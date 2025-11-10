@@ -4,102 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80054CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 10:48:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30B70CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 10:50:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D60A48E000E; Mon, 10 Nov 2025 05:48:38 -0500 (EST)
+	id 43D078E0014; Mon, 10 Nov 2025 05:50:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D11908E0002; Mon, 10 Nov 2025 05:48:38 -0500 (EST)
+	id 414E28E0002; Mon, 10 Nov 2025 05:50:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C00CC8E000E; Mon, 10 Nov 2025 05:48:38 -0500 (EST)
+	id 351FA8E0014; Mon, 10 Nov 2025 05:50:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA7F88E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:48:38 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E5E589DD8
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:48:38 +0000 (UTC)
-X-FDA: 84094373916.09.445AFCF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6F2E3180017
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:48:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F5738E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:50:11 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE7925CA66
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:50:10 +0000 (UTC)
+X-FDA: 84094377780.25.8AE9A9C
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2E22B20007
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:50:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Mib8tEax;
+	spf=pass (imf13.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762771716;
+	s=arc-20220608; t=1762771809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xJe9RrZUlICJVKVCCId7WIyPyCMLhCd5HXbbl2Kr8tY=;
-	b=NXKYM+sz+fBS4ALAtzFl2xASMZFBWH53IUy8ETqhR4WEkF6UPpj7svZI+dAqXnQdEryzl+
-	zGw01tFNagnSsjOOtKZ/jBWE/ghsnIVGRwtQKU6MOCQFPckTjCuoCRHSu1y/oNt5gU/GCR
-	geAOS8SvekrgtOjUSvRV1YsEQnE/aCo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IYGpWxlfS7Ghtlne/3hBnEGQd5/vaVez4+R8iM/BRvc=;
+	b=ozpfHyqSKNAgq0w9+s+a+ydbFifQZRxsutptIUkLCVviuiFs/2QslfQVVJpzcYnTLW6F+5
+	j7FyKWXoxPYhTR+xBK9n4Y4+MkMXe495IM75nTWqepWmp2CHH4FAuGPOuZn++2M7Wl/YsC
+	HKdQbQCk5XgyQemq+8oRSnaas4FHPfw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762771716; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Mib8tEax;
+	spf=pass (imf13.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762771809; a=rsa-sha256;
 	cv=none;
-	b=crbgOZBH9kNm4G/NvLDA9N+4LTy3uBxiGUWxbLlMnE3+UocKWsFu4Sb1gLq5hxHGJGDq4D
-	w0lrLf4ZTYTrAMNgW2kz4RwbKA+TWH+ez+CTnSd8i5ZOflfl2Vz3XrSTimbrJ93L6LwlS3
-	qqsFnfkcSqXiYMgkRNPeiYFDinVBHIY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BB20497;
-	Mon, 10 Nov 2025 02:48:27 -0800 (PST)
-Received: from [10.57.39.147] (unknown [10.57.39.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A51E03F66E;
-	Mon, 10 Nov 2025 02:48:27 -0800 (PST)
-Message-ID: <f7ed51e6-c3f6-402c-b328-8af5f970006d@arm.com>
-Date: Mon, 10 Nov 2025 11:48:24 +0100
+	b=437XzFxUMg7VG72R49wWphIX/ACm3JIhLg001KuobNZi/YYEkrXmIlyXBShi9ZkiE1pf6/
+	gnVDKlJSz3+bYeo94vt8WBENl7uSanZTlZSdJzeR57jQcnh5ou9rpUQUuXmF1nXoXreRTa
+	Eb/bPT7Nwk5+Wu1Xj+YkS+p/A2QqZYo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1762771804; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=IYGpWxlfS7Ghtlne/3hBnEGQd5/vaVez4+R8iM/BRvc=;
+	b=Mib8tEaxFA7R5wFd5+SCweSusyDh1kp24viV8bLJUhkZp4n0FAA6reSyjigFYOpMdnZfCBYiKb726VnbKLCuNCStyoVlBmcBKsPgHOCKNuR656pNXZixnATkPwY9g3gycX5lImWdxU8dOtTDE8q5U8+7E3Jq/KlzRkyea6EUzkY=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Ws1z-Vy_1762771801 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 10 Nov 2025 18:50:02 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
+  linux-mm@kvack.org,  Andrew Morton <akpm@linux-foundation.org>,  Kemeng
+ Shi <shikemeng@huaweicloud.com>,  Nhat Pham <nphamcs@gmail.com>,  Baoquan
+ He <bhe@redhat.com>,  Barry Song <baohua@kernel.org>,  Chris Li
+ <chrisl@kernel.org>,  Johannes Weiner <hannes@cmpxchg.org>,  Yosry Ahmed
+ <yosry.ahmed@linux.dev>,  Chengming Zhou <chengming.zhou@linux.dev>,
+  Youngjun Park <youngjun.park@lge.com>,  linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
+In-Reply-To: <CAMgjq7CTdtjMUUk2YvanL_PMZxS_7+pQhHDP-DjkhDaUhDRjDw@mail.gmail.com>
+	(Kairui Song's message of "Mon, 10 Nov 2025 13:32:52 +0800")
+References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
+	<875xbiodl2.fsf@DESKTOP-5N7EMDA>
+	<CAMgjq7CTdtjMUUk2YvanL_PMZxS_7+pQhHDP-DjkhDaUhDRjDw@mail.gmail.com>
+Date: Mon, 10 Nov 2025 18:50:01 +0800
+Message-ID: <877bvymaau.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/12] mm: bail out of lazy_mmu_mode_* in interrupt
- context
-To: Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-13-kevin.brodsky@arm.com>
- <8a38db66-4d1a-4296-a2dc-e0276c6cdde8@arm.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <8a38db66-4d1a-4296-a2dc-e0276c6cdde8@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6F2E3180017
-X-Stat-Signature: mj1itfhtetr89djdkgkahywyjxdp4jpk
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2E22B20007
+X-Stat-Signature: 17hrac7xbk4jpd95gb8yb5sagnpqhc1a
 X-Rspam-User: 
-X-HE-Tag: 1762771716-146835
-X-HE-Meta: U2FsdGVkX198A6QYnWGuaDT1MRJSV2SBncrj527m8UB2u1nQ/XEs10SvhSMytlvYg1W709IAaIjBb1nHgEBcxTBPUBEUt89iZSIUB2r3I4FcUlcXLpJ8zBuqYRas9NMsrTs3lEIXqx2wtcsePTn1Iken1i+hsF68UcC4eMSAD0YvCQdycC3IRs6aEmB5EXvFjFimVAYa9L6Zp977iaHAxK+XejGHfZUiX2Pp427BmRFNMBhm6NK8caCLKbuDqU+2yw195jqPlu8WlowHPZ+o5x3bD+F29jFmBOWwRiWT+uITa694RGho94dj5ZV63UUy8aMu6lb7eur4vKlEmm/wt80VK3SDHDPwciwuyf9lvHRyaaWfv+r9yMY5zfYLUcUevE96nGFJUWcVvxYGYh1yWtwDuC1CltqLH2JyUfsmFaEG+AMQsgDkY1pPD3WyRWa/HeMoWjS+ftG7TOUGrR64w0fUFhGFyIXddf8WZrabpx/H6WO9s1g/NkhPA2aI63SuUwqLiA7A/+kfHLysapaJd7UxEq0A5VYhe/CqXBgd/1099CI6SWUuucK5daiHWOLMqbo2cfc+BO79EmDQLCAwPuc53KwXKMeNOT13F1Vzr8ek/bJ/zNsSRG+WxbORoRvG+Wws6QxZox0CQNMeUbDXH45XvNBpUdB+pOZsQrng/UK9+NYPdOjZ9a2HZkfw8hpFckyDe3UXuVPbFHsUzYK9rKM7la+STfaMaZmWr6K0o8ZPDetDSRfvUSy/ZcMFslh5Zm++Am4LWl/w3IZwmjXWemsXmWEZVbe57oibVGr+bDQXYxxQgc4O80EAHBjiJN89mQSeyx8naESF7s9gNfFtB+QYouRHFs8SAZIfa7OihW+ZCrs35/WDfZsbsjkEGgmS8I8HkPeSZs4SOHiiT6nOXWdKaOjgwhu0oA9Bo7jxpCap24Zif/GD8+ybYIZZwdXPBO3BB13e2wWyGALgNtc
- EgeWFhze
- wGLtqgafDTpjc2Zkgy6//ErfOw0NPpFhLsA2nmHJubX9usTFoEQRnxYVdVAFN8DNRxoBLYt2HsAlieImEEduIfoASOgalMCgW60w4Bthr93vbyc9J/rwvAcQyEQF61eeKaGwKTfNhPfE/NaCPCX2XgBuvQCuMsvr2a9x0Lejv6aFTzHn04mSN2falKJn+PnIlDXhIxoUeBkF4U4oPlOiKzMRowEfFQG+ckWQ9SmjODXEqFt11kvomODTe28V4bRCNfhSVsZC0XwaiLynIB9K7hS3Tx6zVnRUUP3W8
+X-HE-Tag: 1762771806-583588
+X-HE-Meta: U2FsdGVkX1+/O9EvfcVwC4ZV7RIJw+bQZWEO6O4Ckkq/Sm/a+UbSquPdFCsnul3Qu8M+qzT2FeuqKuX9sVg4M2gw/s5T42qxtE0Nk2SBIwcbYMCyuReREY1vWlqysKSxQGfum8e7AObxH/NSIt8L5wSQx18I4tKv8cz0Q7W4Mo4pUmDSyXlpVPFrvZ0l2yO8mUHPoSQ4LtpUL9QHq3LH9G+a0bgqXAWrR/9zSFHungKuM5E3Ob0WQioG0YMU/7Bptz6YoE9ETzodxKFZtzIrsSYtAFkCSgglhYNCoUUpitbjCvORuOqO6FgDhmfcRAENd6Q58yGSnQfJ2/mROsxr2d1An3Ideg4s2U9osmY4JrE2WA9XxPindArfd6ZnRM+n947afSmhAGNEon2tQHhiI/koSp3r4EXu3E7qjGKyMfhSxDADkImCm18L4ffLZpwJ+wNRXSXWIv/zZc2PXWvr/AXsHDU5jsfSQl1e7ouMTlIRISjL/LSmwW5z3ggS+z0OXEW0DCtwndzQ3DDIbuvdgcx2DG5JcpqCpWpF3yswiX8rrFIl5id84d5jxgQ0QEPnDg5xnCaF+2uI36b7A3Su60ZjC6YSDbRRfn9mGSBDFKLiQZd/EBW0WJs/M2bZ2pTFFr54Tcdyx71f+y4xK//W+9Ucunl7NgWETbx8lbSN0paVuXUUEDwwyBtUbQZuHrAFgqo3I1RSfwXEytbZPf4w08zBKTW7caUK/k012libVfnwNDEIqWwX1ljaWCJvWiQuIUNUIxvIX2MNNNC6W/0aFjRqJGUsp7b4VAfol59jxyaF1364+BtliasNUT7AfEq31wU7E68Ww3vFifscGIBLMJQccSWTHX6LoayltsU5Toqx7m0Sc8NbrNtX0+y8olMkjJRrrxr/ukDBWJ8PIcl3lDx2yIO1WR9XndAPRPZbwGGtpT5tutpES+ziUk3uAuwTycDST7ieRrFRjPLiY9T
+ w/DMeehw
+ hLH2svQXAITc/GedxJp5onD502U2NBFlG5RFjOt9+xh/zH0nhW4xMfyxEZ2Cdu10lKuZA9zKZNiqEij/PjfW2tlrCcpN4jEItVTeva39dApWdT5OiYty4XwFFDjN7HwVWp7ykmbjUqBi4Du1029huTImn16iasqUBQhjKO5qKLyS60m7+oQP6qdeeaPgkw8rjItdPePPTlpHGNBVIn/IDsueRbj1YPdTXoEA6YWmLv7Zf1qlyv0CcO790s/wjqbMMD63HTG/fezgSZKwEhSzG88vnJtlgt48FSYzVVOe6QKLmczJrFn6rxocgQXT1R7W+8n7LODzZihIJvoQCWdj5PPlxoV0mKH/AClIk7Vmt/x4Wp1OfPhfddqSXfGCSG2WDCwduH9/J5gwVfbg3P7rXaC+d6BH0oJvrTnDNPQLZZogg67w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,86 +95,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/11/2025 15:42, Ryan Roberts wrote:
-> On 29/10/2025 10:09, Kevin Brodsky wrote:
->> The lazy MMU mode cannot be used in interrupt context. This is
->> documented in <linux/pgtable.h>, but isn't consistently handled
->> across architectures.
->>
->> arm64 ensures that calls to lazy_mmu_mode_* have no effect in
->> interrupt context, because such calls do occur in certain
->> configurations - see commit b81c688426a9 ("arm64/mm: Disable barrier
->> batching in interrupt contexts"). Other architectures do not check
->> this situation, most likely because it hasn't occurred so far.
->>
->> Both arm64 and x86/Xen also ensure that any lazy MMU optimisation is
->> disabled while in interrupt mode (see queue_pte_barriers() and
->> xen_get_lazy_mode() respectively).
->>
->> Let's handle this in the new generic lazy_mmu layer, in the same
->> fashion as arm64: bail out of lazy_mmu_mode_* if in_interrupt(), and
->> have in_lazy_mmu_mode() return false to disable any optimisation.
->> Also remove the arm64 handling that is now redundant; x86/Xen has
->> its own internal tracking so it is left unchanged.
->>
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  arch/arm64/include/asm/pgtable.h | 17 +----------------
->>  include/linux/pgtable.h          | 16 ++++++++++++++--
->>  include/linux/sched.h            |  3 +++
->>  3 files changed, 18 insertions(+), 18 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index 61ca88f94551..96987a49e83b 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -62,37 +62,22 @@ static inline void emit_pte_barriers(void)
->>  
->>  static inline void queue_pte_barriers(void)
->>  {
->> -	if (in_interrupt()) {
->> -		emit_pte_barriers();
->> -		return;
->> -	}
->> -
->>  	if (in_lazy_mmu_mode())
->>  		test_and_set_thread_flag(TIF_LAZY_MMU_PENDING);
->>  	else
->>  		emit_pte_barriers();
->>  }
->>  
->> -static inline void arch_enter_lazy_mmu_mode(void)
->> -{
->> -	if (in_interrupt())
->> -		return;
->> -}
->> +static inline void arch_enter_lazy_mmu_mode(void) {}
->>  
->>  static inline void arch_flush_lazy_mmu_mode(void)
->>  {
->> -	if (in_interrupt())
->> -		return;
->> -
->>  	if (test_and_clear_thread_flag(TIF_LAZY_MMU_PENDING))
->>  		emit_pte_barriers();
->>  }
->>  
->>  static inline void arch_leave_lazy_mmu_mode(void)
->>  {
->> -	if (in_interrupt())
->> -		return;
->> -
->>  	arch_flush_lazy_mmu_mode();
->>  }
-> Ahh ok, by the time you get to the final state, I think a most of my
-> comments/concerns are solved. Certainly this now looks safe for the interrupt
-> case, whereas I think the intermediate state when you initially introduce
-> nesting is broken. So perhaps you want to look at how to rework it to prevent that.
+Kairui Song <ryncsn@gmail.com> writes:
 
+> On Mon, Nov 10, 2025 at 9:56=E2=80=AFAM Huang, Ying
+> <ying.huang@linux.alibaba.com> wrote:
+>>
+>> Hi, Kairui,
+>>
+>> Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> writes:
+>>
+>> > From: Kairui Song <kasong@tencent.com>
+>> >
+>> > This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
+>> >
+>> > While reviewing recent leaf entry changes, I noticed that commit
+>> > 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
+>> > correct. It's true that most all callers of __read_swap_cache_async are
+>> > already holding a swap entry reference, so the repeated swap device
+>> > pinning isn't needed on the same swap device, but it is possible that
+>> > VMA readahead (swap_vma_readahead()) may encounter swap entries from a
+>> > different swap device when there are multiple swap devices, and call
+>> > __read_swap_cache_async without holding a reference to that swap devic=
+e.
+>> >
+>> > So it is possible to cause a UAF if swapoff of device A raced with
+>> > swapin on device B, and VMA readahead tries to read swap entries from
+>> > device A. It's not easy to trigger but in theory possible to cause real
+>> > issues. And besides, that commit made swap more vulnerable to issues
+>> > like corrupted page tables.
+>> >
+>> > Just revert it. __read_swap_cache_async isn't that sensitive to
+>> > performance after all, as it's mostly used for SSD/HDD swap devices wi=
+th
+>> > readahead. SYNCHRONOUS_IO devices may fallback onto it for swap count >
+>> > 1 entries, but very soon we will have a new helper and routine for
+>> > such devices, so they will never touch this helper or have redundant
+>> > swap device reference overhead.
+>>
+>> Is it better to add get_swap_device() in swap_vma_readahead()?  Whenever
+>> we get a swap entry, the first thing we need to do is call
+>> get_swap_device() to check the validity of the swap entry and prevent
+>> the backing swap device from going under us.  This helps us to avoid
+>> checking the validity of the swap entry in every swap function.  Does
+>> this sound reasonable?
+>
+> Hi Ying, thanks for the suggestion!
+>
+> Yes, that's also a feasible approach.
+>
+> What I was thinking is that, currently except the readahead path, all
+> swapin entry goes through the get_swap_device() helper, that helper
+> also helps to mitigate swap entry corruption that may causes OOB or
+> NULL deref. Although I think it's really not that helpful at all to
+> mitigate page table corruption from the kernel side, but seems not a
+> really bad idea to have.
+>
+> And the code is simpler this way, and seems more suitable for a stable
+> & mainline fix. If we want  to add get_swap_device() in
+> swap_vma_readahead(), we need to do that for every entry that doesn't
+> match the target entry's swap device. The reference overhead is
+> trivial compared to readhead and bio layer, and only non
+> SYNCHRONOUS_IO devices use this helper (madvise is a special case, we
+> may optimize that later). ZRAM may fallback to the readahead path but
+> this fallback will be eliminated very soon in swap table p2.
 
-Agreed, as discussed on patch 7. I might split this patch - first add
-the in_interrupt() checks before patch 7, and then remove the
-now-redundant checks on arm64.
+We have 2 choices in general.
 
-- Kevin
+1. Add get/put_swap_device() in every swap function.
+
+2. Add get/put_swap_device() in every caller of the swap functions.
+
+Personally, I prefer 2.  It works better in situations like calling
+multiple swap functions.  It can reduce duplicated references.  It helps
+improve code reasoning and readability.
+
+> Another approach I thought about is that we might want readahead to
+> stop when it sees entries from a different swap device. That swap
+> device might be ZRAM where VMA readahead is not helpful.
+>
+> How do you think?
+
+One possible solution is to skip or stop for a swap entry from the
+SYNCHRONOUS_IO swap device.
+
+---
+Best Regards,
+Huang, Ying
 
