@@ -4,91 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94869CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 13:25:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F65CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 13:26:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E49AD8E000B; Mon, 10 Nov 2025 08:25:09 -0500 (EST)
+	id 39F978E001C; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E20F38E0002; Mon, 10 Nov 2025 08:25:09 -0500 (EST)
+	id 376F28E0002; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5EAF8E000B; Mon, 10 Nov 2025 08:25:09 -0500 (EST)
+	id 28D1A8E001C; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1F898E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:25:09 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B9E313C358
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:25:09 +0000 (UTC)
-X-FDA: 84094768338.09.71BB77E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A6DDFC0013
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:25:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 124AF8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A804E160D2F
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:26:55 +0000 (UTC)
+X-FDA: 84094772790.14.4559EA5
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5473040009
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:26:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=j0nkU5Dw;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762781107;
+	s=arc-20220608; t=1762781213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lUJsuQsbTZO/r3FsIQZwCllbuT86QgPTYNNkN6JKTUc=;
-	b=hLSJBQn1TnEATrAwGaI/K2gRGxtMwnOIKJdQ4h2VsvDWncBewmDGz9z3kDP3mC6/yWoNyG
-	ILKuKl8MDG1jR+LnFgtftLiAZNyvx/FVEYOU6QAJXQKJxgbtbQq4XZBlliUF1VCoFepFpu
-	WCKcp1zE3oG1HtkZLm43dci/Eub6tLo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lprtFd/NlVRB7w+YKB2xp8fLIpz9NqIGACKh1twoei8=;
+	b=DG9sUw4SxJAakcbiU8E7Q0vFeWItdr+3Mtx/iDrFpEtAiWKCxq38Glkh2TZgcWqCM4V5/+
+	m95TC73a0WV8iyp88tNidvcS52R2LN2VYkm8fAOLxgmzVjsWn3WNKmkIw9KkoWGdH94DRO
+	UT1UYVlz92qiC6DlnrnjH0IvGlgkcKc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762781107; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=j0nkU5Dw;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762781213; a=rsa-sha256;
 	cv=none;
-	b=ovAlRuyLV2Sg5Bo9cGvsbwm9b8MjCFGRAwWtz7o53wbayNssgr0i5ie1j7F+J1sls1WA9P
-	nBb/GTbon+9inE7aiaPuyD+HVFmC8OJQS3iyO9Sj41hkpu5D2kWHNtPgkvZzgP09JcpNvh
-	8oL1WTQqbLLgQfnV8A9Y2s9pf3MlpbM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5247497;
-	Mon, 10 Nov 2025 05:24:58 -0800 (PST)
-Received: from [10.164.136.34] (Mac.blr.arm.com [10.164.136.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E21ED3F63F;
-	Mon, 10 Nov 2025 05:25:00 -0800 (PST)
-Message-ID: <3f5f8a48-fa3b-4985-95e1-dd0ac21b5dcc@arm.com>
-Date: Mon, 10 Nov 2025 18:54:57 +0530
+	b=P8s37W4ulBstmZLOK9n31rov1cpTC9of16J3LaSGiR6V75GUkoTcKmA3rqigCe02KT+AzE
+	y9ekNS+VOnwclOoTWql/5VgoMRyKdAbIn3WIKP1OEHKL3LtaXpNRsOAexJWgPfsOt7+hJw
+	cIR1EwvldPOd3EaFa+thMSvgGGMA/dg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762781213; x=1794317213;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gqluEsxLQlbV3vngbeO8V//CEUVe0NkM4sEqKyJqBVc=;
+  b=j0nkU5DwL3RLIMNhE7L2kPehx1MyJ4ECoEJs6TtzuwgoCXnqvCrcymOG
+   ZlGegpT6fHMg9VdIkD26UWWEKXpEECupAH7YsPuMqixQ+6q6K5nHwApvx
+   c+5RcWgJjpCEnVo43LZqYotoXtc/4BasoFcjVNebr8/2vyUcR8uExFJt1
+   x+qocAy8K6Uu5fgtAswLyGU4roV83oiMX2m/buiA9ikrQ9A2TKGmbsfYP
+   KIG6Hx32+uYbFmStoiQiDfRWn2l7kas3LDReiDro/vPqOjm1/KGF+3fVM
+   g4UQVMNna4A2t4a/CJwG6BwwwlFJ1ImgeiE3qfEH7HRS5vQPkv+mqm45l
+   w==;
+X-CSE-ConnectionGUID: FEOZEAD8QM6E8eFEti7L7w==
+X-CSE-MsgGUID: GjHTOaLGQl69Lb6Uv1A0gA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64711584"
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="64711584"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 05:26:52 -0800
+X-CSE-ConnectionGUID: t+LJONLVQHSZACIPcylDHg==
+X-CSE-MsgGUID: TMq45V+1QXibCa/0AnAzug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="192932412"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 10 Nov 2025 05:26:45 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vIRuu-0000Sp-2q;
+	Mon, 10 Nov 2025 13:26:44 +0000
+Date: Mon, 10 Nov 2025 21:26:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, youngjun.park@lge.com,
+	gunho.lee@lge.com, taejoon.song@lge.com
+Subject: Re: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into
+ swap subsystem
+Message-ID: <202511102100.y6n1mtle-lkp@intel.com>
+References: <20251109124947.1101520-4-youngjun.park@lge.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/khugepaged: do synchronous writeback for
- MADV_COLLAPSE
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- Branden Moore <Branden.Moore@amd.com>
-References: <20251110113254.77822-1-shivankg@amd.com>
- <f21b37bb-7a2b-412b-be76-e8968b4c375d@lucifer.local>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <f21b37bb-7a2b-412b-be76-e8968b4c375d@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A6DDFC0013
-X-Stat-Signature: 14i6sttfcb6kc7wc9u7n387ecn6wnhz3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251109124947.1101520-4-youngjun.park@lge.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5473040009
+X-Stat-Signature: q9dzpt4rcsi3d99a1puf91c3gcb1odfr
 X-Rspam-User: 
-X-HE-Tag: 1762781107-307765
-X-HE-Meta: U2FsdGVkX1+VfI+3m+c9RrXByeJTjeM14J9n4aoR7TkXC2RaQWtMxbcwTZTZAadPcQ3N7yd5E21MZY3JFYRIzInxsFhpumN0xeZLyvFczUkXvHDpM+Ad9PUfP4H69jADKcg31rMxBVoLX9RrvHLX0WNaRpPVR4HhhRhVAgWBmI6WQ7agi1GOp6c4oEs2p3rSPPZGMNJreTsB5We2MuFjCYlG03S8leydY+RR3JaTPB5Tnk0tJ0dgZ0pbHbhXMxGh/Dz++dP/zjE20HMBRe709DYeevvBCfwH5JHw+wA2nSUiTrRz/LUZYhh5yiv9ZyKbQ1UCqNgqHYNmI/UG/P7dKPqsWxCTJyXY5nTb7p3g5/fCREbP7X4XfAcrJCwelpdoCDcR0iZVmHUQaUSLFx836yrNvPAF0i90tdADr9DzqqRcOSMR47Ynlw/NxMJHueZjajyeaFSFNFOhjTmzYmaNPGK1u/w7qlrmKPNkGbaFifDz4o2MvyTz4xH6Q+w+/kQCETHDMATDthuhlpSA0X4osEe1heVGT/5j7h5b4ELmPJd71MEfy8ta7QVKMVbzdfljWLxSq1be3JkWYwSThsYLky0Mx+MN6+rBO+xNFk/y9iVkQJqPfcANslCEntd8asfV32cHi3QF61euUpKITWHeOAIrggMhZE8PACjWWOSVpq28hL2NZiEThVPDS8W3k0d6EmpTswag6QGXvQPI8tWrxUOZ4MqeYPfH5IbdvJsjgVRtYElNUmHX6RlfN7wFybk75KHC+0qwa86hEXK3Vjb+x7lK5SxMJhCOhrWCiBfhUbPiZg1szvgXJsvgEkIQhpMPYWgO0xftY13KT7oVBg1ZPtDpH/u9VXX8zAPaC+XGnHB1p8qCW4FZS4a0s984pgkAlZJdmZkKL90GZMKwJPcEC3dFEUBMEDGXzoGVKZ4AbkSrLW8iEn8HupzKRU8dcavqv9vSq4CmUEWktCW77tX
- buXODTKo
- PP4jAjd2tc5xR7r8+iRgyhGfpOTFGhl0xCJLfqjxquHDl9eaVOyegJwng7H8d6PW7fuNmlP8j7uwldW48fioh3foqVuNnUFpywd7rMiotDxsQ3uJdM7Mki0ySovb99GsaCcznjcy+uIHnruyMZJEglMoetsBcAv1nhKm0XyVjlyUoeKxUBqO66bvOxI+U64MuPFLEfudlv+2of5td7RTcjIKk8/eW9tUa7N87BXH66CrJZiUWaI/AylR0wmqNtctBi5w88Nu+V3szxH/2vIZUnx8D05BBpuj6Jb7uRKrqm7qKD/M=
+X-HE-Tag: 1762781212-781365
+X-HE-Meta: U2FsdGVkX1/j3QBqWxKiwl7BPmSArEsykb50IzwuNUvTY9r19NSSLKRUtfSd5lpBZlPnUuMVGYcDAtFRB5HCwLoRD+t+YtWYHFZy/phqXsKuqmHLWPItdGhVNVdNah/RPIMKf3jK/tkaZ/hXcdchne0IOmfkNz72psWb5qZdbljiyexMjZHcsfOlc33V33YMWJzgge0hWScvx8D1Mb2VMNIrLlyRikrVYEo8DByzTYAfBZFpudGCBTMPmFF3Uet1Zpvgx+jtIbKzh4qDgUyISoPRwH9Vbi4nYydgNeGfOLYS2dNndEFUvmxCAeLA55e9jdNqOTwVDYn0j4Wb/X2jjdyI1kguSyMK2LKef9mR84WBhde6pu60B8n0viS0PoR8cMN33RfsZJM2BkA50GyNkX4Y6UgZlsPwWuwRKOJ7MtEgceGBt0cSNMVfSL46CZpz32Ky6QzEt44IKm9gn9oxGIIAYsnegYyWss/D2ALqlnWlfRw0PDGK/4R1Z1RBPKvPSZO6Nko1m7mBuNSUS90WWByP9dCozKvSFSMESoyeTb/Z6B8bxrzjDisqJRNX+BFxfLmBF6QSeROKf/Y4o8CI5uXDchJFYQovwb++9Be+XJ7dQLx5wGKw3wDbggMM61eRUpaJxhiesA5JXtjuT9WmcrMqOb4WoiTFt0sGRjmKbw2RnEuJ4h6rakN0OX3CBldDUh1h63eUalUnLyUV47X1wMdcqdYDYCF1p85YBaJBKderRREenbZ+EHSxjsB2yjwQXjJEKs3OKhmhqhlNSbUCLEWKxySV47wiUCXJh7oyBRqmoCgTo1yVgrtcS4jmy42ZnJqTQPRQHhcAFXM+qE8OUscZSldj/twOTUu4Kv4F2/lqYnUqW7n5lKkOVl77lC3q+M1hAJeU5a+jS35Gh2xOSGvhZaZj9YsagE70UHGimvTRhFTOI1ackFcqTbD973oGLmLXV3Aw3AW3bL+BIkU
+ 5GjnyCMc
+ nXUyY5EPg/0bkbFZvQ60Ggelh2cumhVSmEllD3SDQcL149UTVPhFwmEUmXW0wi+rczRpWdZeCtUVslF0GIkGzLRET83Px3yM7P10dgODva8LX6cCOipK/jkD347H4vE1pkE5FOukPlGHb9K6aa4TKHa2/1GJwoN2YwRnv9zGWdZ+zX5k+lpoPYfwAwMQDAkCg/tFRfKruWHuJc9x0KkcjGRDWQ/jMwmQx7ybCrtmlDBH6TTjgqgcdS1MT2jUwNNmIM/qwq2GjK9zKGv8KIW75KaDzE4I6LeQ5/YwVFjinrstz1gmSI4V2rNQo5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,114 +114,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Youngjun,
 
-On 10/11/25 5:31 pm, Lorenzo Stoakes wrote:
-> On Mon, Nov 10, 2025 at 11:32:53AM +0000, Shivank Garg wrote:
->> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
->> text sections), the pages may still be dirty from recent writes. The
->> current code triggers an async flush via filemap_flush() and returns
->> SCAN_FAIL, requiring userspace to retry the operation.
->>
->> This is problematic for userspace that wants to collapse text pages into
->> THPs to reduce ITLB pressure. The first madvise() call always fails with
->> EINVAL, and only subsequent calls succeed after writeback completes.
->>
->> For direct MADV_COLLAPSE calls (!cc->is_khugepaged), perform a synchronous
->> writeback using filemap_write_and_wait_range() before scanning the folios.
->> This ensures that folios are clean on the first attempt.
->>
->> Reported-by: Branden Moore <Branden.Moore@amd.com>
->> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
->> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
->> Applies cleanly on:
->> 6.18-rc5
->> mm-stable:e9a6fb0bc
-> Please base on mm-unstable. mm-stable is usually out of date until very close to
-> merge window.
->
->>
->>   mm/khugepaged.c | 17 +++++++++++++++++
->>   1 file changed, 17 insertions(+)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index abe54f0043c7..d08ed6eb9ce1 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -21,6 +21,7 @@
->>   #include <linux/shmem_fs.h>
->>   #include <linux/dax.h>
->>   #include <linux/ksm.h>
->> +#include <linux/backing-dev.h>
->>
->>   #include <asm/tlb.h>
->>   #include <asm/pgalloc.h>
->> @@ -1845,6 +1846,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
->>   	struct page *dst;
->>   	struct folio *folio, *tmp, *new_folio;
->>   	pgoff_t index = 0, end = start + HPAGE_PMD_NR;
->> +	loff_t range_start, range_end;
->>   	LIST_HEAD(pagelist);
->>   	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
->>   	int nr_none = 0, result = SCAN_SUCCEED;
->> @@ -1853,6 +1855,21 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
->>   	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
->>   	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
->>
->> +	/*
->> +	 * For MADV_COLLAPSE on regular files, do a synchronous writeback
->> +	 * to ensure dirty folios are flushed before we attempt collapse.
->> +	 * This is a best-effort approach to avoid failing on the first
->> +	 * attempt when freshly-written executable text is still dirty.
->> +	 */
->> +	if (!is_shmem && cc && !cc->is_khugepaged && mapping_can_writeback(mapping)) {
->> +		range_start = (loff_t)start << PAGE_SHIFT;
->> +		range_end = ((loff_t)end << PAGE_SHIFT) - 1;
->> +		if (filemap_write_and_wait_range(mapping, range_start, range_end)) {
->> +			result = SCAN_FAIL;
->> +			goto out;
->> +		}
->> +	}
-> I feel this is the wrong level of abstraction.
->
-> We explicitly invoke this oth from khugepaged and madvise(..., MADV_COLLAPSE):
->
->
-> khugepaged_scan_mm_slot() / madvise_collapse()
-> -> hpage_collapse_scan_file()
-> -> collapse_file()
->
-> ofc you are addressing this with the !cc->is_khugepaged, but feels like we'd be
-> better off just doing it in madvise_collapse().
+kernel test robot noticed the following build errors:
 
-I suppose the common case is that writeback is not needed, and I don't know what
-is the overhead of filemap_write_and_wait_range() in that case, but your
-suggestion will force that unconditional overhead and skip all the early exits
-possible in hpage_collapse_scan_file()?
+[auto build test ERROR on akpm-mm/mm-everything]
 
-> I wonder also if doing I/O without getting the mmap lock again and revalidating
-> is wise, as the state of things might have changed significantly.
->
-> So maybe need a hugepage_vma_revalidate() as well?
+url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20251109-215033
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251109124947.1101520-4-youngjun.park%40lge.com
+patch subject: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into swap subsystem
+config: riscv-randconfig-001-20251110 (https://download.01.org/0day-ci/archive/20251110/202511102100.y6n1mtle-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 996639d6ebb86ff15a8c99b67f1c2e2117636ae7)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251110/202511102100.y6n1mtle-lkp@intel.com/reproduce)
 
-The file collapse path (apart from collapse_pte_mapped_thp) is solely concerned
-about doing the collapse in the page cache, for which information about the mm or
-the vma is not needed, that is why no locking is required. The get_file() in
-khugepaged_scan_mm_slot() seems to be serving the same function as maybe_unlock_mmap_for_io().
-So I don't think this is needed?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511102100.y6n1mtle-lkp@intel.com/
 
->
->
->> +
->>   	result = alloc_charge_folio(&new_folio, mm, cc);
->>   	if (result != SCAN_SUCCEED)
->>   		goto out;
->>
->> base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
->> --
->> 2.43.0
->>
-> Thanks, Lorenzo
+All errors (new ones prefixed by >>):
+
+   In file included from mm/page_io.c:29:
+>> mm/swap_tier.h:71:1: error: expected identifier or '('
+      71 | {
+         | ^
+   1 error generated.
+--
+   In file included from mm/swapfile.c:52:
+>> mm/swap_tier.h:71:1: error: expected identifier or '('
+      71 | {
+         | ^
+>> mm/swapfile.c:1309:31: error: no member named 'tier_idx' in 'struct swap_info_struct'
+    1309 |                 if (swap_tiers_test_off(si->tier_idx, mask))
+         |                                         ~~  ^
+   2 errors generated.
+
+
+vim +71 mm/swap_tier.h
+
+c17fe68325c921 Youngjun Park 2025-11-09  41  
+c17fe68325c921 Youngjun Park 2025-11-09  42  void swap_tiers_init(void);
+c17fe68325c921 Youngjun Park 2025-11-09  43  int swap_tiers_add(struct tiers_desc desc[], int nr);
+c17fe68325c921 Youngjun Park 2025-11-09  44  int swap_tiers_remove(struct tiers_desc desc[], int nr);
+c17fe68325c921 Youngjun Park 2025-11-09  45  ssize_t swap_tiers_show_sysfs(char *buf);
+c17fe68325c921 Youngjun Park 2025-11-09  46  void swap_tiers_show_memcg(struct seq_file *m, struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  47  void swap_tiers_assign(struct swap_info_struct *swp);
+c17fe68325c921 Youngjun Park 2025-11-09  48  void swap_tiers_release(struct swap_info_struct *swp);
+c17fe68325c921 Youngjun Park 2025-11-09  49  int swap_tiers_get_mask(struct tiers_desc *desc, int nr, struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  50  void swap_tiers_put_mask(struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  51  static inline bool swap_tiers_test_off(int tier_idx, int mask)
+c17fe68325c921 Youngjun Park 2025-11-09  52  {
+c17fe68325c921 Youngjun Park 2025-11-09  53  	return TIER_MASK(tier_idx, TIER_OFF_MASK) & mask;
+c17fe68325c921 Youngjun Park 2025-11-09  54  }
+c17fe68325c921 Youngjun Park 2025-11-09  55  int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  56  #else
+c17fe68325c921 Youngjun Park 2025-11-09  57  static inline void swap_tiers_init(void)
+c17fe68325c921 Youngjun Park 2025-11-09  58  {
+c17fe68325c921 Youngjun Park 2025-11-09  59  }
+c17fe68325c921 Youngjun Park 2025-11-09  60  static inline void swap_tiers_assign(struct swap_info_struct *swp)
+c17fe68325c921 Youngjun Park 2025-11-09  61  {
+c17fe68325c921 Youngjun Park 2025-11-09  62  }
+c17fe68325c921 Youngjun Park 2025-11-09  63  static inline void swap_tiers_release(struct swap_info_struct *swp)
+c17fe68325c921 Youngjun Park 2025-11-09  64  {
+c17fe68325c921 Youngjun Park 2025-11-09  65  }
+c17fe68325c921 Youngjun Park 2025-11-09  66  static inline bool swap_tiers_test_off(int tier_off_mask, int mask)
+c17fe68325c921 Youngjun Park 2025-11-09  67  {
+c17fe68325c921 Youngjun Park 2025-11-09  68  	return false;
+c17fe68325c921 Youngjun Park 2025-11-09  69  }
+c17fe68325c921 Youngjun Park 2025-11-09  70  static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09 @71  {
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
