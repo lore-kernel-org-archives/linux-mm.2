@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02C46CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 23:20:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 330A7CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 23:21:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F5748E000B; Mon, 10 Nov 2025 18:20:36 -0500 (EST)
+	id 953618E000C; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CCD18E0003; Mon, 10 Nov 2025 18:20:36 -0500 (EST)
+	id 929C38E0003; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E32E8E000B; Mon, 10 Nov 2025 18:20:36 -0500 (EST)
+	id 868018E000C; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D8178E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 18:20:36 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CDA311602D8
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:20:35 +0000 (UTC)
-X-FDA: 84096268830.23.BCC98DF
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2A72640007
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:20:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BgAStWnG;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 764358E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36E1786D18
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:17 +0000 (UTC)
+X-FDA: 84096270594.05.A5F692D
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 841D114000A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mmWY40qN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762816834;
+	s=arc-20220608; t=1762816875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9otsU5sTTsv5iDT1hLkwZC6VR8+kvlYsVUkWcUV3yUw=;
-	b=EIfEGib5CdrnI77YKjTFTT2qIZ1EuGQjM16NEdtqPRXiF7uHl3oWDOY2YCCKiTkZikVI43
-	W0F4Ntc6U17mLQ3rxQY3VtRDVtz7Sn61bdVhF0BbJEIGQJ4tRZunAaMg4Fo2GxjeBxfeqo
-	K2og0F0V8tDF8NnPA0iE3FM0pCfJlH4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762816834; a=rsa-sha256;
+	bh=46TR/sEczQ+2endRnnVwUIJHB5dy7B94vjCFZXto+D4=;
+	b=6ms7AkK6aHtjkWaE/ky2vbVb3+TmVlnWuyp2lymh4BPwDTV8O8LsFo4EcxTcfK3VSfDNOk
+	CFpXV0FPXfb/okf7IpIxMU8MSAi2dlKFv784+dbQMPLov73lpanctcYQUMIZ6SAibp0k8M
+	b1lZjwWwtkPKmwYhEuSa+/cw81Cg1VI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762816875; a=rsa-sha256;
 	cv=none;
-	b=5uqwQDBjygLb6B6nVR24DRj4Lyuu8hQ09CIv3siAAqzUpJNd7i9cYRrXdr9LFGwYeyO+E2
-	UAcJOfY0XILOdnrejob7tLDsI4Qc+ER+rjiUh3i1kKR+ZLAAjoUW/Pl4ctLl6/2C66dgHZ
-	lDUMMFj7EbhF5NyZklOSN74OkxuXYv8=
+	b=D65lAdYogydYl+OQwY8NCiYNL7XQ5z2EFcMaf2x+vF/eR11s5rBOma9hXsq6rJ+xdzX62S
+	4EG5u3ymv+8j4ZZQCvnLuMw3Gp+88rM+pFXflbI9wESGCfTCbTi98hfkvNKW4+qfrssApU
+	TvSRhy6iVxVnli/7SJqMOkhfqjU4/wU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BgAStWnG;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mmWY40qN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762816831;
+	t=1762816874;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9otsU5sTTsv5iDT1hLkwZC6VR8+kvlYsVUkWcUV3yUw=;
-	b=BgAStWnGWu+R++HQPUGOOHPlqRzdxWNJ0t59sVFAJf0Bbvv09PqCZGD04X5NPEYjczxOVu
-	jskKx8vaHfikcuEhDCvFDPEaIM+ICUbyL8lklWpFjP8EoEknW3w+mRhSTi2/WREjj1BfDY
-	LLQmumQ5TKsmYPQqq7ZVuNy/GmrDuvk=
+	bh=46TR/sEczQ+2endRnnVwUIJHB5dy7B94vjCFZXto+D4=;
+	b=mmWY40qN6VIF9ZxDo3HqTObvI92nLXnIOdn9QVUEniqCl+Q/AcuqeInjI3fOW+Drh5TLpA
+	amlVqxwCPeEVsVDwCDbuiPFQpFlv30CJHJtBjDcnshma286fhPwsh3aiYmvELvFdy2MXDd
+	R9Mv7CVSiOawTROCn3U/VA4oK9rpYgE=
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
@@ -72,22 +72,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Meta kernel team <kernel-team@meta.com>
-Subject: [PATCH 1/4] memcg: use mod_node_page_state to update stats
-Date: Mon, 10 Nov 2025 15:20:05 -0800
-Message-ID: <20251110232008.1352063-2-shakeel.butt@linux.dev>
+Subject: [PATCH 2/4] memcg: remove __mod_lruvec_kmem_state
+Date: Mon, 10 Nov 2025 15:20:06 -0800
+Message-ID: <20251110232008.1352063-3-shakeel.butt@linux.dev>
 In-Reply-To: <20251110232008.1352063-1-shakeel.butt@linux.dev>
 References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2A72640007
-X-Stat-Signature: xwryu9wu8jsw1zdtc4eusaf3kma1dqc6
+X-Stat-Signature: jr5ampiyocz1rtajqqfau7x31ze5oftq
 X-Rspam-User: 
-X-HE-Tag: 1762816833-39782
-X-HE-Meta: U2FsdGVkX1/BAzu0wEziQKAZ0YoGGRco4X0TC9yE1/27KCs7Qh7ldVVskzuJrQ1LXLQU5MID0wPZ8EdkdwugJX3ZWRXLU/BOEWVy/xxbQ83Pn8WDwCDTols3wYbTlKybzKgjza4AxYeaUKHAZQbFoGcCDI+OzowZjerhPbdC6pjwTE67uVkP9jV1EWcZRUeLENfha/QQE8ydSGyQiUQpSxlEFZyYIsGSK1xN77GrIyx9dLiXIgzR17RP+lEBOYvZoSxuRP+xr40H3TSUR2tZnhzUvy+FweKiKeDiTCtty6lcuxuZmbZqQMObZREiKV5gJtswmmbzOCu1WuyI9d8Gyzt9JDTMf//cSNyBNrqY0HPzEwwpidbI76ptQacidLMFPoxr7QnDtD9dl6iCTGFdwSkJP6zphqZOOggYX4dJyorjmGfs19TVCdhLGDRvtN+3Rku8MjguN/1wygR8GZOHIIgPw+VfWmGxuLYflURWOGrth+op9KFWIH5v8Ik/5K7k7hBUDGP92HAC0Xec2F7vZXhmHUAbRBRVLbsUV3V+PnLNdvkEXKyBPyu4p+LYJh/r8R18jwe50v54D5Fa9QqUpg96FqUs2qGI+ZmSCkxDKKCTpkHh4y1bpFXJUzKbCr1Jaz5oxKvKGQ4TrbPWTp3BZsZJlwxhrDHVFR8+cbrREaWzTCVcTrIxYHUuDR59z1ky4P8ZLHbpmZ6HUyC/CtMlEtqq2sOZkBNqYqN3kIVA1CJp2Nciq+bJbq9ra3245jeQ2Q2oeYwsK4qnJQFfBLgHB2tStjsAX8cMC+dr/eYtqFG6D38qUpj8YpuV5Cc/hlRrYsCKQBXtZGKw99fzEmaF54VgZS+w5OjUVftXQpvquHHb9zx7+tOKWP6MWCa8dp/hl5nnyELroLkRv22Wo+xmxL1CB1qOZpN5D0nsHD/RtLDsDAycGV/KfOEQov9YVaQ+pVTTujYcmFbADiTGJT7
- VdGY2QAA
- YR9YJ1l/bhtRyEAQW0dbesKA55wkS3UUA07qFUgrNS4quqf/RQPGIbXOsB/UGW/HKtjT10FdV44BBjNDR3loHP7/y1w7DSUmaic6N2je62x432uOJD4s0coVbFsSAiEFTYV6iJ8TtA4fZK6ntpy/xjHq+oCga+DtG+SmxrbUF30/2UNffdFpAZPlZPbbquv7e84Jjv3HFp6YMfP0C+JZJI6fEsvLnvJ6ye4XYKnhXYirTnhuHeH2l6POlyUjBNKxYcIzo3wkVGuSlXkrzXOwybiZVww==
+X-Rspamd-Queue-Id: 841D114000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762816875-579802
+X-HE-Meta: U2FsdGVkX1+wF2qqa4CFDLAQ2whW/SfFh+a8WUNOVnlmN4JwaGcIoolXlUm2n8rgU7l0gJeF2tAiSeNtRPXHMDfTeP+MSluzuOQhQnsORYOuO7zEKVdiOppo4u3vDONfirPSwGz8nLgboZonnBFnjqO3Q4RPh3SOvfadj1Ezvar2qOgnRmYkKR+gB6OGdQdp1D8Np1z4Vpy+vdNnHV3i7AjxC/P7jgqPY5vOve+gn2yd7Ty7yUY4eCjnKBB4RRbEzRDbxowzgD1Q936tlEz8P61gFIN0OIBvW+S64BPbfbvALL/Iatx7uK0Kn9IY4J1j01Z2yfXvCOHz+xfT12mjwaPW+2acdJvvab6/hvoFvIcGKIyEUfVLedJB9q1nSKNjwfExMHIO1eAQRIfgA5NZ/qvAO3IMRn63yAAA0KeHrAroHqXMBvlor4Cgylk2O/Z4RUui3ZUIP8C4sclDD2ZblCawPj0ZC7zQkRkmgceE26VD8tP0RpErCCAlB00itBJFpAikXpDF4CHYm+KedaZf+V++Wy+AJDByc7/CZAMVDd3vRtCu6SF0ifabY/tX8KBNxo8qLc21Mz92UzcTLZ8yOJMoK3hxSc1wQhNr48lOkd9SLEgvpwsQjwm14Tt3bay/c9TzqusY3WHSrY/F2KfMUOz+zZJ62t5DFuBPym66mjMWOuSibjQiMc7wGkoYciMCf0VGY9phVrsaMqPCZsji9bd+y3z3TFEDaujfS73yUVwI80JyyunBcGp08K8WBNB+2QWiyMRE0QblzolXoxuk5nh6d9mF4VqFdqaJutcIKoapsBcBktXuIJjD3FYMKJhmfODkHCixt4PPeNdbzhsCA5B8Ge8a133dk29NaQu6vLuT4lrn/pMJ+zxdmR9CKpVNj7phnsnvrH3cp2Fqk8ZI+FKUp6rfmUw3XjriH1kQ9R54pkNwMZ8i7kt6r41vhaRIrY8zzKdpKAvFpEWJwM5
+ 7aAsG0td
+ wLapFlDro9MBcwiaMZVS/zHM5vGkHwmKSVFkwp52EjI89os1vd9ip9/lrueCKvDIoZUIGe7Z0mGh0VliVh9LbBpANRYdYg/fJKNinnEwy6so0zWEmXOSaQDfwHHhPqwMzQ+VnrPmLoOuJlc9jCYlTMI+a7cCG3u/Z+bUkQCi5n+nWEoAt0xvO+BnbHJv9VaVzsWgIEwAIFJeEOKrxWhSTHN1j1+hJkuzSq3/LKSjX15DhX4jMI8otRONwPQwpNg3avQVWY6cYvd1JksGiaUSkq/5mpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,87 +96,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The memcg stats are safe against irq (and nmi) context and thus does not
-require disabling irqs. However some code paths for memcg stats also
-update the node level stats and use irq unsafe interface and thus
-require the users to disable irqs. However node level stats, on
-architectures with HAVE_CMPXCHG_LOCAL (all major ones), has interface
-which does not require irq disabling. Let's move memcg stats code to
-start using that interface for node level stats.
+The __mod_lruvec_kmem_state is already safe against irqs, so there is no
+need to have a separate interface (i.e. mod_lruvec_kmem_state) which
+wraps calls to it with irq disabling and reenabling. Let's rename
+__mod_lruvec_kmem_state to mod_lruvec_kmem_state.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/memcontrol.h | 2 +-
- include/linux/vmstat.h     | 4 ++--
- mm/memcontrol.c            | 6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ include/linux/memcontrol.h | 28 +++++-----------------------
+ mm/memcontrol.c            |  2 +-
+ mm/workingset.c            |  2 +-
+ 3 files changed, 7 insertions(+), 25 deletions(-)
 
 diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 8c0f15e5978f..f82fac2fd988 100644
+index f82fac2fd988..1384a9d305e1 100644
 --- a/include/linux/memcontrol.h
 +++ b/include/linux/memcontrol.h
-@@ -1408,7 +1408,7 @@ static inline void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx,
- {
- 	struct page *page = virt_to_head_page(p);
+@@ -957,17 +957,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
+ void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
  
--	__mod_node_page_state(page_pgdat(page), idx, val);
-+	mod_node_page_state(page_pgdat(page), idx, val);
+-void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val);
+-
+-static inline void mod_lruvec_kmem_state(void *p, enum node_stat_item idx,
+-					 int val)
+-{
+-	unsigned long flags;
+-
+-	local_irq_save(flags);
+-	__mod_lruvec_kmem_state(p, idx, val);
+-	local_irq_restore(flags);
+-}
++void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val);
+ 
+ void count_memcg_events(struct mem_cgroup *memcg, enum vm_event_item idx,
+ 			unsigned long count);
+@@ -1403,14 +1393,6 @@ static inline void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg)
+ {
  }
  
+-static inline void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx,
+-					   int val)
+-{
+-	struct page *page = virt_to_head_page(p);
+-
+-	mod_node_page_state(page_pgdat(page), idx, val);
+-}
+-
  static inline void mod_lruvec_kmem_state(void *p, enum node_stat_item idx,
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index c287998908bf..11a37aaa4dd9 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -557,7 +557,7 @@ static inline void mod_lruvec_page_state(struct page *page,
- static inline void __mod_lruvec_state(struct lruvec *lruvec,
- 				      enum node_stat_item idx, int val)
+ 					 int val)
  {
--	__mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
-+	mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
+@@ -1470,14 +1452,14 @@ struct slabobj_ext {
+ #endif
+ } __aligned(8);
+ 
+-static inline void __inc_lruvec_kmem_state(void *p, enum node_stat_item idx)
++static inline void inc_lruvec_kmem_state(void *p, enum node_stat_item idx)
+ {
+-	__mod_lruvec_kmem_state(p, idx, 1);
++	mod_lruvec_kmem_state(p, idx, 1);
  }
  
- static inline void mod_lruvec_state(struct lruvec *lruvec,
-@@ -569,7 +569,7 @@ static inline void mod_lruvec_state(struct lruvec *lruvec,
- static inline void __lruvec_stat_mod_folio(struct folio *folio,
- 					 enum node_stat_item idx, int val)
+-static inline void __dec_lruvec_kmem_state(void *p, enum node_stat_item idx)
++static inline void dec_lruvec_kmem_state(void *p, enum node_stat_item idx)
  {
--	__mod_node_page_state(folio_pgdat(folio), idx, val);
-+	mod_node_page_state(folio_pgdat(folio), idx, val);
+-	__mod_lruvec_kmem_state(p, idx, -1);
++	mod_lruvec_kmem_state(p, idx, -1);
  }
  
- static inline void lruvec_stat_mod_folio(struct folio *folio,
+ static inline struct lruvec *parent_lruvec(struct lruvec *lruvec)
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 025da46d9959..f4b8a6414ed3 100644
+index f4b8a6414ed3..3a59d3ee92a7 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -770,7 +770,7 @@ void __mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
- 			int val)
+@@ -799,7 +799,7 @@ void __lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+ }
+ EXPORT_SYMBOL(__lruvec_stat_mod_folio);
+ 
+-void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
++void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
  {
- 	/* Update node */
--	__mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
-+	mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
+ 	pg_data_t *pgdat = page_pgdat(virt_to_page(p));
+ 	struct mem_cgroup *memcg;
+diff --git a/mm/workingset.c b/mm/workingset.c
+index d32dc2e02a61..892f6fe94ea9 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -749,7 +749,7 @@ static enum lru_status shadow_lru_isolate(struct list_head *item,
+ 	if (WARN_ON_ONCE(node->count != node->nr_values))
+ 		goto out_invalid;
+ 	xa_delete_node(node, workingset_update_node);
+-	__inc_lruvec_kmem_state(node, WORKINGSET_NODERECLAIM);
++	inc_lruvec_kmem_state(node, WORKINGSET_NODERECLAIM);
  
- 	/* Update memcg and lruvec */
- 	if (!mem_cgroup_disabled())
-@@ -789,7 +789,7 @@ void __lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
- 	/* Untracked pages have no memcg, no lruvec. Update only the node */
- 	if (!memcg) {
- 		rcu_read_unlock();
--		__mod_node_page_state(pgdat, idx, val);
-+		mod_node_page_state(pgdat, idx, val);
- 		return;
- 	}
- 
-@@ -815,7 +815,7 @@ void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
- 	 * vmstats to keep it correct for the root memcg.
- 	 */
- 	if (!memcg) {
--		__mod_node_page_state(pgdat, idx, val);
-+		mod_node_page_state(pgdat, idx, val);
- 	} else {
- 		lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 		__mod_lruvec_state(lruvec, idx, val);
+ out_invalid:
+ 	xa_unlock_irq(&mapping->i_pages);
 -- 
 2.47.3
 
