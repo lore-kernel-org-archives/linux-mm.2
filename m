@@ -4,150 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45CFDCCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B143CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:50:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 566D48E0023; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
+	id E6C5A8E0022; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53DA48E000D; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
+	id E440E8E000D; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 453B08E0023; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
+	id D594D8E0022; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E0968E000D
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4288137EF9
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:47:51 +0000 (UTC)
-X-FDA: 84094976742.22.4E97F7C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DAF3340002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:47:48 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Av7Rfl7F;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C26E48E000D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7179252501
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:50:02 +0000 (UTC)
+X-FDA: 84094982244.24.15C31D7
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 96ACD1C0009
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:50:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="K/mrha0b";
+	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762786070;
+	s=arc-20220608; t=1762786200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIeb35oP9Vs/R5h7VhglPZyEdkMXH/upLLEanGBOeTA=;
-	b=RIV7TvEVmgR8l676fW7aC3IAUe1yKxmXMrnA0EdS/a8ZjbU8QLwaRMBuHOSaGkKAY2G14c
-	SCgH+SYtXS//rZvvls6nFYbBustpzrRM3GqwC/BseV4N7HFr3bA80ZK7Pom+51NXteOYmD
-	fqnmFS+iFMBzDyNPljWtcDTRktqgkHg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762786070; a=rsa-sha256;
-	cv=none;
-	b=t0nrTCMuw2Lc1uKJZOfeiT3Y5w/IfvxOiaXL7rqwbG1tHQY4bTwJgZ/uuAEEz9xC4u8glq
-	bb9gcXDd5jYAQJeRoKz0it8bsdj1VmnNIQKY8A2imqyXo9/TM8ejEAbz+POS7/VIkdgekc
-	TaSFVmzZuVqm7cXchRrvzRrculHbHTE=
+	bh=yuV15cVIkOZ3osUBoMrFPeh8PgM7VFfcDiPWWGwwe8E=;
+	b=lOYPCvA6hvtohaOWHV3zBzQsU4DdqVHQmjZBzg0FLmGgMeospOA52cxBmd2aR9+zdJkBnq
+	7ithB7ZV5jTLhbMldqBl6ztaoq3seiLpgImW452sowlc0puHpCRY8ule0YYBouhILP88qN
+	gyKH27gtnQQwuOsXMuisY7WVbg/3X+g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Av7Rfl7F;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762786068;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uIeb35oP9Vs/R5h7VhglPZyEdkMXH/upLLEanGBOeTA=;
-	b=Av7Rfl7FzLqMYzwuLuWU+Cns8e2zdqv66+WHDAw4MzeWxtX7efipbRIHv5Qp5derHiCgrV
-	hqR5FX8cIvf5YgeSPu6ezKcbrwViWzxODtO/uzlvYuU7G3M4R3tvVpEaajPSvYVAD1ypgg
-	d18VIj2p7v/ra81YSWdO/PW7d1OyXb8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-b2a0058xO8GOujbU21T91g-1; Mon,
- 10 Nov 2025 09:47:36 -0500
-X-MC-Unique: b2a0058xO8GOujbU21T91g-1
-X-Mimecast-MFC-AGG-ID: b2a0058xO8GOujbU21T91g_1762786050
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 49CC218002CB;
-	Mon, 10 Nov 2025 14:47:28 +0000 (UTC)
-Received: from fedora (unknown [10.44.33.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 787811800451;
-	Mon, 10 Nov 2025 14:47:08 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 10 Nov 2025 15:47:27 +0100 (CET)
-Date: Mon, 10 Nov 2025 15:47:06 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Bernd Edlinger <bernd.edlinger@hotmail.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Dmitry Levin <ldv@strace.io>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Will Drewry <wad@chromium.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>,
-	James Morris <jamorris@linux.microsoft.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Adrian Reber <areber@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
-	Alexei Starovoitov <ast@kernel.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	tiozhang <tiozhang@didiglobal.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	YueHaibing <yuehaibing@huawei.com>,
-	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>,
-	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>,
-	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>,
-	Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>,
-	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	David Windsor <dwindsor@gmail.com>,
-	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Hans Liljestrand <ishkamiel@gmail.com>,
-	Penglei Jiang <superman.xpt@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Adrian Ratiu <adrian.ratiu@collabora.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Eric Dumazet <edumazet@google.com>
-Subject: Re: [RFC PATCH 0/3] mt-exec: fix deadlock with ptrace_attach()
-Message-ID: <aRH66lGd-OT4O68C@redhat.com>
-References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <aRDL3HOB21pMVMWC@redhat.com>
- <GV2PPF74270EBEE83C2CA09B945BC954FA3E4CEA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="K/mrha0b";
+	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762786200; a=rsa-sha256;
+	cv=none;
+	b=RgK2X98S3kvcrGDJ3T5k5QGaPk8LDc3l1LxA4ln44zMAkcUKK5w87RsaZso9rUd+U76tIq
+	0lItICVDgnWZQBt1J7rqIGeVlxehdlP/LnyZW/LvsUR+9X9STu4A9V3IKeQoVWte+zPio/
+	Nt78OZ2IUKEyXorFyDnpDOcS3/G9Mw4=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a9cdf62d31so3699460b3a.3
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:50:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762786199; x=1763390999; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yuV15cVIkOZ3osUBoMrFPeh8PgM7VFfcDiPWWGwwe8E=;
+        b=K/mrha0bK++07FxAEv0PI4J0L3bvRVUCeNvpaqGiVE0rf1nl3HqHglX+F38TcPOOdV
+         y0Ky3hS6itNw3YXsUY4jPeq5hOb1mELy6C9rYG0V04jajBuG+lijUjWfj0/X8BTBN5Nt
+         ZOxbACz4sbJtHrpzWiTFkZfcSpz+SIyVTg1vrlBTg7HF1rRuv7N8hh4vrTzLQpY6rFzT
+         DvOwuzEFExfdj3OC4oXOmaeCk0ZAyA9N1qeeqHXEM/r2zXSYcXnWNpuHtVmj39H4zKFI
+         N3UflGLEA+Im9SSlD4JOg3FxLlNAjnTva7TSUJmCqKTe7pvAaSzrWZi6Q5ahlt2eaRr8
+         M3KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762786199; x=1763390999;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yuV15cVIkOZ3osUBoMrFPeh8PgM7VFfcDiPWWGwwe8E=;
+        b=gNIgFH8FM5QERs5UqFOBdcIuixhdym/xyVOOFAK7DJXtN1bxnN6UWQ2WD+57t/ihFZ
+         vaWlnjkOfAFWcKWI8tAiAiHEg9yj85oTw/3/rihzk5tytvX91bsMWmBw/mKrn8WVigIY
+         ulVGUmIb7fsr/JvzJvJAuTNynBtHk7/HeQzBcf14niWmGG54otwvSJ77vJCT77oljuTM
+         ssrpfDtPQHxsSgt0GBWxbZ2HDZvI8U0+M6TEiIgauLah97dXqEAfSk6GGYTK7ziB01hb
+         umoYpb+Y6cn/6JnlDjhvM4btwYx5n7r2cYqYWXt9/Bk70m9hxBo17ydg1vSqgZvarMkD
+         fEnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCgEmKFAo1e5Ivm84qsQ9rnEislwk/HSUPwxt6NnzxF3+U229CjJLsd8VCy41/HEJKVzx5wdIBZQ==@kvack.org
+X-Gm-Message-State: AOJu0YwK43dbx69sg3NMu9XI5FK1Yf0TBHUzYRZBiDZ2H+oQdtq7eUjb
+	jEgqUcWCk3h/uUrdgZZHLVNqP/m0KQ0mv76coITPH6EdwjabcAIJEUzZfCqv4UlY+oSGAoSfgs/
+	C1yUTjptxQheP+R3UUhKjNO12TzG1PsVFCvaaYiDR
+X-Gm-Gg: ASbGnctHHTXIDENwmljyVagXfm3yy0GWgysPmCdA4iFcnEACh6CJpT8WHrDXUcqRiMa
+	vATKtJKzqQbHbDTCTL0Xn+F4JvoMhmWjL143f9VwFC2CeWlhJC8yDAzE5T1bScVnCXXRpFE5DM8
+	0QSJqbDiFljaHdz/LeEM/9yK8nshNZqhTz+cSoQ9otH0kKb9iZenPOkQFqV7tQUe6Bwze7i5E5t
+	lJ95UHOJnnHfvuZv+jHuE5vXkr0AgV5HmBpbGw4xZFQodu/cdPl6FsEtYw2WjI4Juh194p+epsg
+	yWM6eP7Cb6m4hZu8/4vbkXyWr7k=
+X-Google-Smtp-Source: AGHT+IFJrWpsYMgqYHxsl7TDahL4sWC/rojvNE8jvjvqAW1DXIbEkhegStBh6RAJqXTedR75u3LJC4XuuR5ASPiDRjI=
+X-Received: by 2002:a17:903:2f88:b0:295:24c3:8b49 with SMTP id
+ d9443c01a7336-297e56cf5bemr117461485ad.46.1762786198920; Mon, 10 Nov 2025
+ 06:49:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PPF74270EBEE83C2CA09B945BC954FA3E4CEA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Stat-Signature: pgg66q4axgh1x8t7xxwi6i81ce69hrh9
+References: <cover.1761763681.git.m.wieczorretman@pm.me> <81848c9df2dc22e9d9104c8276879e6e849a5087.1761763681.git.m.wieczorretman@pm.me>
+In-Reply-To: <81848c9df2dc22e9d9104c8276879e6e849a5087.1761763681.git.m.wieczorretman@pm.me>
+From: Marco Elver <elver@google.com>
+Date: Mon, 10 Nov 2025 15:49:22 +0100
+X-Gm-Features: AWmQ_bltIHaW2m2Y_rXOjdB0rjwB0avPjx0FCrIDnvZhp3yD5E0mxdw5HHzg9_w
+Message-ID: <CANpmjNM+ot5A-pRLhV6Esn=QvCeCStd9fG_pgwrVA=6pxD8aqw@mail.gmail.com>
+Subject: Re: [PATCH v6 17/18] x86/kasan: Logical bit shift for kasan_mem_to_shadow
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, 
+	kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, 
+	ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, 
+	morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, 
+	baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, 
+	wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, 
+	fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, 
+	ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, 
+	brgerst@gmail.com, pankaj.gupta@amd.com, glider@google.com, 
+	mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, 
+	thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, 
+	jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, 
+	mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, 
+	vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, 
+	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, 
+	ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, 
+	maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, 
+	rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	llvm@lists.linux.dev, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 96ACD1C0009
+X-Stat-Signature: psbafc3sj45a6em1wid59zhxzcq98nns
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DAF3340002
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762786068-354441
-X-HE-Meta: U2FsdGVkX19BTO8JTAggMvGmkwZJ2tFELP6mX95Z7zStCCEMJQu0ROmY1xWqLxNl6LSyBb3VEQrnMY0GraUua21S3NZTFbwjoZbalNAia02Y/S4hPs/hM5cuSu8yDz5Erh1wjCYhTtwo7NSQboDFoMk1TBhLAzsZ2wmMSGlbzAVkfSkIuH7dTVgoS66BCig+7+MWd4Qf6MkkX+Vz34RXdn5j0FeCZ5Z8dvk1mb+MD+ctU33Y/EzuhWfH77CjzDjAQgNsNQtrYL3sSZXBahKcOf/gUNa6pPHC5p6+5KWGlGUJOBmvU+gdKjWz8br3BAQty5q+WB/P/iv9wll/QbAEL5P8fkQfHNZSI9pyz9qICflHrxIgINBGV/ZE3xsfPmIgnN36EAVyFQJlijhmIDzDUEP+YNW2iL1Ih+ZHb8VTHt883/uIX3G5BW4/zIEQ9l7jdOOlLkS6c+NgRV9zTEkdgEnvCMJRU7Cy+TkOzI7oMCrtYH69hEYpDYlY5oSWVL+bjUP8ZB9JZ3yNdI8tsysnlfc6PqelW+7egfDrwBUrImopzZi5XPWAC/ZhEzAFyHRFC/asrvtM/9Yj/fUETtoLhXbGAnEZu8Bfm7h0ftKHiPbvji+sTgnOmWGON8XO21d+yXQP/mQWZFK2H807gssP6cOR086vr1et4rQe7RYUdU2Z6qeTPyC1IWkZ5eSbCr1Ot7InjnauZVVBPy+t8eFB5JVBiL2AgWY4KYOrRX+TJdbSj4ZtsUUBWnNt3iPP/gn7jaiE/tIgsm0D6s9ihJUHZDU0BXd6vpbanw4i5kO6FSqA0vWHRlokArr+FHg7oHMEk748T/RfQcHR2M6x4dYJzSaiJmEAIORiIgJAiBYzaQJzpAKYK7Z672KPcNvMgxhQB3q6iXXrE9oVeKKPnrR1VEfyR0Fkb5/JxUjWlLrmYmFX7GuT4ywuY3qWN8lCenNAdDpu1sJzDL1gFyGuHWC
- VxjkFYjF
- YRaugquNPaiu8OiM+LyqVbzwZRkwoHx/tCD7wPlNmGvuBxAEfCUJoyw7CD+I7pMGuGto88QbcBXDMmX33phkFzH2pmS7Lb4zUsU73bJbgF/Fx+Ihvrl6gHyf9VvxG8g34xOqtTiyAlFJTGSKCMmvKrO517J2UMMmoKQ7Hmvelru0quehX2PdjzVPPq7TiQ6zvQjY3Xw4ndQZKJDJKclKPPjVni+MGeiAi49l4MsQEZ4KfrvSSzCJDPZJctzdeDUKHrI9mPyuibLSAMiemWxOT3am2owNdXTAiRITo+/BaaoeAi87hNmVPFw40PzRbUToIhWChmm2EafxAV5uXWO8QxMkGsWptTMx0a2rfreqc8Wc2b6+AUuiZHGNt0Lf8kqwdZJ2HsU7eo3fRoxO/N4S0x7riS3K5Ww8dnBwnB9wpRj3jh54+OYNI3v91Hw7dwKo0CkgrKaqR73X7MnmzTRNyqHqUo+AAMBfVJBpSeV22zCZvukINsQ2nGJX3HPMHkbD/y+DA
+X-HE-Tag: 1762786200-78688
+X-HE-Meta: U2FsdGVkX1/tVzNixooc6/FHqeVqwbIi0BiWL+3B1/2C6w454ZlHDE2kuUdaccJfILbRT0aBl/8OY2TLaSNqWwJt7uF/Zh7vbINEq5JFEOXhH7xXTRywoLytqd0ynMlAiPza5qXAKVbj4L6bXySOUsYeMjeHBqomX8LDYhAOaAuQyi9h3NL4ryuidh1lAbKM8xD6DODO0BEfyCsp9O0nSpvF9773AW77NvBw/DCjo9Ea8Brol0iXvbrS9B5zFOLbDlFEda6hrytf4pRwFz9+ckH0qG6A1a2UDFD+zQpk5jQzM40kAsjzXd7WqpB3qjxBnAIobVw1jany+bNb1QVMRRy52e05/TQc+TXVWWHGT3wiVh+CFGvpfaWmN5w5cNnc0p1XqdH+bD1QlJDxsi7BSEsyB/qAlq/ZmtwcdVVuFmXdfgk81yXQJU+apTgUp19Cmmul4e/8wVDI9amAD82SGSRJEoDjKdAe9FO5CYVCeta4jNdnDSTGZr2jsuZrN6iINLIFgRSSlBn2327cpVsWsqOcfrbCcDiqjVuQXiGivYS0J2fgj8hpUHw1ZqjNbWHuGgcGiP2BD5Ubhbxlp14602RS3vtOh5aUrzG7pzuQTIaBPoj4McB49nNzn+UhhR2jus431FDZTdFSr7msF7OzADsIw0/KPW7B0I+4VSJFn1c5ezjl1K31PUG/HjtLt3zjpKzawofg6Qd1bip3Idr5UUMyszB7s7hj6CfYs4Dd4MxYAtfKyGTaMLoKVrvFuA5ZwDuHlALvBEFncHgCwh4hnWTndgBpXAh90yLLoeLoOaOOWPcb6Gi4r/s8rrc1SmH3jL0scUbNaQmYAdvWlWHtorkY7bu5Ks6/05EomsMJ3mGdTmz1XN9lUq/NSR/tCRmjbue9lcPiRtcBUZn+xvle5rLB9FUmZRwsIBk5IFEwCUrZmP7rr3Q87haPwOsPIa8XQqOjGyHyN7kErQ/Gqcb
+ l+Esyusu
+ w+lniyq5rLSt5PD7iFwWC/2VOcLUecfNZxQhxvb2Gxsnuh2wdiUFGWqcm0VM9okjA+Iul9jzOCaeK0CYYMvhfmjUCFPdyWa4OC3YuDhLqJ0VpFU+PrQ3C1SkSYe+uowmwe3uVlqO5dcAVGpeLiVOaAMbF/FCG7ujKLAg2pBzZ2RsZ3CmUV6/od16WWKf0BqLVWbGiacg3f1tzda8Xqqw0ONKEzi1SsF8TjfBQxeD3V7gg9qRip1fHlQWTydsRgVmrLY84hblvgUO8aL3GOgFU+AyknDXOPyyv9Xw6uLitX/Ffgqr8kpIOcOKtPwpEsAzC4i6g8TGfI6FgtshH1R1TWO1VRzIukdKa/IUzGBIN9YTdLOHEp0+C3xyvc9BjHrOvOjtm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,76 +134,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Bernd,
-
-On 11/10, Bernd Edlinger wrote:
+On Wed, 29 Oct 2025 at 21:11, Maciej Wieczor-Retman
+<m.wieczorretman@pm.me> wrote:
 >
-> When the debugger wants to attach the de_thread the debug-user access rights are
-> checked against the current user and additionally against the new user credentials.
-> This I did by quickly switching the user credenitals to the next user and back again,
-> under the cred_guard_mutex, which should make that safe.
+> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>
+> While generally tag-based KASAN adopts an arithemitc bit shift to
+> convert a memory address to a shadow memory address, it doesn't work for
+> all cases on x86. Testing different shadow memory offsets proved that
+> either 4 or 5 level paging didn't work correctly or inline mode ran into
+> issues. Thus the best working scheme is the logical bit shift and
+> non-canonical shadow offset that x86 uses for generic KASAN, of course
+> adjusted for the increased granularity from 8 to 16 bytes.
+>
+> Add an arch specific implementation of kasan_mem_to_shadow() that uses
+> the logical bit shift.
+>
+> The non-canonical hook tries to calculate whether an address came from
+> kasan_mem_to_shadow(). First it checks whether this address fits into
+> the legal set of values possible to output from the mem to shadow
+> function.
+>
+> Tie both generic and tag-based x86 KASAN modes to the address range
+> check associated with generic KASAN.
+>
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> ---
+> Changelog v4:
+> - Add this patch to the series.
+>
+>  arch/x86/include/asm/kasan.h | 7 +++++++
+>  mm/kasan/report.c            | 5 +++--
+>  2 files changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
+> index 375651d9b114..2372397bc3e5 100644
+> --- a/arch/x86/include/asm/kasan.h
+> +++ b/arch/x86/include/asm/kasan.h
+> @@ -49,6 +49,13 @@
+>  #include <linux/bits.h>
+>
+>  #ifdef CONFIG_KASAN_SW_TAGS
+> +static inline void *__kasan_mem_to_shadow(const void *addr)
+> +{
+> +       return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
+> +               + KASAN_SHADOW_OFFSET;
+> +}
 
-Let me repeat, I can't really comment this part, I don't know if it is
-actually safe. But the very fact your patch changes ->mm and ->cred of
-the execing task in ptrace_attach() makes me worry... At least I think
-you should update or remove this comment in begin_new_exec:
+You're effectively undoing "kasan: sw_tags: Use arithmetic shift for
+shadow computation" for x86 - why?
+This function needs a comment explaining this.
 
-	/*
-	 * cred_guard_mutex must be held at least to this point to prevent
-	 * ptrace_attach() from altering our determination of the task's
-	 * credentials; any time after this it may be unlocked.
-	 */
-	security_bprm_committed_creds(bprm);
-
-> So at this time I have only one request for you.
-> Could you please try out how the test case in my patch behaves with your fix?
-
-The new TEST(attach2) added by your patch fails as expected, see 3/3.
-
-   128  static long thread2_tid;
-   129  static void *thread2(void *arg)
-   130  {
-   131          thread2_tid = syscall(__NR_gettid);
-   132          sleep(2);
-   133          execlp("false", "false", NULL);
-   134          return NULL;
-   135  }
-   136
-   137  TEST(attach2)
-   138  {
-   139          int s, k, pid = fork();
-   140
-   141          if (!pid) {
-   142                  pthread_t pt;
-   143
-   144                  pthread_create(&pt, NULL, thread2, NULL);
-   145                  pthread_join(pt, NULL);
-   146                  return;
-   147          }
-   148
-   149          sleep(1);
-   150          k = ptrace(PTRACE_ATTACH, pid, 0L, 0L);
-   151          ASSERT_EQ(k, 0);
-   152          k = waitpid(-1, &s, 0);
-   153          ASSERT_EQ(k, pid);
-   154          ASSERT_EQ(WIFSTOPPED(s), 1);
-   155          ASSERT_EQ(WSTOPSIG(s), SIGSTOP);
-   156          k = ptrace(PTRACE_SETOPTIONS, pid, 0L, PTRACE_O_TRACEEXIT);
-   157          ASSERT_EQ(k, 0);
-   158          thread2_tid = ptrace(PTRACE_PEEKDATA, pid, &thread2_tid, 0L);
-   159          ASSERT_NE(thread2_tid, -1);
-   160          ASSERT_NE(thread2_tid, 0);
-   161          ASSERT_NE(thread2_tid, pid);
-   162          k = waitpid(-1, &s, WNOHANG);
-   163          ASSERT_EQ(k, 0);
-   164          sleep(2);
-   165          /* deadlock may happen here */
-   166          k = ptrace(PTRACE_ATTACH, thread2_tid, 0L, 0L);
-
-PTRACE_ATTACH fails.
-
-thread2() kills the old leader, takes it pid, execlp() succeeds.
-
-Oleg.
-
+Also, the commit message just says "it doesn't work for all cases" - why?
 
