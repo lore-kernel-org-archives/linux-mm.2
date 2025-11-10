@@ -4,99 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 017D8CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 13:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6936CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 13:18:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4980F8E0007; Mon, 10 Nov 2025 08:16:44 -0500 (EST)
+	id 0F21F8E0008; Mon, 10 Nov 2025 08:18:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4483B8E0002; Mon, 10 Nov 2025 08:16:44 -0500 (EST)
+	id 0A3288E0002; Mon, 10 Nov 2025 08:18:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3364F8E0007; Mon, 10 Nov 2025 08:16:44 -0500 (EST)
+	id ED36F8E0008; Mon, 10 Nov 2025 08:18:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E0988E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:16:44 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E395E160D4A
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:16:43 +0000 (UTC)
-X-FDA: 84094747086.01.BE129FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2CD614000A
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:16:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PS38d2F+;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D80748E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:18:33 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7301E5D4D1
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:18:33 +0000 (UTC)
+X-FDA: 84094751706.18.97C98D6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B5581C0011
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:18:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762780602;
+	s=arc-20220608; t=1762780711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PoGgbfLp/CQfLa6tlaYlsw16XKv7B12qAptDkaFl0Wg=;
-	b=ytoYrm405M2C+qNhgVPyVC5LTYRwYXPRMAvpTVJyFWJTaMUl/GNTl27CRRYdkAdKnhwFmi
-	qTYXDVKg+bvq9t8mMq3zDf56HSD4DBJrianqH6ki/J+z/EEsiB1A75jMWAajalbnLHfGXZ
-	qypQfBJYypk7IkuCZPm+EpC1UVDNjig=
+	 in-reply-to:in-reply-to:references:references;
+	bh=e61PmBuBpKPW0kEFbYkXrje4f08ptI1Bgty+XwFb8EM=;
+	b=6Bb/uvWcpAPRwY4/Wh6uJxgPierc2k5lJhhDDiWbweR1seEFLZ0iPlIEXbud676Skiq6Hu
+	auul4xbMplUoag/HJkLumZNT3/scjfELREDMAUWLj6pr4kUxs4eDlQw7WWjr+znkBmBMW3
+	9SE50hRyIgDoEL4ef06Vq3zPHeuK2Kk=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PS38d2F+;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762780602; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762780711; a=rsa-sha256;
 	cv=none;
-	b=pSttkxnlLL7FBGfQKAtGOytsiJ0rgmIQTYRHYpHQXTPcaG7hJH/kI7pNWTHN1Pw6U9y8wA
-	tyFtYq3QmP2332/z5nWVodLH5UlrTGVMMXRZ3GnHfl4tCLHcXQ+o9zY6ZypJjeYVkWHFbM
-	RNy1wcRPYNPMr+DOQL4RjuIZaB3aVno=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1CDB243BFA;
-	Mon, 10 Nov 2025 13:16:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A7FC4CEF5;
-	Mon, 10 Nov 2025 13:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762780601;
-	bh=f0dZjtcP0vxUJBo4nfnO1ah3073NhYiLonrdArYUsXw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PS38d2F+HD6yJ+cCZ27VfTyu/Xb5ZNzr80MqBwuo05yeFYAXUJdvjE5nUUkXYcFFD
-	 +5183EI4m7vKpS3ZZwa7ynwmCHyhTwcz+iEuPcYXMSWAvc3cub34I6kp/Cnbduib2k
-	 O2om8Jm3FT/iufyjmHEZqTttkvC6e+bBJbYB2icy6vI5KYYdvLq6XlDk1bKyZZ9tZh
-	 roMVdrRyxyw38iwxO2aGZ2XNKX9DBFV8xK31IMNliK86ajR/C3rW3abM/BOELVQbfR
-	 C0M8uOI3syHk24+OYOUanJp+f96ijtCAJSGZ55L2Ur8Kc8x9HzduLTQ+LWWXzdhMpq
-	 ipF5HIEmgZ2pA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  akpm@linux-foundation.org,
-  brauner@kernel.org,  corbet@lwn.net,  graf@amazon.com,  jgg@ziepe.ca,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org,  masahiroy@kernel.org,  ojeda@kernel.org,
-  pratyush@kernel.org,  rdunlap@infradead.org,  rppt@kernel.org,
-  tj@kernel.org
-Subject: Re: [PATCH v9 1/9] kho: make debugfs interface optional
-In-Reply-To: <442fa82e-16ef-4bde-84eb-743450222468@linux.dev> (Zhu Yanjun's
-	message of "Sun, 9 Nov 2025 16:20:56 -0800")
-References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
-	<20251101142325.1326536-2-pasha.tatashin@soleen.com>
-	<d7651272-f979-4972-ae41-bab2faa8473a@linux.dev>
-	<CA+CK2bDSvtuwrrXGOC07Rj42yGFHWR4Sse7Q5z1z8f1ZFHWQ2Q@mail.gmail.com>
-	<CA+CK2bC_+repP-q183hjAuYYB2-Yx7fr_U3zr2cxysAWx5hzpg@mail.gmail.com>
-	<029090cf-9a4d-4f79-b857-04c3ada83323@linux.dev>
-	<CA+CK2bByYPJXSNOh6R3swqFrGsS02m3Dfh=ZU7YhNjNX6siyqg@mail.gmail.com>
-	<442fa82e-16ef-4bde-84eb-743450222468@linux.dev>
-Date: Mon, 10 Nov 2025 14:16:37 +0100
-Message-ID: <mafs0qzu69gei.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=Ih4OgwxnkgJ/KLmWsPVuq834DYUpk3SvrWuiAMMSzNDhBk2vD2MNqjv4nlaLm3S8q2sd7U
+	YAiiqmvzWErN9LeEMDwqhr9Lhz8AHBvyRCGlH6tDLHJ2JPPB3ge2uQJqFND5QnINRT7HmE
+	kW4EO6Ze1EHeVKWPdTtEqjcw73PhgWM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7B25497;
+	Mon, 10 Nov 2025 05:18:22 -0800 (PST)
+Received: from [10.57.39.147] (unknown [10.57.39.147])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D493F3F63F;
+	Mon, 10 Nov 2025 05:18:22 -0800 (PST)
+Message-ID: <d0ce35ad-bfcd-496b-996d-17e59a1d5a73@arm.com>
+Date: Mon, 10 Nov 2025 14:18:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2CD614000A
-X-Stat-Signature: b4souenhyc6pi75hnff94i3apms7rqja
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/12] powerpc/64s: Do not re-activate batched TLB
+ flush
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-2-kevin.brodsky@arm.com>
+ <87qzud42n1.ritesh.list@gmail.com>
+ <b3e4a92f-5b51-4eee-bfb8-c454add0f0d2@arm.com>
+ <87cy5t4b0a.ritesh.list@gmail.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <87cy5t4b0a.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B5581C0011
+X-Stat-Signature: bkdw93exxjcryg5nr868zs76qt7cmqf8
 X-Rspam-User: 
-X-HE-Tag: 1762780601-523355
-X-HE-Meta: U2FsdGVkX1+KXmLNkOuIKC489tX4VeaatzGzCTLKRI/VDnwxVz+FI2tGALnEMpmp0iMeILvEKKdqZL9pjl5AYOnA1nUzY4dstZbjspTHeDokc9yxWfBcR6pdV5u5S6ihXrA12r7oAi3C/0BKWpGiKF0grb5fNL2iKKH6Y5I+uUs98ICoYJYO7KTKi02xfi0mvFJIxT32SN+QtWHpp9OYWMuRnW6qbXPKTjMylxH4zoj/GdY30lW5GElvbLNnhLY+7wyPyXxllmKO5dqrXVwnAjU2QFHXGgeD11Hp8d4MKFEGUFMn9uLfSOTdxPnZ9nfVuc4+dmBRQ9W7l9t7CQ13mNnhCeuDHnOecdWz3nSCWjuDkPxQ5OLYbrQEnohz/t4oAdBEHdRLWXnnEtS1RMyR84tTdYmG/hkcKKquzKzrGtydeySDxT6R8/jz3giuOeUH2w1ZkZubCeTrU9LdyBWHDKUe8uFwTe+4Kv+O8Yl5YnloJabt7/BOOfYW+5woct/ZvWzM9IptSu0zKmUtMQhalmKTg+WQb97TL+FzvyqGePmZVHVdQeyWZJMnQ/1L0pJbHxl21KmiulDJsf6rA7+2bjW/lbPuneGTvQrEfsHexwq5TaH1GpQaj9ehV6RMedtsdpdtFVJO1Jhb7gk6JWGHCiVbfGoUuk4aszYk4dJ/q9uEnAtdywcoqq/Rj4/mLl0WfFoA5X2I4wlJ79EmyOqdgmhwWkWSZDDglX36zenmrKt86IgBR1JYRuKtfQ+l7nXWa4yw8ZFHu28tl6wf/6PhbROh5KS8xGdinfAXigL1QpMyfk2RMC2OjTeKKxyjX362wv2frcMShMM9iE/zplyt6p9y2doRcmSLxmqKW5qUOi7ta89/sW0lxVikD8HgvddAYI7vEu1tdlKz0Um1CIvEDVPnyDFszvqT60OUTZf/dAfMC0RGKEaeVKa6kYVOaTK9EiYFR8gCfc+BHiKJZhb
- YKwtW4XU
- /1FEA3kJVAx2HJbcOCKevYMMLXhWZ4+lJ8Su+YbHiwvSw4xCVZPheyn0uXsZEyJAYoEJuMOCx7Ahrb0IGiQPE5pRsKnQc9rQTVfW3zuV96SnYqOuoUHkel5uaKIPhlb26d2E5UwAm/FZKJ8a7KKEtDs9P9st4J77m5goc3VPGW3Gu5OizimyfDJ0DHMXZkLrNMIb8vKnE8ik31EEJcacIDXGTbZjcAnlnu7MMb+ilFAJJ2W7nPcU2C9JWFOgs3eiL11CvyMb/DtNr4Ev14pGX2rwDf87Va/pwRhXH6JEFmiZmoT+yEVkqYsxhug==
+X-HE-Tag: 1762780711-390322
+X-HE-Meta: U2FsdGVkX1+EFpWKlHhuFabOWWr/Su4pisr8kOFvm3rbzVu24QaTguPkq0iTvwI/wNnLLWWbPb5eTmw1ShvErrRXmDkhARPR2JFf1n1yMKNBEo+oFgfBTWQi3fgy7TOxJU7cCDsOGqwvwU1aPa5u0/oL6uJYWfn9/ojCtFZ0KnR5PYKQ7yarrPP6fbP9iuBWtuAkFYHHzC1Qg7R4v/871JA81PnVmFmP5WDS9USj9QhHkzbsrsQIeWG45f1/fo58xMRmT8ZpQks1rUkQg41p5staSujYCCU/SRiQYl0d196kmez9A8lXWbnr+eAcitqOO+Xs7UXuNlD6OCnUl4DEFTWa/q+aIufkE9aJdWuws4rIDBq28pGDsxyqdaUESSR3Fih9k44H6StQ/kQuD9hytLXG0TMh/dQ6L4VTdYeHt9ukjW1hdQNVG2vFT4BRDxy+uSRkW+gbuF3TiOJIJsnZrnSZzcQEpqI4/LtdIqVnzrlDUqMrCMjMh/5ljNyVTBJsfzb+I5VTmzNL4p3IihDeDAGDsGW174tze2Mgr2tJd2DkuKqYfycrVjZTDqIszwwHy9U3DsZF4QBWcmckC1cUQSYwSF80a8Lx0X/b8szfEIdmyRT3X9TslpLU0NfA8r0sEoFw6ikLQjhIR2NWJ+1TtIi9RsATLw8yfS7xjvizZd/sXCHM2UIC3DTsRR5MWOkqn4IT5QlJnA9ER5QbUZN3GfnUHJV/v9AakyY5nDLk4evCVZv0JpizcEt4roXew3+YU/U5aet0vjm8uXz8hk1fD3Sh1DJd8khZxbyPLgb+75EUSGyrU9EvlU0zUhdrMC2cidg2wTDoGd0j6sBG49Y9W2ejrq0J3kzzLlOLpMwnoVAB9U1aHLjOP23LC49Rzs5eE9yQveMuiSl9jW6QVdrRDRPYkMF3KzAJlVby8KtTK1Xw5Ob/IWJeDtBSLAWTKD9I79OsezC1+YlJ64bqDwU
+ EB9kf7c7
+ mS4eFBMPzcVKecNP1Gs9lXT33UA/HeMQJF4DvRzlCGwnMsag8Y+AtbpVSWWdJI7uXgpyzQjy9YNsQQnZeXqMad2Rp6jsiQV3kztq2glnXhw3woJZ1vheog6RoXtee1xk/3lykgU94VL8hBcALcfj7rpWIAv12Eov5z8ai3DfiTi9xb7EKGh57oDGR4H58JJfFt6RABi6tciPWffPOeuL0kXNyMnjtKpCwx952Raoqnk2/sSFOnadxFuhWMZ00z6bwNZAzyhDhSWZ1QlEYdXaRb0T/mKGcoM6iA+lAWHsV1TqLus0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,85 +111,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 09 2025, Zhu Yanjun wrote:
-
-> =E5=9C=A8 2025/11/8 10:13, Pasha Tatashin =E5=86=99=E9=81=93:
->> On Fri, Nov 7, 2025 at 6:36=E2=80=AFPM Yanjun.Zhu <yanjun.zhu@linux.dev>=
- wrote:
->>>
->>> On 11/7/25 4:02 AM, Pasha Tatashin wrote:
->>>> On Fri, Nov 7, 2025 at 7:00=E2=80=AFAM Pasha Tatashin <pasha.tatashin@=
-soleen.com> wrote:
->>>>>> Hi, Pasha
->>>>>>
->>>>>> In our previous discussion, we talked about counting the number of t=
-imes
->>>>>> the kernel is rebooted via kexec. At that time, you suggested adding=
- a
->>>>>> variable in debugfs to keep track of this count.
->>>>>> However, since debugfs is now optional, where would be an appropriate
->>>>>> place to store this variable?
->>>>> It is an optional config and can still be enabled if the live update
->>>>> reboot number value needs to be accessed through debugfs. However,
->>>>> given that debugfs does not guarantee a stable interface, tooling
->>>>> should not be built to require these interfaces.
->>>>>
->>>>> In the WIP LUO [1] I have, I pr_info() the live update number during
->>>>> boot and also store it in the incoming LUO FDT tree, which can also be
->>>>> accessed through this optional debugfs interface.
->>>>>
->>>>> The pr_info message appears like this during boot:
->>>>> [    0.000000] luo: Retrieved live update data, liveupdate number: 17
->>>>>
->>>>> Pasha
->>>> Forgot to add link to WIP LUOv5:
->>>> [1] https://github.com/soleen/linux/tree/luo/v5rc04
->>>
->>> Thanks a lot. I=E2=80=99ve carefully read this commit:
->>> https://github.com/soleen/linux/commit/60205b9a95c319dc9965f119303a1d83=
-f0ff08fa.
->>>
->>> To be honest, I=E2=80=99d like to run some tests with who/luo, includin=
-g the
->>> selftest for kho/luo. Could you please share the steps with me?
->>>
->>> If the testing steps have already been documented somewhere, could you
->>> please share the link?
->> Currently the test performs in-kernel tests for FLB data, it creates a
->> number of FLB for every registered LUO file-handler, which at the
->> moment is only memfd.
+On 08/11/2025 00:35, Ritesh Harjani (IBM) wrote:
+> Kevin Brodsky <kevin.brodsky@arm.com> writes:
+>
+>> [...]
 >>
->> It works together with any of the kexec based live update tests. In
->> v5, I introduce two tests:
->> luo_kexec_simple
->> luo_multi_session
+>>> With this analysis - the patch looks good to me. I will give this entire
+>>> patch series a try on Power HW with Hash mmu too (which uses lazy mmu and
+>>> let you know the results of that)!
+>> That'd be very appreciated, thanks a lot!
 >>
->> For example, with luo_multi_session:
+> I did give this patch series a run on Power10 with Hash MMU. I ran the
+> following stress-ng tests and didn't observe any issues (kernel warnings) so far.
 >
-> Hi, Pasha
->
-> I enabled "CONFIG_LIVEUPDATE=3Dy"
->
-> # ./luo_multi_session
-> 1..0 # SKIP Failed to open /dev/liveupdate. Is the luo module loaded?
->
-> # ls /dev/liveupdate
-> ls: cannot access '/dev/liveupdate': No such file or directory
->
-> # grep "LIVEUPDATE" -inrHI /boot/config-`uname -r`
-> /boot/config-next-20251107-luo+:349:CONFIG_LIVEUPDATE=3Dy
-> /boot/config-next-20251107-luo+:11985:CONFIG_LIVEUPDATE_TEST=3Dy
->
-> I made tests on FC42. But /dev/liveupdate is missing.
+> stress-ng --all 0 -t 60s --perf -v --verify \
+> --tlb-shootdown 0 \
+> --fault 0 \
+> --userfaultfd 0 \
+> --fork 0 \
+> --exec 0 \
+> --memfd 0 \
+> --numa 0 \
+> --pkey 0 \
+> --remap 0 \
+> --vm 0 \
+> --rmap 0 \
+> -x swap,pagemove
+> (Note not all options shown here will work with --verify)
 
-You need to add liveupdate=3D1 to your kernel cmdline to enable LUO and
-get /dev/liveupdate.
+That's great, many thanks!
 
-Pasha, your LUO series doesn't add the liveupdate parameter to
-kernel-parameters.txt. I think it should be done in the next version to
-this parameter is discoverable.
+> Let me know what else I can run for validation?
+> Do you know of any specific tests for validation of lazy mmu feature?
 
---=20
-Regards,
-Pratyush Yadav
+I don't think there is - lazy MMU is not supposed to have any observable
+effect, all we can do is exercise the paths that use it and check that
+nothing explodes.
+
+That said it wouldn't hurt to run the mm kselftests:
+
+    make -C tools/testing/selftests/ TARGETS=mm
+
+Thanks!
+
+- Kevin
 
