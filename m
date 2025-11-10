@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CAC3CCFA1A
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 05:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32257CCFA1A
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 05:27:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89C1E8E000F; Mon, 10 Nov 2025 00:26:56 -0500 (EST)
+	id 911DC8E0010; Mon, 10 Nov 2025 00:27:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84BCD8E0002; Mon, 10 Nov 2025 00:26:56 -0500 (EST)
+	id 8C2378E0002; Mon, 10 Nov 2025 00:27:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ED388E000F; Mon, 10 Nov 2025 00:26:56 -0500 (EST)
+	id 789DD8E0010; Mon, 10 Nov 2025 00:27:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5614A8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 00:26:56 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 23CDD4C565
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:26:56 +0000 (UTC)
-X-FDA: 84093563232.21.F27E43C
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011020.outbound.protection.outlook.com [40.93.194.20])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3D99880004
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:26:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=AarZjJgT;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 601C18E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 00:27:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D28A5892B
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:27:22 +0000 (UTC)
+X-FDA: 84093564324.27.2FAF1F7
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012047.outbound.protection.outlook.com [52.101.53.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4EEE01C0007
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:27:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=12TEiNsQ;
+	spf=pass (imf18.hostedemail.com: domain of bharata@amd.com designates 52.101.53.47 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf30.hostedemail.com: domain of bharata@amd.com designates 40.93.194.20 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762752413; a=rsa-sha256;
-	cv=pass;
-	b=0x3VqqWsA8y3hZtnJSwpCizKoAT+2Oe2gVWIgv0O/nc2GKwJqBAtBO2HyjVEHYlsCvlUbA
-	MVTQLYkwoiYt4Nc/rqF2numoYCDdD5Gk8JlmuwWRx5gW3OC5PKuR0nmWXbtWH8+1WUFFt6
-	ARKcHicGw2Ja9JGAjVuXzC8wKb/XVFY=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=AarZjJgT;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf30.hostedemail.com: domain of bharata@amd.com designates 40.93.194.20 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762752413;
+	s=arc-20220608; t=1762752439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rhrbxzHIppFUQyarUc+VlpeUzD6ZknPk8x64Kwb71+w=;
-	b=pZaxjgXN63r69fdiWbxDykboe42clrbVW2YpkSuE2ALn2pSF0Vv8pKiZmIpvJz7asNYRZY
-	xY9dmvfAuhelZ4THD8+JiwFd8fjgoeIQYFoT5aNpc36KKZGU+lcMETD9Q/GFyHy2IihHcJ
-	ke3WfB5C8ISe/6r8KCKKPlIcPBSWUfM=
+	bh=+RXKS7x2FQ6mJS0EUq5g6aDyJjBgpdjgOVW6lopD1IA=;
+	b=z5dqO/yw78M2ZmUbjbfEa5Ojdv2yRdxfX6qZYELAD2SK+flA6X6G2izADDzksGS+E9X818
+	Ffnn6ag+HlNUDnPXrerzXbfar9Vnc3ZS+tz+ntDmXPjyYukUVyDs71NF1BTNWtWE+lp+xp
+	pwXjA7w99BOQgfCI6qr+imNNdUzWWNI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762752439; a=rsa-sha256;
+	cv=pass;
+	b=ZROyWFdvNfirE16XUuDkDrThnAs1P6AVxfajV7UNipbOnO5Y/tsbjBWo7d9FXW5Bx2kXec
+	HUgd9CFYq4Y3YfujW01rWZVP4KB0UpA3E38NmSJi8FDAzCt7nYRpIrLSwwPHF/Mi6/SGmn
+	AL0a8aJTvesuRUHizq6iMctgkgNYJ/Q=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=12TEiNsQ;
+	spf=pass (imf18.hostedemail.com: domain of bharata@amd.com designates 52.101.53.47 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BFz6KKNseB5g78OIB7QqGJJVHeXnuqHrkF5FAW5nsSOIPKHye1pv/mqE7peE8R5jDh40+yUtbvD/jubWaOMIAMJc3Z2VQc5FwNqReEuuS/m1LVz4/7FtzO8C+b+htk8XbYbkTVgqmGYhPyg5z93wXzIYcivWJR/HA74sjdS1BUCbwfKn2mX38G/Tb9j7xSng1QnGlp/+Xr1LImosv9xDs0ccAUPvEMwni89tVpIDYfvE7Gkd+TEzRGeCWifsdekSy6MuIvMhg01txZ/yqo0VbT7tHHH8w1r91W+yn3Txv6OsnNc2BxrgXoHCfRwKkewIDwhG48c+vh2rV4g8J7vIYw==
+ b=RfISrsE4UqfGm2WadkEScEQLdiedcSKk5KTRakGOTIFO8v5pyKjHXauqkbA0WgI2nB/4LJeF1y5PpJL3Xx3Lze81SU7ojCtld3oXUmHdYHr3KB2csgRsTCTNOf3wG65UA8jmSdySsZM8WGdNdEhj/m62NZCvxV1jkK1FtatfvN8Y7/V9t+9NJOsL804pglrbofUfrvT/jD6o3V0loyJuZbOA8ko90loYqn35wSAPJU8+G/bjcN4B2L3+AXiMZKCr7qGjdHTZG8l7ibWNPqVmTlSKF2sa1VSi9Pc6bpWrlOD3Fbb1UAOxx4fKjQeXkmVINbAq1HMe9F9J+OkZHAk3jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rhrbxzHIppFUQyarUc+VlpeUzD6ZknPk8x64Kwb71+w=;
- b=VXzcIWZ8Q+fF6Hzd5rW1m64e/MOYjqdVkC9Y2FvsLUJfmAl5TSeWBThJj+bEtMK1NSBhsO3PnvOoMAbnXU4KNCCLZLxaZtH0sGFkWCwJf4la2Shhq4URZswcwtbGbPOE1VEPOsLuJJ/qQDpwp4Yuuz1mTYEShdbbfJlwdU0Fd5q9OvgO2Gmdkhz9Ko1JR160X7TNsNaHjYUce5OHu4CuhXBA2anuIBSC3pNAEbEBn+EtmitmGFtzAhycBms8rikt5CfXLRfVuHinO11Pva8GPtJ4S8pLKEk5nOHjQC1vIhqU2cnl9+5/gAaTglhRsgdKArapQ40BIN+5eXuQnkuGGw==
+ bh=+RXKS7x2FQ6mJS0EUq5g6aDyJjBgpdjgOVW6lopD1IA=;
+ b=TbkA+jQDjX9PC6sqm0XrSBFfl3vi0lbQVv3H6J5T7T4+ilg9nB42diu33c4mUkIshf/pE9IB195v3p+E3PlW2Pmn7A8oq8RDTi4kURsrlQk5esyIVVm8fYEQFarLYPriKbPqnG1jJefuDNcUz83+3apwtDEQ7m19sHS9dVj0C7m0m0hbY3qF3l+5a6zqt+p3qqgjH8FVoBYJluIDnpjuIRsbDLtxLxzVEaC75VVbcBrm9QmnQnhtnc0N5POaxHp4RPjkI5JE8JaQvIFddNomQCBHRas5DDeUopjSdrIap2nfmx27INLNrnsuhmD+ubAm8s9N4Rv7wK8ro9hv1eof/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rhrbxzHIppFUQyarUc+VlpeUzD6ZknPk8x64Kwb71+w=;
- b=AarZjJgT/xctYLHO233hTvLaIVX1grxNkwci4RKxdaXvFdbv9t1bzx++Jt5RmAISVohuJSP04Hvch1WkduxHYym0oQh0b43JalRokP5Ee3SjhlpcBEw5ZqtiF6wS2+BmjuFc0jbX58mOU4JJxta0kcV7e1oDCjxgmS8PC1TkyUA=
-Received: from BLAPR05CA0023.namprd05.prod.outlook.com (2603:10b6:208:36e::25)
- by DS7PR12MB8417.namprd12.prod.outlook.com (2603:10b6:8:eb::21) with
+ bh=+RXKS7x2FQ6mJS0EUq5g6aDyJjBgpdjgOVW6lopD1IA=;
+ b=12TEiNsQJ6VX2O5p705qfY6objkOHLAcl9mNu2ztEig5vDbAopYMe1euhOm5om4B/qzT2BQDGGzHaPsKHFFnvZgKjih3rDFgn7wEEjS+Q+mV3bZPfWYF+5prf1seFiJuH0Sm30IuQpBYkmYRF73CoIgjjr0nKHxDUi3GUqxAfD4=
+Received: from SN7PR04CA0045.namprd04.prod.outlook.com (2603:10b6:806:120::20)
+ by IA1PR12MB9064.namprd12.prod.outlook.com (2603:10b6:208:3a8::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 05:26:48 +0000
-Received: from BN2PEPF000044AB.namprd04.prod.outlook.com
- (2603:10b6:208:36e:cafe::60) by BLAPR05CA0023.outlook.office365.com
- (2603:10b6:208:36e::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.14 via Frontend Transport; Mon,
- 10 Nov 2025 05:26:45 +0000
+ 2025 05:27:15 +0000
+Received: from SA2PEPF000015C6.namprd03.prod.outlook.com
+ (2603:10b6:806:120:cafe::e4) by SN7PR04CA0045.outlook.office365.com
+ (2603:10b6:806:120::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.16 via Frontend Transport; Mon,
+ 10 Nov 2025 05:27:14 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF000044AB.mail.protection.outlook.com (10.167.243.106) with Microsoft
+ SA2PEPF000015C6.mail.protection.outlook.com (10.167.241.196) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Mon, 10 Nov 2025 05:26:48 +0000
+ 15.20.9320.13 via Frontend Transport; Mon, 10 Nov 2025 05:27:14 +0000
 Received: from BLR-L-BHARARAO.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 9 Nov
- 2025 21:26:40 -0800
+ 2025 21:27:07 -0800
 From: Bharata B Rao <bharata@amd.com>
 To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
 CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
@@ -102,9 +102,9 @@ CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
 	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
 	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
 	<shivankg@amd.com>, Bharata B Rao <bharata@amd.com>
-Subject: [RFC PATCH v3 6/8] mm: mglru: generalize page table walk
-Date: Mon, 10 Nov 2025 10:53:41 +0530
-Message-ID: <20251110052343.208768-7-bharata@amd.com>
+Subject: [RFC PATCH v3 7/8] mm: klruscand: use mglru scanning for page promotion
+Date: Mon, 10 Nov 2025 10:53:42 +0530
+Message-ID: <20251110052343.208768-8-bharata@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251110052343.208768-1-bharata@amd.com>
 References: <20251110052343.208768-1-bharata@amd.com>
@@ -116,61 +116,61 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044AB:EE_|DS7PR12MB8417:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d78e308-f4c2-4176-934d-08de2019bee7
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015C6:EE_|IA1PR12MB9064:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8295be7e-de1c-4b15-4c7b-08de2019ce8a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700013|1800799024|82310400026;
+	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?E0VV5tInnOo9riQ8RT97xX1zE6KyE9FrS0wTdIG1Jvfs1VDO8rMU0i5cSyHy?=
- =?us-ascii?Q?IqPBbqvnE3lTNN20zFfbe93rrBzOSxIB3x9mtipudO818gW19TPSz+4rzRjX?=
- =?us-ascii?Q?oNGOlQ/Zq1yKPP6LqN2+HVd6/JjkvmpAE7547NrTWdGXYCewwLrQ1vYzPX+Q?=
- =?us-ascii?Q?rgGGaD0bmLPci98/6nbkyuBIZx2Q3I9zlTWBZR0qYHfvITw0heQ2mLSAGUZZ?=
- =?us-ascii?Q?mzgWm4uv3rnUIe15P/uwGdPCNF7aYHgjTHFGzaJNUaUEJ4mDoodUuwQ+aIYv?=
- =?us-ascii?Q?P23amI1TU4lJ5XNbLvD9lmhDnIJtT4jwqH8TzqomaBIcsA+8ea6YBqTbDVW4?=
- =?us-ascii?Q?yMir7BvGcKNnlkIyJESG5FdXacOqF1ku/sAKi5KgSePSI8gG6WozhSSVArpf?=
- =?us-ascii?Q?DE8y7MaUBxB6j6xMJaAXxXZQqwLje6itoTt7F1DP9tXID/HpiSa7ugFnZ9ci?=
- =?us-ascii?Q?BrWWzrO8zkqGWsxCbMhulR6uxL6H0SBYb7VQLXrOoD22KtFfogy0uuMRPJGI?=
- =?us-ascii?Q?M4MHLtBawVgYIKYZ0Pe5vO10JP5bDLRYF1Qha8a2hb5M8UWUBos23jr55Ue6?=
- =?us-ascii?Q?4WnAxqyDpAmVVgfj0VSz2o29XyVbzCjVBD06zEr+Qeixq+1TnASINNkLjez2?=
- =?us-ascii?Q?efdvGK868vc9OZlrR+Ikeq94KWACbwzBPEwN1xURXxfbme3gw9ACsF5/Cy34?=
- =?us-ascii?Q?lqbVTOt/bOSvPFt8JD+kSEtEGaPWKF30xA+dpbhgtmlj6bIKoQMlexGU/oop?=
- =?us-ascii?Q?9HCoeKsg6mhgkh93QyUJHekICRaxEpOn/qZk4Jf4bQe92j8b9Uupq5Lbm5sD?=
- =?us-ascii?Q?di3KbxtHAIhe08cdp2gu0FjzYIyeAAsWAp9X5zKI/QPmdzWRrbNX3Upsrc26?=
- =?us-ascii?Q?OHLJBkerNcDkrRN/79aaufuNDXiUdTZpVjgY4V3S+BCBz9l9qgMVxf6HTGyC?=
- =?us-ascii?Q?ZrWqAhQAALsVJBMJza+BbxFiB9fnYA8lXAa+e10SZWo7yhGa7xRLh4EdLOqy?=
- =?us-ascii?Q?2YrgcLrPMm87XDmzfl5lJTcBKaP9oUn2C287jnAwblnZu7TMpwpq1udsnUHe?=
- =?us-ascii?Q?plAfdAO5qC5SI7Nd2kZoge6pbTHMjJdS5466TMGR9dfEqArhpTA5r0Wd0QeE?=
- =?us-ascii?Q?HOi0JgBzqygEzC34TWCL9QZZBZ3VrFA8p6BhMj1tk1408FDtaP8889FSTa6U?=
- =?us-ascii?Q?HVEr/ScBM+l9QY5Tsaa8uI4P8H3siAwqXYJtxHFMU7K4xKl4TDCDI2ngbHpV?=
- =?us-ascii?Q?P7bp4McUjZNB4KLcKjMPlPwdmHFd732+0mJ8wi/K3Kv7zdDBU/KYJuCHKOzF?=
- =?us-ascii?Q?PKN76PCBDzHtDiVDFqm+rA18Y68bvUH9Hws7gT6KyXbtvKxzOam8xB4cKjMV?=
- =?us-ascii?Q?MVSCRClGycBEIjW8UMCzjjDpucvR5rTQo11k5wHVH8B3Ugkcu+WaapbxC/wh?=
- =?us-ascii?Q?Qf770vBv6jouCokrm8grGLAl2i2PdLJGS0AfnAmcSg3pf3mrs8HEN/8TeRmK?=
- =?us-ascii?Q?7ZRNv1T/qWgD+pU3+xr4EqNm9zijonXn0un8Okm7ZSxi4QCMvK988gDgNbQa?=
- =?us-ascii?Q?+XN3/3O8q9UE+dEhWlA=3D?=
+	=?us-ascii?Q?RftUtVlMzDGtWD9M3b0vdDq8lfKx54rKzoTGS0g0CmJU53mfl85EoruD6xVf?=
+ =?us-ascii?Q?q6Hoy4iqofYKItVcQwo2fj0aVSBRFIqW4B/3VuRC3Lb1Sc1WEBCsM9xLTsie?=
+ =?us-ascii?Q?Sd9da/6AkNpuQegFvkyfouCsACNOMhpnxqH2T18nlr4E7IRMhPf7xEWndJR1?=
+ =?us-ascii?Q?bIPHXCpSMUJRE+SrVaK0E1IZCQ345IKr3MqBzGtJyAIgYvaor3qd3zJusqei?=
+ =?us-ascii?Q?ggJqoHybugd3cw1OmEuPV0kx8TSNFaOgNDfCaMi8TFd16LI5sLcZndGa4vGs?=
+ =?us-ascii?Q?8HneStj4qG6bHKG0o18Sg2F7ky3rjaeh4raRHwzMtiu8tcZxAmqiZpz550ic?=
+ =?us-ascii?Q?wNbkh8vh6abdLK602PLg9a7gx+49y8/JbPDEY6xCJFnGXZOGJ84LLUGQlTY9?=
+ =?us-ascii?Q?VsoW6aGYuEsgau7dEGre5M94g4vl+RB02zz21Joir2KTAlcveLeT+WRuqRhK?=
+ =?us-ascii?Q?o1WfVYVr3Gv8im7SsJ5xxmwiikSPn3wDgk2p7CHY3U1Dh9OAoTwqwtdGd6Z2?=
+ =?us-ascii?Q?jqgmzgKrpjcC/g0TkVnJXfP4udHIVPoVkavTjmtSekYVOeBt4Z95GRYJekEY?=
+ =?us-ascii?Q?JYyEdkP2Rhl4SRKJn/Uw2+Z/xAnfct5qLdfiu1JGGIaQnvP2yPIMxYqlR3gr?=
+ =?us-ascii?Q?P7GnEeJMTXA4YxnNnShRKp8yJT7k/aWq40xF1/OlnqP5rA2cU738L1AneDep?=
+ =?us-ascii?Q?Zb87fcA8NCDz7ZDICpPAMG64ecyseax4TLwKiUDQzbe7s5ueuJI8dZHwCaYe?=
+ =?us-ascii?Q?J7XcByqtNsJ/LUD+J6qGHdUhzxp/5LWYf9uUVNMXProzCai3M3XexJj05ZKK?=
+ =?us-ascii?Q?IEYQ80n8ZDq3nFfcvhHgenaT/ftHmOr4HVZdYop8OYVh+ivl3ghwRpTrFlpd?=
+ =?us-ascii?Q?w7IPsIMhF/sATraauxwbQOwn7u3gRPCxK+gK+BPvk+98ugQPeichebg0XyIv?=
+ =?us-ascii?Q?BMt9CaMzBcAIW93KYvtBkjH5qmouwE8Y+5BQkjFIyfynH8G6TaSTHPA3SP5t?=
+ =?us-ascii?Q?U+Sq9VG1GyatgwDCtN1fsogaAuwmSAfDjW3nocoLoXy/q3nnHut8+mrH0MHi?=
+ =?us-ascii?Q?f2XEDS3cWnpCUdel/3+iLUP1Q+MUnTlaWxw5N9hB2CRMep8DU5zzpsjk80B2?=
+ =?us-ascii?Q?/XCUYKrE0I4j/eLikZ9Dk9hqytCM9U2zlOYdUFS2zVWtYo8NY2+r7cJn4s9f?=
+ =?us-ascii?Q?pxkq8diGyf7SQmCHAnYzWeatxmjr8OwJw5mzAVaQXcWgKPg5mRuT+6k8J01W?=
+ =?us-ascii?Q?dxiT37GX+RVMd9f61Z085fS5q6SVmrlJkZpO64tXHg1vxkufgH7RcXW6wA3z?=
+ =?us-ascii?Q?++cQYJuuT00cFRZMr/PuKPKY2rUzZWG5mBb0n0DQi6gnXGR+vcWYklvg28tG?=
+ =?us-ascii?Q?Bs1yi4Fdjz090e0ieJt/qa8tX7GtIUlafqbsfxIVztq3Gj4VyhZ3GlHIPxPx?=
+ =?us-ascii?Q?CHOgkLJJopPnCQ2M0u8bxg3JFZzYvw7d5YbBV0bxpf0x1t7hDdKXlbhEHGM1?=
+ =?us-ascii?Q?iwMmJkiqbGP2bS0hNb1Ct0wuNAoHaqgNOuvoN1RiY/mZpjuDI5J2wNEKBl3t?=
+ =?us-ascii?Q?9RPxMxQ4WXRr8QOEx2Q=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 05:26:48.1879
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 05:27:14.3970
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d78e308-f4c2-4176-934d-08de2019bee7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8295be7e-de1c-4b15-4c7b-08de2019ce8a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044AB.namprd04.prod.outlook.com
+	SA2PEPF000015C6.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8417
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3D99880004
-X-Stat-Signature: u4aaeqh8occ8bdjpsp93p5hxkcyotxsm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9064
+X-Stat-Signature: ixfpqh3m638mfcp36wfmhnogbxkjjehq
 X-Rspam-User: 
-X-HE-Tag: 1762752413-379871
-X-HE-Meta: U2FsdGVkX193qKfMgy3fdJ4ChhRzwZLAtotqUu6WgeBJemQZViJ8m8WoLwe4W7aXfXStGWZ3TzaT2BoHjn4tTB1K8F6kKV+0A4Hgk34lqmTAH7BDR3FsIO0ZHjEkdMQJzLsAoJN8qRVygfYKO+qP0HlfXZF9HMY4XJZswWU/ZHiknpLiGmqS56E3I2VAY28fgqegrUvKFWcteDzNt6hD1VopGmwcb+pI9KjCAf4JIPIfurUORXqEZeR8RpUwbcy+fOzy0l6sfFv7LCnPV/l0pJUoGM4FNwvDl6h0FIoHPkZ936+VaKzS+Vnd0wGw8glEY+BlxHkiMN7BXhqyKg8xfgX3YWrl3Ad6mzn5vgNss2WOI6U6U6XNZh40rGuWuKo5UNBb6RHG5IRqgvZ2OOiLMdnq3J4HgDZrqMBM2lx0w9bpG6N6YqHcw3aNIIjXuR3K14D2sPOX6YdMjaDG88JqjybnJ5BOcEr/sUshxAULaitPAaI5Mwag69yZD4K3AoRaFztcdsIVdk/7eC4pRqEHfoRxt6aebIQWFOPr51+a5HQDsN1s72aHzewnyPW/Br2VymOz8MEG9iquCa7hlFkrg+nnhQXoroyUo6B87Cs83G72ihJIncEWTeBRMmnn37sTpaal3x4QydPOMwx5W0yRJiQz3bTyBJrvLk4YPST4CW7bS6xDWm9YAnl6JxsHdKYe4cTmi0aVCXKjBj9UAcYd7fJrSsen3reg8kcctxBJYIRLcu5myu8kCCYZ8FBq1SytwwpU4ep2vP7cAjtw2wRJJAKhfduRhnKAxknGoi5hfC0bYJGmWmiWj1Vu2JBrXmOChmTwl8eNFUwG4lIFM6wvGpby21jaNCOPjh7khSDNYSggbnK8N4vlPwsOcgfhS7iaARpyTtA0hgCboH1SNjVBPd7VICUyptlRRXsrDezp92inum+8vaNf2eHUJ7v2XfcNk1CalpMYm54z+P/dLfL
- dxoH08O2
- S9gYGpDE1REmn/q+AZeLbEidXqUp+WfLREjKshxSMRVZm0RxywgiEG7kC6pV+Iw0nOjUku+NMpiwr0hqgVVExd5Z64aIcyPXygtIrpswGgbT1E6s=
+X-Rspamd-Queue-Id: 4EEE01C0007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762752439-320005
+X-HE-Meta: U2FsdGVkX19Xc3Jilt5w6JQuzNH70AINVBOSDs/fw+k5lDqtAWgkB8QR7k7DTimrsXw230UTqm/7g4kPfVvRrX961lza2QWFHWULSbiW3WsaRmBgwLoeIRaLM+LIwuiklaG8ugg+2+wlcbKQ5zn7fdz+a3uoWJlVUwOB1NAqphbi3aRO/UCdsEr7i9ZXyI73CiwDg2KlevoB625VDiybjIujLwMU9kYq7grLbfDIsxpvKQ8dWlwOIrpJ1s0vcEQ2rr2pma7fd8tPNf2IMBvgKU605nwnsVMu43cgVd1qpXG7+bx0jF8CHgjfMrMtSLvwiKwhS5TEiC8C6i4kFUZ4K2tWYYBSWSuEoRnx44zNjhbMTrMyy1th+ylf7J7kz2F0pxuhkhJv+yjBKyhGJmogOaw0be5xlsuBZeYQSv6ea43K3V4GcYKtcTIR8CIP9dt5ytlkn+bFun8p9sgLd3RTHMnigTTPPEfDKY/J99WFoDPXoiNhHpaUAQj7C3Ll4BfCaH9Vk+l/8chI0ahkF2i1bEgoJhib0rqj5Z9oubUinU9eKXMcwCK06LgZBR2aNYYp6HMs9Rbr1f1XkXUwxpLRrnog7WrlGnbCtFtW46XNUC68igLyJuy66CmjhQlg7ataGOmZO6h7VzIqxcI/xXuoDvSZTK6TZs1WiRPZmsZicSYQhUiRdMF88a2eIp4tyiDFyNCeSgkgsAEMj34dY8iOem7YTPCyUYw8VJZ6UoBXUS/WnTjUC8iRgWGp82idsb1wt+IQzXYksVmOG8NzotvMHluMtfesoQd0Up9PzNyF1yKLOhAffDnPrcOFBQPcSQSZUOVmPMwyiI5rDr0SOaX7pt9AuVhZKezj45IKfmT/7QqOu0IvCuDa99HZCzxE9SApLSE0ATstUbGKfnVleLnspHkQXaNIrHsZDAmLpoAXDqo8Suf5MqpZAV6HNFx+ouYcmZ/zzCONSczSk20304z
+ V7y8/Dbm
+ VLLDwe+cBB7B3//ldZjXZAiS+wGyd9wtpmuzRAB6nkHCA8Y4/Ig97K2w0yIBLnRx0TzhXhasw2YzXCaxpqqxPC5L4tfEx+G1wcNC5m0UfIpQvPaA1zf1fqwfdteCv8gGpXVj7rgQHEKKVIM/PtwccVvIWKZytjvNo8uri8w5hGcD+oaUKnl9k8cQVnH02zz8uFToRTgoXm0JhWhpfWYXpzIJ962I4braJmyoG9aGj0ikIQB2kG6qUh2i22T2wMWJOKXtHKwkXksk6SbeyPI5lHlvIJxQMxWzmedYvgxol8pq+XGpMTSfu2i+etezM/pauWE0KQrEPTfOw06UFhK2yaCex6ggOwUhLV8Chfz+G/bmJ7nAKK3S3cQrjuyKqzgy8N2wg4XEMhueeubZJijbr9OuAtkdzcxKBVEkgkuJbTowJMn6TBMHZHq9nv+vaHcODcLmVfB9gp1VF+QX3IMnMrm7J1BEMfEZOnBGa7UE2ogYyz/3ba+xMswSjfh5YJ8+6LSJVH/FITtiMjmhg5Qh1PPgPE8r+4ghdDaUNeckJxHlCRNZjq3ZGVUx5FXKl5ooLaQmTSro8FBHJklU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,449 +181,172 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kinsey Ho <kinseyho@google.com>
 
-Refactor the existing MGLRU page table walking logic to make it
-resumable.
+Introduce a new kernel daemon, klruscand, that periodically invokes the
+MGLRU page table walk. It leverages the new callbacks to gather access
+information and forwards it to pghot sub-system for promotion decisions.
 
-Additionally, introduce two hooks into the MGLRU page table walk:
-accessed callback and flush callback. The accessed callback is called
-for each accessed page detected via the scanned accessed bit. The flush
-callback is called when the accessed callback reports that a flush is
-required. This allows for processing pages in batches for efficiency.
+This benefits from reusing the existing MGLRU page table walk
+infrastructure, which is optimized with features such as hierarchical
+scanning and bloom filters to reduce CPU overhead.
 
-With a generalised page table walk, introduce a new scan function which
-repeatedly scans on the same young generation and does not add a new
-young generation.
+As an additional optimization to be added in the future, we can tune
+the scan intervals for each memcg.
 
 Signed-off-by: Kinsey Ho <kinseyho@google.com>
 Signed-off-by: Yuanchu Xie <yuanchu@google.com>
+[Reduced the scan interval to 500ms, KLRUSCAND to default n in config]
 Signed-off-by: Bharata B Rao <bharata@amd.com>
 ---
- include/linux/mmzone.h |   5 ++
- mm/internal.h          |   4 +
- mm/vmscan.c            | 181 +++++++++++++++++++++++++++++++----------
- 3 files changed, 145 insertions(+), 45 deletions(-)
+ mm/Kconfig     |   8 ++++
+ mm/Makefile    |   1 +
+ mm/klruscand.c | 110 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 119 insertions(+)
+ create mode 100644 mm/klruscand.c
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index fde851990394..421b012fb60c 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -548,6 +548,8 @@ struct lru_gen_mm_walk {
- 	unsigned long seq;
- 	/* the next address within an mm to scan */
- 	unsigned long next_addr;
-+	/* called for each accessed pte/pmd */
-+	bool (*accessed_cb)(unsigned long pfn);
- 	/* to batch promoted pages */
- 	int nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
- 	/* to batch the mm stats */
-@@ -555,6 +557,9 @@ struct lru_gen_mm_walk {
- 	/* total batched items */
- 	int batched;
- 	int swappiness;
-+	/* for the pmd under scanning */
-+	int nr_young_pte;
-+	int nr_total_pte;
- 	bool force_scan;
- };
+diff --git a/mm/Kconfig b/mm/Kconfig
+index b5e84cb50253..84ec9a9aca13 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1383,6 +1383,14 @@ config PGHOT
+ 	  by various sources. Asynchronous promotion is done by per-node
+ 	  kernel threads.
  
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..531104a96c51 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -538,6 +538,10 @@ extern unsigned long highest_memmap_pfn;
- bool folio_isolate_lru(struct folio *folio);
- void folio_putback_lru(struct folio *folio);
- extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason);
-+void set_task_reclaim_state(struct task_struct *task,
-+				   struct reclaim_state *rs);
-+void lru_gen_scan_lruvec(struct lruvec *lruvec, unsigned long seq,
-+			 bool (*accessed_cb)(unsigned long), void (*flush_cb)(void));
- #ifdef CONFIG_NUMA
- int user_proactive_reclaim(char *buf,
- 			   struct mem_cgroup *memcg, pg_data_t *pgdat);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b2fc8b626d3d..1bb637fd6e5e 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -289,7 +289,7 @@ static int sc_swappiness(struct scan_control *sc, struct mem_cgroup *memcg)
- 			continue;				\
- 		else
- 
--static void set_task_reclaim_state(struct task_struct *task,
-+void set_task_reclaim_state(struct task_struct *task,
- 				   struct reclaim_state *rs)
- {
- 	/* Check for an overwrite */
-@@ -3093,7 +3093,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
- 
- 	VM_WARN_ON_ONCE(mm_state->seq + 1 < walk->seq);
- 
--	if (walk->seq <= mm_state->seq)
-+	if (!walk->accessed_cb && walk->seq <= mm_state->seq)
- 		goto done;
- 
- 	if (!mm_state->head)
-@@ -3519,16 +3519,14 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct folio *folio,
- 	}
- }
- 
--static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
--			   struct mm_walk *args)
-+static int walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
-+			   struct mm_walk *args, bool *suitable)
- {
- 	int i;
- 	bool dirty;
- 	pte_t *pte;
- 	spinlock_t *ptl;
- 	unsigned long addr;
--	int total = 0;
--	int young = 0;
- 	struct folio *last = NULL;
- 	struct lru_gen_mm_walk *walk = args->private;
- 	struct mem_cgroup *memcg = lruvec_memcg(walk->lruvec);
-@@ -3536,19 +3534,24 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 	DEFINE_MAX_SEQ(walk->lruvec);
- 	int gen = lru_gen_from_seq(max_seq);
- 	pmd_t pmdval;
-+	int err = 0;
- 
- 	pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
--	if (!pte)
--		return false;
-+	if (!pte) {
-+		*suitable = false;
-+		return err;
-+	}
- 
- 	if (!spin_trylock(ptl)) {
- 		pte_unmap(pte);
--		return true;
-+		*suitable = true;
-+		return err;
- 	}
- 
- 	if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
- 		pte_unmap_unlock(pte, ptl);
--		return false;
-+		*suitable = false;
-+		return err;
- 	}
- 
- 	arch_enter_lazy_mmu_mode();
-@@ -3557,8 +3560,9 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 		unsigned long pfn;
- 		struct folio *folio;
- 		pte_t ptent = ptep_get(pte + i);
-+		bool do_flush;
- 
--		total++;
-+		walk->nr_total_pte++;
- 		walk->mm_stats[MM_LEAF_TOTAL]++;
- 
- 		pfn = get_pte_pfn(ptent, args->vma, addr, pgdat);
-@@ -3582,23 +3586,36 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 		if (pte_dirty(ptent))
- 			dirty = true;
- 
--		young++;
-+		walk->nr_young_pte++;
- 		walk->mm_stats[MM_LEAF_YOUNG]++;
++config KLRUSCAND
++	bool "Kernel lower tier access scan daemon"
++	default n
++	depends on PGHOT && LRU_GEN_WALKS_MMU
++	help
++	  Scan for accesses from lower tiers by invoking MGLRU to perform
++	  page table walks.
 +
-+		if (!walk->accessed_cb)
-+			continue;
+ source "mm/damon/Kconfig"
+ 
+ endmenu
+diff --git a/mm/Makefile b/mm/Makefile
+index a6fac171c36e..1c0c79fec106 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -147,3 +147,4 @@ obj-$(CONFIG_EXECMEM) += execmem.o
+ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
+ obj-$(CONFIG_PGHOT) += pghot.o
++obj-$(CONFIG_KLRUSCAND) += klruscand.o
+diff --git a/mm/klruscand.c b/mm/klruscand.c
+new file mode 100644
+index 000000000000..13a41b38d67d
+--- /dev/null
++++ b/mm/klruscand.c
+@@ -0,0 +1,110 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/memcontrol.h>
++#include <linux/kthread.h>
++#include <linux/module.h>
++#include <linux/vmalloc.h>
++#include <linux/memory-tiers.h>
++#include <linux/pghot.h>
 +
-+		do_flush = walk->accessed_cb(pfn);
-+		if (do_flush) {
-+			walk->next_addr = addr + PAGE_SIZE;
++#include "internal.h"
 +
-+			err = -EAGAIN;
-+			break;
-+		}
- 	}
- 
- 	walk_update_folio(walk, last, gen, dirty);
- 	last = NULL;
- 
--	if (i < PTRS_PER_PTE && get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
-+	if (!err && i < PTRS_PER_PTE &&
-+	    get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
- 		goto restart;
- 
- 	arch_leave_lazy_mmu_mode();
- 	pte_unmap_unlock(pte, ptl);
- 
--	return suitable_to_scan(total, young);
-+	*suitable = suitable_to_scan(walk->nr_total_pte, walk->nr_young_pte);
-+	return err;
- }
- 
--static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area_struct *vma,
-+static int walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area_struct *vma,
- 				  struct mm_walk *args, unsigned long *bitmap, unsigned long *first)
- {
- 	int i;
-@@ -3611,6 +3628,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
- 	DEFINE_MAX_SEQ(walk->lruvec);
- 	int gen = lru_gen_from_seq(max_seq);
-+	int err = 0;
- 
- 	VM_WARN_ON_ONCE(pud_leaf(*pud));
- 
-@@ -3618,13 +3636,13 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 	if (*first == -1) {
- 		*first = addr;
- 		bitmap_zero(bitmap, MIN_LRU_BATCH);
--		return;
-+		return err;
- 	}
- 
- 	i = addr == -1 ? 0 : pmd_index(addr) - pmd_index(*first);
- 	if (i && i <= MIN_LRU_BATCH) {
- 		__set_bit(i - 1, bitmap);
--		return;
-+		return err;
- 	}
- 
- 	pmd = pmd_offset(pud, *first);
-@@ -3638,6 +3656,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 	do {
- 		unsigned long pfn;
- 		struct folio *folio;
-+		bool do_flush;
- 
- 		/* don't round down the first address */
- 		addr = i ? (*first & PMD_MASK) + i * PMD_SIZE : *first;
-@@ -3674,6 +3693,17 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 			dirty = true;
- 
- 		walk->mm_stats[MM_LEAF_YOUNG]++;
-+		if (!walk->accessed_cb)
-+			goto next;
++#define KLRUSCAND_INTERVAL 500
++#define BATCH_SIZE (2 << 16)
 +
-+		do_flush = walk->accessed_cb(pfn);
-+		if (do_flush) {
-+			i = find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
++static struct task_struct *scan_thread;
++static unsigned long pfn_batch[BATCH_SIZE];
++static int batch_index;
 +
-+			walk->next_addr = (*first & PMD_MASK) + i * PMD_SIZE;
-+			err = -EAGAIN;
-+			break;
-+		}
- next:
- 		i = i > MIN_LRU_BATCH ? 0 : find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
- 	} while (i <= MIN_LRU_BATCH);
-@@ -3684,9 +3714,10 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 	spin_unlock(ptl);
- done:
- 	*first = -1;
-+	return err;
- }
- 
--static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
-+static int walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			   struct mm_walk *args)
- {
- 	int i;
-@@ -3698,6 +3729,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 	unsigned long first = -1;
- 	struct lru_gen_mm_walk *walk = args->private;
- 	struct lru_gen_mm_state *mm_state = get_mm_state(walk->lruvec);
-+	int err = 0;
- 
- 	VM_WARN_ON_ONCE(pud_leaf(*pud));
- 
-@@ -3711,6 +3743,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 	/* walk_pte_range() may call get_next_vma() */
- 	vma = args->vma;
- 	for (i = pmd_index(start), addr = start; addr != end; i++, addr = next) {
-+		bool suitable;
- 		pmd_t val = pmdp_get_lockless(pmd + i);
- 
- 		next = pmd_addr_end(addr, end);
-@@ -3727,7 +3760,10 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			walk->mm_stats[MM_LEAF_TOTAL]++;
- 
- 			if (pfn != -1)
--				walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-+				err = walk_pmd_range_locked(pud, addr, vma, args,
-+						bitmap, &first);
-+			if (err)
-+				return err;
- 			continue;
- 		}
- 
-@@ -3736,33 +3772,51 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			if (!pmd_young(val))
- 				continue;
- 
--			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-+			err = walk_pmd_range_locked(pud, addr, vma, args,
-+						bitmap, &first);
-+			if (err)
-+				return err;
- 		}
- 
- 		if (!walk->force_scan && !test_bloom_filter(mm_state, walk->seq, pmd + i))
- 			continue;
- 
-+		err = walk_pte_range(&val, addr, next, args, &suitable);
-+		if (err && walk->next_addr < next && first == -1)
-+			return err;
-+
-+		walk->nr_total_pte = 0;
-+		walk->nr_young_pte = 0;
-+
- 		walk->mm_stats[MM_NONLEAF_FOUND]++;
- 
--		if (!walk_pte_range(&val, addr, next, args))
--			continue;
-+		if (!suitable)
-+			goto next;
- 
- 		walk->mm_stats[MM_NONLEAF_ADDED]++;
- 
- 		/* carry over to the next generation */
- 		update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
-+next:
-+		if (err) {
-+			walk->next_addr = first;
-+			return err;
-+		}
- 	}
- 
--	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-+	err = walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
- 
--	if (i < PTRS_PER_PMD && get_next_vma(PUD_MASK, PMD_SIZE, args, &start, &end))
-+	if (!err && i < PTRS_PER_PMD &&
-+	    get_next_vma(PUD_MASK, PMD_SIZE, args, &start, &end))
- 		goto restart;
-+
-+	return err;
- }
- 
- static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 			  struct mm_walk *args)
- {
--	int i;
-+	int i, err;
- 	pud_t *pud;
- 	unsigned long addr;
- 	unsigned long next;
-@@ -3780,7 +3834,9 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
- 			continue;
- 
--		walk_pmd_range(&val, addr, next, args);
-+		err = walk_pmd_range(&val, addr, next, args);
-+		if (err)
-+			return err;
- 
- 		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
- 			end = (addr | ~PUD_MASK) + 1;
-@@ -3801,40 +3857,48 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 	return -EAGAIN;
- }
- 
--static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
-+static int try_walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
- {
-+	int err;
- 	static const struct mm_walk_ops mm_walk_ops = {
- 		.test_walk = should_skip_vma,
- 		.p4d_entry = walk_pud_range,
- 		.walk_lock = PGWALK_RDLOCK,
- 	};
--	int err;
- 	struct lruvec *lruvec = walk->lruvec;
- 
--	walk->next_addr = FIRST_USER_ADDRESS;
-+	DEFINE_MAX_SEQ(lruvec);
- 
--	do {
--		DEFINE_MAX_SEQ(lruvec);
-+	err = -EBUSY;
- 
--		err = -EBUSY;
-+	/* another thread might have called inc_max_seq() */
-+	if (walk->seq != max_seq)
-+		return err;
- 
--		/* another thread might have called inc_max_seq() */
--		if (walk->seq != max_seq)
--			break;
-+	/* the caller might be holding the lock for write */
-+	if (mmap_read_trylock(mm)) {
-+		err = walk_page_range(mm, walk->next_addr, ULONG_MAX,
-+				      &mm_walk_ops, walk);
- 
--		/* the caller might be holding the lock for write */
--		if (mmap_read_trylock(mm)) {
--			err = walk_page_range(mm, walk->next_addr, ULONG_MAX, &mm_walk_ops, walk);
-+		mmap_read_unlock(mm);
-+	}
- 
--			mmap_read_unlock(mm);
--		}
-+	if (walk->batched) {
-+		spin_lock_irq(&lruvec->lru_lock);
-+		reset_batch_size(walk);
-+		spin_unlock_irq(&lruvec->lru_lock);
-+	}
- 
--		if (walk->batched) {
--			spin_lock_irq(&lruvec->lru_lock);
--			reset_batch_size(walk);
--			spin_unlock_irq(&lruvec->lru_lock);
--		}
-+	return err;
-+}
-+
-+static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
++static void flush_cb(void)
 +{
-+	int err;
- 
-+	walk->next_addr = FIRST_USER_ADDRESS;
-+	do {
-+		err = try_walk_mm(mm, walk);
- 		cond_resched();
- 	} while (err == -EAGAIN);
- }
-@@ -4046,6 +4110,33 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
- 	return success;
- }
- 
-+void lru_gen_scan_lruvec(struct lruvec *lruvec, unsigned long seq,
-+			 bool (*accessed_cb)(unsigned long), void (*flush_cb)(void))
-+{
-+	struct lru_gen_mm_walk *walk = current->reclaim_state->mm_walk;
-+	struct mm_struct *mm = NULL;
++	int i;
 +
-+	walk->lruvec = lruvec;
-+	walk->seq = seq;
-+	walk->accessed_cb = accessed_cb;
-+	walk->swappiness = MAX_SWAPPINESS;
++	for (i = 0; i < batch_index; i++) {
++		unsigned long pfn = pfn_batch[i];
 +
-+	do {
-+		int err = -EBUSY;
++		pghot_record_access(pfn, NUMA_NO_NODE, PGHOT_PGTABLE_SCAN, jiffies);
 +
-+		iterate_mm_list(walk, &mm);
-+		if (!mm)
-+			break;
-+
-+		walk->next_addr = FIRST_USER_ADDRESS;
-+		do {
-+			err = try_walk_mm(mm, walk);
++		if (i % 16 == 0)
 +			cond_resched();
-+			flush_cb();
-+		} while (err == -EAGAIN);
-+	} while (mm);
++	}
++	batch_index = 0;
 +}
 +
- static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
- 			       int swappiness, bool force_scan)
- {
++static bool accessed_cb(unsigned long pfn)
++{
++	WARN_ON_ONCE(batch_index == BATCH_SIZE);
++
++	if (batch_index < BATCH_SIZE)
++		pfn_batch[batch_index++] = pfn;
++
++	return batch_index == BATCH_SIZE;
++}
++
++static int klruscand_run(void *unused)
++{
++	struct lru_gen_mm_walk *walk;
++
++	walk = kzalloc(sizeof(*walk),
++		       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
++	if (!walk)
++		return -ENOMEM;
++
++	while (!kthread_should_stop()) {
++		unsigned long next_wake_time;
++		long sleep_time;
++		struct mem_cgroup *memcg;
++		int flags;
++		int nid;
++
++		next_wake_time = jiffies + msecs_to_jiffies(KLRUSCAND_INTERVAL);
++
++		for_each_node_state(nid, N_MEMORY) {
++			pg_data_t *pgdat = NODE_DATA(nid);
++			struct reclaim_state rs = { 0 };
++
++			if (node_is_toptier(nid))
++				continue;
++
++			rs.mm_walk = walk;
++			set_task_reclaim_state(current, &rs);
++			flags = memalloc_noreclaim_save();
++
++			memcg = mem_cgroup_iter(NULL, NULL, NULL);
++			do {
++				struct lruvec *lruvec =
++					mem_cgroup_lruvec(memcg, pgdat);
++				unsigned long max_seq =
++					READ_ONCE((lruvec)->lrugen.max_seq);
++
++				lru_gen_scan_lruvec(lruvec, max_seq, accessed_cb, flush_cb);
++				cond_resched();
++			} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
++
++			memalloc_noreclaim_restore(flags);
++			set_task_reclaim_state(current, NULL);
++			memset(walk, 0, sizeof(*walk));
++		}
++
++		sleep_time = next_wake_time - jiffies;
++		if (sleep_time > 0 && sleep_time != MAX_SCHEDULE_TIMEOUT)
++			schedule_timeout_idle(sleep_time);
++	}
++	kfree(walk);
++	return 0;
++}
++
++static int __init klruscand_init(void)
++{
++	struct task_struct *task;
++
++	task = kthread_run(klruscand_run, NULL, "klruscand");
++
++	if (IS_ERR(task)) {
++		pr_err("Failed to create klruscand kthread\n");
++		return PTR_ERR(task);
++	}
++
++	scan_thread = task;
++	return 0;
++}
++module_init(klruscand_init);
 -- 
 2.34.1
 
