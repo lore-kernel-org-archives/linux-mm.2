@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2997CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 20:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC09DCCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 20:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58A318E0006; Mon, 10 Nov 2025 15:32:13 -0500 (EST)
+	id 980F98E0002; Mon, 10 Nov 2025 15:32:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5612F8E0002; Mon, 10 Nov 2025 15:32:13 -0500 (EST)
+	id 931D98E000B; Mon, 10 Nov 2025 15:32:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 450838E0006; Mon, 10 Nov 2025 15:32:13 -0500 (EST)
+	id 8244C8E0002; Mon, 10 Nov 2025 15:32:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C4E98E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:32:13 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF3A814018C
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 20:32:12 +0000 (UTC)
-X-FDA: 84095844504.21.30F87D9
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 70E438E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:32:15 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2BEB95820E
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 20:32:15 +0000 (UTC)
+X-FDA: 84095844630.10.3C84531
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 15B581C0009
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 20:32:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HnyCPb3B;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 978F3180004
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 20:32:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VDVYayGQ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762806731;
+	s=arc-20220608; t=1762806733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wLe283o4vMysaCqrwno0HqJtodx+oXYkkx187sYaHGg=;
-	b=eZdoNo1qHrgWCxDv+8XT9cyxKo2bRh1M3ALRUIW9YnfXezsNJd5PLi3adu6irD7381wDwp
-	wdmA5tmxeTR7VYi+FfnAujn2lcD7r5IP3PUFoy6ZRIu7qd74ZU9/baQtFWYudfZHoMYt7Z
-	s8v79rfOWqqSEP9gAE1DRWf9JmIfw3M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762806731; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=d49RAnDdJKPql1x4hnuUx4+e4IRWlHWKbvWRLXEJ1gY=;
+	b=x7PynWR5B/nJoUPCh3vbyyhOyWLM5WtvYLgr8Sj0m5fVinojnWjsI9zm/UA9o3EzGCpJXS
+	ivwQKv6/mA4WOFB3gHC9TVchIFQGoaGP8iaVp4BKnoHKQR50dtMJuHREmpXaOMscFWhjKF
+	Rh/iDo5N7aCKQObGPcPLhCLIDmUvRlI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762806733; a=rsa-sha256;
 	cv=none;
-	b=xvIIKTCk2c4wjPxm2Tl/7wz8GdxCo2gqJXQVYPlwUQ2H4L+LNB0HWyXE+J0vMC5GEfwlaM
-	eA0y7bIzol8a2jixuRlwoCT9jzydK3Cshf7TKR1HHdH2XN51YI3oNk+QaKfJVWZOe59Hir
-	PV59iukXU8+lmB1Fl3umfo8Sv4vnGJc=
+	b=XA99aAAPwJCeU8SD3tKBX4hHYkus8c2K+sxcGXCgVhqmnrTzVD+8Mzh2MFpbWW1vM0Tz5L
+	dG9P3OFMOOj8GGctpVL5vBoSErU2FrU45YqmTP6OABFPbZ7W+hepGleYS///vAkagfoFsV
+	wEFFm8D7ymbLY+vJ+drBZEgj1RU58t8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HnyCPb3B;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VDVYayGQ;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=wLe283o4vMysaCqrwno0HqJtodx+oXYkkx187sYaHGg=; b=HnyCPb3BY5rrFjMFTsNakt3ckE
-	0b6KKY7V3C+wjuZJnzlDp9eHg+Qsi4uPWkmKS9168qJeRpBRWiYSKJLdqLC9nrp5xZD4T85Sag++O
-	AMhsdBVLxgT71w028twFDmAk89VpcCeuaFGsjImFNZL/mCPd4GWfVfHpU4JfrAOnUqOpt3EPEJCr7
-	b3ozH1misgwfj9NzO+GVf0V8ImPo5ZBl4qH3bCoNeWum6/+G1gkfAFfIYoaYqqpPd6cxvw12/iew4
-	s2bw6VIcQBhL17JqM2MLtO69SysHqJgI7IeEXrfqr/uHiO1sBp0qj67cSViLH2xK9jyIjRHlFemX7
-	E6F1AGEA==;
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=d49RAnDdJKPql1x4hnuUx4+e4IRWlHWKbvWRLXEJ1gY=; b=VDVYayGQ/ZODGa2QcaPJOq9ALl
+	CG/cNFarWMAgJOBrTeOoNx8iZVuoQ9lgydWZ1EshAQFPvHxlT2gStu4fTXH3ItT5Xfq8kCbXZYkYS
+	Qw3VrQMyeUJHPc2uodJIUSQFDkWJZDjszpxioRQ1B4I0nBuaTme8KgSffGvTVdf5XP/a3uoiROuN6
+	MEO11YGw+ehkOPrx6pBfGNDZO32e03BgtFqR7v190p7JbZgE4q6VU59BDv1ZbhLT44z7GxUgIkQLD
+	fYuVBLCPtr69m7bY+NG10ZIe5QbyBgdpl0/39aZpzP202cEDlSNIFluLjOiKB3wS/EGylzEpl875E
+	4njMCKdg==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIYYX-000000066Kg-2U7n;
+	id 1vIYYX-000000066KL-1sVr;
 	Mon, 10 Nov 2025 20:32:05 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -73,22 +73,20 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Jann Horn <jannh@google.com>,
 	Pedro Falcato <pfalcato@suse.de>
-Subject: [PATCH v2 1/2] mm: Add vma_start_write_killable()
-Date: Mon, 10 Nov 2025 20:32:01 +0000
-Message-ID: <20251110203204.1454057-2-willy@infradead.org>
+Subject: [PATCH v2 0/2] vma_start_write_killable
+Date: Mon, 10 Nov 2025 20:32:00 +0000
+Message-ID: <20251110203204.1454057-1-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251110203204.1454057-1-willy@infradead.org>
-References: <20251110203204.1454057-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+X-Stat-Signature: fqu33h15rzks36mg5g4aptcgy71xu17k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 15B581C0009
-X-Stat-Signature: dqomqk7x3gwr5e8mueerczmag8x8ikyx
-X-HE-Tag: 1762806730-364121
-X-HE-Meta: U2FsdGVkX1+KfiSruRr9NesEnpysbShabRybjYY6lVH3RinkBoQribezCB7r1grDjuLfCNCpn7mCnLv3bQqE/P3oXK1V2j/kpL8NjsqKkql11iV+29tn41hZe9KZ63E8ncoLJibTvrsq4UWdfNnzWN2SfNTs0Z8qkbtAetczSr+MURXtjTsjtgKtYU3qffrQP8E162QQ31/NAPEQQpFD3pbhTDMbEK1NgigL3IUGbhk6utqMrB+0gubYsr9xmJjqDNQ3+RAxE6Q9cWQdLgwsu5x1+8xeIHd6gPuenya5sZMxTAh+1tXgcEKpOCP8hSYAgEcc6+8eeXImn0RnNKdyOh1oTKEUIoHhq+65BDdW+olAjtupwwsbUCKjAIA8sG2fhxaY7ROgugpTx3g62RMqCqd22QAtIe02R2ITb+Whm2z5Xu2A6S0FeP+H3R8HS1qJorAwfblSZ/hb0uwZyTQ8WfQzVqcgIxeTJqqXCBroR5Br3fJZ+7Of9Xn6xynQ4uKIkKWC6KGlsIiCLBWbPLxXU5t+8zQtfPOcdc0McR33cpmXBg1YZcF6Thu5xR9/Nw5tCBfBFTArG8AF6ii2fpL2OeDJ3jEAGq/L2jV15TK7jvjJH/sHztbtZqQ0M74C3u46nK7+ZXw//NMa4uL0kEvmRMNk+xL676wQpe7745jp4tzYPDTBffisPMCNxwRp5JQ1cHxfxv6u4HGpoT43sECY9K3NJtbhoYNH1BqcTp7pBcqRFq4iiqq58unHiCd7v4dVXT5vkjsMorJzKzzHHq56+Iagbt9MCE4N+kg/hcnMvoB4rrI4nr6rf32Vtxw+sD2eT8+qqUCGgBbE9iK1HwNNThfWj8jHGFS7X7AOAhvKnBXbi4kw0Cip+uGdG8JJUUxJiTEDbTv4s31pqgJ7uX2Xxw+ga6MShubgSOc3ivPCztKhYPY0UYmkWqDyWARAv4G++FZSDcmFvNSgrwFHvpO
- yCc+Q3+9
- wCz2M4sXlK8N4gDHIEx/gGqrrEhSYY1yRb1WhuxvYHCwJRqtnSrMc45fONbmWlSPx5HPD6BFOVk/3nrIcOsDPEhpNa3ooNs3qEHQRzqvL4Ar2L9rXpLP36ehuYgsxe8CmV+f2WQnYblkdwiuO8Y9Cnbjs8zSsIBjAPpuACyQae52zb3d8syMM/pwyJB1PwOKdRllrMOJm0WVDJEAFGK2+TrPt4qgATwDTXF+qop4NLHw/+IMNmcF3tG2d536LnhFxND95R5T9qyntIohxuUDXqU6B+G/moLaLJ8OIf9A7/unrbzdUz20tEzc6d6hO7x0i6+HZu2/jdL4itsgQlbv4j4zBHj4dddEj73UqtxRoM4ePMh2iA42VmNkTT1sX47LAZLoxfUM+QJo9muA=
+X-Rspamd-Queue-Id: 978F3180004
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762806733-324032
+X-HE-Meta: U2FsdGVkX1820RIk5em8Nkh47eIXB8cyql7aejlxHE0i6bfiB9IOp1HvNm0gmHCjVwDBlGr5xBr3XEHl1ciIh6j16wwvFmG7EI7ytAI7rtDvx7b9fSC3HvnsE4C3Yo6bbrnKiyvuIBjwlGHs+c/3FQ7mH9OSPaSGC/zdj2nHBdR/V4DbDIMqFOiAHqx0IqxI8UqkrzWyCxMeG7hH8y+myaVv3U1kmljNk54IEN88fxNeugTXxYOon3EDTIheAZ/ln8jEu/19oEa6DDN/TADECE7HXEL5RIABL3gGZ1KyLZ932KIbkM4MSj/XP/SeURzoUoYXF+uG2SOic2fwMXiN3EAm7Ap3vpBq9JxpWjQhjW+K0rkC25cCCTdno0dl3igiqRIv7J0QCkg0p4Hxjzy+fn6EeRnYDlUaVf97Vx/4bJiLsLZRxYTU+5nBJBJGyx7Ny+3aSBIJOvSZ+uTSCVir7MM/g69uxGnGKzoJJ69BD+XijHZE9BRtWi4JIcvpG6sIg0KnpN3uSMFIk+KEzgchVIzBTlsnfMEkPyo0Z7ld/++kMdEKaAi/PrryIyAoAxObLe+bU7d1TaWR6MNRUmJNu50OWBbMKEVCNYMLxyAeUiY0Va49TCenGRb2SNnk3V6UZC6muihGQHY5ccWTOdWWZBQhLaZA+KvlIZOxGo5Bglc9K2jds9viH04wVHMTv4D98yQ8MaGtBc/xa7GYrKBUuI4R7RKwl5rT7M5nes45UKLjOtoCQiQ0Ij0n9kDWrD53Cg6/lRuPVo0f6hif6VeemMwshY5NPaqIDaDaplcaH9uYr1IwO4582Eg4sRjD5LrZLF6oaUXUQTRKynYa2rwaU85CrX0oecoi07K9+NTv56Eohk1n9QzKzpsDLDZv17bhZel+cvWAA0HhUNqzaOGk1Zioaj/dWXo1fwwTBCHIJsWnAt1SetSy4vAxfhOIZdMU4nVRHMXv8M8PCc57wUk
+ XvlzC87Z
+ /MXty7QAFz/IU2Kp6HQi1+Wr+iZDKcOQIx/kBJAE4fSwCbW7e1BRH9amZkB+VNCyQRFKRxur8ubt31RGVPsO2UWVmd56N5RWOL/yTBtBFRK0juJnJjyNCbc7KnturlPyAG+crEEZ6t3AX74ILZdZ4ZrwaARDVNvjzhvXR7byeStlEfoMbsNfliugqkZhRlHGJqTzzv1YbkAf/zTNk8ce+ISk07bP8cIH0QnXmb6g96Zm08HX6IbpqwRNiAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,204 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The vma can be held read-locked for a substantial period of time, eg if
-memory allocation needs to go into reclaim.  It's useful to be able to
-send fatal signals to threads which are waiting for the write lock.
+When we added the VMA lock, we made a major oversight in not adding a
+killable variant.  That can run us into trouble where a thread takes
+the VMA lock for read (eg handling a page fault) and then goes out to
+lunch for an hour (eg doing reclaim).  Another thread tries to modify
+the VMA, taking the mmap_lock for write, then attempts to lock the VMA
+for write.  That blocks on the first thread, and ensures that every
+other page fault now tries to take the mmap_lock for read.  Because
+everything's in an uninterruptible sleep, we can't kill the task,
+which makes me angry.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
----
+This patch set just adds vma_start_write_killable() and converts one
+caller to use it.  Most users are somewhat tricky to convert, so expect
+follow-up individual patches per call-site which need careful analysis
+to make sure we've done proper cleanup.
+
+v2:
+ - Document the return value from __vma_start_write() (Suren)
+ - Call rwsem_release() on failure to make lockdep happy
+ - Reformat the prototype for vma_start_write_killable() to make
+   both Suren & me happy
+ - Add the kernel-doc for vma_start_write_killable() to
+   Documentation/mm/process_addrs.rst
+ - Collect R-b from Suren & Liam (thanks!)
+
+Matthew Wilcox (Oracle) (2):
+  mm: Add vma_start_write_killable()
+  mm: Use vma_start_write_killable() in dup_mmap()
+
  Documentation/mm/process_addrs.rst |  9 +++++++-
  include/linux/mmap_lock.h          | 30 ++++++++++++++++++++++++--
+ mm/mmap.c                          | 12 +++--------
  mm/mmap_lock.c                     | 34 ++++++++++++++++++++++--------
  tools/testing/vma/vma_internal.h   |  8 +++++++
- 4 files changed, 69 insertions(+), 12 deletions(-)
+ 5 files changed, 72 insertions(+), 21 deletions(-)
 
-diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-index be49e2a269e4..7f2f3e87071d 100644
---- a/Documentation/mm/process_addrs.rst
-+++ b/Documentation/mm/process_addrs.rst
-@@ -48,7 +48,8 @@ Terminology
- * **VMA locks** - The VMA lock is at VMA granularity (of course) which behaves
-   as a read/write semaphore in practice. A VMA read lock is obtained via
-   :c:func:`!lock_vma_under_rcu` (and unlocked via :c:func:`!vma_end_read`) and a
--  write lock via :c:func:`!vma_start_write` (all VMA write locks are unlocked
-+  write lock via vma_start_write() or vma_start_write_killable()
-+  (all VMA write locks are unlocked
-   automatically when the mmap write lock is released). To take a VMA write lock
-   you **must** have already acquired an :c:func:`!mmap_write_lock`.
- * **rmap locks** - When trying to access VMAs through the reverse mapping via a
-@@ -907,3 +908,9 @@ Stack expansion
- Stack expansion throws up additional complexities in that we cannot permit there
- to be racing page faults, as a result we invoke :c:func:`!vma_start_write` to
- prevent this in :c:func:`!expand_downwards` or :c:func:`!expand_upwards`.
-+
-+------------------------
-+Functions and structures
-+------------------------
-+
-+.. kernel-doc:: include/linux/mmap_lock.h
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 2c9fffa58714..378dfb9f1335 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -195,7 +195,8 @@ static bool __is_vma_write_locked(struct vm_area_struct *vma, unsigned int *mm_l
- 	return (vma->vm_lock_seq == *mm_lock_seq);
- }
- 
--void __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq);
-+int __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq,
-+		int state);
- 
- /*
-  * Begin writing to a VMA.
-@@ -209,7 +210,30 @@ static inline void vma_start_write(struct vm_area_struct *vma)
- 	if (__is_vma_write_locked(vma, &mm_lock_seq))
- 		return;
- 
--	__vma_start_write(vma, mm_lock_seq);
-+	__vma_start_write(vma, mm_lock_seq, TASK_UNINTERRUPTIBLE);
-+}
-+
-+/**
-+ * vma_start_write_killable - Begin writing to a VMA.
-+ * @vma: The VMA we are going to modify.
-+ *
-+ * Exclude concurrent readers under the per-VMA lock until the currently
-+ * write-locked mmap_lock is dropped or downgraded.
-+ *
-+ * Context: May sleep while waiting for readers to drop the vma read lock.
-+ * Caller must already hold the mmap_lock for write.
-+ *
-+ * Return: 0 for a successful acquisition.  -EINTR if a fatal signal was
-+ * received.
-+ */
-+static inline __must_check
-+int vma_start_write_killable(struct vm_area_struct *vma)
-+{
-+	unsigned int mm_lock_seq;
-+
-+	if (__is_vma_write_locked(vma, &mm_lock_seq))
-+		return 0;
-+	return __vma_start_write(vma, mm_lock_seq, TASK_KILLABLE);
- }
- 
- static inline void vma_assert_write_locked(struct vm_area_struct *vma)
-@@ -286,6 +310,8 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
- 		{ return NULL; }
- static inline void vma_end_read(struct vm_area_struct *vma) {}
- static inline void vma_start_write(struct vm_area_struct *vma) {}
-+static inline __must_check
-+int vma_start_write_killable(struct vm_area_struct *vma) { return 0; }
- static inline void vma_assert_write_locked(struct vm_area_struct *vma)
- 		{ mmap_assert_write_locked(vma->vm_mm); }
- static inline void vma_assert_attached(struct vm_area_struct *vma) {}
-diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-index 0a0db5849b8e..39f341caf32c 100644
---- a/mm/mmap_lock.c
-+++ b/mm/mmap_lock.c
-@@ -45,8 +45,15 @@ EXPORT_SYMBOL(__mmap_lock_do_trace_released);
- 
- #ifdef CONFIG_MMU
- #ifdef CONFIG_PER_VMA_LOCK
--static inline bool __vma_enter_locked(struct vm_area_struct *vma, bool detaching)
-+/*
-+ * Return value: 0 if vma detached,
-+ * 1 if vma attached with no readers,
-+ * -EINTR if signal received,
-+ */
-+static inline int __vma_enter_locked(struct vm_area_struct *vma,
-+		bool detaching, int state)
- {
-+	int err;
- 	unsigned int tgt_refcnt = VMA_LOCK_OFFSET;
- 
- 	/* Additional refcnt if the vma is attached. */
-@@ -58,15 +65,19 @@ static inline bool __vma_enter_locked(struct vm_area_struct *vma, bool detaching
- 	 * vm_refcnt. mmap_write_lock prevents racing with vma_mark_attached().
- 	 */
- 	if (!refcount_add_not_zero(VMA_LOCK_OFFSET, &vma->vm_refcnt))
--		return false;
-+		return 0;
- 
- 	rwsem_acquire(&vma->vmlock_dep_map, 0, 0, _RET_IP_);
--	rcuwait_wait_event(&vma->vm_mm->vma_writer_wait,
-+	err = rcuwait_wait_event(&vma->vm_mm->vma_writer_wait,
- 		   refcount_read(&vma->vm_refcnt) == tgt_refcnt,
--		   TASK_UNINTERRUPTIBLE);
-+		   state);
-+	if (err) {
-+		rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
-+		return err;
-+	}
- 	lock_acquired(&vma->vmlock_dep_map, _RET_IP_);
- 
--	return true;
-+	return 1;
- }
- 
- static inline void __vma_exit_locked(struct vm_area_struct *vma, bool *detached)
-@@ -75,16 +86,19 @@ static inline void __vma_exit_locked(struct vm_area_struct *vma, bool *detached)
- 	rwsem_release(&vma->vmlock_dep_map, _RET_IP_);
- }
- 
--void __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq)
-+int __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq,
-+		int state)
- {
--	bool locked;
-+	int locked;
- 
- 	/*
- 	 * __vma_enter_locked() returns false immediately if the vma is not
- 	 * attached, otherwise it waits until refcnt is indicating that vma
- 	 * is attached with no readers.
- 	 */
--	locked = __vma_enter_locked(vma, false);
-+	locked = __vma_enter_locked(vma, false, state);
-+	if (locked < 0)
-+		return locked;
- 
- 	/*
- 	 * We should use WRITE_ONCE() here because we can have concurrent reads
-@@ -100,6 +114,8 @@ void __vma_start_write(struct vm_area_struct *vma, unsigned int mm_lock_seq)
- 		__vma_exit_locked(vma, &detached);
- 		WARN_ON_ONCE(detached); /* vma should remain attached */
- 	}
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(__vma_start_write);
- 
-@@ -118,7 +134,7 @@ void vma_mark_detached(struct vm_area_struct *vma)
- 	 */
- 	if (unlikely(!refcount_dec_and_test(&vma->vm_refcnt))) {
- 		/* Wait until vma is detached with no readers. */
--		if (__vma_enter_locked(vma, true)) {
-+		if (__vma_enter_locked(vma, true, TASK_UNINTERRUPTIBLE)) {
- 			bool detached;
- 
- 			__vma_exit_locked(vma, &detached);
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index dc976a285ad2..917062cfbc69 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -844,6 +844,14 @@ static inline void vma_start_write(struct vm_area_struct *vma)
- 	vma->vm_lock_seq++;
- }
- 
-+static inline __must_check
-+int vma_start_write_killable(struct vm_area_struct *vma)
-+{
-+	/* Used to indicate to tests that a write operation has begun. */
-+	vma->vm_lock_seq++;
-+	return 0;
-+}
-+
- static inline void vma_adjust_trans_huge(struct vm_area_struct *vma,
- 					 unsigned long start,
- 					 unsigned long end,
 -- 
 2.47.2
 
