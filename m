@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 682A2CCFA1A
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 00:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F68BCCFA1A
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 01:01:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D4808E0003; Sun,  9 Nov 2025 19:21:08 -0500 (EST)
+	id 7A3BE8E0003; Sun,  9 Nov 2025 20:01:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ABA98E0002; Sun,  9 Nov 2025 19:21:08 -0500 (EST)
+	id 7533C8E0002; Sun,  9 Nov 2025 20:01:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2A8E8E0003; Sun,  9 Nov 2025 19:21:07 -0500 (EST)
+	id 643858E0003; Sun,  9 Nov 2025 20:01:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DF7578E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:21:07 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33839C0B63
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 00:21:07 +0000 (UTC)
-X-FDA: 84092792574.11.14AC1F3
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 338121A0005
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 00:21:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aFVEiWeL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762734065; a=rsa-sha256;
-	cv=none;
-	b=WthVnysEJ1MWUFf5rkgf86zBN2BlXYH8gXKTEWiAbZ3dL9YdTfsooucx0NdRmjFrAr6SAv
-	UazE6Yzj0HH+MHR4Ud5OJ3iYjLd2vkN+FCxJGw7dd/dMaP+yPKyQtnRvtCz5+gU6pe53zP
-	R59USTogI47EyGFK7OZVHw6o/PL/zK4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aFVEiWeL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C1288E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 20:01:06 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D85BA13C131
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:01:05 +0000 (UTC)
+X-FDA: 84092893290.22.0546DE3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 31CE416000B
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:01:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LM5epqrP;
+	spf=pass (imf08.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762734065;
+	s=arc-20220608; t=1762736464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jLBZG12EpOweg5W//dmheHVzJBlI9SLwueSdt6kZhp0=;
-	b=Xz9TTlWUXMknUGZIdYsOyblPAC5S9Ojg/PEayL/GpChmZdmIqGMpdg0GDWSbKaikY3f+w1
-	E6RvjuyBnV+StO3hKM3so9/ge9SjCHI32TNxQ8YokbOyEUQRzQV6c9qq4afaY6/jphSSFz
-	1RRN+8apd0/P61ak307c7JhiuEAuSro=
-Message-ID: <442fa82e-16ef-4bde-84eb-743450222468@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762734062;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jLBZG12EpOweg5W//dmheHVzJBlI9SLwueSdt6kZhp0=;
-	b=aFVEiWeLxQUK2ISXdf52J2BDzGtfH3DLAlz7RqIMEVvL9ZhZRM6nGB2fRlFMFljDGu5yXu
-	JcC07geo4luDBuNKUq/6FdonyAlA8GeAPnuUN8ofevO0Hyxet8ILg/fDdsxUkBh4xp+5kB
-	9PLUGv7mP+wX6RNN85JBMCCoTtQXbfg=
-Date: Sun, 9 Nov 2025 16:20:56 -0800
+	bh=WKv+2CQ5J5KhRg09a0yutCdYo0fgBapbY004BSt1hi4=;
+	b=33S9Yd1kHg9ukmamhKkrFntVIb0OzsaCHuAp3KHPVlxLH8/zkXUlIQNHGdIQasqlthZjtM
+	dawOAw4pKahdUNOqMrCPZEWCQe+QRqF4hLNPVCPJpwx97F9/UwhLsvDblJIVeuR5S/+JIH
+	VYHZUXEgYMVd3aIxfdWFZWU8h3N0riY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762736464; a=rsa-sha256;
+	cv=none;
+	b=P0GpjzrAtQYy6uo+iPyuvYyQcVPk7DtF5wNDiEvyWHJqkHISkilT7ugGWsWk9mZBJADh7Y
+	/HEt/aglrvzpbrqmu6F0hQKIlpsCw0nW+E0ZhN5LTh1WydyyZ/0wlT5M20T66AebNZlMWv
+	1Av5iZX44EBtUUlJ6rYDzRCGZufk6QE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LM5epqrP;
+	spf=pass (imf08.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E46560008;
+	Mon, 10 Nov 2025 01:01:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC4AC4CEFB;
+	Mon, 10 Nov 2025 01:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1762736463;
+	bh=VwoauO8e1RWqPBsp4AaLMfdMlCNd5t3asmKpP++k99s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LM5epqrPKqSFwJ9QHgHMn7I+tCQ+5SVLoilapiShmI9grGgqRph2Xcc3SOwNfA4V3
+	 8tgMv7nIrkSxZIKcBtxYXGAFqFN8YAF//oXZce0N1vd78UuqX/MvzhC8WuNiBa/C0Z
+	 oXrC3ngim/1C8weOCpqfB0hpG/HQQPFwcBrGFlf4=
+Date: Mon, 10 Nov 2025 10:00:59 +0900
+From: Greg KH <gregkh@linuxfoundation.org>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
+Message-ID: <2025111053-saddlebag-maybe-0edc@gregkh>
+References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v9 1/9] kho: make debugfs interface optional
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
- graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, masahiroy@kernel.org,
- ojeda@kernel.org, pratyush@kernel.org, rdunlap@infradead.org,
- rppt@kernel.org, tj@kernel.org
-References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
- <20251101142325.1326536-2-pasha.tatashin@soleen.com>
- <d7651272-f979-4972-ae41-bab2faa8473a@linux.dev>
- <CA+CK2bDSvtuwrrXGOC07Rj42yGFHWR4Sse7Q5z1z8f1ZFHWQ2Q@mail.gmail.com>
- <CA+CK2bC_+repP-q183hjAuYYB2-Yx7fr_U3zr2cxysAWx5hzpg@mail.gmail.com>
- <029090cf-9a4d-4f79-b857-04c3ada83323@linux.dev>
- <CA+CK2bByYPJXSNOh6R3swqFrGsS02m3Dfh=ZU7YhNjNX6siyqg@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <CA+CK2bByYPJXSNOh6R3swqFrGsS02m3Dfh=ZU7YhNjNX6siyqg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 338121A0005
-X-Stat-Signature: hfqnwqr4af91dpptcuskxw4159nhqqd4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762734064-96840
-X-HE-Meta: U2FsdGVkX18/8pWK5kC4NXRLceYsfPCd/3tEnIz0E/IkiZu7ndbXPC1bn5pOikRJvGrZMl/RBPpkm2pbDjsLuNE9moabQRG5wE4VoGL7bo0jvWCFsY5RxGrumNS6nE6JjW9G9GhIbd+/VBOr1XXkqI3rxIyKZN6WTI7OKYb/gkbUj/8wyaWDId6pB6M1Fbia+Y309eqr5rZ5RQCSsJVTFA9SqDp3xxwe4WpsLigg/+/36hcDehLuVPBHmwr8GiirP5l59/J1Mg/lPrg3QTlSf7ADSBkmRCFBadAtEoTpqp1vGXWGCpKvQWxS/WR447jwkRVU2ITuCUefqH3ud+foEaXMqoqpc8fQPvFN/xQDluDhB57uSBMoboknRggWb886dNkt6+z2MK2miGxVs/JLXAVZt4kY6y811VTY/gDLiP+0vPLYZfoLAsVwjW7A1nNhDI6T57DPHcdGqp9ogqNkeGPwFx8cjwics3yK7Km69sTw7v01IwL5O1dRT4mKiJdHJXh4Q9F1ZftVZx7HefdD6iBKkHMrucUbtntWmIaSwcmx1BKU71tgI+IJw+Mj22xNJtPgoOa6TFPfOUc8yAWrfC3UE2+5XxVbwXVj/mw2StZCN2CxfEOkbUKzDS2XhYnrB3RBb3PL2Z1c16E629ihkWw9Mk7qUhEDkW/6dlgzh8UyVpIpWwaGvz4NiUIAq6mMEkh0RzQyxBliB+8qf31uASVKznbNV3qErqDjIN+25QJ/DuWjh/mjOC3vO35jxxCSratnmx7EefKQ2UnftwOWCBuMuJe4VjMlA8g3KLtMcYJ+FkaYE3mMcQKYcVpwIbAOv9JngYHltiPRbFKpmwxcKNMCi9zKttE1Ng/ua6drhKqIGYABces7pf15k4mGF1z9WSFn7xEYPpzPp9gOnGCOcZCyP6OS2eVHnV77b87pkAu+nv8Jc9qaYvkXIN9ukb96sBkoSGZmwJ0c8S/TdzZ
- pO2jhlPW
- mIhQ/PIVGQc3GgaNza0nLdWkwvVyAE5YstJB6CJXu7QyaQKOuNpfgHLOUBOwbLDG7Rsol5nX/1RBInBblk0ZvjGh8InTYYQiXYlTXD7moeyb23MKGu5dAn1mDDVy0+sLWtlvcqPA/evWo++FyS1Wt0s1bw0XEL329fI6fTkAZa/r9IXQ8x/X1nPR2w6vSEdmqoME+NsMN4+SGwEVKbCp8wen+ydAnas+teaFFK83kGQqd/r7djJlNgMEUZzaNW6W4V0yegsyyL5Rk89BBqzVbClwXhNmHv5JNrDjZt8hjKVelDU9DHjDTuOo6zojXV0OEjgNk
+X-Rspamd-Queue-Id: 31CE416000B
+X-Stat-Signature: y1obkdje6npz3nzx4ij4sww138rbo13e
+X-HE-Tag: 1762736464-151737
+X-HE-Meta: U2FsdGVkX19bDLKbuWh8dAaE1JkARtQYDyzP/3yAffsCOeHXqWLotep1Pb0MO0jaVGEQB/qZsgkttid5SZdpuJsVpT0U/v3wJEiiTiarVG7KzuPWz8M5Nxvl0LSlpmM1njtioG4QDEMncTs9sBiCN1uYWm79aQmvmWnUXla4Pf+PaKuGU6J9rauFclm/04koLG0JQWxAiIVa/cbSgLTI6FGa+zh4GD84gBVKze60aLoAxlSkBrgUPN1QNAD75gmD0+1PChy7tOiVgFC9VPCO+YtD9FsDfGoEnlAQtXCt08ASWgAvmRbycKZl/0momt6BDPbGn2bC1b+e2slg7Df58z9+AwF13u8E8tcET1zWLsDHvhepiOFarSMo2r0+t7cdVWQHxD8sr0o0b6RdrznDJPnLz/HuiJrFmAydxDYW2+ZusBuPQgoRVZDKdfaJUaf5MA/H7mbbOjfcW3sIKAE2pFYmUC+YWfIsjco5xKfpUFR2rFysGPfwmDiOD8aYaBTwVwR1Bu2s5D7yFG7bY+VU7vySyehX26koLXkdiWGToHXHz8nVvFrm8CfRUnkprmMajeV1SlOD0XX7RQdgWIE+yzljSbbAB54NnlFWrErYSd+aqQ4tnmTyvFmajht30glZ4fWLTlzz0rejJ5FHIJ9hueYzc0+8d3F4HY26ytq5ERj0Fksckr52MqU5qDwpOPvsfPnDLp91Sve0yTFaJsTFyR/DDQ4nYJxIA53t2xhl1HBTxNgHAreeNSoEGlTGzgDf5xcZo+geXRxQW8Qr7JuUkHjYKEAEy9kziHJnISHG48u4fW+9H8Lp3OCtb0hHIyuap4GWVtOSDVeW/pLGCWKw+3C8nJbSpmkyhYhO9SsPnNqG6Uzi6QUwhojAcLqvCZfa+SyZ53P21M/zLIyEf7NTqoo/3FDM/x3SEiwXFEwfoVlxovW5iaNUWD4+/ywqvrGBtRx6cAiYoYrxlh1P7ol
+ iOTda+Bz
+ 4GOGi6G+2E5l09GPY0EsSXLmN3N8YQmeyPeW39zw+6zmqjt6MpLtRX3D1wpog+jphe6JaHCSAw8Fv7UEDjJE1D0KHtQGQu1PDeaQg+8DxxLRYL6b4qgxlmTvW17y3re9l/yOKPQPbQdYdRM3rVyOEfDZfA2GhvGW169PpciknFSEqWZ3dwW7jb87fzK4AlJ5Pibvd72zNyeyMiUukOZNt4fa3HYG71Nq72mHa+RorVu6jD0KdXXiECvo97hPDc3t4Krhnwod3yrVHNYEm+ahKJ+/96vMlnw0nsLCseLgmeOPNjqZge/gMT8FnwHBgpezC832f+VtSRTQ8gnKY7v/w6QlvoVsKQzK5IzAxkDifTmT7ftnAp2zWTuD5OEGc3WRPy/BKVrmdX2ZbedXZHZddTwqqygxCh2EnZdTi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,116 +96,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Nov 10, 2025 at 02:06:03AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
+> 
+> While reviewing recent leaf entry changes, I noticed that commit
+> 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
+> correct. It's true that most all callers of __read_swap_cache_async are
+> already holding a swap entry reference, so the repeated swap device
+> pinning isn't needed on the same swap device, but it is possible that
+> VMA readahead (swap_vma_readahead()) may encounter swap entries from a
+> different swap device when there are multiple swap devices, and call
+> __read_swap_cache_async without holding a reference to that swap device.
+> 
+> So it is possible to cause a UAF if swapoff of device A raced with
+> swapin on device B, and VMA readahead tries to read swap entries from
+> device A. It's not easy to trigger but in theory possible to cause real
+> issues. And besides, that commit made swap more vulnerable to issues
+> like corrupted page tables.
+> 
+> Just revert it. __read_swap_cache_async isn't that sensitive to
+> performance after all, as it's mostly used for SSD/HDD swap devices with
+> readahead. SYNCHRONOUS_IO devices may fallback onto it for swap count >
+> 1 entries, but very soon we will have a new helper and routine for
+> such devices, so they will never touch this helper or have redundant
+> swap device reference overhead.
+> 
+> Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swap_state.c | 14 ++++++--------
+>  mm/zswap.c      |  8 +-------
+>  2 files changed, 7 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 3f85a1c4cfd9..0c25675de977 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -406,13 +406,17 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+>  		struct mempolicy *mpol, pgoff_t ilx, bool *new_page_allocated,
+>  		bool skip_if_exists)
+>  {
+> -	struct swap_info_struct *si = __swap_entry_to_info(entry);
+> +	struct swap_info_struct *si;
+>  	struct folio *folio;
+>  	struct folio *new_folio = NULL;
+>  	struct folio *result = NULL;
+>  	void *shadow = NULL;
+>  
+>  	*new_page_allocated = false;
+> +	si = get_swap_device(entry);
+> +	if (!si)
+> +		return NULL;
+> +
+>  	for (;;) {
+>  		int err;
+>  
+> @@ -499,6 +503,7 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+>  	put_swap_folio(new_folio, entry);
+>  	folio_unlock(new_folio);
+>  put_and_return:
+> +	put_swap_device(si);
+>  	if (!(*new_page_allocated) && new_folio)
+>  		folio_put(new_folio);
+>  	return result;
+> @@ -518,16 +523,11 @@ struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+>  		struct vm_area_struct *vma, unsigned long addr,
+>  		struct swap_iocb **plug)
+>  {
+> -	struct swap_info_struct *si;
+>  	bool page_allocated;
+>  	struct mempolicy *mpol;
+>  	pgoff_t ilx;
+>  	struct folio *folio;
+>  
+> -	si = get_swap_device(entry);
+> -	if (!si)
+> -		return NULL;
+> -
+>  	mpol = get_vma_policy(vma, addr, 0, &ilx);
+>  	folio = __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
+>  					&page_allocated, false);
+> @@ -535,8 +535,6 @@ struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+>  
+>  	if (page_allocated)
+>  		swap_read_folio(folio, plug);
+> -
+> -	put_swap_device(si);
+>  	return folio;
+>  }
+>  
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 5d0f8b13a958..aefe71fd160c 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1005,18 +1005,12 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>  	struct folio *folio;
+>  	struct mempolicy *mpol;
+>  	bool folio_was_allocated;
+> -	struct swap_info_struct *si;
+>  	int ret = 0;
+>  
+>  	/* try to allocate swap cache folio */
+> -	si = get_swap_device(swpentry);
+> -	if (!si)
+> -		return -EEXIST;
+> -
+>  	mpol = get_task_policy(current);
+>  	folio = __read_swap_cache_async(swpentry, GFP_KERNEL, mpol,
+> -			NO_INTERLEAVE_INDEX, &folio_was_allocated, true);
+> -	put_swap_device(si);
+> +				NO_INTERLEAVE_INDEX, &folio_was_allocated, true);
+>  	if (!folio)
+>  		return -ENOMEM;
+>  
+> 
+> ---
+> base-commit: 02dafa01ec9a00c3758c1c6478d82fe601f5f1ba
+> change-id: 20251109-revert-78524b05f1a3-04a1295bef8a
+> 
+> Best regards,
+> -- 
+> Kairui Song <kasong@tencent.com>
+> 
+> 
+> 
 
-在 2025/11/8 10:13, Pasha Tatashin 写道:
-> On Fri, Nov 7, 2025 at 6:36 PM Yanjun.Zhu <yanjun.zhu@linux.dev> wrote:
->>
->> On 11/7/25 4:02 AM, Pasha Tatashin wrote:
->>> On Fri, Nov 7, 2025 at 7:00 AM Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
->>>>> Hi, Pasha
->>>>>
->>>>> In our previous discussion, we talked about counting the number of times
->>>>> the kernel is rebooted via kexec. At that time, you suggested adding a
->>>>> variable in debugfs to keep track of this count.
->>>>> However, since debugfs is now optional, where would be an appropriate
->>>>> place to store this variable?
->>>> It is an optional config and can still be enabled if the live update
->>>> reboot number value needs to be accessed through debugfs. However,
->>>> given that debugfs does not guarantee a stable interface, tooling
->>>> should not be built to require these interfaces.
->>>>
->>>> In the WIP LUO [1] I have, I pr_info() the live update number during
->>>> boot and also store it in the incoming LUO FDT tree, which can also be
->>>> accessed through this optional debugfs interface.
->>>>
->>>> The pr_info message appears like this during boot:
->>>> [    0.000000] luo: Retrieved live update data, liveupdate number: 17
->>>>
->>>> Pasha
->>> Forgot to add link to WIP LUOv5:
->>> [1] https://github.com/soleen/linux/tree/luo/v5rc04
->>
->> Thanks a lot. I’ve carefully read this commit:
->> https://github.com/soleen/linux/commit/60205b9a95c319dc9965f119303a1d83f0ff08fa.
->>
->> To be honest, I’d like to run some tests with who/luo, including the
->> selftest for kho/luo. Could you please share the steps with me?
->>
->> If the testing steps have already been documented somewhere, could you
->> please share the link?
-> Currently the test performs in-kernel tests for FLB data, it creates a
-> number of FLB for every registered LUO file-handler, which at the
-> moment is only memfd.
->
-> It works together with any of the kexec based live update tests. In
-> v5, I introduce two tests:
-> luo_kexec_simple
-> luo_multi_session
->
-> For example, with luo_multi_session:
+<formletter>
 
-Hi, Pasha
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-I enabled "CONFIG_LIVEUPDATE=y"
-
-# ./luo_multi_session
-1..0 # SKIP Failed to open /dev/liveupdate. Is the luo module loaded?
-
-# ls /dev/liveupdate
-ls: cannot access '/dev/liveupdate': No such file or directory
-
-# grep "LIVEUPDATE" -inrHI /boot/config-`uname -r`
-/boot/config-next-20251107-luo+:349:CONFIG_LIVEUPDATE=y
-/boot/config-next-20251107-luo+:11985:CONFIG_LIVEUPDATE_TEST=y
-
-I made tests on FC42. But /dev/liveupdate is missing.
-
-Thanks
-
-Yanjun.Zhu
-
-> # ./luo_multi_session
-> # [STAGE 1] Starting pre-kexec setup for multi-session test...
-> # [STAGE 1] Creating state file for next stage (2)...
-> # [STAGE 1] Creating empty sessions 'multi-test-empty-1' and
-> 'multi-test-empty-2'...
-> # [STAGE 1] Creating session 'multi-test-files-1' with one memfd...
-> # [STAGE 1] Creating session 'multi-test-files-2' with two memfds...
-> # [STAGE 1] Executing kexec...
->
-> ... reboot ...
-> After reboot:
->
-> $ ./luo_multi_session
-> # [STAGE 2] Starting post-kexec verification...
-> # [STAGE 2] Retrieving all sessions...
-> # [STAGE 2] Verifying contents of session 'multi-test-files-1'...
-> # [STAGE 2] Verifying contents of session 'multi-test-files-2'...
-> # [STAGE 2] Test data verified successfully.
-> # [STAGE 2] Finalizing all test sessions...
-> # [STAGE 2] Finalizing state session...
-> #
-> --- MULTI-SESSION KEXEC TEST PASSED ---
->
-> Dmesg data, shows that in-kernel live update test was also successful:
->
-> [    0.000000] luo: Retrieved live update data, liveupdate number: 1
-> [    0.034513] liveupdate test: test-flb-v0: found flb data from the
-> previous boot
-> [    0.034517] liveupdate test: test-flb-v1: found flb data from the
-> previous boot
-> [    0.034518] liveupdate test: test-flb-v2: found flb data from the
-> previous boot
-> [    0.676891] liveupdate test: Registered 3 FLBs with file handler: [memfd-v1]
->
-> Pasha
->
->> Best Regards,
->>
->> Yanjun.Zhu
->>
--- 
-Best Regards,
-Yanjun.Zhu
-
+</formletter>
 
