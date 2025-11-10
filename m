@@ -4,113 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D67FCCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:39:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11BBCCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:41:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2D7F8E001D; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
+	id 23A198E001A; Mon, 10 Nov 2025 06:41:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F05058E0002; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
+	id 1E9F48E0002; Mon, 10 Nov 2025 06:41:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1BC38E001D; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
+	id 0D9AA8E001A; Mon, 10 Nov 2025 06:41:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CCE2F8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D93713C31D
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:39:17 +0000 (UTC)
-X-FDA: 84094501554.12.3428B9D
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 954DE180004
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:39:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=OnKYx94E;
-	spf=pass (imf16.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EAAD28E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:41:43 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9811212D09E
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:41:43 +0000 (UTC)
+X-FDA: 84094507686.14.E4F1CAC
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D17381C000D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:41:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IniNfwEt;
+	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762774754;
+	s=arc-20220608; t=1762774901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4AGg5z7WB7yGesyFSg8uTe5UjZWoCr/Y1LVg0PE2ceo=;
-	b=eYXhGrpiAR2hEk+5kzafecDdL5V5Myle6BLpALb/aktkHPBhq9DFuGSInhZ4dZ+ETVLCJn
-	sO5ipqH8MU/qyROA4nf5dUfA4oYVRrIiVJ3ui7pENf2pMkH6DJFZEk5zO34WNddmGXzQsP
-	Yiii+Q/knaVRHxQN7lCAp/6ofgP4t00=
+	bh=SnjEPV9BddclIRNMsg8a5Gco1BXy5RV6vToCAvDZEjk=;
+	b=YDIiZP3OUM9ObKskNUZrw6AAnpYyZhfY4TkQF+WjTDVJrjbdvMnJAYGVHbEA2/EKcfYrUd
+	mKCo4//2nHC4IGnSwW16qhBqs1sidrfAJ1hGqeSIpoKxPjGD4HKOiVTv4d/ZjFdxT1nos2
+	Qycn2xZETJaKaAhKIHM08F6Rc5KFPmU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=OnKYx94E;
-	spf=pass (imf16.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762774754; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IniNfwEt;
+	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762774901; a=rsa-sha256;
 	cv=none;
-	b=TZvhjxgb+CBRTSun3XFBa4gVBmDhXUZq6GA8Z5uXX5JyBkgGJEqIDGOmwd7XmZ5/0Wstu4
-	wSkoFJ74eMkOWMmXwHPQztjdc67WXDwUDECFon7+OyIGHclmYVd7+pFUn+wYwz2MSSE19M
-	mZjRSEpZ/dtgCYor//uOc1n4uUdq/fo=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 65E2D40E01CD;
-	Mon, 10 Nov 2025 11:39:11 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Pa7YrT3kZa47; Mon, 10 Nov 2025 11:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1762774747; bh=4AGg5z7WB7yGesyFSg8uTe5UjZWoCr/Y1LVg0PE2ceo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OnKYx94EZoFO51ta5Dmjmjm9Z1BzOqlpQpurxAu2RH2jxL/klCqkKRPXfJ7bZoXx1
-	 OykubkkOd+ElmoatXs9ULH2vnFxBxZohjAu60D7FgSNa147RWigXSOpcfa4MmN9HSm
-	 l1DilJRbrV/Pt9IT9BoBZ/FN0uwOChO52wGInrFIAjMPwd9V/4VVKzwWCvRe9mrFqo
-	 I8xOcmoFnKPeYsFAnKjZXfHb3muAZFOEBXlVDlGlvpikRJ7Hkgugf9/beU9Hmb61pl
-	 hBaFsZppnk1A6oXvrtAZqaNRbbqmkrCAD7pxYuTTVd3OIPk+HrIeAKuk3qqMtcLbVd
-	 MyF9dWkGKGansiGSc9XGE4yxgn2w+U8my5i6a40oxP/u0llQoL4jFZVTC35BMF7HI4
-	 gbj3tpvfgsFE3Djw0Cqhpz/EiqluSy7o45TxdZPquITE0f2fDSHzKgE4XwcXOmjSY3
-	 enzG/IelEdOWvy28swqsTG6KYyAqHP5HVLljO8k+Yo+I9Am01ey5P3CV6dIxJMe408
-	 tMx/nrVEL7j2TyvtMT3RkGBflvvBYhfsrrhFPyPCBBtjBSR1V5gm+H32TwsvBCZrMF
-	 8LUsKN4ASRk1ZjqInQA6EqBp1vVQu+jRH03KNjeHlqsI9safg7a2QTjM2GiuX/7/MD
-	 s72XT/NweEXDx8CdQNYeuvFo=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 42BCB40E016E;
-	Mon, 10 Nov 2025 11:38:40 +0000 (UTC)
-Date: Mon, 10 Nov 2025 12:38:34 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, peterz@infradead.org,
-	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
-	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
-	junaids@google.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
-	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
-	yosry.ahmed@linux.dev
-Subject: Re: [PATCH 03/21] x86/mm: factor out phys_pgd_init()
-Message-ID: <20251110113834.GWaRHOuqnXgNa0UiFn@fat_crate.local>
-References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-3-2d861768041f@google.com>
- <20251025114801.GWaPy48dhlZ_EVoqKi@fat_crate.local>
- <DDSLXKU87HTE.G0XUZ5BG5M8K@google.com>
+	b=fPpS5JirZ9kvK0shVPm+AyF3tFi2KQrZy3LnMfFB0bLZ9syAHb5Z1TQLa8YkPf7Rz+sWHy
+	eEGWX9IMlmV1ENTKc8KqvGCem/fCbRwju/dX6h0PII60iBvsNmS3TzqBWaonUg8bmBjcpr
+	DJIq1e0BI8WJrGx8gyEqSVGmuRnfxdc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762774901; x=1794310901;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=omp3BC0nl5OC+y/Q6uZxJQjCYFP23DTOfobjBhZKdmU=;
+  b=IniNfwEt/UM+/IAon84aA+hRkpt7UklrmASV3GLyi31Svqzfr71KHq7a
+   nyrKepKHFgD5BrnjC2Geu/Zlm87NsvnCQ3v7IoWqHXcUHCAuZJEQlnj9p
+   LHcCCnzEKC/3jsWtyy1G136iA0lPYu37uNfbbFOyMxPhSZflc48PL3JLF
+   c0X3hZ3kca+QlAS2JzkaT8D8evFUOn4+mCPLqxqqlJMHTmPYmnHlm0kg0
+   VdgJxw6/qtfbkxJEXa6FSspCUG/NERiBp20IOCSEspZ+S3vG7N4WcOx97
+   xUt5fEGnU4umk/38OzOrcma1Qx6HYFIqvlmsX6p/7B7M7aCeoyRAOlK10
+   w==;
+X-CSE-ConnectionGUID: DIdc2jNVRf6wPmLdTRdWrQ==
+X-CSE-MsgGUID: ngO5nyb0TOChMtj7vuyIHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="64978222"
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="64978222"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 03:41:39 -0800
+X-CSE-ConnectionGUID: 10suJJPjRL2utc/Raav2wQ==
+X-CSE-MsgGUID: CvnKniDvTh+fgkSSdOvjpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
+   d="scan'208";a="193663550"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 10 Nov 2025 03:41:35 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vIQH7-0000MF-1C;
+	Mon, 10 Nov 2025 11:41:33 +0000
+Date: Mon, 10 Nov 2025 19:40:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, chrisl@kernel.org, kasong@tencent.com,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, youngjun.park@lge.com, gunho.lee@lge.com,
+	taejoon.song@lge.com
+Subject: Re: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into
+ swap subsystem
+Message-ID: <202511101938.muW3KLKk-lkp@intel.com>
+References: <20251109124947.1101520-4-youngjun.park@lge.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DDSLXKU87HTE.G0XUZ5BG5M8K@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 954DE180004
-X-Stat-Signature: dhx33cprabpj6opb687pyb59qkfa9nir
+In-Reply-To: <20251109124947.1101520-4-youngjun.park@lge.com>
+X-Rspamd-Queue-Id: D17381C000D
+X-Stat-Signature: qdc6hwop6uw6jobb8p3nhpoty6pyc1n3
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762774754-968239
-X-HE-Meta: U2FsdGVkX18vyq3B/3VzXh+FHjUlBAcpHL8VIcZHNM+2LAV0ttX1NwIjOGyb5DH2i34hVIs4P3c+VLReIYazbDid3oyFABRjvk32vo8czW3U++6InGOXN0lVQJjLhbKNJAYHZCgFPPNHqyRqaTdI/EKNPSCYj5dE9UDbfj59/sw35wOz4Guu1/YLOT0tkKh6guroWQkvxyKLT5vXxR1Fit5RztdhYe85XkmjcsRi8kJg9RqOi8GIrKZ6sRiR+pauu4RFK7vSt0DSmDmABlibHvkF68wALqaROexJkDjV8w6nbNYMyyO0Ffsx3LtKtCdhB0tHSkj3Rzyl1s+Sw24k1DOdPme0EC6z/FE4Or+X6ueA8bBh1MjG5gR2xrBPR0/faivbjZP24IBc4TivwrnLS8QCkI7ki1+/MlBclpzKETMh4UlBY0jChGAN+76RFACDmrkieWeDk5N5JYhVde5uOjS9kvnlHFHfBQU0Ng2KRmKffhDeuUbAEupPHM4VGDvJUXn/omUJ6QTENLzYya3wnRVp4dXTlrRwL5SP1hW58/Rg6+M6wtBouSkyB78DaA5Lpf9VAnY7T6xL/jYqWtc9DhawRl+P8cEjf0zP87V5mVAtrd8UcWYdZlCKQ59ZMLq5CDdhnxK3ScGSKOmrVxhr9WLUohCJtNG+N1i1Km3DM7WuGaQaIGJjYxeNAfd1xl/fX9Vuopgk2j/6G61XEZMI7qtiGMGqSK6Wd31ObcUnPRixFkmvfTbuVlf16KFNUomd/gwkUpUQydLHYzNRNMGz5QoPbZMvIr6iowD6UDbxTfLUVYtiWoHQbRsJ7fzKcwl0IGauon+/HXszwFMp4zXo4954faVwtpgp2TJ0ikxaIVVDx6AmXjDcoSxWZEsBDHrbLQCv3vaW9xE3urxQZdo3wntEHooBr/OBk/aRC0dYxx1DpNqo2ZStyRf7i2gqmRJa15YDxDs+k2e6YgJ+Eel
- WL+x5BdM
- eh7NVhQ8T5MfyWazPFhD7LtdX9wnXlXvYyYE41yZ2uIZs8t2oKMMCHcPcZGE7NjwpqHEFnOC1e6c5YiJxBvvz2xksmKK/CG3Zaho3Pm2ekWWekaMi4t83t5oxqeA4qPPOmcVNCEX4YlwwJcwp/xQ9tBs9eRpWsXC/AfJtCkQ16NgK8Of2JJO3dlSp6TaoOhowauvinprWr+9VNR1BTiHLnkJX31pQnhmqmiv90kAjqOouCSM=
+X-HE-Tag: 1762774900-713789
+X-HE-Meta: U2FsdGVkX1+g90fhGyJJcbmNj4OrrNYpN7XghPFb0zZfDVvCTiAxY/vfeWNpovXl/XuHYIfSwS5V6DxZGWsJGDFyp0kS0KtgzZyzXXkWEbas9X740Cjybf8cpP6iY/4IX1AEYqX47LW3MDOShCWKqtR7zaRASkdMyW7jsQ/kK1DZR1nkg9aYE3jnsaHz3mR6HdO6iFfupxxuDBQQapqB/e0tjKfyd6bgAyvx82DwFa3/JNE18fjo1HWKjAfY5r6ONlrL0lBKvGLip9LREcN61oOlgS3xD7nufOO4tYlMWmVoVBD73k4NhE8vSg/4papU7YYJ5eBuFTQxj20hTNNQGqTDkBfs9AbYMZT+XI6G6DoOkMHXGOjGOGlxEm/5lKEPVreibrPkxDOZCtQLXST3iUD3M/bmn2PphK3YSYw45Q8wo5W3M9G45dEu1HkELBPVveuXlAaANUvUpDotEW0PtlweSUcAosU2aBik6XvccSQTANzGv1MtUfZjzBcqUAAD3gTXqAUWbp6766f34y81+36nNtW+LhddyXj0O5aywDxMw3q1sH8Laff/LU/DbfD9GR++2T2NUW+UGzTD8/hVJNIOlPDZ8P+1HbSL41rKD4vJrwI/+JIuVikaKYtP+PvmlC+95JxwAOLQXMHIykmyOnfWrDvVPZJLNiQ3Riaw7M8hJ9lv9v8FcXQREaA9LulWPsNz9sXRveJUBupvO0w92Fv0AaMBM8WDx1BE6gtKDZmI6ncMTmK6tZkPaIB0i5iQzz8CCrh3KpP6ZbXMFjAzTjxmC8XjC31Vrb3AB4+oJTYTxdOOw0pb0bbIzuvGphKqHrHXzTy17okiBEmhcKfCereIXEq7sXezolk7Ot5CZ9muFw2xfKTllNPFh3MTZhEpduZ+b7y0GaiVbKGJ8K6kVyO/CS5mQebor+SDhHaRi18C2ogKyxczl039CsOmoTbKvfzQJcmI4MyOAgR6+4z
+ 6eWiSrWl
+ t3FLEaLg7+hysI1IT+2orEr/QpTwGNa8/F/J1yl00RfeZ0DALP+Z7C5RW3l586ThG57sIJ9vjbwzGb3QhTW2RYEQXYjEz46nGCraQ/nCtGAdA+S61OnJ3egmG3rmIXVmeEOyZU68cnDly0a9TFYn8i1dWjECuDohGDbMTMx6e3SzjTwDWcqmkmVLZcgoC/8mW3YROSOTRY4t5w/tfXr1YgzXRkFA0kdKtLgAFq9jyVqI4PbWBnpVfE1QHmyoZLGPdMStqWXmmtPNboe/9T7Pa8idyP6fX9D1V3xaYLvWX74QhSViZK7VUE0zWlA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,21 +114,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 26, 2025 at 10:29:23PM +0000, Brendan Jackman wrote:
-> Per Dave's feedback I am still slightly hopeful I can find a way to
-> come in and refactor this code so that it's gets cleaner for you guys
-> and then ASI becomes a natural addition. So far I don't come up with
-> anything in init_64.c but I'm still planning to stare at set_memory.c a
-> while longer and see if anything comes to mind. So maybe we'll be able
-> to reduce the yuck factor a bit.
+Hi Youngjun,
 
-Cleanups like that are always more than welcome!
+kernel test robot noticed the following build warnings:
 
-:-)
+[auto build test WARNING on akpm-mm/mm-everything]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20251109-215033
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251109124947.1101520-4-youngjun.park%40lge.com
+patch subject: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into swap subsystem
+config: s390-randconfig-001-20251110 (https://download.01.org/0day-ci/archive/20251110/202511101938.muW3KLKk-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251110/202511101938.muW3KLKk-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511101938.muW3KLKk-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from mm/page_io.c:29:
+   mm/swap_tier.h:71:1: error: expected identifier or '(' before '{' token
+    {
+    ^
+>> mm/swap_tier.h:70:19: warning: 'swap_tiers_collect_compare_mask' declared 'static' but never defined [-Wunused-function]
+    static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--
+   In file included from mm/swapfile.c:52:
+   mm/swap_tier.h:71:1: error: expected identifier or '(' before '{' token
+    {
+    ^
+   mm/swapfile.c: In function 'swap_alloc_entry':
+   mm/swapfile.c:1309:29: error: 'struct swap_info_struct' has no member named 'tier_idx'
+      if (swap_tiers_test_off(si->tier_idx, mask))
+                                ^~
+   In file included from mm/swapfile.c:52:
+   mm/swapfile.c: At top level:
+>> mm/swap_tier.h:70:19: warning: 'swap_tiers_collect_compare_mask' used but never defined
+    static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--
+   In file included from mm/memcontrol.c:71:
+   mm/swap_tier.h:71:1: error: expected identifier or '(' before '{' token
+    {
+    ^
+   mm/memcontrol.c: In function 'mem_cgroup_free':
+   mm/memcontrol.c:3734:2: error: implicit declaration of function 'swap_tiers_put_mask'; did you mean 'swap_tiers_release'? [-Werror=implicit-function-declaration]
+     swap_tiers_put_mask(memcg);
+     ^~~~~~~~~~~~~~~~~~~
+     swap_tiers_release
+   In file included from mm/memcontrol.c:71:
+   mm/memcontrol.c: At top level:
+>> mm/swap_tier.h:70:19: warning: 'swap_tiers_collect_compare_mask' declared 'static' but never defined [-Wunused-function]
+    static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for OF_GPIO
+   Depends on [n]: GPIOLIB [=y] && OF [=y] && HAS_IOMEM [=n]
+   Selected by [y]:
+   - REGULATOR_RT5133 [=y] && REGULATOR [=y] && I2C [=y] && GPIOLIB [=y] && OF [=y]
+
+
+vim +70 mm/swap_tier.h
+
+c17fe68325c921 Youngjun Park 2025-11-09  41  
+c17fe68325c921 Youngjun Park 2025-11-09  42  void swap_tiers_init(void);
+c17fe68325c921 Youngjun Park 2025-11-09  43  int swap_tiers_add(struct tiers_desc desc[], int nr);
+c17fe68325c921 Youngjun Park 2025-11-09  44  int swap_tiers_remove(struct tiers_desc desc[], int nr);
+c17fe68325c921 Youngjun Park 2025-11-09  45  ssize_t swap_tiers_show_sysfs(char *buf);
+c17fe68325c921 Youngjun Park 2025-11-09  46  void swap_tiers_show_memcg(struct seq_file *m, struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  47  void swap_tiers_assign(struct swap_info_struct *swp);
+c17fe68325c921 Youngjun Park 2025-11-09  48  void swap_tiers_release(struct swap_info_struct *swp);
+c17fe68325c921 Youngjun Park 2025-11-09  49  int swap_tiers_get_mask(struct tiers_desc *desc, int nr, struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  50  void swap_tiers_put_mask(struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  51  static inline bool swap_tiers_test_off(int tier_idx, int mask)
+c17fe68325c921 Youngjun Park 2025-11-09  52  {
+c17fe68325c921 Youngjun Park 2025-11-09  53  	return TIER_MASK(tier_idx, TIER_OFF_MASK) & mask;
+c17fe68325c921 Youngjun Park 2025-11-09  54  }
+c17fe68325c921 Youngjun Park 2025-11-09  55  int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
+c17fe68325c921 Youngjun Park 2025-11-09  56  #else
+c17fe68325c921 Youngjun Park 2025-11-09  57  static inline void swap_tiers_init(void)
+c17fe68325c921 Youngjun Park 2025-11-09  58  {
+c17fe68325c921 Youngjun Park 2025-11-09  59  }
+c17fe68325c921 Youngjun Park 2025-11-09  60  static inline void swap_tiers_assign(struct swap_info_struct *swp)
+c17fe68325c921 Youngjun Park 2025-11-09  61  {
+c17fe68325c921 Youngjun Park 2025-11-09  62  }
+c17fe68325c921 Youngjun Park 2025-11-09  63  static inline void swap_tiers_release(struct swap_info_struct *swp)
+c17fe68325c921 Youngjun Park 2025-11-09  64  {
+c17fe68325c921 Youngjun Park 2025-11-09  65  }
+c17fe68325c921 Youngjun Park 2025-11-09  66  static inline bool swap_tiers_test_off(int tier_off_mask, int mask)
+c17fe68325c921 Youngjun Park 2025-11-09  67  {
+c17fe68325c921 Youngjun Park 2025-11-09  68  	return false;
+c17fe68325c921 Youngjun Park 2025-11-09  69  }
+c17fe68325c921 Youngjun Park 2025-11-09 @70  static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
