@@ -4,108 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 479D1CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 12:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01792CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 12:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A1BB8E000C; Mon, 10 Nov 2025 07:12:48 -0500 (EST)
+	id 574CC8E001C; Mon, 10 Nov 2025 07:15:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 879648E0002; Mon, 10 Nov 2025 07:12:48 -0500 (EST)
+	id 525AB8E0002; Mon, 10 Nov 2025 07:15:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B61A8E000C; Mon, 10 Nov 2025 07:12:48 -0500 (EST)
+	id 43B468E001C; Mon, 10 Nov 2025 07:15:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6909C8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 07:12:48 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28527C0D11
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:12:48 +0000 (UTC)
-X-FDA: 84094586016.07.925EFEA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 584B4180004
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:12:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HG2Ibi4C;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DBD88E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 07:15:50 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D95C614034C
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:15:49 +0000 (UTC)
+X-FDA: 84094593618.15.28C0E76
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 319841C0005
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:15:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=f1XEqOV+;
+	spf=pass (imf21.hostedemail.com: domain of 3ctcRaQgKCLcgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ctcRaQgKCLcgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762776766;
+	s=arc-20220608; t=1762776948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pCt+fyO76BswnXeAXk3DxJteEg2N3PZAd/D6BcbPzjU=;
-	b=eOc1qX7tZ6TR80rAILqVxpgGcaNk0yY+UzkH0U4+dIBXvnr0REqcflJBk/1MU/RMMvbRKL
-	U5nGpDqq8t5wMJ+sA6lup9g6ddaZ22O5RDJX77T4fpZvzFA6LGNdeySRsevFBIOaly5xF0
-	fyy67yfrl8cvr2DMLX9pb0sYR3/71fw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762776766; a=rsa-sha256;
+	bh=r7u+CaWniXfNbRMSrnjLhAt9t/fpHXv3Sd1ZHtazOKg=;
+	b=2ZoqTt1WTll2zVu9l9iT+a05Vdce599XWkVi8on/U9+sp14aDj/VRnfP4jZQym24DtLbIz
+	fozam9OtE2WLxzdkeSSSbtSTq+OWNWrN42BNyKdiBVWX12QHB0de6tqWBVTzXy8XeTOGus
+	spEJpSyI0abq3S8i9ppKm+DjIPEhj/o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762776948; a=rsa-sha256;
 	cv=none;
-	b=lxHUPbdyNJBUIbRD4SUF36Hq7PijNd+/0s3jc4qNXZKCxUrJv11QgO30k8sVhe/wZYahQX
-	rH5Dgb5ZE1a5qqqDxoGx9TtNh1KChsbYelCevTAxVtjZ/R6Q8R3QEw6gd0rjkiSC05GpF5
-	1s8Sh5drtu5mrl91+5diXCjClIiNmyA=
+	b=E6hlGnUGdhuZPzJbs+xu/vuslxdQ1pb/bq6N6HvvSTTG2taXElZv8PMl9ag3xe8Nr21jUe
+	NBiU9H9f8bnIwfGYRZYdPvSkOW+bAK0RZm4Xjo1hGu3owIECK/eWOBxMRFTh5k0JLy1r1w
+	kknf+IGAB2beycp+PTAOzNFpwE93QkA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HG2Ibi4C;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762776765; x=1794312765;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7baM59UhgLs3PzSYxMxfS0Nqh+LcBS+GPLi8CsvzC/w=;
-  b=HG2Ibi4COs4D7P1WTdUMD9YrjdXD2K9g0b2xTlDiuKQZrGxoybfQdjig
-   0Ti2/3R3QispJslYIzbsgR+HLiM9uJ3ebFGjotRbjXgH7q0g5k5Tlf0M+
-   aYMV5pTQcO803+7YLHG60MOswIJljoEM3zZP4kL1u2+O+oDy9Xrwn3wzB
-   0jq01fo7TqL1wvrEX0s/wmTJeyw8ww6oVyWojd8emCe9eJb4t4Tp2ED4l
-   Yf9neuQImK67ipyYisA2vV0LoQt1yBaahS1Bv6b3gzbo3XLUJfBwEpmA9
-   3E13grRdxOCVU+enyftIWj8a94Ariz/yNB/ajrIl718GipjIY0PIGW8If
-   w==;
-X-CSE-ConnectionGUID: 11FBDvwoTgyIhMDUG1DyIg==
-X-CSE-MsgGUID: Pf8aLsy7TKaHS0nBqZEy2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="63830714"
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="63830714"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 04:12:43 -0800
-X-CSE-ConnectionGUID: FSWuZslwQh+TRlCS3ZmSZA==
-X-CSE-MsgGUID: WnKB7LmvS+yM8IUXxmgQBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="187966765"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 10 Nov 2025 04:12:39 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vIQlA-0000Or-2S;
-	Mon, 10 Nov 2025 12:12:36 +0000
-Date: Mon, 10 Nov 2025 20:12:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, chrisl@kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, youngjun.park@lge.com, gunho.lee@lge.com,
-	taejoon.song@lge.com
-Subject: Re: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into
- swap subsystem
-Message-ID: <202511102053.StJy9JAB-lkp@intel.com>
-References: <20251109124947.1101520-4-youngjun.park@lge.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251109124947.1101520-4-youngjun.park@lge.com>
-X-Stat-Signature: iafmskazwuonp4bjsgqfy8u7hmrcqnc5
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=f1XEqOV+;
+	spf=pass (imf21.hostedemail.com: domain of 3ctcRaQgKCLcgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ctcRaQgKCLcgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4773e108333so17923765e9.0
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:15:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762776946; x=1763381746; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r7u+CaWniXfNbRMSrnjLhAt9t/fpHXv3Sd1ZHtazOKg=;
+        b=f1XEqOV+KsKAtZcVh3Sefg5gWCHhe1csccyMrz2Y418HVmSX7OqQ95liGYUdlUN+nT
+         a7sldE5NfTRdXQpwELkopQyTAZRZfx79H4Uj/feEbXyPGT68W/iqD1nx5yorbBAtd+8/
+         GqsGnN6308/sp/5QT/BUV/81DjrgrXRFTsGcyz2MPO2t6rVXH+Wj9LHntfNU8EGvuZAj
+         43omHmM9OBVrQUMNbqWNcbyVs6R5Y5pM1PGC0L2tVrbnqnwIUNL6O8eiAkRC1LQJLVgW
+         txwBIJqR3k0gmqL4aokF4v+QNNTXK1Vro48PuFAdmKaotKabKpEaGKY5uVcRF0TWFg0+
+         UMbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762776946; x=1763381746;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r7u+CaWniXfNbRMSrnjLhAt9t/fpHXv3Sd1ZHtazOKg=;
+        b=YqTw6fkzRwKK0+h7jl5+xjLnvzSKM/nO3PONsyoGkMf1k7Gvy868KViTUivQBSpxuc
+         juYOFiYKTeH5LxEhNJafzhNfZ+bZOfKD6qRlWrFOCsNv8RPhKHaY2vXXBxBZ+f5Gjz+U
+         jwRkqG0wzVTN9Pvxm2uWYTWgALq1S2YlAnMLM3QkrqEnyrOGfRtONS+ZixCeovWkzEYL
+         qKZXJocs+uXL+j5Eh2mSZTRJBsAA/KR63qxwscd03ivbhGIDqvFR45ig02/+/AuMvZ6P
+         Y4R4zdldN/1lVwvXeQrblxjA4FUzc5OXh7WFppwwpRDWM/WM+nnxlhAdlSmVn7qKoSSv
+         Wqjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVzXMf94bm8O8bGWICFRijrFK+bCyFY/i428q3l7eAV1mgCEm+l/aVr0qYmSlbwdkFXzBwistsurg==@kvack.org
+X-Gm-Message-State: AOJu0YzfB1N+LykOlFRGMl0jwRQor1Tb2cZ0MRGHWiTXR3GUzsF/gqs7
+	JcGgpZgbNx/TvZ6CrDggraszwcYm0Z3PEgrCCGs0IfoEwI5KZkmdS2npIaGVW+h4ZleJDTVoifZ
+	aIVOex71HXz/toQ==
+X-Google-Smtp-Source: AGHT+IFsVkAJqDrA0QC1vNQvIugx9gGlCHC4/kl3pctZZHSVNpuIB2x8+7Vb8XbTb0E+0lyCnqY/M4AHDRthJA==
+X-Received: from wmee11.prod.google.com ([2002:a05:600c:218b:b0:477:63d9:f561])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c15:b0:477:7c45:87b1 with SMTP id 5b1f17b1804b1-4777c45885amr34406585e9.36.1762776946520;
+ Mon, 10 Nov 2025 04:15:46 -0800 (PST)
+Date: Mon, 10 Nov 2025 12:15:45 +0000
+In-Reply-To: <20251110112640.GVaRHL8GME4ODowica@fat_crate.local>
+Mime-Version: 1.0
+References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+ <20250924-b4-asi-page-alloc-v1-2-2d861768041f@google.com> <20251025100642.GVaPyhMp4CEmsYW3xy@fat_crate.local>
+ <DDSLTWM2FL58.3MIDS5WUOEEZW@google.com> <20251110112640.GVaRHL8GME4ODowica@fat_crate.local>
+X-Mailer: aerc 0.21.0
+Message-ID: <DE509XAYNMVR.2UH3ZEC7HIU69@google.com>
+Subject: Re: [PATCH 02/21] x86/mm/asi: add X86_FEATURE_ASI and asi=
+From: Brendan Jackman <jackmanb@google.com>
+To: Borislav Petkov <bp@alien8.de>, Brendan Jackman <jackmanb@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, <peterz@infradead.org>, 
+	<dave.hansen@linux.intel.com>, <mingo@redhat.com>, <tglx@linutronix.de>, 
+	<akpm@linux-foundation.org>, <david@redhat.com>, <derkling@google.com>, 
+	<junaids@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<reijiw@google.com>, <rientjes@google.com>, <rppt@kernel.org>, 
+	<vbabka@suse.cz>, <x86@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 584B4180004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762776765-72933
-X-HE-Meta: U2FsdGVkX1+T9sU5w/CMuaqoi0FCaLgAnI3EuJ9aF+nmboK3Q9SkDYCnaOXnaxjR4E7GEzAfHe4AkOZwKKovLIYe/znLT9uLlrrCi+hxFCroSRbfiYqpOsJJdpA3ZWDm9P07SeWhRNbsSUQfAhjRq1klxgUc1LvjJmYcJ3YMY1HsI8EkXHbW7A49Ma3uR0CGeHVrixGswCzJ8pAofB+yupxciIJH1ylNTFgCFK8dxe6bV/BvIRmLc7Z/c4wSn2xXl6SYX7ypoxLW8t70+PAhD9rCiOGdpDrJQvftYplDWCuVBMfmAmMH3tJmgPl1J96BWXuXPBdvKJrN3xiIeiTYSM1zbLqSMdbabwBtwan8yYPYy0bI2Onu+AO0f5XOvG9xH2k0Wr7YCL31EQvReKZRGSfxz1BWHTK9PNavZWy7zooh9pLWnd/9o8Tu9CeGT7CUAGGKgmDo1+0C21ya3c+FaRJ6GV2A9ZogyXuf2d+YlayD0sYX4QlSfM6z3yIpQP1JItilL8yi2+AJ9XHI0m/NKjkRGEdl8j8IfKKKf9pla1PPDCxOvryQW1PgwGbbecPBLOP/SUgwOjl6cNYjbkA9RR1vbVuXR/M6uFWiD+JpIwRaCDladeEJiTpMT6cjKZ2K/cmlb3seIVQYXi6nfhICEM7h6TjsNyVthnau8haAo4XHtFbHKz/1XtpvSRC9SEl1UCfRbmIUkJuH7k0ZIQggSVfFzCrpqdnp0/dKuFiH20BqHVAD11pOcEz6ccFnihCxly+1/q//mcBHXzMr7iFsJ9AYVN/fYoO7wwTjZJ6kkA6GTf03PqMfpOL4FgJ/pyIl9XVmv/a489jKkePthndv9dZEfY6x04omC07gRS6MmE3MprhzHbYZ1CE22P9fhg7b9R5aOtzsWbzXnlIJvtwP94uWIEDuwim0UCQXBYGP1zosfHcjyfCTdMNw7X8jkAvXSjrStgDanJwRolxX1y9
- /hWf04ty
- FpnipaJ3uxicM6oSD8fpdCfsWmNygruDdTl3ZUUl925jTHY9QUacsxXVMNKrX1bJ3jqUVfwMa87KiEr+I7bpyGZhb8F6KVGXE24DZHEQvF1IbJ8E7ejIW4O3XUP/d2fdY/d/sjFUlKVdN0H26jCTab2soFJmYid1YftdICyUhTSc4vwAtNC/ggL1NLEcdaFmWc8g+KjDMCjGawLAF1dKKj6laDL0jJOU2NYW5hIj9xX+ss9+XUd6PyQW3ABPLJSWNpyFgRU+zTfrX2T+iUrE1of3F3LcvDweb7bKyc8tG9FkZ8Eo7tz2kOUj0EQ==
+X-Rspamd-Queue-Id: 319841C0005
+X-Stat-Signature: bnu56kimyt37jbatenupn85xywck34z3
+X-HE-Tag: 1762776947-668754
+X-HE-Meta: U2FsdGVkX1/UZQ3IGfCn/Ii9eULgbe9/BhB9Ae6IlEXM2edmlla0daB/OR1G1ye+4pNS/siGu3Ybqxy8hnB12y+/+BwVfo8DkUzqm43JqzRMBJ74BPW8KFkDAprlaagQDvTU2s1HC3v/oSziCw4WYEHoQLfnsbIhAaKXlkFciVuRfJ2N8cjYMFebArE0vONHFXRmsrUfzA7XoNkCqntURH39oJ519gI/rC1xjDZKj8r5hKvihJRAlx6jfz49hCBFDD867DckegBFBQJCZbpeRZgoUDi9ybkKEodTcZuSYIXlFZKNMpfT5ONxAo/xoNhc1CAI+dK0T0uW/K4NXlQm/+gFUyaSUxsIAsKUmFepcX75djNO950PYG/fRVK5fC2obLUR6mihFfQ3crqhu6PdaDAGtioQaWe/7Fgf2inEE8pU7h0+fbwlDsjJacPVwOkmQQFusVw3NjPoDlE+Qc5hDX6FUGWmrGOwtJjjuB0f5anxtcqCmnITGK29MHMArTsByGYUXg3Fbzv6yXkOgXzcGrseRCXUfnI2W+fCNE8sf3vRIyKdYLrKvIsvMUNbnDz1IHcgjeIE/sBimZGLRgojTTWf27U5X5+sGS0yDrAYCI5INRAuivxbhPNBqUFDK8F/TNVxZFO6tjn7YpmRc7wN7Y9PjjaoTeQ7erupOlLJBNAM/7FeCVu2lwvkTp6p3dA42wmMQRStj2b3S0fnOMuNP+N+MBVXcBESn1PF9GPhG7BCt8sEiAErOAG2uVI1Dewe9aGU4/A03SmCe8ejCJbZprrnpcfbPmXCv3wLzD7M+UVcy9gM9B2akeyMQ6iiJmii2UnKNiTfl2b4LdsAXcq87a+Ah8eW4dPxwg9MVoD2SLAXs6rBqyqPbpKg9yKBY88vpR8fDhMdKa88cJioBSFKdmUOwMbNOJjEdkIhS+nUybBy1tc1npjm4frgWYOcfGqKG1lWhpzarURia6siifa
+ pbi+NDb6
+ DEviRkjUjfu0hXoG5s0GiF27WCjqdgYK5Byb47N6ODwZ/GbaBEcjfmI/DWhVYFyDSS78wN1QGC6rMJGVcag6kZLmhrykMPXDycPn8OzmyhSOnB6IxuiduD8KJK871TJ50Y7OF+2hgmuc7taTk4MwT+mFdQ/+6js3sg+kRmgiaBEJppQ9slqzWbAerHN0j1sKh3O7A2Od23xk7zRW1XJNvS8PdqOi/RrC+6eq1ip0wnelxGC9OXCW0iNlA+iPkLmltcvCZ4O4R5LqtKJi1EB8HlNGnI49Ia/2RpXxDbBqLz5din/mEqk3K7o/RiM7DZ6PxolqQ7fxZjz4xpq9ATj4XzJL9Qx/cgLMSO4pcoE2BzYKVi+g3JKBmmBR81yyTvN/cXXJZ+pPWY5AMFnW0XIId2JVfvtYdrNfht5NxOBybHqpDYYUOBB/tVUD7Xg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,107 +119,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youngjun,
+On Mon Nov 10, 2025 at 11:26 AM UTC, Borislav Petkov wrote:
+> On Sun, Oct 26, 2025 at 10:24:35PM +0000, Brendan Jackman wrote:
+>> Hm yeah, I actually also thought I had some direct feedback from one of
+>> the x86 maintainers saying not to expose it here. I can no longer find
+>> that feedback on Lore so I think I must be misremembering, the flag
+>> was already hidden back in [0].
+>> 
+>> [0] https://lore.kernel.org/linux-mm/20240712-asi-rfc-24-v1-5-144b319a40d8@google.com/
+>> 
+>> If that feedback indeed doesn't exist
+>
+> Just ignore everything whoever might've told you or not - we override all
+> previous statements! :-P
+>
+> From Documentation/arch/x86/cpuinfo.rst
+>
+> "So, the current use of /proc/cpuinfo is to show features which the
+> kernel has *enabled* and *supports*. As in: the CPUID feature flag is
+> there, there's an additional setup which the kernel has done while
+> booting and the functionality is ready to use. A perfect example for
+> that is "user_shstk" where additional code enablement is present in the
+> kernel to support shadow stack for user programs."
+>
+> So it is all written down now and is the law! :-P
+>
+>> then personally I'd lean towards exposing it right away, I don't see that
+>> much downside in terms of ABI, since ASI kinda "doesn't do anything", from
+>> a SW point of view it's just a very weird and complicated NOP. It's hard for
+>> me to see how userspace could grow a functional dependency on this flag.
+>> Whereas for general monitoring it's handy.
+>
+> The point is: once all the ASI code lands, we should show it in cpuinfo. As
+> in: "this kernel supports ASI" and not "there's asi in cpuinfo but well,
+> that's not the whole deal."
+>
+> Makes sense?
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20251109-215033
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251109124947.1101520-4-youngjun.park%40lge.com
-patch subject: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into swap subsystem
-config: s390-randconfig-001-20251110 (https://download.01.org/0day-ci/archive/20251110/202511102053.StJy9JAB-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251110/202511102053.StJy9JAB-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511102053.StJy9JAB-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from mm/page_io.c:29:
->> mm/swap_tier.h:71:1: error: expected identifier or '(' before '{' token
-    {
-    ^
-   mm/swap_tier.h:70:19: warning: 'swap_tiers_collect_compare_mask' declared 'static' but never defined [-Wunused-function]
-    static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---
-   In file included from mm/swapfile.c:52:
->> mm/swap_tier.h:71:1: error: expected identifier or '(' before '{' token
-    {
-    ^
-   mm/swapfile.c: In function 'swap_alloc_entry':
->> mm/swapfile.c:1309:29: error: 'struct swap_info_struct' has no member named 'tier_idx'
-      if (swap_tiers_test_off(si->tier_idx, mask))
-                                ^~
-   In file included from mm/swapfile.c:52:
-   mm/swapfile.c: At top level:
-   mm/swap_tier.h:70:19: warning: 'swap_tiers_collect_compare_mask' used but never defined
-    static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---
-   In file included from mm/memcontrol.c:71:
->> mm/swap_tier.h:71:1: error: expected identifier or '(' before '{' token
-    {
-    ^
-   mm/memcontrol.c: In function 'mem_cgroup_free':
->> mm/memcontrol.c:3734:2: error: implicit declaration of function 'swap_tiers_put_mask'; did you mean 'swap_tiers_release'? [-Werror=implicit-function-declaration]
-     swap_tiers_put_mask(memcg);
-     ^~~~~~~~~~~~~~~~~~~
-     swap_tiers_release
-   In file included from mm/memcontrol.c:71:
-   mm/memcontrol.c: At top level:
-   mm/swap_tier.h:70:19: warning: 'swap_tiers_collect_compare_mask' declared 'static' but never defined [-Wunused-function]
-    static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for OF_GPIO
-   Depends on [n]: GPIOLIB [=y] && OF [=y] && HAS_IOMEM [=n]
-   Selected by [y]:
-   - REGULATOR_RT5133 [=y] && REGULATOR [=y] && I2C [=y] && GPIOLIB [=y] && OF [=y]
-
-
-vim +71 mm/swap_tier.h
-
-c17fe68325c921 Youngjun Park 2025-11-09  41  
-c17fe68325c921 Youngjun Park 2025-11-09  42  void swap_tiers_init(void);
-c17fe68325c921 Youngjun Park 2025-11-09  43  int swap_tiers_add(struct tiers_desc desc[], int nr);
-c17fe68325c921 Youngjun Park 2025-11-09  44  int swap_tiers_remove(struct tiers_desc desc[], int nr);
-c17fe68325c921 Youngjun Park 2025-11-09  45  ssize_t swap_tiers_show_sysfs(char *buf);
-c17fe68325c921 Youngjun Park 2025-11-09  46  void swap_tiers_show_memcg(struct seq_file *m, struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  47  void swap_tiers_assign(struct swap_info_struct *swp);
-c17fe68325c921 Youngjun Park 2025-11-09  48  void swap_tiers_release(struct swap_info_struct *swp);
-c17fe68325c921 Youngjun Park 2025-11-09  49  int swap_tiers_get_mask(struct tiers_desc *desc, int nr, struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  50  void swap_tiers_put_mask(struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  51  static inline bool swap_tiers_test_off(int tier_idx, int mask)
-c17fe68325c921 Youngjun Park 2025-11-09  52  {
-c17fe68325c921 Youngjun Park 2025-11-09  53  	return TIER_MASK(tier_idx, TIER_OFF_MASK) & mask;
-c17fe68325c921 Youngjun Park 2025-11-09  54  }
-c17fe68325c921 Youngjun Park 2025-11-09  55  int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  56  #else
-c17fe68325c921 Youngjun Park 2025-11-09  57  static inline void swap_tiers_init(void)
-c17fe68325c921 Youngjun Park 2025-11-09  58  {
-c17fe68325c921 Youngjun Park 2025-11-09  59  }
-c17fe68325c921 Youngjun Park 2025-11-09  60  static inline void swap_tiers_assign(struct swap_info_struct *swp)
-c17fe68325c921 Youngjun Park 2025-11-09  61  {
-c17fe68325c921 Youngjun Park 2025-11-09  62  }
-c17fe68325c921 Youngjun Park 2025-11-09  63  static inline void swap_tiers_release(struct swap_info_struct *swp)
-c17fe68325c921 Youngjun Park 2025-11-09  64  {
-c17fe68325c921 Youngjun Park 2025-11-09  65  }
-c17fe68325c921 Youngjun Park 2025-11-09  66  static inline bool swap_tiers_test_off(int tier_off_mask, int mask)
-c17fe68325c921 Youngjun Park 2025-11-09  67  {
-c17fe68325c921 Youngjun Park 2025-11-09  68  	return false;
-c17fe68325c921 Youngjun Park 2025-11-09  69  }
-c17fe68325c921 Youngjun Park 2025-11-09  70  static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09 @71  {
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sure, sounds good to me.
 
