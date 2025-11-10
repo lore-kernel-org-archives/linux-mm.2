@@ -4,108 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F65CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 13:26:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11834CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 13:38:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39F978E001C; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
+	id 2ABEB8E0006; Mon, 10 Nov 2025 08:38:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 376F28E0002; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
+	id 25D068E0002; Mon, 10 Nov 2025 08:38:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28D1A8E001C; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
+	id 199788E0006; Mon, 10 Nov 2025 08:38:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 124AF8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:26:56 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A804E160D2F
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:26:55 +0000 (UTC)
-X-FDA: 84094772790.14.4559EA5
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5473040009
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:26:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=j0nkU5Dw;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 087C48E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:38:48 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C91304A890
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:38:47 +0000 (UTC)
+X-FDA: 84094802694.05.BA214C0
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E79B54000D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:38:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PQWMWyeA;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762781926; a=rsa-sha256;
+	cv=none;
+	b=5rxn/C9MzpbBOE/fhr8xiWLUoWqXCqXyU4CLQI/83SjzPPADCC0uPQC/XrNwj8qEFNh9F+
+	21VlWLhEsyDTGqSN3Fb0YMAAS6nwdwD8iNlZSReB+L9SknEqaaWn6JW6jNeBPz54gkpbD0
+	Xdvp7vVMAto9oDu7SXBt1EUfAsiYakA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PQWMWyeA;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762781213;
+	s=arc-20220608; t=1762781926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lprtFd/NlVRB7w+YKB2xp8fLIpz9NqIGACKh1twoei8=;
-	b=DG9sUw4SxJAakcbiU8E7Q0vFeWItdr+3Mtx/iDrFpEtAiWKCxq38Glkh2TZgcWqCM4V5/+
-	m95TC73a0WV8iyp88tNidvcS52R2LN2VYkm8fAOLxgmzVjsWn3WNKmkIw9KkoWGdH94DRO
-	UT1UYVlz92qiC6DlnrnjH0IvGlgkcKc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=j0nkU5Dw;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762781213; a=rsa-sha256;
-	cv=none;
-	b=P8s37W4ulBstmZLOK9n31rov1cpTC9of16J3LaSGiR6V75GUkoTcKmA3rqigCe02KT+AzE
-	y9ekNS+VOnwclOoTWql/5VgoMRyKdAbIn3WIKP1OEHKL3LtaXpNRsOAexJWgPfsOt7+hJw
-	cIR1EwvldPOd3EaFa+thMSvgGGMA/dg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762781213; x=1794317213;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gqluEsxLQlbV3vngbeO8V//CEUVe0NkM4sEqKyJqBVc=;
-  b=j0nkU5DwL3RLIMNhE7L2kPehx1MyJ4ECoEJs6TtzuwgoCXnqvCrcymOG
-   ZlGegpT6fHMg9VdIkD26UWWEKXpEECupAH7YsPuMqixQ+6q6K5nHwApvx
-   c+5RcWgJjpCEnVo43LZqYotoXtc/4BasoFcjVNebr8/2vyUcR8uExFJt1
-   x+qocAy8K6Uu5fgtAswLyGU4roV83oiMX2m/buiA9ikrQ9A2TKGmbsfYP
-   KIG6Hx32+uYbFmStoiQiDfRWn2l7kas3LDReiDro/vPqOjm1/KGF+3fVM
-   g4UQVMNna4A2t4a/CJwG6BwwwlFJ1ImgeiE3qfEH7HRS5vQPkv+mqm45l
-   w==;
-X-CSE-ConnectionGUID: FEOZEAD8QM6E8eFEti7L7w==
-X-CSE-MsgGUID: GjHTOaLGQl69Lb6Uv1A0gA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64711584"
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="64711584"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 05:26:52 -0800
-X-CSE-ConnectionGUID: t+LJONLVQHSZACIPcylDHg==
-X-CSE-MsgGUID: TMq45V+1QXibCa/0AnAzug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; 
-   d="scan'208";a="192932412"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Nov 2025 05:26:45 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vIRuu-0000Sp-2q;
-	Mon, 10 Nov 2025 13:26:44 +0000
-Date: Mon, 10 Nov 2025 21:26:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, youngjun.park@lge.com,
-	gunho.lee@lge.com, taejoon.song@lge.com
-Subject: Re: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into
- swap subsystem
-Message-ID: <202511102100.y6n1mtle-lkp@intel.com>
-References: <20251109124947.1101520-4-youngjun.park@lge.com>
+	bh=ESpxzLjRIYApwkHxl6Vgj10zCasBSSNB54DbKubFwY4=;
+	b=Gv94HWOuJwIxxyqwliDgX6oskuMc8BAYfJvGdEUD++WKXB4t6CRp1OWPojkxUXbWbE4ESk
+	u43wzeOg224Qjq7HtrIs+dC7DpdmTxRbTn1uJ+MzjefVN4qjyYLc5yM2hLXl0ecZrclxrK
+	IkFiIPg8B/m93l5mkMW9Vfv5IKtNApk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ESpxzLjRIYApwkHxl6Vgj10zCasBSSNB54DbKubFwY4=; b=PQWMWyeA36Wa+X7C9sAPrQru6l
+	ZH8kPCH899xum93FMK/P+W/guoOk3C07s17/t3ZB+VfNQNbWUkeiKf/+3IQeKpYLj57WjgglQwMao
+	0aRS3BqQ0uTgr7qUgdBA8IzRaaBLylqYTEDAW6Zu8uBlpsPJiMJiiQJ19KA531Yq+BHC7oUSrJLUi
+	itNxRLsDV0rsi+jrw/0HkwcxzPuiQMOp5mkg5gZ5v7TJGHf4hw6MsHMhk0xWjUwAY5VWex6KVOs06
+	1ZUGmNcLJ9x+1J/WmfxUDbQaGUtNh6vm5IoGxXpks9RjbdcAQZW+dOaQEglBAngDQ2sk5iCgt+4dE
+	2+YEy7vw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vIS6S-0000000GI3P-2js0;
+	Mon, 10 Nov 2025 13:38:40 +0000
+Date: Mon, 10 Nov 2025 13:38:40 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, vishal.moola@gmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/ptdesc: Derive from the compound head in page_ptdesc()
+Message-ID: <aRHq4OdBCtC_V0eS@casper.infradead.org>
+References: <20251110063725.3118037-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251109124947.1101520-4-youngjun.park@lge.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5473040009
-X-Stat-Signature: q9dzpt4rcsi3d99a1puf91c3gcb1odfr
+In-Reply-To: <20251110063725.3118037-1-anshuman.khandual@arm.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E79B54000D
+X-Stat-Signature: j6j6enna74j3oqokgurm1jdoensxu6m4
 X-Rspam-User: 
-X-HE-Tag: 1762781212-781365
-X-HE-Meta: U2FsdGVkX1/j3QBqWxKiwl7BPmSArEsykb50IzwuNUvTY9r19NSSLKRUtfSd5lpBZlPnUuMVGYcDAtFRB5HCwLoRD+t+YtWYHFZy/phqXsKuqmHLWPItdGhVNVdNah/RPIMKf3jK/tkaZ/hXcdchne0IOmfkNz72psWb5qZdbljiyexMjZHcsfOlc33V33YMWJzgge0hWScvx8D1Mb2VMNIrLlyRikrVYEo8DByzTYAfBZFpudGCBTMPmFF3Uet1Zpvgx+jtIbKzh4qDgUyISoPRwH9Vbi4nYydgNeGfOLYS2dNndEFUvmxCAeLA55e9jdNqOTwVDYn0j4Wb/X2jjdyI1kguSyMK2LKef9mR84WBhde6pu60B8n0viS0PoR8cMN33RfsZJM2BkA50GyNkX4Y6UgZlsPwWuwRKOJ7MtEgceGBt0cSNMVfSL46CZpz32Ky6QzEt44IKm9gn9oxGIIAYsnegYyWss/D2ALqlnWlfRw0PDGK/4R1Z1RBPKvPSZO6Nko1m7mBuNSUS90WWByP9dCozKvSFSMESoyeTb/Z6B8bxrzjDisqJRNX+BFxfLmBF6QSeROKf/Y4o8CI5uXDchJFYQovwb++9Be+XJ7dQLx5wGKw3wDbggMM61eRUpaJxhiesA5JXtjuT9WmcrMqOb4WoiTFt0sGRjmKbw2RnEuJ4h6rakN0OX3CBldDUh1h63eUalUnLyUV47X1wMdcqdYDYCF1p85YBaJBKderRREenbZ+EHSxjsB2yjwQXjJEKs3OKhmhqhlNSbUCLEWKxySV47wiUCXJh7oyBRqmoCgTo1yVgrtcS4jmy42ZnJqTQPRQHhcAFXM+qE8OUscZSldj/twOTUu4Kv4F2/lqYnUqW7n5lKkOVl77lC3q+M1hAJeU5a+jS35Gh2xOSGvhZaZj9YsagE70UHGimvTRhFTOI1ackFcqTbD973oGLmLXV3Aw3AW3bL+BIkU
- 5GjnyCMc
- nXUyY5EPg/0bkbFZvQ60Ggelh2cumhVSmEllD3SDQcL149UTVPhFwmEUmXW0wi+rczRpWdZeCtUVslF0GIkGzLRET83Px3yM7P10dgODva8LX6cCOipK/jkD347H4vE1pkE5FOukPlGHb9K6aa4TKHa2/1GJwoN2YwRnv9zGWdZ+zX5k+lpoPYfwAwMQDAkCg/tFRfKruWHuJc9x0KkcjGRDWQ/jMwmQx7ybCrtmlDBH6TTjgqgcdS1MT2jUwNNmIM/qwq2GjK9zKGv8KIW75KaDzE4I6LeQ5/YwVFjinrstz1gmSI4V2rNQo5g==
+X-HE-Tag: 1762781924-274137
+X-HE-Meta: U2FsdGVkX1/f6ST7co5PxiuTp6kMkVr/J5oayNEZk9RJm0B54i09/MvpNcEr8eGbn/ftQ0HLkfIXOETxRzppTfHPl0PYS339qH4O7MlwO3QcIaGOxXmsEL1GBSukD4FiUKAedYN8fcFHVCayfRKwrmD0YsA0hR9XW0H2u7YOHNi5+1W8ph466R8G4yBcsB2g+SwGu8CNUk0wcXZ/iTKKDqOc6/Gd/2SqjkVVbNt5MycbYQPVrGL5Asc1WDx2vemiHDa10tpgU1LUN8e3bPnGgloJj6jFPOSuU6HlQtVwl1nqp68//v3hx4zhoMjRFHJOKA283eu7w1Cc+9o+/af+YtpoUU0NICTH3GwERdSVO33P+vwE60uTeuVRSZWVR/sxwTdD+jVphbztbvHFlyWC5CvWLouKacNTBu1CBwdNtLohvRBduvNOyW/se7F+ni0aUPX+cbSAloaRuBJYzoE6vRNLCNVW7RFoTa0BLeCkXv1p36leNzB7bocF7JTxW+ORooOgOel2tSP5pKnhcsRmGkq9U9psPRYykLCqtr+EXZ11uL74OGLqCskJC3jsuNni11Btlwx9QkOwVQZM2MadiuElusBD1L+GS3imVuYAoEXeoS0Mhmxe4Hya2Gql7kR88qtFvmKmfdxD0KeCSxoWyiZGDhtZoO/QdwgMGZj/fqr7G35kupUAUoLkT1UFhZI35INBPVVAfjpHLyT8gI+UUEmMfEZB35Yag2z3MtOciieI/+Tq/qhNcBEdR58Ik+2CeZqSBXhYFjVOjzLHqAhtTeU7yQXOZYWqZar0i0TBwvnUa0M4exg1ZuMfySHEMzXOcgbOPBvS2h94/mkFBmzwK6WKt/A7jnNsQm5BZbNPEFt+yv0dJUh2G9sz9AIIP+aqUxSi029Vnqi0uFmEen9NiOJmixcBv2IEPmGLYQWFY/z0E8HaqOMsI4kh5BFs2P9xsNwfjp0Hgc2w7K27CRD
+ ABgnR248
+ VZRwk6aED8NhaMgbid8WHcBlteuowXgJER8fAVgNJZ7xIsMUUf38wxt4uWUb2/OsJ5pHeSkL9pOOoKEvkFemW5MqdjMa/MIXpJambj9IgkS8IwoteoWUl8ipFW7E0HJITlSJzqhV3HSzQuULw+t09ez7TsFDLhbpVuEsAPOdsuYNUFAyxbTNb0BcC/583Y/CM40i4EEBgtFZ9VaYMaK+LjXI2pWbZ+kuSWZtfoLcYlErfXRgNHk8KeA1g17MRpUa0i5MQtYaUx4GCyxtaAhy1upaEfOmArmUTc+PASvg+HMorH9cKv1U9+g2bnO5iJm1e1BWBdxmJCR8v5eKLkz3x24qdzCKE27HxNUcCGs5W+KOCz7cbM76QAj8FJ5klAMGGi+79spAGvFd3YMVPiFD+01wcNu+60O8xEEeu4SIweDEQrrP6Fx509tt9hyLpsaDGU9sFYGT8NPbUicI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,78 +95,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youngjun,
+On Mon, Nov 10, 2025 at 06:37:25AM +0000, Anshuman Khandual wrote:
+> struct ptdesc (including all relevant helpers) support multi order compound
+> pages. But page_ptdesc() coverts given page into its own ptdesc rather than
+> deriving from its compound head as would have been expected otherwise. Just
+> change the macro to fetch the struct ptdesc from the compound head instead,
+> so that the same struct ptdesc is reached from all tail pages.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Youngjun-Park/mm-swap-introduce-swap-tier-infrastructure/20251109-215033
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251109124947.1101520-4-youngjun.park%40lge.com
-patch subject: [PATCH 3/3] mm/swap: integrate swap tier infrastructure into swap subsystem
-config: riscv-randconfig-001-20251110 (https://download.01.org/0day-ci/archive/20251110/202511102100.y6n1mtle-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 996639d6ebb86ff15a8c99b67f1c2e2117636ae7)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251110/202511102100.y6n1mtle-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511102100.y6n1mtle-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from mm/page_io.c:29:
->> mm/swap_tier.h:71:1: error: expected identifier or '('
-      71 | {
-         | ^
-   1 error generated.
---
-   In file included from mm/swapfile.c:52:
->> mm/swap_tier.h:71:1: error: expected identifier or '('
-      71 | {
-         | ^
->> mm/swapfile.c:1309:31: error: no member named 'tier_idx' in 'struct swap_info_struct'
-    1309 |                 if (swap_tiers_test_off(si->tier_idx, mask))
-         |                                         ~~  ^
-   2 errors generated.
-
-
-vim +71 mm/swap_tier.h
-
-c17fe68325c921 Youngjun Park 2025-11-09  41  
-c17fe68325c921 Youngjun Park 2025-11-09  42  void swap_tiers_init(void);
-c17fe68325c921 Youngjun Park 2025-11-09  43  int swap_tiers_add(struct tiers_desc desc[], int nr);
-c17fe68325c921 Youngjun Park 2025-11-09  44  int swap_tiers_remove(struct tiers_desc desc[], int nr);
-c17fe68325c921 Youngjun Park 2025-11-09  45  ssize_t swap_tiers_show_sysfs(char *buf);
-c17fe68325c921 Youngjun Park 2025-11-09  46  void swap_tiers_show_memcg(struct seq_file *m, struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  47  void swap_tiers_assign(struct swap_info_struct *swp);
-c17fe68325c921 Youngjun Park 2025-11-09  48  void swap_tiers_release(struct swap_info_struct *swp);
-c17fe68325c921 Youngjun Park 2025-11-09  49  int swap_tiers_get_mask(struct tiers_desc *desc, int nr, struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  50  void swap_tiers_put_mask(struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  51  static inline bool swap_tiers_test_off(int tier_idx, int mask)
-c17fe68325c921 Youngjun Park 2025-11-09  52  {
-c17fe68325c921 Youngjun Park 2025-11-09  53  	return TIER_MASK(tier_idx, TIER_OFF_MASK) & mask;
-c17fe68325c921 Youngjun Park 2025-11-09  54  }
-c17fe68325c921 Youngjun Park 2025-11-09  55  int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09  56  #else
-c17fe68325c921 Youngjun Park 2025-11-09  57  static inline void swap_tiers_init(void)
-c17fe68325c921 Youngjun Park 2025-11-09  58  {
-c17fe68325c921 Youngjun Park 2025-11-09  59  }
-c17fe68325c921 Youngjun Park 2025-11-09  60  static inline void swap_tiers_assign(struct swap_info_struct *swp)
-c17fe68325c921 Youngjun Park 2025-11-09  61  {
-c17fe68325c921 Youngjun Park 2025-11-09  62  }
-c17fe68325c921 Youngjun Park 2025-11-09  63  static inline void swap_tiers_release(struct swap_info_struct *swp)
-c17fe68325c921 Youngjun Park 2025-11-09  64  {
-c17fe68325c921 Youngjun Park 2025-11-09  65  }
-c17fe68325c921 Youngjun Park 2025-11-09  66  static inline bool swap_tiers_test_off(int tier_off_mask, int mask)
-c17fe68325c921 Youngjun Park 2025-11-09  67  {
-c17fe68325c921 Youngjun Park 2025-11-09  68  	return false;
-c17fe68325c921 Youngjun Park 2025-11-09  69  }
-c17fe68325c921 Youngjun Park 2025-11-09  70  static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-c17fe68325c921 Youngjun Park 2025-11-09 @71  {
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Please review
+https://lore.kernel.org/linux-mm/20251020001652.2116669-1-willy@infradead.org/
+instead.
 
