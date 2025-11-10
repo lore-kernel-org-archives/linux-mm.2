@@ -4,120 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0030DCCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:28:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9113DCCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:29:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9B788E0024; Mon, 10 Nov 2025 09:28:05 -0500 (EST)
+	id E613B8E0025; Mon, 10 Nov 2025 09:29:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7A18E0022; Mon, 10 Nov 2025 09:28:05 -0500 (EST)
+	id E386D8E0022; Mon, 10 Nov 2025 09:29:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F088E0024; Mon, 10 Nov 2025 09:28:05 -0500 (EST)
+	id D75B38E0025; Mon, 10 Nov 2025 09:29:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 99C638E0022
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:28:05 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6BDDD1DE26B
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:28:05 +0000 (UTC)
-X-FDA: 84094926930.03.2C3F296
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8D673100018
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:28:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=pdRpfIAF;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf14.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762784883; a=rsa-sha256;
-	cv=none;
-	b=WCi1/QQwz45drUK2e+OKRopKuRSligkJEU5Sx0hd5OqA5PAJxWB+vq9VPqPCuNfzfKDGLp
-	evKcD6UjYMbeyMNl7bdZ94jI8JYqtavPT1vJ/UrkZczkIOQTK8/l/KD91eOaDr5/h8LhrC
-	k67u2utETExt7eNQcXYRSVniUVniOAQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=pdRpfIAF;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf14.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C65B28E0022
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:29:06 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7C2B384016
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:29:06 +0000 (UTC)
+X-FDA: 84094929492.19.A1B5FCA
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D5BE3C000A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:29:04 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="eslnmnK/";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762784883;
+	s=arc-20220608; t=1762784944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U3iQY0mCR0gaZFmXghVPKyhS/yzkP9DkOi+8uk5oqWw=;
-	b=baajNGja252yXtKkkP8KR9a/qEKyeDkTp7v3x3QqUUWtWAbqcPQ5CKYdEGogOSVh7dyd8e
-	kZcaQ8zuAlw2AFXSu085enOLSxU8PLPM+BtxfsA6BBVh4uPDmn01hwYXJISbKKm/BE5jqK
-	5bHGH482LcKX5//Vi/8wc+eyjvGgr4M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1762784882;
-	bh=40WG8/2e61IMWsDRpUFUHulUyBgQPDILQimEoI6b3o0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdRpfIAFOrIos+1h0jjJtBVP6xGOZFtkU9Bx8lM53qIIlxQLD7Y5uavRnQMD2rx8s
-	 OUv7m9FX02Mt9irbrZFe3zyOHTRLHosE+E+uHg17Ebs8pqp24GL94kkT16qGDlTW+M
-	 DUVdh+8MHfy45CNLYS6tkU7UioE4y7cY63+1g8x0g1T9Sy8UHpD75LG+LQ9ZtiqcXh
-	 pynIP43TIlgg4bZg731x/FOi2KiQKXhLrDHlzApm5e6Mwm7rcU1RhiPgOXoPaUtrIp
-	 kkGrW46vwFoZWBn+95khvZCXydhMO7cneQtTQlaiei5cX76bm3axYvogMutBjhpduW
-	 Ow0GGVPFesPjw==
-Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:2e0:4cff:fe03:d8c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 763F017E12C4;
-	Mon, 10 Nov 2025 15:28:01 +0100 (CET)
-From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	bh=R0bFMfSQmAiR4R7u4OGiTL9L+yOue9pBltZEhnqo38w=;
+	b=kyGMFGTLpgMoM5AeaG3YZW9qmGlkfV0fuueFOegmTVjXHgYt7TjheUDRkZIwcg/DhukyrP
+	NztVwEBMOvrYIPEok5IyhQNJnsqx671i24vfjdLeXYcYcIqPwCa4wDK43uByqelox2TSeG
+	X6icO8qCSAC9UluxWDO+AviiEoc4Ll4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762784944; a=rsa-sha256;
+	cv=none;
+	b=hA1tQUke34+tZkVqSY9FKVl9m1/hL5SUwDAukHZumYUiT3bwgFj3UQHJoKR3uU9Pqfd6dv
+	4DIujyQCO5b087J2DNprk0prNrwD4H6bA1MgktP3ojpK2iHXKfaGe4jQHTjtXFXkWZBryD
+	NkYykGGMMh4xx004+BBdSSXGckBQKDU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="eslnmnK/";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=R0bFMfSQmAiR4R7u4OGiTL9L+yOue9pBltZEhnqo38w=; b=eslnmnK/Fby0VR4zb1/mKeZCLZ
+	DOjph/Dw0u5GrkDwKqHSBRXk1gceTtuqJYg4BDmZaKQCemaA5q0mDDEEc0+JCXIzY0tvf2mGzrDO0
+	3Hyvbw9h7V76gWnjonOCZ+T/KSmylsVj55R45EOXCYKgzjv7M1bGuJi1ntSJxMYABxdZMUUriUtiH
+	hJVShixpS42kQYAQTcMKciFVE5lwxWfYKZcx6WyY8z8WJCl4h6JJ/XcMrQR+QBhYZgOz/bCH6lP82
+	iWMr0TVqTcigKcg5e2r2HuFrxa/gAlk2iaFbO4JCzkjnaAq/Zr4THB3ALb6JakqPzz7ojZm3F5WV7
+	Hmk61tOg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vISt3-0000000HFKB-2W7K;
+	Mon, 10 Nov 2025 14:28:53 +0000
+Date: Mon, 10 Nov 2025 14:28:53 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	=?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Miko=C5=82aj=20Wasiak?= <mikolaj.wasiak@intel.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christopher Healy <healych@amazon.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	kernel@collabora.com
-Subject: [PATCH v6 11/11] Documentation/gpu/drm-mm: Add THP paragraph to GEM mapping section
-Date: Mon, 10 Nov 2025 15:27:46 +0100
-Message-ID: <20251110142746.3490-12-loic.molinari@collabora.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251110142746.3490-1-loic.molinari@collabora.com>
-References: <20251110142746.3490-1-loic.molinari@collabora.com>
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	Branden Moore <Branden.Moore@amd.com>
+Subject: Re: [PATCH 1/2] mm/khugepaged: do synchronous writeback for
+ MADV_COLLAPSE
+Message-ID: <aRH2pdhMBQ-20IC9@casper.infradead.org>
+References: <20251110113254.77822-1-shivankg@amd.com>
+ <aRHs3pA2kOr_uD3k@casper.infradead.org>
+ <b7313a45-c36e-4390-a0b8-46f412474f86@lucifer.local>
+ <39c8a4ed-53b5-48e3-baea-f67cc1e8be4f@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <39c8a4ed-53b5-48e3-baea-f67cc1e8be4f@amd.com>
+X-Stat-Signature: cnk36co1hxpy4fa73qz4554aomsokah9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8D673100018
-X-Stat-Signature: opdthfs8x5cd6z7camg5ywunfrtqzk8m
-X-HE-Tag: 1762784883-180620
-X-HE-Meta: U2FsdGVkX18crtNX17tDwM+nnI+bBky9+gB/EllauyUfwVywM5x60c+qYUIQ8QsA1eF1uDhzwtT3hhMhFDO6wxuxvKmFIT/V85LyhoxXMdmY9GFCXzthGcJIESq7pKGo/BJNX4uSKzc3zPW3pXEVunjekIJR7IOYauCusdxlgtKxr23bnoGMJnLnHt/1sSDVZbpOxey2Q/ms7vpPKD/BOpZkl3wrAI7wJD27mjgEEDotbjadtpXRyGZwGJ3tR03G3OKdmftQR70sogabK400eCXoux7ej9kBEdeCkWWf03NPwXRn8+2uSU/9nTe6EB03hsHVEl6vjzHi1qUdSicfjlQlMYr5JbiuSfAL+r93SsxZSfzd2sU/VUUTg3mwmsKZIM85teoXgCIN69DcROTEwGxFGdnkRrTYGTSEG+/5zNOYcOR+Dh6B30sclTh1qmgTksPZhu6ECh9HpFy1j7B3tzZmkqFJrRHgwAJLhWo0DrW5QTs7WntD3XPqTlckN4JT/hnt8y2/3PuVSd/ukPmACeZkI+YhmvWpW+v6u2eNV+BZoG3hOMQCm3zr/v5Y8xZooEmHCuPcvAMuFDJhFIx6WInmh7geWSp126yW5hXbYNNlkwFutTCeY+lB5WusHo/jhRX4KeKU+qacxlnTw2put9aO/BbslskqN+4IrvOtdPtxxs3XazFKc/jqofcJHtwmrl3Llhfk6Dv+HVqYaCkYcH+qo5Hmd8gpYetb5sbXEiJTYXlmplDd8BJaZC6YgtNlIeeQcOSYrxlOf90EbOi2288K6KWdJNnEuSG3xVIKrBMedgmGBkOPGIg23BTwTbHzdozL+ZiGjG1NtF0N7mksIuUKXOmqa6PcPD+ANgh1aBd6tSnW0x615EdP3OpXvTl2L6vTwr6KmxKehuokt9XfY7Fj/VHyzu+gkyK3EokC3vXGCTAbr4LeMq0VGMMAXXit+tVNFNqeG6UeFEzIkuY
- WTGr4q7w
- Ka2BnMKSAtWJkFhCd8e+4YN12D0TN9IeE3LBNA5dWNvFUE87o69wlmb2g6KqAfiThYVkwP9ww8IuESSIAyjteWNsKMoHouE49TITYMcqv8aMAeQcYqPvPOsidZRx2zh+CqHuNdVVkileBn9tCbn1yixe2sooKeElaTB7Zhi3bzEaxtIGwUxGozu4XaSnE7p9pK7B5r8M2wSZ72znmP6MOrKbED/kFjS1sn+iJuEIyK0MpqQWzcSufTJjqjXovMScfAyg2CKdBjLHOoPFflS3dNurOYiY/mVxMXGMr1mm51Xl+H5TliVOr2DxP+QmxnUXO+9fKBH+g8cE5riapvhbgZUbVCN+PDx247EwmAzWPgM91t9t26KloKHJChV2iMfUsOOkqXRo3ByvUm8N45kA9mdGMLy73qMN8Pw1q
+X-Rspamd-Queue-Id: D5BE3C000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762784944-557710
+X-HE-Meta: U2FsdGVkX18cl6HB/XNxvom3Q+KX7Aq1zJ/sQVhWKHIT6Pidkt0Gao1KESy7tzxt2Cj80XWTjX0R21S7OylDuENHt+Q3Nb2+Wr8hFE9NnoLwMgAZ2PdcyJ+hnXOgCW5Q58LjxLYN7tExYwRtBWUoUdCtG5vnH3tyB/vfPTYmLuOWWGTR24wkVDGrgMjh0B9Lhx+xO8yQuvNLZZe2WSk9RD+vzGyoNAZjlky4I0Vo6FLGdBgRdSnp4bl2RxDVbbskvw6RU6TtbwuMbRdinpdvzgECgD4WlUrIaGfJpcN4qwQa4BQs6jKmoBev5HVuYFVTs/R3/VC3BVUrzTGWx3wmB7BlHncW6uMRIoNdZ2qG6pmrpWUDZO4hHsWbUUYXqQ1u6IYNlCrz24IHC6U2iZEh+gaJ7AlfF+um3ZBTAR8OWJDiUF001ExiVKaiU+uyNKzY+mUXZUE5G1h4c4dG1WK5LHzVzLf6gvy8feyTicPuNUld5TcKEYZoaTiwUcFjCZDgQgvNaEPg9D8QnR0oc1TPOi335mtACzW6Vl9tDl2A1dMxRtM5WKC1UrsOhNwrTtbFABrfliPSPz8Waeog/nSgz/tcs9BEqGW2UbyGoR/h5ZUimKiN7vf0Qci77/hGkqO72i5pO+9+E5O+WLvQO9q5Op/Ds3EIDJBBa1kgAbPHw+CiBtzaSbk6hk7XLIU/FCAKhklhdCA85sFVxa0o78VgtIpuCwGlwjSQoVxU2OgJlULP9N7pgY9JB0zzYkVp0oaDHejumMRCseSEkbHH/9OmojNpz6Gn6odKJEyjltGzv0Iq9TSddYtxoAPvmXZrg0jXIWyiyiK3UhOFzl0JJAn/bkkWdwnz2JR3tLKAnY8oOE8Z+qbHW/RJk/2QHIsZ2w7Ws5LzftUxpEBaaECSK0arHxv4do2SumJKviHcCr1D1F0oDfRCJfAP3OlAV7v44WaEhvuw6IkezWp60yROPfE
+ hOJyi8Q9
+ 97DkD3GWY1KoqMwn6Zzvs+iMiJrD9+wjhWqAAACtqW+19XxYhzoyQWKfPNCgKryZpu69K0ui9HrS2tqynQ263qkLbOrGPSRHt6zC0BgY7UqBarxWKoSxgCjoC1ZS5kEFhOghoGDPfFGigaIhrOfZKHm5HkOp7fZR3XO8hE+WApvHve3beGc5P67mBnLcqhD8cQ68iP/1op86DuCZJtikr1XK9X1aU91LIQcxDyXEIwd4BoYwWKCvq5h4JmMZXHyDY2QwyyCSPnwWa5pBW+SAvGJMi8xBlKbqZjjDxXGi7471QnlY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,59 +105,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a paragraph to the GEM objects mapping section explaining how
-transparent huge pages are handled by GEM.
+On Mon, Nov 10, 2025 at 07:50:17PM +0530, Garg, Shivank wrote:
+> The issue is copying those binary to a freshly mounted filesystem.
+> The page cache folios remain dirty until background writeback completes.
+> 
+> Reproduces 100% for me: fresh XFS/EXT4 mount -> copy binary -> execute -> MADV_COLLAPSE fails.
 
-v4:
-- fix wording after huge_pages handler removal
-
-v6:
-- fix wording after map_pages handler removal
-
-Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- Documentation/gpu/drm-mm.rst | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/gpu/drm-mm.rst b/Documentation/gpu/drm-mm.rst
-index d55751cad67c..d69eab0b4093 100644
---- a/Documentation/gpu/drm-mm.rst
-+++ b/Documentation/gpu/drm-mm.rst
-@@ -290,15 +290,27 @@ The open and close operations must update the GEM object reference
- count. Drivers can use the drm_gem_vm_open() and drm_gem_vm_close() helper
- functions directly as open and close handlers.
- 
--The fault operation handler is responsible for mapping individual pages
--to userspace when a page fault occurs. Depending on the memory
--allocation scheme, drivers can allocate pages at fault time, or can
--decide to allocate memory for the GEM object at the time the object is
--created.
-+The fault operation handler is responsible for mapping pages to
-+userspace when a page fault occurs. Depending on the memory allocation
-+scheme, drivers can allocate pages at fault time, or can decide to
-+allocate memory for the GEM object at the time the object is created.
- 
- Drivers that want to map the GEM object upfront instead of handling page
- faults can implement their own mmap file operation handler.
- 
-+In order to reduce page table overhead, if the internal shmem mountpoint
-+"shm_mnt" is configured to use transparent huge pages (for builds with
-+CONFIG_TRANSPARENT_HUGEPAGE enabled) and if the shmem backing store
-+managed to allocate a huge page for a faulty address, the fault handler
-+will first attempt to insert that huge page into the VMA before falling
-+back to individual page insertion. mmap() user address alignment for GEM
-+objects is handled by providing a custom get_unmapped_area file
-+operation which forwards to the shmem backing store. For most drivers,
-+which don't create a huge mountpoint by default or through a module
-+parameter, transparent huge pages can be enabled by either setting the
-+"transparent_hugepage_shmem" kernel parameter or the
-+"/sys/kernel/mm/transparent_hugepage/shmem_enabled" sysfs knob.
-+
- For platforms without MMU the GEM core provides a helper method
- drm_gem_dma_get_unmapped_area(). The mmap() routines will call this to get a
- proposed address for the mapping.
--- 
-2.47.3
-
+Yes, but this is an uncommon thing to do.  Really, it's the kind of
+thing you do when you're testing something (like, whether ext4 supports
+large folios, and whether that yields a performance improvement).
+It's more reasonable to change userspace than the kernel to solve this
+problem you're having.
 
