@@ -4,185 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21D1CCFA1A
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:51:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF030CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:55:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46CED8E0035; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
+	id 140488E0033; Mon, 10 Nov 2025 10:55:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C968E0033; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
+	id 0F11F8E0003; Mon, 10 Nov 2025 10:55:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E4CA8E0035; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
+	id 02E228E0033; Mon, 10 Nov 2025 10:55:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AA228E0033
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9529C0182
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:51:31 +0000 (UTC)
-X-FDA: 84095137182.27.E656B22
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 622AAC0017
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:51:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E5E9E8E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:55:34 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 85CF11DF49C
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:55:34 +0000 (UTC)
+X-FDA: 84095147388.22.13C62C7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 042E3C0010
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:55:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf10.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762790133; a=rsa-sha256;
+	cv=none;
+	b=uWOqfRAOqSgR4ORVXNex+XhFhmYa0dawXZq75+MuUEBpLbWhRS/hXtDIkVB+L0IjRc17tU
+	/OYhI2jTLT8etVrt3lNemPGwfsyZS2LegQ+c3iTN6v9mm8HvxNHamYvKDIGWFpyivi8iDC
+	HjD0jvWJvM/jwexa/WoowG1JOGsohj0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf10.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762789889;
+	s=arc-20220608; t=1762790133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
-	b=vCOuPncCJSmlc/0yVv/US00MLB8V5wbcdlkaLxu1dHVoXDziyHHPeaixa7XGfJ6KhTMqie
-	S6iI7V5Yp/EJ62x93ScEbSzkc5uuYFn8cWztb5xvxJqydqa/1/z/Ij7R0XQM6Xwb0Cc1vf
-	oaD3whM7his/R0GvUXBsPT8OOrwdLgg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762789889; a=rsa-sha256;
-	cv=none;
-	b=d7FZIadLhjNjucXBfmyUqdh3enxNH9OpswrQd7vBkwZZMqD4+gPUGZSNST2EF+ejXijfaA
-	BKVvWCn51GC7Zq6DDwonZ35DS0fGCEGLd9pERxSjCY/2nOT0O8t/MvYdawllPEtCK7IeX2
-	rWMfZDobiB2MYupi2iOl0ATVYY4L4h8=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9A9521FF89;
-	Mon, 10 Nov 2025 15:51:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762789887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
-	b=KHGEHoKmSNIeawnv9BSS7Wuq12+rxdviaKc3/MkzLJwQs+lecF6UpPhcL2UUFdbMnxKB61
-	mcq3GjYPvL0z9HP5MSD8zZKpgVnjweLd76//wdi40sQhI9HpYNlAeLmK8cqmQduJ2IkhKm
-	cLe6LSr63bbDwnQBEhQ92FP/WueI1Qk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762789887;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
-	b=hFY/7tkYSJkZupijhLdaXwAia/ra/uW7fqiD3fqN51tETN1pJaufwHVLhJm3YZ+/TaY0vp
-	z0Ri44Q+XnGDeZDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762789887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
-	b=KHGEHoKmSNIeawnv9BSS7Wuq12+rxdviaKc3/MkzLJwQs+lecF6UpPhcL2UUFdbMnxKB61
-	mcq3GjYPvL0z9HP5MSD8zZKpgVnjweLd76//wdi40sQhI9HpYNlAeLmK8cqmQduJ2IkhKm
-	cLe6LSr63bbDwnQBEhQ92FP/WueI1Qk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762789887;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
-	b=hFY/7tkYSJkZupijhLdaXwAia/ra/uW7fqiD3fqN51tETN1pJaufwHVLhJm3YZ+/TaY0vp
-	z0Ri44Q+XnGDeZDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5AB0914488;
-	Mon, 10 Nov 2025 15:51:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MzPiFP8JEmnZYQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 10 Nov 2025 15:51:27 +0000
-Message-ID: <945fbe45-1ee7-4108-b01a-a8d2b0bb9cfe@suse.cz>
-Date: Mon, 10 Nov 2025 16:51:27 +0100
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RC3lGrqJPe/0O/QOdN48fZmETIJoBwsQwRZlNimQeZU=;
+	b=z3+h3IZMjpBNAIcnT3l1b85IybaMOEAnZcLAp98wdMcmAzaKkCa2oVeLEkD0YYDJUd1E9g
+	oGXO+jxDvl79VCHuQaxVVQINNWBVozq24Ms8W3+S5UdvnzicXQwgeZ0+19Q1l5AfGAr4G8
+	0czWl4iAv/m6EBZMOX2eDClbjKS1Oyw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BE7E601E6;
+	Mon, 10 Nov 2025 15:55:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DD4C19422;
+	Mon, 10 Nov 2025 15:55:30 +0000 (UTC)
+Date: Mon, 10 Nov 2025 15:55:27 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
+Cc: Jan Polensky <japo@linux.ibm.com>, akpm@linux-foundation.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	will@kernel.org
+Subject: Re: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging
+ architectures
+Message-ID: <aRIK79pCWNZS1Yr1@arm.com>
+References: <20251031170133.280742-1-catalin.marinas@arm.com>
+ <20251109003613.1461433-1-japo@linux.ibm.com>
+ <690ce196-58cb-4252-ab72-967e1e1574cf@gmail.com>
+ <aRG05VS-IIxV2y_C@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+ <fbca7868-6f68-4b98-a2f2-e39eb46b7f12@gmail.com>
+ <aRIEkLw7BofLjOWs@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/8] mm: add atomic VMA flags and set VM_MAYBE_GUARD as
- such
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
-References: <cover.1762531708.git.lorenzo.stoakes@oracle.com>
- <cda9d4c073d773ef6c2cf2939d66cf80544cff40.1762531708.git.lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <cda9d4c073d773ef6c2cf2939d66cf80544cff40.1762531708.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 622AAC0017
-X-Stat-Signature: 6jsqbymitdb7d418pcqskhsd7tmiw87s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRIEkLw7BofLjOWs@arm.com>
 X-Rspam-User: 
-X-HE-Tag: 1762789889-330738
-X-HE-Meta: U2FsdGVkX1+UgrzunlZvPOm/S5ZLR2dEmiQnqe/RaoeFvdpJgP2N+l9Jza4QkRWR8Pt4F4dgA8fNzdmO/htj0kDDzNOVBfbDOEETiZfCYuZTG9UfzZITD5Adj1kQKO+aFzXb+6kafIT3lhqIy5e7wZ4q35r3ueIffsAJBLdMU+u5ZYB5Gr7BJFMp5zELT1AWzMnpj6XSuUNIzMUKK3tN1iTVDf43vX+j5xGOJpE0rj5ewLnq7IyE3ZOZ1CTjraeRZQpd1OJ6BiCrLA7LN9OHC/M57CCDTcPMjY9Bilu59rlARQS4XZcOaUE69DJBhgpZ2PEuWdjnWKC81nRdl2n80aX+pTAPZ1O96XlEORNwZn6Ff/z4sPP+DgQn1Vpa+p9NbVsU5ySukXWur9Nk4uyIuHdvjAw/yGpMK1uh0CWh8b5ke5Hecb46gqgPdJdRnRAa9K0kbyQcl02Q5uY4i6vQIpyjteIS2+1kTG0YQD57C6OQiNvQkdkwaRSwIxHf/jEWsEv8bAqq3nddlicrDFbVh0EwLz8gtk9GbPFLelA2qq07lJdrCAzv4DXUtU6Sl9vlE6p9Q1/gnLaeceg0jpmcsR5yO3jMlN7jT0F/bUM9z2w64Oc5fpWFstgwwvvV1lhMfrzNSjUADc7aUi5MUkpOiJDcrRqNe5iltSP9o4umUGEGl4YkeX0adfiejtZrUqjKoL6c4LciCwv/hZnh00yqZUbzaqVcsSqRhrCXtkYOlFylGQliUWMBWrLgtrJtKI9tiwpVrRGWrp39XzRH7B+fagqHpqrtl7YJgIq92Rdx3Gz1dz2S+KUT7Zn/3pQfCZwGAslLqGDn2IuLR5EUTptHk4IiccKT+FlPsQf4kp/Q0mAUP1xtSk1orB0lq3UTfzn+q27Z1aSVfO/vsfGsQcbEcLoGUBDVknffgCEBCpDHh92wHtypDEHXjfAn80bZgwsqeBkDEhljJtQEfh+O45u
- 6lmaMygF
- C5o2WudnWv/qyAjFATlMFfb0z/+cmkvaWlh/BkLdpMLIYJYMpBec16cY887EcdjnqBuQdQTh3TNncGU672ZyqUOWNvcoLIxEbJJ+d24UQow6RXziWyqXJaGIBY7arhA/7EH8mrGYq6ZfAZ0XvHsGzxK2O4VRmf360OcmaLLWiNsnw26nAizY2o/27TZPLplUPxqTFJFWwJBdXv4br6C05BThVvpoM9sg8GNZJt+qFKKI7/m+Us9VURXVdTf60iS44LnsepO5SP4B5OkO56zgUWKygXprho5JR6QaYbciTNfIV+fxgwm9bsPq3FTQIAbYiBHi62jnz5cE0cCRX6N45wSwse0ybHz5up0J+16DsdbhKXQxA9OH6+mkkZDiw4aQ9+O/CAVbR3Vd3PPA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 042E3C0010
+X-Stat-Signature: c33uywrjktiymyfqfyyg8hy6ouduppa6
+X-HE-Tag: 1762790132-541700
+X-HE-Meta: U2FsdGVkX18l3UisAfL0KR6OUAyW/4o5a0LCpW5no89TKYoQ7+oI89KpsNQbUAyqyi8zOqbzSeDoebN5wWZ8Lrgshty/IrfTpe87EvgeVI9AnCMfCCNkkuu5YlvZaVA/oK/E+HXZnnlm8Hb5dbwagyTyVFwPr6abr8rDbPCez1lclx9UIqck2BLTjP5HpNcTT9VBosqOd7hqdfzRKKc8UvE8JKezsP1N0Mt9aqowCNnhdryAUIUA/906Y6yWEb6Uxx0NqsvNiHrIhphZWMMoTgTAikSFoTnPXKmuyevNgnsGivHwmtRFj1593wnA7cIm1yUVn883OU30dATOXTBpbR4JxNy5gY4xy3iDBHKHd5gkMKfIQG1bePPSXe3+5wUrtQSGYmfqDwuk6MPrQ5X2XZPdGuv5X4nzDEO+YIGEBs0r9mp1DUxROWrMagXCmWLlQLO3Bp6ZcXGASXO5f4Z1p0jrufeQ+6trcJmGyv50u7oDpVwaN10b/8iI/sYfGghl54NwYM8lk1JjK22qrAFeLADKxJBH6XZCPLJIxEZHghk9nZWUYA2ahKniValjvHGjKSzJRR+wDTnp03xiiafSDH3ymRtCVYF42Lzbnq7RBMghGJvacOn0WPTBZiRNClT0N4G3ks53j0HL/R7IltpM/ImADbps+zXtQpBTrl+a1lpBc4Lu6mT0HpsrbfqptblrlW/zYTTaI7ozjvXbb0PGrc63UfVdsG8v2fczuZeiBuGTO4WBQk7hXbOmoOEo8Pd+PCQioUOhYBEu2H4U+SO472N+Z8nNkMYD2rRtEtth575NlRYfQpd4HltFje9vhSNGg5L6MzmHj4accqS0txGWGOY/d20ic8qaaXwdRtiQnXP9PfmD80yPclzL1yBIxtlnwC30QGXIhhIoItWa4qiNx5EZ5oTSfIGyOciAHEMLengGnzgukB5/qQusUJBXGClWxoNTRe3eQJ0pAOH5gu+
+ 4lUOgeGf
+ q3B8aGZ65tYUqGEl8wFomzdb0Idu5KNarg2m+AhprRWGrjfoR29pw3guy6ITPCKj0Xxdc4JJ6EWa77S9kQYZc02IKPag5V4qx72NieYJMhlnfIVPUGNby61Xa2USX7oBvxZl9Db+zrozCQc03D1QyJVMddUWBAkIYheK+Sht1sP6v5WoJvnpTwctE7PTWKMMga6zmVan8F1ausya6pzJ+3eVZjjSZx4mhrWVN5wxZtK6Z6zub9ojUpFs0sMceIMXZ/IF3n5oO8rI1F4Ua1gGWOne6NrN1LxRnF+DL0pbaBrKjNrjYcgNZ8oxq+1FQP6z4kX185+pjp5jdb5qyx8Kd/Q9rhyCvmZlDq9rdYNHbOZCNr8idXTIkFqLUA/eIyJvIIjxu4y1UvwTU86M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,97 +88,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/7/25 17:11, Lorenzo Stoakes wrote:
-> This patch adds the ability to atomically set VMA flags with only the mmap
-> read/VMA read lock held.
-> 
-> As this could be hugely problematic for VMA flags in general given that all
-> other accesses are non-atomic and serialised by the mmap/VMA locks, we
-> implement this with a strict allow-list - that is, only designated flags
-> are allowed to do this.
-> 
-> We make VM_MAYBE_GUARD one of these flags.
-> 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  include/linux/mm.h | 42 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 2a5516bff75a..699566c21ff7 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -518,6 +518,9 @@ extern unsigned int kobjsize(const void *objp);
->  /* This mask represents all the VMA flag bits used by mlock */
->  #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
+On Mon, Nov 10, 2025 at 03:28:16PM +0000, Catalin Marinas wrote:
+> On Mon, Nov 10, 2025 at 10:53:33AM +0100, David Hildenbrand (Red Hat) wrote:
+> > On 10.11.25 10:48, Jan Polensky wrote:
+> > > On Mon, Nov 10, 2025 at 10:09:31AM +0100, David Hildenbrand (Red Hat) wrote:
+> > > > On 09.11.25 01:36, Jan Polensky wrote:
+> > > > > The previous change added __GFP_ZEROTAGS when allocating the huge zero
+> > > > > folio to ensure tag initialization for arm64 with MTE enabled. However,
+> > > > > on s390 this flag is unnecessary and triggers a regression
+> > > > > (observed as a crash during repeated 'dnf makecache').
+> [...]
+> > > > I think the problem is that post_alloc_hook() does
+> > > > 
+> > > > if (zero_tags) {
+> > > > 	/* Initialize both memory and memory tags. */
+> > > > 	for (i = 0; i != 1 << order; ++i)
+> > > > 		tag_clear_highpage(page + i);
+> > > > 
+> > > > 	/* Take note that memory was initialized by the loop above. */
+> > > > 	init = false;
+> > > > }
+> > > > 
+> > > > And tag_clear_highpage() is a NOP on other architectures.
+[...]
+> diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
+> index 2312e6ee595f..dcff91533590 100644
+> --- a/arch/arm64/include/asm/page.h
+> +++ b/arch/arm64/include/asm/page.h
+> @@ -33,6 +33,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+>  						unsigned long vaddr);
+>  #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
 >  
-> +/* These flags can be updated atomically via VMA/mmap read lock. */
-> +#define VM_ATOMIC_SET_ALLOWED VM_MAYBE_GUARD
-> +
->  /* Arch-specific flags to clear when updating VM flags on protection change */
->  #ifndef VM_ARCH_CLEAR
->  # define VM_ARCH_CLEAR	VM_NONE
-> @@ -860,6 +863,45 @@ static inline void vm_flags_mod(struct vm_area_struct *vma,
->  	__vm_flags_mod(vma, set, clear);
+> +bool arch_has_tag_clear_highpage(void);
+>  void tag_clear_highpage(struct page *to);
+>  #define __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
+>  
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 125dfa6c613b..318d091db843 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -967,18 +967,13 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+>  	return vma_alloc_folio(flags, 0, vma, vaddr);
 >  }
 >  
-> +static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
-> +				       int bit)
+> +bool arch_has_tag_clear_highpage(void)
 > +{
-> +	const vm_flags_t mask = BIT(bit);
-> +
-> +	/* Only specific flags are permitted */
-> +	if (WARN_ON_ONCE(!(mask & VM_ATOMIC_SET_ALLOWED)))
-> +		return false;
-> +
-> +	return true;
+> +	return system_supports_mte();
 > +}
 > +
-> +/*
-> + * Set VMA flag atomically. Requires only VMA/mmap read lock. Only specific
-> + * valid flags are allowed to do this.
-> + */
-> +static inline void vma_flag_set_atomic(struct vm_area_struct *vma, int bit)
-> +{
-> +	/* mmap read lock/VMA read lock must be held. */
-> +	if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
-> +		vma_assert_locked(vma);
-> +
-> +	if (__vma_flag_atomic_valid(vma, bit))
-> +		set_bit(bit, &vma->__vm_flags);
-> +}
-> +
-> +/*
-> + * Test for VMA flag atomically. Requires no locks. Only specific valid flags
-> + * are allowed to do this.
-> + *
-> + * This is necessarily racey, so callers must ensure that serialisation is
-> + * achieved through some other means, or that races are permissible.
-> + */
-> +static inline bool vma_flag_test_atomic(struct vm_area_struct *vma, int bit)
-> +{
-> +	if (__vma_flag_atomic_valid(vma, bit))
-> +		return test_bit(bit, &vma->__vm_flags);
-> +}
-
-Hm clang is unhappy here.
-
-./include/linux/mm.h:932:1: error: non-void function does not return a value in all control paths [-Werror,-Wreturn-type]
-  932 | }
-      | ^
-1 error generated.
-
-I don't have CONFIG_WERROR enabled though, so not sure why it's not just a
-warning, as the function is unused until patch 5/8 which adds a "return
-false" here. So it's just a potential bisection annoyance with clang.
-
-Andrew could you move that hunk from to this patch? Thanks.
-
-> +
->  static inline void vma_set_anonymous(struct vm_area_struct *vma)
+>  void tag_clear_highpage(struct page *page)
 >  {
->  	vma->vm_ops = NULL;
+> -	/*
+> -	 * Check if MTE is supported and fall back to clear_highpage().
+> -	 * get_huge_zero_folio() unconditionally passes __GFP_ZEROTAGS and
+> -	 * post_alloc_hook() will invoke tag_clear_highpage().
+> -	 */
+> -	if (!system_supports_mte()) {
+> -		clear_highpage(page);
+> -		return;
+> -	}
+> -
+>  	/* Newly allocated page, shouldn't have been tagged yet */
+>  	WARN_ON_ONCE(!try_page_mte_tagging(page));
+>  	mte_zero_clear_page_tags(page_address(page));
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index 105cc4c00cc3..7aa56179ccef 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -251,6 +251,11 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
+>  
+>  #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
+>  
+> +static inline bool arch_has_tag_clear_highpage(void)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline void tag_clear_highpage(struct page *page)
+>  {
+>  }
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index e4efda1158b2..5ab15431bc06 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1798,7 +1798,8 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+>  {
+>  	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
+>  			!should_skip_init(gfp_flags);
+> -	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
+> +	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS) &&
+> +		arch_has_tag_clear_highpage();
+>  	int i;
+>  
+>  	set_page_private(page, 0);
+> --------------------8<--------------------------------
+> 
+> Reasoning: with MTE on arm64, you can't have kasan-tagged pages in the
+> kernel which are also exposed to user because the tags are shared (same
+> physical location). The 'zero_tags' initialisation in post_alloc_hook()
+> makes sense for this behaviour. With virtual tagging (briefly announced
+> in [1], full specs not public yet), both the user and the kernel can
+> have their own tags - more like KASAN_SW_TAGS but without the compiler
+> instrumentation. The kernel won't be able to zero the tags for the user
+> since they are in virtual space. It can, however, continue to use Kasan
+> tags even if the pages are mapped in user space. In this case, I'd
+> rather use the kernel_init_pages() call further down in
+> post_alloc_hook() than replicating it in tag_clear_highpage(). When we
+> get to upstreaming virtual tagging (informally vMTE, sometime next
+> year), I'd like to have a kernel image that supports both, so the
+> decision on whether to call tag_clear_highpage() will need to be
+> dynamic.
 
+Actually, there's not much to kernel_init_pages() other than disabling
+kasan temporarily since the unpoisoning already took place a few lines
+up. The arm64 tag_clear_highpage() calling clear_highpage() directly is
+fine before unpoisoning. So we can cope with this even in the vMTE case.
+
+A simple patch hiding the enum is fine by me.
+
+-- 
+Catalin
 
