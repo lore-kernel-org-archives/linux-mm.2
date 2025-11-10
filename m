@@ -4,118 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B0E3CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 12:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3C5ACCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 12:35:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2956A8E0006; Mon, 10 Nov 2025 07:34:14 -0500 (EST)
+	id 2E4EF8E000D; Mon, 10 Nov 2025 07:35:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26CDD8E0002; Mon, 10 Nov 2025 07:34:14 -0500 (EST)
+	id 2BCDA8E0002; Mon, 10 Nov 2025 07:35:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 182F38E0006; Mon, 10 Nov 2025 07:34:14 -0500 (EST)
+	id 1D3178E000D; Mon, 10 Nov 2025 07:35:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 00DCF8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 07:34:13 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E9CA5A313
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:34:13 +0000 (UTC)
-X-FDA: 84094639986.17.A67499D
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9CBDF100012
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:34:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R8zHq+DC;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 094BC8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 07:35:11 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2DA7BE0BA
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:35:10 +0000 (UTC)
+X-FDA: 84094642380.11.1816096
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DFA58180009
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:35:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bjyLkioR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762778109; a=rsa-sha256;
+	cv=none;
+	b=OMcLw3oImKrdwVHGlWNUOIc0ZMUJhVrQZIABL/AhaT1XIhXex0FRFb9BmVf+JQgkrKwhoz
+	DMq+h/Kpaz+j6KTXh0TyN8eNmaYBg22bzHvMYGwUvnLwtKRkgUbf9KUVQpthBPuJqsplJp
+	sxs86wFusIz39abS/vCNnkS78QjedS4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bjyLkioR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762778051;
+	s=arc-20220608; t=1762778109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sy5DjoSQimDCENwTSGtt2eMZiZGbRj1r/HV/Tgc/t8U=;
-	b=WO+ZbekFqqvCkbZL1Qe/rbsqwvvB6ur/3zWIE17j8DsdtzsbJXOxL/36d9xpBkdd0sCQ82
-	xfL5DO/ejYGP/kBuyl1Favjr/l6x8cXQnKlyBzO8VcSR1n8tOclwX8VIxBFpQCjc20O+bg
-	8Wf5CZ0VaC78pCMGUYb8Tb6cN8H8/Kw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=R8zHq+DC;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762778051; a=rsa-sha256;
-	cv=none;
-	b=X6U0P9qvfDlc6EA9LZREOgjrXcR4hH1f2Z3dTUqMWCKiAI0C/eguAJY954rj+3ETcqGEDW
-	iQTYit2jzxMsyUzOVjHFAOIV2lfNT1ZKgCOrbQkChB8iyjb1yh2dH7OwdLnUKVf9EcE3cM
-	Lx8JK+QzuBxEuMVjHDbl4pyu0S6hFes=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-793021f348fso2006094b3a.1
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:34:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762778050; x=1763382850; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sy5DjoSQimDCENwTSGtt2eMZiZGbRj1r/HV/Tgc/t8U=;
-        b=R8zHq+DC6srkQYIEfQ3jKKz32mVpxCpl/FuyrJdfvi0Pe8IQ0zHO1e1ft8NphzRkZ1
-         c1AG4wnaAoUG728BNaCxEe5tFlBPaLmLR824V/AestDszthbct79CaHHoEcnbo+wLmvU
-         6bD1RBXXQkjALKkKCDYYfpMU/AttOgqC5G6wjETXOHlAAvIdyrXtyKy9mNlUJddAS+v6
-         EG1pXe//VqlymNCGRDAT/PD60/vWHFSDros8LP5OvS5XPxMCpAe7rq0735AEV+p+3v2c
-         YBJlQl+gIWfZ3WUwvDyfQXVMx18HEwELc9e5DYYucVTWnnTc8bZV8tUAyOzrIkvTqtfS
-         eTBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762778050; x=1763382850;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sy5DjoSQimDCENwTSGtt2eMZiZGbRj1r/HV/Tgc/t8U=;
-        b=CIqMMuMXzeg4Due7hMhBa8Iczo9wudIIW9yoq24MMp/Bd2qgwNrjiVWgY1WAXGZRRn
-         tgD6ZFDDyiBOT9PA85y0/zBqI+LvjcxdhGHHoiijGs+2046N56ZyhQ0hsJIh+n2ObJ9S
-         f6x/LpXZoT3i2Og1nBuuZyCid3OtstB3xVlMe9nzgjfsf56CSgLizyseD85AtggaxyfY
-         O8opN6xGZqmbK79PAh1/g5NZFLWJ3VlP+RyG1JbhDt/35ze+wJR4DuBqcKkBOjs1N0m1
-         i00S83KmGMcqrR9f8HUAfK/MmsZgnnmqBFuWF2u0pZEUB/gmK4sDDjTGHLwnJ05QwZmQ
-         1d3A==
-X-Forwarded-Encrypted: i=1; AJvYcCVNfyne9OWU00SbQTE73a9JpTCPZ5kz5dgaqNvLz69zX3ApUat0ihJca6128mzQDziMRuDO01AvTg==@kvack.org
-X-Gm-Message-State: AOJu0YyoZb9Nu/80LD8Kd3Or7vYxNeAu6PWJ9AmVYVq+dtYcnXa0sWGO
-	bbdwGJx6jm3DyTzvKWcaHxVXNtbcTBxUuk/OZHw1NnsRsZCi+7XDTAzx/Pd6oK1SUjBu16eQPyv
-	BKMQ7PLm8AFnLNma8dgjx2vAd5rktJgQ=
-X-Gm-Gg: ASbGncs5hYpkIa6JBConAJgLnoVpWPScpTGWHuvcTcEvHRC63QfCS8qNNSEu33+pMuy
-	lEGgz+BrJow5OPsg7+3llPZBYwtCz81emRSkD3hSms52qVVAgxysPmMU7GuTCCd6S4Q3JuatZKI
-	PCaRituy8sjbVVstDRSgq5kJkBpkI2YyLNHcGLNnZfYor8gYB5TNRJp76SfKvvUZeP0wc2Vyeda
-	pd59sL8BV0ULVtuohvWFi1OVSbXFYnZfw9HlWooj/cBJPTsh9iZsgrq24OOXIuxyNST60/XGZE6
-	qdHg0SoZTqel6UNH3C+IMI7Zzpk=
-X-Google-Smtp-Source: AGHT+IGyg9aZV4dgyvFuRtdSsElpeyZ+CpTXqovvGuPUeZo+pqdjOClLE9fxRv8gppzbemj2+mN2w/AMZs0pWBdc88E=
-X-Received: by 2002:a17:90b:3b43:b0:340:dd2c:a3da with SMTP id
- 98e67ed59e1d1-3436cb7aa3emr8354432a91.8.1762778050319; Mon, 10 Nov 2025
- 04:34:10 -0800 (PST)
+	bh=7ftAhIGd1qK7oc62q4gKkS8hG81IpIum4M8oWVVKkQ8=;
+	b=rBP421+rTEhF+H7wb7Eevz3led2IsNh52wlIT72ZVngpxm3A6lgJeFSauSpyZLCiEBWWX2
+	ytDHNMIcgiFgV46ODdeIgIpsk/9hln/XMHMoCkr15N2Seu/4qYQ6WHGUqvPQDdJw2g2dJ8
+	IX6RgJ30b7Blv6Oj0WJCZfeD8jRJ/r4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BBF8140240;
+	Mon, 10 Nov 2025 12:35:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C89C19425;
+	Mon, 10 Nov 2025 12:34:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762778107;
+	bh=Aqloc7BOWQNjYEGGJL4VNHIwvX0puHEXVUArW0wY5yM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bjyLkioRQTNOQX7WV1Bvgk28/2Npo87/4O/DYvYxhvdIkzERkIF4YWgs3zpThh4Nb
+	 nk4DxXanbkMIWVH7rVuKqkYHYeYKOOPFEthmKGnYEIAObYRKAndU3l8nRk9CvViRux
+	 65l/SP8udZTmUVNRLT5uXlJoPFSAOuwJ8MFyqobPnPc/FGkeiRAg+O5ICkw1tnUxZ9
+	 nw59ACFdY/BU2F4GziHlZTo7UgjLJ3h/vdd4gyK6wH9qrNK6e1DhackPpUZT9njHNg
+	 FBi/N8QIzRNuYSKNnCDyU3rxchuLO1kRHhf4q/nx8ccSCm7L7vHbfETFkVt/ILm193
+	 OzCXZMlkxupeQ==
+Date: Mon, 10 Nov 2025 14:34:44 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: "Roy, Patrick" <roypat@amazon.co.uk>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"maz@kernel.org" <maz@kernel.org>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"david@redhat.com" <david@redhat.com>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>,
+	"song@kernel.org" <song@kernel.org>,
+	"jolsa@kernel.org" <jolsa@kernel.org>,
+	"ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>,
+	"martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>,
+	"haoluo@google.com" <haoluo@google.com>,
+	"jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+	"peterx@redhat.com" <peterx@redhat.com>,
+	"jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>,
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>,
+	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
+	"tabba@google.com" <tabba@google.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>
+Subject: Re: [PATCH v7 05/12] KVM: guest_memfd: Add flag to remove from
+ direct map
+Message-ID: <aRHb5FJ2TUMtktVz@kernel.org>
+References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
+ <20250924152214.7292-1-roypat@amazon.co.uk>
+ <20250924152214.7292-2-roypat@amazon.co.uk>
+ <DDWOP8GKHESP.2EOY2HGM9RXHU@google.com>
+ <aQXVNuBwEIRBtOc0@kernel.org>
+ <DDYZRG8A99D1.2MYZVGBKJNHJW@google.com>
+ <aQiJAfO8wiVPko_N@kernel.org>
+ <DDZV32U60137.1HE9JGMU6P1KD@google.com>
 MIME-Version: 1.0
-References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
- <875xbiodl2.fsf@DESKTOP-5N7EMDA> <CAMgjq7CTdtjMUUk2YvanL_PMZxS_7+pQhHDP-DjkhDaUhDRjDw@mail.gmail.com>
- <877bvymaau.fsf@DESKTOP-5N7EMDA> <CAMgjq7BsnGFDCVGRQoa+evBdOposnAKM3yKpf5gGykefUvq-mg@mail.gmail.com>
-In-Reply-To: <CAMgjq7BsnGFDCVGRQoa+evBdOposnAKM3yKpf5gGykefUvq-mg@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 10 Nov 2025 20:33:31 +0800
-X-Gm-Features: AWmQ_bnm3NOQhTmQKSG361K0h_1KBf9RdCY2Qg8AObjYfkOGH4tdJ9Y2X52coCY
-Message-ID: <CAMgjq7C5H0rV4tkosUEtwvHTd5bO+jxyQkW4xjP+8-qnjh=oiA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9CBDF100012
-X-Stat-Signature: eyehrdtxoe6dhfbqofydefkabnzjoon7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDZV32U60137.1HE9JGMU6P1KD@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1762778051-746855
-X-HE-Meta: U2FsdGVkX18x4JIEd0e2LcAaHlz0+2Bn3Jsm1arWycnjpZwDExiSFjDCrXrEeoYSIAmrEby4CWI9G/cZsU3QBJLPaz5oF64Hg0z8ooCNSR7yHW/wLTZi5wlKEodkETpuoRzNL7S+D/MY9lZ3oRCwpTQkYdnqEhFi4Ed5BwWY8szf31X9QhIeCkgqPU+dXWtGybV13j34izdea8g8cGdbyOqTbpVAcgBOvPvjPH4KvXXa+lIHuXj2B/C9GfCOFySe8SShER7DNJh/fg4o2/ok4N+8rXdIQuS9u8lLbvml2JCQM7F+vn4AwwnspcHz83ZdxUvQ4exYNDuUPDsrP2rOrJZpV9VW8tOTJpSc4WYUkGBVtsc1QNL3BdiNwnnTiwick3V1uWzyE3X37V/q8jjI4dxadSu3TQV26eNTskp1acjllIv5v9XKlch+xphz/waJz6/holX1HP+IHkhQ8zP+cbtXyIgD5FO6Fv14hpiXFr/pIwyPLPoxFnu13hL+05oxUb9K0TCahSL0uwxJ39G5mp0qSTM0gufyAH/04rnLGOnfkgzM0QYdgy+sxS7CFfjNTR7Y7K/DplhcgEr3VNtwaam68L6rBU0Hx272rPl9t72gxNrWgYBUys56mgF1O1T/ckgd2WKxt04uPBGDBV/Akk1UrBwJ2PcI9GPs2bqSk1/AFR0hcM91vKXrFD47uJ3Dl/9wbMCFvHIcVUq6SAz+iFdmsWdAPk2BFXvMouwP9OljoWYLpKmyUxS8TaFqI3J7TRv/XzTorzSfHGpkxGPn798c99ijoaKfkvc1WUIRM9F1Ww7xq/d9vb6Fnoe0jM7cwLrGx6l7jIwH6myflgGkpYw+tOmkfDtPtxVWW3YLA+KVU7BVEL5Xpem8D2OSr6ZVD9pzFhw8OGP5HSo2SRa7yxlvqyzbVgKJI+w3cE6xjtI2Ra1EKV8Jo8aEyKr2k1Mbp0Wu7J7UoTPcKN1uRAK
- a4afCvji
- iPMRYLm15VJloCFbStPx/0A99FLKbAWEhyTAme3IFjNCGwG9qYfjErJVOtVsRzSpsvlUVeSmUHmqNu4tcruPWwMMLV7q3Ad1ytpqyCOIHLw+ReCwfl9LwSZJOa1S6YN6tytu2RjJAaSvhv45tdHVBuSMsmMUoVoOJgwdqKySsR7SjLwmNejREP3I/7er4XEopu3zw/ByFfMjPQwYBXQrvM/Edtu5IQiVjHzmanlR158Yt4rKUVvKxHOL31wKNJVpgio8aVpdupCsn3crxwlWRyXLE1HQiHjCV0OojR3wNlAhHRtEebrFnz4UbGuvmWgUwO3nN+8u5uTNyTHWSAZ8ziMA8PjBmKkHan+fGp03OU7DFEKTbTKsBpXsGrNYIPiijgiSrc4+wzoBbRfCGHQn2DeRZAS7SY0zmRoC5qw70p9o2IyR1+IhRqLgxC1D44rP3K6pmElGHDG8m14zX+knI7MocQ53CdRWeZRvWjsLTCl3CIbIjb66NlEV/PRiG9b7nmVJB
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DFA58180009
+X-Stat-Signature: 8eswbfwp9w6nwkcaztw99f54zu957frn
+X-HE-Tag: 1762778108-437857
+X-HE-Meta: U2FsdGVkX18UlyYBjzlV+y1EJDd6bIVONG4Zoi1e63X4y0FVhs8EIAYrxIeDRdo4SSQzAef6zFDHIEREVOwRP2kCJKsWJyWAT0Vl6M7OnVzy18AjbwRvmjwIq4vGGCE9KSUAxkUufSpdYBQcKiM4+j45w9AMopg99hqDr7dDgsMN5J+JieZ+5bbrQfaabrtYdfqZPzMjjcP4R3AOercMmKBefmvLkIYKuBBkiv9MerDMXUe2aCkqR1HZNMHmWCtfscyQ59kGxHmKzlJt5yuwVE4s4QJlpzRpWYXeaUu0tqmkTMZwcBohukmBUSjzmEfR4BJlB1XKsB/F434z6MBTAkZ6ZUzpPw1UpdqSWbGNrDnk7Ztc36H2A5bWgmqB9n1LtYVefh7XUtvY1+F75MWjj1CSm48dmM4hSB+YKuMENfP0CnZH7d2wVR0/5GbxyDUu+kgIr8+aXv7VakKfpOFdI2tCQw55/M5bh232XkUmGS5MBt0mE4BhV4zWvqeguJcpeIHI3fetlaf2FyEbnH7k1FkbgK/A381wgsH/Wi3Ye3zpTk72OV308I0jJQYuydcNO6uX9fLKe8lZraGLGXd+YGpznmXCUJmfWGsOIeNOJMN57fFC5DhEwxeufeY96Ay2AI7QRtuQYrTwBcj2VT8fJtASAlQeEeJ+l50IaXMhMH9TsbdiOggSQjEo1ZdHSmkZKACFCUUbperDa7FimUwRDJyM9Lfl1MDWF3o9s4xUx0hXeGU2Hqa8DyLrRH8iWhJNrCy0S9fYhUrUnBn9wepysTl/weQxPUSnjl9D+2I9uVJVsgaoLLoQQoLgrErH65cmNEHY2OpPrU3IGxaxBvngoxLpTGQlD006v3qHjcumzhf3EXgDQxkmq6GEEYn/HAA4XRuUzJyxtTfgyikSh1C6H0cAzfP9M0hpdIDxtAvJM0bTEu6VWlJBSCj6PRfxD45ZcfGiiWZqBlM/WYJh+9G
+ qFZhKUBO
+ Dw6fSi7yqQ8hUNQteasxQLCZdSuFZP4/orY814Pd3/oZpmAmSMWq083qXFZlzMGBhF3b8n6+gP/UVBGe5tfb7SyufFc7h7zxUNuPj3LkqyR6uubnbE/Y7J8Dfe/1F2nz3JUt4DDvKY5eoVi/24S9Oy6Xgigzrl8lwiaDyF7SYyLpnQAM/pc1XQB+vPSRRPSe92ynd5RkKCRNsQ5t7AY08Vmht81oJPZchQL2GEIHfmDdBHe7qQ6mTLGk3Tkn8rocjlJCxeZHfCb7hSIP8vFNAWL2SRlhOv0Lo7yB3NmewwArCe0y9sQAYvEtH2w/WBQ8EdqcRSgE+OMdwa4vdXS9eEr4pKQ9oeQj63cKAFahCNgBh5ChsFElsAMS2nxfCkJm3GwxqEaP7jTrb7MF7KxyZDRrsMKhc5tD1BSzA9+Wc2V3zVjMyXwjEimBYJc9PbhTiagBT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,40 +156,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 7:37=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 3f85a1c4cfd9..4cca4865627f 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -747,6 +747,7 @@ static struct folio
-> *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
->
->         blk_start_plug(&plug);
->         for (addr =3D start; addr < end; ilx++, addr +=3D PAGE_SIZE) {
-> +               struct swap_info_struct *si =3D NULL;
->                 leaf_entry_t entry;
->
->                 if (!pte++) {
-> @@ -761,8 +762,12 @@ static struct folio
-> *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
->                         continue;
->                 pte_unmap(pte);
->                 pte =3D NULL;
-> +               if (swp_type(entry) !=3D swp_type(targ_entry))
-> +                       si =3D get_swap_device(entry);
+On Tue, Nov 04, 2025 at 11:08:23AM +0000, Brendan Jackman wrote:
+> On Mon Nov 3, 2025 at 10:50 AM UTC, Mike Rapoport wrote:
+> >
+> >> >> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> >> >> > index 1d0585616aa3..73a15cade54a 100644
+> >> >> > --- a/include/linux/kvm_host.h
+> >> >> > +++ b/include/linux/kvm_host.h
+> >> >> > @@ -731,6 +731,12 @@ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+> >> >> >  bool kvm_arch_supports_gmem_mmap(struct kvm *kvm);
+> >> >> >  #endif
+> >> >> >  
+> >> >> > +#ifdef CONFIG_KVM_GUEST_MEMFD
+> >> >> > +#ifndef kvm_arch_gmem_supports_no_direct_map
+> >> >> > +#define kvm_arch_gmem_supports_no_direct_map can_set_direct_map
+> >> >> > +#endif
+> >> >> > +#endif /* CONFIG_KVM_GUEST_MEMFD */
+> >> >> 
+> 
+> But this is for CONFIG_ARCH_HAS_DIRECT_MAP? I am reading this as a stub
+> to fill in for archs that have set_direct_map_*, but don't have runtime
+> disablement like arm64.
 
-Oops I missed a NULL check here.
+You are right.
+ 
+> Whereas my concern is archs that don't have set_direct_map_* at all,
+> i.e. where we need to unconditionally fail
+> GUEST_MEMFG_FLAG_NO_DIRECT_MAP.
+> 
+> (Or would we prefer to just not define it at all on those archs? Not
+> sure what the norms are there, I guess that's a question for KVM/arch
+> maintainers).
 
+It makes sense to define can_set_direct_map to false for arches that don't
+support set_direct_map. 
 
->                 folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, =
-ilx,
->                                                 &page_allocated, false);
-> +               if (si)
-> +                       put_swap_device(si);
->                 if (!folio)
->                         continue;
->                 if (page_allocated) {
->
-> I'll post a patch if it looks ok.
+-- 
+Sincerely yours,
+Mike.
 
