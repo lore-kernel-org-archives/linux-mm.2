@@ -4,130 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C91D1CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 16:41:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A997CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 16:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A01A8E0056; Mon, 10 Nov 2025 11:41:00 -0500 (EST)
+	id BAC438E0005; Mon, 10 Nov 2025 11:47:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 078078E0003; Mon, 10 Nov 2025 11:41:00 -0500 (EST)
+	id B5C8A8E0003; Mon, 10 Nov 2025 11:47:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECFFD8E0056; Mon, 10 Nov 2025 11:40:59 -0500 (EST)
+	id A4B818E0005; Mon, 10 Nov 2025 11:47:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DB0AE8E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:40:59 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A58161A013C
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:40:59 +0000 (UTC)
-X-FDA: 84095261838.30.A27748D
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CB8FAC0006
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:40:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=l8kyq8Ct;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of glider@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=glider@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762792857; a=rsa-sha256;
-	cv=none;
-	b=48e5XFLZE1RpJ3rZIOYGN9jd03u3qTT/Tui1VISdZvk5U8eEvblSW7lJlcD0LkgD2BxmTL
-	VkZqecO6XSeT+EaGLK6f46E3qZDQ8ICI7pmGhU7zH4QoylR/f1d4BVzb6jVVky0saWPImi
-	hn2CjX5nOP7/3ZjjF1NV+AMmA3yFiqM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=l8kyq8Ct;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of glider@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=glider@google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 955378E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:47:18 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F16B1601D9
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:47:18 +0000 (UTC)
+X-FDA: 84095277756.24.59DBA67
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A0BA110000C
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:47:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jmR9vB3C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Yi3kbSny;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jmR9vB3C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Yi3kbSny;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762792857;
+	s=arc-20220608; t=1762793236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ARP0s0P8t6lHLXGPK7oqG4hn2hPk4JBv7/AQ4HrLq7Y=;
-	b=ebeQg98tKgJm5jlEXqkR1ydIS/10jrClENmuB9P+QT0CfKhCDCRZXsTqzUCSHoCiDz6QG2
-	127LPgOrV8EwdOxm9xaQBf/4Lk0t9291PA+o2rchM42jtcEkiSUt0LNhfob+Laij0H80qb
-	SY0OGA58/cHAls5seOmykv7XnNgfEYw=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ed9c19248bso26336901cf.1
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:40:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762792857; x=1763397657; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ARP0s0P8t6lHLXGPK7oqG4hn2hPk4JBv7/AQ4HrLq7Y=;
-        b=l8kyq8CtShHqtPAJb4OYhl4zIdNq6kJSeJ1Xo79QhR3eTQ31D3la6+r83K9jna7mPA
-         GXCYcsZJHMdPUrFzS7HqPLp+A3No/mQgcg4pcBkp0bSHBSOqAW5/TY44tBs9b8mcSeGg
-         fREEYJRWJiiu4UXEHsfnIH/MIzymLbFaTe7SwXCkV35oEIeZ5xqJHoW4ON/UidCLOPJh
-         CCrWJS4G9Na6EqXbzayqjYeD7vRi9zTwhUug+WrcuNpnvx3/RnLHEMkyZaNKovQCYujD
-         dpF50o6R8vGyAQAjLzJCcCHoq88375twZJxU8p866qHn9aSKXPEwx+Wgi8HbwyobVPda
-         M8oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762792857; x=1763397657;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ARP0s0P8t6lHLXGPK7oqG4hn2hPk4JBv7/AQ4HrLq7Y=;
-        b=t3QOFseTTkgBhwQw2VXMgTN7GPNj2Rv0nhKc/WrMWrJ7QCF+latnQbxtacQaoM1E1p
-         o3Xe8CB364JwmuFP/5BAWvK74Ndqwx/2twWJ+7DPKwE/qu0uofk/WabdceYBubeX+dAl
-         zLfBc7FgG6vIIf2ZODjGxI69aUYJy02yWLTigo4pBrMq/ywyQGO8olHaK9cp7aUluGGA
-         YG8TEQU+w3dWNKHSzedC0qytk1PJ8kclEcRJFCdu40wafqUtdvxBsaNLzTzPgPinMTNR
-         DNv30sfcIAamrE6ry/2aiUPZQIf97sOvWbevAIPvXkDeMJOggXfGoFm5WsXkZUkfJcir
-         pwsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVtjaP35KAe5jPdj+9w5iqHaRF1LPgkojbl+u2rTWeQYTCCsqrjqX80lZiB0dwbj70X6QswQ+jG+A==@kvack.org
-X-Gm-Message-State: AOJu0YwHj1HiBXkGASnC1Z+34UV37y4L/gqwzNVrnJthDZALqf1OZCl9
-	5U4lxipKtffc31qXq09/xbHh8DTsxW9Kaf3VZJCXsETeGEZl7XhFJmbqzYlqJuvvpaubgcQopfH
-	UyARlxisFngsczFCq6oHVxrSJN85ihSfp3EfIenX3
-X-Gm-Gg: ASbGncsQ+0fr/O9StRBtQRKrMoSWX1H0bpI+siNdQwQC7LfGegcqvtWg+Ayz1QMaWnk
-	h6D8DBWh6k1qhlvaYVM3k46cOTgAiGLiE4lKARvWjZSKSNE812Yy945zbcg1wUjlmzEfOYcOKee
-	puLLQIJ0U2iC+Py0z2Ay+6Dui0zi0jPTvGmsxqsa7WSAm7vpAEmR2TOSIw/fxilpdFVrJ3rb5yY
-	erdJT7FDan3x1oOXYwx17QJDPyXaqtdlfxjSyv90sU+E1SAe3F7Fuul26Wabzvhf0e+OFKq+d1H
-	WtBUHCg5d3Z3WQjIQIjKyIMTlQ==
-X-Google-Smtp-Source: AGHT+IFXtIVYv/1akorIwGTU2TyeYWKo/ZKjasuLxC+KldJLVH++s5nwoozhcb1g1AswN8A4ZgMNuJJXiz33fQE7EOA=
-X-Received: by 2002:ac8:5d05:0:b0:4e8:aa15:c96d with SMTP id
- d75a77b69052e-4eda4fec971mr97364671cf.55.1762792856275; Mon, 10 Nov 2025
- 08:40:56 -0800 (PST)
+	bh=0o4cR/QIKNwMr9gQ6XYldm8m+A5IaM06kIrGj5uVkvU=;
+	b=iYgqEQfgSII+kAj0HbG/F0OacZulBevJFgafI4qmYrUHBxPzuhrkFMWcIR2R5UHf7TM3O6
+	snmbh6DpttlfeTEglgboCkDORnV4M70QHnzLtzFIsPVl7Ld6ZSnBjv5fllAd60OTHR94HU
+	K6h2DOIZHdA62gQ6Azj+GeIYg830tM0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762793236; a=rsa-sha256;
+	cv=none;
+	b=K924QxwmulHHtGo12pUKZ1yxVgqBvBulKIEXjujTrHXkev9K3meOROqoaaqxX3Q6RUImLL
+	Hfr+mwefFfEgK/1eOX7Y4kiWCCRI6KSjgRqSp790OFKOUdia17EBo49zSv4/hYaw51IIAb
+	zoHzQH/+kujGXqzbckxnB6Aijm+6I3E=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jmR9vB3C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Yi3kbSny;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jmR9vB3C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Yi3kbSny;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EC3D1F7F4;
+	Mon, 10 Nov 2025 16:47:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762793234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0o4cR/QIKNwMr9gQ6XYldm8m+A5IaM06kIrGj5uVkvU=;
+	b=jmR9vB3C/4IJHwDe5el+xGIHyxDrNpTAs5i07yy2YCs7/PCbNp8nFsD8elSbOIA1h/y2GK
+	PnbhyXgm1DqUW4gmqaHfV1aSr1x4lCF+k2d3od9X2Fo7uBdz7cooSNVIMuh0K6/Q8ZjJma
+	PYNFpBfNHiBzI8rD60hHjppfqRaBCRA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762793234;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0o4cR/QIKNwMr9gQ6XYldm8m+A5IaM06kIrGj5uVkvU=;
+	b=Yi3kbSnyLKZFlz1PJLzSNBAgnO6X9gmH2kQt8ghDYpIR8b1sQHx7NDgvQfqYRA8d/4YGqw
+	PGa4NXkN27O4+vDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762793234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0o4cR/QIKNwMr9gQ6XYldm8m+A5IaM06kIrGj5uVkvU=;
+	b=jmR9vB3C/4IJHwDe5el+xGIHyxDrNpTAs5i07yy2YCs7/PCbNp8nFsD8elSbOIA1h/y2GK
+	PnbhyXgm1DqUW4gmqaHfV1aSr1x4lCF+k2d3od9X2Fo7uBdz7cooSNVIMuh0K6/Q8ZjJma
+	PYNFpBfNHiBzI8rD60hHjppfqRaBCRA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762793234;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0o4cR/QIKNwMr9gQ6XYldm8m+A5IaM06kIrGj5uVkvU=;
+	b=Yi3kbSnyLKZFlz1PJLzSNBAgnO6X9gmH2kQt8ghDYpIR8b1sQHx7NDgvQfqYRA8d/4YGqw
+	PGa4NXkN27O4+vDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 024F0144C0;
+	Mon, 10 Nov 2025 16:47:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fa04ABIXEmnNGgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 10 Nov 2025 16:47:14 +0000
+Message-ID: <025d73b5-8947-43b3-a85e-c112667c030f@suse.cz>
+Date: Mon, 10 Nov 2025 17:47:13 +0100
 MIME-Version: 1.0
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <932121edc75be8e2038d64ecb4853df2e2b258df.1761763681.git.m.wieczorretman@pm.me>
-In-Reply-To: <932121edc75be8e2038d64ecb4853df2e2b258df.1761763681.git.m.wieczorretman@pm.me>
-From: Alexander Potapenko <glider@google.com>
-Date: Mon, 10 Nov 2025 17:40:19 +0100
-X-Gm-Features: AWmQ_bmi0ifqdxD1pRga8rXt1izLseEvw-FOTscdlGLXMffgSbt_R_kuG7tm2tc
-Message-ID: <CAG_fn=V6pbNdN3w0Jr5rCL=M27-bOBt4AK8rB7UvvwT=3g4m7g@mail.gmail.com>
-Subject: Re: [PATCH v6 02/18] kasan: Unpoison vms[area] addresses with a
- common tag
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, 
-	kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, 
-	ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, 
-	morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, 
-	baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, 
-	wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, 
-	fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, 
-	ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, 
-	brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, 
-	mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, 
-	thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, 
-	jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, 
-	mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, 
-	vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, 
-	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, 
-	ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, 
-	maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, 
-	rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	llvm@lists.linux.dev, linux-doc@vger.kernel.org, stable@vger.kernel.org, 
-	Baoquan He <bhe@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: Memory leak in 6.18
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, Tytus Rogalewski <tytanick@gmail.com>
+Cc: Liam.Howlett@oracle.com, aliceryhl@google.com, andrewjballance@gmail.com,
+ maple-tree@lists.infradead.org, linux-mm@kvack.org
+References: <CANfXJztHS4t=w+2Ogq=fHe4WS8CwOJgxog0ZSVf8C=9-4Xx0RA@mail.gmail.com>
+ <aRGAUjkKe_H1xc7H@hyeyoo> <aRGDTwbt2EIz2CYn@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aRGDTwbt2EIz2CYn@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A0BA110000C
+X-Stat-Signature: 7hstmq7bh7krxoy3dqg19g91wq5tpby1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CB8FAC0006
-X-Stat-Signature: dsjt9qorhkdcq48hj7rsayq66aecth9n
-X-HE-Tag: 1762792857-87002
-X-HE-Meta: U2FsdGVkX1+I2cYjUXkaRuN6cDc1ORxxFWPHhtHqQ9MZvt9oENiT+PsdqnFqRn5yYkuVZuIS4Rr4LvjjKYY4GY2MqY/QfIBdTcosvaOfF3L2JzuM+LJ5Mfqv9B/nIGycmxwjWh8VCikXjMIgqLc2PFoIwdUoAr7GL6o2EVkuaIP8IhQEtyKssu+0xeBQR53hSumJV1InceXnyGn5LCSmHbOY9bqM2mKoG6/JHQ4H4x8rMvFteKyd0Dj12AYZi60XGok2kBUE5aDmXVu/3/xhC31kaHcWLaVEMMuHepYLCdL9wILc66ckQJ0QOkA/McJKhbz9EGxarZpsjko+Btov3TLOicMizrPLEaFwn7DD4RteVYRi4lg0gNzgXJUXGK7EpU8v0DxSzU0//lGICT/tNYWA5wziUFi6VtHIR/D//FgpETBeYiiJ+O5caCIxCW8bEjwnBNjhKq8AEYLa9Gb3vy17/ue5lgs9dUfoJGTGiu2RMXMVkc8Kr0QBnvqJK+VN1NSzUIJ8NI+Qu923Yt2FytWAE5pwwTruwiYt+1VBIrKjgoHRCY7u9x4DMsUzJeBsnThcLbuQ9PGG+S4eUbxwt9GbIJCfzF1Rn8CQK/7E2oo7hEwFAXcB91fY1ZdNalynWbVEf3rJ3SyGvAmq8ddR2f32z/Gx0Kh46sIF7dUt4mU9Es/YxCPWaIHR5IUeIAo5UCWSaE0vnc7l5SGOu8BO0rOEmXaza/l/0pMobU896Y0cWhbwwVwYomVnLP8b5aRaZ8pF64zzUaXnY1MPq2HxEijk0YnTN//ERuhUaHeLbLnFKJgIWjOkVtFBcpcHbdPQHSDcDZxt+fVLB465/gnwlBz1vVBxR1O5hkDQsiuVMpGCOZtYsD3lOlppWl1239X1HvSkmU1QuEwobi0vID7VaUWemySlyVPShpc4F4Q2/hIZSZSYeDGO3tte441+02vPxgTI5cVIcMGGPkjDeMZ
- RmN/atNc
- C8yRXIBVsJtcHkAOY7DVKbw1Xh8aCBjBrqSIJElC7Sk05NVbn8Hsva1E2jkUTYprbFvhNakx6kwVeQ0k4X6tMl1XNybCx1f5hgRS39MjHe7gGcfX0NCDJ1Yo6dapoTKRp2t+SVMFnEWyKpssAIkYNXfcJKkB+hqaJZuv8dX2E2BRoBaFaJXAQOT4z64PbzzfnphSix0nCQcGkhhDMn2DFrKHrGW14vFqwBtLEaKuh4Vab2rbCaK2D2h92mMIXYyInVp7JJa5KcwUadWE=
+X-HE-Tag: 1762793235-606033
+X-HE-Meta: U2FsdGVkX19Whlo4Wm0vs7sy78dPjcPfV1gkiNz4xVQjp4NnF+7iyY+/6IM40CG/ShezJGq1BcEeZhjEtC+mfd0TVbc9APAT5BIoTm9Udxy2GDZu5ulJnxv3/azAkyRVUjbcoMD47n1PVUWHk48AYywL5puUekOxwvtvnr9E9uLFZUrNxf1HccBnQls/46CbOJBBPqzm3EsQElwVhu4L93MkBZA/R6YWDOjShqEZIYxJNUoFubsxXxfFyhmNdkBNoNyaMESiP6yav3dOrQgqwMgovUt+rp50MRVuR+RtA+wPO2V84QfpZSD8BCuTbQ+qvN67RHh/QUCZasm9T26etWXTqL0el3ldz6nDiMVavo6Z56WQOJLy3YjlXpeG1Y094jEoohlabQqfhUDaHyFEOwN9fnMARMkr0oSj/mOQ2BMS1jvXikiFMlyZKoa2+ehIPeflnhGAaj0SC5dpQP0fnnSC9mirTuoun1q6eriDismgUN+G98pVyzOKik12877CQQV2yN75scfUVX5tJoXcznEx3e2llCbgACZgqkWfeLFV6sYQD6CdkdJDVRuDBcnnb9TR31kJrG8NbkhH4EZAx9ngYLtNUK59prfnQ9b8udqPF/qFgUk81Ir3IEfT/2XfR533POfb0XCE7bHRqO4v05kCDI5F3vWjwo0Cpbo1bEzmM4rayX65MiX0LW1UK8SfBbQi7q1HfEYmmdASVLVsMMblKVKfu0Mw7t3Bm0XeTCcY9BbZRs3f3yqhbuCvCs2YfMime6DU/Pb9C33KAxGLDStPDG9ahD10PGUuwjztswbEZGClXSXTpq4gFDtI7zI+3cU5Ag3sPi9SsJF6IKmQjh4yoqQKQkw5erp8KaGnvI5Hko+BYDSfKgMhM8qtnnT6oRE2WtcWpnySXTl67staLm69OWcWGs+Uo+qudzMH/OqdJuVcUW7JurVdYZKW+NP2YoEwUp9ONe5gNg40//J
+ T9IlzkFy
+ rYgc1Y7zd1kh6PQaZQ7uFz1dXoSWd3eXx7Rew3i6QxLswe/ImQ4EETdCrDlT7Zfv7fQxJt41BQkmGzfeEK3komCVEBd0+N0hYbdDXQ045H8OW5y3YLKc1mosgpW86JUcRjmYzwJ6mNMVqTCgBhI3u21DhtaWcw+71ble1YFCzj1NlvufKAD3ttxvQgfMcCNEDfrP6vhFQlNSHW0jnhPKn+6nCZiPzDdq1GTaPFdNlUGWk3de78ez/o2x5xLvcSbpiHmidlIAcsP/DCiRJk1dbI7wuXh5JuaG4ZUfq6Lu68Z2JHGE9NeO+pP4YvaEER9vPxlzpaUytK1h9D7nXx4yxIAVEtphYuEYdc2Jdu7rgjc3HRFwTU/mvuBLyrqbAiQjQgrj0pOVYt/8pKj2Ul6y2pV85WtqMYK9URHL0UcensBca/1+s/n3RSRzE8RXSmmBC96w6zgrGOeTYNZc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,16 +177,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->  void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
->  {
->         int area;
->
->         for (area = 0 ; area < nr_vms ; area++) {
->                 kasan_poison(vms[area]->addr, vms[area]->size,
-> -                            arch_kasan_get_tag(vms[area]->addr), false);
-> +                            arch_kasan_get_tag(vms[0]->addr), false);
-> +               arch_kasan_set_tag(vms[area]->addr, arch_kasan_get_tag(vms[0]->addr));
+On 11/10/25 07:16, Harry Yoo wrote:
+> On Mon, Nov 10, 2025 at 03:04:02PM +0900, Harry Yoo wrote:
+>> On Sun, Nov 09, 2025 at 11:36:26PM +0100, Tytus Rogalewski wrote:
+>> > Hi guys,
+>> > 
+>> > Been using 6.18 kernel and i have noticed that there is some memory leak.
+>> > Currently mapple_node takes 86GB when server does not do much.
+>> > I do not see that issue on 6.17 kernel at all.
+> 
+> Cc'ing linux-mm@kvack.org properly as I modified the address by mistake.
+> 
+>> Hi Tytus, thanks for the report!
+>> 
+>> Could you please boot your machine with kernel boot
+>> parameter slab_debug=U [1] and run
+>> 
+>> $ cat /sys/kernel/debug/slab/maple_node/alloc_traces
+>> 
+>> and
+>> 
+>> $ cat /sys/kernel/debug/slab/maple_node/free_traces
 
-Like set_tag(), arch_kasan_set_tag() does not set the tag value in
-place, so this line is a no-op.
+Agreed. What could help in addition to above is also enabling
+CONFIG_SLUB_STATS and also providing the output of:
+
+grep . /sys/kernel/slab/maple_node/*
+
+Thanks.
+
+>> ?
+>> > Total 1000 GB memory
+>> > ASRockRack GENOA2D24G-2L
+>> > 2x AMD EPYC 9654 96-Core Processor
+>> > Running Proxmox 9
+>> > 
+>> >  Active / Total Objects (% used)    : 472110239 / 472257124 (100.0%)
+>> >  Active / Total Slabs (% used)      : 7385489 / 7385489 (100.0%)
+>> >  Active / Total Caches (% used)     : 164 / 231 (71.0%)
+>> >  Active / Total Size (% used)       : 95486861.00K / 95528053.72K (100.0%)
+>> >  Minimum / Average / Maximum Object : 0.01K / 0.20K / 8.06K
+>> > 
+>> >   OBJS ACTIVE  USE OBJ SIZE  SLABS OBJ/SLAB CACHE SIZE NAME
+>> > 345907216 345897683  99%    0.25K 5404801       64  86476816K maple_node
+>> > 120873408 120841337  99%    0.06K 1888647       64   7554588K dmaengine-unmap-2
+>> > 224256 223324  99%    0.01K    438      512      1752K kmalloc-8
+>> > 224040 224040 100%    0.13K   3734       60     29872K kernfs_node_cache
+>> > 196608 196608 100%    0.01K    384      512      1536K kmalloc-cg-8
+>> > 196160 166455  84%    0.50K   3065       64     98080K kmalloc-512
+>> 
+>> Not sure if this is because of sheaves or maple tree changes.
+>> Let's see what's in the alloc & free traces.
+>> 
+>> Or it would be great if you could build the kernel and perform
+>> git bisection [2] and give us what is the first bad commit.
+>> 
+>> Thanks!
+>> 
+>> [1] https://docs.kernel.org/next/admin-guide/mm/slab.html 
+>> [2] https://git-scm.com/docs/git-bisect
+> 
+
 
