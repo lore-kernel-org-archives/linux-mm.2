@@ -4,120 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B2ACCCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21D1CCFA1A
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:51:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD29E8E0034; Mon, 10 Nov 2025 10:50:21 -0500 (EST)
+	id 46CED8E0035; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5CAA8E0033; Mon, 10 Nov 2025 10:50:21 -0500 (EST)
+	id 41C968E0033; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AE7E8E0034; Mon, 10 Nov 2025 10:50:21 -0500 (EST)
+	id 2E4CA8E0035; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 753F48E0033
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:50:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4985C160186
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:50:21 +0000 (UTC)
-X-FDA: 84095134242.04.08F48D2
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 60A8720002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:50:19 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=YaqYP3BY;
-	spf=pass (imf13.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AA228E0033
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:51:32 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9529C0182
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:51:31 +0000 (UTC)
+X-FDA: 84095137182.27.E656B22
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 622AAC0017
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:51:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762789819;
+	s=arc-20220608; t=1762789889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U3iQY0mCR0gaZFmXghVPKyhS/yzkP9DkOi+8uk5oqWw=;
-	b=xrBZfqwz7bUiyq+IbtI4TEzdj3jA4CtDsttBOGq21WIpm0nFdeuhEH/oJ/qWO3rzv2FMlG
-	GgexR8s1lxkMIgZYi6nH8TQQN9/tX4JjfsouoRiwxuS/JpmM7FnvAxGkTkzwsOsioR1ipp
-	k8JVrfrAkwztOHBkCtPjpodOLryCisI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762789819; a=rsa-sha256;
-	cv=none;
-	b=TVPIoPorT5p+4SN1Owgqi6S5doRtuoPLhJrTJvGImQUViEgo0avU3JrliAyIg9StvHIWPW
-	7r7AOjRBodEEk0fFzXO3z0KoCrROqxabuf0wqctkKEJzBL6QD7LDeD0h01Bl2S24sgP0mR
-	9/9n8/SrkG4gq7mWaLDl9Xh1QXNP0cQ=
+	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
+	b=vCOuPncCJSmlc/0yVv/US00MLB8V5wbcdlkaLxu1dHVoXDziyHHPeaixa7XGfJ6KhTMqie
+	S6iI7V5Yp/EJ62x93ScEbSzkc5uuYFn8cWztb5xvxJqydqa/1/z/Ij7R0XQM6Xwb0Cc1vf
+	oaD3whM7his/R0GvUXBsPT8OOrwdLgg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=YaqYP3BY;
-	spf=pass (imf13.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1762789818;
-	bh=40WG8/2e61IMWsDRpUFUHulUyBgQPDILQimEoI6b3o0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YaqYP3BYvVXp0RXTFrTVDF4A/I7xHNeDivG/xTI2MY0FwQuRsUvecjSJKhlVo7qLc
-	 K/nwzBWJAFb/N7lzH0T+FKNRytciqwTzNDOIo8mrmlVxMDoaObzqT4WxrQtcs+BBLq
-	 WpSeDlotcm7Lq18kiR0amNlSkEa8qqOI0Q1nZTSdupPdf8wHNoKdCNgUfC7Q2W/gvE
-	 Ie0bBykl7eaA6dzrY2ixza+QNyH3Qv5/AXou8oA6k/BN71QT85PyQ3xWkJc7yN2Vz1
-	 w/SKZkkQLurmWGEV3gXNhJBekN7CP8t7KsDKXTxaIqNJHimPG6zjDWlRVDehTRsnVE
-	 GfDus8gNJFZjA==
-Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KHGEHoKm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="hFY/7tkY";
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762789889; a=rsa-sha256;
+	cv=none;
+	b=d7FZIadLhjNjucXBfmyUqdh3enxNH9OpswrQd7vBkwZZMqD4+gPUGZSNST2EF+ejXijfaA
+	BKVvWCn51GC7Zq6DDwonZ35DS0fGCEGLd9pERxSjCY/2nOT0O8t/MvYdawllPEtCK7IeX2
+	rWMfZDobiB2MYupi2iOl0ATVYY4L4h8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 30D3317E15C9;
-	Mon, 10 Nov 2025 16:50:17 +0100 (CET)
-From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?UTF-8?q?Miko=C5=82aj=20Wasiak?= <mikolaj.wasiak@intel.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christopher Healy <healych@amazon.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	kernel@collabora.com
-Subject: [PATCH v7 11/11] Documentation/gpu/drm-mm: Add THP paragraph to GEM mapping section
-Date: Mon, 10 Nov 2025 16:49:59 +0100
-Message-ID: <20251110155000.2936-12-loic.molinari@collabora.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251110155000.2936-1-loic.molinari@collabora.com>
-References: <20251110155000.2936-1-loic.molinari@collabora.com>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9A9521FF89;
+	Mon, 10 Nov 2025 15:51:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762789887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
+	b=KHGEHoKmSNIeawnv9BSS7Wuq12+rxdviaKc3/MkzLJwQs+lecF6UpPhcL2UUFdbMnxKB61
+	mcq3GjYPvL0z9HP5MSD8zZKpgVnjweLd76//wdi40sQhI9HpYNlAeLmK8cqmQduJ2IkhKm
+	cLe6LSr63bbDwnQBEhQ92FP/WueI1Qk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762789887;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
+	b=hFY/7tkYSJkZupijhLdaXwAia/ra/uW7fqiD3fqN51tETN1pJaufwHVLhJm3YZ+/TaY0vp
+	z0Ri44Q+XnGDeZDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762789887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
+	b=KHGEHoKmSNIeawnv9BSS7Wuq12+rxdviaKc3/MkzLJwQs+lecF6UpPhcL2UUFdbMnxKB61
+	mcq3GjYPvL0z9HP5MSD8zZKpgVnjweLd76//wdi40sQhI9HpYNlAeLmK8cqmQduJ2IkhKm
+	cLe6LSr63bbDwnQBEhQ92FP/WueI1Qk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762789887;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=E1xGuYFXeq4wBXS5RbbG9hVQUEgFzhzN4Y+tuhwK4Hk=;
+	b=hFY/7tkYSJkZupijhLdaXwAia/ra/uW7fqiD3fqN51tETN1pJaufwHVLhJm3YZ+/TaY0vp
+	z0Ri44Q+XnGDeZDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5AB0914488;
+	Mon, 10 Nov 2025 15:51:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MzPiFP8JEmnZYQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 10 Nov 2025 15:51:27 +0000
+Message-ID: <945fbe45-1ee7-4108-b01a-a8d2b0bb9cfe@suse.cz>
+Date: Mon, 10 Nov 2025 16:51:27 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/8] mm: add atomic VMA flags and set VM_MAYBE_GUARD as
+ such
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
+References: <cover.1762531708.git.lorenzo.stoakes@oracle.com>
+ <cda9d4c073d773ef6c2cf2939d66cf80544cff40.1762531708.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <cda9d4c073d773ef6c2cf2939d66cf80544cff40.1762531708.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fwxnzdsz971mjw6ph7w8ab4uu61wh8yh
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 622AAC0017
+X-Stat-Signature: 6jsqbymitdb7d418pcqskhsd7tmiw87s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 60A8720002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762789819-986586
-X-HE-Meta: U2FsdGVkX1+h4pjWMw6pt7xu3dEBI3NlLw74wL4rjDXrbzICad7xT3Yir4vENCIHb7Epn6ijTXLGQQCMH1FbSOCo9ML9AawIwcdMW4Xcn9zqlCbZ9zgEHCG6cH8HNwkNUC515BlffZYHTzbVv0r5qOuhcZ6R+uLCwzSa1t/MbuYTtxySxwEgLJEO9s8mG0dfSaZ7sqolLAJySTeky73aOtrn+B1Q/Sbkf1j2Y7AOhxyGbQPQxkJyZth1/V1OOlisJTOLsJe6cJEZ0q1tBS6bviJ4ixQKyARsM7gfjsvWzOcdhsVjXWJQCZse2awYzqPWtm+jfKx7tqXdpHiIoxxYF8Cv3OnbHAhb4XlwPCNJ0kc8dujxoooL9Tz0Ke90Lsajed72KbPctLp12i3QhRnxuhAxf0KW0E7xAHZCdfckssTsOPJ7R19b5tUbs0NiQt8N6Z9gAhwbFSJEeHhCtQ58k4ETCE1Hnl2J1vL4ygYX9vgWkYG7eDonfGd1pD0Oj5JJfV9Wzyn0XjsrnMrjPX1mPEYYh7OLXlF//sxE2beshB4vyfoNbXGjWCIJM2eRVybq92yZYlzW/u02r5/pp6xCV8Mwr3fsO4so8Zqx1R1omqz9GOdNjtY9pmZxr2D+cXTTWH6qUzxsNhA51xanZnz7plnjeSKJrLej1UKCiUUMSIza+szs5kRCsvYeAiSoXNn+j8oHvoZRdabofwVGnxxDYUf18+rnfay+1V91CVKaHTGrJInRdBUhjVwA1ZgRv8MrcIgWbNnKW08sHUBPEjg8BvmJY/8TjAK6SG3ddkIpFZCY1Qk2vuAzAWMhhLxrgNwHSFdn2yv5eSoo79s1nOvhvSv21Y+GJSZQ0zs8KjUeMP2ZvykElxzieItJwYTiRCrVA5YuU7jEkP77R1MtpAV1HG4TdA61jlLl3YqSlGVkqKJACyaIWddZQAxPo/UmaF7bYisDPUJdbsDMXZqCoaJ
- /b5T8U4g
- fmgUlDvPcaClaaz9zzpxj3YMW27LpD1YctvlrmxRLvA4IcnoNTWsyaaPCvIRSq/KLK3A7daJIQ7oS7JNWs9H8IZ8+9zPT+n109CnO5FKV1fu6ZijY6vwCGQA7niyECxkB1RFrh1UIfk8p3VwuQWhcSCDSmYcnrbB6WvpQX8uqfSNPKg2hzhe05ubYcvYOorzG27G+6mQrxXvQvvZdxiRFN4SXgTgrpM3t9s8ZKwmLr24j6LY8EqWkbD1QS8opK+4nUNDqcysfbZtdJbjnj0f9/5jE69/8dThcjlKSfgVjTqdWatXbUfYpmj5zFUUVuZxUy1SP1setGwJdLOCVilX69lPjSRG5mzvSt1c9ODZQ7RFDrKOA77KGb8VSwozzF6korReXd51wE0VaSwTKcSAJJUfWmIic8/cdqquzFMV49HsPz0eNwGm/K4MaWtBHkaC/zRHeC3w/5HSrzdTT55gQge9fCwTIoFiipNFME9LnKEyM4cVpMXHnnJC0eoYw8g59c3X3bA07Q75WFpmS+NpXI50Q5qXSlmmrnaA6
+X-HE-Tag: 1762789889-330738
+X-HE-Meta: U2FsdGVkX1+UgrzunlZvPOm/S5ZLR2dEmiQnqe/RaoeFvdpJgP2N+l9Jza4QkRWR8Pt4F4dgA8fNzdmO/htj0kDDzNOVBfbDOEETiZfCYuZTG9UfzZITD5Adj1kQKO+aFzXb+6kafIT3lhqIy5e7wZ4q35r3ueIffsAJBLdMU+u5ZYB5Gr7BJFMp5zELT1AWzMnpj6XSuUNIzMUKK3tN1iTVDf43vX+j5xGOJpE0rj5ewLnq7IyE3ZOZ1CTjraeRZQpd1OJ6BiCrLA7LN9OHC/M57CCDTcPMjY9Bilu59rlARQS4XZcOaUE69DJBhgpZ2PEuWdjnWKC81nRdl2n80aX+pTAPZ1O96XlEORNwZn6Ff/z4sPP+DgQn1Vpa+p9NbVsU5ySukXWur9Nk4uyIuHdvjAw/yGpMK1uh0CWh8b5ke5Hecb46gqgPdJdRnRAa9K0kbyQcl02Q5uY4i6vQIpyjteIS2+1kTG0YQD57C6OQiNvQkdkwaRSwIxHf/jEWsEv8bAqq3nddlicrDFbVh0EwLz8gtk9GbPFLelA2qq07lJdrCAzv4DXUtU6Sl9vlE6p9Q1/gnLaeceg0jpmcsR5yO3jMlN7jT0F/bUM9z2w64Oc5fpWFstgwwvvV1lhMfrzNSjUADc7aUi5MUkpOiJDcrRqNe5iltSP9o4umUGEGl4YkeX0adfiejtZrUqjKoL6c4LciCwv/hZnh00yqZUbzaqVcsSqRhrCXtkYOlFylGQliUWMBWrLgtrJtKI9tiwpVrRGWrp39XzRH7B+fagqHpqrtl7YJgIq92Rdx3Gz1dz2S+KUT7Zn/3pQfCZwGAslLqGDn2IuLR5EUTptHk4IiccKT+FlPsQf4kp/Q0mAUP1xtSk1orB0lq3UTfzn+q27Z1aSVfO/vsfGsQcbEcLoGUBDVknffgCEBCpDHh92wHtypDEHXjfAn80bZgwsqeBkDEhljJtQEfh+O45u
+ 6lmaMygF
+ C5o2WudnWv/qyAjFATlMFfb0z/+cmkvaWlh/BkLdpMLIYJYMpBec16cY887EcdjnqBuQdQTh3TNncGU672ZyqUOWNvcoLIxEbJJ+d24UQow6RXziWyqXJaGIBY7arhA/7EH8mrGYq6ZfAZ0XvHsGzxK2O4VRmf360OcmaLLWiNsnw26nAizY2o/27TZPLplUPxqTFJFWwJBdXv4br6C05BThVvpoM9sg8GNZJt+qFKKI7/m+Us9VURXVdTf60iS44LnsepO5SP4B5OkO56zgUWKygXprho5JR6QaYbciTNfIV+fxgwm9bsPq3FTQIAbYiBHi62jnz5cE0cCRX6N45wSwse0ybHz5up0J+16DsdbhKXQxA9OH6+mkkZDiw4aQ9+O/CAVbR3Vd3PPA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,59 +191,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a paragraph to the GEM objects mapping section explaining how
-transparent huge pages are handled by GEM.
+On 11/7/25 17:11, Lorenzo Stoakes wrote:
+> This patch adds the ability to atomically set VMA flags with only the mmap
+> read/VMA read lock held.
+> 
+> As this could be hugely problematic for VMA flags in general given that all
+> other accesses are non-atomic and serialised by the mmap/VMA locks, we
+> implement this with a strict allow-list - that is, only designated flags
+> are allowed to do this.
+> 
+> We make VM_MAYBE_GUARD one of these flags.
+> 
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  include/linux/mm.h | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 2a5516bff75a..699566c21ff7 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -518,6 +518,9 @@ extern unsigned int kobjsize(const void *objp);
+>  /* This mask represents all the VMA flag bits used by mlock */
+>  #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
+>  
+> +/* These flags can be updated atomically via VMA/mmap read lock. */
+> +#define VM_ATOMIC_SET_ALLOWED VM_MAYBE_GUARD
+> +
+>  /* Arch-specific flags to clear when updating VM flags on protection change */
+>  #ifndef VM_ARCH_CLEAR
+>  # define VM_ARCH_CLEAR	VM_NONE
+> @@ -860,6 +863,45 @@ static inline void vm_flags_mod(struct vm_area_struct *vma,
+>  	__vm_flags_mod(vma, set, clear);
+>  }
+>  
+> +static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
+> +				       int bit)
+> +{
+> +	const vm_flags_t mask = BIT(bit);
+> +
+> +	/* Only specific flags are permitted */
+> +	if (WARN_ON_ONCE(!(mask & VM_ATOMIC_SET_ALLOWED)))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +/*
+> + * Set VMA flag atomically. Requires only VMA/mmap read lock. Only specific
+> + * valid flags are allowed to do this.
+> + */
+> +static inline void vma_flag_set_atomic(struct vm_area_struct *vma, int bit)
+> +{
+> +	/* mmap read lock/VMA read lock must be held. */
+> +	if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
+> +		vma_assert_locked(vma);
+> +
+> +	if (__vma_flag_atomic_valid(vma, bit))
+> +		set_bit(bit, &vma->__vm_flags);
+> +}
+> +
+> +/*
+> + * Test for VMA flag atomically. Requires no locks. Only specific valid flags
+> + * are allowed to do this.
+> + *
+> + * This is necessarily racey, so callers must ensure that serialisation is
+> + * achieved through some other means, or that races are permissible.
+> + */
+> +static inline bool vma_flag_test_atomic(struct vm_area_struct *vma, int bit)
+> +{
+> +	if (__vma_flag_atomic_valid(vma, bit))
+> +		return test_bit(bit, &vma->__vm_flags);
+> +}
 
-v4:
-- fix wording after huge_pages handler removal
+Hm clang is unhappy here.
 
-v6:
-- fix wording after map_pages handler removal
+./include/linux/mm.h:932:1: error: non-void function does not return a value in all control paths [-Werror,-Wreturn-type]
+  932 | }
+      | ^
+1 error generated.
 
-Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- Documentation/gpu/drm-mm.rst | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+I don't have CONFIG_WERROR enabled though, so not sure why it's not just a
+warning, as the function is unused until patch 5/8 which adds a "return
+false" here. So it's just a potential bisection annoyance with clang.
 
-diff --git a/Documentation/gpu/drm-mm.rst b/Documentation/gpu/drm-mm.rst
-index d55751cad67c..d69eab0b4093 100644
---- a/Documentation/gpu/drm-mm.rst
-+++ b/Documentation/gpu/drm-mm.rst
-@@ -290,15 +290,27 @@ The open and close operations must update the GEM object reference
- count. Drivers can use the drm_gem_vm_open() and drm_gem_vm_close() helper
- functions directly as open and close handlers.
- 
--The fault operation handler is responsible for mapping individual pages
--to userspace when a page fault occurs. Depending on the memory
--allocation scheme, drivers can allocate pages at fault time, or can
--decide to allocate memory for the GEM object at the time the object is
--created.
-+The fault operation handler is responsible for mapping pages to
-+userspace when a page fault occurs. Depending on the memory allocation
-+scheme, drivers can allocate pages at fault time, or can decide to
-+allocate memory for the GEM object at the time the object is created.
- 
- Drivers that want to map the GEM object upfront instead of handling page
- faults can implement their own mmap file operation handler.
- 
-+In order to reduce page table overhead, if the internal shmem mountpoint
-+"shm_mnt" is configured to use transparent huge pages (for builds with
-+CONFIG_TRANSPARENT_HUGEPAGE enabled) and if the shmem backing store
-+managed to allocate a huge page for a faulty address, the fault handler
-+will first attempt to insert that huge page into the VMA before falling
-+back to individual page insertion. mmap() user address alignment for GEM
-+objects is handled by providing a custom get_unmapped_area file
-+operation which forwards to the shmem backing store. For most drivers,
-+which don't create a huge mountpoint by default or through a module
-+parameter, transparent huge pages can be enabled by either setting the
-+"transparent_hugepage_shmem" kernel parameter or the
-+"/sys/kernel/mm/transparent_hugepage/shmem_enabled" sysfs knob.
-+
- For platforms without MMU the GEM core provides a helper method
- drm_gem_dma_get_unmapped_area(). The mmap() routines will call this to get a
- proposed address for the mapping.
--- 
-2.47.3
+Andrew could you move that hunk from to this patch? Thanks.
+
+> +
+>  static inline void vma_set_anonymous(struct vm_area_struct *vma)
+>  {
+>  	vma->vm_ops = NULL;
 
 
