@@ -4,116 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A3CBCCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 16:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0793CCCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 16:17:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13A388E0038; Mon, 10 Nov 2025 11:08:37 -0500 (EST)
+	id 483CE8E001F; Mon, 10 Nov 2025 11:17:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EA7B8E0003; Mon, 10 Nov 2025 11:08:37 -0500 (EST)
+	id 434148E0003; Mon, 10 Nov 2025 11:17:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF4858E0038; Mon, 10 Nov 2025 11:08:36 -0500 (EST)
+	id 2D4CB8E001F; Mon, 10 Nov 2025 11:17:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D22EB8E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:08:36 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 811D0C01AA
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:08:36 +0000 (UTC)
-X-FDA: 84095180232.22.2F28BA5
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C268720010
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:08:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jvCKFL3K;
-	spf=pass (imf03.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 18A608E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:17:19 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 437E5C01AE
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:17:18 +0000 (UTC)
+X-FDA: 84095202156.03.B30BBEB
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E7269100006
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:17:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WRlZN1Dt;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HtQdFl7J;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WRlZN1Dt;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HtQdFl7J;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762790914;
+	s=arc-20220608; t=1762791436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FuKiYqKXaLoC/HHi2F0UDEkiOMPWnRzm7yH74kwlVYw=;
-	b=DbaqleOhDHxPKXY3QZmCwf723EH+zmzlOrf6GkJX0/XD/CTdPj7D3bLgJlHCs5zI7FWc0Y
-	78WyLNPuR+uoJTqxYsXgVsfIF2EU6bulR9L2WX93mnUR7GFOKBTsexdHaS78gTBC5WGM7r
-	1LYzoJnxpi8idk99EIumpBHpRFd8geM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762790914; a=rsa-sha256;
+	bh=YrOBspxCbbKPnxtqzlAEE5iWqhCmDcU42GABocD1amU=;
+	b=5Qc/zz6A+6z8ptGvRnNz0L1jni5ZEyb/Vnzjgaa3z1whUDY0LRab9UUhnr0+vmSjyqd40Q
+	cDbFnsUr8VbsznRCj3Ebbq3r+pSxL77q1uqU/glDZ/iR+/E15DcCfVxbzanKQ7wNX3kDnD
+	La7iEpuzNLPkAMCeBUx83E5bVHHQKAg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762791436; a=rsa-sha256;
 	cv=none;
-	b=8Ukj8b3NGpHTaQMZl10TZKM0PwtUkvC+jZmSprmxnudgrjZncqIe81pGIhj5hI/pY8QihO
-	xt2RAXZgGTV1VR3BQTChB5rK2IEFEPpEdSSvemJV/BGUDS10/XXvmlviyaMjyhBVnCVH5X
-	/krra/Sac+TsT0o/1PoA03Qmh3oezbA=
+	b=lLbwLwMa1SjLI1SHWtOv2+5WWOaxQDqIyMIfddvFSCBUI5Nt/gShEfn1fTZlZSz4dIjbWS
+	zcunJh9dIVfUvvIr94/hz5oBHDqriYphDn471v+snPS5qrW6GPGlzLJDTBX8IdOmgEXgCI
+	CF2D8tJ+VX2AjmbS8GbH91/oVgPBNik=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jvCKFL3K;
-	spf=pass (imf03.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-340a5c58bf1so2206853a91.2
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:08:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762790914; x=1763395714; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FuKiYqKXaLoC/HHi2F0UDEkiOMPWnRzm7yH74kwlVYw=;
-        b=jvCKFL3K0hiBw01ifGYnJ2N7w7Ow0O3rN08Od/qNFe1dgp5k/31VZjmnuNVQ0t8h4g
-         xRqfUWETRdPxbFHPpEpQE7DuIb1Et96zs38FbsWQUJW0F7gego12FWnt34aI3Fk3KrDO
-         e+9bBSP3Ph9/Vk/Pjm1ktM+d15I/KHtPpfYmPXGSWsnlGA8g4uuVFXn/djWcc4DVJMVV
-         cVQLHKPb19F8E9RxGVZ0SA96UlDxUMlZRB+g/4lyHcLTTD/SuhtvcXRXHZbLeNSoBwDO
-         PPCvxUp7dLflzrJrXb+9e+LcJj2TY2UILNfXkG1SMs0YtK8JT+hUbznvwBN8Tk0HgndA
-         UZDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762790914; x=1763395714;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FuKiYqKXaLoC/HHi2F0UDEkiOMPWnRzm7yH74kwlVYw=;
-        b=SqVCoeuJKJGTbXZKNN9PBdDuwk345VVfU9NaU+fbPccErdjLZ3tafK1qxkbHMPx5PC
-         yTuS8uSraq2DRKl1hWxo2EjE/p0KgM1VlOft/C5lDUONsbSsFQ69yhvpHNJcannpHSbo
-         IBAhBVsUbWgv9vKUnAiQzoIsVWYDN7G9OnyrFHYeh0ztZZ/DY8kpL41hal213d5UEurB
-         7/r4366BxC4+BM0i5IxUGUnpzxp4oLtxPKAt5hyjGOFS1U4er1xKKYzlo/ijlw53s3zG
-         ZMXg34fFa1wkcZubVRIgOkg19EUXViK6vJ+9VW6gyatTm7pRbJsGRidFe0JF8jsqSJM0
-         144Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU9k8LMqu67v8Vyd2OaCgtx5NTaz4Vc3HItJEr2QJdmwvqOJq52xQP350nTHYHJz84GMAEhmRdFrQ==@kvack.org
-X-Gm-Message-State: AOJu0YwoHAXEmeaksNZtj1AostPkwls82ell//4qNmC5oLBTSEJ6Nw4o
-	tG69Bc3vwsT3AcXQb3+Vudia24raqEZIkoenJ84SGobjzv4dEAbc8zrC
-X-Gm-Gg: ASbGncuLuJMk6DKCOG1cxqdISu8dKBthYFRsRMRqwnI5bvFymMGg4ObzWZQZrpW+VfO
-	pjnqLpWrXv07ZL7lp2wppDOuRC8FrjJYLxwpzKQxp1pA09IX3GICuby5pT5is2BFjMoDb9F3taL
-	W5l+OvqpW+/T51LyFCKebnMP7WLexggM+XNKddU2/c9/2bQcpU09Rf0LMZk7jPms2/VRdYyTfmx
-	L5SSsiGuBNaI5gpMVQu74jbrQgrxyrCQH1/rMI0WTEDYIPg/lKyhs2WRLfEZbGBgExrblzYLSee
-	bJpJFZsgwK6iULCJhCY/Vw2McZ9NNeaSBPMs52rTqs/qBHWEMVSn4/rW3NHGvfWiHjkRmfB3G1x
-	py6u+7KY+VbskXKr0oxvG9BoKa9NCmm5g2+qNbLosUT7aA/W1S8bjiuAZzvgW43cYo1hysSToee
-	JY5PfLiy6qibqs8IJH3iCpJbZcNae8EqnyqgaufSuaIxg=
-X-Google-Smtp-Source: AGHT+IFxL86gMO8C+HEUrlebZRsB/XS5G9BUSOq9q06RQ47+OUHEKa103lg0GYFY88+iDHCfSgaIwA==
-X-Received: by 2002:a17:90b:1c0b:b0:330:7a32:3290 with SMTP id 98e67ed59e1d1-3436cd1cb48mr12509736a91.37.1762790913565;
-        Mon, 10 Nov 2025 08:08:33 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-34362f1f231sm9308893a91.10.2025.11.10.08.08.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 08:08:32 -0800 (PST)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: [PATCH 4/4] mm/vmalloc: cleanup gfp flag use in new_vmap_block()
-Date: Mon, 10 Nov 2025 08:04:57 -0800
-Message-ID: <20251110160457.61791-5-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251110160457.61791-1-vishal.moola@gmail.com>
-References: <20251110160457.61791-1-vishal.moola@gmail.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WRlZN1Dt;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HtQdFl7J;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WRlZN1Dt;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HtQdFl7J;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 56DAF1F81C;
+	Mon, 10 Nov 2025 16:17:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762791434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YrOBspxCbbKPnxtqzlAEE5iWqhCmDcU42GABocD1amU=;
+	b=WRlZN1DtAqT+PMxHhs21FZZKglAss9orVBCok9BiUdcNVF4BWPbgREkiQMWHjTRr9M0jhB
+	YfXTlaczmrbDJb2qkrIxWTTPohaYFMZDzP/Exu8cPjZTFfov/RQwflcvIWIlsbRXt+Y/b4
+	yBQqeggkkz8kar6oqBcLfhkKGVlMZPA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762791434;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YrOBspxCbbKPnxtqzlAEE5iWqhCmDcU42GABocD1amU=;
+	b=HtQdFl7J5kPMtvohpN3txIm0DYVUFWOXvTD07pOuox8uLKCNTa0lKyC3EF5/ttsrd6zbNJ
+	3m9tkwg2kKysFpAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762791434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YrOBspxCbbKPnxtqzlAEE5iWqhCmDcU42GABocD1amU=;
+	b=WRlZN1DtAqT+PMxHhs21FZZKglAss9orVBCok9BiUdcNVF4BWPbgREkiQMWHjTRr9M0jhB
+	YfXTlaczmrbDJb2qkrIxWTTPohaYFMZDzP/Exu8cPjZTFfov/RQwflcvIWIlsbRXt+Y/b4
+	yBQqeggkkz8kar6oqBcLfhkKGVlMZPA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762791434;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YrOBspxCbbKPnxtqzlAEE5iWqhCmDcU42GABocD1amU=;
+	b=HtQdFl7J5kPMtvohpN3txIm0DYVUFWOXvTD07pOuox8uLKCNTa0lKyC3EF5/ttsrd6zbNJ
+	3m9tkwg2kKysFpAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1885C144A2;
+	Mon, 10 Nov 2025 16:17:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wEKnBQoQEmmDewAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 10 Nov 2025 16:17:14 +0000
+Message-ID: <2bbccc79-d64e-4ace-a528-37295e3f8a4d@suse.cz>
+Date: Mon, 10 Nov 2025 17:17:13 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/8] mm: set the VM_MAYBE_GUARD flag on guard region
+ install
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
+References: <cover.1762531708.git.lorenzo.stoakes@oracle.com>
+ <99ce6131e27592c92b43ac866da48b4c2a568298.1762531708.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <99ce6131e27592c92b43ac866da48b4c2a568298.1762531708.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C268720010
-X-Stat-Signature: n5gxs59do5fxi6nztwru99rho4ty33pw
-X-HE-Tag: 1762790914-698643
-X-HE-Meta: U2FsdGVkX1/AnXgcjfBZCnbwUL26riJ14Iu1mITzDxzLiSxUzr0DuLiaGldCCtR5SWCTcq0A26Tg9C33e63xS0r10qhrblQUBfdg6u96fivEaopSYNQDqJIkofmDJWTHGKig7/ExwRsvuRrDuEt42B+54ee/uKgkhtDf2ljUW8lvXj1UE/EKgSrZTMTI/JMRwdB5j8Jjr/1yIS8QXidkCnOtiYPymoC790kFWGNOgpdyrq57uheO2M+zi8z2ivVghUuIK9nWMYUEOKiwnrGakkhuHInGjumq3yboqar3vXOK3abshiDxVI4WHWau25tPJBeI0L3aZbSbuepcrRGRO0LGCevd5K04UpXCQOFKrJr7ZThE2Y6YCUTtPassI/UcH13jAegThA6lwT5g22GC4Tb3IGHhQlIeIPaVRU5ljf6RBkEWNlub8CKSVf6KzXcGtR0Po4C08OE8vW/Fvg/BYWwhsV21n2Kox6HRxTnGAUkcVU2cSMTi5BRTmpuYHOdfLMkxghqFia8febY8b4fjCoUa1O/LLnqZQsEuc0yt0A04uxjlqIIomZ8RmJJiLv7Yfq7I5aedmbHq36KJg2Yzt4M8vYaw/rylGSB292NiBfGn88fThASOzdrMRxW5/NUTa4tbPM06pstG9PWEC/hJuMdQJSQOB4/MJAGB3g7Pl0PjmrMNo/84przPhBZz9lx/nYILjhH3EPYNOLapP3D3UQdnTTIlzOFhrjCt5yTlcCID6X2CTiidLk6oLcMH10m3bNn4QtXSc13KczvwWUN1Qz3V4HK8JMWjuJCi6b1zCUyy1nVPtHJy4NgDMs38kaMsgd/Webex8s7JlvduZq7rWpyBdQg90c18lf1G/KSO19VEG+IJZOu7d7NFaVXagW4UULcCdXMwg0Byhe9CZjHNgpen5Bi7aYOoRDmvDgXRca5EDs6yOOXio0iQncrQC2NK4tdMF59A1KcZia+8XEJ
- mxx8iiwP
- UFTWWFYIDGo2+R+5EA4o1+pAbDvgWctUlZDLwAtRxtTR1VmsKFZNT6NOuaxjTJGcpKAbT3HkGv5DvXZxrIFWk/FmF3MhbcITl5cOAy4vqCVh71jbZboAe3t+mE9Xx3UDNipkmbk7f2t9yHKkWAfB4NkDVkVhpz3W7SDqqR+P1ohQR5GbGo70PSzm5QF3pQwNJZ0bb/gLMgX48uqUYchjsl/vpG7t1fz6ApbQUbagQwu9JmYk=
+X-Rspamd-Queue-Id: E7269100006
+X-Stat-Signature: pn1dhr1tq1rp45a5f79xatnxtymp8onc
+X-HE-Tag: 1762791435-335500
+X-HE-Meta: U2FsdGVkX1/sNiKMcI2kxLjagIgRa1Komq9O4sgPN0mwiPreeiO2NapW8ju+FSTrFPcsy60xgDOTmU0rR+SkPuB22oya2LeHVMAI14fhn7HbP/+7Oroe/P2f9ZqkBwNtRXlCV2N7wQnhTm7jkjdLbHVXJTwM8AJJINU2JwshYx4bDP/+diKvO5mt5A5El4isFjZC3+I3WJkbpWMM/MaMlbmAql/TkaqbAOD1MCZ8mUhfiWhZNDRYhNHwrMMGBJyjYGfsIMLfKsqYcMYjNyDp6HuxLEznqvRGJToCy5q/n8vdqoKm1IDQM0+rJlhNciXC/vEsIMXxd/Lg84yGIJaeLpkEi7oOMap9joHPNcdwL/t/NtglhsG1RK54Nf4zYyu4OvOnWCXz9L1Z09Ch3K9e1p0GXomIPqlhLQ5PcYWr4e0muKGLdfrdBuNp31wgsv10Vk0fLOQ81eMr03WCBc86DmgCJOr9zMCADT2d4c48ngYxm01e0YY1oExGsN9Rj2yUE3ZTz95ns0rRorhFUPUJz6rVAUn2Se6sy2ZLDqqlmmLFJng2yGtz9L55CM0E84yv+9O2FK2OOJ+V3NRpukp6Ep7JZw9vP1IKnl2adReauTfUFWFooYrnIof6diN8IaRrmG3Oa1EOO5mJLKPV5KcmwjNvymB9Mavlsr+5AZE/XHti0NtikQbkzmemv3NiwtxsmkE5H/iZf6wKDNpe2BtHCrnglrNxxUcWpeGLpFAKelQ7Y7tJun6lN+4VsyuhggzIc2Pu2bp4vQKbZEP0Phks+T6IEdtiLcNT+hTsZX4e5dww0vEPwjjUKzEfT9jGgRcyDTvpTqBk9GhqFlFAK2BtTDOgl8SqDhS1Cfx/fwNFpT3YZKfF+l+orEC0fAmsfKOyW1YlQgEul0dFoPTRVSFULgHQ3347ITXhhVtNFEnh/oxO087uoJp52pAonOdtOfRciGwPza6UDgKaIJtDRYJ
+ 9lo0yK/Q
+ cH3ROcTOHw/81egk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,31 +191,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The only caller, vb_alloc(), passes GFP_KERNEL into new_vmap_block()
-which is a subset of GFP_RECLAIM_MASK. Since there's no reason to use
-this mask here, remove it.
+On 11/7/25 17:11, Lorenzo Stoakes wrote:
+> Now we have established the VM_MAYBE_GUARD flag and added the capacity to
+> set it atomically, do so upon MADV_GUARD_INSTALL.
+> 
+> The places where this flag is used currently and matter are:
+> 
+> * VMA merge - performed under mmap/VMA write lock, therefore excluding
+>   racing writes.
+> 
+> * /proc/$pid/smaps - can race the write, however this isn't meaningful as
+>   the flag write is performed at the point of the guard region being
+>   established, and thus an smaps reader can't reasonably expect to avoid
+>   races. Due to atomicity, a reader will observe either the flag being set
+>   or not. Therefore consistency will be maintained.
+> 
+> In all other cases the flag being set is irrelevant and atomicity
+> guarantees other flags will be read correctly.
+> 
+> Note that non-atomic updates of unrelated flags do not cause an issue with
+> this flag being set atomically, as writes of other flags are performed
+> under mmap/VMA write lock, and these atomic writes are performed under
+> mmap/VMA read lock, which excludes the write, avoiding RMW races.
+> 
+> Note that we do not encounter issues with KCSAN by adjusting this flag
+> atomically, as we are only updating a single bit in the flag bitmap and
+> therefore we do not need to annotate these changes.
+> 
+> We intentionally set this flag in advance of actually updating the page
+> tables, to ensure that any racing atomic read of this flag will only return
+> false prior to page tables being updated, to allow for serialisation via
+> page table locks.
+> 
+> Note that we set vma->anon_vma for anonymous mappings. This is because the
+> expectation for anonymous mappings is that an anon_vma is established
+> should they possess any page table mappings. This is also consistent with
+> what we were doing prior to this patch (unconditionally setting anon_vma on
+> guard region installation).
+> 
+> We also need to update retract_page_tables() to ensure that madvise(...,
+> MADV_COLLAPSE) doesn't incorrectly collapse file-backed ranges contain
+> guard regions.
+> 
+> This was previously guarded by anon_vma being set to catch MAP_PRIVATE
+> cases, but the introduction of VM_MAYBE_GUARD necessitates that we check
+> this flag instead.
+> 
+> We utilise vma_flag_test_atomic() to do so - we first perform an optimistic
+> check, then after the PTE page table lock is held, we can check again
+> safely, as upon guard marker install the flag is set atomically prior to
+> the page table lock being taken to actually apply it.
+> 
+> So if the initial check fails either:
+> 
+> * Page table retraction acquires page table lock prior to VM_MAYBE_GUARD
+>   being set - guard marker installation will be blocked until page table
+>   retraction is complete.
+> 
+> OR:
+> 
+> * Guard marker installation acquires page table lock after setting
+>   VM_MAYBE_GUARD, which raced and didn't pick this up in the initial
+>   optimistic check, blocking page table retraction until the guard regions
+>   are installed - the second VM_MAYBE_GUARD check will prevent page table
+>   retraction.
+> 
+> Either way we're safe.
+> 
+> We refactor the retraction checks into a single
+> file_backed_vma_is_retractable(), there doesn't seem to be any reason that
+> the checks were separated as before.
+> 
+> Note that VM_MAYBE_GUARD being set atomically remains correct as
+> vma_needs_copy() is invoked with the mmap and VMA write locks held,
+> excluding any race with madvise_guard_install().
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
----
- mm/vmalloc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 970ee6756909..eb4e68985190 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2699,8 +2699,7 @@ static void *new_vmap_block(unsigned int order, gfp_t gfp_mask)
- 
- 	node = numa_node_id();
- 
--	vb = kmalloc_node(sizeof(struct vmap_block),
--			gfp_mask & GFP_RECLAIM_MASK, node);
-+	vb = kmalloc_node(sizeof(struct vmap_block), gfp_mask, node);
- 	if (unlikely(!vb))
- 		return ERR_PTR(-ENOMEM);
- 
--- 
-2.51.1
+Small nit below:
+
+> @@ -1778,15 +1801,16 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>  			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>  
+>  		/*
+> -		 * Huge page lock is still held, so normally the page table
+> -		 * must remain empty; and we have already skipped anon_vma
+> -		 * and userfaultfd_wp() vmas.  But since the mmap_lock is not
+> -		 * held, it is still possible for a racing userfaultfd_ioctl()
+> -		 * to have inserted ptes or markers.  Now that we hold ptlock,
+> -		 * repeating the anon_vma check protects from one category,
+> -		 * and repeating the userfaultfd_wp() check from another.
+> +		 * Huge page lock is still held, so normally the page table must
+> +		 * remain empty; and we have already skipped anon_vma and
+> +		 * userfaultfd_wp() vmas.  But since the mmap_lock is not held,
+> +		 * it is still possible for a racing userfaultfd_ioctl() or
+> +		 * madvise() to have inserted ptes or markers.  Now that we hold
+> +		 * ptlock, repeating the anon_vma check protects from one
+> +		 * category, and repeating the userfaultfd_wp() check from
+> +		 * another.
+
+The last part of the comment is unchanged and mentions anon_vma check and
+userfaultfd_wp() check which were there explicitly originally, but now it's
+a file_backed_vma_is_retractable() check that also includes the guard region
+check, so maybe could be updated?
+
+>  		 */
+> -		if (likely(!vma->anon_vma && !userfaultfd_wp(vma))) {
+> +		if (likely(file_backed_vma_is_retractable(vma))) {
+>  			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+>  			pmdp_get_lockless_sync();
+>  			success = true;
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 67bdfcb315b3..de918b107cfc 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -1139,15 +1139,21 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+>  		return -EINVAL;
+>  
+>  	/*
+> -	 * If we install guard markers, then the range is no longer
+> -	 * empty from a page table perspective and therefore it's
+> -	 * appropriate to have an anon_vma.
+> -	 *
+> -	 * This ensures that on fork, we copy page tables correctly.
+> +	 * Set atomically under read lock. All pertinent readers will need to
+> +	 * acquire an mmap/VMA write lock to read it. All remaining readers may
+> +	 * or may not see the flag set, but we don't care.
+> +	 */
+> +	vma_flag_set_atomic(vma, VM_MAYBE_GUARD_BIT);
+> +
+> +	/*
+> +	 * If anonymous and we are establishing page tables the VMA ought to
+> +	 * have an anon_vma associated with it.
+>  	 */
+> -	err = anon_vma_prepare(vma);
+> -	if (err)
+> -		return err;
+> +	if (vma_is_anonymous(vma)) {
+> +		err = anon_vma_prepare(vma);
+> +		if (err)
+> +			return err;
+> +	}
+>  
+>  	/*
+>  	 * Optimistically try to install the guard marker pages first. If any
 
 
