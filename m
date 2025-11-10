@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 330A7CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 23:21:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E4E7CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 23:21:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 953618E000C; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
+	id A8AD68E000D; Mon, 10 Nov 2025 18:21:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929C38E0003; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
+	id A626A8E0003; Mon, 10 Nov 2025 18:21:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 868018E000C; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
+	id 99F688E000D; Mon, 10 Nov 2025 18:21:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 764358E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 18:21:17 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36E1786D18
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:17 +0000 (UTC)
-X-FDA: 84096270594.05.A5F692D
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 841D114000A
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mmWY40qN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 89D7A8E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 18:21:22 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 080CC1402F0
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:22 +0000 (UTC)
+X-FDA: 84096270804.14.78E3205
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3CCDD12000A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X4c+7Vyx;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762816875;
+	s=arc-20220608; t=1762816880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=46TR/sEczQ+2endRnnVwUIJHB5dy7B94vjCFZXto+D4=;
-	b=6ms7AkK6aHtjkWaE/ky2vbVb3+TmVlnWuyp2lymh4BPwDTV8O8LsFo4EcxTcfK3VSfDNOk
-	CFpXV0FPXfb/okf7IpIxMU8MSAi2dlKFv784+dbQMPLov73lpanctcYQUMIZ6SAibp0k8M
-	b1lZjwWwtkPKmwYhEuSa+/cw81Cg1VI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762816875; a=rsa-sha256;
+	bh=lysW96W1EmnFFHlgmtNEYrJza4enbLaPzVpDvxDjGNQ=;
+	b=fyYo/j6TAEfkF/Q9fWzdxYHgPdien8rsDlx4q7gcg/31L0pmx/HjpiFOt5zErD5eyw4q+m
+	Ly8X+dQ6Oh+iZgYUnfqwvtuEP3jxXNq1hBpt8mPT16E8dFcbY0wE5Wba/qNxuLU3XlFaw7
+	5PA6A1/dEgUKpp1acNgyJfLTbj1ZSZ8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762816880; a=rsa-sha256;
 	cv=none;
-	b=D65lAdYogydYl+OQwY8NCiYNL7XQ5z2EFcMaf2x+vF/eR11s5rBOma9hXsq6rJ+xdzX62S
-	4EG5u3ymv+8j4ZZQCvnLuMw3Gp+88rM+pFXflbI9wESGCfTCbTi98hfkvNKW4+qfrssApU
-	TvSRhy6iVxVnli/7SJqMOkhfqjU4/wU=
+	b=J8ppC78movYIyzC3aBugd174gPHauHKNBjkgcEAmZU4oqTD+3KzfGybODoYX8/CgS15m51
+	0vR2zY4M5eKVpjja9C4ieGeT/jam0fzUoardmyAT/jfLz8IwqGt0GfWXGFsy0+VxEX2iju
+	XGX5e3iL6Q6OgXBE3vh1LmGQ5dTyWT0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mmWY40qN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X4c+7Vyx;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762816874;
+	t=1762816877;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=46TR/sEczQ+2endRnnVwUIJHB5dy7B94vjCFZXto+D4=;
-	b=mmWY40qN6VIF9ZxDo3HqTObvI92nLXnIOdn9QVUEniqCl+Q/AcuqeInjI3fOW+Drh5TLpA
-	amlVqxwCPeEVsVDwCDbuiPFQpFlv30CJHJtBjDcnshma286fhPwsh3aiYmvELvFdy2MXDd
-	R9Mv7CVSiOawTROCn3U/VA4oK9rpYgE=
+	bh=lysW96W1EmnFFHlgmtNEYrJza4enbLaPzVpDvxDjGNQ=;
+	b=X4c+7VyxY6HfvIJvlc94nZqVXjd6UGao/+wY3ZSW8aRNNVfIQBFkDBtQKgi0EPUX+AOmpz
+	EyOywj6kMmJdY5bFDCW/9ay/25AgeaRzgBZ4JO5btKLtAfePuPV9Jl8k3tMg/1RhpW9y9R
+	WSJR52Vcc1McW39v0PLZZvvceHO1+0c=
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
@@ -72,22 +72,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Meta kernel team <kernel-team@meta.com>
-Subject: [PATCH 2/4] memcg: remove __mod_lruvec_kmem_state
-Date: Mon, 10 Nov 2025 15:20:06 -0800
-Message-ID: <20251110232008.1352063-3-shakeel.butt@linux.dev>
+Subject: [PATCH 3/4] memcg: remove __mod_lruvec_state
+Date: Mon, 10 Nov 2025 15:20:07 -0800
+Message-ID: <20251110232008.1352063-4-shakeel.butt@linux.dev>
 In-Reply-To: <20251110232008.1352063-1-shakeel.butt@linux.dev>
 References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: jr5ampiyocz1rtajqqfau7x31ze5oftq
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3CCDD12000A
+X-Stat-Signature: 33hfu6z77rguks3re18j848nz5ma7ygr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 841D114000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762816875-579802
-X-HE-Meta: U2FsdGVkX1+wF2qqa4CFDLAQ2whW/SfFh+a8WUNOVnlmN4JwaGcIoolXlUm2n8rgU7l0gJeF2tAiSeNtRPXHMDfTeP+MSluzuOQhQnsORYOuO7zEKVdiOppo4u3vDONfirPSwGz8nLgboZonnBFnjqO3Q4RPh3SOvfadj1Ezvar2qOgnRmYkKR+gB6OGdQdp1D8Np1z4Vpy+vdNnHV3i7AjxC/P7jgqPY5vOve+gn2yd7Ty7yUY4eCjnKBB4RRbEzRDbxowzgD1Q936tlEz8P61gFIN0OIBvW+S64BPbfbvALL/Iatx7uK0Kn9IY4J1j01Z2yfXvCOHz+xfT12mjwaPW+2acdJvvab6/hvoFvIcGKIyEUfVLedJB9q1nSKNjwfExMHIO1eAQRIfgA5NZ/qvAO3IMRn63yAAA0KeHrAroHqXMBvlor4Cgylk2O/Z4RUui3ZUIP8C4sclDD2ZblCawPj0ZC7zQkRkmgceE26VD8tP0RpErCCAlB00itBJFpAikXpDF4CHYm+KedaZf+V++Wy+AJDByc7/CZAMVDd3vRtCu6SF0ifabY/tX8KBNxo8qLc21Mz92UzcTLZ8yOJMoK3hxSc1wQhNr48lOkd9SLEgvpwsQjwm14Tt3bay/c9TzqusY3WHSrY/F2KfMUOz+zZJ62t5DFuBPym66mjMWOuSibjQiMc7wGkoYciMCf0VGY9phVrsaMqPCZsji9bd+y3z3TFEDaujfS73yUVwI80JyyunBcGp08K8WBNB+2QWiyMRE0QblzolXoxuk5nh6d9mF4VqFdqaJutcIKoapsBcBktXuIJjD3FYMKJhmfODkHCixt4PPeNdbzhsCA5B8Ge8a133dk29NaQu6vLuT4lrn/pMJ+zxdmR9CKpVNj7phnsnvrH3cp2Fqk8ZI+FKUp6rfmUw3XjriH1kQ9R54pkNwMZ8i7kt6r41vhaRIrY8zzKdpKAvFpEWJwM5
- 7aAsG0td
- wLapFlDro9MBcwiaMZVS/zHM5vGkHwmKSVFkwp52EjI89os1vd9ip9/lrueCKvDIoZUIGe7Z0mGh0VliVh9LbBpANRYdYg/fJKNinnEwy6so0zWEmXOSaQDfwHHhPqwMzQ+VnrPmLoOuJlc9jCYlTMI+a7cCG3u/Z+bUkQCi5n+nWEoAt0xvO+BnbHJv9VaVzsWgIEwAIFJeEOKrxWhSTHN1j1+hJkuzSq3/LKSjX15DhX4jMI8otRONwPQwpNg3avQVWY6cYvd1JksGiaUSkq/5mpA==
+X-HE-Tag: 1762816879-548712
+X-HE-Meta: U2FsdGVkX18+nAqeufrKCvhfqG9eH9Hnh5PTu3PaaqvOe6oOJcQg8LcbN3Algqmf9PJkcoWb3STDMvh0W6OoQVxI1BwS5CS2qHdrVjRiUXiNJtIAIeg9IgHgB7R2/Dpt9YccTv2fOyB+W+XaaaGsUDjxDiAA6JlKidIr3O14U9+UTCWxzZ3tEZM+VOHvFwmNKufJZWuaiEuGINz3kKjDYqbrVoA3iMasUwNC2dT0zj1FEB5DpqgwqF9ya9MQ/C+pVRAfF2njeyr3Wmb4HpmnMQRzO4qA9mABIW3F0FDKT+r2UiEsa3x8JwxxAZmPmx3rY9S1YPviiEeznz3pwPkC0YMhBJ38RVm8Zt6Ob0y+1ZcOKbXZMkusiHUaVcckS4zOnKT8tB9hwrd94zREnXiAfDXTLMjD4xISlDdaGOSiM1zaT7JX1QjDmHYtT5rXAU0JDDQLbBi8FOuHXSjoAzLAmPc+yPawSCmoziFbivCZXNfmTkA7YO9ALJON4qC1Dt6sBWAWY1tAzDM6+MHijEnUoB7qhU0yzEvqBK1axc6+GXwux3CM2vqcLD0uYwI+bvULMpHxl8Qe0lh3c5kBemN9VihC1O/DGjZkiNqwX1ZViugLlHzOTzfYwKhf41xG/u2/srcbGfFDHUDemUeDU/8dnbFjlexIiYcWxY1ykm1BNwXJv/NW8poAhvFwrjsrbgLzN/Ej/fixHG8n24sNUyrTqi8SnDZiDMYcq3pxo3Q3pqTjOV3hYACMHzq1JNnr8K1dqZnWycFwFXXSsZWt7H3fsBucLqf8dudYsAaAHqzaSJXYaNIZEG4LQagnHKCe3Uu6T7uRQiRqoxbhz/TvueUjrTHADJyxiVaje4E+E7U4QeMA2MFGZ5kYcxriYnV6ItYJogj9jyhu7zg+K7/HPmcOtr64+Mq1Emg2wGPqYESgGd1HNkktVUCjxaM78m5ZDSfMCWru3Q/VYr/Coz0QD/J
+ uWDETeHL
+ kjCyFjmlXGKHaMPfAoStAIwCwrZUCJVQ+zvQTYW54EQoK9i8mFa0b68WdfQo+3w5howjOIycQfCzi+rbCpyqAEw67rjcCSJPDwiLfbumPClkHLy4OWtuKJZIM9wAFpFnmtN7pPZzBjun0IglWiKV0Nmtc00tITfDKc0wTtl1FhfAt3pwoK1m8mTL4p1B9iurFE91IOB0gwj2i2pfZ5EZFeZTSHzCngVT9fn3EIHGcJyIkmUPDQ3EEzlJpv3AKKrruMV+qIpul9S5ZOXxSwCphaWj2RBogJBEVYCLR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,101 +96,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The __mod_lruvec_kmem_state is already safe against irqs, so there is no
-need to have a separate interface (i.e. mod_lruvec_kmem_state) which
+The __mod_lruvec_state is already safe against irqs, so there is no
+need to have a separate interface (i.e. mod_lruvec_state) which
 wraps calls to it with irq disabling and reenabling. Let's rename
-__mod_lruvec_kmem_state to mod_lruvec_kmem_state.
+__mod_lruvec_state to mod_lruvec_state.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/memcontrol.h | 28 +++++-----------------------
- mm/memcontrol.c            |  2 +-
- mm/workingset.c            |  2 +-
- 3 files changed, 7 insertions(+), 25 deletions(-)
+ include/linux/mm_inline.h |  2 +-
+ include/linux/vmstat.h    | 18 +-----------------
+ mm/memcontrol.c           |  8 ++++----
+ mm/migrate.c              | 20 ++++++++++----------
+ mm/vmscan.c               |  4 ++--
+ 5 files changed, 18 insertions(+), 34 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index f82fac2fd988..1384a9d305e1 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -957,17 +957,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
- void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index 795b255abf65..d7b963255012 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -44,7 +44,7 @@ static __always_inline void __update_lru_size(struct lruvec *lruvec,
+ 	lockdep_assert_held(&lruvec->lru_lock);
+ 	WARN_ON_ONCE(nr_pages != (int)nr_pages);
  
--void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val);
--
--static inline void mod_lruvec_kmem_state(void *p, enum node_stat_item idx,
--					 int val)
+-	__mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
++	mod_lruvec_state(lruvec, NR_LRU_BASE + lru, nr_pages);
+ 	__mod_zone_page_state(&pgdat->node_zones[zid],
+ 				NR_ZONE_LRU_BASE + lru, nr_pages);
+ }
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 11a37aaa4dd9..4eb7753e6e5c 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -520,19 +520,9 @@ static inline const char *vm_event_name(enum vm_event_item item)
+ 
+ #ifdef CONFIG_MEMCG
+ 
+-void __mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 			int val);
+ 
+-static inline void mod_lruvec_state(struct lruvec *lruvec,
+-				    enum node_stat_item idx, int val)
 -{
 -	unsigned long flags;
 -
 -	local_irq_save(flags);
--	__mod_lruvec_kmem_state(p, idx, val);
+-	__mod_lruvec_state(lruvec, idx, val);
 -	local_irq_restore(flags);
 -}
-+void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val);
- 
- void count_memcg_events(struct mem_cgroup *memcg, enum vm_event_item idx,
- 			unsigned long count);
-@@ -1403,14 +1393,6 @@ static inline void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg)
- {
- }
- 
--static inline void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx,
--					   int val)
--{
--	struct page *page = virt_to_head_page(p);
 -
--	mod_node_page_state(page_pgdat(page), idx, val);
+ void __lruvec_stat_mod_folio(struct folio *folio,
+ 			     enum node_stat_item idx, int val);
+ 
+@@ -554,12 +544,6 @@ static inline void mod_lruvec_page_state(struct page *page,
+ 
+ #else
+ 
+-static inline void __mod_lruvec_state(struct lruvec *lruvec,
+-				      enum node_stat_item idx, int val)
+-{
+-	mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
 -}
 -
- static inline void mod_lruvec_kmem_state(void *p, enum node_stat_item idx,
- 					 int val)
+ static inline void mod_lruvec_state(struct lruvec *lruvec,
+ 				    enum node_stat_item idx, int val)
  {
-@@ -1470,14 +1452,14 @@ struct slabobj_ext {
- #endif
- } __aligned(8);
- 
--static inline void __inc_lruvec_kmem_state(void *p, enum node_stat_item idx)
-+static inline void inc_lruvec_kmem_state(void *p, enum node_stat_item idx)
- {
--	__mod_lruvec_kmem_state(p, idx, 1);
-+	mod_lruvec_kmem_state(p, idx, 1);
- }
- 
--static inline void __dec_lruvec_kmem_state(void *p, enum node_stat_item idx)
-+static inline void dec_lruvec_kmem_state(void *p, enum node_stat_item idx)
- {
--	__mod_lruvec_kmem_state(p, idx, -1);
-+	mod_lruvec_kmem_state(p, idx, -1);
- }
- 
- static inline struct lruvec *parent_lruvec(struct lruvec *lruvec)
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index f4b8a6414ed3..3a59d3ee92a7 100644
+index 3a59d3ee92a7..c31074e5852b 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -799,7 +799,7 @@ void __lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+@@ -757,7 +757,7 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ }
+ 
+ /**
+- * __mod_lruvec_state - update lruvec memory statistics
++ * mod_lruvec_state - update lruvec memory statistics
+  * @lruvec: the lruvec
+  * @idx: the stat item
+  * @val: delta to add to the counter, can be negative
+@@ -766,7 +766,7 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+  * function updates the all three counters that are affected by a
+  * change of state at this level: per-node, per-cgroup, per-lruvec.
+  */
+-void __mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
++void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 			int val)
+ {
+ 	/* Update node */
+@@ -794,7 +794,7 @@ void __lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+ 	}
+ 
+ 	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-	__mod_lruvec_state(lruvec, idx, val);
++	mod_lruvec_state(lruvec, idx, val);
+ 	rcu_read_unlock();
  }
  EXPORT_SYMBOL(__lruvec_stat_mod_folio);
+@@ -818,7 +818,7 @@ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
+ 		mod_node_page_state(pgdat, idx, val);
+ 	} else {
+ 		lruvec = mem_cgroup_lruvec(memcg, pgdat);
+-		__mod_lruvec_state(lruvec, idx, val);
++		mod_lruvec_state(lruvec, idx, val);
+ 	}
+ 	rcu_read_unlock();
+ }
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 567dfae4d9f8..be00c3c82f3a 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -675,27 +675,27 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 		old_lruvec = mem_cgroup_lruvec(memcg, oldzone->zone_pgdat);
+ 		new_lruvec = mem_cgroup_lruvec(memcg, newzone->zone_pgdat);
  
--void __mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
-+void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
- {
- 	pg_data_t *pgdat = page_pgdat(virt_to_page(p));
- 	struct mem_cgroup *memcg;
-diff --git a/mm/workingset.c b/mm/workingset.c
-index d32dc2e02a61..892f6fe94ea9 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -749,7 +749,7 @@ static enum lru_status shadow_lru_isolate(struct list_head *item,
- 	if (WARN_ON_ONCE(node->count != node->nr_values))
- 		goto out_invalid;
- 	xa_delete_node(node, workingset_update_node);
--	__inc_lruvec_kmem_state(node, WORKINGSET_NODERECLAIM);
-+	inc_lruvec_kmem_state(node, WORKINGSET_NODERECLAIM);
+-		__mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
+-		__mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
++		mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
++		mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
+ 		if (folio_test_swapbacked(folio) && !folio_test_swapcache(folio)) {
+-			__mod_lruvec_state(old_lruvec, NR_SHMEM, -nr);
+-			__mod_lruvec_state(new_lruvec, NR_SHMEM, nr);
++			mod_lruvec_state(old_lruvec, NR_SHMEM, -nr);
++			mod_lruvec_state(new_lruvec, NR_SHMEM, nr);
  
- out_invalid:
- 	xa_unlock_irq(&mapping->i_pages);
+ 			if (folio_test_pmd_mappable(folio)) {
+-				__mod_lruvec_state(old_lruvec, NR_SHMEM_THPS, -nr);
+-				__mod_lruvec_state(new_lruvec, NR_SHMEM_THPS, nr);
++				mod_lruvec_state(old_lruvec, NR_SHMEM_THPS, -nr);
++				mod_lruvec_state(new_lruvec, NR_SHMEM_THPS, nr);
+ 			}
+ 		}
+ #ifdef CONFIG_SWAP
+ 		if (folio_test_swapcache(folio)) {
+-			__mod_lruvec_state(old_lruvec, NR_SWAPCACHE, -nr);
+-			__mod_lruvec_state(new_lruvec, NR_SWAPCACHE, nr);
++			mod_lruvec_state(old_lruvec, NR_SWAPCACHE, -nr);
++			mod_lruvec_state(new_lruvec, NR_SWAPCACHE, nr);
+ 		}
+ #endif
+ 		if (dirty && mapping_can_writeback(mapping)) {
+-			__mod_lruvec_state(old_lruvec, NR_FILE_DIRTY, -nr);
++			mod_lruvec_state(old_lruvec, NR_FILE_DIRTY, -nr);
+ 			__mod_zone_page_state(oldzone, NR_ZONE_WRITE_PENDING, -nr);
+-			__mod_lruvec_state(new_lruvec, NR_FILE_DIRTY, nr);
++			mod_lruvec_state(new_lruvec, NR_FILE_DIRTY, nr);
+ 			__mod_zone_page_state(newzone, NR_ZONE_WRITE_PENDING, nr);
+ 		}
+ 	}
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index ba760072830b..b3231bdde4e6 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2019,7 +2019,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+ 	spin_lock_irq(&lruvec->lru_lock);
+ 	move_folios_to_lru(lruvec, &folio_list);
+ 
+-	__mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
++	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+ 					stat.nr_demoted);
+ 	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+ 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
+@@ -4745,7 +4745,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		reset_batch_size(walk);
+ 	}
+ 
+-	__mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
++	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+ 					stat.nr_demoted);
+ 
+ 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
 -- 
 2.47.3
 
