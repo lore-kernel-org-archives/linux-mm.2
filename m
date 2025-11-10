@@ -4,93 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 487B1CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F09ACCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:16:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D66C8E000C; Mon, 10 Nov 2025 04:15:39 -0500 (EST)
+	id 69CA48E0012; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 586D88E0002; Mon, 10 Nov 2025 04:15:39 -0500 (EST)
+	id 6742B8E0002; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C3EC8E000C; Mon, 10 Nov 2025 04:15:39 -0500 (EST)
+	id 5B1548E0012; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 327F58E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:15:39 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC5464CA32
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:15:38 +0000 (UTC)
-X-FDA: 84094139556.21.BB35E4F
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1DA1140010
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:15:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 3OK0RaQkbACkXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3OK0RaQkbACkXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 476E88E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02D0D1A0CE7
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:16:53 +0000 (UTC)
+X-FDA: 84094142748.16.624A159
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E7DE9A0006
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:16:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OPK0YSVX;
+	spf=pass (imf15.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762766137;
+	s=arc-20220608; t=1762766212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=/Zw4H4q2wOKBy+vIN+Jq4WgxmoSs6+RdPp0F0J5oQVA=;
-	b=ojRXO+LkckTZoBL5YCHEag7FGSq3UxV1SxBfM0cwfLd0cYo/P8EOMkSWcCiBY8cH4CcDYX
-	6YIAYCsw6Tz1HEDg5ZRDWbjnEQHeGUbpszs21wTOmps3siWzaqUF1H9mwqiCnZwIKhFAF0
-	1QJX9DWP5i5M3qoOdys7/ajOITskxi0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rK7jfs9gqvXaLNimcAlCkzrJKccO+YVTZrJh68Wev+0=;
+	b=UM2ZuA8vbyUrrIFf2S9cMn3i1EVKchStc2dzXODGYxg7imDZihjAIqCQfhRNQDmR5gd1C+
+	bXa9TIsmR53L5IUsNuwnw3wKFO2xRFtF2AvO34EoM5TnAxrv2IqoFY612XxEem7vPVe8cw
+	EeIMAJGYc019NNdU2fpP+q+TtXCs/A4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 3OK0RaQkbACkXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3OK0RaQkbACkXdePFQQJWFUUNI.LTTLQJZXJWHTSYJSY.HTR@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762766137; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OPK0YSVX;
+	spf=pass (imf15.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762766212; a=rsa-sha256;
 	cv=none;
-	b=rXN3P/Z+sm/bjwU6C0UXWw+8BqBdRP5s0xYKOit+Px7/LDq8nST1wB3J1/MOowhlh+jXSA
-	wRgNDXz/9HGC2tSGTnLWAKSGQg7rbJ3Bk07gLHpKy3w2+jGy0Duixe9nxCCbx+PzwFyV0r
-	FQUioMN0FEoNdYgN/sF15oOFZuLChdg=
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-432f8352633so82767165ab.0
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:15:36 -0800 (PST)
+	b=ks5fN8iKWHCV1aynIxBWrMdouBuuABTxoKpzLme3LOF/2Me7GwytDRjFk276ZHhjDDTY2/
+	nBwkd0+niQFxSQJZb8gCPvICLSEvSpbLYrEZv9Vs/i09ng2JaZqLz3+tVCvVQvrCQpDsXj
+	RAozRHA9Lo6wB+SDkuHXwU+nMFX8JDc=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-591ec7af7a1so2337362e87.3
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:16:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762766210; x=1763371010; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rK7jfs9gqvXaLNimcAlCkzrJKccO+YVTZrJh68Wev+0=;
+        b=OPK0YSVXq42D1CuvO6GJd0AwNugsYciA+l/jE4rHMoDYmnKhHoyZvQisbJzoCAYMqv
+         O6l8ModAu0xocCHJ4j03BtoSd2tAHhOaVhlIN/YpAsqmYUUdP6q480m9u0BGey97c35E
+         rQppqkv5mwsf0Z+vWCu3QbiAeqSWcdj9xbMf21cq1JX4U0NDCS0xBiCzogp9I/MrvZHc
+         q99VegeFfWZ+UxShU/BzRLx+TzFa89sDS2RgLrdF7vI/S4lQUMB4w7Xy9HIwNIGo2OlL
+         HCB6rdC2em1sdMa0rh50DMBmYOwbWRVZi4DoMTPfiZD0XQOfQnWwzPbiUTQugDmrOS5i
+         36ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762766136; x=1763370936;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Zw4H4q2wOKBy+vIN+Jq4WgxmoSs6+RdPp0F0J5oQVA=;
-        b=CbSUELyiWtynunlSRJIBMCQdolDiRNS1x/WK7XmtRmywT0QMq+0kMby7svLKmonvDd
-         z0jcl/FT7AGFemyDGJ60nowDV0sORjtRqMGY4szBpKnrMPolkpTf5qt4iziYv/SXv9bY
-         1nqc+3CEG5//UGRfJJ17KVsTqhPgRuA6tmCpdMpNpubi3drOAc/Kg2o4WYXfRsj+PjdS
-         8YDH+B9eOKtrhJrqltnsLeYUAKqlOgV0myGJjrT5aqx+Ljc4uyOVGzTzX0TdpXnlalky
-         gafCss+yTtFlHoVvCJY+ev8MwOvp083ezXhObVMQtclKMVo/rSLsuu3Y7wKvV7ePFmND
-         0x/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVqxIjCGwqRAemZRWdOd8M1oPvfMxULa0vQZqvbt+7EsyqCRV68jtO5nLnJnoR1xPC08CwdSxe/6g==@kvack.org
-X-Gm-Message-State: AOJu0Yx31zoogZF+jg8rSuA4QUqPk1LR0WtCtwB5EEtNO6PvSYuxkjCz
-	Q8Wh3SgFTQXiW+ihy91YESsGDnDh7V8A3Vvjk9eKxM7sRJ3QSDEKhr6l/lXQm5Et91hBZJj45c5
-	uV03HOoDZXMYar0uMOJqbO/qX/8rSAeJOpQPSuDAOWF/uG6ygrkFIirzdE44=
-X-Google-Smtp-Source: AGHT+IHBCoFZPdfHSvccEotJwuRN7ReNCGqsEk4vmPlEZoxUKaupb9OrzE1EyIqSrZrxtzUhGESDVa3gH6isQrfDR9UMdSlKzbVK
+        d=1e100.net; s=20230601; t=1762766210; x=1763371010;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rK7jfs9gqvXaLNimcAlCkzrJKccO+YVTZrJh68Wev+0=;
+        b=GAhLf/jNGy2rwLk2zqCHXxQZ96uZW+WmVAaMOsf9C5JxS1AY1h3nbbuDwE/nff61HS
+         6y1TSVR7l5bAJSpmtTETI0fT91zRZzVNuXx5HKKF6SiXBMWjjq1rQYBiyLpmnT2pAsoF
+         QMUQRR1llVTrOPlacqLS52AX+0Qmj5q8bZqLfZTxCl3T5amBdGnxVpWbhtaQfrAr1g+X
+         0Q7m8LE1dJhUn/LniTZgPE11Tbfa8OxzQS2J/GPAHtQXlzTxsVNHOEcJv28nOoK9qn/Z
+         w18zDtXcBm6CAjrbKx/3vTcE8C+bU7PTNbabhw1G4MebT7rSvDmEsc5V9anh1MacWUzt
+         eWlg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNVEyH6KXVJ5J6WtvwrAsEs1pxnXrrzaIJp6HfnhhkZ/EJ3xUBqrpPjQ0WWdLogkGge3+6yYMEBg==@kvack.org
+X-Gm-Message-State: AOJu0YzzvmaPo1mW0HOW54mgMwBJHJcP/mObHJu5T1fbcUB49azYgraa
+	X2V97FI6pN1k9AGY+w3zhbnq1DbGlCpR/zQuvpDs8ZSMaonbzzMnyziy3BmfzA==
+X-Gm-Gg: ASbGncsQ9Bh1OZtzEz1gdDOGTZBqn+v/jbRkdK493Sno8Y/ldqzfxJfZmD8FlbfFwux
+	KZNs+7W4UNSd+Sxf6fsD8A6sdKdAYhTlvuzBk9DrVL9aUv8Ggc341oYDhJXOXlqfwJz4JmNXjck
+	L4/mQ1Kn//hVFu1ECmhnGSQogj48+a+/W9AmzPk3jcStEgEx+1ygqCxQ5CqQLl9KGEZO9/py1PW
+	1PUJjk6CRjj0Ex4UN8IpAAE565DidD+jVYw+7bamqJezScsg6OSndKO8Vhuppe/4a9NOSUr1QGj
+	WypO+Wui1yp7bFpgKlulOSF4U6TGVijrzWrrtb0CrXQz4v0fXa0dCEIVoXdtRolZLs+ss77RJdo
+	4j8ivUi5rSZUHSK4gfzKE/gw3RaDpHTqq2uMT4Lt3om6Izz18dCpLiARzQEvJnJgs4elzsreKnl
+	FfQ7NC4OSU/Vb7g0rR221QAWxyERk7W58EM6JP6yk8NBJAgwAa/atzOfaUVbUlIkL+3LbmHLI67
+	ntGLtjGWjzShGp+HX6redTTXmh8iZ6GMm9tixCRDyp4MVRpSnomgCkecCIt
+X-Google-Smtp-Source: AGHT+IE23ygUw1G6qfksLpO5n3+OUhfUG7uTHrVPDbfyBxBi9Rl3+jXpxrwjGQUt9QvW6I+tJFg1qA==
+X-Received: by 2002:a05:6000:657:b0:42b:3907:a38b with SMTP id ffacd0b85a97d-42b3907a591mr2583100f8f.44.1762765773183;
+        Mon, 10 Nov 2025 01:09:33 -0800 (PST)
+Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac679c5dcsm23727969f8f.44.2025.11.10.01.09.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Nov 2025 01:09:32 -0800 (PST)
+Message-ID: <690ce196-58cb-4252-ab72-967e1e1574cf@gmail.com>
+Date: Mon, 10 Nov 2025 10:09:31 +0100
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:248f:b0:433:7a5f:943a with SMTP id
- e9e14a558f8ab-4337a5f94e7mr54740005ab.19.1762766136212; Mon, 10 Nov 2025
- 01:15:36 -0800 (PST)
-Date: Mon, 10 Nov 2025 01:15:36 -0800
-In-Reply-To: <20251110051421.29436-1-lance.yang@linux.dev>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6911ad38.a70a0220.22f260.00dc.GAE@google.com>
-Subject: [syzbot ci] Re: mm/hugetlb: fix possible deadlock in __hugetlb_zap_begin
-From: syzbot ci <syzbot+ci5a676d3d210999ee@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@redhat.com, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev, 
-	osalvador@suse.de, syzbot@syzkaller.appspotmail.com, 
-	syzkaller-bugs@googlegroups.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 1DA1140010
-X-Stat-Signature: ofrgi53ta61e6tuinj6bz3ndnwyczhro
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging
+ architectures
+To: Jan Polensky <japo@linux.ibm.com>, catalin.marinas@arm.com
+Cc: akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, will@kernel.org
+References: <20251031170133.280742-1-catalin.marinas@arm.com>
+ <20251109003613.1461433-1-japo@linux.ibm.com>
+From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20251109003613.1461433-1-japo@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E7DE9A0006
+X-Stat-Signature: 545kzt7hznr9et89zhpua86a16im1sid
 X-Rspam-User: 
-X-HE-Tag: 1762766136-751396
-X-HE-Meta: U2FsdGVkX193e9eXonW/mQvovSNzF2Ot//BMiEuIbbIcuItO+YGqll/9ICOLk7cFWxBE2SbGc9gbDMbMruuszg78UKuu1LynhcTKML4WzQPDOfvQoNtZjuiSgH3nfkzUzNZJWWQ3Stz2/+DQC86IDFq/KcjojQyAxWbGttIJtW55N2gIul5tII97Eh6mba+yXFZ2kEUdBXaHdwInad9yFQCszBOgIGaP6RizqwKfqCpTYOj/w3gZ6wo2csOWzB7hZs4UZgAXzxuORj8Lkmv12OVV198mf07lBRkgEb58p9OtFJ2tqp31NJ5xgQzvj/VUSKWUqXha/a13U0ab88Ea5iRwu4g/TTE797xcFxKoMWrHGKYPrzI59eI6Snh5L962Cbg+sGMidWqKgbbCPMkZ/j3OM7H+RzCUfeH5oPz5fO3qM2xKtIb0/9J2D6gYHw27ruIoTfzt9/BLvwMop1gHpYneOeain8olCsC3LsKVi5uWfP0MDTlCYJ1hxI+IWtkK1NeUilYIOQDBNGRD/sB18hUYn6WJpg1c6tFXUdFSZsLoWxp1O/SdKmj7zObf8Ol6bnn64CoIjeqeUg0Rd/aYshDM9xUjMQK8gQYMnt3SJBOr1/33NiUk1zIjb8oPl4cpFhlhNQohAy/juw+p+qnDBY2LA6zWryBSiwkPZ2WzZ7evbphjgC3Dfimh9NtuYLNN8F3f07SaVko6fR90d2dh86jB4pyoRmHs/FoAyGjwyb1ZOtY5dN/wNGobgY4Cq0ReoMlJE4ue5e2HtVcO4hZ5mUivIhSCwyMC8JUruJ+bvK0pVrsO9GwSSzNVs3khkrATk/g/LtrWitAAw0gKq4YgpLU1RBnjRMaQtyNTg7JSsS14LoURoRWIa+1PxktdorYDoYzy00QSbqg5M8f8KzpHjYAk52mIpUMITaxVOXtazmq1QcGQi7FfpolFm2Ywik7hNn5ahQG0vipMtrBprWD
- BFIEL1OD
- SP7sFL3wnicE7mo5aJd3Hc0obwgsCj4aV1MrVsjINl3RnjnPIvfUgo4PXawzMo9auZSD5oQ4IfrUkzYEtg+Zi/980dgghomRLk/v2EQ8zjOdGZSZc0Z0D6iQ3zC57+rH978z2rkVBX0h5AR4g2W/rpuKQUJG22Dhj6FVK1HH6UUw6tMDAaU+4vy2FNAVPjTON9wNDYVHVkrAa4wC/pgMtxVICTsiF7088YNleRx5V/KZ9c3OlvB2758xlP7XIA/aHGS1ByDmCbOxWnJV3vxrv6D3jlh09gWDqtwKW7AqCa1aZ0CQObCUwkjPMAf2us+ZmXVdPN2qM5Qsaarap8wGKJW9445G7mfMwiCX0/as/o53dGuIcU7I2f5mxNsnjeLw+qs3P413saYWt55V745+DzsFH8AZo5Htx+RL+Paml6etMC3QdNQ4vrGakwjdAiU1pnaK9B4ShH088YzCRcPaIaR4UZlgVDWSFaucMm3cjtzOSf4GNYXEgp9kxdNE3gZh8fcFA05Zde5x3V1o0/foABX1/HsGgXVAzL/ah
+X-HE-Tag: 1762766211-921772
+X-HE-Meta: U2FsdGVkX1+6gfNaIXWSrU6a9Ong5/myBiWsYp5XmP4gJU3yQfrMa7Gnuvzz5Mo2GdZrGFmD56TygOxHjEx01pWVP8XYPD0Wk5y1PXI7cmd+UqMOJdQJDn3PBCJBqcDmLadbCzhLRBTQa/8MvUJatxh0lIcxCbX78BPKbyicxoobNB4w4fdX7SqKuL/+kTQYKx75hKIv26IUfxSxtUNrxH4V5I4sb8XTw71GuLs2ZDFpdjEk7K90ilcSDr5AmQ8GylenWsx1d9C9ci/7uZORgt670NY3Td36XPJr+wt9+Cl61DOfjjz6EhIPt038cs1OmjleGBi7g+NYAqtV+QKBXgGC0NMGRt9Yl5ZCqaIVuuXLc82mFClELT19V/GLZWiRFZ56pEh9MuHy2a03iilOle/BoF2RDcOTMbUU1doFQlZTibrLX4JXc/QrZzq/gcPPZReArdQnDqdioY8wKIt6Gwt/hKEbyopAOeg3vkBrHHzqN6hmNuCJHmDs3awB3knSpsPLCw3JxRcrS/TGUBs465qzByEjWsMec4xboSK8lb9PviQ1MJecZgR62602z4JZWIspie53IdiqYxsmHpjKAaE5hdX5AUsceCnp9nBQrMfjbP4ynxed2DSCQc3Pe6C6cQc4zkJ5EXZM0JsxiSRuJF8fFPf3s3/oG9h95dHHTUhGDcnDFIXzjataLoSFaVl7DOhTtSqQLDCjNgw0i584UbRh0h/x2dMS5V8cMFPq7nh3S3Lvacpw9Ef+V7VihsdMUTAggGJoxiE6yXbFW40nySsyAaA26USfevqds7tu/uGQTSFLh7CUmt422KJ3qMdUu+K6IrWMVgQ9tTG6aOhsHqR4cEsjgzYtMj0B8tSWDDh24YQvihRr/ewo0s0pWuSxdyVJW9QSyJ6oBBSMJBOgyI5rPvyfNyuXI/KklrWUu1ej1Ra6U0GyZ+DTQ9P72UKoztxsPQg2uS9LGBWbJyV
+ DjB92hWo
+ F9IelOJedigcdUp34aKiHzbz6HS8z3tABppIv9mnhLYUaYg5HoOT4wp7o8Zxd5SJz8c5fxz/Rbs8zcbpOwaQJECDBwhqfuaDQmCRFyaKg/Nj42kqioG1QxMe20Y31f6xVbhXwpDF8y7KMXC/mD25LM5jGTSeDGGQTBsQIXCW+OiJgq924y7ZkLsy2kTLDzAX+dZL7EHTI3bVyJAA2dQ3lV1iYVQ6sUWpKo0k3VGGjcgwKFUEephGE8XUQMNxUYtFu2qKYzhV37qIIS1BTuFVNfRdlvp48WN7Ub5NJNn/6gWzFpjcbmB/dwZElKOBt5D4RHPTLkvmZnlNbBXzASeL9bsBS0txZ6H9TLMnEPqJ3knbbO0nFxQrnILnI8hy5VNjRZc3z/nu4YQw0efgTgYdpwj9jhJByrgWNti9IyDvWxmw0P7GcZKHrA8c7pK0IwkT2GrswrDN9X6M4nqSzE4+YIR7wguLp25Itfgr1IkNw6Ota9cMC56ZWHm+vubdhzGkw1e90NGUGAacIa3xQdYUaPn3S/9G4l0QJ6V+GFiUuJcOiG+Ffq+JrkzGPGP9fWuwVrmKoHXMO7kc4aFJRJWHPBvYz5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,422 +126,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+On 09.11.25 01:36, Jan Polensky wrote:
+> The previous change added __GFP_ZEROTAGS when allocating the huge zero
+> folio to ensure tag initialization for arm64 with MTE enabled. However,
+> on s390 this flag is unnecessary and triggers a regression
+> (observed as a crash during repeated 'dnf makecache').
+> 
+> Restrict the use of __GFP_ZEROTAGS to architectures that support
+> hardware memory tagging (currently arm64 with MTE or KASAN HW tags).
+> This avoids unintended side effects on other platforms.
+> 
+> Fixes: 1579227fe0f0 ("mm/huge_memory: initialise the tags of the huge zero folio")
+> Link: https://lore.kernel.org/r/20251031170133.280742-1-catalin.marinas@arm.com
+> Signed-off-by: Jan Polensky <japo@linux.ibm.com>
+> ---
+>   mm/huge_memory.c | 9 +++++----
+>   1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index aae283b00857..0c1794656d7a 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -209,14 +209,15 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> 
+>   static bool get_huge_zero_folio(void)
+>   {
+> +	gfp_t gfp = (GFP_TRANSHUGE | __GFP_ZERO) & ~__GFP_MOVABLE;
+>   	struct folio *zero_folio;
+>   retry:
+>   	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
+>   		return true;
+> -
+> -	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
+> -				 ~__GFP_MOVABLE,
+> -			HPAGE_PMD_ORDER);
+> +#if IS_ENABLED(CONFIG_KASAN_HW_TAGS) || IS_ENABLED(CONFIG_ARM64_MTE)
+> +	gfp |= __GFP_ZEROTAGS;
+> +#endif
 
-[v1] mm/hugetlb: fix possible deadlock in __hugetlb_zap_begin
-https://lore.kernel.org/all/20251110051421.29436-1-lance.yang@linux.dev
-* [PATCH 1/1] mm/hugetlb: fix possible deadlock in __hugetlb_zap_begin
+That looks like the wrong approach. If an architecture does not support
+__GFP_ZEROTAGS it should not trigger anything. __GFP_ZEROTAGS should be ignored.
 
-and found the following issues:
-* possible deadlock in move_hugetlb_page_tables
-* possible deadlock in remove_inode_hugepages
-* possible deadlock in unmap_vmas
+I think the problem is that post_alloc_hook() does
 
-Full report is available here:
-https://ci.syzbot.org/series/4162a577-196d-48cb-908e-f31fe5f186e2
+if (zero_tags) {
+	/* Initialize both memory and memory tags. */
+	for (i = 0; i != 1 << order; ++i)
+		tag_clear_highpage(page + i);
 
-***
+	/* Take note that memory was initialized by the loop above. */
+	init = false;
+}
 
-possible deadlock in move_hugetlb_page_tables
+And tag_clear_highpage() is a NOP on other architectures.
 
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      02dafa01ec9a00c3758c1c6478d82fe601f5f1ba
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/b444c811-3577-4885-8522-093253539e5d/config
-C repro:   https://ci.syzbot.org/findings/118b63ad-708b-4ada-abd9-4d6e18a8384f/c_repro
-syz repro: https://ci.syzbot.org/findings/118b63ad-708b-4ada-abd9-4d6e18a8384f/syz_repro
+Gah.
 
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.0.17/5959 is trying to acquire lock:
-ffff888167d5c918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
-ffff888167d5c918 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: move_hugetlb_page_tables+0x5a5/0x1560 mm/hugetlb.c:5114
-
-but task is already holding lock:
-ffff8881b5f35e78 (&vma_lock->rw_sema){+.+.}-{4:4}, at: hugetlb_vma_lock_write mm/hugetlb.c:-1 [inline]
-ffff8881b5f35e78 (&vma_lock->rw_sema){+.+.}-{4:4}, at: move_hugetlb_page_tables+0x589/0x1560 mm/hugetlb.c:5113
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (&vma_lock->rw_sema){+.+.}-{4:4}:
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
-       hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
-       unmap_vmas+0x23d/0x580 mm/memory.c:2098
-       vms_clear_ptes+0x353/0x530 mm/vma.c:1231
-       vms_complete_munmap_vmas+0x206/0x8a0 mm/vma.c:1280
-       do_vmi_align_munmap+0x364/0x440 mm/vma.c:1539
-       do_vmi_munmap+0x253/0x2e0 mm/vma.c:1587
-       shrink_vma mm/mremap.c:1340 [inline]
-       mremap_to+0x21e/0x790 mm/mremap.c:1394
-       do_mremap mm/mremap.c:1940 [inline]
-       __do_sys_mremap mm/mremap.c:1996 [inline]
-       __se_sys_mremap+0xd45/0xfb0 mm/mremap.c:1964
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
-       __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
-       i_mmap_lock_write include/linux/fs.h:548 [inline]
-       move_hugetlb_page_tables+0x5a5/0x1560 mm/hugetlb.c:5114
-       move_page_tables+0x35c/0x1c80 mm/mremap.c:806
-       copy_vma_and_data mm/mremap.c:1211 [inline]
-       move_vma+0x942/0x1820 mm/mremap.c:1291
-       mremap_to+0x6ce/0x790 mm/mremap.c:1415
-       do_mremap mm/mremap.c:1940 [inline]
-       __do_sys_mremap mm/mremap.c:1996 [inline]
-       __se_sys_mremap+0xd45/0xfb0 mm/mremap.c:1964
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&vma_lock->rw_sema);
-                               lock(&hugetlbfs_i_mmap_rwsem_key);
-                               lock(&vma_lock->rw_sema);
-  lock(&hugetlbfs_i_mmap_rwsem_key);
-
- *** DEADLOCK ***
-
-2 locks held by syz.0.17/5959:
- #0: ffff888172d8d7e0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_write_lock_killable include/linux/mmap_lock.h:327 [inline]
- #0: ffff888172d8d7e0 (&mm->mmap_lock){++++}-{4:4}, at: do_mremap mm/mremap.c:1927 [inline]
- #0: ffff888172d8d7e0 (&mm->mmap_lock){++++}-{4:4}, at: __do_sys_mremap mm/mremap.c:1996 [inline]
- #0: ffff888172d8d7e0 (&mm->mmap_lock){++++}-{4:4}, at: __se_sys_mremap+0x42e/0xfb0 mm/mremap.c:1964
- #1: ffff8881b5f35e78 (&vma_lock->rw_sema){+.+.}-{4:4}, at: hugetlb_vma_lock_write mm/hugetlb.c:-1 [inline]
- #1: ffff8881b5f35e78 (&vma_lock->rw_sema){+.+.}-{4:4}, at: move_hugetlb_page_tables+0x589/0x1560 mm/hugetlb.c:5113
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5959 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
- check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
- __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
- i_mmap_lock_write include/linux/fs.h:548 [inline]
- move_hugetlb_page_tables+0x5a5/0x1560 mm/hugetlb.c:5114
- move_page_tables+0x35c/0x1c80 mm/mremap.c:806
- copy_vma_and_data mm/mremap.c:1211 [inline]
- move_vma+0x942/0x1820 mm/mremap.c:1291
- mremap_to+0x6ce/0x790 mm/mremap.c:1415
- do_mremap mm/mremap.c:1940 [inline]
- __do_sys_mremap mm/mremap.c:1996 [inline]
- __se_sys_mremap+0xd45/0xfb0 mm/mremap.c:1964
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f043598efc9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffe808cfc08 EFLAGS: 00000246 ORIG_RAX: 0000000000000019
-RAX: ffffffffffffffda RBX: 00007f0435be5fa0 RCX: 00007f043598efc9
-RDX: 0000000000400000 RSI: 0000000000c00000 RDI: 0000200000000000
-RBP: 00007f0435a11f91 R08: 0000200000c00000 R09: 0000000000000000
-R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f0435be5fa0 R14: 00007f0435be5fa0 R15: 0000000000000005
- </TASK>
+I wonder if the following would work:
 
 
-***
-
-possible deadlock in remove_inode_hugepages
-
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      02dafa01ec9a00c3758c1c6478d82fe601f5f1ba
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/b444c811-3577-4885-8522-093253539e5d/config
-syz repro: https://ci.syzbot.org/findings/e3555fcc-3852-4e88-aea4-f3445e8a6ffb/syz_repro
-
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.2.22/5989 is trying to acquire lock:
-ffff8881bc18d318 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
-ffff8881bc18d318 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: hugetlb_unmap_file_folio fs/hugetlbfs/inode.c:451 [inline]
-ffff8881bc18d318 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: remove_inode_single_folio fs/hugetlbfs/inode.c:535 [inline]
-ffff8881bc18d318 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: remove_inode_hugepages+0x972/0x1110 fs/hugetlbfs/inode.c:602
-
-but task is already holding lock:
-ffff8881ae823178 (&vma_lock->rw_sema){++++}-{4:4}, at: hugetlb_unmap_file_folio fs/hugetlbfs/inode.c:450 [inline]
-ffff8881ae823178 (&vma_lock->rw_sema){++++}-{4:4}, at: remove_inode_single_folio fs/hugetlbfs/inode.c:535 [inline]
-ffff8881ae823178 (&vma_lock->rw_sema){++++}-{4:4}, at: remove_inode_hugepages+0x96a/0x1110 fs/hugetlbfs/inode.c:602
-
-which lock already depends on the new lock.
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 65db9349f9053..56b82e116cb79 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -47,7 +47,9 @@ enum {
+         ___GFP_HARDWALL_BIT,
+         ___GFP_THISNODE_BIT,
+         ___GFP_ACCOUNT_BIT,
++#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
+         ___GFP_ZEROTAGS_BIT,
++#endif
+  #ifdef CONFIG_KASAN_HW_TAGS
+         ___GFP_SKIP_ZERO_BIT,
+         ___GFP_SKIP_KASAN_BIT,
+@@ -85,7 +87,11 @@ enum {
+  #define ___GFP_HARDWALL                BIT(___GFP_HARDWALL_BIT)
+  #define ___GFP_THISNODE                BIT(___GFP_THISNODE_BIT)
+  #define ___GFP_ACCOUNT         BIT(___GFP_ACCOUNT_BIT)
++#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
+  #define ___GFP_ZEROTAGS                BIT(___GFP_ZEROTAGS_BIT)
++#else
++#define ___GFP_ZEROTAGS                0
++#endif
+  #ifdef CONFIG_KASAN_HW_TAGS
+  #define ___GFP_SKIP_ZERO       BIT(___GFP_SKIP_ZERO_BIT)
+  #define ___GFP_SKIP_KASAN      BIT(___GFP_SKIP_KASAN_BIT)
 
 
-the existing dependency chain (in reverse order) is:
-
--> #1 (&vma_lock->rw_sema){++++}-{4:4}:
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
-       hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
-       unmap_vmas+0x23d/0x580 mm/memory.c:2098
-       exit_mmap+0x23e/0xb30 mm/mmap.c:1277
-       __mmput+0x118/0x430 kernel/fork.c:1133
-       exit_mm+0x1da/0x2c0 kernel/exit.c:582
-       do_exit+0x648/0x2300 kernel/exit.c:954
-       do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
-       get_signal+0x1285/0x1340 kernel/signal.c:3034
-       arch_do_signal_or_restart+0xa0/0x790 arch/x86/kernel/signal.c:337
-       exit_to_user_mode_loop+0x72/0x130 kernel/entry/common.c:40
-       exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
-       syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
-       syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
-       do_syscall_64+0x2bd/0xfa0 arch/x86/entry/syscall_64.c:100
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
-       __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
-       i_mmap_lock_write include/linux/fs.h:548 [inline]
-       hugetlb_unmap_file_folio fs/hugetlbfs/inode.c:451 [inline]
-       remove_inode_single_folio fs/hugetlbfs/inode.c:535 [inline]
-       remove_inode_hugepages+0x972/0x1110 fs/hugetlbfs/inode.c:602
-       hugetlbfs_punch_hole fs/hugetlbfs/inode.c:725 [inline]
-       hugetlbfs_fallocate+0xbc2/0x1100 fs/hugetlbfs/inode.c:751
-       vfs_fallocate+0x669/0x7e0 fs/open.c:342
-       madvise_remove mm/madvise.c:1046 [inline]
-       madvise_vma_behavior+0x341a/0x3d70 mm/madvise.c:1350
-       madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1673
-       madvise_do_behavior+0x38e/0x550 mm/madvise.c:1889
-       do_madvise+0x1bc/0x270 mm/madvise.c:1982
-       __do_sys_madvise mm/madvise.c:1991 [inline]
-       __se_sys_madvise mm/madvise.c:1989 [inline]
-       __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1989
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&vma_lock->rw_sema);
-                               lock(&hugetlbfs_i_mmap_rwsem_key);
-                               lock(&vma_lock->rw_sema);
-  lock(&hugetlbfs_i_mmap_rwsem_key);
-
- *** DEADLOCK ***
-
-4 locks held by syz.2.22/5989:
- #0: ffff8881056ac420 (sb_writers#12){.+.+}-{0:0}, at: file_start_write include/linux/fs.h:3111 [inline]
- #0: ffff8881056ac420 (sb_writers#12){.+.+}-{0:0}, at: vfs_fallocate+0x5f0/0x7e0 fs/open.c:341
- #1: ffff8881bc18d048 (&sb->s_type->i_mutex_key#20){+.+.}-{4:4}, at: inode_lock include/linux/fs.h:980 [inline]
- #1: ffff8881bc18d048 (&sb->s_type->i_mutex_key#20){+.+.}-{4:4}, at: hugetlbfs_punch_hole fs/hugetlbfs/inode.c:693 [inline]
- #1: ffff8881bc18d048 (&sb->s_type->i_mutex_key#20){+.+.}-{4:4}, at: hugetlbfs_fallocate+0x3cc/0x1100 fs/hugetlbfs/inode.c:751
- #2: ffff888103e8e4e8 (&hugetlb_fault_mutex_table[i]){+.+.}-{4:4}, at: remove_inode_hugepages+0x332/0x1110 fs/hugetlbfs/inode.c:597
- #3: ffff8881ae823178 (&vma_lock->rw_sema){++++}-{4:4}, at: hugetlb_unmap_file_folio fs/hugetlbfs/inode.c:450 [inline]
- #3: ffff8881ae823178 (&vma_lock->rw_sema){++++}-{4:4}, at: remove_inode_single_folio fs/hugetlbfs/inode.c:535 [inline]
- #3: ffff8881ae823178 (&vma_lock->rw_sema){++++}-{4:4}, at: remove_inode_hugepages+0x96a/0x1110 fs/hugetlbfs/inode.c:602
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5989 Comm: syz.2.22 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
- check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
- __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
- i_mmap_lock_write include/linux/fs.h:548 [inline]
- hugetlb_unmap_file_folio fs/hugetlbfs/inode.c:451 [inline]
- remove_inode_single_folio fs/hugetlbfs/inode.c:535 [inline]
- remove_inode_hugepages+0x972/0x1110 fs/hugetlbfs/inode.c:602
- hugetlbfs_punch_hole fs/hugetlbfs/inode.c:725 [inline]
- hugetlbfs_fallocate+0xbc2/0x1100 fs/hugetlbfs/inode.c:751
- vfs_fallocate+0x669/0x7e0 fs/open.c:342
- madvise_remove mm/madvise.c:1046 [inline]
- madvise_vma_behavior+0x341a/0x3d70 mm/madvise.c:1350
- madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1673
- madvise_do_behavior+0x38e/0x550 mm/madvise.c:1889
- do_madvise+0x1bc/0x270 mm/madvise.c:1982
- __do_sys_madvise mm/madvise.c:1991 [inline]
- __se_sys_madvise mm/madvise.c:1989 [inline]
- __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1989
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fca36b8efc9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fca37a80038 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-RAX: ffffffffffffffda RBX: 00007fca36de6090 RCX: 00007fca36b8efc9
-RDX: 0000000000000009 RSI: 0000000000600000 RDI: 0000200000bc0000
-RBP: 00007fca36c11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fca36de6128 R14: 00007fca36de6090 R15: 00007ffeef05aaf8
- </TASK>
+Likely we'd have to make __HAVE_ARCH_TAG_CLEAR_HIGHPAGE a proper
+kconfig option.
 
 
-***
+Then we could turn the default implementation of
+tag_clear_highpage() into a BUILD_BUG.
 
-possible deadlock in unmap_vmas
-
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      02dafa01ec9a00c3758c1c6478d82fe601f5f1ba
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/b444c811-3577-4885-8522-093253539e5d/config
-C repro:   https://ci.syzbot.org/findings/0f0a7c70-e594-4359-9971-50a723bbbd7a/c_repro
-syz repro: https://ci.syzbot.org/findings/0f0a7c70-e594-4359-9971-50a723bbbd7a/syz_repro
-
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.0.17/5961 is trying to acquire lock:
-ffff88810be5c178 (&vma_lock->rw_sema){+.+.}-{4:4}, at: hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
-ffff88810be5c178 (&vma_lock->rw_sema){+.+.}-{4:4}, at: unmap_vmas+0x23d/0x580 mm/memory.c:2098
-
-but task is already holding lock:
-ffff88816a110418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
-ffff88816a110418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: __hugetlb_zap_begin+0x2aa/0x3a0 mm/hugetlb.c:5331
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}:
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
-       i_mmap_lock_write include/linux/fs.h:548 [inline]
-       hugetlb_change_protection+0x56a/0x18c0 mm/hugetlb.c:6439
-       change_protection+0x386/0x38c0 mm/mprotect.c:655
-       mprotect_fixup+0x6fe/0x9c0 mm/mprotect.c:774
-       do_mprotect_pkey+0x8c5/0xcd0 mm/mprotect.c:930
-       __do_sys_mprotect mm/mprotect.c:951 [inline]
-       __se_sys_mprotect mm/mprotect.c:948 [inline]
-       __x64_sys_mprotect+0x80/0x90 mm/mprotect.c:948
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (&vma_lock->rw_sema){+.+.}-{4:4}:
-       check_prev_add kernel/locking/lockdep.c:3165 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
-       validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
-       __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
-       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
-       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
-       hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
-       unmap_vmas+0x23d/0x580 mm/memory.c:2098
-       exit_mmap+0x23e/0xb30 mm/mmap.c:1277
-       __mmput+0x118/0x430 kernel/fork.c:1133
-       exit_mm+0x1da/0x2c0 kernel/exit.c:582
-       do_exit+0x648/0x2300 kernel/exit.c:954
-       do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
-       __do_sys_exit_group kernel/exit.c:1118 [inline]
-       __se_sys_exit_group kernel/exit.c:1116 [inline]
-       __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
-       x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&hugetlbfs_i_mmap_rwsem_key);
-                               lock(&vma_lock->rw_sema);
-                               lock(&hugetlbfs_i_mmap_rwsem_key);
-  lock(&vma_lock->rw_sema);
-
- *** DEADLOCK ***
-
-2 locks held by syz.0.17/5961:
- #0: ffff8881151362a0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock include/linux/mmap_lock.h:365 [inline]
- #0: ffff8881151362a0 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x126/0xb30 mm/mmap.c:1262
- #1: ffff88816a110418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
- #1: ffff88816a110418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: __hugetlb_zap_begin+0x2aa/0x3a0 mm/hugetlb.c:5331
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5961 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
- check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
- __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
- hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
- unmap_vmas+0x23d/0x580 mm/memory.c:2098
- exit_mmap+0x23e/0xb30 mm/mmap.c:1277
- __mmput+0x118/0x430 kernel/fork.c:1133
- exit_mm+0x1da/0x2c0 kernel/exit.c:582
- do_exit+0x648/0x2300 kernel/exit.c:954
- do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
- __do_sys_exit_group kernel/exit.c:1118 [inline]
- __se_sys_exit_group kernel/exit.c:1116 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
- x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f470758efc9
-Code: Unable to access opcode bytes at 0x7f470758ef9f.
-RSP: 002b:00007ffed0f73318 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f470758efc9
-RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000003 R08: 00000002d0f7340f R09: 00007f47077b1280
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f47077b1280 R14: 0000000000000003 R15: 00007ffed0f733d0
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
