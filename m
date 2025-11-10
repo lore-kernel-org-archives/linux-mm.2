@@ -4,82 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF030CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09527CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 16:04:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 140488E0033; Mon, 10 Nov 2025 10:55:35 -0500 (EST)
+	id 39FEC8E0013; Mon, 10 Nov 2025 11:04:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F11F8E0003; Mon, 10 Nov 2025 10:55:35 -0500 (EST)
+	id 377808E0003; Mon, 10 Nov 2025 11:04:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02E228E0033; Mon, 10 Nov 2025 10:55:34 -0500 (EST)
+	id 2B48B8E0013; Mon, 10 Nov 2025 11:04:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E5E9E8E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:55:34 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 85CF11DF49C
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:55:34 +0000 (UTC)
-X-FDA: 84095147388.22.13C62C7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 179718E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:04:35 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C437F1DF1C4
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:04:34 +0000 (UTC)
+X-FDA: 84095170068.13.534F454
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 042E3C0010
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:55:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf10.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762790133; a=rsa-sha256;
-	cv=none;
-	b=uWOqfRAOqSgR4ORVXNex+XhFhmYa0dawXZq75+MuUEBpLbWhRS/hXtDIkVB+L0IjRc17tU
-	/OYhI2jTLT8etVrt3lNemPGwfsyZS2LegQ+c3iTN6v9mm8HvxNHamYvKDIGWFpyivi8iDC
-	HjD0jvWJvM/jwexa/WoowG1JOGsohj0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf10.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3CFBB16001B
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:04:33 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J+snn06h;
+	spf=pass (imf08.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762790133;
+	s=arc-20220608; t=1762790673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RC3lGrqJPe/0O/QOdN48fZmETIJoBwsQwRZlNimQeZU=;
-	b=z3+h3IZMjpBNAIcnT3l1b85IybaMOEAnZcLAp98wdMcmAzaKkCa2oVeLEkD0YYDJUd1E9g
-	oGXO+jxDvl79VCHuQaxVVQINNWBVozq24Ms8W3+S5UdvnzicXQwgeZ0+19Q1l5AfGAr4G8
-	0czWl4iAv/m6EBZMOX2eDClbjKS1Oyw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yNLQEol+Rgj9EsjEo0oxUq6WBGuTdteEqbMUM8lGLMs=;
+	b=iILQ25aUh135gel2D3f+gZJEtsz91M3th5vdF5f1NtMmkA1GnY1Rl9aAlJFHX24+rmTxpq
+	4nKpdMf9F5iYiyTgRmsh1DQyl/SujkF35gvNx8vd5dn8k3FL5waGb5ig2MVPlr3kZK0HWq
+	tglLw81oj+1fFP3mi/RZQ74fHe66yKA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J+snn06h;
+	spf=pass (imf08.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762790673; a=rsa-sha256;
+	cv=none;
+	b=OhKCMOiHiTu6QKXHwT4PiWzGPCKPrPeMhgsac2ZQp81MUI5GKH6SvF/qNXmomjldggATKK
+	wAqaHaXp5Tt5zTEtAmYoQTrjCR2kqlMWrfraZm2xMD5qP2NV9UWkdvRim1uI1yms/6s+QQ
+	AV/rjV8HnZCMjHHeko9L44rctDNA3V8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BE7E601E6;
-	Mon, 10 Nov 2025 15:55:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DD4C19422;
-	Mon, 10 Nov 2025 15:55:30 +0000 (UTC)
-Date: Mon, 10 Nov 2025 15:55:27 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
-Cc: Jan Polensky <japo@linux.ibm.com>, akpm@linux-foundation.org,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	will@kernel.org
-Subject: Re: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging
- architectures
-Message-ID: <aRIK79pCWNZS1Yr1@arm.com>
-References: <20251031170133.280742-1-catalin.marinas@arm.com>
- <20251109003613.1461433-1-japo@linux.ibm.com>
- <690ce196-58cb-4252-ab72-967e1e1574cf@gmail.com>
- <aRG05VS-IIxV2y_C@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
- <fbca7868-6f68-4b98-a2f2-e39eb46b7f12@gmail.com>
- <aRIEkLw7BofLjOWs@arm.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id 77FCB601D0;
+	Mon, 10 Nov 2025 16:04:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087B0C4CEFB;
+	Mon, 10 Nov 2025 16:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762790672;
+	bh=LZ0mMsF76kmnDhMfcojZG4ktxujqq7jQuwle0KZTEXQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J+snn06h+IYhepopRmbvt8zlgXQzsk6ymnBqQttXNsd2cAGH3KYMr8zVUQcNDD3jN
+	 YM5zjB1ENrcxFa7Dqk6Wx3PVrpQxby+frFaLCEQhyY844KTRzFe3cH1bzE4S939zG9
+	 BRsNxIlJdrRa+2ma2pfRfVTmWf0EW0ElZsxsen+ENsWYBCsImW1J5qDg3a1WCK3EUS
+	 0gkrEzn+7zUIY5wxIZOro6siQoFX3EbehnqyyovCVg1VtrEibxGFtngGvt8jO6jrNE
+	 6P+B9Bn9y1WKSAuSfN0n71SqtCZEZoQFwsKzA5DzDSPZpPS6MuFlDHu0a/58r3lPYY
+	 oAS9LMgXZYuHA==
+Date: Mon, 10 Nov 2025 06:04:30 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: Leon Huang Fu <leon.huangfu@shopee.com>, linux-mm@kvack.org,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	akpm@linux-foundation.org, joel.granados@kernel.org, jack@suse.cz,
+	laoar.shao@gmail.com, mclapinski@google.com, kyle.meyer@hpe.com,
+	corbet@lwn.net, lance.yang@linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
+ on-demand stats flushing
+Message-ID: <aRINDrnnI1HVvU1p@slm.duckdns.org>
+References: <20251110101948.19277-1-leon.huangfu@shopee.com>
+ <ewcsz3553cd6ooslgzwbubnbaxwmpd23d2k7pw5s4ckfvbb7sp@dffffjvohz5b>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aRIEkLw7BofLjOWs@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ewcsz3553cd6ooslgzwbubnbaxwmpd23d2k7pw5s4ckfvbb7sp@dffffjvohz5b>
+X-Rspamd-Queue-Id: 3CFBB16001B
+X-Stat-Signature: nm5pxho3igwzdk7bnxhycnbgk4d6drpg
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 042E3C0010
-X-Stat-Signature: c33uywrjktiymyfqfyyg8hy6ouduppa6
-X-HE-Tag: 1762790132-541700
-X-HE-Meta: U2FsdGVkX18l3UisAfL0KR6OUAyW/4o5a0LCpW5no89TKYoQ7+oI89KpsNQbUAyqyi8zOqbzSeDoebN5wWZ8Lrgshty/IrfTpe87EvgeVI9AnCMfCCNkkuu5YlvZaVA/oK/E+HXZnnlm8Hb5dbwagyTyVFwPr6abr8rDbPCez1lclx9UIqck2BLTjP5HpNcTT9VBosqOd7hqdfzRKKc8UvE8JKezsP1N0Mt9aqowCNnhdryAUIUA/906Y6yWEb6Uxx0NqsvNiHrIhphZWMMoTgTAikSFoTnPXKmuyevNgnsGivHwmtRFj1593wnA7cIm1yUVn883OU30dATOXTBpbR4JxNy5gY4xy3iDBHKHd5gkMKfIQG1bePPSXe3+5wUrtQSGYmfqDwuk6MPrQ5X2XZPdGuv5X4nzDEO+YIGEBs0r9mp1DUxROWrMagXCmWLlQLO3Bp6ZcXGASXO5f4Z1p0jrufeQ+6trcJmGyv50u7oDpVwaN10b/8iI/sYfGghl54NwYM8lk1JjK22qrAFeLADKxJBH6XZCPLJIxEZHghk9nZWUYA2ahKniValjvHGjKSzJRR+wDTnp03xiiafSDH3ymRtCVYF42Lzbnq7RBMghGJvacOn0WPTBZiRNClT0N4G3ks53j0HL/R7IltpM/ImADbps+zXtQpBTrl+a1lpBc4Lu6mT0HpsrbfqptblrlW/zYTTaI7ozjvXbb0PGrc63UfVdsG8v2fczuZeiBuGTO4WBQk7hXbOmoOEo8Pd+PCQioUOhYBEu2H4U+SO472N+Z8nNkMYD2rRtEtth575NlRYfQpd4HltFje9vhSNGg5L6MzmHj4accqS0txGWGOY/d20ic8qaaXwdRtiQnXP9PfmD80yPclzL1yBIxtlnwC30QGXIhhIoItWa4qiNx5EZ5oTSfIGyOciAHEMLengGnzgukB5/qQusUJBXGClWxoNTRe3eQJ0pAOH5gu+
- 4lUOgeGf
- q3B8aGZ65tYUqGEl8wFomzdb0Idu5KNarg2m+AhprRWGrjfoR29pw3guy6ITPCKj0Xxdc4JJ6EWa77S9kQYZc02IKPag5V4qx72NieYJMhlnfIVPUGNby61Xa2USX7oBvxZl9Db+zrozCQc03D1QyJVMddUWBAkIYheK+Sht1sP6v5WoJvnpTwctE7PTWKMMga6zmVan8F1ausya6pzJ+3eVZjjSZx4mhrWVN5wxZtK6Z6zub9ojUpFs0sMceIMXZ/IF3n5oO8rI1F4Ua1gGWOne6NrN1LxRnF+DL0pbaBrKjNrjYcgNZ8oxq+1FQP6z4kX185+pjp5jdb5qyx8Kd/Q9rhyCvmZlDq9rdYNHbOZCNr8idXTIkFqLUA/eIyJvIIjxu4y1UvwTU86M=
+X-HE-Tag: 1762790673-36772
+X-HE-Meta: U2FsdGVkX184LfwFgPdtqgZMjEGLc9UHsATx+t00YmO6EPpavYyyV3PYFgb5C5S5ijGwaeV7ddzoEBVb2agnWLkN5WeoE3fEgc+OOYfChRiPwOgFL13IYPA2sCxFTp0dtbajUe54nZ0ZPoMYjQmG+ZVxoTibSCxJ1T4H6giduwMF03YkcLrwryGizAyIYMv5T01/FRUSBfp5H9Z7JiDbqjzxUWBTYIxxHolwBc4tFHchXMZeZZMNRTROndV6cqo/2sBTPTEyGDmoYdDI4FJb5OzQeO70PrNFgWiqytx2gvvnBZP6FKpvIwLiWdh8jsTNXxqzhilpIkrZQNO9R+irkmWarCXfYVA05L2lwA+NGGbrWc1WksUGli3AX77zPHQD0xowUAgb3gcFpaFmMrfFKpySLEI867oxbYd98JUXkjG/y7/6WLu0VkwuY2Tkx4NcP+HoijWWGsHSDFSZlOjTC3tTOkatsx1vVlcyUYDGNTwKjRTmkXKK4Okx4ErFGls9HdnIV5SMjlHWbtZjOgEWeQwUMqQC6WYDaqoVgH4tjS453hidCtPZNnWsmfpo79K51yQ1rq0ozHlbkLRm95BScWscfTiI4ArYxiXDwJe4Y8UrcvGcieqFqhcbsOP/ZA1vmBhGMd6n6OOJouOn2IOWxR3WKIRiTCUsLkz7Jzz25+pHSZZxfG1FAtKUj7iJ2Uax/lU3WcCUgFSDbdA8A02cYsYA85nZzs3DhroQsEZ0gH5tsZaZK9hfZP7EIRLWxfRZiPUcf9kM2pirATs/1NQGU72lyoHJOljbckeBT4ZhEc39BSMIqsCSRkeEdZZUU6xumzPZP8YFlRgwPCs2ZoPfxGVWLFS+W9dTgw/NbCCblyFlkHj/9s2/vw0Pgc0fXSV+A6Tubq4HwzIlw+wl6PtMkv7vjoMwIBzHqZDcG31+eeshn/FFEAoL/NULC2yCXv9oQSPlA0EynQ3k9sXCbA/
+ bnQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,124 +99,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 03:28:16PM +0000, Catalin Marinas wrote:
-> On Mon, Nov 10, 2025 at 10:53:33AM +0100, David Hildenbrand (Red Hat) wrote:
-> > On 10.11.25 10:48, Jan Polensky wrote:
-> > > On Mon, Nov 10, 2025 at 10:09:31AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > > On 09.11.25 01:36, Jan Polensky wrote:
-> > > > > The previous change added __GFP_ZEROTAGS when allocating the huge zero
-> > > > > folio to ensure tag initialization for arm64 with MTE enabled. However,
-> > > > > on s390 this flag is unnecessary and triggers a regression
-> > > > > (observed as a crash during repeated 'dnf makecache').
-> [...]
-> > > > I think the problem is that post_alloc_hook() does
-> > > > 
-> > > > if (zero_tags) {
-> > > > 	/* Initialize both memory and memory tags. */
-> > > > 	for (i = 0; i != 1 << order; ++i)
-> > > > 		tag_clear_highpage(page + i);
-> > > > 
-> > > > 	/* Take note that memory was initialized by the loop above. */
-> > > > 	init = false;
-> > > > }
-> > > > 
-> > > > And tag_clear_highpage() is a NOP on other architectures.
-[...]
-> diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
-> index 2312e6ee595f..dcff91533590 100644
-> --- a/arch/arm64/include/asm/page.h
-> +++ b/arch/arm64/include/asm/page.h
-> @@ -33,6 +33,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
->  						unsigned long vaddr);
->  #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
->  
-> +bool arch_has_tag_clear_highpage(void);
->  void tag_clear_highpage(struct page *to);
->  #define __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
->  
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 125dfa6c613b..318d091db843 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -967,18 +967,13 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
->  	return vma_alloc_folio(flags, 0, vma, vaddr);
->  }
->  
-> +bool arch_has_tag_clear_highpage(void)
-> +{
-> +	return system_supports_mte();
-> +}
-> +
->  void tag_clear_highpage(struct page *page)
->  {
-> -	/*
-> -	 * Check if MTE is supported and fall back to clear_highpage().
-> -	 * get_huge_zero_folio() unconditionally passes __GFP_ZEROTAGS and
-> -	 * post_alloc_hook() will invoke tag_clear_highpage().
-> -	 */
-> -	if (!system_supports_mte()) {
-> -		clear_highpage(page);
-> -		return;
-> -	}
-> -
->  	/* Newly allocated page, shouldn't have been tagged yet */
->  	WARN_ON_ONCE(!try_page_mte_tagging(page));
->  	mte_zero_clear_page_tags(page_address(page));
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index 105cc4c00cc3..7aa56179ccef 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -251,6 +251,11 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
->  
->  #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
->  
-> +static inline bool arch_has_tag_clear_highpage(void)
-> +{
-> +	return false;
-> +}
-> +
->  static inline void tag_clear_highpage(struct page *page)
->  {
->  }
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index e4efda1158b2..5ab15431bc06 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1798,7 +1798,8 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
->  {
->  	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
->  			!should_skip_init(gfp_flags);
-> -	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
-> +	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS) &&
-> +		arch_has_tag_clear_highpage();
->  	int i;
->  
->  	set_page_private(page, 0);
-> --------------------8<--------------------------------
-> 
-> Reasoning: with MTE on arm64, you can't have kasan-tagged pages in the
-> kernel which are also exposed to user because the tags are shared (same
-> physical location). The 'zero_tags' initialisation in post_alloc_hook()
-> makes sense for this behaviour. With virtual tagging (briefly announced
-> in [1], full specs not public yet), both the user and the kernel can
-> have their own tags - more like KASAN_SW_TAGS but without the compiler
-> instrumentation. The kernel won't be able to zero the tags for the user
-> since they are in virtual space. It can, however, continue to use Kasan
-> tags even if the pages are mapped in user space. In this case, I'd
-> rather use the kernel_init_pages() call further down in
-> post_alloc_hook() than replicating it in tag_clear_highpage(). When we
-> get to upstreaming virtual tagging (informally vMTE, sometime next
-> year), I'd like to have a kernel image that supports both, so the
-> decision on whether to call tag_clear_highpage() will need to be
-> dynamic.
+Hello,
 
-Actually, there's not much to kernel_init_pages() other than disabling
-kasan temporarily since the unpoisoning already took place a few lines
-up. The arm64 tag_clear_highpage() calling clear_highpage() directly is
-fine before unpoisoning. So we can cope with this even in the vMTE case.
+On Mon, Nov 10, 2025 at 02:50:11PM +0100, Michal Koutný wrote:
+> All in all, I'd like to have more backing data on insufficiency of (all
+> the) rstat optimizations before opening explicit flushes like this
+> (especially when it's meant to be exposed by BPF already).
 
-A simple patch hiding the enum is fine by me.
++1. If the current behavior introduces errors too significant to ignore, I'd
+much rather see it fixed from the implementation side rather than exposing
+internal operation details like this.
+
+Thanks.
 
 -- 
-Catalin
+tejun
 
