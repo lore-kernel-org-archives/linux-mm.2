@@ -4,107 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EE0FCCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73181CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:18:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5190D8E000E; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
+	id B36488E0014; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F0CC8E0002; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
+	id AE6ED8E0002; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4061E8E000E; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
+	id 9AEF78E0014; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D1F38E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B1E7E4CAFE
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:16:10 +0000 (UTC)
-X-FDA: 84094443300.24.12DB6CB
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D74AEC000C
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:16:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 878058E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46D7EBE035
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:18:03 +0000 (UTC)
+X-FDA: 84094448046.17.5D89799
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A92BD80013
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:18:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=suAfZZSb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762773369;
+	s=arc-20220608; t=1762773481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=oRSXEGDPXpNtVK5+kTNlEj4aQG5TyKfDyS+DDaGalzc=;
-	b=Upc8xZqi38zQqxuytfD0lwjjQuCRUTVYEU/bikK+fdUgcPFH0tC/tLsOh9zYTAxX6ZjURn
-	C6y7BdZxYgd3aD8NA/3BbW0mZaDRSux7uYksW/cLu5UaqeZkxY6+7Cz5AoEShctc+HlE1D
-	DCCy85OPVJf4PqwuiupZkxbVS+d1niI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762773369; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QZ/wnETuHj4pngw4rNh6VnRsQQ0NKC9V7rmNNQJYmbM=;
+	b=TUdLlarlKRZZOiYMWK1R3jt0b2h/edJVL1DVbeDYWb1nYo3WBxg8FAtsS6uDiqurQjvPG0
+	sA8yf/xuU74JIrogDrPzBYS3hkfS8t4KJ/U+pDDDLTsvVrzuw2A5ytIqN7i6gbPARg0VS/
+	0GbzXKpE3U8PuvneV6eP8nF1+FAUAbQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762773481; a=rsa-sha256;
 	cv=none;
-	b=UHrf8vDXl9Hh+4P6rf+eUJX4yELc98yzTDrQU8g8jYLiA42DRUV6LVEGnxITAW3SXjyX6X
-	LuUNKUFWFz67Lp0lPmJs9iFlnaCwtC9zV9YvOlFVP+dQZURwpHPBa45AwVdUqCtlb+2Xjk
-	QzNlVSZlQDggNSkxnpOC9ucLTzGqfi0=
+	b=mjF9ddpYqE0FU2iBF88v/ymhpO5vqmtuQZQUpYMMqyVtHmsrBzy8o4SXDPHAIhTUzA1GID
+	x1nS5dSJahDCuKPtg9bi39vIDO1XerVHF5fRz3p6BpnKsbSn/Hd71eEqnEGGd6ETM0lijN
+	dLb3KNHtj4ilk/YAInCHewco2CBkDlU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-340ba29d518so1795165a91.3
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:16:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762773368; x=1763378168;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oRSXEGDPXpNtVK5+kTNlEj4aQG5TyKfDyS+DDaGalzc=;
-        b=LqKTCfSyMhD2eO5nn418PSvi9Q/z2OUz7QGyjgSSzhRm0EcbeavxYGvH8zgn29agEw
-         J2Fe8kqV2T99ZfQ2wxEl3ZWqos330Ayppxz/BJmteKuDn04iq+sXVh0z/U1SD15EPPXI
-         zM0OfEdZ6zHLpYtWEDN7xIl9UKm8Mq09ZWg3ZnVY2xtSjtZwjlhjMXue8J7NCRJpYWp+
-         /jIQ28oAJPOkWha40RSrj7dZleAtdspzaJuzVOOH7UIhAqfVsFsj/7voSxx9XM1lPcEV
-         1KP+bDIJmEXFgMeUiQxsGDmxvNCXKzzdfy6l8yUr9GUEeJBvw5FdFJmah8H9jvb3zU8n
-         Bxmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGZpgE4L4v6cSCkX7igVibzKlDaR4/stC75reScVBGcIqxF0ODpJQrVAiye1sZlzMHxNj1MdR2oQ==@kvack.org
-X-Gm-Message-State: AOJu0YzYObe0Lx857U9mdfN+f2bj9d1mpSgv1InjoxS8fwIT8Kmp/JSu
-	78PYSkDxHSqhdHl5570irSD+DqcaF3XNI4OXAZdAkWVpkMvcgXms7Ccc
-X-Gm-Gg: ASbGncsT2E6lhrdYjSolBFXnrLD8V6QW7VNK0bP3ozPHZh5dDhVsSfGQ6KjSmaMRuch
-	W1nvXhvOeWrZYqpbGPSzCVT9obNKhcCtU0PqdQWa5+jqg/GmAC9GAjSDrIeEMzISUOTvi8rn1d9
-	5KYt99DS47hJG9I/a+2DSgbv+2vt4TC36J82BOycgXaaZzxe7qbe9WHxw4k6PNL/z+0z09cdq9d
-	AsAHUqT/AA7qJ6MtJ4rchcGMC18v7pXg+Py782Wjnlrpd9z7lPDzR+Dtlp6ZWzVs+p/PMMhtnDd
-	Z5maAMgcv6/3GJWnEONNvFE93xDBI3ayNFKtcee1VMMW+mi43vOiaUQUclOsGdg5h+uZijtB7S+
-	T5dD2JNqjBn+6t1L5qVqXfYytNZUAnbimexeeEU/sBCjXpMbKsuzSHstPVyCCU5on3wI0leaQFC
-	bgwPk44ik=
-X-Google-Smtp-Source: AGHT+IFmx5F0C1FFfC1T3kTAEofW5SYHF07alyTgfqPESgG9ejsnGcr8FXW/IACqi7z7O6oK12Ycjg==
-X-Received: by 2002:a17:90b:1f8e:b0:33e:2934:6e11 with SMTP id 98e67ed59e1d1-3436cb898dcmr10302982a91.11.1762773367674;
-        Mon, 10 Nov 2025 03:16:07 -0800 (PST)
-Received: from EBJ9932692.tcent.cn ([2403:2c80:17::10:4006])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bad33c801d1sm8989478a12.7.2025.11.10.03.16.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 10 Nov 2025 03:16:06 -0800 (PST)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: syzbot+3f5f9a0d292454409ca6@syzkaller.appspotmail.com,
-	syzbot+ci5a676d3d210999ee@syzkaller.appspotmail.com,
-	david@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	syzkaller-bugs@googlegroups.com,
-	syzbot@lists.linux.dev,
-	syzbot@syzkaller.appspotmail.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v2 1/1] mm/hugetlb: fix possible deadlocks in hugetlb VMA unmap paths
-Date: Mon, 10 Nov 2025 19:15:53 +0800
-Message-ID: <20251110111553.88384-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=suAfZZSb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A9CFC60146;
+	Mon, 10 Nov 2025 11:18:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C43C116B1;
+	Mon, 10 Nov 2025 11:17:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762773480;
+	bh=Kl3noGEumLrebFoTSEUpT8n+WyWcc5CDX7vO2T8znyo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=suAfZZSbiazW8sFc3Ab8Dx4NBPVEAhiluxobak9p2W7fV7tGaO7etyuexr+Wd3vCj
+	 PqHxUnnNW7q++eT7YBuJNwAJ3rvKAo7XoOn6lFdrMFjUD3WX+vxmv61jmLfPOYOs4S
+	 kgsdkCyDsNIp911BsonJsPQag0KfEYtcFcMSuVKaDEiv4/3VDw0E9C2G+b/HLgSKiW
+	 SvzHr4R5cUfu3krfZf0NcIhD1aEvXuOLOydf18+trvSrzMjKoRzc936vRumSNGLv/7
+	 zHFW012E2kZECXgXkvGjDJltpN+//CUP2yGc+d3k9TyonAEyXSC/gzEyX+zosgPkV/
+	 y+Taz5qHRrJ5A==
+Date: Mon, 10 Nov 2025 13:17:37 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v2 01/16] mm: correctly handle UFFD PTE markers
+Message-ID: <aRHJ0RDu9fJGEBF8@kernel.org>
+References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
+ <0b50fd4b1d3241d0965e6b969fb49bcc14704d9b.1762621568.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D74AEC000C
-X-Stat-Signature: qxiugrmn66coqd6qd8edphi669byqsgf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b50fd4b1d3241d0965e6b969fb49bcc14704d9b.1762621568.git.lorenzo.stoakes@oracle.com>
+X-Stat-Signature: ms5ipjfcbg57e5g1bi17em9b6fpkdtwu
 X-Rspam-User: 
-X-HE-Tag: 1762773368-172842
-X-HE-Meta: U2FsdGVkX19LLDgzGpNNqi3cDvpVH8AT2E6AtUZaPrFeeQ8agKAljdLGUngcBCPM/iYqBP3Ta5dj7+dRE6R92NxPugrMjx2+RyEutZTavM4VuZswbjaUgUV4dwXXMeXajMA8oEYbyHAxi+CdDNg+rqeYxsUdfUPP6rgBxchq9PCLNhz0V4SMh0WwpAA/CNYe8cEhM1vMAtYLeDj8kKdvbkguL6sOFUNcMNETS0aB/VTtiYDldmyHmV1ZYn1+ODSsyzcbAtLtjRHuGOXqKinNuINz6NecFlP99Lh6af3qBTrcUiT5R57/w0VWJTdnYubmt/8IqqyS1Hu7+Yp7AXycTD/dzCk8tA9Ce/i9cwikdt6P2iJCGAnHde5hdAAr1OgYfq/tO4PvT1r73NxXY1n4kaWcAfkbmcX1qRi1BhPxs7XSer50nfxJTV8YfLwzmtlFhDLBIO8LUpU6qZpk3JrfMMTfCMOwDmGB4EuP57ew79Lze9KF4QTcf9wiSC7lF5jkcmhqeX9niC9ty/fR2/rqeg/EiqPFYphoERx0gCvtveYFa71QYy5mGWQhhpkTNmgeP7j+1ppNjAqgtZXzPqafPZYz12qGgm8wYqGxSN8fEqZyBNoinous4QGTNU7Wx6TUkWfzMQRrI040VObQ4FmSFegY6dgapU3pbwMOlLBw2WXI0g7mrPJy4KAZ3YqWBIblcSbhExE3PkmJmMc91vg20k8vT4vtkZPiLmcqs3+6hABCJkWu0TiSnGMPRKOUTJmagLoly59ETlAyoFNIeZEfnV6C05ud0NOOfitd/+ldhH4n4YM1VD4MYivvN2MFfUU0KWuLzE0Td0XfKRpEnqpz65VUXF+H/p0Vy7tENr16ZNSuaa9ZBPxejVIDbTBZ+hyAgZwfQFr9h9EBaL4gBUNPEFsf98zusZqUuRYVFPqciJAyKJN9E1zNKsyJm5C9L8lEiUabtOnNmjnEO+PbVDy
- SckNdmFd
- 2tnlekCVhT/i33LgQhynIDUxDgcjbpDU+QFNQ4dlSvRKqMtfz7T6CbTAkpDtE6L9x1sUCeBtUP6MefB+XPXtjpBA5D9fReDpvZdcUFFH68u4JWzc3MJb2OZWpD8r8T7THDjQr62pObv4MU1wTHyzyvohL4E7/WNzE+b774iUyThSbkeXMTWnPj0LI8zCWstKlU52FhxfK8/ou9TmcqMdz3Gw4huKXwn/FKogYGui8GRy/f9srOdZbFMOgkOi9xPlTlX5vMCkSAmEpPnVdKBsbrGN1WVlRajFgcVmXbTK6oOlPS3HpD+n7ShsBH9QT0XslIHDcCwKu33CjrhGnUJpa2347msWuiEjI8RCCaHjTSyDqEwXG/Yz2h0DBnX2kcYxtSinMxAi7LCESGAaQ7Ea+pwcpJfAdi9SAqFfGNFgMN1LBdwAge+VwIzUgW10TuujS9rF474/NMCEe457Or8jm2/iiu9x8JRWtozq/Rdf8bQE19tzh7KhlsWkOH+F+jnz8qj5xk8LJiLC3RenmV6fC9IYdOE651LlckaBlitzClzYmuv5tGP2tBlqRaerrZYB8RCsbB8ABPZe19S2YofOrAEyqOyimZBz0ZZ2kSg5znC+w4+vAt06dYzrYUM+NonOonr0XpTvIqYc4vOg=
+X-Rspamd-Queue-Id: A92BD80013
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762773481-659540
+X-HE-Meta: U2FsdGVkX19AOPsDB3AiSVLWVVgVMQzsdTEp/sgT7oji8jcvH5vMWUST9fd4qpXsh3+0/co1c+rmEUU0+0u3aa+HGE+IHaH7HiqlSnYQNKQLYkbAO2uCm7UWGRPRbnTPPpkMYb340agro/Z9zYFZn+7KLWxMgZWPK82JiZ64C0K3LrdmwXu5EKLIpjpWv6z3aPCu9YjUaOOOFP4Il0bYmkR+E42QVVWRJhREvNPe0H2GFTTPG0aPK+DpBEBjxv5kAmOj9x2GIuBnEIbs0w87O/z94/3k2ZFMCpi3LkwUWaudnmal1Mwqc8urdlb+5YH4UKyLHXXVALuNcFdD4G2C/2pIY/8R30vRUTBEYpBqU+If0f+P7zf25mHJRtokWyMnvd6Y2tgNeN1kJ/6kRaHMGbbHI/r9FxStbn6NzBywX17Nc86xU98fI0Hdd0TW4pvvUCJXlNRRk/s7vG4o0FIW77D1FbAOHkCXFa7emE1mpW6WRgRpEnFZjXtK7dmJVVdzIvN0RwCkNOnUcaBuszBTwbbQYcqi74jh1ObevJXp6TwSQcWAfgPnWLSW/U4Zt1fn8q6uNTDlSb3GF8yv/mGj13AWL2E9O8QLXnqbvUZlQlBUlYRxqjp2QlonCrP71QVdsQS8GV0SXYJa3tEA/zVbx7fHyPWtrjWMgZ/Pl6kmxxEEH22xRxZ7ZLvDIt1L1yQmkshJ5vSNxexfdol8NdQnmI1xonpXirNDy88JiBDPGUS5M4KvjnkfqjBVxACwRT47U3qOkQj2SSzzVqPL89WRw++eLctKB7+8RC7AHFBwf4GprpEp7KY1kUZID122WJ5T8gj/nb8bLaV1HLNQR4MoFqCcYoI3qOSh+HoC8GY1XgwootKqGrJQ9ikXzyhmiqqHVS9EuV6cGhsaWdgtdPVQgWkvYz0JaeYHWsfEHqvKbTcnB1a55L+VKHrlj2dLyfe3IYVZFgoRjYWmDNBneFt
+ JavN6aGz
+ r6wHrLwr4nNXQABaVLRrUGaZ3MnrjSn3ZtQyF6xM62xsLKrFgyni9qpratz2kGXKRvCiSs1zpzH4vpUvTwUsG9dnQ0T/BnKs4jsLA4Eh3Digqiy2/gF1CD6qkHp5jXrjYI5rKuKRaH6BUos0SW/dT2Q+l1uGprxyfvWnjFlEZu1xKgbvuCwBrwUkQoVJ7yW7zvcdj+BOVONkiw1yqLq4wGy01vwNZFlUXe/e2+92XR+rnp78oeX8fDj/VzXeygLkhXiB2pxaePHJDZ3WHwpupU0oqWlhCo4xvVGFFgyKQupxBDv18/SEWon0ec9PXjEibF795TDLdbBicvgbscSIFZN8P2ijpYi+05Tut
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,83 +137,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+On Sat, Nov 08, 2025 at 05:08:15PM +0000, Lorenzo Stoakes wrote:
+> PTE markers were previously only concerned with UFFD-specific logic - that
+> is, PTE entries with the UFFD WP marker set or those marked via
+> UFFDIO_POISON.
+> 
+> However since the introduction of guard markers in commit
+>  7c53dfbdb024 ("mm: add PTE_MARKER_GUARD PTE marker"), this has no longer
+>  been the case.
+> 
+> Issues have been avoided as guard regions are not permitted in conjunction
+> with UFFD, but it still leaves very confusing logic in place, most notably
+> the misleading and poorly named pte_none_mostly() and
+> huge_pte_none_mostly().
+> 
+> This predicate returns true for PTE entries that ought to be treated as
+> none, but only in certain circumstances, and on the assumption we are
+> dealing with H/W poison markers or UFFD WP markers.
+> 
+> This patch removes these functions and makes each invocation of these
+> functions instead explicitly check what it needs to check.
+> 
+> As part of this effort it introduces is_uffd_pte_marker() to explicitly
+> determine if a marker in fact is used as part of UFFD or not.
+> 
+> In the HMM logic we note that the only time we would need to check for a
+> fault is in the case of a UFFD WP marker, otherwise we simply encounter a
+> fault error (VM_FAULT_HWPOISON for H/W poisoned marker, VM_FAULT_SIGSEGV
+> for a guard marker), so only check for the UFFD WP case.
+> 
+> While we're here we also refactor code to make it easier to understand.
+> 
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  fs/userfaultfd.c              | 83 +++++++++++++++++++----------------
+>  include/asm-generic/hugetlb.h |  8 ----
+>  include/linux/swapops.h       | 18 --------
+>  include/linux/userfaultfd_k.h | 21 +++++++++
+>  mm/hmm.c                      |  2 +-
+>  mm/hugetlb.c                  | 47 ++++++++++----------
+>  mm/mincore.c                  | 17 +++++--
+>  mm/userfaultfd.c              | 27 +++++++-----
+>  8 files changed, 123 insertions(+), 100 deletions(-)
+> 
+> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> index 54c6cc7fe9c6..04c66b5001d5 100644
+> --- a/fs/userfaultfd.c
+> +++ b/fs/userfaultfd.c
+> @@ -233,40 +233,46 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+>  {
+>  	struct vm_area_struct *vma = vmf->vma;
+>  	pte_t *ptep, pte;
+> -	bool ret = true;
+>  
+>  	assert_fault_locked(vmf);
+>  
+>  	ptep = hugetlb_walk(vma, vmf->address, vma_mmu_pagesize(vma));
+>  	if (!ptep)
+> -		goto out;
+> +		return true;
+>  
+> -	ret = false;
+>  	pte = huge_ptep_get(vma->vm_mm, vmf->address, ptep);
+>  
+>  	/*
+>  	 * Lockless access: we're in a wait_event so it's ok if it
+> -	 * changes under us.  PTE markers should be handled the same as none
+> -	 * ptes here.
+> +	 * changes under us.
+>  	 */
+> -	if (huge_pte_none_mostly(pte))
+> -		ret = true;
+> +
+> +	/* If missing entry, wait for handler. */
 
-The hugetlb VMA unmap path contains several potential deadlocks, as
-reported by syzbot. These deadlocks occur in __hugetlb_zap_begin(),
-move_hugetlb_page_tables(), and the retry path of
-hugetlb_unmap_file_folio() (affecting remove_inode_hugepages() and
-unmap_vmas()), where vma_lock is acquired before i_mmap_lock. This lock
-ordering conflicts with other paths like hugetlb_fault(), which establish
-the correct dependency as i_mmap_lock -> vma_lock.
+It's actually #PF handler that waits ;-)
 
-Possible unsafe locking scenario:
+When userfaultfd_(huge_)must_wait() return true, it means that process that
+caused a fault should wait until userspace resolves the fault and return
+false means that it's ok to retry the #PF.
 
-CPU0                                 CPU1
-----                                 ----
-lock(&vma_lock->rw_sema);
-                                     lock(&i_mmap_lock);
-                                     lock(&vma_lock->rw_sema);
-lock(&i_mmap_lock);
+So the comment here should probably read as
 
-Resolve the circular dependencies reported by syzbot across multiple call
-chains by reordering the locks in all conflicting paths to consistently
-follow the established i_mmap_lock -> vma_lock order.
+	/* entry is still missing, wait for userspace to resolve the fault */
 
-Reported-by: syzbot+3f5f9a0d292454409ca6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/69113a97.a70a0220.22f260.00ca.GAE@google.com/
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-V1 -> V2:
-  - Update changelog
-  - Resolve three related deadlock scenarios reported by syzbot
-    https://lore.kernel.org/linux-mm/6911ad38.a70a0220.22f260.00dc.GAE@google.com/
-  - https://lore.kernel.org/linux-mm/20251110051421.29436-1-lance.yang@linux.dev/
+and the rest of the comments here and in userfaultfd_must_wait() need
+similar update.
 
- fs/hugetlbfs/inode.c | 2 +-
- mm/hugetlb.c         | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+> +	if (huge_pte_none(pte))
+> +		return true;
+> +	/* UFFD PTE markers require handling. */
+> +	if (is_uffd_pte_marker(pte))
+> +		return true;
+> +	/* If VMA has UFFD WP faults enabled and WP fault, wait for handler. */
+>  	if (!huge_pte_write(pte) && (reason & VM_UFFD_WP))
+> -		ret = true;
+> -out:
+> -	return ret;
+> +		return true;
+> +
+> +	/* Otherwise, if entry isn't present, let fault handler deal with it. */
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 3919fca56553..d1b0b5346728 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -447,8 +447,8 @@ static void hugetlb_unmap_file_folio(struct hstate *h,
- 		 * a reference.  We must 'open code' vma locking as we do
- 		 * not know if vma_lock is still attached to vma.
- 		 */
--		down_write(&vma_lock->rw_sema);
- 		i_mmap_lock_write(mapping);
-+		down_write(&vma_lock->rw_sema);
- 
- 		vma = vma_lock->vma;
- 		if (!vma) {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index b1f47b87ae65..f0212d2579f6 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5110,8 +5110,8 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
- 	mmu_notifier_invalidate_range_start(&range);
- 	last_addr_mask = hugetlb_mask_last_page(h);
- 	/* Prevent race with file truncation */
--	hugetlb_vma_lock_write(vma);
- 	i_mmap_lock_write(mapping);
-+	hugetlb_vma_lock_write(vma);
- 	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
- 		src_pte = hugetlb_walk(vma, old_addr, sz);
- 		if (!src_pte) {
-@@ -5327,9 +5327,9 @@ void __hugetlb_zap_begin(struct vm_area_struct *vma,
- 		return;
- 
- 	adjust_range_if_pmd_sharing_possible(vma, start, end);
--	hugetlb_vma_lock_write(vma);
- 	if (vma->vm_file)
- 		i_mmap_lock_write(vma->vm_file->f_mapping);
-+	hugetlb_vma_lock_write(vma);
- }
- 
- void __hugetlb_zap_end(struct vm_area_struct *vma,
+Entry is actually present here, e.g because there is a thread that called
+UFFDIO_COPY in parallel with the fault, so no need to stuck the faulting
+process.
+
+> +	return false;
+>  }
+>  #else
+>  static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+>  					      struct vm_fault *vmf,
+>  					      unsigned long reason)
+>  {
+> -	return false;	/* should never get here */
+> +	/* Should never get here. */
+> +	VM_WARN_ON_ONCE(1);
+> +	return false;
+>  }
+>  #endif /* CONFIG_HUGETLB_PAGE */
+>  
+>  /*
+> - * Verify the pagetables are still not ok after having reigstered into
+> + * Verify the pagetables are still not ok after having registered into
+>   * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
+>   * userfault that has already been resolved, if userfaultfd_read_iter and
+>   * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
+> @@ -284,53 +290,55 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+>  	pmd_t *pmd, _pmd;
+>  	pte_t *pte;
+>  	pte_t ptent;
+> -	bool ret = true;
+> +	bool ret;
+>  
+>  	assert_fault_locked(vmf);
+>  
+>  	pgd = pgd_offset(mm, address);
+>  	if (!pgd_present(*pgd))
+> -		goto out;
+> +		return true;
+>  	p4d = p4d_offset(pgd, address);
+>  	if (!p4d_present(*p4d))
+> -		goto out;
+> +		return true;
+>  	pud = pud_offset(p4d, address);
+>  	if (!pud_present(*pud))
+> -		goto out;
+> +		return true;
+>  	pmd = pmd_offset(pud, address);
+>  again:
+>  	_pmd = pmdp_get_lockless(pmd);
+>  	if (pmd_none(_pmd))
+> -		goto out;
+> +		return true;
+>  
+> -	ret = false;
+>  	if (!pmd_present(_pmd))
+> -		goto out;
+> +		return false;
+
+This one is actually tricky, maybe it's worth adding a gist of commit log
+from a365ac09d334 ("mm, userfaultfd, THP: avoid waiting when PMD under THP migration")
+as a comment.
+
+>  
+> -	if (pmd_trans_huge(_pmd)) {
+> -		if (!pmd_write(_pmd) && (reason & VM_UFFD_WP))
+> -			ret = true;
+> -		goto out;
+> -	}
+> +	if (pmd_trans_huge(_pmd))
+> +		return !pmd_write(_pmd) && (reason & VM_UFFD_WP);
+
+...
+
+> diff --git a/mm/hmm.c b/mm/hmm.c
+> index a56081d67ad6..43d4a91035ff 100644
+> --- a/mm/hmm.c
+> +++ b/mm/hmm.c
+> @@ -244,7 +244,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
+>  	uint64_t pfn_req_flags = *hmm_pfn;
+>  	uint64_t new_pfn_flags = 0;
+>  
+> -	if (pte_none_mostly(pte)) {
+> +	if (pte_none(pte) || pte_marker_uffd_wp(pte)) {
+
+Would be nice to add the note from the changelog as a comment here.
+
+>  		required_fault =
+>  			hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags, 0);
+>  		if (required_fault)
+
 -- 
-2.49.0
-
+Sincerely yours,
+Mike.
 
