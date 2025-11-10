@@ -4,101 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96D3CCCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 08:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 584BFCCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 08:44:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFD688E0018; Mon, 10 Nov 2025 03:19:32 -0500 (EST)
+	id 73E1D8E0008; Mon, 10 Nov 2025 03:44:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED4FA8E0002; Mon, 10 Nov 2025 03:19:32 -0500 (EST)
+	id 6EDE88E0002; Mon, 10 Nov 2025 03:44:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEAD78E0018; Mon, 10 Nov 2025 03:19:32 -0500 (EST)
+	id 604148E0008; Mon, 10 Nov 2025 03:44:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CC8E38E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:19:32 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A088D5CAF4
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:19:32 +0000 (UTC)
-X-FDA: 84093998184.01.8F05655
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DA5B140005
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:19:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oHpboN7r;
-	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A62D8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:44:55 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C654BC0CD5
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:44:54 +0000 (UTC)
+X-FDA: 84094062108.20.5D61431
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 14AFE1C0004
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:44:52 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="b/MLsFTk";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762764293; a=rsa-sha256;
+	cv=none;
+	b=3KXbQtPVmoFlEy9qOP6V6nfXRYWCL96fTmnqW5oFUu5OiD23IzPuPAyi9sePVkRBtMvwGZ
+	M1fgEAo3vd/ubClwv98DuCQUkBEH52xqHZBRMXSG8+3MY6+3LxfbgKV0AE47q4IKy7V++z
+	b58fXED8qNoBqq8F9+Z/I1lxe6luUyg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="b/MLsFTk";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762762771;
+	s=arc-20220608; t=1762764293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YZBuBE3QWFYp7uE2iHbl7AwFCBW3XwNIvR3EZWHHVV4=;
-	b=mJ6K2QOiBWn1l2RlqPPBYVdAfqI1T7xYf6EZ5bMeBs2ms5WVd9DmgYDZ0Q+Lp9OiJ2Mcra
-	dWX+s3f/UkAbbFsQV7EyWeQlUFyrAWwGCY9KUMKRiY9b7MgjxdvDjJ45Gi8qhoV8lsmItI
-	1ag6MdXjRu7l2i1EJcE2sCVUJ21ywKc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762762771; a=rsa-sha256;
-	cv=none;
-	b=3l8QxQGvcFJurmdg75IyRWeEBBod02EtYF1GWBAB/AvSOYw8uFdmITRUwZA4uWGwkVwiEz
-	kWES2R5tMNNnE8UJwRaHIdM0H7jk2vkMLALgC3d+HPjWkXBa0cCNmsD6CjrD1oCm5rQnSh
-	R+quLsAXOQ/U3gXhY0faEWp7T39fUy4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oHpboN7r;
-	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:references:dkim-signature;
+	bh=i1AWXzCfEqRFFIgfi716ObTY/oClLhe/oFlQHVuhgXk=;
+	b=ket6XmJgAijKo+b6VrFO4AqIUrmWVbk9NksQef2mSHGA5hQnQJVdMrg4ICIPkcbwLNURMb
+	wemf8eMIfpbuscttUvdLws+MtySPiwA0d8zQaEbRefbk0MM2X+Fwh8p1Ba7c6Ys7rBc6Kb
+	9iSnxDa74nNFbvP9aTqpGISwpWU4i2U=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762762769;
+	t=1762764290;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YZBuBE3QWFYp7uE2iHbl7AwFCBW3XwNIvR3EZWHHVV4=;
-	b=oHpboN7raQaq3heBBKwf64VuXGAjGZj8U6vaCmv4rAbusmntps11N3dfZKkAZGz+JHjIRo
-	NYqR8InlX0YLgDhBMWBKHXvRAI51ckuNCNxLhQMgCtp5Ewj2fxheB0sGh/zf3LbABflqL2
-	3HIcUX9vAaS1xvtsVyaJrf6neuUrjNU=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=i1AWXzCfEqRFFIgfi716ObTY/oClLhe/oFlQHVuhgXk=;
+	b=b/MLsFTkzOowsCnABlSuNUL72SnXg7YGrxD47ixZas0WMQ01U5vWwdV2i3JmnO44oA1CPs
+	jT78saeR97gCQPqp0dgjiQZjrmFW0qcXgGjS3apHrL6YorW+mpRRbo2YC0KrdFxupIN7re
+	BxtmGk09LyUkCZuNLHKAgW6iaqNG9/k=
 From: Qi Zheng <qi.zheng@linux.dev>
-To: hannes@cmpxchg.org,
-	hughd@google.com,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	david@redhat.com,
+To: akpm@linux-foundation.org,
+	david@kernel.org,
 	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	harry.yoo@oracle.com,
-	baolin.wang@linux.alibaba.com,
 	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	richard.weiyang@gmail.com
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	harry.yoo@oracle.com
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v6 4/4] mm: thp: reparent the split queue during memcg offline
-Date: Mon, 10 Nov 2025 16:17:58 +0800
-Message-ID: <8703f907c4d1f7e8a2ef2bfed3036a84fa53028b.1762762324.git.zhengqi.arch@bytedance.com>
-In-Reply-To: <cover.1762762324.git.zhengqi.arch@bytedance.com>
-References: <cover.1762762324.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH] mm: vmstat: correct the comment above preempt_disable_nested()
+Date: Mon, 10 Nov 2025 16:44:37 +0800
+Message-ID: <20251110084437.46701-1-qi.zheng@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: s4y9r6d1dey1ziiuzucuz9s4bd4zo5c4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DA5B140005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762762770-651479
-X-HE-Meta: U2FsdGVkX1+E5BIGP9F2qhmwnULJY/p7wZNdIQwBJJy+NLKLMQaECXlwrBsH1rQLVarxSu5cipKzOoirLYZJlI+FcpGxbbhfMQt4rNp/KzUGE+e74qn8zIKBtwyDM2SXbFPZvfFzfgtCmrCJW3fVduxGQBGBwhARWyzQpYUiNTcqg8VJkKR7JoCifWLVdt+oMxXpv6OiU3chZ1AW3+Ms21za265+tFrD5wVmy9CYQ+aF7sl+ZBIP3sx0wNFwd3on9xaC1sV5xMDiUyPwob0EOZ45NTVn+mjwpa6/OcCIq2h3MsmqcOCT5/v+5wHGgn2OGYv7H93iqe8/nIyAJIPJlhQL0cw+8xrC+oWG35zuXbR/8fYfKka9mru5LnZvkzS1WSKmKkBuXsjQpH/wB9QUUQQfn+XwwKHbqN5raKcCkYx0ePr13mICpYLS0t41DkDm061yqKa2x/eNpCD20OYVOWFL0mKuxG2WYoHRFZ9gXcd6kBP8Sb/PIb7lGsVjxCaImMGn7WRGMMbFszt2jYk882dMn8MDxHZRAtseNINvfhL6pyqIxMEBjEDEwFtLN/VMj/0A6KZDDmL0q2JpTpwuaOAJ5joZr/zbVvLBiFNEON86UhkRTptt1hrkJ+V7U1mmUxTfCf1/8q7fu+2bJhZq8C1wLluIBrRLA6F/UWCwkHuKcUhgMaxs5DY1D+WLCee7FmPUcmb+dQkUqeJbb8oHdPy9XRXNtfqqDBEtStlThyj6gze1h747pPHQF6tednPIQBp1xspG0NYwc/tf2+jxJD1Q0pMQ+XV9YtfOOfQEDa34MUVLbgXbjGvuWRQ3WazwlRifSEQnGyXb5SsTcdgVJSBY25hpl8kA+z6GS4rFUdjjar2hgGsi7KcmOvOVy/gCXCEYrpcG0wssRp6JI1/oCBBE2aV5FXmi2YJQdvtvdVtLTyZdwe3GfJKJ2RqgfgvbGMOVF8i5coDMyfMx2tg
- lXIyqyDc
- GCCLhOWbP/RN34G3Pt67QB9OUtmWhlPrFxEv75hnfClnpnH/1Fi2hfEQaX1PjAwf7+lwV8eu/0FjjvUeoaSwfmOpicWAJPmHHGHTfkUC6q0XoSWv3D2YWJbYkddY6HAY9eeLaaWocLj3Ze7Na7N9D9tUKXMyLOO9A6votvMtDls11UgXpMtTnBcUC0iTxtQN6YLtLXoYv9VlzLW1PoKmc0s8GBLxP8msGXPlMFSNGoHrLK2eh9jYYWEmVoU4TessC7Hc7Ip1Mz9uFWqj9F8lc6lc42Q9z1xRVjhBehiPHFmKnIt8EYkOHUjIPcECfS1BK9Vv/b6bUHbUY57SVcgUm93wjUPYgQYRfsq1G
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 14AFE1C0004
+X-Stat-Signature: ikpxdm7f6zehamx98me75hyyekmwgdnw
+X-HE-Tag: 1762764292-557565
+X-HE-Meta: U2FsdGVkX1+adzb0ZxPyTYU69VvIRkt9ZeqMpnv9JPD/ZVBF2wxuWRINQnxSK5k3JjxDFacc9zh3cQ8T1RJzh8GH6MiqIkNWePHVJGwlJZ0NU7MjFxxksmIFI+Z4r72VyPz/APUG92fTA+bID9girSQIsJq9MG/qzkTmn3jm6jmRroiMdwJXkdwoA/97DHt5wi5Ixm9O7wzczLVb2/Wlj1YDICYrRRbAuVdYTFGDhmq2+zNIfkbPBIAgLWFdTPzO5F2OgmHicdH8A7UfX1UpgMFsairWZpq8aTG0BwpKboEYBx/mXuRoA0ioRLG+Qgq7Zng7DyzxO1pfO1yCr+9bK7x0ceh3jwkqnf3RnQ/W0+vy4LHMIc2SCVe8fVGzbdLyqBzbiwPrruMPsUhPWCJRvr/lzLBHGdtzVh7yC2oajNys0Yzj48GrsYDTpMYOXn16WMogV2iDpo6YhggtP1jISaRCW+a+BiH/dLJfD9i3ZB/kYEC9PfMc4ejL0qjlexxp9wEooEAGUMMYlvApluAhq4oK3AqBDpVyR6tv/47Pt+IPzadtqfJRH6O6seO+TI7WMOKL671LNZQfXMAsXXVKNv6pF3ZYwnVo88G05Q+7X3PQeiknEuw8KRl0HYsiCBKiXGhV6/6hd3KPNAyBmT0KZyQ0D/X7R4dICzjP+2dXINWUiBrdvltGgarh9A56l2rFkES/PJtVlvqAHvgrciotpaMa1J8XncluTobOAN9Drjk8I37Q0fWZRyPCjiLS1zR/PHejbCW/HCfmLNW7HlY4O8vfC+65PZvCyaI6W63SR6AWx1rzGENmfe6bfqYEtt2SfPIwKMllBuC3LVunn4M1nOorDvV5hTvgqLS/dKpzsIsc92wmJwyfp3GKWOpbMcTE9IL46S5Pomw74vNypJn78bKDlFcNklIFwue8YokMKgLt+RR1sQyTTIurZRLKDIDQi4PailBUmNcAtABuSjm
+ ehLmGx1Q
+ zgqiu7RiQ+7lqDpyw1/nVlchHFRTsdHqTwleCV6yhJCiKm6AR9mNM5CiUbHiAnPKQQGfu9GKNDXMITa8Uq4c1nAfCn9YC85NRGcYyVMc2IMGQmcQWIF7odvryWsG8U8XHMVdYGRBZ+pLQK0ogDxloFlFBeMiU+MApVQZ7ocsasSgnVIg+znJpbkGj8Kf2jrn2VWDmVltnt+t1ecUuj2sQRdW1TIgbGv+a4pCaI/6H6IFxbP+ovxbJAbkdajMG+3/CO0i47PAfGGeeVbA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,161 +95,64 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Similar to list_lru, the split queue is relatively independent and does
-not need to be reparented along with objcg and LRU folios (holding
-objcg lock and lru lock). So let's apply the similar mechanism as list_lru
-to reparent the split queue separately when memcg is offine.
-
-This is also a preparation for reparenting LRU folios.
+The comment explaining why these parts use preempt_disable_nested() is in
+__mod_zone_page_state(), not in __mod_node_page_state(), so we should see
+__mod_zone_page_state(). Just correct it.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 ---
- include/linux/huge_mm.h    |  4 ++++
- include/linux/memcontrol.h | 10 +++++++++
- mm/huge_memory.c           | 44 ++++++++++++++++++++++++++++++++++++++
- mm/memcontrol.c            |  1 +
- 4 files changed, 59 insertions(+)
+ mm/vmstat.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 5ba9cac440b92..f381339842fa1 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -412,6 +412,9 @@ static inline int split_huge_page(struct page *page)
- 	return split_huge_page_to_list_to_order(page, NULL, 0);
- }
- void deferred_split_folio(struct folio *folio, bool partially_mapped);
-+#ifdef CONFIG_MEMCG
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg);
-+#endif
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index b53b07aa29e81..65de88cdf40e6 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -392,7 +392,7 @@ void __mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
+ 		delta >>= PAGE_SHIFT;
+ 	}
  
- void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long address, bool freeze);
-@@ -644,6 +647,7 @@ static inline int try_folio_split_to_order(struct folio *folio,
- }
+-	/* See __mod_node_page_state */
++	/* See __mod_zone_page_state() */
+ 	preempt_disable_nested();
  
- static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-+static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
- #define split_huge_pmd(__vma, __pmd, __address)	\
- 	do { } while (0)
+ 	x = delta + __this_cpu_read(*p);
+@@ -438,7 +438,7 @@ void __inc_zone_state(struct zone *zone, enum zone_stat_item item)
+ 	s8 __percpu *p = pcp->vm_stat_diff + item;
+ 	s8 v, t;
  
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index fad2661ca55d8..8d2e250535a8a 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1774,6 +1774,11 @@ static inline void count_objcg_events(struct obj_cgroup *objcg,
+-	/* See __mod_node_page_state */
++	/* See __mod_zone_page_state() */
+ 	preempt_disable_nested();
  
- bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
+ 	v = __this_cpu_inc_return(*p);
+@@ -461,7 +461,7 @@ void __inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
  
-+static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-+{
-+	return memcg ? css_is_dying(&memcg->css) : false;
-+}
-+
- #else
- static inline bool mem_cgroup_kmem_disabled(void)
- {
-@@ -1840,6 +1845,11 @@ static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
- {
- 	return true;
- }
-+
-+static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-+{
-+	return false;
-+}
- #endif /* CONFIG_MEMCG */
+ 	VM_WARN_ON_ONCE(vmstat_item_in_bytes(item));
  
- #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index db03853a73e3f..8bb63acaa8329 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1118,8 +1118,19 @@ static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg
- {
- 	struct deferred_split *queue;
+-	/* See __mod_node_page_state */
++	/* See __mod_zone_page_state() */
+ 	preempt_disable_nested();
  
-+retry:
- 	queue = memcg_split_queue(nid, memcg);
- 	spin_lock(&queue->split_queue_lock);
-+	/*
-+	 * There is a period between setting memcg to dying and reparenting
-+	 * deferred split queue, and during this period the THPs in the deferred
-+	 * split queue will be hidden from the shrinker side.
-+	 */
-+	if (unlikely(memcg_is_dying(memcg))) {
-+		spin_unlock(&queue->split_queue_lock);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
+ 	v = __this_cpu_inc_return(*p);
+@@ -494,7 +494,7 @@ void __dec_zone_state(struct zone *zone, enum zone_stat_item item)
+ 	s8 __percpu *p = pcp->vm_stat_diff + item;
+ 	s8 v, t;
  
- 	return queue;
- }
-@@ -1129,8 +1140,14 @@ split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags
- {
- 	struct deferred_split *queue;
+-	/* See __mod_node_page_state */
++	/* See __mod_zone_page_state() */
+ 	preempt_disable_nested();
  
-+retry:
- 	queue = memcg_split_queue(nid, memcg);
- 	spin_lock_irqsave(&queue->split_queue_lock, *flags);
-+	if (unlikely(memcg_is_dying(memcg))) {
-+		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
+ 	v = __this_cpu_dec_return(*p);
+@@ -517,7 +517,7 @@ void __dec_node_state(struct pglist_data *pgdat, enum node_stat_item item)
  
- 	return queue;
- }
-@@ -4402,6 +4419,33 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- 	return split;
- }
+ 	VM_WARN_ON_ONCE(vmstat_item_in_bytes(item));
  
-+#ifdef CONFIG_MEMCG
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg)
-+{
-+	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-+	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-+	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
-+	int nid;
-+
-+	spin_lock_irq(&ds_queue->split_queue_lock);
-+	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
-+
-+	if (!ds_queue->split_queue_len)
-+		goto unlock;
-+
-+	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
-+	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
-+	ds_queue->split_queue_len = 0;
-+
-+	for_each_node(nid)
-+		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
-+
-+unlock:
-+	spin_unlock(&parent_ds_queue->split_queue_lock);
-+	spin_unlock_irq(&ds_queue->split_queue_lock);
-+}
-+#endif
-+
- #ifdef CONFIG_DEBUG_FS
- static void split_huge_pages_all(void)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 025da46d9959f..c34029e92baba 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3920,6 +3920,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 	zswap_memcg_offline_cleanup(memcg);
+-	/* See __mod_node_page_state */
++	/* See __mod_zone_page_state() */
+ 	preempt_disable_nested();
  
- 	memcg_offline_kmem(memcg);
-+	reparent_deferred_split_queue(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
- 	lru_gen_offline_memcg(memcg);
+ 	v = __this_cpu_dec_return(*p);
 -- 
 2.20.1
 
