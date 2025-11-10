@@ -4,174 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36542CCFA1A
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 08:53:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D42DCCFA1E
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 08:53:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AFAE8E000E; Mon, 10 Nov 2025 03:53:42 -0500 (EST)
+	id 8FBF78E0012; Mon, 10 Nov 2025 03:53:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85DFE8E0002; Mon, 10 Nov 2025 03:53:42 -0500 (EST)
+	id 7EA128E0002; Mon, 10 Nov 2025 03:53:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74C3E8E000E; Mon, 10 Nov 2025 03:53:42 -0500 (EST)
+	id 5C62D8E0012; Mon, 10 Nov 2025 03:53:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 60C3A8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:53:42 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 18CDE4CAAD
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:53:42 +0000 (UTC)
-X-FDA: 84094084284.23.73C0DA9
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9FC5B4000E
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:53:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HeaEcVZW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BMX9bJVA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Dh0EguRo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=S1w9JFlP;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E4E18E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:53:43 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 092F2140C8F
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:53:43 +0000 (UTC)
+X-FDA: 84094084326.06.4209146
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0E18F8000D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:53:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SWWTnnCR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762764821; a=rsa-sha256;
+	cv=none;
+	b=npmddfo6kRiHwI2USOC6jMUEeizwkWjvLkYfz9JqWYiMaok2fm8grWxd+tGnUripLcQcwH
+	oCMFBGdTShdYG7DW6j3x7y/hCzqHoJScdeuHrGd5WXY7NkYclwG7Yw2U4GP6osOnlb7OPw
+	Ar+5PnnZeVZ5aw1Z9pSd4V7OTSVuXJU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SWWTnnCR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762764820;
+	s=arc-20220608; t=1762764821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KhVGXXl82HA74C7MBfa4J8WEYKtUPGSE84qDiektqPs=;
-	b=5u0gWZGg5a7pW+7fx4wWPkhq5ic81ClKx+36CrYkx6dlhD6S6tlDcgmONt2CtU8JfIC2al
-	cUvkt/f9nZA/t0+80JIyua97PZZaYPv+CcXDzTMcnDzYGhLBfrLzSJdZHsPEElktbjdCJ4
-	Go/4zs8Va7baj/U2SlNVXXFx5vtyMQY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HeaEcVZW;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BMX9bJVA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Dh0EguRo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=S1w9JFlP;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762764820; a=rsa-sha256;
-	cv=none;
-	b=ctDfjX/S+R4jwqfb28QeWjEOBClEnziZRKkglqxkj+K9jWwvaECyBHCuBMdY0ouyxoOXxE
-	NONY/ffNLNBWrcF8QBz2IJJmuuaoT7pZ3xfG5JSYIUuBRWOUiHIuQGnnSZwPSpoOUfflnp
-	+/iq2lPvshqd5PC7zfxJM9ti+2IT0kI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D8E9F1F399;
-	Mon, 10 Nov 2025 08:53:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762764818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KhVGXXl82HA74C7MBfa4J8WEYKtUPGSE84qDiektqPs=;
-	b=HeaEcVZWPmhyP07OZdkA1LCc8+GyEblamiy30/X92AvCU37Qdi5HjumXVJw1tzqA5y1khK
-	4UrRmuFiZAlvSdpxL3oZLWzYAGJGBm3TyX2BY5Kq1TN2AWxk4KZCci4aIbo00VzAeSqlb5
-	Dz+4yiEmAp76qmwJJZFLTOoC6XuFDcc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762764818;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KhVGXXl82HA74C7MBfa4J8WEYKtUPGSE84qDiektqPs=;
-	b=BMX9bJVAXlf80cwNa2Me8Y8oIGZkVGa375flp5UMmdp28uPmX4OOQtc6fFpGlW4L20DXT5
-	BM+rPP2YTkGh6fCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762764817; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KhVGXXl82HA74C7MBfa4J8WEYKtUPGSE84qDiektqPs=;
-	b=Dh0EguRoSSDR9MGAZeI2PxlGkax2JYYakxzunVGBJh2OsvD5KpaJ9NDLLswvkJJ9UyvlR5
-	7u+9P+lKUfncy2QJwHSy4lcnnA5oQofh76KpmiRpAlMPlvhnA8+jENRsO2Ahg81HlF4InQ
-	VQ5Mz0TE0gSAGQU/owSzPqwR3r0Nfgs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762764817;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KhVGXXl82HA74C7MBfa4J8WEYKtUPGSE84qDiektqPs=;
-	b=S1w9JFlPp6jK++XeYlLt4YGq4rDiDKZeSsNb4DyUfRkwNG6Fz2NBXLQ13XLMirNna82yeL
-	toDE9K8GdZxDv6AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ADB5013BCB;
-	Mon, 10 Nov 2025 08:53:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2oJ+KBGoEWlFRwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 10 Nov 2025 08:53:37 +0000
-Message-ID: <cff1f137-06dd-4045-942a-b5e56a63f47d@suse.cz>
-Date: Mon, 10 Nov 2025 09:53:37 +0100
+	bh=/Ldu9p98EP72Lub2LnfLE7D8p6c6NaHeByWpsFXZ1WI=;
+	b=PgQaTXIhvtSpXJiHk5BkS3CXm0udFRYZ0Ffotp8BzDWH+kNJWelVA9gCycjUqDR8RMwopY
+	pFSSdcdUrAVWkINsswUbstDalJvDWuQMDOIblZKUn6gWxEoMd+aNl5LU37lVVqGi01dkM+
+	AfYvuHhDOV856fBKXCL+IXNl46wnuX4=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477632d9326so20838425e9.1
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 00:53:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762764820; x=1763369620; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Ldu9p98EP72Lub2LnfLE7D8p6c6NaHeByWpsFXZ1WI=;
+        b=SWWTnnCRC3DO1FJnUutnU4x8AiGMiyGdnxm5W7TfYhgScRtxQBX4PPJZjE5tnibKWr
+         h3ryu8fRVWNXP9wBwPSWGRX6ZfDlEjDLobY/48hw8MtT7t6kpG/d/sRJiAORUpGZMfly
+         tWQkUshXCX4W7/ucNpiI2avKi5vJdR/0JQW25epv4obH/IyhD9qWrI7KThd6I69+HVQY
+         Xy7vTtDtUXlHJh52Zz+sb5h1PmRU/7ennZlA5az2AeCrxCHyBI8XjlcHaTpROJMVcE4y
+         CjIFHZr4ePQqZY4rkZvDbwa3GHwUre1+eLge62nyBOht1Ii8OmvxjP7Y6dmbBFCg+6YP
+         4BPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762764820; x=1763369620;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/Ldu9p98EP72Lub2LnfLE7D8p6c6NaHeByWpsFXZ1WI=;
+        b=m8CJYzoI3qgA+5F+ldgVbi9HybugVB8ayGLJyneEShZ3HDMEtpkwh1hYQWJu1gGurt
+         k5Ve6cLan1kFVCu93t+y2G+g+aaWhkykClfoyjLDc8RONgZNrOpLovEbWgYqr1QqSKtf
+         vmJl4St8JuJlK8GZKOiwPixJmrDa1xgunI5il0j/u+LdxBk79UBD/oP39G0HeNhBqm75
+         +jlFdXMOaWO0L/sUEVEsxcYQa5uQtKHEKDbvnhbAwxiUuaQsH42kNhKTGRlj/lDIzdNQ
+         WMjD5WfV+F4KDaCp2wk0ZO5X9P4UtyubqBSSg3WFypvOYPX4ADkQb5nSO1fz7Xi0n2xk
+         UaXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVDhhHcKDfKwWejHsGz7pmz6dSqwTM1gJsKYMZtd/jTn7hU+vJT09N1JH2fpXn9bdI8z4JbDUtwVw==@kvack.org
+X-Gm-Message-State: AOJu0Yy0a12o68frOxkWaq4j1OLRUHiyark6ed1/B0RmSnhtMKhL1uKa
+	b3V5wZTN1u3uC1KZ1DxrIUR7BTr6l4h6iF71a7zRLxxVS+eFdpGcLtXg
+X-Gm-Gg: ASbGncsREoPNv/NVfI/rrR5tuhNKS5haiGDBGKLkgF2bl11D4ATHoPKtI+FzySXYb1U
+	Ut47bFQzy3QOxmnpLkLe7JnQ6dj1uN6pbNAsfAGxxX/mm0dtJQDGOjIILiT+FBLq+RuPVTWMTks
+	ue3LWkqtqDWP0u0c+byYzDuWQZT6zxobfeIvN74lVdpAiSWX0im5u3TsGrXhJFrZou+Qh5j5n4H
+	KBlq4Mv3SuR1yKyZMuZT4xlWeN48/X4Uz0RTJ7UR1js7eJ8KKDmHKtXoO26yfui+E0MrFrPLV+h
+	QYC7KqrzV9BCjhXUgHUd1F+QIUUyenjBo+sTj3c3GQ3ot7XjT9ybVPV9Nn2pWe7c2umFMwYIpOX
+	X2IKA9OKU0ijDAA56HJ6LB/8wIbCp5oIoquBTqaZf6m50PDNLY/WhwNsbJXb0HTH/E/JCvTH6N7
+	Ay7ZePrvfmEIRo/HBpKP8pEz5IaOjFp1MQi0T7xXuqnaXp8IKSJ6UxohKfrUoilXBQY4eB4Mtz6
+	IWabCOhfPg8JAcROYDRQZKoeuHVPmZpmawuNa66xHFs2yBzBR+RBpFGF4Hg
+X-Google-Smtp-Source: AGHT+IHOWXilb/YcUOqkNvD5jv1JX4N6N7v+d1KUcRwDS+nMZxJhbeCpIXfmOsG8KxaFsorMfkvdQw==
+X-Received: by 2002:a05:600c:a6a6:b0:477:79cf:89d4 with SMTP id 5b1f17b1804b1-47779cf8b43mr25246935e9.31.1762764819414;
+        Mon, 10 Nov 2025 00:53:39 -0800 (PST)
+Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b2dd927d5sm14179020f8f.24.2025.11.10.00.53.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Nov 2025 00:53:39 -0800 (PST)
+Message-ID: <048f6173-f538-46eb-b0dd-70f1aaa79562@gmail.com>
+Date: Mon, 10 Nov 2025 09:53:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: vmstat: correct the comment above
- preempt_disable_nested()
+Subject: Re: [PATCH] mm/ptdesc: Derive from the compound head in page_ptdesc()
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc: vishal.moola@gmail.com, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org
+References: <20251110063725.3118037-1-anshuman.khandual@arm.com>
+From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
 Content-Language: en-US
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, harry.yoo@oracle.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <20251110084437.46701-1-qi.zheng@linux.dev>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251110084437.46701-1-qi.zheng@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20251110063725.3118037-1-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9FC5B4000E
-X-Stat-Signature: fk7atjm4wm5j8j1g91ixdro839uunkc9
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0E18F8000D
+X-Stat-Signature: f9nw6dwa9iej53d5atnh839f1pede3m9
 X-Rspam-User: 
-X-HE-Tag: 1762764819-399679
-X-HE-Meta: U2FsdGVkX19dZalv+u7M1TxEnrew4HVRHiXwvOfkttcacvYDWs9vr3P9wy/+xq8iCCkAFwBjTXM1FnKMiY8PYXHenHL/0jQhJ7Xc589SEhhB4Rqtfz2yT/Z0mgpYNMNkLcZyWeMI2raCuwRTrWdnlMLyOx0xcVb6NrqQr+8u7fYW4Pc0zDgpd+f+xjM1t869NZ4AFtFziCk6GksxdvP6CmPApFoCeZmTRCIA4jznlh3VMdza7hhNQptPXCbYe/tvb1GaB/zcB4HOaPY+twGDyfFzfertEk6Qpg0oBdk7y52HXTfo/JtN4MdvMfIsVVLL2i7LYCCSRip+onv5YUmxeLRJDjOub6lFG7D/+wgWj9SXNzJYt9e9hbiUGOXUTOydTxoKlGdVqZe2FyRsRN4TLpPwNzOjuOTAezeQDRqpPuUYrdIm1VKWxZ6FqCompqtFWb2kFSKdnBLx6A3JgmTXes7/IHCQS3kl387g3pzu0ZA/zrTqcw8wF8Muw2Yz2n9LYx5hBnf6JHPIVqLLh1z+91FLvVB5t5tuXI8wKWybbq7ebuL+zgTrhYch+YI8uAaoxDUuXCDvHZ6wVeTeNm9khsRDnFGPcPImFqbu4gYvr+ya1zRiY69dNu/29Vrd46Z0AfJYIxrjJ9ir3atZ+Q9moIqc6QebdTSqV0XUunBDV6Zujn6aB2/p+DCtLvBSZHv1XveSUS0h1fYwD2ARoujRaHsTDDFSVUTVj6UNIZB6oJ+676yn0ZlMgMsjykQ6vF0Ktjy4hKxWCabnET9W/npsf4yyLYJrp3q6P4r6Ktmd/DYwmXX1Ln6ZeKRsNZkq4WnmK6Z6sTmWPBFghJo75gtehvVE2Ls5wyiyOLqGan2gu5C8IZAeuRvYb5Ystetgom+Fq5/WycUgaKDDvFO9jeCxEtEWVp+1B71MVWUpGfV1RRcmkYaNyVMSgpLP52AdKITTiFVPOCPRTVGZbQgz7q4
- EDAC/rsq
- ADLgxv1wzYr407d4X9TL9wyIFwdn1RYui4KkkOYKhuBX/5461v48rjXk+Duo9BAhnIuLp0iPIODFBijyKoXCvQwbhDCzUHQySAqLWKn9pc4jUmPknnd+wU4zsY7ePTlYS1J3OnbC/XHgbI42HIfbTCe0//BNTO/T40Lfytf54qMfCmR09V8hRf4HEuGpCJz/oanwyCETC+Wkj88DEUNFr28ToJ8ELE9WaIHfaaOmCvqaLI5r/t9dnaWFXtftdMhYpl728aXPJkqDTUplKk61gBsEDplZAd4VXsOfFqbbnW2DCFg223y+63h0h/4H0rdzbFEEtI9MM91PiQ76oFeGnkpCPqYZyYy5thmd/SSLnFbHSsyY=
+X-HE-Tag: 1762764820-300228
+X-HE-Meta: U2FsdGVkX19D1TgndjjtCz2b9QjNkvWfOKxbyDDwbjs5piLn29Lql5JHhA+s4qk/zcumKMiRRmXLY9XesFF91OzBFtm2/8uo+x7FrI4upYnO8HjgPfE85W3Hso612byyygr4bfEijsXiHryl9M/MMvESkblheBCDlPFmSIWnhcqsCjpvPPTf+dAnoIzw4R64apOW3dXjpIaAoG0rCvlUZ7Rr67jwv6UjtNG+P2l8rV9bLqgPz5C7syTRrZ0dv92FX5jhQbJ8kazZYprzZVcgGNEI4WJwscexElilhAbOATgFoVP02k5DRs9ecvkPBd2PLoqRyEwiuZhnMykDAkeslzj/Gt8+3m5DyWhb8EOnUOZM3d/Qhp5dSDCYSSUkPusYlCk956gYXBHmGitenBVSrwjJYdkiiJNQ6J7YCBmArlZdO7HfSEyxcIiARuUezvDz6j28ItHFXuC3ZNcP+t3XHPwkmP3m47xUDyAgAEDt3YXB96kdh7dpECo55FVy6LGVLWhbMGuOCqM0u6KL71DcM1z2JL6Q5ukGvkE6Rv07X65fHssPhuCrFnXaGKw1QzA+9yUN9qYYJR/cE6KRoevUKh+QP75/q79Px5WPKAC7U7NOMIMSVcQ5Ilx/bQRaIh2LqhWRCmu85vyXV3lZg/+eeX7EMkj7bdtZJZQHJOU95U3n6GUxU51i0t44kNpeesz+e5Udwy2FLmr2vYGg2emAI+4s+lPMY054aiLJGDsaEQXcrJfTQmXUg56XRMwsOGFxBYYaz2M5lmI7CHi1qBCmynOEwi2OyO/06UN3kJYisXK4q977EbxayEJrYXLn9+4wimtWCkU2MdkcCidEDxC6042XwQUQbwQ3bhBIKv6mIEvQb0MfecuYhpRCV4eKpRkRdPFU28+k4IeBJ9ZyQBAEKwxghYxxUTo0fPP8yeSR1hYLw9wzq7uOQMdy3hgnACSc+f3B/Vexp/fgZj5SNM/
+ PFw1NmrY
+ 6T3Jt6NRo39HR7WjcS3GqntrtepT6cRwdNLoLfA48aDHV59M+bfAFfJS656Om/FhVl9/efdyw6n4YcH8AMQRACqYFkIeFhJjGj11Z9SKkbrAfSb4Wn85FH2158gJ6/JUPdmDhbtR7NjxVhdDle7ADrejQvR2/0H1xUBXZqSh+K9fQy8MFbFoupNpMJQj2SGHn/c8IhuNxkla5ZpzjtXKGwVs5+kS35+pTTwP9+2W0JZK5v8SYC1j/asZdJxCcmfsFhwwvSg0NiXoSTb+ogYeeCTVTmeMFMg71UPv2Rh16OfSghFdnpMnfFfZW9Zz/hHNlHXpZMS0MZXZTxxDWeb8NGuaOl57COO7+UuUc00AqS3UycxCho0m/F82sGAIQSwSqa3zMOAT2+rtWAdB9sIgPEzWesK13WtOyE5exlcXadw04L1+MdlzvXqT6H6gvfYKW6X2tpGFlgP8PBkIOWtzOEcfvsaDFrYR7boRZ5kf7QieuFpB/L5XYYrV6bP1+vDh1J57OzZcKRrt/7voFMlArUO4Dn7kJqQEqFUbx6PJzpoWmxKZy34HmWvYGkVYEq245kimWBzbe1tA2YuPT6H+T229UNx13gdu6/0pv2reaufsjkWMvX0fx9GpyXQJ71SIBOrh1M2dfjPNEIZHGwoQROqsg6ugmWFg5EWu0Yy42FGowdrf7VcYapaObPCBrRRyS6/cqRO90y7v45/YchPbJhsTZxIocsQd+sa1TZ1she2aJPG6EvibRiwXxyWBA8hcswBdQK2v8LwD6tjbHx2qBNSw5CCblRyX71lblI/LjF59+LzW83pM+XCMs+DDotbaZo92xSkAtDZNaSV6UllTLldChkKS0f+sbZvdrOIZ2nR4X/GWkvYApEnAwsNC4UkpB1jgZgG8rQo81tpej3+cBIFLlhcY6lJ6cHOXLfrOBJkauBW3+a2OgKbwF/KRP/Hcw/IybyyZ5zJCSpB9aP7f2aUae5Pcy
+ mcQChecL
+ O7O5B0FrhfE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,69 +130,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/10/25 09:44, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
+On 10.11.25 07:37, Anshuman Khandual wrote:
+> struct ptdesc (including all relevant helpers) support multi order compound
+> pages. But page_ptdesc() coverts given page into its own ptdesc rather than
+> deriving from its compound head as would have been expected otherwise. Just
+> change the macro to fetch the struct ptdesc from the compound head instead,
+> so that the same struct ptdesc is reached from all tail pages.
 > 
-> The comment explaining why these parts use preempt_disable_nested() is in
-> __mod_zone_page_state(), not in __mod_node_page_state(), so we should see
-> __mod_zone_page_state(). Just correct it.
-> 
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  mm/vmstat.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> This applies on v6.18-rc5
 > 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index b53b07aa29e81..65de88cdf40e6 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -392,7 +392,7 @@ void __mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
->  		delta >>= PAGE_SHIFT;
->  	}
->  
-> -	/* See __mod_node_page_state */
-> +	/* See __mod_zone_page_state() */
->  	preempt_disable_nested();
->  
->  	x = delta + __this_cpu_read(*p);
-> @@ -438,7 +438,7 @@ void __inc_zone_state(struct zone *zone, enum zone_stat_item item)
->  	s8 __percpu *p = pcp->vm_stat_diff + item;
->  	s8 v, t;
->  
-> -	/* See __mod_node_page_state */
-> +	/* See __mod_zone_page_state() */
->  	preempt_disable_nested();
->  
->  	v = __this_cpu_inc_return(*p);
-> @@ -461,7 +461,7 @@ void __inc_node_state(struct pglist_data *pgdat, enum node_stat_item item)
->  
->  	VM_WARN_ON_ONCE(vmstat_item_in_bytes(item));
->  
-> -	/* See __mod_node_page_state */
-> +	/* See __mod_zone_page_state() */
->  	preempt_disable_nested();
->  
->  	v = __this_cpu_inc_return(*p);
-> @@ -494,7 +494,7 @@ void __dec_zone_state(struct zone *zone, enum zone_stat_item item)
->  	s8 __percpu *p = pcp->vm_stat_diff + item;
->  	s8 v, t;
->  
-> -	/* See __mod_node_page_state */
-> +	/* See __mod_zone_page_state() */
->  	preempt_disable_nested();
->  
->  	v = __this_cpu_dec_return(*p);
-> @@ -517,7 +517,7 @@ void __dec_node_state(struct pglist_data *pgdat, enum node_stat_item item)
->  
->  	VM_WARN_ON_ONCE(vmstat_item_in_bytes(item));
->  
-> -	/* See __mod_node_page_state */
-> +	/* See __mod_zone_page_state() */
->  	preempt_disable_nested();
->  
->  	v = __this_cpu_dec_return(*p);
+> Found via code inspection. Apparently struct ptdesc could represent a page
+> table page which is multi order looking into helpers as ptdesc_nr_pages(),
+> __pagetable_ctor/dtor() and pagetable_free() etc. Am I missing something ?
+> 
+>   include/linux/mm_types.h | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 90e5790c318f..f7107bc55d1e 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -604,9 +604,9 @@ static_assert(sizeof(struct ptdesc) <= sizeof(struct page));
+>   	const struct ptdesc *:		(const struct folio *)(pt),	\
+>   	struct ptdesc *:		(struct folio *)(pt)))
+>   
+> -#define page_ptdesc(p)			(_Generic((p),			\
+> -	const struct page *:		(const struct ptdesc *)(p),	\
+> -	struct page *:			(struct ptdesc *)(p)))
+> +#define page_ptdesc(p)			(_Generic((p),					\
+> +	const struct page *:		(const struct ptdesc *)_compound_head(p),	\
+> +	struct page *:			(struct ptdesc *)_compound_head(p)))
 
+Well, this adds overhead :)
+
+The real question is when we would be converting from a tail page to a 
+ptdesc.
+
+Take a look at pmd_ptdesc()->pmd_pgtable_page() where we avoid looking 
+up a tail page in the first place.
 
