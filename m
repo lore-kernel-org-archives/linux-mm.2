@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B278CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 08:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B637CCFA1A
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 08:19:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8F3B8E0008; Mon, 10 Nov 2025 03:19:02 -0500 (EST)
+	id 649A28E000B; Mon, 10 Nov 2025 03:19:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A66DD8E0002; Mon, 10 Nov 2025 03:19:02 -0500 (EST)
+	id 621548E0002; Mon, 10 Nov 2025 03:19:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A45C8E0008; Mon, 10 Nov 2025 03:19:02 -0500 (EST)
+	id 55EBE8E000B; Mon, 10 Nov 2025 03:19:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 857AF8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:19:02 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 197F25CABD
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:19:02 +0000 (UTC)
-X-FDA: 84093996924.10.82C2A99
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2D02240002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:18:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TiT8gxSm;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 40BA38E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:19:09 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C668B13C279
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:19:08 +0000 (UTC)
+X-FDA: 84093997176.22.42B969F
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 13C9440007
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:19:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B0dyRP4z;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762762740; a=rsa-sha256;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762762747; a=rsa-sha256;
 	cv=none;
-	b=DVPwH2ILRp6UozEf+0gizP5qmXrnJflDhsu2PmHcn6B3ieQ1K+8mGMEfVLyd4syCq/sIWX
-	6NZMfW+QZzW+Ft1wVoJcdHBbirdbmb0der6ZMVlSK4uWqV35i1yt2yDjZlLdoHEzB6ACYx
-	h6X7Ma3DQUy6BuQ3OfRRgnpGcUT+Z5I=
+	b=8CvbmBr8p15IKikgP7KAbEqq0c1C4QGDvsGgCarb20vYuZ+frMoz/nmQDXDyovEDgXdvIr
+	adh4QudAVgeWgqPzzQJZLTCfmE4BjTedMjysLvC5vhqrPQuaKfg7duIM95FtWfnzm77JIP
+	dCllTa5p5k8G739B2gupqO5tS/tWg3I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TiT8gxSm;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B0dyRP4z;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762762740;
+	s=arc-20220608; t=1762762747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=aA2NOzQse06x9i0m2QrR5DmKV75xHASn1pyl9aKwEzM=;
-	b=Wny/v9CNvsASIqHgX8Y+dXJ3ZmLH8MUhkKFupAzbtk69D9Ff+nXGh2v0N2N9xK155zApF9
-	3LB6lt6/PO+bcriep2z+ZDG6vk491+uqxG+J4ieO/vF+iMzTAmDtnqdMxY1pc6W8i+00iC
-	DS6HOa622VLGFNrtp1tGwbgJe4D2ngQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ORWbg/QZ7k/YwOw+EM9hdfo/jfLOQNj4xWZcq69g5Tk=;
+	b=NFtOsZUW3CAdewPAOuytURR1aUloQSiwTPoOwqRM217pwgUrA5jb31VzsqFLzLBFoQcvv7
+	WXgoaPzfL+AhSo28J1BMmqh8GRkd8CxwGbb8QzuvQDfbbMWtz3AUiqvnqtCKeDBimbGmZC
+	YKjl1DEbckEyYLEBCh9HfMhPyDIwZ7I=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762762737;
+	t=1762762745;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aA2NOzQse06x9i0m2QrR5DmKV75xHASn1pyl9aKwEzM=;
-	b=TiT8gxSmIZ81WzRtRKz6SsqUMzqS8jbj/Jsn3CvPn926nv44UROFAlB1rctkkIP52Jt9Zo
-	c+RcFMv1f3HcRg80wUVx3Qzb5d6POUdtNRk0c1qnOEFX+coIum6yru0jdCMcjY/uW52xrr
-	2He9M1IqjoI9TMFwjTggRFv2dD4Pomc=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ORWbg/QZ7k/YwOw+EM9hdfo/jfLOQNj4xWZcq69g5Tk=;
+	b=B0dyRP4z53AScVJIQQmak2yHxuvAoCqppuID0nCCzRLNQ3fqvFkNRprnpcyaTpTQduw/+/
+	FOm4LjRTjuekPdcyqEW4mleUB+0Hht2sTsI2i+NABPoC7Vka/dPageeuilVHLSSJ5YORUA
+	g3v99icWRon3eRLlxefji7Ua3uW17fk=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -81,21 +82,24 @@ To: hannes@cmpxchg.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v6 0/4] reparent the THP split queue
-Date: Mon, 10 Nov 2025 16:17:54 +0800
-Message-ID: <cover.1762762324.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v6 1/4] mm: thp: replace folio_memcg() with folio_memcg_charged()
+Date: Mon, 10 Nov 2025 16:17:55 +0800
+Message-ID: <56624d537520e33e5a6b3755238b3dfb959a52ee.1762762324.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1762762324.git.zhengqi.arch@bytedance.com>
+References: <cover.1762762324.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2D02240002
-X-Stat-Signature: 6z5seh6ghy3ra8mcj4hrse3u6uq6s94r
 X-Rspam-User: 
-X-HE-Tag: 1762762739-840543
-X-HE-Meta: U2FsdGVkX184l3E2NbjFnEwn4Q3CPLaAxpJl5fbsWHGDfMxAW4/TfpY0Eo63ufPueq/Qp5/ck1oGb1Dk/58a2gqz5Q1WenJTAfZ7f+PvrfieVIFzwuDc/rj4L4FQuLDSbBKaIEBCgSOLNT9T4gi15PUh+CWXZ/7YEFl8tuY9VpRWu0kjpGsPEl6lIvKDTgmZecNWHw/7TJ41/Dyf4x5c3rY55UAxyLKvdwGEhZmuja9jo7U63ZXr73V2onkK496RszLhQZHQwR4TcD83b2eXZsRMrrIljnqryBex6AZ+vOjH9hMpLLyeU1ZE1plRJo1xOi6PeUtEQMq5F185RZ+I4a3hSFSB7MflWm9fH/UU/Xgltk2MI0hHBguUceqpNqFCuG73Q45SyW0P61qQJoSdAufA182Ba/D6E/xWcXJN6tC1h2Xc1LGP9QLK06O4mmnmQN7OpWIQ29lGPChQcEcaEE87p6LL+WM0DAtX0XrqjFbV/X4CdUk/Fs4snYdxKHD5ubOKlrygplLel2PHt3cq8+E/2rzBOnj41VG/3TIq9ID7rPJsxVWH9iirBgaB5yi7ZGYTpV5mr8a5Crx/AyYrrGSCZTVPouvlU7rShbzf3zD+asLQ/S/ro66x81C4xulC3ney2p8ti2GhXaC0Ee50qHGSmctNCC+fFumqMPi9BwOslfSYXr2C5EMJKQT6wbC/k6OEi/3v/5agaE2AML/gZZw+ykxfdogVUSv5QsxfvN0FBKtMLSjw+F4gL3E9f0P+m07fPdkHtXlLO7u/3ZnXHUIArtr+2e6sZDYfy9hgtKWgyONB64CdmdKQsvOurdTPen9x7wEbGeKwj/l3PERcRs6kRXlhuQTniYRLoowA0kULbjfN8gqfqTB1/6D0XLC7iaxIvpvspD8ViHU7CQhYfi1ed5GXfXi94P+YN7zHlS/S19y7q8QjtdoiD92eQbZm1vJgyAgTSKpNWrjMFD9
- k7nZ+I+Q
- vDQMbbCWEF3o6RECRqiA1eqYplTAjiKRhCbzvJGTL1XEkjwcYY1RZS2yL1BQsM1qiLwt6GImVVdJ3dBnItM2vAiAOs6VKWNpPhSumj62Su0oWEDIlbSVXN89f82P9APxMmQDfhDgzo5oz4rZwRwEMpJ4yOeIa6HuNaF7bl9vqQ6uzvFtFnd+gYjsry2uoearrRhWJL14nsqLiTAArUDVWm8wMGNebJMK0dLrLS2dx1Elr+ccQeSwOBr+sBs90zS+wXVPKvRyRA9Tsqgpo2qJirVEmmQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 13C9440007
+X-Stat-Signature: 5t95dq8jybxtx65qb5tknb4kg3jfuueq
+X-HE-Tag: 1762762746-169039
+X-HE-Meta: U2FsdGVkX1+Pt1xLBRGYjMKwcgquvL2Cq76oSJoydjGgC6X9Cmosivg9X9KPpVTDhaZrH8rEK7UdjdMMOuUPpdtxfTGXKDFAGi9A0hIPmxjXGVNjr8s6Cq9VRMSvqKraHHmrQbFB53232kG0J1M0BsSoQMioi/ZT1yY1qOBnP0cNUSSIOglMhW2IBBwPUIgcQshJxwLMLohVp9OdMq/Je+KHUy3y3y/6UxczAQCqZ9u9Vkilvg/TicIdeHVJZzPE58gGT0uw01839OWpWzU66PKZyz+7A5jbtSM2+3II9n8XjIUwgwcGxZ3+eLFQvYdqj38wWcNuhCkm0qGJKXZ4I8bqCEBjDukTNwqypiWoTMf96n571tDujOPhYvyjEo2qv5ky0eXNP/R2fTSx2mChCussvD02do9uyEpePROImLXWopx6HIrrxTGk8sW3WVoM4napOJ7P6nZ9Y6IuNMbS5uHQSWwGfF8GW6QTVzlCLJ9AIvbOAipRmQtu3ilDHfWNvGPPp1i0nqovxoCJPSI6QmnUO9wBKgJnl/g7ylwyj4/xEQ0TfNogHWDl33cp9fyMLfPpvg8Nle0esE+z+E7sbF2v0XHfBnhKjIrKtSME16X9LefVFKf4B8TjcbjhBfBPxz758WT0HhKdiUWU8fH00+nOtbgAODnHIerSLXC30yurhkIvvwmQBf/iD5s+XSRLVLiTXOJtmFwzsRbuBJWKbKYZ0kX4nF8XcZZXT+/bHpk2nl3DlKN/K1JuGR3p3Gd4k5sqPbyEcI4lYXKJwnYS7Wj5HjjymZxlfU+7G+skqbnrbhATQBrK9kKFW2kimLzogKQAzowCFFCw7zyl7VXoQU2i726B+7hybCS1SMT5hadTjqmh9v/DYhZGQkhLZx+TR7lvUla/D/ngECHA9T4WjwBgu/hcg/PqbLj7mAI5s68D57hGRKa2xs5UThyjZe0oeZ/Ak4xSDlAtBTxBRUb
+ sDZf4R+4
+ eamjOQPsM0LwNn9J2c8zKIPclnxI3F2HxAKWUz8a1pdRWsfW/PbkQXHYba3ePPB8wYkVljsMgDOBMirLBNYejbt1E0EDVLDl7kZewWuLubGoCU3R8wX4ipZDo7xrhBH/JmpI86cc/9JvaumV/AdDHeZPwtRFP0csHzkJC2NsdwHM/GOwLzoQnlT5yFzfhgs0/App+us3PGnXYNL7g9FcOEzqF2UGgxmZ+BzDbingONRH7fNiCOm8VHZUEa3LQ9a9pMqEy5KhF9OnE9JaXAoAA/XvfkQsxqdwndPcwScwC9V421QHfvsVZ781Ki+sUkD6lx0w2ffbZ/avESIPV2RfNwnll4+dOvtjzMwsN9qEljXgB1Xbz/iNYLt4XZs6Gf3+tCdR18vYarJfegEPDcExfTX2l2JRYabk5hfmgt/69Z3o/kt2lSDUTl5t/bbij0gIFBxeg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,84 +108,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+From: Muchun Song <songmuchun@bytedance.com>
 
-Changes in v6:
- - collect Reviewed-bys
- - rebase onto the next-20251110
+folio_memcg_charged() is intended for use when the user is unconcerned
+about the returned memcg pointer. It is more efficient than folio_memcg().
+Therefore, replace folio_memcg() with folio_memcg_charged().
 
-Changes in v5:
- - fix the softlockup issue in deferred_split_scan() (Zi Yan)
- - modify the commit message in [PATCH v4 3/4] (Shakeel Butt)
- - move memcg_is_dying() to memcontrol.h (Shakeel Butt)
- - collect Acked-bys and Reviewed-bys
- - rebase onto the next-20251014
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+---
+ mm/huge_memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v4:
- - add split_queue_lock*() and let folio_split_queue_lock*() to use them.
-   (I have kept everyone's Acked-bys and Reviewed-bys. If you need to discard
-    it, please let me know.)
- - let deferred_split_scan() to use split_queue_lock_irqsave(), which will fix
-   the race problem in [PATCH v3 4/4].
-   (Muchun Song)
- - collect Reviewed-bys
- - rebase onto the next-20251002
-
-Changes in v3:
- - use css_is_dying() in folio_split_queue_lock*() to check if memcg is dying
-   (David Hildenbrand, Shakeel Butt and Zi Yan)
- - modify the commit message in [PATCH v2 4/4]
-   (Roman Gushchin)
- - fix the build error in [PATCH v2 4/4]
- - collect Acked-bys and Reviewed-bys
- - rebase onto the next-20250926
-
-Changes in v2:
- - fix build errors in [PATCH 2/4] and [PATCH 4/4]
- - some cleanups for [PATCH 3/4] (suggested by David Hildenbrand)
- - collect Acked-bys and Reviewed-bys
- - rebase onto the next-20250922
-
-Hi all,
-
-In the future, we will reparent LRU folios during memcg offline to eliminate
-dying memory cgroups, which requires reparenting the THP split queue to its
-parent memcg.
-
-Similar to list_lru, the split queue is relatively independent and does not need
-to be reparented along with objcg and LRU folios (holding objcg lock and lru
-lock). Therefore, we can apply the same mechanism as list_lru to reparent the
-split queue first when memcg is offine.
-
-The first three patches in this series are separated from the series
-"Eliminate Dying Memory Cgroup" [1], mainly to do some cleanup and preparatory
-work.
-
-The last patch reparents the THP split queue to its parent memcg during memcg
-offline.
-
-Comments and suggestions are welcome!
-
-Thanks,
-Qi
-
-[1]. https://lore.kernel.org/all/20250415024532.26632-1-songmuchun@bytedance.com/
-
-Muchun Song (3):
-  mm: thp: replace folio_memcg() with folio_memcg_charged()
-  mm: thp: introduce folio_split_queue_lock and its variants
-  mm: thp: use folio_batch to handle THP splitting in
-    deferred_split_scan()
-
-Qi Zheng (1):
-  mm: thp: reparent the split queue during memcg offline
-
- include/linux/huge_mm.h    |   4 +
- include/linux/memcontrol.h |  20 +++
- mm/huge_memory.c           | 250 +++++++++++++++++++++++++------------
- mm/memcontrol.c            |   1 +
- 4 files changed, 194 insertions(+), 81 deletions(-)
-
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 949250932bb41..84ef014b2c11f 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4140,7 +4140,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ 	bool unqueued = false;
+ 
+ 	WARN_ON_ONCE(folio_ref_count(folio));
+-	WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg(folio));
++	WARN_ON_ONCE(!mem_cgroup_disabled() && !folio_memcg_charged(folio));
+ 
+ 	ds_queue = get_deferred_split_queue(folio);
+ 	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
 -- 
 2.20.1
 
