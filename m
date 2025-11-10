@@ -4,127 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4832BCCF9F8
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 01:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B77CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 01:56:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8066B8E0006; Sun,  9 Nov 2025 20:09:39 -0500 (EST)
+	id 640708E0005; Sun,  9 Nov 2025 20:56:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DDE98E0002; Sun,  9 Nov 2025 20:09:39 -0500 (EST)
+	id 6180D8E0002; Sun,  9 Nov 2025 20:56:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F46A8E0006; Sun,  9 Nov 2025 20:09:39 -0500 (EST)
+	id 52E9B8E0005; Sun,  9 Nov 2025 20:56:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5876D8E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 20:09:39 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC1391A0B65
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:09:38 +0000 (UTC)
-X-FDA: 84092914836.13.56BAD06
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8A889A0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:09:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762736977; a=rsa-sha256;
-	cv=none;
-	b=NwIR9Luud29Yq43a3KDLYWtSKZpLCM34ORlCYn5xHhs7IqnXq8VJSLYW4iOSxgTVuLC8M9
-	cT8VQ/HdUqLD2NsFVx6TZGemop/s9bpd3pMZsBKgGbNenhpOllSC3LTdwlCIiSEAEWZwsW
-	o5DEN7ZJiOiLWUD2IUynZW8zFatDn+g=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D0008E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 20:56:27 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C08DD12D8A3
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:56:26 +0000 (UTC)
+X-FDA: 84093032772.08.E78CD3A
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf16.hostedemail.com (Postfix) with ESMTP id F3457180009
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:56:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UnlODuQP;
+	spf=pass (imf16.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762736977;
+	s=arc-20220608; t=1762739785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bDYU+gQtoSksq3wtRmN5VuMeoTHNRFitVorG0gaqH1o=;
-	b=EkRgyGC3jACrQjnExD9K2hC498YtQVPpsjxJjWPxrYNjwJGkdMor9beL2pH5AZaMJ8wy7o
-	eUxV43RdYTLawHTx0AyJusYwKV1kTXfCCileCrjJIoORBU7SCFSOfHW4PJGVWm8OvqJ10F
-	gNtylTGqLw27LddQ39gXcxYNF6EB/rY=
-X-AuditID: a67dfc5b-c2dff70000001609-52-69113b4c406e
-Date: Mon, 10 Nov 2025 10:09:26 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
-	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
-	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
-	dtatulea@nvidia.com
-Subject: Re: [RFC mm v5 1/2] page_pool: check nmdesc->pp to see its usage as
- page pool for net_iov not page-backed
-Message-ID: <20251110010926.GA70011@system.software.com>
-References: <20251103075108.26437-1-byungchul@sk.com>
- <20251103075108.26437-2-byungchul@sk.com>
- <20251106173320.2f8e683a@kernel.org>
- <20251107015902.GA3021@system.software.com>
- <20251106180810.6b06f71a@kernel.org>
- <20251107044708.GA54407@system.software.com>
- <20251107174129.62a3f39c@kernel.org>
- <20251108022458.GA65163@system.software.com>
- <20251107183712.36228f2a@kernel.org>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h2Vc1MCnbF/ttJ2+MkLrZKM08vvpbJ9pspqnCXu4l4I=;
+	b=HVcHYPu03Jlj7vsXGUsN2hoev05j2yi0XHsTk7CLbeh5uRxfGd9mw0RQzHDgyt7TVyAv56
+	SKsFNwBXUdBtKO2b11K8xkAZKIB0dDzbS2Y31y5E9PFYeaoVY401A93pifo5tUrt0Fg/Be
+	LeMWKDkM2rqIYMX2Z5lmkiVGxKgiy04=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UnlODuQP;
+	spf=pass (imf16.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762739785; a=rsa-sha256;
+	cv=none;
+	b=NtbliW1tRKRX2xUnUjb2wOqG9GW4tOssEjFkpkODBzORjDRgIsCzuayqAaRmroq0AZ86+L
+	+pg7S7j1fPKHU0a7q55i2bPraGx9BharWQoLUAUU2bjHpGXa8PiHQILzq7/EZqj/Z49hRg
+	/MdkEiw+v83+OOukrGgxbQjuw7+dQwE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1762739781; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=h2Vc1MCnbF/ttJ2+MkLrZKM08vvpbJ9pspqnCXu4l4I=;
+	b=UnlODuQP6YYsiAhKNCwEOSsZRkKn+jmtMK0i3uPvdjNt31onkTFLlMJWWGiY0HUNBS7StTv3bCz4LGHBvhWW39oZFLPv4VYNBlwXSnzrIBVlvxi0vC9qohB6aA3FQ8CwgmowV+1k+BjDe9clZGS87QQHRwPint/VRGIAaPMjEfY=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wrz7d2o_1762739770 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 10 Nov 2025 09:56:19 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Cc: linux-mm@kvack.org,  kasong@tencent.com,  Andrew Morton
+ <akpm@linux-foundation.org>,  Kemeng Shi <shikemeng@huaweicloud.com>,
+  Nhat Pham <nphamcs@gmail.com>,  Baoquan He <bhe@redhat.com>,  Barry Song
+ <baohua@kernel.org>,  Chris Li <chrisl@kernel.org>,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Yosry Ahmed <yosry.ahmed@linux.dev>,  Chengming
+ Zhou <chengming.zhou@linux.dev>,  Youngjun Park <youngjun.park@lge.com>,
+  Kairui Song <ryncsn@gmail.com>,  linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
+In-Reply-To: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
+	(Kairui Song via's message of "Mon, 10 Nov 2025 02:06:03 +0800")
+References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
+Date: Mon, 10 Nov 2025 09:56:09 +0800
+Message-ID: <875xbiodl2.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107183712.36228f2a@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA03Se0hUaRjHcd7znpuDQ2fG2t50o2W6gZVdttinCxVFcLCCwCK6N+UhD40a
-	42QaFWMNlFNa7eY2jhOZUV5raCx1poy8rE5FOegaJ7Ydy7ba7WKDNxoddGeKqP8+8Pz48v7x
-	8ljrZWJ5Oc0kGdP0Bh2rolUfoktmrVmskecUdWjA4axiofJTFpQ+r2MgWPWGAkdFDYL+4F8c
-	jNa3IOhrbmXhXVMvgsuXBjE42iw0DDiHMLg9bxC8tV1j4VVLNweVrrXQdfU1DXeO12LoPu1l
-	Ic8yjKE+2MPB0bqycLjazIGvJp+Bc0NXMNSan3PQ4XGw4K8aZeB1Yx4N9+3lNAQKmjF05S+H
-	luIfYPDhewTNzloKBk9dYKGz0EPBrfpODn5rL2bhpaULQXtTNw0FoRMsFOXkIxj+FE72nOln
-	oOgPP7c8QcxRFFZsev8RizfLn1LiE9tZWlTuPqBEt/1vTix27Rery+JFq9KORVdFLiu6en/l
-	xGdP7rCi1zZMi+4XC0V3XR8l5h3rYdeN26xakiwZ5EzJOHvpTlWKJ1TC7Hs8Jst//QJjRuXR
-	VhTFE2E+Od1Qhr7aUnCCi5gWppJe79Bns8J0oihBHPFYYQqxVBfSVqTisRDgiE3xM5FDjGAi
-	gY/m8Ijj1QKQG6bIRCvkYmK1Vn/uqAUNuV/4Dx0xFuKJMvIfZUV82HGkdISPMEqYS8w3f4os
-	xgmTyb2aVurLywI8abi9/osnkIYyhT6DBPt3Uft3Ufu3aDHCFUgrp2Wm6mXD/ISU7DQ5K2F3
-	eqoLhf/X1cOhLXWo15fUiAQe6aLVCqeRtYw+MyM7tRERHuvGqkO7BFmrTtZnH5SM6TuM+w1S
-	RiOK42ndePW8wQPJWmGP3iTtlaR9kvHrleKjYs3IdKSId46G/BP5xH9jfC99Jeka77pfJv3Y
-	zjEzAsscizyznbV/rh7N3rYkCa+vXHWp85Xthudp4YEj3dM2l5zPfzTG8IJKXNmWm9gx8CzY
-	3+k+OW9VQexF+dzZmZ4FkzZmxW0f2MQv3epKMve1/jz+9742+90pK7oOjhyKU6X6cnx7Nujo
-	jBT93HhszND/D1lxqNNbAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRyG+c53bg5Hx2V10KBYSmGUCgW/UsQg6KM7SQlC2cxTjrzEprIF
-	wcyFtdIsE3RpWZHltLRp3sioaV4KLBTjRKVmZRfNli3zsrItiPzvgfd93r9eHqsqmQBem5ou
-	6VI1yWpWQSu2R2Sv2hLhpw3r+wVQUl3FQuWkAW4MNjIwVfWBghJbPQLX1EsOZlvaEXxv62Bh
-	pHUcwbUrExhKnppp+FE9jaGp+QOCz0W3WHjfPsRBpX0bDJQP03AvpwHD0NlOFnLNMxhapsY4
-	ON540zNca+KgtbSLgWf1eQxcmL6OocE0yEFvcwkL/VWzDAw7cmnoslbQ4CxswzCQFw3tZQth
-	4skogrbqBgomzpSy0FfcTMHdlj4OCnrKWHhrHkDQ0zpEQ6H7JAsXs/IQzEx6JsfyXQxcfNTP
-	RYeSLFlmSevoV0zqKl5Q5HnROZrI9x9TpMn6miNl9gxSezOEWOQeTOy2Uyyxj5/nyKvn91jS
-	WTRDk6Y360hT43eK5GaPsTsXxikiE6VkbaakC43ar0hqdl9ljnTPM/TfLmVMqMLXgnx4UVgj
-	mgtPcl6mhWBxvHP6L7PCclGWp7CX/YUg0VxbTFuQgseCkxOL5H7GG8wX0kXnV5OnxPFKAcQ7
-	6d6KSjiFRYul9u+OUvATu4rf0V7GQogo//5EWRDv4UDxxm/eiz5CuGiqW+ptLBCWiQ/qO6h8
-	pLTOka1zZOt/uQxhG/LXpmamaLTJa1frDycZU7WG1QfSUuzIc6HyY+5zjcjVu8mBBB6pfZUy
-	56dVMZpMvTHFgUQeq/2V7gRBq1ImaoxHJV1avC4jWdI7UCBPqxcpN8dK+1XCIU26dFiSjki6
-	fynF+wSYEA7W/3wQtSdkfKNzxjia9m393kD3/Wj7pcT8rQldMb07bo+scuhiEwtWmg2+xbaY
-	2d0Ng5FLvix+aHg5FPRRrbgc52rbVZMhhy8Ocp0e7tzXHWPM2lP3o/v0qzUpX6btJxKWqzpQ
-	QQAJXGu31WzYFr/i4Gw5ziERH8mvOh9n2F6lmtYnacJDsE6v+QPGyCplPgMAAA==
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8A889A0003
-X-Stat-Signature: aeb5767m595bgnu3d1751yqg491tx44g
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F3457180009
+X-Stat-Signature: eex1xrday9w9xhkcngztoziymtygnepp
 X-Rspam-User: 
-X-HE-Tag: 1762736976-3779
-X-HE-Meta: U2FsdGVkX19P6CbQWnmO69u5kD50DFevccIiedy9dutjKWrsQeKifPfJ/xgtU4QKX9dQl0JJPhajCyGngejDXUgFzzQQWMqg1C6oKxhq7AAA74ZUBurdJCU9RPfYorKwFI/AJ9C+spopy/zZnutTUC1NRyjwn+L11So2CdQKtgxVdeyHIip1fAP5+ECTzmzRE+3ztIoFkdhqxgvGTktv3psyrcMmM0cpvKGMZrQasxK9aVi04x9b0WvBqsT/zfnC2E0/vXz4s3waEkDSHp2blv5ZitjmwOmhvMDxNwZJTjdt/4qllhxXzkqlEFSDBgJ2Rv2rw6dNeWj42Bi8rtMUiq5bx5tjSOHAHQr9bYi6pbjouf//kYNNqIz6sMKo8GwT+tW0+6zBmj/pb/+qF2OYicoDDkucz3RBSZax7SgVD3X/Nq04t+h55RXxC6XWAx5IeZ/C9fE2tkmdIF5QkSh2qoXhJW038Kslrxs5twf6ggADMMegdpp0Rqvmv+lY31pFnLjAQakKO1LEBLnMV8nT5amgFuY2o6DEZ9L/FfvunnbJPK1hNbQ6NUtiiC/bcpKh/yo+pL0nyssxL13jOoNooW+zCHJUnl7vvnmvCgNGDKPcptuWFFVqQj1chKl6j82WVaSWoX9WQEmbxo/GSd77S1K7+gnlj6YENYYxK3inC2kjDxgQHFK73DsKodEtxXhwTEsFepO81CezWjxn1tDWLFb8CL2dC9/pEdb7qiwPUCPsCmb3NoYVafPzs3b5tcCu0D82muSQvB/0oOLuPYk+3iskfJ6cKtrinLdToGWctUKe66IQLLuxYm4l1ZHDRopBr5b7yNpnjEdAV3gxLDQOx52d8Ub1Yz0fJ6HKt0mZNGw0yjhIJy5r6JLyLrR9OuNgc0cO5krssTSE/GJ81XA7TLmHBRPpBsE7YbOf+i91yjs8mT4l46CIArC0dSdu1DcjDyqJgQ7vNlZQhuH29sw
- +MqTyji5
- vTqwaWNrNJylWsB77/UJMIUqPI67lNcH13xnG
+X-HE-Tag: 1762739783-346472
+X-HE-Meta: U2FsdGVkX1+dDqTA9+c5rIgnshMEkRwHPFTsjHmMFiFJfrHwpRQh34q7OUVkiYElsOhvnVbpbT7olPdopIFPh/TXNc+kyEnB3zlPRmrZkg+EgEv1VgM2bbgt0Cat3+l7rnYBRIK0B2IydevIi+10ePIh5+KhqFtLWNF0ghUTflq5BK/OLurQrP/4qpZoM3Xj7L7cSw3a01YC3P+nuHyKHM8eauHZTjMUC8p486q6QN/lGlucdbfJnv/Exxnq76cQFGEFvqtWUd2CwyqYQrBJc46elqOIi8CYWGMp5HVMxwj+QFJBEMY5gKdd2+eydqhZHhzE5agICB+bSagTGZaZRoI0z618Tz5Btl1jnA4wsC+/ZDTWJdH2FbtOQIyXKn8QY31vlmUiPdsrWFNeLJTen3djH9rApKVJIPzDrdErTHCeuYIiw20xkNnParuQTavoSlnsbFx+UOYveouvli6KZY4u9eCUX7fbXTYHF0jDfWrrIiE4XkgBkiD4nDEYx/IttClWKwxkVSPHBfkw9PIutbLneWfRzlycQSLWWcYXd1/VYHgnkSBQgSln0fsUruR02/lMug5Yv865GdQmqrJNl5WASJrdjWRrVXqGyyUw4XLibv4sgG08o6PGt9kLtgzprxFJqEzqoorE7ggbDkb6bO4ZA9SxIz5DJ2kels2jAxJdpyEmn2nsSiwfTCYCRqcAsJv/m2D7ddKif3OmNyxrj9pNqpjp3XWmKjW95qhkjM7qHm1L++ERXiY+f9nzQMHeB6qqSSWcYitU40DgZVUfzZQSyAdvENK46o8y77vSfCeDpQzkMzq8OirFJoa8Me88Q7OtfY/En6LMojlnQYzjeo1/jYREc6SGy9UeVl2eEz32qe7D1jcUoOk8x1oOYUSq/PhS6neG/yGRyoTufnJb3y+0tv8NemUeRfdUUmCG0jndUmzM2F3BOIaFIzjmQr7BRBqDSAN4Bypuu+vjySr
+ 6kbelJVT
+ GCgsXEaibo+4gRW2ppZrNh1gk3FU4DrdhalejDFOFFQnZ5JCZwZQSIMS5OTWBOWjWxqfldS8WcafWsx6sFiN+2ZnTQrHdQDQtfNosrnYoM7oJVC741lprTRDoYKAU9ss2ZzFWXIGklsJvTKfs2y12soTKqM8Ej/+zJTWpLi+Qd7Zvq//FfmJ3QUHR6hTPGxqUsGkOYE3bd3pb+gVCYp/V8JoBIrzv3ljnUAqf4quOM1KPgFF92hMM53rP9mfqntghQt3zBWl6ASTFpX7olMvmnf9WxQVp5rRrVp6NX9CNz15qWXNS78Q21NPAGtv7JluXTHwEbXkN073ewK6oPsqS+jW+/0tkGDjccZ6v6CD96rJ1JKLAvrWrbAS9KaaL1i17pj9l1J1h2oy0v9EKnAKi17cESDu6JaJVqr3b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,44 +91,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 06:37:12PM -0800, Jakub Kicinski wrote:
-> On Sat, 8 Nov 2025 11:24:58 +0900 Byungchul Park wrote:
-> > On Fri, Nov 07, 2025 at 05:41:29PM -0800, Jakub Kicinski wrote:
-> > > On Fri, 7 Nov 2025 13:47:08 +0900 Byungchul Park wrote:
-> > > > The offset of page_type in struct page cannot be used in struct net_iov
-> > > > for the same purpose, since the offset in struct net_iov is for storing
-> > > > (struct net_iov_area *)owner.
-> > >
-> > > owner does not have to be at a fixed offset. Can we not move owner
-> > > to _pp_mapping_pad ? Or reorder it with type, enum net_iov_type
-> > > only has 2 values we can smoosh it with page_type easily.
-> >
-> > I'm still confused.  I think you probably understand what this work is
-> > for.  (I've explained several times with related links.)  Or am I
-> > missing something from your questions?
-> >
-> > I've answered your question directly since you asked, but the point is
-> > that, struct net_iov will no longer overlay on struct page.
-> >
-> > Instead, struct netmem_desc will be responsible for keeping the pp
-> > fields while struct page will lay down the resonsibility, once the pp
-> > fields will be removed from struct page like:
-> 
-> I understand the end goal. I don't understand why patch 1 is a step
-> in that direction, and you seem incapable of explaining it. So please
-> either follow my suggestion on how to proceed with patch 2 without
+Hi, Kairui,
 
-struct page and struct netmem_desc should keep difference information.
-Even though they are sharing some fields at the moment, it should
-eventually be decoupled, which I'm working on now.
+Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> writes:
 
-> patch 1 in current form. Or come back when have the full conversion
-> ready.
+> From: Kairui Song <kasong@tencent.com>
+>
+> This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
+>
+> While reviewing recent leaf entry changes, I noticed that commit
+> 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
+> correct. It's true that most all callers of __read_swap_cache_async are
+> already holding a swap entry reference, so the repeated swap device
+> pinning isn't needed on the same swap device, but it is possible that
+> VMA readahead (swap_vma_readahead()) may encounter swap entries from a
+> different swap device when there are multiple swap devices, and call
+> __read_swap_cache_async without holding a reference to that swap device.
+>
+> So it is possible to cause a UAF if swapoff of device A raced with
+> swapin on device B, and VMA readahead tries to read swap entries from
+> device A. It's not easy to trigger but in theory possible to cause real
+> issues. And besides, that commit made swap more vulnerable to issues
+> like corrupted page tables.
+>
+> Just revert it. __read_swap_cache_async isn't that sensitive to
+> performance after all, as it's mostly used for SSD/HDD swap devices with
+> readahead. SYNCHRONOUS_IO devices may fallback onto it for swap count >
+> 1 entries, but very soon we will have a new helper and routine for
+> such devices, so they will never touch this helper or have redundant
+> swap device reference overhead.
 
-This patch set represents the final phase of the full conversion process,
-awaiting the next steps. Once this patch is completed, the entire
-conversion will be finished, allowing for the final patch that removes
-the pp fields from the struct page to be carried out.
+Is it better to add get_swap_device() in swap_vma_readahead()?  Whenever
+we get a swap entry, the first thing we need to do is call
+get_swap_device() to check the validity of the swap entry and prevent
+the backing swap device from going under us.  This helps us to avoid
+checking the validity of the swap entry in every swap function.  Does
+this sound reasonable?
 
-	Byungchul
+> Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+
+[snip]
+
+---
+Best Regards,
+Huang, Ying
 
