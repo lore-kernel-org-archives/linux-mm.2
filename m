@@ -4,128 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B143CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E17ECCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:55:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6C5A8E0022; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
+	id B930F8E000D; Mon, 10 Nov 2025 09:55:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E440E8E000D; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
+	id B6A7B8E000B; Mon, 10 Nov 2025 09:55:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D594D8E0022; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
+	id A80888E000D; Mon, 10 Nov 2025 09:55:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C26E48E000D
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:50:02 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7179252501
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:50:02 +0000 (UTC)
-X-FDA: 84094982244.24.15C31D7
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 96ACD1C0009
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:50:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="K/mrha0b";
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 944858E000B
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:55:01 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 265B71A0142
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:55:01 +0000 (UTC)
+X-FDA: 84094994802.26.529CE70
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1590D20009
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:54:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fSFR8jqT;
+	spf=pass (imf03.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762786200;
+	s=arc-20220608; t=1762786499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yuV15cVIkOZ3osUBoMrFPeh8PgM7VFfcDiPWWGwwe8E=;
-	b=lOYPCvA6hvtohaOWHV3zBzQsU4DdqVHQmjZBzg0FLmGgMeospOA52cxBmd2aR9+zdJkBnq
-	7ithB7ZV5jTLhbMldqBl6ztaoq3seiLpgImW452sowlc0puHpCRY8ule0YYBouhILP88qN
-	gyKH27gtnQQwuOsXMuisY7WVbg/3X+g=
+	bh=UtT4O7BewVOdeU11dvM5Ug5fQnG1uIMIXCN1qCElv4g=;
+	b=07j3C3u1HMSTXZ7MlsiMt14ApMsjME9d+Hax96959ySGNo/pJ6JXAnvR2Q4dIFshId/qa+
+	sp9eg4niKc04eFzuyKCElmyWeVV5zXrewFFI/dnZo7oid4EsgeolKoSv+hWytQieZ4L97I
+	6F+9g+YV11JDLX1xrS502EmqZzHkllE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="K/mrha0b";
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762786200; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fSFR8jqT;
+	spf=pass (imf03.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762786499; a=rsa-sha256;
 	cv=none;
-	b=RgK2X98S3kvcrGDJ3T5k5QGaPk8LDc3l1LxA4ln44zMAkcUKK5w87RsaZso9rUd+U76tIq
-	0lItICVDgnWZQBt1J7rqIGeVlxehdlP/LnyZW/LvsUR+9X9STu4A9V3IKeQoVWte+zPio/
-	Nt78OZ2IUKEyXorFyDnpDOcS3/G9Mw4=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a9cdf62d31so3699460b3a.3
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:50:00 -0800 (PST)
+	b=b5jodVi8b99xHkhdJqhOYAUAcHV7ZhNEeJvjmq+gWPV2WvdnDT7dF0MiYpvMKym+EmAMt6
+	dNdvroTfjZtDlCw6L/GzyIIfWJqrHUpOlkwhRTLfHUlsTivRLWQkrVPwpgxvrdmllwy409
+	ak7PTlD3rZEvZ6gN4gIBP+yFxoW3fd4=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b3377aaf2so865659f8f.2
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:54:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762786199; x=1763390999; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yuV15cVIkOZ3osUBoMrFPeh8PgM7VFfcDiPWWGwwe8E=;
-        b=K/mrha0bK++07FxAEv0PI4J0L3bvRVUCeNvpaqGiVE0rf1nl3HqHglX+F38TcPOOdV
-         y0Ky3hS6itNw3YXsUY4jPeq5hOb1mELy6C9rYG0V04jajBuG+lijUjWfj0/X8BTBN5Nt
-         ZOxbACz4sbJtHrpzWiTFkZfcSpz+SIyVTg1vrlBTg7HF1rRuv7N8hh4vrTzLQpY6rFzT
-         DvOwuzEFExfdj3OC4oXOmaeCk0ZAyA9N1qeeqHXEM/r2zXSYcXnWNpuHtVmj39H4zKFI
-         N3UflGLEA+Im9SSlD4JOg3FxLlNAjnTva7TSUJmCqKTe7pvAaSzrWZi6Q5ahlt2eaRr8
-         M3KQ==
+        d=gmail.com; s=20230601; t=1762786497; x=1763391297; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UtT4O7BewVOdeU11dvM5Ug5fQnG1uIMIXCN1qCElv4g=;
+        b=fSFR8jqT67TySHwqTLSyObmattiPC4k0pIdVe86VohyuECoV1hYqkvwpB9S1IWfORr
+         Ar4kr67iFttyJ1tiwVNzffeMTKczpiUGnTwJjGyNXkjmabLowvouFsentvcL9HO2BxgS
+         jsZyzm033W3zuK4FsN+7GvFq6T4InEUJ7wDiSrSVWT6dHCh2t7dBApnbI2LtZg9aV0HD
+         w5JIis13Cd26Mt1Jt4kB+MQRzhUzMQGQYZLe1Iml29WnoybxhMWvDmIh7xVB15xVUU8M
+         dExhQui5XtuO9t2jzFl1LB8h6hD64LtqznO/9PGDPMS/xs09YT704rBdyzMV5hehDZux
+         cQOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762786199; x=1763390999;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yuV15cVIkOZ3osUBoMrFPeh8PgM7VFfcDiPWWGwwe8E=;
-        b=gNIgFH8FM5QERs5UqFOBdcIuixhdym/xyVOOFAK7DJXtN1bxnN6UWQ2WD+57t/ihFZ
-         vaWlnjkOfAFWcKWI8tAiAiHEg9yj85oTw/3/rihzk5tytvX91bsMWmBw/mKrn8WVigIY
-         ulVGUmIb7fsr/JvzJvJAuTNynBtHk7/HeQzBcf14niWmGG54otwvSJ77vJCT77oljuTM
-         ssrpfDtPQHxsSgt0GBWxbZ2HDZvI8U0+M6TEiIgauLah97dXqEAfSk6GGYTK7ziB01hb
-         umoYpb+Y6cn/6JnlDjhvM4btwYx5n7r2cYqYWXt9/Bk70m9hxBo17ydg1vSqgZvarMkD
-         fEnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCgEmKFAo1e5Ivm84qsQ9rnEislwk/HSUPwxt6NnzxF3+U229CjJLsd8VCy41/HEJKVzx5wdIBZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwK43dbx69sg3NMu9XI5FK1Yf0TBHUzYRZBiDZ2H+oQdtq7eUjb
-	jEgqUcWCk3h/uUrdgZZHLVNqP/m0KQ0mv76coITPH6EdwjabcAIJEUzZfCqv4UlY+oSGAoSfgs/
-	C1yUTjptxQheP+R3UUhKjNO12TzG1PsVFCvaaYiDR
-X-Gm-Gg: ASbGnctHHTXIDENwmljyVagXfm3yy0GWgysPmCdA4iFcnEACh6CJpT8WHrDXUcqRiMa
-	vATKtJKzqQbHbDTCTL0Xn+F4JvoMhmWjL143f9VwFC2CeWlhJC8yDAzE5T1bScVnCXXRpFE5DM8
-	0QSJqbDiFljaHdz/LeEM/9yK8nshNZqhTz+cSoQ9otH0kKb9iZenPOkQFqV7tQUe6Bwze7i5E5t
-	lJ95UHOJnnHfvuZv+jHuE5vXkr0AgV5HmBpbGw4xZFQodu/cdPl6FsEtYw2WjI4Juh194p+epsg
-	yWM6eP7Cb6m4hZu8/4vbkXyWr7k=
-X-Google-Smtp-Source: AGHT+IFJrWpsYMgqYHxsl7TDahL4sWC/rojvNE8jvjvqAW1DXIbEkhegStBh6RAJqXTedR75u3LJC4XuuR5ASPiDRjI=
-X-Received: by 2002:a17:903:2f88:b0:295:24c3:8b49 with SMTP id
- d9443c01a7336-297e56cf5bemr117461485ad.46.1762786198920; Mon, 10 Nov 2025
- 06:49:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762786497; x=1763391297;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UtT4O7BewVOdeU11dvM5Ug5fQnG1uIMIXCN1qCElv4g=;
+        b=AmxRDxJSPbI4pb3Lp9RJqQpi2tw6Ly55MgMYZmPTQlDUMcAaFQYsO+oaF2u2SGL8dO
+         Dc0jGRvVRMRjgpHl3ZOwnRQbLTObHbfimZvoHKHle3TAQRldKqckzKX2f2/qNQK25xcJ
+         t9VDQFtXw9802Dxm9mhN4m8Nhpf9UwRJGwWNByd3T+fnHBzdTa5uju3d9GbFfR4iAnqh
+         +l8SyJ9koeMPCpUhPJ9bfRnhv9N6Lcgg+Hdzx5RPBPdgpkzxHwKezNvzeXWf043AWdxY
+         vNI4a2fwp3lvv4Gj/qxIByp123UHpOO8AAP5KRJwDyj2dDuAjzm55jpHMVSiVY7X153n
+         daew==
+X-Forwarded-Encrypted: i=1; AJvYcCUxP8zQL3HqPOEvZ4EymVvMy4/wuidXSkCXvBn1Pq9WLRE2v1/nSDpLwMvknQMmLbeb/I4sr9wPIQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw50HYLCMUXb8aTU0iSFm5oX9XEXm9Sww3NUmSZB9UXJ0HML4Ck
+	xqa5ilpdk/u3/ecFglADrwytCi8MGrDDTdrYDttusy9srtJNBPx9mDiM
+X-Gm-Gg: ASbGnct5qungQqwzJUJjyHNWzgTfbzSVhzBT9GYZsGW5ZHDW1YRHDsCRvAkbOzh7OuJ
+	W5+g1v7mHPyddPDb3kqYTjl7FXJm/RzaGMsv/YT1zWgBQvCkJ2Vl9AOyXZxiY3UNhTu8CS787nH
+	r53YiBPAaEQzGjes707w9TDyTpWVuXe+QETx6KmMoLiSrsZ1EJepydvPddEKBYLAODusWFiCxsL
+	Pf/+4O0dTsJJIDDoqIAzZ1Y6bUV0XC9pcA0Aq9bic+I6dJUvSHeS+s6bFdEtaUtypGP+TtVmvTU
+	m/qWtcBCo+Qd3dGLZGTV1MHGzQ0tUqLT4q3uLwojbFwI6kYXg8UoE3akine+twoXcuzPAx874Ux
+	87ivedqJkkta3lkUsoyqZT50Ii4aDCmUgXLM/Ae1tbjrEa3oIbokZ3amEKY325OiWU9ojmpcAal
+	3sT5Hfyh/yJM7bdvt6kHl6ycqIOLK9uIVSSdvjrOKqVZd5U11be3z6oATv22PKeRtNiDB0/VcoH
+	vHcIy8Rxyq07iwD6WAvNmsGPCCnJVwzUJA3HnKnoyjTPn6o8w==
+X-Google-Smtp-Source: AGHT+IFgYtF0Zf+P6CHYXSeBIt6XkOznTNcFaXqJDPZp+x8TaTAwDPOPyk8sB9F+rWpsk9Zy+d+pvA==
+X-Received: by 2002:a05:6000:2302:b0:429:c4bb:fbc4 with SMTP id ffacd0b85a97d-42b2dc24800mr7139287f8f.25.1762786497116;
+        Mon, 10 Nov 2025 06:54:57 -0800 (PST)
+Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b316775f2sm12777750f8f.16.2025.11.10.06.54.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Nov 2025 06:54:56 -0800 (PST)
+Message-ID: <69884a4d-60cb-4a66-a225-38d3a17712c6@gmail.com>
+Date: Mon, 10 Nov 2025 15:54:55 +0100
 MIME-Version: 1.0
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <81848c9df2dc22e9d9104c8276879e6e849a5087.1761763681.git.m.wieczorretman@pm.me>
-In-Reply-To: <81848c9df2dc22e9d9104c8276879e6e849a5087.1761763681.git.m.wieczorretman@pm.me>
-From: Marco Elver <elver@google.com>
-Date: Mon, 10 Nov 2025 15:49:22 +0100
-X-Gm-Features: AWmQ_bltIHaW2m2Y_rXOjdB0rjwB0avPjx0FCrIDnvZhp3yD5E0mxdw5HHzg9_w
-Message-ID: <CANpmjNM+ot5A-pRLhV6Esn=QvCeCStd9fG_pgwrVA=6pxD8aqw@mail.gmail.com>
-Subject: Re: [PATCH v6 17/18] x86/kasan: Logical bit shift for kasan_mem_to_shadow
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, 
-	kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, 
-	ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, 
-	morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, 
-	baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, 
-	wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, 
-	fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, 
-	ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, 
-	brgerst@gmail.com, pankaj.gupta@amd.com, glider@google.com, 
-	mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, 
-	thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, 
-	jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, 
-	mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, 
-	vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, 
-	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, 
-	ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, 
-	maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, 
-	rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	llvm@lists.linux.dev, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 96ACD1C0009
-X-Stat-Signature: psbafc3sj45a6em1wid59zhxzcq98nns
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/khugepaged: do synchronous writeback for
+ MADV_COLLAPSE
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ Branden Moore <Branden.Moore@amd.com>
+References: <20251110113254.77822-1-shivankg@amd.com>
+ <aRHs3pA2kOr_uD3k@casper.infradead.org>
+ <9b622374-778a-4459-aca9-4eb406a58516@gmail.com>
+ <aRHwv3XzI4XHcLPP@casper.infradead.org>
+ <2e6153c9-1729-463a-86b5-0973b3f56ea6@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
+Content-Language: en-US
+In-Reply-To: <2e6153c9-1729-463a-86b5-0973b3f56ea6@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1590D20009
+X-Stat-Signature: izmwspppwicshf4pg1w3sqd7i7yrfh1s
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762786200-78688
-X-HE-Meta: U2FsdGVkX1/tVzNixooc6/FHqeVqwbIi0BiWL+3B1/2C6w454ZlHDE2kuUdaccJfILbRT0aBl/8OY2TLaSNqWwJt7uF/Zh7vbINEq5JFEOXhH7xXTRywoLytqd0ynMlAiPza5qXAKVbj4L6bXySOUsYeMjeHBqomX8LDYhAOaAuQyi9h3NL4ryuidh1lAbKM8xD6DODO0BEfyCsp9O0nSpvF9773AW77NvBw/DCjo9Ea8Brol0iXvbrS9B5zFOLbDlFEda6hrytf4pRwFz9+ckH0qG6A1a2UDFD+zQpk5jQzM40kAsjzXd7WqpB3qjxBnAIobVw1jany+bNb1QVMRRy52e05/TQc+TXVWWHGT3wiVh+CFGvpfaWmN5w5cNnc0p1XqdH+bD1QlJDxsi7BSEsyB/qAlq/ZmtwcdVVuFmXdfgk81yXQJU+apTgUp19Cmmul4e/8wVDI9amAD82SGSRJEoDjKdAe9FO5CYVCeta4jNdnDSTGZr2jsuZrN6iINLIFgRSSlBn2327cpVsWsqOcfrbCcDiqjVuQXiGivYS0J2fgj8hpUHw1ZqjNbWHuGgcGiP2BD5Ubhbxlp14602RS3vtOh5aUrzG7pzuQTIaBPoj4McB49nNzn+UhhR2jus431FDZTdFSr7msF7OzADsIw0/KPW7B0I+4VSJFn1c5ezjl1K31PUG/HjtLt3zjpKzawofg6Qd1bip3Idr5UUMyszB7s7hj6CfYs4Dd4MxYAtfKyGTaMLoKVrvFuA5ZwDuHlALvBEFncHgCwh4hnWTndgBpXAh90yLLoeLoOaOOWPcb6Gi4r/s8rrc1SmH3jL0scUbNaQmYAdvWlWHtorkY7bu5Ks6/05EomsMJ3mGdTmz1XN9lUq/NSR/tCRmjbue9lcPiRtcBUZn+xvle5rLB9FUmZRwsIBk5IFEwCUrZmP7rr3Q87haPwOsPIa8XQqOjGyHyN7kErQ/Gqcb
- l+Esyusu
- w+lniyq5rLSt5PD7iFwWC/2VOcLUecfNZxQhxvb2Gxsnuh2wdiUFGWqcm0VM9okjA+Iul9jzOCaeK0CYYMvhfmjUCFPdyWa4OC3YuDhLqJ0VpFU+PrQ3C1SkSYe+uowmwe3uVlqO5dcAVGpeLiVOaAMbF/FCG7ujKLAg2pBzZ2RsZ3CmUV6/od16WWKf0BqLVWbGiacg3f1tzda8Xqqw0ONKEzi1SsF8TjfBQxeD3V7gg9qRip1fHlQWTydsRgVmrLY84hblvgUO8aL3GOgFU+AyknDXOPyyv9Xw6uLitX/Ffgqr8kpIOcOKtPwpEsAzC4i6g8TGfI6FgtshH1R1TWO1VRzIukdKa/IUzGBIN9YTdLOHEp0+C3xyvc9BjHrOvOjtm
+X-HE-Tag: 1762786498-346836
+X-HE-Meta: U2FsdGVkX1+pBO1IiFJAgt/7/F+FU636CF2fx0NsuFW+kSDRbL9V1VO8AZwXEE001H9u87O/koZhqVI4mM9t9/ciiy5dcDfhuAgKjfBJoy3i2Dgt5SSC4QppGtMLbvwBdYUmRoOy8TOULnYd6AmYPbs8yYtOAddC/BdHMNDeUOOw+wjC3JpTE9hOLSqRWAFPgobLhb//67w8Bf1HKNUMPc8/YmE/N1ZNmvIOwXdpkUDsTmn+iw+/5Nuh0y2jcCLCvdKQCg9kCE9od+qzpNFq30YH5fTgPQ5htQTRudM/g5Y6GynR9Mdn4rn3y/KjQy2sVmh3YHvFAhh6mo9ccdstZ6vz9Gp62UVGzxmvF6cZCQFwYV28HOWE2/4n1PC/DkCdGGf56z5gaBscrA8aJuKEbiPZgqaAAyJBy2crkO2DyJ2eoL4ZBGXgG2zMj1yeT9M6mg/rZ8qqd4MHTxWeQHBf+dvcficQLFz0iYZXvx92TK2hNGbk0hb+8fqtsphFTFmHCVlSsZOIGJNpyiFIBs+Rynw+2Al6oA/uDLtJT9jgShYdK1r35CY1PbR1LVfmL+c+NflFIgxb6vKNKr0WUcj2LPEVA/P9mgphzAWz145T5e1LMplNHyOuyrJ8KbS4QnWlUeOySgviMWGaSLYz5/obMPxrVL2vVEIORf5h5t3q7RddcYtlLBj0ougpnJ9fInZte/FypaW0/OGZqWa3E8VDQovF4KWzhnc9vMmI5bx5OOaOwSjPGU2EPpWZlGS7gOROFcuKzWKUx5nEqs5cDqg64vmXeDd1q1aAy9mNu8e5cbBVcZrsGO7/G+d/6am5G+OqpKSc11gZpPsuzIehNNeM5IfXMh1xTLiThy5C0G3EsaYiL3TLUR4bOFFOgo8KWfNOljM0A5mZrUY6s/npW1gCjoYaSZnOyKuMgUde2EswMbeIkc9Do1JsFJUc0UsmI5Lym3vZF+ssvtUZB9E0Fz4
+ hwOvefFK
+ sdctJ7iU5HOutTswLgw+0US3DfuIDFYWThL+yNi55x9KGdsehSdYr56M1zXKJ5DmmARzIQXpKSLD8BpWe2KSfkOLGoWQLZ05nOHdozHxaYaJirHnHKsA9DNt9xn/LIKIVgathMnfg9t26d3leweBu4g4Df1lR8dfXmCZK+psOMgEsYDiKEcrSnJmnn0gZKNfT/B6pbWcJjeJGgVQ/tOfACgjmS7tFo6C4a6v9TesvqU/Xhsbeq/ZBmet6FAUZUKtElXVNK9Zyye3MkHhfPaZbmxBG+NkKD+7V9p7Cm4VXtZ88aEnu3D5bra1xM+uvX33X7Xt3HvDphoLcqJI79OWHps9PTJNSgaD2zDGZ9XjBFo734f/KbF7iYT3moX2OlskI4qjBRQhxHEb3niGcSXLqcChdzwuPgt5VPccyDFEJytoAi4I4JbGX56KvZMnqfK2JBx4SzVFWRk5ls2gf3on9ws2g0a3XtdUQZvOvBQew9ss53XoTlXYPcIxCLuPRlS4s6F0tVoJVp3MbTKvnvbhg9P1Gvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,56 +140,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Oct 2025 at 21:11, Maciej Wieczor-Retman
-<m.wieczorretman@pm.me> wrote:
->
-> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->
-> While generally tag-based KASAN adopts an arithemitc bit shift to
-> convert a memory address to a shadow memory address, it doesn't work for
-> all cases on x86. Testing different shadow memory offsets proved that
-> either 4 or 5 level paging didn't work correctly or inline mode ran into
-> issues. Thus the best working scheme is the logical bit shift and
-> non-canonical shadow offset that x86 uses for generic KASAN, of course
-> adjusted for the increased granularity from 8 to 16 bytes.
->
-> Add an arch specific implementation of kasan_mem_to_shadow() that uses
-> the logical bit shift.
->
-> The non-canonical hook tries to calculate whether an address came from
-> kasan_mem_to_shadow(). First it checks whether this address fits into
-> the legal set of values possible to output from the mem to shadow
-> function.
->
-> Tie both generic and tag-based x86 KASAN modes to the address range
-> check associated with generic KASAN.
->
-> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-> ---
-> Changelog v4:
-> - Add this patch to the series.
->
->  arch/x86/include/asm/kasan.h | 7 +++++++
->  mm/kasan/report.c            | 5 +++--
->  2 files changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
-> index 375651d9b114..2372397bc3e5 100644
-> --- a/arch/x86/include/asm/kasan.h
-> +++ b/arch/x86/include/asm/kasan.h
-> @@ -49,6 +49,13 @@
->  #include <linux/bits.h>
->
->  #ifdef CONFIG_KASAN_SW_TAGS
-> +static inline void *__kasan_mem_to_shadow(const void *addr)
-> +{
-> +       return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
-> +               + KASAN_SHADOW_OFFSET;
-> +}
+On 10.11.25 15:05, Lorenzo Stoakes wrote:
+> On Mon, Nov 10, 2025 at 02:03:43PM +0000, Matthew Wilcox wrote:
+>> On Mon, Nov 10, 2025 at 03:00:32PM +0100, David Hildenbrand (Red Hat) wrote:
+>>> On 10.11.25 14:47, Matthew Wilcox wrote:
+>>>> On Mon, Nov 10, 2025 at 11:32:53AM +0000, Shivank Garg wrote:
+>>>>> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
+>>>>> text sections), the pages may still be dirty from recent writes. The
+>>>>
+>>>> That explanation derails my brain entirely.  Text isn't writable!  How
+>>>> can the pages be dirty and file-backed text?
+>>>
+>>> Files are writable :)
+>>
+>> Well, if you're root ...
+>>
+>> -rwxr-xr-x 1 root root 158632 Jun  4 11:14 /bin/ls
+>>
+> 
+> gcc foo.c -o foo && ./foo
+> 
+> Is more the issue I think
 
-You're effectively undoing "kasan: sw_tags: Use arithmetic shift for
-shadow computation" for x86 - why?
-This function needs a comment explaining this.
-
-Also, the commit message just says "it doesn't work for all cases" - why?
+Yeah, that's my understanding as well. I guess stuff like 
+package/container updates might similarly trigger it.
 
