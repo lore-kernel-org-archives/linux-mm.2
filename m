@@ -4,128 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C35ECCCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 10:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12A47CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 10:33:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEC5E8E0008; Mon, 10 Nov 2025 05:20:07 -0500 (EST)
+	id 635D68E0007; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9C6F8E0002; Mon, 10 Nov 2025 05:20:07 -0500 (EST)
+	id 60D1C8E0002; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8B468E0008; Mon, 10 Nov 2025 05:20:07 -0500 (EST)
+	id 5498B8E0007; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C04678E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:20:07 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F6C589DC4
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:20:07 +0000 (UTC)
-X-FDA: 84094302054.27.6E17EF2
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9198DA0005
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:20:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=QrmSaSKu;
-	dmarc=pass (policy=reject) header.from=shopee.com;
-	spf=pass (imf15.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762770005; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 433B78E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E102BC0C0D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:33:22 +0000 (UTC)
+X-FDA: 84094335444.06.1CF087B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2E0B1C000D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:33:20 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J4JOMTZp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762770801; a=rsa-sha256;
 	cv=none;
-	b=8mbc7gT5Kc/0BheOPZeUqxSSmR5cXShJ0J22+33fY9nmkAhpCQa7X0T8hrg94Aqezu9MgK
-	BlFwdZjFQZXOxYaqPbO1B/8uhOgtIFHTfcsdTrIp9BfsoSxStY6DzsR5Jm03EdKT1KrfkI
-	h1ZqAea6qWrlImIKZyp958QXChu3doY=
+	b=wxJFi0F4NyNDEGPMxpeRp3m2OAVPgSrc2YU0AAmjLcBc2LM/BVDqO4MZFbo7kIDsS42QQ6
+	k+ry3qvI6QzcIqDicl5Hjw6ZLcfTAhMEYVH82gHJhgVqP3s10QJKac/LrxyNRAV2n3vaxX
+	Zmag+rY/29X8rzSkVNBuhfCEuicWA0g=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=QrmSaSKu;
-	dmarc=pass (policy=reject) header.from=shopee.com;
-	spf=pass (imf15.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J4JOMTZp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762770005;
+	s=arc-20220608; t=1762770801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=u9Um+h9dOsIowK0Xeh4oFsJO5SmqkrPeMg+IBmuohd8=;
-	b=ZQejSEN7vZINZu5P8TcCc01h/WK0lgb3podiapV30Y+bczDgyMdCnf50Qdhwu/zWzFKI7C
-	61GrAnpCKMSG/+uF/0rpXzoVVLskvl03ifoDaYntslvvHG7AYEkcsAFsPyTzsfwnA4qbuA
-	U7KIl72mynw3VTnrf6gd69CIhZyTAeM=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-341988c720aso2324961a91.3
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 02:20:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1762770004; x=1763374804; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u9Um+h9dOsIowK0Xeh4oFsJO5SmqkrPeMg+IBmuohd8=;
-        b=QrmSaSKuHsXNvpQVVn4SxBt4kPzKSDfLtsGsRUmU24elA/CHS5jDoOEurUADcYp4zu
-         huTcCfUnko1Y3uEiLRBE2UdeVH3O5cT6BfACioNiyyIgen7ggfjsAC3Pj/X40zD/2ilt
-         3+pZVoPL4nv7jSy7RdMaXmTdZwuzJvNy5sFfdzkbKI8IIGT4lOnPSl/LietsKo/Sy8Fk
-         SMvFzV+I1RL8r3CWD7tspCDeyWFOAnn79tfubft41Gn00AVDXX+r/pXrGq86cUnA9MsK
-         fp5Z7nTHeczX2YFZgVJdk1ab+sNHya3VpPS+iuwJspHIahGWANqaGmVjTL9F0qxsj+Kq
-         JXSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762770004; x=1763374804;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u9Um+h9dOsIowK0Xeh4oFsJO5SmqkrPeMg+IBmuohd8=;
-        b=qhLAnvyXSY7vJTmyKQiKZlgY8bHAXMNcpX+Q5PkMO7A1KzgMIb/KyDI9PwIITkPC7N
-         od93pCZIf+rMhpI/ro7GC62D11emMxLeUw2X6evJ9VyYBTYM1JHL+H4aI5/rU5Qm1I65
-         d/1p4pb3sBbB+bIx3EOCIHd5ZP5y7cvP2Hfxp23qBe/4z9HHpkr6YQCUppaGr98GQnJ4
-         fqNyE/9eF04dDJec3tfYXFGO7ynf+EV+doCgBjwgJfKLZw98mU1z6Hq1FQh0XLqULYIC
-         zHYnWiTGwh5MR81cOspNv2uB7X1hZE/mDzHAKkX93WwVS4WQUczcQF9cOauI4vTvDyfX
-         bo3g==
-X-Gm-Message-State: AOJu0YyOyhf5oxvckTqUrFjFmAN/xLPqqRVjF2vsy/Nz+X4RU+j2G4iF
-	YNV19GCcnHC1PkeOgfIDPf0Hq81P4vOoUTT6OhdQTQp0nHPPmmySfU2uSb+/oB3fiuBnV97TGkr
-	4skstPY1RqSUZ6Ot3wgj2CooZg/9AoXUsUfZIB1WPgovOkkmzrPrBSluz00xJf7f5V1jDhkLqie
-	KcKUIDX8cxC/f66tQdgv0sMuM4p8HLqTBk0CoZVDiivBM=
-X-Gm-Gg: ASbGncs6hWTGwzi5tgt0E6HldNNEIWOKeCBdstyhsTsko2FvMEaCNnYAdHKOILCg5/2
-	XwX1MXYuSPnK8h8Lts414oCYYMq9xBPbPcbjyNC2u1HDZOouquxuNeZdk3tEiYWAEdwxoOZsU+Y
-	POAu6z9Gte4bH/xX+mhMvbszyg0eixaIE78iuOOcSw0bvHuD4dLamEGhg3KHuJRKlHljjgTTavt
-	pBscRb2OPv0bvt12brNzrShuxiv1vEmw53oZtXxY2Kk3sQYRABig1yt6hwJJvLIs/ke/TxkRuZ/
-	el1Pm+59001RwO8ZRM/oF7iCdmJqw/tN/VvMH7zyjIGC+IDv98d2ZP8mzjGQO5BltPcSRfn8xfp
-	mB6UNOnRet6e+Khw8TQknj/f2KcCLrvtLe0jb6gXSQoGvtuWXQbbqyUJAKP3zJR66iisslZpXvt
-	bilnExM2K5YeD2eg==
-X-Google-Smtp-Source: AGHT+IGg+qZi4q9NfQViBJozr4dBl5TzCMHd9K8BS4nEMBk0sFI9y2oNIm83/8ZcSK7PJ3Gqzu8SSQ==
-X-Received: by 2002:a17:90b:582b:b0:340:f05a:3ec3 with SMTP id 98e67ed59e1d1-3436cbc8edamr8666587a91.33.1762770003828;
-        Mon, 10 Nov 2025 02:20:03 -0800 (PST)
-Received: from .shopee.com ([122.11.166.8])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341a69b626csm17372339a91.19.2025.11.10.02.19.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 02:20:03 -0800 (PST)
-From: Leon Huang Fu <leon.huangfu@shopee.com>
-To: linux-mm@kvack.org
-Cc: tj@kernel.org,
-	mkoutny@suse.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org,
-	joel.granados@kernel.org,
-	jack@suse.cz,
-	laoar.shao@gmail.com,
-	mclapinski@google.com,
-	kyle.meyer@hpe.com,
-	corbet@lwn.net,
-	lance.yang@linux.dev,
-	leon.huangfu@shopee.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for on-demand stats flushing
-Date: Mon, 10 Nov 2025 18:19:48 +0800
-Message-ID: <20251110101948.19277-1-leon.huangfu@shopee.com>
-X-Mailer: git-send-email 2.51.2
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uYngT3P0x8BeTeoq5JfLyRYHdqrmCoWdHOiiCCLVumA=;
+	b=nOIiR7zNioVB5Rh+L1eHZmE4xKLT0InvyteWN7CBVhHKWLsz1y7gtqcmNUVg2lu35ZeUC3
+	IP3xwQ3TPTMeelzGGzxEYSCAs0TUhcVTDnrxJGJFhkutTODNJBnW8UEVG5K1wVy+/tly9f
+	b970hjspAQ8/HsWYF+gAYgu0RaYJA6U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D19EC435D3;
+	Mon, 10 Nov 2025 10:33:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E38C4CEFB;
+	Mon, 10 Nov 2025 10:33:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762770799;
+	bh=XGdAZQMoYX6Us3MCpLM/NxmAUfTsARkCljiFE1chCCw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J4JOMTZpT9f7JobhPkEEVtMbrvMHN/QmyRT6CkgFjCdJG5tsJTSz8geO6tHzfz4MZ
+	 GOtCv9QmePCfHi7gUxydKyaNAHExL86jJuMscDVKgAWHZ7EJQr57EVkxmdLu75Y+fa
+	 0e1xo+JMgJNAA5omFi7cogT0zgMR1tsoDvsDgs7KZw1EhYLo4SQ8Go6krZUCmuxhX+
+	 TlUwbp/UOOC/EQHwOjQ9q8LN4U6NTRoMDnhC0LYEYxbZTExqiiDH/Y7wbBEyqMfYlr
+	 r1v9Pp87oj1/1F+lROk+yyvElmJFs/KQ/dMSJPduQqa1ttaRNf6qVKNo4lb44QhkeA
+	 ibjK5TaviSRAQ==
+Date: Mon, 10 Nov 2025 12:33:11 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] selftest/mm: fix pointer comparison in mremap_test
+Message-ID: <aRG_Z7p1jwEUsRy5@kernel.org>
+References: <20251108161829.25105-1-ankitkhushwaha.linux@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251108161829.25105-1-ankitkhushwaha.linux@gmail.com>
+X-Rspamd-Queue-Id: 2E0B1C000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: nx36hp5rizfctc1r9mb973u556xiqcy1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9198DA0005
-X-Stat-Signature: czckr861g9eidsjptcanasak7xgneapd
-X-HE-Tag: 1762770005-334164
-X-HE-Meta: U2FsdGVkX19X3cJqbTaTTTxXrxHTW+tCTetFNNEj0VaPlv8VJgQHJP5jmblRfdfT5guylqXV+yk+MUuRws4Gcyr+UlWvYLKSFrFJtJcI8ahEqIzEsjfK+YWOAYdR9QfDe2Bn1Xei7vSgIQWyHyyOfGXW2VsJZCOMVpHeiSZCxHWzSM4Lja/SXwcWOzoHluRXbe9B92BmDOvxDb/csGmzhtn6ZpcMGLsQcmRLn+hjwQ532bQLbs6c5kXszHGurEqobfZRG8QVh5mdpaAV/PWxYCph8+GtVAfrB6d+K9PjxD1aLl+XZW7mfBOKTSer75Jt9TZ/CvaRf6MzZxtkYp8nreBFHvyYa4eEeHVck66A1tWb9OWUQ0p4nppziCcolSqFLRwlIcWZ52YF/B831df6u4ISLem2uF2zy8v+2p5Fi5XzTF2dfsbzMQVnzdTjOH4fS6laLCPLv6nOj3HDLbyKNSipdaKZM6rGAanxY7Ciazh+eBnW+LVWC7/yGzv/+2C9vSqRFFlwz7P5YJ1CL4GpsgimvEUNsArvI6TpFp2XZGvKL0pGQjSlspOSuqNd1tp131nCTGGHLAPGxzJ98eEDJGXbxurm3hdG1WJXe/sm+MlNFV4CseeTpFGiZ7X/kDHEuKBjJftmL2qmu8wvxb/HEoh9D0kleGKTe3iASMyMBPaD6wE2eAeT/vNe9+eJ0L7VmHRz0GCU5O54Zk7Qzw5326sRW/0tMXbtfNAisLBoB5GR/ak1xoabOploCdHewAPZP+LOIwiPnjjzibINyZTpTSOkw/RIb22QjDyYB47Jbbcz12iTwq0XCQQmuK6finEzDJ7GmBc5jHF+dCTQryK5QGUtih+B84vzaQEs/Ghb2a7fcJ33JFjcVncDhczAqxa9xueV/HnxOR2ym10plBZCgmoC9u0B5tOt3NV0dfnvPCKSgCCZxh61z3e9hjniPKXVJ60/e0Ncw3cK7K/x2Ur
- vz3jcqA/
- DM0kTJIMwWTrPF2ZJJSYNLCZHrEd8CzqequcojimCmyfW5gqYzn/cRPtZqOsPmGIGW72C6EOKG1ouUgkMjUReQaJ3Irq87uGLdT8DptUyMH8K+Kzo/t0xhG8UmPyxu3Rxh9UFUM6Ve24mQzMHwytxAnCvdp/YITU7vQaxCldZi2JB2mJ0cXSod4mhL4F1BOmvEHR/zG4tmtZwa5p0UzGTJ1fNGaBErE5VJyUoF9ICATZ0TIbT/D0Hgpp7jYCbcQj/rQDJzFLnCd2TFyTUWGR7/JagmS7vHArCfemu7fOGkV0wpYxwf7702o00M84BV6UciiKecukttjvSMDNMbc8YZ1A5yTPDmb/ohJAFnUJdwvBtgzPbAWMAhEsVqUYcqY5mrOZaomiDwiUPPBhqkcHgumPtL3nh1Tu5kX86JcOxBLDwcxC0znFltJyHXUEh3KA/Yv8cY7zjzT6+QYfSqFQ68a8mv6M6Yzz4Y2MX
+X-HE-Tag: 1762770800-400646
+X-HE-Meta: U2FsdGVkX1/os8YgKZOmufhRePNH95GpAlDWBqdKTLdCaSqqt6eDDjBcJRPU0px/T7AUm/4NmE7W3TrT7TwpEWAoIT8jlP6JNkZk3IZcyg+PKhwqSXrBhPrVVfyaqMOpcSp5XcjlSJg+AihlHhMkqyot7XaC/U5n6W0Zblt7i1dNoRoarnflXUKczX22st0Ys/zorv/lMxFGnDcvJ4vEVcZ4vTlkfjKi9GcH9gOwePYLXlcTVe3fREpL5amZZLan8r49jT2jF3IzSqgQOughJWOUhqvzkRI2/eoYwjbVHorEFHaSIAV7SIEGuLuYkPS3n5A+xGX8FUkRKm4NS6botj1m3aXFwkPIXGBOUgjOqN39jtLceySiGe5utx41yYyL5vknrVvUY9n3U5UqRrTHT8jhJJ2cXa4jkwxcyzPSDXNYo4AuYsjh0PlaP0M80WKF11tUqFRmhTthF+4MV24XDqEf5IkEWtcUk3Ukahnt5QwgKmRFFzRvBIaCkwXwfr9jOxdHNfPHjVM19Dsbo7Ls67aWq5ork3lpg+eDKFpbyK2+cTHq65B4gtPUyhPScL47z/g+XXWWdjN0M6zoBiWrHT8wI4PrSD1KNXtJ4W7aT5EJkqLqeOQsBtMn89E5qbJa6StVn3da9C7Z2JmZCWc07UH1lZeCyXCci8jrmA45ZbzjQ41YJPkvgC3xLGPgyh2dWFTbG2I8eaJpj6YmR0dB8o/JbuCcKyJcmUGImWmlh1Z4QQhtu8Asdd6YZTqpxRcwjkQUVMhQESJAP95uRpYyTDPwhGpxWwgD50q4fgvDzqoDH0YQqUFIxszVgu5pTEKhxu8iuPp/EWT4K8gQA72cZLbOcCDZwClT8G9s4ZtTN3n2G4tvohorzydclHKWdKk+/4zqyeoA4+TiykltSQ5VQz0LdXJ8HZ2kGViRvzaFY0JI1QAK/wVWUaYMORlfc5x1Fa1Tf0KkwTe6Gn8Gc/f
+ oLjUWXIQ
+ /5NLm8Sy/C4fC6cM7NxKdHNClx67c3K0JRhrIn+JxkZKzMcNS11ygtbp5axH+r49qScRw1rEDpUpMfP+BslZR1ywz/Frp15ds5rX8pI3ZwJK5lF+Pvjt2D+W3su4tIPFFecU21h/1x4MOWdo1CG6baXkmFdBQgW2jfj8u9Eao/0czAT5l8EfH5W0R2CoHGT1LOMCatjdvBS3TOV4EsIWgJ+9Lzg4Ku4yHMHWcz9hIbc2ya7CSAlAD28IBUO1wjQKRyomp4CrqpG3HgjVeZYRTLWe5i8Ij4LJOv2QgYu2V+ZDFEE7GrqF2aIBlHttIwOqUjFGfdqu++fp9ntQ0PL9HEg3/omo1dw7S8XKbHJ5PjKq1v1C8Duer2l5o2MjEF9whepTGYW++k4Hoem/6fSl34R30VoRaSK0IRWTd3pJQ0EDcPpA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,185 +98,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Memory cgroup statistics are updated asynchronously with periodic
-flushing to reduce overhead. The current implementation uses a flush
-threshold calculated as MEMCG_CHARGE_BATCH * num_online_cpus() for
-determining when to aggregate per-CPU memory cgroup statistics. On
-systems with high core counts, this threshold can become very large
-(e.g., 64 * 256 = 16,384 on a 256-core system), leading to stale
-statistics when userspace reads memory.stat files.
+On Sat, Nov 08, 2025 at 09:48:29PM +0530, Ankit Khushwaha wrote:
+> Pointer arthemitic with 'void * addr' and 'ulong dest_alignment'
+> triggers following warning:
+> 
+> mremap_test.c:1035:31: warning: pointer comparison always evaluates to
+> false [-Wtautological-compare]
+>  1035 |                 if (addr + c.dest_alignment < addr) {
+>       |                                             ^
+> 
+> this warning is raised from clang version 20.1.8 (Fedora 20.1.8-4.fc42).
+> 
+> use 'void *tmp_addr' to do the pointer arthemitic.
+> 
+> Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+> ---
+> Changelog:
+> v2:
+> - use 'void *tmp_addr' for pointer arthemitic instead of typecasting
+> 'addr' to 'unsigned long long' as suggested by Andrew.
+> 
+> v1: https://lore.kernel.org/linux-kselftest/20251106104917.39890-1-ankitkhushwaha.linux@gmail.com/
+> ---
+>  tools/testing/selftests/mm/mremap_test.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+> index a95c0663a011..308576437228 100644
+> --- a/tools/testing/selftests/mm/mremap_test.c
+> +++ b/tools/testing/selftests/mm/mremap_test.c
+> @@ -994,7 +994,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp, unsigned long page_siz
+>  static long long remap_region(struct config c, unsigned int threshold_mb,
+>  			      char *rand_addr)
+>  {
+> -	void *addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
+> +	void *addr, *tmp_addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
+>  	unsigned long long t, d;
+>  	struct timespec t_start = {0, 0}, t_end = {0, 0};
+>  	long long  start_ns, end_ns, align_mask, ret, offset;
+> @@ -1032,7 +1032,8 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+>  	/* Don't destroy existing mappings unless expected to overlap */
+>  	while (!is_remap_region_valid(addr, c.region_size) && !c.overlapping) {
+>  		/* Check for unsigned overflow */
+> -		if (addr + c.dest_alignment < addr) {
+> +		tmp_addr = addr + c.dest_alignment;
 
-This is particularly problematic for monitoring and management tools
-that rely on reasonably fresh statistics, as they may observe data
-that is thousands of updates out of date.
+Nit: tmp_addr can be declared here.
 
-Introduce a new write-only file, memory.stat_refresh, that allows
-userspace to explicitly trigger an immediate flush of memory statistics.
-Writing any value to this file forces a synchronous flush via
-__mem_cgroup_flush_stats(memcg, true) for the cgroup and all its
-descendants, ensuring that subsequent reads of memory.stat and
-memory.numa_stat reflect current data.
+Other than that
 
-This approach follows the pattern established by /proc/sys/vm/stat_refresh
-and memory.peak, where the written value is ignored, keeping the
-interface simple and consistent with existing kernel APIs.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Usage example:
-  echo 1 > /sys/fs/cgroup/mygroup/memory.stat_refresh
-  cat /sys/fs/cgroup/mygroup/memory.stat
+> +		if (tmp_addr < addr) {
+>  			ksft_print_msg("Couldn't find a valid region to remap to\n");
+>  			ret = -1;
+>  			goto clean_up_src;
+> --
+> 2.51.1
+> 
 
-The feature is available in both cgroup v1 and v2 for consistency.
-
-Signed-off-by: Leon Huang Fu <leon.huangfu@shopee.com>
----
-v2 -> v3:
-  - Flush stats by memory.stat_refresh (per Michal)
-  - https://lore.kernel.org/linux-mm/20251105074917.94531-1-leon.huangfu@shopee.com/
-
-v1 -> v2:
-  - Flush stats when write the file (per Michal).
-  - https://lore.kernel.org/linux-mm/20251104031908.77313-1-leon.huangfu@shopee.com/
-
- Documentation/admin-guide/cgroup-v2.rst | 21 +++++++++++++++++--
- mm/memcontrol-v1.c                      |  4 ++++
- mm/memcontrol-v1.h                      |  2 ++
- mm/memcontrol.c                         | 27 ++++++++++++++++++-------
- 4 files changed, 45 insertions(+), 9 deletions(-)
-
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 3345961c30ac..ca079932f957 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1337,7 +1337,7 @@ PAGE_SIZE multiple when read back.
- 	cgroup is within its effective low boundary, the cgroup's
- 	memory won't be reclaimed unless there is no reclaimable
- 	memory available in unprotected cgroups.
--	Above the effective low	boundary (or
-+	Above the effective low	boundary (or
- 	effective min boundary if it is higher), pages are reclaimed
- 	proportionally to the overage, reducing reclaim pressure for
- 	smaller overages.
-@@ -1785,6 +1785,23 @@ The following nested keys are defined.
- 		up if hugetlb usage is accounted for in memory.current (i.e.
- 		cgroup is mounted with the memory_hugetlb_accounting option).
-
-+  memory.stat_refresh
-+	A write-only file which exists on non-root cgroups.
-+
-+	Writing any value to this file forces an immediate flush of
-+	memory statistics for this cgroup and its descendants. This
-+	ensures subsequent reads of memory.stat and memory.numa_stat
-+	reflect the most current data.
-+
-+	This is useful on high-core count systems where per-CPU caching
-+	can lead to stale statistics, or when precise memory usage
-+	information is needed for monitoring or debugging purposes.
-+
-+	Example::
-+
-+	  echo 1 > memory.stat_refresh
-+	  cat memory.stat
-+
-   memory.numa_stat
- 	A read-only nested-keyed file which exists on non-root cgroups.
-
-@@ -2173,7 +2190,7 @@ of the two is enforced.
-
- cgroup writeback requires explicit support from the underlying
- filesystem.  Currently, cgroup writeback is implemented on ext2, ext4,
--btrfs, f2fs, and xfs.  On other filesystems, all writeback IOs are
-+btrfs, f2fs, and xfs.  On other filesystems, all writeback IOs are
- attributed to the root cgroup.
-
- There are inherent differences in memory and writeback management
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 6eed14bff742..c3eac9b1f1be 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -2041,6 +2041,10 @@ struct cftype mem_cgroup_legacy_files[] = {
- 		.name = "stat",
- 		.seq_show = memory_stat_show,
- 	},
-+	{
-+		.name = "stat_refresh",
-+		.write = memory_stat_refresh_write,
-+	},
- 	{
- 		.name = "force_empty",
- 		.write = mem_cgroup_force_empty_write,
-diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-index 6358464bb416..a14d4d74c9aa 100644
---- a/mm/memcontrol-v1.h
-+++ b/mm/memcontrol-v1.h
-@@ -29,6 +29,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg);
- unsigned long memcg_events(struct mem_cgroup *memcg, int event);
- unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
- int memory_stat_show(struct seq_file *m, void *v);
-+ssize_t memory_stat_refresh_write(struct kernfs_open_file *of, char *buf,
-+				  size_t nbytes, loff_t off);
-
- void mem_cgroup_id_get_many(struct mem_cgroup *memcg, unsigned int n);
- struct mem_cgroup *mem_cgroup_id_get_online(struct mem_cgroup *memcg);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index bfc986da3289..19ef4b971d8d 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -610,6 +610,15 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
- 	css_rstat_flush(&memcg->css);
- }
-
-+static void memcg_flush_stats(struct mem_cgroup *memcg, bool force)
-+{
-+	if (mem_cgroup_disabled())
-+		return;
-+
-+	memcg = memcg ?: root_mem_cgroup;
-+	__mem_cgroup_flush_stats(memcg, force);
-+}
-+
- /*
-  * mem_cgroup_flush_stats - flush the stats of a memory cgroup subtree
-  * @memcg: root of the subtree to flush
-@@ -621,13 +630,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
-  */
- void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
- {
--	if (mem_cgroup_disabled())
--		return;
--
--	if (!memcg)
--		memcg = root_mem_cgroup;
--
--	__mem_cgroup_flush_stats(memcg, false);
-+	memcg_flush_stats(memcg, false);
- }
-
- void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg)
-@@ -4530,6 +4533,12 @@ int memory_stat_show(struct seq_file *m, void *v)
- 	return 0;
- }
-
-+ssize_t memory_stat_refresh_write(struct kernfs_open_file *of, char *buf, size_t nbytes, loff_t off)
-+{
-+	memcg_flush_stats(mem_cgroup_from_css(of_css(of)), true);
-+	return nbytes;
-+}
-+
- #ifdef CONFIG_NUMA
- static inline unsigned long lruvec_page_state_output(struct lruvec *lruvec,
- 						     int item)
-@@ -4666,6 +4675,10 @@ static struct cftype memory_files[] = {
- 		.name = "stat",
- 		.seq_show = memory_stat_show,
- 	},
-+	{
-+		.name = "stat_refresh",
-+		.write = memory_stat_refresh_write,
-+	},
- #ifdef CONFIG_NUMA
- 	{
- 		.name = "numa_stat",
---
-2.51.2
-
+-- 
+Sincerely yours,
+Mike.
 
