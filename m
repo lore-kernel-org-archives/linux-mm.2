@@ -4,92 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12A47CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 10:33:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163DACCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 10:37:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 635D68E0007; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
+	id 3CE068E000E; Mon, 10 Nov 2025 05:37:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60D1C8E0002; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
+	id 3A5FF8E0002; Mon, 10 Nov 2025 05:37:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5498B8E0007; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
+	id 2E2F38E000E; Mon, 10 Nov 2025 05:37:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 433B78E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:33:23 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E102BC0C0D
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:33:22 +0000 (UTC)
-X-FDA: 84094335444.06.1CF087B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2E0B1C000D
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:33:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J4JOMTZp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762770801; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B4A08E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 05:37:24 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C910CBDF8F
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:37:23 +0000 (UTC)
+X-FDA: 84094345566.03.01BC743
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A7ADF2000A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:37:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762771042; a=rsa-sha256;
 	cv=none;
-	b=wxJFi0F4NyNDEGPMxpeRp3m2OAVPgSrc2YU0AAmjLcBc2LM/BVDqO4MZFbo7kIDsS42QQ6
-	k+ry3qvI6QzcIqDicl5Hjw6ZLcfTAhMEYVH82gHJhgVqP3s10QJKac/LrxyNRAV2n3vaxX
-	Zmag+rY/29X8rzSkVNBuhfCEuicWA0g=
+	b=j4fUMw3mc98St350zdgXKd2ickXsn1ZCu48si6qwpvGTirmg+Cudz/QokeulIdvIsBFSFa
+	xu5BADr0EP7mIWjGtK0AHzl4mxoLUeSq85UTqQ3Tw+MV0fJyblF4Vnw88nE/1tYGtxLSfe
+	oMGMWaKDZNPKWJaEfTtkBG8IpQToSE8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J4JOMTZp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762770801;
+	s=arc-20220608; t=1762771042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uYngT3P0x8BeTeoq5JfLyRYHdqrmCoWdHOiiCCLVumA=;
-	b=nOIiR7zNioVB5Rh+L1eHZmE4xKLT0InvyteWN7CBVhHKWLsz1y7gtqcmNUVg2lu35ZeUC3
-	IP3xwQ3TPTMeelzGGzxEYSCAs0TUhcVTDnrxJGJFhkutTODNJBnW8UEVG5K1wVy+/tly9f
-	b970hjspAQ8/HsWYF+gAYgu0RaYJA6U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D19EC435D3;
-	Mon, 10 Nov 2025 10:33:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E38C4CEFB;
-	Mon, 10 Nov 2025 10:33:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762770799;
-	bh=XGdAZQMoYX6Us3MCpLM/NxmAUfTsARkCljiFE1chCCw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J4JOMTZpT9f7JobhPkEEVtMbrvMHN/QmyRT6CkgFjCdJG5tsJTSz8geO6tHzfz4MZ
-	 GOtCv9QmePCfHi7gUxydKyaNAHExL86jJuMscDVKgAWHZ7EJQr57EVkxmdLu75Y+fa
-	 0e1xo+JMgJNAA5omFi7cogT0zgMR1tsoDvsDgs7KZw1EhYLo4SQ8Go6krZUCmuxhX+
-	 TlUwbp/UOOC/EQHwOjQ9q8LN4U6NTRoMDnhC0LYEYxbZTExqiiDH/Y7wbBEyqMfYlr
-	 r1v9Pp87oj1/1F+lROk+yyvElmJFs/KQ/dMSJPduQqa1ttaRNf6qVKNo4lb44QhkeA
-	 ibjK5TaviSRAQ==
-Date: Mon, 10 Nov 2025 12:33:11 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftest/mm: fix pointer comparison in mremap_test
-Message-ID: <aRG_Z7p1jwEUsRy5@kernel.org>
-References: <20251108161829.25105-1-ankitkhushwaha.linux@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wwdS1VB3vgYSOM1P254K506c5LfSj/vi1RAI9w6ktio=;
+	b=lDj2i6uJVh96Gd6Qxc11jQBK7JOZgD8/qZ6MEmCuuKe7lQEhdxdIj3oUlZvVGRO4kjKgEv
+	dYm95j2FKWeGUASeGRm4qynL63ZZk9IZ8kOGLiJibMCWV/JdfihqT8gFeQby0mhT2ZdPDu
+	yHi+pdiyCTOUYAQEIhlYnmE7yk4QpWs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CEEFE497;
+	Mon, 10 Nov 2025 02:37:12 -0800 (PST)
+Received: from [10.57.39.147] (unknown [10.57.39.147])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E4913F66E;
+	Mon, 10 Nov 2025 02:37:12 -0800 (PST)
+Message-ID: <b21fb5b9-2e7f-4cbc-ae62-015b1317a9bd@arm.com>
+Date: Mon, 10 Nov 2025 11:36:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251108161829.25105-1-ankitkhushwaha.linux@gmail.com>
-X-Rspamd-Queue-Id: 2E0B1C000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nx36hp5rizfctc1r9mb973u556xiqcy1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/12] x86/xen: simplify flush_lazy_mmu()
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-3-kevin.brodsky@arm.com>
+ <b165098a-8164-4664-aaaf-1e8c4391d797@arm.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <b165098a-8164-4664-aaaf-1e8c4391d797@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A7ADF2000A
+X-Stat-Signature: rmwbfnwz8oksoruig94cneezusw3qiko
 X-Rspam-User: 
-X-HE-Tag: 1762770800-400646
-X-HE-Meta: U2FsdGVkX1/os8YgKZOmufhRePNH95GpAlDWBqdKTLdCaSqqt6eDDjBcJRPU0px/T7AUm/4NmE7W3TrT7TwpEWAoIT8jlP6JNkZk3IZcyg+PKhwqSXrBhPrVVfyaqMOpcSp5XcjlSJg+AihlHhMkqyot7XaC/U5n6W0Zblt7i1dNoRoarnflXUKczX22st0Ys/zorv/lMxFGnDcvJ4vEVcZ4vTlkfjKi9GcH9gOwePYLXlcTVe3fREpL5amZZLan8r49jT2jF3IzSqgQOughJWOUhqvzkRI2/eoYwjbVHorEFHaSIAV7SIEGuLuYkPS3n5A+xGX8FUkRKm4NS6botj1m3aXFwkPIXGBOUgjOqN39jtLceySiGe5utx41yYyL5vknrVvUY9n3U5UqRrTHT8jhJJ2cXa4jkwxcyzPSDXNYo4AuYsjh0PlaP0M80WKF11tUqFRmhTthF+4MV24XDqEf5IkEWtcUk3Ukahnt5QwgKmRFFzRvBIaCkwXwfr9jOxdHNfPHjVM19Dsbo7Ls67aWq5ork3lpg+eDKFpbyK2+cTHq65B4gtPUyhPScL47z/g+XXWWdjN0M6zoBiWrHT8wI4PrSD1KNXtJ4W7aT5EJkqLqeOQsBtMn89E5qbJa6StVn3da9C7Z2JmZCWc07UH1lZeCyXCci8jrmA45ZbzjQ41YJPkvgC3xLGPgyh2dWFTbG2I8eaJpj6YmR0dB8o/JbuCcKyJcmUGImWmlh1Z4QQhtu8Asdd6YZTqpxRcwjkQUVMhQESJAP95uRpYyTDPwhGpxWwgD50q4fgvDzqoDH0YQqUFIxszVgu5pTEKhxu8iuPp/EWT4K8gQA72cZLbOcCDZwClT8G9s4ZtTN3n2G4tvohorzydclHKWdKk+/4zqyeoA4+TiykltSQ5VQz0LdXJ8HZ2kGViRvzaFY0JI1QAK/wVWUaYMORlfc5x1Fa1Tf0KkwTe6Gn8Gc/f
- oLjUWXIQ
- /5NLm8Sy/C4fC6cM7NxKdHNClx67c3K0JRhrIn+JxkZKzMcNS11ygtbp5axH+r49qScRw1rEDpUpMfP+BslZR1ywz/Frp15ds5rX8pI3ZwJK5lF+Pvjt2D+W3su4tIPFFecU21h/1x4MOWdo1CG6baXkmFdBQgW2jfj8u9Eao/0czAT5l8EfH5W0R2CoHGT1LOMCatjdvBS3TOV4EsIWgJ+9Lzg4Ku4yHMHWcz9hIbc2ya7CSAlAD28IBUO1wjQKRyomp4CrqpG3HgjVeZYRTLWe5i8Ij4LJOv2QgYu2V+ZDFEE7GrqF2aIBlHttIwOqUjFGfdqu++fp9ntQ0PL9HEg3/omo1dw7S8XKbHJ5PjKq1v1C8Duer2l5o2MjEF9whepTGYW++k4Hoem/6fSl34R30VoRaSK0IRWTd3pJQ0EDcPpA=
+X-HE-Tag: 1762771041-398327
+X-HE-Meta: U2FsdGVkX19jTq6KXUVHAYUeQWuAV8DHetQqBC+oRZlqWfUnbTQmoGjks6tEckL4nCNTFzWro+q7ptUMhzDDlrEYdOUFqUTvSsUsH7E4pZboHMrkjchbpBrNRTj6PVZRhBHejZlVIXCNYJqUt1hwgJLwQyNQx3q1yiWI50HJE0q5GkjG+FgMg3apisgL154cvL4wlcZjnScHmIvZFLzA7l4jjjTrqBZXWKtA69Z2NPTOSy+uHheIZ3OvjpJtZtZMbeZ3MabcGrcd72OTG1fmrKUDVtIw5rZ5JlQ8yVSPWHzAkkxqrZ3WwbyqmQBcFMvMzZYUVO+GN9QJtYaS1KoOQehVU/bJrCzhDp04q8AL0bj/31qnjyX+e26eUaaoF7ZcyAoYWfnaDJIC+ery+4U9KzKQcDt2AghLONdy2lpmlobxrIced6gl6lTUrh7x8GKWRzPy87t7OC1tHqWvtodH57uq9+/lZCXqZfMEe+8adNBcfVqOqim+ofWl1I2PVkDxwRuB/JPEYBB0MOp60Ufwog05h/jHW/jyq53OZopUdtVJHAYxx5iLZiKJnzGQpz6oYgTIjHIyYG70gOTltkyWLrXehLKqTiGjcZvU6dq1g2HHg7y+/A0xlCKgcJ1Wq4HwwfchvwIHG9N0/r6QPSrT4EM6a/iqQ2+MPhP6128fctGbRhh2swt5pribVfoMBDuh2+Ov55AKFWh/Fhzjm10ZRZ/8XxfNcOuz3LK/xZtBjEk901H4rCEFJ3DCInQV2shxfNB1rYMWXRLVS2E5AiiqhE0rR7H8WeAR4F6Y1vpnjXsGJYcYGiyx74knbRKVxlaRNQp/YotjyUUsllWCAt0/XSjgS364E87DZQ5c5i8czAZEDU9wsi6EVSmllPX3kmY+H2qvGJXG6a3fxpunZnkk+Acx9UB5wplykku8zElx0Gn3sBn8A6jiXYWY6ZRPtTonGv96TLCmcKLxenzH79c
+ SKK/Z9BB
+ fkaws6EtjxfPvSZBAiQVlR+hPrpTVgtEXHhVG4PsnRB9w+HJwwyIUa6p/8/A+36Ce2LeJV6dB8g+10BI8h+ngselF09OxlUroG+8Og0oUq296th/2AmaBe+yr9HPubvqRFj3myLOJeCm107Z2Mam58jcEbDD8EzubEikh+BIJuO6/QyJ0ISJdx+f3v2+/yAsMmykAr5ZUqmsNf0R6ZkDPMJbx9rv18pX3fth9drsKBva0Bwx+ICW5ALPYBAK+ooob+OBnyRgabdk/xmk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,66 +107,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 08, 2025 at 09:48:29PM +0530, Ankit Khushwaha wrote:
-> Pointer arthemitic with 'void * addr' and 'ulong dest_alignment'
-> triggers following warning:
-> 
-> mremap_test.c:1035:31: warning: pointer comparison always evaluates to
-> false [-Wtautological-compare]
->  1035 |                 if (addr + c.dest_alignment < addr) {
->       |                                             ^
-> 
-> this warning is raised from clang version 20.1.8 (Fedora 20.1.8-4.fc42).
-> 
-> use 'void *tmp_addr' to do the pointer arthemitic.
-> 
-> Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-> ---
-> Changelog:
-> v2:
-> - use 'void *tmp_addr' for pointer arthemitic instead of typecasting
-> 'addr' to 'unsigned long long' as suggested by Andrew.
-> 
-> v1: https://lore.kernel.org/linux-kselftest/20251106104917.39890-1-ankitkhushwaha.linux@gmail.com/
-> ---
->  tools/testing/selftests/mm/mremap_test.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-> index a95c0663a011..308576437228 100644
-> --- a/tools/testing/selftests/mm/mremap_test.c
-> +++ b/tools/testing/selftests/mm/mremap_test.c
-> @@ -994,7 +994,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp, unsigned long page_siz
->  static long long remap_region(struct config c, unsigned int threshold_mb,
->  			      char *rand_addr)
->  {
-> -	void *addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
-> +	void *addr, *tmp_addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
->  	unsigned long long t, d;
->  	struct timespec t_start = {0, 0}, t_end = {0, 0};
->  	long long  start_ns, end_ns, align_mask, ret, offset;
-> @@ -1032,7 +1032,8 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
->  	/* Don't destroy existing mappings unless expected to overlap */
->  	while (!is_remap_region_valid(addr, c.region_size) && !c.overlapping) {
->  		/* Check for unsigned overflow */
-> -		if (addr + c.dest_alignment < addr) {
-> +		tmp_addr = addr + c.dest_alignment;
+On 07/11/2025 12:31, Ryan Roberts wrote:
+> On 29/10/2025 10:08, Kevin Brodsky wrote:
+>> arch_flush_lazy_mmu_mode() is called when outstanding batched
+>> pgtable operations must be completed immediately. There should
+>> however be no need to leave and re-enter lazy MMU completely. The
+>> only part of that sequence that we really need is xen_mc_flush();
+>> call it directly.
+>>
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> This looks functionally equivalent to me, so:
+>
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>
+> But I don't think this tidy up is strictly necessary for your series to work?
+> (perhaps I'll change my mind on that as I go through it).
 
-Nit: tmp_addr can be declared here.
+I initially thought it might be, but in the end I think you're right -
+it should still work fine without this patch.
 
-Other than that
+Still, I'd rather avoid unnecessary calls to arch_enter() and
+arch_leave() as it makes it harder to reason about what is called where.
+Namely, keeping them here means that a nested call to
+lazy_mmu_mode_disable() would cause arch_leave() then arch_enter() to be
+called - rather unexpected.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+The only calls to arch_enter() and arch_leave() that are left after this
+series are the ones in <linux/pgtable.h> and the Xen context-switching
+logic (the one case where calling arch hooks directly is justified, see
+discussion on v3 [1]).
 
-> +		if (tmp_addr < addr) {
->  			ksft_print_msg("Couldn't find a valid region to remap to\n");
->  			ret = -1;
->  			goto clean_up_src;
-> --
-> 2.51.1
-> 
+- Kevin
 
--- 
-Sincerely yours,
-Mike.
+[1]
+https://lore.kernel.org/all/390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com/
 
