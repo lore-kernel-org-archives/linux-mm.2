@@ -4,112 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC590CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 17:28:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B48CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 17:33:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DBE18E0020; Mon, 10 Nov 2025 12:27:45 -0500 (EST)
+	id 0BCC18E0030; Mon, 10 Nov 2025 12:33:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B3378E0003; Mon, 10 Nov 2025 12:27:45 -0500 (EST)
+	id 094758E0003; Mon, 10 Nov 2025 12:33:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DEE28E0020; Mon, 10 Nov 2025 12:27:45 -0500 (EST)
+	id EECA28E0030; Mon, 10 Nov 2025 12:33:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47F1B8E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:27:45 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0562A572FA
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 17:27:45 +0000 (UTC)
-X-FDA: 84095379690.10.09965A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3BDFDA000D
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 17:27:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kOEmXq56;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DB80C8E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:33:01 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AFE1140226
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 17:33:01 +0000 (UTC)
+X-FDA: 84095392962.24.FA23037
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AC8E312000F
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 17:32:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=HNN8nRgt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of glider@google.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=glider@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762795979; a=rsa-sha256;
+	cv=none;
+	b=tOxE3HXUcPbYPPu9ZfZk9ZkQ0xYWPRpu1Auawr3qyVR2gqnh3MbUgLS3uJ4uApldhLu5nV
+	b/MkgdpF7BiHL4HKqNJWQLc/FsNmzbWP1nNke1pwLKXkXBXe2OF/BPB9t+pDRMgcswu17t
+	vTySid6HRzOOLEAeJOd+8hyGnjgU9vs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=HNN8nRgt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of glider@google.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=glider@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762795663;
+	s=arc-20220608; t=1762795979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mFAlVWiKYLdPJ/T2toy6isqwv6/KtbnO149SK8FdfDw=;
-	b=UreGpwWCzklimnAx0BcJ1gdf6ETCspOvXXK5U0vhNsKArLvoGvuYBuPjzXhCVxyTSkNTyT
-	O5S9Ia1Fh+rNyQ8VH8bqdFm81k5gFcst+sUpVf1XQziJ35RPNVuKBu0YRp1P73muxUWG9k
-	YaK1qnHm0WbkSxiLa7/vISTloQ9tduU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kOEmXq56;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762795663; a=rsa-sha256;
-	cv=none;
-	b=pUHqsiLJWr/15hHSUV4cIrzLdTMe266AAG0FD0LkfYOZN6laUFRp/gq51l0gF2kU2jCX+v
-	kYaPDo4cPqvErDLDLKq7BRGejqugcMauYrut9mcKBLCSUSw+tPPYE1M2bbSAaN3JRlcO/6
-	eaU0OOqBozvvFSIyxccN3RBsqIkJqEQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05EB742A19;
-	Mon, 10 Nov 2025 17:27:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473ABC4CEFB;
-	Mon, 10 Nov 2025 17:27:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762795661;
-	bh=HHttyIN4ZrA3AcpdgGnhsSW/6Bj+qI781YjC1EPK/3Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kOEmXq56QEOhYKVDYg3pmTTbZaQ3owW/HDKwcBuDdC82JmIqyrI0H+yxc99FUcDUL
-	 fwXU81C3GkaANePQ13/nt1UtzHQ8MyPYe22/hw6izEBVPomnOaNifH0nL2YjIuoVqz
-	 bFDQnk/vsnnCJkXC34jzPZvxkem36m07cBLE0RclncJ9pC8+XMc/avvKcXYiGT+kXB
-	 IxJB+zIQ1WdF4EG+YSFYbws5XOV+2UNYGXQCOLRsjYTSDn6n0KjUr0PPbAlCviICtC
-	 SXhBCSgF6rWyM5byi12R1vmT5TvXzSZLCbZ+DnAFyM+S/lRmxXR0TspGUHGzkxmBaW
-	 qPOuJVi+O+KYQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
-  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
-  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
-Subject: Re: [PATCH v5 08/22] liveupdate: luo_file: implement file systems
- callbacks
-In-Reply-To: <20251107210526.257742-9-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 7 Nov 2025 16:03:06 -0500")
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
-	<20251107210526.257742-9-pasha.tatashin@soleen.com>
-Date: Mon, 10 Nov 2025 18:27:31 +0100
-Message-ID: <mafs0ms4tajcs.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=auNNYNeszcnW8UxlPsUXlu6HqCk9VFPDDrt3cDy7QDk=;
+	b=2/rwGAONPC6Ku45iFgzcFcBHaufTTUiUGOjg5I2pomqzPpws/6YOuurMjTg8pkJLw9NeII
+	PUsUbjocRWSnBnxqi8di2wRbq7qcDsbfKnrZJrEdJAbQeuXi7SojXqZgeX8mMgGp2j+/Om
+	OO8myzGNDp3nXNICsEccXJVnQ2i3s5Q=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-88249766055so20047506d6.1
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:32:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762795979; x=1763400779; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=auNNYNeszcnW8UxlPsUXlu6HqCk9VFPDDrt3cDy7QDk=;
+        b=HNN8nRgtFKrGo2Iz6YGNmoDvbGprJdgsHZ5ceAOSXAqMikUlPZ3iu4CKiyf3SYjG7X
+         u4DyrR0+XUUUX6L4XNTpgosIKhrbRrxiGW4ll0Gi9ocOG7u9Su/6inznqkTYdRStpLMB
+         2tEiUcrC/ERYz9PMhN3WPMTpb4oHSJ5CRfOzux7i9ZuK3bBFSd4Kmp0yBvMtwHW9ttJ2
+         q57GKzPejwAUZqBjjbZ1laY7pzRhigNWgjweaaB9lXkYLYQT9a4OtqniMHQYVfzywuSv
+         AxIrFSkhSgtFvC0TrNVMVHd6LAK25lfWOmN4jDZHjYelOVt0gldlIosJEz+Sut8YQ3Mu
+         yzjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762795979; x=1763400779;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=auNNYNeszcnW8UxlPsUXlu6HqCk9VFPDDrt3cDy7QDk=;
+        b=avnZC/NLiONN4HwGsiTtVkhbVEodBm7ZHgtSAU5QUTWVbD70d5qCvlXn6n3zHZr0lN
+         EWyWuS25PhGs99IZ267r8yK+4QzNt4WcOUs4qhFzMBcbKAVfBYM49WfJ0gKidkPSqld3
+         +CL3O7Dd0+ZLgNJ1sO9CQiya6w4d0MaHsfJsY11uICR83vBNUQeukgtHuJOGeG0DSfp7
+         R+mmfmM2TW1PJQq/46kDPn+rxAUyixQCnPzkhymXM4kyG4khMD9LRX9vMaWOlOUWQ+ci
+         bWELv34EUugrft5Ngjio6zcB9qK7l8PcPbMgquyowieL9jaAU0ozCisSSDqVV4pPQoYT
+         6zsw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9dktu9P1i/C7Qn4OfC5krhFw3XnTvmdYNBzSFKP1wqpx8JfgfxhVpUYVhF/RRua4SR5E6K9gwBw==@kvack.org
+X-Gm-Message-State: AOJu0Yzbo+8hx2Kl3jfBq2Z0i8slPhR62Bw/qEUsfWbUIyYSfgvTXNg9
+	hGS2/TJHk0SdH52JzxshQulDeSN7CK3vERILgeGtf4vDY1XZqfcGc9xgZ9TdzuvbB4PtzMjVi+5
+	rxQo/0D0Qy4bF1rABg+8mxuPGUPzH6Tf64XOp4/+N
+X-Gm-Gg: ASbGnctgPrHQaNopcpp/+iWm4oVQ6tgZJRuyVL594pSLOuDf3N8sJL/G3F9LhAXvKMR
+	isuBTjUwOm/JTD9BLrtQZ5G+QKOXOQgPXmvXkfhABKOhUrvsg6tid3P+mzi1vnasRJ/CahvKFew
+	bWMSTkuHL2HFWm+9PYlz9tIh5zDUE6LJUeQH0nas47+tZu+/6b2qWaCYBFhjJGYAsKuOonXh3WR
+	CUKrr380kr5X+ae3/iibtefj949qkX55azP8fSaiIoZ3oNKBGDUUPlXbAim7Shh5Qb6/edsf0tB
+	cA4YDcS06EdetZ8=
+X-Google-Smtp-Source: AGHT+IHeuRC7ChrdFjjxvcWC3ajdMKHJ+Azj7LDyTH5BCluSFj1o6p4ZSWP6EGrRrokOPiEV3z2rvlDUhI4wexrXKNM=
+X-Received: by 2002:a0c:e00a:0:b0:882:4660:3724 with SMTP id
+ 6a1803df08f44-88246605291mr69808466d6.63.1762795978283; Mon, 10 Nov 2025
+ 09:32:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 3BDFDA000D
-X-Stat-Signature: in1ofuoik7scwetfozcenwiixobje45b
-X-Rspamd-Server: rspam02
+References: <cover.1761763681.git.m.wieczorretman@pm.me> <fbce40a59b0a22a5735cb6e9b95c5a45a34b23cb.1761763681.git.m.wieczorretman@pm.me>
+In-Reply-To: <fbce40a59b0a22a5735cb6e9b95c5a45a34b23cb.1761763681.git.m.wieczorretman@pm.me>
+From: Alexander Potapenko <glider@google.com>
+Date: Mon, 10 Nov 2025 18:32:21 +0100
+X-Gm-Features: AWmQ_bmUvxxbg_c-XB1Dy80QL57feg4coPRIZHNTl9ervff8Rzi8S1pGrWY59Fo
+Message-ID: <CAG_fn=Wj9rB0jHKT3QKjZsPYce1JFcb1e72QBOBP52Ybs3_qgQ@mail.gmail.com>
+Subject: Re: [PATCH v6 01/18] kasan: Unpoison pcpu chunks with base address tag
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, 
+	kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, 
+	ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, 
+	morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, 
+	baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, 
+	wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, 
+	fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, 
+	ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, 
+	brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, 
+	mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, 
+	thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, 
+	jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, 
+	mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, 
+	vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, 
+	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, 
+	ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, 
+	maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, 
+	rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	llvm@lists.linux.dev, linux-doc@vger.kernel.org, stable@vger.kernel.org, 
+	Baoquan He <bhe@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1762795663-661490
-X-HE-Meta: U2FsdGVkX18AosXrLUSHjrW52H8i96oxeo16aK1EBZ6n7bwua1oMyz1JwoCXs2Z8R07B71nWQ9VSnHUV3TEpmdhYikzeq4Y9X9SRi6rU8DMX1Dfmek8W/CzQXlm7YxlCmzsE7TCKjXrxqLn/cHbpxN+Hw2bQyj9rM1ArSl/icwuCrLBkkkCb+8GtddepVS6lA1gfZhDWEza9W/rWIPws4dNWcyvJvS79EOwwW4ThK0DU0BdVB4al91esb0TK5dzSiuzs2bnYiDsWNjPAW4haVkNqc8DN5Zxo8BB0PgoHoUZRvpH+3A7iJYTToXRk8rwa3QMQPIFIvD5VieatXPmJ8VNblo/N/EIdz9wYkQN0h1RlO1J5cixB+BVdZpTXHOK3Z3MfLWne0TvvHNkKUaYRlI9/Ap95Ljv22Uc8zxkSKw+jBYymPotz8QE5VLT5MFAmVIkhBl204tTLtoVxJfqo6/nZoA874kJR8cwl3VCeBMDC1ovG7uAVzLIQPhcsnpJ5ubfPwT79Fq8qAVNkpXcXrvIZyYQMeYHqp1Ikj5Vyv5GtVL1KF2k2/V2Ye0TPbjAfinLaDEahU0ySUqXpCMpLcIINMOLua660pa0KClahQaVDaE7ggHuIY6fTikknGGgtHgGh0846dxfazP05lfn2orr43NYt8YdfQNt0jYlR8lLsGWfJYeVLufE7c0EwlHoaI0xCQORzgPyo1mkyxK1UERtXRR/+Ny0DsDvacUgUrdhKJokUhqR5fundIVvtQu8IyvkO/g/tQnejOOvp9HIiLW9C95Zc7BQs9RwqjSbuQe9kYpNLbWBSVJMMlOftIXsKMF/pNl3wfdN+yJ//X4OxnHGnNpLw0dwq76bV7bbaWzBigmaCko5yO1U8uaaJYBAJ2D9EGZjhQDea1XbayiWaWzZ0/KQEzFSzZoRMWi06fl2kVDgflySM/9gVwytDcLIigQ2Mr8rsPpdAZNwG/vO
- S055i6fF
- 4wJ2zd/8c3Tauq/Ox8pDbKMdHOHQmu7apCGwsriqJcv/PppHrUFe6yd/hfD4bh+gFuEYXx6wncjpEVIe05BydSPU6z6Ku0tJ9GiWdabBMjtQGJ5DFP6lop9iapulIRrVE78tf5De+gwPJqNttrDCrrq4oTrzabWYlBqpK+on4ASy640GMeqwI2PJ/EkeRyXs6vGtGmEuRAPeVa91AEn4TBnWxU5aRgLfeGrJHTq8zRxc8L8mWZHLSC2N6ttZBzxDsGo2stsKmtB76SOzHmWd0Zi+oTK7n8cujOmcM2fi2bld4IgRrYAzF4gXOSwGS2spYr7U3m5TYsc/7Pi3ckn0yeE7fp/7O7HAi0mM0
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AC8E312000F
+X-Stat-Signature: juhoauq9whg5zneza1ixfyurfyc651pw
+X-HE-Tag: 1762795979-967489
+X-HE-Meta: U2FsdGVkX1/0HsrlZcwDhGxqIna5B2Z+ZyKggYSZNl71+2IXBkI6QQdG5iTyBSrbYFiOJr04sq36/iP4KKa2524OPvN0XlWjY4yeJrnq+2vBy7U1gwJYr58dijS/9+dqNPHENxcoSwEw1vbOU2w31YqjJwpgzXCgb9jJ4qK1hyo6+L1c3TdJrv8ZDT7NI5yNnnmMMjx/K8yTNJyzLe4lfTXI1JlYZjifgaD75ZnjAwz//uAHb+CQbIbLQbKRdBovh7YYs4cBZJwUYs2JbjdJhJQCqGbxZPfJcK1HWy4fYTc8BjKUumqK2KTRyWe7oUlnbvq6BhEy73w+PLqUlA991rZQKj9xEdvKFgb/oxKLPP/OdH6lVvbasUswxYBA8qdzojQYXc++khg69scIB0IOI8HVjxe47SlH98ExrOysVOH1rJoI6TSpDuvNYkB4ZmbZr4INv72CYJOOL1j1rzSgPXb3Z9oFEemEomtM4qQ2YFS0C2zVn0620c/Valf3HMRw3vvwAVXftUdMjHCkhHLskWrEtF+5hP3yo3PllbjvPxN1Jv99xwT4kBVVTQoe5c0umoMfBtZl8PmTf4ZCt7KXkVz3DLAsZmG1VIj+qVpDzMefXMLc4oivr5xn/GiEE3wydBY7e4q7m/DqRVtmGC9fc9iWdBtSYj/cH6T8y8im0DwpJALv4/3FHUpcy0mgNBNULeqr72hvqJXCedPQ4Goi17VSLfra4RVJRikjc7oI1vtoCDjeeSWL/X8cJXCAJ1hMcxSo3Xzu9+PcN23FthhzxtY1LK4f9HOqE9V2F7/oCnqGv4Yv3/NuMLpcY3vMA0K+eP+5vSLhXcGtHB0CnEpvXBnRI0u7mb8Oy6woCnxgXZeLOFJJG9Fsjqx6Y0T/CihLnCQnko2ltm/uYUAWiL4lc4sT3WYSr9cBzWxLNzbppBVNM6ncCR0geJ81JZLl/rnum9BoiItNzutPPzzTAUb
+ oyYJCbLB
+ wvAc9TLCKZTsdafarS39oAOstJZERXdP40Mxmz6qCbgIQLbzY9yHEvJ09AF/2wtvGJKhy8GZ1ujsKwxYDIuK+0s8mIKa2ncBz1HaPbD/xukDTAv8elDhy3pJX1exzQOQIL2nxoLVcxiSifOq10M6j+A1KuFwrhQJM7E7ZQEsAV+uWYYrZScYPy4P1F/rH1Q1syfPOVEyifrQhbqba7KbIVa7aH+43jj198mWzuAG0a+xugCgr+q3IChCXL7vvbt6vQpNvDdyNAsbiuZqn19XW6zUkMLP9cvHon5mT9v4VBIzorjAaRQQ5TDFBYiyzY9ERgF6+WKMwRGG1zBY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,114 +138,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
-
-Caught a small bug during some of my testing.
-
-On Fri, Nov 07 2025, Pasha Tatashin wrote:
-
-> This patch implements the core mechanism for managing preserved
-> files throughout the live update lifecycle. It provides the logic to
-> invoke the file handler callbacks (preserve, unpreserve, freeze,
-> unfreeze, retrieve, and finish) at the appropriate stages.
+On Wed, Oct 29, 2025 at 8:05=E2=80=AFPM Maciej Wieczor-Retman
+<m.wieczorretman@pm.me> wrote:
 >
-> During the reboot phase, luo_file_freeze() serializes the final
-> metadata for each file (handler compatible string, token, and data
-> handle) into a memory region preserved by KHO. In the new kernel,
-> luo_file_deserialize() reconstructs the in-memory file list from this
-> data, preparing the session for retrieval.
+> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 >
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-[...]
-> +int luo_preserve_file(struct luo_session *session, u64 token, int fd)
+> The problem presented here is related to NUMA systems and tag-based
+> KASAN modes - software and hardware ones. It can be explained in the
+> following points:
+>
+>         1. There can be more than one virtual memory chunk.
+>         2. Chunk's base address has a tag.
+>         3. The base address points at the first chunk and thus inherits
+>            the tag of the first chunk.
+>         4. The subsequent chunks will be accessed with the tag from the
+>            first chunk.
+>         5. Thus, the subsequent chunks need to have their tag set to
+>            match that of the first chunk.
+>
+> Refactor code by moving it into a helper in preparation for the actual
+> fix.
+
+The code in the helper function:
+
+> +void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
 > +{
-> +	struct liveupdate_file_op_args args = {0};
-> +	struct liveupdate_file_handler *fh;
-> +	struct luo_file *luo_file;
-> +	struct file *file;
-> +	int err = -ENOENT;
+> +       int area;
 > +
-> +	lockdep_assert_held(&session->mutex);
-> +
-> +	if (luo_token_is_used(session, token))
-> +		return -EEXIST;
-> +
-> +	file = fget(fd);
-> +	if (!file)
-> +		return -EBADF;
-> +
-> +	err = luo_session_alloc_files_mem(session);
-
-err gets set to 0 here...
-
-> +	if (err)
-> +		goto  exit_err;
-> +
-> +	if (session->count == LUO_FILE_MAX) {
-> +		err = -ENOSPC;
-> +		goto exit_err;
-> +	}
-> +
-> +	list_for_each_entry(fh, &luo_file_handler_list, list) {
-> +		if (fh->ops->can_preserve(fh, file)) {
-> +			err = 0;
-> +			break;
-> +		}
-> +	}
-
-... say no file handler can preserve this file ...
-
-> +
-> +	/* err is still -ENOENT if no handler was found */
-> +	if (err)
-
-... err is not ENOENT, but 0. So this function does not error but, but
-goes ahead with fh == luo_file_handler_list (since end of list). This
-causes an out-of-bounds access. It eventually causes a kernel fault and
-panic.
-
-You should drop the ENOENT at initialization time and set it right
-before list_for_each_entry().
-
-> +		goto exit_err;
-> +
-> +	luo_file = kzalloc(sizeof(*luo_file), GFP_KERNEL);
-> +	if (!luo_file) {
-> +		err = -ENOMEM;
-> +		goto exit_err;
-> +	}
-> +
-> +	luo_file->file = file;
-> +	luo_file->fh = fh;
-> +	luo_file->token = token;
-> +	luo_file->retrieved = false;
-> +	mutex_init(&luo_file->mutex);
-> +
-> +	args.handler = fh;
-> +	args.session = (struct liveupdate_session *)session;
-> +	args.file = file;
-> +	err = fh->ops->preserve(&args);
-> +	if (err) {
-> +		mutex_destroy(&luo_file->mutex);
-> +		kfree(luo_file);
-> +		goto exit_err;
-> +	} else {
-> +		luo_file->serialized_data = args.serialized_data;
-> +		list_add_tail(&luo_file->list, &session->files_list);
-> +		session->count++;
-> +	}
-> +
-> +	return 0;
-> +
-> +exit_err:
-> +	fput(file);
-> +	luo_session_free_files_mem(session);
-> +
-> +	return err;
+> +       for (area =3D 0 ; area < nr_vms ; area++) {
+> +               kasan_poison(vms[area]->addr, vms[area]->size,
+> +                            arch_kasan_get_tag(vms[area]->addr), false);
+> +       }
 > +}
-[...]
 
--- 
-Regards,
-Pratyush Yadav
+is different from what was originally called:
+
+> -       for (area =3D 0; area < nr_vms; area++)
+> -               vms[area]->addr =3D kasan_unpoison_vmalloc(vms[area]->add=
+r,
+> -                               vms[area]->size, KASAN_VMALLOC_PROT_NORMA=
+L);
+> +       kasan_unpoison_vmap_areas(vms, nr_vms);
+
+, so the patch description is a bit misleading.
+
+Please also ensure you fix the errors reported by kbuild test robot.
 
