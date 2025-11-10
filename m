@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD1A6CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 16:38:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B710CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 16:38:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7774A8E004D; Mon, 10 Nov 2025 11:38:14 -0500 (EST)
+	id 5F02A8E004E; Mon, 10 Nov 2025 11:38:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74E8A8E0003; Mon, 10 Nov 2025 11:38:14 -0500 (EST)
+	id 5C7F28E0003; Mon, 10 Nov 2025 11:38:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6169C8E004D; Mon, 10 Nov 2025 11:38:14 -0500 (EST)
+	id 4B76E8E004E; Mon, 10 Nov 2025 11:38:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 432F18E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:38:14 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0BE6C1601D3
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:38:14 +0000 (UTC)
-X-FDA: 84095254908.14.C105846
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2F1FD140012
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:38:11 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YRXFvBLJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 364E28E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:38:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D95BD1601B6
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:38:17 +0000 (UTC)
+X-FDA: 84095255034.21.79D6369
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EA5CD180017
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:38:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XqmrY9Ot;
+	spf=pass (imf24.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762792692;
+	s=arc-20220608; t=1762792696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tjEoXPNXhfVJUSFrtIZUZPOp73U+hEWiDpkQ2qC/SvQ=;
-	b=m3zFOSW5zwGsOr5uoo9Uu0GyqHsYQ2wojO0wgr8ajgAaQQa9XxKcua3fZSsQlNi7NARED5
-	VsWHEDBxgOBhlEEgRZxNKsT4OSS+ip006Lowmc5+dcuoXkl7fLOgHsM2cYsUbThMdikCPR
-	cpG453qa+u322HwK35A9EEFHnRV8wwI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762792692; a=rsa-sha256;
-	cv=none;
-	b=ba1aV+i2T/prgwL0Fn30vhhioVVqqsydssdBIL1FDS2lVx1mbxncmcO1zbiMLfWb6C50wF
-	kOgURzLerQzxV5nwLy4Bl1JEbs1VJvZEqfUHyryJ5iofJgDfc9cg0+aoinKqwM71/4+BPr
-	0dchL96lRPNlvZDk6kGl5J3l/DFekew=
+	bh=LZgTPWUg6fgnNgIWmgc5f2sdICO+ed5Q8W3qiS9yQCY=;
+	b=LBqUS/wN8ZaWxWd8F+O80hdAFX5i0HCplOfUFI0Olf3uICTpJ9MDtmWK4eUe1H/4BVUU9R
+	j795HPYM1ZU/3HCsHT++mHINjjqejlQJu3P4Mq+eNcvgw1YO/f2YVh+FdHGMVG8ZuUFpyS
+	fGEFVFBrlC3IMgusLGCYP1B0NMBISjE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YRXFvBLJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2955623e6faso27683275ad.1
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:38:11 -0800 (PST)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XqmrY9Ot;
+	spf=pass (imf24.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762792696; a=rsa-sha256;
+	cv=none;
+	b=jKanoN56jzWG7DoJ47iMML0A1vkTW8LdW+LU8bEeo3X6y+UUasNpWS8qtE4Uk5MAYvJrW3
+	FHDFGtR4SJU8qUqmULE/B77U4UAcp9CZM5cHnmzJ62K4AN499aN0jA1SXvNcJAW/3UH1Zr
+	XBycxN0I/Cky1wzlSArFoR6hMYUikDo=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-781ea2cee3fso2598765b3a.0
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:38:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762792691; x=1763397491; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1762792695; x=1763397495; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tjEoXPNXhfVJUSFrtIZUZPOp73U+hEWiDpkQ2qC/SvQ=;
-        b=YRXFvBLJjwaDy4BO2C89scHAoyrebtqMugIMWgraBtSZ+wprTvBirrEDW3mytPqMku
-         UjOCXc3mFTfEpaS00NwcViWjmrgegmXX98KDh6TL4NFQBqxXx6P6QmVVnzPkxvWB1hFJ
-         wQgCPagtrJXrumL7+ZR2UEdYOCS9qOoAvKnj2PBuY7virSOBlIBI4tYnEc3Gi96yUAc6
-         gK4agU8ni3wOzcIY0pMsFdcXn98WvnWFz8AGGCWpwDKSIX6mPvzdwr2oFSJZGB8iLIf+
-         nLvfPtwXP816CNwautnvscagOYS3HK7lIuIqwf9xrBMSVfKWPFyGf0uMOed9SCLkVHkQ
-         P+wQ==
+        bh=LZgTPWUg6fgnNgIWmgc5f2sdICO+ed5Q8W3qiS9yQCY=;
+        b=XqmrY9OtDJTzWqiJU+4WycwirCZejpmYD6eEPnGSEAzUpwm4jbJjF+JdylRLcXOQ31
+         JB9WTzevHVrAy9wEuED56v84/1+stvtcVoxHB84pYFyKUXpZo9P6Nm6JQqNipp6DdNQx
+         lDDZgJzjOD/KtD05hoNsRMuRJOLLKFKCg73rXTsW/Dum3AamlBjvRSLS/7WfxbGJDYxC
+         CZquXrYuizrzXPtRINs+V6p9EuYsPymNnVpmRyqVatq1OJOLllZ5aDEBJUN3A25nxAKw
+         k9zKW35BYg+X23I3w9k8v7IoVfSL/XuhGveEJOLQkbFc234IYF9Srk4gKcnT17q4zCdK
+         v60Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762792691; x=1763397491;
+        d=1e100.net; s=20230601; t=1762792695; x=1763397495;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=tjEoXPNXhfVJUSFrtIZUZPOp73U+hEWiDpkQ2qC/SvQ=;
-        b=Hv/yxSXkSI48Z3yFkPRaSOqwu+q8xVgBTIOL3BlryDW4vqzWirp2TZVmuswPJN/D/u
-         VVxvREDrohV1nanF/5jm3WmC9eznxD9OHxH9Kvxq3Y1RRehZuGO1wQCNQg5wOL/Wr32/
-         U56m5e4roOx1Utzu4/H7xilm7OamrlaA0OA2OGgECi5K/SSBKBWoqhNeGiK24yeUgHqP
-         Tl/76D82HDPKRsQbHmkDworC4T8jT4FSz3IuM0QG3Ozuax6AQoToIXOBAjXoPGEjOM/8
-         2FGIv0iEkVNGLJCmlwYCnkgu0FF3jtxenpXkCRWNEdbrpcPVkpmQPSiB0oPVlbXgch7U
-         MBew==
-X-Forwarded-Encrypted: i=1; AJvYcCWuJH39jKmQyURDK8PDcWYk1wtMisGZWG2d7x9j+8TMw2eQ37YQFsCLagBbn2qK1douaGxPpRK4tA==@kvack.org
-X-Gm-Message-State: AOJu0Yw9Jf7o4dApl2ZC4gaup4CijWYWqRAaEBlYovlJWkieEqIqdZBJ
-	XmDUpLMshCfpABBzyH6O391lNeI0DJPRy2pEcIcHaPjkv2aTbZPjtBb4
-X-Gm-Gg: ASbGncsCBCvbdKLSEMhVY9VhLX3qH1G7JrjBQ0frV0YGhYa4QE2itYSW0Z38fkpTSUH
-	oBPwxI1bTxgHF+1j0Bj3tNYhvEW2RN5+vwONV9zcPZM//H5eSmmlGyQMNH+JcWtUUA8LW8b0G/j
-	veg1gRblNKsbYd7S0hGB1cyXMW+djb8U2FLDCaFroykln55ecvhLelf66bU+nzdHmEAEj2Sgg6p
-	MQzySCeJe6w5vcIJes8F8PT6e/SbAjbYTO57f6pPpVvAzdkb8VFJwr6EgKg45l0hrg+m+CqumPQ
-	5iTEx1zA/mLJSY2onuWYMIYa4jsC5wt9BN6XzRs+cvoR4O7L4aGlfvsTSGeE/wyczSlqjkr1Ofs
-	x60rYJdglEzVIQV9AvBzAMC1e2FutIKfo18viOnWm8SDvv+nMtPVyOKg5GybQ3EsjAP1uf3lGzj
-	adsCwUNcyaRCA=
-X-Google-Smtp-Source: AGHT+IGgGEjFRVaat56XCDxopiL8+SM4HXr1TFRgWsca/knmSVG340IyJkWxuGKU2hwaDE2EKORtXQ==
-X-Received: by 2002:a17:903:244a:b0:25c:8745:4a58 with SMTP id d9443c01a7336-297e53f933cmr112300665ad.3.1762792690825;
-        Mon, 10 Nov 2025 08:38:10 -0800 (PST)
+        bh=LZgTPWUg6fgnNgIWmgc5f2sdICO+ed5Q8W3qiS9yQCY=;
+        b=sbW+5dePBi/yE56w47JFcbIDEXZcaV8ODBlSBq1ejza6il2L2xhidBFu0FAhi1vgzc
+         7JHeRccilJk+Yy/FqxxnbmiJtmQtNm/vDWcc/uF00NT718/IPbolOmWYclKEkFFULCF/
+         +QO8QDshc25Lo/1yUtkcznjWMbCPPpEUjNP1GyzJFrgeX7MuU8bj/xIiYQ4lPk+aiiEZ
+         uewgDUDPHa79qE0yaA4wWUSZrYb4sU224drZMQj/9U8TQrIbKRmTM1aGtkW7aNlWx/P6
+         At0ca3ygMPbkGHeQVE/ELHrU1xJH+UuzUEERuZTAZdVnyw//tHPvfG6cOAVdvGrl5ZKy
+         llJw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/A5+If7qGnzBA/H/rZb6eDElvzFnSAyK1iy2PT40J8M5RvfPkrZiJDA99L5ggA54pNp3jpObi5A==@kvack.org
+X-Gm-Message-State: AOJu0YxiEtwWSXdB0hQ3xL/RdfTLBE1vUzUBvZSw7dE+p4JNjqKME2Vu
+	PQmg5qOzaBdNNgzNMbIwCuTlaBtHyXi8cEkf6RJu4fFWpn7f+LjmFaD6
+X-Gm-Gg: ASbGnctn4pgpOMKtVqdfYiAC8viRpcSSup7DbFI0UJ7axCuCXvCemsKanETIAOeRsgy
+	/szeHKGsO3mtj4l1wdV9m8YpwONU0sS6rnxaz+9l1zrruQaVcXU0hIonszAO3dBn9HX9ZiStDKg
+	XR80u7MaXkKC4U73CzgwZ1WVSQI3FUZiMpafO+Bh0ZssxEfmYRz5GLwFK16x3uqbvoGbQIXm+qj
+	EZ5jldlubCAOTofsLLpeplnUstD3X1preeVzzcqfP3rL+koWxVJtlsMR7I6H+fhpQ3Nyf1AwA/f
+	E46ur8ZaRsbuVwLyBSWoW9i6G+s3stALhURX6DVQhDVwRs7/a7/wS6zi0EecKXg/Tl1POadIAr8
+	6SuypzlKPRYPzArdYRHIWKnaYVqAvOUwV5i4/Z40ye0V2KjUROwv8ALW0dhqsvI3/93YvWVfYNw
+	8fAW8hsC7Z7hOidyTam4UUyg==
+X-Google-Smtp-Source: AGHT+IEM5Su6Hnp4ru+i7ZTcc23vkwmNQiSNdXgOr/mmO6C717GoWpmDkvA/Iw9C6gak0AA7kGqiVQ==
+X-Received: by 2002:a17:903:244a:b0:295:59ef:809e with SMTP id d9443c01a7336-297e564e380mr115227515ad.24.1762792694655;
+        Mon, 10 Nov 2025 08:38:14 -0800 (PST)
 Received: from localhost ([103.88.46.62])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341d0aee149sm8572006a91.1.2025.11.10.08.38.09
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b0c953d0a6sm12288816b3a.12.2025.11.10.08.38.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 08:38:10 -0800 (PST)
+        Mon, 10 Nov 2025 08:38:14 -0800 (PST)
 From: Jinchao Wang <wangjinchao600@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
@@ -164,22 +164,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Will Deacon <will@kernel.org>,
 	workflows@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v8 20/27] mm/ksw: add self-debug helpers
-Date: Tue, 11 Nov 2025 00:36:15 +0800
-Message-ID: <20251110163634.3686676-21-wangjinchao600@gmail.com>
+Subject: [PATCH v8 21/27] mm/ksw: add test module
+Date: Tue, 11 Nov 2025 00:36:16 +0800
+Message-ID: <20251110163634.3686676-22-wangjinchao600@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251110163634.3686676-1-wangjinchao600@gmail.com>
 References: <20251110163634.3686676-1-wangjinchao600@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 34tgioah657fwpexxjotobt3qt8g4x8b
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EA5CD180017
+X-Stat-Signature: ujh9e8fiuxfzckqrnxgimykyzx8bumxd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F1FD140012
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762792691-231253
-X-HE-Meta: U2FsdGVkX1/Qn5RnsvNPLtODiHN9sZqpJ6X6sW0Fqpmj2HWGuGlcztjZOCL5OriaFpTefrMBnpAvR+JryBhs+ijGJBX7FC+ary3CNFrZ4Oz4MpNxbbN9aN8DZN0AnUrtHX6etJ6L4p+V+Jljv5ggtjJ1qr9/FKWfdq6BOGVhxHgSf+fxQazZ0zN+EkEST7yi9Yx3NM//B/+4YYjeeel87hUn/SGjts/0KvxBkw+AUIQGg9UTUc/VMPRvL+c2bf8+4Wrhka1+U5n8YrGeBgynNUTsX0pWFYl/DrkiCJHT/REXi08W/VuBy2x9loBY/uNaYsEPJ8qAc1219xXyrQvHxMoS8IAW2XxTxy+fCj4s8z8JbopXhLiEnLXNwPlkUNEDi08U7G/5XOPBtxMRwBH6YuPvXV/U2hDc87LwqEiz0YwsB4KeJ3FdeLLHoly5bsyyru4lZx5hbZWXJvYxkK0HkusyRuikSRHfX1zMLOoa9QVhTfnQW7z1ltcw8/Ay1Y1iz9Pa4OUwkUKypFrlIW4ckIS+obdg5jRKPnkuJs6X6xsS0PPY9BnF4C05j9Ek78wH01oi0EmtagxeZ7wKZdc4CmANzcJKJfCMQKCrq429giAHDwA6HW4uGDMXf91XUSurjgT+2ocbhu95MPG+YEtsbKeDLSsvHGRRUiuNfgrT+sB+uhwQt+hz9HiDGAKMPozJ2f3x2KHQGw4eT39nHaxzwEN3++pn/yrgpgbPOZHL+eMzq9jLJtdW3SR1TJ2yQn7iYZg50tXU0+hTsnUwk1IpAn6w/qglD+hBEujQT8Ai+axDO9vjNi/Og3d6nooVr8oXd0Z7mfA2xBSJnyaEPzPBf30ba3069g/faxDU1Cje1YnsRJyQlXvFvEyMND6n34fDhZhH18kzRoh5hrI4rfnKbssyGtjwaUup0bHwaaQ5VW2G2I9WSbQIJ5DSvKXVa5ZpTW2y/vn07IcFPmxlNwq
- LZNlvoEV
- o6ptQnMYhOkOotBcl+nwr3ZcjfKD+8tyO2jotytUu1SZVZ13Ox4GeOYzMI/bUtGhz7WfHw/tyiq0MeIH8AH1zTpYGn7xDWGvsOwPuq9g3AH08SIaW7lvPEQ1RWVi27yrhKe25ZqKNUWs7Pq2ocl9gmr8KF3oFovD1AFhTvKClDcjt9ZIFakCT06Hzkh9LgUxKTzoU0r1+IRrDw00No23sOMO/VTktgQNvnmn7QRBl4G3Sr8NgWjklWpkOI5UgGoxIAj/FY6hmfh95hRJPxeVejdmmxEMIOn0J1M+34ypql5ubDO0SgGURUcOjTVYyF01kSzow2QjmgOzA8bbVC06f+iUwsDqvSYJnuIJb5yjQtOOhUmjqPuLwTthAIoZSyGh2eFbzC18u54SNmAS6iTAPOahpateZS381tdJShtDvVrikEHepCnG3olsT9pdQcQjZn4i5N6hgvZFen2cnWnzcgJdDBQEeTjWGvq8QYlcDKWnD5q4P+x8oXtCrmNREDhamB2cLByW+rfK2r90I9GK/lUwCRqmz75fRWl/KM3/5dnMRopjFSDPHjtUTgLTtagmdVNx7+7W3/HXcB/e1RGPhXVtu6w==
+X-HE-Tag: 1762792695-389161
+X-HE-Meta: U2FsdGVkX19CdsXTHu5oGVQ35eLP7jtrpvdkipRnPIzk+Vnym2O/ZdVGCueX5HHxW9vtrc+Nz8SYbpUa1lldDs5PV8IRnPZEezbd54Ztvd+RAwyjmKKdsruRD5rgSMYGjQzSn/WMQIGkD+/dDb6yF/oZc4k3YLWhxMIsE+fwICZznrJm4pjfs1y/UXNIOzuS2esNzCOU6d++vV3C+TpBSG1rrCAGkm+IkqOvfc5zejRGG61Vend0ROQbkGtoT8aVcik1StRfWpbamw3tNJ3FpulHArNwGli7NN5hyGz4mLqAiC3KnN5WZQwEsuvbN72i7scK3vnZlb7keHszrOVD6PHK3utDXjI+NxvaiZwsA+dtTDCC7pLvmD3CRw1muSajk5QY28LNlGgpVrl73IaCcOIXJYbpGmtS0bQMUk5zT1eTbypWRCgrWF9iQXqpYd67ohfVsKhrmSAfTvjRa9CqoJUW7mxRioIONmtnuoGWNL6UNyzPTMxqaA06AD0NhC34dpla19wbz55nUQRaAmz/WrAePevgzQmwQJ3bZCEdsuq1cgMPdSj8Bx02IR1Go+Vr1PRyKLTwqByJlBhD42LMfon+xrl/1vdgUdi+CxqSmJegqOF8XxbAGZKKMCdFcck0RD1gRQ3UUA1RnPyfDBs3trt9hgFrbovwBuNOdf5gMhMWo48USIX4zTnN+XVPvt1m6WslY2s56EtzQrYmr57oScCHXG22eC41j+wDHQ/8hvoK5jLR3QivNtKZhB60VtECcjHiJyvS+xsnNfr4X5OTsHF4Kt8zgWcV0SlLBzhHUSfTHAmV3BJWn77Onni9AW3sIN2gGlcMHyqCccNq7GJt5ZxFsExo8Eeyme7fUfcmj1LQJWrl1KaQoOdn/1GyQg4LJEtOanlvXNYAEX/MRBZlu5LKtFjNMbVxl9pgimwU7a1sMz7E5tedWimf8kHf8jMZ2KotwR44X3htWgE3YaC
+ xPdPg3mF
+ eA8kFjSInkKErUcROoQqna10yM63wXmhxzcyV+q2sn+ckxoXvdTI71BVeuiklaB1kTbY0NfMaBI1pGSZces/LU/d7ac5n5j3JBI8PbtWc8YjJX3kEaNLe4ZXzirCMGS+dZCMgUbMHxIpojZkT95eJiW8eb2DdJH+vcZ7hpCnZY6q2Fosiwu1WpMbN9IbEdTzNojDS2B9RZiTWOIL6Ao6+Kb87JyEq6UET+1tx+6Ja7SuwMTlN+GNQ8BOS/xuUnlVeFN6LnWDkqQZVum55aegDT7ED/7WR9VoLGvadQHz4I82TeJvC1lgyQNMkR4vkXGe5jih6XreDQIyYSoWeGjgt2bQi+hxbecM5XvIvWnzqv2+WTFmASCQnbPDql5YiXAccUxua7RjyfcROX2GkCoGmcecI6epgbEDz3HRtZ/yV2gePBhKPf0X3Q+G1BIEnCekEAQmuT34VRR51wTABs8H9PUVyruufmCHXv/eWIAdgkdYkzf61R3ioSyLOdFtj4sO3dhJZj+Bl4meOSWM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,72 +188,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide two debug helpers:
+Add a standalone test module for KStackWatch to validate functionality
+in controlled scenarios.
 
-- ksw_watch_show(): print the current watch target address and length.
-- ksw_watch_fire(): intentionally trigger the watchpoint immediately
-  by writing to the watched address, useful for testing HWBP behavior.
+The module exposes a simple interface via debugfs
+(/sys/kernel/debug/kstackwatch/test), allowing specific test cases to
+be triggered with commands such as:
+
+  echo test0 > /sys/kernel/debug/kstackwatch/test
+
+To ensure predictable behavior during testing, the module is built with
+optimizations disabled.
 
 Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+
+show addr of buf and watch_addr of test case
 ---
- include/linux/kstackwatch.h |  2 ++
- mm/kstackwatch/watch.c      | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+ include/linux/kstackwatch.h |   2 +
+ mm/kstackwatch/Kconfig      |  10 +++
+ mm/kstackwatch/Makefile     |   6 ++
+ mm/kstackwatch/kernel.c     |   5 ++
+ mm/kstackwatch/test.c       | 121 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 144 insertions(+)
+ create mode 100644 mm/kstackwatch/test.c
 
 diff --git a/include/linux/kstackwatch.h b/include/linux/kstackwatch.h
-index ce3882acc5dc..6daded932ba6 100644
+index 6daded932ba6..7711efe85240 100644
 --- a/include/linux/kstackwatch.h
 +++ b/include/linux/kstackwatch.h
-@@ -60,5 +60,7 @@ void ksw_watch_exit(void);
- int ksw_watch_get(struct ksw_watchpoint **out_wp);
- int ksw_watch_on(struct ksw_watchpoint *wp, ulong watch_addr, u16 watch_len);
- int ksw_watch_off(struct ksw_watchpoint *wp);
-+void ksw_watch_show(void);
-+void ksw_watch_fire(void);
+@@ -40,6 +40,8 @@ struct ksw_config {
  
- #endif /* _KSTACKWATCH_H */
-diff --git a/mm/kstackwatch/watch.c b/mm/kstackwatch/watch.c
-index c2aa912bf4c4..a298c31848a2 100644
---- a/mm/kstackwatch/watch.c
-+++ b/mm/kstackwatch/watch.c
-@@ -273,3 +273,37 @@ void ksw_watch_exit(void)
- {
- 	ksw_watch_free();
+ // singleton, only modified in kernel.c
+ const struct ksw_config *ksw_get_config(void);
++struct dentry *ksw_get_dbgdir(void);
++
+ 
+ /* stack management */
+ int ksw_stack_init(void);
+diff --git a/mm/kstackwatch/Kconfig b/mm/kstackwatch/Kconfig
+index 3c9385a15c33..343b492ddbd3 100644
+--- a/mm/kstackwatch/Kconfig
++++ b/mm/kstackwatch/Kconfig
+@@ -22,3 +22,13 @@ config KSTACKWATCH_PROFILING
+ 	  stopping. Useful for performance tuning, not for production use.
+ 
+ 	  If unsure, say N.
++
++config KSTACKWATCH_TEST
++	tristate "KStackWatch Test Module"
++	depends on KSTACKWATCH
++	help
++	  This module provides controlled stack corruption scenarios to verify
++	  the functionality of KStackWatch. It is useful for development and
++	  validation of KStackWatch mechanism.
++
++	  If unsure, say N.
+diff --git a/mm/kstackwatch/Makefile b/mm/kstackwatch/Makefile
+index c99c621eac02..a2c7cd647f69 100644
+--- a/mm/kstackwatch/Makefile
++++ b/mm/kstackwatch/Makefile
+@@ -1,2 +1,8 @@
+ obj-$(CONFIG_KSTACKWATCH)	+= kstackwatch.o
+ kstackwatch-y := kernel.o stack.o watch.o
++
++obj-$(CONFIG_KSTACKWATCH_TEST)	+= kstackwatch_test.o
++kstackwatch_test-y := test.o
++CFLAGS_test.o := -fno-inline \
++		-fno-optimize-sibling-calls \
++		-fno-pic -fno-pie -O0 -Og
+diff --git a/mm/kstackwatch/kernel.c b/mm/kstackwatch/kernel.c
+index a0e676e60692..b25cf6830b15 100644
+--- a/mm/kstackwatch/kernel.c
++++ b/mm/kstackwatch/kernel.c
+@@ -235,6 +235,11 @@ const struct ksw_config *ksw_get_config(void)
+ 	return ksw_config;
  }
-+
-+/* self debug function */
-+void ksw_watch_show(void)
+ 
++struct dentry *ksw_get_dbgdir(void)
 +{
-+	struct ksw_watchpoint *wp = current->ksw_ctx.wp;
++	return dbgfs_dir;
++}
 +
-+	if (!wp) {
-+		pr_info("nothing to show\n");
-+		return;
+ static int __init kstackwatch_init(void)
+ {
+ 	int ret = 0;
+diff --git a/mm/kstackwatch/test.c b/mm/kstackwatch/test.c
+new file mode 100644
+index 000000000000..2969564b1a00
+--- /dev/null
++++ b/mm/kstackwatch/test.c
+@@ -0,0 +1,121 @@
++// SPDX-License-Identifier: GPL-2.0
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/debugfs.h>
++#include <linux/delay.h>
++#include <linux/kthread.h>
++#include <linux/kstackwatch.h>
++#include <linux/list.h>
++#include <linux/module.h>
++#include <linux/prandom.h>
++#include <linux/printk.h>
++#include <linux/random.h>
++#include <linux/spinlock.h>
++#include <linux/string.h>
++#include <linux/uaccess.h>
++
++static struct dentry *test_file;
++
++#define BUFFER_SIZE 32
++
++static void test_watch_fire(void)
++{
++	u64 buffer[BUFFER_SIZE] = { 0 };
++
++	pr_info("entry of %s\n", __func__);
++	ksw_watch_show();
++	pr_info("buf: 0x%px\n", buffer);
++
++	ksw_watch_fire();
++
++	barrier_data(buffer);
++	pr_info("exit of %s\n", __func__);
++}
++
++static ssize_t test_dbgfs_write(struct file *file, const char __user *buffer,
++				size_t count, loff_t *pos)
++{
++	char cmd[256];
++	int test_num;
++
++	if (count >= sizeof(cmd))
++		return -EINVAL;
++
++	if (copy_from_user(cmd, buffer, count))
++		return -EFAULT;
++
++	cmd[count] = '\0';
++	strim(cmd);
++
++	pr_info("received command: %s\n", cmd);
++
++	if (sscanf(cmd, "test%d", &test_num) == 1) {
++		switch (test_num) {
++		case 0:
++			test_watch_fire();
++			break;
++		default:
++			pr_err("Unknown test number %d\n", test_num);
++			return -EINVAL;
++		}
++	} else {
++		pr_err("invalid command format. Use 'testN'.\n");
++		return -EINVAL;
 +	}
 +
-+	pr_info("watch target bp_addr: 0x%llx len:%llu\n", wp->attr.bp_addr,
-+		wp->attr.bp_len);
++	return count;
 +}
-+EXPORT_SYMBOL_GPL(ksw_watch_show);
 +
-+/* self debug function */
-+void ksw_watch_fire(void)
++static ssize_t test_dbgfs_read(struct file *file, char __user *buffer,
++			       size_t count, loff_t *ppos)
 +{
-+	struct ksw_watchpoint *wp;
-+	char *ptr;
++	static const char usage[] =
++		"KStackWatch Simplified Test Module\n"
++		"============ usage ===============\n"
++		"Usage:\n"
++		"echo test{i} > /sys/kernel/debug/kstackwatch/test\n"
++		" test0 - test watch fire\n";
 +
-+	wp = current->ksw_ctx.wp;
++	return simple_read_from_buffer(buffer, count, ppos, usage,
++				       strlen(usage));
++}
 +
-+	if (!wp) {
-+		pr_info("nothing to fire\n");
-+		return;
++static const struct file_operations test_dbgfs_fops = {
++	.owner = THIS_MODULE,
++	.read = test_dbgfs_read,
++	.write = test_dbgfs_write,
++	.llseek = noop_llseek,
++};
++
++static int __init kstackwatch_test_init(void)
++{
++	struct dentry *ksw_dir = ksw_get_dbgdir();
++
++	if (!ksw_dir) {
++		pr_err("kstackwatch must be loaded first\n");
++		return -ENODEV;
 +	}
 +
-+	ptr = (char *)wp->attr.bp_addr;
-+	pr_warn("watch triggered immediately\n");
-+	*ptr = 0x42; // This should trigger immediately for any bp_len
++	test_file = debugfs_create_file("test", 0600, ksw_dir, NULL,
++					&test_dbgfs_fops);
++	if (!test_file) {
++		pr_err("Failed to create debugfs test file\n");
++		return -ENOMEM;
++	}
++
++	pr_info("module loaded\n");
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(ksw_watch_fire);
++
++static void __exit kstackwatch_test_exit(void)
++{
++	debugfs_remove(test_file);
++	pr_info("module unloaded\n");
++}
++
++module_init(kstackwatch_test_init);
++module_exit(kstackwatch_test_exit);
++
++MODULE_AUTHOR("Jinchao Wang");
++MODULE_DESCRIPTION("KStackWatch Test Module");
++MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
