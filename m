@@ -4,140 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D468CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DBD7CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:48:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C51C8E000E; Mon, 10 Nov 2025 04:48:34 -0500 (EST)
+	id D79178E0012; Mon, 10 Nov 2025 04:48:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44ED58E0002; Mon, 10 Nov 2025 04:48:34 -0500 (EST)
+	id D295D8E0002; Mon, 10 Nov 2025 04:48:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EF988E000E; Mon, 10 Nov 2025 04:48:34 -0500 (EST)
+	id BF14F8E0012; Mon, 10 Nov 2025 04:48:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 13B6F8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:48:34 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABBF2C0CFB
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:48:33 +0000 (UTC)
-X-FDA: 84094222506.14.230605A
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5DEED180018
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:48:31 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A74FD8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:48:54 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A4181A0C3A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:48:54 +0000 (UTC)
+X-FDA: 84094223388.28.42A931E
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6AEAA180010
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:48:52 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NbIWz+Fx;
-	spf=pass (imf24.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=japo@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	dkim=pass header.d=suse.com header.s=google header.b="R+/B/+zb";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762768132; a=rsa-sha256;
+	cv=none;
+	b=IKTtUOV5C7OZ75ytwDHCrC9fy72u+qRTL7PNWrnY/+68/ag0kjTH3ww6iGjmwCTxhDthX3
+	Ujr/xVV4O5Fri1hI48+is/ewpdo4c6ZKaBpses01OwuXxu7crIi2KSFwV3ige+GXIDa8KA
+	hlvuBCREMgIWf9jNteVs574ca+MR4Mg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="R+/B/+zb";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762768111;
+	s=arc-20220608; t=1762768132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a98CfjmePTD+JuGbf9VtPKBSfCpi8DNU4q7pZUy5p+E=;
-	b=8k+0r0yvQfTIHyRJGaQsisEtHV/yO2vMtbZoHIm/ZarOlZAsl7fzOG0QUtSe8rkCe8jCxP
-	Uslj3pIyAtbbf6q+7hTwszfcuti9r9BTMETQ5fqIG6EZHVlifAcrnTmlkwHtsKwRb+NAIT
-	CjhimJbfM3ZF07egOE5Q48cea6QuKNQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=NbIWz+Fx;
-	spf=pass (imf24.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=japo@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762768111; a=rsa-sha256;
-	cv=none;
-	b=OPLSyvntwSslMK3VC+b0B3BfAioIjXmlK+GXBgQF3O7nBx6OnaRgsG6alVMsh3VtepOwmK
-	8OgRUwgdYL9X9TPISGrGflUxd9121HrR5IiicjpY7vfmhbg0GihlQxcOTT92NvW04Z44C2
-	oGcsxs3jBNiRHZ9vqxCZcNvh4qhDerQ=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A9JwIFK013673;
-	Mon, 10 Nov 2025 09:48:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=a98CfjmePTD+JuGbf9VtPKBSfCpi8D
-	NU4q7pZUy5p+E=; b=NbIWz+FxDn8g+YGwVLhcZ4kAjY4rVSZVypeTK/djcxgB3y
-	t7/KSQ1gaeq3siUv2+MPp8sqHlG2H9l0xGG6Z5ZJPkHRJjYijMfojEupoJ2Br7e6
-	NTZ64OiwKuWhKeBXi9LOpZKR53eE34niMUMBOKVx1zJQPbh5NKOFMtgD5SbWwNC+
-	GcK+byyZCWnDIFniIwqRBH7J7IgnbxUieVXlava9qo3jUCDw5oHnz4Sz1epOu3da
-	/PFu6qIpnMeokCXog0bNcWI6VOOV+asmPyJiR5RQPKi6OZK1oD9W9osvthYMexIZ
-	kK7Se1O9rdeB7I2x8DOgvT9Y5oNh1wbNG/auku4w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjnf3c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 09:48:26 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AA9kQuV029027;
-	Mon, 10 Nov 2025 09:48:25 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjnf39-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 09:48:25 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AA97D0F004748;
-	Mon, 10 Nov 2025 09:48:25 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aagjxn3as-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Nov 2025 09:48:24 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AA9mN0R25755958
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Nov 2025 09:48:23 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0EAF20043;
-	Mon, 10 Nov 2025 09:48:22 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8DE9320040;
-	Mon, 10 Nov 2025 09:48:22 +0000 (GMT)
-Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com (unknown [9.111.94.180])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 10 Nov 2025 09:48:22 +0000 (GMT)
-Date: Mon, 10 Nov 2025 10:48:21 +0100
-From: Jan Polensky <japo@linux.ibm.com>
-To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
-        catalin.marinas@arm.com
-Cc: akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, will@kernel.org
-Subject: Re: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging
- architectures
-Message-ID: <aRG05VS-IIxV2y_C@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
-References: <20251031170133.280742-1-catalin.marinas@arm.com>
- <20251109003613.1461433-1-japo@linux.ibm.com>
- <690ce196-58cb-4252-ab72-967e1e1574cf@gmail.com>
+	bh=jhIrfg+ZeGmHHXgRYjIXkWVaO+GMicaDEEBop0R1M78=;
+	b=K8zaOcNnudJuZ/Pk2AJoBzOUqKhFiOabfRcEFfRBAGAX39UyJUmJuWcE/5LINYvRtrtPiC
+	Z9rCWmEVwZ8fL25qQop8hXediLfvW5DVw5plpmA1sxCI7fCCR3WjjnVQGtmXV26zkzad6x
+	DoITrWW6dyzmZ4YRaRGFzf5ihgbpbRo=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64166a57f3bso1936944a12.1
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:48:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762768131; x=1763372931; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jhIrfg+ZeGmHHXgRYjIXkWVaO+GMicaDEEBop0R1M78=;
+        b=R+/B/+zbxpTHXQheMksiLXBkFek2b14qZGVLmMMjDBsBVwGXyAs4s8tGEXB8NVh8mi
+         ZXQ2Q0FhKhAHJ5TBrMbhXWUNdsJPWXcWgGQrJ+8bsBCe5tioSpYP71TVDhYiRXOQPVa6
+         ETlmFteQKNl+FHZfoO/8k1K0WWgnFYhrddqLqA3aG98H8VHEzixhV03bPMGsRpxRly3q
+         +QSAAmKa4wjgQGVddViKmKqLgQfVOgVdTumi4xLaZCnezw/mIJFofEy4CSPzmd2JpSWL
+         3yO1aRFsd8jCjtMfAkWbwnaeSue1/BVIuJQ2hSGI9hjDMRgIbuh5UARQ+XfjIsKgZ/og
+         kMWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762768131; x=1763372931;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jhIrfg+ZeGmHHXgRYjIXkWVaO+GMicaDEEBop0R1M78=;
+        b=jI/4aihpHzgIx5S+1SNEVGnhvGcpNNPwFymHfOdwUJBl1oKSh4uj7mCSihhG1UDMhg
+         0GDOZcLathbRCzfo7rrFoPrOWA5FUI8Qo5Urz+5EXd+dYwXakGTTi/kscXofgvBcx7jq
+         KbFFw1V2Bls+V5E97W98j0VlZwmgNATSp8qoaISpF8PlfbWZrFw27C2YOISS4KFW+nvp
+         STJx7aDYWxy3PwMiR3CEQhsMZwZzWtngIAaxQcIS5lMbu8bmfa+jqwqZG0fX4RT0DG20
+         DBJB5ibpf8RxMro9yW/pEr57Xwuuh7Tht2KVcq8zQPrdn835ie9B9nylfuaScg4rXJVi
+         43pg==
+X-Forwarded-Encrypted: i=1; AJvYcCWMWguN50wtZ8jXcOu5HJp1VgqsMeZrQdL6tKJW5KV/ldv+wTbrJedW+wR/mZDjLykREgbIbvh0Sw==@kvack.org
+X-Gm-Message-State: AOJu0YxWfOPt3nz7nz1lU82QJm86Hl1gLqSPmqGYeAL7qTrD2oxesvFv
+	3Z1OPMDAjVX2tH2nmZEy4n7p59ZjJdwTGCtTQffTpVJQcsjf+ZV6SfJyWAu4gtLZm1s=
+X-Gm-Gg: ASbGncstWXiw0/4JolsXs1r5o9z/FPjMuKhfocSaSM/qH/SsalOMRN4GKOHJnYC3FfE
+	rhfa0wQJCPHOWNdHhc/VxQvJdgh4VgE5fWSOcWkEyVeh2F/IfY68/lnjC9jGxmiQzpRRSmYMtjE
+	EXHHnMqCT6uf9/8YoAufW+FZQJDGiTJrCRk0uRmOTQHj1ovmtyE9z6IxTHDrsypDas5c8CVMQJz
+	unl7UgBYkiuiuzmC0DuwbmmpvpL8HaWt3FgLxWLntV1avHx6x0m8tWhRR6+64yxkJ/uDQGJwsfL
+	cy/RU61vNIKOKVQpNmMFUcrU+GbYYT5fmXynum4sEmP6LLrp8vLjzzyKy2q43s1g4obbmXfQXXi
+	F+rJY/YZbLLOJ3ZocFxwNzA5nnkuIT282/IeS7AZIRgSNz+ElqVNKpiNyrGgBxG0MJ3olGsGcp/
+	T3P99qsrd6t5xlSnR2TyBSzBTS
+X-Google-Smtp-Source: AGHT+IFxQkylFq2Crr8V5DsL5/o3I3bsVnjZJeM/h5I99Cls23cajzpMg5CawHlhDUEoe8P5BasDOg==
+X-Received: by 2002:a05:6402:50cf:b0:640:da69:334c with SMTP id 4fb4d7f45d1cf-6415e80fc71mr5848770a12.35.1762768130923;
+        Mon, 10 Nov 2025 01:48:50 -0800 (PST)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f813eb6sm10864916a12.14.2025.11.10.01.48.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 01:48:50 -0800 (PST)
+Date: Mon, 10 Nov 2025 10:48:49 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2 23/23] bpf: selftests: PSI struct ops test
+Message-ID: <aRG1AX0tQjAJU6lT@tiehlicka>
+References: <20251027232206.473085-1-roman.gushchin@linux.dev>
+ <20251027232206.473085-13-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <690ce196-58cb-4252-ab72-967e1e1574cf@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TjX7AmV5bBkDSJblXm1e_Oldw9yNMTAS
-X-Proofpoint-ORIG-GUID: tOlnJNKqKiBpAi3dzDJ9nNv5_lNfPWyX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5OSBTYWx0ZWRfX202bi/KWpMN4
- lEZVD3vrScGWetcEbpDI0EeawZ6wGN3cBoRTHHg+y6U33yRQUvrgwOulhmDxHfM4JQBIi5ZG/Ow
- lFb8Bg2uPBwIv49KrLI0dQIH8fvNBrYOkMAJjGfIv+uwvDCrD3KPzPTBhLyKwDq6wCdjozgPnFl
- VIcQuTH7Co3d23dxAcfb0z5blGkeIlmKOTxmKYgWHaWLxBDBktE1cHu2FS9ZnYEWQQ6W9idjYVV
- 8sggU+jDiXohL6+DvF80k58U8mOmGtBCerWY0OCt/yk+Cg9WHNoo2i+j8rUKlT8yHnc/XKACvtO
- Zyqoux+rq5ckj15lEtM2Vgkf6jM35wJyU7akwda27XYWGTPjuALSNWRYJDUXYz5a2gLLA510tdu
- Yn667JfsSwrr+uT+MGwpsyRz0c8Bow==
-X-Authority-Analysis: v=2.4 cv=V6xwEOni c=1 sm=1 tr=0 ts=6911b4ea cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8 a=VnNF1IyMAAAA:8 a=x1nD6dm_iKPnSlzVoXgA:9
- a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-10_04,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
- suspectscore=0 priorityscore=1501 phishscore=0 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080099
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5DEED180018
-X-Stat-Signature: 3zyfbimfmuia43hgj7wfoi6twp9o5zd5
+In-Reply-To: <20251027232206.473085-13-roman.gushchin@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1762768111-109597
-X-HE-Meta: U2FsdGVkX190k2uYmsHStjQLORdyM8jv8S/Ncz11zepX4ZkxRjcDoSbcPd6K+c1n40hsFsi7osVaTdbTGnQ0FvMJNvEa3khYiNaw3EdrxAhM+mYyXWQxOUKeDg6VlUyNFjyaMrBwMYpFZ2SRiKstf5XiVe4cT+KTlBo14aclxIMZQbQsrUsq2l9pIHSedUNRgv1svym6dbf4TtP0GKrkN4i6/z3Ui04VWij1cWBJYu8FkC0P+5QKB3Rffz8ftNh2cuyuP8s7S8cYi9A7WuWNfeNjKK4AKkH/PjMzHEXxzJ6+4Dxgc7pxYtSS4Zr3y9s7NYWMccNsBqZfXuviCbPnFxNXsYOGaS0/Ty+MpDqTOANzctasngnpWKMDS2Qz97xXNKC0UItyK8bGVoVa1g/xhn1iPogPhJckLWhjq6ONv0krVEL59L72FGeZmUYtPxexvAgMgn9q6wycI93+EzFWpnJgZwO0T9GpRYl4kDfHDGe0U0BxHyauOE8RGEfYSFDB3LXLWsydVGrwuBjNxsLQ9OJqenhpNaXXLgrphL3ihNY1oQhKlvugiXPE5zjYAnRquKyo5iUY63t1hlryjCUyNcfaF1ywtkbWjFIbHOexCBMPQNeZTc+1XU0lCUGM+Csrl5YdKnH5HJDMdupMmSMVXHDB9ag+H7xdqHBLyfWhNSRyjeLeieHVgVQuMFMAWvT5uHk06pgPicoX7rRjKab78ZbFbojNxBV6LYCf5nKCLgsBM4Hl+mEZrEUxShF5zxtxvug9hzCgXRh20ovpRA4i3SK4Ftnqf2f/9ZOjZKTT+TZDOflod+axvVSDErVieiAHtGhLB3rnOThiIcbwHrkD17OkpI9Y6AFYiwUOMXKqglHv2Bx/KGnpwh2flJIMIFYS+D5pus4Bog3RD/v/YHjqCJUQqRhm5UE6CiAMCjuSv7+Be166M42AQiC9BNXGxAPh/XHaIZJZ77lfA6NVX8/
- TEXL8zPw
- fIDRLpdaqByMHsJhmo0RLCJ/qh3WdOxGffFK0VLnM8SPvkY3nsmT/FdtO1OyHhoCva0RiwCQwGTSMTtMPxrdD8YLUgiSDMtCrn0MdMgte0UAFPaU3pUIjhnbD5PJkttOSR9ccZy06k6/8RaGRXjNFtPD9mjQuIJhOEls0kW98RzLj3upD2Ro2/3ydiPBbPqhRYywPBR+XV95VrbeOSKGeCtweZ9R8gJ0BwbYP8ZCQ9W0INdlpPuopBvKRz5C6hMckGvEVkKBmpqk0tQ0NpfutWP7V30wWfTcjVW1hnF6nEfW03v//+HBVnbEu/Mehj4Yv6893e6lEB1XppYc/6rdmFbpH7WBvbHBicj0E05/tqjaza0K5fVxEaH8yhQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6AEAA180010
+X-Stat-Signature: em3663z49e1jsnfz9dk8uqbjk76ue6wj
+X-HE-Tag: 1762768132-829961
+X-HE-Meta: U2FsdGVkX1+U+IGF2NSQ7fINx7x0BY7UFgI9t8ym22jmHpy0zXi6LIRp8zDYG4BuuNgadeDMcG4oQCHrNIKjht+89WRU5XkuK23yAgbt5J1HrOs+x+JahR7e8Bq9NXaEIu2MVVizv3hoPbH3MJZKsDEjYKGEIk3FR9K4tKcuvMuclI7a+Gqr8l8xO4ga0mhtt7oHyFf6Tt+7huXj1XQOIStV8lQe0oSJBXvFq9K5AqnVtO2vQiOYsyeebD3OAsop92qXswIyAY00lPAIiJvbTM53bFRBmIdnBANg5LHmyGDScOVH3huOGUiRkIcKfGKunDTrEkcZlmWhjZ+Ry7KUSY7+6XRJKDTObj5QSDQO3qtNZJU9l6BUy+EBpEbeBq2Nu5Jd8byDQWOCeHbx1HikJFPkCbvQh5X3OujDwL2ZemXTvTEcAO/zH9hNagj/2U8BYud4PeEejwh27Hl8ktEyxdkHRKMbC+mF0Co+oMsk4X9rbBucQ4mLOHnvEgui6MKHcuqmGsOk8PCOpmFF1C7j1wAdsaiaHd8DM+JPrUWVYDS7qKDEiJgJqtRTeTIo3APpYjN2nFQ4/pJ1FuWGortwkn0BpbTmNWuvhdIYYC4HiguEpOqs0VzcTtZdfyBYGrLu9WcoDDQg+acGJDb5Zbuj40uc+0gubtLnpUgjtU7UqOUpilb1mP1jTftK9S4ssjdZWCoVt2PJoHNrji+v91+H+8YKQgt9NwQzeXPapVjmcdnJdF9zH968e0Wrf+nSQtI6RYIBqCZY3ojdm9yXy2EOyNXP0Zdo6/00RMc6VHLxrH0i5EqOwDKmGovEpVObmawcGyI6kvqx8TR1dX7f85XBpMMUd4WoWDAzHZ1xJNcSzb6pgiKDYzbkBnLVQ2UkmOmPIapqUTBXMw9vqBWrbMQivh8RRU/i79K2iQW0ZKrXZtIt1AxzidoMjtAfvamp3TbuDyAlUtJVpL0lKWTqxTw
+ v5M+Zuz9
+ nZTMa7fxSi6tYSiDUUhf5oApzmRR5z3pOadPskA1XdXw+IZktK1s13JIi7RsD22NBE3aHdlQYKuuruWoBtZGhPXEMrn4AccVVMr4OZhXxvCCV9EV3W8OSw7Ub/fqmDbgRq6/g5dFMnnOX8SEPc5LeTrcH4R/JSoEkT8pnECPzzy3jpd1rvy1Nlh2xe1wKsFVs+Pt9ptowo4Ll0H5kYsBUyRMvap0VmwA1234F0KjvwRVY4LrX0GJAjeLlb80X7TJFON2fyYtWzY4WYAQ5YrPZh7bnUwGFCgZuxMc8D3v2KGpxDbcDXXNwD5FPE/H9vdfENtw+22HZXEKZQTLJ8IKbii5M1yyin+EtKQRw5EwOOuA3vbiHIK6wTwGGUnIGshm0IiabYGypmgf2DDGRgew7OJVDFKsvSoOPkooA0nQALWX95LC/RwTNG5VIGZElH5k1G8QM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,127 +129,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 10:09:31AM +0100, David Hildenbrand (Red Hat) wrote:
-> On 09.11.25 01:36, Jan Polensky wrote:
-> > The previous change added __GFP_ZEROTAGS when allocating the huge zero
-> > folio to ensure tag initialization for arm64 with MTE enabled. However,
-> > on s390 this flag is unnecessary and triggers a regression
-> > (observed as a crash during repeated 'dnf makecache').
-> >
-> > Restrict the use of __GFP_ZEROTAGS to architectures that support
-> > hardware memory tagging (currently arm64 with MTE or KASAN HW tags).
-> > This avoids unintended side effects on other platforms.
-> >
-> > Fixes: 1579227fe0f0 ("mm/huge_memory: initialise the tags of the huge zero folio")
-> > Link: https://lore.kernel.org/r/20251031170133.280742-1-catalin.marinas@arm.com
-> > Signed-off-by: Jan Polensky <japo@linux.ibm.com>
-> > ---
-> >   mm/huge_memory.c | 9 +++++----
-> >   1 file changed, 5 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index aae283b00857..0c1794656d7a 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -209,14 +209,15 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >
-> >   static bool get_huge_zero_folio(void)
-> >   {
-> > +	gfp_t gfp = (GFP_TRANSHUGE | __GFP_ZERO) & ~__GFP_MOVABLE;
-> >   	struct folio *zero_folio;
-> >   retry:
-> >   	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
-> >   		return true;
-> > -
-> > -	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
-> > -				 ~__GFP_MOVABLE,
-> > -			HPAGE_PMD_ORDER);
-> > +#if IS_ENABLED(CONFIG_KASAN_HW_TAGS) || IS_ENABLED(CONFIG_ARM64_MTE)
-> > +	gfp |= __GFP_ZEROTAGS;
-> > +#endif
->
-> That looks like the wrong approach. If an architecture does not support
-> __GFP_ZEROTAGS it should not trigger anything. __GFP_ZEROTAGS should be ignored.
->
-> I think the problem is that post_alloc_hook() does
->
-> if (zero_tags) {
-> 	/* Initialize both memory and memory tags. */
-> 	for (i = 0; i != 1 << order; ++i)
-> 		tag_clear_highpage(page + i);
->
-> 	/* Take note that memory was initialized by the loop above. */
-> 	init = false;
-> }
->
-> And tag_clear_highpage() is a NOP on other architectures.
->
-> Gah.
->
-> I wonder if the following would work:
->
->
-> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> index 65db9349f9053..56b82e116cb79 100644
-> --- a/include/linux/gfp_types.h
-> +++ b/include/linux/gfp_types.h
-> @@ -47,7 +47,9 @@ enum {
->         ___GFP_HARDWALL_BIT,
->         ___GFP_THISNODE_BIT,
->         ___GFP_ACCOUNT_BIT,
-> +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
->         ___GFP_ZEROTAGS_BIT,
-> +#endif
->  #ifdef CONFIG_KASAN_HW_TAGS
->         ___GFP_SKIP_ZERO_BIT,
->         ___GFP_SKIP_KASAN_BIT,
-> @@ -85,7 +87,11 @@ enum {
->  #define ___GFP_HARDWALL                BIT(___GFP_HARDWALL_BIT)
->  #define ___GFP_THISNODE                BIT(___GFP_THISNODE_BIT)
->  #define ___GFP_ACCOUNT         BIT(___GFP_ACCOUNT_BIT)
-> +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
->  #define ___GFP_ZEROTAGS                BIT(___GFP_ZEROTAGS_BIT)
-> +#else
-> +#define ___GFP_ZEROTAGS                0
-> +#endif
->  #ifdef CONFIG_KASAN_HW_TAGS
->  #define ___GFP_SKIP_ZERO       BIT(___GFP_SKIP_ZERO_BIT)
->  #define ___GFP_SKIP_KASAN      BIT(___GFP_SKIP_KASAN_BIT)
->
->
-> Likely we'd have to make __HAVE_ARCH_TAG_CLEAR_HIGHPAGE a proper
-> kconfig option.
->
->
-> Then we could turn the default implementation of
-> tag_clear_highpage() into a BUILD_BUG.
->
-I'd like to suggest to keep the enum untouched and only use the second
-part of your suggestion.
-Which works by the way for our arch (s390).
+On Mon 27-10-25 16:22:06, Roman Gushchin wrote:
+> Add a PSI struct ops test.
+> 
+> The test creates a cgroup with two child sub-cgroups, sets up
+> memory.high for one of those and puts there a memory hungry
+> process (initially frozen).
+> 
+> Then it creates 2 PSI triggers from within a init() BPF callback and
+> attaches them to these cgroups.  Then it deletes the first cgroup,
+> creates another one and runs the memory hungry task. From the cgroup
+> creation callback the test is creating another trigger.
+> 
+> The memory hungry task is creating a high memory pressure in one
+> memory cgroup, which triggers a PSI event. The PSI BPF handler
+> declares a memcg oom in the corresponding cgroup. Finally the checks
+> that both handle_cgroup_free() and handle_psi_event() handlers were
+> executed, the correct process was killed and oom counters were
+> updated.
 
- include/linux/gfp_types.h | 4 ++++
- 1 file changed, 4 insertions(+)
+I might be just dense but what is behind that deleted cgroup
+(deleted_cgroup_id etc) dance?
 
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 65db9349f905..c12d8a601bb3 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -85,7 +85,11 @@ enum {
- #define ___GFP_HARDWALL        BIT(___GFP_HARDWALL_BIT)
- #define ___GFP_THISNODE        BIT(___GFP_THISNODE_BIT)
- #define ___GFP_ACCOUNT     BIT(___GFP_ACCOUNT_BIT)
-+#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
- #define ___GFP_ZEROTAGS        BIT(___GFP_ZEROTAGS_BIT)
-+#else
-+#define ___GFP_ZEROTAGS        0
-+#endif
- #ifdef CONFIG_KASAN_HW_TAGS
- #define ___GFP_SKIP_ZERO   BIT(___GFP_SKIP_ZERO_BIT)
- #define ___GFP_SKIP_KASAN  BIT(___GFP_SKIP_KASAN_BIT)
-
-This solution would be sufficient from my side, and I would appreciate a
-quick application if there are no objections.
-
-Thank you David.
+-- 
+Michal Hocko
+SUSE Labs
 
