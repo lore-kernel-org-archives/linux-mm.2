@@ -4,117 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D06CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78AEECCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:33:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57C7A8E001A; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
+	id CD8E38E000B; Mon, 10 Nov 2025 06:33:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52D308E0002; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
+	id C89EB8E0002; Mon, 10 Nov 2025 06:33:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4430F8E001A; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
+	id B9F828E000B; Mon, 10 Nov 2025 06:33:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 349278E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D775D160D1C
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:28:35 +0000 (UTC)
-X-FDA: 84094474590.15.3E8FFEA
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AF3FB4000A
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:28:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=W3rfcjHh;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762774114;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FC0E8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:33:49 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 31E2D1A0D31
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:33:49 +0000 (UTC)
+X-FDA: 84094487778.19.2BC3A47
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010044.outbound.protection.outlook.com [52.101.193.44])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 68A54140005
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:33:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=SHLSqNUz;
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 52.101.193.44 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762774426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=csQWI5jqus0ZWRL/iU5hav/pk5IdN2xcgvPAVhT7DnE=;
-	b=TJnZWPVrMveQwevGndPvBICJSsl1/Pm0ClIJWO3T+0yn5kZvuYORn7TNCnESwEceYcu5I+
-	WB40S2FNrcgizFAi9GQQDd3OHY2NCSdEwOqzcDFkFghGKsxRmQoq2LqkVw8tmWwalZ+CmC
-	3s1AsSOYQ06+95RdGlsIzNDmsjh1V8I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762774114; a=rsa-sha256;
-	cv=none;
-	b=46FQTGA8dMvis5Xc3489xaF2cR1kgRsB8uPqS6sagng6LD8MJdsMdeMt6GouSMvLTX9MN+
-	Ap923j2us+CqkXhC3SYdQazuvVY8pkUhliIFJI1LEfTiyxzTKPvVzcz6+sBWN8Ou63gFAc
-	KIetCkmvJQzhL4dyBaCpNo8yZXHZ0xk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=W3rfcjHh;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64074f01a6eso5293888a12.2
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:28:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762774112; x=1763378912; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=csQWI5jqus0ZWRL/iU5hav/pk5IdN2xcgvPAVhT7DnE=;
-        b=W3rfcjHhg8a3wzWhiiozrkGtF/ZH6h58KcStlILZiSZpcfgv0aE/6u6lsalDWZQ8KC
-         cVXouSEZcMUmI+mUwSiKYJmr3UN6tiGjzDHPFGdC/SGEou1t0LUqMnjoWnadUlzZIHde
-         y8W3eEyaiosCKHoGtcyXNVlnpcGAggV0/CKyWZ79n7Z7sPKDMPSmcC5/TPGeAu7ASXR0
-         TIZKADNNkZ5ERrWIjC5uMN4uykYaEfiEzUMAxKoUvLBcCKt+nhEtJoc6bo94RqHaLoZ9
-         CJfA0M1odcMgAFrjpIDpzGfMX7Wmos+zXG3bZydoqAFeFTiT9028f8r9o1ZQ6C573thn
-         ZPug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762774112; x=1763378912;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=csQWI5jqus0ZWRL/iU5hav/pk5IdN2xcgvPAVhT7DnE=;
-        b=LojVFh7zaEVeH7bKHhdH93J0KUcmNpjZNmJHdSeoXKPeKKCxtcl4wQW2D7bxoufgQa
-         DewHpb8/ndWBdQvIft5k1A3DG5vEG63pxC77l3wTtJoRrybfcoJ6JNJMZ7kAyYdk5u5d
-         wUAgZ/NCuhgFgWXm/SPJRIyhIbmhm4wD/wb7E/Ci9fjEJ8t/u6br2uOuSkNyH8xHNe3G
-         xFDjriSQKoe0a5FpUnNxHJasrf/cVp5MeMQ18RyJ08sj3bf8tFXW0b1XqGEBNDQMe7jV
-         AZ/SbvqUU6RWvtQZI5iUjqwnCt8HP4N3BFP0eplfQKwFSYgypey1/kn4UMTkQ4eWBCP1
-         N5Gg==
-X-Gm-Message-State: AOJu0YxPWLfWQ0KGTBa4qEcesiGn3pAVSZxEQmpr2jlCLrhrdFLPBY7l
-	DaN/Y93vx5RhKfawfxIGH3IQeDO3So40SCbvSm2RhW4fPsvgPX4Ha0UNUQLPONFrbeQ=
-X-Gm-Gg: ASbGncvAFvPiory+gNnJI7bSf0vpa0JZmnPMYQhF4n1wk+l4fctt0JqQDWbQLU7zwIw
-	VOOpGfJodhATxsRWfs21tnOAYOj1HTmxX3iZsH4/lD6mdKS4H/V8eUzI+2PsTJZCA1KjpzBBwyI
-	W0B9EqQfvJmf/9MC7ZD0eV/f18bkmAOSEn9XUfneTcmAZHp/FMeLuFmMv9YPt015ugHGjYG2o6P
-	V729MFAgXKrQIwDLXUxjhWw4BrVLR7lWYIBGQHDViUUATqyX8BwtWtf7ENVP449mDE3w6UAzsq/
-	mVLpYue3jEsZRxYfrTuV/xqLas4+DXXGazG3rQdD+Wys9fVUrCSSacwxPMsH+u8qEiZmqhzBIVG
-	GePj7XMzJP0uyml+cDRvRJumNImy2FyOxMiJxVD/9IZgG85K+E8f0Hh0Td+I5Crx2OJeXIVbVay
-	jz/hlXiKnPEh+1fcf8YAZpBpi5
-X-Google-Smtp-Source: AGHT+IGAJqQ0Kq7UeRNfTo+kG/hya+4ozhhHWlZnaOOqZGzl+HnP2llew3IXX1GgpwGtU4vmKHgoXw==
-X-Received: by 2002:a17:907:2d8d:b0:b40:b54d:e687 with SMTP id a640c23a62f3a-b72e055e508mr784475766b.47.1762774111807;
-        Mon, 10 Nov 2025 03:28:31 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf40768fsm1062473966b.23.2025.11.10.03.28.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 03:28:31 -0800 (PST)
-Date: Mon, 10 Nov 2025 12:28:25 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Leon Huang Fu <leon.huangfu@shopee.com>
-Cc: linux-mm@kvack.org, tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	joel.granados@kernel.org, jack@suse.cz, laoar.shao@gmail.com,
-	mclapinski@google.com, kyle.meyer@hpe.com, corbet@lwn.net,
-	lance.yang@linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
- on-demand stats flushing
-Message-ID: <aRHMWewcW41Vdzed@tiehlicka>
-References: <20251110101948.19277-1-leon.huangfu@shopee.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=t5w/ANerXOQHdNYV2b4/3czO7wHX1+QlP5USmGpuqec=;
+	b=36YHbn4HZ2VsuN1n4x0jsHA/bJKOwDInWUAI0wWECYwxAeyPxT397NxwJ5XFuo5f6kpIXj
+	M1qlYZcGpXLe+au49fMAH5SwAb3/76czhXStP1/75QzQcXRV0sRidQDdUnSH7HBkA4jR4o
+	uO1ldMAKelr23MszO+m/IN9+ZWmSkKE=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=SHLSqNUz;
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 52.101.193.44 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762774426; a=rsa-sha256;
+	cv=pass;
+	b=yeVlkVqiQQU6BLk/EWWDwa7z23X++hk+zNyEsDMPQpVcAIrzxv4lsCJwSdwpzQjiYSWtjO
+	UtA9757rsSC2JSPO7NR18IN5IAvyVcuwDkc6qW45hIxD1zXFX30sfIqgb/4tJx6k0CKB+b
+	McgVUJrxImR34v9LN7ELddf4onKUpGg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nZ+dzPa0fdcQfzlxPHKi0NzsBDRfdOSauRdV9MB8VEaPqkxbZQsLEG9BcRH3I0ouYNNUEhIClllnrCLF0xbeJNG1ccT9eMW7YyuJPHDkmm2FfZrZn5oJ39WfXzMczH2qnPAQm1euaN9rP+eDQOT4yMhwvP5AkuEKedCCQT2e9OETiMvZvrV3MhDijsPb2RIFArYvZ0qRilzY6IOHrY5t5DiOXt5Kx13M5PCaHPpAZsn8FdfrQaSEbZfuN3GyTXvasO6Va2CqMg3nZwipXu+3AQrXBxdHVxEP0oVRh3YxGE34FV8+7EXAfFMR5Kraf/VBiG23VX4Ab1CHsAWK9Bz3mA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t5w/ANerXOQHdNYV2b4/3czO7wHX1+QlP5USmGpuqec=;
+ b=XZPQxF8T8iedS0VM9RTsJyAvHUTl0L4jd4lKfiY7M7EOC+YIAdoA93jKS7ztbKXXPcwx2AIO87Tk6ReapnLpnMNusJ1KnrvQ2VNl+qd9HqSbLsCX0wWa+zj6jqsaInOnk0/km9AgN0+nJAq/BcPzlMph9di66wQ2dVMXxsrEsJZLDVsVpuvxPRMj4hAS8oCl5VnI59nFAlUi+W4NgK6O0ivkWXMtLcB1HbN9b78/52JaxgmvRnUfHw1/hSLZfUCLzqyKoxH8ZURpkewtvL96Sup44AzWMzpmkOTTayicL5GFmH0WMoR+syjsygsOfE3y7bMZxIxMD8+dEPMzadc5sg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t5w/ANerXOQHdNYV2b4/3czO7wHX1+QlP5USmGpuqec=;
+ b=SHLSqNUzgliyhDjbJvMr7cPbGsjrY8g7ny+zl/WISDHL8Uo2Xl+uxLP0FhlxMSzRVsVCZoFQBzmbwKnUqhtxs32zuytbilBOt1IHzXWYaxD0ziGy1SMNqp3WJTYkt+oOiUITksPShtJqFbSHQqxNNjxtl1+W3N0tBac2kGz9pwk=
+Received: from DS7PR05CA0077.namprd05.prod.outlook.com (2603:10b6:8:57::17) by
+ CH1PR12MB9694.namprd12.prod.outlook.com (2603:10b6:610:2af::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
+ 2025 11:33:41 +0000
+Received: from DS1PEPF00017099.namprd05.prod.outlook.com
+ (2603:10b6:8:57:cafe::28) by DS7PR05CA0077.outlook.office365.com
+ (2603:10b6:8:57::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.15 via Frontend Transport; Mon,
+ 10 Nov 2025 11:33:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS1PEPF00017099.mail.protection.outlook.com (10.167.18.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.13 via Frontend Transport; Mon, 10 Nov 2025 11:33:41 +0000
+Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 10 Nov
+ 2025 03:33:36 -0800
+From: Shivank Garg <shivankg@amd.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, Zach O'Keefe
+	<zokeefe@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <shivankg@amd.com>, Branden Moore
+	<Branden.Moore@amd.com>
+Subject: [PATCH 1/2] mm/khugepaged: do synchronous writeback for MADV_COLLAPSE
+Date: Mon, 10 Nov 2025 11:32:53 +0000
+Message-ID: <20251110113254.77822-1-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251110101948.19277-1-leon.huangfu@shopee.com>
-X-Stat-Signature: 7wbmmtqxf799w8khz8snzdu7s7owsrrh
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017099:EE_|CH1PR12MB9694:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5ab4f9c-8ce5-4f92-f5cb-08de204cfffc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?neWzWBjfL8GJbIKWGr1RmKTM5ELFFTwtsGF5MEkO7QKz/K6NA3UMllZ8zKXf?=
+ =?us-ascii?Q?UZ64RXRkDUf9CCmKC6mpfTfkYFOzLn8sv3aJnb4+wcH5lk87SO5F1+8WVnMO?=
+ =?us-ascii?Q?ZHLavHiKwYZl4NocDuSko9xrpbVF+s1BHpO+vlkDxilRAmgnSsPQqKa7Ix5o?=
+ =?us-ascii?Q?H7ENYnA8bNPsH6cA47zfnnlgdzkRV0NAeS4qFw/9SRTFEOpUQxjQTAsyiqj4?=
+ =?us-ascii?Q?LyJprAOkG36oEa8RC3IbBqwtxTps0X70hl98I+2aKOOlW97ayAAux3jItnQf?=
+ =?us-ascii?Q?SOt8E4dVgwdoslfqYbtqxGAUa7Vlf2VP615RWK8WdVONhOcg/bGTE04R9tv8?=
+ =?us-ascii?Q?FBbnwYd9rU9fWyxIE23M1BgS1I85XInHwaIyvF/pvkaVfQPCpps67h2m7T9O?=
+ =?us-ascii?Q?+2tSkuI7xPkzWUr3MwW5nHP4Bjv++kpVyE0GWm1Db6pnNy98gpYgXhWAYjgc?=
+ =?us-ascii?Q?KL/ZVRhGhf8dXSonBKOII/5eljXoON9JNzcAKhrT8VeNRGuyPGSr6iFvU0R3?=
+ =?us-ascii?Q?KTo3U4Balxik4j0cgTawe/hq/T9yGnttGL7S5l23ZgPsbsX/tTLTQovpzmTy?=
+ =?us-ascii?Q?hi9YBtDJ7KaHjijkgjctCEUoG47ZMM97/TM5IOgFv23QPNbcQ8fbxHDy0Pkf?=
+ =?us-ascii?Q?B4QEtOhkarnKElicJ12Qh/rwW/GFMIZQAvgdp5tASQlBbkp4GuEqWmo8qBCt?=
+ =?us-ascii?Q?virc+jCzmeKWhIPKIs0mQZM3oLs2Vbge8W3HWitRXTAbyliM+oa+TPVvDDX5?=
+ =?us-ascii?Q?h0/AhRReojANLEFGc6f8DHfhXdaUNGmIoLc66Q1dGQhvIt+dKEj4cJwFvDF6?=
+ =?us-ascii?Q?NgA+CoRQSSM6rReZJX+/lYZnotmG3+Tt3kh82WRN4RUjj+w9tayK28Q01u0W?=
+ =?us-ascii?Q?BXvXeshe4KP7viIxeU9j/mXvtoWrt5SlSYC40uQAsuDTwIguug0jfjihsZVH?=
+ =?us-ascii?Q?ku5Ko8PPWpEWXHQ1azxIw72Mk4c0foJ40WoeTGGLREVfpE0bNeiVFsCAZ0JM?=
+ =?us-ascii?Q?sAnMeuLzVaLkaT/VRYI0BYt30LsOfphocBI92+LOrldtePi/PjS2fvmGnoAp?=
+ =?us-ascii?Q?KP3qkzL7Ocfr46txs1HEujYpMJZdN778R4eaObbdNejzRNMV4MsJmeWhhaVf?=
+ =?us-ascii?Q?e5kuoPAIi9ewGPSJW10zTrYcRdjiuEmpqU8jcq+edpweiP9VJcxuGieXDBLl?=
+ =?us-ascii?Q?KXNJjb7oUaeDTuNTZC0XiehBd/yKzNO+qn07HcqNGjbOy02J/5O2OiL6e3i1?=
+ =?us-ascii?Q?zvI65rfX5YgtRiekL4kxrGN/4q9mUKBomYdGUOCZBb/5ApRNVccf77ZHnxzs?=
+ =?us-ascii?Q?qb5pGilWZmR12vtg0KvueWdzxfn0SPyjUYmhMfkkcA7MYjn7WBmYrhGq9YVg?=
+ =?us-ascii?Q?XVCSDRAj8gCVu36UK3GYKMG/Yz+drONbXpVJKvwusGI7zje+5AOnbKRtWnZC?=
+ =?us-ascii?Q?yTArrugp8WKsZT1P/8VwkAWvjlkQT2GfzzFo8Q4KND/CKVKW0dZNwq6eiGRT?=
+ =?us-ascii?Q?/BN6fF0qlBqhANt1JtxmSSdoN+uoXFeaKBrZ8T+X6W6lPtQi+dBC8MkUjmxS?=
+ =?us-ascii?Q?8OiknDySiHS/O2yrDNkY+NrebiylT9FwTysAf/Un?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 11:33:41.6773
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5ab4f9c-8ce5-4f92-f5cb-08de204cfffc
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00017099.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9694
+X-Rspamd-Queue-Id: 68A54140005
+X-Stat-Signature: ffqptak33iqgwnotg9tmju8enun6yge8
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF3FB4000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762774113-724724
-X-HE-Meta: U2FsdGVkX19OySbFnbUsvInCqusivFRxMjp7yA5Jlo41qio3wOyG+4XN+mLFx9QAQciQ0NVY7ZbObvyN/Jo+9oV+ny+c3biwLeMApiBKdwb+4D8DnclozZnvcTuaAs2U9JkWUXff/eUqm+ODkn+IZlSB1GntE2W8Ulb2CxjHEAeBWCz7ntZ8W+XkupakY97N/5fLr98HD1CZcyxUYY6rZ1WsqmoUjAU+7STUVg4hhuyZmOcDHY4JpAiX+26JbgHcjUMXYKMpjz2QpgdZHu3/KX7BEWDuL1lEFdD4d+uLt1dgkSKUulQbrf4rPFZFE4U9GWdr4OGBYmUhyMcAAPQoCtjMSAc+OGvLiIkBzv7ZPYEFfondJH1J+f+bNtlTR5tmw0gBLVp/c7s4rWJVIVi7t/ZKVmXnE9Zb0Omq4haxMPATUaFZ/H1neTasUrs79EO3gWq2lsMwOQpgayrpiWVvQu3KL67dyI72u7LONSBFmKh8Bhyw95pkueAFteyBefV3Tgrc1M3H/COEtAR39FKpTSCWCWn/mz4ArVnsGInJWlmKGGeL1X2H9JQM92ERTij5Vyz/nkE/IwUTmQ+Lp5DJ4rfrZcII90MKh5AoKAbZ31HjBdJ7ez3Oa/a4MMzt505+ySDSBrEq5csMvn9u+FFPd/Heg304OA4LVDr/2CD3bEzP3dA5zdU0s8AMfRgk9Pa8QedAClS+33JWvc93sSvIVW7Rv2TL4d1Ex/B2y4V+yo7iLAFzhxgFPGuEXVirMHtHnvVjucAhQnJv/IMjeEBQH/fb0iSyHx2EkIRcDFO5sVzT7S+0tvFpWDZYQiQjBKO6RgqaRUWkTVSrY3IWf9TCY8CImSKR/B2sbu6ACbUqVh0mwbLMpec7J0DhSq7zbBZtI3GaUq7Czs7e1td9I7cPc4TTNzjKIztI6fXjDBbFGol/Z3BVkCZexBeytR+doKCSPrYkxit5l34+flWdns2
- nMjb55JG
- oQXJZWRQoOgkTuPl9fJ/A7cfDIgBFti5RX2PapwjaUvRBouGn20nxR62XjOL42z/8Brp3HFJ9RluGEVQbeiDeos+NsG/mqd77Cf9AD1C/2g4z+OfrpLldjovaIAzdDinKkv8OgGc/nYZetthXOtDMTSSErYk4FSolbZktUo+WkohYJUsaKlZRkMbHOh9l9lF+ikNrt7AO/g09xXY1/A7FwV5mp8AEWL8Wro9qsp5whl0bRPj7fuObRfKSoI80NN3C0egaG6HahT0jxGVOLS5R1lzq96q5bmX82ppYQLGXtlEWrJmc4QA7320ej5zHOWNGAxzU1snEhVF98kWck0VLpuNAvj1NDnC2d7SKjSB/Z4FR7bbupTfzAkcqKH1yirtmQBPfc/mLvxyV2Kl0OjcWTdI+F1SsyUHjd9WcSNw1czs13MkRyjIQfQlUrSXqA5gCM/SX1T+lYyTm/gVlhTI+FJbF+lMq//vTHWc6qSS7lwq3YRyGc5390Jucv0DAWtPOksmiISA4Qw9PbyFQG2Xwl6S/rXZmQ5D2QktptmaUZk4Ncq3UgpqmWn/kqXCoydfwjOvXyt/Px4nkhVUpB14NfKh9scHL4s+9YvLOkXr2tbQSSTY=
+X-HE-Tag: 1762774426-897138
+X-HE-Meta: U2FsdGVkX193hb38jtX9tRqdvmCKxKXz1VdvoahyghFsuG+B9e/xWNlGPlu4HumMWUEGfJhh1/i8ohi06wDs7wp2h3y/FV1nqLIZVkFZOpcU08XvF+oEf+whnEIHZwS+fyvcuFyadu6ejVmL/UOmF+ndtiJqywFXoCDUcC+CGSSQkhwDHjANSnrSr8Kf2BL4lzdXWeo8VUbmbRlw2YOivEQwEXKvnus0MFHO5z4Jnx8xOAQPskxMHPy2hQ2xgHNl36T6WBJIAiOPUdS+0y/QfcIQXKMdHRXW82mp1h6zbmyU3waihV407qFHlsKT/8KZAsfISybKXG6yRO5DsyBia9PLV7QLfjnDyaWhQMVg5WqqgNpPHuIYNFx1ghGtmIUCKicIlIeAMEThS0Ahr1/6RP+iADQwP2N4DZFczKKVZjwuxUtLlCRljElpm87iUx1UpnDCdLjbegH28A1ZI8SJwJA9OVp86qE2VZ6TXBE0Keq1wpvDKzF8cVwOJrFudw/CkJldUJAKK0g6yOGx89pIrmQDNeWtvZfx3eJVdMyrayE6N0UEiVPBUVVuKvEYt9ph/AIZ7+D5FEvbtX2NnmsO5UOxwlndksIGZq7vqSvLrYE0J85CdH7cBYBCJXrR4Xzn5CaRYcMdsCp6JVO+xQQtnZbq4Zq/jQuTWzZU9WjULjhjRey/Zqaexm9hBCGn7xcKjyVu1lg4+Glje0sgZCBg8CHlmwL1Vv5hb1gyLG9173W8bNRoYYTiYOc5oZPJVzHRu3njJqCNcOPdHAwihmoiN1E5/gcA7FhGzi1g3j6HEUVK/y5OX0OsgcGJDHhuVIwzQBM/kLja3WKNxvwHCOhn2iYDWa++Old9Cl0NXTa1O6l0X2SoPKPoxtb8n9C77YV8IhvFKstIXX4g2PwA4Sazs0dHP/Yq8IEgB4+lh+YjGKkUx+ec69lOJbA1FISt+oAda+LFZ71GrV7VhCfvOtc
+ a3F9/zFn
+ Ot75B7Q4/IpnbIm9dGue3xhOQtx8oaDadx3TZzgq5zIzD9maLz9ozkvUo9n5iMUQLs21+bryvkObM2JktusbGgj7NTrdSsm12pDN8+htHn3yaTc01HYMI80PrL8jqDweKxL3/Q0txDwGYfj7fp05Jn1ydsjxYmvCF2A6MtJn1ci0wmo0nIB1CpIEutg800I2YNrtBjcsxQ3/Ad4ndrJR5sKnhQpbgWYXhpLE/7NVEDLxE+y2K2Q5Bj0ZeqSz9M4/LJTk/HtFGxTfftgq92Jkih74mWuuRorPqLbE9LCGjJFcfJw6fySA+Vd02/gEGhcUH4fkjDRD1G2o32u5YGZ78FnA8wTxXIvwCMHfbnjRAj+9eJJyaaiPhIFGD85lgLxXM4YMjw6v5R55/u+UOGlEZRPpABhGP+D38PmMJI1c2O3bJKPa1go+CYc/0NiCwbBaunP2sH4kFhTEFeyap1YM/fjbcELYhc3upgonMZv6rTkn5S3nX0qCU7AU2cgo08o0e41QYTG+aC+AIKejp4upP8qJKx4BtBpdc+P2IRx16LCGIqsH6zyvHTaSV6RbEgSZOKlZ0eihpHzUwm2I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,193 +176,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 10-11-25 18:19:48, Leon Huang Fu wrote:
-> Memory cgroup statistics are updated asynchronously with periodic
-> flushing to reduce overhead. The current implementation uses a flush
-> threshold calculated as MEMCG_CHARGE_BATCH * num_online_cpus() for
-> determining when to aggregate per-CPU memory cgroup statistics. On
-> systems with high core counts, this threshold can become very large
-> (e.g., 64 * 256 = 16,384 on a 256-core system), leading to stale
-> statistics when userspace reads memory.stat files.
-> 
-> This is particularly problematic for monitoring and management tools
-> that rely on reasonably fresh statistics, as they may observe data
-> that is thousands of updates out of date.
-> 
-> Introduce a new write-only file, memory.stat_refresh, that allows
-> userspace to explicitly trigger an immediate flush of memory statistics.
-> Writing any value to this file forces a synchronous flush via
-> __mem_cgroup_flush_stats(memcg, true) for the cgroup and all its
-> descendants, ensuring that subsequent reads of memory.stat and
-> memory.numa_stat reflect current data.
-> 
-> This approach follows the pattern established by /proc/sys/vm/stat_refresh
-> and memory.peak, where the written value is ignored, keeping the
-> interface simple and consistent with existing kernel APIs.
-> 
-> Usage example:
->   echo 1 > /sys/fs/cgroup/mygroup/memory.stat_refresh
->   cat /sys/fs/cgroup/mygroup/memory.stat
-> 
-> The feature is available in both cgroup v1 and v2 for consistency.
-> 
-> Signed-off-by: Leon Huang Fu <leon.huangfu@shopee.com>
+When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
+text sections), the pages may still be dirty from recent writes. The
+current code triggers an async flush via filemap_flush() and returns
+SCAN_FAIL, requiring userspace to retry the operation.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+This is problematic for userspace that wants to collapse text pages into
+THPs to reduce ITLB pressure. The first madvise() call always fails with
+EINVAL, and only subsequent calls succeed after writeback completes.
 
-> ---
-> v2 -> v3:
->   - Flush stats by memory.stat_refresh (per Michal)
->   - https://lore.kernel.org/linux-mm/20251105074917.94531-1-leon.huangfu@shopee.com/
-> 
-> v1 -> v2:
->   - Flush stats when write the file (per Michal).
->   - https://lore.kernel.org/linux-mm/20251104031908.77313-1-leon.huangfu@shopee.com/
-> 
->  Documentation/admin-guide/cgroup-v2.rst | 21 +++++++++++++++++--
->  mm/memcontrol-v1.c                      |  4 ++++
->  mm/memcontrol-v1.h                      |  2 ++
->  mm/memcontrol.c                         | 27 ++++++++++++++++++-------
->  4 files changed, 45 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-> index 3345961c30ac..ca079932f957 100644
-> --- a/Documentation/admin-guide/cgroup-v2.rst
-> +++ b/Documentation/admin-guide/cgroup-v2.rst
-> @@ -1337,7 +1337,7 @@ PAGE_SIZE multiple when read back.
->  	cgroup is within its effective low boundary, the cgroup's
->  	memory won't be reclaimed unless there is no reclaimable
->  	memory available in unprotected cgroups.
-> -	Above the effective low	boundary (or
-> +	Above the effective low	boundary (or
->  	effective min boundary if it is higher), pages are reclaimed
->  	proportionally to the overage, reducing reclaim pressure for
->  	smaller overages.
-> @@ -1785,6 +1785,23 @@ The following nested keys are defined.
->  		up if hugetlb usage is accounted for in memory.current (i.e.
->  		cgroup is mounted with the memory_hugetlb_accounting option).
-> 
-> +  memory.stat_refresh
-> +	A write-only file which exists on non-root cgroups.
-> +
-> +	Writing any value to this file forces an immediate flush of
-> +	memory statistics for this cgroup and its descendants. This
-> +	ensures subsequent reads of memory.stat and memory.numa_stat
-> +	reflect the most current data.
-> +
-> +	This is useful on high-core count systems where per-CPU caching
-> +	can lead to stale statistics, or when precise memory usage
-> +	information is needed for monitoring or debugging purposes.
-> +
-> +	Example::
-> +
-> +	  echo 1 > memory.stat_refresh
-> +	  cat memory.stat
-> +
->    memory.numa_stat
->  	A read-only nested-keyed file which exists on non-root cgroups.
-> 
-> @@ -2173,7 +2190,7 @@ of the two is enforced.
-> 
->  cgroup writeback requires explicit support from the underlying
->  filesystem.  Currently, cgroup writeback is implemented on ext2, ext4,
-> -btrfs, f2fs, and xfs.  On other filesystems, all writeback IOs are
-> +btrfs, f2fs, and xfs.  On other filesystems, all writeback IOs are
->  attributed to the root cgroup.
-> 
->  There are inherent differences in memory and writeback management
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index 6eed14bff742..c3eac9b1f1be 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -2041,6 +2041,10 @@ struct cftype mem_cgroup_legacy_files[] = {
->  		.name = "stat",
->  		.seq_show = memory_stat_show,
->  	},
-> +	{
-> +		.name = "stat_refresh",
-> +		.write = memory_stat_refresh_write,
-> +	},
->  	{
->  		.name = "force_empty",
->  		.write = mem_cgroup_force_empty_write,
-> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-> index 6358464bb416..a14d4d74c9aa 100644
-> --- a/mm/memcontrol-v1.h
-> +++ b/mm/memcontrol-v1.h
-> @@ -29,6 +29,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg);
->  unsigned long memcg_events(struct mem_cgroup *memcg, int event);
->  unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
->  int memory_stat_show(struct seq_file *m, void *v);
-> +ssize_t memory_stat_refresh_write(struct kernfs_open_file *of, char *buf,
-> +				  size_t nbytes, loff_t off);
-> 
->  void mem_cgroup_id_get_many(struct mem_cgroup *memcg, unsigned int n);
->  struct mem_cgroup *mem_cgroup_id_get_online(struct mem_cgroup *memcg);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index bfc986da3289..19ef4b971d8d 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -610,6 +610,15 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
->  	css_rstat_flush(&memcg->css);
->  }
-> 
-> +static void memcg_flush_stats(struct mem_cgroup *memcg, bool force)
-> +{
-> +	if (mem_cgroup_disabled())
-> +		return;
-> +
-> +	memcg = memcg ?: root_mem_cgroup;
-> +	__mem_cgroup_flush_stats(memcg, force);
-> +}
-> +
->  /*
->   * mem_cgroup_flush_stats - flush the stats of a memory cgroup subtree
->   * @memcg: root of the subtree to flush
-> @@ -621,13 +630,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
->   */
->  void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
->  {
-> -	if (mem_cgroup_disabled())
-> -		return;
-> -
-> -	if (!memcg)
-> -		memcg = root_mem_cgroup;
-> -
-> -	__mem_cgroup_flush_stats(memcg, false);
-> +	memcg_flush_stats(memcg, false);
->  }
-> 
->  void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg)
-> @@ -4530,6 +4533,12 @@ int memory_stat_show(struct seq_file *m, void *v)
->  	return 0;
->  }
-> 
-> +ssize_t memory_stat_refresh_write(struct kernfs_open_file *of, char *buf, size_t nbytes, loff_t off)
-> +{
-> +	memcg_flush_stats(mem_cgroup_from_css(of_css(of)), true);
-> +	return nbytes;
-> +}
-> +
->  #ifdef CONFIG_NUMA
->  static inline unsigned long lruvec_page_state_output(struct lruvec *lruvec,
->  						     int item)
-> @@ -4666,6 +4675,10 @@ static struct cftype memory_files[] = {
->  		.name = "stat",
->  		.seq_show = memory_stat_show,
->  	},
-> +	{
-> +		.name = "stat_refresh",
-> +		.write = memory_stat_refresh_write,
-> +	},
->  #ifdef CONFIG_NUMA
->  	{
->  		.name = "numa_stat",
-> --
-> 2.51.2
+For direct MADV_COLLAPSE calls (!cc->is_khugepaged), perform a synchronous
+writeback using filemap_write_and_wait_range() before scanning the folios.
+This ensures that folios are clean on the first attempt.
 
+Reported-by: Branden Moore <Branden.Moore@amd.com>
+Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
+Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+Applies cleanly on:
+6.18-rc5
+mm-stable:e9a6fb0bc
+
+
+ mm/khugepaged.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index abe54f0043c7..d08ed6eb9ce1 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -21,6 +21,7 @@
+ #include <linux/shmem_fs.h>
+ #include <linux/dax.h>
+ #include <linux/ksm.h>
++#include <linux/backing-dev.h>
+ 
+ #include <asm/tlb.h>
+ #include <asm/pgalloc.h>
+@@ -1845,6 +1846,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	struct page *dst;
+ 	struct folio *folio, *tmp, *new_folio;
+ 	pgoff_t index = 0, end = start + HPAGE_PMD_NR;
++	loff_t range_start, range_end;
+ 	LIST_HEAD(pagelist);
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
+ 	int nr_none = 0, result = SCAN_SUCCEED;
+@@ -1853,6 +1855,21 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+ 	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+ 
++	/*
++	 * For MADV_COLLAPSE on regular files, do a synchronous writeback
++	 * to ensure dirty folios are flushed before we attempt collapse.
++	 * This is a best-effort approach to avoid failing on the first
++	 * attempt when freshly-written executable text is still dirty.
++	 */
++	if (!is_shmem && cc && !cc->is_khugepaged && mapping_can_writeback(mapping)) {
++		range_start = (loff_t)start << PAGE_SHIFT;
++		range_end = ((loff_t)end << PAGE_SHIFT) - 1;
++		if (filemap_write_and_wait_range(mapping, range_start, range_end)) {
++			result = SCAN_FAIL;
++			goto out;
++		}
++	}
++
+ 	result = alloc_charge_folio(&new_folio, mm, cc);
+ 	if (result != SCAN_SUCCEED)
+ 		goto out;
+
+base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
 -- 
-Michal Hocko
-SUSE Labs
+2.43.0
+
 
