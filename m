@@ -4,114 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9689CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:39:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45CFDCCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:47:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1339E8E001C; Mon, 10 Nov 2025 09:39:44 -0500 (EST)
+	id 566D48E0023; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BC788E000D; Mon, 10 Nov 2025 09:39:44 -0500 (EST)
+	id 53DA48E000D; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9E508E001C; Mon, 10 Nov 2025 09:39:43 -0500 (EST)
+	id 453B08E0023; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D1C798E000D
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:39:43 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 561FC12AE63
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:39:43 +0000 (UTC)
-X-FDA: 84094956246.08.9F9496C
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3C96FC0012
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:39:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="fq/6bZr3";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf22.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E0968E000D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:47:52 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4288137EF9
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:47:51 +0000 (UTC)
+X-FDA: 84094976742.22.4E97F7C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DAF3340002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:47:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Av7Rfl7F;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762785581;
+	s=arc-20220608; t=1762786070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=52h3btDgfApCo4cTARjbeD/+n7ncTe762Z+6oMGl+44=;
-	b=IHJgpa76CUOuGYPoLsFQkdyS7EfODWPGs1vsTyPJoFuNJY54Z4m6ODE/gqjMvGHU+nAw8U
-	BJpBwS6rbX3g4LRueDGCYZRW408oPtXPbXmid3JtUHxiRYny3CysRPPO4hL7GPx3IcYgk0
-	3TtBJQDRF1dqkbXzNRbIVv6+S3EDTNA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762785581; a=rsa-sha256;
+	bh=uIeb35oP9Vs/R5h7VhglPZyEdkMXH/upLLEanGBOeTA=;
+	b=RIV7TvEVmgR8l676fW7aC3IAUe1yKxmXMrnA0EdS/a8ZjbU8QLwaRMBuHOSaGkKAY2G14c
+	SCgH+SYtXS//rZvvls6nFYbBustpzrRM3GqwC/BseV4N7HFr3bA80ZK7Pom+51NXteOYmD
+	fqnmFS+iFMBzDyNPljWtcDTRktqgkHg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762786070; a=rsa-sha256;
 	cv=none;
-	b=FjFVXbZOaUFXPzF+Fj5Kyd/ms0Xf8Wq5/Balz9zPSrgMQm1CwxjlfjoQrbnMY4722wVQy6
-	w6fcxGBykjd2Yv2d/DJuebehTpykTJjIBq5r09qWrV4CgaWMLUWDkX3OL/452/Ajt0Jqzx
-	NZTKD5tQGHVSW+z129lWNCAjxd00MpI=
+	b=t0nrTCMuw2Lc1uKJZOfeiT3Y5w/IfvxOiaXL7rqwbG1tHQY4bTwJgZ/uuAEEz9xC4u8glq
+	bb9gcXDd5jYAQJeRoKz0it8bsdj1VmnNIQKY8A2imqyXo9/TM8ejEAbz+POS7/VIkdgekc
+	TaSFVmzZuVqm7cXchRrvzRrculHbHTE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="fq/6bZr3";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf22.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1762785579;
-	bh=PmfHj5puT5EuJo5jMH3r8sbaCa9NbA7iIIBw3q5tS7U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fq/6bZr3AF2h2wkMNGSn1bXsocPuQEeBd+ezF2avzPXvHo/lvHsrcNC+tZbS8E5Iq
-	 xkJB4+am2a5IfxqIp+ehb9NPVKFSgvleVHdn4CivlgZRwnuPF9SnL8ajyR0NknfvP2
-	 s7xp9Kqk+2jipyZbRtQfHx9eyAwAhm/ABmTkeAkIjdOiTtc2+8qqtYFcn7QauIky0J
-	 qi2AkZfthvSdYWmtrRTHuQs5oTa836l4Rwoz4pKgCE7iGHMIdDFb3F2YXgGACOPt1d
-	 jxQdyUfGkeW7/htZh8Ig5e8reM+6vEQVZbJRkW4WM4vf5Ct5o9PibWgvFUQrFyq3hO
-	 0R67ZlTin9JNA==
-Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Av7Rfl7F;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762786068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uIeb35oP9Vs/R5h7VhglPZyEdkMXH/upLLEanGBOeTA=;
+	b=Av7Rfl7FzLqMYzwuLuWU+Cns8e2zdqv66+WHDAw4MzeWxtX7efipbRIHv5Qp5derHiCgrV
+	hqR5FX8cIvf5YgeSPu6ezKcbrwViWzxODtO/uzlvYuU7G3M4R3tvVpEaajPSvYVAD1ypgg
+	d18VIj2p7v/ra81YSWdO/PW7d1OyXb8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-b2a0058xO8GOujbU21T91g-1; Mon,
+ 10 Nov 2025 09:47:36 -0500
+X-MC-Unique: b2a0058xO8GOujbU21T91g-1
+X-Mimecast-MFC-AGG-ID: b2a0058xO8GOujbU21T91g_1762786050
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 17CAE17E0610;
-	Mon, 10 Nov 2025 15:39:38 +0100 (CET)
-Message-ID: <e19cdd3a-0d33-4c06-9c9a-7e9e2df51c4b@collabora.com>
-Date: Mon, 10 Nov 2025 15:39:37 +0100
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 49CC218002CB;
+	Mon, 10 Nov 2025 14:47:28 +0000 (UTC)
+Received: from fedora (unknown [10.44.33.158])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 787811800451;
+	Mon, 10 Nov 2025 14:47:08 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon, 10 Nov 2025 15:47:27 +0100 (CET)
+Date: Mon, 10 Nov 2025 15:47:06 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Dmitry Levin <ldv@strace.io>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Will Drewry <wad@chromium.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>,
+	James Morris <jamorris@linux.microsoft.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Adrian Reber <areber@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	tiozhang <tiozhang@didiglobal.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	YueHaibing <yuehaibing@huawei.com>,
+	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>,
+	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>,
+	Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>,
+	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	David Windsor <dwindsor@gmail.com>,
+	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Hans Liljestrand <ishkamiel@gmail.com>,
+	Penglei Jiang <superman.xpt@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [RFC PATCH 0/3] mt-exec: fix deadlock with ptrace_attach()
+Message-ID: <aRH66lGd-OT4O68C@redhat.com>
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <aRDL3HOB21pMVMWC@redhat.com>
+ <GV2PPF74270EBEE83C2CA09B945BC954FA3E4CEA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/13] drm/shmem-helper: Map huge pages in fault
- handlers
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Boris Brezillon <boris.brezillon@collabora.com>,
- Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Bagas Sanjaya
- <bagasdotme@gmail.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, kernel@collabora.com
-References: <20251015153018.43735-1-loic.molinari@collabora.com>
- <20251015153018.43735-4-loic.molinari@collabora.com>
- <aO_ZmA6yoqbzTKt9@casper.infradead.org>
- <f564735b-7cbd-486c-9dd4-a4555e73edde@collabora.com>
- <aPK4YwMmYTDsKHcL@casper.infradead.org>
-Content-Language: fr
-From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
-Organization: Collabora Ltd
-In-Reply-To: <aPK4YwMmYTDsKHcL@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yssnqmo8sh6ximdhh65bey5rxa3sogk7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PPF74270EBEE83C2CA09B945BC954FA3E4CEA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Stat-Signature: pgg66q4axgh1x8t7xxwi6i81ce69hrh9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3C96FC0012
+X-Rspamd-Queue-Id: DAF3340002
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1762785580-146729
-X-HE-Meta: U2FsdGVkX1+eBBm/nQt00F0voxRmo1HidYe19g0OiIh40XFxjIdAWCJG4qFqHfUT7diQCexNCKHvR9hPjUHgQocnPMLasRCpUSpTe7wDWfSE1zemX55qyf8lSORHtJSpbr2KeU9odjBCMTY6m1OONSeYW/WONSOAkBzq9Xcmp5MhhUFp0WeRXKMuXF6HFxqLP1Epr+SLwQ7v8FjKs4Wc8AuoqsJkUz6JAt70P0VtBUc8wCzPww61nBLmHXbDHxZNObvAAtYzBfd570Wm0qnY6i83SKHrl0xDh0zNq5OSgtHFU6VkpKyCu9z5Ca7eQATBP4KPjeoNm4NVQPZA18u4QYNHuVMat6ATvhVQbApkO/9WHrWyTCJ3j/MEZYiXxTP4ib831wB9RD0RYzh5qAKgmApkCHqhCjLReqx2WgHjL6XZ8GY88Sb/S5nD+HfmIa5C7zw/zSYQiVg9qty4V381V1gdVdXyzbsnaMVeg2b9bckn3O8meK+VkFQCdNoxi9szsjMtanJBGPHRSi0/AdNXGXsM57McAvKaC4gKnWEeL7V3QOfNAG0waC3bOir8MP5+ua9OLb3MLZFX3xg9cw28io1UOv+n8gNmlVQRkPzaOq4Kt2OhJGcM4URDwLksrA+Y30E8jn/IO+CwH3iMw40EPguKfO/zS3pYRfaVT68E7pTyeg9+p9Bnv18rl86tfdLa5sqpR6JiNcu5QgrGHCHOaWG2/kTxMvlOUniD9+ccEidwDWJ5EFQUK/6FfeyEJjzLEX+SJgq8+NCnq9TQhoLFb1lThooyblHPKRV7YwOecUhlZMUy2/NTnUdaaz7WAxO20kvmH6hTokKb2Xy7Ek6yOe+OYKxYay3BRMFQ1ol7VM5CwEGuP5WlY+kenNiqd+CCCExNodwh2TXxn0MLJ9sYhxTwCArX1raJH/ip2xdWXNR9HGedq7waXAVyToruSUaNfOboyrxB/+eBfPRED06
- oocxB5PD
- 7BY+1nubgICzyGFZo7WqDdlvt0ESkmO/6lcmPRBgh71kBRy0U0As+8OElRnjhws0eWfWGBALOB79qxb/IjoRRfgF75s80TirqNTif+FOX2BX4GELYeCKfyYGp17daXucIsYrFLHo6IhDOJS8V6hKAKbzEod7hkhHYv3wS8/usbF0NBf0tSuAI1i+nMx0+tOYWzInRS5U+FanVRneAuBoxgeHOESoi5hzGFMiKFPd37875Ekbm0bzNMOmNZ33v+3QQB0U2MJa2+nOfl8jFRXQuajzPU0cY6axCjl9FvxuOw9AGPvA+yvjlLgzDmEU1mK8EBOkNwI6lyQXFmwW8yF02Y5O4lS9zzjqsvJVuSKHKQV+pW3k8uF91JlBIqhMKQK86WzUJrFQySuHUVayfzGYx4gFn7w==
+X-HE-Tag: 1762786068-354441
+X-HE-Meta: U2FsdGVkX19BTO8JTAggMvGmkwZJ2tFELP6mX95Z7zStCCEMJQu0ROmY1xWqLxNl6LSyBb3VEQrnMY0GraUua21S3NZTFbwjoZbalNAia02Y/S4hPs/hM5cuSu8yDz5Erh1wjCYhTtwo7NSQboDFoMk1TBhLAzsZ2wmMSGlbzAVkfSkIuH7dTVgoS66BCig+7+MWd4Qf6MkkX+Vz34RXdn5j0FeCZ5Z8dvk1mb+MD+ctU33Y/EzuhWfH77CjzDjAQgNsNQtrYL3sSZXBahKcOf/gUNa6pPHC5p6+5KWGlGUJOBmvU+gdKjWz8br3BAQty5q+WB/P/iv9wll/QbAEL5P8fkQfHNZSI9pyz9qICflHrxIgINBGV/ZE3xsfPmIgnN36EAVyFQJlijhmIDzDUEP+YNW2iL1Ih+ZHb8VTHt883/uIX3G5BW4/zIEQ9l7jdOOlLkS6c+NgRV9zTEkdgEnvCMJRU7Cy+TkOzI7oMCrtYH69hEYpDYlY5oSWVL+bjUP8ZB9JZ3yNdI8tsysnlfc6PqelW+7egfDrwBUrImopzZi5XPWAC/ZhEzAFyHRFC/asrvtM/9Yj/fUETtoLhXbGAnEZu8Bfm7h0ftKHiPbvji+sTgnOmWGON8XO21d+yXQP/mQWZFK2H807gssP6cOR086vr1et4rQe7RYUdU2Z6qeTPyC1IWkZ5eSbCr1Ot7InjnauZVVBPy+t8eFB5JVBiL2AgWY4KYOrRX+TJdbSj4ZtsUUBWnNt3iPP/gn7jaiE/tIgsm0D6s9ihJUHZDU0BXd6vpbanw4i5kO6FSqA0vWHRlokArr+FHg7oHMEk748T/RfQcHR2M6x4dYJzSaiJmEAIORiIgJAiBYzaQJzpAKYK7Z672KPcNvMgxhQB3q6iXXrE9oVeKKPnrR1VEfyR0Fkb5/JxUjWlLrmYmFX7GuT4ywuY3qWN8lCenNAdDpu1sJzDL1gFyGuHWC
+ VxjkFYjF
+ YRaugquNPaiu8OiM+LyqVbzwZRkwoHx/tCD7wPlNmGvuBxAEfCUJoyw7CD+I7pMGuGto88QbcBXDMmX33phkFzH2pmS7Lb4zUsU73bJbgF/Fx+Ihvrl6gHyf9VvxG8g34xOqtTiyAlFJTGSKCMmvKrO517J2UMMmoKQ7Hmvelru0quehX2PdjzVPPq7TiQ6zvQjY3Xw4ndQZKJDJKclKPPjVni+MGeiAi49l4MsQEZ4KfrvSSzCJDPZJctzdeDUKHrI9mPyuibLSAMiemWxOT3am2owNdXTAiRITo+/BaaoeAi87hNmVPFw40PzRbUToIhWChmm2EafxAV5uXWO8QxMkGsWptTMx0a2rfreqc8Wc2b6+AUuiZHGNt0Lf8kqwdZJ2HsU7eo3fRoxO/N4S0x7riS3K5Ww8dnBwnB9wpRj3jh54+OYNI3v91Hw7dwKo0CkgrKaqR73X7MnmzTRNyqHqUo+AAMBfVJBpSeV22zCZvukINsQ2nGJX3HPMHkbD/y+DA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,64 +156,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+Hi Bernd,
 
-On 17/10/2025 23:42, Matthew Wilcox wrote:
-> On Thu, Oct 16, 2025 at 01:17:07PM +0200, Loïc Molinari wrote:
->>> It looks to me like we have an opportunity to do better here by
->>> adding a vmf_insert_pfns() interface.  I don't think we should delay
->>> your patch series to add it, but let's not forget to do that; it can
->>> have very good performnce effects on ARM to use contptes.
->>
->> Agreed. I initially wanted to provide such an interface based on set_ptes()
->> to benefit from arm64 contptes but thought it'd better be a distinct patch
->> series.
-> 
-> Agreed.
-> 
->>>
->>>> @@ -617,8 +645,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
->>> [...]
->>>> -		ret = vmf_insert_pfn(vma, vmf->address, page_to_pfn(page));
->>>> +	if (drm_gem_shmem_map_pmd(vmf, vmf->address, pages[page_offset])) {
->>>> +		ret = VM_FAULT_NOPAGE;
->>>> +		goto out;
->>>>    	}
->>>
->>> Does this actually work?
->>
->> Yes, it does. Huge pages are successfully mapped from both map_pages and
->> fault handlers. Anything wrong with it?
-> 
-> No, I just wasn't sure that this would work correctly.
-> 
->> There seems to be an another issue thought. There are failures [1], all
->> looking like that one [2]. I think it's because map_pages is called with the
->> RCU read lock taken and the DRM GEM map_pages handler must lock the GEM
->> object before accessing pages with dma_resv_lock(). The locking doc says:
->> "If it's not possible to reach a page without blocking, filesystem should
->> skip it.". Unlocking the RCU read lock in the handler seems wrong and doing
->> without a map_pages implementation would be unfortunate. What would you
->> recommend here?
-> 
-> I'm not familiar with GEM locking, so let me describe briefly how
-> pagecache locking works.
-> 
-> Calling mmap bumps the refcount on the inode.  That keeps the inode
-> around while the page fault handler runs.  For each folio, we
-> get a refcount on it, then we trylock it.  Then we map each page in the
-> folio.
-> 
-> So maybe you can trylock the GEM object?  It isn't clear to me whether
-> you want finer grained locking than that.  If the trylock fails, no big
-> deal, you just fall through to the fault path (with the slightly more
-> heavy-weight locking that allows you to sleep).
+On 11/10, Bernd Edlinger wrote:
+>
+> When the debugger wants to attach the de_thread the debug-user access rights are
+> checked against the current user and additionally against the new user credentials.
+> This I did by quickly switching the user credenitals to the next user and back again,
+> under the cred_guard_mutex, which should make that safe.
 
-I proposed a series v5 using dma_resv_trylock(). This actually fails 
-later because the vmf_insert_pfn*() functions end up locking too. Not 
-sure how to fix that yet so I proposed a v6 with no fault-around path 
-and will get back to it (along with contptes) later.
+Let me repeat, I can't really comment this part, I don't know if it is
+actually safe. But the very fact your patch changes ->mm and ->cred of
+the execing task in ptrace_attach() makes me worry... At least I think
+you should update or remove this comment in begin_new_exec:
 
-Loïc
+	/*
+	 * cred_guard_mutex must be held at least to this point to prevent
+	 * ptrace_attach() from altering our determination of the task's
+	 * credentials; any time after this it may be unlocked.
+	 */
+	security_bprm_committed_creds(bprm);
+
+> So at this time I have only one request for you.
+> Could you please try out how the test case in my patch behaves with your fix?
+
+The new TEST(attach2) added by your patch fails as expected, see 3/3.
+
+   128  static long thread2_tid;
+   129  static void *thread2(void *arg)
+   130  {
+   131          thread2_tid = syscall(__NR_gettid);
+   132          sleep(2);
+   133          execlp("false", "false", NULL);
+   134          return NULL;
+   135  }
+   136
+   137  TEST(attach2)
+   138  {
+   139          int s, k, pid = fork();
+   140
+   141          if (!pid) {
+   142                  pthread_t pt;
+   143
+   144                  pthread_create(&pt, NULL, thread2, NULL);
+   145                  pthread_join(pt, NULL);
+   146                  return;
+   147          }
+   148
+   149          sleep(1);
+   150          k = ptrace(PTRACE_ATTACH, pid, 0L, 0L);
+   151          ASSERT_EQ(k, 0);
+   152          k = waitpid(-1, &s, 0);
+   153          ASSERT_EQ(k, pid);
+   154          ASSERT_EQ(WIFSTOPPED(s), 1);
+   155          ASSERT_EQ(WSTOPSIG(s), SIGSTOP);
+   156          k = ptrace(PTRACE_SETOPTIONS, pid, 0L, PTRACE_O_TRACEEXIT);
+   157          ASSERT_EQ(k, 0);
+   158          thread2_tid = ptrace(PTRACE_PEEKDATA, pid, &thread2_tid, 0L);
+   159          ASSERT_NE(thread2_tid, -1);
+   160          ASSERT_NE(thread2_tid, 0);
+   161          ASSERT_NE(thread2_tid, pid);
+   162          k = waitpid(-1, &s, WNOHANG);
+   163          ASSERT_EQ(k, 0);
+   164          sleep(2);
+   165          /* deadlock may happen here */
+   166          k = ptrace(PTRACE_ATTACH, thread2_tid, 0L, 0L);
+
+PTRACE_ATTACH fails.
+
+thread2() kills the old leader, takes it pid, execlp() succeeds.
+
+Oleg.
 
 
