@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF49CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 12:47:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC70CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 13:01:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5CC28E001C; Mon, 10 Nov 2025 07:47:54 -0500 (EST)
+	id CB0AA8E0006; Mon, 10 Nov 2025 08:01:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0CCA8E0002; Mon, 10 Nov 2025 07:47:54 -0500 (EST)
+	id C88688E0002; Mon, 10 Nov 2025 08:01:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFB9B8E001C; Mon, 10 Nov 2025 07:47:54 -0500 (EST)
+	id B78258E0006; Mon, 10 Nov 2025 08:01:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8F778E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 07:47:54 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A1D9E8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 08:01:27 -0500 (EST)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 400BA140A64
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:47:54 +0000 (UTC)
-X-FDA: 84094674468.07.554BE4E
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42DDEBBA9A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:01:27 +0000 (UTC)
+X-FDA: 84094708614.07.E65550D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B17FB20014
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 12:47:52 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IkU2Otl9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762778872; a=rsa-sha256;
-	cv=none;
-	b=XFoZENMV4OjI2uuyIJ/DvJkhuT+TgbF2pZD8GwDb7q5Ux3r9N6m0v3TRNZySMX/sksMKSD
-	ehWIE8depHTuwPTB6lPysILFAT1/ooL9IJpycLJKqZ/QHGqMxadEsibqaTBeJH/kd0fdNy
-	rHqAHtTb1+YYZ4gdjQCmfnIxm31Yi3A=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IkU2Otl9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 90DAF40006
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:01:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WBsr08XW;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762778872;
+	s=arc-20220608; t=1762779685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uhWDEahHH2dQRnTeY/t1nGCeUgFnz+bovzFSF7V2ocs=;
-	b=eYteun9bTcQVk4j9x1hmzawOM9loO24sFE4I37ZGFcyVNR1OzZgNMSKsVc3UDMlgN0ovwL
-	ym0kMiswp2pNh9aaZDE8/0jMcJWH9pMgxVNt6gk1JsypQi4rRiqI8ozbTEDw2rJ8muLfiy
-	CPItA45y6auSMM1Z8pzs34TlE/6T/S0=
+	bh=H1ETRJzdOxlQKSyAz+a76VzFR/24tozVfYIYvOyIgX0=;
+	b=U/rOVOTDUPHEHpjFPFqI+lqVdvwW0YQYn3qpMWUdAlDdJgp04i2SjCZdAVVi5oC3GAMmcf
+	Jk4hJoBOeBtlLT8eQe7L+mJk7B+GHKg8tpBs7RdAjbsfXBrHgKM+9UIkH8rEH+f++huN+W
+	VgCRHx8PRYc86T7bMADCa/Fszb/wTRA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WBsr08XW;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762779685; a=rsa-sha256;
+	cv=none;
+	b=I9/K9AS9Bn4+xD4gg0VTkryUqos9RtA2WzZigVepkBDd/YnBc0DZ+tviU5+EC4zfj0T0Vy
+	ScL87XPMrKddxI5FQ5ZWLIuXcfwMG+GVv3c2wjcHV753yvIdEY/ABT64fyaxTHZW6hORxs
+	RpHwM5Pjn9Eye8ZcHbjuaGRl/tuVBqs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D16F6014D;
-	Mon, 10 Nov 2025 12:47:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528B6C16AAE;
-	Mon, 10 Nov 2025 12:47:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EA5F2601A4;
+	Mon, 10 Nov 2025 13:01:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC7FC4CEFB;
+	Mon, 10 Nov 2025 13:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762778870;
-	bh=krQuZhwpzOYT8s7UHP2yOrtuhp6BF8s1XMfmG+rag9w=;
+	s=k20201202; t=1762779684;
+	bh=Nty6eYvSZQwOVNMjVt6MpJ2VRDmLEsf0ItJ+R2b2b5Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IkU2Otl92+NH6dS6BRxM3Pcwe5qEi0rO36rNDsE5dHY5pkl8emxeUFv5DBGqvn8m+
-	 huc6rMZRzf//W1QBka7gMF2VfdmLtp27tgCpcsM67jyG6LgnY1LYqBtBUOP7xbKoF4
-	 zbiKt1oAlYsXkoYlxMjROzPvk8bnqMUonRm+QHOV0gcrKvnhdPiCJNeX0MBxx+DssH
-	 Y2Frbw3m3Hs/dfpCZeLPel6eYxerTlM93oEv6pFrRKhsAqhA5qXK6p2rINmTh1FmZf
-	 KVtV7Rosq7FhkeR+hploLk3pK12+4sDNEwquB7tPTUXL7zFaRlM7on8PMD8r4CYLHO
-	 tjU0vnabCYe9g==
-Date: Mon, 10 Nov 2025 14:47:26 +0200
+	b=WBsr08XWCoMFNAwbMOQ0qNvF4Su6puJFwAVVqSGXeT6zPs3x84rtXd1S+NejmtuJx
+	 xZdr6ygbytRvjLLjSuil0yB1/WF1G2479mk8z0dDg11Wyp55cwJsF7pGl0DehEuhcZ
+	 WVy01lGJQu0UrlJOlsnE40nEMhyV2hN0PmRaLfMiIYzXqz837/kxUFMsbhOvrkv7iE
+	 unZy1naPkELeU5A3OWaTwOd54LEYSQj6e5v0JRS4ibLAAqLFQM73hnr4rGzDzaRVCZ
+	 6L8e3xlbp4/r2UWtdNwmuPzalQnsl2O8+BHfUBH3qZdlIJoyclPpp5lAfF79lgxG3M
+	 MXR0rv+rTTjZA==
+Date: Mon, 10 Nov 2025 15:00:59 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -94,23 +94,22 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v5 05/22] liveupdate: kho: when live update add KHO image
- during kexec load
-Message-ID: <aRHe3syRvOrCYC9u@kernel.org>
+Subject: Re: [PATCH v5 02/22] liveupdate: luo_core: integrate with KHO
+Message-ID: <aRHiCxoJnEGmj17q@kernel.org>
 References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-6-pasha.tatashin@soleen.com>
+ <20251107210526.257742-3-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251107210526.257742-6-pasha.tatashin@soleen.com>
+In-Reply-To: <20251107210526.257742-3-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 90DAF40006
+X-Stat-Signature: 8ryqirnpf8qwm8gc1ijz3mcw9mtc9ey3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B17FB20014
-X-Stat-Signature: quiez3sfm8jeck4aofskqadg8gujhxm7
-X-HE-Tag: 1762778872-508040
-X-HE-Meta: U2FsdGVkX1/l0MG0W2rSUbXjEDLFTQnnhrqHUoQoFdT4xGmIvdZbqF6OQbU3/a8VgyjS56DKFJw4kXmgErk+X220mr4W9I/30hHXvbsNTTaBQl1Ug/w+lFi8Jf35Zpq9kjhdNzsLKlji8/kC7lYrfTCqYlaV6I8P8gsr6yxAsgYqRFiYSLzGXHCo2EKI5YHyM7MLbaXcz0GmBuA06Qy6ax2Xqg2CZoksJXep4mrH34gHUmRk0CIqg/qMxKs9vF0yHWtfx4dyKJKC2keh1b2RMbmh0Clp3wRykgS9lR2wcTelEXKzi/b0K0sgVauT0he/jTZrBbvrBYYsB8C76N3ROxEtRbHjOVc4IGrRVyuhgOLeIbwcNyNGqGVHevqZB3lNECCXMlYmJuBVwTkJsRBgRryFZOJVdyVLHcfx6ZR2Mtn0a2KdX2pHK7WGYDxWO6RDWSasZ874de8LP7tJ+AyiYa/ztX6qNaozFXLBq1tE6MWSDyVPrWwfTGm8QDLKyxBI/cl4arhS7Wki4uFP8mWXUYYaDFRr007bW+7sIowcr+Jx5L0Mhr+j3/9PD8aIs4sKeqV0ry1nySDO/ZOLvPfvexQOX4AocPVB13whj4+v8UfqaSQTxT3PD0V7PZQi8sUO9HuHb0y2BTkadONWfJMLKqyWgkHhfCCBONiDZKM/kYYJqCwVbiwcqmPGWnta7sSaVZDgBjfjz/qgx6Bf+DUsmuxhsURkKqnEOnbS68WOhoHEpzZuGb6cwhljuVndeL8tWDZN9VF+OQeZKZIFNPsQbf6y5G2qVqua1GGsAyVRGM0hHGkTRjOe8X43+a6PP0wG46qOzoOKQ9U9hJDYH3LHZnYklFbRtj2Zx/RfDDVgS7BFyV1ma8QNQqKl2Q7tgJXRaTcj05C7v+5MFZUCDYE4L1g+6IYyewYgYPAELJeYpa4lhceCjZhzgNdAdtw99mVt3B6zkaHRDuGa6c2bIm1
- jGhzr4Om
- f5cAlqSUcl7DQpFuvNLBzU+OaFnQrDM0xhSoUd5AL7SYLHqQX/ZQtQt8fxhtb4CmHZxAapxHRXDk4aWKfCdnJBwjxQBN01DsDLeg7w0dJoD+PlT6cylHB3lOf7f1lygqTJbK3r2cJYcXEoFKrdzLJs1DtdUc3IhibtrYEpOCbL8VhfIRw5TZ9w+IYl76fTmU6ExtnuR/+vXcJLPn+i2TOhqJ395qCIoU55OxVpfSX/waZjnBxHPGebJkH4DG44HV7k8kodkdZ93q9NiKkl3XEmX3g/XV+jqrTA0vuoeUbjnXoQy/YfM0/Uj2nDpGQ6goX6ne+vRtGbj0nWCfbqAkrltfjuqipstzY7FXEsYeoDEouJ5Z09VveQlhZjSvaJI6yEZWvnWQfbMw3uXUdUyvuVCJXEUEA9Ie5qXzuCU4v7xDATETe3FzeCM1fVLBjGGXAYMSebf/aaUrC+ow=
+X-HE-Tag: 1762779685-737583
+X-HE-Meta: U2FsdGVkX1/XSc48GFESzlv3G4cKVV1fpBTHt1Su1rRDk+mhvrSl4LLB3Cp4syaT7BkOZCWwlLGC0urXKRIM2F4Q/AbU8y1BUOwn1BqMQx3iJ3NbcFKVmoXxmTR0MRMXWapvHU8qhoLmEHKq8kjVtFdCqKrcfZKhBM4pL2hjv1Ml+MECvNDuMRWCsOVpxS6Zn4L41TMWaPCCyi+6UTl7buzDDq0cS+HvSdvnHDwrWAhn5A3IZDTx68JOUT4xJhs2W67Gtr+4CoNpPATqpYccRBxVV/x3OCFe93GFwOGfJNa33ZeRMDAkhU7k1lwnf/baPG/ccUfiXKptEW+8ydfXIN9b6HpkFGEOZtErzKpuqxbD87MQBd4ojH6qExq5IBjP+yk2s/WbvguWRw96tiSPcbydhl1vFMXJ1D9IO+w94R+JV1uxxFumWXvphCvPDBUEWC9egREOwj5fTQDBIaNtt+S2l8W7S7koAEeiMoGeExA4+SEUrJWBKUcMr8EnDQFrEDG3sVdt2TB2LOhM0Z5k4up02uDSxZyRIMHpX/v5kOgTiK7u9fgPtMBKYMXeOFr+W5yGy9xl2vXCeE27naHXh1hIi4xpZv9cmLrJrk/kRHMyH7ChfyjNiRrAgiY6Sr7EAX/hX+Eh01naxc94w266BzZqPT+Pm/VrcmVfRVvRooRDwNspTIL3IKTZyDQpnpDkHanl7O9EXwERVHiWP3U6DkiPjn6V+++pbZHSz+we7HL3ntECIc4MW82neY71bGGb+21R7DrUxOGHLqilVHK0xUyXEW1JhU7CYsgJtyWuMWObMazHHeqlaJHOQKxpSZDGXAGIlMGF8dFqMfvzowTADhjFI7PMIPoCt75QCkvsa1Oz2lN5dIo+Ly1queii3YSBovdJuMLc/7d6U98w1VwBByiUFsjaX3BlgZT274ZMx2LKGZLpGXqAxB98PEsZvKrXBSgq0j+7wWCK6snXwN+
+ sk6EhmOj
+ ILKikpMTUL3bjSlwUOtUlYXPeaztDRos5i3Krjjv8nXCwz9mUXwZM8Vm7+cjHoNfIkv4GYY3ebrPCPJ42+V4zy58CSg+qE2sFkJ0XWGPxfhNb9R3+94LCtH2nft1ywcAz29u/GZp9c/CJOn3J1Lk/iviqS1JY2cwaDu/vvdjoLAhVTJ9va12s4khjqA8mzUSGfJXsd2Jyk1cuXGlULoKWF7GOvdnkY6M3YgarrttOTzmnNo6AtxMFjr9euYFCj2brrxvZBtWxXCND2Ccq87tBnCzrA04PUJUywEnyFxKyNNiQ4PwNyuyXybOl/34MmnO185gMsRpCzS/tdChWu7XceiGiNHiYgPXMRRdYCbF/1lDV/sx6UCbyD618lFArkwa74f1f09VWQdKE3FePXCMp2Bgc6vPc4c/tutpVTzfvHN+Og1s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,41 +118,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 04:03:03PM -0500, Pasha Tatashin wrote:
-> In case KHO is driven from within kernel via live update, finalize will
-> always happen during reboot, so add the KHO image unconditionally.
+On Fri, Nov 07, 2025 at 04:03:00PM -0500, Pasha Tatashin wrote:
+> Integrate the LUO with the KHO framework to enable passing LUO state
+> across a kexec reboot.
+> 
+> When LUO is transitioned to a "prepared" state, it tells KHO to
+> finalize, so all memory segments that were added to KHO preservation
+> list are getting preserved. After "Prepared" state no new segments
+> can be preserved. If LUO is canceled, it also tells KHO to cancel the
+> serialization, and therefore, later LUO can go back into the prepared
+> state.
+> 
+> This patch introduces the following changes:
+> - During the KHO finalization phase allocate FDT blob.
+> - Populate this FDT with a LUO compatibility string ("luo-v1").
+> 
+> LUO now depends on `CONFIG_KEXEC_HANDOVER`. The core state transition
+> logic (`luo_do_*_calls`) remains unimplemented in this patch.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
->  kernel/liveupdate/kexec_handover.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 9f0913e101be..b54ca665e005 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -15,6 +15,7 @@
->  #include <linux/kexec_handover.h>
->  #include <linux/libfdt.h>
->  #include <linux/list.h>
-> +#include <linux/liveupdate.h>
->  #include <linux/memblock.h>
->  #include <linux/page-isolation.h>
->  #include <linux/vmalloc.h>
-> @@ -1489,7 +1490,7 @@ int kho_fill_kimage(struct kimage *image)
->  	int err = 0;
->  	struct kexec_buf scratch;
->  
-> -	if (!kho_out.finalized)
-> +	if (!kho_out.finalized && !liveupdate_enabled())
->  		return 0;
 
-This feels backwards, I don't think KHO should call liveupdate methods.
-  
->  	image->kho.fdt = virt_to_phys(kho_out.fdt);
-> -- 
-> 2.51.2.1041.gc1ab5b90ca-goog
-> 
+...
+
+> @@ -69,7 +197,22 @@ early_param("liveupdate", early_liveupdate_param);
+>   */
+>  int liveupdate_reboot(void)
+>  {
+> -	return 0;
+> +	int err;
+> +
+> +	if (!liveupdate_enabled())
+> +		return 0;
+> +
+> +	err = kho_finalize();
+
+kho_finalize() should be really called from kernel_kexec().
+
+We avoided it because of the concern that memory allocations that late in
+reboot could be an issue. But I looked at hibernate() and it does
+allocations on reboot->hibernate path, so adding kho_finalize() as the
+first step of kernel_kexec() seems fine.
+
+And if we prioritize stateless memory tracking in KHO, it won't be a
+concern at all.
+
+> +	if (err) {
+> +		pr_err("kho_finalize failed %d\n", err);
+> +		/*
+> +		 * kho_finalize() may return libfdt errors, to aboid passing to
+> +		 * userspace unknown errors, change this to EAGAIN.
+> +		 */
+> +		err = -EAGAIN;
+> +	}
+> +
+> +	return err;
+>  }
+>  
+>  /**
 
 -- 
 Sincerely yours,
