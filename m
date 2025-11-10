@@ -4,99 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 895FBCCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 21:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 898E3CCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 21:49:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1BEE8E0006; Mon, 10 Nov 2025 16:43:57 -0500 (EST)
+	id CEEA88E0008; Mon, 10 Nov 2025 16:49:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCCCD8E0002; Mon, 10 Nov 2025 16:43:57 -0500 (EST)
+	id CC61F8E0002; Mon, 10 Nov 2025 16:49:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABC7D8E0006; Mon, 10 Nov 2025 16:43:57 -0500 (EST)
+	id BDC548E0008; Mon, 10 Nov 2025 16:49:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 90C758E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:43:57 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1454F140270
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 21:43:57 +0000 (UTC)
-X-FDA: 84096025314.30.911F9F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7D557180004
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 21:43:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VTB/W/EN";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762811035; a=rsa-sha256;
-	cv=none;
-	b=cN+2q1dacwiaLqBoOmVxTnLv77vdTnwglCAIUqBsh7xknbvJE1iFln3HgqNHkBj8eDmHea
-	zXugACbIKniD5OYao/sTFgOUYkMb3aUPwrhGf2gVzIlJEgDL9XsQez+6L923vc9vgfog0c
-	w/+IUuyFJ1+0CztEMgcXm1r4kwDuH4M=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VTB/W/EN";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A5E198E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 16:49:43 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4FE885835D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 21:49:43 +0000 (UTC)
+X-FDA: 84096039846.18.20A313D
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2F3351C0007
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 21:49:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="IrYkqZ/o";
+	spf=pass (imf18.hostedemail.com: domain of gorcunov@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=gorcunov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762811035;
+	s=arc-20220608; t=1762811381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FdIdV93QtZNivTpbNvC3FQ7U3j2XinAa3RaCvqPea9s=;
-	b=k5wW2oXzJd4+jPRCmQrzsz2KOyS5UkUI2HftgwdIVDH2j9EGL/79QM5XLsjbux5lZm+gd6
-	zYgxerge99MMWMtFynNNSM1GQY5ovue7K8gmpxn8HeqYbtn/fye//+2g89KPH8DOARcgz9
-	zLH4udJUnzN6lHwcJBSSj/VjAJ9WDMc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C9335601CD;
-	Mon, 10 Nov 2025 21:43:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC532C116B1;
-	Mon, 10 Nov 2025 21:43:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762811034;
-	bh=qLsh4xwJFcm7ZBPTELrv5HlI3dadasyJWn9EEI6vM8Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VTB/W/ENaZyWqwN3+1JS39b2RHZU0mVzd+iX5zXnJ6OoHc80SN0wrgaz/WIvM6Y77
-	 0dYcTeQlruQ7+v0pSvqoEsOHFlc4fXmZIMPBFmrz8H3LqzxQen+v/v8WRHWMNqmQb8
-	 2LiRM0jBjhSRh584eNaIXPZRqftXWByMhTDaIH7Rk7LitC1Gy1RRsBSREWb3SQPP3c
-	 YljSbH+HHxNKJvBbpjkbRilCUSwqwsOME1fxIuh3C3gwyanU/PhpkLlsuNEma24Pww
-	 uMGlOkYblxl+rwD8gC0QEGBRFsfHSVzFaVMrfAoc4BgVm7yuqOKEcg6+TOoj1h9LoD
-	 f85WUmDtXeziA==
-Date: Mon, 10 Nov 2025 14:43:49 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftest/mm: fix pointer comparison in mremap_test
-Message-ID: <20251110214349.GC302594@ax162>
-References: <20251106104917.39890-1-ankitkhushwaha.linux@gmail.com>
- <fc051006-5cb2-49e1-bb27-7839837439cd@kernel.org>
- <aQyOZ6eYng-IjxS_@fedora>
- <6e07949b-d86f-46d8-a68c-9717cfb26084@kernel.org>
- <20251107160855.58891ac6df6854a3b608185f@linux-foundation.org>
- <aRA6lEQmmrvmj2DX@kernel.org>
- <a7034e0c-a2ab-425a-8472-ef0a87a17681@suse.cz>
+	bh=RFirqqcYt6xjzQLvnHeiyd54+NIBXchkEuHWoh2vuEE=;
+	b=1rsRvqsWwjvbhs6go/yqz3659/jxVc2H74bygwQ7qOa/mV22Gk8vnItnvE7+6Dv26Mb5qd
+	xf6r6z1D6ZC+l3uPLIJR8+XIOJAkzylX6AFRiI9Fw/Yiwsuf3mmcvI59ygMgBrt3DbcURD
+	3Io51gJC9GBDZHVs7GhueJQ6T74jtvw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762811381; a=rsa-sha256;
+	cv=none;
+	b=0Lw7N6KEnyY3frZVO7XIbi8NkpKXfm2tsQFs/PI1cuImvVmEefCjKDzvWW0eMggZqNw4e6
+	L/ImQ37t3Cg8I6RHdRZ6bmYeTW4pcr9c+wcTipoPyX6hW5PXtDSt3IGE7paF70UXU+ZlQH
+	fgOvsK4Gtod9536ueQAsciWRHnAL8IM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="IrYkqZ/o";
+	spf=pass (imf18.hostedemail.com: domain of gorcunov@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=gorcunov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5942ee7bc9dso3404323e87.2
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 13:49:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762811379; x=1763416179; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RFirqqcYt6xjzQLvnHeiyd54+NIBXchkEuHWoh2vuEE=;
+        b=IrYkqZ/oH82FhAFi7Jo4nyAWfkbzFmka9iyzphK5PdXCqOClXNyYDI22RWPzl2MDB3
+         9c+UnzHRlQvw0jVcyJeY/TUpgnT+XhPdFaHZ/885G1u2jXYFKIoShXfwqcYcfuW/7jW1
+         KtFKNlfU7nCVKnFF1Jok79zQWvil7zJ6WNKtllzA4WNVDfzIgdSTkdkk5Ck9LIlXqYGV
+         1dM18nZ+PxCa148cq7KmISfN8XjXmkKwm1KonRKXHz0Ke76xcHmKxgX5+F1O4rca0V2q
+         Y/j4iezlp+dD2sx49/jRQGeMZQIaKsLa0lAsleJHXPZh6Qz3Vuxch3dPILj/QIS/x98K
+         QDcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762811379; x=1763416179;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RFirqqcYt6xjzQLvnHeiyd54+NIBXchkEuHWoh2vuEE=;
+        b=B8r0KxEuaqiYDshmk2tD8AsDcrMC+A/CHPQ/vUzesyEPKjmEJP9hHsWZBPBroah1/U
+         4YEqYzTcHj9GAuHnkqSlvVt53gPcTLCk/RXcAQDlm7EWLCu0/LASRSso9mxj9fRNHncb
+         XLR/KjuWLYsZZma6LCLiQVNTP3ZIUGoSeo7s3NhMAFbEEBnKIL0jClTZOQuPDGlfI4im
+         dk5QkqhyPNyy1jY72fW8TeXRkdRf0NoDOBk3zJwwMNNjtWxsNUK8p27lunQS57MFTHrm
+         X685ZH1V9QBGpk5HuUL4gE2e6EGw6PgMnSzIgxkC2Y2oV30hya7ygjei8CNZ/v/sS7n7
+         AFgg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXKx2KPhyzWD2GLsOZghk4sD2ZFp8keLrzMtTNNxxyuXDAi6xog30Kca/1sJlVVvVIFnC5VVa1Ig==@kvack.org
+X-Gm-Message-State: AOJu0Yz+QpwCObOYw+WT5uLwty/WoBmm6kntl52wqA1dcHEi/vmteB1T
+	aqdKf1dvc0c9yPI3x+q/MsiqO4E8Gmz8fsgbIHByzxCYC+nLV7xHLlMzte0Qtw==
+X-Gm-Gg: ASbGncsbu7cO6c75gaqAYfC5Y6L7uR4sOCJWlH08yvbbAoKmnoxQ0rhQRQgAArouwV4
+	8GDSAgXBFW2YDat8/FI4/bBHsUEg4geOrnyT/LOv4oiEFnfV/v3tYbwq9KkQnSkI5AbCl6BqkkR
+	g8I4z0PQEs+7GnM1Pq4KmWJut0oNh/5W0x8s76T9SvrE88BzeeazB6kQogQ9HSrW9rtkILlc/z2
+	fVOaSDbiuynwQ/RAQTSxv3uJ7LomET9tau4a5NEei77WmGcB9abg+/6VTLktxFvUqeMrbuRbZyL
+	8qR7Nx/tW7wPG3WjLm0YH0F/n1W8kLeNTF5sm4cbajmsgkPvB7agSN5klRhHRdoJ//Hup2i+qO8
+	JCeCgoe4SRxhjSZZD33FR+Kqn4G+ePVu6Ffo3nPfNkLo62SRSQ1xwjBWMcdr9FDLMVY4jgjx3lm
+	m0wg==
+X-Google-Smtp-Source: AGHT+IGjkYEZuiIm45qpRwthPMBOYrneNAO2t8mNMUlpQZhecV1r6b86jhyyoGDLr3xqW66ODHKdcw==
+X-Received: by 2002:a05:6512:3a86:b0:57c:2474:371f with SMTP id 2adb3069b0e04-5945f1e5562mr3111337e87.45.1762811378727;
+        Mon, 10 Nov 2025 13:49:38 -0800 (PST)
+Received: from grain.localdomain ([5.18.255.97])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944ff427d0sm4115144e87.68.2025.11.10.13.49.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 13:49:38 -0800 (PST)
+Received: by grain.localdomain (Postfix, from userid 1000)
+	id 93D625A0033; Tue, 11 Nov 2025 00:49:37 +0300 (MSK)
+Date: Tue, 11 Nov 2025 00:49:37 +0300
+From: Cyrill Gorcunov <gorcunov@gmail.com>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [RFC PATCH 2/3] exec: don't wait for zombie threads with
+ cred_guard_mutex held
+Message-ID: <aRJd8Z-DrYrjRt4r@grain>
+References: <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <aRDL3HOB21pMVMWC@redhat.com>
+ <aRDMNWx-69fL_gf-@redhat.com>
+ <aRHFSrTxYSOkFic7@grain>
+ <aRIAEYH2iLLN-Fjg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a7034e0c-a2ab-425a-8472-ef0a87a17681@suse.cz>
+In-Reply-To: <aRIAEYH2iLLN-Fjg@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2F3351C0007
+X-Stat-Signature: q98yhuionu9ny9i89f5j3thensdkr4qw
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7D557180004
-X-Stat-Signature: u73qeuxbqu6oudeq8ds8jgdduajzj6cf
-X-HE-Tag: 1762811035-36131
-X-HE-Meta: U2FsdGVkX191Si0d2ghRMdDYggMqT4wjfvo8rxs72pOYRZjB4TUyt1l4UYyVhJAwlBcBlOp1x4zpJjuQ6qPGirH+YufBrLtsJeAaijnZ29PZxvCyRiEANeyMBCeODecqja2TyJZfclze0BsXZJttZTASt8MEkgNjsZZYzyZ4V0OtzeWtsSquCg2uXbeNkI5DRhQrhYc98+sldm5hdYyJibbIsIyOJ7SQ53MBoigGwPUvWghX4ie3O53xavP5eLcrudVskfO6c3ZCy+CxWdFVE7BhtviRjXTGlQkSkmXvqJWSAbEiQKl2+Ip0+xjfHI54eRLLP45Yyw1dMN3VWpPvRvUN/ExUSR/KPPOwiL90gbTaQcnZU7PJb4zKgBfBt0PSjvJ43nsWuH+ADPmcrKAHy3P+yzwd6tjJLN9Styyoef3nYvwLnBhtwjsoPjiA5d37PlJnwDI+Li0dwA76itzszAjoVRGMaCTJYfEZGOmWuQjNreVIhregCwyL1Y310sfTK10fW9rlABRyCj0Ne4Rz8x9xWfWxhAMQvcelx8Q9KR5Df7A+IZVxc/dVdiJz92keaYmFPJrUnD7MwLy7qQJjmxZih9OUj6x+OqUEg4UecViS0oMQJBdsSJSCK0btbGm/ks/d38KEZ9bfmPr++yQEG7pkxxERQCMOj9ZIysuPQzLOy/WrTWHYaJhZLmh9SYAZA1yjQBW5XNlog/JuD3mw2gq0uIqwbnY9NFHEQHgJPMrZiprLWYzK11SLQyC6xAugsXsY9pC6H8oPlVVdketqHLJyJd6UP+s8aA2DC/kYkkIB5QiDx9IhSiUvO96AufLxVVBReH86ZEWAOLhcGYm8iMK2vq5yMxxcJog5lkHfP2TaqdGsQAXpszextV2T4CnSRTIp/faaP4k+TbwNntu4Pe+4np0WI3dJr8egzaCo5OrcZCR4qZLe+evpeFewfrCKu5INh3BPOChFypcq0lN
- Q4RhbKkq
- sAk8AgJVgLVEqfkmqe7bOMbYtVSbIz6Y2i/0PqBc3auL3mrJcmNDQ5xDEg4QMoQR6fdd7n4QGprOqClHClLhoMm8y1eYJr+t9bjVytKiCS0GlVFILL2oSyBRd+GQ+cXhsy/JS2jsf8rOc+7FSjfWArR/RMovqdi6oT9kBdm5uApNZ1GGHVK1rXloyDlUE4CXWqJBgtgMBA44fl5ktXhKIXq7/tinnX4C9lGM4q51z2QZFnJQ77WiWIUAlU/TnpOKhwepz/kB1iaafmse8HUlWQukZRYs202lLkBRRfxNoKFv+OWS7o3mL3Hlo8aX+XGngF4YmR3O6M3qc1QI6HlVvLxNpLSvBrDI9ZnF/zaPqZK2Lhe4ORQ1PSAWv0F8wmJeOFForfamZ5RkndrkEj+hsfB13YfBlQnC+pAimCGVoo2cipnskr/LDreyPoQP/nqwWAqOlZWC6P13NBbg=
+X-HE-Tag: 1762811380-693259
+X-HE-Meta: U2FsdGVkX18+zDyrqOig4kgAA5jhrJi1H//6HRY9r/4hYMgJBjCZylu6/cXfbeGWVtROTsS4K2hGh7Gxjx9+8y3CFgAlu4kDsXL8H1Dk/WLTgfjXaj2s9Tyt0LMIHh6zmeN/MAqKjJn6vsGrzdba3T9Xb4gBovuUPKNewbWrxvnJelU8AUbLy7Chr+cDemim9oz+nzs8S8m1FcuFtE4I79XFqOGCXK4mllW4Yr2ImyWYsq2lcVpPpLqHv5UtTW9J1A8ECD+Onz+iFyF8NnOtmn2Y4BkYS5OTePaN1vu4jMaxKok1M7JpTMsvCT7EwS5ee2ghKyGrVxOvAjlhev3OwV9yw+qAsR9zeiMVXJFi6nUqu9KXPCzia4LYaQLb2oKTbnJiqnup0jiNwdK9oG3WEGJeMzGvW8Qmwq4KqcwRTTcnbF5nnlU4KheSR5uHWu/vpvSiVoj8ASilz4L6XmJgmwYO50hccMKNIa1rgtDE7lQLfPjqEPvJaC3cfgABI5QSVlzYEAoHPOfyZE0EvrIrUNhNyz+Ce77OPg5LEWw4pTcs9ix5R8iQbTjmIFnCkJLoNJCK8yK2Uf+9BhkvqtpEFULhdUOrSxyEu5BM8kpe7wtJ3v67zOqyv0xmseZCZF7aVuvfx2qlbIybaMTWYU47r6G2uMs9oQKGAuhaPQZ+hGLzhgb4t4xa94Xob4ExUE2bi7iE4mSgeA9gV5LdUq67mgSz4HlbTqhrJY8DVbK5u5Jkkc4bZGSzXbaTxyMj69CbBv5JznJxGRwOxkTyEiC1eI1ct/JUW9VpXP7vgHlGx3/4MDHH+EvZmCsjlHg+Vhi+faXHJVMBw1nYJLzsMucM30xPRuX004swMy0dJJRWpDFIWNOj9X5JhLPrvQIk2vKEbM51zdLNY9QjlXtIzWWysu8kaL83pTb/325LpbUdwWNLALl5ARDMC3qdgFQXAifCf6/Snbiw17GZDv4/0ei
+ XoRnC6t8
+ xSJNtkuJBTEHjs2x6tLxSMZGl4zClsWX1riHkkRrW6uJ1arJId1wbMlPXM5VDi9uO5cr8tFsLKJORhsvpKf9ysY8JFps6IYuv2xFjWRH5I/9liAOouuyQjQ4bJWGXUJeSE1m9LMSz8N9QSwvLOAvFYN5NFJsYiINv9Bvt/Jc745xWJ5YGEZkDKBkXpEvMmuBZ2JVFmdFQmufx5J5tD6d7BOxJRO5xtNf0iQQKSBu9AbGriKyJ5jhRXO6QdxNrdyeznJt1MbAXikcnwoQI80ZH0yUHoyLoIUThmCryhwnbUMy7LK34fAGd/eV4QEtA9wNAx5X5xNMNYJhi7VBibxs6GrpxVJ7h++T9bPaJRa7F9SFQUKDq0MF9UiLOVuiCzzCH7RjWThuvxvTUUdhAX0XFG1ONH2LwB9cMyyIeH0PUH3ggNx0Rz8C51xaV/TbxKRW+8e+oVNOdLWg47DoLzfeIeFn4biadBLWZ+98HHx9afJUIUGjgbllcA8QgbDq0KhU9JptYv+0wUiTiOVjOkxjK/a6l0nWxxE1iRiRd0+V5OILiQgxRbx3WCxd2yLHyA7ZqRxrzGBgzpuANGrB06GzCUEUale7Zq/NepBHx8foXOI0vCg2l9K4wh1W/QSBmhbZKJG84
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,73 +134,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 09, 2025 at 08:11:09PM +0100, Vlastimil Babka wrote:
-> >> > >>> Pointer arthemitic with 'void * addr' and 'unsigned long long dest_alignment'
-> >> > >>> triggers following warning:
-> >> > >>>
-> >> > >>> mremap_test.c:1035:31: warning: pointer comparison always evaluates to
-> >> > >>> false [-Wtautological-compare]
-> >> > >>>    1035 |                 if (addr + c.dest_alignment < addr) {
-> >> > >>>         |                                             ^
-> >> > >>>
-> >> > >>> typecasting 'addr' to 'unsigned long long' to fix pointer comparison.
+On Mon, Nov 10, 2025 at 04:09:05PM +0100, Oleg Nesterov wrote:
 ...
-> >> I must say, applying this would be an unhappy life event.
-> >> 
-> >> 	if (void* + ulong < void*)
-> >> 
-> >> makes perfect sense in a world which permits void* arithmetic (ie,
-> >> ours).  So what the heck is clang doing??
+> > > 	if (!((sig->flags & SIGNAL_GROUP_EXIT) || sig->group_exec_task)) {
+> > > 		sig->group_exec_task = tsk;
+> > > 		sig->notify_count = -zap_other_threads(tsk);
+> >
+> > Hi Oleg! I somehow manage to miss a moment -- why negative result here?
 > 
-> My (not very informed) guess would be something about undefined behavior
-> because pointer arithmetic is strictly speaking only valid within an array,
-> so void* + ulong is also still in the same array, and thus can't become
-> smaller by an overflow, because overflow can't happen if we're still within
-> the same valid array...
-
-It is indeed due to undefined behavior but more so that without
--fwrapv-pointer (set via -fno-strict-overflow for the kernel build), the
-addition of an unsigned index and a pointer cannot wrap. This warning is
-a result of the following change in clang-20:
-
-https://github.com/llvm/llvm-project/commit/6d34cfac53b993a6cdf3d6669e017eac3a2296c8
-https://godbolt.org/z/hvMoPYb17
-
-which I made sure respected the value of -fwrapv-pointer in
-
-https://github.com/llvm/llvm-project/commit/f0dcf3240dffe3767c7f3a2e2da5b92ae9fd1bef
-
-But it looks like the mm selftests do not build with
--fno-strict-overflow. Maybe it should?
-
-> But I don't know if this strictness is only applied to the warning itself or
-> to the actual compilation too (does it eliminate everything as dead code then?)
-
-Yes, it would turn that
-
-  if (addr + c.dest_alignment < addr) {
-
-into just
-
-  if (false) {
-
-based on the above Godbolt link.
-
-> >> If we do
-> >> 
-> >> 	void *addr2 = addr + c.dest_alignment;
-> >> 	if (addr2 < addr)
-> >> 		...
-> >> 
-> >> then which statement warns, and why?
+> You know, initially I wrote
 > 
-> As the answer was that nothing warns, I'd think it just isn't able to warn
-> if it's no longer part of the same statement. Whether it also means it's not
-> eliminated as dead code anymore, dunno.
+> 		sig->notify_count = 0 - zap_other_threads(tsk);
+> 
+> to make it clear that this is not a typo ;)
 
-Based on the above Godbolt link, it appears it will be optimized the
-same way, just without the warning letting you know something is up.
+Aha! Thanks a huge for explanation :)
 
-Cheers,
-Nathan
+> 
+> This is for exit_notify() which does
+> 
+> 	/* mt-exec, de_thread() -> wait_for_notify_count() */
+> 	if (tsk->signal->notify_count < 0 && !++tsk->signal->notify_count)
+> 		wake_up_process(tsk->signal->group_exec_task);
+> 
+> Then setup_new_exec() sets notify_count > 0 for __exit_signal() which does
+> 
+> 	/* mt-exec, setup_new_exec() -> wait_for_notify_count() */
+> 	if (sig->notify_count > 0 && !--sig->notify_count)
+> 		wake_up_process(sig->group_exec_task);
+> 
+> Yes this needs more comments and (with or without this patch) cleanups.
+> Note that exit_notify() and __exit_signal() already (before this patch)
+> use ->notify_count almost the same way, just exit_notify() assumes that
+> notify_count < 0 means the !thread_group_leader() case in de_thread().
+
+Yeah, just realized. It's been a long time since I looked into this signals
+and tasks related code so to be honest don't think I would be helpful here)
+Anyway while looking into patch I got wonder why
+
++static int wait_for_notify_count(struct task_struct *tsk)
++{
++	for (;;) {
++			return -EINTR;
++		set_current_state(TASK_KILLABLE);
++		if (!tsk->signal->notify_count)
++			break;
+
+We have no any barrier here in fetching @notify_count? I mean updating
+this value is done under locks (spin or read/write) in turn condition
+test is a raw one. Not a big deal since set_current_state() and schedule()
+are buffer flushers by themselves and after all not immediate update of
+notify_count simply force us to yield one more schedule() call but I've
+been a bit confused that we don't use some read_once here or something.
+Another (more likely) that I've just said something stupid)
+
++		schedule();
+ 	}
++	__set_current_state(TASK_RUNNING);
++	return 0;
++}
+
+	Cyrill
 
