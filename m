@@ -4,87 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBCECCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0C32CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2E778E001A; Mon, 10 Nov 2025 04:32:10 -0500 (EST)
+	id 29E098E0008; Mon, 10 Nov 2025 04:46:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADE6C8E0002; Mon, 10 Nov 2025 04:32:10 -0500 (EST)
+	id 275498E0002; Mon, 10 Nov 2025 04:46:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B978E001A; Mon, 10 Nov 2025 04:32:10 -0500 (EST)
+	id 1B1CC8E0008; Mon, 10 Nov 2025 04:46:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 91AD98E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:32:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2CEF212D3EE
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:32:10 +0000 (UTC)
-X-FDA: 84094181220.17.54F1D41
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 29C6E16000C
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:32:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ghppzoIr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762767128; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A6938E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:46:21 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FD1A4CAD1
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:46:20 +0000 (UTC)
+X-FDA: 84094216920.30.EF4CF94
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8CCD840007
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:46:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GehTLk4A;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762767978; a=rsa-sha256;
 	cv=none;
-	b=AVGSQ9VTm0Y69PzyHicW/yTH4Z+Odaek3Yn8p0VrhEbpaW/mu2snT9nSHNJ8FwbSWhly7B
-	wP+eRYE6w4jqwPl/sPYhEaIfWaMr/gRe0ZFZLq3tjdFEUiN/OUlquxdzvCHJG+2yfquOtS
-	cjVf35Wuguz42/9T5m7kjuIFCD0fCbs=
+	b=aOALpPe5F8TDrgxzk/FV+RBENbONXAOpVpZCTy4aRljjdjIv+2Tsa2F61HcUPa0MsADPj7
+	qilGl3AEnqLpveEtuKA8/HfAW8qmiVvvYjpUV/r0auh764AL76Ag9kvlbCy9vGwjDiw85X
+	lejcXTSBqr9STTyXsYqWgWiTfnKsMHc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ghppzoIr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GehTLk4A;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762767128;
+	s=arc-20220608; t=1762767978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ClMFlGw+3oW+Mx09+T/4s8CBInH2qbgvOkap9Vt6M8=;
-	b=A51vMIRdeC7TDcRr2hG0lQtijMzkSf4TcEo3sDpxzg1gTLDtzi93ZB6enLGUDFQ+ujkqbv
-	iaQwYwDjEC9ndFr2QAL+Eva6D1S2NmSdqy2nxi8iYwjTxDdDXqIuJ7ewkbzqtLZVJJDALS
-	SHu6ARFN0rGNg2+li16IKt7TM0RVPns=
-Message-ID: <b3f05987-74d9-4e6e-a18d-31e64c92337e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762767125;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2ClMFlGw+3oW+Mx09+T/4s8CBInH2qbgvOkap9Vt6M8=;
-	b=ghppzoIr9fx6cD8ZMfCbFqa2KZA907YF/YA668q73DyyK8bg2shk1VN85RWbYu0Kpyi5Vb
-	6sblyfDy7g/nARJGFPlCAaj3C5TbcF1ndDGoSWRerKBQGaRhUdXAlTefbbfVdYs4x7suy+
-	s/7TalOfMqKoUWP1tamsbc7gZXJJSYw=
-Date: Mon, 10 Nov 2025 17:31:48 +0800
+	bh=7+ENjiuiICq/dHaWISCwIQ30N8r+q3a2JUSxj4I5SZ4=;
+	b=dzcyboQvs/ny2cI7Q2iNNkkvopMMXSCZxjPu0ZV3x18qvhZve2E3IDYmCQIpQOh2BXItx0
+	yZgFnVNiK9ZqhTOl0CxtdT2olZ2r4/GHcu6DoiUmxaUkj+YvqP3ssHOwpVigk51pcOjFXX
+	GG+rh9WPll7VskE5a6y07SAq6bazxnc=
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-641677916b5so2410567a12.0
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:46:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762767977; x=1763372777; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7+ENjiuiICq/dHaWISCwIQ30N8r+q3a2JUSxj4I5SZ4=;
+        b=GehTLk4AzvC6dJCndXePwW7tufc7ZSVQLX8AX7g3hNudbSCtVCeVsVq6gI+PzfliKT
+         14XIj0u0XIPF6uGQ/UFsECj8qsghbUyJgHjiJDVeFNSk0Mx/Oxw8Z81IRmW+3UTXt/Ak
+         oMPhyNLYTZwL5DUUc9WMp0J2k2fGgXi2c8MUA0g+hEiyBwU+J+CCJcVo+lReJG1/PeMd
+         74fuuwtS4mWNxaaAVssqSDQCrOikXuHdyeM/cRGDNcXs7kdgQp2nPBnUXu+z4j/z4qYa
+         7PXL1mnFZYDwJgymYR0Mp9kJL03KOvwGeLIhLY4WZkL2Jg7Z1Q0QYM1IMaksyx+sXIKn
+         UjKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762767977; x=1763372777;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7+ENjiuiICq/dHaWISCwIQ30N8r+q3a2JUSxj4I5SZ4=;
+        b=pM846+T2sRFQPCo41Z7/BsNDQsLbbZ+Ud78mm/oLa4g2+azd8pIrkffyRj2sKoUCxm
+         ZO1oSsiT8XrYz7bN+A619lGtihkSOgVNeIEztm3P0HekRzOmYxhD2xkNH+9ljiga+UFg
+         hDbn5GMiiSmjB53Gig7c4ASFsF7zzXNWggPr9a0STOTBJ5dfDH+0vYMmZCgQkfjx/X1U
+         tlISB/mz1qNBUhcArz1IbK9vcowLfXRcipgMlZXh/aL4iZ3GOX75/14heuohnvTpddfB
+         QlYUjwzmWRL6EQipwxscfxeToOIRojJMv2JYBcYUa/p9Ffk4D9hKcw9WpUDy+QGYXDxQ
+         opyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWnA+annWahz3jGeowCG799f45fNJddTxjaEVBxK15nO5s/VRmWfpOgauGdEZFOxNmKWdmtDH3nQ==@kvack.org
+X-Gm-Message-State: AOJu0YyNXboZJhfBs9Wsoss/yzD3FMQUWyLneb20A160N6sIsz70Ixg1
+	fSg3QAZ1uOgpiRF/du5JwgUp1ap2yHZytyVyQ4rCfeip+Zjk2alsBWb5JIm1D284VoE=
+X-Gm-Gg: ASbGncuDSW+qp5AOGDDqf1ou7DxK3LwF7iQ0VCZzu/02+O30cIZO76xTfHyM0KEqaAN
+	XOunW2G1l7HVA2pfFIdNd4Dst2EKskQJl61X/MZszpHbvMfJBK6mX9I+T51LkQTGqJ6hwf0JJkK
+	bcAxZakBV97lEJNytzcziO4pVu0QPidNZx4MkyDJV7ZR9yn8ho+vT+ak+98oeUcxsWPSUrKQW7o
+	bNYi4Qz3yYFwtva4wI1H/8FkzCnWx3yqUnMN0kyhR2VAGdDmNfMEmWo4s7Jj4gfxuN2rqrwL6m3
+	LF97g6CHf6gd3HZ9/ga/j77HdDJJygBuFrFmfm40x2HGqsE21cV9Q38Qhw/AlaC9BZMEluOIisJ
+	6evduu93pS70odpbFWVfhUEzlz4xbobJrHcgcaC6mL/XGoXizI2XK31Jj3MsSZQePxMw7qDcxHE
+	9duHujWZw68gYJKQ==
+X-Google-Smtp-Source: AGHT+IGmZmcainr9lTW69kXNHob9h7gFoRrMJ4orD0WaJEzcosAR93nxuffTYpmtgx+UXuB6Sga00g==
+X-Received: by 2002:a05:6402:1d55:b0:640:ceef:7e4d with SMTP id 4fb4d7f45d1cf-6415e81207dmr6218186a12.32.1762767977000;
+        Mon, 10 Nov 2025 01:46:17 -0800 (PST)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64179499189sm3896343a12.8.2025.11.10.01.46.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 01:46:16 -0800 (PST)
+Date: Mon, 10 Nov 2025 10:46:15 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2 13/23] mm: introduce bpf_out_of_memory() BPF kfunc
+Message-ID: <aRG0ZyL93jWm4TAa@tiehlicka>
+References: <20251027232206.473085-1-roman.gushchin@linux.dev>
+ <20251027232206.473085-3-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-Subject: Re: [syzbot ci] Re: mm/hugetlb: fix possible deadlock in
- __hugetlb_zap_begin
-Content-Language: en-US
-To: syzbot ci <syzbot+ci5a676d3d210999ee@syzkaller.appspotmail.com>
-Cc: syzbot@lists.linux.dev, osalvador@suse.de,
- syzbot@syzkaller.appspotmail.com, linux-kernel@vger.kernel.org,
- david@redhat.com, akpm@linux-foundation.org,
- syzkaller-bugs@googlegroups.com, linux-mm@kvack.org, muchun.song@linux.dev
-References: <6911ad38.a70a0220.22f260.00dc.GAE@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <6911ad38.a70a0220.22f260.00dc.GAE@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027232206.473085-3-roman.gushchin@linux.dev>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 29C6E16000C
-X-Stat-Signature: cwti5911zciwdjma1p57jker3131zj6o
-X-HE-Tag: 1762767127-956823
-X-HE-Meta: U2FsdGVkX19wwvGs2qd+wtd5PFdQ0XohdnjmA3rkE8ePrbANVz/WGI08XpfRCB0DPvesIzhgXpzC0Ray1PWGLpqn4eJaVp9PZc2Uq0VAU8ylTW1vf7QzbiOhZyjqQR5WM7Ft3cnqVA6MOqqGk9Xd50vHSK1X3moBYuAF14v28oWRXk1JLhLUzyI/YNkpD9kW0KMEZoanVVEUvNQZsCKCVdnK8fcoYi7dGvUgailzpT8Z0YxQEiHztB9VuN+82nKaNdvuM3g0KRF73Jg1cPXzRDh5eFGEPG5kxYa4tSrvo+B5kqghZo3F+ETgUhfhapkSRz2bBB+Vk7HuixYO2OTDKNHOb4Fk5CiFxptNEhmrDpcNIMANmlVoeQvWiohMcCxmVopu0dfJhKcOZbHVDTgSGkj/SlfXxRL/bgXgMGdFXgEw5MGSST1r4DUAN2ZI9WFAT8YaDqyNrTL54m6Wr6xD7NfXwHMQzlB6ec54dZ4Xx7Js/YDCT9uUgaihvxi2l7m5S65UXPCmLHc1FjnW5ytuq8mnpIMjLaBDoPuF3a5lEMGsSoz37/ejd7YiD4J1KDYcOcgw7W0lJmBVwgYs13HoQH9i+NQYO1tyDJqnlhtYmONqg0pP0H2WVJAnh/vHd2yIwlYc0q/y8oYYo/ySYzrN9afxGNZ4M5D5xeu4vcEznRBpabiqBgolQ3mFr0a1RfBcc/8FrIY+JmuSNxOUMdlqUY53jRB5/Xy+gPHLUDAM4hhy9rlcQp3w3j0Q37vUd4jihWvMk7FwM46JKDFgz3nG5TYWrnzv6EaDe6KIL+j+C5viDDtVF1LUa6eh2/XAM4WMas1UkiVMBlDM84R4eL5Ah5DEUOyvLOHMnuIQEgrUuhah/OdlJp/JBt0rtPRgavCjZ/U5gu2fJqoR1HU97eHNwXSkV29FVfF/Izkz4Z913LVkU803tEh/aAlVJFldH6TZwAznz3MGk96NU8MAbuI
- 6kSUaWb1
- vhyg5beBueZHIyTGDXlWzQRhZYjcYx2FiUuldLVrZhzXigUmW0jmGUHQCQS/xpw4MSwJaIYVzdGTxAtNlb4wwuyGnHnuUaASj7ZDd1aQdbYfZ2JCmCPEeodx3lMqsaHx+mbkusYircAtsX3ZC6nt1fmhFjnlWcoNKtzhPHgWDXHkqzpwVHfECPxE1ZBfpIqVbSakFhQpksn/G4qYAckhTwfAePoJuHEDc9j3NoJ1Vn2/Q7G0x4O3NqRy/IySiVnUjQ6Itl03thmL3F+LBVbPRj6HYnf/9etEF3JRtSAE47inxeubHuCH4wmXs+gSP0WsRuf3yovftLGpEcMUtThcVrLX0brAAwpF6e75tPG2D7zSqV3Je3EMbfTjfTQ==
+X-Rspamd-Queue-Id: 8CCD840007
+X-Stat-Signature: fjskjf4end8o9smz1nrobitsku5wf685
+X-HE-Tag: 1762767978-799823
+X-HE-Meta: U2FsdGVkX188paj2bGf9mHfbPRMwtOBoJxtkDZn+BP3xxFSoNxfjk6CzaJpuTCs1YXsmYJFJfmN1UjkPi0mVLlsN3NyxIbtYM3D7GFHJgdQteWHku0Q9BTu4zEK6ikSWcUPu1AM/wse8uj1SRAm+oRlumQ3FigQqN0oHjWHwmNxVROertgFyHvT8NN9nC0l5FaYDkuDC38wAMXDwXp5K3IO6B4vDBJEzWXqaZeLxDyTa38UDwgZY5gqbFF1LawajL54unZHXb2VqVdqftyrXoudPyzWofRwM/PrwTGojqY2YkoX7eYEOXHAwYMlK4e2537jjTLOJfhXLg3e9qAVPBhS88odMR1pB3tbZwVYXzkA/kMhQdqIzhTXx6HMf+VzLg0xCG8SUjhsanN+gH6CsmwR6CiJdR3dt0iKS9AbH8ebp0+5ggkL9SRjcQPcHYzPkEi4fnRVzfrqbGcKE8/WK8MqTrxBahHTWXzZBv2+CYXhuGDjLAcANebHZFy3xv74QQWmYahZinHBPWlT1BrAucEKz3Ru+pbUBtrOfSNkrkIdMt4ak2K6nABI0TydAu0K+8RF/pz2yjk0zrPvr/pTVR0ntEiKIL/KlyP3SjLozPB/pAlLhxv0GIhgizgdo63ZV1AelqN9k/aNRtKNA1M18HWYlGvWmzf34g/anW8SMRf/7LLYPJ2c8vIsDjQxHarGAvuJ8K69SITYJI7qgJ726PrIQ9bUsTjMnFlTk5rnh8PQ+5FeHh0xzGlVJpDYG+hBlYpFoabit2ITEw2OoBp6DN0n722B3Y87heNGxCm+P3aBhBSLXfUwJ3le4QPceaktCv1hfBXnBEef9ufW60pSj5QI/GpmyDckQKE3jvfsgR9pIKFtAJiq/phYGL0rcBHPR4uFe2g4nlGVB6rwg1otvenvXPcK9Ab4Egkt0HzwQGg3Y8pMuvl6dL9Qtm4quu8nxdl+ADuQG1vT5m99DP4h
+ j+6q0tIQ
+ +/TIf1eB85Q3FkVO3NWfAO8XbLd6EfDIgcq3hhk7vf+Wp9e3jMOUSlmKXmDjFSfm3V4Hcx+/T8WW+UE4eUk67TY+E2Vy7XIrEt7mlRpOg/rS38iumhtg69kGnKN799gquZRylYdwvmRNJHtAA74u/1oaxEAIf4kBI8CIc6VQRRBGVOCi0EFoxebCpZMcPh/V6ibxHwLmDJ2CoEc9PvWLnRgn1wAcLCuLQvvc/SHOLUGi+QLpv8917YsqDiCxJrT0/7TuzYnG3G85X9bIof9Rsw0BSh8mjcBc7VIBEM2VxRS7AAgUq0S9pseuaLuTx58oxF7ZEJmdXiXoqjZmgAWdD9jgX1ptXxJonYOT54c63u6ETFFG4KC2zVRtE7f9FNL+8g0vswzOHBCGTiW0hm36OTS8gog==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,22 +129,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/11/10 17:15, syzbot ci wrote:
-> syzbot ci has tested the following series
+On Mon 27-10-25 16:21:56, Roman Gushchin wrote:
+> Introduce bpf_out_of_memory() bpf kfunc, which allows to declare
+> an out of memory events and trigger the corresponding kernel OOM
+> handling mechanism.
 > 
-> [v1] mm/hugetlb: fix possible deadlock in __hugetlb_zap_begin
-> https://lore.kernel.org/all/20251110051421.29436-1-lance.yang@linux.dev
-> * [PATCH 1/1] mm/hugetlb: fix possible deadlock in __hugetlb_zap_begin
+> It takes a trusted memcg pointer (or NULL for system-wide OOMs)
+> as an argument, as well as the page order.
 > 
-> and found the following issues:
-> * possible deadlock in move_hugetlb_page_tables
-> * possible deadlock in remove_inode_hugepages
-> * possible deadlock in unmap_vmas
+> If the BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK flag is not set, only one OOM
+> can be declared and handled in the system at once, so if the function
+> is called in parallel to another OOM handling, it bails out with -EBUSY.
+> This mode is suited for global OOM's: any concurrent OOMs will likely
+> do the job and release some memory. In a blocking mode (which is
+> suited for memcg OOMs) the execution will wait on the oom_lock mutex.
 
-Oops, this fix was incomplete, as other code paths with the reverse locking
-order still exist, leading to the deadlocks reported by syzbot ...
-
-Let me take a closer look ...
+Rather than relying on BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK would it make
+sense to take the oom_lock based on the oc->memcg so that this is
+completely transparent to specific oom bpf handlers?
+-- 
+Michal Hocko
+SUSE Labs
 
