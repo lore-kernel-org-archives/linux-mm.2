@@ -4,120 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F09ACCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:16:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A89EECCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 09:19:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69CA48E0012; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
+	id 088E38E0005; Mon, 10 Nov 2025 04:19:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6742B8E0002; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
+	id 060B68E0002; Mon, 10 Nov 2025 04:19:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1548E0012; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
+	id EDFE08E0005; Mon, 10 Nov 2025 04:19:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 476E88E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:16:54 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02D0D1A0CE7
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:16:53 +0000 (UTC)
-X-FDA: 84094142748.16.624A159
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E7DE9A0006
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:16:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OPK0YSVX;
-	spf=pass (imf15.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBADC8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 04:19:53 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 848BC4CA3A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:19:53 +0000 (UTC)
+X-FDA: 84094150266.14.F97ABDE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7AB75100003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:19:50 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762766212;
+	s=arc-20220608; t=1762766390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rK7jfs9gqvXaLNimcAlCkzrJKccO+YVTZrJh68Wev+0=;
-	b=UM2ZuA8vbyUrrIFf2S9cMn3i1EVKchStc2dzXODGYxg7imDZihjAIqCQfhRNQDmR5gd1C+
-	bXa9TIsmR53L5IUsNuwnw3wKFO2xRFtF2AvO34EoM5TnAxrv2IqoFY612XxEem7vPVe8cw
-	EeIMAJGYc019NNdU2fpP+q+TtXCs/A4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OPK0YSVX;
-	spf=pass (imf15.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762766212; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=BE9g58aO+50xrZTAkMSZ+nucJ9JIlqY0y6onurX6UkE=;
+	b=EnvAdVGKQ8/ltAmkTcEltygSW30IMo07c1/5D5TZBT1jVHU5VZoVECMlad1IfOckvTTtWm
+	rZ8udJyX+ViiDFLM4wb7cndjcXg2mX1TFTGLOyi3Y0ghDJV3zQ6lMJYt7gRQfEIQdTHM6j
+	Wv/KiqeSbinxuJHRSHMtldqODsrgThQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762766390; a=rsa-sha256;
 	cv=none;
-	b=ks5fN8iKWHCV1aynIxBWrMdouBuuABTxoKpzLme3LOF/2Me7GwytDRjFk276ZHhjDDTY2/
-	nBwkd0+niQFxSQJZb8gCPvICLSEvSpbLYrEZv9Vs/i09ng2JaZqLz3+tVCvVQvrCQpDsXj
-	RAozRHA9Lo6wB+SDkuHXwU+nMFX8JDc=
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-591ec7af7a1so2337362e87.3
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 01:16:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762766210; x=1763371010; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rK7jfs9gqvXaLNimcAlCkzrJKccO+YVTZrJh68Wev+0=;
-        b=OPK0YSVXq42D1CuvO6GJd0AwNugsYciA+l/jE4rHMoDYmnKhHoyZvQisbJzoCAYMqv
-         O6l8ModAu0xocCHJ4j03BtoSd2tAHhOaVhlIN/YpAsqmYUUdP6q480m9u0BGey97c35E
-         rQppqkv5mwsf0Z+vWCu3QbiAeqSWcdj9xbMf21cq1JX4U0NDCS0xBiCzogp9I/MrvZHc
-         q99VegeFfWZ+UxShU/BzRLx+TzFa89sDS2RgLrdF7vI/S4lQUMB4w7Xy9HIwNIGo2OlL
-         HCB6rdC2em1sdMa0rh50DMBmYOwbWRVZi4DoMTPfiZD0XQOfQnWwzPbiUTQugDmrOS5i
-         36ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762766210; x=1763371010;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rK7jfs9gqvXaLNimcAlCkzrJKccO+YVTZrJh68Wev+0=;
-        b=GAhLf/jNGy2rwLk2zqCHXxQZ96uZW+WmVAaMOsf9C5JxS1AY1h3nbbuDwE/nff61HS
-         6y1TSVR7l5bAJSpmtTETI0fT91zRZzVNuXx5HKKF6SiXBMWjjq1rQYBiyLpmnT2pAsoF
-         QMUQRR1llVTrOPlacqLS52AX+0Qmj5q8bZqLfZTxCl3T5amBdGnxVpWbhtaQfrAr1g+X
-         0Q7m8LE1dJhUn/LniTZgPE11Tbfa8OxzQS2J/GPAHtQXlzTxsVNHOEcJv28nOoK9qn/Z
-         w18zDtXcBm6CAjrbKx/3vTcE8C+bU7PTNbabhw1G4MebT7rSvDmEsc5V9anh1MacWUzt
-         eWlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNVEyH6KXVJ5J6WtvwrAsEs1pxnXrrzaIJp6HfnhhkZ/EJ3xUBqrpPjQ0WWdLogkGge3+6yYMEBg==@kvack.org
-X-Gm-Message-State: AOJu0YzzvmaPo1mW0HOW54mgMwBJHJcP/mObHJu5T1fbcUB49azYgraa
-	X2V97FI6pN1k9AGY+w3zhbnq1DbGlCpR/zQuvpDs8ZSMaonbzzMnyziy3BmfzA==
-X-Gm-Gg: ASbGncsQ9Bh1OZtzEz1gdDOGTZBqn+v/jbRkdK493Sno8Y/ldqzfxJfZmD8FlbfFwux
-	KZNs+7W4UNSd+Sxf6fsD8A6sdKdAYhTlvuzBk9DrVL9aUv8Ggc341oYDhJXOXlqfwJz4JmNXjck
-	L4/mQ1Kn//hVFu1ECmhnGSQogj48+a+/W9AmzPk3jcStEgEx+1ygqCxQ5CqQLl9KGEZO9/py1PW
-	1PUJjk6CRjj0Ex4UN8IpAAE565DidD+jVYw+7bamqJezScsg6OSndKO8Vhuppe/4a9NOSUr1QGj
-	WypO+Wui1yp7bFpgKlulOSF4U6TGVijrzWrrtb0CrXQz4v0fXa0dCEIVoXdtRolZLs+ss77RJdo
-	4j8ivUi5rSZUHSK4gfzKE/gw3RaDpHTqq2uMT4Lt3om6Izz18dCpLiARzQEvJnJgs4elzsreKnl
-	FfQ7NC4OSU/Vb7g0rR221QAWxyERk7W58EM6JP6yk8NBJAgwAa/atzOfaUVbUlIkL+3LbmHLI67
-	ntGLtjGWjzShGp+HX6redTTXmh8iZ6GMm9tixCRDyp4MVRpSnomgCkecCIt
-X-Google-Smtp-Source: AGHT+IE23ygUw1G6qfksLpO5n3+OUhfUG7uTHrVPDbfyBxBi9Rl3+jXpxrwjGQUt9QvW6I+tJFg1qA==
-X-Received: by 2002:a05:6000:657:b0:42b:3907:a38b with SMTP id ffacd0b85a97d-42b3907a591mr2583100f8f.44.1762765773183;
-        Mon, 10 Nov 2025 01:09:33 -0800 (PST)
-Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac679c5dcsm23727969f8f.44.2025.11.10.01.09.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 01:09:32 -0800 (PST)
-Message-ID: <690ce196-58cb-4252-ab72-967e1e1574cf@gmail.com>
-Date: Mon, 10 Nov 2025 10:09:31 +0100
+	b=C2Yl1ZMhBnPvx4vMzk/e/n1rbXYiVUFicaK7eo/4mTZirxzlkx4F6RqyV4ARf2cUyNC1+1
+	PE0hf0L0EjvlPkyP8egfohEmzFgbQMuCn/bUAMiqedDXP1I3B5sUXZjjIkqmkjc9Arat+i
+	scGZfFrKxOyGDLdlSHe0/8+1pg5hGf0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 91A6F2B;
+	Mon, 10 Nov 2025 01:19:41 -0800 (PST)
+Received: from [10.57.85.123] (unknown [10.57.85.123])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CED693F63F;
+	Mon, 10 Nov 2025 01:19:42 -0800 (PST)
+Message-ID: <e428b1d5-65a8-49bc-92dc-ec4a4d933dec@arm.com>
+Date: Mon, 10 Nov 2025 09:19:40 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging
- architectures
-To: Jan Polensky <japo@linux.ibm.com>, catalin.marinas@arm.com
-Cc: akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, will@kernel.org
-References: <20251031170133.280742-1-catalin.marinas@arm.com>
- <20251109003613.1461433-1-japo@linux.ibm.com>
-From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20251109003613.1461433-1-japo@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E7DE9A0006
-X-Stat-Signature: 545kzt7hznr9et89zhpua86a16im1sid
+Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
+Content-Language: en-GB
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-7-kevin.brodsky@arm.com>
+ <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
+ <c764489e-0626-4a50-87b5-39e15d9db733@gmail.com>
+ <645178fd-df4e-42fe-b55e-97d9506499be@arm.com>
+ <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7AB75100003
+X-Stat-Signature: pnpw7rew3kdjd9xostb8f3b8f584ay1u
 X-Rspam-User: 
-X-HE-Tag: 1762766211-921772
-X-HE-Meta: U2FsdGVkX1+6gfNaIXWSrU6a9Ong5/myBiWsYp5XmP4gJU3yQfrMa7Gnuvzz5Mo2GdZrGFmD56TygOxHjEx01pWVP8XYPD0Wk5y1PXI7cmd+UqMOJdQJDn3PBCJBqcDmLadbCzhLRBTQa/8MvUJatxh0lIcxCbX78BPKbyicxoobNB4w4fdX7SqKuL/+kTQYKx75hKIv26IUfxSxtUNrxH4V5I4sb8XTw71GuLs2ZDFpdjEk7K90ilcSDr5AmQ8GylenWsx1d9C9ci/7uZORgt670NY3Td36XPJr+wt9+Cl61DOfjjz6EhIPt038cs1OmjleGBi7g+NYAqtV+QKBXgGC0NMGRt9Yl5ZCqaIVuuXLc82mFClELT19V/GLZWiRFZ56pEh9MuHy2a03iilOle/BoF2RDcOTMbUU1doFQlZTibrLX4JXc/QrZzq/gcPPZReArdQnDqdioY8wKIt6Gwt/hKEbyopAOeg3vkBrHHzqN6hmNuCJHmDs3awB3knSpsPLCw3JxRcrS/TGUBs465qzByEjWsMec4xboSK8lb9PviQ1MJecZgR62602z4JZWIspie53IdiqYxsmHpjKAaE5hdX5AUsceCnp9nBQrMfjbP4ynxed2DSCQc3Pe6C6cQc4zkJ5EXZM0JsxiSRuJF8fFPf3s3/oG9h95dHHTUhGDcnDFIXzjataLoSFaVl7DOhTtSqQLDCjNgw0i584UbRh0h/x2dMS5V8cMFPq7nh3S3Lvacpw9Ef+V7VihsdMUTAggGJoxiE6yXbFW40nySsyAaA26USfevqds7tu/uGQTSFLh7CUmt422KJ3qMdUu+K6IrWMVgQ9tTG6aOhsHqR4cEsjgzYtMj0B8tSWDDh24YQvihRr/ewo0s0pWuSxdyVJW9QSyJ6oBBSMJBOgyI5rPvyfNyuXI/KklrWUu1ej1Ra6U0GyZ+DTQ9P72UKoztxsPQg2uS9LGBWbJyV
- DjB92hWo
- F9IelOJedigcdUp34aKiHzbz6HS8z3tABppIv9mnhLYUaYg5HoOT4wp7o8Zxd5SJz8c5fxz/Rbs8zcbpOwaQJECDBwhqfuaDQmCRFyaKg/Nj42kqioG1QxMe20Y31f6xVbhXwpDF8y7KMXC/mD25LM5jGTSeDGGQTBsQIXCW+OiJgq924y7ZkLsy2kTLDzAX+dZL7EHTI3bVyJAA2dQ3lV1iYVQ6sUWpKo0k3VGGjcgwKFUEephGE8XUQMNxUYtFu2qKYzhV37qIIS1BTuFVNfRdlvp48WN7Ub5NJNn/6gWzFpjcbmB/dwZElKOBt5D4RHPTLkvmZnlNbBXzASeL9bsBS0txZ6H9TLMnEPqJ3knbbO0nFxQrnILnI8hy5VNjRZc3z/nu4YQw0efgTgYdpwj9jhJByrgWNti9IyDvWxmw0P7GcZKHrA8c7pK0IwkT2GrswrDN9X6M4nqSzE4+YIR7wguLp25Itfgr1IkNw6Ota9cMC56ZWHm+vubdhzGkw1e90NGUGAacIa3xQdYUaPn3S/9G4l0QJ6V+GFiUuJcOiG+Ffq+JrkzGPGP9fWuwVrmKoHXMO7kc4aFJRJWHPBvYz5Q==
+X-HE-Tag: 1762766390-884478
+X-HE-Meta: U2FsdGVkX1+48cqe37bnTmiPixvznue+krg6kBTRBg6FJmo5aAXcBhFfc2q+21rKMxSY0kQ3I+WmG6iP1DKOS1KWerdPoFMDw6e602h3mN+uw325k2CApetQI3Dtq1z4SQgA1ta2+Kr8Dn6bFVr7yQLGY2TNjvRLGm2Z2cYJJ0QAWBS0iiSbuyA7fVf/O2H5RgTdB9mKw7tUwOg67H0eT92c+6/axjW5rjQXD2JjOu6d1j2ds8VJczugtZuxqYImCz7rizBq9LXDhjbHqep5rorJI6iVEmYcFWO2sb/10t+ZSspvUgE63Fwl50I58bWtu8QmYSECS//NgDE6+CyB5XNeP/Zp8gGWiv16kqbw8zhHcXESPr0ZDolcpWortX6bhUmDVnzpq+g5E6b3+IPwS2ux4x7T8v5m3txpnQwLbbb3Q7kwDASklTxgKtJ4d6lDBTJGj8k7C3DEmQ9hbr9jCoIvlMyQ9+q3gNcrPZAuVh+954h6U7t8QR/LK0jqeXg7Nx910S33feh0Coqb4xqVfOPDPFl/AKiUspbmobM01qWMhgVMpZKIEzd0t1pm2EQ+CfYNmHRyDTvP7llxMAG0BdNnYJLp3Iv1/NGdl6P8Qrt1bc2jOdnTopi6ElxV/okSkG7JU/n/l/QFr3+9mYVzmo/0uSExU4X4EPrFmbmv0V1Li7MZDOuSgYiQ3AxEF9LDh9xiQg+RcUf5ATGbzlo9qEGsHMQMyoDZq1JXDCVgDyyLxmQqErMAu+ZZxUf8o0Y4hBNrq6Fy6ZmaT7hKDeNgwxC4SZq0HRWCaheJQDHolWX6RZaPDh0IEWncyTo7dEqzoyZWOO5kYGo+G08sn9Il33n3hTuIUrAhxVbwBTHOqcRI8aMvXVsY3ARY3VEmFZSttJRa0voYauz7PFeM6uONTGucNr6VjzHa5euisgoQGZSSSwxpP5ylOrhc8Adx9mAxEl5xECPje1tAvWfr+Jf
+ TD5hO7VC
+ 5vCvsuQzUyvQRLNJf9LOUlscMsQx2S/e687bvyNXR9UEv3GLf4a58r4KwIa3S7vwSFOVRneUCdV1qBarpvA2f9+veuNjpdRwG1VV5g9ZGPnVRs04H2h7OMfo+W1GdGy51NlISNqHxDFPdpRw6sxbc8KIKjM+Uz3AX01YHh5F+H4PFuAg3U20a/DnIHiJIJ5uvCC6oTlnbgG5x18JJhHfmaokF4n/63B8MIVfQx+QGzMztUsBFWoBslJ3DCBn2aG3DMjlDghoJJXiwmOR+8jw9zJMeKzQSEwzUym7LqerSEFM6gX4F0v4lcI629mCFLlT6exKE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,98 +110,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.11.25 01:36, Jan Polensky wrote:
-> The previous change added __GFP_ZEROTAGS when allocating the huge zero
-> folio to ensure tag initialization for arm64 with MTE enabled. However,
-> on s390 this flag is unnecessary and triggers a regression
-> (observed as a crash during repeated 'dnf makecache').
+On 10/11/2025 08:11, Alexander Gordeev wrote:
+> On Fri, Nov 07, 2025 at 03:22:54PM +0000, Ryan Roberts wrote:
 > 
-> Restrict the use of __GFP_ZEROTAGS to architectures that support
-> hardware memory tagging (currently arm64 with MTE or KASAN HW tags).
-> This avoids unintended side effects on other platforms.
+> Hi Ryan,
 > 
-> Fixes: 1579227fe0f0 ("mm/huge_memory: initialise the tags of the huge zero folio")
-> Link: https://lore.kernel.org/r/20251031170133.280742-1-catalin.marinas@arm.com
-> Signed-off-by: Jan Polensky <japo@linux.ibm.com>
-> ---
->   mm/huge_memory.c | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
+>> On 07/11/2025 14:34, David Hildenbrand (Red Hat) wrote:
+>>>>>   #ifndef pte_batch_hint
+>>>>> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+>>>>> index 5d2a876035d6..c49b029d3593 100644
+>>>>> --- a/mm/kasan/shadow.c
+>>>>> +++ b/mm/kasan/shadow.c
+>>>>> @@ -305,7 +305,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep,
+>>>>> unsigned long addr,
+>>>>>       pte_t pte;
+>>>>>       int index;
+>>>>>   -    arch_leave_lazy_mmu_mode();
+>>>>> +    lazy_mmu_mode_pause();
+>>>>
+>>>> I wonder if there really are use cases that *require* pause/resume? I think
+>>>> these kasan cases could be correctly implemented using a new nest level instead?
+>>>> Are there cases where the effects really need to be immediate or do the effects
+>>>> just need to be visible when you get to where the resume is?
+>>>>
+>>>> If the latter, that could just be turned into a nested disable (e.g. a flush).
+>>>> In this case, there is only 1 PTE write so no benefit, but I wonder if other
+>>>> cases may have more PTE writes that could then still be batched. It would be
+>>>> nice to simplify the API by removing pause/resume if we can?
+>>>
+>>> It has clear semantics, clearer than some nest-disable IMHO.
+>>>
+>>> Maybe you can elaborate how you would change ("simplify") the API in that
+>>> regard? What would the API look like?
+>>
+>> By simplify, I just meant can we remove lazy_mmu_mode_pause() and
+>> lazy_mmu_mode_resume() ?
+>>
+>>
+>> We currently have:
+>>
+>> apply_to_page_range
+>>   lazy_mmu_mode_enable()
+>>     kasan_populate_vmalloc_pte()
+>>       lazy_mmu_mode_pause()
+>>       <code>
+>>       lazy_mmu_mode_resume()
+>>   lazy_mmu_mode_disable()
+>>
+>> Where <code> is setting ptes. But if <code> doesn't need the effects to be
+>> visible until lazy_mmu_mode_resume(), then you could replace the block with:
+>>
+>> apply_to_page_range
+>>   lazy_mmu_mode_enable()
+>>     kasan_populate_vmalloc_pte()
+>>       lazy_mmu_mode_enable()
+>>       <code>
+>>       lazy_mmu_mode_disable()
+>>   lazy_mmu_mode_disable()
+>>
+>> However, looking at this more closely, I'm not really clear on why we need *any*
+>> special attention to lazy mmu inside of kasan_populate_vmalloc_pte() and
+>> kasan_depopulate_vmalloc_pte().
+>>
+>> I *think* that the original concern was that we were doing ptep_get(ptep) inside
+>> of a lazy_mmu block? So we need to flush so that the getter returns the most
+>> recent value? But given we have never written to that particular ptep while in
+>> the lazy mmu block, there is surely no hazard in the first place?
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index aae283b00857..0c1794656d7a 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -209,14 +209,15 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> There is, please see:
+> https://lore.kernel.org/linux-mm/cover.1755528662.git.agordeev@linux.ibm.com/
+
+I've stared at this for a while, but I'm afraid I still don't see the problem.
+This all looks safe to me. Could you explain exactly what this issue is?
+
+If I've understood correctly, kasan_populate_vmalloc() is called during virtual
+range allocation by vmalloc. This is not in a nested lazy mmu block (but it
+wouldn't matter if it was once we have Kevin's nested changes to ensure flush
+when exiting the nested scope). kasan_populate_vmalloc() calls
+apply_to_page_range(), which will walk the set of ptes, calling
+kasan_populate_vmalloc_pte() for each one. kasan_populate_vmalloc_pte() does a
+ptep_get() then, if none, calls set_pte_at().
+
+That's not a hazard since you're calling get before the set and you only visit
+each pte once for the apply_to_page_range() lazy mmu block.
+
 > 
->   static bool get_huge_zero_folio(void)
->   {
-> +	gfp_t gfp = (GFP_TRANSHUGE | __GFP_ZERO) & ~__GFP_MOVABLE;
->   	struct folio *zero_folio;
->   retry:
->   	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
->   		return true;
-> -
-> -	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
-> -				 ~__GFP_MOVABLE,
-> -			HPAGE_PMD_ORDER);
-> +#if IS_ENABLED(CONFIG_KASAN_HW_TAGS) || IS_ENABLED(CONFIG_ARM64_MTE)
-> +	gfp |= __GFP_ZEROTAGS;
-> +#endif
+>> apply_to_existing_page_range() will only call kasan_depopulate_vmalloc_pte()
+>> once per pte, right? So given we read the ptep before writing it, there should
+>> be no hazard? If so we can remove pause/resume.
+> 
+> Unfortunately, we rather not, please see:
+> https://lore.kernel.org/linux-mm/d407a381-099b-4ec6-a20e-aeff4f3d750f@arm.com/
 
-That looks like the wrong approach. If an architecture does not support
-__GFP_ZEROTAGS it should not trigger anything. __GFP_ZEROTAGS should be ignored.
+Sorry but I don't see anything relavent to my point in this mail. Perhaps there
+is some s390-specific detail that I'm failing to understand?
 
-I think the problem is that post_alloc_hook() does
+Thanks,
+Ryan
 
-if (zero_tags) {
-	/* Initialize both memory and memory tags. */
-	for (i = 0; i != 1 << order; ++i)
-		tag_clear_highpage(page + i);
-
-	/* Take note that memory was initialized by the loop above. */
-	init = false;
-}
-
-And tag_clear_highpage() is a NOP on other architectures.
-
-Gah.
-
-I wonder if the following would work:
-
-
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 65db9349f9053..56b82e116cb79 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -47,7 +47,9 @@ enum {
-         ___GFP_HARDWALL_BIT,
-         ___GFP_THISNODE_BIT,
-         ___GFP_ACCOUNT_BIT,
-+#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
-         ___GFP_ZEROTAGS_BIT,
-+#endif
-  #ifdef CONFIG_KASAN_HW_TAGS
-         ___GFP_SKIP_ZERO_BIT,
-         ___GFP_SKIP_KASAN_BIT,
-@@ -85,7 +87,11 @@ enum {
-  #define ___GFP_HARDWALL                BIT(___GFP_HARDWALL_BIT)
-  #define ___GFP_THISNODE                BIT(___GFP_THISNODE_BIT)
-  #define ___GFP_ACCOUNT         BIT(___GFP_ACCOUNT_BIT)
-+#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
-  #define ___GFP_ZEROTAGS                BIT(___GFP_ZEROTAGS_BIT)
-+#else
-+#define ___GFP_ZEROTAGS                0
-+#endif
-  #ifdef CONFIG_KASAN_HW_TAGS
-  #define ___GFP_SKIP_ZERO       BIT(___GFP_SKIP_ZERO_BIT)
-  #define ___GFP_SKIP_KASAN      BIT(___GFP_SKIP_KASAN_BIT)
-
-
-Likely we'd have to make __HAVE_ARCH_TAG_CLEAR_HIGHPAGE a proper
-kconfig option.
-
-
-Then we could turn the default implementation of
-tag_clear_highpage() into a BUILD_BUG.
+> 
+> The problem is kasan code invokes apply_to_page_range(), which enters lazy_mmu
+> mode unconditionally. I would claim that is rather an obstacle for the kasan
+> code, not a benefit. But it needs to be tackled.
+> > Should apply_to_page_range() had an option not to enter the lazy_mmu mode
+> (e.g. an extra "bool skip_lazy" parameter) - the pause/resume could have
+> been avoided.
+> 
+>> Thanks,
+>> Ryan
+> 
+> Thanks!
 
 
