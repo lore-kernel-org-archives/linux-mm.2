@@ -4,127 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F44BCCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:05:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EE0FCCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 749198E0007; Mon, 10 Nov 2025 06:05:05 -0500 (EST)
+	id 5190D8E000E; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 720D68E0002; Mon, 10 Nov 2025 06:05:05 -0500 (EST)
+	id 4F0CC8E0002; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65D168E0007; Mon, 10 Nov 2025 06:05:05 -0500 (EST)
+	id 4061E8E000E; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 55CB38E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:05:05 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1527212DBA0
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:05:05 +0000 (UTC)
-X-FDA: 84094415370.17.F255C78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 30953180015
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:05:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sa6AQQ73;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D1F38E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:16:11 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B1E7E4CAFE
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:16:10 +0000 (UTC)
+X-FDA: 84094443300.24.12DB6CB
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D74AEC000C
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:16:08 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762772703;
+	s=arc-20220608; t=1762773369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=57vcXoVaGnG9l4Hdh9tDUE5rwfPZ24UgvbT3aVj/BUk=;
-	b=muKOBZoMnqDI4FMDiWSLrc4ueEml7S6JyL+a9j3B4xTXtPGJKajAWYgMyRtdQCwCA3gTzd
-	3gjg0o/oAlfyI7iqjKTHY+9PcUR/9cvfAj8EvqzZOGFABNlnRyGBpB+mEryQ0ttcoJMllp
-	cU1gf+wYpLa/n6USShokTZLFbxRCANM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762772703; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=oRSXEGDPXpNtVK5+kTNlEj4aQG5TyKfDyS+DDaGalzc=;
+	b=Upc8xZqi38zQqxuytfD0lwjjQuCRUTVYEU/bikK+fdUgcPFH0tC/tLsOh9zYTAxX6ZjURn
+	C6y7BdZxYgd3aD8NA/3BbW0mZaDRSux7uYksW/cLu5UaqeZkxY6+7Cz5AoEShctc+HlE1D
+	DCCy85OPVJf4PqwuiupZkxbVS+d1niI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762773369; a=rsa-sha256;
 	cv=none;
-	b=rbzpL1CXaNwhLNjDZt8nVdlEJpsIPgTsgggV/OMXj/ItiYtIfWsFRKQTfslFdtbH7U/ICG
-	gVhSQRYwYPZ0hjdNsu/6zKAh2VC8pCTWcm0MtD0ChMQHXg3FhXI+H1yfXk6dPFaIu8OMuk
-	4dz7S89mDe/lz9FPVWI4mmJfJSzv/sc=
+	b=UHrf8vDXl9Hh+4P6rf+eUJX4yELc98yzTDrQU8g8jYLiA42DRUV6LVEGnxITAW3SXjyX6X
+	LuUNKUFWFz67Lp0lPmJs9iFlnaCwtC9zV9YvOlFVP+dQZURwpHPBa45AwVdUqCtlb+2Xjk
+	QzNlVSZlQDggNSkxnpOC9ucLTzGqfi0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sa6AQQ73;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 159B2446CE
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:05:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE85DC2BCC4
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:05:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762772701;
-	bh=57vcXoVaGnG9l4Hdh9tDUE5rwfPZ24UgvbT3aVj/BUk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sa6AQQ73O01w64nwho5tib1IxlyUdIJGtdtZ9Hkgxafn61iopBLbXLDF1Ba5V2i27
-	 WD6YFYVerjMnAIO9/muIJYDdpv8clNUqhwoewQ/kI6xBSZ7jVC6JHroti+9tXdEs20
-	 5EKZAMf9l+SFPX7I9+FCSHrvUm+bOAkz1wYS9nveGAjwkbxnr4Nd7GtPj5xjzuo5O4
-	 Fc7gKbOMrlamMfMeSGiNycyH/4IkhNBrCVvNpqk+BQzuNmMhCTvf5IxMmj7iK+EaLs
-	 ETWg/vuyz4jZTP7O28TnvbQhzcLZpoWBPH2g2qFYB1KLl4zsm3zT9ooSaICIThBSgK
-	 PLzO/EzPnjooQ==
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-63fc6d9fde5so2594833d50.3
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:05:01 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWQqCh47jE6mDIYwNn3Nr/XtbANndYpjWKqthO2yrvskxwErIR5jo+1gAAT7I5tzxOvXGbLA7M3Yg==@kvack.org
-X-Gm-Message-State: AOJu0YyieND8xYQnYWxNA47egyrs0seATgZKXEwQ8ffb/MuOwx4iHnMh
-	vy1tgwT9cwavjyQzWZDQ5+5HOHighK0Qb2xV4DlJmaJ4mNemR7eZJmZEVopEfc7agkZqJ5UV/VM
-	rP7NlpCyNDoja+0bh57eOS4mcKZD/fVUZMbJaFvqz+w==
-X-Google-Smtp-Source: AGHT+IGb5xn+sWB6zhZvawlKpKaY52jteK/NuAWw2b6kNJUT3KOwS3xUtwezxnsh77APdSOaFVEz79TEZy9y4Ini9II=
-X-Received: by 2002:a05:690e:2598:b0:63f:a089:ad11 with SMTP id
- 956f58d0204a3-640d45e57f4mr5199456d50.47.1762772699777; Mon, 10 Nov 2025
- 03:04:59 -0800 (PST)
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-340ba29d518so1795165a91.3
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:16:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762773368; x=1763378168;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oRSXEGDPXpNtVK5+kTNlEj4aQG5TyKfDyS+DDaGalzc=;
+        b=LqKTCfSyMhD2eO5nn418PSvi9Q/z2OUz7QGyjgSSzhRm0EcbeavxYGvH8zgn29agEw
+         J2Fe8kqV2T99ZfQ2wxEl3ZWqos330Ayppxz/BJmteKuDn04iq+sXVh0z/U1SD15EPPXI
+         zM0OfEdZ6zHLpYtWEDN7xIl9UKm8Mq09ZWg3ZnVY2xtSjtZwjlhjMXue8J7NCRJpYWp+
+         /jIQ28oAJPOkWha40RSrj7dZleAtdspzaJuzVOOH7UIhAqfVsFsj/7voSxx9XM1lPcEV
+         1KP+bDIJmEXFgMeUiQxsGDmxvNCXKzzdfy6l8yUr9GUEeJBvw5FdFJmah8H9jvb3zU8n
+         Bxmg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGZpgE4L4v6cSCkX7igVibzKlDaR4/stC75reScVBGcIqxF0ODpJQrVAiye1sZlzMHxNj1MdR2oQ==@kvack.org
+X-Gm-Message-State: AOJu0YzYObe0Lx857U9mdfN+f2bj9d1mpSgv1InjoxS8fwIT8Kmp/JSu
+	78PYSkDxHSqhdHl5570irSD+DqcaF3XNI4OXAZdAkWVpkMvcgXms7Ccc
+X-Gm-Gg: ASbGncsT2E6lhrdYjSolBFXnrLD8V6QW7VNK0bP3ozPHZh5dDhVsSfGQ6KjSmaMRuch
+	W1nvXhvOeWrZYqpbGPSzCVT9obNKhcCtU0PqdQWa5+jqg/GmAC9GAjSDrIeEMzISUOTvi8rn1d9
+	5KYt99DS47hJG9I/a+2DSgbv+2vt4TC36J82BOycgXaaZzxe7qbe9WHxw4k6PNL/z+0z09cdq9d
+	AsAHUqT/AA7qJ6MtJ4rchcGMC18v7pXg+Py782Wjnlrpd9z7lPDzR+Dtlp6ZWzVs+p/PMMhtnDd
+	Z5maAMgcv6/3GJWnEONNvFE93xDBI3ayNFKtcee1VMMW+mi43vOiaUQUclOsGdg5h+uZijtB7S+
+	T5dD2JNqjBn+6t1L5qVqXfYytNZUAnbimexeeEU/sBCjXpMbKsuzSHstPVyCCU5on3wI0leaQFC
+	bgwPk44ik=
+X-Google-Smtp-Source: AGHT+IFmx5F0C1FFfC1T3kTAEofW5SYHF07alyTgfqPESgG9ejsnGcr8FXW/IACqi7z7O6oK12Ycjg==
+X-Received: by 2002:a17:90b:1f8e:b0:33e:2934:6e11 with SMTP id 98e67ed59e1d1-3436cb898dcmr10302982a91.11.1762773367674;
+        Mon, 10 Nov 2025 03:16:07 -0800 (PST)
+Received: from EBJ9932692.tcent.cn ([2403:2c80:17::10:4006])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bad33c801d1sm8989478a12.7.2025.11.10.03.16.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 10 Nov 2025 03:16:06 -0800 (PST)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: syzbot+3f5f9a0d292454409ca6@syzkaller.appspotmail.com,
+	syzbot+ci5a676d3d210999ee@syzkaller.appspotmail.com,
+	david@redhat.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	syzkaller-bugs@googlegroups.com,
+	syzbot@lists.linux.dev,
+	syzbot@syzkaller.appspotmail.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH v2 1/1] mm/hugetlb: fix possible deadlocks in hugetlb VMA unmap paths
+Date: Mon, 10 Nov 2025 19:15:53 +0800
+Message-ID: <20251110111553.88384-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
- <CACePvbVq3kFtrue2smXRSZ86+EuNVf6q+awQnU-n7=Q4x7U9Lw@mail.gmail.com> <5b60f6e8-7eab-4518-808a-b34331662da5@lucifer.local>
-In-Reply-To: <5b60f6e8-7eab-4518-808a-b34331662da5@lucifer.local>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 10 Nov 2025 03:04:48 -0800
-X-Gmail-Original-Message-ID: <CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
-X-Gm-Features: AWmQ_bl_ugrcb7Xqm2Eobi_WepJs_DP4Kj2CRqbuSy5_pOEO8kL68WELcSVKV30
-Message-ID: <CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
-Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
- entries, introduce leaf entries
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
-	damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D74AEC000C
+X-Stat-Signature: qxiugrmn66coqd6qd8edphi669byqsgf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 30953180015
-X-Stat-Signature: azgem3ugn3aymqsa1s5fp8tkkynd7re8
-X-HE-Tag: 1762772702-190116
-X-HE-Meta: U2FsdGVkX19yAGzMt1DFTWJMzXJDsuFjY3K927g1CU9pMKNchH8ZafBu9Vn+Hg0jpBMNVlXfarCcrCSdR2+qxytlcbiezWnxa36X3Pgr6gJdl3+tqQMV0xXMOPNHQjO+kfCMquUshP+wAXm3q4llEYrfR0oHpzTNWUjMqbbi9v1G6iK+Ulcu4P0lh6wiekQkO/P8jrQsH0hMFMP2eBlGS1Vk+INzb4xzgCmv2JkQoBH5qAJoccgH3OxeaMWLl5Pj1x677jkxsn79R0cEBVAqImJfP9ob6FrpJCys2232EITRMVJZ/TXdSaCEioTcR3XgHselCkASw13Ah4A1VnhjlRhPXZVTK08LiO3WYoHSmyBRy023AXdoSSPW8B4nLCcMNc0GJMwIo3HrEXxWdl7UV4kWrwLZ9IlzepU3hfJIPFS5m/ofvykyFaWxbeIKF4tjPi7y8657y17xAM1F3lFck7DFhR1FWeUH1bOS3C8b3hTRDuWRxTbnPdJXNEuAWuYmQQNYB5E9mnt+v1J7EK3K8id+PhmbEWN2JarXGk8zLKs8GM+ibhRNeMo+ZZ4gbbiC2fUEaDQPjpzu8OPdQszvJp20WWAUCZcSvC5EplW8fyaH3khrvYMhynSPGMhZ/T/IJD3SdF79TT6UybivStSa8p0ZdsVoOIduEb+7NN9EShKVOq7UPDHwfSYFOycJcr1IuSVQvCj4z6N3PMl9Z/26lwCaARm5EBs9TpltaG0DtccVAqXmIfjOCHkxIS9gpOokLp9GiBjE+Lf1xkwC27653FMI73HlhAT6QcegVsg6UNYLwHGAx4pFVP7EsrqmXYcbZMGG5PnIC84abMHHc5lK61CJfcrqzzJvFk3tF7Tpzhh2CC7zauhvkJldKMLnyNf7jQqzj3M/iUHgIU0tCUr4TLLTDPYYkSkAv+Fj4iUGpqGfJ5ApX3hL5rVSEoQTaHyaNXXjbsMavf2x+u/GM8R
- x+KrZuFw
- ds9xpiwF2xTV/lFaJl2kMys0qKC9SmR76t/HpnLvHt3v2czhoIkMII4nFHuqSws1WQuhEsT8Denk59QKjk8zlhgyZ9ERc0Ob7vcxwR+xKUg5UkfQ=
+X-HE-Tag: 1762773368-172842
+X-HE-Meta: U2FsdGVkX19LLDgzGpNNqi3cDvpVH8AT2E6AtUZaPrFeeQ8agKAljdLGUngcBCPM/iYqBP3Ta5dj7+dRE6R92NxPugrMjx2+RyEutZTavM4VuZswbjaUgUV4dwXXMeXajMA8oEYbyHAxi+CdDNg+rqeYxsUdfUPP6rgBxchq9PCLNhz0V4SMh0WwpAA/CNYe8cEhM1vMAtYLeDj8kKdvbkguL6sOFUNcMNETS0aB/VTtiYDldmyHmV1ZYn1+ODSsyzcbAtLtjRHuGOXqKinNuINz6NecFlP99Lh6af3qBTrcUiT5R57/w0VWJTdnYubmt/8IqqyS1Hu7+Yp7AXycTD/dzCk8tA9Ce/i9cwikdt6P2iJCGAnHde5hdAAr1OgYfq/tO4PvT1r73NxXY1n4kaWcAfkbmcX1qRi1BhPxs7XSer50nfxJTV8YfLwzmtlFhDLBIO8LUpU6qZpk3JrfMMTfCMOwDmGB4EuP57ew79Lze9KF4QTcf9wiSC7lF5jkcmhqeX9niC9ty/fR2/rqeg/EiqPFYphoERx0gCvtveYFa71QYy5mGWQhhpkTNmgeP7j+1ppNjAqgtZXzPqafPZYz12qGgm8wYqGxSN8fEqZyBNoinous4QGTNU7Wx6TUkWfzMQRrI040VObQ4FmSFegY6dgapU3pbwMOlLBw2WXI0g7mrPJy4KAZ3YqWBIblcSbhExE3PkmJmMc91vg20k8vT4vtkZPiLmcqs3+6hABCJkWu0TiSnGMPRKOUTJmagLoly59ETlAyoFNIeZEfnV6C05ud0NOOfitd/+ldhH4n4YM1VD4MYivvN2MFfUU0KWuLzE0Td0XfKRpEnqpz65VUXF+H/p0Vy7tENr16ZNSuaa9ZBPxejVIDbTBZ+hyAgZwfQFr9h9EBaL4gBUNPEFsf98zusZqUuRYVFPqciJAyKJN9E1zNKsyJm5C9L8lEiUabtOnNmjnEO+PbVDy
+ SckNdmFd
+ 2tnlekCVhT/i33LgQhynIDUxDgcjbpDU+QFNQ4dlSvRKqMtfz7T6CbTAkpDtE6L9x1sUCeBtUP6MefB+XPXtjpBA5D9fReDpvZdcUFFH68u4JWzc3MJb2OZWpD8r8T7THDjQr62pObv4MU1wTHyzyvohL4E7/WNzE+b774iUyThSbkeXMTWnPj0LI8zCWstKlU52FhxfK8/ou9TmcqMdz3Gw4huKXwn/FKogYGui8GRy/f9srOdZbFMOgkOi9xPlTlX5vMCkSAmEpPnVdKBsbrGN1WVlRajFgcVmXbTK6oOlPS3HpD+n7ShsBH9QT0XslIHDcCwKu33CjrhGnUJpa2347msWuiEjI8RCCaHjTSyDqEwXG/Yz2h0DBnX2kcYxtSinMxAi7LCESGAaQ7Ea+pwcpJfAdi9SAqFfGNFgMN1LBdwAge+VwIzUgW10TuujS9rF474/NMCEe457Or8jm2/iiu9x8JRWtozq/Rdf8bQE19tzh7KhlsWkOH+F+jnz8qj5xk8LJiLC3RenmV6fC9IYdOE651LlckaBlitzClzYmuv5tGP2tBlqRaerrZYB8RCsbB8ABPZe19S2YofOrAEyqOyimZBz0ZZ2kSg5znC+w4+vAt06dYzrYUM+NonOonr0XpTvIqYc4vOg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,122 +113,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 2:18=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Sun, Nov 09, 2025 at 11:32:09PM -0800, Chris Li wrote:
-> > Hi Lorenzo,
-> >
-> > Sorry I was late to the party. Can you clarify that you intend to
-> > remove swp_entry_t completely to softleaf_t?
-> > I think for the traditional usage of the swp_entry_t, which is made up
-> > of swap device type and swap device offset. Can we please keep the
-> > swp_entry_t for the traditional swap system usage? The mix type can
-> > stay in softleaf_t in the pte level.
->
-> Ultimately it doesn't really matter - if we do entirely eliminate
-> swp_entry_t, the type that we are left with for genuine swap entries will
-> be _identical_ to swp_entry_t. As in bit-by-bit identical.
+From: Lance Yang <lance.yang@linux.dev>
 
-In that case you might just as well leave it as swp_entry_t for the
-_actual_ swap code.
+The hugetlb VMA unmap path contains several potential deadlocks, as
+reported by syzbot. These deadlocks occur in __hugetlb_zap_begin(),
+move_hugetlb_page_tables(), and the retry path of
+hugetlb_unmap_file_folio() (affecting remove_inode_hugepages() and
+unmap_vmas()), where vma_lock is acquired before i_mmap_lock. This lock
+ordering conflicts with other paths like hugetlb_fault(), which establish
+the correct dependency as i_mmap_lock -> vma_lock.
 
->
-> But I did think perhaps we could maintain this type explicitly for the
-> _actual_ swap code.
+Possible unsafe locking scenario:
 
-Exactly. Please do consider impact the actual swap
+CPU0                                 CPU1
+----                                 ----
+lock(&vma_lock->rw_sema);
+                                     lock(&i_mmap_lock);
+                                     lock(&vma_lock->rw_sema);
+lock(&i_mmap_lock);
 
-> > I kind of wish the swap system could still use swp_entry_t. At least I
-> > don't see any complete reason to massively rename all the swap system
-> > code if we already know the entry is the limited meaning of swap entry
-> > (device + offset).
->
-> Well the reason would be because we are trying to keep things consistent
-> and viewing a swap entry as merely being one of the modes of a softleaf.
+Resolve the circular dependencies reported by syzbot across multiple call
+chains by reordering the locks in all conflicting paths to consistently
+follow the established i_mmap_lock -> vma_lock order.
 
-Your reason applies to the multi-personality non-present pte entries.
-I am fine with those as softleaf. However the reasoning does not apply
-to the swap entry where we already know it is for actual swap. The
-multi-personality does not apply there. I see no conflict with the
-swp_entry type there. I argue that it is even cleaner that the swap
-codes only refer to those as swp_entry rather than softleaf because
-there is no possibility that the swap entry has multi-personality.
+Reported-by: syzbot+3f5f9a0d292454409ca6@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/69113a97.a70a0220.22f260.00ca.GAE@google.com/
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+V1 -> V2:
+  - Update changelog
+  - Resolve three related deadlock scenarios reported by syzbot
+    https://lore.kernel.org/linux-mm/6911ad38.a70a0220.22f260.00dc.GAE@google.com/
+  - https://lore.kernel.org/linux-mm/20251110051421.29436-1-lance.yang@linux.dev/
 
-> However I am empathetic to not wanting to create _entirely_ unnecessary
-> churn here.
->
-> I will actively keep you in the loop on follow up series and obviously wi=
-ll
-> absolutely take your opinion seriously on this.
+ fs/hugetlbfs/inode.c | 2 +-
+ mm/hugetlb.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Thank you for your consideration.
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 3919fca56553..d1b0b5346728 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -447,8 +447,8 @@ static void hugetlb_unmap_file_folio(struct hstate *h,
+ 		 * a reference.  We must 'open code' vma locking as we do
+ 		 * not know if vma_lock is still attached to vma.
+ 		 */
+-		down_write(&vma_lock->rw_sema);
+ 		i_mmap_lock_write(mapping);
++		down_write(&vma_lock->rw_sema);
+ 
+ 		vma = vma_lock->vma;
+ 		if (!vma) {
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index b1f47b87ae65..f0212d2579f6 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5110,8 +5110,8 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
+ 	mmu_notifier_invalidate_range_start(&range);
+ 	last_addr_mask = hugetlb_mask_last_page(h);
+ 	/* Prevent race with file truncation */
+-	hugetlb_vma_lock_write(vma);
+ 	i_mmap_lock_write(mapping);
++	hugetlb_vma_lock_write(vma);
+ 	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
+ 		src_pte = hugetlb_walk(vma, old_addr, sz);
+ 		if (!src_pte) {
+@@ -5327,9 +5327,9 @@ void __hugetlb_zap_begin(struct vm_area_struct *vma,
+ 		return;
+ 
+ 	adjust_range_if_pmd_sharing_possible(vma, start, end);
+-	hugetlb_vma_lock_write(vma);
+ 	if (vma->vm_file)
+ 		i_mmap_lock_write(vma->vm_file->f_mapping);
++	hugetlb_vma_lock_write(vma);
+ }
+ 
+ void __hugetlb_zap_end(struct vm_area_struct *vma,
+-- 
+2.49.0
 
->
-> I think this series overall hugely improves clarity and additionally avoi=
-ds
-> a bunch of unnecessary, duplicative logic that previously was required, s=
-o
-> is well worth the slightly-annoying-churn cost here.
->
-> But when it comes to the swap code itself I will try to avoid any
-> unnecessary noise.
-
-Ack.
-
-> One thing we were considering (discussions on previous iteration of serie=
-s)
-> was to have a union of different softleaf types - one of which could simp=
-ly
-> be swp_entry_t, meaning we get the best of both worlds, or at least
-> absolutely minimal changes.
-
-If you have a patch I would take a look and comment on it.
-
-> > Timing is not great either. We have the swap table phase II on review
-> > now. There is also phase III and phase IV on the backlog pipeline. All
-> > this renaming can create unnecessary conflicts. I am pleading please
-> > reduce the renaming in the swap system code for now until we can
-> > figure out what is the impact to the rest of the swap table series,
-> > which is the heavy lifting for swap right now. I want to draw a line
-> > in the sand that, on the PTE entry side, having multiple meanings, we
-> > can call it softleaft_t whatever. If we know it is the traditional
-> > swap entry meaning. Keep it swp_entry_t for now until we figure out
-> > the real impact.
->
-> I really do empathise, having dealt with multiple conflicts and races in
-> series, however I don't think it's really sensible to delay one series
-> based on unmerged follow ups.
-
-If you leave the actual swap entry (single personality) alone, I think
-we can deal with the merge conflicts.
-
-> So this series will proceed as it is.
-
-Please clarify the "proceed as it is" regarding the actual swap code.
-I hope you mean you are continuing your series, maybe with
-modifications also consider my feedback. After all, you just say " But
-I did think perhaps we could maintain this type explicitly for the
-_actual_ swap code."
-
-> However I'm more than happy to help resolve conflicts - if you want to se=
-nd
-> me any of these series off list etc. I can rebase to mm-new myself if
-> that'd be helpful?
-
-As I said above, leaving the actual swap code alone is more helpful
-and I consider it cleaner as well. We can also look into incremental
-change on your V2 to crave out the swap code.
-
->
-> >
-> > Does this renaming have any behavior change in the produced machine cod=
-e?
->
-> It shouldn't result in any meaningful change no.
-
-That is actually the reason to give the swap table change more
-priority. Just saying.
-
-Chris
 
