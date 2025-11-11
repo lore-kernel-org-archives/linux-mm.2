@@ -4,176 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7D7CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:16:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA546CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:19:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D76F8E0016; Tue, 11 Nov 2025 04:16:56 -0500 (EST)
+	id 060488E001B; Tue, 11 Nov 2025 04:19:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5884D8E0002; Tue, 11 Nov 2025 04:16:56 -0500 (EST)
+	id 037AE8E0002; Tue, 11 Nov 2025 04:19:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44FA18E0016; Tue, 11 Nov 2025 04:16:56 -0500 (EST)
+	id E8FD68E001B; Tue, 11 Nov 2025 04:19:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CB098E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:16:56 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C662888E3B
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:16:55 +0000 (UTC)
-X-FDA: 84097771590.09.824A379
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5A35C1C000C
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:16:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="L3nW/fFa";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pTm6AU7L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="L3nW/fFa";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pTm6AU7L;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D0A3E8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:19:55 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 753E9C0494
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:55 +0000 (UTC)
+X-FDA: 84097779150.08.65E7E0E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 934B14000A
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vGClO8NE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762852793; a=rsa-sha256;
+	cv=none;
+	b=q9hmxpFpYOMAMt1TQTGxJ2RaWNH7vtRFqpQsoDrLTO1SVm3XbTwKh5mm0ygTEy2Njc4BPS
+	xO+cpafojQEmNkkwTzK9U9luvK3njNguR6RRliRqVxkPbUocwEnng/VN4oQSsJnHS9D0rI
+	neTEGbUMsGnOAXknM/AzXLk+7CDa4ZQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vGClO8NE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762852613;
+	s=arc-20220608; t=1762852793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1tITnDQcZwLtSq9sYlYGisYchpGvQH4gHZAxbZ0YeMQ=;
-	b=LpVU1bjwZ8CLgUsfvUYOa6N2OW1p+eK2EZVZKSCWxbVRn12B7sujQTlOwPl0uQQZKf59pU
-	G4NqZW6AI5nXNBCLlpfGNYR5U2U5N6L5k1eVa6OZhp9OD50xKnPAo9QxtzXVSJpSLec671
-	7ZIjqUojFq7clC2CgFkUHGG5v78MVZc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="L3nW/fFa";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pTm6AU7L;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="L3nW/fFa";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pTm6AU7L;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762852613; a=rsa-sha256;
-	cv=none;
-	b=eOl0QImmdwuUFdFauDswIldiFi9rLtVsm54PR4UZd3j49CckbQuy5PJhQIKz8Yv7ECd5D1
-	fNfH5bcLU4m0r6n1KW5JuHZBtm16yxg+hc72pYvvNbxr2iH1kiz9D10xDr801uFglMl3th
-	Cf3MffD4DtLk2GZm0OiWhcmwLlTVeNw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5A8FE1F456;
-	Tue, 11 Nov 2025 09:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762852611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1tITnDQcZwLtSq9sYlYGisYchpGvQH4gHZAxbZ0YeMQ=;
-	b=L3nW/fFaLv4zwDa72oYLR0sm1vPjqEBaO1aYN+GVSO8LonlDF7G5Ybn7MpW2YyAMl5kDM1
-	YKVotafOkNeqk9qR6kf9vLFwySNiEx04FlKYzmfEltIrHasNCTHgvp9CitsbrJPQgu8XwH
-	Q/yC8Dxn22wD4Q4as0b6FtsU4yljuH8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762852611;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1tITnDQcZwLtSq9sYlYGisYchpGvQH4gHZAxbZ0YeMQ=;
-	b=pTm6AU7Lu55VgSXW+gkZS4jyRPHrv+gNJLEkyRcyjr6xGbxeecN6W2t2n0xeGPQej1hF7v
-	9cIohtCC0UjvhHBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762852611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1tITnDQcZwLtSq9sYlYGisYchpGvQH4gHZAxbZ0YeMQ=;
-	b=L3nW/fFaLv4zwDa72oYLR0sm1vPjqEBaO1aYN+GVSO8LonlDF7G5Ybn7MpW2YyAMl5kDM1
-	YKVotafOkNeqk9qR6kf9vLFwySNiEx04FlKYzmfEltIrHasNCTHgvp9CitsbrJPQgu8XwH
-	Q/yC8Dxn22wD4Q4as0b6FtsU4yljuH8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762852611;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1tITnDQcZwLtSq9sYlYGisYchpGvQH4gHZAxbZ0YeMQ=;
-	b=pTm6AU7Lu55VgSXW+gkZS4jyRPHrv+gNJLEkyRcyjr6xGbxeecN6W2t2n0xeGPQej1hF7v
-	9cIohtCC0UjvhHBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3DC8B1489C;
-	Tue, 11 Nov 2025 09:16:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id c4vSDAP/EmnmYQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 11 Nov 2025 09:16:51 +0000
-Message-ID: <bc419597-238f-4858-bdd3-98b752312c27@suse.cz>
-Date: Tue, 11 Nov 2025 10:16:50 +0100
+	bh=RXZ2/EXzi6r7HrFOiKQfxybykgs0x88PVJCYtHof4Hg=;
+	b=aYnUwUnJSMHoUVDKOBb88gVnWR6h+q2qZkPpGebP3A1gWVbLblAhSyGaIWVin7QOAn/6g/
+	xe3LvmvZoQvm1Dqa2Ie1AEjBzw39gX3PFAjEmvZJ7LSjaPzUPVHeB1cqPJg1++KkiLKa4c
+	IiSUGuOpEoyx2xuQIoxHahwPtljVIhA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1EE8C61923
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D2EC116D0
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762852791;
+	bh=dVuTtHvnVZEobITrk9FyDHPMZXl5yRe3omNS/JcWa64=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vGClO8NE0KorCNpVq7YjjPoJy4vppAc1exbgNg08YFojL+dCZUmXYan4Wftv6Gmgv
+	 GEa5Cfno24p5jxvYB/qDkaZk9C5q5w3kRLHUbzXznZ6oolxTsaWOZHMZ30eLed0sXX
+	 Egq/iKpmX81Z2Ojm2N/HTq94Olgee+8BMC8ZQeiiffDB8QDkji4mseoLtGvE7ZrhYn
+	 dP6Lyes8MmmyzNcHmC8Tv8TlcJnJCoZxEs+Jh5/+z/VVpJKPEC43Am3km0NAnjA2Au
+	 zZAMssPqCgroICwsfk9a9tSlMA452D+MVB2qo029A00ncGyiyFIJrvq/hmj6vDJQzp
+	 +9zlwlmMK1NvQ==
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-78802ac2296so9966987b3.3
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:19:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW0sOS8diYPvsuy66RSxu4EjuYRWrIEZXU3+Sgg+NwrrUHcpmbRTJhQX/pyibxhrs91zldyTg2NBw==@kvack.org
+X-Gm-Message-State: AOJu0Yyq8EYs/a+KEN8BwgfJs2HQOLa3rb6IM9q+IoeQoM5iavBYc9i3
+	HQaSHHCoDYBZBn2XNxAki9QiHjs1vJg1g3uJeB63G8Nd51Zjjp6BHmyd3VS+yR2lIqDNnKgGm6u
+	1wg4VgalAnlEWs5pF68mHCUL3HjRW4N64esAv9enf+g==
+X-Google-Smtp-Source: AGHT+IE7U/hfMH//RfLupvft/VoqtwYRbFfH+avnkA19gWihvYeZ3A5/gr7GLzY5y0EQ9dDLUE90MgX0MeQiFlzqDkk=
+X-Received: by 2002:a05:690c:3341:b0:786:6b92:b1f5 with SMTP id
+ 00721157ae682-787d5439064mr100470067b3.47.1762852790107; Tue, 11 Nov 2025
+ 01:19:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm: Use vma_start_write_killable() in dup_mmap()
-Content-Language: en-US
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
- Chris Li <chriscli@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-References: <20251110203204.1454057-1-willy@infradead.org>
- <20251110203204.1454057-3-willy@infradead.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251110203204.1454057-3-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 5A35C1C000C
-X-Stat-Signature: a49guq4ya484gy9weggo66b5xkkzstbj
-X-Rspamd-Server: rspam02
+References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
+ <CACePvbVq3kFtrue2smXRSZ86+EuNVf6q+awQnU-n7=Q4x7U9Lw@mail.gmail.com>
+ <5b60f6e8-7eab-4518-808a-b34331662da5@lucifer.local> <CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
+ <3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
+In-Reply-To: <3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 11 Nov 2025 01:19:37 -0800
+X-Gmail-Original-Message-ID: <CACePvbUHCrNNy38G4fZP92sdMY7k5pRQkcfo=iPp0=10T5oCEw@mail.gmail.com>
+X-Gm-Features: AWmQ_bkffqW5YvxjFtC7ucCTeEYe-oG-VIvciMpKUSHdG9LRrce-7fJweHmox0c
+Message-ID: <CACePvbUHCrNNy38G4fZP92sdMY7k5pRQkcfo=iPp0=10T5oCEw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
+ entries, introduce leaf entries
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
+	damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1762852613-262334
-X-HE-Meta: U2FsdGVkX19wOovCs3Ih4tbYkCybsKDaJPp1e5PNDinTxhOd+AlV8e62TRZNt+Ww9rmR5ObXzpz+kzZghhRkJhKMaiL4sMhTReVz9ytTn44MgIn5pcu0F1l8ZIElSCWHBeQYsoxjleCHHrnNGGkgBUW8yVx5lV2T2l7MuXF8w0QeG316M7DSKulZ0aeo83IeMEUdBExipbWgh9ncpUdrrqUqKkq9ezFxzbsapbReiLyf46h008B5t8fcS3JMLhG4p63x4SGMZ+Kjbtt3LKSnyISVFQpeURKPbpaeRCdn19u/FDpSvTIou5qmjdZUZ9drJD24WEJXFh9kz5qpg62Pg8NkOSvHx+Y2Hbf2ktAUJXX8B3SUHmTcdGdHYcYKiaQnMZalPNkfjz2EhdCjazl4BkytMJeNclJRNr6yINxmeNUJJC1RSRNOzA+NXCUJDKbPgTIpeqcYvrPXWmihKIvWeQKktDgB0sprXFcK/kP1CaWXeVAP4XAq+II7Fv6lVxmZVWxfS4qu0oxm+i3Zppy+c+JOBCAHdyOUMco3SfUg3dZvibpS/kOpzB1HMG6y4EqsbONIgJOGARX9dnYHLCdJh9b2afPzboQgZjNnYaoK+lqee6m2pnrkhootJHdR00U1zlPJW92yAjplIRl6HfM3tG2JPCj1Dn6Y2SL2EZ2Fl5pN6rMK71GKTDr9kuVfDW38EgGFI+eNYEEc95Q35UsrLRy5mDRPkXtt6mCX05VIQtXIYnVyIgqpqFo3CTv3t0/KMWnH99yz+oknB+cCc6umBWe59RSNB30JY7YUd5/KtwpHR0niO7HTaVtBgwrVfWhSh/WBkyQxRDGcV9S7EQXA8pxHQKGbBHe2VRQTegnuBEpuhjWrCbGQCIGFxaChlxLvlCQrY1SiKK2pMLOsy+8JOwFMqySTh+ZlIIYfXHR52aw3Fa6PzQ+2BYtugeLOUtHmvZZirEDCeFjNzjtPYIN
- eg6G2ui9
- uHQq2GmA70O2eMuTn4vK8xBdlRNP4J+jv4lb+qj6JhIz3dFktNNB1OjTMtLaHMycQQDJ0AsigfuZvxbzmWFBxV6l7UnxPp59IC0RBgyRmFdUba+GwIScKUhBwmVHDdjKEksT6qT4JJkqKI9Xu2PqsqvYHmPTkfdMO3XZVmXg3fRaGyqSkZgjY+N45m8wOzS0dJ2Bm91xFM/UywtwCMCHibCzIUWuZlCTwXuaTdUR4VZQE4X3v5aqOtJT9yCUnADAPWamparSDxrtCWzVIX5KTWZF7U+VaYX9Az8/Lsw/Nnpfg5jPA/tf1iiBIrO23+v4qkxK5smy6iV89yyDGqIVLyQ4oQq3mWIC3ERI/JHSmCNaXW05azgSnSTdup8PN2yFHra07ShMQCRwY2M9BGhxmjO2ovmSWIn17FHu2MyuGwTeshJ+z9qlJjeGKAmZjDa1WQ4sjC0fCy+hfH7KmBh5ExTPitD7dYtEvmLPb
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 934B14000A
+X-Stat-Signature: moxhhy8snxa6wwoo9redxk71bwwgh397
+X-HE-Tag: 1762852792-103736
+X-HE-Meta: U2FsdGVkX1+3KOW/GPGt+Ys4H8iPCa8rNIqvMszt0LpNwnRxUh6V/FtYDRbbKSYHbfz8TDQCjGnyrmiSUA4Iv+G/4drQFjF9QuASL9ceKCPCWz7SsqetQ3pvkxxtIcvrw6Bb+b2IGucB4+pMpwGA2+5CG7bHR2b5SHVGtjU9RMliTVktqfJGSStLEKlriTxKtLyq+UzTKufuxkxei5OMjlabbh96x+mhVxIf4PJQcY6MnEmgkd0y23y1gej5qVeRYDLhFh47pMTD2sj5uJSB5Rf1RJnpPlHZyBBlGduhf+IS9JzmEZ2sJ8GfPGNsX0PtfJTQvCispopaO+RDbOtWB7d89xFIYJaHYFtpcEu8C1rZXdtGtSLG8tBMIyFgvtvf1eFv5TfpF9rnClpP5xfZAIJPpwyxMLTuWwZIq/0slpZ7SGsUC/f1LJnmnRl0peYxJldTBz+ljzUIzqk5tzF6Opjs7pfSnp3ZLO3xm05aPIuYsJGA5H5pB161ZFXJ26gkIfKnvqb2Sq3vK+9MpKHFGj1pPqmsYX0KNPR4ZubEw1APtwwOCfPkCMqsAueHKB/AarIF/TitDWADxxifKYyYgj7jqv5kCWj41Nt06m7QPM/dr1Gl4omEy8dvFMOn4e/KgnMOYDA7oymUY8PQibgOGvJs4QveZkPNkIWvjyQWPWH4q1WuaasODrJEXxaNn01+3kMabN3qo3Yo8hhmHA+1wrCE06zn6puraIwDViqx2eJ02fERQmwUIoAziTT1Uj1r8L0ZFNxqkjUyYdlhLVPG8vC0ftTtOwTx3b4Ok/1LxNEiYHhxYLOsvfr3ghtsZzcVWfxzcdSDkkm3t3Ql7YfR2P7rayop/C9tGYXEMrq7sBIka4qZep7Xl8CYfo5Q40gELIvU5moIlWQfLBnh8oY5SmXe2bbjF8/P4CVghou90mPqeXv4irn3ZqLifOi1/2GywsnQ+jVsFIL/x6Vik4x
+ QNjL88Fo
+ HjP8esGjeHvPnkwaeAwtABV39Y11+pFr068cAmSZ5hcAO/n0yfJKKr0OZsfZGWO1fktum9GL8sEScv62toO+K4zuw9OXxk68cI4GbobWVYll3oVB8Q6xChXDAoxutG6R+Ni6sqG9Dxpnx64ojXoOUCkwhsBufZNBuITAxxXFQWDd+HjG2VhlxdGLPELXW3PGMB97GMx6bOjyFJ6egQ/JPApoOHuJys64HPp1W8Kovq9s6YmayNIFhbD0dtyQuA3HVbsOrIxva32lZRNO2160xRMsJXcJB18KlR7etmh/B2NsQeEf60jJEVCozFzIkk63W3K701n9FDqUbS+fPV6pnLzMUP+wRLYCfiGsQ2QQAjRw01ZFK3oARzNRnMPyj2PCPOlC82EqqIqRgjwjK03ix0MQcIn510EVJVIc1Mnl/Q7tOm6g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,52 +135,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/10/25 21:32, Matthew Wilcox (Oracle) wrote:
-> Allow waiting for the VMA write lock to be interrupted by fatal signals.
-> The explicit check for fatal_signal_pending() can be removed as it
-> is checked during vma_start_write_killable().  Improves the latency
-> of killing the task as we do not wait for the reader to finish before
-> checking for signals.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+On Mon, Nov 10, 2025 at 3:28=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> > > > I kind of wish the swap system could still use swp_entry_t. At leas=
+t I
+> > > > don't see any complete reason to massively rename all the swap syst=
+em
+> > > > code if we already know the entry is the limited meaning of swap en=
+try
+> > > > (device + offset).
+> > >
+> > > Well the reason would be because we are trying to keep things consist=
+ent
+> > > and viewing a swap entry as merely being one of the modes of a softle=
+af.
+> >
+> > Your reason applies to the multi-personality non-present pte entries.
+> > I am fine with those as softleaf. However the reasoning does not apply
+> > to the swap entry where we already know it is for actual swap. The
+> > multi-personality does not apply there. I see no conflict with the
+> > swp_entry type there. I argue that it is even cleaner that the swap
+> > codes only refer to those as swp_entry rather than softleaf because
+> > there is no possibility that the swap entry has multi-personality.
+>
+> Swap is one of the 'personalities', very explicitly. Having it this way h=
+ugely
+> cleans up the code.
+>
+> I'm not sure I really understand your objection given the type will be
+> bit-by-bit compatible.
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Just to clarify. I only object to the blanket replacing all the
+swp_entry_t to softleaf_t.
+It seems you are not going to change the swp_entry_t for actual swap
+usage, we are in alignment then.
 
-> ---
->  mm/mmap.c | 12 +++---------
->  1 file changed, 3 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 5fd3b80fda1d..03773fe777b7 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1750,7 +1750,9 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
->  	for_each_vma(vmi, mpnt) {
->  		struct file *file;
->  
-> -		vma_start_write(mpnt);
-> +		retval = vma_start_write_killable(mpnt);
-> +		if (retval < 0)
-> +			goto loop_out;
->  		if (mpnt->vm_flags & VM_DONTCOPY) {
->  			retval = vma_iter_clear_gfp(&vmi, mpnt->vm_start,
->  						    mpnt->vm_end, GFP_KERNEL);
-> @@ -1761,14 +1763,6 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
->  			continue;
->  		}
->  		charge = 0;
-> -		/*
-> -		 * Don't duplicate many vmas if we've been oom-killed (for
-> -		 * example)
-> -		 */
-> -		if (fatal_signal_pending(current)) {
-> -			retval = -EINTR;
-> -			goto loop_out;
-> -		}
->  		if (mpnt->vm_flags & VM_ACCOUNT) {
->  			unsigned long len = vma_pages(mpnt);
->  
+BTW, about the name "softleaf_t", it does not reflect the nature of
+this type is a not presented pte. If you have someone new to guess
+what does  "softleaf_t" mean, I bet none of them would have guessed it
+is a PTE  related value. I have considered  "idlepte_t", something
+given to the reader by the idea that it is not a valid PTE entry. Just
+some food for thought.
 
+> I'll deal with this when I come to this follow-up series.
+>
+> As I said before I'm empathetic to conflicts, but also - this is somethin=
+g we
+> all have to live with. I have had to deal with numerous conflict fixups. =
+They're
+> really not all that bad to fix up.
+>
+> And again I'm happy to do it for you if it's too egregious.
+>
+> BUT I'm pretty sure we can just keep using swp_entry_t. In fact unless th=
+ere's
+> an absolutely compelling reason not to - this is exactly what I"ll do :)
+
+Good.
+
+> > > So this series will proceed as it is.
+> >
+> > Please clarify the "proceed as it is" regarding the actual swap code.
+> > I hope you mean you are continuing your series, maybe with
+> > modifications also consider my feedback. After all, you just say " But
+> > I did think perhaps we could maintain this type explicitly for the
+> > _actual_ swap code."
+>
+> I mean keeping this series as-is, of course modulo changes in response to=
+ review
+> feedback.
+>
+> To be clear - I have no plans whatsoever to change the actual swap code _=
+in this
+> series_ beyond what is already here.
+>
+> And in the follow-up that will do more on this - I will most likely keep =
+the
+> swp_entry_t as-is in core swap code or at least absolutely minimal change=
+s
+> there.
+
+Ack
+
+> And that series you will be cc'd on and welcome of course to push back on
+> anything you have an issue with :)
+>
+> >
+> > > However I'm more than happy to help resolve conflicts - if you want t=
+o send
+> > > me any of these series off list etc. I can rebase to mm-new myself if
+> > > that'd be helpful?
+> >
+> > As I said above, leaving the actual swap code alone is more helpful
+> > and I consider it cleaner as well. We can also look into incremental
+> > change on your V2 to crave out the swap code.
+>
+> Well I welcome review feedback.
+>
+> I don't think I really touched anything particularly swap-specific that i=
+s
+> problematic, but obviously feel free to review and will absolutely try to
+> accommodate any reasonable requests!
+>
+> >
+> > >
+> > > >
+> > > > Does this renaming have any behavior change in the produced machine=
+ code?
+> > >
+> > > It shouldn't result in any meaningful change no.
+> >
+> > That is actually the reason to give the swap table change more
+> > priority. Just saying.
+>
+> I'm sorry but this is not a reasonable request. I am being as empathetic =
+and
+> kind as I can be here, but this series is proceeding without arbitrary de=
+lay.
+>
+> I will do everything I can to accommodate any concerns or issues you may =
+have
+> here _within reason_ :)
+
+I did not expect you to delay this. It is just expressing the
+viewpoint that this is internal clean up for benefit the developers
+rather than the end users.
+
+Keep the existing swp_entry_t for the actual core swap usage is within
+reasonable request. We already align on that.
+
+Chris
 
