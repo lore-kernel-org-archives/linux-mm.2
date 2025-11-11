@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36988CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09438CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:12:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DEC38E0015; Tue, 11 Nov 2025 04:11:54 -0500 (EST)
+	id 3D1888E0019; Tue, 11 Nov 2025 04:12:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68F308E0002; Tue, 11 Nov 2025 04:11:54 -0500 (EST)
+	id 382988E0002; Tue, 11 Nov 2025 04:12:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57DB78E0015; Tue, 11 Nov 2025 04:11:54 -0500 (EST)
+	id 271AD8E0019; Tue, 11 Nov 2025 04:12:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DF648E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:11:54 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED052140451
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:11:53 +0000 (UTC)
-X-FDA: 84097758906.19.E04B01D
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1295114000A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:11:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="bgo/iHaZ";
-	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=glider@google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E2138E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:12:02 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8CD13591A1
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:05:14 +0000 (UTC)
+X-FDA: 84097742148.25.37EAC66
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf21.hostedemail.com (Postfix) with ESMTP id CE9201C0011
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:05:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QlbGq8t0;
+	spf=pass (imf21.hostedemail.com: domain of glider@google.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=glider@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762852312;
+	s=arc-20220608; t=1762851912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMAn9oTbF3Zv6YZXMFgD9SCNTI8yFt+ADFGBD5EQzqY=;
-	b=byYPOb2mqQp3PcwA/2Drx9n4T2urkhQNvyuJ3j9MFWEFwp2UyFUrhuQkd6RfODrFzfw+kM
-	vw3Po/UyLIyFfs0PuPAsFbXw6HAITUKm7OnPll4j+OXYTxnNwp+Me2RBiRHFWe4LArmwHV
-	N3MhBevq4W8StUUlFjUSIltVF5LTaaw=
+	bh=RciqffmsGUnB8tK3sBcxSnH1zQElvWzvEdnZAAXNZdg=;
+	b=Vma+T29xW4MM7rJsLqpVJSqs0jTspoyTDIp4A5jSEudtUpLRuqpyjPvw1B66JQORIvnaKx
+	eRYKu7dR/B9FRDc4kW9ZYTd72XBt+QVHaCAo+ktRIu92AJNzNZnefmWB5g1eUL3wYJkozt
+	rawEGCT7Bh6w/u48CHCeeAO4hNZmMis=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="bgo/iHaZ";
-	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=glider@google.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QlbGq8t0;
+	spf=pass (imf21.hostedemail.com: domain of glider@google.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=glider@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762852312; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762851912; a=rsa-sha256;
 	cv=none;
-	b=0MqofldvYF3jwf9vSqyHjOQmIxZpFbldb/7Z0HMpCKwzoT+4I3RYzolHKUKL43o46dcOAJ
-	6XHPB4cyhVKi1PSwX9bmcUWplD6owMQIqQ2eo3T0ZhHWl0yYgZgB+13HXFYOP+U5svpL6s
-	bi3nmhwefqYxAgs1mzauldrnxqyQfmA=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4edb029249aso19882821cf.2
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:11:51 -0800 (PST)
+	b=HTRTjo9B2UXbYnsEZ6xt42+vEn5dtcR+4QPaHGGyl4RtkR8ZbcaH2ryejYr3YYZIlph0Fb
+	kD789TgtWEcUe91yI/A75e1SLVye8p0N42zpjdJNB6qNFVTYkkHf+FrvVh3nYsYlBD6ylh
+	DnoVTzjN/yWJ01d32VD4hqG6PamWIJY=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-88043139c35so40260236d6.0
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:05:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762852311; x=1763457111; darn=kvack.org;
+        d=google.com; s=20230601; t=1762851912; x=1763456712; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wMAn9oTbF3Zv6YZXMFgD9SCNTI8yFt+ADFGBD5EQzqY=;
-        b=bgo/iHaZ84/IXk2eAmHay2VFiR9/8EOsSA8thYRniaAOSOfUc+2tO2tBW8fuWGRJr5
-         2+SJbDdiXYVVgkSaKu61soV0HOoCQdEGIrq3XesBNCQyD+A7BfBYmd/MKAxZotxYrk+L
-         QBXq8xP6awgHC+fOuRrlJbvlR+itfg5pXhlsmkgeDyQ8/8qOUlfEIgMKbQdDS2n7d1Af
-         7aczfaNRry3GbT3b0kAZQFYVqYfjq9euGENEmecDJbUXmnpYSY5+GD3/wLKy/FrYmuJV
-         vB3oaMv4UTWv2cC6LnPyM/Z6F8Dof48GVgdL4Zp9VkvyGGLfjSAVaFr9KQQY6yZnUdLB
-         crsg==
+        bh=RciqffmsGUnB8tK3sBcxSnH1zQElvWzvEdnZAAXNZdg=;
+        b=QlbGq8t0vA4y3lkPTmzMUoRPrUEVrC3odWZGvuJHDRLJxoii7UYrRqV0DWkMaDcs0I
+         9gtnQzTNBltABDollZNnm0CNZttRQdCyrOshS/svVfhioQfijl7ILatzwHLGF8zCmAOb
+         NiAjL4cNWTKYsspEVBU3rf6XpCkkVTVG3c3zBRwlXCSqAwRHo2XOwlxTe8SBnO7cB4lH
+         aCCDHWnL+7+WaaF5ETNqXz9ItHOFLYJPKB0vcz28/jkFhzT/D98ZtKxEfyHBmqOPJo1T
+         duzjt6JVgoe/eIxpUuDB3RhF8wEQABFMvY1n1ZathQbZQmFOizAyr11gs8y7IhoUoVbW
+         fCQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762852311; x=1763457111;
+        d=1e100.net; s=20230601; t=1762851912; x=1763456712;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wMAn9oTbF3Zv6YZXMFgD9SCNTI8yFt+ADFGBD5EQzqY=;
-        b=Vq6W3w9QeBqRxgEmOniOMcYn5LHrNEy3M2jzOJGUuGs+pv7Duu3iY9TQyjV38LdxOf
-         SAt/ofB7GMlDurZMm1/QXSqgWx8nlI9EDCpGSlhpvY/DlzjQmhSH+9PAQRHbXLs1Z3bL
-         DUjijmQ5xkY70ZzYdHnsQaTYDsckMwdWmWNMBaFrYC0RTYsqKUak2ri9L533XYISqpRM
-         iitCG8k5AZap9daDL6+G5NqWH74P396qadhMWuGO9MKkN2N/68JuUOjoe/cT/Yh/9FWi
-         3bX4sPrXHRurjWmScwuUPAP636Mnri+F+XJo6N5Hnl1cT0fiFgaFmBqEjX/KOVq/j746
-         blOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgWL0Bxr/32uUXvVNDr+ruMAKJebhhZxf2GwdiT7h6aBhxUWLs0nebWrzBzuTkAmM5kR9ryNmviA==@kvack.org
-X-Gm-Message-State: AOJu0Yy91UK+VtT4vlEzqROAX5dN1pjVVFNO5la5tPDU/2hNoB8pdHUu
-	9Sy0vqoZmlBqR/tPDL6LZL0KlKm9FPEwIvB+WWcrTMeoXM3JOd8cmqaR3djXGhsUxlf9PRL5Gi6
-	38EQZvCLHx9GkzR5UzkFUeddcXQiQxy/xnn86gB0+
-X-Gm-Gg: ASbGncsZyba+T4Gjv9rR91odRys4s+2nq6xz/TtJZ5lgRHwKFIb4xQ0Vb71bkJmF/TN
-	W3LxlTMbJeL7VIPBjyRdljuvST+FmmihLSBuAhT1EvERpC8diCqM93B2XBBx7w8lO5smPHXgIuY
-	7QJ5Jr4gqTSJ1vvcF9Ht7kJYUjV1gv6ZAHFRRcuTyyEgx9wh7GrekG0nZx9wwdcy/5/9Mzk4Nt9
-	veGZ3Z+M3o/RksRb3MM6cDdUE4yayjOSUj7lKj2yfar5WT6Q5+TryhT1q5GuMgBNNRwveAZiXwV
-	3d5QTzhsC3ES2SAX3bSZ8O4w592juy+2Q4US
-X-Google-Smtp-Source: AGHT+IH+IyV5M3UDNVO30prt5PPyyx1n6sQAkg8H+r/cXESUVZ9Sxny0Upk5iwgOz2Gyh93ucwAfPrYSF2wYVT/cQJo=
-X-Received: by 2002:ac8:7f84:0:b0:4d3:1b4f:dda1 with SMTP id
- d75a77b69052e-4eda4ff2f1fmr126391511cf.61.1762852310737; Tue, 11 Nov 2025
- 01:11:50 -0800 (PST)
+        bh=RciqffmsGUnB8tK3sBcxSnH1zQElvWzvEdnZAAXNZdg=;
+        b=OW+isJpbqLSKxJrLO8wA7zPPjsT0HXg7ICa7/p+Er3gxAh7F2ziglj8Z5deuXt4z/H
+         xc86U5i4LwwmgS5msTTpHAzaAFh+ilkIXwn10moV4Q08b1L09X1CbNiv+yoMSMrRiLYT
+         24/uMdg2hHGNKwvZbcF+MlMH1XZK6W6HB6+Oi9Ydp/ZKZIWSQyaE5o7GcnS7Fsy6ZLVx
+         OVCr17mKjActzvC/CElENMl3y87rfGhxSFAjf9a60cWKdB7Dc8K0miYtG+/rfsDsd1j6
+         UESbwLfNqYFEaFAu9exuO5yi4J3TAWe/2IaYNPhB7FDxoYAF2j0cvwiKS3GhleUyh24p
+         /S1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV6zAfbt2D9f68INgkm8mlQ/17KvVIy99xgcNJWDecGGBzbjY4+Ux2dtL3Ou28GYbm7V3bngFHxzA==@kvack.org
+X-Gm-Message-State: AOJu0YwYVXfvZIvQ2f4oT8uPtbtbfQteSUbK/3DfQ0Iu09nd3Dr4nyPS
+	3AavBykM8p3TvKZ8ZAOV0N01yVzeAfZ3Whk3PzlfhlJFKyblcpdkDJVshg1Cl0JBFESFvYAXvNm
+	L1pbuVOlY6OY7UVgylCLNbKQ1jsZqeggbJHLckVKf
+X-Gm-Gg: ASbGncv5VFmAzwoVdm5nZ2FV3Qar7pkD70mxZ9KBZV1kv8+gPWi/bSJoLncKpl0ScCH
+	1rcc27CwEIrjeX3b3LikaKXBB0bB1meSV//obKuRWTYefq+bTjijPDWW8rHCN1f2Wm32BqqFbWc
+	Lj5dUt14SddpxtLyGDSJtRk7PpAhgJBTV+3A63m+5j/rPB0JHXVgsmmEBL+68bqV6+oGbHCkgSe
+	Mb0ZcJis1Tnnw/M/KReOlS8A8zM6w6R6lA2QurN9LrlJkoJTl1bjNIz5dkU/jDQ5kAr57vhrv7B
+	3it8svubOuhu4ebo943YiAXZ5Q==
+X-Google-Smtp-Source: AGHT+IG5h9zoN8ZgQbNHnylwE6ej/e45pEoTj6YsGsJFK5D5YZvplepfzX5RbzM9p15i6Nqb6Snmeh5EikEQA067P+g=
+X-Received: by 2002:a05:6214:d4c:b0:880:56f6:92ae with SMTP id
+ 6a1803df08f44-882386d7384mr151892296d6.57.1762851911409; Tue, 11 Nov 2025
+ 01:05:11 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <f533bb094a566242ec196afbde222796c6d6c084.1761763681.git.m.wieczorretman@pm.me>
-In-Reply-To: <f533bb094a566242ec196afbde222796c6d6c084.1761763681.git.m.wieczorretman@pm.me>
+References: <cover.1761763681.git.m.wieczorretman@pm.me> <96559d5a8e897f97879259bad3117db617e21377.1761763681.git.m.wieczorretman@pm.me>
+In-Reply-To: <96559d5a8e897f97879259bad3117db617e21377.1761763681.git.m.wieczorretman@pm.me>
 From: Alexander Potapenko <glider@google.com>
-Date: Tue, 11 Nov 2025 10:11:14 +0100
-X-Gm-Features: AWmQ_bnrR-pK5Rc9D-XEScjrYr9MOeawukkWZRpWJ1yHRGagV2Ym8rHVDa4nqXc
-Message-ID: <CAG_fn=X-FB6vVtDC8WhQzF7cNePS5AtmC4W1-YfTce+5jOc+wA@mail.gmail.com>
-Subject: Re: [PATCH v6 11/18] x86/kasan: KASAN raw shadow memory PTE init
+Date: Tue, 11 Nov 2025 10:04:34 +0100
+X-Gm-Features: AWmQ_bnTIARw6amUs-gvSQivLCgG0XY32k4ioUAxykbqmf67HMroMwsIF2IdVwY
+Message-ID: <CAG_fn=X5Dr_Dc1pcnAW19zgo7tW8mUSkpDj-v5eaG-awy4S53Q@mail.gmail.com>
+Subject: Re: [PATCH v6 13/18] x86/mm: LAM initialization
 To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
 Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, 
 	kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, 
@@ -121,14 +121,14 @@ Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com,
 	llvm@lists.linux.dev, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1295114000A
-X-Stat-Signature: azgwxsifkcxxn7g3wqgpz8d1d393bkdd
+X-Rspamd-Queue-Id: CE9201C0011
+X-Stat-Signature: q546ue4nzocff5dcgutpeqyz6r9tus8w
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762852311-824152
-X-HE-Meta: U2FsdGVkX18aGH/rpFwGpNF3KcLnZLOjj38BpBazyp5QUkb+3z/LZmf7xWMYwpDdmee8/3hOvel8eWJUUvBStmrf0/na+u0XiGFs6pkxEBxkBDShqU+2bWfnMQz3FKdByGXjSkmrW16obtfIlxd8cuBcX1CS5QwDOpjKN6Cb38NlJfXxH1s9M+0uNb1yQ5k+sWnh7Dxf9vaPUWLRdxSWGh1+b0vcICgee0iI3uQQhJyjWc2dQiYDUH3wjpJROxB5vptQuAvYAA5MyY1v6/oy0VRUSV9NhjxS+lWPo1S7kj86yV+nq3l7/QzezwGpAgLnbDmYoNAP/NDEOWjIvh4Za/839UsM8P7D2r+Ku8JETdCzCQJ/n/5+0EaAupblIcIsAB0fEuN+G0JQ5eQv5CoXyC3kQRDb6nF7bS5QxW2m/3P2yuMKkpykA1kQMOsVVYsh1dHxoEPcYSmpYR3U+UJWbB9owdgAGt8sdsA2b3wmqxKPXkH2hPRpiX0KVt+a7mHvnPUYZOMhryLKvMobo23GFICSBRQecXqGww1V2MhbGsZfXJlPmz7S33iiRfv8pDEL8HAyfzkmCV54E0j7XGVRX90sn7VfxOwVHqtYYcZarBw5INhcswNnaNBUkatlwEYh03FthLvt8euLWi9glH59w83+JQsM7DmkBIT4IVJSQiRWf15BP0380VgSqqfsc7zYvwBrlFJ7V35OHqcc6bvTEUNgFqObGlB8W0+NJDJV+sobxC/JLzRpTl6Qcg0P2j7nxDDMAd8JpZ1hL+C34fu+nbTIbUelMK/tVoIEuQIeBOlpcOnPTqrSIvcXf7chD3qzK9+Cp5YrOMGHdAXBTulYleaIgyFxctY4yjRSToJPwx/Z/0QW5lb2pKryFGyos4Is/jIFa8TmL5WL7ditidAxwMKl4ogKjsEu7JFa4e8BMUYK/3p7GqKM/fyI9msrZtOJBx9OBxDZ3w+bgBzF++a
- ABf5Bfux
- mEKcXh6rb5gjO9lj1CtAR9W/uHIGi+8VbgJYC7cJO476rGajY+nXrrvD5gumADLBiJvjGuQRlS/GpRrDm/kSQIs/2dE6MJGlvcwA7W6v+4lzzDNbxF9Rl9rZyANdB50BeCF2u/d0rZ0u4zvdmnJ9kVwyfbY8rqqxjywmovWNPNUijeyTeIJOiQ3t/zLTpZ5rRBbWE7FqsYNqe0TGp2xHMHpGNutbkUJxEivy5jF/jOop6wI/koUgI9n/TeMccetQcDX/LWeMq6bRVCNh0vW+8uMDVQ48HPHyMKU8DUgLu+NEWUz0fZHsTig6cQkBMz9mRCHHYBSNuDpOe0YaWgtzP1UpJhA==
+X-HE-Tag: 1762851912-610745
+X-HE-Meta: U2FsdGVkX1+EAemoyLVH7UhOE91tkhpdHSgpjjkSUp/hj4aOQHe1P/lwSmb3ia4S0ZA6baHXW83zdgcMhY4Fo/xTNZ4wj7gr/Lz6VuLvRhT18i3/OrosqR2QF/QNMyMkrLiMqdnYQ9vEaDpJWOIEIV7gaaKqWUzUX9hPkYceADD5KW067FGGA7V4CBtBiLJaK/I0h09fZ2guRmOrxZ1GeDzVFOWULeevkzN0JThYoyfT+NqxiQl1soFJ6czB8pEKzysWspbezithQUjNlruK7p2SL1xuuAXvxR/bgK8jHK+YGMPyOVgA9upr+YIpCEtqG8p5WaJ6alU/zEIF9M2vLm2G+Uach8t20Wc0fpaxsmtMONCDsxT9np15fdMW91mP8mawXnzipR2sxFvT/P55YzJ+dOk8ZwE0T6rkgqkY5va9ToGw5bmbHBshE6yDn3qMmpmmeS8PSqefgcWqrtjAOL+ktbR1V0DlOMsjjcyye265BEwCvZKFMQAGAZ6uohoxHJJJeHl4iY6WPqlwHcFlHZQvCg+TiVN/Ygnm1YlGqGNSs79V/D7i+PvUxRi4bBBL+46pbKSefXHuJhk+RitUhZ3Hs2B0fEbnlKqRmePlQRcFh/jNTGS81xi+OcR+7Kg6OuKwYxoVanvK+FUWAlXesl7Aa4uSjBoyza2n6V6JUELOji0t0B8TG4CBrYdSow/4IkWdlxxwQ0a04M+xTjhmO7imwflVUjrGCzfmzdwrWaQ3gqW086nlCs2o3g894qMYNLngk8tLuJJi1pUgbvqlSl0cuVGbG2mYmBz9XlQDtwWnscl/j1jhtiilGN4lonc7CyLcMk1tTmoz17cvejX0YK99vu4T+4o2gNCv3CJzrQ3kYJUek4tfhEX4RPViajBd84911cwt9Bmz8WI4YdNDy1AJK2BPNrJZwtUi2yz0+CBFJjdbJDcs7mDSW8fPMoWZTKtg9uoN9KWqNGfElut
+ qyJE1IqV
+ 0/KVITxg295ZfJiU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,25 +137,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 9:07=E2=80=AFPM Maciej Wieczor-Retman
+On Wed, Oct 29, 2025 at 9:08=E2=80=AFPM Maciej Wieczor-Retman
 <m.wieczorretman@pm.me> wrote:
 >
 > From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 >
-> In KASAN's generic mode the default value in shadow memory is zero.
-> During initialization of shadow memory pages they are allocated and
-> zeroed.
+> To make use of KASAN's tag based mode on x86, Linear Address Masking
+> (LAM) needs to be enabled. To do that the 28th bit in CR4 has to be set.
 >
-> In KASAN's tag-based mode the default tag for the arm64 architecture is
-> 0xFE which corresponds to any memory that should not be accessed. On x86
-> (where tags are 4-bit wide instead of 8-bit wide) that tag is 0xE so
-> during the initializations all the bytes in shadow memory pages should
-> be filled with it.
+> Set the bit in early memory initialization.
 >
-> Use memblock_alloc_try_nid_raw() instead of memblock_alloc_try_nid() to
-> avoid zeroing out the memory so it can be set with the KASAN invalid
-> tag.
+> When launching secondary CPUs the LAM bit gets lost. To avoid this add
+> it in a mask in head_64.S. The bitmask permits some bits of CR4 to pass
+> from the primary CPU to the secondary CPUs without being cleared.
 >
 > Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
+Acked-by: Alexander Potapenko <glider@google.com>
 
