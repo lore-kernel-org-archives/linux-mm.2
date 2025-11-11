@@ -4,104 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8324ECCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:04:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41D0BCCFA13
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:04:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8C4F8E000C; Mon, 10 Nov 2025 22:04:24 -0500 (EST)
+	id 9E3258E000D; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3D5E8E0002; Mon, 10 Nov 2025 22:04:24 -0500 (EST)
+	id 96C8E8E0002; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2BE08E000C; Mon, 10 Nov 2025 22:04:24 -0500 (EST)
+	id 85B408E000D; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A85F78E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:04:24 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4330EC036B
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:04:24 +0000 (UTC)
-X-FDA: 84096832848.12.E8583EA
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 940A0180002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:04:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jNsiaLRb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf06.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tianyou.li@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762830262; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 700A68E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C20F16034E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:04:31 +0000 (UTC)
+X-FDA: 84096833142.22.47B1A54
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B3FB04000E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:04:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m1VOnbj0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762830267; a=rsa-sha256;
 	cv=none;
-	b=C1f4/kZlA3zHH5Q0TGCBtaGdSCrPYhfMSdEFB26Ao3PSTTmgdA/gzPO5Hk5VA4yHGYWDxw
-	AU38rxW2u7A78EBlLxZ1YNnARMj80Nt2zmgEQUHnf+BeVHMcyfBOIilTV+3PeDlAyK9cNS
-	VJU6rz5gJandMJqtq8Y9UJx2yId7N9Q=
+	b=0G12y/UAb8Md/YVSTDe1MBkWUl1IKCzCeJ2Pt66zXju6ArhsSUGfj6WJ6ygcT+Q4XMFm9d
+	Dduic+7N5vfwsS1oO8pCvse0MD0PnhjKsYIPMs16gOPgkYu4S+VIQ71sqPvscesYXCp9Oq
+	BeEsAho+1uo2dWnou7tK8Fo6aiu3upQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jNsiaLRb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf06.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=tianyou.li@intel.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m1VOnbj0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762830262;
+	s=arc-20220608; t=1762830267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xTgzSccouxxOd1Pd0gwWnVYm2edQE0v4nnHTl2yGMM4=;
-	b=ejAO0ElSRk0o0xOCzY69ktAnJ/LLbUpedukGpqOYo4UxeoRZeS6NzeZdeW5efE8VYXpTBA
-	xYNaWZ+X/fzQ++KETjDx4nP9BtLpGCoHLhu3NfXVCM82e8j3mTKDqTftbZmJTuK4QkAEHt
-	Gi9gs72z+ZkTq66fOdyVq8xawHJVecg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762830262; x=1794366262;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=U14qEmo2Bd9oj+urSYeVZMeAZrk53gq/DoeDSco2grA=;
-  b=jNsiaLRbJUuEmCgcwJUcaz0N7J4N6w4YmVxR0sV/0RyZTD1wDl537waV
-   DuUqLVU46EOZ5JZa6q1mAeG/DrmZ6IvR2A6xohtuzVenkfdQI+vj+SUI+
-   gE/pc0DF6hNGeaFz6Z2SDA8XEjEtGwJMHNSairB4bcCpc/q2Mj37an/ii
-   PViquz5IFyoqPEE9cwcG6P3V6ioJpwhVkMJiaHa++Zt6F9GyKcdBCnfHX
-   WkDI2zOx618mjiNVOYFWqfHhIEYIxFkGrESbOm2SmSb9ikPiT4S+IdduR
-   sOgdeTqpp3JJ9XHkHpzz1H88guy//3xhTNWLufgIjU21aDBzQh6Rpz3d5
-   Q==;
-X-CSE-ConnectionGUID: mby+jA7MQmmbh0cPe/j84w==
-X-CSE-MsgGUID: GFizm4CRQKyeBbgp8axuEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="65044832"
-X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; 
-   d="scan'208";a="65044832"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 19:04:20 -0800
-X-CSE-ConnectionGUID: dYGErXrHQMy2oUs2IjcdZA==
-X-CSE-MsgGUID: 2N3tqJKnS6+ccOwshoA7Hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; 
-   d="scan'208";a="193844403"
-Received: from linux-pnp-server-27.sh.intel.com ([10.239.147.41])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Nov 2025 19:04:18 -0800
-From: Tianyou Li <tianyou.li@intel.com>
-To: David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>
-Cc: linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>,
-	Nanhai Zou <nanhai.zou@intel.com>,
-	Yuan Liu <yuan1.liu@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>,
-	Tianyou Li <tianyou.li@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/memory hotplug/unplug: Optimize zone->contiguous update when move pfn range
-Date: Tue, 11 Nov 2025 11:58:45 +0800
-Message-ID: <20251111035845.2556593-1-tianyou.li@intel.com>
-X-Mailer: git-send-email 2.47.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=V5c8zazQymbCh3EJOF0KTydVfHgB+HL63txNkj2DBcg=;
+	b=YZX6BG4OGl5jlQm/OlO07AGtCpx0gmz05hnzFpntGkoew9wmaXSnAtu2QlbCu8csMnYP5u
+	y6beiRqP6HaArPf2fWDN9fPk+9TZjHAj2fDAjAAONKIezv9Xa61bfwS28SaF0imQ7VtKxW
+	4bGe35HhHM4ziS6e1D/sd57rIWKxN6o=
+Message-ID: <8d6655f8-2756-45bb-85c1-223c3a5e656c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762830265;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V5c8zazQymbCh3EJOF0KTydVfHgB+HL63txNkj2DBcg=;
+	b=m1VOnbj0B52FF5eqkgvxn2ibcAZ2AlUdQ2OpPrHQmPQeylgDhQJZc44smuZ/tFwxYYmsLz
+	MO94ShQBlC2V/Nu2D3aYvij6xrHH3NeUozTm0MkGI8F9M9YBE2vzLtaW4CW2d3AV3LqiNx
+	ieAfXns9GSZy2EFyQl44C+OKbFBoyNc=
+Date: Tue, 11 Nov 2025 11:04:09 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
+To: Shakeel Butt <shakeel.butt@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Muchun Song <songmuchun@bytedance.com>, Qi Zheng
+ <zhengqi.arch@bytedance.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-rt-devel@lists.linux.dev
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+ <97ea4728568459f501ddcab6c378c29064630bb9.1761658310.git.zhengqi.arch@bytedance.com>
+ <aQ1_f_6KPRZknUGS@harry> <366385a3-ed0e-440b-a08b-9cf14165ee8f@linux.dev>
+ <aQ3yLER4C4jY70BH@harry>
+ <hfutmuh4g5jtmrgeemq2aqr2tvxz6mnqaxo5l5vddqnjasyagi@gcscu5khrjxm>
+ <aRFKY5VGEujVOqBc@hyeyoo> <2a68bddf-e6e6-4960-b5bc-1a39d747ea9b@linux.dev>
+ <aRF7eYlBKmG3hEFF@hyeyoo>
+ <aqdvjyzfk6vpespzcszfkmx522iy7hvddefcjgusrysglpdykt@uqedtngotzmy>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aqdvjyzfk6vpespzcszfkmx522iy7hvddefcjgusrysglpdykt@uqedtngotzmy>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 940A0180002
-X-Stat-Signature: we3yzoc56fx8tk7w19eft1iub77fsgtg
-X-HE-Tag: 1762830261-664661
-X-HE-Meta: U2FsdGVkX18m0qTuqD25ZV+QGlPPhatBvEMMEVv6BiJn33eca7OkhIIMV435vK1bNzfO5rSimG8Y2V95wnuDWexEZZ8k9/cW5jfdcEC4hXjp5kMbLkWDbEeY/rNuQcUFmCAnLFVPyjePuuqXyhY3nggKvCzaXDl/IEHDEo0HroWINxd6gsICZmlatP+bG0qpzQW/MEXwWJe5Ff6339sunCBGTiCZQxuQ6HmTHr/e0W6M8n1et5dkfQIulkRQHMwORU77l+XLt1WEpDAjNkgdSpnp8I3WC2Q6B9pZL4aRzgTe7c7Y0Oetl24C8T/WWNNgPqXbUngBmskbuT+ntgh54qv3A8PZsUvhzz0RCz39s0+Oplg9LQjICijGTrG9IsijCR5tkoX7PKtjtXlFTqZEmgIqNpLa3K7wV1F5Rq6M8cVGi8Kzx6L1BS8kqofDs9UwNCeGLSCdbrKrtDQuLQPHNgcoCWpKnu3V9BqWeWydXNMmPRCcCXCvZBG0gnuToBj08+XmKuMxNUEV8XfagsXL2eLzZkaCU6VgUyCJY6UtAtGed+cQa4KtySU5oYw+6TUcWt3/X6Nu72iynvghbmOM0WelK/+Wnvn1tAlM0nevh3FlNEjPIQ2qa36nMv6r3z2NkKFv+OLQOTqBrVFLkV0T/M6fWLRaGtESuDBHdFecnr+abLmaBRruHWAcz0xMNpKdwlX/hIYUusX5Zgqj0S6SKbygBW6MssHjDUMf+yeP57HNUzP1ofyIOsrGHhrn0we2paTGYb8iFjRe3DlnG/ZBIA/oVgBbqvzEtvBTlqMSMyd+O3bLkkTznIp7kpch51JRLZnQgNm3WvQaqAuKhV2lL6dJOePkZX14r4PvpE85umqCTgprO7MA2yHDbAI3bdPu+ZE1QFz1IlV0TEabZVQwOz5mlqsjGwBG+2Gt00L3uIHfNQJb1AIoseYBkWdsS7dY/AQViTUswL+WbtnY11v
- Mp8yaUe2
- QqSi1KPnLfQV/mN3t1itRY3u2x6IouZgNgJOLXrtsJ/Mkiu5LbGps+QB+Ji0+ycagM1lTb7xIt5DKCdr3HWUGWzNHWPAfmODt6QHgw9V7fC3g8P2/IRw7DymJR2nof4UE6DxDtr9ik/fUZn6kmvcaMrzE+/JX7XSxp3FksRd+pkP5w5ybR94jIPXZnQ==
+X-Rspamd-Queue-Id: B3FB04000E
+X-Stat-Signature: ubuz5gt39genj89pny7cbk8jasq7ayb9
+X-HE-Tag: 1762830267-606479
+X-HE-Meta: U2FsdGVkX1/0EFdWKc0g/zQaLHXWSMWLTOPVxZj9qQnhZqKZi3YzNY4dV8Kzni6UnDHmevqM/cPU6SVXYZKPw+UJL9t1Wu9I3RvCoKA4eyt/vybUjYV7cqXd4ZtzTD1mrk2yht6DbEhZUUxhr4w7U/2mkCA7Xx1wKc9BNZHvgPeB1KUeiHgt0JWjuUcVUMVL+P+J8oSyMlJtDmZOofAqN5oU1dXHHlEbQ8sLnHvyRAqFWBZwDHE2nMk9LXrqMYgOznyiAtzuzZk0DwDMO7PCX6d6BDpKPDOxG+C1Zcz0Oi4jcahH4t+9qYO4RSv8W8CW0acppPqF3DwBshmvL3OmdTIadMEQMMR/OshD1hTmjI7f389yFq6k4v7M5MkQgAbvFOn81T5PgGCAA00gBijaroe3J8vUXOQ0VLSasrGTuOxL6tt6OQoAnm3qanHKT3ihXcroYQfryONaFJ8k+6GSsifiUMeIZsLgNninEUFqrPht2l6r3N3naveIA07bs2kXEgG6/QiIbbxJnRGltK7elHNE6aejTMH03DtNKEbXg5WlecV7GdVmz8jLda9V6sKP+ryXCYhfI0GwlBfWCacm95LYsfTkfNDWio/myf0hKof9efru3w9Wz56HxqR9toyH1h2edPQmiU+889c2zD9kEDtuh3QpE690OEIltEm+UlYPUnzV267Pe8ZN7t8g+tzPEYdiWRXpwk5Ni41F4VHqv7F/IOgdmyKL5np52amtN3WK46rykk15vfwd7K2OHMjyOuwDCI3GQSB1tAjprANNkLMroUDwfJS4eWMn2xo7CvH+twkJImB3VCbSGgFF+v08YPsh3II0MmMYeDsJom9YW1uc7cT65SWMgLWjzDseFpuMbyOErv3WZ1tqRomySukcrY0EpjIj9kZD2jU8XWUuJ4mA5C0pjOYwJGNkjXGToJVmIaBZg5JSW1Wp7FQS2W+HbvZhLNZVCCzFapvGDys
+ iWH2M37i
+ YWPG10keJFfx+EapN1YERAc8L4O80ol9TOVZM6E1SCLOS9CKxB0IU3Iz5IIF3vwAwmbx9LCQJ4WwPH39HfhkrKQJwPfsABD14BziG1v2OQ1WyMlA29Ie8NRYuBeVOvNf9gHZTz0m8uGRqA02SOhVjK1Ep2y17q+5IG/h1VcRc77fEjLwsbnjd9kloKZ49aYRSFBkh5UheCXIm19ts3VuYhSc+lXenr1qkBttubFHFlP8S1paA4fjtwAvkHQ896Cr3RiYv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,215 +105,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When invoke move_pfn_range_to_zone, it will update the zone->contiguous by
-checking the new zone's pfn range from the beginning to the end, regardless
-the previous state of the old zone. When the zone's pfn range is large, the
-cost of traversing the pfn range to update the zone->contiguous could be
-significant.
 
-Add fast paths to quickly detect cases where zone is definitely not
-contiguous without scanning the new zone. The cases are: when the new range
-did not overlap with previous range, the contiguous should be false; if the
-new range adjacent with the previous range, just need to check the new
-range; if the new added pages could not fill the hole of previous zone, the
-contiguous should be false.
+On 11/11/25 12:47 AM, Shakeel Butt wrote:
+> On Mon, Nov 10, 2025 at 02:43:21PM +0900, Harry Yoo wrote:
+>> On Mon, Nov 10, 2025 at 12:30:06PM +0800, Qi Zheng wrote:
+>>>> Maybe we could make it safe against re-entrant IRQ handlers by using
+>>>> read-modify-write operations?
+>>>
+>>> Isn't it because of the RMW operation that we need to use IRQ to
+>>> guarantee atomicity? Or have I misunderstood something?
+>>
+>> I meant using atomic operations instead of disabling IRQs, like, by
+>> using this_cpu_add() or cmpxchg() instead.
+> 
+> We already have mod_node_page_state() which is safe from IRQs and is
+> optimized to not disable IRQs for archs with HAVE_CMPXCHG_LOCAL which
+> includes x86 and arm64.
 
-The following test cases of memory hotplug for a VM [1], tested in the
-environment [2], show that this optimization can significantly reduce the
-memory hotplug time [3].
+However, in the !CONFIG_HAVE_CMPXCHG_LOCAL case, mod_node_page_state()
+still calls local_irq_save(). Is this feasible in the PREEMPT_RT kernel?
 
-+----------------+------+---------------+--------------+----------------+
-|                | Size | Time (before) | Time (after) | Time Reduction |
-|                +------+---------------+--------------+----------------+
-| Memory Hotplug | 256G |      10s      |      3s      |       70%      |
-|                +------+---------------+--------------+----------------+
-|                | 512G |      33s      |      8s      |       76%      |
-+----------------+------+---------------+--------------+----------------+
-
-[1] Qemu commands to hotplug 512G memory for a VM:
-    object_add memory-backend-ram,id=hotmem0,size=512G,share=on
-    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
-    qom-set vmem1 requested-size 512G
-
-[2] Hardware     : Intel Icelake server
-    Guest Kernel : v6.18-rc2
-    Qemu         : v9.0.0
-
-    Launch VM    :
-    qemu-system-x86_64 -accel kvm -cpu host \
-    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
-    -drive file=./seed.img,format=raw,if=virtio \
-    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
-    -m 2G,slots=10,maxmem=2052472M \
-    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
-    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
-    -nographic -machine q35 \
-    -nic user,hostfwd=tcp::3000-:22
-
-    Guest kernel auto-onlines newly added memory blocks:
-    echo online > /sys/devices/system/memory/auto_online_blocks
-
-[3] The time from typing the QEMU commands in [1] to when the output of
-    'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
-    memory is recognized.
-
-Reported-by: Nanhai Zou <nanhai.zou@intel.com>
-Tested-by: Yuan Liu <yuan1.liu@intel.com>
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
-Reviewed-by: Pan Deng <pan.deng@intel.com>
-Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-Signed-off-by: Tianyou Li <tianyou.li@intel.com>
----
- mm/internal.h       |  3 +++
- mm/memory_hotplug.c | 48 ++++++++++++++++++++++++++++++++++++++++++++-
- mm/mm_init.c        | 31 ++++++++++++++++++++++-------
- 3 files changed, 74 insertions(+), 8 deletions(-)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..734caae6873c 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -734,6 +734,9 @@ void set_zone_contiguous(struct zone *zone);
- bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
- 			   unsigned long nr_pages);
- 
-+bool check_zone_contiguous(struct zone *zone, unsigned long start_pfn,
-+			   unsigned long nr_pages);
-+
- static inline void clear_zone_contiguous(struct zone *zone)
- {
- 	zone->contiguous = false;
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 0be83039c3b5..96c003271b8e 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -723,6 +723,47 @@ static void __meminit resize_pgdat_range(struct pglist_data *pgdat, unsigned lon
- 
- }
- 
-+static void __meminit update_zone_contiguous(struct zone *zone,
-+			bool old_contiguous, unsigned long old_start_pfn,
-+			unsigned long old_nr_pages, unsigned long old_absent_pages,
-+			unsigned long new_start_pfn, unsigned long new_nr_pages)
-+{
-+	unsigned long old_end_pfn = old_start_pfn + old_nr_pages;
-+	unsigned long new_end_pfn = new_start_pfn + new_nr_pages;
-+	unsigned long new_filled_pages = 0;
-+
-+	/*
-+	 * If the moved pfn range does not intersect with the old zone span,
-+	 * the contiguous property is surely false.
-+	 */
-+	if (new_end_pfn < old_start_pfn || new_start_pfn > old_end_pfn)
-+		return;
-+
-+	/*
-+	 * If the moved pfn range is adjacent to the old zone span,
-+	 * check the range to the left or to the right
-+	 */
-+	if (new_end_pfn == old_start_pfn || new_start_pfn == old_end_pfn) {
-+		zone->contiguous = old_contiguous &&
-+			check_zone_contiguous(zone, new_start_pfn, new_nr_pages);
-+		return;
-+	}
-+
-+	/*
-+	 * If old zone's hole larger than the new filled pages, the contiguous
-+	 * property is surely false.
-+	 */
-+	new_filled_pages = new_end_pfn - old_start_pfn;
-+	if (new_start_pfn > old_start_pfn)
-+		new_filled_pages -= new_start_pfn - old_start_pfn;
-+	if (new_end_pfn > old_end_pfn)
-+		new_filled_pages -= new_end_pfn - old_end_pfn;
-+	if (new_filled_pages < old_absent_pages)
-+		return;
-+
-+	set_zone_contiguous(zone);
-+}
-+
- #ifdef CONFIG_ZONE_DEVICE
- static void section_taint_zone_device(unsigned long pfn)
- {
-@@ -752,6 +793,10 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- {
- 	struct pglist_data *pgdat = zone->zone_pgdat;
- 	int nid = pgdat->node_id;
-+	bool old_contiguous = zone->contiguous;
-+	unsigned long old_start_pfn = zone->zone_start_pfn;
-+	unsigned long old_nr_pages = zone->spanned_pages;
-+	unsigned long old_absent_pages = zone->spanned_pages - zone->present_pages;
- 
- 	clear_zone_contiguous(zone);
- 
-@@ -783,7 +828,8 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- 			 MEMINIT_HOTPLUG, altmap, migratetype,
- 			 isolate_pageblock);
- 
--	set_zone_contiguous(zone);
-+	update_zone_contiguous(zone, old_contiguous, old_start_pfn, old_nr_pages,
-+				old_absent_pages, start_pfn, nr_pages);
- }
- 
- struct auto_movable_stats {
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 3db2dea7db4c..7e5049f060eb 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2263,26 +2263,43 @@ void __init init_cma_pageblock(struct page *page)
- }
- #endif
- 
--void set_zone_contiguous(struct zone *zone)
-+/*
-+ * Check if all pageblocks in the given PFN range belong to the given zone.
-+ * The given range is expected to be within the zone's pfn range, otherwise
-+ * false is returned.
-+ */
-+bool check_zone_contiguous(struct zone *zone, unsigned long start_pfn,
-+			    unsigned long nr_pages)
- {
--	unsigned long block_start_pfn = zone->zone_start_pfn;
-+	unsigned long end_pfn = start_pfn + nr_pages;
-+	unsigned long block_start_pfn = start_pfn;
- 	unsigned long block_end_pfn;
- 
-+	if (start_pfn < zone->zone_start_pfn || end_pfn > zone_end_pfn(zone))
-+		return false;
-+
- 	block_end_pfn = pageblock_end_pfn(block_start_pfn);
--	for (; block_start_pfn < zone_end_pfn(zone);
-+	for (; block_start_pfn < end_pfn;
- 			block_start_pfn = block_end_pfn,
- 			 block_end_pfn += pageblock_nr_pages) {
- 
--		block_end_pfn = min(block_end_pfn, zone_end_pfn(zone));
-+		block_end_pfn = min(block_end_pfn, end_pfn);
- 
- 		if (!__pageblock_pfn_to_page(block_start_pfn,
- 					     block_end_pfn, zone))
--			return;
-+			return false;
- 		cond_resched();
- 	}
- 
--	/* We confirm that there is no hole */
--	zone->contiguous = true;
-+	return true;
-+}
-+
-+void set_zone_contiguous(struct zone *zone)
-+{
-+	unsigned long start_pfn = zone->zone_start_pfn;
-+	unsigned long nr_pages = zone->spanned_pages;
-+
-+	zone->contiguous = check_zone_contiguous(zone, start_pfn, nr_pages);
- }
- 
- /*
--- 
-2.47.1
+> 
+> Let me send the patch to cleanup the memcg code which uses
+> __mod_node_page_state.
 
 
