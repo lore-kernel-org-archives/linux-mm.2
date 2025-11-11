@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C70F6CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 10:28:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86BD1CD1297
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 10:30:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A5658E0010; Tue, 11 Nov 2025 05:28:32 -0500 (EST)
+	id BF8338E0016; Tue, 11 Nov 2025 05:30:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27CD38E0002; Tue, 11 Nov 2025 05:28:32 -0500 (EST)
+	id BA8DC8E0002; Tue, 11 Nov 2025 05:30:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA868E0010; Tue, 11 Nov 2025 05:28:32 -0500 (EST)
+	id A97CF8E0016; Tue, 11 Nov 2025 05:30:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C1608E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 05:28:32 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A524E4C161
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:28:31 +0000 (UTC)
-X-FDA: 84097952022.27.DE4CA63
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C80814000D
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:28:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=Qzk2zNHv;
-	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.175 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 927B98E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 05:30:06 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 600B0C04DB
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:30:06 +0000 (UTC)
+X-FDA: 84097956012.15.6A8FDDA
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 98A291C0010
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:30:04 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=NUvWuq76;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
+	spf=pass (imf21.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.180 as permitted sender) smtp.mailfrom=miklos@szeredi.hu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762857004; a=rsa-sha256;
+	cv=none;
+	b=UBY2+mCQnUT56i5RsNlDnuqCPWhNNJ2PVNAGwoWFk3zFIKDTIjkr4e2Z6FhGVVDmHAS4yd
+	IZPrOgkbvx0EmocNMQlH+Non7CBEA0X9ZSJbSxHvPQyhr+qRetm1hqPoY2HiaW6QgKUDv7
+	yy5ry4p7IJfUvPF2pL2N+FOAhw2WWoI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=NUvWuq76;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
+	spf=pass (imf21.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.180 as permitted sender) smtp.mailfrom=miklos@szeredi.hu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762856909;
+	s=arc-20220608; t=1762857004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/p7mEepN8jUuWyprYCkVkbNxCuAN/nU2Y/T4HHlQA0=;
-	b=foyxoRMNOLpel7FYuWJqNV8ewSs/rchQfCt5LOFaxpja/waxc5WiRdCTT65zBxOXXFi+A+
-	0mdHpXZf6G0Ul3Pzj/H5iONW4tSEu05vdzTXE/J7dA+kT2UyAc7hea1tktaQPHETi2G8I3
-	rxyUstzo5lGB7WUp43B+b7RaY9ZSX9w=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=Qzk2zNHv;
-	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.175 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762856909; a=rsa-sha256;
-	cv=none;
-	b=eKCtCBAooNiTKo+4qld47tGPrry+kd+QcWkllDit3+3SbETiX6QHpn8ou0FgtrZfXFYZkc
-	k9LZTMJmFcsUY4Uu4qtUE79cFG7j/6nh+27y4eXUW6u5SZN5Ok/hVcsPcku2d0sB0tHorT
-	0WZJ7NviWiL19cCxnH9t1kpduThqXGo=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4edaeb11634so20277971cf.0
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 02:28:29 -0800 (PST)
+	bh=ErpvLu+msmOQH+DLoUzEraHYQEPe7HwAu5dxR8qbtAo=;
+	b=DdDtYT4wEdRtv5GYH0BcXjGY0+aKCgnjYaZ/5jKaRX3f8LhnOTBLWgiVbFTFZA9qa8b7WW
+	e2cDkAIsUBr2N+vv4/AaHlCGQwLkV5v4NioPRDFhjRWJFe74bD5PIPm3wrbc0rvb32SFhU
+	PTgdvbd0BkS2ERz5vhkLZDnjTkkWgmM=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ed946ed3cdso32229321cf.3
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 02:30:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1762856909; x=1763461709; darn=kvack.org;
+        d=szeredi.hu; s=google; t=1762857004; x=1763461804; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=h/p7mEepN8jUuWyprYCkVkbNxCuAN/nU2Y/T4HHlQA0=;
-        b=Qzk2zNHvmiummXOKBkHY3utAn9KwSNsy9kNHeof7B524rcv3QMIHrbCruiKBiTPA8v
-         DwDMKDRVy31M5/4Fmk4PdHJXDfkff72TaO38JPnxbqP70v1uri1pKRNmfZ+4hEPuJAES
-         9puh0ieRmZOpSzLxjgcjri9K4/WdfmrPdfbtU=
+        bh=ErpvLu+msmOQH+DLoUzEraHYQEPe7HwAu5dxR8qbtAo=;
+        b=NUvWuq760ai2VM+lRdUeFNFpq9jjacGVE4jVJ5ZPIw/4QyIpsRneUL985M1Rm0ATmo
+         LPPcXIEXN/qsOtvRaL53/Y51kn5XLejUz30CGJpPHYq5rXu/4xp0IIPzfkyOxlvvVoyw
+         z86pHktL1YJyWVniJdryfS+8F9Tkl4cxyfnVA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762856909; x=1763461709;
+        d=1e100.net; s=20230601; t=1762857004; x=1763461804;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=h/p7mEepN8jUuWyprYCkVkbNxCuAN/nU2Y/T4HHlQA0=;
-        b=lvaQyrgWxEi47RRk70SzxT1u5cJjZIVc/27yNpU5AXhM4mxz8OplX48vdYEG9iYiqe
-         d6SP0hA50liwv2Hp4fNiLbysOz0aWjKj7xPekyMFx72hLtTPHV0Y3BAHvfLWV5kKdvHT
-         ceOCK0Zi/ywfPyEEoo//wzt2s/UWovaZ+E0q7gZLfSwrOdyu+d69xtfQtsY/ok64At6C
-         OV6FVfecCWwhYKXfTeaj5fN32UFfJ6KGKaKZwPUcTuJyuZHJs5+4a5qdMuL0CPQY0Tfs
-         K7avWsjRphP9He3EpXpJjb760OdyftI3GlFw0CtQVyN74wlZkLYEuJqjRkZv8Q6QRakI
-         eLtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWkUOKfIEHG1jCSQ36CpnOjAazItXms6YowTLhJkvPAM4luRNsMmz2ZapT8/JNTiL4y6U48132okQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzv2jbeYUAXU2tzGdWagVZrL7eBk4ZqKSxGeso+QKX2mC1xaHPB
-	q3i51/RyUrmeYQvRfWDOkMOQif4s9kyf4cmt4Q4c69acJKUTm4EJrTUPdtYYai+9OKwf1jlJvYv
-	TXl/w6tgXmyid+/CJTLwxWiVh2JOHKyHztYnQwick3A==
-X-Gm-Gg: ASbGnctVSM9YGNDZ5C/f7BS3lT1eRSTwX6q/gyvWH0IPmeZ7Cr9rzvP/ay0BQZgpvl+
-	ZX22VYj1qXCyehOxB/T+jPM45JSeL3HgY1tjigC3nxT7KtsiagEb3yo+LACaNjfWZbJikznr0cQ
-	0FJMuXHWXlWO3RrE0j/bnF+0Qh94dp/tA/KpCwXWLUsXDkhRLeJODsKxp378LJLPF+cD719Fmz2
-	zuzZ2pQHyKDiePG5Hd0NND5XuRLFp9a+eorppybbV2qoLlVGXx0tOLH6i0=
-X-Google-Smtp-Source: AGHT+IF2jsXtOYznzAlKiswAAYjfBT86jbKpGaMbobTgICmObIV//j5aCRxdPYkP+19MfGrAnajQvcSXxRuiu1TbWoM=
-X-Received: by 2002:a05:622a:1898:b0:4ed:602d:dfb8 with SMTP id
- d75a77b69052e-4eda5043040mr135933731cf.82.1762856908949; Tue, 11 Nov 2025
- 02:28:28 -0800 (PST)
+        bh=ErpvLu+msmOQH+DLoUzEraHYQEPe7HwAu5dxR8qbtAo=;
+        b=NoOSXKMuVdb+f76xDwT6DkVTUAHiM5Q1gMIN5Gi77KTPnY7+9N2ssKF9xKrxmo5Sle
+         1mQZBlabJxGA/JavzKWgvzrhIZ6B8Jv8rXOuZSvpa2hBbIXUDQvanUK5A6x7g4VOovYh
+         FIsTHB5PQa3ZVx7xcPatqistuQOm1e6hyFuZRGoUFa6rE9i2Z02Pl1+Pl/3cDxeGq9xa
+         xyemHwgRX7Z9dIgCfA2D+6KHRnz2dghL70k2gERJbYCI7NlkeHqBWsCtnX9LqtkgDWtg
+         O/uASc/rSDAb9iw8s/IO/aGP3yo02tK0a+UykvvhsTFhXc2qWnVD2E2yHhoeqaOh44hL
+         NFlA==
+X-Forwarded-Encrypted: i=1; AJvYcCUv71g8bPrglPXMavidYvkU5g6YBushxcaaIjEIzS1jEGTZLCeMMhnHfKddQadZu5cVLHkLdAfutg==@kvack.org
+X-Gm-Message-State: AOJu0YwcU664Z1Z806w3sqCRk/KxlE63uEq+/lwl180ltGQeaPa8D8Qa
+	HD52+0rxGZmm+skZ7/tibVkf7RQ3bRlCXGgkzk2PXAvREOizGzT5s3X9rFgzA+ncWkK1RiydON2
+	cpWT2ShE1JVu7Mj3e3wvGwfpAHj/jw9xxHn7Dof+5fQ==
+X-Gm-Gg: ASbGncsYij8SXGCnpEgezXQjTUPPBkzZPa0jNM4DzDI2tbSbe3wXkfHStKK4DcpTw+8
+	PIsvfSkAYdSfv/+0Lmk6qUCtrX7EpbHYP5mI/ImlqFAcwc61Z/1/8tI9S8RjeBeEcTaS0+kLJNg
+	UyDGNNsjE6P1MAwpVEQrb9s9t4uT+EfLsoA5n8qjRPIJv+wFvoOLLGxHAYxbWd0Ch/QsCjs2ABj
+	GijL0gjcVGTA6n6JmSLF+/lhEi/H75Voi793gCRxXJaYrcM/N7JE+fgocrTffJL2ab/+g==
+X-Google-Smtp-Source: AGHT+IG1vPc79jE1NxMTWUcAkMOFXJ1dO7xwNLHncVzXeQGMi6M4ZcaWG7wZ9Wn4xgn8RqaQcm4UKxcrnMz8XFw/71I=
+X-Received: by 2002:ac8:7d8b:0:b0:4ed:b378:145d with SMTP id
+ d75a77b69052e-4edb3781c5fmr87056701cf.45.1762857003684; Tue, 11 Nov 2025
+ 02:30:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk> <20251111065520.2847791-18-viro@zeniv.linux.org.uk>
-In-Reply-To: <20251111065520.2847791-18-viro@zeniv.linux.org.uk>
+References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk> <20251111065520.2847791-4-viro@zeniv.linux.org.uk>
+In-Reply-To: <20251111065520.2847791-4-viro@zeniv.linux.org.uk>
 From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 11 Nov 2025 11:28:17 +0100
-X-Gm-Features: AWmQ_bl7He3VQsld2UXN2E831Naa9ot3hmwpZMaWScQnQVWsufspzsog6zo2yMQ
-Message-ID: <CAJfpegv0jMq96xD8gSbMBydj=1wRixVGy+qd3feC2vSSn7v_rg@mail.gmail.com>
-Subject: Re: [PATCH v3 17/50] convert fuse_ctl
+Date: Tue, 11 Nov 2025 11:29:52 +0100
+X-Gm-Features: AWmQ_bnbS5BGnOdlDcNli2J3_mWe2QdNv2AalQvWZZg8jjhCbQzLKZqYiVdFPQQ
+Message-ID: <CAJfpegv5eZK=70GEdbofg8u-CKS7gL6Ur5PD86Ay4h3Z8D986A@mail.gmail.com>
+Subject: Re: [PATCH v3 03/50] new helper: simple_remove_by_name()
 To: Al Viro <viro@zeniv.linux.org.uk>
 Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
 	brauner@kernel.org, jack@suse.cz, raven@themaw.net, neil@brown.name, 
@@ -100,14 +100,14 @@ Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
 	john.johansen@canonical.com, selinux@vger.kernel.org, 
 	borntraeger@linux.ibm.com, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C80814000D
-X-Stat-Signature: abr1ndn63fn6m7zbbidhu4qawf7xfajz
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 98A291C0010
+X-Stat-Signature: pn8qe5e37ntj3c8w85t7hmkyn3iwcccr
 X-Rspam-User: 
-X-HE-Tag: 1762856909-292577
-X-HE-Meta: U2FsdGVkX19mcpFFjDSiZgSUGE5xKzENVRskY3c45d3WFZQM1SIR6RWlipv8efUab2Q/te+mgshU2HCdTciisbBUUc33rmtJrZFOAqiLcNiOEfPac2Yq+yzMYi89nH3XOpcx65VcBOq4EOYjf1uEFZlKH9xeOmFO/twK/OOGPC5JpEWxepJLUIfI68aO7RQFKCiaM1+JcF8AWPAiGoPR6MadE4bxWstFz1hjnxyLAl1MAr/5q0lMkBDv0BMdQPLLpEjDrcmXEhrqmx7vKOT9amk2EQgvgzqEwPbGqBH6/Xvh+CBx1RHri/GlToYhb62U6VDDCzccOjSOmblnYldTQRMbvl/JHaHcqKDe0z16xHCePGHH3KbYtRgKvCtyVdst8fQwwkqifH9p29NP95i7Y+TuXbsucusM7cd8yvQW5KPg7NdECtkEeGjOVLnoyonniTo6SiGIoZ+T7NGL9n8h1IXWAcRDwdyLTdZyApcf8pKX4PVdZeexh/zJT8lQQdhRdtj5nnWC7kJJjW09i3JNdwijdDlnZis5u0OwTVg/hzAXZV0CYDWLjKV5kHXfzpMmT4vODwZvQIRTMeGo5RMPGStMC/vCxHrghZkQBVOe3txMUbYCocEarmEp2grtyCXgbXf/q0Km+2P690nmHjz9YmfQCeOFlieygZmV+dVugTaTewL5P0F9JA9d5nw8mcrKlnXPhVrxCJl9JRiSX8YrHxvpgfrwi2XRpcwRLpnWuKOjEpTPvijBcYVNeXxOH7JOD1iPThKnjWmixIbLYc05qtMXgZlygDn2/qCUhvFuoR3yQrY4yMqmLkF5+d31IBtr7ieiZUxZCwHYonUjLzIQTwskkydP8PFsi6xx1YQ2HVqHIAagDLEwGzRp+hTugkT8PjkA4IUS96tFTNk9ZpYS5bYncWfls3u496GASdAWyPWI5kqq+MQvb7lKdIltnSzjMXhNh5sOd77l7mYLnas
- hIWjd3qV
- jUs47ty5EGwTC2DFW2qutkpUs6rJRcAVVrj6OLADczUMh37wVHzbeiWE8OZAFy1pSn6YII9Z9Xa0RXuTIf6FbzwPpUFlpsrKdt/AmQENvc7FSZ2wscTayvJ/NdEvL0yD9KVVWdRAsAZy+YCOdBhvLIW6DtaFyu2lF+pvG6ezeV2/8gI/kOLi4nwBUDSMvqwFPtlaIvmZv+XI2Qj+p6bKFFdkKgw8kNA0AvwUqOG5fcaRusNeCpGlFgs2EX4ySYqRRQs1ENiiomqh/noa0qwGZ9IcNFoBP2LG9y5ZoH6f2wDXQVtJxciMCq2XmDBHhBjLDfYAI4US6CsM6NhM=
+X-HE-Tag: 1762857004-568493
+X-HE-Meta: U2FsdGVkX19dsdQq725Rkhp+cMy6xBdzjbvfVtL2CziWaBcQvBCn56X19TC7LQlh+7muw9EmdhDAR6LkaClvCCmSVgE0nIeK36VxzTZFV+mTGcg5pXq3ykatOP0z4LCgMSkIRGLDiHYEpT+HWnJEIk6y9gx47RaT2Hg6wd/lmuDkl+avyq3pZp9x6/PGF6QtA/1Vhu/Rbt5OBO3XzClUtni+cJAeE60AGIX3+aEWAW9uSF5iS1kX3pgbOidFEr0GVgC3CXmGKJTYnMRekBBkjSPYptC2RcsNzMorggtSSyn3WsZL3g40yS6vWBSdJUn6IljDintcjJ3HNO+1SHZjoemjPzkU1w/FPRuVYqHHiotaifvYptomp/2MDR1pdu+HL14kKPX2sBoiYGJxtgAcvM5VwIfJ02ya2MEEGoy40o+RZQp/SgPVIwGOr3Xaj9gdsllOlybkHhvyMHngayovp0otBEUrud92TOBte5dadZcSsnQD7YsOR/4NPk+iC0N9t8qg31db0IPZJclvDA7s7tJkC4SNNyLwU6wA2ehuTRZkyiQEJdlLZJCH+GaVIWeu8QLdWB/P2loQi1pWPTRC4mf6DD/3QMo9liH5AUqY4ctt65EjvT+z89Gblql1UoCGrOycbnSeNkCtjVK9QHuJMch6sP2a2TTlB9kqR8ydZZmHc+gS9D9q1+dZdPSij2jw8c1/wLMrsnyKrc8GyyKxRaZPT5ea1WYS/tW07CSHTmvRMRQpevLCrAGBpdpi7sVZwTB0nXdRW37njzIdjSJpKOwfPYPenSfrMhR3AtNeQ4UxzsIy+6O43zf1FUunQbUo64XQxXT7VKpkX2h1iPUWLuwGJ3M5JlAOgwd0Cei6jQQb8K9Ek/OmBifoSOsKMF/HC1P4mK+8UTpMf/pmlYXxVaVyxYlh8RIGQNwnWwEM+ntLYZ8bTlUZTcUssVHfMNmj7hS6sI01I4jShuzUlkM
+ uxiGLag4
+ nhh2z8Ie4Lvaziask+PIxfv5FjcUBm/j+dnrRAHySZ3RNMYykcbYKskK6AeJSYf1loU/VE0EeijwFPceHCAmqLMHBcxlhXNOcKa5yOkyWBbdbBOWekgsVAnvbrndYycvFGwr/8mUTsNNuMGjCav3R4wep1YK8TXh7M//s7qPAZjwZn167T78Tpe01xyvwz4GVyhyEGwY+qxhHnG68WOvKA5o3cFn7ZWfsryZNKc+SpKZ0nRGhMnGuYpr/Z6NxG1wVWSxn4gnCAbPjfAwPi7AJHzCt8KqfObgI4tA6+m0DHuDCFXsbg7QdfteGiYZh6BpwkbpdsiMwBYTzD3A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,16 +118,12 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Tue, 11 Nov 2025 at 07:55, Al Viro <viro@zeniv.linux.org.uk> wrote:
 >
-> objects are created in fuse_ctl_add_dentry() by d_alloc_name()+d_add(),
-> removed by simple_remove_by_name().
+> simple_recursive_removal(), but instead of victim dentry it takes
+> parent + name.
 >
-> What we return is a borrowed reference - it is valid until the call of
-> fuse_ctl_remove_conn() and we depend upon the exclusion (on fuse_mutex)
-> for safety.  Return value is used only within the caller
-> (fuse_ctl_add_conn()).
->
-> Replace d_add() with d_make_persistent() + dput().  dput() is paired
-> with d_alloc_name() and return value is the result of d_make_persistent().
+> Used to be open-coded in fs/fuse/control.c, but there's no need to expose
+> the guts of that thing there and there are other potential users, so
+> let's lift it into libfs...
 >
 > Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
