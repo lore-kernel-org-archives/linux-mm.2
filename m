@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39852CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 00:17:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B647CCFA13
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 00:23:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2797A8E0008; Mon, 10 Nov 2025 19:17:52 -0500 (EST)
+	id C22878E000B; Mon, 10 Nov 2025 19:23:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 251468E0003; Mon, 10 Nov 2025 19:17:52 -0500 (EST)
+	id BACD48E0003; Mon, 10 Nov 2025 19:23:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 167488E0008; Mon, 10 Nov 2025 19:17:52 -0500 (EST)
+	id A74618E000B; Mon, 10 Nov 2025 19:23:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 06B838E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 19:17:52 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3B02160315
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 00:17:51 +0000 (UTC)
-X-FDA: 84096413142.28.155E639
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E674218000F
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 00:17:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vjkeLHDm;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F0FE8E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 19:23:19 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C6B712CC96
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 00:23:19 +0000 (UTC)
+X-FDA: 84096426918.15.A8C3D60
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 690BCC000B
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 00:23:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="pBK+uz/9";
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762820270;
+	s=arc-20220608; t=1762820597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VRa6a9PTVAKzZIPhPoFYhNCRojY7+kwf6ee46naNTlw=;
-	b=hBvrnc7sg6lSf5xlVD5YflWQjmZdxZq1lnvy2Wgt4FwN8A2mfDUwjysqpGdRcyf0tjIk7q
-	UKbqqfzgDBWS+6vrc9IG7gDR4Svr5HSlW6nJeRd/kfJlWtl5hEN90b9BAN/X7AF/BoojC2
-	CLzX2edFUV0hlkw/JntSrJ+ykPEcFNo=
+	bh=bhCU1wl+0WRiNZkcInDb6pihu5NuBMB+5m3WCnvHHos=;
+	b=JQhUhy84av5k03y8o4illMYD6l4uNFV7nsOI1DeUlzcnPk/TlIl0dvkPitTbL4UUYDvgzY
+	A1lI2IfH10ET9sCdqjXlSpKDT4ClEPX4UsL4MWzZocygAIXlMUFct0HNZNdmH4ItAwH1mp
+	x1TulolAuoIyj3VAUdn7HJN9slJNLnc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vjkeLHDm;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="pBK+uz/9";
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762820270; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762820597; a=rsa-sha256;
 	cv=none;
-	b=OyWqOxuRzAHxskfJtDqUQ+D8JvS+kLdXY4shPxgce2m5DuH+rSgV3wrIdoOSO23jwASm9g
-	iGHswvUayyvDNfeGw6CzlwyPgUwgGdDbqgTUhyElbcTbA9Qtmg2rXDarXaGxyQf/3kxtRd
-	KBJVmA3y2CsoqlDDYf4C69c6wIUcPbU=
+	b=ddxM3X+ywMaV43lKcAGYac1DQCYjlporfV22bEgBQavNlp5NckrKlRMvMhIAeti6LXtw4g
+	EexAz+yyBPP4OLg23JppA9OOq6pJZYNK9u/JiHHKe8D0R7ZIUU1kRJjo5RvU1ZbaAuI4se
+	t9gTB7N9VA59pbj+BXr7S8OFXViqujA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1776560195;
-	Tue, 11 Nov 2025 00:17:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CB5C4CEFB;
-	Tue, 11 Nov 2025 00:17:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C8D44428B;
+	Tue, 11 Nov 2025 00:23:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8D1C19425;
+	Tue, 11 Nov 2025 00:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762820268;
-	bh=h4IOFDJ10o8gxsjF+0swXOnDNA//+lvIGav3YD5mbm4=;
+	s=korg; t=1762820596;
+	bh=gHyaL6pqvKbF/42T+jG0a6a0x8S6QYiyQ3WK/gyAZKs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vjkeLHDmhlbRmdh2J8YEkuADTnOje8197r13F9Y+9M4PNEGyrIjTsJrXa9FcWBd30
-	 3dmWPQqBvqXKMpha7c0qNKjQ5ewY10+fA5vTYMX7SAz0x9GQP2DAUfOdVKd+b+ILms
-	 w4QnZBmAPYCsSnhcOO+V0J4HJESA9uFYopLe6MVY=
-Date: Mon, 10 Nov 2025 16:17:45 -0800
+	b=pBK+uz/9B/7dT4Dfr1fmhdpoHhdxbIQqjTbyre/CkikfJY2PM+IIamTL2ZV0BAKI6
+	 KK/J5MjNOlWuttzCb4ScA2sCUxaN79WlqRq+Yt72sQj5jhbtkPdo/BxnO6J7GWbfms
+	 VP61krwUmcnmNbdLHyOdfy1bZLglbb1ntnV/rcd8=
+Date: Mon, 10 Nov 2025 16:23:13 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, David
- Hildenbrand <david@redhat.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle
- <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
+To: Hugh Dickins <hughd@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Chris Li
+ <chrisl@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Peter Xu
+ <peterx@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Arnd Bergmann
+ <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
  <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
  <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
  <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Muchun Song
@@ -85,34 +87,38 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
  Popple <apopple@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>,
  Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kemeng Shi
  <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li
- <chrisl@kernel.org>, SeongJae Park <sj@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
- <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
- <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, Miaohe Lin
- <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro
- Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, Rik
- van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins
- <hughd@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, SeongJae Park
+ <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn
+ <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry.yoo@oracle.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
 Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
  entries, introduce leaf entries
-Message-Id: <20251110161745.2075f263e3c693bf65f98ccc@linux-foundation.org>
-In-Reply-To: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
-References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+Message-Id: <20251110162313.baee36f4815b3aeb3f12921e@linux-foundation.org>
+In-Reply-To: <c9e3ad0e-02ef-077c-c12c-f72057eb7817@google.com>
+References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
+	<CACePvbVq3kFtrue2smXRSZ86+EuNVf6q+awQnU-n7=Q4x7U9Lw@mail.gmail.com>
+	<5b60f6e8-7eab-4518-808a-b34331662da5@lucifer.local>
+	<CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
+	<3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
+	<c9e3ad0e-02ef-077c-c12c-f72057eb7817@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E674218000F
-X-Stat-Signature: fr3ny8qr8t6djgyutift56drnb5qkxma
+X-Rspamd-Queue-Id: 690BCC000B
+X-Stat-Signature: kkbe8ahnb76fnpq9ash4p3pfprayzeta
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762820269-557263
-X-HE-Meta: U2FsdGVkX1+o/e4G+9NCTd/6B89FG01Vkog7/CYRQx0zbd7FrfiA6DpRoEVDr1wMAasFRIhIGwzzjZT5WvRhkPr+GYzg64m8YyXvI/cPD3/OgmqnIqAm6VACL2jgXfUeDSt20Xgtj90wC6ihcAL7qOJO/GeYyvSO1+frvHdNaJttm3B7TOm5zTz3X7bW8wMcdMtapcSzEGaPizijduWOWn1FzBg5cXE3dQdqLQC0QSG/HUbSeMyvMaV+WRK9gN9SMDJ0cDwbn/iUC8amT69ulnMgocxCNm9cXK1RZlxwiwUH47LaqgUgPVnu5YJxVYBjwd62cXp2QQvRPXekRrWyXjcOgFeP7YdS4fr5XYYrovcvMtthFk/7fOUeDjQpKmKbZkHgYK91PI986lyIECaAI2sOsAMrHyzcNNQnsNb4IL9bnxJ7RO4S2Wbva9SbpNumIeMh7j/DTgoH1yF2eHD2iHQzFEBNI3nBXMoh0VVWBsv5inNypFSTPiHDG0On8yMnTYf1qqPATfM/5KwKJuOaw5owfsNdN0B18zs12hOGSIYEkMIlo4ndCh2HwPtGIReGXSLpHWkPFTEaIIuhWXsoD1P21lik+ssfTrYhD0YUHkm8ztTqE/5vWZsiT7gliqiInC4SPB5elRaNPXiHznVJMWS6AonmraC6R5XIlF2TUj6azNxkJEEe8OCf1FGaMANGiSNx3zK+yct41ihESc+XbAZnBP88WdwxpVw1blhesVE73OC8x94luYawP4H+g3U67UBzE43zIkVkPUhvomHvjsIhIKxNk2oo7frOIWOOaogRe9B7FC8z/rgZbTMFvcpW+Bkq6V5IYLvaD6miYEgij7kmJdQEgb7LhrOImEGFPR8+Lah+b6rXangmhYLwXF2O0Mc0myriejrTp9fFi7v7k1kjIw8OGq5gBPQJT/CnA8DuPjrVbW3MQgCUTdkHuJADlquBcqMat/ThK90drVi
- n2KCOgHE
- UABHZQw6X6ki/4xBElbi+iW2+2boJu0+TJjJZOIxrty0GlqFZE/EuMsXZ8TuVJ5sGa/a8UUadVdgzUE9fxDRygBQq/EZEJ1iWeKcd4m4qtEKGn5D0sVAkoZ35DBxuP3riCf3+MIsFxNlMkQFvHGqQbKgmJIoVF5E196uuqijVD3cS6JC8C9uC8eBvO8m8pqNGzJY229GNIfLeIVTCnTOGp/lddIKhLdKkT6dgZuUUOjhUnIOK7CmMNiTfxMSCyF/PMyfZBRXfT6x5vUI9HO/R9pM2OcGGu8uibIBXPoQ2ok+1ijyU3ivldl20J7ux4/5pCjrRameQCT+eU3KKDGJAsvOCW4cFVMYlMqejc0whTjnYmM9JsFpi/Gh264ahjjedFed+lC8+Iy8YcEI=
+X-HE-Tag: 1762820597-813484
+X-HE-Meta: U2FsdGVkX1/G0h18wv//Q9wXQx+GEXnO3RIU8gcJ+v/MYxFNQYHBdyarFiqIGp0gRWPB/3vEOWCzVzZk4GCxg9loYttLUsQIizRcF3AhdK3ZXbokmHo9gYp1g5bdOw4n7kLiZaLLtVsbAOd0fOI1flV+eXvBsZuc62EAaCS7Uv6Lzxi59Tpw5ePoKdXLuhKSAZfHbIfirLIRBNNAJ3HLEO12D0YMHBkYcfqJgCAs8/jKheicywU64B6LAtLtNc/hyc3Kne7AcWhGYeua3DqIyyC54dVmLLR+CwaHTKRmoyw9whzn2oy+0YtYCY9Uwl+Q2D5XADyI5n8SuJQQbgPWYzjDnAjYwmp4KqW8lmzKKtlutaIxQbJgDcnRclHsJvOHfyShxL1aDGgnpfSccPrw/YADu0Xw5JIEkSWzhxKfURDhBENy6pTL4DvxSXkMGyEM7kE9fBnRjxmWDYbb1j0lc/V78PrPVBDmneUer3XHq/FFA4so2SFzKiWUh3aLBmJ9a0+cnh84r4wsFh5Wf8yxnoFbaRJhyTcrGs4VVpTL+vUw2sbZFqfGLUjU+YycB1tDdxPq3pfKwANZQyt6JQCdtFFks8WzNzrbGtF0/10Ve5BqHdSPPgd3JKignEyWaZ6XfNdSaCrP/rlLIgPfN+QOtplBMHrOdh+w9TaJ1KyezRzAmYULGEa4akF9KBOwg4j3mDzVsNfhlAcXj6Yl3ggRVqaFYd74Pb4sYbzh4ZUphOm5UDIBFcXZXTwqsHJtSyWcJDYQtHrFUXPw4ptq/Vbqvoo7fIXPteDO4yrVRAKw4TOh/ITj+FIzhHXG+2E++v2pqA0EVoHocPHNzT491UUuivjxV+IkCPOooL4FGFCvmy6s1EDY2Z9hX0JW3SpZSmfVYW8fIzKXuXiw7REjHFA11QudB6//YsTdc5bDsfywkrbTSw9NbVZZpLCJ5BletsbAceDOeGwmUElaTmaWGQl
+ abjVVxIS
+ lshfRO2YEwQH0ODo4HX92mn2rKywyWu0k1Fiao7SA56WBBOzTwn55hMrilaWshe2LP8fA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,27 +127,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Nov 2025 22:21:18 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Mon, 10 Nov 2025 15:38:55 -0800 (PST) Hugh Dickins <hughd@google.com> wrote:
 
-> There's an established convention in the kernel that we treat leaf page
-> tables (so far at the PTE, PMD level) as containing 'swap entries' should
-> they be neither empty (i.e. p**_none() evaluating true) nor present
-> (i.e. p**_present() evaluating true).
+> > I'm sorry but this is not a reasonable request. I am being as empathetic and
+> > kind as I can be here, but this series is proceeding without arbitrary delay.
+> > 
+> > I will do everything I can to accommodate any concerns or issues you may have
+> > here _within reason_ :)
 > 
-> However, at the same time we also have helper predicates - is_swap_pte(),
-> is_swap_pmd() - which are inconsistently used.
+> But Lorenzo, have you even tested your series properly yet, with
+> swapping and folio migration and huge pages and tmpfs under load?
+> Please do.
 > 
-> This is problematic, as it is logical to assume that should somebody wish
-> to operate upon a page table swap entry they should first check to see if
-> it is in fact one.
+> I haven't had time to bisect yet, maybe there's nothing more needed
+> than a one-liner fix somewhere; but from my experience it is not yet
+> ready for inclusion in mm and next - it stops testing other folks' work.
 > 
-> It also implies that perhaps, in future, we might introduce a non-present,
-> none page table entry that is not a swap entry.
+> I haven't tried today's v3, but from the cover letter of differences,
+> it didn't look like much of importance is fixed since v2: which
+> (after a profusion of "Bad swap offet entry 3ffffffffffff" messages,
+> not seen with v1, and probably not really serious) soon hits an Oops
+> or a BUG or something (as v1 did) - I don't have any logs or notes
+> to give yet, just forewarning before pursuing later in the day.
 > 
-> This series resolves this issue by systematically eliminating all use of
-> the is_swap_pte() and is swap_pmd() predicates so we retain only the
-> convention that should a leaf page table entry be neither none nor present
-> it is a swap entry.
+> If you think v3 has fixed real crashes under load, please say so:
+> otherwise, I doubt it's worth Andrew hurrying to replace v2 by v3.
 
-Thanks, I updated mm.git's mm-unstable branch to this version the patchset.
+Oh.  Thanks.  I'll move the v3 series into mm-new for now.
+
 
