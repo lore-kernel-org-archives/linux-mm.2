@@ -4,147 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3985CCCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 17:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06176CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 17:54:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 592C58E000C; Tue, 11 Nov 2025 12:28:42 -0500 (EST)
+	id 49A6B8E0008; Tue, 11 Nov 2025 12:54:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56AF68E0002; Tue, 11 Nov 2025 12:28:42 -0500 (EST)
+	id 471D48E0002; Tue, 11 Nov 2025 12:54:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47FB58E000C; Tue, 11 Nov 2025 12:28:42 -0500 (EST)
+	id 3AEFB8E0008; Tue, 11 Nov 2025 12:54:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 365918E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:28:42 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4562140168
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:28:41 +0000 (UTC)
-X-FDA: 84099010842.19.F297BF3
-Received: from siberian.tulip.relay.mailchannels.net (siberian.tulip.relay.mailchannels.net [23.83.218.246])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4DFEBA000D
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:28:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=MeBs0vAl;
-	spf=softfail (imf15.hostedemail.com: 23.83.218.246 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762882119;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 28B628E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:54:05 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0971138F2D
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:54:04 +0000 (UTC)
+X-FDA: 84099074808.29.0F19337
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C06AF20019
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:54:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=a1uFiBIJ;
+	spf=pass (imf13.hostedemail.com: domain of 3OHgTaQgKCMUulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3OHgTaQgKCMUulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762883642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fGEXgunrl9FTquLyoAqFKq7Y4iaVGi3mztkWXISr/mg=;
-	b=8JWSj7G3UQku89995ex+GrwyTtWIUTHOCJ19rS3k0w7E/qt7CjgBQA4InQ+yrYp9UDU7zL
-	vF5jD9wyFnOGG5wtNyR5j17Qsmnr5F4/Te4bVrRvXEpUAXeXRMW2S4/CE/CHiICQBhVEJH
-	Yisf+WDmr6/VMn/scwvUzxnq+q0s1U0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762882119; a=rsa-sha256;
-	cv=pass;
-	b=40hiDj7dImOl2v1Rn5zuFDQslcxJOKEfeWSK+qMCPOvKaIcGxOBtXufMdWsb+ATO1PBHMW
-	LcqmU1p7sX6ugPrhjxM+cYfOXRiBTTC1KybcDGCxRNNJzHFN8rLdmkQnx5aBw23ItZaplC
-	BCuTpLOaB4El1xfUQmLmNVW0S8mnYU8=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=MeBs0vAl;
-	spf=softfail (imf15.hostedemail.com: 23.83.218.246 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1")
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id DC444782877;
-	Tue, 11 Nov 2025 17:26:24 +0000 (UTC)
-Received: from pdx1-sub0-mail-a229.dreamhost.com (100-121-213-86.trex-nlb.outbound.svc.cluster.local [100.121.213.86])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 69FA8782A54;
-	Tue, 11 Nov 2025 17:26:24 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1762881984; a=rsa-sha256;
+	bh=siZpfgLP5dzbji0XiVCv9b7MoiCCfLbkPmoP4Qg2zlY=;
+	b=z3HoAp6K+akBi3aR7loA/rqhp/v9xgYOs1UaqJBUbq4TV7gMBakZfkw6Jpy4o9REYzxMsC
+	4PIXQ1dEA0duPjR7GR6UKQpH6EDX3U2uKz+1EqsF9GgNJZtyPVjWX9PqRmCREG+fWmP44W
+	f31/Y9oabsTRQR1sD/L1N6dOHz16if4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762883642; a=rsa-sha256;
 	cv=none;
-	b=0J7hKXdHWGUhuMYjopblG/a/ktX7eRjc3ERxz/o+VuKq+q5zpWdozVP4xRmKpEBZEI5iyw
-	ckUlvSYZtvl9GcqDUFRtk1ek01kVkEP+QIfg/SNm7q4KJIt27Zo/1lRfUxVvKAz9rs2nhH
-	0TJ9NNEYYWhSxiMHe7rXkLdg8Zmxuz97L9EaTBHzzjwvLyLWlsi7/2CUORZEhYFlMsIf6X
-	c1jks8ZxOQvbyyMj5n5YDHxKYtaYHgni3glXATwMfGlKEMx8uIZmmpJKWVv/QXf3foi+UZ
-	GR+oGT5rkt964idf1Vmp4rLf08vsOwFsiXQYm8vRqyIdfmdiV2Xmh2PLGiNpTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1762881984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fGEXgunrl9FTquLyoAqFKq7Y4iaVGi3mztkWXISr/mg=;
-	b=zx5/4bj2uSrWlTHnlPr2VQvpzl5GU6Av6g0R6mpdnWvEuFzebekhXc8Yy30mLM5XKu+5vD
-	+CNwsYPMPv9tis9LEo0whPD+Ex4I8xqTMdyPcE/r/Y/848VydRDaWprVR1FJxygGZ7S5MQ
-	OJ3YW4XDXAl9chig3+bpA5nM6wo9WSF1+CELsk1ZePztQyO7bGxbrYEPOim9g3BiExcPNv
-	rY798LWd8SyvP+kbdR2+c/3SHD4Bzj/SOSAT604Lo3A2Rs6t7rvXurPB7Wk1OxyJhRWaKO
-	1YDfxuucyXU+lkC5IvJqd0ybvIpzTHaRQrFWTCb7fAK0Y0kzAxTvMMBZucbbJw==
+	b=KmZlCYPDcJ0t2WXcgn1zCrTVOduatq1lv2eN5/79+tIgPX/6g9Sbkdl1ilGbuB68wU8dFw
+	LZQbvLimPQQ53UKUsxLO8Cw5ksTjs4uSz4Jw7/imIZHg98NUAQ61HerMTKbB8biFhoyby6
+	WmBLoPlS8RLcDFlGINSqsUfYcdIHdCA=
 ARC-Authentication-Results: i=1;
-	rspamd-768b565cdb-4j59m;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Inform-Shoe: 3cfc82b06efca727_1762881984722_3782567276
-X-MC-Loop-Signature: 1762881984722:3676767511
-X-MC-Ingress-Time: 1762881984722
-Received: from pdx1-sub0-mail-a229.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.121.213.86 (trex/7.1.3);
-	Tue, 11 Nov 2025 17:26:24 +0000
-Received: from offworld (unknown [76.167.199.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a229.dreamhost.com (Postfix) with ESMTPSA id 4d5YNb4z1Dz2W;
-	Tue, 11 Nov 2025 09:26:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1762881984;
-	bh=fGEXgunrl9FTquLyoAqFKq7Y4iaVGi3mztkWXISr/mg=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=MeBs0vAlrFCikEu4BdYnm3CWXL/eYV16oGylX0dD5s3QHKiJsB0iQsYhZDfHK02Wc
-	 16uYwnZMJRJ6y7vkJm3DQAPUWdL4AKi811KMhQ3yfLvCFz7N4/BFhvpzOQyGNvz+P0
-	 ZG/YsLmJ1i6ktuz/7b4ZcWnE6mUmwPqZtKYF8wmhGpk8n7+0lPVIKrWZRDn4tL2i6X
-	 J8tpPyiW987HegmmpcfDF/dpMUvUAfeh/rvPkH01qKcUsAdlpFzKhgcBGxe89/0910
-	 51CoD35q06Kgfkdtx1+NVboRFlmlApXURVnBRQNuGeR14BIng2RjcdGjX3q1aZ76h6
-	 CGwEoJLZCK0tw==
-Date: Tue, 11 Nov 2025 09:26:21 -0800
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm/madvise: allow guard page install/remove under
- VMA lock
-Message-ID: <20251111172621.thszs4gtc5exsvuy@offworld>
-Mail-Followup-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1762795245.git.lorenzo.stoakes@oracle.com>
- <cca1edbd99cd1386ad20556d08ebdb356c45ef91.1762795245.git.lorenzo.stoakes@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <cca1edbd99cd1386ad20556d08ebdb356c45ef91.1762795245.git.lorenzo.stoakes@oracle.com>
-User-Agent: NeoMutt/20220429
-X-Stat-Signature: fgwjq7oscazowmfp9dnojwehcuokkqk9
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=a1uFiBIJ;
+	spf=pass (imf13.hostedemail.com: domain of 3OHgTaQgKCMUulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3OHgTaQgKCMUulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b2ad29140so2208235f8f.0
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:54:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762883641; x=1763488441; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=siZpfgLP5dzbji0XiVCv9b7MoiCCfLbkPmoP4Qg2zlY=;
+        b=a1uFiBIJSAWFIzdaS+0+DIwedXp5FajGl+x3/k6hPttJmD66PuJJ/nVDEfa2O6DL9v
+         PgbvDCfxhBOicHS/jvkyOMyllSG+mA8wOSKP1IJsYVxymgwdTcmnXKcO7KT4buYVMhUf
+         gsCOfMUocaX7xJc5Qpv9KSlXlS91Li6fJcobrACyAhxolhMMRV8u0o32sLatf5OxXBYu
+         uppgyQxuL0oUeb/fuDfjVVmr7i9zLIv9/gGSj5z89dwXwaPIFTQow2p4q2QHJKQV749f
+         WkCTyOgoOODrG/XW2g6GF00KtmKaGL/VSO2yXrhAp3MSxoKwVKvk3h7kP23qpQbG7gGA
+         peoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762883641; x=1763488441;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=siZpfgLP5dzbji0XiVCv9b7MoiCCfLbkPmoP4Qg2zlY=;
+        b=YMgmrFwxr/HQjP2UPGRez2VF/suXajMW1MMOyBVUOi/FUxEX+mieO9svsQWcaPbdEs
+         DHjPZPUiCLdLb8RZhElxv5Q37miL3UZiF5GBgcCaM8MaIxuA7MB+Ppu5KXvLjPtsLinS
+         /07kYVlVjf73onkurVg6zIc/sFd+irdGBcM+bHoTapG4htXI1C5lWiwzsTps/HWyJyG/
+         6We8YEots7vj7rph2oH9qcykhqKFjCPi4saJjgS7g0d71aWATOwXCFg5X/pFH5OA/8xE
+         1GJksam7aAma3mBBg4F6teT7Alt9OPm/s8BDi4Ayxf0rUxYoHaAr2z/Ud2SAWGlTtANR
+         gN3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXRdRF+Leettv7Tvx2f+mYegGpfJC1acFt9LphxeAboqOwOUrgg8f7yIy9zmRwgt5eoWa2LB//7mQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy6fbp+qJTbJgERE8CgjiQ/54TfPS0iUxCQuplGRazjLqc5pBg3
+	/OG/v2Rkg8mJ++DQy+p/qEP93rHK+3thRcfbWdqJpwAa7nhaEyxc4zK6Ecq+MU+JQ35Il490TtM
+	rthxjrNwiJZXO4A==
+X-Google-Smtp-Source: AGHT+IHnB/R6F1elE6X4v0mXrao282IGqxpFWQpLfCUMAKdx6t7LO867oky5ICmv/qkdodAMAQ3IVjvKrQvXng==
+X-Received: from wmgg10.prod.google.com ([2002:a05:600d:a:b0:477:76e1:9b4e])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c8a:b0:477:10c4:b4e with SMTP id 5b1f17b1804b1-477871e3943mr2099455e9.41.1762883640647;
+ Tue, 11 Nov 2025 09:54:00 -0800 (PST)
+Date: Tue, 11 Nov 2025 17:53:59 +0000
+In-Reply-To: <20251111145501.GXaRNORRWGIYQ7yFmH@fat_crate.local>
+Mime-Version: 1.0
+References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+ <20250924-b4-asi-page-alloc-v1-4-2d861768041f@google.com> <20251111145501.GXaRNORRWGIYQ7yFmH@fat_crate.local>
+X-Mailer: aerc 0.21.0
+Message-ID: <DE623FVJ73LV.1PIGW7RLYUAX0@google.com>
+Subject: Re: [PATCH 04/21] x86/mm/asi: set up asi_nonsensitive_pgd
+From: Brendan Jackman <jackmanb@google.com>
+To: Borislav Petkov <bp@alien8.de>, Brendan Jackman <jackmanb@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, <peterz@infradead.org>, 
+	<dave.hansen@linux.intel.com>, <mingo@redhat.com>, <tglx@linutronix.de>, 
+	<akpm@linux-foundation.org>, <david@redhat.com>, <derkling@google.com>, 
+	<junaids@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<reijiw@google.com>, <rientjes@google.com>, <rppt@kernel.org>, 
+	<vbabka@suse.cz>, <x86@kernel.org>, <yosry.ahmed@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4DFEBA000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762882119-961700
-X-HE-Meta: U2FsdGVkX18NNzTRMpjUduG7m58OKe3btdVMPFbfS4TuKR+W2HkARqGqlBl3kITQfvIkWj4EoPhhirH16b8UXqI9Cd7MOOaJ76Meuao76KXEdzU3dojJKUrNZ4q/ToKfyXKprKUqnA1JD36leg7Ge0m/pK7Cgm8pmq4DBS13MhqObS8DW2ji7qfTjvXzY8e72XJt+ROkclw93CvQliUoAUDbP2K0lkJfiBDQwD96Yfn8WVQlZDonWFqdM1AbBXXmPKiLo1VJvaA565swMMAPc67aQa5R2nk5QtJOmvbhYhKGJShgbTxx3FvQMJrz4ZFu1ryUR1tkbFDOr9vVHYUkJQcaohtnIG88hlKKWg2M9287E2Pp5aYAvARs/kUk/No7tWGAfHgIAFX4Gkv7i3qSTGZ9r+0kP76aE1gqKLYqUd6ff1RhoF2ouhFoaCKZXBaSN1P4Wds5u1ZxRFuNSA0fgB2uNl1BS3es1Xv/NJa/DEl0GsIuEwIR0NrKCtTXNsUon/xc5fWWORBDcFZuvTqAA00zSWXu6Oxphx+RkbnbZ3V1s7c/bXvIfxR2Jd6hMZan2MlIqxnE7+g+O4ClJwgEtnBeG8QkEfwVIbNaWNM97eqymn7ZkdBGwIntYu3a90HvPz+rEWUmc7Hlm0v2QOYl7WywsyixUJv4qtP0GmYVrEAMBj8TkdH8k747yJYAdh8JtWfbzhGV/UxPolG2T0wvEOb8rBNifpbLmeJSCef9jldiFY+YGpQYRrSVimQzpD/PYmrcrKm+t2EnWR1XhcFy2GRKlzgAk3hkf0aQdABsXfWuxC+Una7fntM66DejtTuTAtpQBJO0BcReEzEoJO7PhI8DtWVVSJ+BKHstRMW71aj5gxVljC0YTo4voyeNcCjaq0DygFNO+hinnAw0rndS6ruOZOxUri/cOA6JaJlndOcGjtfhVQ87ox/qFpW8AG0+2CVvs5KwLoU3EaZMHJP
- wEWJeokD
- PFCjuRxWhVP0u9EwxVrf7irQRR6JAhTiZkPw0o9SST9JfmLLpuD7b9XY4vdCS9AOiyMy56XliYBZVfRNCELmhQdOveyRdrRBH5YKRBvYCoDPTzKAuUutBVl3I/ZsO8tWmbWS4TiQgrDP2TM6er+19flK90sXYjBB6MZS3t7saGB+3JKdxl+j8kct+Bh9bp66UGBTjUc8k6h1/eXDJii2KnrH4gfL0zLFBXUAc1aQAquekJfnMWHT6BylTBBH0s/3JsTQoviF/jiW7hX7vAXHONApYvx0/fq77B9fn2PLVClnDbDTJMhwEX03v2IAmyz0ayzFNnl+XYso413vMe9wLQTLuk+B6cbYyLYwUDjBtZHBgd6njpw4gFkfT4w==
+X-Rspamd-Queue-Id: C06AF20019
+X-Stat-Signature: qa31bhqcg198ekr413zxtzpc76qsf3z6
+X-HE-Tag: 1762883642-519384
+X-HE-Meta: U2FsdGVkX1+Nzl35U1LlAfQEx8YR1Yep7Caw+rSF8bPMoUUzl58BPfKbtZy7RoMNjA04hvIuDtHyK+0A3DBdL/gfqwx5RWT+xcpeXz0xTMT5NRuIG5zAwp32Sn/oNTycRd2I8CxGLBtMcVwrepHfKPJyi6E3oheyGNewh3GsW4n1oojsPd7rF6fJCet+UNfhgP7othYtQFnXGlpCmRcrboifaz4CUEMSAUtRwrwI2b6069u3nzHt2hGYTcGgpUCnAuyVYYolYhf10j1kp4BNUwSweDtRgs/C09nsu2IkqaG8OvnbSFuOffm3L6oOTbJqOW23Yte4/IOO6DTPM5gACZQ/btONY9fEzy+XVmGfGGqSBWB8vFRFBwLTjl76AzjsMP7X6YSrlIW+l5Btz7VNfc2CUIgMbDLNZvTgCRj+LF8pC4lWQ7VBMS7fOqxkAH23E7NoeCIRAMAMP4NV2BuzJ6nT/0hkwTgxSI8gb8gr6JoSxyCbmgZhvl2rRsDF/eNdF8v7wif3C7A44/NGHQTm1IYqaw+f6W57nnpkBdDEn4PEVLtsGmEXp5LAIYdZZbxcLfGvalZ8OO3xyf/QYAfbz5lrxBnjCbdr9Wpl42R0pUfIBWiubFS2KKwX4YLzsyhlBLinxZzKIZbplDqB7PMzsHkf9sGjJtwzNDOVw5ubwwcLr3CVd9m8jgXbleH2u8vS4EHuI+IwIje8V5YGf4FYEMjvchOsX0BStT5+cNlGqugydhhjMMr3jUCGxW6fW7pnlcjOuMepkY6VGx5r096P++p+0dTijiHL+wA6MarMZrOlEPnKYm18AQtO3L0mFHswdq7qfeFBfmdjZ+42kFkJfQMGjnfcFQPAChwR59LWSoCr5Uw9ze/4t3d3xLwQPK7By5rC3/57OZEqT7Cnzo4YdwMvM8BcRW3yklQrIQ04WVBCpxnXOTObCG9Tz3PHTIEOiVQ16ZWp41iHRnWcmJd
+ LsHsLm/f
+ iCD/FoR7oicCima6SC7q40YYYo17xuKxumn+gkMQveloyI7Fqco/RfbWbwwThCbHHpJOLNw0EQAOdJzph4U7OAtCEFVFstKNaWZrFKy5og6kc+f9hrzb4uzb17QYT+67CWM5lOkomffgtU3lf9nmLU3+LMygz5RpiZYYu6/QK6sDKw2Vpwmtpr8at2f2JrirJDM7unwwsaxGKt1yrww6KiC+kCIk+GPklNkNE7FT3gmjgqYaatVsJH0wI5FgVEbQNoJYSuoBY3eUZVAPxzxH06W0Ui3/qTu2HmIM1p+MPFbeYgqtOqaol7J6MUfUQIVYI/36ZhI1X63auv2GxZcpGmqsXSwqrdO40XJYqutjm8MPjMki/VntypgM7FLc3e3gljjAT0nY0umVpaQyNZJB+ByypmtIHtwuVX0+jRxNKMVBclRL/Xby51lqxdZkBqzTOcHa6+ftA+wsLhy/xQIvp2GXX/l1vZys8NQk+5+1mgSqeS0kEbl/z3OzWK6EBgY2X/QWDcwMamlC8EmUxU3AlzmZvU9Vhdb30Jp3SOUYx/3mzBEiBSHcehv/wRxdfJtSUjdbnF3XkyDX4lC0yKD/buPyoQQiO7JZitWwo/8kWHPZdAwHri2lfipsWkzEgediiviv0vSLTBsvOUzk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,34 +118,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Nov 2025, Lorenzo Stoakes wrote:
+On Tue Nov 11, 2025 at 2:55 PM UTC, Borislav Petkov wrote:
+> On Wed, Sep 24, 2025 at 02:59:39PM +0000, Brendan Jackman wrote:
+>> @@ -797,6 +800,24 @@ __kernel_physical_mapping_init(unsigned long paddr_start,
+>>  
+>>  	paddr_last = phys_pgd_init(init_mm.pgd, paddr_start, paddr_end, page_size_mask,
+>>  				   prot, init, &pgd_changed);
+>> +
+>> +	/*
+>> +	 * Set up ASI's unrestricted physmap. This needs to mapped at minimum 2M
+>> +	 * size so that regions can be mapped and unmapped at pageblock
+>> +	 * granularity without requiring allocations.
+>> +	 */
+>> +	if (asi_nonsensitive_pgd) {
+>> +		/*
+>> +		 * Since most memory is expected to end up sensitive, start with
+>> +		 * everything unmapped in this pagetable.
+>> +		 */
+>> +		pgprot_t prot_np = __pgprot(pgprot_val(prot) & ~_PAGE_PRESENT);
+>> +
+>> +		VM_BUG_ON((PAGE_SHIFT + pageblock_order) < page_level_shift(PG_LEVEL_2M));
+>> +		phys_pgd_init(asi_nonsensitive_pgd, paddr_start, paddr_end, 1 << PG_LEVEL_2M,
+>> +			      prot_np, init, NULL);
+>> +	}
+>
+> This looks weird: so you have some other function - asi_init() - which *must*
+> run before this one so that the pgd is allocated. But then you check it here
+> and in order to do such a "distributed" init, you export it too.
+>
+> Instead, I'd simply add a function call here - asi_init_physmap() or whatever
+> - which is defined in asi.c and gets *only* called from here. And that
+> function returns the pgd or NULL. And then you use phys_pgd_init() on it.
 
->We only need to keep the page table stable so we can perform this operation
->under the VMA lock. PTE installation is stabilised via the PTE lock.
->
->One caveat is that, if we prepare vma->anon_vma we must hold the mmap read
->lock. We can account for this by adapting the VMA locking logic to
->explicitly check for this case and prevent a VMA lock from being acquired
->should it be the case.
->
->This check is safe, as while we might be raced on anon_vma installation,
->this would simply make the check conservative, there's no way for us to see
->an anon_vma and then for it to be cleared, as doing so requires the
->mmap/VMA write lock.
->
->We abstract the VMA lock validity logic to is_vma_lock_sufficient() for
->this purpose, and add prepares_anon_vma() to abstract the anon_vma logic.
->
->In order to do this we need to have a way of installing page tables
->explicitly for an identified VMA, so we export walk_page_range_vma() in an
->unsafe variant - walk_page_range_vma_unsafe() and use this should the VMA
->read lock be taken.
->
->We additionally update the comments in madvise_guard_install() to more
->accurately reflect the cases in which the logic may be reattempted,
->specifically THP huge pages being present.
+Well, this isn't the only place that refers to asi_nonsensitive_pgd in
+this patchset - it's also used as a global from set_memory.c for the
+later updates.
 
-Makes sense.
+Still, you're right about the janky distributed init / setup ordering
+issues. So yeah what you suggested with asi_init_physmap() (or whatever
+we call it) still makes sense to me, it's just that we'd still have to
+export it to set_memory.c
 
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+> Also, looking at kernel_map_pages_in_pgd() - and you mentioned set_memory.c
+> already - and if I squint my eyes hard enough, it does look like a bunch of
+> redundancy between there and init_64.c. But that's nasty code so unifying that
+> would be a hard task.
+
+Yeah :/ Some folks pointed out to me that all this logic is kinda
+separated between the upper levels of pagetables which are preallocated,
+and the lower level ones which are more complicated. So I am still
+planning to see if I can come up with some sort of refactoring that only
+affects the upper levels.
+
+However, in the meantime I have switched tracks since David H pointed
+out an opportunity for me to help out with the guest_memfd stuff [0].
+That lets me start getting an interesting subset of this series without
+needing any changes to the x86 code just yet.
+
+[0] https://lore.kernel.org/all/20250924151101.2225820-1-patrick.roy@campus.lmu.de/
+
 
