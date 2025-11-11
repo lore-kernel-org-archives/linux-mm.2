@@ -4,175 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F9E7CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 07:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A6A4CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3E5D8E000A; Tue, 11 Nov 2025 02:56:30 -0500 (EST)
+	id 44A5D8E000C; Tue, 11 Nov 2025 03:01:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D15D18E0002; Tue, 11 Nov 2025 02:56:30 -0500 (EST)
+	id 421C58E0002; Tue, 11 Nov 2025 03:01:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C055B8E000A; Tue, 11 Nov 2025 02:56:30 -0500 (EST)
+	id 35EF68E000C; Tue, 11 Nov 2025 03:01:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ABEAB8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 02:56:30 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D90212D1D9
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:56:30 +0000 (UTC)
-X-FDA: 84097568940.05.F7C4ABD
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BB687180009
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:56:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F+wjVqlu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Vek2zLom;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hg2u4BMe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZnfMZ2vp;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762847788; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 255048E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:01:33 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9514160492
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:01:32 +0000 (UTC)
+X-FDA: 84097581624.07.5E1FEFC
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E90A220005
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:01:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Szj1eQpI;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762848091; a=rsa-sha256;
 	cv=none;
-	b=WS3XF7WAXyxUd7vROa58UeIcGLPdnNLrAtxxNSy7MSBoFgXASrpMSr5c+WmI+lyGPHY36I
-	wxBa1VMi0p1fh+EFMbrnIepG3glCE9xoVKYmHHwAyu/3P1drzXvYPDf6zvjlblJ8znobof
-	5r7g7vV/WkECQCpGOjwnn31MjOQaNLA=
+	b=vJndI3zTAmQitXd+rxO7t8HeJ5AcLCYBHd+gKSPBqBEOFXZKSbAOEhaQL2SgMbWKqUA940
+	YBXyUU4g3BnobXRDP7Fn/ZxlNYNoUK1+ZYKaXXqkAUJFY5Ktv25gs5ObxZ+Qt4nkZqBdS/
+	2gI+BqgFHBmPUlnxvfh/ydxAyW0JsMs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F+wjVqlu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Vek2zLom;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hg2u4BMe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZnfMZ2vp;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Szj1eQpI;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762847788;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762848091;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9nEk9c1kRKHjmPhenxqkRPT9FPoh0RLFhK0X7tXvjIs=;
-	b=Jy80Bjlpl3t7Wy04bJR/CXZ4eSNANQkT4yixd54GMZyL/K+b0i3Spt0hFmE4uyKQvpPqd4
-	jm3kqS0fqyHSBOWcfOrrwapC1R9JrkiUaUeJn6VW1mDUFJ5j853Xf3oBwYO5uKgiDtRAqc
-	CPfHuTq561ngW31cm/I8DGa/iuf9GJI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D961C1F399;
-	Tue, 11 Nov 2025 07:56:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762847786; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9nEk9c1kRKHjmPhenxqkRPT9FPoh0RLFhK0X7tXvjIs=;
-	b=F+wjVqluT176lizgzTqNtnb0wcGrpWTFXw4yeJAJG5On/fOeV1T9GF60oPo9mTe3OJehFk
-	eICjzjoVVGU4eQbC/AHhXmPP+SHvxPzTOKYYiPnKqs/Ejun87k/9bwVncMLbXubBKwOpF8
-	jRnlygcrfG/xZJRMprkLL81NkCQFehE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762847786;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9nEk9c1kRKHjmPhenxqkRPT9FPoh0RLFhK0X7tXvjIs=;
-	b=Vek2zLomK8EkwUgPH/ByC81G+B6kitYk9lEG3L9IVoHK+9J7YiV6lM98eHzGiC2scrBD9k
-	AX+6slAsYLoYFpCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762847785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9nEk9c1kRKHjmPhenxqkRPT9FPoh0RLFhK0X7tXvjIs=;
-	b=hg2u4BMeM78e2bYg0FWUF0d2URB3pqPNUTOvk9XFkjh6eDjdD63E6RePtN4Nox8h2LXYt8
-	TGvP9e5ObIgy2il6Q+GUcnhgdd6fafVGCaNRlepSqKc+Rxt4CcfZOqRA+NqPqmC+Yl0Mjo
-	aIXALiIMnvu4Qn4M13BxVq1JYfgFl8s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762847785;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9nEk9c1kRKHjmPhenxqkRPT9FPoh0RLFhK0X7tXvjIs=;
-	b=ZnfMZ2vpGUylNRAjwEP9t+E6Qc2JivQOCHD19c0hhCFa6V0ctbibaYw9PaO4OSL6SxzRmB
-	OnOnBxgHYPklgnDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B51A81484E;
-	Tue, 11 Nov 2025 07:56:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2F1SKinsEmkyEgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 11 Nov 2025 07:56:25 +0000
-Message-ID: <66acdf13-a225-4c9b-a29c-9b16079b7e02@suse.cz>
-Date: Tue, 11 Nov 2025 08:56:25 +0100
+	bh=bCMcASxW4GQs4KES7qr2omvwcK385DadzCf/GiIFZ/s=;
+	b=BZcbMjXeRnHKx1Ae4XNyncmlxcsKiYPkGoXgtvq+gODhs2KQfE3kU+DUhEJdwI0Wcqcjbz
+	yLxOcBJu3RBiAbJAYyy/AEV0K2E+MMvvHwTUnl6/bIetItECcYG1nQJNUhoNdQg/d61XRM
+	g1cJybNyBG34AjldGkYPKPMIa9/lqJg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=bCMcASxW4GQs4KES7qr2omvwcK385DadzCf/GiIFZ/s=; b=Szj1eQpI+CpNio2fSHn7Rcubuy
+	O90u0mX0bC+nvLtB/n8A+Hsu8sXDra0o47XTuYTPDtlbJmPr6+UDSbWTQZvBUnPXKMoK6haWU4gJp
+	k3fl4MdfIBIDWE609M/HMU2vNrpNJI75hI9Q0jHmNaRq0jn6KKt+dt8jIOxUVQhcCF5/PjEortYMj
+	LKGabpY4EW4575FtUxDU83xgOhm8FI+Jhdf3y56T9MUdJgqah0UYyj+VNQx0j4Sz3rHOKnAn6eMmx
+	V/IansGF9MRt78Rb+QfUuYUuhboOC36fFkiaUwfqrKRxAnM2QB3PAY1uR6pvl3KHmCrk6nzB3ZYYU
+	mheacS8g==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vIiHm-0000000Bx1w-2oy2;
+	Tue, 11 Nov 2025 06:55:26 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: [PATCH v3 32/50] convert binfmt_misc
+Date: Tue, 11 Nov 2025 06:55:01 +0000
+Message-ID: <20251111065520.2847791-33-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
+References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm: rename walk_page_range_mm()
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1762795245.git.lorenzo.stoakes@oracle.com>
- <c684d91464a438d6e31172c9450416a373f10649.1762795245.git.lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <c684d91464a438d6e31172c9450416a373f10649.1762795245.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BB687180009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3xjgxadpi1rdfast1ydiwoa8t4pfjihb
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1762847787-82543
-X-HE-Meta: U2FsdGVkX19vznBFSy9PycXqEt8qEoJM34as4uy2qORXCY+IOHK7ZOFsgGxQB/BLInJknhYv1IAIEea+Bny8Drz7A2iWucuFKz5YjkqSux/aK2F3K7AGjNzBKo25C5XuJBBFdM0cZzEDSBcAQKwBlx8jYcHFrE/eRnq7kxw3DUtJk2FcF4V054v2NBBMQj6tzvZBDWgecbs5HZIacxNyuYHACJyyvwvUg33MVD1ZbFQmYb7hhRDfTK2aeTaSA4vV+KzvS1yaD+m8sgLPXw1XiVyXmQvzHi6aeo0AfPfYkiFuowEkjNTivy/NfzoGGmXBuD1XzBdo8NTjbWVO4RqfgUr9Oc4HailpfpJjWoyAzOP1roBLuzKWlgZDt1F6xycIjvesid4eK33JZoLF2NBmTcrXvknosEn3v+FUs2dKYANC+aQ3+wCtAC2ENxL/e76KwgX+5UkBPIuhh6rRkTEof7Be5jUj0bzDOjlY1T8JMxgcF7FVFj+egRnwDA932fWFxY3rbuBCsvTPiOTXjsJ4m2KTXg0g5jaj6K1oDgAKCxZiHkVIhLAYRyIVsk7mpoU8y/ZwTtxCEbnNCZFkUaj2MeOECBKy2x/GDxx+bfaWvRr3NRREBdH6pfKptdXPamQdqGp47uT9gHhj2ritBsdUA2kt4TCH5PaY1Lse/L9QN3/aSHvHQM9NMbS30/CSrAM+ObLZOMSjnMz0ld5/hAClc9R1tt+M7fXn3/LcymHIbJylKLidEpTbQIwWB5eRVLChOEDbgZO+vkdLjO1xy1eE4bEUCCmOvVUaKkLCJHCKXqrXSzHRS6Mx3JAOKEueRMs61l2SZLw/kZpVQ2kmNrdu9jYa9VwdVb2tjYqlX+CtNFHAz9Lw3cJ07ONInBlvoqE0Kbg9R16cplPsyKjSP2NKBAVYlkXpaRreXRAAhGmAsOVe+7Nk1V5fmnue1tIZblgAPQQdc4r/w5C6d1SzKW9
- IYqkksWr
- ihz34DyVeZM1fuK9qbJGMzaf6ZqeK6GOvqT54hGhhQr2Kob8Ublq6boL7eVvbMUxJE8m190/jfjHNlCWxj19hrbiyseomdvFU5aCYzKJ/DXXHJ5h94/9wpeZtO/fLOjc6QSBFe0Z4CoCJcaYXYWTeh+TeNR6t6mdLTls2AGdD2U0u5Lg1XZCVYqkmhc5mCE8zaVti1gZTsoFOC5/xYclXtt//04E+QWgFja3gl/R0b6yi1gbPR73w3n8XwaRqWrUwORwl0GS63neNyGWr+A6o71Rx0ZPuu74xxTeRQjU6TiXnQBxVl9sE8SxFuWlfuaXirMSyRL7YJQE5KZoQrwZioyfJkpkpNlmz4X0w8i5pV4ic0YZzCd+IYJgpScyDeFL5kfKE2LPx47au/PE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E90A220005
+X-Stat-Signature: rr5jr67q3pgdiwaq13tk4xcyu8sqeexk
+X-HE-Tag: 1762848090-264394
+X-HE-Meta: U2FsdGVkX1+pcWuebG4vWwyZGhDaTEEIG+WMH1bP6denT+U3LScOfkOM5oa2a/asnYDfVaVA4x3aw9Rj6KwHyhVjInxvDgZzWApixvYd8/DeZs5XEMUTzCRqrrsE2UW/mO30aDg27n7SppyqpSHyn6IVDb8hSYdT2q5c23ScGhxJvbiuyMHNsWJq44UVhZWG7vICyx6xZYg74BjJQYzXgRhPHTy+5srN4M1/IyJ7sE7yZijvGi7z3jd5+O4lsMEo+QIG59EIanxC0FrRitZByh4Wsz09/TakzVzKTT85sPu0mXPSTcMZhv8A0x6vdW3Okl6f/EOqqrNwwPpbd7AHTb3k4WPWYXq3DYNCcUIbbZCLmNQHG5PVZ7HblsEQFQda6h/dh5dt7II2dGIAm6IoV9S+LTU0Ms8moH8Wd3XR+VKlN/cIqN2DYEywdbfjbmehHYH0k9+vtuCaUxVnO4Uq9uXHhJYWcThAvJoIQ/ENPHP7HvcA2Q8eLA0WiJTWJCZv5l6ZTs8mHCl4mxegJ7awpgRRGDOpWUNmYtp61BAqWw7iQLuKoVoSOzon9/LA/bJ5NqwKA4tG9vtM3nP27be7ZO1c5dLj5cIYOPNuf8iz4J6BpmP8XRDMAsIZw0QpfJ2C8n9HVPSChM345lTNEGSFaqrXtd3kwMw4BHZawJOCpNOa8aEyCb8JZVAIX+4iuHSv6LAfbdROsiGgSUk6YqIW0bbGutQD7KRrQx28NuNp65A0MwI8lYa49yzLm8chKWYpeWRnv0AKPy9JWEefStBX9W1+8m6ZdbT+952VWDuDPCBfc4cM+f6q05xsQu2Cd8QVU4iwJVJWJgumXsgO9U3NgeYLqVHBUDhKBeUtnvrmlvSqYlOONLOieXQPjFBmv4ld66Vu1lMzMwkd7T2KelpD+RckYJb3vdvlz8clwpeWP0hY6PzK+4Vbw676YvkbW+e+x1c7pPPBW/gxSZ45X7R
+ 7ixusKk/
+ f+lgdbbhmq/9Soe80teh5uU/grkSAbF79NvML0gqMAyv1zXZPg774VzFEnaZK/F3mU2YhaocHd5VNBxWgtPqyDOUycRJibvbJp+9xa7JuPoJg1NK5H9ny6/WfA1fqf/J0yanDJmR9Nuv5yMimsvaN3Yd6ItcPXZs5zQiZJVFl56AAyPbOgKqu9VH92ovjM96EXamK5a6r4NQKtdqP7GZHMIxqJAl+CLVM79CkBXaZE6M8zWQu0/tpqi6DQxvV0PtnU47UQnYVdc1t1xAXtSh1Ihlj5lJwO7fTwu+MhDwdQFa5tlkEFIZ9GBNrmFUYI5WyLgYfuUnGijQC8JTSxzIVgdMd6EYHBc0ltgoNZfdtAZxeitlw5MQ+Q/sZup0reXfkJsxMqxt5qS6eXaswgJQcCH5H1RIxxXo0FdpBsOg+2oEVsuOw1ERDO6YMw2BAGui74LqSwQHEDPdecCSoOtl7QknyqA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,138 +108,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/10/25 18:22, Lorenzo Stoakes wrote:
-> Make it clear we're referencing an unsafe variant of this function
-> explicitly.
-> 
-> This is laying the foundation for exposing more such functions and
-> maintaining a consistent naming scheme.
-> 
-> As a part of this change, rename check_ops_valid() to check_ops_safe() for
-> consistency.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+removals are done with locked_recursive_removal(); switch creations to
+simple_start_creating()/d_make_persistent()/simple_done_creating() and
+take them to a helper (add_entry()), while we are at it - simpler control
+flow that way.
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ fs/binfmt_misc.c | 69 ++++++++++++++++++++++--------------------------
+ 1 file changed, 32 insertions(+), 37 deletions(-)
 
-> ---
->  mm/internal.h |  2 +-
->  mm/madvise.c  |  4 ++--
->  mm/pagewalk.c | 22 +++++++++++-----------
->  3 files changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 0af87f6c2889..479234b39394 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1652,7 +1652,7 @@ static inline void accept_page(struct page *page)
->  #endif /* CONFIG_UNACCEPTED_MEMORY */
->  
->  /* pagewalk.c */
-> -int walk_page_range_mm(struct mm_struct *mm, unsigned long start,
-> +int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
->  		unsigned long end, const struct mm_walk_ops *ops,
->  		void *private);
->  int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index de918b107cfc..7b938ff44be2 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -1171,8 +1171,8 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
->  		unsigned long nr_pages = 0;
->  
->  		/* Returns < 0 on error, == 0 if success, > 0 if zap needed. */
-> -		err = walk_page_range_mm(vma->vm_mm, range->start, range->end,
-> -					 &guard_install_walk_ops, &nr_pages);
-> +		err = walk_page_range_mm_unsafe(vma->vm_mm, range->start,
-> +				range->end, &guard_install_walk_ops, &nr_pages);
->  		if (err < 0)
->  			return err;
->  
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 6cace2c8814a..ab29b16abd2c 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -452,7 +452,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
->   * We usually restrict the ability to install PTEs, but this functionality is
->   * available to internal memory management code and provided in mm/internal.h.
->   */
-> -int walk_page_range_mm(struct mm_struct *mm, unsigned long start,
-> +int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
->  		unsigned long end, const struct mm_walk_ops *ops,
->  		void *private)
->  {
-> @@ -518,10 +518,10 @@ int walk_page_range_mm(struct mm_struct *mm, unsigned long start,
->   * This check is performed on all functions which are parameterised by walk
->   * operations and exposed in include/linux/pagewalk.h.
->   *
-> - * Internal memory management code can use the walk_page_range_mm() function to
-> - * be able to use all page walking operations.
-> + * Internal memory management code can use *_unsafe() functions to be able to
-> + * use all page walking operations.
->   */
-> -static bool check_ops_valid(const struct mm_walk_ops *ops)
-> +static bool check_ops_safe(const struct mm_walk_ops *ops)
->  {
->  	/*
->  	 * The installation of PTEs is solely under the control of memory
-> @@ -579,10 +579,10 @@ int walk_page_range(struct mm_struct *mm, unsigned long start,
->  		unsigned long end, const struct mm_walk_ops *ops,
->  		void *private)
->  {
-> -	if (!check_ops_valid(ops))
-> +	if (!check_ops_safe(ops))
->  		return -EINVAL;
->  
-> -	return walk_page_range_mm(mm, start, end, ops, private);
-> +	return walk_page_range_mm_unsafe(mm, start, end, ops, private);
->  }
->  
->  /**
-> @@ -639,7 +639,7 @@ int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end
->  
->  	if (start >= end)
->  		return -EINVAL;
-> -	if (!check_ops_valid(ops))
-> +	if (!check_ops_safe(ops))
->  		return -EINVAL;
->  
->  	return walk_pgd_range(start, end, &walk);
-> @@ -678,7 +678,7 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
->  						    pgd, private);
->  	if (start >= end || !walk.mm)
->  		return -EINVAL;
-> -	if (!check_ops_valid(ops))
-> +	if (!check_ops_safe(ops))
->  		return -EINVAL;
->  
->  	/*
-> @@ -709,7 +709,7 @@ int walk_page_range_vma(struct vm_area_struct *vma, unsigned long start,
->  		return -EINVAL;
->  	if (start < vma->vm_start || end > vma->vm_end)
->  		return -EINVAL;
-> -	if (!check_ops_valid(ops))
-> +	if (!check_ops_safe(ops))
->  		return -EINVAL;
->  
->  	process_mm_walk_lock(walk.mm, ops->walk_lock);
-> @@ -729,7 +729,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
->  
->  	if (!walk.mm)
->  		return -EINVAL;
-> -	if (!check_ops_valid(ops))
-> +	if (!check_ops_safe(ops))
->  		return -EINVAL;
->  
->  	process_mm_walk_lock(walk.mm, ops->walk_lock);
-> @@ -780,7 +780,7 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
->  	unsigned long start_addr, end_addr;
->  	int err = 0;
->  
-> -	if (!check_ops_valid(ops))
-> +	if (!check_ops_safe(ops))
->  		return -EINVAL;
->  
->  	lockdep_assert_held(&mapping->i_mmap_rwsem);
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index a839f960cd4a..2093f9dcd321 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -765,14 +765,41 @@ static const struct file_operations bm_entry_operations = {
+ 
+ /* /register */
+ 
++/* add to filesystem */
++static int add_entry(Node *e, struct super_block *sb)
++{
++	struct dentry *dentry = simple_start_creating(sb->s_root, e->name);
++	struct inode *inode;
++	struct binfmt_misc *misc;
++
++	if (IS_ERR(dentry))
++		return PTR_ERR(dentry);
++
++	inode = bm_get_inode(sb, S_IFREG | 0644);
++	if (unlikely(!inode)) {
++		simple_done_creating(dentry);
++		return -ENOMEM;
++	}
++
++	refcount_set(&e->users, 1);
++	e->dentry = dentry;
++	inode->i_private = e;
++	inode->i_fop = &bm_entry_operations;
++
++	d_make_persistent(dentry, inode);
++	misc = i_binfmt_misc(inode);
++	write_lock(&misc->entries_lock);
++	list_add(&e->list, &misc->entries);
++	write_unlock(&misc->entries_lock);
++	simple_done_creating(dentry);
++	return 0;
++}
++
+ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 			       size_t count, loff_t *ppos)
+ {
+ 	Node *e;
+-	struct inode *inode;
+ 	struct super_block *sb = file_inode(file)->i_sb;
+-	struct dentry *root = sb->s_root, *dentry;
+-	struct binfmt_misc *misc;
+ 	int err = 0;
+ 	struct file *f = NULL;
+ 
+@@ -803,39 +830,7 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 		e->interp_file = f;
+ 	}
+ 
+-	inode_lock(d_inode(root));
+-	dentry = lookup_noperm(&QSTR(e->name), root);
+-	err = PTR_ERR(dentry);
+-	if (IS_ERR(dentry))
+-		goto out;
+-
+-	err = -EEXIST;
+-	if (d_really_is_positive(dentry))
+-		goto out2;
+-
+-	inode = bm_get_inode(sb, S_IFREG | 0644);
+-
+-	err = -ENOMEM;
+-	if (!inode)
+-		goto out2;
+-
+-	refcount_set(&e->users, 1);
+-	e->dentry = dget(dentry);
+-	inode->i_private = e;
+-	inode->i_fop = &bm_entry_operations;
+-
+-	d_instantiate(dentry, inode);
+-	misc = i_binfmt_misc(inode);
+-	write_lock(&misc->entries_lock);
+-	list_add(&e->list, &misc->entries);
+-	write_unlock(&misc->entries_lock);
+-
+-	err = 0;
+-out2:
+-	dput(dentry);
+-out:
+-	inode_unlock(d_inode(root));
+-
++	err = add_entry(e, sb);
+ 	if (err) {
+ 		if (f)
+ 			filp_close(f, NULL);
+@@ -1028,7 +1023,7 @@ static struct file_system_type bm_fs_type = {
+ 	.name		= "binfmt_misc",
+ 	.init_fs_context = bm_init_fs_context,
+ 	.fs_flags	= FS_USERNS_MOUNT,
+-	.kill_sb	= kill_litter_super,
++	.kill_sb	= kill_anon_super,
+ };
+ MODULE_ALIAS_FS("binfmt_misc");
+ 
+-- 
+2.47.3
 
 
