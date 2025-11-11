@@ -4,120 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDA86CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 19:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C39CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 19:48:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15A1D8E000E; Tue, 11 Nov 2025 14:48:10 -0500 (EST)
+	id F3D818E0011; Tue, 11 Nov 2025 14:48:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 110928E0008; Tue, 11 Nov 2025 14:48:10 -0500 (EST)
+	id EED888E0008; Tue, 11 Nov 2025 14:48:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3B558E000E; Tue, 11 Nov 2025 14:48:09 -0500 (EST)
+	id DDCC18E0011; Tue, 11 Nov 2025 14:48:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DBE768E0008
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 14:48:09 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 72A4E56D9A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:48:09 +0000 (UTC)
-X-FDA: 84099362298.10.9A63AB4
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 48A8640009
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:48:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="SGBL/NWw";
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C5EB08E0008
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 14:48:23 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F6C41A01BF
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:48:23 +0000 (UTC)
+X-FDA: 84099362886.21.6F16177
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4C8ECA000B
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:48:21 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ky4HQqn/";
+	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762890487;
+	s=arc-20220608; t=1762890501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lKDhxqPky+srato1DuJ5M1fuwPAvG3rezlKsBwQc3xk=;
-	b=nig+mxSLnuMtrFBZmJkSldhVPqYHjZMqkvH2D+aVOx4FcdWoTZy9wdf62v2zP9T6nj5U+N
-	+yIOjzk3wvEOA1tZkGeV6KTSF0yDdY7jP80/xV6JOlo+XZTQC5rxQe4DjoaHlKXp6AN6F8
-	obL/v5Hu0kMMNvE560Nwrf4UBakhHJw=
+	bh=UbE0DBTQIFEdPxSSdzhQNw1lCZYmDmkNb+ii//A3mIs=;
+	b=urZLc7JseX18Awt+P+/ABDxF39yL6o29mKyn4lQBYrSgvrSnqlGIRvP8f6rfHIUbZ3vLDX
+	HQWmftqyB0BC8/9AUJx2CFx8dMHj4ZbJSyFSuGyTIGp8mC/HjK1TqRWDsQ1xaECmTifArX
+	v5AyhpjnNCzuhUTJFM/IoYA0+172n1I=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="SGBL/NWw";
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762890487; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="ky4HQqn/";
+	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762890501; a=rsa-sha256;
 	cv=none;
-	b=R6nK46vN7rpTm2PRsIZVvVp4NzTXu3dZDy+FOA/Y314juMablfIgnN8Qvrr8KCJS5vYYQ9
-	lnAhYjVOCHs6m1/UGb5Am+MPQv5QP/W0bnJU5++Ro0oCOPO07wDbRbHqf8LnsHBcCfRziT
-	MQNXSDcFkDeJJUo2dz3VBxJQ1USHSzw=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b7277324204so24441466b.0
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 11:48:06 -0800 (PST)
+	b=vBZZGZ6m1KjJn5gIbSBJCI/TKlZ0u4PUmZd/DwCQzia8YAvlWjJp+TXjRPCEhORYcSZeX4
+	+RhTLRm0fqW9r8lfgrTCrl7rxfSBqw4hyoOVFpvitp3LywcZb/GNt1gPlT2TiiRjkCfGqM
+	+uV884KJtfnVtWCKAq6QtFELcq4fgwE=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4774f41628bso91175e9.0
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 11:48:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762890486; x=1763495286; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lKDhxqPky+srato1DuJ5M1fuwPAvG3rezlKsBwQc3xk=;
-        b=SGBL/NWwkZxRt8bGYb+MUYwasqF93HRuldpfOTCCZkIXRqL2vc2/F4sIiywu5zflSX
-         OkJsvTv1+iPP5xOB2rK8ZaYyYXPRMiJVKxeR37fHzL6NRgjskz6mC0DFyOkk32VrXq80
-         /9ZXbTGvxRkBqHe/wjbdIDU/Pol7eiljTEG3vGMMOUJpOveVbMpMQOrAtNujqdeAq/kO
-         5wkKEYhK0DNehCZAyRYhfcvT31JvNyoQR/lQ4Rzjl72sJ33hGjcpiMPwqp5yA9LU6vzA
-         NDBoLd1ptiMLhRtyNjrVJI0jOGQl7cXFqVwFOMkMtIx81lX2QNyAYvIYHKK6E/YIvRd/
-         3yjg==
+        d=gmail.com; s=20230601; t=1762890500; x=1763495300; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UbE0DBTQIFEdPxSSdzhQNw1lCZYmDmkNb+ii//A3mIs=;
+        b=ky4HQqn/pNcWmdCN55JxrLwYB55Rh21wF21g2QRJWfyxgH3SZzd1fJjTdMEt/RaVcQ
+         6lmZ7ChXENJtRuv/icvtbhh6WvabONH+QVuaTeG/hz2OKc16kHiIfE26iXhHxrt/v6Zt
+         AWkH3xysHLOIyQQpwqY3qavy1iqsrQCZu95SMV6iQHT7W98Z9yy1XuXK5TH9XsPB7Xzb
+         p2wRpRtCDa6YUewiWjSXxFYeUG2jez+8osom8GosgjymXXhTiTSPsiMbTtRHU7FxUOnw
+         OgvfwXkKBlqAnme+phBKAFWn1yLbaC9f6D7RfBf/9X1rJhR077li1sKX5v7jqADpeAOn
+         jixA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762890486; x=1763495286;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lKDhxqPky+srato1DuJ5M1fuwPAvG3rezlKsBwQc3xk=;
-        b=TaEMon0VP3/zAEEbKm00N88I2pfs6SL5iimALrtf7Bnkph9ED3iPSlUdXegDLqxwD2
-         ezQRxBSdHBS/yWO3BHyQlwQMk/OnyhDIMPgcobWyU8ui5itJGLsWsX9tiJ9PJbuS+GME
-         qvDzCWnLeTJ5m6+kohzd+ZGZEL2j09ucXEnupjBxbmBeaMPPrfO15sQ5lOrhbjrX4cGr
-         LGXUIMtWpfcF3rx9fNRbwTlG9xxg/xmE/UxGq2KiRPNJvVc4qhzfjZUbqMgXB3OpYr/3
-         ztu/Jxk7nbCfwDbqWuaU7wiQWqdZolOkCr5JLvcKdOHVycVjvui7ETi+YCvFXIKRA+P1
-         ZrjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVXnTsUcKgeXtrRxdqBsha3S1gpTSEmg9BLADbDi+Br8VXOdzwpPNEXFQUTQm60+YgaHHR2K2zwRA==@kvack.org
-X-Gm-Message-State: AOJu0Yx/5BqwE8NfwMkgHY9eK6jdBHAIVca8HbBvJebOB3HSINixo5mV
-	v6ASLtB+EXS3GR1aGil41JJbHcWlJEJ6/YyfLvB9kHT7GtuY9yW0JG9siAz054ExyU4=
-X-Gm-Gg: ASbGncs/9EWsoPMSZjxbAFWoaAOHLGXt8zUYcuMAxavMorwhI3S5vuQdDdkbo+iHy4m
-	RdhGp9jOFREgYVkawYh07W3EiYcGY7W7aILLK5Xmlw3rNkm6hI4C0AA9vUqnOqDU8L7COnDG8kA
-	uiC9Pbdazx/i5fv3sY8DfFMr65OR/3+WNZ2XamfxKe71dk3yqHmdwMODD9boJjbm0OqukqgQ/0o
-	8i8qsBWdimrUsMeenl30KUimsr8GqMhiUSY0RgoCLz1GKD7IBU+UcvuHbzo9SKK+TZtOYApAsL0
-	7y8qlltw7S3i48kuGRtnuHJJdlU7Juz1EdQDfcUTU5/pGNbdvWfp9v+LBFFc5xIQWfzOASRdT4S
-	SzsfUiQDnijay38f+1I2fekN/WTJOvtyir/9YRs9VfiVwrZpdWp7KLugkgk3anhqVjmd7MdcY4I
-	r9h/Yp3zyIjonjltXv+B0x3yxf
-X-Google-Smtp-Source: AGHT+IEelejsUR71Jpq8Ao/NajBuvRLoWEBkOC/8vGvaNmUC/dfrqtprfl//rF6trpCO0nJn8h4ofA==
-X-Received: by 2002:a17:907:9812:b0:b73:21db:53a0 with SMTP id a640c23a62f3a-b7331960eb5mr32990666b.8.1762890485668;
-        Tue, 11 Nov 2025 11:48:05 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf9bdf15sm1411961966b.62.2025.11.11.11.48.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 11:48:05 -0800 (PST)
-Date: Tue, 11 Nov 2025 20:47:59 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Waiman Long <llong@redhat.com>
-Cc: Leon Huang Fu <leon.huangfu@shopee.com>, linux-mm@kvack.org,
-	tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	joel.granados@kernel.org, jack@suse.cz, laoar.shao@gmail.com,
-	mclapinski@google.com, kyle.meyer@hpe.com, corbet@lwn.net,
-	lance.yang@linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
- on-demand stats flushing
-Message-ID: <aROS7yxDU6qFAWzp@tiehlicka>
-References: <20251110101948.19277-1-leon.huangfu@shopee.com>
- <9a9a2ede-af6e-413a-97a0-800993072b22@redhat.com>
+        d=1e100.net; s=20230601; t=1762890500; x=1763495300;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UbE0DBTQIFEdPxSSdzhQNw1lCZYmDmkNb+ii//A3mIs=;
+        b=kPKJHvzRvi4C0zrJW1vrvzph6dnGamahoTOBlNGNulZ7bT0iIV2QlF6tPpmbtkk/IN
+         wRud+TiKtMBcN9TJnTtuH/AwSmmN7iSczbaHj5WjnAPn/b4Dqen+bipmZq++SGI9Muad
+         oMnbbkCH+Xo9PJ38Z66sPjOD/ubskhBbJgHRAiOnYpCdttgrlXJkPRqs45y/1zQTzItt
+         VsZWY7+rAaVkOJ4LdkVNAanCx4Z9z5HWblQjOmSky5G/lLu52Q21Ju9b4ef6RHoXwt8a
+         N51leUK5TRPPmDJaq5YZUXXL8nxtZ+1RSTltEkf97nPaPiI0dtPe54Hnhs3itTRbBAVz
+         tRvQ==
+X-Gm-Message-State: AOJu0YyzeYMHd/82l6xYhmk5lfwCFEDOzbMmPPfvptFGURXK+XIV5hXY
+	SqvXmMznZP7qqGfSTmr+RVZvBzHw14tJM+OOlV0KpV/GK3DZPoLNBNn8qhtwpwCrzyiSOtiG7jj
+	FG4w6URB2iMDmwLCM39eluJrdjTXaTJ0=
+X-Gm-Gg: ASbGncvSEKXNTXw76sBk5m134ya4QQPe6BFzSaxbitIU4mY+/7lIIcUxXBKW13kPiTF
+	zvYOeTsDEPLG8gMeHL2rLoZ/L/hHS/e2Jnr4yJGtce7vbtE9Pt3QW9Vc/YfQQQfn7jIyhXjJKnc
+	iFfd+5MlUwlPaXZa1bRFXJDn2Kg+WmetJeRTZmUnoVsVMR6mUxswZgJEosysM5C1eQURcVBMYuz
+	liLnNFSUQNQVFGNq1a6zySrWiG+ZKt//hhT5RoKXXXYBF+oH7QoDoOEiqeG
+X-Google-Smtp-Source: AGHT+IFXK4RlJhG5N0ePOzGo2aczS5G6iw+lxf53O9oDZtZdPYxRASWBOWz3i7tmyMb7gaU0omWaNjuw8uXf/sXa9jw=
+X-Received: by 2002:a05:600c:2942:b0:475:de06:dbaf with SMTP id
+ 5b1f17b1804b1-4778144eaf9mr29391645e9.17.1762890499699; Tue, 11 Nov 2025
+ 11:48:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9a9a2ede-af6e-413a-97a0-800993072b22@redhat.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 48A8640009
-X-Stat-Signature: to8ysxp61rfisn75pst4kk4tedfi95kk
+References: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com>
+In-Reply-To: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 11 Nov 2025 11:48:08 -0800
+X-Gm-Features: AWmQ_bkqvQTvzr2wIJqIY0mYNqX5zE1OAJvC7EppmNrvuhY6ZoKspaTSdmcDjb4
+Message-ID: <CAKEwX=OuhWBZWAKs0JYG6mLqe=NvyiD9L0dOEb=5ZJB-jfFi1Q@mail.gmail.com>
+Subject: Re: [PATCH] mm, swap: fix potential UAF issue for VMA readahead
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Huang Ying <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4C8ECA000B
+X-Stat-Signature: qjxck7w7wpaawkxsx3kxsoyh5xbq9aze
 X-Rspam-User: 
-X-HE-Tag: 1762890487-360497
-X-HE-Meta: U2FsdGVkX1/CniZhboUy+uRtK/dn72OYj3XACrRDCwGnPJTStkDijbDs3FeGhOcwFizKNH3Zd1lGAf+ko3ztkN7dlI+LzThrja+N1ze7UwfDUdsa28eigTP9MqZeO1zyjQ941+YcOgCGlQ7qZYNwEqzKtWFMt6XFkYytzpCc45Gjx0YUgNfoGgNak85pUGbY5QiB77ZdJtdSnyV8SbMcT4MZTWJ3pOuvR5C8Lihgf2II+mEjZCp+xRiucTlNETd/yHz34f1K4eC7S8IzlgGMcOqCNUN8FGW4qsijpFzv2j8UoFVFgxuVIpebfPf3t3K3y1YDiP61zxx7N+jU3urLzAySD2G5IXpIxLg633YpintPttdg2m9WtVZ5kqbEJf1G2/UUxAvmPIVvv6WVDi+BiuuoyQm7aSFmS3Hr9cg0HU8yjJ/c3k0tOzrYLwj/8OXU/uDWQ5m7B/bC1iQkEx3jy2Qb9Wx9MMPhOFwcFcVLlViuY9qgSXNnndWv3FgkIXdYNbNQSUmb6E4/CryM/5eeid+Eja0gB4WPm/a5XjeONQ/rZcGB9D3mqH4C35GNMxwa4d8kAcobHP94xvWp8ykESyLhgTSMzz2lLr29qNc50rTJaVdco8aq8KCjQwdWk8F08so0WgRBHCXi0hV+0/saPc1TuHNaix6goVr5NxrEhtwNUgycoW7WtZrSsDCLxs6q0kVjCF5G0+Miy/ual2ziq381q2sY3tfQGnW3tQYUfzmfgUECEdfzeGY0lUtEMA4uEQqE/bhAjL4saa9wyS2MBZqdAFDO42JLFQ2jllLDhQMQKiA6to/fz5ubBXe0ay7tbploNgAXrTCSndkUM6puWYxm5iZe6sfB1/Br6KyOP4+SSvowk0ML6c6OCgvzc/OpNMDPuZ046irHqN3min3BoV0UKg6Dlj8yFnAJMna4PmtQBaSCcQSoMA0+VaVb0E5I7XzL+bv8LS6DVn4HJwe
- ud6Rv4By
- xKd51nhXmat3Cj4aEpDaxhfreTeCZhm/WxxC/K/tR/HJZg7WG22qUGyVf6s0TmSgre0sV8I9Q5sDh+R/3+ZJmjfVgt1Gb9vMtqHBQX2JKBzMJw8e7ffgTc9y4RwobRD9JDSEvQdfIF+8VxEqfnncemkWBrpIBH4m9qVqMSsSGWpFnbvhvtVnGZbJkE3FHIvc0/lHMomqh1saE0ddjcwqwlPEHeER141CY0yaTei4t7TS/ptcs39e3zji/+7oYDzznudfFZ7yiKx+MfS1Z+a85aBjfdEOULfWyYldplrCaHwc4zB9UnlisGgutjGRiwr4ZjoS1/oP9/QM+NPlRdM+Ssm48YL8ShJ+fA/Rxt/mx1hLF8bkmEpKb647Tes9ybYB934nw1Efo2RFA6+hXXhhP8BrzLgfPkbuIdRYkKWBtGlIO71CPbm46Tu74qLgkaUfoVc1Tj/T2cFldq0oVADGIrWrHieTHlmbZhTxr
+X-HE-Tag: 1762890501-609187
+X-HE-Meta: U2FsdGVkX19nCLknkvcyL6IeLAo7xsDsf9t+XszqVp6A4gYwEVROzUuUEAeKX9nWrvaejxJLQV4Zbs0/5qZMqrWRi2/IsxLg9K73Dhp5bwU8sX6ipn3aFhdVn2pJ5N6XBBJPzoHFno5IxVoYudnqcqOG1gA3mguyENMCcujlkhg2ttGE7Djtga6OSB7tXxX2YNBjcGfQczXIqlo7nACdWKbgZ6fNmS+ZbDJ9Z/eNh+Qj3HOz4QpVK9OQNcfbKoXxSempFWKD0iwBQpb7tGAIySblp4PHXaACm/cFn9MY5fwgmzvBhKtNJfJDV30fnHPISMVS5jdfy2lp+/3vKI3ZpavbGLL0bBTHzEKlzuRXWBvnUzwcPB36dqLQAN/0brEfntE3HtN48ThQi2qAR/WlAwSDxX3PtGRX1n3ymDfkVUb3gJSO9U3Go/EPP2FjoOAsftWnB/qcWMU43Gx48Pru4G6PuaoJXO+q13c7jJMKv35G71EfOaYyFyQsC+LcJ/PqBB1h/UtncQllroQej8HH+RkbprOAVYe2t7UxZqdaRYIjWS3YvYhMDNEifLVLlO2Fo0gCMHANpOhnp1AUq/KDNMU+fejoMXJjMbEUf1AXgSVSbGMf8viXhDEW+Y1Xi/Pzi+BmERZdf9lQIGp8Lxtqliav+1rtWJz3FTzvcjXJzpjoF+jBggN35QDPZs9tibef+xLeO66z1qD18muaTPVvv0n9VCuJtbK9485wu4l5gFynXBFx/z6gpDhzjAhgTrKowqvnwp0l43Ij723js2n0kqACW2xKUUxppsB7qgO6B9a9gSH1AWdE6QbTrXWOFk3D60fyxryGzWw5tEA1SMhBVO4IxwWYkb0YGWK8GzXY1wmt7nNsne2u+sXvYLVW01nnfYvV57B8+P/h7Q0bnU53lTpXdsmOjWgE7HqbLkZpsCuYh40QeVheByNpNGcBQwtqQFqYMZHRxI2X3QLsJZw
+ JlXRG0Ja
+ Q+yblGQNWH7+bYVI55Al24nmmxPjSKf6QLXKIEdKWgT0krdp+epX38bP8IWTJaeqHvIg1HAyfX+j8nC1f1hlMTC+6+y+XSlkyKR8tfHwpafGC/j8R0pFnntuZjkmrHAedzbZXlvjENmACEbs8CJctSqJHC+ln7TjjjEdd9sp2uRL4inCuvU9uio/WnXbkucsVWKGxOA8OwXk1htPQOeJnUDRwnshOlPwMx+JvH7CaDxRey4pXqpOeKtJ9tWvkd7gF+KhlrpcXfhXONFg0enLj/5Z6TNJYz0qH6JW43ymvu2bNQIlElkFENnG+/ECKjRgwgeRq4pbzCTl83kaGYXKJZ6Iv8VQq3exdeYFhBRWfqm9S1yBrzm+X4Xk4jQyeGSOHkYGGDLLVY79709AYpNzfn7HhvDTA5VTRTvS7C7ukwNiO0XlCsfleAdq1mDJ+7tdTvz5y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,29 +118,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 11-11-25 14:10:28, Waiman Long wrote:
-[...]
-> > +static void memcg_flush_stats(struct mem_cgroup *memcg, bool force)
-> > +{
-> > +	if (mem_cgroup_disabled())
-> > +		return;
-> > +
-> > +	memcg = memcg ?: root_mem_cgroup;
-> > +	__mem_cgroup_flush_stats(memcg, force);
-> > +}
-> 
-> Shouldn't we impose a limit in term of how frequently this
-> memcg_flush_stats() function can be called like at most a few times per
+On Tue, Nov 11, 2025 at 5:36=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Since commit 78524b05f1a3 ("mm, swap: avoid redundant swap device
+> pinning"), the common helper for allocating and preparing a folio in the
+> swap cache layer no longer tries to get a swap device reference
+> internally, because all callers of __read_swap_cache_async are already
+> holding a swap entry reference. The repeated swap device pinning isn't
+> needed on the same swap device.
+>
+> Caller of VMA readahead is also holding a reference to the target
+> entry's swap device, but VMA readahead walks the page table, so it might
+> encounter swap entries from other devices, and call
+> __read_swap_cache_async on another device without holding a reference to
+> it.
+>
+> So it is possible to cause a UAF when swapoff of device A raced with
+> swapin on device B, and VMA readahead tries to read swap entries from
+> device A. It's not easy to trigger, but in theory, it could cause real
+> issues.
+>
+> Make VMA readahead try to get the device reference first if the swap
+> device is a different one from the target entry.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
+> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+> Sending as a new patch instead of V2 because the approach is very
+> different.
+>
+> Previous patch:
+> https://lore.kernel.org/linux-mm/20251110-revert-78524b05f1a3-v1-1-88313f=
+2b9b20@tencent.com/
+> ---
+>  mm/swap_state.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 0cf9853a9232..da0481e163a4 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -745,6 +745,7 @@ static struct folio *swap_vma_readahead(swp_entry_t t=
+arg_entry, gfp_t gfp_mask,
+>
+>         blk_start_plug(&plug);
+>         for (addr =3D start; addr < end; ilx++, addr +=3D PAGE_SIZE) {
+> +               struct swap_info_struct *si =3D NULL;
+>                 softleaf_t entry;
+>
+>                 if (!pte++) {
+> @@ -759,8 +760,19 @@ static struct folio *swap_vma_readahead(swp_entry_t =
+targ_entry, gfp_t gfp_mask,
+>                         continue;
+>                 pte_unmap(pte);
+>                 pte =3D NULL;
+> +               /*
+> +                * Readahead entry may come from a device that we are not
+> +                * holding a reference to, try to grab a reference, or sk=
+ip.
+> +                */
+> +               if (swp_type(entry) !=3D swp_type(targ_entry)) {
+> +                       si =3D get_swap_device(entry);
+> +                       if (!si)
+> +                               continue;
+> +               }
+>                 folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, =
+ilx,
+>                                                 &page_allocated, false);
+> +               if (si)
+> +                       put_swap_device(si);
 
-This effectivelly invalidates the primary purpose of the interface to
-provide a method to get as-fresh-as-possible value AFAICS. 
+Shouldn't we reset si to NULL here?
 
-> second to prevent abuse from user space as stat flushing is expensive? We
-> should prevent some kind of user space DoS attack by using this new API if
-> we decide to implement it.
+Otherwise, suppose we're swapping in a readahead window. One of the
+swap entries in the window is on a different swapfile from the target
+entry. We look up and get a reference to that different swapfile,
+setting it to si.
 
-What exactly would be an attack vector?
--- 
-Michal Hocko
-SUSE Labs
+We do the swapping in work, then we release the recently acquired reference=
+.
+
+In the next iteration in the for loop, we will still see si !=3D NULL,
+and we put_swap_device() it again, i.e double releasing reference to
+that swap device.
+
+Or am I missing something?
+
+>                 if (!folio)
+>                         continue;
+>                 if (page_allocated) {
+>
 
