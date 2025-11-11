@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C6DCCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 23:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 491C2CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 23:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DDA78E000C; Tue, 11 Nov 2025 18:48:42 -0500 (EST)
+	id A7EE68E000D; Tue, 11 Nov 2025 18:50:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98ED28E0002; Tue, 11 Nov 2025 18:48:42 -0500 (EST)
+	id A56BE8E0002; Tue, 11 Nov 2025 18:50:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CBF18E000C; Tue, 11 Nov 2025 18:48:42 -0500 (EST)
+	id 9941F8E000D; Tue, 11 Nov 2025 18:50:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 757288E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:48:42 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 866478E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:50:46 -0500 (EST)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28933B74CE
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:48:42 +0000 (UTC)
-X-FDA: 84099968484.10.E0840FB
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49D9B16025C
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:50:46 +0000 (UTC)
+X-FDA: 84099973692.10.4845CB6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A66D080008
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:48:40 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M2vt0uH+;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf01.hostedemail.com (Postfix) with ESMTP id A14B240007
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:50:44 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sbq0zAF8;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762905044; a=rsa-sha256;
+	cv=none;
+	b=wt/8gI9kJ9B/y5Oyo45XuDvlzF4S31mETHqCPE3df30C4PL7Lo4SP9Ky02JeR50B4wq7NN
+	wtBMIV+ao5dJJQEqVDEFpLGgjwmIsfBiM0xSN7z/AVVrwRkBStudLex+tfCl3AWlFsOyhL
+	UPNDUKK+ryvVOFRzZtL/YdjBKLVPgxI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sbq0zAF8;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762904920;
+	s=arc-20220608; t=1762905044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mVDlArf+0TEhas/Dcd4YjunEOiT4L5F1x3vTLDPGEJM=;
-	b=lBkfFqAot5RJkoh/M8vao4AilOEHrjhEuHuGCYzo5cFWjEWvYk+K51cyQXj4mdFi32iG6a
-	9XnnfyGLQxe+fX2h/B3zg9UYJF3UFzU7pByMl9TzqPAYquf4TwiD35YU+97bUOgUzXKuZn
-	cbgqsoeCemGmJBtxOSHB2L7OrLwf5P8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762904920; a=rsa-sha256;
-	cv=none;
-	b=AiNQUBUQ5bsggO1YLU9aFLe0a0KsDHRptiCrIfR/mk8Xq8BtwK0DxRhQABCAFVlAezQSAv
-	MtqQS/nFaoeBjInERUE96zTxU+59N1V+UXU1glNL2bxqsLNWMM+AD32CCaWlqm0k3Wu4/B
-	P+50338+4+VTXrvE1Ji+LQMX9/nDhOM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M2vt0uH+;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=6+fG8djHPQZG555gpqRofF9PCdgJB4FAwLPcs+bKW/Q=;
+	b=7jE7a+8W2qk3SY3YFUHPQNk22zGXtIFe65ZoHG822UxMr+AgaT9Yq5algSUo2gtCEiUKxc
+	dIneJt88ebAVGekVWJ/r7x9ufnDO8lwhJW5LgX2uGg1khmZTtFn1IVi5BuWkTSME6GOa3V
+	KQtMhZEWE7mXXiysqpbrPZSWoSOlsr8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D876E600AD;
-	Tue, 11 Nov 2025 23:48:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34607C19423;
-	Tue, 11 Nov 2025 23:48:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 230FE60204;
+	Tue, 11 Nov 2025 23:50:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799FBC19422;
+	Tue, 11 Nov 2025 23:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762904919;
-	bh=FXS2195HdvuacL8cAJSqhNLqJ6/8m8aNe7EdqbioGIs=;
+	s=korg; t=1762905043;
+	bh=zYEFGSpbh5QVtMNWkfebiNl3sYg5AT/6cdw0nIpNhjA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=M2vt0uH+VTB3VZGUYDyR3hgkhk1P4pSTj7Pji7bDh4pVQh51O2hSCkzKfpgiM3la8
-	 Y+fj6dDgnmVYfkvX3p9ktrrnnuRDI06k2r4ahXk33xQtkdyc4sdk2pyncrFjHoW+hl
-	 +VXuFQzx63uh/ep81BfqmkFyWIM0Ev+mnjUN3RqQ=
-Date: Tue, 11 Nov 2025 15:48:38 -0800
+	b=sbq0zAF8ZoyJ4/uRqYKb/iFdUnRXolH8+oI/TIRRzMqSZSt9zA5kQE0jsUEmJTEXj
+	 mk8R3WEuV/HVLTPG6Pt+mb/jCfI5SJGy3dwwWR0pIiai1Hcby8nZsidkp0W6bhkLLR
+	 /wjfCZT4mAuO4NKy/bmvJGeNQqJUqTCWAa2ZsDpc=
+Date: Tue, 11 Nov 2025 15:50:42 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Manish Kumar <manish1588@gmail.com>, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_isolation: clarify FIXME around shrink_slab()
- in memory hotplug
-Message-Id: <20251111154838.0951555906fa923ec642cfd4@linux-foundation.org>
-In-Reply-To: <7e43294a-03d5-42e5-bec2-5fbcfab97b69@redhat.com>
-References: <20251015175041.40408-1-manish1588@gmail.com>
-	<7e43294a-03d5-42e5-bec2-5fbcfab97b69@redhat.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, David Hildenbrand <david@redhat.com>, Zi
+ Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>
+Subject: Re: [PATCH] mm/migrate_device: Add tracepoints for debugging
+Message-Id: <20251111155042.b07ecb045c978fe4c457b1d0@linux-foundation.org>
+In-Reply-To: <20251110161954.47d88433@gandalf.local.home>
+References: <20251016054619.3174997-1-balbirs@nvidia.com>
+	<20251110161954.47d88433@gandalf.local.home>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A66D080008
-X-Stat-Signature: sfj5fy9n45mz7ffkxhxadhmpb85ecax6
-X-HE-Tag: 1762904920-953561
-X-HE-Meta: U2FsdGVkX1+sQfMgMOr/SSJS0hiZ1qst7VMaMRmW9T96MyPmP5TByWlYs75cZ0dkRd1C7pHX7w5w4BAQUEmXBMvd3hPRcxAb/T6/MWNeI2MHYYz4y1kC8glaFLnJMZKL6QBswJz0qHfUKREZEiSHy468J8TdK1pjKsufKOJZi5rJu1vzdQrEjdBVM6KYUDt8tCaJe5lgyPYhUxH9rGsGtHex24SeEjEQv09/Wq2m/4Bu/zbGcVLksSYjCq3sTSMZkdLUM8mtDN+JMdfAjgbyKFGvw+bL1hp/zyOmA6FMlfPfRtAMJABn9OxwQo1MHDQVQN6J7Y8yblv+oGU0NzBx2JNZ2a3Vre3HtB4URTJkdl8MgAhiZC6017e4RE5BtJgfDy/HclALCl/Lt1FHKqeltPFd07XyurQskfxov90u1FqwGw4Izzls/PNZY13w7VLhK90XE+ySEQYtCPOAKTvLc1rs3ATdpHTfJI5sWSZvgnoWkVgkba8UxnqkMscJG1ajY3XD+qoA+F1lcN1jzLdX34ZU0wpfUHasTwcDoaafqy8HCvmZNh+pwCGe0EEfzH9TM1QgKsQCcw5DOBKy3Z1fnP3FqaQix66BsrtetPiN3N48PGl5OQzdubkVT8uP9JjMf1r1DpB4c+A2SA/namPM6EwjAhi7ClgOBrvwy7KketgrHxzIkYV9aoyGOVkfAgIQRnHkZE941on8giizdc+LyDYSPw6ByFyxvBRTJK4+S9W9Ej5M+ETd02sVbfdU0tNZ0xFN7FmLF3D0qOMeLiA5xdhrOua8QYu+ZWZYioLr7L+usx6i9yKVcoHGxeaU/JPRA8lwCWPZUDpFDYIc7KsOOQWIYR2NWle8hLtBDlE/Eh/qZTB53I+aP/vrc8X50L4imiU5miAw08stVD3LStiWmpsYJNG1mONP0U/imiF6tJ0zKtZToTKdV7rBJJ+wAGQGGRvp08IpHvSZ5yOiuyn
- NnQaiDjG
- BVYdt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A14B240007
+X-Stat-Signature: h59gbzwbe5iy48qmdjjqtrrunwdstnn9
+X-HE-Tag: 1762905044-443944
+X-HE-Meta: U2FsdGVkX1+F+MC4JSyFrrImMo8C1PwZA4Ah6QBLQpkahEoqXG3Q0jwCO7Y0nhLNKtanty3b0fTDjClS1PYuJw3R1Zgv/sA0e47nA+gp3Y3RUjxrU0o2f2/aIgyut+PaoUsVbOEkfnPWjF4PAbhz5gWDu8Z6g+M3USqPEswbQ168cUulhr5um35zN7X7rY6iZoujA1kdbVlUfKv3taAqY+I+ff9GFuK+KyITMNsUkAZ/YjErVkTUu996rXdYxyCuxcu8LAtLmjnfMm/seOGoI26h2pSy41qcrh0Bj6zCyy8d3v6uJwI8QEu7QT/EApSn4sfLpgvMxPwsQ72Cgam9COW0X0m+d8Ll8MjB3AfyttjTzcknn+xd8v4lJGgeYHztvD6lAR+mRwbiMojG87wWeX9OyGZ81ITM8jok7UCKUPfdm/BF7HNcRLwJDqJwRSQhsK2k5AlIM8XsuzUtVHfngaNnFMw8zAW4+ZAO//707xDta90Id/lYLo2Eluq4BCyLRcqCATq5J5MAwWdmr0TDWqlBYzU1aXuSfxgpr24uVYFfhjt9s483JgFsx3u22lhnah1gfxzhEreEWDltEDBnH/n2bQ766TK5rlh8aenyk2TkWP86gB7PBTXNKe2I4v0BptnqUyVAtKMpQVjh8E5GUBOv73r89WIAaDUb6lyDI1Hy5urZPsmWfYRM4B5G/QGDFuwK4hC9D4aanhIIRg45S7ZbarDM89eSfIpjt4M9PGeDxtCSNO56bbeWx9ro0YWNofpC9I+HmGTJWBa8m8Hk0y60y9hlxH18PcPGxndVd65BIM9LzqwnVflnFR/YsPIiMhgZ7YDWyJNZ/fxIx1vBKO0oEIw3Doxv24dymc2ImBWhRsSkWyt/nxXa4FB4s/mX6UQvyGHWrVWW7PVkcO46UgEliavnJfFDqPK88lCcpmhCc0/8VZ1J2Y6JUWj99TKFWntmP+yjPpfyoJbAzS3
+ XwQOKR9g
+ tqB9M5YziA83bUCGp8NcJTiWwyVK01YULL5maLtmmz5A93bLd9kRnpEhvOV39ribbT7rtPFdtOfpQ18AXAoWZWpxtwpIAwLq7Pxr4rlpXyBRvvsLE9kDqilC3C0sUrnuzzBWCfPDPHL/KbKiRpE5l/mrQkVTcurMTXsCzQAzS8wJlC9Jo9E9JJWnFldhMrDKBL5ZAKzbSJsDuuNMRNeZCN00OjudcZi2L9loLLnOv7hHot+nnsQS4u1RopnZ29DLpoT0YZ5CpVCUXiMrFtIYQS/yytdZU/kcmCzQPCJPGxb6UlIZyNtW5nBmQIlVMj1/eddUwknzmZADcqdJ17itoKZSP9CDtZXRJh0/iQ9tDao06U16jM5At5B7FDXA9DzH7G+WeIZ65HQNN83MK0cPIzCK3As7Eu6vVfy0G8f1JhVnwQf7o1twZF0iyThUkzCG2J2KT+P4U4kz1qA0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,39 +97,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Oct 2025 21:26:42 +0200 David Hildenbrand <david@redhat.com> wrote:
+On Mon, 10 Nov 2025 16:19:54 -0500 Steven Rostedt <rostedt@goodmis.org> wrote:
 
-> On 15.10.25 19:50, Manish Kumar wrote:
-> > The existing FIXME comment notes that memory hotplug doesn't invoke
-> > shrink_slab() directly. This patch adds context explaining that this is
-> > an intentional design choice to avoid recursion or deadlocks in the
-> > memory reclaim path, as slab shrinking is handled by vmscan.
+> On Thu, 16 Oct 2025 16:46:19 +1100
+> Balbir Singh <balbirs@nvidia.com> wrote:
+> 
+> > Add tracepoints for debugging device migration flow in migrate_device.c.
+> > This is helpful in debugging how long migration took (time can be
+> > tracked backwards from migrate_device_finalize to migrate_vma_setup).
 > > 
-> > Signed-off-by: Manish Kumar <manish1588@gmail.com>
-> > ---
-> >   mm/page_isolation.c | 10 ++++++++--
-> >   1 file changed, 8 insertions(+), 2 deletions(-)
+> > A combination of these events along with existing thp:*, exceptions:*
+> > and migrate:* is very useful for debugging issues related to
+> > migration.
 > > 
-> > diff --git a/mm/page_isolation.c b/mm/page_isolation.c
-> > index b2fc5266e3d2..2ca20c3f0a97 100644
-> > --- a/mm/page_isolation.c
-> > +++ b/mm/page_isolation.c
-> > @@ -176,10 +176,16 @@ static int set_migratetype_isolate(struct page *page, int migratetype, int isol_
-> >   
-> >   	/*
-> >   	 * FIXME: Now, memory hotplug doesn't call shrink_slab() by itself.
-> > -	 * We just check MOVABLE pages.
-> > +	 *
-> > +	 * This is an intentional limitation: invoking shrink_slab() from a
-> > +	 * hotplug path can cause reclaim recursion or deadlock if the normal
-> > +	 * memory reclaim (vmscan) path is already active. Slab shrinking is
-> > +	 * handled by the vmscan reclaim code under normal operation, so hotplug
-> > +	 * avoids direct calls into shrink_slab() to prevent reentrancy issues.
+>
+> ...
+>
+> >        hmm-tests-855   [002]    50.042800: set_migration_pmd:    addr=7f2908a00000, pmd=dfffffffd39ffe00
+> >        hmm-tests-855   [002]    50.062345: remove_migration_pmd: addr=7f2908a00000, pmd=efffffe00403fe00
 > 
-> This is the first time I hear about this reentrance issue.
+> Each TRACE_EVENT() is equivalent to:
 > 
-> How did you come up with this explanation?
+> DECLARE_EVENT_CLASS(event, ...)
+> DEFINE_EVENT(event, event, ...)
 > 
+> Where a class is around 4-5K in size, and the DEFINE_EVENT is between
+> 500 and 1k in size.
+> 
+> By using a single DECLARE_EVENT_CLASS() for multiple events, you can save
+> several thousands of bytes of memory.
 
--ETIMEDOUT, I'll drop this patch.
+Thanks for the detailed review.  I'll drop this version of the patch.
 
