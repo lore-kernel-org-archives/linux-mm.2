@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D026DCCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 109F4CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:58:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 328738E0015; Tue, 11 Nov 2025 04:58:10 -0500 (EST)
+	id 6837E8E0017; Tue, 11 Nov 2025 04:58:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FFB58E0002; Tue, 11 Nov 2025 04:58:10 -0500 (EST)
+	id 65B838E0002; Tue, 11 Nov 2025 04:58:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23D508E0015; Tue, 11 Nov 2025 04:58:10 -0500 (EST)
+	id 571228E0017; Tue, 11 Nov 2025 04:58:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 132D78E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:58:10 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF13B8772B
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:58:09 +0000 (UTC)
-X-FDA: 84097875498.04.0B7723A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 104AC100003
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:58:06 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 472C88E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:58:14 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 357FEC049E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:58:13 +0000 (UTC)
+X-FDA: 84097875666.02.0D3A6B0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 67F71100002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:58:11 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PpdOFyIy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762855087; a=rsa-sha256;
-	cv=none;
-	b=opvwmn7aHhNTMoCqQtFMBAVjG+rA96Npt2/r9OTlVuuVuZpyo7R79hw00pGbuoq3vpvjiy
-	I0jj6UI0ftAIzk5F5/k7TKI5VvWKD1OGVTE87fVx/2oiNqpBH20k6ElJ3OevGT4qknDy9y
-	MNryk2Us0jkVQYP6EfeLl8uNp6YoLCo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PpdOFyIy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PmgEhAdi;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762855087;
+	s=arc-20220608; t=1762855091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sac2gWwtS3qyo1lm5LRvirpkfA5AwBQv7rs+QevdvNc=;
-	b=w/8+7Ygz9qnz5oFazAaxVud3Mnpb5wbQgKnqMpEleF059j+V/VeakxvGIFlIw8XwOBZyxK
-	k68hroZNxb6foIE6DpVNCYjxBccoytUBUrBAeQktAXK09YWyQVrMJWLyrUSXq8wJCniqJO
-	GlUuaevNJy2GU8zcwwNGYkuj1XJrsgM=
+	bh=e+fnm6mQjjfI6CLNPrnbRhwzlAxLZ9sUR0EdS1YV8rw=;
+	b=JILuZ7ZIp/VqxLPH2fIK2MLgUIWNffKUC2cebJkh58VOj+rFxvOosaYs4KvwhhuRvUdlqx
+	C2jotX8vBzojuxGdXE5bValjmtoS110v9axcY2my+JQwN+Zn+oaNobaqaYMo1ofMrnlsmh
+	uhRgJtA33dvqsj79Gs5zXdTS46P4b7Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762855091; a=rsa-sha256;
+	cv=none;
+	b=41SuXzkpxyVaN0nlOwEtVmJlIQgTL9AVXBFJnb3D38mSfC99yYu6sS5FuWj3QZ3YFbgNJZ
+	Z/5tN1GKcsea+sKiR6D4NYMOdWUxsd3GOxxYCuW0UYafxtO4vqHN92Khn9sYEyonbigKsl
+	auLLW4NHWyz8dOCEOZo7lkkEuSgLjxM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PmgEhAdi;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E5ED61907;
-	Tue, 11 Nov 2025 09:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF5EC116B1;
-	Tue, 11 Nov 2025 09:58:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 360984474D;
+	Tue, 11 Nov 2025 09:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9D5C116D0;
+	Tue, 11 Nov 2025 09:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762855086;
-	bh=L8qqZS4yiGoy/yDtN7UUvNA+Wvt8X2u1F0Wzw5L9TQk=;
+	s=k20201202; t=1762855090;
+	bh=kzHmI0xoFIpZL37C7mUc4yRfRqSiPY61Bd6I2CAG5BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpdOFyIyspm59Mu6z2SrIhsLr/8KoxMfJojwN+8SJyOu4SsAGzqCI/Fk2iEo+DYV8
-	 HbrJ/U99lYXD5mNuqUki7hVfc1CQDo8WHv/NG0mVX1qdcyK3bG3dRscWK14oCtS/YL
-	 W5T8daUVkogQ9DoozSeZTDUpIhX14N5GoZS0Wy8zKEFqPQ4QJT8AaoxqE9pHqN1eVk
-	 oU03dfaH/GtMoHYwo4vlbVZ2vyg8CYuuphncIDLOg3vMWJSTwcwBKvYzhEjDwysCAO
-	 j+GycmCGIoQLoCalsxPBxTotXfLB2s20KmZceg0TKBVhyqtFvH2uFQsvMa8+U3MPum
-	 4g/ObhXd6Yjzg==
+	b=PmgEhAdiAuknJ3d5ajb7CJ44R+1A0rSDPklVME4iaUomQB31FG+KCOBCAgci2vmj3
+	 ZasIkE5ZuEL9SL0HvrQyyEHFyDpEh8lpKvE/50NK1x18vogItDofv7zp29/P6/Fu3g
+	 QSEsMLijkj0dRSfia8G4TgdmsUPOXUB85WHwqEOgLu9EjOQM+q6bAQC6rTc0JKrI0h
+	 t3VUfR+6g14cA2jQoElHhNtw621wt34HZLMUp7+U57f+Zxxs8dQ5O38/GVv9rrdDVa
+	 3aLJ8KD/Z/IW1YC9PZ8KSnugB02gI6R4GRg1Jv9Zj0gCz9HJtlfayA4NsVfTmn1/AR
+	 auPnbCkVPmpmA==
 From: Leon Romanovsky <leon@kernel.org>
 To: Bjorn Helgaas <bhelgaas@google.com>,
 	Logan Gunthorpe <logang@deltatee.com>,
@@ -100,9 +100,9 @@ Cc: Krishnakant Jaju <kjaju@nvidia.com>,
 	linux-hardening@vger.kernel.org,
 	Alex Mastro <amastro@fb.com>,
 	Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PATCH v8 02/11] PCI/P2PDMA: Simplify bus address mapping API
-Date: Tue, 11 Nov 2025 11:57:44 +0200
-Message-ID: <20251111-dmabuf-vfio-v8-2-fd9aa5df478f@nvidia.com>
+Subject: [PATCH v8 01/11] PCI/P2PDMA: Separate the mmap() support from the core logic
+Date: Tue, 11 Nov 2025 11:57:43 +0200
+Message-ID: <20251111-dmabuf-vfio-v8-1-fd9aa5df478f@nvidia.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
 References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
@@ -110,14 +110,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.15-dev-3ae27
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 104AC100003
-X-Stat-Signature: xkj41dbyid5ttgwd9ucxidwhszhjc1j6
-X-HE-Tag: 1762855086-852190
-X-HE-Meta: U2FsdGVkX1+LUuKDSb+dna01SFu3rUNvm57MINvyQGzraDFF5hJ05bpbBYmp8b4IocsjBegcHXiXGTJDrioQrhwHWn4ml5wMstZe+eh2T2o3S3/vfsfD6sNWH1yerDNILujNh+8pjM5b1zwBMeATrFAJAgmz6spZ0zchiX+4ykz8EmEWuyu5iiGhzNssC6P5UkbtvNdhJMsTEiFacLdO6erNCDeE/5FUVjI+0Gm8IFdM3x6AOOGr0G52ajUWTkA4CfAAgb9CBr/7Q0af8mEfALADgGR2iTTGnCg/GuZON8Ubt2zASeLW9fHZ2vgez+WT+3sz2pXIFixsZQNggO9qDTG7Q6cInFoGpPSVhuYmQ/Xs/ZrivvIerT8WaP5yjGzOpgDXkzrXbVkqDfurw9OCgagXQUSy4q8NvAmtbf9jVuZj79NOUZBMmhLdUVpdapfr1qe3WtY/SD08rSxGnG3HF06/W/IARiIc745TQNXw5BCjRXN6TljyL20/aB9eq3U8a5b7U+2aQ4BVHteUK1WFjVV4ve9xf5JFC3zUHV9DcebpGVZYBTUNd1bQHcIyA2AQNJBwUhW3e6FVukoaPPuHA8FYLFeUZMZe0FsNpmrbzW1RW1Du1IURq3E0fQuy5duIOyK1o4uYHEwnRb4/AN0L4zXbfyOBsXqj7sCf3cpVrKiLWa12/TRcqrhwnMrf8QWgaFY05FwVC2V8T8cyvarDD+d6pdqOGvfnl0njhACKNkY+YlFBcPNJRRHSld83S8jbqs8/ebZYgv2sxEIEXrJ5sZBbU2hZwYkfEzyeb5NcTVDEmI8cRj3SDniyx0G6190aE6cqa2OgqoT/cN+f8fWZYQt9cXwa8lpy5mMfdbLYjopys8V4kVj3GT14Pt73DPQMPskdU3REPZ4N4fWNE84hyUpviz6vUBoB6fZVOIwar/pqqC7Dd6rrh/iTTQorSFtBFZHJy39MHvJcx9SbUMh
- YlJGdwo6
- th3P0JL2dLNrpsW+uiTlNrokOyDQ4KngznfLS//85zyk/Jl+WKnz1zE9wFk/1aQtN0YAUVQitvJ0KxATScqSQFAnaBAwhHVm7CQcAekY+MhY6TX7oIi51uJnFSy4v2Ek0dHow/FBgei3h6XvQurHpYMmGVGTz8PkQyk/ydeZh+xuvRxtp7NnZapxVsKQA1UKpZztT375t60Q5JrGhaOj19n/eiAcQFK33bjEJbV2oCt+UuOp4ltEoXpepQSHt3n7GQqVxJDFvF/EEYHryR3165a4hQBNf/lKWj1qWcQNtzp+yueeHLZBS6Bb1ZjLYxVMqYaqsSLO11KEtlrV9gPUMFTHDDg==
+X-Rspamd-Queue-Id: 67F71100002
+X-Stat-Signature: cm1xn338yh3y68wkrsm4366ponfsd13n
+X-HE-Tag: 1762855091-796215
+X-HE-Meta: U2FsdGVkX184SIieohBnMqXd+dYQfp1GitEun0FNzL6kyPAn+PfZv2Ihe6s6iEcEVIQbOqpudmpDp/5vjFRl7LO5h7PVu8eG/TpdekRjbXhg0lvP8k5paYoAqmL2Ct7kPfTJ7iTyMWzXFe3EgchIpcLgPn1fIAXFSPg4hFr1YAzt+SdzvTRZiMXfu2p0CSmz1BXZk8AmrN3vryp0R0TulwUmEeaNLT1RBn1UUoT/NNI8I/BmXmzOnubNPvSlyFnFfyGISmAEE/P/NjkXEdRyesjO+IfhOOQHaPmD6moxhazizYF48+X5LzRcnEbakwcINUtNdU4zbQ62yiBgtqb/odjlIq4GgRxeP6L1TwcLQDFeBxcfvhFWIND/oK+tYAvHjLF9tw1nTkT8cXwowSG1ZiDAql7Mgsxhvuic7FxE+40faf/1xanc2g/CX9/vwoCweVpXRi5FJdBpkjhrJZoEJOIM9hZD12hqcbmAaECBwlymOk2pOn1ydJr0rW27k3UjS9fzw2Jl7Sja9W7MRh7Wc7f/+q5amWjK/G9se4bPheG6l1Ypal6RNPAinFkQyDQdYnAKZ6Or+z9QI1bXD87QClvLTvXdnhFZpEEo/IGnSlwk/7JdGcGunzj4cCdW6wzf/YlOnHkwM1saFlV0gHAkeNQeBBuBxV+zP80Qzy+jRiVHHGOamAy6LhiuCe01CWvif5TuIU737/KeN5SAtMYC9mZJSPgUJdj74wV5IIRHV+I7azebSzHyp9/Cl6qvux3zmGDd6I9bx4jLIGJ5g4TOLNSZYa8UrrQNkNFfpgbz2onRBAB+b6f4rUd8Kq/Ta+SBzBPh6UDIo9a4O2yITq+O8h7JdrivJWvUelKBCNYabNP/PVkn/CVJMT4y2UsKw5+YVHeAPa+/doOhqbJqmYAH+EDcS1XYmxTsd3RfznIQP6of7xazbiBTIze7mPAcgAvvK7ki7517W0RjsvycQbR
+ 451ex57d
+ udq/H8xzkjSZ/e6FpXSK4HcJb1Yq7TJeuBCXkLv4MK1fzcaUtPPJm2kbKQl/NMnKKI+bc9x8B6daQSfWK/24vEeJX6z3KudLqrgXVcN/dCiPKAotSM3IOg9xkXv9JSofqUx/UpGJ7mMRJ8KEeYBOambZwg3qL1nNZjIljwdf9hqy4EAtda8MXiL00weuXYxlI79lQdgYeMD4rukGcg75gDGu9ojVhqImPugcz4kGLfur34BNsOc3RLGpdsU6WmTy6pFc01OeYC+jSePoIf+0m0zyKdzTB+Wj3L2UVvDcICPkvxi/aelO8POoyuP4pXHNZG8n1FlCeiZ91K9lrHYgSCqT8ww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,108 +128,249 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Update the pci_p2pdma_bus_addr_map() function to take a direct pointer
-to the p2pdma_provider structure instead of the pci_p2pdma_map_state.
-This simplifies the API by removing the need for callers to extract
-the provider from the state structure.
+Currently the P2PDMA code requires a pgmap and a struct page to
+function. The was serving three important purposes:
 
-The change updates all callers across the kernel (block layer, IOMMU,
-DMA direct, and HMM) to pass the provider pointer directly, making
-the code more explicit and reducing unnecessary indirection. This
-also removes the runtime warning check since callers now have direct
-control over which provider they use.
+ - DMA API compatibility, where scatterlist required a struct page as
+   input
 
+ - Life cycle management, the percpu_ref is used to prevent UAF during
+   device hot unplug
+
+ - A way to get the P2P provider data through the pci_p2pdma_pagemap
+
+The DMA API now has a new flow, and has gained phys_addr_t support, so
+it no longer needs struct pages to perform P2P mapping.
+
+Lifecycle management can be delegated to the user, DMABUF for instance
+has a suitable invalidation protocol that does not require struct page.
+
+Finding the P2P provider data can also be managed by the caller
+without need to look it up from the phys_addr.
+
+Split the P2PDMA code into two layers. The optional upper layer,
+effectively, provides a way to mmap() P2P memory into a VMA by
+providing struct page, pgmap, a genalloc and sysfs.
+
+The lower layer provides the actual P2P infrastructure and is wrapped
+up in a new struct p2pdma_provider. Rework the mmap layer to use new
+p2pdma_provider based APIs.
+
+Drivers that do not want to put P2P memory into VMA's can allocate a
+struct p2pdma_provider after probe() starts and free it before
+remove() completes. When DMA mapping the driver must convey the struct
+p2pdma_provider to the DMA mapping code along with a phys_addr of the
+MMIO BAR slice to map. The driver must ensure that no DMA mapping
+outlives the lifetime of the struct p2pdma_provider.
+
+The intended target of this new API layer is DMABUF. There is usually
+only a single p2pdma_provider for a DMABUF exporter. Most drivers can
+establish the p2pdma_provider during probe, access the single instance
+during DMABUF attach and use that to drive the DMA mapping.
+
+DMABUF provides an invalidation mechanism that can guarantee all DMA
+is halted and the DMA mappings are undone prior to destroying the
+struct p2pdma_provider. This ensures there is no UAF through DMABUFs
+that are lingering past driver removal.
+
+The new p2pdma_provider layer cannot be used to create P2P memory that
+can be mapped into VMA's, be used with pin_user_pages(), O_DIRECT, and
+so on. These use cases must still use the mmap() layer. The
+p2pdma_provider layer is principally for DMABUF-like use cases where
+DMABUF natively manages the life cycle and access instead of
+vmas/pin_user_pages()/struct page.
+
+In addition, remove the bus_off field from pci_p2pdma_map_state since
+it duplicates information already available in the pgmap structure.
+The bus_offset is only used in one location (pci_p2pdma_bus_addr_map)
+and is always identical to pgmap->bus_offset.
+
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Tested-by: Alex Mastro <amastro@fb.com>
 Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- block/blk-mq-dma.c         | 2 +-
- drivers/iommu/dma-iommu.c  | 4 ++--
- include/linux/pci-p2pdma.h | 7 +++----
- kernel/dma/direct.c        | 4 ++--
- mm/hmm.c                   | 2 +-
- 5 files changed, 9 insertions(+), 10 deletions(-)
+ drivers/pci/p2pdma.c       | 43 +++++++++++++++++++++++--------------------
+ include/linux/pci-p2pdma.h | 19 ++++++++++++++-----
+ 2 files changed, 37 insertions(+), 25 deletions(-)
 
-diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
-index 449950029872..a1b623744b2f 100644
---- a/block/blk-mq-dma.c
-+++ b/block/blk-mq-dma.c
-@@ -85,7 +85,7 @@ static inline bool blk_can_dma_map_iova(struct request *req,
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 78e108e47254..59cd6fb40e83 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -28,9 +28,8 @@ struct pci_p2pdma {
+ };
  
- static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
+ struct pci_p2pdma_pagemap {
+-	struct pci_dev *provider;
+-	u64 bus_offset;
+ 	struct dev_pagemap pgmap;
++	struct p2pdma_provider mem;
+ };
+ 
+ static struct pci_p2pdma_pagemap *to_p2p_pgmap(struct dev_pagemap *pgmap)
+@@ -204,8 +203,8 @@ static void p2pdma_page_free(struct page *page)
  {
--	iter->addr = pci_p2pdma_bus_addr_map(&iter->p2pdma, vec->paddr);
-+	iter->addr = pci_p2pdma_bus_addr_map(iter->p2pdma.mem, vec->paddr);
- 	iter->len = vec->len;
- 	return true;
+ 	struct pci_p2pdma_pagemap *pgmap = to_p2p_pgmap(page_pgmap(page));
+ 	/* safe to dereference while a reference is held to the percpu ref */
+-	struct pci_p2pdma *p2pdma =
+-		rcu_dereference_protected(pgmap->provider->p2pdma, 1);
++	struct pci_p2pdma *p2pdma = rcu_dereference_protected(
++		to_pci_dev(pgmap->mem.owner)->p2pdma, 1);
+ 	struct percpu_ref *ref;
+ 
+ 	gen_pool_free_owner(p2pdma->pool, (uintptr_t)page_to_virt(page),
+@@ -270,14 +269,15 @@ static int pci_p2pdma_setup(struct pci_dev *pdev)
+ 
+ static void pci_p2pdma_unmap_mappings(void *data)
+ {
+-	struct pci_dev *pdev = data;
++	struct pci_p2pdma_pagemap *p2p_pgmap = data;
+ 
+ 	/*
+ 	 * Removing the alloc attribute from sysfs will call
+ 	 * unmap_mapping_range() on the inode, teardown any existing userspace
+ 	 * mappings and prevent new ones from being created.
+ 	 */
+-	sysfs_remove_file_from_group(&pdev->dev.kobj, &p2pmem_alloc_attr.attr,
++	sysfs_remove_file_from_group(&p2p_pgmap->mem.owner->kobj,
++				     &p2pmem_alloc_attr.attr,
+ 				     p2pmem_group.name);
  }
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 7944a3af4545..e52d19d2e833 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1439,8 +1439,8 @@ int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
- 			 * as a bus address, __finalise_sg() will copy the dma
- 			 * address into the output segment.
- 			 */
--			s->dma_address = pci_p2pdma_bus_addr_map(&p2pdma_state,
--						sg_phys(s));
-+			s->dma_address = pci_p2pdma_bus_addr_map(
-+				p2pdma_state.mem, sg_phys(s));
- 			sg_dma_len(s) = sg->length;
- 			sg_dma_mark_bus_address(s);
- 			continue;
+ 
+@@ -328,10 +328,9 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 	pgmap->nr_range = 1;
+ 	pgmap->type = MEMORY_DEVICE_PCI_P2PDMA;
+ 	pgmap->ops = &p2pdma_pgmap_ops;
+-
+-	p2p_pgmap->provider = pdev;
+-	p2p_pgmap->bus_offset = pci_bus_address(pdev, bar) -
+-		pci_resource_start(pdev, bar);
++	p2p_pgmap->mem.owner = &pdev->dev;
++	p2p_pgmap->mem.bus_offset =
++		pci_bus_address(pdev, bar) - pci_resource_start(pdev, bar);
+ 
+ 	addr = devm_memremap_pages(&pdev->dev, pgmap);
+ 	if (IS_ERR(addr)) {
+@@ -340,7 +339,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 	}
+ 
+ 	error = devm_add_action_or_reset(&pdev->dev, pci_p2pdma_unmap_mappings,
+-					 pdev);
++					 p2p_pgmap);
+ 	if (error)
+ 		goto pages_free;
+ 
+@@ -972,16 +971,16 @@ void pci_p2pmem_publish(struct pci_dev *pdev, bool publish)
+ }
+ EXPORT_SYMBOL_GPL(pci_p2pmem_publish);
+ 
+-static enum pci_p2pdma_map_type pci_p2pdma_map_type(struct dev_pagemap *pgmap,
+-						    struct device *dev)
++static enum pci_p2pdma_map_type
++pci_p2pdma_map_type(struct p2pdma_provider *provider, struct device *dev)
+ {
+ 	enum pci_p2pdma_map_type type = PCI_P2PDMA_MAP_NOT_SUPPORTED;
+-	struct pci_dev *provider = to_p2p_pgmap(pgmap)->provider;
++	struct pci_dev *pdev = to_pci_dev(provider->owner);
+ 	struct pci_dev *client;
+ 	struct pci_p2pdma *p2pdma;
+ 	int dist;
+ 
+-	if (!provider->p2pdma)
++	if (!pdev->p2pdma)
+ 		return PCI_P2PDMA_MAP_NOT_SUPPORTED;
+ 
+ 	if (!dev_is_pci(dev))
+@@ -990,7 +989,7 @@ static enum pci_p2pdma_map_type pci_p2pdma_map_type(struct dev_pagemap *pgmap,
+ 	client = to_pci_dev(dev);
+ 
+ 	rcu_read_lock();
+-	p2pdma = rcu_dereference(provider->p2pdma);
++	p2pdma = rcu_dereference(pdev->p2pdma);
+ 
+ 	if (p2pdma)
+ 		type = xa_to_value(xa_load(&p2pdma->map_types,
+@@ -998,7 +997,7 @@ static enum pci_p2pdma_map_type pci_p2pdma_map_type(struct dev_pagemap *pgmap,
+ 	rcu_read_unlock();
+ 
+ 	if (type == PCI_P2PDMA_MAP_UNKNOWN)
+-		return calc_map_type_and_dist(provider, client, &dist, true);
++		return calc_map_type_and_dist(pdev, client, &dist, true);
+ 
+ 	return type;
+ }
+@@ -1006,9 +1005,13 @@ static enum pci_p2pdma_map_type pci_p2pdma_map_type(struct dev_pagemap *pgmap,
+ void __pci_p2pdma_update_state(struct pci_p2pdma_map_state *state,
+ 		struct device *dev, struct page *page)
+ {
+-	state->pgmap = page_pgmap(page);
+-	state->map = pci_p2pdma_map_type(state->pgmap, dev);
+-	state->bus_off = to_p2p_pgmap(state->pgmap)->bus_offset;
++	struct pci_p2pdma_pagemap *p2p_pgmap = to_p2p_pgmap(page_pgmap(page));
++
++	if (state->mem == &p2p_pgmap->mem)
++		return;
++
++	state->mem = &p2p_pgmap->mem;
++	state->map = pci_p2pdma_map_type(&p2p_pgmap->mem, dev);
+ }
+ 
+ /**
 diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index 1400f3ad4299..9516ef97b17a 100644
+index 951f81a38f3a..1400f3ad4299 100644
 --- a/include/linux/pci-p2pdma.h
 +++ b/include/linux/pci-p2pdma.h
-@@ -181,16 +181,15 @@ pci_p2pdma_state(struct pci_p2pdma_map_state *state, struct device *dev,
- /**
-  * pci_p2pdma_bus_addr_map - Translate a physical address to a bus address
-  *			     for a PCI_P2PDMA_MAP_BUS_ADDR transfer.
-- * @state:	P2P state structure
-+ * @provider:	P2P provider structure
-  * @paddr:	physical address to map
-  *
-  * Map a physically contiguous PCI_P2PDMA_MAP_BUS_ADDR transfer.
-  */
- static inline dma_addr_t
--pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t paddr)
-+pci_p2pdma_bus_addr_map(struct p2pdma_provider *provider, phys_addr_t paddr)
+@@ -16,6 +16,16 @@
+ struct block_device;
+ struct scatterlist;
+ 
++/**
++ * struct p2pdma_provider
++ *
++ * A p2pdma provider is a range of MMIO address space available to the CPU.
++ */
++struct p2pdma_provider {
++	struct device *owner;
++	u64 bus_offset;
++};
++
+ #ifdef CONFIG_PCI_P2PDMA
+ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 		u64 offset);
+@@ -139,11 +149,11 @@ enum pci_p2pdma_map_type {
+ };
+ 
+ struct pci_p2pdma_map_state {
+-	struct dev_pagemap *pgmap;
++	struct p2pdma_provider *mem;
+ 	enum pci_p2pdma_map_type map;
+-	u64 bus_off;
+ };
+ 
++
+ /* helper for pci_p2pdma_state(), do not use directly */
+ void __pci_p2pdma_update_state(struct pci_p2pdma_map_state *state,
+ 		struct device *dev, struct page *page);
+@@ -162,8 +172,7 @@ pci_p2pdma_state(struct pci_p2pdma_map_state *state, struct device *dev,
+ 		struct page *page)
  {
--	WARN_ON_ONCE(state->map != PCI_P2PDMA_MAP_BUS_ADDR);
--	return paddr + state->mem->bus_offset;
-+	return paddr + provider->bus_offset;
+ 	if (IS_ENABLED(CONFIG_PCI_P2PDMA) && is_pci_p2pdma_page(page)) {
+-		if (state->pgmap != page_pgmap(page))
+-			__pci_p2pdma_update_state(state, dev, page);
++		__pci_p2pdma_update_state(state, dev, page);
+ 		return state->map;
+ 	}
+ 	return PCI_P2PDMA_MAP_NONE;
+@@ -181,7 +190,7 @@ static inline dma_addr_t
+ pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t paddr)
+ {
+ 	WARN_ON_ONCE(state->map != PCI_P2PDMA_MAP_BUS_ADDR);
+-	return paddr + state->bus_off;
++	return paddr + state->mem->bus_offset;
  }
  
  #endif /* _LINUX_PCI_P2P_H */
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 1f9ee9759426..d8b3dfc598b2 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -479,8 +479,8 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
- 			}
- 			break;
- 		case PCI_P2PDMA_MAP_BUS_ADDR:
--			sg->dma_address = pci_p2pdma_bus_addr_map(&p2pdma_state,
--					sg_phys(sg));
-+			sg->dma_address = pci_p2pdma_bus_addr_map(
-+				p2pdma_state.mem, sg_phys(sg));
- 			sg_dma_mark_bus_address(sg);
- 			continue;
- 		default:
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 87562914670a..9bf0b831a029 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -811,7 +811,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
- 		break;
- 	case PCI_P2PDMA_MAP_BUS_ADDR:
- 		pfns[idx] |= HMM_PFN_P2PDMA_BUS | HMM_PFN_DMA_MAPPED;
--		return pci_p2pdma_bus_addr_map(p2pdma_state, paddr);
-+		return pci_p2pdma_bus_addr_map(p2pdma_state->mem, paddr);
- 	default:
- 		return DMA_MAPPING_ERROR;
- 	}
 
 -- 
 2.51.1
