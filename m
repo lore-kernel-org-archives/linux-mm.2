@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D75CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EE35CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:41:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D6958E0010; Tue, 11 Nov 2025 03:41:35 -0500 (EST)
+	id 9CE118E000D; Tue, 11 Nov 2025 03:41:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AE498E0002; Tue, 11 Nov 2025 03:41:35 -0500 (EST)
+	id 97ED58E0002; Tue, 11 Nov 2025 03:41:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EEA48E0010; Tue, 11 Nov 2025 03:41:35 -0500 (EST)
+	id 8BBFC8E000D; Tue, 11 Nov 2025 03:41:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FDE68E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:41:35 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E259888DA1
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:41:34 +0000 (UTC)
-X-FDA: 84097682508.09.07006A5
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DF2D8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:41:38 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E866559105
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:41:37 +0000 (UTC)
+X-FDA: 84097682634.06.2B26EF5
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 46CE91C0005
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:41:33 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=WXIL7oKW;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 32C1F1C000E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:41:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=NvA4L2Zw;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf21.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762850493; a=rsa-sha256;
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762850496; a=rsa-sha256;
 	cv=none;
-	b=5DXRSU3oHtj9BEdF3GFAFcRLI9nkFBYD85Pb5wDHIp9jTLRoiaUe4z2Ev6C3r/RHxIcbmv
-	BnY48jyceEDkOlqDqbqvEtftJJAPuEkOVRHh0EE/SRTpnbnP4BXbmEb5V753bJ4mWDnblV
-	ktfqa2V5c7tD0UTyh/ytL/LtW/6dhPw=
+	b=LvXu5u34oXMejusWKHjLlYx/9WL1fdnoAZaNKtm0mqUbnQ2ClXrK8ynWhljN8KL4mzADiR
+	EuMKVdSnM1aiuPt/t5tYhxaolgLE+AdbL5K+EOwRKwg5LU/h66u26ZV4hshniKdryauDnv
+	XFZcW4WJIT//lglAcbMkjKbaecLFsWs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=WXIL7oKW;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=NvA4L2Zw;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf21.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762850493;
+	s=arc-20220608; t=1762850496;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IpNAvIvaquRQO1Ji53mf5vyLMZJ4O2UIIE/EO15yw64=;
-	b=tPbV2WpQdtt4b0+exK1cN/el+XkAiHsyCwqD//LAqjRkNVD0uY2ucGhZzI98FD8V7caMhD
-	rFRDmu+O08Gb46kO3TVDaGXuUK9a+iJWisA6MG8wy31NWk6tBw4Elx5LEn5NuzTteWeU/k
-	ZqbdLipQz9mQ4PjU68ic3HTAvRe80MY=
+	bh=KjlhtDhBu18/9JmgPyyx9lDuBAywfgEoPZuaBcmvHHc=;
+	b=EDiDEsKwAV7yF4IXQTZBRLdA8R9ysjinu7ZuzhCfZdaJDMLCfqZX+vhYO6un4rKf+gGgNo
+	XxNwWF87bbAtBobxgoqLnozIc+zTJdTT7ZLBcb1/dq76JwpShKRbjNiK8tUbA9FqrYr425
+	i7CLgl4sXSGmUTHtPt+ZTTFiyHFgPyg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=IpNAvIvaquRQO1Ji53mf5vyLMZJ4O2UIIE/EO15yw64=; b=WXIL7oKWy9HSEHoMSySZvGsg9C
-	HZvXk7ur65/jTDXn6YYUhFwacBQF/Fiuvc10VS9Xsn2QTYNJviwjaUBuekxRtO11Dz6DWxo52FpOW
-	xx+ZAWpH5IdaikOJr+SbHm78dNqDE2qZY+DP1N0bGiBMbz3aP11/TIksIad5bfQV5LMa8w658GqFc
-	PUj46ECxO6udLrf5JY3DFWh513jOhp89Sb2BW1rFbpnxjAhi2kFDDHVq5N9vbQexaMhN/htdPvnVc
-	B0ZK7pnVCrUaDpqBGoNoZ8x2c6t6wD7OjT+9UR9FRgOyeCOzpJ8vK7G4mE4q2vcKe9yJN0K6r6owU
-	UJuGjEKg==;
+	bh=KjlhtDhBu18/9JmgPyyx9lDuBAywfgEoPZuaBcmvHHc=; b=NvA4L2ZwRtUeHW7QuJvY2SyLmK
+	RV8qnqzYay1FuvT3UE6H/54cBzg4DqPMeUKeJSdgeNeO9GmXF94fsND+sL+kHe2P/SEz/SzruMejC
+	KC+vAFArMaR4Ab2WBlEhCiNphiaWVR/RSO1HFienvay3iqhf5PaLC0KcKeuFjdEvwYxidZN7ylSeZ
+	lHhRmrqaTzX2ctZFOtAQ1ASzsxi923LvOSaksum1niBBc/aXEOfT7i9Xr+cAzQAQKVr+JuHbRn34K
+	18XCZshuF9YyNevfgXnWMq6+t6aQK9xTZjd7wkgoorB+bOwQIMSp4onK30UsLV5x8ND5Wb5eqKLft
+	Y3mHOsnQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHj-0000000Bwy6-0yJJ;
-	Tue, 11 Nov 2025 06:55:23 +0000
+	id 1vIiHh-0000000Bwv2-34MT;
+	Tue, 11 Nov 2025 06:55:21 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 12/50] convert smackfs
-Date: Tue, 11 Nov 2025 06:54:41 +0000
-Message-ID: <20251111065520.2847791-13-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 03/50] new helper: simple_remove_by_name()
+Date: Tue, 11 Nov 2025 06:54:32 +0000
+Message-ID: <20251111065520.2847791-4-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 46CE91C0005
-X-Stat-Signature: kohjd3op8rcnq7coq3qbtxo3hiccp59y
+X-Rspamd-Queue-Id: 32C1F1C000E
+X-Stat-Signature: mftfxu4ya9jbmxpn1f7yio1bq1kbttyk
 X-Rspam-User: 
-X-HE-Tag: 1762850493-732332
-X-HE-Meta: U2FsdGVkX19fOgUXovOgcL1GKBjuTqwnrv5fRJl53axlacwGKOrR7mfgt7gIxkYaTQNVFK+80JCYra0q22h3ygsyRFTD6QGEPl4tBCpCS+qS69FZw4RQ/bZzfEPplWJPErMmziSWAA/Ihs3VHnmX3HDd3wQOfazOJLfWIDn14x2dywF1JNAYdt2T0P2U58gc+dh+80lvBq3kaM6afid0kqx+tsQX6fZ1i6BBBlCggmqRZU/qRIybaxMC+KLUrr6CRZKRygdrF7YEycC1lyTUJDQovxfTNF1SjV2T75YM84EDHl18pojh5G3NaOqSJaA5+2rwR8M2Ywd/2JBKOQz6441Zflq00xDbRfFIBCOlD7I5ZxfKIZTnAEfxBlEfgbIhH1yKnnUt4kZIjbINbHrR5mxs8QcMd4SupnZISJ1qQR7ZlCGFUwDpSl9NRvnzVsrALZB6lUBwTHvL0wiLx78LhZCN5lfPX+UzpjzTNrVhr6NhpuhOiF/55OfC/Nf+VUgP8cWx6dxv4F78tvSFQ3taeX2KlddniQWn5UD+28AKNnRM0E8b/S1UQXnNj2nL6gjkKtYDCN+Do8imEsX6hdNLv3+ho5Nwfs82HpHjADCJWwvHBe5Tw2N5YxYRiKloA3W5P/uhUirXJRG8xDsgHd/MQkbaEGUgoQhtAHOPfWLmRSbDHjhGZzwDX7bQMKJyjR5xqz62MEXb8e08yjsxU766sIZtLBPRfUWuciXxstQzwLv1Qq1DCPfAfTcx/rsV3cNiNq1b4dYW1oNs69w9QH53I3+JSdge/DypihPx+BTKXEgqQUWYurRQR2E/Fc0jUwjM3zDRl4mZxWFrrhAvXiWjvulg2ZgiYVZTvkPVbfsNwEEDhhvrq4F4Jia2S/kidN+kGoFLewOCANwOc1cVeZ5ykyoJQPk0rp3lisui51hlsJ3FreOQME81qpOxMq7uJVEvlEJ3pjsht0/XNeIClgx
- wwXr+cIp
- UcdTv4tPfoZSnr/p9IU4W6UxeLCtTOTFUD+haxwNMuScc5Lrdw0sjP0Y9AINVkiGyHFRZAOcoK6jELseql9yo9P9c1lY861hGjNGTx8RuYZWUuEo6M2k4nzgv+romEBWzs6k4di7WGXJad6Ph+Q0N09+Rj0s77+cEGRHQ43kglUcpQSEsXCKnvdODoC/buLHyrayEtR3UJvTzTLaur5T1k4jcl20h7HvCUC0HRdutYYdFPu7tJA9tMqpac59URJkXzIhSQnHWVuCf2hVs0kb49XSQbnHb+Q7R3lPnAO6RLEPiNVSFOY9o+KFcfk4aUw4mU90WUnpQDHBlXS2aOMsZd4+Ke04DEn0FE8iMJwGD0vIkGJ6wVMW0+YFkxVtIGR1kLxcRauCXspPjtONhrMVsecn4g1cXmIz6sH2XdYjFkM3r82GECxjYcGXUwu+drJ4zajlpc1NrMo+menz75STqHee9Nw==
+X-HE-Tag: 1762850495-48367
+X-HE-Meta: U2FsdGVkX19MuTaKWWGd1wiD2w3F5yX0CitaUY1BvhASG0lHDRKlF2zQ1wWwwsWyTGBRVxVaw4E7WPJZFPJ6bkong0iAgJiulWXAcBTF70rwN4d+sTQCcLHaPtWNZDxez5zXYfg/RyS4v9sGuPY+77kClmUSZGNJq9fUBSzEdIGK/YCxwg7iL2LVL7VXJXBOnnpR+laGCNNO9aXmFhTN2wb0kWIZaGTL1t+fjYfja+LWoUfA0R8Ve1BwXG/LeCc0e8iGMW3OYm68Vkopxv+H91PgoAiy3XX205H9GJTTP0MK7YGRoeMUpl/QJt9tkRMGbqRvcCZfL28t3IwauIH7hzLmPgIuvbAKDcLtaGEZRFnyOZ9y86fnpmwcOhQJfmXexpK1osi2z+7890tkul0aIo+b3S5tt1VijwE+0xTQzmNESrarParUwg0KDnZFJBYP5Nkag6Mmitz/fRy2iHeSkEUksSdR+9Ea2npNcNx0cgt79rVk5rsEj1QnzRusgvtJx7AslytW0RUXLewYFkLSJRcFhcohbiEvKlO4qAB6OEBi2p0Aya6bkxaRqf4LAIfgDrJTSHjq9PBm97UFjRTUKcoNaBhblwzCQ4bPBBX2q0IFM48bj8CGwH3GlZb/PRa4Z+vzijyGzA/FvC2Abc/j1Y3mqtSF4fKlwDcOxhIzrS26K+2/Fs8sUgEpXzrWhS8MD2kLgjjItoA07l/BT1plm9qcm0ISDWmHF/vgohRbvziUaYLOp5Lw0IsgWEIvxVDJ85ZURibOeyVRD4F+hypPtJNylSaU6NWdOGR+My+Hh+0XwKepqwS+rqbnZvieqJ0N6RmImGkUGtIulMjMOjHFCIdAq8PTGsdgpIqdWVLlFUUZypAsNjN37Mp2GPKKRtAUoEf/oRA02bowLNWzqHyI6edKteZX13okQfdPQdNL7Kwmc1/9CjZp0AEQH2SZEyXQBk8V7DDqh+h4/pqRrZ/
+ D1nxgu2+
+ hQZaJhFX1Br+fiRJzHhoXRCBp2d/kokvx9kIqbFry6ctAEzihJMOges5F8KJGF6Bw5VbwKvGBv7hq6RmK4W3bsTXXHhgl06vnMMxnXGaCOuAuJaYx4A1jAuY8lg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,28 +108,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Entirely static tree populated by simple_fill_super().  Can use
-kill_anon_super() as-is.
+simple_recursive_removal(), but instead of victim dentry it takes
+parent + name.
 
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+Used to be open-coded in fs/fuse/control.c, but there's no need to expose
+the guts of that thing there and there are other potential users, so
+let's lift it into libfs...
+
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- security/smack/smackfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fuse/control.c  |  7 +------
+ fs/libfs.c         | 13 +++++++++++++
+ include/linux/fs.h |  2 ++
+ 3 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index b1e5e62f5cbd..e989ae3890c7 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -2960,7 +2960,7 @@ static int smk_init_fs_context(struct fs_context *fc)
- static struct file_system_type smk_fs_type = {
- 	.name		= "smackfs",
- 	.init_fs_context = smk_init_fs_context,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
- };
+diff --git a/fs/fuse/control.c b/fs/fuse/control.c
+index 5247df896c5d..3dca752127ff 100644
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -290,18 +290,13 @@ static void remove_one(struct dentry *dentry)
+  */
+ void fuse_ctl_remove_conn(struct fuse_conn *fc)
+ {
+-	struct dentry *dentry;
+ 	char name[32];
  
- static struct vfsmount *smackfs_mount;
+ 	if (!fuse_control_sb || fc->no_control)
+ 		return;
+ 
+ 	sprintf(name, "%u", fc->dev);
+-	dentry = lookup_noperm_positive_unlocked(&QSTR(name), fuse_control_sb->s_root);
+-	if (!IS_ERR(dentry)) {
+-		simple_recursive_removal(dentry, remove_one);
+-		dput(dentry);	// paired with lookup_noperm_positive_unlocked()
+-	}
++	simple_remove_by_name(fuse_control_sb->s_root, name, remove_one);
+ }
+ 
+ static int fuse_ctl_fill_super(struct super_block *sb, struct fs_context *fsc)
+diff --git a/fs/libfs.c b/fs/libfs.c
+index ce8c496a6940..d029aff41f66 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -655,6 +655,19 @@ void simple_recursive_removal(struct dentry *dentry,
+ }
+ EXPORT_SYMBOL(simple_recursive_removal);
+ 
++void simple_remove_by_name(struct dentry *parent, const char *name,
++                           void (*callback)(struct dentry *))
++{
++	struct dentry *dentry;
++
++	dentry = lookup_noperm_positive_unlocked(&QSTR(name), parent);
++	if (!IS_ERR(dentry)) {
++		simple_recursive_removal(dentry, callback);
++		dput(dentry);	// paired with lookup_noperm_positive_unlocked()
++	}
++}
++EXPORT_SYMBOL(simple_remove_by_name);
++
+ /* caller holds parent directory with I_MUTEX_PARENT */
+ void locked_recursive_removal(struct dentry *dentry,
+                               void (*callback)(struct dentry *))
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index c895146c1444..28bd4e8d3892 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3631,6 +3631,8 @@ extern int simple_rename(struct mnt_idmap *, struct inode *,
+ 			 unsigned int);
+ extern void simple_recursive_removal(struct dentry *,
+                               void (*callback)(struct dentry *));
++extern void simple_remove_by_name(struct dentry *, const char *,
++                              void (*callback)(struct dentry *));
+ extern void locked_recursive_removal(struct dentry *,
+                               void (*callback)(struct dentry *));
+ extern int noop_fsync(struct file *, loff_t, loff_t, int);
 -- 
 2.47.3
 
