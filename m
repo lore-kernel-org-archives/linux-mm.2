@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57496CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A3E6CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 171138E001A; Tue, 11 Nov 2025 01:55:34 -0500 (EST)
+	id 370E78E0012; Tue, 11 Nov 2025 01:55:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB4D58E0013; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 05E1C8E001B; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AB5C8E0010; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id A4C8F8E0015; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AE5918E0016
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AF3548E001A
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6FA95140438
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73120160448
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:32 +0000 (UTC)
-X-FDA: 84097415304.25.25B2F79
+X-FDA: 84097415304.11.ACD1DF3
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AD4031C0003
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9F5374000E
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:30 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bfOYqpnw;
-	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=R4NIhkG0;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762844130;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TcFcmzxfGV+3rJDGgJ/eg0JcSdO3AKCKkQ7NxQ/vrvI=;
-	b=sEjlpvSDX9iwB+EDVAng9d9IbFcR9Cc1IlU/mSQisIOenKbuoVAeDY/6Y40DC2ykB9pV8A
-	OBykq3sbuI3vKcfNxRiLXEuHk1LtqT+EWSYHJ3X9F/S/ZF1iEm+TqeZ5lmhrualu6rYVAP
-	/QnNeMzlfZy/KQDjcBsyCfO1SL76SMo=
+	bh=OHt/Ew+g7B0pNZwOTBE8VBfCIPUfQxC19aVy8itf040=;
+	b=jbUD8ANYAHNZopcOQgj17KDiV2ygQxel43Boc/qwk8T4pp8YwB4fb0NaaCfNaQt9SRBE4r
+	XdzUuWM/j1tqb6isJ9Nw58F8GI7k46kWEe8qrp3DGlblzCNWTPvKFxMjxvvMczuqiXsf8D
+	j9mg9CtkkfqXu+PWukYulO9OhIZydXk=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
 	cv=none;
-	b=5JbZNRYuAv4+SACyYmjmNirInPGDgsx2GvPJUliBS306aaMIaUocn+Y55JJsx6GDwgF88z
-	f2TSVtwu93GsqYYKRHGWBo/QIDI32+93sR6lTZZcWi4p4nrCDtDuWKTRpQeeCvdD0UKYvS
-	xwHZL8ObaCASIu6g67CfqOTHwoi5rjA=
+	b=iObny/it4h8b4/Fmz9ZERyidY632gb15GJcSAqF3Y4H4O1SQ1g/CPc4M9TVBQINm0ERMmz
+	IRGqu8viWTFuE1H+Ws+ZYaVwMgvEQRzUQjcH3MEreHkEh8W8DMUWsv7G+/2TlKCEKQqGQY
+	luLy7ldLwEtb/ycwbUo7tfLmUH/HqLg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bfOYqpnw;
-	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=R4NIhkG0;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=TcFcmzxfGV+3rJDGgJ/eg0JcSdO3AKCKkQ7NxQ/vrvI=; b=bfOYqpnwRITYWirzu325V+Vjft
-	4P70PiidxpZzvKaDpbtGKJZ7Z7kz6ULfRHNrRj/WhL+Opb09PfOAkeMHjytlfhR5QIfbTxRuY/lkk
-	/SP/qvo6ubJuLtRmW3riFd9ATus8rT+PHyY9X1HWRv2hv7DJJ2L7Ccaz4SET8eWwIQLJ+goThnlDi
-	vkXMMPnDq1aZDyW1sUWNd7e6NenMqgpjtXspP5i7WkLuyOipur7dG97xmgp/Mmhh9IBeuSaH76i9V
-	Rv8y20iWmbTDwzQuWzvArRCwYZiu969sFh4ctU9PLoErZxvGh/parpyMzgOk9czyg9AZyT20F80Sa
-	ixjYrEeA==;
+	bh=OHt/Ew+g7B0pNZwOTBE8VBfCIPUfQxC19aVy8itf040=; b=R4NIhkG0/V2mLVIyhcwusQ9nft
+	8PZeZikDf6DfjU8btWRu2gDdgdWAWufZgJAle4MZacBlTpu2VZUM/bXqtHmYL2zuE8JBljJcITK5A
+	ugGpjTf5V8wyuS4R3+1VZc7ZTTmixykTU3IcImNAEiuz6ATWp7kqFS1iITWbp8J6MWXKVKfkbf40O
+	UgnGSBuhf3W3cUjZllApd4FxBfdfgJhXFyUxxC21kqutXFs51ZBuYxbsOaTS+L7EJy5FRp6bVMD3n
+	0k/LUFpYm857/BMdvbI7VmNwc4MB+zYeIIM04sRhDT2NxMSMLKzbaSSQ5BeV4XHeiUn2/fcWdnrkX
+	a3YFAoGg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHl-0000000BwzW-1uyd;
-	Tue, 11 Nov 2025 06:55:25 +0000
+	id 1vIiHk-0000000Bwyp-1RVQ;
+	Tue, 11 Nov 2025 06:55:24 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 24/50] convert ibmasmfs
-Date: Tue, 11 Nov 2025 06:54:53 +0000
-Message-ID: <20251111065520.2847791-25-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 20/50] convert debugfs
+Date: Tue, 11 Nov 2025 06:54:49 +0000
+Message-ID: <20251111065520.2847791-21-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AD4031C0003
-X-Stat-Signature: on5nco9mahe6bp3aucpnopgkihuddmm9
+X-Stat-Signature: souzux9u7xzpu1p63h5xkc67xqn1ahqy
 X-Rspam-User: 
-X-HE-Tag: 1762844130-9404
-X-HE-Meta: U2FsdGVkX1+vcoQxeqjyyr+79bT7LWbdAaulXYeZYlcQsM+jzP2Klt0RYzCKeWTre1ja+o18TyA0r3O3KGw6LPubZgKN2ioJ7MQylCdb0EXgcTIbFQ2sAhZGiaD9cWUrtBoOUsJNAFrXycLYSOCvEafIYdTevL8aiEqrPor8NX6agm7USC5AnUbkqx0MUcUvIgEksYaVVqMYie//Tvco3Uudkp98UJdu2+M0tRWOzdrd5Dh8o+Xd4c5KhAiS0LAVnUzZYmq+9SmlTFVtvlemsqiUY11HymcFxRdCJ2wL0bTxFdkuKpB/un2isy12dpEcxdcayvh7XQhkeTJUCmBnUl07MK1qELzyAMB7nX6m50c788/dDyIsOETQnKlOS72MtGCJZpAY3CGm19bNlGWSGE6vaZ/+SM+iqnbZV4fnsVJCKXQH17m9bPC8EFpeu/4IMmbrej871CwqqgfitSoSAlVOyz7wbajZxPjZ3E7RXrwUQ+Bq6bgzhyYY/8haAdRvrJiLMkeedfBBpqqAW2jm8QWyngxNNa8uSP2mR8XCmT2mm4BXL7TOI9idNyP6f7Q1zLrCnjA3wouiTUYV8h0JyZmZnexKbsIm9wPOUKNaw5DjDoygDsenH1Ca+cC1wwX1y33/exOHn3HEtjH0r6/ZsnC+zybNYTC75EpBFMKYukt6vPcUDVnsOJuKuaUC2u4gBYHQ1uM04mqE90zLe1EB+OpTkeRygZ0VWJM5Ar8XCTuXuonZhjEARmOEJ/p10jESLvkV+oajVgtVmEQYEqP+mHN8qx50JGQDlDn/yVAqRFlKKKWAoxcr+UIXMiaqPSw4rGHTDJqBuVKYrkCGT77TgUTvAvjwkRHw5HrqM5wnfpo7motFDF4Oilj49bofkUa11e3tp2olkfeU5K7/IDJ2jzXSB9UNgumy0S6aEoUV9wW5TuaiRLDfpT0ud1Td45LhsZcA806fKC30KPz9ZvV
- PJYB6DoU
- SXSRzciwpoM3tHs/n84Bex2i7e3m7J0oOAm3/FCqrvkP8rgEgnnQ8HvJGF3cQrUFNWfLPJe8GOliab2rp1CLLoUWS8aF0JXCzCp8qD9JGp7962Uzr4xSc99SFCs3sd9nd315WuKAiFld7YEzamnxbh2NwL8xJWzk5oyRblO+9hfR7NjpDn5QBYFo1F66RfXCaVAia9cdLzW5UMygaAqZyDbT5ZKKgbYipNUt7eW4iyKP1O1I5A+y/2obT+v+XA4MtQzoEeLSCws4QfGXe1EhIffPwBcTiggVGXR0ZOQxZO8//YKCyE408H6uvvzj5wgHfEcet+DqA5b539zCMveol28hKtM4Ep4Sc8Bp6dMmKdhtLwNdG0tENcop3YhfuI6NVSZLdy0+oZLMFnYvb5WGDLiKFDe5cwHh6MX2N
+X-Rspamd-Queue-Id: 9F5374000E
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762844130-524525
+X-HE-Meta: U2FsdGVkX18pCO0MMr/Ma0LgDVDbDj1oYSP6TKppnzDrG7uYCeXqBFCQrd9CjbpdTSIsDL+Lv0EVeopot7I+kyGjPQGbU0R6tv3Jn4eRjRy5akE7Q1lIfZbYdKf/EkeO+ZB7Lx1iGo+QGuyrt6L8b/uYijNGan0uUGzJgzXD4FKDRK2fi616dKYBeFsMhRpTE9pkqks4BdwwwuAfSJoAo3tbNywE4Yv6AruIStjO/R217ijnnXCszNaZd2RcjnWAxXAPAmenOyRlTgM93N23Kf8p/FFBAqZrSinHG8EuJpS+50hSz8LAgLmTyHnmuHhMgHeoEcD46a5afSX0pJm3DnpxENio6RMnuwKaxA/l93vvO0NI/BbMg8UFwweCrei+0vJC6DKKT1R4wFDxH+8jmEgBkDhSG5y+AzVXdmq270kNSznOuMnGJEHDSt88J2w/fgYWpZlHhFuRjlJN45AfuyPwzN4QqIl1j6jthndwAApbjGG/7MCgMBwXJPZAt1355HoX1yr+JIDmhnoQM01JA811mygW/Ab2DzpVoDXqgeCQaPGHUdW8pIcOX2000jeMkwM9GzJ/7M+2cguXsHTieQey3vQ4JPLASZsflo5ZnGOypQKtGc8sEkWvEtiExRI7IbAx9grxwwPBUv34BYQdwr+W5Q4Pf08m7XVDZzDdxvqwch+TsRHPH0YD17x9uNEDA9rkU3VPwttwaq+mXPUqs74x3Gu/Lun3fHe5qOYNOSLd84/5Qdnmj5AC8rPpC+wLJo+J6t7phw92eTG9dyGXD5OIbTRINeYcxyC06pnrTAN99X+6fkUwj/lz8NyX1LTv+SgdEjW1405bc1o8m1POKceWWy9uSUBc7mpDIrlqiUweMSooasRb/QZu05P6UIhFy2zljz308iamT42ha3t10sPsg+QiE1zNcACDGN+GsOt9dTX0KktjyyOhuhvGkzbxTgAipRb2QIhD/uG3HW4
+ P3dWEEOY
+ Of7wj49T8rqyqZzqzeRfU1IEx+Q4yCOLx704h2ruNnZxk0c1KkxFNC7QU7uFUaUDbvlfU1sH89VXRwZB86x/p3ShgUaexYWd70jNVnC8Ij6p/XAWEQmdekTRovKjCtkY7vmA9ZXhYSVaifCHhvcLdZZICJDJe85S8a9SnNhnXIgrIIWh3NurZEU9FRxMjgz0T2j6NiKgfqnuuU1TARTRGN7/9upro5SluECwtDk47yuMdezR1+bB1vPD2iN3RzDmEeQp+AMIxmZ9Q5d7xSsS+XTDITIEVojEhRcIlZK/BVAei6mungiGZoPzWRPR2XzsQdnFkhmhl/LAHAAapn44gEXyE0xNkSWjAMovmkC/Piw2sDoMuofOIg+8x61wwWf0wyASt+PTCVNd3RZX64heM9CShrI0S4V0Z8ISVKbg9FEvLC7ZfjUZSzAoJhbmvGo88gi58GyjQyjhze8LEK+spcFpGwJhNVgd8IqK/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,86 +108,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-static contents for each "service processor", whatever the fuck it is.
-Congruent subdirectories of root, created at mount time, taken out
-by kill_litter_super().  All dentries created with d_alloc_name() and are
-left pinned.  The odd part is that the list of service providers is
-assumed to be unchanging - no locking, nothing to handle removals or
-extra elements added later on.
+similar to tracefs - simulation of normal codepath for creation,
+simple_recursive_removal() for removal.
 
-... and it's a PCI device.  If you ever tell it to remove an instance,
-you are fucked - it doesn't bother with removing its directory from filesystem,
-it has a strange check that presumably wanted to be a check for removed
-devices, but it had never been fleshed out.
-
-Anyway, d_add() -> d_make_persistent()+dput() in ibmasmfs_create_dir() and
-ibmasmfs_create_file(), and make the latter return int - no need to even
-borrow that dentry, callers completely ignore it.
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- drivers/misc/ibmasm/ibmasmfs.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ fs/debugfs/inode.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/misc/ibmasm/ibmasmfs.c b/drivers/misc/ibmasm/ibmasmfs.c
-index b26c930e3edb..a6cde74efb68 100644
---- a/drivers/misc/ibmasm/ibmasmfs.c
-+++ b/drivers/misc/ibmasm/ibmasmfs.c
-@@ -103,7 +103,7 @@ static struct file_system_type ibmasmfs_type = {
- 	.owner          = THIS_MODULE,
- 	.name           = "ibmasmfs",
- 	.init_fs_context = ibmasmfs_init_fs_context,
--	.kill_sb        = kill_litter_super,
-+	.kill_sb        = kill_anon_super,
+diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
+index 661a99a7dfbe..682120fdbb17 100644
+--- a/fs/debugfs/inode.c
++++ b/fs/debugfs/inode.c
+@@ -329,7 +329,7 @@ static struct file_system_type debug_fs_type = {
+ 	.name =		"debugfs",
+ 	.init_fs_context = debugfs_init_fs_context,
+ 	.parameters =	debugfs_param_specs,
+-	.kill_sb =	kill_litter_super,
++	.kill_sb =	kill_anon_super,
  };
- MODULE_ALIAS_FS("ibmasmfs");
+ MODULE_ALIAS_FS("debugfs");
  
-@@ -144,7 +144,7 @@ static struct inode *ibmasmfs_make_inode(struct super_block *sb, int mode)
- 	return ret;
+@@ -405,16 +405,15 @@ static struct dentry *debugfs_start_creating(const char *name,
+ 
+ static struct dentry *failed_creating(struct dentry *dentry)
+ {
+-	inode_unlock(d_inode(dentry->d_parent));
+-	dput(dentry);
++	simple_done_creating(dentry);
+ 	simple_release_fs(&debugfs_mount, &debugfs_mount_count);
+ 	return ERR_PTR(-ENOMEM);
  }
  
--static struct dentry *ibmasmfs_create_file(struct dentry *parent,
-+static int ibmasmfs_create_file(struct dentry *parent,
- 			const char *name,
- 			const struct file_operations *fops,
- 			void *data,
-@@ -155,19 +155,20 @@ static struct dentry *ibmasmfs_create_file(struct dentry *parent,
- 
- 	dentry = d_alloc_name(parent, name);
- 	if (!dentry)
--		return NULL;
-+		return -ENOMEM;
- 
- 	inode = ibmasmfs_make_inode(parent->d_sb, S_IFREG | mode);
- 	if (!inode) {
- 		dput(dentry);
--		return NULL;
-+		return -ENOMEM;
- 	}
- 
- 	inode->i_fop = fops;
- 	inode->i_private = data;
- 
--	d_add(dentry, inode);
+ static struct dentry *end_creating(struct dentry *dentry)
+ {
+-	inode_unlock(d_inode(dentry->d_parent));
 -	return dentry;
-+	d_make_persistent(dentry, inode);
-+	dput(dentry);
-+	return 0;
- }
- 
- static struct dentry *ibmasmfs_create_dir(struct dentry *parent,
-@@ -189,8 +190,9 @@ static struct dentry *ibmasmfs_create_dir(struct dentry *parent,
- 	inode->i_op = &simple_dir_inode_operations;
- 	inode->i_fop = ibmasmfs_dir_ops;
- 
--	d_add(dentry, inode);
--	return dentry;
-+	d_make_persistent(dentry, inode);
-+	dput(dentry);
++	simple_done_creating(dentry);
 +	return dentry; // borrowed
  }
  
- int ibmasmfs_register(void)
+ static struct dentry *__debugfs_create_file(const char *name, umode_t mode,
+@@ -456,7 +455,7 @@ static struct dentry *__debugfs_create_file(const char *name, umode_t mode,
+ 	DEBUGFS_I(inode)->raw = real_fops;
+ 	DEBUGFS_I(inode)->aux = (void *)aux;
+ 
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	fsnotify_create(d_inode(dentry->d_parent), dentry);
+ 	return end_creating(dentry);
+ }
+@@ -602,7 +601,7 @@ struct dentry *debugfs_create_dir(const char *name, struct dentry *parent)
+ 
+ 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
+ 	inc_nlink(inode);
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	inc_nlink(d_inode(dentry->d_parent));
+ 	fsnotify_mkdir(d_inode(dentry->d_parent), dentry);
+ 	return end_creating(dentry);
+@@ -649,7 +648,7 @@ struct dentry *debugfs_create_automount(const char *name,
+ 	DEBUGFS_I(inode)->automount = f;
+ 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
+ 	inc_nlink(inode);
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	inc_nlink(d_inode(dentry->d_parent));
+ 	fsnotify_mkdir(d_inode(dentry->d_parent), dentry);
+ 	return end_creating(dentry);
+@@ -704,7 +703,7 @@ struct dentry *debugfs_create_symlink(const char *name, struct dentry *parent,
+ 	inode->i_mode = S_IFLNK | S_IRWXUGO;
+ 	inode->i_op = &debugfs_symlink_inode_operations;
+ 	inode->i_link = link;
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	return end_creating(dentry);
+ }
+ EXPORT_SYMBOL_GPL(debugfs_create_symlink);
 -- 
 2.47.3
 
