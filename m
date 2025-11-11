@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D71DCCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57496CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8FB8E0015; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 171138E001A; Tue, 11 Nov 2025 01:55:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D08858E001A; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id EB4D58E0013; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7130F8E0012; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 9AB5C8E0010; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE5A78E0017
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AE5918E0016
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 66EAE4BE39
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6FA95140438
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:32 +0000 (UTC)
-X-FDA: 84097415304.26.38A9359
+X-FDA: 84097415304.25.25B2F79
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A84394000A
+	by imf18.hostedemail.com (Postfix) with ESMTP id AD4031C0003
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="I/pjxcaH";
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
-	cv=none;
-	b=VB5xxDAYdHdgcrO4NgRDAdtkPD/MiusJYK3xD7FdpMkBAImg+DUDsj3aJTTblDJJazGL4B
-	RoqNLVq+YWG4c13e0Wb3uGxpxk5KmPgpMCT78nTVRWbf12wSKNnjlLEN707wRDrc1kwhWJ
-	QEPz/AhaehM9PjOet/onmaZQH8/8dRc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="I/pjxcaH";
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bfOYqpnw;
+	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762844130;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WKINhvrphJyrNwMIsOfgnLwqrkhKPlvlu+weyrXrIrI=;
-	b=l/TTvuKQESAzgqxnv0xj3Uwd9Z8zwC/QwRAmUjBfbQ7b03qsWt3O1cLq22tczw09UPf59f
-	QWZCZNlH12u2wVJS0u7yo7V3s8oVqP/OsBOOKH4qUK1pyRVP29f++S7WR2m+4fgbbHTnPe
-	D9+Zpmx2cuvuV5JA7fyNknH7FF3BSwU=
+	bh=TcFcmzxfGV+3rJDGgJ/eg0JcSdO3AKCKkQ7NxQ/vrvI=;
+	b=sEjlpvSDX9iwB+EDVAng9d9IbFcR9Cc1IlU/mSQisIOenKbuoVAeDY/6Y40DC2ykB9pV8A
+	OBykq3sbuI3vKcfNxRiLXEuHk1LtqT+EWSYHJ3X9F/S/ZF1iEm+TqeZ5lmhrualu6rYVAP
+	/QnNeMzlfZy/KQDjcBsyCfO1SL76SMo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
+	cv=none;
+	b=5JbZNRYuAv4+SACyYmjmNirInPGDgsx2GvPJUliBS306aaMIaUocn+Y55JJsx6GDwgF88z
+	f2TSVtwu93GsqYYKRHGWBo/QIDI32+93sR6lTZZcWi4p4nrCDtDuWKTRpQeeCvdD0UKYvS
+	xwHZL8ObaCASIu6g67CfqOTHwoi5rjA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=bfOYqpnw;
+	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=WKINhvrphJyrNwMIsOfgnLwqrkhKPlvlu+weyrXrIrI=; b=I/pjxcaHFuWqmzpdIenmacuMOH
-	aq3cr35oehDoPW359bMKvb6c6KWUoxbBSQ2G3ldspISxYPF9RuYak10Xx3e+eHgt8lcYwIUx8PWd5
-	n48wI6Ja4l0zXmFmcSKvD2hIWlFyiZWHI3NYWs1S0q6MSqY/21Kbj266yiuuIGjs4yJnjtYj7YWjG
-	AaiKqhUTtdf+hIgM8y6q22/U7TuKt23LIqH3zhKzwQU5kpjFf0+Ct2RifQPBTm0EKmQA0DIcvY0TE
-	okXU1h7E09WAXuaXA+cIsui7rVE9YFszhKtGLHIn6iCmbbQfwCWZgGLgwFjWLAl/8FkdRugPY7cBH
-	I6FbTrPQ==;
+	bh=TcFcmzxfGV+3rJDGgJ/eg0JcSdO3AKCKkQ7NxQ/vrvI=; b=bfOYqpnwRITYWirzu325V+Vjft
+	4P70PiidxpZzvKaDpbtGKJZ7Z7kz6ULfRHNrRj/WhL+Opb09PfOAkeMHjytlfhR5QIfbTxRuY/lkk
+	/SP/qvo6ubJuLtRmW3riFd9ATus8rT+PHyY9X1HWRv2hv7DJJ2L7Ccaz4SET8eWwIQLJ+goThnlDi
+	vkXMMPnDq1aZDyW1sUWNd7e6NenMqgpjtXspP5i7WkLuyOipur7dG97xmgp/Mmhh9IBeuSaH76i9V
+	Rv8y20iWmbTDwzQuWzvArRCwYZiu969sFh4ctU9PLoErZxvGh/parpyMzgOk9czyg9AZyT20F80Sa
+	ixjYrEeA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHj-0000000Bwxo-025Z;
-	Tue, 11 Nov 2025 06:55:23 +0000
+	id 1vIiHl-0000000BwzW-1uyd;
+	Tue, 11 Nov 2025 06:55:25 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 10/50] configfs, securityfs: kill_litter_super() not needed
-Date: Tue, 11 Nov 2025 06:54:39 +0000
-Message-ID: <20251111065520.2847791-11-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 24/50] convert ibmasmfs
+Date: Tue, 11 Nov 2025 06:54:53 +0000
+Message-ID: <20251111065520.2847791-25-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A84394000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: m7d9p93izcrocjrawdj7xusxcf1oajxz
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AD4031C0003
+X-Stat-Signature: on5nco9mahe6bp3aucpnopgkihuddmm9
 X-Rspam-User: 
-X-HE-Tag: 1762844130-630208
-X-HE-Meta: U2FsdGVkX185KQEv2/q+BBJj916JJl8/jPXs8JpIKMeJ4aoAEsuDoSbIwax+MBKcBSGG22EuFVfvdNgswKefgprR5/ZqjdRbU7MzgoHOuxm90drjD091ioSQidkh+ZXvJWSG9iQ5sj4jIUYXBHhF2YXeloCf79nfINYKwavq1qsArjdDGwgRGTxhZDtP8h2QZcGEFuhgGGIb0s1ptcpe1rp+93XJMVV6a4lG+LX0/Fz+kNL0siYVOJqlzJW3v4FddBdGRk8PeIdhS8dQgjx5YzNaKdCdc0f/yiVPRVLz/Rg+ckL6dyN/qCzYJICsixf7si4QFjPiCkBfvu0lWRMGKbRRbq1LtAvhHmwCFM0cy+sHs8/rsZTqWUA5gxTm0CkVEx7cKd391MaIabt8qJElCAphV70AE8T1ERcFgK+Dpw+PAAkXXrtfMd7u5tmSbRws/DhB23AM2CPiy9Eo7heQOjL1zwgHopjb+Pq5mHt5R19xny+fsslpZwTWYnyc5CdPwiqm+nCYPQv5kGciLp57rAZ8J3pmmNnll46L+Fo+/QqrLIOQjCqom2xwj+kcmgiiTBVfYe0iaHm0puFpX8pz+zpdkV3sHCSfPvSoqxWsxMtDZS/qqHpMLNL6yWePhl9VYhGxgaafTqDAl6lloS5mJ1LCLypIvHGnJ3gT8mMqwOm4A5ouXWkiofR2gzo1D506MxswcT3ldfHUuUemt40kEApVgkzKoErQ69BW1Mulii0YiJv+0K2MFuYO0tN11ObY9ioz4Ys85rgeX8sUjQiPgwociEovxje3vsVHLrOQSZpJfX97UXF0A71Solb4jmgkZVaBt3vzCnNKGDOCWnbV8ZLPP0SAWLPdLEqLvkfdW0F5Gy5LcnmzTBWciDQo383RrOTnDV2WGBJdyFbhTlwmYKnpXU00zkGgOSj4HemhVkJkyKU3K4AL5WqDtFpl85vCseY7fa+x3v7wgXQWp6a
- Ho2Y2AIh
- iQDijlEpvGwgcO4KRbfXmnU/2A1zYJ7KwCM2fcwHCJtOdOwgHkbjfRm8xMCfhwl0fyMffOg5CfpGjpSJrMSC8Ab48PlTaDh8BgOYPTlgRQWun7nKhHVcQxnNKR+Us+FwOTOr1huoyp5qzxdQ7BaREzDl2o8LH8W11zR661yiAs+o9rzvdjvkzacq+kvb/+HfgwpujbfrAmfKtVDuf5CryL0BPXHDHE3M6L81aKjyExSdc/1BVTdTMSwOBJ3ARP20mMp71ixk09167W/Z793QeInV4F8dP8iaiexqEmOsuOFQck3CeK6ErGQ22QoLVgbYzktpi28UxzR8EItUgJllW7yq7lnzb7wVqYEs6beaE0M6XorNy8O6lc28rNVYWwUIsfW8hKOVngOT3FP0JR+hgBtDYGlHj9rovQTiygT5EnuzyH8AObcrmyqzTm3lB+QmO/ATLtl34gr7TuyX1DGg5rQvAJWs272P2v7pUKt7/Te4Asaq3lPwLm7sp4l90pU7pOkw/
+X-HE-Tag: 1762844130-9404
+X-HE-Meta: U2FsdGVkX1+vcoQxeqjyyr+79bT7LWbdAaulXYeZYlcQsM+jzP2Klt0RYzCKeWTre1ja+o18TyA0r3O3KGw6LPubZgKN2ioJ7MQylCdb0EXgcTIbFQ2sAhZGiaD9cWUrtBoOUsJNAFrXycLYSOCvEafIYdTevL8aiEqrPor8NX6agm7USC5AnUbkqx0MUcUvIgEksYaVVqMYie//Tvco3Uudkp98UJdu2+M0tRWOzdrd5Dh8o+Xd4c5KhAiS0LAVnUzZYmq+9SmlTFVtvlemsqiUY11HymcFxRdCJ2wL0bTxFdkuKpB/un2isy12dpEcxdcayvh7XQhkeTJUCmBnUl07MK1qELzyAMB7nX6m50c788/dDyIsOETQnKlOS72MtGCJZpAY3CGm19bNlGWSGE6vaZ/+SM+iqnbZV4fnsVJCKXQH17m9bPC8EFpeu/4IMmbrej871CwqqgfitSoSAlVOyz7wbajZxPjZ3E7RXrwUQ+Bq6bgzhyYY/8haAdRvrJiLMkeedfBBpqqAW2jm8QWyngxNNa8uSP2mR8XCmT2mm4BXL7TOI9idNyP6f7Q1zLrCnjA3wouiTUYV8h0JyZmZnexKbsIm9wPOUKNaw5DjDoygDsenH1Ca+cC1wwX1y33/exOHn3HEtjH0r6/ZsnC+zybNYTC75EpBFMKYukt6vPcUDVnsOJuKuaUC2u4gBYHQ1uM04mqE90zLe1EB+OpTkeRygZ0VWJM5Ar8XCTuXuonZhjEARmOEJ/p10jESLvkV+oajVgtVmEQYEqP+mHN8qx50JGQDlDn/yVAqRFlKKKWAoxcr+UIXMiaqPSw4rGHTDJqBuVKYrkCGT77TgUTvAvjwkRHw5HrqM5wnfpo7motFDF4Oilj49bofkUa11e3tp2olkfeU5K7/IDJ2jzXSB9UNgumy0S6aEoUV9wW5TuaiRLDfpT0ud1Td45LhsZcA806fKC30KPz9ZvV
+ PJYB6DoU
+ SXSRzciwpoM3tHs/n84Bex2i7e3m7J0oOAm3/FCqrvkP8rgEgnnQ8HvJGF3cQrUFNWfLPJe8GOliab2rp1CLLoUWS8aF0JXCzCp8qD9JGp7962Uzr4xSc99SFCs3sd9nd315WuKAiFld7YEzamnxbh2NwL8xJWzk5oyRblO+9hfR7NjpDn5QBYFo1F66RfXCaVAia9cdLzW5UMygaAqZyDbT5ZKKgbYipNUt7eW4iyKP1O1I5A+y/2obT+v+XA4MtQzoEeLSCws4QfGXe1EhIffPwBcTiggVGXR0ZOQxZO8//YKCyE408H6uvvzj5wgHfEcet+DqA5b539zCMveol28hKtM4Ep4Sc8Bp6dMmKdhtLwNdG0tENcop3YhfuI6NVSZLdy0+oZLMFnYvb5WGDLiKFDe5cwHh6MX2N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,50 +108,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These are guaranteed to be empty by the time they are shut down;
-both are single-instance and there is an internal mount maintained
-for as long as there is any contents.
+static contents for each "service processor", whatever the fuck it is.
+Congruent subdirectories of root, created at mount time, taken out
+by kill_litter_super().  All dentries created with d_alloc_name() and are
+left pinned.  The odd part is that the list of service providers is
+assumed to be unchanging - no locking, nothing to handle removals or
+extra elements added later on.
 
-Both have that internal mount pinned by every object in root.
+... and it's a PCI device.  If you ever tell it to remove an instance,
+you are fucked - it doesn't bother with removing its directory from filesystem,
+it has a strange check that presumably wanted to be a check for removed
+devices, but it had never been fleshed out.
 
-In other words, kill_litter_super() boils down to kill_anon_super()
-for those.
+Anyway, d_add() -> d_make_persistent()+dput() in ibmasmfs_create_dir() and
+ibmasmfs_create_file(), and make the latter return int - no need to even
+borrow that dentry, callers completely ignore it.
 
-Reviewed-by: Joel Becker <jlbec@evilplan.org>
-Acked-by: Paul Moore <paul@paul-moore> (LSM)
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org> (configfs)
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/configfs/mount.c | 2 +-
- security/inode.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/ibmasm/ibmasmfs.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/fs/configfs/mount.c b/fs/configfs/mount.c
-index 456c4a2efb53..4929f3431189 100644
---- a/fs/configfs/mount.c
-+++ b/fs/configfs/mount.c
-@@ -116,7 +116,7 @@ static struct file_system_type configfs_fs_type = {
- 	.owner		= THIS_MODULE,
- 	.name		= "configfs",
- 	.init_fs_context = configfs_init_fs_context,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
+diff --git a/drivers/misc/ibmasm/ibmasmfs.c b/drivers/misc/ibmasm/ibmasmfs.c
+index b26c930e3edb..a6cde74efb68 100644
+--- a/drivers/misc/ibmasm/ibmasmfs.c
++++ b/drivers/misc/ibmasm/ibmasmfs.c
+@@ -103,7 +103,7 @@ static struct file_system_type ibmasmfs_type = {
+ 	.owner          = THIS_MODULE,
+ 	.name           = "ibmasmfs",
+ 	.init_fs_context = ibmasmfs_init_fs_context,
+-	.kill_sb        = kill_litter_super,
++	.kill_sb        = kill_anon_super,
  };
- MODULE_ALIAS_FS("configfs");
+ MODULE_ALIAS_FS("ibmasmfs");
  
-diff --git a/security/inode.c b/security/inode.c
-index 43382ef8896e..bf7b5e2e6955 100644
---- a/security/inode.c
-+++ b/security/inode.c
-@@ -70,7 +70,7 @@ static struct file_system_type fs_type = {
- 	.owner =	THIS_MODULE,
- 	.name =		"securityfs",
- 	.init_fs_context = securityfs_init_fs_context,
--	.kill_sb =	kill_litter_super,
-+	.kill_sb =	kill_anon_super,
- };
+@@ -144,7 +144,7 @@ static struct inode *ibmasmfs_make_inode(struct super_block *sb, int mode)
+ 	return ret;
+ }
  
- /**
+-static struct dentry *ibmasmfs_create_file(struct dentry *parent,
++static int ibmasmfs_create_file(struct dentry *parent,
+ 			const char *name,
+ 			const struct file_operations *fops,
+ 			void *data,
+@@ -155,19 +155,20 @@ static struct dentry *ibmasmfs_create_file(struct dentry *parent,
+ 
+ 	dentry = d_alloc_name(parent, name);
+ 	if (!dentry)
+-		return NULL;
++		return -ENOMEM;
+ 
+ 	inode = ibmasmfs_make_inode(parent->d_sb, S_IFREG | mode);
+ 	if (!inode) {
+ 		dput(dentry);
+-		return NULL;
++		return -ENOMEM;
+ 	}
+ 
+ 	inode->i_fop = fops;
+ 	inode->i_private = data;
+ 
+-	d_add(dentry, inode);
+-	return dentry;
++	d_make_persistent(dentry, inode);
++	dput(dentry);
++	return 0;
+ }
+ 
+ static struct dentry *ibmasmfs_create_dir(struct dentry *parent,
+@@ -189,8 +190,9 @@ static struct dentry *ibmasmfs_create_dir(struct dentry *parent,
+ 	inode->i_op = &simple_dir_inode_operations;
+ 	inode->i_fop = ibmasmfs_dir_ops;
+ 
+-	d_add(dentry, inode);
+-	return dentry;
++	d_make_persistent(dentry, inode);
++	dput(dentry);
++	return dentry; // borrowed
+ }
+ 
+ int ibmasmfs_register(void)
 -- 
 2.47.3
 
