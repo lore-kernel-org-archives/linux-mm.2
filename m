@@ -4,229 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05143CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 12:55:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FC40CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 13:03:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AC168E0005; Tue, 11 Nov 2025 07:55:34 -0500 (EST)
+	id A451F8E0006; Tue, 11 Nov 2025 08:03:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 383558E0002; Tue, 11 Nov 2025 07:55:34 -0500 (EST)
+	id A1CD08E0002; Tue, 11 Nov 2025 08:03:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24A918E0005; Tue, 11 Nov 2025 07:55:34 -0500 (EST)
+	id 95A1E8E0006; Tue, 11 Nov 2025 08:03:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D13A8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:55:34 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A36CA59724
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:55:33 +0000 (UTC)
-X-FDA: 84098322546.02.6C726C9
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3BEFEA0009
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:55:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ItxFiuc0;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=E5EueRDQ;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762865730; a=rsa-sha256;
-	cv=pass;
-	b=hh6fWyZA/jyEbxA6jpzlCt3hC7wHXACAT2FJJquqxst+FHUGH1qracmW0YZEjlZ9vuRPK+
-	F28x5FpWUVZQ9QdBVometNxW+jKUI6ZWTkx95gBgz0Vo2MGjt5NY67uxQBjQtoY0tyS83E
-	A5Eh0QuNfgHSWxCQiYm/q+/Qi1URIFY=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ItxFiuc0;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=E5EueRDQ;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762865730;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 83C698E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:03:06 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0416313B259
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:03:05 +0000 (UTC)
+X-FDA: 84098341572.08.6D3958B
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 42AB74000F
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:03:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf04.hostedemail.com: domain of 3BzQTaQkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3BzQTaQkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762866184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gedVwHP3uwb/zv1lr5ebn8AaH2r6l2JzH6ENNomjySw=;
-	b=gY/Ww26wrA+UjaQW9sAFi7fcyTMh7KCF3GbbCwkp8pqTJpeceTVQaBb0Qi5tNLl1LKBODi
-	4wR2wmgpEhBEYhY8YaHYcm2RrwvXPzLe1NXwjjqhUwxgrqmrwhcXma0RYYMMNlkNaZ3KjF
-	tNrS6KmG+ukMhtMfCxUlMeX9uIIiXFs=
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ABCpPh9015930;
-	Tue, 11 Nov 2025 12:55:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=gedVwHP3uwb/zv1l
-	r5ebn8AaH2r6l2JzH6ENNomjySw=; b=ItxFiuc0V2+W9Hkqj54SIaWQoBk7eBMU
-	6xsm2uEvbTM5BJOTLQT6jxRDjrv4ZWW3UfxkCa2obF13mo4GJ5o/7ZT9pJzsD+53
-	Eaf7xjmro6t8HKshStGZ0NNXigwhXrqWPd3gZTFJl9pfh7nV5uBz9ZJwDe5l+Q3E
-	0Kb07b1vbNd4VOJtH917DxoHyM8IJF+NhKkcqgQ+tn9XQZRVfoGMUkURWkZcgGAX
-	eWwkIoULrN1jdzPayxxzgxvPp1VpIvfqG1pyL4QXRLGt4bWB6Mhu3AyqXd5Mwm4I
-	kzzDl+VYHRgEkr6/3wRKkW4rjf6eHge99XuhFHEHtHoONxF4mkUt+g==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ac571r11e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 12:55:24 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5ABCiSZj012621;
-	Tue, 11 Nov 2025 12:55:23 GMT
-Received: from ph7pr06cu001.outbound.protection.outlook.com (mail-westus3azon11010040.outbound.protection.outlook.com [52.101.201.40])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vad054k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 12:55:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BsnMUEu7js8B6OoIlQAPTFlSM8f6twLSuAWbsx/5odYH4DBROAeuuvmcnLNBywFiN/sDzWzwrnbdZLYacGUp0J+ZTJeCp6ElnQ0lSgK4tN0JOjvxq4nlss6YG2wpRd9BsExBuJONbojpy+Ay5KOgFmG0xtwAEdvuevtrK3rf7CAtwrBEpuNL1jyfF4ci0Ry+Dhe/BEQgo/8ksWU/B2YaaNoNNPY2igZfLfkbYwgjYNHtIE+83OS444ZH+0vNTcTP5OPCU38BBqIC5uZT+55G3tsXmF8+NsG9u5OsEvOFUkWwAZNhQ7retjOI3kPWq2nq8QpX7l5EnONPEMQLXN60UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gedVwHP3uwb/zv1lr5ebn8AaH2r6l2JzH6ENNomjySw=;
- b=FkPP8BmjoxDHkz+DdhAzxCCQnDPaghxDIqNBlGa9ijFgDvxK+mjf5VkVud7PgURd3MxCeBJZxhKfIFlspcEpaQTXohiIFpYJKZkanKScK+G8ZbRfItsDwdbgyNsX4v88hzZktywoLPMRFQ+l7r5jPg+qhLN3dwXO5pMkEbnTHIsisG3+pTuvn1Zj/Ko2OhJ9dTsj2mNwrd1zLeYGvZ7+K6KH5OWIzJGxKvFSywPVCUmOfRh1yQ1BdK8VN+WUqNYSbUbt31qY3qfviooMgmrhuMuaOe6xfCmfVKAXv1upduMDZ33w/cqT2o5QNkdKiERsgnTwdeKNwF8bSOPzoutVQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gedVwHP3uwb/zv1lr5ebn8AaH2r6l2JzH6ENNomjySw=;
- b=E5EueRDQBvD9IuvH3Y7da3iGkxOoJZu+wx7veo41vxVq1VggOFcuPwdtG656FSpxnsejZxC9bR69BE+ZkoMi2xeocF8mBLrlk7/dKM7nqUZ0Pq9B4TlOL1Gp13x0oLjK1WE4KMLv4BOgycv7qwW+0cyvRhBWaYE0U6r+pPX0Tjc=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by PH7PR10MB5832.namprd10.prod.outlook.com (2603:10b6:510:126::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Tue, 11 Nov
- 2025 12:55:20 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.9320.013; Tue, 11 Nov 2025
- 12:55:20 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Tytus Rogalewski <tytanick@gmail.com>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org
-Subject: [PATCH V1] mm/slub: fix memory leak in free_to_pcs_bulk()
-Date: Tue, 11 Nov 2025 21:53:31 +0900
-Message-ID: <20251111125331.12246-1-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0139.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c0::7) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=CGB/TAKZOcKtrhPxjpEL/9Rt1n53HiPGQxYzu5TTEyA=;
+	b=Lzu8OeRzb/j5rCBTLnRlv7dlpVLG/i0Ll5Qj/+OEicuZumQSfG9/FNsNaRr+MrobqUDJxI
+	0az1A81d8QeD8Ezws1503ZB46jFwXIl+ZFx9nGNwygygz500POWmM5Ueluq5y3+v90mZUO
+	kjyMpJspsdb0UfuBPiq21CzNuWL9R6k=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf04.hostedemail.com: domain of 3BzQTaQkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3BzQTaQkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762866184; a=rsa-sha256;
+	cv=none;
+	b=0oXpjmYv8fDYfUfaaA4eAJ2vybF+bYw61XaSPTEHVtVZKQ/9U93+E6CNeKDLeCyTNvaTdp
+	qbFjBmwoswodJHgx44wWcP02eaZl3dE3ku1WaUTKHb2DwSMCo+QXTOWI8/WOmkuFOco2iy
+	NiEyJAuwhUCd+f6rf9QIDHFyfQ6H0zA=
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-43470d72247so1808975ab.3
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 05:03:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762866183; x=1763470983;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CGB/TAKZOcKtrhPxjpEL/9Rt1n53HiPGQxYzu5TTEyA=;
+        b=DI1Tl/ircVSCXQrLenaY8+0vaak5UIandRYuZBam5XevHBAiTHUgVcl5LivFqqOAnC
+         yTDS5QksuBwU04tHmLFQE/+UUG8bsTcnWz0TBrdj8/y1SFClquU/xkTVZaQ+2MH4JVaY
+         x02aciIq5YZlDT0iEJXreDHgpiisdTb1x3rgJI0LupyGXkeuSvVr+XziQeYaYuU9ZptO
+         uKibuzkWC3aRbp/b99ySK2ySw1p8BqHTBT8pXTv1QfdY8rXYvF3zhAXohwmenmRBMYrY
+         eMxBL1kNtBr5/RsjB5q/zyCk9dEl6Z4crJJim/xbL/U9CsCdOY4rhI01WzqwxJmA7z7U
+         kltQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXU43evOPPSJ5N6QkiUGi8cLGN1kziPkIV2Qpyzi13UZqF4j+fTZseUBvmDmEt/6OLrCTx6DvObIA==@kvack.org
+X-Gm-Message-State: AOJu0Yz1ONJFbbHACEM+i+QGARqf7etJYKjMNX5xCLbV4/maOKRSGJXk
+	9VVxTxWuMBHD+jXFggUVfAQ5WdlUUb+gQ5a2+D79UDnGQYGX3Gnnfes3k7bSbCXYw1t9+4DfjVI
+	jCJPCb9YN01uDy+LiuO2V9cKouVEjIMmY9Sh7N0ieqV/BtTx6NHokwrkX2Rg=
+X-Google-Smtp-Source: AGHT+IEpTzA/3NqtQbsss3Bt9ogTGA39GU8M8pGLRnvPzS3lXufcYtJkf55mtmGcYxBah4LCmhDhp2qV1vWIUjAYrBjwalX4qAqr
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH7PR10MB5832:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb3f152c-a670-4eba-805a-08de212191e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Fp2UI6PQau1B/5IsXrmD1Fwvl5TDe74pW+zJCchpvAu5urSJjVLZ1lmE3tcG?=
- =?us-ascii?Q?+KzYzz+xDppm+27ejLvgyA4A4P5cvVWxU7XGYQaXEbm5slY52+C9lnHE1FcI?=
- =?us-ascii?Q?78SujUs9hKTR0WNOqlCGV4I5J21XFRslqTffKUfINcCCMI+7Z4wWZr1Dp8Pr?=
- =?us-ascii?Q?RqQ/T41A6FwI8scEPsZvgvvwUkuRO1lD/heStF/zM1cSVqL7Y2LFWu3ECSmp?=
- =?us-ascii?Q?HwE6nTb5Z/NoYZNZbvl5AA7tOz5xyb9cyjSddKhyOa06l0mhdgEufaJN8PY0?=
- =?us-ascii?Q?mUZui4UrY/z1at9uVYACR2vdge77IoQCzwPp1b0XRYGKJILPs1By688iJlnX?=
- =?us-ascii?Q?dh9iuoGRGRKQUh/3hoPEYvWef+Cu7IUnvSfGW3dyIfkHF/kRBhRQzMRH4vjq?=
- =?us-ascii?Q?pQLZbCfBffQN3Sq9Kpu/m3adueXeC4Suop0LhP7+Ndg+dftRahFs5gcMGI5I?=
- =?us-ascii?Q?OPDkh7PC7LiH4T08DYOLfP/Sskh5prwe1eXShJbwarTigJN054LcOCi92bYW?=
- =?us-ascii?Q?OVKmLaigAwltMTzUUO8XxmQs+2UDv7S//ummqidy5gpf5YF6uk3oj4IMlvoM?=
- =?us-ascii?Q?xHxEKIzCfL7oL+F1xQgZzzkDEcNj5mnYPxCMdmEAqpvpPb2u5marFRhUDXdI?=
- =?us-ascii?Q?5bgroXPuvYUVDWDDATXoZ1AxAd397Ps9YhOX7gCocwvg2LG7nCeQk1dxY2ns?=
- =?us-ascii?Q?eK2toSdedMToWVWEU6qynFuOmalP77LbTJpNRWhI5yWnDjlGslO3qy9wz8Yi?=
- =?us-ascii?Q?V7yatCvRTf5nOkMC+n1sG90Bu0rZJ3BD48IxYOpZV4/VCvqEp1+TXe5k+dnZ?=
- =?us-ascii?Q?m3ADsoXa54WTf2enU6b7hWm42hfLoQsvQJG8jRqdbehJkAHnjGwNcQcLqTBd?=
- =?us-ascii?Q?HfO2wahw/G9l8fUlFE74Syk6RrVTUsXcHx1h1sOuhhAEnLd/xnBD5MhHgCBe?=
- =?us-ascii?Q?yeJ0n5bKx7Mzh1cUaIdqEUUIGH28tvprHWHmVQPlE4SnvZiyPAIpHufu/ILy?=
- =?us-ascii?Q?okr6sE5xuLZmRIoz7Lver28InbJE2BjOi4k9ZLbasPPGdU7JjVuH3/l/6EZB?=
- =?us-ascii?Q?Pem9T8ObPVLcSctuJusZJx0johedtUbyWyt4IaB4UNJC//Vze0tLHdvzmKmu?=
- =?us-ascii?Q?jLAXV9L+WqzloRa8c8pI6fJ87eKMhny/La+AFcVPF1q+rQ5VyvzXFWalbkch?=
- =?us-ascii?Q?tlDStxyWmHi4H1jC6gwiqRYPF0d8ma7qfgKSHtpw9WzUxZpN5ID3ZkHE03+G?=
- =?us-ascii?Q?+lK0PD47hMU7nMXcMRik5I+j8gVHlB5JA2ja6lZify7lE0BmR7ze9eZUW/Uu?=
- =?us-ascii?Q?Ij968AXA5g8BEGzsVxLSRC2L7gu19Hi6mGa4Tjm6cGV5Lda9gB+te9J+aqQ7?=
- =?us-ascii?Q?+Ud6ymCn+4QlwL1YLKUsw81tqyJ57F2GNGr8fm8Jv0ghMzS351ur5KojW+Ax?=
- =?us-ascii?Q?ICviK4QsDk0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bQOCW/49z5xMWT9yNrHDrNz5frr9ZJgOFXowksG1X0pycIDlWmkhMOnSQVYF?=
- =?us-ascii?Q?/y/qzsx0S0f90sow5eN2paL0SwGhDQnzbjD1DvIlvb/qRhB0inYaIBSeHxtI?=
- =?us-ascii?Q?hLlnxhyEJxHSQUnBEAGxniYnM63E8+OQ0k/O9SGgO82N/btx+ix4cKxzehoj?=
- =?us-ascii?Q?dNiE8an0R+CJMKWRMZVbjK/S/s7hyg7+R7ngR4VI4dYaYaZYmhdhHkOr344S?=
- =?us-ascii?Q?s9QgjhoeAuSvXAgPE8TzGfq621ibn4taYk4Hmg8ONcDCp58Zlu4mbqi/UtGY?=
- =?us-ascii?Q?K1ZkI7TlhaQ5bS3FOToPzA7hqPJ968mZ5+bVX99wNk17KFlziuqyX2Af4SQa?=
- =?us-ascii?Q?/0dGgD/jAR2/XLQ4o1AcbOfzIxFL9zYFTi2HAg5ISQOHAz+airpdbuEWkvf7?=
- =?us-ascii?Q?axa8F+fTKyJISJM4A7UbVXqVudVIb70ku/jOh1c+h2ZPUgaidB4vOF52xDsL?=
- =?us-ascii?Q?aC9BTCbrRbQCG3hn1m8mVB7JAhsupP4vYSe7tumBZgjpuQteIRFyC4cI4RWU?=
- =?us-ascii?Q?Tw6ldpI+PxF8g8bpl3ShcglSAd3V85KWBTu/RhL5Pk3HL4DSCrc8GvIMv6D6?=
- =?us-ascii?Q?mmy8Xn9gItwuph9YMaM+dpTYjVi94zWcJlaeB1FDdBnaVx4D0hAzaKVn38YR?=
- =?us-ascii?Q?fvpSEkwXSlA4XhVOPPwfC7FNJGsvpI60qkIXb2LN8Ysu/EPsctN3QEuth0IB?=
- =?us-ascii?Q?YyT2lx5t+iEUfsba/29vkbL2vTwdRVsoYyV7GyIa82KbTkNBEDqNeZAybym7?=
- =?us-ascii?Q?9DQhKms0WXBCyOpN8g4luzBeutsn4AraPAI5H3Eq2a502m1fNh2+WtnYQNNL?=
- =?us-ascii?Q?9HVBR/dZ1cKO5pq8V6226mo6at0b1+l6bzs03N5FIIT/7dYjh/bXOD0HjhP4?=
- =?us-ascii?Q?tTUWv33y/aNHIYg9eEx31kHso1R/3WpfH5TSETRdHoNzU4Sa9ljum+DGP+vY?=
- =?us-ascii?Q?uWXk+47BSksdvlMR+BFAWaYFYYSk+jSa0LyucoHPJyNX1MExWGKpmnB24953?=
- =?us-ascii?Q?GNW1tzxb6OYe6D3nt5d+o6uPogYp//G4TJjnzxY/Wdxta8H0lv6grJUuunjV?=
- =?us-ascii?Q?b9Wnf5cKkZzyxi7cdnU7sHK+3RU6Rl1AW5pCsi8XZjH+2Ufc4qqArTuYd9OI?=
- =?us-ascii?Q?Eypy/sqN+vTKBpvnCracp4pWHE6+7Xm3dJ2eySmxh7UxqtQ1GELmpinD0iMM?=
- =?us-ascii?Q?2sGU4F62OygOIpRcsncPtgakSkx4n0iWOJUaKw/Dlx1ArQRadnX0DnTHVzhC?=
- =?us-ascii?Q?OvlVT5bxtTNvF6/xCFivkVMA+c64b414pz36x0fkb5LvvBKM714ScP9RQrbY?=
- =?us-ascii?Q?6eRnD49FX+XtoOyemUq/WL6wLLV4AShFsoVOMj4CAJGTP3vqhqSjeYppdkFx?=
- =?us-ascii?Q?+oshR/V1DIW+8zIiAgUV0Ha6lf0eivvLffvwI0KvMxUFe29Cvlv8NL9OetJR?=
- =?us-ascii?Q?UortqB8F0f35uThIUwGNwrj6jPmEt/yOZ+qxJKkiJohA/VpFYlhWu8mETANJ?=
- =?us-ascii?Q?cHUsSKov5DLg63739zvF60s/G5ViuzAHYnrlPRGYISoiz1a61oiyKmGi6R88?=
- =?us-ascii?Q?11Nas6hnEWmshIfMSxJeUh2j3LqwtOmq+uhcfWvV?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	LKflmR9PiMpWI64ZT3EmcllfeqLpEH0SoBij5aCjCb8KwiXPgZkZT3Et37mB4YMRpjGA6/z52n+3+Uhvc6vx3H5M2DTmiIKGxixfyhvm2ehHq8pWEkZ1y8nNxGIy+IOvzljl240DCIENWjzBinOMblYCWQt1v0XruaouidhEoFQN3yu1MXURRzOHgkn6gEZ8GqDafwRtj4f881KAUcBrfboyqJv3uayVd5qvuGhUnjPDG+dfLnlug2iFNdwq8phg9eJylSj9zYSAYgaNq0ASsPETfMHYHsR+ILWzlmDwOpppmCIJojcSbQ5oJR1PSrEPH5+7DKblM8xq568ca1+q/M7U6cHsA/XSFECb0WwFrIYWOZPACXKMRWRzh+Eu69znW5FayTKU2HjdnvD6V8h/8VPfw+71i1f2cJbnrVMqNVSBNWd/9jUGSjS+JcMxjIKengZ880StdoqL325YQj1ZRVNzTdLcI90rtg9RP1qMSRPIM8h0010WHRskMrm/WhaKNNZwdUcRarkRE7l+4K7834GWgWeBh2NRAuc4yLbG4IoP2rYrLOvax/7CkywY35IOKgSB30blj5Mw/PowiY6IC7eJlWXG80c5oQhvnecYtug=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb3f152c-a670-4eba-805a-08de212191e7
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2025 12:55:20.0276
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +89O0s/vi8Aor3yYF+945r1S/c0/EydtGmIR1k7VCgXzLwQ7ZxT8ssyVHkbWmwtZ6Yk+zsrJC0Vy+QBdLQEFtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB5832
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-11_02,2025-11-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 spamscore=0
- phishscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511110103
-X-Proofpoint-ORIG-GUID: 2ZgV-29_1drpBW24bGytsohtpzt0ZRnl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDA5OSBTYWx0ZWRfX9S/PJRecjUXX
- CddPf03FJ99WaVzyXpseMqVox1mH4bYZrO0WO6xBYxKQUH86wdEAAfUP0qgRJbAI7G6PwDqUr+v
- pkrESVc2O9p9MONxyLN3nhCZv+yinm92HvZ69ZzO5gDBI4poVkfByPf1RKSLwKEJ6KnZswGnM6J
- ZIjc1egoHhPVOPDVu5e14v+yx3y7GnydR4mIwGVQJAbQ1QETEzxIU/xTwB+6YKXE4vJzPFvjctk
- 0GMwFU/51RGYvSSHUv+qZZqwt16e8ZZejVZV20RuoQoC4RMpqf1QbvUIF0rGUoUEpJ8ceLEsCWG
- cC+9W0kgxgaK24u3nnFQM2kKxtBRw7ETncG3ts0o35d6obvF9SyCmJERJ/3TUsmDiBT2i6qCzOZ
- 6bZ+9ta5U0+H69LCIYXsDWLRBsqSJAzNQW7JLZ8pKAHPdtnPe2k=
-X-Proofpoint-GUID: 2ZgV-29_1drpBW24bGytsohtpzt0ZRnl
-X-Authority-Analysis: v=2.4 cv=Y9T1cxeN c=1 sm=1 tr=0 ts=6913323c b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=Z4Rwk6OoAAAA:8
- a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=2Ysd3pv3ZpWesbIp83QA:9
- a=HkZW87K1Qel5hWWM3VKY:22 cc=ntf awl=host:12099
-X-Rspamd-Queue-Id: 3BEFEA0009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: thg8mift4amzr3di4dxm97o4qm46rm45
+X-Received: by 2002:a05:6e02:2408:b0:433:29c3:c512 with SMTP id
+ e9e14a558f8ab-43367e2d24emr143895815ab.21.1762866183264; Tue, 11 Nov 2025
+ 05:03:03 -0800 (PST)
+Date: Tue, 11 Nov 2025 05:03:03 -0800
+In-Reply-To: <20251111-covern-deklamieren-ee89b7b4e502@brauner>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69133407.a70a0220.22f260.0138.GAE@google.com>
+Subject: Re: [syzbot] [fs?] WARNING in nsproxy_ns_active_put
+From: syzbot <syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bpf@vger.kernel.org, brauner@kernel.org, 
+	bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com, jack@suse.cz, 
+	jsavitz@redhat.com, juri.lelli@redhat.com, kartikey406@gmail.com, 
+	kees@kernel.org, liam.howlett@oracle.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	mgorman@suse.de, mhocko@suse.com, mingo@redhat.com, mjguzik@gmail.com, 
+	oleg@redhat.com, paul@paul-moore.com, peterz@infradead.org, 
+	rostedt@goodmis.org, rppt@kernel.org, sergeh@kernel.org, surenb@google.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, vincent.guittot@linaro.org, 
+	viro@zeniv.linux.org.uk, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 42AB74000F
+X-Stat-Signature: dha4pn3irta5f7nubxt3ciy4dsf4w9p4
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762865729-942747
-X-HE-Meta: U2FsdGVkX1/rNJVIjlDvy8/fOOM9BZKq42/JIBxkyH/4rSJ8CgSlOs40h20c3SZm3uQ0vJv5qvGlzWZEuIXHMchpBGbS6b4CChXoePFmkX0mSzLdD/ZAWYdJ4DinPNrZhm7+mKB2xOC1yDhSj3JqHqD/Z+B5KyouzvYd5O0aGCZceGBb0Me2T98lcionbKaD29Bzrfh0okT0E8Ga8BAY7z2a/TRcQY7qVcYEBy++1TN3UuKy5yQ/MTUdDRzhbVxkw5CRCJC1mUf3oTjUTBZj7oXHtgLB95OS3Wfe15vWvUkw+EvltXcG1JCSz7ictiVMoeGIq/OD4nRdkACHhksh1zSObuB4UfOrNqsn9f6IWM8aaYpnBh6uYUvVnSVo3UvVaL8cBUjJ0w3ewKRHp0jIENZzAPkvTFULh20NLqIJBBnmICOaH7cuMZbYArY1xLbvGaaDuwXI9XTw7BsT10yRuvzz+H9tfuDoOdUfD1Fpm230MSffJ29fpPXS5uA+8gm16bDRiRbj+1DW0CdGFOuEnOySS9KX5G+OeKBuyfKC74AXfDkMaRrQyAcIO4oEjcygqtjxhmvOfkjrODU9/So0XiTXsQAasNL485mDszj2jN5ficuoNXFIHwq3UbtLmdCFECH36ucOoGHb6pIlHiXG6nwctvWQ5MHXHtxSNsv8dPLpuJrsOvHF9tywXJbCtmMTVAtihuOv71GORqiHG30vpb/lYAKpyxWbBR7RoVNyeBHVS7f+z8HEK4e2zFrwgL3XXRK2JsMTGlwZ6zrlPF9orRXDOp1tiXyF7WvtXL+cXhXdd+46PGrNWhQ2FX/5uAyH0X/RskRbE8wWg/CEx0ngpcmU3P92X3A3o8bDoVOJSgnjjt8FLV4wZmtNfiKDoC+CfMh3v+psGSFNZUJVsr5GR+KdY46YpRwm6qmOFK29ZgdwFX6hcsDMb6s/GRaoUzR1ikUEdxOwqsxYbrOSCYo
- LLM+Ov7d
- 1Ip2JdMO+RoBMUz5gZ7hcHRmN4e0wfCxrLTdfCazqH6c85ZPn2Oh6MRTkb9bz41pVe6azSLQmnXKxT4iKAWKR/ks8gOF+A1YqFKneAtsB8AXyOqkI2VDMAFcFLjfYMfkHvGbO8cVUXpPzHAdxWKfSdihjFGk9vmreSbV7Jw15BecKSbhHtZOqV0Mzt88H73MaJhhyzxx8NRA8O00U3XTtgIi5dm/TDybG4kvA9UBROztfXA2Dkgq3k4kMMMcQmC3pD+ADskIsN5UwCYwS/V5JgahGq7S5o+MJl3UUbcGE5qWdkLwtwC2A35ed+ADJBt3EL4gf54Rh+4llcjCtRwDO+9CbBYYVN8tlC+InOPLGQL1u3j46sfZI3xsHTgh6WHTvgHOZU/Aj3XI34e3z+gctG8I8D9mlkvVFTFlY2+pHmOrTUiObWHqTCnwNeTHdXQ8VEKICBJtvbZX8r0i5qNIC5cMN2a5fzOqzdoARWNC7T4g5ZV5gmoJZHvQbzwL+o2NkdwQS+G18jzcSPoHCAQR38ldaTtSzlcQiFUEamOEXueN9GpTlbSjKfvagBnW6xQD1rdJnSCAQYFPu390Vyg3bO49KUMeJe5eWoIpXasguG43aF61xuJqkNZP4dtXSzYtZVBQgwAon5CfD9F8moOiPvWFASUhFEyDkGroytHj7Tn+MwImpBoZsEKc/QpwyB7tWzwjgysXJtmebJJJrypp/Xifkj8dksnKkzKy6f5ptEyyukIeuIWoQBIy6DiVtpXiosVMNHhwMBm3OB+FrNdAyYdY+CM17iw16IMbJ
+X-HE-Tag: 1762866184-134605
+X-HE-Meta: U2FsdGVkX1+zcfNtQ0dxBAoVUO8kH/dPApQD2vCicnCP5baNQB/dDp+oMduy0U14dMAkYBLMwWrAHy585CcYpE2xL0SYQj+/uYc6L+XXRUz6Q2Oc+WX4WwLzkYVGsYnlw3lB783hKT+ab7DhXTZjFR265LjShFHRkrMpir7YBhiKb67UFqZ8n8QTPqRKScyv1fAkcbHz26x9xJVVXJH3ETvgWwuMrX8XM/4oCqH0Iz6jrwnSYkO/sZr7kzKUrr3xaEKnXjC4/zl0vQchGWlSuXj93vx9ll0q+1ukstlHUjJGuKeIFLJxntFin6IJ23ajNHVVvCVXft+dlLihOi/JH7IoQuvo8EMo34VOaaNZdIh+RWc+ruN4vuxq7PosqbMpwW8IbGFKCcjpHI53pQqvBFFmBgMr6HcbG4ThKppFI3or+VRl3biUn674w3MRK5XK+rmFMCJy78XuAHg5CjEISqHm5FPvYHA7wIRY6p15WTDQs4+OpvHwBZmLOe6pZjOCF+Rmw1T1jyqW2ysNjKW+NbrPwS9yDlHD/tGqUeG3JS/McyYvDYPgccOFYKwdjKGbaPBSMrsCfyEB4idZwaTblYZUtmVxjpjevxzkgspD07RTCK7jyZHIEYah2P4IIsrmKtEqf1HHxNDZHC0U+j9jc2QYU9f4qqorZ/3VKT+X7OK9drSNL6wo+Z9MHqlP7/EF8kI9qsEjwfFBIT9OprqhlVNnX59hdzfk4LM3qRTiOsMUtMrhHFYWkWDsKlDKtsmJidkqaaXOHFi8shmUQiPj7BDHVCbUFLTymzYNmIXMx8FVKn5LKAA/IJBMdOG/9kaX5ROpP8E9Pxh5QQgFvXtFiQBenamP1XP0rbncOQdi29NTvXMHpj0bQD0Q3BQ3uAkX/fEAp20IoeR9woPFnktZ30+WCJj79wO1xziZw1YNqjG0uY//s6lsrdnpBlCmEmgt9wBQ48mhcqhMsU9/aOA
+ mqCx5BMy
+ hQmT7nANXf2OTT2XujGSL9EAU3LMG8E0cYsgZWvIFeLemoNcuZ2u6o1/B7Tob/EoAeDsvpZP1+vZc7dMApHYvPwIn/iWkXOqwvttvvU8+fMZyGvbB41FUhLpbNwH4TQqotfiXV0hNYLz3EAyabUKVVpJUEoWnkyi9raOsD9n1RB84Tpfz8b/tkJvMZhmfxNegWin75VA1+gRpZX3pTM9wNSDaMeHpFq5mjBT6aQOPcHs6n/YJXCjIQCsOe8WPHbxkliWEE2idkIKmO9yvwvJUfCqv1LF4hmRGUsnKNGRs9t2uVo9Xomq0PIonfhBEErpev7rVlEYhzD9A2ZN47HlJ6F2LDbuim5Jmif328mA1n2K3Ago5geGMmMCHuBvfyvWLX5HdOV/nKJHDuMGRTiKyXPjkcXeUdafO9MvVIjAm7eJH/kiBtsHk705WJeHE50nwrYQ6PyNkcYND6/cBYJXjncRfWJKdtO4y6ZuQOd0A6XIaXUi6flRPs/hHpSNJqYdIYYFJfo+9i1JLLeF/Hj1tOOyr3x7h48DB59CUdDx28ym1ZT0X2UFZw6AvvXDk+la0ft496nXEWd6WBXECy4DpZsiuTAR/+bJe12eWsRXMgypVTRbudgCsBHMVwkeVGyyB0rLRxqzBWXCTe0Iof2cJ+fcFDulytdwvVYFO6wYOSNAVm4NpraPG7LU1Si+S0hR0u4/D6qTu8TNB8IEeKGl5DGxU8cW5rQyOOHFoNYVjmznuromTcwkuNc+fz8UcsPiHW36m1EAnI2jf2O2kdJOG8N1XiuTmn8SuID0C2vrJRz9ujEmIeigV9NimTZ+Q2kp18ceOQ4q1/yCAv7cULH+yMP56iyFdF9/9Yld+Ujl6wfkBuiB72ijufF6f2WGUhdwI4vmjQ9WWzshO8JSLS52i+hPjjMxEB92WlfcTMd63pYjuRGiZ9gsLCP4Zzs4YS0FcV9pTCkMI6ulM2SGwCl16f/evRXxJ
+ 4uFRnzlD
+ XXIi817Z9IXWNNTv5pC6lSi6xD+2IlKgJ3HdOuqxnStfajmSHg09j43ijcsSQUjYQLA/wrIZ7tklxZIcjf++1qDRYCMlkX+d+5y6aeNR0A0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -235,71 +107,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The commit 989b09b73978 ("slab: skip percpu sheaves for remote object
-freeing") introduced the remote_objects array in free_to_pcs_bulk() to
-skip sheaves when objects from a remote node are freed.
+Hello,
 
-However, the array is flushed only when:
-  1) the array becomes full (++remote_nr >= PCS_BATCH_MAX), or
-  2) slab_free_hook() returns false and size becomes zero.
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+WARNING in __ns_ref_active_put
 
-When neither of the conditions is met, objects in the array are leaked.
-This resulted in a memory leak [1], where 82 GiB of memory was allocated
-for the maple_node cache.
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 6581 at kernel/nscommon.c:171 __ns_ref_active_put+0x3d7/0x450 kernel/nscommon.c:171
+Modules linked in:
+CPU: 0 UID: 0 PID: 6581 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+RIP: 0010:__ns_ref_active_put+0x3d7/0x450 kernel/nscommon.c:171
+Code: 4d 8b 3e e9 1b fd ff ff e8 76 62 32 00 90 0f 0b 90 e9 29 fd ff ff e8 68 62 32 00 90 0f 0b 90 e9 59 fd ff ff e8 5a 62 32 00 90 <0f> 0b 90 e9 72 ff ff ff e8 4c 62 32 00 90 0f 0b 90 e9 64 ff ff ff
+RSP: 0018:ffffc9000238fd68 EFLAGS: 00010293
+RAX: ffffffff818e5946 RBX: 00000000ffffffff RCX: ffff8880302ebc80
+RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 0000000000000000
+RBP: ffffc9000238fe00 R08: ffff888078968c2b R09: 1ffff1100f12d185
+R10: dffffc0000000000 R11: ffffed100f12d186 R12: dffffc0000000000
+R13: 1ffff1100f12d184 R14: ffff888078968c20 R15: ffff888078968c28
+FS:  00007efc0fd536c0(0000) GS:ffff888125cf3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b33263fff CR3: 0000000030876000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ nsproxy_ns_active_put+0x4a/0x200 fs/nsfs.c:701
+ free_nsproxy kernel/nsproxy.c:80 [inline]
+ put_nsset kernel/nsproxy.c:316 [inline]
+ __do_sys_setns kernel/nsproxy.c:-1 [inline]
+ __se_sys_setns+0x1349/0x1b60 kernel/nsproxy.c:534
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7efc0ef90ef7
+Code: 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 34 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007efc0fd52fd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000134
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007efc0ef90ef7
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000000000c9
+RBP: 00007efc0f011f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007efc0f1e6038 R14: 00007efc0f1e5fa0 R15: 00007fff5692b648
+ </TASK>
 
-Flush the array after successfully freeing objects to sheaves
-in the do_free: path.
 
-In the meantime, move the snippet if (!size) goto flush_remote; outside
-the while loop for readability. Let's say all objects in the array are
-from a remote node: then we acquire s->cpu_sheaves->lock and try to free
-an object even when size is zero. This doesn't appear to be harmful,
-but isn't really readable.
+Tested on:
 
-Reported-by: Tytus Rogalewski <tytanick@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220765 [1]
-Closes: https://lore.kernel.org/linux-mm/20251107094809.12e9d705b7bf4815783eb184@linux-foundation.org
-Closes: https://lore.kernel.org/all/aRGDTwbt2EIz2CYn@hyeyoo
-Fixes: 989b09b73978 ("slab: skip percpu sheaves for remote object freeing")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/slub.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+commit:         cc719c88 nsproxy: fix free_nsproxy() and simplify crea..
+git tree:       https://github.com/brauner/linux.git namespace-6.19
+console output: https://syzkaller.appspot.com/x/log.txt?x=1613f17c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=59952e73920025e4
+dashboard link: https://syzkaller.appspot.com/bug?extid=0b2e79f91ff6579bfa5b
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
 
-diff --git a/mm/slub.c b/mm/slub.c
-index f1a5373eee7b..a787687a0d59 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6332,8 +6332,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 
- 		if (unlikely(!slab_free_hook(s, p[i], init, false))) {
- 			p[i] = p[--size];
--			if (!size)
--				goto flush_remote;
- 			continue;
- 		}
- 
-@@ -6348,6 +6346,9 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		i++;
- 	}
- 
-+	if (!size)
-+		goto flush_remote;
-+
- next_batch:
- 	if (!local_trylock(&s->cpu_sheaves->lock))
- 		goto fallback;
-@@ -6402,6 +6403,9 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		goto next_batch;
- 	}
- 
-+	if (remote_nr)
-+		goto flush_remote;
-+
- 	return;
- 
- no_empty:
--- 
-2.43.0
-
+Note: no patches were applied.
 
