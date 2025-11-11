@@ -4,85 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5498CCCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE609CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:52:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B25388E0019; Tue, 11 Nov 2025 13:46:05 -0500 (EST)
+	id E3DEF8E001C; Tue, 11 Nov 2025 13:52:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFC568E001B; Tue, 11 Nov 2025 13:46:05 -0500 (EST)
+	id DC7E48E001B; Tue, 11 Nov 2025 13:52:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3FAB8E0019; Tue, 11 Nov 2025 13:46:05 -0500 (EST)
+	id D04508E001C; Tue, 11 Nov 2025 13:52:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 94C458E0019
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:46:05 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67533129CCB
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:46:05 +0000 (UTC)
-X-FDA: 84099205890.13.A07F10C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2F0DF40009
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:46:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=P3JxL1nx;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762886763; a=rsa-sha256;
-	cv=none;
-	b=yV5eaxeXUdc5+VVNwUh2o1cWcu0ezLv7c4yva0Wg1A4Nmup2WYSlfq2TLO8FOKy6iRu2Yc
-	kmi2EuYFjXt4Ry0I1NfNiBXElqqXyK6FeM8qgavNf40nFZ4SG17rnPS1OFqMjqgh6Y46Uf
-	7gdhKrpxEF4tBVnrauV6C3oGHgqfEVk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=P3JxL1nx;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C3A6A8E001B
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:52:05 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2F17160152
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:52:04 +0000 (UTC)
+X-FDA: 84099220968.30.E10502C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 220CF1A0003
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:52:02 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hJaY3/c4";
+	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762886763;
+	s=arc-20220608; t=1762887123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=87AGEWskOWuKD8bTn2TMtYTHJt9FBx5sBjo27mIhX4E=;
-	b=epBmRr9oaGsv253JvaGziPScmsbHPvbYQCj6CCD9JLYMEZ6Xwo+wzhl7Pb+mPm+N5DchjT
-	NeWd9BcT4w8+WlRZurQQpz7ro1h4r3mYtLe8Sa0FIY2xEzKIcmT3l005dYxWS7YARQtYaZ
-	IAeQeUlFwpTCNs6p67tM6TLfGEMB698=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=87AGEWskOWuKD8bTn2TMtYTHJt9FBx5sBjo27mIhX4E=; b=P3JxL1nxVNfIf32+302Hw1gZzw
-	OF7tCr9psj46nfmXab1VWQL90Ib8k25YTZbi8r88SGymdXbjVAGxaAbpux6ngSKBOZIAd2cPfxyPr
-	EZQIN1VXpyfBGCv5mEHkgq2qcPqtEI+/sK/BBLtFnJybq7hnKBCtHaWQ0Oq7LAOCuFqe254FUD66b
-	10ETTLrcYe0rWu+kjo7VsYQwQWdhO8QoAM4rKlPGzufRJd/PT4R9Y256zfcO9PUh4Olja8War6I49
-	J2H/u8Ye6TV2mm7rIowULwLczq6YPw4h0/dGzok6p+D7VJxKDBjvqMCqFqvpz39k248KoxSggRh29
-	f17unObg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vItNR-00000004i7O-1BBT;
-	Tue, 11 Nov 2025 18:46:01 +0000
-Date: Tue, 11 Nov 2025 18:46:01 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Vishal Moola <vishal.moola@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [RFC PATCH 4/7] pgtable: Remove uses of page->lru
-Message-ID: <aROEaV-840d6ZP7L@casper.infradead.org>
-References: <20251020001652.2116669-1-willy@infradead.org>
- <20251020001652.2116669-5-willy@infradead.org>
- <4f7a1501-b10a-4047-8823-a31a68813424@arm.com>
+	bh=/d8zCUQbZaRJGUvUbaOUB68Dj5a+tv8u4HUw+7Y4SuI=;
+	b=05orI3nwhWm7tC7ldLuv/X3sc8hzRTV7uBw0nOh+uui/VS4GAur5MCc4pRZIfy24kc2lRn
+	l2wm+v/vEbRjdbTOHcb9a+O5U/RQAQYY1YyzokeMOItsmL3fip+BK1XdNBXtdysrNh1Tkf
+	l3L8dsZFGGUq9Yn0tvv9oSo6BSWHko8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hJaY3/c4";
+	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762887123; a=rsa-sha256;
+	cv=none;
+	b=L+vUjYf5NK8gQJvl7zxo4GnnVLd9Zw7+LowmVmtYizs9Jx2u4MVExKVP8m5LjGJbTOM8zC
+	k6vAScQqn/XDROnNCpeBie4foRmXH+Jq+6yna1OzuctKZA4/c9VpFK9H/AAM3SmavWbEJl
+	wxczUj4p91dgoCuptjKvSRHjP9VGAfQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 199EF43F21;
+	Tue, 11 Nov 2025 18:52:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDF5C2BC86;
+	Tue, 11 Nov 2025 18:52:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762887121;
+	bh=wKqIegUi0DiJka0SaYsAR82k/GO5oanlw/ZrqT+rYI4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hJaY3/c4Hz0IicNy9MoLgjQ72hFd73LWM4TMqP63GTIdB5LtGou1hjNDUDGl+e7zD
+	 AT6j1WygoT+efMp5+V2fSzW03Cm+yUOQUbt42/hpdA2H4tZckgvVxWisb1xdKNSWal
+	 f/bPa+DZO92VdcbG49H/eXwNxeehNe6TnMde639i1q9Un8Jq0i+x5usTEbtkDlYX/S
+	 Pb1PB14S2v+U/XSQt8C6/C+niFgrViOBm/icjKuwBROUgkWHgCALRlB6UybWi9e4GJ
+	 fXObnVEmiXEAFwUpr/hOzM6bwlPNmfXhiDxOGdi/z40pF6S6E/XfkVvN4u02zuI/yo
+	 mkVtoSvrX+DQA==
+Date: Tue, 11 Nov 2025 08:52:00 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Leon Huang Fu <leon.huangfu@shopee.com>
+Cc: mkoutny@suse.com, akpm@linux-foundation.org, cgroups@vger.kernel.org,
+	corbet@lwn.net, hannes@cmpxchg.org, jack@suse.cz,
+	joel.granados@kernel.org, kyle.meyer@hpe.com, lance.yang@linux.dev,
+	laoar.shao@gmail.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	mclapinski@google.com, mhocko@kernel.org, muchun.song@linux.dev,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev
+Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
+ on-demand stats flushing
+Message-ID: <aROF0BXEJtCM7c12@slm.duckdns.org>
+References: <ewcsz3553cd6ooslgzwbubnbaxwmpd23d2k7pw5s4ckfvbb7sp@dffffjvohz5b>
+ <20251111061343.71045-1-leon.huangfu@shopee.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4f7a1501-b10a-4047-8823-a31a68813424@arm.com>
+In-Reply-To: <20251111061343.71045-1-leon.huangfu@shopee.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 220CF1A0003
+X-Stat-Signature: n3mx7bqjota17jxp9noaoexumzdzc6ho
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2F0DF40009
-X-Stat-Signature: a5pgqe3thh7eh5dch8rsaxjy3w6xycgp
-X-HE-Tag: 1762886762-320235
-X-HE-Meta: U2FsdGVkX1+uJrX9NvwknWVUD4t+W7+suV8x9HrfYeHIgrYiUxcWNyvj7sOrWOYR6h+33xQcp5Lqim3K2z2JDKIlE0+Z4QhpCZzwhwV6kPdfua9ERwWUWdcoF9CNinWquNyrPfFRpQL+zS7lLhIOOUEEAuMGAm0UpoQ+AjsEv7k0ZxEanF3RdGP6jJHa5kn4LU4OA5fvq1yU4CCT6rVXp8l0hh85ZwVBktjSi6UO6tguzMM/Y+smxiLStJkgwWK6kII/llYNDSPxJx6ZYjuDRRpaWt82Qi7bw1rw9f/IW8TqZz4cZuUI2l/iSP52n38ipsaS8w0Psp6H2E8fG4zEAjigHh5dAv4hm7mz8yeqNiT8HVG25jP6ymYR/EGbWGxczgRRRBKkyDKgEK0DbigmqqOmc5J+f0Mdeos0LvZwO9rP1a6HyAtAPYJdAX8bA5+I7GStFP9cYQ2T/ra3RgLR+aXKQ2UKxP0vHc3pVhVWUUel2tonIztlp/EIyWC8V2wcQv0bFSALdGE8Wkkaa+R1bWF5IEr88gXt2+4d5Z1x2rHqxYp04EeNwjxZAY+14K8ud5BisYTN9odZU8zVKRPxXSrkc89o0RlYenwbCx9gLZ5Imz0F2v/9oSJm9GucyioKCJivTKWyEhW0ggMJxMo54CWju/MfJneHgsX6YbpnsZ/d/HyARjZVW9OYiKR8A0hllZJDMq9QtUX4O/tDvcrXp0CIPiwAaA+7vZK5yddaEblo3IcSj7JlObC46gGMqKM+1vmIcdvW5x2Y7RB4dkadydcp6efnbgAoIA3EwfOjYXPtXHlAS4WoBYqwVZ5JcJuJKBHMb0o2H1WD/Q1lGYcGQdTVe06buOGnxMYGleZNuulAzsl4dpL1+8IHLaPeOKBfaiKiefPOTPqvgtvqqXArA+uSIwW7S2zaetyzL5iID3+LAvZ2lBfvmKzhRE9csBEUzRS/PjX5wX+PIC7BfeH
- QFFBwaXE
- GHP/UI+l6CLJ0X0uotCDR45b0sRVqWN6/rNc4igtMPSgdje4w3P/iP5qw9ESUTeE6E/Wb/uLVqd61QRfbjXXLVMo8L0k3S36MF7vIM24GhkAPJEniJRDjAym0DC4Xsx5dg/iI5cuoqdB6Jf3TzmPUHfAtb+DEtmma6V7OaxSAVCgCt8dPjlMNa9rT6+fFTABl/a2e6RswWYpTgxOSLC56WgoUzjyAMjZuXcuW8OoZ8zAElC7QiP76IcC1QAA0jZdU4d+4IeAbeZSOW1Gza3tIiQtLy/k7QeyvgqBX9v36N1BMMDM57v8TA6alQ3coITT+ur5l
+X-HE-Tag: 1762887122-765161
+X-HE-Meta: U2FsdGVkX19k6G0MvnUuWPdwQyAfUE7zo1JdW1eMY8j8BLtXSJ4JFSkagAtEaf0fsMIO1LKXQ3wG9oJDEOCxE2gVc6JUv4CkPA6hPDGQ0HwcDJ52QoiJtbjwgISFW6RgUKWYC6lE+PYsP88a1SFP57OSSowlNnyNSXvrMZRjVGgJbqU8UC5dBsmA2BYXLIuLOTLGuNnLcN4OHnXk/As573x/QpsmDf7Ad3WhOqV9EMOc1VcR1noUw9i9bAYuwMCPnYA8AZeEXXRRyOrnU7Ez2l403+r9eNuliv70SNRklw2+EG0BLFVZH8CdKA/a2MWMThUBztzrdAj0IOAGg7igeSAv81YxSkezp8+8G1aDZScBd7FuFd5RmKJB4ZPLrhhNr6aujlXZ508Pke6MM7wsIUBzVE7QxBoT0UJ8Y8odl88bsAkBPQKxq2MZwn6Ulk1YpXFDwTBsOIpInujS1DDzvnEvGU3Z7jKb17I7YeC3o39HFfM3nt9et4CJB6ejk387GtrcAfgd6oFu3ivxAOnq0gRFQCONsZqYY9kvm8hKpr4HfUAbcJDRA1wD6KEFK4ITCRE9zGEczC/Qiu6jympRfW5DURvUJpiGG8fpzuJsmXMoyKikXmDYio2l3aKg92xOWOee/xwUBPEYjn6wq1nT01LXprQIo4s99eAoAzB16AFuZHf8MeGW2cqjbgIVXEs5u425a2Cc/Wru2OsGTHfJ/hLnlV+jgNxzFJlK5Ig354NyKhppC8/3ftI3/AysZOi60bVYhZy/d0HA82nRPWTNAo9wbTeTEcDnHsGg6Rw13c4H4tJPF3W20OJbdVCgnOosFcN24knZ2QjAumUIS96vI+3SDS5+JQnlLVM3yto/HLxEf6CU+wYp/6jTfHnnvFf/M5M5Q+oHj1YbAa0H8apLIPoVGQl46QEroFZoZqMeRK+yOJ/5tnBaKxgYT/uSRNtyU85aVGIBxVu6zzVTU4z
+ hqMQgXFX
+ lgLyBkVcGZQXG/rIHcVjF8vHZZSDyRzqLWy967QGK1+5CsxECo1RezTncR8RIj5rQ7jQ1Zb5GiTTwcYjDqC9NYEYrDYFAAvLz3XakWYh8wTjMHxtzFOn/cxiMn/2cJwKKKtwK5k6KREtbIVLHlUzbB0jxcFPHFnUJStnt49BKljwrVDb4qUTda01CN7d2n/Ar6gI4qxICNbWp+jVvDFHcnqPHGU0YPAu6gHAdTNklvB/6MvkhkhUYQQYdCcMGLJTUiTLhkY/+cMKk19egsLuowEsfSHL87cTjgoc3jllRWMgOmtYZ+6rHSatjFHt78+Dr3yi9EnkSU9zFOPg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,15 +98,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 11, 2025 at 01:23:53PM +0530, Anshuman Khandual wrote:
-> On 20/10/25 5:46 AM, Matthew Wilcox (Oracle) wrote:
-> > Use ptdesc->pt_list instead of page->lru.  These are the same bits for
-> > now, but will be different when ptdesc is allocated separately.
-> 
-> Just wondering - should a corresponding TABLE_MATCH() be added untill
-> those above bits in page and ptdesc remain same.
+On Tue, Nov 11, 2025 at 02:13:42PM +0800, Leon Huang Fu wrote:
+> We are going to run kernels on 224/256 cores machines, and the flush threshold
+> is 16384 on a 256-core machine. That means we will have stale statistics often,
+> and we will need a way to improve the stats accuracy.
 
-Huh, I hadn't noticed that was missing.  I'll put that in as a separate
-patch.
+The thing is that these machines are already common and going to be more and
+more common. These are cases that aren't all that special, so I really hope
+this could be solved in a more generic manner.
 
+Thanks.
+
+-- 
+tejun
 
