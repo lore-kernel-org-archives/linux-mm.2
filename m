@@ -4,103 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D08CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 15:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75672CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 16:14:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D29AC8E0007; Tue, 11 Nov 2025 10:56:56 -0500 (EST)
+	id 823098E0007; Tue, 11 Nov 2025 11:14:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDA9C8E0002; Tue, 11 Nov 2025 10:56:56 -0500 (EST)
+	id 7D35D8E0002; Tue, 11 Nov 2025 11:14:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9078E0007; Tue, 11 Nov 2025 10:56:56 -0500 (EST)
+	id 6C2348E0007; Tue, 11 Nov 2025 11:14:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A787B8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:56:56 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4239288CF9
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 15:56:56 +0000 (UTC)
-X-FDA: 84098779632.22.33DFACC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3B6BB40005
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 15:56:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 53BD58E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 11:14:07 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DBBD259F6B
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:14:06 +0000 (UTC)
+X-FDA: 84098822892.11.773AC1A
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2E7CF80010
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:14:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf30.hostedemail.com: domain of 3zGATaQkbACsZfgRHSSLYHWWPK.NVVNSLbZLYJVUaLUa.JVT@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.69 as permitted sender) smtp.mailfrom=3zGATaQkbACsZfgRHSSLYHWWPK.NVVNSLbZLYJVUaLUa.JVT@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762876614;
+	s=arc-20220608; t=1762877645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+wOVHCwjCTKp66R7ucfYg0ohu+W1Y4sPrlqnEcbYBKg=;
-	b=0mPt6tG/3vCIlwXkJYHdojppY6D2PJefcAxYYgIUwHBxpnyIj0w/X5SpII1ozMept1JNOW
-	iXHFWJOkQkAdyJ1CUmGeLnL92Tvzj6jcu6I2SzTB57q4hZHzVf35o1VUU7PXrKnKqPSz8b
-	cp1Ehgn0rnAkFG5w2Odxo0IqUFePF8I=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762876614; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=rsIzj5zeRN34MODne/Dex4pJnbVaec6z/SJRkF/VqmY=;
+	b=2o/s6YzBld+9oviAq4OFB1NlmNYqVDiZ3pHVd+BCfZb95O5aAURpyy0LQ32rZF4w8Ncd3B
+	LUTlykTwWWqvSQSpgTwv3cFnAz6fL8WCAddkJqlpB7/cW6tB+qdhATxEzeXrot46rCS6h1
+	aLGbykV1iMQVzQCRQBQPSnekGcOD4w0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762877645; a=rsa-sha256;
 	cv=none;
-	b=5VSgdH1r490YhpdGageERy0VyKLIr2jCe9eBXq2kDOy+V7HWkvcMBWWHPFGb1VeKIOGNY2
-	Db+Ym0g/0JviHexlakxDrTd+ZCYURpe8I2MqUvFQaq/j7Gqr9NN6IuRSRSc5h54jNouuYQ
-	2nln5ZMX10++AK0FNdQllmlfXN4Sy70=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5ECCC2F;
-	Tue, 11 Nov 2025 07:56:45 -0800 (PST)
-Received: from [10.57.38.153] (unknown [10.57.38.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 489953F63F;
-	Tue, 11 Nov 2025 07:56:47 -0800 (PST)
-Message-ID: <58fd1a6e-f2c4-421c-9b95-dea4b244a515@arm.com>
-Date: Tue, 11 Nov 2025 16:56:44 +0100
+	b=w1GDDaRKf5r0bOz12rRpdaIGEE0JXMpoichn7bxnpRYvY/fiysPIwPZ13dKr8oNmEq4JmA
+	PWO/2buS3oJYaECJ3aon0gYQuB7/e2G5MwIjlJe52Nx9yTD69x6bGfj/2z2fRU12zvlrIC
+	yzysnKY49Emta8snSKCruNEGito/Png=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3zGATaQkbACsZfgRHSSLYHWWPK.NVVNSLbZLYJVUaLUa.JVT@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.69 as permitted sender) smtp.mailfrom=3zGATaQkbACsZfgRHSSLYHWWPK.NVVNSLbZLYJVUaLUa.JVT@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-948610ae935so384184139f.2
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:14:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762877644; x=1763482444;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rsIzj5zeRN34MODne/Dex4pJnbVaec6z/SJRkF/VqmY=;
+        b=gkgp4rRIe27lVwnSKQAZDsCmzxfsJt9I6bhiwirKtcoSllX7H0xl52YUScxJjN93Hz
+         +BKtyXn9tEiQHFExlrsA2Si7wdrRghhG1DqUeKDOkQsl1oUomNtvn8m+JxWNY1Lcs2B3
+         OEr0jifrTWaLYZequ+D/GMn0+wg/YxY8OHfOV9n/kqx9+Cd6BTsmLiBa6bfAXRUd3KVU
+         b/fuQDVtCtxRAOqkSrurEtDrfWCEKoqsL5tg1/mV650nnhrTkU+Gp4SAAfjUT6mC5Uqp
+         QCbZKypBPWWjP0ivSsuZLQuLEqTX/U6twfIvdVLVuYEaNuSguiAMkn1YepXXlpkb3VlA
+         jkmA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+beThP1VGy+kdFfqxrxeJCveyYhSFWji3ChhuWOE13Zw8HTRj8mXDaMGYiDsZGRt/X8/8RDci7Q==@kvack.org
+X-Gm-Message-State: AOJu0YxVYWQhkCNO1R/vMKyRKWVTLTTPl3s7OJ6wS/TshYK08rw4jUtk
+	vLAa54bg3O9efPDHCX6PpyRxrNGfONxVGqc366LNc8q41n+NhkxC9Qhqw9UVSqBIt6oxNTYkloa
+	BWV3ztDkDEZMcsLXsbT7Mmd6osA5Wxk2dmYY0RXciBjUhAElQ7vCp6UIOUFo=
+X-Google-Smtp-Source: AGHT+IGhd1YIu4TmAb300ER5ywQ/phsKtardGYlr/w81752isCeFiUXjr5Li77UIL+5T2x/Jd6onzK9n8xsWrbfW3lALSN73fnOL
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
-To: Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-8-kevin.brodsky@arm.com>
- <999feffa-5d1d-42e3-bd3a-d949f2a9de9d@arm.com>
- <cc9dc398-b9c5-4bb8-94ad-7e7f3ddd5b4f@arm.com>
- <824bf705-e9d6-4eeb-9532-9059fa56427f@arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <824bf705-e9d6-4eeb-9532-9059fa56427f@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3B6BB40005
-X-Stat-Signature: hz4e5bniqujdkab5hxcwfqtpaqxw9yee
+X-Received: by 2002:a05:6e02:4914:b0:433:767e:8f47 with SMTP id
+ e9e14a558f8ab-433767ec96fmr150345295ab.29.1762877644204; Tue, 11 Nov 2025
+ 08:14:04 -0800 (PST)
+Date: Tue, 11 Nov 2025 08:14:04 -0800
+In-Reply-To: <20251111-gaspipeline-getippt-9b19b62f89d2@brauner>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <691360cc.a70a0220.22f260.013e.GAE@google.com>
+Subject: Re: [syzbot] [fs?] WARNING in nsproxy_ns_active_put
+From: syzbot <syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bpf@vger.kernel.org, brauner@kernel.org, 
+	bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com, jack@suse.cz, 
+	jsavitz@redhat.com, juri.lelli@redhat.com, kartikey406@gmail.com, 
+	kees@kernel.org, liam.howlett@oracle.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	mgorman@suse.de, mhocko@suse.com, mingo@redhat.com, mjguzik@gmail.com, 
+	oleg@redhat.com, paul@paul-moore.com, peterz@infradead.org, 
+	rostedt@goodmis.org, rppt@kernel.org, sergeh@kernel.org, surenb@google.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, vincent.guittot@linaro.org, 
+	viro@zeniv.linux.org.uk, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2E7CF80010
+X-Stat-Signature: 9d6h3oka3zmpqps5zax7ezzdbhcupmou
 X-Rspam-User: 
-X-HE-Tag: 1762876614-9505
-X-HE-Meta: U2FsdGVkX19/UghueSyaUD87ar80S09m8wfyvq9WagOzXqitahf/DFXXVbOw6uWIXmcMsGMqtF3lmYDAgnFGNU7SzAktrLZg+WNQRQYDTtxD0T+NWCSksi987fypp6sSLTqyRnCRxfgSpIneSkNVGCkWBrNghjRdz8xdtMa11It9jsU/hWDVMHBHAbqnlwAP8dmMM3VyMldmkCJRTittvAvsc6rgFbz6x4vJiPebBAQg2VRurI7NJlHy6Deb4RcsjnJZm2Xoacah0IkxF0ad6bW2VmI1bk/z6e5sMWWI3oSjk92AGmsXjrA7LDS8Dxgn2QzGtGRQxLswE2GF48dDgDf5n+op/n056ukuWrUydlgq94HS6TSFdtX83uH+t+Ur0Vkz0ZBaOcu4myCLsjXCA0LyzNPwFROr+nhVxCjWL2iwKfCWyIprirUSn+SZ3yXPHOVVHQTHSAidt6Hb98Igi0CZiu8vc7R5+zNCfmlBkl2PeylSGdCnfs0eLQ0cPEHrvPwtCaiygz/qFfl2Rg7ppCrWG0dU7RfZamtjefr9Rvcnb0VfMJhE4JhAZul9Ajlc5aYIy3dpXhiSqduT5R7tsAuzaalfvABVfGzlfgQih8EPfcxgtQi+fIDj3u3I6EhjdiPevOexGJaGNud4K0k1pD+EjWuRzYCUmNkv8p0/xVMRzeGVOZRQ5AVLNBoyiBcK5xaaUzGN2naJeQAvXbBREsyjb6utYrJiMln0uq2rgVIrim9kvvG4Owlgnhe2yZ6Ebq+JKkl/Z+FUuj7RNTuucuALRli7DScPAZH79JdNd0eh75lobSAndrLPq0ITXtNwXMe6H/VYSs0MS5M4HKe0dTzGbTgzLEAXQqTUZAlHQcuijCF/gpGfHb2e+GZ4V462C65gsDwCUDGbe6eBhduRGRaGeuWI1WbhTmhGxQxSIt73sOGxvzWIerFBKrIT9DoN+lN9u/9CNMx8OTr5EJs
- 3xKPDBJm
- vOEGJOMfY5HCwpmz8oUT67HqRDtLqiuuYcshNNbfBFf1wKdsVAQiupdGfecTuapS/AcwPVDRA2o+IPaxw6LF4onkd55sv+MO/1vb7Mjcq96ZSn4yZney9viW42E29mHsoVk96p78WdThx3mPK7NlhjqsY6ELrRvah1M+TSMgmA9uDwb1rPXBY0hn0r6JCZiv2NmM2Evn4LWdfbkrEw7wD1q/PWg==
+X-HE-Tag: 1762877645-263598
+X-HE-Meta: U2FsdGVkX19yKs5Dr8Z23YN6lM8yY5BTxG3Uy8AgC9db2JGwJd3TMm81AMI0I61hs2kmqfPjMFQCNKqFxK4EifWHfUjXn974wXu+Hu1F0A3+7WN1nGrbsz8z+gJKHUBfwKnUg815tVmfr3xMtFqgSCZ/DR1xelYYndfrnxohEEvFwTFmAd+E5OpfDRqSExYw+4OB2Qn3Rd489g1dZqNJm1Rlzck7rmgwkBLyAqvin32X7D3x4RUdLbYm0b3Ao8mmh7uRPXw7WmAGcmDwKjlQCZx7zJWjLLDe+crorILHK8RlPhJ0IeLonKwvSvtNy0QXo4vtKkoYBsprgCXOLEr7S1Nk/bAFvnMH4Dr8VVUvok+sVcDUswRwD4jB4tzvrj0z3EiVM0a5pNPG5OdxIkOJJSNxkTnF3As+It/DGxyepVa4n2+6lO8UWEB6ZvRNIzSP92m0YUfsZqVzVlGyUIOPll3aayPoxHDtlx4XgDGoloDNO1QOcav3fX+soIkyex4NSXvTMxRSW6Y7MIGI00Pm/7It24a9oylHNq3rDDpXKffjwLyeQHubvc32iPbRa+d4OvsWSy/gBUDavwCQQ+7ZpOpsSuWsUD6iG7eJD4L7Wfw7s5TpLWKN0aSNXDuCP/7uE3zCmhqXh58S8ENUz/sxVsEGFz3cJXqWP+VPbu0DMCZSXZvE67xd+pQtXHEdVwlIgNZICE7Ri9MNmSSh1x7deFhaWAhXDaySnXWsjnJC+PdITghvq78nk/2DYSbWvM2yGuap8TQDXKTp11oJvSbfeJWIfizGoVBrUFoFvTAfOwnJLXjEgBE2IGEpWYnxu5J38fYHkm5twFFTgL5EV9KvZWjvE8/PgMb7DBxbq79THswd+l9LkdUCTcTlt8y4d7kL+uxe74HwI/AIsTmNU78LtXR3blHScOj2NuvzVrhrTa7QxceC5E9SdCwR66QuVOUUmmIGV9gE67VNVVkWJTq
+ DbPF8Ikw
+ 9gnadU5Wv5kPT65TYcNiFJAkCRRP7tsaOV2I/v9UOZEAYyaA+Bf3pa4HA8J6WHxg0LEa3efgrce6krEfrcuBMw9OSWs2X58W8oFemS1GymsmNJxrO/mriJwuOL4lVnqvTVNVqH2VMZRMSbsnhu7Hd1jH5anLmcVBZ8lov/mJ0JqW4hca/aAa9sOidC8jkolFLP+pG7M7QdOloY8zGuckvanB45vgnlj8EdFqETxmjkjR4Du+00m2TMTMLrI0wWSAEZFnlUX7htpC8TmraGx/veYXskCCndJrZXsbJFnUyveHBXZWO6ytiq1ECcD10B1YhxOQ0hVezCkIzaDGsLv2gbzvee4qlNJbrYtvEuzaBpBaG5uw+NuRNf5HFnH4koo69gYNcbvoo/vUHdppMGhyQ67Um68BKoyGEzpOEHSB0k1LEQVDQPl/QIgxHJZkxhOuu1OMIApix6kjw35cwLyJaFfqfAXHFzMrByrbjZf7pCFeQhes7RsYT2l5t1l8yCW/j16nXXJno1RCtjj0qU7Xy1LjfR+QSvrJ5P3Aru8rQVhjRcEZDqFRaE7+lDTXNxnolEj2Raw5MxWUgbp6JMc8TKH8+kQJehTWKiIWQK82g9Xl2qUV8mlm4E6KXriGRPG7xqqWRuWr4pRFHif2YGqcH66pyqmH5qOYO6JnUlAvWPsl0MQGPs7W4R3Xim8/rcuD1b0a7p9L8iRas3szdYAgxg90GEXRrXBCRaH+DQh5fTq2Zo1AutISVSNig8srVNZMp8q66QnnyGMhGDdQS/pm4FmALOEQN7wofbV3T1SxgVJeRwBwrGRxVQUXxhxhgxyVlCjvC7mtaC7LTKMw5mu8M8wMeC2dTM3kkBvFHXQXf4ThQrdsMwXDn3kM5zKgh2emMxAEFg6OdsBKH9q1aQ3fjteS1tVy1fjFs+8YGCLpbIzlOVrW9xNpwCM/t6KpuB0OSxtj8bWPZ9pDa7cxRECSqU9bALYU5
+ himEfiPc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,180 +106,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/11/2025 10:24, Ryan Roberts wrote:
-> [...]
->
->>>> +		state->active = true;
->>>> +		arch_enter_lazy_mmu_mode();
->>>> +	}
->>>>  }
->>>>  
->>>>  static inline void lazy_mmu_mode_disable(void)
->>>>  {
->>>> -	arch_leave_lazy_mmu_mode();
->>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>> +
->>>> +	VM_WARN_ON_ONCE(state->nesting_level == 0);
->>>> +	VM_WARN_ON(!state->active);
->>>> +
->>>> +	if (--state->nesting_level == 0) {
->>>> +		state->active = false;
->>>> +		arch_leave_lazy_mmu_mode();
->>>> +	} else {
->>>> +		/* Exiting a nested section */
->>>> +		arch_flush_lazy_mmu_mode();
->>>> +	}
->>>>  }
->>>>  
->>>>  static inline void lazy_mmu_mode_pause(void)
->>>>  {
->>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>> +
->>>> +	VM_WARN_ON(state->nesting_level == 0 || !state->active);
->>> nit: do you need the first condition? I think when nesting_level==0, we expect
->>> to be !active?
->> I suppose this should never happen indeed - I was just being extra
->> defensive.
->>
->> Either way David suggested allowing pause()/resume() to be called
->> outside of any section so the next version will bail out on
->> nesting_level == 0.
-> Ignoring my current opinion that we don't need pause/resume at all for now; Are
-> you suggesting that pause/resume will be completely independent of
-> enable/disable? I think that would be best. So enable/disable increment and
-> decrement the nesting_level counter regardless of whether we are paused.
-> nesting_level 0 => 1 enables if not paused. nesting_level 1 => 0 disables if not
-> paused. pause disables nesting_level >= 1, resume enables if nesting_level >= 1.
+Hello,
 
-This is something else. Currently the rules are:
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-[A]
+Reported-by: syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com
+Tested-by: syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com
 
-// pausing forbidden
-enable()
-    pause()
-    // pausing/enabling forbidden
-    resume()
-disable()
+Tested on:
 
-David suggested allowing:
+commit:         d2bab7f2 nsproxy: fix free_nsproxy() and simplify crea..
+git tree:       https://github.com/brauner/linux.git namespace-6.19
+console output: https://syzkaller.appspot.com/x/log.txt?x=123a8658580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=59952e73920025e4
+dashboard link: https://syzkaller.appspot.com/bug?extid=0b2e79f91ff6579bfa5b
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
 
-[B]
-
-pause()
-// pausing/enabling forbidden
-resume()
-
-Your suggestion is also allowing:
-
-[C]
-
-pause()
-    // pausing forbidden
-    enable()
-    disable()
-resume()
-
-> Perhaps we also need nested pause/resume? Then you just end up with 2 counters;
-> enable_count and pause_count. Sorry if this has already been discussed.
-
-And finally:
-
-[D]
-
-pause()
-    pause()
-        enable()
-        disable()
-    resume()
-resume()
-
-I don't really mind either way, but I don't see an immediate use for [C]
-and [D] - the idea is that the paused section is short and controlled,
-not made up of arbitrary calls. A potential downside of allowing [C] and
-[D] is that it makes it harder to detect unintended nesting (fewer
-VM_WARN assertions). Happy to implement it if this proves useful though.
-
-OTOH the idea behind [B] is that it allows the caller of
-pause()/resume() not to care about whether lazy MMU is actually enabled
-or not - i.e. the kasan helpers would keep working even if
-apply_to_page_range() didn't use lazy MMU any more.
-
->>>> +
->>>> +	state->active = false;
->>>>  	arch_leave_lazy_mmu_mode();
->>>>  }
->>>>  
->>>>  static inline void lazy_mmu_mode_resume(void)
->>>>  {
->>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>> +
->>>> +	VM_WARN_ON(state->nesting_level == 0 || state->active);
->>> Similar argument?
->>>
->>>> +
->>>> +	state->active = true;
->>>>  	arch_enter_lazy_mmu_mode();
->>>>  }
->>>>  #else
->>>> diff --git a/include/linux/sched.h b/include/linux/sched.h
->>>> index cbb7340c5866..11566d973f42 100644
->>>> --- a/include/linux/sched.h
->>>> +++ b/include/linux/sched.h
->>>> @@ -1441,6 +1441,10 @@ struct task_struct {
->>>>  
->>>>  	struct page_frag		task_frag;
->>>>  
->>>> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
->>>> +	struct lazy_mmu_state		lazy_mmu_state;
->>>> +#endif
->>>> +
->>>>  #ifdef CONFIG_TASK_DELAY_ACCT
->>>>  	struct task_delay_info		*delays;
->>>>  #endif
->>>> @@ -1724,6 +1728,18 @@ static inline char task_state_to_char(struct task_struct *tsk)
->>>>  	return task_index_to_char(task_state_index(tsk));
->>>>  }
->>>>  
->>>> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
->>>> +static inline bool in_lazy_mmu_mode(void)
->>>> +{
->>>> +	return current->lazy_mmu_state.active;
->>>> +}
->>>> +#else
->>>> +static inline bool in_lazy_mmu_mode(void)
->>>> +{
->>>> +	return false;
->>> Just pointing out that this isn't really a correct implementation:
->>>
->>> lazy_mmu_mode_enable()
->>> ASSERT(in_lazy_mmu_mode()) << triggers for arches without lazy mmu
->>> lazy_mmu_mode_disable()
->>>
->>> Although it probably doesn't matter in practice?
->> I'd say that the expectation is invalid - lazy MMU mode can only be
->> enabled if the architecture supports it. In fact as you pointed out
->> above the API may be called in interrupt context but it will have no
->> effect, so this sequence would always fail in interrupt context.
-> Yep, but previously there was no way to query the current state so it didn't
-> matter. Now you have a query API so it might matter if/when people come along
-> and use it in unexpected ways.
-
-I suppose the best we can do is document it alongside those helpers
-(David has already suggested some documentation, see patch 11).
-
->> Worth nothing that in_lazy_mmu_mode() is only ever called from arch code
->> where lazy MMU is implemented. I added the fallback as a matter of
->> principle, but it isn't actually required.
-> Yes, I agree that's the intent. I'm just wondering if it's possible to enforce
-> that only arch code uses this. Perhaps add some docs to explain that it's only
-> intended for arches that implement lazy_mmu, and don't define it for arches that
-> don't, which would catch any generic users?
-
-Yep sounds like the best option - a lot less risk of misuse if it can't
-be called from generic code :) The build would still succeed on arch's
-that implement it, but the kernel CI should catch such calls sooner or
-later.
-
-- Kevin
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
 
