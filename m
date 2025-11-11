@@ -4,128 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59EF0CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC9F2CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:40:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7298E0010; Tue, 11 Nov 2025 04:39:54 -0500 (EST)
+	id 352788E0011; Tue, 11 Nov 2025 04:40:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A7788E0002; Tue, 11 Nov 2025 04:39:54 -0500 (EST)
+	id 303268E0002; Tue, 11 Nov 2025 04:40:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7963A8E0010; Tue, 11 Nov 2025 04:39:54 -0500 (EST)
+	id 1F2128E0011; Tue, 11 Nov 2025 04:40:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 637EE8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:39:54 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 058BA8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:40:10 -0500 (EST)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F03F8591A2
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:39:53 +0000 (UTC)
-X-FDA: 84097829466.29.F3F7895
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 240D24000A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:39:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hTlG2TZI;
-	spf=pass (imf17.hostedemail.com: domain of glider@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B761C12D294
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:40:09 +0000 (UTC)
+X-FDA: 84097830138.29.354121E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 030FD4000D
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:40:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GCiWpRgX;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762853992;
+	s=arc-20220608; t=1762854008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x27CBOBuvs19lllL/4Ne+a54Yz+5/uzP3YpUzWY+JnY=;
-	b=1ck2xosBN+MO/mN31+1qSZmIIYyGIVR7m64NLFd+MknFxiTn3WrDmfLUVd+t7KWaZ68ZTS
-	jajKEy9IoAW1Ic6YrsVGH5UQc6NT6vFlCSDyBH5Pat941isCey4eTeiaRLUjtRPctHps9P
-	LLzUQkV8SAER0sRU/yLJUzl1lMzbe70=
+	bh=yl4+gwf8QOtt9hN7qj5CGIv/iNxBo8//09K9iSurOVQ=;
+	b=rky8MLyuXZ+0OyztyJbxBOnCAcvsmZwGavaqOdRjx0/8Z5P5GkE630aHot35tITXHF1QIw
+	ZJBCPq1486VSJR8rJIpUAMOH26AyHoDAC0zcdtjlSEyWf9zeuhjmsnMrivTAp/Ek4JKJrQ
+	21qlXV/MlAXfL0ydJlLSV4KF6V/WDQU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hTlG2TZI;
-	spf=pass (imf17.hostedemail.com: domain of glider@google.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762853992; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GCiWpRgX;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762854008; a=rsa-sha256;
 	cv=none;
-	b=nxsetxvoBfTG61gnf24WtjJsNpqU4RzPjMMq8HCZpxFismAon+P77rerHIhqW8l4gGh/gw
-	iqWdgNxxA84jIwm7t87kR64SIBeALkBVV5a/cd9N2UQqikqTVCtzevk0/hE5zVXe2RX5zw
-	XbhANfJMW3LMzkDbI9L0Sq5Z0xnPVNA=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-343684a06b2so2885554a91.1
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:39:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762853991; x=1763458791; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=x27CBOBuvs19lllL/4Ne+a54Yz+5/uzP3YpUzWY+JnY=;
-        b=hTlG2TZIiJwh+IWgnUbQQBsMcECLYYGC1/iYSmtcZ6FpKziuBKAiDB7pYUNh6xVDJG
-         8Cb9EiFzqhsosa0MOmkWGBPUYxm9hEW3DZlp7uvBrYUfkUxmGCfOQ1j1lINzuNbDOful
-         yprVJp/+/u1JG9w8NDqAjTlDY43MGz8nU2UVQS8ZwzHNk07zE3D5gRq1Hl+1uEwmcmSs
-         nTSjmZEi8NcmhntzkOSgPhYyeJEjmnDx7GTCICmJ/8ceSEBmlrkT2Rb2cgtWrnNwaqYw
-         7QSPXCq9wyDyDMOPhLZnHqTzXJ2LbEP+rvl4etT65D1v0SOqDv+CZ97ARzy/Gp0amCoj
-         fk7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762853991; x=1763458791;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x27CBOBuvs19lllL/4Ne+a54Yz+5/uzP3YpUzWY+JnY=;
-        b=WxZCsZFrXZ9CjjO250JuWXWmxyvx5oL1vfnwUDpkWvq1NQYpuvkJUBfg61hmHX37pz
-         Uc2s2UZHAZzZUeBpfHlq5F8QBcAPC9owEuL3K9IHZ1+a/YhvTBi7SWCDWeBaMl3B8bw8
-         sORj13M3q9MODUSW20tH/sbZYbhMfPyokhrJm7mKxn8PmckcpzTQz+jCvomm4mdruO9/
-         lveH3u8MbW4rKtHW4DHuxbdhrav3zdYi1Zbs/ntx6XA54CzU2CqUT6vrpqbTu5H/KEk+
-         k956UMBYfsOOlRkUHtnRuzxC+QqMNvzP9+IYAEovXwBnueG6q1Clw14TvKkxcn5ps2Tk
-         ACPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOLok2N4gw+HOWm/ek+EBl8YZdoruR8GYftG6OHFQ+6k+m/E3POWaNpPQLkHTyqwHXRpGIldvnww==@kvack.org
-X-Gm-Message-State: AOJu0YzZ7gRw4dCNnpnXKnIL6WQJrRvcg2yx7dxPXskJu0u8eVY8Hs+Y
-	4Jc1X86TkZnoTEZmnKPJHH0SIY5kS12M1i6tWkmlI71FXsYNt3mys+KaYgivmRZV4LCelZuSjfg
-	8v5Bfrb0mXVIMUBbkqEv6ItkEfm2+CFpbEyYjr6lK
-X-Gm-Gg: ASbGncv2fpKm+OsNJ86NqQpiCT0B2BY72kOvneRsfx+xXQt5hJ9rGFzVJmLEzK/0W/j
-	m0qIAzIYDXJ+Q3XwCdKvRJCwy4xllmLrkkax6JQ1U4aAZDIoCRY6Z+iTVCW0wUMA5/9ka6ak6+x
-	8YLFZbdvCty0PhCBjiiLDDOUGs5VkszTC93uO45P1D92VcAHBo2eVnZL4LkJwRbrs57TzpWWDg3
-	Auwcr3WOUPrTN1z5HOP5PkDbCqkyCRNT4R/awpL/VwUz73ZOWmy2yY00XWZSb1Ly6K1y4G+0Tws
-	pSwe4vPAGAhERA4wCgjm0o6wpIX0EjKVnX6b
-X-Google-Smtp-Source: AGHT+IHbYtcp4TEm3YWuggGsZDtmzQmO+Esj4ot5UyBq5O3ykfRy1t7VIIRByVPx+YeUvhQm6/mmmHJjCQ5y0jFctOY=
-X-Received: by 2002:a17:90b:2f8b:b0:340:ad5e:c9 with SMTP id
- 98e67ed59e1d1-3436cb9f0a4mr17438597a91.16.1762853990547; Tue, 11 Nov 2025
- 01:39:50 -0800 (PST)
+	b=5ddyKQf5fWdr4N/4fdO3g/L3DKuRK6Zs8hDKHQecE9SAYF8CoBMK6eQRohoGDclc190NJB
+	CNhu/6zq1KAZJTuR+kaxCCSnAvqqVytlivuaob7N8ocLW7y02WqF8Y/1/fE3FHpkg1g7/I
+	WN7LQ6sYy5P10+08HTbFW+cpUKXPUGw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EE69B43954;
+	Tue, 11 Nov 2025 09:40:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E4CC4CEF7;
+	Tue, 11 Nov 2025 09:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762854006;
+	bh=tV63J7taBdyVxD5Onk+zak6F3ctliG+Q3nAMch/i9HU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GCiWpRgXryUr0YiOuRCqFKMHFElrFfOJGLeX13fDzQhzdLeEMfA68uzI2EJFfxVhm
+	 0MUDm4yk8dcgPkbCGQ9mByaYozbzGtDDR+dxx7BYEgVrFiJ8SZ2pdALZBfQboS0gvo
+	 mHVFJX+o1gZPTNTphPXA9WbgGYWk9nlExIF62mZ73WXnbIrDTiR4NqRFsQaQL8Dvkw
+	 S1IFcQzK7HMyEOdAdOb32M0+zECDPIh+yvtjXasK0QRuj70XQpLdc9540fG5C8LyLy
+	 GOdJphkYB7U4gWmOkayWv8GOEYQl0T5F0efMNLKo7WjK4EvGrJauQ6RDtyW294LDmB
+	 ZpUDNt59CcokQ==
+Date: Tue, 11 Nov 2025 11:39:43 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v3 01/16] mm: correctly handle UFFD PTE markers
+Message-ID: <aRMEX5YP7ubGOmqo@kernel.org>
+References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
+ <c38625fd9a1c1f1cf64ae8a248858e45b3dcdf11.1762812360.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <ab71a0af700c8b83b51a7174fb6fd297e9b5f1ee.1761763681.git.m.wieczorretman@pm.me>
-In-Reply-To: <ab71a0af700c8b83b51a7174fb6fd297e9b5f1ee.1761763681.git.m.wieczorretman@pm.me>
-From: Alexander Potapenko <glider@google.com>
-Date: Tue, 11 Nov 2025 10:39:12 +0100
-X-Gm-Features: AWmQ_bn-DpseVZlfA_JkC1KeMe_i9gWzENoYdJOcpoJ15BxyTxVZhbSiKbweC94
-Message-ID: <CAG_fn=XyQ5Mc_ZvsibN4K0r70xfDAkhPqUJgtojVRcgTt-q0WQ@mail.gmail.com>
-Subject: Re: [PATCH v6 03/18] kasan: sw_tags: Use arithmetic shift for shadow computation
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, 
-	kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, 
-	ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, 
-	morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, 
-	baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, 
-	wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, 
-	fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, 
-	ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, 
-	brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, 
-	mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, 
-	thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, 
-	jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, 
-	mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, 
-	vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, 
-	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, 
-	ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, 
-	maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, 
-	rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	llvm@lists.linux.dev, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 240D24000A
-X-Stat-Signature: 5h1ef4reeyxn1im315ay14mg8oaht373
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c38625fd9a1c1f1cf64ae8a248858e45b3dcdf11.1762812360.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 030FD4000D
+X-Stat-Signature: zarga8t9tcz59hfbsbnf433he3ke64os
 X-Rspam-User: 
-X-HE-Tag: 1762853991-603446
-X-HE-Meta: U2FsdGVkX18fAip9tBEe3/viZg+TCgmNK1nK4P3pSbZoQr+iGEdVhAUStPt20MIB/hzipWEp3Q+GBCyH7/Jqd5N/G4ImZqeRdBsjpkHziHFnH4tMv4BrBRNmnW3Q5CwoxJ+CqNgXlpz0gdIcdlR/Xph4Js/yul3gHv4CK0xtENYXBerybeYwCD3h+qvphdU7Sf49TZ1wT7rd0EHOFgkzWuzUi5HLLam9CkTR/SQfa2D1FwEnCdO+pjcV3R86hui3v4lBPVhsE03R3KlgqFFYc33PcUbkECJUWF4D0BK61xSOyCci8tkSRUwVXqDoI0PtRy9AQdgsN0m8cjajKJi0xKoj4JYUVxnWWD15Kcl7Ymib45MfUE1VO+tzH9c4RYJBXqOhuxrT+isSyNE11IVWBnh7zK/6c22V5R6006ugE93940OB/GcAp4Dh+7Sq6lxiZfklQCatlbYSnnzknyjxOMUkB1oLfI9Xvneod7sVUwB/UoQLXCrS+kafwnLefJxmOLZJNio8Hf/JrsIZyPq/OZrxrFk2713z5i3S54Y7PxNPE8t+w4FU5sdBQaUi/lKLIeSbqEwRHirkSj7hsry+OG5SZx+wHpv+ayCJqQsmOLF4QUjyFF3kb38pkp29dyOX8xInqgit4Qzin6MEdmu8p72Bz0bQBKgjYNaLfFrhlpy6Jnh4QOGY38iloqJfNY0KCy+bKIVSLAe5Wa5tNJQLqozk5lC/pXuHlmlQnCujemGRr7oX7PlO7JwXPg7ZgvhmKrZxPPULpsSaZoR9EiXWQC8gqvuhkfT5DgyDhHfYL7d6rHc7jatLcvR00RHkQtXRVLNQhJmUjslEVZBclTrJNi6C0a/t4jjDquUlqNvKB9gy6EGxISyt/7T1XzAL9dkSIc93eXm2uPz2gNiIPKfpHVZKC07WnZof+Yj+/FkAVb3FbEUGHh5YlcLswkT+RaeyVtTtJnfIJLmRY9OTKEj
- p5P1oVnr
- W0EIpWO8xQqv4WMfWE+dpAlL6RIqB/mZx/HjJlOXlCWSyIOJh7kdsh7U9rtt5hqEKDjGsViDMz1yYohTaVSve+ZU3vAvv7tr45o3hnAW2nB5eet+/J6fsHnwrE8b+BHx4iCqyjhq31kFSjUWgh/8d1pyarKCxMUqtp2X8ssiQ4pA9ciHNiocrSolTeyCMh7Yxd6ypW+4ePZMb2xHivk0cAeAeFihbzyJpyOB5jRD+cu9ozBFfmwGNONffzvFHvC9rqGn64Q726MeH6kapSKsl6fSpAFiQVuP/e8cqsD62mPZw+i1uFL+F2d5D3u68sulu0GTmGfkQMIStiDbRthrtWHaZTPPHUwwQ8euF
+X-HE-Tag: 1762854007-177902
+X-HE-Meta: U2FsdGVkX1+5gIZI5jHz1tc3cBs+EmPg3YREIiEFItuQ6EKX1R3FsXRUvM9ssf/xxXXA90oU7qvtggja44lFlLu5KIk0Be5XFFxlHjtK0yFB9BJ+vVgHT4eHQ1Hk6KZ6ngr3H9DgajZFhmhu1LizN95fw2I5gLlkRD8sTNZVYxkTsMWS+d0fBTsK9XSoK1arJIxUBGfORmSlKNWEpN2hjWcTHo6wgEoexYDbSZhngGPculXv/I1PkrzM/KFY+wW4IY62y/HYMcKi/OknU3hzbDTHtR2qZ2fC98y1YD6E5iAczrRxmoZ4utAz1Kq9NQ3zurJE1v2E1gfa80L7hrx2lHFmgjwf0OPut8e4Ot9t7stdA/Enf7NXYB6cF6dHyvMNhgZr0+PGLZbZq3v0Xsc2YhPbUdQPvJIyizdyPczRnkmuI64+SCnqgK2z2ErQI6qjCn4g/rc/ogQOmFk/TGhG3dtCX6GyqFDgWtWg/icvuRgCUX4tybBwA/qUhVE2dBKRgHpkU/fa7h/00y6ycdUXRPR7A/8FntZsIci67hr/mMGiSruzDtishkxAPyUtRlGHdV+w4Kh8oA88meuxCR8WNwXEzR3WOmdTGS/s7YT4oN4pGyn2uMJjFqXKAujk3pZRW/uqbj2VADCcNNl7eZ6S2p1BkjiCb7DbtDZZ2GYoKYTR7LPnbKU6yjpRLqcBmtrgrsfiXLaLoyU70tAzBhpRG0sU88Tde7JW4MjiKAdTpwGMwAS1S3RPk5oO6OyjE+zFKYsh6ZcJRVv83Uae3cmJ4/jQx37L6KMI14JwoeUoNz/PrpK6Pgx8cONxKLC0beoT/yXNCsVisExISA70pfKBc3s/2mTMqFtMpzBzao0O5NIdeRJ9HqIFriYtP2pqRSh2aivtQ+AdVNFrOI4ciuB/73BFqgPWdCbkofyFlvw0Y+MTatLZvbPXsnzcOFko3IAHoMb4MmhWlcSmyQtNNE+
+ L8dUiJsG
+ RB1ZPtmnXMRyEdCEGUyd4Anjh+k3dybOdazZpUNpvZ2knUrUvR2ORjIl0IIXBzAkpv0f4Ojp+fFoajRXlEK7RnihyiYwuT9bXTi4VUh1fxLFrWfPM12N0pvYZlNZEqIgcCRaXy7qwEIGtpt7Xvh4RKcJTdmkH8mvCwL0Y/Mm8cWqd2M3XhhdfSAtR/7FzrXqfiQEbTLT35WGtVLnzWVVYBSeJvD3Q/PJNQlvYoIgY72sZG8Qg7Mt6/LvRfa0jMdyhX9N2Shye+8kWwFIynRNvAnl+MWwT2b9J/sCeloIVK40M0Ya6zJkDfieXxwFmoeoq0r53c0sBnGuK/iekyO9DCRQTbnws3Z6WxfPKQRrypNj1QGl9Joj9BGG2NQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,26 +137,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index b00849ea8ffd..952ade776e51 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -61,8 +61,14 @@ int kasan_populate_early_shadow(const void *shadow_start,
->  #ifndef kasan_mem_to_shadow
->  static inline void *kasan_mem_to_shadow(const void *addr)
->  {
-> -       return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
-> -               + KASAN_SHADOW_OFFSET;
-> +       void *scaled;
-> +
-> +       if (IS_ENABLED(CONFIG_KASAN_GENERIC))
-> +               scaled = (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT);
-> +       else
-> +               scaled = (void *)((long)addr >> KASAN_SHADOW_SCALE_SHIFT);
-> +
-> +       return KASAN_SHADOW_OFFSET + scaled;
->  }
->  #endif
+On Mon, Nov 10, 2025 at 10:21:19PM +0000, Lorenzo Stoakes wrote:
+> PTE markers were previously only concerned with UFFD-specific logic - that
+> is, PTE entries with the UFFD WP marker set or those marked via
+> UFFDIO_POISON.
+> 
+> However since the introduction of guard markers in commit
+>  7c53dfbdb024 ("mm: add PTE_MARKER_GUARD PTE marker"), this has no longer
+>  been the case.
+> 
+> Issues have been avoided as guard regions are not permitted in conjunction
+> with UFFD, but it still leaves very confusing logic in place, most notably
+> the misleading and poorly named pte_none_mostly() and
+> huge_pte_none_mostly().
+> 
+> This predicate returns true for PTE entries that ought to be treated as
+> none, but only in certain circumstances, and on the assumption we are
+> dealing with H/W poison markers or UFFD WP markers.
+> 
+> This patch removes these functions and makes each invocation of these
+> functions instead explicitly check what it needs to check.
+> 
+> As part of this effort it introduces is_uffd_pte_marker() to explicitly
+> determine if a marker in fact is used as part of UFFD or not.
+> 
+> In the HMM logic we note that the only time we would need to check for a
+> fault is in the case of a UFFD WP marker, otherwise we simply encounter a
+> fault error (VM_FAULT_HWPOISON for H/W poisoned marker, VM_FAULT_SIGSEGV
+> for a guard marker), so only check for the UFFD WP case.
+> 
+> While we're here we also refactor code to make it easier to understand.
+> 
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-As Marco pointed out, this part is reverted in Patch 17. Any reason to do that?
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+with a small nit below
+
+> ---
+>  
+> -	ret = false;
+> +	/*
+> +	 * A race could arise which would result in a softleaf entry such a
+
+                                                                    ^ such as 
+
+> +	 * migration entry unexpectedly being present in the PMD, so explicitly
+> +	 * check for this and bail out if so.
+> +	 */
+
+-- 
+Sincerely yours,
+Mike.
 
