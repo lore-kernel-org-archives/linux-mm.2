@@ -4,103 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E89FFCCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 01:00:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2623CCFA13
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 01:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57DB88E000D; Mon, 10 Nov 2025 20:00:38 -0500 (EST)
+	id 5CD0F8E000E; Mon, 10 Nov 2025 20:00:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 554FE8E0003; Mon, 10 Nov 2025 20:00:38 -0500 (EST)
+	id 57D818E0003; Mon, 10 Nov 2025 20:00:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4926D8E000D; Mon, 10 Nov 2025 20:00:38 -0500 (EST)
+	id 4936B8E000E; Mon, 10 Nov 2025 20:00:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 36DCE8E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 20:00:38 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2A6B140340
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:00:37 +0000 (UTC)
-X-FDA: 84096520914.19.33A0B84
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 121F74000D
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:00:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 39D268E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 20:00:47 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C867987AE7
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:00:46 +0000 (UTC)
+X-FDA: 84096521292.26.C5F2F37
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf17.hostedemail.com (Postfix) with ESMTP id ECD4C4000F
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:00:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HAyzilsu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762822845; a=rsa-sha256;
+	cv=none;
+	b=YgBVCtmsfhwI9gywvX4jNXa+pHMQT+2tiVzrpGxeVTYnkqMVudyi67mJvcUNiV1jYbqbou
+	+Qg2ubp2GCvD+dhRQjMELeVqMenDOiUyf0pTjO3sp7uL3kLxwe6nVSeWReDRMXmZPN0ziK
+	ggTQKBZpeAP1NLYmDArWisTdj9T00wg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=HAyzilsu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762822836;
+	s=arc-20220608; t=1762822845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dz/LbOz2fV3pMpNZ86MhsSfDMgpaR79+9z4nvwiNtKI=;
-	b=tKRXz4fS5mmdcagidsjnT/foiTvH4BmPx5aDM5EyHhJhPqzIvNpGlSB1kxiaAmGEQncbVr
-	6Ca4Yp9rxUzxU/k/ZdrjrP7i7E3cDa0on3GgVoDYZtZvt0ERrBuFWSI5WUnTRp8b+6dtdn
-	H3Ol47xoEBhfm4pOj4t4gvEJXPGGA08=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762822836; a=rsa-sha256;
-	cv=none;
-	b=K91QLKZKh3O6E8OFiliEPhDpdI6lj1VDeJ0afoTmhdtEDEAGV0JLA6OLplQPoewkgqJD+4
-	zG6si/EhF+/cgPsvRS3B1AU4JVqfS43W0TjmJXmMSpEUIpo5iZcDmZ5Iq1n//fELGAodGC
-	USWrOisuyhY7eAppqE8doil9ig4Ucvg=
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4d57Vh0gMzzKHMQB
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:00:12 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 74D011A0359
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:00:27 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgCnz1yqihJpULVJAQ--.64891S2;
-	Tue, 11 Nov 2025 09:00:27 +0800 (CST)
-Message-ID: <7d46ef17-684b-4603-be7a-a9428149da05@huaweicloud.com>
-Date: Tue, 11 Nov 2025 09:00:25 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e8DKKG/b2Ml/VevY+oANvvTeILuRGs8NqX1/6ypJaMU=;
+	b=iufz8YVCUhBEoobsstwNpVnS3F4tI2+zSD4Eg9PFzYuN8H3eZXITFiytDAg0Cp+6tEqYoz
+	gYUutOgm/FuClf9JV/43ttTt+jqLu6do+O9Es05UDPEmk3ZO9/tQR7v0TfZZB5qc1kLu9E
+	2IL/yyVF6xERWDQNG2qHfErdRolj7WU=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-77f67ba775aso4315727b3a.3
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 17:00:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762822844; x=1763427644; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e8DKKG/b2Ml/VevY+oANvvTeILuRGs8NqX1/6ypJaMU=;
+        b=HAyzilsudi1GuGXFzGKd4VP21fNlgfNT+9W+kDef9lIRbs/CA0ZYiPGf5TQY79RKPV
+         elXY7Pw60tfTp+CMgldpwt0Rdi9JhLNRNwPZTJeSe4SPyL87+goul2SxPoXQxgtzcRC4
+         JeEomt6x0qqGUz2bSpg8oyKu6SavX4H4OJXiNJDnjzdLYxJrOoWN6f/q9Vxi3GKS8aRA
+         enAaH1je7llUUUdavyP82PUm2c+3R9rwWTYn65QdyroxQhaXtajTECqKC9kZ1YuWSry0
+         sZJilLSyywBsbprIfenaFqnK5oNTw4ucTcC9YQooeN9WaTPC6T4BpR4cDsnXOzvG222L
+         UMeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762822844; x=1763427644;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e8DKKG/b2Ml/VevY+oANvvTeILuRGs8NqX1/6ypJaMU=;
+        b=SMlnya4cFOZ4Tn9eXTS1uV9HComASp1xtKv7Qb2WdO3vjcsGe/cahsqtrqIY70fMRy
+         VRBTAdtdHet+kTAlM+IluIrBQDaS05rYcTPgKA613JOO4GjZz0SYDmtBXYAaFcDbVTSC
+         qSuWrlFdUhJFmpV/D1J3dUdReDH7BD6OFNEeFZjBaxdHOoN6nv7yndag/xUxCpfgt8yt
+         v+ylx/O7vZRutg/Xmgrz0Khv2MGvdiV3rOpGqbMjqaDBIfJTNSSloZUkG5lTYYhUxJBr
+         3HfXG+hvHMuwE/XKGK7C5Js55nXyTW4fXb46X60e9VSSHKqeQyCdvGHSlf6SLDQz+u0o
+         bV9g==
+X-Forwarded-Encrypted: i=1; AJvYcCXar+OdIbfFlsn+ckiBNQJvGqXYgQ13p373uRrGwsXEJuwcPiJZkFQ5ayKOKzjhIGMLidvk+jWaoA==@kvack.org
+X-Gm-Message-State: AOJu0Yzf1Isx1T7F7hNyw4CuQhJhaYUJW1M/HeT/E/6FxnjAbHmBj18k
+	TNJASHUlrkBLNysmgq6M+0pdt220lxXpwlrqh6BbjJmmAwz16i2cJftd
+X-Gm-Gg: ASbGncswCMrKrGAB/xvlnAKq0E5UMxRlmKIPfo3pXxU/dxiDy+HtLV3ePjxkTvGYiOp
+	QsD+hnP86auNK2T9jtPGsyPhsugIjkJMzMDBjTI6umi2c3YCjuJFqarfSvylkeL8KigRkiKT28n
+	cGAxoR5WBelGM1heSeSQ79qXwY8H3SSO6qpM7f+icTy2W0opw2uKFMUNIo8w5meonnfXXJaq54I
+	c1aDlRpyYQyc8NX0MH5rf7n7U4A5TD/rkxqBBCQnMo1uSLMAK27BjUK+acwUVhb3HwSnCg+Luk7
+	3KEkppKgmYRJ+SuJvINPBHBYmtueqrwfjjdm/vWUbkNLdVYaOpgb3krS0lLucaSyadI1AtMANbF
+	QEUNFYp93tXq5PanMbfoi0ue0z7p2YZz1B2Hkb/mNQGV/sv/kg3v/UWijSDVPBh1whzf6Z/uoYk
+	f45lB7K8rs0JXZwVe2sdpedComlA==
+X-Google-Smtp-Source: AGHT+IFxgrUWy77gbsunqJhGkWdQe0ZI1d5eQkSH1uE+PZ2zCTXOzCFHVH40iYpbqAAUkEG/NUEFKw==
+X-Received: by 2002:a17:903:1103:b0:298:43f4:cc49 with SMTP id d9443c01a7336-29843f4d12emr612625ad.24.1762822843523;
+        Mon, 10 Nov 2025 17:00:43 -0800 (PST)
+Received: from localhost.localdomain ([240f:34:212d:1:d90d:a2eb:35df:9157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29651ca1b8csm163515505ad.85.2025.11.10.17.00.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 17:00:42 -0800 (PST)
+From: Akinobu Mita <akinobu.mita@gmail.com>
+To: rppt@kernel.org
+Cc: akinobu.mita@gmail.com,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	dan.j.williams@intel.com
+Subject: [PATCH v2] memblock: fix memblock_estimated_nr_free_pages() for soft-reserved memory
+Date: Tue, 11 Nov 2025 10:00:10 +0900
+Message-ID: <20251111010010.7800-1-akinobu.mita@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <aQo1VjjQw1OZG8nY@kernel.org>
+References: <aQo1VjjQw1OZG8nY@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
- on-demand stats flushing
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Leon Huang Fu <leon.huangfu@shopee.com>
-Cc: linux-mm@kvack.org, tj@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- akpm@linux-foundation.org, joel.granados@kernel.org, jack@suse.cz,
- laoar.shao@gmail.com, mclapinski@google.com, kyle.meyer@hpe.com,
- corbet@lwn.net, lance.yang@linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20251110101948.19277-1-leon.huangfu@shopee.com>
- <ewcsz3553cd6ooslgzwbubnbaxwmpd23d2k7pw5s4ckfvbb7sp@dffffjvohz5b>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <ewcsz3553cd6ooslgzwbubnbaxwmpd23d2k7pw5s4ckfvbb7sp@dffffjvohz5b>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCnz1yqihJpULVJAQ--.64891S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF13Wr47Gw4kWr1rtr15twb_yoW5Kr15pF
-	Z8tasYyw4DKryxCwn7Ww1xXrWFkw4fW3yUtF9xC34fC3ZxJF1S9rW3tFWrKr9I9FWfX34j
-	vF4Yva4ruay5AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
-	s2-5UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Queue-Id: 121F74000D
-X-Stat-Signature: f3abaxzszzi57mrxfy96jdn4kamxd7ow
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: ECD4C4000F
+X-Stat-Signature: bpwoo6s1imeb1ytctu6ndyxgmzeg7kze
 X-Rspam-User: 
-X-HE-Tag: 1762822831-472235
-X-HE-Meta: U2FsdGVkX19MkcpL0XWTXG6bKt8LQIHVw5RiGvYc8FDaFzG2kYjo1gdr8WJ8BLIuTU8gwQztJtjee7DBOO191jEJZZUx1kPLlJC40slyWZx6KNP1bY1jOCj5tu4FmoD6Sti+cZcTamz2x2OuTK0KDDzJDF92u8/fgbZOfCx6i216LCxWKzRTSv6Bp5J8ZukIQEjJOlAR/g3i8ws5ck5eUCdr+Jmjbs1oFkfFtIQaPc2yzj+mgkG8EqMxbE8Vm2LwkJbqo4zI4Q+4YdWLvu+zp0JOt3QvUD8XCfYzWiafUj1HumNhInKwkFz4gtvbqlFTNzyvi31mOoVshskeouG/sDrOXZp80RW/NYJuHGig2bzm1OMklheDHGBz6CkBqG7tkZVTeizfqHLuti5G4g3/SWXQ40dr/N1UbKnolJAd7aNFRzhF/jMm47Al586XJbFWSBBKhIJSuVnrO6I83uszUOb8tXW1b5jkSwXjyHktc91NTvH8mlyHCjNSpoLnCvgHIedUwjYdQE1qUvET2sR9eamQUs+SoOKdRexCz5aoKfyqQZDOUzQrKTXGEJ5slGMMkJvTXh8wSv/Lji1y+TedXF6WE3/ivlqknI62j+fgXOr+rMAC9RJqKWn9MZSB5YjcQkUbXNkiF8lZofrYfcA4PQTYwEnjQzedGYPZhvQW/R232IjQ9ngT5LZ/Mgrp1iEOjygiSQthOlxeKYZxM3eo74CWBRKlZlcs8AjRXoUhlZR+fk97WFSusKS5Dbk/sW2U4c2SWhdgFh/8JLI3J3uY6K/2txN5OSHaXwkngvM+RK7NlNyrckuVE8MWEH7jkpa1o+XF4Vcs5i08/UVbX0yJpiZY8ImTdg6cy3yZkswHi5Ibfv7SnMUM96s3dfsZA7PaGgAhLkqQ8DkXQnyBJPkk05D9qM8OiLF/wsCdQg3dCx0y8x5n/XFHTa0IDG21mTxA
+X-HE-Tag: 1762822844-918690
+X-HE-Meta: U2FsdGVkX18vXd0nxuj/M9xcIi/I+OOMJk8P0W3lhyVAOUsG8rJ3wr9LWL9ByI8NbC+HyjHwTIwy22tSDHjx62C5iYlcmM6XACCyncxQycxr8JCPegvnzr85R7g7WFBtEzjAT8QzoZ2pzSmhCfb/OnGUGkIhRuJgqj/0i5PyEVRmlTBrz30LIYUg5VUcFpLJPDhAJVww3J1gB2wQpBloMGOxwWTRj2T0exRRKUuiRhMGKF/Xmnv9JRV/vi9TtgQNlkSGcUg0YDSEmI5z1Pw/PbWayntxGJGNPplLIbZGvRUt6IP5qCh5fqLnTaWmfXlEs6OXv6mgd60iV2RnG3VevrVGXGelknrNds2KXbstNkX/u3je2jG+k01KVNttymWi1jPlNCHfI6XLTRSlXW9qjyINN9N8CSq7z4WJbDhHxGdqYGa78Od+ra7wFTEaevnrzKrz/Dsu5r+8MJvc2lTMvJgzz80NrnSIrQ4JU46cM4+IAZZy2SYHvUyfX+qFArGR/OBC6EpkR0vLpmOC23Mi3eYCSEFYHZbvRWSF0BIKsBv1J0omKwmXJYMr4wjnEnBbN5wlJy6V6gHxAc22qepflZO3vkMSBOMff50Ntx6jMuRcJXDNOkZWotYvyP9vQN6yzDD3V+dTtXI85oXbPmu2H+sbiyoELVmn7v4xM8U2cH9TsuF4WVJgXp4Af4uiKruJbQleXoa1nBHVG74lwhjYL4QW1xNLc8OgVj8Gp+uW5Mr9czi8sKm6LR1NDAn1+sjb7Q79Q4qaysWBLSD6mV8/ZIMhNjLO88XI2XX7GF+ZAz9SWMcUFC4eymKQubQBlCBRS5hNWyZarLDo9xHzGCxJ9w/Sp9AzIk6gcatGlpByoJWin/KV9YcRwArIMTicmj0bNyB0W0cgnCtfaxt3+3FlBG8w3ugcgjDb2xtZTlFXoCcCNvvqYLJH/2gTrg9dm0PtGCUi2FoTUSMuLMOnzp2
+ kBFnyR56
+ 8U18zwX/aHRCVOXXaHzKDzT5E5eWL4/fpixTYnjhbhE4MV6DXES0IiIBcIdlhnyyxvmpfLimVnBoA7AfyGGtJjycmOLY3qsy9y++1nwiWDjiopAREI3abikzgz9MHg4BejcWvvI1t8nvypAzqIi7GI5joJ+12gIuUNJ1F/XE6y5jolp6K6jaiVxHKbC8tza2j1EY2c39w3KLlqYw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,93 +123,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+memblock_estimated_nr_free_pages() returns the difference between the total
+size of the "memory" memblock type and the "reserved" memblock type.
 
+The "soft-reserved" memory regions are added to the "reserved" memblock
+type, but not to the "memory" memblock type. Therefore,
+memblock_estimated_nr_free_pages() may return a smaller value than
+expected, or if it underflows, an extremely large value.
 
-On 2025/11/10 21:50, Michal Koutný wrote:
-> Hello Leon.
-> 
-> On Mon, Nov 10, 2025 at 06:19:48PM +0800, Leon Huang Fu <leon.huangfu@shopee.com> wrote:
->> Memory cgroup statistics are updated asynchronously with periodic
->> flushing to reduce overhead. The current implementation uses a flush
->> threshold calculated as MEMCG_CHARGE_BATCH * num_online_cpus() for
->> determining when to aggregate per-CPU memory cgroup statistics. On
->> systems with high core counts, this threshold can become very large
->> (e.g., 64 * 256 = 16,384 on a 256-core system), leading to stale
->> statistics when userspace reads memory.stat files.
->>
+/proc/sys/kernel/threads-max is determined by the value of
+memblock_estimated_nr_free_pages().  This issue was discovered on machines
+with CXL memory because kernel.threads-max was either smaller than expected
+or extremely large for the installed DRAM size.
 
-We have encountered this problem multiple times when running LTP tests. It can easily occur when
-using a 64K page size.
+This fixes the issue by replacing memblock_reserved_size() with
+memblock_reserved_kern_size() that tells how much memory was
+reserved from the actual RAM.
 
-error:
- 	memcg_stat_rss 10 TFAIL: rss is 0, 266240 expected
+Suggested-by: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+---
+v2: instead of subtracting only the overlapping size,
+    replace memblock_reserved_size() with memblock_reserved_kern_size()
 
->> This is particularly problematic for monitoring and management tools
->> that rely on reasonably fresh statistics, as they may observe data
->> that is thousands of updates out of date.
->>
->> Introduce a new write-only file, memory.stat_refresh, that allows
->> userspace to explicitly trigger an immediate flush of memory statistics.
-> 
-> I think it's worth thinking twice when introducing a new file like
-> this...
-> 
->> Writing any value to this file forces a synchronous flush via
->> __mem_cgroup_flush_stats(memcg, true) for the cgroup and all its
->> descendants, ensuring that subsequent reads of memory.stat and
->> memory.numa_stat reflect current data.
->>
->> This approach follows the pattern established by /proc/sys/vm/stat_refresh
->> and memory.peak, where the written value is ignored, keeping the
->> interface simple and consistent with existing kernel APIs.
->>
->> Usage example:
->>   echo 1 > /sys/fs/cgroup/mygroup/memory.stat_refresh
->>   cat /sys/fs/cgroup/mygroup/memory.stat
->>
->> The feature is available in both cgroup v1 and v2 for consistency.
-> 
-> First, I find the motivation by the testcase (not real world) weak when
-> considering such an API change (e.g. real world would be confined to
-> fewer CPUs or there'd be other "traffic" causing flushes making this a
-> non-issue, we don't know here).
-> 
-> Second, this is open to everyone (non-root) who mkdir's their cgroups.
-> Then why not make it the default memory.stat behavior? (Tongue-in-cheek,
-> but [*].)
-> 
-> With this change, we admit the implementation (async flushing) and leak
-> it to the users which is hard to take back. Why should we continue doing
-> any implicit in-kernel flushing afterwards?
-> 
-> Next, v1 and v2 haven't been consistent since introduction of v2 (unlike
-> some other controllers that share code or even cftypes between v1 and
-> v2). So I'd avoid introducing a new file to V1 API.
-> 
+ mm/memblock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-We encountered this problem in v1, I think this is a common problem should be fixed.
-
-> When looking for analogies, I admittedly like memory.reclaim's
-> O_NONBLOCK better (than /proc/sys/vm/stat_refresh). That would be an
-> argument for flushing by default mentioned abovee [*]).
-> 
-> Also, this undercuts the hooking of rstat flushing into BPF. I think the
-> attempts were given up too early (I read about the verifier vs
-> seq_file). Have you tried bypassing bailout from
-> __mem_cgroup_flush_stats via trace_memcg_flush_stats?
-> 
-> 
-> All in all, I'd like to have more backing data on insufficiency of (all
-> the) rstat optimizations before opening explicit flushes like this
-> (especially when it's meant to be exposed by BPF already).
-> 
-> Thanks,
-> Michal
-> 
-> 
-
+diff --git a/mm/memblock.c b/mm/memblock.c
+index c7869860e659..905d06b16348 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1826,7 +1826,8 @@ phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int n
+  */
+ unsigned long __init memblock_estimated_nr_free_pages(void)
+ {
+-	return PHYS_PFN(memblock_phys_mem_size() - memblock_reserved_size());
++	return PHYS_PFN(memblock_phys_mem_size() -
++			memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE));
+ }
+ 
+ /* lowest address */
 -- 
-Best regards,
-Ridong
+2.43.0
 
 
