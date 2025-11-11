@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C64BCD13CF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:44:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95463CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:44:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5570F8E0011; Tue, 11 Nov 2025 13:44:33 -0500 (EST)
+	id 7EE018E0018; Tue, 11 Nov 2025 13:44:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41D058E001B; Tue, 11 Nov 2025 13:44:33 -0500 (EST)
+	id 777EB8E0019; Tue, 11 Nov 2025 13:44:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D91F88E0011; Tue, 11 Nov 2025 13:44:32 -0500 (EST)
+	id 690CD8E0018; Tue, 11 Nov 2025 13:44:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 962918E0016
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:44:32 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 43949862EF
+	by kanga.kvack.org (Postfix) with ESMTP id 245AA8E0019
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:44:33 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DAE7B5641D
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:44:32 +0000 (UTC)
-X-FDA: 84099201984.13.8CDAF94
+X-FDA: 84099201984.06.2425B53
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A42B240009
+	by imf01.hostedemail.com (Postfix) with ESMTP id 208B64000A
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:44:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rj81mmns;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762886670; a=rsa-sha256;
-	cv=none;
-	b=1XzuyMaHcwm0b6eLgcbmT0J/ZEmGay31fJwiyYBL//brklHebWf7wtLosTNW5oexnmfSxy
-	mW7XlNrACpOuWv8Xv5Y9s5Lx9A7yPCdA7xNQ/z3R/PlXUfQhLNkC3EiqdteO4s5q1lcABT
-	5c3HnVQ0GZ6LCW/ouwiZT00C8pblEIc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rj81mmns;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ivB+mUEJ;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762886670;
+	s=arc-20220608; t=1762886671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B8KOwUqj586MtnKMIcrLakL6oDVeeP0SF56oad2SoxQ=;
-	b=D5jk+QYumgaBdmkdBehXsHRQVYyonke1r9cx06oGu3fcDf7j/OLdfv2BgT/0XKeIBkfRpZ
-	+K37hJLQuyoJKRBuKscwmJzpmUtC5U4IwTBttJyvKeKfEe3bnLAcVJtHulSzMcOTx0SKqH
-	Ph5EsWBySfpz2szARHj8xt2phgEZNvM=
+	bh=yQL5mwIv1JbloV+S9EmZALk/mWUSKjWp0QtOEDmPYrs=;
+	b=P/kupyA9jeTNMbukEzFr/SohK7IUP+floE1ctVj6DUYJ4tZvmuyC4TgEAEv7r3KzF9Fcbg
+	ErxK/pgkJ9ri5ZIU/tXW9OlcUeueq+njmiQQw3Q2faPTbFd9qH0m4mF1JvwSAQkY/tWU2/
+	dFY4cElWczxWlcS0nV5NUAfD1CibqCk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762886671; a=rsa-sha256;
+	cv=none;
+	b=02v/V+PON6O85THcrBj+xk6HqtEIZVVqDgVQOeMLKaVqoNeVxdu8G0frZZjwTtHJHlACKu
+	zNbHyxmiwXubB3323LO1iKiSHvDn7ljekngA465W1jj/PsRU6uTGaqng7FPfMp5IqBDyTO
+	9sXWnT44LHq5f9/Fz12+pdh3xKGkF+s=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ivB+mUEJ;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3591446E9;
-	Tue, 11 Nov 2025 18:44:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B436AC2BCB1;
-	Tue, 11 Nov 2025 18:44:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E265A446FF;
+	Tue, 11 Nov 2025 18:44:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D23FC116D0;
+	Tue, 11 Nov 2025 18:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762886668;
-	bh=5hPS/JRy01yuhaxPekjxyV4N7WLnupymMnfSho8r7YU=;
+	s=k20201202; t=1762886669;
+	bh=UHTTCWbBxKg4HVFBjTI+3bp4LAWv9VnyN7HpL47+onk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rj81mmnsTq9QoQJciglj+bJbWGeRJMX1Z8c3nXxw5O866+6jzgG4D0x1bG/s/cn6t
-	 Wm0mjoiaPhVNsS3s2lED/trYsAAYtzb3wqopG5VmmZ4K1TPEwrWC+sXxv7sfN7wQpm
-	 3jPPoH0C2v8/27DKJTnnFYbiQoq25aOahjNWIRfHE0y4s0dHjAYQdH+651u1ARpvR2
-	 V2QRm7lKBebdCZvRnz+600iCpaBS94DRjlRxAm86QubX5E9PQh95Yni4JVMDB+uYhq
-	 76qP//eUUWQVLd1sBWkr9wxUDZqVr81muia0rWg/4VRdvg7XwFY4wGDoAeL/00hp6n
-	 9CaqyCsyW7C9g==
+	b=ivB+mUEJg/v+GWvlW7Q7nRX8JRqQEfRVL0BwPVv9S1vkR6mhVZO/vgmOG9bWe6nQK
+	 tQKRPeqjBXg5Zbor+Vn+l3o/rVu1HkdRN6hgT9YM7sNvfcATE99rKvba+BmemfCHeO
+	 SHunCl44MO+uvxRsip0iaPF9XNuCLpuNdSyAEb6kGbHMSy0yGpwkVyd4bLaOq9lOBG
+	 R742RGGAY3sSUhywxeUgdHnpPjM/miRf1TtzPG6WzMHGOBpuYm+OvrN2/LO7KNpGYK
+	 xkSeqg13Uet2qerkEo8vZWhhTda5LWSSABDZrFHoEwT74wP1qn5YtRkRiiZIwxYgwT
+	 cqOpD5atP/lOg==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -73,22 +73,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 07/11] mm/damon/tests/core-kunit: add damos_commit_quota() test
-Date: Tue, 11 Nov 2025 10:44:06 -0800
-Message-ID: <20251111184415.141757-8-sj@kernel.org>
+Subject: [PATCH 10/11] mm/damon/tests/core-kunit: add damos_commit() test
+Date: Tue, 11 Nov 2025 10:44:09 -0800
+Message-ID: <20251111184415.141757-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251111184415.141757-1-sj@kernel.org>
 References: <20251111184415.141757-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A42B240009
-X-Stat-Signature: 7ejgqffziy6y38z1z61pe6q81ihhypg4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 208B64000A
+X-Stat-Signature: u3t3f4wymcimb8pfutmwabfbak11e1kd
 X-Rspam-User: 
-X-HE-Tag: 1762886670-804598
-X-HE-Meta: U2FsdGVkX19VDf/bYNKBdxuIzIGY1sv6piJjNh+jXnT5y/2HKDTSeQ960G0toJVNWhliN0KOP/NkvHRx6T/YuJ0lEiOY9MdzLZBRETBsio3KMTyifLiM5cneqJZAmqrUp7Itn+v2OBV8Q6XswFQksuf8U3+nb3BSFj1BCvr5HKa3o4wwcBkObUj8TSVZCTAp+FEO9IiOp+gMFdl4kmN3ydKO6/A71epVuB1RyKlr/iKmYwNP08kMdxr+Cu7DXKgo+ECJcjIIH5Ybc8kfPOkDNUUFAAso49V2leMcOLwQl9nIN8lU6GBC8b3EwPi352yTiArsS7RTN+YgnxyaFu7d8UavwDeRitxtDwBi8bTFeHw+SaTx9D+wG7jkf386cNhO9DZfLMZNJaBg+oX9ubR/uBozrELwiOZTDEC18Z/4c2tgkMaY4jT1odod4NrUVrK7siG0p3am6pBwBhGtneKF+HChVm/vgpcHO4Dpx0LR8xm7ucKRhbzyALrzlbcyO1Nl02xR/RwSFKlljoKJNrwR5LrwfKoZ1LwN0Cb4J6fDRG8NR6d3xcASOriScHlmT8wIMNwSzpj0a/97rMw+Xzl1mcD8QzeWgVF6qZMTfSqD21GG8iMDZIRr8tNxkXHdcrwZTyEWum3E1djQECpmweoPwJ/JCRQQfx1+lvTta/FlyAFunczOX0wBpqDWm+dP2r5MjdfTCV18BcwM2BU+yIAq3PLHw+CIEObD5Qictc9TU/74tFKmUq8J8xyN9AlHZXI/e0sgKw6nopZJkUDWBnnHVeQWW0lWRmn8bhCLtV50gFAU+mjA/2kCrFgcuAVRCa8N8S1N/iMxns7deptmt5aHxt/1jmSN7ZqC8Kw2tEHTcjpyTw0pN4Cb74KvZ5hS8Qj5N2u5uuZM33d1ulxj7X9D1MnhVHl5wN0KscazFLyHvalVaps1kF0ni1G0ScMyFcIq6x/mCDbzraOyIFI1KV2
- oc+Ho5F1
- DjRI4Xe3+v0nzjlu7SqxXBvvi+N3jBAIo1Y/fpLITj0rLKbzXcgEnhlCItUU49HpFUDF9ixSw2+7oW/XVhFfLs09e2GxG6i/tuvhxUIKHUlZbmunY8xUYBbMtwxXNITs40bu+L5ZCb1QrEubESebnzjrQvkENcWAdwA0aWxNwbHHU7sYo4Jfzm+TX7gD3I1MKzdHDMBqEJWjsP4EWOlSETAYNZovUc1fkqeTNetp9NtxFa3O2o43a15Mk/aQ+YZz92RrtCUYZSykfQLiUWU6Q1GrGGg==
+X-HE-Tag: 1762886670-237543
+X-HE-Meta: U2FsdGVkX1/WO/ygUYPayTSqO7vmLAGFGMSU5mxBpaBiYlPVew0S7MMDBL71ABevGmlUbb8eTQufCS5Q8PdpF90pT89DT2thcrvyyQL/dWLyhBkO47Zgsa36dhaN7P1TD3hBMIEMLpnK63ruxXPV0O2wE9df29VVo1JEBPohEhkC2yT2sqMy8mUBi7D8xWIvqSOitWNGZymYleRgG6b7OqKplCCluT/bAfXU8H6m5T7RiwwM9KlUsvDMIXYNgDZN9Lw8WSff8QMGVXoz7/aEKhHkJ2DsNXO+/yu0fp4ko+CIObFIiMwDHmwDscvW5D8lpXKiY3/Hapl/darKLGtFDp9YDVWJBw0AEjJGeCluK9rzbijYJvMLK9twZwpVnaf8uCU6BuEMSciAonLyTJNCLH19JkwVBFbDS55z7awdH/PHKgYLN8NUVdfibJ2ItEOvtd7gJQse/wRLN/rdHClpNL15dknSJSh43o/755SxUqQWc5HuCsSQQ6wAT7F1bSqU3EXYi4TL9pqTrcGGfuD8ZeZknn16QqV8AYAulOnhrXI0gUvo0s4jTmMouhyzSl+EyFqoqjWL9mzBeWf5nYOy/uiJ5+y4dZ9ERMV4+YI8KqlPvBRkmqlzwI+bOkRZtaFDI7As1iuJgRJgZ1pCg8lXzjdwflwLgEU/ngzujLaa7vIxcd330zAwqZHae4ydb6gAf82Js03zu+vncPZgEl+h8pL1DnciDxcBwKXrMvc3csbNPhqAC3Y0nDf/msh21CNoaAkKVqaoY1s+Dj4/34jQnnAJUQunbClG2IQWFh/7IG++t8DnKymDOrcvbwmCmjvmi9IhfNqJA7/+2mmCoJbyhYM1VsYVR9CbMqZB/+4FILNjvp+CVoPn5H5KgBfxKl8QWFtzSfgkgiCmHPX8GuprRDxWpg2IHIR/SA63uLPRUsvTy4tcLYyiGeXZf4UjR4yn4WB66HmM+FKDqkVuxXG
+ zFSRyMNJ
+ MKq3frf3T8mwUpAv/LK9P4MkYq4KnlDxd2jzZSsaapjhf+9B/O5J/tSjkb9ImAeUSSqvcjCQ+jIXrM1m8KXUhYaxKxEjLidr3sSRK36Hl0tFwqhUwr+krmBw4bntce9u6khWIL0inTNhUzLgi5L0auURcGnLGXZ3R56hdKLZ6VcHd3wmMg3IkNOEZkZU3wa+VtHEW1xtqNwiwCWT20+zPsSNotC6BDBESgSt1Y82CIMclfzygoJUBM0L+9chxP+21jVx9zqVTryo2kuOfO6mTRwyTCw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,64 +97,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new unit test for damos_commit_quota().
+Add a new unit test for damos_commit().
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ mm/damon/tests/core-kunit.h | 92 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
 diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 3abf31fb1074..546e1a09d801 100644
+index 10f2aefc71ff..c71c10f9e059 100644
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -660,6 +660,38 @@ static void damos_test_commit_quota_goals(struct kunit *test)
- 			(struct damos_quota_goal[]){}, 0);
+@@ -873,6 +873,97 @@ static void damos_test_commit_filter(struct kunit *test)
+ 			});
  }
  
-+static void damos_test_commit_quota(struct kunit *test)
++static void damos_test_help_initailize_scheme(struct damos *scheme)
 +{
-+	struct damos_quota dst = {
-+		.reset_interval = 1,
-+		.ms = 2,
-+		.sz = 3,
-+		.weight_sz = 4,
-+		.weight_nr_accesses = 5,
-+		.weight_age = 6,
-+	};
-+	struct damos_quota src = {
-+		.reset_interval = 7,
-+		.ms = 8,
-+		.sz = 9,
-+		.weight_sz = 10,
-+		.weight_nr_accesses = 11,
-+		.weight_age = 12,
-+	};
-+
-+	INIT_LIST_HEAD(&dst.goals);
-+	INIT_LIST_HEAD(&src.goals);
-+
-+	damos_commit_quota(&dst, &src);
-+
-+	KUNIT_EXPECT_EQ(test, dst.reset_interval, src.reset_interval);
-+	KUNIT_EXPECT_EQ(test, dst.ms, src.ms);
-+	KUNIT_EXPECT_EQ(test, dst.sz, src.sz);
-+	KUNIT_EXPECT_EQ(test, dst.weight_sz, src.weight_sz);
-+	KUNIT_EXPECT_EQ(test, dst.weight_nr_accesses, src.weight_nr_accesses);
-+	KUNIT_EXPECT_EQ(test, dst.weight_age, src.weight_age);
++	INIT_LIST_HEAD(&scheme->quota.goals);
++	INIT_LIST_HEAD(&scheme->filters);
++	INIT_LIST_HEAD(&scheme->ops_filters);
 +}
 +
- static void damos_test_commit_filter_for(struct kunit *test,
- 		struct damos_filter *dst, struct damos_filter *src)
++static void damos_test_commit_for(struct kunit *test, struct damos *dst,
++		struct damos *src)
++{
++	int err;
++
++	damos_test_help_initailize_scheme(dst);
++	damos_test_help_initailize_scheme(src);
++
++	err = damos_commit(dst, src);
++	if (err)
++		kunit_skip(test, "damos_commit fail");
++
++	KUNIT_EXPECT_EQ(test, dst->pattern.min_sz_region,
++			src->pattern.min_sz_region);
++	KUNIT_EXPECT_EQ(test, dst->pattern.max_sz_region,
++			src->pattern.max_sz_region);
++	KUNIT_EXPECT_EQ(test, dst->pattern.min_nr_accesses,
++			src->pattern.min_nr_accesses);
++	KUNIT_EXPECT_EQ(test, dst->pattern.max_nr_accesses,
++			src->pattern.max_nr_accesses);
++	KUNIT_EXPECT_EQ(test, dst->pattern.min_age_region,
++			src->pattern.min_age_region);
++	KUNIT_EXPECT_EQ(test, dst->pattern.max_age_region,
++			src->pattern.max_age_region);
++
++	KUNIT_EXPECT_EQ(test, dst->action, src->action);
++	KUNIT_EXPECT_EQ(test, dst->apply_interval_us, src->apply_interval_us);
++
++	KUNIT_EXPECT_EQ(test, dst->wmarks.metric, src->wmarks.metric);
++	KUNIT_EXPECT_EQ(test, dst->wmarks.interval, src->wmarks.interval);
++	KUNIT_EXPECT_EQ(test, dst->wmarks.high, src->wmarks.high);
++	KUNIT_EXPECT_EQ(test, dst->wmarks.mid, src->wmarks.mid);
++	KUNIT_EXPECT_EQ(test, dst->wmarks.low, src->wmarks.low);
++
++	switch (src->action) {
++	case DAMOS_MIGRATE_COLD:
++	case DAMOS_MIGRATE_HOT:
++		KUNIT_EXPECT_EQ(test, dst->target_nid, src->target_nid);
++		break;
++	default:
++		break;
++	}
++}
++
++static void damos_test_commit(struct kunit *test)
++{
++	damos_test_commit_for(test,
++			&(struct damos){
++				.pattern = (struct damos_access_pattern){
++					1, 2, 3, 4, 5, 6},
++				.action = DAMOS_PAGEOUT,
++				.apply_interval_us = 1000000,
++				.wmarks = (struct damos_watermarks){
++					DAMOS_WMARK_FREE_MEM_RATE,
++					900, 100, 50},
++			},
++			&(struct damos){
++				.pattern = (struct damos_access_pattern){
++					2, 3, 4, 5, 6, 7},
++				.action = DAMOS_PAGEOUT,
++				.apply_interval_us = 2000000,
++				.wmarks = (struct damos_watermarks){
++					DAMOS_WMARK_FREE_MEM_RATE,
++					800, 50, 30},
++			});
++	damos_test_commit_for(test,
++			&(struct damos){
++				.pattern = (struct damos_access_pattern){
++					1, 2, 3, 4, 5, 6},
++				.action = DAMOS_PAGEOUT,
++				.apply_interval_us = 1000000,
++				.wmarks = (struct damos_watermarks){
++					DAMOS_WMARK_FREE_MEM_RATE,
++					900, 100, 50},
++			},
++			&(struct damos){
++				.pattern = (struct damos_access_pattern){
++					2, 3, 4, 5, 6, 7},
++				.action = DAMOS_MIGRATE_HOT,
++				.apply_interval_us = 2000000,
++				.target_nid = 5,
++			});
++}
++
+ static void damos_test_filter_out(struct kunit *test)
  {
-@@ -947,6 +979,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damos_test_new_filter),
- 	KUNIT_CASE(damos_test_commit_quota_goal),
- 	KUNIT_CASE(damos_test_commit_quota_goals),
-+	KUNIT_CASE(damos_test_commit_quota),
+ 	struct damon_target *t;
+@@ -1078,6 +1169,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damos_test_commit_quota),
+ 	KUNIT_CASE(damos_test_commit_dests),
  	KUNIT_CASE(damos_test_commit_filter),
++	KUNIT_CASE(damos_test_commit),
  	KUNIT_CASE(damos_test_filter_out),
  	KUNIT_CASE(damon_test_feed_loop_next_input),
+ 	KUNIT_CASE(damon_test_set_filters_default_reject),
 -- 
 2.47.3
 
