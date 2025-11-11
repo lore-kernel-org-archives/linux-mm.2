@@ -4,125 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C4ACCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 13:06:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4669DCCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 13:13:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF94B8E0005; Tue, 11 Nov 2025 08:06:35 -0500 (EST)
+	id A0AB48E0005; Tue, 11 Nov 2025 08:13:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA9B88E0002; Tue, 11 Nov 2025 08:06:35 -0500 (EST)
+	id 9BAA58E0002; Tue, 11 Nov 2025 08:13:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABF668E0005; Tue, 11 Nov 2025 08:06:35 -0500 (EST)
+	id 8A97D8E0005; Tue, 11 Nov 2025 08:13:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C1EA8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:06:35 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FE3E13B347
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:06:35 +0000 (UTC)
-X-FDA: 84098350350.20.31E2A44
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9E551180009
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:06:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tg0OtVLz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762866393; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 73CBD8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:13:07 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C308596E7
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:13:07 +0000 (UTC)
+X-FDA: 84098366814.24.28493A2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2A0B0C000D
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:13:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EYC0cbJ9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762866785; a=rsa-sha256;
 	cv=none;
-	b=3YFSV7iMSX6ZaTO21bBEunz3+153V7q6mEIhok350jsh5+gKpVRjriGwxqjaT5KXA8+4PM
-	wdvBzvABM4vAR0KWSy8eW5TIkUHZM/mU7JT8fGs2B8v7VhsqD5lXoVzUr3DQeLtlzPIdlv
-	0biF+Zo3jW8j31u3bBH5BS7dOHduopE=
+	b=4oNmOHCOofKxQnRGXUp6RX68xfMCcmAmXBtvXMwYgiQuLYz77A2NojpHqdbUaUnsX7xuOf
+	g3c9ZsUSP8IiadEISnoFYOLR8cjFl0fGbsX3l9v0svP/VZx+9gDkLtvKQg6bqeRkodFB0X
+	av3mAQCkCGr4zCYPz3gVgfa5Zfi3kN4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tg0OtVLz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EYC0cbJ9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762866393;
+	s=arc-20220608; t=1762866785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QUuxZIIuJ+7a2uOXKUVW8bGDd4sgEnQiZHeUL+8j6cI=;
-	b=euZpEjPkjF667QKfEI+CpCUXXfXEQHORZ93Qf5swNJ0zcV9wwZNLr6CpFUHySNz/2J3pQz
-	rrY0WkSsNUhrG2Wlgxby7cT6tMthl2sN8LmtCche6dOfVrtG3VdvpATZ3c9Z+oMmUhxHrX
-	yHMoZFacHIYz8UPFnuY7Lx8hMRiJf5g=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B15426190F;
-	Tue, 11 Nov 2025 13:06:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E9AC16AAE;
-	Tue, 11 Nov 2025 13:06:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762866392;
-	bh=ahDE0Hde9+gZsnP0JCOLdJBo8hGroTd4JJCH/jgFj/0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tg0OtVLz3wAXRZo7tCvWTInHjKpVK4LV67NTO+lYAZ/bR93jyG2IyFgcvsue4SRjB
-	 0h8QMWesGpk3qXoW3f/y5g5hNGaIhpu5ZvQWDGwHfLvH2QohrLgDnSv/T7XK5D98wL
-	 z5paZ8OThivObxShM274wdwZcvtkA9PuAU6b+qI29fKv1akghKWsQ9OqLPjtgfb1tU
-	 4dhW8r72DwTtl22M6htocWaDV7hTEh5uNlGrHZ2wikbz5TAqNJgsCaWZxjg5IGzZHl
-	 e2ra3fX+DjamK0ohLsg2Y80OH6UCT/oI2TuutGRfJ5NWGrLux815QwhhypwuSp+iZj
-	 JUT65tT6i+w6g==
-Message-ID: <6c7c5f86-a9d5-4b7e-aa08-968077f66ace@kernel.org>
-Date: Tue, 11 Nov 2025 14:06:10 +0100
+	bh=ZQiYZa+UMJ28kPPzr7A5LUc/D3pE1z5z0fBFkzoygMc=;
+	b=Gmzt87QE/Ija7v6ynAaVR0zWs2IF8m3Yb19ydrk6WcyQPp5YnTuYTKNlg9Z8G70Op9OTXv
+	OgBpl2kEANAqpd+wq2/YqgWcNQV+W18idSbyaT12cFJ+KpPLHQH/nDQCPV+2yniLBsW2eE
+	/H7V5qDavKAjF2TxckVNnA7+KagLIkw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762866784;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZQiYZa+UMJ28kPPzr7A5LUc/D3pE1z5z0fBFkzoygMc=;
+	b=EYC0cbJ99ssLpn2uk75zQfV+zZG40T4gEqBu9rm5xJZvXfyWza7kuGf5pA9Ysg1Vef/Uyn
+	+SMpyMb0JTJilchDZuoamV9+jBXx6VKjT/2xgsZwvVydjZNXxGX+dpIMTr55Xi3FV2/UbT
+	axWRtb7Ozd99LMIo1MVjjJtZG+BMYSo=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-9-RmVw9LOWG7O6AoUjelsw-1; Tue,
+ 11 Nov 2025 08:12:59 -0500
+X-MC-Unique: 9-RmVw9LOWG7O6AoUjelsw-1
+X-Mimecast-MFC-AGG-ID: 9-RmVw9LOWG7O6AoUjelsw_1762866773
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 440D51956061;
+	Tue, 11 Nov 2025 13:12:50 +0000 (UTC)
+Received: from fedora (unknown [10.44.33.58])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 6E9631800872;
+	Tue, 11 Nov 2025 13:12:30 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 11 Nov 2025 14:12:49 +0100 (CET)
+Date: Tue, 11 Nov 2025 14:12:28 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Will Drewry <wad@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>,
+	James Morris <jamorris@linux.microsoft.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Adrian Reber <areber@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	tiozhang <tiozhang@didiglobal.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	YueHaibing <yuehaibing@huawei.com>,
+	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>,
+	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>,
+	Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>,
+	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	David Windsor <dwindsor@gmail.com>,
+	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Hans Liljestrand <ishkamiel@gmail.com>,
+	Penglei Jiang <superman.xpt@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
+Message-ID: <aRM2POTDTxEzeF2F@redhat.com>
+References: <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <20251105143210.GA25535@redhat.com>
+ <20251111-ankreiden-augen-eadcf9bbdfaa@brauner>
+ <GV2PPF74270EBEEDCF80CEE0F08891ED37BE4CFA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/16] mm: introduce leaf entry type and use to
- simplify leaf entry logic
-To: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Arnd Bergmann <arnd@arndb.de>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
- SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
-References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
- <c879383aac77d96a03e4d38f7daba893cd35fc76.1762812360.git.lorenzo.stoakes@oracle.com>
- <CBBF1711-5881-4B5A-ADE6-1D86C0E94296@nvidia.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <CBBF1711-5881-4B5A-ADE6-1D86C0E94296@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PPF74270EBEEDCF80CEE0F08891ED37BE4CFA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9E551180009
-X-Stat-Signature: dwcrnxjt4t1f1u54bd54jyb4qczjx649
-X-HE-Tag: 1762866393-36146
-X-HE-Meta: U2FsdGVkX19uaWiSqMG6s7qFXUKIB1x+YbAyFIWd4lWOXjPYdBYbNUxUy8k2n/Fdz/eMd4jx4u+X2iNq5XbLDumZs8pisHmivX/FEjvRX0e/3EXZ3SM+lXwBeANiqdSg7SmHZW2I/v6WSMFf1TlMdYZdh4AsG6YR3g6DoweuDXotcy9gq2DptuZ4XNlR+DVGUuNR39NU32r4QlRwe7oK3wDd2BajvnPuGYWK9k4UI2+p+O9kU1qabKfsQYyxTzPIonnIUbH0t1ufcUGJ7G/rCVjtMXlMNBontZuwNiAE8IaSmQw8s0GpE+/tQY4FkE7pKUr0ybUeR6BUUieAelqpFKqKMA5rOeMxKxrhmIixLET+iMuFGME5u5iuHlQs3N5k7djCnxhT1A47yzSOBVc5CMk/Bbh97yGMnaDu4OQ7ahpplwhcV2qowwLkNfhDmyr16TfG8MPtpD6+lN+NYbPPP2vZ073TJtKZ1Z03Tg9R8sxdaupuC46BgAhyIBM3Nk79umPs1v7yWrvX0UX1Pf8VbZRAWNHdETZ6ASDvt18mTftaUQrc57+CWalhL0qBAFdljDMbq3f5medCQknoJD545oCpRCgonNN1ysmZDgCY1rNf/7xs72fdUtVjge4kdpNchR+q5IJQIObHX9ARFQ327w9uYSvtCbDK0s39aztdyy+g6tCDBEmtuIDhi4M8iGe68xuVHRSX98dMMPy4yFd2/YU7L1Yuv7Ddq0y4l2fz3vroKocPdnaWZoWp6x9/qhw47PeQ2b+C2HfgABZhCNE3X2BHDg/8VvEnW/28GF17O1cOtMnpclcYaX+vW+KjALtPNtnk2AtXxnJN5zx6nqYLxs16GFPHHV8zLn7/yv8VPA0UCG1mhKJQW2TS/5Pnr9TiO2Yg5h/LZAobZPMEbeubzNIY5Jxc13M8k8mTUNCmpbsvqVoWTxjCFDaiR6mUyW5szVvMrgEZ/Tk/eTU42HM
- unLdM6ba
- Vwh7iXTkiPtLzByeoSQ8BKaSYB8asUCUeySpDANimTyhC91fYc0OGfAFYKIu6SFAeh2A/BPabDYMH40aEcayJhqBtMP6A75it1KsekosXy2z7+duSelqn7AXmiD/KXeNH4zvqTLv8orhnsLMspHvdPF1XvyJ0MjucXyvQceAj9h9kTEh477ni/1XuSAAFSZ+vwfJKaox0ZztIZwfVcJkhQJogWLw+W/0DtgJtit3lkcBmOPTcqh0Rj3CuOsSMCJmlRgb8damzM6md00uR8wHuQQy+5WWU6sR++R0VQYTuFhk/nLJzsS3slsPQuNrXkkDcLc9RO6AXoCtfPgg=
+X-Rspamd-Queue-Id: 2A0B0C000D
+X-Stat-Signature: sqc8hgthy6kuabijdkrm64k19eeoraqg
+X-HE-Tag: 1762866785-285088
+X-HE-Meta: U2FsdGVkX19K+YjjnbvqHXlud9H0HpErty57UMu0ZVNyosYKYpbsZ0URKLS6xOfeUgADPzaBWSpQaDSEjllRJTSHt8BQ1aKMUKc+WsyiqSCmQC7/KllBjdhr9HLRoLJxMY34VSTMii1DxAXGTG2ZQTUPa2ly/y2coWO+X+sqXz03so5tA9OaFOCt0Tlh2xdUXDPqbY+j9FhxuPh3eSHp5wFZk90oze7Ox8YBRdFP9Kwb21etIX24uPkKffj/YuN9Vl7Pi1RG7hXOz4p4EFD5LtATmQ5WPvKnFiplRlPb9EmxV0t0aUyEYXQPW4SIpph0jtO53TE/NAoidJEPIiweCrfgDqKIzcz53INc0AGozYQJoxc2KE7LvsKs781aCDJZ7oBP2qMt+4aUav2abJkL8fVmGQYtcF7thGTkNkQzhqejirnTAYlKzhSsilEDh1VJRh0MGjbHsUmlQVhZS+BjWfRpBZPQ0Hz/FF6hgagXUWYAX/DiDxAj9l4pvfU+whyysHfhtUhKyV2U+IMZbcNMBfqfCSVPzDln2/o6HmKb0D+kJGpOymoTtrDIX/XpvE5deFpVSv6TS3kQD0sddQo3DNAvmZgjRGD7j0g9zmTfb+X2efTu4pf3/awJ9R6nFsdExRoUW28fc0NWmzG5wt/P7XWO1tf1NcBY9uEn8KhdQOfiZhL8wQwU5hZgvvquELPocNTJesvXCkXxuQZoQmbL3imw3ztLfRWHng1/+xOO5j6vfwYQb/vt1Xi+9I2LyjwFG/Sx57Px7pOXtRsHsmVTL8X8rfxCbK7EqeTGiGAqOMP2gO1mpixdiGbud8QO3JPU+HlYcJQr1wHA96eLuG08iURMBSDNfBp/xHNjPsZgFimzQFFm7corElQMPfNPKFLLluBizTCKeOZz3nO7oGFMq0AuHNdbOzbfevmeIvzjGS5k0CoOIeHO3/6ysOpY1tdO+QZVOubXHunrfg6q0Dj
+ Mig5yTKt
+ WGFwIZZ2i+U4zK5TuIYkTFiftkr1zXY0H1/8HGstjYabeOJEFjg+9BJ8fLy999uOGJWUV5qhW/XzwyzMhqDty7k18iOVoS8mDger8OEYA4AF9Kv3bkIchYnONfyTrfc4TfyHgdOEIUQyNTpd1xIwxbpqOlZMuGNiyd+uLTk+MYw5DTWAbEaL/YPGNs42HZOGp9cjwD4Q4mnKN9PJX7prviImBYqofTknJWKguDRUafVlmciUA4I0AUs6BkVx+odAqkMac/8lW2LB6lEMLyEzwEDHsp/LMr1ZGv7vE42hBe9NoKzVzr4MJHrjCuRkA0+vlCgACJ4E2BnI7Zmo11TXeEnZtk7naXI9fTYrqOg8xbv6PW04BAvkU1y7ay6Ze1cUV//uuhI8l0wSWoieVra2nFrxz0vT+plEfSB7cLGOzhrxWnxosA1Gq8rgj0HZM1/bbJYhcNqr46d8l2pDVXPLcFGxcUVONfz0UOSoknd76NlowadT9lUgbLqMuhRvpGptyG47SG/pVyb9Y43RoqmeHv7DnxUyAN78RGg97aZZzKRGzwTwHigEJ0uxzSw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,42 +154,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11.11.25 04:25, Zi Yan wrote:
-> On 10 Nov 2025, at 17:21, Lorenzo Stoakes wrote:
-> 
->> The kernel maintains leaf page table entries which contain either:
->>
->> - Nothing ('none' entries)
->> - Present entries (that is stuff the hardware can navigate without fault)
-> 
-> This is not true for:
-> 
-> 1. pXX_protnone(), where _PAGE_PROTNONE flag also means pXX_present() is
-> true, but hardware would still trigger a fault.
-> 2. pmd_present() where _PAGE_PSE also means a present PMD (see the comment
-> in pmd_present()).
+On 11/11, Bernd Edlinger wrote:
+>
+> On 11/11/25 10:21, Christian Brauner wrote:
+> > On Wed, Nov 05, 2025 at 03:32:10PM +0100, Oleg Nesterov wrote:
+> >>
+> >> This is the most problematic change which I can't review...
+> >>
+> >> Firstly, it changes task->mm/real_cred for __ptrace_may_access() and this
+> >> looks dangerous to me.
+> >
+> > Yeah, that is not ok. This is effectively override_creds for real_cred
+> > and that is not a pattern I want to see us establish at all! Temporary
+> > credential overrides for the subjective credentials is already terrible
+> > but at least we have the explicit split between real_cred and cred
+> > expressely for that. So no, that's not an acceptable solution.
+> >
+>
+> Well when this is absolutely not acceptable then I would have to change
+> all security engines to be aware of the current and the new credentials.
 
-I'll note that pte_present/pmd_present etc is always about "soft-present".
+Hmm... even if we find another way to avoid the deadlock? Say, the patches
+I sent...
 
-For example, if the hardware does not have a hw-managed access bit, 
-doing a pte_mkyoung() would also clear the hw-valid/hw-present bit 
-because we have to catch any next access done by hardware.
+Oleg.
 
-[fun fact: some hardware has an invalid bit instead of a valid/present 
-bit :) IIRC s390x falls into that category]
-
-Similar things happen on ordinary PROT_NONE of course (independent of 
-pte_protnone).
-
-A better description might be "there is a page/pfn mapped here, but it 
-might not be accessible by the CPU right now".
-
-We have device-exclusive/device-private nonswap (before this series) 
-entries that fall into the same category, unfortunately ("there is 
-something mapped there that is not accessible by the CPU")
-
--- 
-Cheers
-
-David
 
