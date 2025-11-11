@@ -4,80 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A828DCCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:59:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60277CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:01:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A7DB8E0012; Tue, 11 Nov 2025 03:59:54 -0500 (EST)
+	id AE4208E0015; Tue, 11 Nov 2025 04:01:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0583F8E0002; Tue, 11 Nov 2025 03:59:54 -0500 (EST)
+	id ABBBC8E0002; Tue, 11 Nov 2025 04:01:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED71D8E0012; Tue, 11 Nov 2025 03:59:53 -0500 (EST)
+	id 9F8A88E0015; Tue, 11 Nov 2025 04:01:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBCBE8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:59:53 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 894511A04A3
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:59:53 +0000 (UTC)
-X-FDA: 84097728666.17.0022052
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9BCCE160004
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:59:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EF478E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:01:33 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A6BF13AFC9
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:01:33 +0000 (UTC)
+X-FDA: 84097732866.12.9E27939
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 77E5FC0003
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:01:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=LNsamXUY;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf28.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762851591;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762851691;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ylrv4gl7+C8Suhfr7XCvJiCKcDkTqrNjLEn+8wEGBVM=;
-	b=o/bVhIwPkJkziXsampMlAC2LLlnFgetwE9uGfZMC4OGSgmnxntykCF16wXBs6atQ28eTJl
-	NpR7gP92K8K+64hu2v+pyle7jhkY6LMS35ihUUK/wdyJsrCCuJ1HF//zbghN52syRWt9at
-	wyMUantewYFOVzwudlm+QqX+OX7cxdA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762851591; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VD4R3gUn11tbzuOSrLlHcr6CK6toCdQdVG0PoPu8WQM=;
+	b=edb6qMicDmYlDcItnT0zXn/gXr0xNPfa3G2hlpis+CQwzpk9IUtzKp0s1lq4hT4KgQlZYL
+	QqVdYozdGuJjLSdEKGY7nUaMiCO4OHcRPPGy6bYnTn+/ZYX5VZh720oJrj+x3g7B1jV1wB
+	5b6aNnQZB84CoEMXZpwlJGcF7LaWMBE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762851691; a=rsa-sha256;
 	cv=none;
-	b=vyyUNRTuOtiYvQAPU1g8WER8QHof86/+A0k4A+ZFDvpQjUzOAOsMNmkA3RnY6qMGKxdLwf
-	n6rfHF8Vrleu5E/cWoY84L6O8MdvpA9Ez+tdstsyvFRM4MzG5iJfr+Mf3ONX2VqNYWc8gw
-	mLGp/w/HggnchSutK8/O2VJI8M7dwG0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD4842F;
-	Tue, 11 Nov 2025 00:59:42 -0800 (PST)
-Received: from [10.163.74.35] (unknown [10.163.74.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 803293F66E;
-	Tue, 11 Nov 2025 00:59:48 -0800 (PST)
-Message-ID: <29319ba1-9093-4ec4-b84a-3c60d2b00264@arm.com>
-Date: Tue, 11 Nov 2025 14:29:44 +0530
+	b=Pv+Qw+E8/RHljEIT3MnimLJclf+jk4cpxgdVmlGqCrxwVVBKeK9n4HO02YQFwjIWUYC8W+
+	Gw+MGxHksl89oGTtJMgh0fOHTwHOaJ7c1r2xnGPOqcRhe+U8ykYZO+KIjfe58nskqRaALP
+	1fRiuNagCWd1BBmP0PxVVTRbSZfo4ms=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=LNsamXUY;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf28.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=VD4R3gUn11tbzuOSrLlHcr6CK6toCdQdVG0PoPu8WQM=; b=LNsamXUYKazGznu3+E9phCtvFS
+	xjf71FMGZm2JuJ+Cm32kOVxJtfzKEkBIb6d+BGR6fEOzTgfS5jd2YVeRQ+OE3ni4yswC4QAmDdjYR
+	eibV6DV0w0cYIHk8DTwzzamCwCJ10F9b99eAk5T5XXcpsxwHZXtsxcCuPYQD0MNkAhlMPWuqH+iB5
+	jfNCfcEMxoJ8XR9FBm1BU0CXGLNlnxeX1ZFDwILY9hz+pqCSBxzWR7Vie+mSQmpxsAQfgMJzQAUfW
+	2KDzj4EKBxh8RCptnzntp/hsjYZ/yeL05Zj7aoBPhNRhCEUIsc5L1dSUPXa5glgwv4vV9LjL3/pNM
+	ip9DcELg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vIiHi-0000000Bwwg-0icy;
+	Tue, 11 Nov 2025 06:55:22 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: [PATCH v3 05/50] introduce a flag for explicitly marking persistently pinned dentries
+Date: Tue, 11 Nov 2025 06:54:34 +0000
+Message-ID: <20251111065520.2847791-6-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
+References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 5/7] x86: Call preallocate_vmalloc_pages() later
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org
-Cc: Vishal Moola <vishal.moola@gmail.com>,
- Johannes Weiner <hannes@cmpxchg.org>
-References: <20251020001652.2116669-1-willy@infradead.org>
- <20251020001652.2116669-6-willy@infradead.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20251020001652.2116669-6-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9BCCE160004
-X-Stat-Signature: 9aagkrph35aqxbroyu15ere6kcxd3op8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zhzqkturd1icaiso8nkdusm3eo6tg5u4
 X-Rspam-User: 
-X-HE-Tag: 1762851591-176300
-X-HE-Meta: U2FsdGVkX19fdUwRjJ5nzArrCNJKwNgw7zp/6FbUHBj4qxtg5sYfh5cFp1uhM9GC+E44oNwVthurK7HvP8oQf9ewtGCsaMhJT6OFqyzytXIepidkSjAHDSxDbyCy23moALWRF53jkNMDzgfeJ4E4VxgWly3e+JsdUbAOqF2ZBGaH0iC7z2rAruHQdzi8V6hamSpx/V7p9/z580ngkZmS8BA1lxXot2FyzA44c+EX//lo8cJOy2c/2Pzq5lBGYUysAOQsjMiJNafo3kPy6x+iyC0NXacOzMA8iYa1/PpCub8pgl/y+gAuMVSnWz6BiBQCGIkgyitn0CqCoOqJnWW0YL6MO5o2tX8hOZuC8RRtGKnjFVIg8cRxVwSKMysNWz7VQozoTQyBm2e2z/xmQHWU3ZlfHP1KPNkrasUMtQy6Xed/zt9LcR+NTb8JOKs197F9YQDnsfdhS29diiY1wDU467hi0Pwuaa9w2X3JsYM/f8+GjIwfxWfZArayBBAiAsV/WVslmjFaLAErZew08wcZVhfgquI3d/32meLVKhCYvfzReYYxsDWAvVvzhZcII7jcnFWBvmlQgcz3BkPg2tpEdkUBKr0qV6OZ34h1nv2djOXTtoUySpXEs8y41dhUUEdzKeL43OMdxqs4E8SkO80qlG4NonFdp7O75yI9awfGXGSAWNlHzkFjH5RpZJJLUpRc3IgvrbGIE+BEFhJlyFjq9Ld6COxwbB8ghqS63XoSf/GO6C1+Slh+7DPqMuHGWfvk3PCOHM3pRcvos93t6o3IvFYziMGujDxNERJHNGZ5jnLGyzi/j3/bvh2pp1ghio6RFt3BZbPBLUm4XxX80rMf1S+IK86LpC5052FpTELlSniIAERR0FAYMTIqfKN4LDZHIUK0iURvfse67Qh5cB59AGixG5KcqOS4r/ip3UUhjMJprQnZsFK4MflRSNCRq7EOAXmrlQrXt2l6ELsHz00
- vHm0ng4Y
- BLRlgsPkrq0OwSPKTnGR1JV6YyovA9IRrI7PEA9W7Y4ikqkIvoJzFV5PepkqclLwkrYfQc6V8mrLt2zpaTV/SGhv3iZZhrC+DkVvBsFLuHh0LDyXq9+hK+kXmLkRSoqjDiGyY8STkpOB560UUgQz1XSlXKbODnzSBxqqSZ9ZwFdY+R7YFbl/LUM4RhvVA0w+7vCHC5goytn0DngfTT44RZfUGbqGMw8P2PynyJDrnzodVJzat5kjE9ifUxqG3nsRt8rbtvptR9NO8Jyw/pdp3OepEvko7FFJXLykT7Kvd75orK5ySRHfHoWY6Sei+DSzzAUXT1NuyBoAo19RLbIM3vjmTAmjOTsEkEuAH
+X-Rspamd-Queue-Id: 77E5FC0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762851691-62516
+X-HE-Meta: U2FsdGVkX19tH2rf0M1vfmOnoh+UOz00EOKB9GWDrtaPrIDXkAwHX+6+4DqEO9NxNdm6eoHIXVjS3kvqgxdFtjQNvPXYXRKOD8TXho8jtIS770O726MY2ts4hJhI1sGCvnMHb2n5zLk7/bbAZJTy4v+Z5Lxv1J/qjgSu3FX0SvDfY62NKXbpSvMBLlUGJVnP6hxILDA5jiRj2tOp5Pz0VP2fTM1kazIiTQJQ+mg5gGw7mM07ADFTagREJIcuJvcGt498bFqYzJAJ82xH9OQGLFFWOpMxWYTKrgnBsNQsFvR4tl31yBixT2bc8FbMBU4NXQUhxY6enb434Ir/PE0cwWLyk/svfBoncrP5M1fWLckRxdvlakj6ezQbSfXDDToTlnNW6eCHBoAZ6YRv4TosvjZbjipO/QVL4pwH4VUNhvdqWImycTLfL5M4B2UMs6g4FYCcox9xayiYVX+CZ75WhKgItGnoadCpe5RK0YDSCr6Y2V8tTknos1x1r0qB5iCi3tPEzMoqoCyYIZ7G7seWRI2sZCr1DtRrRCIAOgE7rzDlasY1dTX1z1FNYDjjfoWzizVZQZZCtj9iJJM9iXWeJTQS0spKg+vwKu/uP3cVwxqc//1NXR/Efnj4K7ckNdDnneya06rUFaA8oiOJAmuHzHv66xHDgIn/OjgZ4OAXYumHgjYhujuEfy9PRkTHOpj99c5OPot3xVzWVrXylM31ANuqRsJaIW5imZXPItQCcGUp6WbgeNjiM40d79xljo4GCGbXHyrqTz0oCP4l/aY3VuraLGsjfDVfVS8frRhfD2qooxXvbPn9uzm3rfGW0ZKbv7wj22m/JvAXU5prdzSx5SyKGOB2tb0C/GToSgqrrEXks3oweVTwdYB+BixYH82JqBrzIlz00wwgC+2saJMWUnuy7H/cZtKvvKbyv2XPpJxlJp/d5UAyPfq7za+Ea29Zhu+1aCP4vyPwrSJf/ko
+ IJTFDRlw
+ XhX0lgHrUxmqt3fPIc3FcAmF1VOA19fISLn69Mi1/2vnixQVLOOo/Q0Wuu23VGz+F9iDSbEK8pILib5PvFy6lgN2Thu6rCiZhyhLL2OPtNhYryhwhbBYBXk4r0M7wlnMCOQD4YYO5KEA4tfWgM8GJ+1QQD3NVrFnJtyFZXH1pv72ESHwml4+cZv2kXDR+Eu5bEpXYY898UPr34l/PKWiizdlauFEvBRVlqpgnBOEHv92jJc3w/MMHji0K6mLeX8xIc1rzI+1B46iOerAkUDiRPx04y7TOlGIWZQXAfXeEk1ZVy9fb869A+MQnU+CTTGK+zaE+NRiKdyiuflHX46EYgjOVOsyRNWoOqgnGgTo2VqkEQRPNh+V+Q2i/scG6tb/a0jXNFKatl/z9Keeysqmgum2HzbBRzdRniwS8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,121 +108,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20/10/25 5:46 AM, Matthew Wilcox (Oracle) wrote:
-> When separately allocating ptdesc from struct page, calling
-> preallocate_vmalloc_pages() from mem_init() is too early as the slab
-> allocator hasn't been set up yet.  Move preallocate_vmalloc_pages() to
-> vmalloc_init() which is called after the slab allocator has been set up.
-> 
-> Honestly, this patch is a bit bobbins and I'm sure it'll be reworked
-> before it goes upstream.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  arch/x86/mm/init_64.c |  4 +---
->  include/linux/mm.h    | 33 +++++++++++++++++++++++++++++++--
->  mm/vmalloc.c          |  2 ++
->  3 files changed, 34 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index 0e4270e20fad..5270fc24f6f6 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1322,7 +1322,7 @@ static void __init register_page_bootmem_info(void)
->   * Only the level which needs to be synchronized between all page-tables is
->   * allocated because the synchronization can be expensive.
->   */
-> -static void __init preallocate_vmalloc_pages(void)
-> +void __init preallocate_vmalloc_pages(void)
->  {
->  	unsigned long addr;
->  	const char *lvl;
-> @@ -1390,8 +1390,6 @@ void __init mem_init(void)
->  	/* Register memory areas for /proc/kcore */
->  	if (get_gate_vma(&init_mm))
->  		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
-> -
-> -	preallocate_vmalloc_pages();
->  }
->  
->  int kernel_set_to_readonly;
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index edcb7d75542f..e60b181da3df 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -1160,6 +1160,12 @@ static inline int is_vmalloc_or_module_addr(const void *x)
->  }
->  #endif
->  
-> +#ifdef CONFIG_X86
-> +void __init preallocate_vmalloc_pages(void);
-> +#else
-> +static inline void preallocate_vmalloc_pages(void) { }
-> +#endif
-> +
->  /*
->   * How many times the entire folio is mapped as a single unit (eg by a
->   * PMD or PUD entry).  This is probably not what you want, except for
-> @@ -2939,9 +2945,32 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
->  }
->  #endif /* CONFIG_MMU */
->  
-> +static inline struct page *ptdesc_page(const struct ptdesc *pt)
-> +{
-> +	return pt->pt_page;
-> +}
+Some filesystems use a kinda-sorta controlled dentry refcount leak to pin
+dentries of created objects in dcache (and undo it when removing those).
+Reference is grabbed and not released, but it's not actually _stored_
+anywhere.  That works, but it's hard to follow and verify; among other
+things, we have no way to tell _which_ of the increments is intended
+to be an unpaired one.  Worse, on removal we need to decide whether
+the reference had already been dropped, which can be non-trivial if
+that removal is on umount and we need to figure out if this dentry is
+pinned due to e.g. unlink() not done.  Usually that is handled by using
+kill_litter_super() as ->kill_sb(), but there are open-coded special
+cases of the same (consider e.g. /proc/self).
 
-pt_page has not been added as an element into ptdesc and hence
-the build fails upto this patch.
-> +
-> +static inline struct ptdesc *page_ptdesc(const struct page *page)
-> +{
-> +	memdesc_t memdesc = READ_ONCE(page->memdesc);
-> +
-> +	if (memdesc_type(memdesc) != MEMDESC_TYPE_PAGE_TABLE) {
-> +		printk(KERN_EMERG "memdesc %lx index %lx\n", memdesc.v, page->__folio_index);
-> +		VM_BUG_ON_PAGE(1, page);
-> +		return NULL;
-> +	}
-> +	return (void *)(memdesc.v - MEMDESC_TYPE_PAGE_TABLE);
-> +}
+Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
+marking those "leaked" dentries.  Having it set claims responsibility
+for +1 in refcount.
 
-Ditto - these elements have not been introduced.
-> +
-> +/**
-> + * enum pt_flags = How the ptdesc flags bits are used.
-> + * @PT_reserved: Used by PowerPC
-> + *
-> + * The pt flags are stored in a memdesc_flags_t.
-> + * The high bits are used for information like zone/node/section.
-> + */
->  enum pt_flags {
->  	PT_reserved = PG_reserved,
-> -	/* High bits are used for zone/node/section */
->  };
->  
->  static inline struct ptdesc *virt_to_ptdesc(const void *x)
-> @@ -2957,7 +2986,7 @@ static inline struct ptdesc *virt_to_ptdesc(const void *x)
->   */
->  static inline void *ptdesc_address(const struct ptdesc *pt)
->  {
-> -	return folio_address(ptdesc_folio(pt));
-> +	return page_address(pt->pt_page);
->  }
->  
->  static inline bool pagetable_is_reserved(struct ptdesc *pt)
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 798b2ed21e46..9b349051a83a 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -5264,6 +5264,8 @@ void __init vmalloc_init(void)
->  	struct vm_struct *tmp;
->  	int i;
->  
-> +	preallocate_vmalloc_pages();
-> +
->  	/*
->  	 * Create the cache for vmap_area objects.
->  	 */
+The end result this series is aiming for:
+
+* get these unbalanced dget() and dput() replaced with new primitives that
+  would, in addition to adjusting refcount, set and clear persistency flag.
+* instead of having kill_litter_super() mess with removing the remaining
+  "leaked" references (e.g. for all tmpfs files that hadn't been removed
+  prior to umount), have the regular shrink_dcache_for_umount() strip
+  DCACHE_PERSISTENT of all dentries, dropping the corresponding
+  reference if it had been set.  After that kill_litter_super() becomes
+  an equivalent of kill_anon_super().
+
+Doing that in a single step is not feasible - it would affect too many places
+in too many filesystems.  It has to be split into a series.
+
+Here we
+	* introduce the new flag
+	* teach shrink_dcache_for_umount() to handle it (i.e. remove
+and drop refcount on anything that survives to umount with that flag
+still set)
+	* teach kill_litter_super() that anything with that flag does
+*not* need to be unpinned.
+
+Next commits will add primitives for maintaing that flag and convert the
+common helpers to those.  After that - a long series of per-filesystem
+patches converting to those primitives.
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ fs/dcache.c            | 27 ++++++++++++++++++++++-----
+ include/linux/dcache.h |  1 +
+ 2 files changed, 23 insertions(+), 5 deletions(-)
+
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 035cccbc9276..f2c9f4fef2a2 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -1511,6 +1511,15 @@ static enum d_walk_ret select_collect(void *_data, struct dentry *dentry)
+ 	return ret;
+ }
+ 
++static enum d_walk_ret select_collect_umount(void *_data, struct dentry *dentry)
++{
++	if (dentry->d_flags & DCACHE_PERSISTENT) {
++		dentry->d_flags &= ~DCACHE_PERSISTENT;
++		dentry->d_lockref.count--;
++	}
++	return select_collect(_data, dentry);
++}
++
+ static enum d_walk_ret select_collect2(void *_data, struct dentry *dentry)
+ {
+ 	struct select_data *data = _data;
+@@ -1539,18 +1548,20 @@ static enum d_walk_ret select_collect2(void *_data, struct dentry *dentry)
+ }
+ 
+ /**
+- * shrink_dcache_parent - prune dcache
++ * shrink_dcache_tree - prune dcache
+  * @parent: parent of entries to prune
++ * @for_umount: true if we want to unpin the persistent ones
+  *
+  * Prune the dcache to remove unused children of the parent dentry.
+  */
+-void shrink_dcache_parent(struct dentry *parent)
++static void shrink_dcache_tree(struct dentry *parent, bool for_umount)
+ {
+ 	for (;;) {
+ 		struct select_data data = {.start = parent};
+ 
+ 		INIT_LIST_HEAD(&data.dispose);
+-		d_walk(parent, &data, select_collect);
++		d_walk(parent, &data,
++			for_umount ? select_collect_umount : select_collect);
+ 
+ 		if (!list_empty(&data.dispose)) {
+ 			shrink_dentry_list(&data.dispose);
+@@ -1575,6 +1586,11 @@ void shrink_dcache_parent(struct dentry *parent)
+ 			shrink_dentry_list(&data.dispose);
+ 	}
+ }
++
++void shrink_dcache_parent(struct dentry *parent)
++{
++	shrink_dcache_tree(parent, false);
++}
+ EXPORT_SYMBOL(shrink_dcache_parent);
+ 
+ static enum d_walk_ret umount_check(void *_data, struct dentry *dentry)
+@@ -1601,7 +1617,7 @@ static enum d_walk_ret umount_check(void *_data, struct dentry *dentry)
+ 
+ static void do_one_tree(struct dentry *dentry)
+ {
+-	shrink_dcache_parent(dentry);
++	shrink_dcache_tree(dentry, true);
+ 	d_walk(dentry, dentry, umount_check);
+ 	d_drop(dentry);
+ 	dput(dentry);
+@@ -3111,7 +3127,8 @@ static enum d_walk_ret d_genocide_kill(void *data, struct dentry *dentry)
+ {
+ 	struct dentry *root = data;
+ 	if (dentry != root) {
+-		if (d_unhashed(dentry) || !dentry->d_inode)
++		if (d_unhashed(dentry) || !dentry->d_inode ||
++		    dentry->d_flags & DCACHE_PERSISTENT)
+ 			return D_WALK_SKIP;
+ 
+ 		if (!(dentry->d_flags & DCACHE_GENOCIDE)) {
+diff --git a/include/linux/dcache.h b/include/linux/dcache.h
+index c83e02b94389..94b58655322a 100644
+--- a/include/linux/dcache.h
++++ b/include/linux/dcache.h
+@@ -225,6 +225,7 @@ enum dentry_flags {
+ 	DCACHE_PAR_LOOKUP		= BIT(24),	/* being looked up (with parent locked shared) */
+ 	DCACHE_DENTRY_CURSOR		= BIT(25),
+ 	DCACHE_NORCU			= BIT(26),	/* No RCU delay for freeing */
++	DCACHE_PERSISTENT		= BIT(27)
+ };
+ 
+ #define DCACHE_MANAGED_DENTRY \
+-- 
+2.47.3
 
 
