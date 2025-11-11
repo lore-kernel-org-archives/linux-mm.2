@@ -4,145 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC325CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 10:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50909CD13D2
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 10:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D17D8E0017; Tue, 11 Nov 2025 05:44:26 -0500 (EST)
+	id A65CE8E0005; Tue, 11 Nov 2025 05:56:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0823D8E0002; Tue, 11 Nov 2025 05:44:26 -0500 (EST)
+	id 9EF7D8E0002; Tue, 11 Nov 2025 05:56:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDA038E0017; Tue, 11 Nov 2025 05:44:25 -0500 (EST)
+	id 8DE268E0005; Tue, 11 Nov 2025 05:56:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D9C2A8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 05:44:25 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96A3E4C08C
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:44:25 +0000 (UTC)
-X-FDA: 84097992090.22.9969356
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 108F714000A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:44:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=i+8ZqsKp;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=japo@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762857863; a=rsa-sha256;
-	cv=none;
-	b=ZCq/EfbinfdBdxTXNdpCINol8UVPpCqfS4/qQfZT+dLyk1r+XxXulzPlE13tDMOWwQheVs
-	x26ytydTN2M0OIrQyMSQjZ+JLAbXX2rD1DgF+mGtJvFpCxf5e/6KlQf/xcAoV81u0Ttdla
-	9lazkUhKjH4vS8cscqbsJpSDiUwghho=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=i+8ZqsKp;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=japo@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 788ED8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 05:56:37 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E9691A00E9
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:56:37 +0000 (UTC)
+X-FDA: 84098022834.28.548A926
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 89E9640012
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:56:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKJFap5K;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762857863;
+	s=arc-20220608; t=1762858595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3zhkdC954/XIoW9lj3eK97QBTio9c6/Ra5E7JBlylD0=;
-	b=tzcTCtRqLqS6yOTraWhjMoNKxequLXrO0jPJo6jsWk2COVH7IprLrFvtkOM24SK4GX6oHs
-	d4+O6DpVV4AYJyarTCuVINREUak+Aws6ir3l5089oMBStZNrl/+inVxhVRW9U7GlZjS3gO
-	bZNps271AQXImKR5LcNo72xvrBVrCIM=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAMNRj4023632;
-	Tue, 11 Nov 2025 10:44:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3zhkdC
-	954/XIoW9lj3eK97QBTio9c6/Ra5E7JBlylD0=; b=i+8ZqsKpJTU9G2r3wtEEHL
-	nVc4aj19EgJvtBtVjgz6wPQ/+qdui4Imp9dEwiDbaH8n4w6z0a+qpuCd+y71kgrs
-	KRZK+a2NMCEcE02z5B2CtUZWzXnGNduu1hFdOiAMP3fFjXxY8jD/nKSWBeHASo8g
-	3MMTBu4T7mdFomUJpwOHAaUY37zekNmawB7ShjD9MFqzbNEG5ly5CowZfD1JMt9X
-	ypu3NaYJ7DN+KN05f4FjFCv5/cwGNmm1F+kXi9SA2K540gdZueJgrfnvhCOFZO4o
-	ZnuPHopPVsVEvrWWzjf9jLiIya4osAC04TRdLEs5At9seugZmSMnHWcl3c3EGYeg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wc74qxj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 10:44:11 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ABAWr3U002403;
-	Tue, 11 Nov 2025 10:44:11 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wc74qxg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 10:44:11 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB9pbYK008260;
-	Tue, 11 Nov 2025 10:44:09 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aah6mtbd2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 10:44:09 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ABAi7Zp42664248
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 10:44:08 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D9B7C2004D;
-	Tue, 11 Nov 2025 10:44:07 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A392520040;
-	Tue, 11 Nov 2025 10:44:07 +0000 (GMT)
-Received: from li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com (unknown [9.155.201.149])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 11 Nov 2025 10:44:07 +0000 (GMT)
-Date: Tue, 11 Nov 2025 11:44:06 +0100
-From: Jan Polensky <japo@linux.ibm.com>
-To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
-        catalin.marinas@arm.com
-Cc: akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, will@kernel.org
-Subject: Re: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging
- architectures
-Message-ID: <aRMTdt5tqJhjLgGd@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
-References: <20251031170133.280742-1-catalin.marinas@arm.com>
- <20251109003613.1461433-1-japo@linux.ibm.com>
- <690ce196-58cb-4252-ab72-967e1e1574cf@gmail.com>
- <aRG05VS-IIxV2y_C@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
- <fbca7868-6f68-4b98-a2f2-e39eb46b7f12@gmail.com>
+	bh=rjRq0YRtxMoRBmf76gnK3sXsLqWZGz3LL8//ivtwijk=;
+	b=E2rcF7vuUPIKtDrohnFO5T6hmEkN4ktvEp86VYf/gYPOawEz3KBFps18mbcaGIPK0XvuWM
+	nUFEQACa3xbNLVpuvVqb+lmiWiHPB7H8ZEMOYwBfJ+6kLpU3Sqrf1SdMZF96h61Q/rfTtN
+	QUDLyIekW66T/xTvNLJT8+EdEszcEFA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762858595; a=rsa-sha256;
+	cv=none;
+	b=shr8tuQjkUUN/GKZP5jVezyJrmQ/MYf9CVaZJXbC8k3It2sKb/34H9vu29/edCHL9KNKjI
+	Hf7RLoWAawVI3shl8t5Ji2j+JI90Th6qsj7mbyJGKcvhoTWHWI1MI8OYAxKNiT2Cqc0mC/
+	Y5Q44NIrW8l1m+9/rrDzwroQBwlOJNs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKJFap5K;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BF0FD61909;
+	Tue, 11 Nov 2025 10:56:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313A8C4CEF7;
+	Tue, 11 Nov 2025 10:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762858594;
+	bh=LLE8UQmsCCogkZVKSd1TLbVt9gs72Jh93jqozm60ebU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YKJFap5K6aImcv2glJeiNMSpxrwhX6LrxJE9jB2o/nF/WyKkn1WH6018FXJoi/UCP
+	 kwILmx0XpLJxYnaUhsyl42/On0deramtMNIHMDakZ3XBWX3DBuNSISALizcXkP5J1g
+	 As9tysDbaFlf4n4MhlGm4iCSknWQmP/uRA7y3UcgxHHrHNeSX1vdVQgCeGvYZzT/xd
+	 4kN6IgSEXZHZeuWLm2Bdu2rfQ3za3HSpRsHwoEVGtapRsGF7Y0ZMbazAjnKP+Hw6s1
+	 1ehJojThYLaGzj/AfbW9ZcFiZLxCIHI4qKUiP0ztlFxRlVs0DdQDmb3wCyvyfh4liI
+	 CUKpd3rfxq+1w==
+Date: Tue, 11 Nov 2025 11:56:27 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
+	jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, neil@brown.name, 
+	a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, selinux@vger.kernel.org, 
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+Message-ID: <20251111-tolerant-profan-0aff1cc76691@brauner>
+References: <20251028210805.GP2441659@ZenIV>
+ <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+ <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
+ <20251029193755.GU2441659@ZenIV>
+ <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+ <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
+ <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
+ <20251105-sohlen-fenster-e7c5af1204c4@brauner>
+ <20251105-vorbild-zutreffen-fe00d1dd98db@brauner>
+ <20251109204018.GH2441659@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fbca7868-6f68-4b98-a2f2-e39eb46b7f12@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAxOCBTYWx0ZWRfX/7v5MALMQkkz
- 5sjvinfISCBxNCIY43PoelSTNcEIUJW93X81M3VejNVqM3aTrNjD7iOyyWHqxsUtKeZ49AsDTWy
- hMvv/Q0Sskmg3YbV/M7CWmHtJ83wd1YNQqLStx1q+PBadGEZrPRJMSdYUTXtYUs/At8Iu/FrmaM
- izstGxJOPjKXqDR+T4bkrzBCsR1qNRCnGEG1amHpvb2YiKGHAz+rSE7ic14VkdN3q+PLjaOEDYq
- sYj8sOC9iIq/NGHgHdXWxv2Lkw8pPT04mrygd35AqvzsJWQiXmBSYAMnag0vFYyBI9yvVGbCEmV
- ETZyvOkbuMXcwMXhL4G+Q/b6zv1Ts75mRX3FwLUU00uVWqq2WsBJtamQecCawhnUxeoIrjqX/FM
- qbZf+Od6U5LQqA+MAHLnNgiH8HjC1Q==
-X-Authority-Analysis: v=2.4 cv=GcEaXAXL c=1 sm=1 tr=0 ts=6913137b cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=-mZ0xOhmsHb9JoomMBoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: ZSHFsu6k6PII3E4XpGUJvo1JK-0hDjpn
-X-Proofpoint-ORIG-GUID: 6nzRhirrpSwM50mDZO38SB8ub4IKHh9N
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-11_01,2025-11-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 spamscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080018
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 108F714000A
-X-Stat-Signature: 8i9xnudy1c3zauz4ud8yeeyeowbog6qm
+In-Reply-To: <20251109204018.GH2441659@ZenIV>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762857862-522144
-X-HE-Meta: U2FsdGVkX19+SE6vOr+jzVk5sjyLklWcBNpSosNAp+xqVKjN0Sje2PCK44DG9ZtWAx5Ss94cKyfAiGkbAXgTt0n6wUbjXtAAkTCo1IDVXSPXj4Eue61l1hBdgAfy9lBzCkzDX5StGS4JHC2zv3BqdSvLYEczQGcdLazkbxNSa7VgXJvysgTIdUHbdDr8XkEo94uxzlbn0IkVUGv9MHiMrJcgOB4tQFDFvYqmbkqZOrdcONjfsd3ypPLsxJqktmkWS/223TTCVL0EktK11Cy5S7fUcFM90Q+MaF6VQCepziStH7NeHQhLw7Saw2JyOhIii4Z76xqG4FU7xRcKreReO5mh6EOxp0lEEzjSdQQH+nCypiWLGp+z1Hc6xEv4Oo4ALaNTVwsUm9AZQooNS++baA27BK8hEkzJdixJy7BtB1Q0SV/kacjr7rHFmAwPr4WZ1i//qcON7IB4bwnAp9hig9iwYtjgC8Ck6a0UjQpxPqEYdfmG6qpXNZgEQA2nQLwjsp5BdFEcMjjbpKTEucr/J5rWYpBVrdNSJfC4T+QWfd2ykMK2Xwm1LxDjL5ZmERp4+z8uJNeWy2wpt5xaEbMUe+sKtydq2+pvvHPdWjiBpWX9iSY9ykPoWZ7nEsvsnjR/812uOP1UCOcLdTQXO+aSu6UIiXootkTmJjgshDUtSMseIghTsOr9nW5y1YOLnT+s9P5iTxPGgitKtrbXIaEny/LmXaEZ6pbaoBnhQ1zSDiNdzEQcc4HB7EgZalUnQgoDCkYGWe7nx+I7HAR+rEcWn6cB5b6koS6Y5ybUyxbHAUvBLnfIVRJaJIQrzn6YhezbhQ8XeZvGQREeBaf9OsXK7AHEIAmoCb5hUA77ID697WJr7Z8OxcuJuQMYnhiyaYE1TCF+3iROtowYKOAjt/bhKYjt9KpOq6KNcbBqmmAQwU08f1KyZw5o5r3ak1VT4vHDu98WcUE3hIJX2apsG3R
- n5Vriq/c
- H8lOEqEOvAguQl4wno/zAEsanmX99WWu9bLu8Eg2SeMUmkdDMoMo3AlqT/vcNi07f6w+PkGQdc2ewnii3bmVvbunuYx9JsNNbn1vf0e0MkT8bwgwlbWcL+oPrwPPypdAkojm0Lc/C8ZbjpCUMFnYKUHqSbbdWjjpklhNA7nUAqUuvYQPJdFKyMXi+KCSHDlTNcJb6weAm0TJILiMXhNChXtoNm1FxWF+WjUDJuxpS1D0iGxPHOOGbWZjeT2yanqt5DLG7At+ifEiGlCmQcl6Wsv3w4FMiSLZpRcVkPVqZr7rSSVk=
+X-Rspamd-Queue-Id: 89E9640012
+X-Stat-Signature: ibg8o9bzc59688ornzwkqds4o8oo4uw3
+X-HE-Tag: 1762858595-453744
+X-HE-Meta: U2FsdGVkX1+pNaaItU+5/+MjGjLegB8aGV5eCuoIHXSTQWO0rCg/dj9jOPvld5EZeiDTIxF/sFs89N6tbNYvo7Ko2q4kXZDt35jJGyXwtigf9TAAzM/Wdi1/VDGgQvat7lCtYQUIMM26a7IPQ3VNXqaxjrukq1WprL3vC+mlvAOnGvvT0Pneg/ZYOip8JcU0suAiBJN59aVGR7CXAlUkvMhJge/G95y8Tf1w1JAkyybsSlUwgwQ0sKIZ03OuT+4mWYVmStP7qTGWcJbLcGMFRf8cKDC3cQMAVjO5oaRCHYIjpj6U0w1yaRkcRGw1I9pNZWpuwskINOx7WEsdDPF++YM84GbglOrJCYRJYb4ac8UI0KNw4nknX4QFKuFwW7hvZaOWszW7dKSKm7WH7/ihjGo3aY1cDDdyDetZaKjkxfNSm8t+OB/pR8wRV8c/o9jw2cJvpzNTf+G5YX2+zfVl2Slj+gAGnWV/A2nYTrQFxnk466LK2vbsysl3eajio/o4rDla6Z3frzxTGfN0qElQYWzGRFq+0w94qmoD+mqDch0NFoQCYqlehtTSrDxz5nnTwDVxb9MsO4t6onKKoWsV5I8N7oZsFm4sCas3XqyRX7TN6lPyxWY46+CjgN1/yNWiSRvYqSWipGkkATbTQy6vYn/SGmrbpPZlHQhQ7c1oJUM64WRyMo0ISh2UvygDDASOoisN4C9Llshus1KrGrBlv4rM607/PPy6yUtB5AYe1Qsi5xDswILZBTIgty6SWS2DC2l9+CS+C69/W98lFmuZSf8MhzablBaC0iAgq1DlpmrzNU+cy9kBhN8T5mxO8r8G8aGk7qLu0eKUI96XW7fuG4rgqm/8RV7nzZPsbpor/8lRRlUOcE6WZ+axY4Vp8eI1Y6uyJdb5G92eJWABnhVESsBrtKkvuGMyN6oq2dTps4nMjwHOILqKwI8FN7e+diOjHwwZZ6+4wqHYmhoJksH
+ Q+qKTX1r
+ UgjtYV5wsdRUKDDLxWkr9JYNPJaJrfAFrhdf54eQfSaJ4y5r8gfeAT+WnwxJSJsIZtPJx553m75uF5U3EyAvHxuclIBNEXSW1QnBRWZ4Iaw3ne3ZloB9ek9MrhZpoF9z1kKG9x5NJ5MOkRd4w7g1viqimIVXMN9NaNvCb12amRJ0MrV2qGY6wR8KEjkRJEDP7NixsndErSjn7+ja5c1slgmbDOnMlid79uw4Kig8SVzNo2otKY8bMUbGKAY9X4yQQK1cUhhB46j1s6aJ9Oftb4K3KR1KGCYorbeohIwvWiESad/o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,88 +106,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 10:53:33AM +0100, David Hildenbrand (Red Hat) wrote:
-> On 10.11.25 10:48, Jan Polensky wrote:
-> > On Mon, Nov 10, 2025 at 10:09:31AM +0100, David Hildenbrand (Red Hat) wrote:
-> > > On 09.11.25 01:36, Jan Polensky wrote:
----8<--- snip ---8<---
-> > > I wonder if the following would work:
-> > >
-> > >
-> > > diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> > > index 65db9349f9053..56b82e116cb79 100644
-> > > --- a/include/linux/gfp_types.h
-> > > +++ b/include/linux/gfp_types.h
-> > > @@ -47,7 +47,9 @@ enum {
-> > >          ___GFP_HARDWALL_BIT,
-> > >          ___GFP_THISNODE_BIT,
-> > >          ___GFP_ACCOUNT_BIT,
-> > > +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
-> > >          ___GFP_ZEROTAGS_BIT,
-> > > +#endif
-> > >   #ifdef CONFIG_KASAN_HW_TAGS
-> > >          ___GFP_SKIP_ZERO_BIT,
-> > >          ___GFP_SKIP_KASAN_BIT,
-> > > @@ -85,7 +87,11 @@ enum {
-> > >   #define ___GFP_HARDWALL                BIT(___GFP_HARDWALL_BIT)
-> > >   #define ___GFP_THISNODE                BIT(___GFP_THISNODE_BIT)
-> > >   #define ___GFP_ACCOUNT         BIT(___GFP_ACCOUNT_BIT)
-> > > +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
-> > >   #define ___GFP_ZEROTAGS                BIT(___GFP_ZEROTAGS_BIT)
-> > > +#else
-> > > +#define ___GFP_ZEROTAGS                0
-> > > +#endif
-> > >   #ifdef CONFIG_KASAN_HW_TAGS
-> > >   #define ___GFP_SKIP_ZERO       BIT(___GFP_SKIP_ZERO_BIT)
-> > >   #define ___GFP_SKIP_KASAN      BIT(___GFP_SKIP_KASAN_BIT)
-> > >
-> > >
-> > > Likely we'd have to make __HAVE_ARCH_TAG_CLEAR_HIGHPAGE a proper
-> > > kconfig option.
-> > >
-> > >
-> > > Then we could turn the default implementation of
-> > > tag_clear_highpage() into a BUILD_BUG.
-> > >
-> > I'd like to suggest to keep the enum untouched and only use the second
-> > part of your suggestion.
->
-> Why? We also do that for CONFIG_KASAN_HW_TAGS, CONFIG_LOCKDEP and
-> CONFIG_SLAB_OBJ_EXT.
-If we remove the enum entry, we’d also need to update mmflags.h because
-the trace macros reference it.
-Enums are compile-time only, so they don’t affect the generated binary.
-My thought was to keep the enum list as it is and just apply the second
-part of your suggestion.
-That way, the trace definitions stay consistent without extra changes.
-Just an idea, happy to go with whatever you prefer.
->
-> > Which works by the way for our arch (s390).
-> >
-> >   include/linux/gfp_types.h | 4 ++++
-> >   1 file changed, 4 insertions(+)
-> >
-> > diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> > index 65db9349f905..c12d8a601bb3 100644
-> > --- a/include/linux/gfp_types.h
-> > +++ b/include/linux/gfp_types.h
-> > @@ -85,7 +85,11 @@ enum {
-> >   #define ___GFP_HARDWALL        BIT(___GFP_HARDWALL_BIT)
-> >   #define ___GFP_THISNODE        BIT(___GFP_THISNODE_BIT)
-> >   #define ___GFP_ACCOUNT     BIT(___GFP_ACCOUNT_BIT)
-> > +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
-> >   #define ___GFP_ZEROTAGS        BIT(___GFP_ZEROTAGS_BIT)
-> > +#else
-> > +#define ___GFP_ZEROTAGS        0
-> > +#endif
-> >   #ifdef CONFIG_KASAN_HW_TAGS
-> >   #define ___GFP_SKIP_ZERO   BIT(___GFP_SKIP_ZERO_BIT)
-> >   #define ___GFP_SKIP_KASAN  BIT(___GFP_SKIP_KASAN_BIT)
-> >
-> > This solution would be sufficient from my side, and I would appreciate a
-> > quick application if there are no objections.
->
-> As raised, to be sure that __HAVE_ARCH_TAG_CLEAR_HIGHPAGE is always seen
-> early in that file, it should likely become a CONFIG_ thing.
->
+On Sun, Nov 09, 2025 at 08:40:18PM +0000, Al Viro wrote:
+> On Wed, Nov 05, 2025 at 02:43:34PM +0100, Christian Brauner wrote:
+> 
+> > -static void filesystems_freeze_callback(struct super_block *sb, void *unused)
+> > +static void filesystems_freeze_callback(struct super_block *sb, void *bool_freeze_all)
+> >  {
+> > +	bool freeze_all = *(bool *)bool_freeze_all;
+> > +
+> >  	if (!sb->s_op->freeze_fs && !sb->s_op->freeze_super)
+> >  		return;
+> >  
+> > +	if (!freeze_all) {
+> 
+> Minor nitpick: do we even need a dereference here?  Just check
+> whether the argument is NULL and adjust the caller...
+
+Yup, sounds good.
 
