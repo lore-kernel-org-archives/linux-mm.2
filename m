@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA07CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE349CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D83808E0019; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
+	id 005758E0002; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D54D88E0011; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
+	id F02CA8E0025; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEA1A8E0019; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
+	id CB8478E0002; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97CEA8E0002
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A60D88E0011
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A3A8B9801
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 739994BE42
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:32 +0000 (UTC)
-X-FDA: 84097415304.30.4BC0EBD
+X-FDA: 84097415304.18.3CC8FE5
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9E20940009
+	by imf12.hostedemail.com (Postfix) with ESMTP id 98A2E40002
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=hM6msKPS;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=w3HzJj6d;
+	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762844130;
@@ -34,32 +34,32 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Swq0voO+aKDUTzOh35qGY7dyE9PZZpqvfSqrFdp+4zM=;
-	b=vcOUmWmFZOsTmWfU7mTCdh2eWqIOE07NWgP6Xi020dEYKVjZJdwKX+747BUd8Xu+pZyS4a
-	OJ5Uu+rbrDsTzcwcLrwclKla95OWDCYXO8mM1uHljkZGHl9TnulZAN9iKz8FZKtdqaz07W
-	FNLoHU9EVPW+ZS09QXlDBuk1xgiVEsY=
+	bh=0rQmwI4wUCW4CFIUjCTrKY3EBmJE6MZ3qh3WAaCxCww=;
+	b=gSpgieg+xMJ2Iuun8XGbvWBeNHgjTRI8WvvxY6auwse+TbbQibLq6Xq4ti6jD2SXW+1mOT
+	1kgwWUA6+kB1GDzLlf9DAbrzmtXPWP8T7/M5Wa3cW/mbaM2sWsU31rVhlQEBdBof/QUyCZ
+	0pmATmZVdGcrodkVC6BX3kEryAaEyH0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=hM6msKPS;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=w3HzJj6d;
+	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
 	cv=none;
-	b=xNAXndlayKDseCfk3Mlu3BNA9LKsIifA38yEWeYeDbIcnfQsg7dhc3MLnMwZArepF9iPZC
-	+2X8gfPQyUJ/DiEaGiEMdEv6hBjaCKXlPbwNwDcbZZH6OSapITn5TjEWq7wqCRo3sK88BN
-	DRzGO4vz7qbfYJAes1qPjUloTI8ObzU=
+	b=5uTJOWoKNpNAlNN6NPSZ/L40P8GP8HuxlC2x6xBou1LVgy5WPWDhgem0jg7ugJ0OLfe+Qr
+	jQ7X4loWOBGGf+tDpE3ZVKhSf+bfbhvJyeOYSbHGhZ1WSsbdAqr68Y31lQ2pTZfZwLFtv0
+	J04GFTKGFraKhwMBkgh2qTCCFpzNqk0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=Swq0voO+aKDUTzOh35qGY7dyE9PZZpqvfSqrFdp+4zM=; b=hM6msKPSIkdjC0WuzKYvaQi8y8
-	SMuoUsmVVskXl3viTWYdFMHDSs8cfuh8pOhMNc5KX4MsBtLI1gAxDkLn1mZ/iWpVkcIQJV0ThCVZ7
-	22fj9roVqJ4E9onmNfDu4LvkO58PJBbm9Hz02mcX43J/Lo/SwpbUieAaCU2FrVmktHXwyF5uszsU7
-	O3VsQ5TYfXnLP4aVqxvjJyrTyrP6WhsIjlAUGUHmQ2uT32yLmdkhwpy0mttsq3V733OXEC2Xl/nww
-	0zp3NYPnTyNY12tOtir+MEyRwQDaZSghmv619Rpla3YEUAQnn/G3sSXKhTygu/EatNxfEEtcgC6Wn
-	d0e4bw0Q==;
+	bh=0rQmwI4wUCW4CFIUjCTrKY3EBmJE6MZ3qh3WAaCxCww=; b=w3HzJj6dIjUGvVtuH9EW2+M/oX
+	l2sQlAQ9o3B9CyZUYYA4OXaizv62M7NjTVobql1V02v22x7GXnZ8QNDFLN1uc/kCnoLwYhr9nAxZC
+	wCkoEamKxQMJPivBMdxeCtsVnuJHyct5ys4qSehrBLtSNh/JI5Z5el/50nGhUV9xnRpjcrtgRtQTM
+	jnxdeI8xRzQEVH9WzI6PB7UsboUJRoseob9UIqEJNKhXhJZfU1ddIPB6CYm9QPiWF17Htr5r4XITD
+	53c068+7s255nbfMCbX+eSz2Ms0ldTle1KLXxVXEVLlcDMewriy1w9Qfr89wD1ERdYdXtMTPhCuMU
+	0HRk00bw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHi-0000000BwxV-2gUL;
+	id 1vIiHi-0000000Bwx0-19u5;
 	Tue, 11 Nov 2025 06:55:22 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 08/50] convert ramfs and tmpfs
-Date: Tue, 11 Nov 2025 06:54:37 +0000
-Message-ID: <20251111065520.2847791-9-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 06/50] primitives for maintaining persisitency
+Date: Tue, 11 Nov 2025 06:54:35 +0000
+Message-ID: <20251111065520.2847791-7-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9E20940009
-X-Stat-Signature: obkubdi6qpwhqkwx751iqfzxoh8scw8w
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 98A2E40002
+X-Stat-Signature: daymihhu8idi64y988k5fukpfgnrpz56
 X-Rspam-User: 
-X-HE-Tag: 1762844130-111064
-X-HE-Meta: U2FsdGVkX18CWW2M/Yk/BIDqK0A8A9TZxH/0BJ8J97N2j5Jwna6VPDPELQUCwFhMSeaSQp8xGwm26Fmfxp3XYeg9VwHOhQnrLhYIsbTeybgFmSVFdGa9hiCbHnzMHTBxNo8tjGeJJ/o45FX8qwISWr6+AB+W9rc+GmVxqi62+JPVXzm/wXcD8CANL+Oos7gCAhjG9Z+Qr0QY3eol6TEPT+MA2WN9K86xjuLbidhzKGUn7zkpd3sDOc4nRWyq7ndTmu7UHiPNTjIKQV9y3lGHyNy6aIIKdmdkQuO7hncWIvcdjDSDvP0Yk0ptCuiyUxY5cX5tarR9fw7qxRWSmsF32Ixo/Fia7fRG6msSWNVuZG1oTV3DV5Gu0yznrVKf2p+PRLnCS6o8+1vb57Af4oqqU7y+XfkA1S5FEFjjeYwg7pMGKndxZq/ROlCPEgFgfEopyIOThnYR1JJRcSxlYOjivbHxg/5Dl6k+2kUdhvgr3B7LWXqA6qcmg1JfWBxeLywZGOzK1nGwSILg9EPBeIfwEKYEzY7f/3VFP1KOVSiG8LTUjokZJwWWH0ZTtqd5Y62mfmKbVqEifmE+c/Fyk9DHQsKnYEPmKJNqQuzVKA8bRQ73fdiLOyMQ6yKQ2pMX8lnlRxfLaOWhKawmQZ6J7tpEuZP5tPtygTFWa/7xzHsEShXZ/dZOP7fBul2tlf/eyd/D0ihuuOl45FxUV70FXp06qCcGuybMxwS5bBnFEWUH6PRFHAMm/z3c8vNMqyaAV8N/Y1homxxDWOPX8Ltw854/Re3i7i7pCQE1qNY/iPoHb0Sw34GvLE9xItqV42opx9xHaqQXrAQ7rdqpAjPP5AB/3V6BVqTJ40zXQDbSzFJY9LGYhbqCzzetGdJWz6DYV0Lkp2YlFuF76Yb1KIiA9voUG+rlpoH7smfyCyTffu4Cw3x7XDyd/+rvgMZXEAWSdUXP4T7sPySHFuho7+5GLUv
- 1ze1rTwP
- XYp71Fap4F/DTagRp7wEW1Jl1waVEWtQswjwe28JNl0HsI2+NTaNShUF9KafPFeIz1VmEuDzSIWjKeos=
+X-HE-Tag: 1762844130-687393
+X-HE-Meta: U2FsdGVkX1/Z8DVx5FPSiG8cp8mFyspXQy/WZFO5OwgFBd/cvaZ6F9eOdLUFS6+gHfLp/NDIL5KeWYiK3LP75S2Mz9m5PoFwmPe612bIsB70EG7lFvHlFUe93FPEnS6Lv+AvOqFvNwZyYkpzO92xe03pifN6kmdCQF/tHnW5JPYb9ZvLqFLNfKl78h61Wm0O/HjbaVfVjeS41ow59XqZboZUjHLD7z18oM2g0++32GFpUyGZEht6X4hJ7ssWT052OyFQNcEbzMeiodUGhmBFguPWKhJXWwWRmKHKpcmsjcSjW/cReyDRY0ikHqeTaFwcDTqhkTbdHKO6uO1RGMOjsnJpPJHT92Tvmv4vtLOj29bST88y6MG/WtvYbr/gVCrPA6TzJTm+NC4TmavZCXYAUO0q92SGkq4HMuH5LeNVGlRS2ArjPRRsXyjLgYffUJGJ7al0V1sD70dIU3GqDhOFoGp+qm1CNtv9OPhKVoI1vpMKDOnQ/XfI2paHIURTAGcgzr9vPfchUJGZTbsDXMy96RuGz8Xx8K696zHYGvwF2EKubwqsVtNn/Ebskejy6WnT5+npc7aK4jgUfR/efAqsHRxy2ehxR0DzMhorLyFf9x0jQJFzP2wmym3kdt7nNq01GV8OWfD3a1GFpFXWz8T4pqRbigCxzdzpxG2t65vWT3ryifyF+JnTjyDDfC/Ql5M+NWGc9CtXt+eIU0esSowPgXqe/iC2NKX2D1aVdch/VFQMx07TbzFi/LM0FMUMw//vL9AOHZiGmjnV8gkmQqkd2nZt/ds5CTET0Nfrn4mzEv8CcvTkWBrPH6tT8x4NcN3fH+xZ/PC42rI43hWF+nWI8Zm1IPXHx3g4psFPPT5VGJdOrqRwINDFmCjTR9AWmg07EZxlXK2jfAJWF+5yzngWtmRep2psj5Vds/hlA7IGjuzarwRtDgaSAeIyuH0FFhQScKzgf6rYaZ7FtJpSnPC
+ VBjhYTNL
+ q9442KW0UloNNuoS6drlq+iMqOwK2vG8bx0vNQ/Ujxmp3iE2KmLX40viCiDJdNLEuFW2zC/EuXKBv7bWHLBEHnHXrjMi5FLV4UVnpFQ9/d7YHE/urVYsFWQ54/e4QW0MtoslVjVJR/C6aovsvDDhIIkw5re3LtzZb/PEpu7sjiE2i+XKacpZh1zO4DrNBcPy7QQxe2rQ84zjWbxTrTytZFptqKgJvpHa3uDjq4KrVrjwP8OSCHVfxsMt96X/Wieu6UI+WBed0m1Hg+qPwJtjHNc3trWqLnA+4HhIvEG1c5Ag8kwfI+9swGOjGxt1QvVk+eM6pKwkCCIOQPlTb/flf8Md+4SBxdUJOOaWmW/YVmD/pR6CFFdtF6LFZ8kspwOwYW+oh1aOWv7bgtmvFYjmEan8YqNI7BO72o99SBhoV+vkfY74g7PB/8v9M+ovgB2eeTeR4WaI9NrW6IvQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,192 +108,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Quite a bit is already done by infrastructure changes (simple_link(),
-simple_unlink()) - all that is left is replacing d_instantiate() +
-pinning dget() (in ->symlink() and ->mknod()) with d_make_persistent(),
-and, in case of shmem, using simple_unlink() and simple_link() in
-->unlink() and ->link() resp., instead of open-coding those there.
-Since d_make_persistent() accepts (and hashes) unhashed ones, shmem
-situation gets simpler - we no longer care whether ->lookup() has hashed
-the sucker.
+* d_make_persistent(dentry, inode) - bump refcount, mark persistent and
+make hashed positive.  Return value is a borrowed reference to dentry;
+it can be used until something removes persistency (at the very least,
+until the parent gets unlocked, but some filesystems may have stronger
+exclusion).
 
-With that done, we don't need kill_litter_super() for these filesystems
-anymore - by the umount time all remaining dentries will be marked
-persistent and kill_litter_super() will boil down to call of
-kill_anon_super().
+* d_make_discardable() - remove persistency mark and drop reference.
 
-The same goes for devtmpfs and rootfs - they are handled by
-ramfs or by shmem, depending upon config.
+d_make_persistent() is similar to combination of d_instantiate(), dget()
+and setting flag.  The only difference is that unlike d_instantiate()
+it accepts hashed and unhashed negatives alike.  It is always called in
+strong locking environment (parent held exclusive, or, in some cases,
+dentry coming from d_alloc_name()); if we ever start using it with parent
+held only shared and dentry coming from d_alloc_parallel(), we'll need
+to copy the in-lookup logics from __d_add().
 
-NB: strictly speaking, both devtmpfs and rootfs ought to use
-ramfs_kill_sb() if they end up using ramfs; that's a separate
-story and the only impact of "just use kill_{litter,anon}_super()"
-is that we fail to free their sb->s_fs_info... on reboot.
-That's orthogonal to the changes in this series - kill_litter_super()
-is identical to kill_anon_super() for those at this point.
+d_make_discardable() is eqiuvalent to combination of removing flag and
+dput(); since flag removal requires ->d_lock, there's no point trying
+to avoid taking that for refcount decrement as fast_dput() does.
+The slow path of dput() has been taken into a helper and reused in
+d_make_discardable() instead.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- drivers/base/devtmpfs.c |  2 +-
- fs/ramfs/inode.c        |  8 +++-----
- init/do_mounts.c        |  2 +-
- mm/shmem.c              | 38 ++++++++------------------------------
- 4 files changed, 13 insertions(+), 37 deletions(-)
+ fs/dcache.c            | 74 +++++++++++++++++++++++++++++++++---------
+ include/linux/dcache.h |  2 ++
+ 2 files changed, 61 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/base/devtmpfs.c b/drivers/base/devtmpfs.c
-index 9d4e46ad8352..a63b0ff0c432 100644
---- a/drivers/base/devtmpfs.c
-+++ b/drivers/base/devtmpfs.c
-@@ -70,7 +70,7 @@ static struct file_system_type internal_fs_type = {
- #else
- 	.init_fs_context = ramfs_init_fs_context,
- #endif
--	.kill_sb = kill_litter_super,
-+	.kill_sb = kill_anon_super,
- };
- 
- /* Simply take a ref on the existing mount */
-diff --git a/fs/ramfs/inode.c b/fs/ramfs/inode.c
-index 41f9995da7ca..505d10a0cb36 100644
---- a/fs/ramfs/inode.c
-+++ b/fs/ramfs/inode.c
-@@ -110,8 +110,7 @@ ramfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 			goto out;
- 		}
- 
--		d_instantiate(dentry, inode);
--		dget(dentry);	/* Extra count - pin the dentry in core */
-+		d_make_persistent(dentry, inode);
- 		error = 0;
- 		inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- 	}
-@@ -154,8 +153,7 @@ static int ramfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 
- 		error = page_symlink(inode, symname, l);
- 		if (!error) {
--			d_instantiate(dentry, inode);
--			dget(dentry);
-+			d_make_persistent(dentry, inode);
- 			inode_set_mtime_to_ts(dir,
- 					      inode_set_ctime_current(dir));
- 		} else
-@@ -313,7 +311,7 @@ int ramfs_init_fs_context(struct fs_context *fc)
- void ramfs_kill_sb(struct super_block *sb)
- {
- 	kfree(sb->s_fs_info);
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
+diff --git a/fs/dcache.c b/fs/dcache.c
+index f2c9f4fef2a2..3cc6c3876177 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -869,6 +869,24 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	return false;
  }
  
- static struct file_system_type ramfs_fs_type = {
-diff --git a/init/do_mounts.c b/init/do_mounts.c
-index 6af29da8889e..810878fb55b6 100644
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -507,7 +507,7 @@ static int rootfs_init_fs_context(struct fs_context *fc)
- struct file_system_type rootfs_fs_type = {
- 	.name		= "rootfs",
- 	.init_fs_context = rootfs_init_fs_context,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
- };
++static void finish_dput(struct dentry *dentry)
++	__releases(dentry->d_lock)
++	__releases(RCU)
++{
++	while (lock_for_kill(dentry)) {
++		rcu_read_unlock();
++		dentry = __dentry_kill(dentry);
++		if (!dentry)
++			return;
++		if (retain_dentry(dentry, true)) {
++			spin_unlock(&dentry->d_lock);
++			return;
++		}
++		rcu_read_lock();
++	}
++	rcu_read_unlock();
++	spin_unlock(&dentry->d_lock);
++}
  
- void __init init_rootfs(void)
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b9081b817d28..a38f71519813 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3858,12 +3858,7 @@ shmem_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- 	inode_inc_iversion(dir);
+ /* 
+  * This is dput
+@@ -906,22 +924,28 @@ void dput(struct dentry *dentry)
+ 		rcu_read_unlock();
+ 		return;
+ 	}
+-	while (lock_for_kill(dentry)) {
+-		rcu_read_unlock();
+-		dentry = __dentry_kill(dentry);
+-		if (!dentry)
+-			return;
+-		if (retain_dentry(dentry, true)) {
+-			spin_unlock(&dentry->d_lock);
+-			return;
+-		}
+-		rcu_read_lock();
+-	}
+-	rcu_read_unlock();
+-	spin_unlock(&dentry->d_lock);
++	finish_dput(dentry);
+ }
+ EXPORT_SYMBOL(dput);
  
--	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
--		d_add(dentry, inode);
--	else
--		d_instantiate(dentry, inode);
--
--	dget(dentry); /* Extra count - pin the dentry in core */
-+	d_make_persistent(dentry, inode);
- 	return error;
- 
- out_iput:
-@@ -3924,7 +3919,7 @@ static int shmem_link(struct dentry *old_dentry, struct inode *dir,
- 		      struct dentry *dentry)
++void d_make_discardable(struct dentry *dentry)
++{
++	spin_lock(&dentry->d_lock);
++	/*
++	 * By the end of the series we'll add
++	 * WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT);
++	 * here, but while object removal is done by a few common helpers,
++	 * object creation tends to be open-coded (if nothing else, new inode
++	 * needs to be set up), so adding a warning from the very beginning
++	 * would make for much messier patch series.
++	 */
++	dentry->d_flags &= ~DCACHE_PERSISTENT;
++	dentry->d_lockref.count--;
++	rcu_read_lock();
++	finish_dput(dentry);
++}
++EXPORT_SYMBOL(d_make_discardable);
++
+ static void to_shrink_list(struct dentry *dentry, struct list_head *list)
+ __must_hold(&dentry->d_lock)
  {
- 	struct inode *inode = d_inode(old_dentry);
--	int ret = 0;
-+	int ret;
+@@ -1939,7 +1963,6 @@ static void __d_instantiate(struct dentry *dentry, struct inode *inode)
+ 	unsigned add_flags = d_flags_for_inode(inode);
+ 	WARN_ON(d_in_lookup(dentry));
  
+-	spin_lock(&dentry->d_lock);
  	/*
- 	 * No ordinary (disk based) filesystem counts links as inodes;
-@@ -3936,29 +3931,19 @@ static int shmem_link(struct dentry *old_dentry, struct inode *dir,
- 	if (inode->i_nlink) {
- 		ret = shmem_reserve_inode(inode->i_sb, NULL);
- 		if (ret)
--			goto out;
-+			return ret;
- 	}
- 
- 	ret = simple_offset_add(shmem_get_offset_ctx(dir), dentry);
- 	if (ret) {
- 		if (inode->i_nlink)
- 			shmem_free_inode(inode->i_sb, 0);
--		goto out;
-+		return ret;
- 	}
- 
- 	dir->i_size += BOGO_DIRENT_SIZE;
--	inode_set_mtime_to_ts(dir,
--			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
- 	inode_inc_iversion(dir);
--	inc_nlink(inode);
--	ihold(inode);	/* New dentry reference */
--	dget(dentry);	/* Extra pinning count for the created dentry */
--	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
--		d_add(dentry, inode);
--	else
--		d_instantiate(dentry, inode);
--out:
--	return ret;
-+	return simple_link(old_dentry, dir, dentry);
+ 	 * The negative counter only tracks dentries on the LRU. Don't dec if
+ 	 * d_lru is on another list.
+@@ -1952,7 +1975,6 @@ static void __d_instantiate(struct dentry *dentry, struct inode *inode)
+ 	__d_set_inode_and_type(dentry, inode, add_flags);
+ 	raw_write_seqcount_end(&dentry->d_seq);
+ 	fsnotify_update_flags(dentry);
+-	spin_unlock(&dentry->d_lock);
  }
  
- static int shmem_unlink(struct inode *dir, struct dentry *dentry)
-@@ -3971,11 +3956,8 @@ static int shmem_unlink(struct inode *dir, struct dentry *dentry)
- 	simple_offset_remove(shmem_get_offset_ctx(dir), dentry);
- 
- 	dir->i_size -= BOGO_DIRENT_SIZE;
--	inode_set_mtime_to_ts(dir,
--			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
- 	inode_inc_iversion(dir);
--	drop_nlink(inode);
--	dput(dentry);	/* Undo the count from "create" - does all the work */
-+	simple_unlink(dir, dentry);
- 
+ /**
+@@ -1976,7 +1998,9 @@ void d_instantiate(struct dentry *entry, struct inode * inode)
+ 	if (inode) {
+ 		security_d_instantiate(entry, inode);
+ 		spin_lock(&inode->i_lock);
++		spin_lock(&entry->d_lock);
+ 		__d_instantiate(entry, inode);
++		spin_unlock(&entry->d_lock);
+ 		spin_unlock(&inode->i_lock);
+ 	}
+ }
+@@ -1995,7 +2019,9 @@ void d_instantiate_new(struct dentry *entry, struct inode *inode)
+ 	lockdep_annotate_inode_mutex_key(inode);
+ 	security_d_instantiate(entry, inode);
+ 	spin_lock(&inode->i_lock);
++	spin_lock(&entry->d_lock);
+ 	__d_instantiate(entry, inode);
++	spin_unlock(&entry->d_lock);
+ 	WARN_ON(!(inode->i_state & I_NEW));
+ 	inode->i_state &= ~I_NEW & ~I_CREATING;
  	/*
- 	 * For now, VFS can't deal with case-insensitive negative dentries, so
-@@ -4130,11 +4112,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	dir->i_size += BOGO_DIRENT_SIZE;
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- 	inode_inc_iversion(dir);
--	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
--		d_add(dentry, inode);
--	else
--		d_instantiate(dentry, inode);
--	dget(dentry);
-+	d_make_persistent(dentry, inode);
- 	return 0;
+@@ -2754,6 +2780,24 @@ void d_add(struct dentry *entry, struct inode *inode)
+ }
+ EXPORT_SYMBOL(d_add);
  
- out_remove_offset:
-@@ -5334,7 +5312,7 @@ static struct file_system_type shmem_fs_type = {
- #ifdef CONFIG_TMPFS
- 	.parameters	= shmem_fs_parameters,
- #endif
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
- 	.fs_flags	= FS_USERNS_MOUNT | FS_ALLOW_IDMAP | FS_MGTIME,
- };
++struct dentry *d_make_persistent(struct dentry *dentry, struct inode *inode)
++{
++	WARN_ON(!hlist_unhashed(&dentry->d_u.d_alias));
++	WARN_ON(!inode);
++	security_d_instantiate(dentry, inode);
++	spin_lock(&inode->i_lock);
++	spin_lock(&dentry->d_lock);
++	__d_instantiate(dentry, inode);
++	dentry->d_flags |= DCACHE_PERSISTENT;
++	dget_dlock(dentry);
++	if (d_unhashed(dentry))
++		__d_rehash(dentry);
++	spin_unlock(&dentry->d_lock);
++	spin_unlock(&inode->i_lock);
++	return dentry;
++}
++EXPORT_SYMBOL(d_make_persistent);
++
+ static void swap_names(struct dentry *dentry, struct dentry *target)
+ {
+ 	if (unlikely(dname_external(target))) {
+diff --git a/include/linux/dcache.h b/include/linux/dcache.h
+index 94b58655322a..6ec4066825e3 100644
+--- a/include/linux/dcache.h
++++ b/include/linux/dcache.h
+@@ -611,5 +611,7 @@ static inline struct dentry *d_next_sibling(const struct dentry *dentry)
+ }
  
+ void set_default_d_op(struct super_block *, const struct dentry_operations *);
++struct dentry *d_make_persistent(struct dentry *, struct inode *);
++void d_make_discardable(struct dentry *dentry);
+ 
+ #endif	/* __LINUX_DCACHE_H */
 -- 
 2.47.3
 
