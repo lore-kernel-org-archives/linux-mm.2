@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B65FBCCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 07:53:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1459DCCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 07:53:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2DA8E0003; Tue, 11 Nov 2025 02:53:21 -0500 (EST)
+	id 45CFC8E0005; Tue, 11 Nov 2025 02:53:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0648E8E0002; Tue, 11 Nov 2025 02:53:21 -0500 (EST)
+	id 40D2A8E0002; Tue, 11 Nov 2025 02:53:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBB9F8E0003; Tue, 11 Nov 2025 02:53:20 -0500 (EST)
+	id 2FC128E0005; Tue, 11 Nov 2025 02:53:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D34EE8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 02:53:20 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 778074BB17
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:53:20 +0000 (UTC)
-X-FDA: 84097560960.09.54B04AA
+	by kanga.kvack.org (Postfix) with ESMTP id 0942A8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 02:53:22 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD15413AEA0
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:53:21 +0000 (UTC)
+X-FDA: 84097561002.29.34E1837
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C54B140006
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:53:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GT1YKP0D;
-	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1B58312000E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:53:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o8p0McGb;
+	spf=pass (imf29.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762847598;
+	s=arc-20220608; t=1762847600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QSsXNui30CdY93HhnZ9iVbgXJUzgciOVZvR9PGs4bjM=;
-	b=lFcigZlHeOHWzcHyYsBwBSqmo9E7mGX6Ue/Ahf3r2MLmDdg4qkaSGnE6A9wPiO5/xHXGEn
-	72MQbuO6cO5AhwyXro7kakgse4Grt/MEoJq/xgF4Ll5naBhahbILFh5gudRjNMNYdkN9u6
-	lX32KMvhXGFmuoOX03lyr3xmiDUP1QA=
+	bh=NLoaUhRplSc2c+OLwLIc3JhAwVgSH0o4v+ejZHdX3XI=;
+	b=mB+1S9CwVL6YojvLyJ9I+2a82n4QYK5wbaWaXIAlKL02Icr3rOF2iiPXlK+uZsLKDTcegU
+	CdvbCCVKCvzAgScMM72A/tacRhVhYd1JUODg4EY8Cnq55evbr0AisV6Tkk9F+XIoumlcfj
+	kDQkSEzOcd/Yvmw5YrIIHMyNN5ce3nM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GT1YKP0D;
-	spf=pass (imf01.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o8p0McGb;
+	spf=pass (imf29.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762847599; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762847600; a=rsa-sha256;
 	cv=none;
-	b=f70zYzoyRYJ4Y1LyeuShhT4fWsoNMxQfj8v6tPtb/VFvSqxEv3kTclpUa3d8sS5AgBd7IH
-	ryJAWdyDbPvOvhm1bAzFi4XFu2pd+1HvCjQT74PAJTO9YiW7+z8vAO5WlNDeX+0jxpB2Rc
-	KLJDrnmayuEDQ3NA43GqHfRThOt78M4=
+	b=Lsv1cUBYMrvMbP/fASBIPAnYaHAxeV85UXZK4oOEozmMPi0iKX/jpsNdVkcMZyksDQYfnS
+	ioq4nHq9ZVP8XBh/j2Ytkt35oruXG4SXFNDlFvvjKd19XlgsED8I6Ut8PdQ3QEdROPVzsE
+	BMg6Xkg8xWn+TWjP3o9cJ0/SZAY9J9s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BE47418B4;
-	Tue, 11 Nov 2025 07:53:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EFAC116D0;
-	Tue, 11 Nov 2025 07:53:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 034B143E59;
+	Tue, 11 Nov 2025 07:53:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73270C116B1;
+	Tue, 11 Nov 2025 07:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762847597;
-	bh=6vLdCVtUOmwT2xBG2CthgZi9Ig8JOsV5A1e4sciMj58=;
+	s=k20201202; t=1762847598;
+	bh=7qxex0fb9sux6H6YiFyflQQ1fF27LToi81rAOC7nyJw=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=GT1YKP0Dqo8Ysx1f1jn1aJnzunt/m+vgmkHza86dvdju2EoOZI6rbkPd7I+ZcBeM+
-	 sMRoB0c30MgD2v1Yb5EZikViuPNT9qU6D1zpwh1o3OD7j4ZzdXpPAIauOb57UMw4bv
-	 I60wtyPt3IyQJygJ4dixY3dw68KJmjTTO1siXWRgIfdzeLxoIP8G2HrfqFcRWayLag
-	 434bWzG4C5dIXX3cv0RlRRd1dhjWeDIx9KMPU1TowHWPucntp2dQsJT9/iu1QfqbYc
-	 Y/H5S/PxMIu45+cpnJF56ZFcZiXa6QAttdqqbIZMPl+jb91U6hNFBKXExqdER7dwwx
-	 ib+6wzq9EnUzA==
-Content-Type: multipart/mixed; boundary="===============1014260008914052501=="
+	b=o8p0McGbUBg/mt4W0NwniQY9deSF651afKOoP439t4jTJeKv5LTx9vea9SGEQP8si
+	 Q+5a+sIU7/rr5zqsP+ur8SebApGAvWVYTCiHpEoBxnRS/ATLz92ZlOpzA+IPHvqxX7
+	 dy4GVB4pVeP8wFW2h7PYHaYeO0gbrMbOZYKJPHlrur9uUuvNsp9xny9Zx+MXTS3GYV
+	 cqyVrLtwlM6rSDu0Fgu90qu055/duQnw869B0CGPbEtwgor0ofWM7MG2wjg4jSiR0W
+	 0z4Ylk8vrW16xqRUmM/x1Dj8l4LfK4kIc0/1RsgkaikoHSoF9wMUFwvk/QGdaVgMjc
+	 CIoMYVMhdAYTw==
+Content-Type: multipart/mixed; boundary="===============1170773288298516893=="
 MIME-Version: 1.0
-Message-Id: <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
-In-Reply-To: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
-References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v3 36/50] functionfs: switch to simple_remove_by_name()
+Message-Id: <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+In-Reply-To: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
+References: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v3 34/50] selinuxfs: new helper for attaching files to tree
 From: bot+bpf-ci@kernel.org
 To: viro@zeniv.linux.org.uk,linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,brauner@kernel.org,jack@suse.cz,raven@themaw.net,miklos@szeredi.hu,neil@brown.name,a.hindborg@kernel.org,linux-mm@kvack.org,linux-efi@vger.kernel.org,ocfs2-devel@lists.linux.dev,kees@kernel.org,rostedt@goodmis.org,gregkh@linuxfoundation.org,linux-usb@vger.kernel.org,paul@paul-moore.com,casey@schaufler-ca.com,linuxppc-dev@lists.ozlabs.org,john.johansen@canonical.com,selinux@vger.kernel.org,borntraeger@linux.ibm.com,bpf@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 11 Nov 2025 07:53:16 +0000 (UTC)
-X-Rspamd-Queue-Id: C54B140006
-X-Stat-Signature: a3qu68tziptufzp8n1mynsnwzmtbhnqz
-X-Rspamd-Server: rspam02
+Date: Tue, 11 Nov 2025 07:53:18 +0000 (UTC)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1B58312000E
+X-Stat-Signature: i9q7314eusk14c9mbr84jcwj3ax8dfh6
 X-Rspam-User: 
-X-HE-Tag: 1762847598-236824
-X-HE-Meta: U2FsdGVkX1/MFMBsiN0JFMByiw9WraXu0k1LsgcuF+Kj5zOrwmyiYBs6edeqkb60KXf0DTbYJLhEEiF8KtEdCy7hygTa+gldb7ETH0TIr2uV+RXOvHtInQ6zyrOYUkkQpOr4fmmlrJ6ngcwMAq6UhAoGkbMZwQWR+lstvgYcyN2OKNZ4cnSh7740yKrR79+INjwfsi/SR2xBe/KpfuK3mVNsRBUIDKag/RrZSFKy2w27pF0gq5hYXvgh6DRkJHdR2qDMRkKvgIftXA+S6d9e2+MiWvrCxYcaXPzfF+4PuAuIuLfu8MU4PhaZmKo5m5rJOwAUnfuetBAQYT3gAnh/5LnXtjiR4ka5pJzB3VxNQVn+HxlC8mLDXE16x7xZD5+/rjsxuhC9vKnrjmISp+9ddUjVQNHTDyJn7mYWx9YgZNfQgLaz6nwB7J2jl9J0ALKDcNsV6FMZWc10F5KaovfHROefoWO/DMsnbvMp8dT+8RpsXqxnOzTMAxT2Pf0H/atYw0zR2d8Ysqyqt/d28TR357+WPNS5R4SDJKT3dPs8arxX9TDeqkRI7iRbDg3kFizfABVOMVFvJb51q1Z4+2WJpVLUsxq8wBJzrgiQY0A/a3Rq+c16JhCSS8BFGnMPT3dO0HE6I2E1O53ItGPcLjAypnKsHa6pRcsuer+18D3pBdCgwWilbrD95sUY89AASHkecYWidxAamQGz6h7CFk+AYKN6w5wjTOenGGQj7AghhqlZEz+/MqIrV/bfeqlTStlPICm0pfanS0OW7E+V/Db/0Se6U9Mrn2mLN+fE5Wd5yWkTgU/xJHWTpp2rqBjChWwO7zHiGbIukdf4+qEBTHAIfoAKb0WSv3ukBN7sbvcDeeldQyMUbv2JNL1by39WjU/oKYa4sKK2kPqgh5ixDCY4WLjHhcOuCOVFDjopE3hQYxniiuXThgkJVyLSaxZvOU/cAGm2Zsu3cTkcptF+L+P
- izMzz7h6
- nYQ/haw+bYm4WkuRGUa5p4N5um5lLJbe25KzuW4uVBm0xoO39KEm7c1l3mPrWj8lpaETXTTqIrR7rcA1lCqTexOsGbykGhacqOM2utoFefd4faWcjnwMANMmrOMxle0E8QG9n7jL7L4rQsQ2RuuHnAAVk+fQ/Mf7HKwXkpLexkLTJ0EQ/qBTSyu5ma75giPPRazHPFuzLLSXNOWy8o9W+47bjoABDldNwo66EP6LtAfx4uoh4EI/XbMFyLlU0IMyjLuWcbVazkn1OS6dgZS66aLVCWzFg/245rtYH/GYMIB+Hn9go/yOhzJQTz7QUM7zudNYtMdwQRed6xD/yQyn4g5SY8GakOEzjeEYQjRIu3hPbPf5JDKSgaEClWWZrqKCL7NUFW5musor3E4urVbC8rbQTwYts2Vh1a+tV9ATNcUlecWPDoCwq5aGy1pfLs5iPgzLB/tEOFaHMIwV4cqWYv1EhUi8XJz64ku8ch3CZj7uXPU1aq4SUxbhogzZEY5PI7OCP79tfv8GG22A=
+X-HE-Tag: 1762847599-281063
+X-HE-Meta: U2FsdGVkX18IutfxBFpj+aT9Xi+F6YPi7Om1Lpt1k+/JLwrYgzUs5L2WP76vxErQYthXVpPkNtWXuVxWx6JyKUohSVai9woMYT0O6ADZ3hjP1VaqExOY+dgVlfsl5uxQFwxhkKnBiajAAQrcVZw3RZWWFMUS11f+OQvn70cwUSSweaCoCREZvVF4GRolrfQM7Su9XpCYYXYciGnQpTp93p+WxaLn8UeHpEcbMfMNSUh6A2yKU5tJgaS3XPicxdymQ9vSxSjwhIlVVg4TlUIXp7n9yrDl/+iFpkDvCl17YCdfMdBxG56055S9mWvGE084OkWuL/BJavFz8v0zJ0RhGUidSyqtIPrH2hELTsDc/ZEAbvyoK+gf1yt4t/zLOWbXOhyuBV+1QW/sbSE/Lt+A1ca/OVi3Sqz2BtgZ6yMRfSlEH3/V9e7so0TSfFpoDe4jFj3x3SLSkuvcfezoTxfJMvQ+B6kz/Ba9bDylOoiorwp03hjUbJmoN2g6xZ19GTJQ/c8lowYAKrrXKW50zwA7qdNgc28YJykY1tAqfqFQT/1+gEcM30WzHQ8vt+bYQexu+5dfTc10NkUb3+sF5Q97n2QZ53T1wqWG7GSqTTljLj6/TB/DbmUOCQgPrhB6C65E8UyUahI62XhriPudPkjP+03aKdEYi45XZj2UbvIZ5B9K/eSXrX54jJUQMrHooyvDUcrRWo0u/OgPmEessjw7fhajXHgtXXPkyKiA66psMJInI71xAFIvA4vBdbG0+uPunN2loJLiSK0Wxs2k8pa9cGR8pzjJ0I0HFoDSHBp7rEe5yWAYNm+dkURgJsASPgp4MX/kPjW0izjzu84h0dNDr0PKHw67VPJDtH01X2APrAzxo6mAM3vBk7um3JlRFeLX97HRhw16h7xBUEiNe5OugVPg0FfUe6aZe+gWBk2hJwKIZMaaTFILMok7xjXsHpHL6SGQ9pjN4MbWZ5jkJr1
+ dOig99nS
+ WKSaN1loi3deB6q94GvvwOsno8ocEnrzDk+z/x7QJOiczSjH/T464QRCUGSApkEJeXH+a+at8gv9jkzX0B36KQH88cJ9SzXqcLRYJ1SLsxcxcu28oQacqKtUNj3/kwEBQCKS1N0BPDswqVDm8q+6RtjFmBR3d4EKRKAK/Lm6HvURm8uafZ3iAB/eBW8mFIZHOKnRJH287TT+dI9rdIiJ9RYvWFQC9HW/dNpDY8Fz0hawNpKN/SuK8f/keJ9uPTc1xDnGkAhTDynlv6uzPOPbx1yopgqstvPnS1qK5f0aZmoBdI3qgtH4KJlhkdrkPDczIOp7CAr/odexDTgfP1kPqgDT9i3nphU1ToDKpojK5TJdlU3tUX+MTu1eBbDAdraoVmi5QbHNqNG4yJxbJZP3ojOC7F1jVQCwdswWwCdqpXAWTq2M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,71 +89,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============1014260008914052501==
+--===============1170773288298516893==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-> index 47cfbe41f..43dcd39b7 100644
-> --- a/drivers/usb/gadget/function/f_fs.c
-> +++ b/drivers/usb/gadget/function/f_fs.c
+> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+> index b39e919c2..f088776db 100644
+> --- a/security/selinux/selinuxfs.c
+> +++ b/security/selinux/selinuxfs.c
 
 [ ... ]
 
-> @@ -2323,6 +2316,7 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+> @@ -1197,6 +1197,25 @@ static struct inode *sel_make_inode(struct super_block *sb, umode_t mode)
+>  	return ret;
+>  }
+>
+> +static struct dentry *sel_attach(struct dentry *parent, const char *name,
+> +				 struct inode *inode)
+> +{
+> +	struct dentry *dentry = d_alloc_name(parent, name);
+> +	if (unlikely(!dentry)) {
+> +		iput(inode);
+> +		return ERR_PTR(-ENOMEM);
+> +	}
+> +	d_add(dentry, inode);
+> +	return dentry;
+> +}
+> +
+> +static int sel_attach_file(struct dentry *parent, const char *name,
+> +			   struct inode *inode)
+> +{
+> +	struct dentry *dentry = sel_attach(parent, name, inode);
+> +	return PTR_ERR_OR_ZERO(dentry);
+> +}
+
+[ ... ]
+
+> @@ -1887,31 +1887,23 @@ static struct dentry *sel_make_dir(struct dentry *dir, const char *name,
+>  			unsigned long *ino)
 >  {
->  	struct ffs_epfile *epfile, *epfiles;
->  	unsigned i, count;
-> +	int err;
+> -	struct dentry *dentry = d_alloc_name(dir, name);
+>  	struct inode *inode;
 >
->  	count = ffs->eps_count;
->  	epfiles = kcalloc(count, sizeof(*epfiles), GFP_KERNEL);
-> @@ -2339,12 +2333,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
->  			sprintf(epfile->name, "ep%02x", ffs->eps_addrmap[i]);
->  		else
->  			sprintf(epfile->name, "ep%u", i);
-> -		epfile->dentry = ffs_sb_create_file(ffs->sb, epfile->name,
-> -						 epfile,
-> -						 &ffs_epfile_operations);
-> -		if (!epfile->dentry) {
-> +		err = ffs_sb_create_file(ffs->sb, epfile->name,
-> +					 epfile, &ffs_epfile_operations);
-> +		if (err) {
->  			ffs_epfiles_destroy(epfiles, i - 1);
-> -			return -ENOMEM;
-> +			return err;
->  		}
->  	}
+> -	if (!dentry)
+> -		return ERR_PTR(-ENOMEM);
+> -
+>  	inode = sel_make_inode(dir->d_sb, S_IFDIR | S_IRUGO | S_IXUGO);
+> -	if (!inode) {
+> -		dput(dentry);
+> +	if (!inode)
+>  		return ERR_PTR(-ENOMEM);
+> -	}
 >
-> @@ -2355,13 +2348,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
->  static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
->  {
->  	struct ffs_epfile *epfile = epfiles;
-> +	struct dentry *root = epfile->ffs->sb->s_root;
+>  	inode->i_op = &simple_dir_inode_operations;
+>  	inode->i_fop = &simple_dir_operations;
+>  	inode->i_ino = ++(*ino);
+>  	/* directory inodes start off with i_nlink == 2 (for "." entry) */
+>  	inc_nlink(inode);
+> -	d_add(dentry, inode);
+>  	/* bump link count on parent directory, too */
+>  	inc_nlink(d_inode(dir));
+> +
+> +	return sel_attach(dir, name, inode);
+>  }
 
-Can this dereference uninitialized memory in ffs_epfiles_destroy()?
+Can this leak the parent directory's reference count? The parent inode's
+link count is incremented with inc_nlink(d_inode(dir)) before calling
+sel_attach(). When sel_attach()->d_alloc_name() fails and returns NULL,
+sel_attach() correctly cleans up the child inode with iput() and returns
+ERR_PTR(-ENOMEM). However, the parent directory's link count has already
+been incremented and is never decremented on this error path.
 
-When ffs_epfiles_create() calls ffs_epfiles_destroy(epfiles, i - 1) after
-the first ffs_sb_create_file() call fails (when i=1), it passes count=0.
-The initialization loop starts at i=1, so epfiles[0].ffs is never
-initialized. The kcalloc() zeros the memory, making epfiles[0].ffs NULL.
-
-The new code unconditionally dereferences epfile->ffs->sb->s_root before
-the loop, causing a NULL pointer dereference when count=0. The old code
-was safe because the dereference only happened inside the loop.
-
->
->  	for (; count; --count, ++epfile) {
->  		BUG_ON(mutex_is_locked(&epfile->mutex));
-> -		if (epfile->dentry) {
-> -			simple_recursive_removal(epfile->dentry, NULL);
-> -			epfile->dentry = NULL;
-> -		}
-> +		simple_remove_by_name(root, epfile->name, NULL);
->  	}
->
->  	kfree(epfiles);
+In the original code, the parent link count increment happened after
+d_add() succeeded, ensuring it only occurred when the full operation
+completed successfully.
 
 
 ---
@@ -162,5 +172,5 @@ See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/19257803162
 
---===============1014260008914052501==--
+--===============1170773288298516893==--
 
