@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E1E9CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 19:03:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6678ACCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 19:10:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F0D58E0015; Tue, 11 Nov 2025 14:03:27 -0500 (EST)
+	id C94C58E000E; Tue, 11 Nov 2025 14:10:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C72A8E0008; Tue, 11 Nov 2025 14:03:27 -0500 (EST)
+	id C46CD8E0008; Tue, 11 Nov 2025 14:10:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 705AA8E0015; Tue, 11 Nov 2025 14:03:27 -0500 (EST)
+	id B820F8E000E; Tue, 11 Nov 2025 14:10:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ED088E0008
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 14:03:27 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0907B1401E0
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:03:27 +0000 (UTC)
-X-FDA: 84099249654.25.4335C4D
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 451EE40007
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:03:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=g0piEOi7;
-	spf=pass (imf11.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A7A1E8E0008
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 14:10:05 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CB5E139308
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:10:05 +0000 (UTC)
+X-FDA: 84099266370.17.31A886F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B1AB820007
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:10:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yMmALMuA;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762887805;
+	s=arc-20220608; t=1762888203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DW8aN6cJL9dQFQJZZx/YDopoyiRzOsZu1J7Nkl1MZyE=;
-	b=nAPn7AlRptDDewBtVWr/4I6UiGVFcUWT6nFv5nqxKgvKTs7cUyRIMtr2HSpOjyO3SjGnC3
-	KvqwfWvTpjpRNJfOgACg9Q1rtTFBW7RVnaS6dwUhEkEMO5E2E6C0ji34b18BhvYesWFKIw
-	m0LTv0Xg11ecvQA3d7sqQKAtZ/a/slo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=g0piEOi7;
-	spf=pass (imf11.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762887805; a=rsa-sha256;
+	bh=KD+mCwPCF3kHkfwRrTb5N97Q8DVr7AMaYPwz1ApO2Mw=;
+	b=Bcw4T/4pTf9XeK0dLiCi5ujysyxURCxFQksqmgHvqfV4qoDPYfi7av0teWPjXOnCsH9g75
+	BwD7R5WPJLkx7Uo19c0+L2s6lcsnENCIgKQnD3UjOKU+6T3VX1hO8O/crFRQKCW3HCE06D
+	7kDPfIDx/5vxrHVcyRFYDtQGLmI14VM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762888203; a=rsa-sha256;
 	cv=none;
-	b=XBmazTekdZ79uv2pSeeh7QPoZzzy6AOe9Z9ImdOxCsWCi9qAxTkOmCCbAEOUY7c/1uxQPT
-	MvISvORAZbeymMhGVbcxFg1Sb1zvnDypkEL4JJNcfXcTnoQvjx0EjjWuxZyVIOISIL8+5/
-	//71gTbrk/Tqv+TLacg5q4EM0cBDHSU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762887803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DW8aN6cJL9dQFQJZZx/YDopoyiRzOsZu1J7Nkl1MZyE=;
-	b=g0piEOi7PUNvhRsEedKkUKToKKhRiRVhkUdb3LpP8NXbecrf9b3s8VAaPeLvtQGogIZlsr
-	hAeUk3T/QXj1j5qRVb71vKrkldRbCPpU2JzwWMajvTO3vnA5hBoeA80IFo29+LjL0ewnzv
-	FtZ/b2SlKMv43H3BJwsRfu/Fu645uBU=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,
-  Suren Baghdasaryan <surenb@google.com>,  Shakeel Butt
- <shakeel.butt@linux.dev>,  Johannes Weiner <hannes@cmpxchg.org>,  Andrii
- Nakryiko <andrii@kernel.org>,  JP Kobryn <inwardvessel@gmail.com>,
-  linux-mm@kvack.org,  cgroups@vger.kernel.org,  bpf@vger.kernel.org,
-  Martin KaFai Lau <martin.lau@kernel.org>,  Song Liu <song@kernel.org>,
-  Kumar Kartikeya Dwivedi <memxor@gmail.com>,  Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 23/23] bpf: selftests: PSI struct ops test
-In-Reply-To: <aRG1AX0tQjAJU6lT@tiehlicka> (Michal Hocko's message of "Mon, 10
-	Nov 2025 10:48:49 +0100")
-References: <20251027232206.473085-1-roman.gushchin@linux.dev>
-	<20251027232206.473085-13-roman.gushchin@linux.dev>
-	<aRG1AX0tQjAJU6lT@tiehlicka>
-Date: Tue, 11 Nov 2025 11:03:16 -0800
-Message-ID: <87bjl8qtmz.fsf@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 451EE40007
-X-Stat-Signature: 8a8enegokpa9g5p1bic8ikd85e5xq3p1
+	b=4pTeHOoaFPg7xFWiawxIHocv3SrdEK9dqvXf4LxyeCrcpJfmXOn2tPTectYOY9jr9dyOLk
+	lXV5KwlmL6uCcApUvxDTfJSE3MyHXfm7Z2LIpjysP45zmlrElCNTPREV/gR+kAM1P9t1mH
+	JHt/4Xi44WCVNVAHBnMas+v6LRlX8u8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yMmALMuA;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9EEE60204;
+	Tue, 11 Nov 2025 19:10:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FD9C113D0;
+	Tue, 11 Nov 2025 19:10:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762888202;
+	bh=El+Z/L3HXKC2aFhDnhlEIS9FQckPXE2P5pGlBt1edZA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=yMmALMuASVOTl3Ax05wz3Zqh3iGBO2/lclrUnhOWppWSyY/IMwv3q6V3gyRKcgTKp
+	 1b3iUf+YFnPkC/qrN7MtjYiVW5kac7f5wNRJ6C0aPwfTQBTTA1GQXZtRuWFfM+YfM3
+	 flFsQFRzQmVA1/biAKn5D9dZgcjBPZ6/xRqCB9Pg=
+Date: Tue, 11 Nov 2025 11:10:01 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, llvm@lists.linux.dev,
+ oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>
+Subject: Re: [linux-next:master 7210/7661]
+ kernel/liveupdate/luo_file.c:571:3: error: call to undeclared function
+ 'get_file'; ISO C99 and later do not support implicit function declarations
+Message-Id: <20251111111001.a4a4bee3d4e132b76115fe5e@linux-foundation.org>
+In-Reply-To: <202511120222.vMZm9rD4-lkp@intel.com>
+References: <202511120222.vMZm9rD4-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: h3yt3i46j45im3g1caj19hjuxqwerw58
 X-Rspam-User: 
-X-HE-Tag: 1762887805-511736
-X-HE-Meta: U2FsdGVkX196bqZRjuGwuQZWF2urnB59qyezlfEWpKiYzc7GEc3GjsEgOhlICIqMMdSqoS4aOg48Dzi2Wc9cFrncwj0p4HqQl9e8VUDxUs6ZluO3EbQgCTKBSBaryUXNfGx6qSBxlB1XzqcqrqrpHegYRSk8SkjH+vR4dz5lqNF9ecuITLlYtgw2MiHjPkqr1fxarhIe2ZwoL/VEsK45RE+SNmnh13pAjxBTsDsyQ3EOtupT7oGJyy2R3qfHDTMAiZd5v7oUI2L7tmqudlwCnznfCW7MRBj8o+W6OKr/8++9uyFN5wXe0juyZzE95i7tqGBY0+TmYqP8lzx52v/ffKdLVaJ3PPXInNz9QCdmG9VE6aYpkAjnZXSs0MeAppMx0aOH0LD4SqM2iPbzeZ29SyDl/LvwGAlp36aCa8GBzznqkoaDfEu45LAewQUZaR0Mufm6pcGasptOwmo5FCJmKEm/5j26ks6pTQAq8AlTGe2Ct0wUudN8qkl1OsRtSrgMgwX1HAon+oxQbCjtHqiH+3IMNt0WK5bHlOczNKGemQUSgwdbtYj9L6GjO+wF+Bbrk2niuilaUhwwcIht+hMgjchT4l1wnh7esUxoVQATxgvafbgGK7TPXUBAvMyVihcu7sWlO1yu9EEx9ZgHNONwpvNEfGXaXgPm/MvH0DB8+Sopi4EhlnKlscDg0w9WwXl6ZgVOlbsmSd1ptvlZfqLgxUl2VdfR0ZLStAXe8Ljmp0lfYs/HnTFyjViBJlHFHtuaYcACEaMxm7jKtv+/tzNn9BuSC9wwSks5FhpO8h/uQ1CKGEXqVklHKAjw44t98Yw/VUqFVM4uBELS2iWRPSFn51eWnbkVBamSSxyP63kSM4eWyKiIeewfBjQNn94NqVWY1EFAzO+ZK5S8XCqeox+LQEtlxYbYXQ4QIKZ1wm/nF2f1jrF+s8DF3u7iKmsCG4KYP9LOC5QkfEPFt+bKj2y
- tTC2wAdA
- WeNOYaY1tfYQ8+Ue9GMV/g99IWK0PjEEjfnTYtxrYUwQY7viJF4qU98jqjf3MilEAx8OG2V2FvP3dLxBbDVTM+EvKsGlek07b2v1xNZ2v0gI3j8rh/lGyAnAh6KT+DvKu4oVT9eJk2uxL23QxQ/ACrC8xYWwFHm6aH8rrLMWyOfCfuYQ8xVBfkk23XgBzsxcRU5HLPcZ9N+yyGWPCo1EC2RQAdu9E2ZuBkKM7
+X-Rspamd-Queue-Id: B1AB820007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762888203-375888
+X-HE-Meta: U2FsdGVkX1/Q/0AU+q/nSKvWuLSiJys4CZmntu/DmGSkd15MAewsrvr7utLxbt7sbS4MatgwLvA5SEpofr+EKPKxp+NoOG8cGp6gOLpCSOM6pLzesQqXyhvQayB/tb4F46fImJ2R53yHLqbOnObGh7xRo48MchBacaYUkcpvJhicJfYRkROQYi6j9Bna5wdWdJQSx6BYzyRTrSAlcdFWGXuigZdsDqu5K0W3RXeuJNDJoHAvwVDP3aNxai/Z1LlvMLzgvCERU25yvSURHPkqQztM1UotlKR7ngC+OqykHCWCa4ptMPKuJOSYv8n+lUCPcQoCl6IeqQtb53H09kKxHPSOTlqj/dvhH4t3y7FYoeRB+64ADqa4Oblp90o6cXZqQnyl38zBNH6xme4/wczw9WaKQ2Roq8YWs4YhR4C6/X8nnHKJ+mMhTVZRZeQcqZ7AF8yWCyJE5QF4T3aJkQ4cZ1IzjmEotDtK2BbNWk7/lm+PtMP57jIVQP1nBhCQxANI0q6VjE9CoapVhKxVqzC5kadlFkl92/z1dBWQWQYgXd+YNgeTrRpxHb2/7qmXXaKyx3OwFIT8xjZ3sd9ws4iUB+BTAjH6U+dwZZZCX/ih85GjsdmooofXBcqk+EWTBKNB6qtyLqoBib06oG7+0p+CeH3UJqXAD4Zctv6MKDp34JXPyg+4YoUTxU4/DEoHYVqOn88FW7R3ULcbqNHs6yzpyX+ONztREbftWnDjioWjpWrDJMDbZltmv9eXSMPZ26Vqx4cQwSARmZG4OgHWIj/aIpS6bo92Rnrav8XN1+2fqFVAx4KCbcE8seOngHBSNZcVd2kOhPGmpoKRNsW1fzrsE8AEbe8/RzmSz9D5Iqxrds+ta3m+/fpckOCFWLO/c8klOTf61lpExHvenZ6kFTcVafqFWgrGzIiap++ja7HZ3SBDDlozKt6b/0oLs6l4oXcDTcykWDheF4IO8VGl/3D
+ DFmTJ5mR
+ aSjXBazximPE2rn+qs6SmNsP6vcWhiHzjf+U4R9kQaxLHZvER9alVTYtDUKYf1FRFu8WttI2LfCZMA7ia6FGGehkRq8JphCjBGpUbn9wCw4H5y522jLAf79sGHs1VdyxEhrMkldXwo++tAGml5HRUWH1LWn8wWtK25+D/JrAWOfKRIxs9rLHLK4pslvcJiPyUpce4i+TfyxQflm6Rk+ijlZpL4UaQVqa9AyJ93tDWw+S4Gb+Twmxt1og1HBU1b/ZT1AG36xKkobddCxmSo4Sk2rgGIGV2nyLGBkgmD2zC1wo3Dft+HCABnzpD8FVoPqLnk00TbM6okpw7AzQ+zQu4NyBNR3by5TFHCirXySX4jV+qRQqA+vvmCrdv0qozeMu464nr6MMUgoK7r+lOPrup3fM7ky8+x5Q2FqBCyXHCJXAE0XOPwSlF2YMaeYOf18Vw7539daCfBmR65ZWEC/I+OMhpHdG8Ty5npKQL92ymw+D52EQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,33 +93,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Michal Hocko <mhocko@suse.com> writes:
+On Wed, 12 Nov 2025 02:19:06 +0800 kernel test robot <lkp@intel.com> wrote:
 
-> On Mon 27-10-25 16:22:06, Roman Gushchin wrote:
->> Add a PSI struct ops test.
->> 
->> The test creates a cgroup with two child sub-cgroups, sets up
->> memory.high for one of those and puts there a memory hungry
->> process (initially frozen).
->> 
->> Then it creates 2 PSI triggers from within a init() BPF callback and
->> attaches them to these cgroups.  Then it deletes the first cgroup,
->> creates another one and runs the memory hungry task. From the cgroup
->> creation callback the test is creating another trigger.
->> 
->> The memory hungry task is creating a high memory pressure in one
->> memory cgroup, which triggers a PSI event. The PSI BPF handler
->> declares a memcg oom in the corresponding cgroup. Finally the checks
->> that both handle_cgroup_free() and handle_psi_event() handlers were
->> executed, the correct process was killed and oom counters were
->> updated.
->
-> I might be just dense but what is behind that deleted cgroup
-> (deleted_cgroup_id etc) dance?
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   2666975a8905776d306bee01c5d98a0395bda1c9
+> commit: 74602408d6248999ca8a567c46ce0f78204d6e89 [7210/7661] liveupdate: luo_file: implement file systems callbacks
+> config: x86_64-buildonly-randconfig-001-20251112 (https://download.01.org/0day-ci/archive/20251112/202511120222.vMZm9rD4-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251112/202511120222.vMZm9rD4-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511120222.vMZm9rD4-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> kernel/liveupdate/luo_file.c:571:3: error: call to undeclared function 'get_file'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+>      571 |                 get_file(luo_file->file);
+>          |                 ^
 
-It was a way to test the handle_cgroup_free() callback, which might
-go away in the next version. If it's gonna stay, I'll add more comments
-around.
+Thanks.
 
-Thanks
+--- a/kernel/liveupdate/luo_file.c~liveupdate-luo_file-implement-file-systems-callbacks-fix
++++ a/kernel/liveupdate/luo_file.c
+@@ -102,6 +102,7 @@
+ #include <linux/liveupdate/abi/luo.h>
+ #include <linux/module.h>
+ #include <linux/rwsem.h>
++#include <linux/fs.h>
+ #include <linux/sizes.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+_
+
+
 
