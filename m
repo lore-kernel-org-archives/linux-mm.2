@@ -4,105 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 984A2CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:02:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8776CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:02:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC2058E0012; Tue, 11 Nov 2025 03:01:59 -0500 (EST)
+	id 33C178E0013; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D73228E0002; Tue, 11 Nov 2025 03:01:59 -0500 (EST)
+	id 3135C8E0002; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C61128E0012; Tue, 11 Nov 2025 03:01:59 -0500 (EST)
+	id 2028D8E0013; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C24B8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:01:59 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66CB488573
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:01:59 +0000 (UTC)
-X-FDA: 84097582758.01.CE60DD1
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 969A62000A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:01:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=vMvGc8hC;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=iUqoMMo0;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762848117; a=rsa-sha256;
-	cv=none;
-	b=a3Oaes+5zMj6k9JJGjum9hMZJF9CSJri6UIPd0gbyvZ4+hnBZo57QCD4Xd/OSeC7PAClGl
-	lY8bhrXDcakNs+pRlGZI31wG3oHAzejiD2pM7Cl5oqYCMTp2vLSSRogORPTASAOQgGI8z2
-	y4vDtZk57bS9JkuqqzqmQZE9nBoQFiI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=vMvGc8hC;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=iUqoMMo0;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FA688E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB67012D045
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:02:39 +0000 (UTC)
+X-FDA: 84097584438.24.87562F8
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 543EF40016
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:02:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qdo1txQg;
+	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762848117;
+	s=arc-20220608; t=1762848157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dx+P3tmh8RRhlJbEuybtXJQuyEPuClVVZRpIZ0Mh1q8=;
-	b=itS5dVD4f6+klWkGyVTxmZwREvMhYdUExKhS9L/E69YSV9TqhHz+jKa4lPE7lSY/ZLeoJJ
-	xXjgp5Exd5Jqhq8CvjuwZ2Yr6i7ToDa9nG1PbH/VOc5T5ZtOfpBD07r2fZQUlgIUin63t6
-	JGlNj48EBEwCM0/G5xXLY7bHhZXxZww=
-Date: Tue, 11 Nov 2025 09:01:53 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762848115;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dx+P3tmh8RRhlJbEuybtXJQuyEPuClVVZRpIZ0Mh1q8=;
-	b=vMvGc8hCbnyKYogzWdAmHFKDT2esfKhiN/1WVwqSpRwIuyM0XqM+Hw24fN35m+ziuw1ZwN
-	H4+vaj9gT0so58eZaRH8Fghkk14qaV5iKGl816Bvl95Y1+05Nmsa5A22vn6+QLq44OC/av
-	mggOpIH2/avhHyT1+xzbnR58gA1b7XoWgsbtocODVQTNhB+0wYf9VyTPM8A41GgLZ5t4bq
-	Y7Cd9e8JFK5AD4aMSrGP8yz6Xp7DpeDz7i8KQdHg5RNahP/caaiOW4aB7ElRolz1Ir2Sxe
-	+puGZu1XqOOmIOzkpppJzZfHGNC2QM7Jac5cHnosNtxaDwcgYRsK2SVgt4aaIw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762848115;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dx+P3tmh8RRhlJbEuybtXJQuyEPuClVVZRpIZ0Mh1q8=;
-	b=iUqoMMo0MCvnlPoaGp1XbX6sIHxU35Loi+T+vRoqwekh2f53jfWu9cCkH5+W+iunP1eY2N
-	T/1+j18ur9A+p5Cw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH 0/4] memcg: cleanup the memcg stats interfaces
-Message-ID: <20251111080153.eo8vtb4P@linutronix.de>
-References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
- <aRKKfdN3B68wxFvN@hyeyoo>
- <24969292-7543-456f-8b80-09c4521507e2@linux.dev>
- <gsew67sciieqxbcczp5mzx4lj6pvvclfrxn6or3pzjqmj7eeic@7bxuwqgnqaum>
- <99429fb8-dcec-43e7-a23b-bee54b8ed6e6@linux.dev>
- <aRKn4kqHx9m9lWfu@hyeyoo>
+	bh=a9W0L6CfK0bWdTLm9fJi4xkSwBtlng03J+x1NVveACU=;
+	b=0hTxPpYzct5U7RF+PvXcfG7nyzikGsNT4X177Bhl4z6ug1Z56fqi5YZAbK7xXVPlacLkIT
+	05birlJRHiOyuEEurdO1UmzoFd2mLvzzOlQXQtQIp8Xrj5V0HSpY9lVdymLxnpJgjEkTsB
+	qY0nIQTuBJwGlIp+2xqkXwaDt2R0fVM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762848157; a=rsa-sha256;
+	cv=none;
+	b=5BuBKjNGCpY2tsWlGS6D2v3VmliyHBqWtKS4KZZFvBUiEle6H13UuyT8/T6gJwnpnUiBc5
+	N6Jz2ozD6I+S1BQogMexZp7U6ZDZ9dmel7N1psx91xcnzwZUW4bzxDo/sqZizEcMWEjQqR
+	ooYPkXfTpl6csigpNgHUnSkSKUVh2NY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qdo1txQg;
+	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AALY1xc017402;
+	Tue, 11 Nov 2025 08:02:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=a9W0L6
+	CfK0bWdTLm9fJi4xkSwBtlng03J+x1NVveACU=; b=qdo1txQgzgOvIHTmCzU7HB
+	Gn+DrVuskN48MqA/40OYsz0tP49ocEYlsaI4/lyOl87fxVMg8ZYDJ6WfohfxUa2H
+	sCIXGOdWkVT7byFFSSNba85ql3Jovzbu3vHW6s+6oA+dceJ5xhYy0xmHLma5lXwH
+	lco3Z991ZRYlMBrC8ph0/LJ1Vvt/e3RGPvY6qNS+2DRsPg2MSEcRVFMIwTtKS8WI
+	KYdt+tIQ5ETwHVz86a6K28vbtfyBvCD2F1E+28XuqeV3bN6vX0T9xvwyMQDiSz6P
+	IcBBYG90bfN/z8xaZDRdprnl55ftC0Cnz9ls8W5PCCk0f7PgPqbw7DMxKYlyocBw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgwtumd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Nov 2025 08:02:00 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AB7kG37026652;
+	Tue, 11 Nov 2025 08:01:59 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgwtumb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Nov 2025 08:01:59 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB5Gbhj014853;
+	Tue, 11 Nov 2025 08:01:58 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aahpk1q0u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Nov 2025 08:01:58 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AB81uo343188530
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Nov 2025 08:01:56 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80F072004B;
+	Tue, 11 Nov 2025 08:01:56 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2ADFB20040;
+	Tue, 11 Nov 2025 08:01:54 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.64.50])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 11 Nov 2025 08:01:54 +0000 (GMT)
+Date: Tue, 11 Nov 2025 09:01:52 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
+        Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org
+Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
+Message-ID: <92eca53f-eb5d-4bd0-ad6c-56c65fdcea86-agordeev@linux.ibm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-7-kevin.brodsky@arm.com>
+ <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
+ <c764489e-0626-4a50-87b5-39e15d9db733@gmail.com>
+ <645178fd-df4e-42fe-b55e-97d9506499be@arm.com>
+ <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
+ <e428b1d5-65a8-49bc-92dc-ec4a4d933dec@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aRKn4kqHx9m9lWfu@hyeyoo>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e428b1d5-65a8-49bc-92dc-ec4a4d933dec@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6zTX9ZOrNUJdIPkZTpOF6inwbKLmfWMW
+X-Proofpoint-ORIG-GUID: LChZoM8zrhHNbPBL-El76cxb9g1AeKQe
+X-Authority-Analysis: v=2.4 cv=VMPQXtPX c=1 sm=1 tr=0 ts=6912ed78 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=8nJEP1OIZ-IA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=7CQSdrXTAAAA:8 a=RmnHjvQuIkE0_jnVAnoA:9
+ a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
+ a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfXyGhka9ktVQcp
+ NtumBxw6X433jOZ6hxU7cflzh+FFuYKWWKnULzVPcUOjZXQmkTAqOCdXlHIsHv1lpUX47VickOd
+ +ymisGDp/K22Lqycx3j2XXMo0XpqaRXvqkKxvBKvJKxPXuUfuzt3AXkbSqNOdA4ImI9C+Xq1kxt
+ TEOnl7KKGrGzBnDhvUHkdpLWQe2Lh5ecd2l9m9sQhLcN/N7oBhjXJoRqt609HdHHCQ8kIUpq28s
+ Sh00eZmpM+PD2+npNB09KeaWuLe3d4wgMIavWSzMSuvE62y1vEOzjS8GZEWtbBR0nfeizZ8kPEd
+ goqFEPPBTD0yzYfjqEub6US2xXlbVyhasXpHCLWJWgCsNJJetNjX1OgXN6mLcI9N0yKOs9EGAVS
+ 77b7qIhDEPM4ZI6Q7fzDt9a5okKZvQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-11_01,2025-11-11_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ clxscore=1015 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511080022
+X-Stat-Signature: fo87cysjuyaa83ryxztm81hxgp1thgq3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 969A62000A
-X-Stat-Signature: a9tyxihrzyxi3swci9bsu61fhdjuymyp
-X-HE-Tag: 1762848117-650672
-X-HE-Meta: U2FsdGVkX1/aXjwpn0yKys7ifY0hq37eMlTwTKpGwAHmcMZGpDdCcisewAJKz0BOZsCja7ocUU9WClq2LJEV8AYlfbTnaP+FwQrcuiQmLV8SXlgPB6FLQLyqNRpZN7VCnKcKrZvLm/39uPynoFTQ0IROsLrUWJrr/v7bEYLhTw+qLSSQyflSf+8c+Bgd1IUvkxenjiV6GinMeUadwGUlEjJTJC+Tnsru6liYqi+eQqICQlnwBdcvvlMTyOqTD9WXun7dWGxRsZ9Me6ARt0hnyKANNhTrJPQlR7As+Nml56tXuslzNGEy0yCFohnp0dKOHY4oQdyarASnzQUrRvEvAuos3LSgoAEC76ktMYWCydLj/dMYKjseyVZyCGjeLtaFhSVqBK7Ie3DbbPE1wiD5JL+fi1VYGPLXXagiT4z9cAIXM9wQLH9UA1URtZ8Yge2L81X+cnWHAU/Ad6wHCacz/MoTvX7bO8jHT1jX+2eXbAya2ouGet0HQ4ayJSNkONX/AbhibSFO0iSlGRLFwglPE7bRB+6Zn/qYIVeHYignrCmQKvyqfqCSt5GsX32iaavoO313eVUobPhwfTs70OtInIHehnr2UxLECBhnsSU4iN7YHOnHGVMRbA8bf5BbjVdGqrjblwKIVh7NO2/x9flAc3g+rjb86au2Dvi7udjV35mqvB4OxWQ4pk26+317XYeOkGiOBQ6Pfooo2nl8IRQ7q8RtrWSNCR+/xjwKq55Tr5ivTGn1vdQe52qyXSasu9C4cCAY0qmbZ6vzEpyDDEPH6DvS/DEjnUpFYp1PSOCkK3OhBWoRe91ecgW2SxPaaswgYp49AQdccrJbUFWoBhtHHLgK9jWlD/zkOny08gVjTMBflG9SFrPup3bdzZi+d/NKDASwu8g8S7XrC9Q3vnTIG8GHMuLnHklHoUfP9ol6NzoTeA8IhE8wZspX4gJgMD9BgLdrPW6y6FJj9fSvXtR
- LV1DZNCm
- T7YQx0x1lTl1y3eNr+KS0iQDwhUZ+2D2jOmqNzjW8jRAaS0emNK64be6KLSWojkjgNbJlRWRMWaybohIN56zKLS0GvWvX+eqZeKC7wp9lzWIwfYdEj7nA6AJ3R2s/hbdYpV0eagfDbBIdW4NrDtnPx5ytqikoxM1hmmlPpep8qmE1XtGbbiLakw/0JWDh6aWnI4yS
+X-Rspamd-Queue-Id: 543EF40016
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762848157-449137
+X-HE-Meta: U2FsdGVkX1/L/MdaQ8owKuujU0qsf2BGDS3qc7O/iiPWyQa0pLGZx0AMSxxj6wqIl32mXENkI8PZ16gSL16ONsDCef+MP9P58AfbgG0DCbxHQ/iCr/b++AmOg55UFzku6a3oSFEd6NJz/i3iViMtgtWssR/d6Oh61yQWKRU7PHjIX0SSCODzmeVHA1QB+5LKtqo7oS0E47Ygpq8n3YewOfXcXhC3Mpr37nLyoi/F+ABG48j35d2XRy0vB2mimEsdvAh5vkzdoql0RlcR2dYBmYCWJ3r4DdTDwLsxxo0/f3ZsRrbNgaiJeWW6SxThH3doHKkA1W+v81zXty4HO3DJLnUiRknvGakf0gyGYzShl2u60pUGSn9dBO+A4BclXEx0umHtXuUf6JiD4bQqyYwXUCaFkFBfd12fO9NvwLa75/AeDzmTAOFDc/VdJPS2Jx83CP6oMDf02Q85aYQAcUy18szXRI6V4eFprnWHCoD/ySZwcEryEjqAhpU5wf0kigBf5H8hCRlSzyv5zR8sCSHbdEqvyF5IK5In6qfWJjnADRaTpvkBwN3z7W2zo+st1CTyaB1uROLD1wgj4fSF6rQwSeBRHllSQzWhSph2p0rPGvtXgpjOb6w7X5X6rJsgiDgj/zEncsXFqoHBHN0cLhJIqNZF3805VdtLXuqeCKERBCM9KHtTrhI3FkJ0TooM5pSBMfD6+p+tT0FYQU3dlzHw0MkaDoLAjgiN4l5JWFYITDWWQ1UXiPiuuQrvpwQWp7bbNQHrI7dHZrxX3ccTTSwFeegOJz50gsPV1eXdreUidws7vjUuprqIRLXl2yiIS14zS4hHZOJi+It30iUgRpD15VDi7bmjEENB3oOG6vQLFcE3FN0kRC2jptnkcwiIBJR8UMI8TR+sfWzc7pIU05Ullv/w8kSoz12us+0BNy9FvunKD2yx6oNmZT4Ut5ko9zYiQs77D6JUFMdjoAVx+UK
+ Dm6h9Nml
+ wfJzLxKZs1aLs/1IBkWqb0/eTopoUscEZ9SB5n7V7DQ9xa+zUeFwR9K0+RGpnG5Mm5SZDpC279hbNx8ppE0NKFEDyF9QnJQ42rBM8Qh1Lof9f7tEtusJvKnOGqVkZ8rpyVUMt0rXi7wP2q5EOdHuWKwwhaJZ3/fX7RQsioShMR6505gZHhTEPmwzyNeFHsUJQHY+oBGGP7jDitaXt1MifGXeOqKUvvPeosetn8TN/zXpNspHRZ24ndbKid00bVDbIfM/KV0/zzJtAEiYM4HaQbKS4DDVpkZvdExdSoMiJwHfe96pm1exWNMPmm85ePcKhRUEx4/cVVvd3nehkKSwbUbEhJn502WHPKMgTLygdLKm0kYtwtOZI3Ca3zs5B+zQJ01QPgN0fv8JI+KqKt/v1IKPIPQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,29 +176,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > I mean converting these places to use spin_lock() instead of
-> > spin_lock_irq().
+On Mon, Nov 10, 2025 at 09:19:40AM +0000, Ryan Roberts wrote:
+> On 10/11/2025 08:11, Alexander Gordeev wrote:
+> > On Fri, Nov 07, 2025 at 03:22:54PM +0000, Ryan Roberts wrote:
+> > 
+> > Hi Ryan,
+> > 
+> >> On 07/11/2025 14:34, David Hildenbrand (Red Hat) wrote:
+> >>>>>   #ifndef pte_batch_hint
+> >>>>> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> >>>>> index 5d2a876035d6..c49b029d3593 100644
+> >>>>> --- a/mm/kasan/shadow.c
+> >>>>> +++ b/mm/kasan/shadow.c
+> >>>>> @@ -305,7 +305,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep,
+> >>>>> unsigned long addr,
+> >>>>>       pte_t pte;
+> >>>>>       int index;
+> >>>>>   -    arch_leave_lazy_mmu_mode();
+> >>>>> +    lazy_mmu_mode_pause();
+> >>>>
+> >>>> I wonder if there really are use cases that *require* pause/resume? I think
+> >>>> these kasan cases could be correctly implemented using a new nest level instead?
+> >>>> Are there cases where the effects really need to be immediate or do the effects
+> >>>> just need to be visible when you get to where the resume is?
+> >>>>
+> >>>> If the latter, that could just be turned into a nested disable (e.g. a flush).
+> >>>> In this case, there is only 1 PTE write so no benefit, but I wonder if other
+> >>>> cases may have more PTE writes that could then still be batched. It would be
+> >>>> nice to simplify the API by removing pause/resume if we can?
+> >>>
+> >>> It has clear semantics, clearer than some nest-disable IMHO.
+> >>>
+> >>> Maybe you can elaborate how you would change ("simplify") the API in that
+> >>> regard? What would the API look like?
+> >>
+> >> By simplify, I just meant can we remove lazy_mmu_mode_pause() and
+> >> lazy_mmu_mode_resume() ?
+> >>
+> >>
+> >> We currently have:
+> >>
+> >> apply_to_page_range
+> >>   lazy_mmu_mode_enable()
+> >>     kasan_populate_vmalloc_pte()
+> >>       lazy_mmu_mode_pause()
+> >>       <code>
+> >>       lazy_mmu_mode_resume()
+> >>   lazy_mmu_mode_disable()
+> >>
+> >> Where <code> is setting ptes. But if <code> doesn't need the effects to be
+> >> visible until lazy_mmu_mode_resume(), then you could replace the block with:
+> >>
+> >> apply_to_page_range
+> >>   lazy_mmu_mode_enable()
+> >>     kasan_populate_vmalloc_pte()
+> >>       lazy_mmu_mode_enable()
+> >>       <code>
+> >>       lazy_mmu_mode_disable()
+> >>   lazy_mmu_mode_disable()
+> >>
+> >> However, looking at this more closely, I'm not really clear on why we need *any*
+> >> special attention to lazy mmu inside of kasan_populate_vmalloc_pte() and
+> >> kasan_depopulate_vmalloc_pte().
+> >>
+> >> I *think* that the original concern was that we were doing ptep_get(ptep) inside
+> >> of a lazy_mmu block? So we need to flush so that the getter returns the most
+> >> recent value? But given we have never written to that particular ptep while in
+> >> the lazy mmu block, there is surely no hazard in the first place?
+> > 
+> > There is, please see:
+> > https://lore.kernel.org/linux-mm/cover.1755528662.git.agordeev@linux.ibm.com/
 > 
-> Just one thing I noticed while looking at __folio_migrate_mapping()...
+> I've stared at this for a while, but I'm afraid I still don't see the problem.
+> This all looks safe to me. Could you explain exactly what this issue is?
 > 
-> - xas_lock_irq() -> xas_unlock() -> local_irq_enable()
-> - swap_cluster_get_and_lock_irq() -> swap_cluster_unlock() -> local_irq_enable()
+> If I've understood correctly, kasan_populate_vmalloc() is called during virtual
+> range allocation by vmalloc. This is not in a nested lazy mmu block (but it
+> wouldn't matter if it was once we have Kevin's nested changes to ensure flush
+> when exiting the nested scope). kasan_populate_vmalloc() calls
+> apply_to_page_range(), which will walk the set of ptes, calling
+> kasan_populate_vmalloc_pte() for each one. kasan_populate_vmalloc_pte() does a
+> ptep_get() then, if none, calls set_pte_at().
 > 
-> is wrong because spin_lock_irq() doesn't disable IRQ on PREEMPT_RT.
-> 
-> Not 100% sure if it would be benign or lead to actual bugs that need
-> to be fixed in -stable kernels.
-> 
-> Cc'ing RT folks again :)
+> That's not a hazard since you're calling get before the set and you only visit
+> each pte once for the apply_to_page_range() lazy mmu block.
 
-The tail in __folio_migrate_mapping() after xas_unlock()/
-swap_cluster_unlock(), is limited to __mod_lruvec_state() based stats
-updates. There is a preempt_disable_nested() in __mod_zone_page_state()
-to ensure that the update happens on the same CPU and is not preempted.
-On PREEMPT_RT there should be no in-IRQ updates of these counters.
-The IRQ enable at the end does nothing. There might be CPU migration
-between the individual stats updates.
-If it remains like this, it is fine. Please don't advertise ;)
+I have to admit I do not remember every detail and would have to recreate
+the issue - which is specific to s390 lazy_mmu implementation I think.
+Both kasan_populate_vmalloc_pte() and kasan_depopulate_vmalloc_pte() do:
 
-Sebastian
+apply_to_page_range()
+{
+    arch_enter_lazy_mmu_mode();
+
+    kasan_de|populate_vmalloc_pte()
+    {
+        arch_leave_lazy_mmu_mode();             <--- remove?
+
+        spin_lock(&init_mm.page_table_lock);
+        <PTE update>
+        spin_unlock(&init_mm.page_table_lock);	<--- PTE store should be done
+
+        arch_enter_lazy_mmu_mode();             <--- remove?
+    }
+
+    arch_leave_lazy_mmu_mode();
+}
+
+Upon return from spin_unlock() both kasan callbacks expect the PTE contains
+an updated value to be stored to pgtable. That is true unless we remove
+arch_leave|enter_lazy_mmu_mode() brackets. If we do the value is continued
+to be cached and only stored when the outer arch_leave_lazy_mmu_mode() is
+called. That results in a race between concurrent PTE updaters.
+
+> >> apply_to_existing_page_range() will only call kasan_depopulate_vmalloc_pte()
+> >> once per pte, right? So given we read the ptep before writing it, there should
+> >> be no hazard? If so we can remove pause/resume.
+> > 
+> > Unfortunately, we rather not, please see:
+> > https://lore.kernel.org/linux-mm/d407a381-099b-4ec6-a20e-aeff4f3d750f@arm.com/
+> 
+> Sorry but I don't see anything relavent to my point in this mail. Perhaps there
+> is some s390-specific detail that I'm failing to understand?
+
+Sorry, with this message I meant the branch where it was discussed,
+I will try to C&P some excerpts and summarize it here.
+
+* lazy_mmu_mode_enable()
+
+This helper is parameter-free, assuming the MMU unit does not need any
+configuration other than turning it on/off. That is currently true, but
+(as I noted in my other mail) I am going to introduce a friend enable
+function that accepts parameters, creates an arch-specific state and
+uses it while the lazy mmu mode is active:
+
+static inline void arch_enter_lazy_mmu_mode_pte(struct mm_struct *mm,
+						unsigned long addr,
+						unsigned long end,
+						pte_t *ptep)
+{
+	...
+}
+
+* lazy_mmu_mode_resume() -> arch_enter_lazy_mmu_mode()
+
+Conversely, this needs to be -> arch_resume_lazy_mmu_mode(). And it can not
+be arch_enter_lazy_mmu_mode(), since a lazy_mmu_mode_resume() caller does
+not know the parameters passed to the original lazy_mmu_mode_enable(...)-
+friend.
+
+> 
+> Thanks,
+> Ryan
+
+Thanks!
+
+> > 
+> > The problem is kasan code invokes apply_to_page_range(), which enters lazy_mmu
+> > mode unconditionally. I would claim that is rather an obstacle for the kasan
+> > code, not a benefit. But it needs to be tackled.
+> > > Should apply_to_page_range() had an option not to enter the lazy_mmu mode
+> > (e.g. an extra "bool skip_lazy" parameter) - the pause/resume could have
+> > been avoided.
+> > 
+> >> Thanks,
+> >> Ryan
+> > 
+> > Thanks!
 
