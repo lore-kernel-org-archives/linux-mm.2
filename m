@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26C40CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:26:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53AD6CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:29:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 868A68E0010; Mon, 10 Nov 2025 22:26:00 -0500 (EST)
+	id 69B9D8E000D; Mon, 10 Nov 2025 22:29:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83FE48E0002; Mon, 10 Nov 2025 22:26:00 -0500 (EST)
+	id 625928E0002; Mon, 10 Nov 2025 22:29:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77DA88E0010; Mon, 10 Nov 2025 22:26:00 -0500 (EST)
+	id 4ECFE8E000D; Mon, 10 Nov 2025 22:29:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 691CC8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:26:00 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2DBB61A036E
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:26:00 +0000 (UTC)
-X-FDA: 84096887280.26.BF55980
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4048EA0006
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:25:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kRjP4hwt;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A98E8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:29:20 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF0AD140396
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:29:19 +0000 (UTC)
+X-FDA: 84096895638.29.E3400F8
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8280E20005
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:29:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U51cVDT+;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762831558; a=rsa-sha256;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762831758; a=rsa-sha256;
 	cv=none;
-	b=gqCjHKWmguhNvSyGxviWt0LCBWHsQqZd5oE6uo6/5vC58AueKkjmT8BQZQm/EUQlqL1FZL
-	KmcF1yjuAmxb4GlPSfnRiDBtfvkgDOEeVbnjhyUQojAFbwwHtv3aRE2YIn9bAJ6xjbp2p5
-	EXyp+Yhiaepyrv7hx+r1Y80i4fRWP5U=
+	b=TWUX38mM4JI08eDzIV5bF7fpOEaIf9EtSP5XGQtkykOXPb0NyWh3osTWj55KZy5T3R4h9W
+	kpzhRKzdwD3i3vxcxWTqlxuF4hyVhXT3moCHTuMLsgwO1eCBHWPZ+r+Qkw00r6bDWzFyYg
+	HbDjG3bHo+VPN4m3MRgZaTetJ69vWr8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kRjP4hwt;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U51cVDT+;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762831558;
+	s=arc-20220608; t=1762831758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MWmeOmbaA7+VgqiMTnj4K9aVuIljbTl3qUWGKZSf2ZI=;
-	b=302CKcud1STukM3+jscKVtWrQK5qIdWePAoN5GJW1IFVC7DvymvPtOBAua2Hp/O8Y+FJwb
-	shPhn9frC13mq8vJ+Ho041vhwGN3F8CfXG5dvZiKqPx0QV2pnugvuu0rWWIpqmKfnbh+xh
-	BTm4yCi4ew+YEQk2uoklC0THW0ra1ss=
-Message-ID: <0432bee6-b384-4cd7-ac1c-e9123c7b393f@linux.dev>
+	bh=N4Gwun/4Q7PEKmKnOLx/o5MXaYbKvzj+YtrVyTMLJUI=;
+	b=s4oq9c4P9vDa4I3gg0iJvUyaNeD/DcW/j5HVAv9BxHPoWDyF+k7dhaHtMqiIpt0UhmRXZ8
+	jgN5iOFyq+Vx3QA/JhH7iuxTinrWLdAfJax0IsZlFHSoDWWw5RCoWNhsJ5MUAqWK3QaewY
+	UaiLosb3JK1Z+cJt15uNDKvRa/JXqTo=
+Message-ID: <b2750e21-2853-414c-9552-4f7faac12afd@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762831556;
+	t=1762831755;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MWmeOmbaA7+VgqiMTnj4K9aVuIljbTl3qUWGKZSf2ZI=;
-	b=kRjP4hwtLD/JKJhFT4zQmm9kFq1RTjPBFxj/uY9nDzwWWJ+0CxeWDkGfDw0cgwdDzBgWh9
-	1qhVlRRJTFNiNdEaMuKaXVneQlZa9ZpQI6kBrhlWqcqUYjjj73FvsAPztH8Gaa1CNjy7sf
-	7fqgBNkxyZYUM4R44GqIieGGbWGVi0U=
-Date: Tue, 11 Nov 2025 11:25:42 +0800
+	bh=N4Gwun/4Q7PEKmKnOLx/o5MXaYbKvzj+YtrVyTMLJUI=;
+	b=U51cVDT+HoQJkqGpZyUh24NPRj8r8kB9s7IFPlUaPzcFECva7S0Za+l8wdZrgWmjPfgS9X
+	sSk5DXMwygzYLR9y19gvsioIxANWmk+n4/q0Cg1JMGOY4JFs9V/Rqu1YROgCP4lqMFD6I8
+	3RF7Cs0QV6cRRGItbLSkpv3V9yP3X8k=
+Date: Tue, 11 Nov 2025 11:29:05 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/1] mm/hugetlb: fix possible deadlocks in hugetlb VMA
- unmap paths
-Content-Language: en-US
+Subject: Re: [PATCH 0/4] memcg: cleanup the memcg stats interfaces
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Meta kernel team <kernel-team@meta.com>
+References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+ <aRKKfdN3B68wxFvN@hyeyoo> <24969292-7543-456f-8b80-09c4521507e2@linux.dev>
+ <gsew67sciieqxbcczp5mzx4lj6pvvclfrxn6or3pzjqmj7eeic@7bxuwqgnqaum>
+ <99429fb8-dcec-43e7-a23b-bee54b8ed6e6@linux.dev>
+ <hgf4uciz7rp2mpxalcuingafs5ktmsgvom2pefjv3yogel5dh3@7kkwtrnqotnc>
+ <982d6b8c-53e7-46f3-9357-afb85319d0a3@linux.dev> <aRKq-JOzoCW9kKMz@hyeyoo>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-To: mike.kravetz@oracle.com
-Cc: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Hillf Danton <hdanton@sina.com>, muchun.song@linux.dev, osalvador@suse.de,
- david@kernel.org
-References: <20251110230745.9105-1-hdanton@sina.com>
- <aef27438-7636-4c38-a5c7-beda95efa02b@linux.dev>
-In-Reply-To: <aef27438-7636-4c38-a5c7-beda95efa02b@linux.dev>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aRKq-JOzoCW9kKMz@hyeyoo>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4048EA0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5pfqcor41cd35snd85kxwd4nxzwypeop
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8280E20005
+X-Stat-Signature: n98sncsewircrsp4wy6yoaq7841yjbty
 X-Rspam-User: 
-X-HE-Tag: 1762831558-506414
-X-HE-Meta: U2FsdGVkX1/Yu9XM0l0znNc8OfZGfUrare1HLrFCn7/r33Up5ZnGc4pD3ydiYEgaJ/k2uXPryo5UYsr+VG6uNY9+nTNBty+hJvP4LjK6BDUtCXPMhqxMlck11Ge2NWoxwjHeKkrWtQJIb0W1uMJwHYW7fxRu/OLkdhxRHK8koY2h2fi/l0uCWNHq7qedC3iZPot+gFn95Q5n+2csJ4SKYGvtPJMbH9q7OWE1wNSBMZhy2ImluVnsh7eamxWR8ksUQoi4edILAhqEQVpUCMk2vL18vnP4YVUQUJ4z0VhAUTav9vFKWbFA96u0bck/HxHnjZCLhuIqPDuiAjtijM2+IvWnJ4XlQBCJAC39p9KR3Gol/rk5O38lyG8rRm8LUEJJMGE1zlcCm3s1hipQV+WmP8cq2wqYqQ4cWI6UDV+FQncZyQ66R5ufComGNzXBoVtPDzA7kWnbdf/uQezUAjyWFumSwpS3oDRavUkutL4OE4UqBpVUYbXHzfH/u0wYyzuP5P2uvOC4WuQ0y+4T/Y1kvm26IX9vZubdLXTMzofB8NlZnCHJfQN3s+fOXpSzhFO82u41Jzug492hO2QFW3O7nOdJpJWkRxZ1+ptHzSb5fkdAzA1pex3H32J9MyE0y1MVCGCHKBRShf3//CSQOjNn/Od7pK9LTUnaw5tTyKPPpIR1fvdYBBOxeCHp5ib6O8s5VkmIg05Fiy/Judf8FeTG7w+4kRO4aIxgqIyVOpg6iC5hmFnGLIJcM0q2HeUq4FpBKEiSRDXBcRLtMLPSIG3I15OaZazCdebyDKYlViZah9YFRR9pSEcg85bcKmFws4jYwNXlGDIE3tQd/LnUsajOek3nXWd5qqAavVmgH3K5z7+PoB4zuOWJ+o4agRKulnvi1YGeR2J5d1Ni37N8t9QbwGFdmHxSwG6UNN1Vz+gjFdMqbQXQq9ZQxThbH6fet7h+2vxiMBXsT34wIsprUmk
- tN+p1uiL
- PhVZlk9yv2ZoL9Qh/aCYmP9FO8StWIcHNVhn3znHK4s6OHGShnFpPCoo1He54NGgC1cVAKK4F7fcQgNxbiK6O2NL0ue1QKCF7wkbX1PSozHKiN75qMzeLaw95bze3yjqIjQo15Sfr8LO24DrvcPxIWlkqCysr7i4mzRUQr25sbiSz+rPCoszoLnUuSM7YniEYlkHsoeftxH+wYn/USbECfyWpiCMJ3BnBvIn8h2/UCjE/PeSTxtQ87iActl1Q78638wh3qGYX+MNqtYnuYqb4QSK1AATOM9eZkxeg7aQeBR1QC/aKUJjC2hY13g==
+X-HE-Tag: 1762831756-974934
+X-HE-Meta: U2FsdGVkX1/qd/8o6YSnRpf1avt6EUMd0HwX3xhTN9FIsSSWJwxyL7bq+ACH58S97VOwSoOQXNGvXFwRw99lER9+ZhovcGRqWGR1tuw4/B4mEv1qEovOzRye8UCDCSSrNgXdbqVRvBn9QFRTPxGLDNm3XHM7MRxdQ79eFbdE3RbujrFyKWGLCj5mrWVjG4Gr0qCht0yBNz0jEmzvcuYGTadSxcSclAU5oOS+9vZKbzpquRRcbUVUL4rL5vuu01d0G9tb2ot9/QfaJ+MPE068xRHPM2eExjQrhi+2mo6+iSxKrB67xvzrmaMpqHC/BFlsD3BziMiTQxUN5sOoNSTK8BT5OezMYnyumEfWyXrCIl/r5PmGP3+8UF6AYSGXjmTpwWgJL8OoE4iHhEzeoXFNlS55EfLPSlt9VvUvyWdbvlAvL10wMyfXfuJDOexak4aRv9avwxU4A0kKEYNzGmAX/TGILDNbG3rLM5K54WV3fBeMF9paF00D42c1w6kVyeFwQ31vU6/3N2JRvQ03KvoNN3Ae305qQ8sZJM7CEMHOYdtZv2Rc+RrC30JVOK7KGfv2t8ld4WVEWHqpln+guSOjVknhvgysIRNdqRTnwotl27OBNPgL2LAEqfArFwnh781piIZyV+uWY9COh5xCl+fg4AsAe4RSf4qx3bGsulO1h/GLiwOxZYjvzfQYdro2slGiPoNztjLJ9T+AU1aaWEIIdj4vjchzxKSZeq/R++3hCAp6/AKOw2s8+59m5pmo7g+DtvajBZOxu5dUoidDrGTbDPUrYIyv68UlcIy1k7aqsRwS66DkdgLhMzgO0pERxDhtdyxfgTmyqfGFG1I97zXkSrO70xQPJk/eAdZ0DMkG1k/iZgtReGmFDkl3ukABN3KV+lGCGbvwUzugSJIkOWTTZmqESfMYdKU/5Gg79cGfdfK1L32Ry6wTyoT4ZFF4tGUbNSTZjHSuijWHOyE9Xrs
+ jAMp+t1f
+ 6fJfShRkOarmAUo/uUJ5QayoQSPjP+WCZkYTOngyDrKsnECJnqilzLer1pCIq0linD7Xu2FKmyuvDT71JI7PtEqAuXbp4Pe9fSDbDSiahLYxFiv5rsB6v7N/H3hnduKH8nCPj6y61NbGltjyJeCz4CDlXaXxA0i8F3poeMBgBKl0lv0wVDEq2T2+6/4oRxRL4Icmr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,112 +99,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cc: HugeTLB folks
 
-On 2025/11/11 11:20, Lance Yang wrote:
-> +Mike
-> 
-> On 2025/11/11 07:07, Hillf Danton wrote:
->> On Tue, 11 Nov 2025 00:39:29 +0800 Lance Yang wrote:
->>> On 2025/11/10 20:17, Harry Yoo wrote:
->>>> On Mon, Nov 10, 2025 at 07:15:53PM +0800, Lance Yang wrote:
->>>>> From: Lance Yang <lance.yang@linux.dev>
->>>>>
->>>>> The hugetlb VMA unmap path contains several potential deadlocks, as
->>>>> reported by syzbot. These deadlocks occur in __hugetlb_zap_begin(),
->>>>> move_hugetlb_page_tables(), and the retry path of
->>>>> hugetlb_unmap_file_folio() (affecting remove_inode_hugepages() and
->>>>> unmap_vmas()), where vma_lock is acquired before i_mmap_lock. This 
->>>>> lock
->>>>> ordering conflicts with other paths like hugetlb_fault(), which 
->>>>> establish
->>>>> the correct dependency as i_mmap_lock -> vma_lock.
->>>>>
->>>>> Possible unsafe locking scenario:
->>>>>
->>>>> CPU0                                 CPU1
->>>>> ----                                 ----
->>>>> lock(&vma_lock->rw_sema);
->>>>>                                        lock(&i_mmap_lock);
->>>>>                                        lock(&vma_lock->rw_sema);
->>>>> lock(&i_mmap_lock);
->>>>>
->>>>> Resolve the circular dependencies reported by syzbot across 
->>>>> multiple call
->>>>> chains by reordering the locks in all conflicting paths to 
->>>>> consistently
->>>>> follow the established i_mmap_lock -> vma_lock order.
+
+On 11/11/25 11:18 AM, Harry Yoo wrote:
+> On Tue, Nov 11, 2025 at 11:07:09AM +0800, Qi Zheng wrote:
+>>
+>>
+>> On 11/11/25 11:00 AM, Shakeel Butt wrote:
+>>> On Tue, Nov 11, 2025 at 10:48:18AM +0800, Qi Zheng wrote:
+>>>> Hi Shakeel,
 >>>>
->>>> But mm/rmap.c says:
->>>>> * hugetlbfs PageHuge() take locks in this order:
->>>>> *   hugetlb_fault_mutex (hugetlbfs specific page fault mutex)
->>>>> *     vma_lock (hugetlb specific lock for pmd_sharing)
->>>>> *       mapping->i_mmap_rwsem (also used for hugetlb pmd sharing)
->>>>> *         folio_lock
->>>>> */
->>>
->>> Thanks! You are right, I was mistaken ...
->>>
+>>>> On 11/11/25 10:39 AM, Shakeel Butt wrote:
+>>>>> On Tue, Nov 11, 2025 at 10:23:15AM +0800, Qi Zheng wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>> [...]
+>>>>>>>
+>>>>>>> Are you or Qi planning a follow-up that converts spin_lock_irq() to
+>>>>>>> spin_lock() in places where they disabled IRQs was just to update vmstat?
+>>>>>>
+>>>>>> Perhaps this change could be implemented together in [PATCH 1/4]?
+>>>>>>
+>>>>>> Of course, it's also reasonable to make it a separate patch. If we
+>>>>>> choose this method, I’m fine with either me or Shakeel doing it.
+>>>>>>
+>>>>>
+>>>>> Let's do it separately as I wanted to keep the memcg related changes
+>>>>> self-contained.
 >>>>
->>>> I think the commit message should explain why the locking order 
->>>> described
->>>> above is incorrect (or when it became incorrect) and fix the comment?
+>>>> OK.
+>>>>
+>>>>>
+>>>>> Qi, can you please take a stab at that?
+>>>>
+>>>> Sure, I will do it.
+>>>>
+>>>>>
+>>>>>>>
+>>>>>>> Qi's zombie memcg series will depends on that work I guess..
+>>>>>>
+>>>>>> Yes, and there are other places that also need to be converted, such as
+>>>>>> __folio_migrate_mapping().
+>>>>>
+>>>>> I see __mod_zone_page_state() usage in __folio_migrate_mapping() and
+>>>>> using the same reasoning we can convert it to use mod_zone_page_state().
+>>>>> Where else do you need to do these conversions (other than
+>>>>> __folio_migrate_mapping)?
+>>>>
+>>>> I mean converting these places to use spin_lock() instead of
+>>>> spin_lock_irq().
 >>>
->>> I think the locking order documented in mm/rmap.c (vma_lock -> 
->>> i_mmap_lock)
->>> is indeed the correct one to follow.
+>>> For only stats, right?
+>>
+>> Right, for thoes places where they disabled IRQs was just to update
+>> vmstat.
 > 
-> Looking at the commit[1] that introduced the vma_lock, it seems possible 
-> that
-> the deadlock reported by syzbot[2] is a false positive ...
-> 
->  From the commit message:
-> 
-> ```
-> The vma_lock is used as follows:
-> - During fault processing. The lock is acquired in read mode before
->    doing a page table lock and allocation (huge_pte_alloc).  The lock is
->    held until code is finished with the page table entry (ptep).
-> - The lock must be held in write mode whenever huge_pmd_unshare is
->    called.
-> 
-> Lock ordering issues come into play when unmapping a page from all
-> vmas mapping the page.  The i_mmap_rwsem must be held to search for the
-> vmas, and the vma lock must be held before calling unmap which will
-> call huge_pmd_unshare.  This is done today in:
-> - try_to_migrate_one and try_to_unmap_ for page migration and memory
->    error handling.  In these routines we 'try' to obtain the vma lock and
->    fail to unmap if unsuccessful.  Calling routines already deal with the
->    failure of unmapping.
-> - hugetlb_vmdelete_list for truncation and hole punch.  This routine
->    also tries to acquire the vma lock.  If it fails, it skips the
->    unmapping.  However, we can not have file truncation or hole punch
->    fail because of contention.  After hugetlb_vmdelete_list, truncation
->    and hole punch call remove_inode_hugepages.  remove_inode_hugepages
->    checks for mapped pages and call hugetlb_unmap_file_page to unmap them.
->    hugetlb_unmap_file_page is designed to drop locks and reacquire in the
->    correct order to guarantee unmap success.```
-> 
-> The locking logic is a bit tricky; some paths can't follow a strict lock 
-> order
-> and must use trylock or a drop/retry pattern to avoid deadlocking :)
-> 
-> Hoping Mike can take a look and confirm!
-> 
-> [1] https://lore.kernel.org/all/20220914221810.95771-9- 
-> mike.kravetz@oracle.com/
-> [2] https://lore.kernel.org/linux- 
-> mm/69113a97.a70a0220.22f260.00ca.GAE@google.com/
-> 
-> Thanks,
-> Lance
-> 
->>>
->>> This fix has it backwards then. I'll rework it to fix the actual 
->>> violations.
->>>
->> Break a leg, better after taking a look at ffa1e7ada456 ("block: Make
->> request_queue lockdep splats show up earlier")
+> ...Or if they disabled IRQs for other reasons as well, we can still move
+> vmstat update code outside the IRQ disabled region.
+
+Ok, I will take a closer look.
+
 > 
 
 
