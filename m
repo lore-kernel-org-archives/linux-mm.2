@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52722CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 19:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FDE3CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 19:34:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C3558E001D; Tue, 11 Nov 2025 14:18:05 -0500 (EST)
+	id 752CF8E0013; Tue, 11 Nov 2025 14:34:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99A938E001A; Tue, 11 Nov 2025 14:18:05 -0500 (EST)
+	id 703778E000E; Tue, 11 Nov 2025 14:34:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D72D8E001D; Tue, 11 Nov 2025 14:18:05 -0500 (EST)
+	id 619AD8E0013; Tue, 11 Nov 2025 14:34:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E7F38E001A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 14:18:05 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2258712C532
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:18:05 +0000 (UTC)
-X-FDA: 84099286530.11.84DBEB0
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3F7EF180009
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:18:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kT23GwCJ;
-	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 50F5F8E000E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 14:34:23 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 002181DFD83
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:34:22 +0000 (UTC)
+X-FDA: 84099327564.04.C2F04F0
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9C71B1C0007
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 19:34:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HSM8/b04";
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762888683;
+	s=arc-20220608; t=1762889661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qFnKHaytVNV0OfjfOFrWCarKwTG+bMnNvrU4GEFWYBk=;
-	b=HjPb89Rf6+HhBf2ogMHB6vQT4PLZIqBmG4N5QOmGb9zTCfJ3ZAxT76Hr8v4WzlGQo2H1pt
-	zuwVBehdrzdG+uPMuLcuVy/V5eQrrvyAQ+b2hYhkN8bCC+UxAhTVxkzGJaOqJEnW8MFHMt
-	cM6bZANjJP4aXiUhLG84/sR4HB17h4U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762888683; a=rsa-sha256;
-	cv=none;
-	b=LOH3cOozrWRYpsxnzII93/OD86tYsXz8SMI6BbUGGTBRpc+ufLth9xzI7nt1ue0qhtFelh
-	wqw2obQWEJo5yxGVaQvVke4MMijmeet+uZ20Cifoyr8LCt7PpKaUsrtXG62eor6YTME8d9
-	zwbJ9LsKtetiLQ0OcA7FSCu2X19eRiQ=
+	bh=u+/QIYglm3+7rhOS6L7Kr9NAKmdN6FeBGXByzeklErs=;
+	b=1SJwFjJ6ZGGBlrALIPX1Wj6rSBfwX05Fn1CCOdhFjL4I8M6PX6GJAiwr5VxUTmumfA1qiV
+	zDh1D6Wk4Y9HTG764wZXliiNEtWsnGqpnM52GFN8RgAcYVgXHE7o1eBKbrH8GKXVWSMFTZ
+	2Th0dmE4qAcyDZh7peIidOugTWA65yE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kT23GwCJ;
-	spf=pass (imf24.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HSM8/b04";
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762889661; a=rsa-sha256;
+	cv=none;
+	b=54zSQBtGTwpnLezn5Vz190KsVxwaXMfeZA47UI0m7uE2acEpCynrRgt1ya7sZkj4XMwzpc
+	Fvfz+aPmz/sWrqRW+0swN7XCDnzU2HCKoLir+WaO5XC2ElTjL5oEoZz265TA/cANh0bIEf
+	Eyp0LY9vGLLuQ49LAOYX6CfenuRqgW0=
+Date: Tue, 11 Nov 2025 11:34:11 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762888681;
+	t=1762889657;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qFnKHaytVNV0OfjfOFrWCarKwTG+bMnNvrU4GEFWYBk=;
-	b=kT23GwCJTLtrgw+qw/LIT9f52tM66JsOOW1Xkg2v5t3ySioBIioZdiYVLTj8+aJfRHcm2Z
-	2DCDxwlfjfLs2W8TxB7i+dgf1S2QeNBp5CtJlXPMqP+rgLszGmOnZtV7N0h2bDPsGvUG/s
-	knjm/jRQNK6WJUyutK/XnFRE4BctAjQ=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,
-  Suren Baghdasaryan <surenb@google.com>,  Shakeel Butt
- <shakeel.butt@linux.dev>,  Johannes Weiner <hannes@cmpxchg.org>,  Andrii
- Nakryiko <andrii@kernel.org>,  JP Kobryn <inwardvessel@gmail.com>,
-  linux-mm@kvack.org,  cgroups@vger.kernel.org,  bpf@vger.kernel.org,
-  Martin KaFai Lau <martin.lau@kernel.org>,  Song Liu <song@kernel.org>,
-  Kumar Kartikeya Dwivedi <memxor@gmail.com>,  Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 14/23] mm: allow specifying custom oom constraint for
- BPF triggers
-In-Reply-To: <aRGw6sSyoJiyXb8i@tiehlicka> (Michal Hocko's message of "Mon, 10
-	Nov 2025 10:31:22 +0100")
-References: <20251027232206.473085-1-roman.gushchin@linux.dev>
-	<20251027232206.473085-4-roman.gushchin@linux.dev>
-	<aRGw6sSyoJiyXb8i@tiehlicka>
-Date: Tue, 11 Nov 2025 11:17:48 -0800
-Message-ID: <871pm4peeb.fsf@linux.dev>
+	bh=u+/QIYglm3+7rhOS6L7Kr9NAKmdN6FeBGXByzeklErs=;
+	b=HSM8/b04crKD15cHPSnLQx4Hhg2/3Us8iUQB645UpiF+QFOEmAw+UOT0+SyUrYVCQWmUDz
+	tZsE/VL6fS1cWO+eXr2Ms/1rLGv/BLb659T1jvAiYYrHlcmDOEWF/nQvfPODuNJBS9ALRE
+	0a1L69FWHj4U6P9pxJywFzDkIgZrQug=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH 0/4] memcg: cleanup the memcg stats interfaces
+Message-ID: <djh4sirs2cgmdhso5fwcx7s6yrkocxbqshcosgrqetfykte2bz@opfihf4wun4v>
+References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+ <87pl9oqtpg.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87pl9oqtpg.fsf@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: rn7i9nxywgdco5hz8sppbftgbt695yd4
+X-Rspamd-Queue-Id: 9C71B1C0007
+X-Stat-Signature: 7d5454yx3izgm75udgdfq8phfdb8wk48
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3F7EF180009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762888682-486693
-X-HE-Meta: U2FsdGVkX19DmmRoaaVf86C/trh+H9s3YJxjL7Vd78zY78JEsRfrDEXel5OJgnI1xnRPUUB1cbq+A7zuDk5degEQhdfkAQkLAsU0mLIlNJQ9eo8daMVXrcXLQP0H/RHkT1cbRHFHuTzio3wrQ0bH9PWBakWOCvZSEjzTKAfMDUHQhpiy0RYjPRIs5rHXpV0ae/bx2eDaS6NeZ3UHFzBGnub81dd2Fcb436UhKJQWxHennITfid+S6M2QjSL8XchvhhjnfO2qUGtSIrJG80XNJInhRDtUwQylyzVECuX6S9yo4Q/XCKLdWK3XczJYw+D20C1zcVBanxN7rOXd0dsVdM80yZRv8+2h/XIsEJP7cIXZrdUkSqSLcbc7CT1dpaIPAR9opvR9jIc6RcJbQ5SmBXfpQsLnbSlLWxHHMzGAegzaIQiGnaCxCQNHg/gaGPUPGpiGNw+uRp8/e9DjG/iMz03+Y8y8jug1NAQmmlTDlDLmLQN+TTjySBDCohZgkNHnUqtNiUfHWOX6O3Vuoen1bl6YowFy9HJc8raVdakvc1BWcXz4e16irU+1BJqtVDVAN9uNmQq9h+iDSI1qpwj0L+7odas2L3PlH8q53Pte0r0Y2YVnF2ndmHqX05nEkk2LfsZ3VfHwBlVDszG10BEHfm/msdWjIdYCTRQMkZvf8mGsSYzAVCQCLo1A1H2fhm8ye6g65hvOn4Xuj+F9caTlZJrV8UgOnoHGzi9G9Tfk4hE5thOsdSyWqiYMvfe4lX2Tu8Gfrvsgtosn7H3QAEr1vLAQYt5os+vNnXHE47AsgVlQobzvxNRYEpvFYX0DUCNHmzYYWwSYDpv+0GNzV5YWLslDFUJ+oFOALNu1rl720OxSvozO5GzG7BnC+HPQK9D9CyvVTrOOTdZJ/ucYvRUt/67Vda+pKmPTa54RR/RezJ86Q2iG7/wvVXTIPqAhW0QVISTA7M1TM2X4hciPRmw
- xD1lHy6O
- S6buRj/GDCGAzczmFciDZp9N7EmcYJ7LA/e/8qbPev/eABRaHN+tertN+TEcb8lyu3Fd+NQCcLE6cF6j9GtzFVs727veMKZPvBAtGMj12KUHB4mUoWdyQgRz8fH/kR1oj0AGUicak7QXn2j6V/OC8E3QypnNld1eFn0+UgWdPvCXosGmBZM6sUtD6ZaVneMfsy/O4Xyqb99bj8rIC6CCOlKMu5R+PS7R0WPW0
+X-HE-Tag: 1762889659-283086
+X-HE-Meta: U2FsdGVkX183aWZQHigrPj39yAv9tfEwH29TWqfcaah6PdV083dSdqJQdPSlpuhRPSO4cTvSapeN54Co8Whk5tDNFcj/mKBAhE8S3Ln6Igw17CoI5mCkcBGSpIp9TrGPPuUlBLcBowvtLeBm95u2QEZCqGPXh2dhzlr/BlD6sTr6HD1g9S+k/h0fvqk8jSQslTLB+oiUYqmarllf/6PHZPZivVTV+EbAvSmluFxGCTJ5NZZK/J/xdfpB7NCeEZf50rmUjK+V/f/GVnLNnwtGxhkSbgtXFxdM8O44K9/EBg80O69zrLCz7KJBfZsimJje8b7r9MiV6mbMCWm1BpoHILa9HaBGDEnO5vlNsj4IfcL1qMqbQhBNeYVgTdJV6RsAEyd8vqoNNnibUsPOnU+fkmoQgOM4WvcSPyKYWw3j7zC485pbSfTiLVAlrocjtvPBi+VHlWG4a2mxJ70Juk4calo3qSYpK20OMIX3Lq0HWHRoWUu3QR3PkJCXXeTyQJd+p7ErkODStm3s97BhU+iO61qyMdqu25LAzVCKJ+5IeDBSFug8AzPUZB8DkCrJUEJ3f+l/5LUV2i3JpxemVf6EyAYCi7x4nHMLL/jpcF7iTaAdfVXM5UN2QMlWaXFGB5/prNFST0ZrEL1F+1jiYBbja8gnL1beXPjYfMHYpcFzKnMJ8moFWQQNtmcWtaji3nyAB9yAW9fnNhqz3+bdWVvjDw9xsVoQtfixKG9/wI5/tVEo5YwOchjoEq8S5tn4tKeEPsdv2BOdGfhldgjEDf2kmXuFniBDts/1GyYt6HnwAtwrVe9mZy4RjCJ+ALSUSmRzkbyNeihE4I8F6CyspfXhmuhKsu3SXySZs/ZOUcDbGhuciKoBIQn0xNIJugj6Pabg7WPtsCbGS4zPI2+DLINRNshbXK6PHvYE02y8ulwmC+LbnmlaggWrVzW8wm6ScbynGCW4UhLZLcobvrvb95G
+ GLKvePvd
+ 3f2VAIt6+/75Fy29VWY4OiMCkR0zB4+IdZCXnZm9hT0Y/r1MHpWw/zTG8vHgy4/f01ErBojJ/CzdzzdaIw3yUe9UBMnXKFcPN7CVggdDsxm+oWI/tpfVSEK7KenG1CMJ3+BU4WdOGMBUvDyKsbsIWD0AR2nk2kGQJzm8eRNgurtj9GwEJEVgVqQbhXHvSvdPc2BbfQCBAPoPR82OpGEDmGrIK0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,24 +91,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Michal Hocko <mhocko@suse.com> writes:
+On Tue, Nov 11, 2025 at 11:01:47AM -0800, Roman Gushchin wrote:
+> Shakeel Butt <shakeel.butt@linux.dev> writes:
+> 
+> > The memcg stats are safe against irq (and nmi) context and thus does not
+> > require disabling irqs. However for some stats which are also maintained
+> > at node level, it is using irq unsafe interface and thus requiring the
+> > users to still disables irqs or use interfaces which explicitly disables
+> > irqs. Let's move memcg code to use irq safe node level stats function
+> > which is already optimized for architectures with HAVE_CMPXCHG_LOCAL
+> > (all major ones), so there will not be any performance penalty for its
+> > usage.
+> 
+> Do you have any production data for this or it's theory-based?
 
-> On Mon 27-10-25 16:21:57, Roman Gushchin wrote:
->> Currently there is a hard-coded list of possible oom constraints:
->> NONE, CPUSET, MEMORY_POLICY & MEMCG. Add a new one: CONSTRAINT_BPF.
->> Also, add an ability to specify a custom constraint name
->> when calling bpf_out_of_memory(). If an empty string is passed
->> as an argument, CONSTRAINT_BPF is displayed.
->
-> Constrain is meant to define the scope of the oom handler but to me it
-> seems like you want to specify the oom handler and (ab)using scope for
-> that. In other words it still makes sense to distinguesh memcg, global,
-> mempolicy wide OOMs with global vs. bpf handler, right?
+At the moment it is theory-based or more specifically based on the
+comments on HAVE_CMPXCHG_LOCAL variants of stats update functions.
 
-I use the word "constraint" as the "reason" why an OOM was declared (in
-other words which constraint was violated). And memcg vs global define
-the scope. Right now the only way to trigger a memcg oom is to exceed
-the memory.max limit. But with bpf oom there will others, e.g. exceed a
-certain PSI threshold. So you can have different constraints violated
-within the same scope.
+> 
+> In general I feel we need a benchmark focused on memcg stats:
+> there was a number of performance improvements and regressions in this
+> code over last years, so a dedicated benchmark can help with measuring
+> them.
+
+Yeah it makes sense to have a benchmark. Let me see which benchmark
+trigger this code paths a lot. At the high level, these interfaces are
+used in reclaim and migration which are not really that performance
+critical. I will try benchmarks with a lot of allocs/frees.
+
+> 
+> Nice cleanup btw, thanks!
+
+Thanks.
 
