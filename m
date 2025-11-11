@@ -4,102 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D042CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB8F8CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5DBA8E0012; Tue, 11 Nov 2025 04:21:32 -0500 (EST)
+	id 4D3928E001D; Tue, 11 Nov 2025 04:22:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D34828E0002; Tue, 11 Nov 2025 04:21:32 -0500 (EST)
+	id 4AA9E8E0002; Tue, 11 Nov 2025 04:22:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C71668E0012; Tue, 11 Nov 2025 04:21:32 -0500 (EST)
+	id 3C0918E001D; Tue, 11 Nov 2025 04:22:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B2F158E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:21:32 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CFEA1604C3
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:21:32 +0000 (UTC)
-X-FDA: 84097783224.30.68A4C32
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 863A040010
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:21:30 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=mNRfCj7o;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762852890; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 253138E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:22:16 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BEAB288CEA
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:22:15 +0000 (UTC)
+X-FDA: 84097785030.16.780724A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0CC508000F
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:22:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Iq/i8hPW";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762852934; a=rsa-sha256;
 	cv=none;
-	b=yOdg41U8aEVt6QHoweNTKLZ3Tg4YrF5uwVGbD6/PRDensFPTzmjpfq33d+/r2RM4lcLhay
-	kqeurnF5BEkFx3VpjxBTK+/dUT/f60+WVocd0SxpXMqJIsvwkvRhEGt3/OjJYd/QkicXVq
-	CEnn0aDE7hvFWsuUTHXDVRN1q08cjc4=
+	b=aDKp2zGHAo+M5LNPOw7iN9+wBviULjNc3PRRrQ7XyhCAOhGk5nmwGDk5RYruRewzfH0iih
+	JXzcbGM+BYrzWz/aOW5Z1oL+GL8W66ST/TQeF8sfccgzYOQ+RQ9O+AEAi/AWi9+t8nOs7O
+	tXlZNO2wRtwinOpA3ZJPCZpVIQW5FZc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=mNRfCj7o;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Iq/i8hPW";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762852890;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762852934;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tZCVSqTQSDDLvQs1X2myYSkLJtZwbiT5pTgxLsDWfWg=;
-	b=nNfXTF3T4eoiGecclNCWxDzvFkTZeJoedz0wtbWSBAxU7tYemMpvHBhnTkpjvhpVHpnW4F
-	dsx90THFxEwi9Kg0Rv4HMyiqnMzoNitpOxQZvKzRwSXxeun+AR/AEMJDdsbfMtkft/lzL6
-	uSGrnGA7KGfoVsjeZQQvR7PHankTmnI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=tZCVSqTQSDDLvQs1X2myYSkLJtZwbiT5pTgxLsDWfWg=; b=mNRfCj7o5DsyadrTOAd3PG913l
-	201C7wMUBSUYG7x8M00Si6M8oYv4ANGn1iKzb+lHWLy0+Lu4uY+ZdiuYrVf4nVdtMwESJEGFGxvEg
-	ddUMj5in/pZybEUgy3WPRJq0oTRhm9nRH3ENr4LQkkaqHtn9JwhQXL2KtntemE79n/9mCYw1tWTfE
-	C8HbTwqu+441Wz5LpaAxDcPcfWvtEtiBRfb3GrswMaYwTuDQc6y012OzP+0oXcxgh/zISf/Q5eAfs
-	kusJonnF9/xByqdJJmx8Pfmts8z1PoUVa7JLLKkc2gdgBbXjFenJ40u0NiNLfONirl3XP70dRc+l/
-	EWpH+UYw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHi-0000000BwxE-1dWe;
-	Tue, 11 Nov 2025 06:55:22 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: [PATCH v3 07/50] convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
-Date: Tue, 11 Nov 2025 06:54:36 +0000
-Message-ID: <20251111065520.2847791-8-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
-References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
+	bh=QAuGXI5pmMHjdPB/JqSMc2jjA8YJhyKvnq/uvh5ITHA=;
+	b=R7LloqLvOpuBkkn4wUOSPopj5zEoRiY+beVqRj+5PcTHG9B1W4Y3fRp4Sf9f/vO4HFQyLK
+	L9iEazJu+ueZqSkoWvJ9DnAXMUZZthpHcPIgcUyNss2XG5JVrrxfjBpMzLy0wQcd5qX1an
+	jCpjxtIrI6enVXxLn7agwEvgra/kkc0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DA3B543AF1;
+	Tue, 11 Nov 2025 09:22:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B43C19422;
+	Tue, 11 Nov 2025 09:22:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762852932;
+	bh=YKxB1Tk0c8PA5NVe6KSLcg4q1RUhiINUvY7b/ZMmRUw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Iq/i8hPWgHTwu435PI+UGZlLN/X3lyfBrrm+1OwNKieirVMDPmDCkCaFA5KX+Cpoo
+	 jCY0uq+bKxbfSS/6qRug9ACZVWvSIG2hb05Nfywkq6thFqPc80S2JztzaJqBCtX5TK
+	 6ankYgSWSaELPVPWooj+5cT1eMoRBXuIxw8R7wm0f3aC08zRAHgGqQPhTXlh+50TBr
+	 zxjneSB775FAK9WKt6FxPW2yAZcqlXQ0OEYW8MPlkyO1msbbTBkJLfLsWoPQX0KMwY
+	 2kPRjg5gUXXR3fF2VCX329Z0qynUJi5o5aKfiv7nNQoaN9iGP9xwUFoDOYr6HTaRw8
+	 daoW/qmbnCCrQ==
+Date: Tue, 11 Nov 2025 10:21:58 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Bernd Edlinger <bernd.edlinger@hotmail.de>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Alexey Dobriyan <adobriyan@gmail.com>, 
+	Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>, 
+	Will Drewry <wad@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>, 
+	James Morris <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>, 
+	"Eric W. Biederman" <ebiederm@xmission.com>, Adrian Reber <areber@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>, 
+	Alexei Starovoitov <ast@kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, "Paulo Alcantara (SUSE)" <pc@manguebit.com>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Frederic Weisbecker <frederic@kernel.org>, 
+	YueHaibing <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>, 
+	Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>, 
+	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>, 
+	David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, "Joel Fernandes (Google)" <joel@joelfernandes.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Hans Liljestrand <ishkamiel@gmail.com>, 
+	Penglei Jiang <superman.xpt@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Cyrill Gorcunov <gorcunov@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
+Message-ID: <20251111-ankreiden-augen-eadcf9bbdfaa@brauner>
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <20251105143210.GA25535@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251105143210.GA25535@redhat.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0CC508000F
+X-Stat-Signature: uigm86qa7dgf3yajsdtdeaft7nzc4p85
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 863A040010
-X-Stat-Signature: ss4ycjcr5syquzbhan6sfryfj4qiy58i
-X-HE-Tag: 1762852890-664152
-X-HE-Meta: U2FsdGVkX19kFFn4PKiInIA9cvd6G6F4VpuvkBiRLvRo8NvDwicmM2FirBiDy0zY4+C9ZlDrayb9gTfBkcHj+D8iUxtUjCU3I4SRhqRuhU8FpxqeLWGsofPLdKzCF/lcxfDwN0Me8uYvl64EBUzXErrDXcBY27L8XFhpTbH39f+UtL58PO1f/NXNgDhWe5d7vc1LzXpuXtrPc0XoKFqZKuG8VpSEXm/cl45KbCFQKj5HFYXzZUSFbPWbagKOJQqN3BBj+3Op/N2/bM/gb4VJPCb5zFW5gBwsVsRDNv8EWDJ5+e034qvD9tJj1vaWl0/iox4sTeYh84gF64TUaWP9GcOYj3VVD+lv0dq3RTsPoExNmZBSOxBN7wjAoYtENQSQwGHk3jE1eapIfLoCk64gLF5wjd7yAzI792gFK48cNtCOtViujFHcwT6PEbCNxu1bU7IWRGkG3At+OSD3+iGIQ8TQEglkEaj3kTOpKKodZJ6sE9KGezPXn5A4X8nuq1iGzeaOnf+vCIZx1k6GEl51ImgidaZHqCyG1M5NATKd+Lq6kF7dnBdsmfMEV9bszD4nmTqGpF3d+OHG7XOd42W0QOT9ZaiHM3DqZKV+UYTl1nlClILWS45eLg91aM/azvMVoMchCpjJUpkXv6GuOHUBAwjixzp8Nc7GcKjr1QpUMsrI5Vb6V8BfXb5IDSITdsssxzPLUccdtmp1ro2w9nxp4O7Pp7Q0q8JCufPHTn3WyNyv58DgfxM8mI766fwTsfwEdGyioaWZ00lMv2jqQ5l0E+6oqE9qgLrrR0jU5Nh4ghAgdCbiSP8dcX1TyXrEx4Y91v9EcHpFkPPM9dlzpc66iSG0gcM3/gd/3zPsE65L2qTjHoXpC649mbbvCoshFCdz3x7/Kb/sP2eY8m/1t68+n0BqClxFj1Fo53WE0H/1b4tBdb/phy3sHLvzGtKPnHy6i9KMrJAJ0NiJXo2GuFw
- hDyDx2sz
- JGCvcA5n9U3Vcj0zgCY2ehCS4Xk+kwHKGOyxPQqgaRuS+PiXChaXeYKpJg7Ng9FaJYKDvvUSg9ENMJz0w+A4hPRINzgXnjJ5N3jmWHN4uvz+9z8ummvtivmqlGsbuddvkiTFRSiZavNsjXfcN7wVbPiWs3TBaJ1oNO/j43Boq9aW+9TeU/nt1+QFmCBoTg4BO13mAST2BKGu4JogqsiVo7awNKX+otaN6w59txYjBZLB7JCG/iyp3v+MP3nFTgGCKBBJTvdnO+iWIfll++XZZI+0I8L6Y30R9/tP3xAFB/aPf2G7iweFv0+v60XKIVbs+e+xl+h76oIflBfdms9YEnAXGjcoLuDReHYruTcqZqfo2Ule4z+njyOTjGT5utT2v6+LIuqCF7EHQyolE+YHO4NzfMQnRi+YpJSUcMVfYRa9qZ84=
+X-HE-Tag: 1762852933-440219
+X-HE-Meta: U2FsdGVkX18I9RmVkmyfKAyTRflLuAzPFQcVaacCB9V9Y4jd+hHi874q3gUNkzpIPFpEGDflVIbOW1uEpylD6M/sAvJy69a49oWsVU6l42ybAZClWcs06uJt7fB7dehq2nknvOMqXGlx3iWrLaalC/M/oRKDf8mKQf/IY6qvYWbOslOWEiEsD6qHncHpOQvEOFz/sL2kkERGluyn2jJ5cvierHnDBAHYmCgZm+gcYr8QaX08riorBXxtXlaoW4HdBtLpvXFzqMshHcdKJkFm0/6SR2aIXfK6YPjlYk2OmnM43AEN4XcGozjhIxpUQhtsP6tVMZ+eyxBCzR+DGPl86WM6hVfLuvUVV+DFJ+2Ap0kzmfbGmQAFA81twzfgmDcypY6su3sdDlRAWnlirROc9oh7Lj6peg2PzCh/t4rN8nvi9MPTqLdL06BvPz0dmu6dwNH1xS0IVxzvVVuWRA8cPojClbw6CpwnRO8y6/zb1aKvzP14Ac94zyA92+rtuO9h5oP0568xz+iSVNDDp1GvsNN651ceVW49EFUbpvp2hOSrDIr7IWx0rcFG0AugkNWGxnGe3QqmJWO/6IVdzk30G8r9CqIqo1jDaaz11b441Ih7U8h3G+E5/kVeUkozKXVnNq4y1WauxFXDgdt1WdLH86VbINphtCx0m3xBq8kOhyuTIuy9wy+c4peXE8TUf5V91CH+r3z20EZPA95m3yR78GOnnpycqLyeeTWMM9iGX4mDVcZATjrMi8NbROyjb8eiKxwZV38ma2g0D7sBwuwyUM4h2AxqxuEzqN3EwhnyvF69SFtGL0XbWxl1T5aIFM+elB+lBaG+plynBuNan6+puBQJK99oM+ygp9XDJmJuworZmUQCo8VC2gdPVqwoI7U2k58gzLl73eZ6seeKCUaNtGjXJL85zOy0oast3KPcLAks96c/CkNnwPM0v+3m8l0zdXcQPXdM5mEDRznE6gQ
+ VNGItiup
+ uaKx0JX7R/WWhVp1LACwkmzuZd6tWfLZd3QwEcSbgpsFbOHx/3U2Ccf0TEWvnO3TLpGWhf6z9ywkKiwQPvTM2DqNq+bKq6dNku1FV/EytH2E0UBwKhXBLwLXQ0B1IzcobUVawTVtJg5dp2LqQ8uKpB6svzW2dzHNSynf+Qqd+vKvbMp5hp3ZBdSF0PTALtI+PuoqFyFQC4Ak84zR5r3c+pAKbkcjWJ8aIuZZ05BAjb6W611AzWwCpP5kvcON8GYu/3uYKtZ6yEBOsWrf/h4kN68iLToNwwg95dwKnBiIL0lhkpD0sdAe1GIUhY6CkpZz+l6wdSGamTxTRP1klUDZaNWFQocLrIKGfQwLtbfIg4yP4d0q2+TOR4dZfAcOswWpIvgQtjeCHlhNpFUQt19U8Wc9uyY371N/chnpmSLT54MfC/0qO3L5BMm7LsMjeZ1SxH5rkon4PNwHfLV4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,60 +123,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Note that simple_unlink() et.al. are used by many filesystems; for now
-they can not assume that persistency mark will have been set back
-when the object got created.  Once all conversions are done we'll
-have them complain if called for something that had not been marked
-persistent.
+On Wed, Nov 05, 2025 at 03:32:10PM +0100, Oleg Nesterov wrote:
+> I am still thinking about another approach, will write another email.
+> But let me take a closer look at your patch.
+> 
+> First of all, can you split it? See below.
+> 
+> On 08/21, Bernd Edlinger wrote:
+> >
+> > -static int de_thread(struct task_struct *tsk)
+> > +static int de_thread(struct task_struct *tsk, struct linux_binprm *bprm)
+> >  {
+> >  	struct signal_struct *sig = tsk->signal;
+> >  	struct sighand_struct *oldsighand = tsk->sighand;
+> >  	spinlock_t *lock = &oldsighand->siglock;
+> > +	struct task_struct *t;
+> > +	bool unsafe_execve_in_progress = false;
+> >
+> >  	if (thread_group_empty(tsk))
+> >  		goto no_thread_group;
+> > @@ -932,6 +934,19 @@ static int de_thread(struct task_struct *tsk)
+> >  	if (!thread_group_leader(tsk))
+> >  		sig->notify_count--;
+> >
+> > +	for_other_threads(tsk, t) {
+> > +		if (unlikely(t->ptrace)
+> > +		    && (t != tsk->group_leader || !t->exit_state))
+> > +			unsafe_execve_in_progress = true;
+> 
+> you can add "break" into the "if ()" block...
+> 
+> But this is minor. Why do we need "bool unsafe_execve_in_progress" ?
+> If this patch is correct, de_thread() can drop/reacquire cred_guard_mutex
+> unconditionally.
+> 
+> If you really think it makes sense, please make another patch with the
+> changelog.
+> 
+> I'd certainly prefer to avoid this boolean at least for the start. If nothing
+> else to catch the potential problems earlier.
+> 
+> > +	if (unlikely(unsafe_execve_in_progress)) {
+> > +		spin_unlock_irq(lock);
+> > +		sig->exec_bprm = bprm;
+> > +		mutex_unlock(&sig->cred_guard_mutex);
+> > +		spin_lock_irq(lock);
+> 
+> I don't think spin_unlock_irq() + spin_lock_irq() makes any sense...
+> 
+> > @@ -1114,13 +1139,31 @@ int begin_new_exec(struct linux_binprm * bprm)
+> >  	 */
+> >  	trace_sched_prepare_exec(current, bprm);
+> >
+> > +	/* If the binary is not readable then enforce mm->dumpable=0 */
+> > +	would_dump(bprm, bprm->file);
+> > +	if (bprm->have_execfd)
+> > +		would_dump(bprm, bprm->executable);
+> > +
+> > +	/*
+> > +	 * Figure out dumpability. Note that this checking only of current
+> > +	 * is wrong, but userspace depends on it. This should be testing
+> > +	 * bprm->secureexec instead.
+> > +	 */
+> > +	if (bprm->interp_flags & BINPRM_FLAGS_ENFORCE_NONDUMP ||
+> > +	    is_dumpability_changed(current_cred(), bprm->cred) ||
+> > +	    !(uid_eq(current_euid(), current_uid()) &&
+> > +	      gid_eq(current_egid(), current_gid())))
+> > +		set_dumpable(bprm->mm, suid_dumpable);
+> > +	else
+> > +		set_dumpable(bprm->mm, SUID_DUMP_USER);
+> > +
+> 
+> OK, we need to do this before de_thread() drops cred_guard_mutex.
+> But imo this too should be done in a separate patch, the changelog should
+> explain this change.
+> 
+> > @@ -1361,6 +1387,11 @@ static int prepare_bprm_creds(struct linux_binprm *bprm)
+> >  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+> >  		return -ERESTARTNOINTR;
+> >
+> > +	if (unlikely(current->signal->exec_bprm)) {
+> > +		mutex_unlock(&current->signal->cred_guard_mutex);
+> > +		return -ERESTARTNOINTR;
+> > +	}
+> 
+> OK, if signal->exec_bprm != NULL, then current is already killed. But
+> proc_pid_attr_write() and ptrace_traceme() do the same. So how about
+> something like
+> 
+> 	int lock_current_cgm(void)
+> 	{
+> 		if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+> 			return -ERESTARTNOINTR;
+> 
+> 		if (!current->signal->group_exec_task)
+> 			return 0;
+> 
+> 		WARN_ON(!fatal_signal_pending(current));
+> 		mutex_unlock(&current->signal->cred_guard_mutex);
+> 		return -ERESTARTNOINTR;
+> 	}
+> 
+> ?
+> 
+> Note that it checks ->group_exec_task, not ->exec_bprm. So this change can
+> come in a separate patch too, but I won't insist.
+> 
+> > @@ -453,6 +454,28 @@ static int ptrace_attach(struct task_struct *task, long request,
+> >  				return retval;
+> >  		}
+> >
+> > +		if (unlikely(task == task->signal->group_exec_task)) {
+> > +			retval = down_write_killable(&task->signal->exec_update_lock);
+> > +			if (retval)
+> > +				return retval;
+> > +
+> > +			scoped_guard (task_lock, task) {
+> > +				struct linux_binprm *bprm = task->signal->exec_bprm;
+> > +				const struct cred __rcu *old_cred = task->real_cred;
+> > +				struct mm_struct *old_mm = task->mm;
+> > +
+> > +				rcu_assign_pointer(task->real_cred, bprm->cred);
+> > +				task->mm = bprm->mm;
+> > +				retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
+> > +				rcu_assign_pointer(task->real_cred, old_cred);
+> > +				task->mm = old_mm;
+> > +			}
+> 
+> This is the most problematic change which I can't review...
+> 
+> Firstly, it changes task->mm/real_cred for __ptrace_may_access() and this
+> looks dangerous to me.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/libfs.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Yeah, that is not ok. This is effectively override_creds for real_cred
+and that is not a pattern I want to see us establish at all! Temporary
+credential overrides for the subjective credentials is already terrible
+but at least we have the explicit split between real_cred and cred
+expressely for that. So no, that's not an acceptable solution.
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index a033f35493d0..80f288a771e3 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -630,7 +630,7 @@ static void __simple_recursive_removal(struct dentry *dentry,
- 				if (callback)
- 					callback(victim);
- 				fsnotify_delete(inode, d_inode(victim), victim);
--				dput(victim);		// unpin it
-+				d_make_discardable(victim);
- 			}
- 			if (victim == dentry) {
- 				inode_set_mtime_to_ts(inode,
-@@ -764,8 +764,7 @@ int simple_link(struct dentry *old_dentry, struct inode *dir, struct dentry *den
- 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
- 	inc_nlink(inode);
- 	ihold(inode);
--	dget(dentry);
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 	return 0;
- }
- EXPORT_SYMBOL(simple_link);
-@@ -798,7 +797,7 @@ int simple_unlink(struct inode *dir, struct dentry *dentry)
- 	inode_set_mtime_to_ts(dir,
- 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
- 	drop_nlink(inode);
--	dput(dentry);
-+	d_make_discardable(dentry);
- 	return 0;
- }
- EXPORT_SYMBOL(simple_unlink);
-@@ -1078,7 +1077,8 @@ int simple_fill_super(struct super_block *s, unsigned long magic,
- 		simple_inode_init_ts(inode);
- 		inode->i_fop = files->ops;
- 		inode->i_ino = i;
--		d_add(dentry, inode);
-+		d_make_persistent(dentry, inode);
-+		dput(dentry);
- 	}
- 	return 0;
- }
--- 
-2.47.3
-
+> 
+> Say, current_is_single_threaded() called by another CLONE_VM process can
+> miss group_exec_task and falsely return true. Probably not that bad, in
+> this case old_mm should go away soon, but still...
+> 
+> And I don't know if this can fool the users of task_cred_xxx/__task_cred
+> somehow.
+> 
+> Or. check_unsafe_exec() sets LSM_UNSAFE_PTRACE if ptrace. Is it safe to
+> ptrace the execing task after that? I have no idea what the security hooks
+> can do...
+> 
+> Again, can't review this part.
+> 
+> Oleg.
+> 
 
