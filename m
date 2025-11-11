@@ -4,122 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14258CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 21:01:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 795DACCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 21:30:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7074A8E0003; Tue, 11 Nov 2025 16:01:43 -0500 (EST)
+	id 915258E0008; Tue, 11 Nov 2025 16:30:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DEAA8E0002; Tue, 11 Nov 2025 16:01:43 -0500 (EST)
+	id 8EEB18E0002; Tue, 11 Nov 2025 16:30:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61BD08E0003; Tue, 11 Nov 2025 16:01:43 -0500 (EST)
+	id 829A58E0008; Tue, 11 Nov 2025 16:30:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 512708E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:01:43 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EBE9A875C5
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:01:42 +0000 (UTC)
-X-FDA: 84099547644.16.A85047C
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BE9674000C
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:01:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YQHKKnet;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73BFD8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:30:02 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 193E5B700E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:30:02 +0000 (UTC)
+X-FDA: 84099619044.30.CBD0B3C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4AE794000E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:30:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uGKgOZih;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762896600; a=rsa-sha256;
+	cv=none;
+	b=ry3jinx0PxQV2dFpGVfcFRju2iwGFyAEX6g2rImcTOG9jzP2E7vpKa10kRY8PzK26jbxS8
+	QZ2EIiDHind8jtHIVOp/lWe1zfBvFSl9j8deQglfUj/vLlTET3XNxQZxz4o0OLsE5h63+W
+	ix0rE3UMY6frzTpLPPiQnuTGT6FaYuo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uGKgOZih;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762894901;
+	s=arc-20220608; t=1762896600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AOtZbxVqz3T0EH1q1J5hisXUupKcXN5oOYovjWYI2BY=;
-	b=ejH6L3bqSUVb2S2ZW2BzO6WQazVqk/whuutIDTy7SDkvOC/lhYo4cmvFnw7IJ8vymrLmTA
-	oC3RvZAp5eT4dr3cwcQqyWEnemw/2/+QSoJv5XdL/sr/laCvEDu3I8lfXy6myjp7p0REcV
-	2O6Fbi6aK0S9osVBSmayvR73vidKRvo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YQHKKnet;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762894901; a=rsa-sha256;
-	cv=none;
-	b=Y8VJYZCJOUon0aTKDEUYW/PXQfzFYj08JK37G12ZVEtp7hEwRHWVFxXyLabpgCfvIjEGvD
-	13+CRipeOaTrfoLcfgM4WrfsZLgkPqvTKRFeQvphn9GAYoblJexMCUedKEL8/s6ZnHOSz+
-	NJ7nWuuFdRZ3e7S7XnxIlqsTmZVraCE=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so162513a12.0
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:01:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762894899; x=1763499699; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOtZbxVqz3T0EH1q1J5hisXUupKcXN5oOYovjWYI2BY=;
-        b=YQHKKnet3FjFijwLGXTrIfNLlOo5gemP9c3fGD4zpwcm7J3AL+yN/I9jNlFowsA0q3
-         OThi/TlykT3Iv9QgoQRHqlaD4z0x+P+SGHSnlMSLJ64DjjPYO4AuzTX4SlKwfhZTF2Zg
-         FfVjTdJdkkCC7XhX1V2oGINb5BjVOKV0xKVECtOam30qf7CZ8/W7yTQdrATOPlxnUWLm
-         2P9IlK+ZKS08A6PPpIvrpH/VbY721zn5TDe40FoDTiqsgVDdGa6jk3/pJqP406DrjrK/
-         CVHeS2hFMuFIdzeWKgyCcRutiaraYgQb4pFQj/eVUokHRZwcTygHawTjBvV05ALymtKC
-         P5Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762894899; x=1763499699;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AOtZbxVqz3T0EH1q1J5hisXUupKcXN5oOYovjWYI2BY=;
-        b=U6gGQC8oU7sQJJ/1y3BuIMIqMBycQuI4SA4R7QQV+fM0nOBfwajjshkSlsYq1ibNAs
-         U0D1hTyBBufAkRPUtUvM62/9RT4y7/Xv5HHX3HkpucTKKvPZKjPkbi9btPArPUMNqxM2
-         DR1qFhUkPuxvvVq6oQLnRZAZCtkiNbobQSQTUIUUcII3UkYj6/5EMV9HyM4X0nU5FfRr
-         C7tJ25x9zf4MH3ixSSx6nNDByK/2K7naz3qMkwAdm75X28GOiJ4+/O8K4uRBCvv6Cx09
-         Il/cOQCgAxFMQHdyndhJPMBhVUetYMMp9cHLyp6F+DA4928CQbrP+I3gGTIMGKKbr0W0
-         aHGw==
-X-Forwarded-Encrypted: i=1; AJvYcCV15jqFj35ahJZWy1bxIi2kbhDqPp1i8KYn0pZzUjl3IxoWmUYpBKYOlwRpzmXRH58U0j8ywggQuw==@kvack.org
-X-Gm-Message-State: AOJu0YyNnuTz70is7+TweBTylzIanQLJmW5m78LawbGcOeK2k8Jt/dxo
-	WR78FC/z78lgj4apC5CYf6R0KEOdP8cKpxJo0D3A/Rg5uI4CPnr+D9JmpMHl0hAXQs4=
-X-Gm-Gg: ASbGncuXbX06ua1r5PB6y7iEy75e36VU1nxcGYCJW/H/xy5B7Cqo4W0wxL4OldwSB0u
-	0ZIV/neDmtKXLztrovOdJy0FeAmsIWKk61U3+GEj9vLWURfm8uOScbQ2GMbRZUTdA+m2wsQe+wu
-	g0SW4QmCnZ9/x/63GSI3fmYxHACuV/7J/F8TjqHhFAe4qB9/NAg4LOzJNktUIFClFMPV5E+pl2c
-	8Ls4OIbsyY0S9c7s/jL5UgK9oQdSX03XUPK8BrgMvy2fbTK+by3hoD86D9dxbJ3+fM5fSEQIvhz
-	3cKKpkVT1AkgCb+0635YlPjV894wTvl2z7LfSTsg8pZieEygRyjJZh4ZU6y0x9qM2+IhIQW/C3L
-	+kApHi3eegEY36GARJfrQ0Ygq+d6fb1GnHRQEDQ8Av5T5flDEuQx/5AMOH+tMVlYZ1fK/NOSFyt
-	Ne+2+Eaxmmx8HPaFVz0vo/qYA/
-X-Google-Smtp-Source: AGHT+IFHxQR5RsZZYuu15UkFc5wCGawdUUh/83F65t7RT/bR8gwY77ILDOKtOxH1D+cIwgNbNyoHRA==
-X-Received: by 2002:a05:6402:42cf:b0:640:9d8f:3c73 with SMTP id 4fb4d7f45d1cf-6431a577ae9mr518057a12.32.1762894899315;
-        Tue, 11 Nov 2025 13:01:39 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f86e12fsm14093400a12.34.2025.11.11.13.01.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 13:01:38 -0800 (PST)
-Date: Tue, 11 Nov 2025 22:01:37 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Waiman Long <llong@redhat.com>
-Cc: Leon Huang Fu <leon.huangfu@shopee.com>, linux-mm@kvack.org,
-	tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	joel.granados@kernel.org, jack@suse.cz, laoar.shao@gmail.com,
-	mclapinski@google.com, kyle.meyer@hpe.com, corbet@lwn.net,
-	lance.yang@linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
- on-demand stats flushing
-Message-ID: <aROkMU-OFAmYPBgo@tiehlicka>
-References: <20251110101948.19277-1-leon.huangfu@shopee.com>
- <9a9a2ede-af6e-413a-97a0-800993072b22@redhat.com>
- <aROS7yxDU6qFAWzp@tiehlicka>
- <061cdd9e-a70b-4d45-909a-6d50f4da8ef3@redhat.com>
+	bh=pcvbtbrD2+CAqo+91Fr52LwiFBypQ2qDEhuvk+86pXg=;
+	b=RWzFEmZKM3VkfyG0V66hBM+CazlaMYy1IvTOBZ6aBRzN91tQ9FpiMYAYJO3Y1mqXNlbg06
+	0M35ojvqsux0rYoWuqs5tbHFtIiXhXta9VZR+FZDnNgvm2DaiOynz/GZkraXvUpaBpPFcQ
+	ndlcgNMIzAeHMdNOtiVQ9LD78j5QUB0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EE35C43E81;
+	Tue, 11 Nov 2025 21:29:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBE2C116D0;
+	Tue, 11 Nov 2025 21:29:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762896598;
+	bh=/bC50lhCtcx6OG7oIZHLvFZOizTdGgNdqLCTc3tazgg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uGKgOZihX6WkxOXaYaMp7Ce45mAoZy1EdfFSGzxey8lL8ehrEFIL28KuIarmg/MNN
+	 q3HW4jyWthAJ8uUu/tNQsUJIcWjqrwAyZYS2WAzJFEVqjfCokNpJ+pA5pdwBRqWMey
+	 bPGuKEJQFW0OLIvy59Fzs8zpgRKcZmZjpPqjwd1hcYyG4KMM7du5CZ+tP62TLx16s2
+	 vDik8OOPhpjo+w0OVb0HfR9Y1msHmcC+CUnE13AHRG//Nak7D47T7MeOw4cM6XUuLE
+	 SN+jmchssstwp47zqOcbrNN6mzaZpHQXpJoluWRAwVhesyL1Yvf7L+IGOI9KCkFGB8
+	 ZB7mc1l3UU0Dw==
+From: Christian Brauner <brauner@kernel.org>
+To: syzbot <syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	akpm@linux-foundation.org,
+	bpf@vger.kernel.org,
+	bsegall@google.com,
+	david@redhat.com,
+	dietmar.eggemann@arm.com,
+	jack@suse.cz,
+	jsavitz@redhat.com,
+	juri.lelli@redhat.com,
+	kartikey406@gmail.com,
+	kees@kernel.org,
+	liam.howlett@oracle.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	mgorman@suse.de,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	mjguzik@gmail.com,
+	oleg@redhat.com,
+	paul@paul-moore.com,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	sergeh@kernel.org,
+	surenb@google.com,
+	syzkaller-bugs@googlegroups.com,
+	vbabka@suse.cz,
+	vincent.guittot@linaro.org,
+	viro@zeniv.linux.org.uk,
+	vschneid@redhat.com,
+	syzbot+0a8655a80e189278487e@syzkaller.appspotmail.com
+Subject: [PATCH] nsproxy: fix free_nsproxy() and simplify create_new_namespaces()
+Date: Tue, 11 Nov 2025 22:29:44 +0100
+Message-ID: <20251111-sakralbau-guthaben-7dcc277d337f@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <691360cc.a70a0220.22f260.013e.GAE@google.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <061cdd9e-a70b-4d45-909a-6d50f4da8ef3@redhat.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BE9674000C
-X-Stat-Signature: 5zmy7pjzsmbpdn1d17jh5cudexqid5h6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6748; i=brauner@kernel.org; h=from:subject:message-id; bh=/bC50lhCtcx6OG7oIZHLvFZOizTdGgNdqLCTc3tazgg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQKrzr99kkW6wzH6+UP/PreNc3KE2rfU+NbHrZ+xbWOF t7s6PTXHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPRDmVkuJPxT1/H9VJg0TpP bYu9tkz6hpfdpUT+6F3i3+xsae+1ieGv0BItmR8v/+iyT+J6VCyx5du09JVfWi1ua75+sX5Kp8w rHgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1762894900-507949
-X-HE-Meta: U2FsdGVkX1/VEAN0tUh5lMQSt2iwEH3v3/97uYPSMl2WdyUjCt9AdBuzk6Ieq6xLDsD3RpbBV1umYaahZWvqB17AQNuTQAojwk8WxELwUkCmMjnjqRoN7Jtl0fZ7lDjWrwL4wajn1E/5i0i+0S88sWJd8edp3ej6ukOpt8L2y55xmzPyfVl6cn91fTQXCHLBbL3jAgGmNvickQZXbP+kP+O9Cuk3XfNNnsWH/90caUqNXnQsA/oKEu256AlbS27KVlmFO1m8dWiFPCvIWf+PiZ5kOvWtgo/ObveI3yz07ckTbP5GfDs+8xF0cqhR2fCvPfqmyu+WiSDs9mSq7E3QW/MLHqEQZx7Yqidwp/9CNWXYDUe5Z+8ogoCY0uthU8l+6IfX2z6h6+XfM+mXMswo74v382i3RhScVnTOLH3uqDds0tmxJ3UqjH7w+FzhBFo86dYR1+p1hFEtU/Y8/aQ+F53xCLV9pMJ4VcsqOAQv3TguW9arBkmJcrL+A1zP8nm8YpPDe8fx2fvWPfemjXdCiZn1nDbbxl80hwPmL0vO9jNT5X4XkQeEfPGgOGn+h4BLEsd2Dn8020tWzTcxUurQs0AHpKrvrZL4bQH1z1O3AZl8sgGIvzD1fdQR+TyefBMXLeWQqa9jghhQFfy6/MYBnIM3mkpSuJBZQ/2V9eQrXh+rXKhXF2LOpSHA7ZyoPg2OAcqAsv83QaEPPcd9NSupzo6QLKUPEnGcfHyvRKDAbzutU8xP+ah4QfS/DYbQAqq2uxpDZ0aI1jXMlrwMQMuLdKNj75gnwCZJVyRTVbZGgAs4CRhdj/odj1JEaTJsAbfSNhvgx4oMuEpg+omA8vVEE8fEgrzpHEvip2Br4ksYg59XU7zzKNYz9Jt9NKvFSdpvNP799KfHJVieSbvwsc47Qr1pp1p9aSB6qycfVZWGNyRnakVcPWY/jXduwyZpqU6Duad1NUlcTowHh+UbG3n
- hqapcUL+
- On97YFkJIyHZLb2GqqN3amzpfEXSLJYttz76RfoESexmA2rLS/Hsg5JbSXlI0e3Gi6aEUVunZEXQ6WEOwhAK9wT3yJubrP2YzDlqqdyHyRsulUkqUM6x0vkYsD92I5RmxUxIX9Z6SMYUj8Q16xNiHsrbXRVH6QOyKE6SWhrxO/XAkE335RmJVuHZwvV3TXeIXG4BNgD7fd86NeVqfK9nzsewZeDE0kcZ25/Dbu8CuDMQ/O593/UlYy9UIovMtHpXsNhk9X6M1kLDjqvOxuUjX699YU+abQ/El3STJxbwYA8j+eofKG0ujluZ1c1dSYV9o5xlZXo6TVW2npgjPYm0aX129xwYd0aJYSJVWPNNu9ougs4e7nBMHDjZ73RKxhZ21mboXI4Nxi/Nq7+iQfRA995ywQz0XwMV9eBYdutdyHiMUO0eJJgPnyDtkjSdjIsWjSRezJ7DgOpx03veSSXAR1xqLawWPgSWNV6af
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4AE794000E
+X-Stat-Signature: 8uj771tnue9sugg8g7j8jmmkbnqwfdnm
+X-HE-Tag: 1762896600-389581
+X-HE-Meta: U2FsdGVkX199F2Gk0zJr2LE+j6+8KdLTOqs748rOnx3NWysi7I7nS/Pa14nFBGXSUXe5y/a2R0vJJm67ShlsmW3KVmodtyxF0yJyiUhKfteQ5SlSCfJIzRgMjU/MWmBD8X89PiQYHDHRzZNYHNEraCQhWsp2t147wSyFO7XpLDvvbJyZabRlh7g+IHZ5Ap8QVE4MRpNyK0w2iSCfxFxvJXtb6aEBIHtTDtKBgjKq0d+SmGjT3NKEVRCKRRczlFRspNSWHPPErckL/E1qDA5hlEDPtA7MkAMQboZhlKedxx08Cf6Ou9LwUqUF9pKhAt/5X5CJ0mokPoqRNDGzxDRYwLCFpN4MKRoIk9s4iUTHjdq3uv2ira+jqoL6w8+AckfcBtm2yNWE/ESc/GLIhXDFCmc7WQDeUsUDsBhZrHJ/kaowDZrj1dANzk1SYEkVU/poYSOp0kyY+gn+XTHkuxmdsdlYySZMJnQ2CM6GPlNgSKG8ShIa2NFTbwWqzVrPBuHxxfVeOoGLwxVfmCOFe8+ygUb7ziZ+IJQ1EYcoE4o5AcOM9V1OtxXOjtswZbYULgYtsBKUJZIBRyMYCpTYperZBoZ3cxVu1044vNl3zzB3SH2Hc0FheQRwV97qZVYTP+//YTSjqCzRIdPmz46/vQN1kHzVaMjxmWI/S6FxGu7/qCgW/MMHewddE3AUvGZ5J50idxR3Bcz3/WGPJ+PpY4BhC4X7hqrjx7p0VI7H4wuGf3wlnBvD3Nub8pW5Tv1bo9ymM/gJxSpjva6BSQdOQNSXLoaBQQlSp1BMt1oyiw6vlzLUg/ITIaEZB0P2zYVLQ7uUHsQgoxmR3OCuwrM0eFWm/11n6fH2UypvgUgM83xihH7Giqvr+lj9CFbq9WBQXp3oHdtYCafE8J25GD/uMEuE7w90GHtZkgQGrdiuZy5Jm4ysxms2kYgUfrRwrZ4emCa/5nsNrhlgGu/QkHlqJQa
+ yZWLBqfK
+ JT2In6qASo5/BAeHAwJLS9hc/vyFdKIBnpyN8UaFN2sRpQDOXZV+9wHX/82QXi2NmlZw2qYExzxYW43leBpXPzKuTDywssmh6/8XHqgLLrH96tg0kCJYXLTyxEuCCtzNLTjba1XVlNq+4vyGLybW8T/HL2SLMfJDzPQOZQcUFQAl5GvxMgbPdRNkADZce6p941mZSY93W5UGaOPJAzetnwjzcIxXYYZa8fI3iN3aHkLxMJCr8GGR3O/WaQoJIWSmsbtV+0EGQkXuicpSyUugTpYH/BUcNFIubeQ000o9PZYFZkf1vd2tIF/aJQYs5gNU4YoriED9+jmCxlcei/qb6o52O4RMaASSjd1UBwkUQL04xETuO7MQ6363YpdUxvNSsxyCJmD4sou7VVebFE8EKTo4YAHn77EFS2cyQEEwMWqi9GJh7ColnsnoMxBhaYa5C5xUFDiLc0dXDGDGwXS993upTEheKrnPhSXQd8EZ1a1uaAbc9ri4lXuwtoffaS0/9ZSK9mW1eEu8H1cvkFQYmr5hCdyxKmZHfOPocrHDTdvXGCwWAeQygnF5mQfxewVzv3VLc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,41 +125,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 11-11-25 15:44:07, Waiman Long wrote:
-> 
-> On 11/11/25 2:47 PM, Michal Hocko wrote:
-> > On Tue 11-11-25 14:10:28, Waiman Long wrote:
-> > [...]
-> > > > +static void memcg_flush_stats(struct mem_cgroup *memcg, bool force)
-> > > > +{
-> > > > +	if (mem_cgroup_disabled())
-> > > > +		return;
-> > > > +
-> > > > +	memcg = memcg ?: root_mem_cgroup;
-> > > > +	__mem_cgroup_flush_stats(memcg, force);
-> > > > +}
-> > > Shouldn't we impose a limit in term of how frequently this
-> > > memcg_flush_stats() function can be called like at most a few times per
-> > This effectivelly invalidates the primary purpose of the interface to
-> > provide a method to get as-fresh-as-possible value AFAICS.
-> > 
-> > > second to prevent abuse from user space as stat flushing is expensive? We
-> > > should prevent some kind of user space DoS attack by using this new API if
-> > > we decide to implement it.
-> > What exactly would be an attack vector?
-> 
-> just repeatedly write a string to the new cgroup file. It will then call
-> css_rstat_flush() repeatedly. It is not a real DoS attack, but it can still
-> consume a lot of cpu time and slow down other tasks.
+Make it possible to handle NULL being passed to the reference count
+helpers instead of forcing the caller to handle this. Afterwards we can
+nicely allow a cleanup guard to handle nsproxy freeing.
 
-How does that differ from writing a limit that would cause a constant
-memory reclaim from a worklad that you craft and cause a constant CPU
-activity and even worse lock contention?
+Active reference count handling is not done in nsproxy_free() but rather
+in free_nsproxy() as nsproxy_free() is also called from setns() failure
+paths where a new nsproxy has been prepared but has not been marked as
+active via switch_task_namespaces().
 
-I guess the answer is that you do not let untrusted entities to create
-cgroup hierarchies and allow to modify or generally have a write access
-to control files. Or am I missing something?
+Fixes: 3c9820d5c64a ("ns: add active reference count")
+Reported-by: syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com
+Reported-by: syzbot+0a8655a80e189278487e@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/690bfb9e.050a0220.2e3c35.0013.GAE@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+ include/linux/ns_common.h |  11 ++--
+ kernel/nsproxy.c          | 107 +++++++++++++++-----------------------
+ 2 files changed, 48 insertions(+), 70 deletions(-)
+
+diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
+index 136f6a322e53..825f5865bfc5 100644
+--- a/include/linux/ns_common.h
++++ b/include/linux/ns_common.h
+@@ -114,11 +114,14 @@ static __always_inline __must_check bool __ns_ref_dec_and_lock(struct ns_common
+ }
+ 
+ #define ns_ref_read(__ns) __ns_ref_read(to_ns_common((__ns)))
+-#define ns_ref_inc(__ns) __ns_ref_inc(to_ns_common((__ns)))
+-#define ns_ref_get(__ns) __ns_ref_get(to_ns_common((__ns)))
+-#define ns_ref_put(__ns) __ns_ref_put(to_ns_common((__ns)))
++#define ns_ref_inc(__ns) \
++	do { if (__ns) __ns_ref_inc(to_ns_common((__ns))); } while (0)
++#define ns_ref_get(__ns) \
++	((__ns) ? __ns_ref_get(to_ns_common((__ns))) : false)
++#define ns_ref_put(__ns) \
++	((__ns) ? __ns_ref_put(to_ns_common((__ns))) : false)
+ #define ns_ref_put_and_lock(__ns, __ns_lock) \
+-	__ns_ref_dec_and_lock(to_ns_common((__ns)), __ns_lock)
++	((__ns) ? __ns_ref_dec_and_lock(to_ns_common((__ns)), __ns_lock) : false)
+ 
+ #define ns_ref_active_read(__ns) \
+ 	((__ns) ? __ns_ref_active_read(to_ns_common(__ns)) : 0)
+diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
+index 94c2cfe0afa1..2c94452dc793 100644
+--- a/kernel/nsproxy.c
++++ b/kernel/nsproxy.c
+@@ -60,6 +60,27 @@ static inline struct nsproxy *create_nsproxy(void)
+ 	return nsproxy;
+ }
+ 
++static inline void nsproxy_free(struct nsproxy *ns)
++{
++	put_mnt_ns(ns->mnt_ns);
++	put_uts_ns(ns->uts_ns);
++	put_ipc_ns(ns->ipc_ns);
++	put_pid_ns(ns->pid_ns_for_children);
++	put_time_ns(ns->time_ns);
++	put_time_ns(ns->time_ns_for_children);
++	put_cgroup_ns(ns->cgroup_ns);
++	put_net(ns->net_ns);
++	kmem_cache_free(nsproxy_cachep, ns);
++}
++
++DEFINE_FREE(nsproxy_free, struct nsproxy *, if (_T) nsproxy_free(_T))
++
++void free_nsproxy(struct nsproxy *ns)
++{
++	nsproxy_ns_active_put(ns);
++	nsproxy_free(ns);
++}
++
+ /*
+  * Create new nsproxy and all of its the associated namespaces.
+  * Return the newly created nsproxy.  Do not attach this to the task,
+@@ -69,76 +90,45 @@ static struct nsproxy *create_new_namespaces(u64 flags,
+ 	struct task_struct *tsk, struct user_namespace *user_ns,
+ 	struct fs_struct *new_fs)
+ {
+-	struct nsproxy *new_nsp;
+-	int err;
++	struct nsproxy *new_nsp __free(nsproxy_free) = NULL;
+ 
+ 	new_nsp = create_nsproxy();
+ 	if (!new_nsp)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	new_nsp->mnt_ns = copy_mnt_ns(flags, tsk->nsproxy->mnt_ns, user_ns, new_fs);
+-	if (IS_ERR(new_nsp->mnt_ns)) {
+-		err = PTR_ERR(new_nsp->mnt_ns);
+-		goto out_ns;
+-	}
++	if (IS_ERR(new_nsp->mnt_ns))
++		return ERR_CAST(new_nsp->mnt_ns);
+ 
+ 	new_nsp->uts_ns = copy_utsname(flags, user_ns, tsk->nsproxy->uts_ns);
+-	if (IS_ERR(new_nsp->uts_ns)) {
+-		err = PTR_ERR(new_nsp->uts_ns);
+-		goto out_uts;
+-	}
++	if (IS_ERR(new_nsp->uts_ns))
++		return ERR_CAST(new_nsp->uts_ns);
+ 
+ 	new_nsp->ipc_ns = copy_ipcs(flags, user_ns, tsk->nsproxy->ipc_ns);
+-	if (IS_ERR(new_nsp->ipc_ns)) {
+-		err = PTR_ERR(new_nsp->ipc_ns);
+-		goto out_ipc;
+-	}
++	if (IS_ERR(new_nsp->ipc_ns))
++		return ERR_CAST(new_nsp->ipc_ns);
+ 
+-	new_nsp->pid_ns_for_children =
+-		copy_pid_ns(flags, user_ns, tsk->nsproxy->pid_ns_for_children);
+-	if (IS_ERR(new_nsp->pid_ns_for_children)) {
+-		err = PTR_ERR(new_nsp->pid_ns_for_children);
+-		goto out_pid;
+-	}
++	new_nsp->pid_ns_for_children = copy_pid_ns(flags, user_ns,
++						   tsk->nsproxy->pid_ns_for_children);
++	if (IS_ERR(new_nsp->pid_ns_for_children))
++		return ERR_CAST(new_nsp->pid_ns_for_children);
+ 
+ 	new_nsp->cgroup_ns = copy_cgroup_ns(flags, user_ns,
+ 					    tsk->nsproxy->cgroup_ns);
+-	if (IS_ERR(new_nsp->cgroup_ns)) {
+-		err = PTR_ERR(new_nsp->cgroup_ns);
+-		goto out_cgroup;
+-	}
++	if (IS_ERR(new_nsp->cgroup_ns))
++		return ERR_CAST(new_nsp->cgroup_ns);
+ 
+ 	new_nsp->net_ns = copy_net_ns(flags, user_ns, tsk->nsproxy->net_ns);
+-	if (IS_ERR(new_nsp->net_ns)) {
+-		err = PTR_ERR(new_nsp->net_ns);
+-		goto out_net;
+-	}
++	if (IS_ERR(new_nsp->net_ns))
++		return ERR_CAST(new_nsp->net_ns);
+ 
+ 	new_nsp->time_ns_for_children = copy_time_ns(flags, user_ns,
+-					tsk->nsproxy->time_ns_for_children);
+-	if (IS_ERR(new_nsp->time_ns_for_children)) {
+-		err = PTR_ERR(new_nsp->time_ns_for_children);
+-		goto out_time;
+-	}
++						     tsk->nsproxy->time_ns_for_children);
++	if (IS_ERR(new_nsp->time_ns_for_children))
++		return ERR_CAST(new_nsp->time_ns_for_children);
+ 	new_nsp->time_ns = get_time_ns(tsk->nsproxy->time_ns);
+ 
+-	return new_nsp;
+-
+-out_time:
+-	put_net(new_nsp->net_ns);
+-out_net:
+-	put_cgroup_ns(new_nsp->cgroup_ns);
+-out_cgroup:
+-	put_pid_ns(new_nsp->pid_ns_for_children);
+-out_pid:
+-	put_ipc_ns(new_nsp->ipc_ns);
+-out_ipc:
+-	put_uts_ns(new_nsp->uts_ns);
+-out_uts:
+-	put_mnt_ns(new_nsp->mnt_ns);
+-out_ns:
+-	kmem_cache_free(nsproxy_cachep, new_nsp);
+-	return ERR_PTR(err);
++	return no_free_ptr(new_nsp);
+ }
+ 
+ /*
+@@ -185,21 +175,6 @@ int copy_namespaces(u64 flags, struct task_struct *tsk)
+ 	return 0;
+ }
+ 
+-void free_nsproxy(struct nsproxy *ns)
+-{
+-	nsproxy_ns_active_put(ns);
+-
+-	put_mnt_ns(ns->mnt_ns);
+-	put_uts_ns(ns->uts_ns);
+-	put_ipc_ns(ns->ipc_ns);
+-	put_pid_ns(ns->pid_ns_for_children);
+-	put_time_ns(ns->time_ns);
+-	put_time_ns(ns->time_ns_for_children);
+-	put_cgroup_ns(ns->cgroup_ns);
+-	put_net(ns->net_ns);
+-	kmem_cache_free(nsproxy_cachep, ns);
+-}
+-
+ /*
+  * Called from unshare. Unshare all the namespaces part of nsproxy.
+  * On success, returns the new nsproxy.
+@@ -338,7 +313,7 @@ static void put_nsset(struct nsset *nsset)
+ 	if (nsset->fs && (flags & CLONE_NEWNS) && (flags & ~CLONE_NEWNS))
+ 		free_fs_struct(nsset->fs);
+ 	if (nsset->nsproxy)
+-		free_nsproxy(nsset->nsproxy);
++		nsproxy_free(nsset->nsproxy);
+ }
+ 
+ static int prepare_nsset(unsigned flags, struct nsset *nsset)
 -- 
-Michal Hocko
-SUSE Labs
+2.47.3
+
 
