@@ -4,99 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41D0BCCFA13
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:04:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2BC2CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E3258E000D; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
+	id 3A7FE8E000E; Mon, 10 Nov 2025 22:07:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96C8E8E0002; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
+	id 37EC98E0002; Mon, 10 Nov 2025 22:07:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85B408E000D; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
+	id 2BC2A8E000E; Mon, 10 Nov 2025 22:07:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 700A68E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:04:31 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C20F16034E
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:04:31 +0000 (UTC)
-X-FDA: 84096833142.22.47B1A54
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B3FB04000E
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:04:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m1VOnbj0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762830267; a=rsa-sha256;
-	cv=none;
-	b=0G12y/UAb8Md/YVSTDe1MBkWUl1IKCzCeJ2Pt66zXju6ArhsSUGfj6WJ6ygcT+Q4XMFm9d
-	Dduic+7N5vfwsS1oO8pCvse0MD0PnhjKsYIPMs16gOPgkYu4S+VIQ71sqPvscesYXCp9Oq
-	BeEsAho+1uo2dWnou7tK8Fo6aiu3upQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m1VOnbj0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18DBE8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:07:21 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DA349160386
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:07:20 +0000 (UTC)
+X-FDA: 84096840240.08.CF3CDE1
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 09FAD1C0009
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:07:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i2VXkTwr;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762830267;
+	s=arc-20220608; t=1762830439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V5c8zazQymbCh3EJOF0KTydVfHgB+HL63txNkj2DBcg=;
-	b=YZX6BG4OGl5jlQm/OlO07AGtCpx0gmz05hnzFpntGkoew9wmaXSnAtu2QlbCu8csMnYP5u
-	y6beiRqP6HaArPf2fWDN9fPk+9TZjHAj2fDAjAAONKIezv9Xa61bfwS28SaF0imQ7VtKxW
-	4bGe35HhHM4ziS6e1D/sd57rIWKxN6o=
-Message-ID: <8d6655f8-2756-45bb-85c1-223c3a5e656c@linux.dev>
+	bh=coZlxvjouzIp2H+RXwQcczehI/L+km+mWX+nuQHuLuc=;
+	b=AVdQz9AkSDPCQLbRybXDW0ArS3OxclZ13TMn6gU5kxEe4ICAHbjGvUUmF/pfbEA69ahh2a
+	qstRVEc4gc3FtzysKsrvMvYipzX4XQJqF1VHGxBTrCMM5s86vF3xsp5nhbf4Aekg4RlLSU
+	oD6Q3VOAcUf629bK5y63CdJwlv+AjjI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i2VXkTwr;
+	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762830439; a=rsa-sha256;
+	cv=none;
+	b=CnQm1HdVYw0VB8b3PgHa6TVugKr/JYy9TaYkqqe3c5dSqFlbyoozg+Cne+o5tKVOun8UQ/
+	gQO9RABVnb8BXPLk48yE25P/AodO3i3wrxvtctsc4+5oFdx8FqgJpcC7awX4DFKQMohLZS
+	imtrk2gqEYATvUTaGxeoslCy1ae++V8=
+Message-ID: <982d6b8c-53e7-46f3-9357-afb85319d0a3@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762830265;
+	t=1762830437;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V5c8zazQymbCh3EJOF0KTydVfHgB+HL63txNkj2DBcg=;
-	b=m1VOnbj0B52FF5eqkgvxn2ibcAZ2AlUdQ2OpPrHQmPQeylgDhQJZc44smuZ/tFwxYYmsLz
-	MO94ShQBlC2V/Nu2D3aYvij6xrHH3NeUozTm0MkGI8F9M9YBE2vzLtaW4CW2d3AV3LqiNx
-	ieAfXns9GSZy2EFyQl44C+OKbFBoyNc=
-Date: Tue, 11 Nov 2025 11:04:09 +0800
+	bh=coZlxvjouzIp2H+RXwQcczehI/L+km+mWX+nuQHuLuc=;
+	b=i2VXkTwrEj122SnmJM/kZ5RGpk+CzulkvQbubkractg6E7mfog6AeRcXLOdWG1K07xKKJo
+	3PSATPpRhFOSR6pWC2IQHDdfj13x4O+rsoI9YBNN/lzT8Lwd9xqxAJvLM96rPpnDJcphP/
+	tfysCV3NdMZAEmDE402Rr8RVOpryFAA=
+Date: Tue, 11 Nov 2025 11:07:09 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
-To: Shakeel Butt <shakeel.butt@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Muchun Song <songmuchun@bytedance.com>, Qi Zheng
- <zhengqi.arch@bytedance.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- linux-rt-devel@lists.linux.dev
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <97ea4728568459f501ddcab6c378c29064630bb9.1761658310.git.zhengqi.arch@bytedance.com>
- <aQ1_f_6KPRZknUGS@harry> <366385a3-ed0e-440b-a08b-9cf14165ee8f@linux.dev>
- <aQ3yLER4C4jY70BH@harry>
- <hfutmuh4g5jtmrgeemq2aqr2tvxz6mnqaxo5l5vddqnjasyagi@gcscu5khrjxm>
- <aRFKY5VGEujVOqBc@hyeyoo> <2a68bddf-e6e6-4960-b5bc-1a39d747ea9b@linux.dev>
- <aRF7eYlBKmG3hEFF@hyeyoo>
- <aqdvjyzfk6vpespzcszfkmx522iy7hvddefcjgusrysglpdykt@uqedtngotzmy>
+Subject: Re: [PATCH 0/4] memcg: cleanup the memcg stats interfaces
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Meta kernel team <kernel-team@meta.com>
+References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+ <aRKKfdN3B68wxFvN@hyeyoo> <24969292-7543-456f-8b80-09c4521507e2@linux.dev>
+ <gsew67sciieqxbcczp5mzx4lj6pvvclfrxn6or3pzjqmj7eeic@7bxuwqgnqaum>
+ <99429fb8-dcec-43e7-a23b-bee54b8ed6e6@linux.dev>
+ <hgf4uciz7rp2mpxalcuingafs5ktmsgvom2pefjv3yogel5dh3@7kkwtrnqotnc>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aqdvjyzfk6vpespzcszfkmx522iy7hvddefcjgusrysglpdykt@uqedtngotzmy>
+In-Reply-To: <hgf4uciz7rp2mpxalcuingafs5ktmsgvom2pefjv3yogel5dh3@7kkwtrnqotnc>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 09FAD1C0009
+X-Stat-Signature: 5zqjh4he1oykhq5z1bjqt8ea9nzojsmg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B3FB04000E
-X-Stat-Signature: ubuz5gt39genj89pny7cbk8jasq7ayb9
-X-HE-Tag: 1762830267-606479
-X-HE-Meta: U2FsdGVkX1/0EFdWKc0g/zQaLHXWSMWLTOPVxZj9qQnhZqKZi3YzNY4dV8Kzni6UnDHmevqM/cPU6SVXYZKPw+UJL9t1Wu9I3RvCoKA4eyt/vybUjYV7cqXd4ZtzTD1mrk2yht6DbEhZUUxhr4w7U/2mkCA7Xx1wKc9BNZHvgPeB1KUeiHgt0JWjuUcVUMVL+P+J8oSyMlJtDmZOofAqN5oU1dXHHlEbQ8sLnHvyRAqFWBZwDHE2nMk9LXrqMYgOznyiAtzuzZk0DwDMO7PCX6d6BDpKPDOxG+C1Zcz0Oi4jcahH4t+9qYO4RSv8W8CW0acppPqF3DwBshmvL3OmdTIadMEQMMR/OshD1hTmjI7f389yFq6k4v7M5MkQgAbvFOn81T5PgGCAA00gBijaroe3J8vUXOQ0VLSasrGTuOxL6tt6OQoAnm3qanHKT3ihXcroYQfryONaFJ8k+6GSsifiUMeIZsLgNninEUFqrPht2l6r3N3naveIA07bs2kXEgG6/QiIbbxJnRGltK7elHNE6aejTMH03DtNKEbXg5WlecV7GdVmz8jLda9V6sKP+ryXCYhfI0GwlBfWCacm95LYsfTkfNDWio/myf0hKof9efru3w9Wz56HxqR9toyH1h2edPQmiU+889c2zD9kEDtuh3QpE690OEIltEm+UlYPUnzV267Pe8ZN7t8g+tzPEYdiWRXpwk5Ni41F4VHqv7F/IOgdmyKL5np52amtN3WK46rykk15vfwd7K2OHMjyOuwDCI3GQSB1tAjprANNkLMroUDwfJS4eWMn2xo7CvH+twkJImB3VCbSGgFF+v08YPsh3II0MmMYeDsJom9YW1uc7cT65SWMgLWjzDseFpuMbyOErv3WZ1tqRomySukcrY0EpjIj9kZD2jU8XWUuJ4mA5C0pjOYwJGNkjXGToJVmIaBZg5JSW1Wp7FQS2W+HbvZhLNZVCCzFapvGDys
- iWH2M37i
- YWPG10keJFfx+EapN1YERAc8L4O80ol9TOVZM6E1SCLOS9CKxB0IU3Iz5IIF3vwAwmbx9LCQJ4WwPH39HfhkrKQJwPfsABD14BziG1v2OQ1WyMlA29Ie8NRYuBeVOvNf9gHZTz0m8uGRqA02SOhVjK1Ep2y17q+5IG/h1VcRc77fEjLwsbnjd9kloKZ49aYRSFBkh5UheCXIm19ts3VuYhSc+lXenr1qkBttubFHFlP8S1paA4fjtwAvkHQ896Cr3RiYv
+X-HE-Tag: 1762830438-8727
+X-HE-Meta: U2FsdGVkX18gvCxkm+ZEzsJRW7XZ7CpUK/VxTxHjZWyV76nOlmr8w6u75VcetPh3negflcUtRpQyufbw7lcrBskibIJktkvA/dd8PLluNw9BHd54TFgv8BeiDkeX08HY1nJoZqqOR+ooE5WTtUkt/o0U6se1a1P/4kx6+LTJeq2kQlsuE1ezJ/QepU6e0orUTbqzDn8ckZVLJX7VpyXDIDVX83NUcsyCuHgr5Y7tdaN4RwTv43DwwXv/ROGU9pI5hvzrG/svsRJgBMBlUka5yJDmpF4ZUpMsalmWNRHiMKKp3qivqa+AH2+lUAkLt2QyZlK6qmsSFcO4ajCyMmOsVjKLcI7d9NRqk6qfm2k0HsFply4Z5oP+WaJpUPCP5IszNSZbZW1H3dPw6eNNItNtOboBMo3b2tLvptef4j2NGMmyrp3Sz5SFvwXqXVcNLLdMxNPexW5BCenn6tpWg4j4Pik4GSJ/OOoshb+lTi8CFbyP4qUYZS/K46aaTip6n1mZQyUPQEGrYV9wBcUDWHqeZ2InfAGPB+NVXEaCOLz2r39TvGcbGU0QzOeRu/Mjlbz5rmIP9kR0XKN7k+EkI+4TNfKn5kEoCxBQIMCH2+TbJC2p/D1KhaFwLu0PUqly/jkrBFaN0+Gmw4TNyn1nk5Oz4/qd6JQsyPiqymNfDM4wHeK6GFzZszYKgoAwgBMKohZ3g4zJ4IA5zc7ZEhXNsG0rhSp4kPXyIgekYU55vaPkkSEFZa2jPTb0u+IOSdm/s1wAGJfj1TyoM7ZeJrnife8rRVZq0Zw1CkaK90eJlztN201/styW9hX4/mL7ddYSKv5pSBELWFbbQLBK2QezJ9EL2FsWN5KwJtY8WONH2eNfMZf3on8zYXsxOmJ+aWKyATAYIt15CRPgYQvsRKI811bInQwE4Yrdel5BEGN6KMPhZjD+NPZ0+XEmimSvRRodTSrhCtx1xDTb/Hw4yA2Wb0A
+ id12jl8F
+ wzgCtqMI7lyN8KwB7MX6cswcOHg+kaFUgJACsOFrhWR5G+7wrLaeB7+JpFiuRsGcwaHLEVKFvvOi/U/1Lm7OgRfT7E41nyMOLuOf6+F4Bi8hgpUyGl4yMkCPgfN4m/8iv3ktX6B1mH965/zzeIRR2ZeBCzHB8jmxtFMJFWKoFtmR8SSaF1cGFxXabHouN/mHx+mIJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,27 +99,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 11/11/25 12:47 AM, Shakeel Butt wrote:
-> On Mon, Nov 10, 2025 at 02:43:21PM +0900, Harry Yoo wrote:
->> On Mon, Nov 10, 2025 at 12:30:06PM +0800, Qi Zheng wrote:
->>>> Maybe we could make it safe against re-entrant IRQ handlers by using
->>>> read-modify-write operations?
->>>
->>> Isn't it because of the RMW operation that we need to use IRQ to
->>> guarantee atomicity? Or have I misunderstood something?
+
+On 11/11/25 11:00 AM, Shakeel Butt wrote:
+> On Tue, Nov 11, 2025 at 10:48:18AM +0800, Qi Zheng wrote:
+>> Hi Shakeel,
 >>
->> I meant using atomic operations instead of disabling IRQs, like, by
->> using this_cpu_add() or cmpxchg() instead.
+>> On 11/11/25 10:39 AM, Shakeel Butt wrote:
+>>> On Tue, Nov 11, 2025 at 10:23:15AM +0800, Qi Zheng wrote:
+>>>> Hi,
+>>>>
+>>> [...]
+>>>>>
+>>>>> Are you or Qi planning a follow-up that converts spin_lock_irq() to
+>>>>> spin_lock() in places where they disabled IRQs was just to update vmstat?
+>>>>
+>>>> Perhaps this change could be implemented together in [PATCH 1/4]?
+>>>>
+>>>> Of course, it's also reasonable to make it a separate patch. If we
+>>>> choose this method, I’m fine with either me or Shakeel doing it.
+>>>>
+>>>
+>>> Let's do it separately as I wanted to keep the memcg related changes
+>>> self-contained.
+>>
+>> OK.
+>>
+>>>
+>>> Qi, can you please take a stab at that?
+>>
+>> Sure, I will do it.
+>>
+>>>
+>>>>>
+>>>>> Qi's zombie memcg series will depends on that work I guess..
+>>>>
+>>>> Yes, and there are other places that also need to be converted, such as
+>>>> __folio_migrate_mapping().
+>>>
+>>> I see __mod_zone_page_state() usage in __folio_migrate_mapping() and
+>>> using the same reasoning we can convert it to use mod_zone_page_state().
+>>> Where else do you need to do these conversions (other than
+>>> __folio_migrate_mapping)?
+>>
+>> I mean converting these places to use spin_lock() instead of
+>> spin_lock_irq().
 > 
-> We already have mod_node_page_state() which is safe from IRQs and is
-> optimized to not disable IRQs for archs with HAVE_CMPXCHG_LOCAL which
-> includes x86 and arm64.
+> For only stats, right?
 
-However, in the !CONFIG_HAVE_CMPXCHG_LOCAL case, mod_node_page_state()
-still calls local_irq_save(). Is this feasible in the PREEMPT_RT kernel?
+Right, for thoes places where they disabled IRQs was just to update
+vmstat.
 
-> 
-> Let me send the patch to cleanup the memcg code which uses
-> __mod_node_page_state.
 
 
