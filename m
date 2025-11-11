@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7B6CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56ECECD13D2
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 737D28E0017; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id BF7A98E0016; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53F6C8E000E; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 8BEA78E0025; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4065E8E0010; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 601368E0010; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AE5328E0014
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8FC48E0012
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C87D88BEC
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78999B9807
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:32 +0000 (UTC)
-X-FDA: 84097415304.21.385EC9B
+X-FDA: 84097415304.09.C7DE320
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C8A98C0006
+	by imf28.hostedemail.com (Postfix) with ESMTP id C70D8C0003
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KJyJxRMc;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=J53TPJ+O;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
-	cv=none;
-	b=NBLB5G2KphXe6U2CCGiooE3kbEeTOh12xAWvryw3JPG8arCrBXHjdhnpoYnKcS9ud25rCG
-	h4DGCV+53MO28FBlI5UIU48KmB/Y1m0YQK0SlJtqVnkFUiinyDXiAC7EXlvYdyk4obkviv
-	8keVaWBeKBBw6qTZOK9MNgJPtCC/M4o=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KJyJxRMc;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	spf=none (imf28.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762844130;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=;
-	b=KBLzO78whQthk66ZjwiwhVglTjWwccqx4J76+kqKUKaSPKYKqEnNeXU4H40PO27aqSpguz
-	PvT1cmjYZmNlV4+G8+QUhhe7wg5UWF8Hjrj1t7RnzIQgrxebH3rca2JXv+CNSr2ffNTXsJ
-	6NB0bTZ2c5jlS5Lr8KsXpFVrnJpA7zI=
+	bh=lB/gWST5s3/zNGGpGrNmQn0s9XjLn6XUo6NFB74HdeU=;
+	b=GdpkKHdSI6039KieT83RdsV1NvfAhSY9UtsYpk6674qRVFBxUM+UuR4h/1UkMCSMIWIca5
+	23Tn9yvPMSecqEzmNQEC3NlQQXMfkfUzJVKOYFnSd0TWkpUttey7W231LEryJMpZ+4Wtpk
+	lrnech//2iujc8C9sxCHKNoBeUJOhOc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
+	cv=none;
+	b=fXhs0riCBz1ZX6Czxc4JY7KcUlMail34HMiutsy5XdnHYwa4q1gk9j34TT3tjz6TsbSioB
+	S0orIrzQ6DX2rYVr+FYPcOSXbedmSJPDyQw9a0KnPWCiSQvy9te41pB4AkrrYyYs8d7BMb
+	g69YW/ddbnBb2oRefuHGCuOsEhqq8PU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=J53TPJ+O;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf28.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=; b=KJyJxRMc0dvbQcOITZBVA+WBk6
-	ifKPkydBj5RdVYpkYeX6lt/kJ7ld5xb0t53muvLxLstYnB5Kj+ibW1kF1JoNVPQmbi/Msmgp6IIua
-	rxkVOKwaX09nya1yIHsO/LXlke4OexR2bBkWG9LhOwtpTOY2ugBYceF0WF/wnns6qgtdqeY6EhATx
-	NaphnnRAzZNypERmbf3t7xl0oXOouhXWk5Ks9Gq+2D+L1HLZ20izPqJ7SWklcqVqWcK8WfltyTXu1
-	JWzC4NyfbA4dtQ5vb8jg0/lTWmXs+f02YOh/csRHhSEvARsXS9htgina50+ZEPcUaq8myz/AFR1Nu
-	i5DDMhaA==;
+	bh=lB/gWST5s3/zNGGpGrNmQn0s9XjLn6XUo6NFB74HdeU=; b=J53TPJ+OZ5kZaHTrq85iExMJ+0
+	ESCvD/mY3AUsQJbPBplyGJvh+DHfa6CJDgQjwYe04T03q5fZxVnFU0fMIh0322RWs9ZOTmhrzBB4F
+	M7pYyqB4AJ1pH5/4yHMfI4b55YVk9UTCBH3TyPGbn2v0fBFizfaZELuSNxzb5Gn9xTdxjsRHFHBov
+	Vbxe51f2IOsquNV3XRN/456KamzLZYI0lkolF+ELEVzocIV/iNa1VqfookQvrhsRG+cJ5VKjQ4CKf
+	g24MHsi3z0nxP8/d+QstBk8c4urCx51+yd1QoDelaMTgnAdd/wT1JKm9FpFgd8pogNRRcXpLYc3aG
+	PGOz2OPQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHj-0000000BwyK-2Gux;
-	Tue, 11 Nov 2025 06:55:23 +0000
+	id 1vIiHh-0000000BwtD-1BG9;
+	Tue, 11 Nov 2025 06:55:21 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 14/50] convert mqueue
-Date: Tue, 11 Nov 2025 06:54:43 +0000
-Message-ID: <20251111065520.2847791-15-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 01/50] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
+Date: Tue, 11 Nov 2025 06:54:30 +0000
+Message-ID: <20251111065520.2847791-2-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C8A98C0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ceypzwrzzkykcgeeum15qrfanjbfzehf
+X-Stat-Signature: h4dqkbcqcn4hu76qtjtkbxjn5qgzr4pa
 X-Rspam-User: 
-X-HE-Tag: 1762844130-194047
-X-HE-Meta: U2FsdGVkX18yciwfGm2NsNZ91RZyDN6lhyHXHksoti9vajMFEp3pmJbMk+bmbG7crDLiRS4/hcX7x7hZBxLNynFndEn5S/Ky6iywc1fetwh7mWnz91f8VZ7w6t3NSRqY4Orm12TSWyUO46tmsnJJ9OxAPDjnmJS3MSEjLK/cCskm5ht9wa2pspB2YYktycpaXwrf+eRTbrer7KG/poWQd9S+LnpOgHwmKIuDgRhzE7x2q2x3DHy9qWs4YlLq3JhrfI3zykhHBgg1IeOrXTwnyRhUVdJBRhdowlcv1jdA6kVZdIFCnbC2yTvUXJVXSx4kl20PF/hiWVCGdL2mRqUzLIUAv5vNEZ6ldbiP2FVrSqaZGR5ZeHzatvgxfWj3M3PJQlAtcqAZga1/2bxTSi+ItYRu4n/SMihf9WRfr58mWXK+KnOtSI7Iexh3joevGhnGrGUrp4OS71bpfMd73gVoHoWoNWfr5leJBBuj6YMY0zlDeJxchTw72zY0Z1nyL19hVxKn4p9TqdWJQEXZzC1nP6+tnWzsEGRqL8jYYFpUen6JAl3nVNXoBsCZQ4G5BHqZlazJqghBlSxby/bPc+npyepB76TxEgKK5LkABlxhBdhdVPp7YvUBqwG8VhJupMiWZQ3t1wY4BV0Xgcu4h0GoqLVDNGX1BzaFITki2b7/qYwzO6sWTymYE2tBxETH5ZQ54hg7WJAZPkgDbMGEJM1pbvi6fXsDb+41cn4bSI69exaUtrL2bTvJYSQiZDRbPof0ahABwqUq/URa10xnurSG8YeJeAiYto5JgLmDgJWwev/CKFEDfbSt0acgicb993y6a8Jr6hYwv/+rcChUTgG6wU1SjH9xlTmlFaGtTtUo+svlM6F404kWTgI9CSektuH47Td4dgvefQ87GZwMU/CL3vJSBwec+YWRjhR4uN01IdS/rApDdY4R9RYp8BFipjDgWTnRehDPyWi2JeKxDt1
- SVjvCnv3
- 1crRlKzWFFcyUFQW7UmJ/QlYAUCUmsTjDaiViJL2ZVFVa+wqcSn7Qs3z2NnCMzEV9CiyYJDSUaVhFKA6Em2p+U/v5RmQ4F3Z2dPPwyn938Agqw2S4EMXNypx0ROQ9oBzmWw6WC+QNQ/AUfZqxl8SOn24bvxj1Z4jqeSyh4HFnBoHeCpvXu+L/bmlD+E33G6fNGP8Kevp6u7VoXIBtFc5Rk048KB6Ahzu05ZcWM1D79hL1YW5kfEK304cajIDCI8Lhg9KQzqJnCnwxONRxxQ0dS9MdLKFt8cawkYsBjVirhIMUnmsYNYCH3aOCCP4xYPfGot4R8/rbtcIWSTWgZxEkghvklY5iwF1r7U8VlLl/deoA9pO55h46ky3yWcbNL57wQAQhV2ieIrIbmxsz/htlEJZsrW7xVLWJmawE
+X-Rspamd-Queue-Id: C70D8C0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762844130-73536
+X-HE-Meta: U2FsdGVkX19BDTVhRK5mHoFErHXoWlOAhM5vd9a/jzmkhq+nK/lCN+TKz21zH9jKn8Ta19O/DYK05DVGkzbiSH+9f/qE2/wDoniz/msdZc9qPPCLrs1PH2b6NR35Dx7N8QZ0aPuFrOKwkCqOlV4LJ4hYKM33rVnYDaZ0iYoWaWh0E/uuP3dER3mXtA3/dmgehBSPDKLW4eNh1EfudPer6vt6vJJeFxsSl/DOOXSQhfFlLX7APDf4owERujBpJNJuloagHB0KLl8rmT4tp28g7rg+XKcmmzDqA/+cuuDLU9n7GGw5ECHmFZx+8ugc/JtZ4Ak6n1p9h29EQ5sJNWFT2wc4omnZZMPtL3/yagnXhDkR1yD1w3lSpOFjVy6g/hB/ZlMo+ymX543mBRruf9MuA3O2la5dlyOXB45Hxr50SYnmoDrqk7lR5LDwxvUZ+xzazyIVuQT1PlIwAcSTxDFuAtY1TCwcFHMVxod4M5/mAcE2WPfYPJZ1tUdxZUAjQ3I2q2NHqIqCyNF9Pr4nQxXilc2NbQojTNCh4qIghZAk1X7jW7QQq2prRb03+mRl+3vhDUTuXWw011oexPgeEE0yyhRb3ymFSYSh5TEhSg/kR6MP0i2Bm3RgZpURDBWkbHq2rIN8tOp+0fJUZTamhJYBDgT/h7xHO/eA7SDNI46HoEJTVjq5WnyZzf3OxDtzJ/wayzGLWVBfY7sSpvvmp5/hZ/ypF4Qi329tUp6III3XbS5FE2WIhIQXet+Dz1IhCmLk/wwFY3sPcTaodMqe5xA0JC73TpKYwp0sIRu+bg1N/OxI5GQQH7ij9TuiXewxRg9I5CYKo0Y/yv+1ofEmCVklU5uZHxDNoWa0QyMkZ6Tqf7hc1RBG4xQ6f2Xb4M9+lHfZ22s2TLoWMprLjhFC+Hn3PllR743OS0kp8WbFV7vLFqx89hm51ydAFSqMjS73GcQ03YYhvhc945FbQooF7Kg
+ rXOmjPQq
+ FRfrinxZOj6MK+MvoYmV8M0owL/PdyFQ/DhZUbdGxcxAm6slPui9WhoQTjYGQuxOnn066hMnXQZr1HBnHHZ+D9UeMnMsMc38k5i0eInv00AhYyuBhQZkIdPOuhNRjtr43OuqXoJ7RPhD2tCdRL0KnqDcyRrsikaVPxpXMuHq1I3I6ibH4zof1nnyceKk/N6C0kxjFmE/Fq24YGiMGIaeSv6CtfeZvkGQYq0Xwqq5PGxSZxPNQKCYdfV/s/dfNSzgLhc3NED9+NSYWol//m+jSVjmZ4Byk4QL2sAk1Kr039+UdAc8iwxGl/iH4SZqdmdG7kwL34vqf0CcZwgA0aA48O83NBfK/u7UOfhqnFuObkg9DnSzSMdB3qMzqtaXhY1LCkBhVh+31dXqEmQT2W2vsMMrt6eDiLorW5pXalAH/1ROWlUN3gjPJPUZUEYF/7/OrA6wnWvCniw0IBBsJRLiqjUEGvA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,55 +108,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All modifications via normal VFS codepaths; just take care of making
-persistent in in mqueue_create_attr() and discardable in mqueue_unlink()
-and it doesn't need kill_litter_super() at all.
+fuse_ctl_remove_conn() used to decrement the link count of root
+manually; that got subsumed by simple_recursive_removal(), but
+in case when subdirectory creation has failed the latter won't
+get called.
 
-mqueue_unlink() side is best handled by having it call simple_unlink()
-rather than duplicating its guts...
+Just move the modification of parent's link count into
+fuse_ctl_add_dentry() to keep the things simple.  Allows to
+get rid of the nlink argument as well...
 
+Fixes: fcaac5b42768 "fuse_ctl: use simple_recursive_removal()"
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- ipc/mqueue.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ fs/fuse/control.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index 093551fe66a7..5737130137bf 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -599,8 +599,7 @@ static int mqueue_create_attr(struct dentry *dentry, umode_t mode, void *arg)
- 	dir->i_size += DIRENT_SIZE;
- 	simple_inode_init_ts(dir);
+diff --git a/fs/fuse/control.c b/fs/fuse/control.c
+index bb407705603c..5247df896c5d 100644
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -205,8 +205,7 @@ static const struct file_operations fuse_conn_congestion_threshold_ops = {
  
--	d_instantiate(dentry, inode);
--	dget(dentry);
-+	d_make_persistent(dentry, inode);
- 	return 0;
- out_unlock:
- 	spin_unlock(&mq_lock);
-@@ -617,13 +616,8 @@ static int mqueue_create(struct mnt_idmap *idmap, struct inode *dir,
- 
- static int mqueue_unlink(struct inode *dir, struct dentry *dentry)
+ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
+ 					  struct fuse_conn *fc,
+-					  const char *name,
+-					  int mode, int nlink,
++					  const char *name, int mode,
+ 					  const struct inode_operations *iop,
+ 					  const struct file_operations *fop)
  {
--	struct inode *inode = d_inode(dentry);
--
--	simple_inode_init_ts(dir);
- 	dir->i_size -= DIRENT_SIZE;
--	drop_nlink(inode);
--	dput(dentry);
--	return 0;
-+	return simple_unlink(dir, dentry);
- }
+@@ -232,7 +231,10 @@ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
+ 	if (iop)
+ 		inode->i_op = iop;
+ 	inode->i_fop = fop;
+-	set_nlink(inode, nlink);
++	if (S_ISDIR(mode)) {
++		inc_nlink(d_inode(parent));
++		inc_nlink(inode);
++	}
+ 	inode->i_private = fc;
+ 	d_add(dentry, inode);
  
- /*
-@@ -1638,7 +1632,7 @@ static const struct fs_context_operations mqueue_fs_context_ops = {
- static struct file_system_type mqueue_fs_type = {
- 	.name			= "mqueue",
- 	.init_fs_context	= mqueue_init_fs_context,
--	.kill_sb		= kill_litter_super,
-+	.kill_sb		= kill_anon_super,
- 	.fs_flags		= FS_USERNS_MOUNT,
- };
+@@ -252,22 +254,21 @@ int fuse_ctl_add_conn(struct fuse_conn *fc)
+ 		return 0;
+ 
+ 	parent = fuse_control_sb->s_root;
+-	inc_nlink(d_inode(parent));
+ 	sprintf(name, "%u", fc->dev);
+-	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500, 2,
++	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500,
+ 				     &simple_dir_inode_operations,
+ 				     &simple_dir_operations);
+ 	if (!parent)
+ 		goto err;
+ 
+-	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400, 1,
++	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400,
+ 				 NULL, &fuse_ctl_waiting_ops) ||
+-	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200, 1,
++	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200,
+ 				 NULL, &fuse_ctl_abort_ops) ||
+ 	    !fuse_ctl_add_dentry(parent, fc, "max_background", S_IFREG | 0600,
+-				 1, NULL, &fuse_conn_max_background_ops) ||
++				 NULL, &fuse_conn_max_background_ops) ||
+ 	    !fuse_ctl_add_dentry(parent, fc, "congestion_threshold",
+-				 S_IFREG | 0600, 1, NULL,
++				 S_IFREG | 0600, NULL,
+ 				 &fuse_conn_congestion_threshold_ops))
+ 		goto err;
  
 -- 
 2.47.3
