@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 672B2CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 13:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B4BCCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 13:53:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6AC58E000A; Tue, 11 Nov 2025 08:53:24 -0500 (EST)
+	id 53F518E000B; Tue, 11 Nov 2025 08:53:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1B858E0002; Tue, 11 Nov 2025 08:53:24 -0500 (EST)
+	id 516D78E0002; Tue, 11 Nov 2025 08:53:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B561D8E000A; Tue, 11 Nov 2025 08:53:24 -0500 (EST)
+	id 4543A8E000B; Tue, 11 Nov 2025 08:53:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A45468E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:53:24 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47212C059E
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:53:24 +0000 (UTC)
-X-FDA: 84098468328.15.84C3A15
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 340D18E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:53:31 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0430DBA242
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:53:30 +0000 (UTC)
+X-FDA: 84098468622.17.1C7148C
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A92C980009
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:53:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=259CjJXP;
-	spf=none (imf30.hostedemail.com: domain of BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6104DA000F
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:53:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hcCD81pg;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf25.hostedemail.com: domain of BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762869209; a=rsa-sha256;
+	cv=none;
+	b=l7rPPNaB9pAqBGWJ2ueI/1PCWdh59yCA64OZ9URgVgVIm3lyY8ozKW3r7HqP81xZduFAvO
+	NlsI6oDrFRQSBZvNsAnDHDrIupyz+iBAYTzws2iz/UHUXF7WDSDKzQiyVykO+ff0to/WQB
+	hgVpftQ725IEbC+ADj2/fIKjHPalsGs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hcCD81pg;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf25.hostedemail.com: domain of BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762869202;
+	s=arc-20220608; t=1762869209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ArUALhhnnFb4xiAkoDnrGF2IGhkIYQ7lLR2WNnAtJAA=;
-	b=3usXOzxhUvQwGA/Vbz1jnf8ICZ71zgaN48uq+I8cwvuBAz0swlXTUj5qDAsX8tVauvRQ1X
-	Lfx2UCzMsjdyqW3qtpapNmn/LdMLsM4t6yjPcyT47v0yEMpNCChNElGS/odAR9RL8FgpBl
-	mFEPAJZjR9clpdPuISkqSmlEQIXMXZI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762869202; a=rsa-sha256;
-	cv=none;
-	b=kxoQd0FMS6KK8qL/1wps/8XfpI7Bsa9f5zrCM8uWH8Uc+VZl8IZVq/OofxGB/UyOFCdjxd
-	bXfpD9IU6kWUUy1FrF9xWr+Nmv8Y2HAdYRdKxi03zr/tSxFw+2+YdGTx88DjL65AyuR5FB
-	uDpWvBar29uhVIRSyeNfkqbE8q+bv7I=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=259CjJXP;
-	spf=none (imf30.hostedemail.com: domain of BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d2227ed7c5ccf651b4a3+8115+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+	bh=OirQmgBsq9ZqcHQPfOm2bMkDUM1Tvp25rNeIxjb7fQI=;
+	b=PNZrh/P3OAwXTxERZt7J04UVxf60atI6lK/nvAFE/qQY+3PgVdYEilSTbL7zSZd5EtfRMb
+	/k0Cih0hIthwi+r9ja2rPigazV7hQOeiy+HBisMO1KrzIxR+OPlZXMVLurdaJ1J/I5h2NE
+	oEoyQZ3m0PaBhTMRdSRegZCk7hZESYA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=ArUALhhnnFb4xiAkoDnrGF2IGhkIYQ7lLR2WNnAtJAA=; b=259CjJXPMHPnTFJE3SN3W5RJz2
-	MGZ9QBB2T4Lt/+BnG7+hzvjlHNezLqLVmiUpGzyC/yKmCA1wBStH1etDAxaEkuJr/UI8U7AKyF8Sp
-	yS4s/mxfV3NkZj+OMFthIg6mjDa3XLNu959JAdbzn942QuNkn6Fe2ugQyq09Mgq1kBOku56luBqgf
-	uO5cSQitNIxS6t09gYaq0VZhir2qpVmq6Kp1pNC7yy0G0BIHB59DsKiZ5r+bMuf0QMovXzFlSMifc
-	l4mrI1gCFeI7uzioa8OMXEnIwc/YYzsF9vRNl71a/Wo8MXj4mRNI1uNdb6vTPwSGlJwzMFTmVWPpp
-	gJK31OPQ==;
+	bh=OirQmgBsq9ZqcHQPfOm2bMkDUM1Tvp25rNeIxjb7fQI=; b=hcCD81pgtTW5SnfqMWQpI1ODvA
+	wsPYKYS/5ih1YHfo+JQkkIryCABj8vH4cyOFrYqbRrg6k2zaeeADIebmygrUx8P9ZakmAECs03zmr
+	Xod+fl/8T6O54USDCJSBYDvh/pEZQhVXSk0bZGDmVxSs6eQrWg1LvTKH6DeZOHVEa7Ye/W3qxRupG
+	2cabM8mYUF/T54p/EXcT0/0Ydad9VtuD/YTmcuotvalRy5qPT6HMn3DB26iRiDdAoCivoiwRvO1VB
+	jEZHlGl02Ah7BdbRrP1EMNjD0mcfR+p5mvev5H+6lBbLQ7gVAcQyc6GdV25DIX21x3+MjIYnxdHM7
+	one97HtQ==;
 Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIooB-00000007Gah-1yuh;
-	Tue, 11 Nov 2025 13:53:20 +0000
+	id 1vIooI-00000007GbY-1Ojh;
+	Tue, 11 Nov 2025 13:53:26 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Vlastimil Babka <vbabka@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -72,23 +72,23 @@ Cc: Christoph Lameter <cl@gentwo.org>,
 	Eric Biggers <ebiggers@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/7] mempool: add error injection support
-Date: Tue, 11 Nov 2025 14:52:31 +0100
-Message-ID: <20251111135300.752962-4-hch@lst.de>
+Subject: [PATCH 4/7] mempool: factor out a mempool_adjust_gfp helper
+Date: Tue, 11 Nov 2025 14:52:32 +0100
+Message-ID: <20251111135300.752962-5-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251111135300.752962-1-hch@lst.de>
 References: <20251111135300.752962-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A92C980009
-X-Stat-Signature: y4qaeex3eyccimhaj9te8f9r9yqmupqu
-X-HE-Tag: 1762869202-636667
-X-HE-Meta: U2FsdGVkX18cU6J2SBWyK76njHgaalYhwPMU8hLng4krsNmGlaw+ZnzjqH5rxLAt/9GJaBpEzcYv7IZMvKK/59nLE61DSWlBsWrI9a9RzQw+be2vC1MOZ3jh5ZInXGg5KqH2OYOtmY9srx+PpuOF2OM/Vu4CZwMzoDaZSEqfuelxetz8ZEarwlta3n7XRuDNXvjnIrgag2I+uL641huMaVoHPDrlX8vscTD2qBcHW3N22GFWkQautnemj034V2B42fTaweN9afszVTHge52EWHXA5BUKmT20hB5YRWvvmDPhIJwwiL37GvH/+H51Vv8NQQbmWBtjmHCLlvBsZDcqF4hGbyALBpX3nOk+b5exomB+g6JDLfh5ELKeX9I24f3QePE5o+WmlgHxxznwViAOnkaRjuXewH0UfBrxH9nGrmkWuzhW6GjP8P1NjAiedNVLSsLTy2nXGCYo9OIV5dxMl4kYZLmQ2RKOz0YTJqeEKhp7ex3eAhjh6Up+UDoJmZPlFWvsVcELNw7opp/+B0WEUP6VH7KWO94EfbLpWc4yqoXznqH/k00WS7x/h3ZNo31FoPuhynnVBmCqnzBEOX2ry1xfDxyo2eKscvzYvwm2t2zcPXjo6C4mu9AVG9fCPjggTtH35eOtrmVNMw2m97YeomdAcMSO1QAXBaHDaGiG7YcQZqSdbx9m7SSJcygC2ToHWcp5b6jCi0reXdNHrsP9yKKlyPt6KlQA5SEAq19+ogle7IJqNJSdAVXQk6vu1gKlf/riW1U7hoOyTUwP9XOHWHNjlg9FO0bhk7Guc1wMW4sP0Ux3sTEkY7ohdcfmSytFYopdaT8j/yo94JsJjXb/Vv8saAnTQatdtibr4gW/lK0qZCfgY3BvPKKlfsAEkDYQOQydPvcZR0fI7fbFcXdBwHA/q5yWKj8Kyk3vsRmDxaKgooNhNa5C893e+C48yqFk+wcAe8rY0hKi3CQ7Si0
- jr3ZHdOT
- oeUISIqUCqPEBuyP8mKd4wvjsJ2N++5VP7T8P47Mfbpix+TsUa8uoqxfuoZeSwmhLLQQNZSVQEsxJox9IWBkMl324b1i0vkCKUu6p1vuZwlu33xDkmPA9Sj9V9S9mBDaYfASNQpZQH9UOQRU4mqLuumPaITpaNI47vhH1WLFNtkdwJ2YRZoMS9USAYyKUblV9npoTPjaQFzp4a7EDeazuTYyBflHt4HKvb1/s6FlkPplW0IvCYMcEirBtJt6/tWWRUwQnAIn0iMpvX6nRmPRXdtWOymaG/vUZaeSBfwMB51I3q3F38lER73tGBTK7P9fv2vZoFYQuSlyIp5mqJVEHpqC2U9ZJKoxx+LtK8wFDtElt603UPwZTDQ1MOq0XBT1n6XT4SgiGpglYrJPu0TGTt79n9mjD20QEE6to/ceIAi8AAGV19YPtTdK8EsXso0VHQPh+lMdED1AmkoKQDKrt41LgAPjIzdLZiAygibFGPVrtp2d2XxSLkpcN9aQtKv9ksE5oi9VAJ4ICY1Wwlvl7UNUfq4C2InBqofYtdjhFk1ftk+PbgMbQAwmSc8YhDz36Hq2S0f1Tq81ARJNUoyiefvaOjQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6104DA000F
+X-Stat-Signature: 5yyqi85691zhzcxx6n3woqjtug5g894g
+X-HE-Tag: 1762869209-47171
+X-HE-Meta: U2FsdGVkX1+ETg4iVFTk18oSAvBAF1MxT0kI7sCo+kbLfUO9mPmefSowcBYzjGMOvgnwb39qDM3nfRd/hkxWs3YXDGELFdJSDdqfE0nqgGVEDZyz7DSopguTNwOpbmBNABrWUy4MRAiZrIzK3WuyfOHsjU94vMAQHipksoJOXEJ9aYx4VGty38rgLvaJdmkOQjDqIJ/D1pr4aKOomiI7vUacOmNiIcgCcxVfyCLhpOCApi1DrGaPxap1kLNWrMO4t661U6rX7Ec9oaEKK01Of5fl+gNN5gRsLyvfkF51mLuKYIhxyDhWhHSvepgNASztG//1NWlhfdwX9hJ4RvV3B6d17gkA20Cz3u87NMIF6QhpjlPDq10hAvnRTOxQ4CL37apc0Pj+QD5ZEpfTrasKbbaU2mJ73nVZ+BNfsqMfSBJs7bOfQAwfIEP2RbyoahXhtT345Ia/ZGKDiRTDI/TYB4EYVHA91rS05SUP6oTTSaHXf5VvDSSPNdHHdKUZJ/BzVyo46v39wFCD8t+3owgH7Tg8zN6smuucHU2Yt+h9rXUVpj11ymJSDnrzN8qOAa2245fK52Il+zEm66/VnW6MshZojQqqcAN053RLOez8kk4RIDzWaWu/prriqUiWOCg79b2QwTTnlft6nGeIzAlscw6+CzpQ80Xb2N95HgSTMq1OxxqNZA2jxVjzZ4waZihlVCdK3R8nklgknr3OHlYMzaPR88OFevALAk+Ph3v1JlHLMQKp4ZTE5fGRBMKKVdTrDT1E5B+fEQXxpLZzUx7fzeqhsiIHZwSIHtfs6E6jViOh+Z5eCe+AheiHRFHLTDVbxRRb1TxnF4nfhEiu8xCN1xmisg1CsAHslQIgTFoX/Onagkbjm9KhUHM1eCEnvDDf66ji4hbUwbXI87Dlw5ZkmqhVI/pdBfI4ZZDQt6bejoAP95oz2PdLbs4DOX1grteSKSZXMHIMfpn0uQ4hMZm
+ UCh4vzuO
+ Rv/oCtoYHgjTulDL6bVPbphRwTlrpYbuCqjc5iJPMVIM/+jtDkyr2cr9K8rPwK2eHmvpa25Kw8sGHbvhIM/5hdALsHSa2OJHqPZHrUxotfa1iNpqudVbvyqgXqcs3uEfhvAvvglziXJwf+QrtGuPXv9Ql3v3wL0iurFZxnfO5WFnyDTRJc9QZfCnLDDUJg/ZFef6Su5Kcuoj13sbCCq0v/aVthFQ42mVkPRh+3FcLbLkbscz2U4bcRrccdx3ENMapTuSCGo8oS4C44YktOtwOK8zBg4H74tpTxFm1TMPcGQP+EnwlhzilyIkkNAL9uyB1T64VqGP3qZb4q1Zi7eHFdCgeI2mh5LF+GR1ard82zkA2Zr7Y5aA5Pstd+jKgJ5QiswA+42k35Q3ifAP00RSN86RwLp1r+1dhNoPHl4eVn4e7xyDxwcDv3G5Bi8Dm5TPmH/o6pecAb1/ShZsPs2kPLi6iUTW4V00HOwU9RS2pF2S2QgWPZmPh4+wnNOoSw8hnAAna1lXZX9hKTL6W8uMXngW6AAWj/SBAzW80670vkzQpmu17OjKKSqpVGQOqfZZQZqijqf45RKq9H4adLGq8udnd3t3btdsavyqd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,67 +97,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a call to should_fail_ex that forces mempool to actually allocate
-from the pool to stress the mempool implementation when enabled through
-debugfs.  By default should_fail{,_ex} prints a very verbose stack trace
-that clutters the kernel log, slows down execution and triggers the
-kernel bug detection in xfstests.  Pass FAULT_NOWARN and print a
-single-line message notating the caller instead so that full tests
-can be run with fault injection.
+Add a helper to better isolate and document the gfp flags adjustments.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/mempool.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ mm/mempool.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
 diff --git a/mm/mempool.c b/mm/mempool.c
-index 1f4701713203..76ba4d5e656f 100644
+index 76ba4d5e656f..912364e279e9 100644
 --- a/mm/mempool.c
 +++ b/mm/mempool.c
-@@ -9,7 +9,7 @@
-  *  started by Ingo Molnar, Copyright (C) 2001
-  *  debugging by David Rientjes, Copyright (C) 2015
-  */
--
-+#include <linux/fault-inject.h>
- #include <linux/mm.h>
- #include <linux/slab.h>
- #include <linux/highmem.h>
-@@ -20,6 +20,15 @@
- #include <linux/writeback.h>
- #include "slab.h"
+@@ -380,6 +380,19 @@ int mempool_resize(mempool_t *pool, int new_min_nr)
+ }
+ EXPORT_SYMBOL(mempool_resize);
  
-+static DECLARE_FAULT_ATTR(fail_mempool_alloc);
-+
-+static int __init mempool_faul_inject_init(void)
++/*
++ * Adjust the gfp flags for mempool allocations, as we never want to dip into
++ * the global emergency reserves or retry in the page allocator.
++ *
++ * The first pass also doesn't want to go reclaim, but the next passes do, so
++ * return a separate subset for that first iteration.
++ */
++static inline gfp_t mempool_adjust_gfp(gfp_t *gfp_mask)
 +{
-+	return PTR_ERR_OR_ZERO(fault_create_debugfs_attr("fail_mempool_alloc",
-+			NULL, &fail_mempool_alloc));
++	*gfp_mask |= __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
++	return *gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_IO);
 +}
-+late_initcall(mempool_faul_inject_init);
 +
- #ifdef CONFIG_SLUB_DEBUG_ON
- static void poison_error(mempool_t *pool, void *element, size_t size,
- 			 size_t byte)
-@@ -404,9 +413,15 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
- 	gfp_temp = gfp_mask & ~(__GFP_DIRECT_RECLAIM|__GFP_IO);
+ /**
+  * mempool_alloc - allocate an element from a memory pool
+  * @pool:	pointer to the memory pool
+@@ -398,20 +411,14 @@ EXPORT_SYMBOL(mempool_resize);
+  */
+ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+ {
++	gfp_t gfp_temp = mempool_adjust_gfp(&gfp_mask);
+ 	void *element;
+ 	unsigned long flags;
+ 	wait_queue_entry_t wait;
+-	gfp_t gfp_temp;
  
+ 	VM_WARN_ON_ONCE(gfp_mask & __GFP_ZERO);
+ 	might_alloc(gfp_mask);
+ 
+-	gfp_mask |= __GFP_NOMEMALLOC;	/* don't allocate emergency reserves */
+-	gfp_mask |= __GFP_NORETRY;	/* don't loop in __alloc_pages */
+-	gfp_mask |= __GFP_NOWARN;	/* failures are OK */
+-
+-	gfp_temp = gfp_mask & ~(__GFP_DIRECT_RECLAIM|__GFP_IO);
+-
  repeat_alloc:
-+	if (should_fail_ex(&fail_mempool_alloc, 1, FAULT_NOWARN)) {
-+		pr_info("forcing mempool usage for pool %pS\n",
-+				(void *)_RET_IP_);
-+		element = NULL;
-+	} else {
-+		element = pool->alloc(gfp_temp, pool->pool_data);
-+	}
- 
--	element = pool->alloc(gfp_temp, pool->pool_data);
--	if (likely(element != NULL))
-+	if (likely(element))
- 		return element;
- 
- 	spin_lock_irqsave(&pool->lock, flags);
+ 	if (should_fail_ex(&fail_mempool_alloc, 1, FAULT_NOWARN)) {
+ 		pr_info("forcing mempool usage for pool %pS\n",
 -- 
 2.47.3
 
