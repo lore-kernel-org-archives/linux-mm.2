@@ -4,95 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB059CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:50:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE707CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:55:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F7A38E0016; Tue, 11 Nov 2025 04:50:06 -0500 (EST)
+	id 0D9308E0009; Tue, 11 Nov 2025 04:55:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CF5C8E0002; Tue, 11 Nov 2025 04:50:06 -0500 (EST)
+	id 0B1738E0002; Tue, 11 Nov 2025 04:55:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00CA68E0016; Tue, 11 Nov 2025 04:50:05 -0500 (EST)
+	id EE19F8E0009; Tue, 11 Nov 2025 04:55:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E16B98E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:50:05 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9486813B0CD
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:50:05 +0000 (UTC)
-X-FDA: 84097855170.25.A2E616B
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C3D8212000A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:50:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="WXA69s3/";
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762854604; a=rsa-sha256;
-	cv=none;
-	b=kqRSnLBm208wAQl3x028BsehZz9iahgnLJTHMRQWIiTO+SjAd+GlS0ekNn5NXwFM7a0+dQ
-	aYy8O+NFj84hmv/7S6efm9mcdUcUXVVXLRjfSEFXIc8Z0FtdNlSZQMyaFMAuqVapoh4OJ2
-	yzBBNG+95UVJ9i21KkRV7AYOdZMVv24=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="WXA69s3/";
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DBF638E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:55:02 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F35C591EB
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:55:02 +0000 (UTC)
+X-FDA: 84097867644.16.76F3A28
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3B07418000B
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:54:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E09n6Evr;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rhHNp8rn;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E09n6Evr;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rhHNp8rn;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762854604;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762854900;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6bsPdtBaqJ4UPF5R7K+ouK1dJ6DCyxBWv0w/QZnr7cE=;
-	b=skS9njqw/CU9WKMn1g/GDXTvI1brZA6qIvplDRai6fO6BMMgUeYf4sJw8416FSbd/BuJOC
-	nmDHnLky8ymmzeLzGs6o0b6isbkok3h/5tq0E0CctR1HbisMds1gH6BpJ0XFMnSlXFyNL0
-	PW4NEHu5hkKgkd7aPuMj1tjhN35OeKY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6bsPdtBaqJ4UPF5R7K+ouK1dJ6DCyxBWv0w/QZnr7cE=; b=WXA69s3/ndSSCDKncRmaO/hjic
-	O1y94fGm7YG4wpp1EnXG6yDbvuMjQmTNWvtrC7zZiZbJKSJQ3qPVVV+wFbvU9CFAsYmwuwFWd9TQz
-	502RxsFSRuMlb+ZsoiAw/Eyy0gQ2krWPMw0fEZQ3Z1ZbYzdnWOQhbqHDcknhoQE/b6LUe5OiGj/uX
-	ilItJNCZJAw3WeivKD5Fmg/6ibDscl4juFxBkBG0efupSFSIBUUIdS3DG4fn/rMt/0u9B5d/iqbE3
-	VTHj0bLhd9xu7SVaxQVogoLmue/J7I9fcpgSO2MhCBANTrOxCwyy94lXIyVk5oV9wmikQTnsNUf6U
-	oFmhH9OQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIl0f-0000000FPaa-0OxV;
-	Tue, 11 Nov 2025 09:49:57 +0000
-Date: Tue, 11 Nov 2025 09:49:57 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: bot+bpf-ci@kernel.org
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
-	linux-mm@kvack.org, linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
-	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
-	yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH v3 34/50] selinuxfs: new helper for attaching files to
- tree
-Message-ID: <20251111094957.GT2441659@ZenIV>
-References: <20251111065520.2847791-35-viro@zeniv.linux.org.uk>
- <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+	bh=MaNl3KVXDMb4yVsW79umxB3okzTjoLpsTH9fuEvuObI=;
+	b=7y4sYtjXMN4uhvlLqjCPF8/3w+Wn2pmfYI0zZBwuHYnv3TywE6am+CGQHS0uNi7rHe0MGE
+	2EQHGtW2ndMERXTEM2cTZvDcdZzNBPCm3dCQJAZFRZWidk1/euwDfWDITD3RH9yLwoKll5
+	XoA7iaf4RnPUxEU93zLSnrERdrCy2vI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762854900; a=rsa-sha256;
+	cv=none;
+	b=pYXJ2BCfbohYE3YEcfGvoECFisJnljQZEX4EYbYcANI04oIeQjFGhjNG0PWsXHsYpS9XnW
+	4b/KKzLlW5S3f6Ez2sywTINuA4pRUzrA1irxW9yDWPhTO6YcaZtrvq60LzU6nWe8V3/Zv1
+	6uBwPO2GK2+Q/tdm2GMaUVdMqtoZxSk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E09n6Evr;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rhHNp8rn;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E09n6Evr;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rhHNp8rn;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9B07F1F78B;
+	Tue, 11 Nov 2025 09:54:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762854898; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MaNl3KVXDMb4yVsW79umxB3okzTjoLpsTH9fuEvuObI=;
+	b=E09n6EvrRECYQ74NuyMvO0OrLOP2ePwW+yg6IHMP+jX5ArQukh3cD/rjuBGFXY63npAiZv
+	G5DhvO2yOKiSHCocoTMjrGl8ALoLUvgjw8ye+E+14Tq94tOa8+KYZfA5BWjW5tC0pgsrsk
+	RfK36xXh7UP8tZnpNN17NEc6uLBXQFE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762854898;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MaNl3KVXDMb4yVsW79umxB3okzTjoLpsTH9fuEvuObI=;
+	b=rhHNp8rnyr8L9iaGwd/FjyGBSDZK6E26aKNoCtyKQEe8YDg/hPhVEQBsbSuqf5plYNNAHa
+	zMXog1G3h/miPPDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762854898; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MaNl3KVXDMb4yVsW79umxB3okzTjoLpsTH9fuEvuObI=;
+	b=E09n6EvrRECYQ74NuyMvO0OrLOP2ePwW+yg6IHMP+jX5ArQukh3cD/rjuBGFXY63npAiZv
+	G5DhvO2yOKiSHCocoTMjrGl8ALoLUvgjw8ye+E+14Tq94tOa8+KYZfA5BWjW5tC0pgsrsk
+	RfK36xXh7UP8tZnpNN17NEc6uLBXQFE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762854898;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=MaNl3KVXDMb4yVsW79umxB3okzTjoLpsTH9fuEvuObI=;
+	b=rhHNp8rnyr8L9iaGwd/FjyGBSDZK6E26aKNoCtyKQEe8YDg/hPhVEQBsbSuqf5plYNNAHa
+	zMXog1G3h/miPPDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 740DF148C6;
+	Tue, 11 Nov 2025 09:54:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 01KAG/IHE2mYCQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 11 Nov 2025 09:54:58 +0000
+Message-ID: <75656c78-7e42-4a32-87c0-373416adb4a8@suse.cz>
+Date: Tue, 11 Nov 2025 10:54:58 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <70d825699c6e0a7e6cb978fdefba5935d5a515702e22e732d5c2ad919cfe010b@mail.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] memcg: cleanup the memcg stats interfaces
+Content-Language: en-US
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Qi Zheng <qi.zheng@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Meta kernel team <kernel-team@meta.com>
+References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: i55pam6ydg55493a3hyjizjtzfyky97y
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C3D8212000A
-X-Stat-Signature: ht1mkgdyhnq1ttukfo3z6cc39imqx1pt
-X-HE-Tag: 1762854603-151547
-X-HE-Meta: U2FsdGVkX18bEIu3jz6K5mtMZ37kRxFQea1z1ABa8J5ndcMVD6q3o0QlVRhuyuc1JzsSlY7b0NPNoD9flofejKlfReOKMgzBSA6mSmLbk6GiXHYtYL8mP8fwvxVG7VYjRcwG7XCNkdVylwq1lzmcLWJ2Z/K5P8RubRVTvLKQtBFat1t7WHsNAeicrK9GlkwzeoUQWrkOBJKT7BgMtLoBh0tVggwQOPZo3oK9i0ViMziXomjpan4hqfwWcIl8RX1Ef/NqqTorbd2tFl80nJ4y10jqLF0jZHjvARfdHZV0tlGEVaQti5+lRXpprDs5Ury7nYK98zaZ8NDNWJ+cRkBbk7jR7KQG/3i0y58Ve2PzuAPD7g1FjK3Mx6VGPpsZWbVmsuA9A2DypmtPVzObJYFz7lNnDfIkGO4JS3jbVOnlClm9GWagVYlI+YwqjOUSTvm+gso9/dWA3BXUg+923Koy/4uGVywN4kazybknKLQSKbuvDFmvf4h/R+6jpN01qcbZHytjovqO1xRgKF3O4TCpAqi9O5tsoBjoSm1o+UyNGjUXE97O90XGpEq96/lEiqYzTJxJ7h0uekLll0rqXO38oPtO+GgUpCsPqyQ1ZWN0AjPyyvMVxjHNhVlkIdtRemouzG6flDxFgdLiaz0frXsP85UAnRnLtTpAElo2F+fxCJ0g3blltq33fCLthQMgAq46DVxgEXQlGRZR6EOzCNzh3zx4j1hekbpVwHeaxK9Yblk13zg3LdkQSPPPDjDgm2cgdjbw8rfcYnC0zVcUPsf4TH/5pzhAXU6mN2wsMISGSnNvxUGQMu7/Xwdc65QuYX5zlMN9hwdcNm6WEbkxwTvOrHO6/F/Ng26bKavRbjJiXaqWzMd1CoLCZg7RnudSh8flrjJ5sRv3SDBOU3bsBPKAr5waF3aZy9arBflksd3OobVF07fUub3q+PD46LxdeonExfmr1TFT6tv2FNRGkNv
- wdES6HWV
- LgJbOyJaATr5XWLL9j9Dt3JDZqfnXmyKEB2kQH0T9+gKHBe3zKPY3b/5Tk+gonpyr1z8g2eN5e/Vjvizwa+1g0KdChEIk7WAMmLfzs0yG66QL1TDeq+9UC8G0WQ7TTxOOUborGvHul2UhHZgmKOrWuW5UAWgwMVF13UsGJ94xn7/k6S4Tdd8nQwylzwB4tCJ4jb6+HQq7v9o5j1xrT8mJIoDzQv59TVWEZDmCOHqplpEEJv1jFEEYOxLfYuoA5IOuVx0Z6yIEpfQzjW8oxumywY5/egGNwjK3fLXjykSxmsPD8GthPOuVqw83NlQLC2JBe/8YnCf24Pn1vZIEYUCTnboZfT872Xe77X1VC1lopoRrvkXfWyvMghVHCBLJVGkP2CJbUPcoiZa0L20I3zXHT7l/lwDFJXvtdgpwJswaL6XwW6HiR+y+82x7NyGVVZKeMiEDJAVRDNdc+aiecAcPJEtaSg/p2+f4Uwmo2Cqu9vhfcQAV+zOT4kSnmvy5paDVGwOa/haqpfQ+mePDYffBpNSmjlyncYLxOgpY
+X-Rspamd-Queue-Id: 3B07418000B
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762854899-775544
+X-HE-Meta: U2FsdGVkX1/A81ugcIOnVONLhEbHVxLT0RMJ81Hs62Na0bmoQzDsIakpClGRuZERufLmV1JBGa0teZ8OJmUMu4vLJcfK+UN3PRcE2V4yJOGsSJnSBSNZyH1Q/pqTtxkMaHW0FSfMBJk8ScFv8ig/EZJeEYyCHUnJEKh9ak6MIZXSxyZ8tiLHQpsB362WMKRui8DS1Hb5U8h9csiFAz0jFixwwGSlKWdle0+Oc7f8RLVPETRDPMnHlFLHw9ZPJOSoQefGhwryP08CKoy0uxSy6zojv70CsxqOcBw9czojA2ds0pLOE6O+WC/VGio0GT5Om8CNw/PnVB8Ie35Cz3qzZa7wLfAEi0cfl6JvRW4Z0zxFS3+zUQIFaC4XqIEqlA0AgpaeN1vH2rBEckjJ4i58vs4gdek2uPCwbLFPct0hxwnf8p/7Y/IioEuV082Hn/UhhxX5i7L88HI5bDNqf18aOE+zA6+iAN+6Sa1Vopf0Cr3GdNA27rbAYh+tumDGh3RyBXt2XRLPVQYrsUSiQ4tczTs6YJXCPUohII9ui6b6og3kWxgZ+V++J6uoFjC+mvEdNdUToYUh97cJ5+qWS40w3+w8o1/xyi3U6/BnwrXSnOPzsfvzdW9yww/HC9FYwTRgYYQgnkV+woEzgbp8560b47ujTPWlGqdNCb4LjVHfqlnD+n+tEjSqY+Zn+uD1E0XgDAfjHWw/6PtTZfOjhmWlTW9yLPUI0GbD/+fN/Ph6IBJl/Hep96VBJsmp05P5QYYfTcsqMHf8FX2j1HccYAkEpp625OjNGen+QOiqxgzPGf5eEonPXiU+4rI2dMUrU+BzIId7FE0nlR7syGyW5Yji0IPzyH8k5PWnrNW3EAPD0fnrh2Icz8hbAO9U6E8Eo0pc0rDBV9n3RGft9EVmbGp5Rt2MQBeqjPNx71Jjsz/mWGapokoefJTz2A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,41 +178,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 11, 2025 at 07:53:18AM +0000, bot+bpf-ci@kernel.org wrote:
-
-> Can this leak the parent directory's reference count? The parent inode's
-> link count is incremented with inc_nlink(d_inode(dir)) before calling
-> sel_attach(). When sel_attach()->d_alloc_name() fails and returns NULL,
-> sel_attach() correctly cleans up the child inode with iput() and returns
-> ERR_PTR(-ENOMEM). However, the parent directory's link count has already
-> been incremented and is never decremented on this error path.
+On 11/11/25 00:20, Shakeel Butt wrote:
+> The memcg stats are safe against irq (and nmi) context and thus does not
+> require disabling irqs. However for some stats which are also maintained
+> at node level, it is using irq unsafe interface and thus requiring the
+> users to still disables irqs or use interfaces which explicitly disables
+> irqs. Let's move memcg code to use irq safe node level stats function
+> which is already optimized for architectures with HAVE_CMPXCHG_LOCAL
+> (all major ones), so there will not be any performance penalty for its
+> usage.
 > 
-> In the original code, the parent link count increment happened after
-> d_add() succeeded, ensuring it only occurred when the full operation
-> completed successfully.
+> Shakeel Butt (4):
+>   memcg: use mod_node_page_state to update stats
+>   memcg: remove __mod_lruvec_kmem_state
+>   memcg: remove __mod_lruvec_state
+>   memcg: remove __lruvec_stat_mod_folio
 
-All callers of sel_make_dir() proceed to remove the parent in case of
-failure.  All directories are created either at mount time or at
-policy reload afterwards.  A failure in the former will have
-sel_fill_super() return an error, with the entire filesystem instance
-being torn apart by the cleanup path in its caller (get_tree_single()).
-No directories survive that.  A failure in the latter (in something
-called from sel_make_policy_nodes()) will be taken care of by the
-call of simple_recursive_removal() in the end of sel_make_policy_nodes() -
-there we
-	1.  create a temporary directory ("/.swapover").  We do *NOT*
-use sel_make_dir() for that - see sel_make_swapover_dir().  If that has
-failed, we return an error.
-	2.  create and populate two subtrees in it ("booleans" and "classes").
-That's the step where we would create subdirectories and that's where
-sel_make_dir() failures might occur.
-	3.  if the subtree creation had been successful, swap "/.swapover/booleans"
-with "/booleans" and "/.swapover/classes" with "/classes" respectively.
-	4.  recursively remove "/.swapover", along with anything that might
-be in it.  In case of success that would be the old "/classes" and "/booleans"
-that got replaced, in case of failure - whatever we have partially created.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-That's the same reason why we don't need to bother with failure cleanups in
-the functions that populate directories - if they fail halfway through, the
-entire (sub)tree is going to be wiped out in one pass.
+> 
+>  include/linux/memcontrol.h | 28 ++++------------------
+>  include/linux/mm_inline.h  |  2 +-
+>  include/linux/vmstat.h     | 48 ++------------------------------------
+>  mm/filemap.c               | 20 ++++++++--------
+>  mm/huge_memory.c           |  4 ++--
+>  mm/khugepaged.c            |  8 +++----
+>  mm/memcontrol.c            | 20 ++++++++--------
+>  mm/migrate.c               | 20 ++++++++--------
+>  mm/page-writeback.c        |  2 +-
+>  mm/rmap.c                  |  4 ++--
+>  mm/shmem.c                 |  6 ++---
+>  mm/vmscan.c                |  4 ++--
+>  mm/workingset.c            |  2 +-
+>  13 files changed, 53 insertions(+), 115 deletions(-)
+> 
+
 
