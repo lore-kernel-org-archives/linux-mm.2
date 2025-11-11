@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56ECECD13D2
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F9BCD1297
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF7A98E0016; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 8EC368E000E; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BEA78E0025; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 650468E0026; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 601368E0010; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 47AFD8E0014; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8FC48E0012
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D3DA8E000E
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78999B9807
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7097F1A0419
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:32 +0000 (UTC)
-X-FDA: 84097415304.09.C7DE320
+X-FDA: 84097415304.20.27C2F83
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C70D8C0003
+	by imf13.hostedemail.com (Postfix) with ESMTP id B885220007
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=J53TPJ+O;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf28.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="HiKTZzZ/";
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762844130;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lB/gWST5s3/zNGGpGrNmQn0s9XjLn6XUo6NFB74HdeU=;
-	b=GdpkKHdSI6039KieT83RdsV1NvfAhSY9UtsYpk6674qRVFBxUM+UuR4h/1UkMCSMIWIca5
-	23Tn9yvPMSecqEzmNQEC3NlQQXMfkfUzJVKOYFnSd0TWkpUttey7W231LEryJMpZ+4Wtpk
-	lrnech//2iujc8C9sxCHKNoBeUJOhOc=
+	bh=XM4FZa0do0+xkZhNaAyLfkF8FdfO7rZo+6nC0ji7Cc4=;
+	b=3PQWB3xMAN+0pCgfukv7O03jerEk1TPf03/m0//WYEPpEdKV3967yJIaP0FLL0ssxPEaYi
+	wZE/i0mQrk6AWYzT43WLAbc2lufwOSLv60GSKHi6Nbi3Cz98Ybu0YxTPhtjUeOrd9kV70i
+	R5SR8kpqTS0J8n777qkTn+jgdwAcYCA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="HiKTZzZ/";
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
 	cv=none;
-	b=fXhs0riCBz1ZX6Czxc4JY7KcUlMail34HMiutsy5XdnHYwa4q1gk9j34TT3tjz6TsbSioB
-	S0orIrzQ6DX2rYVr+FYPcOSXbedmSJPDyQw9a0KnPWCiSQvy9te41pB4AkrrYyYs8d7BMb
-	g69YW/ddbnBb2oRefuHGCuOsEhqq8PU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=J53TPJ+O;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf28.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	b=EjvISzH66BsI3VS8KQjBTqnlGh8SX5dgHbrTAgKBYwfd77d6pfaHmB32+fGqsJ3JACxkrT
+	6EOWsARELqjh4h2/d6y4LUkOfMx7vlf5JAtigDTRcozA9tQUSiY/WZ4Ao5VYiByeejRWMg
+	raeaLyF5ayRdA2TWqZKvRtMnTyysDm8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=lB/gWST5s3/zNGGpGrNmQn0s9XjLn6XUo6NFB74HdeU=; b=J53TPJ+OZ5kZaHTrq85iExMJ+0
-	ESCvD/mY3AUsQJbPBplyGJvh+DHfa6CJDgQjwYe04T03q5fZxVnFU0fMIh0322RWs9ZOTmhrzBB4F
-	M7pYyqB4AJ1pH5/4yHMfI4b55YVk9UTCBH3TyPGbn2v0fBFizfaZELuSNxzb5Gn9xTdxjsRHFHBov
-	Vbxe51f2IOsquNV3XRN/456KamzLZYI0lkolF+ELEVzocIV/iNa1VqfookQvrhsRG+cJ5VKjQ4CKf
-	g24MHsi3z0nxP8/d+QstBk8c4urCx51+yd1QoDelaMTgnAdd/wT1JKm9FpFgd8pogNRRcXpLYc3aG
-	PGOz2OPQ==;
+	bh=XM4FZa0do0+xkZhNaAyLfkF8FdfO7rZo+6nC0ji7Cc4=; b=HiKTZzZ/q4UOe5+JDM6CDFXNw+
+	HyDR5VqKNtpjR2amfKboMkRHLZr4PaGe7CCAYJP+76LUWUXz8vpbtEKAIPStBmmhP8Sjxzs+thRRb
+	rJWYPOUAtvnPrutA0+F0/TY1GdkWOThpY2oCwiyCD0KsJ/zHRyjJ4bPea0L/z8x5fffm3GVWTUX/F
+	C1klgokjca5tCzuxZN45ZPaBHqDRnIqHcrhKNk50YL8SEnnGxVsxtfM/mF0CaVVxuNE6g5P/XIX9V
+	OIeVgxtX/90DlBBBiZxd8xJJxrKK6b8c92oeeg8BBKwc8nngThjXp3MfbnCwxU5TS6sArZUNYqKB0
+	MGm2kVNA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHh-0000000BwtD-1BG9;
-	Tue, 11 Nov 2025 06:55:21 +0000
+	id 1vIiHj-0000000BwyW-3XSb;
+	Tue, 11 Nov 2025 06:55:23 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 01/50] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
-Date: Tue, 11 Nov 2025 06:54:30 +0000
-Message-ID: <20251111065520.2847791-2-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 17/50] convert fuse_ctl
+Date: Tue, 11 Nov 2025 06:54:46 +0000
+Message-ID: <20251111065520.2847791-18-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: h4dqkbcqcn4hu76qtjtkbxjn5qgzr4pa
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B885220007
+X-Stat-Signature: 88nw8ny48yeriadzgm7oruuixm53c1ww
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C70D8C0003
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762844130-73536
-X-HE-Meta: U2FsdGVkX19BDTVhRK5mHoFErHXoWlOAhM5vd9a/jzmkhq+nK/lCN+TKz21zH9jKn8Ta19O/DYK05DVGkzbiSH+9f/qE2/wDoniz/msdZc9qPPCLrs1PH2b6NR35Dx7N8QZ0aPuFrOKwkCqOlV4LJ4hYKM33rVnYDaZ0iYoWaWh0E/uuP3dER3mXtA3/dmgehBSPDKLW4eNh1EfudPer6vt6vJJeFxsSl/DOOXSQhfFlLX7APDf4owERujBpJNJuloagHB0KLl8rmT4tp28g7rg+XKcmmzDqA/+cuuDLU9n7GGw5ECHmFZx+8ugc/JtZ4Ak6n1p9h29EQ5sJNWFT2wc4omnZZMPtL3/yagnXhDkR1yD1w3lSpOFjVy6g/hB/ZlMo+ymX543mBRruf9MuA3O2la5dlyOXB45Hxr50SYnmoDrqk7lR5LDwxvUZ+xzazyIVuQT1PlIwAcSTxDFuAtY1TCwcFHMVxod4M5/mAcE2WPfYPJZ1tUdxZUAjQ3I2q2NHqIqCyNF9Pr4nQxXilc2NbQojTNCh4qIghZAk1X7jW7QQq2prRb03+mRl+3vhDUTuXWw011oexPgeEE0yyhRb3ymFSYSh5TEhSg/kR6MP0i2Bm3RgZpURDBWkbHq2rIN8tOp+0fJUZTamhJYBDgT/h7xHO/eA7SDNI46HoEJTVjq5WnyZzf3OxDtzJ/wayzGLWVBfY7sSpvvmp5/hZ/ypF4Qi329tUp6III3XbS5FE2WIhIQXet+Dz1IhCmLk/wwFY3sPcTaodMqe5xA0JC73TpKYwp0sIRu+bg1N/OxI5GQQH7ij9TuiXewxRg9I5CYKo0Y/yv+1ofEmCVklU5uZHxDNoWa0QyMkZ6Tqf7hc1RBG4xQ6f2Xb4M9+lHfZ22s2TLoWMprLjhFC+Hn3PllR743OS0kp8WbFV7vLFqx89hm51ydAFSqMjS73GcQ03YYhvhc945FbQooF7Kg
- rXOmjPQq
- FRfrinxZOj6MK+MvoYmV8M0owL/PdyFQ/DhZUbdGxcxAm6slPui9WhoQTjYGQuxOnn066hMnXQZr1HBnHHZ+D9UeMnMsMc38k5i0eInv00AhYyuBhQZkIdPOuhNRjtr43OuqXoJ7RPhD2tCdRL0KnqDcyRrsikaVPxpXMuHq1I3I6ibH4zof1nnyceKk/N6C0kxjFmE/Fq24YGiMGIaeSv6CtfeZvkGQYq0Xwqq5PGxSZxPNQKCYdfV/s/dfNSzgLhc3NED9+NSYWol//m+jSVjmZ4Byk4QL2sAk1Kr039+UdAc8iwxGl/iH4SZqdmdG7kwL34vqf0CcZwgA0aA48O83NBfK/u7UOfhqnFuObkg9DnSzSMdB3qMzqtaXhY1LCkBhVh+31dXqEmQT2W2vsMMrt6eDiLorW5pXalAH/1ROWlUN3gjPJPUZUEYF/7/OrA6wnWvCniw0IBBsJRLiqjUEGvA==
+X-HE-Tag: 1762844130-618886
+X-HE-Meta: U2FsdGVkX1/pRSxL6Bql/uQD/tgMC1+9C/KYhYtpycwBLe17k2zJfx24UoEeDL91xg+OYi2ej82tZnLwlJagwPBbB3EiqQJ5kZ/fwAK3KXzypCIRRL8uMgoN1YfxVaWWD4GWSXMwOWCadmSb9vPSbeVyNNs2lg2JhtD4elkKuROkO2bwVb1lfWnjyqv7U+l/RacGxSDbmeIfgLjN/yEJo7QViCgqYudTeWm8kj6SOKQIhWOB5w5IvuZtlYkEhT87F74gEOsNiIcGQUKOlVJXhke6yweBugK61bKwbB2G+Zd0lCZe1T2wEfbY/aWenAI6usNxAEYDIDEY76LTsQ9lF+5/pYkWX1N1rzwlLS0Kit+85bm25MB+N5vEf7PK3mQP3/PYGEaxBmvBbckL4mJec31ij/Xnx0xf/5eyEnTAueIjrONLUXftYfN+oeLwGz0sndk5Bg0MhB75yIMMIZb8z1RWiakReehRaZk6krAjG58tGsQmfnkxkct4pzllZPtpEumhPnPJTorD4wuKG/O1+avaW3rk9VtMK27f2y9DLX6nwkpElR7ud5vINHh2pfGtNLDQvDZRc0IrDADQQCdlV5WonqEM1uBwp8wwqaZcx28EYuGrzIb741DLH569cXpLG3c1plH1iV1+Jop+9S46/IeJQ2JXy7HbiupoOHUFAvuLhfJFAgNRlYzXqr3o0uVDKy5X4aLRWD6bnZflcHAjJe1MNPUNym9qeZAHIdeM7c5XMr5I7y1diwQL21mn+uQ6hOLu8B0bVxwdMouZy/gHDBusB2frFiCauTjsus13X4ZiXVRjrwvCNByNslHHcjXnzLKCkJIs7PNMoxgjXILBHeG/vyG3pRV6Ww5hunnGziG1zheNQ0zCsJPlkZwuZz/sw0sYqez2xKI85TWP1m1rozvMmSuig8EXOP1JpJHSiE34HzEqIE89rtqnlMQ95GbDWLLnYj+9ehNo+NplucB
+ fxYxiLh1
+ GVdseHqRXbCjAfukGYmZ0+IbO8EIQ7xiSfTFhmeHIKii7eaYu3huEqJRXIe3sDhcd9brgMS6O/D70oN2c734W7rKKjGiiOfmWFEXkjAciXsG+c3e5xa3CH6+W7exXGIiUJVPgcrKLD+BrFS6ex1a2iwYMeJwnaNn6tzHsWyIf9SSHDbl5n/rGHZoD86q6AvHP64p2Mt95l54f21/gJ54XZe5S+sppINDBkQM5TQBnAMhkhjZkySnld2LQ90Tke7kql7hC+ltcpeuDX1IUkURBn1BplP6KOH+sKSE/6Pu3vaCKdQ88HlaWPWXS6V5R04QLeEFQh90nMseGmwvqqADWJpoA3IWbcXbig9ie44bVDoXpSKnvT3Yk+geqLsrqZ1y0P8CFB7WS+IHCHMkN+lvqLeJgbTwShpXFWWRYzuLYA1sNBgJL7wsLXIBN5zCu6+JCGM2aUSwa+2MnnxjYRu5Yzo1USw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,75 +108,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-fuse_ctl_remove_conn() used to decrement the link count of root
-manually; that got subsumed by simple_recursive_removal(), but
-in case when subdirectory creation has failed the latter won't
-get called.
+objects are created in fuse_ctl_add_dentry() by d_alloc_name()+d_add(),
+removed by simple_remove_by_name().
 
-Just move the modification of parent's link count into
-fuse_ctl_add_dentry() to keep the things simple.  Allows to
-get rid of the nlink argument as well...
+What we return is a borrowed reference - it is valid until the call of
+fuse_ctl_remove_conn() and we depend upon the exclusion (on fuse_mutex)
+for safety.  Return value is used only within the caller
+(fuse_ctl_add_conn()).
 
-Fixes: fcaac5b42768 "fuse_ctl: use simple_recursive_removal()"
+Replace d_add() with d_make_persistent() + dput().  dput() is paired
+with d_alloc_name() and return value is the result of d_make_persistent().
+
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/fuse/control.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ fs/fuse/control.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/fs/fuse/control.c b/fs/fuse/control.c
-index bb407705603c..5247df896c5d 100644
+index 3dca752127ff..140bd5730d99 100644
 --- a/fs/fuse/control.c
 +++ b/fs/fuse/control.c
-@@ -205,8 +205,7 @@ static const struct file_operations fuse_conn_congestion_threshold_ops = {
- 
- static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
- 					  struct fuse_conn *fc,
--					  const char *name,
--					  int mode, int nlink,
-+					  const char *name, int mode,
- 					  const struct inode_operations *iop,
- 					  const struct file_operations *fop)
- {
-@@ -232,7 +231,10 @@ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
- 	if (iop)
- 		inode->i_op = iop;
- 	inode->i_fop = fop;
--	set_nlink(inode, nlink);
-+	if (S_ISDIR(mode)) {
-+		inc_nlink(d_inode(parent));
-+		inc_nlink(inode);
-+	}
+@@ -236,8 +236,14 @@ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
+ 		inc_nlink(inode);
+ 	}
  	inode->i_private = fc;
- 	d_add(dentry, inode);
+-	d_add(dentry, inode);
+-
++	d_make_persistent(dentry, inode);
++	dput(dentry);
++
++	/*
++	 * We are returning a borrowed reference here - it's only good while
++	 * fuse_mutex is held.  Actually it's d_make_persistent() return
++	 * value...
++	 */
+ 	return dentry;
+ }
  
-@@ -252,22 +254,21 @@ int fuse_ctl_add_conn(struct fuse_conn *fc)
- 		return 0;
+@@ -346,7 +352,7 @@ static void fuse_ctl_kill_sb(struct super_block *sb)
+ 	fuse_control_sb = NULL;
+ 	mutex_unlock(&fuse_mutex);
  
- 	parent = fuse_control_sb->s_root;
--	inc_nlink(d_inode(parent));
- 	sprintf(name, "%u", fc->dev);
--	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500, 2,
-+	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500,
- 				     &simple_dir_inode_operations,
- 				     &simple_dir_operations);
- 	if (!parent)
- 		goto err;
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ }
  
--	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400, 1,
-+	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400,
- 				 NULL, &fuse_ctl_waiting_ops) ||
--	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200, 1,
-+	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200,
- 				 NULL, &fuse_ctl_abort_ops) ||
- 	    !fuse_ctl_add_dentry(parent, fc, "max_background", S_IFREG | 0600,
--				 1, NULL, &fuse_conn_max_background_ops) ||
-+				 NULL, &fuse_conn_max_background_ops) ||
- 	    !fuse_ctl_add_dentry(parent, fc, "congestion_threshold",
--				 S_IFREG | 0600, 1, NULL,
-+				 S_IFREG | 0600, NULL,
- 				 &fuse_conn_congestion_threshold_ops))
- 		goto err;
- 
+ static struct file_system_type fuse_ctl_fs_type = {
 -- 
 2.47.3
 
