@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED05ACCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7B6CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:55:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 414E08E0011; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 737D28E0017; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36E9E8E0025; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 53F6C8E000E; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 194EF8E0010; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+	id 4065E8E0010; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A42A98E0010
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AE5328E0014
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 72EB113AE32
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C87D88BEC
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:32 +0000 (UTC)
-X-FDA: 84097415304.13.72F5115
+X-FDA: 84097415304.21.385EC9B
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9767C14000B
+	by imf10.hostedemail.com (Postfix) with ESMTP id C8A98C0006
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=TqkcMEiv;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KJyJxRMc;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
 	cv=none;
-	b=xjvnPm5tdZTgZvGxXMCbo3F2iIbx8wYl1KZFrG3D2p2/b6X7T8yqzTjlfVpcu1d7XR4JmU
-	Iz3x3931J0V2H0qGJnNCgLiJfOgVlbnVH1ulJ+n5rPnAtSlDeaDSf8FCsWux73kTNSn3M3
-	lrHCEHmfz2++nhaqP23+DuDIcgKjfjY=
+	b=NBLB5G2KphXe6U2CCGiooE3kbEeTOh12xAWvryw3JPG8arCrBXHjdhnpoYnKcS9ud25rCG
+	h4DGCV+53MO28FBlI5UIU48KmB/Y1m0YQK0SlJtqVnkFUiinyDXiAC7EXlvYdyk4obkviv
+	8keVaWBeKBBw6qTZOK9MNgJPtCC/M4o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=TqkcMEiv;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KJyJxRMc;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762844130;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NeGicC5Z67ZOycdylyHVP58sPv/wzz9kpKbtM8vrBao=;
-	b=WJ4iKiIbtzs4DuiQ4S81TM9OyWDdI5ANA5hZApGEbKtup/fy0mqNvrOmbfUmsojI51ghUV
-	Gi+OPMpdmMGLuH6LNFeBw5/y4o/huL80R2Xe3e+wrvnBk0uHyFAzcKVJW3u2NXL8Ar6kJJ
-	xmhLk3I+09T4PH4wdBJojPdbTRVU5M8=
+	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=;
+	b=KBLzO78whQthk66ZjwiwhVglTjWwccqx4J76+kqKUKaSPKYKqEnNeXU4H40PO27aqSpguz
+	PvT1cmjYZmNlV4+G8+QUhhe7wg5UWF8Hjrj1t7RnzIQgrxebH3rca2JXv+CNSr2ffNTXsJ
+	6NB0bTZ2c5jlS5Lr8KsXpFVrnJpA7zI=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=NeGicC5Z67ZOycdylyHVP58sPv/wzz9kpKbtM8vrBao=; b=TqkcMEivZIXJYaF6ZOIHxmt9Vk
-	ohKhWrAsLkuIVUzpRtv9GAOLw4PKTjGu0cDrLfq1aZdI1jpzLIeVbQJUtimjnqiyE4l28biMeXbU0
-	SIQ9Rb3j150+dScnH4j4C3q+qtBcOCjEBfpcd3R4Jx8kW1fQP3eCjEpoPGCq/C7xzApDvTnyKJR98
-	PXZAThOhk5zfcqKAsI5C3RZlC5f1Axfu8UDfOLsCHtAoj7mqx27DDYDiOSKPtcPe+a8s9ij06CBms
-	M0WHQ4bUWJL0ApP+7L+eWUGoTAFk9bqmcTwUs5BYke3+24aoCR67UP1bIbQcrW5ESQ9Z9sGcWideo
-	fsqkHMSQ==;
+	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=; b=KJyJxRMc0dvbQcOITZBVA+WBk6
+	ifKPkydBj5RdVYpkYeX6lt/kJ7ld5xb0t53muvLxLstYnB5Kj+ibW1kF1JoNVPQmbi/Msmgp6IIua
+	rxkVOKwaX09nya1yIHsO/LXlke4OexR2bBkWG9LhOwtpTOY2ugBYceF0WF/wnns6qgtdqeY6EhATx
+	NaphnnRAzZNypERmbf3t7xl0oXOouhXWk5Ks9Gq+2D+L1HLZ20izPqJ7SWklcqVqWcK8WfltyTXu1
+	JWzC4NyfbA4dtQ5vb8jg0/lTWmXs+f02YOh/csRHhSEvARsXS9htgina50+ZEPcUaq8myz/AFR1Nu
+	i5DDMhaA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHj-0000000BwyO-2vqR;
+	id 1vIiHj-0000000BwyK-2Gux;
 	Tue, 11 Nov 2025 06:55:23 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 15/50] convert bpf
-Date: Tue, 11 Nov 2025 06:54:44 +0000
-Message-ID: <20251111065520.2847791-16-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 14/50] convert mqueue
+Date: Tue, 11 Nov 2025 06:54:43 +0000
+Message-ID: <20251111065520.2847791-15-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C8A98C0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ceypzwrzzkykcgeeum15qrfanjbfzehf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9767C14000B
-X-Stat-Signature: sf4wors85cz5fmg8tkdrafw6mfhmnyte
-X-HE-Tag: 1762844130-834388
-X-HE-Meta: U2FsdGVkX199jR8MclyhrJDCu+yXIEdNDtHIv8IHepeiKwmYI1PQbN98oQJUtoB8Xtv82PGrh9IUbKdqW4yPIrG9LGK9LtJC+P2BYalkjO+PbCMBBMsqlQra3F+5SZJ3ExMTdS/M5LBzp/mIKQoR64+9CwdrPEUYpHs6WEyIjnD/kPHZ+xtvaGtyDdWH62iikqTuh5s6i5qOEdhZ1qIaITOM1alzMD87cPXZo8S3+AZ17TGJAwu+/CImI2gDaIrJy1ndRzjFNbEwUsqkLNGEkMWIsonPkxJQaVeKc+M37CIGb5gnb4FlcOLlsLu7V11/FoXFq+NI0h5ZT2r7wWfhowafvqQI9Kd5p0LyUg6XbyZRqejBVWosuhTC5ixK7cRZY7zVbDs0TJun1YuMGNEBeffq+SLJH+16HN4Em7QlnOC/bHel9yxijNH0KNRWgrZAIHd9w9da+N3eBOSBHZLiVoO60xX5WMfwQPUIbq5ZPy4LziK0wM2lqSmuoYu/CIgaLnM82DlqLBE7VX4XBc5hyQ7pSblXh8iHn0H6J1Rc+JuwTJpWSZ9b7kDiM0ohxcdLMBc4GOCseOS1nc6/Vt8JXsobRsXl7J98/D6USrJVlIZOkqBbVfuPschYNzIp57n7PLT9Bq48NHSx2YpUr3SSxzbQ5rqw+qVOVVXn80DIpJ3wghsEGWsNrgmWBUSylP9fB97N1raDzPnz/ZASYPps2PveglCPIXr/0NN0OHz7Hm5gKORBor138vvY2inagN9npX7YWrg52+zK169MbCY/5FDIwhWvBLcGRz/Z2QwQZxuQa0rAVGW9DWKeREmj21ax5uvv5H+e42ZM1RMlVEmh6Grb1JO+i4Xm5uYzBspWlQdgj+gKTRZ3AfZlxw3kbPf3avq1bDyMvFRFV4ngFVRwkkkRiG6sjsdxAew8TMYjehfthg1KcNHrt1JD1H2rDlanXn5FIaBhMtRYtU9+hQW
- PlkBU9Tx
- ulyKMdffi5hXq2rfMq17fwmq749mzpvt0FrM1iW9dTp2E027OvdWINQDLYBtSoQRrXfzjRBWGIZ9R/RztKmoqTkrad2a1nOFPwQoVdgLiRK0IXO3JHtaQtMeZQ+b9A4GAdGLM5DhnMKuFplGHwr/WHVlCly83+0dcRKuguSN+z8ORwcLxxCPpa8eJ/Y6zEMF4mYtnF0JPccNQVfS14vQ0VqCoZaKU/yWmYgsfq068E2E0eizZ/3lIkMN/xdQX99nN4VPCzsUY1VVwqU8V2W1JaQAgvqm7t1QBtf9x8moMTzy+knyTsfHVlIo9JrDZSamNrhGlRFU4PiuDuEoBCxRj83ZJZOUzf2u8G3eEU1NQ2U0voFc4Q/IQRaecpf2lY680U9GLZkyZ4avyUvWW9wBxeWgw6J1MfLynjJAJ
+X-HE-Tag: 1762844130-194047
+X-HE-Meta: U2FsdGVkX18yciwfGm2NsNZ91RZyDN6lhyHXHksoti9vajMFEp3pmJbMk+bmbG7crDLiRS4/hcX7x7hZBxLNynFndEn5S/Ky6iywc1fetwh7mWnz91f8VZ7w6t3NSRqY4Orm12TSWyUO46tmsnJJ9OxAPDjnmJS3MSEjLK/cCskm5ht9wa2pspB2YYktycpaXwrf+eRTbrer7KG/poWQd9S+LnpOgHwmKIuDgRhzE7x2q2x3DHy9qWs4YlLq3JhrfI3zykhHBgg1IeOrXTwnyRhUVdJBRhdowlcv1jdA6kVZdIFCnbC2yTvUXJVXSx4kl20PF/hiWVCGdL2mRqUzLIUAv5vNEZ6ldbiP2FVrSqaZGR5ZeHzatvgxfWj3M3PJQlAtcqAZga1/2bxTSi+ItYRu4n/SMihf9WRfr58mWXK+KnOtSI7Iexh3joevGhnGrGUrp4OS71bpfMd73gVoHoWoNWfr5leJBBuj6YMY0zlDeJxchTw72zY0Z1nyL19hVxKn4p9TqdWJQEXZzC1nP6+tnWzsEGRqL8jYYFpUen6JAl3nVNXoBsCZQ4G5BHqZlazJqghBlSxby/bPc+npyepB76TxEgKK5LkABlxhBdhdVPp7YvUBqwG8VhJupMiWZQ3t1wY4BV0Xgcu4h0GoqLVDNGX1BzaFITki2b7/qYwzO6sWTymYE2tBxETH5ZQ54hg7WJAZPkgDbMGEJM1pbvi6fXsDb+41cn4bSI69exaUtrL2bTvJYSQiZDRbPof0ahABwqUq/URa10xnurSG8YeJeAiYto5JgLmDgJWwev/CKFEDfbSt0acgicb993y6a8Jr6hYwv/+rcChUTgG6wU1SjH9xlTmlFaGtTtUo+svlM6F404kWTgI9CSektuH47Td4dgvefQ87GZwMU/CL3vJSBwec+YWRjhR4uN01IdS/rApDdY4R9RYp8BFipjDgWTnRehDPyWi2JeKxDt1
+ SVjvCnv3
+ 1crRlKzWFFcyUFQW7UmJ/QlYAUCUmsTjDaiViJL2ZVFVa+wqcSn7Qs3z2NnCMzEV9CiyYJDSUaVhFKA6Em2p+U/v5RmQ4F3Z2dPPwyn938Agqw2S4EMXNypx0ROQ9oBzmWw6WC+QNQ/AUfZqxl8SOn24bvxj1Z4jqeSyh4HFnBoHeCpvXu+L/bmlD+E33G6fNGP8Kevp6u7VoXIBtFc5Rk048KB6Ahzu05ZcWM1D79hL1YW5kfEK304cajIDCI8Lhg9KQzqJnCnwxONRxxQ0dS9MdLKFt8cawkYsBjVirhIMUnmsYNYCH3aOCCP4xYPfGot4R8/rbtcIWSTWgZxEkghvklY5iwF1r7U8VlLl/deoA9pO55h46ky3yWcbNL57wQAQhV2ieIrIbmxsz/htlEJZsrW7xVLWJmawE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,65 +108,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-object creation goes through the normal VFS paths or approximation
-thereof (user_path_create()/done_path_create() in case of bpf_obj_do_pin(),
-open-coded simple_{start,done}_creating() in bpf_iter_link_pin_kernel()
-at mount time), removals go entirely through the normal VFS paths (and
-->unlink() is simple_unlink() there).
+All modifications via normal VFS codepaths; just take care of making
+persistent in in mqueue_create_attr() and discardable in mqueue_unlink()
+and it doesn't need kill_litter_super() at all.
 
-Enough to have bpf_dentry_finalize() use d_make_persistent() instead
-of dget() and we are done.
-
-Convert bpf_iter_link_pin_kernel() to simple_{start,done}_creating(),
-while we are at it.
+mqueue_unlink() side is best handled by having it call simple_unlink()
+rather than duplicating its guts...
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- kernel/bpf/inode.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ ipc/mqueue.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
-index 81780bcf8d25..9f866a010dad 100644
---- a/kernel/bpf/inode.c
-+++ b/kernel/bpf/inode.c
-@@ -144,8 +144,7 @@ static int bpf_inode_type(const struct inode *inode, enum bpf_type *type)
- static void bpf_dentry_finalize(struct dentry *dentry, struct inode *inode,
- 				struct inode *dir)
- {
+diff --git a/ipc/mqueue.c b/ipc/mqueue.c
+index 093551fe66a7..5737130137bf 100644
+--- a/ipc/mqueue.c
++++ b/ipc/mqueue.c
+@@ -599,8 +599,7 @@ static int mqueue_create_attr(struct dentry *dentry, umode_t mode, void *arg)
+ 	dir->i_size += DIRENT_SIZE;
+ 	simple_inode_init_ts(dir);
+ 
 -	d_instantiate(dentry, inode);
 -	dget(dentry);
 +	d_make_persistent(dentry, inode);
+ 	return 0;
+ out_unlock:
+ 	spin_unlock(&mq_lock);
+@@ -617,13 +616,8 @@ static int mqueue_create(struct mnt_idmap *idmap, struct inode *dir,
  
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- }
-@@ -420,16 +419,12 @@ static int bpf_iter_link_pin_kernel(struct dentry *parent,
- 	struct dentry *dentry;
- 	int ret;
- 
--	inode_lock(parent->d_inode);
--	dentry = lookup_noperm(&QSTR(name), parent);
--	if (IS_ERR(dentry)) {
--		inode_unlock(parent->d_inode);
-+	dentry = simple_start_creating(parent, name);
-+	if (IS_ERR(dentry))
- 		return PTR_ERR(dentry);
--	}
- 	ret = bpf_mkobj_ops(dentry, mode, link, &bpf_link_iops,
- 			    &bpf_iter_fops);
--	dput(dentry);
--	inode_unlock(parent->d_inode);
-+	simple_done_creating(dentry);
- 	return ret;
- }
- 
-@@ -1080,7 +1075,7 @@ static void bpf_kill_super(struct super_block *sb)
+ static int mqueue_unlink(struct inode *dir, struct dentry *dentry)
  {
- 	struct bpf_mount_opts *opts = sb->s_fs_info;
- 
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
- 	kfree(opts);
+-	struct inode *inode = d_inode(dentry);
+-
+-	simple_inode_init_ts(dir);
+ 	dir->i_size -= DIRENT_SIZE;
+-	drop_nlink(inode);
+-	dput(dentry);
+-	return 0;
++	return simple_unlink(dir, dentry);
  }
+ 
+ /*
+@@ -1638,7 +1632,7 @@ static const struct fs_context_operations mqueue_fs_context_ops = {
+ static struct file_system_type mqueue_fs_type = {
+ 	.name			= "mqueue",
+ 	.init_fs_context	= mqueue_init_fs_context,
+-	.kill_sb		= kill_litter_super,
++	.kill_sb		= kill_anon_super,
+ 	.fs_flags		= FS_USERNS_MOUNT,
+ };
  
 -- 
 2.47.3
