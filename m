@@ -4,84 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A82CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:20:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1493CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 03:23:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A56C28E0006; Mon, 10 Nov 2025 22:20:43 -0500 (EST)
+	id 4E0D28E0007; Mon, 10 Nov 2025 22:23:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2EAE8E0002; Mon, 10 Nov 2025 22:20:43 -0500 (EST)
+	id 4B8228E0002; Mon, 10 Nov 2025 22:23:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 944FB8E0006; Mon, 10 Nov 2025 22:20:43 -0500 (EST)
+	id 3F5088E0007; Mon, 10 Nov 2025 22:23:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 82BBC8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:20:43 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5BA344BBAB
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:20:43 +0000 (UTC)
-X-FDA: 84096873966.15.5118536
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A1827C000B
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:20:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qldQiTbD;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 324338E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 22:23:51 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D289012CDF7
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:23:50 +0000 (UTC)
+X-FDA: 84096881820.20.6791213
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 13852100002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:23:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UPsgop1U;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762831241; a=rsa-sha256;
-	cv=none;
-	b=2TWk0zWyL2rWo8Ftv2rhG65cTR6ZbFU9SG0Mo2ucLo5lwXWEenhOxwP+8fbyCvDZ1d3agX
-	ncBzpgiNdOGD9PQAYRtmSPn4F1rEjygKdcXcCZfFVvBuxYkpXKr4Tb7ebJqfjsFnDvS6kF
-	YGXeG1ilyXADp6raDihQpERMMsDLIUs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qldQiTbD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762831241;
+	s=arc-20220608; t=1762831429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/TjnAMwRA5cP5wMGVIyQAzD0ksmiesUlEX8b9U57VhE=;
-	b=P6/OrRu7XCm85hLyueibx3mcxK72qyt5oQhQKG+qQcs8oaB29M4OuTfWwd8cTXZvmZMr5p
-	zuPmyDhDuOivJPldfC23FqVinuS7MTS5eyQ7mPbjr/kgSLv6owi/u7FtT03P3/c3SAcYWv
-	zCJEEVlVBOGMpXuC6uKbN/wIyn6Z76E=
-Message-ID: <aef27438-7636-4c38-a5c7-beda95efa02b@linux.dev>
+	bh=dRsaTINzsimOU7sZV8eoCiJrcZgmp+6Lp0gB2Wv5aQA=;
+	b=ppmo3ITufjn7HTmUoOZ09M1jX1yJQsztXENQKvWRt/kcxQjEzi4M/S+7O1emglDpnigJ1j
+	e6DADD8/TWy30gnsMXtM3+Wgn0Y9ade3W3sxu1lsaEdiNQTWrQKlzNGSx+h0Dchc9YOJO/
+	cHZjhQqwKuKJCJcuzqjfRJDI0Cdpwsg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762831429; a=rsa-sha256;
+	cv=none;
+	b=UYMlZnewaLl7xlBqBpWk+pD18JfvrVAI8//N0cdUmWtAEJxzF2Lmha5+C8atxSLeH9YYmi
+	jYSXo8sN6AebestVc5Luk/POyz//G9Q/fO0rvubd2QW07ydESuT9GAPOP9qSugRB6ejx6N
+	ZXOROi3Z4GzJuJdYsPvwJ0NXg69GDVI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UPsgop1U;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Message-ID: <8ee2e132-6f80-4da5-a03d-820e4031a9fc@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762831236;
+	t=1762831426;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/TjnAMwRA5cP5wMGVIyQAzD0ksmiesUlEX8b9U57VhE=;
-	b=qldQiTbDatoU6IH1wo9+2leMUJS+h+YzNt9j57iIjdLoUpD6HAm4kbwl7VQUy7ZaGWGSdI
-	Xo0gKPh86ve4phAVfTgQ8DzZYmDNKj67oj63NHq4XIB+f4wKt0tF6DxczAs4Ny1Gq3SJ6P
-	NzM2FCv4ZaJF/MrqSJ2mkG85wftiqaY=
-Date: Tue, 11 Nov 2025 11:20:22 +0800
+	bh=dRsaTINzsimOU7sZV8eoCiJrcZgmp+6Lp0gB2Wv5aQA=;
+	b=UPsgop1UdM6iVCJKMcwkLQQY5vs0SziOL+3tJ/VISeF+lny1aY3cMPROrx3D8xU1Knz0m9
+	plXApivp7nUGBs1nBOpcQsteaD4gZ2IUmuGCzVATmlxxRxRqknAme7SMVjU/wDvlKfS9zp
+	TplEvHow7j+IYgpq+bQVD88BJ3XJbYM=
+Date: Tue, 11 Nov 2025 11:23:33 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/1] mm/hugetlb: fix possible deadlocks in hugetlb VMA
- unmap paths
-Content-Language: en-US
-To: mike.kravetz@oracle.com
-Cc: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Hillf Danton <hdanton@sina.com>
-References: <20251110230745.9105-1-hdanton@sina.com>
+Subject: Re: [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, hannes@cmpxchg.org,
+ hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-rt-devel@lists.linux.dev
+References: <97ea4728568459f501ddcab6c378c29064630bb9.1761658310.git.zhengqi.arch@bytedance.com>
+ <aQ1_f_6KPRZknUGS@harry> <366385a3-ed0e-440b-a08b-9cf14165ee8f@linux.dev>
+ <aQ3yLER4C4jY70BH@harry>
+ <hfutmuh4g5jtmrgeemq2aqr2tvxz6mnqaxo5l5vddqnjasyagi@gcscu5khrjxm>
+ <aRFKY5VGEujVOqBc@hyeyoo> <2a68bddf-e6e6-4960-b5bc-1a39d747ea9b@linux.dev>
+ <aRF7eYlBKmG3hEFF@hyeyoo>
+ <aqdvjyzfk6vpespzcszfkmx522iy7hvddefcjgusrysglpdykt@uqedtngotzmy>
+ <8d6655f8-2756-45bb-85c1-223c3a5e656c@linux.dev> <aRKqm24Lrg-JnCoh@hyeyoo>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251110230745.9105-1-hdanton@sina.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aRKqm24Lrg-JnCoh@hyeyoo>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: p76qprhk9okmz9x6ar81si5rhjw1wap4
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A1827C000B
-X-Stat-Signature: edpo8zbx7o5npui7r9146q767kb11s56
-X-HE-Tag: 1762831241-140629
-X-HE-Meta: U2FsdGVkX18qq3rAL6XgJFX5RZSRhsM8hSCeun9jQ2tcgdne42efJoiuzSLUIHLRdfQJjYE2Ql1Mcppn7tJv+caHl8KPCP/P65Y8CMaWmEX9vEQxQDbiGqVu7VJFlt9C76FBasMI5r32eKe4aja/ErqEgEIR4gzdPIk1CW1L5hwSIwgxt4YvnOKM1PgOSUYQdH/oRTC2bQtdYALuRcpHo+fCZBZLDkCOPOUNbzRymSISBpjA36/nfZhSYGdTF8N/4dTUTAaIMXUOu9vkPzH1HBFqnxSWud2p7cesHHzw3yEywdCGFlJNfKsqhIoTrQQ+U7AGD8Pigmngf9FEZIvcvaxWXmeDQME9bZRg3VWLZ2vgIl4FyxDFxGmCgEG1SZz0AY83YGBPCe/5+O9RSFaP52B1md4JpD8LShNELgJgi72XlWpkKTOiEno120sJi7ldo9VtkUpWri/v1W0SzX5JFDKD0XG1XuG5pwEvKQV+G5ieuWqRM8gN7zk1mC3FBOLcTio5fqSEa8M8faf/DRGu/kRUvYKI+10RP0de4K2YjipmKpvbBAkdbgmu+UlgDMeHb4TABnDo5gjbi4sn+ZOZrbHSQF3ybbtWsT6hT94qY1UW/FLOm/CXIF/LWeFE59I8W3eQ/JiQnK0l6OaLn+0rb8qXZMxpnd/pcGpxE9LTn3ZbPguTmG5pAUrVWp6+J/pELk6NhqzTcJcqmkK8o/qZyhwaTTWQmz5seL0Ye7uVv4boNohxyrKvS/M2YOhaS6tOvddix6cQvxyAG6VEsQzTou3rQNiLnCb45sUxCmwbwqpnsRo3zKaZ4lJKo7lOmTxf+jbcxk/na2Q=
+X-Rspamd-Queue-Id: 13852100002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762831428-615909
+X-HE-Meta: U2FsdGVkX18WbC8MOXXk1Si2bk5Me9GZ5mvZtAA7uv3fVGsmoDYJV6qDik3vxYRhxt7BoTh64sE5/SIEuWqK3dRld4hv5mf9fkN+RgI0tQrXaZy9jphbEe89VakB1Etoj666sYqjjgf6qblQnzuxvdY1VnUp0Gpvx0BvtplPP3+Qu5D/PfuKkU2jh9pTxVTkfhzDiyEMOpoHZAVQT7qG37NHGGCXAFTmXo9NHWvKEyS80SKIlBd2v2d3bg4Y9CQrjL4DScXmHuGUY9FgIDboGB6CMFmK3Arm8klMdJMNH1UiaPoYKb15FMPEfEKk2oWOBEO+UTgs7avcOtOHbLzwfAlznp1+cIiSX3m9tJFguCWYv7IZ6rxPMi4HIxPPOndji2JUDV3Ez68RZFCq4MYmGxPA+vI1vEivuQybiDVoVbndOfg2uDFjhrKuN5at/6QxLWTK1uZNVLk5Jvr1c7+Uc1XFyp5+HuRBXON/F7Lk09T4DSyLQ4vDsdV/QZ7mT08jd3gd5sV/8Q3sKaKdVcZNIbGBApkun5asTwM7MRYYiKTlvBFPYxEd+SuepmcSlLHTE8qb1nZ3aivn+Gn6rKH5b0/MSK2MRKznUZlVUuI+6fkFt5zVXXXxsWebe6E+JOu22lpQmJCWOCX9clrCzqIhlbD7+ZtY4UGhRtZdJZ7ys5TiNmv/hwuMLILHuimM7eaFoDeLjiC774RggcOwhuQSv3KSc6n4OHuEByNuhtvC6aPX5Bt4HzZdwg4feY1BUQKId+vO3unwg8EC4gn/eEyjQMYxBxzHaN0xUX70QeJwJN7YVYCWrVIkSx5iL68RVHDEHx36XUaPvebnIq109PCTwOWB2yefJ/zhS58z6GT3etxGAQESYo3vcpKtW928+vpXaDBAyUJgSC8bVaenywdRrMqb+cxDnTB8VVuRKH4IcxC6Ewks6ItcDfVb/KyhudAEGpfM0vnSYISeyU8PUII
+ 7iNGRP39
+ YpkkwiK9pCE6i7f2ek08ZeFxhgHer5PNz67WZITyMtTnOlBQ/Qpt2tUbj2li3WLqzEUYvoY8Ov0z57sUhLmpBAwPOONngKuI+d1CcpAlCqq4vOTEq3KlQz85l2//IlLWTJ292j8q7uj0UiUVehZQ/mO9EiQSZZlPEC4FQ/cbS3AOBXWtIapFk77bojdcfPaeCJQYKpcjhmlmqUMQEy4MOXrWMoI1u+D5MSPcZJcuOJW9BqzDJVcDpAVEprvtHwma4dIke
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,101 +105,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Mike
 
-On 2025/11/11 07:07, Hillf Danton wrote:
-> On Tue, 11 Nov 2025 00:39:29 +0800 Lance Yang wrote:
->> On 2025/11/10 20:17, Harry Yoo wrote:
->>> On Mon, Nov 10, 2025 at 07:15:53PM +0800, Lance Yang wrote:
->>>> From: Lance Yang <lance.yang@linux.dev>
+
+On 11/11/25 11:16 AM, Harry Yoo wrote:
+> On Tue, Nov 11, 2025 at 11:04:09AM +0800, Qi Zheng wrote:
+>>
+>> On 11/11/25 12:47 AM, Shakeel Butt wrote:
+>>> On Mon, Nov 10, 2025 at 02:43:21PM +0900, Harry Yoo wrote:
+>>>> On Mon, Nov 10, 2025 at 12:30:06PM +0800, Qi Zheng wrote:
+>>>>>> Maybe we could make it safe against re-entrant IRQ handlers by using
+>>>>>> read-modify-write operations?
+>>>>>
+>>>>> Isn't it because of the RMW operation that we need to use IRQ to
+>>>>> guarantee atomicity? Or have I misunderstood something?
 >>>>
->>>> The hugetlb VMA unmap path contains several potential deadlocks, as
->>>> reported by syzbot. These deadlocks occur in __hugetlb_zap_begin(),
->>>> move_hugetlb_page_tables(), and the retry path of
->>>> hugetlb_unmap_file_folio() (affecting remove_inode_hugepages() and
->>>> unmap_vmas()), where vma_lock is acquired before i_mmap_lock. This lock
->>>> ordering conflicts with other paths like hugetlb_fault(), which establish
->>>> the correct dependency as i_mmap_lock -> vma_lock.
->>>>
->>>> Possible unsafe locking scenario:
->>>>
->>>> CPU0                                 CPU1
->>>> ----                                 ----
->>>> lock(&vma_lock->rw_sema);
->>>>                                        lock(&i_mmap_lock);
->>>>                                        lock(&vma_lock->rw_sema);
->>>> lock(&i_mmap_lock);
->>>>
->>>> Resolve the circular dependencies reported by syzbot across multiple call
->>>> chains by reordering the locks in all conflicting paths to consistently
->>>> follow the established i_mmap_lock -> vma_lock order.
+>>>> I meant using atomic operations instead of disabling IRQs, like, by
+>>>> using this_cpu_add() or cmpxchg() instead.
 >>>
->>> But mm/rmap.c says:
->>>> * hugetlbfs PageHuge() take locks in this order:
->>>> *   hugetlb_fault_mutex (hugetlbfs specific page fault mutex)
->>>> *     vma_lock (hugetlb specific lock for pmd_sharing)
->>>> *       mapping->i_mmap_rwsem (also used for hugetlb pmd sharing)
->>>> *         folio_lock
->>>> */
+>>> We already have mod_node_page_state() which is safe from IRQs and is
+>>> optimized to not disable IRQs for archs with HAVE_CMPXCHG_LOCAL which
+>>> includes x86 and arm64.
 >>
->> Thanks! You are right, I was mistaken ...
->>
->>>
->>> I think the commit message should explain why the locking order described
->>> above is incorrect (or when it became incorrect) and fix the comment?
->>
->> I think the locking order documented in mm/rmap.c (vma_lock -> i_mmap_lock)
->> is indeed the correct one to follow.
+>> However, in the !CONFIG_HAVE_CMPXCHG_LOCAL case, mod_node_page_state()
+>> still calls local_irq_save(). Is this feasible in the PREEMPT_RT kernel?
+> 
+> Hmm I was going to say it's necessary, but AFAICT we don't allocate
+> or free memory in hardirq context on PREEMPT_RT (that's the policy)
+> and so I'd say it's not necessary to disable IRQs.
+> 
+> Sounds like we still want to disable IRQs only on !PREEMPT_RT on
+> such architectures?
+> 
+> Not sure how seriously do PREEMPT_RT folks care about architectures
+> without HAVE_CMPXCHG_LOCAL. (riscv and loongarch have ARCH_SUPPORTS_RT
+> but doesn't have HAVE_CMPXCHG_LOCAL).
+> 
+> If they do care, this can be done as a separate patch series because
+> we already call local_irq_{save,restore}() in many places in mm/vmstat.c
+> if the architecture doesn't not have HAVE_CMPXCHG_LOCAL.
 
-Looking at the commit[1] that introduced the vma_lock, it seems possible 
-that
-the deadlock reported by syzbot[2] is a false positive ...
+Got it. I will ignore it for now.
 
- From the commit message:
-
-```
-The vma_lock is used as follows:
-- During fault processing. The lock is acquired in read mode before
-   doing a page table lock and allocation (huge_pte_alloc).  The lock is
-   held until code is finished with the page table entry (ptep).
-- The lock must be held in write mode whenever huge_pmd_unshare is
-   called.
-
-Lock ordering issues come into play when unmapping a page from all
-vmas mapping the page.  The i_mmap_rwsem must be held to search for the
-vmas, and the vma lock must be held before calling unmap which will
-call huge_pmd_unshare.  This is done today in:
-- try_to_migrate_one and try_to_unmap_ for page migration and memory
-   error handling.  In these routines we 'try' to obtain the vma lock and
-   fail to unmap if unsuccessful.  Calling routines already deal with the
-   failure of unmapping.
-- hugetlb_vmdelete_list for truncation and hole punch.  This routine
-   also tries to acquire the vma lock.  If it fails, it skips the
-   unmapping.  However, we can not have file truncation or hole punch
-   fail because of contention.  After hugetlb_vmdelete_list, truncation
-   and hole punch call remove_inode_hugepages.  remove_inode_hugepages
-   checks for mapped pages and call hugetlb_unmap_file_page to unmap them.
-   hugetlb_unmap_file_page is designed to drop locks and reacquire in the
-   correct order to guarantee unmap success.```
-
-The locking logic is a bit tricky; some paths can't follow a strict lock 
-order
-and must use trylock or a drop/retry pattern to avoid deadlocking :)
-
-Hoping Mike can take a look and confirm!
-
-[1] 
-https://lore.kernel.org/all/20220914221810.95771-9-mike.kravetz@oracle.com/
-[2] 
-https://lore.kernel.org/linux-mm/69113a97.a70a0220.22f260.00ca.GAE@google.com/
-
-Thanks,
-Lance
-
->>
->> This fix has it backwards then. I'll rework it to fix the actual violations.
->>
-> Break a leg, better after taking a look at ffa1e7ada456 ("block: Make
-> request_queue lockdep splats show up earlier")
+> 
+>>> Let me send the patch to cleanup the memcg code which uses
+>>> __mod_node_page_state.
+> 
 
 
