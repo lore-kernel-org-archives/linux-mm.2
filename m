@@ -4,107 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5379CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 10:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163A4CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 10:08:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AE9B8E0024; Tue, 11 Nov 2025 05:05:19 -0500 (EST)
+	id 6BD258E000B; Tue, 11 Nov 2025 05:08:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15F598E0002; Tue, 11 Nov 2025 05:05:19 -0500 (EST)
+	id 66DC68E0002; Tue, 11 Nov 2025 05:08:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027348E0024; Tue, 11 Nov 2025 05:05:18 -0500 (EST)
+	id 55CC18E000B; Tue, 11 Nov 2025 05:08:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE94A8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 05:05:18 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A8DE91A04C4
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:05:18 +0000 (UTC)
-X-FDA: 84097893516.05.963C4D6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1ABCC120015
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:05:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZinXmRZQ;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762855517;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gw01WpZHnZnNghi4nzRuevPnhz/lHQoMbtS3uJwZLMk=;
-	b=ZjzSCkprMy2DnRXc1qMhY1Jx1jeIbO39nSC2SzZFA2pndrMa4uYfEYhqUTfY/gO3Wq0OD/
-	2xmpuPPdqfMVQxQ5ywbJXVR9dzmcq9qcD3jg+2hVyFfi7YaxAs9mKMSwEVfvvNMf1n1RYJ
-	C1diM4hIldcI/buTj7oYCz3dlYn6i4c=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZinXmRZQ;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762855517; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 411858E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 05:08:23 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B881B591EC
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:08:22 +0000 (UTC)
+X-FDA: 84097901244.29.502D7F8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 943D61A0005
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 10:08:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762855701; a=rsa-sha256;
 	cv=none;
-	b=6KFF9SY1sbBrkUnmGpDdx4KYYlGydqxaWMaxhPZq5e+qqd8beHnSer0NDg4jInHFSrptV6
-	eN60smRKfwAQLxISNRG78RIayNm/J9KPKviZUkX1tHYEWnZ9nfY4hcOFg/+EhshiHayGnI
-	MhrY3XP2U36dn5UCX/A+mIhi9+JkyAw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59EB561903;
-	Tue, 11 Nov 2025 10:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E745C116B1;
-	Tue, 11 Nov 2025 10:05:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762855516;
-	bh=SwY69HX5+VyJGypqI9OgmzagGzzfnjk24hRcW5iGh84=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=ZinXmRZQK3QA863duST9CN8mQG/mCA8r6mYuOdmlL6KZ7dld0KrJ9fwEMzM2nc6tJ
-	 v0KemDEcB4Ng5aonY3wcZ3kIseZOeIaxndeuS6j2qkqPuK9RollPoXh+2ZD0aavIeQ
-	 wzcX1wyiP/EPerloWZJwQ0dwuhNHqWSTWqMLZFDj17+SWm9tNLK3YfDy0psKJDV0bu
-	 UMXS9G6IN9b3jUYQGQOefsNxSYaiKfGXspdEKFB6AkSXnUYseUZ3INd88RBXLHoh/I
-	 bX/ZMR1HnxHTlXewIiBRYs0EJ+API7Q+RzJ7TnSd6l5fAjblN1ElSUsjJr+FaWqJHo
-	 yomewFZj8FEGQ==
-Date: Tue, 11 Nov 2025 12:05:06 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
-	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>, conduct@kernel.org
-Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
-Message-ID: <aRMKUoB/nc5A8ZMf@kernel.org>
-References: <aQPCwFZqNd_ZlZ0S@x1.local>
- <d0b037a6-11b9-483b-aa67-b2a8984e56e0@lucifer.local>
- <aQPU-tyo_w68cnKK@x1.local>
- <7768bbb5-f060-45f7-b584-95bd73c47146@kernel.org>
- <aQkUwbx7Z4q1qcSB@x1.local>
- <5f128cbf-7210-42d9-aca1-0a5ed20928c2@kernel.org>
- <aQmplrpNjvCVjWb_@kernel.org>
- <mnjrtg62qh2rd353mbudryvs3neukt26xtovyddm5uosxurmfi@lldnrp7a3666>
- <aRA-se6hJPzHD3mA@kernel.org>
- <ulpftgdk6hgorwsrbtv2tv47b7usn3cow362knuxlzq2az2cl2@krwo6e3zxryn>
+	b=L7Je6K0FjajdsUCKsJFxypZ/lmYRB3tnNaWTEh4Wl0LOE19IT5iwGt6vYD4t3TtJX2ZCCz
+	ZEaOtDvmAKv5JJgex2taa2Z1O6leG8eTy0DrlVN4oAaFkHYxTrQsaA7xOSFeYvN0jLDZvA
+	YVnpIZeQWApg+65Ogg5o/H4S3ZO9RhI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762855701;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t+WmW7yNqD2aweWk296ozfzQ200USyv416afCxbmVnk=;
+	b=eQcroHYJCUdlQiR2YgoFqacu1K9ZxXnUJL/WUc2blp8xuA2SQsCX9AvNzjJ+5bZmgFnDSo
+	+Sobufab2LILpB+Nz8E1UoMSV1+PSwBLs2GUstorHR4MPvPhhOMkTpXO7mf9JsMqPRrRIl
+	lPFyVZwVGhh9Ee8CdXPmwNm+ySWcV4Q=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ACCFF2F;
+	Tue, 11 Nov 2025 02:08:11 -0800 (PST)
+Received: from [10.57.88.30] (unknown [10.57.88.30])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D9E443F63F;
+	Tue, 11 Nov 2025 02:08:13 -0800 (PST)
+Message-ID: <e2497863-8cbf-42b2-8f83-2c7b46fd1f47@arm.com>
+Date: Tue, 11 Nov 2025 10:08:12 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ulpftgdk6hgorwsrbtv2tv47b7usn3cow362knuxlzq2az2cl2@krwo6e3zxryn>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1ABCC120015
-X-Stat-Signature: 1xiz886ot4ap34yzxy9faifa1xj43dwe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/12] x86/xen: simplify flush_lazy_mmu()
+Content-Language: en-GB
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-3-kevin.brodsky@arm.com>
+ <b165098a-8164-4664-aaaf-1e8c4391d797@arm.com>
+ <b21fb5b9-2e7f-4cbc-ae62-015b1317a9bd@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <b21fb5b9-2e7f-4cbc-ae62-015b1317a9bd@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1762855516-183515
-X-HE-Meta: U2FsdGVkX19bMKhdCPCP6OOYlfBq31iY5smpMAFIeY1++b9MgADCCdf/BQmyPWPG2zxPsQ7y6ZDXgwcIlnfvtQDTMtik1NXZ7B1QkzHbDOM06DNi+y0YQZpYg1IYI49bbwqz7cSne44SY4bkBJABZcNIxr6q2TqQMtGzbJ5H2knR49BORjTHAPz1L3g/NpCabBka7/fNzpKWneppjGMc8+ld0+4/w5vXY1aJrC/73Jc4+SFr7leDioit9fGgYqot6djU/ilWT1mAuViBfZ8z5AE5j26m1zdAdXMkhCqirCb4LD18s9v19YnTiad1ZD+qPtUal2gmkHtb1qTFjAD9tQCSzQZpNYK5OJxtrV8T9H9Opi1lb+wbcB7D0s8KPZEsnxXcenDTbWd2jz/knScnX8adEuVgehUXiQZwW1Kx8xAkz0JeI1gUzHJSA/lZdvc7yCPXPXJ9JghVqY/UGhd2j+n7zCqbTsejB6idxqFsVu0rVnXoW5MyCqriP25qKQmgMstqEklajH0yVJdo6qJsDnT4fSmp3M1vtyPBAPXcW0zUto65LjiHnUs85C7RoDGOso1hHwIdlBLIMdDLMRWdePHEcysOwdOGQWiXbjSTRbcqYdYcrI4F3bYAB2YQpwlwP8ysEx8RR6EwdFwDQ1KhnKw7IcJgaJbLLInMNFhPslSgkdvVCe8YTrGjKyqOVlw8xv3E3ONYO6H5W7jzAVRzyld1q8qZS2c2qpiIt2CjuqwD5gFmqtLw9P5AZ8zNcVhWLzfCyOWasehnsQHwRdRuVG2J0ljC0Noy4Q6SiASxGtUnaitxG3ccd/xmMk/cqUgYCU+hhn4cV9PyA2kR8F2E+oe5+oeNTNuu9AjB+txtcOn/HZ/FmJttALJeF/EY2MILDjFURfqIzkiutve0wWmdlAmmnWeca08aPgb5+NZfqjt/qYQo7haZUXhSqeuHd8yT+l8qH6DNU5ujaX0u4ah
- 26STci0W
- tLDK4/pzQp2DFNjq9/u4nDU0HWfjQRyRN12BoITkWOlHv6pgeG1G17F4cooI47OwZJ4E0lYWDqoL4Y84t6RE3n52LAj1eWp0bh3YNsGRsKxjZ8Y/0RDe4DNmkEkZUxgm5l0Kut0o+yKSSKGjwVmcRg++VFJnn0om5mPFxA5NH/luFhdRiw9St9Nm4FRX9ATn8OVl9JsrXRCRZUc/Cl+RW4MM/r0oQIjh2p+IsYP/wyQwMiIkx0s7RzDlTFKfyTOIFxsW5tifpBmrpM8O70yQQcOewCYeEXeN6OQjjubNa24os6jdpgJfnoRGn785I7spNmzt8xvCHXkzg3A2+8IQb6pjEqgg0bwFMaXvT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 943D61A0005
+X-Stat-Signature: 8d7zx8i3ucsgc3y4zbdyminposhxqs46
+X-HE-Tag: 1762855700-155324
+X-HE-Meta: U2FsdGVkX18sbFZUHCCfkPQLEz/n9110a/h6Zc5hL1FEnm3AjGJf1bE5A45NRcNp24A7QWcZwyho+88X8XUnW9mpLjX1DeLqzG6eUJdv3hLJpK2gjILKkuD0Lnu1V2Dd2Uc2OxzQb+w0YUf0Gph7Q+ogUG+PcIoGh7NrynuPFN4HMm+//Csua8l9hpdOpMKg0PXG6ETr4HeS3v/swRuHWXcMVU+RsjA3Za3AntVuBDSmWyyqzRPFqruCYQ6ni7VHN6t3AQNroyfn9yUBLsEY7brrCV/FRh8fK0Bj08URX1xaE2uR+YYU+zckDxK33hhvZz3Lh2Ykbc6TvUlSghJe2gedtX23u11HNjkK/poO2h0bnlLw9DkCBnRwfUXOB0hGsKjerMIfzQoo/193BdocdKplvL/ey+T0BiIOMjetvxFdUc36NVt2R5oXnykrYCZs13AIC20DItylN5D+ocDVl3LhCoWwiHR5AVFNPXG15MGSVr5S8073MuWyEHxzDF7VMYKwQJRCMHzixjE8Gtr69tX6FLaSRhVIvcEa5kO8lxUmYWMHc92gwp1nFrO6tPU4tjPDpDP/CHPs3CM0qHFNdsgL1IMa7D6ieLiYJgXoVYlApjzdICfqa5uQiBOAQuBJZDQHlEgMXlgnAdIZZpl98Hi1GjJENQ9efkSYkrwkZkwCN7ivd/ukQz4+9glVWjvLNPlC4b3DabxYW4Y9SihS4YnhYBYqDV2nNiLkGn7IbiQnbeLhpNAOGu22SBV0g05lK18YAm4o2kJp/5tjj3V5NWnTZkR52UJXAsmS5dzlY8bhOqtKiYkjH1vRRTtcyS3/e0Aqct6ex85ZQ1awcHISUtbnRWG8UHiOnFepCcwCig8r8OFmWY6tJTzYPfrPBLDVNZ0ecfK02N0PPluXQNQS/bzFYsRSbkPUPA0QenVtK2KHXCj6AvrVWg+EM3iarYtWNYDEspjPwmXAK5NkjYO
+ oSwnMHJN
+ zvLztFFJv10JTyY5TL1pYQdtjo5va2lt6k+GiMH+719hHPE9fPPhvsawmnRCYIn7uBrxicMpysHCntvhV795Amxr3Z8iYPQDevysaNpTYTgmjDEHmIku42XHXUageXInYr1K953cczYAJC3D4pRWE5xfQNBkaXCZyydnBMVNNMlh0CV3qNqRb6aimCbmaSQDc4ptwV6HSk2TBNkLhPCO0seavXwKgm9eJlAKM+nJ3qzJrb+YF4f7nGMZkJrTyAwGS3QnPe6oZoygz7AQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,43 +108,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 11:34:59AM -0500, Liam R. Howlett wrote:
-> * Mike Rapoport <rppt@kernel.org> [251109 02:12]:
-> > On Thu, Nov 06, 2025 at 11:32:46AM -0500, Liam R. Howlett wrote:
-> > > * Mike Rapoport <rppt@kernel.org> [251104 02:22]:
-> > > > 
-> > > > It seems that "as simple as possible" can even avoid data members in struct
-> > > > vm_uffd_ops, e.g something along these lines:
-> > > 
-> > > I like this because it removes the flag.
-> > > 
-> > > If we don't want to return the folio, we could modify the
-> > > mfill_atomic_pte_continue() to __mfill_atomic_pte_continue() which takes
-> > > a function pointer and have the callers pass a different get_folio() by
-> > > memory type.  Each memory type (anon, shmem, and guest_memfd) would have
-> > > a small stub that would be set in the vm_ops.
-> > 
-> > I'm not sure I follow you here.
-> > What do you mean by "don't want to return the folio"? 
+On 10/11/2025 10:36, Kevin Brodsky wrote:
+> On 07/11/2025 12:31, Ryan Roberts wrote:
+>> On 29/10/2025 10:08, Kevin Brodsky wrote:
+>>> arch_flush_lazy_mmu_mode() is called when outstanding batched
+>>> pgtable operations must be completed immediately. There should
+>>> however be no need to leave and re-enter lazy MMU completely. The
+>>> only part of that sequence that we really need is xen_mc_flush();
+>>> call it directly.
+>>>
+>>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> This looks functionally equivalent to me, so:
+>>
+>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>
+>> But I don't think this tidy up is strictly necessary for your series to work?
+>> (perhaps I'll change my mind on that as I go through it).
 > 
-> I didn't get this far in my prototyping, but if we have a way to service
-> the minor fault for the memory types then we could use the function
-> pointer as the way to change how to get the folio vs passing in a
-> pointer to get/set the folio.
+> I initially thought it might be, but in the end I think you're right -
+> it should still work fine without this patch.
 > 
-> > 
-> > Isn't ->minor_get_folio() is already a different get_folio() by memory
-> > type?
+> Still, I'd rather avoid unnecessary calls to arch_enter() and
+> arch_leave() as it makes it harder to reason about what is called where.
+> Namely, keeping them here means that a nested call to
+> lazy_mmu_mode_disable() would cause arch_leave() then arch_enter() to be
+> called - rather unexpected.
 > 
-> Yes.  If you are dead set with handing the folio to the module, then
-> this is what you do.
+> The only calls to arch_enter() and arch_leave() that are left after this
+> series are the ones in <linux/pgtable.h> and the Xen context-switching
+> logic (the one case where calling arch hooks directly is justified, see
+> discussion on v3 [1]).
 
-uffd does not hand the folio to the module, it gets it from there.
-We can make it even clearer by changing minor_get_folio() declaration to 
+OK yeah, sounds reasonable.
 
-	struct folio *minor_get_folio(struct inode *inode, pgoff_t pgoff);
+> 
+> - Kevin
+> 
+> [1]
+> https://lore.kernel.org/all/390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com/
 
--- 
-Sincerely yours,
-Mike.
 
