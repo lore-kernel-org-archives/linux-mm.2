@@ -4,104 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86763CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 17:03:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B35CCCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 17:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE36C8E000C; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
+	id 721238E0007; Tue, 11 Nov 2025 12:12:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABAA08E0002; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
+	id 6D1478E0002; Tue, 11 Nov 2025 12:12:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F7ED8E000C; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
+	id 5C1128E0007; Tue, 11 Nov 2025 12:12:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9021B8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 409831386F8
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:03:24 +0000 (UTC)
-X-FDA: 84098947128.29.3565411
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0329EC0018
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:03:21 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762880602;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 453A88E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:12:29 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E410A12AC93
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:12:28 +0000 (UTC)
+X-FDA: 84098969976.16.BB247D3
+Received: from iguana.tulip.relay.mailchannels.net (iguana.tulip.relay.mailchannels.net [23.83.218.253])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 669BBC000E
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:12:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=fdbS9yPy;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1");
+	spf=softfail (imf10.hostedemail.com: 23.83.218.253 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762881146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aua8l6YRNgQP+NPu3nML7Xo2TxY8EffMn9iRDXN1Nuw=;
-	b=0qzwbGdW21Mhni0B5E9juZ+F8OFpMoKsLznj66p2DMos6imoOnW4K9hZPfvdmDDDO6hB7w
-	AtQ9Fh1jsL0S/FNDjV/e4UTmfBPaP7zweSai6wGswXAUQ+unMPW4By06fO3GhVglQBGyGS
-	G/4sGk2UMRBWLWgW2GhT5kID+ifelXI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762880602; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DwzBrHIlFCrwz0pBkyv1QDmJzAlCpDAp0FiyfPycSs4=;
+	b=XI3nqXNxDsqBbevNIyM5qEQOf1OVw9PT6SEYoZfWhg4FU9syqARWaK5t9fW7BZ1bNobvUH
+	DmWRKq53IwOTSQ6gMBgOV83ZERNluDrlt4YUM2MyGPydvBvL7j4IeuGdIS6pKKnLkaQkqp
+	oYsi3Bn3icUz4SzgDzA1zMyUo7uZWCg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762881146; a=rsa-sha256;
+	cv=pass;
+	b=Odd2cumsX2rCY90c6cPw+2nnq65O/EJV1RSZE58tRKp864JT6wqnS8P7/kbqOxZsamL3E0
+	BZ6SGNqcmDU/YVu1WDOgX9bwhMEXJqMZHNpP+nujypVQg3Fhph/g5rdPsdEXBF6Akm215+
+	PcdRcaktb82v3JYLLB/h4OFcs/x+PkA=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=fdbS9yPy;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1");
+	spf=softfail (imf10.hostedemail.com: 23.83.218.253 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id C57D0823062;
+	Tue, 11 Nov 2025 17:12:24 +0000 (UTC)
+Received: from pdx1-sub0-mail-a229.dreamhost.com (100-121-222-5.trex-nlb.outbound.svc.cluster.local [100.121.222.5])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 4C95B822E15;
+	Tue, 11 Nov 2025 17:12:24 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1762881144; a=rsa-sha256;
 	cv=none;
-	b=8hcrKelJ4uLLPW5UF9ck274e8DGxKnTG/OG63RV9NxYruZys1H2uP18XlmyAXMqCfbR8n9
-	IzK5Vjn/MUl6tzF9aRVY1wUmOWGl1ttcHc9B38eeQA0VOJzlxSsqMU/HMJ1pKxmMUe/bn5
-	EQImPx58heOQSPkqz75pVIdSFygF+LY=
+	b=NsSl1/ShxD0udbXLaUE66r4LaIXTX1mri5bAqCel7RD+ou8zW0k4oEI4D/eSFS5PhaGKIb
+	lZtfGhrY8VRVfcLFiI7iUcnbJONbA8ZFJNSdBZvNjMtJhB+Vt9L1ZqDygVfFY4iByQzzto
+	J4eY6wBBxdFvXX9OJyk3EwDx2mKcYw/MS56b/64voLRPBU94hMqojI93ulieAuSev6C8ri
+	Ijrz1pIZhOUV3traxQHNf23rECqwrh8r20j35NRHgQO7KUdQl6C3XIwLo+JAvw4nt/TwMI
+	erV28UTcGjIQP1Rqa1KXKUm2KEBxv0cclB2JlXSwJfgugUa44v0O2SX2lA8zaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1762881144;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DwzBrHIlFCrwz0pBkyv1QDmJzAlCpDAp0FiyfPycSs4=;
+	b=yA62lARTIsiukPI8WFo1RSylWDxMK66D20q2wi3jS9JXwaiBH1/exxmHQDeR4xBKgPvGw7
+	tqeCtpcVp/7sZhDy1pBJZfNrPV2LrIXHaz/0JEO6ha5Nux63bYhj3JuQ+ZLGxoxC91yAPh
+	5n5uSAE0NX7Te2tZYjJn/blmSfl3JqslfY88qnhuG+j5kiWduEQpUdodBauIZlGDrafzVO
+	sMC9SWRRIvmUcIjPhENvSznYHDvY/5Kbka+WBJNvgEs880RVS9YaRr8fO9gx5zQzpo5Otu
+	X+U6mBv9vNmqAJM72JsoEKfPpbv7FZFneiAcgTpiDgQjnT+9HbN4okpA5Ve/Gg==
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32480497;
-	Tue, 11 Nov 2025 09:03:13 -0800 (PST)
-Received: from [10.1.31.216] (XHFQ2J9959.cambridge.arm.com [10.1.31.216])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 106E43F5A1;
-	Tue, 11 Nov 2025 09:03:15 -0800 (PST)
-Message-ID: <8f70692c-25a9-4bd0-94ab-43ab435e4b1b@arm.com>
-Date: Tue, 11 Nov 2025 17:03:14 +0000
+	rspamd-768b565cdb-dvdb4;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Whispering-Plucky: 01ba490779e6d506_1762881144597_2899740575
+X-MC-Loop-Signature: 1762881144597:3773387619
+X-MC-Ingress-Time: 1762881144596
+Received: from pdx1-sub0-mail-a229.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.121.222.5 (trex/7.1.3);
+	Tue, 11 Nov 2025 17:12:24 +0000
+Received: from offworld (unknown [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a229.dreamhost.com (Postfix) with ESMTPSA id 4d5Y4R3s1VzSJ;
+	Tue, 11 Nov 2025 09:12:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1762881144;
+	bh=DwzBrHIlFCrwz0pBkyv1QDmJzAlCpDAp0FiyfPycSs4=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=fdbS9yPyZzrPZntWn2v0QMdrCT5fSSVzYV5XV0sz7xrk21l/fNV8DFWDmmQ75kNT1
+	 EprQvQCvZLSYv8vUc+YSdFK8CDT4yoa2BcwdVlyIS9ED9JBaymtGcS+Odxv2dqTh38
+	 6r2NYmf/V4piTqs8jUD6/BINrH0WHhmWRLUdsXEzc9cyuA4lAmiiPB9mQJhDooBtMA
+	 Shevrno0+zAsus57hWpBTFZiYe8qKV0Y37iWW5aOg+dVUMyfIncEXIWblXvk/yNfEB
+	 enPcljnxINeFKVjfD3NtRgQ3YAq0WVdxEF1voVXL4Y+Ai7U5RnWrjdqc2m6HnKRn5I
+	 uAVmX4hmhxItw==
+Date: Tue, 11 Nov 2025 09:12:20 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm: rename walk_page_range_mm()
+Message-ID: <20251111171220.vbafzcqhiauhxlpl@offworld>
+Mail-Followup-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1762795245.git.lorenzo.stoakes@oracle.com>
+ <c684d91464a438d6e31172c9450416a373f10649.1762795245.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
-Content-Language: en-GB
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-8-kevin.brodsky@arm.com>
- <999feffa-5d1d-42e3-bd3a-d949f2a9de9d@arm.com>
- <cc9dc398-b9c5-4bb8-94ad-7e7f3ddd5b4f@arm.com>
- <824bf705-e9d6-4eeb-9532-9059fa56427f@arm.com>
- <58fd1a6e-f2c4-421c-9b95-dea4b244a515@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <58fd1a6e-f2c4-421c-9b95-dea4b244a515@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <c684d91464a438d6e31172c9450416a373f10649.1762795245.git.lorenzo.stoakes@oracle.com>
+User-Agent: NeoMutt/20220429
+X-Stat-Signature: cy5jhhzrfa5r4rk1oxfugudfgfkz16rh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0329EC0018
-X-Stat-Signature: e3emqyz78pbxnrxi3j3urm5nzu77koo7
-X-HE-Tag: 1762880601-274173
-X-HE-Meta: U2FsdGVkX1+LiFetcDyUK2Xa8Y3g5sXbkx1la/OZU5YwpCbij8hRVwpGZd2tZzQ0t8eDTvpOAr8jPUXiVRELFiru5zzrnBhIt0qcrRN47Kzc+KrFS400MbNwWr8lvYJ7vwUkflCsLJaYXSIG4WLmuUUSuAAthZy4tH9wYU1nbrGdwZ5OhyH7hpzMnppy5zaDntamFcIldQOHLIWwwQFC+lzhKBz5u/DTJiRv/YZEn8LlGmPHDXMqgnDF+hCZsQdpqYpvdU4sWQ7qZ4p1k6sZ4YZDHTt2DwDjHIkn3zVyx+gYlX4oQ1woi2tdCg5TMmqwhIKzLgcXjzf1X6RkZqHrtrMZXuguw49jvT8YEfUeA1/eT6owq5azCemR3jpKkrgnTx8dNCk4ur0TCkkd+fPBlZxnighpIEDCQT4NTSq4b0FnOnc1l/RVT7NgXPaj2th2rRJpTGayFS8KN113t9VZAHVLLedVbmY4asxCHSZiHTAUFZflGgnoCx0/+8+XXbGAYl0EhVb0gZdh3e+xjZeBOQAmu9Ho7NRcSbSbe3bTtyoEaetmy0P+N5/CURe2lok/OseiykxTjgbrrhoimb50Iw870mF6uFRIUumCPEbNd9weXBsNJXCkDU0W9PCcKrmCjbsn5+KjtRdQ+tzJ+6jK1x7zhzpa+I1dA241Dr62iBZB7E9g9EI50DECkaD7Dch5hJautFzg6MY0660ZAaudcK7nezsQCYANDqQc1UerImdprCAuIFPfV2wVKUVJ4UrwVP6k8NgcYpqBpfqGwDAx5zYk31JVYTGCIs4jbB1IwM1Nj2PJYVq5W3MjLLi5TORj752mxXYqpWv8v7UowF0J5B9JqwyGfzx/0L0N+I5mp5wL3GGpTUcZN5ieMbtufOZ2Dytn5y4+GEqYpvFFPBT1R4QAC9+B5MNedEAo2YgaGcJw+lA4E9LzEDEHmOVsTExRI1iE5hhONMHRUjmaqV9
- Ci4nPjhv
- dgEnEO/jINyB4cqpV5gjbMx1THTQprF/bOaMTsatNu7/fi05YZZT54mvp0+l3OE0EhrtqE5sKOKNT/JKG4P3g9iLJ6MfMzhkWRWFMrpVDseWyeLmD2bnzal/xvQqEePaZGqwMnDw3Lznc9L9BwblnjUtb6YZSc+wT/39sJZSkizbRI804n7KChRIjWDtYgRfIlP4LE8K0caJ0nGpfRWH4tkelMQ==
+X-Rspamd-Queue-Id: 669BBC000E
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762881146-647798
+X-HE-Meta: U2FsdGVkX18FXQObe9919FMCg+9q09NWOrUozkayQQcIfh6G4svnUkvm08RuYMX03/4me1RPz8Mvr1GcS7eEnX6satLnBNwKNRQHZfjGhG/tMWGgcScLRfOWGegNWUHRjCH7enBcrHMg2qy5FNDFrZhKK27HYM8cMMS/9yFFlml28yNYu4Ju5fu/OBDp39znRizYIyfwXwWZ6ggjVZ7T6TSSD88UDOj4MnRyPJBDrZhlNUa40EeLR99jFUmb40uXfE+LAzApv1qNjAGs2nmfRp3wTAyUL6QTI5x07wuUt4rEXbtx87caNuvtCWeL190rpisc4lIHYjMO+Or64oSxXsIj0a9tMl1Zl+Or01ldIk/RZ0N6/ZfQemNO7ZhWL4IAOUapx2sZ1EvA3ZkD7RrrHTQ9ZaSNquq1hPuBEkb+3iQAbmi+xTa/2EQrR85y3dvLEAQFLJ1IzXq5yKAPpqxmoD28z9xYGvpNGrdcQQWsJPXjyt7Y+tTvSxNU+YwnM0nHkNOYXLNZMxCLG+QNY9XjXVQJXB7gYHKhlrxUHJibMmDXhiWtMjqKEZN0tWuF0xDBaWcqBL7Lw8P+5uIZwfgQSxioYG65rvcJZ8yEKYL8or5bydf0+0NxYM6W4JQOBWWcmCYk4hhGiud0+j6Q9+WqsbhAfffU+WN5sPP36e7IhIP+cLica+7J8KUuAUOqgteRDH2yYP+Aec6k2nlzR5VkE/dBdvNc/BPrxK5f/QCmLryPSBB8bFNhxfV9QTzFatprsLKjTfP7wDm5p4Q3M9pxdoPZ+QMjmLFRUdotWWtmTM2n17Plqc3Cy5GhB23Ebl+iAbj8MIllDnPSTpLtYdxQQaH3kL17L2s8J/Fiq9rRNMFw0CMdG21AFpMW5UHQ7CC5UpIxeR6p4VQyQp/Y8Tvm1ePBUMITl4SplBxm1Xl8aEW59EU45Rj6PWpyxMPUK2x4II25I0tkjlVUEa9spSl
+ bjeSjSIv
+ TcG4Ng4hz9PhzZEPNfM6mjzxu5QOswSapJtrvvB6r15WZI2oF36CafRu71PCiPww5eiDGx/dCyOrLzNftwy52jJ05rAvOzACUEDbCV0+ho0FrpGmbKskPOG88t87ivVxLdalZA/KipMYkdbwtCZKMfpN6liZtnTdudneY5nsSWbJCU9qa5OMpvBCy3hGWvyg0DTz0ddoNkWJB+cCFtJV2ekOYvpdKo+wu0OPDKL8H1pT73cfnLN1lClF1qx8LAqXROUdveqIm3oQdBgRV04JpF8FW1ivnrij8SgzL6d3n7EIVVblmPf5sheU5pcEDGZwPw8gGrZ8E++zN81s4w5Ij13RDYpalTlX9wuQNllKvXxPZnz6X4eH+bgP+CHMYXsWLV2I0kIl4FJySAS9HYPQpssv27t+m1bu/ez7SdEMOnoHW/Xz08CVD5knNLprUPGunZA0C
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,202 +152,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/11/2025 15:56, Kevin Brodsky wrote:
-> On 11/11/2025 10:24, Ryan Roberts wrote:
->> [...]
->>
->>>>> +		state->active = true;
->>>>> +		arch_enter_lazy_mmu_mode();
->>>>> +	}
->>>>>  }
->>>>>  
->>>>>  static inline void lazy_mmu_mode_disable(void)
->>>>>  {
->>>>> -	arch_leave_lazy_mmu_mode();
->>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>>> +
->>>>> +	VM_WARN_ON_ONCE(state->nesting_level == 0);
->>>>> +	VM_WARN_ON(!state->active);
->>>>> +
->>>>> +	if (--state->nesting_level == 0) {
->>>>> +		state->active = false;
->>>>> +		arch_leave_lazy_mmu_mode();
->>>>> +	} else {
->>>>> +		/* Exiting a nested section */
->>>>> +		arch_flush_lazy_mmu_mode();
->>>>> +	}
->>>>>  }
->>>>>  
->>>>>  static inline void lazy_mmu_mode_pause(void)
->>>>>  {
->>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>>> +
->>>>> +	VM_WARN_ON(state->nesting_level == 0 || !state->active);
->>>> nit: do you need the first condition? I think when nesting_level==0, we expect
->>>> to be !active?
->>> I suppose this should never happen indeed - I was just being extra
->>> defensive.
->>>
->>> Either way David suggested allowing pause()/resume() to be called
->>> outside of any section so the next version will bail out on
->>> nesting_level == 0.
->> Ignoring my current opinion that we don't need pause/resume at all for now; Are
->> you suggesting that pause/resume will be completely independent of
->> enable/disable? I think that would be best. So enable/disable increment and
->> decrement the nesting_level counter regardless of whether we are paused.
->> nesting_level 0 => 1 enables if not paused. nesting_level 1 => 0 disables if not
->> paused. pause disables nesting_level >= 1, resume enables if nesting_level >= 1.
-> 
-> This is something else. Currently the rules are:
-> 
-> [A]
-> 
-> // pausing forbidden
-> enable()
->     pause()
->     // pausing/enabling forbidden
->     resume()
-> disable()
-> 
-> David suggested allowing:
-> 
-> [B]
-> 
-> pause()
-> // pausing/enabling forbidden
-> resume()
-> 
-> Your suggestion is also allowing:
-> 
-> [C]
-> 
-> pause()
->     // pausing forbidden
->     enable()
->     disable()
-> resume()
+On Mon, 10 Nov 2025, Lorenzo Stoakes wrote:
 
-I think the current kasan kasan_depopulate_vmalloc_pte() path will require [C]
-if CONFIG_DEBUG_PAGEALLOC is enabled on arm64. It calls __free_page() while
-paused. I guess CONFIG_DEBUG_PAGEALLOC will cause __free_page() ->
-debug_pagealloc_unmap_pages() ->->-> update_range_prot() -> lazy_mmu_enable().
+>Make it clear we're referencing an unsafe variant of this function
+>explicitly.
+>
+>This is laying the foundation for exposing more such functions and
+>maintaining a consistent naming scheme.
+>
+>As a part of this change, rename check_ops_valid() to check_ops_safe() for
+>consistency.
+>
+>Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Arguably you could move the resume() to before the __free_page(). But it just
-illustrates that it's all a bit brittle at the moment...
-
-> 
->> Perhaps we also need nested pause/resume? Then you just end up with 2 counters;
->> enable_count and pause_count. Sorry if this has already been discussed.
-> 
-> And finally:
-> 
-> [D]
-> 
-> pause()
->     pause()
->         enable()
->         disable()
->     resume()
-> resume()
-> 
-> I don't really mind either way, but I don't see an immediate use for [C]
-> and [D] - the idea is that the paused section is short and controlled,
-> not made up of arbitrary calls. 
-
-If my thinking above is correct, then I've already demonstrated that this is not
-the case. So I'd be inclined to go with [D] on the basis that it is the most robust.
-
-Keeping 2 nesting counts (enable and pause) feels pretty elegant to me and gives
-the fewest opportunities for surprises.
-
-Thanks,
-Ryan
-
-> A potential downside of allowing [C] and
-> [D] is that it makes it harder to detect unintended nesting (fewer
-> VM_WARN assertions). Happy to implement it if this proves useful though.
-> 
-> OTOH the idea behind [B] is that it allows the caller of
-> pause()/resume() not to care about whether lazy MMU is actually enabled
-> or not - i.e. the kasan helpers would keep working even if
-> apply_to_page_range() didn't use lazy MMU any more.
-> 
->>>>> +
->>>>> +	state->active = false;
->>>>>  	arch_leave_lazy_mmu_mode();
->>>>>  }
->>>>>  
->>>>>  static inline void lazy_mmu_mode_resume(void)
->>>>>  {
->>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>>> +
->>>>> +	VM_WARN_ON(state->nesting_level == 0 || state->active);
->>>> Similar argument?
->>>>
->>>>> +
->>>>> +	state->active = true;
->>>>>  	arch_enter_lazy_mmu_mode();
->>>>>  }
->>>>>  #else
->>>>> diff --git a/include/linux/sched.h b/include/linux/sched.h
->>>>> index cbb7340c5866..11566d973f42 100644
->>>>> --- a/include/linux/sched.h
->>>>> +++ b/include/linux/sched.h
->>>>> @@ -1441,6 +1441,10 @@ struct task_struct {
->>>>>  
->>>>>  	struct page_frag		task_frag;
->>>>>  
->>>>> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
->>>>> +	struct lazy_mmu_state		lazy_mmu_state;
->>>>> +#endif
->>>>> +
->>>>>  #ifdef CONFIG_TASK_DELAY_ACCT
->>>>>  	struct task_delay_info		*delays;
->>>>>  #endif
->>>>> @@ -1724,6 +1728,18 @@ static inline char task_state_to_char(struct task_struct *tsk)
->>>>>  	return task_index_to_char(task_state_index(tsk));
->>>>>  }
->>>>>  
->>>>> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
->>>>> +static inline bool in_lazy_mmu_mode(void)
->>>>> +{
->>>>> +	return current->lazy_mmu_state.active;
->>>>> +}
->>>>> +#else
->>>>> +static inline bool in_lazy_mmu_mode(void)
->>>>> +{
->>>>> +	return false;
->>>> Just pointing out that this isn't really a correct implementation:
->>>>
->>>> lazy_mmu_mode_enable()
->>>> ASSERT(in_lazy_mmu_mode()) << triggers for arches without lazy mmu
->>>> lazy_mmu_mode_disable()
->>>>
->>>> Although it probably doesn't matter in practice?
->>> I'd say that the expectation is invalid - lazy MMU mode can only be
->>> enabled if the architecture supports it. In fact as you pointed out
->>> above the API may be called in interrupt context but it will have no
->>> effect, so this sequence would always fail in interrupt context.
->> Yep, but previously there was no way to query the current state so it didn't
->> matter. Now you have a query API so it might matter if/when people come along
->> and use it in unexpected ways.
-> 
-> I suppose the best we can do is document it alongside those helpers
-> (David has already suggested some documentation, see patch 11).
-> 
->>> Worth nothing that in_lazy_mmu_mode() is only ever called from arch code
->>> where lazy MMU is implemented. I added the fallback as a matter of
->>> principle, but it isn't actually required.
->> Yes, I agree that's the intent. I'm just wondering if it's possible to enforce
->> that only arch code uses this. Perhaps add some docs to explain that it's only
->> intended for arches that implement lazy_mmu, and don't define it for arches that
->> don't, which would catch any generic users?
-> 
-> Yep sounds like the best option - a lot less risk of misuse if it can't
-> be called from generic code :) The build would still succeed on arch's
-> that implement it, but the kernel CI should catch such calls sooner or
-> later.
-> 
-> - Kevin
-
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
 
