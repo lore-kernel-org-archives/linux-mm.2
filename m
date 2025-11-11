@@ -4,109 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E87B8CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 16:48:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86763CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 17:03:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51D8A8E000F; Tue, 11 Nov 2025 11:48:51 -0500 (EST)
+	id AE36C8E000C; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F5558E0002; Tue, 11 Nov 2025 11:48:51 -0500 (EST)
+	id ABAA08E0002; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40B728E000F; Tue, 11 Nov 2025 11:48:51 -0500 (EST)
+	id 9F7ED8E000C; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BAA18E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 11:48:51 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8913954A53
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:48:50 +0000 (UTC)
-X-FDA: 84098910420.04.9EEDB07
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 860CB40008
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:48:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PSbwC8vw;
-	spf=pass (imf07.hostedemail.com: domain of tytanick@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9021B8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:03:24 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 409831386F8
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:03:24 +0000 (UTC)
+X-FDA: 84098947128.29.3565411
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0329EC0018
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:03:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762879728;
+	s=arc-20220608; t=1762880602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZbFbYVvcEedVwJRwUwPZiNLEZK9ffdaAqCwqz+/NeA=;
-	b=mF13L7pvladzhYumw2kqrFq9EN8vdHnFR8kLh2+5vMgcTLMJ1n3H0xicdJv6YnaicDba74
-	X9XS6qAJIJHbcNSmGmnjf9HtravxXMhna0fhGofsM7hx2V0yYc0623iBYFKOp+gf7vD/Fe
-	t2DXPRW1RY8qasV1/wJtz+G+xj0xZgw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PSbwC8vw;
-	spf=pass (imf07.hostedemail.com: domain of tytanick@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762879728; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aua8l6YRNgQP+NPu3nML7Xo2TxY8EffMn9iRDXN1Nuw=;
+	b=0qzwbGdW21Mhni0B5E9juZ+F8OFpMoKsLznj66p2DMos6imoOnW4K9hZPfvdmDDDO6hB7w
+	AtQ9Fh1jsL0S/FNDjV/e4UTmfBPaP7zweSai6wGswXAUQ+unMPW4By06fO3GhVglQBGyGS
+	G/4sGk2UMRBWLWgW2GhT5kID+ifelXI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762880602; a=rsa-sha256;
 	cv=none;
-	b=n7Bjlqx79zrHHwpT+VXP7jd6QPN1tao10+DmXYtY3+D3GYBoKlgMdEr7zGztXuZjPZoCCH
-	ZyDGmT4/rM//a3l3XBFAVWCiOlIIcM4Q1lHDvV2b8WBdblz1FLyV/s+xmjAEvVzsj/Ywx/
-	UT5RZYAlcOgTuTPqwCnDYh51PV7qhJQ=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-594476f218fso3202497e87.1
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:48:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762879727; x=1763484527; darn=kvack.org;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NZbFbYVvcEedVwJRwUwPZiNLEZK9ffdaAqCwqz+/NeA=;
-        b=PSbwC8vwM2d1sCH0SJFJE2JxnJkphHJWmwT8T0KgmL2L+gZHwnbS905rCoOTrxBe7H
-         /tsohrrksGlYeYv9WKTvL/reqoGenRnGntfD7P+0YGvTmi0KC7TEe7xazHnZmgJKYUuI
-         gUVFStwO3CuCI/vywWt9ObLIUHHLgfp0O5iXVht28lBs5Zzr9FMstZaZv4lXX/o0dKPS
-         0yVgFEzrt82c9c5mtnqHvxT6zDn//I2measaXomrnenTpuAy94RBye5tRMZtp7XbJeFI
-         dwoEhVBYsMsLQa7J4Co30+9MKfYbBoeRMWXvazsCekmf7pLu1l0ghBvMyejBEYe35Gyh
-         cLvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762879727; x=1763484527;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NZbFbYVvcEedVwJRwUwPZiNLEZK9ffdaAqCwqz+/NeA=;
-        b=mywKa99V4vG0HtdIOEB0ex9GlYRhX+vGq7yGaUmXjtl/R5+c/OHEmsusyWLG/sij83
-         nVZHd8J/Zk3cX5x3ZJE12Z4/MXiizz2UwCefTlPA6VFSWxmxBda3HBokAw1HyYLbV+N0
-         FvxIs/wjXhl8LB1foafaKY2HOOV8UWMtR1ch/4GgPfgdU/qldzk8wwS5aHk8vLbnnx+B
-         zHoWzbiIKdjI/47432iL8BvMEz6UXf6mN8cUAkbQBN/ePZjlRgpJqg3POyy30RYbZAKi
-         +6fW6fAvVMCAtQrbiwspqga8xdqjvUGqNMZLD7M1pwd94tvVvHdua0wTGJC6ynIPEFJL
-         NBDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRJXCsKezQYn21PDuhkwTyWeBSebS7FTZ5Q5vSXxG/N4jw7Ar/idVv/N0aba4/sswAo6E2k3FOWA==@kvack.org
-X-Gm-Message-State: AOJu0YxBEhn/RTI/gGywPP2ODk8vRsKbP0NC4KfjpovMwqkhnPN6ezcE
-	ONRHnkGvVZCg8zUzZj9OhGi8GSaUhw228H+KcSu+wamQeINHchPpHKZPXRAcvYC48URwt0W6nlL
-	dv9LOkprdTzoH3+FHLHr6cD1ic+uKAjk=
-X-Gm-Gg: ASbGncuHuh8qxUDd+fJOIbGL2G8M3Bw4nKd7zP9zCtaC3e4rd3w5W3qKDZiXSnXrlzV
-	oQ+cq0vJems0QsusCSakddxsfbAs48CK2mP3DVsN9Z8PlSorRewGmhpeB16c6s33CvAsFRfkSiX
-	9z1jfl1e4CgNLn+Z0JZ4h6zkhZ7xqodDY991V8ChGVolacaX5vhCkfCJfsTzxWJRXPLGhXooh1G
-	McyelIllVUjAEKDIQLwZy+uip9a74yOqwK8k/LgIlyPoO2GzLkGWy00rDw7xUI=
-X-Google-Smtp-Source: AGHT+IHEe0sy8WvJxoll8giSLL3klufqc2pLCUx8+YL0MxXNPfzvgXc6LEee7WT7jHo+cEBJ70x+MQ9Ie2skkXFy6Hc=
-X-Received: by 2002:a05:6512:3a86:b0:579:f0fc:429f with SMTP id
- 2adb3069b0e04-5945f1e53eemr4023997e87.49.1762879726251; Tue, 11 Nov 2025
- 08:48:46 -0800 (PST)
+	b=8hcrKelJ4uLLPW5UF9ck274e8DGxKnTG/OG63RV9NxYruZys1H2uP18XlmyAXMqCfbR8n9
+	IzK5Vjn/MUl6tzF9aRVY1wUmOWGl1ttcHc9B38eeQA0VOJzlxSsqMU/HMJ1pKxmMUe/bn5
+	EQImPx58heOQSPkqz75pVIdSFygF+LY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32480497;
+	Tue, 11 Nov 2025 09:03:13 -0800 (PST)
+Received: from [10.1.31.216] (XHFQ2J9959.cambridge.arm.com [10.1.31.216])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 106E43F5A1;
+	Tue, 11 Nov 2025 09:03:15 -0800 (PST)
+Message-ID: <8f70692c-25a9-4bd0-94ab-43ab435e4b1b@arm.com>
+Date: Tue, 11 Nov 2025 17:03:14 +0000
 MIME-Version: 1.0
-References: <20251111125331.12246-1-harry.yoo@oracle.com> <eesmaqfwnhq4xcoduevr5aodsf622ugn5aheywvpbhpg5fzhcv@5zbfhikqmrtl>
-In-Reply-To: <eesmaqfwnhq4xcoduevr5aodsf622ugn5aheywvpbhpg5fzhcv@5zbfhikqmrtl>
-From: Tytus Rogalewski <tytanick@gmail.com>
-Date: Tue, 11 Nov 2025 17:48:35 +0100
-X-Gm-Features: AWmQ_bk-1Bgvnxk0qvW09RSQ0q-NAHra3FjWQ517_JL-8cPHHU9hW1N8F_W3w_k
-Message-ID: <CANfXJztJZJ4eaFf+FxC=deFeO7MG0__U3FVtBDcmS7iUk3gFgw@mail.gmail.com>
-Subject: Re: [PATCH V1] mm/slub: fix memory leak in free_to_pcs_bulk()
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Tytus Rogalewski <tytanick@gmail.com>, "Darrick J . Wong" <djwong@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Content-Type: multipart/alternative; boundary="000000000000dd736c0643546b6b"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 860CB40008
-X-Stat-Signature: 4x7p4j4kd1dxxyitawxbuxwz9sgt9p3w
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
+Content-Language: en-GB
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-8-kevin.brodsky@arm.com>
+ <999feffa-5d1d-42e3-bd3a-d949f2a9de9d@arm.com>
+ <cc9dc398-b9c5-4bb8-94ad-7e7f3ddd5b4f@arm.com>
+ <824bf705-e9d6-4eeb-9532-9059fa56427f@arm.com>
+ <58fd1a6e-f2c4-421c-9b95-dea4b244a515@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <58fd1a6e-f2c4-421c-9b95-dea4b244a515@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762879728-410212
-X-HE-Meta: U2FsdGVkX1+Pvj9N3jLW4IOQN8Mn/NIAWr+cNQBTauvvznAxtQDasSPRrVqeUf9w8IHXPz9HuqZgTKCxVkglIgZif0LurPuOJAHHItV6NQhusLNxF3rIhbYghNi2f+UiBiIchGxRuwrF3XcmvrNgk+93/EV4/28FgwB6zrY0dFa+SiYYZ5HmFbgMmDztq23NOgV6Y+0TT8HkNqvDbykYcAQOqmtclQ6LqxisuMZ3+zVDYrTkZsGDwcfpQra0PpxnCyQhGmVZyL5SJdvNamOTJapCDb0TtcVaoYYSwZJo+0KPGYceneThy5osdbttZO022EXFmTlXuw5EI/I9ln0zVmV6PLvSDe87QQsDk2SfIj3m7hgHyyszHBmMq18gq9G9Bfkp4pTQv1CrwXFpl+Y1u68yL6AMOUOU0cM9dpFiPwrpxiK4g6KV0N5UjiB6VK1knltidQHSrrMZ/QcBV3gogh4gY5v5m6jgNO5wAP0+vNUAPToh9dsBXjtsNhzGi6xHbyGHch2GtkxKsTSfKjRvdKhn9ZTMn8klr0HQ8cSD9j5zlxH5FiWOGIClQ/6kxWKtMt6IfqZQs3on3FHzD0kWQRZLGodV7K/NYSJGMzARA3GR6/eji52olFMprj6vIFVyh/MsNtXzYmYsGeO1H59cZEM3+1To1AIQ3Xlxx5LQPCsyPGdQG1CM9ap/jJdQ8QoDM8byiGseWH66tGi0i/etgPXXfIEJlYcgGBnP1ZwAttm9pcvC7GoG/cluEvDj9gJhOwWHeTv3z7GPBsNOOTu+T1q59Sxmq7CvUByKHJBLIyy/YznFzBLUJAkq9yetcUFKR2rvE3RYQs+4L1a4BMeCxRjKwSMXAeCssK7fW5NaEttBfIpbnQEwb4xyFW66BJVyzGNxfKatVho32Ellrv4WY3sO3yGydsuWyb9pupz2EIdaZ1TG7pV0cjB+sFx9lNnayZDpcIRj2lAn1nPWCks
- TkOyxMzv
- snUf/PTiuV+M1Gz74cSMFXuCftiZa92i/OtTHGJqmrJTZ1Nwl7KdxzKdpQ3OpZv9RsDVFhxRMv0SKdPxveZLzH1IMqQUsF2H3S00ACOqW51RtNCvFC/ixX9uLPSs0G4H5FDj+hoHOe1NzCdOmOS1xypaY5FTm6ej51lftq/VBuhdXpzpydsIhhJN4gzCAvm1MwC3AbQeUaWViFPQ2MnNxdRtB0hEfqodJDwY8E9EFhjLKcJtTtSwAloYB9ZtLQV5fgXHP9lnPCVIhDwA6G6V1P6ibb7NiD7PMoeu8O0H8D/xDUhl7Tt4sM2GuQwzyiogdBRF8WGDP+zjqM36rD6l3Oe8PcfRbRGJU9EgbFFO0HCfMwekdKYCUhmLT/WVexFH0fRojvgErqnfOEhn4eLzhyD2kjvcbtCZkc7YH+3WWiD0Unx0zMQZ6cD29n3NO1nGbAhPhZLl8s6DeGrfglp6goJgohefv5zosSKvwYXWWsJQB//iMqbU0Gl0c3/k7mN4vyrWUBAEw0XR9QWR3GP+SxmkgG6c2xxV5oLGVkcRYrfohI1/HyzrtNBg0q4SHuLstqdMIICuDWhqEMJDM0CFRwtFSi6+/d9QTBwnt6kmGxGvynZ8UQtA7go+ClEiavhnylDLu
+X-Rspamd-Queue-Id: 0329EC0018
+X-Stat-Signature: e3emqyz78pbxnrxi3j3urm5nzu77koo7
+X-HE-Tag: 1762880601-274173
+X-HE-Meta: U2FsdGVkX1+LiFetcDyUK2Xa8Y3g5sXbkx1la/OZU5YwpCbij8hRVwpGZd2tZzQ0t8eDTvpOAr8jPUXiVRELFiru5zzrnBhIt0qcrRN47Kzc+KrFS400MbNwWr8lvYJ7vwUkflCsLJaYXSIG4WLmuUUSuAAthZy4tH9wYU1nbrGdwZ5OhyH7hpzMnppy5zaDntamFcIldQOHLIWwwQFC+lzhKBz5u/DTJiRv/YZEn8LlGmPHDXMqgnDF+hCZsQdpqYpvdU4sWQ7qZ4p1k6sZ4YZDHTt2DwDjHIkn3zVyx+gYlX4oQ1woi2tdCg5TMmqwhIKzLgcXjzf1X6RkZqHrtrMZXuguw49jvT8YEfUeA1/eT6owq5azCemR3jpKkrgnTx8dNCk4ur0TCkkd+fPBlZxnighpIEDCQT4NTSq4b0FnOnc1l/RVT7NgXPaj2th2rRJpTGayFS8KN113t9VZAHVLLedVbmY4asxCHSZiHTAUFZflGgnoCx0/+8+XXbGAYl0EhVb0gZdh3e+xjZeBOQAmu9Ho7NRcSbSbe3bTtyoEaetmy0P+N5/CURe2lok/OseiykxTjgbrrhoimb50Iw870mF6uFRIUumCPEbNd9weXBsNJXCkDU0W9PCcKrmCjbsn5+KjtRdQ+tzJ+6jK1x7zhzpa+I1dA241Dr62iBZB7E9g9EI50DECkaD7Dch5hJautFzg6MY0660ZAaudcK7nezsQCYANDqQc1UerImdprCAuIFPfV2wVKUVJ4UrwVP6k8NgcYpqBpfqGwDAx5zYk31JVYTGCIs4jbB1IwM1Nj2PJYVq5W3MjLLi5TORj752mxXYqpWv8v7UowF0J5B9JqwyGfzx/0L0N+I5mp5wL3GGpTUcZN5ieMbtufOZ2Dytn5y4+GEqYpvFFPBT1R4QAC9+B5MNedEAo2YgaGcJw+lA4E9LzEDEHmOVsTExRI1iE5hhONMHRUjmaqV9
+ Ci4nPjhv
+ dgEnEO/jINyB4cqpV5gjbMx1THTQprF/bOaMTsatNu7/fi05YZZT54mvp0+l3OE0EhrtqE5sKOKNT/JKG4P3g9iLJ6MfMzhkWRWFMrpVDseWyeLmD2bnzal/xvQqEePaZGqwMnDw3Lznc9L9BwblnjUtb6YZSc+wT/39sJZSkizbRI804n7KChRIjWDtYgRfIlP4LE8K0caJ0nGpfRWH4tkelMQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,268 +110,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000dd736c0643546b6b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 11/11/2025 15:56, Kevin Brodsky wrote:
+> On 11/11/2025 10:24, Ryan Roberts wrote:
+>> [...]
+>>
+>>>>> +		state->active = true;
+>>>>> +		arch_enter_lazy_mmu_mode();
+>>>>> +	}
+>>>>>  }
+>>>>>  
+>>>>>  static inline void lazy_mmu_mode_disable(void)
+>>>>>  {
+>>>>> -	arch_leave_lazy_mmu_mode();
+>>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+>>>>> +
+>>>>> +	VM_WARN_ON_ONCE(state->nesting_level == 0);
+>>>>> +	VM_WARN_ON(!state->active);
+>>>>> +
+>>>>> +	if (--state->nesting_level == 0) {
+>>>>> +		state->active = false;
+>>>>> +		arch_leave_lazy_mmu_mode();
+>>>>> +	} else {
+>>>>> +		/* Exiting a nested section */
+>>>>> +		arch_flush_lazy_mmu_mode();
+>>>>> +	}
+>>>>>  }
+>>>>>  
+>>>>>  static inline void lazy_mmu_mode_pause(void)
+>>>>>  {
+>>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+>>>>> +
+>>>>> +	VM_WARN_ON(state->nesting_level == 0 || !state->active);
+>>>> nit: do you need the first condition? I think when nesting_level==0, we expect
+>>>> to be !active?
+>>> I suppose this should never happen indeed - I was just being extra
+>>> defensive.
+>>>
+>>> Either way David suggested allowing pause()/resume() to be called
+>>> outside of any section so the next version will bail out on
+>>> nesting_level == 0.
+>> Ignoring my current opinion that we don't need pause/resume at all for now; Are
+>> you suggesting that pause/resume will be completely independent of
+>> enable/disable? I think that would be best. So enable/disable increment and
+>> decrement the nesting_level counter regardless of whether we are paused.
+>> nesting_level 0 => 1 enables if not paused. nesting_level 1 => 0 disables if not
+>> paused. pause disables nesting_level >= 1, resume enables if nesting_level >= 1.
+> 
+> This is something else. Currently the rules are:
+> 
+> [A]
+> 
+> // pausing forbidden
+> enable()
+>     pause()
+>     // pausing/enabling forbidden
+>     resume()
+> disable()
+> 
+> David suggested allowing:
+> 
+> [B]
+> 
+> pause()
+> // pausing/enabling forbidden
+> resume()
+> 
+> Your suggestion is also allowing:
+> 
+> [C]
+> 
+> pause()
+>     // pausing forbidden
+>     enable()
+>     disable()
+> resume()
 
-Do you guys still need that debug then?
-I think this is happening only when qemu vm is working.
+I think the current kasan kasan_depopulate_vmalloc_pte() path will require [C]
+if CONFIG_DEBUG_PAGEALLOC is enabled on arm64. It calls __free_page() while
+paused. I guess CONFIG_DEBUG_PAGEALLOC will cause __free_page() ->
+debug_pagealloc_unmap_pages() ->->-> update_range_prot() -> lazy_mmu_enable().
 
-I can get results within 1-2 days.
+Arguably you could move the resume() to before the __free_page(). But it just
+illustrates that it's all a bit brittle at the moment...
 
---
+> 
+>> Perhaps we also need nested pause/resume? Then you just end up with 2 counters;
+>> enable_count and pause_count. Sorry if this has already been discussed.
+> 
+> And finally:
+> 
+> [D]
+> 
+> pause()
+>     pause()
+>         enable()
+>         disable()
+>     resume()
+> resume()
+> 
+> I don't really mind either way, but I don't see an immediate use for [C]
+> and [D] - the idea is that the paused section is short and controlled,
+> not made up of arbitrary calls. 
 
-tel. 790 202 300
+If my thinking above is correct, then I've already demonstrated that this is not
+the case. So I'd be inclined to go with [D] on the basis that it is the most robust.
 
-*Tytus Rogalewski*
+Keeping 2 nesting counts (enable and pause) feels pretty elegant to me and gives
+the fewest opportunities for surprises.
 
-Dolina Krzemowa 6A
+Thanks,
+Ryan
 
-83-010 Jagatowo
+> A potential downside of allowing [C] and
+> [D] is that it makes it harder to detect unintended nesting (fewer
+> VM_WARN assertions). Happy to implement it if this proves useful though.
+> 
+> OTOH the idea behind [B] is that it allows the caller of
+> pause()/resume() not to care about whether lazy MMU is actually enabled
+> or not - i.e. the kasan helpers would keep working even if
+> apply_to_page_range() didn't use lazy MMU any more.
+> 
+>>>>> +
+>>>>> +	state->active = false;
+>>>>>  	arch_leave_lazy_mmu_mode();
+>>>>>  }
+>>>>>  
+>>>>>  static inline void lazy_mmu_mode_resume(void)
+>>>>>  {
+>>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+>>>>> +
+>>>>> +	VM_WARN_ON(state->nesting_level == 0 || state->active);
+>>>> Similar argument?
+>>>>
+>>>>> +
+>>>>> +	state->active = true;
+>>>>>  	arch_enter_lazy_mmu_mode();
+>>>>>  }
+>>>>>  #else
+>>>>> diff --git a/include/linux/sched.h b/include/linux/sched.h
+>>>>> index cbb7340c5866..11566d973f42 100644
+>>>>> --- a/include/linux/sched.h
+>>>>> +++ b/include/linux/sched.h
+>>>>> @@ -1441,6 +1441,10 @@ struct task_struct {
+>>>>>  
+>>>>>  	struct page_frag		task_frag;
+>>>>>  
+>>>>> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>>>>> +	struct lazy_mmu_state		lazy_mmu_state;
+>>>>> +#endif
+>>>>> +
+>>>>>  #ifdef CONFIG_TASK_DELAY_ACCT
+>>>>>  	struct task_delay_info		*delays;
+>>>>>  #endif
+>>>>> @@ -1724,6 +1728,18 @@ static inline char task_state_to_char(struct task_struct *tsk)
+>>>>>  	return task_index_to_char(task_state_index(tsk));
+>>>>>  }
+>>>>>  
+>>>>> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>>>>> +static inline bool in_lazy_mmu_mode(void)
+>>>>> +{
+>>>>> +	return current->lazy_mmu_state.active;
+>>>>> +}
+>>>>> +#else
+>>>>> +static inline bool in_lazy_mmu_mode(void)
+>>>>> +{
+>>>>> +	return false;
+>>>> Just pointing out that this isn't really a correct implementation:
+>>>>
+>>>> lazy_mmu_mode_enable()
+>>>> ASSERT(in_lazy_mmu_mode()) << triggers for arches without lazy mmu
+>>>> lazy_mmu_mode_disable()
+>>>>
+>>>> Although it probably doesn't matter in practice?
+>>> I'd say that the expectation is invalid - lazy MMU mode can only be
+>>> enabled if the architecture supports it. In fact as you pointed out
+>>> above the API may be called in interrupt context but it will have no
+>>> effect, so this sequence would always fail in interrupt context.
+>> Yep, but previously there was no way to query the current state so it didn't
+>> matter. Now you have a query API so it might matter if/when people come along
+>> and use it in unexpected ways.
+> 
+> I suppose the best we can do is document it alongside those helpers
+> (David has already suggested some documentation, see patch 11).
+> 
+>>> Worth nothing that in_lazy_mmu_mode() is only ever called from arch code
+>>> where lazy MMU is implemented. I added the fallback as a matter of
+>>> principle, but it isn't actually required.
+>> Yes, I agree that's the intent. I'm just wondering if it's possible to enforce
+>> that only arch code uses this. Perhaps add some docs to explain that it's only
+>> intended for arches that implement lazy_mmu, and don't define it for arches that
+>> don't, which would catch any generic users?
+> 
+> Yep sounds like the best option - a lot less risk of misuse if it can't
+> be called from generic code :) The build would still succeed on arch's
+> that implement it, but the kernel CI should catch such calls sooner or
+> later.
+> 
+> - Kevin
 
-NIP: 9570976234
-
-
-W dniu wt., 11 lis 2025 o 16:37 Liam R. Howlett <Liam.Howlett@oracle.com>
-napisa=C5=82(a):
-
-> * Harry Yoo <harry.yoo@oracle.com> [251111 07:55]:
-> > The commit 989b09b73978 ("slab: skip percpu sheaves for remote object
-> > freeing") introduced the remote_objects array in free_to_pcs_bulk() to
-> > skip sheaves when objects from a remote node are freed.
-> >
-> > However, the array is flushed only when:
-> >   1) the array becomes full (++remote_nr >=3D PCS_BATCH_MAX), or
-> >   2) slab_free_hook() returns false and size becomes zero.
-> >
-> > When neither of the conditions is met, objects in the array are leaked.
-> > This resulted in a memory leak [1], where 82 GiB of memory was allocate=
-d
-> > for the maple_node cache.
-> >
-> > Flush the array after successfully freeing objects to sheaves
-> > in the do_free: path.
-> >
-> > In the meantime, move the snippet if (!size) goto flush_remote; outside
-> > the while loop for readability. Let's say all objects in the array are
-> > from a remote node: then we acquire s->cpu_sheaves->lock and try to fre=
-e
-> > an object even when size is zero. This doesn't appear to be harmful,
-> > but isn't really readable.
-> >
-> > Reported-by: Tytus Rogalewski <tytanick@gmail.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220765 [1]
-> > Closes:
-> https://lore.kernel.org/linux-mm/20251107094809.12e9d705b7bf4815783eb184@=
-linux-foundation.org
-> > Closes: https://lore.kernel.org/all/aRGDTwbt2EIz2CYn@hyeyoo
-> > Fixes: 989b09b73978 ("slab: skip percpu sheaves for remote object
-> freeing")
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
->
->
-> Thanks Harry.
->
-> Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
->
-> > ---
-> >  mm/slub.c | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index f1a5373eee7b..a787687a0d59 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -6332,8 +6332,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s=
-,
-> size_t size, void **p)
-> >
-> >               if (unlikely(!slab_free_hook(s, p[i], init, false))) {
-> >                       p[i] =3D p[--size];
-> > -                     if (!size)
-> > -                             goto flush_remote;
-> >                       continue;
-> >               }
-> >
-> > @@ -6348,6 +6346,9 @@ static void free_to_pcs_bulk(struct kmem_cache *s=
-,
-> size_t size, void **p)
-> >               i++;
-> >       }
-> >
-> > +     if (!size)
-> > +             goto flush_remote;
-> > +
-> >  next_batch:
-> >       if (!local_trylock(&s->cpu_sheaves->lock))
-> >               goto fallback;
-> > @@ -6402,6 +6403,9 @@ static void free_to_pcs_bulk(struct kmem_cache *s=
-,
-> size_t size, void **p)
-> >               goto next_batch;
-> >       }
-> >
-> > +     if (remote_nr)
-> > +             goto flush_remote;
-> > +
-> >       return;
-> >
-> >  no_empty:
-> > --
-> > 2.43.0
-> >
->
-
---000000000000dd736c0643546b6b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Do you guys still need that debug then?</div><div dir=3D"=
-auto">I think this is happening only when qemu vm is working.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">I can get results within 1-2 days.<br=
- clear=3D"all"><br clear=3D"all"><div dir=3D"auto"><div dir=3D"ltr" class=
-=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><d=
-iv dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr">
-
-
-
-
-
-
-
-<p style=3D"font-size:12px;line-height:normal;font-family:&quot;Helvetica N=
-eue&quot;;margin:0px"><font size=3D"1" style=3D"font-family:&quot;Helvetica=
- Neue&quot;;color:rgb(0,0,0)">--</font></p><p style=3D"font-size:12px;line-=
-height:normal;font-family:&quot;Helvetica Neue&quot;;margin:0px"><font size=
-=3D"1" style=3D"font-family:&quot;Helvetica Neue&quot;;color:rgb(0,0,0)">te=
-l. 790 202 300</font></p><p style=3D"font-size:12px;line-height:normal;font=
--family:&quot;Helvetica Neue&quot;;margin:0px"><b style=3D"font-size:x-smal=
-l;font-family:&quot;Helvetica Neue&quot;;color:rgb(68,68,68)">Tytus Rogalew=
-ski</b><br></p><p style=3D"font-size:12px;line-height:normal;font-family:&q=
-uot;Helvetica Neue&quot;;margin:0px"><font size=3D"1" style=3D"font-family:=
-&quot;Helvetica Neue&quot;;color:rgb(153,153,153)">Dolina Krzemowa 6A</font=
-></p><p style=3D"font-size:12px;line-height:normal;font-family:&quot;Helvet=
-ica Neue&quot;;margin:0px"><font size=3D"1" style=3D"font-family:&quot;Helv=
-etica Neue&quot;;color:rgb(153,153,153)">83-010 Jagatowo</font></p><p style=
-=3D"font-size:12px;line-height:normal;font-family:&quot;Helvetica Neue&quot=
-;;margin:0px"><font size=3D"1" style=3D"font-family:&quot;Helvetica Neue&qu=
-ot;;color:rgb(153,153,153)">NIP: 9570976234</font></p></div></div></div></d=
-iv></div></div></div><div><br></div><div><br><div class=3D"gmail_quote gmai=
-l_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">W dniu wt., 11 lis=
- 2025 o 16:37 Liam R. Howlett &lt;<a href=3D"mailto:Liam.Howlett@oracle.com=
-">Liam.Howlett@oracle.com</a>&gt; napisa=C5=82(a):<br></div><blockquote cla=
-ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;=
-border-left-style:solid;padding-left:1ex;border-left-color:rgb(204,204,204)=
-">* Harry Yoo &lt;<a href=3D"mailto:harry.yoo@oracle.com" target=3D"_blank"=
->harry.yoo@oracle.com</a>&gt; [251111 07:55]:<br>
-&gt; The commit 989b09b73978 (&quot;slab: skip percpu sheaves for remote ob=
-ject<br>
-&gt; freeing&quot;) introduced the remote_objects array in free_to_pcs_bulk=
-() to<br>
-&gt; skip sheaves when objects from a remote node are freed.<br>
-&gt; <br>
-&gt; However, the array is flushed only when:<br>
-&gt;=C2=A0 =C2=A01) the array becomes full (++remote_nr &gt;=3D PCS_BATCH_M=
-AX), or<br>
-&gt;=C2=A0 =C2=A02) slab_free_hook() returns false and size becomes zero.<b=
-r>
-&gt; <br>
-&gt; When neither of the conditions is met, objects in the array are leaked=
-.<br>
-&gt; This resulted in a memory leak [1], where 82 GiB of memory was allocat=
-ed<br>
-&gt; for the maple_node cache.<br>
-&gt; <br>
-&gt; Flush the array after successfully freeing objects to sheaves<br>
-&gt; in the do_free: path.<br>
-&gt; <br>
-&gt; In the meantime, move the snippet if (!size) goto flush_remote; outsid=
-e<br>
-&gt; the while loop for readability. Let&#39;s say all objects in the array=
- are<br>
-&gt; from a remote node: then we acquire s-&gt;cpu_sheaves-&gt;lock and try=
- to free<br>
-&gt; an object even when size is zero. This doesn&#39;t appear to be harmfu=
-l,<br>
-&gt; but isn&#39;t really readable.<br>
-&gt; <br>
-&gt; Reported-by: Tytus Rogalewski &lt;<a href=3D"mailto:tytanick@gmail.com=
-" target=3D"_blank">tytanick@gmail.com</a>&gt;<br>
-&gt; Closes: <a href=3D"https://bugzilla.kernel.org/show_bug.cgi?id=3D22076=
-5" rel=3D"noreferrer" target=3D"_blank">https://bugzilla.kernel.org/show_bu=
-g.cgi?id=3D220765</a> [1]<br>
-&gt; Closes: <a href=3D"https://lore.kernel.org/linux-mm/20251107094809.12e=
-9d705b7bf4815783eb184@linux-foundation.org" rel=3D"noreferrer" target=3D"_b=
-lank">https://lore.kernel.org/linux-mm/20251107094809.12e9d705b7bf4815783eb=
-184@linux-foundation.org</a><br>
-&gt; Closes: <a href=3D"https://lore.kernel.org/all/aRGDTwbt2EIz2CYn@hyeyoo=
-" rel=3D"noreferrer" target=3D"_blank">https://lore.kernel.org/all/aRGDTwbt=
-2EIz2CYn@hyeyoo</a><br>
-&gt; Fixes: 989b09b73978 (&quot;slab: skip percpu sheaves for remote object=
- freeing&quot;)<br>
-&gt; Signed-off-by: Harry Yoo &lt;<a href=3D"mailto:harry.yoo@oracle.com" t=
-arget=3D"_blank">harry.yoo@oracle.com</a>&gt;<br>
-<br>
-<br>
-Thanks Harry.<br>
-<br>
-Acked-by: Liam R. Howlett &lt;<a href=3D"mailto:Liam.Howlett@oracle.com" ta=
-rget=3D"_blank">Liam.Howlett@oracle.com</a>&gt;<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 mm/slub.c | 8 ++++++--<br>
-&gt;=C2=A0 1 file changed, 6 insertions(+), 2 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/mm/slub.c b/mm/slub.c<br>
-&gt; index f1a5373eee7b..a787687a0d59 100644<br>
-&gt; --- a/mm/slub.c<br>
-&gt; +++ b/mm/slub.c<br>
-&gt; @@ -6332,8 +6332,6 @@ static void free_to_pcs_bulk(struct kmem_cache *=
-s, size_t size, void **p)<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (unlikely(!sl=
-ab_free_hook(s, p[i], init, false))) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0p[i] =3D p[--size];<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0if (!size)<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto flush_remote;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0continue;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 <br>
-&gt; @@ -6348,6 +6346,9 @@ static void free_to_pcs_bulk(struct kmem_cache *=
-s, size_t size, void **p)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i++;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 <br>
-&gt; +=C2=A0 =C2=A0 =C2=A0if (!size)<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto flush_remote;<br=
->
-&gt; +<br>
-&gt;=C2=A0 next_batch:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!local_trylock(&amp;s-&gt;cpu_sheaves-&g=
-t;lock))<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto fallback;<b=
-r>
-&gt; @@ -6402,6 +6403,9 @@ static void free_to_pcs_bulk(struct kmem_cache *=
-s, size_t size, void **p)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto next_batch;=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 <br>
-&gt; +=C2=A0 =C2=A0 =C2=A0if (remote_nr)<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto flush_remote;<br=
->
-&gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 no_empty:<br>
-&gt; -- <br>
-&gt; 2.43.0<br>
-&gt; <br>
-</blockquote></div></div>
-
---000000000000dd736c0643546b6b--
 
