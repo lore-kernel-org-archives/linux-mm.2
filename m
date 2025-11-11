@@ -4,134 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8606BCCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 21:56:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F4FCCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 22:18:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D946E8E000C; Tue, 11 Nov 2025 16:56:58 -0500 (EST)
+	id 912718E0008; Tue, 11 Nov 2025 17:18:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6BB18E0002; Tue, 11 Nov 2025 16:56:58 -0500 (EST)
+	id 8EA7B8E0002; Tue, 11 Nov 2025 17:18:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C829E8E000C; Tue, 11 Nov 2025 16:56:58 -0500 (EST)
+	id 7FFEB8E0008; Tue, 11 Nov 2025 17:18:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B38E58E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:56:58 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E0A712CB3B
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:56:58 +0000 (UTC)
-X-FDA: 84099686916.16.C297BDC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E87631C0005
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:56:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FB528E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 17:18:41 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D93CA4BAFE
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 22:18:40 +0000 (UTC)
+X-FDA: 84099741600.03.4C53A42
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 469611C0008
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 22:18:38 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iwjEVkUs;
-	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NFCnAd0C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CxyDphfL;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NFCnAd0C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CxyDphfL;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762898216;
+	s=arc-20220608; t=1762899518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fJQdUI+LXX11RLLs0Qx52DufVkzJbNjuRnkX8eB0oEo=;
-	b=upqamcrK7Ciid7TAaeY03/z8bv+I87Am0fEhIldAZMN7FvH7KFkR55sJUpWK+Y6ZcjlcjV
-	ro7L8GBCX0fu2kr38Vs1PAo2qn3+7zKcTFzMb8n/gxLjkCwFuuXuelbOSlVg2x3pJ/g8Dt
-	s5KglwG+WP6JK5mzkJM3ItKTVfwOyTo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762898216; a=rsa-sha256;
+	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
+	b=tGrKXDDKCigf+jfy1RC4WaJKkh9obGo3PnqkToJ63hrTXEJmzWBWVDhYa5jCBD3xnc14KF
+	jjtZ0oxFE/lg2TCQd0BgIWTgv1tGXDA+G1LwgsW0hCTWphYT3TglqVDqqF7hEiJJzQyWJA
+	VCaBQVCtIueH0EH2S2wb7aWIKSV/eCA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762899518; a=rsa-sha256;
 	cv=none;
-	b=KpSs0zbXm52Ioe94Od0KMMaoKKHzNyhwSsSUIKT1dXxQqc2i4eZ8BRrZj5KyoX60Rqz56c
-	FA7vaFZIQh5gHvHOAPBXLBlnpujfKaJ2RPLwLlts9pbtRWknHmYoYCuf8H9sBqEkDVwvVc
-	sH40wrBLu75S3o3M49KebBYMv29MbXI=
+	b=0YtbQY4ZAT9AwlWvcUvvnt9VDt8LUOGl6XhdxJB+4ppsDD2fSHOWd4WcjWnCAgFMvuQxwZ
+	xeiIvPL9c4VGmbJg0r+i9hwr7PMR1HdyOuTMvZEQaQSkkijR1xrptNhRlf36/VayHDhqyG
+	mfzniEv0RRuLYDL04Qnqlm7anV2SDnk=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iwjEVkUs;
-	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762898215;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NFCnAd0C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CxyDphfL;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NFCnAd0C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CxyDphfL;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 11BDE1F458;
+	Tue, 11 Nov 2025 22:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762899516; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fJQdUI+LXX11RLLs0Qx52DufVkzJbNjuRnkX8eB0oEo=;
-	b=iwjEVkUsVdYTf1/368vXfNisjgJ+JnDHgNbZ7g4Pl9YIgdIX75UejcU/mB1ilNoEiz7Qu0
-	6JFHOdPidB25lodjY0o+KLgUB2yh2FtfwNhWO6AwEe0aiiq8zwCx1eSANCs2CrvIAS4M5G
-	DY9yNt3AhRmVjdLp7Mr38gLJBVGHhr4=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-CTvFAEV8P6SnVwoOeMG7Pg-1; Tue, 11 Nov 2025 16:56:54 -0500
-X-MC-Unique: CTvFAEV8P6SnVwoOeMG7Pg-1
-X-Mimecast-MFC-AGG-ID: CTvFAEV8P6SnVwoOeMG7Pg_1762898213
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-787cb36b60dso3238667b3.2
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:56:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762898213; x=1763503013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fJQdUI+LXX11RLLs0Qx52DufVkzJbNjuRnkX8eB0oEo=;
-        b=HjR1MdeC2le+/ovldDzwlY1kcW9SUn5tIw69Ggy3qQ/Lt5rP0l0mwT4AVfCrwah/0/
-         XJDJ9xlNLRUBHuurhUeJ/wVnDfcPKoalk/ymn9LU1IHS6VIKk00qLLnCaEvSEHJPXTTv
-         16qnxYXgRJAxXzeDykX8d1FpjXQ0gK7y1VTnsH1OEjGarteDSvEoj8L7zRKALOKLF9kU
-         vW/+Rua/cwoUK+orB2uIbum6bQYHpWhehcLSJRgri8fEvjS0voQ1ev80Uc0zGCBMAWCU
-         ivj/I2TM0T1DBYxkD7VvOFqPkVnM23ACXYQNP/ZGITUF0f/XK6H2O1T2sLwzTW1VF2Sc
-         cmlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXXb59dCPhaDPnV+Oc1BGGeLfvXca097QXayqvZSnjU7MRUFUAk3LEmbcg/xNzREljelxYLvKQbgw==@kvack.org
-X-Gm-Message-State: AOJu0YxOUeIR9OtwUIh7H3QIAprjLk1ObQZCUzU/iGUoNOkQ+7VsMJyw
-	LN+JTJCEthQNxouj8lalZuu626GkBgw2a8Uv1t8MyWXVS8tBI8dnY2ABWA+1g6F1vqEvfhyXMcd
-	hEZbuk7zsgC/yGxqPcl65bqWERN9WTvn+BihmsD/QVvr1qICvri5BINmEubnt0V5AK6pbgu2tS3
-	OacVMViMXxm5dyc6ODAKB6mhuZeh8=
-X-Gm-Gg: ASbGncs1QRDLhDYXpzuUMZf2niwg0o1doX2Ne6JUbTy2tF8JI+D07CbXUFdsduqWl/1
-	mgswA1O7Z5Fp2fa2f2yBr2Pc5DdauhtSXEi/7lOlIwujcK2iQvNfktS46FBVkAG9iLZUrEQapGf
-	p3WBElZOjEL8YMeV7GFp0+yDNPY1chB/XKkYTbaqoZO0H6vA4vxDBP6b90hrcHzBSMuA8HHg==
-X-Received: by 2002:a05:690c:c341:b0:787:e9bc:f9d8 with SMTP id 00721157ae682-788136a7be5mr8843827b3.52.1762898213572;
-        Tue, 11 Nov 2025 13:56:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF+b3xAzqqRUNr4xdfJt+6yqZ+2HXxhopK8ftc8r8sTeifMmau05ZwVAtlGjfvcUgQM5qWXlqEnQddMG63Dwo0=
-X-Received: by 2002:a05:690c:c341:b0:787:e9bc:f9d8 with SMTP id
- 00721157ae682-788136a7be5mr8843467b3.52.1762898213134; Tue, 11 Nov 2025
- 13:56:53 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
+	b=NFCnAd0CdU+wg3CFf3WCxS3+vuWYLoBI2PXiNTQ3Q/ofKTjPtRvznMzcsWTd5gFZVYKixH
+	I8OqOwM/K8jiD8gC0xphwKIZTqlXmG6TXeZYnL2RRdmQV++Qj7G9979n2lNByBk/jxS6Wo
+	riFP0fp/zVVMr3T+vZ9ldUcGsMx4Bxs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762899516;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
+	b=CxyDphfLW3AsRB2q4RGIcsWDAK20PWCDYLJtNdZth2+v6u1xkPsdzbAo/QlqsS2QQj+A32
+	Fh7g8HeIZDG/rACg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762899516; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
+	b=NFCnAd0CdU+wg3CFf3WCxS3+vuWYLoBI2PXiNTQ3Q/ofKTjPtRvznMzcsWTd5gFZVYKixH
+	I8OqOwM/K8jiD8gC0xphwKIZTqlXmG6TXeZYnL2RRdmQV++Qj7G9979n2lNByBk/jxS6Wo
+	riFP0fp/zVVMr3T+vZ9ldUcGsMx4Bxs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762899516;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GicdksCSyjI82vUkF0Oi03JhVOMlvz+IX5VHtm4eASA=;
+	b=CxyDphfLW3AsRB2q4RGIcsWDAK20PWCDYLJtNdZth2+v6u1xkPsdzbAo/QlqsS2QQj+A32
+	Fh7g8HeIZDG/rACg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC89414BB0;
+	Tue, 11 Nov 2025 22:18:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WbznNzu2E2nNBwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 11 Nov 2025 22:18:35 +0000
+Message-ID: <8219599b-941e-4ffd-875f-6548e217c16c@suse.cz>
+Date: Tue, 11 Nov 2025 23:18:35 +0100
 MIME-Version: 1.0
-References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-13-npache@redhat.com>
- <20251109020802.g6dytbixd4aygdgh@master>
-In-Reply-To: <20251109020802.g6dytbixd4aygdgh@master>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 11 Nov 2025 14:56:27 -0700
-X-Gm-Features: AWmQ_bn3fKyzIDCH5FNeUuK4AtOvAXqhYr80QM2Hqo2H858Qfygt1YN2wMe4pp8
-Message-ID: <CAA1CXcA5pKaAOxw45YQ90ygNcGc73MY8o1X9MqR7GBih9AA1HA@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 12/15] khugepaged: Introduce mTHP collapse support
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
-	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com, 
-	pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DsQuGkCNrEbzSb26_B_2ZX6Kx-WOX9jH0uoJaOfnQhg_1762898213
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rfpn5ykzrb3dyhzx4mazqmifacfnyt1o
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
+ retry
+Content-Language: en-US
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+ stable@vger.kernel.org, syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jhmm8by7toqkaz18rrzyrb91q1ty4coo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E87631C0005
+X-Rspamd-Queue-Id: 469611C0008
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1762898215-392193
-X-HE-Meta: U2FsdGVkX1+UjgFSL/Cy4KzAJ0lX9gDinGZ45UmwJwJUa48c9Sby5PWf7gm0uADBkrvQYT3XWYfm+qIdlKHj2b8kJn3P1sZVRON8kqfu8y1Og4JanqapotaIWnZVu7AkF6SKHygCYZYh+m4jgB3c2nfXEcZyTLtd3rOGf5kC9pB9rPvU0XT2QekQzYnJjzHA1bLqkMUOsMkY3gzl3fF+yYBjtn3eZT5smmKZ3JZeibciDkbYtH7SC/Kr9z3p3t6w8DrSHvVBv71afgAv4ul/RXXteckd+Q0UsQBP4TS/yBL9yO/DI2xO8w8zGu6Ow0peq9e5qcoprKnr2H0h9b+YPVIS10HAtwlrRR/xNjHfJAzjv7/tv3AhadB2XNSXtxs0AGMvzstTogRMoPFQDR+G7BCIVS8yZkz2HEMa0hK/p8keX4gVj/5ymEMqKKajDjlKh6zlP0LRxMbKcYO5N7otFf7MNvytT1xvfHu6prX0WUF+1ae/IJua3qNKhi1UoHVyVYACsBeftLpYqYH28XdeCOpbJ+nqZwibnygq0ecpWiuCoL16cGePWfHMxcCoBLGZTmB4FExbNayl1n5rArE+0LLJ9ZDm6aoLLnq8fAGbsX1KWFH0hPQk0cPSa0lq22IWNRptO/5lUeh2G3FliMuhcLa2fxNF8HiYHWwCGHTaBK0Cwy4odZuk0MdnOtkegoWmdiHMXKmwTbxukP/SQvEOuiQIr7brNJwxrigpA+qQrc/asMt9JETApHZr1i+MRfcrRgZ0FqVCqqC+xVFUJU4RtP3GNSi0ZB8s3SbabG9t9LXCfjfQaMoYRoNp0UYzMAujPTEFjjzdFJhSTLfhzMBkkR2BvNHR7DgspV0e0ZYEvu+u//4OcF/gC+6cu+nsHZqMo0PxUMKkFRHpCgplRO+qAmG6Ge8JWdQJDTFuX1TIq+f/DIESB+9+466EEppt97iygMyHvUGRbFoWeJyXLGR
- P5BuX8GP
- G0tRZVzi3sWht09P8kMipdZMGMHv6QIEuVeTU1r611WZC3gXxS2i2ncczRtLEjabPjDgQ5irPOVIqPiDWD8jQQgVolbKYH1bhqRZWsNPA8KL1vLF3o3P/CkvSwuPqtJCDX2kuKzwfZeb4I967gXVzfV52pRB69Dl6dU3QZgY4oKRqlfR60dlgJJw4BjnBdDU6iQH6f6jWk3EWCgIPBf/MsHSeFqjpmp3jD+1F8xB0qYZOEYcHvXNXkiGiM8TQsBUnfsbl6I3+KGAZFGs3sIyuP4nnT63ielKXML+K1hbp768BkQ8WA09ztocyjB2rFHmV2SgCTK+fDCu9elRaokkxlWnR9dGXtLxytqms8ocFIlc/mqnfLAHLXBIKQqtgLBGQS+nA5SdEyEObL6QO/UALaarFDA==
+X-HE-Tag: 1762899518-209301
+X-HE-Meta: U2FsdGVkX19CA5xFUH6mzEJmjf8+oxMuyCCPsyj1oZA7ONcNttafST9Wnse8lyKd2te6LR7oQP2e+K0s8YCrrEy061Y7j7baoHHGrDobNFr8lczexfcxQtsloH1voiga61+9dqLJpBv67rtynBH4GOaZTrd2s9Q0YkAgVFHMTu0lQDKuYnktBMADJDN8Hqw9dUh22vXOGwdq8Ryw0upWKC8rSv8jSuUclmLg5XD/SX5NLYfoVSZVQjgQyluhH0wEZoWJEKOyDnoIvuGtqztCoYSSyypzm5EO/X+Sm4IRXqpDYTSEUSP3EIjrVL0kP5UQgOENS/40V6aYjsa34RPCIHRoyfxdVk2HEiek4PPdRRK21pcKsbdtih1OcPe6nbrhh6gQLDGzgtALZrBoXy8rTOCPQI9/At3pW3xaCMc7uJwntI9cGv6f8ONYzDPN/P7Uv4aM3yMZkvTgcLj0YbxuJN0zJCzRtn5ZaqN8TRsz1jCjWDkfcQQvZb022X0U0M1kR5t8e52BLzD5/9Dq8pkNoOv8+SLn7FC+zRBAhstUNcGGrKWcVx0Eb9tBl7eVnpF6Qxy7JRdPgQkicGveR/4tzFKMUuxFJIV3bNFgv5t7uPBvAlhb197pyP5n4xmLzSPAZOxVar6DgttNN5x6PZDaY3Cr9eb0G8IyHYuNOWHQqexRS1oNtG3v2Jtr/QjeJFpC1RH45ovUTISE8OCx9MUxa8POfLnN7+M3yHP0/vgJlCsjtc34n/vSKjSLg639fbEdTTyDhbea8Mq4ETjgmC1VMZS0VAzFUBlZXKqbrQ28Q31k86kGX1rUaZ4rhEZn5w3fUnDG4G/6yACF5Lhym5rYvmOI0vGAmAWJrH1UZ0JiKi4udtnNbdLHNSdlH8D6hLkeYvqKXpPzXQsnAxImGT141Ps5CKJGBwAjPaoyj11RfUGbuEnp+/ZtqSGBrza480DyhEfMMJVmeUoJmguV3oc
+ hzIjLTwu
+ 2Y84Lx/wUk5uzk/NMZcKBoV8tv2wyS2pVbStfBn9g43l5NPApmF+TIwqXTa3F0AqpjzT99yXvPcfrmsRKwKpvDRj8TLF0SmXyUKODMbtcRpTpeOoANDf1+eRZ5rvDORFTCttAOEm/mCRpIjxP4rPvb3l6PM5MyxpeP4j5iNKvfscgzr2TG+YS33hfQ31nJZDqOe65mGKdfGJ/aWRi5tWahVFbNted2Gid8AcOfsYOab4SKrus5qu7FmZjh5RwlEDGzsBiPSzvN7wTAMZbsJbIgMaBKnDElbAtnK+afOcPbQUUz4UFVuxSid1wYXz1r4V8faoYFoxl6lawyFxx1r/mRMBgQ9W+GxaqOjMMqT5R0m50LSixcZ5NUvxMrbJX2kHEVeWtbT5DkFepPhhH1egZvOwFsFZPeaRvqLP+xIManNa3pSEthh3YI9QfiHwsJEPrbQxOSEhv+0vJZ1LqHOt1Bok4lSzhL3LgJDiqerXED90M0UcIDz14VqgYxMdDmOtWde5xx8UitDlSjNl3YkAu2434RPOs2rGWhb7qYbQiHcIgiVLSkcJ8Weo+kOsRHbL667RFVEPGX9pecd0QpNSsjHXBIQqgakUbQscDXpm6iE13ByrvuLhSmvU/gRU1FvGP2ZDKettGNFhTiGY7s6eWKUvU/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,353 +181,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 8, 2025 at 7:08=E2=80=AFPM Wei Yang <richard.weiyang@gmail.com>=
- wrote:
->
-> On Wed, Oct 22, 2025 at 12:37:14PM -0600, Nico Pache wrote:
-> >During PMD range scanning, track occupied pages in a bitmap. If mTHPs ar=
-e
-> >enabled we remove the restriction of max_ptes_none during the scan phase
-> >to avoid missing potential mTHP candidates.
-> >
-> >Implement collapse_scan_bitmap() to perform binary recursion on the bitm=
-ap
-> >and determine the best eligible order for the collapse. A stack struct i=
-s
-> >used instead of traditional recursion. The algorithm splits the bitmap
-> >into smaller chunks to find the best fit mTHP.  max_ptes_none is scaled =
-by
-> >the attempted collapse order to determine how "full" an order must be
-> >before being considered for collapse.
-> >
-> >Once we determine what mTHP sizes fits best in that PMD range a collapse
-> >is attempted. A minimum collapse order of 2 is used as this is the lowes=
-t
-> >order supported by anon memory.
-> >
-> >mTHP collapses reject regions containing swapped out or shared pages.
-> >This is because adding new entries can lead to new none pages, and these
-> >may lead to constant promotion into a higher order (m)THP. A similar
-> >issue can occur with "max_ptes_none > HPAGE_PMD_NR/2" due to a collapse
-> >introducing at least 2x the number of pages, and on a future scan will
-> >satisfy the promotion condition once again. This issue is prevented via
-> >the collapse_allowable_orders() function.
-> >
-> >Currently madv_collapse is not supported and will only attempt PMD
-> >collapse.
-> >
-> >We can also remove the check for is_khugepaged inside the PMD scan as
-> >the collapse_max_ptes_none() function handles this logic now.
-> >
-> >Signed-off-by: Nico Pache <npache@redhat.com>
->
-> Generally LGTM.
->
-> Some nit below.
->
-> >---
-> > include/linux/khugepaged.h |   2 +
-> > mm/khugepaged.c            | 128 ++++++++++++++++++++++++++++++++++---
-> > 2 files changed, 122 insertions(+), 8 deletions(-)
-> >
-> >diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
-> >index eb1946a70cff..179ce716e769 100644
-> >--- a/include/linux/khugepaged.h
-> >+++ b/include/linux/khugepaged.h
-> >@@ -1,6 +1,8 @@
-> > /* SPDX-License-Identifier: GPL-2.0 */
-> > #ifndef _LINUX_KHUGEPAGED_H
-> > #define _LINUX_KHUGEPAGED_H
-> >+#define KHUGEPAGED_MIN_MTHP_ORDER     2
-> >+#define MAX_MTHP_BITMAP_STACK (1UL << (ilog2(MAX_PTRS_PER_PTE) - KHUGEP=
-AGED_MIN_MTHP_ORDER))
-> >
-> > #include <linux/mm.h>
-> >
-> >diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> >index 89a105124790..e2319bfd0065 100644
-> >--- a/mm/khugepaged.c
-> >+++ b/mm/khugepaged.c
-> >@@ -93,6 +93,11 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM=
-_SLOTS_HASH_BITS);
-> >
-> > static struct kmem_cache *mm_slot_cache __ro_after_init;
-> >
-> >+struct scan_bit_state {
-> >+      u8 order;
-> >+      u16 offset;
-> >+};
-> >+
-> > struct collapse_control {
-> >       bool is_khugepaged;
-> >
-> >@@ -101,6 +106,13 @@ struct collapse_control {
-> >
-> >       /* nodemask for allocation fallback */
-> >       nodemask_t alloc_nmask;
-> >+
-> >+      /*
-> >+       * bitmap used to collapse mTHP sizes.
-> >+       */
-> >+       DECLARE_BITMAP(mthp_bitmap, HPAGE_PMD_NR);
-> >+       DECLARE_BITMAP(mthp_bitmap_mask, HPAGE_PMD_NR);
-> >+      struct scan_bit_state mthp_bitmap_stack[MAX_MTHP_BITMAP_STACK];
->
-> Looks like an indent issue.
+On 11/11/25 22:56, Liam R. Howlett wrote:
+> The retry in lock_vma_under_rcu() drops the rcu read lock before
+> reacquiring the lock and trying again.  This may cause a use-after-free
+> if the maple node the maple state was using was freed.
+> 
+> The maple state is protected by the rcu read lock.  When the lock is
+> dropped, the state cannot be reused as it tracks pointers to objects
+> that may be freed during the time where the lock was not held.
+> 
+> Any time the rcu read lock is dropped, the maple state must be
+> invalidated.  Resetting the address and state to MA_START is the safest
+> course of action, which will result in the next operation starting from
+> the top of the tree.
+> 
+> Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU
+> lock on failure"), the rcu read lock was dropped and NULL was returned,
+> so the retry would not have happened.  However, now that the read lock
+> is dropped regardless of the return, we may use a freed maple tree node
+> cached in the maple state on retry.
+> 
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 0b16f8bed19c ("mm: change vma_start_read() to drop RCU lock on failure")
 
-Thanks!
->
-> > };
-> >
-> > /**
-> >@@ -1357,6 +1369,85 @@ static int collapse_huge_page(struct mm_struct *m=
-m, unsigned long pmd_address,
-> >       return result;
-> > }
-> >
-> >+static void push_mthp_bitmap_stack(struct collapse_control *cc, int *to=
-p,
-> >+                                 u8 order, u16 offset)
-> >+{
-> >+      cc->mthp_bitmap_stack[++*top] =3D (struct scan_bit_state)
-> >+              { order, offset };
-> >+}
-> >+
->
-> For me, I may introduce pop_mth_bitmap_stack() .
->
-> And use it ...
->
-> >+/*
-> >+ * collapse_scan_bitmap() consumes the bitmap that is generated during
-> >+ * collapse_scan_pmd() to determine what regions and mTHP orders fit be=
-st.
-> >+ *
-> >+ * Each bit in the bitmap represents a single occupied (!none/zero) pag=
-e.
-> >+ * A stack structure cc->mthp_bitmap_stack is used to check different r=
-egions
-> >+ * of the bitmap for collapse eligibility. We start at the PMD order an=
-d
-> >+ * check if it is eligible for collapse; if not, we add two entries to =
-the
-> >+ * stack at a lower order to represent the left and right halves of the=
- region.
-> >+ *
-> >+ * For each region, we calculate the number of set bits and compare it
-> >+ * against a threshold derived from collapse_max_ptes_none(). A region =
-is
-> >+ * eligible if the number of set bits exceeds this threshold.
-> >+ */
-> >+static int collapse_scan_bitmap(struct mm_struct *mm, unsigned long add=
-ress,
-> >+              int referenced, int unmapped, struct collapse_control *cc=
-,
-> >+              bool *mmap_locked, unsigned long enabled_orders)
-> >+{
-> >+      u8 order, next_order;
-> >+      u16 offset, mid_offset;
-> >+      int num_chunks;
-> >+      int bits_set, threshold_bits;
-> >+      int top =3D -1;
-> >+      int collapsed =3D 0;
-> >+      int ret;
-> >+      struct scan_bit_state state;
-> >+      unsigned int max_none_ptes;
-> >+
-> >+      push_mthp_bitmap_stack(cc, &top, HPAGE_PMD_ORDER - KHUGEPAGED_MIN=
-_MTHP_ORDER, 0);
-> >+
-> >+      while (top >=3D 0) {
-> >+              state =3D cc->mthp_bitmap_stack[top--];
->
-> ... here.
+The commit is 6.18-rc1 so we don't need Cc: stable, but it's a mm-hotfixes
+material that must go to Linus before 6.18.
 
-Ack!
+> Reported-by: syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=131f9eb2b5807573275c
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
->
-> >+              order =3D state.order + KHUGEPAGED_MIN_MTHP_ORDER;
->
-> We push real_order - KHUGEPAGED_MIN_MTHP_ORDER, and get it by add
-> KHUGEPAGED_MIN_MTHP_ORDER.
->
-> Maybe we can push real_order ...
->
-> >+              offset =3D state.offset;
-> >+              num_chunks =3D 1UL << order;
-> >+
-> >+              /* Skip mTHP orders that are not enabled */
-> >+              if (!test_bit(order, &enabled_orders))
-> >+                      goto next_order;
-> >+
-> >+              max_none_ptes =3D collapse_max_ptes_none(order, !cc->is_k=
-hugepaged);
-> >+
-> >+              /* Calculate weight of the range */
-> >+              bitmap_zero(cc->mthp_bitmap_mask, HPAGE_PMD_NR);
-> >+              bitmap_set(cc->mthp_bitmap_mask, offset, num_chunks);
-> >+              bits_set =3D bitmap_weight_and(cc->mthp_bitmap,
-> >+                                           cc->mthp_bitmap_mask, HPAGE_=
-PMD_NR);
-> >+
-> >+              threshold_bits =3D (1UL << order) - max_none_ptes - 1;
-> >+
-> >+              /* Check if the region is eligible based on the threshold=
- */
-> >+              if (bits_set > threshold_bits) {
-> >+                      ret =3D collapse_huge_page(mm, address, reference=
-d,
-> >+                                               unmapped, cc, mmap_locke=
-d,
-> >+                                               order, offset);
-> >+                      if (ret =3D=3D SCAN_SUCCEED) {
-> >+                              collapsed +=3D 1UL << order;
-> >+                              continue;
-> >+                      }
-> >+              }
-> >+
-> >+next_order:
-> >+              if (state.order > 0) {
->
-> ...and if (order > KHUGEPAGED_MIN_MTHP_ORDER) here?
->
-> Not sure you would like it.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-I went ahead and implemented this based on real order. Thanks for the
-suggestion, it's much cleaner now. It made more sense like this when I
-had the bitmap compressed into 128 bits.
-
->
-> >+                      next_order =3D state.order - 1;
-> >+                      mid_offset =3D offset + (num_chunks / 2);
-> >+                      push_mthp_bitmap_stack(cc, &top, next_order, mid_=
-offset);
-> >+                      push_mthp_bitmap_stack(cc, &top, next_order, offs=
-et);
-> >+              }
-> >+      }
-> >+      return collapsed;
-> >+}
-> >+
-> > static int collapse_scan_pmd(struct mm_struct *mm,
-> >                            struct vm_area_struct *vma,
-> >                            unsigned long start_addr, bool *mmap_locked,
-> >@@ -1364,11 +1455,15 @@ static int collapse_scan_pmd(struct mm_struct *m=
-m,
-> > {
-> >       pmd_t *pmd;
-> >       pte_t *pte, *_pte;
-> >+      int i;
-> >       int result =3D SCAN_FAIL, referenced =3D 0;
-> >-      int none_or_zero =3D 0, shared =3D 0;
-> >+      int none_or_zero =3D 0, shared =3D 0, nr_collapsed =3D 0;
-> >       struct page *page =3D NULL;
-> >+      unsigned int max_ptes_none;
-> >       struct folio *folio =3D NULL;
-> >       unsigned long addr;
-> >+      unsigned long enabled_orders;
-> >+      bool full_scan =3D true;
-> >       spinlock_t *ptl;
-> >       int node =3D NUMA_NO_NODE, unmapped =3D 0;
-> >
-> >@@ -1378,16 +1473,29 @@ static int collapse_scan_pmd(struct mm_struct *m=
-m,
-> >       if (result !=3D SCAN_SUCCEED)
-> >               goto out;
-> >
-> >+      bitmap_zero(cc->mthp_bitmap, HPAGE_PMD_NR);
-> >       memset(cc->node_load, 0, sizeof(cc->node_load));
-> >       nodes_clear(cc->alloc_nmask);
-> >+
-> >+      enabled_orders =3D collapse_allowable_orders(vma, vma->vm_flags, =
-cc->is_khugepaged);
-> >+
-> >+      /*
-> >+       * If PMD is the only enabled order, enforce max_ptes_none, other=
-wise
-> >+       * scan all pages to populate the bitmap for mTHP collapse.
-> >+       */
-> >+      if (cc->is_khugepaged && enabled_orders =3D=3D _BITUL(HPAGE_PMD_O=
-RDER))
->
-> We sometimes use BIT(), e.g. in collapse_allowable_orders().
-> And sometimes use _BITUL().
->
-> Suggest to use the same form.
-
-Yeah I caught this after posting, I missed this one!
-
->
-> Nothing else, great job!
-
-Thank you :) I appreciate the reviews!
-
->
-> >+              full_scan =3D false;
-> >+      max_ptes_none =3D collapse_max_ptes_none(HPAGE_PMD_ORDER, full_sc=
-an);
-> >+
-> >       pte =3D pte_offset_map_lock(mm, pmd, start_addr, &ptl);
-> >       if (!pte) {
-> >               result =3D SCAN_PMD_NULL;
-> >               goto out;
-> >       }
-> >
-> >-      for (addr =3D start_addr, _pte =3D pte; _pte < pte + HPAGE_PMD_NR=
-;
-> >-           _pte++, addr +=3D PAGE_SIZE) {
-> >+      for (i =3D 0; i < HPAGE_PMD_NR; i++) {
-> >+              _pte =3D pte + i;
-> >+              addr =3D start_addr + i * PAGE_SIZE;
-> >               pte_t pteval =3D ptep_get(_pte);
-> >               if (is_swap_pte(pteval)) {
-> >                       ++unmapped;
-> >@@ -1412,8 +1520,7 @@ static int collapse_scan_pmd(struct mm_struct *mm,
-> >               if (pte_none_or_zero(pteval)) {
-> >                       ++none_or_zero;
-> >                       if (!userfaultfd_armed(vma) &&
-> >-                          (!cc->is_khugepaged ||
-> >-                           none_or_zero <=3D khugepaged_max_ptes_none))=
- {
-> >+                          none_or_zero <=3D max_ptes_none) {
-> >                               continue;
-> >                       } else {
-> >                               result =3D SCAN_EXCEED_NONE_PTE;
-> >@@ -1461,6 +1568,8 @@ static int collapse_scan_pmd(struct mm_struct *mm,
-> >                       }
-> >               }
-> >
-> >+              /* Set bit for occupied pages */
-> >+              bitmap_set(cc->mthp_bitmap, i, 1);
-> >               /*
-> >                * Record which node the original page is from and save t=
-his
-> >                * information to cc->node_load[].
-> >@@ -1517,9 +1626,12 @@ static int collapse_scan_pmd(struct mm_struct *mm=
-,
-> > out_unmap:
-> >       pte_unmap_unlock(pte, ptl);
-> >       if (result =3D=3D SCAN_SUCCEED) {
-> >-              result =3D collapse_huge_page(mm, start_addr, referenced,
-> >-                                          unmapped, cc, mmap_locked,
-> >-                                          HPAGE_PMD_ORDER, 0);
-> >+              nr_collapsed =3D collapse_scan_bitmap(mm, start_addr, ref=
-erenced, unmapped,
-> >+                                            cc, mmap_locked, enabled_or=
-ders);
-> >+              if (nr_collapsed > 0)
-> >+                      result =3D SCAN_SUCCEED;
-> >+              else
-> >+                      result =3D SCAN_FAIL;
-> >       }
-> > out:
-> >       trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
-> >--
-> >2.51.0
->
-> --
-> Wei Yang
-> Help you, Help me
->
+> ---
+>  mm/mmap_lock.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 39f341caf32c0..f2532af6208c0 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  		if (PTR_ERR(vma) == -EAGAIN) {
+>  			count_vm_vma_lock_event(VMA_LOCK_MISS);
+>  			/* The area was replaced with another one */
+> +			mas_set(&mas, address);
+>  			goto retry;
+>  		}
+>  
 
 
