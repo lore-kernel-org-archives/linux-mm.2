@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE45CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:58:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910F3CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2C968E001D; Tue, 11 Nov 2025 13:58:19 -0500 (EST)
+	id DD7238E001E; Tue, 11 Nov 2025 13:58:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DCCD8E001B; Tue, 11 Nov 2025 13:58:19 -0500 (EST)
+	id D878A8E001B; Tue, 11 Nov 2025 13:58:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F32A8E001D; Tue, 11 Nov 2025 13:58:19 -0500 (EST)
+	id C9E3A8E001E; Tue, 11 Nov 2025 13:58:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 776768E001B
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:58:19 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2626E1DFD41
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:58:19 +0000 (UTC)
-X-FDA: 84099236718.13.AF6B064
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3D4A340005
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:58:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rHob7y7U;
-	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B286A8E001B
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:58:46 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7157C129CCB
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:58:46 +0000 (UTC)
+X-FDA: 84099237852.20.FA77374
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BC42C1A0005
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:58:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CAmFJeGW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762887524; a=rsa-sha256;
+	cv=none;
+	b=WXKxeLOOqfOtbaACxCjNyZOUiXVi3aKhWvSmGvsnJh+89vcy6pmz0WCzgV+4kgtNGS0XBG
+	s7Y/OOd9AJnS6AR+WgEotCfvQBjl/EASfCNdLZ9ZtvAhsrWx6rXIlwUNDL37q98bFH4YLn
+	4qqYgieYaTfIQUMi/f01AfWg+8T5uRw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CAmFJeGW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762887497;
+	s=arc-20220608; t=1762887524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kx+FXBuhKKRAGKrr5/plFPqCKumMeNYYYtkhE4HBypE=;
-	b=wEL4Q1EgJRJC+a/pStFjzvb6H/ESpt3mr9Ee+AAdfLJsxaLvoMTaC9lFA3OUUlTbq61Qm7
-	npKodrUHrJOsDlJrxRUWue34U9COk78k37kpVZBtfQ8ZYGsJsgDklDJUS03WwVAY3Go8Od
-	RyAHlU71JysyOz6heH9ec8L2T3QhLY0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rHob7y7U;
-	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762887497; a=rsa-sha256;
-	cv=none;
-	b=YoN25FOiD3EBQUjAOE4A+vvP5nlZP/kh4tWtQmE/SCVDoBC7752or1WtIim7nWsddUg/4E
-	7aSO8DfwzZ2/5ONRyobklUKPBH0H2SBRa+KQP8CbloiZZk1nu9BcKryQJrq0v+tNHJ1L+G
-	ns4CUfy6Du2XhebFhldUYLfHJ5lr33U=
+	bh=AGVQvQg8MiLEgx1G3pQPBT8+hmFVeqeHvps6Z7l8J/w=;
+	b=Wx1US0x2vC0cfPBqZZs5lefr7IdGdk8COQQ6GsRdf1vEpoK3395k4VefSarqYr33RptSqq
+	Kv7WRbkTNKhpbJfXI4Yg6vQFQPBO4kxImK+VfgV39oBz1X7ypWpIvX9xPpOCT4dHTfiWD/
+	3ja79pFEKFnoarccVY6CObrQjbVrouM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762887495;
+	t=1762887520;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Kx+FXBuhKKRAGKrr5/plFPqCKumMeNYYYtkhE4HBypE=;
-	b=rHob7y7UWymH1inhA1ByOYabtPCUkfecfAjIaljlgEHiACDBJFHtSRnSanQ5oSsgZ5Z1fH
-	z8kMqD4pdBecZSRUvP+pOZ00ZD+9iEjeQ8tA9GB2z/gu5UR5HxNvSKYl0XRxAuNjm27kt4
-	d/V9G4AruJodXnPdobBbAcDYHa4jikc=
+	bh=AGVQvQg8MiLEgx1G3pQPBT8+hmFVeqeHvps6Z7l8J/w=;
+	b=CAmFJeGWCZJN57MY4gwWybs2dREiErDYue/5FkpwaTUcKoSHRYBd+iwgP58+4Ya76HjQaQ
+	aTh8usMbQC2DeyEzHeLKJQBPTjn/lvHDdqglejQE+XTtesJbXwIgdjEyyGCRDD9nauKniU
+	urGosVTQFZPdErlV2MyeoZQoQWc4vRc=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>,  Johannes Weiner
@@ -66,24 +66,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,  Johannes Weiner
  <qi.zheng@linux.dev>,  Vlastimil Babka <vbabka@suse.cz>,
   linux-mm@kvack.org,  cgroups@vger.kernel.org,
   linux-kernel@vger.kernel.org,  Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
-In-Reply-To: <20251110232008.1352063-2-shakeel.butt@linux.dev> (Shakeel Butt's
-	message of "Mon, 10 Nov 2025 15:20:05 -0800")
+Subject: Re: [PATCH 2/4] memcg: remove __mod_lruvec_kmem_state
+In-Reply-To: <20251110232008.1352063-3-shakeel.butt@linux.dev> (Shakeel Butt's
+	message of "Mon, 10 Nov 2025 15:20:06 -0800")
 References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
-	<20251110232008.1352063-2-shakeel.butt@linux.dev>
-Date: Tue, 11 Nov 2025 10:58:08 -0800
-Message-ID: <87zf8ss8fz.fsf@linux.dev>
+	<20251110232008.1352063-3-shakeel.butt@linux.dev>
+Date: Tue, 11 Nov 2025 10:58:30 -0800
+Message-ID: <87qzu4s8fd.fsf@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3D4A340005
-X-Stat-Signature: sggh56w8bpi8w4u8b9mp6a85r4bo5dqc
+X-Rspamd-Queue-Id: BC42C1A0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 53ze43umwk4jqd4pcqi48xcb4rif1mea
 X-Rspam-User: 
-X-HE-Tag: 1762887496-515786
-X-HE-Meta: U2FsdGVkX18jKtSDODgpicS7Gwe0QbemVvUN4HO8az5H77o0UOwOWLde5xczo5S2lBuSH4YKwaYuw+wx5LdQL8y4vSBKahQGnLRyzKJ1zUewO7k4YCHZs0UnAChn+PlGde/+SozR8CF8hTWaimqRpvuQGcc4RIz0fjvM4r9V2hk4XFXCNmlp+I3L+EJAOSvPqyiUILfffhaTMex2v3a/ZxccqARZ0szJrL62u4dM4Ijl1qp4C8wREZaIiAJ4h2QTHaEqol0CtXIJ7+v3EPUr0lSTK4ZcU/4ZZLLRvh7EQhRt5WkePCZtqBpQXUY34ABP6tKRhoCMveqXq8YGeZh5ogoBCVis0MqtUM2ht42sMWDcegY6+q+WHwGfprdo2yz848vOrLf1K0ZTdvGwzVH0CVFWiK01q2e6aHTGmjF9Fvgx7EkjKhfYDFurpgEGN9y8bGl4VB/XN67/rn/Lqs4uAQqelh/EKkx9qrGbrVCAXPCsHsOHbwWdauzN2aCLDFhoH+wnzOeH7sp5FFfvKNZgC7ChQNlx5W8juWK7BmVSdeD6eEDH3iUufg/dER7SjgzR7rJL0vfhiWiHrpdly013Gxr20eyiEFMMg59BE/qb/N6mI9SnRjLZWLwNi1rvmj5jsqxoAgrMXVk/3+avk+K8RtQGbbEFlenFLbEknxNgkMqP1LrhpIjQpXtIMwlvj2L8zYtEY8x8lddWeajtozdVFlYvYMiXTy+K5n/GeBdHIkgFIn/j4wAqOaerRoERQ+w6LzR8wwxzH2VUCwE7guMdEBkb/6A4t2YRCjhtu+QaCrQvAZjbXJEif2azyvvnzOAa7K/MgJKcAgboaPO1KPgWBBmyGcAdyuxCWnkLH9ocrbdRxX2Dfm7PXWT5ButcDlpkdjcqSEi8TbVFKYeV8rCq6LIq1BoalWXkV5L0LAH2iK4kAvXk33VOVs5IM4x7G9YzNUiSFEWC1TcBP/GD8QO
- kaRqh37s
- S8bM++xc7gCeKp9/yY6TPf/Q2M1WKeNTC3pja0busLHAlcOL9G4E4oKRR2wKXhF9mGNFizrEB8FXHsNHpCrXOghV2EVshLUtd7Pw6KWVDtWa1FgkGfTh28ZBD6epH/UebhAIayJTuWjrLeplKBhVJqWy6XRHuI1zfolx4kS3iT39/6w/Ht0AVHqfVtZZR4QtFpDeoZQ4yKnvKwq0=
+X-HE-Tag: 1762887524-733139
+X-HE-Meta: U2FsdGVkX1+ONyOKoR4Fs/tcm04VGxDAjVepr3gdNpSF4IAX7De0q0FLAIlalRPWVfzgyaXlj+n5Y1IDU3vAH9X78lbtIXpb9eTpttQxBb9kh0Gsk8TKdEwO+sZmqd2KhmCjnrkMJ/5loczEyyKaKLn7v3UOodAhb3iansFlpBAd7/8Up9X4uBZEO0bSuiJ9fWXCyMQN3q7TfQCKJcl9JD41kRJTon7a36ddYOKS1G5tiELhe4OPE1IZZ+q16tDRIGSzvIOE9rN7t3n0vR8Oo3MTWa90eMJu3JLWJYMxo7RM92ZI2UUbsxN5FQTbM1WIk/VuNFmiR2HvlMmcz4kSXaDcWMLf4b/ec9X4Mg6tVmU0w6RQ6C6rWFjjgv/zYr2cmtls6OpOtch4kaymAtatQVHn/3gcf5bkq+dSLMTYHk5Le2usM2LABN2vclGE6xNyKyLshuulyyYoQeV1yeJVNsw7lnFIeQlEWCMNziUZvllYX1VcYntoHu6u7GMk2fjs0ksqDigVZy8oRc6K9kWdVR3tDnjKcw/dCY8Eu1twoNILzZjtEU7ZRcntYsG/q7bdDFDGCna/iJQZF1J56cd4etF3zP9Bj60aORCvgkmiBbBcDQueaI8Fmsh5zX6bbFjxs03042hhTItEpLDLjDaqpo6RZew92MYkdWwjh7vpMUcYTCB5OSUStGfnIxUlR1YZS0v+c1xe6JBBLQ/5MUQJKbuLzeJ+yYFlj60rm02i+I8bJfDd9OSAh9OCkmIq4VEzL+h/2l72izz2GUnZgatQoDs84CTrOUgiBpyltCdHx6cYxVfeChVjoyguZTFZ4vYfo0fDQPNpAgBxSoeK3iG2u85x9FThCGI06yd5VJI/JHoC7uCFY/tYWbGhAsf0sTI90PYffint1xjs4UPD6/iB4y3ZcPpnRd8H5tR8gId6fY27cSJcrr8qI6S/01+hp1giXiLrrNe+gjxCQ+JjfTm
+ ZIPcsWIk
+ FEtANSH2vE+e+ShnnoW1gPmS7gs0lkyVoo9W1B/ZAyzk/Wa0vOkIMdjR11pi8S0iBqCzLuQEmZHFpiW1/ubVHNzF8WldvxJudtLZ/2XwRq6j2jx/Vdb/1R1PC49gyKY1Vw9x+H/x9Bjo8NUKY1eC5fEUV3ePzVenjMPOIcCiPPlJcu1AFf9xGLF+x2F9FEQStgVDL3ea8Cll/AOY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,13 +94,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Shakeel Butt <shakeel.butt@linux.dev> writes:
 
-> The memcg stats are safe against irq (and nmi) context and thus does not
-> require disabling irqs. However some code paths for memcg stats also
-> update the node level stats and use irq unsafe interface and thus
-> require the users to disable irqs. However node level stats, on
-> architectures with HAVE_CMPXCHG_LOCAL (all major ones), has interface
-> which does not require irq disabling. Let's move memcg stats code to
-> start using that interface for node level stats.
+> The __mod_lruvec_kmem_state is already safe against irqs, so there is no
+> need to have a separate interface (i.e. mod_lruvec_kmem_state) which
+> wraps calls to it with irq disabling and reenabling. Let's rename
+> __mod_lruvec_kmem_state to mod_lruvec_kmem_state.
 >
 > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
