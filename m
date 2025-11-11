@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567E1CD13CF
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:44:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7FB7CCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 18:44:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BD7F8E0002; Tue, 11 Nov 2025 13:44:31 -0500 (EST)
+	id A10768E0012; Tue, 11 Nov 2025 13:44:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 248398E0011; Tue, 11 Nov 2025 13:44:31 -0500 (EST)
+	id 9C1628E0011; Tue, 11 Nov 2025 13:44:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E7BE8E0002; Tue, 11 Nov 2025 13:44:30 -0500 (EST)
+	id 861FF8E0012; Tue, 11 Nov 2025 13:44:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D508A8E0011
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:44:30 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9589D1401A4
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:44:30 +0000 (UTC)
-X-FDA: 84099201900.09.E4A03D3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 728F68E0011
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 13:44:31 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B3C51A0174
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:44:31 +0000 (UTC)
+X-FDA: 84099201942.18.B146C73
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F2C09160006
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:44:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EOcGp6yY;
+	by imf02.hostedemail.com (Postfix) with ESMTP id AE2D080003
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:44:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Nz/BecqM";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762886669; a=rsa-sha256;
 	cv=none;
-	b=0J5uN3LAS3q8zTZja4WUt4r++S05IvC4iW3HJU6FyESzrUYMhEmjD2ODzu2gU0TP8z28xj
-	Ym5rFn9Z7ZDuvYUAZhuL/dGsIYtnsId8f5MRwMJt0ZFnL8fhlFniciNNv75XCqGS9SABwp
-	c9oz7DKnTURmXZt98KF3ZF4+zuTysz8=
+	b=7KopB+cnXaYhFJN3ucuVsjW6tpgUHLWFH9ZTuUVRA6TNLh6pk15iw2gmvMXHxvV/RE+5Kr
+	gClwlVUqkgoFi60UZ+/Q+cG2QFPV9MrZv3WgeWaDFyqjfhziHDteOK4C72ZooZ9q3b7h0g
+	GStmhn73yGW2ZVyZ7c45b2fBAjF0+Y4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EOcGp6yY;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Nz/BecqM";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762886669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tIW4yOi2mYrsvfYYz8B3ejPAcd8LvYBVN8qqXRZeE1Y=;
-	b=7ctSI12bwcT2umSZbhTY1/8lYzaoKGR8sCfw6bDkXLRelUmbDzdpy+HvWYKq60X/28mIKY
-	uQSMdyTVLpxAjP37P+MWrjfYWYWNzNOzjaMTRGx+BkR1yG/X0usNmVeufIYFKzw2YRMLbx
-	Whq5fRIUbuEJevqUpaJEyfbYPxnZFt4=
+	 in-reply-to:references:dkim-signature;
+	bh=y4mHkNTdE/EGu9quYeF9TBXV28VECsvTeCKjU/8ifMA=;
+	b=e5BHQH3ywOeRhG0ulArmXz2rgI7Okg2eCxmhdqTpPUYTJ6kIYaeTpdJQBlEMrAE/lH6SFE
+	HJKfZYM5EkHraSwMS9v4V7auZ8X8P7hQEFNB5MnIleCIgpLBO1KMWX/u37yXgVvxcogGfv
+	EbxwMtcAf8gq4kF/w/GHh9/c284PJwI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27648446D9;
-	Tue, 11 Nov 2025 18:44:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D320FC4CEF5;
+	by sea.source.kernel.org (Postfix) with ESMTP id 08DD8441B5;
 	Tue, 11 Nov 2025 18:44:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCDAC16AAE;
+	Tue, 11 Nov 2025 18:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762886668;
-	bh=bWfWODgDizfceoDSDsQvR25at7fdp8OVsfqGkOutAqM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOcGp6yY2aQatoc9Pf+0VGj8G7nF6mD5WtOgX1LI7HrKoGF+J5uDarPUUvNpntots
-	 HO/A1rcMkU4gGomxfPV5O+QRdCwTBJhTOP2WAXYYCR1gBO0ujStAlusyiV3pHsEwHU
-	 3huE/rA5fZ1sEbwMv+FkhBth8xsfxDg541I+XVotUHN4AGXeFMGVi1o51QFXwnMxc0
-	 tIpelBNbkZwejQdLyv34q+zBFICZzjjmNOfrOPiCYb/2KUl++VDsvlkJbIKud3MgTe
-	 hO1e3gy5yqcQNJ3AXl8DxUHNfD9LQCPDRZkp+eRLtb4H0k13FyEUTz82KCc41PaA4o
-	 mKIRxMI6muc9w==
+	s=k20201202; t=1762886666;
+	bh=m2hHKtIlg5ETlXGHsaViOdGrXByOpAXl7sGM5smf3nI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Nz/BecqMuxBuI+lNBLETRFlGtiVXVLN4K+dCBpk3eY9BC1/3fVqpb/hTqL4w+KvOp
+	 Kgefl7VDI4E4xTEyMn75nXstAkJI4qhaAZE4IYO5AQd9U1xYHh6KuJGkRD44Kb9dWC
+	 kOjwltrWdmLoAX8VDNL3F76Y0otKH/XvDNjv0IclF0m9PCW6o0qm6vBII4PEF7Uzja
+	 DMXMT5cb9iJoLUGnZZ0gnOWY08hSJd22zNikESwzBOzpqhg5drTTx0xFLwKOehZGZJ
+	 54aapKTRXzMrQwvFuPI+a8q1YPbpgIc8GNkw3vfo51eqQT9i1nCyJ6QWwB+oNNrVgf
+	 E8Wb4WqQVA2Mw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -73,22 +73,20 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 04/11] mm/damon/tests/core-kunit: add test cases to damos_test_commit_filter()
-Date: Tue, 11 Nov 2025 10:44:03 -0800
-Message-ID: <20251111184415.141757-5-sj@kernel.org>
+Subject: [PATCH 00/11] mm/damon/tests: add more tests for online parameters commit
+Date: Tue, 11 Nov 2025 10:43:59 -0800
+Message-ID: <20251111184415.141757-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251111184415.141757-1-sj@kernel.org>
-References: <20251111184415.141757-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F2C09160006
-X-Stat-Signature: 3bmsirn9ytzbbaymkwn8cxujaq9n4wx8
 X-Rspam-User: 
-X-HE-Tag: 1762886668-748953
-X-HE-Meta: U2FsdGVkX1+8Ksu7IWV9JqAi88cHSxLn84hKk9j1SK18XdvZbzEEyqKmJusi5Xin0nUnKwzBO1EYlhN1M9Px9bFc6JFoMXQHvUO13+kwXbpVin1FLfb9o11VA7LulLmxQ3MLsjbBC2M7JBq73PwpTp3f5GnXnsq1qUFkTbZ2H6So+hbinCJ5J1xepiFFmGM1IzlOa5jswihfPJTgGX8Ww7leRdR/72cJVIeK7qtQt5H0O200l0KWx31rOcz6VH+dZEYGnr5KlRXq7iRQQ6ZLFwYydzN8zkJjuT1c4+Fg3kmj2seGcOIodnzhbfMQcp1Yiuy8vP1ai6o0h5YUIOcox6zX3D2TW8x/LI65VG1PHYaHx2rMww935COPctwxQWKuXHCWYNkpM7+Z/sDdUW72zjytBPVMd09WkN1z7K0oN+OarI4/omews5LznDMrKtL00kwVJ+NOKJ8phlkShqOAIdw7omVc8E3D5Ys3KMKl4ph/Zr2CBvZ0hwxUBAfYVrCTUuwUZo98saXNJvwsn71cdGoEK0dweCurNO5l1xCwU/YSXCgPIpL/Ns+yrdJFvPEzGbcr7M1pOUqVCnlErQyKZLulisBHwnuthn8PXALlNVmH88Q3ZxUqb/Yf3yxMpN26VYUKAooChH8gJikN/iHk05lNvzdZY+xk+lVfcwMItzT2O+Uw/NrdBHPpT6+STzbER+ob0hNiMhhEZVPo2cQwgcsgQNihmzQp35wcOmkx+cnlC9qUrqQxKfBfj4tkv7q1AJiepkcx2hodwH+4lJPfxfxagTdbTciBMeoyC4uJIIBHeUxipJg5ZTc0cVcIqNdQ2r32kvhxieyiWEXvn3GGWAjbql6i0pewUiB0X4DVboOf+nU51EHLX6/cfpGiK5xx2J0bO9tYWsXzFxIrh246g2amr+2LVqoGEO6hIYSyLdSc6OsR9Jr/byqUwQ6qi5xEJo22xMH93/rF/3AXWMy
- moQk6BPY
- qj/Nv9gcg5RxGwN2n8RnPtOJUPUrWKr9F73TUNS4Tf8uJn7YpzzxDreFcYo/sIGGhZuRaFYZGmXRMR3CRB1JrDiykBD/ttjwOSP6r5lZ/9oSREm77dFza7nRPBgVJ7LdlX6UPyZZEIrGMP1Xv4Z+SgCnbNqop5EazqBAc0ZVQA2coEn/t64XM+Bwazfwh0FHM+Z1wHHgBEo/jpnY9iBmKTh1EVFDv8Zz9qpBQ60uQhw2LhiR6vg/yvPUf+mtRb+91m5cgz4E9bXynbhWHoiVgUhQMbw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AE2D080003
+X-Stat-Signature: eh66zkscpxtf9jice3oyx96r1jc9695c
+X-HE-Tag: 1762886669-894100
+X-HE-Meta: U2FsdGVkX1/xyXH89ZXy/9faVW2nD9lv7YaUezXV0xnXN+ABawL/twf2S+VzHPY4IqliGc1HrXZaQdoxeWHpslDfg3xMFNgQBn4j5MYuaI1g9jaK0ort4JuQAdCR1CbOAsa6qAhNDFI0txdJ75D7mwYzLpCfo22/E2SSrqI2dtkrF5KS/K+TLDZ+mkifl8yJzWkYKAZ0SfKt1iyY3zcEObFnro1aNmXFjqhNzIYdkvZgk/oCSc00vltc3oPVGrnO+nTBroVvW7IPYg+eO/nHu5/x0edbRuxma74/dA4FTa5DTM0r6IhwDHsE8HKkmibzuHgy4vJpdErhCCDuYOOb3A4ybZ+CdOIQFL7stUqcknZu3LCE04FJ1oMQJGs6CkW9xwneBIJVlcZOX0QvQBxeTMrQR1e/rWRdm2DnxuIi2MPFNGgVS+KrLlK7gXGzLLIsmlxSNUlbQB71aFj3Tkr6beXWuYpYK+Vg1Of1J9a8rl89+HIingZbBAXKbYj3768ZFT5USKBZXzvwj6vI0SxyC5d+viLTwkbIYXpMt2T6jZeYPEpRufjojah6CaDvnesPEF+PxFmaNp9dV1La+S0CM0rhhp2aAq8JrXfgt3b7I4ur7D9sFtFDaPOKeU85WOnGI3ZCaiJrMWS7pMqRzJELJnnodVVQwPa6bx1qYxB2kYDiVJ4o2oXjvJ6gbJ1ZyjgoCTk/Fwfjwc1heToczEmipFlY4TSxb/1z8ApXCVQpC5mpJt+ZdLLhbWi8Mn86DRg7vmfmz/tv8HI3sT8u/iWfEli/PDwrGonxHb5ST5EoUotKQcv8Z/cZD/+iUnTDAUr6tc5OzJ+aWIU9ztHImhKWW/obQ2ux8uIyC1GzIVz7y+MBk2XLWksdg0eWS8WUrAOXTzVZ04gay30NW+paH4JKWDzLQlbZWkg8ZIJpGgoa1ACIlpbo6/ezdpRgUzIhBzx7yyS3c5UCk0l0yd8mhkT
+ da9UM+4D
+ qTuDqQkDSBNJNAwhihFPhNt+nOoHywZxWVBfRK1qAasFPLvdHKZLt8DKgm4ptRtd44Td0zuF1MyUCCVVN8LtsMKk5kVohhRCkuvZ9Afe88SQO53+uBY2R4P+LdldbpqVljCIH5jxTW1f2PBomH/+/+Q+ijCiVCIeG2k2Al7iYIBBqFBzXChZkAW3Jmh+3N0RnbaRWHBdelRHwGkk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,83 +95,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_test_commit_filter() is covering only a single test case.  Extend
-it to cover multiple combinations of inputs.
+A DAMON feature called parameters "commit" allows DAMON API callers and
+ABI users to update nearly every DAMON parameter while DAMON is running.
+This is being used for flexible DAMON use cases such as taking a
+snapshot of the monitoring results with minimum overhead, or adjusting
+access-aware system operations (DAMOS) for user-space driven auto-tuning
+or investigations.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/tests/core-kunit.h | 53 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 6 deletions(-)
+Compared to the usefulness of the feature and size of the
+implementation, the test coverage is pretty small.  Only the filter
+commit part has a single test case, namely damos_test_commit_filter().
+Actually, we found and fixed a few bugs of the feature in the past.  The
+single existing test was also added to avoid reintroduction of a found
+bug.
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 5052d8db9657..2770972b0a39 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -528,17 +528,58 @@ static void damos_test_commit_filter_for(struct kunit *test,
- 
- static void damos_test_commit_filter(struct kunit *test)
- {
--	struct damos_filter src_filter = {
--		.type = DAMOS_FILTER_TYPE_ANON,
--		.matching = true,
--		.allow = true};
--	struct damos_filter dst_filter = {
-+	struct damos_filter dst = {
- 		.type = DAMOS_FILTER_TYPE_ACTIVE,
- 		.matching = false,
- 		.allow = false,
- 	};
- 
--	damos_test_commit_filter_for(test, &dst_filter, &src_filter);
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_ANON,
-+			.matching = true,
-+			.allow = true,
-+			});
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_MEMCG,
-+			.matching = false,
-+			.allow = false,
-+			.memcg_id = 123,
-+			});
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_YOUNG,
-+			.matching = true,
-+			.allow = true,
-+			});
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_HUGEPAGE_SIZE,
-+			.matching = false,
-+			.allow = false,
-+			.sz_range = {.min = 234, .max = 345},
-+			});
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_UNMAPPED,
-+			.matching = true,
-+			.allow = true,
-+			});
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_ADDR,
-+			.matching = false,
-+			.allow = false,
-+			.addr_range = {.start = 456, .end = 567},
-+			});
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_TARGET,
-+			.matching = true,
-+			.allow = true,
-+			.target_idx = 6,
-+			});
- }
- 
- static void damos_test_filter_out(struct kunit *test)
+Add more unit tests for the feature.
+
+First four patches (1-4) refactor and extend the existing test for DAMOS
+filter commit for multiple test cases.
+
+Next three patches (5-7) add tests for DAMOS quota commit.
+
+Next two patches (8 and 9) refactor damos_commit_dests() for ease of
+code reading and test writing, and implement a new unit test of the
+function that is being refactored in a test-friendly way.
+
+Final two patches (10 and 11) further add new unit tests for
+damos_commit() and damon_commit_target_regions().
+
+SeongJae Park (11):
+  mm/damon/tests/core-kunit: remove dynamic allocs on
+    damos_test_commit_filter()
+  mm/damon/tests/core-kunit: split out damos_test_commit_filter() core
+    logic
+  mm/damon/tests/core-kunit: extend damos_test_commit_filter_for() for
+    union fields
+  mm/damon/tests/core-kunit: add test cases to
+    damos_test_commit_filter()
+  mm/damon/tests/core-kunit: add damos_commit_quota_goal() test
+  mm/damon/tests/core-kunit: add damos_commit_quota_goals() test
+  mm/damon/tests/core-kunit: add damos_commit_quota() test
+  mm/damon/core: pass migrate_dests to damos_commit_dests()
+  mm/damon/tests/core-kunit: add damos_commit_dests() test
+  mm/damon/tests/core-kunit: add damos_commit() test
+  mm/damon/tests/core-kunit: add damon_commit_target_regions() test
+
+ mm/damon/core.c             |  38 ++-
+ mm/damon/tests/core-kunit.h | 544 +++++++++++++++++++++++++++++++++++-
+ 2 files changed, 547 insertions(+), 35 deletions(-)
+
+
+base-commit: 620a4c1c5116eb811807ea7e63d61846015f69c8
 -- 
 2.47.3
 
