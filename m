@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F4F5CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:56:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F4D8CD1297
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 06:56:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 080378E0020; Tue, 11 Nov 2025 01:55:36 -0500 (EST)
+	id 262C18E0023; Tue, 11 Nov 2025 01:55:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628A08E0023; Tue, 11 Nov 2025 01:55:35 -0500 (EST)
+	id 75D868E0026; Tue, 11 Nov 2025 01:55:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B59B68E000F; Tue, 11 Nov 2025 01:55:34 -0500 (EST)
+	id E18728E001F; Tue, 11 Nov 2025 01:55:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BCC5B8E0023
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:32 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7CFAA14043B
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:32 +0000 (UTC)
-X-FDA: 84097415304.16.03BD545
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 713E98E0014
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:55:33 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4924E12D04F
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:33 +0000 (UTC)
+X-FDA: 84097415346.01.EB66428
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A924B80008
+	by imf05.hostedemail.com (Postfix) with ESMTP id 98479100002
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 06:55:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=af7kWl7S;
-	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=OsRGle84;
+	spf=none (imf05.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762844130;
@@ -34,33 +34,33 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3maaNWdAFQG6lKGkg4q4mAf3fnGzZVX1VVI0dDX3CYE=;
-	b=b/IJH9a7jDvWZ1YFQ7GOwIchFDVKjmL117ZuMy0QmAHIlztpAjKCjuMfQz+DfIzq2c9oHA
-	T9nvM70vz59QF8mekBWxZCIQbKrPI5vn6y0qXssT0lbOxzbvtFgF2b7kOKsU3KwF7l6r4h
-	3fYS4aROHDnhLdXw9ETFLZN8Hconugw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=af7kWl7S;
-	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	bh=bkByHERsS9JuCtqGS9wCvZ7R+EhcIoCC8ci4VG063fc=;
+	b=yWlgNrbYqZt/HNUVeFD5OTjwEr7uzDpLgaXZDIb0NrBc2WF8V+w6frVtCyjtmwSMSbNCVS
+	IUfNzRk4MkYgTy2n5889GcbH2kkKw3XH3w91blTfdB21sBG8k5BWEuT232qZjB6tA8Tsjr
+	ozHO6rYuUtZc1gwxvEmwk90e98kloMI=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762844130; a=rsa-sha256;
 	cv=none;
-	b=HDYbW467uwPxtzBITaNp1nqGsYpXL+CgE/kT5Og4/lXKJBGKnwBzi1RULLIBEBMDwmG4Gr
-	/am/tDBRD05GpBurRnfShHvcwx8h0TnoCsfWN1BFxzeKLf0yh7urU4v9HPHlJ2aTeMh07k
-	KCSKlpd10/MnpumP/mP2T5cYP9pUsZU=
+	b=BLUlC6aPH9W+zJCyrn3KKhZd5uZjSTVmim8xbdL8/qGE5WGic1u67pPa1HPASKiINKWais
+	Ihpvo9M5Nr6sc3BNpC1t9Evq5UfN5VVoaMoXU8VGRzM+a8JLz3haeaaGrmFrEV+qyU2+cc
+	VqeMaQhhXq3ruVNkI7KiXfnmO/7lXV0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=OsRGle84;
+	spf=none (imf05.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=3maaNWdAFQG6lKGkg4q4mAf3fnGzZVX1VVI0dDX3CYE=; b=af7kWl7SJFjT7QdFsmwd1bB+oa
-	7VF4d+2ZD5Otiraw7rQJvFktfdYbXy9putsaQRRkXkOvJ2RRHpQeOkz/XScblzy4AWTDnYkqxk7jI
-	xvXI50CDcJ3cX8iE/4vQHVzOqyIJoFi+dUf84KaD7SvsNct9FO7YtW9WAFxGc7FQ396MDz96SPgRz
-	aMN6g8qg7qqSneL1FzADG34DExFPBmzbA6yQLt0avegFgzzf5TaGU9ndWTrScPkLhVV+zRqofYjyA
-	6KZLqZMKt2p757dZqbtqzRX96ZIr1csj7b+Z3fPzh75G6phFt8ewveWWPDJd8CZfUOOwzM4Ebj77C
-	7W2Byy1g==;
+	bh=bkByHERsS9JuCtqGS9wCvZ7R+EhcIoCC8ci4VG063fc=; b=OsRGle84xX6lCMsOqbmX88O9Vv
+	QCGMmghlcMX+6qLKlD9YKtDKt/l7fD3/fJuRQCcxCewWhB6+puUIARCAP4cdHhdwrk97PNTrKy26Q
+	8csjifXGqpFVsO9ko9DNm/2juQyXZvXFmkWFAeWU+31WAdIv7cfWan9d4z/6lgn5AjPSiVVRTdXaU
+	VhylboWKmDvf+1FPY/jegeXzt69CLtlo6J62v6F96sm5LguMFUuvDL6c0RASnXkK+tYJuZ/c+7FMb
+	jUPSTT+hCcfBeXvrWHIi3KnwppTrUqUdM5EsI3H7rnVi1AuKn23uRGHjcgBa/LO4606zdkJpk/K1m
+	OCyq9HEQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIiHh-0000000Bww2-47vE;
-	Tue, 11 Nov 2025 06:55:22 +0000
+	id 1vIiHk-0000000Bwyi-0fof;
+	Tue, 11 Nov 2025 06:55:24 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v3 04/50] new helper: simple_done_creating()
-Date: Tue, 11 Nov 2025 06:54:33 +0000
-Message-ID: <20251111065520.2847791-5-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 19/50] convert tracefs
+Date: Tue, 11 Nov 2025 06:54:48 +0000
+Message-ID: <20251111065520.2847791-20-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A924B80008
-X-Stat-Signature: fgwd3xh5ec4iwkfmrqsu5tua1j6hrqdn
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 98479100002
+X-Stat-Signature: x5fwcgcnf1dputqz1ocphwkx53ngmr7m
 X-Rspam-User: 
-X-HE-Tag: 1762844130-364535
-X-HE-Meta: U2FsdGVkX1+0+Xs3NqsY8CP60B3pNfQL+z9ql5SUHMppoSwaGM7x7ZtgxSvf1tQ9LeBv2zAoXjV3DSCIsMmMn+2zwUOdSbpaxm899guSm5kxbqIaZcid58cHyjgxy1PoR5Pj/iI2IhS9bNkneFkB9moCavUY3BgMTP1QwGtwsaNWgXOuItb/wnVXuJel7l9hrxR8oJcFxzqgdQ8M6UAqQ/QNdueoQ1z7kajsMHxHG5rlr/ur0k5QMnfb6seqIjzqgyU9KS3gquoQ53HETrGSoynBcVS1cqu9tWTDBVxj/VE9W/Vum1k8JezbPVhn3PQaytkggCxU+T5hGUA40/K3on5wxMP9hFFLypPJ01fywUAX/qUbQvGuonFEKk0Ecd9FNXxVcN8teu8S+NuU065ghTLRXI0H/PreT7uo3/6SzBgiTl124ct/Sv9NQEM8bj7DDSDXH0zd3B/zmbx+lhXi99bIMvDOBuYPJ2cNwggyesjShxEGon/SaZhyMT+zZish6XXgIuc+v1NkRq5oaGso80DMBY3gXb05VLk8lICSbSBS1NTLGVEDXJ0m405pmzjO3kK1+tbPYBSxHQky4qy1e21Bzm3C5obrqJDR0MT+19VUsB2YEGG/mU4gLXMwuXsT7r/r+romr6DCrV9v7rGBJEBlAUZi7fH9UY+2XD39qeHTx8AD/VrignW99zTGH0CCwFCA+ThpxnEdd6L/XKBHWjZ4qHmmHd1wgKaNOb/75nYac1VCj9VunkKGjgvEsTXT85oDw3alVhqc2U1Ifpl3i5mz4K+BFlvSbmiL0XiQqDQhDibwRaxD5Mchhfny1glW9+2yjpyuwJCRAu0J3pFbmKD8hpDaXOIvPY+r2437MG5b8N+Vl146rpFcmvTW7LvAU65n2M58pEZzU5R67tHFRUFzAStjhdeh7wk5nNzWxTL7co0tfRqIM9+8louqvLRuhbDDJLWLxldmTjrAJqH
- yWnmzCPi
- HYn4d0MaDTJzWHvKytoUFiN+4cqSdxdIrbq+tguAAGr3LKViI1cQlFCZpU8chLo/RLlGoUQaNCjOKrisVxSZZ+mJpR/AZcuoh3XkS/o1GZ0Lb2xjovAR6s7OQ9sNGQyVZ+3pfTjrW5MxEbjI/Z1ENYJqmnEJELfr7mgMq9dypgmtOZN9MFaPEY8Ru54grjI0JpBSYifk7ZzJItTCfC5p/LEawgqcozwxoxnNiReqvsAlW2yhpQu3+eZY43wfCrJvrcd/nVSP8dKlphfa0Uu1EKeX3LNyAWxAtMHWYtpj1iTbqMlL/UDAAte/ETTzqV+NzTMvh9R85UO2uH/ySADxisEcP3yzjcdN+1JH4wmt6Tkli2F6/ZFqzPo+ax/ncNvoRu1dUz4PYs9WqecVQS1bK+qEn1r0nos3cxpJwCqS/AuqeZ9np2PyipZMcWR1ooYqhNfXm5jllh+AiKVw8Kbt1k0PZaQ==
+X-HE-Tag: 1762844130-855552
+X-HE-Meta: U2FsdGVkX18zobb/DnYrkwEOwXRmSZrCJjaktleMipCtrgKoaF4NyAi86IDnfXNy5pSJlcisOO+iqoFxgpBbTsrMTlALo/GuDbz9JOFibXYEWslUboxHpsVZThISK7OcR9Sdh/Enu1Hsd4NWzyNamGhqNNA6ikncSoJtixjmih4gw4Y73F8zOcOStufvm7mgwh5/ZCEyk/viPE/H975S9dbfrHQQL7Oafd3bP+xleqyclgDp67b5biuzg/gzVfqZcq0kmXT9K7BRdqm8SfPHZhI9mlG24udMiTrCakigJTLmG+QROip/sjSb7MGtWK3lZmK6nSqJSdCVvSJ1lLXRE96JCUk2h1ZSjnW0Dtyy3ajgV7Ol6WTuMi/s85Uua3MGuVw9GJtqgoOd9DAVuF6MNr/FTrKcloH7121xBv5ssK86UDVEZDKoq/P5coJzv370/Q0WLm9HbSlBekq71jikk6K02yaIPuS6O/B/2LvdC3R7t4EIe0sN48iPzfP6wvcIcW/dXTubckBtNOAXTNU9kpkM9GpcEQ/0jxdPD9QvZTX4K/DapUmMepJT1XfPFDsGN5D0SmqccL+IOUUd8SrpwUfIZGjuDUlTFXhlbcIlttkmKlm0YkLNjdm0A97ra0HbITFqexxoFsykRiFw3xnWUmfv+TQ+Oz9AML9SNYmUOOpbusjRjEFdo2fr1DZckEMLfrUXJ2dDR92G4ql0jiD45e9Jv55O2rDLZsQ0vNgvs3AhzocVqJXHEF6uv/ZTLUBghF0eMN/Lray0BBzyCj1OW+7w2eGRCUow0xTBCriHW4fL5OWe0xzbGyZDN+n/E7TxNTTVgXVpLTdhEvAOg51c6Ixh5BYyTGcTWrKZujw8prE6LEKO4Wng8aACF2C6aXXEP0jJ8yntrlxRbh8Rs0zX54H0okHu68AoPrdeX1Asx3e0xWN1b8Hbf/yJLO3BVOwT0vcQcLb89S/Vv/yBPH8
+ UNVdp5yY
+ frsTYwrjljhQ96ZhVDthbg/PwhIyo4ZP174RZuq3nAWbSdD5gJAVPnIuevFcTJpr5P20IC9n4Kx1DXEezdklS+SP03jS7BZ+7XRrqMEHOdrDy5sw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,43 +108,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-should be paired with simple_start_creating() - unlocks parent and
-drops dentry reference.
+A mix of persistent and non-persistent dentries in there.  Strictly
+speaking, no need for kill_litter_super() anyway - it pins an internal
+mount whenever a persistent dentry is created, so at fs shutdown time
+there won't be any to deal with.
 
+However, let's make it explicit - replace d_instantiate() with
+d_make_persistent() + dput() (the latter in tracefs_end_creating(),
+where it folds with inode_unlock() into simple_done_creating())
+for dentries we want persistent and have d_make_discardable() done
+either by simple_recursive_removal() (used by tracefs_remove())
+or explicitly in eventfs_remove_events_dir().
+
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/libfs.c         | 8 ++++++++
- include/linux/fs.h | 1 +
- 2 files changed, 9 insertions(+)
+ fs/tracefs/event_inode.c |  4 ++--
+ fs/tracefs/inode.c       | 13 ++++++-------
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index d029aff41f66..a033f35493d0 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -2326,3 +2326,11 @@ struct dentry *simple_start_creating(struct dentry *parent, const char *name)
- 	return dentry;
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 93c231601c8e..61cbdafa2411 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -823,7 +823,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+ 	 * something not worth much. Keeping directory links at 1
+ 	 * tells userspace not to trust the link number.
+ 	 */
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	/* The dentry of the "events" parent does keep track though */
+ 	inc_nlink(dentry->d_parent->d_inode);
+ 	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
+@@ -910,5 +910,5 @@ void eventfs_remove_events_dir(struct eventfs_inode *ei)
+ 	 * and destroyed dynamically.
+ 	 */
+ 	d_invalidate(dentry);
+-	dput(dentry);
++	d_make_discardable(dentry);
  }
- EXPORT_SYMBOL(simple_start_creating);
-+
-+/* parent must have been held exclusive since simple_start_creating() */
-+void simple_done_creating(struct dentry *child)
-+{
-+	inode_unlock(child->d_parent->d_inode);
-+	dput(child);
-+}
-+EXPORT_SYMBOL(simple_done_creating);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 28bd4e8d3892..f5037c556f61 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3662,6 +3662,7 @@ extern int simple_fill_super(struct super_block *, unsigned long,
- extern int simple_pin_fs(struct file_system_type *, struct vfsmount **mount, int *count);
- extern void simple_release_fs(struct vfsmount **mount, int *count);
- struct dentry *simple_start_creating(struct dentry *, const char *);
-+void simple_done_creating(struct dentry *);
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 0c023941a316..d9d8932a7b9c 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -538,7 +538,7 @@ static struct file_system_type trace_fs_type = {
+ 	.name =		"tracefs",
+ 	.init_fs_context = tracefs_init_fs_context,
+ 	.parameters	= tracefs_param_specs,
+-	.kill_sb =	kill_litter_super,
++	.kill_sb =	kill_anon_super,
+ };
+ MODULE_ALIAS_FS("tracefs");
  
- extern ssize_t simple_read_from_buffer(void __user *to, size_t count,
- 			loff_t *ppos, const void *from, size_t available);
+@@ -571,16 +571,15 @@ struct dentry *tracefs_start_creating(const char *name, struct dentry *parent)
+ 
+ struct dentry *tracefs_failed_creating(struct dentry *dentry)
+ {
+-	inode_unlock(d_inode(dentry->d_parent));
+-	dput(dentry);
++	simple_done_creating(dentry);
+ 	simple_release_fs(&tracefs_mount, &tracefs_mount_count);
+ 	return NULL;
+ }
+ 
+ struct dentry *tracefs_end_creating(struct dentry *dentry)
+ {
+-	inode_unlock(d_inode(dentry->d_parent));
+-	return dentry;
++	simple_done_creating(dentry);
++	return dentry;	// borrowed
+ }
+ 
+ /* Find the inode that this will use for default */
+@@ -661,7 +660,7 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
+ 	inode->i_private = data;
+ 	inode->i_uid = d_inode(dentry->d_parent)->i_uid;
+ 	inode->i_gid = d_inode(dentry->d_parent)->i_gid;
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	fsnotify_create(d_inode(dentry->d_parent), dentry);
+ 	return tracefs_end_creating(dentry);
+ }
+@@ -692,7 +691,7 @@ static struct dentry *__create_dir(const char *name, struct dentry *parent,
+ 
+ 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
+ 	inc_nlink(inode);
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	inc_nlink(d_inode(dentry->d_parent));
+ 	fsnotify_mkdir(d_inode(dentry->d_parent), dentry);
+ 	return tracefs_end_creating(dentry);
 -- 
 2.47.3
 
