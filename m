@@ -4,120 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66626CCFA1A
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38072CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:59:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B668B8E0020; Tue, 11 Nov 2025 04:58:46 -0500 (EST)
+	id 8D0BF8E0021; Tue, 11 Nov 2025 04:59:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B16F88E0002; Tue, 11 Nov 2025 04:58:46 -0500 (EST)
+	id 8A8378E0002; Tue, 11 Nov 2025 04:59:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A339E8E0020; Tue, 11 Nov 2025 04:58:46 -0500 (EST)
+	id 7E5548E0021; Tue, 11 Nov 2025 04:59:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 914248E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:58:46 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 643E312D197
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:58:46 +0000 (UTC)
-X-FDA: 84097877052.20.65D087E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9098E20007
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:58:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m91Cvs5L;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762855124; a=rsa-sha256;
-	cv=none;
-	b=gVj+Ut61Hqf9syx0UtH4obakIyLT5TT2uqc14ue68qpBW7MxlhJ2PsvPys4Xc6HdaP+A8f
-	lOrHyn7aof2iNkUKk/bhcvmOEoB/mQ+uhNuH2A980/VjC7ZYZFN97M7CGqLFCZTOEqotk+
-	vTgzwNrakQuPABMZi+msK9J+NGXmNNc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m91Cvs5L;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D47E8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:59:53 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0755C1404DE
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:59:53 +0000 (UTC)
+X-FDA: 84097879866.23.E736F02
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 70C5C20008
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:59:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQEDW3Fl;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762855124;
+	s=arc-20220608; t=1762855191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J+hCtphTek4rIcDdECZc1NVwwb/iWryElbMcv+WGJdQ=;
-	b=k7Wyn/sek6cdzjM1Z8DLQfg2OSKjtN/wblCztQ5IQGmFbPbNt1RSjDpznrKSMpHyWp5dpP
-	1bK/bNC0fTatnkcvYEPmvcQfsr+BuSieT74jr3gcJRgyfcg2UynUKsZ4ijFaWroXn3nfdH
-	7mM/zn5KeSkrYSdMrjnIRoCGyCtvjDk=
+	bh=4FyGQez7pvyrljUgUtsWdyef129PSJdGth4p3IkPJoI=;
+	b=uNKs8b0bKPNB8DVhF+fOOrDxPv23OJZxyLjwXBn29l3Y9bFKaXjXGybxlSHZxyHhm/WO7B
+	7oMHJ5MZQBUkQ1zvOTuK32yZt3c26NmoTKzNvgVHYhkzGVXjXMAaeOh9nQJrt7SNY+H7h1
+	UG9GHbEDGmjuO0Y36LHKZEL4HPlWh0Y=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQEDW3Fl;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762855191; a=rsa-sha256;
+	cv=none;
+	b=f+u7g6ypTakMEcuTs+fOSXIDCvWvNzQM6qPadlFJUT8mWOPK3naImbrqOihpxix1qW+c0P
+	L4XpCIN43x9gDeHn/MVdAxqyV5KLYZJjm9pGETaZlY27SmttZlhd6CPOcrjBImu6v5mZbF
+	pDuWXxXG2J1ZH0YtK6iv5T1Ar9jJGJ0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B82A840051;
-	Tue, 11 Nov 2025 09:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8DEC4AF0C;
-	Tue, 11 Nov 2025 09:58:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D29BC6190D;
+	Tue, 11 Nov 2025 09:59:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05460C19422;
+	Tue, 11 Nov 2025 09:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762855123;
-	bh=RNhQRersDtpXI6Het2PRLPg6Pf8djhGeIyqap//L360=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m91Cvs5LMEj+eGKN/zSGKHFgLn5OOKb6iBpr2HEAPuKEuOKnCutXDEc5JBoZrO3dp
-	 nX6pZtBqyo1gEDea8WYR/UY3E1b1aOvK9J4eK7Sh2Ip7fE9o07N1yzx0Nw2z5GjK3Z
-	 HJgPAsEptYiJPdaHwSLGVCZ20GpxOY76HvEh8MzXAIc3DmPRhCkeAtpy525bRKlimk
-	 C2aytYrId2LtUJW8EPhTIZ4E4Jw+gvI27B9jqMhKdjFxvv1gxRBqG5MKBDZQjAcvyt
-	 e2DJ4lzH4e3tl+6nlqXTZeHgMeor6n8DtPFTPJVpcFDxJR0fmhy90/cN2Z1HsDkssQ
-	 NcMMmjN0stnWw==
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>
-Cc: Krishnakant Jaju <kjaju@nvidia.com>,
-	Matt Ochs <mochs@nvidia.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	iommu@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Alex Mastro <amastro@fb.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PATCH v8 09/11] vfio/pci: Enable peer-to-peer DMA transactions by default
-Date: Tue, 11 Nov 2025 11:57:51 +0200
-Message-ID: <20251111-dmabuf-vfio-v8-9-fd9aa5df478f@nvidia.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
+	s=k20201202; t=1762855190;
+	bh=8N8GqKjKVmCcW3FPmEMuf6YYiwxcbop3EKSwjq5wsII=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vQEDW3Fl5K0Dvr5C3P/+Eri/nAbohVDuKI4XtVOkvLaGSgP/SbgOWEsbGFspy5nQu
+	 nFSoIgCeKhZ8/np8jueh2RXyHgwigbhdfUHpUnrBccm5ghZqyZs/wLCKTMgp0+U0CU
+	 UPKoeJ2L54ClBnB/Rj1h93V3TjtFJZw8KljZ0eIEGh+5dWcujLT8jdVHCWGOleCi6z
+	 GNs67YgdA6V5htKQOI+51a5LLw3fXAW8w8KEgYkck12568Nm42KYxcDgcTA6wDqp5e
+	 8LAJFtg1p55l16dKnc2Umtnzf4Ozu7FTOrIv9JwSGA1EJ5rJFAOmtJMYh7ssZ40DCV
+	 k3xHyxAhkViyQ==
+Date: Tue, 11 Nov 2025 10:59:46 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-fsdevel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH 10/10] mm: Use folio_next_pos()
+Message-ID: <20251111-droht-oasen-449486f7248f@brauner>
+References: <20251024170822.1427218-1-willy@infradead.org>
+ <20251024170822.1427218-11-willy@infradead.org>
+ <aQ7ObHvd8FXb8Taz@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-3ae27
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aQ7ObHvd8FXb8Taz@casper.infradead.org>
+X-Rspamd-Queue-Id: 70C5C20008
+X-Stat-Signature: cscpj43tz8q1dzjo87m9t1sjw86zwcbh
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9098E20007
-X-Stat-Signature: fwpd7kgptkn5mmrybbn6c5dr6fjbo6j7
-X-HE-Tag: 1762855124-809118
-X-HE-Meta: U2FsdGVkX18xxXFm96Iu7Szvkbew01wgNlorJIFr/ZRC9PPX8FUR/ml/XkdjlwJK7gaaha0G1/4RMxOLAQ5SWvEJ6Dpzb0CubeRDVY+ImH/OV2cad/2LMhd0GOf9UuEDCO2K0uropFCJM1eq5dl0a99Q/xVn5n7CMMZkXg8yReh2/0M7tAkgCkEoUtOKwIgld36b9tR+M1p9sX7DpUq/irpfXoODlFCY+35H+QiaYwwwkmbCE0Rx4s09toqyRSoGnecPB5y+YSHVCnqNzFxysoSkyhfEUDU5B3HF4IY5ZW40asZJUFxcq06lcES0A9mWsyKkXeF7XdZ9d04MDhBbehHho5FrTPM0sBAA1GgWM30GbO5ozFTUlY2D/7fnKjyOheaAY88FTemFSoYQ9BRUk2O8tg+cnelqSAB1J3qVla3eLXnpSAd0yetvJo6dg+1cs1AaoQ/rI8xq0XS621X9EN7QIZpnYKnEqOz+n+yfOHRw9afkIAx9HCUnzZtKQvftSmCKhuLaOvzPLoXGSjKIgP2LSg9BAgn4c6Ml4AmvNh8SdkNY1lXxDpfbSvY/RbUYWPYm3Bk69JNLKB51owa0vU9Dk66iMCy2ZZSQ4MrBJN/GBbpd859EMOP3dGGHSzCnRSdpETlRmfaNYyL1dbd4CEpjdn1oWH00K9xewJuvaZhk8YZEMo3Um4pXu/FcFQ2STE6dV4X6GTb37heVqG+AFnZJt09qsp68WPysW2UV4QSh0MKzkgjKq4Pjkrw7ujj5HP+amlPTk/dX9AjbDfKInagO7A8j8isNq2Zkdbh/OBCzqZQ/0SBfIuqsHPmBmklHY776u/a2Ezl4V/PDUhmv2Vyr94iqXqrkzEUSDEuowf84LVU4zwHcCzb6WJQGl6OBmjhQLbS9P0JlBs2s1sF1oXUje2lJSsmpvOeJrnQkWm3zVr/HxzKGY7Snh4NglAfQ839VMQ2zmeTQhPoJ7Mu
- GrbYA6Dj
- W5+PG5/PR5KG4ioVlmXlaM0wNCIvfJrrRbtl0+phvM5oWpwD2dAodtIPTzXiaOhmjRUHTYZ8gPyMTHPAUB+Cqb5C/35dstiBwihPPtxNhx1MZS+iqIqkNri2DDpvirL4kKYuDqiG7hQ7jOnonypmnTzrM81k7O8ENpXvfwfw9w484lfFkr2Se33QlHTnqyTaJHTgXHxK4ok9QSzE78h5y79Jo7Tpl0MvWZ0dOhJIo2b86M/zlqLHhZ08KUKT5RnZnisHBxtYsoaPfKenyTYuuFAEA33h1kwInWRurDrRLGGNzNlVroesctxqGuiRsBIdwJnQntzgTbUFPIWxZeCAtcAh8HA==
+X-HE-Tag: 1762855191-713866
+X-HE-Meta: U2FsdGVkX1/Z8S+o6l/9o2EkfwwXQnOO/MSR525UGHtAoYVk/v78kB3fMdpva4ecC3Acq2uIl02LwLWjaEvsovGuLJQVCTBVOg9exk+tEEYr2oL388fF+Yseef25hsMbGAv8ZInHY5M69f+wNNGgqiWToNxi2aD4jycLofc4lWUcOY2Bsw1lO6gfKHuSKqG5hFrRbGtQsMKTouaP+oSUhwi2L2FsOS012i3OLRvrcurTCpkHCrfO+hXFcNXa2QhOr6vnrbGtuKpoeYfIFy8iDhdFj/zQoCB3MFeEscCo3Dx1NmSuRznqgIjhFgi9xNRoEC+ldu48iIVrZ6d4pUlVAAWXF9OgpNVRTd6M1opZxw7QvUjlDuxp3rpkUX8v1Pg2SgN2jWVm19Jbv5QmdpUOGj0VEZAXnDLkyOiaB6mCSCpfmhSyyqUFI39mqBG4mXP4wb7TNeZM35kIUsS6aCQBB9jYjGy598rnXI8RgkZp+vJjg/9HS4ri2C0ejYedSIp9msQU7ai7GeGQzQ1VU3c6lctWj4XGQAv35VhldtRvwakj2i+q4Yan7+Xp4usIx1N6NEpJkRzMU8v/81xVNDv8LAS7I+abJweCiuASYjOCinV9L+SxKt/uvxYr9oY6zLdF4b0RGXRhbSxxgBBjLvgF1XBeWEQ3tTNIeja4pVBemTTmutJJNLTjoKHZ1IBOaPtVIjSnLR2JHGoA3GaDFcdzu0A2AhJjqWjckkGtRt/+R3vDqTaM11fJSEvY3XcAAvKy/6ACg0fcJlW0JQE5AMHOJZ/h69PL1W5OEBCkLS4ISUrkWUbGb8rFrtCuxb0B4knhnuSmODvDbFnK+9LNj/duGLuodkCt8L08hlub2wvwKd5zG9DhxSWCELwVhxpHaR870s6XDYe8vDRSUlDnLmPeklOGHSCScELmp8nVhp1IgO/NZvg/8YsNU7KQMsyuvOAjLR3o5zD5UdYayg6R3lP
+ 3fO5WioF
+ j0zKL4Il+I/qL/cbJxmrg2vFPUtKk/9Ny6eC7kJBbWH/MsVbq2dNJOInZhSC0Xf3tnmccDLcCbxa8JWwUAC380nDU34QW6ZaUlPerPqsF8ExVveCtgLqUt1YEcFDOz+P5LeYjPGPlrsmneYbaVB5duxAn0U/xW4ZFZNQPmsb+pb6mCuRfE2rtiYGZkEtk7S/5Pg/EE9dIrDftLh2eBAnpHD8/NX/4kzlxVYWkAExtYFYOMzyAcNwvi9t2sABOylwbpcTqMG/rnZxpqV4j2T3AUGZI5Cbo/nGsoqjw07lSEdgylAb3EdB747hzxWtayydP3PWtXEDISSLZ/umN6eajeaVrU8IZW3uZ8wIDb09ofYVQjKgj+viOpijvGvbbKar9pk++bOPhVYaewBgBISlNwjPAOZoYx62W6zQvt2BokhwT56I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,75 +93,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On Sat, Nov 08, 2025 at 05:00:28AM +0000, Matthew Wilcox wrote:
+> On Fri, Oct 24, 2025 at 06:08:18PM +0100, Matthew Wilcox (Oracle) wrote:
+> > +++ b/mm/truncate.c
+> > @@ -387,7 +387,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
+> >  	same_folio = (lstart >> PAGE_SHIFT) == (lend >> PAGE_SHIFT);
+> >  	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
+> >  	if (!IS_ERR(folio)) {
+> > -		same_folio = lend < folio_pos(folio) + folio_size(folio);
+> > +		same_folio = lend < folio_next_pos(folio);
+> 
+> This causes an intermittent failure with XFS.  Two reports here:
+> https://lore.kernel.org/linux-xfs/aQohjfEFmU8lef6M@casper.infradead.org/
+> 
+> This is a fun one.  The "fix" I'm running with right now is:
+> 
+> -               same_folio = lend < folio_next_pos(folio);
+> +               same_folio = lend < (u64)folio_next_pos(folio);
+> 
+> folio_pos() and folio_next_pos() return an loff_t.  folio_size() returns
+> a size_t.  So folio_pos() + folio_size() is unsigned (by the usual C
+> promotion rules).  Before this patch, this was an unsigned comparison
+> against lend, and with the patch it's now a signed comparison.  Since
+> lend can be -1 (to mean 'end of file'), same_folio will now be 'true'
+> when it used to be 'false'.
+> 
+> Funnily, on 32-bit systems, size_t is u32 and loff_t is s64, so their
+> addition is also s64.  That means this has been wrong on 32-bit systems
+> for ... a while.  And nobody noticed, so I guess nobody's testing 32-bit
+> all that hard.
 
-Make sure that all VFIO PCI devices have peer-to-peer capabilities
-enables, so we would be able to export their MMIO memory through DMABUF,
+death by slow degradation...
 
-VFIO has always supported P2P mappings with itself. VFIO type 1
-insecurely reads PFNs directly out of a VMA's PTEs and programs them
-into the IOMMU allowing any two VFIO devices to perform P2P to each
-other.
+> Anyway, what's the *right* way to fix this?  Cast to (unsigned long
 
-All existing VMMs use this capability to export P2P into a VM where
-the VM could setup any kind of DMA it likes. Projects like DPDK/SPDK
-are also known to make use of this, though less frequently.
+Naively, I would think it should be an unsigned comparison for u64.
 
-As a first step to more properly integrating VFIO with the P2P
-subsystem unconditionally enable P2P support for VFIO PCI devices. The
-struct p2pdma_provider will act has a handle to the P2P subsystem to
-do things like DMA mapping.
+> long)?  There's an ssize_t, but I really want the opposite, a uloff_t.
 
-While real PCI devices have to support P2P (they can't even tell if an
-IOVA is P2P or not) there may be fake PCI devices that may trigger
-some kind of catastrophic system failure. To date VFIO has never
-tripped up on such a case, but if one is discovered the plan is to add
-a PCI quirk and have pcim_p2pdma_init() fail. This will fully block
-the broken device throughout any users of the P2P subsystem in the
-kernel.
+Fwiw, I don't think anything is stopping us from defining uloff_t in the
+kernel if it's helpful.
 
-Thus P2P through DMABUF will follow the historical VFIO model and be
-unconditionally enabled by vfio-pci.
-
-Tested-by: Alex Mastro <amastro@fb.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/vfio/pci/vfio_pci_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index ca9a95716a85..142b84b3f225 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -28,6 +28,7 @@
- #include <linux/nospec.h>
- #include <linux/sched/mm.h>
- #include <linux/iommufd.h>
-+#include <linux/pci-p2pdma.h>
- #if IS_ENABLED(CONFIG_EEH)
- #include <asm/eeh.h>
- #endif
-@@ -2081,6 +2082,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- {
- 	struct vfio_pci_core_device *vdev =
- 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-+	int ret;
- 
- 	vdev->pdev = to_pci_dev(core_vdev->dev);
- 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
-@@ -2090,6 +2092,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
- 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
- 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-+	ret = pcim_p2pdma_init(vdev->pdev);
-+	if (ret && ret != -EOPNOTSUPP)
-+		return ret;
- 	init_rwsem(&vdev->memory_lock);
- 	xa_init(&vdev->ctx);
- 
-
--- 
-2.51.1
-
+> (now i'm going to go back through all the other patches in this series
+> and see if I've made the same mistake anywhere else)
 
