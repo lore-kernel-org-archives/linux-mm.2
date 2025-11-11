@@ -4,129 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA546CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:19:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C40CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 09:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 060488E001B; Tue, 11 Nov 2025 04:19:56 -0500 (EST)
+	id 7B7948E001C; Tue, 11 Nov 2025 04:21:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 037AE8E0002; Tue, 11 Nov 2025 04:19:55 -0500 (EST)
+	id 767FB8E0002; Tue, 11 Nov 2025 04:21:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8FD68E001B; Tue, 11 Nov 2025 04:19:55 -0500 (EST)
+	id 6A5218E001C; Tue, 11 Nov 2025 04:21:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D0A3E8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:19:55 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 753E9C0494
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:55 +0000 (UTC)
-X-FDA: 84097779150.08.65E7E0E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 934B14000A
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vGClO8NE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762852793; a=rsa-sha256;
-	cv=none;
-	b=q9hmxpFpYOMAMt1TQTGxJ2RaWNH7vtRFqpQsoDrLTO1SVm3XbTwKh5mm0ygTEy2Njc4BPS
-	xO+cpafojQEmNkkwTzK9U9luvK3njNguR6RRliRqVxkPbUocwEnng/VN4oQSsJnHS9D0rI
-	neTEGbUMsGnOAXknM/AzXLk+7CDa4ZQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vGClO8NE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 595FB8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 04:21:35 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 05C6812D1DD
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:21:35 +0000 (UTC)
+X-FDA: 84097783350.19.2396FE0
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 54BD120007
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:21:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=oQsjlNA0;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762852793;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762852893;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RXZ2/EXzi6r7HrFOiKQfxybykgs0x88PVJCYtHof4Hg=;
-	b=aYnUwUnJSMHoUVDKOBb88gVnWR6h+q2qZkPpGebP3A1gWVbLblAhSyGaIWVin7QOAn/6g/
-	xe3LvmvZoQvm1Dqa2Ie1AEjBzw39gX3PFAjEmvZJ7LSjaPzUPVHeB1cqPJg1++KkiLKa4c
-	IiSUGuOpEoyx2xuQIoxHahwPtljVIhA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1EE8C61923
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D2EC116D0
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 09:19:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762852791;
-	bh=dVuTtHvnVZEobITrk9FyDHPMZXl5yRe3omNS/JcWa64=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=vGClO8NE0KorCNpVq7YjjPoJy4vppAc1exbgNg08YFojL+dCZUmXYan4Wftv6Gmgv
-	 GEa5Cfno24p5jxvYB/qDkaZk9C5q5w3kRLHUbzXznZ6oolxTsaWOZHMZ30eLed0sXX
-	 Egq/iKpmX81Z2Ojm2N/HTq94Olgee+8BMC8ZQeiiffDB8QDkji4mseoLtGvE7ZrhYn
-	 dP6Lyes8MmmyzNcHmC8Tv8TlcJnJCoZxEs+Jh5/+z/VVpJKPEC43Am3km0NAnjA2Au
-	 zZAMssPqCgroICwsfk9a9tSlMA452D+MVB2qo029A00ncGyiyFIJrvq/hmj6vDJQzp
-	 +9zlwlmMK1NvQ==
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-78802ac2296so9966987b3.3
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 01:19:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW0sOS8diYPvsuy66RSxu4EjuYRWrIEZXU3+Sgg+NwrrUHcpmbRTJhQX/pyibxhrs91zldyTg2NBw==@kvack.org
-X-Gm-Message-State: AOJu0Yyq8EYs/a+KEN8BwgfJs2HQOLa3rb6IM9q+IoeQoM5iavBYc9i3
-	HQaSHHCoDYBZBn2XNxAki9QiHjs1vJg1g3uJeB63G8Nd51Zjjp6BHmyd3VS+yR2lIqDNnKgGm6u
-	1wg4VgalAnlEWs5pF68mHCUL3HjRW4N64esAv9enf+g==
-X-Google-Smtp-Source: AGHT+IE7U/hfMH//RfLupvft/VoqtwYRbFfH+avnkA19gWihvYeZ3A5/gr7GLzY5y0EQ9dDLUE90MgX0MeQiFlzqDkk=
-X-Received: by 2002:a05:690c:3341:b0:786:6b92:b1f5 with SMTP id
- 00721157ae682-787d5439064mr100470067b3.47.1762852790107; Tue, 11 Nov 2025
- 01:19:50 -0800 (PST)
+	bh=h9ER29fbTJgjBa1gGf0LtXabL8srR/KWhHIa5FKJzwk=;
+	b=bef6seNZq2jEm2e4OGoaKBMbwPo8J9FnZ21QLEfEhLYl8zr6CtUX1KFWY6TFmEzP8ygfSg
+	wfPb9rOQpEKgeY6HTtvAwmAKlqDip00Lllg3i/oZb4YFbKpM+jc1QMul56wNC5m+31SGHB
+	mg810/KIrtX9vXMsNlNiGBx8/tJ0ml4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762852893; a=rsa-sha256;
+	cv=none;
+	b=R1m7fARFu0nOf1vfeXxwHhYXpCtsrOdHrUfkFqj4iF6JqMPiMIo52CY6qr7h22hWUvh6zl
+	pyzPhrVKvo7+P9x9Zo61rAflu63S+bBJBBASkWZAf6Hm3uFDBkpFoDK79N1RpLvFx6XqcL
+	bkamb58UQo0PFfY2W38+MDdJLotQDj4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=oQsjlNA0;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=h9ER29fbTJgjBa1gGf0LtXabL8srR/KWhHIa5FKJzwk=; b=oQsjlNA09lydyaG8FeEwSV0XoJ
+	PUWsxqhIyS8v4nFPrdoo96yfcVKpmdff1gejn53PbFOVMACcn6fe7mJoXdScunb2j9pVWcq9ijz79
+	vvmfnDQnEQ7JKbik2NCvovbfTo69xQuIggh4zPsb1p/Upe/eH4hziX654BCvSmnlJ/k3FfMOIwbJF
+	o8q0WnptvwFpYe5ZM/6npRERUN8GH0zJzilKT37w5RGhgnp5RPBoFufvwG8Sk8nQx5BbD+To6YWvp
+	cDz9q86r/3rOH5cGFEWaBhEpqEMRUOkTxYFsXrqQIxijoK5+8o3fyMu4FW57NIVo0iyE3kHiX/kFO
+	mTLjKEdQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vIiHo-0000000Bx7I-1Uv3;
+	Tue, 11 Nov 2025 06:55:28 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: [PATCH v3 38/50] gadgetfs: switch to simple_remove_by_name()
+Date: Tue, 11 Nov 2025 06:55:07 +0000
+Message-ID: <20251111065520.2847791-39-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
+References: <20251111065520.2847791-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
- <CACePvbVq3kFtrue2smXRSZ86+EuNVf6q+awQnU-n7=Q4x7U9Lw@mail.gmail.com>
- <5b60f6e8-7eab-4518-808a-b34331662da5@lucifer.local> <CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
- <3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
-In-Reply-To: <3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 11 Nov 2025 01:19:37 -0800
-X-Gmail-Original-Message-ID: <CACePvbUHCrNNy38G4fZP92sdMY7k5pRQkcfo=iPp0=10T5oCEw@mail.gmail.com>
-X-Gm-Features: AWmQ_bkffqW5YvxjFtC7ucCTeEYe-oG-VIvciMpKUSHdG9LRrce-7fJweHmox0c
-Message-ID: <CACePvbUHCrNNy38G4fZP92sdMY7k5pRQkcfo=iPp0=10T5oCEw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
- entries, introduce leaf entries
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
-	damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: h543gahk1p5arz7kddip8gwgwqqkdxwr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 934B14000A
-X-Stat-Signature: moxhhy8snxa6wwoo9redxk71bwwgh397
-X-HE-Tag: 1762852792-103736
-X-HE-Meta: U2FsdGVkX1+3KOW/GPGt+Ys4H8iPCa8rNIqvMszt0LpNwnRxUh6V/FtYDRbbKSYHbfz8TDQCjGnyrmiSUA4Iv+G/4drQFjF9QuASL9ceKCPCWz7SsqetQ3pvkxxtIcvrw6Bb+b2IGucB4+pMpwGA2+5CG7bHR2b5SHVGtjU9RMliTVktqfJGSStLEKlriTxKtLyq+UzTKufuxkxei5OMjlabbh96x+mhVxIf4PJQcY6MnEmgkd0y23y1gej5qVeRYDLhFh47pMTD2sj5uJSB5Rf1RJnpPlHZyBBlGduhf+IS9JzmEZ2sJ8GfPGNsX0PtfJTQvCispopaO+RDbOtWB7d89xFIYJaHYFtpcEu8C1rZXdtGtSLG8tBMIyFgvtvf1eFv5TfpF9rnClpP5xfZAIJPpwyxMLTuWwZIq/0slpZ7SGsUC/f1LJnmnRl0peYxJldTBz+ljzUIzqk5tzF6Opjs7pfSnp3ZLO3xm05aPIuYsJGA5H5pB161ZFXJ26gkIfKnvqb2Sq3vK+9MpKHFGj1pPqmsYX0KNPR4ZubEw1APtwwOCfPkCMqsAueHKB/AarIF/TitDWADxxifKYyYgj7jqv5kCWj41Nt06m7QPM/dr1Gl4omEy8dvFMOn4e/KgnMOYDA7oymUY8PQibgOGvJs4QveZkPNkIWvjyQWPWH4q1WuaasODrJEXxaNn01+3kMabN3qo3Yo8hhmHA+1wrCE06zn6puraIwDViqx2eJ02fERQmwUIoAziTT1Uj1r8L0ZFNxqkjUyYdlhLVPG8vC0ftTtOwTx3b4Ok/1LxNEiYHhxYLOsvfr3ghtsZzcVWfxzcdSDkkm3t3Ql7YfR2P7rayop/C9tGYXEMrq7sBIka4qZep7Xl8CYfo5Q40gELIvU5moIlWQfLBnh8oY5SmXe2bbjF8/P4CVghou90mPqeXv4irn3ZqLifOi1/2GywsnQ+jVsFIL/x6Vik4x
- QNjL88Fo
- HjP8esGjeHvPnkwaeAwtABV39Y11+pFr068cAmSZ5hcAO/n0yfJKKr0OZsfZGWO1fktum9GL8sEScv62toO+K4zuw9OXxk68cI4GbobWVYll3oVB8Q6xChXDAoxutG6R+Ni6sqG9Dxpnx64ojXoOUCkwhsBufZNBuITAxxXFQWDd+HjG2VhlxdGLPELXW3PGMB97GMx6bOjyFJ6egQ/JPApoOHuJys64HPp1W8Kovq9s6YmayNIFhbD0dtyQuA3HVbsOrIxva32lZRNO2160xRMsJXcJB18KlR7etmh/B2NsQeEf60jJEVCozFzIkk63W3K701n9FDqUbS+fPV6pnLzMUP+wRLYCfiGsQ2QQAjRw01ZFK3oARzNRnMPyj2PCPOlC82EqqIqRgjwjK03ix0MQcIn510EVJVIc1Mnl/Q7tOm6g=
+X-Rspamd-Queue-Id: 54BD120007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762852893-356299
+X-HE-Meta: U2FsdGVkX1+AKwixzNhWiwB85ZB8RGRHzLRB/KNdJUEbHKxcRJ8BLiM1e7d2PY2NQlqydE2JcEYeGreS/eZ39ErnSPAkIH6TeRWCdV33s36CIf12ypRj0vrQQvA9AMvnaMAVuvWbk47i9k0NguBgH2HzYLo+Ne2NfITrlGWFbalh6iRsJg7Y+PV7BeT40vhpnLZcTUY3+msn0dhetBA2aCOGE7J86XIxlPgQAbbvK3hVSK1N+RJMpgB0NcYBHONla1jaeElvDfRBf6DA4jIj/1EU0CNVsBv9r0+tn81atLznG1C6vMW98+nkIEK6hwv59ffO1E4JYgV3VwK57f7Bs9vPoX5VasPld3J0eC/unFnRluXhsHdTN7LUr993HUd9Mm1pxL88kITlK1d4psMOA3d1d1oe1yLK+GkJMdA2+JBB8BzUcQVfnHzry73ISMfKF6TiDAZn3WymLUR9d4QRmhaFyVfyypVq5MeH9rBooSl3QsZFo+0oeQ2/CsPCZp8C6ZPTmHOd4Kyqi9K3Ww6TUmWyl/lLk/XnSS4sO1OhB4CbLZFv4uCfSJysu1//3yhkT3oktV6T38n5onGryG59s6yS4PIFWUqjvokEx6WApBXLjI8QrqZCr6UF/CUjTKlAx090L50Cw6oKCnZ52XxIHTZSMS8idjnweypJ8aCXkS+ggODyb/T3EeMciWGkx5CaTFeLOuq4KFtN+XfK7uGPdBrgnqAikYeAVCearZfutdjChRSQValmhwCy7V6n90p6jCKSxMa040tpagOoyklv7FwdFUjhkUu0LCILDlsfo4IQZ6EQaKpuVyZ4Ro6jRQTL2dmxqsMNdjuD4LmeghloTdPSxSA2ZHcU9H1ukt4WsXjbb7Jk2fOkN2uQW/qi9jweM3k4x/iPoh+1aAt5ujAb/M4Cx75D4wxz+1tYuUWJVjTrGMp0wCerMDT+TLwdgimdtHjXeNfmG/Gf2SXnup+
+ N8EFlwDR
+ Bxo+ST1JyyhBUuk3+kdHDudwdyewkV4stNSbJSxbLkuSg2E3X9VGCyc2WLFBTQ4fH3jABN7LDeYgbgPvpd7wB4RR36izuQe9EvgarQSeVy2PLlp8+RyhCGAc/eybtxkBhUXZJAxdJVg+p6XjfuSyZo72sSD7fUMhqqVUN2Ps8hfss0ZV+zxCWj793GVmWdOiJqKFPRPKSduYHiz49G4U7gC9PRaydsa3TCPGcmNb/tgpSoxhNGoR2fA1T/P3kJIOWTXSevKlcS3cpJEShvSJNSoqoPlT59i18gn1lHblYZXTKCIXhDnfRCYhUFvDtDkZ3tbRJdaFj/VD/z9dy/lb9oe1oGeOapMAgfiZzvH0w3DjwRsUNW2DozzB8o3NI6wCIv88veGCKnPEPOoz6pg/LxUPRdvnh4NHaRvlzmgbF7tq2f8FBm2ycNN+LSlPSAUK3Y0NuEoUP1j3pMu6C4a/o22ATMg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,134 +108,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 3:28=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> > > > I kind of wish the swap system could still use swp_entry_t. At leas=
-t I
-> > > > don't see any complete reason to massively rename all the swap syst=
-em
-> > > > code if we already know the entry is the limited meaning of swap en=
-try
-> > > > (device + offset).
-> > >
-> > > Well the reason would be because we are trying to keep things consist=
-ent
-> > > and viewing a swap entry as merely being one of the modes of a softle=
-af.
-> >
-> > Your reason applies to the multi-personality non-present pte entries.
-> > I am fine with those as softleaf. However the reasoning does not apply
-> > to the swap entry where we already know it is for actual swap. The
-> > multi-personality does not apply there. I see no conflict with the
-> > swp_entry type there. I argue that it is even cleaner that the swap
-> > codes only refer to those as swp_entry rather than softleaf because
-> > there is no possibility that the swap entry has multi-personality.
->
-> Swap is one of the 'personalities', very explicitly. Having it this way h=
-ugely
-> cleans up the code.
->
-> I'm not sure I really understand your objection given the type will be
-> bit-by-bit compatible.
+No need to return dentry from gadgetfs_create_file() or keep it around
+afterwards.
 
-Just to clarify. I only object to the blanket replacing all the
-swp_entry_t to softleaf_t.
-It seems you are not going to change the swp_entry_t for actual swap
-usage, we are in alignment then.
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ drivers/usb/gadget/legacy/inode.c | 32 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-BTW, about the name "softleaf_t", it does not reflect the nature of
-this type is a not presented pte. If you have someone new to guess
-what does  "softleaf_t" mean, I bet none of them would have guessed it
-is a PTE  related value. I have considered  "idlepte_t", something
-given to the reader by the idea that it is not a valid PTE entry. Just
-some food for thought.
+diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/legacy/inode.c
+index 13c3da49348c..bcc25f13483f 100644
+--- a/drivers/usb/gadget/legacy/inode.c
++++ b/drivers/usb/gadget/legacy/inode.c
+@@ -150,7 +150,6 @@ struct dev_data {
+ 	void				*buf;
+ 	wait_queue_head_t		wait;
+ 	struct super_block		*sb;
+-	struct dentry			*dentry;
+ 
+ 	/* except this scratch i/o buffer for ep0 */
+ 	u8				rbuf[RBUF_SIZE];
+@@ -208,7 +207,6 @@ struct ep_data {
+ 	struct usb_endpoint_descriptor	desc, hs_desc;
+ 	struct list_head		epfiles;
+ 	wait_queue_head_t		wait;
+-	struct dentry			*dentry;
+ };
+ 
+ static inline void get_ep (struct ep_data *data)
+@@ -1561,16 +1559,12 @@ static void destroy_ep_files (struct dev_data *dev)
+ 	spin_lock_irq (&dev->lock);
+ 	while (!list_empty(&dev->epfiles)) {
+ 		struct ep_data	*ep;
+-		struct dentry	*dentry;
+ 
+ 		/* break link to FS */
+ 		ep = list_first_entry (&dev->epfiles, struct ep_data, epfiles);
+ 		list_del_init (&ep->epfiles);
+ 		spin_unlock_irq (&dev->lock);
+ 
+-		dentry = ep->dentry;
+-		ep->dentry = NULL;
+-
+ 		/* break link to controller */
+ 		mutex_lock(&ep->lock);
+ 		if (ep->state == STATE_EP_ENABLED)
+@@ -1581,10 +1575,11 @@ static void destroy_ep_files (struct dev_data *dev)
+ 		mutex_unlock(&ep->lock);
+ 
+ 		wake_up (&ep->wait);
+-		put_ep (ep);
+ 
+ 		/* break link to dcache */
+-		simple_recursive_removal(dentry, NULL);
++		simple_remove_by_name(dev->sb->s_root, ep->name, NULL);
++
++		put_ep (ep);
+ 
+ 		spin_lock_irq (&dev->lock);
+ 	}
+@@ -1592,14 +1587,14 @@ static void destroy_ep_files (struct dev_data *dev)
+ }
+ 
+ 
+-static struct dentry *
+-gadgetfs_create_file (struct super_block *sb, char const *name,
++static int gadgetfs_create_file (struct super_block *sb, char const *name,
+ 		void *data, const struct file_operations *fops);
+ 
+ static int activate_ep_files (struct dev_data *dev)
+ {
+ 	struct usb_ep	*ep;
+ 	struct ep_data	*data;
++	int err;
+ 
+ 	gadget_for_each_ep (ep, dev->gadget) {
+ 
+@@ -1622,9 +1617,9 @@ static int activate_ep_files (struct dev_data *dev)
+ 		if (!data->req)
+ 			goto enomem1;
+ 
+-		data->dentry = gadgetfs_create_file (dev->sb, data->name,
++		err = gadgetfs_create_file (dev->sb, data->name,
+ 				data, &ep_io_operations);
+-		if (!data->dentry)
++		if (err)
+ 			goto enomem2;
+ 		list_add_tail (&data->epfiles, &dev->epfiles);
+ 	}
+@@ -1988,8 +1983,7 @@ gadgetfs_make_inode (struct super_block *sb,
+ /* creates in fs root directory, so non-renamable and non-linkable.
+  * so inode and dentry are paired, until device reconfig.
+  */
+-static struct dentry *
+-gadgetfs_create_file (struct super_block *sb, char const *name,
++static int gadgetfs_create_file (struct super_block *sb, char const *name,
+ 		void *data, const struct file_operations *fops)
+ {
+ 	struct dentry	*dentry;
+@@ -1997,16 +1991,16 @@ gadgetfs_create_file (struct super_block *sb, char const *name,
+ 
+ 	dentry = d_alloc_name(sb->s_root, name);
+ 	if (!dentry)
+-		return NULL;
++		return -ENOMEM;
+ 
+ 	inode = gadgetfs_make_inode (sb, data, fops,
+ 			S_IFREG | (default_perm & S_IRWXUGO));
+ 	if (!inode) {
+ 		dput(dentry);
+-		return NULL;
++		return -ENOMEM;
+ 	}
+ 	d_add (dentry, inode);
+-	return dentry;
++	return 0;
+ }
+ 
+ static const struct super_operations gadget_fs_operations = {
+@@ -2059,8 +2053,8 @@ gadgetfs_fill_super (struct super_block *sb, struct fs_context *fc)
+ 		goto Enomem;
+ 
+ 	dev->sb = sb;
+-	dev->dentry = gadgetfs_create_file(sb, CHIP, dev, &ep0_operations);
+-	if (!dev->dentry) {
++	rc = gadgetfs_create_file(sb, CHIP, dev, &ep0_operations);
++	if (rc) {
+ 		put_dev(dev);
+ 		goto Enomem;
+ 	}
+-- 
+2.47.3
 
-> I'll deal with this when I come to this follow-up series.
->
-> As I said before I'm empathetic to conflicts, but also - this is somethin=
-g we
-> all have to live with. I have had to deal with numerous conflict fixups. =
-They're
-> really not all that bad to fix up.
->
-> And again I'm happy to do it for you if it's too egregious.
->
-> BUT I'm pretty sure we can just keep using swp_entry_t. In fact unless th=
-ere's
-> an absolutely compelling reason not to - this is exactly what I"ll do :)
-
-Good.
-
-> > > So this series will proceed as it is.
-> >
-> > Please clarify the "proceed as it is" regarding the actual swap code.
-> > I hope you mean you are continuing your series, maybe with
-> > modifications also consider my feedback. After all, you just say " But
-> > I did think perhaps we could maintain this type explicitly for the
-> > _actual_ swap code."
->
-> I mean keeping this series as-is, of course modulo changes in response to=
- review
-> feedback.
->
-> To be clear - I have no plans whatsoever to change the actual swap code _=
-in this
-> series_ beyond what is already here.
->
-> And in the follow-up that will do more on this - I will most likely keep =
-the
-> swp_entry_t as-is in core swap code or at least absolutely minimal change=
-s
-> there.
-
-Ack
-
-> And that series you will be cc'd on and welcome of course to push back on
-> anything you have an issue with :)
->
-> >
-> > > However I'm more than happy to help resolve conflicts - if you want t=
-o send
-> > > me any of these series off list etc. I can rebase to mm-new myself if
-> > > that'd be helpful?
-> >
-> > As I said above, leaving the actual swap code alone is more helpful
-> > and I consider it cleaner as well. We can also look into incremental
-> > change on your V2 to crave out the swap code.
->
-> Well I welcome review feedback.
->
-> I don't think I really touched anything particularly swap-specific that i=
-s
-> problematic, but obviously feel free to review and will absolutely try to
-> accommodate any reasonable requests!
->
-> >
-> > >
-> > > >
-> > > > Does this renaming have any behavior change in the produced machine=
- code?
-> > >
-> > > It shouldn't result in any meaningful change no.
-> >
-> > That is actually the reason to give the swap table change more
-> > priority. Just saying.
->
-> I'm sorry but this is not a reasonable request. I am being as empathetic =
-and
-> kind as I can be here, but this series is proceeding without arbitrary de=
-lay.
->
-> I will do everything I can to accommodate any concerns or issues you may =
-have
-> here _within reason_ :)
-
-I did not expect you to delay this. It is just expressing the
-viewpoint that this is internal clean up for benefit the developers
-rather than the end users.
-
-Keep the existing swp_entry_t for the actual core swap usage is within
-reasonable request. We already align on that.
-
-Chris
 
