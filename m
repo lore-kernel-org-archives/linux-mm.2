@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 710DECCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 12:27:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 196BCCCFA1A
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 12:28:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBA228E0005; Tue, 11 Nov 2025 07:27:10 -0500 (EST)
+	id 56BDE8E0007; Tue, 11 Nov 2025 07:28:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C911F8E0002; Tue, 11 Nov 2025 07:27:10 -0500 (EST)
+	id 542FA8E0002; Tue, 11 Nov 2025 07:28:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCE308E0005; Tue, 11 Nov 2025 07:27:10 -0500 (EST)
+	id 480CA8E0007; Tue, 11 Nov 2025 07:28:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4EA8E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:27:10 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0EE2988E40
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:27:10 +0000 (UTC)
-X-FDA: 84098251020.02.CE2ADE6
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 36CFF8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 07:28:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8E604A551
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:28:47 +0000 (UTC)
+X-FDA: 84098255094.18.0CE3D16
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4110240008
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:27:08 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iVfV3zZE;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2855C1C0007
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 12:28:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vKxzX0wr;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762864028;
+	s=arc-20220608; t=1762864126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uOKtIcKiSnqa9LQ6PDlJXgH7KMz7cEzsEEGJs0DM60E=;
-	b=S1LpEIwmx7bMVNsTgfT4O6Lt6bnGVBm45Vi2wjhAsvFuSkxHNyZqZIqbwfs7ckdZvKgcgf
-	Txt6+E2LiyonKqdOzwJ6ZzcfBK76iieCVcMdp9sBnWw85DYnbuU1yIChbajzgyqYiLLr/k
-	htMoEJFbhwg/BOqbU4qFodMsu2cWBrE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762864028; a=rsa-sha256;
-	cv=none;
-	b=xXCBf9cci30v7+Z9bu6D2YCQOBIYiIAaLtZ8hNVLvVbdNzO9Vl6Pp0X2N1TdAgB9JAE4s9
-	MoGyHN0MqnSnjHtDS34KLU9+9FSrodO97SwBdhn50b7iELgiqJgMfH2BCSvP7aaIBPTzdG
-	p6463iBbXVpeYKB/1UH5GhHv3duJLdE=
+	bh=JTvP5vxQEYtfYTlHY1HTXzoO9Iicc6ibib68+E/xsbg=;
+	b=G1r4G7luR5jn49FDlgs6fkruDUIbuuRWmH0VxD7ghmqF/KazEJPWH79zkhxGjMM9vIpT3I
+	+FyPXPGlkNq9KJdxjKe44L7u7ZVMj/UIBXutgTKgUUQXeSSNpq8h81EshXuk5jG2fJkzhX
+	T704+lzDkQm+X8fP+vU4m0stNm9gD1g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iVfV3zZE;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vKxzX0wr;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762864126; a=rsa-sha256;
+	cv=none;
+	b=BNcW/1BpcCV9CNnqhPgpkeeih1ehJ3pPV03RuIMyOY8zl+1UAAHL2CoE6umAvd/7yHjIWK
+	Wj3NC0mungFCIECcCnBn6Z477P/pl3tSSJbnK1iVc7Bu7g59UuXTrmmbFX8Libvrn8kkUu
+	ZR8cnACN4hmS63JSyQHniYXJOWjr/J4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 262C243D23;
-	Tue, 11 Nov 2025 12:27:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FF9C4CEF5;
-	Tue, 11 Nov 2025 12:27:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2558E4024C;
+	Tue, 11 Nov 2025 12:28:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F770C116D0;
+	Tue, 11 Nov 2025 12:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762864027;
-	bh=aqDfiydvnVJkvaEowpMZlpXtb2930fTV0jo2nb/Yezw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iVfV3zZEbyZxRw8I78bwgSfHLHlmQ4HZ2Xz+2Mp2kY+F5vGfYhDYDMkU3/vBxRsoE
-	 ChDQGktRiOJLXy6BU1cDG0ERZWNkiY++pQt9yqqVDKMjxrrjYJwdsAsQ0qRZCkrZZQ
-	 IkMlk96jrxP8MRn4FolyyqVH47mqM8HE+czkR0ZpCkytflv1PlV3A7xN9XPpf2PVQC
-	 Vd+EjGptOzFyPx1BjahnCgcwWVGBuZaAgwkgmvl4jLHrsOgXLIMe8lDHYlpSgAbBRx
-	 CrNmx3gVtzLSjcQWWRkKfjkoxGVxiLDkRXTaObEuVDH+e/MKGO7T0DsISnrFaFAyks
-	 cjsd+DewwrUeg==
-Message-ID: <e2b1339f-89da-4500-b638-c915e15d6c09@kernel.org>
-Date: Tue, 11 Nov 2025 13:27:02 +0100
+	s=k20201202; t=1762864125;
+	bh=QBPQY2h3jb/dwTv8ixDDU/KeHlFYOPsvatKmJc16Bpw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=vKxzX0wr6ntIaxsK/A53hJWE8lLaVeIm69oxgve/EX5SRbhA+pZALO6oZirT/Ncwi
+	 jUAHgUFt6USdqjMZj9fX0ByuYJS9TgpZrbp1dalhANR68mARv7EpZCA7T0WH1PJ1Ql
+	 s96onujRGUeSVaDS57BbFqPQIkf68jPyOfckNz/F7YWI4ppD3ttAHnnTblSm67XLjT
+	 pol5Cl5oPHZO1FrLjEgRMsnDwtaPc0ktaq/LnFNnSlUNquxzwSPzCDjgAhEJFgeLAs
+	 gL80VUVermJRjuSoQ1suChEgy3U4XFDrDNGY9Up2R4zc8gDnU4jVyVobAoZ1wjVhx/
+	 DQX5sdotI1TDA==
+Message-ID: <2093f05a-542f-4d4d-b8e9-22b14d0a7a4c@kernel.org>
+Date: Tue, 11 Nov 2025 13:28:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging
  architectures
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 To: Jan Polensky <japo@linux.ibm.com>, catalin.marinas@arm.com
 Cc: akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
  linux-mm@kvack.org, will@kernel.org
@@ -79,19 +80,19 @@ References: <20251031170133.280742-1-catalin.marinas@arm.com>
  <aRG05VS-IIxV2y_C@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
  <fbca7868-6f68-4b98-a2f2-e39eb46b7f12@gmail.com>
  <aRMTdt5tqJhjLgGd@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+ <e2b1339f-89da-4500-b638-c915e15d6c09@kernel.org>
 Content-Language: en-US
-In-Reply-To: <aRMTdt5tqJhjLgGd@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+In-Reply-To: <e2b1339f-89da-4500-b638-c915e15d6c09@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jrbwri43dmambm173un33mo91nfg1gjo
+X-Rspamd-Queue-Id: 2855C1C0007
+X-Stat-Signature: iwum15p4uam1dnmj8it7wtmstpmf97nt
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4110240008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762864028-784155
-X-HE-Meta: U2FsdGVkX1+XRStxCGTEzUTxh05EuJf40bEr+c/5vJbBeXVIk8tZRFBhLhKw5svmFFu9K+HJQ4+vNZpoFXNnziRPWk3J0TRP01jRuZI88Jt9DQt0Rh3kWi9glFKIF/3xLGNyhPdwiA7Eqo/yy8baZ+gMilU/vTZ2yK0gkPD1oB0rcl4xyG3TKWhZuN454G+PxjDLYbVIhtEUE/HDRxdYDXqMJLgDiuZiuZ6dahgUPD1KkcKnQYPHOGjVQWEhe9ksbanQTfRuqgsHPMLZL7U3u/c2ukh5+918+J2r1ptHHJgp7sxwbmBnlrbkoo7s+m1D9OwYz4n3mhoZIBpMNeArRZ6k8kNH1KSQ+rupmWc3Phz9whCVXIw0s04xL0PXBl1LDT5p5RUFvh0DXu4McQZj2F7j+SX4wnG1QWSOP3P+C5ZjFpsIvPQ9DU5SBPgD2dXuOrcJZmemB7pJ78+timbiq5ImodizX3Q1NSnKTzwjD5GRPvf5mdl5kTOt9EMn2XiqA9Jt54SN+p1U+1KKvQGYbuCXZl7gOkl3PE16v3YAwqyhSZEVojlRujxtOx7su2HADdAqLfNSIdrJV3q335iuKk8gDWofBl1ooWDCCgGwCL2i2QLr4az021DuLKiDF1cAUcdcjV4ZUcot8/EtCOjQNlLRLTnmveKE2DCOso0xkoyh8W/QyPduWf/AgjkLUS6pVbOxVw/n8RsX3izc046G2owlUSMkocOXKTDHs2AFtm8s34sUn+FS4eV0/GbJBDQ5FN8YWmoBrZfxDo5rFFxNu6GJHHt+fkdeA0mp8grG+XzOhWBw14U4lKXGKaY5Lap72gwfLwTzeC2qMGyDG6QKTiWze54EV78nJbSRCykJQWlhxvNpKP/H9tLBCXeqdVrbecP49z0SvgXyTM8L3CbBXRlzTOmDkA7FtUo7/XJFP4wKGLjjMNgCNq9L0KUBzdVsAqbKR3/hdvIuDpnfvFU
- gvM3wGct
- iq7JFU1gaJkvWn22Azu4e6XJo8dnYIFbCevG9nS1cdi3HpmKs7sxVoCYnT20o+xo00bFy9TanHyMlTL9EGDGkgo+hl3t+49go3wtImBt9QXrxzjSKMBp9AIsk7NyaRVKGMiOqNnyMJJ/cn0Y21ex7dWtwo6X7mZXJrlOFJGDajjTq90a55hTkrIAr/DJpyncR+BX6otOvi/43dnYs+SWxcjcs8JHzZMjKbo4cALE/aeUyRBVYHK/ebysjrR5SOtTsekjHNj4bhdL34lS7xnHP0FBRlr3+D2qx+CRCSdHOYwv05ZaEJUrMfiGbzroSRzQFQcrTwtj4EQANeqU=
+X-HE-Tag: 1762864125-608910
+X-HE-Meta: U2FsdGVkX19YoGX5tgikkaRfo29h8XbTQm98EukKJINeAnfVlNmPPuDbbyFeiqIKYwAlH++WieVDcLTpiKGc8HzCTauPdpEzK4E6SdjS41SXmYjXTJ1fMv41N5rCvLLF8/vj1J/3vb2aTy3NldbiwGb5iFkJ83JRiMCcOBDPBg2amFvO1MI3S5zIfbIuNVsCWc5vMMTgsF+Jg56g4R6arW2xligVRzMeUeukyqecZ94QfYTZGtvXNDC0wSFfDMhCBiSkxB+iodE+fgFOSJnDIBVKIYHPLK2IOtCW5qJcBAY0iad2+keP9uFBHwptYif90loWIh9b45i61ju8A0SEQ9Bkipf0amQEbeyHp7Wulgi0Vt5MSJs0YKYWPpIlf3FtITgpbtwB6+FTuXaY4+99wfLvnZIv0JFPkeQUVX9JrLUrUSWYfkqgIAH3oZDGbcfTh/HQ2KGOBtnN9yIWeUSQmh48Xbcdembhk/R0FYpBzARAfNDb32G1WPzhojdCt7OPVdriSTU99B1TVMjp2x0TUk9ouYYNSgk38aeiTqFHZ+7ztNehGH2mpQKDrGL2jlreqiI1bGaDpb0wTuywondMpRLvRgTTZV9le2480e3UmHmtq9NZ9Zucw9dCdAdGVao3oHXPV8iJ75f6me9FGQLwzXQmj/V7GhTe80e2SR3MAFwzpj19J6fH3JNXm4oHzgt5wcERJe8uktLN+OJU5t4/mPlqjPOe01TKidVXWIeNvVywNfKJfpXDLXXAD1lgMJIpFfTFOanwFXBi//ntH1CsSM5sCfikueMysjuKkMzxSbWO0LAOfpIziY39f0x7Lwc1mtrFWgiU5kLv5o9BFX+/cC36fRiR9MNtuVHUbK6EJGjsABuqikEUtPkkESzvmDrpgFKSpJ+4eJvq2Xx3QBtQ31O5Z06DnNXfirWfG72QPwON3yL4ekHpDRVyPu79zutRiwxRcgHzlY9iFXPn1Ib
+ chp1glsi
+ KA/n3nDe74LFYU/BE1Ycj2+RExBmgLhpG9pTlaSSBtSYw/1MKfrHCURVQ/9i/GIJiRmmzldE5+w2Sz/6cw0VkRNqcLy2NXzzpQZmr//jVWMuYKnEBHYkIEfck5c1kGhI19JTmne2iZdTFtF20tqZIC27rvw0BGukxM0jGx9WrlBBK0AIMlR65lKstM2FAwrvGpyGs1L5dWvxZed9PNph77UUA5VBIyNYEEv7zBkbivkDmi83ktYRF1akvVmzKSDLSduKD3dKOef18dusuDRMRaqmcJvPys3wgYL1EN3fF1e9dmNeAPaBaMBCRUqc4DMCg1DaCfd4jX4+b2bg8pjy6nHekY78vC34omhRY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,71 +101,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11.11.25 11:44, Jan Polensky wrote:
-> On Mon, Nov 10, 2025 at 10:53:33AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 10.11.25 10:48, Jan Polensky wrote:
->>> On Mon, Nov 10, 2025 at 10:09:31AM +0100, David Hildenbrand (Red Hat) wrote:
->>>> On 09.11.25 01:36, Jan Polensky wrote:
-> ---8<--- snip ---8<---
->>>> I wonder if the following would work:
->>>>
->>>>
->>>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
->>>> index 65db9349f9053..56b82e116cb79 100644
->>>> --- a/include/linux/gfp_types.h
->>>> +++ b/include/linux/gfp_types.h
->>>> @@ -47,7 +47,9 @@ enum {
->>>>           ___GFP_HARDWALL_BIT,
->>>>           ___GFP_THISNODE_BIT,
->>>>           ___GFP_ACCOUNT_BIT,
->>>> +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
->>>>           ___GFP_ZEROTAGS_BIT,
->>>> +#endif
->>>>    #ifdef CONFIG_KASAN_HW_TAGS
->>>>           ___GFP_SKIP_ZERO_BIT,
->>>>           ___GFP_SKIP_KASAN_BIT,
->>>> @@ -85,7 +87,11 @@ enum {
->>>>    #define ___GFP_HARDWALL                BIT(___GFP_HARDWALL_BIT)
->>>>    #define ___GFP_THISNODE                BIT(___GFP_THISNODE_BIT)
->>>>    #define ___GFP_ACCOUNT         BIT(___GFP_ACCOUNT_BIT)
->>>> +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
->>>>    #define ___GFP_ZEROTAGS                BIT(___GFP_ZEROTAGS_BIT)
->>>> +#else
->>>> +#define ___GFP_ZEROTAGS                0
->>>> +#endif
->>>>    #ifdef CONFIG_KASAN_HW_TAGS
->>>>    #define ___GFP_SKIP_ZERO       BIT(___GFP_SKIP_ZERO_BIT)
->>>>    #define ___GFP_SKIP_KASAN      BIT(___GFP_SKIP_KASAN_BIT)
->>>>
->>>>
->>>> Likely we'd have to make __HAVE_ARCH_TAG_CLEAR_HIGHPAGE a proper
->>>> kconfig option.
->>>>
->>>>
->>>> Then we could turn the default implementation of
->>>> tag_clear_highpage() into a BUILD_BUG.
->>>>
->>> I'd like to suggest to keep the enum untouched and only use the second
->>> part of your suggestion.
->>
->> Why? We also do that for CONFIG_KASAN_HW_TAGS, CONFIG_LOCKDEP and
->> CONFIG_SLAB_OBJ_EXT.
-> If we remove the enum entry, we’d also need to update mmflags.h because
-> the trace macros reference it.
-> Enums are compile-time only, so they don’t affect the generated binary.
-> My thought was to keep the enum list as it is and just apply the second
-> part of your suggestion.
-> That way, the trace definitions stay consistent without extra changes.
-> Just an idea, happy to go with whatever you prefer.
+On 11.11.25 13:27, David Hildenbrand (Red Hat) wrote:
+> On 11.11.25 11:44, Jan Polensky wrote:
+>> On Mon, Nov 10, 2025 at 10:53:33AM +0100, David Hildenbrand (Red Hat) wrote:
+>>> On 10.11.25 10:48, Jan Polensky wrote:
+>>>> On Mon, Nov 10, 2025 at 10:09:31AM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>> On 09.11.25 01:36, Jan Polensky wrote:
+>> ---8<--- snip ---8<---
+>>>>> I wonder if the following would work:
+>>>>>
+>>>>>
+>>>>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+>>>>> index 65db9349f9053..56b82e116cb79 100644
+>>>>> --- a/include/linux/gfp_types.h
+>>>>> +++ b/include/linux/gfp_types.h
+>>>>> @@ -47,7 +47,9 @@ enum {
+>>>>>            ___GFP_HARDWALL_BIT,
+>>>>>            ___GFP_THISNODE_BIT,
+>>>>>            ___GFP_ACCOUNT_BIT,
+>>>>> +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
+>>>>>            ___GFP_ZEROTAGS_BIT,
+>>>>> +#endif
+>>>>>     #ifdef CONFIG_KASAN_HW_TAGS
+>>>>>            ___GFP_SKIP_ZERO_BIT,
+>>>>>            ___GFP_SKIP_KASAN_BIT,
+>>>>> @@ -85,7 +87,11 @@ enum {
+>>>>>     #define ___GFP_HARDWALL                BIT(___GFP_HARDWALL_BIT)
+>>>>>     #define ___GFP_THISNODE                BIT(___GFP_THISNODE_BIT)
+>>>>>     #define ___GFP_ACCOUNT         BIT(___GFP_ACCOUNT_BIT)
+>>>>> +#ifdef __HAVE_ARCH_TAG_CLEAR_HIGHPAGE
+>>>>>     #define ___GFP_ZEROTAGS                BIT(___GFP_ZEROTAGS_BIT)
+>>>>> +#else
+>>>>> +#define ___GFP_ZEROTAGS                0
+>>>>> +#endif
+>>>>>     #ifdef CONFIG_KASAN_HW_TAGS
+>>>>>     #define ___GFP_SKIP_ZERO       BIT(___GFP_SKIP_ZERO_BIT)
+>>>>>     #define ___GFP_SKIP_KASAN      BIT(___GFP_SKIP_KASAN_BIT)
+>>>>>
+>>>>>
+>>>>> Likely we'd have to make __HAVE_ARCH_TAG_CLEAR_HIGHPAGE a proper
+>>>>> kconfig option.
+>>>>>
+>>>>>
+>>>>> Then we could turn the default implementation of
+>>>>> tag_clear_highpage() into a BUILD_BUG.
+>>>>>
+>>>> I'd like to suggest to keep the enum untouched and only use the second
+>>>> part of your suggestion.
+>>>
+>>> Why? We also do that for CONFIG_KASAN_HW_TAGS, CONFIG_LOCKDEP and
+>>> CONFIG_SLAB_OBJ_EXT.
+>> If we remove the enum entry, we’d also need to update mmflags.h because
+>> the trace macros reference it.
+>> Enums are compile-time only, so they don’t affect the generated binary.
+>> My thought was to keep the enum list as it is and just apply the second
+>> part of your suggestion.
+>> That way, the trace definitions stay consistent without extra changes.
+>> Just an idea, happy to go with whatever you prefer.
+> 
+> I think we'd remove the enum value as well, because then there is no way
+> it could accidentally be reused.
+> 
+> And yes, as you correctly state we'll have to update mmflags as well
+> like we did for CONFIG_KASAN_HW_TAGS etc.
 
-I think we'd remove the enum value as well, because then there is no way 
-it could accidentally be reused.
+/me realizing that my mail client decided to use yet another mail alias, 
+I hope I have it fixed now such that everything is sent from my 
+kernel.org account ...
 
-And yes, as you correctly state we'll have to update mmflags as well 
-like we did for CONFIG_KASAN_HW_TAGS etc.
 -- 
 Cheers
 
 David
-
 
