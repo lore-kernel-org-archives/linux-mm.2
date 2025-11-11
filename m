@@ -4,85 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D71B1CCFA18
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 16:43:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D2C9CCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 16:44:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38B2A8E000C; Tue, 11 Nov 2025 11:43:44 -0500 (EST)
+	id 699618E000D; Tue, 11 Nov 2025 11:44:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33B728E0002; Tue, 11 Nov 2025 11:43:44 -0500 (EST)
+	id 649EF8E0002; Tue, 11 Nov 2025 11:44:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 251BC8E000C; Tue, 11 Nov 2025 11:43:44 -0500 (EST)
+	id 55FF58E000D; Tue, 11 Nov 2025 11:44:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 11EB58E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 11:43:44 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95F5316012F
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:43:43 +0000 (UTC)
-X-FDA: 84098897526.16.A248AE2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EEAFCA0003
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:43:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=A4MiOq+W;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762879422; a=rsa-sha256;
-	cv=none;
-	b=lTar6qZY5a1ge6SRR4gfBaAl2PKN8hh8EMRORzjHYL3wh0Prd8qNywpHTbDSCXFi6qCpI3
-	ybt1/lAuBy0KHtv6J3CLLzwIv6L6aq+U0RsYgCoXI1cJBfjGFpWHPFdnOosbRR0EYYYCFv
-	uUtFSe6kVgukK1mwr1wNbSSeqEEENhA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=A4MiOq+W;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4388E8E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 11:44:30 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 03731C0118
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:44:29 +0000 (UTC)
+X-FDA: 84098899500.08.A256720
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4AB7820003
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 16:44:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rfXPZSdW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762879422;
+	s=arc-20220608; t=1762879468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s7kUONsnFg9eyKhe0+h2kxSQHVhw/rjfrzCjpIXpzzs=;
-	b=OjvYcMz8dwAj/YS1t1qwRQYSMT7O81pQlw4c+MrhDZccUBDoVZs8Pxo7QdfruSJSo3D2sL
-	XZB7xmTnm+ATbBK+N4HH5YjJQt4gc7+Ra0GzFNi98ZA6eBKx4mdgFD+Re2aChtEwvJbQpY
-	9ycqRANj7AUJb4KK8wvlqJjdrMPs5no=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=s7kUONsnFg9eyKhe0+h2kxSQHVhw/rjfrzCjpIXpzzs=; b=A4MiOq+WYSb0RAhEkMnN8EsCit
-	dpjqJfnxKobjERQWzXOX1P97oI8t3Rkj/8CE3d1+JOtm0bwgwqqRRNbpANSXpBDXKBqfpqM5f04CG
-	s9QkSFEAnB+r6CQxfkw85KinUlNPmfbzgCK1CxJ8z7pApRfX4KNZQq+ysPbI90960Kc732MTdPJq7
-	hFr9/qEzvxczZCZy93mbzwanvF9trY+N1LvM5PqT5MRUdCyNWzS9QrCnkndgwlmd6miTroB+qbMzt
-	5eyqd5xtK8Kr6tH9MJxAk1nOlo8aw3muGqGrWf1iCIywtqq/t0brE4M5w5hn1OFr8W2BOVdYzATiI
-	Vz7YuO0A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vIrT0-00000004ZcC-2bHY;
-	Tue, 11 Nov 2025 16:43:38 +0000
-Date: Tue, 11 Nov 2025 16:43:38 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Vishal Moola <vishal.moola@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [RFC PATCH 2/7] mm: Account pagetable memory when allocated
-Message-ID: <aRNnulWuk3TO7VB1@casper.infradead.org>
-References: <20251020001652.2116669-1-willy@infradead.org>
- <20251020001652.2116669-3-willy@infradead.org>
- <d71ad346-e88b-45a8-b873-c7a3def197a1@arm.com>
+	bh=AFGArA0AwyLodhjb1ON/WMsB8iA1cwp5MzvB1sHE/Ws=;
+	b=KC+de721qi3RJeTcMTfKGRLFhBUXhVRbE3+EQ/PSAqmZERe6NByk29SrJBpf/JOpdfsY5w
+	EDVJ9lUGadx+k3RuC8k9ieCeJZhLZYMH06RL5pWJzkVdL9IsTNbfbtOEBPYGaa+PS3meEA
+	yd+vvGGhsuSuMX3bypQkB7Z/gCCJsNw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762879468; a=rsa-sha256;
+	cv=none;
+	b=A9vXY/NYxYiBllHoFCTEZckZPN9Ozn0BW5Jm8iEAKQzAod/pg2N2JFu71e+XfzgXziruws
+	onynG/GWIDBJvkI4nexaGHkZDd1Xl9y1BArb3CxZuqEeHU5KlKI5pLZml68JQpNXoQspjy
+	R/GT4uTQTrk2OEpwfnzix6HOlVHsi7E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rfXPZSdW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Date: Tue, 11 Nov 2025 08:44:14 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762879463;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AFGArA0AwyLodhjb1ON/WMsB8iA1cwp5MzvB1sHE/Ws=;
+	b=rfXPZSdWWJKvfp/fyeozoSkkYJwyDMDkRUVrEra7CvbSs6AFwxYotJETtKrWvS3TJZRC2h
+	Arwcb/Xt1oFuQUnzOeHaCFe/795zZ0GNk5RO/LZXgNAfpb+qLnIUjCIe0slSEGkSjAeNYH
+	bROAJPYA4Fq3TcbIL99NO0L3yuoCXjU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
+Message-ID: <jzihvbb6w26d4codfigy2o7b2h26izb4ahihouw54cvuzau54d@jyaa6rgpzuai>
+References: <366385a3-ed0e-440b-a08b-9cf14165ee8f@linux.dev>
+ <aQ3yLER4C4jY70BH@harry>
+ <hfutmuh4g5jtmrgeemq2aqr2tvxz6mnqaxo5l5vddqnjasyagi@gcscu5khrjxm>
+ <aRFKY5VGEujVOqBc@hyeyoo>
+ <2a68bddf-e6e6-4960-b5bc-1a39d747ea9b@linux.dev>
+ <aRF7eYlBKmG3hEFF@hyeyoo>
+ <aqdvjyzfk6vpespzcszfkmx522iy7hvddefcjgusrysglpdykt@uqedtngotzmy>
+ <8d6655f8-2756-45bb-85c1-223c3a5e656c@linux.dev>
+ <aRKqm24Lrg-JnCoh@hyeyoo>
+ <20251111084900.babaOj0w@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d71ad346-e88b-45a8-b873-c7a3def197a1@arm.com>
+In-Reply-To: <20251111084900.babaOj0w@linutronix.de>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: gt81gw1egy6huima596eqajimy39bhmw
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EEAFCA0003
-X-Stat-Signature: 1ysi18d8th4dfyixgke8cuf1rmtcjq3h
-X-HE-Tag: 1762879420-968445
-X-HE-Meta: U2FsdGVkX18BDfyeF7Umgf+kYcXcXRwvPBDCUjtNfa+lb56iDKkS6+7X7i3Y3hC94saVuKk4NnptUQGYBy35QV8DVXE5bdXJw84+/s+R0WRrJQLxqyEInrocqK6klR7rwGcwVqyhPViwnHyve+cLCzBeGIiblRfIawtHEIPJ+q2N7owIXka34wA4d74FXs597AEczmnhiK5Os/Lm55cKDSzZ/Uku6AFAoR19cFzkuQo5djN3dXxm2qMwY98RFGH2tpHyPceo7fzpSa2wHNynSqbjND/fXBkBlC4I896eM1Chhutvw+CgYgg8GgcsAdTuBEZGEGhJzOV0EyPVgOYEnHeX88S1wmTUCRu4Ow/WQTQmXD3hk7jFhIPQyKX5HF4BHOwf7rfe/FanxG5J7IfCBMlWvRHMjCfEcxr02sA/N+KhbeECzUqrugXudfC0GTbO/Va+g911eFvo/QXV4UOfRkHaA+F4/uHUoknLvAKIJCW2lVninbtz43RzLYVaeQHzZAxW3xvQfDNqGjDnzzkqCiJGdJL3/tzd9J7DklK03OyjwWhY33iXtWIswiFBKuV9D4UkGvgaNA3KNKxV/06lY0cogHovUPoi/mFKfRMCud5l0f45lKdOUj10QFBhg2xKjQuuffeshI9lDdSWCdlNtJBo1Cjhk3iiAnb5BhrHXI27CfJgnY3atWxjUV9d9wzWtMdrcAOo5hisFh4eyGOegPIZm8USQ39zwthEVb5yRXmvrkjGmj2FaFxtsmh3QH5Pw9zfQLF+iM14AdPoiwFi3s3snn19DB0lMp0yx16D5h/cUmNkwyDcfz2+zDM5LacpD/JzeFUoaXqMofQzaki8KP9clxnlwjeS4KaKAEDSAY4dgBBIc/Y07vB/bxU5r/nXTFRC3aluJqA16553dQcO1yhcfQeRDIRNh/oEzHVP9rAQGJOQgmQiP8K9VxqFaDbBeu53i7M0RhLWxCTvo4I
- AM+0Jmzd
- 4Kzi7uknynRovVtnXUk7LIGn/o2TDjlaKMk4Fc5MuzsEQqlM18bgkKMUgevgoFWHuz+wGBxzzMRMce20fxM3w6MwKiYaen+H7f65fJoP73pjpjm6M/sZTbzkYifJy5KqtUAbeHAlcKoPgINEjlOTmkcDoO0N/cfN0ewQT3E9eIb/BTkNROz7OKPiw97vAiEvSOgsCRR+7mrVZ+F91SFFiT2z0RH6iZSTyVgJvhzzPqKwJBnIv5wY+Knpm4AePX+c+SeW9i3MY1n9ZdORSHVyXOCSdFgoQi71+WS4oxKz2g1qn9NGA5bysvT0l3OFcvYQOkf8X
+X-Rspamd-Queue-Id: 4AB7820003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762879466-893283
+X-HE-Meta: U2FsdGVkX1+yom1cm1y+sIr6bSpYDRSzALQMeZ7zZgk+XiZxa2Leg52Rsvr5DVS0Ren/mFnBfV3wR/g5rS0pggTxwra79+wcBI1wkAKJlnjfAZLLRGnmds4o7Z4IZ0DZe/qXC6upen5lkn2wWTKMWPgxA/Ax67vGQp75AK9u8I46z+6HoTWkvpfmXBdSULjiJxR9TkIJaZqO8r8OVG2kBVdMfRuubQXD8xBumlCBEJJXvISWGmw6kYO9OZCVWSqkpWTEWfULE3sWJ5qzSEOz8pHhVQiNeRo+ER1CcEciPz8/P351iyMzVXil0H44k/ni7PMV36OZPUZbX7/AhELu+6KtgZL1sk1qAL9Tx7IWKYeoXQL4YOPu1rHhLvsE33fKH1oK1g6CGTwaj3INRs+QIIoxCW4zUxRTs1POtAlLqoAYv3hLkJfKpZ7/AS44DvPqgDmmoKuzMGosLz1iXxQ1qAQ3BNVgpdsUFMEoqB2psknOSvV2euRA9Wfa3mSibxJauu3GngMqA8U4cgQY9aukdT7ZH2M5NncxXg+Phbg5TeYNMa+U3zOYQFkwnfiOIPV7R1G3un60Wn1iK+l0hqWCvAIyYc6hkz1kPwGWLAgdjmo5MeiN/feQ8Dnmw3SgdvRb7ijpgpfPJL3cRrDu9OVsHOd6wnkX0qCFfu6643q6Hk0OITVO4qeWUkX1twLZYrV7wyvS84vHtoVUDutZmW/Q+d0JnPnWO806bUd8wJACynngXF7Re3RDfeOQCnKw+6puyByaIyyTU0w7oVqpDF+8IrZoJ2Ci0vHsH699ituA//XYhyR5+3AKCXHpFFOZWGcZY4C7TrhT0a7rAgtWNM0K4y6XjWMAxdGzHQnszgHJgBXTQ20d3a6kxNhdrgIi4mG2qPf6bkzPxOC7dTVDNLbYGm02+ti/2oLnF1ijj0D3V0k/h1wZPN/xNc2fZP4ZVveauAW2VIOOD9pBs1PsrKQ
+ 4MjhMZkJ
+ knDTdTXLdWpnx/FTHA5ZG2NpgxAfimZl/FpobH/F32bqbocJAMxSRcgezxgd3e6td7d8cSflY8nSbNT2zhmS3VicimD7dNT+5foUqq5gKWgn5KxMEyMuOqqX1rZst88p+uCXkd9FNgWMMkvjBo/KC6jQ3J18PHdD9xKl9XJ4JY1XaWheqLo33GJCWBa8Foo9/LKe+Y3BRryCn5erPnLxp99PGTFO+YWyLsHzys7UpfI5E+kTqBT5NHVga65Xq+jiVVUxB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,20 +103,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 11, 2025 at 12:39:19PM +0530, Anshuman Khandual wrote:
-> > +++ b/mm/memory.c
-> > @@ -7280,7 +7280,13 @@ long copy_folio_from_user(struct folio *dst_folio,
-> >  struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
-> >  {
-> >  	struct page *page = alloc_frozen_pages_noprof(gfp | __GFP_COMP, order);
-> > +	pg_data_t *pgdat;
-> >  
-> > +	if (!page)
-> > +		return NULL;
+On Tue, Nov 11, 2025 at 09:49:00AM +0100, Sebastian Andrzej Siewior wrote:
+> On 2025-11-11 12:16:43 [+0900], Harry Yoo wrote:
+> > > However, in the !CONFIG_HAVE_CMPXCHG_LOCAL case, mod_node_page_state()
+> > > still calls local_irq_save(). Is this feasible in the PREEMPT_RT kernel?
+> > 
+> > Hmm I was going to say it's necessary, but AFAICT we don't allocate
+> > or free memory in hardirq context on PREEMPT_RT (that's the policy)
+> > and so I'd say it's not necessary to disable IRQs.
+> > 
+> > Sounds like we still want to disable IRQs only on !PREEMPT_RT on
+> > such architectures?
+> > 
+> > Not sure how seriously do PREEMPT_RT folks care about architectures
+> > without HAVE_CMPXCHG_LOCAL. (riscv and loongarch have ARCH_SUPPORTS_RT
+> > but doesn't have HAVE_CMPXCHG_LOCAL).
 > 
-> Should not this check be moved to the earlier patch instead during
-> the page allocation ?
+> We take things seriously and you shouldn't make assumption based on
+> implementation. Either the API can be used as such or not.
+> In case of mod_node_page_state(), the non-IRQ off version
+> (__mod_node_page_state()) has a preempt_disable_nested() to ensure
+> atomic update on PREEMPT_RT without disabling interrupts.
+> 
 
-We could, but since page_ptdesc() is only a cast, there's no need to.
+Harry is talking about mod_node_page_state() on
+!CONFIG_HAVE_CMPXCHG_LOCAL which is disabling irqs.
 
+void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
+					long delta)
+{
+	unsigned long flags;
+
+	local_irq_save(flags);
+	__mod_node_page_state(pgdat, item, delta);
+	local_irq_restore(flags);
+}
+
+Is PREEMPT_RT fine with this?
 
