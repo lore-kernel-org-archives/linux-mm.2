@@ -4,170 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8776CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10F8ACCFA18
+	for <linux-mm@archiver.kernel.org>; Tue, 11 Nov 2025 08:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33C178E0013; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
+	id 65E498E0007; Tue, 11 Nov 2025 03:10:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3135C8E0002; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
+	id 635AA8E0002; Tue, 11 Nov 2025 03:10:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2028D8E0013; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
+	id 572748E0007; Tue, 11 Nov 2025 03:10:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FA688E0002
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:02:40 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB67012D045
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:02:39 +0000 (UTC)
-X-FDA: 84097584438.24.87562F8
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 543EF40016
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:02:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qdo1txQg;
-	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 456F38E0002
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 03:10:44 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D49C6160495
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:10:43 +0000 (UTC)
+X-FDA: 84097604766.05.9661B4D
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B6A6720007
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 08:10:41 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NWlgOimx;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762848157;
+	s=arc-20220608; t=1762848642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a9W0L6CfK0bWdTLm9fJi4xkSwBtlng03J+x1NVveACU=;
-	b=0hTxPpYzct5U7RF+PvXcfG7nyzikGsNT4X177Bhl4z6ug1Z56fqi5YZAbK7xXVPlacLkIT
-	05birlJRHiOyuEEurdO1UmzoFd2mLvzzOlQXQtQIp8Xrj5V0HSpY9lVdymLxnpJgjEkTsB
-	qY0nIQTuBJwGlIp+2xqkXwaDt2R0fVM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762848157; a=rsa-sha256;
-	cv=none;
-	b=5BuBKjNGCpY2tsWlGS6D2v3VmliyHBqWtKS4KZZFvBUiEle6H13UuyT8/T6gJwnpnUiBc5
-	N6Jz2ozD6I+S1BQogMexZp7U6ZDZ9dmel7N1psx91xcnzwZUW4bzxDo/sqZizEcMWEjQqR
-	ooYPkXfTpl6csigpNgHUnSkSKUVh2NY=
+	bh=TQbue78pKwkHXp+W4v6uPbf6iMxcJPuiWhAhoJWq+ek=;
+	b=LDGJt4h+KdB0Ypx/gjTM9l1+W2aQ3f6jcM1zbpS5FnxlVqvGDhFaC8nKLWqiwZP/NE0MR4
+	kstxkkpycOEv4e4/vsVQ5jYtwy64FJamzV5vxSaxfUtCNJUumWqvXv482XRWc2wy1EvYnW
+	4rW4kp2g1mizoEZ/aD32EBRHlYlm8xo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qdo1txQg;
-	spf=pass (imf07.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AALY1xc017402;
-	Tue, 11 Nov 2025 08:02:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=a9W0L6
-	CfK0bWdTLm9fJi4xkSwBtlng03J+x1NVveACU=; b=qdo1txQgzgOvIHTmCzU7HB
-	Gn+DrVuskN48MqA/40OYsz0tP49ocEYlsaI4/lyOl87fxVMg8ZYDJ6WfohfxUa2H
-	sCIXGOdWkVT7byFFSSNba85ql3Jovzbu3vHW6s+6oA+dceJ5xhYy0xmHLma5lXwH
-	lco3Z991ZRYlMBrC8ph0/LJ1Vvt/e3RGPvY6qNS+2DRsPg2MSEcRVFMIwTtKS8WI
-	KYdt+tIQ5ETwHVz86a6K28vbtfyBvCD2F1E+28XuqeV3bN6vX0T9xvwyMQDiSz6P
-	IcBBYG90bfN/z8xaZDRdprnl55ftC0Cnz9ls8W5PCCk0f7PgPqbw7DMxKYlyocBw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgwtumd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 08:02:00 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AB7kG37026652;
-	Tue, 11 Nov 2025 08:01:59 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgwtumb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 08:01:59 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AB5Gbhj014853;
-	Tue, 11 Nov 2025 08:01:58 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aahpk1q0u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 08:01:58 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AB81uo343188530
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Nov 2025 08:01:56 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 80F072004B;
-	Tue, 11 Nov 2025 08:01:56 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2ADFB20040;
-	Tue, 11 Nov 2025 08:01:54 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.64.50])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 11 Nov 2025 08:01:54 +0000 (GMT)
-Date: Tue, 11 Nov 2025 09:01:52 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
-        Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Woodhouse <dwmw2@infradead.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        x86@kernel.org
-Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
-Message-ID: <92eca53f-eb5d-4bd0-ad6c-56c65fdcea86-agordeev@linux.ibm.com>
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-7-kevin.brodsky@arm.com>
- <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
- <c764489e-0626-4a50-87b5-39e15d9db733@gmail.com>
- <645178fd-df4e-42fe-b55e-97d9506499be@arm.com>
- <413b2c49-f124-4cda-8fea-a6cc165f6326-agordeev@linux.ibm.com>
- <e428b1d5-65a8-49bc-92dc-ec4a4d933dec@arm.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NWlgOimx;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762848642; a=rsa-sha256;
+	cv=none;
+	b=o7b0Ij0GpJ65GWCJmH4jAxv2DUd6s19yvrWapXegArNqkLkyTACDzT1cWetCKxJNsA8c66
+	IW7DqS7hr+qePPA8gcSGUQM2fR0lTnx/vtNn1Hq6PdPQlEn50zGlsCFB65Ja3MKdcdFmS1
+	suvBIJDZ8wpVj6H9bNM4Jlivseqr1Zc=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6417313bddaso3942845a12.3
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 00:10:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762848640; x=1763453440; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TQbue78pKwkHXp+W4v6uPbf6iMxcJPuiWhAhoJWq+ek=;
+        b=NWlgOimx0FVxOv4jkurGcuZ30Sil25r1xcwqHiSLESgfK4w95TsI+shuT//y/7GZh+
+         vXx8cLbDzoGWEWLKmDytuLjsTVXUWzei0cEXVTha3q/4qWJTQ9aD5jFoqKHQIDYFmNXx
+         3cscyr+5hz7TzXFxVwj/my0xnRjHOiUqAD/qlN2DFRtoEktjy5Z4UPIkUrvRvIRmCOs4
+         WY/NaIqY/2lTHk07LzGEKT1hMNr9NTOMaVut0Rq2cIl3jrk+54c0OcWm0RQM3Dw0cRBu
+         f44ohh/bD8XVbyM/T2lyg9mKKKYc20vZHcviO/cHB89WOgk0HLIa3vvfjDWJOSv5xduj
+         Ilqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762848640; x=1763453440;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TQbue78pKwkHXp+W4v6uPbf6iMxcJPuiWhAhoJWq+ek=;
+        b=wL2PCnKB3i0uTAnm9Snrmf6x4nuPCuBQOwomlmV1EBifcs1YfTSX5abfgdvkgm9J9t
+         W+oyqYB2UUIpjFgLiVcaJGg2jMIQ8WNhmes91Dds/0/6CbsOkkRBCneTwzCu6Fq3v4MM
+         CGZCZeZwPWbdKPBhZuRuL+wU7foZzsILEsLQTkVwRIU35fTVXVAds0vj9WDNT4dPjicp
+         zIgYWpbhGfRjLS5i3YNPCWSzHVhNv8B5B66xqTyvpah4jfXraZdVrJ4icI6TTYDrbzSR
+         /CGax8bdJhywJt4NAPJh158vCxh1mx31uQZlHo7QT6dQMb8ubFUVqkmQUhFRnPZh6Jnf
+         FcVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXrdEw2L1Ub+4uZ2mzC7DPtWp6IWWUv8wyCgfmPP4IOD52NtT1okqZgK5sOls+rl5pm8EX/ji6rJA==@kvack.org
+X-Gm-Message-State: AOJu0YxGgxBhpR4feMZwLNwsqjfHholOXouJGWXiuZKAMCkOEHc7j6Mb
+	u+GX0rT0SdHbb3bJT0PaFgdG4MLQxseaKDpExMhjYLf8s7qmqtNneLp/ERz5mGsj4to=
+X-Gm-Gg: ASbGncs3z725IhTEE0l/GhQ82iYJpioJmF+WgdKo58BV9R+lMioCyTY9l+XLYP2V+0M
+	AWAvamQoblrzlNDXsPQOWDKUoy1BJFz58BjD2IhPfPLIOMT/7W+i9qnje0XPJa9FfDz3AdohgZG
+	cSDibfpp5OhF1lmsMEUq/3WTY/prfGlCGnUtO4qQhlhcLKnJhO+1bNz9dlLq5w3uRCvmPYi8426
+	H2B9E89AecQp49sUlNB/MPLcgkPJsywKVFnipOC6exnn9IJumIlTHjWu/MJwA9z4rTbLQTknApN
+	WB15Svr/IslitkH17zMay276irZVGiPIQ/d1QJsNGdhKY89XP1FP6I78zPc8mYqKTBBzd2xSAPT
+	M7el4rASBEur04Chr89hwJijz+U8P8udOj3T/g0gJhymiO7iU79PkUl8/d14fLttKaWHSZ0DAQd
+	INmwP+gKLYR7Nv8UlcOp+7tTTT
+X-Google-Smtp-Source: AGHT+IEZYvAe437RcYeslkObkmRF/TXOLhs0HzqzcY6BdpIa2QVGfreM/sajryoPs6lMwNHAyeu0Pg==
+X-Received: by 2002:a17:907:3d44:b0:b6d:8da0:9a35 with SMTP id a640c23a62f3a-b72e028d598mr1171710366b.13.1762848639974;
+        Tue, 11 Nov 2025 00:10:39 -0800 (PST)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf40768fsm1292308366b.23.2025.11.11.00.10.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Nov 2025 00:10:39 -0800 (PST)
+Date: Tue, 11 Nov 2025 09:10:38 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Cc: Leon Huang Fu <leon.huangfu@shopee.com>, linux-mm@kvack.org,
+	tj@kernel.org, hannes@cmpxchg.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	akpm@linux-foundation.org, joel.granados@kernel.org, jack@suse.cz,
+	laoar.shao@gmail.com, mclapinski@google.com, kyle.meyer@hpe.com,
+	corbet@lwn.net, lance.yang@linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
+ on-demand stats flushing
+Message-ID: <aRLvfoMKcVEZGSym@tiehlicka>
+References: <20251110101948.19277-1-leon.huangfu@shopee.com>
+ <ewcsz3553cd6ooslgzwbubnbaxwmpd23d2k7pw5s4ckfvbb7sp@dffffjvohz5b>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e428b1d5-65a8-49bc-92dc-ec4a4d933dec@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6zTX9ZOrNUJdIPkZTpOF6inwbKLmfWMW
-X-Proofpoint-ORIG-GUID: LChZoM8zrhHNbPBL-El76cxb9g1AeKQe
-X-Authority-Analysis: v=2.4 cv=VMPQXtPX c=1 sm=1 tr=0 ts=6912ed78 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=8nJEP1OIZ-IA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=7CQSdrXTAAAA:8 a=RmnHjvQuIkE0_jnVAnoA:9
- a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
- a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfXyGhka9ktVQcp
- NtumBxw6X433jOZ6hxU7cflzh+FFuYKWWKnULzVPcUOjZXQmkTAqOCdXlHIsHv1lpUX47VickOd
- +ymisGDp/K22Lqycx3j2XXMo0XpqaRXvqkKxvBKvJKxPXuUfuzt3AXkbSqNOdA4ImI9C+Xq1kxt
- TEOnl7KKGrGzBnDhvUHkdpLWQe2Lh5ecd2l9m9sQhLcN/N7oBhjXJoRqt609HdHHCQ8kIUpq28s
- Sh00eZmpM+PD2+npNB09KeaWuLe3d4wgMIavWSzMSuvE62y1vEOzjS8GZEWtbBR0nfeizZ8kPEd
- goqFEPPBTD0yzYfjqEub6US2xXlbVyhasXpHCLWJWgCsNJJetNjX1OgXN6mLcI9N0yKOs9EGAVS
- 77b7qIhDEPM4ZI6Q7fzDt9a5okKZvQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-11_01,2025-11-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- clxscore=1015 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511080022
-X-Stat-Signature: fo87cysjuyaa83ryxztm81hxgp1thgq3
+In-Reply-To: <ewcsz3553cd6ooslgzwbubnbaxwmpd23d2k7pw5s4ckfvbb7sp@dffffjvohz5b>
+X-Rspamd-Queue-Id: B6A6720007
+X-Stat-Signature: e7yw4m89hnw436ka7k1fpzywco1syste
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 543EF40016
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762848157-449137
-X-HE-Meta: U2FsdGVkX1/L/MdaQ8owKuujU0qsf2BGDS3qc7O/iiPWyQa0pLGZx0AMSxxj6wqIl32mXENkI8PZ16gSL16ONsDCef+MP9P58AfbgG0DCbxHQ/iCr/b++AmOg55UFzku6a3oSFEd6NJz/i3iViMtgtWssR/d6Oh61yQWKRU7PHjIX0SSCODzmeVHA1QB+5LKtqo7oS0E47Ygpq8n3YewOfXcXhC3Mpr37nLyoi/F+ABG48j35d2XRy0vB2mimEsdvAh5vkzdoql0RlcR2dYBmYCWJ3r4DdTDwLsxxo0/f3ZsRrbNgaiJeWW6SxThH3doHKkA1W+v81zXty4HO3DJLnUiRknvGakf0gyGYzShl2u60pUGSn9dBO+A4BclXEx0umHtXuUf6JiD4bQqyYwXUCaFkFBfd12fO9NvwLa75/AeDzmTAOFDc/VdJPS2Jx83CP6oMDf02Q85aYQAcUy18szXRI6V4eFprnWHCoD/ySZwcEryEjqAhpU5wf0kigBf5H8hCRlSzyv5zR8sCSHbdEqvyF5IK5In6qfWJjnADRaTpvkBwN3z7W2zo+st1CTyaB1uROLD1wgj4fSF6rQwSeBRHllSQzWhSph2p0rPGvtXgpjOb6w7X5X6rJsgiDgj/zEncsXFqoHBHN0cLhJIqNZF3805VdtLXuqeCKERBCM9KHtTrhI3FkJ0TooM5pSBMfD6+p+tT0FYQU3dlzHw0MkaDoLAjgiN4l5JWFYITDWWQ1UXiPiuuQrvpwQWp7bbNQHrI7dHZrxX3ccTTSwFeegOJz50gsPV1eXdreUidws7vjUuprqIRLXl2yiIS14zS4hHZOJi+It30iUgRpD15VDi7bmjEENB3oOG6vQLFcE3FN0kRC2jptnkcwiIBJR8UMI8TR+sfWzc7pIU05Ullv/w8kSoz12us+0BNy9FvunKD2yx6oNmZT4Ut5ko9zYiQs77D6JUFMdjoAVx+UK
- Dm6h9Nml
- wfJzLxKZs1aLs/1IBkWqb0/eTopoUscEZ9SB5n7V7DQ9xa+zUeFwR9K0+RGpnG5Mm5SZDpC279hbNx8ppE0NKFEDyF9QnJQ42rBM8Qh1Lof9f7tEtusJvKnOGqVkZ8rpyVUMt0rXi7wP2q5EOdHuWKwwhaJZ3/fX7RQsioShMR6505gZHhTEPmwzyNeFHsUJQHY+oBGGP7jDitaXt1MifGXeOqKUvvPeosetn8TN/zXpNspHRZ24ndbKid00bVDbIfM/KV0/zzJtAEiYM4HaQbKS4DDVpkZvdExdSoMiJwHfe96pm1exWNMPmm85ePcKhRUEx4/cVVvd3nehkKSwbUbEhJn502WHPKMgTLygdLKm0kYtwtOZI3Ca3zs5B+zQJ01QPgN0fv8JI+KqKt/v1IKPIPQ==
+X-HE-Tag: 1762848641-701489
+X-HE-Meta: U2FsdGVkX18q1rKe5YfHoaNabhqYorQ4hhoXyh6di84byvC2zjpVr1StA0FbpmhQAWma47gpMpRdCSHWv4kFnz5npiZOLq3nP+VI7DD4/g48PlmlLbR/ineA0iRqPurWPq8sUmkkADtBtZPTWWJ9YXmLQfDgWQ4NSq97pJzb7OTiHznUVHrgkb28mN+yELYp76KqqKTo8UISiBxbTOy0g+1FgRj2aPdMlOWnQow7sIegycRLMQcKdSLRQpUYi/B0SFavqclRjMTkt5JqN+l3hwD5ueVKgar0eMqBoY5ZtJvuTw0oqDZQHxcST4Uodw6BbkT+A1xmd831pL6DjGGtuVW1UgeYv0A+AiajQN8wxUcqoGVJZSAyQblPc+RMBn5Umhhf6O3clbuwLMEibzIecKDxbtR4P3gdR1x2lo6cNzFhWzThChRLEcZ5jbPaiO8j1X6MP/0zXZV4K0ndfVfRk2ftLnRSEXaNjfJ43k78/Nz8D35GUGiuCAPYrLCE8OzouTeBRFzNzmjzG9kAcCGyDrB9Vk4nPMywIxfg5l5sXXWW8YDipo1aI6OUYmh1dpyt8nUUZFXfmRbLAl1VISC/v9sMbfeHxpYuQ3OVd4JXHeIttqL1XM3TitUWxA5F2plZhK0WgHuyhLi5oXZgbfUbUT1kdjyEWMwBs34sCQlRUoe5mi4LExpMbHui8UGxL6O+3f9anhh4Jydh9veQLpr61BQlMnT3w05IMxkZSqIUw1uhQJdBPtbX4s3biv/F1Qd4YRHawUDGE49dzmIampaKyY1X5DecI7ptg2YYaIDqP/mCzIxdbCimSseyNYJZTdSyUvbBrUzez2WMxTPvzo4w9NaBLHAtDSqZ11fIwAqlP5lR1Nw3zXEW9eS3TXyOxlXsVoisqUAGE0x++NIURUze624OTEZW9D8NSsleGE4TE1sBYK8sVNARbv69TpzeLcA+Z+p34CWGAz1ESkvzC8i
+ FiNVtWtX
+ rJOuM3RtJhNeXcmg3Ri/PdZA1ESY6MaAknf4Yv5x/7ZFrb6T74N+EQ3zZ6OyJOowlslyTl2RlsTCjpDxBHtS1IBiAdtcbeWs2DvE0Z8EMVmPTPslmxc/tgoWqE779I5QsPSk5cfXIYy2NgUDvpWPTJqokqwt7rHz1Xmgh6RKxCDLmKsVxvpvYEpTNT/Bmph2EoLq5Wod3vRm4PHnMcIcLNTbvmNUyO1fTP+Heo3X/eTEtL62YN8oanwBsze2IsU0GFt6fZk4CcnIyeW00HJuqNAo1Kyj6XH/9D6AG6/GdcxnZ+R5d2u4hQPEfpa4LrRJAduBE9CF3JoQOy+RIa85H3OsWfTKzWoVP/2eqBAbvKBSLBKz2ySbnjmAWaMERqy8bfD6LkxKIQT1SFa9SSz7Gi5bg+PhvqTG5kxm0Ablm3OBx2r97eCF7y2jhDgVocr3wT0xEiHmFnb8YJBvW6eHM5+FyE60coYi8fsPG7QfZ690H3Nasn8xz9A66h7oPEPP1YyqFBsmIZPnWhONIR828uMrG6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,171 +125,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 09:19:40AM +0000, Ryan Roberts wrote:
-> On 10/11/2025 08:11, Alexander Gordeev wrote:
-> > On Fri, Nov 07, 2025 at 03:22:54PM +0000, Ryan Roberts wrote:
-> > 
-> > Hi Ryan,
-> > 
-> >> On 07/11/2025 14:34, David Hildenbrand (Red Hat) wrote:
-> >>>>>   #ifndef pte_batch_hint
-> >>>>> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> >>>>> index 5d2a876035d6..c49b029d3593 100644
-> >>>>> --- a/mm/kasan/shadow.c
-> >>>>> +++ b/mm/kasan/shadow.c
-> >>>>> @@ -305,7 +305,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep,
-> >>>>> unsigned long addr,
-> >>>>>       pte_t pte;
-> >>>>>       int index;
-> >>>>>   -    arch_leave_lazy_mmu_mode();
-> >>>>> +    lazy_mmu_mode_pause();
-> >>>>
-> >>>> I wonder if there really are use cases that *require* pause/resume? I think
-> >>>> these kasan cases could be correctly implemented using a new nest level instead?
-> >>>> Are there cases where the effects really need to be immediate or do the effects
-> >>>> just need to be visible when you get to where the resume is?
-> >>>>
-> >>>> If the latter, that could just be turned into a nested disable (e.g. a flush).
-> >>>> In this case, there is only 1 PTE write so no benefit, but I wonder if other
-> >>>> cases may have more PTE writes that could then still be batched. It would be
-> >>>> nice to simplify the API by removing pause/resume if we can?
-> >>>
-> >>> It has clear semantics, clearer than some nest-disable IMHO.
-> >>>
-> >>> Maybe you can elaborate how you would change ("simplify") the API in that
-> >>> regard? What would the API look like?
-> >>
-> >> By simplify, I just meant can we remove lazy_mmu_mode_pause() and
-> >> lazy_mmu_mode_resume() ?
-> >>
-> >>
-> >> We currently have:
-> >>
-> >> apply_to_page_range
-> >>   lazy_mmu_mode_enable()
-> >>     kasan_populate_vmalloc_pte()
-> >>       lazy_mmu_mode_pause()
-> >>       <code>
-> >>       lazy_mmu_mode_resume()
-> >>   lazy_mmu_mode_disable()
-> >>
-> >> Where <code> is setting ptes. But if <code> doesn't need the effects to be
-> >> visible until lazy_mmu_mode_resume(), then you could replace the block with:
-> >>
-> >> apply_to_page_range
-> >>   lazy_mmu_mode_enable()
-> >>     kasan_populate_vmalloc_pte()
-> >>       lazy_mmu_mode_enable()
-> >>       <code>
-> >>       lazy_mmu_mode_disable()
-> >>   lazy_mmu_mode_disable()
-> >>
-> >> However, looking at this more closely, I'm not really clear on why we need *any*
-> >> special attention to lazy mmu inside of kasan_populate_vmalloc_pte() and
-> >> kasan_depopulate_vmalloc_pte().
-> >>
-> >> I *think* that the original concern was that we were doing ptep_get(ptep) inside
-> >> of a lazy_mmu block? So we need to flush so that the getter returns the most
-> >> recent value? But given we have never written to that particular ptep while in
-> >> the lazy mmu block, there is surely no hazard in the first place?
-> > 
-> > There is, please see:
-> > https://lore.kernel.org/linux-mm/cover.1755528662.git.agordeev@linux.ibm.com/
+On Mon 10-11-25 14:50:11, Michal Koutny wrote:
+> Hello Leon.
 > 
-> I've stared at this for a while, but I'm afraid I still don't see the problem.
-> This all looks safe to me. Could you explain exactly what this issue is?
-> 
-> If I've understood correctly, kasan_populate_vmalloc() is called during virtual
-> range allocation by vmalloc. This is not in a nested lazy mmu block (but it
-> wouldn't matter if it was once we have Kevin's nested changes to ensure flush
-> when exiting the nested scope). kasan_populate_vmalloc() calls
-> apply_to_page_range(), which will walk the set of ptes, calling
-> kasan_populate_vmalloc_pte() for each one. kasan_populate_vmalloc_pte() does a
-> ptep_get() then, if none, calls set_pte_at().
-> 
-> That's not a hazard since you're calling get before the set and you only visit
-> each pte once for the apply_to_page_range() lazy mmu block.
-
-I have to admit I do not remember every detail and would have to recreate
-the issue - which is specific to s390 lazy_mmu implementation I think.
-Both kasan_populate_vmalloc_pte() and kasan_depopulate_vmalloc_pte() do:
-
-apply_to_page_range()
-{
-    arch_enter_lazy_mmu_mode();
-
-    kasan_de|populate_vmalloc_pte()
-    {
-        arch_leave_lazy_mmu_mode();             <--- remove?
-
-        spin_lock(&init_mm.page_table_lock);
-        <PTE update>
-        spin_unlock(&init_mm.page_table_lock);	<--- PTE store should be done
-
-        arch_enter_lazy_mmu_mode();             <--- remove?
-    }
-
-    arch_leave_lazy_mmu_mode();
-}
-
-Upon return from spin_unlock() both kasan callbacks expect the PTE contains
-an updated value to be stored to pgtable. That is true unless we remove
-arch_leave|enter_lazy_mmu_mode() brackets. If we do the value is continued
-to be cached and only stored when the outer arch_leave_lazy_mmu_mode() is
-called. That results in a race between concurrent PTE updaters.
-
-> >> apply_to_existing_page_range() will only call kasan_depopulate_vmalloc_pte()
-> >> once per pte, right? So given we read the ptep before writing it, there should
-> >> be no hazard? If so we can remove pause/resume.
+> On Mon, Nov 10, 2025 at 06:19:48PM +0800, Leon Huang Fu <leon.huangfu@shopee.com> wrote:
+> > Memory cgroup statistics are updated asynchronously with periodic
+> > flushing to reduce overhead. The current implementation uses a flush
+> > threshold calculated as MEMCG_CHARGE_BATCH * num_online_cpus() for
+> > determining when to aggregate per-CPU memory cgroup statistics. On
+> > systems with high core counts, this threshold can become very large
+> > (e.g., 64 * 256 = 16,384 on a 256-core system), leading to stale
+> > statistics when userspace reads memory.stat files.
 > > 
-> > Unfortunately, we rather not, please see:
-> > https://lore.kernel.org/linux-mm/d407a381-099b-4ec6-a20e-aeff4f3d750f@arm.com/
+> > This is particularly problematic for monitoring and management tools
+> > that rely on reasonably fresh statistics, as they may observe data
+> > that is thousands of updates out of date.
+> > 
+> > Introduce a new write-only file, memory.stat_refresh, that allows
+> > userspace to explicitly trigger an immediate flush of memory statistics.
 > 
-> Sorry but I don't see anything relavent to my point in this mail. Perhaps there
-> is some s390-specific detail that I'm failing to understand?
-
-Sorry, with this message I meant the branch where it was discussed,
-I will try to C&P some excerpts and summarize it here.
-
-* lazy_mmu_mode_enable()
-
-This helper is parameter-free, assuming the MMU unit does not need any
-configuration other than turning it on/off. That is currently true, but
-(as I noted in my other mail) I am going to introduce a friend enable
-function that accepts parameters, creates an arch-specific state and
-uses it while the lazy mmu mode is active:
-
-static inline void arch_enter_lazy_mmu_mode_pte(struct mm_struct *mm,
-						unsigned long addr,
-						unsigned long end,
-						pte_t *ptep)
-{
-	...
-}
-
-* lazy_mmu_mode_resume() -> arch_enter_lazy_mmu_mode()
-
-Conversely, this needs to be -> arch_resume_lazy_mmu_mode(). And it can not
-be arch_enter_lazy_mmu_mode(), since a lazy_mmu_mode_resume() caller does
-not know the parameters passed to the original lazy_mmu_mode_enable(...)-
-friend.
-
+> I think it's worth thinking twice when introducing a new file like
+> this...
 > 
-> Thanks,
-> Ryan
+> > Writing any value to this file forces a synchronous flush via
+> > __mem_cgroup_flush_stats(memcg, true) for the cgroup and all its
+> > descendants, ensuring that subsequent reads of memory.stat and
+> > memory.numa_stat reflect current data.
+> > 
+> > This approach follows the pattern established by /proc/sys/vm/stat_refresh
+> > and memory.peak, where the written value is ignored, keeping the
+> > interface simple and consistent with existing kernel APIs.
+> > 
+> > Usage example:
+> >   echo 1 > /sys/fs/cgroup/mygroup/memory.stat_refresh
+> >   cat /sys/fs/cgroup/mygroup/memory.stat
+> > 
+> > The feature is available in both cgroup v1 and v2 for consistency.
+> 
+> First, I find the motivation by the testcase (not real world) weak when
+> considering such an API change (e.g. real world would be confined to
+> fewer CPUs or there'd be other "traffic" causing flushes making this a
+> non-issue, we don't know here).
 
-Thanks!
+I do agree that the current justification is rather weak.
 
-> > 
-> > The problem is kasan code invokes apply_to_page_range(), which enters lazy_mmu
-> > mode unconditionally. I would claim that is rather an obstacle for the kasan
-> > code, not a benefit. But it needs to be tackled.
-> > > Should apply_to_page_range() had an option not to enter the lazy_mmu mode
-> > (e.g. an extra "bool skip_lazy" parameter) - the pause/resume could have
-> > been avoided.
-> > 
-> >> Thanks,
-> >> Ryan
-> > 
-> > Thanks!
+> Second, this is open to everyone (non-root) who mkdir's their cgroups.
+> Then why not make it the default memory.stat behavior? (Tongue-in-cheek,
+> but [*].)
+> 
+> With this change, we admit the implementation (async flushing) and leak
+> it to the users which is hard to take back. Why should we continue doing
+> any implicit in-kernel flushing afterwards?
+
+In theory you are correct but I think it is also good to recognize the
+reality. Keeping accurate stats is _expensive_ and we are always
+struggling to keep a balance between accurace and runtime overhead. Yet
+there will always be those couple special cases that would like to have
+precision we do not want to pay for in general case.
+
+We have recognized that in /proc/vmstat casee already without much added
+maintenance burden. This seem a very similar case. If there is a general
+consensus that we want to outsource all those special cases into BPF
+then fine (I guess) but I believe BPF approach is figting a completely
+different problem (data formating overhead rather than accuracy).
+
+All that being said I do agree that we should have a more real usecase
+than LTP test to justify a new interface. I am personally not convinced
+about BPF-only way to address this fundamental precision-vs-overhead
+battle.
+-- 
+Michal Hocko
+SUSE Labs
 
