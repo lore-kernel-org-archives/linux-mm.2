@@ -4,166 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F3FCCFA1E
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 07:36:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37195CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 07:41:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CE688E0011; Wed, 12 Nov 2025 02:36:18 -0500 (EST)
+	id 950178E0012; Wed, 12 Nov 2025 02:41:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A6298E0002; Wed, 12 Nov 2025 02:36:18 -0500 (EST)
+	id 9004D8E0002; Wed, 12 Nov 2025 02:41:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BBC68E0011; Wed, 12 Nov 2025 02:36:18 -0500 (EST)
+	id 7EF3B8E0012; Wed, 12 Nov 2025 02:41:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 686C08E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:36:18 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C140C03D6
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:36:18 +0000 (UTC)
-X-FDA: 84101146836.22.889B74C
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012040.outbound.protection.outlook.com [40.93.195.40])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 21DB380019
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:36:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=sVxBMO2I;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf02.hostedemail.com: domain of Honglei1.Huang@amd.com designates 40.93.195.40 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762932975; a=rsa-sha256;
-	cv=pass;
-	b=yOHmBnZIXmlj8QUKvBUdnC1ZMGdqAo+dmHUre6Co3VWDLq6xF1OjWgcbOBQ35IXUzB7pe0
-	os2otuI+GYj09vUF8Z3GlF5sZqea190CUorvkb/2yZpqaW5bGTgAr3PZwbkBiGc2SC/uY4
-	qlLycutWAn0yWOzuHoGm7NmuK0YffvI=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=sVxBMO2I;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf02.hostedemail.com: domain of Honglei1.Huang@amd.com designates 40.93.195.40 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762932975;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6233E8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:41:32 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1A86A12CB51
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:41:32 +0000 (UTC)
+X-FDA: 84101160024.08.2FBC95D
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 37E3CC0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:41:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762933290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Gs0Pky3GDoOKhuYlvj2+bMquUrfqu40FMFQWLzO8gkM=;
-	b=Nn6GE0X22j6gnu/7opzE0/Fla7bKy/Mw0p8tbIQFBGqNJPk9PxgEmron+zOLIGnt10X8HX
-	DUX9+m6AT7B63CZVm5FcQ+tMDJdP4Llza0hGgQZqr5vkwvZSNnCfjJujWfWxujVRJ49Dxm
-	p/uqur2DWYqW3pG8+S7wTAjCpQdN5W0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xR0U5NayTWzUpfBzND4KTseEbcpt8O/tejgMpd1oIIYDxrzO/lrVoGcHQ9I8fbP1BGziXs+eoWA+rM2u4csfiiZ80jv8zE9Cdez80qmTc0MArrNDUQx5ZToH/Vq2FtrK5P1o3gTS1wdVRjNRf6fh1EpcFB1jpSWW/t53GisqTJIslydyBfJXVyP9apWtXRHsPt2WkBhWrvuUYVpMR6HEdfz05UdJenSjMw2qYNbq2g3j7B45UUNDS/aCAdUuYwIlApFC1dnuQVl67OghaKNxl0xhCGL13QMAwk/tlVVY1Jd7AP/P40TBjrHk7S0hLkIc7TOTWiGnTiOJObszkeoFLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gs0Pky3GDoOKhuYlvj2+bMquUrfqu40FMFQWLzO8gkM=;
- b=OM+Rxjix27i6N/4RV7ZDCfiHf7kPMU1gYJBGoa3YOSBfCwep6ytPgTyvl5BrbXkbMeIjUYigaFRIrLqnn45RFQRO8xcVy+B60b2fu8RBEli/TMx9ixhOzzfZ8XdBUgfWFb62OQ+GkfFZZlr5oyChtq1T7NCyoQs5dFUEL2VMinjNXAC2bLIHx0GDLRZZeSA51CF+U0BCZLGrFkN0/bksNv0IQwUa3PROS080gfQgMQkzyAol74v9uLdsJEh9bTeApHervmyC23X1ZuBPvANtSK3GreqyZu6yysSHYeDIgaSspJzmeM9BZcUtxwTUyiaHQb5hj3k4qvepEg9d3yKUig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=collabora.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gs0Pky3GDoOKhuYlvj2+bMquUrfqu40FMFQWLzO8gkM=;
- b=sVxBMO2IYwLcp5GRNoI0EbIhcxcPsxijVAwfMvU2HW8eBKELfJ9uPhRaCLRRQ5o9SPr09Ea0MLdkXMbKgAmOpwR7YYw+5L9SCzo7yevV5BBWX4s75XsnNEtZYC3p8c7FShOwCyyl6ktdTSoxZ/SNos736rLa3oQyd1tAd3GDh+I=
-Received: from PH7P220CA0089.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32c::14)
- by BY5PR12MB4209.namprd12.prod.outlook.com (2603:10b6:a03:20d::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
- 2025 07:36:09 +0000
-Received: from CY4PEPF0000E9D3.namprd03.prod.outlook.com
- (2603:10b6:510:32c:cafe::bc) by PH7P220CA0089.outlook.office365.com
- (2603:10b6:510:32c::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.16 via Frontend Transport; Wed,
- 12 Nov 2025 07:36:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF0000E9D3.mail.protection.outlook.com (10.167.241.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Wed, 12 Nov 2025 07:36:09 +0000
-Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 11 Nov
- 2025 23:36:05 -0800
-From: Honglei Huang <honglei1.huang@amd.com>
-To: <Felix.Kuehling@amd.com>, <alexander.deucher@amd.com>,
-	<christian.koenig@amd.com>, <Ray.Huang@amd.com>
-CC: <dmitry.osipenko@collabora.com>, <Xinhui.Pan@amd.com>,
-	<airlied@gmail.com>, <daniel@ffwll.ch>, <amd-gfx@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <akpm@linux-foundation.org>, <honghuan@amd.com>,
-	Honglei Huang <Honglei1.Huang@amd.com>
-Subject: [RFC PATCH 0/5] drm/amdkfd: Add batch SVM range registration support
-Date: Wed, 12 Nov 2025 15:35:49 +0800
-Message-ID: <20251112073549.3717925-1-honglei1.huang@amd.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+vEdxvEJF6AklM+Rjk+lMWlYzf+olEF6RTJxPn9fUSw=;
+	b=yhiM8SfesQWf9OhzKXU65ERj6D8nvUTDPXoClDQcsm7prgF7jlaWEXOWJg4dRh+rPIJyTL
+	CxhYI10TCA2oY06mhTDxkcsMXQq4vAdV/50SS+CGZ+3+ng3Lua/0psN6uvMce+u4iC0Fml
+	2Zz1dxwwRkDMVdUpgIjnrnE/3T083aA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762933290; a=rsa-sha256;
+	cv=none;
+	b=p9XXjxm/++//sk5q7aFlU8+wBoKkp/4Vp7jODQrSjfl7G0/q9wCGNOPF7HYgWaNQbvbti6
+	S/0h8M6ukCM5IklLrFuvGpaeW63RD/YEho5hkPXAL8Yw2x8VyFoNRmqVsRsi227TUDzu2Q
+	5Zt7WuUUgJgrnfHb5x6hydtPaPEGT5o=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-5a-69143a24e040
+Date: Wed, 12 Nov 2025 16:41:18 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+	davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
+	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
+	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
+	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, horms@kernel.org,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	ilias.apalodimas@linaro.org, willy@infradead.org,
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: Re: [RFC mm v5 1/2] page_pool: check nmdesc->pp to see its usage as
+ page pool for net_iov not page-backed
+Message-ID: <20251112074118.GA31149@system.software.com>
+References: <20251103075108.26437-1-byungchul@sk.com>
+ <20251103075108.26437-2-byungchul@sk.com>
+ <20251106173320.2f8e683a@kernel.org>
+ <20251107015902.GA3021@system.software.com>
+ <20251106180810.6b06f71a@kernel.org>
+ <20251107044708.GA54407@system.software.com>
+ <20251107174129.62a3f39c@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D3:EE_|BY5PR12MB4209:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9277661-10ef-4702-bd76-08de21be25da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vVcZJaJYo00iAJqVxQxhPPGy0hMBNx8EUSapPIRovnGpXcY16txxjJZ9TuFW?=
- =?us-ascii?Q?W0ih7NYAc07B3lTQ6r18r5PFUyQmTkXMkVJJy2BvwMApNVJoSo5bBxEDnTGg?=
- =?us-ascii?Q?AlMA/1TRqDFGPFnJp635LtQX5i2q2roUPYPAwGGCeh6Yn/acwJPN/lcHA2pK?=
- =?us-ascii?Q?3/qrZg4QckE4SmrmmXgVbd5nNiy3TT8blROrZLamtjVoVkQU77qQY4jondPm?=
- =?us-ascii?Q?PZ0DiDTagUi/ergvb4Gq1eDuxSYs+xVG9G3feph5zABwFuHOUZCNx36E7Clg?=
- =?us-ascii?Q?QIeLgBaGp2bb1QEzRGgBZQY6t01di+jPk5M7UR4ALoRlvJs7mX4VhW/yCvWs?=
- =?us-ascii?Q?IWo6ELztDle3ruDk/i4XhEopFt+FvUCZHTWpeOy/PzgAR6O7gAwZdcgOo0On?=
- =?us-ascii?Q?6aNUefTc8cVt4NlbbukfdwloSm8t5MOmVNmIKZrjGoFngVlaP+xveALjtx5z?=
- =?us-ascii?Q?YOYIqJXY7kvXHCareDclXavsZL4IyivShU6FCDD9+jJOwatEumV1ixVkWXtH?=
- =?us-ascii?Q?PCQ6AQ9/xvD7Hw6T6phLbs5m+k+CUFZXd/rM2+0EsUoE7RQJv4keBy6u/fOf?=
- =?us-ascii?Q?XHRCGAqk5uymsdMgKDC1NiBfZCcWBIYr2++4dkXIkDCrhtS4AD8humyTITXQ?=
- =?us-ascii?Q?gXv9rvnHMjV+PdGArt9fm45a7TNckhT1cFHmkBEwrHBnrr4t1Z5IJ+U3qIgn?=
- =?us-ascii?Q?YXg84xYIE1bkqJdqyJLoGhQ8kBsm/cZ+hKOIVtpZyTz9dTwTocenLEfUEYCw?=
- =?us-ascii?Q?youDQu9qUxjK+9YdbgxK3pgy8UKrbPPzQixbrGT3iOP88u13yC5AVNQuT6PZ?=
- =?us-ascii?Q?g6HzzD8vB8obBC/OY4DHu9yHYZN0dzFINfpcQWHrCShI2frx97tdLcGl6n6z?=
- =?us-ascii?Q?C8V9pRd62Mqorq4AJ4IaGZSv3HfUriMwBmBmjCmxFOB23Q8ngidKEQv7rB0v?=
- =?us-ascii?Q?rDlz93TGJ+mDRoeLNF82OBI5KvtjSAh7jPy/AATpJ7tGmYYpsA79lUOO5XTD?=
- =?us-ascii?Q?M+RZFipsGqwOOic9YvMUmTLq+2KeGkr0OleQ8W1N0QNkGWPENrsO5P/OzUBv?=
- =?us-ascii?Q?jF0ZvDBaHVC4ZqsLzH5yJZjCpw4glT1ZywUOeTpvaA6vaqrodOQjNyGoTr1N?=
- =?us-ascii?Q?o3RkvFkgFtcei/qPgzCgoBH8HyckjCyEEVhw3P2xTk6vAdKzEtfaGSZyyrbF?=
- =?us-ascii?Q?yQuruuucbLoORvJPq99PArIK9n9O0r/Q1iGTJH2sJFSA5u/ILrYAb/ux/jUG?=
- =?us-ascii?Q?f6uE+hk13XMXhu+oIrar7q8oYB06SCE8ys6CUOABAG3PH5L9Ld0m0+kwOH2u?=
- =?us-ascii?Q?zOrpUYF0r7rwPTfkcnpziA5dgdvI/9DaE9CCz9KOXwIQAy6CZzJbDFuOGgeL?=
- =?us-ascii?Q?qHVsmjDLGKFans+kMLd+VDreNXBkSpCCXI7WauqlsZkwuqJUOFjH2s8/9TM7?=
- =?us-ascii?Q?2WcT9Ck3hXwCQq4+uqINEgawdEo5+YRrWeu9wQxXOZf/elgjD10T+is0B7ol?=
- =?us-ascii?Q?e5WLu3CvUHKL4UzEAHYqDooXLRgRS0Rc6Pv/WCQeWkZ/zmx8i789Sogy6jEU?=
- =?us-ascii?Q?11rj/39JHzadgpXVtPc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 07:36:09.4918
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9277661-10ef-4702-bd76-08de21be25da
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D3.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4209
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 21DB380019
-X-Stat-Signature: a4pq1xgq4ru55kkp8iuhiztjju1ecq6x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107174129.62a3f39c@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa1BMYRjH5z3n7DmnHavXFl76wKwME1IG8zCGPr7GZcwwY1wGh85otYUt
+	q8xgaQdFKypqLTbXbqaZjdpSLpWED5lMOgbdL4i2qcQq0mYM337zf575/Z8Pj8hqn6umivro
+	WNkYLRl0vJpTfxl3bV7gUn99iOW0L9gL8nnI+x4Ht5tdKvDkdzFgzy1CMOB5K8BIeTWC/qqn
+	PHRX9iG4njXIgr3WwsHXgh8slJR2IfiUcYeHjupWAfKca6DpVicHZSeLWWg9W8NDsmWIhXJP
+	jwDHXdmj4kKzAC+LrCpI+3GThWJzswCvSu08NOaPqKCzIpmDZ7YcDnrTq1hosoZBtWMSDL74
+	jKCqoJiBwTOXeajPLGXgXnm9AKl1Dh7aLE0I6ipbOUgfPsXDpWNWBEPfR5U9KQMquPSkUQgL
+	pscUhaeVn90svZvzhqGvM85xVHnwnKEltvcCdTgP0MLsIJqk1LHUmZvIU2ffeYG+e13G05qM
+	IY6WtCyhJa5+hiYn9PDrJm5WLwuXDXqTbJy/fIc6ovjC3H1dq+MST6SxZnRxRRLyEQleSH6e
+	rRH+sj03e4w5PJO03CwYYx7PIoriYb3sjwOJpTCTS0JqkcW9AslQGlXegR+OJb1u89iSBgOx
+	1TYgL2txIUPaL/j+ySeQZ5ntnJdZHESUXx+ZJCSOcgC5/Uv0xj44lFz92D7WOxHPII+KnjLe
+	LoIHRNJQ14L+HDqFPM5WuBSEbf9pbf9pbf+0DsTmIq0+2hQl6Q0LgyPio/Vxwbv2RjnR6Ifd
+	Ojy8xYX6Xq6vQFhEunEa0uan16okU0x8VAUiIqvz1wzvxHqtJlyKPyQb9243HjDIMRUoQOR0
+	kzULBg+Ga/FuKVaOlOV9svHvlBF9ppqRabHf1vmbG9a+WJa2cVH/pnOORM2T7mk9Rz5sq38Y
+	mjlZezEtfXvOyYDhspaE+3Mip+wv7X0054bbJR1tbl8Vid9fS3GvDKlNjd/BJdxL/eb+kjX9
+	Td/V4Lw93Xs2hEVq27aGb5I2WpeaX20Y8Z3ta73il5WzfL3ZMG/8oYOmDuoJDLmh42IipNAg
+	1hgj/QYWkDtbXQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+59zds7ZanSal05mBbMIVmlB5duFEqL6E13pQ9CXXHXSg/PS
+	ZqKBuMoyLU0ra85Fq8h7jGY5JxqxmTqtDMVaVGpmmiYq3sg0zRlR3348z/s875eHJRUlEj9W
+	jIoVtFFqjZKWUbL9Wy6sCdjsLa6trQwGk6WEhuIf8ZDfXi6B8ZJuAkxFZQhGxj8wMF1Vg2C4
+	upaG784hBA/ujZFgakymYNTykwR7RTeCXsMjGr7WdDBQbN0HbXldFFSm2EjouFZHQ3ryBAlV
+	4/0MnC8vmCku1TPgvOOSwJuyDAnc/PmQBJu+nYHmChMNrSXTEuhypFPgMhZSMJhdTUJbRgjU
+	mH1hrKEPQbXFRsDY1Ts0tORUEPC0qoWBG01mGr4ktyFocnZQkD15mYbccxkIJn7MVPZnjkgg
+	90UrExKEz7ndNHb2DZD4SeF7Ar81ZFHY/ayewHbjJwabrWdwaYEKp7mbSGwtSqWxdeg6gz++
+	raRxnWGCwvbPm7C9fJjA6Rf66YO+R2VbTwoaMU7QBm0LlYXbbq2O6d4bn3rpJqlHt7enISnL
+	c+t5U1EB42GKW8F/fmiZZZpbybvd46SHvbnlfHJpDpWGZCzJDTK8wd0q8RheXCw/OKCfPZJz
+	wBsb3yEPK7hSgu+8Nf+PvoB35XRSHiY5Fe+e6iHSEDvDi/n8KdYjS7l1/N2eztm/PlwA/7ys
+	lshEcuN/aeN/aeO/tBmRRchbjIqLVIuaDYG6iPCEKDE+8ER0pBXNbCgvcTKrHI0073YgjkXK
+	efKQFV6iQqKO0yVEOhDPkkpv+eRxTlTIT6oTzgra6GPaMxpB50CLWUq5UL7niBCq4MLUsUKE
+	IMQI2r8uwUr99GhHkCrPR6i66L/pyqLszFOhxtMRYmOjPslmq0s05c9zNJ2tbnnk2EgsCZ4z
+	mqS6tKOYeFMz2huQH2afGj7Ue3+qwcw9oxa4TAZXin13bjQrrZc2W745MzseE4ca8Ou5p19t
+	/qX5stRyQm33mzzgtUp7uPBxV+rrXcte3t7pP/icUFK6cPU6FanVqX8DpSw1ej8DAAA=
+X-CFilter-Loop: Reflected
+X-Stat-Signature: 59d38f7fnhe1xnz8zwp81pptwgw73911
 X-Rspam-User: 
-X-HE-Tag: 1762932974-534209
-X-HE-Meta: U2FsdGVkX1/R1AGC2YKP6KsPsoimwqdPG2OSFWr6J0iV3/gsL3RoFFXjJGQjksU5WLxMu+M9Xa/BPOUqH6Q0KM2WAQp0xjx/PX1HLkHfSJ01amEuewj7Q2tmrxkhnNRiKPTxfKFjnED20983418qCX967ZDjXYyVsyqg9UDhNa0wyq+LNApY5ZxlBPyhretPIzrLBNw/TurwBXL6lTfA0rYDg8gyqaEy0vDn2QrtgTBgYDGGPvyS6TaALVGqTyJ/iMCfBnPApKymOm6bB2GsmTbXc4oFlK0r3r8lbqRxUgttInoK2iCoHC/LK1ocQVuI0dXucruxBRk70ULomnxHP1WQDWEgUKtuesMwXIA3YPk50Ss/ngfhoPy/X8NNZUk1FUi6KADJS7N81jHPSxyPulonox6bG2Ba6VgOFTnzqJlG4d83vZYB9BlnuhQs2fhLbcIBXaniIfwF6GF7hkJdflacpNJh2xWN71dGtyhTj9d5r6xcyIgLmfdsELDAOH0o80PpnzaUBnKQE4jjUdZuQPzrLPT0E3+DF2NKKEeJskPqJP2aZ4tjsrkkh8XCojBOYFbLTVzj0ZcX+EP8PugENBlb66OFU3eM5E6T6XlZqF9qORli5ofkluhu01JCfhqK6lFwZ+HRAIB0dk9u9svdISy26gqGOeMIP6TAFUtSohB9XL/SdP6/Q2rj0ncD9bVozCfEMlFSNVuiIigroBsTkScqyyYEV10chKco3ec88SZwP1SHYE0zdLuCAV9lp9OveCpGiB6PEJbCSWQqE32zTKWFNghDNNeQPCHj7kfqFlr7hRCdgzJycBv8AxpJj88tkPYis9T9fIKqqswqQma/Ny1bjbFN8msEmt8SD+BG6/2NkC6ZWNhn4gxaCqj2K56aPkimc0MXES936AHjwqGRwtcf3xea/Vg8GXW9vq/WfX8x0XPznxgRvTs3wDYd9/zOZK5dGIIIcW5hAmgO43U
- IqOjshJL
- GaLmvw5Nt1o8py7Jur2W2sqrRbNwb0ORPee+BCeym3G7WwFhUTJsUVXJD7QUJl+QtVMXhNTbTYkaTd3th1jggT2RBeNhMEE8n8KqB/LMavfYsW++h1WfRtJl0Q+5R/udRBWUH9+Lo9XR4yAV2xWDJSIT9mHxcsHK+pseNaKhmsqUSJWKgUFhTGfcx95d21z7yOuIE87gcC2MckV5Qh8aM4139IzkaXs7zkSygBCk82V3spE1RhzFHafoq/II35epDzbgjCynL4XGvyBDI2xu/ychEeW/6Bjc+XgW61PJByuX6A/9q9EHaJNNGujlQrfoUK60SrWyRSUMauOALBOIuXw47UGthcrOC9Ir0IuFMk/DMDZGwn8qETVZHWGQK4gYQFP5TAflaf+5z+IKiPm+yp5XN4TU2H7i0KCsC+i8kd/SJsSlFDTW656dPqQp0cVryri+ZYHff/fHXLm3KxfTi0vdbn3c7C+9veHq6CqUaC6nuiEw=
+X-Rspamd-Queue-Id: 37E3CC0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762933287-255693
+X-HE-Meta: U2FsdGVkX19SJI6gAx5dHehwTwsaEGZx7wtc0w0csQGAgjY62mcPiRQD/XIL7zypBhyK79OSm9OdgX8wD7TFoSrf9FsGAGC7DXBQclTGW3n+TVx5uo80fbNWID07zK/kNDNViqYLQ4tGgzAdNMF/tnLE4llTr5hCJeAvt3yxYYA/yeNyVOeglwk9d9qEZv9iFqIU7oTD5ucuW8XYSYPgbBJB7iXEFmLz3gRRZYAmqSoSoIeGLg+qW5IE/Zbr0FZeoZR1DO3hwOgDni08HVZaAoQctfBWbI/pwQ9dLd7bM7YoKA/6yKtomURo96/6NHWj4FZJyKG+0ITIOfYLFsUY4fbzaT8dCZ4KyQ2CfW/sQrH0RV0CH0lcW/IL4fkH5uvqKkWSrb8dS4ZQA7DR0wPZ2TEfBXe3jdKUUh/l2OKIAEl6mzhFyx3hF6Jh8iPgtaZtMUlE9fUBIiOgHnjtj/nsd9JzoOzSX+LCOtgtLeaDNbPnVNZ4hJwEQ4ehZ/sZVYEc7+4ywou9surLOtnPkKu5gm2e1khhwyHH+EwVdIuNp3OGgK6aKhuI2qvdCKX22/ILx1l30T1bEF4/NO8i1OpEBhMTRZZBoSW2+2xFStqsX7PS9rA0cfxMM2TJhqRYVZlOvTc3vlQUmjqGeKAqLnmtafmH4GGwf8JJ4L+krkvdGzhbninNuu4X6xHZgVKAdUmxCByID/fDFfQU1vHYqL0ue7zy2gJioIOakNF1RmqjDFDG+6xHdbTe7BHrA8kIjnoSm39YtwOMOpP5UI3fs1gPDtYJuBcR9Z9+Ky6kRa6/wYsMB6fSGvuO47mJtqF/ZTwAC2JBS8MSQon7sHuBwyGENR6WO9t07iHonSk3fYyqzA+XtHIemwLWRCMcGbvnzCpPRQu1OzDpkEKImwWo2umv95QgaBtT5Q3ByQLu9w0gMEIGRlED/0Po7ptOzRrBPiNXV/6WA1NSzEvsTXULedm
+ aZcvkRgH
+ xaa/8QBW0PEcvDvnrIOJpVtODgrOjjLx9x4dD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -172,143 +131,257 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Honglei Huang <Honglei1.Huang@amd.com>
+On Fri, Nov 07, 2025 at 05:41:29PM -0800, Jakub Kicinski wrote:
+> On Fri, 7 Nov 2025 13:47:08 +0900 Byungchul Park wrote:
+> > The offset of page_type in struct page cannot be used in struct net_iov
+> > for the same purpose, since the offset in struct net_iov is for storing
+> > (struct net_iov_area *)owner.
+> 
+> owner does not have to be at a fixed offset. Can we not move owner
+> to _pp_mapping_pad ? Or reorder it with type, enum net_iov_type
+> only has 2 values we can smoosh it with page_type easily.
 
-Hi all,
+At the beginning I tried to smoosh it with page_type but it requires the
+additional logic or something to save and restore the value of enum
+net_iov_type if the netmem is net_iov when updating page_type like:
 
-This RFC patch series introduces a new mechanism for batch registration of
-multiple non-contiguous SVM (Shared Virtual Memory) ranges in a single ioctl
-call. The primary goal of this series is to start a discussion about the best
-approach to handle scattered user memory allocations in GPU workloads.
+  if (netmem_is_net_iov(netmem))
+	type = get_type_from_niov(netmem_to_niov(netmem));
 
-Background and Motivation
-==========================
+  /* Unconditionally clear the value of enum net_iov_type. */
+  __{Set,Clear}PageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
 
-Current applications using ROCm/HSA often need to register many scattered
-memory buffers (e.g., multiple malloc() allocations) for GPU access. With the
-existing AMDKFD_IOC_SVM ioctl, each range must be registered individually,
-leading to:
-- Blocking issue in some special use cases with many memory ranges
-- High system call overhead when dealing with dozens or hundreds of ranges
-- Inefficient resource management
-- Complexity in userspace applications
+  if (netmem_is_net_iov(netmem))
+	set_type_to_niov(netmem_to_niov(netmem), type);
 
-Use Case Example
-================
+Or page_pool_{set,clear}_pp_info() callers should handle it in a similar
+way.  I'd like to check if you are okay with this approach.
 
-Consider a typical ML/HPC workload that allocates 100+ small buffers across
-different parts of the address space. Currently, this requires 100+ separate
-ioctl calls. The proposed batch interface reduces this to a single call.
+Or I can make it simpler by adding page_type to struct net_iov like the
+following.  Jakub, do these approachs work for you?
 
-Paravirtualized environments exacerbate this issue, as KVM's memory backing
-is often non-contiguous at the host level. In virtualized environments, guest
-physical memory appears contiguous to the VM but is actually scattered across
-host memory pages. This fragmentation means that what appears as a single
-large allocation in the guest may require multiple discrete SVM registrations
-to properly handle the underlying host memory layout, further multiplying the
-number of required ioctl calls.
+	Byungchul
 
-Current Implementation - A Workaround Approach
-===============================================
-
-This patch series implements a WORKAROUND solution that pins user pages in
-memory to enable batch registration. While functional, this approach has
-several significant limitations:
-
-**Major Concern: Memory Pinning**
-- The implementation uses pin_user_pages_fast() to lock pages in RAM
-- This defeats the purpose of SVM's on-demand paging mechanism
-- Prevents memory oversubscription and dynamic migration
-- May cause memory pressure on systems with limited RAM
-- Goes against the fundamental design philosophy of HMM-based SVM
-
-**Known Limitations:**
-1. Increased memory footprint due to pinned pages
-2. Potential for memory fragmentation
-3. No support for transparent huge pages in pinned regions
-4. Limited interaction with memory cgroups and resource controls
-5. Complexity in handling VMA operations and lifecycle management
-6. May interfere with NUMA optimization and page migration
-
-Why Submit This RFC?
-====================
-
-Despite the limitations above, I am submitting this series to:
-
-1. **Start the Discussion**: I want community feedback on whether batch
-   registration is a useful feature worth pursuing.
-
-2. **Explore Better Alternatives**: Is there a way to achieve batch
-   registration without pinning? Could I extend HMM to better support
-   this use case?
-
-3. **Understand Trade-offs**: For some workloads, the performance benefit
-   of batch registration might outweigh the drawbacks of pinning. I'd
-   like to understand where the balance lies.
-
-Questions for the Community
-============================
-
-1. Are there existing mechanisms in HMM or mm that could support batch
-   operations without pinning?
-
-2. Would a different approach (e.g., async registration, delayed validation)
-   be more acceptable?
-
-Alternative Approaches Considered
-==================================
-
-I've considered several alternatives:
-
-A) **Pure HMM approach**: Register ranges without pinning, rely entirely on
-
-B) **Userspace batching library**: Hide multiple ioctls behind a library.
-
-Patch Series Overview
-=====================
-
-Patch 1: Add KFD_IOCTL_SVM_ATTR_MAPPED attribute type
-Patch 2: Define data structures for batch SVM range registration
-Patch 3: Add new AMDKFD_IOC_SVM_RANGES ioctl command
-Patch 4: Implement page pinning mechanism for scattered ranges
-Patch 5: Wire up the ioctl handler and attribute processing
-
-Testing
-=======
-
-The series has been tested with:
-- Multiple scattered malloc() allocations (2-2000+ ranges)
-- Various allocation sizes (4KB to 1G+)
-- GPU compute workloads using the registered ranges
-- Memory pressure scenarios
-- OpecnCL CTS in KVM guest environment
-- HIP catch tests in KVM guest environment
-- Some AI applications like Stable Diffusion, ComfyUI, 3B LLM models based
-  on HuggingFace transformers
-
-I understand this approach is not ideal and are committed to working on a
-better solution based on community feedback. This RFC is the starting point
-for that discussion.
-
-Thank you for your time and consideration.
-
-Best regards,
-Honglei Huang
-
-Honglei Huang (5):
-  drm/amdkfd: Add KFD_IOCTL_SVM_ATTR_MAPPED attribute
-  drm/amdkfd: Add SVM ranges data structures
-  drm/amdkfd: Add AMDKFD_IOC_SVM_RANGES ioctl command
-  drm/amdkfd: Add support for pinned user pages in SVM ranges
-  drm/amdkfd: Wire up SVM ranges ioctl handler
-
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |  67 +++++++
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c     | 232 ++++++++++++++++++++++-
- drivers/gpu/drm/amd/amdkfd/kfd_svm.h     |   3 +
- include/uapi/linux/kfd_ioctl.h           |  52 ++++-
- 4 files changed, 345 insertions(+), 9 deletions(-)
-
--- 
-2.34.1
-
+---
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 5d51600935a6..def274f5c1ca 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+ 				page = xdpi.page.page;
+ 
+-				/* No need to check page_pool_page_is_pp() as we
++				/* No need to check PageNetpp() as we
+ 				 * know this is a page_pool page.
+ 				 */
+ 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a3f97c551ad8..081e365caa1a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4252,10 +4252,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+  * DMA mapping IDs for page_pool
+  *
+  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
+- * stashes it in the upper bits of page->pp_magic. We always want to be able to
+- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
+- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
+- * (since it overlaps with page->lru.next), so we must ensure that we cannot
++ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
++ * arbitrary kernel pointers stored in the same field as pp_magic (since
++ * it overlaps with page->lru.next), so we must ensure that we cannot
+  * mistake a valid kernel pointer with any of the values we write into this
+  * field.
+  *
+@@ -4290,26 +4289,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+ #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+ 				  PP_DMA_INDEX_SHIFT)
+ 
+-/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+- * bits used for the DMA index. page_is_pfmemalloc() is checked in
+- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+- */
+-#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+-
+-#ifdef CONFIG_PAGE_POOL
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+-}
+-#else
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return false;
+-}
+-#endif
+-
+ #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+ #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+ #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 0091ad1986bf..edf5418c91dd 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -934,6 +934,7 @@ enum pagetype {
+ 	PGTY_zsmalloc		= 0xf6,
+ 	PGTY_unaccepted		= 0xf7,
+ 	PGTY_large_kmalloc	= 0xf8,
++	PGTY_netpp		= 0xf9,
+ 
+ 	PGTY_mapcount_underflow = 0xff
+ };
+@@ -1078,6 +1079,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+ PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+ FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
+ 
++/*
++ * Marks page_pool allocated pages.
++ */
++PAGE_TYPE_OPS(Netpp, netpp, netpp)
++
+ /**
+  * PageHuge - Determine if the page belongs to hugetlbfs
+  * @page: The page to test.
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 651e2c62d1dd..b42d75ecd411 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -114,10 +114,21 @@ struct net_iov {
+ 			atomic_long_t pp_ref_count;
+ 		};
+ 	};
++
++	unsigned int page_type;
+ 	struct net_iov_area *owner;
+ 	enum net_iov_type type;
+ };
+ 
++/* Make sure 'the offset of page_type in struct page == the offset of
++ * type in struct net_iov'.
++ */
++#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
++	static_assert(offsetof(struct page, pg) ==	\
++		      offsetof(struct net_iov, iov))
++NET_IOV_ASSERT_OFFSET(page_type, page_type);
++#undef NET_IOV_ASSERT_OFFSET
++
+ struct net_iov_area {
+ 	/* Array of net_iovs for this area. */
+ 	struct net_iov *niovs;
+@@ -260,7 +271,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
+  */
+ #define pp_page_to_nmdesc(p)						\
+ ({									\
+-	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
++	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
+ 	__pp_page_to_nmdesc(p);						\
+ })
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23..01dd14123065 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
+ #ifdef CONFIG_MEMCG
+ 			page->memcg_data |
+ #endif
+-			page_pool_page_is_pp(page) |
+ 			(page->flags.f & check_flags)))
+ 		return false;
+ 
+@@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+ 	if (unlikely(page->memcg_data))
+ 		bad_reason = "page still charged to cgroup";
+ #endif
+-	if (unlikely(page_pool_page_is_pp(page)))
+-		bad_reason = "page_pool leak";
+ 	return bad_reason;
+ }
+ 
+@@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
+ 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+ 		folio->mapping = NULL;
+ 	}
+-	if (unlikely(page_has_type(page)))
++	if (unlikely(page_has_type(page))) {
++		/* networking expects to clear its page type before releasing */
++		WARN_ON_ONCE(PageNetpp(page));
+ 		/* Reset the page_type (which overlays _mapcount) */
+ 		page->page_type = UINT_MAX;
++	}
+ 
+ 	if (is_check_pages_enabled()) {
+ 		if (free_page_is_bad(page))
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 23175cb2bd86..6b7d90b8ebb9 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -8,21 +8,15 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
+ 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
+ }
+ 
+-static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
+-{
+-	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
+-}
+-
+-static inline void netmem_clear_pp_magic(netmem_ref netmem)
+-{
+-	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
+-
+-	netmem_to_nmdesc(netmem)->pp_magic = 0;
+-}
+-
+ static inline bool netmem_is_pp(netmem_ref netmem)
+ {
+-	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	return PageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
+ }
+ 
+ static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a5edec485f1..27650ca789d1 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -699,7 +699,14 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
+ 	netmem_set_pp(netmem, pool);
+-	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	__SetPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+ 	 * page_pool_set_pp_info() is only called once for every page when it
+@@ -714,7 +721,14 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 
+ void page_pool_clear_pp_info(netmem_ref netmem)
+ {
+-	netmem_clear_pp_magic(netmem);
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	__ClearPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
++
+ 	netmem_set_pp(netmem, NULL);
+ }
+ 
 
