@@ -4,90 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 320FACD1297
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7EFACD1297
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:57:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95BC58E001E; Wed, 12 Nov 2025 10:56:33 -0500 (EST)
+	id 0FB718E0020; Wed, 12 Nov 2025 10:57:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 933868E0002; Wed, 12 Nov 2025 10:56:33 -0500 (EST)
+	id 0D3068E0002; Wed, 12 Nov 2025 10:57:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8722E8E001E; Wed, 12 Nov 2025 10:56:33 -0500 (EST)
+	id F2A968E0020; Wed, 12 Nov 2025 10:57:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B6678E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:56:33 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FC0E13B470
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:56:33 +0000 (UTC)
-X-FDA: 84102407466.02.D4591DB
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8D27B40005
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:56:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E27A68E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:57:47 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95EAB16059A
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:57:47 +0000 (UTC)
+X-FDA: 84102410574.20.E5947B8
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4768A40011
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:57:45 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MI7on72x;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K6ZcofAf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="fteLK/xn";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K6ZcofAf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="fteLK/xn";
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762962991;
+	s=arc-20220608; t=1762963065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=unTZnhIKbo/kPjktubhrqmYbcE5u2DsI4RiHT1r059I=;
-	b=XS9DfYgT8bmi5U1vqBiZmFyFKW8f6W4j2XnJAxz0Aqvb+LfBUemxz0nSznvMCW/tOKmgc9
-	o28YY8nQxnf2WNAOa6L47jgz6bOOHrD6890ICU5zkpqdILg2GxcsC5T/oBxzVgUvQSnd1T
-	yp/Et+ef4ABdPNsc1aAabT1VHTsP92s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962991; a=rsa-sha256;
-	cv=none;
-	b=Xr3qwlbadZdxIbIkPbcfUQ6RZ9HbuTmdnj9ebrmFkSRXOJR+b9xPtVe7iR6s4G/FTkmE+E
-	uS+AY3RCTvlPDSZ1nm/dGyi4twgsEJ5BYnrzodjLEULYkOgRfHbJSqrEWADwDWofLBwrAO
-	vngHA1zkADPxCxyWNi+F1TTc0cYMQGo=
+	bh=Fy4ID+S4/SX6mxpVfENndsdMlaf45bnvKyDiWnu9Ecs=;
+	b=hWmptEwYPQBT7RScIIpWo4xumtQ2+00yyiw1qOLNJwpmlcLLpGgRTf/KMGhe5akcDiXn95
+	uC15VQzSuf3Lcm/5ffFAS7muybxJGpRYWcipZ+hToaeG2KmHnfjCJjQhUhJOmJV2sbr4Y+
+	pkr0lB8mvDIK6MpX6Iuk9S3oOt8KYc8=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MI7on72x;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=unTZnhIKbo/kPjktubhrqmYbcE5u2DsI4RiHT1r059I=; b=MI7on72xw2kf/B0fnp/Td1CmSV
-	cU9dbT/g+mZGa1UNpCIHupjk46WxBL+uRHMUEeWxwLRSkXz17Be9Hne9VcX6KQdww6djkwn9ioHUy
-	aH17QCGTqVUWDLtpdaZdhL2ibY70RahsDhZ47uDJKzVCKDXDHtAIkciT+X+oZPq2xGTQKnUjSXAt9
-	XcJ5YUbQ5SdLn0wYzI1hCu+1eqmst/T2SVkPRcnqOc56dc7Cpc1aK9cytD0hdTWtwVmewWHNt5GAY
-	CqXjbe2HM5IMYV/N8UWZhtq+Jn4qR3w4265TBNhvAI2OMRzWsEptBnvVN11hXrCNrX7VeS64P/vMI
-	ednyePxw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJDCh-000000068nw-2KVV;
-	Wed, 12 Nov 2025 15:56:15 +0000
-Date: Wed, 12 Nov 2025 15:56:15 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: Christian Brauner <brauner@kernel.org>, djwong@kernel.org,
-	ritesh.list@gmail.com, john.g.garry@oracle.com, tytso@mit.edu,
-	dchinner@redhat.com, hch@lst.de, linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz,
-	nilay@linux.ibm.com, martin.petersen@oracle.com,
-	rostedt@goodmis.org, axboe@kernel.dk, linux-block@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/8] mm: Add PG_atomic
-Message-ID: <aRSuH82gM-8BzPCU@casper.infradead.org>
-References: <cover.1762945505.git.ojaswin@linux.ibm.com>
- <5f0a7c62a3c787f2011ada10abe3826a94f99e17.1762945505.git.ojaswin@linux.ibm.com>
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K6ZcofAf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="fteLK/xn";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K6ZcofAf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="fteLK/xn";
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762963065; a=rsa-sha256;
+	cv=none;
+	b=4dSGspCltCoP01ZfCIcbZgXR9zlK1vfbb0kio/g0DjwKzdcC+W7izP3KG/R8i6KkRG5Boa
+	yak+WwxtSjlw0ayq7wDtx+MRWbsNPgyk2+VxExmJimW6t97iqICMay+oRrc+9ItbeGpdCC
+	7D3Rvxy59IQEAetHJ9IgfjJXiZcqqeA=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AE92521B05;
+	Wed, 12 Nov 2025 15:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762963063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Fy4ID+S4/SX6mxpVfENndsdMlaf45bnvKyDiWnu9Ecs=;
+	b=K6ZcofAfS8Szx5muLFtT9p7+ZC3eIi+MtePof+v71M0Ap14e+7NYLoQI4mi33Jflv0/IlE
+	p81a50jOVRfx17IeSxSSqxsc9LTbO6oXAE0RrmbMW1yk/yGvHzwQRxS2nsm7eetqMxISdC
+	7cR7EzqN153hYcxfyA1qhJ73c7UmxW4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762963063;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Fy4ID+S4/SX6mxpVfENndsdMlaf45bnvKyDiWnu9Ecs=;
+	b=fteLK/xnXRGpgrdpL1xWgUZiouiGEqxkew0oyqngGT7AXujaOvvgl8Fkheb2hqYBqRUhOw
+	JEjGbN+GSor78qBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762963063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Fy4ID+S4/SX6mxpVfENndsdMlaf45bnvKyDiWnu9Ecs=;
+	b=K6ZcofAfS8Szx5muLFtT9p7+ZC3eIi+MtePof+v71M0Ap14e+7NYLoQI4mi33Jflv0/IlE
+	p81a50jOVRfx17IeSxSSqxsc9LTbO6oXAE0RrmbMW1yk/yGvHzwQRxS2nsm7eetqMxISdC
+	7cR7EzqN153hYcxfyA1qhJ73c7UmxW4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762963063;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Fy4ID+S4/SX6mxpVfENndsdMlaf45bnvKyDiWnu9Ecs=;
+	b=fteLK/xnXRGpgrdpL1xWgUZiouiGEqxkew0oyqngGT7AXujaOvvgl8Fkheb2hqYBqRUhOw
+	JEjGbN+GSor78qBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 997473EA61;
+	Wed, 12 Nov 2025 15:57:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WgcaJXeuFGmmDQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 12 Nov 2025 15:57:43 +0000
+Message-ID: <454da918-bb53-410e-8046-49ffded8e5df@suse.cz>
+Date: Wed, 12 Nov 2025 16:57:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f0a7c62a3c787f2011ada10abe3826a94f99e17.1762945505.git.ojaswin@linux.ibm.com>
-X-Stat-Signature: ahsj1mnx46k43y5s413uf3roawoyczim
+User-Agent: Mozilla Thunderbird
+Subject: Re: mempool_alloc_bulk and various mempool improvements
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Eric Biggers <ebiggers@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251111135300.752962-1-hch@lst.de>
+ <48e45106-f76a-421d-8f9c-645469076ad4@suse.cz> <20251112155011.GC7209@lst.de>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251112155011.GC7209@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 4768A40011
+X-Stat-Signature: ho1niwb9tft6fmpgy79hdhi3z9t5xjwk
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D27B40005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762962990-811539
-X-HE-Meta: U2FsdGVkX1/fQWF4u9Krz04tW0LLb1b5P95jV+AWnHdBv/svZhkub8U2cO5kI2ylx48MFwbYjTKYd69y3IGvsniliZ5MayV16x7W1MgmTAzK61XKb2x1HLScXSv/i4HYEsnwBWdeETnf/H/8DUr9DA/xiZqZR2qviShHo74sqfCBtY2QoF7+GWwc0dCLqdYXuAd65rerWZfGzUGS4E2hL67VvKmd8kXrMFNZO+/cT1Es/RgNiFs7bfEeWf7G1grkB1ZyzZdGm5gW6qPMphxV3TMfdZLbXupJ0sFYiFavXg5dSL7jwEylFSm+vzrGSFTgwHfr2aWaHqw4BAdJsa53otHq50XjUtsuHvZZ8PU1wwGGUCkiwwAIzuP+fnfkdniKdVBUYrnBezzOyfTKf9gutyQuFjT6zMWfsGUnCTZlq2EHoSehFm6Ub36LPccwLivsYXTjfNCd2ntuTq9uJxdXTScZYcqLeG/pKJXvxyFCBwMNJtM4XwRv8H7TqCOinyAPDwwUR6SCx9B1w0ER5Lab/gy1elDHaSRUSJvj0vbJfTcH2lmaO6jnEiXu48Xd+uEAibjLtTLyrqeMfDdAy/DjGmegMJEUNGAGtLUgdTwyslKcc0QLa2XoXN4DPJqwkufgtpFko30cgFh1K7FbIibjWISUT+n+d2tcQ3nh4gCowrFLKuWA3RLshMccL1p1iVNljFPGzQuA6Nfvqrn4WKkY7kMA9+Wo3Xc6LTiJyHeFZU57hKB2x2+xIGQCc7tAJHtiGSebMoxSKAvOiY2+xSHDw5hB76XlN1zYQQl8kUUiAM+PzBABoo8UMysDkZ2l3qh60L1yjnq0LDcNADeGsQj0YZZRgq/y67hQluWhuzt7gOcGzn59IqCgNI0VgDbFb5RnFBNeUNERkkNqgaYGopk/Oq67tcFwymM9N3ZjugTXKeFe0MDxqCWmB+nQ7PkQY+OwlqEQz5pxCvA1MeratNb
- nF7j4wuT
- IGFbS4RFFBNGy8YXDZFfX20Hi1AT8oG5baof0t4iK+RQFU1EM9MTRtScb1aqccQKzFKRsQsDKTn9dbXAIjcknMb0p6kxklAgprylhV6BEyvrIl7Tn4kS2U/xZ2OQ7xBOqm+AJF8fqB1YElsIfH2TvIGvh2yCH0n3Z0ojOFP3ZXlBabyZITvMWAsZ7ZAkjZ6gtmP/Vn3usA+NhS9FaH1D8bZDs/ZUdn9TXf15taZ4kV3Cy8yw8Ez8ErhFgy/wC5f6/h9v4ksh6jge2z/VW9RAYXlQNWuhN+C6K7LGGgXPs5om0gcfK+KRr5GYhEb0HxRiVFRS9i79OFnfJA/Y4w5oy4B6H8DghtJ9TwObGwIeE1niic3Ljw3xOafCBkH6D6o7U74q3MGzTMLqMMhM=
+X-HE-Tag: 1762963065-118784
+X-HE-Meta: U2FsdGVkX1/lYZK3NoAj70O9ECEz8YQQuBXGyKuoFH/EBAC/+bj2ygCuduoOpTruoG+KCfyeJvfNp9upDUdwCp/9mPWP4Cj3yMWD1EjluZVsLjHIYKA+WWvtCp3Bn79P2CFfPIAu1EDMjC3ZbP0RRkfvgbyD2mERQ3ML6MlkW4UHMmLBRo8Izuexkl74wwSzfp4yZYeG9DPE7iBrgJ9H9LWPf4YDcgEFgrR1EcnrSZrCPCHQPjNcadrbXyX/Y+C4/IXCG7TnhQzABRGqnwwBa3mqV34yjFlQsLL3pdkY6ZF+kpoKwkgh3yGjEXqO20bSDKkFwJYmPHf7wyWcpZ4dQoV76pg274Dg6g+gbaZjoV+rZpUpZ8+kbnUIYiV+bxBJOaxIdHBK5bsRq4xbBn4nnOyIzCZkbWUAUI1DxsKjZrg1hU0PQsKYKatdLn3vf8bv88yMQbn49o0lkM1iWLOGnhzJ3i2S73or0iuqJa/dU+lFnt3oaPSyjrKFCQUgCj5OFCXBTSSBo/V3Gu+L1YT1VcSkpDmU/uqgurcGz1SLNtpPcezLG3rfr+B9QdlhmdO5AqDJev8QgKDRlGxmitZ4OBgmEdeZ8NZU0aMwJgAuUru30A59GHC/RDBnm0jEgMgKYumtPOBZLocFHPQptGOsJs1yRr6viwpMi9YHxhP93+vwQ4kP/gHpgbYuASEm1c6Nlv+rNPKNz2fOIFe+Xg2l6KHB8rNvCG+nm5hSxdvRQ694j9EkTJ/nV4QrTmhZAGfL+ZtUM8cZ08PZ5AnVT156Kydfb/eJhWqZJ654Rv3AKfrlPM/5uocXY+KSgwowrFlnsmoLm92fxm9QYNi9/2fYv8w9Ile7vV08D2COhkj8hSd/JOC+rLn3JnemdDkAstbp1kw9an7pdQUUH5/z1ho1udVpWTnVz465c/3dk6PkYqhHmrTPktPE++mVj5DKTw5jZmZ59lxg8imNUZzgD8f
+ 5cU11fw5
+ nb0ukD/mZGFsAC/d9Q4h/BSg7JiS0uP+e4DuUk5zdinE+RFf7QgYAnvZeJlcYp0nXjxj+IADnUe8bLUknfvBRaAVQ/sYQE/TerIKaXz3fGzj9Vui7gQINRPUV44xPzv4LPyP/J8HANwbNI5n1WNe37Mcfo+5DJABdIi8X0R3RTtXU5zUPGBGFatS7JghCiVljX+2DfJu/pBqZUHVSwEjzJr3+My5n+ohNPYFBP2rPGGVqNBL31g2zEaY0o5P7aWUXXTdWuSXGzRV2IqM+9LCS+mTJCrazOckCfwV8f1M4lHC+HO3zk2bceLFmlD0FB3LWG7Qkxt5813SjQln8Gjs84V8MQxNKE8JWAJE9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,15 +181,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 04:36:05PM +0530, Ojaswin Mujoo wrote:
-> From: John Garry <john.g.garry@oracle.com>
+On 11/12/25 16:50, Christoph Hellwig wrote:
+> On Wed, Nov 12, 2025 at 01:22:01PM +0100, Vlastimil Babka wrote:
+>> On 11/11/25 14:52, Christoph Hellwig wrote:
+>> > Hi all,
+>> > 
+>> > this series adds a bulk version of mempool_alloc that makes allocating
+>> > multiple objects deadlock safe.
+>> > 
+>> > The initial users is the blk-crypto-fallback code:
+>> > 
+>> >   https://lore.kernel.org/linux-block/20251031093517.1603379-1-hch@lst.de/
+>> > 
+>> > with which v1 was posted, but I also have a few other users in mind.
+>> 
+>> How do we handle this then once it's settled?
 > 
-> Add page flag PG_atomic, meaning that a folio needs to be written back
-> atomically. This will be used by for handling RWF_ATOMIC buffered IO
-> in upcoming patches.
+> Good question.  I think there is enough mm material now for a merge
+> through an mm tree.  If we get it sorted out for this merge window just
+> merging it through mm even when there is no user yet would be easiest as
 
-Page flags are a precious resource.  I'm not thrilled about allocating one
-to this rather niche usecase.  Wouldn't this be more aptly a flag on the
-address_space rather than the folio?  ie if we're doing this kind of write
-to a file, aren't most/all of the writes to the file going to be atomic?
+OK should work hopefully...
+
+> the blk-crypto work is probably not going to make this merge window with
+> additional review from Eric and I'll most like have another user for the
+> next merge window as well (block bounce buffering for !STABLE_WRITES
+> dio).  Otherwise we'll have to operate with shared branches.
+
+... and we can avoid the need for shared branches that way.
 
