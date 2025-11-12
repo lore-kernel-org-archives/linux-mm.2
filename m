@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7598CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD36CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:15:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 101338E0022; Wed, 12 Nov 2025 06:08:32 -0500 (EST)
+	id B4CBB8E0009; Wed, 12 Nov 2025 06:15:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B3378E001A; Wed, 12 Nov 2025 06:08:32 -0500 (EST)
+	id AFDEE8E0005; Wed, 12 Nov 2025 06:15:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F30FA8E0022; Wed, 12 Nov 2025 06:08:31 -0500 (EST)
+	id 9EBAF8E0009; Wed, 12 Nov 2025 06:15:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF12A8E001A
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:08:31 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A52815909A
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:08:31 +0000 (UTC)
-X-FDA: 84101681622.14.0A240DE
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EFD764000E
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:08:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8439C8E0005
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:15:41 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BE1F891EF
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:15:41 +0000 (UTC)
+X-FDA: 84101699682.22.D2CB1DA
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C88D240015
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:15:38 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762946139; a=rsa-sha256;
+	cv=none;
+	b=KXi65XhIjDMh/EPcQNEkajfT2LNH4fTa6fLIc1KLdt3HMEd0dONzirJ0oIPuzkj4+KnjvF
+	Mf0BcXrOqIevpq5hboie9ltN4iMF2cLCDwGxMdYLIOPFVPEQ689w7Klx3+k9JoiI+an0jA
+	01zJcQKk6/h2oFl7YWQNxjy0XSoMmhE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762945710;
+	s=arc-20220608; t=1762946139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=APJ3/i0Qwt68My5sl3F+6dc+O4UltIlrkWW1kSuJpio=;
-	b=FpQWATqIZuNKc2y3x/p8K3qKTPFE5FtOhtgzlcLADE0ydRfYuV+n+A3ysj4osjqlczzhTN
-	7tGr+jqaP4cl/2FVW4jjRUoMhLCey1eiJsww3U6PwtUhzSHduqysj8A3+9VueyC6QpXC9e
-	/YcjqqI3eJUA6608HxU4QCoBCtfTaWI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762945710; a=rsa-sha256;
-	cv=none;
-	b=CqfB8CVlrDpeqC1tapB9MiMgpA5iIikwiUADQuDQjQyvNDpc2pxrOHC0U/6P1hRGgUJ70Q
-	b2IP1ez1NSb4vBtKiCL8P9Zgj9xsorgEVvSkM9xfJYbH/jhhEAC6VtGNOrKegf7eVny3K1
-	myY93KqsmWg8DupXM/+WBbMI0xyBr1Y=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F0BE1515;
-	Wed, 12 Nov 2025 03:08:21 -0800 (PST)
-Received: from MacBook-Pro.blr.arm.com.com (unknown [10.164.18.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0DF393F66E;
-	Wed, 12 Nov 2025 03:08:23 -0800 (PST)
-From: Dev Jain <dev.jain@arm.com>
-To: catalin.marinas@arm.com,
-	will@kernel.org,
-	urezki@gmail.com,
-	akpm@linux-foundation.org
-Cc: ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	shijie@os.amperecomputing.com,
-	yang@os.amperecomputing.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	npiggin@gmail.com,
-	willy@infradead.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	Dev Jain <dev.jain@arm.com>
-Subject: [RFC PATCH 2/2] arm64/mm: Enable vmalloc-huge by default
-Date: Wed, 12 Nov 2025 16:38:07 +0530
-Message-Id: <20251112110807.69958-3-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20251112110807.69958-1-dev.jain@arm.com>
-References: <20251112110807.69958-1-dev.jain@arm.com>
+	bh=NbAH9ltoJxJkHN8bSWaXy1SJilPSqT6BewxNoTRwLHs=;
+	b=7gdrn8ovyQk4U3WizsP7eX/0BMaPRG2vuBx6qqMZta2Tr7lFB+CRZGcGq7rb+Q37Hs7NOd
+	NbOZhKuLWsnIHRvwC1PhEeCgEeHFgLHG/p3Tn5/bzJePVT5/eSHmyB+6MscNoAb4UT7HWv
+	zNy4DMybKK673WbjIoi++wPqNAWica8=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d616J1lGlz9sSb;
+	Wed, 12 Nov 2025 12:15:36 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id IDngTuJZ3gRw; Wed, 12 Nov 2025 12:15:36 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d616J0kqSz9sSZ;
+	Wed, 12 Nov 2025 12:15:36 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 03A088B76E;
+	Wed, 12 Nov 2025 12:15:36 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id WbBSOMNQv6aS; Wed, 12 Nov 2025 12:15:35 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 69C278B764;
+	Wed, 12 Nov 2025 12:15:35 +0100 (CET)
+Message-ID: <caf091d5-6122-4cd7-bdbd-88b3f9a4029e@csgroup.eu>
+Date: Wed, 12 Nov 2025 12:15:35 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc, mm: Fix mprotect on book3s 32-bit
+To: Dave Vasilevsky <dave@vasilevsky.ca>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Nadav Amit <nadav.amit@gmail.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-mm@kvack.org
+References: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cbiiotcz4qs33ifhm4im13tcef9kfqcf
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C88D240015
+X-Stat-Signature: u85ymf8fddsehexa3hwfyoic88inhg6o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EFD764000E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762945709-415000
-X-HE-Meta: U2FsdGVkX1+lbEjlh6gYcObGHQcmcOAqZRoV3IrHKl5vvNwJ1WQ2qEwCOAUDhNOkKUATCMSj8GKmZG/fULRvAREBi9fRVi8VgK9/ktWcoNhIIA0iAgpx/9crZJE/cCHh3pSw+h+LRxDLmUgEIMWrKU2SbpKha5dhvF/xz/RJu+oI1HlhL21kQ74m/+/Zfaex2RbNw3xf7QZnWB8w6oGnXaAh7Ugt3VEB2azoRu5Hdo/g8/nB6+mVeuI4+lIpcnUaBGCRIMns9Wvi104WPeK1p5tQxMIsSoYCi5T/mNroq0gVcMcWObSndpWG/K1MdW/CZ3eESYxIXV0NqTC1TeSWLAymvNsdq9/1iMj4sKB7jChfdjuMIropoqHi2x8WfHG6QFXTIaur+o0OFfV9EYL+m42+RyPqG5mr6+MpysoEUaO1iMCEcT6/fsihLBOAA6OTKVhWq1a6eZoK8V+GVRFMqWlsQHC0BenY7+RtdZxBy+0EZ35gL+0XI4UgJRj7PnXG07EayctUSFmXi0VqkjggpkdFoL6G9dacHcBigyXKQSWkzD8NUl0zBRNEVABS+WFKomJjkbsX8fG3+MiwVWTSYRJdkmpVkmUn9f/qSl4SknUwwf1xmhqd6O4O04WXMTnfERWGMUHvsHvNxU4rC1j/0v29KP2pynMpgBJXtyRBWkeFYbSMaPUFRw/ubYAPyYGd/xC16rDtCRE/lF8bPPyjkJu2k1dHSxIh78lbCeYJ0oHoO0zvZPUH9JOON32d6OakxfPwdsEy3axcl4RZIUl4TmvcVgs2M2MBMCZUCDjZCYzuaQk3dACU028Rrfh5pcsIt/VE6AbPccq3SCBJGQxe8EQOIXgs0h8+mOIrIdRR6rsR8nddit3NEZ/iLlFj8wrvt1YHKMmr7dMqhMYKm0NdyikW7ipxZ79UXcPf3VCXCHcHS0OvIMOIEs3vxayG+Kcn/lz3iAHjX8Jae2pFHHy
- GGIf05+m
- lPxAjnmfPpHo0yv2gYzfH2LhpMp5yJLkhGkA2fLvRj27+3ahDUQoAlFweRe4ElKcvfHzuBKbUWNPTKeaNBNOYXuRdIOy2BjvETnAlAdw3V+hVdxVthLbtlBxcnbFq4zYTqzs+1z6iOGYw2zveH2vPWTCzoQ==
+X-HE-Tag: 1762946138-192550
+X-HE-Meta: U2FsdGVkX18q6AbF0pf7zct2qhPh9eCQIkpApQ1HdSXTRmsek69u3axxxF+dsq/prK42tCJ5Tt9bgTF5EuedZt9rN8/4N7Nlv4ohpOrgwsv7qXmEYkaJPU6Yfugh37fud28YEWb+1XvO+TQQZAIzJ/7TiHIPGP7BY5Qx8xe4DqMY31ZYAVArhdCNZ0ApqHb3VzhXWvZyccKArEeBRtE8961/fxuf/AQKRqb2oJHOrg6O23NBzs9o25VWJ601jVxIeUgVDuoUwRbJ2ldV4SrNYLL7q/S7pj6MEcGi2jT9qJ6OR2Lw9u07onDnH8iawNUXQzcR/xcA72R/SxI36EhQd4Vv/SQ61S6QYwuNROmk9gHz5xlp2bLETEBdYDUO+i3mAEgwXDCv8BdPtN//2boLyGQ2WqUGtj//Kl2MNoQ0CH/uek3CHyvLqXaBe118g/31wLqNxLHzX7IVwtbOh+Ffa1bV9FQPS0Q0Ik+TTh9WrGKzXDqKvYw4OSzH5Pu+CieVzFC5YcZSKZTJfNj7FSSSp3TaVHt2N0N3GOhbS+ptUA3af2lWFT+l+Wr5CffI6XUcNzg9xCEiHh9J4rwgiZFS+FDc4j+3/zr8/b066jzsrBCUwzDGlxS/xS7vhlbtlyzG3lwycjAhQeSxC0del6N/yJWmxFuZP8rFsqp4BwFM++bu6pb2KuaWp7cEUz0I7wEBe/GZXrTnTxWbMrwRAaPrv1KeuMlWKRArl6x/IOmJEUj+ZxnIuKWr+w4bURBrNZPRw1gyFIpydldxstVANrRDc8HapdIu00/qZcwYtpK4vOZD8zVnoY1vNoumxyPrYwNaqLfM6p5Sepbx1NjGwcCTIu+YD6WhD+UjDUOmd9oAWUYOnMz4FG5oxFCoBBBtqnIoWPKQTARfyKxeLZVlsYs4pQhkE2qZXQ1ApnsGrOyY/URy1c7h+PmITq2oA2nxmE15T+qgIPltdBYm4F2DOBo
+ 5QksSc8P
+ H84njamem1T5pQB5AAswyqYeGO/IsMqn5WT8XbGHhPbdfFGJqdSpjPOf9AkZuN79017I7HiDt/pDNaK0ZUefIft2gMlcMdT3p/dZRJpEvhDFBgo6CyDJadmG3Gj4qVWZVkY2DFCTI1UCTyhL2MOatOzrr3+xZVfMg+aUrgbmbPZ9mOiri1UYdFkcYxFojyyNfMRHrIRF8LWefx6AeHoFf2D54tv62LIboaMPki9nCbDDW8SqznD09ms9QVUF1LgnhC/Z/rxtZnvKBqeMTVES/5Cy9ojEgcAzRmMwVnXN9mWOGjmSFa0W2dv8r2Bf4lffWL7vvZahMylMQQB/YxdtNkP8co+uepACb2aVGBXRpmJTMvhE64efG3XzZIUDFdQURQRNro96SragZb73mcTxSfQAWo1Ad/ksY4+MqjU4HIADhdZ41eCNxTuG0A5lOmP4W7rjWC7WnRg3vNHtPpEJ7fYT4COV99pVaGf2B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,154 +105,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For BBML2-noabort arm64 systems, enable vmalloc cont mappings and PMD
-mappings by default.
 
-There is benefit to be gained in any code path which maps >= 16 pages using
-vmalloc, since any usage of that mapping will now come with reduced TLB
-pressure.
 
-Currently, I am not being able to produce a reliable statistically
-significant improvement for the benchmarks which we have. I am optimistic
-that xfs benchmarks should give some benefit.
+Le 11/11/2025 à 22:42, Dave Vasilevsky a écrit :
+> On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
+> unnoticed because all uses until recently were for unmaps, and thus
+> handled by __tlb_remove_tlb_entry().
+> 
+> After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
+> tlb_gather_mmu() started being used for mprotect as well. This caused
+> mprotect to simply not work on these machines:
+> 
+>    int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
+>                    MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+>    *ptr = 1; // force HPTE to be created
+>    mprotect(ptr, 4096, PROT_READ);
+>    *ptr = 2; // should segfault, but succeeds
+> 
+> Fixed by making tlb_flush() actually flush TLB pages. This finally
+> agrees with the behaviour of boot3s64's tlb_flush().
+> 
+> Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
+> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
+> Cc: stable@vger.kernel.org
 
-Upon running test_vmalloc.sh, this series produces an optimization and
-some regressions. I conclude that we should ignore the results of this
-testsuite. I explain the regression in the long_busy_list_alloc_test below:
-upon running ./test_vmalloc.sh run_test_mask=4 nr_threads=1, a regression
-of approx 17% is observed (which increases to 31% if we do *not* apply the
-previous patch ("mm/vmalloc: Do not align size to huge size")).
+A small comment below
 
-The long_busy_list_alloc_test first maps a lot of single pages to fragment
-the vmalloc space. Then, it does the following in a loop: map 100 pages,
-map a single page, then vfree both of them. My investigation reveals that
-the majority of time is *not* spent in finding a free space in the vmalloc
-region (which is exactly the time which the setup of this particular
-test wants to increase), but in the interaction with the physical memory
-allocator.
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-It turns out that mapping 100 pages in a contiguous way is *faster* than
-bulk mapping 100 single pages. The regression is actually carried by
-vfree(). When we contpte map 100 pages, we get 6 * 16 = 96 pages from
-the free lists of the buddy allocator, and not the pcp lists. Then, vmalloc
-subsystem splits this page into individual pages because drivers can
-operate on individual pages, messing up the refcounts. As a result, vfree
-frees these pages as single 4k pages, freeing them into the pcp lists.
-Thus, now we have got a behaviour of taking from the freelists of the
-buddy, and freeing into the pcp lists, which forces pcp draining into the
-freelists. By playing with the following code in mm/page_alloc.c:
+> ---
+> Changes in v2:
+> - Flush entire TLB if full mm is requested.
+> - Link to v1: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20251027-vasi-mprotect-g3-v1-1-3c5187085f9a%40vasilevsky.ca&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C7b1beec4921c4c67c95108de216b416f%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638984941704616710%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=mJL3gS4YkTUAWmivSWL5AE9BlhAQ0R%2FI3eBwYwN26nA%3D&reserved=0
+> ---
+>   arch/powerpc/include/asm/book3s/32/tlbflush.h | 8 ++++++--
+>   arch/powerpc/mm/book3s32/tlb.c                | 9 +++++++++
+>   2 files changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> index e43534da5207aa3b0cb3c07b78e29b833c141f3f..b8c587ad2ea954f179246a57d6e86e45e91dcfdc 100644
+> --- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> +++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> @@ -11,6 +11,7 @@
+>   void hash__flush_tlb_mm(struct mm_struct *mm);
+>   void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
+>   void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
+> +void hash__flush_gather(struct mmu_gather *tlb);
+>   
+>   #ifdef CONFIG_SMP
+>   void _tlbie(unsigned long address);
+> @@ -28,9 +29,12 @@ void _tlbia(void);
+>    */
+>   static inline void tlb_flush(struct mmu_gather *tlb)
+>   {
+> -	/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
+> -	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
+> +	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
+> +		hash__flush_gather(tlb);
+> +	} else {
+> +		/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
+>   		_tlbia();
+> +	}
 
-	high = nr_pcp_high(pcp, zone, batch, free_high);
-	if (pcp->count < high)
-		return;
-The time taken by the test is highly sensitive to the value returned by
-nr_pcp_high (although, increasing the value of high does not reduce the
-regression).
+You should keep the comment on 603 outside the if/else and remove the 
+braces, in line with 
+https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces
 
-Summarizing, the regression is due to messing up the state of the buddy
-system by rapidly stealing from the freelists and not giving back to them.
-
-If we insert an msleep(1) just before we vfree() both the regions, the
-regression reduces. This proves that the regression is due to the unnatural
-behaviour of the test - it allocates memory, does absolutely nothing with
-that memory, and releases it. No workload is expected to map memory without
-actually utilizing it for some time. The time between vmalloc() and vfree()
-will give time for the buddy to stabilize, and the regression is
-eliminated.
-
-The optimization is observed in fix_size_alloc_test with nr_pages = 512,
-because both vmalloc() and vfree() will now operate to and from the pcp.
-
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- arch/arm64/include/asm/vmalloc.h | 6 ++++++
- arch/arm64/mm/pageattr.c         | 4 +---
- include/linux/vmalloc.h          | 7 +++++++
- mm/vmalloc.c                     | 6 +++++-
- 4 files changed, 19 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
-index 4ec1acd3c1b3..c72ae9bd7360 100644
---- a/arch/arm64/include/asm/vmalloc.h
-+++ b/arch/arm64/include/asm/vmalloc.h
-@@ -6,6 +6,12 @@
- 
- #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
- 
-+#define arch_wants_vmalloc_huge_always arch_wants_vmalloc_huge_always
-+static inline bool arch_wants_vmalloc_huge_always(void)
-+{
-+	return system_supports_bbml2_noabort();
-+}
-+
- #define arch_vmap_pud_supported arch_vmap_pud_supported
- static inline bool arch_vmap_pud_supported(pgprot_t prot)
- {
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 5135f2d66958..b800e3a3fe85 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -163,8 +163,6 @@ static int change_memory_common(unsigned long addr, int numpages,
- 	 * we are operating on does not result in such splitting.
- 	 *
- 	 * Let's restrict ourselves to mappings created by vmalloc (or vmap).
--	 * Disallow VM_ALLOW_HUGE_VMAP mappings to guarantee that only page
--	 * mappings are updated and splitting is never needed.
- 	 *
- 	 * So check whether the [addr, addr + size) interval is entirely
- 	 * covered by precisely one VM area that has the VM_ALLOC flag set.
-@@ -172,7 +170,7 @@ static int change_memory_common(unsigned long addr, int numpages,
- 	area = find_vm_area((void *)addr);
- 	if (!area ||
- 	    end > (unsigned long)kasan_reset_tag(area->addr) + area->size ||
--	    ((area->flags & (VM_ALLOC | VM_ALLOW_HUGE_VMAP)) != VM_ALLOC))
-+	    ((area->flags & VM_ALLOC) != VM_ALLOC))
- 		return -EINVAL;
- 
- 	if (!numpages)
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index eb54b7b3202f..b0f04f7e8cfa 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -84,6 +84,13 @@ struct vmap_area {
- 	unsigned long flags; /* mark type of vm_map_ram area */
- };
- 
-+#ifndef arch_wants_vmalloc_huge_always
-+static inline bool arch_wants_vmalloc_huge_always(void)
-+{
-+	return false;
-+}
-+#endif
-+
- /* archs that select HAVE_ARCH_HUGE_VMAP should override one or more of these */
- #ifndef arch_vmap_p4d_supported
- static inline bool arch_vmap_p4d_supported(pgprot_t prot)
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index ddd9294a4634..99da3d256360 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3857,7 +3857,8 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
- 		return NULL;
- 	}
- 
--	if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
-+	if (vmap_allow_huge && ((arch_wants_vmalloc_huge_always()) ||
-+	    (vm_flags & VM_ALLOW_HUGE_VMAP))) {
- 		/*
- 		 * Try huge pages. Only try for PAGE_KERNEL allocations,
- 		 * others like modules don't yet expect huge pages in
-@@ -3871,6 +3872,9 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
- 			shift = arch_vmap_pte_supported_shift(size);
- 
- 		align = max(original_align, 1UL << shift);
-+
-+		/* If arch wants huge by default, set flag unconditionally */
-+		vm_flags |= VM_ALLOW_HUGE_VMAP;
- 	}
- 
- again:
--- 
-2.30.2
+>   }
+>   
+>   static inline void flush_range(struct mm_struct *mm, unsigned long start, unsigned long end)
+> diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
+> index 9ad6b56bfec96e989b96f027d075ad5812500854..e54a7b0112322e5818d80facd2e3c7722e6dd520 100644
+> --- a/arch/powerpc/mm/book3s32/tlb.c
+> +++ b/arch/powerpc/mm/book3s32/tlb.c
+> @@ -105,3 +105,12 @@ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+>   		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
+>   }
+>   EXPORT_SYMBOL(hash__flush_tlb_page);
+> +
+> +void hash__flush_gather(struct mmu_gather *tlb)
+> +{
+> +	if (tlb->fullmm || tlb->need_flush_all)
+> +		hash__flush_tlb_mm(tlb->mm);
+> +	else
+> +		hash__flush_range(tlb->mm, tlb->start, tlb->end);
+> +}
+> +EXPORT_SYMBOL(hash__flush_gather);
+> 
+> ---
+> base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
+> change-id: 20251027-vasi-mprotect-g3-f8f5278d4140
+> 
+> Best regards,
 
 
