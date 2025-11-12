@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 649F9CD37BD
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB86CD4842
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:23:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A12108E0014; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
+	id BAEBC8E0002; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94CD38E0002; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
+	id A0FB38E0011; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B4928E0011; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
+	id 8FF208E0013; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5709D8E0002
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 72FC68E0002
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03CFC13B895
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:43 +0000 (UTC)
-X-FDA: 84103080768.12.4623001
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4002C13B8E8
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:44 +0000 (UTC)
+X-FDA: 84103080768.24.54E35E4
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4D398A000D
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8EDB940009
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=erE5ya6Z;
-	spf=pass (imf15.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=m5Zdg3v6;
+	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
 	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762979022;
@@ -34,36 +34,36 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dIA/jdXg8XhpF5qFcJkcp8Nfo/i/kNxnm5Fq/ADnXoU=;
-	b=kxq7CwFYs8n1FDmqimir8IqspFbbFjnlAubacARzM9pKGq87SFwNBmn3JWtW++WCkDjkMH
-	0WGy1ZXhe9k8lv6Lv3Fz7maIMotaJWwBrwSEckGL/2kvrxjOU8IsW/r8r3etL22zPNAuL/
-	7gfr0kp/vY1C9zrKGxsEzRFt+LnIgLs=
+	bh=kKepbIurdihWBOSv7qfxVjB2xtYQNTgrV9okxaVFtJY=;
+	b=IZmgNAwc+7DPW6yfnXGYqpkpZEc4W64GEJFt//YcYsZ1gqsh6xmnFK7Dm8bpDMd8fn7jJ1
+	Ca3g6zFbTMrLOO5AZD63udF4BWJHfiKqFTLuqeiB0V4WvzYlf4s/cSQEcyJ8FAj5ngLyFc
+	p3m5nAx0QiWA3HkMG2mJzZJQbdFvNh4=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979022; a=rsa-sha256;
 	cv=none;
-	b=8Xxy8LqARmHJ/OCjD7iq0dbXkk4GCFljX0fuwp6Y5bmWu3oAcAj2cWRZZhHWbb3NZ3WpS3
-	f12sL/HFVA4y/u+T/hlpXh04Y3YQERzYBfDqNXsZTkErhqiBjSVbM6Ej4IExqcOUvbT8gc
-	ehqkbom5J0e2EVNPmV81iP571XfCjFU=
+	b=xGkZd9fIa1YH8XzbyaHhW5J6TTDvNsFAlhdqTrfBWFSWvpzlk5irrPMTBW2/eX0OaC+gOT
+	nmL5MQGW8UbKJQV/MvM2/DSKCRh2MjPt6yP9wev7alEKwxldJOguqT3FRi56brc+Q+mD+C
+	0BQoAXdNNsGQN5Y6sFd1cy6l3I9FfWE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=erE5ya6Z;
-	spf=pass (imf15.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=m5Zdg3v6;
+	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
 	dmarc=pass (policy=none) header.from=zytor.com
 Received: from mail.zytor.com (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5ACKN2M2978372
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5ACKN2M5978372
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 12 Nov 2025 12:23:11 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5ACKN2M2978372
+	Wed, 12 Nov 2025 12:23:16 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5ACKN2M5978372
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1762978993;
-	bh=dIA/jdXg8XhpF5qFcJkcp8Nfo/i/kNxnm5Fq/ADnXoU=;
+	s=2025102301; t=1762978998;
+	bh=kKepbIurdihWBOSv7qfxVjB2xtYQNTgrV9okxaVFtJY=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=erE5ya6ZBEtOXOOJ5AnvTJd4AlAMrYTDV9tWnhzYO0H2qioOgGzqXd92XvYymdIw3
-	 Mb0vPXxWLA+evNZQv6W2FTGg6vslU8tklaRz1TXcSN8m6+eAFHsQgjfH824fun1ZGR
-	 OB2UjETqfyXyMRmYE9CuiuKBhrq6v7SN1SssonJX5hvsxhlQ2chl+r++pj6P1jCnQu
-	 z4hjkoC8sbj3uKO0vnTUYC31mdWQxaYCFx9kIWAUF8UnSyVCuc3QsXAlFszSQ11n25
-	 qEZALCAfm83FK9u+9SyqGvG+tCkhnt4jclQsXVDp0oGFDCsN9JMph67tFJy/iyyqaS
-	 lQ6N6oueE++Gw==
+	b=m5Zdg3v6NVwk5n3XG9KSuQXOOMS2SeHI7FvfxMGCwHyBkA4GLazgEU/ibfCXefRP5
+	 NDyff88v5Po6/9PBN7H3oL8d1C/L/La1SNXMmZfOvdJ6bkQktDmzGqhpXb0qd8Z9fH
+	 Cj/nXsP2LbPYPvPYIWATaJNSbhh8oX+WwKVM3yz3NMhvFuhz/ZUZaZefJFGLi+tf9l
+	 3WmhxMzphWWWhv3ehR3oxOSx46DqLCZDPDa6LpJOvGhPh27BuWtl71XQVrM7ROIZwN
+	 vF0eIDeqp+hcfbYHWyxP2Ib/6JMQj0vX02iIFUMHegXtp4bPlBP+c3+Ax9e0MnywIm
+	 S4bdBCckfPnoA==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,22 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v3 4/9] x86/entry/vdso32: remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
-Date: Wed, 12 Nov 2025 12:22:49 -0800
-Message-ID: <20251112202258.1310754-5-hpa@zytor.com>
+Subject: [PATCH v3 7/9] x86/vdso: abstract out vdso system call internals
+Date: Wed, 12 Nov 2025 12:22:52 -0800
+Message-ID: <20251112202258.1310754-8-hpa@zytor.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251112202258.1310754-1-hpa@zytor.com>
 References: <20251112202258.1310754-1-hpa@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4D398A000D
-X-Stat-Signature: f9bcqy1dtdcm5sk6xgno6u8zse5m7gcu
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762979022-817897
-X-HE-Meta: U2FsdGVkX1+zod1EdEj5E2Us56djy8gCn5dRWTKEWPv45tvO/oxD/zz2XAxEUhh8BZB4Rdgkur74fy8nTi01+4AbPKegosS9ZZbJAlUeV3dH205f+9hOoCDWTviqIup5uinGX3PYpRk9iMbLniy0bUgYmv//7GFvSclt6WMRAHLROujCI2UCGm69xw/k1oNoMIzabFyOHVGfN9NJpwuA4OzUmJJ4Ab1fbWWBvXAdFVrYRdHCjaKsW2AVAylLcnPpu0Hd+x9OOZdWBctY7U2hBarNxlPi+oWwKREtI3dZhVNzKn61/0vj2UZ/6aP0SMVaocS2iGBnkB0ks6rk7IHaLP+RnFtlp6E7HYl43zYghvf504TELsvqhwdXUnCW63Fta82XLFNrJDygzWqVA5mEnJAN/c6CSHybhyvuzenLyuqIBfejI7DOCFOgq7Ml8PCJpWNXojWI5UZp9qqoG5vSolaOTd9rk3L1HAXkF6SBvU/2nfCwmBb4CTD0EcmwoJpQ2brg19SFrsynxw+U+8cipbjgo01uROXhGnGGHd8g9qd84SNPXtLFxbYVy5YP9KuZxSh7PbafX0sRcWtJjh/OIIR3Yh32vqJw6kDmmJyaupEnxVkIbF2h3sqCkvK+LDB6ASIoATG6mU0HkDkIrEu5mJ67pA4VdgDlwCUhOaK6hnm6wgj2+y39Yg55upqdUQnevNJ8WTfKrxyG8Pn/R9Fh5P+6zMVGgSEl3yRus+Jwkw1O2AJw1wBtZGFeosqWVudVQaE9zt9fiFPyMmpWq0uzNMHgHLPGRwXfrM4pYIHDU8Ny9bNAsBLGGM/nTxyWOAOPZwWGw0aABZX0QlPFKKOcGIUgf0Zz18MHv9J6or6hFo0Fey/iWGJq83MtSHkgZwfe4dZYSBG4CtMc57A058ehGM8RJBKthYFr//H6/dZpRvtstG90Ld+UrWMOIBR1sMf9Hnq2lz3AOTzp7clukKl
- 2SpxB4n9
- EWH7hCr2rsxnEQb9+O50WMrMmlJdc37UfcBBBEfst77t+vlZGF+CdFBcKQz1uwA1bt+VTO8y5VkJ4EeBTZ+DDa4EuySICcqEC/GtovM7TEvBJrXDKS+FaIvUqQYP2ppbWB5q/ScwDszoNZ0ePFz4yjV1DooGbVKyqr47BZMuMXIjtes1akCF/Xg/jFYoT8Vp2GeAO++BdSW6K+F3/K/Zj1zSqOWjQ7U29Y9MOpCl8HE4IlN9wbofJgFmfn0v6VlRIA+4iqw0JrbDB43wXAAWJ99S8izD/co+MCNmIWBvoexfvaojPeDSvPGj+gZpEUjpAzN7grtU1u0du4r9vWLo0I2OjlA==
+X-Rspamd-Queue-Id: 8EDB940009
+X-Stat-Signature: 4ucjfd1toyx3dw44n18htjsc3bdf3d67
+X-HE-Tag: 1762979022-405017
+X-HE-Meta: U2FsdGVkX19bCNkQC3JbBWSQrVbjaZzfzOewGXHCEN2brXbkiTys+7fEM54BnvvbEPtgvXzl+CxC6b6CSTXU60abNDrigU3V4itOShTjvrAOxeZY2RZwd1Nv89aqGAp11Mb9XQeVqqGFmM39qWQLukx/L/EzL6pOhrlHMPAyvlBIIvJQxuGyLQIumhgdIoEsje2HHLCJDzlC4IQVRskcowqTJMOGjtfDmT1jULXu/6Ipq5OrIPg5SHo5XEnrufg2drCRchQkLjlc5kUlSKnkRAH9gA3hXxLalrHBkYzmKSsY1z0cPxy8oDwbrvNaVEq6l+TAniyqJDvlB4rkLVvVtWbuG8uL5+cExiTB38YwjHHEhpWGvDXZNxKcB7Pg3JuY1/1hh+30OGgGC6bM2qzOHHz3nnNn5TbtbbCUKxxnuKeUBpfezLB9CFcuhcpJL5hHjYjC5xEWbXHrX4CkoRfXCUxNruvYamiSNd4DzXIRiMXrwoOy8bGUjpHR2ckKNbcC8S5RpFGWuL/QEg5urAiZqc9wZUxkpg3x+a75e6u4IqAC3HpECCzTxhEs8aEDkAeHGbRvYDzwW0yNtPFaeZSJ3UqF/5tI/P29SIBM7HUIIBSRgk5qZmIR1xWPlYyb/ryIf7i7U/L/hEJ3aR40BnUV1v3nJ6M5wTJR7y4+l29M6RoRes9/XEBUDzcJYY0ROGfdySZ41QduS8w6V7TsfwBd0I2KnVuPnzuQELuuJR7P7MCi3D6BZHJRGMrBTx08yZg3zjZ4BxDT+Fn8YgMDdcvSuhPDeaf5pZ5ONrGFUVHiWvgglHwyJ93HO/nWF4w5y2VUAlLREbpG08UK4UhqvNpmChZF+TAXxXueYfzQENRjktrZr4EvHdPm44B92mU48FgvHGBcZqRPJNtpSO/UnQDXUVqvOERQerr/0y00hSbvcft8MHEGae2RhYnye2gBMvnaCROt6ff2H2NBucaAO2G
+ 0v5Ut9U5
+ MPvBOEpu+BqtW1om5FHsAzdJ1EhibC08MKeg/yEidOe+xr9MmCbiAGBHQK3Yl00tL/34y79xBHYpV7GajtOfQv6nVGH7tQ3P5rRGWFMu4kEDb0sAZJvhjNHkihLlLBGAUfD4iBwyZpmELjK94sTMjhSo4ViAm7Qi6q+ufMaIn3U0KnBG+AtLNQzKXZmW1HLGiqTJA5/GJAQGdITd7CILih0RcbsHGJw+YbuIQd/YUUAruUZdhRiF09VtTd8udBlQtj9+LN+iGeHaB9H18F7GjW4s9w13P3gahvzQAuLgXBj1fD/QMnDIzREe90yTK3ftge2WpXahESZgNE6A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,50 +105,294 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A macro SYSCALL_ENTER_KERNEL was defined in sigreturn.S, with the
-ability of overriding it. The override capability, however, is not
-used anywhere, and the macro name is potentially confusing because it
-seems to imply that sysenter/syscall could be used here, which is NOT
-true: the sigreturn system calls MUST use int $0x80.
+Abstract out the calling of true system calls from the vdso into
+macros.
+
+It has been a very long time since gcc did not allow %ebx or %ebp in
+inline asm in 32-bit PIC mode; remove the corresponding hacks.
+
+Remove the use of memory output constraints in gettimeofday.h in favor
+of "memory" clobbers. The resulting code is identical for the current
+use cases, as the system call is usually a terminal fallback anyway,
+and it merely complicates the macroization.
+
+This patch adds only a handful of more lines of code than it removes,
+and in fact could be made substantially smaller by removing the macros
+for the argument counts that aren't currently used, however, it seems
+better to be general from the start.
+
+[ v3: remove stray comment from prototyping; remove VDSO_SYSCALL6()
+      since it would require special handling on 32 bits and is
+      currently unused. (Uros Biszjak)
+
+      Indent nested preprocessor directives. ]
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/entry/vdso/vdso32/sigreturn.S | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/vdso/gettimeofday.h | 108 ++---------------------
+ arch/x86/include/asm/vdso/sys_call.h     | 103 +++++++++++++++++++++
+ 2 files changed, 111 insertions(+), 100 deletions(-)
+ create mode 100644 arch/x86/include/asm/vdso/sys_call.h
 
-diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vdso32/sigreturn.S
-index 1bd068f72d4c..965900c6763b 100644
---- a/arch/x86/entry/vdso/vdso32/sigreturn.S
-+++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
-@@ -3,10 +3,6 @@
- #include <asm/unistd_32.h>
- #include <asm/asm-offsets.h>
+diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
+index 73b2e7ee8f0f..3cf214cc4a75 100644
+--- a/arch/x86/include/asm/vdso/gettimeofday.h
++++ b/arch/x86/include/asm/vdso/gettimeofday.h
+@@ -18,6 +18,7 @@
+ #include <asm/msr.h>
+ #include <asm/pvclock.h>
+ #include <clocksource/hyperv_timer.h>
++#include <asm/vdso/sys_call.h>
  
--#ifndef SYSCALL_ENTER_KERNEL
--#define	SYSCALL_ENTER_KERNEL	int $0x80
--#endif
+ #define VDSO_HAS_TIME 1
+ 
+@@ -53,130 +54,37 @@ extern struct ms_hyperv_tsc_page hvclock_page
+ 	__attribute__((visibility("hidden")));
+ #endif
+ 
+-#ifndef BUILD_VDSO32
 -
- 	.text
- 	.globl __kernel_sigreturn
- 	.type __kernel_sigreturn,@function
-@@ -16,7 +12,7 @@ __kernel_sigreturn:
- .LSTART_sigreturn:
- 	popl %eax		/* XXX does this mean it needs unwind info? */
- 	movl $__NR_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_sigreturn:
- SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
-@@ -28,7 +24,7 @@ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- __kernel_rt_sigreturn:
- .LSTART_rt_sigreturn:
- 	movl $__NR_rt_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_rt_sigreturn:
- SYM_INNER_LABEL(vdso32_rt_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
+ static __always_inline
+ long clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+ {
+-	long ret;
+-
+-	asm ("syscall" : "=a" (ret), "=m" (*_ts) :
+-	     "0" (__NR_clock_gettime), "D" (_clkid), "S" (_ts) :
+-	     "rcx", "r11");
+-
+-	return ret;
++	return VDSO_SYSCALL2(clock_gettime,64,_clkid,_ts);
+ }
+ 
+ static __always_inline
+ long gettimeofday_fallback(struct __kernel_old_timeval *_tv,
+ 			   struct timezone *_tz)
+ {
+-	long ret;
+-
+-	asm("syscall" : "=a" (ret) :
+-	    "0" (__NR_gettimeofday), "D" (_tv), "S" (_tz) : "memory");
+-
+-	return ret;
++	return VDSO_SYSCALL2(gettimeofday,,_tv,_tz);
+ }
+ 
+ static __always_inline
+ long clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+ {
+-	long ret;
+-
+-	asm ("syscall" : "=a" (ret), "=m" (*_ts) :
+-	     "0" (__NR_clock_getres), "D" (_clkid), "S" (_ts) :
+-	     "rcx", "r11");
+-
+-	return ret;
++	return VDSO_SYSCALL2(clock_getres,_time64,_clkid,_ts);
+ }
+ 
+-#else
+-
+-static __always_inline
+-long clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+-{
+-	long ret;
+-
+-	asm (
+-		"mov %%ebx, %%edx \n"
+-		"mov %[clock], %%ebx \n"
+-		"call __kernel_vsyscall \n"
+-		"mov %%edx, %%ebx \n"
+-		: "=a" (ret), "=m" (*_ts)
+-		: "0" (__NR_clock_gettime64), [clock] "g" (_clkid), "c" (_ts)
+-		: "edx");
+-
+-	return ret;
+-}
++#ifndef CONFIG_X86_64
+ 
+ static __always_inline
+ long clock_gettime32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+ {
+-	long ret;
+-
+-	asm (
+-		"mov %%ebx, %%edx \n"
+-		"mov %[clock], %%ebx \n"
+-		"call __kernel_vsyscall \n"
+-		"mov %%edx, %%ebx \n"
+-		: "=a" (ret), "=m" (*_ts)
+-		: "0" (__NR_clock_gettime), [clock] "g" (_clkid), "c" (_ts)
+-		: "edx");
+-
+-	return ret;
+-}
+-
+-static __always_inline
+-long gettimeofday_fallback(struct __kernel_old_timeval *_tv,
+-			   struct timezone *_tz)
+-{
+-	long ret;
+-
+-	asm(
+-		"mov %%ebx, %%edx \n"
+-		"mov %2, %%ebx \n"
+-		"call __kernel_vsyscall \n"
+-		"mov %%edx, %%ebx \n"
+-		: "=a" (ret)
+-		: "0" (__NR_gettimeofday), "g" (_tv), "c" (_tz)
+-		: "memory", "edx");
+-
+-	return ret;
++	return VDSO_SYSCALL2(clock_gettime,,_clkid,_ts);
+ }
+ 
+ static __always_inline long
+-clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+-{
+-	long ret;
+-
+-	asm (
+-		"mov %%ebx, %%edx \n"
+-		"mov %[clock], %%ebx \n"
+-		"call __kernel_vsyscall \n"
+-		"mov %%edx, %%ebx \n"
+-		: "=a" (ret), "=m" (*_ts)
+-		: "0" (__NR_clock_getres_time64), [clock] "g" (_clkid), "c" (_ts)
+-		: "edx");
+-
+-	return ret;
+-}
+-
+-static __always_inline
+-long clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
++clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+ {
+-	long ret;
+-
+-	asm (
+-		"mov %%ebx, %%edx \n"
+-		"mov %[clock], %%ebx \n"
+-		"call __kernel_vsyscall \n"
+-		"mov %%edx, %%ebx \n"
+-		: "=a" (ret), "=m" (*_ts)
+-		: "0" (__NR_clock_getres), [clock] "g" (_clkid), "c" (_ts)
+-		: "edx");
+-
+-	return ret;
++	return VDSO_SYSCALL2(clock_getres,,_clkid,_ts);
+ }
+ 
+ #endif
+diff --git a/arch/x86/include/asm/vdso/sys_call.h b/arch/x86/include/asm/vdso/sys_call.h
+new file mode 100644
+index 000000000000..dcfd17c6dd57
+--- /dev/null
++++ b/arch/x86/include/asm/vdso/sys_call.h
+@@ -0,0 +1,103 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Macros for issuing an inline system call from the vDSO.
++ */
++
++#ifndef X86_ASM_VDSO_SYS_CALL_H
++#define X86_ASM_VDSO_SYS_CALL_H
++
++#include <linux/compiler.h>
++#include <asm/cpufeatures.h>
++#include <asm/alternative.h>
++
++#ifdef CONFIG_X86_64
++# define __sys_instr	"syscall"
++# define __sys_clobber	"rcx", "r11", "memory"
++# define __sys_nr(x,y)	__NR_ ## x
++# define __sys_reg1	"rdi"
++# define __sys_reg2	"rsi"
++# define __sys_reg3	"rdx"
++# define __sys_reg4	"r10"
++# define __sys_reg5	"r8"
++#else
++# define __sys_instr	"call __kernel_vsyscall"
++# define __sys_clobber	"memory"
++# define __sys_nr(x,y)	__NR_ ## x ## y
++# define __sys_reg1	"ebx"
++# define __sys_reg2	"ecx"
++# define __sys_reg3	"edx"
++# define __sys_reg4	"esi"
++# define __sys_reg5	"edi"
++#endif
++
++/*
++ * Example usage:
++ *
++ * result = VDSO_SYSCALL3(foo,64,x,y,z);
++ *
++ * ... calls foo(x,y,z) on 64 bits, and foo64(x,y,z) on 32 bits.
++ *
++ * VDSO_SYSCALL6() is currently missing, because it would require
++ * special handling for %ebp on 32 bits when the vdso is compiled with
++ * frame pointers enabled (the default on 32 bits.) Add it as a special
++ * case when and if it becomes necessary.
++ */
++#define _VDSO_SYSCALL(name,suf32,...)					\
++	({								\
++		long _sys_num_ret = __sys_nr(name,suf32);		\
++		asm_inline volatile(					\
++			__sys_instr					\
++			: "+a" (_sys_num_ret)				\
++			: __VA_ARGS__					\
++			: __sys_clobber);				\
++		_sys_num_ret;						\
++	})
++
++#define VDSO_SYSCALL0(name,suf32)					\
++	_VDSO_SYSCALL(name,suf32)
++#define VDSO_SYSCALL1(name,suf32,a1)					\
++	({								\
++		register long _sys_arg1 asm(__sys_reg1) = (long)(a1);	\
++		_VDSO_SYSCALL(name,suf32,				\
++			      "r" (_sys_arg1));				\
++	})
++#define VDSO_SYSCALL2(name,suf32,a1,a2)				\
++	({								\
++		register long _sys_arg1 asm(__sys_reg1) = (long)(a1);	\
++		register long _sys_arg2 asm(__sys_reg2) = (long)(a2);	\
++		_VDSO_SYSCALL(name,suf32,				\
++			      "r" (_sys_arg1), "r" (_sys_arg2));	\
++	})
++#define VDSO_SYSCALL3(name,suf32,a1,a2,a3)				\
++	({								\
++		register long _sys_arg1 asm(__sys_reg1) = (long)(a1);	\
++		register long _sys_arg2 asm(__sys_reg2) = (long)(a2);	\
++		register long _sys_arg3 asm(__sys_reg3) = (long)(a3);	\
++		_VDSO_SYSCALL(name,suf32,				\
++			      "r" (_sys_arg1), "r" (_sys_arg2),		\
++			      "r" (_sys_arg3));				\
++	})
++#define VDSO_SYSCALL4(name,suf32,a1,a2,a3,a4)				\
++	({								\
++		register long _sys_arg1 asm(__sys_reg1) = (long)(a1);	\
++		register long _sys_arg2 asm(__sys_reg2) = (long)(a2);	\
++		register long _sys_arg3 asm(__sys_reg3) = (long)(a3);	\
++		register long _sys_arg4 asm(__sys_reg4) = (long)(a4);	\
++		_VDSO_SYSCALL(name,suf32,				\
++			      "r" (_sys_arg1), "r" (_sys_arg2),		\
++			      "r" (_sys_arg3), "r" (_sys_arg4));	\
++	})
++#define VDSO_SYSCALL5(name,suf32,a1,a2,a3,a4,a5)			\
++	({								\
++		register long _sys_arg1 asm(__sys_reg1) = (long)(a1);	\
++		register long _sys_arg2 asm(__sys_reg2) = (long)(a2);	\
++		register long _sys_arg3 asm(__sys_reg3) = (long)(a3);	\
++		register long _sys_arg4 asm(__sys_reg4) = (long)(a4);	\
++		register long _sys_arg5 asm(__sys_reg5) = (long)(a5);	\
++		_VDSO_SYSCALL(name,suf32,				\
++			      "r" (_sys_arg1), "r" (_sys_arg2),		\
++			      "r" (_sys_arg3), "r" (_sys_arg4),		\
++			      "r" (_sys_arg5));				\
++	})
++
++#endif /* X86_VDSO_SYS_CALL_H */
 -- 
 2.51.1
 
