@@ -4,109 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C57F8CCF9E3
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 14:48:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 593B3CCF9E3
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 14:50:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 233BC8E0015; Wed, 12 Nov 2025 09:48:08 -0500 (EST)
+	id 9DA948E0017; Wed, 12 Nov 2025 09:50:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E41B8E0011; Wed, 12 Nov 2025 09:48:08 -0500 (EST)
+	id 9B1518E0011; Wed, 12 Nov 2025 09:50:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F9DE8E0015; Wed, 12 Nov 2025 09:48:08 -0500 (EST)
+	id 8C6F38E0017; Wed, 12 Nov 2025 09:50:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E866F8E0011
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:48:07 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8A6259577
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:48:07 +0000 (UTC)
-X-FDA: 84102235014.11.368AC5B
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A5FBF1C000A
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:48:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HrBvVsBs;
-	spf=pass (imf20.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 74AD78E0011
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:50:49 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 174C7140530
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:50:49 +0000 (UTC)
+X-FDA: 84102241818.24.6F6AA38
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3DFFD14000B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:50:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iJztxQPl;
+	spf=pass (imf09.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762958885;
+	s=arc-20220608; t=1762959047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3VNPigpgIeukJ7CSSeeB9OOzKnRd+iQCK/rhwRam1G8=;
-	b=HDlXLp5BnQ1o6KFlO01NUAq7F6+roDtEKm+BWJC0H9kNoxO/FqD846LzMFq6IOivDfj74V
-	YtxGzuqaW+se0798xe2J1OtD5KcVQ+SxzXhNmkxyM3jzPrpD7lt4G4zdHY7ugPNs96p67S
-	5XIIEqxIckz9WkluzVoHdOYAJL7xbck=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HrBvVsBs;
-	spf=pass (imf20.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762958885; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=04QlL+5Mx8OxfT7e5p1Z21nDjyi+h+Wk/vku3CS8HUg=;
+	b=PB+/nJK6eZnW+TvbzXEloxfBvMAk3QTnhYkc08ThpKqfLRm6QVfN/HEY8IOVcQV1ihf9fu
+	J+mx+8gSuyZ6cOjAfO3wRpe5eL0KC1ehak1SnU995XhHvzyMugzNbTtiLlvwE3b2Atyp1v
+	aJWuOyA9wcYVD82DGJUpAx8x8pRvGgs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762959047; a=rsa-sha256;
 	cv=none;
-	b=xpqj/fR6YWznb8m4N18Zkzn0W+tOnlo641GppVViadicF2KDx/gYnnxlK+T+XHOA0wWzv+
-	S42zhh7Z41Haua83BDyNXGru0SPgNkZU+f2TtuMnz2QpsoieRBaK7qGVd1bQdFLoquTJi7
-	BGPa2eMGDAue2bibuQiDccurjw1VdlY=
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37775ed97daso7349521fa.0
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:48:05 -0800 (PST)
+	b=JdMPNcPumSxFK1u86yla96YqWeGV4akU5G/OMqSbh0KT9zn7QzV7ZjX3y92RtKCdjaKxGR
+	nZ3O0/tEU8SZfuY8dfr/ArZmG9a5dTa8A0yJL7qCuYbjPeJK1Ks5TUGMpCWjSuipZ4IXod
+	lV/mNQDqQD3nMBr+8vmxXmL0dcx+b7U=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iJztxQPl;
+	spf=pass (imf09.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-297e239baecso7875625ad.1
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:50:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762958884; x=1763563684; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3VNPigpgIeukJ7CSSeeB9OOzKnRd+iQCK/rhwRam1G8=;
-        b=HrBvVsBsAojUj59BCN64sbvKRodlH/PlXi+/U3FXl+jHJX6r3FalkXIPCzRczi+YLe
-         /FUY9zPQjh9poK4rpjs8KSotRxrE6KLeKJFNR6PF6fi6lPifxoDwPXyMtRZo4uoPB+Jd
-         YnrMIEuQeuC4fBtxFwr+OMvYvxdseF9SRdaglRrT5Hbev2TwmQESyaZ22OKw0PIezFqK
-         RofFlSrOPscyh/dbXHliuz9jqj352ujrz1gDui25xfPNwTMKvUVKBvD43Oj8rRIQeIu5
-         1FOS8SA4tRcH1UEl1+EG5eo1CPdqAebCfsyPPKe+5W6mP7is68n5h4QVImFoAZj0CJMT
-         HxBQ==
+        d=gmail.com; s=20230601; t=1762959046; x=1763563846; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=04QlL+5Mx8OxfT7e5p1Z21nDjyi+h+Wk/vku3CS8HUg=;
+        b=iJztxQPlLfto2rPPEEIlc+EsSgCqEonhUtqJLiW0s8iaHYZULbsRkEoQloZZ+gpZJU
+         MIZMbjiciTens0CQ+Es/FrKG7vfyYQ0bkWXLtxCGqgnYDWi6NBPIiNtAYWK181vLz2db
+         ydmBGFUMaUEyCAxKuCUCohS6tSPXyPG49oHliQFmpff/07bKFlv3EZolmoyabHyjQCBz
+         w/Jyodz+1kE+55P65ulTL3s21zCOo0QJd7nmrKG73LJmPE2oOof+Lk/D99dZveilpDpl
+         IlRw8DHgDOHu4d0fBKQoyzmxjTlxa8YoSfcqVICXD+f7+hwwbJmMLBE7OyrP8HMqggR6
+         GhXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762958884; x=1763563684;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1762959046; x=1763563846;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3VNPigpgIeukJ7CSSeeB9OOzKnRd+iQCK/rhwRam1G8=;
-        b=cIN3i3M7We6VWNzr7C6vs3rjPgMkQGEQn03WZtrka1KvJiGvnOapeZKyTQedDwl3gB
-         CS+/FsJByXm+qXj79WTZIxYjhRFWOEtwwc8UgR6R/K/jpkhqC1crJrsEeIuMGzrnadvD
-         i07vlJT9g+K200mTfwGAYuV+UddSluUUYFMJOFiTnR6Pn3yAHUcq8a7k/3B9ARM4nYxY
-         f8+lE68LfOhXr+NZrIGx7vyzvn+TzvTz84Pzo6xUxht9j1Zax1XZ7BCYYJMsYFiYNLOl
-         Bp6QZ22PtOcKzX2LvzrA/jvZoJfbmYxmT2bf/2dgCltwBZzpur+qiha1kK1AcJ5js+ZC
-         /Owg==
-X-Forwarded-Encrypted: i=1; AJvYcCX0iKG84oSdaeMaxS6d+kl8wn5mHDbehL0qdAmM1bPQwlEEoVUk5VNWkLRdgSCaNG0hEkYzhtVekw==@kvack.org
-X-Gm-Message-State: AOJu0YwOOKjb0gzH18d6nndNgDwt8+T/RM9nGjK56Bewl2IjGcmZ0X97
-	4eacLrDPWBT/vdd1USCVGQJ4teDAWrGnl+uR6OfNCcpfb5Kh/wpLPzZP0InDtF0rJ8jYbUfo+bM
-	sMOLkniuhnTBMrp9m7yg3Pwfw4Lkzwb4=
-X-Gm-Gg: ASbGncssSAYvXCwy7VT67pYwiy7Quygx/dwp4/1xRzvDt54zOqCcTlE05bZsZb1UQW+
-	B7ujhjBuTZWm8vjMQ/c6vBhVDa45G90g5CCNoNdttkp9x+yh8c845isdMJl+eSeJoDfdn/b/HdO
-	c9N2ZiqW3gPzaKnm7Tbzm2QDMCGv3eXNV2Sv6S0KqVLUBAuGelZG+xpp6lmTmQySxwP4F9S4pog
-	RrEKAr8m8NByUQBDEuR36Y2QrkjNx9rn8+sEyH3VeuJiDCIkFRK5vi4UPFG9/Aacb6lO1NJ6g==
-X-Google-Smtp-Source: AGHT+IHKXaM4H8ZexYYwatmRvIKlpWlg7nRJG8gwsD/vxeOb2JJ4n7gp5V3aZgP5LXHuVOrSowoC3ggKd835v4apLtI=
-X-Received: by 2002:a05:6512:159b:b0:593:de8b:9a04 with SMTP id
- 2adb3069b0e04-59576e106cfmr1121136e87.1.1762958883355; Wed, 12 Nov 2025
- 06:48:03 -0800 (PST)
+        bh=04QlL+5Mx8OxfT7e5p1Z21nDjyi+h+Wk/vku3CS8HUg=;
+        b=S9QErqf78MJ3ptWij3o9B4XSj2CwNWXdBeZCtWf+zDQ5eg4APY9L12lPw5iif9vvnk
+         aFHcuOjuO/LSUgUDntCSNyoYYIZh23KY5Z140U1aXW5bVIN4vgmeiYLgoXpTP9mRu/Kw
+         noDeWCaNeRT1qPVurbXuxZhvd9b3Q0OZmh5e7UEVaVbDyYpN/2aEGGqnU3PhWkYR971i
+         ODzW8uNgGZaUPM9TUTnAb3hvm0K7IvV97Qn2IgBmyqCPDG8+jgle99ygPjsEf1Ljx6aF
+         zJV0/X9MhTGObhyfjAYN2/8aChECcGEySddcGYxAZ8JAz4/qz9SDnHQ2y1CDRlvahJ1+
+         Wt4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVmrr8IRuILp1ff3Wuaio0NOKv1B6syBPEWewVX9nrlxQVSo9RAIxu0pNlHIWjZ3r8+MtUbqQLNyA==@kvack.org
+X-Gm-Message-State: AOJu0Yw8vXoBEgfxLvke52bRaEDrGgHpOricpSyb8lEN6+wr3+ueLRft
+	yidYKQTCBLya6ttVWDQQigUsODuLP+33pr6ieLtXCfBp+L7ML5C/lCMg
+X-Gm-Gg: ASbGncsdRXMDsp7cn5snUOBOiGoWyVzRYwyZlJfaJ92AU0CcgdIAKMFprtkVhivdpMw
+	2jmNMY8jWyaJGX2IfDIgyMh9ZHTZv1qRf0DucHjgDkjvXHp9E7UYN4q2YhrTr6WMJ3Mk2L9qc4C
+	cMwlOuipinXAFwlZdESKKrGzf92VvmLP4PqyfqvQkI1WXxjIPao97Nh6gr0sI6ZYU5kIrIklKgu
+	+rXYzlbV8Lx6nok9fNju+nLIJusspsrV6ubjrMkL2rAqTQTAQYsPTKR07d1irg34xrWrs/mrtAc
+	MSEe8d6hSpaqesR1RMw/KOTD0iM+5WfhqEK2Qg6mOISgICoPZJbNbj4/8WGMlxeKezEsHbvlmlS
+	gVhr/hXHkSxHHtUJqng9sYPiRliFlSSSwH4jH6FROWw4Vr/xg9qM7qnfRfHfI5+Sw3U9k+C3l+B
+	rL3xY9Rzb6i2sYc9xvUOzMPSXt
+X-Google-Smtp-Source: AGHT+IE2Jk3jIxHv0j57R0SoqELtg9Swv8OUP0MYlU3+JveRpVMaxRxaqU9rPiV1dpQNjx/a9aXLaQ==
+X-Received: by 2002:a17:903:3b8b:b0:294:8c99:f318 with SMTP id d9443c01a7336-2984ed2b4b6mr40095785ad.3.1762959045905;
+        Wed, 12 Nov 2025 06:50:45 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:3a14:81d0:725d:2dc7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dc0df31sm33048055ad.50.2025.11.12.06.50.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 06:50:44 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de
+Cc: kraxel@redhat.com,
+	airlied@redhat.com,
+	jgg@ziepe.ca,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	vivek.kasireddy@intel.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/memfd: fix information leak in hugetlb folios
+Date: Wed, 12 Nov 2025 20:20:34 +0530
+Message-ID: <20251112145034.2320452-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251111125331.12246-1-harry.yoo@oracle.com> <eesmaqfwnhq4xcoduevr5aodsf622ugn5aheywvpbhpg5fzhcv@5zbfhikqmrtl>
- <CANfXJztJZJ4eaFf+FxC=deFeO7MG0__U3FVtBDcmS7iUk3gFgw@mail.gmail.com> <aRN_0P3CXDJujrLp@hyeyoo>
-In-Reply-To: <aRN_0P3CXDJujrLp@hyeyoo>
-From: Tytus Rogalewski <tytanick@gmail.com>
-Date: Wed, 12 Nov 2025 15:47:52 +0100
-X-Gm-Features: AWmQ_bmaTqLPdupqx_Dy9TCGShsW9nOMFZ9fF5jI2IWHj08va9dTT9zY9Cmf1Wg
-Message-ID: <CANfXJztkO_r41SU6jNBnh=tYDSQ=rAFj4hZFX6Crk1WDAg-QDA@mail.gmail.com>
-Subject: Re: [PATCH V1] mm/slub: fix memory leak in free_to_pcs_bulk()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Darrick J . Wong" <djwong@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Content-Type: multipart/alternative; boundary="000000000000ff016e064366d9b3"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A5FBF1C000A
-X-Stat-Signature: 3mtzxm5zg6erig7k5qkb3apzyf141rj7
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: coh63d6x1c4uyu5sawax9sgqy4wy1dku
 X-Rspam-User: 
-X-HE-Tag: 1762958885-436275
-X-HE-Meta: U2FsdGVkX19gJACa76BJg8VHEbxxqBqckhSggp/lrR2oCy3BkmBwdbNWBx20Dv6eAyqyIBOiLJgcv4017+Yooy4MUKQBvcSn/VlSo7J9FvLprGmVZOZ5/HDBqhnCMfZMVPNL7Doaq0mtiHADgd1EVZUg2lQOTqsd8iHRIq2rn8FZ/oycbu33tH2WjgD7RwXj1l5Up38GLlZWNHtkZF43BLYK1Qn0pYigQCbs39OvmZbJ15Pa4brl93brIJVejocSrimkkfx2DzEkMWFfGKdrvyXqxx9p15xoBXbMqzVNFFbslk+n1riaSwp2QeBCYLYjeGqzy5gu/5dMtLETMtiAUwzC3ficw/aONLmzScxyuKcPHDS4p3BriQVGyGGXYtDp40/nuNrqvzZ+4lDSw66VgSc7jX64E18A464IHsjSMQ67OVu6qUWLXXVT/d+Cc2G6ZLrSshp3y7CuPjLKzs2f7t2KyK93N4gdrUGZ8CxyfNmggLeWcXeBibUgrG+Nct1ti7s69Xq5Fe3gymD79v+uDGujK5SG/Jv5b6AYudg601ozSrywVQgxNdN9LfLjWORVLhHksjEsC9qlFUzdj0Um+wTnX330xa4SkE0AzUuAXlRby9cdQr8qxCH8hW6/bre3YZyLCHEeNWzWDZv79g32AwPMSiK6155zo0t2lLc7rDcuPwsolPf0YkI5LjI+PZClG5dwErilxzP5EyrI8VO1PTA0vShLLnN7msZvLKbO6yLy+0+YJAQmSGqFuf3IsJ3cO3JHbIItD2V2ucuL+v9iorMec2huHluWAPelQVj3NfrPVQGQXGh7Qfx5Yi0hmRt1qNBRM8SroVMoWjni47quUiiOLZtCZuMj1gZay6DAfJ1YRn0anCTWTLfe54XFaDPn/3a3up1Ll4suQsdCqmjbIGxZkDIZRFROfX23JTkCp1pKs2Xwbc73PwIEEoAZDgkqALI7qLiNApLwPxtZ7o3
- NXVeWBBG
- VTFcwWbU+tnL1yX+fM+BO+MtcFBSJQXp7++oE8zTFKp417lqOQQx8CgmqpOJT5bomxinmq42bSOPvefUn37J99DbzQ2Fz+6NimT9OYkDKh37VfGQ0VpIYpxWQp+SjLeloLO1JicHnbOqD3ZxZvzv5/H08wPDumBncnBITSAauH3qiMyQLcAVN7ljDi5RSinNemSwggNiP65Ks0LRv/WtGprj6G1dBDSgr+Kmu/yDNqxhZ5ciI2Om+zUfaa/LH30baRd3ca0h/Sg0nb4t5tzwxY+bNYyX89x/Xjyt+C5H6SaxLll2gudbcbF8sf04r3kZGDP5UoJweo1aIP0S4QE9mubPI4AVnzx7586uu3QSCEesptFbWOWfI1cuA15tu1Bk/4mVsiaQzIe3A4xePn5sjYJML5C2geVwvVa6MjhUk6lSi4DEGmXbA2CXd6BySvMS10GkKNzOgvLZRAcZgLeVkH3G539E+LhVVy7N8ookMbH4YZ8+02bmGFh4+AKWaxUckKC7rAwnxh1HxD6C43uu7jagB93HV1R5yCc2iUy5b3An+5YeUnCy3SuEg5+ogRS7DPKK54WFnitIEGUOoOTeeSVRZIfWDkz/VQvBuMaWtuuObnsFnz2gre3SLSyhW6kWrjVpzwW/CDM62gHirH9UXKQ84z2JBJr+7mUZFBw4bd7Nf8/JBof00PMlxj9S6Vx6vJcF+
+X-Rspamd-Queue-Id: 3DFFD14000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762959047-669839
+X-HE-Meta: U2FsdGVkX1+vtXdb/bf/Pbpx9K+cc7AROa70eUktW6jLV1pHZb+LTfMFtB/T6NQwWaUiCRHeTQZBNfEWg4mJGJ44YyucJdPdng4sn/R9Fi/D3INGk+Ka9uU1bVnRw7jfUYhrpUKKpdy0H4tgLhHWJUUXypORnEkW2RmAK9Z90ikiYJBWobDIOuN60uMQ1sbnLm17IyPB59MKKHgi2iIsHxaxX0XeqCFpJK+nKvZKgHdCu1NRTGmAynC18KYQjMajF+rXzgHv9CL6JEUX6UPNFe0XT5yw0G612LgUgKhH54xnZwB+1GxMG6qdHt+LTncyqr5nzY0nXHgVIDWnVQo0YLtaY2x3wHhA80HEtoMz57K64ir+3xZrGs7ABRDaPFBzRmE6blvJYO5aRsm88z2FgVceb9iMOwaZaoxjthNxytWEbayrCdPIuJCV/jbg0F6kXLs4spPuaktLN2l+nMAH6uYxQtm95qqz2YmQV/8hXu2SWXmuS6OGzEyxqtgNAVCvAGuVRIJFCjBKwMOTL6/86EtCRP/iPcM85Sbczyqg3gY5kWRwbVJjGTNa7Cczb2ypK4iPjtWfqNB1ohrujCui1/L05MH1/Mx7MxKBu49g/voNtFHSX8ZgoSBCOBYI75QAjZnvAok/Jefqt8GGGpwT2wqcd44yFC4PmBUcIr8svZMH7oopzwYX/C9JweH4REWlfObgNEfrhG+QfwklV6/DFAWGsbSe7oZ7H39ri13hF30LUQLDS9FL7qwYuxUxHAAaLIjD2Y6TGsPZ+iIiQ8v0boWoO/kHrd27L1LuAjsPixpEz3cBSg5k2MoAI1v+she5GbyrRarzfOdiNOFWk9qPFzVTwpyn7ZLh/vT45jOFjFcPHOAppH3ZzHzqW/dnRRYCLO/jbbZcyamX9QcHItH3iFC2kCfhYPQbh1hY/U77Ko65D8Mx98i3dhiGsJzWg6iyex4tDaSLpZaf8CAgNMm
+ MYarj0sa
+ YTG70pZugKqJWfPx9VHcD60zbCVxIgnKnBQN8GUouiu2v72pT8FrBN8p1DX+q8j2RhIQ+VwD14H3ilZ0k+w7NZbVfkk8Cx75ZHfoHwhKDInM4hN+FIDNhmK6WZtUYr2idAcC5ZeXg+VRhJpOJRdH11OrUJdDLQwA4Fz0P+nQXLQkQ8IUluRfBdsKS0uV0YXwc3k4WVlYv8XoHpgbYxV2tgLT4eNjB0up0R1YDbYyVdteDkzEGeF2/dUT/JDTrKlxPu+aiaxUAY2yXaVPgpuz3AN+p13XeDJyhyfzI9aWZHeNwiwpE+c7c65A3lq0kQe2EiNRnZCBqQsfYOXDblYOrPq9nIxg1NBOmBbbTK9lNywIRpRnzhrK7nFoSwYwUE+8A6L43JeyiQXFbIrda99Q7AeM5KLWUC36KCJh1R3WkWplfLaY1rvyTd7/GZTLc8x27S1JZTi7p+AitcgDPyk8r6dfsMBU2NLxirT56GPpLebhLw8aiNHZsXYxTlX+gZ5+OWo6+0GSj/gzP9F39QHXjvjiAy/rElKGn851ikmiivSkVTQlJNH19AKZCsDWofUVOe1VsijU+ONvUKMBcFgLQjQovDnYmrg1YORZ4f7vtCP73RLpFenaV0A3IsHngDym1yoSInzzz0rE0gXWGeQLkmBg1cn4wpo/D7WD5uTqwKJJjpVx4hDPwY3zG8G9xinUg6QHIZE44epNLkHg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,372 +128,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000ff016e064366d9b3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+When allocating hugetlb folios for memfd, three initialization steps
+are missing:
 
-We wont make it until next week.
-Maybe you guys can compile newest r5 kernel with that patch ?
-We are using https://prebuiltkernels.com/ and do not compiled 6.18
-ourselves. We can do that next week. This week is full of emergencies lol
-If you can provide me two debs like prebuild kernels i could deploy it and
-leave for testing for 1-2 days.
+1. Folios are not zeroed, leading to kernel memory disclosure to userspace
+2. Folios are not marked uptodate before adding to page cache
+3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
 
+The memfd allocation path bypasses the normal page fault handler
+(hugetlb_no_page) which would handle all of these initialization steps.
+This is problematic especially for udmabuf use cases where folios are
+pinned and directly accessed by userspace via DMA.
 
---
+Fix by matching the initialization pattern used in hugetlb_no_page():
+- Zero the folio using folio_zero_user() which is optimized for huge pages
+- Mark it uptodate with folio_mark_uptodate()
+- Take hugetlb_fault_mutex before adding to page cache to prevent races
 
-tel. 790 202 300
+The folio_zero_user() change also fixes a potential security issue where
+uninitialized kernel memory could be disclosed to userspace through
+read() or mmap() operations on the memfd.
 
-*Tytus Rogalewski*
+Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
+Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Cc: stable@vger.kernel.org
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
 
-Dolina Krzemowa 6A
+v1 -> v2:
+- Use folio_zero_user() instead of folio_zero_range() (optimized for huge pages)
+- Add folio_mark_uptodate() before adding to page cache
+- Add hugetlb_fault_mutex locking around hugetlb_add_to_page_cache()
+- Add Fixes: tag and Cc: stable for backporting
+- Add Suggested-by: tags for Oscar and David
+---
+ mm/memfd.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-83-010 Jagatowo
-
-NIP: 9570976234
-
-
-wt., 11 lis 2025 o 19:29 Harry Yoo <harry.yoo@oracle.com> napisa=C5=82(a):
-
-> On Tue, Nov 11, 2025 at 05:48:35PM +0100, Tytus Rogalewski wrote:
-> > Do you guys still need that debug then?
-> > I think this is happening only when qemu vm is working.
-> >
-> > I can get results within 1-2 days.
->
-> Hi Tythus!
->
-> Really appreciate you reporting the bug and testing it.
->
-> Now that I know what went wrong, I realize that `slab_debug=3DU` paramete=
-r
-> will hide the bug, since we disable "sheaves" feature for
-> debug caches.
->
-> Instead of testing with `slab_debug=3DU` parameter, could you please
-> apply this patch on top of Linux v6.18-rc5, build & install it,
-> and verify that the memory leak is indeed resolved on your machine?
->
-> > --
-> >
-> > tel. 790 202 300
-> >
-> > *Tytus Rogalewski*
-> >
-> > Dolina Krzemowa 6A
-> >
-> > 83-010 Jagatowo
-> >
-> > NIP: 9570976234
-> >
-> >
-> > W dniu wt., 11 lis 2025 o 16:37 Liam R. Howlett <Liam.Howlett@oracle.co=
-m
-> >
-> > napisa=C5=82(a):
-> >
-> > > * Harry Yoo <harry.yoo@oracle.com> [251111 07:55]:
-> > > > The commit 989b09b73978 ("slab: skip percpu sheaves for remote obje=
-ct
-> > > > freeing") introduced the remote_objects array in free_to_pcs_bulk()
-> to
-> > > > skip sheaves when objects from a remote node are freed.
-> > > >
-> > > > However, the array is flushed only when:
-> > > >   1) the array becomes full (++remote_nr >=3D PCS_BATCH_MAX), or
-> > > >   2) slab_free_hook() returns false and size becomes zero.
-> > > >
-> > > > When neither of the conditions is met, objects in the array are
-> leaked.
-> > > > This resulted in a memory leak [1], where 82 GiB of memory was
-> allocated
-> > > > for the maple_node cache.
-> > > >
-> > > > Flush the array after successfully freeing objects to sheaves
-> > > > in the do_free: path.
-> > > >
-> > > > In the meantime, move the snippet if (!size) goto flush_remote;
-> outside
-> > > > the while loop for readability. Let's say all objects in the array
-> are
-> > > > from a remote node: then we acquire s->cpu_sheaves->lock and try to
-> free
-> > > > an object even when size is zero. This doesn't appear to be harmful=
-,
-> > > > but isn't really readable.
-> > > >
-> > > > Reported-by: Tytus Rogalewski <tytanick@gmail.com>
-> > > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220765
-> > > > Closes:
-> > >
-> https://lore.kernel.org/linux-mm/20251107094809.12e9d705b7bf4815783eb184@=
-linux-foundation.org
-> > > > Closes: https://lore.kernel.org/all/aRGDTwbt2EIz2CYn@hyeyoo
-> > > > Fixes: 989b09b73978 ("slab: skip percpu sheaves for remote object
-> > > freeing")
-> > > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > >
-> > >
-> > > Thanks Harry.
-> > >
-> > > Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > >
-> > > > ---
-> > > >  mm/slub.c | 8 ++++++--
-> > > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/mm/slub.c b/mm/slub.c
-> > > > index f1a5373eee7b..a787687a0d59 100644
-> > > > --- a/mm/slub.c
-> > > > +++ b/mm/slub.c
-> > > > @@ -6332,8 +6332,6 @@ static void free_to_pcs_bulk(struct kmem_cach=
-e
-> *s,
-> > > size_t size, void **p)
-> > > >
-> > > >               if (unlikely(!slab_free_hook(s, p[i], init, false))) =
-{
-> > > >                       p[i] =3D p[--size];
-> > > > -                     if (!size)
-> > > > -                             goto flush_remote;
-> > > >                       continue;
-> > > >               }
-> > > >
-> > > > @@ -6348,6 +6346,9 @@ static void free_to_pcs_bulk(struct kmem_cach=
-e
-> *s,
-> > > size_t size, void **p)
-> > > >               i++;
-> > > >       }
-> > > >
-> > > > +     if (!size)
-> > > > +             goto flush_remote;
-> > > > +
-> > > >  next_batch:
-> > > >       if (!local_trylock(&s->cpu_sheaves->lock))
-> > > >               goto fallback;
-> > > > @@ -6402,6 +6403,9 @@ static void free_to_pcs_bulk(struct kmem_cach=
-e
-> *s,
-> > > size_t size, void **p)
-> > > >               goto next_batch;
-> > > >       }
-> > > >
-> > > > +     if (remote_nr)
-> > > > +             goto flush_remote;
-> > > > +
-> > > >       return;
-> > > >
-> > > >  no_empty:
-> > > > --
-> > > > 2.43.0
-> > > >
-> > >
->
-> --
-> Cheers,
-> Harry / Hyeonggon
->
-
---000000000000ff016e064366d9b3
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>We wont make it until next week.</div><div>Maybe you =
-guys can compile newest r5 kernel with that patch ?<br>We are using=C2=A0<a=
- href=3D"https://prebuiltkernels.com/">https://prebuiltkernels.com/</a> and=
- do not compiled 6.18 ourselves. We can do that next week. This week is ful=
-l of emergencies lol</div><div>If you can provide me two debs like prebuild=
- kernels i could deploy it and leave for testing for 1-2 days.</div><div><b=
-r><br></div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=
-=3D"gmail_signature"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><di=
-v dir=3D"ltr">
+diff --git a/mm/memfd.c b/mm/memfd.c
+index 1d109c1acf21..d32eef58d154 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -96,9 +96,36 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 						    NULL,
+ 						    gfp_mask);
+ 		if (folio) {
++			u32 hash;
++
++			/*
++			 * Zero the folio to prevent information leaks to userspace.
++			 * Use folio_zero_user() which is optimized for huge/gigantic
++			 * pages. Pass 0 as addr_hint since this is not a faulting path
++			 *  and we don't have a user virtual address yet.
++			 */
++			folio_zero_user(folio, 0);
++
++			/*
++			 * Mark the folio uptodate before adding to page cache,
++			 * as required by filemap.c and other hugetlb paths.
++			 */
++			__folio_mark_uptodate(folio);
++
++			/*
++			 * Serialize hugepage allocation and instantiation to prevent
++			 * races with concurrent allocations, as required by all other
++			 * callers of hugetlb_add_to_page_cache().
++			 */
++			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
++			mutex_lock(&hugetlb_fault_mutex_table[hash]);
++
+ 			err = hugetlb_add_to_page_cache(folio,
+ 							memfd->f_mapping,
+ 							idx);
++
++			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
++
+ 			if (err) {
+ 				folio_put(folio);
+ 				goto err_unresv;
+-- 
+2.43.0
 
 
-
-
-
-
-
-<p style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-fami=
-ly:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">--</font></p><p =
-style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-family:=
-&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">tel. 790 202 300</f=
-ont></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal;f=
-ont-family:&quot;Helvetica Neue&quot;;margin:0px"><b style=3D"color:rgb(68,=
-68,68);font-size:x-small">Tytus Rogalewski</b><br></p><p style=3D"font-stre=
-tch:normal;font-size:12px;line-height:normal;font-family:&quot;Helvetica Ne=
-ue&quot;;margin:0px"><font size=3D"1" color=3D"#999999">Dolina Krzemowa 6A<=
-/font></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal=
-;font-family:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1" color=
-=3D"#999999">83-010 Jagatowo</font></p><p style=3D"font-stretch:normal;font=
--size:12px;line-height:normal;font-family:&quot;Helvetica Neue&quot;;margin=
-:0px"><font size=3D"1" color=3D"#999999">NIP: 9570976234</font></p></div></=
-div></div></div></div></div><br></div><br><div class=3D"gmail_quote gmail_q=
-uote_container"><div dir=3D"ltr" class=3D"gmail_attr">wt., 11 lis 2025 o 19=
-:29=C2=A0Harry Yoo &lt;<a href=3D"mailto:harry.yoo@oracle.com">harry.yoo@or=
-acle.com</a>&gt; napisa=C5=82(a):<br></div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">On Tue, Nov 11, 2025 at 05:48:35PM +0100, Tytus Rogalewsk=
-i wrote:<br>
-&gt; Do you guys still need that debug then?<br>
-&gt; I think this is happening only when qemu vm is working.<br>
-&gt; <br>
-&gt; I can get results within 1-2 days.<br>
-<br>
-Hi Tythus!<br>
-<br>
-Really appreciate you reporting the bug and testing it.<br>
-<br>
-Now that I know what went wrong, I realize that `slab_debug=3DU` parameter<=
-br>
-will hide the bug, since we disable &quot;sheaves&quot; feature for<br>
-debug caches.<br>
-<br>
-Instead of testing with `slab_debug=3DU` parameter, could you please<br>
-apply this patch on top of Linux v6.18-rc5, build &amp; install it,<br>
-and verify that the memory leak is indeed resolved on your machine?<br>
-<br>
-&gt; --<br>
-&gt; <br>
-&gt; tel. 790 202 300<br>
-&gt; <br>
-&gt; *Tytus Rogalewski*<br>
-&gt; <br>
-&gt; Dolina Krzemowa 6A<br>
-&gt; <br>
-&gt; 83-010 Jagatowo<br>
-&gt; <br>
-&gt; NIP: 9570976234<br>
-&gt; <br>
-&gt; <br>
-&gt; W dniu wt., 11 lis 2025 o 16:37 Liam R. Howlett &lt;<a href=3D"mailto:=
-Liam.Howlett@oracle.com" target=3D"_blank">Liam.Howlett@oracle.com</a>&gt;<=
-br>
-&gt; napisa=C5=82(a):<br>
-&gt; <br>
-&gt; &gt; * Harry Yoo &lt;<a href=3D"mailto:harry.yoo@oracle.com" target=3D=
-"_blank">harry.yoo@oracle.com</a>&gt; [251111 07:55]:<br>
-&gt; &gt; &gt; The commit 989b09b73978 (&quot;slab: skip percpu sheaves for=
- remote object<br>
-&gt; &gt; &gt; freeing&quot;) introduced the remote_objects array in free_t=
-o_pcs_bulk() to<br>
-&gt; &gt; &gt; skip sheaves when objects from a remote node are freed.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; However, the array is flushed only when:<br>
-&gt; &gt; &gt;=C2=A0 =C2=A01) the array becomes full (++remote_nr &gt;=3D P=
-CS_BATCH_MAX), or<br>
-&gt; &gt; &gt;=C2=A0 =C2=A02) slab_free_hook() returns false and size becom=
-es zero.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; When neither of the conditions is met, objects in the array =
-are leaked.<br>
-&gt; &gt; &gt; This resulted in a memory leak [1], where 82 GiB of memory w=
-as allocated<br>
-&gt; &gt; &gt; for the maple_node cache.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; Flush the array after successfully freeing objects to sheave=
-s<br>
-&gt; &gt; &gt; in the do_free: path.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; In the meantime, move the snippet if (!size) goto flush_remo=
-te; outside<br>
-&gt; &gt; &gt; the while loop for readability. Let&#39;s say all objects in=
- the array are<br>
-&gt; &gt; &gt; from a remote node: then we acquire s-&gt;cpu_sheaves-&gt;lo=
-ck and try to free<br>
-&gt; &gt; &gt; an object even when size is zero. This doesn&#39;t appear to=
- be harmful,<br>
-&gt; &gt; &gt; but isn&#39;t really readable.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; Reported-by: Tytus Rogalewski &lt;<a href=3D"mailto:tytanick=
-@gmail.com" target=3D"_blank">tytanick@gmail.com</a>&gt;<br>
-&gt; &gt; &gt; Closes: <a href=3D"https://bugzilla.kernel.org/show_bug.cgi?=
-id=3D220765" rel=3D"noreferrer" target=3D"_blank">https://bugzilla.kernel.o=
-rg/show_bug.cgi?id=3D220765</a><br>
-&gt; &gt; &gt; Closes:<br>
-&gt; &gt; <a href=3D"https://lore.kernel.org/linux-mm/20251107094809.12e9d7=
-05b7bf4815783eb184@linux-foundation.org" rel=3D"noreferrer" target=3D"_blan=
-k">https://lore.kernel.org/linux-mm/20251107094809.12e9d705b7bf4815783eb184=
-@linux-foundation.org</a><br>
-&gt; &gt; &gt; Closes: <a href=3D"https://lore.kernel.org/all/aRGDTwbt2EIz2=
-CYn@hyeyoo" rel=3D"noreferrer" target=3D"_blank">https://lore.kernel.org/al=
-l/aRGDTwbt2EIz2CYn@hyeyoo</a><br>
-&gt; &gt; &gt; Fixes: 989b09b73978 (&quot;slab: skip percpu sheaves for rem=
-ote object<br>
-&gt; &gt; freeing&quot;)<br>
-&gt; &gt; &gt; Signed-off-by: Harry Yoo &lt;<a href=3D"mailto:harry.yoo@ora=
-cle.com" target=3D"_blank">harry.yoo@oracle.com</a>&gt;<br>
-&gt; &gt;<br>
-&gt; &gt;<br>
-&gt; &gt; Thanks Harry.<br>
-&gt; &gt;<br>
-&gt; &gt; Acked-by: Liam R. Howlett &lt;<a href=3D"mailto:Liam.Howlett@orac=
-le.com" target=3D"_blank">Liam.Howlett@oracle.com</a>&gt;<br>
-&gt; &gt;<br>
-&gt; &gt; &gt; ---<br>
-&gt; &gt; &gt;=C2=A0 mm/slub.c | 8 ++++++--<br>
-&gt; &gt; &gt;=C2=A0 1 file changed, 6 insertions(+), 2 deletions(-)<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; diff --git a/mm/slub.c b/mm/slub.c<br>
-&gt; &gt; &gt; index f1a5373eee7b..a787687a0d59 100644<br>
-&gt; &gt; &gt; --- a/mm/slub.c<br>
-&gt; &gt; &gt; +++ b/mm/slub.c<br>
-&gt; &gt; &gt; @@ -6332,8 +6332,6 @@ static void free_to_pcs_bulk(struct km=
-em_cache *s,<br>
-&gt; &gt; size_t size, void **p)<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (un=
-likely(!slab_free_hook(s, p[i], init, false))) {<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0p[i] =3D p[--size];<br>
-&gt; &gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0if (!size)<br>
-&gt; &gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto flush_remote;<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0continue;<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; @@ -6348,6 +6346,9 @@ static void free_to_pcs_bulk(struct km=
-em_cache *s,<br>
-&gt; &gt; size_t size, void **p)<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i++;<b=
-r>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0if (!size)<br>
-&gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto flush_=
-remote;<br>
-&gt; &gt; &gt; +<br>
-&gt; &gt; &gt;=C2=A0 next_batch:<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!local_trylock(&amp;s-&gt;cpu_=
-sheaves-&gt;lock))<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto f=
-allback;<br>
-&gt; &gt; &gt; @@ -6402,6 +6403,9 @@ static void free_to_pcs_bulk(struct km=
-em_cache *s,<br>
-&gt; &gt; size_t size, void **p)<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto n=
-ext_batch;<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0if (remote_nr)<br>
-&gt; &gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto flush_=
-remote;<br>
-&gt; &gt; &gt; +<br>
-&gt; &gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt;=C2=A0 no_empty:<br>
-&gt; &gt; &gt; --<br>
-&gt; &gt; &gt; 2.43.0<br>
-&gt; &gt; &gt;<br>
-&gt; &gt;<br>
-<br>
--- <br>
-Cheers,<br>
-Harry / Hyeonggon<br>
-</blockquote></div>
-
---000000000000ff016e064366d9b3--
 
