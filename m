@@ -4,114 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19365CD13DF
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 14:54:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9672BCCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 14:56:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 749788E0013; Wed, 12 Nov 2025 09:54:33 -0500 (EST)
+	id E510F8E0019; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7203F8E0011; Wed, 12 Nov 2025 09:54:33 -0500 (EST)
+	id E011E8E0011; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 636968E0013; Wed, 12 Nov 2025 09:54:33 -0500 (EST)
+	id CF03D8E0019; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F7AB8E0011
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:54:33 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0270BC0534
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:54:32 +0000 (UTC)
-X-FDA: 84102251226.24.F4ECE05
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 27A28140007
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:54:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YvdtGNn1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762959271; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B8D4C8E0011
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 415E7894A7
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:56:40 +0000 (UTC)
+X-FDA: 84102256560.12.7386383
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C33C240003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:56:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D79khSQs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762959398; a=rsa-sha256;
 	cv=none;
-	b=a5f86vCIOLH/22joH0SudFXh0r1EdZobwBiaohzx5wagQHqVyH2S7KDoeiq5jerrslGXd7
-	aAw634ndsBb/vimfTL4sv3bSI8Om2yWgkTLgHqWsTzRBut9G5woPfK6MxWo+o31fvzfCVl
-	NtnMYA5C9DtAw4IYR7e031ng5Z0H6L8=
+	b=IO4kVQUTK1Yy0oNq0UJnn+L8UJnmSBMSZYFIv4N/6Djj5edNePT5DkyJ9O7fEZJIvJgqAJ
+	m6Viw8xWYQVlGniqdXuoWdZHCeKWa0LJSzRPAswgb8iQ5dnYz86A+MV+6leGK8gQ4Eka1S
+	8kv83UDf9NO4Eg0Qqs+PkqUObXqzoPo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YvdtGNn1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D79khSQs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762959271;
+	s=arc-20220608; t=1762959398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Es4V2hOvKRdpsw6YS8mXJmboFpSdQNT35YFD/0aY9uo=;
-	b=okQIMhK9k0vygFLUj9Qe6Fi22WNGYZ/V3BszPTd3aRtV3md87FDaOQvhb+xBLsCV4ECSH8
-	al0Wi2uPMugPTAIoo0x1UuACQLLWYDrnqsIWY3q/kkiRsBVyupb2B8XqRXf1J3vfm8kGBq
-	Ck3q45QzqZDzgkZMi6YVrnAPxAAI33o=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-787df0d729dso9911557b3.3
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:54:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762959270; x=1763564070; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Es4V2hOvKRdpsw6YS8mXJmboFpSdQNT35YFD/0aY9uo=;
-        b=YvdtGNn1irpaVT2m6htgigFQ1BTDfP8Fw4BcwOe/LzLDCCN+6Wx9BaQ555PS8IGohc
-         MBrdj5ExLUhzp2IEkHFsi3H2VEpJXIZ0a9rgpTosMbMgHyQBQIjrSkB3FjumT6/ZwVDE
-         QDGLASevZ3V0flF3goya+AHdo53iNYmxybQu2644JY1K8pmrXqstZuuNVw2ua4uM5JfR
-         dAU2YE+Jj/PxA/SFYAm1myNOzZkO0GclXaNegkYMTHeTyi3cv8hiZdZ6OqlOCQdcsgjh
-         eJIeVAjhmTuYYSlniIOXDVhUR5clb6ymOqfK5i7wBkv/QjnA08UzWn38rzBZuDwJ4URU
-         ONcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762959270; x=1763564070;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Es4V2hOvKRdpsw6YS8mXJmboFpSdQNT35YFD/0aY9uo=;
-        b=lRgzTtWg7IqpgJfY0V0hCcDhIpj+ZDrc+5dhBFXgicixMPy85QmaM/fPX2VL18m/Tr
-         5Zb971yS/BSdkw9cudni7V14hmojum6aIjzGS88IC3Q26aVnU7UquUNqWs15fjAGSl0M
-         CmS2J8DphbBjUCOLX9Zk5RzPnfAnPfx3YxzzD+b+iHfZrHP3a8tZoozU2A/ctXlbZYMY
-         YMK1rblnPYviQxCrnEObjyob2zG3CXGCaOyfY8GwPnbarTrmmEKbWGUMQrM76BY+93IJ
-         ksfkZ+0J3STOFe3C6Jd46Cbqs1rrl0n87f+vHNwoP1DwMTtMqNTSNlOonbNEoZzLptr1
-         gG/g==
-X-Forwarded-Encrypted: i=1; AJvYcCU6UZab8U3RJGmVQwy7+YB8liZkT698ZyWGYNrt3zUfpIsBm8rFCZ11qVqxoztD3pVtdzlUNoEtqA==@kvack.org
-X-Gm-Message-State: AOJu0YxD06rXW8yz6NR7inI7VjyPzsR1wZFDOic0iZ6Wu9jkbm+Cix1V
-	HBL+tSMmpwXtIcIGotcs0rDNjNEW5AaOOb9zehwX2KQIJtaj/wKQ46+9UYLCMg6EuDzPV6rhaO3
-	6LmPHa+T3OIK9uO/pobqAtDnw8qLowLU=
-X-Gm-Gg: ASbGncs/3nkDFxqRNh4hK1BpCWFp/9a1FuEoUzkJO/3KNRnpps70CBFPAPG/g/t2iXW
-	N3/vTenecGEzmmpT6RM6Uwi2q+g6w1WTg2XmCnsDX5gcz2C6eyXglFbzqeyt6gkAUPshKXGk3cx
-	rVdrum4c9xD29vYYcNw1Om+h7szTZ8oaLstjIni+yDDtw0x580rYh247MUfwygzu6/oSi7TS+jY
-	LvIgpa58MgvmbGd+F//1xzoBDwAZt6wFpdaWC3mBBuZKYs+vtPUcyZ/Ouofd5quEXNvLh6CHLPf
-	k72AgcgFPUC3RP5zew==
-X-Google-Smtp-Source: AGHT+IGi+EK7jmVM3fBQOR5lG3p0ZTX5BLAC4TwPf9ia+SY4+ie0fgyFcvb1NjwLS80NIvosDD5TOEpY9arGzvvmcpA=
-X-Received: by 2002:a05:690c:d93:b0:787:fec5:7072 with SMTP id
- 00721157ae682-788136e4a20mr24513187b3.57.1762959270077; Wed, 12 Nov 2025
- 06:54:30 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ryP1wiJVw9aw+DpTbMpV/h0UEZ8NMcdOc+GlItX0uJI=;
+	b=QQJUL6PKEHdscfxj0wpKeGQlcTkArPk6wB50WaZQZnFPRts2mjjCplbnHX6GN3lqvwaNxp
+	78SnKd3YzxNueIJflOGjhn9906Ej3KcMxd6/u6gi2cqr/9VBaeHLgZ3iC2IDKOwRHaktK3
+	6oHT/Nr4oROUM40QwHQDtbNacfRwgHI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 37CDE60219;
+	Wed, 12 Nov 2025 14:56:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BD2C113D0;
+	Wed, 12 Nov 2025 14:56:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762959397;
+	bh=/i5+uzL0Oqs6gEV3AXY8bbYwafp63UToQF5glVJFuPc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=D79khSQsyM2jtSumiC6G+0g59BNd6JFWbzNVlgUIR79tiGlaliyAjTfh8cVo+sovs
+	 Zf0qtjUtxNdE+enBHdx/SoUjg4XTdWhKo1E9Cw3JDQqa2QNqbP6roWSveZcgbKByYY
+	 u1kGW4HkXHsIbz364QHPma0yJrxgNJqgw8txrHtMUGMzq8CzEpmTvJIcUflZesjOQO
+	 hMjrnKaZxEfOSo72qJpGUddcPsp6Rag5IxCIIyWNvAORAhmC8jp0NveqasSz6ceZti
+	 cKLJCFHmP8tgM/qYXGge3d1hQBnhVyLPZ/IqOkQKjj41GF0X1ZkvlsbfDMYi42+4mk
+	 Ygc6eYKKTpabw==
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: [PATCH v1] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
+Date: Wed, 12 Nov 2025 15:56:32 +0100
+Message-ID: <20251112145632.508687-1-david@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20251112031631.2315651-1-kartikey406@gmail.com>
- <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com> <aRRPvn4DYAhuGtq3@localhost.localdomain>
- <6a63dbb8-58f7-4511-8090-18a58c3206d8@kernel.org> <aRR2AV7_R20i4qi8@localhost.localdomain>
- <CADhLXY6keq6+0NY_=xiugguHNFGpFGc07ePWbiTTFU3qO534rg@mail.gmail.com>
-In-Reply-To: <CADhLXY6keq6+0NY_=xiugguHNFGpFGc07ePWbiTTFU3qO534rg@mail.gmail.com>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Wed, 12 Nov 2025 20:24:18 +0530
-X-Gm-Features: AWmQ_bn-PDgYdvD5rofMqW1rSZWchWejM-yP2xGtKnv7KqOlVNyGvEzFiahTHr4
-Message-ID: <CADhLXY5Hr-w07b+8Ji-ByfC1WbmAd+2UQHHWqdAEVeYr=FTrBQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/memfd: clear hugetlb pages on allocation
-To: Oscar Salvador <osalvador@suse.de>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Muchun Song <muchun.song@linux.dev>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 27A28140007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C33C240003
 X-Rspamd-Server: rspam07
-X-Stat-Signature: f5squ4y9mgezqz4sy4u9b4nsfyiydxpa
+X-Stat-Signature: eunmn66rrr5m189xcbuiasup6otqh5hz
 X-Rspam-User: 
-X-HE-Tag: 1762959271-432550
-X-HE-Meta: U2FsdGVkX18LKPJ76MT3TU1GfHpBBQG+EE+RG0p4uEbT9G5iHWvN43ReCnYuqAxw0TnjMJVOeALx9LGalF2xP6NPk0N70GjrubbzCKUcktn27QhfVv08FwqB6uP65E3tFHjGQWZ+SsoCee9dJmz2j4DgyfgXSormz5xGoVdFmY3F5lWkdr+2FKDAMO2JllPyzvieZ8qG+slBl4wKzAwUE+ebvJoi/h5wP5Y5kyIJiP03gazk4TjeR91L8o4Sepo4reWzg62F5bgV68QrE0ZnEaYgEPLCBccV72zjyk0Fqo9AXZ6ENmRHPn8JIoVCX5WXvjDKoiylzVXHO5PhHw82S/xZw1276c2j0SZvCyu4XZMwwluemYrho4QTV2ckHNgmW1HNkYknQ9wYsIRAWCglW20RAkMy272vYwwSN3OSkLQGH0f1pBwD+eMOEgR8xFVo/K3WKP52R2f4twrNBYb78rgyORnudjnNYanUQ0eihiMrnjA/aOs2tUQ/sKVXy22kJpS+6BpPk2bnnpx7TFEHekDjNGorPHfGEHUhVvWM1jOXI4CtiMm3OFIH9GSbC7R9eLbKajA9kWYPjOAdIthDD8lCt+RodU3VaF6wcrcqHS6ksfz7+WqrbTI5Cq3kyJIiBrViCIHaGfyj41ZjR9KuUwrMKR736GuWpG9T6gfNSmNGay3o6zyGixO0TeORD9ZmCu/VTRMkL44Y/8i+sIUG4O+COnkr0zPIE+bUa/g+KpPRNE9TlJ2DraZrONo7ct/iLSTawbyAFtv1PoDtG3NwQhtBAYG9I7qEVTvwI2RunCz/1JFPMc0wmn8wB1+kCCknjXGW4klogD2m28y/7ARY0HgfK7tS+Xh3WCKH9QwO+YQtFZQW0bRdZVJasvplQ0BGgnnMMPpqFxOPXNs24DI6sOz+RAtZu/Ru+5tc2mqc3SCth3gnCtejYnnoQZpbV9rCntV8P2tDiVVPW2G9UgD
- EvQTGK0Z
- xWGul7eAVrg70+ybMkoox7mnXbUHxkhnrm7iARUHlRZc0CVuduVEtch1PLRgcHud3gAhu7GVZ3vln18wI9pD64/yPls/A6Cj1p5uZE21CCY6EqiiY34Efc3UGAVL/XBWUcFQRksO7H6QGiVxZffq5G/uc1iSAfGKzO610RtE+V7YiLX47uAjboZa53xHWEMB6hXvs3nScwqU+3EYBJmbQkHtrM2Mf+qkEcJMYExrexS/HqxS6NJpMBc8Ujg36MfWuOsbwvp6Hxzc/+prJMXpXngYUJeRAa/942/o/a/gvXhLV0BYEHidIWWmLFev88UKWOZbOyjteU+VskWNSuYDRSiS/xPc3aVdg8LqG6rtAoV+euQna2a60AMnhfeYoe/usiDO+1RrGlmGdk/Ix7rxKrrsLKCv3k6hwv+835msql5RCrBESX4AG5kue8praTPWxkWtdXMlociQYP+I2S7jvAdeFMBTy1DcMljVGr0G2rq8dKd72EUjtsdJ58tEhPBpztavfJ8Jd3WDWked5Io6V2Wg/4Me0pNeA5EwRIRe443k9TUI=
+X-HE-Tag: 1762959398-756687
+X-HE-Meta: U2FsdGVkX189iqNDe7nsBdaydaIvVfPDIAXoCtBymcD27UR3JeytBwIiNCX2Jlftw8I9G2gBCAcvl4pwsCG+xsJQAFeE9m5qfw3eHI8oP7hpOFF4wTVstbnON4F4XjzA1610azbXBiwqJtmXybsIOrBFGIUGLK2JvKvrv+m/ARAsAncSeEF3Sk3wwBEtfU7GziN2P2aNv9fAUlQHyYecjtlbvo2DUtCZfA4Uiv+/w4bUr918Q4JXI6PiEFiyvDe6PqhjZNjNKmjN27FYmr3HFJZCO2qiBETvUtLjuvam7VW8rgpQ5+4UEimWVmrLsra9ymN8KmrDJI49+cG6oXCbf14SBchfPYQwzEelOSGiZ7z8PfpV/qc1eK/VDVztvILrQsP+TfApCyvG9ORS0nFA2UqU1/PRkm0DzN1pIM/UhkXu41n9j9bQ2+5DGQ9HdHW+NTcxoQ5gD4+Iwol/Urz3JtFMgkbAu6VIOa2Bz8CAIfJM9/+BUD06WDHGODv/Nwwj/eVazPdOq51kXDxKFp6I3TwCtAPxPfwrEJKqpcJbTrSMX1+DY4tzh0WTTvTNsX90wr5GYrrwlrDTkqez+Id8KzjpL7Lmhgm0b23cJxZebnPSIoPRbxqq7gx6bGNqgmuA9visAQ50MHJw62qAVptALMqFM5Gc29D08rMgpGilYZyYVnul7T+sh54nRz5Ifgquz2MS5Nlpq2x9QSF9ej+uEEvZFGvqYkNfUweZ00OcAYUrTlyMwH/V4H4vGDGLx9v6XwSyTaJClBaopacFniK27XzLs79evHNanmasOhPJtGApAGzneMh9VgoM3RvTA2xgdip4iIRJY8yVAKdmchxDbs+tqAFZG0sp8iGHWBOclp0AUZJB/aBLECuF0MUJvLMqx2nthdgG9T73jbiYzWh0+Gvh3y02/8f9JiTI7n8v9YAZmj2YcxPHbIZwe0tJ/RkoFr6V7fiXSBKJxHDtRTA
+ 4ogfzfjF
+ 2DkzSJnRfXYiR5VfKeYiiF1pZo/R3epb3x9V4n7kYnSrNm/WAFIcTU49zEWywmRcovDF1c3zZ2mAYtVx6UJfArIg5JTlcIRj7CXJdkvWi0L5dRTQWKUTgq94NrCi22H0MBfG3EEop4Qr+e2bpPfIYm9Sl5taTv0g5/TvYM9R8gF8H+v4c4gJ+9qgI0Z/rwNN6Ol0wBsKgusT6mtQ6PvjNuUijaS8P3eRY8gLyMVyv6CmDovQoPL5jKyaQXSIkD0c7m/aY2xRGpWvtVF9HUg3grdWguh6hErrYELY3vQH9iAP7jzcX3IuSrEvpztfbrLJVMNcqjGHYBwrV0s3JZEK+jVaWCWXe5RR2dQbhMXF30UEwZhJTGRvAX1J7/buKWHGuwqrSi15HazJxNjy5b4K+pWCj9kYrKQFLNHEikCsDnVPVTp8DYG/btADVRcQxwKsKoJ69cjbYpxGsowP4glAAETTfXJzkp2ZNwr2aa+SvvD6I5rGH9G5pNHP1G+k5BTu3wblYRsqOvAo7DV5zb1FdGOKCkyEviwYVk3AD92Y6QuCrbSu+ksu6hUzS02DLx6NHoojhKvHvWK5csvkF2EMSj2p7kHvH/EF8qgkRkrbx+j3FGVU5+IshrJTbiw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,12 +104,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-v2 sent: https://lore.kernel.org/all/20251112145034.2320452-1-kartikey406@gmail.com/T/
+In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
+runtime allocation of gigantic hugetlb folios. In the meantime it evolved
+into a generic way for the architecture to state that it supports
+gigantic hugetlb folios.
 
-Changes in v2: -
- - Used folio_zero_user() as suggested by Oscar and David -
- - Added folio_mark_uptodate() -
- - Added proper hugetlb_fault_mutex locking
+In commit fae7d834c43c ("mm: add __dump_folio()") we started using
+CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
+have folios larger than what the buddy can handle. In the context of
+that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
+when dumping tail pages of folios. Before that commit, we assumed that
+we cannot have folios larger than the highest buddy order, which was
+obviously wrong.
 
-Thanks for the reviews!
+In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
+when registering hstate"), we used MAX_FOLIO_ORDER to detect
+inconsistencies, and in fact, we found some now.
+
+Powerpc allows for configs that can allocate gigantic folio during boot
+(not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
+exceed PUD_ORDER.
+
+To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
+hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
+GiB (possible on arm64 and powerpc). Note that on some powerpc
+configurations, whether we actually have gigantic pages
+depends on the setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is
+nothing really problematic about setting it unconditionally: we just try to
+keep the value small so we can better detect problems in __dump_folio()
+and inconsistencies around the expected largest folio in the system.
+
+Ideally, we'd have a better way to obtain the maximum hugetlb folio size
+and detect ourselves whether we really end up with gigantic folios. Let's
+defer bigger changes and fix the warnings first.
+
+While at it, handle gigantic DAX folios more clearly: DAX can only
+end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
+
+Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
+clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
+HUGETLB_PAGE.
+
+Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
+also allow for runtime allocations of folios in some more powerpc configs.
+I don't think this is a problem, but if it is we could handle it through
+__HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
+
+While __dump_page()/__dump_folio was also problematic (not handling dumping
+of tail pages of such gigantic folios correctly), it doesn't relevant
+critical enough to mark it as a fix.
+
+Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
+Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Closes: https://lore.kernel.org/r/3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu/
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Closes: https://lore.kernel.org/r/94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com/
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+---
+ arch/powerpc/Kconfig |  1 +
+ include/linux/mm.h   | 12 +++++++++---
+ mm/Kconfig           |  7 +++++++
+ 3 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e24f4d88885ae..9537a61ebae02 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -137,6 +137,7 @@ config PPC
+ 	select ARCH_HAS_DMA_OPS			if PPC64
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
++	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
+ 	select ARCH_HAS_KCOV
+ 	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32b..63aea4b3fb5d9 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
+ 	return folio_large_nr_pages(folio);
+ }
+ 
+-#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
++#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
+ /*
+  * We don't expect any folios that exceed buddy sizes (and consequently
+  * memory sections).
+@@ -2087,10 +2087,16 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
+  * pages are guaranteed to be contiguous.
+  */
+ #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
+-#else
++#elif defined(CONFIG_HUGETLB_PAGE)
+ /*
+  * There is no real limit on the folio size. We limit them to the maximum we
+- * currently expect (e.g., hugetlb, dax).
++ * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
++ */
++#define MAX_FOLIO_ORDER		get_order(SZ_16G)
++#else
++/*
++ * Without hugetlb, gigantic folios that are bigger than a single PUD are
++ * currently impossible.
+  */
+ #define MAX_FOLIO_ORDER		PUD_ORDER
+ #endif
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 0e26f4fc8717b..ca3f146bc7053 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
+ config PGTABLE_HAS_HUGE_LEAVES
+ 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
+ 
++#
++# We can end up creating gigantic folio.
++#
++config HAVE_GIGANTIC_FOLIOS
++	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
++		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
++
+ # TODO: Allow to be enabled without THP
+ config ARCH_SUPPORTS_HUGE_PFNMAP
+ 	def_bool n
+-- 
+2.51.0
+
 
