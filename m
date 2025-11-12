@@ -4,102 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A13ECCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 10:00:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33F6FCCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 10:10:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EB898E0018; Wed, 12 Nov 2025 05:00:12 -0500 (EST)
+	id 7D8868E0019; Wed, 12 Nov 2025 05:09:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C2B98E0002; Wed, 12 Nov 2025 05:00:12 -0500 (EST)
+	id 7B0278E0002; Wed, 12 Nov 2025 05:09:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D8788E0018; Wed, 12 Nov 2025 05:00:12 -0500 (EST)
+	id 6C5CD8E0019; Wed, 12 Nov 2025 05:09:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 358BA8E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:00:12 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB36112DB03
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:00:11 +0000 (UTC)
-X-FDA: 84101509422.17.F1C94BB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2BD731C0004
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:00:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="akwA/QS5";
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A8348E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:09:59 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 04DC713AFC4
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:09:58 +0000 (UTC)
+X-FDA: 84101534118.24.8351825
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 23E3820014
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:09:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ipFvEp/h";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762942197; a=rsa-sha256;
+	cv=none;
+	b=tlxmCJEpfoipt2DELM1zawB1Girn9VU4I5bW85zi6lCsTcZ4VWPuo5zKxrCl4GrApODOCI
+	n+J3uineh72ZLMkqayAsv1B2rL2Jy/LZBCCiRAKVLzB0bhdRS8DmpexagAnzwbhLxyIb34
+	/1W/SaebEw6xEv0QhRWX1Yl7DuldvBQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ipFvEp/h";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762941610;
+	s=arc-20220608; t=1762942197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v2SlrP3MYrgSHwQ2tNBmEBL1wFBTNSOq43U2jq6eP0Y=;
-	b=niw74kWJMdTofSUhPMIBVo1rFq4XWpM/GbLbwlk5lx1vAjKcfTrd76KujSBqZfZy0zKjZ+
-	xxiO9pW6E6MecZV8VF33umfKfLoVN0JHNE+2c85Gc9i11A2zw55Xe9VoP9d5QY/H++CwxE
-	CzhaiRr9erwVMrbkHenZf+THMNzgONc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="akwA/QS5";
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762941610; a=rsa-sha256;
-	cv=none;
-	b=HjT7XE2PCcpaLamdRA+k6WGomnVvrKRWIEnZFsRa4cDvLSt54bqcZCdfDlDoEUONoa5OnN
-	arqQWe+XZXl9eUDT0MwS60i4OlIGRG/a7SNy2diqaiVI8B1s1OdjNpsWVW6V1/DzRPmEOi
-	FtgUUoDJZv4MkEGhQ8hI14jAGp1rpVc=
+	bh=pSFxej47CRo5G2gO4PHK9FI8eRqtd9Jxs0aSu19kvY0=;
+	b=8UBkJG8NjK1QfkBqX5IrDbfZc/1Z+wE53iO+ULIkWM035pjcob2P77IiLZhPtau2+aSaLr
+	CSdGcFUgTx/wEq9rnp6quuoSmbp5vq4zoa20uWKa11jZg0aA/SOy4m3J5QCtlMD2p4Rw0h
+	unMJH4diHK4UWd5GmknjCTGjup41k2s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 46C0E60143;
-	Wed, 12 Nov 2025 10:00:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB55C4CEF8;
-	Wed, 12 Nov 2025 10:00:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 268BA434CF;
+	Wed, 12 Nov 2025 10:09:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABF3C116B1;
+	Wed, 12 Nov 2025 10:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762941608;
-	bh=Hc9SpvODoEKqXyT0Yv/Hs9C9gFsaCYRYLwLn+AbBGok=;
+	s=k20201202; t=1762942196;
+	bh=0pN/N/WAEGV8G73wqQYsy1NYVE302SNrvtLisTX/RFM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=akwA/QS5z6CaUXVEzunr+7pQgnrxiS05TwnBHMPu9G9K7v9c/3R8iUIoq0Fcs1D4g
-	 uZyFVcYDoifzu15xZtQHiFBAIMDuqArYYZlBjJXdyvuagQ+WofFYu/yGFfMBt2KwOe
-	 G+n6vnPF/RN8DkE0+tTxciwrHE1uEt6TYEil166dlKMJggi3wQvLptrv9X9lU6PxgQ
-	 XNAr6Fr9I8+mApELE0Zj+iZ1Qiz442z8ZyH6mke/U0LWo9Hx0HSVCUoO8RPKVSBGnf
-	 CUy8XhqDiIhiws23n55El8P4yhgadO8ReX6Eikf6sUhqd0LFCEWkHzOmC++LncJ0+w
-	 wQDl9Ia2iQ4lw==
-Message-ID: <048134fd-6a3d-4a6c-a2eb-9a9911c3b35f@kernel.org>
-Date: Wed, 12 Nov 2025 11:00:01 +0100
+	b=ipFvEp/hfILLkxsY+k06HidEsIf8ffPVLU466T+rWPF18sHN42s39t8W5OlLwF0z/
+	 lr6PIvS4/3zfBmi0nnpAHZRlwFz2ly+RoNeUYXVCNUdKXZTsZc9kcl/xUvxsPhu0+J
+	 WHC/KK9Hbx/fSQdNJOTteV9VznFF964AGjiNI9PO2E0mPbDodJPtvQ0fjF+m+fE4eX
+	 4PqWdflNQCw4yhQbbtfxOd7ka/AMObTnz//MZaOqv/Rslr4pKDUgL7FkRa4MdHD2/U
+	 cJHKybdmQJuqzbjMmpd7LA7Zx0JYL6YpTKPnzkEfFAw1NqiMcVHk4e5kbLuGSHqzoK
+	 zf40DMoPvzYYw==
+Message-ID: <6a63dbb8-58f7-4511-8090-18a58c3206d8@kernel.org>
+Date: Wed, 12 Nov 2025 11:09:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory.c: introduce split_unmapped_folio_to_order
-To: Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251112044634.963360-1-balbirs@nvidia.com>
+Subject: Re: [PATCH] mm/memfd: clear hugetlb pages on allocation
+To: Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>,
+ Deepanshu Kartikey <kartikey406@gmail.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, baolin.wang@linux.alibaba.com,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+References: <20251112031631.2315651-1-kartikey406@gmail.com>
+ <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com>
+ <aRRPvn4DYAhuGtq3@localhost.localdomain>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251112044634.963360-1-balbirs@nvidia.com>
+In-Reply-To: <aRRPvn4DYAhuGtq3@localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2BD731C0004
-X-Stat-Signature: 5pno7x8thz8s9zm1d7rnqwnikakh9813
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 23E3820014
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qnx71gbnxnyhdr4ryowtx4kb5hjazhr8
 X-Rspam-User: 
-X-HE-Tag: 1762941610-191349
-X-HE-Meta: U2FsdGVkX1+XYDh3Ey5NaLBimXBCcPFJ4iZAw3jHA/U3sgTcSCV534VBVcyGkIEC5I3UmTfbNwhsNZsGaWsiBE39PYIIN/C95tWAGJ+2szw42PYVOz8O93wW6G05cbNR0SsraT6RZAWcXs+KRhlwbhtSD4Cm4TcUgaUy3ILcO30YtafHRfyIbGxXs0pXBCDB0Wl9mV+x/WSKk157HjcyHQiItGKPnLWOC39pR5C392hkgMr/9Idxat545OjD9G9O3mRKH61YwgTsaBO31Je4igLDClgQAWYSSRqy9K/JZpKBD+/6seGWCGgABabSY+ok9geRcQHUQUvkxlF5K2YBDa3J4Zhrw86ndf4mfQGCiyMo791DV1X6jyzLSo5J4rSAyyvOa4oEe3R1iFg+JmLumZUyW9sqrd3jg8aEqkKKjURTKadFigx8gB8Vsies9zLAFOY8+p8MzixiqReWP831c/kRxrv9+8+R5SQWZtDdrP0AVJcmHin2f/jLmE9orwzCgL6ZBt/EGZSWg+SAvr/+YBGU+y/byRBSGIC7ZmyULVJ4o/Yy0INSS1wSsiZiWx5w7l/dWVyjbSNehgHkoOMeBBNcoXvRWeLwcPEX+jnlW/BP0Yht/VuAYu1TNntGVcvmw3PtD5fel/+evDkWEWWw3+2TtXAlZhFAuZDDMRtTcL2AxmbcC+REexSlgsAaBLSWdDfOoSyUhH+5Z4hD5YR+O5Q5SYo0gP63mNCVV3RmnSgmUpj9EihZ7rI30UE9JnG8YuLEDqVcErjq0vbIws2nH3sPGC6sBffpW1OcYRDkM5pIKO5ozIToEZlFzfgJtk3u/DvNorUOjFvtAyCpXpbZxzrPzPT2mDt8NayYm+J4Xny0topBnj2PzFiRDMNHsbvyqkRl9wv36nsAFi2rCGLTkSFpek3o6DcKpShufZ0+l7c6Z9ZN8srYd3khanWZ6ZrGWBthKwKWKRDvvrM6Gpy
- 144/pnql
- 8WvJhQi44xo3c5YCQD4CowoNVul1zi7xxOT6Li7Y2lwa96uGtDs3gW9e1BDICowZlT/Jt/oJQTwMfANLhirG3KLtQD72kaVaglNpct/1lWu1PxADEWykFJbepuobFWAZvENnc4CNWT2LNIFscfyLCWEJrsG+AxDjMQHHJNC17Rv2/nGTZ7lW1PJSHIDVKtEdFssIzeR5CapulSwMAd869B61oKuLZtmPJvfYNeDuISwB3YQUbeWD5h50J6f2wjpdiBIltRTahdiA2kvE+J+mXxyzyGG8Ml0zGmoffxZyFcPd1suwkEE1AhVQ3nchkklwqmgvv/iIAsixTV0OPCJacM3eGWuaCBaJ0TFkn0Y9PyZuT4dFX9LNX6HRQQJVXH1KCneGMQznJRKqgY02tm1yvl8QDq2XkLxC+/hiuQcnV5velqQ70JYb45RM6Wf9x2GuRcOZ3qriW7CG3+g0pjHgw+9BfJwK7SWv3AvW7eKL/YKSG7J/I3qHtpGP355Mf0m1SU/UhqnDCd2WfkaXnkCbWnIcFIVwb0RGZzFl7BmuDSjLt5uEEl5SOcG2q5UupVWXJTyT5JJn4QDIUbBrm/wFlWzBnoree/ktmRqj6hjf33il4Qf1VzDq+Sj1cLDsr8OLmc/Tk+xI0kyMO5aIn1DLDbXz2PLYnYXs+Mm95cvd/LGbFfnG2xLUWcVg/+NsOQrU7KEbE4NSDospYd79/kbXRG6UWiB2faaaB1zdLo9PldHDAdVjFBmf09/T5By+cRCksAJrOT14BwSu637dFepcrD/23puc/bk8vVOsvomRFCzKq3IQ=
+X-HE-Tag: 1762942196-265739
+X-HE-Meta: U2FsdGVkX18hfHu6vaQzH3g9e+7ZziGyKUfS8osTzthZ6vEbsdm14baG6lHyShNxLnRTlGFP4loKt40T64zK0bJ6YyHbb2Be0Us/Kw54kOdOkQ2Uw6gD8qiFp4PPiY6RdfRA55DI8pZqs5/dAH/kdtaM8w50AXZMiFy1an1LFjS9netCbBeZ9DoQ3RcY6JHpzrlnAZN8naxZWZzb3sAy5356ID9ygGpRXnrexuOoRFot3EApayMS4d6j7sHBUnM5ZIjCycdMwVfg0xFx5PMK4zTUAySvnE7gJBtxtgXnDxyX9jp9/4pFSVLfRnflhe7QRNnIwavVKzO8ETSEP3IBN19Q8BGjLTWon+hgazxB5ECFz2JIq9qVo008SgWEMydOJQF/jwn1qs2h9NIe0CRNZsK7EfL6/iKg2PfxHfWrAkHyPtI+4DU+8p+d/LLVLBF1DxRaqfjnW4/EDl/2iftOI5hhaGYFbEaS3/ym0YV94m1LoOPGn840gVjq952YFsQA8y0YvMOPvnqYAM8aJqmawseOL46Rjz62GY2JkTdYIEIWRBQtSCtZSNpG0fvkMzbP1MSdTx9jy9R1hEqzChjhUOenFqaUuTteczSHrXPx1O+lahwAsXwCc7in/1S+uvk3ierxl+C9138qv9mG6S6iKdqGsPV918t2cvZrIo+H4bm22SBnt1gJ7hrJxnCMneTURQbQkThRPg+M1DzK9pZl8CEkItjq7CUydHQ6faznZWN9AG21t4hPxMmgszMwxLtPg7C5ZkxtDnhrr5CQqg+jsMYfGWuVEZ5oAdSd2pnxx6j27YfBnlqzVav5vl/4cca2eeKEeshiKsFfegfUTo9ayq1BJP8/BRVBr0RV6dRY5j2qwtHK2xSaNJiLZ7y5IOytd4yfNvalSshZPv0i4RbCe5EdpkcssPrIaPBykvMQ+oQyAtShstIHD6sW+In69RsanYVfVkeAsD+KhzTYyMR
+ e/aDOZnn
+ RzYF866MdCCnoKIwdZ/LBHjNh09lwPYLFT+V+CGKC1qphkenys3IcE5+dI7PCh393CbQJO35I1osKXQ4soXfV5xC82HEdiWvSAE75+/NXn213dtLQ+jjNHe8+3ZgXaMpF+gs/hT7UYMS1zTSlX3nt18ma94V/9tK0UrqvVgOj8YH0YeQnXAqLAO7Px/opZrop/mSJg2eUI7AuyPnxvAEOPVzJMNWJi+cL5I73v3rGwr6Iu83idsSKqcu/LTY/bvofjHfZKEFebw1Sp1rEUi4ecoUWp5vSFGfPMlD9EYFNPlMAV24BUsITSIrJYq1paJQBIAwG0GhQf2cf5jSeliX3OWHicVj94/1yfFw4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,148 +99,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.11.25 05:46, Balbir Singh wrote:
-> Unmapped was added as a parameter to __folio_split() and related
-> call sites to support splitting of folios already in the midst
-> of a migration. This special case arose for device private folio
-> migration since during migration there could be a disconnect between
-> source and destination on the folio size.
+On 12.11.25 10:13, Oscar Salvador wrote:
+> On Tue, Nov 11, 2025 at 10:55:03PM -0800, Hugh Dickins wrote:
+>> Thanks a lot, Deepanshu and syzbot: this sounds horrid, and important
+>> to fix very soon; and wlll need a Fixes tag (with stable Cc'ed when
+>> the fix goes into mm.git), I presume it's
+>>
+>> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+>>
+>> But although my name appears against mm/memfd.c, the truth is I know
+>> little of hugetlb (maintainers now addressed), and when its folios
+>> are supposed to get zeroed (would a __GFP_ZERO somewhere be better?).
+>>
+>> I was puzzled by how udmabuf came into the picture, since hugetlbfs
+>> has always supported the read (not write) system call: but see now
+>> that there is this surprising backdoor into the hugetlb subsystem,
+>> via memfd and GUP pinning.
+>>
+>> And where does that folio get marked uptodate, or is "uptodate"
+>> irrelevant on hugetlbfs?  Are the right locks taken, or could
+>> there be races when adding to hugetlbfs cache in this way?
 > 
-> Introduce split_unmapped_folio_to_order() to handle this special case.
-> This in turn removes the special casing introduced by the unmapped
-> parameter in __folio_split().
+> Thanks Hugh for raising this up.
+> 
+> memfd_alloc_folio() seems to try to recreate what hugetlb_no_page()
+> would do (slightly different though).
 
-As raised recently, I would hope that we can find a way to make all 
-these splitting functions look more similar in the long term, ideally 
-starting with "folio_split" / "folio_try_split".
-
-What about
-
-	folio_split_unmapped()
-
-Do we really have to spell out the "to order" part in the function name?
-
-And if it's more a mostly-internal helper, maybe
-
-	__folio_split_unmapped()
-
-subject: "mm/huge_memory: introduce ..."
+Can we factor that out to merge both paths?
 
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Mika Penttilä <mpenttil@redhat.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
+> The thing is that as far as I know, we should grab hugetlb mutex before
+> trying to add a new page in the pagecache, per comment in
+> hugetlb_fault():
 > 
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-> ---
->   include/linux/huge_mm.h |   5 +-
->   mm/huge_memory.c        | 135 ++++++++++++++++++++++++++++++++++------
->   mm/migrate_device.c     |   3 +-
->   3 files changed, 120 insertions(+), 23 deletions(-)
+>   "
+>     /*
+>      * Serialize hugepage allocation and instantiation, so that we don't
+>      * get spurious allocation failures if two CPUs race to instantiate
+>      * the same page in the page cache.
+>      */
+>   "
 > 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index e2e91aa1a042..9155e683c08a 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -371,7 +371,8 @@ enum split_type {
->   
->   bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
->   int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
-> -		unsigned int new_order, bool unmapped);
-> +		unsigned int new_order);
-> +int split_unmapped_folio_to_order(struct folio *folio, unsigned int new_order);
->   int min_order_for_split(struct folio *folio);
->   int split_folio_to_list(struct folio *folio, struct list_head *list);
->   bool folio_split_supported(struct folio *folio, unsigned int new_order,
-> @@ -382,7 +383,7 @@ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
->   static inline int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->   		unsigned int new_order)
->   {
-> -	return __split_huge_page_to_list_to_order(page, list, new_order, false);
-> +	return __split_huge_page_to_list_to_order(page, list, new_order);
->   }
->   static inline int split_huge_page_to_order(struct page *page, unsigned int new_order)
->   {
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 0184cd915f44..942bd8410c54 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3747,7 +3747,6 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
->    * @lock_at: a page within @folio to be left locked to caller
->    * @list: after-split folios will be put on it if non NULL
->    * @split_type: perform uniform split or not (non-uniform split)
-> - * @unmapped: The pages are already unmapped, they are migration entries.
->    *
->    * It calls __split_unmapped_folio() to perform uniform and non-uniform split.
->    * It is in charge of checking whether the split is supported or not and
-> @@ -3763,7 +3762,7 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
->    */
->   static int __folio_split(struct folio *folio, unsigned int new_order,
->   		struct page *split_at, struct page *lock_at,
-> -		struct list_head *list, enum split_type split_type, bool unmapped)
-> +		struct list_head *list, enum split_type split_type)
+> and at least that is what all callers of hugetlb_add_to_page_cache() do
+> at this moment, all except memfd_alloc_folio(), so I guess this one
+> needs fixing.
+> 
+> Regarding the uptodate question, I do not see what is special about this situation
+> that we would not need it.
+> We seem to be marking the folio uptodate every time we do allocate a folio __and__
+> before adding it into the pagecache (which is expected, right?).
 
-Yeah, nice to see that go.
+Right, at least filemap.c heavily depends on it being set (I don't think 
+hugetlb itself needs it).
 
->   {
->   	struct deferred_split *ds_queue;
->   	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
-> @@ -3809,14 +3808,12 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->   		 * is taken to serialise against parallel split or collapse
->   		 * operations.
->   		 */
-> -		if (!unmapped) {
-> -			anon_vma = folio_get_anon_vma(folio);
-> -			if (!anon_vma) {
-> -				ret = -EBUSY;
-> -				goto out;
-> -			}
-> -			anon_vma_lock_write(anon_vma);
-> +		anon_vma = folio_get_anon_vma(folio);
-> +		if (!anon_vma) {
-> +			ret = -EBUSY;
-> +			goto out;
->   		}
-> +		anon_vma_lock_write(anon_vma);
->   		mapping = NULL;
->   	} else {
->   		unsigned int min_order;
-> @@ -3882,8 +3879,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->   		goto out_unlock;
->   	}
->   
-> -	if (!unmapped)
-> -		unmap_folio(folio);
-> +	unmap_folio(folio);
->   
+> 
+> Now, for the GFP_ZERO question.
+> This one is nasty.
+> hugetlb_reserve_pages() will allocate surplus folios without zeroing, but those
+> will be zeroed in the faulting path before mapping them into userspace pagetables
+> (see folio_zero_user() in hugetlb_no_page()).
+> So unless I am missing something we need to zero them in this case as well.
 
-Hm, I would have hoped that we could factor out the core logic and reuse 
-it for the new helper, instead of duplicating code.
-
-Did you look into that?
+I assume we want to avoid GFP_ZERO and use folio_zero_user(), which is 
+optimized for zeroing huge/gigantic pages.
 
 
 -- 
