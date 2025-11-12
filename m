@@ -4,66 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1D0CCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 13:25:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BA9CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 13:34:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0665C8E0006; Wed, 12 Nov 2025 08:25:32 -0500 (EST)
+	id EA5CC8E000B; Wed, 12 Nov 2025 08:34:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 016B48E0003; Wed, 12 Nov 2025 08:25:31 -0500 (EST)
+	id E56D68E0003; Wed, 12 Nov 2025 08:34:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E48318E0006; Wed, 12 Nov 2025 08:25:31 -0500 (EST)
+	id D45FB8E000B; Wed, 12 Nov 2025 08:34:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CCA008E0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 08:25:31 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EC9EB9B73
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 13:25:31 +0000 (UTC)
-X-FDA: 84102026862.03.D2B8039
+	by kanga.kvack.org (Postfix) with ESMTP id BF2468E0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 08:34:08 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E2B61A0507
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 13:34:08 +0000 (UTC)
+X-FDA: 84102048576.02.EDE3BA5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D04671C0007
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 13:25:29 +0000 (UTC)
+	by imf20.hostedemail.com (Postfix) with ESMTP id AEE751C0016
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 13:34:06 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JuXf8Iy+;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZrJfWier;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762953929;
+	s=arc-20220608; t=1762954446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SxbEP0/mT6oRz19zAiNieP5qnCOb5jc6DkpK21x1k8I=;
-	b=YaXAlmRBNDatNgydSLC1DC+lEevHmkACppfUtdEP82QUfUod7mCnjYO4c8ce1Frp/aexc1
-	IstgsFKBVcsri9WxlCgtyQCqeR0EWM1ivM4Hy29kqNF9y6mrhStnYqYs3A0kP0VJXW3P68
-	9G38JQVun3g6gEwgDo5P5x2r/49O8xM=
+	bh=r3+ZctwDuZGvlb1k0GqzpRSDDJ7h/5ZJWqMNp77avuo=;
+	b=WenXQs3E0yTIttyhb6KhOehRXNxmlBIoK63KncCgFr+lYxwOtZBTvDNAfKb8NgGuVAdnzu
+	TuCswoJh0K1obzfO4EGzfk0RJirUKy+lhBCKJXMmbio+FbauLFZ/oWk6tL7KNewbkmVs9k
+	i7l42IUScBc0XGG5GxFYk4p/TcIima4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762954446; a=rsa-sha256;
+	cv=none;
+	b=MdS8RMHvKMi+XPLAqpkZtKJj+Xq4CNYse9B4Lx9Yjbv093LUYEqquuSvymhYDS5tNaqH8h
+	zNN+Aq66rUbhqvPPs2RghTMEwALf2MR6iBMcyVawo12KXSYr4ICp5bHKq9IabqAL3Ijtph
+	Iqyvd4PMlwBOZOSRaYIKEF8Vmszh5w4=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JuXf8Iy+;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762953929; a=rsa-sha256;
-	cv=none;
-	b=Wf3KI11NIyVIqLOB24GgQF4MuuN98D331exlrCE+bKE5MqY+bNeFOXCwAuSeATJEFEvm8a
-	q8+7JazpMtMqnKdT2YWdEP0gzrP6TX/f+keQQt7r7v9oK3XLyUDZdhQAPr3OIg5jPd/bY8
-	wU77xuUzZhj1KT0R62OvUQHmgZCMUMI=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZrJfWier;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EF21F60231;
-	Wed, 12 Nov 2025 13:25:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16109C16AAE;
-	Wed, 12 Nov 2025 13:25:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 05D1E6020F;
+	Wed, 12 Nov 2025 13:34:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41D9C16AAE;
+	Wed, 12 Nov 2025 13:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762953928;
-	bh=0L4I5YakZvITlyeB7zaJSYGUCZoIKpW33DPBC2WOOhM=;
+	s=k20201202; t=1762954445;
+	bh=qbSj2P7cauAyPGofpRuk2eH237ghZw6hFXEaJ7Ed/gc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JuXf8Iy+r0eY2kUE7hNwEY3/woXsoN7mLLb0NujdRDnGnxWsUwW61gwcXje3J84z4
-	 B3/yjjUcJLgZz+Z63i2LjQpS2xfQ308sv9sRWCv/JMCr+xz6rxzPHlAb+EIGZDMMcl
-	 +4BJ5OyXy1HSzx36sq+0a/dYIJuQqqf03VW94U30S6eWt3+ZrvU9aDMFk2zcRDN8iX
-	 sLbX+QhHTEbyi6hp2/eWg7aUEYD/KYgV1FvYa5w1MO3SBpUSY2kF0rFvNKOhzSjCjU
-	 MFbxZY4wDY5r7NZTXeppRfA1WRwj4O7n5KTZrdrUJEUF2x466Y0AkWfrUxTDXAc225
-	 gY47Gsfbb3eQQ==
-Date: Wed, 12 Nov 2025 15:25:03 +0200
+	b=ZrJfWierYi07WtFcEryrFiK6Au3xJI//n+EazQJsB4b0URzBvOjJ2BPBvBPoM7FvZ
+	 XWPWQhLqrXXbk6Los7kqf3Hu8uafXdEsjQxORzsfBLgMdTU6sehs9FlWa9STelJO6B
+	 OWz3HlWFH/uCzNh2VZL47Gng+Ch9YiD7yBzskEndLdC70aFjLKWUcBaq0XFoDHp60t
+	 0wx+iCnlCp9J1RZS79PtlT4DNB84z8R8sl+GyTqFXcqT3qGXpr8ALU3f1PIB1jKeK2
+	 8K/l0BTJHUIz6SWhepPCUMWA1Uk5bb1RAQCRj5RdZtH28whozTzBEJKm7YoNIweTse
+	 RnTOFGNsvHEfQ==
+Date: Wed, 12 Nov 2025 15:33:39 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -95,25 +96,27 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
 Subject: Re: [PATCH v5 02/22] liveupdate: luo_core: integrate with KHO
-Message-ID: <aRSKrxfAb_GG_2Mw@kernel.org>
+Message-ID: <aRSMsz4zy8QBbsIH@kernel.org>
 References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
  <20251107210526.257742-3-pasha.tatashin@soleen.com>
- <aRHiCxoJnEGmj17q@kernel.org>
- <CA+CK2bCHhbBtSJCx38gxjfR6DM1PjcfsOTD-Pqzqyez1_hXJ7Q@mail.gmail.com>
- <aROZi043lxtegqWE@kernel.org>
- <CA+CK2bAsrEqpt9d3s0KXpjcO9WPTJjymdwtiiyWVS6uq5KKNgA@mail.gmail.com>
+ <aRObz4bQzRHH5hJb@kernel.org>
+ <CA+CK2bDnaLJS9GdO_7Anhwah2uQrYYk_RhQMSiRL-YB=8ZZZWQ@mail.gmail.com>
+ <CA+CK2bD3hps+atqUZ2LKyuoOSRRUWpTPE+frd5g13js4EAFK8g@mail.gmail.com>
+ <aRRflLTejNQXWa1Z@kernel.org>
+ <CA+CK2bB8731z-EKv2K8-x5SH8rjOTTuWkfkrc4Qj6skW+Kr7-g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CA+CK2bAsrEqpt9d3s0KXpjcO9WPTJjymdwtiiyWVS6uq5KKNgA@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D04671C0007
-X-Stat-Signature: s9uo7tp6zniwqgbk9ozb3p8tztxgk5co
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+CK2bB8731z-EKv2K8-x5SH8rjOTTuWkfkrc4Qj6skW+Kr7-g@mail.gmail.com>
+X-Stat-Signature: w7t5iz4fctgy71tje193913ah1ij3444
 X-Rspam-User: 
-X-HE-Tag: 1762953929-993797
-X-HE-Meta: U2FsdGVkX1/ElC5Urdv9JCWzuF/DG9zRcvb4D3UkLd+lLpAudtNGV33Lav1+CcdI6HfVK6vZoTycX9qGQuGPwzJ7uKVJP105Q8s830oTkrtCgS2Xom9uUkczhZiXDwqVxLt5cwkLyRZDNqEp4mAf8gBBGvzXpyOddNeFuyuRePKDZWrVBkfRi2eMMVZIQ0DcZT2gDaPPDewzq7TyqY9RA1TxpmqZejj1mdaIeP9ZizPHskhSACCcqFPnr5Y5w5JWZ+3/OIGWu6ji7TJer+w1l1AnFe+7APK9zOy/9frVd//QBATT6v8LQr3FgcqgZ6ERpa8fdj4ePQkLck7RcFAr3SsG2CE8rwgy1tXUHkbioYkojdwG2wMZl82kMx02G4L32hOkkdbNbQKVYmvIHRMs0MwFZtmFIVsziJpmuJDyOcRoRdr0H2rt+C4VdcmNjH1d/NF8EFSFJrondUhmowrs5E9IsGkxWz1OZjHihFtQmxdKEvIRQ0Jxn3GCvUgrrbFLV/4BGtm/0BV0XIiZtqzyGRZyylKsQhWoqcA4VConI376nJBqZX0ASJHJ8Mg8XegMP9HwjQwaNnr/z8bjwObtl0IsJR68t2l+kn+gZQPs7BvNQYhABpAhyJohy+BhN9/H7xbrVankhEiaxEw68dZBxWFI7a/T4R3zJd77TY+vn5Z39Xp98uInN10OchYIpFuJ5FiAurB7MlksGvFADpGNBuf0pWctaAq6I86moC1FFtTMSQ7UzTt3Dq9jGXNLAkdh21r+gNIOLQoxt8S+FowUI2/wSLHjEz4fkpm6kp7olCm3QkiefWQD1WQZxUOYhKakuvCxE6JMYlpyZ+LF27gx1EOQ7RnPEkCjcFYUtkwaEw7FAls6XUJvyTAfGpK/IyPBdK0NgY2abvMsSSOIF24N7V+A61mxKQE3AM5AzqlCLqvPQQ8iezjPn8w+Sj8AIlmMB0FmRsI07ZaKxyw5oQC
- pcDmUxUp
- C3Jg7T+YE9WK9McvMNGn7hC6oOWhrUlWxK3BV5m/qOAGNxgNYk6w37bzOoV0ZZB+FCG2qTDSrhsos0nkalMfe33U8j3iE9Lm7WNuJB0KGdBT5eLRIx5qDjw6EZBvAKjUpq12eMfwShY25ftrmnyx0juVgmIYWf2znYKpJpbubPqxvoUii9d9plhrIOxiZqlCqJOF+zehVu6robjQt3q6k3OTeWd1oEfSR00lgfPDErXzeWx47IUJCoxUL9Mf3rhxkclmjLNmlKOjmTHPkCeHtl7CS/KwEVPNXRG8c0I+/yFK/ggzlIFuXVlkWKx2rLwf8UhQM131Wvab2MaFSngJDkG0v/TzWP2odDlJQUwHuq0/OBXVClhE5Un0p9w==
+X-Rspamd-Queue-Id: AEE751C0016
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762954446-339545
+X-HE-Meta: U2FsdGVkX181n+BbIfe/EybKyiNMEfL2nWN+IEhfy+QNdUQtYKd78vZYJcahe5sQTGi9GVr9D4M+VQk6Ax0ORJwUBrEoL85B6HUroDB6zLs3KF6msF4Z1lOxyyl9bx+E9D5EKd8SAReMx7vNkTsQqe+rEBx6xx0P8VpywEyt+bosKx0Fe5XyuYNzPrOW01qSP4UuGef2Gj42heUXCeNYzmPi5fxcs43JVxQvCTfD3e1mhb36FzB+YRqhtHsMAZ5kvkI0fCovgJIPoQvu3Qd+C94+dgT2eh7Ho1J6hJ7+s+T/v9LI3J/q1op+5xHbq4zpj2wxZaHT699AhQl0g13iXo/tMmmTAEh/MM3VjHppKcuinoGGpQMxlZ974qDlyYrpKZInGMrJlploRo6UrzInH6p/KROwifq4tSpzK1vFq32rRwAMnjZHxJiUNM1x7kPREPl8u6BFNEtH9/NH3pyCR2jl4RdwgCHyqqInDxrqmzpKPtbAhOAYK5PIld0eqqZzqQUFkFVkk0ybZX3TSWJRY9vH0UDuwgzmaKhbai6JF2xAxw4iyuMACuhrzgda2jIWNI/NECKLMrauEU+Wpk1urhj0BM6Xvh5anuJRH5p0qq1yWWs7kSkOEWafnqBES+MrT2dMWipx4Su7XeK2NHIAPOCnpBLpTBAGPhmzIz31jWH6wJisnEV+5R4RIP7CYxx7cQXW7PA8pGr1bq7RA/nsnC0wAKb2g9tcy862kP7SCTXycBVvBWRmnPp93I35WXai7/SvK9XClJgjw65Xr+kAPsBYm1Di6Eo+D6PmmC7pQT0rRuvkopVMKRaqKkPf74Cr6k6PPOakSIkREOGtwW3w4muTruQgTV2/OlWYK0atbvzhCQm8/G9fp2CWwXPudPTrM+h+rrblJgbcKuiXswTGqjOqSMjASv7PXTtsWRqaHGIIwSC5eL4wIJfbymRT2+bY4JMaL8Oo/ik+jYL/EX5
+ zE0P3IUl
+ GFYAFdwAJwiXTWmmVH38kwOub+28JDgFDCMjbnrZb9Zjr1PzzHKD7S7lINIWKEju1ElygqE+QAo0TQ4THNZQNyHg6xQ48vJt1sKa/nVdFH0EE1/URP2QfQ36XIfzi2LI1z80HmaaqT4wo3C/PpNkzNKAlI/quGnE+dKN4vc2fpXW5vXatUdWilHrtbQukBONlLkk14/wI0M1Z2aseDWwQ+BaCbjRtHgtjlz0Q6PfKks0beiq5zH1sNA9ej6j2lhJH+670Op6pLzeO1lvylaaq7Gd6SyONfNGHrPvlHreMohQkHVTrodW5wWAC+hGFheM4it1PTxcGr8wKaqsP3qx1II0MXNm4Se02p51fxl9ZYJv0KieoRmnBh2G955xFwVv46aAdMaNpIDh9Zi8TzXI7PPw5y4qGptueIm3wij8LMhQMiaPipfw8ztoxag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,85 +125,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
-
-On Tue, Nov 11, 2025 at 03:57:39PM -0500, Pasha Tatashin wrote:
-> Hi Mike,
-> 
-> Thank you for review, my comments below:
-> 
-> > > This is why this call is placed first in reboot(), before any
-> > > irreversible reboot notifiers or shutdown callbacks are performed. If
-> > > an allocation problem occurs in KHO, the error is simply reported back
-> > > to userspace, and the live update update is safely aborted.
-
-The call to liveupdate_reboot() is just before kernel_kexec(). Why we don't
-move it there?
-
-And all the liveupdate_reboot() does if kho_finalize() fails it's massaging
-the error value before returning it to userspace. Why kernel_kexec() can't
-do the same?
-
-> > This is fine. But what I don't like is that we can't use kho without
-> > liveupdate. We are making debugfs optional, we have a way to call
-> 
-> Yes you can: you can disable liveupdate (i.e. not supply liveupdate=1
-> via kernel parameter) and use KHO the old way: drive it from the
-> userspace. However, if liveupdate is enabled, liveupdate becomes the
-> driver of KHO as unfortunately KHO has these weird states at the
-> moment.
-
-The "weird state" is the point where KHO builds its FDT. Replacing the
-current memory tracker with one that does not require serialization won't
-change it. We still need a way to tell KHO that "there won't be new nodes
-in FDT, pack it".
- 
-> > kho_finalize() on the reboot path and it does not seem an issue to do it
-> > even without liveupdate. But then we force kho_finalize() into
-> > liveupdate_reboot() allowing weird configurations where kho is there but
-> > it's unusable.
-> 
-> What do you mean KHO is there but unusable, we should not have such a state...
-
-If you compile a kernel with KEXEC_HANDOVER=y, KEXEC_HANDOVER_DEBUGFS=n and
-LIVEUPDATE=n and boot with kho=1 there is nothing to trigger
-kho_finalize().
- 
-> > What I'd like to see is that we can finalize KHO on kexec reboot path even
-> > when liveupdate is not compiled and until then the patch that makes KHO
-> > debugfs optional should not go further IMO.
+On Wed, Nov 12, 2025 at 07:46:23AM -0500, Pasha Tatashin wrote:
+> On Wed, Nov 12, 2025 at 5:21 AM Mike Rapoport <rppt@kernel.org> wrote:
 > >
-> > Another thing I didn't check in this series yet is how finalization driven
-> > from debugfs interacts with liveupdate internal handling?
+> > On Tue, Nov 11, 2025 at 03:42:24PM -0500, Pasha Tatashin wrote:
+> > > On Tue, Nov 11, 2025 at 3:39 PM Pasha Tatashin
+> > > <pasha.tatashin@soleen.com> wrote:
+> > > >
+> > > > > >       kho_memory_init();
+> > > > > >
+> > > > > > +     /* Live Update should follow right after KHO is initialized */
+> > > > > > +     liveupdate_init();
+> > > > > > +
+> > > > >
+> > > > > Why do you think it should be immediately after kho_memory_init()?
+> > > > > Any reason this can't be called from start_kernel() or even later as an
+> > > > > early_initcall() or core_initall()?
+> > > >
+> > > > Unfortunately, no, even here it is too late, and we might need to find
+> > > > a way to move the kho_init/liveupdate_init earlier. We must be able to
+> > > > preserve HugeTLB pages, and those are reserved earlier in boot.
+> > >
+> > > Just to clarify: liveupdate_init() is needed to start using:
+> > > liveupdate_flb_incoming_* API, and FLB data is needed during HugeTLB
+> > > reservation.
+> >
+> > Since flb is "file-lifecycle-bound", it implies *file*. Early memory
+> > reservations in hugetlb are not bound to files, they end up in file objects
+> > way later.
 > 
-> I think what we can do is the following:
-> - Remove "Kconfig: make debugfs optional" from this series, and
-> instead make that change as part of stateless KHO work.
-> - This will ensure that when liveupdate=0 always KHO finalize is fully
-> support the old way.
-> - When liveupdate=1 always disable KHO debugfs "finalize" API, and
-> allow liveupdate to drive it automatically. It would add another
-> liveupdate_enable() check to KHO, and is going to be removed as part
-> of stateless KHO work.
+> FLB global objects act similarly to subsystem-wide data, except their
+> data has a clear creation and destruction time tied to preserved
+> files. When the first file of a particular type is added to LUO, this
+> global data is created; when the last file of that type is removed
+> (unpreserved or finished), this global data is destroyed, this is why
+> its life is bound to file lifecycle. Crucially, this global data is
+> accessible at any time while LUO owns the associated files spanning
+> the early boot update boundary.
 
-KHO should not call into liveupdate. That's layering violation.
-And "stateless KHO" does not really make it stateless, it only removes the
-memory serialization from kho_finalize(), but it's still required to pack
-the FDT.
+But there are no files at mm_core_init(). I'm really confused here.
+ 
+> > So I think for now we can move liveupdate_init() later in boot and we will
+> > solve the problem of hugetlb reservations when we add support for hugetlb.
+> 
+> HugeTLB reserves memory early in boot. If we already have preserved
+> HugeTLB pages via LUO/KHO, we must ensure they are counted against the
+> boot-time reservation. For example, if hugetlb_cma_reserve() needs to
+> reserve ten 1G pages, but LUO has already preserved seven, we only
+> need to reserve three new pages and the rest are going to be restored
+> with the files.
+> 
+> Since this count is contained in the FLB global object, that data
+> needs to be available during the early reservation phase. (Pratyush is
+> working on HugeTLB preservation and can explain further).
 
-I think we should allow kho finalization in some form from kernel_kexec().
-
-When kho=1 and liveupdate=0, it will actually create the FDT if there was
-no previous trigger from debugfs or it will continue with FDT created by
-explicit request via debugfs.
-
-When liveupdate=1, liveupdate_reboot() may call a function that actually
-finalizes the state to allow safe rollback (although in the current patches
-it does not seem necessary). And then kho_finalize() called from
-kernel_kexec() will just continue with the state created by
-liveupdate_reboot().  If we already finalized the kho state via debugfs,
-liveupdate_reboot() can either error out or reset that state.
-
+Not sure I really follow the design here, but in my understanding the gist
+here is that hugetlb reservations need to be aware of the preserved state.
+If that's the case, we definitely can move liveupdate_init() to an initcall
+and revisit this when hugetlb support for luo comes along.
+ 
 > Pasha
 > 
 
