@@ -4,99 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B06E2CD37BB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:23:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F160DCD37BD
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CBEC8E0013; Wed, 12 Nov 2025 15:23:48 -0500 (EST)
+	id 5A51B8E0017; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 557878E0011; Wed, 12 Nov 2025 15:23:48 -0500 (EST)
+	id 57C5D8E0011; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A9328E0013; Wed, 12 Nov 2025 15:23:48 -0500 (EST)
+	id 4B9B18E0017; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 23B938E0011
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:23:48 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E94CB4BE86
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:47 +0000 (UTC)
-X-FDA: 84103080894.03.2073FA7
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1FBA18000B
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=cqeb3vVu;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf30.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3AE548E0011
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 10EBB160620
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:26 +0000 (UTC)
+X-FDA: 84103082532.28.2019939
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 45882160010
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WQbgQLw9;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762979026;
+	s=arc-20220608; t=1762979064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JO4NTIUlmNaAY7yiYGnbE1tZshxRZRjWcGcuMEnO2Hs=;
-	b=WZNDMhmsq35Fjsw/nNS9h68/+zPPxZp8669zQeq4yQcmcgG/UZ6IIIzhifyOoTxYNJzWkI
-	hmuVRs94li8Rea+n45Oe61K1+LMppeYCpwtTcDSjR12GnpLXl8mNeII1rVAZF+bmgwgQEt
-	czGv0CN02YNSAbCpeKDR6jeLAoHOxYk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979026; a=rsa-sha256;
+	bh=cJO5Mlv5L3YO1HhnW49gfBbXtzg4tozwhai+dggc8pU=;
+	b=GERDO674+WZ+7ppgL6HXIQ1C4tScg7Gaqat+VlGkPQ80csr0ifrERCU+GMgjCw3yUTwXT3
+	UopU6436mDOOHOjg3VZ/HDBZx7hxS+2pP6NRkYPgvpPA0ALcIU8rmXTkzga2R3IVTsAqUa
+	LlY9ShBCQa9CmfvaCtDK4eTExv+d/ZY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979064; a=rsa-sha256;
 	cv=none;
-	b=5uIHJMQ6lTIGBmoMqz7Vs7wR7Z8xgVNPxzsiuUVTBbFXyQVLhTGBRl0t1gsNJ7h1bKy4IX
-	juhMbVj4rDJ/wXAp6tCuC5z5aufxgS8wKhb/nvbuij9/Jlj9XoShniM+Tlzd8XBiRQD2u8
-	E4umpC5teMZDElVinPkGd3uOdN9zRRA=
+	b=fUCS6/mEH+TqMuwvqDe3cRfN1VefJTk0J5Q2a3Na6WSwxEGV8jQeJqPrqlVyOevoiJuYIC
+	xXPi7fp4Lx1a2baKqLALKLislxRsvkHbdYgwIdt3V/f948X5ekfoEnVJ+724T9+tlUNqJb
+	XBHuHv6Arm1IEAFh/Ln2uL/DnR49NEc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=cqeb3vVu;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf30.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-Received: from mail.zytor.com (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5ACKN2M7978372
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 12 Nov 2025 12:23:20 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5ACKN2M7978372
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1762979001;
-	bh=JO4NTIUlmNaAY7yiYGnbE1tZshxRZRjWcGcuMEnO2Hs=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=cqeb3vVuc6fpkuuhA9ngqVxP73miAJEYWN74jSKBFZQRgHXgXrOPuJVnnZl/Pw35U
-	 7L9p9q+a6zNLXHcwMYQkjtVQZn6mSxvz9tmwlCaj/tchRBNj259xDVgJae1wMSyPs2
-	 oP8Pnve6U+tE0qmrBwNLaPeJL8MdmE21Isedup/8xOgJdotQkNh0w/r6hSMg7wVw2X
-	 7LpGxwR0FCOhUi4DpObBQQiHVRDTYmgmeeOEoUl8rucFFFXEDVgTKXV/YMIBCA4OTb
-	 jhsqjbyx2EGfWymE/EyeDOVkGCJBkLsBd7cxwxY6UR4HcVVVf/RP14ObZ5fJ8xBU4u
-	 IaLK1xmj7pKjQ==
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-        Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>,
-        Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Brian Gerst <brgerst@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>,
-        Nam Cao <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
-        Perry Yuan <perry.yuan@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v3 9/9] x86/entry/vdso32: when using int $0x80, use it directly
-Date: Wed, 12 Nov 2025 12:22:54 -0800
-Message-ID: <20251112202258.1310754-10-hpa@zytor.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251112202258.1310754-1-hpa@zytor.com>
-References: <20251112202258.1310754-1-hpa@zytor.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WQbgQLw9;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0147B4169E;
+	Wed, 12 Nov 2025 20:24:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09228C4CEF1;
+	Wed, 12 Nov 2025 20:24:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762979062;
+	bh=mwcUjonCzzMfZYdyYUdmDpwyU/fnuOYn/CICWev1Wls=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WQbgQLw9P6lFKBibAUmbYpSG8Kc0wXxdq6DEPV4fot9A8Q1oC6lf/tQLmW3FpXmzf
+	 qPCka0jwkKlO0iXyomcWRkBkvtD8Vbh6IeUouYmzxc4zjLlXFrIDKw+zN9TcibDmA3
+	 kKrDOOClHAVnPGzZD8sm2BtDGLYh6R8Ah/qLCCyr4KqWYmJNVn+BTx7p58HNu7zK+u
+	 osS1a4WSO0TQ/dDij7iWmGThiI+x15CS5wutDKmEuCHdJVOaHz0R9BWvwqk/W/34C2
+	 YF+3vFzxZBtnxFH1djMCfeY6S+cWfnL61EpWx0F2ygcbKJEmGW2ZqapHGLcxWwkLsa
+	 yrAZl3wZLOt7w==
+Date: Wed, 12 Nov 2025 22:23:57 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v5 22/22] tests/liveupdate: Add in-kernel liveupdate test
+Message-ID: <aRTs3ZouoL1CGHst@kernel.org>
+References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
+ <20251107210526.257742-23-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5uq141ypjaxcnten6uyq4ot9tug9g5jy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107210526.257742-23-pasha.tatashin@soleen.com>
+X-Stat-Signature: iugxoz678m8m9ztzipzbsqo9yiygdisx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1FBA18000B
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762979025-797428
-X-HE-Meta: U2FsdGVkX1/ltynzuFrBOXNDj+8sEUBahAqMlgjkkx7wbTMhs1B/4+l4b1aOzWkve0FtzX4DNR3C0apXj9QHlfpo37M/LxfUEIfvuTvnfpveXjgCwvmbNpxy+sYM2X7NrGSWmnruIaeIjA3y1PDmYRUyXgnWMOCTjds1ThLnn1GedkDv49tSTTiigvIvVnGUsvfoqopnS32okLGUKEEpXoCX/a6GFjpXedyGGWXJ3Epy2cZ/8EOs5GKUSxUzmK9MOozfuaOqod7Ep2DO3UAoeCK8jIcHClLlcZWUpUg80JuMO/jfF9tkopcidvgrrVB4ObBmLhpJmoiO+YRdjTQ+vTfNFcNLYDKvKTPECl7jXot8+2MF2TphngiAWSsR8pcBQR+/cQfAyaMaNZkFBHri2zYmFWhPcZHGxWJ2FEAy4XygqHsSZMqv8BgFdCimNZequ1uyQGBy6KNonULzJY7/0Mr5j/o8juiBzgbcepy+et3eqma7zdJXsOK24OTgBd8MMM3CC2imNCmV7k5fy+1NH0zDoQqondyLPU/z3PYEXSo0P1HVogr8Sc9YaLJVnAnusBXgTFC/bgXtazRRI6FG6jRqt9fdJPu3DG1KHZyJlb3WtSNe28k/O+NX0iwZbz9TDRWNmyJctbr5tvdUekAhPc0S+kH0yyOQa6GtVPvwT6KkrvwJJXXdSmlKXNy17oM0+rxucvT2X6CNG0PMua8ubCzw1K5O0KcJ3lg2TKEyY5ydbnERO8XoEFRMrhA3sVgPyu2Dm2uFI1wJnRfM9KCh+onaQ5DSvi3atwYRR8Ig2cl/2+wAXhLetF6fuFqcwq1yw7s0OqtmTu2tEZhZpTVu45rweukFNYOBVu7NWOTr2J0ZqJ+1QeVmXgraw47JqcRoa4itf/4SZiJhnpTOcSVrq1DeKi3GJUCgBJOk7dYnnf6Z6q0wukzt2DZFMzXfPxB/l6CpSxEMpWtW0Pvxpy2
- MsNjumcY
- K3BMON4S+jGE3YqhNJD+JZWwFaewJKwO6D9vMNYodyAMmqtSVo7EtKwIi6082P50IwTQNDzWwpaErNnP2DcaoPLAdXrDKq0PAuLhrXSWoa0UJumX1ZvPuCf8lP+08uWiwMnXGP7l15WfOArcCmnL0L1ovJMvKmpjz/qoJC5joB7NWBhhRjwWtpIoT0K7ePGtz1wQyIOgSW6WsQTg7rZBCvQsvfGXrpChk1E7pXGMGW3ged+Qx/Ity+ni1MNrk8Mb0FWPdiun1iaIn3vGlHetbhhGRq8Xt6+TcWor31lLxUYY/4kvRQfDdF/7AsfFu4tm+ZjMJk8TPYXpTfck=
+X-Rspamd-Queue-Id: 45882160010
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762979064-166982
+X-HE-Meta: U2FsdGVkX19XeP4UlMXLnKA33ZOQ/p4iBj6t6rzbHe1yE1mDh3LquDqMKedxZue0x/sstDGIVQvUXx9Qj/3Fyx6WdMmmu8a8QXYH6SzJPxHPcNj1VpvquZbi2n/imtVhcfJ5bLY5Cb8jePlvcTwHcRdA5ytvPrGjsSUekamlLz+0w02RiJVWHvchNeLjz7sLW05cYuJm7RZgyTEwnfo5Aiwt0b20+4Z1uKNDBc6eak+qRpjrBcOAfsjn7zAG1reIk3ClDOyYw4gsUN8/oYU1aBwCdV54+rNwkS3mvgQ1IqyRlYUH6mNeaZFar9xYOowL3w2Dj3RSltFLc6UoB+LYffBoF0azIuFctq6fEMrgCSHdVg+9euUQngypfQ64DS6/h+v2lVyGWkkppjSBf+s5pTiIZnvQLPgpJVDlPRY/XtkBXQu3MddwbB7a8vGiGGBP38R4J1X3mEQOjgtME3VTJIlprk7fSsN4hwq15zrhc8MgjFaeDd7VVfagBQklLj+LV+6y+31it7fDS8vCrkbSZ2cjBy5Z5hH2eQ1kPgCbwABzTSf161l9TRRdfxIiHHuMjFnJo2nK/9xGGnd/0HEbuVDz+5dgWwvMbLjca/Fr9XKI3GTHBInsF8tzdSkyKhJKpzFz0HodaXpL/B/7ixZkeAo07xpALmFMM0vTgpS2gwwJ+aK5v6XFbwOtzQI5RXoL5EsPBiVcngeIsjPZlKNGUQnchCe1aSea/6i02nTtmkZDT85xQlENkKgkEX0GbUA8YNZ+IXZgEylV3M91hLV6KZohwCyIdTyCQRO9q6856IxjO9Of4ANR9L5jPNOAedF3HiFu9s6UiA3J1+lOvTAwZMq90UbPAoKaA1aM6bZATEuZpDnQxM3bUSzeadf8FhSddfQEMgsin+Tsv0c4koDNV/Vq8rxtz80cmnJa7SLW42BzcOKWRxS/nnHIE25WqgyfwmdcYfK4IK0Rg0qMPAM
+ THUWqmBJ
+ tlIlMmlcj1wjaxRzjRzdAYC7SCcftEXj1f2GK5v0w/cW2WHHj1qrBXKVVETYpmIsG7TruBjiDOmxPrFhXks7sp0jzDDd7gFKQOolhrXaVQaFXks9WRAgrQw9AqkAL+tOD8W3xYcE5ZDU60IfetaB1SyFoIoyH23qZgYY15o0w77aCKundo3/gQCk7RvRGccuPIjVxUL4pptScsmWmAq4qjZtn6DKRQLdSQbXqwoMPpiSP5DzgaMPl2S+gtF5kDK7pFLYgI72OMvD+RX2ie9egT+11nI1T+K7gq22hfgHla4eihq0otnYhX6FyMVgYLhji0gKYHR8BBTKXGdAPBJd9DQH0JoiDD84IGZm40nmlBIMI1zUhkymOBGoJdJrYWTVnH/yb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,75 +118,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When neither sysenter32 nor syscall32 is available (on either
-FRED-capable 64-bit hardware or old 32-bit hardware), there is no
-reason to do a bunch of stack shuffling in __kernel_vsyscall.
-Unfortunately, just overwriting the initial "push" instructions will
-mess up the CFI annotations, so suffer the 3-byte NOP if not
-applicable.
+On Fri, Nov 07, 2025 at 04:03:20PM -0500, Pasha Tatashin wrote:
+> Introduce an in-kernel test module to validate the core logic of the
+> Live Update Orchestrator's File-Lifecycle-Bound feature. This
+> provides a low-level, controlled environment to test FLB registration
+> and callback invocation without requiring userspace interaction or
+> actual kexec reboots.
+> 
+> The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/luo_file.c     |   2 +
+>  kernel/liveupdate/luo_internal.h |   8 ++
+>  lib/Kconfig.debug                |  23 ++++++
+>  lib/tests/Makefile               |   1 +
+>  lib/tests/liveupdate.c           | 130 +++++++++++++++++++++++++++++++
+>  5 files changed, 164 insertions(+)
+>  create mode 100644 lib/tests/liveupdate.c
+> 
+> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+> index 713069b96278..4c0a75918f3d 100644
+> --- a/kernel/liveupdate/luo_file.c
+> +++ b/kernel/liveupdate/luo_file.c
+> @@ -829,6 +829,8 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+>  	INIT_LIST_HEAD(&fh->flb_list);
+>  	list_add_tail(&fh->list, &luo_file_handler_list);
+>  
+> +	liveupdate_test_register(fh);
+> +
 
-Similarly, inline the int $0x80 when doing inline system calls in the
-vdso instead of calling __kernel_vsyscall.
+Do it mean that every flb user will be added here?
 
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
----
- arch/x86/entry/vdso/vdso32/system_call.S | 18 ++++++++++++++----
- arch/x86/include/asm/vdso/sys_call.h     |  4 +++-
- 2 files changed, 17 insertions(+), 5 deletions(-)
+>  	return 0;
+>  }
+>  
 
-diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vdso/vdso32/system_call.S
-index 7b1c0f16e511..9157cf9c5749 100644
---- a/arch/x86/entry/vdso/vdso32/system_call.S
-+++ b/arch/x86/entry/vdso/vdso32/system_call.S
-@@ -14,6 +14,18 @@
- 	ALIGN
- __kernel_vsyscall:
- 	CFI_STARTPROC
-+
-+	/*
-+	 * If using int $0x80, there is no reason to muck about with the
-+	 * stack here. Unfortunately just overwriting the push instructions
-+	 * would mess up the CFI annotations, but it is only a 3-byte
-+	 * NOP in that case. This could be avoided by patching the
-+	 * vdso symbol table (not the code) and entry point, but that
-+	 * would a fair bit of tooling work or by simply compiling
-+	 * two different vDSO images, but that doesn't seem worth it.
-+	 */
-+	ALTERNATIVE "int $0x80; ret", "", X86_FEATURE_SYSFAST32
-+
- 	/*
- 	 * Reshuffle regs so that all of any of the entry instructions
- 	 * will preserve enough state.
-@@ -52,11 +64,9 @@ __kernel_vsyscall:
- 	#define SYSENTER_SEQUENCE	"movl %esp, %ebp; sysenter"
- 	#define SYSCALL_SEQUENCE	"movl %ecx, %ebp; syscall"
- 
--	/* If SYSENTER (Intel) or SYSCALL32 (AMD) is available, use it. */
--	ALTERNATIVE_2 "", SYSENTER_SEQUENCE, X86_FEATURE_SYSFAST32, \
--			  SYSCALL_SEQUENCE,  X86_FEATURE_SYSCALL32
-+	ALTERNATIVE SYSENTER_SEQUENCE, SYSCALL_SEQUENCE, X86_FEATURE_SYSCALL32
- 
--	/* Enter using int $0x80 */
-+	/* Re-enter using int $0x80 */
- 	int	$0x80
- SYM_INNER_LABEL(int80_landing_pad, SYM_L_GLOBAL)
- 
-diff --git a/arch/x86/include/asm/vdso/sys_call.h b/arch/x86/include/asm/vdso/sys_call.h
-index dcfd17c6dd57..5806b1cd6aef 100644
---- a/arch/x86/include/asm/vdso/sys_call.h
-+++ b/arch/x86/include/asm/vdso/sys_call.h
-@@ -20,7 +20,9 @@
- # define __sys_reg4	"r10"
- # define __sys_reg5	"r8"
- #else
--# define __sys_instr	"call __kernel_vsyscall"
-+# define __sys_instr	ALTERNATIVE("ds;ds;ds;int $0x80",		\
-+				    "call __kernel_vsyscall",		\
-+				    X86_FEATURE_SYSFAST32)
- # define __sys_clobber	"memory"
- # define __sys_nr(x,y)	__NR_ ## x ## y
- # define __sys_reg1	"ebx"
 -- 
-2.51.1
-
+Sincerely yours,
+Mike.
 
