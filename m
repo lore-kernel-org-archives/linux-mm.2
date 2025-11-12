@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B0FCCF9E3
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:42:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46050CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:42:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BA3E8E0014; Wed, 12 Nov 2025 10:42:16 -0500 (EST)
+	id A4A058E0015; Wed, 12 Nov 2025 10:42:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36A3A8E0002; Wed, 12 Nov 2025 10:42:16 -0500 (EST)
+	id 9FAC48E0002; Wed, 12 Nov 2025 10:42:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 259978E0014; Wed, 12 Nov 2025 10:42:16 -0500 (EST)
+	id 910BC8E0015; Wed, 12 Nov 2025 10:42:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F7E18E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:42:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F2E713B346
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:15 +0000 (UTC)
-X-FDA: 84102371430.22.D3D8765
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 072A718000C
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rg+Iy5FU;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D5438E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:42:23 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C1A61403DA
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:23 +0000 (UTC)
+X-FDA: 84102371766.06.7E9EF42
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 53DAB140015
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q476rGfT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962141; a=rsa-sha256;
+	cv=none;
+	b=T1mM1DNw1WQmIyeu2YUnD0tODVjMXWZqlrgdvJZujtRVZglFtw7AekAL9C5rgYOkL++TaO
+	ZnY9H0W6TWYv3PRgePQq6Lexu4cjaa7Y8O8teg97oGrOn+MVT9bp0r1BTB6QH7vJE4OBa0
+	p0Sd92TPcrToF1uo6INrNntzZ2giuTE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q476rGfT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762962134;
+	s=arc-20220608; t=1762962141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dJqVhfur55PHVL7B8oF3JesRY7YM4/jOO7TyOinsK7A=;
-	b=DJkf5lqj2nEivxGHZdJ/CvuWbT6WCAfb3p3S/ETZ9eQyViU4M99V/5TfP9WU7lwUDzMVB0
-	bS3Ke6FmL0N+qOgfoT8Rve7tNU3FCY7i54k8t541dzYkpIyYFI6yFDb8LbEbedsVwd56Mx
-	22FmZVEqdMebITDx8sq9i9s3ee0SsN8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962134; a=rsa-sha256;
-	cv=none;
-	b=v4TGgrSYM4KWUPQElvwWcZDbkI65AUOFpsvLvKvdrTK9U69j2zObu/bl9iQ+wMmmSMedmq
-	GylXulXv4r37vzhhWbvIKEJRu4u/25Lv3FIr3tZLIN02ZYQzHLDin8W9mLc+f+CeBaliEw
-	HrsR8EDNnDeGLVaTe/YeNU1Zmy+V6Bk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rg+Iy5FU;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=7l7kWlaXXjGCDiC3F04ra8CKgs49uXjm136f4ME0PEk=;
+	b=Q8E7i9Zf7fbcR160PgBijLkCAQXcgPK0yvUQXmVfoADD2GkmV1I+ma04hClq9DJr3lI7QC
+	SBxmEFhyYxmj/OpnzpcoLJF1Aq0t8ZJewpfCmU0z3uqmpGiS+XUnrc7mQkoWRVNMgCh9/8
+	s2Qk0xSs+eCfwjql6jmSaSRDEoUmGxg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7421360236;
+	by sea.source.kernel.org (Postfix) with ESMTP id 79141435D9;
+	Wed, 12 Nov 2025 15:42:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977D6C4CEF5;
 	Wed, 12 Nov 2025 15:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70B9C113D0;
-	Wed, 12 Nov 2025 15:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762962133;
-	bh=Ydpo3xsumi/0AU0ywoSi8MHefmYKBp2O+zycDWbAlqg=;
+	s=k20201202; t=1762962140;
+	bh=1rHJgGszkdfaLNjPQTgFPJf9bjvlypOeFoo13vrtMto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rg+Iy5FUuR0ooXsRWmZ7hGatyVWmvp72qpBrqVWMcmB/BuD7VDSM+iqFRVTPiczNx
-	 5U2G+YmR+esLUWkDZF0qWemYZXgEnh5ngPcocxe1UnXxc/yK+9gCaQkKbv8KA6KR0c
-	 mq3RaDiWMH2WnEcKJxhqk3qFLKWbLn++cjQK7fF1FWAxUqjPC/pZrbIiouTc+2C6cD
-	 +6X0a1lHaESDqKqwA6n0jxZ3qb0+SDXEla6TyFJthCovxImSHbJ6+l5gZ6thQH3hZi
-	 hYZ0FWZrB3AgEuhyh8NJDbqStNejmwBULgg8U10Np7m5eR505QXSMQ/iRnj7mdrPUM
-	 JqN0EnmuyfyXQ==
+	b=q476rGfTrYl4tz8y5mq9CS1pT/6YlSCHU1cNxcS1yQ8qnfxTacdAaWz1jFQQnceTr
+	 DE6zFlkuS6mCsTM0RV0tOC9XXJ23ZVUdZA3ghKdZg2l1qT2gxRJbjIEILdLoh3AEL1
+	 2sxKFoTiOAshj+O8U2L4k9I5tRmY/us7DyiDq2OdmzqQZbtILTfbgMTjKDw2hUBPuf
+	 OK61rWD5sGnqkImo1IwtrkZRX5ekoiizatRueQLw0LL9bR2v/73lDx2EbZDzJ8czTq
+	 yknaZdVaOadcM0nw03uf4QBB/7xIKBAljlfyuQmFHdBl9WMRG3ziJux/jJd9IWeTit
+	 JdpXoNuP94qEQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 2/9] mm/damon: rename damos->filters to damos->core_filters
-Date: Wed, 12 Nov 2025 07:41:05 -0800
-Message-ID: <20251112154114.66053-3-sj@kernel.org>
+	linux-mm@kvack.org,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH 3/9] mm/damon/vaddr: cleanup using pmd_trans_huge_lock()
+Date: Wed, 12 Nov 2025 07:41:06 -0800
+Message-ID: <20251112154114.66053-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251112154114.66053-1-sj@kernel.org>
 References: <20251112154114.66053-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 072A718000C
-X-Stat-Signature: zs61o5gco5bacy6tzuhpqxixuige7pzk
 X-Rspam-User: 
-X-HE-Tag: 1762962133-114079
-X-HE-Meta: U2FsdGVkX1882XGpLW3NZ5Iiws8+nEUXOydVh4KyvKKmNp96CGZKKiqN32h1EI+FOV0+Dq05fhdhOdLKK6EySK/W/GM1AOW0sY+JxVn51KY3X9JT+e9XidInSfpKWuDT47m0sUrjoz5aB0i/LaybOT6z2dWUKMRm0sxx+DKyF9Q6Akl5LOmpGOMBx77HwKnrixx7k7Epzb2pWdjXOTg1+cndY/yPKvhWB1kJ4ZN0nm5WSw8DNG3skdtNP7KOO860/y/cGwNGYOGpdfv9DeiiOObIEUA1g+7mnD72Nl1BUFWq0Tz+rIj2OkpmwPG5f7LtiXmBISO2dsuqKr11kMDieAD4g8K2NfkX9e7I9b9qFW5pLYWkfFa5tPjt5tURrq79MsNb1eLnaj/m8cf18hZLW7CT/l7O+U8Cex2kWM+CWSXSr7ZAtlCE7B8rXtKGXQyONZvXSCj117vak3sK6FM6+ZTvei72187nI2ORWleyg2eJW/YWMBKvNDPQrdOUyi9tMv6UShxIgRqLEEZmrjI9EGCbBMR2LhgnML7YBtC+SXjM1veba7Ywdv3OcJhJp2OG5JbWCI06cCsmjNnMBiWpB/gQdN8g/l2UJG+7PoB/Jcnfj782XLXbhMAnqn87AkOrPl24R5aHUVZQdueCEG9rEiDpmAS0Hzh9KunyoeufXHTvCI21j2X7HZu7c7f5iiAgt9tYnQfZjAlH/K7jF8fiWLHTunIqVjqi0q35C3hXp+GsTk7OFimjPbJtMhVhjSewhnseicp7Jh3rAGsHhX0bMqACInTWf0BX/QETwfr3TXxieYvrXCjdqkQ9coIqT+HoE38bLE/GklqSOnyKein7BfJWwcYIlWnFtZ2r6HHavt60717+VHpsy4Ls+JuhAHbRVEhF+rYpFDCfE2aI7Bqtxom3CZCsdpDb6FoGiNOuz+QnUdnSjZhRqUXAN8NZDwJXhSvjZSJZ14Pis64FQEE
- smg/pCiU
- IklBwOVMqIE2lcQEoMYVz8M+XST8TKLyNmJlrOYQqeOaqhpHJSwn5IH9lb70z1Cgon1nOVYjB7kNkRJa+05MosJLiv3HJlw+kA+FqT1JnrodB+v6RTPpCSvVtXKb+0XMXg2MjezJ+6fbwf5xiTr38V6IIWytpXZKQjUlOL1XBiygsNF/8wydfayZB5yy3WicKUGnXKQ4b/0JLL8QA429pp+Ynvd360Tqi6HSJ1xQpak24z+T1pN/YH4GXu6klJ5OrJcVj+YduywxqguoTSx++h/m7Yg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 53DAB140015
+X-Stat-Signature: xb6p7x5m9e9w9wounrjmxj37jid17rz4
+X-HE-Tag: 1762962141-991360
+X-HE-Meta: U2FsdGVkX1/GnAnh8ceGaGSq7MDCllvWY6sbCPhXQvwaVHp/osZEuu6NunQ1sRerZYGA5rMTucZOEXmx+JIgw6mswNgESbH9uj94py7e9vfGMo2051xBc7rvlFxLLruNADvTfRJqSJNHDek/O+60MmzqsFPnKdtXAAjdViuBcYmtcQYmYAZbElRr7SJDirw6VPxtfh+mJGv77weTzpMZS/NfdPXGzufgVcQjkJHewd5XxMAriuqoB8s9KCwK42QFmRcJC/xXd8lxo1MhxQfQARdfyngbNcs0u61IwEjbzflp8bf/ntIrQI3am6aaqIqnPJShnbviSvmZe2CLCvrXfGpMnNAOE7smfpVztpm7Fmn94EIsFibe1ZSWjpAGL2Stt4BImqYnJty7c8oZf86r3fW6ydGxpCQ+MynABhqOMs9FPT2jR3ddhB+7BHYHaH+VjFsWCdOLlF5+fAuFkpW8RHufX4ULYpgTeV/IEWGEngesTuk32D/0TJlpxMDAueXHY9p+B1rcbH1lGJKi1uwJX/G+nNOQffE8N5kmNda1ufEOgpCLshOXmEX48Xa3gUQVy3akzFFvPUVWc6Y+EnZOzFP6kWUisMv4bVTkOKfMO5AdQ6gPKK5Uq9vWoIZug3S2oRs8lcAxNjQ+gnuvfKEiVwJQo4FfT5/u+AfN2OX5lhKnKvImgxcDsIgNQqlh0xVohOnUObCfxZMRtMe4hDn4YJEs4hl7iqDfsXQuC69jFRVwGyVLBcovVRSXvGf/aJsvkZHL/f1ItjDtJr3QZc7vUtsSp+T2srdiE+uPfvxk5p0/RYW35r6NjWKbiEfUZBN13CuIhkYtQ72mUNW318s4el6+91rN3G3cR9KRCOjoDVLF6Br40i50MQhdAXGTi8ClJcw1XU46yQPtVHgPxcQaDmQuoRbK3VnhtgsiQSHsse5fVztnkqDGoosMAqcPm06diaWMoqOCrTE/hkIISO+
+ T9v7IngQ
+ V4okoZpo72LqjnpB3iuVPQCOqYGUQlAHUjROUlkyOhTmRnoXua1jCMlYfZNAUY3NB4nmwy/YLVZ2yVU8p1VesKmDS1G3Bz9vwlSDkKFAAokJE8QGYP9DCcr02r5eJmPDc7RhEVI186gTSYWusdBQ8+imqNNp99oyVs9yAALx7Lf6kIuNPr0bczPCh1NIerYe2PEeXHG/wWzJNt7D7Eo5f3NWYnx/7Eg1Qg5CCC+GSylY5qnF6udZduGOxB13TjPyigENfPPqvQEuy3I7v9Po7wgFTNeL+jy18wQ/MzHCRPcyiP6M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,152 +94,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS filters that are handled by the ops layer are linked to
-damos->ops_filters.  Owing to the ops_ prefix on the name, it is easy to
-understand it is for ops layer handled filters.  The other types of
-filters, which are handled by the core layer, are linked to
-damos->filters.  Because of the name, it is easy to confuse the list is
-there for not only core layer handled ones but all filters.  Avoid such
-confusions by renaming the field to core_filters.
+Three pmd walk functions in vaddr.c are using pmd_trans_huge() and
+pmd_lock() to handle THPs.  Simplify the code by replacing the two
+function calls with a single pmd_trans_huge_lock() call.
 
+Note that this cleanup is not only reducing the lines of code, but also
+simplifies code execution flows for migration entries case, as kindly
+explained [1] by Hugh, who suggested this cleanup.
+
+[1] https://lore.kernel.org/296c2b3f-6748-158f-b85d-2952165c0588@google.com
+
+Suggested-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h                                  | 10 +++++-----
- mm/damon/core.c                                        |  6 +++---
- mm/damon/tests/core-kunit.h                            |  4 ++--
- .../testing/selftests/damon/drgn_dump_damon_status.py  |  8 ++++----
- tools/testing/selftests/damon/sysfs.py                 |  2 +-
- 5 files changed, 15 insertions(+), 15 deletions(-)
+ mm/damon/vaddr.c | 48 ++++++++++++------------------------------------
+ 1 file changed, 12 insertions(+), 36 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 6e3db165fe60..3813373a9200 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -492,7 +492,7 @@ struct damos_migrate_dests {
-  * @wmarks:		Watermarks for automated (in)activation of this scheme.
-  * @migrate_dests:	Destination nodes if @action is "migrate_{hot,cold}".
-  * @target_nid:		Destination node if @action is "migrate_{hot,cold}".
-- * @filters:		Additional set of &struct damos_filter for &action.
-+ * @core_filters:	Additional set of &struct damos_filter for &action.
-  * @ops_filters:	ops layer handling &struct damos_filter objects list.
-  * @last_applied:	Last @action applied ops-managing entity.
-  * @stat:		Statistics of this scheme.
-@@ -518,7 +518,7 @@ struct damos_migrate_dests {
-  *
-  * Before applying the &action to a memory region, &struct damon_operations
-  * implementation could check pages of the region and skip &action to respect
-- * &filters
-+ * &core_filters
-  *
-  * The minimum entity that @action can be applied depends on the underlying
-  * &struct damon_operations.  Since it may not be aligned with the core layer
-@@ -562,7 +562,7 @@ struct damos {
- 			struct damos_migrate_dests migrate_dests;
- 		};
- 	};
--	struct list_head filters;
-+	struct list_head core_filters;
- 	struct list_head ops_filters;
- 	void *last_applied;
- 	struct damos_stat stat;
-@@ -872,10 +872,10 @@ static inline unsigned long damon_sz_region(struct damon_region *r)
- 	list_for_each_entry_safe(goal, next, &(quota)->goals, list)
- 
- #define damos_for_each_core_filter(f, scheme) \
--	list_for_each_entry(f, &(scheme)->filters, list)
-+	list_for_each_entry(f, &(scheme)->core_filters, list)
- 
- #define damos_for_each_core_filter_safe(f, next, scheme) \
--	list_for_each_entry_safe(f, next, &(scheme)->filters, list)
-+	list_for_each_entry_safe(f, next, &(scheme)->core_filters, list)
- 
- #define damos_for_each_ops_filter(f, scheme) \
- 	list_for_each_entry(f, &(scheme)->ops_filters, list)
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index d4cb11ced13f..aedb315b075a 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -306,7 +306,7 @@ void damos_add_filter(struct damos *s, struct damos_filter *f)
- 	if (damos_filter_for_ops(f->type))
- 		list_add_tail(&f->list, &s->ops_filters);
- 	else
--		list_add_tail(&f->list, &s->filters);
-+		list_add_tail(&f->list, &s->core_filters);
- }
- 
- static void damos_del_filter(struct damos_filter *f)
-@@ -397,7 +397,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
- 	 */
- 	scheme->next_apply_sis = 0;
- 	scheme->walk_completed = false;
--	INIT_LIST_HEAD(&scheme->filters);
-+	INIT_LIST_HEAD(&scheme->core_filters);
- 	INIT_LIST_HEAD(&scheme->ops_filters);
- 	scheme->stat = (struct damos_stat){};
- 	INIT_LIST_HEAD(&scheme->list);
-@@ -995,7 +995,7 @@ static void damos_set_filters_default_reject(struct damos *s)
- 		s->core_filters_default_reject = false;
- 	else
- 		s->core_filters_default_reject =
--			damos_filters_default_reject(&s->filters);
-+			damos_filters_default_reject(&s->core_filters);
- 	s->ops_filters_default_reject =
- 		damos_filters_default_reject(&s->ops_filters);
- }
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 0d2d8cda8631..4380d0312d24 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -876,7 +876,7 @@ static void damos_test_commit_filter(struct kunit *test)
- static void damos_test_help_initailize_scheme(struct damos *scheme)
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 7e834467b2d8..0ad1ce120aa1 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -307,24 +307,14 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 		unsigned long next, struct mm_walk *walk)
  {
- 	INIT_LIST_HEAD(&scheme->quota.goals);
--	INIT_LIST_HEAD(&scheme->filters);
-+	INIT_LIST_HEAD(&scheme->core_filters);
- 	INIT_LIST_HEAD(&scheme->ops_filters);
- }
+ 	pte_t *pte;
+-	pmd_t pmde;
+ 	spinlock_t *ptl;
  
-@@ -1140,7 +1140,7 @@ static void damon_test_set_filters_default_reject(struct kunit *test)
- 	struct damos scheme;
- 	struct damos_filter *target_filter, *anon_filter;
+-	if (pmd_trans_huge(pmdp_get(pmd))) {
+-		ptl = pmd_lock(walk->mm, pmd);
+-		pmde = pmdp_get(pmd);
+-
+-		if (!pmd_present(pmde)) {
+-			spin_unlock(ptl);
+-			return 0;
+-		}
+-
+-		if (pmd_trans_huge(pmde)) {
++	ptl = pmd_trans_huge_lock(pmd, walk->vma);
++	if (ptl) {
++		if (pmd_present(pmdp_get(pmd)))
+ 			damon_pmdp_mkold(pmd, walk->vma, addr);
+-			spin_unlock(ptl);
+-			return 0;
+-		}
+ 		spin_unlock(ptl);
++		return 0;
+ 	}
  
--	INIT_LIST_HEAD(&scheme.filters);
-+	INIT_LIST_HEAD(&scheme.core_filters);
- 	INIT_LIST_HEAD(&scheme.ops_filters);
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+@@ -446,21 +436,12 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	struct damon_young_walk_private *priv = walk->private;
  
- 	damos_set_filters_default_reject(&scheme);
-diff --git a/tools/testing/selftests/damon/drgn_dump_damon_status.py b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-index cb4fdbe68acb..5374d18d1fa8 100755
---- a/tools/testing/selftests/damon/drgn_dump_damon_status.py
-+++ b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-@@ -175,11 +175,11 @@ def scheme_to_dict(scheme):
-         ['target_nid', int],
-         ['migrate_dests', damos_migrate_dests_to_dict],
-         ])
--    filters = []
-+    core_filters = []
-     for f in list_for_each_entry(
--            'struct damos_filter', scheme.filters.address_of_(), 'list'):
--        filters.append(damos_filter_to_dict(f))
--    dict_['filters'] = filters
-+            'struct damos_filter', scheme.core_filters.address_of_(), 'list'):
-+        core_filters.append(damos_filter_to_dict(f))
-+    dict_['core_filters'] = core_filters
-     ops_filters = []
-     for f in list_for_each_entry(
-             'struct damos_filter', scheme.ops_filters.address_of_(), 'list'):
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index b34aea0a6775..b4c5ef5c4d69 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -132,7 +132,7 @@ def assert_scheme_committed(scheme, dump):
-     assert_watermarks_committed(scheme.watermarks, dump['wmarks'])
-     # TODO: test filters directory
-     for idx, f in enumerate(scheme.core_filters.filters):
--        assert_filter_committed(f, dump['filters'][idx])
-+        assert_filter_committed(f, dump['core_filters'][idx])
-     for idx, f in enumerate(scheme.ops_filters.filters):
-         assert_filter_committed(f, dump['ops_filters'][idx])
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (pmd_trans_huge(pmdp_get(pmd))) {
+-		pmd_t pmde;
+-
+-		ptl = pmd_lock(walk->mm, pmd);
+-		pmde = pmdp_get(pmd);
++	ptl = pmd_trans_huge_lock(pmd, walk->vma);
++	if (ptl) {
++		pmd_t pmde = pmdp_get(pmd);
+ 
+-		if (!pmd_present(pmde)) {
+-			spin_unlock(ptl);
+-			return 0;
+-		}
+-
+-		if (!pmd_trans_huge(pmde)) {
+-			spin_unlock(ptl);
+-			goto regular_page;
+-		}
++		if (!pmd_present(pmde))
++			goto huge_out;
+ 		folio = damon_get_folio(pmd_pfn(pmde));
+ 		if (!folio)
+ 			goto huge_out;
+@@ -474,8 +455,6 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 		spin_unlock(ptl);
+ 		return 0;
+ 	}
+-
+-regular_page:
+ #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+@@ -910,13 +889,10 @@ static int damos_va_stat_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	int nr;
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (pmd_trans_huge(*pmd)) {
+-		pmd_t pmde;
++	ptl = pmd_trans_huge_lock(pmd, vma);
++	if (ptl) {
++		pmd_t pmde = pmdp_get(pmd);
+ 
+-		ptl = pmd_trans_huge_lock(pmd, vma);
+-		if (!ptl)
+-			return 0;
+-		pmde = pmdp_get(pmd);
+ 		if (!pmd_present(pmde))
+ 			goto huge_unlock;
  
 -- 
 2.47.3
