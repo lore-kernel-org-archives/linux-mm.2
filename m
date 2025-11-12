@@ -4,173 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB0FCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 10:53:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3AB8CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:07:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DA768E0009; Wed, 12 Nov 2025 05:53:45 -0500 (EST)
+	id 013798E0003; Wed, 12 Nov 2025 06:07:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28AE48E0002; Wed, 12 Nov 2025 05:53:45 -0500 (EST)
+	id F2D798E0002; Wed, 12 Nov 2025 06:07:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12B7C8E0009; Wed, 12 Nov 2025 05:53:45 -0500 (EST)
+	id E43108E0003; Wed, 12 Nov 2025 06:07:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED9298E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:53:44 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A0ED58FB7
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:53:44 +0000 (UTC)
-X-FDA: 84101644368.21.D62686F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1A408160008
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:53:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CFEB38E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:07:07 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E73FC0493
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:07 +0000 (UTC)
+X-FDA: 84101678094.26.DAD1C7D
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4733E180016
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oPCzVNga;
+	spf=pass (imf16.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762944822;
+	s=arc-20220608; t=1762945625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
-	b=t9Z9MVE6Hjw4P6mNnZ5NLJPX8E+iNISSmyXoHHRMtt8LpPBo3bFxN4GLvXdlOrHk17NCMc
-	luMXcZnDuXC5hE82xc6Zot/t1/53NtGs+HnVVxHSISA9SQsa0X8aMZcUPI2N99BAcEazt+
-	qaXSz/ZfygsmGWeW9st+p25zGV5RZpc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762944822; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=tYBzlMluwsbHKCVcq0twUKYhrQ+ptfpgJmIv6rRZzu8=;
+	b=zF+4yXCi9dp2pnT3QTN7hbDb3m7aDuiIBHBdrwmoMf8crf/NfYM8+lO6ceJgB87eToIxti
+	r/vTP0K8C6iXGWRGroEQGGV7UOuwuMXxmXcHnp0HxP9Wr4sv3E/Ng2WIKw7Tdq50QhiSd6
+	UaAR6VUm2Sf1q9vj30rUrT5r9sV3n38=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762945625; a=rsa-sha256;
 	cv=none;
-	b=KWi/3kT9aMrmRl/HugjXxgf+AltQYi1JK+gHRXnIHuUs/wM6Mt0fFv44v0ZjOzO03vFyTm
-	DH1YAmQ9Ji/oaejjdYCs4M3Wj4JiLaeqchT7uqVF+/vIqvDb5x9x4VHm8LmDglGsDyzyuJ
-	hIayGrxgVzFnIxCyqf2UfkOU7hjV4rM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3D4F51F45E;
-	Wed, 12 Nov 2025 10:53:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762944820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
-	b=SnuugUs6s1i1G+ha+hOQ/OmhxQf1kpNet502wtDhpCQIM046YZQm/kYEr2XO7CmNuNHOSz
-	SvWC03cxUvmrbX09Ka9nD06/IQbvmtBaVrGVwwSftI+YJ9LSrW0dk+eaAJzabm5VGcUTz0
-	lLqEz1dcNViXOO7Fqc2Kk/SrWgD8GiM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762944820;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
-	b=2g3IQ7CrieoVjAWYQ8/aQ/uUl3/ZY61tFT/tLgOfjhUUXCtuznNcjwTCxJuhL5IYeAcXwX
-	Xk1BQuKZ6Kg0tFBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762944820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
-	b=SnuugUs6s1i1G+ha+hOQ/OmhxQf1kpNet502wtDhpCQIM046YZQm/kYEr2XO7CmNuNHOSz
-	SvWC03cxUvmrbX09Ka9nD06/IQbvmtBaVrGVwwSftI+YJ9LSrW0dk+eaAJzabm5VGcUTz0
-	lLqEz1dcNViXOO7Fqc2Kk/SrWgD8GiM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762944820;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
-	b=2g3IQ7CrieoVjAWYQ8/aQ/uUl3/ZY61tFT/tLgOfjhUUXCtuznNcjwTCxJuhL5IYeAcXwX
-	Xk1BQuKZ6Kg0tFBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2A4853EA61;
-	Wed, 12 Nov 2025 10:53:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id crmgCTRnFGn5VAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 12 Nov 2025 10:53:40 +0000
-Message-ID: <dec19492-bc23-49a0-a2b0-1cd8b5c7726e@suse.cz>
-Date: Wed, 12 Nov 2025 11:53:39 +0100
+	b=R4JRXb8DvZ30pg0N5haIS7DCt+gYm2x2tTyjvVFMS9iIZMAelKLJQ4mXQjfEae0tZULdP7
+	HydAJM/FigyX11T46Uc8/WUqMIL4F8gyz3NDgwbkMIGwkA5Q0uj2Aji6Hr8sfRPmxaifyv
+	aidKGOc6MZ0WWW5FruuOjCWwc8coe0c=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oPCzVNga;
+	spf=pass (imf16.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC5uvrq025241;
+	Wed, 12 Nov 2025 11:06:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=tYBzlMluwsbHKCVcq0twUKYhrQ+ptfpgJmIv6rRZz
+	u8=; b=oPCzVNgaWIrKiSUDHN8sSXW7GsJ9dYYsGIWxhZfBRllX2tWkQxqlSjNCx
+	fnXHHnsSvddyXiiE990ITx6hviLluSNHD43TDvyy9ZiByZnZIH9stMiBGkZGl7gd
+	zqSUyCgzuW+g9D7eYump3ku8/QjIL4kTKM1FOgI7BaQbWfo/h//jt2n6gzfDLv12
+	XgXkyPZhGIotfQwA5c+NQrRNnxQkIA7TJ2jbZq3AxERW/5UuTgmNMTv1Im+vrsIz
+	f6Ry6LfSXNwzRNdZzUIzkHUqaS5sY5ectNbWQwmxANxKS5EruOyPHJ0fDx3ZlH/P
+	IT+Vu98eCdXK9efDsTDaHez5nJpOg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjymj7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 11:06:45 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ACB5Afb023927;
+	Wed, 12 Nov 2025 11:06:44 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjymj4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 11:06:44 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC9xYoC007313;
+	Wed, 12 Nov 2025 11:06:44 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajdjfjkb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Nov 2025 11:06:43 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ACB6gB615991266
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Nov 2025 11:06:42 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 358AC2004B;
+	Wed, 12 Nov 2025 11:06:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 61D7120040;
+	Wed, 12 Nov 2025 11:06:35 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.210.190])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Nov 2025 11:06:35 +0000 (GMT)
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Christian Brauner <brauner@kernel.org>, djwong@kernel.org,
+        ritesh.list@gmail.com, john.g.garry@oracle.com, tytso@mit.edu,
+        willy@infradead.org, dchinner@redhat.com, hch@lst.de
+Cc: linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, jack@suse.cz, nilay@linux.ibm.com,
+        martin.petersen@oracle.com, rostedt@goodmis.org, axboe@kernel.dk,
+        linux-block@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/8] xfs: single block atomic writes for buffered IO
+Date: Wed, 12 Nov 2025 16:36:03 +0530
+Message-ID: <cover.1762945505.git.ojaswin@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] mempool: fix a wakeup race when sleeping for elements
-Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Eric Biggers <ebiggers@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251111135300.752962-1-hch@lst.de>
- <20251111135300.752962-7-hch@lst.de>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251111135300.752962-7-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1A408160008
-X-Stat-Signature: 9jbkp46kem81jd65qzqfbethr4fn6qtb
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ztNLutqFQyZSVfciFckg7VeDJQL8ZM4W
+X-Proofpoint-ORIG-GUID: a4RxntF_YGKVbOV_uzj9QeH2pP7F7lIR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5OSBTYWx0ZWRfX7cKGmobGS9D+
+ kz38uvdHIZPD0+uYpqfSlI4T9Wf1CBtuKcoT1q482xr8c1Lal/p8JLAQsnEzMxTks60IJPaW4k6
+ DD80ZumvhYuUvtKbrorpfA9Kz3QYuqK9AFeNb4njEDzJDx+DT7T+AFnwS3t2duwdVI5wK2HqpKC
+ uZUIQeosYNAxkQjehYfjekHNRwCjV4lRQiymbRKFhtNxUJFk1/kMiyYJ50U2TpsJ6giIroxpFq0
+ dr5ezNZ572sYznpmLnoIczhLt2ybdV4wJHYqyRCRHX22CJCNCqev0mLINWdqbVgH9FJIp9ifgPj
+ nwjAvOhs5wcM87/Mrg3k/UO5dQ3FuBTVZ7EDJ09t9zbmtImJkKJ/VempAyEJ51jhgOgDH+bQP2y
+ pH6i8La+uWErKe/1IPcOXBhvV6V6Cg==
+X-Authority-Analysis: v=2.4 cv=V6xwEOni c=1 sm=1 tr=0 ts=69146a45 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=JfrnYn6hAAAA:8 a=LdkhcUUB4uF8gWK5nKsA:9 a=1CNFftbPRP8L7MoqJWF3:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-12_03,2025-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ suspectscore=0 priorityscore=1501 phishscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080099
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4733E180016
+X-Stat-Signature: fgumtfqta3z9eijjmghqkc1x3jund7br
 X-Rspam-User: 
-X-HE-Tag: 1762944821-521502
-X-HE-Meta: U2FsdGVkX19wql4fthpeg9M0xrA7Q3UCM3k4B/BztSLKi8/4zTacf+RXfP/jTmVVjaLSd72JRqGrydOyu0xONe/KYUxnuEy5KkwVDDqMSId5tSh5NI9SR9vg8aLIxk47mhDPNDW+5gMA9+nq5LF+yEPdMZfNK7zaIVlCEPSdMTg7RVpLoeBi0FFrrbohDdoUC4xC6Y2CjrMc88Biv/ZkOKqeSuVH8zaFvmbVeDc4Piqb9/a1p9OtElsxhfdyurzs+QWPhEU163Sa6uCgj4ndi07j8hDvrITPErVXxjvopJY1WKu+0/scM76P2lkWkbgK/1cl6PQyV6poiD59bcPaZPaNEAUo+nKla12iws4OTy9zNb9m9jogBgPYiDNnBQ7sXKSKJNa8ALmPYx0oJnAC/8fJ8rl3/xvDg/ydzXOqD0eyIAqE22ILVgLm2YGwg2xD8O7dFsF/4EBgKKSvXKRucvyN7M/WSJlm+fpErQDmFCdEF5u7xIN9WgTEeE8zIt1TiQTJEt/v3sDPt5k4vrGtL96b8PEn9BirWDXD1woy4jPF3HJor+Pr30HlQF1iaMs2Yl2h4zZQb2o8lyVV+VsWtd3v600ClzYtmgFgeQWyDNyYkNSBdeBX3gvwGjR33kLhYTkWh505wVIfg23pwH5DujusOXmnhrk/kJMs1xy1XoId1IGQtgqUD3fEd+5q3VNdX8XGrY9cJQ/AGPzV+lq1BK/kT1QkvR+lh1haYQ2loS5xCMjZwAxfmWLFMdZm2LYaBxrBkYepvc0vBSp29G3opZceMZVX5TLAmoBcaU9HE2mW+GjcOC0szCfiEISMS79Mg1HQp8R68rtnZp7Gva1WPsle+5pAm8onEh5a1/LxYO1D1U0rA7xI20EV/wDsmIafJ/TnV6J/6scsHpM+8UjyR05TBDBKtEH50CEtuBV+j+/VfGvkDfSOLZAjFAQggGmQ7rb3eF1xb89lNRwegL+
- Vc/j+s5e
- p7af6kgKa6aDoqLGa3tFfr/B7V9c/ohlA8x4fFmpl6y29kZ+edT5fBUA0JzYJzftCoHsD9psa5SdlMNQ410Ow4G0Enbi2cNCEOBkDETmMNH1JCW2D2YMzUUWu7fbNo9WPqRrlLO85QgtlEBdjPRkMTec5SupQKfFS2L2m04oWJCx2ZyJC9LQQlxPLNetfjRib4angH1oCmQgZroSv7j7Yi7Oy4GM0ehXq7CvLbSmDrMbtbLirs+dZxoyK72wgxqkBmTCc6pWioqpio33guV0+xEA+Iu4TjPmnpr0P
+X-HE-Tag: 1762945625-945902
+X-HE-Meta: U2FsdGVkX1//DCTwcAYRwng6ZZdQbf1AcfslPNQ4l1/GMlWbL6J6r+VHh9qtCphrMcxSJD51C77E6n7sry60gIhquGoUHz6AwAQc/AXB/lXP5HW3lOjKT2VqzcLFBjgpVqztYsW6IIjkPu90Oo/OF2nnJ43RJVgpH5DLs1uOm7963NQacQdPlUe9k0/2n8A8CMiz1WlkJrajWOYTBzMrtiLaBsfk2nlrG7Llq9CWHVF+sxC1yvXKr/HmHnGSw2Y0C1u1CnIGjr9V7tQD4KtP8IESOqwrknybqp0XKW6RwCdnv+TUIlNrZbBg2I36RFXHY3jmhWA4+HRNRsFLqGppbB1dwuq8gQMPs473HSV6hvFFbOvQKnoSVVIV2Ixao9+AcRXeLXe9ZY/0xnlKoEJGE11iiSmOnisaYW2OYiAp6iFhiWtK7ns6U1RA7UKi2e3uGLpXujW2uO3B/rUcg+3FRnGqYN9/UaGvr1Um43SVO1Nq6y129zp1KEpLFl+eI0rvtOfHzYz4QOev8I5fVwgB8ICpBUYRBMmnbv7X6GpgHN8uYZPzQ3g/eYlHanuXUzLvcpeahab4aQGOo16xx34xnV0QD8+NGEfD2wrIJHgLaepQxNaaBwj5mvXAOtzz/dNL5jG/ZlsrSbHuT6snkILeA0oPuftAYTHj+i+UuA3YkQWVUiLBW7JyE5v0EkrHv6yYEzaifO/qepXXG0BRn2+sHwmQn20HUmB2v5r/6VFc/nlaOVLB+Ii9lOtYVlF5WhwPzDvn0ZXJSyHhd88GNQM0T/sl017AWKG3UEiytvHBKM3PJJv+bPfmrk5USGt9TFu2P8PCVtXaDW0kIiblo2Awb3W38wmJY6P7b7q+0U2wRdqvCvSNqyA8KY3d4Mvv/jsa3Fw4vPENHKwgmq/MlQghTAeB/r56x1zOd0Nsa/htN+XcNWulcNsVTYL/VrkgM4NExe0FN77bQsLlUjR6Fua
+ g0HM3eiF
+ M167sh/zxYu7ZX7ez/bVaFT1F2baX+bnA9cJM/pJophKmqEoTImOdnPuJTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,59 +145,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/11/25 14:52, Christoph Hellwig wrote:
-> Waiters always need to re-check their condition after adding themselves
-> to the waitqueue, as otherwise they might miss a wakeup.  Check
-> for elements in the pool and use them before going to sleep.
-> 
-> The workaround mentioned was probably due to this, but seems genuinely
-> useful for other reasons, so keep it and update the comment describing
-> it.
+This patch adds support to perform single block RWF_ATOMIC writes for
+iomap xfs buffered IO. This builds upon the inital RFC shared by John
+Garry last year [1]. Most of the details are present in the respective 
+commit messages but I'd mention some of the design points below:
 
-Thanks for looking into that historic comment :)
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  mm/mempool.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index 850362f4ca7a..8cf3b5705b7f 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -388,6 +388,7 @@ static void *mempool_alloc_from_pool(struct mempool *pool, gfp_t gfp_mask)
->  	spin_lock_irqsave(&pool->lock, flags);
->  	if (unlikely(!pool->curr_nr))
->  		goto fail;
-> +alloc:
->  	element = remove_element(pool);
->  	spin_unlock_irqrestore(&pool->lock, flags);
->  
-> @@ -406,13 +407,17 @@ static void *mempool_alloc_from_pool(struct mempool *pool, gfp_t gfp_mask)
->  		DEFINE_WAIT(wait);
->  
->  		prepare_to_wait(&pool->wait, &wait, TASK_UNINTERRUPTIBLE);
-> +		if (pool->curr_nr) {
-> +			finish_wait(&pool->wait, &wait);
-> +			goto alloc;
-> +		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
-I think the race already cannot exist, thanks to the pool->lock being
-unlocked after prepare_to_wait()?
-The freeing path can't bump pool->curr_nr without the lock, so the condition
-you added can't even be true, no?
+1. The first 4 patches introduce the statx and iomap plubming and page
+flags to add basic atomic writes support to buffered IO. However, there
+are still 2 key restrictions that apply:
 
->  
->  		/*
-> -		 * Wait for someone else to return an element to @pool.
-> -		 *
-> -		 * FIXME: this should be io_schedule().  The timeout is there as
-> -		 * a workaround for some DM problems in 2.6.18.
-> +		 * Wait for someone else to return an element to @pool, but wake
-> +		 * up occasionally as memory pressure might have reduced even
-> +		 * and the normal allocation in alloc_fn could succeed even if
-> +		 * no element was returned.
->  		 */
->  		io_schedule_timeout(5 * HZ);
->  		finish_wait(&pool->wait, &wait);
+FIRST: If the user buffer of atomic write crosses page boundary, there's a
+possibility of short write, example if 1 user page could not be faulted or got
+reclaimed before the copy operation. For now don't allow such a scenario by
+ensuring user buffer is page aligned. This way either the full write goes
+through or nothing does. This is also discussed in Mathew Wilcox's comment here
+[2]
+
+This is lifted in patch 5. The approach we took was to:
+ 1. pin the user pages
+ 2. Create a BVEC out of the struct page to pass to
+    copy_folio_from_iter_atomic() rather than the USER backed iter. We
+    don't use the user iter directly because the pinned user page could
+    still get unmapped from the process, leading to short writes.
+
+This approach allows us to only proceed if we are sure we will not have a short
+copy.
+
+SECOND: We only support block size == page size buf-io atomic writes.
+This is to avoid the following scenario:
+ 1. 4kb block atomic write marks the complete 64kb folio as
+    atomic.
+ 2. Other writes, dirty the whole 64kb folio.
+ 3. Writeback sees the whole folio dirty and atomic and tries
+    to send a 64kb atomic write, which might exceed the
+    allowed atomic write size and fail.
+
+Patch 7 adds support for sub-page atomic write tracking to remove this
+restriction.  We do this by adding 2 more bitmaps to ifs to track atomic
+write start and end.
+
+Lastly, a non atomic write over an atomic write will remove the atomic
+guarantee. Userspace is expected to make sure to sync the data to disk
+after an atomic write before performing any overwrites.
+
+This series has survived -g quick xfstests and I'll be continuing to
+test it.  Just wanted to put out the RFC to get some reviews on the
+design and suggestions on any better approaches.
+
+[1] https://lore.kernel.org/all/20240422143923.3927601-1-john.g.garry@oracle.com/
+[2] https://lore.kernel.org/all/ZiZ8XGZz46D3PRKr@casper.infradead.org/
+
+Thanks,
+Ojaswin
+
+John Garry (2):
+  fs: Rename STATX{_ATTR}_WRITE_ATOMIC -> STATX{_ATTR}_WRITE_ATOMIC_DIO
+  mm: Add PG_atomic
+
+Ojaswin Mujoo (6):
+  fs: Add initial buffered atomic write support info to statx
+  iomap: buffered atomic write support
+  iomap: pin pages for RWF_ATOMIC buffered write
+  xfs: Report atomic write min and max for buf io as well
+  iomap: Add bs<ps buffered atomic writes support
+  xfs: Lift the bs == ps restriction for HW buffered atomic writes
+
+ .../filesystems/ext4/atomic_writes.rst        |   4 +-
+ block/bdev.c                                  |   7 +-
+ fs/ext4/inode.c                               |   9 +-
+ fs/iomap/buffered-io.c                        | 395 ++++++++++++++++--
+ fs/iomap/ioend.c                              |  21 +-
+ fs/iomap/trace.h                              |  12 +-
+ fs/read_write.c                               |   3 -
+ fs/stat.c                                     |  33 +-
+ fs/xfs/xfs_file.c                             |   9 +-
+ fs/xfs/xfs_iops.c                             | 127 +++---
+ fs/xfs/xfs_iops.h                             |   6 +-
+ include/linux/fs.h                            |   3 +-
+ include/linux/iomap.h                         |   3 +
+ include/linux/page-flags.h                    |   5 +
+ include/trace/events/mmflags.h                |   3 +-
+ include/trace/misc/fs.h                       |   3 +-
+ include/uapi/linux/stat.h                     |  10 +-
+ tools/include/uapi/linux/stat.h               |  10 +-
+ .../trace/beauty/include/uapi/linux/stat.h    |  10 +-
+ 19 files changed, 551 insertions(+), 122 deletions(-)
+
+-- 
+2.51.0
 
 
