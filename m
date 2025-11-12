@@ -4,213 +4,238 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22DEECD13DE
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 16:03:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9497CD13DE
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 16:10:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 464618E0005; Wed, 12 Nov 2025 11:03:42 -0500 (EST)
+	id 2ECD08E0014; Wed, 12 Nov 2025 11:10:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EE9A8E0002; Wed, 12 Nov 2025 11:03:42 -0500 (EST)
+	id 2C6CD8E0002; Wed, 12 Nov 2025 11:10:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 268258E0005; Wed, 12 Nov 2025 11:03:42 -0500 (EST)
+	id 18C3E8E0014; Wed, 12 Nov 2025 11:10:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4948E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:03:42 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D08E1405EC
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:03:41 +0000 (UTC)
-X-FDA: 84102425442.17.08D3F65
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013013.outbound.protection.outlook.com [40.93.201.13])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AF7B2120015
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:03:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RUjXcxWm;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F3AA88E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:10:49 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6206A89675
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:10:49 +0000 (UTC)
+X-FDA: 84102443418.22.D621A9A
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9DBD24000D
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:10:45 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AT1DTrQt;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=sG+ikGKi;
+	spf=pass (imf27.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762963418;
+	s=arc-20220608; t=1762963845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sectjm9ynUQYmA+CWCEuq6pUMJlViS7YKlXsPFLkWLY=;
-	b=GSdXsOf9QTDYV1fBFUxk0eaoiZmaZxD4e/2elQJA3MOOq3+5QclHhWy1+vFbzlMc4UzGC5
-	i8RIIQSqo0H+GgGK2gHyqHoHAla4aVPCuCs9MegrbcIqQkagUDpklAllGaswuwqf2jjcSQ
-	jIa34dDpFknItjubx+ATbNwXn0CSb3o=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762963418; a=rsa-sha256;
-	cv=pass;
-	b=XQT45U/Ci78mIrAG8YZ1x9y1n0yNiZavhlATyJDwVvpQEeNVF6VypPHmAqjQiO0ekbCL9u
-	inywh2yRxHTd9/FOoC1i3208mPI/QMMzjYSxPtOtLom4WFJQ5XIdOxDaP682vuJ0tfIuB0
-	4A/4li4j7pu6BGvqTScnz7KfTEJCc8s=
+	bh=01IlYPXYbCIzYljjSEPqRhSs2fjOonpIMFEzkTZzpoQ=;
+	b=a6XAxlUP3NrDPHruX0HhjLrIAOcAC38+uIY0S4kWUrmaYwUMh2VPnpFxKrQwIOwT2bMSn+
+	oyGiutB2U01HrbxPwZZdse3HOevEe/1R3Xuo8EP8nYq4jZAriQnwSR+lMXMuq4dIfNlYCg
+	ByMUsve0AAb85fJgwP5QqTZtfA0LxMY=
 ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RUjXcxWm;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AT1DTrQt;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=sG+ikGKi;
+	spf=pass (imf27.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762963845; a=rsa-sha256;
+	cv=pass;
+	b=2sealVNAuGt9fcgLy3/v5V243LaFYh8x1wO7U8qBrixY46M8Zz6xn47Skqieep5VTA+5ba
+	9Z9BOkAkjwsI+W5uEN7Kakjz53rsuivcznaGTAjus2avqwwPY9QvcRgVFi0fhc95SGYnca
+	pFPvbH1KFwFUixha0KbPWUX98ZQM7MU=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ACFj7Mj006355;
+	Wed, 12 Nov 2025 16:10:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=01IlYPXYbCIzYljjSE
+	PqRhSs2fjOonpIMFEzkTZzpoQ=; b=AT1DTrQt97mOzK/SYbw2MTPeOa0AbxT+PX
+	BHR2nKWS05ik44raQMUrXX78wko4UhrnVr31Lz+7WZwi0HHQPhn0rTvW2l5SX08T
+	bshAbkZgkUhTXOfAqP/p3/sENPhanlbsfUvHtGL/bXI5JabqxGo4xjB/2reCrfJO
+	V8/5JhuzfGQMvxVKlmsXA7Ej6FegR3zumYXZ8lQyGVsoyRhuJVbjVM6l4IgCudbn
+	WHb255VaOcpi/ECHKsiH81JPAi8HW/uc/DfTHzS6mGXFJNjJE+evNNlwnufXqfPg
+	wv2/fzQ6Pkl69KYuP6NallXOHmZHz3mnhQIj1m1UoNOE6GABRHQw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4acw5f02v1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Nov 2025 16:10:40 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5ACGA7bw011406;
+	Wed, 12 Nov 2025 16:10:39 GMT
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013013.outbound.protection.outlook.com [40.93.201.13])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vaedpjm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Nov 2025 16:10:38 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jIIDEH1OP8W3kw0PPkqIhuTrWFUNb+w8/vFrI3O6qnqy/E1ncDzwRwgSyxqVineqMKYlmPoZQ0CpPu6E1bE6RWiFD+Z2PFHPFV+q7OGpKRhV8R3WcV9S/gvZmzT7EttSSg7zFwGaxOnLoRY4xjqscxM/lomr/6u7KCdLWlyvtL3iUMdvS2RUqwSIYWrR4hZKgvaMfioSjLb03G/hms48fEdd6pK+soZ/di/Gy5ua5kgQC9r6Hwy+jYhYpOax0vdLeZNcD5IqKyJ0Kwgpc1RiMYbBXUQ11ZsY85GPDxSwlcJFZEBsUXG7bbEHYWfucIPrjBNTzIWpy2bYXqohqQ2Pyw==
+ b=WlEidhtF5kJ2zH4KkBV1mnqTjaNVEf/PENxEXgcEeDUgwdIJ4mXoE1gEszV4yvYwPGeMt/IZz8lVDTXjE3JLntlrnY83kzJDAOP5kaO9F5C/fpmykrYgsAB2Yx2m0N+iIM/V5A6I7yCN++gFzUh0HKOYTPOhE5siHJzpMdMZ8+tO1zMrB5ooQxvXpHxVhwLsHQhGXRWTMhli32+gAXV9U0QP5Gxj3geeEqtmOdAdbpVzq/8f+U4nkDh4pJ2zcqu6auo32UV3po/eMyFPt27Wx4T8zAZYe1907gui66Hfkw8mMth/uOABHIGlF0HlDxlBSYxX3Dr//WPCraOUJvTXUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sectjm9ynUQYmA+CWCEuq6pUMJlViS7YKlXsPFLkWLY=;
- b=MDMg+xsFiCYG29odf5utnBdWZq/59GmRxP3nuqOG8vpWRUv8jN4PAput3tXqmFDCcGaiuzRIFi0Z3AP1Hbxe0B4/7mgLLGPZnI5xkpOwzqhd/4HkQ1pxXKE5v6b/jhqOWfj4aWv7qS1pom5pm9svu2JiS3k8Q8uOJ5mC2qVc/Gp/RJkNmc7+6VzFk8fat79lAtB33tPdUFexoqxbl3jCJ4g5PSQ+m3i49bcMW9lZ8jbF8R6PpfGrIcGXXYqgyZtr8BzyftvJquWR8scpN4xiqAp0BKBpOX9JgovB4gfIYjsHLUvwRfYq5baFgvsn2wDEsjQS+N0+9scoRll+YDyM2Q==
+ bh=01IlYPXYbCIzYljjSEPqRhSs2fjOonpIMFEzkTZzpoQ=;
+ b=aYW6uYKiwJUdV6ODFGG2hpMLMEklNM30a3RKg7qfcsTpoBPR3++7yXaHkOuCU2mYV5vf5CFg2u8hnsO6R9zz3qvcg5DY9LGDYqUBwu5FqRrfaMKp85mS5oOXDmheTNfZEDdafnHgBgncgdYTs8IdetROD/WzJEDpnkNaQlMi0l7VvNTA93MmuDIGC7hyVYotIZkzbS0Henv1sP6G0jNZ+4zwBr80VwN4zp/F/6kjmP1KdGaJW1mPE28p0O7i20WBEZ+qg2j1Gopk9N5fyRztewGTWe8aIPLz4fPvEmCeB5UfPj959uIoolcvNDFvX0pjgaOfg7pRkh/oRFCVQS1joA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sectjm9ynUQYmA+CWCEuq6pUMJlViS7YKlXsPFLkWLY=;
- b=RUjXcxWm4OuKy+F/ONFGEA6WeF1PXhZrXcrG8C3I++SAhlXXBGIWM6prnXd1nSE69NyBUekwi3Et9TE/TWuXVCIHwInl8HGYlO57igLQKunItGdyEOzijzAgt/zE41bmU6X2ujC7rXhzlPSoanTr7M3BHSClsFXtEF+7N5PH2jZK4XFqpYux0HQ1MNYOUGjQ998Hs6i7UbqQHv0+kBtyIFQui5+PdNrsCsOCWgN1S7OMVOzZk3J+0ABl8Fs8d/M9pDJNevnMj2THabklOzwS2LJX2Qpfn9/CHah5Jc6iS6XRZ2JRbRai8xRco5EzCR6H9uSrGVZJZyKjgJ6UEmzWbw==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS7PR12MB6359.namprd12.prod.outlook.com (2603:10b6:8:94::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.16; Wed, 12 Nov 2025 16:03:30 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
- 16:03:30 +0000
-From: Zi Yan <ziy@nvidia.com>
+ bh=01IlYPXYbCIzYljjSEPqRhSs2fjOonpIMFEzkTZzpoQ=;
+ b=sG+ikGKiq9V4XvzN45SoBPQpDdn1nmb+bvzYDylkBEAu685sT01kPkl2KeKeDng6iKdwYZCY2rNXKgIeMGEtqwWFoGeaxbiUhuWooBDMT8EspOy+96sOFY7UJEZ8POQkorDBrdFXHOe7TGr6fxvNT6o3rkoPzuZ63K6OjTK5SuU=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by IA3PR10MB8638.namprd10.prod.outlook.com (2603:10b6:208:581::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
+ 2025 16:10:35 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%7]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
+ 16:10:35 +0000
+Date: Wed, 12 Nov 2025 11:10:30 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Arnd Bergmann <arnd@arndb.de>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
- SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v3 03/16] mm: avoid unnecessary uses of is_swap_pte()
-Date: Wed, 12 Nov 2025 11:03:24 -0500
-X-Mailer: MailMate (2.0r6283)
-Message-ID: <D80CF897-63BE-4C11-8363-57ABD5303DA1@nvidia.com>
-In-Reply-To: <c69f57ff-c4b1-4fb9-8954-c5687dc2d904@lucifer.local>
-References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
- <17fd6d7f46a846517fd455fadd640af47fcd7c55.1762812360.git.lorenzo.stoakes@oracle.com>
- <B114F7B2-8EDA-44DC-8458-79E3FF628558@nvidia.com>
- <c69f57ff-c4b1-4fb9-8954-c5687dc2d904@lucifer.local>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN0PR02CA0022.namprd02.prod.outlook.com
- (2603:10b6:208:530::25) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+        stable@vger.kernel.org,
+        syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com,
+        "Paul E . McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
+ retry
+Message-ID: <uvsjfodaoyikufskxriaycxcydhhgzndhs2hp4ydbwbgivhna6@h7svwhivantw>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Jann Horn <jannh@google.com>, stable@vger.kernel.org, 
+	syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com, "Paul E . McKenney" <paulmck@kernel.org>
+References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+ <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
+User-Agent: NeoMutt/20250905
+X-ClientProxiedBy: YT4PR01CA0283.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:109::8) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS7PR12MB6359:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2f682b5e-b267-4fe2-870e-08de220505fd
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|IA3PR10MB8638:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec6688cd-f84b-4c06-106e-08de22060280
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gQIRL35Pepwr4w08N5BiBpcbB6sVQJCxB6+2lJ2tYx3I8ZvM90Ur/mIxog6L?=
- =?us-ascii?Q?hCoLbC+OlI6mQZKIayaXvWoDRHtF6QrhFUp/ZvCCjTyj9MQ8a9cOYFR9OzSg?=
- =?us-ascii?Q?4wcefxmOdZcwExGYlG8p57fxm8TxkZgYknK7b5f4LGJwTmQDCMBzsomTkV2h?=
- =?us-ascii?Q?KrV7uyjOHe/vo8q7+eWKjykna6AHkvuZ/i69yICZSIWVhFz3O8atOKkje/du?=
- =?us-ascii?Q?ChlxWhvHoAQZhsZM3evkY9LTSbkI17tusP5PfalQbMNh0Nb7kJlL7VVocF2e?=
- =?us-ascii?Q?qzM/tm8UhLwhrwOZaWfj8axauA+DlR6QGG42KUOFf9e56VRpj7Rpv61Upk2p?=
- =?us-ascii?Q?BzVzMcfYdCYyvXPSPA8WkoJ5Ac+nKZJ54LTv+ct9eJhjVvAzJEZWg+7SEpVv?=
- =?us-ascii?Q?XIZcMZFWfQ+dAYD3HwDxB1v9CHi38AExEX8w2fwSE29B9+r0jjEvlwOvh4Bw?=
- =?us-ascii?Q?OcZup+ORMs6A4u89XPmZ9DnCPcPmNpvoazADkiv2RJz+DxyGb4davtZ6dJtg?=
- =?us-ascii?Q?gU7fvBfHBTG6SoWTbLusHUT/Ye1zBSmOSc7HikOlWwQhkZamBPiheMRRWu8K?=
- =?us-ascii?Q?wa0PmssoqbyW1KIW7nxqpei1t6SHD/+MR/UWzY3vM1Q5JDbU54bt1TYy/+bv?=
- =?us-ascii?Q?eTEDqLIyx3jw/3cSJY9I7PAxHkgDX7FLZjFZ8fhAwmRPiMp8AJXAsKhgMG8F?=
- =?us-ascii?Q?QM2fEg8PMoeYi21t0LSUjiIjGeEHjxqGJcgYXOcFLgIJbAQd3YKjkx30+lOZ?=
- =?us-ascii?Q?6I0CfHpVNtfJbrdbF5/UUhj8d2vA5NAkM9M3XN84Y0rnaHLJ0rmZhg8zDHfr?=
- =?us-ascii?Q?j73o5rH2Xa/lwEGPpcWjBvOdKwY3Nf4/VlzM/sP0r2MayXhFuQU6vdVplxAs?=
- =?us-ascii?Q?6lbv4mpl+AO6aE/IT/dm9pb48u6IWd5K1ohbo4FUlv4Vu2BaWRORdS7FzSZC?=
- =?us-ascii?Q?VULCvGqJD83DfX+M6JPycYBN/jGSMxAOCMakTusx72y0JCfhDlwJhL7OEJH5?=
- =?us-ascii?Q?0gC4/Y/lVDL2zTkm5oKfqn2+NEJv4P1QvGNeWynhqJ7iCL8Ksnm8BEFoaWcY?=
- =?us-ascii?Q?kLlsxqQINQ0fHXoU3zwjP/hOb3CAgOF9FzDGMur5f54r1KGxGHZoL0c6Os6W?=
- =?us-ascii?Q?bm2enr7QGm3TBd6sVbJz3mkeu0lzgjb0c34FAtxJ616ujX0dZXELQnsMfeRk?=
- =?us-ascii?Q?ct9KyaE57AtXkHp7Zfx2EIqGjOZ1pX/JgD2QasSm6J6GK6OJo2efEbYVuxxb?=
- =?us-ascii?Q?sJxbJRyFpRAm3u4EcboRRGzukm73COgZW5luEpjT450guVOYCyxDM3ucSZdF?=
- =?us-ascii?Q?xJhOsG1waFbYdw7nnGRpmIz4UJZNhezkalKeRGRjorG9ukD4N6w+8ofyVfch?=
- =?us-ascii?Q?+ho5mLd2REJFfWJNfhXNHpH87TP/o06TydgkQCiLHNd2WCNRWK6VVrMhXnhN?=
- =?us-ascii?Q?57AmrVaYYT2MbUJkZlBHfEbpGqqAD4Jh?=
+	=?us-ascii?Q?vNVIPylnq8G4KUwiL7zxg5Gt4izY50+2g7xQguYSoC4L0JIlAyEAicIhwLjl?=
+ =?us-ascii?Q?YVy5hjf9qDCCMGkWH3TS/XsX+T8mCAOcWgQ2oCks2JkK8d10Zf8iUrv716iI?=
+ =?us-ascii?Q?1s5UtDCfvBjBgTmxgw4n1Ol1H0mDyy+O7ivNWeMEmZBh+bzZjce0UrnVxuc9?=
+ =?us-ascii?Q?pU+S3J37x+AibvT2Yk51kMaeAC4y2fj6Wpc9KRXIsm52aapBIxc+KuikkMEV?=
+ =?us-ascii?Q?c5HFcfI45uA0xJ+ohs8n7UFP4MCkWayL8l83MUbTGOmO5y+n5qEr1FJODL66?=
+ =?us-ascii?Q?norCr5iYlYS+o7rbRYBhvYAW91d3WdWi67Ae0WtsNLyxUvSxQe3l/6pZpEu/?=
+ =?us-ascii?Q?DWQmHgq6FGDDyGdVDI3pGbecBNMqOUz2JFSH+ui+Ij9yIlY4G9RZvURjaAeL?=
+ =?us-ascii?Q?NHLQTPgxENiQ9m+rvkHA5bIGIGotxH+x4aS6fOcdSl3V/Z9Vdl1R4eYuB4rp?=
+ =?us-ascii?Q?PibRZ0F48NuxQl64BC01hdzgNnIBiHY6bsT9ywbbbuIHEs9juaNQpfH43utH?=
+ =?us-ascii?Q?RmJ26vyj4M+RzqSzwtBxtjDtJmxsluLFw23Vgtb4Vl+fu4aHtAAshc0SsfVs?=
+ =?us-ascii?Q?KeDcUjtNSOzCh5/6LHJDctlQbce+nGgsddY+OzYSbD531AuL98KZ5SF8z7Fr?=
+ =?us-ascii?Q?j2v2AH8l5oUwDEKg96g8dyw9WbwgjR3perpTtcRhNZ6vIJNKO+NlPJ1eJOwN?=
+ =?us-ascii?Q?QahhlxMUhG17KLwNBpe8gUJCMwECM8hpkv0WZ+KZ8n7cxsrn76TXhNaPQLkg?=
+ =?us-ascii?Q?ZPog5qaaLKdRmreMqG/5LOKC+mIskq4osnlw1/ykIEvWdL+Z+hfui0A+Y6kd?=
+ =?us-ascii?Q?X+ZqvlI6qkTACCu/S8SzQwxOr9r4ad+8wAripKOMREdxdhoFLvzkq7TR0cKt?=
+ =?us-ascii?Q?9PLtTihtKY96JgatJ7K32Um65qoLRxPk1fFrPXaEwZopX0JlbxNJ2PmZc6CT?=
+ =?us-ascii?Q?c2s9f+3hZ8uZdf5362G+V5/9GgWTcbYymwhirYbRRQ+b2YqIC58wMhaBZzzr?=
+ =?us-ascii?Q?nmYey7uF49zsQvFLQC/bEukYN/0cE8+5oOK6lxC9IoU7R05Y4EcmsAxkvvyd?=
+ =?us-ascii?Q?WI9Horq93wdfzHT3rq6ohLlCKzKL4LLckofX7eIGg/O5KgemXfYVBt+BIyWy?=
+ =?us-ascii?Q?DVeA3F52cTT63i+33QlL8RZyONH2MzxLndz9C5+pjqSAsUcypbrEe+hK82xw?=
+ =?us-ascii?Q?jrHILf7b3rnxV+9g4Rnwk1t8BQrs6DbGbKrdhPcEL+kSkMXMge5Cv66BfD7k?=
+ =?us-ascii?Q?T0eXB4TKrDo65EGnwIujTV9YHdWogSHpzCglyWu5CYS8VzOpbTvzuwDmFa92?=
+ =?us-ascii?Q?ABp9ozuUKmoEJwekHgGfOXL2pYIKLhFCry59sngkGjQHOLoL8epSp6MEmni7?=
+ =?us-ascii?Q?wYDwNTtzycwDachnpRKmUonbVukTp/G/FJhhV4N+uWnh4PI4YQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8Ar6TOuG3IS1ZY5NAiTNcsgfeSqYfi6SDohhRRf+rs+0LE/FPVOytUvuPGRv?=
- =?us-ascii?Q?Bf+6UfSLnTOr8RTg0n1K5yJ55MNAEwREz0S5X0OBVL0eYNvmEImTmaPOMXsX?=
- =?us-ascii?Q?SoSUJhnWJ7FXHASSiz7vDO3xJHW3j4dA5/DWaxtNukv+mQ3Ir4NTNshPmMH0?=
- =?us-ascii?Q?fNxY/PX1CzEXMOUllodsrtw+GhxteOOL8JHTVFodD8sHKRQHZnKCfQgjdB9b?=
- =?us-ascii?Q?gzG8erOgNEbrkYqodlXMGNO3dEZvxNuxjTLDquYXMUb7P9WlB1j+6dNZoD17?=
- =?us-ascii?Q?PsmsjzXjfN6YhyFgTr3BDP65kLd41SYGN9iRvyRY1N25ocgt39gE2VasZnoM?=
- =?us-ascii?Q?EfEAgU5a7if4Cjka7QddPHX4hJpQGwU7L2yVkTkc2iDRBmjugdx3S5G4+vcS?=
- =?us-ascii?Q?lZaFyYL0y1MyL05xuVqvhXUOd4VG9LaTxQVcKd0K1R5RLJJj0Ucw297VxPUX?=
- =?us-ascii?Q?qv2epHUsbvadWSW+vVkUmhaOgEUzLwVm2TjbvEQq3t5tmq2OKldWifcUcXQ+?=
- =?us-ascii?Q?0+Ug1XJRrE5w/UK8Qq0JsIi01V6lF2SCmgKmr7C9Q8hhW7V4UFuwKVwxz5hb?=
- =?us-ascii?Q?9UdHcrlWd5Ox0sXRDBm4G3WCNXejN27YXvuRN12U9cbkwHOeh+V/Ms5x5wOT?=
- =?us-ascii?Q?6ItE39rL50jdxjB5ZxwUSCf59aI0h7H7aR+kRHfGYxMufQpuoKzvm4/7gXDo?=
- =?us-ascii?Q?n3jaLzRzP/erfEnYTldKhFmPTNc2QnzBcMBxor42DniXpd3kHcUXocfj91tx?=
- =?us-ascii?Q?gJJpghTUMJSa894HRwOqO/PnRoatSaq7iW85koueIOsDJ/+GbTSLBjaDscuC?=
- =?us-ascii?Q?hz1Cfh75cJ7c/A+fNzbm6tfxuhapjKWvdsxYXyFO4z6bGTm6u+RHz1wJiZQ3?=
- =?us-ascii?Q?rXU7aXsUCQwDmv0z7HmEzHjQvWXOw04tnSVtePufCabbAcHsFQeZN6OIaZnN?=
- =?us-ascii?Q?mNrAr+V1bakWEw87ZcJCui8jG/mhUF42zwtTD2w9/fipv1urGQ4grw0kGeS4?=
- =?us-ascii?Q?vCaMGSMEfmpxiY4gvk0UBgu6SWS0yLGXllvmlH9MUpplSiwyNEYcBKrs+QoH?=
- =?us-ascii?Q?vqLsGwi/3Mabu8pX2EX077hvOSKrAC7qiseFot+WSPYIhMyfTT0vlORHP8D4?=
- =?us-ascii?Q?kQ+TWAmmGEIjxG++UkbITM5o7OgQBBCZUi6k8Esw34KtkrOXanFFpF8hj4CQ?=
- =?us-ascii?Q?n0ORUN8APxvmp0YHxHVygxTh12210JC3/kgYrYWa90T2ZmKJ1qioZINw8RHN?=
- =?us-ascii?Q?BNdzTHVYWhnaiR7aGJTj3G7w6A3KjqmKQ5kQS4tcD3JDZFM47ONGYH4pYXTg?=
- =?us-ascii?Q?kv79AKiAE4CCTmf2x75OgpXb5CPfKf2KRBP1SUXLupIDHFWb9TZCjQRVyrgH?=
- =?us-ascii?Q?ABx+kmFSGm7I8B2+hsKDwBrBFKQGtV89SYsHT+D663cAFxkbxwIONTMpkCoA?=
- =?us-ascii?Q?RqXGSLgRmHlZnXm7Us54VPXI9Wss09GJ8OTHYfbUunAi73W03jUZWImddLdz?=
- =?us-ascii?Q?28VDnljaenB+DRXqcUK9czzA3tGQLunSPPYcFUlOWA2SC0scmalog6Xn+HAl?=
- =?us-ascii?Q?LYO4ziu4UzjTlykl+4QWY/e04YlOAtcNrLQYEAYw?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f682b5e-b267-4fe2-870e-08de220505fd
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+	=?us-ascii?Q?njzf3v9ys8PfK+hpyT3ibOqeDanyaFWEACPrftP1L1RgzTn+p6JBWoRlz8LE?=
+ =?us-ascii?Q?udEc0rWg1rXqYxswNdFN7cgix9aYfIOewXecfXdIEqV1KmhEHcymOcZg4qlT?=
+ =?us-ascii?Q?YC5Op/nSxcPZha7rzWCxwDLrp6I7hDEWVIlR2lA5ZCZUPviGxZnDF3UoefvO?=
+ =?us-ascii?Q?0ko7JrQ8k5/S07gGYw2DuWAsJpokPFTh9KissJZbfrYU9j8Ac6FFyxtLEuPv?=
+ =?us-ascii?Q?jWTQLrDYdC6q7ypJS1vIsTLR/x6TwJRqluKABBtJxxjQX3tGCT5IRU3RPKdV?=
+ =?us-ascii?Q?qNFEHgPUIsOf8ZRVYePG29tEjBGUD7sCHXcGT1DHG0RwfC4SihLcvRHAINzw?=
+ =?us-ascii?Q?Ui3yqTo/yr1/5zhrtL+kznu8Cl5rJy2VhaRYbPV+p29Y+SSbG4EUfAPRktyx?=
+ =?us-ascii?Q?s+7Xg592JCBEBkKLjeZ6e2hXtOyyn+NZ2D2o2vWJa1zRSrff4j5X5WAbtYXq?=
+ =?us-ascii?Q?lKfCF7hMag057/gZSlBbPdYKID7tuoPOQDh+A1UFlRcRVIknQeQ64nsRkFG+?=
+ =?us-ascii?Q?js2i8WZTvF10jXs/bS9u6iUI/OA4wfqCbEbVl2buNRfLR7gk5VB5CVOLsPAD?=
+ =?us-ascii?Q?qHX5yuZo+uMUVzrFTnroPVdoaJzZa68NNQQku7WpWDtwJ+3KWO/EShgJWXIs?=
+ =?us-ascii?Q?qqzw5wRcTGULHKYDtRLWf28UuW/L4BeOuRqxcBvQR+I8i5INKS6XBFh791xG?=
+ =?us-ascii?Q?ZupZTP0KLpBLoXOfdWYwbpNiYaand/d09qWbaVStyz1IFFFCLHaVUC2qjifh?=
+ =?us-ascii?Q?3wQdBmPm35/4ZDlMaGQg6GYmlvPQdydQ5SvPq3lEECk6hTz9DCjjAfaHR1Ub?=
+ =?us-ascii?Q?xetA6QatndYlnvoixJpt2AMsIq1uoMgYQGH3wV+zfjmqhHY7nmkVuD4jnVUJ?=
+ =?us-ascii?Q?ZOHcP/1eiBwIZ6bxdSjfeVAW2VjKEh2nGI74OdbT3zAEpdLuezz3dsxcUKez?=
+ =?us-ascii?Q?u1rCfQfTXPpWw6U5xTn+nl2IwNoCTapY2lZT/OGcM64c/E4IEs4tY5555HmU?=
+ =?us-ascii?Q?EGGtpmwTSuhVwc2Tx+24XYedgLAMoMsx0RWxowbFL4lBwujnnc+v5gvHEJW6?=
+ =?us-ascii?Q?FN5T/B1W8Ei+h/DVD+/nm9hPsZNvGiS3zej7qPCs9pqLHjDUQvQ4gz6liF60?=
+ =?us-ascii?Q?NHSYuj2v6sIOCQwQpFovSmYDlX4E37PNF4SwHuej4NwnY4n6/4PeSipHhX4G?=
+ =?us-ascii?Q?4bvtscciReRw5cTl22RIl8RvXMlA3iMGj4Opa76UmW2+Vfro9gCMA6l4/9pW?=
+ =?us-ascii?Q?CZ9z2jadnIkZbJ/m2RIWpBOqF81mFGsiuyFd6cRlZmYWV9nzVZ2S6Nl6tMOo?=
+ =?us-ascii?Q?vLkeuKeEoCqU2CQCZPNujxn8+uwI61hZ3jr40hgmSSyjvgFf6Xy9dkfw8Ztc?=
+ =?us-ascii?Q?22bzcIMcCbbqPeL4WVpohm1OoWcSDV2rrw0SKxwqV3175tqDAJRzsvJ12VQy?=
+ =?us-ascii?Q?vn/fLkXBkAyPYh3oJlrFV6xgTWvLJCYiAfWa3u0sal/Zhf+4UHGZhyQoDvLL?=
+ =?us-ascii?Q?Ba96LW5fNEHqRvDzNTcvx2Z3bUWfdIiwCLOrL0o5/araffKwY3eDfnlVHYfQ?=
+ =?us-ascii?Q?ef98cXCM+WocEhLrAndIq0DQ3mXM9xhNo1QE7Z2f?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	vFu7u4bOy8BYkNDaZ+v7tmCm5ICmmb6+rcCYKc4j5i9ozUkmndZ4rG2ooGXSpxiPESH5xxPR6bh7fUEgr5bNWUcDFBy+qpLml4/jUR81Kd0vYScrH3luHKWj+fJqzbYBaDv8bvT8piaVmBrmdeU25XlcihSnRwh1qmpn9VUOLwAK6Dg5vgfgTYeYiIfDpDRdpHA5OobNpwxLSy8OHvzpcn1jIIBjlw1B7K8KnBoyarynY0qh0r6A6kHR5Q0c1EEJWmeVKC6oK9BPmPcBoobJJA33eRRKVlmVsnRjtv9G3Qg1EcNFsUDZRh0qYWIjqVsTmj5mbCK4LLgID3SA9nXeEpvo52VqTrOdtKad+a9dwIQi687E8nn+Vc/IUdeQehXQE4a+6qP8X+Absh/NdZ0D4zbdX56GXl3/rUL4bfqL22//w0kLV77EkskaC2LsaAyVL+2ZHXTl55MF2k7lrgwrqFBckIf09GmnU3u5J0lYa929iv5GfN5CotRImVzL/5QrWuV9rtA/SagjZDzH93FDOUPxLuQLkkvhP7QzY+BXCHTqMaWcSc/be08SYto8XlpsZTnJgd8ZAAX7r8N44/O3+VguF0OoJVbTyjwbIWraGuA=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec6688cd-f84b-4c06-106e-08de22060280
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 16:03:30.5663
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 16:10:34.9029
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fdWotTRfQizcDq3G+HAQkUOz4mQZqn4CfoOfum5jRikXSxrd3OW37z3iwHgMp5hW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6359
-X-Stat-Signature: pu758u37uf16na8o6s9zo15ygkdd8j4r
+X-MS-Exchange-CrossTenant-UserPrincipalName: CVzst0R/TCHrpLq0iv4b73lE5b5i8zpqU73zMMUMADRGBoga4MdcZaeYs0+5xLDa1C7Kh2dedt1uGd9OEZ10nw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8638
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-12_05,2025-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ phishscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511120130
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEyMDEyNiBTYWx0ZWRfX+VBbAcpuOfPc
+ h3QbAWiJlKiD0xpdcT+v0w2gTr4AtR3HqpIXbUOIvJ2xShyVTxJcHAaZvvwKARvsP/nJN/9Ujhz
+ LARtx+snRAroW8vJQtS3V1eW/PZ186klf/E1iBM36HsxinUO5PIv2k3IVvERfRMvXttZzW4Hvbw
+ UcRDX8+bHdBtv76fgTFmJrlBUPUv/cCBCYLgmE+YT7vlhlmsX8ltMqgahv1uuzNga76a0bE+nAX
+ Bm6JJ9tlx4aLwmKLYvSDDnWHsmUTLxDCg8jFSrDTdyxa+ffF1TZ6TeHjZXdggLoMBkHn/VG50Dm
+ bjhPHMCKXv1lAA0CmQcctms1NvpTZvNu4jhfLoWccS6+Z5JpO8R3mcvDJx7P6AwQ+is14hyE2wo
+ u75dDK/1B4zHhF/3JZxILr+2baMwD/145kn2gfsmH11MdFSWH8w=
+X-Proofpoint-GUID: glfY-WKMhWnLNKLuvcqXzlD-Cfw-LGz6
+X-Proofpoint-ORIG-GUID: glfY-WKMhWnLNKLuvcqXzlD-Cfw-LGz6
+X-Authority-Analysis: v=2.4 cv=Ju38bc4C c=1 sm=1 tr=0 ts=6914b180 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=edf1wS77AAAA:8 a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8
+ a=hSkVLCK3AAAA:8 a=7jtmr7J8IhXo0RXn3EwA:9 a=CjuIK1q_8ugA:10
+ a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22 cc=ntf awl=host:12099
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9DBD24000D
+X-Stat-Signature: k63xpb6jppg1k7w5kafy6idchzx7j881
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF7B2120015
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762963418-898798
-X-HE-Meta: U2FsdGVkX18v/J7hxSp5g6wKBeyeyc41iFlFcG2PY2CYFvdBtLRVtK7a5gsq+d++Yyw2sm0Pa3wGjqHfXxGu8TILQDTkNnQ1oeDvgoLMkbhnvkv5V8SZ2wXoET0d388uhQvdl5+vV9hNhlCTt2BRIqMS6SCKXBogjzMNchwl2S5VDg+/lcdoko8G9EJ1v5x8NTadeZsk1tiMU8nA7ATFTV1xYsQ0cE3a3if2Jms9NqIA5Q4jVoJSlCxNPNBm06MGZg+PjGMYzWdM5aprgKd5Wkz9c9orkptX73LGDKk2JC9VKED3lqoaKlXBVkHpqGT7vgG3JHN2bdYUsFx3qTP7JQnbYe6VMeJgM71HlGNHRYtndALyGEh+fx2XKElH3ArMDeLOHxK2kMkxusPxEEU0shYq5tIpjYKXF3u+SggkpXvv9n3FSwEJ/+NHrpObHqWVpyHTKeH57McgpUYXYWoCTmet5NMl5UdbIE3lGpZLo078kH5/EHRtVcR4MCasITAVydLMnxQIL4NtorjGTxomxNLGSUZwW35Pj8F/mxnW72kfk3wfi/YfVgTVZ4UYo5QtOTXsIlPlruge9QKW0AEnyMeaijrurU5rRT+Bx/Is5KhIegklbbIyJbLhiM14o/z/QcrVdTsUaO0zFMAFFKjjHzxpaJ4Av6GhY/gzWl4uE6r+GZFJILx1hsWGXGrbX/UsY5HuRmVNXfZhMBbhIiFUFQO+InIqwaGDLwOCXLDPDNcDPUB0qz7Ubrs6Q7AT6LuwQH00s2K4Enc5KaXwi8JCzYQ5mVNCe/R1lfLIea7QwwkUGIVjtl4AfKHYLupULjTr9S2NBqoKhxTXyk5ZOYDDSCVNxnBAphgKbxuDhBKayh9+4OEOFcDVgEs0Hs9+nCTV5eo4V/8/tdR3jYqm+YWcxxhl3f4fHtPMdNos2AkOL75J5wyQ6SHekbpXfcRzRCuoa7130lu7f4p6zzscsSp
- VU0vI5GF
- KqOX+m/rdtUcdgyiUCQf9vEq41JWW7Fmgc3xVOABQRa+vJSLylrjqR52bdiedty5csdIB5Whl6FGSVdpPOtL7JPtu4IlNC4Nr5XOEzHQ+pkcpZW7RYIVNK7TE+GwXGVrOIPIGuHNgb0P5lnUpifhnMoiRHiTXwfpFJPWuHWhZYue5GclJXTKHEDCrM8vFBkNcCEEraoOiU1/eAYmWe2IpuJBtzrcjtEqCy+CaJo1xer7+ws8JPBX3hpRn5Q1erfrjxRr2GFvFuS6dENUG+qiIOLLh0PSZ8Qz9Hozcg9PxXIc2OGXxg2ckaUXGKjAjhkSk0NG3wC8/4y0qU0ce55sfWIEw/M7gEflbPPzUC5PnSgAfoBl/GL5F3Eakf8ckEjJOv7Nw0Z7UyuNoO46RRFZlTN7MXdIiJTrPT2abHk2I1ITKRf6XWPx+HgDKPv6VRnxR//7IWxOKJBus9nEm3kHw3A1D6pRt2+wQyK1b4qlS7RC/3l934QIe284YF5fBRVrSQQ9UmwOaoxuDgl6JdLeoAUbhCA==
+X-HE-Tag: 1762963845-357342
+X-HE-Meta: U2FsdGVkX192g97lzd9HoaoBr/kpVz1E/hgReClUZUWv+JW/8WfcNGh8Ob60bHGrjr2XO4ojaiDuU3mCf70rVtESdXmUZWSgpCaZIQWELHOhc2N6yilxDko6IkpAVRGu45Rw69O+S1UQlfTvhd/7JjAOyNypARNEqIwN8TCEY/t7WfLMtCsFGpGCHUHj7ZqM6dlGebkp3w456CTbHVQBOCx27R9LoUIU7JR+M/Uirf6o7T/69MRy4udF6irQ810XP6+V48a8YDzltlNhukccJsHGME8fDMRA39Gj/igCUsu9IW2jep0Z7iDnCKiiXJ34rtc4aKiGJxpexExLNQa1bw1vvagter9fz9PBdUE4vt+eyIOj/VwYwAnStzjaTlIjvLhHKAD0asEicDSGU+ietiLr5nayoBdZSLnmd7pIyzo31MjIS62DS3Jh5A66FelLwz2j5VOUfPHyXkjaslC0zRW+s9mEBwzmIADlZydRBvkHkRRMtpDiUqHIDyaPhQaA3hoBcrD/yqMZ9VY/w6V4w5zBjvp1Xs6fupeHGbPUM7WQxQks7r0hWwkWATWZAUFVVEbCHgSMXc6xrMl6MOD4c4+3r/23Wi2Zdl2e7c9qKBUZAgptQDW3IjJi0BwgERH2unzJAXYg9ssDobYAddC/7SSjsocPPYY0yuFonT8yImssWVyqpYZeM3WL+gF5fKDMaEg1o7lN3VJXg1LcQKc9MejCJfK6xcFBPFVE6v7R4VB5gu6k5ElZvGZMayNbkKkpHUZoZJKb2A8jopoMSv3+j3ON6diIBVpa/8YTTWWJAKDa0AfRU0Dw7keQZ2V5PdY98R+1QBmuwedKoH7ETbfGqezc8ce/rlUAErkWL6rYt3/GugkzmA7PX0RCsSD7DKPyU5ql441ZL92AZfpSgqnbap8jm/vhcZuztR+cjgHI4VCB6/gRPDmYwkN6rNAC7/xkuwRcwHxMKbJcMVkHTZa
+ +TWQljvs
+ SxdDqUx15rjL+KH43JuulfmdC8z3mtXH1RPMhzxScAy+7A4vjAWbVmkSdjWNrSZlPWrslx+QcClGGMsb7wccUI68XpHPeN6ea/JTMFMYPcsJfprx7ZNfsSdsH+YRyHSmKVHFLwnW7d4OELpwj4RjTwObXUQono9TsyXdvv9M9SsopVcVLERScyyDrQ9FCh5xmad3EAUEHk+Ja5+oDqd3qJetRlI4D1K8vBxQrCEMeKE2jmOP7BHQ3+Uo4ontH6rHJz/MUbyf5rn8+jxP367owDRpstdClv2ZQbz8WW/dlvE8oyMwY4dakYTlG4TFc08yFwwvXzH6Ku+Om0n4xsM6pvqiIjjIbSOT8b6r8jGK0rUvWSBh/qlFlSZE7vI9ANCgv4V8/T4LS9TQSSLMxWIr6wrBS1pQK2qZkyxbWyMP5Glf9tscIggQHHj0ExzHbjhTdfh/adIsmWWn5g71XaYuXwSmRLRZxqgdDL3kcPfqoyEbP94EPDC/0brWDe4vvH+dsz2nSUcAZAUmsCp5IurDSlMII4ctjT2xDM9+L9jqAuFkStF7NxpRVVbdSNWM0soNgUD3k00PdN5DxoQixzxWm151mIgtnoV41AMPcbC0UgJRaxv1H0Lok3RLdObczO4pVklxRNjhDSLK/sFuagO0eUrLgXLoxFOLob9nH54v1ZR/nzsyQUvcHNKhGfMkgSqlp40SY2vD4UbJ8pfni6mMMhS2jxJHyl3jyZlWoxpsdWzJ7qHHTaFb2myhp76b/kfkpXSCvnPItfgPzWi/Zb34Ry5qzpwJAXVivLKvKcfTiLYEYzClSeUlrXI4gMHsv3Re6Rnh+KFasjX3kvRVmgBarpAMC8GT2xqWXOdRQFwLR4Xu1UE0M0YZsSc4XUlfbVzlX1n2PeJ2J7/NpzHSq/v1NzvuRz4/uR6xOlnNZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,299 +244,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12 Nov 2025, at 10:59, Lorenzo Stoakes wrote:
+* Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [251112 10:06]:
+> +cc Paul for hare-brained idea
+> 
+> On Tue, Nov 11, 2025 at 04:56:05PM -0500, Liam R. Howlett wrote:
+> > The retry in lock_vma_under_rcu() drops the rcu read lock before
+> > reacquiring the lock and trying again.  This may cause a use-after-free
+> > if the maple node the maple state was using was freed.
+> >
+> > The maple state is protected by the rcu read lock.  When the lock is
+> > dropped, the state cannot be reused as it tracks pointers to objects
+> > that may be freed during the time where the lock was not held.
+> >
+> > Any time the rcu read lock is dropped, the maple state must be
+> > invalidated.  Resetting the address and state to MA_START is the safest
+> > course of action, which will result in the next operation starting from
+> > the top of the tree.
+> 
+> Since we all missed it I do wonder if we need some super clear comment
+> saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
+> by doing 'blah'.
+> 
+> I think one source of confusion for me with maple tree operations is - what
+> to do if we are in a position where some kind of reset is needed?
+> 
+> So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
+> to me that we ought to set to the address.
+> 
+> I guess a mas_reset() would keep mas->index, last where they where which
+> also wouldn't be right would it?
 
-> On Tue, Nov 11, 2025 at 09:58:36PM -0500, Zi Yan wrote:
->> On 10 Nov 2025, at 17:21, Lorenzo Stoakes wrote:
->>
->>> There's an established convention in the kernel that we treat PTEs as=
+mas->index and mas->last are updated to the values of the entry you
+found.  So if you ran a mas_find(), the operation will continue until
+the limit is hit, or if you did a next/prev the address would be lost.
 
->>> containing swap entries (and the unfortunately named non-swap swap en=
-tries)
->>> should they be neither empty (i.e. pte_none() evaluating true) nor pr=
-esent
->>> (i.e. pte_present() evaluating true).
->>>
->>> However, there is some inconsistency in how this is applied, as we al=
-so
->>> have the is_swap_pte() helper which explicitly performs this check:
->>>
->>> 	/* check whether a pte points to a swap entry */
->>> 	static inline int is_swap_pte(pte_t pte)
->>> 	{
->>> 		return !pte_none(pte) && !pte_present(pte);
->>> 	}
->>>
->>> As this represents a predicate, and it's logical to assume that in or=
-der to
->>> establish that a PTE entry can correctly be manipulated as a swap/non=
--swap
->>> entry, this predicate seems as if it must first be checked.
->>>
->>> But we instead, we far more often utilise the established convention =
-of
->>> checking pte_none() / pte_present() before operating on entries as if=
- they
->>> were swap/non-swap.
->>>
->>> This patch works towards correcting this inconsistency by removing al=
-l uses
->>> of is_swap_pte() where we are already in a position where we perform
->>> pte_none()/pte_present() checks anyway or otherwise it is clearly log=
-ical
->>> to do so.
->>>
->>> We also take advantage of the fact that pte_swp_uffd_wp() is only set=
- on
->>> swap entries.
->>>
->>> Additionally, update comments referencing to is_swap_pte() and
->>> non_swap_entry().
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>> ---
->>>  fs/proc/task_mmu.c            | 49 ++++++++++++++++++++++++---------=
---
->>>  include/linux/userfaultfd_k.h |  3 +--
->>>  mm/hugetlb.c                  |  6 ++---
->>>  mm/internal.h                 |  6 ++---
->>>  mm/khugepaged.c               | 29 +++++++++++----------
->>>  mm/migrate.c                  |  2 +-
->>>  mm/mprotect.c                 | 43 ++++++++++++++----------------
->>>  mm/mremap.c                   |  7 +++--
->>>  mm/page_table_check.c         | 13 ++++++----
->>>  mm/page_vma_mapped.c          | 31 +++++++++++-----------
->>>  10 files changed, 104 insertions(+), 85 deletions(-)
->>>
->>
->> <snip>
->>
->>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>> index be20468fb5a9..a4e23818f37f 100644
->>> --- a/mm/page_vma_mapped.c
->>> +++ b/mm/page_vma_mapped.c
->>> @@ -16,6 +16,7 @@ static inline bool not_found(struct page_vma_mapped=
-_walk *pvmw)
->>>  static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdval=
-p,
->>>  		    spinlock_t **ptlp)
->>>  {
->>> +	bool is_migration;
->>>  	pte_t ptent;
->>>
->>>  	if (pvmw->flags & PVMW_SYNC) {
->>> @@ -26,6 +27,7 @@ static bool map_pte(struct page_vma_mapped_walk *pv=
-mw, pmd_t *pmdvalp,
->>>  		return !!pvmw->pte;
->>>  	}
->>>
->>> +	is_migration =3D pvmw->flags & PVMW_MIGRATION;
->>>  again:
->>>  	/*
->>>  	 * It is important to return the ptl corresponding to pte,
->>> @@ -41,11 +43,14 @@ static bool map_pte(struct page_vma_mapped_walk *=
-pvmw, pmd_t *pmdvalp,
->>>
->>>  	ptent =3D ptep_get(pvmw->pte);
->>>
->>> -	if (pvmw->flags & PVMW_MIGRATION) {
->>> -		if (!is_swap_pte(ptent))
->>
->> Here, is_migration =3D true and either pte_none() or pte_present()
->> would return false, and ...
->>
->>> +	if (pte_none(ptent)) {
->>> +		return false;
->>> +	} else if (pte_present(ptent)) {
->>> +		if (is_migration)
->>>  			return false;
->>> -	} else if (is_swap_pte(ptent)) {
->>> +	} else if (!is_migration) {
->>>  		swp_entry_t entry;
->>> +
->>>  		/*
->>>  		 * Handle un-addressable ZONE_DEVICE memory.
->>>  		 *
->>> @@ -66,8 +71,6 @@ static bool map_pte(struct page_vma_mapped_walk *pv=
-mw, pmd_t *pmdvalp,
->>>  		if (!is_device_private_entry(entry) &&
->>>  		    !is_device_exclusive_entry(entry))
->>>  			return false;
->>> -	} else if (!pte_present(ptent)) {
->>> -		return false;
->>
->> ... is_migration =3D false and !pte_present() is actually pte_none(),
->> because of the is_swap_pte() above the added !is_migration check.
->> So pte_none() should return false regardless of is_migration.
->
-> I guess you were working this through :) well I decided to also just to=
+This is why I say mas_set() is safer, because it will ensure we return
+to the same situation we started from, regardless of the operation.
 
-> double-check I got it right, maybe useful for you also :P -
->
-> Previously:
->
-> 	if (is_migration) {
-> 		if (!is_swap_pte(ptent))
-> 			return false;
-> 	} else if (is_swap_pte(ptent)) {
-> 		... ZONE_DEVICE blah ...
-> 	} else if (!pte_present(ptent)) {
-> 		return false;
+
+> 
+> In which case a mas_reset() is _also_ not a valid operation if invoked
+> after dropping/reacquiring the RCU lock right?
+
+In this case we did a mas_walk(), so a mas_reset() would be fine here.
+
+> 
+> >
+> > Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU
+> > lock on failure"), the rcu read lock was dropped and NULL was returned,
+> > so the retry would not have happened.  However, now that the read lock
+> > is dropped regardless of the return, we may use a freed maple tree node
+> > cached in the maple state on retry.
+> >
+> > Cc: Suren Baghdasaryan <surenb@google.com>
+> > Cc: stable@vger.kernel.org
+> > Fixes: 0b16f8bed19c ("mm: change vma_start_read() to drop RCU lock on failure")
+> > Reported-by: syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=131f9eb2b5807573275c
+> > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> 
+> The reasoning seems sensible & LGTM, so:
+> 
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> 
+> 
+> > ---
+> >  mm/mmap_lock.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> > index 39f341caf32c0..f2532af6208c0 100644
+> > --- a/mm/mmap_lock.c
+> > +++ b/mm/mmap_lock.c
+> > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+> >  		if (PTR_ERR(vma) == -EAGAIN) {
+> >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
+> >  			/* The area was replaced with another one */
+> > +			mas_set(&mas, address);
+> 
+> I wonder if we could detect that the RCU lock was released (+ reacquired) in
+> mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
+> 
+> Not sure if that's feasible, maybe Paul can comment? :)
+> 
+> I think Vlastimil made a similar kind of comment possibly off-list.
+> 
+> Would there be much overhead if we just did this:
+> 
+> retry:
+> 	rcu_read_lock();
+> 	mas_set(&mas, address);
+> 	vma = mas_walk(&mas);
+> 
+> The retry path will be super rare, and I think the compiler should be smart
+> enough to not assign index, last twice and this would protect us.
+
+This is what existed before the 0b16f8bed19c change, which was
+introduced to try and avoid exactly these issues.
+
+I think there's no real way to avoid the complications of an rcu data
+structure.  We've tried to make the interface as simple as possible, and
+in doing so, have hidden the implementation details of what happens in
+the 'state' - which is where all these troubles arise.
+
+I can add more documentation around the locking and maple state,
+hopefully people will find it useful and not just exist to go out of
+date.
+
+> 
+> Then we could have some function like:
+> 
+> mas_walk_from(&mas, address);
+> 
+> That did this.
+> 
+> Or, since we _literally_ only use mas for this one walk, have a simple
+> function like:
+> 
+> 	/**
+> 	 * ...
+> 	 * Performs a single walk of a maple tree to the specified address,
+> 	 * returning a pointer to an entry if found, or NULL if not.
+> 	 * ...
+> 	 */
+> 	static void *mt_walk(struct maple_tree *mt, unsigned long address)
+> 	{
+> 		MA_STATE(mas, mt, address, adderss);
+> 
+> 		lockdep_assert_in_rcu_read_lock();
+> 		return mas_walk(&mas);
 > 	}
->
-> But is_swap_pte() is the same as !pte_none() && !pte_present(), so
-> !is_swap_pte() is pte_none() || pte_present() by De Morgan's law:
->
-> 	if (is_migration) {
-> 		if (pte_none(ptent) || pte_present(ptent))
-> 			return false;
-> 	} else if (!pte_none(ptent) && !pte_present(ptent)) {
-> 		... ZONE_DEVICE blah ...
-> 	} else if (!pte_present(ptent)) {
-> 		return false;
-> 	}
->
-> In the last branch, we know (again by De Morgan's law) that either
-> pte_none(ptent) or pte_present(ptent).. But we explicitly check for
-> !pte_present(ptent) so this becomes:
->
-> 	if (is_migration) {
-> 		if (pte_none(ptent) || pte_present(ptent))
-> 			return false;
-> 	} else if (!pte_none(ptent) && !pte_present(ptent)) {
-> 		... ZONE_DEVICE blah ...
-> 	} else if (pte_none(ptent)) {
-> 		return false;
-> 	}
->
-> So we can generalise - regardless of is_migration, pte_none() returns f=
-alse:
->
-> 	if (pte_none(ptent)) {
-> 		return false;
-> 	} else if (is_migration) {
-> 		if (pte_none(ptent) || pte_present(ptent))
-> 			return false;
-> 	} else if (!pte_none(ptent) && !pte_present(ptent)) {
-> 		... ZONE_DEVICE blah ...
-> 	}
->
-> Since we already check for pte_none() ahead of time, we can simplify ag=
-ain:
->
-> 	if (pte_none(ptent)) {
-> 		return false;
-> 	} else if (is_migration) {
-> 		if (pte_present(ptent))
-> 			return false;
-> 	} else if (!pte_present(ptent)) {
-> 		... ZONE_DEVICE blah ...
-> 	}
->
-> We can then put the pte_present() check in the outer branch:
->
-> 	if (pte_none(ptent)) {
-> 		return false;
-> 	} else if (pte_present(ptent)) {
-> 		if (is_migration)
-> 			return false;
-> 	} else if (!is_migration) {
-> 		... ZONE_DEVICE blah ...
-> 	}
->
-> Because previously an is_migration && !pte_present() case would result =
-in no
-> action here.
->
-> Which is the code in this patch :)
-
-Thanks again for spelling out the whole process.
-
->
->>
->> This is a nice cleanup. Thanks.
->>
->>>  	}
->>>  	spin_lock(*ptlp);
->>>  	if (unlikely(!pmd_same(*pmdvalp, pmdp_get_lockless(pvmw->pmd)))) {
->>> @@ -113,21 +116,17 @@ static bool check_pte(struct page_vma_mapped_wa=
-lk *pvmw, unsigned long pte_nr)
->>>  			return false;
->>>
->>>  		pfn =3D softleaf_to_pfn(entry);
->>> -	} else if (is_swap_pte(ptent)) {
->>> -		swp_entry_t entry;
->>> +	} else if (pte_present(ptent)) {
->>> +		pfn =3D pte_pfn(ptent);
->>> +	} else {
->>> +		const softleaf_t entry =3D softleaf_from_pte(ptent);
->>>
->>>  		/* Handle un-addressable ZONE_DEVICE memory */
->>> -		entry =3D pte_to_swp_entry(ptent);
->>> -		if (!is_device_private_entry(entry) &&
->>> -		    !is_device_exclusive_entry(entry))
->>> -			return false;
->>> -
->>> -		pfn =3D swp_offset_pfn(entry);
->>> -	} else {
->>> -		if (!pte_present(ptent))
->>
->> This !pte_present() is pte_none(). It seems that there should be
->
-> Well this should be fine though as:
->
-> 		const softleaf_t entry =3D softleaf_from_pte(ptent);
->
-> 		/* Handle un-addressable ZONE_DEVICE memory */
-> 		if (!softleaf_is_device_private(entry) &&
-> 		    !softleaf_is_device_exclusive(entry))
-> 			return false;
->
-> Still correctly handles none - as softleaf_from_pte() in case of pte_no=
-ne() will
-> be a none softleaf entry which will fail both of these tests.
->
-> So excluding pte_none() as an explicit test here was part of the rework=
- - we no
-> longer have to do that.
-
-Got it. Now my RB is yours. :)
-
->
->>
->> } else if (pte_none(ptent)) {
->> 	return false;
->> }
->>
->> before the above "} else {".
->>
->>> +		if (!softleaf_is_device_private(entry) &&
->>> +		    !softleaf_is_device_exclusive(entry))
->>>  			return false;
->>>
->>> -		pfn =3D pte_pfn(ptent);
->>> +		pfn =3D softleaf_to_pfn(entry);
->>>  	}
->>>
->>>  	if ((pfn + pte_nr - 1) < pvmw->pfn)
->>> --
->>> 2.51.0
->>
->> Otherwise, LGTM. With the above issue addressed, feel free to
->> add Reviewed-by: Zi Yan <ziy@nvidia.com>
->
-> Thanks!
->
->>
->> --
->> Best Regards,
->> Yan, Zi
->
-> Cheers, Lorenzo
+> 
+> That literally just does the walk as a one-off?
 
 
-Best Regards,
-Yan, Zi
+You have described mtree_load().  The mas_ interfaces are designed for
+people to handle the locks themselves.  The mtree_ interface handles the
+locking for people.
+
+I don't think we are using the simple interface because we are using the
+rcu read lock for the vma as well.
+
+If you want to use the simple mtree_load() interface here, I think we'll
+need two rcu_read_lock()/unlock() calls (nesting is supported fwiu).  I
+don't think we want to nest the locks in this call path though.
+
+...
+
+Thanks,
+Liam
 
