@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07BEBCD1297
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:42:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A803CCF9E3
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:45:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5D288E0002; Wed, 12 Nov 2025 10:42:50 -0500 (EST)
+	id 596298E001F; Wed, 12 Nov 2025 10:45:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0CE18E001E; Wed, 12 Nov 2025 10:42:50 -0500 (EST)
+	id 56DAC8E001E; Wed, 12 Nov 2025 10:45:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9050A8E0002; Wed, 12 Nov 2025 10:42:50 -0500 (EST)
+	id 4AAAB8E001F; Wed, 12 Nov 2025 10:45:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 760C48E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:42:50 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46DCEBA0B5
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:50 +0000 (UTC)
-X-FDA: 84102372900.26.3D2FB3B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9532B1C0015
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uB+6vhcX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D9AE8E001E
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:45:06 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEB591A057D
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:45:05 +0000 (UTC)
+X-FDA: 84102378570.22.62AC243
+Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 17AE3180020
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:45:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762962168;
+	s=arc-20220608; t=1762962304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r7/V9HUa+DpFiidCNDTPVTzme87zZeF9okNpyKW71vw=;
-	b=cyw8t3R0ibWnFevuFJfEJcbzgDzZAALyKp5Yp2WF0sZj8HzH6oQtO7xzT2PiJyz/yWtduw
-	oc0sCN2VToPd6SM8q/iIresaHXABcqDHFzRjb3cSEqL5eBPbPobN2jmY2wbUoJX+3Li+EV
-	H9oz5QeiA+VahlbQ/u2wV41uXy2isB0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962168; a=rsa-sha256;
-	cv=none;
-	b=FIhKtqb8c7SPp9bRkBtUJT+4mm0vBtA1YMWnLE1f0cBTYq7j75TcC94orxts21LdwPA+zB
-	Bj9kTiZhc4cJRWNUGTQTYSAcrT1ERj4Prj+FR9MSKoqBiYT2Hsfsb0jr4ncaknQzKez0R7
-	UlFZiWCqKOUmjXDxNCigbqB4QEvOiXo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ac37Nrx6rXh3r4cpy5Y0bUxRoGnpSwgkURQws2TSzA0=;
+	b=oIzU/0/7vqEsCNxdtRBTuinQdENW5tTdLVh4Pqig7UOHte1yHaBdHrPBrfXdIaJbWfTpVz
+	GRfskHv4hcwbxMCdwk5ZEsqUdqBbsvVay9nElcye8ZPsuu/pW1Nz1p/5JSyYxwBTbKCxaU
+	dJL8wxvpNC6sfsTABv1f3dgwqKtz9mY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uB+6vhcX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEE77415F4;
-	Wed, 12 Nov 2025 15:42:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9C4C4AF09;
-	Wed, 12 Nov 2025 15:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762962167;
-	bh=FBvB31rC2k0tLRJF6QYnzPfHs35FSu/tgti7HSN3rF0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uB+6vhcXgD2N/irb6B7wVJSD0ZCkAohTi91IssEJMN5ne6QnsOoRIjSATHwXszAJP
-	 KtwCRdxqtDCAbw63HqvPiHcVK1/ollFG5R5GF1vTt0cQkZUoiIBqEKDyZIVarM2GE7
-	 byMmioNTmy+MlAzqC5Ia3j5zEGYbKg4lS5S+CoAgb2jLfGCpRIA3cU620h3SF7I/Nz
-	 8hCl91wRfHQSzkBePKgMxNaSU8UQBiG2RasFpYimQp7eFui0xGIVKg5OP2UcAWld4V
-	 vw+4DdO6eicqU0FkjKljiRcCsYseK7y1tWx0cwGjdlNPFhU4NeET2lzLv17Q6hvz5V
-	 Io/xl7FbXk5ag==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 9/9] Docs/mm/damon/maintainer-profile: fix grammartical errors
-Date: Wed, 12 Nov 2025 07:41:12 -0800
-Message-ID: <20251112154114.66053-10-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251112154114.66053-1-sj@kernel.org>
-References: <20251112154114.66053-1-sj@kernel.org>
+	imf24.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962304; a=rsa-sha256;
+	cv=none;
+	b=HgNLQWAWRsm/NoQK6pms4R1nsmSpbvcziRMq5nPIyBInjK3E1JD34ibQQPeqep1isUDWQ9
+	7IdR0fE+B7LhNCUeZ4fzCaTmNa2+k1IfkFPuNwUljFPLS/ZB4mKBOxyC6+5x9pHSROCohm
+	mrnDpWnHE+5WcqA/jqqKT/o6Qxl4bxU=
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CDD17140573;
+	Wed, 12 Nov 2025 15:45:00 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf18.hostedemail.com (Postfix) with ESMTPA id C85DD32;
+	Wed, 12 Nov 2025 15:44:55 +0000 (UTC)
+Date: Wed, 12 Nov 2025 10:45:08 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Harry Yoo
+ <harry.yoo@oracle.com>, Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org,
+ hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Muchun Song
+ <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Clark
+ Williams <clrkwllms@kernel.org>, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
+Message-ID: <20251112104508.5500ad9b@gandalf.local.home>
+In-Reply-To: <jzihvbb6w26d4codfigy2o7b2h26izb4ahihouw54cvuzau54d@jyaa6rgpzuai>
+References: <366385a3-ed0e-440b-a08b-9cf14165ee8f@linux.dev>
+	<aQ3yLER4C4jY70BH@harry>
+	<hfutmuh4g5jtmrgeemq2aqr2tvxz6mnqaxo5l5vddqnjasyagi@gcscu5khrjxm>
+	<aRFKY5VGEujVOqBc@hyeyoo>
+	<2a68bddf-e6e6-4960-b5bc-1a39d747ea9b@linux.dev>
+	<aRF7eYlBKmG3hEFF@hyeyoo>
+	<aqdvjyzfk6vpespzcszfkmx522iy7hvddefcjgusrysglpdykt@uqedtngotzmy>
+	<8d6655f8-2756-45bb-85c1-223c3a5e656c@linux.dev>
+	<aRKqm24Lrg-JnCoh@hyeyoo>
+	<20251111084900.babaOj0w@linutronix.de>
+	<jzihvbb6w26d4codfigy2o7b2h26izb4ahihouw54cvuzau54d@jyaa6rgpzuai>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5451cngo61uoiuyrz3qewfocmj1etqua
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/zzJBKVnQjnF7+vD3iE7NPwFKeizQlGh4=
+X-HE-Meta: U2FsdGVkX18sZXyIcTgAaFZzEaJim5B3AdsBNcnSuhkN2xVPR14V+jN/a1c5qbKBwiNNEDsYnm/64J4ywfekI1ESXBN6UJspS6OQJv2pFY4ePIxPhNzVl9Rm+8vU67m3SqAyq9LTVgOoNLhlzs0tmR4GFlK36oZ2M//1r6/uqVtRYmW841FrUMVYjYit8fHlXYKbBGeroJSS3BFYTvoXIMH5Z70gftOSU00Kt1bZvIjYFPdOyzv8A9vwq3mX3ifD5SZC3t2J5qSG6sJo6DrZkw5hpFnMuHHE12uSwei8c4W8RtEV9QEVyxIuOx7wSpSY
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 17AE3180020
+X-Stat-Signature: 8i46fu3i1uexab3gcai9n6jo5zxtnjew
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9532B1C0015
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762962168-502487
-X-HE-Meta: U2FsdGVkX18qyg+pbSn1/vcjrRpvbIpMSyE6zIjWe2J5xVBWpgtk6vBD+pN5vIn4N1X4OB8+vu2AwIxYnc+ORshpxyiGS+kU7L4LRcyK3vPS9tXCW1ZPh2acY5MRnXFjMFsnzBLjShzfh+8jJr300pZ1TFtUNefvbb040TVdIb71RtRpNDCuVRJGpkTbWGaB5fiYMsINLgEZs0BPsNU91afWlVfHQemMBTyTWo5ZLSIHSAqWJ8BWV6fCwMJlwv0LgVW/eKhWQQi3Kq+9yU3hjVFqyCOyqYKKN8AUiJge1cZrf9JgZdnhDSQ+N/mDBRqVd+D2vtJeVp4IOESnNe/r+WLdnof7XGY5++PxhN+IQPo7faBNatRlAoqJjILhDEH2GZV2Zq7NBHWShrbz2DHWMqEhP8C58dKBBax7js7QrfMq02brSQT4zfHOEmVCHVciIUyVSmybGrgpEBwcQigKTGF9V5W6cPVA9PUi5gEX7CGndqsxUG0IgPKEOMgAkB0JpzBhoRhtyjhbMR876hvk8QyOmkFgwrM+6zHtM8ybk1a0BkxMroAnowkz1WrMYSV6xyL40wRhvBmpkkvP0nvLTdQBQ+RgJYqDifxZaQ9QpvI8ujN+QUeJfDcCBCzxJDnF0s664Q9v3X69pPKv4qK/Om4B7fAZcCqMI/+3nZasUmzFKJ1HQj8UAd5WFIDFeEA4mVTXan2SOgrWdcAdb/J6+nGKCdyoDK6r3Q3n2qeCNw+PuXV/Ob0HFR6epQZEqJ9+pEXg/4mNCcoWZBAAgs2X9VQDlToKpNmxl+rG+maYjdFPQwVXnYkeFCgoJPuxorjxmvx1z9uCMxhwN7TFf+z+mEAOvvDp0u4qxhGqS6FnCnRZeQ3RrnBFGDfv1ra957xmjRNwWxRontxr8jASQonvjaERo5/WMmVZBrpD6Gs/7NLFZFn7jy4VCrnjWngOeaZuRljmHkvEHxMfwlIByUE
- DhQYCg0P
- /EHePQLJtSgXCD+sllDgafTF01VVddEv4cl2tFvZxFaqGyFlF2gmRmo1lWsYev+2vapYWywPZy7WgNAZZQzLJgb4cpZYGCjRDcupI8AdcAlRQMJ2OC8ph59d1+FelJ0v0+8c0dmfV7QHtPUFhgrtHYCvyuSw+DRyxMDtQ4s7S5R9dV65m819pMMPZd3/bDIIbSKz+FK1+tfhX+Sip+zVQ87OGHAGVBdmYzC82cx/T9ojGIdfsv3+HN7GythTf+ZDwJxHux3s1qDiHhFBN2qj7uKHPYg==
+X-HE-Tag-Orig: 1762962295-724363
+X-HE-Tag: 1762962303-855634
+X-HE-Meta: U2FsdGVkX1+laF/2FOz+G/3BQ4CfNg5GpRu/xDUWthLXNTE8dI7c8ZI1/16ekOpIlH+13xU90tYWewzLzdv2eljS0p5a30rrirJ5uGUhxphZLXGO9l5OzAmLuO+paXDZnrYM5Ey5qAigfCjY8/5SgyXdEKTZ4yHXBtRB91D6Mahr4w17qIiZ6ihpl9rSNQM9MLp82NQTJFDR2WFJNcVL0nrTGe2yelrukcvEh/9DGKpFL1dRMs901LH96Y43dejUHljQkY/b+89vA+xWoczmegetxTh3UfGN9AM6iPqKXSc2lX19wlt5B4xVmhXIS0DpZo4WWcDl6OSFWtIZlRhL340urGF8vX7ZnXstNTjFZ6K56HMtPihaT2tsoXdCWMQdcvsOxJKvJlg0bzhBYTEGJMhezFEAj40cA9oYC3NyyZLlhfO4X7T+csMJ5daBhwheMvTqvfmjpGXavP0Sj3MlUwrwTcolTgUTa3Y7XsdQaI/EudLjp1b9c0DnQZsh4Wk3N3t1zV6bWKlfZLmxhFlDO/ojP0k0MIyYFmpYPH+SS935vwLvgcahnp+RBgHFIIi6CpN33fLZBa/3/+xUydqWeJwZ3PXaNxQmSFKnIw0q8kdGY/6SbQCLF0vvaec3oqqeSHTuw4KIhyhGgs/xHwFUwtCxBvh1YgbYoHgLhECVYXD6ohO7xRAzUSdXr+34zH+MCGILqwUjIlnVXP/iz9L6T/whQLlZK7QOi8xblN6T6XGK/8YLz8whMMcOct2iBDAigvG2SeYxsO++TMjRY8+lmX/QGZp0tZAOHaqOTng2xl4GzOa6CDn1wcl3I2wS6ynvfUPMDH7pHrKYsH/+t8X9yATaf6Y3M/yaWu/xFuOFY6N5nrn50rQmL76GlSnSmhO0eDIONuI4GsKNNESqYRHPButnjMyRlqaB9n7csm8OBQtdDEbRDgxkVMNmEtcZlMuwFXcB1L4b2Uw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,36 +99,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix a few grammartical errors on DAMON maintainer-profile.
+On Tue, 11 Nov 2025 08:44:14 -0800
+Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- Documentation/mm/damon/maintainer-profile.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> Harry is talking about mod_node_page_state() on
+> !CONFIG_HAVE_CMPXCHG_LOCAL which is disabling irqs.
+> 
+> void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
+> 					long delta)
+> {
+> 	unsigned long flags;
+> 
+> 	local_irq_save(flags);
+> 	__mod_node_page_state(pgdat, item, delta);
+> 	local_irq_restore(flags);
+> }
+> 
+> Is PREEMPT_RT fine with this?
 
-diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
-index f1aed6e55d31..e761edada1e9 100644
---- a/Documentation/mm/damon/maintainer-profile.rst
-+++ b/Documentation/mm/damon/maintainer-profile.rst
-@@ -27,8 +27,8 @@ maintainer.
- 
- Note again the patches for `mm-new tree
- <https://git.kernel.org/akpm/mm/h/mm-new>`_ are queued by the memory management
--subsystem maintainer.  If the patches requires some patches in `damon/next tree
--<https://git.kernel.org/sj/h/damon/next>`_ which not yet merged in mm-new,
-+subsystem maintainer.  If the patches require some patches in `damon/next tree
-+<https://git.kernel.org/sj/h/damon/next>`_ which have not yet merged in mm-new,
- please make sure the requirement is clearly specified.
- 
- Submit checklist addendum
-@@ -99,5 +99,5 @@ Schedules and reservation status are available at the Google `doc
- <https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing>`_.
- There is also a public Google `calendar
- <https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t>`_
--that has the events.  Anyone can subscribe it.  DAMON maintainer will also
--provide periodic reminder to the mailing list (damon@lists.linux.dev).
-+that has the events.  Anyone can subscribe to it.  DAMON maintainer will also
-+provide periodic reminders to the mailing list (damon@lists.linux.dev).
--- 
-2.47.3
+But should be:
+
+void mod_node_page_state(struct pglist_data *pgdat, enum node_stat_item item,
+					long delta)
+{
+	guard(irqsave)();
+	__mod_node_page_state(pgdat, item, delta);
+}
+
+-- Steve
 
