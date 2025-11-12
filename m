@@ -4,91 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C1B2CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E67FCCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:57:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A840F8E000B; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
+	id 074618E0012; Wed, 12 Nov 2025 06:57:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A345F8E0003; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
+	id 015DF8E0003; Wed, 12 Nov 2025 06:57:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94A648E000B; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
+	id E470B8E0012; Wed, 12 Nov 2025 06:57:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F6A88E0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F3E313B0F2
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:44:53 +0000 (UTC)
-X-FDA: 84101773266.10.3765144
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 747551C000C
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:44:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4CD28E0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:57:00 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 548251A0401
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:57:00 +0000 (UTC)
+X-FDA: 84101803800.22.201EDB3
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 315E01C0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:56:57 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FyXu+/73";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762947891; a=rsa-sha256;
-	cv=none;
-	b=R3uMyTz+nW5Hn90TbJjT52Pmb59SWeqGHzqX/IllinSDp01Sqd/FkTVCMgMxiDo/cLAbPj
-	blxaKa0etRMMSRDR/YBX80dypBvrntNaeiWijNsF1Z89yjdHWWNKI8vQa6b8B/cU6fU3RX
-	dwqF41UpEaEdzbkdjcnjmEOmKDfeibM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FyXu+/73";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w9nOhYJe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jAac+cRE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w9nOhYJe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jAac+cRE;
+	spf=pass (imf21.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762947891;
+	s=arc-20220608; t=1762948618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SVsLPNAHvuU0RO+oDmZDadvORmqdDV2Xo8kuiXQeoTU=;
-	b=n3EoisJ1ChHQVvzys9TY6/AqMFD0bFxPd86mJ2/1VJcqmHwUZmRgThfqCd2p0WP45JBVGl
-	fg1lOaAAF8lZjDSO3ctiuTgFcYt9VEw/yJLpQgAjr3F838crjNDYCCOeM+ITINmpfFBof9
-	brEMmO9cByzIaOO8NaYqobadu7AQDfo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6575E41773;
-	Wed, 12 Nov 2025 11:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69803C4CEF7;
-	Wed, 12 Nov 2025 11:44:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762947890;
-	bh=Wj/4q1C1ArnQ7Q4ixJ7EiiawvGxLIH7JDw3b8s+7UQk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FyXu+/73fldy/N9aF3u1xUDUGJiObxFLxZZGQhuJ7inI7zDlB+KnAcT4c2tZlz9sC
-	 UKPZDozEAjr1L6hpJF+xTP8CKVu7qTZH2UHes9izH5opdFzdciysPSWizGXeeQ+mej
-	 MEPSu1l20VwPcnP75gh82oftOZZvJfc42pUMu0ZOzsv2iqfiwdqkTsm06PShgbY+VX
-	 MH23jxelP4g06YyGWqLJJQoeO0oNfOQnO6GELdouoJDl94E2Eq+0JbBM/M7YxoD/rg
-	 dZ4K5lVyLs0s9vo04NQf5U250KVefbpOjIdtwl5L8IUVUWS8rq3ok9s3+UpREtyhJs
-	 TcUGKdtezFBVA==
-Message-ID: <9c4cac95-adbf-4236-a872-5213a2a797da@kernel.org>
-Date: Wed, 12 Nov 2025 12:44:46 +0100
+	bh=0g2ZQGhI6iBBn2VcyWKzEcG+U4eJ7lGhaFDWj+BTHYQ=;
+	b=NRgXsWh27t3tBFqPev7qqCMxaEyeGq0zOwz/2RpSX9hQrnV30dddzk+ih82OPKLVQBcjN4
+	i2aUBdT2l3+GbeVVh+iG79E2Ud0xXkb6Ye5WGA1lsOe4GeKzPb9w/4Y1ros0PZlK1W2kDp
+	EMKyvA2TqQROKAm4TMwzvj0zHcdC5z0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762948618; a=rsa-sha256;
+	cv=none;
+	b=EeoddvvWM95mtFPFmQCJvmhtUUSBgpP3iEfes6Neek9/a8RH320U2kLTQ42F0pckKJc3bC
+	dxnb7p3ODrqM46tH6jx8DFKsCRSVllCch0GZEh5drk/GE/WjO8N3YfsONseC+NTWJ92gaR
+	yaM3YKg/3gM7jAozGocL1QxFJw1OZpY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w9nOhYJe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jAac+cRE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=w9nOhYJe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jAac+cRE;
+	spf=pass (imf21.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7CAEF1F45B;
+	Wed, 12 Nov 2025 11:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762948616; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0g2ZQGhI6iBBn2VcyWKzEcG+U4eJ7lGhaFDWj+BTHYQ=;
+	b=w9nOhYJeRdw9nlV17PNOpINUgL9gTQyOFMOsYdfybI8OGqvUCcUmK6lzPmOYXCh0GVNJkv
+	w8akBR0W0u0ovF5ITBxrgJxuvM2PzyfoUzQhfldntgG2qOHjkBvEryb4T8dXK8yh9IbFfz
+	8MMc2FS6UBh06sng3Hz35XVKB75Iisw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762948616;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0g2ZQGhI6iBBn2VcyWKzEcG+U4eJ7lGhaFDWj+BTHYQ=;
+	b=jAac+cREUcPC2hYeqBGKcKTu0WDrmg+Qr74YJjX7dmSW3tT/4wz6itAyP6ydhSxd3dDYZm
+	EDXH4FSXh8+pyVAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762948616; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0g2ZQGhI6iBBn2VcyWKzEcG+U4eJ7lGhaFDWj+BTHYQ=;
+	b=w9nOhYJeRdw9nlV17PNOpINUgL9gTQyOFMOsYdfybI8OGqvUCcUmK6lzPmOYXCh0GVNJkv
+	w8akBR0W0u0ovF5ITBxrgJxuvM2PzyfoUzQhfldntgG2qOHjkBvEryb4T8dXK8yh9IbFfz
+	8MMc2FS6UBh06sng3Hz35XVKB75Iisw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762948616;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0g2ZQGhI6iBBn2VcyWKzEcG+U4eJ7lGhaFDWj+BTHYQ=;
+	b=jAac+cREUcPC2hYeqBGKcKTu0WDrmg+Qr74YJjX7dmSW3tT/4wz6itAyP6ydhSxd3dDYZm
+	EDXH4FSXh8+pyVAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD9823EA61;
+	Wed, 12 Nov 2025 11:56:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6YJwLwd2FGmJFQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 12 Nov 2025 11:56:55 +0000
+Date: Wed, 12 Nov 2025 12:56:49 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>, Muchun Song <muchun.song@linux.dev>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/memfd: clear hugetlb pages on allocation
+Message-ID: <aRR2AV7_R20i4qi8@localhost.localdomain>
+References: <20251112031631.2315651-1-kartikey406@gmail.com>
+ <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com>
+ <aRRPvn4DYAhuGtq3@localhost.localdomain>
+ <6a63dbb8-58f7-4511-8090-18a58c3206d8@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] shmem: fix tmpfs reconfiguration (remount) when noswap is
- set
-To: Mike Yuan <me@yhndnzj.com>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>,
- stable@vger.kernel.org
-References: <20251108190930.440685-1-me@yhndnzj.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251108190930.440685-1-me@yhndnzj.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 747551C000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: a317goyjfrcz8w3inapuh73ttpa7tnwd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a63dbb8-58f7-4511-8090-18a58c3206d8@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 315E01C0003
+X-Stat-Signature: z4jni4ijcdsrsxseihibmnnm3anetkut
 X-Rspam-User: 
-X-HE-Tag: 1762947891-437183
-X-HE-Meta: U2FsdGVkX1/OoEPuWsH50aaHpJ1fNQ9rdQRiYEbqIv9fYfVZxae0O7qC7IO/VfBBAS6Mt2Y5PKt/T1BxPv7XDlhg3hVFtDczGdQl3dcUMunk00WImvuYR2VJ+h1oJKC9yznxj/SKe3P3svKwFG2vDFfzaV6m1OuVWJzEF9m8aNLwTI8iwTODzV3SmP0r51CYUR+B/I4CM6edvekVD5njiHtKFklMj/IQKn/uK3i7y3omA+27kkY3bNeaJPq0fWamiw5LJdBctoootbJ6Win02amIzFP5AEqw0Sl1Ijikneyi+0IiAwB0h4uxGyn8COtlQxzfRnZJyyFloOqBtNpJbqWSL7p0aM19ly6My/w3ijRvvoDHBeO11mjZhs1nnZ0IQo6dZHHPL8CGjmhE6S2CymfCp4TQ/BzeNGKtDcQIsm6OlH1gKw36WpVTjcEDao9YQWigIl9aAdcCycOQSOjvqxcYiSMuwbknrkbPeFs/qQcXhFvxTk1O1O8cBmj4icRZtkD5NXG4iVzT0EAF0GJqh2fh5h60Z2zHgUG9a8J7gYeAHpwugvoLxB5xoVVEEVLkNfCcGIGAdggBm5WvL5/h5F6OZ9CMyoutfo+K9dpFzhOGYfKzT9jT3Y+XbXm7zINxhD4ofJe0zePkHjZ7pu3MdthGmzMOn/knFrVl/OKuACnrn+3jCkC32hgDHcWX0WQNTT+trVepMynmBfsoFNkAS6NCJYdECq8JYAkbXs/4dZ7gtSkFdNdNJlmwVup0SZQtHxzJ/ZOSpqEEh8DNyOS5vk3EDYm8r+4jwRPH0eU276EGYanxGJRNMRYQ7mlWyyd7dknXg1y0AhJhdUYC9gvGwtSrBM5BudsuH9xReCsr49JOnWU7nQO+zQzf0JbnpJX5+vXgEiUXUgXHW0s6S2IR9dN6m2AET+gq3qssi1yL0CxfRvC+HqhWyibLQXRKhyvdkWnfP+xrrJzZHb4vPAl
- v0xrV6uH
- R16ROMME2VecLCwBTphnZKOZU7WyrT6MOKq4ufCgZqZuFTarI+ge0xpCPp8e4lgtYxoms9OHkGrmMo6zHTGEuoBQMmL1V6D9t/b+JquVFlc1PGLAFZd39ehs8yLBtdNpJBEsN8/zC7PmJP2N9ZgMa+3UOh7WCscSvg6z8KG0e126IAQ4OrpQekfoqDxLMgeYQEb4bzvp4NISyBAh+HJ8CWhmkFlUPbCXmtCIVcys2rrUG6TB8T6SLofUd9yMRZdxR7Ysxn+4zSPiK/MbwDGXxwc6BX1KisxO8reFeVXGDfHNamJPMIKmJQT4kJQ02ronKijMS1GpEoWpl4FtCELTMH3p7KpyHoBCdpwn30DB5Ltbu99MGtiE0bLqLpXW65H5LwMhc
+X-HE-Tag: 1762948617-171062
+X-HE-Meta: U2FsdGVkX1/iH7Qf7Pi+J41vaTiHciapRybAfDMKceAueiB+R+2C5ricKw54NPQzg++OOM3kTc6h0JHIuOuJwI3eTc4PCPHfdHikFPrznCCMqVDIRzc91PPYFlMFC20S3kC4If6jRwuCs4zudr0+7sepoX8580lbEHr+pymxatmi81JwlxTlYW1rcX3xooOrxu8VvisL2j64T466TyREzok18A1HVAvuqGJgVrqhwYuZwFYUR6hkxhWheFPU5ab2LCUIkItoTOST5eu2fuQExvbevnnQ0ybA++FKxu9e67e/VcyVcjgj80VBrqWsBrxV4kmoF79agCnwuhECpwhuDhMtWMisPGIDpDbZG8kI8WbcZk4cPtPaqIMd1SZfqDVWnJb1OlgVF9T+oU4WTdaDtZo98KSBHj59JOW8FKHbxnqmg8cLzNezfVVv+3xieQFJrNghvDkQFUK02/FzJw9e1dSVmgMWOTqODEyn2WA3viWgKYZu/EP8ae4hRCpH38dRSSIMq6KewX70GGbYnuJWt3Up76xQbqfKD6GRJolcYeVD2VrL76p8WWN2J5dVIMygXJCYVAIuNxf1A00/gqh0Sfv0ogFgzfoiCBdLm1YBiLXPojj1mUwhJ2Bx6k5QcT0fnoOh6/w3Z5w8diiSD8237yMn5LElCXsOJYtRt3q+MH9s9NtWcr4QEGhLsrCpYcFybJW/7OS1Q1tI55g7xc3qquFMDd2hhlGO9tdb/tLfglj/83aiIwSZ4dy5omoK8ct/+hso0zd0IXfuNFBu4LEoUOcSPJ+NhwsA7k0iTbsClySco8hP6fYkW1n8hUdZHgmUtS5LaboBxsOUHjg+0SHC+oVtPlWg/ezvF89FleYxmq9AmhMqRjNN2afWT2DBeLxghFIZHHwavaqsTVrEC99xXJZmJ+TCDQzl2hhhgLKOvmuPKSnhexdpYNNHpNSI7DWRa2vsKIFGlaDHp98/I+E
+ 1gfCHX+k
+ CM96uVNY3tJULNBVN7TCC7e/xLMWiWaBBBFROAYM8ufoDQc9tvvjgZGlPABxlFpDKPjP5jtxASNPVQhA0M1HlCW9UHueeI23IenBi4ZmEo+jr7JzFNbVE5QlTpq+oTG/cH6L9/D0DOsXmFpZqtQIkLLRroidkncbP5eLzfER7rk1ARM+x7sbrclE0flqrJNgwgTjVDyp1mcrsymzKVhazXHtfi7wtUaLF7OIxzdDp3AQOyOPNIL+XJIQAds9OSfKmuAJTsQs+O0iixkQjJABxzfJYkaD9yT/S639JZ3gkwqwLzig6Bs+zCmm520IEvh5T0h1jzVq1Npz41mKlzEFc7fWr0IjcWF3hQWfQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,43 +137,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.11.25 20:09, Mike Yuan wrote:
-> In systemd we're trying to switch the internal credentials setup logic
-> to new mount API [1], and I noticed fsconfig(FSCONFIG_CMD_RECONFIGURE)
-> consistently fails on tmpfs with noswap option. This can be trivially
-> reproduced with the following:
+On Wed, Nov 12, 2025 at 11:09:51AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 12.11.25 10:13, Oscar Salvador wrote:
+> > memfd_alloc_folio() seems to try to recreate what hugetlb_no_page()
+> > would do (slightly different though).
 > 
-> ```
-> int fs_fd = fsopen("tmpfs", 0);
-> fsconfig(fs_fd, FSCONFIG_SET_FLAG, "noswap", NULL, 0);
-> fsconfig(fs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
-> fsmount(fs_fd, 0, 0);
-> fsconfig(fs_fd, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0);  <------ EINVAL
-> ```
-> 
-> After some digging the culprit is shmem_reconfigure() rejecting
-> !(ctx->seen & SHMEM_SEEN_NOSWAP) && sbinfo->noswap, which is bogus
-> as ctx->seen serves as a mask for whether certain options are touched
-> at all. On top of that, noswap option doesn't use fsparam_flag_no,
-> hence it's not really possible to "reenable" swap to begin with.
-> Drop the check and redundant SHMEM_SEEN_NOSWAP flag.
-> 
-> [1] https://github.com/systemd/systemd/pull/39637
-> 
-> Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
-> Signed-off-by: Mike Yuan <me@yhndnzj.com>
-> Cc: Luis Chamberlain <mcgrof@kernel.org>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: Hugh Dickins <hughd@google.com>
-> Cc: <stable@vger.kernel.org>
-> ---
+> Can we factor that out to merge both paths?
 
-Makes sense to me
+I guess it is worth looking into it, I shall fiddle with it.
 
-Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> > Regarding the uptodate question, I do not see what is special about this situation
+> > that we would not need it.
+> > We seem to be marking the folio uptodate every time we do allocate a folio __and__
+> > before adding it into the pagecache (which is expected, right?).
+> 
+> Right, at least filemap.c heavily depends on it being set (I don't think
+> hugetlb itself needs it).
+
+Yes, you are probably right.
+
+> > Now, for the GFP_ZERO question.
+> > This one is nasty.
+> > hugetlb_reserve_pages() will allocate surplus folios without zeroing, but those
+> > will be zeroed in the faulting path before mapping them into userspace pagetables
+> > (see folio_zero_user() in hugetlb_no_page()).
+> > So unless I am missing something we need to zero them in this case as well.
+> 
+> I assume we want to avoid GFP_ZERO and use folio_zero_user(), which is
+> optimized for zeroing huge/gigantic pages.
+
+Yes, I would go with folio_zero_user() as well, to match what we do in
+all paths.
+Maybe if we can factor it out, we can simplifiy it as right now seems a
+small-duplication of hugetlb_no_page (and more so once we add what is
+missing: mutex, uptodate and folio_zero_user).
+ 
 
 -- 
-Cheers
-
-David
+Oscar Salvador
+SUSE Labs
 
