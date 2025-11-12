@@ -4,116 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6888BCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 07:24:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D86CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 07:29:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFAF78E0005; Wed, 12 Nov 2025 02:24:35 -0500 (EST)
+	id B06D18E0005; Wed, 12 Nov 2025 02:29:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AABD58E0002; Wed, 12 Nov 2025 02:24:35 -0500 (EST)
+	id AB6BB8E0002; Wed, 12 Nov 2025 02:29:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C16B8E0005; Wed, 12 Nov 2025 02:24:35 -0500 (EST)
+	id 9CD1D8E0005; Wed, 12 Nov 2025 02:29:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BE598E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:24:35 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F531B9160
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:24:35 +0000 (UTC)
-X-FDA: 84101117310.04.F4D952E
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7D5F640008
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:24:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BZkx8BQ0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762932273; a=rsa-sha256;
-	cv=none;
-	b=rziobcnNEYLPknecT/DkqmVwo/FKR8pMyi2FpJO2+LukErLtB8+Boqloys5uEExk/GGvfS
-	MxACmb6zTZRmBSGvbyITzP/LmGaq+v95ngYgyLmE19GDrvTc+83l4Mv7/fiv1LWW0t3T9R
-	Pdv07ocMt/55lBfkEnQMJjOMrLefrcs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BZkx8BQ0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B8578E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:29:11 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D36413ABEF
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:29:11 +0000 (UTC)
+X-FDA: 84101128902.10.6458EAF
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5EA111C0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:29:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ktKx11xZ;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762932273;
+	s=arc-20220608; t=1762932549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gHjs64x1sYM8PIf291RcKqDCzlklmWGwXUXJRSFHLCg=;
-	b=FG/l3PDjr9KrU8N90T/3xh35Xn/Q+JuWzknB4IHWrkvXvIiptK6nJiiwGFWnAG+AM3qaYd
-	AXER0YvjroeOlnvHzKp6L9hdb3HBsDu37YaIiOQXooPD5t6tWEQIm7uUaoPBJC0aDUUUKJ
-	I8zSKTPHQwqvlj5r/57RIfazPhybHKI=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7a9fb6fccabso431370b3a.0
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:24:33 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eC7AqgZQkH9Bf8jeUIBuhznj5sAlbf4jzNtUK6FuTHY=;
+	b=zQkMh9N66DOc79WCucJkoPcUpgixkJOvnJ1B9XbUpu+Gw7vSKOMI3Rd1RyCsTWKJDTtC+r
+	n7L6hFZ9DHTQfhwiaFD8eUneYaeq2tD8PvCtiN4LxfNwOYNLx2Zgyl9kexo17Vg9foz8xp
+	JiAe9IuO5MC3T6MkFF1jGk+WuddZd6Q=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ktKx11xZ;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762932549; a=rsa-sha256;
+	cv=none;
+	b=azLPeJ0v68VefI1xOLnHvwxswk/jo6Cl7g5MwvYr7wDX2QS3X4GC8A6PbGwXAlMSbNCP9d
+	nwcEpOpdaoJpaWuaYD3yKUN1booXOIA7LHl1PVuVKIoX+dKtXWkhNDbedgpRfcavV1n62F
+	56j+PqHem1wYQbx5V0gK31BP4m3jD4c=
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63fc6d9fde5so519322d50.3
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:29:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762932272; x=1763537072; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gHjs64x1sYM8PIf291RcKqDCzlklmWGwXUXJRSFHLCg=;
-        b=BZkx8BQ0MS2vhuQ8oG31kZSwzDK56n4WZz9K0KIXuBOuMVsSaG/s+sPDwlcdAAFg7N
-         L/Gs6a1D+dOvG3NmOjgijMnwVTaD8QvsQCCWMucsuxa+OLXgmI4fGBO2IccHGIi2rWAg
-         BCqoOj520Yi7JN1Mwqu4UqeNv+bZQtmrzSg++3LrHM37f7OCst4RrCrq9xoYtYeA7aAm
-         WQTg8TdI6lZ8zzava3JvFedZdjPOjhDxs5wMu5S68sTeplswDHgNWBm0ZTXOgH0FizOx
-         WFkL40utISPJ+gUkE4p163fgtxM571og2jI1cMvASVMVcU7DQY/tkyyOlS+bAapHPL01
-         EqdA==
+        d=gmail.com; s=20230601; t=1762932548; x=1763537348; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eC7AqgZQkH9Bf8jeUIBuhznj5sAlbf4jzNtUK6FuTHY=;
+        b=ktKx11xZ1lWC7yRtKoyaBM15Wiy2+WBKrjO7QoJz8/Vf7EjUy3tRVvIJScjLS6oOQm
+         rG0/1llCNsnsr1++8x7eLMU4s2iDtUSC762SeBKHHaAmgxRvWzDeJjGLRo46TRyd7aaT
+         wutraQwpuPBqgGbgYGHx1dPsCz1WhwH9SIxTWTLwYx4Q69Fdfp/C9yd1xO801kxdYrqD
+         Cv2H9q66ctLDwmJ0O2HWJ4ZFQxbpa6Tv2CGzqNnLJ2HcexyvzO4joiF4StPk5doBIQ0D
+         Ojmc6ro17kI5fFI4OYt8xoUdqxmaNSixXXfZJ+H4ku1HgDXE49JPj7Ybzp2+u/CQCKCa
+         1JGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762932272; x=1763537072;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1762932548; x=1763537348;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gHjs64x1sYM8PIf291RcKqDCzlklmWGwXUXJRSFHLCg=;
-        b=EQ1hUGtHojlcyloJ1wLCtzKzxV0G1Dz5e6d1+9PxryZJu9tv+0ReuMUvAw6qgt62Df
-         k1b6Th64Yy0r8uFO9lKTA7EU04jxdp/go8RP+e2ACVueaKXqnFnxFZFsZfZTcZJz3KaJ
-         HEt+UKyskHkTvEmoXaRPkRQ1L3Mh/F4rqSp5YYkVxOZs9o2/xQZC+v6EZb39U+edZ5BJ
-         EmRtqPTiKb+s6pdMP1uXsSdw04QjyQcCgHtUf/bHiBj3jz1eHAtONTXOEXSq1CxfTd7L
-         MWY3ewCuw9+M10S652+AfcNYSWqnUM8b7+d+4yNapiOOtQ6RUbSQpHsEXpId6leqh1M1
-         nBKA==
-X-Gm-Message-State: AOJu0YxXAxVYNgnQjgRY+TQ2uO7itHMPjS9Twfi5Ofxqa2mSQqgCHBrw
-	wjRjX44xH1IrsP3SfMCQj4jHosfvvcZW8QFfOdxmcVZp12fA4hGghlj6CSsML0qgivjfYQ==
-X-Gm-Gg: ASbGncsJgcLljLr/SszpasNQVcrFjKQo/bHW62WHbptvE4UE5BGSj6JyZMxDzeoDIdU
-	c+w9aG95e+uNrp3JS5g/X5ACMLVdJHcpNd/lmAeKF1t/7lO54OGmRTgP+XSwBZk7HL75rSLvuAL
-	MXvKh12+vqwRBXNLOrwoYB+ToxmNEhMiinSoBiCaxjV8ub7MsUIAE82/E3l+55YTYenMknIl8Kx
-	D6VtIH+xsPstW3jlp0rmJoO20ucSo8satp8SA0BEZeVJo8lyyjCopTp3zVe6OrsofcmBZuyeFDE
-	PUa0mfRqTFujdRUERXUW4nazsNkVP0F75b2qRb/bs2NkiOHGt9s2l2P9+Co2gJF7yc6EnZXuuVI
-	eQCT1Zh7H8q8WlpaEXlKzN+Svs/TVXBCgtNQD7EiFKiFHyLYN6/hnvGAlh27iaInVe2CmZsRVmp
-	Bh0H9ACQiGhQ==
-X-Google-Smtp-Source: AGHT+IFUZAAP6TA8tNra5vdp5shDkkx1ePydRmct9+JBO8i8YD0QZYerdN9x2vPVqM44KgUCXLMhvQ==
-X-Received: by 2002:a05:6a00:1397:b0:7aa:8397:7750 with SMTP id d2e1a72fcca58-7b7a2d8fb0bmr2111013b3a.12.1762932272063;
-        Tue, 11 Nov 2025 23:24:32 -0800 (PST)
-Received: from gmail.com ([117.147.73.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b811183c77sm903311b3a.20.2025.11.11.23.24.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 23:24:31 -0800 (PST)
-From: peng8420.li@gmail.com
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Cc: david@redhat.com,
-	osalvador@suse.de,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	linux-kernel@vger.kernel.org,
-	dan.j.williams@intel.com,
-	"peng8420.li" <peng8420.li@gmail.com>
-Subject: [PATCH] mm/gup: fix handling of zero page in follow_page_pte()
-Date: Wed, 12 Nov 2025 15:24:24 +0800
-Message-ID: <20251112072424.125514-1-peng8420.li@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=eC7AqgZQkH9Bf8jeUIBuhznj5sAlbf4jzNtUK6FuTHY=;
+        b=q00k8eQkT1SlPT6236M1xihB4ketnY43gHUMHzD8plQXBB7t6OEfYMe8yLjUuNIRY4
+         pp3dBL4fKT9AULaUUTLkQJd9ezBVJYFnkLM9RQibeqAq1psYDs90INBhF2TPVdXUrn6l
+         TybOIru2FjmTCxUmVju6nAReOutVj5hb/X4dMYZPkpFLkoSkWeFbkt5+smHF61cca1Hn
+         m0FBhRCXCz0STT/6EEI/xKEkMEd56ZNPIstfma7gzZpB5/gFqlzQkyi4bk8iwlYaq/p6
+         j8RM9j2ulrTrhKhFgJPDHzsReZLyhJoJO8wr0XFVnq47xZIVkg9iQKxGT9gPkJ1nutiA
+         xHew==
+X-Forwarded-Encrypted: i=1; AJvYcCVv7id/OGRN9ohISYG0LtB2u1HCNfTihwLEneaJLKfF2zmfH7bXkAqhvCoWA0dvuvaTQn/OFNPN5w==@kvack.org
+X-Gm-Message-State: AOJu0Yx8WZhP4nCHiTMxSJ8QqVG2CwzCV51cgUQcr/jA/zbG6jt6KukU
+	3yHXLbE8eSd/9F4AEQZz+/jLpB5PHKnvutc4mZbhV2plpx9dZZh/ApJS2aNwiVUiA6yq3fcdHPW
+	AGdcVh9ua7gvNdT0+ffyUcv/UZYwdOgI=
+X-Gm-Gg: ASbGncvt+PNsjqm2OwsGsHQGMGjVkXrvw68mZXLX9oFHGiDzEUK+iX/HJ8JoRZSQIe7
+	hzr34hh6olJqAO/VK8ej+UkI3Zw6qSsXh1CBg9RZJzxtlTkJqFjr9o5MT14MwbhkNFiZQ22zhrC
+	RaPx8GNiMTcmsnNF6GL8tiM65onrLGIsNRwGQ8du6fbFgSQDBYHZBrvlij22b2UcgRiwBShJa2M
+	vS+xQoesevmwR+aIp3SuwrgmzHUW+Pk/c7hNRTBCqx2LprzKXWCFO8ilrq8CwoPKP2+AgeStTJ1
+	qQCKRFSAaFiDZAFIuA==
+X-Google-Smtp-Source: AGHT+IH7KULuuRrF2Oly5Rimc+QhsJIxRJ3ajNz39rkRuKHwfzBK/tXJ3NwVa7aPrWyci+T55J/S8XdqtHfeU2E+JxQ=
+X-Received: by 2002:a05:690e:d44:b0:63e:18d6:72c1 with SMTP id
+ 956f58d0204a3-64101b37d64mr1604942d50.46.1762932548401; Tue, 11 Nov 2025
+ 23:29:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7D5F640008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dfjiziytfquxoucgwqf7jbqfejoxo1et
+References: <20251112031631.2315651-1-kartikey406@gmail.com> <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com>
+In-Reply-To: <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Wed, 12 Nov 2025 12:58:57 +0530
+X-Gm-Features: AWmQ_bnwRTMjo11VJ1_SlN2ozfCDVzCWYVVmlr2dEKduOizviC1FKYdbRb3--IE
+Message-ID: <CADhLXY4qMvBTqirNmzgiPszn8vCkCFV6GGeDkNpxVDi32uhzEw@mail.gmail.com>
+Subject: Re: [PATCH] mm/memfd: clear hugetlb pages on allocation
+To: Hugh Dickins <hughd@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5EA111C0003
+X-Stat-Signature: ewukwz4o75g7s163rukcfj3fjt843yoy
 X-Rspam-User: 
-X-HE-Tag: 1762932273-340725
-X-HE-Meta: U2FsdGVkX18xmt10SGCsRGwP56iSZCnGAXO1fypijPG/n1zzqauMd3puzRvCTquzQiQv1qfatbLQMJUHQlGqqTH25z9SFt+AYeryCt0MIcw1yuIpLSRdP7bkxskcgxnbQSQ+2UMg0nvvDvr+Ethe65te49VfB6YrRa5SJLwxbAd9B3CcK3ua8xPEe8RsuE0pLbK0C3gx47MV/HJas0PnWo50eXIOxYg7lJEqagNhuPRaPQDkkpMFieCbyncPAIRWrDtVz51xI+v2ylX2Z8Ysq5OMPqBN0T5l93YM38He9dtdhTGWKO2mwTDyWfIC9vmoTwM5QPqOgXEiVspnNakM2FaHinS/hPl+Hkz9zvlB52o+YK38C/0VY7gTr7k9HI2XUU9uG85Er9ZNsdRPbzRcUHyYNxVDywtfJugcQBiZ5YuwigxaIKnA+7NTikMhkCNa8OQxsnYGC+wTATYqA/cDl8io6OMp0RJ5vH+iy9VZm56j2wI/r1dbBEup4L01T9nQZtQrk9b+yT0c7AcsiOBV1c06OWJrpX69RKc77ibCyuhvMWejqTbFQgAb7K/UrobvPtI1kV0xVmGyUetMMdTt+w25Qj6ukd/GeSgTupyVYEkrS5JFQeAm2RSjlOTnl8dMSPw5pG7kPffY0FLcOhqFJkpI1n97VE0rVSw2S6tdOXk1pxOV95eQAoZhe7KI/KlvfP78WObFgfaiR432clFsAILCx6ur/g9BbBut6ABhez8deKnyPO5FDC6KUTD819AjpvxPYLPXZwFnexFPWnAHDGcT/2rj6QEMzhUwS4D03UnP3GGjwAipNi+5dI+xTaWyuUFXN3SZZgfB1GwSZQhTIeyIKAvG8jDpCK42ezpuGvmqQZ4ius6vynRkqLuxrcmBJhqhNkA6mP3+NuCoCqhxP3ydMbSRudComR99fF2aW693J0OlXTAgULjjp4Wpk7sfJHY6cn650dKquC43ugD
- YqN2OKLp
- QP5G+DJYo+Y+Pljsrn9LbB2bonAXUMii687faS6ebAn9D5q8wgcPrWLNxptEv3g3opIjoTtTtVnYVBmEzQXbYzGCd5V50qP1i3R3o1zajg3UNZdMPPl15w5VHCVHfYgTjJNfaG+8BryxcpLHKS4Hn5WLgRACxLUifv6b65UHG5AxM1DjjyjTC+HCPURRMj50tQ9geyiuVl9L54mKPbuxI/cDrWbcIXKm3zP42W3jxqz+IYNb5efH9p3+NoddRdx1Q3jsk/G4vssYwBRe9ic1AZ3xqY6SvM7ZglKY7L13TLQNuB1jXFbZO0pL18567VFDqTM+rIFGFk7FTVi1G4MXhoFf5QN4sxIYpPJylKjcWwlgr4t8j3k4dCpyAwEqAEZ/f0W54ZPlLWBUPx9pWE8WpLg2l/2dEPy67UwR4yWIHv9733Jh46eqn1Cu72K1Edn6G32QQlv3nVPMe6bT+Q5DvflrcP2iOQmzzsvIXBoe888hpfvMX/k/K5FRB77jLniju9krnburuKGHDYyo=
+X-HE-Tag: 1762932549-787614
+X-HE-Meta: U2FsdGVkX1/gpyDTSFiUfZ3efQB4G5ix7WecoCma2pZgV9BwZOx0lXLhsxHjM8O0dlKqIjdzfWLKO+uYKZXK2+rR2VoJdRf3wdcTGFlezgdVfGCN3AXzUdBjBXQxKLQaCKWBYmaU+EwxbfdnllG8OOOAT5ltHc58NIH3ETVygMBOoXL2KGDOKZxgs1pogjuMXA4lCg0M9EIrCZALCTTZS4M0uqzml7xr+7FKWD/rTN75X3N3fuwBcyGfY7PH+7thb2AwaWGqqdFpF7SaJEM1HihPclh9xFJlUFgZe9v3q0Mt+7zLSLS8GQ6w2F/fP/P51V9FR9D4WitTGGtVJISi+6NfemR9RB9FXg2Mmi25CWt9ti3xq/3qwywTIHaWGuv1+y3E/2xJRFciRrE00Umpsn6FUWCCB33/uJW7hGaPHJUogRWkhBQV3drLjuaugz67KiBFDOYZLhQA+Z4bMM+Y1fWH8hiROEaGNxkap/U1OaFtsFJk++3MyE01FYmAsz//4oTNt+orL7JVRi/rKysNuQ+kPMufHe4iWS0Won7iTafBOSu40IznRwMxcINx91kEDMKZ2950Y/i1p7roQ4zoXW6/xgqLzGRQ4xPaDy0XV7vJlwBR6P13UPSc4CEt+mvJUDdbebtpnA4sNvTDxkRJ/N/MraxC/1HRKmVGAG1avSOGRseJB9Xceog7Y7EktoBED8p44nXU9dFu9cfXAtOQMIfN5sqLvcaHIYKsNO+yqdvV2trfpcg1+7NHNO0QcYT3ATszZP+OB8XvpeILtmP6T+GFVfRnnTXPpX5qlZwwrinbfEleT2kDTnPafKIVMXG8WaXcSPf1n99JNiMpuey3GE5EoX21iTpflUg6C465zDCY5BXDGClMVzmyGnNcHN+te3HHkxV/ofbs9qC5MrXea543QI8YsvlJTygQZbFojF7Tv/DJ6Yus7+XNATI3LYqCbbwHkS8FdlOSlmrFsw3
+ D4raiJUM
+ 8lh4Jg7Z5899utZ0maEoSbpNfIfTBy+nmxO1zVMfLlG5R1Nnvsz/FRQ/8sNB/LU3XWRSvOHl0P8RaOONdilW3aQqcnTzOJiSp1OBrCTgCo97utwVSK4/hgRDW0pGs6arig0Nz2dugYodbMBkfRZJ2Xwr1Q/UN1CX8IPv2dmQZHmJyKECQEYJ6cSowfFbO8ByN1LJonR6hNW25ARoIeI9pI7CJR1mY1aRablHh0tKLaHhfCJIsiXZMpvJmxL/1Q/InBFTYgLKD9GPA2vV4qUlkh0/H/WuazMQjvnOcgoXh5W5LfdtGZold0W/jGD1IpuqVebC69W7zldr3ZWnBo2NtKkKfd4TpDKBemGP3smORI+wuFJH0oKfUHSO7FvHKPzKqPWFNM4EH537SYvYkJ1Z33ApHPB+cI6MIEnxq3czDuIFLXbvGvNQ1mBKMj9dp5EwLg6/gXln98NXqRh4FIq9SCLb7HlcdYg9dnIEi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,30 +117,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "peng8420.li" <peng8420.li@gmail.com>
+Hi Hugh,
 
-In some scenarios, `__vm_normal_page` might return NULL.
-In this case, if `is_zero_pfn(pte_pfn(pte))` is true, simply return `page = pte_page(pte)`;
-no further folio processing is needed.
+Thank you for the quick review and for looping in the hugetlb maintainers!
 
-Signed-off-by: peng8420.li <peng8420.li@gmail.com>
----
- mm/gup.c | 1 +
- 1 file changed, 1 insertion(+)
+You raise good points about the approach. I chose explicit zeroing in
+memfd_alloc_folio() because hugetlb_reserve_pages() can allocate pages
+without seeing the __GFP_ZERO flag, but I'm happy to revise if the
+hugetlb maintainers prefer a different approach.
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 95d948c8e86c..60ae5f0c20e0 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -838,6 +838,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
- 
- 		if (is_zero_pfn(pte_pfn(pte))) {
- 			page = pte_page(pte);
-+			goto out;
- 		} else {
- 			ret = follow_pfn_pte(vma, address, ptep, flags);
- 			page = ERR_PTR(ret);
--- 
-2.43.0
+I'll add the Fixes: 89c1905d9c14 tag and Cc: stable in v2.
 
+Should I send v2 now with just the tag added, or wait for feedback from
+Muchun/Oscar/David on the overall approach first?
+
+Thanks,
+Deepanshu
 
