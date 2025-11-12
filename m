@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 608E4CD13CF
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:42:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCD3CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:42:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 800CD8E001C; Wed, 12 Nov 2025 10:42:46 -0500 (EST)
+	id AE7B18E001D; Wed, 12 Nov 2025 10:42:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73C628E0002; Wed, 12 Nov 2025 10:42:46 -0500 (EST)
+	id A983D8E0002; Wed, 12 Nov 2025 10:42:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62B4C8E001C; Wed, 12 Nov 2025 10:42:46 -0500 (EST)
+	id 95FF58E001D; Wed, 12 Nov 2025 10:42:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4240C8E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:42:46 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 090F814052D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 73CC58E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:42:48 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4238D1A056B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:48 +0000 (UTC)
+X-FDA: 84102372816.28.A356E05
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B2B1D4000E
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:46 +0000 (UTC)
-X-FDA: 84102372732.26.382E4C9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 442451C000D
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:44 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPituJcF;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPxNTBtu;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762962164;
+	s=arc-20220608; t=1762962166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cO/foAkB/68zSvBI1xEq6NGsOvJ7lPY59mZlpmM/OuM=;
-	b=lehB1V9V2uLrSf5G2zvds9s6fDueC/wNlA7l+svE5wocVhw/hclipLaNX5dCXkB7ajg+Dh
-	JNzsTMJBteq/OdNO4R24AIgGvhUiA4GMWSuKbXAYLlssMntJdMNPrGZp1hNxfedXgq9EZ2
-	njAo9UaUN/xIlJioYFvDPRsCR51RIJw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962164; a=rsa-sha256;
-	cv=none;
-	b=cFT0IOClzFGQSv4oKwwhSaynDD71Om22f7ja0JP+qsOXUiNygOLXKYMhQVLhap1haFZ6FC
-	rNhzf1GqLKmn0RaPkOluA03+u7J6hkwfSsn3/3zEbkBZdosG28BHdAgqDnFzutXQ2p6SB+
-	bR1XcVB+vZ1iRpce0Z5a6zLauVB2lsQ=
+	bh=yIgrDpD3CrWSyVuSFtCsRsBF0u7y2CQRSmKcd9cGmg4=;
+	b=vxVxcKUPmqBTJnFaVhgMnRLvAs7Qjn2NswZJtwhC/J1HXFwP4oDU4FmX7u204HxjnmfJ8K
+	9vFAmSh0e9gOwdvP+Fy/d0SFsC5F9O+lQBTtQp+LupkpOj8gcpNGkwIE9LEhKXeGgkGoMd
+	VHeLgrfkqDi8vvNa8pW1FfSH16YUBmw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPituJcF;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPxNTBtu;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962166; a=rsa-sha256;
+	cv=none;
+	b=l9BbgjxQTGNRrxYoo9K75ceNj2wimhmhKPfe5YxHRSJOIexho/JWl1+OH/4xav2FkD3LXq
+	PDkXDMoebF/AwHN1p+VVwL77HUyXCZTpHEOIyvIrttPYBCpujKrC+nLN7KQJyY3wN4N4ac
+	UUiuEfLbWuDhIR1YFQb+knPyQWQJ4lI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7EB7943C3C;
-	Wed, 12 Nov 2025 15:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7079AC4CEF5;
-	Wed, 12 Nov 2025 15:42:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3F899601AF;
+	Wed, 12 Nov 2025 15:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EE4C19421;
+	Wed, 12 Nov 2025 15:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762962163;
-	bh=ipqbHpurnSVvOIPX2qXsTqde4IbogP7c/9c05Brr93w=;
+	s=k20201202; t=1762962165;
+	bh=+Y8/mmzsL4R1VnXUesO/LqQSUharTVlUfdkKQD15AOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPituJcFNSjD5P+6aPcagVN3PDZTIuLo6Chdee4DGXczD42xk/RYHpsFtOpSMPV2w
-	 igC1fhqrXpXvYjeAZ5uX6tawwU1Vpm82tNw4zXOBvLP2r+j/kgv6VWOMuBZ37HH3j6
-	 +HHSzHW56t9Af4AeL/NraNZ0QcK2yjWO6ORCouO+o8mlaW6wGjKnR2LEVF4E9Z/DK1
-	 fv1fk43sm+4Fr6bzIw0/eWUO3rLsKpB7m+awnK52NgUfEoN1HmY3d+uYx6ndW57SlW
-	 c/bHxyfZRAQvrKG5+Ya/V3B4kfOmCZ1jwG30ay6XjiegnhPYtlPmA8KbhaFKOm8xpv
-	 eqEYcsuEhq7wQ==
+	b=VPxNTBtuFzWP5E0kbJfUaoHse2TRa2w3nZ7fygR+O4btmVa4UyrFKKPFIVhBu1gAp
+	 /FxcP+pNURKfWiadsKxQsW+cuQkIE/ik57NaUnCq2om4A6XN+9Ev2fZEbRPl/saqy1
+	 1FAPq3L/MS8HBKtkCko/vb381RHwcFxRcnYu5clqp4frD5Mt9zBWEibZI+OOpbRNbP
+	 cQfXVgDHOBs+XzBzlIYZcLlZB4gv1NkonecWttOx4sE5fIOLC3ztqIX76Bg6p7aJ/F
+	 UyGuKTdsWUkuCq53Vhruu08ckKwqpZWi//L+HpgnQAl0Z9CErM3dHFWNwKJqxnanBt
+	 6+pGTk/lNP2ew==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 7/9] selftests/damon/sysfs.py: merge DAMON status dumping into commitment assertion
-Date: Wed, 12 Nov 2025 07:41:10 -0800
-Message-ID: <20251112154114.66053-8-sj@kernel.org>
+Subject: [PATCH 8/9] Docs/mm/damon/maintainer-profile: fix a typo on mm-untable link
+Date: Wed, 12 Nov 2025 07:41:11 -0800
+Message-ID: <20251112154114.66053-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251112154114.66053-1-sj@kernel.org>
 References: <20251112154114.66053-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7hdn853swrhbjuyeyntdjbn5tturonak
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B2B1D4000E
+X-Stat-Signature: 48e57dqsc8xsupkfcednutw3ou4dq38n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 442451C000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762962164-820763
-X-HE-Meta: U2FsdGVkX18ZNsIM0kC2YYRHtbZ8mX8bzWIjfjkt00ywPiAzkCtswP69kqhm2ia9DFiztbSsIM/oUNteVQgfUQ/7rzTiW1F99jx1sWd8DiaL+Y5qUnJQ7wtr7142J/qbBa+E0m/XQ/jVD3q06AZJtGAX2WOmFKSPFlT5KTNZOMcS8sZNYcZihWA6SnGWJNBzmAoxZDE17zSFsfbNqkvG2FRV2LjDP3n6TB2VGo+ek1PXKRt9eOeHIst/8pYOoB+o79cIoJH7AMzXaMzLS53tCwEiJQ8LpaR8Z/t+KJaM2ks0+U3CE3LHGZL0OEPH4rfuAyxoo6D1DQDgTV03LD7cmx5FpILIrhaU5AwAksPmX3ut6XSW2epsRZC+7V8adVP3W68lt1NQ83d4MUfUxhvKQ4lUs7mBDRp7HtvO45HzuNtO7B8IOXsw0mSZ/rzeaNbG7KOJ8ZtV69NAFB2wVL+/kOFeFiDO95jDPX/XShq4c49rYwJBXOVN6b9ujAUP/SKxY8siUK0m2pIdAJZt0LwGjXUx6e//BxVuqnOVJsKu8EpdDdTRapMO+c0dsyblLOQDzxWLptXUSgYahKbZopXZuP9THe1hchk+lDp9Abi4GnfOIFbE4V9kwn6kyQZPUNSPcxo7BArfwIef8jCNCTMGAjXxzQrtk8cChzqSQ8AfF8+L98+1fgUZDeVep4hECQvoG/6DqOP5Xi9Q0/JdVf6G62JhnSbUbUs+HOyvG9PyvzT6LWwSQPPOLONdqarimnIkbPO/bNWJJOUppN4WC5nK7JTrBwfaV3gOWnJjqHd/S+i/X+8fb0BAlMIP58/mbWOgFC1YXhYfMt6IruWXygGJ+V9dbTrdIPjvSxBUCxCJgl4ulVtcagDQ9KZH5RgWHAdte2XAhKmxup2m3ygbobPUr9gb73oqUBEgbIK9NgJfQwF50a8xSO9xeJxEFQ13j8x6AtJdUrS2b6BWJfeSLjh
- avxvnGEK
- 2ZF8lhSXhznoyojgryy6LbmFIgabCN8cT8OWWV8l9/wK5zzIhU32oVPw0NLFMeLil9tncf00e3bIru6N4Z+QBnyF48Pzhro8ewsdDXeKtW5Yb5C2pik7pzS6ZjepkACWkN6PP1ttKDlXP4e5NJKbYq92Dw6q67K3R6pnQKjNvv0ap2iJ+byYOcQ/Wfr4yBjNg8hzMP6scRT+GPLwBGFhsfTsQxTIK7OiGNGsfcOhbpP3oYtk=
+X-HE-Tag: 1762962166-364389
+X-HE-Meta: U2FsdGVkX1900whxyAEXliNU8LoW5RBUG8ohN5PL7sJWo8zpkwpB+PYYfABcJc0kG/jT9JIQcmf7wAHbbK+UW+vFQdzC0rmoiiYINmKtngDjWcV+PmakpDQ220Y+fT2yh9CYSpGW7dDqU+0/ImuSKqZwinoEnRJApSGn07TMILZoEqQAkFVv9wGeHjq1BY1asfu8Z4nO0WtcK7eVgy4Ls/z10xf2ixHs4CUxuRZ95biYBJhZsyBFReQyYTiptcEOLxNMU1Qdv3ljUCGM3NxKIao0IhFogD/pF4eiV9yT0oMgDgwe55AxkSB8vpAMb+v/8ui+pAKnQeeJtlajcK//uBnq6HlBQ7uurUPv3zQhSkVbbtdt7rxqp+kzhFapsVFLrNdTXWdEHAhgztRknXbCSj/JjuOwc/qH+yFu7S7uuylJqHDWqCAMgYgGEID2xSLcd3HGd0tENqLUh+5qszCDZvTndIv/O2RMnmG0CDOnr1RxZsXhnzBbsm89MATaJ68f9ZecxC2Pt8S5+8rViPLGqkzuLou6Fc0Ie57kR2DoTiw+d/tfszpMSHgu0jVRkfsko65SdvZMejk9BD8O1GQyvMlMJMecVeopCtt2eKBAakveA+TkofukEy3sqQPiZmnW/0eAZkWMFT1zRdi+uURTQlpJZjxdrhvM1y+ylBPsVMKmqcDsDLQ7W8Myk/clr+JJKVdCOeIW7KzPPt6uCKh2Yz0JJdI+I+W9+OZh2wf9ogjacD9xrscsmtqpFGGYg0GhlkowSk4WRyltlOWMCOq2mczSwx+BkWtJPsjd97WKSswXny7JKPIhsfVkFXJQvZdPvEHYZZHV/zEBP2qPBpSwPBU4GW4H5EvkExiQBjQqJiXo6JkKQju4+xrltkzPD2k1TnAoK+laMoLAASPVqCg3JkYeYx0NiS9Yr7usp46Rp+0akBZhwV8IhpzCt14o1im/boaa81jx6630IlLNEzA
+ 6NJN9vk9
+ 5U/8D5zb7essJ1tsA4bvUelWnmMkpPpHCdh8Zqm866u868HjqPzKHewrdrgRoit33Gieu9p/2OFT0NU28j+phGMk+7mp8i89pJGuwN0vxKPO4uasUu4w5vr3xQHDF8Zx7gFHhn8PBY0xDkGY8/VniEjLST9S0COP1Mnu0SYKBJzo1t2KA9ifFLwtiqYWgkxlK7K3SKYOOIL99Z5vwASkail4pd5r4x5xjPtQEeTyPJDJuI6CGXOuJLKxeNUVllNwgyzHYU7AS7DtCzkU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,104 +102,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For each test case, sysfs.py makes changes to DAMON, dumps DAMON
-internal status and asserts the expectation is met.  The dumping part
-should be the same for all cases, so it is duplicated for each test
-case.  Which means it is easy to make mistakes.  Actually a few of those
-duplicates are not turning DAMON off in case of the dumping failure.  It
-makes following selftests that need to turn DAMON on fails with -EBUSY.
-Merge the status dumping into commitment assertion with proper dumping
-failure handling, to deduplicate and avoid the unnecessary following
-tests failures.
+Commit 0b473f9e6eac ("Docs/mm/damon/maintainer-profile: update for
+mm-new tree") mistakenly forgot putting a space between a link and the
+next word.  Fix it.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs.py | 43 ++++++++------------------
- 1 file changed, 13 insertions(+), 30 deletions(-)
+ Documentation/mm/damon/maintainer-profile.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index b4c5ef5c4d69..9cca71eb0325 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -185,7 +185,15 @@ def assert_ctx_committed(ctx, dump):
-     assert_monitoring_targets_committed(ctx.targets, dump['adaptive_targets'])
-     assert_schemes_committed(ctx.schemes, dump['schemes'])
+diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
+index 58a3fb3c5762..f1aed6e55d31 100644
+--- a/Documentation/mm/damon/maintainer-profile.rst
++++ b/Documentation/mm/damon/maintainer-profile.rst
+@@ -57,7 +57,7 @@ Key cycle dates
  
--def assert_ctxs_committed(ctxs, dump):
-+def assert_ctxs_committed(kdamonds):
-+    status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-+    if err is not None:
-+        print(err)
-+        kdamonds.stop()
-+        exit(1)
-+
-+    ctxs = kdamonds.kdamonds[0].contexts
-+    dump = status['contexts']
-     assert_true(len(ctxs) == len(dump), 'ctxs length', dump)
-     for idx, ctx in enumerate(ctxs):
-         assert_ctx_committed(ctx, dump[idx])
-@@ -202,13 +210,7 @@ def main():
-         print('kdamond start failed: %s' % err)
-         exit(1)
+ Patches can be sent anytime.  Key cycle dates of the `mm-new
+ <https://git.kernel.org/akpm/mm/h/mm-new>`_, `mm-unstable
+-<https://git.kernel.org/akpm/mm/h/mm-unstable>`_and `mm-stable
++<https://git.kernel.org/akpm/mm/h/mm-unstable>`_ and `mm-stable
+ <https://git.kernel.org/akpm/mm/h/mm-stable>`_ trees depend on the memory
+ management subsystem maintainer.
  
--    status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
--    if err is not None:
--        print(err)
--        kdamonds.stop()
--        exit(1)
--
--    assert_ctxs_committed(kdamonds.kdamonds[0].contexts, status['contexts'])
-+    assert_ctxs_committed(kdamonds)
- 
-     context = _damon_sysfs.DamonCtx(
-             monitoring_attrs=_damon_sysfs.DamonAttrs(
-@@ -256,12 +258,7 @@ def main():
-     kdamonds.kdamonds[0].contexts = [context]
-     kdamonds.kdamonds[0].commit()
- 
--    status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
--    if err is not None:
--        print(err)
--        exit(1)
--
--    assert_ctxs_committed(kdamonds.kdamonds[0].contexts, status['contexts'])
-+    assert_ctxs_committed(kdamonds)
- 
-     # test online commitment of minimum context.
-     context = _damon_sysfs.DamonCtx()
-@@ -270,12 +267,7 @@ def main():
-     kdamonds.kdamonds[0].contexts = [context]
-     kdamonds.kdamonds[0].commit()
- 
--    status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
--    if err is not None:
--        print(err)
--        exit(1)
--
--    assert_ctxs_committed(kdamonds.kdamonds[0].contexts, status['contexts'])
-+    assert_ctxs_committed(kdamonds)
- 
-     kdamonds.stop()
- 
-@@ -303,17 +295,8 @@ def main():
-         exit(1)
-     kdamonds.kdamonds[0].contexts[0].targets[1].obsolete = True
-     kdamonds.kdamonds[0].commit()
--
--    status, err = dump_damon_status_dict(kdamonds.kdamonds[0].pid)
--    if err is not None:
--        print(err)
--        kdamonds.stop()
--        exit(1)
--
-     del kdamonds.kdamonds[0].contexts[0].targets[1]
--
--    assert_ctxs_committed(kdamonds.kdamonds[0].contexts, status['contexts'])
--
-+    assert_ctxs_committed(kdamonds)
-     kdamonds.stop()
- 
- if __name__ == '__main__':
 -- 
 2.47.3
 
