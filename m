@@ -4,115 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01811CD3444
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:31:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E1ACCD37B7
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:41:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59AAA8E000A; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
+	id BA5218E0005; Wed, 12 Nov 2025 14:41:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54B7A8E0002; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
+	id B7CDC8E0002; Wed, 12 Nov 2025 14:41:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 413398E000A; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
+	id A92938E0005; Wed, 12 Nov 2025 14:41:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B2548E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E1857140699
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:31:28 +0000 (UTC)
-X-FDA: 84102949056.15.D6AEFA7
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F02064000F
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:31:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FZHfVSPW;
-	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 916218E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:41:01 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 261071A0680
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:41:01 +0000 (UTC)
+X-FDA: 84102973122.20.BD61935
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 47C2A10000C
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:40:57 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cOpK2e7F;
+	spf=pass (imf14.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762975887;
+	s=arc-20220608; t=1762976459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xbWXdGium5WT582WXTIZPEFMTUPHcX5qp0Lk00cNrKA=;
-	b=nKs2PGmTGDRK2SD7EpRIzB6BXYhZz9PbKoI6/nY6w017oVfCulmkMZtY4RBPO8GmBB4qj9
-	QTHvrJy/4N5INAiWDl6WzAN+qTS9VClI+/nxgD6iTTv/0XIsj3HY192pyyZS/aixwT2Ugf
-	uRFB+lmS4XB/Acep6drNiZPseXszSj0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762975887; a=rsa-sha256;
-	cv=none;
-	b=D9HuCSQsyIPBIYu8xZxQBxAro5Na/PxtaOpr7XdExujhUHfNrfZSlkyiTv1Id5VDBZoe88
-	zGtUAU36xS1MOMWVRtsEGW61+ZYOUFT/wlstSCSK7R+rtm8mCv8Ue/8ZYLlU0H3WWxVW/J
-	BC0Cn+ejtLDeYhMXPx5rF9sP/tY8EzM=
+	bh=TMVqKzNLRoQP0sbvs5442g9fKDoLzrGhO39ngYXqELw=;
+	b=GvXh5x7pLkDcw8buCazFU/93E2gJRoPNbXSzjG8+XABGuiM7p1kF+sjx0VBu0/PHUfehow
+	IA/+n79ijxiPT1Ejt5/7gBU2XwnNgafqHyd8yhGVHuikRoKOEf1VmWv8HuJWurevp1kzdI
+	tK72Cu7f2+SIAjvZeXBZc5kC4Zm5Mmw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FZHfVSPW;
-	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7acd9a03ba9so1079149b3a.1
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:31:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762975886; x=1763580686; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xbWXdGium5WT582WXTIZPEFMTUPHcX5qp0Lk00cNrKA=;
-        b=FZHfVSPWPHT3J9t/FWVEtlgE9Q2dVQ/fhKz6CxQZ5fXNnS7JF4lVyaH/3gfy3/mqTs
-         0DeczVMZNCrFxhuT1y2uR5ZgKCWP3U3axmjS6fh9+GSW57wXxKFLbWMuepMAz5+tIa6d
-         +kwCdrN+utZ6iJrnYsEPFjG2F8BHh+ez7kXlEhSoIO31m7V6fJRpFdNicoHWVxZ3G7Ui
-         KdHJj/Dm1ilKnhATSDEdh43gynF+fx9qxi8Avdg0AKnNsok0wqFMyZOBjov9QwPfbNdK
-         wPVGshoMFZryCDImMxZSSI3NykS6TTql/lG+GoHf1d3yf3+FTLRpUjzQ1vEfeodJj+36
-         rsUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762975886; x=1763580686;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xbWXdGium5WT582WXTIZPEFMTUPHcX5qp0Lk00cNrKA=;
-        b=lz1TBy+tGBTh7EqZ/PngT0pKTuwgIsCfhPJTCp/Yy+cOet7a3Bk8QwxKoyahv0ShJP
-         c3sWQTT4rzZY5eMz6jJVZn8fVeKFUzbPKffJryalzVEOsUHP/j93IF2Er4/D42jHlQjs
-         oidWjcVzLdqZ4iMcSMdUsXwMAvdGWeJQ/DdnMoyzFr0uj6N25xxpK/R2PbHmsSqxOuby
-         d/1hk/Ppm7/GCuGndsf53BeWdbEZFGxVg/opgMNn+rqZO/UQXy52J9gJbvJt99c93Xj7
-         qPzmazgGvnpTYb2LtbUO22k0RmOrmtKFyeVWtiZlev1tBcbRkzx1IKNL5HYuL87VLbr/
-         vT2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ3fFJPYjIRwJSW48KT64ipxqhLlXv4Bsi4aRO8zZglPh5n9hD+UXHtTuIRAnaRejtCpjWRmey0g==@kvack.org
-X-Gm-Message-State: AOJu0Yx+nNIhXjHq6Gc7veS67M14s5yWRvH6iFunxgL1p+k+QI2J6ccu
-	zmEKgtW8YbgyCUQcRybykBkFLra0PQITl5WCO8h+Kn5ZDw64sg7NZG4/
-X-Gm-Gg: ASbGncvLK9MVC3UVs/WCxDEgWtEdulRP8KLcj+Q6vGU0cgMbJeivRv4NXOxPVRSW8uy
-	38e2Z96yhY4H/vVSMQwbmKKk2DtWbY+bxjUfzKrEUSRgJExR/tXPY8+KyvLoAww16rzcL2jsgDt
-	u/mcowM1rqBDGDdZn6z8Y/zVHwfq6/KdV6opjuFz5swvadn1K3akC1i6dI59K4+PJI2q2WPAs3I
-	z0IlLRvrg91VrK/A0EeIrGaYbHaVnWGKxxyLsEwA5mWCL9E23fGzDyUyAxsay7XVrArP2HdxNUI
-	2Tewe1KIwwwqRTkeQGCNvLOM2KRpib0n7L2eupIS3H/+3WJpDwx3AM5hnW8PnltSTsfB4Mu6lfZ
-	vWXYEWKA7prrHCIIWVJsOuqwNmOHF/jKigQA9ag6oON+bGNIFh0oGMY5FSWSyVUITgQR2IjHf86
-	ELaATAqTSCQSIKMkjnqIUC3OnqgW8ZMup4
-X-Google-Smtp-Source: AGHT+IHRljw9kbmjLSJU1F5Kw04BLaWKwpQ+xn7u6+wy8m2YVbrYDQAktVvbX2jC5qH3OoDLduOfmg==
-X-Received: by 2002:a05:6a21:998e:b0:341:2fea:6b5 with SMTP id adf61e73a8af0-3590998a27cmr5464017637.20.1762975885633;
-        Wed, 12 Nov 2025 11:31:25 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bc208695cf1sm1014625a12.7.2025.11.12.11.31.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 11:31:25 -0800 (PST)
-Date: Wed, 12 Nov 2025 11:31:23 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [RFC PATCH 5/7] x86: Call preallocate_vmalloc_pages() later
-Message-ID: <aRTgi5uk1taUB1fe@fedora>
-References: <20251020001652.2116669-1-willy@infradead.org>
- <20251020001652.2116669-6-willy@infradead.org>
- <29319ba1-9093-4ec4-b84a-3c60d2b00264@arm.com>
- <aRTTtHQwfOm-loMb@fedora>
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cOpK2e7F;
+	spf=pass (imf14.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762976459; a=rsa-sha256;
+	cv=none;
+	b=RaZfGYOweGxnQujrWLYZ0xYUMtC8KBBmHMDuPUHTWEQYZB8LO80I7zGOsnrC3+01OT4wq+
+	n3sg3TO+Eo2w3+nj4tTVBcDjcixq2p4QCw0P8E66oBfNeyT0lfIWRPuyU8+HV4O5ggzUfi
+	wHX2CBJ3wCoJeeX/2tChMBc+a2gKVTM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762976459; x=1794512459;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1CEb0exxHNbFTNrWD8OFik1gh5Iji875G0YGz0rm2tE=;
+  b=cOpK2e7FY2rMKfadGr0QcAd6x5bJzCwABXMRzqSoSSqGZy0D6UHnhILr
+   MKgkrpIlMNKbXFD/ct6v/cNZTJQAOwJ/izP3C69lxNVgjUPtqgFeA5dzx
+   hKHb+h2KfWT4YaDqY4jJj86w8xFavNuCRaB10A1u39ZZCsYX0yKLO/PjF
+   zkgwFcYk4cN/G4AtNA97DnoWE1YFVKyND5N85w9t5v0gARVfbfzudPHIj
+   FjUQlcQQn23wOghiRhavv6snmagUSYNcmiiBZE2CakCg0dXCwKJUqoLgH
+   WJ8KmS0T/wThRjzdrymmjA5n4+F1NTUrppZ/B0NVACKdCvW0XV2StUrHw
+   g==;
+X-CSE-ConnectionGUID: V5fUirKlSFO55OnkJeutFw==
+X-CSE-MsgGUID: qn3fvfGZRSCdou/zyfLNNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="68899804"
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="68899804"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 11:39:43 -0800
+X-CSE-ConnectionGUID: /0qMLToMSJaGNFV1iOZRcg==
+X-CSE-MsgGUID: OSGF5WF3QNyy4bQejpbmWA==
+X-ExtLoop1: 1
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.108.22]) ([10.125.108.22])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 11:39:41 -0800
+Message-ID: <0dbdd1ff-bf23-4306-bace-97f745800c13@intel.com>
+Date: Wed, 12 Nov 2025 11:39:40 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRTTtHQwfOm-loMb@fedora>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F02064000F
-X-Stat-Signature: qk8wgzeap8zreg1rster59p8ktahanqr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/21] x86/mm/asi: set up asi_nonsensitive_pgd
+To: Brendan Jackman <jackmanb@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: peterz@infradead.org, bp@alien8.de, dave.hansen@linux.intel.com,
+ mingo@redhat.com, tglx@linutronix.de, akpm@linux-foundation.org,
+ david@redhat.com, derkling@google.com, junaids@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, reijiw@google.com,
+ rientjes@google.com, rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
+ yosry.ahmed@linux.dev
+References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+ <20250924-b4-asi-page-alloc-v1-4-2d861768041f@google.com>
+ <b0fb40f6-8baa-498f-bb88-50113cb80f53@intel.com>
+ <DD7W6FACMRPU.BXJCZU93UMVQ@google.com>
+ <9502454a-8065-4a65-9644-2b7fe0ec5f7f@intel.com>
+ <DD80BJMZM5EF.4V737FVJY4F3@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <DD80BJMZM5EF.4V737FVJY4F3@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 47C2A10000C
+X-Stat-Signature: apc3gixw7d7regg7358zoeaqfbqdetfx
 X-Rspam-User: 
-X-HE-Tag: 1762975886-105975
-X-HE-Meta: U2FsdGVkX1+Gs/LypVgnT5NT0nUC3Rfz52tz4YOKdF+W/Jc4pCL6cVrW8y9zIboU2Wvu2NtrhQUBvh2StfXkGpmHlOE/ODZFQPLJwK510hKDBu7aqdR3c/wD5AwjejJ+BDoANlj3q/FzBeA+TNG7FHx6v5H+ibHjpNEBk3nFDIQyq5xgOuAXcHR37ei5GFfQwissRc8cof9kyE+rk6RO5K4kI5GC4ofli87j/JhHLDUor/HVf0p3cvkxagIT/bZF0hv/K31FS0/8lRVaRY7MABro0b5NnuEPks1kvv3RmXR+oguQG75R03oLvyripwRVB+V9YWXGmwrlC8W2z0Pgp4HzqyqR8j+KoCUVY4QSve84oufBCXgJoWdjg9pXivsNq38Oc758KDBpfR/PEUxRcgq6msmdrkLHH0jSDsmTDc1JqsYO0Pidjw6qd580OAXMWz7L261kD73nDQVFXtBaEmQW7GmuE0fLkbez5PeGi+E12Ms8EAmhrW5Mq7/+TKGjUKlVDSPHWTy5syeKbyCDRVj19TvVXtwoMVRejlkpswrN4E11t02CWoTnP/eVFy+m0dkhPISbV0uDSBQUP8dHiR0jlO2MX3zjeWq+iGScXodYv7EXen+xxJL5OgDjj2FCCcmkqlEUFEM0TBuViuiz6LI57IioYkKu7JHS9fC1/mLBgSF63aAJ9bxHePo76xLNBBZYrXC6XSz/Ha5OKHPJEVIum9cHnO14t9Tf6lgtK/LAH0FKT4FIbuj/L/lQaAIxvznSB502052+Dzx+hYk249KMVi6FO1ZSZQz9bCox2uZS/pVOjzsUlven2Xmysj46SXG5Tzw2kbuZht7nedW1DFTQdVvxe/F8SKxkojKa527Afx0liVdD6Vip6CXph3lHgaWkzDygMbVWwiAvNmVBgeDscY068EH+7NIEyelVeuC+C9YkYJy2Dfa0MXxutntVrtd+ui/QikbrTewztgZ
- 8gJyTLRa
- w4JCfpZCOErtVZTxP1VWdTB3TPJqWeLkTyx7MiUSoF9b4sBffLGmAHZ2YXGFSrasEagQnfnPuMpt/21/oqFwlT/IcYa/u6m/nvVMuDkbf0C8zIL5+4DXI/PHDA4NI6wNUp7eSivoGSwjP8Dt3qRM5pE/2Vr9foxWvFKs8hCxTO/lr/Yl75OsS3E8Zmh669ZrPtS3Io90sWmxqyzcpMnv+5GLYIfR7HvpwxiI1BI69LZm4EprspIj8k87HlSX8aFZV7w50Tg4Dq7u2Q/ExhQJ20JnMZPKiDcbPCayhK6/yaqQyXyUfrUG138W7AXllqPqSRZHkoIk1QEy4kNuX2f9PVcZZsljXLowoA3BCRtmUCVmemq1idbOcEDZKIsGOX9k5Yfax8mxZRTpJN1Y6brYX2rnjjO++YCqHdrPVt/N4DYgbLi+f14/OpmzgEH1FHjj09C1gMo+Lb4JNbkQIqXe5DCQBilN/dCwPX2XbHPt6GwBDQ+CxYCi1QqpOyDGzAecJT5nS7odSiflTsEmUp7WcJRKeaw==
+X-HE-Tag: 1762976457-153338
+X-HE-Meta: U2FsdGVkX1+yNaj9rmJ0tM1Zg+nAFO3T4Tx1+cySyDxZFFY0JKfXgA7uY2RV9u/ely5EsCv2rETOu8zHcOoz+gmyYmWxAE9+abK618G8V7l+FxgQAiriTQ0D7Y8VwPULsO+w9o4Ob9o0SP7UriKjT9gf+lHWVmeoWEGGOY1iInrU3ODfoVBpzS0V68cD5ZwnooGRUAquLzuAru5MDm81dos4dQNlsyL4EzddQtjsqPg7V0KXZ0hl3scPpt1+rPoVJfQlB5AIy5bTtBu65fABvFdSPYF6dkxRiOa3zlDeeGiGoDDMJAa8VH7/8QbmiHF2TRMEuSXv1NxctM1u/Wqorhl0v87ysz9po0IzqSEOoWLT4bHWrBglxpn3iRvzCYMkEA4r2Joll1frU5G9PzmLB+2UZfo5kpa0KZlf7Kv4cB/NF+Q7yr5FPJsPJ9x7EiWHcsFPgKWPqUTsfWMCMmLoQtPXpryMpfs8lqvOBIFrNJU+efSAHOWSjB3632AQaRp56TH8Px0ZTmzdTUPjd8ZyfUglOrzh/0XXlbra0nkCkmKMvszYDhmghjJafc2Q8wIDh4FK80yPM4eFyOFamXEwW0GKvbVI50Bmj168/RQvEwUvnKgTc/nnKWD40dFfeI6JEE4O9SusgD3dASeospRwG0YIe42eADW7vV+LnYBranB2iR5FtWGjw7yWen8gkNWSXH4loHgT/T8+wONVvOnVyhf+5EcvGEYkD7HGgr8tRdO46FVdz3MyXklruEO4PSEQdW7rNS5UQM6VXOS10w3eb908HKgvF6gIyCLVo1upSRT+ye124IEAlJKopiazvi4paIh7IV1ORozRv8oEdBFVuWKMicGPg6RjlpY1OFUZ07kP86Utr/+knU1+ZE8sL+B7R8Q66BqWgOhg1nsrNVYoWd254VwVoSlbq2DU6RjqZu22AAFDwdD0LvZrdtSYkajK1KQ5VdZqK5DB+nNaF73
+ 0D/YdaoW
+ RRWGbg+8YwODWv5fW+YgDTMAEPzTuNg8nVUnReTjtO5um6jUmUYHmfkTypCipFDylyY4UqY1DWN0rpH+oGCUtv2BlFThuE9lcnEzvMOiMP/RUbz1i7urs/d18Fwzrj8x4ztoMSmXNMz2yspnXn55gGkBV12ztBxEAV7K5UB6H7I84AzfOjf/aXKNCCJckHhuDL0b0JtKDhX8/GHD652FeZu2jfDB2JjuTU4YUUBkccbmrez7HEpzfULtSNW9z0HL1x0OW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,93 +162,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 10:36:36AM -0800, Vishal Moola (Oracle) wrote:
-> On Tue, Nov 11, 2025 at 02:29:44PM +0530, Anshuman Khandual wrote:
-> > On 20/10/25 5:46 AM, Matthew Wilcox (Oracle) wrote:
-> > > When separately allocating ptdesc from struct page, calling
-> > > preallocate_vmalloc_pages() from mem_init() is too early as the slab
-> > > allocator hasn't been set up yet.  Move preallocate_vmalloc_pages() to
-> > > vmalloc_init() which is called after the slab allocator has been set up.
-> > > 
-> > > Honestly, this patch is a bit bobbins and I'm sure it'll be reworked
-> > > before it goes upstream.
-> > > 
-> > > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > > ---
-> > >  arch/x86/mm/init_64.c |  4 +---
-> > >  include/linux/mm.h    | 33 +++++++++++++++++++++++++++++++--
-> > >  mm/vmalloc.c          |  2 ++
-> > >  3 files changed, 34 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> > > index 0e4270e20fad..5270fc24f6f6 100644
-> > > --- a/arch/x86/mm/init_64.c
-> > > +++ b/arch/x86/mm/init_64.c
-> > > @@ -1322,7 +1322,7 @@ static void __init register_page_bootmem_info(void)
-> > >   * Only the level which needs to be synchronized between all page-tables is
-> > >   * allocated because the synchronization can be expensive.
-> > >   */
-> > > -static void __init preallocate_vmalloc_pages(void)
-> > > +void __init preallocate_vmalloc_pages(void)
-> > >  {
-> > >  	unsigned long addr;
-> > >  	const char *lvl;
-> > > @@ -1390,8 +1390,6 @@ void __init mem_init(void)
-> > >  	/* Register memory areas for /proc/kcore */
-> > >  	if (get_gate_vma(&init_mm))
-> > >  		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
-> > > -
-> > > -	preallocate_vmalloc_pages();
-> > >  }
-> > >  
-> > >  int kernel_set_to_readonly;
-> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > > index edcb7d75542f..e60b181da3df 100644
-> > > --- a/include/linux/mm.h
-> > > +++ b/include/linux/mm.h
-> > > @@ -1160,6 +1160,12 @@ static inline int is_vmalloc_or_module_addr(const void *x)
-> > >  }
-> > >  #endif
-> > >  
-> > > +#ifdef CONFIG_X86
-> > > +void __init preallocate_vmalloc_pages(void);
-> > > +#else
-> > > +static inline void preallocate_vmalloc_pages(void) { }
-> > > +#endif
-> > > +
-> > >  /*
-> > >   * How many times the entire folio is mapped as a single unit (eg by a
-> > >   * PMD or PUD entry).  This is probably not what you want, except for
-> > > @@ -2939,9 +2945,32 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
-> > >  }
-> > >  #endif /* CONFIG_MMU */
-> > >  
-> > > +static inline struct page *ptdesc_page(const struct ptdesc *pt)
-> > > +{
-> > > +	return pt->pt_page;
-> > > +}
-> > 
-> > pt_page has not been added as an element into ptdesc and hence
-> > the build fails upto this patch.
+On 10/2/25 10:19, Brendan Jackman wrote:
+> On Thu Oct 2, 2025 at 4:14 PM UTC, Dave Hansen wrote:
+...>> What is the point of having a pgd if you can't put it in CR3? If you:
+>>
+>> 	write_cr3(asi_nonsensitive_pgd);
+>>
+>> you'll just triple fault because all kernel text is !_PAGE_PRESENT.
+>>
+>> The critical point is when 'asi_nonsensitive_pgd' is functional enough
+>> that it can be loaded into CR3 and handle a switch to the normal
+>> init_mm->pgd.
 > 
-> Which commit are you basing this on? It builds and boots fine for me on
-> 6.18-rc5. The commits don't apply to mm-new anymore but that sounds
-> different...
+> Hm, are you saying that I should expand the scope of the patchset from
+> "set up the direct map" to "set up an ASI address space"? If so, yeah I
+> can do that, I don't think the patchset would get that much bigger. I
+> only left the other bits out because it feels weird to set up a whole
+> address space but never actually switch into it. Setting up the logic to
+> switch into it would make the patchset really big though.
 
-Ah nevermind, I see what your saying. This and patch 6 don't compile.
+The patch set has to _do_ something, though. It's fine for a patch
+series to add code that then gets turned on at the end of the series.
+But, at the end of the series, it has to have something to show for it.
 
-> > > +
-> > > +static inline struct ptdesc *page_ptdesc(const struct page *page)
-> > > +{
-> > > +	memdesc_t memdesc = READ_ONCE(page->memdesc);
-> > > +
-> > > +	if (memdesc_type(memdesc) != MEMDESC_TYPE_PAGE_TABLE) {
-> > > +		printk(KERN_EMERG "memdesc %lx index %lx\n", memdesc.v, page->__folio_index);
-> > > +		VM_BUG_ON_PAGE(1, page);
-> > > +		return NULL;
-> > > +	}
-> > > +	return (void *)(memdesc.v - MEMDESC_TYPE_PAGE_TABLE);
-> > > +}
-> > 
-> > Ditto - these elements have not been introduced. 
+If the series is small *and* useful, all the better. But, if I have to
+choose between small or useful, it's always going to be useful.
+
+> Like I said in the cover letter, I could also always change tack:
+> we could instead start with all the address-space switching logic, but
+> just have the two address spaces be clones of each other. Then we could
+> come back and start poking holes in the ASI one for the second series. I
+> don't have a really strong opinion about the best place to start, but
+> I'll stick to my current course unless someone else does have a strong
+> opinion.
+
+Yeah, but the end of the series has to have holes poked that are
+marginally useful for *SOMETHING*, at least if anyone wants it applied.
 
