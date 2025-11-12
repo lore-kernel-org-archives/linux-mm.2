@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78ADCD13DD
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 16:20:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B659CD3420
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 16:21:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A52AE8E0011; Wed, 12 Nov 2025 11:20:58 -0500 (EST)
+	id 1EE088E0016; Wed, 12 Nov 2025 11:21:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B2978E0002; Wed, 12 Nov 2025 11:20:58 -0500 (EST)
+	id 177408E0002; Wed, 12 Nov 2025 11:21:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87C0F8E0011; Wed, 12 Nov 2025 11:20:58 -0500 (EST)
+	id 066F88E0016; Wed, 12 Nov 2025 11:21:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 711538E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:20:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F47D12DE2E
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:20:58 +0000 (UTC)
-X-FDA: 84102468996.06.F1BCFA1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 51931140012
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:20:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UsmGD2BD;
-	spf=pass (imf09.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E46AD8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:20:59 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A354D1A0594
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:20:59 +0000 (UTC)
+X-FDA: 84102469038.30.27856C5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 950BD1C000D
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:20:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RBw2nQH9;
+	spf=pass (imf21.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762964456;
+	s=arc-20220608; t=1762964457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=MraQBP8Fz8GDLEPLH0WoG09oMfWbX6B77SbiOfhXQE8=;
-	b=Os7bFB/pRBkfwuztBvMSbAZvLu+l+cBqxH0kjwGprIObSgmDEYE0QbEuAPy9uRzIDERvt+
-	oPKcI3cOdpUmo4uXF2F7K+k5GyNuVb5Fe45fF/w6tI0mHk0BFezEM4EQP9vH9VQ8THrr5X
-	ewN/ktSsiHDliaMFEIZ+7EGH13Kavfc=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t6Lo1lVPdrODA2HpZ1AIFuWYBpbvy/PrwzKPErcVbp8=;
+	b=FgBM0ERGcR0GvB6zmOy4ZO9NWpTL5fNNI/QGo5BCFEH32b2+mD4rz7DZu70OjUJB4+qPXi
+	ks3/mBj54K9C3wiJWkwrZCgRjiBWvIxD7GYhQLQZRYtCWgywGwy5O4CcIADIobiAc88UVI
+	4VIWLQmu3bDwNMgkqgG3c+50xoR0iUY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UsmGD2BD;
-	spf=pass (imf09.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RBw2nQH9;
+	spf=pass (imf21.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762964456; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762964457; a=rsa-sha256;
 	cv=none;
-	b=ceQkLhWRtEuls//KxkUapx3VdyyfYvvczGMm0jpi1ojNfgjWU16e2Ai2j9UP+IdVjfGbZe
-	mHQ30qotmr39XIp5DKwG+mEPIzkUB8i/2xQBtM5zkeip0ogpQHZjydTiMNY3gAUTgUbiKd
-	Io48dT13kt5OB5EJfqu53RtQD6lzriU=
+	b=4oa2sj+yb2nJ5gDt26tpPzrq4tMNn9H7YSC9HkxoCPxoe1+7dhbulqN/dI0e4VEzkl5Wr4
+	VbSG9wI2bILa/9ywYtVzzoA7VxI0Q2UxdhIWc6KEUmnmSFGJV1JFUh7V1Z7XcB0mmYCjev
+	MVFW6zkSARLtU5uUyPRWn+s6ydRBgfY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762964455;
+	s=mimecast20190719; t=1762964457;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MraQBP8Fz8GDLEPLH0WoG09oMfWbX6B77SbiOfhXQE8=;
-	b=UsmGD2BDsv5m4dCSMeF/ZQ8ak8qlUINwmkw8K9qLQT45rNzDcWm2p2oSUAXTFAMWm9GDcd
-	9q4kiiMneahPyzEFdlqmHK9VJzjVIxv0TFwuCv+lIlKjG7/3cE+Gjc1vibh8TTvQ5oqaiH
-	+ml+wgud+cN4Fy2gP/LIIJwgsD+Rba8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t6Lo1lVPdrODA2HpZ1AIFuWYBpbvy/PrwzKPErcVbp8=;
+	b=RBw2nQH9Jnkg/ETHJWtNUUv6xEyOmkjUrSMTDHZ0gD/LYZFEK3uS+luUbT96C4uD0J4mow
+	dzsctToLlwF6Ue90PcBp5WPDlHPeZ9KnAnCwl8Vai5TiPYNBxM3SuqpH3AF4vTdhi2FMjC
+	cl9XdrX8I0yp1chCLyO+BfEq3tVLhoM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-JeiFEAvtMiyRzhoWazdvlQ-1; Wed,
- 12 Nov 2025 11:20:51 -0500
-X-MC-Unique: JeiFEAvtMiyRzhoWazdvlQ-1
-X-Mimecast-MFC-AGG-ID: JeiFEAvtMiyRzhoWazdvlQ_1762964450
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-ddLVrbkSMDipGbF8GAQGUg-1; Wed,
+ 12 Nov 2025 11:20:53 -0500
+X-MC-Unique: ddLVrbkSMDipGbF8GAQGUg-1
+X-Mimecast-MFC-AGG-ID: ddLVrbkSMDipGbF8GAQGUg_1762964452
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 31AD61954B08;
-	Wed, 12 Nov 2025 16:20:50 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACB43195608E;
+	Wed, 12 Nov 2025 16:20:52 +0000 (UTC)
 Received: from bfoster.redhat.com (unknown [10.22.64.29])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3CA6D1955F1A;
-	Wed, 12 Nov 2025 16:20:49 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E0DFB1955F1A;
+	Wed, 12 Nov 2025 16:20:51 +0000 (UTC)
 From: Brian Foster <bfoster@redhat.com>
 To: linux-mm@kvack.org
 Cc: Hugh Dickins <hughd@google.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH v2 0/3] tmpfs: zero post-eof ranges on file extension
-Date: Wed, 12 Nov 2025 11:25:19 -0500
-Message-ID: <20251112162522.412295-1-bfoster@redhat.com>
+Subject: [PATCH v2 2/3] tmpfs: combine !uptodate and post-eof zeroing logic at swapout
+Date: Wed, 12 Nov 2025 11:25:21 -0500
+Message-ID: <20251112162522.412295-3-bfoster@redhat.com>
+In-Reply-To: <20251112162522.412295-1-bfoster@redhat.com>
+References: <20251112162522.412295-1-bfoster@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: UE2cSRrctFXotwg2adrN076RwoVeWAgi8LwJzNND6b4_1762964450
+X-Mimecast-MFC-PROC-ID: iAwzq_dsLL_xc0sQzIr_KLYry1GbkjnS6WKBEjDeF20_1762964452
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 51931140012
-X-Stat-Signature: c7jdoqxdeuzc98yddubxkifwmido7kwr
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 950BD1C000D
+X-Stat-Signature: 7pheh4rik3h4tkuqe5xhcuejipnie6td
 X-Rspam-User: 
-X-HE-Tag: 1762964456-473944
-X-HE-Meta: U2FsdGVkX1+s1fVGQhyhngAiV1RU8uGxqRwOXDdF7OAfh5Ct0GfeuvuOXPPj2neviZE6VjDROB52ZBG3ivbpFIXIJxCRXsKzF2G3Qx1q/fulLb5WK3ibdjzaYh83A+7CAcTNbUTVM9afQfRtqFqQc804HmDCd1tcztZq1Mv1zc6IRc8q0PrUv2xqKXAzNqHeb/td17Hoa6yki9Dw6v1GBMtmjAkadgX604vrsqTa33ICAq0sFQy5VlEFr3GV86Z++8xP2otNe/s70puxccRm/AbMwtUm2EieXJtRRD6kGozCPXFvKt36xpeKDaTImX+l1001zL0IuxuX1MyCXzgJdz22+LDHsW4C3KlQPln+IuCw7rJ5W/3kfnLsgz2cMPHBSWfEOSJT92HLvIiprDbHIt2/0psnbruCxGyYHKwVBecL4iPGGAzE5AvXdVU7AWBecS2cQUsirD0EiLw+09IxCwFzMnNcp8xtKYrqu1eSNOsCSAWoWY9SCNgrhmCFFCm8OaKbr4/N8rl/5IRh3n9u8+wGPiojT8a9qjyO0ogVC86EbGyzqMNts/eQAOQCcuyHM0KZ9+Aj/mu+i6Um55DKDSQUaDYDMLq6u3Uo4F51ZC2FiRcz6wX0ikUVCxjpFKQRlOgZBuKyuwKoZFQ+1/NXshOtcgQVie0Q9vc7OYi5kUqurjLkDeY24cunNGdYdpK2gI/qdWsm3blXaTT9QKqe2lWT/CAFKBePiqxKg+8U1K14BynWdUynDxzBLOXZEuNequVQhCHr4HCyQmkf/D8T/qjHZztykNjpfX7TMnfSb6AWemr1hRhNEeIBge9j0s9NCPws29151+kUpjZoqMFRmk1ZG2d+XLE+un97WPGRXKUkGyaCzn6I3rZUNLe+2Zs0NT9tbPd+I3+9pLqUt84TvWrcEBYYY9BQTp7PgZ7jD8j/EG2thnXCr3Qp3WECV/htYk63pbOMydbvkls/XgL
- fsSyw4z+
- +FAOA+QkVZ7jVIfZqd3VjXaWboI6S/W82rt6xojx4SrCae8H7NUXdqOVwZ11rYBmQ5cQqbG6QE7aY8lPbNt7RQjbU19DZBNEhQugwkH89GXQ/yZ4RZNIiSFaXahxaY8xZUdY9jUnebB6ZDeWpOOWNw9gv79cOoKALDJKYCXhwzxqxQzIvyIqKvV27cDDwj0NGLkPoYOhiEul3bATVvkUYQQTxCSF5AIXJTt4+0/pU3ByM7ZZ2FwpnXZh4bQRLYYwaip0Rho9QgcqsNzicCxivjLx4Xyf6MazXwUpCp/eof2YYkqf3ezl9/l3xJhI10Qpm2lxOnchghqX5gGbSZwrCPYaUL3USYl2enN/LeaOtmuXs4jaCGC9SV+GMtlcabU1y8ILm5Lg5nKImGY0=
+X-HE-Tag: 1762964457-862580
+X-HE-Meta: U2FsdGVkX19UeKK+tgY87TxHevtWSvVRnxUROf5qv8+Yqzd6zONuZQdNAQvzZbxrcHXCGGvSgmUF0vYoOm+wczDR5jaqThi/TIMmrl79mfEPHn3PT1OhdR9VIzMWcF9kcN0DC+poLK6uIAiNOxrJCzH3LukxL6SggOaIsMe1hym+byzVonTxJ8Sxv+LODVZg98bBDCRLzjN/Na6mztboGgKaekMGGJYmVCA1xjmrDmmn52BnhL7QJirfPqfV9UwefqBX42LPjdSPuaPi00zkGolwjI2AmaIXzYGgrb4e4awASWQ9FBr+CjZPKKg0rm2TkzobDFuVGxzR01e/a/pd/fOT0xlbfwT0PWpbc5ls0Eh7Z9KgQL3Htz9w8c0mkPqpedsj848Q3/ygBNinOAs7Zju+DNymwCBRH6BVvQwI6YVhmx8T5NGHPFUJE3O7KtBhtisEr92oG5BVQiwZGJ6ybrw08jjMb+a+wz/7OQW3dNYpO/WJOU/aAE/gHjVokY6Ej/H2Jtepmdv6wXdmKaNsV1y8ap+G2iNMzbOIb5nJ7bpEGj3OfuQ0szs4VXbNUnIuwTIdxB95QweAUM2XaEmoZaR0TRQw3c7BVfa6h228K1qhA28F1qILcBGEctLO/27uvwIlzPGTwya6ccjDb1NipK7atHo41GTiD1qEaXDA6+byqvM6WO3s8X7N9sspDEVLYrtsxcY+rwJ34SUJvR5cU74IJPslrHYtzh6IIWsYrTQutMojEjScb5rOUkQc+3Kw/sHxP9mimuV4nV3A/lfvhm0YMZW0WHJhcu0IRObakLK6U5aAVeP59AzaIhafIsy0E8Vjf/ckryEVhONSGGwpoe775u4e/mECrnMxliESvqUmcBQuNPCSTDfvRsEq1iA4DfP1oaFYYPFVtLRvJaPvcMG6KPEg/xvzI9bulGYy7YNX3kLd7y8KjmqCwWrk7FYrKtLmjox/aP+Y9V49s3J
+ SqN7aVc/
+ O9yb3fS7tPDju28mvuuheTy1NggDogAf3QyFJIyq5ScQEEQfVIcpjZ3tQsq2oW7P38Peqe1ZvmOGNeTkuxDb24EWZyn987RzrUWoV30hBBkABlsQM+wM3ws/fzvN+T380gXjJJdYNcdLESFyGjoa5H+g01nUdPCRLY+neU4xw/giIlxpRxctYb02sd8KPLQttaygszLUdx81PvSWj1cpGZvj7wr2XB8KR0USaDOJaXHFW6CVYZs94tVbrH9ys2G8NkTSxJxUhPBQAn8sJb1BJXWSfdGAs0rL4qIgQJV48RiM8WMIBPfyE1uUJBmQGorjI6cmsSgntd9WZJnA6vf5uN70be5+z2nhnUOXY8BYrYamR5zthxcf8Rs2VnjsX4t0ghwSIkvl31vHZM/e5FhepOtKI/n1cXtFbwl5P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,53 +107,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+shmem_writeout() zeroes folios that are !uptodate (before marking
+them uptodate) or that extend beyond EOF to preserve data integrity
+according to POSIX. This is handled in a couple different blocks.
+Fold the !uptodate zeroing into the post-eof block so we zero from
+one place.
 
-First and foremost, I'm posting this v2 with a bit of a caveat. This had
-survived most of my testing until I rebased onto -next and came up with
-a bit more involved of an fsx test that concurrently stresses swap
-activity. I root caused a couple or so issues that fell out of that
-which appeared to be preexisting problems, then ultimately ran into the
-folio_next_pos() type issue that exists in for-next (this causes wrong
-same_folio values and subsequently wonky behavior).
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+---
+ mm/shmem.c | 40 +++++++++++++++++++---------------------
+ 1 file changed, 19 insertions(+), 21 deletions(-)
 
-So with that I need to reset my thinking and revisit that particular
-test, but given that I hadn't thus far changed anything in these
-patches, I wanted to get a v2 of the core work out on the list. Note
-that this is based on -next and I'm testing locally with the
-folio_next_pos() changes reverted (including the call added in patch 3).
-
-With that out of the way, I think this addresses the open issues from
-the discussion on v1. The main difference in v2 is that rather than just
-zero the post-eof portion of the EOF folio, we now zero the full range
-between the current and new i_size to accommodate situations where large
-folios may split across writeout and swap in.
-
-Patch 1 introduces post-eof zeroing at writeout time so the zeroing call
-can skip swap entries. Patch 2 is an incremental cleanup (I found it
-easier to split the change this way, but these two patches could be
-squashed). Patch 3 introduces the zeroing behavior.
-
-Thoughts, reviews, flames appreciated.
-
-Brian
-
-v2:
-- Rework to zero uptodate post-eof folios on writeout and full range
-  from EOF on size extension.
-- Misc. cleanups: variable renames (pos -> end), code relocation,
-  comment cleanups/removal.
-- Update commit log to call out POSIX requirement.
-v1: https://lore.kernel.org/linux-mm/20250625184930.269727-1-bfoster@redhat.com/
-
-Brian Foster (3):
-  tmpfs: zero post-eof uptodate folios on swapout
-  tmpfs: combine !uptodate and post-eof zeroing logic at swapout
-  tmpfs: zero post-eof ranges on file extension
-
- mm/shmem.c | 135 ++++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 113 insertions(+), 22 deletions(-)
-
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5fb3c911894f..7925ced8a05d 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1627,25 +1627,20 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 	 * good idea to continue anyway, once we're pushing into swap.  So
+ 	 * reactivate the folio, and let shmem_fallocate() quit when too many.
+ 	 */
+-	if (!folio_test_uptodate(folio)) {
+-		if (inode->i_private) {
+-			struct shmem_falloc *shmem_falloc;
+-			spin_lock(&inode->i_lock);
+-			shmem_falloc = inode->i_private;
+-			if (shmem_falloc &&
+-			    !shmem_falloc->waitq &&
+-			    index >= shmem_falloc->start &&
+-			    index < shmem_falloc->next)
+-				shmem_falloc->nr_unswapped += nr_pages;
+-			else
+-				shmem_falloc = NULL;
+-			spin_unlock(&inode->i_lock);
+-			if (shmem_falloc)
+-				goto redirty;
+-		}
+-		folio_zero_range(folio, 0, folio_size(folio));
+-		flush_dcache_folio(folio);
+-		folio_mark_uptodate(folio);
++	if (!folio_test_uptodate(folio) && inode->i_private) {
++		struct shmem_falloc *shmem_falloc;
++		spin_lock(&inode->i_lock);
++		shmem_falloc = inode->i_private;
++		if (shmem_falloc &&
++		    !shmem_falloc->waitq &&
++		    index >= shmem_falloc->start &&
++		    index < shmem_falloc->next)
++			shmem_falloc->nr_unswapped += nr_pages;
++		else
++			shmem_falloc = NULL;
++		spin_unlock(&inode->i_lock);
++		if (shmem_falloc)
++			goto redirty;
+ 	}
+ 
+ 	/*
+@@ -1653,11 +1648,14 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 	 * traditional writeback behavior and facilitates zeroing on file size
+ 	 * changes without having to swap back in.
+ 	 */
+-	if (folio_next_index(folio) >= end_index) {
++	if (!folio_test_uptodate(folio) ||
++	    folio_next_index(folio) >= end_index) {
+ 		size_t from = offset_in_folio(folio, i_size);
+ 
+-		if (index >= end_index) {
++		if (!folio_test_uptodate(folio) || index >= end_index) {
+ 			folio_zero_segment(folio, 0, folio_size(folio));
++			flush_dcache_folio(folio);
++			folio_mark_uptodate(folio);
+ 		} else if (from)
+ 			folio_zero_segment(folio, from, folio_size(folio));
+ 	}
 -- 
 2.51.1
 
