@@ -4,91 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EC3FCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 09:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DC6CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 09:52:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED7C08E0016; Wed, 12 Nov 2025 04:51:50 -0500 (EST)
+	id EDA0D8E0017; Wed, 12 Nov 2025 04:52:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3A068E0002; Wed, 12 Nov 2025 04:51:50 -0500 (EST)
+	id E8A1D8E0002; Wed, 12 Nov 2025 04:52:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D298F8E0016; Wed, 12 Nov 2025 04:51:50 -0500 (EST)
+	id D2B5D8E0017; Wed, 12 Nov 2025 04:52:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BAD8C8E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:51:50 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 628FCC0446
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:51:50 +0000 (UTC)
-X-FDA: 84101488380.07.46E98F1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8732D100010
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:51:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=blWZyuhn;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B6B8B8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:52:49 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6ADCC4C93A
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:52:49 +0000 (UTC)
+X-FDA: 84101490858.16.FEEDA72
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 626BD100003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:52:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qx+reW0v;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762941167; a=rsa-sha256;
+	cv=none;
+	b=l8GEt4OacCphDykP6zhG0e9FcK16YAO66EV2zqWNJES0sx6TJoqs2Fi2a4kqGjML8P4Vm+
+	L0Jl0jqu03V5vFUW+LZ9MKEtLPoJeCjEvHCRnXJ0tssMsfFZjxxTDgX7OFZ5XvuNiIARKL
+	OcLIQMyz99NST+ANOtf+FRBMi3wwvr8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qx+reW0v;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762941108;
+	s=arc-20220608; t=1762941167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QSPak/G3ooeBRjGhS+wC8fKO72bBj9gWkBo+099LaLA=;
-	b=dUqJYwxzpevLoucb2nj9SdGl/uI59QqTeJ7FsGF9PcdlFrlYbocUpp/Hg5jBypylL8XSDJ
-	Ehd6XbIcntMwrECVuZuQQlO5ix45BuP+o44K2qUOatF1/bGp7+8Vuloj5Qw9WskqcB/lwi
-	p2Ihi4Fjj+DgwXWIOPgcKmzBmSHk3g8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=blWZyuhn;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762941108; a=rsa-sha256;
-	cv=none;
-	b=y82gYTKs9VA3ixd/zIy0lnZQlr7KoWrf2Nsd7++PPTCeCBySRNESHWKA9XNOf9XF0MkHPV
-	G/H7MFRAc4Fq5JdzHBGZNenYI338/9CCw3ZFpbZRUg+IQ4kfA3yAVwCq3f+tvmDPWIkBN1
-	kPG3z3PhPQ9zZax0GTlLoG83qujb4lg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A6CC4416F4;
-	Wed, 12 Nov 2025 09:51:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE067C4CEF7;
-	Wed, 12 Nov 2025 09:51:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762941107;
-	bh=JpCm7hIOXYoCacl8skSZV8a5tTlSpGCfcV94O6Mv+U0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=blWZyuhnbETFn27f6OqpWrXth2ubBEfvedwLSFDNclPYXgtCbAhDrxvX4YbPzgnY4
-	 GafPHFEqrHG3MGl+70esf4QkMiGaiHFMmDwXqV4rmExiGPGhuX/r8NIMkiujtvBNPR
-	 TWE4RtI14v78OTGKHAhyaTe0mIVCVIrDc+JhilPz/wSxNmJIFX+kUp+0D4jgXOPjus
-	 eQ3KbK9iKGOv6ywSd/6nTK44qZwWJTJ17MALEJpcGihTUP9TkcGMegy96fWkUKfkV6
-	 EGJ6h5OFB0YhGJzJButnuR6EuXpSghAsJo0ezQXkb6sNsJDOa3EO39EqZpxOEzRc10
-	 ed1wBFFsUQtMw==
-Message-ID: <d4e055dc-be45-4ced-870b-2b62f3507c71@kernel.org>
-Date: Wed, 12 Nov 2025 10:51:43 +0100
+	bh=NhHDG/RYOkgjp1iTZiVveFurISFNmM/HJtxHwxRJDf8=;
+	b=JZNtM7Sg6WTtXKRpJRF2Mh5vV0Jc7Ub9PDLhf7z0b5RJ31VheSbrEoc/0Z0/q8fJyn+aWX
+	tTG5sf61jzOY053BJA5Wlx2dYoTIkYIQr2FVl77VifXRhKpu5eUA30P8b7tQDLJptcCLFj
+	Rb2Gv33HVhfuP2X/tmpB5eQM0W0o/L4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762941166;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NhHDG/RYOkgjp1iTZiVveFurISFNmM/HJtxHwxRJDf8=;
+	b=Qx+reW0vrhJmkf6ybZN4Ko1CcJLOVr/pMVjQ2m0GU+zaxPqbrHEjFkkN6WK8jZaXywe4NA
+	Bml7u5jR9fVvlktTd96f0klHWonWarWAB7dxBl0CgQe13QS0qmvqSm5aS2fRISxp0FWD23
+	i4xC3DPaDBE0XoWe6IGdCCYMQlheteY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-thKX29d8MDyDCSuebjYMpA-1; Wed,
+ 12 Nov 2025 04:52:43 -0500
+X-MC-Unique: thKX29d8MDyDCSuebjYMpA-1
+X-Mimecast-MFC-AGG-ID: thKX29d8MDyDCSuebjYMpA_1762941158
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9FED31800650;
+	Wed, 12 Nov 2025 09:52:35 +0000 (UTC)
+Received: from fedora (unknown [10.44.34.114])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 8BECE1800451;
+	Wed, 12 Nov 2025 09:52:14 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Wed, 12 Nov 2025 10:52:35 +0100 (CET)
+Date: Wed, 12 Nov 2025 10:52:13 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Will Drewry <wad@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>,
+	James Morris <jamorris@linux.microsoft.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Adrian Reber <areber@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	tiozhang <tiozhang@didiglobal.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	YueHaibing <yuehaibing@huawei.com>,
+	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>,
+	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>,
+	Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>,
+	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	David Windsor <dwindsor@gmail.com>,
+	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Hans Liljestrand <ishkamiel@gmail.com>,
+	Penglei Jiang <superman.xpt@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
+Message-ID: <aRRYzb2FxHzpKhms@redhat.com>
+References: <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <20251105143210.GA25535@redhat.com>
+ <20251111-ankreiden-augen-eadcf9bbdfaa@brauner>
+ <GV2PPF74270EBEEDCF80CEE0F08891ED37BE4CFA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <aRM2POTDTxEzeF2F@redhat.com>
+ <GV2PPF74270EBEE16FE36CF873C5C2309A9E4CFA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: continue to collapse on SCAN_PMD_NONE
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Cc: linux-mm@kvack.org
-References: <20251112020031.25350-1-richard.weiyang@gmail.com>
- <04e8e813-b43b-423e-8ad9-fb13ac953055@kernel.org>
-Content-Language: en-US
-In-Reply-To: <04e8e813-b43b-423e-8ad9-fb13ac953055@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8732D100010
-X-Stat-Signature: daf7799oit8agb78kh145sniuugzc3bg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PPF74270EBEE16FE36CF873C5C2309A9E4CFA@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: 626BD100003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: j6y13wpsxgou4d9qs8dk98somcruuydw
 X-Rspam-User: 
-X-HE-Tag: 1762941108-872275
-X-HE-Meta: U2FsdGVkX19KrKn+DmUp1vhPUpjvCif2fnNXpcJZTiSVKq6l9WrX4BGtRr3wIbu/sSpxS4HZikpgV741Ao7XGr2pzAjT2l37sqRQXDX/G4M9gxVH6NCPX7pLMJddo8M/C05b4vY5s0fEVG2FjyAETCvxTkijrBor5qAcLl+Y8+EPbRRgCbD7mMvmtkDye1TRcrUSo6fuqFUNALHN3/gQPDyMg3jex1AMwnoOdsWYh90TP0VCrSy7PEeFjmbClR1Lp7lOhu3p/LqakGOtsofqpjgcmOayd+uAn8pK+zRWakO6jJZ2EWxoXJ5h05mGNXIw93iPTCc1VcAsbSptyxUFDSRudOG0nIB3LOWTnJ8LUbfoQo2wliFY5ByQ6MepwJmRO19KcVxpZ6nPr6h6PpMXRiZZLqF1r93T8Km1ORe/FubcBC5S+mngthFtAK0KZVhyYaq1P/9sYJM5agijvV6jxz2ECtnW3hofrrXGpBHBAD84AXNqy7ZHUX/8lRQbsJdr6w9vB/r6IXcGsI7P9/6MM4aHWecJUqWRt90pa/kY27jA/2ArsbUGkLhbt0ytGSnHOmUG97ODM/zP/PbgcSW5+nHmEwA8D1GHK2BUwKM6iLbgddrJMGZy+In5wwObCogLObGN4KYbFMrXmF0WycQAtxkh0iJHZka9JM2hA0dQCNSdVa9JjgrHdwuM7Bz1M1Fbz5+RC3gUv+D3v/PBTM/QOF8PDxgGcfMPehT4gY+IR1wfLa6YonU1MhFkwSAGLKvZolddFTSPhtROWbFm0pEHCmtXs6qwEq3lq7oh+NcZh6JkP8UcSsDsZleIKBHPyhlle3Nvvldy85wKSD0wgnfAPn0efBeq+JxhucEXk0xqADuQGTqkIQohdTxzVd1hTBqsQRvvyLY+NRhKOLwfLDq647/GAmd78fp5tsbNWHgQmP7/wzK4dlkL8vLSQwU6THY4bIPOUYSADrjnqAkE932
- HEiwDZyM
- V8u37qsjH1ZmWHefnn2YPSX10Q3IwpVf1dBkXX1qpktdGpnB96jZqr9YIBvVEXppS0ssfj+kQLkwfR9WOvnsB2By61xdAKCN0lxrFX6eBzp8VQJrZjU9Z6b4eqzSyW/kUZkPwuQHvzGYzuFeu3o8Hp1tx2Du4Me6miGBvMAA1aBO2PhUZfU8DpMONf6Venqld8xRvcIsZ/P7626ey79kzqlEJ9eexIpsPwk2z/Hz78WtyI/v28qJX/zvjg1tJS1/TYZWkUfGLY6Z0PuStjGBB0l3scFMCjHY5ynkUMzXN+5g+mCx6eNSorOnM82swCVdnICWSEwYfGic813wafU1uS6qwIy/9gGG+5jP9TkhEi5XFGfo=
+X-HE-Tag: 1762941167-516462
+X-HE-Meta: U2FsdGVkX1+pW/OSj+W55JFTtFs2OSodBXkyVKYDKAv/jt26UWZWx9yi26lvPW4JiWRvFVx0ezqQCya4t6SLVFPFysa/KiixogEmIpu7LyYPSqmPwCzlzRDv6gO9nD79GcdOnIlPF/FJx5/N3pJRzWJUsfCUFbkdgziqP7Sm+w9BhE81c9zoLSvGQr8rL1DTZhYGgxR5snDyqp8Yh6CxoFMxFeDqx/QTV0bXxSjRgyfqec1pzaKKQ9VDnwwndZ3773ydOHA+XlTw7GGlR35fmiPmv7kkBvcM11abWQ9xfFjLdqpBWthmSHJDGTq/c96wXNCVu1blR9qHp/5kETkcN+pOoPVI4PYcSlaVsOb+MHBuXIRCjp1le71B1LdvlrAwcsKrg6PRedIG+ECXqOQXcd+H43N1nlwhfVuDzlfHTqmjLD/BrH+KbPlxcuPPSnRkTM6N6Nzvaxp4WLiq8NmDg7IX2nVrtH0qjoxnkccHNTuS1zlxA9zMMOtuEPQSYs2SMvCYW+xKRcnWqNeaPHG5KiTkEwyy0QRER7KDqwG94aV+/HNWyB/6bZGl2ZSpidrWLpaFwn2Gh/VWeKf6DTF4LOTd+BZ3t4UEPB8Lk+2yTEyXHhKO0e25UygCycK0IYWQoHYnt0fFgkKvAmmNr4R90EU5tUhbi6mwTc9MsMRvWYr1iNwRxwMoiLDQvssNBEG3ln6ZYNF3rQ1uY8F7ZbDY/wUVjgm6lqAlaqBAR2XAJntfD7OTm1PLqqqYSHkUn022gbzb3V5KdQ7n8BKj9J//7dJt30OMHFeo3I33Gj4RFkn3tlUl0ojGbVH8zt9os3XAYc0BkfBBTck8QI+XNZLA2iZ3AXbI5nA6L06k50KAQROQz+TdS3tWBEbOw3o5WRd/VK8Ws6AZw1xQectgtCW6FEHFbhTGq2RWKu8yS4tRXm4LQbxr0Yr4oXd2pGUq17OZqSNbtHvjYv8RDJH9b+Q
+ ASFtn+WP
+ oaMHTwwXjM6S5yptGaFyHdZN/dErdf0DKQ3Npi/yju3OSTJo6sK7TJGR+qDipWDx/NiRQpuC0aC4Fl6GbOjdbXmiOQKGIaYuQuW3WtGnA7vxkU+mo2ynk1YruKDFZAcOunV8bIIMbPtGp9ZiJSFvms4w1xT1n8Gblb3eGHrboXR7soawi+c3lqA0uoBJMxCk2EOymjomBUU+FAabvKdLNiY2njRcPKdjvWfdEGyzM1lp3P5KKUjaPtRh5mwlr0D/k594FsbXxuIL9mcC4vyVsNsVoifNPc1xsGaRtSuKVTVUjKnG5te+JxmjzEye3U4dMPH3yHbWYaAW3JfP0DRXpX+8vDQTpu1oyw8mlLrqV7NgimO14btLjxP1BorSWFCFOxR8FdatkbuWdXie0Uz8sZ0xfIdnpWszLC/DWOuAVbOzdR6ca+gCkkCXLKLPgPJ7Dgy2QSrlhBNBo02XQ69uMLv7s2FetPnvMcqKFfV/ZJWlpzZoTc8kSxbsn6glM1cqJAZMC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,40 +154,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.11.25 10:51, David Hildenbrand (Red Hat) wrote:
-> On 12.11.25 03:00, Wei Yang wrote:
->> SCAN_PMD_NONE means current pmd is empty, but we can still continue
->> collapse next pmd range.
->>
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> ---
->>    mm/khugepaged.c | 1 +
->>    1 file changed, 1 insertion(+)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 7e8cb181d5bd..4c2217076ad3 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -2835,6 +2835,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->>    			goto handle_result;
->>    		/* Whitelisted set of results where continuing OK */
->>    		case SCAN_PMD_NULL:
->> +		case SCAN_PMD_NONE:
->>    		case SCAN_PTE_NON_PRESENT:
->>    		case SCAN_PTE_UFFD_WP:
->>    		case SCAN_LACK_REFERENCED_PAGE:
-> 
-> Looks ok to me.
-> 
-> I am really confused about PMD_NONE vs. PMD_NULL.
-> 
-> Is my understanding correct, hat with your patch we can just merge both
-> into a single NO_PMD_TABLE or sth. like that?
+On 11/11, Bernd Edlinger wrote:
+>
+> On 11/11/25 14:12, Oleg Nesterov wrote:
+> > On 11/11, Bernd Edlinger wrote:
+> >>
+> >> Well when this is absolutely not acceptable then I would have to change
+> >> all security engines to be aware of the current and the new credentials.
+> >
+> > Hmm... even if we find another way to avoid the deadlock? Say, the patches
+> > I sent...
+> >
+>
+> Maybe, but it looks almost too simple ;-)
+>
+>    164          sleep(2);
+>    165          /* deadlock may happen here */
+>    166          k = ptrace(PTRACE_ATTACH, thread2_tid, 0L, 0L);
+>
+> what happens if you change the test expectation here, that the
+> ptrace may fail instead of succeed?
+>
+> What signals does the debugger receive after that point?
+> Is the debugger notified that the debugged process continues,
+> has the same PID, and is no longer ptraced?
 
-NO_PTE_TABLE, actually
+Ah, but this is another thing... OK, you dislike 3/3 and I have to agree.
 
--- 
-Cheers
+Yes, de_thread() silently untraces/reaps the old leader and after 3/3 debugger
+can't rely on PTRACE_EVENT_EXIT, so unless the debugger has already attached to
+all sub-threads (at least to execing thread) it looks as if the leader was just
+untraced somehow.
 
-David
+OK, this is probably too bad, we need another solution...
+
+Oleg.
+
 
