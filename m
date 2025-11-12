@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F2FFCD3445
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2248DCD3444
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:29:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3738B8E000C; Wed, 12 Nov 2025 14:29:51 -0500 (EST)
+	id 7DFFD8E000E; Wed, 12 Nov 2025 14:29:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34AFB8E0002; Wed, 12 Nov 2025 14:29:51 -0500 (EST)
+	id 791048E0002; Wed, 12 Nov 2025 14:29:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 261758E000C; Wed, 12 Nov 2025 14:29:51 -0500 (EST)
+	id 67DC78E000E; Wed, 12 Nov 2025 14:29:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 13FCA8E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:29:51 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B915C12DF59
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:29:50 +0000 (UTC)
-X-FDA: 84102944940.19.EE0ADC0
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DEBCAC0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:29:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="kjUK/jA1";
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 4DA458E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:29:54 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AA2C160666
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:29:54 +0000 (UTC)
+X-FDA: 84102945108.09.7FDEBF3
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 49C12A0012
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:29:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gPbrAhQr;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762975792; a=rsa-sha256;
+	cv=none;
+	b=0ZGASvdSvkamJqPfCo69KuwxLIgkamO6QdQAoCIJGxRlyGx/DDHNjKC+h2vlkBby+F6+mX
+	4pXclw+OOJTHtG+guvNvDgqH3H9m6P5XW1gjccVyM/xuBGaWO6u6ejZtzzYBdRrMKpl3Ub
+	+eMxo+sH9297THUsVPM7rVRj7rWfBfE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gPbrAhQr;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762975789;
+	s=arc-20220608; t=1762975792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4+0KzZp8SwB3qOByrtp+OoMjU8q91P/BfZmx06JIMXk=;
-	b=F04LB0zAYo3VMwieFjSVnA6ThTTOsIApe/iKboTTXvUkL2SvZ9jNYlC54YT3JyXpK38Ztt
-	e2DEaC3+X9voxFw7/pV6zVSqs3JXP7Dh6ES+hKzV8jpBMw3Ru1OpLF+8UgU8+Fz36Nn4JF
-	zTB/VGsHRNdRbznHlj4dfBUNws2lvRM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="kjUK/jA1";
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762975789; a=rsa-sha256;
-	cv=none;
-	b=UFJlC9nRnHg5ph9aJpjiMD6yX/gNmwda/2YNxwSErEyqBxxb05lRZy61X1bbVans7OuNj5
-	8xG1P7bP1tSfiKiQAj+ei6OBWLz9zqYObVH8mSW4l8KRZdQ8svveY3T5TdSgo46NqGdkQX
-	ki8Pv7MeyZUrPUxpxv89S1tvLprHACM=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b26b12be9eso4216385a.1
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:29:48 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T7tukR8goduFTZ00FpwpL7JWktUWF3Mq7A3Wmoox3b0=;
+	b=nHK0s7ZMGqVmieXGUr7QMfdBaF2yOuzUq4ij1u//1Z4fdP7DZhRg1p8hmdWkOCw6J8vy3m
+	oYEy93heMxrSwY7Gc3+KCeie4ehfOdhAsQTNIl3ncdy/sQ2C4dQRYRZTtuQ6xM7xV67dxk
+	sRprSughmUqvF4z3f52Ctew1zIsSzDY=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b25ed53fcbso7046685a.0
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:29:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1762975788; x=1763580588; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4+0KzZp8SwB3qOByrtp+OoMjU8q91P/BfZmx06JIMXk=;
-        b=kjUK/jA1/UyZURJo+Fdm9ywEL15SAO7UE6wlz6vXC8qmoonaVZvFzd/7x2sVhS6HQ0
-         Oj7YeFeLKa0SxqwNi32aFHeP6A5S/McgwVi1hjcwZOM2CCKlQfuC+SP8HtsWgGkPPS4P
-         Ci+40bfOxFtdgezDOlZIwXfHJbmOtmPuTIk7EmfHwMrUN1uRemp3Z/D1MV1hpnffoKvk
-         dKNm4D9SHzrhTVdd/6XwMJ/kHLmbZUf3fRbzFXWwXmA6WDr/3qjKT0FSdCGVdVlsB4MY
-         DJXgjP+bGJscdDqRJyRMkd/4RfAeNnKB1k1ZgI1yQ+/jEu0uxDETpKLRZWKxmXY4OBU3
-         BTkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762975788; x=1763580588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gourry.net; s=google; t=1762975791; x=1763580591; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4+0KzZp8SwB3qOByrtp+OoMjU8q91P/BfZmx06JIMXk=;
-        b=rjHaWwRrj3e6fenWQ6XnuhkrWqGVPuKookpyNhcV6QDucXuIty3ue+iiWfD3QuQC4w
-         tB5rZyQigaWUO++SsFeSlP6Cr2iBJGJm0bbmYOT7GuDp0+pbFGV1dNizcZyG71/xfpJ1
-         KnDfDEu1Ieqrlykad2n71Pug6QjnnJ6h99boZxMRHxROATBd/oRjVAMPJnKitwoXlkpa
-         bR7OR4WKXkXG4NwgjLOtVp3viLYB7M9b20eY9+VY0qMgNTnm8PNu22qosgLjSNjNlOJo
-         un3QsgrfJUZ7AuDfZoiObEDW+U5vH3HAFMgdcP1wZ15v47DXMRRHE031dIf9CYQ/7Zgg
-         XSVA==
-X-Gm-Message-State: AOJu0Yy7QfgvbZRPZMstwrziPHngnaM0QMvotKKLAimxAVvEU03m9cA2
-	7BMCevhkOqfF0GbZfkiBEEeW3OP2jYCVbacQzRsS2vauVZdny7F6q/t1ASM+qpZII8wqRqIiE6d
-	Kc24i
-X-Gm-Gg: ASbGncsT5hC3kz9nq/Q7vK9CxsV/tdOxMBFV8OP0F9BVToB8h6WTwPptjBM5G+U6gGk
-	8O7+WBeZAtEl9BkhzrwSRxF2XtKnI0wJeDbrQHN+hjgjrbxHN3+vpXW6qLp99zgmMzVxCSCJAI9
-	n0fOiolFCR9pV+vkVLqN0QbXWrmgOTHKwsnkJZ8AdcAJRg3rHqUEpbPWQXkM63wiVKtaSxA3xUx
-	/x0l1zACG+0AVauap/oXaa9ZryQGgdg9rsOQVf3RbVe+ckQwYdgOJagvdV1WR/p/gzEFAziXGCy
-	HnT33zDPSMwD9Dy/Kvsnpx93pRievV9e81PAGBeGIshOvXWr9A4Zse0ceZFzkT/84kad88ZEJNg
-	9UQnOa//D75o779JHzFidIkGNODZS0blDlaT9qUlKQSO2uQzTlYFafbFizKmEN5GzBYgVdw6wQq
-	368tzSv5SQZf1yNedvlTrFVyLcDZyQRvLikEnXc2hxhs0+CYlELAgpmqoGjte0BCvN
-X-Google-Smtp-Source: AGHT+IED/6odDPyQbULX4YBs7xZBD1FyA57cRMNb3Lw5e2EsWmuJNVD+txeZjw/L/EjeaGulzMWhyA==
-X-Received: by 2002:a05:620a:f15:b0:892:8439:2efa with SMTP id af79cd13be357-8b29b77ab2bmr557638985a.23.1762975787508;
-        Wed, 12 Nov 2025 11:29:47 -0800 (PST)
+        bh=T7tukR8goduFTZ00FpwpL7JWktUWF3Mq7A3Wmoox3b0=;
+        b=gPbrAhQrIDczy4pGXOtrOe5AJNju+W6o8YzjR40OVB0/zcL6eFB8hmmWtjzwWSQwMJ
+         Fi9E6spLlaPix8N58m64CeER6pM0BJ0Z6Mfq2o7wx971/f8ZqEAGMQ1YhXqZDQdayruW
+         vk5uf88E32TnVxoz/6+xtvMqKSOAP0OBhgE/f6J0d3SLyLj53d0dbCsksnb3Nz5wYY+7
+         BtCQHJJpDdgLIB8960dnPR3qL83reWZm/pOaq1YqWUD1FyCuH7yiQjvo2C+A75Y3YorJ
+         8sEzFU/dMDrYa5w1ZUXSm+mYJcyHsZROK55ESRWeoQruTUdOZYSKvRENgnsODXw6yKNn
+         XQOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762975791; x=1763580591;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=T7tukR8goduFTZ00FpwpL7JWktUWF3Mq7A3Wmoox3b0=;
+        b=BHnDgUzWggOLqFJgp2s8bKapZy+kW3pZV7wW25ctxWU0suEeFrIfmYyZYQumMOOe+p
+         OV/i6nl4CKti2+KGZi09c9yNngZ2LZQZZBSfh+QlYARq8d4xo6ZCwMUMN/wcHBLMFRxw
+         sUAk6Uv5Pg0TQhByLo7hByqf+s3VdkRYX0SvdQiM79Jd4WQY0e/HTW/Y2Rte3gK6x2Hs
+         R6lzyGpo5p939gqinKtufrq/F4mW53jR04/nIg09nUoxIUTqEAJXFiNo6cZFYBa3j0No
+         KsYv1kvJv7EIFbjLBhHALA5MRYKU9z3mN0kbEjKPmvEhutob4lv66h2hCQMr9++O6uPU
+         ay2Q==
+X-Gm-Message-State: AOJu0Yy3N++LYhwnd4oyhhs5Fh3TibY5g/hLEKVVBs77Gfsu7Hftk8rP
+	vUPSvY43L3u1bdbFgptz0LsrYl5sqsWJhOwTrwLxuobMUHqa81l1Ai/RoWSpYoCFDafhQhPc9ZO
+	/VcLg
+X-Gm-Gg: ASbGncvUvRUJs5DWN36/StcNkS4QMqJh/ZuTQ1vQ9g2YlyxaI1F6cfYcyY9vrhfu2AE
+	wtVxnDoBl9oDEply5E/lQkHXVk2GGoe/zMSae5cWIg+7amiowlIJ+3JHn7Y3uA9iUm3lp1lMgqy
+	ordmzxwJTfQapLDgmswgnaZ9Vn/v1vnuttg5HuQ6CWQBGVgdNNohwJpUDtPSogf3oLY7/AR2iXk
+	nZT9XTwixtpdbT/tOM0J1N5gER1MllFJvV99msWnaC4eghpLlfgWeFI4zBPqheFaFoxuBg2MmgU
+	nAYIsJQf7fY50ivcwmRjEEgTZB851bdppqgcfU/WY9oDjEGrD3ZJMWX1Eykt4zXF9HibnyB+GG+
+	td+1jNa7cjZ75rNx7ipFEhiqd4mS7tQwjcl19zg0ZuyD3+f10ZS08X2RnY9KnOpMInkzHe79i7C
+	nC7LbX5rp1uS/C5VdAQzRhUcLMVyQH26D5bnpCrwrCd6V6zqvhtTjwm+3OtjtHLWai
+X-Google-Smtp-Source: AGHT+IHo8OwgwUC032YSv60eOJd12q77M7KD3oUAYRPoiD1R5IwVdmpQvxPyI0R/rCY63GPtuNDIug==
+X-Received: by 2002:a05:620a:4406:b0:8a4:40da:b907 with SMTP id af79cd13be357-8b29b768ba9mr557487185a.32.1762975790793;
+        Wed, 12 Nov 2025 11:29:50 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29aa0082esm243922885a.50.2025.11.12.11.29.45
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29aa0082esm243922885a.50.2025.11.12.11.29.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 11:29:47 -0800 (PST)
+        Wed, 12 Nov 2025 11:29:50 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: kernel-team@meta.com,
@@ -159,21 +160,22 @@ Cc: kernel-team@meta.com,
 	namcao@linutronix.de,
 	escape@linux.alibaba.com,
 	dongjoo.seo1@samsung.com
-Subject: [RFC LPC2026 PATCH v2 00/11] Specific Purpose Memory NUMA Nodes
-Date: Wed, 12 Nov 2025 14:29:16 -0500
-Message-ID: <20251112192936.2574429-1-gourry@gourry.net>
+Subject: [RFC PATCH v2 01/11] mm: constify oom_control, scan_control, and alloc_context nodemask
+Date: Wed, 12 Nov 2025 14:29:17 -0500
+Message-ID: <20251112192936.2574429-2-gourry@gourry.net>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251112192936.2574429-1-gourry@gourry.net>
+References: <20251112192936.2574429-1-gourry@gourry.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DEBCAC0003
-X-Stat-Signature: tksiu3ddu19eotmcyxy63zetg48j9r7e
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 49C12A0012
+X-Stat-Signature: 3w1fod133y8h9co3ihi3dpxeqz1945rr
 X-Rspam-User: 
-X-HE-Tag: 1762975788-166147
-X-HE-Meta: U2FsdGVkX1/znwXiLYo3lCbxRT0su0UuOTfmRLGrJqES5kQksEZjaVkjUVt+HZ7rOq1ey0PW5B620FyjW6lephDk7YKFIUHHI1BMBGTGzPoVO2F9C4yu7ZmBSX9KHDcmoLD1mVjqtLiVYqyXphtp0YFbYoxWWfJuGOfTpgVs2f33VjMJ+LlaeLvAN+uL8XRJbf3DFnYyItt79Ri/sOFjIm4FKPZScHRDGNksWniR5ZwQumx5gUmjkYdi7wT9dmHUKR/9PkJSq95WHF1Ye9cjaG2BVQ5sN9GFSU1Zf6C1PvzeI1JHDBFfzC+X7oML+jhEm6E4DpEDaYbU95+x16pCq50ErYrjCQP3RDT7+0IGX/0Yq7Fy7SBdh70I2MifDgE++bveAi7ZNUnoF72gBPK8C6FrtX6CktruhhwJmjOzuzNL02ob6dxbNGpR7myDewVWMIiW1ZwVMLWYzNxTQK1vcVXYRZBhS1rhiFwX7ZV0AU7OAiM+f+nU7PJlF5xz+ZjxGw8lGOpLVyriXFy7hGxQ9eBkg3I1xBpUfRo2+K+4XDI0k79UGrRGbXSFewCpdSQNu+SUKPBNOSFAwXHu9CXPiJ2AU0YxCEyAQJ2oAaJwtVLNYoSNNb/298kSDRJgPaGK731PbVzXxbzEJdqTfbMI/JCxtvf4qI2sRMT12+h9sjlOzyMsOWapTufz0gWOe3IC1Gn+AJsyRtqW7NEUNtORErk6XnoykHjPUDhpLpi88jXIn4I3aPaqj/V7xq2cSWVmcoaOj2tlSA4R5HMOtRvH4BsnjA/WiOiJW3yushDhSvMXW4kkqVi9VB7haEhHePpdqCuzOGNQDF6gsuC+akUrFlyNFftZG9PqkzaiW9AlFYu3xehjP1B3rE3/PW7CL+cp7C6CEkit7/WGLzD+12RI0wi8RB6xT+1dn26y65x1gPFNPe6Afnt+x0udI8CkeF26Kx8Xe8KABOneAxV1G04
- X91YaUu2
- UqLKctIpxBJQxFpdVgoEXCR9didmHN17/Ei8B6Mm1iCQtygoyWP7uDIRsVECH7g/Hk4UiH7CdjuZOFb18Gcmi+bWY4OphWZw8rDBe3qADs7JxpICLXwMZSXhOzJ2yO0v3zDr9yNlKz17xpGIEXd0lmnTuWOUdaideCpAflkM+Egm0FsucNnRsS3etSn2vdM1vmwRmEsv2+njPOzEKo1m9tFC0mjfYZ6cVfq1nwxLzCsFJnN7UAdyMfj26FLtWKX/bcuf0v/AKzpfYZXeP0+PFu9WfEC//VhahhkiWeyQCe+PCFWEXKT6PWf0k5axX1Mmk27Inn9fb2yHXXxbrPfAfwFE09esAPTTDuTLumVrqPXGB2D2IhgxkI6UQtCg5YJBLU3ZnlFQxJ18LFHVJDVDxrUUps0/4nnxfM3pLBZbM0Wdh/eUQIQWTFrws+MMuESwKETOWWg3+pTyzDlpBf8ZukfNCdJPqTpaXqASWnQoDUJhXc1AUu0BMDAPK2Exeu5o/hVFbcsMgBRINwmc=
+X-HE-Tag: 1762975792-612839
+X-HE-Meta: U2FsdGVkX18CQAp6eWHEHDGVuzCnfUadXUB6xOczr35ot8ng9s55fhVX9NOwP/36hfhiBs7qfeWQZOXr5nKh3ptsaS8Zrdj1J1yvSA5O/2MEpegAFVafisxP4S+MvtMQyNozI4DMjrdSCywt+IcTKOFlyGlzof7sOBj0nYjmqUvNav96mTE0+nxhCVYInbcC9DW9afHzdracM3i6Zd8iBlYttnrLZ1sMPve/FyQVaVc1SX1dMDanbAyZJSyC3onRfSI03WZENrQjEFS8TXUwA61Q3aKiM0fSz8l5uFKx9E7pLhXOY+9Sclow2bZtJzj1a0dA0i2jpgUEepZhLaOYy6tKdBU7eJ5rE7SE1s1oajpfjn1nVfXqMtFszh8YGAODIVvT1u/7nTWP5TTK2x81rul+CnLrW4U+2x8WLzSYXuPpWEmBt0gJMh5MO5k/BnGkOWroZ9U0bkvSefsPdaZAxF2EkLFBnpNH0K4MTJytE79XfWuhGF7PdzSkSMsuxfzwIPsAuX6Qz+8SSy2AtfmjezzngkZeCx5+vX0NtNfpZnZVNdC07Ig/g+pMkM0poQrIQGSH0ZVQx+GUXk3JOCnNSmT9iRDk9a/SspYiJ2CZJAAAnM/7VY0iXYWEX92ijR2MCkxLEXN9ugY5IbVxvvuNHuJKeuXvSojIp6CXZvK3tpZihAhn5+8HWUAQxnEN79p3fI9SjiXtnvu4dqf1fnnSXg+x2+lPFz3lgcfSxdOeF+CoWnDHQXsimR0AHCNdyF/KfCY4nK/wbJ2CMygwbdmxhMioxXtH4CUdxqJLyeQOffhadtBKrQXZLEBF5g3tg4iW4i7iXTQ6RBcLqt+FVbp6LLudd1H4y8zLOMBd7aREXtBsEAWLSpiqSiIsuO68jEvn8A5eP20DNiRuUC4vTZc7lDcJE+KHLl6H8D9jU9rper7hMKj+mP2l18uAYBebBOsEGs2bQdLKK42VpoFkIVn
+ fX/Qk2Qn
+ QYHJYxliRNbvn63xfOo+G5ruPyrbRKEAy11VfG0PC8KdmLhqWX9pWEUXFp2YDg/lIr0lOAoT2F9M0RJ3u7ZXJ4aUBotVjJkyyT0N9uTgemBkPcLCYke1gvnHFcn31tXSuFWnwCC3ph+e0RpmmFfyOZsGt/ZBec2ILn0H0bNfjsDsddJvoJCJLuJYFlTY0gkm11DO3q3uOVHzytqgambmcn0dora8ee9X4CJgSHFirpnpaB9d0dL3JG+3ADBDEiPuugsRWnt69lp0tyueIKg27vz4TT+SZxbbZ0Wafdjff4ioa96hSns3tKtx4xrKIkkMBXs4HHy+gtkAc+EyWzAlTx6jsvCwjvunuEoGoVLT9qxtenuJXW7xKBPOPgsjBDqrf4PFdSwvGZWQ01IYvB4vs2u/APufW+Gi3ea+kRL/3b+6Jb3YRdt9jjB3boewqt3fm58ujou8G2zVUlmM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,175 +184,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a code RFC for discussion related to
+The nodemasks in these structures may come from a variety of sources,
+including tasks and cpusets - and should never be modified by any code
+when being passed around inside another context.
 
-"Mempolicy is dead, long live memory policy!"
-https://lpc.events/event/19/contributions/2143/
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ include/linux/cpuset.h | 4 ++--
+ include/linux/mm.h     | 4 ++--
+ include/linux/mmzone.h | 6 +++---
+ include/linux/oom.h    | 2 +-
+ include/linux/swap.h   | 2 +-
+ kernel/cgroup/cpuset.c | 2 +-
+ mm/internal.h          | 2 +-
+ mm/mmzone.c            | 5 +++--
+ mm/page_alloc.c        | 4 ++--
+ mm/show_mem.c          | 9 ++++++---
+ mm/vmscan.c            | 6 +++---
+ 11 files changed, 25 insertions(+), 21 deletions(-)
 
-base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
-(version notes at end)
-
-At LSF 2026, I plan to discuss:
-- Why? (In short: shunting to DAX is a failed pattern for users)
-- Other designs I considered (mempolicy, cpusets, zone_device)
-- Why mempolicy.c and cpusets as-is are insufficient
-- SPM types seeking this form of interface (Accelerator, Compression)
-- Platform extensions that would be nice to see (SPM-only Bits)
-
-Open Questions
-- Single SPM nodemask, or multiple based on features?
-- Apply SPM/SysRAM bit on-boot only or at-hotplug?
-- Allocate extra "possible" NUMA nodes for flexbility?
-- Should SPM Nodes be zone-restricted? (MOVABLE only?)
-- How to handle things like reclaim and compaction on these nodes.
-
-
-With this set, we aim to enable allocation of "special purpose memory"
-with the page allocator (mm/page_alloc.c) without exposing the same
-memory as "System RAM".  Unless a non-userland component, and does so
-with the GFP_SPM_NODE flag, memory on these nodes cannot be allocated.
-
-This isolation mechanism is a requirement for memory policies which
-depend on certain sets of memory never being used outside special
-interfaces (such as a specific mm/component or driver).
-
-We present an example of using this mechanism within ZSWAP, as-if
-a "compressed memory node" was present.  How to describe the features
-of memory present on nodes is left up to comment here and at LPC '26.
-
-Userspace-driven allocations are restricted by the sysram_nodes mask,
-nothing in userspace can explicitly request memory from SPM nodes.
-
-Instead, the intent is to create new components which understand memory
-features and register those nodes with those components. This abstracts
-the hardware complexity away from userland while also not requiring new
-memory innovations to carry entirely new allocators.
-
-The ZSwap example demonstrates this with the `mt_spm_nodemask`.  This
-hack treats all spm nodes as-if they are compressed memory nodes, and
-we bypass the software compression logic in zswap in favor of simply
-copying memory directly to the allocated page.  In a real design
-
-There are 4 major changes in this set:
-
-1) Introducing mt_sysram_nodelist in mm/memory-tiers.c which denotes
-   the set of nodes which are eligible for use as normal system ram
-
-   Some existing users now pass mt_sysram_nodelist into the page
-   allocator instead of NULL, but passing a NULL pointer in will simply
-   have it replaced by mt_sysram_nodelist anyway.  Should a fully NULL
-   pointer still make it to the page allocator, without GFP_SPM_NODE
-   SPM node zones will simply be skipped.
-
-   mt_sysram_nodelist is always guaranteed to contain the N_MEMORY nodes
-   present during __init, but if empty the use of mt_sysram_nodes()
-   will return a NULL to preserve current behavior.
-
-
-2) The addition of `cpuset.mems.sysram` which restricts allocations to
-   `mt_sysram_nodes` unless GFP_SPM_NODE is used.
-
-   SPM Nodes are still allowed in cpuset.mems.allowed and effective.
-
-   This is done to allow separate control over sysram and SPM node sets
-   by cgroups while maintaining the existing hierarchical rules.
-
-   current cpuset configuration
-   cpuset.mems_allowed
-    |.mems_effective         < (mems_allowed ∩ parent.mems_effective)
-    |->tasks.mems_allowed    < cpuset.mems_effective
-
-   new cpuset configuration
-   cpuset.mems_allowed
-    |.mems_effective         < (mems_allowed ∩ parent.mems_effective)
-    |.sysram_nodes           < (mems_effective ∩ default_sys_nodemask)
-    |->task.sysram_nodes     < cpuset.sysram_nodes
-
-   This means mems_allowed still restricts all node usage in any given
-   task context, which is the existing behavior.
-
-3) Addition of MHP_SPM_NODE flag to instruct memory_hotplug.c that the
-   capacity being added should mark the node as an SPM Node. 
-
-   A node is either SysRAM or SPM - never both.  Attempting to add
-   incompatible memory to a node results in hotplug failure.
-
-   DAX and CXL are made aware of the bit and have `spm_node` bits added
-   to their relevant subsystems.
-
-4) Adding GFP_SPM_NODE - which allows page_alloc.c to request memory
-   from the provided node or nodemask.  It changes the behavior of
-   the cpuset mems_allowed and mt_node_allowed() checks.
-
-v1->v2:
-- naming improvements
-    default_node -> sysram_node
-    protected    -> spm (Specific Purpose Memory)
-- add missing constify patch
-- add patch to update callers of __cpuset_zone_allowed
-- add additional logic to the mm sysram_nodes patch
-- fix bot build issues (ifdef config builds)
-- fix out-of-tree driver build issues (function renames)
-- change compressed_nodelist to spm_nodelist
-- add latch mechanism for sysram/spm nodes (Dan Williams)
-  this drops some extra memory-hotplug logic which is nice
-v1: https://lore.kernel.org/linux-mm/20251107224956.477056-1-gourry@gourry.net/
-
-Gregory Price (11):
-  mm: constify oom_control, scan_control, and alloc_context nodemask
-  mm: change callers of __cpuset_zone_allowed to cpuset_zone_allowed
-  gfp: Add GFP_SPM_NODE for Specific Purpose Memory (SPM) allocations
-  memory-tiers: Introduce SysRAM and Specific Purpose Memory Nodes
-  mm: restrict slub, oom, compaction, and page_alloc to sysram by
-    default
-  mm,cpusets: rename task->mems_allowed to task->sysram_nodes
-  cpuset: introduce cpuset.mems.sysram
-  mm/memory_hotplug: add MHP_SPM_NODE flag
-  drivers/dax: add spm_node bit to dev_dax
-  drivers/cxl: add spm_node bit to cxl region
-  [HACK] mm/zswap: compressed ram integration example
-
- drivers/cxl/core/region.c       |  30 ++++++
- drivers/cxl/cxl.h               |   2 +
- drivers/dax/bus.c               |  39 ++++++++
- drivers/dax/bus.h               |   1 +
- drivers/dax/cxl.c               |   1 +
- drivers/dax/dax-private.h       |   1 +
- drivers/dax/kmem.c              |   2 +
- fs/proc/array.c                 |   2 +-
- include/linux/cpuset.h          |  62 +++++++------
- include/linux/gfp_types.h       |   5 +
- include/linux/memory-tiers.h    |  47 ++++++++++
- include/linux/memory_hotplug.h  |  10 ++
- include/linux/mempolicy.h       |   2 +-
- include/linux/mm.h              |   4 +-
- include/linux/mmzone.h          |   6 +-
- include/linux/oom.h             |   2 +-
- include/linux/sched.h           |   6 +-
- include/linux/swap.h            |   2 +-
- init/init_task.c                |   2 +-
- kernel/cgroup/cpuset-internal.h |   8 ++
- kernel/cgroup/cpuset-v1.c       |   7 ++
- kernel/cgroup/cpuset.c          | 158 ++++++++++++++++++++------------
- kernel/fork.c                   |   2 +-
- kernel/sched/fair.c             |   4 +-
- mm/compaction.c                 |  10 +-
- mm/hugetlb.c                    |   8 +-
- mm/internal.h                   |   2 +-
- mm/memcontrol.c                 |   3 +-
- mm/memory-tiers.c               |  66 ++++++++++++-
- mm/memory_hotplug.c             |   7 ++
- mm/mempolicy.c                  |  34 +++----
- mm/migrate.c                    |   4 +-
- mm/mmzone.c                     |   5 +-
- mm/oom_kill.c                   |  11 ++-
- mm/page_alloc.c                 |  57 +++++++-----
- mm/show_mem.c                   |  11 ++-
- mm/slub.c                       |  15 ++-
- mm/vmscan.c                     |   6 +-
- mm/zswap.c                      |  66 ++++++++++++-
- 39 files changed, 532 insertions(+), 178 deletions(-)
-
+diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
+index 2ddb256187b5..548eaf7ef8d0 100644
+--- a/include/linux/cpuset.h
++++ b/include/linux/cpuset.h
+@@ -80,7 +80,7 @@ extern bool cpuset_cpu_is_isolated(int cpu);
+ extern nodemask_t cpuset_mems_allowed(struct task_struct *p);
+ #define cpuset_current_mems_allowed (current->mems_allowed)
+ void cpuset_init_current_mems_allowed(void);
+-int cpuset_nodemask_valid_mems_allowed(nodemask_t *nodemask);
++int cpuset_nodemask_valid_mems_allowed(const nodemask_t *nodemask);
+ 
+ extern bool cpuset_current_node_allowed(int node, gfp_t gfp_mask);
+ 
+@@ -219,7 +219,7 @@ static inline nodemask_t cpuset_mems_allowed(struct task_struct *p)
+ #define cpuset_current_mems_allowed (node_states[N_MEMORY])
+ static inline void cpuset_init_current_mems_allowed(void) {}
+ 
+-static inline int cpuset_nodemask_valid_mems_allowed(nodemask_t *nodemask)
++static inline int cpuset_nodemask_valid_mems_allowed(const nodemask_t *nodemask)
+ {
+ 	return 1;
+ }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32..1a874917eae6 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3343,7 +3343,7 @@ extern int __meminit early_pfn_to_nid(unsigned long pfn);
+ extern void mem_init(void);
+ extern void __init mmap_init(void);
+ 
+-extern void __show_mem(unsigned int flags, nodemask_t *nodemask, int max_zone_idx);
++extern void __show_mem(unsigned int flags, const nodemask_t *nodemask, int max_zone_idx);
+ static inline void show_mem(void)
+ {
+ 	__show_mem(0, NULL, MAX_NR_ZONES - 1);
+@@ -3353,7 +3353,7 @@ extern void si_meminfo(struct sysinfo * val);
+ extern void si_meminfo_node(struct sysinfo *val, int nid);
+ 
+ extern __printf(3, 4)
+-void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...);
++void warn_alloc(gfp_t gfp_mask, const nodemask_t *nodemask, const char *fmt, ...);
+ 
+ extern void setup_per_cpu_pageset(void);
+ 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7fb7331c5725..5c96b2c52817 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1725,7 +1725,7 @@ static inline int zonelist_node_idx(const struct zoneref *zoneref)
+ 
+ struct zoneref *__next_zones_zonelist(struct zoneref *z,
+ 					enum zone_type highest_zoneidx,
+-					nodemask_t *nodes);
++					const nodemask_t *nodes);
+ 
+ /**
+  * next_zones_zonelist - Returns the next zone at or below highest_zoneidx within the allowed nodemask using a cursor within a zonelist as a starting point
+@@ -1744,7 +1744,7 @@ struct zoneref *__next_zones_zonelist(struct zoneref *z,
+  */
+ static __always_inline struct zoneref *next_zones_zonelist(struct zoneref *z,
+ 					enum zone_type highest_zoneidx,
+-					nodemask_t *nodes)
++					const nodemask_t *nodes)
+ {
+ 	if (likely(!nodes && zonelist_zone_idx(z) <= highest_zoneidx))
+ 		return z;
+@@ -1770,7 +1770,7 @@ static __always_inline struct zoneref *next_zones_zonelist(struct zoneref *z,
+  */
+ static inline struct zoneref *first_zones_zonelist(struct zonelist *zonelist,
+ 					enum zone_type highest_zoneidx,
+-					nodemask_t *nodes)
++					const nodemask_t *nodes)
+ {
+ 	return next_zones_zonelist(zonelist->_zonerefs,
+ 							highest_zoneidx, nodes);
+diff --git a/include/linux/oom.h b/include/linux/oom.h
+index 7b02bc1d0a7e..00da05d227e6 100644
+--- a/include/linux/oom.h
++++ b/include/linux/oom.h
+@@ -30,7 +30,7 @@ struct oom_control {
+ 	struct zonelist *zonelist;
+ 
+ 	/* Used to determine mempolicy */
+-	nodemask_t *nodemask;
++	const nodemask_t *nodemask;
+ 
+ 	/* Memory cgroup in which oom is invoked, or NULL for global oom */
+ 	struct mem_cgroup *memcg;
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index e818fbade1e2..f5154499bafd 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -381,7 +381,7 @@ extern void swap_setup(void);
+ /* linux/mm/vmscan.c */
+ extern unsigned long zone_reclaimable_pages(struct zone *zone);
+ extern unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+-					gfp_t gfp_mask, nodemask_t *mask);
++					gfp_t gfp_mask, const nodemask_t *mask);
+ 
+ #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
+ #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 52468d2c178a..cd3e2ae83d70 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -4238,7 +4238,7 @@ nodemask_t cpuset_mems_allowed(struct task_struct *tsk)
+  *
+  * Are any of the nodes in the nodemask allowed in current->mems_allowed?
+  */
+-int cpuset_nodemask_valid_mems_allowed(nodemask_t *nodemask)
++int cpuset_nodemask_valid_mems_allowed(const nodemask_t *nodemask)
+ {
+ 	return nodes_intersects(*nodemask, current->mems_allowed);
+ }
+diff --git a/mm/internal.h b/mm/internal.h
+index 1561fc2ff5b8..464e60dd7ba1 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -587,7 +587,7 @@ void page_alloc_sysctl_init(void);
+  */
+ struct alloc_context {
+ 	struct zonelist *zonelist;
+-	nodemask_t *nodemask;
++	const nodemask_t *nodemask;
+ 	struct zoneref *preferred_zoneref;
+ 	int migratetype;
+ 
+diff --git a/mm/mmzone.c b/mm/mmzone.c
+index 0c8f181d9d50..59dc3f2076a6 100644
+--- a/mm/mmzone.c
++++ b/mm/mmzone.c
+@@ -43,7 +43,8 @@ struct zone *next_zone(struct zone *zone)
+ 	return zone;
+ }
+ 
+-static inline int zref_in_nodemask(struct zoneref *zref, nodemask_t *nodes)
++static inline int zref_in_nodemask(struct zoneref *zref,
++				   const nodemask_t *nodes)
+ {
+ #ifdef CONFIG_NUMA
+ 	return node_isset(zonelist_node_idx(zref), *nodes);
+@@ -55,7 +56,7 @@ static inline int zref_in_nodemask(struct zoneref *zref, nodemask_t *nodes)
+ /* Returns the next zone at or below highest_zoneidx in a zonelist */
+ struct zoneref *__next_zones_zonelist(struct zoneref *z,
+ 					enum zone_type highest_zoneidx,
+-					nodemask_t *nodes)
++					const nodemask_t *nodes)
+ {
+ 	/*
+ 	 * Find the next suitable zone to use for the allocation.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23..fd5401fb5e00 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3924,7 +3924,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 	return NULL;
+ }
+ 
+-static void warn_alloc_show_mem(gfp_t gfp_mask, nodemask_t *nodemask)
++static void warn_alloc_show_mem(gfp_t gfp_mask, const nodemask_t *nodemask)
+ {
+ 	unsigned int filter = SHOW_MEM_FILTER_NODES;
+ 
+@@ -3943,7 +3943,7 @@ static void warn_alloc_show_mem(gfp_t gfp_mask, nodemask_t *nodemask)
+ 	__show_mem(filter, nodemask, gfp_zone(gfp_mask));
+ }
+ 
+-void warn_alloc(gfp_t gfp_mask, nodemask_t *nodemask, const char *fmt, ...)
++void warn_alloc(gfp_t gfp_mask, const nodemask_t *nodemask, const char *fmt, ...)
+ {
+ 	struct va_format vaf;
+ 	va_list args;
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 3a4b5207635d..24685b5c6dcf 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -116,7 +116,8 @@ void si_meminfo_node(struct sysinfo *val, int nid)
+  * Determine whether the node should be displayed or not, depending on whether
+  * SHOW_MEM_FILTER_NODES was passed to show_free_areas().
+  */
+-static bool show_mem_node_skip(unsigned int flags, int nid, nodemask_t *nodemask)
++static bool show_mem_node_skip(unsigned int flags, int nid,
++			       const nodemask_t *nodemask)
+ {
+ 	if (!(flags & SHOW_MEM_FILTER_NODES))
+ 		return false;
+@@ -177,7 +178,8 @@ static bool node_has_managed_zones(pg_data_t *pgdat, int max_zone_idx)
+  * SHOW_MEM_FILTER_NODES: suppress nodes that are not allowed by current's
+  *   cpuset.
+  */
+-static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
++static void show_free_areas(unsigned int filter, const nodemask_t *nodemask,
++			    int max_zone_idx)
+ {
+ 	unsigned long free_pcp = 0;
+ 	int cpu, nid;
+@@ -399,7 +401,8 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+ 	show_swap_cache_info();
+ }
+ 
+-void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
++void __show_mem(unsigned int filter, const nodemask_t *nodemask,
++		int max_zone_idx)
+ {
+ 	unsigned long total = 0, reserved = 0, highmem = 0;
+ 	struct zone *zone;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index b2fc8b626d3d..03e7f5206ad9 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -80,7 +80,7 @@ struct scan_control {
+ 	 * Nodemask of nodes allowed by the caller. If NULL, all nodes
+ 	 * are scanned.
+ 	 */
+-	nodemask_t	*nodemask;
++	const nodemask_t *nodemask;
+ 
+ 	/*
+ 	 * The memory cgroup that hit its limit and as a result is the
+@@ -6530,7 +6530,7 @@ static bool allow_direct_reclaim(pg_data_t *pgdat)
+  * happens, the page allocator should not consider triggering the OOM killer.
+  */
+ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
+-					nodemask_t *nodemask)
++				    const nodemask_t *nodemask)
+ {
+ 	struct zoneref *z;
+ 	struct zone *zone;
+@@ -6610,7 +6610,7 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
+ }
+ 
+ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+-				gfp_t gfp_mask, nodemask_t *nodemask)
++				gfp_t gfp_mask, const nodemask_t *nodemask)
+ {
+ 	unsigned long nr_reclaimed;
+ 	struct scan_control sc = {
 -- 
 2.51.1
 
