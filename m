@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B61CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8938FCCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:07:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40BF38E001B; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
+	id E93F88E001E; Wed, 12 Nov 2025 06:07:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E3BF8E001A; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
+	id E6B9C8E001A; Wed, 12 Nov 2025 06:07:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F9EB8E001B; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
+	id D81A38E001E; Wed, 12 Nov 2025 06:07:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BE9F8E001A
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB1C8C0374
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:31 +0000 (UTC)
-X-FDA: 84101679102.16.97BACCB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C78538E001A
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:07:42 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9350712DAC8
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:42 +0000 (UTC)
+X-FDA: 84101679564.12.C10CCE3
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8A1DEC0014
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=LoRQ6ovR;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762945649; a=rsa-sha256;
-	cv=none;
-	b=AjXTfNkpQksHqJCDl1vBkMj027RzDgUGJ9AB+aVGtWpMUkKS8kXkxS1xIVSycNY/S16Gxh
-	XSmG06qCyNZCLE6GqyO50NRWRc/9Suw/nriHr+7VBlpuGbJvLlQ1ITjC848RbzJgbRkzeV
-	xDncFmqq5qwAKR6X3RKVBTu6h3mPQFs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=LoRQ6ovR;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3936F4000F
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:40 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=pOB7QhmM;
+	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762945649;
+	s=arc-20220608; t=1762945660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PVFH6XG0+MNfFYKp/Q4P2dsd/VFw0IA47SArwJQ6BTI=;
-	b=w+tPmQoIfbQL7MUZd7Rxx944dkwTLMoc9xlrm7JbEPZo/JLjldCUT7y0WGN1MMCRAvXY5h
-	r+TYZJyVhSnh7VQSwlFihiBNd4tZMb5pJ/ua8wUTGO2N5Y7QXiYMvfTTAiXeTe+WQJHvjX
-	KjUGeM1ta818TD3goqJK+dHLgvQa8x0=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC7dnSC002270;
-	Wed, 12 Nov 2025 11:07:18 GMT
+	bh=lS0PV8URMxmmce+9yYxA6ZwV8ssL8Pfv2N3KgoOn0Oc=;
+	b=IgFEhlvBkSNoER/UJ6YTrxnL8IfAQW5ralH+NcxGMJOCc5qIPYTdx0DlKXz7ZvkcL1x6Yz
+	PzXeL6irFXjuFInC6g1daUR70I8ME1DR7mgFMpPHDgZl4TkQ6N7awjDWj8ORVJRtcLCKkr
+	hXmDmVVqdXEZdhXBoFom73gotcOh+ps=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762945660; a=rsa-sha256;
+	cv=none;
+	b=U9PB7482aBvO6kU6bpwaT7QgmmhQ1sFMvEmMLijMJLVMKinrFq47fZGcchZwFKl3FLXKCS
+	DMlhJZeoH5j+BIXQtJa+fQyoNPvs9vB8G+aDoAJCTjYUvqbgLcwQhtYnn57Rl8ZfIEZB/P
+	yw8A0i3mOD7KvpdV/srYDyeVuzmzcGQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=pOB7QhmM;
+	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC6nTkG028520;
+	Wed, 12 Nov 2025 11:07:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=PVFH6XG0+MNfFYKp/
-	Q4P2dsd/VFw0IA47SArwJQ6BTI=; b=LoRQ6ovRbPWCckMFiKZKVyRS1GcJD8GlU
-	Nijsz+8v2/CvGFpXY2e50dj72Taq28bbPFI/Z9NjW406BJuma8KKRLZqhxCieWiR
-	nIO5GUpTTUPtimEYiFcU08b/UtPrXWQuXd9D3jOocB5c3nw0MsV2gliXxCKJrsAX
-	ZctEU/WAoM/hUUpEKQRjFO0zXB3Fu1lcX7ZsCxngSgWmoerIPfxHGB2v8VAfzY3z
-	jiYN6nhIMZk/zvuBCeCIW5XfxhRaktMRtDqZQILcZL+5Xb6anX8CmROsyNm72dpK
-	xZR6Z7tl7POBNVhJyWn4FoAkoqLgkzAOp45JTp3lXm9RyH5r3v4yQ==
+	:mime-version:references:subject:to; s=pp1; bh=lS0PV8URMxmmce+9y
+	YxA6ZwV8ssL8Pfv2N3KgoOn0Oc=; b=pOB7QhmMKumE+2Ewk0J81JPbGPU/jfzXZ
+	lQgYDaIKG+gR9FpX3LyQ1Df17NPun1GTooeAH52oDLyC3C+QHRc9BFPG+AdHTtRK
+	wd3snm2oNdwwbMjZWANEa8pjXp4UVeYb3I35p1dPa9FkbsNLzBVusbf8HneBkgCu
+	WWdXYPdOb0shtMsvVEPkhTRbJLESYAZuFF9BVGl2dVaYR7atgSYipSdQ0/6K5ITD
+	8jjuzmu7DRI6F2rDTpTwvxzmkJ38HY6rb5/MRfSy6cIMNMotYCAvL+u/xFVOKmiv
+	7lCR91WMcv+TU7Cf9jENRnTa+9o3RoEiquKFyM7RakWr9H/okbCow==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgx0q52-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjymnq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 11:07:18 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ACB0Xta019638;
-	Wed, 12 Nov 2025 11:07:18 GMT
+	Wed, 12 Nov 2025 11:07:29 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ACB4SYB022695;
+	Wed, 12 Nov 2025 11:07:28 GMT
 Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgx0q4y-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa5tjymnn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 11:07:18 +0000 (GMT)
+	Wed, 12 Nov 2025 11:07:28 +0000 (GMT)
 Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC9l1ZH014762;
-	Wed, 12 Nov 2025 11:07:17 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aahpk7qd8-1
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC9QpsE014859;
+	Wed, 12 Nov 2025 11:07:28 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aahpk7qe4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 11:07:17 +0000
+	Wed, 12 Nov 2025 11:07:27 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ACB7Frd41877778
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ACB7Pg551118504
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Nov 2025 11:07:15 GMT
+	Wed, 12 Nov 2025 11:07:26 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 46B0A2004B;
-	Wed, 12 Nov 2025 11:07:15 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D83932004F;
+	Wed, 12 Nov 2025 11:07:25 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 917A220040;
-	Wed, 12 Nov 2025 11:07:10 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id F267120043;
+	Wed, 12 Nov 2025 11:07:20 +0000 (GMT)
 Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.210.190])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Nov 2025 11:07:10 +0000 (GMT)
+	Wed, 12 Nov 2025 11:07:20 +0000 (GMT)
 From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 To: Christian Brauner <brauner@kernel.org>, djwong@kernel.org,
         ritesh.list@gmail.com, john.g.garry@oracle.com, tytso@mit.edu,
@@ -100,45 +100,44 @@ Cc: linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org, jack@suse.cz, nilay@linux.ibm.com,
         martin.petersen@oracle.com, rostedt@goodmis.org, axboe@kernel.dk,
         linux-block@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: [RFC PATCH 6/8] xfs: Report atomic write min and max for buf io as well
-Date: Wed, 12 Nov 2025 16:36:09 +0530
-Message-ID: <9d0ec1039dd3fb40419cef56470ca508f36b8f51.1762945505.git.ojaswin@linux.ibm.com>
+Subject: [RFC PATCH 8/8] xfs: Lift the bs == ps restriction for HW buffered atomic writes
+Date: Wed, 12 Nov 2025 16:36:11 +0530
+Message-ID: <0f1f53d6fad8c25118b0348b0cb91dc2e4ecf456.1762945505.git.ojaswin@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1762945505.git.ojaswin@linux.ibm.com>
 References: <cover.1762945505.git.ojaswin@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: pufiJPBZmK00VnB_Sp4q2PFNYPTOwycU
-X-Proofpoint-ORIG-GUID: gVtj59SvZZWfpitmJWZCYcz7I5_8OHLl
-X-Authority-Analysis: v=2.4 cv=VMPQXtPX c=1 sm=1 tr=0 ts=69146a66 cx=c_pps
+X-Proofpoint-GUID: ADQK4HD0lQecC7xUBvMAVAknMXJGVpEF
+X-Proofpoint-ORIG-GUID: iQAnc7Mvlf5AFos0tKRg3f3C_4ix3pmO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA5OSBTYWx0ZWRfX52SSPqtKtk4i
+ cOa+6iOjuAAo2h3dK97pN8YCSCEGsYjvxno1zsFcUvQEs8u8QFoS8EVe4pT0zpMsHpPdVwbWA1T
+ 0zo5RABNZRExM0hTMZPRyOam0cl9R1euNDPgYUagq4a1jUJQXcD4MdbGR+DPYm19JsbetcQDbLp
+ IQpdcmM02Hdswz10zt3coYGH2sQxqol1aaRs3Nno9T2vFNe2dBPp59Ks7j3Pe37MrPuoZmS3vVq
+ +ks1ZnAEyrV5uifEEGDaPOsLzfMeDcTgtT/VBdftWRhkKkfyZsXRrAFwJW7wHSXcMsDjNIQg+am
+ ejhzNtQRfiKZ7AuNzA5NnblMkDmXntu5WTp1V7TrOlqMmUnX3jgGAQAU45KJ5jLteLGR1AUaDQy
+ OsFaBLrhNGF97igEbAhLryJJS6zuFA==
+X-Authority-Analysis: v=2.4 cv=V6xwEOni c=1 sm=1 tr=0 ts=69146a71 cx=c_pps
  a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=Xt1C_Ey-aFlpf-Mi6TUA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfX4SKeXmIOv3HO
- Ye6oGhayyMmFR3oMpLkif2Y/RFw3/uRw/AW5sl9D2nRirIKN6+6BjrcdjcTDdvrYQKnJTeOaaFE
- qqmgizV5PYhwWexLrotrGlG8yEBCuGbn+2u82vD3qSN5FExI0aXfQDYzSrXhx0l1HqRa6gkSSBe
- 2rZjR7Y5IXuEPMjuQ9l5lajhwp9Qyp/1kFVewE/7w6rL5ycO6+EH4MwoKw9khVZimRp9KxMPlGQ
- LuNfAUpMyyycMl0TJMYJRXUl8z7UWioa1ncziuwUKlftUDdGciEas5JzyZyuTFmKyrIDmIjmzHZ
- 3BgegXAy8/yRHj+7kd6SHGJN7Xc+zn3/3wl6qsXrZGPjWjnLH7q+5yAoxXowA2gMCLf4+mLY6GW
- b14TkVAhHlBkCy5u1CERwqnHcl/SJg==
+ a=PLfzAVb2A4JWLM4niBMA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-12_03,2025-11-11_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- clxscore=1015 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2511080022
-X-Rspamd-Queue-Id: 8A1DEC0014
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ypyigrkzah7d69cykp39y3k1ch7dttf1
+ clxscore=1015 lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ suspectscore=0 priorityscore=1501 phishscore=0 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080099
+X-Stat-Signature: sc7hr55n5zziz7cooxmcn8yc1dikzzje
 X-Rspam-User: 
-X-HE-Tag: 1762945649-372486
-X-HE-Meta: U2FsdGVkX19KD8Uk2PtKh9kJZK87TKoSFewupRwZlTSigT9iweXRwbhCxUvBhTcZgSTMBCJA4aRW5Fapi9BQyepoWMqZBEqd7uRv2CUujV2jJ4aOe0QMcjDnZAJRG2BzIO4DmiyFEPGq2dhBE5r6Pan4VnfA4jLeMm9w4GXFytOfMRrwX141MAB8SnSzeJddAr79B3YKnQAjVNp3PZOf4YPTWIP/uoogYrxJWQqbz5mcoXTvnLX0IVgfpEbmAzIxFZ3u1abA/8NVxY1ZOpgeX1a3veuo4vd9JFdm1RRolyRnerhjxaAKB8adX/33WCMzLTrjnmLbitisZOgOoncsowS4kzmcqmmGVr9/IbxgUOENpNi/FhIgFCetJVDItR3jeFmKafq5HvkI7Iv3OrsKD1lBPz6WZQ2Gl3M3Vu3afWyM5dl95z+/+elwD+TsQr4+OmHA2HSMQfQTa+gsR5c7n4t2vALxpVGfbpELIpvY7h//kQYIi5sX3HL34MBNQifyhXpgeOqLKmYyxce0MghTmxytbzLuImZX+9ZNUFQH6KJDvXKLi04tUMhvESfO0Sf9xgLDHo/A2wCm+aNQSjcj8kuaZHQ8++rfOhcGp9ZsQL01RCBBbduel4Qu8ryNRqWrFDE4Lh/dTMbh2m8zlaZr/njvJferYAoC2uZUHLgkFdZmNDvgB2DrQbHZxXPSyhwLzbWlYYfrop3OtkO3OcoE+JT+DGu1fBXWe5JGcUb4aGk2CeFTjmfHGQdQ8xfFDwUOBeZqczAlmbkmjQfewjXukjYWbl9pGfyNVQ6bstztdxIH+i+5Nw0l5f+pupb547jA1pSL7Rvyh3mJiNKSwJybCzP/UtxNr2DB+36VQJDA3BS8CZ28LHFVRdXnRwL8wIExM8CLvNUSXUys3YhWfCF5ExQpkFYO7DlbmthScYMGegwj3B6aDzctaxZwLJ2usboFKt5NxVQI4p4BY86BZO7
- ujADhjLm
- ydKm5jcQFEr5OOr4DaYiOFgwM593MGvr4GuqWr2fJ6ssBaVZOjKOkTKFAsY3sDoSan55mK7kPaTqmOXVVHoEE8Ulz4n79vBSxHPkZaKDiVO8te798QSG9qCXjV5HCoHTFrID3XwD9MAaEvvtg9d0g6vfw77xRB9njuXinC7PqmitvQ6eBsUZyDGkBR/Y7MZXmenU5sPCF5uYla+YCwduMJ+bNw33cIyLrKnYTm1T16ywZOTNIsJAvtj3bLEWhm0rvdokDDnhZe2AHaeyjV+oprp18QQ==
+X-Rspamd-Queue-Id: 3936F4000F
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762945660-252690
+X-HE-Meta: U2FsdGVkX1+Nw03GGGWKDT7iFMJftlyaB/L91W1rzekryDNVm11flX/DwKdpusxE72yJvgZ1Wh/hFBrERji1tjWjWWNMDF04ofFSTZCHgBlPG6m5Sy9l0pomxaUcVL3vE9yiycxRVjm/2IwLhhSTKwKeDQN+XXeSChgcrgjnZjuTFH6UKz7KmnqqmSsv2iWoKClaaxyHESomXKhD91ZjJ/iE7f8Nl6h06RjVsD9RcwPcxldpjHXA4o42ZSKvbede6YKQONAhx62I4WFcYicDZh2PVQeq5of/dt+9cteBOrvQhMuLxFZ0vDnQtFhrVMVanuYjRP0xHgjRQPFF+n6dj7/BURCfnlPEVOGXgb7oKhr6SI1nneTlxyGgaW1GqIDykdXmt/SHzMX71ATk0eXEROR33uhUlVem2Y+sSTLvW6GRDBma7DsoyPOCdZ2Kg2W4K6EhQRTtqB3fxHWmLDXePBDV05WF5Eb/dzQiWMoX77zEK8CXyZ/ICJbIpYi4/Ka3CpKhkizpaCyKzGevRgsPAyyrt6G4AmE0mNXnsQtA/z5AZ912FeXtF97TWWbM/Q/1ba/mVUAcBjJe0uFuivL+Is6MWF1Qsq8KzInqh+Dko+kwWlffY6/crVZ/BHRmsTFr63l+4QAn368iEePCjaR5EoqT62b2hUs2WwS3rFslUycnP604sZ5uwYALwW5d9/7zj3zRn3/4fpL3/AKa2B3IdMy38EcjI+I/jr6JJ6bqU3q2HQtFFITUQMwCPEQxCBz0i/d9thLn6nhEuxKtCxJRoGXOk11/S7ZQYNfHnLO1wprvC7J0CYCV7wEa4qScCVsap9CHRaa5r+xG6jhHiMtBTgGhOnLTcdMOTcTGKGWa69N/f2ol4ltIwutrtLoGAVG6l+KuXaUJ8v3pZ6z+wtWNum+eIqpDnr0bYmB8xred3c4+Ykr502PNvcTxWvz0nPUE7BiOGrBqAH/frzfHApq
+ nvgEvCBi
+ 93/5i8S4aJ6++HMRkjJnfxKvAbi+u29UXK751XgDuQpVK4iANCOpVfOn+YENikFxTWH4SepXImR578VTvq8sVpgm9ke7WLPk29nu8IlV4XhlE/GE1bnKUQSMU/dLfDsdXGDiT8RCdDZOATtIBDcWYXGCZjbSZRvDyFFJR4MBj1JouawkK9C7yRqPaWj5wo8oc0iMTlFWtYHiEFgbKRsLTrFvb5i1+mTzDUPgK+69Jv2lxn5MtMgXQxAeTlEgSl5nbN2ac2sA5wi0OWLE1XsS0BgGUHg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,92 +146,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we can reliably perform a HW based single block buffered atomic
-write for page size == blocksize, start advertising it in XFS.
+Now that we support bs < ps for HW atomic writes, lift this restirction from XFS
+statx reporting
 
 Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 ---
- fs/xfs/xfs_iops.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ fs/xfs/xfs_iops.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-index f036c46b19c5..67d370947d95 100644
+index 67d370947d95..5bd31aacf514 100644
 --- a/fs/xfs/xfs_iops.c
 +++ b/fs/xfs/xfs_iops.c
-@@ -604,9 +604,10 @@ xfs_get_atomic_write_min(
- 	struct xfs_inode	*ip,
- 	bool			is_dio)
- {
--	if (is_dio) {
--		struct xfs_mount *mp = ip->i_mount;
-+	struct xfs_mount *mp = ip->i_mount;
-+	uint32_t bs = mp->m_sb.sb_blocksize;
- 
-+	if (is_dio) {
- 		/*
- 		 * If we can complete an atomic write via atomic out of place writes,
- 		 * then advertise a minimum size of one fsblock.  Without this
-@@ -618,10 +619,15 @@ xfs_get_atomic_write_min(
- 		 */
- 		if (xfs_inode_can_hw_atomic_write(ip) ||
- 		    xfs_inode_can_sw_atomic_write(ip))
--			return mp->m_sb.sb_blocksize;
-+			return bs;
+@@ -622,10 +622,9 @@ xfs_get_atomic_write_min(
+ 			return bs;
  	}
-+	/*
-+	 * Buffered IO only supports hw single block atomic writes and bs == ps
-+	 * configurations.
-+	 */
-+	if (xfs_inode_can_hw_atomic_write(ip) && bs == PAGE_SIZE)
-+		return bs;
+ 	/*
+-	 * Buffered IO only supports hw single block atomic writes and bs == ps
+-	 * configurations.
++	 * Buffered IO only supports hw single block atomic writes
+ 	 */
+-	if (xfs_inode_can_hw_atomic_write(ip) && bs == PAGE_SIZE)
++	if (xfs_inode_can_hw_atomic_write(ip))
+ 		return bs;
  
--	/* buffered IO not supported yet so return 0 right away */
  	return 0;
- }
- 
-@@ -630,7 +636,8 @@ xfs_get_atomic_write_max(
- 	struct xfs_inode	*ip,
- 	bool			is_dio)
- {
--	struct xfs_mount	*mp = ip->i_mount;
-+	struct xfs_mount *mp = ip->i_mount;
-+	uint32_t bs = mp->m_sb.sb_blocksize;
- 
- 	if (is_dio) {
- 		/*
-@@ -640,7 +647,7 @@ xfs_get_atomic_write_max(
- 		 */
- 		if (!xfs_inode_can_sw_atomic_write(ip)) {
- 			if (xfs_inode_can_hw_atomic_write(ip))
--				return mp->m_sb.sb_blocksize;
-+				return bs;
- 			return 0;
- 		}
- 
-@@ -653,8 +660,13 @@ xfs_get_atomic_write_max(
- 			return XFS_FSB_TO_B(mp, mp->m_groups[XG_TYPE_RTG].awu_max);
+@@ -661,10 +660,9 @@ xfs_get_atomic_write_max(
  		return XFS_FSB_TO_B(mp, mp->m_groups[XG_TYPE_AG].awu_max);
  	}
-+	/*
-+	 * Buffered IO only supports hw single block atomic writes and bs == ps
-+	 * configurations.
-+	 */
-+	if (xfs_inode_can_hw_atomic_write(ip) && bs == PAGE_SIZE)
-+		return bs;
+ 	/*
+-	 * Buffered IO only supports hw single block atomic writes and bs == ps
+-	 * configurations.
++	 * Buffered IO only supports hw single block atomic writes
+ 	 */
+-	if (xfs_inode_can_hw_atomic_write(ip) && bs == PAGE_SIZE)
++	if (xfs_inode_can_hw_atomic_write(ip))
+ 		return bs;
  
--	/* buffered IO not supported yet so return 0 right away */
  	return 0;
- }
- 
-@@ -679,7 +691,7 @@ xfs_get_atomic_write_max_opt(
- 		return min(awu_max, xfs_inode_buftarg(ip)->bt_awu_max);
- 	}
- 
--	/* buffered IO not supported yet so return 0 right away */
-+	/* buffered IO for now only supports 1 filesyste block so max_opt is 0 */
- 	return 0;
- }
- 
 -- 
 2.51.0
 
