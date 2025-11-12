@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69A35CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C1B2CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC6D38E0009; Wed, 12 Nov 2025 06:41:19 -0500 (EST)
+	id A840F8E000B; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C774F8E0003; Wed, 12 Nov 2025 06:41:19 -0500 (EST)
+	id A345F8E0003; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B66128E0009; Wed, 12 Nov 2025 06:41:19 -0500 (EST)
+	id 94A648E000B; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5188E0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:41:19 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 640B71404B0
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:41:19 +0000 (UTC)
-X-FDA: 84101764278.13.AC99B09
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F6A88E0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:44:53 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F3E313B0F2
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:44:53 +0000 (UTC)
+X-FDA: 84101773266.10.3765144
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A0D641C0008
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:41:17 +0000 (UTC)
+	by imf21.hostedemail.com (Postfix) with ESMTP id 747551C000C
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:44:51 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V50cSsvg;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FyXu+/73";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762947891; a=rsa-sha256;
+	cv=none;
+	b=R3uMyTz+nW5Hn90TbJjT52Pmb59SWeqGHzqX/IllinSDp01Sqd/FkTVCMgMxiDo/cLAbPj
+	blxaKa0etRMMSRDR/YBX80dypBvrntNaeiWijNsF1Z89yjdHWWNKI8vQa6b8B/cU6fU3RX
+	dwqF41UpEaEdzbkdjcnjmEOmKDfeibM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="FyXu+/73";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762947677;
+	s=arc-20220608; t=1762947891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9brjwWV7LTKYneNrHBlF7d68GjJetXJN+dE8L8/cNlE=;
-	b=kk7W4mwspeu9XypBi/7a2PSbIdRgn+2D5e9HWtEh/elvi6rhJqbrVF5Z/a7D1JE8cC9ZO4
-	U+pkYrYb+usUV33+R7OxUBK6MC7FHGzyCKaOPUAIRqjOW990b80TucUvF09WgSMvMat/dv
-	Kl/lQcJu1gPaaOAm26hDLXLt8HQfzL0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V50cSsvg;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762947677; a=rsa-sha256;
-	cv=none;
-	b=B5nV6Jpb+ram19XEmd5UN9W1J5+O1ylVa0vhOxWnZWbY6FYNbBhKhW5dc3FsWgBLRO4mTP
-	JTHhF5ygfjzstDLZRd9wjMFMWjeQaHFXaf0BRiX+VsikelQTzs7nynFtRy3xNUNoF8vaMa
-	tRk7uQ19HCkhnZUn2BpaXz5Z+Obices=
+	bh=SVsLPNAHvuU0RO+oDmZDadvORmqdDV2Xo8kuiXQeoTU=;
+	b=n3EoisJ1ChHQVvzys9TY6/AqMFD0bFxPd86mJ2/1VJcqmHwUZmRgThfqCd2p0WP45JBVGl
+	fg1lOaAAF8lZjDSO3ctiuTgFcYt9VEw/yJLpQgAjr3F838crjNDYCCOeM+ITINmpfFBof9
+	brEMmO9cByzIaOO8NaYqobadu7AQDfo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ADC4940792;
-	Wed, 12 Nov 2025 11:41:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38810C116B1;
-	Wed, 12 Nov 2025 11:41:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6575E41773;
+	Wed, 12 Nov 2025 11:44:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69803C4CEF7;
+	Wed, 12 Nov 2025 11:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762947676;
-	bh=SIcYOLNtSvw9wJCXNgXOjvI2cZB6CzHnmisI6JJDTrU=;
+	s=k20201202; t=1762947890;
+	bh=Wj/4q1C1ArnQ7Q4ixJ7EiiawvGxLIH7JDw3b8s+7UQk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V50cSsvgX5TzA7qHWhwRyQKwLZenq97Ek5BWphCnh5KEKL4Ij5XcrwVLyPvuVz1w8
-	 ZLzEPjYlNXzqH/8D/gH19704pySpJKM+2DLh+f9gmn/AsYOPWVgy7NuxKc4i3CmEyD
-	 B3dBdnDKQp2l2X6kqFBmNSOMEbuBpXfn9KfzYZuJexQL+l253CPBFI73/1+vLIFz3a
-	 EHRAgFz9lPu2FtfV1VvFwITZddbpKhtJyOqQPAu9JMDnu7VAdbJSS2Pkr8oBbD7YDP
-	 hFbi3M/gHXBVAb1IckloaeDog/qYIF8ZCctyNLOWy/LL4xjvolhscUx4GmFdOL1LzR
-	 2PqDQTuPSxBew==
-Message-ID: <374276d0-1831-44dc-b7c8-1976a07da296@kernel.org>
-Date: Wed, 12 Nov 2025 12:41:12 +0100
+	b=FyXu+/73fldy/N9aF3u1xUDUGJiObxFLxZZGQhuJ7inI7zDlB+KnAcT4c2tZlz9sC
+	 UKPZDozEAjr1L6hpJF+xTP8CKVu7qTZH2UHes9izH5opdFzdciysPSWizGXeeQ+mej
+	 MEPSu1l20VwPcnP75gh82oftOZZvJfc42pUMu0ZOzsv2iqfiwdqkTsm06PShgbY+VX
+	 MH23jxelP4g06YyGWqLJJQoeO0oNfOQnO6GELdouoJDl94E2Eq+0JbBM/M7YxoD/rg
+	 dZ4K5lVyLs0s9vo04NQf5U250KVefbpOjIdtwl5L8IUVUWS8rq3ok9s3+UpREtyhJs
+	 TcUGKdtezFBVA==
+Message-ID: <9c4cac95-adbf-4236-a872-5213a2a797da@kernel.org>
+Date: Wed, 12 Nov 2025 12:44:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: continue to collapse on SCAN_PMD_NONE
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org
-References: <20251112020031.25350-1-richard.weiyang@gmail.com>
- <04e8e813-b43b-423e-8ad9-fb13ac953055@kernel.org>
- <d4e055dc-be45-4ced-870b-2b62f3507c71@kernel.org>
- <20251112112739.ovfkj6zy7kqcervv@master>
+Subject: Re: [PATCH] shmem: fix tmpfs reconfiguration (remount) when noswap is
+ set
+To: Mike Yuan <me@yhndnzj.com>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>,
+ stable@vger.kernel.org
+References: <20251108190930.440685-1-me@yhndnzj.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251112112739.ovfkj6zy7kqcervv@master>
+In-Reply-To: <20251108190930.440685-1-me@yhndnzj.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A0D641C0008
-X-Stat-Signature: hc3rejh443kkugmko9us64bq7367xfxf
+X-Rspamd-Queue-Id: 747551C000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: a317goyjfrcz8w3inapuh73ttpa7tnwd
 X-Rspam-User: 
-X-HE-Tag: 1762947677-637807
-X-HE-Meta: U2FsdGVkX1//pMLyV51yYv6sWXLBRc29zy3SjwFF2QuWmcA+PS2E9Nyzea4VGkzXbBSvaUgLRcuDNVRnedRaBynC1zZeR0w+9r2H0BwFSKDbG1RuAcE4G2Muju39FjHh2LjyFbRTxQg4QbUgt5YLq2ZRqvDPBlG1SMV2+lpJRHD+5Tl/fqJspcL1ECyeQg4fT9QfhrH9be9VTj0E5/8jmcZSBCpVgjD0YfeOUpxNNH0Kv97WZqfUUx9qkF/fkdEJqw5CawmQe+N0766bxxJiMXCx74mbM4VEUvED2OqGy4okaDPQ8wroDihF1eEwqfv2jVa0zb3C3sUrAyGgpYGes5MixJ8BORVAhUuDSL/eLb6BQlUwesnUQ+yDAzp5+ha2TMwHHvkgk1H/WrsyvxzXHXLJPLVO+SOTGRfeiM+5HeJUj9a64v4QPAcUfWb2hjoq+ozHu4XFuh9CVp6rMWcBojzJUdbTH/y7WDuTC+CZuHczcsbW+oyDpzfhP5xdx1t7e3BdAAlP5XuEIxM2CnAkjghA0WxHVcd2ZtLV09qabw99C/z6Jz0RPVAc2snHUPnYDCxvKI3UqR9K402f6TJMt5Q+lCnyBY+aPTO0TycOcJn8r4Tz4bUBaBUpDCS0bTMZNEff0GUV+dTxKQ7qlUCUKoCJ+3RF3uxgJS4keO3u2PnHVTzzdHCq0ILyuzpqRpKpTQETKo2nl4V/tMxvLq264FNMmTpAWQBRs/OdStbIxjNL/BBr+Ab7QDZVVq/IK3mjjXlq+gIMOk7XtMjeYn4B301PeujFvJHzExRcmG5RU1OI9uA26YA89ZW/n5bvxxeXSmKFm3u0+ROGevNYE6CS36zH9+oq9tokYS5FSApJPwfAbRC+9VKb4bG2Lhq71vzgXr0Lt7rn7+fO1c8YZeMo6ZOewgjqAMsMXeKQpyIBirhRJBTsuZMk2Kfatdklhr8iPzGr8v6ezAmUkQaI7sf
- 9YWxjw/C
- DGnHul8iRKEPk/apXiZiHmlEGBXY6Rw3WVDpxE7VH7vVF8Xtqhgtc0Z/EMELTuT1mARcsex/AU3dRTOlOrznMZOowL1iqbTak8LQ3UiKiIqy8ZRN42F5wJoM3S1/dZRnOgU0c/L4HrIZTZS6O9RegGB7Nux6duNyIIgk/RC/cJvUc3fvIgvsN1a0fzyVgt4FiD45cVCODH6w9sVb5SvZN4yOKA3uZs7F7a4U4wkEi0wuSnWPZv/MVTEqLGcOEO6V+VdnTyoX8qu02YjtMIb5d31F6oGzvLuuuetMm37iOolxB2lrqYJZdqimDip3l7+H8Z87ixfpcaTGw47UlMxJ0sioOilHbTf4AfYOfRCEOeH40XB0=
+X-HE-Tag: 1762947891-437183
+X-HE-Meta: U2FsdGVkX1/OoEPuWsH50aaHpJ1fNQ9rdQRiYEbqIv9fYfVZxae0O7qC7IO/VfBBAS6Mt2Y5PKt/T1BxPv7XDlhg3hVFtDczGdQl3dcUMunk00WImvuYR2VJ+h1oJKC9yznxj/SKe3P3svKwFG2vDFfzaV6m1OuVWJzEF9m8aNLwTI8iwTODzV3SmP0r51CYUR+B/I4CM6edvekVD5njiHtKFklMj/IQKn/uK3i7y3omA+27kkY3bNeaJPq0fWamiw5LJdBctoootbJ6Win02amIzFP5AEqw0Sl1Ijikneyi+0IiAwB0h4uxGyn8COtlQxzfRnZJyyFloOqBtNpJbqWSL7p0aM19ly6My/w3ijRvvoDHBeO11mjZhs1nnZ0IQo6dZHHPL8CGjmhE6S2CymfCp4TQ/BzeNGKtDcQIsm6OlH1gKw36WpVTjcEDao9YQWigIl9aAdcCycOQSOjvqxcYiSMuwbknrkbPeFs/qQcXhFvxTk1O1O8cBmj4icRZtkD5NXG4iVzT0EAF0GJqh2fh5h60Z2zHgUG9a8J7gYeAHpwugvoLxB5xoVVEEVLkNfCcGIGAdggBm5WvL5/h5F6OZ9CMyoutfo+K9dpFzhOGYfKzT9jT3Y+XbXm7zINxhD4ofJe0zePkHjZ7pu3MdthGmzMOn/knFrVl/OKuACnrn+3jCkC32hgDHcWX0WQNTT+trVepMynmBfsoFNkAS6NCJYdECq8JYAkbXs/4dZ7gtSkFdNdNJlmwVup0SZQtHxzJ/ZOSpqEEh8DNyOS5vk3EDYm8r+4jwRPH0eU276EGYanxGJRNMRYQ7mlWyyd7dknXg1y0AhJhdUYC9gvGwtSrBM5BudsuH9xReCsr49JOnWU7nQO+zQzf0JbnpJX5+vXgEiUXUgXHW0s6S2IR9dN6m2AET+gq3qssi1yL0CxfRvC+HqhWyibLQXRKhyvdkWnfP+xrrJzZHb4vPAl
+ v0xrV6uH
+ R16ROMME2VecLCwBTphnZKOZU7WyrT6MOKq4ufCgZqZuFTarI+ge0xpCPp8e4lgtYxoms9OHkGrmMo6zHTGEuoBQMmL1V6D9t/b+JquVFlc1PGLAFZd39ehs8yLBtdNpJBEsN8/zC7PmJP2N9ZgMa+3UOh7WCscSvg6z8KG0e126IAQ4OrpQekfoqDxLMgeYQEb4bzvp4NISyBAh+HJ8CWhmkFlUPbCXmtCIVcys2rrUG6TB8T6SLofUd9yMRZdxR7Ysxn+4zSPiK/MbwDGXxwc6BX1KisxO8reFeVXGDfHNamJPMIKmJQT4kJQ02ronKijMS1GpEoWpl4FtCELTMH3p7KpyHoBCdpwn30DB5Ltbu99MGtiE0bLqLpXW65H5LwMhc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,51 +97,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.11.25 12:27, Wei Yang wrote:
-> On Wed, Nov 12, 2025 at 10:51:43AM +0100, David Hildenbrand (Red Hat) wrote:
->> On 12.11.25 10:51, David Hildenbrand (Red Hat) wrote:
->>> On 12.11.25 03:00, Wei Yang wrote:
->>>> SCAN_PMD_NONE means current pmd is empty, but we can still continue
->>>> collapse next pmd range.
->>>>
->>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>> ---
->>>>     mm/khugepaged.c | 1 +
->>>>     1 file changed, 1 insertion(+)
->>>>
->>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>>> index 7e8cb181d5bd..4c2217076ad3 100644
->>>> --- a/mm/khugepaged.c
->>>> +++ b/mm/khugepaged.c
->>>> @@ -2835,6 +2835,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->>>>     			goto handle_result;
->>>>     		/* Whitelisted set of results where continuing OK */
->>>>     		case SCAN_PMD_NULL:
->>>> +		case SCAN_PMD_NONE:
->>>>     		case SCAN_PTE_NON_PRESENT:
->>>>     		case SCAN_PTE_UFFD_WP:
->>>>     		case SCAN_LACK_REFERENCED_PAGE:
->>>
->>> Looks ok to me.
->>>
->>> I am really confused about PMD_NONE vs. PMD_NULL.
->>>
->>> Is my understanding correct, hat with your patch we can just merge both
->>> into a single NO_PMD_TABLE or sth. like that?
->>
->> NO_PTE_TABLE, actually
->>
+On 08.11.25 20:09, Mike Yuan wrote:
+> In systemd we're trying to switch the internal credentials setup logic
+> to new mount API [1], and I noticed fsconfig(FSCONFIG_CMD_RECONFIGURE)
+> consistently fails on tmpfs with noswap option. This can be trivially
+> reproduced with the following:
 > 
-> I am thinking about this too.
+> ```
+> int fs_fd = fsopen("tmpfs", 0);
+> fsconfig(fs_fd, FSCONFIG_SET_FLAG, "noswap", NULL, 0);
+> fsconfig(fs_fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+> fsmount(fs_fd, 0, 0);
+> fsconfig(fs_fd, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0);  <------ EINVAL
+> ```
 > 
-> If no other objections, I will prepare a v2 with this.
+> After some digging the culprit is shmem_reconfigure() rejecting
+> !(ctx->seen & SHMEM_SEEN_NOSWAP) && sbinfo->noswap, which is bogus
+> as ctx->seen serves as a mask for whether certain options are touched
+> at all. On top of that, noswap option doesn't use fsparam_flag_no,
+> hence it's not really possible to "reenable" swap to begin with.
+> Drop the check and redundant SHMEM_SEEN_NOSWAP flag.
 > 
-> BTW, you prefer merge them directly, or merge on top of this change?
+> [1] https://github.com/systemd/systemd/pull/39637
+> 
+> Fixes: 2c6efe9cf2d7 ("shmem: add support to ignore swap")
+> Signed-off-by: Mike Yuan <me@yhndnzj.com>
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: <stable@vger.kernel.org>
+> ---
 
-I'd probably do it in a single commit, stating that both scenarios 
-should be handled completely the same.
+Makes sense to me
 
-But no strong opinion against doing it in two commits from my side.
+Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
