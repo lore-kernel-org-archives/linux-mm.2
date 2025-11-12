@@ -4,136 +4,232 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E85CCF9E3
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 14:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 641A1CCF9E3
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:06:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 419BD8E0018; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
+	id A6A078E0011; Wed, 12 Nov 2025 10:06:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F1BB8E0011; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
+	id A41938E000B; Wed, 12 Nov 2025 10:06:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 307FC8E0018; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
+	id 9304A8E0011; Wed, 12 Nov 2025 10:06:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CE228E0011
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCDB2C047E
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:59:08 +0000 (UTC)
-X-FDA: 84102262776.06.F6B0D8F
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B81BD40009
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:59:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BPJqGA+B;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762959546; a=rsa-sha256;
-	cv=none;
-	b=kMQVthjZlKH3eS1SVorGKYKMTKNuSh6CvenW5c/G/4qLNkRX3mZGLp5H5j+TXbwaYpaNRa
-	e6A/pRF6rGb14AhmEo54iqME5wZEEEsjtBHVKXEtVfIP7GkU9mpp3kVa/S0/CbPEjLPeg9
-	kHfgz0QxT9RTcEoYAnfQA3felVPO/3w=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=BPJqGA+B;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762959546;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D4208E000B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:06:54 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3915DC0521
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:06:54 +0000 (UTC)
+X-FDA: 84102282348.11.4A6D69D
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B9577160002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:06:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YyfIxq0i;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KqtoDQnZ;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf08.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762960010; a=rsa-sha256;
+	cv=pass;
+	b=Io2TK8PfiQSBG5pItSG15WNxRo8DmW5l3/sw9gh4Ln8pdClwgg7w751nekL1YKtXVZjEy5
+	aYWrwlyHFfEkDvn2EFIX3lF3qyLdq9AGElVhSkwQkcq8B7IWOprKSD+JttyV6UWz3OXT0o
+	1W7ndWQZdvNQ5kVcmH7JTkSF6prBsMc=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YyfIxq0i;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KqtoDQnZ;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf08.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762960010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0MTLQ2+KzlbyAQxckoGWY8C9+me/+LObO2aCT3fFijI=;
-	b=Lq72wO45qfDtn3jwlNdNdPkpJvFz4AwGEOI/XNAT1W1/pd7n74hmUsq+9tcmxC4mb208zO
-	0cy4qb1aNd/tuyj6J78yzgqqZe5znrOmapCHOXHGofSo7Lz9VpCdLoNPnPmuI4MwyP0KHw
-	skx/ZIXOh0BO/KP7/iX5aPATe421qiI=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so1569536a12.3
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:59:06 -0800 (PST)
+	bh=5CEvDQeBz8lmpCHaQXv571TnFqb5IK8ONY61kiv4J2M=;
+	b=xp/yjfIstI42keodGNEY492tMs+a+W92o/NLbJoWqdWbO5tGk9piCQ0Z/UAOBM2gWusWaP
+	J/CBM5PCHDtOnJj2Rdm0oLkE0fwmBmmiCZhgEXGQqDrdAf/AF7eC8ZGGUQJIY6pvZ+t0bv
+	6rAOO1Jdgp5xHhtNasQFt8hutyCYVX4=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ACEuG8u023548;
+	Wed, 12 Nov 2025 15:06:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=5CEvDQeBz8lmpCHaQX
+	v571TnFqb5IK8ONY61kiv4J2M=; b=YyfIxq0ilEPuFj3z6Pbz2xgMjWnD5LvLSg
+	qysDvMKOAYmuZyRo9b/0y5rMUSdbqKRa+aGDzTfwgZlDnUeeZHl0m1WoN4uZCvpc
+	5h8YNOsmLskLOYdrod9vJCmdkUPM5eOGW44EM0BvyqaIZMhO8G1LshQyT1wOccgF
+	rZf64sd8nv0zrAG14zTp+NQr6ZEC3BVy23nxBTCKn01vev5CNXvr58HwhQvgPviQ
+	jt/hedaqUNdxzcczvc9JxY/Uk35xeYPES4tpNiSb6MozH8xrnz0aq3qikVk5+lEo
+	1IcF1gyR9eT6mLSDPlrAy4rOXZX4qabj+0M/zCXuJcsV/G2DlecA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4actyag8wg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Nov 2025 15:06:44 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5ACEG3Da009926;
+	Wed, 12 Nov 2025 15:06:43 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012037.outbound.protection.outlook.com [52.101.48.37])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vabbjvw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Nov 2025 15:06:43 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KIHLHn+aCmFbPmS/L5+USZGZKwUfkxSe+ld3Y2hpSwxbOwK/YczNh6s9kzA4KWzkjwJzZTKuYaDoAwstSXPKdKYdvpAa6gCsQ/5AB2bw9Ts9YTKbUEkquyp17RBPNpE+2lNg9kKqC95D9dwq3wNE09LgPfdfDKGO9nfT5cgd28f6tmu0Nfgv1JdczV1HnfvkpjcSPO4PUvMh6R2DV8z6dxtirZ9xe8vSebqUclwa6saeZKmyUrKGTPHFtLMoXdnC+3S4BW4qR7Dnns1Ii5wZHwRt4dMbMrBb7eCv6ygLDSqudvmIIQKK5klUwvzqyyqz5JolT0Y/OEyAbeRPUs9sGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5CEvDQeBz8lmpCHaQXv571TnFqb5IK8ONY61kiv4J2M=;
+ b=nNYq8KSlieWJV7BZDcj8zWoL/zpD0QrdVNklni1uTYILT5qnpr8prTjEg//9kAtKTnMroIpDC15yJWWlOjd3LV2zFsC5EHJVqbxZBhIT1XiIkrBB+1IVzhApBxkDO/txDMPTgmUf2jf8B6BlZwSMnO1qwF+mbMLiWJUH5ls7qxth2DInj+y/3JWg1YvS9imBxWKbjB96DSVpcyTRD+FbG1sCoFg1JyRTcSm8F+9WYjiizoKlghNl7Nb4S3jN3cKQfPGqFy3RGFCNCLMVRDQn6AJvPx5+IPvwbnJFBgiT0iMJlTLMt4146hQ3hdPsZ7xNToBo2Pjn+vyZQ+cyUN2J7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762959545; x=1763564345; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0MTLQ2+KzlbyAQxckoGWY8C9+me/+LObO2aCT3fFijI=;
-        b=BPJqGA+BoqBhxNdNaIDnWjyRcJ1h+mDfr8NKjJYEDEQ1ESSbXNyUwAqqrJtpoZwlMX
-         tD3pJDCzMohWK9DWYyKUGO8G+YkxJmn07vBL4IlVuhUf8xgGrLHdUjFrjqHKkjH+1kgh
-         QdkVejwFWV66LC/navKeZGL+A8WDrROMSxazt4BBlgnMS5ozh92ERTqhLLGvz5ugKe/q
-         xg9QdbgS6CH5o6phgaSUI/dKLDhVLsmlmSXvGKXCXD9+Pf9ZsfNHF1pGPR3RcG/hdx3X
-         UsUmZRVDWJun7fTZVP8kTRE49PqpEeI1b0sIinPZybJpFFgKG9ujxeI/Yu72HvIA0Qtm
-         f5Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762959545; x=1763564345;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0MTLQ2+KzlbyAQxckoGWY8C9+me/+LObO2aCT3fFijI=;
-        b=GAQaEWqLJ7q7Zyh992pWaKw1unNFWA5yEUJnw/ZRXJTgLenK/Bwecx3Oev635GLYNW
-         EaAE1hCaChKDv8mmS7EtBslwOqFTxy3w8dQDl8yermLtwjFyesVPvxoEVx/ezm8Ea/9N
-         YSN1onGjL1gMa/r+xiaqATA0FH1uuSj8AnzgOo6RPr+gr7V5rX4vg5b83DmtaVYlOUjz
-         oUa2XOsU7wrbSoEUQRNQ8i+6p0sDvbMs93hq1alsvFkElgnOJ0XeCXsEDe1UCUdE0mhU
-         StwhHtCHgR+Ria2HkIzb+WXlGjuXvESuOL1rxJutaCpNZn5+wjMTXVi1yglc7bbTZlUk
-         qLGA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2o9mBC3H8c7sNgsY18XUukhQDADfyb34bTkMkt+N3mBN++zVWVVrn3hWdVa4zd8tBCkQC/zhisQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx8vcPbxA/7fkyL4EGd2D0rhOZbGUhG8Wz2CETPHbHdYjWWztGr
-	xM4vIuyRdVYD05kKmfcHQqiYHDQPG5Ihki9OGJ8ZS6n0d0NCOiwPH6qJqk3+hKGi+eEzpNdGmtO
-	vIdsTpztwHkOBqXCiquggSaeVGBkBdYwhc/GkGsICVw==
-X-Gm-Gg: ASbGncvcJLRj2SrvIBbioQ2r3Wcw5ECeAtQy1Qhj6pBs3NssKJyPGm5sqvdsaT/MHN4
-	aVrdzfEmEVgTK3K7BQX53PXGQMq4DPCxVsUkeQKN/Nn57DDOQfOFlbPzFlZx6Zp9lOpTeCNgMrz
-	JPY5SujsAIZ+4HXVdxAiM1cQ357zLQSMsJepgtot+kqPPUDiKkJlibkUWVIEc+AdAZE7YV2WzcE
-	SEg3FNFi6TaeB2oioGs1lW+enzYPYuS7Hei+xvXlVn+P+2qrCG+SjKr3w==
-X-Google-Smtp-Source: AGHT+IEdmxSCUrDpzYYdeQ7xGZMZCFuRazVHOEq301lv0Np/o4OtNdmIj/Fd7MlLr72XZf02Ov5bYrL1l7CAevQmQsg=
-X-Received: by 2002:a05:6402:20d5:20b0:640:6650:9173 with SMTP id
- 4fb4d7f45d1cf-6431a5906c4mr2199942a12.33.1762959544759; Wed, 12 Nov 2025
- 06:59:04 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5CEvDQeBz8lmpCHaQXv571TnFqb5IK8ONY61kiv4J2M=;
+ b=KqtoDQnZwXwTOK3xwNW2ep9ibb6fZAZ4MFX5g2Q+qfteaMd+F1Cc5q6oI24/DTyWVR7h09vSoXL0Kd1UFXnEuSvAzUqSBS1nhfIpE8l0ToTWrHzWnLmBPejT6iomxYXWDwzvNKZbTsCDHMzLg3FbzEYpeC+dsiN6g9IVFW8s24o=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by CH2PR10MB4263.namprd10.prod.outlook.com (2603:10b6:610:a6::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
+ 2025 15:06:40 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
+ 15:06:40 +0000
+Date: Wed, 12 Nov 2025 15:06:38 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+        stable@vger.kernel.org,
+        syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com,
+        "Paul E . McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
+ retry
+Message-ID: <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
+References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+X-ClientProxiedBy: LO6P123CA0001.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:338::7) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
 MIME-Version: 1.0
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-3-pasha.tatashin@soleen.com> <aRHiCxoJnEGmj17q@kernel.org>
- <CA+CK2bCHhbBtSJCx38gxjfR6DM1PjcfsOTD-Pqzqyez1_hXJ7Q@mail.gmail.com>
- <aROZi043lxtegqWE@kernel.org> <CA+CK2bAsrEqpt9d3s0KXpjcO9WPTJjymdwtiiyWVS6uq5KKNgA@mail.gmail.com>
- <aRSKrxfAb_GG_2Mw@kernel.org>
-In-Reply-To: <aRSKrxfAb_GG_2Mw@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 12 Nov 2025 09:58:27 -0500
-X-Gm-Features: AWmQ_bnbzArXLN8aoATNdiGHp809pzMOSngeRCNP27w6LsiaaRY3i_BJDeNIl5I
-Message-ID: <CA+CK2bAq-0Vz4jSRWnb_ut9AqG3RcH67JQj76GhoH0BaspWs2A@mail.gmail.com>
-Subject: Re: [PATCH v5 02/22] liveupdate: luo_core: integrate with KHO
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
-	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CH2PR10MB4263:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2e875c9-030b-4230-e326-08de21fd15b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?y4F5hNo9kLKjHVMp2TdR3oNDUGGW6zwn7nk1IcD53c+JXs0JTO4o2A/yqdez?=
+ =?us-ascii?Q?c7pu91Yiey53yieI5dKPfHCq5Jep/GOEh5vGtSqt7rh5qBbWJcxxiPP27frz?=
+ =?us-ascii?Q?WonDZUsny60O/t7e2bIMU9lu/GmaLLtdDvokjBEDgAcRHVdSXgfAqYe/N59Z?=
+ =?us-ascii?Q?MV2QormZxRpBZLRmFszGdqfPBcswp7jGrKwO1pm6m0mSuphwmO2+jD+d+6OQ?=
+ =?us-ascii?Q?Y8kvoFB+sKl/I16xPqjMhEmLYTMbvgBjP4v2O3f2ABniFcJpHksT1Yjutm21?=
+ =?us-ascii?Q?QP99WfiW0lpz5/dyEfM/9FswbmFhd4gvjGYEybrkcw3ClwUKZHrb4nOQiOs3?=
+ =?us-ascii?Q?51ZBMFyVYgFJK4XIEtQ9Puky9wCblhb7tb/APl1KIfEbYYjdWbDTToUBUWKy?=
+ =?us-ascii?Q?cD8KskeZw/qNWRSVAS3T3u+IsKtxvluN+FPKq/75wA4ocZTCgNY1+oAdOExw?=
+ =?us-ascii?Q?mpHzVVo8KVMJK4CASoQaOCMOeli4lnzgMkSaK9huv+rJ6YXbyya9Sh28Fw1H?=
+ =?us-ascii?Q?X5BPUV4gMBjQ4kE98i66J5nL1LEdp68vLPxwgtlo7W+Kyo33DorgqNcWwOGS?=
+ =?us-ascii?Q?KNcJOvI1aeWRypnnx/CjrNUSZNaAyhrA4BB3aDaPq6TJrNlQEk5ksMrDIoKl?=
+ =?us-ascii?Q?fHJbssClMOxfq7gFURe/sP0gX1NPMYu/EnLwXXIXWJ5TbbACnQErugOmyXOj?=
+ =?us-ascii?Q?BA1IGS9sLgQmPR2bExi8XfK3Buds38ONCvrvlF0eeFgQPo0tKD2Zp3d1jP81?=
+ =?us-ascii?Q?/MB5Q/rh8j1+1pL+p+7mujiUZH8RmtkCOmd/kD6sL1AcYEEfPCWw54Rb+ye1?=
+ =?us-ascii?Q?hMyeJ535mkPmtaACs/SOlVEpQrCdNFm5KmEq9lMDFHf1rHviHoK7Yps8LpwM?=
+ =?us-ascii?Q?pTl3bH1UHiXSRM4Tzo/yO2QiprUeEP2a67//nAuVZLVQjLctyZVQwGE9Wqi5?=
+ =?us-ascii?Q?4Iwjy3NAolYpDW5iJK4TdO81mY5dnlBbDs6d8VhrLxXsnaKZVUk5XbvEPqvq?=
+ =?us-ascii?Q?PET6IuOwf6ZW3EhA+G9E0M1Jd6NKMXQxfodJP21yiNujVsMamcZk9PbRRz3Q?=
+ =?us-ascii?Q?zaM44/4oySlLld535zGNfnrtYHG6CHaDNujAHkSYa9d9Z5A5MESCE9/vhqwL?=
+ =?us-ascii?Q?hCx4T2BI2G7xLU1jo/ooCQ9N0Oqw4VZP9B/pJC0fjXYT8rJP0MxWx1T7GmP6?=
+ =?us-ascii?Q?xHxZNjzvV0qH916u9H0LpnG4xgOyFAenngNoWajZq4NZc3eHtlH4T1TDPGJ4?=
+ =?us-ascii?Q?BqJ9AD+gyWO0MjQqY7Pw/beuRpe1zH8xAYD9HohxYnVEnTxWyhgAI8uptOF3?=
+ =?us-ascii?Q?Y2i1b1RlXGd8Il635NN+L4YbT6Ewqj6D5I7jMh78GND6m/usezckqYTskA9c?=
+ =?us-ascii?Q?H6CxtGuZF17y1JOB3YNfuiYGh3hWnyGvD/dAHrNYWGhJw89nCQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bgEgYlZZpTAkKUlH/UXIbHrEqgxp9ENFUMsWL0vunI394okP7+uvdcCe6q0B?=
+ =?us-ascii?Q?8uzjXx7wGAAydBoTqkHqEpEuJJ81thsk/hWKKwYfELHGc2h15waAY+6TUl3D?=
+ =?us-ascii?Q?IemAa/rHQXOXZHuDNg6NXC4kxGbG0U577FsrEW3mZn8SEvdKFybqSRVAk9SJ?=
+ =?us-ascii?Q?Nchly516o35Xdz1Rf90Xw4AOcAnQSw5nLZHmlbBnVbxfJu35Vr3PKuOY1USY?=
+ =?us-ascii?Q?64BjIww/v9tZFiZHKDPKv0KNuP7v9aRbioaGnaGXTqlkWD1DBhkd9i7au1Iy?=
+ =?us-ascii?Q?cHEIaPTkNT808akhCP4ByXsC88FeDTFhaYarQw6UTErmmV1zcDpzGBNev+Wf?=
+ =?us-ascii?Q?8Ie+MblHteYy8FAK2jPhZRLXDmZyJnj5J0kHPCmH1gcCsH/lTsz2g0hepOSR?=
+ =?us-ascii?Q?YjIwnpyCxIMt1hfq0Mit5ep3BFt4cwt4QE9c5qwq8GKb4exLjKGpgiZZjp4v?=
+ =?us-ascii?Q?I+mUyeaIWNjGGPIfwHmoPR5T1AzEYzB99+kUt3NAdnb6xKmxk7rLhPjCk8i0?=
+ =?us-ascii?Q?nHmOYWIVAsFfGUQTYSaLH82yTWJjZKa8oHe0B+qOZqj2ktYrBb/aaCMEr8fP?=
+ =?us-ascii?Q?Z1QPCWBGVtSUA9mqcoYYw9yiEdC3Xdjxfuw8kbzvKhroK523mZyAdQzcd/p4?=
+ =?us-ascii?Q?nNZSPlrP12jYIw5b8lbdTIjI27wzcKG0CYCf3UZTHIyStyKbjTjOSzwc9y/N?=
+ =?us-ascii?Q?GlLDYsjnGDJxDIVop6g5CgsqtUC8xSemnqAN/2RyS7djNSNd7JEdhKRx684W?=
+ =?us-ascii?Q?IeZv+t3jKVYyxyUrbIYEdaPOibZ4S6AbaJkuFx/MhDHi5xu42bulqhBADRhQ?=
+ =?us-ascii?Q?CfxoAf0dBM9LT9txFkNBSov27Y1szHoFxQbVMuQ69TCBIV4FwBMgdZQImf6A?=
+ =?us-ascii?Q?F+QFaDiPHTqsoXBeDbV8sXzr3KWlUolE6FZgIDq2rWRmpjOcWanmKNGTsSej?=
+ =?us-ascii?Q?wjvxTmzI7GHIvcLG1TJvsgX2y1TNtD6W2UEJjUBrQEZViqulgwKv9WvG2tWY?=
+ =?us-ascii?Q?wxAVsgLeCU/bmHAUTr8qG0EgNbj/f4f5P8UfC2unYc7A/hoATvtphPCoWhO2?=
+ =?us-ascii?Q?/PlRi/4rTMuYqFhuBPe26zg0JWWLR0ST8wGIYVx3qXHQUGk5smbwxm63zNJE?=
+ =?us-ascii?Q?rlJQKD8pNyJFofrOi5lD5GLO/YdXiEV9ViMgwjcH9QxxNVE4RoIftw07K1pe?=
+ =?us-ascii?Q?LdzXT2mv6Vgsanymw6ApLJSBOcvagjT7m2AUesYNueIOdtctziQCPbVpBjWG?=
+ =?us-ascii?Q?c1EthbyUvYTFzjRsbR5A0fEOMIts4Zq7V4kgbk0jd2KqcspzOFjN8sVMgtx+?=
+ =?us-ascii?Q?sAlfomMVS1tQD3iR5hr2JIvEPD/D974iXTeKOp+Nr+xdFsQ3NjwMvRMjpVGh?=
+ =?us-ascii?Q?9nMi+zVf2xg/apK5fvNlH6wi0MCRtrNghBdfWusQkjj97tm5YzY2zIy45SlO?=
+ =?us-ascii?Q?BsWGhrXNTLOTgyP6nGJz2kYaj+6Z4lo/Iv+3mCp2A9Y9/cL1n/QFCB2ZLas+?=
+ =?us-ascii?Q?Q6QTyIECYVsF8aXPN1e4TGlu9x2NsJ3S74CBaKH1NXPoc8+oWgxs4ZzO0Up4?=
+ =?us-ascii?Q?kaUxF1cmOXCI12xGk5c03rZUA1dm16FSHddSPFjr5lqfXiAvKn8d747z7w6O?=
+ =?us-ascii?Q?zg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	duvW2txqMZAdP3WcALa4fQdxFMVZi7rEVvvfAHsPW8vRf4UfGVMYOkgfyl6ymv3iJvAh9eN3Buc/oqbHPxFtbukD7hUtvE7sNfKOGdfHobksAJ2OgsjsHTrF6/Mk8dEPWu6ji8hB6xyajmo3kr19RIRsN5uvuniKtlCofOlOlpqI1Asn/wVNJca5zb9GWoBc3QXHPNe0VXO2nC8LD8PcLFbVF5EL4JDkvEuJ0bB7ixt4SvkpTYwu2t+rRagVzY2GKTjU5MnxIMsioRRUzXmchGPV48eCY82AwswtdoWH8zU9ylmH0HO9A/WhZJMt1O7d77eXBju4miAN6f4DVxQyELQuxK0HyRnBC+5tgCx0XGGUIFwQnPz7vUXlB2r35k/XW5anmqHzZJq2Zc6a3s3XcywOCqcUibDvG7ynXlokp4Yl9SspRhc3FuWiwzCmRNKEwtKeE1+7VyNNKTCWfAvFYgXgQpIgEHLw8BAH+LQUPGH+D4HsU9bqrIszT3pPMRyMjOEGNDPuqWfQUUVanT82JTrC8tf0b2DG6XQtn9sw/U07u76d6p00OwQsxDlOTM+Ckdhx/kJKD9RX//9sVkKSJJ6JARpFlYBb2FunVIn+PYo=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2e875c9-030b-4230-e326-08de21fd15b7
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 15:06:40.8952
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iT+Ru1UueDdRWyuxdFd51PG5l/Dpj4hvKhuYQJRk+Rd3dxwMR8vhskpG1cdVDcPOx1k/jb+/qq1zIOYaop4KZnDl6tKC3HYHAkF+7TdvtWc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4263
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-12_04,2025-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
+ mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511120122
+X-Authority-Analysis: v=2.4 cv=Y+r1cxeN c=1 sm=1 tr=0 ts=6914a284 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=edf1wS77AAAA:8 a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=hSkVLCK3AAAA:8
+ a=yPCof4ZbAAAA:8 a=jlbU7W0MT8901EHh5ugA:9 a=CjuIK1q_8ugA:10
+ a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+ a=poXaRoVlC6wW9_mwW8W4:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=SsAZrZ5W_gNWK9tOzrEV:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEyMDEwNyBTYWx0ZWRfX7a0Cz+euVJb1
+ CvW+e4o442s2Zd4KrdJMoWy2vkS/u3i5gQRapPFNzHv80TtPkRMBncEHLNwkYp6sMI17t5jUj7V
+ IrAPw0QFdtriwN3PKs9c1AWp6qWb339iB8eP4GzwNsG8p5q/hOBBUscskyfiFTnJAejlGwUxF3+
+ fE+n1wwZ800maBvss1Mox2RYAGWKCATE3YyF1k66lE38TyFyNKQZuxfQClwmJZBCU7kj7jqclj9
+ Bv76sbJGJf6B9E5EsFFOM0sQ6gidkS9U1sm0K2ByMk3l6PAlYRpI07WWoeGiYg5srCjb1GMCHpg
+ crr2KZ4s2Zr+GcUWRoEcZq11I6dzIUEDfMoTlSAA7VYDtLpSq5pl3C5t/ak2SxU2ZQZgLWoX+S6
+ +1sR7yIWhqBLZNPDdSpMM98c3pUPzA==
+X-Proofpoint-ORIG-GUID: n5YoLIaLTDAw3b_XqYDFf6Lcj15onXZq
+X-Proofpoint-GUID: n5YoLIaLTDAw3b_XqYDFf6Lcj15onXZq
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B9577160002
+X-Stat-Signature: 16tzdidpgqupeqe3m791aseg1pj8ds47
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B81BD40009
-X-Stat-Signature: g7mg6ph5aoadrehbrnb9phnhxk1in6yw
-X-HE-Tag: 1762959546-571428
-X-HE-Meta: U2FsdGVkX19S/5/a8/cXY5g0A+KZzxUUgHl3sdh7xX3rGMut8S4Md8Nwy0ye6F9II36voVzrJd58q94v7H2T2Thg4Da+Dlfg+7ArFtbOEAZCtHeRqhPZrC83wDWEMwB4H4yr74iuthMTXK5RcOhEWtrqCfEFB9w0M+fxCjdL4xzjznHQ3lZXQWBMx7djlTM5iXYKrhkUQPRHOGaT3Abar9EcI2mHfKoC0WNJlfHFRDmWiafbehNHRxIAFq5r07Gpg3/TFTjmgaDwoI+hQZgrnvXxmu32nXf2sVVOql+XymHMB0CAeP+TL80MLIRaJD4y0Ldr6MiOxVMJVLNMPhoOCKIGhwR9LExLvXyOxMrP7B0/8odRHc2CNiC0fopd/+NiiqQlvEsXS41WEgOisLmPBk4pRbRXmvlpEI6orsEtSZHPyPYeG8mUpQ2S2H2ct/i66eZNZk8s7OVEl04NTcU5/hRlse8EYmegF51mA8AyxLxb05eVA/M1Mr3HNC13CiFW3XKdTm3gYCmVOhbaCa7mwveXUTVYRBjZ0ZvFXJX82mryHd2z0o5gboo7tfOstMqabv0rhmySCuBDVR8oC2l6WeVsJMHaVh0SQPQ/xpraXbVuuI2A1EbrefG3ceq23BTXoIKPf9xRgsXrx0AHAyr15QzPqWKUV9aw5ghpXBqE+tk1YVWGEJ97DWjvK0+Ctaf33sz2CJA4+euW5iJM7Ihm/qAzKycWnOTVzYGm68QSxIBI55kfqeDMRl1GGUSOlGev1+m382V/I506/u7AtRGNxQkgUlmvN2GPDqibgT5DzTbz84R1NhaUTKyRTGsrG6Mx1LO7u7SBhuMy/zjmDdlBTDAGJf88kZmrIHwb154OwIE4IgsDkgc/wXbjopVTmXhfKIvkTEgLUJrFsflACsr/WJcrcU3Qa9jBcMD7zc89ejigSsvCtXhRLBIgCZHlfThSFLs0/C4RB4pKV/4an+u
- eRUPhL26
- 3BKJ7BZWy13/qxLOYXJ5e+ZxL+9xRc0Zug/1VZyno5e4FEGFr5GJiFqd4Z9k7XuDwmubMfcizseJfXiZjD78uPbQLpU0ycRlGR06Pzb3h/64GR+bCQcAFaVjg+Bofj7VqtZ0lNzp8otv/d+4/zRrXTPh2NyThs9HjF5oQLePAlr6Bj+ys7fIBFfJSCJZoIPo0McfrJq4RCMuvQY8X/CAEXMHj95iWvKkmvFayHi1jEqxlE3fqMC5x3XbAt0tJoYtZc7tSt3A+JvM74YHQdfuSJ/ygbfyYsibfqUbctKmza/YbIvpVQpKRU2/CdoNNmmAjOdI3pqYsq6KbzGY=
+X-HE-Tag: 1762960010-682279
+X-HE-Meta: U2FsdGVkX1/2gpQiHrNjsAcFYhPOjDzXmsa0lwwrZ3JSaG1OF/R0/1/VlMjmd/JyqJcLb4j0N/SZ0f+jEQLlh7HJEN9uUu/TOXzd94gt31BPNNbjh3R/MkJuoxEGqkVqUOG8slQCFLmW4Bao5oUj+7aWkY6Ddi8CmurhITiorprFStZQrDQ9R3SXHFzRqb5AQIiwrxf5N7cnkFsSU6dHIXhnEfrpEDJ2m4MVhiL1C3SEbzL4s2z+eP7IStIaO4NgqOZCm1oGVEqtYO510lvApOdun1QXhF3N5ZIRqeGsiVjmYuKkXkR8EOXnTy9DKxOXa5vJToU4DmbIM2HzvCWHbhllJ3jEOffsUMOvhhOXM3WxsY5DFZzPJzjgKBqU9xl055r011jNhHmauI3iumONRd0cY+F9v1tzAkQWbPK/S1T+Df+TcZOUB9+rSc5DmkIP2QeqIRkXUHdkUrQKYyrdxZbq1PoVWa8bUpDfFeZq3nFct4YUeGwH8cN5tQn49kjBLeILee7JzlPO7o7GEKGsOhHwWxyqJI87phN23s3cMgT042AYpmwqIARXiY9O3QRawPGm/XM8PBdqfpphTwnaP7JVUv0GolNE/rx2ynhTJ0lDOpOgMIx8SGSRpO1YmNrPMTfShJGkiYEzrC0LG+pDjyOPMuqLA0jvz27lBYlQrlSJwBa+ZGosgLWdIfIt5XvnRQPDV33lSy3/NLRlopP6ELJK6ASKIeZ0PJsQ1PXTyflOuf9fOgC8JtMXZPCbjax7fdUwAQ4ZWcMV1hBolbhmVtqdOARwrsU7vPn9X2RWAk5GwXY8TEc7NL8xOPOxu6IrmUEFZoEDg5k5tnpoRKmioNq3yEWJJCqkFUYjD9trVdxjitGooyp2aMkxFgLwR0drIZUxjjQP87767wfqSBhwSSsbL8/GBoI9I3TxQordeE5qvn5CpCp1eKGNOwPssfT4mDr5d+pIwpzY1Q69neM
+ 4MNIOgis
+ 7GvFp0oP/HBncyY+8gTuPktFhANK2FjWEwYcD2OGekSXexjgjpCHraZylPGZI9c4C+uBCge+uNHIlwTQh/d1Olt8lTa5YwX2dVmasu8qDzKDjaCFbKKzl4ERim0FpwfKgHsOcpvkZ92KuWSne00jNBNlDei3R3TXOs1epqp412ZnMTskfh5fKDUknEnby6QNClU3dV8IHrfeYjTV0sMf7Jzzaz48CEkhUmfeo6+dUwA01oX/URgQt01i3kR2OhC3+Law3rcX98W/cdunFFLzv7xfWKPSz542C9yRTRIyLPfQ0l2CbWDxx6nfjML7mcBAPUomPHgRvXbM6CkS2M4sJ1v3j67ub5/tHDJY1LAf96ev7ORAi72p5TDNtLRsMgx3ag4YTQQU5OwN7LsjY6M6SvgPvKqJEy+9BiQc4cg/aFHpvZ7mx1Wfsg482CGZZBhk27gbI0WplQ53BpAqkVjacLJOp8r5IRs2JfSfG86bK9Eftc+VcII9R7c1YT+rdBDsGLbQZ5OKZQu4V8h9dVSYqjktqGna/QNQb1S3/I4heOU9aTLjLjzLTb+xqQ9pqlbF46Vsa1N8WhwowBY8h4Zqlc6Wv+seY64/OW3Pa4pYN/q8Jg83Xzj7OO/W1EEDVN248qMbH3RXuy4Hj+yLjgKE/cGRvjhiWUB929/2Jyw4du3A5I6aPHm+62GEXPFXnU/Fizo1psmW2x089WYXSRohT7zFmJPppgYMq8UPNIlPcwa5A85Llr2UE62ugYYYbltsIPmopp0BNVSXa637NgArvKVuLTQCQHmwGQdi46A102Auj0Qw5IsIaSk7WQrlB44tyJEkWl0pGlk7C0MjduedgqeT3fBzP4qdU220G1WMbw7Mq6L6Ql71iX0ZGTE/Ir+GRdF1F
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,130 +238,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 8:25=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
++cc Paul for hare-brained idea
+
+On Tue, Nov 11, 2025 at 04:56:05PM -0500, Liam R. Howlett wrote:
+> The retry in lock_vma_under_rcu() drops the rcu read lock before
+> reacquiring the lock and trying again.  This may cause a use-after-free
+> if the maple node the maple state was using was freed.
 >
-> Hi Pasha,
+> The maple state is protected by the rcu read lock.  When the lock is
+> dropped, the state cannot be reused as it tracks pointers to objects
+> that may be freed during the time where the lock was not held.
 >
-> On Tue, Nov 11, 2025 at 03:57:39PM -0500, Pasha Tatashin wrote:
-> > Hi Mike,
-> >
-> > Thank you for review, my comments below:
-> >
-> > > > This is why this call is placed first in reboot(), before any
-> > > > irreversible reboot notifiers or shutdown callbacks are performed. =
-If
-> > > > an allocation problem occurs in KHO, the error is simply reported b=
-ack
-> > > > to userspace, and the live update update is safely aborted.
+> Any time the rcu read lock is dropped, the maple state must be
+> invalidated.  Resetting the address and state to MA_START is the safest
+> course of action, which will result in the next operation starting from
+> the top of the tree.
+
+Since we all missed it I do wonder if we need some super clear comment
+saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
+by doing 'blah'.
+
+I think one source of confusion for me with maple tree operations is - what
+to do if we are in a position where some kind of reset is needed?
+
+So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
+to me that we ought to set to the address.
+
+I guess a mas_reset() would keep mas->index, last where they where which
+also wouldn't be right would it?
+
+In which case a mas_reset() is _also_ not a valid operation if invoked
+after dropping/reacquiring the RCU lock right?
+
 >
-> The call to liveupdate_reboot() is just before kernel_kexec(). Why we don=
-'t
-> move it there?
-
-Yes, I can move that call into kernel_kexec().
-
-> And all the liveupdate_reboot() does if kho_finalize() fails it's massagi=
-ng
-> the error value before returning it to userspace. Why kernel_kexec() can'=
-t
-> do the same?
-
-We could do that. It would look something like this:
-
-if (liveupdate_enabled())
-   kho_finalize();
-
-Because we want to do kho_finalize() from kernel_kexec only when we do
-live update.
-
-> > > This is fine. But what I don't like is that we can't use kho without
-> > > liveupdate. We are making debugfs optional, we have a way to call
-
-This is exactly the fix I proposed:
-
-1. When live-update is enabled, always disable "finalize" debugfs API.
-2. When live-update is disabled, always enable "finalize" debugfs API.
-
-Once KHO is stateless the "finalize" debugfs API is going to be
-removed, and KHO debugfs itself can be optional.
-
-> > Yes you can: you can disable liveupdate (i.e. not supply liveupdate=3D1
-> > via kernel parameter) and use KHO the old way: drive it from the
-> > userspace. However, if liveupdate is enabled, liveupdate becomes the
-> > driver of KHO as unfortunately KHO has these weird states at the
-> > moment.
+> Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU
+> lock on failure"), the rcu read lock was dropped and NULL was returned,
+> so the retry would not have happened.  However, now that the read lock
+> is dropped regardless of the return, we may use a freed maple tree node
+> cached in the maple state on retry.
 >
-> The "weird state" is the point where KHO builds its FDT. Replacing the
-> current memory tracker with one that does not require serialization won't
-> change it. We still need a way to tell KHO that "there won't be new nodes
-> in FDT, pack it".
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 0b16f8bed19c ("mm: change vma_start_read() to drop RCU lock on failure")
+> Reported-by: syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=131f9eb2b5807573275c
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+
+The reasoning seems sensible & LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
+
+> ---
+>  mm/mmap_lock.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 39f341caf32c0..f2532af6208c0 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  		if (PTR_ERR(vma) == -EAGAIN) {
+>  			count_vm_vma_lock_event(VMA_LOCK_MISS);
+>  			/* The area was replaced with another one */
+> +			mas_set(&mas, address);
+
+I wonder if we could detect that the RCU lock was released (+ reacquired) in
+mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
+
+Not sure if that's feasible, maybe Paul can comment? :)
+
+I think Vlastimil made a similar kind of comment possibly off-list.
+
+Would there be much overhead if we just did this:
+
+retry:
+	rcu_read_lock();
+	mas_set(&mas, address);
+	vma = mas_walk(&mas);
+
+The retry path will be super rare, and I think the compiler should be smart
+enough to not assign index, last twice and this would protect us.
+
+Then we could have some function like:
+
+mas_walk_from(&mas, address);
+
+That did this.
+
+Or, since we _literally_ only use mas for this one walk, have a simple
+function like:
+
+	/**
+	 * ...
+	 * Performs a single walk of a maple tree to the specified address,
+	 * returning a pointer to an entry if found, or NULL if not.
+	 * ...
+	 */
+	static void *mt_walk(struct maple_tree *mt, unsigned long address)
+	{
+		MA_STATE(mas, mt, address, adderss);
+
+		lockdep_assert_in_rcu_read_lock();
+		return mas_walk(&mas);
+	}
+
+That literally just does the walk as a one-off?
+
+>  			goto retry;
+>  		}
+>
+> --
+> 2.47.2
 >
 
-see my answer below
-
-> > > kho_finalize() on the reboot path and it does not seem an issue to do=
- it
-> > > even without liveupdate. But then we force kho_finalize() into
-> > > liveupdate_reboot() allowing weird configurations where kho is there =
-but
-> > > it's unusable.
-> >
-> > What do you mean KHO is there but unusable, we should not have such a s=
-tate...
->
-> If you compile a kernel with KEXEC_HANDOVER=3Dy, KEXEC_HANDOVER_DEBUGFS=
-=3Dn and
-> LIVEUPDATE=3Dn and boot with kho=3D1 there is nothing to trigger
-> kho_finalize().
->
-> > > What I'd like to see is that we can finalize KHO on kexec reboot path=
- even
-> > > when liveupdate is not compiled and until then the patch that makes K=
-HO
-> > > debugfs optional should not go further IMO.
-> > >
-> > > Another thing I didn't check in this series yet is how finalization d=
-riven
-> > > from debugfs interacts with liveupdate internal handling?
-> >
-> > I think what we can do is the following:
-> > - Remove "Kconfig: make debugfs optional" from this series, and
-> > instead make that change as part of stateless KHO work.
-> > - This will ensure that when liveupdate=3D0 always KHO finalize is full=
-y
-> > support the old way.
-> > - When liveupdate=3D1 always disable KHO debugfs "finalize" API, and
-> > allow liveupdate to drive it automatically. It would add another
-> > liveupdate_enable() check to KHO, and is going to be removed as part
-> > of stateless KHO work.
->
-> KHO should not call into liveupdate. That's layering violation.
-> And "stateless KHO" does not really make it stateless, it only removes th=
-e
-> memory serialization from kho_finalize(), but it's still required to pack
-> the FDT.
-
-This touches on a point I've raised in the KHO sync meetings: to be
-effective, the "stateless KHO" work must also make subtree add/remove
-stateless. There should not be a separate "finalize" state just to
-finish the FDT. The KHO FDT is tiny (only one page), and there are
-only a handful of subtrees. Adding and removing subtrees is cheap; we
-should be able to open FDT, modify it, and finish FDT on every
-operation. There's no need for a special finalization state at kexec
-time. KHO should be totally stateless.
-
-> I think we should allow kho finalization in some form from kernel_kexec()=
-.
-
-If we achieve that, we wouldn't need a kho_finalize() call from
-kernel_kexec() at all. All KHO operations should be allowed at any
-time once KHO is initialized, and they shouldn't depend on the machine
-state. So, even late in shutdown or early in boot, it should be
-possible to preserve KHO memory or a subtree. I'm not saying it's a
-good idea to do that late in shutdown (as preservation may fail), but
-that should be the caller's problem.
-
-Thanks,
-Pasha
+Cheers, Lorenzo
 
