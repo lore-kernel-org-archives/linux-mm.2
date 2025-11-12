@@ -4,188 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39AA1CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 04:47:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAFF5CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 05:16:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 974A68E0017; Tue, 11 Nov 2025 23:47:14 -0500 (EST)
+	id F07F38E0005; Wed, 12 Nov 2025 00:16:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94C878E0015; Tue, 11 Nov 2025 23:47:14 -0500 (EST)
+	id EB7C18E0002; Wed, 12 Nov 2025 00:16:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83AF48E0017; Tue, 11 Nov 2025 23:47:14 -0500 (EST)
+	id DA9758E0005; Wed, 12 Nov 2025 00:16:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 72CDF8E0015
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:47:14 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1431E4C2AD
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:47:14 +0000 (UTC)
-X-FDA: 84100720788.07.72BD15B
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011051.outbound.protection.outlook.com [40.107.208.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 29FC8C000C
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:47:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nraC3aqv;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.208.51 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762922831; a=rsa-sha256;
-	cv=pass;
-	b=0iAfYebdYvLASDDM2BJn9sf2G5aFEJuhaEgb/PRWWGF2umZxui1rM8fYZ3N396bB/wCXOP
-	lU+8FKZRjKrYvu8h6R6uDCvp0157Q0fUXApGmdHMGczscz60UV3b5EI9eouqVXCQx0Zw29
-	9GZ7o6gYAlbxSZNKliwH4W3Lh2t/e4I=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nraC3aqv;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.208.51 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762922831;
+	by kanga.kvack.org (Postfix) with ESMTP id C577F8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 00:16:29 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F8B3B8721
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:16:29 +0000 (UTC)
+X-FDA: 84100794498.20.69DA057
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9083440006
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:16:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=AQBVX+p1;
+	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.169 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762924587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/kMngb5+B04Sq7AqVV075rWHA+VVKWe4vWLs9GWA10=;
-	b=Abawwl4TdPc+XxzgyWV9fdZY1aprNho+50q4kGOBDdGkmmcxR13rc6GRpvrz/HVMpl6//r
-	EOgIvGlJyVut6L8eY8EkKpWqqgvNRZFA5b7JeU6+MD2KKGkUtmEoa9NdEd0Ytsw/GlPuS0
-	o9ALDEAOKmlbUAAP2IvK/g58sISWO9M=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G2GD3PJIf4TpUWh46PcfQWPu0pD06DoyH4Q6DKF8sZOv0upY/2KYvxDBVxwNteY+orZICan0XERC6T9yQU/6d1QBp55WmtLZn9PyVcHd9iLe08H87EpWt44D8nVEeuNb6lkEcgaxB8CLkUUuCGNtgrt0PdTfJ8+46zoy2aXv0dXWCjb3ga4uSFsQFYt6IEmjjXbLmsHu1lB7I+IXGgdjOF05DxjmAj6clURRuWOwTO1K1xSiZo+29t/YaoraQL//zBQNEtgf9q1qGSCGradmTDL79UC/dL002QogQcLdh65/wACkeMrD5X6Tvke+LXHbZ3BQFdjHuCo6TEp35DCiPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q/kMngb5+B04Sq7AqVV075rWHA+VVKWe4vWLs9GWA10=;
- b=REO/e6N7lcZuVNUzzUQVRcJ2jE1adCqjYICLEfl34Lpnak+6qsfb6IGdpRN2H94KiHJ4X0dAMcyuIvmFAgQqiDJgtN5vejIVeWVs149r1iUCNn3xrQcLwJgNQZ+WaPerLj5y+qvPIKS76hAeH5X8okLkmuuq8TcdsB6fh1SjBer2XkoJrxPt6I6PtmYKZpVJML9EChiZ219/PSJA90tyWrKELHoJXLRJ8NSCCZ88AoSrJIuEFA0ahhEIFOp2q7+FcSGYTd66O9ANpprXRymLIyeecVvxv4G1rpLNPJTZMtdWuGjx73iYE9Kxx4UD3k2hVl09QW1oIFO8Hucd9lrWgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q/kMngb5+B04Sq7AqVV075rWHA+VVKWe4vWLs9GWA10=;
- b=nraC3aqvtJ4s5gsK15NF7HVHiESoyHtqWJMvnglgeThnlpllxTo9mxwFihy3aQAb43zFnqVTY96JMEEEll/ZUeC5iSBVf9zYZIFgJ7aHKwLClyPwu3SVVLpyoz9GzdSJHEodsLRHDADaQ4/7JVsslRME0H7Gb/LIViW0UFVkdgsnKbD0xaMCPvqngH+bNXRuo18ry804xSp6Oyzl/0e0e/ST5i/sh7IBelndcfxef2wxICSQ1klh6Z7I+PlksguAUl6xJqdcNdxlrqToCcGmIHdDFxsYSzNZUf3ILmNoczfgab7thoyEXTSJiy15FUIcRfXAJKX24XAEp+4gFtiyBw==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by MN0PR12MB6175.namprd12.prod.outlook.com (2603:10b6:208:3c4::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Wed, 12 Nov
- 2025 04:46:55 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
- 04:46:54 +0000
-From: Balbir Singh <balbirs@nvidia.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Balbir Singh <balbirs@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH] mm/huge_memory: softleaf device private fixes in remove_migration_pmd()
-Date: Wed, 12 Nov 2025 15:46:34 +1100
-Message-ID: <20251112044634.963360-2-balbirs@nvidia.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251112044634.963360-1-balbirs@nvidia.com>
-References: <20251112044634.963360-1-balbirs@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SY5PR01CA0115.ausprd01.prod.outlook.com
- (2603:10c6:10:246::7) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=nhp9WztXVzcfj91SAG1PnTJUC4+cBVLBbRZgiqHWwK0=;
+	b=4soiuhOlLoazlCRu9U58j2zifKxTiubt2uoQf9Xg6bhnSMk3zapdcOwvRpVu113mIRMtPF
+	eWddyGlePYitHpBr2m9DMc+O6FQjipzpc84xIjSPgLJD81bT0YIFlT5ZiFQeIVPW5E0zNN
+	j2OuPI0sKICCvd0H7/WjbHVTBpZ/DIA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=AQBVX+p1;
+	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.169 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762924587; a=rsa-sha256;
+	cv=none;
+	b=jFG4n/uUiI6YFxiRe+IK/SdQWHGHOSrlsrX22qRHKNePYlGxve4hnXm3Fg1Zoba2xLfUKO
+	Uq0EX6cOlIRQBGMZd+6USKHPmjNOLIGJmaJe48aNaCn/CDS10tKEyPxma0qa1oXd2HG82F
+	1XBm4lW94be8JDLvUETnjoHi35mwVQU=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso319468a12.3
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:16:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1762924586; x=1763529386; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nhp9WztXVzcfj91SAG1PnTJUC4+cBVLBbRZgiqHWwK0=;
+        b=AQBVX+p1eUY899o74NiQumJ79XxlW3LARiOcTddNimtbcbW1P7O1BAbhMTOo4PB7pO
+         xGxkh9F4/WivE1S/QEgyYdzZnqAtpVF0KJ8LnUDsQGcmHsD/JcXco7pfHsm9ve/YYcyp
+         BOKY0Th+Po8nwn3zt/f+pO/Liem12GLoJTeLg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762924586; x=1763529386;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nhp9WztXVzcfj91SAG1PnTJUC4+cBVLBbRZgiqHWwK0=;
+        b=BWyq9oXWvvdo1E7XcJUviSZJ/5x/JexsCS5ic4rMqcHzN7E+PTdQYhRxu8M8cZU57i
+         0mX86JfIkDB3D5avKPusMkPPzNDd/mfjOW8c8kAdlpn+V8A/CHBgdLs5tgIqWmxp714N
+         ixRX/werFW/k8HBGVcTD68oL1Ro2KFm3UrVP7vOdnSuOcf8VetKRDqGcNG+BqfSkSypR
+         Dyc/PSdbuOtzvGZ5DRysoEXLnUREjEzSxOa3eDwHbZcnCQMxjDHOGVmhfKxvno+u2SNI
+         5xWy2w4hHfffadXeG/M2KSxjRk45Dc9wqctf1zc4UrxwVLjjqK0wc6uij8NgRNx8UmbP
+         Kfag==
+X-Forwarded-Encrypted: i=1; AJvYcCW7hvdjwEYWfkC5q5HQW3BvSJwpwk+RBcrOsgiPVG60lemmSgPgZFk5vlI//32gB3qmqIS9WhzXgQ==@kvack.org
+X-Gm-Message-State: AOJu0YwscM8ldefxOXFyhDSNZN2t3ib7AXyFADgq1NEozjnvlM0I6i4A
+	qE5qaWSrTuDfHe9Wf0SlnBFXpHAWyZfptua9dCFMUFCbmUl49Tfu9xG56EnkTtgtEA==
+X-Gm-Gg: ASbGncvi8AEPy8Hrn6omsrF6z+P3xcWdFt+KzuXoFCzKJtmZV8QoFLIm6vgxms76Z31
+	qXIWbySz69NJn0cyLH2lEyax5Jrm4SDfLZvZTc6felf0EIVCR+VqmuFaQJbHgakTF79K5XJ8X9O
+	6Jt5BI5rVpsyZzFbSifVZ7lVG3BeQdesf+SmCwIA4Je7UQ5qbseBibRLF5pXE/sX2iA7uhCnzCC
+	iD953b0NvqeoMNh8nCGq2zjNoFySkSAjdjw4iFW+ooUbWz6X+iSfnt1+Qcl15YyuiyJy9fy+z9S
+	ikod554WEZnLxrVnIS526Qgc7cqXx00EjiWEVCAC/giYRw+j08uELwDNoXU5+ZhyX0ktwDYdY5B
+	S8yGKR3B8rlUlhAscfj1Lk6m6LSb123vlqDv5D75WtU68mL5/S5P6IPs4pfAlQd1njlK0DMJNW1
+	1ISpPi
+X-Google-Smtp-Source: AGHT+IFho98A44dYQmBzRJFEzURybon+j1FaW7jn0iPAop/8QKKhvf7Z8/ur2Ft8vMS29vyNafxipQ==
+X-Received: by 2002:a17:903:22d2:b0:295:7f1d:b02d with SMTP id d9443c01a7336-2984ed496ccmr24732195ad.22.1762924586274;
+        Tue, 11 Nov 2025 21:16:26 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:2495:f9c3:243d:2a7e])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dca17ffsm15788105ad.71.2025.11.11.21.16.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Nov 2025 21:16:25 -0800 (PST)
+Date: Wed, 12 Nov 2025 14:16:20 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Yuwen Chen <ywen.chen@foxmail.com>
+Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, axboe@kernel.dk, 
+	bgeffon@google.com, licayy@outlook.com, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, liumartin@google.com, minchan@kernel.org, 
+	richardycc@google.com
+Subject: Re: [PATCH v4] zram: Implement multi-page write-back
+Message-ID: <3enjvepoexpm567kfyz3bxwr4md7xvsrehgt4hoc54pynuhisu@75nxt6b5cmkb>
+References: <yv2ktkwwu3hadzkw6wb4inqzihndfpwb42svuu25ngmn6eb7c4@hclvcrnsmvvk>
+ <tencent_B2DC37E3A2AED0E7F179365FCB5D82455B08@qq.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|MN0PR12MB6175:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e531c46-f55b-4fbc-050d-08de21a680cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?svHMGPrkwdfw7IkKr5jaIx5z7Vhf98soayq3Bmd21FCEypsnqfZyL4tSuV2e?=
- =?us-ascii?Q?7bed59T1Ujewa1P/vr0Biw88mfsru969jTTg5cow39wYva6J7IWDivQXRZ8Q?=
- =?us-ascii?Q?ogwq0aepXkmHwes890hW19rGaqlPmfB9AFiwB/d1qnvLKiA/2bUCY5WgMdyH?=
- =?us-ascii?Q?R6c0GWauBSOgNb0ZQBHEFtVM7iV2bLMQpgoJZnQxYspZqgQp6M3m9r+xqMZA?=
- =?us-ascii?Q?gN9A8f4vRfqfNylQnIhco5juX9TKM3E4zZuJ/nXMNQPcYRzFNTIhTm7p8BKT?=
- =?us-ascii?Q?mIZ0uDO7/F7D8rhTfqAnBh4klDz6uU/9apt7r09ktRYQpL9XBgMQxQuYtrir?=
- =?us-ascii?Q?BtxuqzLoSupXElZiqJcgD1x/ef+PmyIwuicDuJrPLA/1jv1F34yfETy6CwlY?=
- =?us-ascii?Q?tkKAdvhVFKnxBzliGAQs7qqqp698/yqiQyoN5uvlxZgP/8sn9V9H1AnVLzS1?=
- =?us-ascii?Q?eI4wYMwWRNVHtBSU1n/ZbGfaYRlch8hKsl9eghxmnNkxSCPZl8YVxzv1XALO?=
- =?us-ascii?Q?escwp8uZcYmtmQWJhqSYAXZbDF8Z1r4dJ8TEXR0MSzqkaN0Qrg5sB9Gsr4fd?=
- =?us-ascii?Q?BZu4Rke5uSDQ8o2I06SJkY6zhiZH0LZihhKHTgf85DEVCbIxSxMIKvVLUnvV?=
- =?us-ascii?Q?mwXwvHOtaRdqAiEBHObOhjdlxaar5+8CiiJQ29xI+X8apr8wsf4qBuvejIIv?=
- =?us-ascii?Q?FuijKzEd9vlABVXsvXTEe7Z6PYQD6ldJeoKh/ElNSpTmlk/GiTKElPCrjPfI?=
- =?us-ascii?Q?TRbhVKEMp3tOFcJgv3di4KJo7ioGb5I8JCqmVsDYEd9k2e/w8FrzYVtuyY1i?=
- =?us-ascii?Q?d5Diag41Tf6tfNC/3sKLazfUQzP9m4UgZ/VvKF89NwQplHadXH4CJwcFwKhG?=
- =?us-ascii?Q?WCaJhAFI7YHxUNmyT24Jv5iQoBbZTPBbPc1PB07O8dsP4NnxLtQDkEX/EyRe?=
- =?us-ascii?Q?MKvsfRQfbk354D9DvPQsQF/YynlTGXlPL6HRhqSDQyZ6c3KYAmS7xJ7izZUD?=
- =?us-ascii?Q?Fm3w8E6PJCg2EWhHd0RMWTqQHNatQUu9dI+ILLM0Pnzglr8WGtAJ2mJ1dKxS?=
- =?us-ascii?Q?t3oldCdqLusnsK1ZfwFVrwZm9zFLWZXGdoATvzNRzvici5MC/b7ANGrUJpm2?=
- =?us-ascii?Q?9wNKDIC++HdYYMT+xh6rM/+B0efiWv66DiGxqHjS+/aN6mV3ZUBOjWyrls9u?=
- =?us-ascii?Q?Bj652rvETTu4RVQqaj9d2PYV1S8lCdyS1MVk9YCxwE/Pik6+WfC2Wpbx3PZJ?=
- =?us-ascii?Q?V4kNYOgSIkKnIZp8s80XtAgFoh9UbM6c+dIXo4UoLAxVLKrh+Qm7P5b8R27y?=
- =?us-ascii?Q?O2gvfeX0PjPfKFdLO2hXCUraholxuSAWUBlehYIsDzWCeHAjI0Bl+Vk1eyQ3?=
- =?us-ascii?Q?i7hBUJ3X258RgMwNhf8GZ8QUbacTxQoPhuUJnkqVMBlpHGCe0k446iK1Z534?=
- =?us-ascii?Q?8KcrBgPaHFcGnJkEaEsy8gP5n1K6p8Yb?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?o6uiRKQUGskPLyUOgn/UY07OpHcsccGJpBEjZJIv5bW6jjLub0y2Pj60S+Md?=
- =?us-ascii?Q?09qNSlPo9oWfZ45uezk4w77LUN4dGh+dEAuErsrx5jaeT1jjpxtYi6E/ZSmC?=
- =?us-ascii?Q?tX0+umG3x6drCnFm6MPjgFv3ka1dt5Sb/OhRcMvvL2TohYyPYo+s7hiqM+0W?=
- =?us-ascii?Q?Pna0vM45roe07S+9paXMbwtP0jcNtRdD24CR+3hM735qpz3x7EHGzoiDlnU9?=
- =?us-ascii?Q?wNMndPfP5OQWWKH1ylB3HUWJxKOYgN00dgMpBEqQdbIuIvLA0kSUoxCUznb4?=
- =?us-ascii?Q?c9PhUMq7IAVwIBolkXNZYxQBofCcO6VEdsrYLAXtENhwf2Q0GAP6bTpZTo5r?=
- =?us-ascii?Q?f1mgZNT/jMGS6ZsU9DzwOWwuLGVz82kDPeDChG2Tl1ki5Ivo+JehN0tsQ68x?=
- =?us-ascii?Q?41O0ZehL6iw+cAc0QXe47YZlI9VcK7FcYvkHZVxY3sKOa9jJpEYPDVVFrcda?=
- =?us-ascii?Q?2XK85pb5zkcX6ONNwinOOUcnpcQsQZzJqNXZBYbUUslGZUwN3LLO/Wh/PTID?=
- =?us-ascii?Q?BqbQSEDPRRAuiNwaymjh2eyyO22X/ypmBy72yo8W+5CtyAUKQGoNUF6kgPXi?=
- =?us-ascii?Q?HcTLcUbUnrDOQZAo81lqAVi7AOF0jEs0jR/A+W/8GkjQkJwpNek6YaR9xpz/?=
- =?us-ascii?Q?vDGyula/LXRRSv3+Mrd9gpWp/Q3nwJK8X3CTKNA9Wumxe/uyfwP/fkMw3wZ/?=
- =?us-ascii?Q?ab+hsUTLlMHfTZg1bd8OGXLSHSz5mxRZP0ro0WWz6Qxy18dJcr+UsQ2XEST3?=
- =?us-ascii?Q?eoDu/GloeiecVNuD6g3rBvg1GytOS/cvzCwb8+hrA/njrLmEVXpWYPNuiKsq?=
- =?us-ascii?Q?SnFtEW6ijyOOg1LrS9CaSvK+9i9T0oLgxH4Gx1nE5JOn6DjsU/1qBVlpyHxI?=
- =?us-ascii?Q?qw/IAJa+/vvltCRMDTG0WPgBm/dscBn0EVDMvszFwitLtjSZJpoUaKZhMWck?=
- =?us-ascii?Q?VeSfOxLtPzV2UtHzx4vAYU/kRNfFvpDVi5GNv2U3Gs5uD797lFcJjJkrfx1l?=
- =?us-ascii?Q?fMRLVbGoOQkx3L3LTWz4f92HV1WfgUQzmVKRAFJZSx1XOuWhak0Nn3b9hcPc?=
- =?us-ascii?Q?STzzwCiDNHDpcEj8xmq0tE0qMDILr+wnOhgaekNTocobIAtCPVrs2uN4Zl8F?=
- =?us-ascii?Q?RpSLwta4tfZcA5Nza0PDXVLSRSoEXiVWCWRd3BrXs20uQ8DPq8SQdKUe4d4O?=
- =?us-ascii?Q?1O+0E9ndGfgxOy9X2xD8/gmP7IdotvygyyBnYafDSmGUwXbBi2TSHgGhn1VA?=
- =?us-ascii?Q?nJh+tplvmphaqb9erZFn9mdap5ebrchvV7t3FgxpuBX/uVQg5kVOYSLbN7E0?=
- =?us-ascii?Q?hSLhHxjxf4efQ3rq+qAbLD0iklfRvYBm0CelwWulWePfbD5hhDipX9CYJH7o?=
- =?us-ascii?Q?0g2OEEF9wosL6W54kn1MgnYElpKF9bczu83ytv/bfFwX+AkJRd6aQ/VaH93U?=
- =?us-ascii?Q?RYpCZR3oICABI2vOkC9QAKPKN42NEiBl1EZjJpqCKU2MGQdH8CoVWIe4CRLG?=
- =?us-ascii?Q?olxkS5ZSCiHbTQLR5nQ2t1OHlPXR6hIAYr4lQhD8cNErTHCTLQFHBIciX4uW?=
- =?us-ascii?Q?qLXikSxmUuzVhu4En0wTxKnAnJO8welPX6tt4CWlTKLbHIqB+KAj5ARhfU0N?=
- =?us-ascii?Q?iQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e531c46-f55b-4fbc-050d-08de21a680cd
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 04:46:54.6197
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ye7QFyxHfYKxkWas7mKmvORW5FA3jdmdrlo/GO/yH0R/mA/doOzOGhQjYQKqk+9SxlK0lQpy6QCaZMsjlL6z0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6175
-X-Rspamd-Queue-Id: 29FC8C000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: xieafjo81gcfjo3icjwznxqwicb3iixh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_B2DC37E3A2AED0E7F179365FCB5D82455B08@qq.com>
+X-Rspamd-Queue-Id: 9083440006
+X-Stat-Signature: xwb7xe15ksjqj1jrwhbxcq49xg6aes4n
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762922830-526950
-X-HE-Meta: U2FsdGVkX18UwO1tfJoelVLtScvUNcRrD6iD5rCWgrXD0oxLkBXT5vOxyPwLIggKP0op9W6WRC8e9OMxdiXQQkpDa7CPLmprfFuWbmkREIh12+zpUUBAIjHN49hQRYdxEL3gfDXLqy1MNLmz2tDv36BhFC/D+b3dqX+WNjIDSIV6oGddb/vXwlwhBmfCiM5IgWGe/i+0f5l5DKZWkRr3t4zOCjOAkE9E3fZMMOV0sSev7ejZ3ujkmw/dqa6EhZaWKso9iL0NNAcHKoDi/2KGxzIzmDprpnl4Z4i9QBvGnB7e1wIqLM0CQPsGei4BtJon817R652NMnW9vT4ZJldzJTjk+T5ICel0QY8/Gx7y1268sC4cr9C91ImyRCRUmKi+jiBEe3nwrEK+TRUJeolxNgcmCorX/u16gX+1fIm7lnXBDeaQiskmRKmsB0HshfY45QVbpIx/NsN6rcBuAGvzN75Dj85GQ1CNCabiHrftW4InjIPiLb+mkolTeqjX4vwR7sbmxWIndo5EztETvZLXfFKPmCjKZDuthLrQ3AqkO9e4upxOOdZt0KiIy89oo7U+bbxnZr67GMH+FZ/bCzDE3l0PLkKB52vkVwh59WAWjj97YodxhmAECy7p1Q9xf/wAJ8kWUPH/c5gYDfW8oEBybu/H7jrnvWX4o0M34OdS/Tz7JWZH/3HoPoY2FuWSoWjt7UelECNBjNRNrG6jksFS/an06b+ZZKs7lmcmC2HMX+tM9nUI986jGz6V8xUOSmzmP56JczoUdIT3G/woNt+JyfqLVPu+h9xof6etphUQLBtJNYqXxbZ/L1COyMktOdxCUAzxQwU3uRLpDvndC/LqfE6ZYv3/aJnhb8qxvMSSx1jZa6btU7TJPvjYDpo71JGgC9KC4hrhcsL06xn//OAuVvxfx+kwkYcS5mGkmvk3p3lk9V0JH46EQEr2pEc+vAf7Nguwu/yERJkIr9k8M7v
- yyyOCK+5
- ppLfHudcNkPcHSYswZqv7Js9pianMLAojy/7OgpYAYIczufCo7Nz23/rv3g43MxfAQn/9QSyoxixpAYWrb33UJ7cmkS6s+iB6yh7Qe/Y7ezOSfopm7Cs/cD1fIJCw0QygQ8Wwi88DME58S9jt391bYu8eWbPTHK4IMEbpSLWeOBZaAhq31mwEaDDADtxSKrTuWZH+qaeJoB4Aq/kAqhVxjM9zp1PVBonzdEPsgyLfjMWvGJZyYZgeYDqovnHCTHFC4SA/m3BhXW4543q/rAkYqQWVAWsylRduj5DfyhdyLQukZ3Efhem27HHoWIZ4W2DUpQiGvHDUHDZuwikis3bJeql+PB/U3RYmwlNM/fiq04u3wpiiZ49c/1rpmB7TLqFCJ1jONV0wbkWEvijOionK8yu4JNPo3NJ8N5j3o6Fx8BZr/d0oPRkmbYbQeJ/H/FXaya08NfFDDG8/VFFYOFcHBS71nsWWYv+8Iscwwe308xYAfmd0kedI1DB87u+LnRJ4NOHsSqEXkxWC2tu76F1jVadCEfju/P12FvRO3Y0dFY+gIPGECpvx+bjON5+B3UAmWPNKIkvGx69WYehWJGV0+f5BqkqFkWiU3cXHBXnpfraNqrzwj6eHfHcyQIUcp52LbHUTX5ZiJcHVWo4=
+X-HE-Tag: 1762924587-799068
+X-HE-Meta: U2FsdGVkX1+Xj4x1mghU/Cyx456Weww/ApjqyUNK+4KXfb/MKdAdbIsO6AXa8XHmfPUJBLXhlnC41wWvxWCnpgyCNqaje/A5tP5YRql12drI7YEu6YRLZt40EthewA7+OOeSYIuW9PUcp3E7rR1MV+uJnewPScOiTU0VvFUeN3TahAAJ2RMvNjH/HHp51cLiUbwqbCNbNFynjzlgDL+f+ehNUVURwm+vEaAEmVGj/KbDqem4HRDAt41ceIkeP7lxS+TNr+LzdW9qGTKWKmnzOSUuwwZjnNliBFydiyk8QbFty6OFyi/hzUqHRbt7rbNVodAM9+ELZv2buRlY1u8yENsmEX12DOO+5C2hj+oAG0P+FWuwmTniqmJzE50LMN6fRqv9KmxNPrnZacrsBjGmfeBUX0p+mPsNnKQ8yBy604Hule3ORbXmxAX4lwf/+kbky1UYHUgbuOzZz+mNFvnQSB9ONzmgRNNpi1WYRvNZzsDO3HE5OZb0qqFy2n5m92WKlxFEC93P6kI3cqhMOohxdfcdaJYUcLLKzdHF0Z5/JU/DHKxURFwTEtlZzxFNa7FND8nSHZzdzmAsWoVvKERY8cpbf2O0J46oLWzhLZHNTdWwx5pyeEGN7I9KAavHdz6XOMC4Jq8684ZHpO/99VkKxU7RpqZgPoWsRpKGcxfxVmu3N8y5zi/7GHaX45hf10wBNkGNAjfPQpoVCOO7VmC7ppSa5M8BZnmFJBIeeXU1x3YyNdzyo3k78Jv/n15rfBh8S7gclEziFxq34f5k+aCtpChfMx0zSjNCHLKztzCyrAblyGxUd5nDJ3MtwfbjxcPuI/wbjDqfigqcptIcxmHQjIlu3KpejSo/NLyeF3iuu4lhWrnree3cowz3lHHCzeOJ/DC1ECnWH5Lt50FcqCEyX6aPhk5+A7TN0Gjd80oe005z17R6kDfiMxoM6qW+kSaPwkqDgAAgr7pJo4vE+1W
+ +7cuu481
+ 61xGCUy4iW6n9JuPezLIA6KFpJ8zIhEnUlfS4nX7ikr0wupjGrMhK5a4jvffwFX5M7k1l1afAmWx+GcOh82ewMXC6eIIM81cQNtKRpEPb97wlQf+vmfkd5iaNgTttsoqmP9cFt8eaxmNTts1eJ/WHGgRXZcIfZxjcU7t1Bl4r+MgJrguEnSdOfZSevfbuJxOb9c7B86jHXzOZg+ZnfaSgrCGkOQXjbmCpudnLUCt6KtpK55aGdIT33cG+AVFzxcAMp5LPArL57zR7SQ0csfPcGUaWX9zRLjWruxXgfb55Z0gCKp2c8S+4udplRsCqdiBhRa0kHoUP+PMua29ZqYrTsHFVdYPlS3jq7teaxfd5MSxIMEw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,91 +118,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-commit a6ca2ba46390 ("mm: replace pmd_to_swp_entry() with softleaf_from_pmd()")
-does not work with device private THP entries. softleaf_is_migration_young()
-asserts that the entry be a migration entry, but in the current code, the
-entry might already be replaced by a device private entry by the time the
-check is made. The issue exists with commit
-7385dbdbf841 ("mm/rmap: extend rmap and migration support device-private entries")
+On (25/11/10 15:16), Yuwen Chen wrote:
+> On 10 Nov 2025 13:49:26 +0900, Sergey Senozhatsky wrote:
+> > As a side note:
+> > You almost never do sequential writes to the backing device. The
+> > thing is, e.g. when zram is used as swap, page faults happen randomly
+> > and free up (slot-free) random page-size chunks (so random bits in
+> > zram->bitmap become clear), which then get overwritten (zram simply
+> > picks the first available bit from zram->bitmap) during next writeback.
+> > There is nothing sequential about that, in systems with sufficiently
+> > large uptime and sufficiently frequent writeback/readback events
+> > writeback bitmap becomes sparse, which results in random IO, so your
+> > test tests an ideal case that almost never happens in practice.
+> 
+> Thank you very much for your reply.
+> As you mentioned, the current test data was measured under the condition
+> that all writes were sequential writes. In a normal user environment,
+> there are a large number of random writes. However, the multiple
+> concurrent submissions implemented in this submission still have performance
+> advantages for storage devices. I artificially created the worst - case
+> scenario (all writes are random writes) with the following code:
+> 
+> for (int i = 0; i < nr_pages; i++)
+>     alloc_block_bdev(zram);
+> 
+> for (int i = 0; i < nr_pages; i += 2)
+>     free_block_bdev(zram, i);
 
-Fix this by processing the migration entries prior to conversion to
-device private if the folio is device private.
+Well, technically, I guess that's not the worst case.  The worst case
+is when writeback races with page-faults/slot-free events, which happen
+on opposite sides of the writeback device and which clear ->bitmap bits
+on the opposite sides, so for writeback you alternate all the time and
+pick either head or tail slots (->bitmap bits).  But you don't need to
+test it, it's just a note.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>
+The thing that I'm curious about is why does it help for flash storage?
+It's not a spinning disk, where seek times dominate the IO time.
 
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
----
- mm/huge_memory.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+> On the physical machine, the measured data is as follows:
+> before modification:
+> real	0m0.624s
+> user	0m0.000s
+> sys	0m0.347s
+> 
+> real	0m0.663s
+> user	0m0.001s
+> sys	0m0.354s
+> 
+> real	0m0.635s
+> user	0m0.000s
+> sys	0m0.335s
+> 
+> after modification:
+> real	0m0.340s
+> user	0m0.000s
+> sys	0m0.239s
+> 
+> real	0m0.326s
+> user	0m0.000s
+> sys	0m0.230s
+> 
+> real	0m0.313s
+> user	0m0.000s
+> sys	0m0.223s
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 942bd8410c54..82b019205216 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4939,6 +4939,7 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 	unsigned long haddr = address & HPAGE_PMD_MASK;
- 	pmd_t pmde;
- 	softleaf_t entry;
-+	bool old = false, dirty = false, migration_read_entry = false;
- 
- 	if (!(pvmw->pmd && !pvmw->pte))
- 		return;
-@@ -4947,6 +4948,19 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 	folio_get(folio);
- 	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
- 
-+	if (!softleaf_is_migration_young(entry))
-+		old = true;
-+
-+	/* NOTE: this may contain setting soft-dirty on some archs */
-+	if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entry))
-+		dirty = true;
-+
-+	if (softleaf_is_migration_write(entry))
-+		pmde = pmd_mkwrite(pmde, vma);
-+
-+	if (!softleaf_is_migration_read(entry))
-+		migration_read_entry = true;
-+
- 	if (folio_is_device_private(folio)) {
- 		if (pmd_write(pmde))
- 			entry = make_writable_device_private_entry(
-@@ -4959,20 +4973,17 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 
- 	if (pmd_swp_soft_dirty(*pvmw->pmd))
- 		pmde = pmd_mksoft_dirty(pmde);
--	if (softleaf_is_migration_write(entry))
--		pmde = pmd_mkwrite(pmde, vma);
-+	if (old)
-+		pmde = pmd_mkold(pmde);
- 	if (pmd_swp_uffd_wp(*pvmw->pmd))
- 		pmde = pmd_mkuffd_wp(pmde);
--	if (!softleaf_is_migration_young(entry))
--		pmde = pmd_mkold(pmde);
--	/* NOTE: this may contain setting soft-dirty on some archs */
--	if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entry))
-+	if (dirty)
- 		pmde = pmd_mkdirty(pmde);
- 
- 	if (folio_test_anon(folio)) {
- 		rmap_t rmap_flags = RMAP_NONE;
- 
--		if (!softleaf_is_migration_read(entry))
-+		if (migration_read_entry)
- 			rmap_flags |= RMAP_EXCLUSIVE;
- 
- 		folio_add_anon_rmap_pmd(folio, new, vma, haddr, rmap_flags);
--- 
-2.51.1
+Thanks for testing.
 
+My next question is: what problem do you solve with this?  I mean,
+do you use it production (somewhere).  If so, do you have a rough
+number of how many MiBs you writeback and how often, and what's the
+performance impact of this patch.  Again, if you use it in production.
 
