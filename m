@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24500CD4845
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:41:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4964FCD4842
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:47:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DC268E0010; Wed, 12 Nov 2025 15:41:34 -0500 (EST)
+	id A8E418E0009; Wed, 12 Nov 2025 15:47:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B2FB8E0006; Wed, 12 Nov 2025 15:41:34 -0500 (EST)
+	id A663A8E0006; Wed, 12 Nov 2025 15:47:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C8E28E0010; Wed, 12 Nov 2025 15:41:34 -0500 (EST)
+	id 97C948E0009; Wed, 12 Nov 2025 15:47:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4740C8E0006
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:41:34 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA6744CF46
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:41:33 +0000 (UTC)
-X-FDA: 84103125666.28.79400C7
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D3AD810000C
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:41:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HszrvRjZ;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8722A8E0006
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:47:46 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2BD771606D4
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:47:46 +0000 (UTC)
+X-FDA: 84103141332.17.60889B2
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3784EA0009
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:47:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=chvQossl;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762980092; a=rsa-sha256;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762980464; a=rsa-sha256;
 	cv=none;
-	b=QogiM24KxkP5iqxfW2pl/3FnmBIpRRn0qSo97kPHezmSpEAHZH3YivyuABrVM97z+YksDr
-	6UPJoQXG+16mYqjcLcTNGMtNv/C+ll6sD6G/AxsfIsYSUubJWIDY3Fy2Z2u8a9fCYwOKyR
-	w4LBhEHx/Lu4/yyeqG9Ug8QLsovEOoM=
+	b=dQZovMSyiq5j2p6PQZB1hOVccrSHlBNMwGVDm2JzktIls7k2qPi+oCwSB9q4gsAWsU4aXO
+	5X9JtW8641R03bxW1/0eUoI1YLYToe7WKhLYaIdP1SNCkbXV8Cmzr0DxTtbEBS1LiyVzQ9
+	hJ5GEBqi57+eAD7XPa+pMog7H3Wsp34=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HszrvRjZ;
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=chvQossl;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762980092;
+	s=arc-20220608; t=1762980464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dhyXtoYIzmR1qHGhz6TVmqBXuiqas52bqmxrLwkY3s0=;
-	b=7OsWLFmamwVKLdLnU5mVSNM5uAAn2yQGZieOjKpAVfOKID95IwbkSKaPfRyhRVaq51jvbw
-	CMR//oldoZAemYzUq+3LF6Sst2F7nVXMU2Swb1hFHOjOTDoiGcmP1zhEpAZ1xHYasW7x1Y
-	JzmBwpcDMHCUb5cZABDVnqpZfke1MEA=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640e9f5951aso2054331a12.1
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 12:41:31 -0800 (PST)
+	bh=dB48jiAJQmCTSUKKfFbF2w4Wvbq8+BICA0uZNvppCf0=;
+	b=LIVKWdcfz1WDPdKKXx1abVGm/vIeiWQd4DnX0klDSTnc8jhrnT9pMfXr6P6G4Afbv74xbz
+	T/y/Un3fYeHxmHbUByxdrdJRVAHkDaTDQie2CXNWGvdy1YYqMn4RuVBTbgccKPHrCfgAp0
+	bMqJUG+EkRfUAT8uBWt0rDSr9rJ+Fec=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64320b9bb4bso279504a12.0
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 12:47:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762980090; x=1763584890; darn=kvack.org;
+        d=soleen.com; s=google; t=1762980462; x=1763585262; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dhyXtoYIzmR1qHGhz6TVmqBXuiqas52bqmxrLwkY3s0=;
-        b=HszrvRjZwywGjOBWWv61mGEykBDilf2wZ/8I2IWDrAbbpgmbFxwwLYKm/thhYCi6Yc
-         1XyitckRz0q68WiYwRHas8Xe0Nu8GHkmpItWGbNE/TRvPuX89/OtPNeV+Zx1xVAi8PMn
-         vcN34/cqfZf06x/fsMuRXrB+ES4UkPu5hDQGUEgwbaGNEBwHIxZ2CFD7rFRccLBd+Z1W
-         QhwORevooLWvNJW2moFmEYAdBNMxl6RpKOr8+YMZhcIL2FkrYGc+/yMkxI+wB49FV8hi
-         kdToJx/iGsraevqVouLdQw0+9Gtq4pZuzi3cuTD0qz+0rppbKa9f1Y8fGfWjD2iekXTn
-         SGAQ==
+        bh=dB48jiAJQmCTSUKKfFbF2w4Wvbq8+BICA0uZNvppCf0=;
+        b=chvQosslxoEYV6YTkdH52Eqt/ngka6IEb/1m+iqnbgB/9pidlAdWHppnq0QPnP2cFv
+         O6Elv3KS3YmNo4WQTol4MSIyOef63zN0Zms+68PP67sb9NnblKEORWWHyzCnhphg/YLL
+         7zCGgCvLf37CsHr2jyKmHhReXAoJsxUpRX8jPNROAcnSl5X3A0dQPX6QuTmewG+uKy6c
+         0R+72caq6WPuI1Z9DA3IQKKwP9bzINKt1Z2QOJV5d7pR0e7l9lHqHjo2De3OFcG78TNa
+         BWBgVOFcswlcoInOJ2i9U5fF0Oju0TddwGaqI5OJaVEz+DbzxmyT2Fbv0gNEuJHxghKT
+         BEwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762980090; x=1763584890;
+        d=1e100.net; s=20230601; t=1762980462; x=1763585262;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dhyXtoYIzmR1qHGhz6TVmqBXuiqas52bqmxrLwkY3s0=;
-        b=wd6t/o3n/4bf/Fem6CKUXEFBh6X5fMb+UP1x+r7f+VIJi0t7RFy1vvCQRbuR4Bj5cw
-         RxB9P11zAVX80jCfzAEZOCpmAYuw51A+tz4yw+YCOT0bJbaH6PCdgHuAnYGNRNQzEl9S
-         WM55xYiiIjs2K9bQGB+rDCFrQ7tnuefeIpPumpAjjOxBovn7c1/30aE1/EE0eCnbt8ze
-         X9BkHycjkMW7D59Mh7pSKnXjGiFyTnbtmVWAILSVy/Pb7BEIB9igz7IDJ7Y+qhRi39xt
-         +3SLlO9hoZIyKseYTV0k79F/FTuATnoRINZldFyGWQj1IWwwklRIX5H3ILHZz5Sj7TzG
-         2I2w==
-X-Forwarded-Encrypted: i=1; AJvYcCXCRp2aw/+57FsluZo9BhOM9mvgoyMavNzOiO3+YYJDQwq36PpPVd6gi8yvcR0YjYFNTdyiOwp+rg==@kvack.org
-X-Gm-Message-State: AOJu0Ywh4WSEVuc33CZL3rzvWgeloA0zYUe8CO68ySSfOqTqMQ9wqLXF
-	IJd2xY3TIkmdfj2m8yR6i+3syWE8GU0fJcamCYwzRAK1U+5RAk0FaywUXh8WUIINknhdQzeOOyW
-	52x4IX0YlPifXdhEyaE0a5rGIl4Ay6WF9c/dZhfKh/w==
-X-Gm-Gg: ASbGncuFIgrP9EJLm9XXSyqqDL6u4nwDajUsDb5QvfeCQir6uINqcJnoA7n1+73p4x+
-	TfWQIpVeO4TRGSC80O//pJSv6L2simhrMqGOJUE6llNgwu/DrHzoGQIbeHT2XDuYF/mVAcyFFaA
-	+euauTOs54+Dq2c6RcgHkZQYBKQKVHYXJr/JK5tau5ARIHh1iiULMKt97l0s88ya0LzeSLd3PB9
-	hwuD+6ItZ2p/WEiVJ3zmaE2nRNgvTS0ErDK7f64dum5RqIClgEq7j93bQ==
-X-Google-Smtp-Source: AGHT+IHqo0cWs4d/0+ME7Pp4LbR8c7We/VnufInTVc25I/poQ6OzmFZFO8BkwH4hrLb9dn8NI1Qgpj2DiapmSAwzhV0=
-X-Received: by 2002:aa7:c9c4:0:b0:640:e7bc:d3ce with SMTP id
- 4fb4d7f45d1cf-64334cf0fa3mr536431a12.11.1762980090000; Wed, 12 Nov 2025
- 12:41:30 -0800 (PST)
+        bh=dB48jiAJQmCTSUKKfFbF2w4Wvbq8+BICA0uZNvppCf0=;
+        b=Aspws6/d9tP9nKCYEqUYPW4ye2vIelEz7w+JdVyV+LdKQkYrX7fvlSy20RHYpb7jHT
+         Q1ymWSC+8+JHcyfxnL6YzomZmScsVZsPxg1vUc1JbPeUOW5InsA4IBQoTKp6HoksO93q
+         hbkcZ644Ma2w48/JA1SozzZbyZmiooCP0TkqpmKUNz9BXVok1EwxqXXDSY/W0trX07mv
+         yEzlSfBCbOAN/EImxPqXy2szrrR4PnOC//LVqBzuYwTlRrBvCz4f6v+HV49ZUmTE0CW5
+         9dBRrLEWM4OOd2vf3PG2k8bXpFUSJnc0CFnW3wc8JJpo5nRGTtBPupq6PWex4RNoCxi0
+         xlhA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJfh4uOf2AiWxCxDxy7OSzPxj6EX2+U4J7Z7xmfTi2gGjAyVMzauuYmaaQuV54e3FrC7AUhatIpw==@kvack.org
+X-Gm-Message-State: AOJu0Yybro/yzZ7YJ0AP3C7fs0cH0SAGHm9SBslXn/6Jr8P85ZPDK0ul
+	eDk+kryu4Il5iI/o0QcX0q1gjwt8ZCxRO4IArdwQYL/+v4yASwkJ/fbianJ+Wtub+vIvyHwju9D
+	WmXmbBVo2DNvMRD34oAaA4NtvxJow8ZRZchu1yHnAgA==
+X-Gm-Gg: ASbGncuY8Gza2z0LgcBvSBLremiCraD3bfZl3FY/Mp8xKZ3h66Od33lpDOAm0eBQzve
+	a9ucRDqK/W20xRkAf7o+xoDgvAnY9u59b+gIS34ZY/pPsN7RQYDGG7pY/reXKP20j0WwZG3lbQV
+	8d/mQIcFcq3z/dNnucKyZQ6WP/mE9A8ZkjewC4PZ4tGDSCk+FB1ByGNov6l4c/0X1IBktCbDvh2
+	MpxRiA3HwXGR1HSxgBl/z0y9YbxIHD+3Vj0zO/jj4RGvkWxFGpnpB32NQ==
+X-Google-Smtp-Source: AGHT+IHnCxJ5sXULWNZ4xyt6eOXGzcL5bRRpxTbpBkagcIsWqapM9iv+G712dgCOMjYDLl8hNWljgh4gZ1/4nXWnvWg=
+X-Received: by 2002:a05:6402:280d:b0:641:270:2c8a with SMTP id
+ 4fb4d7f45d1cf-64334ce2bf2mr656038a12.14.1762980462571; Wed, 12 Nov 2025
+ 12:47:42 -0800 (PST)
 MIME-Version: 1.0
 References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-23-pasha.tatashin@soleen.com> <aRTs3ZouoL1CGHst@kernel.org>
-In-Reply-To: <aRTs3ZouoL1CGHst@kernel.org>
+ <20251107210526.257742-7-pasha.tatashin@soleen.com> <aRTwZNKFvDqb1NG5@kernel.org>
+In-Reply-To: <aRTwZNKFvDqb1NG5@kernel.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 12 Nov 2025 15:40:53 -0500
-X-Gm-Features: AWmQ_bn7hzYlz1CnwhflDe9tj18uCKgXHbii3rFfCz-B6efDQe-vtqY1VtpWQlg
-Message-ID: <CA+CK2bBVRHwBu6a77gkvsbmWkQFDcTvNo+5aOT586mie13zqqA@mail.gmail.com>
-Subject: Re: [PATCH v5 22/22] tests/liveupdate: Add in-kernel liveupdate test
+Date: Wed, 12 Nov 2025 15:47:05 -0500
+X-Gm-Features: AWmQ_bkVh8Sk3xM0csiNTGOKzpW_RilqarlOG4vqEffeEKya7lO37kZmCW2_pO8
+Message-ID: <CA+CK2bAhJ+Lbm6v375RuZKs40q34gsKHE-N+dD8gKqgzsHCqww@mail.gmail.com>
+Subject: Re: [PATCH v5 06/22] liveupdate: luo_session: add sessions support
 To: Mike Rapoport <rppt@kernel.org>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
 	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
@@ -125,12 +125,12 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D3AD810000C
-X-Stat-Signature: yntiekaxp1jcqjbs3ojfyhx5ddgu688f
-X-HE-Tag: 1762980091-226448
-X-HE-Meta: U2FsdGVkX1+lRie4Sv91I3phWZTdNZYmfVWcCWQnx6h7w3aeowgxq53r5ibNZF8Zze6LJQenuwL+xSWUuJUop8Zkf/sbpFDYymQsrq4axoHtJ3Sr81+mkMpW/hO/ONlCeFykQfjSJkhaKYWTaecQhVPncTiwEDRujce6s5LAvGNbvjubmxqBKYLCFmhKFZ/SFfwcwGEzzndnY3R3SbsHdNM7UEGljgqX3/43xcrE1gagicwOZ+a9mHYoWDAdM3lg3qlsOh8q2LBqi8//zTIzmw0LT15TvX7AfEFVSv3agylwxEIz7xiWknzfwODSDXeH9fG+anQCxFGAWCuJrApGZ5UntPNjlWnvjARfn1WwHvCB6l/H11l9cXEtZTDU6fgKHfqN4lPiGqlVoFob4wAeMi8qKFp3Qwi2kAWAzDcI62ToUjGq0XvSKsOx6aGh0O6kJgcbC4sl9RQNXVLrWLBnbHn6wqlRAVoVkMUqjJpAVJyjO/srjBi6jsPQjrGt/29mi7KPGu8hsmSMn/OjSkPo2mKpjlr8c7up1SvtDn6Dpm3eUEpujPnN8F3xQqge5I3zEfFIs/mgGo2FCQY85j10FlUNXct3sgLsES/MIuLYLnT2attpqbInhra8oTRNodNG/drLgN2Bfp0CRTfNB0PrLyeOQIv7QGjcZ//wOPrqniIVRzI+DiDp1NgDt26mYeeq8ajbCVOcLDjQ6pRetO557ZlxbkrJmeFhAmBxHb06u3I1zOiCfdpOgove099THIly/jgfoTUQGM8MNhsJNZzgSLSjhgQ9/7HZaHTSkg3N7FI7jbOmbXaEu/diJgxvgDH7bMGzGrAXac4v7pZIob99UPmZlVB9MoHhfGgGTO52pvmrcmi571111D0VpWmQCLmIgeoQGCkq5FCu+UyjUOCv9glHPzy0ZuCn9glkytqITSyjJoYjAq6J4ENJuwQ2ju6ccPVfAT5O7fh7uDjStLD
- 5d8Fcyb3
- 56EgfgDqk5dWrDMyTkw8VojZVi1KV4lKdxyARdq9iA9S+3lgBiSa0fqT66cJqnsLJ1bmNRhTKO/lc+SE0xo33wqPpef736SJAVIOXcG430/w1PBuWMcc52w+g++7GHPXBH2L6Xsy1sPfwlGTR4pMLpJVAMdAtPQuPLRzFoSm6NuwwGJg5b7Onqntc0oxCLpbl4X3lpKS1+Smb/oj6y3axQliLQtqZpTUndqnqyng+/BrqBOduYqweX7/31vR1h759H3NZwxiSLE6dbxfR5FQqvd55ykSnFhB24r6YSNszYjvw/DETvspZI7Wf7QK3A5MnEfV/vbfd6CUFlVXYLWvaQn1zxg==
+X-Rspamd-Queue-Id: 3784EA0009
+X-Stat-Signature: 4d7cub1s86mb7ptowwoyzi6qgsa6q5qg
+X-HE-Tag: 1762980464-562466
+X-HE-Meta: U2FsdGVkX1/SAF+lDpCxvyqqZFBnJljbi0CwB55qOuidFth/eHfFJpkfYu62DQLj6P1UMIuGPEtIGzdnAFu2n+zxSaZTppp1LZMOVQnM5l8G1GEzTgetMBEltqmzejJ8t1CGVloF/n9cCglWoJOBFeqterfNqOHWzhmoAt26f1sRVdPytLQTH66AC6iJO+id9SK5DAf2TUslPLSClIthHJWJps41nAVpPxH03SlWQcHVPmw7LJK9i5m8N5Twb6YrHG7PWt1pJTz84eQ5HoOgvoKI3/H4dnPTbbzOp7Lh7V6fBFX/3gxAmW3gFM4+wLFi+jABh4gSpMQUFCqWTm62hqRTeUPlQEFYWnhZeGqhqKAPLzI1+Gz0FJD1vlV8JaohQR/hz0+Eba2ETV9uPlBW3XM7CGkHqc5hda7WXhciokM2V3tsviZLvRqPXFgji9Sq8Z7j2Yz+k0rVSRfxj05EVsJhnT8/gm2gEWy17/G8fMaSzOk75Xi15xTpWiEHYw8cyNf1/ADqGNz8CuBjBsw5xghAEUPFM3iJcquBrhvwbbAysDFPJVt3lWsZ/AwRM9hxUDiRMObLWAWP23xiVPi8x+Fjq20oRIdL06IvoRtSGOVZdFpdY4TGZclKonDYZ1jPLlhmxi/8aJkPr3jUc2XJUFqu3rhgHipPyHS1y2u1lDS4HN+Gj/2Y7G9FnVUqDcoe6FUcJF1e71p/luMRpCuVBdZkZ29Ury0agkPc1wld/6tzNRizsuNDSyhv/tDiLrXOdx58iGmdAwdAVUWH8s738vPhbulLhJKscucZxsTNGktA6GuRTp6mnVY57eY015A73P0mubbj/fD4MXt1ECa1vudS8/aS0vu7cc8EjbJhu/dlNTv1PurqNhdrgddinEC+80B6TkkraHFTMvhJ5wYBw+OMtawRIgj821k3h6O94SEwTHe3UqkELTlqeM1Xkal+iCeRuEvWc8KO7e6isak
+ yjMAXpCk
+ YhXwMEt1KG/h5aKTO/RW3Tv0EmaVtaRaZzCcQp9xh6vqmqGATz3Xa5Cf3Z2xB+aiUq9LyMdMfe4VuMqujWAsoiRcBCOgo4b+lItbPsmnlnF5kqp4p+2+PGZCGLW8M1oUHW1akZuXN0BGLgE55d84mWZ1IalyCm8SW/VosQpP0sxWemo6JUzXLnU5vvAH6g6WXk1ZQrp50nUtuFy9Wm9/4hcRGB9NJShMjaMtsV6o4EwScRGQLcf9wyNlt7kdPrbSwRadzoxLfRhJzo92fK9ni2/n1o4+46F0+n2e6eaHHgCyzosTNcdLcdpp+FGgnwWyBC32O3r9OgzUTXsA+HxoS+u/Oi6KYH+566qkW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,49 +139,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 3:24=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+On Wed, Nov 12, 2025 at 3:39=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
 te:
 >
-> On Fri, Nov 07, 2025 at 04:03:20PM -0500, Pasha Tatashin wrote:
-> > Introduce an in-kernel test module to validate the core logic of the
-> > Live Update Orchestrator's File-Lifecycle-Bound feature. This
-> > provides a low-level, controlled environment to test FLB registration
-> > and callback invocation without requiring userspace interaction or
-> > actual kexec reboots.
+> On Fri, Nov 07, 2025 at 04:03:04PM -0500, Pasha Tatashin wrote:
+> > Introduce concept of "Live Update Sessions" within the LUO framework.
+> > LUO sessions provide a mechanism to group and manage `struct file *`
+> > instances (representing file descriptors) that need to be preserved
+> > across a kexec-based live update.
 > >
-> > The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
+> > Each session is identified by a unique name and acts as a container
+> > for file objects whose state is critical to a userspace workload, such
+> > as a virtual machine or a high-performance database, aiming to maintain
+> > their functionality across a kernel transition.
+> >
+> > This groundwork establishes the framework for preserving file-backed
+> > state across kernel updates, with the actual file data preservation
+> > mechanisms to be implemented in subsequent patches.
 > >
 > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > > ---
-> >  kernel/liveupdate/luo_file.c     |   2 +
-> >  kernel/liveupdate/luo_internal.h |   8 ++
-> >  lib/Kconfig.debug                |  23 ++++++
-> >  lib/tests/Makefile               |   1 +
-> >  lib/tests/liveupdate.c           | 130 +++++++++++++++++++++++++++++++
-> >  5 files changed, 164 insertions(+)
-> >  create mode 100644 lib/tests/liveupdate.c
+> >  include/linux/liveupdate/abi/luo.h |  81 ++++++
+> >  include/uapi/linux/liveupdate.h    |   3 +
+> >  kernel/liveupdate/Makefile         |   3 +-
+> >  kernel/liveupdate/luo_core.c       |   9 +
+> >  kernel/liveupdate/luo_internal.h   |  39 +++
+> >  kernel/liveupdate/luo_session.c    | 405 +++++++++++++++++++++++++++++
+> >  6 files changed, 539 insertions(+), 1 deletion(-)
+> >  create mode 100644 kernel/liveupdate/luo_session.c
 > >
-> > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.=
-c
-> > index 713069b96278..4c0a75918f3d 100644
-> > --- a/kernel/liveupdate/luo_file.c
-> > +++ b/kernel/liveupdate/luo_file.c
-> > @@ -829,6 +829,8 @@ int liveupdate_register_file_handler(struct liveupd=
-ate_file_handler *fh)
-> >       INIT_LIST_HEAD(&fh->flb_list);
-> >       list_add_tail(&fh->list, &luo_file_handler_list);
-> >
-> > +     liveupdate_test_register(fh);
-> > +
+> > diff --git a/include/linux/liveupdate/abi/luo.h b/include/linux/liveupd=
+ate/abi/luo.h
+> > index 9483a294287f..37b9fecef3f7 100644
+> > --- a/include/linux/liveupdate/abi/luo.h
+> > +++ b/include/linux/liveupdate/abi/luo.h
+> > @@ -28,6 +28,11 @@
+> >   *     / {
+> >   *         compatible =3D "luo-v1";
+> >   *         liveupdate-number =3D <...>;
+> > + *
+> > + *         luo-session {
+> > + *             compatible =3D "luo-session-v1";
+> > + *             luo-session-head =3D <phys_addr_of_session_head_ser>;
 >
-> Do it mean that every flb user will be added here?
+> 'head' reads to me as list head rather than a header. I'd use 'hdr' for t=
+he
+> latter.
 
-No, FLB users will use:
-
-liveupdate_register_flb() from various subsystems. This
-liveupdate_test_register() is only to allow kernel test to register
-test-FLBs to every single file-handler for in-kernel testing purpose
-only.
+Or just use the full name: "header" ? It is not too long as well.
 
 Pasha
+
+>
+> --
+> Sincerely yours,
+> Mike.
 
