@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77665CD3444
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:30:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 537A7CD3445
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:30:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D87878E0018; Wed, 12 Nov 2025 14:30:23 -0500 (EST)
+	id AEF718E0019; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36F78E0002; Wed, 12 Nov 2025 14:30:23 -0500 (EST)
+	id A9FCC8E0002; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFEC98E0018; Wed, 12 Nov 2025 14:30:23 -0500 (EST)
+	id 967918E0019; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AAF018E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:30:23 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 785534CFC0
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F7258E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44622160695
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:30:25 +0000 (UTC)
+X-FDA: 84102946410.19.278223A
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6EF61140009
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:30:23 +0000 (UTC)
-X-FDA: 84102946326.02.AC72095
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 96A061C0014
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:30:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dplgIXBw;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762975821; a=rsa-sha256;
-	cv=none;
-	b=qHsvLkxVIFI4U8kSDP/eJSP3orcZdrYEljWXGRLX4+kGsdfobk+agB30iGXNNwrECAJXEd
-	IlSEufs5mw6sfM5iS1cEn4euA8XUGbFpVtGiOqLpJBALlcrbGNPOg9qYIwvvxUbu6N8oar
-	rOIrEiYt/QvXX/Vkz2RbBBpAZVaLgzw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dplgIXBw;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=T4FScfvV;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762975821;
+	s=arc-20220608; t=1762975823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UkWGDFkxsYcV2vUuZc9I0ZRX3P3sH+nyS9DR2ZbJTF8=;
-	b=yaddTGHl9/ouV32iAzcw+5vGgq43cipzQPCG/GEwdaGYxQNtYaYpaD1NiPmaTBpXF7cNn/
-	HuXhBZim4slBDob9FjzypeQDao1ZiHE8M/Ys7Ha6cmV8aidntKg587ds540Xct/gRFzYTo
-	Dt6H5vwdX2ckgWcGoB5RMWB7vKbe/XI=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-891667bcd82so3563685a.1
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:30:21 -0800 (PST)
+	bh=EE3olEnyRjl52kAEWnA02JLmmLDlTmwS9hIpIeJT8kY=;
+	b=MoVFUD2lDHfTecfgIjJsmQx6YJT7Sqh7tFqzUHRCFaVGjHFCBYv2KnDjJr+tMC9XNGh+Q0
+	eySD/R7fYayqUgVcSfsRL7leDWRTktxtezKCcClwP+bzM2PbBjeI1zn9wtILP9Hvki7giS
+	GEsSLOAJEjsoz9S/hsMtIa8QfiZk63g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762975823; a=rsa-sha256;
+	cv=none;
+	b=COtdy7uCDJq8LQ7k3YV5APMVDoHF1Vxu5UkhO02zuDepZFAy+d5CPleKe0PDzDmwkqkWIQ
+	LBEBcNQSZbFvMzM+1uR/5yzWvZiH3GadakM1RJBytPy8HL5nnLDUgwrwpV6j0bIEjNkb11
+	KEhGom7bchQ7QJ3qLGKbfk94vVHgytY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=T4FScfvV;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4e88cacc5d9so9855181cf.0
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:30:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1762975819; x=1763580619; darn=kvack.org;
+        d=gourry.net; s=google; t=1762975822; x=1763580622; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UkWGDFkxsYcV2vUuZc9I0ZRX3P3sH+nyS9DR2ZbJTF8=;
-        b=dplgIXBwgNPMxq3oorgUGtE3QaTodmGCx27DYwlC6XtkNtMrsaarFKhPn/9RVrLg8e
-         EPLthbI6H1ECJ0NDBO3LuPh0+h11RdukhrIiXFoVJM0w/F7g2ye+cRL+aJ/IY74Hmz+7
-         +g/4CHqXe/pTkUduzqGnLzVhxH9htPDg447iGsdjGY+8HbD41RP+fthU1uCjF+uhmX5g
-         yvlhuf3CFzA1YZndEH8yb2mDXW8ecIXKL8s8E5Oz+d9X4YIYGbb7E2PdttKrpFdF+HBi
-         qWMt8e6dwKJaZ0KTyENv8t96nXR8u3LLIFAS7Ibk6bF/7BpRX47wTXKCEwefOc9dQplv
-         qzpA==
+        bh=EE3olEnyRjl52kAEWnA02JLmmLDlTmwS9hIpIeJT8kY=;
+        b=T4FScfvVCYDHzr78PMOcOxgAoFUIrvopoj7BomTKlBgHk3zPkgT3H86kETQ8ueBh2r
+         8AHIcVmRUbK6/DaCLlybYmk/DKF4bQF2iIA70/O8uR9f9HPna0sa5IY56Kcgk0ii/U/t
+         CFhBPQ4AOgDzdPEkU8wcuGbvST+h8/7EtEaENTQHyMrGj+y5NifqXZNNkvf4I7Sj55jZ
+         ZNleTSa4zv0uBzYlGlcCs9nFmO1PrYYZbyL/5GeelwMH1ZGYuZyNNdDHCi3bJrHjY4vN
+         NT2lYypsfU+0Imld48YmhMB4mYgCSpwBheKMhbFR9NM6q6d3xyqleXGgnlLwsroOQMNX
+         YC2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762975819; x=1763580619;
+        d=1e100.net; s=20230601; t=1762975822; x=1763580622;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UkWGDFkxsYcV2vUuZc9I0ZRX3P3sH+nyS9DR2ZbJTF8=;
-        b=ZaXkg4mvaOLODXaITk7DkS2kIFL4uI/+zERQIG8DUV/IErP0FofSyvcnfqy8APlM+9
-         5HH15aC0V4eJBRsirsyOcwZLxakC7zHTIU2KQe8hZE/hXow6ucvWMu+0HrDKeq+qYQ8T
-         uHlXJrWuNt1kWTXWhUjyQKhhTjqIGbVOCNKzveMzkMGCT74fmVDyNUNN1PJ+NPmxArgT
-         IzJLaXGHnDBxbuUQURLF4KCd61Yt75CIxwbp4XbAlaZq119q2SJiOsHDY3XkD7QiXXvI
-         tHv9Ti7ZDVj8pGS6zcY+gVxgeH8y1sWjm2Lo0fH8QW+7K2RTd65PlCyENSzxL/Z1hVp3
-         SZKg==
-X-Gm-Message-State: AOJu0YzJ+3iXasjhxKZ+Eg1zJMq3NPJAIxsSKp1vNHBNZYd6cPbktZLu
-	uofnHuicPAQ6+8Mpc0qjREJpSaADxR0ZDlMP2nPsaKqwRZydOQaYW4dWwxIjuBF4+vi/SeM/jZY
-	6beuY
-X-Gm-Gg: ASbGncvbFmJkJyeP9zdBaHiAf6LpDzvX68pk5qvxvwE26AIf+XZztjmDZRvi/n7Mptd
-	5I3CrH5oC8B52xB76ZCmGdWhQm3hklPjRIwJhpFhSBW5LmL442Jym1I0hb+u/3NoUoyTueYBuNm
-	8mnH6kqH50fkXr0qaqYpAm0FEazDJBYFiNA71TtHKe+f6qsR2X3lkJYX3FjcdwEU7R/kt35cv2s
-	EB7i97Laj9MlK2ygTcf5QQ6Ft2wdBQ0I8bzgtAxTCTN4la7mrvjiOaByI78AIPw5ALs0NQ+sMQ/
-	emx+SJ3jugkDXxbtxXSlo5yft8icUXsHdJgCnFfx6nvkVhLziFpIk46EXiPdvDFpUqTjlez8aD1
-	AlFxEyM/iuGEC9OpBTFWqsHCKAqXGmCMbDXxgY+eE40xE2CfDV/5wchqjxZ5JikXQOjc+7WbHS/
-	LWe8qg1ucyxwgTaVma2qFedM/h1RbUfI8r6HItpD9GuNRzLDBfKAEx/F7Fxo0E1qOC
-X-Google-Smtp-Source: AGHT+IHnA96vKIbRbEVDdRL2YlwlXqxXxNpoq+1tyGBGVESiKZZsfFfpRROUBFK0hifrTyISq2ufZA==
-X-Received: by 2002:a05:620a:f01:b0:89d:b480:309f with SMTP id af79cd13be357-8b2ac08bd6amr88119885a.7.1762975819003;
-        Wed, 12 Nov 2025 11:30:19 -0800 (PST)
+        bh=EE3olEnyRjl52kAEWnA02JLmmLDlTmwS9hIpIeJT8kY=;
+        b=EVDhS1avlV4v3nNgaQLEf3um5bV0IuYI4NLvykjTENYCTeRQ3rCqY/7jV4Bgm5QtlR
+         uQ6xfFrpogK6KxqklkE3kpX0iD1HsTRz8G+2ZQDaonzi7bNfXSpgE5aFX0nFTZLrX0/Z
+         FFdnN7k5n/H2YIcgCovBSbMh+gdigy8TP11/w87VxjmNLBl/E6ePlb9MQMu5RAkty/YS
+         O57bn+LMVvof4NncTgQMpPZm6wzqL2kLXLbI0SVk2LtAshkvHuZ8oIYgFh/1TW77pQOJ
+         6Y5Hp9SrjKA+aabxdX3tNeiR8OUyur1IgunACp+EpPouixOxM3TVBmZdAkc+Q8zJiOHU
+         tdLw==
+X-Gm-Message-State: AOJu0YxmnQUrcr7/+x1Hof0pKilrY5I/x9DI3urC8AkmEv1MDL5H5QFW
+	Ay8lIZWkOheDH2bf1BdVsw7iY2i6hB2NLTOsK8gkh5+zaoYfij6GvSy7IDNZwEqAkIK8JqNWe3w
+	aID7L
+X-Gm-Gg: ASbGnctGz3R2VUcS5waVmJk7bstijrs5dzvx50YaxAroYY2KxSFXyHspL0v5uUSn2dD
+	cHT6dn+TIOXAVdVl7AISO0iFYGj36snyvz9c8JX2fO4Ea9BS2LEiDalXS6qNiUemCrRSVm5/DXx
+	JoS1IUCFZUZ5k+jtz5axgjsgoS0O4Hez8igMSHmDBpuMC5Xxmw5SONG2TQISbgJSpPMLwP2KH6G
+	kJPVxdsYJ41toKx1wN4lVSKIBng/nl1mshP1vuibBjn2mbY3hC6RIoaKlhhNZFzK8veWEQYBXdC
+	ZRncNPS9pFlz5KM/jKJrTtD+2csVivFri0qfPFNHlALMShHDclFbtvGnw/x3hxSd4clOMPrJS8K
+	KsuDs4ow8cDJh9Qrry8qYoRsZENWtsO4WxFOHJSfc5fF5AFjS9ZQRcj4AEmE5c8jXx39kufI/oW
+	+YX8ixCzMTosjViSpFiSyoIEQZBf2PkNab7hK9bvSmd461xWZsJZVSCLqkG5e4AyJX
+X-Google-Smtp-Source: AGHT+IEpkA9sHRf+vDkvWZyRaV+z+4MD09rdo9Mmp9OjAhV3qhp/e6NAADZhOGarPgun9sbSz0rc+w==
+X-Received: by 2002:a05:622a:14f:b0:4e8:b980:4792 with SMTP id d75a77b69052e-4eddbcb30a2mr55332141cf.37.1762975821965;
+        Wed, 12 Nov 2025 11:30:21 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29aa0082esm243922885a.50.2025.11.12.11.30.17
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29aa0082esm243922885a.50.2025.11.12.11.30.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 11:30:18 -0800 (PST)
+        Wed, 12 Nov 2025 11:30:21 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: kernel-team@meta.com,
@@ -160,22 +160,22 @@ Cc: kernel-team@meta.com,
 	namcao@linutronix.de,
 	escape@linux.alibaba.com,
 	dongjoo.seo1@samsung.com
-Subject: [RFC PATCH v2 10/11] drivers/cxl: add spm_node bit to cxl region
-Date: Wed, 12 Nov 2025 14:29:26 -0500
-Message-ID: <20251112192936.2574429-11-gourry@gourry.net>
+Subject: [RFC PATCH v2 11/11] [HACK] mm/zswap: compressed ram integration example
+Date: Wed, 12 Nov 2025 14:29:27 -0500
+Message-ID: <20251112192936.2574429-12-gourry@gourry.net>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251112192936.2574429-1-gourry@gourry.net>
 References: <20251112192936.2574429-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6EF61140009
+X-Stat-Signature: mk4zna7i9unu63dqsxmf1rr57pfq336r
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 96A061C0014
-X-Stat-Signature: rcdkuc1gu8xieyghb5sntp54cg7nu3oz
-X-HE-Tag: 1762975821-285215
-X-HE-Meta: U2FsdGVkX18rfjtJoda8kRUfovTIvmccn4KMXTh7+nGRYQliGVVASfvOlHsxdj20j7N8bPaleyHxBntsiM91kk89Shc8Pv1BPpIEVbdsMcA8STC4dc00qsn0nNNkCmtUpQnfXUuofSnlQVZOuzc0WE197lqsC0HELMaWNr+N89qK64RaRnPxZ+wDEfFaLMZbr/Zwkrccz/T7YiM3zoOPsG27jE9+yU2z4TsbEW2Zzup7eRi7Aa7llwuyaaJzi9+9AzJsQcdgnuyk42fy1PEtDK4l4jWL1iSxPJksMr1Po1AOmes3oS/gUrQZJGwPC27uNanzqBqvutzfchqHz8CdfHc4mjYzxPdZUrzH8OK3AkPOyp4tVIuE+6xbZ6lErlrQxlCRANMd+Mnf23qD9wRdPo0uLVX2jTj5uLlSE7Q51qI6y2PMzXhckouHWyGx9oV2rAcQ6MLzAJzmjgCvth5cq0FYAjBsDagmm1Ecy6gA0AlAZ3qlUmnSc2x0XMwn/0YbN3TO55bkW0gNeBp5o2mRwXu/VnooKmJhUGJw4/R7+gLhSqUO2lWYX9SceYqlISum9d36dKKY05cka1fz7h82AojmpyB1j1tt2eqSw8gf8AIhqcNuM5QLnaMHJk6Q51NeKqj6q+Z9cjlREz4hdOgOtRAWNdpyez7n8ye9IHGj3fP/vvOb8BgILZsnn7P7v/PS+f6/eZMMD0KQIw33MjIZj2EjnJqKOHBUgRJ7dgbzCaNBND3m4oylqxPJnf+L/rAZeYXkNhk3ygU96NUGz68efcOe9h3BaNQ4+dY6YbBJOxi+8UUth+PasTp2DV9Eq7mzxxDeZJRsbCY6jl8B+yc4i3f+P/Pp/zovnU6MlPMJ2zNt3171SlAKerI+rd8sMlCs5EPYnG4wSihfxLuTzOxw+iog//6npbcQlu801drN4SOHpfK69tlz+8h0wYy5Kqb4sx5+vN/8f+6AV8k3Egz
- Ior2BADi
- aH/3F4VRN9GLp5IcLjpnc8DXxTDuEB70NXnEPL3JoJpamAIgsFbldutJbig8H1RDEykPWz4d7hewRAOfQ2EDfQ/GPRbVNFOQE5mzfi6QsnyaVQCQiGScKFA030aDhyWi+mufgSSuGC1RTfzeI3GoxsuurSdWHhf8RujKF/KfiB3NtCH9werFaogjPcigsHmnBzZgR4Pzmth/QNjMB/dKIQ2LkVeCyAL1bJJWpIHlyLJsqCJSsNwqgkvSzV+S2V/QvSjjTqlevg7AEwLCCs8huWvUhqPLAUPCIc2GnrsyYtEztTNXfEuP4mJdsMdcSTdwL7VzbUK2Qqy/ceKROVF/7UMitfhG0Kw5/s9DKFbpApCZ2jslQTx1g97Wpz7AmWiz1v3Uaory6H5xeNkcJBX2xKTfBMZWjxxkjVp5BAU/tdg3th4c=
+X-HE-Tag: 1762975823-834929
+X-HE-Meta: U2FsdGVkX182bCo6vgR+hFSBKWMpYw3qsfJIgIUGTtoUsClfsJgHKbUwuRaGklok6HuRk8RKwBjQPAUI0UWPrw3uNkPHpmCEbe69RZNENSJGTqlU03vZQZUmjMv9X6SR16UHzLwa8kw8FqwOBnpQCpnRNArnFAyURjbT/H5arPPkJyR5yODJh7wIXVfZj3W0Rt5dxo89QHTrus2vszscnR0dNC1Kkiyx3YY5byJ8FbPqtZfKoxWiDZR+SL1Kb+Hm3RtgVYMun9Fei+rKsZ9jWBpjsBtNs9OQCNiIJLuYkq1SBYpqrlMP3DD9oCmE3botOVPiGfP4H7S0MFBmJagKabTN5RFzYBAflCdbT7zGC6vdcwGOVYJu1TbVt/zSHML+jtqhBq/sCRkto8xhJWNVW+/DmFRYA9nbYBrdbLc61qXu/ZXW9DsE33DBMqrt6VGSu8Qu20fSqN0YTlmxtE5cgLWAeqDCF2HM3d86WC4bgtCE0BXiyFRVeoQHYwX5oPozSbE5qEV03BesBGb3llcUIPCstdxJeR2TqlL4/53kGV+thI71tdCnD6OwoZPbqr5P+W6tszB614ap8WmizadLwPRTjyj/iHpBdc3sZrc70Lmht0XD9N3IRSO6Pk5lF2d3qL/1NeSRueDp1SJiV9eYU+WFlAVI232ZTy75B2Ip2CK9EHQiJ7OBfCPCTXXFl2kpDyo9omcNETEY8jy9RAAuA/sTcRqeK7AMPEmnmH07k6D+PchSvYFGzLFwdIWom027D351FUfvrITLcRtK0vAnDp8qYA2QOzvhNhjGHJTuypkMVWa/vtfvxD28PQD/ddq+wGlVC7jMzg1vOdYI9RXvmUTjiaZDECfmS46LPyFwFyhQb2Wyl6L89hhtsbGe8hsUOgc+FB4aO/LhImEbrvRYg04z+gAXMM0lTbok7DoX5WiGtdXLqtXwgmGTmM4htCKbKw37AOIJCz48xQnkwvk
+ 5dDXq6sw
+ U9BqOJJInbJyrav2jzFjc2muH6UsUeif6c8Ul3CuGA3UQB6x97Y6pN9CcY2BHK4O3SugbZ1gJ6yQ7ZOJ1uFiz1lb24uYeukCDkbUuJr3wXqVTed7/dGCXmZXvGzCu7ga4wvkZ0inBefs775/EMyXFMpI+XSSwTWOlEOTKYYauzeGQKKomtY6+oPH/5pJsu6GFGxP5j1/QPVC1v37iCPUz9jgbXMliNYxk0i2NBVxMzdivqhbx+U7eslOZKpMrQnjlALyLqepB/qGdSm5T0WKHajUOcYksgCwR+GDF1wR9GArtYXpMtX3UtzTahh5MLMwnrrxVEktrJQCtg+9DfukNll7WlAoPvHCzxLMWS6mEMVP2+UkXSqHtY5xKDg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,98 +184,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add spm_node bit to cxl region, forward it to the dax device.
+Here is an example of how you might use a SPM memory node.
 
-This allows auto-hotplug to occur without an intermediate udev
-step to poke the DAX device spm_node bit.
+If there is compressed ram available (in this case, a bit present
+in mt_spm_nodelist), we skip the entire software compression process
+and memcpy directly to a compressed memory folio, and store the newly
+allocated compressed memory page as the zswap entry->handle.
+
+On decompress we do the opposite: copy directly from the stored
+page to the destination, and free the compressed memory page.
+
+Note: We do not integrate any compressed memory device checks at
+this point because this is a stand-in to demonstrate how the SPM
+node allocation mechanism works.
+
+See the "TODO" comment in `zswap_compress_direct()` for more details
+
+In reality, we would want to move this mechanism out of zswap into
+its own component (cram.c?), and enable a more direct migrate_page()
+call that actually re-maps the page read-only into any mappings, and
+then provides a write-fault handler which promotes the page on write.
+
+(Similar to a NUMA Hint Fault, but only on write-access)
+
+This prevents any run-away compression ratio failures, since the
+compression ratio would be checked on allocation, rather than allowed
+to silently decrease on writes until the device becomes unstable.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- drivers/cxl/core/region.c | 30 ++++++++++++++++++++++++++++++
- drivers/cxl/cxl.h         |  2 ++
- drivers/dax/cxl.c         |  1 +
- 3 files changed, 33 insertions(+)
+ mm/zswap.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index b06fee1978ba..3348b09dfe9a 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -754,6 +754,35 @@ static ssize_t size_show(struct device *dev, struct device_attribute *attr,
+diff --git a/mm/zswap.c b/mm/zswap.c
+index c1af782e54ec..e6f48a4e90f1 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -25,6 +25,7 @@
+ #include <linux/scatterlist.h>
+ #include <linux/mempolicy.h>
+ #include <linux/mempool.h>
++#include <linux/memory-tiers.h>
+ #include <crypto/acompress.h>
+ #include <linux/zswap.h>
+ #include <linux/mm_types.h>
+@@ -191,6 +192,7 @@ struct zswap_entry {
+ 	swp_entry_t swpentry;
+ 	unsigned int length;
+ 	bool referenced;
++	bool direct;
+ 	struct zswap_pool *pool;
+ 	unsigned long handle;
+ 	struct obj_cgroup *objcg;
+@@ -717,7 +719,8 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
+ static void zswap_entry_free(struct zswap_entry *entry)
+ {
+ 	zswap_lru_del(&zswap_list_lru, entry);
+-	zs_free(entry->pool->zs_pool, entry->handle);
++	if (!entry->direct)
++		zs_free(entry->pool->zs_pool, entry->handle);
+ 	zswap_pool_put(entry->pool);
+ 	if (entry->objcg) {
+ 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
+@@ -851,6 +854,43 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
+ 	mutex_unlock(&acomp_ctx->mutex);
  }
- static DEVICE_ATTR_RW(size);
  
-+static ssize_t spm_node_show(struct device *dev,
-+			     struct device_attribute *attr, char *buf)
++static struct page *zswap_compress_direct(struct page *src,
++					  struct zswap_entry *entry)
 +{
-+	struct cxl_region *cxlr = to_cxl_region(dev);
++	int nid = first_node(mt_spm_nodelist);
++	struct page *dst;
++	gfp_t gfp;
 +
-+	return sysfs_emit(buf, "%d\n", cxlr->spm_node);
++	if (nid == NUMA_NO_NODE)
++		return NULL;
++
++	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE |
++	      __GFP_SPM_NODE;
++	dst = __alloc_pages(gfp, 0, nid, &mt_spm_nodelist);
++	if (!dst)
++		return NULL;
++
++	/*
++	 * TODO: check that the page is safe to use
++	 *
++	 * In a real implementation, we would not be using ZSWAP to demonstrate this
++	 * and instead would implement a new component (compressed_ram, cram.c?)
++	 *
++	 * At this point we would check via some callback that the device's memory
++	 * is actually safe to use - and if not, free the page (without writing to
++	 * it), and kick off kswapd for that node to make room.
++	 *
++	 * Alternatively, if the compressed memory device(s) report a watermark
++	 * crossing via interrupt, a flag can be set that is checked here rather
++	 * that calling back into a device driver.
++	 *
++	 * In this case, we're testing with normal memory, so the memory is always
++	 * safe to use (i.e. no compression ratio to worry about).
++	 */
++	copy_mc_highpage(dst, src);
++	return dst;
 +}
 +
-+static ssize_t spm_node_store(struct device *dev,
-+				      struct device_attribute *attr,
-+				      const char *buf, size_t len)
-+{
-+	struct cxl_region *cxlr = to_cxl_region(dev);
-+	bool val;
-+	int rc;
+ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 			   struct zswap_pool *pool)
+ {
+@@ -862,6 +902,19 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	gfp_t gfp;
+ 	u8 *dst;
+ 	bool mapped = false;
++	struct page *zpage;
 +
-+	rc = kstrtobool(buf, &val);
-+	if (rc)
-+		return rc;
-+
-+	ACQUIRE(rwsem_write_kill, rwsem)(&cxl_rwsem.region);
-+	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &rwsem)))
-+		return rc;
-+
-+	cxlr->spm_node = val;
-+	return len;
-+}
-+static DEVICE_ATTR_RW(spm_node);
-+
- static struct attribute *cxl_region_attrs[] = {
- 	&dev_attr_uuid.attr,
- 	&dev_attr_commit.attr,
-@@ -762,6 +791,7 @@ static struct attribute *cxl_region_attrs[] = {
- 	&dev_attr_resource.attr,
- 	&dev_attr_size.attr,
- 	&dev_attr_mode.attr,
-+	&dev_attr_spm_node.attr,
- 	NULL,
- };
++	/* Try to shunt directly to compressed ram */
++	if (!nodes_empty(mt_spm_nodelist)) {
++		zpage = zswap_compress_direct(page, entry);
++		if (zpage) {
++			entry->handle = (unsigned long)zpage;
++			entry->length = PAGE_SIZE;
++			entry->direct = true;
++			return true;
++		}
++		/* otherwise fallback to normal zswap */
++	}
  
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 231ddccf8977..ba7cde06dfd3 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -530,6 +530,7 @@ enum cxl_partition_mode {
-  * @coord: QoS access coordinates for the region
-  * @node_notifier: notifier for setting the access coordinates to node
-  * @adist_notifier: notifier for calculating the abstract distance of node
-+ * @spm_node: memory can only be added to specific purpose NUMA nodes
-  */
- struct cxl_region {
- 	struct device dev;
-@@ -543,6 +544,7 @@ struct cxl_region {
- 	struct access_coordinate coord[ACCESS_COORDINATE_MAX];
- 	struct notifier_block node_notifier;
- 	struct notifier_block adist_notifier;
-+	bool spm_node;
- };
+ 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+ 	dst = acomp_ctx->buffer;
+@@ -939,6 +992,16 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	int decomp_ret = 0, dlen = PAGE_SIZE;
+ 	u8 *src, *obj;
  
- struct cxl_nvdimm_bridge {
-diff --git a/drivers/dax/cxl.c b/drivers/dax/cxl.c
-index 13cd94d32ff7..968d23fc19ed 100644
---- a/drivers/dax/cxl.c
-+++ b/drivers/dax/cxl.c
-@@ -27,6 +27,7 @@ static int cxl_dax_region_probe(struct device *dev)
- 		.id = -1,
- 		.size = range_len(&cxlr_dax->hpa_range),
- 		.memmap_on_memory = true,
-+		.spm_node = cxlr->spm_node,
- 	};
++	/* compressed ram page */
++	if (entry->direct) {
++		struct page *src = (struct page *)entry->handle;
++		struct folio *zfolio = page_folio(src);
++
++		memcpy_folio(folio, 0, zfolio, 0, PAGE_SIZE);
++		__free_page(src);
++		goto direct_done;
++	}
++
+ 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
+ 	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
  
- 	return PTR_ERR_OR_ZERO(devm_create_dev_dax(&data));
+@@ -972,6 +1035,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
+ 	acomp_ctx_put_unlock(acomp_ctx);
+ 
++direct_done:
+ 	if (!decomp_ret && dlen == PAGE_SIZE)
+ 		return true;
+ 
 -- 
 2.51.1
 
