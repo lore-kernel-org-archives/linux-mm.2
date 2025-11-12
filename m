@@ -4,112 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F160DCD37BD
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:24:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C16BCD37BB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:24:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A51B8E0017; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
+	id EA6DE8E001A; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57C5D8E0011; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
+	id E7E0E8E0011; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B9B18E0017; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
+	id DBBD28E001A; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AE548E0011
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:24:26 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 10EBB160620
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:26 +0000 (UTC)
-X-FDA: 84103082532.28.2019939
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 45882160010
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WQbgQLw9;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CB7568E0011
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9CE9F8980B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:50 +0000 (UTC)
+X-FDA: 84103083540.01.B7F3C01
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 212AC180002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MMV7TwLQ;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762979064;
+	s=arc-20220608; t=1762979089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cJO5Mlv5L3YO1HhnW49gfBbXtzg4tozwhai+dggc8pU=;
-	b=GERDO674+WZ+7ppgL6HXIQ1C4tScg7Gaqat+VlGkPQ80csr0ifrERCU+GMgjCw3yUTwXT3
-	UopU6436mDOOHOjg3VZ/HDBZx7hxS+2pP6NRkYPgvpPA0ALcIU8rmXTkzga2R3IVTsAqUa
-	LlY9ShBCQa9CmfvaCtDK4eTExv+d/ZY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979064; a=rsa-sha256;
-	cv=none;
-	b=fUCS6/mEH+TqMuwvqDe3cRfN1VefJTk0J5Q2a3Na6WSwxEGV8jQeJqPrqlVyOevoiJuYIC
-	xXPi7fp4Lx1a2baKqLALKLislxRsvkHbdYgwIdt3V/f948X5ekfoEnVJ+724T9+tlUNqJb
-	XBHuHv6Arm1IEAFh/Ln2uL/DnR49NEc=
+	bh=w99u8UTaeMEokMZw0/vRmMX2Eo0plGVgzdi9tGIbBcM=;
+	b=d9XF38vLet/jIgtPRBvNfEyrMPXCQvmeg5aGicVtmBre47pXzEsaBmUYT4Ohv+q76OGiuZ
+	+M8+HGt3IOntIb/tTF0JIpVXnFMNnwo6OVJOpeDoBX9uSlvONsghqrJhxgzNlkYDtQWSTQ
+	y2TapkrUFkyGy0NUI4StJXZCCm5Iej8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WQbgQLw9;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MMV7TwLQ;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979089; a=rsa-sha256;
+	cv=none;
+	b=xo9BLd0bDUioaCygH5Jh8nZhThoiMPB27fAJ/w/ORzcZAD+UBM+kGZ8nYtrkFT0M7/pLdg
+	2H3bnRh7rBb9vlkEfQmzT7hAH+w7r+k3om2NfTuaGqzgPr7IbtJ2K9waQYycjl/Mv3/OS7
+	TGXWDMjf7EDyawWEVzDvuJV4DabRt+I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0147B4169E;
-	Wed, 12 Nov 2025 20:24:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09228C4CEF1;
-	Wed, 12 Nov 2025 20:24:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762979062;
-	bh=mwcUjonCzzMfZYdyYUdmDpwyU/fnuOYn/CICWev1Wls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WQbgQLw9P6lFKBibAUmbYpSG8Kc0wXxdq6DEPV4fot9A8Q1oC6lf/tQLmW3FpXmzf
-	 qPCka0jwkKlO0iXyomcWRkBkvtD8Vbh6IeUouYmzxc4zjLlXFrIDKw+zN9TcibDmA3
-	 kKrDOOClHAVnPGzZD8sm2BtDGLYh6R8Ah/qLCCyr4KqWYmJNVn+BTx7p58HNu7zK+u
-	 osS1a4WSO0TQ/dDij7iWmGThiI+x15CS5wutDKmEuCHdJVOaHz0R9BWvwqk/W/34C2
-	 YF+3vFzxZBtnxFH1djMCfeY6S+cWfnL61EpWx0F2ygcbKJEmGW2ZqapHGLcxWwkLsa
-	 yrAZl3wZLOt7w==
-Date: Wed, 12 Nov 2025 22:23:57 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v5 22/22] tests/liveupdate: Add in-kernel liveupdate test
-Message-ID: <aRTs3ZouoL1CGHst@kernel.org>
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-23-pasha.tatashin@soleen.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107210526.257742-23-pasha.tatashin@soleen.com>
-X-Stat-Signature: iugxoz678m8m9ztzipzbsqo9yiygdisx
+	by tor.source.kernel.org (Postfix) with ESMTP id 35CE4601BB;
+	Wed, 12 Nov 2025 20:24:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F883C4CEF1;
+	Wed, 12 Nov 2025 20:24:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762979087;
+	bh=TW9NSBuZC0pCuqNjfj0PDRPjYM0/XDdyBFkYzlhTUz4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MMV7TwLQJIgxVHH9Jfnn46TzH8kkfNaH3YCBvwOtvaROgcrfmaOqvv1Qxyj2a9TSq
+	 d59+NX27bhJounNl3b67AuiZlrcIpp9Pcs/XTM8FabyhC4qlmByxyR1JDVPmcsFkgf
+	 8YB4+GRYweYr9seeG6OE4aQ5UMPKXUBln5Ehofag=
+Date: Wed, 12 Nov 2025 12:24:46 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
+ <vbabka@suse.cz>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+ stable@vger.kernel.org,
+ syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
+ retry
+Message-Id: <20251112122446.e1f2c037550dc591a4d6b307@linux-foundation.org>
+In-Reply-To: <aoq7jyue2qamctxmvtlic4nv53phskj6k7iizh7k6kwruwdgxk@qgjnaib7xgze>
+References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+	<8219599b-941e-4ffd-875f-6548e217c16c@suse.cz>
+	<CAJuCfpESKECudgqvm8CQ_whi761hWRPAhurR5efRVC4Hp2r8Qw@mail.gmail.com>
+	<kfqzb2dfxubn6twcbiu3frihfkf6u34g2rcnui2m63rbc4x4kk@dh3bxvpzpnmp>
+	<CAJuCfpEWMD-Z1j=nPYHcQW4F7E2Wka09KTXzGv7VE7oW1S8hcw@mail.gmail.com>
+	<aoq7jyue2qamctxmvtlic4nv53phskj6k7iizh7k6kwruwdgxk@qgjnaib7xgze>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 212AC180002
+X-Stat-Signature: ajgr3n7wwcy5j5hpwectcnpoyy5xygbg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 45882160010
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762979064-166982
-X-HE-Meta: U2FsdGVkX19XeP4UlMXLnKA33ZOQ/p4iBj6t6rzbHe1yE1mDh3LquDqMKedxZue0x/sstDGIVQvUXx9Qj/3Fyx6WdMmmu8a8QXYH6SzJPxHPcNj1VpvquZbi2n/imtVhcfJ5bLY5Cb8jePlvcTwHcRdA5ytvPrGjsSUekamlLz+0w02RiJVWHvchNeLjz7sLW05cYuJm7RZgyTEwnfo5Aiwt0b20+4Z1uKNDBc6eak+qRpjrBcOAfsjn7zAG1reIk3ClDOyYw4gsUN8/oYU1aBwCdV54+rNwkS3mvgQ1IqyRlYUH6mNeaZFar9xYOowL3w2Dj3RSltFLc6UoB+LYffBoF0azIuFctq6fEMrgCSHdVg+9euUQngypfQ64DS6/h+v2lVyGWkkppjSBf+s5pTiIZnvQLPgpJVDlPRY/XtkBXQu3MddwbB7a8vGiGGBP38R4J1X3mEQOjgtME3VTJIlprk7fSsN4hwq15zrhc8MgjFaeDd7VVfagBQklLj+LV+6y+31it7fDS8vCrkbSZ2cjBy5Z5hH2eQ1kPgCbwABzTSf161l9TRRdfxIiHHuMjFnJo2nK/9xGGnd/0HEbuVDz+5dgWwvMbLjca/Fr9XKI3GTHBInsF8tzdSkyKhJKpzFz0HodaXpL/B/7ixZkeAo07xpALmFMM0vTgpS2gwwJ+aK5v6XFbwOtzQI5RXoL5EsPBiVcngeIsjPZlKNGUQnchCe1aSea/6i02nTtmkZDT85xQlENkKgkEX0GbUA8YNZ+IXZgEylV3M91hLV6KZohwCyIdTyCQRO9q6856IxjO9Of4ANR9L5jPNOAedF3HiFu9s6UiA3J1+lOvTAwZMq90UbPAoKaA1aM6bZATEuZpDnQxM3bUSzeadf8FhSddfQEMgsin+Tsv0c4koDNV/Vq8rxtz80cmnJa7SLW42BzcOKWRxS/nnHIE25WqgyfwmdcYfK4IK0Rg0qMPAM
- THUWqmBJ
- tlIlMmlcj1wjaxRzjRzdAYC7SCcftEXj1f2GK5v0w/cW2WHHj1qrBXKVVETYpmIsG7TruBjiDOmxPrFhXks7sp0jzDDd7gFKQOolhrXaVQaFXks9WRAgrQw9AqkAL+tOD8W3xYcE5ZDU60IfetaB1SyFoIoyH23qZgYY15o0w77aCKundo3/gQCk7RvRGccuPIjVxUL4pptScsmWmAq4qjZtn6DKRQLdSQbXqwoMPpiSP5DzgaMPl2S+gtF5kDK7pFLYgI72OMvD+RX2ie9egT+11nI1T+K7gq22hfgHla4eihq0otnYhX6FyMVgYLhji0gKYHR8BBTKXGdAPBJd9DQH0JoiDD84IGZm40nmlBIMI1zUhkymOBGoJdJrYWTVnH/yb
+X-HE-Tag: 1762979088-962766
+X-HE-Meta: U2FsdGVkX1/ottwhDfpW5k94tb9UQyINl6fJQYv6Lo1OUbbaRLwmCeinAtkymvCy0MrYP4McsrKP4AAa5Cd4AbqolEBcT98vlFxUrUSEpPFJzBAdGSylQsD5kTWePUy/D2Kk01xdTYYIRD6WYnT0fyS4mvqujI4PJH2RyYZDwRQwRCse90eIRHfhwhpnQ6PTIRfI84/B2t0FxDJAQcfTouw+jGL7XwbtwAqkRwvqQ0vuqTfLoySeFkvK6HSvUPdorpbzsWkXTXujpY1Qxq/a89R84oFKQ68jzjs+tp8VzjDOyOF2YF+taX2alo8/rjsosL1F4ODp4YNM2zovS8T4Z8WiiQdoj9d3R2PGJ9AlIc7Bnha+mrxVmeiLlh3xvgGIVrHPL4g+SV9TCDBwYJpgm32LLSi/NyZ1iYQApp8ia/eS6oT8nBhZj97ZX2bwUVHi+voz3O3ZfCqJwqItwombrPEuMi+tYrev19/J/TA2YhcxvW7HX0FdonoHKms07ua9rx90fgYcI7Bcc3Tmf5oNTAqONsNyQfK8nKsViqC4bhYnw9pdma+qhvNNBXp2O5e0IC1h4q5UkulBW/GnXINUEkuSW+JjlgYp1EET9jx1Qv+oZiLI/tLNy6URh4Qjg8BL9IHBs8Bul+uh7X2cH0K+8jcGiA67O0ZA3egnzrCbktOMaO13pGBKNky2fAw+aNlax59AjypVTVSfc66zJf9HsodxTnB33enIGp19VTawDAQj474ZhLuiSrBLzAYzVqEKOBkjPqG+Nh9XFCD3zSPDEpLTE4IptTOSzd86kLZjK0ZUBLl4QXyjK+r8TFLmCpeov7jZYNvoo12mRTYRm9JY5vi8yDmCclTXZGt5Pv5m7NrsYavz1bl6cbufMykaPI7ZtlqO7SYBY+acAMKoopwA/BdUrb0u2y3xbwuTUP7UOXHfUtcD/Vm1zUx4ChyQgjXbzHdC1cev7rFkRF/qWNC
+ E5i/pM2I
+ EYvDUGCbaAaTdY1oWtPvrJ6QruBd9g8K9cng126d0EZzMch2BnnW1yS4AP4LDbG2O83sxMjVYYtABzle7zyp2oo0B/+fR2FJMPS9K
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,43 +100,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 04:03:20PM -0500, Pasha Tatashin wrote:
-> Introduce an in-kernel test module to validate the core logic of the
-> Live Update Orchestrator's File-Lifecycle-Bound feature. This
-> provides a low-level, controlled environment to test FLB registration
-> and callback invocation without requiring userspace interaction or
-> actual kexec reboots.
-> 
-> The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  kernel/liveupdate/luo_file.c     |   2 +
->  kernel/liveupdate/luo_internal.h |   8 ++
->  lib/Kconfig.debug                |  23 ++++++
->  lib/tests/Makefile               |   1 +
->  lib/tests/liveupdate.c           | 130 +++++++++++++++++++++++++++++++
->  5 files changed, 164 insertions(+)
->  create mode 100644 lib/tests/liveupdate.c
-> 
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index 713069b96278..4c0a75918f3d 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -829,6 +829,8 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
->  	INIT_LIST_HEAD(&fh->flb_list);
->  	list_add_tail(&fh->list, &luo_file_handler_list);
->  
-> +	liveupdate_test_register(fh);
-> +
+On Tue, 11 Nov 2025 21:18:19 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
 
-Do it mean that every flb user will be added here?
+> > Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU
+> > lock on failure"), vma_start_read() would drop rcu read lock and
+> > return NULL, so the retry would not have happened. However, now that
+> > vma_start_read() drops rcu read lock on failure followed by a retry,
+> > we may end up using a freed maple tree node cached in the maple state.
+> 
+> Yes, sounds good.
+> 
+> Andrew, can you make this change and also drop Cc stable tag?
 
->  	return 0;
->  }
->  
+Done.
 
--- 
-Sincerely yours,
-Mike.
+> This needs to be a hot fix, as Vlastimil said earlier.
+
+Yup.
 
