@@ -4,108 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A6A1CCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 05:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4893DCCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 06:09:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98E268E0009; Wed, 12 Nov 2025 00:18:48 -0500 (EST)
+	id 28CE98E0003; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 965508E0002; Wed, 12 Nov 2025 00:18:48 -0500 (EST)
+	id 23DC18E0002; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A3728E0009; Wed, 12 Nov 2025 00:18:48 -0500 (EST)
+	id 17B0C8E0003; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 76BF88E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 00:18:48 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 23DAD1A032C
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:18:48 +0000 (UTC)
-X-FDA: 84100800336.20.19ECAA5
-Received: from mail-il1-f196.google.com (mail-il1-f196.google.com [209.85.166.196])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6795820005
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:18:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OOH1pNo1;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 053198E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 589DC5896B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:09:10 +0000 (UTC)
+X-FDA: 84100927260.16.0A27409
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9985A40005
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:09:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lm49z3qx;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of arraybolt3@gmail.com designates 209.85.166.196 as permitted sender) smtp.mailfrom=arraybolt3@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762924726; a=rsa-sha256;
+	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762927748; a=rsa-sha256;
 	cv=none;
-	b=N4kyeHG0w0P/YAAB8pfYWq3ChuEAW7R9xiltEu0pSn73ajcsrSLNJmvktAiSEckLwwXA0U
-	5IGX4UABJvXc850dqWRh0RoSZKXUvJhUKOe9lLS5yilXc0zDk3B1ceCbhFJsoK/N32bRCl
-	R6bwBsEgHbsTjnF8HXYvxsyF8h6PkJA=
+	b=uJc84cCKUvyoR6LfJvB5NOvc21nD/0z7AwP54hwAiLSFVlUyxVgJWHnJFvr664GlJ9cdDh
+	D4jlDOJ2C7RSrxG99FYSlD/HzNuIInB1TOruEzeNmZgG4K0XVcnbY68sByzRD8U1uobnR4
+	61i4s7bBAakfjPSDtLSj4spUUty4QB8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OOH1pNo1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lm49z3qx;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of arraybolt3@gmail.com designates 209.85.166.196 as permitted sender) smtp.mailfrom=arraybolt3@gmail.com
+	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762924726;
+	s=arc-20220608; t=1762927748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ezl4SSQLTdq74CW82/F96/qsFWv/FcEbMyqJZMgIA2A=;
-	b=Hv8OtmrlQwvR6pndS6umn2KmkyGwD845jFRKnRlLfc+IeSpqb/rpKHjjoAcKLYdb9X6/GR
-	2QomPeXpBq47bO074qz+7oySPU2TScLZz9OYhSju+PMiDPAxWTx1RIO+Pf5h3zw79jOH0l
-	0Jsle6Hco0kTftAAgKF76jx/xwSdK10=
-Received: by mail-il1-f196.google.com with SMTP id e9e14a558f8ab-4330f0a4846so125885ab.2
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:18:46 -0800 (PST)
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
+	b=PjhTs2obpwO3ZeUU8H/lgQw+z5FMxOt3kg0O+9jRwxY2u5nPzu0hbEicSGlmXGuQrkJMfi
+	DfyEef9enDqyb35MZQjP86yN/30eGEKMcMGfX70xu+FY1Je1hlgg2ZCtk89Y1IP3T6x2H4
+	HpSsaWbUr9D2qBejCAA7qQbmU4Dz4E0=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bc0e6d91222so64835a12.2
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 22:09:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762924725; x=1763529525; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ezl4SSQLTdq74CW82/F96/qsFWv/FcEbMyqJZMgIA2A=;
-        b=OOH1pNo1L5wEA69mdJJr+BAzM8HUlt2rwXiZwBqnW4EREvewLIGHUBVwzlN1M95Pbc
-         NSAFx3QfLLcx2htG1fwUH112HGVQEZmzsOfjSem/L7lEZmlt0p1r5px3TRO7U7aV6twD
-         2NO54xR3a6MI2/DaSE0ylDXEQ5WQoE8+TLEnBAqy0DeubvmBo0fUoGMbNGSCJZ7a8HYG
-         en39kG7n4ZxE0eyd1osBkBglaUIHtBAp8qgha9KntRlJHZOBejpiBxaJAmuBR98XOSTv
-         FxQZdmYABZVkIG7V5PWrm5hbZJ5Ze0c0PoDcg5/0tpnHZlJqGADAnqsDjk/t6xowgxbN
-         5Wbw==
+        d=gmail.com; s=20230601; t=1762927747; x=1763532547; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
+        b=lm49z3qxVacoQEDk/spXTPiZItvILZdRs7qpgSH5dmCUmBTHdQylU5Ra2Ypt7Nm0UF
+         zSumG4yQLrcmIbvNMN2/DX4MtQZBHkuKyBQPKh+9Q6V16UhmDgKC6gD7oPc6l+m9I2UM
+         02PO+ZsOgPGD6LU8pP8SwckOQztA7qGvjgN/GUU+MsM+ghwYFKHLC5JJ3yryecR7Ixh6
+         IlMAoTJvwMcPXaWd7j4xeVVozJnAaWrjWlYqTxP4CS+2qbedULQ9bY8zl4lxoaUm7iry
+         s6RgyQ2wC7qGln+ElhGaROj+hWmTUKnbb6mNXQ9ALTRQeDre9yklUEweZ9Spe9hCaqnm
+         a92w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762924725; x=1763529525;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20230601; t=1762927747; x=1763532547;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ezl4SSQLTdq74CW82/F96/qsFWv/FcEbMyqJZMgIA2A=;
-        b=Lv99Sg/4zdSCuAgKtJMmNGzqU5PDIcGdVLhq9vDMRQy+IIGjpM3bo90deEna6dldqe
-         eIJgr8sbqiHGlIYSmHTkpTS5focxzksd55pR80vKELSYPSISpq7t3XhtkRbAO/mZk2aJ
-         wEGvIvbG9PcniqpUmgI3KjKgNTKuvaWmyTyrewKgDgkhr22EI6zG6cFmmoK9H5WIm06d
-         1ImAG1eX+FC6d7zlzGUVIGjm3L3A+XH5bzmyXz1rnWJ7QXkB7260JhdhmFazw80m9ZgV
-         VWCcfZWDzVcul4e3p82g0Z82z9onVLc9uSmprimrFTSytnvEgXKArqM+FUL9FDcnAKr/
-         bjsQ==
-X-Gm-Message-State: AOJu0YyWeU7BTHNQ4jzaEGd0uELgZN2cWmgZVJhPIZ1QvyWKo5Hofma3
-	REkBhgJIMlyf6JmmRJEF9/d+pDY5dRX5rzI6oMnsfIiCa4w4/bVoy4xaawKzir9x
-X-Gm-Gg: ASbGncv/lHoDZByjKiQvbIUqCEtt9vsnL9erpU/xNu4h1G16C/bmdTxO6C4TKb/gS7p
-	FPK1sUtRcbp//IC5Wi8k+FwfhR2kKwtpMkARHhLwhL27LI41xGL7sU6AqVi5GlujSz2D5uMMsGX
-	Or+ALY+IIFE9D/YNzMwDXaAvfsWMvDEc9wl2hUkXlF7Ns5jrlNfNilrZCg1wHjHjdxIZqMfsCsO
-	GMLlS1RPAgOk5yPOVRf66okNRYjcwl3jDK5+OjAs2+etRfLzRn32291lkGuY3DcVEGE8zwgloHi
-	cB/l+UAMNCnHOSkzQ4Ln8W2n7JhuXAeWZ6Vt/U10b40VFthPxmDUZ2MFEmqpjaMj0NuUUsU9RHg
-	ADrZgRWGw3X5vmecHpqWvyjN/ujd1zu63eSr+Ag5Lf4y6Sx4RPscmnhMe3GrfpKe9hT9FIPE1N9
-	MPqlcUIgOF
-X-Google-Smtp-Source: AGHT+IG+CGWHKYLx/mgjt5y0vC6+WM/NIsUYelFqXQlQ4OGrBX/1QS3A/YpW77DPQRnBU2qp1nCKvA==
-X-Received: by 2002:a05:6e02:3807:b0:433:2421:d752 with SMTP id e9e14a558f8ab-43473de377cmr8414505ab.7.1762924725169;
-        Tue, 11 Nov 2025 21:18:45 -0800 (PST)
-Received: from kf-m2g5 ([2607:fb90:cf2c:12ad:3e02:9a49:f465:3655])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-4347338d4d7sm6753305ab.20.2025.11.11.21.18.44
+        bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
+        b=w2MafgOPq+EqSVTB5du9koAOpuBWFWFhwjD3sGBmFQ4lXCHvZRHv1/1uPMzGnmCEs/
+         x3ScGUGXx2KzrCt3qZ9pcYkohUqPXcvijypKqUcYMCWELkYlxzAu2y+FYUKy++GmfwY5
+         PuxRFUbsy8paZLY4eLr1gE4uX8k2qpyKj7WDPjGItsk/fSaLVN7L0/gzzQ6F17R4D8XD
+         q9RviSUPIDsk1m0wLP24UcOLp99eLH4/fyi2IkTM0z7kSqcULexxx3fLLir7FePlOgKw
+         u0173PJirFx0v1FxPDvuyi5q9HeeMd1HvvNA2jOllIM9qePAQHrkk7dvbQ79TsWd84zp
+         ytSA==
+X-Forwarded-Encrypted: i=1; AJvYcCWRiqqlHrB6ytziprCdddMR2mlaDhy/qGelXM5wiG0uf48IET7dJJWFyGmHiSsj4Agb7jlzNks9uQ==@kvack.org
+X-Gm-Message-State: AOJu0YyoSzEucWYbokPSTeSSdyB5jOCxFha5BadMIA1zKuoKtqtNoKRP
+	1+lsK92cMPCZE9k7SCZ8CHg0YtjYUfHyId0dAPGYUj3eSeC09EdeonU6
+X-Gm-Gg: ASbGncvMEU7u1d/3p0Co8DKoOo1sh0mka6+KS/gInG7u4jhfG2g0bM1dr/G1tHyILfO
+	o+DAWv4CLRu65Sy0tmsRRt5+y05j5d51O20zX6kqGvmRvwyHh27Ab7GbqtyBpx+X0f95etOXWkJ
+	eW6Oy+uZZvYZjNckxGoiYSnXWVIL3uxWhI2qBOJHuGUSfH3k8QJiBhJVdiQEYxlkaCDTTmARk0a
+	NX1g4rAMAOnpSje4hxwW+ixs9TbGxBHPtUmNjThUVwOuzDGVXtNC7XHIAJ7B/qgLLRc6u8faVt6
+	De0eSLZKYzIyQ3pLqIfYP8zeDg+iAWpBREMgvyUz55MPo5/2/YWl145EAdAkGVVKfw4dc5s9ZmN
+	nxF6ioxwDUInm4loS/qB2SMMg5AYcj77nyqg0uxPB4PjlnkaTO9I7/DRaO/6pE7TFPjRocpM=
+X-Google-Smtp-Source: AGHT+IEohiT6l/U6Q6cSeQX1Sd4BBaq0PAFAEVh2j8GuYXQZDYJogJ/Y0Dgu8WSYVH4jJhCDgr7O2w==
+X-Received: by 2002:a17:902:e804:b0:296:1beb:6776 with SMTP id d9443c01a7336-2984edf314amr25324145ad.58.1762927747094;
+        Tue, 11 Nov 2025 22:09:07 -0800 (PST)
+Received: from dw-tp ([49.207.219.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dbd8cd0sm18094405ad.4.2025.11.11.22.09.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 21:18:44 -0800 (PST)
-Date: Tue, 11 Nov 2025 23:18:35 -0600
-From: Aaron Rainbolt <arraybolt3@gmail.com>
-To: linux-mm@kvack.org, cryptsetup@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, adrelanos@whonix.org
-Subject: Hard system lock-ups when using encrypted swap and RAM is exhausted
-Message-ID: <20251111231835.1232ad8f@kf-m2g5>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.41; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Z4RQJJ68rzCF8i_e+DrlMou";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+        Tue, 11 Nov 2025 22:09:06 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Dave Vasilevsky <dave@vasilevsky.ca>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nadav Amit <nadav.amit@gmail.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-mm@kvack.org, Dave Vasilevsky <dave@vasilevsky.ca>
+Subject: Re: [PATCH v2] powerpc, mm: Fix mprotect on book3s 32-bit
+In-Reply-To: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
+Date: Wed, 12 Nov 2025 11:03:52 +0530
+Message-ID: <87ikff95mn.ritesh.list@gmail.com>
+References: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6795820005
-X-Stat-Signature: ewnr47oeu7sp6en81gnh7tfuqjzqk15g
-X-HE-Tag: 1762924726-570663
-X-HE-Meta: U2FsdGVkX1/ukfWn6bp8oyz5GGYUijNp5yS77YuxkJSGziR/673oGkCOQTkfWDxu219dYXVI1kTlBZgzpBkVJ6sMsrGzxit48t3uYJI7X/A43483ZMb+2oYP+YYGHFexc3ohr2M9ALiIgyN4Jl/LAo8lG9xnyhP+dv2BThXWk/6qBXcEhMj8M6GaErXkZVXLgEDBw0jI36xnoT8eMQ55bJGRg/g61vb0C+fnKtIctkrzgkHhyq3fwMfiVgZrFPz3g5WxIKNrhFHp/lfeP9oA/NC15oLIc3co4icdloq4Fce+Rtt1oEgzUANZjYEcnSr091LQRKQ2gxpqs9bmHqWRJLTJqo7+GjS2CvNN2CSOhTxR+OCKKFZyXAOBOqfBNY8bDSKGdLTMBuzVIPMAL9+Hqz4KDoddF/Eo/Oj9hBWtezkusgO1KJ6z/UIqUa5Peqg9oYPfF82V2UAKGNf+LkYK7xcfFWIVhLKSbvm4uShbq3mfWx4lNzU5RQ9SBFesRCItC7jxIe3oQQjrVcUFtHcTtkcaWR8cBfobNibnrgMOtPB08YTTRjaf9VU6KuysSpaPI77c36KDp//XSJXyudd+X3Iforf1aMB5MHb64n/WQklYs0ry3ZCjaAM7aInCbn4KKWnXQNOQKU3TihTlVNNY0VpuchDwU0d+Uh42MO53iUAPCOF/uc3/ebz47BnwgWtshV2g1oXQvPYAknHre4ipyyHrX8fL4z0IkKUzChNoH1JiKU44RmJkecCJfrCZPzz+kJfUVnguSdSULanxxHEAj6vt5xZummlQjlb6NNPpAe0vKvFvYilQG9AWjNUSULCL4dJltQ7zC2lwYNf7j+BPN8hnTgkdrybf2I/54ninlfFMAc9/TppVJiJui8psGf4bCLJ8/Mtv/TZn97QWnMT4mk8wgD1wgBEkfkw3Rqca8ENHERUYfiZneNaAIZg+loNc6uK8GKFHlQasNWiDgMs
- P2t67nG7
- ZEwZpgF+DagHvGFJgy2ukI19oIe3xpRZeuYZCTMPZ6x4G4pYUSr5fAweeoS0W0z92frw9HEdWcXMK6TLK9I1ybyiRmMS7AjJLgKcAJ6hcKAfH502gXxVh/WGEem+bpVac4G5DuKs8OG+uB+Ws3QmYLr/bE6wcziEF8hO5mkqgoT1WhO+rv2Qzltx0tnQPHOnoloAGHNvXZV04t39l0J6Uyew7fKWeUjjmZao0VpDfDUPG5eDDsMgl/CrfVgkDA1shwRsaLwVp9nicbYcSbTAvvXJNb4RCQBx3SMc3xH0z2lqSuwoslpAOlrPO5LFS/83OiKXU8d2+ZSwKFK2DMZ4B+LFEz/8R+QRA3Pu6HoESU7qDCxey68hgrjaXflQA9DPQ3bXDDZsxOXs/cOIA/L4EnXas07f/8ZCoQFy2IHPELhkn9gTraO8mHmRjcwFD20VGOf6H0Z/l96hSVIIZJ2LqGyhTFYLH+iSX922PmA4gG4L993EN3F1BcSkd0QYZpaEKXA3PyO2PM8+Gx4nMUxt/LP5BZYy+bbyHsPDtSuF2tEKNGaXXOH/vE5G/5bsbPujGM5yIvyYHvaPSJLvw5aevqw1EKnCidYkIzni/e79fTe0D2viQnRB2ZPVTiA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9985A40005
+X-Stat-Signature: ajp4u8sdupwz1pz96esrfuq9xxkco7qw
+X-HE-Tag: 1762927748-495563
+X-HE-Meta: U2FsdGVkX1+xrNZ6PSqTkKEMEYvmAFxR+jZvCvIrbrdl9Nx7ImrnqNAhk4T5QGpT7THdMjErYsKZMepAqm1Vd6y8U/QLuDWUwjycE0EsupLHJjLKW7OrAvaVQeglE2i0DzQhD5iTZR1pUHefHlNHIhpPFg2UwABNB4CzDzGwMiFnDD4Q7wj98uWVJGnIXLD3dP+MLtnkkZsHM/Vsqu2fM6CEsak1czvGaQ85KWx86AfqYy7QLFsFGG9HS5UrJNeXKc2A863O6muopB8ntVPpfr/TbEQsqknb9z0UINM+he6dbOdDEzuhtECESVIqSLLvYGXneKi3ti8gNCUpFas1EfjDLf0I4P0xkjilOmMfX5d7/U7LvlR0UIX0QktC0urJHden7QTwUovu9h3891LuDq2FlfDCPqkUzeIo8alS4up5iwrgnrlS/nu+8U/pNqE27ejrXvjMtBprboDBXvWO3JWeyBWhZ/BauOB4mv676cPVlnNxbFntZ4k7PFh5/qtk6sP5QsUfldAD74pXvRV3Oef89+iO4eRAthcxuUQ7zNQ8VJclzuww+rWPTLHUtY8cBHJKbCpm2/aRf5bMWjR+Lwzs8ULiOGQuJC3PSMBSKOghUbO+mWX0PRoJ7IDhhqAx7t6kSKq8mzI7Oz+cgfayonVAMvq7jX+fjsWSp/bT4VAdVi4F7u8fYijo9qPvAOqyDoEbiQms1wObIJxE+I8Fk88q8eDCFO9SLGdu5/Co7JRKDF5jHM+iXm0N8WFfj9NdBbWJUApOjAAvtKOx2dcPQd8D7KZ8JncgVzpZyJ2vIJP+c0IFn9eMsmUKNoLti19KMllmi0pmJ0ylf74u9hpgkPD5OxpOF5GeARLAElE5047qfCn/RE/lYVwrHHct2xN9oI9v8AbPxc4i+WhPCfte3eaed6l7zgKBXHniZ55/ZuBJp5Q4hsOGwrFMNT/RiJK1BOPBv4zOGASRlPbsqLk
+ J7aDNLJx
+ nlWdK+gNKc4/mqT4fOouHm4cc5CyTBrrdevyYYeChqzjV1pYBkxlD3UVZrBsLoah46V+MBC9LEbMT0MD8wpwq7x0RRjgDWNbbvx8Z0FQqQRIbE0J4Zg43sMJZMPjJ+5scbZz+BCgP+g3x8qXRFMgisg5xXsjGHexyvwY558m4dTTXn7CG9VVh+uys7pBClicuGF0UlhAGAAgpU/DVhKTka3qOJHud0RYfAZEMlReOy1IAsx0nvOi6RbVCgUX+z/wbRjWl/iMNPPt4+AAIF8ZmCZoLkH0+YFPM4qTr7+imEfF3hV555Twu/Qq/wym6xi83pKaRfkKjh8Zwl63SlZEcRNHdHddFbxS5dGoSQPasyE/dulyIdloDwvcTDvK40efgwM7Oh5gUUPf/vpIBtDNXB+RMnUculOWGTJ8RclvXJGzxIMIXbHhw0ey/pAofB6NVuvumPFjZCiV6C+xBvXcn8H359aBQDcmQ7cTVjb9P8oxwzRXVtxz1U48RIE89CKXzIdmsKJ3C7/a/kfuB3WoN2Ep2Sf1pkr6XJecMSdjeCrHMaazL2wj65WQ2LFTZYnMxcZAWx6GqRZowa4jZ8CO3mcUJXA==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,104 +112,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---Sig_/Z4RQJJ68rzCF8i_e+DrlMou
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Dave Vasilevsky <dave@vasilevsky.ca> writes:
 
-Not sure if this is a memory management issue, a LUKS issue, or both,
-so I wrote both mailing lists.
+> On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
+> unnoticed because all uses until recently were for unmaps, and thus
+> handled by __tlb_remove_tlb_entry().
+>
+> After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
+> tlb_gather_mmu() started being used for mprotect as well. This caused
+> mprotect to simply not work on these machines:
+>
+>   int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
+>                   MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+>   *ptr = 1; // force HPTE to be created
+>   mprotect(ptr, 4096, PROT_READ);
+>   *ptr = 2; // should segfault, but succeeds
+>
+> Fixed by making tlb_flush() actually flush TLB pages. This finally
+> agrees with the behaviour of boot3s64's tlb_flush().
+>
+> Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
+> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
+> Cc: stable@vger.kernel.org
+> ---
+> Changes in v2:
+> - Flush entire TLB if full mm is requested.
+> - Link to v1: https://lore.kernel.org/r/20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca
+> ---
+>  arch/powerpc/include/asm/book3s/32/tlbflush.h | 8 ++++++--
+>  arch/powerpc/mm/book3s32/tlb.c                | 9 +++++++++
+>  2 files changed, 15 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> index e43534da5207aa3b0cb3c07b78e29b833c141f3f..b8c587ad2ea954f179246a57d6e86e45e91dcfdc 100644
+> --- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> +++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> @@ -11,6 +11,7 @@
+>  void hash__flush_tlb_mm(struct mm_struct *mm);
+>  void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
+>  void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
+> +void hash__flush_gather(struct mmu_gather *tlb);
 
-I'm seeing an issue with both the latest mainline kernel (6.18-rc5) and
-Debian 13's 6.12 kernel package. When physical memory fills up, the
-entire system locks up hard, as if it hit rather severe thrashing,
-despite the fact that there appears to be disk cache that can still be
-evicted, and there is ample amounts of swap space remaining (gigabytes
-of it). This issue did not occur with the 6.1 kernel in Debian 12. I'm
-seeing this occur in very low-memory Debian VMs, with between 512 and
-900 MB RAM, running under VirtualBox and KVM. (I suspect, but have not
-verified, that I'm seeing similar behavior under Xen as well.) These
-VMs generally use a swappiness of 1, though I have seen a lockup occur
-even with a swappiness of 60. The filesystem in use, in case it
-matters, is ext4.
+Maybe I would have preferred the following naming convention for hash
+specific tlb_flush w.r.t mmu_gather, which is also similar to what
+book3s64 uses ;)
 
-To reproduce on a system running Linux 6.18-rc5, with :
+- hash__tlb_flush() 
 
-* Follow the steps from
-  https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQuestions,
-  section "2.3 How do I set up encrypted swap?", but creating a
-  swapfile rather than a swap partition. I created an 8 GB swapfile
-  with fallocate. Reboot the system when done.
-* In a TTY, open a terminal multiplexer (or something you can abuse as
-  one, Vim works well), and open two terminals. In one terminal, run
-  `htop` so you can observe memory and swap usage.
-* In the `htop` terminal, sort by M_RESIDENT.
-* In the other terminal, create a new file `test.py`, that will
-  gradually fill memory at a relatively fast pace and print an
-  indicator that it's still alive. I used the following code for this:
+But no strong objection on this either. BTW - I did run your test
+program in Qemu and I was able to reproduce the problem, and this patch
+fixes it.
 
-    import time
+The change overall looks good to me. So, please feel free to add:
 
-    count =3D 0
-    mem_list =3D []
-    while True:
-        mem_list.append([x for x in range(2048)])
-        count +=3D 1
-        time.sleep(0.002)
-        print(count)
-
-* Run the script with `python3 test.py`.
-* While the script runs, observe the growing memory usage in `htop`.
-  Swap usage should start at or near 0, RAM usage will gradually
-  increase. Once RAM usage starts getting high, some data will start
-  being swapped out as expected, but after a short while the whole VM
-  will lock up despite there being gigabytes of swap left. (On my KVM
-  VM, the last time htop updated its screen, it showed RAM usage of
-  712M/846M, and swap usage of 328M/7.40G. The python3 process
-  running the script was consuming 551M memory. The VM is entirely
-  unresponsive. Incidentally, the python3 process also was in
-  uninterruptible sleep when htop last updated its screen, but that
-  could mean nothing since it might have come out of sleep between the
-  last screen update and the VM lockup.)
-
-Under Bookworm with Linux 6.1, the Python script would occasionally
-freeze, but the VM would remain responsive, and the script would
-eventually resume. Even with kernel 6.12, both unencrypted swapfiles and
-swapfiles that are technically unencrypted but live on a LUKS volume
-both behave as expected. It's only swapfiles that are themselves
-encrypted that seem to trigger these lockups.
-
-I haven't looked at the code at all, but it seems like maybe memory
-LUKS needs available in order to operate is being consumed, thus
-making it impossible to swap anything in and out of the swapfile? That
-seems like it would cause these symptoms or similar, though I don't
-know.
-
-Let me know if I can provide any further information on the issue. I'm
-happy to bisect the kernel if it will help.
-
---
-Aaron
-
---Sig_/Z4RQJJ68rzCF8i_e+DrlMou
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEudh48PFXwyPDa0wGpwkWDXPHkQkFAmkUGKsACgkQpwkWDXPH
-kQk4ARAAqk9d7FDHR97lXxeh1nY89u028mDQ/739cRtbBMzWbgbiEsNkgGPq+L+M
-Umbu80ExIyDXuNEE2fxWsYvqguj4YI9nuOFHIX+PGIGagiYFlwWlnaQcrmO8PmA4
-A9qXirRq+PxxBYMwsEcS++DafDtoH54fHMGjhKf8KCi/DmwES4bdbWkHRiYojmYE
-CpjyvLuCXOiXMe/pAgzfp++EpBX1AiF948MFKf6/a4qagycypVrX8AWluIVwEjBw
-w40yZjZ5t5Fwm6F86VfnalBf+YGFOeiLUbPe/+deYmhQUHSc8RXGq7SBaYJJhCpq
-lE90ypvTOCRnhGSe8PaTOvekAJhCzVCFqyUmgsUHAkb7uOKcdiaNVKJdpS9q6ZWf
-UF5vhWZ8AEe2qyISOQW4cFRsNF4MMxyJsDbi5XAJDii1UP+RoAJfcdvljVKfSfnD
-A5VXJAMmtCUFak67VYp7Cr8787LOs84b1HtjLpGH+aWOx4csJWKyKwq8KBbxayon
-DHW36A/8546cgHR2/P8ke8Hfi5QI+qq6v8M0ACCoYUsKXw/MSttNa4H7To0F+MW7
-9XUYisaBv/h0NM38aVl1E6FnRM/9HlBzUYmGVJLGg02IIZkqM77l0eJHhz1wVnm7
-+h7ExBaCaI57vjOkHGm2dH1XitrwKCjAWf4nVlzs+P8hOzLDSFM=
-=xCmb
------END PGP SIGNATURE-----
-
---Sig_/Z4RQJJ68rzCF8i_e+DrlMou--
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
