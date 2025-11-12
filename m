@@ -4,262 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C1BACCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 02:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E38ACCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 02:19:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 600C68E0006; Tue, 11 Nov 2025 21:18:54 -0500 (EST)
+	id BA75B8E0007; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D87F8E0003; Tue, 11 Nov 2025 21:18:54 -0500 (EST)
+	id B7F088E0003; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A0608E0006; Tue, 11 Nov 2025 21:18:54 -0500 (EST)
+	id A95018E0007; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 37B038E0003
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:18:54 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC4781602C3
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:18:53 +0000 (UTC)
-X-FDA: 84100346946.16.C2AE0D1
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 344DCC000B
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:18:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BJqtqrUc;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=wHbSPnHb;
-	spf=pass (imf10.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762913930;
+	by kanga.kvack.org (Postfix) with ESMTP id 95EAF8E0003
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 665BA4BEA5
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:19:39 +0000 (UTC)
+X-FDA: 84100348878.22.3ACD5E4
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6BB0BA000B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:19:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=e7m18XJy;
+	dmarc=pass (policy=reject) header.from=sifive.com;
+	spf=pass (imf25.hostedemail.com: domain of zong.li@sifive.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=zong.li@sifive.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762913977; a=rsa-sha256;
+	cv=none;
+	b=2jQo+UkLOWTNLkrsIonpaH4VTo9IcZi8p6Wxh24s29+U947LlHVG5xMiZUSw9NJyCw/DGo
+	siogEFTn75MET442oNOq+vqtPJdDF4ef63a10VeiADS9SOYUf0g2PP/g63XOfvz3IRvIkW
+	yHW9Ag+3yPDf16p6amgDHcvbLgPCU4s=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=e7m18XJy;
+	dmarc=pass (policy=reject) header.from=sifive.com;
+	spf=pass (imf25.hostedemail.com: domain of zong.li@sifive.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=zong.li@sifive.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762913977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vlBss3aDHXH2BBR8gw92xics3PPbTYOILAeOMzYXeFY=;
-	b=0DjVeApd6ZdymSoh22fMFUOqjDrqWo9otRasPYQOxV4BrJPtNB7uyZm+9lw1MHrm75GR26
-	nfqVHYdeYI6qlYc0c2lt06wR3Q+uKEO9OWfzpoM6rru/045POSqSHgdbEk5v1+hf/r+u7z
-	25Lzb2AN/DRtRgs7Eibw2zI/X/8I8YU=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BJqtqrUc;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=wHbSPnHb;
-	spf=pass (imf10.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762913930; a=rsa-sha256;
-	cv=pass;
-	b=BVRNkf3Lhg6RtB4oCdyVAg1jRXCOcreD9xKp+p+0ApwTsH8BeVKvU38m/b4UHekJmRyjYN
-	GAPZl/P8Otzj5SqWOCwL6RDrrxGxbiKiUq09nlezu9TbjMBuaRnskDB8itfgFvyb6KJIjW
-	hAf1+6eJIIWKuhzke4GA4W9M8pfyAYs=
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC0Fb9x027149;
-	Wed, 12 Nov 2025 02:18:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=vlBss3aDHXH2BBR8gw92xics3PPbTYOILAeOMzYXeFY=; b=
-	BJqtqrUc5SxAajpZPAuZXHb2UsqN3S/2UD5r0s2/e5d3gAh3iCiga7LVzNOf8PuK
-	D3EDszi0VyWX4MrfClDZy8B8S+hHdiV5RQ3W9zQPiWYiRAbSSVsgaXA5F3l2BlEd
-	nheiD7ckb71dbtjr6y9OHAMLyfuyYqQUzGeLeT1U7btj/qfdfZbXbmOgK8Sp3QeW
-	F+zYog8ZrDY8XNwMkausiPlMlQSdg+vURu48jlUrGXGjRooKqJ5t9Q42ZPg8NiK8
-	ca0ePn+8CC/99jHwvJERYiKOV5erqx5LLcGJ4VlbjI1Kf27LQZtQg5hgfhnKaEbv
-	84Xq65y3l5T5apMhx/cAog==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4acd468cxb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Nov 2025 02:18:47 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC1ZIQR007462;
-	Wed, 12 Nov 2025 02:18:46 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010020.outbound.protection.outlook.com [52.101.61.20])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vaan9uq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Nov 2025 02:18:46 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ngchBkCIdtF0ZzorLwBXq331DP/WeA86HjE55cBznZYSwW7xducc3ZMSvxVMi5NAlaHZdh1bPUUNdS+CS8PfCfcIk3GmdEtXi4G73E20erIEo9zG6vgGJVlMD+F0eZsoPtlHTKVL2sK/WqzBV/FyBDGnAlb27Im9lWmrAYGp3a1Uj/yZWxN5Fc7XXMjJIj2MbJ0dn2mRrhJqEc9JV8HmCZpVrIQDSAjAE244gOTzrs7UqkOqHmmT9tr+XjJ08abl3d3Hw8KUch3iuDvrgFoD6x1wv8uyKHOpURFzCWYaUD2uldfew+DAZOkR+GtV6ss0XD5jc+4HWPVd9NYySlT5SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vlBss3aDHXH2BBR8gw92xics3PPbTYOILAeOMzYXeFY=;
- b=fjsJkL3MitBM8TiFQ0czn4BPr2w/Z0axSKcz90HQN1xFkAU6VbvHyTm9kIXO6liFORZnu4h3m/jYw8lTPt9eJ0tFLIGfcGXxPCqOTw7ey7ZL13cn+RHSrkxumi7yVbyfceazNWlipesRl+k8+PkapUtRpmhuvS3kV+X1k8cY24s1FbtuyAuxjFAMMj1nWiaJKZ4oi2lZ4XwajYY8lzwA/lAI5+Ilzkw/aiAqktEGfVemWNOESOxAJba3p5X+kPgvj1vI6l6sbLSCQBBWlqFPkM73ZuEIyLiXtmGHj1u8C9F/2VXfHfifgJdlsKAFpVfDxFDD5p+m5H7RO7hmWYrEYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
+	b=gyg06720qDJxCs0Wk5sUqJhQ9ig2kil8dDW5QV95VvNE2U2HCXO52O1XOPBYbyHkgZy8ci
+	ZMdSG9E62G6K2FgD1KE+j6PlLw3MFOjXBb9KcqlzQy1VbNceKLBLextUkvEM1I5IMpMAaF
+	9hAUTSPCtLb5fL73Kgkc5DVuUyANVg8=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b72bf7e703fso67155566b.2
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:19:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vlBss3aDHXH2BBR8gw92xics3PPbTYOILAeOMzYXeFY=;
- b=wHbSPnHbVKW1p4wZ5sqfWe2T4vJkGn3uCvpSxag1ckqPEXNIJ8COxDtT7c49p8Xrhns1zboU/hPPb7w+8ApYllUoC1jPGPBSSv2QrBwBuS69TfJBdkvy+kDBEydlZS4bYqAvi1tK+dGn0dk+uao/kUB30fs/ijkLp7EqoQM8xac=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by DS4PPF80E5E852F.namprd10.prod.outlook.com (2603:10b6:f:fc00::d2e) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Wed, 12 Nov
- 2025 02:18:38 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c%7]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
- 02:18:37 +0000
-Date: Tue, 11 Nov 2025 21:18:19 -0500
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-        stable@vger.kernel.org,
-        syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Message-ID: <aoq7jyue2qamctxmvtlic4nv53phskj6k7iizh7k6kwruwdgxk@qgjnaib7xgze>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jann Horn <jannh@google.com>, stable@vger.kernel.org, 
-	syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
- <8219599b-941e-4ffd-875f-6548e217c16c@suse.cz>
- <CAJuCfpESKECudgqvm8CQ_whi761hWRPAhurR5efRVC4Hp2r8Qw@mail.gmail.com>
- <kfqzb2dfxubn6twcbiu3frihfkf6u34g2rcnui2m63rbc4x4kk@dh3bxvpzpnmp>
- <CAJuCfpEWMD-Z1j=nPYHcQW4F7E2Wka09KTXzGv7VE7oW1S8hcw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAJuCfpEWMD-Z1j=nPYHcQW4F7E2Wka09KTXzGv7VE7oW1S8hcw@mail.gmail.com>
-User-Agent: NeoMutt/20250905
-X-ClientProxiedBy: YT3PR01CA0073.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:84::7) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=sifive.com; s=google; t=1762913976; x=1763518776; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
+        b=e7m18XJy8sRsE7L/TLMBWYoQEhnDbxXGkM7v+ZLtS9KbHwHdFBs+NuSalWS/ogjEko
+         n36mQNTxs75r04KRlzNPtfcHv8uV3an6kgCOX/HK34Cl2pYZK4QAj63RrWLL9dTjFypJ
+         aVFqIAwrvOx8/BlSWJrFwAbshP1/JcOosjpaa53kxkO3Pg5xZHzLyErv6uiXQOu8PyiA
+         66FaAu3Y0lI3VNjWEO6WCa9Vz2xYnj2CkT0jjyJJYJKit2D4KuxFbiev3TydFIBJ999L
+         nq0vghE/pyYPvg+HVmZ4Qlu8/z2YCAfcjp0QGkLFg6O14JErBG+siez7p44UYWKTMLSq
+         nGug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762913976; x=1763518776;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
+        b=bLojcrS1XY24jFAZAVMvp/OvYhWrF3b7xpNKOzoSuZlBcPk+iUOYO/h1lTJ4gVEJYY
+         PBf+kxDrA/vMT6cmkR6tf3YrU5ObNLJXusJu6q01ZBdL9vkai31uPBEP1DPZNHeJ+YDi
+         OGFj+rRow88ncIqGF3GoGqOgFtqk2o5VbldvGOaL+Jta3H0usBzVSWaG9OvQ1tToa8Yh
+         7VUZ1cyVVJROONJC7cChLOUoelKrvUjG7DzuwzNgAEFbrp3tGGxiIu2qOphSRMAzRjeb
+         J1HV55TSWmsM82KMv31SS4+kPxUHsPTCr74Kv60o5k/fQBfQvtxL9XwsHLTW8031+C86
+         OlSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXadjvOF+9SH85tq1kmzJ9DXoAmmuVo8QCnkybdyu0dyHUBVEKuRqgm97YDTqFXwnc7UZxLZP8wdg==@kvack.org
+X-Gm-Message-State: AOJu0Yx4Ale/VIGYN1Y2lh9NyXBFnZ4AGi+EJA0nVLkV8scHzuXe6KIH
+	a21HUCM/nbs+Z3cmDtbd2THp5m7rF5JzFtg93a7aM95EBurin1yDYPCDhEZKJP3W5eBJLAmC8DT
+	F/hWOyFbxQy0Y2UmecXxZzdhFOLK3RCKzAnFHMmze6g==
+X-Gm-Gg: ASbGnctmW6VkO9aR4oQwH6cyLZRy887yHBMUhcjjP0HI9QNZn5k2OAmbFie+w69HxIW
+	bIatX1ExlMaBg+rVDWzgjP/xZAYXHDwKQalswAJfFL6ekXBrM0QQsQVpkgXeSBtbhmXB8jHRLmw
+	/V14GG6uMipPXo0WcnX+AzvMCU+FuqJhj53HXlTUr3ASLHMoMByMQ1qInmuGs2NvYdI3PT6Mfn8
+	x5wS+aG/7f4hmZegG+UJOal+oXwCzAlDkEi35a6kLi/CNcmO8x/TJ2iFAPiOC4=
+X-Google-Smtp-Source: AGHT+IE+yEBTlwHkenGiGwu5UyXnAf6gT3RkSyNE+10D+a3qX/UN5XaT1J5EAZetmYd9Vh7p3GgyT6IZWxgqCbtm2x0=
+X-Received: by 2002:a17:907:3daa:b0:b72:52c2:b8ca with SMTP id
+ a640c23a62f3a-b7331aec193mr102047266b.59.1762913975653; Tue, 11 Nov 2025
+ 18:19:35 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|DS4PPF80E5E852F:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1479b99-9250-45f0-0f89-08de2191ca00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VkRCNFBvTmN5VW1HV0dvVmpHOHExTS9Gc2VBdlYrN0k5bkN5VnVNU1VKT2Z2?=
- =?utf-8?B?SmkyWFY4ZDZJbWQ3b0ZEY0tCTXNmZ21SZmorRjJmQy9MQ0RZTHFnVFQzbFJ2?=
- =?utf-8?B?bUhEZjVOQm1KMVNLWm1KMFVsRU9sOHRqeWZhNDI5RmhTdGpUemU4VDY1UWdB?=
- =?utf-8?B?Q3FDYktWNzZ1WjE3UHNVZnNha3VrOVlsR0xsNmFQMGx5TzZNZnJZV2J4VkxM?=
- =?utf-8?B?ZjhxN05zem91aE95Q3VpZ1I0SDdxZHphZU1lRXVYMFlTNFQrUUdySmNhWEVv?=
- =?utf-8?B?bkJIakxEd3ZUMUV0RWcxclhJTjFnV3NvVTJZcXJEYTFzdlp0ZnJqZm8vNTAr?=
- =?utf-8?B?S3dKM3hjL282SmhjT050ZTlNc09tNDFEM0pxV3RpNDV5ZVpyQjJFVnI0TSt0?=
- =?utf-8?B?L3VGNDdmVThHT2xRSjlmN0lBdGJha2REdDdMSHBzb0U4WktTNHhtU01LOThU?=
- =?utf-8?B?Ymp0SE1jNVh1TEdpR1F1cXBtdi9Na1VnalJxMzJFNnZ2QVNrVU9vd2lzcDZ0?=
- =?utf-8?B?RmltUmtqMjNMajl6akVzRFJtbGFvcTgxbmlEaHNzUkh0MndwTEs0OExCN3VE?=
- =?utf-8?B?UHgvZzJ5ZGNDK3IybFMxb3N4VnNyWmdPRzVVN1JIbS9sYnFYenlQbmt4Y2F5?=
- =?utf-8?B?K3A3T3VLbDhzYnRQZ2p4WCtnVmJudWdCUkxaWTNidmQ1Y0syd1pEL1grRC9R?=
- =?utf-8?B?cTRHVjB0YU0xUlhDeUYvS0o5VkZkZldpbUpEVFZLd2FCTGpuRitibERUcXVq?=
- =?utf-8?B?MFZ0dDlwVUM2d2g0ZlM4b29takhKVVo3QjYrSjQ2dlJDRVpFSHBRSUVBYWhY?=
- =?utf-8?B?bFhaSys0RUU5OU1DZktqT0pwdWo2dzdwZURvTWlHQjhXV3FpcGtrYXhyMXRi?=
- =?utf-8?B?bGF4N2V2ZHcwUGkrWDR4eFpJTFVtR1BDR2g1eUwzM3F0SndwTHJvT0t2R1Iv?=
- =?utf-8?B?eEoyS1cyM2s0WGRqcEdVVkxUaVpCOG9sSGRZY2wrcWVQNEhvYXIrT1M2WlFz?=
- =?utf-8?B?V1B1dXRHdmVteVFyci9FY1ZwbzBVT2l4cWVRR0Vva3J3MlBCaVBXS1dLVEN3?=
- =?utf-8?B?OTI5czlVd2tOSldOWmJJN1Y4VkpsMU9qRENJS2ZZV01TN0NxbUloYlRFY0do?=
- =?utf-8?B?RU83cmkwdld0QmxtZW5sQ2x3TDF5cDZSTG1nMkdBbVlsRlgvUy90clJNOEpG?=
- =?utf-8?B?cTMreVZ3dnEwUVhGTGJLSDQ0bEVzRk9PM1FKa1Y5Tktzc0VRbmJtSHJiUEVG?=
- =?utf-8?B?RVVMTVQzbXQ4S1FSY01QUS9sYnRreGNaamhEaTBiZ29VYlVEeFhVQVdsOHBs?=
- =?utf-8?B?TzFOU1VleXEwUkpsVG5oMFF6aUVsMjArT3dXa3NUbjZteTg1ZWVQeGxQdk96?=
- =?utf-8?B?UjNmcTRhWm9YUENDQWY5ZDJjWWc0NWV5dnhsVE9sM25KajNuRVNoM3AxZk85?=
- =?utf-8?B?WiszTEhLT1BXd3N6WitZYStobU51L3F2MDMzekh5aHRCTFZmRWZwdlZmV3Vx?=
- =?utf-8?B?Z0xRSHNjdEUzd05OSVVxZCtUWmlFcVZsdG5PYkVpNFZFK28xaG0xN0Y0RFcv?=
- =?utf-8?B?TjR1b2tXbGxFcWNmSmpLblJwZTNNNDlvUUMxd1pmSTRKbmMzR3llRGlNY25L?=
- =?utf-8?B?WkRMR0pzMnhyQ1VpZ0YrODIvSWowS3FKZWFPTGswTTcyWnhWMlAvTGdOKzVC?=
- =?utf-8?B?K3dUa3Roa0R3MVR1KysyMDdPTmJtc0dLcUNOb3d6c2RKZ0dySHdKekJ3ZlAr?=
- =?utf-8?B?S2FZTnU5aGVMYUF0L0ZxeVhoRmpYdlNpSE4wOVBta3V6akwxVjRRMkRacEVt?=
- =?utf-8?B?c0lodHRMc2ZZYTdEai9QRWdkc0ljVWlxWktId2c1cHpXSDdRNXdIOVRKZzRD?=
- =?utf-8?B?ZWFBb3RsakJVTy9DeWNDTS8yd2ZFelJPMFRnbnlPZW12a0E9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SHBwK1RKT0p1eXdVUThlSkZQN0hpM0E5REtCOEFXNm1Pd0lKUVEzRDdWV1Bv?=
- =?utf-8?B?Y1ZINjRVK1MveXZIZk4xcExIQXVyTnZuUFk1T1lld216Z3B6Uk44Zkg2K2FK?=
- =?utf-8?B?ZW1Rd3grY0s3UW1WVHZ1ZnNFQXEwOWs0elE4MEErcnhyL2gwaFpuUndHVm1w?=
- =?utf-8?B?WmNWejVjRE5Ja1BaQVlJY2RXZUZGemo5dTM5OGRBZVVFM2w0b3pheHdUUWV1?=
- =?utf-8?B?SlFtNWNoZVprT25qTWw0ZVBNRTVIanM1NHdVMFl6alh1ZmhUYWF2WUJmOEk1?=
- =?utf-8?B?cFRoMjdZR29LZDRJTmRKb2NIOEdxTkRVVVdPdU1oMTZhK3B6VnhhbjR0WFpz?=
- =?utf-8?B?N2wyazdUeUw2VDZvQ2VEOE1Ia2RuSzZuWUpsSExYQTNLR1ByckhOdXkranBt?=
- =?utf-8?B?c0lxLzBRc0twbVdKSGZOSk03M3pNRHZVM1Jtb2thZjJ3SU5SM3RmTHpNYXpD?=
- =?utf-8?B?NlQ4U3d3ZlhSY2lhd2NkRXF0QlBOUS9WOFJ0YVhUUTZtdzd4ZzhmY3VSYnFP?=
- =?utf-8?B?eUUwQTJ6QVZMTk8xMTE2YVRFQlFDbEdLcjZ6RFk1SlhmeUdqZU5BWGViaFBt?=
- =?utf-8?B?aU5WMGxSbkRJajJMczU1UG42bVFOOGpITGhrYStBcW5JU2ZQU3k3OHFIM0Ur?=
- =?utf-8?B?cndqd0duaGtNdkdtMW8wQmYvOWFkckF1Qm9WZXpoazFoR09kOGJOdTdqTnY1?=
- =?utf-8?B?M3FUZUVKZkdxUmVEZDlQcFRIcjZWTmIwN29SU09waGl3Q2IwUGF4TXgyS2x2?=
- =?utf-8?B?TTNjK0FhQ3h5eUxTK0U4UVJCQWpmdXNFbFcvd240ekR0eHhVVGRGUTRubFdT?=
- =?utf-8?B?ZVhERmMyclhWcmRwM0FTTkhkaVMweW1XSFJxbUxtNmFDRTIxOTl4YjU4UHc0?=
- =?utf-8?B?MFp4cDJBN1RRekNtczEvZ3FyYm4vSXpDeUlXS2l3OWp2SDdyd2FmYWhMSUU1?=
- =?utf-8?B?V0xEaU4zS3FBOUc4d0VRZlBUYVZDbGRvd2pGSmxMTjVDYzlXa09lekdsbnJ1?=
- =?utf-8?B?TDFTRThCeDFiTVVCR2NoVWFvSE5KZFZVTGFTakliVnZoK1JvakNYY3BieDFj?=
- =?utf-8?B?V3Z0N3VKVWh5MWhxczlaV25nUUtzSDZxZE44TVJuTWMrcTB4SzI5czRtQ2s1?=
- =?utf-8?B?aTNnT2VWYW5rVFNBUSt6TFhkMytKY1NTeWk4OHBtMjZQd2hmMFlRdDRuNGpQ?=
- =?utf-8?B?QW15UmQzZUNySjExZ3RoYTJiVVZ6MXk2Y0lhek1RZWFRQ0Uwd3U5dHFRNm1M?=
- =?utf-8?B?U0tyZ24zSUMwczFxekNENkgxRENvaTFCM3pTQ3hXTmNIOHpqczZ6WTEzd1Vh?=
- =?utf-8?B?YlJ2NW5MdmJGemNUaWJUM0RGWW1sb0FjZkNmSFpjT1B0Nnc2MFJUZnUxZkJE?=
- =?utf-8?B?WXNkUEpVNURSMlYrR016U2MzMjk4NXROWlNMTGpPaWRPcHBJOFpYa2FQWFAw?=
- =?utf-8?B?WDJPQmlrdFJLdWlTUkVIdmxTS29keUVZSjE0QUUySU9temg4YkNZSTNsT2FM?=
- =?utf-8?B?MHZhUUFvaG0zZGVCbXkwTm5hT1NTR08zWDA2MENxWGUvT3NJRzlFRWYzNnBD?=
- =?utf-8?B?bml5aTV3ODdkdW5JdzNqZWdEekdVblJONVV1VXRJS21iK2V6bFZvWHpobHMy?=
- =?utf-8?B?b0pMSnRFWlpWUnN6QVExY2k2K2dOVGVJSnY2OTlpUmRscVNjNzFZQzlvV0RG?=
- =?utf-8?B?dWkxclhnaDQvWm1aSDd0VnlkZS83clRESUtUYzRBZndvN0VZS2JMdHFJOWtN?=
- =?utf-8?B?dFd3UWNYOU56d1hwZDhzSkRlTFJuRndrZ3VyVGlxb1JOVzk5MWJxL1ZUQTdF?=
- =?utf-8?B?MC9RUkI0VCtTeXBJVWpCaTJSRzUyamZnMm1qdEQ1cjd6b0o4K3pYVmJRdGFE?=
- =?utf-8?B?ZFhLeURSdnZJOHJCNjViMGE4T2hFNS9Fd0F2eDhTQ2IwQmxPelM1YWJrdW1Y?=
- =?utf-8?B?eWJZUS9icHNIdk9qeEh2R2N6djI2NU9ybU9FVDJhWUVVTHIvTUk3czg2Wjd6?=
- =?utf-8?B?MGUwc1NJSWhKTENDUjQ0MjFYZzhQcTdsL3dNTkRrWXh1TlNlLzd1aFB4WTAw?=
- =?utf-8?B?d3NrMVB1Z0F4UFl5MXJ5VC9kczhxeUxVSit3RnlYQ1h4bmxyZUJqTGFoNmty?=
- =?utf-8?Q?s+/AKpRhEUPa6KCQoFnN6jXbu?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	DH5MV3TxQXxUsrpnS0vahYc2tt1CBsqX+oF+E7/MpX9KG33/IXJ/LK0TYsirz1Ve8MjI5C0nYv341y+ltP1+tuCID/5livqqyNmt0LfdKtedpdS7+1a0VuT6iuymWTzxrHqORpFScZgKVTCV1l3QKgWK/irGfpSOAzsQMndaqFXFBaJulBJZ7+UG6oLoozVzbJ0/3Rh3NkYUDXJIgE2IFzQIrXX2zWnmISqZDVvkNFRLoY3q2H4qVSW0OC3zD15PWjzZ7umvmxFeK/XSK44u9nWwyvexxdoT21wejnDA9bDfTlnfoMbP3ub4gvQ6X3Nf7jUm51YnzdkFj5qww4vgEhtsVyrZWLKRqEYclWstKrqvQgn07WnnbEXbLQ5lrPnkJ7Jx69ZDHHauRcBCso1BIgKAcP4eFHZpBjgbttTTUDFrymoJb2am2V0Nc0pJ878P9x3htdUy+ZdCs5iA/Ykh8By82D2hUtWD/tOhWaLxgW3r3SInBZiMWHTR6oIYg0ujRCZ2mNYy8lx1zS0a3I79UmIJVD1jxZSUhTYbgcZL0WesvQkTzh519Vis2HtejxZLBFElIJqi3qFhVK6UA6hgGl3kK7ki6CUl0qaWDHzhPr4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1479b99-9250-45f0-0f89-08de2191ca00
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 02:18:37.8566
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OfcgLevUrcTLsP/5k8dikCmFSxjPWJUWnljx35El36Atg9mGEAYzchLCxF+FMwrb2OtiWaNrSNhLkw6AYXorRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF80E5E852F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-12_01,2025-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
- mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511120016
-X-Authority-Analysis: v=2.4 cv=DMiCIiNb c=1 sm=1 tr=0 ts=6913ee87 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=edf1wS77AAAA:8 a=1XWaLZrsAAAA:8 a=yPCof4ZbAAAA:8 a=VwQbUJbxAAAA:8
- a=hSkVLCK3AAAA:8 a=e5hHg2YQfrC2PJfLeyQA:9 a=QEXdDO2ut3YA:10
- a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22 a=cPQSjfK2_nFv0Q5t_7PE:22
- a=poXaRoVlC6wW9_mwW8W4:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=SsAZrZ5W_gNWK9tOzrEV:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDE3NSBTYWx0ZWRfX0rJnLdv/oyo/
- qrNV7/ClYs1oQZHI+GFmh0ZQzH0zxknmMP0hJQDa6oWImth6zPmS5UcX0imrdcbI0x6rWBsVh6E
- tXVhNI3na5CUiQ5G4v5rT9EBBkTIiNeNKWJKNOBe/sSLwDKlnGazzRB1eYmjWAQTJks2rzni6aV
- w6lIoVWTx2fQqZgWq9EIhR5M5xpfl7K4MdBYAW81o1LdqAMkC+8WZtbOuIBtZBlqHUv8BrACd96
- L8qYujpLcrZ+s+JKi20K2M6V3V8R7wMl5iTgXEa3mCLopmjnkWnRY1TFjgkm14N2RvDM+4B3i0j
- cCDxl6iNA9dify0xbGDagdQuk1qAQxX4Nb8nRxKcWNOQ57P1bhZl1/iIG5rtQaG8jAChwP1ni6F
- MhxL7AYB2v+9w82HAc4Iu0NMPj/3Pw==
-X-Proofpoint-GUID: WRjV-_TKvhHMcykufhQrqIzr1Lf-0Yr7
-X-Proofpoint-ORIG-GUID: WRjV-_TKvhHMcykufhQrqIzr1Lf-0Yr7
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 344DCC000B
-X-Stat-Signature: cf73jzn8na9c7y733wy1xb5syqfws7sz
+References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
+ <20251023-v5_user_cfi_series-v22-25-1935270f7636@rivosinc.com>
+ <CANXhq0oEpCow0G+KsJ6ZPuwsxmAFVqoKGEzygiwSmxFsmntiWg@mail.gmail.com> <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
+In-Reply-To: <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
+From: Zong Li <zong.li@sifive.com>
+Date: Wed, 12 Nov 2025 10:19:23 +0800
+X-Gm-Features: AWmQ_bmKovRTmE80-MSruF1BPvDQmZ8Z-ahD6_kAC3IOhiFoglBht7EGrzIY3bI
+Message-ID: <CANXhq0ryrNUoBvACX9hh-=FVOe+L6_6beXrZQn2e1P6eWgcUiA@mail.gmail.com>
+Subject: Re: [PATCH v22 25/28] riscv: create a config for shadow stack and
+ landing pad instr support
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1762913930-844620
-X-HE-Meta: U2FsdGVkX1/WSclVEGA6tre/LW34UHHhmaCkj3TqRVZtEkioZM+EmK7mmia8lGEnRO2sEeNoYjrqzrvnmPXXneK7Xr5CIS0UCXzE3uT9eRnoirTmystRYLbObQwhwX9tC/ZF826Wg2v6mNrepo5IXCQblm2FAao6qx2NzE+VJdNXidX5k4fBwqaDmghTRVyCz3pQIxqqU/OhlEbaTDUu7ogIoD093hpxmUJXQ65cAGWc1emwO2q4k8tYI5oVbMVnnzgRqrs5Kv5OYGDuwTC16qk8s3JrBMMjco4E8mPuf9kb2YF6nBZfkuox1ReDxWBDkPmk3UBo02ntpoYsOuoDqH9A8KsowWqJMDMxJ8SOdvosqf8kQvLXDGfkpr68it7zBDFtN8Br9qPL9k+lA2Kk6eS+JxktBD8SMKaphWrWB/GfIA93/2G9wG08Qz5ffMfx/hvtD3wbsvcJps1rPqRvelelEqAaNgC1gzwsvYuhVsE6bg7am2IGPSLj+9H0mV1PX2z7+nrhqIISn04uKJRLPmu7qh9bs4iCMj0QN/CQT3KnMFpGUvloA7Wi/jQTRno0rYo6CL0jG2DsvPyt9CJRwA/+tluG5JRENydrYEGqWBCt8TnY6QA4Rus04I/K/UvCtg0sXw6cnZRPHFgaDrbe4ZP7rKJdoOEUaGCz+Gs2WijTEJhcAX4SP1wrzCltjlm+d/EdJ7VeJSB2rYZMGBiHERwACNxCT+s5l5yE8TGWDmf0ynxTwzn/1DSlqbddv5JufPze61bXiWNLkFYKgMgkZqgNwbccST5OAzTzi95VCPSESR9FakCtFVf5GAXwsJ3JcBdYv6JfdyjADx96QgrFhpW0SkOq+hNe6kdnkXr4q8oloaw+VVKbcLyHX/xAZklqdIz0L9Ur6hiGNZi7Ec52Rm10b5SKjp//LZHIMEMRm1sWDGt/XL5B64tgEkPsi/ZoNSzSAnDOhEl6zUAWHuO
- 6e+4W+4J
- uiH/vyX+IO6s992Ys3hg1NGNTTXI2AfGyXbytH0bhYS72/zuVd89r7c7HvkqhfPbq6V0LVRL9Lm8HneNZwMowGxuOskTpakpytM3ql4Zs1ZUnEyniTz5vhSNV2iuwvu//3cKW2FUBZfGehHTOQkMMIgwRvzP4BT4pOkz62sOYotWvjcoFAClBTVb0yH1v3mvzGcLZzLSAbU5qy+OEwoxJB0VOmqXC62BGjqT5SPyQoU8qDBCOhjCgy+DQWHxeQcw7Lo7KJrU3STCv6ZiLWCYYwRhOUE5ThnrtFN2mNY/nXB3DgzEs2PQR1Wfn9Qwy6RaPUCYF5zsFKNW6oR98Sf+x3QvFKFdwTLzquURrvCPb/FAuE3XByFYVVFZqHTWaV/IFcyHWs788gC/wk2HqtmOHX40kWpjEcTIB6DVIMegzjY7n3LSo15s/gNKc2oWDqdvEjWFMUGsc2egLiQnkGNkMjValIbWDREj/p1xgOVy+pvAtAZg6bTsCSBcsqublE5VlzrnykjAerclzLKpERPGKAuqjBIhlB4uEA61y6RD5j8o3wopQ1fPFIAJxrwzeuXYDE8esJNVXbpbMWCrqYg7qIdNOksI6sJitxsDcPxdLACAl7vmJkby6OhsCs/VZ/nv7s/2rtfDnOsrzdRdDZhxdNwC5kwyfzDpYNQCGX5eKBotgKok6/BY7y/UEm7s7YLhFfc4pAVaa49KAVin2UdAC4Mq6F5OSUuomz1dCB0Sy0HdmwCHDCqT81cTjH8E8IPpjt4sRbk7bEhPGFtLICQol+9EVl6BDlMYl+esn9wDyMmMTrTYomvJXX6s9xRW8SZRVfW4zLyHUvjJVjngE9//O1AEyKsobegdQHATN4aWa6w2Y+v7CGIP8iXox0kmxOzlNrY4P
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6BB0BA000B
+X-Stat-Signature: 3ksnm6d8ycnszdaw8t6d7gdy7ud4eumf
+X-HE-Tag: 1762913977-222701
+X-HE-Meta: U2FsdGVkX1+2Zpn21UDvOarK4TvrIPAGzJ66Z5NHxf4m8om9LFtslJRKFX0eEbZuA67z19N+e+4Tn/qmeGl1LDkwUPqtZsWrl9T8zKHTRK/+L2cCAG5sAi9dZDovqmjFkG0Bq4hOA/0vLZSpS35Zbtr4OPoaQ07TETGHdHsJlmrgvgM2dn7sSb1pp6xsqnLj3YnZ2QzYhdSCWsg5+vPrqQrpX5Ps85BkJnOEaiIiYBILiJGwCuxmK1QrXMNXxMveMZdWl/so3OTAM+lHdoKPpirTYQOVSamWTFojKlAAmrp0tfsvw5/Hh6ZeRbbMNVbZQWwGYG8mP2KQQXKJhLTe/I6MwwmnAxBQrUyHeuc0pvTkbaAzw3eUll+PmcQdgp06ijFmOFlMj3ks76p9pjX2VMpNhw77HJi+JGABxD8g6RRnNs/BmieRdWJSHJ7XEG9jryeIK2B2Bd0O+3naJUTa1a9dr899UPBHwnM7qSXY0xLxTlOpye8MJ8LLz6KBOSm0qBMs0Q4rH8GhvsNTNDNoaFo2CqRRv217GvA6L4PHUuWBeHT63hziEazR+Hy3KgNKf6M8hoC/MajbsrIJ/9Bf/VPP9scUmvc1Hir1GP7yzE1qWQMLGk9nIu5s2YbKRI6VXGrdr78BsRyP+LByLk8NvuXdw63SFtpHJ+ymMRx6ULtqfU7Sv1HX/yQf+3HQ42kCkoX5ejA4LXppp1G/rTqtQSgouWHMvYpXSzvCABh1274lrmz7zLs7FccF6ddgsHOWK3V0nbtc+rXs8yy8o0oiT7rVTC4aAIXcVKZZQRKC91fIcLo/HBHof3tpaZsVSh99oo+taQE0d8Nm3WnFyVJnsJrb241Da82d+LqnNCnBZpbGi4ZGJQ4vSPOxQ/lO2JWIZQvztXatd1OwbykkBS+iNkl+9Bq/sR8QtjhGYXHIBeJ5E9kgna9t4g2K9Vy2v/Y+kn4E02vh9p+B3Fq5YeY
+ HxF9kVq8
+ 2RjhcyjNY20i7/jl8R3DbVRRbf536ZPbn0TkTE8rJYd0FVqUypCRRGilHNM6CBjnfDP5tvbeaXizYjLuXH0BfcfiOvOasrKf13md9kTcwnnFZ0xGQ6/8bHIdgk/g1xnhxTGEZkuoEzCW31mgDVcaW8yZv7dUcVhAgSBeXojJh/yy0hwyVzbZvDZz/hTR66yGRt1It3tNl+kCzguBDmZE8TGLW0SzDwVyK2kP6rWvz9FD6GiE6D/jD5KTXPLiMb9mcyY7/8inUlSQuhfixB7fqNn4AF2oWYx/IsUpr03ATlaipsryIqRmAsEoLLsW8IZljwbFJxS5YAniv0m7jYyBoq+y1HvJyOt8xX1vC71n6xtreI3/ewYreg2VTkYo70T2z1Ez5ZuLHiBHM1eX3EzHaQqeTpw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,136 +142,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Suren Baghdasaryan <surenb@google.com> [251111 19:45]:
-> On Tue, Nov 11, 2025 at 4:20=E2=80=AFPM Liam R. Howlett <Liam.Howlett@ora=
-cle.com> wrote:
+On Wed, Nov 12, 2025 at 2:22=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
+rote:
+>
+> On Tue, Nov 11, 2025 at 01:58:37PM +0800, Zong Li wrote:
+> >On Fri, Oct 24, 2025 at 12:51=E2=80=AFAM Deepak Gupta via B4 Relay
+> ><devnull+debug.rivosinc.com@kernel.org> wrote:
+> >>
+> >> From: Deepak Gupta <debug@rivosinc.com>
+> >>
+> >> This patch creates a config for shadow stack support and landing pad i=
+nstr
+> >> support. Shadow stack support and landing instr support can be enabled=
+ by
+> >> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` w=
+ires
+> >> up path to enumerate CPU support and if cpu support exists, kernel wil=
+l
+> >> support cpu assisted user mode cfi.
+> >>
+> >> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS=
+`,
+> >> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
+> >>
+> >> Reviewed-by: Zong Li <zong.li@sifive.com>
+> >> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+> >> ---
+> >>  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
+> >>  arch/riscv/configs/hardening.config |  4 ++++
+> >>  2 files changed, 26 insertions(+)
+> >>
+> >> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> >> index 0c6038dc5dfd..4f9f9358e6e3 100644
+> >> --- a/arch/riscv/Kconfig
+> >> +++ b/arch/riscv/Kconfig
+> >> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
+> >>
+> >>            If unsure, say N.
+> >>
+> >> +config RISCV_USER_CFI
+> >> +       def_bool y
+> >> +       bool "riscv userspace control flow integrity"
+> >> +       depends on 64BIT && $(cc-option,-mabi=3Dlp64 -march=3Drv64ima_=
+zicfiss) && \
+> >> +                           $(cc-option,-fcf-protection=3Dfull)
 > >
-> > * Suren Baghdasaryan <surenb@google.com> [251111 19:11]:
-> > > On Tue, Nov 11, 2025 at 2:18=E2=80=AFPM Vlastimil Babka <vbabka@suse.=
-cz> wrote:
-> > > >
-> > > > On 11/11/25 22:56, Liam R. Howlett wrote:
-> > > > > The retry in lock_vma_under_rcu() drops the rcu read lock before
-> > > > > reacquiring the lock and trying again.  This may cause a use-afte=
-r-free
-> > > > > if the maple node the maple state was using was freed.
-> > >
-> > > Ah, good catch. I didn't realize the state is RCU protected.
-> > >
-> > > > >
-> > > > > The maple state is protected by the rcu read lock.  When the lock=
- is
-> > > > > dropped, the state cannot be reused as it tracks pointers to obje=
-cts
-> > > > > that may be freed during the time where the lock was not held.
-> > > > >
-> > > > > Any time the rcu read lock is dropped, the maple state must be
-> > > > > invalidated.  Resetting the address and state to MA_START is the =
-safest
-> > > > > course of action, which will result in the next operation startin=
-g from
-> > > > > the top of the tree.
-> > > > >
-> > > > > Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to dro=
-p RCU
-> > > > > lock on failure"), the rcu read lock was dropped and NULL was ret=
-urned,
-> > > > > so the retry would not have happened.  However, now that the read=
- lock
-> > > > > is dropped regardless of the return, we may use a freed maple tre=
-e node
-> > > > > cached in the maple state on retry.
-> > >
-> > > Hmm. The above paragraph does not sound right to me, unless I
-> > > completely misunderstood it. Before 0b16f8bed19c we would keep RCU
-> > > lock up until the end of lock_vma_under_rcu(),
-> >
-> > Ah.. usually, yes?  But.. if (unlikely(vma->vm_mm !=3D mm)), then we'd
-> > drop and reacquire the rcu read lock, but return NULL.  This was fine
-> > because we wouldn't return -EAGIAN and so the read lock was toggled..
-> > but it didn't matter since we wouldn't reuse the maple state.
-> >
-> > I wanted to make it clear that the dropping/reacquiring of the rcu lock
-> > prior to 0b16f8bed19c does not mean we have to backport the fix
-> > further.. which I failed to do, I guess.
->=20
-> Ah, ok, now I get it. You were talking about vma_start_read() and RCU
-> being dropped there... Would this explanation be a bit better?
->=20
-> Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU
-> lock on failure"), vma_start_read() would drop rcu read lock and
-> return NULL, so the retry would not have happened. However, now that
-> vma_start_read() drops rcu read lock on failure followed by a retry,
-> we may end up using a freed maple tree node cached in the maple state.
+> >Hi Deepak,
+> >I noticed that you added a $(cc-option,-fcf-protection=3Dfull) check in
+> >this version. I think this check will fail by a cc1 warning when using
+> >a newer toolchain, because -fcf-protection cannot be used alone, it
+> >must be specified together with the appropriate -march option.
+> >For example:
+> >  1. -fcf-protection=3Dbranch requires -march=3D..._zicfilp
+> >  2. -fcf-protection=3Dreturn requires -march=3D..._zicfiss
+> >  3. -fcf-protection=3Dfull requires -march=3D..._zicfilp_zicfiss
+>
+> toolchain that I have from June doesn't require -march=3D..._zicfilp_zicf=
+iss
+> for -fcf-protection=3Dfull. If that has changed, I think this will need a
+> revision.
 
-Yes, sounds good.
+Yes, that=E2=80=99s what I=E2=80=99ve learned from the toolchain guys so fa=
+r, perhaps
+we can double check with them. If it is right, I guess we might merge
+them into one check as follows:
+$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfilp_zicfiss -fcf-protection=
+=3Dfull)
+or
+$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfiss -fcf-protection=3Dreturn)
 
-Andrew, can you make this change and also drop Cc stable tag?
-
-This needs to be a hot fix, as Vlastimil said earlier.
-
->=20
+>
 > >
-> > > so retries could still
-> > > happen but we were not dropping the RCU lock while doing that. After
-> > > 0b16f8bed19c we drop RCU lock if vma_start_read() fails, so retrying
-> > > after such failure becomes unsafe. So, if you agree with me assessmen=
-t
-> > > then I suggest changing it to:
-> > >
-> > > Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RC=
-U
-> > > lock on failure"), the retry after vma_start_read() failure was
-> > > happening under the same RCU lock. However, now that the read lock is
-> > > dropped on failure, we may use a freed maple tree node cached in the
-> > > maple state on retry.
 > >
-> > This is also true, but fails to capture the fact that returning NULL
-> > after toggling the lock prior to 0b16f8bed19c is okay.
-> >
-> > >
-> > > > >
-> > > > > Cc: Suren Baghdasaryan <surenb@google.com>
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Fixes: 0b16f8bed19c ("mm: change vma_start_read() to drop RCU loc=
-k on failure")
-> > > >
-> > > > The commit is 6.18-rc1 so we don't need Cc: stable, but it's a mm-h=
-otfixes
-> > > > material that must go to Linus before 6.18.
-> > > >
-> > > > > Reported-by: syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.co=
-m
-> > > > > Closes: https://syzkaller.appspot.com/bug?extid=3D131f9eb2b580757=
-3275c
-> > > > > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > > >
-> > > > Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> > >
-> > > With the changelog text sorted out.
-> > >
-> > > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> > >
-> > > Thanks!
-> > >
-> > > >
-> > > > > ---
-> > > > >  mm/mmap_lock.c | 1 +
-> > > > >  1 file changed, 1 insertion(+)
-> > > > >
-> > > > > diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> > > > > index 39f341caf32c0..f2532af6208c0 100644
-> > > > > --- a/mm/mmap_lock.c
-> > > > > +++ b/mm/mmap_lock.c
-> > > > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(str=
-uct mm_struct *mm,
-> > > > >               if (PTR_ERR(vma) =3D=3D -EAGAIN) {
-> > > > >                       count_vm_vma_lock_event(VMA_LOCK_MISS);
-> > > > >                       /* The area was replaced with another one *=
-/
-> > > > > +                     mas_set(&mas, address);
-> > > > >                       goto retry;
-> > > > >               }
-> > > > >
-> > > >
+> >> +       depends on RISCV_ALTERNATIVE
+> >> +       select RISCV_SBI
+> >> +       select ARCH_HAS_USER_SHADOW_STACK
+> >> +       select ARCH_USES_HIGH_VMA_FLAGS
+> >> +       select DYNAMIC_SIGFRAME
+> >> +       help
+> >> +         Provides CPU assisted control flow integrity to userspace ta=
+sks.
+> >> +         Control flow integrity is provided by implementing shadow st=
+ack for
+> >> +         backward edge and indirect branch tracking for forward edge =
+in program.
+> >> +         Shadow stack protection is a hardware feature that detects f=
+unction
+> >> +         return address corruption. This helps mitigate ROP attacks.
+> >> +         Indirect branch tracking enforces that all indirect branches=
+ must land
+> >> +         on a landing pad instruction else CPU will fault. This mitig=
+ates against
+> >> +         JOP / COP attacks. Applications must be enabled to use it, a=
+nd old user-
+> >> +         space does not get protection "for free".
+> >> +         default y.
+> >> +
+> >>  endmenu # "Kernel features"
+> >>
+> >>  menu "Boot options"
+> >> diff --git a/arch/riscv/configs/hardening.config b/arch/riscv/configs/=
+hardening.config
+> >> new file mode 100644
+> >> index 000000000000..089f4cee82f4
+> >> --- /dev/null
+> >> +++ b/arch/riscv/configs/hardening.config
+> >> @@ -0,0 +1,4 @@
+> >> +# RISCV specific kernel hardening options
+> >> +
+> >> +# Enable control flow integrity support for usermode.
+> >> +CONFIG_RISCV_USER_CFI=3Dy
+> >>
+> >> --
+> >> 2.43.0
+> >>
+> >>
 
