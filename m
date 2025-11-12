@@ -4,98 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9672BCCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 14:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E85CCF9E3
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 14:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E510F8E0019; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
+	id 419BD8E0018; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E011E8E0011; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
+	id 3F1BB8E0011; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF03D8E0019; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
+	id 307FC8E0018; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B8D4C8E0011
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:56:40 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 415E7894A7
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:56:40 +0000 (UTC)
-X-FDA: 84102256560.12.7386383
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C33C240003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:56:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D79khSQs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762959398; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CE228E0011
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:59:09 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCDB2C047E
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:59:08 +0000 (UTC)
+X-FDA: 84102262776.06.F6B0D8F
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B81BD40009
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:59:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BPJqGA+B;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762959546; a=rsa-sha256;
 	cv=none;
-	b=IO4kVQUTK1Yy0oNq0UJnn+L8UJnmSBMSZYFIv4N/6Djj5edNePT5DkyJ9O7fEZJIvJgqAJ
-	m6Viw8xWYQVlGniqdXuoWdZHCeKWa0LJSzRPAswgb8iQ5dnYz86A+MV+6leGK8gQ4Eka1S
-	8kv83UDf9NO4Eg0Qqs+PkqUObXqzoPo=
+	b=kMQVthjZlKH3eS1SVorGKYKMTKNuSh6CvenW5c/G/4qLNkRX3mZGLp5H5j+TXbwaYpaNRa
+	e6A/pRF6rGb14AhmEo54iqME5wZEEEsjtBHVKXEtVfIP7GkU9mpp3kVa/S0/CbPEjLPeg9
+	kHfgz0QxT9RTcEoYAnfQA3felVPO/3w=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D79khSQs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=BPJqGA+B;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762959398;
+	s=arc-20220608; t=1762959546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ryP1wiJVw9aw+DpTbMpV/h0UEZ8NMcdOc+GlItX0uJI=;
-	b=QQJUL6PKEHdscfxj0wpKeGQlcTkArPk6wB50WaZQZnFPRts2mjjCplbnHX6GN3lqvwaNxp
-	78SnKd3YzxNueIJflOGjhn9906Ej3KcMxd6/u6gi2cqr/9VBaeHLgZ3iC2IDKOwRHaktK3
-	6oHT/Nr4oROUM40QwHQDtbNacfRwgHI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37CDE60219;
-	Wed, 12 Nov 2025 14:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BD2C113D0;
-	Wed, 12 Nov 2025 14:56:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762959397;
-	bh=/i5+uzL0Oqs6gEV3AXY8bbYwafp63UToQF5glVJFuPc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D79khSQsyM2jtSumiC6G+0g59BNd6JFWbzNVlgUIR79tiGlaliyAjTfh8cVo+sovs
-	 Zf0qtjUtxNdE+enBHdx/SoUjg4XTdWhKo1E9Cw3JDQqa2QNqbP6roWSveZcgbKByYY
-	 u1kGW4HkXHsIbz364QHPma0yJrxgNJqgw8txrHtMUGMzq8CzEpmTvJIcUflZesjOQO
-	 hMjrnKaZxEfOSo72qJpGUddcPsp6Rag5IxCIIyWNvAORAhmC8jp0NveqasSz6ceZti
-	 cKLJCFHmP8tgM/qYXGge3d1hQBnhVyLPZ/IqOkQKjj41GF0X1ZkvlsbfDMYi42+4mk
-	 Ygc6eYKKTpabw==
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v1] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-Date: Wed, 12 Nov 2025 15:56:32 +0100
-Message-ID: <20251112145632.508687-1-david@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0MTLQ2+KzlbyAQxckoGWY8C9+me/+LObO2aCT3fFijI=;
+	b=Lq72wO45qfDtn3jwlNdNdPkpJvFz4AwGEOI/XNAT1W1/pd7n74hmUsq+9tcmxC4mb208zO
+	0cy4qb1aNd/tuyj6J78yzgqqZe5znrOmapCHOXHGofSo7Lz9VpCdLoNPnPmuI4MwyP0KHw
+	skx/ZIXOh0BO/KP7/iX5aPATe421qiI=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so1569536a12.3
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:59:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1762959545; x=1763564345; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0MTLQ2+KzlbyAQxckoGWY8C9+me/+LObO2aCT3fFijI=;
+        b=BPJqGA+BoqBhxNdNaIDnWjyRcJ1h+mDfr8NKjJYEDEQ1ESSbXNyUwAqqrJtpoZwlMX
+         tD3pJDCzMohWK9DWYyKUGO8G+YkxJmn07vBL4IlVuhUf8xgGrLHdUjFrjqHKkjH+1kgh
+         QdkVejwFWV66LC/navKeZGL+A8WDrROMSxazt4BBlgnMS5ozh92ERTqhLLGvz5ugKe/q
+         xg9QdbgS6CH5o6phgaSUI/dKLDhVLsmlmSXvGKXCXD9+Pf9ZsfNHF1pGPR3RcG/hdx3X
+         UsUmZRVDWJun7fTZVP8kTRE49PqpEeI1b0sIinPZybJpFFgKG9ujxeI/Yu72HvIA0Qtm
+         f5Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762959545; x=1763564345;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0MTLQ2+KzlbyAQxckoGWY8C9+me/+LObO2aCT3fFijI=;
+        b=GAQaEWqLJ7q7Zyh992pWaKw1unNFWA5yEUJnw/ZRXJTgLenK/Bwecx3Oev635GLYNW
+         EaAE1hCaChKDv8mmS7EtBslwOqFTxy3w8dQDl8yermLtwjFyesVPvxoEVx/ezm8Ea/9N
+         YSN1onGjL1gMa/r+xiaqATA0FH1uuSj8AnzgOo6RPr+gr7V5rX4vg5b83DmtaVYlOUjz
+         oUa2XOsU7wrbSoEUQRNQ8i+6p0sDvbMs93hq1alsvFkElgnOJ0XeCXsEDe1UCUdE0mhU
+         StwhHtCHgR+Ria2HkIzb+WXlGjuXvESuOL1rxJutaCpNZn5+wjMTXVi1yglc7bbTZlUk
+         qLGA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2o9mBC3H8c7sNgsY18XUukhQDADfyb34bTkMkt+N3mBN++zVWVVrn3hWdVa4zd8tBCkQC/zhisQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx8vcPbxA/7fkyL4EGd2D0rhOZbGUhG8Wz2CETPHbHdYjWWztGr
+	xM4vIuyRdVYD05kKmfcHQqiYHDQPG5Ihki9OGJ8ZS6n0d0NCOiwPH6qJqk3+hKGi+eEzpNdGmtO
+	vIdsTpztwHkOBqXCiquggSaeVGBkBdYwhc/GkGsICVw==
+X-Gm-Gg: ASbGncvcJLRj2SrvIBbioQ2r3Wcw5ECeAtQy1Qhj6pBs3NssKJyPGm5sqvdsaT/MHN4
+	aVrdzfEmEVgTK3K7BQX53PXGQMq4DPCxVsUkeQKN/Nn57DDOQfOFlbPzFlZx6Zp9lOpTeCNgMrz
+	JPY5SujsAIZ+4HXVdxAiM1cQ357zLQSMsJepgtot+kqPPUDiKkJlibkUWVIEc+AdAZE7YV2WzcE
+	SEg3FNFi6TaeB2oioGs1lW+enzYPYuS7Hei+xvXlVn+P+2qrCG+SjKr3w==
+X-Google-Smtp-Source: AGHT+IEdmxSCUrDpzYYdeQ7xGZMZCFuRazVHOEq301lv0Np/o4OtNdmIj/Fd7MlLr72XZf02Ov5bYrL1l7CAevQmQsg=
+X-Received: by 2002:a05:6402:20d5:20b0:640:6650:9173 with SMTP id
+ 4fb4d7f45d1cf-6431a5906c4mr2199942a12.33.1762959544759; Wed, 12 Nov 2025
+ 06:59:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C33C240003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: eunmn66rrr5m189xcbuiasup6otqh5hz
+References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
+ <20251107210526.257742-3-pasha.tatashin@soleen.com> <aRHiCxoJnEGmj17q@kernel.org>
+ <CA+CK2bCHhbBtSJCx38gxjfR6DM1PjcfsOTD-Pqzqyez1_hXJ7Q@mail.gmail.com>
+ <aROZi043lxtegqWE@kernel.org> <CA+CK2bAsrEqpt9d3s0KXpjcO9WPTJjymdwtiiyWVS6uq5KKNgA@mail.gmail.com>
+ <aRSKrxfAb_GG_2Mw@kernel.org>
+In-Reply-To: <aRSKrxfAb_GG_2Mw@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 12 Nov 2025 09:58:27 -0500
+X-Gm-Features: AWmQ_bnbzArXLN8aoATNdiGHp809pzMOSngeRCNP27w6LsiaaRY3i_BJDeNIl5I
+Message-ID: <CA+CK2bAq-0Vz4jSRWnb_ut9AqG3RcH67JQj76GhoH0BaspWs2A@mail.gmail.com>
+Subject: Re: [PATCH v5 02/22] liveupdate: luo_core: integrate with KHO
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
+	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1762959398-756687
-X-HE-Meta: U2FsdGVkX189iqNDe7nsBdaydaIvVfPDIAXoCtBymcD27UR3JeytBwIiNCX2Jlftw8I9G2gBCAcvl4pwsCG+xsJQAFeE9m5qfw3eHI8oP7hpOFF4wTVstbnON4F4XjzA1610azbXBiwqJtmXybsIOrBFGIUGLK2JvKvrv+m/ARAsAncSeEF3Sk3wwBEtfU7GziN2P2aNv9fAUlQHyYecjtlbvo2DUtCZfA4Uiv+/w4bUr918Q4JXI6PiEFiyvDe6PqhjZNjNKmjN27FYmr3HFJZCO2qiBETvUtLjuvam7VW8rgpQ5+4UEimWVmrLsra9ymN8KmrDJI49+cG6oXCbf14SBchfPYQwzEelOSGiZ7z8PfpV/qc1eK/VDVztvILrQsP+TfApCyvG9ORS0nFA2UqU1/PRkm0DzN1pIM/UhkXu41n9j9bQ2+5DGQ9HdHW+NTcxoQ5gD4+Iwol/Urz3JtFMgkbAu6VIOa2Bz8CAIfJM9/+BUD06WDHGODv/Nwwj/eVazPdOq51kXDxKFp6I3TwCtAPxPfwrEJKqpcJbTrSMX1+DY4tzh0WTTvTNsX90wr5GYrrwlrDTkqez+Id8KzjpL7Lmhgm0b23cJxZebnPSIoPRbxqq7gx6bGNqgmuA9visAQ50MHJw62qAVptALMqFM5Gc29D08rMgpGilYZyYVnul7T+sh54nRz5Ifgquz2MS5Nlpq2x9QSF9ej+uEEvZFGvqYkNfUweZ00OcAYUrTlyMwH/V4H4vGDGLx9v6XwSyTaJClBaopacFniK27XzLs79evHNanmasOhPJtGApAGzneMh9VgoM3RvTA2xgdip4iIRJY8yVAKdmchxDbs+tqAFZG0sp8iGHWBOclp0AUZJB/aBLECuF0MUJvLMqx2nthdgG9T73jbiYzWh0+Gvh3y02/8f9JiTI7n8v9YAZmj2YcxPHbIZwe0tJ/RkoFr6V7fiXSBKJxHDtRTA
- 4ogfzfjF
- 2DkzSJnRfXYiR5VfKeYiiF1pZo/R3epb3x9V4n7kYnSrNm/WAFIcTU49zEWywmRcovDF1c3zZ2mAYtVx6UJfArIg5JTlcIRj7CXJdkvWi0L5dRTQWKUTgq94NrCi22H0MBfG3EEop4Qr+e2bpPfIYm9Sl5taTv0g5/TvYM9R8gF8H+v4c4gJ+9qgI0Z/rwNN6Ol0wBsKgusT6mtQ6PvjNuUijaS8P3eRY8gLyMVyv6CmDovQoPL5jKyaQXSIkD0c7m/aY2xRGpWvtVF9HUg3grdWguh6hErrYELY3vQH9iAP7jzcX3IuSrEvpztfbrLJVMNcqjGHYBwrV0s3JZEK+jVaWCWXe5RR2dQbhMXF30UEwZhJTGRvAX1J7/buKWHGuwqrSi15HazJxNjy5b4K+pWCj9kYrKQFLNHEikCsDnVPVTp8DYG/btADVRcQxwKsKoJ69cjbYpxGsowP4glAAETTfXJzkp2ZNwr2aa+SvvD6I5rGH9G5pNHP1G+k5BTu3wblYRsqOvAo7DV5zb1FdGOKCkyEviwYVk3AD92Y6QuCrbSu+ksu6hUzS02DLx6NHoojhKvHvWK5csvkF2EMSj2p7kHvH/EF8qgkRkrbx+j3FGVU5+IshrJTbiw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B81BD40009
+X-Stat-Signature: g7mg6ph5aoadrehbrnb9phnhxk1in6yw
+X-HE-Tag: 1762959546-571428
+X-HE-Meta: U2FsdGVkX19S/5/a8/cXY5g0A+KZzxUUgHl3sdh7xX3rGMut8S4Md8Nwy0ye6F9II36voVzrJd58q94v7H2T2Thg4Da+Dlfg+7ArFtbOEAZCtHeRqhPZrC83wDWEMwB4H4yr74iuthMTXK5RcOhEWtrqCfEFB9w0M+fxCjdL4xzjznHQ3lZXQWBMx7djlTM5iXYKrhkUQPRHOGaT3Abar9EcI2mHfKoC0WNJlfHFRDmWiafbehNHRxIAFq5r07Gpg3/TFTjmgaDwoI+hQZgrnvXxmu32nXf2sVVOql+XymHMB0CAeP+TL80MLIRaJD4y0Ldr6MiOxVMJVLNMPhoOCKIGhwR9LExLvXyOxMrP7B0/8odRHc2CNiC0fopd/+NiiqQlvEsXS41WEgOisLmPBk4pRbRXmvlpEI6orsEtSZHPyPYeG8mUpQ2S2H2ct/i66eZNZk8s7OVEl04NTcU5/hRlse8EYmegF51mA8AyxLxb05eVA/M1Mr3HNC13CiFW3XKdTm3gYCmVOhbaCa7mwveXUTVYRBjZ0ZvFXJX82mryHd2z0o5gboo7tfOstMqabv0rhmySCuBDVR8oC2l6WeVsJMHaVh0SQPQ/xpraXbVuuI2A1EbrefG3ceq23BTXoIKPf9xRgsXrx0AHAyr15QzPqWKUV9aw5ghpXBqE+tk1YVWGEJ97DWjvK0+Ctaf33sz2CJA4+euW5iJM7Ihm/qAzKycWnOTVzYGm68QSxIBI55kfqeDMRl1GGUSOlGev1+m382V/I506/u7AtRGNxQkgUlmvN2GPDqibgT5DzTbz84R1NhaUTKyRTGsrG6Mx1LO7u7SBhuMy/zjmDdlBTDAGJf88kZmrIHwb154OwIE4IgsDkgc/wXbjopVTmXhfKIvkTEgLUJrFsflACsr/WJcrcU3Qa9jBcMD7zc89ejigSsvCtXhRLBIgCZHlfThSFLs0/C4RB4pKV/4an+u
+ eRUPhL26
+ 3BKJ7BZWy13/qxLOYXJ5e+ZxL+9xRc0Zug/1VZyno5e4FEGFr5GJiFqd4Z9k7XuDwmubMfcizseJfXiZjD78uPbQLpU0ycRlGR06Pzb3h/64GR+bCQcAFaVjg+Bofj7VqtZ0lNzp8otv/d+4/zRrXTPh2NyThs9HjF5oQLePAlr6Bj+ys7fIBFfJSCJZoIPo0McfrJq4RCMuvQY8X/CAEXMHj95iWvKkmvFayHi1jEqxlE3fqMC5x3XbAt0tJoYtZc7tSt3A+JvM74YHQdfuSJ/ygbfyYsibfqUbctKmza/YbIvpVQpKRU2/CdoNNmmAjOdI3pqYsq6KbzGY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,144 +142,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
-runtime allocation of gigantic hugetlb folios. In the meantime it evolved
-into a generic way for the architecture to state that it supports
-gigantic hugetlb folios.
+On Wed, Nov 12, 2025 at 8:25=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> Hi Pasha,
+>
+> On Tue, Nov 11, 2025 at 03:57:39PM -0500, Pasha Tatashin wrote:
+> > Hi Mike,
+> >
+> > Thank you for review, my comments below:
+> >
+> > > > This is why this call is placed first in reboot(), before any
+> > > > irreversible reboot notifiers or shutdown callbacks are performed. =
+If
+> > > > an allocation problem occurs in KHO, the error is simply reported b=
+ack
+> > > > to userspace, and the live update update is safely aborted.
+>
+> The call to liveupdate_reboot() is just before kernel_kexec(). Why we don=
+'t
+> move it there?
 
-In commit fae7d834c43c ("mm: add __dump_folio()") we started using
-CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
-have folios larger than what the buddy can handle. In the context of
-that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
-when dumping tail pages of folios. Before that commit, we assumed that
-we cannot have folios larger than the highest buddy order, which was
-obviously wrong.
+Yes, I can move that call into kernel_kexec().
 
-In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
-when registering hstate"), we used MAX_FOLIO_ORDER to detect
-inconsistencies, and in fact, we found some now.
+> And all the liveupdate_reboot() does if kho_finalize() fails it's massagi=
+ng
+> the error value before returning it to userspace. Why kernel_kexec() can'=
+t
+> do the same?
 
-Powerpc allows for configs that can allocate gigantic folio during boot
-(not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
-exceed PUD_ORDER.
+We could do that. It would look something like this:
 
-To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
-hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
-GiB (possible on arm64 and powerpc). Note that on some powerpc
-configurations, whether we actually have gigantic pages
-depends on the setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is
-nothing really problematic about setting it unconditionally: we just try to
-keep the value small so we can better detect problems in __dump_folio()
-and inconsistencies around the expected largest folio in the system.
+if (liveupdate_enabled())
+   kho_finalize();
 
-Ideally, we'd have a better way to obtain the maximum hugetlb folio size
-and detect ourselves whether we really end up with gigantic folios. Let's
-defer bigger changes and fix the warnings first.
+Because we want to do kho_finalize() from kernel_kexec only when we do
+live update.
 
-While at it, handle gigantic DAX folios more clearly: DAX can only
-end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
+> > > This is fine. But what I don't like is that we can't use kho without
+> > > liveupdate. We are making debugfs optional, we have a way to call
 
-Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
-clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
-HUGETLB_PAGE.
+This is exactly the fix I proposed:
 
-Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
-also allow for runtime allocations of folios in some more powerpc configs.
-I don't think this is a problem, but if it is we could handle it through
-__HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
+1. When live-update is enabled, always disable "finalize" debugfs API.
+2. When live-update is disabled, always enable "finalize" debugfs API.
 
-While __dump_page()/__dump_folio was also problematic (not handling dumping
-of tail pages of such gigantic folios correctly), it doesn't relevant
-critical enough to mark it as a fix.
+Once KHO is stateless the "finalize" debugfs API is going to be
+removed, and KHO debugfs itself can be optional.
 
-Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
-Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Closes: https://lore.kernel.org/r/3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu/
-Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Closes: https://lore.kernel.org/r/94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com/
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
----
- arch/powerpc/Kconfig |  1 +
- include/linux/mm.h   | 12 +++++++++---
- mm/Kconfig           |  7 +++++++
- 3 files changed, 17 insertions(+), 3 deletions(-)
+> > Yes you can: you can disable liveupdate (i.e. not supply liveupdate=3D1
+> > via kernel parameter) and use KHO the old way: drive it from the
+> > userspace. However, if liveupdate is enabled, liveupdate becomes the
+> > driver of KHO as unfortunately KHO has these weird states at the
+> > moment.
+>
+> The "weird state" is the point where KHO builds its FDT. Replacing the
+> current memory tracker with one that does not require serialization won't
+> change it. We still need a way to tell KHO that "there won't be new nodes
+> in FDT, pack it".
+>
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index e24f4d88885ae..9537a61ebae02 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -137,6 +137,7 @@ config PPC
- 	select ARCH_HAS_DMA_OPS			if PPC64
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
-+	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
- 	select ARCH_HAS_KCOV
- 	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d16b33bacc32b..63aea4b3fb5d9 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
- 	return folio_large_nr_pages(folio);
- }
- 
--#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
-+#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
- /*
-  * We don't expect any folios that exceed buddy sizes (and consequently
-  * memory sections).
-@@ -2087,10 +2087,16 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
-  * pages are guaranteed to be contiguous.
-  */
- #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
--#else
-+#elif defined(CONFIG_HUGETLB_PAGE)
- /*
-  * There is no real limit on the folio size. We limit them to the maximum we
-- * currently expect (e.g., hugetlb, dax).
-+ * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
-+ */
-+#define MAX_FOLIO_ORDER		get_order(SZ_16G)
-+#else
-+/*
-+ * Without hugetlb, gigantic folios that are bigger than a single PUD are
-+ * currently impossible.
-  */
- #define MAX_FOLIO_ORDER		PUD_ORDER
- #endif
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 0e26f4fc8717b..ca3f146bc7053 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
- config PGTABLE_HAS_HUGE_LEAVES
- 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
- 
-+#
-+# We can end up creating gigantic folio.
-+#
-+config HAVE_GIGANTIC_FOLIOS
-+	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
-+		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-+
- # TODO: Allow to be enabled without THP
- config ARCH_SUPPORTS_HUGE_PFNMAP
- 	def_bool n
--- 
-2.51.0
+see my answer below
 
+> > > kho_finalize() on the reboot path and it does not seem an issue to do=
+ it
+> > > even without liveupdate. But then we force kho_finalize() into
+> > > liveupdate_reboot() allowing weird configurations where kho is there =
+but
+> > > it's unusable.
+> >
+> > What do you mean KHO is there but unusable, we should not have such a s=
+tate...
+>
+> If you compile a kernel with KEXEC_HANDOVER=3Dy, KEXEC_HANDOVER_DEBUGFS=
+=3Dn and
+> LIVEUPDATE=3Dn and boot with kho=3D1 there is nothing to trigger
+> kho_finalize().
+>
+> > > What I'd like to see is that we can finalize KHO on kexec reboot path=
+ even
+> > > when liveupdate is not compiled and until then the patch that makes K=
+HO
+> > > debugfs optional should not go further IMO.
+> > >
+> > > Another thing I didn't check in this series yet is how finalization d=
+riven
+> > > from debugfs interacts with liveupdate internal handling?
+> >
+> > I think what we can do is the following:
+> > - Remove "Kconfig: make debugfs optional" from this series, and
+> > instead make that change as part of stateless KHO work.
+> > - This will ensure that when liveupdate=3D0 always KHO finalize is full=
+y
+> > support the old way.
+> > - When liveupdate=3D1 always disable KHO debugfs "finalize" API, and
+> > allow liveupdate to drive it automatically. It would add another
+> > liveupdate_enable() check to KHO, and is going to be removed as part
+> > of stateless KHO work.
+>
+> KHO should not call into liveupdate. That's layering violation.
+> And "stateless KHO" does not really make it stateless, it only removes th=
+e
+> memory serialization from kho_finalize(), but it's still required to pack
+> the FDT.
+
+This touches on a point I've raised in the KHO sync meetings: to be
+effective, the "stateless KHO" work must also make subtree add/remove
+stateless. There should not be a separate "finalize" state just to
+finish the FDT. The KHO FDT is tiny (only one page), and there are
+only a handful of subtrees. Adding and removing subtrees is cheap; we
+should be able to open FDT, modify it, and finish FDT on every
+operation. There's no need for a special finalization state at kexec
+time. KHO should be totally stateless.
+
+> I think we should allow kho finalization in some form from kernel_kexec()=
+.
+
+If we achieve that, we wouldn't need a kho_finalize() call from
+kernel_kexec() at all. All KHO operations should be allowed at any
+time once KHO is initialized, and they shouldn't depend on the machine
+state. So, even late in shutdown or early in boot, it should be
+possible to preserve KHO memory or a subtree. I'm not saying it's a
+good idea to do that late in shutdown (as preservation may fail), but
+that should be the caller's problem.
+
+Thanks,
+Pasha
 
