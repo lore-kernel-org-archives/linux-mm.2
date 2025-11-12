@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E38ACCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 02:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34EFBCCFA18
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 02:21:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA75B8E0007; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
+	id 8EB1D8E0008; Tue, 11 Nov 2025 21:21:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7F088E0003; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
+	id 89BAF8E0003; Tue, 11 Nov 2025 21:21:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A95018E0007; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
+	id 78B038E0008; Tue, 11 Nov 2025 21:21:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 95EAF8E0003
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:19:39 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 665BA4BEA5
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:19:39 +0000 (UTC)
-X-FDA: 84100348878.22.3ACD5E4
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6BB0BA000B
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:19:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=e7m18XJy;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf25.hostedemail.com: domain of zong.li@sifive.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=zong.li@sifive.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762913977; a=rsa-sha256;
-	cv=none;
-	b=2jQo+UkLOWTNLkrsIonpaH4VTo9IcZi8p6Wxh24s29+U947LlHVG5xMiZUSw9NJyCw/DGo
-	siogEFTn75MET442oNOq+vqtPJdDF4ef63a10VeiADS9SOYUf0g2PP/g63XOfvz3IRvIkW
-	yHW9Ag+3yPDf16p6amgDHcvbLgPCU4s=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=e7m18XJy;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf25.hostedemail.com: domain of zong.li@sifive.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=zong.li@sifive.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 62F608E0003
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:21:46 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 057971402EE
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:21:46 +0000 (UTC)
+X-FDA: 84100354212.06.C304A24
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1555D40011
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:21:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EarAueks;
+	spf=pass (imf04.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762913977;
+	s=arc-20220608; t=1762914104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
-	b=gyg06720qDJxCs0Wk5sUqJhQ9ig2kil8dDW5QV95VvNE2U2HCXO52O1XOPBYbyHkgZy8ci
-	ZMdSG9E62G6K2FgD1KE+j6PlLw3MFOjXBb9KcqlzQy1VbNceKLBLextUkvEM1I5IMpMAaF
-	9hAUTSPCtLb5fL73Kgkc5DVuUyANVg8=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b72bf7e703fso67155566b.2
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:19:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1762913976; x=1763518776; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
-        b=e7m18XJy8sRsE7L/TLMBWYoQEhnDbxXGkM7v+ZLtS9KbHwHdFBs+NuSalWS/ogjEko
-         n36mQNTxs75r04KRlzNPtfcHv8uV3an6kgCOX/HK34Cl2pYZK4QAj63RrWLL9dTjFypJ
-         aVFqIAwrvOx8/BlSWJrFwAbshP1/JcOosjpaa53kxkO3Pg5xZHzLyErv6uiXQOu8PyiA
-         66FaAu3Y0lI3VNjWEO6WCa9Vz2xYnj2CkT0jjyJJYJKit2D4KuxFbiev3TydFIBJ999L
-         nq0vghE/pyYPvg+HVmZ4Qlu8/z2YCAfcjp0QGkLFg6O14JErBG+siez7p44UYWKTMLSq
-         nGug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762913976; x=1763518776;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
-        b=bLojcrS1XY24jFAZAVMvp/OvYhWrF3b7xpNKOzoSuZlBcPk+iUOYO/h1lTJ4gVEJYY
-         PBf+kxDrA/vMT6cmkR6tf3YrU5ObNLJXusJu6q01ZBdL9vkai31uPBEP1DPZNHeJ+YDi
-         OGFj+rRow88ncIqGF3GoGqOgFtqk2o5VbldvGOaL+Jta3H0usBzVSWaG9OvQ1tToa8Yh
-         7VUZ1cyVVJROONJC7cChLOUoelKrvUjG7DzuwzNgAEFbrp3tGGxiIu2qOphSRMAzRjeb
-         J1HV55TSWmsM82KMv31SS4+kPxUHsPTCr74Kv60o5k/fQBfQvtxL9XwsHLTW8031+C86
-         OlSg==
-X-Forwarded-Encrypted: i=1; AJvYcCXadjvOF+9SH85tq1kmzJ9DXoAmmuVo8QCnkybdyu0dyHUBVEKuRqgm97YDTqFXwnc7UZxLZP8wdg==@kvack.org
-X-Gm-Message-State: AOJu0Yx4Ale/VIGYN1Y2lh9NyXBFnZ4AGi+EJA0nVLkV8scHzuXe6KIH
-	a21HUCM/nbs+Z3cmDtbd2THp5m7rF5JzFtg93a7aM95EBurin1yDYPCDhEZKJP3W5eBJLAmC8DT
-	F/hWOyFbxQy0Y2UmecXxZzdhFOLK3RCKzAnFHMmze6g==
-X-Gm-Gg: ASbGnctmW6VkO9aR4oQwH6cyLZRy887yHBMUhcjjP0HI9QNZn5k2OAmbFie+w69HxIW
-	bIatX1ExlMaBg+rVDWzgjP/xZAYXHDwKQalswAJfFL6ekXBrM0QQsQVpkgXeSBtbhmXB8jHRLmw
-	/V14GG6uMipPXo0WcnX+AzvMCU+FuqJhj53HXlTUr3ASLHMoMByMQ1qInmuGs2NvYdI3PT6Mfn8
-	x5wS+aG/7f4hmZegG+UJOal+oXwCzAlDkEi35a6kLi/CNcmO8x/TJ2iFAPiOC4=
-X-Google-Smtp-Source: AGHT+IE+yEBTlwHkenGiGwu5UyXnAf6gT3RkSyNE+10D+a3qX/UN5XaT1J5EAZetmYd9Vh7p3GgyT6IZWxgqCbtm2x0=
-X-Received: by 2002:a17:907:3daa:b0:b72:52c2:b8ca with SMTP id
- a640c23a62f3a-b7331aec193mr102047266b.59.1762913975653; Tue, 11 Nov 2025
- 18:19:35 -0800 (PST)
+	bh=kvK6l0Spby2Ufnh2o78Z5U1zll55EzgJKPTf2NI2yt4=;
+	b=ldxZMwrPtZ0ey3uLbhzEt8Fqp8zOvTLXGCnDRPwIvjlfSHQHmlCTNZLC9NAsIQ3HFHnu9Y
+	bVCUnVK0uB4s06A48byDJClOT71OLNDuxF8dGAPYhi7lVJZZJjsAhpQCYSIwshrm1Sq5nD
+	mB18hsSlNT7IkhQ2tESD6AV1TO1u3c0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EarAueks;
+	spf=pass (imf04.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762914104; a=rsa-sha256;
+	cv=none;
+	b=IHJvqXUUb0Tj63ILvQWkjfq8DmakoNu74ZJqrR5yMOCB9XiYC4tVQKKyIwAhGq6SYemHmn
+	4Gz4vrMwOR+JChrWlm1noHg0umxrXtIqGMLkK4ecirbbACa/Ldn/+H42ZBBCD8RREfBkmk
+	N+VJcghLUWrQ8N/eQfapiNZLzhqTqz0=
 MIME-Version: 1.0
-References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
- <20251023-v5_user_cfi_series-v22-25-1935270f7636@rivosinc.com>
- <CANXhq0oEpCow0G+KsJ6ZPuwsxmAFVqoKGEzygiwSmxFsmntiWg@mail.gmail.com> <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
-In-Reply-To: <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
-From: Zong Li <zong.li@sifive.com>
-Date: Wed, 12 Nov 2025 10:19:23 +0800
-X-Gm-Features: AWmQ_bmKovRTmE80-MSruF1BPvDQmZ8Z-ahD6_kAC3IOhiFoglBht7EGrzIY3bI
-Message-ID: <CANXhq0ryrNUoBvACX9hh-=FVOe+L6_6beXrZQn2e1P6eWgcUiA@mail.gmail.com>
-Subject: Re: [PATCH v22 25/28] riscv: create a config for shadow stack and
- landing pad instr support
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762914101;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kvK6l0Spby2Ufnh2o78Z5U1zll55EzgJKPTf2NI2yt4=;
+	b=EarAueksC5BoIPzUkMnwSVxkjYw3cjkzTp84rwgAyuj+Z9xxvSmzZj8+Swb6FIW8oJET0g
+	wbmHxttRUtr4W7o/9nHChRXgMs/SYZdknRA6BtN1AVC0bLAJG6n/c5E9fYmICPF5GOkHWD
+	Gf7TcIc+vefye2qurTC0PH3VRAGTd6Y=
+Date: Wed, 12 Nov 2025 02:21:37 +0000
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <59f26b5b0c49f8d0f3bdb33f99d69dd3d442ed60@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v2] mm/vmscan: skip increasing kswapd_failures when
+ reclaim was boosted
+To: "Shakeel Butt" <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "David Hildenbrand"
+ <david@redhat.com>, "Michal Hocko" <mhocko@kernel.org>, "Qi Zheng"
+ <zhengqi.arch@bytedance.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, linux-kernel@vger.kernel.org
+In-Reply-To: <e5bdgvhyr6ainrwyfybt6szu23ucnsvlgn4pv2xdzikr4p3ka4@hyyhkudfcorw>
+References: <20251024022711.382238-1-jiayuan.chen@linux.dev>
+ <e5bdgvhyr6ainrwyfybt6szu23ucnsvlgn4pv2xdzikr4p3ka4@hyyhkudfcorw>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1555D40011
+X-Stat-Signature: 7sb1ot5tqhoxoyakrctjd4sm5m3idwk7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6BB0BA000B
-X-Stat-Signature: 3ksnm6d8ycnszdaw8t6d7gdy7ud4eumf
-X-HE-Tag: 1762913977-222701
-X-HE-Meta: U2FsdGVkX1+2Zpn21UDvOarK4TvrIPAGzJ66Z5NHxf4m8om9LFtslJRKFX0eEbZuA67z19N+e+4Tn/qmeGl1LDkwUPqtZsWrl9T8zKHTRK/+L2cCAG5sAi9dZDovqmjFkG0Bq4hOA/0vLZSpS35Zbtr4OPoaQ07TETGHdHsJlmrgvgM2dn7sSb1pp6xsqnLj3YnZ2QzYhdSCWsg5+vPrqQrpX5Ps85BkJnOEaiIiYBILiJGwCuxmK1QrXMNXxMveMZdWl/so3OTAM+lHdoKPpirTYQOVSamWTFojKlAAmrp0tfsvw5/Hh6ZeRbbMNVbZQWwGYG8mP2KQQXKJhLTe/I6MwwmnAxBQrUyHeuc0pvTkbaAzw3eUll+PmcQdgp06ijFmOFlMj3ks76p9pjX2VMpNhw77HJi+JGABxD8g6RRnNs/BmieRdWJSHJ7XEG9jryeIK2B2Bd0O+3naJUTa1a9dr899UPBHwnM7qSXY0xLxTlOpye8MJ8LLz6KBOSm0qBMs0Q4rH8GhvsNTNDNoaFo2CqRRv217GvA6L4PHUuWBeHT63hziEazR+Hy3KgNKf6M8hoC/MajbsrIJ/9Bf/VPP9scUmvc1Hir1GP7yzE1qWQMLGk9nIu5s2YbKRI6VXGrdr78BsRyP+LByLk8NvuXdw63SFtpHJ+ymMRx6ULtqfU7Sv1HX/yQf+3HQ42kCkoX5ejA4LXppp1G/rTqtQSgouWHMvYpXSzvCABh1274lrmz7zLs7FccF6ddgsHOWK3V0nbtc+rXs8yy8o0oiT7rVTC4aAIXcVKZZQRKC91fIcLo/HBHof3tpaZsVSh99oo+taQE0d8Nm3WnFyVJnsJrb241Da82d+LqnNCnBZpbGi4ZGJQ4vSPOxQ/lO2JWIZQvztXatd1OwbykkBS+iNkl+9Bq/sR8QtjhGYXHIBeJ5E9kgna9t4g2K9Vy2v/Y+kn4E02vh9p+B3Fq5YeY
- HxF9kVq8
- 2RjhcyjNY20i7/jl8R3DbVRRbf536ZPbn0TkTE8rJYd0FVqUypCRRGilHNM6CBjnfDP5tvbeaXizYjLuXH0BfcfiOvOasrKf13md9kTcwnnFZ0xGQ6/8bHIdgk/g1xnhxTGEZkuoEzCW31mgDVcaW8yZv7dUcVhAgSBeXojJh/yy0hwyVzbZvDZz/hTR66yGRt1It3tNl+kCzguBDmZE8TGLW0SzDwVyK2kP6rWvz9FD6GiE6D/jD5KTXPLiMb9mcyY7/8inUlSQuhfixB7fqNn4AF2oWYx/IsUpr03ATlaipsryIqRmAsEoLLsW8IZljwbFJxS5YAniv0m7jYyBoq+y1HvJyOt8xX1vC71n6xtreI3/ewYreg2VTkYo70T2z1Ez5ZuLHiBHM1eX3EzHaQqeTpw==
+X-HE-Tag: 1762914103-443901
+X-HE-Meta: U2FsdGVkX1/LE9eQDqHJLqeYWY7QPELw6T4xitJiwTd4lP1b2/GOZbEwrKAXvnlva/+fptq/HtSU+DxJh4n9FzsIRoCFuqnQjUVty1yCJcpEwg1997Di6Mj9xD7veUv5XkXqffLIzIrVjhegHVm/S74GfTFedMnAJRvo/3b9EF9n+2OFXvLeMNPf7SyN8+V1uiKVaZa8enXg2Jp6Qkv05j7Eo+d23rTH7AbrWHWAx/hQ6qZYSWC+IK98OkfXNiXkiAQ3gcSmyLGoYixY9uo0pz0lImPdNqvSRccJo9+L/gjECSbVq4dPCFx6s0TZOuLDi5/P4zJ/wuLBvTpTSEHvzkWCm4w682uqddEBKgEmnqN4JNe4mYZ7VHYuFBXqpWlCUch6X6oP89kRJin3ySN/gHsNLszpCLBPyUwbEQS6S/1j9jjM+Uf2Oz4Ja525GOUCUv1gl5dCYs5en3lbiP/lrkB/vRiROgK/EZXpj64uDRcvlIvo0rWyExfm2NnxpnD/NC52ggfwkRBvowihDsutq6kwfOz6Z31YpC0CvbSUSZocybP3hmg+4mjkvdXF1bhapcFHENZUkTHvHN3Ao9Lt8yQLZdRjgdFzEppJI0VJuGl9XNHuAKC2tC9OHoVy/Pcefp9+mCRvXfJ6A7hewCAM2SUNNDCr7gVSJXcoNFNv1I+2d0tcsqOyYAJy6IxlfZ14ES/ARNjfFH7Xse/Y2SgC0yHGpfy07OWWEKlj2HjU/tzfbkdcWnibrGwn9EjzrlNaSYC3xr57Tc2aHiwSmA4vmzU5SKl4pMau8d2LFJopltBMZe2PInFSH2OUvuUm0sioHHyDE2q0JqDuth4L/fGhR+h/lM+7bbLAoeDAleaxLJZwLzYx6ZGQum39zY+Pp7F9mn2Mkn6Fi9havtl48dnv+P3YXsl8DrUfArWZBQcV2OejUjb/itlEGc04mGaicM7E529ulwfs9PKQzW1JgG6
+ r1IEFUQB
+ h1J4eqRz+zxLIavWBfxXY2rDfy5kjpltNVs5y2q/IJD8tCMfICOQhv9NX9Cj9xUwthlKB59PWtGSu3qeomT69KgPxPjBfM4OQyblmUS0UMspdNS9HHk/C+8j+F/PKMGbxifu7144PsAerGK9VcGWVEE7tHcRT2sWLdV4+7ALElhx0FxYXSwLmWGfmmIKxNhDNZlMrAebzH1QOJ3BCGJWPN0ZSp+pQQpta0lBeCtzVP4tVkIpSoSXnW//USovJM8GZnDyb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,119 +97,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 2:22=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
-rote:
->
-> On Tue, Nov 11, 2025 at 01:58:37PM +0800, Zong Li wrote:
-> >On Fri, Oct 24, 2025 at 12:51=E2=80=AFAM Deepak Gupta via B4 Relay
-> ><devnull+debug.rivosinc.com@kernel.org> wrote:
-> >>
-> >> From: Deepak Gupta <debug@rivosinc.com>
-> >>
-> >> This patch creates a config for shadow stack support and landing pad i=
-nstr
-> >> support. Shadow stack support and landing instr support can be enabled=
- by
-> >> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` w=
-ires
-> >> up path to enumerate CPU support and if cpu support exists, kernel wil=
-l
-> >> support cpu assisted user mode cfi.
-> >>
-> >> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS=
-`,
-> >> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
-> >>
-> >> Reviewed-by: Zong Li <zong.li@sifive.com>
-> >> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> >> ---
-> >>  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
-> >>  arch/riscv/configs/hardening.config |  4 ++++
-> >>  2 files changed, 26 insertions(+)
-> >>
-> >> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> >> index 0c6038dc5dfd..4f9f9358e6e3 100644
-> >> --- a/arch/riscv/Kconfig
-> >> +++ b/arch/riscv/Kconfig
-> >> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
-> >>
-> >>            If unsure, say N.
-> >>
-> >> +config RISCV_USER_CFI
-> >> +       def_bool y
-> >> +       bool "riscv userspace control flow integrity"
-> >> +       depends on 64BIT && $(cc-option,-mabi=3Dlp64 -march=3Drv64ima_=
-zicfiss) && \
-> >> +                           $(cc-option,-fcf-protection=3Dfull)
-> >
-> >Hi Deepak,
-> >I noticed that you added a $(cc-option,-fcf-protection=3Dfull) check in
-> >this version. I think this check will fail by a cc1 warning when using
-> >a newer toolchain, because -fcf-protection cannot be used alone, it
-> >must be specified together with the appropriate -march option.
-> >For example:
-> >  1. -fcf-protection=3Dbranch requires -march=3D..._zicfilp
-> >  2. -fcf-protection=3Dreturn requires -march=3D..._zicfiss
-> >  3. -fcf-protection=3Dfull requires -march=3D..._zicfilp_zicfiss
->
-> toolchain that I have from June doesn't require -march=3D..._zicfilp_zicf=
-iss
-> for -fcf-protection=3Dfull. If that has changed, I think this will need a
-> revision.
+2025/11/8 09:11, "Shakeel Butt" <shakeel.butt@linux.dev mailto:shakeel.bu=
+tt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linux.dev%3E >=
+ wrote:
 
-Yes, that=E2=80=99s what I=E2=80=99ve learned from the toolchain guys so fa=
-r, perhaps
-we can double check with them. If it is right, I guess we might merge
-them into one check as follows:
-$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfilp_zicfiss -fcf-protection=
-=3Dfull)
-or
-$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfiss -fcf-protection=3Dreturn)
 
+>=20
+>=20On Fri, Oct 24, 2025 at 10:27:11AM +0800, Jiayuan Chen wrote:
+[...]
+> >=20
+>=20Can you share the numa configuration of your system? How many nodes a=
+re
+> there?
+
+My system has 2 nodes.
+
+
+[...]
+
+> >  if (nr_boost_reclaim && sc.priority =3D=3D DEF_PRIORITY - 2)
+> >  raise_priority =3D false;
+> >=20
+>=20Am I understanding this correctly that watermark boost increase the
+> chances of this issue but it can still happen?
+
+
+Yes. In the case of watermark_boost, due to the priority having a lower l=
+imit,
+the scanning intensity is relatively low, making this issue more likely t=
+o occur,
+even if I haven't configured memory.low. However, this issue can theoreti=
+cally happen
+even without watermark_boost =E2=80=93 for example, if the memory.low val=
+ues for all pods are
+set very high. But I consider that a configuration error (based on the cu=
+rrent logic
+where kswapd does not attempt to reclaim memory whose usage is below memo=
+ry.low,
+
+[...]
+> >  - if (!sc.nr_reclaimed)
+> >  + /*
+> >  + * If the reclaim was boosted, we might still be far from the
+> >  + * watermark_high at this point. We need to avoid increasing the
+> >  + * failure count to prevent the kswapd thread from stopping.
+> >  + */
+> >  + if (!sc.nr_reclaimed && !boosted)
+> >  atomic_inc(&pgdat->kswapd_failures);
+> >=20
+>=20In general I think not incrementing the failure for boosted kswapd
+> iteration is right.
+
+Thanks. I applied a livepatch, and it indeed prevented the occurrence
+of direct memory reclaim.
+
+
+> If this issue (high protection causing kswap
+> failures) happen on non-boosted case, I am not sure what should be righ=
+t
+> behavior i.e. allocators doing direct reclaim potentially below low
+> protection or allowing kswapd to reclaim below low. For min, it is very
+> clear that direct reclaimer has to reclaim as they may have to trigger
+> oom-kill. For low protection, I am not sure.
 >
-> >
-> >
-> >> +       depends on RISCV_ALTERNATIVE
-> >> +       select RISCV_SBI
-> >> +       select ARCH_HAS_USER_SHADOW_STACK
-> >> +       select ARCH_USES_HIGH_VMA_FLAGS
-> >> +       select DYNAMIC_SIGFRAME
-> >> +       help
-> >> +         Provides CPU assisted control flow integrity to userspace ta=
-sks.
-> >> +         Control flow integrity is provided by implementing shadow st=
-ack for
-> >> +         backward edge and indirect branch tracking for forward edge =
-in program.
-> >> +         Shadow stack protection is a hardware feature that detects f=
-unction
-> >> +         return address corruption. This helps mitigate ROP attacks.
-> >> +         Indirect branch tracking enforces that all indirect branches=
- must land
-> >> +         on a landing pad instruction else CPU will fault. This mitig=
-ates against
-> >> +         JOP / COP attacks. Applications must be enabled to use it, a=
-nd old user-
-> >> +         space does not get protection "for free".
-> >> +         default y.
-> >> +
-> >>  endmenu # "Kernel features"
-> >>
-> >>  menu "Boot options"
-> >> diff --git a/arch/riscv/configs/hardening.config b/arch/riscv/configs/=
-hardening.config
-> >> new file mode 100644
-> >> index 000000000000..089f4cee82f4
-> >> --- /dev/null
-> >> +++ b/arch/riscv/configs/hardening.config
-> >> @@ -0,0 +1,4 @@
-> >> +# RISCV specific kernel hardening options
-> >> +
-> >> +# Enable control flow integrity support for usermode.
-> >> +CONFIG_RISCV_USER_CFI=3Dy
-> >>
-> >> --
-> >> 2.43.0
-> >>
-> >>
+
+We have also encountered this issue in non-boosted scenarios. For instanc=
+e, when
+we disabled swap (meaning only file pages are reclaimed, not anonymous pa=
+ges), it
+indeed occurred even without memory.low configured, especially when anony=
+mous pages
+constituted the majority.
+
+Another scenario is misconfigured memory.low. However, in our production =
+environment,
+the memory.low configurations are generally reasonable =E2=80=93 the sum =
+of all low values is
+only about half of the system's total memory.
+
+Regarding how to handle memory.low, I believe there is still room for opt=
+imization in
+kswapd. From an administrator's perspective, we typically calculate memor=
+y.low as a
+percentage of memory.max (applications often iterate quickly, and usually=
+ no one knows
+the exact optimal threshold for low).
+Furthermore, to make the low protection as effective as possible, memory.=
+low values tend
+to be set on the higher side. This inevitably leads to a significant amou=
+nt of reclaimable
+memory not being reclaimed. In the scenarios I've encountered, memory.low=
+, although intended
+as a soft limit, doesn't seem very "soft" in practice. This was also the =
+goal of the v1 patch,
+although more refined work might still be needed.
 
