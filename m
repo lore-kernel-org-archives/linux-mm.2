@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C16BCD37BB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:24:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1261BCD4842
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:36:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA6DE8E001A; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
+	id 5E8548E0008; Wed, 12 Nov 2025 15:36:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7E0E8E0011; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
+	id 5BFF48E0006; Wed, 12 Nov 2025 15:36:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBBD28E001A; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
+	id 4FCD98E0008; Wed, 12 Nov 2025 15:36:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CB7568E0011
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:24:50 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9CE9F8980B
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:50 +0000 (UTC)
-X-FDA: 84103083540.01.B7F3C01
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 212AC180002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:24:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MMV7TwLQ;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 3AEA78E0006
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:36:40 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 727D55A2B6
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:36:39 +0000 (UTC)
+X-FDA: 84103113318.04.354077A
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CAF66140009
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:36:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kp57rjur;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762979089;
+	s=arc-20220608; t=1762979797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w99u8UTaeMEokMZw0/vRmMX2Eo0plGVgzdi9tGIbBcM=;
-	b=d9XF38vLet/jIgtPRBvNfEyrMPXCQvmeg5aGicVtmBre47pXzEsaBmUYT4Ohv+q76OGiuZ
-	+M8+HGt3IOntIb/tTF0JIpVXnFMNnwo6OVJOpeDoBX9uSlvONsghqrJhxgzNlkYDtQWSTQ
-	y2TapkrUFkyGy0NUI4StJXZCCm5Iej8=
+	bh=s9o8NRvJdzTieC05I6sj+VphdIDRCWgXCmaEd+EQUzE=;
+	b=EnWh2V627ykvacx9/8O8zjJLh6pTajVMM3KAdwqerO5R4r88M3DqldoLpF9g+Iw/9q3VAn
+	S+wDszBsOOWVBN0q5369n4CDlMXKOIBiQNDdm5M0gHfENIEUbkqrt4InDy8kZGaONf+f6P
+	JStruaRQo08WUqEOLXJjiMS0wMOplaA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MMV7TwLQ;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979089; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kp57rjur;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979797; a=rsa-sha256;
 	cv=none;
-	b=xo9BLd0bDUioaCygH5Jh8nZhThoiMPB27fAJ/w/ORzcZAD+UBM+kGZ8nYtrkFT0M7/pLdg
-	2H3bnRh7rBb9vlkEfQmzT7hAH+w7r+k3om2NfTuaGqzgPr7IbtJ2K9waQYycjl/Mv3/OS7
-	TGXWDMjf7EDyawWEVzDvuJV4DabRt+I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35CE4601BB;
-	Wed, 12 Nov 2025 20:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F883C4CEF1;
-	Wed, 12 Nov 2025 20:24:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762979087;
-	bh=TW9NSBuZC0pCuqNjfj0PDRPjYM0/XDdyBFkYzlhTUz4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MMV7TwLQJIgxVHH9Jfnn46TzH8kkfNaH3YCBvwOtvaROgcrfmaOqvv1Qxyj2a9TSq
-	 d59+NX27bhJounNl3b67AuiZlrcIpp9Pcs/XTM8FabyhC4qlmByxyR1JDVPmcsFkgf
-	 8YB4+GRYweYr9seeG6OE4aQ5UMPKXUBln5Ehofag=
-Date: Wed, 12 Nov 2025 12:24:46 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
- <vbabka@suse.cz>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
- stable@vger.kernel.org,
- syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Message-Id: <20251112122446.e1f2c037550dc591a4d6b307@linux-foundation.org>
-In-Reply-To: <aoq7jyue2qamctxmvtlic4nv53phskj6k7iizh7k6kwruwdgxk@qgjnaib7xgze>
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
-	<8219599b-941e-4ffd-875f-6548e217c16c@suse.cz>
-	<CAJuCfpESKECudgqvm8CQ_whi761hWRPAhurR5efRVC4Hp2r8Qw@mail.gmail.com>
-	<kfqzb2dfxubn6twcbiu3frihfkf6u34g2rcnui2m63rbc4x4kk@dh3bxvpzpnmp>
-	<CAJuCfpEWMD-Z1j=nPYHcQW4F7E2Wka09KTXzGv7VE7oW1S8hcw@mail.gmail.com>
-	<aoq7jyue2qamctxmvtlic4nv53phskj6k7iizh7k6kwruwdgxk@qgjnaib7xgze>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=5liVCMuPGBN54Kkdi1andTBFHBo8OPraRHCZCavpf5xQXMxBTEggcpYOVHp56teZlDS679
+	PIlSBQzdkc73RoPPBf5jS9VX6hW5CCWwFz22NIZuRdSaiOace/xFb5+m3N5ZRl9/ftGE2c
+	+pOJDd6loEX5+2uqie/r21VOGDAi5Fk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=s9o8NRvJdzTieC05I6sj+VphdIDRCWgXCmaEd+EQUzE=; b=kp57rjurHJAHd7F+xCvQZd2no/
+	zldsm/PODHXAoZPRO03KjAvh+i6TFvDrouKIddaHozeoKX6h2p6XnR40qvkW2IfcfJjSqtjOOASHE
+	pcLUkbSjzs9jrpSZ1b8HCTaxH2HZB+iIqy3JOelzm0XwDoUm+rsEL547/n1nbkk1Zdvdon9bDW7m/
+	fbDrR+VT28Mw+bAffi2/e9rYJYquUsYKCdFL34XhsCio+W3x5wyTN9hfghxd3d7PyPKLuC/rsdqJN
+	omr01SQUfqZXqu1vGLmq3jMm7SSbX5suEPyADu3Kw4ySsNlAUtR/0apBO+uhzbLc6bklHuhuBZo+/
+	5LaH1Fjg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJHZx-00000006TTz-1U22;
+	Wed, 12 Nov 2025 20:36:33 +0000
+Date: Wed, 12 Nov 2025 20:36:33 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	workflows@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v8 00/27] mm/ksw: Introduce KStackWatch debugging tool
+Message-ID: <aRTv0eHfX0j8vJOW@casper.infradead.org>
+References: <20251110163634.3686676-1-wangjinchao600@gmail.com>
+ <aRIh4pBs7KCDhQOp@casper.infradead.org>
+ <aRLmGxKVvfl5N792@ndev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aRLmGxKVvfl5N792@ndev>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 212AC180002
-X-Stat-Signature: ajgr3n7wwcy5j5hpwectcnpoyy5xygbg
+X-Rspamd-Queue-Id: CAF66140009
+X-Stat-Signature: 13f1p7bocznnp3665hkcf8cmmdac5gqi
 X-Rspam-User: 
-X-HE-Tag: 1762979088-962766
-X-HE-Meta: U2FsdGVkX1/ottwhDfpW5k94tb9UQyINl6fJQYv6Lo1OUbbaRLwmCeinAtkymvCy0MrYP4McsrKP4AAa5Cd4AbqolEBcT98vlFxUrUSEpPFJzBAdGSylQsD5kTWePUy/D2Kk01xdTYYIRD6WYnT0fyS4mvqujI4PJH2RyYZDwRQwRCse90eIRHfhwhpnQ6PTIRfI84/B2t0FxDJAQcfTouw+jGL7XwbtwAqkRwvqQ0vuqTfLoySeFkvK6HSvUPdorpbzsWkXTXujpY1Qxq/a89R84oFKQ68jzjs+tp8VzjDOyOF2YF+taX2alo8/rjsosL1F4ODp4YNM2zovS8T4Z8WiiQdoj9d3R2PGJ9AlIc7Bnha+mrxVmeiLlh3xvgGIVrHPL4g+SV9TCDBwYJpgm32LLSi/NyZ1iYQApp8ia/eS6oT8nBhZj97ZX2bwUVHi+voz3O3ZfCqJwqItwombrPEuMi+tYrev19/J/TA2YhcxvW7HX0FdonoHKms07ua9rx90fgYcI7Bcc3Tmf5oNTAqONsNyQfK8nKsViqC4bhYnw9pdma+qhvNNBXp2O5e0IC1h4q5UkulBW/GnXINUEkuSW+JjlgYp1EET9jx1Qv+oZiLI/tLNy6URh4Qjg8BL9IHBs8Bul+uh7X2cH0K+8jcGiA67O0ZA3egnzrCbktOMaO13pGBKNky2fAw+aNlax59AjypVTVSfc66zJf9HsodxTnB33enIGp19VTawDAQj474ZhLuiSrBLzAYzVqEKOBkjPqG+Nh9XFCD3zSPDEpLTE4IptTOSzd86kLZjK0ZUBLl4QXyjK+r8TFLmCpeov7jZYNvoo12mRTYRm9JY5vi8yDmCclTXZGt5Pv5m7NrsYavz1bl6cbufMykaPI7ZtlqO7SYBY+acAMKoopwA/BdUrb0u2y3xbwuTUP7UOXHfUtcD/Vm1zUx4ChyQgjXbzHdC1cev7rFkRF/qWNC
- E5i/pM2I
- EYvDUGCbaAaTdY1oWtPvrJ6QruBd9g8K9cng126d0EZzMch2BnnW1yS4AP4LDbG2O83sxMjVYYtABzle7zyp2oo0B/+fR2FJMPS9K
+X-HE-Tag: 1762979796-653226
+X-HE-Meta: U2FsdGVkX1+iY+30ExMsi79GaluE1XyhiQD74GMurwoRcv7qBXDq+GzdYBs31+yKR3lFXlzxS02FG+/2b7C88uoJGEL579+s+3pRk+p4Abf061HODz9Aaqq1/aGdDbZ1NcBGEbGKHvQPHzu1/RUPgbSk4baTjybToWGK1xuoH3s0aGik2j9ch/fLWMmiGj9VCSO9kh7zqHoiHK2t7GmKBLMPLaQ9DAQNTCQXbjPoV2/1GgdeSw8q39g3bVLQaLyPAXzjEp17gaJIVKUvJNNW2QiuPt18d8s4wbUxWUl4pEqAfihHwxOQeyHpOTXibMBX5ka77vrwFtnsWkuulv8jnTgIZiJiwyLwI7i4x+RwyBb+6oteu7LNqHvnq72VzFHQdgJJooQebzvrtdwDIP4dvkSrC25Gxh9sqbgygfk3VabICNn8dfC0Ret74xD122dilA5zdLaHMkmo02gXX0MM7Wd2+c6O6t0LgiltbgUedsJRGqaTJbJ9wSwBHLJFRG5Ru4HeTItbu5Ok+oi6eSJbkvHsDBoP4uHC64S2XGqVu5OjjsK/uTnKrCKzOoMtyncPDJmTzbgytlqVwaYcUSE+SSNRSt3UiAbLQGfoCa45KYOrkYx02DDWnekIF57aHDTb2YhnQbp+nN5QxrFdNx+qnWA9fYyb2VZmkGuS+9ldSl6TtgaG+ueEw1MBpi/SunWTNqTh/MhIP49GQhiCU9VDptz9BmpM7cZD1WVqlhE0BACEgzbfXQ7xocYAQM15aJ0vv9mMJcCBFGn2A+5cd5DRBP3dWDNJRmER7oNLBQyNEz35UWNw76Fk2iA0JpASikyzHLt/csFGZ9I1MdtAQTzDUn1evHaZhKdKA2icRfINAnXA+LzeXbI7+vQAE+4IzNay83YfZmgvi5hM/1o9d6/m3cTTp0diJ7YiI9xN2a1278oRIRWAmDI5LONjv42yg8E+UcYGwcuNf/wcAF24aNd
+ kYxVDB2M
+ 1+5qhJVSlymjoWYz0Qm7BOAuRsB6A3eZgqRO6TPkBsxwr4Cdze4tVLjbcPbW3p3FfW5hoMEFS9ivmYKy3aLh37RKYPAkLa29gCQK/TMXsVmYKm1fPrLBn9xTBRwuDtcbtwBP/5EDbl7HZ/AKwRiNFaK6gXvpaMMgIgletrmJFjknFeFLu+IRSg9SVTrkcZAx9GVbZaCfJKRZz3lS0Ke4bjQX29LWqTuupQIElGG0WuBalJkAjq2x89gpkCrfuu1eu4dMNn6J9pyKzgj5mfSgvBhVeLA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,21 +96,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 11 Nov 2025 21:18:19 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
+[dropping all the individual email addresses; leaving only the
+mailing lists]
 
-> > Prior to commit 0b16f8bed19c ("mm: change vma_start_read() to drop RCU
-> > lock on failure"), vma_start_read() would drop rcu read lock and
-> > return NULL, so the retry would not have happened. However, now that
-> > vma_start_read() drops rcu read lock on failure followed by a retry,
-> > we may end up using a freed maple tree node cached in the maple state.
+On Wed, Nov 12, 2025 at 10:14:29AM +0800, Jinchao Wang wrote:
+> On Mon, Nov 10, 2025 at 05:33:22PM +0000, Matthew Wilcox wrote:
+> > On Tue, Nov 11, 2025 at 12:35:55AM +0800, Jinchao Wang wrote:
+> > > Earlier this year, I debugged a stack corruption panic that revealed the
+> > > limitations of existing debugging tools. The bug persisted for 739 days
+> > > before being fixed (CVE-2025-22036), and my reproduction scenario
+> > > differed from the CVE report—highlighting how unpredictably these bugs
+> > > manifest.
+> > 
+> > Well, this demonstrates the dangers of keeping this problem siloed
+> > within your own exfat group.  The fix made in 1bb7ff4204b6 is wrong!
+> > It was fixed properly in 7375f22495e7 which lists its Fixes: as
+> > Linux-2.6.12-rc2, but that's simply the beginning of git history.
+> > It's actually been there since v2.4.6.4 where it's documented as simply:
+> > 
+> >       - some subtle fs/buffer.c race conditions (Andrew Morton, me)
+> > 
+> > As far as I can tell the changes made in 1bb7ff4204b6 should be
+> > reverted.
 > 
-> Yes, sounds good.
+> Thank you for the correction and the detailed history. I wasn't aware this
+> dated back to v2.4.6.4. I'm not part of the exfat group; I simply
+> encountered a bug that 1bb7ff4204b6 happened to resolve in my scenario.
+> The timeline actually illustrates the exact problem KStackWatch addresses:
+> a bug introduced in 2001, partially addressed in 2025, then properly fixed
+> months later. The 24-year gap suggests these silent stack corruptions are
+> extremely difficult to locate.
+
+I think that's a misdiagnosis caused by not understanding the limited
+circumstances in which the problem occurs.  To hit this problem, you
+have to have a buffer_head allocated on the stack.  That doesn't happen
+in many places:
+
+fs/buffer.c:    struct buffer_head tmp = {
+fs/direct-io.c: struct buffer_head map_bh = { 0, };
+fs/ext2/super.c:        struct buffer_head tmp_bh;
+fs/ext2/super.c:        struct buffer_head tmp_bh;
+fs/ext4/mballoc-test.c: struct buffer_head bitmap_bh;
+fs/ext4/mballoc-test.c: struct buffer_head gd_bh;
+fs/gfs2/bmap.c: struct buffer_head bh;
+fs/gfs2/bmap.c: struct buffer_head bh;
+fs/isofs/inode.c:       struct buffer_head dummy;
+fs/jfs/super.c: struct buffer_head tmp_bh;
+fs/jfs/super.c: struct buffer_head tmp_bh;
+fs/mpage.c:     struct buffer_head map_bh;
+fs/mpage.c:     struct buffer_head map_bh;
+
+It's far more common for buffer_heads to be allocated from slab and
+attached to folios.  The other necessary condition to hit this problem
+is that get_block() has to actually read the data from disk.  That's
+not normal either!  Most filesystems just fill in the metadata about
+the block and defer the actual read to when the data is wanted.  That's
+the high-performance way to do it.
+
+So our opportunity to catch this bug was highly limited by the fact that
+we just don't run the codepaths that would allow it to trigger.
+
+> > > Initially, I enabled KASAN, but the bug did not reproduce. Reviewing the
+> > > code in __blk_flush_plug(), I found it difficult to trace all logic
+> > > paths due to indirect function calls through function pointers.
+> > 
+> > So why is the solution here not simply to fix KASAN instead of this
+> > giant patch series?
 > 
-> Andrew, can you make this change and also drop Cc stable tag?
+> KASAN caught 7375f22495e7 because put_bh() accessed bh->b_count after
+> wait_on_buffer() of another thread returned—the stack was invalid.
+> In 1bb7ff4204b6 and my case, corruption occurred before the victim
+> function of another thread returned. The stack remained valid to KASAN,
+> so no warning triggered. This is timing-dependent, not a KASAN deficiency.
 
-Done.
+I agree that it's a narrow race window, but nevertheless KASAN did catch
+it with ntfs and not with exfat.  The KASAN documentation states that
+it can catch this kind of bug:
 
-> This needs to be a hot fix, as Vlastimil said earlier.
+Generic KASAN supports finding bugs in all of slab, page_alloc, vmap, vmalloc,
+stack, and global memory.
 
-Yup.
+Software Tag-Based KASAN supports slab, page_alloc, vmalloc, and stack memory.
+
+Hardware Tag-Based KASAN supports slab, page_alloc, and non-executable vmalloc
+memory.
+
+(hm, were you using hwkasan instead of swkasan, and that's why you
+couldn't see it?)
+
 
