@@ -4,82 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F256CCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 01:56:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6215CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 02:00:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A76A8E0008; Tue, 11 Nov 2025 20:56:07 -0500 (EST)
+	id 05D028E0007; Tue, 11 Nov 2025 21:00:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929ED8E0007; Tue, 11 Nov 2025 20:56:07 -0500 (EST)
+	id 034C58E0003; Tue, 11 Nov 2025 21:00:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 819128E0008; Tue, 11 Nov 2025 20:56:07 -0500 (EST)
+	id E8C738E0007; Tue, 11 Nov 2025 21:00:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 66C0C8E0007
-	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 20:56:07 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 095A2160283
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:56:07 +0000 (UTC)
-X-FDA: 84100289574.17.4188921
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 13E74C000C
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:56:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TmYpnGV3;
-	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D10908E0003
+	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 21:00:41 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74B7A1402DD
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:00:41 +0000 (UTC)
+X-FDA: 84100301082.12.4202021
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C8DF720014
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 02:00:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cjqeAGmM;
+	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762912565;
+	s=arc-20220608; t=1762912839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UBuA1/Lj8w03kZCEoicnR0iXOgCaZCHxQwdHH9zt7bc=;
-	b=xssEsNy6R1yQs7N0udKyVjxPPMFVsXzwfvbVCbzIWEkMAABbOj+83Q2RnnRFsxBu+hSFyc
-	EL128fecU2gSJsh57gPJJMKyhMqQvZcA3AmUsG0VXn8Q8/oIQFk5w19EEhkeeqkNhjcYdh
-	OSF0Yp3LaV9uAZqeQj7hM19GUIgQ5p8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762912565; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=iUK9slEDktZYgXNEXqA3TGoJ4r8MnqYkr4EAB/HuO4I=;
+	b=5iZj1g3T0Qk9fbNLga+HXmFQucrKJwy5qLDvlnSa/sSILwG+MJrfOFC4+dr7CCaVXNNfLI
+	r5evYWG+a1d5o6F4psX7gQIEAEz1vxtahNYdPoYTNJ2Q8yaKwqcLDO066GpROLNCWIgjCY
+	Jv9/XoT6522IDJcxwvr1AeRExJyvBa8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762912839; a=rsa-sha256;
 	cv=none;
-	b=7QcyR4jATbL1UWmpIttnLmIdhK2p8nOMhxolKkA+qbM7TNkNtrwd8kRg6oseAwp+FMu90L
-	YsGQLEEiWoMN1i3rC7kF09mJ2qbM3DQ84hZda5SCwE7qu+gHj62WEQSQceNPjclvvgumnT
-	34cLdPxHMq8hmXjHgfRz7KWFWE0HENM=
+	b=NY0o3blFA121mZe4BNnlLD9QK3ieA/OjeYbjYnsRZ479Of428OZelq8f9EcjaICOEYJy9R
+	ev1OF2VVaDLB2lQsrFCVqAHzmWXBfWShahTISjVCJe5m3aaV+90qW+j5BuLX6bd0YAf66X
+	S3yKRIQChaa8ms9cXdRGdPGrfFUuq90=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=TmYpnGV3;
-	spf=pass (imf10.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1762912561; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=UBuA1/Lj8w03kZCEoicnR0iXOgCaZCHxQwdHH9zt7bc=;
-	b=TmYpnGV3WYTJdOO2ZyOguEC8WXRfQjPWw58fCUDnRZL+lMcJddHfjnS5EoSMLgfxpkPqHtWzzfaObmZuagjN7Bv3C6UM7gdnT4DE7ml76IKNR9Eq1c2ISFiw/ViekHkaaAw4nJXjlkee0oIfHvHPIAfeV0WobtoFl0M+Hp8B6tE=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WsENh76_1762912548 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 12 Nov 2025 09:56:00 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org,  Andrew Morton <akpm@linux-foundation.org>,  Chris
- Li <chrisl@kernel.org>,  Kemeng Shi <shikemeng@huaweicloud.com>,  Nhat
- Pham <nphamcs@gmail.com>,  Baoquan He <bhe@redhat.com>,  Barry Song
- <baohua@kernel.org>,  linux-kernel@vger.kernel.org,  Kairui Song
- <kasong@tencent.com>,  stable@vger.kernel.org
-Subject: Re: [PATCH] mm, swap: fix potential UAF issue for VMA readahead
-In-Reply-To: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com> (Kairui
-	Song's message of "Tue, 11 Nov 2025 21:36:08 +0800")
-References: <20251111-swap-fix-vma-uaf-v1-1-41c660e58562@tencent.com>
-Date: Wed, 12 Nov 2025 09:55:48 +0800
-Message-ID: <87ldkchv4r.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: h8eyshn1qd414u4u7sa7o43e7wbkpixy
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cjqeAGmM;
+	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b72134a5125so57353666b.0
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 18:00:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762912838; x=1763517638; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iUK9slEDktZYgXNEXqA3TGoJ4r8MnqYkr4EAB/HuO4I=;
+        b=cjqeAGmMAJJTfHo6JhzXueZdDrRpV1q7rslsLAU/iLE2G/xE0O8ev/ymxd5Z03EaBh
+         IyJ8LD9NmUq3Krs2VsD60vBoBflRla/Ukl9a5o/inA6+lSg36hHixR+xtnQJzi9Q/lGc
+         6Xb0nNTtJ5RZUKo9ueyZXNxEbXA+pv5TPNWzb+Gzf8RYShEbguQq5DrWGq0/X1JKZhOK
+         ZtPJBi2Ocdl7DWU8ePC2WrMui8pc90PhXV+h0wZgEFoePDBBfrHEkVMuedLM+38y7sOf
+         UmGEG/S2WgOUtzK78LpWqVGNbMYE/Bb/woZpXGmvMvijf9oZdUstQpcLncGOOT2FUtQo
+         FLSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762912838; x=1763517638;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iUK9slEDktZYgXNEXqA3TGoJ4r8MnqYkr4EAB/HuO4I=;
+        b=BlumMNV91hGEjds9q4U+RZIAxkegh/7m2aRB0x5l2GkDtBpT+TpXJT7qNLmn4+aeTS
+         OhgdKK1rXqzUA+PcrO7rrvijqkIXHnvDiETP0oVQWY0h9W6S3gbDGaHaaGXfNtY5I3s9
+         iY0NY8EUlnmi59YjlJBSIMrR4hvS4hJqa6q+fPaqAks3QklCqUFbPl7ceTRkibb8uZ30
+         ei+luwUCeX0GgRSIF0MZhZwz/SrPLaCXrBRdpCaogSQkwyXSIJ60v+1gR4/4A8rUhNzN
+         fXBmQfMcdMqMC+HD3ML9TTIblG+/O5Z4ev+oAVldWpY3YN8k3Oemy9gkO7iUqO6b6qLT
+         u7TQ==
+X-Gm-Message-State: AOJu0YxFp8cYmSfaup2t2So99QG4pWXAq9mMMqN0088iTENg8nY49IZL
+	rTciV3i+zwsxt4FTI8fC3a0Q7T+4lv+nm7XlBqlkG8bUeIE+/2pazV7b
+X-Gm-Gg: ASbGnctVuy/lxpbVh2pGE0Bwft/fWNFaYWKxGJSor7iye+wPzRJGxRDYcbubvCuHUd9
+	AIPdJqS2v0ZK1qE6yy6f88fCPVO14wcN2cN7xXV0vZMOHynQNOVPU+2xjtV1cZalLNEtspNcIH0
+	LPgPr8nWFiUdhkztd0+QLFDitAORGdjaF4/C3fuhzJs8y/zwtflFi83bc9RL+lb7NZrg3TcNS/D
+	JcsGiGa3WGPSTPawDaMNlvvhPrh70Lte+j5CHLBbovrDTRdZ3Ew9Ng+0pqB45gPwbhcrDOfkQUh
+	WJ8NBb9BeXYYRWpgYgJOHsH8HjnmjHiwIPEup85/5672cLXGVJC2Ic+S5rLR+4efNUHlkuknF4H
+	02a7PYRJIWZvj5EksaSaEzwG/tNNBQ1WmROF2iUKPYB0vXHPe3v31fHzMO7eslZl5PmGR5yU5oQ
+	ipCK6I5jWochWmkw==
+X-Google-Smtp-Source: AGHT+IFTFwMldvhG+0xBGnMSROt2guV9IQraoVk7NXSiRsy6N3Pv2nwdrN6Hej9qVVEBDhKX7xd4aw==
+X-Received: by 2002:a17:906:c109:b0:b4e:f7cc:72f1 with SMTP id a640c23a62f3a-b733197e9a2mr123822666b.22.1762912838121;
+        Tue, 11 Nov 2025 18:00:38 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf9bcd59sm1457896466b.53.2025.11.11.18.00.37
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 11 Nov 2025 18:00:37 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH] mm/khugepaged: continue to collapse on SCAN_PMD_NONE
+Date: Wed, 12 Nov 2025 02:00:31 +0000
+Message-Id: <20251112020031.25350-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C8DF720014
+X-Stat-Signature: 5wm5bmh5b9wkh4pbcuhusxnrzebchi4k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 13E74C000C
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762912563-262925
-X-HE-Meta: U2FsdGVkX1+4g53UF+dPRsNGYeTdHtKi0XTVq+byiCGUn1EvosGvLyPlnw2iUryq64KxnEGEJrN505rM+iygEdm/t5oY/vgupeCHOcywhMJsgpCkyM6Vj5qkrdVmBWBpfnMjB4k7wsLhnUCe48U67MaE4Iq2yHMxV/4eRpgDQazk7rk0+sWfr18xcg5I80hbWjQVqfFG5i+z53ivgmtU6jCwjuaCTrBH3uqkOQES9GQs2meQ8OE/lS7apn6B+tGvJwA1sSO/anDZJ0wQ3AIJstnPTdP4VuJZGEqlyIsZectp0obij/743puAx8OLave0uSBzKp1Ye8CagsLphWlNUoEqdQleokgk/3Zv1KT8p8IHhKs8AfQIT2twnun9F2NrPxSvLK3CR+0HawZipYAxGv0SWIyS5bXJZQ3uqgrjGSRH47EwxSKnKp8od8QOEc61SizyUQiFFqOwqstWisKkC0APVImZROAkSqnRaFDhL5KMDLxWDpTng/D1I9FpmakP01eRUQLn4azf9/YBKl+mU4AglfF/YRof0TGENoLnpqknlIhWKb+3MPgfJYxX1t48cNB72V8OCrIDfd6wgV+DM03O/+s1tBdcHtHkzJMNc1+uCA76oydNeJTaRKbJrj79JZWsYqVC2YV3Xkn9xI7KCSPsCtG3QD1WlrylLNcIAG4e2+Xp3XErcI44bJaRHA9dmJQpD0XiFn2yijzqHqgtcL4iCj8Hzjx8zH8xusUB13Kny2mXioWgo5YXBJk8gGg3/Pv8UoTCFBGvXrorVwKF6QSghhu8nkGdyUrIiUzcbglt/A17l15HgRTkk0chk2FqCqd66JP+9Jy69kD8mfqOkgVM4TlipVT24Cge0jZ9gfiN7ao4usKbLixE07lexKbqono3aV09bXbPfRHbrllAwdTdahl+wBQyB9Gd/HhAIDQ0csAD1WUR6+4QJLnhcZwggkTm+O+I0xid5djDb8p
- mJxbgtXl
- T5q91xuZdM8d5XPEgWdTmfxX2u+e6iCcuwXs1Gagbt5VZBoPKAFMLI5zO2mH0vKRSP/ezDDSsBoT7Lr4a3XKJghT0NyUL0AIbLIKvO+jYwKaohiydTcAqf8/g5tzK3qCvgxi5Gb0Bkas+7BpcjPbu/oovSFhcwOusvwW1V2Q1q14NVlEnlhCANBq2iHzZshJLCACvu0cWfXFTUS3WR8kqbbfu8VEVDtw0tiAR+gsTqYkbvkjMM7EFgVE+sWeIuRbQFmQCsINB31ta7r+b6cpkNdsSy3KoMd41/tYMvxT4ByCXyfkoVoBkcz37mD7C4nl7c4QO7gaJkIDL94s=
+X-HE-Tag: 1762912839-598266
+X-HE-Meta: U2FsdGVkX1+GCdaljy/KBNBa6XB6fy7l4SAG1vCEJd7oiJSldMWGAW4wDPspc+4bgk570eqMEiYaDu4/BH3rEznqTOfxV0b1k8R+nmEW/Y1rkj/tuY24tZ4+jYV/75EISpPiVtdaLhLdwZX9FJuUituaHASr6LZGHnLZIHEe+EAMx6Ycnwl4TRcLWOwrpm7H3M/F5hWbzR9icepSHHAVqQcEhkxD9krCnQIWvo+4VLJEoEcVUVRwVG5tPJlV7nvJEtbpTB2GeDe7z6fhr17XbxMOMhgFN7BkazH7z46lG2ZOtj5Jgk+Xz3WKLpHPIyYgxmPCafkz9CPFMLcMozf/hSCE1DmXMoHmVLiYT/Dpu50TqZNKTtc0IMwEyPhnhCAGcXl7W6kAVcL+O9rmnaEGv9c+QMy/wawQSmVqQMESxGoU3zWJZyDGPozsOW0llfl37Ua7ZANXSB5oblJm4sWvGGY0cGkUj1EWhi+KTLj2Pl+hr+CqI6cfQO+q7s/IXPlcuDkS96ZJnKKygwJ3Jg2H4TnHuFVrpTv9esoz8QQMaH6w6YVshYYTGah2WMGGjwP8xF4uJMCKt92pD+WDDNPaiUEfYoRny0Ph6t2r9HfITUaK3FZDHOL1Gcqp829UzPVRaxX8xMVrkOvrc4nsA6tQ7LoNCUJXCc4HHOrGX6DVcMgS/+zZrB8TNtfM//l3FCSYXQ/r0vWDxZbmIaP8QfwZ/iTDf4hpw1attj4l2oancwCZ8uz6HKI5yrPZoA3OcjzPmZBFjSKrM7WwJX4iy/N6OMqocmwJGJ6w12vV9jdS4xec1ggmKem0dBp7ysr6gdScwhyWdncsyRocivM3uytsHgkbgp/B4HqUhmBy9rOfHF8oagSxLXd/pzXqpJG2hnfMAMiktLZGw8esUuwOAC/mvMw8viQWeylV9ZivCJm+JgIkqSIvr0cE77+ZsrJX4TgAJ8bqYL/PPO/KkJelVkx
+ 65UIdeKH
+ P+7BWsyr+HbRsITjc++qaZrRKnY8JRS69KMSMti1Sgyq9u7cc3vcqh0DSMtzOAP6+Z2YCVj1eUHnuhV3dYruBwa95e6ML/n8lZxr5Usmso62dqNjo73XCW0tKfFSypxcudE4dsxu/ulCdxhweOkSyOiFjFH9IqBJ6Rn74F87RRWs9LXVy+U/7hwnqgkLFbWCA8iYJ4VV3dlFdwwnKPq5e6D4bE3P7Qhyz7zvBsEkiVAptkBfrHb0fjRszMzgIcw/UB1P04kDxqftc2FLfCkVI1z3xFM8NIr2ke3n+ZSsgen/vA9la47ruKcQ+xLmwzem7U3rs1MAGMXovvCzqZ4WodYQSJMLpP3V3Obtof6r3dOD0Dp8l6qfrlSjeSz0MvQwcLWYCC+VU9upLJQmniOINa4/sVfNkcFCP9cRIm33N9Eu8UGPrHFo/lezanxD+KoB2tj1RGOjs44dFWzA7gTzgM0mHRls5lsf7MMrV2jUd8KPePAGLrcHnRgE80LOOhlO3sYJX3sFnGoYXo45LKfJ4ED47zeKnE6COCh2Fj8SJSVut+i8LcXIbLGtP2aQxWMG0AmFcUzKsZhnPsyExFCpHIx02QjS2namjctOc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,96 +121,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kairui Song <ryncsn@gmail.com> writes:
+SCAN_PMD_NONE means current pmd is empty, but we can still continue
+collapse next pmd range.
 
-> From: Kairui Song <kasong@tencent.com>
->
-> Since commit 78524b05f1a3 ("mm, swap: avoid redundant swap device
-> pinning"), the common helper for allocating and preparing a folio in the
-> swap cache layer no longer tries to get a swap device reference
-> internally, because all callers of __read_swap_cache_async are already
-> holding a swap entry reference. The repeated swap device pinning isn't
-> needed on the same swap device.
->
-> Caller of VMA readahead is also holding a reference to the target
-> entry's swap device, but VMA readahead walks the page table, so it might
-> encounter swap entries from other devices, and call
-> __read_swap_cache_async on another device without holding a reference to
-> it.
->
-> So it is possible to cause a UAF when swapoff of device A raced with
-> swapin on device B, and VMA readahead tries to read swap entries from
-> device A. It's not easy to trigger, but in theory, it could cause real
-> issues.
->
-> Make VMA readahead try to get the device reference first if the swap
-> device is a different one from the target entry.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning")
-> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
-> Sending as a new patch instead of V2 because the approach is very
-> different.
->
-> Previous patch:
-> https://lore.kernel.org/linux-mm/20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com/
-> ---
->  mm/swap_state.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 0cf9853a9232..da0481e163a4 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -745,6 +745,7 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
->  
->  	blk_start_plug(&plug);
->  	for (addr = start; addr < end; ilx++, addr += PAGE_SIZE) {
-> +		struct swap_info_struct *si = NULL;
->  		softleaf_t entry;
->  
->  		if (!pte++) {
-> @@ -759,8 +760,19 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
->  			continue;
->  		pte_unmap(pte);
->  		pte = NULL;
-> +		/*
-> +		 * Readahead entry may come from a device that we are not
-> +		 * holding a reference to, try to grab a reference, or skip.
-> +		 */
-> +		if (swp_type(entry) != swp_type(targ_entry)) {
-> +			si = get_swap_device(entry);
-> +			if (!si)
-> +				continue;
-> +		}
->  		folio = __read_swap_cache_async(entry, gfp_mask, mpol, ilx,
->  						&page_allocated, false);
-> +		if (si)
-> +			put_swap_device(si);
->  		if (!folio)
->  			continue;
->  		if (page_allocated) {
-
-Personally, I prefer to call put_swap_device() after all swap operations
-on the swap entry, that is, after possible swap_read_folio() and
-folio_put() in the loop to make it easier to follow the
-get/put_swap_device() rule.  But I understand that it will make
-
-if (!folio)
-        continue;
-
-to use 'goto' and introduce more change.  So, it's up to you to decide
-whether to do that.
-
-Otherwise, LGTM, Thanks for doing this!  Feel free to add my
-
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-
-in the future versions.
-
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 ---
-Best Regards,
-Huang, Ying
+ mm/khugepaged.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 7e8cb181d5bd..4c2217076ad3 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2835,6 +2835,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 			goto handle_result;
+ 		/* Whitelisted set of results where continuing OK */
+ 		case SCAN_PMD_NULL:
++		case SCAN_PMD_NONE:
+ 		case SCAN_PTE_NON_PRESENT:
+ 		case SCAN_PTE_UFFD_WP:
+ 		case SCAN_LACK_REFERENCED_PAGE:
+-- 
+2.34.1
+
 
