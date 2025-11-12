@@ -4,105 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD53CCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B841CCF9E3
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 15:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84DD08E000B; Wed, 12 Nov 2025 10:42:03 -0500 (EST)
+	id 78A538E0013; Wed, 12 Nov 2025 10:42:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 825938E0002; Wed, 12 Nov 2025 10:42:03 -0500 (EST)
+	id 73A9C8E0002; Wed, 12 Nov 2025 10:42:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73AA98E000B; Wed, 12 Nov 2025 10:42:03 -0500 (EST)
+	id 629BC8E0013; Wed, 12 Nov 2025 10:42:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CF418E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:42:03 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2EA5E160583
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:03 +0000 (UTC)
-X-FDA: 84102370926.24.CECBA00
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A7AA3180009
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aVg6vKow;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962121; a=rsa-sha256;
-	cv=none;
-	b=fZvpwVkSnv1iu6JwDdd6GWuzMiHgKx9i9k9lDqmMllRq7OaQ+caihp99qtQz6iAzgaFZug
-	SCihfEA//wUhCGRJB8wAwsf1Xjlvg/68KtpGJjtCFB6nyW+sBMhXuk9+tR8y8Cm5JFEIRf
-	+JLnyg9j6WUU4YtZeSNA3pBqjj0oaLQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aVg6vKow;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D0F28E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:42:10 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEE711A0573
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:09 +0000 (UTC)
+X-FDA: 84102371178.21.149E57C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5D5384000A
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:42:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="R37Sx87/";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762962121;
+	s=arc-20220608; t=1762962128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4i1fZuHcSX4YPrXwiLX6kBr6QM38WuQPVodqsUnZyh8=;
-	b=y/Jr6YhKlBfRyM9ZBTQpt2ZYFRww//oFc4b3wWwoGz1maMwNGvx/wx27Zy41Gs3/vFWB2B
-	RfeBGAgbsItWsh0VooiNs2l4wJjEqiL2wfYv2HwNDJb9LlPgv4D1XXrkiHDNNj89cKaSs5
-	c5re/hxlWfpG6kin7jR9KnJR06s95vA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Qmd5pLCXiY5TZRrtHuIC7PxKw2zPFS7Xe/7+jvfACA8=;
+	b=RizWTjLk7+TqjECMYVQWoH3witrluykyS1axtTNoyDHXKFH31JA6Pawlb3A6hhcPjWyyhp
+	uwt3bLCBniJRcp/gdQTbmEi86WXcvSJo7zu81mkG/kdo/IdL0tLxhyuNfKBu6JmH3yYTXG
+	TWsG8abgUjDSZy2h4PVnnlNCwnQL24A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762962128; a=rsa-sha256;
+	cv=none;
+	b=oAdd06qiJGYjtf6oUm8RrK/mmnG6iatsgwUdnSzucq1wHXfeYCBh4FMtTU0jCXgl1xXb49
+	rsxSmgsGKD9opifT7Ty2ep9G0HKt1Uv390rqwxddxXz7ZGv+gOATBeLS9cw+v8Jhc0qeoU
+	pZFPMKgKEXewWAeqWQfCWNzc/MNMAHk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="R37Sx87/";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CE982601A5;
-	Wed, 12 Nov 2025 15:42:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88B5C4CEF7;
-	Wed, 12 Nov 2025 15:41:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2B5AC40C47;
+	Wed, 12 Nov 2025 15:42:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B4EC19423;
+	Wed, 12 Nov 2025 15:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762962120;
-	bh=RV6XEf4RD0FSD3rZ6zn+ujLr2U2ziSUdSWBe0aiDwBo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=aVg6vKowroSd0N7vGnLb3piydnhBDNsCjtJovexqZWBWkXsTe/9ohWwJqVFUVtVxE
-	 NVzabcponIiM5dP/bhvobHVssD8SIjVhM6txqc/vtF+QVyrQDtidaC6cThCAGxrjxE
-	 kujjKtMP0CxabrtCiDdqjKhH6GwOG5xW/Z2H1JydwtQfi6hILw9HkdrSZ+zisSOkHf
-	 6/69xw2Wy7QKZtnhqHr0ybrz9ev6KFD9sbE1vLxtlRwlG+CR7HrQH2X0yZtruP5ogx
-	 xJrM2cVPZyMC0cpoX3CyrrKwx5K0rNs6drjnmCug3F2Qj/wXGPp7CVFczHXYheaFDG
-	 WmCxhH83o5l9w==
+	s=k20201202; t=1762962127;
+	bh=NiZ7ea35pME1fM3maEI5aXEnDEDvdt1SSghBc/AiFyk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R37Sx87/i8ZHQBhoTFE3dFsIlhXKSfafQa9RFcrnozAwKjGlQ6I43Gj+nu9r3YpI1
+	 wZJuXfNsCUjC5eZyWKbnO5syAAPhPOKJabI09QgxpnHGorsMMlgnyOKVbdwhnUS63I
+	 ONJdbjKKxW3SWgYr6p9SSeI/5zfJWBN355f90Acup8ovlYRmnS3yayYk1LT5pXP8Br
+	 Ewgc0WKL3TTUXbHtqcJb+uioWEM+TVWg4aBVN9oCiR4ovVv3IWjz/JkFd/EUnK9hTp
+	 P0UCtkGfo2OiALXDr5eMNuDw4caLVt5Mn+NZCCPvg8I5x+7XgkLkOQWt2Q8Nt25VSP
+	 mc6lX1AxKFFuw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Bill Wendling <morbo@google.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
 	Justin Stitt <justinstitt@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org,
 	llvm@lists.linux.dev
-Subject: [PATCH 0/9] mm/damon: misc cleanups
-Date: Wed, 12 Nov 2025 07:41:03 -0800
-Message-ID: <20251112154114.66053-1-sj@kernel.org>
+Subject: [PATCH 1/9] mm/damon: rename damos core filter helpers to have word core
+Date: Wed, 12 Nov 2025 07:41:04 -0800
+Message-ID: <20251112154114.66053-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251112154114.66053-1-sj@kernel.org>
+References: <20251112154114.66053-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A7AA3180009
-X-Stat-Signature: 3tzzbkdshep87k1i5p8dtyx4kcxrim6q
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5D5384000A
+X-Stat-Signature: pj6idyxscuq165neyy8t33dh7xyt8r37
 X-Rspam-User: 
-X-HE-Tag: 1762962121-15348
-X-HE-Meta: U2FsdGVkX18z09wgbgPIlqZsohNR5lRloRw20qRd/ICVqbfP8Z2WoYgZJc9iHl634axe1T4u+s3Gzit/tEoObbafzMmvES0qQg0XgP1dNzqTvYO4CyKSPFyGv/gzRCGJBjCexiG/27lGYOuLM7lcd7x5SFWczVuq4FMfjnNfmYuKQ7WyPtOCZJ0MBYL22d96VOmqe7m/6cpqs8kcOXhAVdmH7CJ9UEdG+5l4mxE3KDZ0uczi31/jTh3Uk6INF2N17DcdOlXsivgklr4gPAoNNfQ5/q1DRKOU5mvcLafTZidrKGUwQVtsPtvUyADNlRBFd+P8zLBjaGUVOD7u2EmXK2vcAugbT3Gx5pQ3fHuNBS0M3zD2Xdm7Yj943JCYTWyshoHTLHrX+YPgaEFKX5v52d/UXmvgaNJQqQ9IOuh7qkaw9SQyPPNDBxTvMoDRU3xnLh+lpKmRWDEf7+TUnBp40cVVmRf8IeqUgUzQBhR/9bd9K6lZ1UrIYm5z1iFuViwiS/y//DLznGubnizymVsRwDGmiPqloGtBondIt+OP6DYPCNVKft7l1+tYpRqKhHSrPMwfq/zAbyLpe/+ZtVhiqMVctpCngqLIZ3e/EFLCstd62Fh0EbUcAJHWd4LsTRVhoOduOYqpyb/YW54V5L9BtRIbm6iyWIfJVo+57q6kG2WExybGa3a/ryYGwrm1wh/4hDmY5cEc9/Q8QW9S4F9Nw9xl8RmEAKvbNtoet2Bo81hQAGs60Ol01h52oxp8EQy5KOvbutaD/hhgOKL3gE0hbmJfII2xP6y8YXSwO3ePflMhqj+iuFUm5lMeuHYTPaZgoFujsa1x4Jy7ClHgYD2wBZeItFUde/4NCkyzWgLcHsF/vjDn7IAeWYZLHsBvI3ZiuG6HOH3juOPTB4xgRabxvZ6NLHL/tOxF6nbYcWxWsutAZPMh+rR0EA1jGhZkR0iornsllKU3VjIkrit8lv6
- RcPGuhQy
- 8S4CPRrqdXnZMKZ+2GW/cly/mew7FliKSxnwKvRBlFlEcRQ4q/S3bJgF72miyCbLDh74jtu5Ryamk6dls8Z20lU5DNlFc7ZWvu8f5x5HOK91FPSbNJRxtcbGvTHq/0Jzr2I6j8km2sIGCPRyR95RdSFfxbzegtEGkNDKtm5hVOqmVa++dMueYbfU3PGw35i4Ft7nrBILliOwj9nDOvNi7HUCr8fyOLoSlpt5crNY5Gv3ciGCubYB4LeOkf6BM+D97yZJkClms8AHom0fas9sy1fu6y6IE8jrFtWN5
+X-HE-Tag: 1762962128-609273
+X-HE-Meta: U2FsdGVkX19Hk1fbsbHib0cxF+1AIunkhG+SHYULmYVXgoFpyzWhr4VlcM+LybLIff2UPv1YXi7kPKJxX8Df4FvhEIkQr82bbRks34Xyw4ufAl12nfH7Jyhqke9wQ4Ga3QnFpPN6A8OyR/yIfGqnld820OX8C0SUlK3UwFMzI24lEfzUuoLxCmtwP+meeZSMkkwkEUbNOhBzVtSFgml+R768ztCC9Gt7I4+RkV4l5U1Z9tXRE2SyvRPJM8CVFqS0oOOntvkDLfjHqq726CtFGL2i0I0TMaV7MYDUGN6x4goxra+YklYIJp9vy9Lf9xa6WQI+HWAHcA2w4cFs7YeFdRV8nX7rlgecBNGwqYXKcXS0dX9AV45FzKYzbq8E+C6uw+N3khfIz8A5ofTMuhNXeNU64OHyf7KOM5lU8tNQ/h2J26ICSzcdlrUG64n0UGHuX+cJALer7cSMXAJQfBR/d5jv0A/IozgdpnWV7pyhotqswRHmIna80vMUJihGZohjM/eHl116O7r26+LLvXtN85CDkdtU0IpP69dC/1NzWO27IOQdhGjjIgZBAc6L4lj8TOe4lUv7uui8U46tiQQHq0PCwFCGg+/k8RLNElzO+4+om+AK6xTD4pcH29k9H3GRwVGCrniTdXWYC+mo+W7qeXupEgfpH1a+/2rlhIh99uI2SG4QWy2K0hJHzBvbjdUH6SeKjOq46C97F1GymhjWaKKDKIsNr+Lfr5mznnUVP0glv3G6mGUTxgrtGLCkrmZxB4/Gi2LSgVi/nydOSn7IuKWBpJQKZL1TY3YvTHNhy5tcSb8loBTxQ346MqBvbsxp8uX4sAM1ZW4x/0EuvFVVO7b3lnzN0aGYgd8ubZ48yNe/BwY67jtm327UHYKQU/pfVUcOLqTTNaDvnyDwON6g+e1wwcbgnSmNk6WyCFzQIHdTWTqo4fTWA2zTuJAH1AwtqGL3NwkrUwJXiqHmIoB
+ 4Z7HyK5k
+ 1/vC4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,46 +99,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yet another batch of misc cleanups and refactoring for DAMON code,
-tests, and documents.
+DAMOS filters handled by the core layer are called core filters, while
+those handled by the ops layer are called ops filters.  They share the
+same type but are managed in different places since core filters are
+evaluated before the ops filters.  They also have different helper
+functions that depend on their managed places.
 
-First two patches (1and 2) rename DAMOS core filters related code for
-readability.
+The helper functions for ops filters have '_ops_' keyword on their name,
+so it is easy to know they are for ops filters.  Meanwhile, the helper
+functions for core filters are not having the 'core' keyword on their
+name.  This makes it easy to be mistakenly used for ops filters.
+Actually there was such a bug.
 
-Three following patches (3-5) refactor page table walk callback
-functions in DAMON, as suggested by Hugh and David, and I promised.
+To avoid future mistakes from similar confusions, rename DAMOS core
+filters helper functions to have a keyword 'core' on their names.
 
-Next two patches (6 and 7) refactor DAMON core layer kunit test and
-sysfs interface selftest to be simple and deduplicated.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ .clang-format         |  4 ++--
+ include/linux/damon.h |  4 ++--
+ mm/damon/core.c       | 14 +++++++-------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-Final two patches (8 and 9) fix up sphinx and grammatical errors on
-documents.
-
-SeongJae Park (9):
-  mm/damon: rename damos core filter helpers to have word core
-  mm/damon: rename damos->filters to damos->core_filters
-  mm/damon/vaddr: cleanup using pmd_trans_huge_lock()
-  mm/damon/vaddr: use vm_normal_folio{,_pmd}() instead of
-    damon_get_folio()
-  mm/damon/vaddr: consistently use only pmd_entry for damos_migrate
-  mm/damon/tests/core-kunit: remove DAMON_MIN_REGION redefinition
-  selftests/damon/sysfs.py: merge DAMON status dumping into commitment
-    assertion
-  Docs/mm/damon/maintainer-profile: fix a typo on mm-untable link
-  Docs/mm/damon/maintainer-profile: fix grammartical errors
-
- .clang-format                                 |   4 +-
- Documentation/mm/damon/maintainer-profile.rst |  10 +-
- include/linux/damon.h                         |  14 +-
- mm/damon/core.c                               |  25 ++-
- mm/damon/tests/core-kunit.h                   |  59 ++++----
- mm/damon/vaddr.c                              | 143 +++++++-----------
- .../selftests/damon/drgn_dump_damon_status.py |   8 +-
- tools/testing/selftests/damon/sysfs.py        |  45 ++----
- 8 files changed, 121 insertions(+), 187 deletions(-)
-
-
-base-commit: 4e9ec347bc14de636aec3014dee3b5d279ca33bf
+diff --git a/.clang-format b/.clang-format
+index f371a13b4d19..748efbe791ad 100644
+--- a/.clang-format
++++ b/.clang-format
+@@ -140,8 +140,8 @@ ForEachMacros:
+   - 'damon_for_each_scheme_safe'
+   - 'damon_for_each_target'
+   - 'damon_for_each_target_safe'
+-  - 'damos_for_each_filter'
+-  - 'damos_for_each_filter_safe'
++  - 'damos_for_each_core_filter'
++  - 'damos_for_each_core_filter_safe'
+   - 'damos_for_each_ops_filter'
+   - 'damos_for_each_ops_filter_safe'
+   - 'damos_for_each_quota_goal'
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index f3566b978cdf..6e3db165fe60 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -871,10 +871,10 @@ static inline unsigned long damon_sz_region(struct damon_region *r)
+ #define damos_for_each_quota_goal_safe(goal, next, quota) \
+ 	list_for_each_entry_safe(goal, next, &(quota)->goals, list)
+ 
+-#define damos_for_each_filter(f, scheme) \
++#define damos_for_each_core_filter(f, scheme) \
+ 	list_for_each_entry(f, &(scheme)->filters, list)
+ 
+-#define damos_for_each_filter_safe(f, next, scheme) \
++#define damos_for_each_core_filter_safe(f, next, scheme) \
+ 	list_for_each_entry_safe(f, next, &(scheme)->filters, list)
+ 
+ #define damos_for_each_ops_filter(f, scheme) \
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index a14cc73c2cab..d4cb11ced13f 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -450,7 +450,7 @@ void damon_destroy_scheme(struct damos *s)
+ 	damos_for_each_quota_goal_safe(g, g_next, &s->quota)
+ 		damos_destroy_quota_goal(g);
+ 
+-	damos_for_each_filter_safe(f, next, s)
++	damos_for_each_core_filter_safe(f, next, s)
+ 		damos_destroy_filter(f);
+ 
+ 	damos_for_each_ops_filter_safe(f, next, s)
+@@ -864,12 +864,12 @@ static int damos_commit_quota(struct damos_quota *dst, struct damos_quota *src)
+ 	return 0;
+ }
+ 
+-static struct damos_filter *damos_nth_filter(int n, struct damos *s)
++static struct damos_filter *damos_nth_core_filter(int n, struct damos *s)
+ {
+ 	struct damos_filter *filter;
+ 	int i = 0;
+ 
+-	damos_for_each_filter(filter, s) {
++	damos_for_each_core_filter(filter, s) {
+ 		if (i++ == n)
+ 			return filter;
+ 	}
+@@ -923,15 +923,15 @@ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
+ 	struct damos_filter *dst_filter, *next, *src_filter, *new_filter;
+ 	int i = 0, j = 0;
+ 
+-	damos_for_each_filter_safe(dst_filter, next, dst) {
+-		src_filter = damos_nth_filter(i++, src);
++	damos_for_each_core_filter_safe(dst_filter, next, dst) {
++		src_filter = damos_nth_core_filter(i++, src);
+ 		if (src_filter)
+ 			damos_commit_filter(dst_filter, src_filter);
+ 		else
+ 			damos_destroy_filter(dst_filter);
+ 	}
+ 
+-	damos_for_each_filter_safe(src_filter, next, src) {
++	damos_for_each_core_filter_safe(src_filter, next, src) {
+ 		if (j++ < i)
+ 			continue;
+ 
+@@ -1767,7 +1767,7 @@ static bool damos_filter_out(struct damon_ctx *ctx, struct damon_target *t,
+ 	struct damos_filter *filter;
+ 
+ 	s->core_filters_allowed = false;
+-	damos_for_each_filter(filter, s) {
++	damos_for_each_core_filter(filter, s) {
+ 		if (damos_filter_match(ctx, t, r, filter, ctx->min_sz_region)) {
+ 			if (filter->allow)
+ 				s->core_filters_allowed = true;
 -- 
 2.47.3
 
