@@ -4,208 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1835CD13DF
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 16:11:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC0BBCD3420
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 16:20:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5ACBE8E0015; Wed, 12 Nov 2025 11:11:24 -0500 (EST)
+	id C9C0B8E000B; Wed, 12 Nov 2025 11:20:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 584998E0002; Wed, 12 Nov 2025 11:11:24 -0500 (EST)
+	id C4C118E0002; Wed, 12 Nov 2025 11:20:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 474CB8E0015; Wed, 12 Nov 2025 11:11:24 -0500 (EST)
+	id B3B4A8E000B; Wed, 12 Nov 2025 11:20:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 304598E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:11:24 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B41A31405D8
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:11:23 +0000 (UTC)
-X-FDA: 84102444846.29.F300A63
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013048.outbound.protection.outlook.com [40.93.201.48])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E402E1C0008
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:11:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cMvhAUTq;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.48 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762963881; a=rsa-sha256;
-	cv=pass;
-	b=ZXAsikQWgODJFvpldDxbbAzmRDCJKbs3el7ovdYQs3bpIimh29/skNqEd07M2Re4ZYDBdr
-	mM5KKQ6mDCvZKHVTl4IAYg/dYSM8c4iu3NXX3oWPuDJlhkBr81kkIe9r0vaDktt5k0fyBZ
-	0hUxULcWnj6KvFfQxaDxBpe+iN/UXww=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cMvhAUTq;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.48 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762963881;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FABD8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:20:57 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5C4771A058E
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:20:57 +0000 (UTC)
+X-FDA: 84102468954.28.EA24491
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4204CC000B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:20:55 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Djvyhq2V;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762964455; a=rsa-sha256;
+	cv=none;
+	b=Uwyk9redvn7Hnja11wej0YI0D8+9VHLBZk8YRovflESIBdUmZPEYMZaItPQ8oAVEPc4eSE
+	eRTljggosPjdSLgN9g92Y3lWp2An7oC3IGgpeVq9NuqI5jUk/nVvSZJ7gChnFyeVLl1j4O
+	7FONmX+fuXspGdp6HXQmYKx/BySpQcg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Djvyhq2V;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762964455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3Lxc1rZj8nKGD/MFOCBJGbkR2EsCI4IL4XH2Lxanj4=;
-	b=konz6FWQlEVxf7qLr3dxCbcDt0eU/yIjNb5uMkOmC8lrAOE+yXJaH89d2BZAhqCGY2wuT+
-	GrxukdZR881cvobwhjdtycLIhoU2lesYzoNSvKGMxtfJNd8YV9rGrFVLeweokHRxVCzt10
-	ZNH6T+L1SIuFscTgluec9jPA1+YnRRA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bfBT/99gscDFriaaxkKpwdmYPlKGfN1xb9oyZT01kNI/m8jscE5e+fQokVPjpNXMXyvCzgfN/imiq37M/cPjYD4w4/tjyPnD7mKsa6vJPgc93xC970NDcim2phSt7cRBm/Nkx7qV4/LtjZD8FdOitr6otzxOA1Dz1z3QoOQCGbq2W1/Yww+cF3/drH4vM2vxV0OOiWgjTpFEmhUJrnES/utT8NA/DthX+euQ/ZAjlqRRHGVlJnZ2PU7nE/1mAP33J160SukaJijABInRsyOewlnY8ncJgJ4jTtnnPxdeZXqVF+hJXC7KNyobWEp8mdbtw8zKiHZ4L4xx+AKoMN39jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G3Lxc1rZj8nKGD/MFOCBJGbkR2EsCI4IL4XH2Lxanj4=;
- b=vtszcmf+9I1fkpgR+HZbkd7DMH6+5UxUmUBY2mCMMLxnkFdTGuLcxOJjCFrkfQ+A3hk9IWfCLJZomnW6ORn8XxfAk7qRNgqHzsf0WnMNyfq6YYr86jJMsqVNEJD/rraT/VNRRP1YIIpsRERCw8HK7pJv8vLQ5tuhICCuXwhO2fjI5EpYYeL5IFt+uayUc8RypeOXjLndcinfkDaTo3f/i3pPjsyCjnYSrJ1ChVNaFNzb8fwIlzSRjLagvyNRF1fmgukYGYA3dbT8ixN5odnt4W0TrdoO6a9BQ8mmuAYGHq22GVOhl27Zl4epBDrQiqr5G3LvTkTBGlN17j5oE3b/Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G3Lxc1rZj8nKGD/MFOCBJGbkR2EsCI4IL4XH2Lxanj4=;
- b=cMvhAUTqTlN+mUJW/4gZzSThcgBvCAo+IKVmsU3mnhw7d7RzaUDtHqph4If0P3YVMvm+9dgDi3e5aHYGM4xfoLmktcH1jE4FxT+/0mQbEwUd0kVwAMYwCt6mm7hrsDbgkCthFxQDZgGQFNTX7EkZj3ziMGGtE80b1Ma1dpM+N7cbfVpiHFJP8BZq0bFTek+eeh69tpqEvSCavUDn7fi8cuFAi/+TWZwYjwWvUcQU6CkiZCyvwRAkv4UES5sYZtQzrUaQ8Ujy/qI9WsHIVOOgTMVdtsVwFRrjHfBm397O7qDI+Lg9LQbpnil/b66f7CSzPh6DAoXV/HN4FD1tZ69x6A==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DM4PR12MB7624.namprd12.prod.outlook.com (2603:10b6:8:107::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.15; Wed, 12 Nov 2025 16:11:15 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
- 16:11:15 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Arnd Bergmann <arnd@arndb.de>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
- SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro Falcato <pfalcato@suse.de>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-s390@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-arch@vger.kernel.org>, <damon@lists.linux.dev>
-Subject: Re: [PATCH v3 03/16] mm: avoid unnecessary uses of is_swap_pte()
-Date: Wed, 12 Nov 2025 11:11:08 -0500
-X-Mailer: MailMate (2.0r6283)
-Message-ID: <CA6617F2-7EA3-4A2A-8EE1-C9CE098ACB60@nvidia.com>
-In-Reply-To: <B114F7B2-8EDA-44DC-8458-79E3FF628558@nvidia.com>
-References: <cover.1762812360.git.lorenzo.stoakes@oracle.com>
- <17fd6d7f46a846517fd455fadd640af47fcd7c55.1762812360.git.lorenzo.stoakes@oracle.com>
- <B114F7B2-8EDA-44DC-8458-79E3FF628558@nvidia.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BL0PR01CA0024.prod.exchangelabs.com (2603:10b6:208:71::37)
- To DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5)
+	bh=gUnNpzH1K5Q3QUwq8YbkUWhWqv3nPr6h1FM/qan1yhU=;
+	b=jaV5S/NAHkqedH27jhGOm5j1iOJt+s3oXl/3+sSkzdsYi3+WB3Poa8lAk7bRll7oy2aXdz
+	BoAXcccTzcUxXsc4YMWuVTxYB02PrxkBreTbEo7xJfM1kRVsahVDApQpGEJYLW8wv5f64I
+	vXMORSCtrFtfDq4I33TfMfw2ahYX7PI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762964454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gUnNpzH1K5Q3QUwq8YbkUWhWqv3nPr6h1FM/qan1yhU=;
+	b=Djvyhq2Vv0AntUHqRiznWVRukIELwvO5tov1Gz9HywmmvB7NamOqSMYGvX79zDLS9WO2a5
+	u8j2v4RKbI9Ff0Yo+L1ox6F9LzBQiNxA0uUUEkGEtb99vsj0Nr8YzZKz+kU+OMNY9/2fhI
+	bCl37kwbqN6dtDsPnRVA5WrhfY+3ZpI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-2lcr0vqwN2GSscYKc966VQ-1; Wed,
+ 12 Nov 2025 11:20:52 -0500
+X-MC-Unique: 2lcr0vqwN2GSscYKc966VQ-1
+X-Mimecast-MFC-AGG-ID: 2lcr0vqwN2GSscYKc966VQ_1762964451
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8123119560A7;
+	Wed, 12 Nov 2025 16:20:51 +0000 (UTC)
+Received: from bfoster.redhat.com (unknown [10.22.64.29])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 89400196FC99;
+	Wed, 12 Nov 2025 16:20:50 +0000 (UTC)
+From: Brian Foster <bfoster@redhat.com>
+To: linux-mm@kvack.org
+Cc: Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: [PATCH v2 1/3] tmpfs: zero post-eof uptodate folios on swapout
+Date: Wed, 12 Nov 2025 11:25:20 -0500
+Message-ID: <20251112162522.412295-2-bfoster@redhat.com>
+In-Reply-To: <20251112162522.412295-1-bfoster@redhat.com>
+References: <20251112162522.412295-1-bfoster@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM4PR12MB7624:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49be0fdc-5ef9-47bc-c34e-08de22061b15
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hcX7qNoEcUyQDyAT5liB19I4ym1eHfmrlGWuJb/d4sfKDrOd9TnGiVOuuGz2?=
- =?us-ascii?Q?HEv7yi6EN56ILf70L3pDhIZEDrr5TLsDrGME6VXy/Z1jsOaq4U6pPeiLJg1C?=
- =?us-ascii?Q?vjqxTtJbPOOxYMkrmQMwf/ivlpm28vrpN278QmL16y64HWRMuVazZ3u5Jb07?=
- =?us-ascii?Q?hol1WDwgo2wBWyjmtFgm3EMRpwapPZXeViVbTBkzonMp5KuB+ngscCckYD72?=
- =?us-ascii?Q?L7Ta3ty0eGH9YRplQQBt9c6/4v9oOwOtP59PjvH/ugXYPRurffrCJarzG77S?=
- =?us-ascii?Q?R08iQrRvXGKY2WItGP17cfkjyv8QcVhJWQ4xZeQGKRZkKEKjl4lQ6ynu6ywO?=
- =?us-ascii?Q?UQrv6Et2I56PiFs7X55gpjOImjjHiMfQoA9mdHfJiiipZyD468LHey/nhHz1?=
- =?us-ascii?Q?h/uRZrvE1sSJVqBO6cJ8UW7HZXRgtJQecmFw5Sa7mpWxVSOjiVBgAeJ7+dtY?=
- =?us-ascii?Q?UYph+nDFjkHQzDU2IkplWp6BUvKdv5gL4SOjG4j3UycvVbHzaNJgaJLul6Sb?=
- =?us-ascii?Q?35SgjD0wDWF2A4g+NFR4KEBuJr5QSGF07rEDc7iPcEJ88vGH5qPbF0956/wa?=
- =?us-ascii?Q?YiBQZka5mcsxxjJeOV4p8KaEcZo+UBahb9zcRYRX9qiFmrQ6VYRk40PrhBLK?=
- =?us-ascii?Q?wo1MgzRXr0h2DGOU8XO/6gri2xPjb+MqPXttT2f6vtaKsNPSb8oD7E6sBprv?=
- =?us-ascii?Q?wacBmfmNrcLLklRczELLlNyd669KugO2rtyzVvc3+OsefpaVQc82EBWDaJqm?=
- =?us-ascii?Q?bJMfwjfHu2w4GasEi9FYobIZjYdsNj5e3nQSVb25yoAd/bARVzGM0oC0e+r6?=
- =?us-ascii?Q?KJvHa/Xa+EYEZFQWVq+e29zq4OtDJxmMPe2K5vfYffroCPtfmIbIa1xyw+4I?=
- =?us-ascii?Q?CvuaFRQ1Z9vpAxHT5Z46ZT3OJLktW5zmr1eChCODgGYv4897Y+xVh8gfNzJX?=
- =?us-ascii?Q?T2dUxq5vAD9/uLYjUkV59F46YLJNnTIObiVtRYQRRGBmg8vFxJM2qdhJVs5Q?=
- =?us-ascii?Q?shdQ46rbildpBmRnIzC3sud8Ri5k/tElhQRPpnhAoaApC59QEVyJv7aEhWt4?=
- =?us-ascii?Q?0EpQpN6F8RYq/LCfeY830kqSPrXZjrmRQFhYMMf4zAbF60TfLGa2EQU7lVgR?=
- =?us-ascii?Q?dqFWzUJrwYX/Ep4WleqBTFwXNJ10iUelH5wkx5kyjRIie/izfo8cNNn01rxA?=
- =?us-ascii?Q?/+QVq6RKn7qoipkOYrsimEk0lQeOzcs0KSzs5YPhwNOvAAtee3E2HUcKRDFj?=
- =?us-ascii?Q?q+OHiEVyZgtuUo3e74VgMaONSmEJZqQ8lui2qGLi/uJblcsVbedgKtVh2NcO?=
- =?us-ascii?Q?yFZAG1ZH5smvhORmfSO6p6gBSsurrQ++TOLqKadbiUl/M8d8a5qhJznkymXN?=
- =?us-ascii?Q?GjEbPJrzFU/lHH4cS3yj4IaFy1kc64ZdkAQus31vewMdM42DwIJruwwciy+a?=
- =?us-ascii?Q?UJlNj1C5YvO7CHObBhPD9sHoSHufewpH?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wCmGD+u0lB0nsfBrLLlMAAQBLtdt0vTVu129yme7ohl5Avw+MlBE03Yhxf0q?=
- =?us-ascii?Q?381ej7L60VUtPadZYknrP1mbeWWgeafg9dUkhUzCLUyfLbGlDH5aFDak4oDL?=
- =?us-ascii?Q?cOPDwhD9TvFkHvhcvevEgDHwQmBMefpr3Fr3oWlJVynA67uqyNDRSdOcKz4m?=
- =?us-ascii?Q?iVPq4Rn5bLjot5FpI0ZFbh8pl1QEFnOsZYCHJ/bvVmCxjRhvGNZjVid0170m?=
- =?us-ascii?Q?UvBBhrHX9JJboqUdO6Hr4SZNc8WP5Sd9TXeRIN2pary0dUNCPYdDJ4qyDkRG?=
- =?us-ascii?Q?Dsi5Z4YxtIUELRKlNyZQvIwF4WIpLxN5RLUJZ1YQXq2hOmHJ0Vo1QFTHPDDb?=
- =?us-ascii?Q?uGqyk23+GMl2FkATChV0LEjaS08pGO3CxyZm5j7Z71oXqSNlfISGgZMkJSLb?=
- =?us-ascii?Q?9oqvN43aJNAivrQZSzhcGTmBpXtEP/9VLvgWQHvMf0ZYHziHsPf0FS4rTgRk?=
- =?us-ascii?Q?tF06QiUABnGe5N8oSzPwgLZ+nL2nUqxq4crhjmagJFs1faGwgqGMIy9KbzZ2?=
- =?us-ascii?Q?B8Y5LGVonCvuWCXw8bb45/DbxQGAX/mlMWKGWYBbPzk+VOE+J8rtM5juXxSf?=
- =?us-ascii?Q?9m6yPabgUwauXgycFiwW4G4eDYSfx0gaFh4l9xUz78P6PaJoelpHI+GyN2QO?=
- =?us-ascii?Q?fdwSUdrtwfjY0egrgmz3zfJVvAclsWFPsle7dS1eNSM9dMziS5z+zT/SlZsl?=
- =?us-ascii?Q?26+klYKCsKugzFgXVOkmM7vmhwdX81ceB+BzSmT8iBYapMdKu9zUm888ljGf?=
- =?us-ascii?Q?y09ZLBx8fqhyeax0kX1LNQaql+xNHQoA9kiL62IBpdtCXFlEs1b3jrlonOZt?=
- =?us-ascii?Q?BIC4oZS36wvKWhHBKsIQ15zd5Z8VIU/0Jz0co5jm6JpVnwBv3lWpMf8eq1I7?=
- =?us-ascii?Q?z2PeXR8hdyEPx4BLbGhy9oa0fm11gE4GhIvdtCpCh8WOgxT6MMjpDfXvjO92?=
- =?us-ascii?Q?xIcnWLgp/dZCUEb4bYXvnnRDIxvlUgqlR1/pUg1z6j4A+FjOBzcDuBp/RYwV?=
- =?us-ascii?Q?cqr1OO44B6RQv6ZSVJJd3HwYzyZ6sZfxSqUx9fIixrLwidtu+zOJiBphWRha?=
- =?us-ascii?Q?z0xQgD2/yqhClyzOGz/cHVOMSF3DMpvy3eg50OcAhgjlDG1uipZw4SQ4e0zm?=
- =?us-ascii?Q?Doer5azKbMjY86DSvPlMCbgkG/WeRTLlCCXr9YArMzsA4s2NCkChQGrs3/JG?=
- =?us-ascii?Q?4t9+3BT0EfpeNbsqBCZuwJEdAEp4L/PFAsy03UCJyBHPjc4U6DiS+FRGBcMT?=
- =?us-ascii?Q?//+zBhq1klIukApRv8HBx3YOkZe9qKn8MG/ODPx/f++iENoQhMsifX949639?=
- =?us-ascii?Q?kvmPO8yTB9Fx1ehNiJ5ujccEVi0KEr3kDAR0DrUa2b91nyMKDNhVl1svRUdZ?=
- =?us-ascii?Q?MpqGDJAcrCdU/b6pnS5N1ldS7jWfThqmYYa3DwFWwReOT7IDvT/Fwo3zb0Xm?=
- =?us-ascii?Q?U6h57fQb4bYqQZE/855EhkZGRnz2Ebu79UCrF8d/mbynXMGqGT8NjU46JiIU?=
- =?us-ascii?Q?o9uLU7wJ4ufUlgQ23Yp+9Tobd/qjMgZ4kaVOxw89f6JjDGnOTGYL7pAXTpDL?=
- =?us-ascii?Q?YB0+e7CvkW+ZYqSjzuK4VRFp/dW4wiR1jWFwArkT?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49be0fdc-5ef9-47bc-c34e-08de22061b15
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 16:11:15.4335
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: beQ1gPhz5dfNqbQk/Fut70SV2Mb6s8QrKsngHRT6SQwp7ZEDfBvY5wUYBKhS4tdr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7624
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VQfAm9v7kCHJMtdLsusUHcm-YCbAQj0wELMIuxyzHtI_1762964451
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4204CC000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ppeoto55dou8wo7qptktsk1jg4wg6p3r
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E402E1C0008
-X-Stat-Signature: h46pemsufrtpqyyioxqi4o7n8nea35pj
-X-HE-Tag: 1762963880-440550
-X-HE-Meta: U2FsdGVkX18qXMe5GmxXwGoja4lHGqbxMoUsTI8Pnta6qvyjg56tg/LKRXM8AwgFqdFsDo8zKjiN6Nf/1mpS8dA3a0fnUF4EmRhL/L09zGca9fG1fcqaeLmtwTrx9HioQ3CuR3d8CgjJm1B3YwdHHtGH3fjWKiUtF/fMf/VP9Mu2QEMDfaHm9Rh4LK7DLRdlSCErPKhmhoTCQjkJEl7jzHuzQgPt/IG8+OEvya5ikrBGi8BE/gRgeCqR15PTQm6JfgwEUKtV5zMF6m6S1uaj8gAhZuLkBQRlQ7LmLgvwxnEtd1jH2C73kfLiJTqaJMaleJXqXJK7Andlt6AdhPcALUuUnngpE4237kFdN6R9IdntOErPd2tE+d3zZg7QrWb7pJj9MSmQa29Lv005F16pz7hbD50fwfP6JltokIWAGWhzF/JxZx8hTJN6Xl3n8NPe8Q+D/Q6dYO6LC3YWYOl8DZ5L9bl3H4Pcq3vTXhRI3BExMcabm8ozSRgzRShFrItOe/EHmKcQalEp3S74gOG07KiY8cY36npVhi33B2THCyUWat6Qcp3VKww7XKUtMjKESfruhMPDmRYdPPVAOmJSMXk4T/Xqc+qa3P2oR0c7MgO9XrbgpqrI6MYHymw3EZD0qIsUbWyPKvaSl+H723rlrNL0108xUltruKwdl0PtCvFCCNlYZ5pzNhcYKli2JKyvVwG+oUfhlIJ3gg7+xQ655o7nl4XX3YFDXsc/V5+MbPJBfRMYeJu2byEJDk6oSQXJB+oP5fwRLJYXuc6ohZCB8doqZKg20d0P0ldpqwmaw7Iel71ya7zFIw4aBxrrlpsVmPDzx46jlibVkvn5cmcQhDANHkQ59u0EohM4BGqwO3jpQx7Gs2IBG5h4N8TFXF46HXWUC5WgkrKkEiCzZazwoRcCnHkymhLYCYLQNT0yqWndY8lbFHZy9lxnveO0ODelorKqi+fz0W0DzSuUrRK
- qYEX/xB5
- 1WcSpcx+GeCShm1TDZOZ8IEq2F7v8mhM2j6A3AMh1jiFD5ycvpCjMBsWayitUDGeH4Ak6dCOelR4JgJlhnyndvsYdCBh5ZVcUg3//W72vbGQ6cw9s618aDPsy3YDQaPYOtyu+TBFUzahbpTRGzD+x5nm288ktaBRgeWLEgnvK8dZbOMSVPqpIE/fh8nB70mN+GmSHr//0/IkgI+4UBtnudkNOFvlm1v/3LRND3NlMSAQmJqH8kwsKPqvnY15xOPg5sjCwzmjNdSwb9dgmGFefcqghGcttVUhliURDrAnAkmtPPcyE1jirQI6Q+sFWrAbY1m6CJ5skQ/OZqY/nY5vKUVpz57iuFfCNx+9edMV04HyIR8WvvUn5Hz/aE/6e5UQ7Q859XyLZQa0ME0hIahRAjgRNKzEHoEV0SYbLOqH/Y3H693qUBCPZLJ5IferkLdGzUWbtMVCr0MeV1oidJVvPPeRdUBtmgQK9yDXb5/NQ+xMRlT8=
+X-HE-Tag: 1762964455-665651
+X-HE-Meta: U2FsdGVkX1+pTkfGXSNNT1oxMCxMGzvPVKn9YKIndZRnTC72dhElE2hRBpMnVaxMrbnHIX0QrIvTV+fWxg+kP5dd9SeTIrK7djaZv/qSBVA3TjLXdhKZfVLXESFotjVTrSQZSTNcnypvz8ntwuDNTNCyyHykoDAbac4mQq9BHv2Gkfm+qpxx0UE03iVwMgkHhRhi7nDNpSxesNriGyhEqX+lm5TXcZ6Gq6Xf0iePCkehfbKHhz9S18VHwaYl+mBvh4oVA9IVKED350C6MKNQu/We2I5B+IyssL0YOt92ozABYKq55SiL3bVTFHyk/MmgraEVCRIi2G27eqZzSkBCuTjM89whEgNKR7U5doo2rEUwTu1dItLD4DhJq2tWnbjXrircr+HivjAmewyMEfp6b/1OwkMYXiiSu3xctOVe0q+k0bO0MygL+807gfv7vFu69tDBA9Ad0ODuHqY5iTgmZrPYf7FadhyBW7Lc55EWL9ZWm8+O+LOrA0lBsDxdD1RUriNzsEe/FIxOqrEYFmr4fKSdEyvc9iICV2MNb63SFQBZnW0ny8/8KZ+FPjH4L85wSjY0TfQB/UuZCt4qjnHOXn4M87DBSRrjTN0SopoUCcnTolNxLp/gMui/xMq2012tUISiuvXs7Tdm2tL4Ehg+4iJ4cNqXJwXzBA5VSlYaS4fEFnyvl4kpDzbTkvKRqBG5REdkedVAClyBAHL96c9+lWGSmHUDXF/Xd7gr/ZrWqxUHJuxRwD+hPHln7os20viRGaeY8vNQRFhrgkC7/G8aNSHRC8Ekc1HXoGj5OUgPvxSxvzEdG7t6y1WQqLlRTC+7zJaY484SYcj3aL386RneznC1p/Ut7ws4IAsGFLWPuwBB6gV8FxRrhYc69wybLfK7+H59CQT0sdYeSurKXragD/ae+CaFzVziDKVqnf6MS88iCREhACKLtaGq2MpENlvHMi2Ht958tTl0v5wRcID
+ S2K/bk6n
+ ksoIWr5MUuORX3DryZxwgQUUfJeSRQTLWIPy1gbDfO/MO42a5d7B74crXw2yUecvbGrOMU1ixy4Dpn9PmkzGcZgWYc2wNVSLOoBQo+0MWmcljjanz/KPQ6DQUBBCF67lCDk9SrcN/4OPby2Jg9S4dQEIbO+T+RcX5zCwoYBSC/CDLI41c1NBG0HE/XJjCGHXNEpV8D3aUkCuGjTXW2PkiaK/4v4o/VTxKUn428PAWhSMJp8+SlOgjN5q82MGALA+mq4Q3vG3vv823QrqgXYYCOMUpBlpDsDhdU3mbJiTIOFr4Z5CH3AxjFHRUzZAvv2g1bbodP2z6EVwdvjRL2kV3xBNy7pwfB4ZZgF6GTCUMELzARp6aI+r1PuxibQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -214,73 +107,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11 Nov 2025, at 21:58, Zi Yan wrote:
+As a first step to facilitate efficient post-eof zeroing in tmpfs,
+zero post-eof uptodate folios at swap out time. This ensures that
+post-eof ranges are zeroed "on disk" (i.e. analogous to traditional
+pagecache writeback) and facilitates zeroing on file size changes by
+allowing it to not have to swap in.
 
-> On 10 Nov 2025, at 17:21, Lorenzo Stoakes wrote:
->
->> There's an established convention in the kernel that we treat PTEs as
->> containing swap entries (and the unfortunately named non-swap swap entries)
->> should they be neither empty (i.e. pte_none() evaluating true) nor present
->> (i.e. pte_present() evaluating true).
->>
->> However, there is some inconsistency in how this is applied, as we also
->> have the is_swap_pte() helper which explicitly performs this check:
->>
->> 	/* check whether a pte points to a swap entry */
->> 	static inline int is_swap_pte(pte_t pte)
->> 	{
->> 		return !pte_none(pte) && !pte_present(pte);
->> 	}
->>
->> As this represents a predicate, and it's logical to assume that in order to
->> establish that a PTE entry can correctly be manipulated as a swap/non-swap
->> entry, this predicate seems as if it must first be checked.
->>
->> But we instead, we far more often utilise the established convention of
->> checking pte_none() / pte_present() before operating on entries as if they
->> were swap/non-swap.
->>
->> This patch works towards correcting this inconsistency by removing all uses
->> of is_swap_pte() where we are already in a position where we perform
->> pte_none()/pte_present() checks anyway or otherwise it is clearly logical
->> to do so.
+Note that shmem_writeout() already zeroes !uptodate folios so this
+introduces some duplicate logic. We'll clean this up in the next
+patch.
 
-BTW, I wonder if we could use switch + enum and compiler to prevent future
-inconsistencies.
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+---
+ mm/shmem.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-Basically,
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 0a25ee095b86..5fb3c911894f 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1577,6 +1577,8 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 	struct inode *inode = mapping->host;
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
+ 	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
++	loff_t i_size = i_size_read(inode);
++	pgoff_t end_index = DIV_ROUND_UP(i_size, PAGE_SIZE);
+ 	pgoff_t index;
+ 	int nr_pages;
+ 	bool split = false;
+@@ -1596,8 +1598,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 	 * (unless fallocate has been used to preallocate beyond EOF).
+ 	 */
+ 	if (folio_test_large(folio)) {
+-		index = shmem_fallocend(inode,
+-			DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE));
++		index = shmem_fallocend(inode, end_index);
+ 		if ((index > folio->index && index < folio_next_index(folio)) ||
+ 		    !IS_ENABLED(CONFIG_THP_SWAP))
+ 			split = true;
+@@ -1647,6 +1648,20 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 		folio_mark_uptodate(folio);
+ 	}
+ 
++	/*
++	 * Ranges beyond EOF must be zeroed at writeout time. This mirrors
++	 * traditional writeback behavior and facilitates zeroing on file size
++	 * changes without having to swap back in.
++	 */
++	if (folio_next_index(folio) >= end_index) {
++		size_t from = offset_in_folio(folio, i_size);
++
++		if (index >= end_index) {
++			folio_zero_segment(folio, 0, folio_size(folio));
++		} else if (from)
++			folio_zero_segment(folio, from, folio_size(folio));
++	}
++
+ 	if (!folio_alloc_swap(folio)) {
+ 		bool first_swapped = shmem_recalc_inode(inode, 0, nr_pages);
+ 		int error;
+-- 
+2.51.1
 
-enum PTE_State {
-	PTE_PRESENT,
-	PTE_NONE,
-	PTE_SOFTLEAF,
-};
-
-enum PTE_State get_pte_state(pte_t pte)
-{
-	if (pte_present(pte))
-		return PTE_PRESENT;
-	if (pte_none(pte))
-		return PTE_NONE;
-	return PTE_SOFTLEAF;
-}
-
-in any code handling pte:
-
-switch (get_pte_state(pte)):
-	case PTE_PRESENT:
-		break;
-	case PTE_NONE:
-		break;
-	case PTE_SOFTLEAF:
-		break;
-}
-
-And compiler will yell at you if any enum is missing in the switch case.
-
-Just an idea came to my mind when I am reading the commit message.
-Feel free to ignore it. :)
-
-Best Regards,
-Yan, Zi
 
