@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E0FCD1297
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 04:38:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9522CCFA1A
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 04:38:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 195D58E0011; Tue, 11 Nov 2025 23:38:29 -0500 (EST)
+	id 4073E8E000C; Tue, 11 Nov 2025 23:38:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 120878E0010; Tue, 11 Nov 2025 23:38:29 -0500 (EST)
+	id 2F2418E0013; Tue, 11 Nov 2025 23:38:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4008E0013; Tue, 11 Nov 2025 23:38:28 -0500 (EST)
+	id F2C878E000C; Tue, 11 Nov 2025 23:38:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C40F78E000C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D7EAC8E0010
 	for <linux-mm@kvack.org>; Tue, 11 Nov 2025 23:38:28 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8429E13A84C
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A3130878AE
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:38:28 +0000 (UTC)
-X-FDA: 84100698696.21.E0C8B69
+X-FDA: 84100698696.19.0F3242E
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E4E07120005
+	by imf07.hostedemail.com (Postfix) with ESMTP id 20E3E4000A
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:38:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=NY2cqwKa;
-	spf=pass (imf29.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=SHEkIi9i;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf07.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762922307; a=rsa-sha256;
+	cv=none;
+	b=4qZAiSLrXfLFHB81OKWO+tMuMFpnczbziQXEIz4EAJFAmrvDGxTGPIc25YWSSXU/qX/0Ug
+	KBEobgIffeHPXAuEiqnH8KX8VfnmP2lPStFA9kha+LV3lcYbRjMVGGFVIftkKT+jdZCWOF
+	hppCqiWItdctn2ZND0/q4DF/fOT1VtA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=SHEkIi9i;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf07.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762922307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JZWb39kaxm/aTHHHAoGRq7ylnE7bG8wlHoUJFfzGXJY=;
-	b=UvMCZFmX5VvetReRJDovtttSCUbkqfP10FO/3XYpYxnUZqPWuDiHqdFixCNnhjCt1s3HCh
-	rGZK1XeL/J1gpWA+L4G+WajKKefZIb3gyvmPWKVQemg/qrPswq+j2iDRakFlLh8W/OedzC
-	0/rtM4yue5oh4LFNXG49gTYvye9zkqA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762922307; a=rsa-sha256;
-	cv=none;
-	b=T2qCm2Jwzc3B/pghsIZKQuhk4jGl5j28SxVufEYktShclFGzaXeRLHeSIfDcSZXXTb9Qe2
-	FEQKoR7a7XMHSXZSuLdArGc/UEWgtRCHqzxiQF0G3U5h/VHkRJ0NBbJP4Ijt3DeFSzB+qz
-	E5xYCzb8sRt31vte0BHDXezymclmpAI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=NY2cqwKa;
-	spf=pass (imf29.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NrZ4a9zMFdvWjyXptq7JgOSecWDqm8f6ekGuTnbG+ug=;
+	b=jW9PawomrEhJwxwF9XPF1WojBIOZJLirT/svlaP5tH4eI5BKiLVuLIaR5Yvveqx88zRbny
+	7L6WdkrHP64XbuVDc2nOy7vGXr5X/ipkA8/vIOwybp9yBvsYgmH3c8P5tCsX1W7YraRcD2
+	ivPWVhEsAVKTLPzIoRXEcG7hfeWMob0=
 Received: from mail.zytor.com (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5AC4bYDS542538
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5AC4bYDM542538
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 11 Nov 2025 20:37:46 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5AC4bYDS542538
+	Tue, 11 Nov 2025 20:37:35 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5AC4bYDM542538
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1762922267;
-	bh=JZWb39kaxm/aTHHHAoGRq7ylnE7bG8wlHoUJFfzGXJY=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=NY2cqwKaIrKZUtfTvxfjn6R8wymEXPWHv7bYCi+aME4HmaudXcZTxAmPw5vWao3g7
-	 LPA092rWorB2+oPLf8bRPnWf5jVZohiBbEFPMOzoUsWrk32k4PtN+0fvwXfzU6+U/u
-	 h6pVDUWk1TNQ02FdIyxmMiUTdM60BaRxbt4KgfjkkhgQgD4t9Ufb+CbC5h7sK/WdlY
-	 4UmBUhsjz/0R9+ZJjl6AZpLqIZEcQd0M23JdbmIMP8PoXd/GqGdLG937KVnVjr4WId
-	 kJmFy4PbZrHDGH6h6bbnODmuUUz+EdIQI748dLPbJoE1xKdaCGb4TeT0yglAfgHCDn
-	 qsJkhlUpgl5eQ==
+	s=2025102301; t=1762922257;
+	bh=NrZ4a9zMFdvWjyXptq7JgOSecWDqm8f6ekGuTnbG+ug=;
+	h=From:To:Subject:Date:From;
+	b=SHEkIi9i+0a9MuvHZOHtVEPv6HqcQD/luJ0tEUMKKxnunRgi6YKnnIvnwd6YAcyJm
+	 VPNDvWDGHqEsOp6kXnpxQ2egxT38JrVGljKEqedQ2f/gyOtt4Alt54N+UZcDyboJE0
+	 GeeOMPGgITGU2RRgTMvMGslqjlXgarSaVSXDjOrVCrRik+KAyYsIIwLM3Z0l2fOfNE
+	 HbgFyfGPBpCtWA+JcsMJpwbJxAxqk2b4dMv0IlwQd0Z0MyjBxyH7MGph4sUAx3Gkec
+	 hqInN9c+zuPxn8YBOicyZ1r39aQ7B9GZEznHqwKvOVNHAj2B9Zw8ZeR9C/kzRRXFIp
+	 6rK8tcfDe+3Hw==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +80,20 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v2 6/9] x86/entry/vdso: include GNU_PROPERTY and GNU_STACK PHDRs
-Date: Tue, 11 Nov 2025 20:37:24 -0800
-Message-ID: <20251112043730.992152-7-hpa@zytor.com>
+Subject: [PATCH v2 0/9] x86/entry/vdso: clean up the vdso build, vdso updates
+Date: Tue, 11 Nov 2025 20:37:18 -0800
+Message-ID: <20251112043730.992152-1-hpa@zytor.com>
 X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251112043730.992152-1-hpa@zytor.com>
-References: <20251112043730.992152-1-hpa@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ohhqq1wmqk4en8bmg4j7d9djffp87ror
+X-Rspamd-Queue-Id: 20E3E4000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zc76xaftrzi7jnqrwgrrxr7rn7ucj9ze
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E4E07120005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762922306-414464
-X-HE-Meta: U2FsdGVkX192Ckbfw7XkfndPoN03ZlOExufxC03yLripl3JDcXpVI6GPHtENyLJGIECKRT06XaoUi7j2AwTuQ884Axig2Wce2uALgHPhVlfk1fkUsrfC40G+AxTfFfHlTJpODljj38Ek8JX++UsQvIZqrcHoFz7I7Y2IPvVP+5Z7K+xUfn01jTmG3HfE22NYthuRi8qG51C3nDmMjA+uyiLduOWv5XAbkcdC4ocncERHwCZ09ZaGr8lddf4aCehLHk9Z1HqiD2MC/vC1Y6siH5OeURC0T9W+iyL8AKl+SmeiNvktwzuMf/qKDPzULavnoQYQXN/rovXU4K+KqIGQl/Jzr+OKKj8mNvmyAgzBhHOPkzGjUXdmLLArvCOkR4A3cpTsV/6j+rgrPFyUueavJTjhBcPoX2aYhXTcMiZr44TBlncFnU0HhpXD8X828rHx9Xy6I5ZCnegGUZ5SVAMS0V8mGsf9gSBO23X4FywSlEZOmzJDuijhEnxWW+cPlySW8gdl572bf9QN+HY0H4arp9JvKaoknUF0yag58fR9lszoTu54fsZi5QE9W4wX5fc31SW+jZq3QCxdkEPJZQtQQFaBZwvJq59riQUwyTjze1scJtubZJq8F6Qicv1GQ5HZiuQRck4BXyej2pmGTfsqHXDCPK8X58ruz6j2COxMzlETAXuOVT9+cBzzfIQeFVJaXqaOgf7UM0mLtlvcIF3toPel+7Q1e733+MKxG5YcxBEnldCIGALwhFNJP/ulENOwekCvnlO1CIBV2a+DbNLB1+BkKuVk8KnEUwHzrRKuWCgdgHIOW5cHwSET6pY6MXKuH8uBOhDX8Jpsx6Cpv67Eklkgb8o6zROcywpkDCNAiYY1bQyiBdQAz7KdTkkFKHtWDk45tmKzYM8Bc2GbosjT00yvLnh08w5KZmCtF7nEB95gO5ClzXtssD6lVJjCQVhlAl3laIGrQ1vNdDTm4UC
- 1vwiuLzj
- 2cmWKKyTE7FtzcvgUhCV7Zxxpe8Enzxyzcolici/JAFB0gnSDzLD+77fIt9G1mNWCJf8gBC7wHjZPsLiQ0/Zeau7Luqfp6hLLppqWLcPubhQkmMR9kJ0V1DT3xGh4SWq6wWtT1VjZ4hv7YxsPvO8Fh6HF6k4Y7tuwhWwDJ3HDgzl4FUEkhA/jcmRw01HBh1tle7Mt/Y2ngjvVYfBXpQgZQbTpHOpFJS6OiwCRFpdEWczsA0x6jgVyIfYH0UGy4fRL60OBjTMRB8pTwq1W5fKuJJRXrVkuhnR0hizhp1wvljAJI19Y7rLFqd59JV/bce8iT1FQzZJbCCHqaHaMTtkD1RM0Fw==
+X-HE-Tag: 1762922306-538077
+X-HE-Meta: U2FsdGVkX1802zzOVN3mOYYLyIuDDXf5JcQb3qiGW0aZ8QjW12/9S4XH6bVQ2rcM4Vq4EpP3lLlht9FR6kUqWGPha3iKmftpE0gE96i/4mFrYaPJp3DfN1NMpLSwuyrb0Nexok/U6FxCjofwfyrtnEG/gJYqeplV3hqa9ZULq1k3OHyHA56yIUvyWta64Podu8umi/vFTBeeJ4wLfOFtNyOdo1hNNkS41TlVim8DQAjcJW2kdXUxyRIhP5JsBDSh1bSUJ0bDmuugVhAyHYy9WEU1knhGF0VjUjRYi6zf2V7MftxnVXuqtpYhpSkVS2a4MMJqDiq0aUNub89N5DOc3CvfgYc1qLxfibUVBdG29FBYS+yRzynuFoY7C76S/f9C270PKPOI4nlm2NueCHsGWGcfuRfiMUwuXondv54a3mxU7ZZPIdJ8IBFUSECLOZKObyYTxYM67Ukyrjj8WwTNcb9CVj8FdPJjSEWOEs42QAIJRYzp1G6yxAEQBkLGbuGfgMzddvhghSdj8QTy/vPT/4QIUr0CTa37ZpiAmgR8Lh9g5AyqoTz6mD1DGW1id47SqfC9adICUBRR5k1XN/L1qxqnICUmjzIDqpeqCHvg40MyZhTNtXHR0cTNbVchbMy+xdwEecQSeX3UKVzvQKcD93NtLilRM0VY/ibPTiaNdD72RY+9L9JLcb9r9KfPJxs+KwyweKx6bGEk2p4wgJhWNVAdx+lIuY9cFLx7Hmkj6WN23/g4yfZdZbJNgjF7cLNwXfMKn3NLSBCsZrv9lQeYhfd0KYn8aSl3odUfBzLpcAEcVXzTZnEFrd3AbbZOF7SU9mmZjfI9V55y+9nXjQR8CwrXV5CYKiO8kHiDxuJgyf9L7fdaoiLeQsISDrrSo4+D8/UU+Ef06nkzynwdgmdcNEIKzGnQKOJPidc3GAU0i+xuarZqyiWRFli17YJ9xFqSrwApN7/MI9Y/h8tYzED
+ rrgsqvIz
+ MrMq2akecLM4/v/uo+/w4b5MPtSG8Hy6baMZwAjuj/nd/PAQkqupID4LkQKigC7Vmv7LdUQHcwib8qCWbXMyveQ0lX4/ggNMqflkTdxsjzZe35TSwlZOw/FT8YP2HpWEONWZofI1jodMilb/TiUeuEO+zTj0mxXK6RjJ/KI+EcJzAF+DS83GsGa33Mt+T8+lLxzuwJjqvs6i4i4fXk4Ysr5iqA/P/alXnmB+afz8TBDG1HCI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,120 +102,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently the vdso doesn't include .note.gnu.property or a GNU noexec
-stack annotation (the -z noexecstack in the linker script is
-ineffective because we specify PHDRs explicitly.)
+This patchset cleans up the vdso build by building the 32- and 64-bit
+vdsos in separate directories, moving the vdso2c tool to
+arch/x86/tools, and by merging common code and especially Makefile
+rules between the 32- and 64-bit vdsos to the greatest extent
+possible.
 
-The motivation is that the dynamic linker currently do not check
-these.
+Be more strict about sanitizing and standardizing the vdso build
+options.
 
-However, this is a weak excuse: the vdso*.so are also supposed to be
-usable at link libraries, and there is no reason why the dynamic
-linker might not want or need to check these in the future, so add
-them back in -- it is trivial enough.
+Disable CFI for the vdso until the kernel adds user space IBT support.
 
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
----
- arch/x86/entry/vdso/common/vdso-layout.lds.S | 51 +++++++++++---------
- 1 file changed, 28 insertions(+), 23 deletions(-)
+Modernize the DWARF generation vdso32/sigreturn.S.
 
-diff --git a/arch/x86/entry/vdso/common/vdso-layout.lds.S b/arch/x86/entry/vdso/common/vdso-layout.lds.S
-index ec1ac191a057..696bacb99ed8 100644
---- a/arch/x86/entry/vdso/common/vdso-layout.lds.S
-+++ b/arch/x86/entry/vdso/common/vdso-layout.lds.S
-@@ -26,7 +26,7 @@ SECTIONS
- 
- 	. = SIZEOF_HEADERS;
- 
--	.hash		: { *(.hash) }			:text
-+	.hash		: { *(.hash) }		:text
- 	.gnu.hash	: { *(.gnu.hash) }
- 	.dynsym		: { *(.dynsym) }
- 	.dynstr		: { *(.dynstr) }
-@@ -34,7 +34,7 @@ SECTIONS
- 	.gnu.version_d	: { *(.gnu.version_d) }
- 	.gnu.version_r	: { *(.gnu.version_r) }
- 
--	.dynamic	: { *(.dynamic) }		:text	:dynamic
-+	.dynamic	: { *(.dynamic) }	:text :dynamic
- 
- 	.rodata		: {
- 		*(.rodata*)
-@@ -45,31 +45,28 @@ SECTIONS
- 		*(.bss*)
- 		*(.dynbss*)
- 		*(.gnu.linkonce.b.*)
--	}						:text
-+	}					:text
- 
--	/*
--	 * Discard .note.gnu.property sections which are unused and have
--	 * different alignment requirement from vDSO note sections.
--	 */
--	/DISCARD/ : {
-+	.note.gnu.property : {
- 		*(.note.gnu.property)
--	}
--	.note		: { *(.note.*) }		:text	:note
--
--	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text	:eh_frame_hdr
--	.eh_frame	: { KEEP (*(.eh_frame)) }	:text
-+	}					:text :note :gnu_property
-+	.note		: {
-+		*(.note*)
-+	}					:text :note
- 
-+	.eh_frame_hdr	: { *(.eh_frame_hdr) }	:text :eh_frame_hdr
-+	.eh_frame	: {
-+		KEEP (*(.eh_frame))
-+		*(.eh_frame.*)
-+	}					:text
- 
- 	/*
- 	 * Text is well-separated from actual data: there's plenty of
- 	 * stuff that isn't used at runtime in between.
--	 */
--
-+	*/
- 	.text		: {
- 		*(.text*)
--	}						:text	=0x90909090,
--
--
-+	}					:text	=0x90909090
- 
- 	.altinstructions	: { *(.altinstructions) }	:text
- 	.altinstr_replacement	: { *(.altinstr_replacement) }	:text
-@@ -87,15 +84,23 @@ SECTIONS
-  * Very old versions of ld do not recognize this name token; use the constant.
-  */
- #define PT_GNU_EH_FRAME	0x6474e550
-+#define PT_GNU_STACK	0x6474e551
-+#define PT_GNU_PROPERTY	0x6474e553
- 
- /*
-  * We must supply the ELF program headers explicitly to get just one
-  * PT_LOAD segment, and set the flags explicitly to make segments read-only.
-- */
-+*/
-+#define PF_R	FLAGS(4)
-+#define PF_RW	FLAGS(6)
-+#define PF_RX	FLAGS(5)
-+
- PHDRS
- {
--	text		PT_LOAD		FLAGS(5) FILEHDR PHDRS; /* PF_R|PF_X */
--	dynamic		PT_DYNAMIC	FLAGS(4);		/* PF_R */
--	note		PT_NOTE		FLAGS(4);		/* PF_R */
--	eh_frame_hdr	PT_GNU_EH_FRAME;
-+	text		PT_LOAD		PF_RX FILEHDR PHDRS;
-+	dynamic		PT_DYNAMIC	PF_R;
-+	note		PT_NOTE		PF_R;
-+	eh_frame_hdr	PT_GNU_EH_FRAME PF_R;
-+	gnu_stack	PT_GNU_STACK	PF_RW;
-+	gnu_property	PT_GNU_PROPERTY	PF_R;
- }
--- 
-2.51.1
+Add macros to cleanly call system calls from vdso source code.
 
+Add the GNU_PROPERTY and GNU_STACK PHDRs to the vdso.
+
+When using int $0x80 (old 32-bit hardware or FRED-capable 64-bit
+hardware) skip the stack stuff in the 32-bit kernel entry code and
+call int $0x80 directly when used from C code.
+
+Changes from v2:
+
+	Too many to count - much of the patchset has been reworked
+
+Patches:
+
+	x86/entry/vdso: rename vdso_image_* to vdso*_image
+	x86/entry/vdso: refactor the vdso build
+	x86/entry/vdso32: don't rely on int80_landing_pad for adjusting ip
+	x86/entry/vdso32: remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
+	x86/entry/vdso32: remove open-coded DWARF in sigreturn.S
+	x86/entry/vdso: include GNU_PROPERTY and GNU_STACK PHDRs
+	x86/vdso: abstract out vdso system call internals
+	x86/cpufeature: replace X86_FEATURE_SYSENTER32 with X86_FEATURE_SYSFAST32
+	x86/entry/vdso32: when using int $0x80, use it directly
+
+--- 
+ arch/x86/Kconfig.cpufeatures                       |   8 +
+ arch/x86/Makefile                                  |   2 +-
+ arch/x86/entry/syscall_32.c                        |   2 +-
+ arch/x86/entry/vdso/.gitignore                     |  11 +-
+ arch/x86/entry/vdso/Makefile                       | 162 +--------------------
+ arch/x86/entry/vdso/common/Makefile.include        |  89 +++++++++++
+ arch/x86/entry/vdso/{vdso-note.S => common/note.S} |   5 +-
+ arch/x86/entry/vdso/{ => common}/vclock_gettime.c  |   0
+ arch/x86/entry/vdso/{ => common}/vdso-layout.lds.S |  51 ++++---
+ arch/x86/entry/vdso/{ => common}/vgetcpu.c         |   0
+ arch/x86/entry/vdso/vdso32/Makefile                |  24 +++
+ arch/x86/entry/vdso/vdso32/note.S                  |  19 +--
+ arch/x86/entry/vdso/vdso32/sigreturn.S             | 152 +++++--------------
+ arch/x86/entry/vdso/vdso32/system_call.S           |  22 ++-
+ arch/x86/entry/vdso/vdso32/vclock_gettime.c        |   5 +-
+ arch/x86/entry/vdso/vdso32/vdso32.lds.S            |   2 +-
+ arch/x86/entry/vdso/vdso32/vgetcpu.c               |   4 +-
+ arch/x86/entry/vdso/vdso64/Makefile                |  45 ++++++
+ arch/x86/entry/vdso/vdso64/note.S                  |   1 +
+ arch/x86/entry/vdso/vdso64/vclock_gettime.c        |   1 +
+ .../entry/vdso/{vdso.lds.S => vdso64/vdso64.lds.S} |   2 +-
+ arch/x86/entry/vdso/{ => vdso64}/vdsox32.lds.S     |   2 +-
+ arch/x86/entry/vdso/vdso64/vgetcpu.c               |   1 +
+ .../entry/vdso/{ => vdso64}/vgetrandom-chacha.S    |   0
+ arch/x86/entry/vdso/{ => vdso64}/vgetrandom.c      |   2 +-
+ arch/x86/entry/vdso/{ => vdso64}/vsgx.S            |   0
+ arch/x86/entry/vdso/vma.c                          |  24 ++-
+ arch/x86/include/asm/cpufeatures.h                 |   2 +-
+ arch/x86/include/asm/dwarf2.h                      |   1 +
+ arch/x86/include/asm/elf.h                         |   2 +-
+ arch/x86/include/asm/vdso.h                        |   6 +-
+ arch/x86/include/asm/vdso/gettimeofday.h           | 108 +-------------
+ arch/x86/include/asm/vdso/sys_call.h               | 121 +++++++++++++++
+ arch/x86/kernel/asm-offsets.c                      |   6 +
+ arch/x86/kernel/cpu/centaur.c                      |   3 -
+ arch/x86/kernel/cpu/common.c                       |   8 +
+ arch/x86/kernel/cpu/intel.c                        |   4 +-
+ arch/x86/kernel/cpu/zhaoxin.c                      |   4 +-
+ arch/x86/kernel/fred.c                             |   2 +-
+ arch/x86/kernel/process_64.c                       |   6 +-
+ arch/x86/kernel/signal_32.c                        |   4 +-
+ arch/x86/tools/Makefile                            |  15 +-
+ arch/x86/{entry/vdso => tools}/vdso2c.c            |   0
+ arch/x86/{entry/vdso => tools}/vdso2c.h            |   0
+ arch/x86/xen/setup.c                               |  28 ++--
+ arch/x86/xen/smp_pv.c                              |   5 +-
+ arch/x86/xen/xen-ops.h                             |   1 -
+ 47 files changed, 464 insertions(+), 498 deletions(-)
 
