@@ -4,178 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 537A7CD3445
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01811CD3444
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 19:31:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEF718E0019; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
+	id 59AAA8E000A; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9FCC8E0002; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
+	id 54B7A8E0002; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 967918E0019; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
+	id 413398E000A; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F7258E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:30:25 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44622160695
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:30:25 +0000 (UTC)
-X-FDA: 84102946410.19.278223A
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6EF61140009
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:30:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=T4FScfvV;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B2548E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 14:31:29 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E1857140699
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:31:28 +0000 (UTC)
+X-FDA: 84102949056.15.D6AEFA7
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F02064000F
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:31:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FZHfVSPW;
+	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762975823;
+	s=arc-20220608; t=1762975887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EE3olEnyRjl52kAEWnA02JLmmLDlTmwS9hIpIeJT8kY=;
-	b=MoVFUD2lDHfTecfgIjJsmQx6YJT7Sqh7tFqzUHRCFaVGjHFCBYv2KnDjJr+tMC9XNGh+Q0
-	eySD/R7fYayqUgVcSfsRL7leDWRTktxtezKCcClwP+bzM2PbBjeI1zn9wtILP9Hvki7giS
-	GEsSLOAJEjsoz9S/hsMtIa8QfiZk63g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762975823; a=rsa-sha256;
+	bh=xbWXdGium5WT582WXTIZPEFMTUPHcX5qp0Lk00cNrKA=;
+	b=nKs2PGmTGDRK2SD7EpRIzB6BXYhZz9PbKoI6/nY6w017oVfCulmkMZtY4RBPO8GmBB4qj9
+	QTHvrJy/4N5INAiWDl6WzAN+qTS9VClI+/nxgD6iTTv/0XIsj3HY192pyyZS/aixwT2Ugf
+	uRFB+lmS4XB/Acep6drNiZPseXszSj0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762975887; a=rsa-sha256;
 	cv=none;
-	b=COtdy7uCDJq8LQ7k3YV5APMVDoHF1Vxu5UkhO02zuDepZFAy+d5CPleKe0PDzDmwkqkWIQ
-	LBEBcNQSZbFvMzM+1uR/5yzWvZiH3GadakM1RJBytPy8HL5nnLDUgwrwpV6j0bIEjNkb11
-	KEhGom7bchQ7QJ3qLGKbfk94vVHgytY=
+	b=D9HuCSQsyIPBIYu8xZxQBxAro5Na/PxtaOpr7XdExujhUHfNrfZSlkyiTv1Id5VDBZoe88
+	zGtUAU36xS1MOMWVRtsEGW61+ZYOUFT/wlstSCSK7R+rtm8mCv8Ue/8ZYLlU0H3WWxVW/J
+	BC0Cn+ejtLDeYhMXPx5rF9sP/tY8EzM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=T4FScfvV;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4e88cacc5d9so9855181cf.0
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:30:23 -0800 (PST)
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FZHfVSPW;
+	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7acd9a03ba9so1079149b3a.1
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:31:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1762975822; x=1763580622; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EE3olEnyRjl52kAEWnA02JLmmLDlTmwS9hIpIeJT8kY=;
-        b=T4FScfvVCYDHzr78PMOcOxgAoFUIrvopoj7BomTKlBgHk3zPkgT3H86kETQ8ueBh2r
-         8AHIcVmRUbK6/DaCLlybYmk/DKF4bQF2iIA70/O8uR9f9HPna0sa5IY56Kcgk0ii/U/t
-         CFhBPQ4AOgDzdPEkU8wcuGbvST+h8/7EtEaENTQHyMrGj+y5NifqXZNNkvf4I7Sj55jZ
-         ZNleTSa4zv0uBzYlGlcCs9nFmO1PrYYZbyL/5GeelwMH1ZGYuZyNNdDHCi3bJrHjY4vN
-         NT2lYypsfU+0Imld48YmhMB4mYgCSpwBheKMhbFR9NM6q6d3xyqleXGgnlLwsroOQMNX
-         YC2g==
+        d=gmail.com; s=20230601; t=1762975886; x=1763580686; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xbWXdGium5WT582WXTIZPEFMTUPHcX5qp0Lk00cNrKA=;
+        b=FZHfVSPWPHT3J9t/FWVEtlgE9Q2dVQ/fhKz6CxQZ5fXNnS7JF4lVyaH/3gfy3/mqTs
+         0DeczVMZNCrFxhuT1y2uR5ZgKCWP3U3axmjS6fh9+GSW57wXxKFLbWMuepMAz5+tIa6d
+         +kwCdrN+utZ6iJrnYsEPFjG2F8BHh+ez7kXlEhSoIO31m7V6fJRpFdNicoHWVxZ3G7Ui
+         KdHJj/Dm1ilKnhATSDEdh43gynF+fx9qxi8Avdg0AKnNsok0wqFMyZOBjov9QwPfbNdK
+         wPVGshoMFZryCDImMxZSSI3NykS6TTql/lG+GoHf1d3yf3+FTLRpUjzQ1vEfeodJj+36
+         rsUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762975822; x=1763580622;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EE3olEnyRjl52kAEWnA02JLmmLDlTmwS9hIpIeJT8kY=;
-        b=EVDhS1avlV4v3nNgaQLEf3um5bV0IuYI4NLvykjTENYCTeRQ3rCqY/7jV4Bgm5QtlR
-         uQ6xfFrpogK6KxqklkE3kpX0iD1HsTRz8G+2ZQDaonzi7bNfXSpgE5aFX0nFTZLrX0/Z
-         FFdnN7k5n/H2YIcgCovBSbMh+gdigy8TP11/w87VxjmNLBl/E6ePlb9MQMu5RAkty/YS
-         O57bn+LMVvof4NncTgQMpPZm6wzqL2kLXLbI0SVk2LtAshkvHuZ8oIYgFh/1TW77pQOJ
-         6Y5Hp9SrjKA+aabxdX3tNeiR8OUyur1IgunACp+EpPouixOxM3TVBmZdAkc+Q8zJiOHU
-         tdLw==
-X-Gm-Message-State: AOJu0YxmnQUrcr7/+x1Hof0pKilrY5I/x9DI3urC8AkmEv1MDL5H5QFW
-	Ay8lIZWkOheDH2bf1BdVsw7iY2i6hB2NLTOsK8gkh5+zaoYfij6GvSy7IDNZwEqAkIK8JqNWe3w
-	aID7L
-X-Gm-Gg: ASbGnctGz3R2VUcS5waVmJk7bstijrs5dzvx50YaxAroYY2KxSFXyHspL0v5uUSn2dD
-	cHT6dn+TIOXAVdVl7AISO0iFYGj36snyvz9c8JX2fO4Ea9BS2LEiDalXS6qNiUemCrRSVm5/DXx
-	JoS1IUCFZUZ5k+jtz5axgjsgoS0O4Hez8igMSHmDBpuMC5Xxmw5SONG2TQISbgJSpPMLwP2KH6G
-	kJPVxdsYJ41toKx1wN4lVSKIBng/nl1mshP1vuibBjn2mbY3hC6RIoaKlhhNZFzK8veWEQYBXdC
-	ZRncNPS9pFlz5KM/jKJrTtD+2csVivFri0qfPFNHlALMShHDclFbtvGnw/x3hxSd4clOMPrJS8K
-	KsuDs4ow8cDJh9Qrry8qYoRsZENWtsO4WxFOHJSfc5fF5AFjS9ZQRcj4AEmE5c8jXx39kufI/oW
-	+YX8ixCzMTosjViSpFiSyoIEQZBf2PkNab7hK9bvSmd461xWZsJZVSCLqkG5e4AyJX
-X-Google-Smtp-Source: AGHT+IEpkA9sHRf+vDkvWZyRaV+z+4MD09rdo9Mmp9OjAhV3qhp/e6NAADZhOGarPgun9sbSz0rc+w==
-X-Received: by 2002:a05:622a:14f:b0:4e8:b980:4792 with SMTP id d75a77b69052e-4eddbcb30a2mr55332141cf.37.1762975821965;
-        Wed, 12 Nov 2025 11:30:21 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29aa0082esm243922885a.50.2025.11.12.11.30.20
+        d=1e100.net; s=20230601; t=1762975886; x=1763580686;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xbWXdGium5WT582WXTIZPEFMTUPHcX5qp0Lk00cNrKA=;
+        b=lz1TBy+tGBTh7EqZ/PngT0pKTuwgIsCfhPJTCp/Yy+cOet7a3Bk8QwxKoyahv0ShJP
+         c3sWQTT4rzZY5eMz6jJVZn8fVeKFUzbPKffJryalzVEOsUHP/j93IF2Er4/D42jHlQjs
+         oidWjcVzLdqZ4iMcSMdUsXwMAvdGWeJQ/DdnMoyzFr0uj6N25xxpK/R2PbHmsSqxOuby
+         d/1hk/Ppm7/GCuGndsf53BeWdbEZFGxVg/opgMNn+rqZO/UQXy52J9gJbvJt99c93Xj7
+         qPzmazgGvnpTYb2LtbUO22k0RmOrmtKFyeVWtiZlev1tBcbRkzx1IKNL5HYuL87VLbr/
+         vT2w==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ3fFJPYjIRwJSW48KT64ipxqhLlXv4Bsi4aRO8zZglPh5n9hD+UXHtTuIRAnaRejtCpjWRmey0g==@kvack.org
+X-Gm-Message-State: AOJu0Yx+nNIhXjHq6Gc7veS67M14s5yWRvH6iFunxgL1p+k+QI2J6ccu
+	zmEKgtW8YbgyCUQcRybykBkFLra0PQITl5WCO8h+Kn5ZDw64sg7NZG4/
+X-Gm-Gg: ASbGncvLK9MVC3UVs/WCxDEgWtEdulRP8KLcj+Q6vGU0cgMbJeivRv4NXOxPVRSW8uy
+	38e2Z96yhY4H/vVSMQwbmKKk2DtWbY+bxjUfzKrEUSRgJExR/tXPY8+KyvLoAww16rzcL2jsgDt
+	u/mcowM1rqBDGDdZn6z8Y/zVHwfq6/KdV6opjuFz5swvadn1K3akC1i6dI59K4+PJI2q2WPAs3I
+	z0IlLRvrg91VrK/A0EeIrGaYbHaVnWGKxxyLsEwA5mWCL9E23fGzDyUyAxsay7XVrArP2HdxNUI
+	2Tewe1KIwwwqRTkeQGCNvLOM2KRpib0n7L2eupIS3H/+3WJpDwx3AM5hnW8PnltSTsfB4Mu6lfZ
+	vWXYEWKA7prrHCIIWVJsOuqwNmOHF/jKigQA9ag6oON+bGNIFh0oGMY5FSWSyVUITgQR2IjHf86
+	ELaATAqTSCQSIKMkjnqIUC3OnqgW8ZMup4
+X-Google-Smtp-Source: AGHT+IHRljw9kbmjLSJU1F5Kw04BLaWKwpQ+xn7u6+wy8m2YVbrYDQAktVvbX2jC5qH3OoDLduOfmg==
+X-Received: by 2002:a05:6a21:998e:b0:341:2fea:6b5 with SMTP id adf61e73a8af0-3590998a27cmr5464017637.20.1762975885633;
+        Wed, 12 Nov 2025 11:31:25 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bc208695cf1sm1014625a12.7.2025.11.12.11.31.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 11:30:21 -0800 (PST)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: kernel-team@meta.com,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	longman@redhat.com,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	osalvador@suse.de,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	mkoutny@suse.com,
-	kees@kernel.org,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	rientjes@google.com,
-	jackmanb@google.com,
-	cl@gentwo.org,
-	harry.yoo@oracle.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	zhengqi.arch@bytedance.com,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	fabio.m.de.francesco@linux.intel.com,
-	rrichter@amd.com,
-	ming.li@zohomail.com,
-	usamaarif642@gmail.com,
-	brauner@kernel.org,
-	oleg@redhat.com,
-	namcao@linutronix.de,
-	escape@linux.alibaba.com,
-	dongjoo.seo1@samsung.com
-Subject: [RFC PATCH v2 11/11] [HACK] mm/zswap: compressed ram integration example
-Date: Wed, 12 Nov 2025 14:29:27 -0500
-Message-ID: <20251112192936.2574429-12-gourry@gourry.net>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251112192936.2574429-1-gourry@gourry.net>
-References: <20251112192936.2574429-1-gourry@gourry.net>
+        Wed, 12 Nov 2025 11:31:25 -0800 (PST)
+Date: Wed, 12 Nov 2025 11:31:23 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [RFC PATCH 5/7] x86: Call preallocate_vmalloc_pages() later
+Message-ID: <aRTgi5uk1taUB1fe@fedora>
+References: <20251020001652.2116669-1-willy@infradead.org>
+ <20251020001652.2116669-6-willy@infradead.org>
+ <29319ba1-9093-4ec4-b84a-3c60d2b00264@arm.com>
+ <aRTTtHQwfOm-loMb@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRTTtHQwfOm-loMb@fedora>
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6EF61140009
-X-Stat-Signature: mk4zna7i9unu63dqsxmf1rr57pfq336r
+X-Rspamd-Queue-Id: F02064000F
+X-Stat-Signature: qk8wgzeap8zreg1rster59p8ktahanqr
 X-Rspam-User: 
-X-HE-Tag: 1762975823-834929
-X-HE-Meta: U2FsdGVkX182bCo6vgR+hFSBKWMpYw3qsfJIgIUGTtoUsClfsJgHKbUwuRaGklok6HuRk8RKwBjQPAUI0UWPrw3uNkPHpmCEbe69RZNENSJGTqlU03vZQZUmjMv9X6SR16UHzLwa8kw8FqwOBnpQCpnRNArnFAyURjbT/H5arPPkJyR5yODJh7wIXVfZj3W0Rt5dxo89QHTrus2vszscnR0dNC1Kkiyx3YY5byJ8FbPqtZfKoxWiDZR+SL1Kb+Hm3RtgVYMun9Fei+rKsZ9jWBpjsBtNs9OQCNiIJLuYkq1SBYpqrlMP3DD9oCmE3botOVPiGfP4H7S0MFBmJagKabTN5RFzYBAflCdbT7zGC6vdcwGOVYJu1TbVt/zSHML+jtqhBq/sCRkto8xhJWNVW+/DmFRYA9nbYBrdbLc61qXu/ZXW9DsE33DBMqrt6VGSu8Qu20fSqN0YTlmxtE5cgLWAeqDCF2HM3d86WC4bgtCE0BXiyFRVeoQHYwX5oPozSbE5qEV03BesBGb3llcUIPCstdxJeR2TqlL4/53kGV+thI71tdCnD6OwoZPbqr5P+W6tszB614ap8WmizadLwPRTjyj/iHpBdc3sZrc70Lmht0XD9N3IRSO6Pk5lF2d3qL/1NeSRueDp1SJiV9eYU+WFlAVI232ZTy75B2Ip2CK9EHQiJ7OBfCPCTXXFl2kpDyo9omcNETEY8jy9RAAuA/sTcRqeK7AMPEmnmH07k6D+PchSvYFGzLFwdIWom027D351FUfvrITLcRtK0vAnDp8qYA2QOzvhNhjGHJTuypkMVWa/vtfvxD28PQD/ddq+wGlVC7jMzg1vOdYI9RXvmUTjiaZDECfmS46LPyFwFyhQb2Wyl6L89hhtsbGe8hsUOgc+FB4aO/LhImEbrvRYg04z+gAXMM0lTbok7DoX5WiGtdXLqtXwgmGTmM4htCKbKw37AOIJCz48xQnkwvk
- 5dDXq6sw
- U9BqOJJInbJyrav2jzFjc2muH6UsUeif6c8Ul3CuGA3UQB6x97Y6pN9CcY2BHK4O3SugbZ1gJ6yQ7ZOJ1uFiz1lb24uYeukCDkbUuJr3wXqVTed7/dGCXmZXvGzCu7ga4wvkZ0inBefs775/EMyXFMpI+XSSwTWOlEOTKYYauzeGQKKomtY6+oPH/5pJsu6GFGxP5j1/QPVC1v37iCPUz9jgbXMliNYxk0i2NBVxMzdivqhbx+U7eslOZKpMrQnjlALyLqepB/qGdSm5T0WKHajUOcYksgCwR+GDF1wR9GArtYXpMtX3UtzTahh5MLMwnrrxVEktrJQCtg+9DfukNll7WlAoPvHCzxLMWS6mEMVP2+UkXSqHtY5xKDg==
+X-HE-Tag: 1762975886-105975
+X-HE-Meta: U2FsdGVkX1+Gs/LypVgnT5NT0nUC3Rfz52tz4YOKdF+W/Jc4pCL6cVrW8y9zIboU2Wvu2NtrhQUBvh2StfXkGpmHlOE/ODZFQPLJwK510hKDBu7aqdR3c/wD5AwjejJ+BDoANlj3q/FzBeA+TNG7FHx6v5H+ibHjpNEBk3nFDIQyq5xgOuAXcHR37ei5GFfQwissRc8cof9kyE+rk6RO5K4kI5GC4ofli87j/JhHLDUor/HVf0p3cvkxagIT/bZF0hv/K31FS0/8lRVaRY7MABro0b5NnuEPks1kvv3RmXR+oguQG75R03oLvyripwRVB+V9YWXGmwrlC8W2z0Pgp4HzqyqR8j+KoCUVY4QSve84oufBCXgJoWdjg9pXivsNq38Oc758KDBpfR/PEUxRcgq6msmdrkLHH0jSDsmTDc1JqsYO0Pidjw6qd580OAXMWz7L261kD73nDQVFXtBaEmQW7GmuE0fLkbez5PeGi+E12Ms8EAmhrW5Mq7/+TKGjUKlVDSPHWTy5syeKbyCDRVj19TvVXtwoMVRejlkpswrN4E11t02CWoTnP/eVFy+m0dkhPISbV0uDSBQUP8dHiR0jlO2MX3zjeWq+iGScXodYv7EXen+xxJL5OgDjj2FCCcmkqlEUFEM0TBuViuiz6LI57IioYkKu7JHS9fC1/mLBgSF63aAJ9bxHePo76xLNBBZYrXC6XSz/Ha5OKHPJEVIum9cHnO14t9Tf6lgtK/LAH0FKT4FIbuj/L/lQaAIxvznSB502052+Dzx+hYk249KMVi6FO1ZSZQz9bCox2uZS/pVOjzsUlven2Xmysj46SXG5Tzw2kbuZht7nedW1DFTQdVvxe/F8SKxkojKa527Afx0liVdD6Vip6CXph3lHgaWkzDygMbVWwiAvNmVBgeDscY068EH+7NIEyelVeuC+C9YkYJy2Dfa0MXxutntVrtd+ui/QikbrTewztgZ
+ 8gJyTLRa
+ w4JCfpZCOErtVZTxP1VWdTB3TPJqWeLkTyx7MiUSoF9b4sBffLGmAHZ2YXGFSrasEagQnfnPuMpt/21/oqFwlT/IcYa/u6m/nvVMuDkbf0C8zIL5+4DXI/PHDA4NI6wNUp7eSivoGSwjP8Dt3qRM5pE/2Vr9foxWvFKs8hCxTO/lr/Yl75OsS3E8Zmh669ZrPtS3Io90sWmxqyzcpMnv+5GLYIfR7HvpwxiI1BI69LZm4EprspIj8k87HlSX8aFZV7w50Tg4Dq7u2Q/ExhQJ20JnMZPKiDcbPCayhK6/yaqQyXyUfrUG138W7AXllqPqSRZHkoIk1QEy4kNuX2f9PVcZZsljXLowoA3BCRtmUCVmemq1idbOcEDZKIsGOX9k5Yfax8mxZRTpJN1Y6brYX2rnjjO++YCqHdrPVt/N4DYgbLi+f14/OpmzgEH1FHjj09C1gMo+Lb4JNbkQIqXe5DCQBilN/dCwPX2XbHPt6GwBDQ+CxYCi1QqpOyDGzAecJT5nS7odSiflTsEmUp7WcJRKeaw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,158 +121,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Here is an example of how you might use a SPM memory node.
+On Wed, Nov 12, 2025 at 10:36:36AM -0800, Vishal Moola (Oracle) wrote:
+> On Tue, Nov 11, 2025 at 02:29:44PM +0530, Anshuman Khandual wrote:
+> > On 20/10/25 5:46 AM, Matthew Wilcox (Oracle) wrote:
+> > > When separately allocating ptdesc from struct page, calling
+> > > preallocate_vmalloc_pages() from mem_init() is too early as the slab
+> > > allocator hasn't been set up yet.  Move preallocate_vmalloc_pages() to
+> > > vmalloc_init() which is called after the slab allocator has been set up.
+> > > 
+> > > Honestly, this patch is a bit bobbins and I'm sure it'll be reworked
+> > > before it goes upstream.
+> > > 
+> > > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > > ---
+> > >  arch/x86/mm/init_64.c |  4 +---
+> > >  include/linux/mm.h    | 33 +++++++++++++++++++++++++++++++--
+> > >  mm/vmalloc.c          |  2 ++
+> > >  3 files changed, 34 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> > > index 0e4270e20fad..5270fc24f6f6 100644
+> > > --- a/arch/x86/mm/init_64.c
+> > > +++ b/arch/x86/mm/init_64.c
+> > > @@ -1322,7 +1322,7 @@ static void __init register_page_bootmem_info(void)
+> > >   * Only the level which needs to be synchronized between all page-tables is
+> > >   * allocated because the synchronization can be expensive.
+> > >   */
+> > > -static void __init preallocate_vmalloc_pages(void)
+> > > +void __init preallocate_vmalloc_pages(void)
+> > >  {
+> > >  	unsigned long addr;
+> > >  	const char *lvl;
+> > > @@ -1390,8 +1390,6 @@ void __init mem_init(void)
+> > >  	/* Register memory areas for /proc/kcore */
+> > >  	if (get_gate_vma(&init_mm))
+> > >  		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
+> > > -
+> > > -	preallocate_vmalloc_pages();
+> > >  }
+> > >  
+> > >  int kernel_set_to_readonly;
+> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > > index edcb7d75542f..e60b181da3df 100644
+> > > --- a/include/linux/mm.h
+> > > +++ b/include/linux/mm.h
+> > > @@ -1160,6 +1160,12 @@ static inline int is_vmalloc_or_module_addr(const void *x)
+> > >  }
+> > >  #endif
+> > >  
+> > > +#ifdef CONFIG_X86
+> > > +void __init preallocate_vmalloc_pages(void);
+> > > +#else
+> > > +static inline void preallocate_vmalloc_pages(void) { }
+> > > +#endif
+> > > +
+> > >  /*
+> > >   * How many times the entire folio is mapped as a single unit (eg by a
+> > >   * PMD or PUD entry).  This is probably not what you want, except for
+> > > @@ -2939,9 +2945,32 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
+> > >  }
+> > >  #endif /* CONFIG_MMU */
+> > >  
+> > > +static inline struct page *ptdesc_page(const struct ptdesc *pt)
+> > > +{
+> > > +	return pt->pt_page;
+> > > +}
+> > 
+> > pt_page has not been added as an element into ptdesc and hence
+> > the build fails upto this patch.
+> 
+> Which commit are you basing this on? It builds and boots fine for me on
+> 6.18-rc5. The commits don't apply to mm-new anymore but that sounds
+> different...
 
-If there is compressed ram available (in this case, a bit present
-in mt_spm_nodelist), we skip the entire software compression process
-and memcpy directly to a compressed memory folio, and store the newly
-allocated compressed memory page as the zswap entry->handle.
+Ah nevermind, I see what your saying. This and patch 6 don't compile.
 
-On decompress we do the opposite: copy directly from the stored
-page to the destination, and free the compressed memory page.
-
-Note: We do not integrate any compressed memory device checks at
-this point because this is a stand-in to demonstrate how the SPM
-node allocation mechanism works.
-
-See the "TODO" comment in `zswap_compress_direct()` for more details
-
-In reality, we would want to move this mechanism out of zswap into
-its own component (cram.c?), and enable a more direct migrate_page()
-call that actually re-maps the page read-only into any mappings, and
-then provides a write-fault handler which promotes the page on write.
-
-(Similar to a NUMA Hint Fault, but only on write-access)
-
-This prevents any run-away compression ratio failures, since the
-compression ratio would be checked on allocation, rather than allowed
-to silently decrease on writes until the device becomes unstable.
-
-Signed-off-by: Gregory Price <gourry@gourry.net>
----
- mm/zswap.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index c1af782e54ec..e6f48a4e90f1 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -25,6 +25,7 @@
- #include <linux/scatterlist.h>
- #include <linux/mempolicy.h>
- #include <linux/mempool.h>
-+#include <linux/memory-tiers.h>
- #include <crypto/acompress.h>
- #include <linux/zswap.h>
- #include <linux/mm_types.h>
-@@ -191,6 +192,7 @@ struct zswap_entry {
- 	swp_entry_t swpentry;
- 	unsigned int length;
- 	bool referenced;
-+	bool direct;
- 	struct zswap_pool *pool;
- 	unsigned long handle;
- 	struct obj_cgroup *objcg;
-@@ -717,7 +719,8 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
- static void zswap_entry_free(struct zswap_entry *entry)
- {
- 	zswap_lru_del(&zswap_list_lru, entry);
--	zs_free(entry->pool->zs_pool, entry->handle);
-+	if (!entry->direct)
-+		zs_free(entry->pool->zs_pool, entry->handle);
- 	zswap_pool_put(entry->pool);
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-@@ -851,6 +854,43 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
- 	mutex_unlock(&acomp_ctx->mutex);
- }
- 
-+static struct page *zswap_compress_direct(struct page *src,
-+					  struct zswap_entry *entry)
-+{
-+	int nid = first_node(mt_spm_nodelist);
-+	struct page *dst;
-+	gfp_t gfp;
-+
-+	if (nid == NUMA_NO_NODE)
-+		return NULL;
-+
-+	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE |
-+	      __GFP_SPM_NODE;
-+	dst = __alloc_pages(gfp, 0, nid, &mt_spm_nodelist);
-+	if (!dst)
-+		return NULL;
-+
-+	/*
-+	 * TODO: check that the page is safe to use
-+	 *
-+	 * In a real implementation, we would not be using ZSWAP to demonstrate this
-+	 * and instead would implement a new component (compressed_ram, cram.c?)
-+	 *
-+	 * At this point we would check via some callback that the device's memory
-+	 * is actually safe to use - and if not, free the page (without writing to
-+	 * it), and kick off kswapd for that node to make room.
-+	 *
-+	 * Alternatively, if the compressed memory device(s) report a watermark
-+	 * crossing via interrupt, a flag can be set that is checked here rather
-+	 * that calling back into a device driver.
-+	 *
-+	 * In this case, we're testing with normal memory, so the memory is always
-+	 * safe to use (i.e. no compression ratio to worry about).
-+	 */
-+	copy_mc_highpage(dst, src);
-+	return dst;
-+}
-+
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -862,6 +902,19 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	gfp_t gfp;
- 	u8 *dst;
- 	bool mapped = false;
-+	struct page *zpage;
-+
-+	/* Try to shunt directly to compressed ram */
-+	if (!nodes_empty(mt_spm_nodelist)) {
-+		zpage = zswap_compress_direct(page, entry);
-+		if (zpage) {
-+			entry->handle = (unsigned long)zpage;
-+			entry->length = PAGE_SIZE;
-+			entry->direct = true;
-+			return true;
-+		}
-+		/* otherwise fallback to normal zswap */
-+	}
- 
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
- 	dst = acomp_ctx->buffer;
-@@ -939,6 +992,16 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	int decomp_ret = 0, dlen = PAGE_SIZE;
- 	u8 *src, *obj;
- 
-+	/* compressed ram page */
-+	if (entry->direct) {
-+		struct page *src = (struct page *)entry->handle;
-+		struct folio *zfolio = page_folio(src);
-+
-+		memcpy_folio(folio, 0, zfolio, 0, PAGE_SIZE);
-+		__free_page(src);
-+		goto direct_done;
-+	}
-+
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
- 	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
- 
-@@ -972,6 +1035,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
- 	acomp_ctx_put_unlock(acomp_ctx);
- 
-+direct_done:
- 	if (!decomp_ret && dlen == PAGE_SIZE)
- 		return true;
- 
--- 
-2.51.1
-
+> > > +
+> > > +static inline struct ptdesc *page_ptdesc(const struct page *page)
+> > > +{
+> > > +	memdesc_t memdesc = READ_ONCE(page->memdesc);
+> > > +
+> > > +	if (memdesc_type(memdesc) != MEMDESC_TYPE_PAGE_TABLE) {
+> > > +		printk(KERN_EMERG "memdesc %lx index %lx\n", memdesc.v, page->__folio_index);
+> > > +		VM_BUG_ON_PAGE(1, page);
+> > > +		return NULL;
+> > > +	}
+> > > +	return (void *)(memdesc.v - MEMDESC_TYPE_PAGE_TABLE);
+> > > +}
+> > 
+> > Ditto - these elements have not been introduced. 
 
