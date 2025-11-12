@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 085CBCD37BB
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:23:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F6ECD37BB
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 20:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE0988E000D; Wed, 12 Nov 2025 15:23:42 -0500 (EST)
+	id 296468E000F; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB6348E0002; Wed, 12 Nov 2025 15:23:42 -0500 (EST)
+	id 26E238E0002; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA6D88E000D; Wed, 12 Nov 2025 15:23:42 -0500 (EST)
+	id 15C7D8E000F; Wed, 12 Nov 2025 15:23:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BA0458E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:23:42 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6CBF5BA7E0
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:42 +0000 (UTC)
-X-FDA: 84103080684.30.CA73AC4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F3D7A8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 15:23:43 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9917BA7E0
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:43 +0000 (UTC)
+X-FDA: 84103080726.01.6629173
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C0685C000A
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=hjYlM03X;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1B1EF80008
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:23:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=UzujqSnI;
 	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf28.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979020; a=rsa-sha256;
+	spf=pass (imf02.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762979022; a=rsa-sha256;
 	cv=none;
-	b=VdKSd+pRyMw74U19nssQJXmTZzeo9wIa4vLI3ZxWlEi2nniIO+D2sYWKvHTUBS9K6Pa9Ij
-	iOSGUBkAK9QSTgVf7mU97BOhPlu62GxEuI+QEjL4sAm/K4ynorGCKrRjvS6iRWuJF+1u1B
-	RrAUK7jssYAVqjOmu/F3Ao3ykrjcK9I=
+	b=f5BrYOvv40JgufpPseBlPEQRzjCy2/34cQEOfla/A5RJCvYG+wK22rabVP6pBvx8ra9AkY
+	7zFnAT3zh4pgrK0QjE2dHJuhu9EBaorv/+cpEN4l3ikHKHuNtJ9XiV18S4RGUeBTzAZTiW
+	juwRPcBTCAd6Io7+qrH7Dg5QS+OV/Ig=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=hjYlM03X;
+	imf02.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=UzujqSnI;
 	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf28.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	spf=pass (imf02.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762979020;
+	s=arc-20220608; t=1762979022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ImePh3VNFlRKFA3aVONVbSvh+rUXxcMoLlx75oRDw3U=;
-	b=173lsyGy1dD41v0cw5+TL8YRLcZGkGpWUIHwMOuW4mKYlggH0G3+RED/05Dbl0ahQIQPw8
-	uMK+uD7aJLclLDnNTuN4icGnQJbafcRMEmujboC326tqGoAcAD0EOarAiBkNXUWcAMLGwb
-	3SkMWi6JYu9xkRpgo0XQka7iJ/KlwqQ=
+	bh=RSrawaxFNt2Z/5pOE4HoYPKNvtOFlzYj6JREyQY69Oo=;
+	b=QfYH6CAAjJVWeP9cuLPFcso2TSQnK5qhtRTMV2ji5AzxDK7yRBeUcg5spPjISGyOZTiEv/
+	u6jQJ8kxwfGrY1pxX5j2s4AfJ96C7qsdEmc0ZyBdOFzNW6Jl3VOHT1+oM/qtdyiJ/CGfwe
+	e05dU8sluk/38oLmUgl0K3tOiLx55pM=
 Received: from mail.zytor.com (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5ACKN2M1978372
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5ACKN2M6978372
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 12 Nov 2025 12:23:09 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5ACKN2M1978372
+	Wed, 12 Nov 2025 12:23:18 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5ACKN2M6978372
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1762978991;
-	bh=ImePh3VNFlRKFA3aVONVbSvh+rUXxcMoLlx75oRDw3U=;
+	s=2025102301; t=1762979000;
+	bh=RSrawaxFNt2Z/5pOE4HoYPKNvtOFlzYj6JREyQY69Oo=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=hjYlM03XBIIjaEGfWSA0UmQWuITCtXA2+ecAASu5QDLww+uOrYBRrqaCL/sZgjUZ8
-	 dl9jtYdo3A0olwtEyvj4z+HVNyCmpc0Z8G3ePUVA66mq/jVxHVzvr5xdo/pxJVoPRp
-	 h3zvhxhB/3xLVJr41WeceZvzQOepAvyWmCoBaklCVncJSWRt1mUvVl87iwdXGwqCYT
-	 y26CPA1xhhWISUxqzgYYfx24L3Tzq0UuChIOgLzijj6NV4kGKGriqHOO8rpKH2VMZQ
-	 n8wIuf4bWdhoIdXfpbKsW3GKG+399DUT6PsXmszOJymnSrR7G9CI//3ZRjstQPqU8c
-	 tZUJLbJNelHpA==
+	b=UzujqSnIJgkNQSyEzRK89S6I4okzGPOQfmZTUi1xn1iO9tgsd/j4z0RiF8Nx+sKXo
+	 VOhftPi9Vy3b0FdGAvnIKD/4FpHlT11pTDQ/qcneLSx31D2pXs5XpOQCdOvVbnLjUb
+	 QRj+3r1IeiiVPzP41UAFyexvB6/ZAAVLSZAJD6nwnQ87bMRYDfamrxuTDmGi/k3jC3
+	 qE5Wi15Jxixc7FdrC/fY2DW4hDk2owfSqvBDUBPHmDWxe1KnJP3UPbA0lOUH0AqGCQ
+	 tfEiJk9iYV1Btw6LggfW3SsjXIetO1mzJLE1mUGEkLsNFTUMhCFn3KhxFsjd5lqbgk
+	 iSLn9jKl20n9w==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,22 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v3 3/9] x86/entry/vdso32: don't rely on int80_landing_pad for adjusting ip
-Date: Wed, 12 Nov 2025 12:22:48 -0800
-Message-ID: <20251112202258.1310754-4-hpa@zytor.com>
+Subject: [PATCH v3 8/9] x86/cpufeature: replace X86_FEATURE_SYSENTER32 with X86_FEATURE_SYSFAST32
+Date: Wed, 12 Nov 2025 12:22:53 -0800
+Message-ID: <20251112202258.1310754-9-hpa@zytor.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251112202258.1310754-1-hpa@zytor.com>
 References: <20251112202258.1310754-1-hpa@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1B1EF80008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: e9xsww1s8p4xcuqrdy3spnicuswien6o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C0685C000A
-X-Stat-Signature: 13sn4fxeigqawtzskk7jseaiyjzrz5fs
-X-HE-Tag: 1762979020-890202
-X-HE-Meta: U2FsdGVkX1/pePtuZ3iHXMEmu7+Sda5bA1mSCbKMqqJoCzF+y74DA8ibENRPIXXWnckmdr8a0r91pNgpu5tw65OtVqNpVXbgGvvgEhTsNGr1/z77CjPYwuvjfFbwBgPSzj2QM72EGl0G66Owmo22wbM/f0hdI8Ou1zQJInato+iAmmROlFLRH6QzHwp9nBXnx/4HayyHXfFnqE5rHmuqkQPszqOBLIubHAvksTmjdPaAVtzAHy25PwXWyQka8RcyJSutJka0u90gzS7wnGAu09frxhyRZYSqF65kyJ5W3XpwttgE8aU/jo39lMnCJbkPcuxDXTizviplv/A/EUGcy3Xayc9MkKpJEj/X9lc3LS8p8+egUFxkU8Woa/8vs8LAa33ACp2aAIhFk9naspX9jqVHkJ+r4ALCK7KYFEKfOWR3WtUYSuMLnisidIBTFyYg7FZH9HdNPS2LJPupCV96IJ/T79CZOuwajAZ21JyO8atouuhF51f22Lra/S9VLyk/9tF331SRB/8+a3hC2IeSXefCQ176nAFPCh1Muvrc5YXg9g59ebpiVqp/EhiZnNG77MGOIyIEGyta5Ex2zP3LMPU1IEHT4n8ZAr0Lwdi6AmxLLg3D/wY0TAlVojwfmpqy0QozNmWsqfbldOmfCih+Vz1/AkcKxCSILRiYpI0zsUbHmJRv6Tesmqxmm0J9f4zaCoWNNOQ5mjan0kITzvpHsFn4ZQbi0IxtvpMKGxmTBSPp1RSfy8PyUDpTLbycMpmVxb3l3lalBFaCDd4Cc1zhocMmsf5vhfpUMhdYm8Hnvz3P3Ows5lxpp0USRyLmaXi4+uh7QI5v84pLUGLf0pgTRAvWXaGXSGhSRQfvMZDXdXa8bRPMyLUDXUQI/l/KCjWXwQhcoRHufPFKjhEFn59Eoud8nljKnb3a3U+gz61vApSU1GG6LkmfHHOMJ+bbWE/lk5KZCDA3saMP/PCOG8A
- MBJy794P
- sh/wfSzFMqp7yvbsn4/l5ti/bnHH8g8pCfF8sYnUfpf9hPXCjeERbCp2aQ73iNCJqWes+VTnYzh3m0weN1yUPV+IFop7FJWVGsJoiAMzTF/teFopl8fxC04Cr/XDbtPWphQnpSvO40Pr0+PIpqeDRGke+/GzwNgG1wW5P6RuxmSf7720vAuoROPz8/QjiV1GH1+CymIRa37ZBxN2D2GHVcAGU+4K9npS1DWTB/QAWVFa5R1ERIkIGc8bpMc5nHIJ+BH5HRQLKZ19WOfFDEV6SsYflTZv5B8QNVzWUpOvntYPDnm5+0DNgq35nnBzzLlmCU6AJK1PFJF/ezvudSxzUBQmhew==
+X-HE-Tag: 1762979021-151153
+X-HE-Meta: U2FsdGVkX1/oBFeB21XF6L7vfAu8N5uvmno/c/7h2Njz9Yyws1h6PTLcWGK2WqKpjVpYGN/XSR2r1BOREHv5t8uAjzhLXMSjsDmsoOphiscBqcAew3jCX37H3tixNObH1JTNOjvtGNwZ17OUzS+dYS119St7gxVHwdGQK6WpI3VFB+GrA/E+SJC8siv8WMRiVBaM/DtvOiMZojyJHUrhOscXznYxiM/7ZHm5aU8uGf6v2oMK1CzWtvBl2sr5G5EMqodIgM03QfEwBvoTJz4mf/TdgFBafwdlFj7grbMR3XSRgC+6endmuT+OmZF+fr5a/mn+3mcBFYLC+v0GSfAjYNe5lpkWDAFqmnVV1d98/xqMkZ0cHjZC+ZAK05WA7Wd4Vn8obqEfNvXgKyIMNbU/pDQ8vve+heEGZHjJPWKIWbWhjWZLu8fEPSA3JS51n51mMrWNax7Ocr7FNzfOPhXw9wMHOfQnHhyHKF/qmJBDkjGwQ9JioHq4thRb6wdmIGklGU0PyRZUJa5LAsEYuR1nIFcn97Z5nYGgY43lk72Psb5nbxIzcNPY1wOO80pW3Q5DpqFUkTN4VVuKHj8oCYe1s/UoT5MTtLM8qEyjMxXzfWgivaa1xLfNsqM86Bd3uNnbJcS7u/4oy978svWrDMk7vl9Qll3qsu3aiJgyFrHJNLc86FhozAvUv4b9gMNVkam1KhuzCGLs3T6MZk24P/9rhefrve/NkAprZRpkzZxf+TpnpWZGusoYB3QkxqPhb+2na/aDWBssKtvPAZlWp+0uL83wYwpApVxXGIkXrYwGKrua7Tqt9pmbk/yp+rbihfLuXVZM+V1bvMaLzS/eTdHakM2o3YNwEMfl1PDKI9rTmIfLZMmdjZx99UtxZsFwzKHHewzLkMpgu9InGpUvt73Pypc0aN+wTDxWvhkEioqWamoiptb6MsNtkdAi9hpLdkkmTf89anjxkkb3+io/wqq
+ gVBvdA5z
+ /MRy52jPG1qZou/tsl42fmK6xCctfhWLBjHHrwSHcz1yhyy7VE5lrf0V1VSJMgZmyO9ving9jd/fIGtk279zU/UDCZP67kJI/HNs31nYAwpbDTbm7lWpzV5P+D7xrJDclDzEcYs1STGHuc5W9ItCHzZDqUnml/aCuRrHQtjheVy9NODjdToTEMDK5Su9eXHIl5UtYaXx672Ngd1a8mB+zYJ4E6sQwUK2/1g0ITYEZaDdGXcENo3nssb2kIIaSu0mIEWiQt21V3lNff5LGJ+UNT0hA81RbfMULp2vcxP5so5Wuvvly+dOWUdGzGbbykmHMFEyn6jiJvRjtLF9d55eeKTsEAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,52 +105,266 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is no fundamental reason to use the int80_landing_pad symbol to
-adjust ip when moving the vdso. If ip falls within the vdso, and the
-vdso is moved, we should change the ip accordingly, regardless of mode
-or location within the vdso. This *currently* can only happen on 32
-bits, but there isn't any reason not to do so generically.
+In most cases, the use of "fast 32-bit system call" depends either on
+X86_FEATURE_SEP or X86_FEATURE_SYSENTER32 || X86_FEATURE_SYSCALL32.
+However, nearly all the logic for both is identical.
 
-Note that if this is ever possible from a vdso-internal call, then the
-user space stack will also needed to be adjusted (as well as the
-shadow stack, if enabled.) Fortunately this is not currently the case.
+Define X86_FEATURE_SYSFAST32 which indicates that *either* SYSENTER32 or
+SYSCALL32 should be used, for either 32- or 64-bit kernels.  This
+defaults to SYSENTER; use SYSCALL if the SYSCALL32 bit is also set.
 
-At the moment, we don't even consider other threads when moving the
-vdso. The assumption is that it is only used by process freeze/thaw
-for migration, where this is not an issue.
+As this removes ALL existing uses of X86_FEATURE_SYSENTER32, which is
+a kernel-only synthetic feature bit, simply remove it and replace it
+with X86_FEATURE_SYSFAST32.
+
+This leaves an unused alternative for a true 32-bit kernel, but that
+should really not matter in any way.
+
+The clearing of X86_FEATURE_SYSCALL32 can be removed once the patches
+for automatically clearing disabled features has been merged.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/entry/vdso/vma.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/x86/Kconfig.cpufeatures             |  8 +++++++
+ arch/x86/entry/vdso/vdso32/system_call.S |  8 ++-----
+ arch/x86/include/asm/cpufeatures.h       |  2 +-
+ arch/x86/kernel/cpu/centaur.c            |  3 ---
+ arch/x86/kernel/cpu/common.c             |  8 +++++++
+ arch/x86/kernel/cpu/intel.c              |  4 +---
+ arch/x86/kernel/cpu/zhaoxin.c            |  4 +---
+ arch/x86/kernel/fred.c                   |  2 +-
+ arch/x86/xen/setup.c                     | 28 +++++++++++++++---------
+ arch/x86/xen/smp_pv.c                    |  5 ++---
+ arch/x86/xen/xen-ops.h                   |  1 -
+ 11 files changed, 42 insertions(+), 31 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index 8f98c2d7c7a9..e7fd7517370f 100644
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -65,16 +65,12 @@ static vm_fault_t vdso_fault(const struct vm_special_mapping *sm,
- static void vdso_fix_landing(const struct vdso_image *image,
- 		struct vm_area_struct *new_vma)
- {
--	if (in_ia32_syscall() && image == &vdso32_image) {
--		struct pt_regs *regs = current_pt_regs();
--		unsigned long vdso_land = image->sym_int80_landing_pad;
--		unsigned long old_land_addr = vdso_land +
--			(unsigned long)current->mm->context.vdso;
--
--		/* Fixing userspace landing - look at do_fast_syscall_32 */
--		if (regs->ip == old_land_addr)
--			regs->ip = new_vma->vm_start + vdso_land;
--	}
-+	struct pt_regs *regs = current_pt_regs();
-+	unsigned long ipoffset = regs->ip -
-+		(unsigned long)current->mm->context.vdso;
+diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+index 250c10627ab3..2808b8aee8df 100644
+--- a/arch/x86/Kconfig.cpufeatures
++++ b/arch/x86/Kconfig.cpufeatures
+@@ -56,6 +56,10 @@ config X86_REQUIRED_FEATURE_MOVBE
+ 	def_bool y
+ 	depends on MATOM
+ 
++config X86_REQUIRED_FEATURE_SYSFAST32
++	def_bool y
++	depends on X86_64 && !X86_FRED
 +
-+	if (ipoffset < image->size)
-+		regs->ip = new_vma->vm_start + ipoffset;
+ config X86_REQUIRED_FEATURE_CPUID
+ 	def_bool y
+ 	depends on X86_64
+@@ -120,6 +124,10 @@ config X86_DISABLED_FEATURE_CENTAUR_MCR
+ 	def_bool y
+ 	depends on X86_64
+ 
++config X86_DISABLED_FEATURE_SYSCALL32
++	def_bool y
++	depends on !X86_64
++
+ config X86_DISABLED_FEATURE_PCID
+ 	def_bool y
+ 	depends on !X86_64
+diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vdso/vdso32/system_call.S
+index 2a15634bbe75..7b1c0f16e511 100644
+--- a/arch/x86/entry/vdso/vdso32/system_call.S
++++ b/arch/x86/entry/vdso/vdso32/system_call.S
+@@ -52,13 +52,9 @@ __kernel_vsyscall:
+ 	#define SYSENTER_SEQUENCE	"movl %esp, %ebp; sysenter"
+ 	#define SYSCALL_SEQUENCE	"movl %ecx, %ebp; syscall"
+ 
+-#ifdef BUILD_VDSO32_64
+ 	/* If SYSENTER (Intel) or SYSCALL32 (AMD) is available, use it. */
+-	ALTERNATIVE_2 "", SYSENTER_SEQUENCE, X86_FEATURE_SYSENTER32, \
+-	                  SYSCALL_SEQUENCE,  X86_FEATURE_SYSCALL32
+-#else
+-	ALTERNATIVE "", SYSENTER_SEQUENCE, X86_FEATURE_SEP
+-#endif
++	ALTERNATIVE_2 "", SYSENTER_SEQUENCE, X86_FEATURE_SYSFAST32, \
++			  SYSCALL_SEQUENCE,  X86_FEATURE_SYSCALL32
+ 
+ 	/* Enter using int $0x80 */
+ 	int	$0x80
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 4091a776e37a..f9d1c404b750 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -84,7 +84,7 @@
+ #define X86_FEATURE_PEBS		( 3*32+12) /* "pebs" Precise-Event Based Sampling */
+ #define X86_FEATURE_BTS			( 3*32+13) /* "bts" Branch Trace Store */
+ #define X86_FEATURE_SYSCALL32		( 3*32+14) /* syscall in IA32 userspace */
+-#define X86_FEATURE_SYSENTER32		( 3*32+15) /* sysenter in IA32 userspace */
++#define X86_FEATURE_SYSFAST32		( 3*32+15) /* sysenter/syscall in IA32 userspace */
+ #define X86_FEATURE_REP_GOOD		( 3*32+16) /* "rep_good" REP microcode works well */
+ #define X86_FEATURE_AMD_LBR_V2		( 3*32+17) /* "amd_lbr_v2" AMD Last Branch Record Extension Version 2 */
+ #define X86_FEATURE_CLEAR_CPU_BUF	( 3*32+18) /* Clear CPU buffers using VERW */
+diff --git a/arch/x86/kernel/cpu/centaur.c b/arch/x86/kernel/cpu/centaur.c
+index a3b55db35c96..9833f837141c 100644
+--- a/arch/x86/kernel/cpu/centaur.c
++++ b/arch/x86/kernel/cpu/centaur.c
+@@ -102,9 +102,6 @@ static void early_init_centaur(struct cpuinfo_x86 *c)
+ 	    (c->x86 >= 7))
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 
+-#ifdef CONFIG_X86_64
+-	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
+-#endif
+ 	if (c->x86_power & (1 << 8)) {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 02d97834a1d4..25af63f0c449 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1049,6 +1049,9 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
+ 	init_scattered_cpuid_features(c);
+ 	init_speculation_control(c);
+ 
++	if (IS_ENABLED(CONFIG_X86_64) || cpu_has(c, X86_FEATURE_SEP))
++		set_cpu_cap(c, X86_FEATURE_SYSFAST32);
++
+ 	/*
+ 	 * Clear/Set all flags overridden by options, after probe.
+ 	 * This needs to happen each time we re-probe, which may happen
+@@ -1794,6 +1797,11 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
+ 	 * that it can't be enabled in 32-bit mode.
+ 	 */
+ 	setup_clear_cpu_cap(X86_FEATURE_PCID);
++
++	/*
++	 * Never use SYSCALL on a 32-bit kernel
++	 */
++	setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
+ #endif
+ 
+ 	/*
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 98ae4c37c93e..646ff33c4651 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -236,9 +236,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 		clear_cpu_cap(c, X86_FEATURE_PSE);
+ 	}
+ 
+-#ifdef CONFIG_X86_64
+-	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
+-#else
++#ifndef CONFIG_X86_64
+ 	/* Netburst reports 64 bytes clflush size, but does IO in 128 bytes */
+ 	if (c->x86 == 15 && c->x86_cache_alignment == 64)
+ 		c->x86_cache_alignment = 128;
+diff --git a/arch/x86/kernel/cpu/zhaoxin.c b/arch/x86/kernel/cpu/zhaoxin.c
+index 89b1c8a70fe8..031379b7d4fa 100644
+--- a/arch/x86/kernel/cpu/zhaoxin.c
++++ b/arch/x86/kernel/cpu/zhaoxin.c
+@@ -59,9 +59,7 @@ static void early_init_zhaoxin(struct cpuinfo_x86 *c)
+ {
+ 	if (c->x86 >= 0x6)
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+-#ifdef CONFIG_X86_64
+-	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
+-#endif
++
+ 	if (c->x86_power & (1 << 8)) {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
+diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
+index 816187da3a47..e736b19e18de 100644
+--- a/arch/x86/kernel/fred.c
++++ b/arch/x86/kernel/fred.c
+@@ -68,7 +68,7 @@ void cpu_init_fred_exceptions(void)
+ 	idt_invalidate();
+ 
+ 	/* Use int $0x80 for 32-bit system calls in FRED mode */
+-	setup_clear_cpu_cap(X86_FEATURE_SYSENTER32);
++	setup_clear_cpu_cap(X86_FEATURE_SYSFAST32);
+ 	setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
  }
  
- static int vdso_mremap(const struct vm_special_mapping *sm,
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index 3823e52aef52..ac8021c3a997 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -990,13 +990,6 @@ static int register_callback(unsigned type, const void *func)
+ 	return HYPERVISOR_callback_op(CALLBACKOP_register, &callback);
+ }
+ 
+-void xen_enable_sysenter(void)
+-{
+-	if (cpu_feature_enabled(X86_FEATURE_SYSENTER32) &&
+-	    register_callback(CALLBACKTYPE_sysenter, xen_entry_SYSENTER_compat))
+-		setup_clear_cpu_cap(X86_FEATURE_SYSENTER32);
+-}
+-
+ void xen_enable_syscall(void)
+ {
+ 	int ret;
+@@ -1008,11 +1001,27 @@ void xen_enable_syscall(void)
+ 		   mechanism for syscalls. */
+ 	}
+ 
+-	if (cpu_feature_enabled(X86_FEATURE_SYSCALL32) &&
+-	    register_callback(CALLBACKTYPE_syscall32, xen_entry_SYSCALL_compat))
++	if (!cpu_feature_enabled(X86_FEATURE_SYSFAST32))
++		return;
++
++	if (cpu_feature_enabled(X86_FEATURE_SYSCALL32)) {
++		/* Use SYSCALL32 */
++		ret = register_callback(CALLBACKTYPE_syscall32,
++					xen_entry_SYSCALL_compat);
++
++	} else {
++		/* Use SYSENTER32 */
++		ret = register_callback(CALLBACKTYPE_sysenter,
++					xen_entry_SYSENTER_compat);
++	}
++
++	if (ret) {
+ 		setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
++		setup_clear_cpu_cap(X86_FEATURE_SYSFAST32);
++	}
+ }
+ 
++
+ static void __init xen_pvmmu_arch_setup(void)
+ {
+ 	HYPERVISOR_vm_assist(VMASST_CMD_enable, VMASST_TYPE_writable_pagetables);
+@@ -1022,7 +1031,6 @@ static void __init xen_pvmmu_arch_setup(void)
+ 	    register_callback(CALLBACKTYPE_failsafe, xen_failsafe_callback))
+ 		BUG();
+ 
+-	xen_enable_sysenter();
+ 	xen_enable_syscall();
+ }
+ 
+diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
+index 9bb8ff8bff30..c40f326f0c3a 100644
+--- a/arch/x86/xen/smp_pv.c
++++ b/arch/x86/xen/smp_pv.c
+@@ -65,10 +65,9 @@ static void cpu_bringup(void)
+ 	touch_softlockup_watchdog();
+ 
+ 	/* PVH runs in ring 0 and allows us to do native syscalls. Yay! */
+-	if (!xen_feature(XENFEAT_supervisor_mode_kernel)) {
+-		xen_enable_sysenter();
++	if (!xen_feature(XENFEAT_supervisor_mode_kernel))
+ 		xen_enable_syscall();
+-	}
++
+ 	cpu = smp_processor_id();
+ 	identify_secondary_cpu(cpu);
+ 	set_cpu_sibling_map(cpu);
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index 090349baec09..f6c331b20fad 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -60,7 +60,6 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size);
+ char * __init xen_memory_setup(void);
+ void __init xen_arch_setup(void);
+ void xen_banner(void);
+-void xen_enable_sysenter(void);
+ void xen_enable_syscall(void);
+ void xen_vcpu_restore(void);
+ 
 -- 
 2.51.1
 
