@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9F69CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:07:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B61CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 11:07:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 544E98E001D; Wed, 12 Nov 2025 06:07:26 -0500 (EST)
+	id 40BF38E001B; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F4638E001A; Wed, 12 Nov 2025 06:07:26 -0500 (EST)
+	id 3E3BF8E001A; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BC608E001D; Wed, 12 Nov 2025 06:07:26 -0500 (EST)
+	id 2F9EB8E001B; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BF9E8E001A
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:07:26 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D4F21160498
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:25 +0000 (UTC)
-X-FDA: 84101678850.29.36254F5
+	by kanga.kvack.org (Postfix) with ESMTP id 1BE9F8E001A
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:07:32 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB1C8C0374
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:31 +0000 (UTC)
+X-FDA: 84101679102.16.97BACCB
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 748FC4000A
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rdUaptTB;
-	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8A1DEC0014
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 11:07:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=LoRQ6ovR;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf22.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762945649; a=rsa-sha256;
+	cv=none;
+	b=AjXTfNkpQksHqJCDl1vBkMj027RzDgUGJ9AB+aVGtWpMUkKS8kXkxS1xIVSycNY/S16Gxh
+	XSmG06qCyNZCLE6GqyO50NRWRc/9Suw/nriHr+7VBlpuGbJvLlQ1ITjC848RbzJgbRkzeV
+	xDncFmqq5qwAKR6X3RKVBTu6h3mPQFs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=LoRQ6ovR;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf22.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762945643;
+	s=arc-20220608; t=1762945649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EVZQc7qmgA5wJPVG+Bj3uDtqtTwQveu8wh6J4oOIWpA=;
-	b=8Tg/5m/oyS/ycTVsXab9R71llwwC19F/xJqkYE1A6p2Id8+aVleQK89HCCxYA8aZJ76vwc
-	sFNyQR5+bDQaHkWfdIk9Yau5ZQwbJGpujv0UVcf31ZEI4kZJIZqUw/wPUNJ2hVOQSaEzBX
-	XEI7vAZxYnFq6Bj2V3u+dbUSLfMkNlw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762945643; a=rsa-sha256;
-	cv=none;
-	b=c+Ascu+7h4jr3N96glyTRe3NFLg/ddRSwDJ7ovv25eSh7dz2Y6gkLiqR+ToOhHEtlQQJeH
-	+0fse4N5xZTT6ojxhxIhMf3gO1hk/F5AmBKIIhxLnZAluvAGCJoG6ic6Nz42nlS/AAIPGX
-	X8XZ622/wraiLjon/kXm5w0oVv82yxs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rdUaptTB;
-	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC0G5wA002861;
-	Wed, 12 Nov 2025 11:07:13 GMT
+	bh=PVFH6XG0+MNfFYKp/Q4P2dsd/VFw0IA47SArwJQ6BTI=;
+	b=w+tPmQoIfbQL7MUZd7Rxx944dkwTLMoc9xlrm7JbEPZo/JLjldCUT7y0WGN1MMCRAvXY5h
+	r+TYZJyVhSnh7VQSwlFihiBNd4tZMb5pJ/ua8wUTGO2N5Y7QXiYMvfTTAiXeTe+WQJHvjX
+	KjUGeM1ta818TD3goqJK+dHLgvQa8x0=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC7dnSC002270;
+	Wed, 12 Nov 2025 11:07:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=EVZQc7qmgA5wJPVG+
-	Bj3uDtqtTwQveu8wh6J4oOIWpA=; b=rdUaptTBlliAo634fAM/R3w23qCzxijTF
-	Ea+9sQj/jy4hBhqMIeH6Lp84abQ3k5HEyjjCoXzhyWq1Pc2jmM+CKwgR/LwI/09K
-	uzTOe8QayPuEKjdE4fD8x0yaMJItHJJvfpP8Yb4eMEdKXuMRSiQNvXtA4lZSA/FO
-	BpbiFLczD3MoYjh+/SESCSOT3fBgOZNQKRbnCVSjDSpsuVKQ/j/32hGKJxTzBInB
-	/WT7tT9sxrDoFW27xrK63Eesw4BiSpWO/u0rWuSqS6s/X8BwbLLecpvyJ3L22C2s
-	Sm99GML69A6eKF4QgFLs7jrkty7GO1MSRXLb0EyLcpxzpl+X5UXTQ==
+	:mime-version:references:subject:to; s=pp1; bh=PVFH6XG0+MNfFYKp/
+	Q4P2dsd/VFw0IA47SArwJQ6BTI=; b=LoRQ6ovRbPWCckMFiKZKVyRS1GcJD8GlU
+	Nijsz+8v2/CvGFpXY2e50dj72Taq28bbPFI/Z9NjW406BJuma8KKRLZqhxCieWiR
+	nIO5GUpTTUPtimEYiFcU08b/UtPrXWQuXd9D3jOocB5c3nw0MsV2gliXxCKJrsAX
+	ZctEU/WAoM/hUUpEKQRjFO0zXB3Fu1lcX7ZsCxngSgWmoerIPfxHGB2v8VAfzY3z
+	jiYN6nhIMZk/zvuBCeCIW5XfxhRaktMRtDqZQILcZL+5Xb6anX8CmROsyNm72dpK
+	xZR6Z7tl7POBNVhJyWn4FoAkoqLgkzAOp45JTp3lXm9RyH5r3v4yQ==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa3m87y3a-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgx0q52-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 11:07:13 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ACAsEBn031942;
-	Wed, 12 Nov 2025 11:07:12 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aa3m87y35-1
+	Wed, 12 Nov 2025 11:07:18 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5ACB0Xta019638;
+	Wed, 12 Nov 2025 11:07:18 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wgx0q4y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 11:07:12 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC9imJi008197;
-	Wed, 12 Nov 2025 11:07:12 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aah6myrcn-1
+	Wed, 12 Nov 2025 11:07:18 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AC9l1ZH014762;
+	Wed, 12 Nov 2025 11:07:17 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4aahpk7qd8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 11:07:11 +0000
+	Wed, 12 Nov 2025 11:07:17 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ACB7ALe15991066
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5ACB7Frd41877778
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Nov 2025 11:07:10 GMT
+	Wed, 12 Nov 2025 11:07:15 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E210C20043;
-	Wed, 12 Nov 2025 11:07:09 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 46B0A2004B;
+	Wed, 12 Nov 2025 11:07:15 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0659B20040;
-	Wed, 12 Nov 2025 11:07:04 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 917A220040;
+	Wed, 12 Nov 2025 11:07:10 +0000 (GMT)
 Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.210.190])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Nov 2025 11:07:03 +0000 (GMT)
+	Wed, 12 Nov 2025 11:07:10 +0000 (GMT)
 From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 To: Christian Brauner <brauner@kernel.org>, djwong@kernel.org,
         ritesh.list@gmail.com, john.g.garry@oracle.com, tytso@mit.edu,
@@ -100,44 +100,45 @@ Cc: linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org, jack@suse.cz, nilay@linux.ibm.com,
         martin.petersen@oracle.com, rostedt@goodmis.org, axboe@kernel.dk,
         linux-block@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: [RFC PATCH 5/8] iomap: pin pages for RWF_ATOMIC buffered write
-Date: Wed, 12 Nov 2025 16:36:08 +0530
-Message-ID: <e457da0bf10c9ac5db84bfd21f12275ca2414bc6.1762945505.git.ojaswin@linux.ibm.com>
+Subject: [RFC PATCH 6/8] xfs: Report atomic write min and max for buf io as well
+Date: Wed, 12 Nov 2025 16:36:09 +0530
+Message-ID: <9d0ec1039dd3fb40419cef56470ca508f36b8f51.1762945505.git.ojaswin@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1762945505.git.ojaswin@linux.ibm.com>
 References: <cover.1762945505.git.ojaswin@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MtZfKmae c=1 sm=1 tr=0 ts=69146a61 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-GUID: pufiJPBZmK00VnB_Sp4q2PFNYPTOwycU
+X-Proofpoint-ORIG-GUID: gVtj59SvZZWfpitmJWZCYcz7I5_8OHLl
+X-Authority-Analysis: v=2.4 cv=VMPQXtPX c=1 sm=1 tr=0 ts=69146a66 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=WNJbaA9oiIIJLtcfmx8A:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: FAM-rncxNJ-mpYkmvRm7V1ZZTPdubWGU
-X-Proofpoint-ORIG-GUID: qXWHihwQ9a3vmRb4XXCAE2VgMmyhm4ms
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDA3OSBTYWx0ZWRfX+WRaeh1uDxeb
- lvkABinf8Lb8H6mcI7vr4Ozn0wnY6ljzKG5irmKxBiXzor8yUNGOVF+tJ8PZGf2Lf3H6IJKvU5u
- spQe+QYlXAFwTt5w9D/kogAN/oCE9yo+cHjGWzvRTN2vx0QCttyVdTAb9Jiq7sibDp8/m9X266p
- 0APhKcd8LY1Z6gucORb0MWIQI8flR1UYaEkMaueZuv6rzAVPQ384uvzQYW87riwCmiCyyTp+rBp
- JiPww8wjh/lPZC6kelKOP6/qVBY5r/XWqGv9V5w/zOlw12iuiH1d+jno8gNGQvkLcfaQ+9/cOYF
- CSeAHWrzXljQ31SyM6b40KjhOjxjNOWTktDebnqwC1g31WlmeRnnsMu9tPD+GT8mWWzlwjPHTQA
- yvIsuezvumfv34T8shtMUvsusmvTeQ==
+ a=Xt1C_Ey-aFlpf-Mi6TUA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAyMiBTYWx0ZWRfX4SKeXmIOv3HO
+ Ye6oGhayyMmFR3oMpLkif2Y/RFw3/uRw/AW5sl9D2nRirIKN6+6BjrcdjcTDdvrYQKnJTeOaaFE
+ qqmgizV5PYhwWexLrotrGlG8yEBCuGbn+2u82vD3qSN5FExI0aXfQDYzSrXhx0l1HqRa6gkSSBe
+ 2rZjR7Y5IXuEPMjuQ9l5lajhwp9Qyp/1kFVewE/7w6rL5ycO6+EH4MwoKw9khVZimRp9KxMPlGQ
+ LuNfAUpMyyycMl0TJMYJRXUl8z7UWioa1ncziuwUKlftUDdGciEas5JzyZyuTFmKyrIDmIjmzHZ
+ 3BgegXAy8/yRHj+7kd6SHGJN7Xc+zn3/3wl6qsXrZGPjWjnLH7q+5yAoxXowA2gMCLf4+mLY6GW
+ b14TkVAhHlBkCy5u1CERwqnHcl/SJg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-12_03,2025-11-11_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080079
-X-Stat-Signature: bt8ny3cbucyn6eeq81soi8tfjdemuhx8
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ clxscore=1015 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511080022
+X-Rspamd-Queue-Id: 8A1DEC0014
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ypyigrkzah7d69cykp39y3k1ch7dttf1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 748FC4000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762945643-485542
-X-HE-Meta: U2FsdGVkX1+9LUZOcSJCXBTA13Iy8gtA5EqsgM9QaO4OP5HXFxt4jqt18IMxtnrF8sTci6vRyV6Dwhs16dsroE3ShlRI1a2sHqTxco6ynz5qWZI6hDNMsmRhQcOORPVeVvlznueE5xM8pFlh5gWqAaLsMmaQoTqVKCoYL5rFDNJjq13DsqxUtHlUQaHsP0ww4PtHOE4E7JxVH//3dmuIeOUfYtJu8JI6+dMxaduUGNgrUIhflDN7ZcHMTykJIE/6dMUxYXItYQtaOuAzHBPFjZUZtVefVdXn98reqidbD8tdjjDioOgSOVL410slc+1548s1oYf/Qe7n/quX9Ak89j2qM4lM4ewsfVh591hgEvU7ATnhSlaXtMBBNl6RYFuZbMYTe2XWcfBYyM+e3mmmzoD2qSOTO9+X7MvcWu+Lhxbrs8Wfd/AVKnRCmf/ckR9iIrSs1T75/5ZpHvUiXsVqd/mpTy3xBIV2KoQsYY2ZVF1ULbL2lQhOm0XZ6uX5cy8RThfirJ92shHuM3qJjlMA1PyjohiTX7eQAL3DWvMznOW8ihwdlsrbIcTtGZGEzPjmbt/sqMc+I9s1sHCNm/O5Q0AN4tBX0i2sOkOpmLJRVUVyRNUDLl8besPlLA33yiVdI4qjcuHUTEIlZS4T+lERplmbIQLvghfqG/IWASik28f2YLbtAl0omN5xEYRaIzlzvr+Qlb+wB9MBzaMjTuLyzBdLciRINV0Vb7jEijg90C3x2i+n0TyP+ytjEVv8G3qyXnxohulBhfMNte7ArJ9OeCb0OfV9vRZARLsv/Ib4ZhijJzpXa4MATm48pgUNGrdLZYEWEqlV8Yf7HfdgMmu0lxq2ia1Nm1jcsHNAjPCn1+OOSsJ/NVBvEnPoQJpFJuFG4VZwqd+a3E7BkRcOv6ATAcdv3a9UDeV8C28i0FQshuXT8BLk8+X8b4sJchJaYgboFDow49QPScjVuWKh2UC
- dh6Gf0mS
- QAN1IqAxIMh7L3reW3Xz2KbTmT7OF84huDZb2y1rjkzO/OoCEQva1BSfInQQfu26cvr+jTHks451yPWXZQcnMV7ydt05dmxiC9BjLaw+59hEC2MK/zujhnWEY9oaUXVe+7UvlzxrCtgS2m8SCCCCmPKJPtIzeP185KGuu+T7PTT6zYCtX1u5o7ufLdS1DGkGGoo3mqnTl4+HUw3YZP9iMBmrahMNTGTIWqkOP5xGsfbPOWI4UeZkCAXhmqO7e4er6f04vSiEZQF8oaMBRRYALkFJIQuI1tg+AfDIlAdBLJ1sHIvAG0aGGwAxzFMAuChXzdTGG
+X-HE-Tag: 1762945649-372486
+X-HE-Meta: U2FsdGVkX19KD8Uk2PtKh9kJZK87TKoSFewupRwZlTSigT9iweXRwbhCxUvBhTcZgSTMBCJA4aRW5Fapi9BQyepoWMqZBEqd7uRv2CUujV2jJ4aOe0QMcjDnZAJRG2BzIO4DmiyFEPGq2dhBE5r6Pan4VnfA4jLeMm9w4GXFytOfMRrwX141MAB8SnSzeJddAr79B3YKnQAjVNp3PZOf4YPTWIP/uoogYrxJWQqbz5mcoXTvnLX0IVgfpEbmAzIxFZ3u1abA/8NVxY1ZOpgeX1a3veuo4vd9JFdm1RRolyRnerhjxaAKB8adX/33WCMzLTrjnmLbitisZOgOoncsowS4kzmcqmmGVr9/IbxgUOENpNi/FhIgFCetJVDItR3jeFmKafq5HvkI7Iv3OrsKD1lBPz6WZQ2Gl3M3Vu3afWyM5dl95z+/+elwD+TsQr4+OmHA2HSMQfQTa+gsR5c7n4t2vALxpVGfbpELIpvY7h//kQYIi5sX3HL34MBNQifyhXpgeOqLKmYyxce0MghTmxytbzLuImZX+9ZNUFQH6KJDvXKLi04tUMhvESfO0Sf9xgLDHo/A2wCm+aNQSjcj8kuaZHQ8++rfOhcGp9ZsQL01RCBBbduel4Qu8ryNRqWrFDE4Lh/dTMbh2m8zlaZr/njvJferYAoC2uZUHLgkFdZmNDvgB2DrQbHZxXPSyhwLzbWlYYfrop3OtkO3OcoE+JT+DGu1fBXWe5JGcUb4aGk2CeFTjmfHGQdQ8xfFDwUOBeZqczAlmbkmjQfewjXukjYWbl9pGfyNVQ6bstztdxIH+i+5Nw0l5f+pupb547jA1pSL7Rvyh3mJiNKSwJybCzP/UtxNr2DB+36VQJDA3BS8CZ28LHFVRdXnRwL8wIExM8CLvNUSXUys3YhWfCF5ExQpkFYO7DlbmthScYMGegwj3B6aDzctaxZwLJ2usboFKt5NxVQI4p4BY86BZO7
+ ujADhjLm
+ ydKm5jcQFEr5OOr4DaYiOFgwM593MGvr4GuqWr2fJ6ssBaVZOjKOkTKFAsY3sDoSan55mK7kPaTqmOXVVHoEE8Ulz4n79vBSxHPkZaKDiVO8te798QSG9qCXjV5HCoHTFrID3XwD9MAaEvvtg9d0g6vfw77xRB9njuXinC7PqmitvQ6eBsUZyDGkBR/Y7MZXmenU5sPCF5uYla+YCwduMJ+bNw33cIyLrKnYTm1T16ywZOTNIsJAvtj3bLEWhm0rvdokDDnhZe2AHaeyjV+oprp18QQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,255 +147,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, if the user buffer crosses a page boundary (even if it is a
-single block write), we can end up with the following scenario:
-
-1. We prefault the 2 user pages in iomap_write_iter.
-2. Due to memory pressure, 1 page is reclaimed.
-3. copy_folio_from_iter_atomic() ends up doing a short copy
-
-This is unacceptable for RWF_ATOMIC writes since at this point our folio
-is already dirty and we will be unable to recover the old data to
-guarantee the atomic semantics.
-
-Get past this issue by taking inspiration from the direct IO code and
-performaing the following steps for RWF_ATOMIC:
-
- 1. Pin all the user pages. This pins the physical page but the user
-    space mapping can still be unmapped by reclaim code, which can still
-    cause a short write in copy_folio_from_iter_atomic().
- 2. To get past the user mapping getting unmapped, don't use the user
-    iter anymore but rather create a bvec out of the pinned pages. This
-    way we area safe from unmapping since we use the kernel's mapping
-    directly. Having a bvec also allows us directly reuse
-    copy_folio_from_iter_atomic().
-
-This ensures we should never see a short write since we prefault and pin
-the pages in case of RWF_ATOMIC
+Now that we can reliably perform a HW based single block buffered atomic
+write for page size == blocksize, start advertising it in XFS.
 
 Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 ---
- fs/iomap/buffered-io.c | 154 +++++++++++++++++++++++++++++++++++++----
- fs/read_write.c        |  11 ---
- 2 files changed, 140 insertions(+), 25 deletions(-)
+ fs/xfs/xfs_iops.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 947c76c2688a..e7dbe9bcb439 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1027,6 +1027,73 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
- 	return __iomap_write_end(iter, pos, len, copied, folio);
- }
- 
-+/*
-+ * Prepare an atomic write by pinning its pages and creating a ITER_BVEC out of
-+ * them. This function also advances the original iter. Incase we encounter any
-+ * error later, we revert the progress.
-+ */
-+static int iomap_atomic_write_prep(struct iov_iter *i,
-+				   struct iov_iter *atomic_iter,
-+				   struct bio_vec **atomic_bvecs,
-+				   struct page ***pages)
-+{
-+	size_t pg_off;
-+	int bytes_pinned = 0;
-+	int k = 0;
-+	int len, total_len = 0, off;
-+	int pinned_pgs = 0;
-+	struct bio_vec *tmp_bvecs;
-+
-+	bytes_pinned = iov_iter_extract_pages(i, pages, iov_iter_count(i),
-+					      UINT_MAX, 0, &pg_off);
-+	/*
-+	 * iov_iter_extract_pages advances the iter but we didn't
-+	 * do any work yet, so revert.
-+	 */
-+	iov_iter_revert(i, bytes_pinned);
-+
-+	pinned_pgs = DIV_ROUND_UP(pg_off + bytes_pinned, PAGE_SIZE);
-+
-+	tmp_bvecs = kcalloc(pinned_pgs, sizeof(struct bio_vec), GFP_KERNEL);
-+
-+	if (unlikely(!tmp_bvecs))
-+		return -ENOMEM;
-+
-+	for (struct page *p; k < pinned_pgs && iov_iter_count(i); k++) {
-+		p = (*pages)[k];
-+		off = (unsigned long)((char *)i->ubuf + i->iov_offset) %
-+		      PAGE_SIZE;
-+		len = min(PAGE_SIZE - off, iov_iter_count(i));
-+		bvec_set_page(&tmp_bvecs[k], p, len, off);
-+		iov_iter_advance(i, len);
-+		total_len += len;
-+	}
-+
-+	iov_iter_bvec(atomic_iter, ITER_SOURCE, tmp_bvecs, k, total_len);
-+
-+	*atomic_bvecs = tmp_bvecs;
-+	return pinned_pgs;
-+}
-+
-+static void iomap_atomic_write_cleanup(struct page ***pages, int *pinned_pgs,
-+				       struct bio_vec **atomic_bvecs)
-+{
-+	if (*pinned_pgs) {
-+		unpin_user_pages(*pages, *pinned_pgs);
-+		*pinned_pgs = 0;
-+	}
-+
-+	if (*pages) {
-+		kfree(*pages);
-+		*pages = NULL;
-+	}
-+
-+	if (*atomic_bvecs) {
-+		kfree(*atomic_bvecs);
-+		*atomic_bvecs = NULL;
-+	}
-+}
-+
- static int iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i,
- 		const struct iomap_write_ops *write_ops)
+diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
+index f036c46b19c5..67d370947d95 100644
+--- a/fs/xfs/xfs_iops.c
++++ b/fs/xfs/xfs_iops.c
+@@ -604,9 +604,10 @@ xfs_get_atomic_write_min(
+ 	struct xfs_inode	*ip,
+ 	bool			is_dio)
  {
-@@ -1035,6 +1102,11 @@ static int iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i,
- 	struct address_space *mapping = iter->inode->i_mapping;
- 	size_t chunk = mapping_max_folio_size(mapping);
- 	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
-+	bool is_atomic = iter->flags & IOMAP_ATOMIC;
-+	struct page **pages = NULL;
-+	int pinned_pgs;
-+	struct iov_iter atomic_iter = {0};
-+	struct bio_vec *atomic_bvecs = NULL;
+-	if (is_dio) {
+-		struct xfs_mount *mp = ip->i_mount;
++	struct xfs_mount *mp = ip->i_mount;
++	uint32_t bs = mp->m_sb.sb_blocksize;
  
- 	do {
- 		struct folio *folio;
-@@ -1057,19 +1129,52 @@ static int iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i,
- 		if (bytes > iomap_length(iter))
- 			bytes = iomap_length(iter);
- 
--		/*
--		 * Bring in the user page that we'll copy from _first_.
--		 * Otherwise there's a nasty deadlock on copying from the
--		 * same page as we're writing to, without it being marked
--		 * up-to-date.
--		 *
--		 * For async buffered writes the assumption is that the user
--		 * page has already been faulted in. This can be optimized by
--		 * faulting the user page.
--		 */
--		if (unlikely(fault_in_iov_iter_readable(i, bytes) == bytes)) {
--			status = -EFAULT;
--			break;
-+		if (is_atomic) {
-+			/*
-+			 * If the user pages get reclaimed or unmapped, we could
-+			 * end up faulting and doing a short copy in
-+			 * copy_folio_from_iter_atomic(), which is undesirable
-+			 * for RWF_ATOMIC. Hence:
-+			 *
-+			 * 1. Pin the pages to protect against reclaim
-+			 *
-+			 * 2. Iter's user page can still get unmapped from user
-+			 *    page table leading to short copy. Protect against
-+			 *    this by instead using an ITER_BVEC created out of
-+			 *    the pinned pages.
-+			 */
-+
-+			pinned_pgs = iomap_atomic_write_prep(i, &atomic_iter, &atomic_bvecs,
-+							     &pages);
-+			if (unlikely(pinned_pgs <= 0)) {
-+				status = pinned_pgs;
-+				break;
-+			}
-+
-+			if (pinned_pgs << PAGE_SHIFT < bytes) {
-+				WARN_RATELIMIT(
-+					true,
-+					"Couldn't pin bytes for atomic write: pinned: %d, needed: %lld",
-+					pinned_pgs << PAGE_SHIFT, bytes);
-+				status = -EFAULT;
-+				break;
-+			}
-+
-+		} else {
-+			/*
-+			 * Bring in the user page that we'll copy from _first_.
-+			 * Otherwise there's a nasty deadlock on copying from the
-+			 * same page as we're writing to, without it being marked
-+			 * up-to-date.
-+			 *
-+			 * For async buffered writes the assumption is that the user
-+			 * page has already been faulted in. This can be optimized by
-+			 * faulting the user page.
-+			 */
-+			if (unlikely(fault_in_iov_iter_readable(i, bytes) == bytes)) {
-+				status = -EFAULT;
-+				break;
-+			}
- 		}
- 
- 		status = iomap_write_begin(iter, write_ops, &folio, &offset,
-@@ -1086,9 +1191,27 @@ static int iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i,
- 		if (mapping_writably_mapped(mapping))
- 			flush_dcache_folio(folio);
- 
--		copied = copy_folio_from_iter_atomic(folio, offset, bytes, i);
-+		copied = copy_folio_from_iter_atomic(
-+			folio, offset, bytes, is_atomic ? &atomic_iter : i);
- 		written = iomap_write_end(iter, bytes, copied, folio) ?
- 			  copied : 0;
-+		if (is_atomic) {
-+			if (written != bytes) {
-+				/*
-+				 * short copy so revert the iter accordingly.
-+				 * This should never happen ideally
-+				 */
-+				WARN_RATELIMIT(
-+					1,
-+					"Short atomic write: bytes_pinned:%d bytes:%lld written:%lld\n",
-+					pinned_pgs << PAGE_SHIFT, bytes,
-+					written);
-+				iov_iter_revert(i,
-+						iov_iter_count(&atomic_iter));
-+			}
-+			iomap_atomic_write_cleanup(&pages, &pinned_pgs,
-+						   &atomic_bvecs);
-+		}
- 
++	if (is_dio) {
  		/*
- 		 * Update the in-memory inode size after copying the data into
-@@ -1130,6 +1253,9 @@ static int iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i,
- 		}
- 	} while (iov_iter_count(i) && iomap_length(iter));
+ 		 * If we can complete an atomic write via atomic out of place writes,
+ 		 * then advertise a minimum size of one fsblock.  Without this
+@@ -618,10 +619,15 @@ xfs_get_atomic_write_min(
+ 		 */
+ 		if (xfs_inode_can_hw_atomic_write(ip) ||
+ 		    xfs_inode_can_sw_atomic_write(ip))
+-			return mp->m_sb.sb_blocksize;
++			return bs;
+ 	}
++	/*
++	 * Buffered IO only supports hw single block atomic writes and bs == ps
++	 * configurations.
++	 */
++	if (xfs_inode_can_hw_atomic_write(ip) && bs == PAGE_SIZE)
++		return bs;
  
-+	if (is_atomic)
-+		iomap_atomic_write_cleanup(&pages, &pinned_pgs, &atomic_bvecs);
-+
- 	return total_written ? 0 : status;
+-	/* buffered IO not supported yet so return 0 right away */
+ 	return 0;
  }
  
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 37546aa40f0d..7e064561cc4b 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -1833,17 +1833,6 @@ int generic_atomic_write_valid(struct kiocb *iocb, struct iov_iter *iter)
+@@ -630,7 +636,8 @@ xfs_get_atomic_write_max(
+ 	struct xfs_inode	*ip,
+ 	bool			is_dio)
+ {
+-	struct xfs_mount	*mp = ip->i_mount;
++	struct xfs_mount *mp = ip->i_mount;
++	uint32_t bs = mp->m_sb.sb_blocksize;
+ 
+ 	if (is_dio) {
+ 		/*
+@@ -640,7 +647,7 @@ xfs_get_atomic_write_max(
  		 */
- 		if (sb->s_blocksize != PAGE_SIZE)
- 			return -EOPNOTSUPP;
--
--		/*
--		 * If the user buffer of atomic write crosses page boundary,
--		 * there's a possibility of short write, example if 1 user page
--		 * could not be faulted or got reclaimed before the copy
--		 * operation. For now don't allow such a scenario by ensuring
--		 * user buffer is page aligned.
--		 */
--		if (!PAGE_ALIGNED(iov_iter_alignment(iter)))
--			return -EOPNOTSUPP;
--
+ 		if (!xfs_inode_can_sw_atomic_write(ip)) {
+ 			if (xfs_inode_can_hw_atomic_write(ip))
+-				return mp->m_sb.sb_blocksize;
++				return bs;
+ 			return 0;
+ 		}
+ 
+@@ -653,8 +660,13 @@ xfs_get_atomic_write_max(
+ 			return XFS_FSB_TO_B(mp, mp->m_groups[XG_TYPE_RTG].awu_max);
+ 		return XFS_FSB_TO_B(mp, mp->m_groups[XG_TYPE_AG].awu_max);
+ 	}
++	/*
++	 * Buffered IO only supports hw single block atomic writes and bs == ps
++	 * configurations.
++	 */
++	if (xfs_inode_can_hw_atomic_write(ip) && bs == PAGE_SIZE)
++		return bs;
+ 
+-	/* buffered IO not supported yet so return 0 right away */
+ 	return 0;
+ }
+ 
+@@ -679,7 +691,7 @@ xfs_get_atomic_write_max_opt(
+ 		return min(awu_max, xfs_inode_buftarg(ip)->bt_awu_max);
  	}
  
+-	/* buffered IO not supported yet so return 0 right away */
++	/* buffered IO for now only supports 1 filesyste block so max_opt is 0 */
  	return 0;
+ }
+ 
 -- 
 2.51.0
 
