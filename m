@@ -4,107 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 977CDCCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 09:25:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20956CCFA1E
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 09:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B633F8E0011; Wed, 12 Nov 2025 04:25:18 -0500 (EST)
+	id 7BCAA8E0012; Wed, 12 Nov 2025 04:26:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC5598E0002; Wed, 12 Nov 2025 04:25:18 -0500 (EST)
+	id 76CEF8E0002; Wed, 12 Nov 2025 04:26:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4458E0011; Wed, 12 Nov 2025 04:25:18 -0500 (EST)
+	id 65C638E0012; Wed, 12 Nov 2025 04:26:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D1238E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:25:18 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F66F88F13
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:25:18 +0000 (UTC)
-X-FDA: 84101421516.19.D149729
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1966E20002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:25:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=MeuVsTll;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf13.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762939516; a=rsa-sha256;
-	cv=none;
-	b=hU69VqK6mE56ZjuBXl/nuVm2HWvufQcGWCL2h8mtcUhCDbbsfqPKjALUyRTi2RQ3RDjvl4
-	8R3PuQdS8H2+PJAbohTtuJn4nBf2KaFaH+k+qSUvTOa3Gdjhku/c7mYqKOCRqY5UCgEVLc
-	pg2Qw/2YXHrkVqX47+wjAWTJwyz2vGs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=MeuVsTll;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf13.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DE598E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:26:47 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E0A4F14042C
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:26:46 +0000 (UTC)
+X-FDA: 84101425212.17.103E2A0
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 189EA40007
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:26:44 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZIQZwiF+;
+	spf=pass (imf01.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762939516;
+	s=arc-20220608; t=1762939605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RVnCHkLjcr0RspKn5Jtrrnb2AKO/SrtvJOSAHmN/skc=;
-	b=cDkm1cLXfWI6hRw+Yu2IgRyC+JztOgLfGBWVBDMCV2h/aUqGHK9SBKd3FKXKLpkeXfbH3P
-	H/sookUxFBWHFckh7onvMXMSI4yqZTzHrCGmEjtWevNwQkW6yp4omiqsFxiR4jDzHXONfp
-	BAHHWhItLBoblogSzRcagx2hNOyQAf8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1762939513;
-	bh=wfdiu7J2v8ebQjPtRjS9CStPzrfquDSfEs/pL6nqmaY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MeuVsTllT4ykJQdbbdHweXlWptimWOqEdLqKL7bcrfCrSqzE+IYsnSawgqaBLVumd
-	 lDdLYHJNix4epPZvJzO8U/lo/H+fa6CdtR3pDPrkhk2JmXkUqo5wxAxX9P3AAi3U8E
-	 YI3/frGF8lanYUkFyVFmgoKqIgbzzW3RkkEG20oMZIt++WToJvcp0oWPa+itdSGvnc
-	 Gw6tIWRjCZQgc6jyOHbuUt0jUa8g7v5jv0Wcvg4NKiLF3ndEYnFPYy3Ck+WIMi17Vb
-	 HbHxgkAi7JblZw5lgDdWCTL4NlLF+Xyxki1E/DhdDE99LYlNFqe1L4dG5320TCy1iy
-	 pp09DCW7We3zg==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4CD0D17E1318;
-	Wed, 12 Nov 2025 10:25:12 +0100 (CET)
-Date: Wed, 12 Nov 2025 10:25:07 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Melissa Wen <mwen@igalia.com>, =?UTF-8?B?TWHDrXJh?= Canal
- <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?B?TWlrb8WCYWo=?= Wasiak
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>, Nitin
- Gote <nitin.r.gote@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
- Jonathan Corbet <corbet@lwn.net>, Christopher Healy <healych@amazon.com>,
- Matthew Wilcox <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH v7 06/11] drm/v3d: Use huge tmpfs mountpoint helpers
-Message-ID: <20251112102507.66060e30@fedora>
-In-Reply-To: <20251110155000.2936-7-loic.molinari@collabora.com>
-References: <20251110155000.2936-1-loic.molinari@collabora.com>
-	<20251110155000.2936-7-loic.molinari@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	bh=13U7AVC+v5UBTnrbtBPdFJDstqOHomUS2ScWYjnJ9zw=;
+	b=PChY4lT6ZSTdeNd+o0U2pCcRmhYeky83MTMWQ6anNb9u3lUSqVdmkMjMwNQ42TymTnVfam
+	jofC+u2kwXjaxS7IQFgh7ATFghNFtSCP6qaIx/Gg74Qsn5TrODsY/0jIWq0ErxZeRiiK+V
+	/QqxBDMpx5MSYrH6nMqOxXa1IpldNrA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZIQZwiF+;
+	spf=pass (imf01.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762939605; a=rsa-sha256;
+	cv=none;
+	b=T1WyYszevVmRMlXZQ7DolMb3WWKpWUnJH0/KJa+YsekQmiUmMg0XjCCSfLYRqru2ZG64GI
+	X66uOU3xDpUEbmlzUdPnEBhmruPM7lSXB9eHsiItIODccWynZlLe66tjT7R7IqSQgOBv5/
+	jxg1TIIGmIIfqpAz3VKFntH9mefWagA=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7880686d178so6747687b3.1
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:26:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762939604; x=1763544404; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=13U7AVC+v5UBTnrbtBPdFJDstqOHomUS2ScWYjnJ9zw=;
+        b=ZIQZwiF++LpTfq+ze5Y0Lf1iG1KEoqKI1cwUq+zXhmWJBKAzL62zB6oCjt3jpWoxBK
+         1G/EF766EUASXHfSvA4QZfczXTnzqmoivf0n46ivvo83C41lp7zU2xCHSHNnk015RHiG
+         ePIC+TjCBEWDYnSCYunoaZmi96vqlxgOhL9brdhINAz3OwgCXwCX1OpAoSxprffC6DQj
+         JZsWIUxILv7eyy0Edp8kxDCkb4fdQ4n0cqSSINR9F28+78guHqnMMfFw7vhYnamlyO0v
+         cWK1nGjwxBveGWnHVs7qWQnVYCtGWoIvaDn0k5MKoqV+5RAPxXVjjzprKbJJkfhHZNqD
+         ZyAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762939604; x=1763544404;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=13U7AVC+v5UBTnrbtBPdFJDstqOHomUS2ScWYjnJ9zw=;
+        b=m7p865ryXFt/aLkFMd+vOxHWAtHiDIFKooMfcZpV2t1xCSKkFEIZIUbnUbnW7tzukh
+         bHla8F+UfP9aH9HX2dwwKIchXy3CQbYgGWOgTtO1NUvx7Y0IX1wN5DdO6lEri57DO4qu
+         iMUG39dxec28mkwmOtUn0sEEvt5bETnh8ARZjKF09lpXWDeWyMujnSMkV0geVtSeqH8t
+         Yf0Pje74fqybAkdSdDe7nXwzERNce91/A8hfc4vGH/7wh0XdqiL98RJA2WkalMSMtlKu
+         gMPWYFtyptgQUKnwIMRiN2mwL4ga9dzrNVLeKs47AOKGAKyqxFuDzalavBz/bpYPuiZO
+         DdQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWeFvSQb6px7hK7CM05WPidAc8c55f29n3MFmSC7mre021ht/VjHmWkt2ycn9p6c9j3kDq4nIIpFQ==@kvack.org
+X-Gm-Message-State: AOJu0YyJFdcjX2d/dnGJzViCGGvWqtkWQDQP+0Ou6lJVgMwin+UQza63
+	tUAJcGjWNRI/xiSYWAER+MUE2QHWZICRi0i0J6wZAh0quRRo7ElFvJFExcu/NB340ce4yNQcETv
+	IHtlARg6FIudCfJOXozlHk0sU/hgvtAA=
+X-Gm-Gg: ASbGncsopzXoQpdSvimmsykChVBWW2l4g2VGUwOr8AivzNXN1TVDVZ09psFkifbTT5V
+	hYztmg1gBU8ZqRvRuamhE7F//KajPloRPJ8U3vktshbDNkGCXD1DGkjdzFhEfrI9lXPIs9YFsT3
+	HSJjrUMiI43sIgqE3QTXlWkTuWIGiq7gwUp+ApFfBfEECdZoMqxuWu5nblLOFv2EOOn8uweQ6Rh
+	+yoBNmCZXekJrQ7nu4ksmxbXE+q3dZGm4aOOwwz67Z0ncqOZtYiYbj/T2glCv78aQvwKZuLy1z0
+	d7mLaUlzshOgLzhKMg==
+X-Google-Smtp-Source: AGHT+IFeg2Gqvtsptiri6ePX3FBgv70zi6fuHZ1BwTdto3EYCmKxE4YFDolr1iUmWcSeBCbWwr8e8FtaD2C0e2n3xP0=
+X-Received: by 2002:a05:690c:a742:b0:784:a232:b3d9 with SMTP id
+ 00721157ae682-78813621726mr15697227b3.18.1762939604074; Wed, 12 Nov 2025
+ 01:26:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20251112031631.2315651-1-kartikey406@gmail.com>
+ <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com> <aRRPvn4DYAhuGtq3@localhost.localdomain>
+In-Reply-To: <aRRPvn4DYAhuGtq3@localhost.localdomain>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Wed, 12 Nov 2025 14:56:32 +0530
+X-Gm-Features: AWmQ_bmaI_JIe64abNiasFhIiNWEIeB6vR-Ar5fHJ7UfN9zGaffX73JU93uBIJ0
+Message-ID: <CADhLXY7-62Q51_fCXs01kiZ5u=qpieXJbjqrJnvwGEpaR37khg@mail.gmail.com>
+Subject: Re: [PATCH] mm/memfd: clear hugetlb pages on allocation
+To: Oscar Salvador <osalvador@suse.de>
+Cc: Hugh Dickins <hughd@google.com>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 189EA40007
+X-Stat-Signature: jn9pqmqf5kqk9tyz9yb46q6z486rgoez
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1966E20002
-X-Stat-Signature: rc6oscd1aua4i1hcewsph9ktmek8yt8o
-X-HE-Tag: 1762939515-617582
-X-HE-Meta: U2FsdGVkX189ddmr3LZga9dw1uT49zPa2pdYMeNeIKr7yR1KqVvzq8rjm4oN1IRV4NxMS23CqDoyjAdsMenpHe+5/+H4q20JAn9bp3AXyPT59NjxeHSiwHxMQ35muUCs65QpE4lI+9Y2S3PamGi4gy4VBPXytb+WkxLbkMe90WqRlwjzmFs8RnQIArsbW+KmaRBLleIbPm+Y2Ne9a7Gpphz2O8fSEe4yJyX4uMFWRILpHnyTdMTCiqb4S+tJyks/r+qS55NjAE+nLxJCQ/lpsX+KNsRb6oXen8uN5M62tkYLEmR4eUJu56CnhaRyUYjICFErNN8ZncNc4aQTHxJZXn9jmrnNQ1njGsW+hfRAvVX5blm5jy7i09r4exyH0Me1Gm4ExlxPXlTsFaVK+Nvpt0glDWvbjmeckdlYydXysOd1aQO4fn6UcP8HJsa5tSXFGKi8GxjH4r7S64zMwxicaGcMqByD+E+mQ644yFF1cJuetxeZXTraD0RCqZ3yBQBNoYJl1/zlOHTCJbULCVTDMTeVVcfMgcYY1Hg+VVZ2Jj8AEEX/7K91VsWMLcMCd0x+ipsark6r2RRXP46XC4/HdHU5/uLmMGK63mLuBv19IPQEwI7EY4iVd4deKelUwa7V1jo4rbwOWSx50YXxk9xkcQ2faf5WuERdGadEsmrPeT/jzLANqz1H5MWqu349Tjl9YmAl/q8R2p6aL8njGIcv4GRdKjbIOS3a6I1uC7/LzRiQe3YkBUgYyZkiViyCTxRKF1Bu4yqq+hnQnXDMunODXMSN4bk2/fQiLHJrGSBdYmvXynAma7z8fuovP5D5hrEhUMyud58FkIicl1wAiA2E3+414Egh8XkqsN+VydnCUM+bPoGo0025/LSRqn6nsAZ9azV3TndY/4ii7+CMJ/8Afaq+NvkWmnJXMkzt5UuIBKdITRP3ChBxXkOfmVSbF/i4ixaC8un0iUaOyAzvtYj
- LqoAuY/6
- m+mmRB8ogGEp1Y61nfP/Z6C7HdM5PxwtTc5IqtqCesg1y8KDLdOYHz1cls7woehZ4ERGH1F+ndCSRRbweg4eME/AjXHFInvTdYs5J6E+xdRbiYlJqg4Bu5qkNSwIoaBa1PBqUFO4YuBR911q4b0IO4Vn12leWxtJ/qodE5+csc1mddpAaE9f7Vg2jnhBv5+2OeHt4T26RPYwXpv0q2ROxeXStRnN2+OkjtYD+fldOj1kewsishWesXmL0eyDbzG9ZlQOHoiEoxksyj8LmoNROqo2ODU4AIR6EaupzTOBjuHNsq6EoT3hIFGPUGwKrhVbDPiiATlrrQhEQOxLs8HQhFAnJAqjfOJdDb606FSg0afoWUrOouaCE+YW5HA==
+X-HE-Tag: 1762939604-59136
+X-HE-Meta: U2FsdGVkX1/IVDIXQKNqLUK5dc+xTpFy76VTt6bjCzggf9YNhkdaYIsNd/wE67dHEKpn6EMnqjdIHI2Pcaezmw0vy4Bp7G4KMTmJ4sn3GOMWDWKlMM3zhfpPZBs8ewPSF92x+vYFlTgQOCT7eVbs1SCIlfJ5Mf2zPH3eBCY8qwUxp+bmsfCaOoEIMb/2rodbeVEAE/OaKbaR11AhVtgvI0VpCVoOHSfSsugZ+4g28qFw/EQ36LLuasv9wqa9Nnm8VfFmWB7ANpvNCip6GGGs2V40LTXO6aVTdCit5eHPh8PkcWkuUQ9P2EitGSkdPrMOgr9en02+qmP+iDHWREZ+wZS/xnTPPlboHnXrlpvQ55OdZjZaBJjtT/RTKd9vSg99mfZhPxmx7/7J/rhRHsLeEWCzizn/kYQDEOuL9TaTwUWc4lMNabVDnKIaLRpvkEvaAgH4bJdAnVw5M8+LSnV3MM6HO3BACs2+GbnebhepIXNivY2HYgo8hP9oNhcQeDwnyqhxxrtX20ZYOYL6nuUuo5SPc/UI6a48CpriC+KBPq7H/A6YKO+5xkK+FH9VVbi0V3XmavQNWnMCngmZirfwzysclDCUoUh8WveIQubY1gdrZkJmx4hpZ/TZ+8ObiIYzXsEW8dRkEwEAmLr9oIpceeycjgyn3bK60ydM0quh0sDmBDU5yIlHWWu7D1EChhe9AALzvg0gPQoGyHKbhRdgjxQVoVPsMybAm8yPS6+TW/NP78ivCJUo0qWpmH0oWCrjXl6SqOUUIEdBO21gtDSNnqW2skabEs+fEmyKM6ZrfXqj0tNdwLyMuE2QHuEbRrPSXWH4I6VPssIQR+PFqSVH5sf8BAQWirgOpG13Z0GbbiUii1/oauVe/TTzRXuqRXRuvwPPunqxwya7yE1VYOKu2Hh+PNb0iRPnmAg4qwQpGk8j27ptl9PYrFsBK7YJqZE99oUzXQp88w3q1rSoQ7K
+ Ib4lyLNG
+ KUL6m1OLny4PpQeJQrz1umFsOp5gY7DzVtXEd5sX5jHshunjKYHZ8aibdCWIJlENowjmSUV0jye6NFQ2EISxZwHeuN++hHDlURPP8u5roSKX986xI10G5ZdvVVPx4eKMd9YC2zII9N55XviwqixgrbQ6rvBydDI7z3s3O+UO5iHrRYPLA+0FJZhU9yI+V/wPJ0n2bG2we61PUmOXs9y5fWDWzIK4NhhekvT65XvgwLbFSwtAXNKp64RXmGM3eRSGt1o0Cykw138R7RBonWVPm5XEF3fbC6fdt97YPPYN1BYH7wINGduFXSRC+XZmY5y4CJFzGTZ7287clusnVzUpu8Hp43NBwFjZzK4RMVBCQqaLmUSs8CZUHSwXrI94s1acDfuuk/DbpL8ctKXuVajYQGUoBFaiddKbr5h9p4tliGBbVYdhZXiqMjvPnc713dCG/aTyowXsijhQsVFawlkOCfmfq4D/kjoTcuSLMaGFs45DqVvbsfnLT3By58MVUVfg8Vhht
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,257 +118,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 10 Nov 2025 16:49:54 +0100
-Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
+Hi Oscar,
 
-> Make use of the new drm_gem_huge_mnt_create() and
-> drm_gem_has_huge_mnt() helpers to avoid code duplication. Now that
-> it's just a few lines long, the single function in v3d_gemfs.c is
-> moved into v3d_gem.c.
->=20
-> v3:
-> - use huge tmpfs mountpoint in drm_device
-> - move v3d_gemfs.c into v3d_gem.c
->=20
-> v4:
-> - clean up mountpoint creation error handling
->=20
-> v5:
-> - fix CONFIG_TRANSPARENT_HUGEPAGE check
-> - use drm_gem_has_huge_mnt() helper
->=20
-> Signed-off-by: Lo=C3=AFc Molinari <loic.molinari@collabora.com>
-> ---
->  drivers/gpu/drm/v3d/Makefile    |  3 +-
->  drivers/gpu/drm/v3d/v3d_bo.c    |  5 ++-
->  drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
->  drivers/gpu/drm/v3d/v3d_drv.h   | 11 +-----
->  drivers/gpu/drm/v3d/v3d_gem.c   | 27 ++++++++++++--
->  drivers/gpu/drm/v3d/v3d_gemfs.c | 62 ---------------------------------
->  6 files changed, 30 insertions(+), 80 deletions(-)
->  delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
->=20
-> diff --git a/drivers/gpu/drm/v3d/Makefile b/drivers/gpu/drm/v3d/Makefile
-> index fcf710926057..b7d673f1153b 100644
-> --- a/drivers/gpu/drm/v3d/Makefile
-> +++ b/drivers/gpu/drm/v3d/Makefile
-> @@ -13,8 +13,7 @@ v3d-y :=3D \
->  	v3d_trace_points.o \
->  	v3d_sched.o \
->  	v3d_sysfs.o \
-> -	v3d_submit.o \
-> -	v3d_gemfs.o
-> +	v3d_submit.o
-> =20
->  v3d-$(CONFIG_DEBUG_FS) +=3D v3d_debugfs.o
-> =20
-> diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
-> index d9547f5117b9..99c6a775d18b 100644
-> --- a/drivers/gpu/drm/v3d/v3d_bo.c
-> +++ b/drivers/gpu/drm/v3d/v3d_bo.c
-> @@ -114,7 +114,7 @@ v3d_bo_create_finish(struct drm_gem_object *obj)
->  	if (IS_ERR(sgt))
->  		return PTR_ERR(sgt);
-> =20
-> -	if (!v3d->gemfs)
-> +	if (!drm_gem_has_huge_mnt(obj->dev))
->  		align =3D SZ_4K;
->  	else if (obj->size >=3D SZ_1M)
->  		align =3D SZ_1M;
-> @@ -150,12 +150,11 @@ struct v3d_bo *v3d_bo_create(struct drm_device *dev=
-, struct drm_file *file_priv,
->  			     size_t unaligned_size)
->  {
->  	struct drm_gem_shmem_object *shmem_obj;
-> -	struct v3d_dev *v3d =3D to_v3d_dev(dev);
->  	struct v3d_bo *bo;
->  	int ret;
-> =20
->  	shmem_obj =3D drm_gem_shmem_create_with_mnt(dev, unaligned_size,
-> -						  v3d->gemfs);
-> +						  dev->huge_mnt);
+Thank you for catching these issues!
 
-I thought you needed some kind of drm_gem_huge_mnt() helper to cover
-for the fact drm_device::huge_mnt does not exist if
-CONFIG_TRANSPARENT_HUGEPAGE=3Dn.
+I have a question about scope: Should I fix all three issues (zeroing,
+locking, uptodate) in a single patch for v2, or would you prefer:
+
+1. My current patch for just the zeroing (security fix), and
+2. A separate follow-up patch for the locking and uptodate issues?
+
+I'm happy to do either - just want to make sure I'm following the preferred
+approach for the mm subsystem.
 
 
->  	if (IS_ERR(shmem_obj))
->  		return ERR_CAST(shmem_obj);
->  	bo =3D to_v3d_bo(&shmem_obj->base);
-> diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
-> index e8a46c8bad8a..30b55a00eeda 100644
-> --- a/drivers/gpu/drm/v3d/v3d_drv.c
-> +++ b/drivers/gpu/drm/v3d/v3d_drv.c
-> @@ -107,7 +107,7 @@ static int v3d_get_param_ioctl(struct drm_device *dev=
-, void *data,
->  		args->value =3D v3d->perfmon_info.max_counters;
->  		return 0;
->  	case DRM_V3D_PARAM_SUPPORTS_SUPER_PAGES:
-> -		args->value =3D !!v3d->gemfs;
-> +		args->value =3D drm_gem_has_huge_mnt(dev);
->  		return 0;
->  	case DRM_V3D_PARAM_GLOBAL_RESET_COUNTER:
->  		mutex_lock(&v3d->reset_lock);
-> diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
-> index 1884686985b8..99a39329bb85 100644
-> --- a/drivers/gpu/drm/v3d/v3d_drv.h
-> +++ b/drivers/gpu/drm/v3d/v3d_drv.h
-> @@ -158,11 +158,6 @@ struct v3d_dev {
->  	struct drm_mm mm;
->  	spinlock_t mm_lock;
-> =20
-> -	/*
-> -	 * tmpfs instance used for shmem backed objects
-> -	 */
-> -	struct vfsmount *gemfs;
-> -
->  	struct work_struct overflow_mem_work;
-> =20
->  	struct v3d_queue_state queue[V3D_MAX_QUEUES];
-> @@ -569,6 +564,7 @@ extern const struct dma_fence_ops v3d_fence_ops;
->  struct dma_fence *v3d_fence_create(struct v3d_dev *v3d, enum v3d_queue q=
-);
-> =20
->  /* v3d_gem.c */
-> +extern bool super_pages;
->  int v3d_gem_init(struct drm_device *dev);
->  void v3d_gem_destroy(struct drm_device *dev);
->  void v3d_reset_sms(struct v3d_dev *v3d);
-> @@ -576,11 +572,6 @@ void v3d_reset(struct v3d_dev *v3d);
->  void v3d_invalidate_caches(struct v3d_dev *v3d);
->  void v3d_clean_caches(struct v3d_dev *v3d);
-> =20
-> -/* v3d_gemfs.c */
-> -extern bool super_pages;
-> -void v3d_gemfs_init(struct v3d_dev *v3d);
-> -void v3d_gemfs_fini(struct v3d_dev *v3d);
-> -
->  /* v3d_submit.c */
->  void v3d_job_cleanup(struct v3d_job *job);
->  void v3d_job_put(struct v3d_job *job);
-> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-> index 5a180dc6c452..f316f67364d2 100644
-> --- a/drivers/gpu/drm/v3d/v3d_gem.c
-> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
-> @@ -259,6 +259,30 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
->  	v3d_invalidate_slices(v3d, 0);
->  }
-> =20
-> +static void
-> +v3d_huge_mnt_init(struct v3d_dev *v3d)
-> +{
-> +	int err =3D 0;
-> +
-> +	/*
-> +	 * By using a huge shmemfs mountpoint when the user wants to
-> +	 * enable Super Pages, we can pass in mount flags that better
-> +	 * match our usecase.
-> +	 */
-> +
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && super_pages)
-> +		err =3D drm_gem_huge_mnt_create(&v3d->drm, "within_size");
-> +
-> +	if (drm_gem_has_huge_mnt(&v3d->drm))
-> +		drm_info(&v3d->drm, "Using Transparent Hugepages\n");
-> +	else if (err)
-> +		drm_warn(&v3d->drm, "Can't use Transparent Hugepages (%d)\n",
-> +			 err);
-> +	else
-> +		drm_notice(&v3d->drm,
-> +			   "Transparent Hugepage support is recommended for optimal performan=
-ce on this platform!\n");
-> +}
-> +
->  int
->  v3d_gem_init(struct drm_device *dev)
->  {
-> @@ -310,7 +334,7 @@ v3d_gem_init(struct drm_device *dev)
->  	v3d_init_hw_state(v3d);
->  	v3d_mmu_set_page_table(v3d);
-> =20
-> -	v3d_gemfs_init(v3d);
-> +	v3d_huge_mnt_init(v3d);
-> =20
->  	ret =3D v3d_sched_init(v3d);
->  	if (ret) {
-> @@ -330,7 +354,6 @@ v3d_gem_destroy(struct drm_device *dev)
->  	enum v3d_queue q;
-> =20
->  	v3d_sched_fini(v3d);
-> -	v3d_gemfs_fini(v3d);
-> =20
->  	/* Waiting for jobs to finish would need to be done before
->  	 * unregistering V3D.
-> diff --git a/drivers/gpu/drm/v3d/v3d_gemfs.c b/drivers/gpu/drm/v3d/v3d_ge=
-mfs.c
-> deleted file mode 100644
-> index bf351fc0d488..000000000000
-> --- a/drivers/gpu/drm/v3d/v3d_gemfs.c
-> +++ /dev/null
-> @@ -1,62 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0+
-> -/* Copyright (C) 2024 Raspberry Pi */
-> -
-> -#include <linux/fs.h>
-> -#include <linux/mount.h>
-> -#include <linux/fs_context.h>
-> -
-> -#include <drm/drm_print.h>
-> -
-> -#include "v3d_drv.h"
-> -
-> -void v3d_gemfs_init(struct v3d_dev *v3d)
-> -{
-> -	struct file_system_type *type;
-> -	struct fs_context *fc;
-> -	struct vfsmount *gemfs;
-> -	int ret;
-> -
-> -	/*
-> -	 * By creating our own shmemfs mountpoint, we can pass in
-> -	 * mount flags that better match our usecase. However, we
-> -	 * only do so on platforms which benefit from it.
-> -	 */
-> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> -		goto err;
-> -
-> -	/* The user doesn't want to enable Super Pages */
-> -	if (!super_pages)
-> -		goto err;
-> -
-> -	type =3D get_fs_type("tmpfs");
-> -	if (!type)
-> -		goto err;
-> -
-> -	fc =3D fs_context_for_mount(type, SB_KERNMOUNT);
-> -	if (IS_ERR(fc))
-> -		goto err;
-> -	ret =3D vfs_parse_fs_string(fc, "source", "tmpfs");
-> -	if (!ret)
-> -		ret =3D vfs_parse_fs_string(fc, "huge", "within_size");
-> -	if (!ret)
-> -		gemfs =3D fc_mount_longterm(fc);
-> -	put_fs_context(fc);
-> -	if (ret)
-> -		goto err;
-> -
-> -	v3d->gemfs =3D gemfs;
-> -	drm_info(&v3d->drm, "Using Transparent Hugepages\n");
-> -
-> -	return;
-> -
-> -err:
-> -	v3d->gemfs =3D NULL;
-> -	drm_notice(&v3d->drm,
-> -		   "Transparent Hugepage support is recommended for optimal performanc=
-e on this platform!\n");
-> -}
-> -
-> -void v3d_gemfs_fini(struct v3d_dev *v3d)
-> -{
-> -	if (v3d->gemfs)
-> -		kern_unmount(v3d->gemfs);
-> -}
 
+Thanks,
+Deepanshu
 
