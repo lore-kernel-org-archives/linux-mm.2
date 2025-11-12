@@ -4,132 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3768ECCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 08:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 458BFCCFA1E
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 09:10:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 913D08E0008; Wed, 12 Nov 2025 03:58:38 -0500 (EST)
+	id 6E0FF8E0003; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EAC08E0002; Wed, 12 Nov 2025 03:58:38 -0500 (EST)
+	id 68EA88E0002; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8272B8E0008; Wed, 12 Nov 2025 03:58:38 -0500 (EST)
+	id 5A4808E0003; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2378E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 03:58:38 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 174B312DA1C
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 08:58:38 +0000 (UTC)
-X-FDA: 84101354316.07.E2A1F27
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 49CB020007
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 08:58:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=n05MXCnw;
-	spf=pass (imf13.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762937916;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b8kOFNMQqc6DwZYKiExs1FsLT7JfiAiiPFiPODZcAIg=;
-	b=hfmc7mJb4L9pa5pYhmpPlRDcc7KkW+RXPKQQr+V13qGEXn/2FTf1hiZsZbeJ0Uujr5Bb8b
-	m5GHA75DHly0wQX3zo2eC50E89SFycNoUc3pUFqOJ6Rm7CvgXcXnIPgBeNg8Qojn+dCSm6
-	zhWk/1SJ7EONlXY4pNADBglC4ukp/ec=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=n05MXCnw;
-	spf=pass (imf13.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762937916; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3366F8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1C5012DA52
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:10:14 +0000 (UTC)
+X-FDA: 84101383548.20.68DA1D3
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C1D3FC0004
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:10:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZVjocBTV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762938612; a=rsa-sha256;
 	cv=none;
-	b=fH6vyUq7y4x6GlxZHPwPfa5NUNOgG9r7WavDM4aIwwXB3sbVNqw+C3XfxdL3IQXcAE0JO3
-	8vUtNT0xzu8ZJUqB3hQ3dQ1z/sQ7L9zdvZQsJ3ZWYDRBNwizBovxWP35AVl5A+ddFf7AJW
-	H9nSq1AFzjFA2aSIrFlp1pIeou1qQJc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762937915; x=1794473915;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zRDQF4ySYQusOHzc2T1tZsRtG0bPI5An+rv/0D9ldPA=;
-  b=n05MXCnwoF3FDYv3miQrqUY/syKVpHg561KFlQRaJfHD0mvgOQwmEDx3
-   uDTk+hD9pCTsCpfbGV/KX63xlUjQAQkeSHAWa54xUlUvthEU7YE4XlJqD
-   hmXwdPlRfKkTZ785dPturti7hAhdBC1MGU+aTQU29/7IzUWTh+6gK16TY
-   //rxvqTMs6KwNex5XFBMXG1aEhDowAZWdusbHmm3BRJRYCdT7sl2+K3wP
-   NZW6vrQPgmVEo9dQoXt7YgzYn48R3bz2c8IOfUD9INWHKh5tX+u09uygY
-   E4erDzqbw3BmDGtKSnfmnYxATluz3K9qTLgK3/NLZ73LKvBce5p+xhfZM
-   Q==;
-X-CSE-ConnectionGUID: LGH+txuFSQO0AP1q3VhIng==
-X-CSE-MsgGUID: MRbyI/WNQ8ugegH1zoZ5Ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="52556530"
-X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; 
-   d="scan'208";a="52556530"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 00:58:33 -0800
-X-CSE-ConnectionGUID: pRO6tdWeROitpi6xfJxcsA==
-X-CSE-MsgGUID: jwxmFvxbSl+/qGbeC5NoOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; 
-   d="scan'208";a="189343307"
-Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 00:58:13 -0800
-Message-ID: <ab3f297e-44d5-4f42-aa17-f2e7c135580e@linux.intel.com>
-Date: Wed, 12 Nov 2025 16:58:10 +0800
+	b=geREP2k7gwLhKNqyNuOVKhrDj6n8m/YadcppktQVm1+7TLICXEq+GePZvPqbTjjrXJ09va
+	stjdFsBwqHadSOLlKNVNLku8mfbPWRnSdf2nABaaWQmkHKo74Rf3xKznXUjqJAA56nGWGO
+	o6Gch4lIvslkDPkMnzHXsjCvNANaQjU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZVjocBTV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762938612;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xq6Pkz3PynpH0qi1kBl1OjrW5Or2+dSMMg5022+CzXI=;
+	b=hrE78C3RJBW1UNYXN70qJ/wIhMSrvdgK/bga6RqlrVbwsWNNoBIjpgk0two/eKVqPENX5a
+	rQXMTrUYTGK2AYfR9e6yc2V5OzV8ZewaNBTxZ3NCLfWTQgUNNouMNoijPlC6OnRbzCp3xH
+	7C4KgC2oUKnhQjtWtH/pihCxxg7tonI=
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b7260435287so94225566b.3
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:10:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762938611; x=1763543411; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xq6Pkz3PynpH0qi1kBl1OjrW5Or2+dSMMg5022+CzXI=;
+        b=ZVjocBTVsdhtJue2lx5EPVB4Yv1DTaZUDK3QwQmSE2iaswz5U9H+Q9iWep1PVInWg5
+         rztkRO8SgEqBxVx5+2QkjygzfpjEQHeDDBvho6wClD9uDOfALhnnlInvcCMk8AnC4EIr
+         W1f025GLs/+902goH5S5xODxFdtHLxXeF/EJaiJxy2HtxsAgrhX4MzgxduHiXBY8rhV4
+         L3IRwQzhWOZ4jyhS5znrhg5AxUzehb2FVhD1g7AUg5h8464ha8ubT82EXsiqqLGy8/uS
+         puUdwGXZTz8wClcDxAx9/Q84iyO5QprkRhofcT18bbTRZmhr+DKbQi/ezZMHPCuSod7A
+         YgYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762938611; x=1763543411;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xq6Pkz3PynpH0qi1kBl1OjrW5Or2+dSMMg5022+CzXI=;
+        b=XGlZ601y3Hs8UMdR1RGKjMa+SUBzmUDueAnusgXXen7i7W6VxcTZL6tL0rH3vIGz/K
+         +PD7PIuzzbHlPZuoJhjzBCKopizMk3S2q9PPDU3kF0FGErgKM2CWNvQo0ULrkZvnaaLl
+         bjtT1Zr8xPiiM+XYu0x+TsgBt34IB1dNDAxVcKyVz9QjIVDjudTGnJugOar0OEJusH8K
+         zdaOLbRN9x4+YjItmSbNDvMekFb4Pc7mZlAC7rWkTOFQIFEBwB383JCsp+HBkTmvIJmR
+         o0KoZlOZFYhqKVbEuh7FFPpGzm0QrWKbEeAOxyEjvHXc4EgjZ/AuBGPRaDFanwjS7/qP
+         nFvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWa5TnRzWFGCeyK0oDrS6ZmG/QiTTRqbAaEDm22Fk/MIuNUL54hcaNCbW3E/nZGBNkJ5hXM8IwVmg==@kvack.org
+X-Gm-Message-State: AOJu0YzBoToUT8RDIMdRZiti2CAaNv3pCRAkvMdQcNYmBmhg+rUOXMWP
+	ABwq0OqsuYLs7stGGferH4BnPekw7j8yDy2zbfROdhfrNcTal2GNYoac
+X-Gm-Gg: ASbGncuGGeiux+HuAt2P0hEYZOrdbnO2NdNjgYBclJtwr/00G3x47m42/cjvl9cyT2g
+	p3FMU4i+C4VXVbQYjsyS27lEa1zKY5eTLaABO6JyWeqdxMdrNvYjk00MggtTalbxFEFRRakcQfv
+	iMo5YImd9hKjRY5SXguUie6k6j6LLQ6ZH82gSu3loOGo+wdXcRsC4zW2gcVUKKVM9sGgDUopxNY
+	Wi8XcopV29CqUAFVJUVktdyV/ZSMTMvAFemNIoCPcRwIkl7OJm2WZBSUt1A8h9iANvYnsbbLPU0
+	yHXTOlTsmxZEfsCRegYRd0gi4J26Z+X0+FYN2/O7Pf04uW9NDXClZoBEXF0+yeXn9yW0XZ2uRCg
+	CpoDiECeDLyRH6ry/YzwCwtc0P9hGeE8BjsdE4zim04IVCbTpQR8AnM7yJyQlh81Nh+p0pK/8w3
+	Zhrdk=
+X-Google-Smtp-Source: AGHT+IFG1lbFQXG4fnln8ZtPUziEQL0kZeEfj0v4OL0cUWGm+I0pGkLzjIzHZcn2EYT7SNPiF/SERQ==
+X-Received: by 2002:a17:907:807:b0:b70:aa96:6023 with SMTP id a640c23a62f3a-b7331971805mr197887066b.24.1762938610695;
+        Wed, 12 Nov 2025 01:10:10 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bdbcb0aasm1523156666b.11.2025.11.12.01.10.10
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Nov 2025 01:10:10 -0800 (PST)
+Date: Wed, 12 Nov 2025 09:10:09 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, npache@redhat.com,
+	baohua@kernel.org, akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com
+Subject: Re: [PATCH] mm/khugepaged: continue to collapse on SCAN_PMD_NONE
+Message-ID: <20251112091009.5xewhutnvdaoxt5s@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251112020031.25350-1-richard.weiyang@gmail.com>
+ <06096f8b-4da0-4b5c-af3c-fd8871437c16@linux.dev>
+ <20251112034008.ojwghkko74psu65v@master>
+ <811bea18-30d0-446f-8840-d99698a6a9ba@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 01/37] KVM: guest_memfd: Introduce per-gmem
- attributes, use to guard user mappings
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, x86@kernel.org,
- akpm@linux-foundation.org, bp@alien8.de, brauner@kernel.org,
- chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net,
- dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com,
- dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com,
- fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org,
- hpa@zytor.com, hughd@google.com, ira.weiny@intel.com,
- isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com,
- jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com,
- jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com,
- kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev,
- liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
- mail@maciej.szmigiero.name, maobibo@loongson.cn,
- mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
- mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com,
- mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev,
- nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev,
- palmer@dabbelt.com, pankaj.gupta@amd.com, paul.walmsley@sifive.com,
- pbonzini@redhat.com, peterx@redhat.com, pgonda@google.com, prsampat@amd.com,
- pvorel@suse.cz, qperret@google.com, richard.weiyang@gmail.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, rostedt@goodmis.org,
- roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com,
- shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
- steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
- tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
- vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
- wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
- wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
- yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-References: <cover.1760731772.git.ackerleytng@google.com>
- <638600e19c6e23959bad60cf61582f387dff6445.1760731772.git.ackerleytng@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <638600e19c6e23959bad60cf61582f387dff6445.1760731772.git.ackerleytng@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 49CB020007
-X-Stat-Signature: d5mztaf5he1qj693zba9trutkn9uy4cq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <811bea18-30d0-446f-8840-d99698a6a9ba@arm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-HE-Tag: 1762937915-859836
-X-HE-Meta: U2FsdGVkX18vTdTs+kUvydbW3gZbB74btMVrl+GjJKrpr6ok8hJEt7ZFDzLTE2zYdMlBlQNri1IviUscJBeMhNiincyo7J5HaflARS8h+Fd3tyKnzySV5NTO8L+yKa1PqF1FKKm2i6Pwr6MEDh/V6DlQqfZRaugieV3SWL1+ObuEtx5pHioRNgtWPxz1qUFTCArXAn9NgNd8+wdOByGtJyM56rWqkeUdYffDVyDUF0v44b7er9TSGuGWzQo7g7Bvi62MGeS+bB+owrpkGOcpJk1wvv3/2hqbP1zIn4O6w1p64HanevtxyM1fBe+mtU8Uoydev63g+b9zpW0kY2qFbskVZxGGrPl+FNYd19IcfOdgWYE1j701tl/Uw8Go/lfmMe6PbfgJyyRiqiA4JjOyD12SME8EQ9YFHgAmoiodHLi8S7uFmcNWWe93rbpI+gVGQdXTs1Rp8KDwza+IRLRkL+gAssGOojrCjoaU77z/ghzZ+3OAca+Socn6BKLEC1y5JZ3cPMZ+iucKxTrHUtFOY1ybuAER1JtpOTb1wa5A4aApaF9Wb/qHId1mIUS6CasFtX/p54wrjYrhgFeUtO3f5XNS/yaL6BsnTx10dOXetcHNGDj9YZfNdnRVeAsHTSrG2G1kQNpPZXuTG5nUPewcf9KlBipJKkTWNiS3628Cn/q+z76FFo5Pd5oiXs1nZ0aJTkQz1r9oMd8f+9LVHpTDnq8leko6TwzDp03/PnHZ48ekP0sZ/AAWM7pGSctUC8PW618a9E5uIoEOhCiKkYzHUWVyk4AvFSmrYh2Grb/ZLBQT2BZE3cCH51/5k34zWzLbLTZ3qxKDp6dhbsCIJK/WPF16QrpMtrZiEImSD0S2tN0sZdbACf6YfQ59SUQUrEby6EsR3eUb6yB03HG1MhXPR0XaA3YgcwdNIGRNFz9gyEbCJJW7mZJmCPFICsZPAOhyM3buTpU8pXbkiMd10Rc
- PmV029LI
- Wze+/mv9HocPW97h8z0qu+b1GsLS332fqD+Bsao1PL+kR1/uh0CHqmLCLFXu58jo2z66/u/FcrEkT3OXzu0hisZbvO89XBmPAB/JhCs9TZsp8XtJXcE8qQkFSemifBdScsBZvwp1gbz3564OvrqzwHtoyH3Ww/SDWhKAoGZXZTg2+QzKfh1GPEnNkMGXJWcGDcZanPnDy8bWZ+olAznoqfFWtgfg10loI/wd2BsEKI90CQOg0KdFOIiQwSwsYb4MSL5w8Wu4FrIZY7xj3ByNIqvwIg4Nt95o1RuVkQ1dVbXI7KLagACSfAbZmKHiJRhzm/w7P+Phj4TBKovhLyk1q+RMPUA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C1D3FC0004
+X-Stat-Signature: 1hday5p7ybr5c9o5apidwzzdz5rymuza
+X-HE-Tag: 1762938612-963396
+X-HE-Meta: U2FsdGVkX18mp5vAPboW4S39NHQ7PaDT5qYcVjDlZAnLt62mUn+xqXBMRjn8Djw0jM7SLYjXNGA5giTnatZElJHaeba+OYy9OQ87Xw+3wnvBclE+1d3RQiDZsLcqHqe8TasEaMBFwIGf9wSP//5wqp/ldPpOoFCsbOk4It+4V8/HvDDI7Of8HCa5EkMvgX3p07iNnsnGQbRxspeQlr+70eDUpKO3J0+DgE1S4ADNBIWZBJlXBUGgCAMDQ09kSogwRZHFymMIzL1BrbNE3rwfJ4UNcN4Yg4FeCSjr0UvLhzO45jiCR+vwJM7EL7h0CjfTKchDot+T5IULgrzCJwT8RhEZO5qQr9S7vpDWOs3eFZ0UoGi42w2z+i8bPnKdOyy5CtFSzyvwVSYqi7DY5flubSAJqV6NU3APN+l5v5CRsku2nLXWvQ7HynDzOTFL++9x6s5XwcRXcDZ3YCVFouFt39j6OKqrYBpfzhSuoLfv7WxuBh/2g544QYr20HV59eAixXtfH0kZh1UGVpi5Ea4Z790MkAq9biQqDZXC+BsXZip1BhkaEfZV6OMObm/FNaB/WsFnvyS9KGsbMs57lUeYhOjlfO/qfxuzM3BB//Ucu+3DUdwat3/h8X8msqVFFKwoCQ7JYXQEOsiTwvoSBCFsl/dLHw+C1Sk46LQdNsA6fPBGuzPC32BVUgamPygvFefRalBLRJUUaH/88aO8ky47I6d8IGL+BIcci2rKMI1+yTfbPN4PS79iq7J/lRbZTprmyZzOZ0ZoRwCH4KicAltAPOfFvrE8IXjAEXATDdOYPqg6XwKLYLz9SgOG8CeLCssQmfq7CRKc8lQuATv5UfiULrthA7uYioxzfLw6oSqSj6zLWIx5k86tdejyvdOX+l9g2U70PugZypuV8Jb+Mf1mX5e2PqiP42v5lRTK+qXJUl7dtSos1ij26cgc3wPuZD2JgUhEoff8iQO7ONTnyY4
+ 0HD3wtfz
+ qBwuTYDAJaIrrvYOLTC2R8yVCOMlr2WZx+4QmGsX0YSBSjPX4IwY8k/vheF9KVS8ywX2yfa0cbEvsNYvR3iwytFpJbFgWXXZlAVX5nSY7s8EnIkTSjOm/h2VsNArbFynN+NSCifZKluq4uO29DV7DLwFj7m44zn0fxuPVKWa0jFmx05y5u6dVvVKAp3qBQdevky1sFPDTXEu4kAs704A4rzflt58FYsBE6Oco1xVrLSTlkkZIOff41YMebVhSydtKf0VLC/Jr0rWfN4hg/zFnuFHZSEy+XQHf4xSxTTUHYUNuAFTPcAmCG7GKSlG7D4/KnEQegvhKEyIwvNiKcpon6vIGCLnBK+gfMXePjUyve91OGgzcrD/taNQJFAtfHd3seB6Jfnk7GrrPfTsBCDc8/QHWvMjFRzalZOHCEMB0Zm+sMaA+MObe93lWYKEljMkHG3HTkCPN2RQ6681CiaewkqVEmpVh23pMBUvWbpIOp2QxOwaIa8NCS4XfAoCR5KyArHUnefRK6VeLhRgS8uJ0863CA9lQrH4xFK9a2S/9fcYR+QIuAIYI/BcpQSgcZEIbRYkUp9QzklGEp6qTT6e6aWjnESn0L/TAmeYbgzy3bYSGP7ihM2yLIELZR2NCFEqRH+W/48nF4iqfutGti2WrmEQvYykuDgyrVINbBMtpxXfi6uTWGYjqXYTG7s98iLH0oFSdvD97sHNSUw3vwptUi4t6F+ueYn6rox/HgyIZ4DvfSGvSYKFD7uVMDZkE/P9eXfSjPNTrDMUgn29FSZbkH4kT02qFBpJ4dv8SId32zLrIpog=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,105 +127,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 10/18/2025 4:11 AM, Ackerley Tng wrote:
-[...]
+On Wed, Nov 12, 2025 at 09:28:34AM +0530, Dev Jain wrote:
 >
-> +static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
-> +{
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
-> +	u64 attrs;
-> +	int r;
-> +
-> +	inode->i_op = &kvm_gmem_iops;
-> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> +	inode->i_mode |= S_IFREG;
-> +	inode->i_size = size;
-> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> +	mapping_set_inaccessible(inode->i_mapping);
-> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
-AS_UNMOVABLE has been removed and got merged into AS_INACCESSIBLE, not sure if
-it's better to use "Inaccessible" instead of "Unmovable"
-
-> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> +
-> +	gi->flags = flags;
-> +
-> +	mt_set_external_lock(&gi->attributes,
-> +			     &inode->i_mapping->invalidate_lock);
-> +
-> +	/*
-> +	 * Store default attributes for the entire gmem instance. Ensuring every
-> +	 * index is represented in the maple tree at all times simplifies the
-> +	 * conversion and merging logic.
-> +	 */
-> +	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +
-> +	/*
-> +	 * Acquire the invalidation lock purely to make lockdep happy. There
-> +	 * should be no races at this time since the inode hasn't yet been fully
-> +	 * created.
-> +	 */
-> +	filemap_invalidate_lock(inode->i_mapping);
-> +	r = mas_store_gfp(&mas, xa_mk_value(attrs), GFP_KERNEL);
-> +	filemap_invalidate_unlock(inode->i_mapping);
-> +
-> +	return r;
-> +}
-> +
-[...]
-> @@ -925,13 +986,39 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+>On 12/11/25 9:10 am, Wei Yang wrote:
+>> On Wed, Nov 12, 2025 at 10:37:06AM +0800, Lance Yang wrote:
+>> > 
+>> > On 2025/11/12 10:00, Wei Yang wrote:
+>> > > SCAN_PMD_NONE means current pmd is empty, but we can still continue
+>> > > collapse next pmd range.
+>> > Right, bailing out of the whole MADV_COLLAPSE request just because
+>> > we encounter one empty PMD is too strict ...
+>> > 
+>> > It makes sense to treat SCAN_PMD_NONE like the other whitelisted cases
+>> > (e.g., SCAN_PMD_NULL).
+>> > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> > > ---
+>> > LGTM.
+>> > 
+>> > Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> > 
+>> Thanks for the review.
+>> 
+>> I'm currently evaluating the use of SCAN_NULL versus SCAN_NONE. It seems their
+>> usage in the current code is intermixed, and I'm questioning if there's a
+>> strong, practical reason to maintain a distinction between these two states.
+>> Should they be unified?
 >
->   	mpol_shared_policy_init(&gi->policy, NULL);
+>There was some discussion about that in this thread:
 >
-> +	/*
-> +	 * Memory attributes are protected the filemap invalidation lock, but
-                                      ^
-                                 protected by
-> +	 * the lock structure isn't available at this time.  Immediately mark
-> +	 * maple tree as using external locking so that accessing the tree
-> +	 * before its fully initialized results in NULL pointer dereferences
-> +	 * and not more subtle bugs.
-> +	 */
-> +	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN);
-> +
->   	gi->flags = 0;
->   	return &gi->vfs_inode;
->   }
+>https://lore.kernel.org/all/v5ivpub6z2n2uyemlnxgbilzs52ep4lrary7lm7o6axxoneb75@yfacfl5rkzeh/
 >
->   static void kvm_gmem_destroy_inode(struct inode *inode)
->   {
-> -	mpol_free_shared_policy(&GMEM_I(inode)->policy);
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +
-> +	mpol_free_shared_policy(&gi->policy);
-> +
-> +	/*
-> +	 * Note!  Checking for an empty tree is functionally necessary to avoid
-> +	 * explosions if the tree hasn't been initialized, i.e. if the inode is
-
-It makes sense to skip __mt_destroy() when mtree is empty.
-But what explosions it could trigger if mtree is empty?
-It seems __mt_destroy() can handle the case if the external lock is not set.
-
-
-> +	 * being destroyed before guest_memfd can set the external lock.
-> +	 */
-> +	if (!mtree_empty(&gi->attributes)) {
-> +		/*
-> +		 * Acquire the invalidation lock purely to make lockdep happy,
-> +		 * the inode is unreachable at this point.
-> +		 */
-> +		filemap_invalidate_lock(inode->i_mapping);
-> +		__mt_destroy(&gi->attributes);
-> +		filemap_invalidate_unlock(inode->i_mapping);
-> +	}
->   }
+>There are some cleanups mentioned in the thread which you can try if you want :)
 >
->   static void kvm_gmem_free_inode(struct inode *inode)
-> --
-> 2.51.0.858.gf9c4a03a3a-goog
 
+Thanks, will take a look.
+
+-- 
+Wei Yang
+Help you, Help me
 
