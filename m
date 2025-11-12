@@ -4,104 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F271ACD4849
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 21:26:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 791E5CD484C
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 21:57:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5E798E000E; Wed, 12 Nov 2025 16:25:59 -0500 (EST)
+	id 4C2D18E0008; Wed, 12 Nov 2025 16:57:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E366A8E0006; Wed, 12 Nov 2025 16:25:59 -0500 (EST)
+	id 49A8C8E0006; Wed, 12 Nov 2025 16:57:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4C9E8E000E; Wed, 12 Nov 2025 16:25:59 -0500 (EST)
+	id 3B0638E0008; Wed, 12 Nov 2025 16:57:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BCC2C8E0006
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:25:59 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 590F91606E3
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:25:59 +0000 (UTC)
-X-FDA: 84103237638.05.F50119C
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B6F301A000B
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:25:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=l4sYpKrF;
-	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 28DF58E0006
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 16:57:04 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB2C812DA2B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:57:03 +0000 (UTC)
+X-FDA: 84103315926.26.D2F2AF5
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AB4F5180018
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:57:01 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=Ngp85mQS;
+	spf=pass (imf24.hostedemail.com: domain of david@fromorbit.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=david@fromorbit.com;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762982757;
+	s=arc-20220608; t=1762984621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8N8ijlsC6KhiWuu4QbjeYznaUps6aMGSWXMdwdxDAxw=;
-	b=qpiH8geD2RXSAjviAapXdShNqrfzcGfcLoFHrWvVCZfz16g/ERob3kXDCLD7rIoXrCS6vZ
-	fdZxqXj9lL+GbKomKGWm27LLalSlmaVVne5jSHFjMIu1Kfz0+9ShqWMJUZt1V+Ypjne1XQ
-	L6ISa2oV/1upxpErEQk1P2X2Qtz3Cws=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=l4sYpKrF;
-	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762982757; a=rsa-sha256;
+	bh=UtzYm6CaQwwng4XDexAXOIVM2T8jYsSpOQI11uV7cIk=;
+	b=ug2YM3kbfnpTNadLuVgNQXg5RY96qllHoLFlKf1FIthM6csWqgNtSH8kkaE0+2DFiMwn6z
+	2BgqYsQILDAaBL3onkBlMNjEHvzxWh7Zr14hyGm+KmvnNWSOFGyamBspXmhjvb8slDyBjG
+	0PzEA6+Up1gDQn7injkmKk4iuSXONOs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762984621; a=rsa-sha256;
 	cv=none;
-	b=O8q9GR9tm9MfdZNaHM+QH/LQRyQYggatRXob7dXWCwJfr4ouTWG3DasRRPx4usRCqGQHCN
-	9N4QZPpD6PE1hqfeCaffxvDr0lUCvvLtFjDx+qQQU5LEoaGO+KeM+VUOMJmUDlfj5eLs+t
-	2fH9MZttJxpreSgLagVc3FvXi9oWVNY=
-Received: from [172.27.2.41] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5ACLPBM51004081
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 12 Nov 2025 13:25:12 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5ACLPBM51004081
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1762982714;
-	bh=8N8ijlsC6KhiWuu4QbjeYznaUps6aMGSWXMdwdxDAxw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l4sYpKrFCrAsnPAUyghmeRvLc4mPQ58O8qoEOPAzhg8jBuxPwak/5xDhgQWN78fys
-	 QSjKjYsvalXcxtnp9HzBoEO9qWXhDIdwf/mwzIQAdam4tfqTBiqVbrOwIPxfHQoLAw
-	 b47MS7R2RlNPoDYTPCOFO35llNJHDLZ32JwpBzoo/VDXeoj8K6OPCRL4/0wrcjT7KN
-	 MdFFSLf5wVH/PLLOFkI8gZtVJTzqi6kqtcDUYAveaXx2MXgCBoAwdEOCse1XChFlwr
-	 q6x51Xhio24ZjGTMigtf82gbuTS5LTfHI4ZHCnNNQzanQco9yEzECdXehZ6JdLUc3a
-	 knoLwc6mpTVhg==
-Message-ID: <d5531acf-cd79-428d-80d1-eb7562cf3922@zytor.com>
-Date: Wed, 12 Nov 2025 13:25:11 -0800
+	b=ULOBcNSorMtG5S5RDnNEb9xhdvtfcxlFsx7nzt3Zr6+ZoMiiPm6d6WoGdx5xFHOkrZYijx
+	6iFvAZNjeCqOviKS5IvYuCfxNpvN1NEg8XP/+SV74XXawt8e+yt1s5i/La4ij5kl30PAWd
+	AW3x+eZnRiW19Mahwo1DkXSxf8Old6E=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=Ngp85mQS;
+	spf=pass (imf24.hostedemail.com: domain of david@fromorbit.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=david@fromorbit.com;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-bc169af247eso98130a12.2
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 13:57:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1762984620; x=1763589420; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UtzYm6CaQwwng4XDexAXOIVM2T8jYsSpOQI11uV7cIk=;
+        b=Ngp85mQS+iw36+ErvgSC7Ryj4U2McsfYGOy7XJGHNvPdF424Q8DtKUgdGXpXo9WZPz
+         PyJp9v/bXdmEgerE50eR53wL/ILBol197ewbpiNmUlZVoULG5p85bdP7nQKr7mjzXmIp
+         o2XnmwtnSQD+wWalQyCjh+9Ir90gTJHvVTzhzmGPJt/9+kRC8RL99i6tefc8UoZmQQou
+         19Jh3bebALZoLUlJEGF27/LBejUArjVZAxSHL+BUJWVIXIVQmMbmMDNg3tXhZYgbCAuX
+         jNgv26IEaCCs7nSVOMSVfC5vfKuZlBBR6B7F/sZ6b2Dux+bJOJBR8EHYRdWD5FHABKyF
+         bwCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762984620; x=1763589420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UtzYm6CaQwwng4XDexAXOIVM2T8jYsSpOQI11uV7cIk=;
+        b=AFs0TecoGd73J1y+fZ5C2D1YPKsShcMeiG27tS3UO3UAr6JEgxIfCqpbwr2JT4TtLq
+         p8PomRzIS/PMfNg1/oD5GkyRWqcM0HDGw+eMif5KyVphSgC5FTZMpIwoOawVZL3nfXBa
+         X7sU7uPM51ucZTzuOU4FqqJUgTe0eRWc2lhEFj0zm5GVoAnDGa3sPdcCr0a5BR0M4rQu
+         uNvdYxf6FQBieryxEUHf08ZK16gBiXcUl4J/PJTsZNh+4ChGka0JLnn9mSwyIeCd+xGj
+         0YQ2HXmHXBaDHS7R2Rckw2t/8MwUGzJTxeahGV5PfdP1Ez38ok4AXozQ3Sy+yRCMKgH6
+         xtnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFjk/hc6hYJ6jfFhPvkPoUKZpgM2FlHlEIResbv+BT6rdYmcJruNgVXxqUHoTq1ir7tJ81F3BAvw==@kvack.org
+X-Gm-Message-State: AOJu0YxbC34MaAMYztyTdPOTMsxgufXXoHxi9GssnnEhN6cJsMMxMQ7W
+	KtOUE29i1hXTnsByXXMBr4MeZsBDT4VerIYkYQUN45wGqioJYQrsy9WTSkBKKd2CHvA=
+X-Gm-Gg: ASbGnctQAe8SflKnPlzIEHzroBK+xqkIwPiKiOKbMWYNU+TuB36AkMk3JKALonBCTpE
+	UH7s+Qp1yH7oqjwFiS+HsD71I4v5RK6fsDLvIZLLHL8MUEuDIlHaJalSlP1ORQvnqKzh14vB1FU
+	Ve0EMcEHYqOHG+1lI6nPjl1QTgma1VTEaQxAprjI2SM7ZGn3WZZIoAoYEWHb4ShWAfSWeULOzOM
+	oh87GGY6M1q+hnoPyF5rDgDPOnoZHtjFxhSM1oarmb3WDQbaEKJwF39TmG+w1ZTZSq8+WMejooa
+	B1HxtEpLPzisGVX8jGmWbT121sbrx7VbGl+bXcisr0i7a8ZO1c6I/nDVn7Uqww9AdY5KqB63amP
+	P20GaJ4+8xosNhhDOive4DYhuohvViILaGVwRKpp/SFNnVHJcCKeH6rij20Yv2bq5NLRsMMsvH+
+	WPbhoq1gEFVIswi87Rccmz4ZZxH+aDmvTKWTX8tbfGfyZ/iU0heN4=
+X-Google-Smtp-Source: AGHT+IGGcSgtma54hv+7RKzmUmjycRVqw/LnJDNDCrdXo50noFmBCjb2IbQqtC0Ft6zra7BT9FpOHw==
+X-Received: by 2002:a17:902:d4c3:b0:28e:756c:707e with SMTP id d9443c01a7336-2984eda94d4mr56523225ad.33.1762984620190;
+        Wed, 12 Nov 2025 13:57:00 -0800 (PST)
+Received: from dread.disaster.area (pa49-181-58-136.pa.nsw.optusnet.com.au. [49.181.58.136])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2ccd1fsm1507945ad.110.2025.11.12.13.56.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 13:56:59 -0800 (PST)
+Received: from dave by dread.disaster.area with local (Exim 4.98.2)
+	(envelope-from <david@fromorbit.com>)
+	id 1vJIpk-00000009zCe-0KVQ;
+	Thu, 13 Nov 2025 08:56:56 +1100
+Date: Thu, 13 Nov 2025 08:56:56 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Cc: Christian Brauner <brauner@kernel.org>, djwong@kernel.org,
+	ritesh.list@gmail.com, john.g.garry@oracle.com, tytso@mit.edu,
+	willy@infradead.org, dchinner@redhat.com, hch@lst.de,
+	linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, jack@suse.cz, nilay@linux.ibm.com,
+	martin.petersen@oracle.com, rostedt@goodmis.org, axboe@kernel.dk,
+	linux-block@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/8] xfs: single block atomic writes for buffered IO
+Message-ID: <aRUCqA_UpRftbgce@dread.disaster.area>
+References: <cover.1762945505.git.ojaswin@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/9] x86/vdso: abstract out vdso system call internals
-To: Uros Bizjak <ubizjak@gmail.com>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-        Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>,
-        Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Brian Gerst <brgerst@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>,
-        Nam Cao <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
-        Perry Yuan <perry.yuan@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Huth <thuth@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-sgx@vger.kernel.org, x86@kernel.org
-References: <20251112043730.992152-1-hpa@zytor.com>
- <20251112043730.992152-8-hpa@zytor.com>
- <CAFULd4aMOueG5y3K7F57ryLtt-JUhE-yfsDODC=5+bgjF_gtSw@mail.gmail.com>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <CAFULd4aMOueG5y3K7F57ryLtt-JUhE-yfsDODC=5+bgjF_gtSw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B6F301A000B
-X-Stat-Signature: 8yfkxgexkbsyxqh4tacz4hpo99i6k93i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1762945505.git.ojaswin@linux.ibm.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762982756-325301
-X-HE-Meta: U2FsdGVkX1+yZphk+u70JRscGUiiXSCQgasSsSMv+uMOR3KtZJg0Ye37XD6ZAqlyHzDtFSe5QI/9i7T8Pct/sTrega7gcv38z8koQiSrBGNSpbifhbZbqTprjWJw2Hr1UaYWU+QR3flVMINVhp67PqcW8mowBcl5j/hDFJ2lOpi8RoNEaEkq39ysjaeyfCs3b4ucHALjdp4rzJ9zN+5J1OVtuoBhhsUsq8kx0LsKyyy8hTUTEzMOB/avChvvfoSX4IHhOR0pfzqJ9mqWZ1P9IXJXOAxNd0B/2X+/QbsnEQ/9JQp36DNvyyQcB/Sr2qNTH7j1RuTwL098oLkZBohwJN65ni2R/7FVNae2qrmOpDQh5P6zKwLRbOszBqXTLn0ksvvNsMTO4BZByOeX+FVhVkvQtGlNFTBEkD0HqQsPFLIRdWzt5fRWZ5jV574fzJSfvhQqEgzBaRSvkmHoj/SLCbh4zov1ZKQpXBcLxCRMe3srcZOPFAfTmD5GC1Fp89d2x9GobYyG1u6cW0ro1FXyJ31HN75ZkevxuLy1jkSddJh1Kxg1/pjb2W8KEQo1orCBWJo1PFjlqpGa/Om8QJzV7BHz3LDx50yFPhEGW+KwZJe/sDZuPPgC2ylNJcZCyCgFd0J7MJ9DwATAaIpyn4+9a5SbYPvB9ZSDl17tXxjzAFQqNLtpYQmMpyHj5RcRMQIGjXZ6SBepPobow8JA6m4LHYLW1RDTsgHZp9dKAFS22wZ4Au5j1y4EFKr/Ftd9/3wlNhqaIkeMHr3h73E6zHELitxbdepv0dTR9K+OpVN2Sie3CHIps68hKIeMitbaHF3nFWzTCkQHuogL4SUA00lql4nrLHa4v43Jwul7w9hv2MU+0Uu0OZWz4JynPyhU1N+8j3Lwk4pC1a0lVjxu+yhPpHlTZec6hl3O+JbYo0xm/Ie6O/Yc9wWNtYpo1pCCRWdyDd64r6XJ75dzVSnZL7h
- AluHZg5Z
- NvNnGlwF1ECEaFyPHskcDmNKZGJ7HNVcOl1YGApfZy7RWnPfpHyr7hJBQbg1F2SWC0eB4N4vQpVzOEnki0Hfqoti0gZPjTAwpXkk7TXAdDc9bt1FiaC/iEYOXxyC87MCLajfBFkDfgNicmLotT6s9CQsebPs8qICqBWJ7Fjv/qZmvYT+KAl9Te7qoO0z/7goKEm8cOdWjiEVkg+I/QtKktEab5dLxw7p+e/QV61Aw7RhN+7EELWfFj3/wHb/hacrpSOWRCYRD3BA7iXdTbTQQ3daXEJBmvIbLqvOtCvqOyLDJeJRyDSkS3BibGIsDXFQ87YnBzrK1NrkplBI=
+X-Rspamd-Queue-Id: AB4F5180018
+X-Stat-Signature: h47m1ox36objm4sknugmtx3qwya4sdc5
+X-HE-Tag: 1762984621-540325
+X-HE-Meta: U2FsdGVkX1+ZLcrHBr1qV9UgYj1O64DPCC19D3qofMKIle9lP4jpdz+30PBhDeeCYBwqORiuAYWawMGb45+CPBWC4+UFPdI6UP9qtZl0rJWzojyhQ6kKTiDkdqTHZaV5GqxIv5CfNXte48B2ajcDVBShCYEfWYS5d7IrdVtDp96X8yYiAq4edvXTSj5Pbm1iguFn2zPpuB9l+WifvukGtmg9BNsgUOAwJ4bedBFXrJeNtoj/BmMlORNp3yY1UF1Y+pIsMMRxzNFnLn0GIOZSq7zzwOfG5dvoiBzuPxt61bq4XOtsd45TS4sWT/N6woGpsMfvs+0C8tdQa+xoHMoVsdmBV8OXVTaFm4bmxAA8gY7Ng86pWMH8/FQ91z4Mi8cW2zwtejIAos3Jd2MWVnPAVMdrtIPS+3hwumv0CvxaecSyJoW18DLQU0tKrslWgue1l5ZCiyn60ECrA26kJoQoxnEQ3110lm3a3ag4LZsJ1P4t3tIuTKm3CVsa9ZE0tftbmRi40aOpaOD/xBYdxr1UtnRqZxDLiidP7GnSb6E+VAPDMro9mRnzn3PUN3Hz0PhtqJoQbzw1H4L2anEUq1g+QkKCDyr9vTqgvPhxB2bIroOz9IQ5yN5nRO43iAb7MZDKQyET7u1KqLwwYtX5tYFSYnKykFdtZpV12DjEHrCbY3yCYTRhFU5+YB5kX0rIzSEnFXGfsMEVQpSPVswx5eh21NSusFLBsrDfhPyPllGLWJ1Rg4SkLfn9Xg93I+SxEscsCgQ3FLekaLHjscYeRpdad0b2AwNjIop6fgrIPEbApRUqNsOcTfKjyEq2qXdlC3jjcdTnQdsMi293JWbvSaGkvL+bBbrdELtkLH22Rk7Kctsc9UHX1jhaZpl15Ed9Lcknr7Th3wJZ96UdAgQEO9em/KMct4Xn7CThpML2aUZZMtFJpVzLiKBy+vB0vcyeNKNwKUzdSwjBPehZVsvWmiz
+ +3xri4Gx
+ f4gnqDzUwUJd51s+ShPJYvy83GbZgMlESYXBg8+CNClACPfpvPq8IpzOsDqxjUUX50JYF82GWQF+PAJ25bLmRjBAlFOhjuylA2lqYNDxz2W85ZHpkZCPygUiQeuZcNKAGe4l9hO05nMwhrOf65tk697hZnNHX/CaRR//jflk0ITWSM3VWH7ZVEQlePa1LXWsQQc9zRX4dtzL6yxFA4Tl5mYaQprQIotByaeg3qgC1r1AgE+gXNtPUkPbl6H/H//NOWoYzoIVgcO89ObPpOGno4A2TfkxUDjXCstSeMqIcfbz3Vje0paptCOmnZo4IcGlawhvJbkDlNSRB0btQR5nzcDfmJ5nJCcVkcl2AaUZXVuWkNJa+wS2VtpYWZ9nYTtbqKSUsQDKxOBp7roy5fwtxTkQDp3R6hkrxD3PdoHQg12ZBavkM2y/atC5X30yooiMcA4bp7gJMwJFqkg0u3Y7qhM6BZEdPFmE9xG/kwOsxGKg/KT9cYnkn2USix7ZSwX+sXMa53sGjoqMheL0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,62 +128,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-12 02:31, Uros Bizjak wrote:
-> 
-> Unfortunately, %ebp is still special with -fno-omit-frame-pointer, so
-> using "ebp" as _sys_arg6 on 32-bit targets will result in:
-> 
-> error: bp cannot be used in ‘asm’ here
-> 
-> Please see how %ebp register is handled in
-> arch/x86/include/asm/vmware.h, vmware_hypercall_hb_out() and
-> vmware_hypercall_hb_in().
-> 
+On Wed, Nov 12, 2025 at 04:36:03PM +0530, Ojaswin Mujoo wrote:
+> This patch adds support to perform single block RWF_ATOMIC writes for
+> iomap xfs buffered IO. This builds upon the inital RFC shared by John
+> Garry last year [1]. Most of the details are present in the respective 
+> commit messages but I'd mention some of the design points below:
 
-#ifdef CONFIG_X86_64
-#define VMW_BP_CONSTRAINT "r"
-#else
-#define VMW_BP_CONSTRAINT "m"
-#endif
+What is the use case for this functionality? i.e. what is the
+reason for adding all this complexity?
 
-        asm_inline volatile (
-                UNWIND_HINT_SAVE
-                "push %%" _ASM_BP "\n\t"
-                UNWIND_HINT_UNDEFINED
-                "mov %[in6], %%" _ASM_BP "\n\t"
-                "rep outsb\n\t"
-                "pop %%" _ASM_BP "\n\t"
-                UNWIND_HINT_RESTORE
-                : "=a" (out0), "=b" (*out1)
-                : "a" (VMWARE_HYPERVISOR_MAGIC),
-                  "b" (cmd),
-                  "c" (in2),
-                  "d" (in3 | VMWARE_HYPERVISOR_PORT_HB),
-                  "S" (in4),
-                  "D" (in5),
-                  [in6] VMW_BP_CONSTRAINT (in6)
-                : "cc", "memory");
-        return out0;
-
-That code is actually incorrect, in at least two ways:
-
-
-1. It should be conditioned on frame pointers enabled, not x86-64 vs i386.
-2. The compiler is perfectly within its right to emit an %esp-relative
-   reference for the "m"-constrained [in6]. This is particularly likely
-   when *not* compiled with frame pointers, see #1.
-
-A better sequence might be:
-
-	pushl %[in6]
-	push %ebp
-	mov 4(%esp),%ebp
-	<stuff>
-	pop %ebp
-	pop %[junk]
-
-Then %[in6] can even safely be a "g" constraint (hence pushl).
-
-	-hpa
-
+-Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 
