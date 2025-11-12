@@ -4,135 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13CA2CCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 12:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA03CD13CF
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 12:50:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11F8F8E0005; Wed, 12 Nov 2025 07:47:05 -0500 (EST)
+	id D84E58E0006; Wed, 12 Nov 2025 07:50:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F7508E0003; Wed, 12 Nov 2025 07:47:05 -0500 (EST)
+	id D5CBC8E0003; Wed, 12 Nov 2025 07:50:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00CE68E0005; Wed, 12 Nov 2025 07:47:04 -0500 (EST)
+	id C4BBE8E0006; Wed, 12 Nov 2025 07:50:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E16708E0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:47:04 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 975D3B9662
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 12:47:04 +0000 (UTC)
-X-FDA: 84101929968.26.F2C3FEF
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 96FC2140007
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 12:47:02 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LO4NBWFL;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762951622;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AEC138E0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 07:50:53 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E5EF592B0
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 12:50:53 +0000 (UTC)
+X-FDA: 84101939586.10.968616C
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011065.outbound.protection.outlook.com [52.101.52.65])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 75488A000D
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 12:50:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Z7AprRyt;
+	spf=pass (imf15.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.52.65 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762951850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NlYd6Xq+AnhKekfFM+8+8cT83BwyMkqy6p8G3DXg5+E=;
-	b=PPcmR+mABerC66adZZgXe2najoMocK75uTBf4OF42VIc206isCvbrtCtCjhEV0BDOUV8LO
-	ztOWOZoXXG5hm9v+bj3e0YU+arKUoEY7paGEdPca4x1V0xmZoPiLiNsJ9l9v5uPmGKYAC7
-	OxOUc0V5HWG3o80HdcF5duaMXsUMyKo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LO4NBWFL;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762951622; a=rsa-sha256;
-	cv=none;
-	b=iRqyOeAQZErhd6g/ql70TYV6x/UCk93CkgYhlRW9v8iXuAVRw1JkdNfP+xZdGvWh/wsx8r
-	KroXLabEKaybTZzWTykgI7YjSLMOQqm9vI+tlPvz7OqpSQFf17djdajjekKEBJJ/RXPrj1
-	6WaMo2mWIf12Bxju6LZxU1zghwltpqo=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-64088c6b309so1235684a12.0
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:47:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762951621; x=1763556421; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NlYd6Xq+AnhKekfFM+8+8cT83BwyMkqy6p8G3DXg5+E=;
-        b=LO4NBWFLEta76oq9Z57MxTdUT6Y32vFq4G97K6d/SDcawl2Su+RvO3SOj6PmP5Yv37
-         HwmE3Mmqrmyp0zDaawSehJsLlDp71+6K31805nPmzhqF9Svns8JCQFx0jQ696y+5sJ7w
-         oAmIUZXsgI9r98c4lt9J9Tuwjah5Ri00W9uuoQjDQN6qC0gthCSNNHI8YBJqsP7b9fro
-         u3RyiD8lyjPM13PQWNzl9mV3+DkKDuSVp2/dLcws0u7b6QXbs9kA10OgF9Fl7w+72HFp
-         7n8T4GIdi6x7qum6MljmpQmhQdLlWsS9E+52op3vQRrtLoiZ6151EaYkUfY0ORPeq/WP
-         kWiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762951621; x=1763556421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NlYd6Xq+AnhKekfFM+8+8cT83BwyMkqy6p8G3DXg5+E=;
-        b=MGmfNG3OVRVGNicO3UN0r0fmFeorVr0IaHKV9xHaviKEmRTdqXUtUBceukvEnV0Zq1
-         5e1pvvfPxmb3k209RpwlytO88Ez58Cj4YbdI0jdETltS5SOjJ7jMSdAMeftpYtKBen/a
-         Yf7W9b7a0Li9BZwoY3Zv4eI6q6eWKKQdH24heYC6UxfEhOnvqA1qDqztb5A2/CUidu1I
-         NyO47/trvh6Jx7s2XZEF9PoIRh5vdzEB5L2gCdlRKUHtujWpGs/Kij8MC2a0nuOMFAHZ
-         /3WyyJE8Yygl4DPQEKEtrbgbRdfe9htO3Qj30PgsoucJ1MfKoPHRsbMrUo7f9OIZMk3G
-         36pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX5d806v4I1MZ5AlBSFqEvq5Q7H2VrmFtcPqYWom9v8P3N8i0Q2DPPvcwB3DAuYVYmjZ+5t9hV8tA==@kvack.org
-X-Gm-Message-State: AOJu0YxotidUOnGulK6PurTHUJGvtUt2sn4Q0mGBJ6vf4eVjPsdW1wzl
-	5tx5Mv5nK6mDrS2HkEPhalj8ZBLpmRA07M6ZWYbLG348TU3MKPh6eXiwFlMplusXcZ43AhUSGuZ
-	7z0UqQXWc46IJLuvbVk9BNDuneyVJ81X8+NZ8cqdFiA==
-X-Gm-Gg: ASbGncsSMGMJasugJfRTq+Bhm2RuUatKFxoDrWWiExocOB76+BurVvy/06FHH4zs60/
-	OS5cJ6JVXZdkp6jVazphyn6leeXHEiy3OwCdeeCW5fK/EH1Yluj6y19wpxpQ/2yr/6Zn3zgk+iY
-	5nz9K4jVyjXbG6zsWUY1DgTq3HDuDBnLb+3W29H263Nfl109VgpWLFA1pcNYupnOir95cWb+fWt
-	pW2OCV1o54y93+GQ2dNa6CBZAILJPpwvo5Sd79N5828VG+e5pEjjTzt3A==
-X-Google-Smtp-Source: AGHT+IHPQjz/pJ437pH7YFtSiDGAQ3VcFvPXvPvzuQHBM0+kWPerbB0r4L6RkLw74giNqTUgcHTcvt5mHbrdxH4Haek=
-X-Received: by 2002:a05:6402:5186:b0:640:9c99:bfac with SMTP id
- 4fb4d7f45d1cf-6431a4d609bmr2586786a12.13.1762951620623; Wed, 12 Nov 2025
- 04:47:00 -0800 (PST)
+	bh=6pcK81sDiySzeK/tuQgk0eeeSiODaCg7Fico8bmbIJA=;
+	b=IGOO8autJ5/bZc8BzpsQeVJgI5d/2Nx9j3O07INHPWuWfFjL61/5odM8lg9YigTyAZKWyY
+	XNY2dsP3IF3Lm+6fJVVI6Nkr8OUuKR61oE2Ha+CWRTZNI9o/uWukWSDoga25c29ZMkBE+l
+	ZAM548sR9p/Isdhv9LeUQWxC8MEdF6s=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=Z7AprRyt;
+	spf=pass (imf15.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.52.65 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762951850; a=rsa-sha256;
+	cv=pass;
+	b=QXOXQ62WA3HDwL+CdppND+AL/R9FZNkGduyatdCI1QyUfti/p++hoLYGyAtdmkA1GjiDVU
+	U6+DZLbqG9jI64yvZMOW96y8ho6W3qHrbgjcvVK+WbxNxmPo8Xls51lh+r3I3ie+iI+42d
+	j/DZ3yg7VK9wvGfw3BlKjzELR+Z12Qs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K9rmdnYL/uXeWFMlExwySTgw6eNKPY5cqZgKn3g94vdButQzTLR8s5cJI9QU65KoTbV8o9TxJXY6lDqfICjdlQcnR6GTwZeFznhn8WAWkbpHaD+MonFAsLS0qJJQElC7BbGQs31TGO3bu/Ooqq6+F8OelutO6fxlsEn6aMV9nELwJN2PWlfVmNka9P5oWVGEo7ZLtMCYRzGIjTJaIuROhwoUplKAG+/PJg515hDqAgE+0b+H3kieYZ+zUIL5JeQx+ZNj73vEd1wXArPVN/b0/jyVxqX9+BX0j58Ou4DrKcnROMnTk6Llrxx6hm1NGyL1GUmfEnG5g6aJ0gqIPSQuRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6pcK81sDiySzeK/tuQgk0eeeSiODaCg7Fico8bmbIJA=;
+ b=WmDBdJw03i1tmeJko7f2qFcg4wwV3zvwhZdcoBu5+3pWi7yx6gr13OARZhMaQ5BUmj/0wHAlEU6pG81i/NcrUtNwAJ+9JeRNUfoK+mG5X8p4eDX74z/ML/RI7ot6uFhxk17BO8fO2DLd/zeqUxmmHVMW3TflwKrTwCbeZhdN1Zxt5H6pW2uRNC2tYyQVlus7cDbihgKKhN+ETavi5M7M7N0JvK5Aeqx9B9dw1ufLL+vG2fF+6CekTygC5zMLd/W2kqWptM/uEgvKEO6RZu9r/5MttzLxIZqH22yMwL3kspMtG2u62yOIUhHDSWcgCstYnCjOstuqnrAvMyIWqyUfPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6pcK81sDiySzeK/tuQgk0eeeSiODaCg7Fico8bmbIJA=;
+ b=Z7AprRytn5BALucJdkZBqWGMbw2WqCTi5iS89BJQ5rFGzeGeKWcaOBMPQtQIp+b5hm5DbVw9qnK77yXxngLkbQNStPZRwAblK0Xz4cu+1LIYfUkoPWtmcStaWBIlFbItCoo7j1KqyASH4F2AXTCz1ueuH205dBwUG7GkDNiZsT4=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by DS7PR12MB9042.namprd12.prod.outlook.com (2603:10b6:8:ed::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
+ 2025 12:50:45 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
+ 12:50:44 +0000
+Message-ID: <5488f98e-4101-42c1-a0ff-0e0054e0e08c@amd.com>
+Date: Wed, 12 Nov 2025 13:50:39 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] drm/amdkfd: Add batch SVM range registration
+ support
+To: "Honglei1.Huang@amd.com" <honghuan@amd.com>
+Cc: Felix.Kuehling@amd.com, alexander.deucher@amd.com, Ray.Huang@amd.com,
+ dmitry.osipenko@collabora.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+ daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, akpm@linux-foundation.org,
+ Honglei Huang <honglei1.huang@amd.com>
+References: <20251112072910.3716944-1-honglei1.huang@amd.com>
+ <32a918b6-37bc-4d83-ae72-35010d4f1a8d@amd.com>
+ <03b8be5c-64e0-4577-b4f0-0d505eff04bf@amd.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <03b8be5c-64e0-4577-b4f0-0d505eff04bf@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0036.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c7::9) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 MIME-Version: 1.0
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-3-pasha.tatashin@soleen.com> <aRObz4bQzRHH5hJb@kernel.org>
- <CA+CK2bDnaLJS9GdO_7Anhwah2uQrYYk_RhQMSiRL-YB=8ZZZWQ@mail.gmail.com>
- <CA+CK2bD3hps+atqUZ2LKyuoOSRRUWpTPE+frd5g13js4EAFK8g@mail.gmail.com> <aRRflLTejNQXWa1Z@kernel.org>
-In-Reply-To: <aRRflLTejNQXWa1Z@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 12 Nov 2025 07:46:23 -0500
-X-Gm-Features: AWmQ_bl87XR7836bCxIna383p3224VYBM84reJOLcIDxOxFdtSf2hXG1yTbnSeY
-Message-ID: <CA+CK2bB8731z-EKv2K8-x5SH8rjOTTuWkfkrc4Qj6skW+Kr7-g@mail.gmail.com>
-Subject: Re: [PATCH v5 02/22] liveupdate: luo_core: integrate with KHO
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
-	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 96FC2140007
-X-Stat-Signature: kc8j4eydnfwby3hg79aqfai9f1ohmbpp
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS7PR12MB9042:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3114d91-f2e6-42f6-13b9-08de21ea1829
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QWZsRmhlc2F3VXZTcXJxMmg2ejFud0xweFpDN3lBUVFzRG1HeVJIejJPUnk5?=
+ =?utf-8?B?bU1mOFNJUDNIS00ydnh2eTVqcFZwbFU1ZjFRWnl6dXVLTjZGTndxamcrZHJu?=
+ =?utf-8?B?ZXJZYnMycHNKZ1FRU2I5bWJHREQ3R2dFSmtpeTZsV2hXOW5MaFlySnpaOTJE?=
+ =?utf-8?B?Q3hnR1VYcERiVHpocXV4ZklTQ3B6eUFVczVjT0NsTkZReGt6VmpQb0VRQUEr?=
+ =?utf-8?B?NDlNQmlXT1RGdnhkRGZkTVRmMDVaZXhjbnpCL281Q2lMWjZtd2xvWTQycUF3?=
+ =?utf-8?B?T3ZhalpPbkdKbEYrUWdPc3p3Z25KQU0wTEs3Yi9CaUFQNkJZNE1leVNyTEN4?=
+ =?utf-8?B?dlJIaG1RYk1paUc2d2tDUzFjS21JNXZrcUJFSzY0TDZQUUUrUkRVcysrZWh6?=
+ =?utf-8?B?bit2TzZjMmFLdVVPWkpOU3BLelRKU05lUUtIQUcxWmdEZWNQUk4yanI1RFpu?=
+ =?utf-8?B?ZUQ5TEhkeEVKZ2c4RXVBSTNBOXRHWDJ5dXpheDVWR2Z4U244VHQ0emdCeUlj?=
+ =?utf-8?B?VlIwU3ViTDJ6Wnc4WEhGZlZpMWZZWE9ITmRIWFdUYXZKQkxoZkZtVWFKdjA4?=
+ =?utf-8?B?aCt0Y1BzdklnQ3BabWJ4OHk5d011b1l5Tk1STGUyS1RLZnJxZWV6Yk5yOXRY?=
+ =?utf-8?B?MnVBdXgvSnRsd25pbFAweGVKUlB1cGM0dmpadUdBMDNpcHFHaGo2aThxWDBW?=
+ =?utf-8?B?MDhUdXN6TE1PdDF5R0xGNi9rVGgyUjI1WVBKMktOcnA4bGNMdUR5ZUFMYVp5?=
+ =?utf-8?B?a2MzamFSeEpSNU9YaFJlV3Y4K3JHejZZc1dTZllueTRRS01FRFJGQmdjc3Y5?=
+ =?utf-8?B?Nnc3SHBuRytvWjd0elNBYTFWZk1yYkFUaXZJZnNUb1phYnV1cWhETDFPZWcv?=
+ =?utf-8?B?UStMOEFNQzlpSXZkY3FYWU5kOGFvWWRVa1RqTzNpRnNDZGRFTlh0d1cvcThT?=
+ =?utf-8?B?S1huS2dUeUNQR3ovZjhVS3MvU2FvZVIyUG9PejRYTGRNdGQ4U3J3TjZJd0Vw?=
+ =?utf-8?B?ZDAyVmRxYjN1dlVCZHlWU1dqSDNSRm5uVmEvbFJldXhaTTZoeTF2d0toMktL?=
+ =?utf-8?B?M0UzdGZVZDRrd1dYendmUlhnZ1RPTEJnVUJDSnprOHNkTjBHOEVrWVppN3VE?=
+ =?utf-8?B?NjJEUFZXTWhGMHpOaDBkdGV2NlF0dlZKZlVRYzg0aEUrOCtrczMrUnlid1Vp?=
+ =?utf-8?B?dGE5TGM5U2tySzR3ODFYazE0Q2diV1k2bzhLN0dmcWFaUlJhS2t6a1MxZEJI?=
+ =?utf-8?B?YllMc3dXRmI0V1RZRGVXeGVENVJyVFZNeDE0ek5XeFRJWUJGbjdpb045YlhV?=
+ =?utf-8?B?a3EvNWo4ZTROVTdhWkJzOTd1L2tYeDRMN2J3blo0UDVIU0pvV2RES0RHS3pz?=
+ =?utf-8?B?c2xYNThMTUhsMzRYa1ljQnBpb0s2QUFnVWJFbjFtcDZVeEYwSnNVTFZUbXpm?=
+ =?utf-8?B?STdwb2lVRVlkV1N5MktHNjkrZVRDMEZKU044dG1SVldXSlhyUUwyTE14UmtE?=
+ =?utf-8?B?R1crb3VGS3I5QTlueFlZK1ltYWdPd01ZaGJhT2hVc1UvVTROQzkvb1UvaitM?=
+ =?utf-8?B?Zm1qZSs0YmdqNVlJTks0UzFJd3FTeVcvOGpWbWoxMXczSnBoUFpCbnZMNURq?=
+ =?utf-8?B?NWhhSTVxek5nTFgzMUYxNXJIUnNjV3crOEpqb0JUNFByOVk3Zlh3R1dUaGFw?=
+ =?utf-8?B?ZzhEUzRjTnp1Q21GQ3crNjBFVVh0OVIwMkNGb0IvZk1rRmpiTkUwRDN4RkN1?=
+ =?utf-8?B?UysyZG9XaU9NNHhGbUN2NmQwbE93Qi9zZE14SlBuc1kxWWxNSWtlUGhtalhv?=
+ =?utf-8?B?NE1kaHRRUUdaU2FsYVNseEZ6VFdRR1A5N1kyck5MNXU2N3BWN3MvZi9SWVBh?=
+ =?utf-8?B?REhpT3o3N2tJR1dlcE9lQTUyK0pYTVd1eHhFOHZ0RjhrRlRNVnp5NlIxbW1V?=
+ =?utf-8?B?OFYwclVWVW9LeERKM1Ezb2g5NEJCQXA2WXdjTm5ETWR2QngwNnBwTG9TL1Fp?=
+ =?utf-8?B?aW1rUUQ5RnRBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TXMwbVVGQk1iZUhJdytmZjVLUzVaemMwTloreUR4WjhlYWRSR2gwc3FFLzRo?=
+ =?utf-8?B?ZDZwNlNVeVVMbzJlTnMvSFdFNmhyYitNVlhWOTlnLzB4dTFpZVl1aDZNdUZ0?=
+ =?utf-8?B?SlU5ZHlWemR2aFFzekR5bUcvRldlUWxwWkRhaFVneUNtSjBidVJkNXVWcXJn?=
+ =?utf-8?B?SGNaNzdvUFh3eHpOOXdySmU4M1kyQ0lhV0dxbkF1N1NnTWFEVUROb1RWTFVL?=
+ =?utf-8?B?WDltUHd5ZlV1Y2lPZ1poSUhHWit6Y2FWcUlJMzM1OGgxdC9MODErWWdvVzdq?=
+ =?utf-8?B?Qlp2eXcvSjBFRERwRUVTU0dTUEt4NURaaDArblZsZXREUjR0UWl5RTNtOE1n?=
+ =?utf-8?B?TFRYMTdhTlVLUnJ6YnNNeVl0UXkxSldUU3hWWllNc09KZkR6cGVkQXlsRTJY?=
+ =?utf-8?B?MXdpQi9pT3QwS1hYUnpvQ2l6dU04Z1lJelB6Mk55c1ZYS0h6L2orRWlES0ZE?=
+ =?utf-8?B?Y3BFZXUxM3lwbnI1N3I0WG5HWkNnTkJONWdyaldZNkhEQWFtd3I0eWJPbG84?=
+ =?utf-8?B?Y0JHaEJvc0RKb3RoSUpOZDlIVXZPM0tyYzFMQXAvM1pwQWtXMlcxeWNhTTN2?=
+ =?utf-8?B?ZjNtRExZc0ZIZlJFdHJaMHovSVhMQkduSWNMSlVjTU00YUR6MUordmJUMU02?=
+ =?utf-8?B?VHM2N1gwL2UvQ1YrQmlWbndNSHJ4UDRWZVRqd1NoWkZMSlVLQmpabHovamIx?=
+ =?utf-8?B?ejN2MU5GbDdlaURhcEtIMS9mMUpiZVBWcmdOcTlGZElBYTExQmx2SHpDd2xS?=
+ =?utf-8?B?Szc2NDRRNEplQUg5MndvOVM4bUhkQ3hQN0dvQStwVEZlQllEZFdvQ2ZGazNn?=
+ =?utf-8?B?QW9XMkxiUDZEcU9FVzhSWG84NVFJTmROZmVIc2duNDZISktRSGdVb1VKRHZo?=
+ =?utf-8?B?aXRDUzJJeHpuQTA3YjhYRFNxbHRVR1BqdWZCQnZuR3Vzdk50LzdjNkI3KzBO?=
+ =?utf-8?B?Z05RUUZ4NUNwbmJ4dmtjS2w2YTUzZ1gvaE51YXFITnFWM29abG9rTi85WTV3?=
+ =?utf-8?B?dm03WFJsdjF1bGlKVmd5VzllTnlxS0tGbXBIVE93ZmpWTldpM2tWZlB2blNW?=
+ =?utf-8?B?SkhtZTFoM2MwdnpQalVDa0J0QzRrdUZicXNuRFhrcU9hblBhZU1QOU9zMVdR?=
+ =?utf-8?B?dEw1VDRHcmprVUdiV1daQjZBZExEcnRpTWMxbEZjVGJZeEdnSGtjOUJhTE9v?=
+ =?utf-8?B?SksxVGdPQmtQR2ZiWktCbGdGZE1kQWNaUC96ckU3N21FSEZsSHVEc29yREJq?=
+ =?utf-8?B?Vlpla1Z3TklONVFRVERSYXk1WEFaU2d0ekNVQSsrVnYvSGJoRDA2NUtRQUdG?=
+ =?utf-8?B?SThaY1dNK29UNStINElqOCsrckZSUlNiUUg3eTZMYzA4VHdpUEtDVjMycURP?=
+ =?utf-8?B?YmZ0aGZMdDhFelNTKzhJZDhHMXJNNTJPRnBVR1RxS3U5YUpkVURCYktnNWV2?=
+ =?utf-8?B?dytNU2dGS053RW1tTHp1YXNrKzZNWUY5cFlCSWtNSmkrbUFiUGlHZzg2NW1K?=
+ =?utf-8?B?ZzhwMWVpbTQ1clFZN0xBTEJROTdJcnlUV3RQSFVxaXF0SlJoa1F5UkJkK3ln?=
+ =?utf-8?B?U2lxbytmTHBvVzA1ZFZWQ0NaYVVHY0JZSnpxMnBFRkdWRE14R2V2ZU5rMTFB?=
+ =?utf-8?B?S2laNDJXUEdMK1Z2b1NkRk14OXlVTUNvaFF2TXR1Qmt1WWprRm4weXc3MGpN?=
+ =?utf-8?B?NERQZTdQUEhVT1FHVWNhQlVaTG5CRUU3SmNsdUF0TkVvdnpoVUYyMGhJM3hu?=
+ =?utf-8?B?S3VyTnNpbzMrREo0YTdLRHNPUEU1MCs0MEJtajlzRmhZbWoyK0szYmxWNXgz?=
+ =?utf-8?B?M1RKRnVTWGYzdWVuMFRKZ0ZZbnBKVXNDcWZoZW9JVHNxSE9nbzNKUHkzUm1m?=
+ =?utf-8?B?NjZWQkQxeGI0QUJmdlJicjluSGN0Zzc4NjRaSC82Z3RDQXBsSEpjMm5FRy9w?=
+ =?utf-8?B?WFNub0RsNFdrOUUwYmdMSGN4cGZRZmJWbThJREN2cGhrTlBxMFY0akRrcUta?=
+ =?utf-8?B?bnhQS2d3RlVrS09BczlQRHY4SGRLb1RLTWpqOWtVeHlWbFFQR2dYTWJhU0FV?=
+ =?utf-8?B?dEx0eithUTU5a1hUalljeVBDMkZlNkdlOG56L1k5YWFOakxNa0xzWU9iVHBS?=
+ =?utf-8?Q?CBC6LL8jGzVbTA9Nnw8FpInnI?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3114d91-f2e6-42f6-13b9-08de21ea1829
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 12:50:44.7099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: T+/1A83palQGbDfl5KpWCErfR5+NCX4nNzfyxw30wJgdqBhMrCKFIuQZ6h6ag/4R
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9042
+X-Rspamd-Queue-Id: 75488A000D
+X-Stat-Signature: jcii7pq5h4uzjhgt54sq1kbegxpuqygx
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762951622-576205
-X-HE-Meta: U2FsdGVkX1/Mt9bwt5vo17rBsB6TQpvKD6579jr/admnfMDV6+z9IM9j4HzAtBrufEZMM4ACR+NhOpBKEzOdd6aIZHHYJ7BWkYTvXsXPaZEIGJnNjEHTuUfcibd7CrWObKTCqFFAGtvYpamRefzlwaSbouUmK8x/BMFUPuoPsBvZMEfoX+kCULDE63gAYC2YAR/1RaGEqRyVSI6AQQ19y46HLln7F7lxnbZHABxwt0RvRL25aS1x9HM0O9h4kYssiFndqW4C7QE3v5DZDhUfbejpXbZXUj9MaCsHqzB0Nf5+SrKwzohojm99oK+tcTflovmi5BOkfHeJIounmC+QjZ4Jw6KvF/62wKlee30uZ4dc9P/L19XuVvowfG9jXRprtPVBe85ljta/ili+p5NVTkPmbIyyrerllubLitGF+Y4tgx36jv+zYkeLm/COlBHT7HZPFEt5PQ9p5qlsGj7/cFJubp8GMCddPrFbYzBp4kL9nLpIH9z39by9ZgcQ7KUNmVgdO4Fr50VOi3URwY1pzsOyZOUVEC1I8ZoTe6hy4qAyr/CmK9k6aRiiCj4ERW7yJjTfP5ehVm8a+dPgOKOOerK/X8qnfAPo5XIGyu1hKVwiLO/zX3b0Y9M3VBbxlDqir9JCWNX9Bd06SAtysZXPkgSJ6G4alS+ONVCv0FC4aH7Q+ps9kVoLMRUvM9C7+r3tHuye0WfbIWVgMIeNBLWo09X8aDaP87hu0Fc2JbkTxwrqFTvE+1eKv4L8kK51vErSjYuSGXXO0KMBXiOagsY9e3vAjCDJIYy5pTLSY78mH6NrUblNAfxi7UM6Hhfr6uvR2wNSMWmaxPEiIe/xhq992DCjXnKzLXj+olvGJkftRNy6vAgmzEIC1wf20rqV48qp0dyhB17Wumvw0DF9QRh6XkAU/6xmReex6ixXViOzGnVclJh62nlbj6vbuSuSvEu28RvDLN1BghivJF3vIRi
- tbfIT6DB
- xyxEzmCUN8BtHIS2FbTfJkvIkqNQ9MJyHB/3kZi6B+gxdO3Xu/w/pXKAVlmkLEq+N3Jtw8999Bjo8MYl5KQwk7aeBxhPf0aZwIeI4yKn7pHwuGNQtqulPAa/UVOCGi9fdTvTZ/dqsUwScEoz1NTuutq+mt/PQvkVCyOYExYDgaiGadFfFvhpsu19x6OSSqxwnbwAjRxfXld/kGz8efWD1fB8KWrGdzmQzmJMbZwBc90Rx+MiZj5y5aWEfDhw9jX6GmLXq1TFSgNa6clDXUqbTn62y8v8T4ybMHhpNsApSchZHjNNSjeOZpZtd+KTO4SsfwurXrgS49Tx9TaSAdUTZPt1YQKKQQU1nbjnM
+X-HE-Tag: 1762951850-36768
+X-HE-Meta: U2FsdGVkX18tEvxgGJGWtP8nD7+lqaEMo0McFHEb+4PCwwA4p2jJDXscbqyQYiOBmTvZGaGWRFXtSiNmO1EsKY0Jyksp9ycH4X2aXpiDukW19t0BIgU4aD1g4I5BMZSeDERVK4NXyaX2dhngvn5h22U2fj7K3tvO3v2Y62BNZA3VDJvu/uZSvXCfbAvatz39q/IQEpbXkSd2OQ1a0TvNSPcPehXnYH8qwF8KQaq5k/fQIURJhYk5o0LDLqrHMkss8oXF/wDG5nmt9iOVLZ4oOB1D1sjWrza6k8+sLrvZmzoOWhjG3UDtaSRGql4CFyDDS65nNrzxnflKjmEAh+O+q+FjvhjwWk5ReM29DXEZim9L2LRrSSHLYkem4TUM6SGAvPpUxvaGS+h7r/GNifs3t/t16wHeGe7ku589dW0y/igTeuav914JJgY4llVzk9R5uYmtJIrysGH+oblUlRQWhAMxYskfxdl3aEu5Cu/6zvV//qI6LV/xl9Qc2v4YADILsMN5L5W3cgJbNFKBABOgmNW9tk/4DLRIWF/DnOb561M7FHeK1ert2HZkbUcDjOXXueiWRK2ktnwO4Ki81j3tr872vNVse2ltI2HYLQ0yh+2WQr/Cd8FdSEaMCfiRm0gT/sIp08zfEgcS1clL5yFi8tnegdxUVEVdR4snRgf71OG7GIt7OePVMyEfe3nDWouN0P5Mme37Qu19QXns+SaZCdrgEQ/703H26ycnMmXmBVMszdmBphT+o5AxRVCOgCq5Tut7nXuEwC+r9yb1U5+ozrksorw25uGFW0GEGS1YKKF/uHVnkapXhK6kNvHZzrZKMLRHE3RgKbBVCkAvXUUvf2VExfEFN3LBMIJa3aL1WJEkvXpvygUGih6nAbAnOoWOgASQOwDKenclPZ9T6uPlO1ldo5xU6Is4KIi3LiNkQ5M2mF4laHpmbxvaNED1lhDYxm5j4Izf9r+2+EdL15y
+ oHa+UtVi
+ jx03NeQ6AuzkzCIr8UcRTXvIzQJ9uYb0CNL8U9+u0bGM6LDH+C9TeQc8SLdnDsh31Id3HO0KCVZrzET+TiOHUzuAQOGD+RIbVL9gU7JM3RMartmXfECMJ9wrTRh+AdtA5Oh6YJMllviNKblELr5hOxPJ9W5KSIyCVdJ7cHLtofqRN0KjJfxxJ/5loOTmcSVCmgFnLpxy3hDCD6Nsuc2zyKcKkkJnDxRaazJPYYwp8vJAXPZMduTg8GDG0eZq9n0uT06zEjyzEuxT7PnqjwAyL2EFCj5blaVE2282hqRljNhOSkwtSiMclXC2N369A++Dzu/7w8Y7dIwBchgS81hiv/k8O2pwtB1aaUP43HfuVoeqZ7F4CyRsT7GZkmPpADsPkMznalGz6JvAi4W/bkPPF5oWi/n0v4lDMHmbSMo22/Fmqk+AISGxnfNORAhdmObJAkTsiKs29xlNprMMKJOe7p/g3dFrtHdIF1Jt8dwVgkgqLBp5reugE1Xk/3RAbjw+G/Qa5H6a8AlMzTYSqlEvob/9NB7WUy7FPph07Z8/yb5HKnt34AGlMo+n/VL87Fa6LyM5j
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,64 +206,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 5:21=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Tue, Nov 11, 2025 at 03:42:24PM -0500, Pasha Tatashin wrote:
-> > On Tue, Nov 11, 2025 at 3:39=E2=80=AFPM Pasha Tatashin
-> > <pasha.tatashin@soleen.com> wrote:
-> > >
-> > > > >       kho_memory_init();
-> > > > >
-> > > > > +     /* Live Update should follow right after KHO is initialized=
- */
-> > > > > +     liveupdate_init();
-> > > > > +
-> > > >
-> > > > Why do you think it should be immediately after kho_memory_init()?
-> > > > Any reason this can't be called from start_kernel() or even later a=
-s an
-> > > > early_initcall() or core_initall()?
-> > >
-> > > Unfortunately, no, even here it is too late, and we might need to fin=
-d
-> > > a way to move the kho_init/liveupdate_init earlier. We must be able t=
-o
-> > > preserve HugeTLB pages, and those are reserved earlier in boot.
-> >
-> > Just to clarify: liveupdate_init() is needed to start using:
-> > liveupdate_flb_incoming_* API, and FLB data is needed during HugeTLB
-> > reservation.
->
-> Since flb is "file-lifecycle-bound", it implies *file*. Early memory
-> reservations in hugetlb are not bound to files, they end up in file objec=
-ts
-> way later.
+Hi Honglei,
 
-FLB global objects act similarly to subsystem-wide data, except their
-data has a clear creation and destruction time tied to preserved
-files. When the first file of a particular type is added to LUO, this
-global data is created; when the last file of that type is removed
-(unpreserved or finished), this global data is destroyed, this is why
-its life is bound to file lifecycle. Crucially, this global data is
-accessible at any time while LUO owns the associated files spanning
-the early boot update boundary.
+On 11/12/25 13:10, Honglei1.Huang@amd.com wrote:
+>>> Paravirtualized environments exacerbate this issue, as KVM's memory backing
+>>> is often non-contiguous at the host level. In virtualized environments, guest
+>>> physical memory appears contiguous to the VM but is actually scattered across
+>>> host memory pages. This fragmentation means that what appears as a single
+>>> large allocation in the guest may require multiple discrete SVM registrations
+>>> to properly handle the underlying host memory layout, further multiplying the
+>>> number of required ioctl calls.
+>> SVM with dynamic migration under KVM is most likely a dead end to begin with.
+>>
+>> The only possibility to implement it is with memory pinning which is basically userptr.
+>>
+>> Or a rather slow client side IOMMU emulation to catch concurrent DMA transfers to get the necessary information onto the host side.
+>>
+>> Intel calls this approach colIOMMU: https://www.usenix.org/system/files/atc20-paper236-slides-tian.pdf
+>>
+> 
+> This is very helpful context.Your confirmation that memory pinning (userptr-style) is the practical approach helps me understand that what I initially saw as a "workaround" is actually the intended solution for this use case.
 
-> So I think for now we can move liveupdate_init() later in boot and we wil=
-l
-> solve the problem of hugetlb reservations when we add support for hugetlb=
-.
+Well "intended" is maybe not the right term, I would rather say "possible" with the current SW/HW stack design in virtualization.
 
-HugeTLB reserves memory early in boot. If we already have preserved
-HugeTLB pages via LUO/KHO, we must ensure they are counted against the
-boot-time reservation. For example, if hugetlb_cma_reserve() needs to
-reserve ten 1G pages, but LUO has already preserved seven, we only
-need to reserve three new pages and the rest are going to be restored
-with the files.
+In general fault based SVM/HMM would still be nice to have even under virtualization environment, it's just simply not really feasible at the moment.
 
-Since this count is contained in the FLB global object, that data
-needs to be available during the early reservation phase. (Pratyush is
-working on HugeTLB preservation and can explain further).
+> For colIOMMU, I'll study it to better understand the alternatives and their trade-offs.
 
-Pasha
+I haven't looked into it in detail either. It's mostly developed with the pass-through use case in mind, but avoiding pinning memory on the host side which is one of many per-requisites to have some HMM based migration working as well.
+
+...>>> Why Submit This RFC?
+>>> ====================
+>>>
+>>> Despite the limitations above, I am submitting this series to:
+>>>
+>>> 1. **Start the Discussion**: I want community feedback on whether batch
+>>>     registration is a useful feature worth pursuing.
+>>>
+>>> 2. **Explore Better Alternatives**: Is there a way to achieve batch
+>>>     registration without pinning? Could I extend HMM to better support
+>>>     this use case?
+>>
+>> There is an ongoing unification project between KFD and KGD, we are currently looking into the SVM part on a weekly basis.
+>>
+>> Saying that we probably need a really good justification to add new features to the KFD interfaces cause this is going to delay the unification.
+>>
+>> Regards,
+>> Christian.
+> 
+> Thank you for sharing this critical information. Is there a public discussion forum or mailing list for the KFD/KGD unification where I could follow progress and understand the design direction?
+
+Alex is driving this. No mailing list, but IIRC Alex has organized a lot of topics on some confluence page, but I can't find it of hand.
+
+> Regarding the use case justification: I need to be honest here - the
+> primary driver for this feature is indeed KVM/virtualized environments.
+> The scattered allocation problem exists in native environments too, but
+> the overhead is tolerable there. However, I do want to raise one consideration for the unified interface design:
+> 
+> GPU computing in virtualized/cloud environments is growing rapidly, major cloud providers (AWS, Azure) now offer GPU instances ROCm in containers/VMs is becoming more common.So while my current use case is specific to KVM, the virtualized GPU workload pattern may become more prevalent.
+> 
+> So during the unified interface design, please keep the door open for batch-style operations if they don't complicate the core design.
+
+Oh, yes! That's definitely valuable information to have and a more or less a new requirement for the SVM userspace API.
+
+I already expected that we sooner or later run into such things, but having it definitely confirmed is really good to have.
+
+Regards,
+Christian.
+
+> 
+> I really appreciate your time and guidance on this.
+> 
+> Regards,
+> Honglei
+> 
+> 
+> 
+>>
+>>>
+>>> 3. **Understand Trade-offs**: For some workloads, the performance benefit
+>>>     of batch registration might outweigh the drawbacks of pinning. I'd
+>>>     like to understand where the balance lies.
+>>>
+>>> Questions for the Community
+>>> ============================
+>>>
+>>> 1. Are there existing mechanisms in HMM or mm that could support batch
+>>>     operations without pinning?
+>>>
+>>> 2. Would a different approach (e.g., async registration, delayed validation)
+>>>     be more acceptable?
+>>>
+>>> Alternative Approaches Considered
+>>> ==================================
+>>>
+>>> I've considered several alternatives:
+>>>
+>>> A) **Pure HMM approach**: Register ranges without pinning, rely entirely on
+>>>
+>>> B) **Userspace batching library**: Hide multiple ioctls behind a library.
+>>>
+>>> Patch Series Overview
+>>> =====================
+>>>
+>>> Patch 1: Add KFD_IOCTL_SVM_ATTR_MAPPED attribute type
+>>> Patch 2: Define data structures for batch SVM range registration
+>>> Patch 3: Add new AMDKFD_IOC_SVM_RANGES ioctl command
+>>> Patch 4: Implement page pinning mechanism for scattered ranges
+>>> Patch 5: Wire up the ioctl handler and attribute processing
+>>>
+>>> Testing
+>>> =======
+>>>
+>>> The series has been tested with:
+>>> - Multiple scattered malloc() allocations (2-2000+ ranges)
+>>> - Various allocation sizes (4KB to 1G+)
+>>> - GPU compute workloads using the registered ranges
+>>> - Memory pressure scenarios
+>>> - OpecnCL CTS in KVM guest environment
+>>> - HIP catch tests in KVM guest environment
+>>> - Some AI applications like Stable Diffusion, ComfyUI, 3B LLM models based
+>>>    on HuggingFace transformers
+>>>
+>>> I understand this approach is not ideal and are committed to working on a
+>>> better solution based on community feedback. This RFC is the starting point
+>>> for that discussion.
+>>>
+>>> Thank you for your time and consideration.
+>>>
+>>> Best regards,
+>>> Honglei Huang
+>>>
+>>> ---
+>>>
+>>> Honglei Huang (5):
+>>>    drm/amdkfd: Add KFD_IOCTL_SVM_ATTR_MAPPED attribute
+>>>    drm/amdkfd: Add SVM ranges data structures
+>>>    drm/amdkfd: Add AMDKFD_IOC_SVM_RANGES ioctl command
+>>>    drm/amdkfd: Add support for pinned user pages in SVM ranges
+>>>    drm/amdkfd: Wire up SVM ranges ioctl handler
+>>>
+>>>   drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |  67 +++++++++++
+>>>   drivers/gpu/drm/amd/amdkfd/kfd_svm.c     | 232 +++++++++++++++++++++++++++++--
+>>>   drivers/gpu/drm/amd/amdkfd/kfd_svm.h     |   3 +
+>>>   include/uapi/linux/kfd_ioctl.h           |  52 +++++++-
+>>>   4 files changed, 348 insertions(+), 6 deletions(-)
+>>
+> 
+
 
