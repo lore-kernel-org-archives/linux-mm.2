@@ -4,121 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 458BFCCFA1E
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 09:10:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D455ECCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 09:13:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E0FF8E0003; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
+	id 200EB8E0010; Wed, 12 Nov 2025 04:13:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68EA88E0002; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
+	id 1D8828E0002; Wed, 12 Nov 2025 04:13:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A4808E0003; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
+	id 0C7248E0010; Wed, 12 Nov 2025 04:13:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3366F8E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:10:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1C5012DA52
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:10:14 +0000 (UTC)
-X-FDA: 84101383548.20.68DA1D3
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C1D3FC0004
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:10:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZVjocBTV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762938612; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8A5C8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 04:13:40 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 87EB14C8FB
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:13:40 +0000 (UTC)
+X-FDA: 84101392200.19.2CE907C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3A7114000B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 09:13:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xTn4hJmo;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=h4g1xlLI;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xTn4hJmo;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=h4g1xlLI;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762938818; a=rsa-sha256;
 	cv=none;
-	b=geREP2k7gwLhKNqyNuOVKhrDj6n8m/YadcppktQVm1+7TLICXEq+GePZvPqbTjjrXJ09va
-	stjdFsBwqHadSOLlKNVNLku8mfbPWRnSdf2nABaaWQmkHKo74Rf3xKznXUjqJAA56nGWGO
-	o6Gch4lIvslkDPkMnzHXsjCvNANaQjU=
+	b=g1snz4k/TU9aReHqvKYjqskep67LLKCfSayEXb6NHaWcfbE1kWt7MuyuaktU4t/Xc29jKJ
+	8jRYGm8HhzvCQ7InukVjoToTErLtRhFIivbpc+os3p99fB0aHyTY7l7rXQlhjNr+uyB74p
+	zOTbquix2IqAPLJs8JaoguK3IGI3Hoc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZVjocBTV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xTn4hJmo;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=h4g1xlLI;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xTn4hJmo;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=h4g1xlLI;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762938612;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762938818;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xq6Pkz3PynpH0qi1kBl1OjrW5Or2+dSMMg5022+CzXI=;
-	b=hrE78C3RJBW1UNYXN70qJ/wIhMSrvdgK/bga6RqlrVbwsWNNoBIjpgk0two/eKVqPENX5a
-	rQXMTrUYTGK2AYfR9e6yc2V5OzV8ZewaNBTxZ3NCLfWTQgUNNouMNoijPlC6OnRbzCp3xH
-	7C4KgC2oUKnhQjtWtH/pihCxxg7tonI=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b7260435287so94225566b.3
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:10:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762938611; x=1763543411; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xq6Pkz3PynpH0qi1kBl1OjrW5Or2+dSMMg5022+CzXI=;
-        b=ZVjocBTVsdhtJue2lx5EPVB4Yv1DTaZUDK3QwQmSE2iaswz5U9H+Q9iWep1PVInWg5
-         rztkRO8SgEqBxVx5+2QkjygzfpjEQHeDDBvho6wClD9uDOfALhnnlInvcCMk8AnC4EIr
-         W1f025GLs/+902goH5S5xODxFdtHLxXeF/EJaiJxy2HtxsAgrhX4MzgxduHiXBY8rhV4
-         L3IRwQzhWOZ4jyhS5znrhg5AxUzehb2FVhD1g7AUg5h8464ha8ubT82EXsiqqLGy8/uS
-         puUdwGXZTz8wClcDxAx9/Q84iyO5QprkRhofcT18bbTRZmhr+DKbQi/ezZMHPCuSod7A
-         YgYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762938611; x=1763543411;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xq6Pkz3PynpH0qi1kBl1OjrW5Or2+dSMMg5022+CzXI=;
-        b=XGlZ601y3Hs8UMdR1RGKjMa+SUBzmUDueAnusgXXen7i7W6VxcTZL6tL0rH3vIGz/K
-         +PD7PIuzzbHlPZuoJhjzBCKopizMk3S2q9PPDU3kF0FGErgKM2CWNvQo0ULrkZvnaaLl
-         bjtT1Zr8xPiiM+XYu0x+TsgBt34IB1dNDAxVcKyVz9QjIVDjudTGnJugOar0OEJusH8K
-         zdaOLbRN9x4+YjItmSbNDvMekFb4Pc7mZlAC7rWkTOFQIFEBwB383JCsp+HBkTmvIJmR
-         o0KoZlOZFYhqKVbEuh7FFPpGzm0QrWKbEeAOxyEjvHXc4EgjZ/AuBGPRaDFanwjS7/qP
-         nFvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWa5TnRzWFGCeyK0oDrS6ZmG/QiTTRqbAaEDm22Fk/MIuNUL54hcaNCbW3E/nZGBNkJ5hXM8IwVmg==@kvack.org
-X-Gm-Message-State: AOJu0YzBoToUT8RDIMdRZiti2CAaNv3pCRAkvMdQcNYmBmhg+rUOXMWP
-	ABwq0OqsuYLs7stGGferH4BnPekw7j8yDy2zbfROdhfrNcTal2GNYoac
-X-Gm-Gg: ASbGncuGGeiux+HuAt2P0hEYZOrdbnO2NdNjgYBclJtwr/00G3x47m42/cjvl9cyT2g
-	p3FMU4i+C4VXVbQYjsyS27lEa1zKY5eTLaABO6JyWeqdxMdrNvYjk00MggtTalbxFEFRRakcQfv
-	iMo5YImd9hKjRY5SXguUie6k6j6LLQ6ZH82gSu3loOGo+wdXcRsC4zW2gcVUKKVM9sGgDUopxNY
-	Wi8XcopV29CqUAFVJUVktdyV/ZSMTMvAFemNIoCPcRwIkl7OJm2WZBSUt1A8h9iANvYnsbbLPU0
-	yHXTOlTsmxZEfsCRegYRd0gi4J26Z+X0+FYN2/O7Pf04uW9NDXClZoBEXF0+yeXn9yW0XZ2uRCg
-	CpoDiECeDLyRH6ry/YzwCwtc0P9hGeE8BjsdE4zim04IVCbTpQR8AnM7yJyQlh81Nh+p0pK/8w3
-	Zhrdk=
-X-Google-Smtp-Source: AGHT+IFG1lbFQXG4fnln8ZtPUziEQL0kZeEfj0v4OL0cUWGm+I0pGkLzjIzHZcn2EYT7SNPiF/SERQ==
-X-Received: by 2002:a17:907:807:b0:b70:aa96:6023 with SMTP id a640c23a62f3a-b7331971805mr197887066b.24.1762938610695;
-        Wed, 12 Nov 2025 01:10:10 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bdbcb0aasm1523156666b.11.2025.11.12.01.10.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Nov 2025 01:10:10 -0800 (PST)
-Date: Wed, 12 Nov 2025 09:10:09 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Lance Yang <lance.yang@linux.dev>,
-	linux-mm@kvack.org, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, npache@redhat.com,
-	baohua@kernel.org, akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com
-Subject: Re: [PATCH] mm/khugepaged: continue to collapse on SCAN_PMD_NONE
-Message-ID: <20251112091009.5xewhutnvdaoxt5s@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251112020031.25350-1-richard.weiyang@gmail.com>
- <06096f8b-4da0-4b5c-af3c-fd8871437c16@linux.dev>
- <20251112034008.ojwghkko74psu65v@master>
- <811bea18-30d0-446f-8840-d99698a6a9ba@arm.com>
+	bh=lOkexIAv3v1duPJ1ViOi5rMNa1miLiwCtXPhdmXLxp0=;
+	b=pY5KxtigiqQnHGWFzJbWSMemdrc2f3iCsbrjTp1r/wGGmscCS9Gp5wlDTHMQfNuuyQS6z4
+	xCNaeuASJgY2NuTyoa25tn1MuuDVL74Dc5zdY+7A6OfDw4PtWsR+FvYkEgXcZeJDWgjIVF
+	Hhvuyg2Su71c0tom5JqNKUbtyKnPhSM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4DB7A1F45E;
+	Wed, 12 Nov 2025 09:13:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762938816; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lOkexIAv3v1duPJ1ViOi5rMNa1miLiwCtXPhdmXLxp0=;
+	b=xTn4hJmoP9BdmIdEZZL+ENruH10vR6IjNXoBgVIDacRFj0dj9+C8I+wpFgqvnhh9wrEQVF
+	ZP49g6jiBAZDvAcZqw9j1LyhpW7do6s6zpgFmmvWUeeN7vL8N55WbgCJtSw4cir1JX9p+8
+	7pAB5Xuyz+ZMEMCorsjRX954lI5LmU8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762938816;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lOkexIAv3v1duPJ1ViOi5rMNa1miLiwCtXPhdmXLxp0=;
+	b=h4g1xlLIKRO8zI6qtfxagw+bHr+RCvDq3wwpTdTCPXXC4sq84KVWoWCwmxmLn98Pkns8Mi
+	8IGK4AexbxaINtDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762938816; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lOkexIAv3v1duPJ1ViOi5rMNa1miLiwCtXPhdmXLxp0=;
+	b=xTn4hJmoP9BdmIdEZZL+ENruH10vR6IjNXoBgVIDacRFj0dj9+C8I+wpFgqvnhh9wrEQVF
+	ZP49g6jiBAZDvAcZqw9j1LyhpW7do6s6zpgFmmvWUeeN7vL8N55WbgCJtSw4cir1JX9p+8
+	7pAB5Xuyz+ZMEMCorsjRX954lI5LmU8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762938816;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lOkexIAv3v1duPJ1ViOi5rMNa1miLiwCtXPhdmXLxp0=;
+	b=h4g1xlLIKRO8zI6qtfxagw+bHr+RCvDq3wwpTdTCPXXC4sq84KVWoWCwmxmLn98Pkns8Mi
+	8IGK4AexbxaINtDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A12E23EA61;
+	Wed, 12 Nov 2025 09:13:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5gSIJL9PFGk2cAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 12 Nov 2025 09:13:35 +0000
+Date: Wed, 12 Nov 2025 10:13:34 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Hugh Dickins <hughd@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/memfd: clear hugetlb pages on allocation
+Message-ID: <aRRPvn4DYAhuGtq3@localhost.localdomain>
+References: <20251112031631.2315651-1-kartikey406@gmail.com>
+ <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <811bea18-30d0-446f-8840-d99698a6a9ba@arm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C1D3FC0004
-X-Stat-Signature: 1hday5p7ybr5c9o5apidwzzdz5rymuza
-X-HE-Tag: 1762938612-963396
-X-HE-Meta: U2FsdGVkX18mp5vAPboW4S39NHQ7PaDT5qYcVjDlZAnLt62mUn+xqXBMRjn8Djw0jM7SLYjXNGA5giTnatZElJHaeba+OYy9OQ87Xw+3wnvBclE+1d3RQiDZsLcqHqe8TasEaMBFwIGf9wSP//5wqp/ldPpOoFCsbOk4It+4V8/HvDDI7Of8HCa5EkMvgX3p07iNnsnGQbRxspeQlr+70eDUpKO3J0+DgE1S4ADNBIWZBJlXBUGgCAMDQ09kSogwRZHFymMIzL1BrbNE3rwfJ4UNcN4Yg4FeCSjr0UvLhzO45jiCR+vwJM7EL7h0CjfTKchDot+T5IULgrzCJwT8RhEZO5qQr9S7vpDWOs3eFZ0UoGi42w2z+i8bPnKdOyy5CtFSzyvwVSYqi7DY5flubSAJqV6NU3APN+l5v5CRsku2nLXWvQ7HynDzOTFL++9x6s5XwcRXcDZ3YCVFouFt39j6OKqrYBpfzhSuoLfv7WxuBh/2g544QYr20HV59eAixXtfH0kZh1UGVpi5Ea4Z790MkAq9biQqDZXC+BsXZip1BhkaEfZV6OMObm/FNaB/WsFnvyS9KGsbMs57lUeYhOjlfO/qfxuzM3BB//Ucu+3DUdwat3/h8X8msqVFFKwoCQ7JYXQEOsiTwvoSBCFsl/dLHw+C1Sk46LQdNsA6fPBGuzPC32BVUgamPygvFefRalBLRJUUaH/88aO8ky47I6d8IGL+BIcci2rKMI1+yTfbPN4PS79iq7J/lRbZTprmyZzOZ0ZoRwCH4KicAltAPOfFvrE8IXjAEXATDdOYPqg6XwKLYLz9SgOG8CeLCssQmfq7CRKc8lQuATv5UfiULrthA7uYioxzfLw6oSqSj6zLWIx5k86tdejyvdOX+l9g2U70PugZypuV8Jb+Mf1mX5e2PqiP42v5lRTK+qXJUl7dtSos1ij26cgc3wPuZD2JgUhEoff8iQO7ONTnyY4
- 0HD3wtfz
- qBwuTYDAJaIrrvYOLTC2R8yVCOMlr2WZx+4QmGsX0YSBSjPX4IwY8k/vheF9KVS8ywX2yfa0cbEvsNYvR3iwytFpJbFgWXXZlAVX5nSY7s8EnIkTSjOm/h2VsNArbFynN+NSCifZKluq4uO29DV7DLwFj7m44zn0fxuPVKWa0jFmx05y5u6dVvVKAp3qBQdevky1sFPDTXEu4kAs704A4rzflt58FYsBE6Oco1xVrLSTlkkZIOff41YMebVhSydtKf0VLC/Jr0rWfN4hg/zFnuFHZSEy+XQHf4xSxTTUHYUNuAFTPcAmCG7GKSlG7D4/KnEQegvhKEyIwvNiKcpon6vIGCLnBK+gfMXePjUyve91OGgzcrD/taNQJFAtfHd3seB6Jfnk7GrrPfTsBCDc8/QHWvMjFRzalZOHCEMB0Zm+sMaA+MObe93lWYKEljMkHG3HTkCPN2RQ6681CiaewkqVEmpVh23pMBUvWbpIOp2QxOwaIa8NCS4XfAoCR5KyArHUnefRK6VeLhRgS8uJ0863CA9lQrH4xFK9a2S/9fcYR+QIuAIYI/BcpQSgcZEIbRYkUp9QzklGEp6qTT6e6aWjnESn0L/TAmeYbgzy3bYSGP7ihM2yLIELZR2NCFEqRH+W/48nF4iqfutGti2WrmEQvYykuDgyrVINbBMtpxXfi6uTWGYjqXYTG7s98iLH0oFSdvD97sHNSUw3vwptUi4t6F+ueYn6rox/HgyIZ4DvfSGvSYKFD7uVMDZkE/P9eXfSjPNTrDMUgn29FSZbkH4kT02qFBpJ4dv8SId32zLrIpog=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3A7114000B
+X-Stat-Signature: qdx7jkpjj7gpid5ixd4y6oswnfhgmqt4
+X-HE-Tag: 1762938817-938214
+X-HE-Meta: U2FsdGVkX1/T/8MCaZ+IbZxSQiagIBoETCWGOhHCndpRCp5OsndwyL/MfZfk1OnfFQ5RB5Xi23o1RB1lnZ8d0qB260eqVOGMxrKZ6GRj/wpbUbO/k5QXyDRbYnKH9+tRKoi4Bux8mz7x5acb4wyrh21/jsT9FuEVqXlGzh+OKtflRLWQv3NUG7I7PVRkJas1wZeV26SMYX31AshXGBZpjIbvB8SUDS8F/PWgq6soxqDQcFO8AqIvogPoK8FnwhVzbOKHclVl+lgGuEqKX5/tsdT1Gcd0Sd0b/I9pFLi4YbFlc4emybDK3hQFdZnOcwcC48fsM268FXHLz32w7CuCJS9zYlkulajfGITzQA3UL7s9gP++7nySyliHu6kR3YaPWwWJelzctg6Ogx2SmfU3tvXBeDmkrxjSX9GqbcHw+WuxRPgQ95fCIsBCapoRqkIRUK8SOfB77usF8ezYRjf23GeFuw+O2mWuwDaFEZRmufWkYEVBhBE5Imw1LPIpGy2fJ+KvfLC/OOUS2/p9QHLSHBksYCRq1NalvQGwXfT00vha+wEDTCj6A5YDsqANp8BkBEY6WK1448QIXAqmVjnL4HYrKatNtxxM2Ve6NDpqSQYVSKQVddfsDNuQZXzlOWowSPhJt4HCn8zZf4p+etKq/HAW7WJ4td3JSTW9NIgb0RmxWYhlpk4f6GK5ankQV7oGMVbwzORLvaL4QfEClIcwJRzAqw6PPO1gaDGKlnDISAq4CZcPiupiae/Or0YILS87bNEc15ZoNRtqk/aG9CiFAReF8lSDWP0Ldgnl2ABUMBAxeYpqKTqOs7xfdFVw2Zd9Me3xS1GhDzIeYqIpGEWh89pPm/luAF1tgzyAVYjvcQn8AB+xjVcu4EzUmuIcg6x87NJIGPwuI7PRUJH8Rc788Ie11K5GuJIuj614GmxlBaa7P9Mie7iDRlg0uSE/ew/hySUt0lVDnMkHkbM2Pme
+ eh6+efEv
+ QiBYKw0s+5F4wkrpzwyMdD2RFEAfkhC6B26/QEnyTfK55Yb6lukDSr0NNpcOGvL85eElWmLjzVomCr4e30QJdsxsbHt892t6FjmQtpbKXa3jdMoHM4WselfETO+KiQKHzUnvUdaENxclLgQzEKc5y8EkJFLZPIwrcQYiO9Lsvla7LIbnazM3qR0irbL4azVW62z0/uDnCekDyDoMndLKqkXvKLYU1AAwynkimAQ0jBl2ckTWkHyghsqpNJyJFKWZlwOUlC+PAmSEORPqhbIdkwIbBv0V8KTT6Kvoge/qGkSfoxFGsgdlU6wWd8Jju7bmWHyRAIj5zRl5+Lwmz1lm9MrvwtJPVqAGSxlgEtDQgUepQ8G0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,42 +136,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 09:28:34AM +0530, Dev Jain wrote:
->
->On 12/11/25 9:10 am, Wei Yang wrote:
->> On Wed, Nov 12, 2025 at 10:37:06AM +0800, Lance Yang wrote:
->> > 
->> > On 2025/11/12 10:00, Wei Yang wrote:
->> > > SCAN_PMD_NONE means current pmd is empty, but we can still continue
->> > > collapse next pmd range.
->> > Right, bailing out of the whole MADV_COLLAPSE request just because
->> > we encounter one empty PMD is too strict ...
->> > 
->> > It makes sense to treat SCAN_PMD_NONE like the other whitelisted cases
->> > (e.g., SCAN_PMD_NULL).
->> > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> > > ---
->> > LGTM.
->> > 
->> > Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> > 
->> Thanks for the review.
->> 
->> I'm currently evaluating the use of SCAN_NULL versus SCAN_NONE. It seems their
->> usage in the current code is intermixed, and I'm questioning if there's a
->> strong, practical reason to maintain a distinction between these two states.
->> Should they be unified?
->
->There was some discussion about that in this thread:
->
->https://lore.kernel.org/all/v5ivpub6z2n2uyemlnxgbilzs52ep4lrary7lm7o6axxoneb75@yfacfl5rkzeh/
->
->There are some cleanups mentioned in the thread which you can try if you want :)
->
+On Tue, Nov 11, 2025 at 10:55:03PM -0800, Hugh Dickins wrote:
+> Thanks a lot, Deepanshu and syzbot: this sounds horrid, and important
+> to fix very soon; and wlll need a Fixes tag (with stable Cc'ed when
+> the fix goes into mm.git), I presume it's
+> 
+> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+> 
+> But although my name appears against mm/memfd.c, the truth is I know
+> little of hugetlb (maintainers now addressed), and when its folios
+> are supposed to get zeroed (would a __GFP_ZERO somewhere be better?).
+> 
+> I was puzzled by how udmabuf came into the picture, since hugetlbfs
+> has always supported the read (not write) system call: but see now
+> that there is this surprising backdoor into the hugetlb subsystem,
+> via memfd and GUP pinning.
+> 
+> And where does that folio get marked uptodate, or is "uptodate"
+> irrelevant on hugetlbfs?  Are the right locks taken, or could
+> there be races when adding to hugetlbfs cache in this way?
 
-Thanks, will take a look.
+Thanks Hugh for raising this up.
+
+memfd_alloc_folio() seems to try to recreate what hugetlb_no_page()
+would do (slightly different though).
+
+The thing is that as far as I know, we should grab hugetlb mutex before
+trying to add a new page in the pagecache, per comment in
+hugetlb_fault():
+
+ "
+   /*
+    * Serialize hugepage allocation and instantiation, so that we don't
+    * get spurious allocation failures if two CPUs race to instantiate
+    * the same page in the page cache.
+    */
+ "
+
+and at least that is what all callers of hugetlb_add_to_page_cache() do
+at this moment, all except memfd_alloc_folio(), so I guess this one
+needs fixing.
+
+Regarding the uptodate question, I do not see what is special about this situation
+that we would not need it.
+We seem to be marking the folio uptodate every time we do allocate a folio __and__
+before adding it into the pagecache (which is expected, right?).
+
+Now, for the GFP_ZERO question.
+This one is nasty.
+hugetlb_reserve_pages() will allocate surplus folios without zeroing, but those
+will be zeroed in the faulting path before mapping them into userspace pagetables
+(see folio_zero_user() in hugetlb_no_page()).
+So unless I am missing something we need to zero them in this case as well.
+
 
 -- 
-Wei Yang
-Help you, Help me
+Oscar Salvador
+SUSE Labs
 
