@@ -4,105 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FFF2CCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 10:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB0FCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 10:53:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED3F18E001C; Wed, 12 Nov 2025 05:43:10 -0500 (EST)
+	id 2DA768E0009; Wed, 12 Nov 2025 05:53:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EABB78E0002; Wed, 12 Nov 2025 05:43:10 -0500 (EST)
+	id 28AE48E0002; Wed, 12 Nov 2025 05:53:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE93B8E001C; Wed, 12 Nov 2025 05:43:10 -0500 (EST)
+	id 12B7C8E0009; Wed, 12 Nov 2025 05:53:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C72898E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:43:10 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 663924CA2F
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:43:10 +0000 (UTC)
-X-FDA: 84101617740.09.C4A5088
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 34CAD100012
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:43:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED9298E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 05:53:44 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A0ED58FB7
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:53:44 +0000 (UTC)
+X-FDA: 84101644368.21.D62686F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1A408160008
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 10:53:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762944188;
+	s=arc-20220608; t=1762944822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9CszuyZCpIAkXuMjAUxx68LzymHvfkndaeApzQvLhEA=;
-	b=xHQddmUF0f8uS+ksbko8cIuSr3CxNwvVDVBHmfNSIWACsHj+G5DcOD+WUaOAxvvyieBYlr
-	KjF9nbYYLLbNxpdkRONGouSK4IVX45DZMkFJS5XwH6xH/R51mQpUtxG+4aWTWUd3T9KkJp
-	nLQ/J2BPocysK0Slxlk9HyIJVIENa3w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762944188; a=rsa-sha256;
-	cv=none;
-	b=IDlZosozJQ4AzKdYRzzQKq1bKdYQpkNaCslQdlDGqkNVzBkkU5qBid4IqwgEBwxYj2P5CA
-	2/mMQtpuahS5XOopSyG4SfW+AWzjWxHK86w23clHsw47r5/yluS/uQDY1iuPjY5XHq/e9p
-	VxYyLoE4Alp1t+g4v6CHsNKTTrm1xGs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
+	b=t9Z9MVE6Hjw4P6mNnZ5NLJPX8E+iNISSmyXoHHRMtt8LpPBo3bFxN4GLvXdlOrHk17NCMc
+	luMXcZnDuXC5hE82xc6Zot/t1/53NtGs+HnVVxHSISA9SQsa0X8aMZcUPI2N99BAcEazt+
+	qaXSz/ZfygsmGWeW9st+p25zGV5RZpc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7755A1515;
-	Wed, 12 Nov 2025 02:42:59 -0800 (PST)
-Received: from [10.57.41.24] (unknown [10.57.41.24])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A008F3F5A1;
-	Wed, 12 Nov 2025 02:43:00 -0800 (PST)
-Message-ID: <cdb4b97a-415b-4dba-877b-0cd570381a6d@arm.com>
-Date: Wed, 12 Nov 2025 11:42:58 +0100
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SnuugUs6;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2g3IQ7Cr;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762944822; a=rsa-sha256;
+	cv=none;
+	b=KWi/3kT9aMrmRl/HugjXxgf+AltQYi1JK+gHRXnIHuUs/wM6Mt0fFv44v0ZjOzO03vFyTm
+	DH1YAmQ9Ji/oaejjdYCs4M3Wj4JiLaeqchT7uqVF+/vIqvDb5x9x4VHm8LmDglGsDyzyuJ
+	hIayGrxgVzFnIxCyqf2UfkOU7hjV4rM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3D4F51F45E;
+	Wed, 12 Nov 2025 10:53:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762944820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
+	b=SnuugUs6s1i1G+ha+hOQ/OmhxQf1kpNet502wtDhpCQIM046YZQm/kYEr2XO7CmNuNHOSz
+	SvWC03cxUvmrbX09Ka9nD06/IQbvmtBaVrGVwwSftI+YJ9LSrW0dk+eaAJzabm5VGcUTz0
+	lLqEz1dcNViXOO7Fqc2Kk/SrWgD8GiM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762944820;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
+	b=2g3IQ7CrieoVjAWYQ8/aQ/uUl3/ZY61tFT/tLgOfjhUUXCtuznNcjwTCxJuhL5IYeAcXwX
+	Xk1BQuKZ6Kg0tFBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762944820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
+	b=SnuugUs6s1i1G+ha+hOQ/OmhxQf1kpNet502wtDhpCQIM046YZQm/kYEr2XO7CmNuNHOSz
+	SvWC03cxUvmrbX09Ka9nD06/IQbvmtBaVrGVwwSftI+YJ9LSrW0dk+eaAJzabm5VGcUTz0
+	lLqEz1dcNViXOO7Fqc2Kk/SrWgD8GiM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762944820;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=OdJts0YerqvsGbnAyfaCLpmo7zmoI6SztVNRu9g+40U=;
+	b=2g3IQ7CrieoVjAWYQ8/aQ/uUl3/ZY61tFT/tLgOfjhUUXCtuznNcjwTCxJuhL5IYeAcXwX
+	Xk1BQuKZ6Kg0tFBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2A4853EA61;
+	Wed, 12 Nov 2025 10:53:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id crmgCTRnFGn5VAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 12 Nov 2025 10:53:40 +0000
+Message-ID: <dec19492-bc23-49a0-a2b0-1cd8b5c7726e@suse.cz>
+Date: Wed, 12 Nov 2025 11:53:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
-To: Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
- David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-8-kevin.brodsky@arm.com>
- <999feffa-5d1d-42e3-bd3a-d949f2a9de9d@arm.com>
- <cc9dc398-b9c5-4bb8-94ad-7e7f3ddd5b4f@arm.com>
- <824bf705-e9d6-4eeb-9532-9059fa56427f@arm.com>
- <58fd1a6e-f2c4-421c-9b95-dea4b244a515@arm.com>
- <8f70692c-25a9-4bd0-94ab-43ab435e4b1b@arm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <8f70692c-25a9-4bd0-94ab-43ab435e4b1b@arm.com>
+Subject: Re: [PATCH 6/7] mempool: fix a wakeup race when sleeping for elements
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Eric Biggers <ebiggers@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251111135300.752962-1-hch@lst.de>
+ <20251111135300.752962-7-hch@lst.de>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251111135300.752962-7-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1A408160008
+X-Stat-Signature: 9jbkp46kem81jd65qzqfbethr4fn6qtb
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 34CAD100012
-X-Stat-Signature: 5imyqwtmgd8t8jmrwazcgfigamefq74a
-X-HE-Tag: 1762944188-437216
-X-HE-Meta: U2FsdGVkX1+WvWCPD/5SvknTAUlbhocUk/3iTEgJuA5wU8ojmhvFsAheWRJHFIuHF4ZkQZmnskzcQZJJiq7eJ7zFFDeEZfhLWn4nYVuZbmcJTqBB5j6eoX/pQ8Z/mGzjsIAu8uiwj+IrVmy4jUI1iJ0fbNIJ9B226nOaL9eg4DQQpHZwFIomVyXJ+n2MD3v+qvOFjwNwmYi431U1IUxnYBYOPJlGSQbP/Jqcgzm1Txc9mEev4ZHvqKX8JmmLxmtzlLMpJrfOQcx2oKwYxeihT9sliGgNe2QTssfpPweT8xdehBdArQTdAwsUPuVgYQJnLZaaHE7KwGkfQJ72vx2Sd1NkWhWIkWQXO6jYWyBUQbP/89WCs3x6dP+i4KaLN0nwm/Wi/0fZHGAXkdJ0qYaKZDG4F6PEgyvZhJZY2fh8PlqvgnJ+vrEtc6omSWYmwy6YnhOKbmZRvO4O1e6dB67Tr6TomGoqYuT32zerRHDaGryxBCQe2i8w1uHdks4s11t563sP02RbbOb5NnTTjUuzJ4R+laj/0OtqxIP0a0C7+aZqLRZElosdHeIDr/h7yr31mpYukjn7nWEvD7zTO6aEsSSftf8vgA/xAnMrSI5Rz15GTk7pJNsnVepKeDlUytRdHrTORNqGWLHF+q0/kt6vetHJVSKeU0Rw7RPCbLEqLtwwnt/KmRlHiLny41v0viTjCHDJmhN1KxaVx2/5QBbZN7huG8Gdvaok9XLXbFExzlp9rYqPQfPLDTjIzdSiWFL38yDsaOq4R4XeSy66ei51CVEHZVbDAknEZ+mdmfwUT6Coz9df304yzQ/LOujp8n+fV352q4+gxb+bwvzXF5lZlbc7UfNOPwbpm9E9Stp/mGbRX31AMCBukyMev7nhXScSJ7EkvHNOPLHdmz1FXWMz+aijBk+flnOrbxLCeyH5GKGZzz6cjtyoNbFJy/qBqwqiXpprZf1tuNDV9iuP8eV
- +lRIoLLQ
- hPgMdV2hBjBd9dpkv5d6fxxXGS3dxxamH8Et7Ocp1/Aoop+aZN/Wst4CUHmVw2YpmFKeuzn4kNqOSGdq54xEfAT39PGDCEe/IPTqW83VTwTl2a7ICGOCwXlUbWDJKBc+QkXksUai7pAVRgCIiGSpeTdaQ9K48EpwS6JRoU4RBxV3gEItM+RuMytpJkUboUji44KRfUOCo63lH8/mQ4grXVHxtVA==
+X-HE-Tag: 1762944821-521502
+X-HE-Meta: U2FsdGVkX19wql4fthpeg9M0xrA7Q3UCM3k4B/BztSLKi8/4zTacf+RXfP/jTmVVjaLSd72JRqGrydOyu0xONe/KYUxnuEy5KkwVDDqMSId5tSh5NI9SR9vg8aLIxk47mhDPNDW+5gMA9+nq5LF+yEPdMZfNK7zaIVlCEPSdMTg7RVpLoeBi0FFrrbohDdoUC4xC6Y2CjrMc88Biv/ZkOKqeSuVH8zaFvmbVeDc4Piqb9/a1p9OtElsxhfdyurzs+QWPhEU163Sa6uCgj4ndi07j8hDvrITPErVXxjvopJY1WKu+0/scM76P2lkWkbgK/1cl6PQyV6poiD59bcPaZPaNEAUo+nKla12iws4OTy9zNb9m9jogBgPYiDNnBQ7sXKSKJNa8ALmPYx0oJnAC/8fJ8rl3/xvDg/ydzXOqD0eyIAqE22ILVgLm2YGwg2xD8O7dFsF/4EBgKKSvXKRucvyN7M/WSJlm+fpErQDmFCdEF5u7xIN9WgTEeE8zIt1TiQTJEt/v3sDPt5k4vrGtL96b8PEn9BirWDXD1woy4jPF3HJor+Pr30HlQF1iaMs2Yl2h4zZQb2o8lyVV+VsWtd3v600ClzYtmgFgeQWyDNyYkNSBdeBX3gvwGjR33kLhYTkWh505wVIfg23pwH5DujusOXmnhrk/kJMs1xy1XoId1IGQtgqUD3fEd+5q3VNdX8XGrY9cJQ/AGPzV+lq1BK/kT1QkvR+lh1haYQ2loS5xCMjZwAxfmWLFMdZm2LYaBxrBkYepvc0vBSp29G3opZceMZVX5TLAmoBcaU9HE2mW+GjcOC0szCfiEISMS79Mg1HQp8R68rtnZp7Gva1WPsle+5pAm8onEh5a1/LxYO1D1U0rA7xI20EV/wDsmIafJ/TnV6J/6scsHpM+8UjyR05TBDBKtEH50CEtuBV+j+/VfGvkDfSOLZAjFAQggGmQ7rb3eF1xb89lNRwegL+
+ Vc/j+s5e
+ p7af6kgKa6aDoqLGa3tFfr/B7V9c/ohlA8x4fFmpl6y29kZ+edT5fBUA0JzYJzftCoHsD9psa5SdlMNQ410Ow4G0Enbi2cNCEOBkDETmMNH1JCW2D2YMzUUWu7fbNo9WPqRrlLO85QgtlEBdjPRkMTec5SupQKfFS2L2m04oWJCx2ZyJC9LQQlxPLNetfjRib4angH1oCmQgZroSv7j7Yi7Oy4GM0ehXq7CvLbSmDrMbtbLirs+dZxoyK72wgxqkBmTCc6pWioqpio33guV0+xEA+Iu4TjPmnpr0P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,192 +179,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/11/2025 17:03, Ryan Roberts wrote:
-> On 11/11/2025 15:56, Kevin Brodsky wrote:
->> On 11/11/2025 10:24, Ryan Roberts wrote:
->>> [...]
->>>
->>>>>> +		state->active = true;
->>>>>> +		arch_enter_lazy_mmu_mode();
->>>>>> +	}
->>>>>>  }
->>>>>>  
->>>>>>  static inline void lazy_mmu_mode_disable(void)
->>>>>>  {
->>>>>> -	arch_leave_lazy_mmu_mode();
->>>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>>>> +
->>>>>> +	VM_WARN_ON_ONCE(state->nesting_level == 0);
->>>>>> +	VM_WARN_ON(!state->active);
->>>>>> +
->>>>>> +	if (--state->nesting_level == 0) {
->>>>>> +		state->active = false;
->>>>>> +		arch_leave_lazy_mmu_mode();
->>>>>> +	} else {
->>>>>> +		/* Exiting a nested section */
->>>>>> +		arch_flush_lazy_mmu_mode();
->>>>>> +	}
->>>>>>  }
->>>>>>  
->>>>>>  static inline void lazy_mmu_mode_pause(void)
->>>>>>  {
->>>>>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
->>>>>> +
->>>>>> +	VM_WARN_ON(state->nesting_level == 0 || !state->active);
->>>>> nit: do you need the first condition? I think when nesting_level==0, we expect
->>>>> to be !active?
->>>> I suppose this should never happen indeed - I was just being extra
->>>> defensive.
->>>>
->>>> Either way David suggested allowing pause()/resume() to be called
->>>> outside of any section so the next version will bail out on
->>>> nesting_level == 0.
->>> Ignoring my current opinion that we don't need pause/resume at all for now; Are
->>> you suggesting that pause/resume will be completely independent of
->>> enable/disable? I think that would be best. So enable/disable increment and
->>> decrement the nesting_level counter regardless of whether we are paused.
->>> nesting_level 0 => 1 enables if not paused. nesting_level 1 => 0 disables if not
->>> paused. pause disables nesting_level >= 1, resume enables if nesting_level >= 1.
->> This is something else. Currently the rules are:
->>
->> [A]
->>
->> // pausing forbidden
->> enable()
->>     pause()
->>     // pausing/enabling forbidden
->>     resume()
->> disable()
->>
->> David suggested allowing:
->>
->> [B]
->>
->> pause()
->> // pausing/enabling forbidden
->> resume()
->>
->> Your suggestion is also allowing:
->>
->> [C]
->>
->> pause()
->>     // pausing forbidden
->>     enable()
->>     disable()
->> resume()
-> I think the current kasan kasan_depopulate_vmalloc_pte() path will require [C]
-> if CONFIG_DEBUG_PAGEALLOC is enabled on arm64. It calls __free_page() while
-> paused. I guess CONFIG_DEBUG_PAGEALLOC will cause __free_page() ->
-> debug_pagealloc_unmap_pages() ->->-> update_range_prot() -> lazy_mmu_enable().
+On 11/11/25 14:52, Christoph Hellwig wrote:
+> Waiters always need to re-check their condition after adding themselves
+> to the waitqueue, as otherwise they might miss a wakeup.  Check
+> for elements in the pool and use them before going to sleep.
+> 
+> The workaround mentioned was probably due to this, but seems genuinely
+> useful for other reasons, so keep it and update the comment describing
+> it.
 
-Well, I really should have tried booting with KASAN enabled before...
-lazy_mmu_mode_enable() complains exactly as you predicted:
+Thanks for looking into that historic comment :)
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  mm/mempool.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index 850362f4ca7a..8cf3b5705b7f 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -388,6 +388,7 @@ static void *mempool_alloc_from_pool(struct mempool *pool, gfp_t gfp_mask)
+>  	spin_lock_irqsave(&pool->lock, flags);
+>  	if (unlikely(!pool->curr_nr))
+>  		goto fail;
+> +alloc:
+>  	element = remove_element(pool);
+>  	spin_unlock_irqrestore(&pool->lock, flags);
+>  
+> @@ -406,13 +407,17 @@ static void *mempool_alloc_from_pool(struct mempool *pool, gfp_t gfp_mask)
+>  		DEFINE_WAIT(wait);
+>  
+>  		prepare_to_wait(&pool->wait, &wait, TASK_UNINTERRUPTIBLE);
+> +		if (pool->curr_nr) {
+> +			finish_wait(&pool->wait, &wait);
+> +			goto alloc;
+> +		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+I think the race already cannot exist, thanks to the pool->lock being
+unlocked after prepare_to_wait()?
+The freeing path can't bump pool->curr_nr without the lock, so the condition
+you added can't even be true, no?
 
-> [    1.047587] WARNING: CPU: 0 PID: 1 at include/linux/pgtable.h:273
-> update_range_prot+0x2dc/0x50c
-> [    1.048025] Modules linked in:
-> [    1.048296] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted
-> 6.18.0-rc3-00012-ga901e7f479f1 #142 PREEMPT
-> [    1.048706] Hardware name: FVP Base RevC (DT)
-> [    1.048941] pstate: 11400009 (nzcV daif +PAN -UAO -TCO +DIT -SSBS
-> BTYPE=--)
-> [    1.049309] pc : update_range_prot+0x2dc/0x50c
-> [    1.049631] lr : update_range_prot+0x80/0x50c
-> [    1.049950] sp : ffff8000800e6f20
-> [    1.050162] x29: ffff8000800e6fb0 x28: ffff700010014000 x27:
-> ffff700010016000
-> [    1.050747] x26: 0000000000000000 x25: 0000000000000001 x24:
-> 00000000008800f7
-> [    1.051308] x23: 0000000000000000 x22: fff00008000f7000 x21:
-> fff00008003009f8
-> [    1.051884] x20: fff00008000f8000 x19: 1ffff0001001cdea x18:
-> ffff800080769000
-> [    1.052469] x17: ffff95c63264ec00 x16: ffff8000800e7504 x15:
-> 0000000000000003
-> [    1.053045] x14: ffff95c63482f000 x13: 0000000000000000 x12:
-> ffff783ffc0007bf
-> [    1.053620] x11: 1ffff83ffc0007be x10: ffff783ffc0007be x9 :
-> dfff800000000000
-> [    1.054203] x8 : fffd80010001f000 x7 : ffffffffffffffff x6 :
-> 0000000000000001
-> [    1.054776] x5 : 0000000000000000 x4 : fff00008003009f9 x3 :
-> 1ffe00010006013f
-> [    1.055348] x2 : fff0000800300000 x1 : 0000000000000001 x0 :
-> 0000000000000000
-> [    1.055912] Call trace:
-> [    1.056100]  update_range_prot+0x2dc/0x50c (P)
-> [    1.056478]  set_memory_valid+0x44/0x70
-> [    1.056850]  __kernel_map_pages+0x68/0xe4
-> [    1.057226]  __free_frozen_pages+0x528/0x1180
-> [    1.057601]  ___free_pages+0x11c/0x160
-> [    1.057961]  __free_pages+0x14/0x20
-> [    1.058307]  kasan_depopulate_vmalloc_pte+0xd4/0x184
-> [    1.058748]  __apply_to_page_range+0x678/0xda8
-> [    1.059149]  apply_to_existing_page_range+0x14/0x20
-> [    1.059553]  kasan_release_vmalloc+0x138/0x200
-> [    1.059982]  purge_vmap_node+0x1b4/0x8a0
-> [    1.060371]  __purge_vmap_area_lazy+0x4f8/0x870
-> [    1.060779]  _vm_unmap_aliases+0x488/0x6ec
-> [    1.061176]  vm_unmap_aliases+0x1c/0x34
-> [    1.061567]  change_memory_common+0x17c/0x380
-> [    1.061949]  set_memory_ro+0x18/0x24
-> [...]
+>  
+>  		/*
+> -		 * Wait for someone else to return an element to @pool.
+> -		 *
+> -		 * FIXME: this should be io_schedule().  The timeout is there as
+> -		 * a workaround for some DM problems in 2.6.18.
+> +		 * Wait for someone else to return an element to @pool, but wake
+> +		 * up occasionally as memory pressure might have reduced even
+> +		 * and the normal allocation in alloc_fn could succeed even if
+> +		 * no element was returned.
+>  		 */
+>  		io_schedule_timeout(5 * HZ);
+>  		finish_wait(&pool->wait, &wait);
 
-
-> Arguably you could move the resume() to before the __free_page(). But it just
-> illustrates that it's all a bit brittle at the moment...
-
-Difficult to disagree. With things like DEBUG_PAGEALLOC it becomes very
-hard to know what is guaranteed not to use lazy MMU.
-
->>> Perhaps we also need nested pause/resume? Then you just end up with 2 counters;
->>> enable_count and pause_count. Sorry if this has already been discussed.
->> And finally:
->>
->> [D]
->>
->> pause()
->>     pause()
->>         enable()
->>         disable()
->>     resume()
->> resume()
->>
->> I don't really mind either way, but I don't see an immediate use for [C]
->> and [D] - the idea is that the paused section is short and controlled,
->> not made up of arbitrary calls. 
-> If my thinking above is correct, then I've already demonstrated that this is not
-> the case. So I'd be inclined to go with [D] on the basis that it is the most robust.
->
-> Keeping 2 nesting counts (enable and pause) feels pretty elegant to me and gives
-> the fewest opportunities for surprises.
-
-Agreed, if we're going to allow enable() within a paused section, then
-we might as well allow paused sections to nest too. The use-case is
-clear, so I'm happy to go ahead and make those changes.
-
-David, any thoughts?
-
-- Kevin
-
->
-> Thanks,
-> Ryan
->
->> A potential downside of allowing [C] and
->> [D] is that it makes it harder to detect unintended nesting (fewer
->> VM_WARN assertions). Happy to implement it if this proves useful though.
->>
->> OTOH the idea behind [B] is that it allows the caller of
->> pause()/resume() not to care about whether lazy MMU is actually enabled
->> or not - i.e. the kasan helpers would keep working even if
->> apply_to_page_range() didn't use lazy MMU any more.
->>
->>>>>> +
->>>>>> +	state->active = false;
->>>>>>  	arch_leave_lazy_mmu_mode();
->>>>>>  }
->>>>>>  
->>>>>> [...]
 
