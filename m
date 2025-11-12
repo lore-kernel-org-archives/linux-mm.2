@@ -4,106 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4893DCCFA1A
-	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 06:09:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89B61CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed, 12 Nov 2025 06:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28CE98E0003; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
+	id 9C5008E0003; Wed, 12 Nov 2025 01:55:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23DC18E0002; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
+	id 99CB68E0002; Wed, 12 Nov 2025 01:55:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17B0C8E0003; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
+	id 8B26C8E0003; Wed, 12 Nov 2025 01:55:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 053198E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:09:11 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 589DC5896B
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:09:10 +0000 (UTC)
-X-FDA: 84100927260.16.0A27409
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9985A40005
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:09:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lm49z3qx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762927748; a=rsa-sha256;
-	cv=none;
-	b=uJc84cCKUvyoR6LfJvB5NOvc21nD/0z7AwP54hwAiLSFVlUyxVgJWHnJFvr664GlJ9cdDh
-	D4jlDOJ2C7RSrxG99FYSlD/HzNuIInB1TOruEzeNmZgG4K0XVcnbY68sByzRD8U1uobnR4
-	61i4s7bBAakfjPSDtLSj4spUUty4QB8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lm49z3qx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 757FB8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 01:55:18 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0CF1AB812B
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:55:18 +0000 (UTC)
+X-FDA: 84101043516.03.6E55407
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3B7C71A0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 06:55:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ilvfbFqB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of hughd@google.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762927748;
+	s=arc-20220608; t=1762930516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
-	b=PjhTs2obpwO3ZeUU8H/lgQw+z5FMxOt3kg0O+9jRwxY2u5nPzu0hbEicSGlmXGuQrkJMfi
-	DfyEef9enDqyb35MZQjP86yN/30eGEKMcMGfX70xu+FY1Je1hlgg2ZCtk89Y1IP3T6x2H4
-	HpSsaWbUr9D2qBejCAA7qQbmU4Dz4E0=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bc0e6d91222so64835a12.2
-        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 22:09:08 -0800 (PST)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7+2aDAgNNpvmztVWzyWU67msD40mML9fNw2pd7SfUBM=;
+	b=s5tt8mNec9aEXd2Y2bqcIkw6qyJnnbzZrKYnQzTr35r/pGQhhsWTYNxfs4cx/ul8JTX7TO
+	eevVDHfCOWKkyTvgYo96nJtzo98z8Fee9UF1A9RTM/+QeN2C9qHvW4i+YZZ1mUI/0Jw8Mr
+	dQ5QIFRFH0YRYac73hJ57WCNgGJC/ms=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762930516; a=rsa-sha256;
+	cv=none;
+	b=CKo1OJVWz8jDwyw467cS8l+RJM18pYS68UuoYkqu6NRnGC8P/QFel9sbOGqrEqXXPWUxzj
+	4Key5/XvsrY0eyrWZ0p1uUdrZdHsFP+ijkX+m08Q60i4+MgTdENvc7/5tqcQZab/ORNC7q
+	2EZyeq5+VaA5eSKxFpdWloBYePUty54=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ilvfbFqB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of hughd@google.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=hughd@google.com
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78677ff31c2so4492857b3.2
+        for <linux-mm@kvack.org>; Tue, 11 Nov 2025 22:55:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762927747; x=1763532547; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
-        b=lm49z3qxVacoQEDk/spXTPiZItvILZdRs7qpgSH5dmCUmBTHdQylU5Ra2Ypt7Nm0UF
-         zSumG4yQLrcmIbvNMN2/DX4MtQZBHkuKyBQPKh+9Q6V16UhmDgKC6gD7oPc6l+m9I2UM
-         02PO+ZsOgPGD6LU8pP8SwckOQztA7qGvjgN/GUU+MsM+ghwYFKHLC5JJ3yryecR7Ixh6
-         IlMAoTJvwMcPXaWd7j4xeVVozJnAaWrjWlYqTxP4CS+2qbedULQ9bY8zl4lxoaUm7iry
-         s6RgyQ2wC7qGln+ElhGaROj+hWmTUKnbb6mNXQ9ALTRQeDre9yklUEweZ9Spe9hCaqnm
-         a92w==
+        d=google.com; s=20230601; t=1762930515; x=1763535315; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7+2aDAgNNpvmztVWzyWU67msD40mML9fNw2pd7SfUBM=;
+        b=ilvfbFqB2nfhHGKI45FyqNhNHJ7ILN9HrLdeaD5qWjUbe2qJMhqFRNhR9l/UA4fcmu
+         FCJlSqJz3n73MDfxnK/+MuLInvzf8UT7U2jHsdNM/OhrvJETD/465WpnX1vpA1ZtIEdd
+         pIICszm31cGXJbhK1ZqLGkAhSwbcOELf94HUO7LoTkq/d1txWjN+W0fBSkukVMykyR9V
+         VaJIdcqW0hRiN3r64lJ3ucqpXnKB/z7/OGD1LxgQf5XGfjGDvgGGz5Ai6Pxwbq9t/9YP
+         5JWisgO2KV6WIFq0ViZVp461QPuXkoX9tBAfr0ztmP5gYBbVvuc4/mzeUK7HuPXLXZ+p
+         LDiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762927747; x=1763532547;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vf+V3xa9EgGUbHOlQxF1xdJJTU0DRTndVUemiyXUeyI=;
-        b=w2MafgOPq+EqSVTB5du9koAOpuBWFWFhwjD3sGBmFQ4lXCHvZRHv1/1uPMzGnmCEs/
-         x3ScGUGXx2KzrCt3qZ9pcYkohUqPXcvijypKqUcYMCWELkYlxzAu2y+FYUKy++GmfwY5
-         PuxRFUbsy8paZLY4eLr1gE4uX8k2qpyKj7WDPjGItsk/fSaLVN7L0/gzzQ6F17R4D8XD
-         q9RviSUPIDsk1m0wLP24UcOLp99eLH4/fyi2IkTM0z7kSqcULexxx3fLLir7FePlOgKw
-         u0173PJirFx0v1FxPDvuyi5q9HeeMd1HvvNA2jOllIM9qePAQHrkk7dvbQ79TsWd84zp
-         ytSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRiqqlHrB6ytziprCdddMR2mlaDhy/qGelXM5wiG0uf48IET7dJJWFyGmHiSsj4Agb7jlzNks9uQ==@kvack.org
-X-Gm-Message-State: AOJu0YyoSzEucWYbokPSTeSSdyB5jOCxFha5BadMIA1zKuoKtqtNoKRP
-	1+lsK92cMPCZE9k7SCZ8CHg0YtjYUfHyId0dAPGYUj3eSeC09EdeonU6
-X-Gm-Gg: ASbGncvMEU7u1d/3p0Co8DKoOo1sh0mka6+KS/gInG7u4jhfG2g0bM1dr/G1tHyILfO
-	o+DAWv4CLRu65Sy0tmsRRt5+y05j5d51O20zX6kqGvmRvwyHh27Ab7GbqtyBpx+X0f95etOXWkJ
-	eW6Oy+uZZvYZjNckxGoiYSnXWVIL3uxWhI2qBOJHuGUSfH3k8QJiBhJVdiQEYxlkaCDTTmARk0a
-	NX1g4rAMAOnpSje4hxwW+ixs9TbGxBHPtUmNjThUVwOuzDGVXtNC7XHIAJ7B/qgLLRc6u8faVt6
-	De0eSLZKYzIyQ3pLqIfYP8zeDg+iAWpBREMgvyUz55MPo5/2/YWl145EAdAkGVVKfw4dc5s9ZmN
-	nxF6ioxwDUInm4loS/qB2SMMg5AYcj77nyqg0uxPB4PjlnkaTO9I7/DRaO/6pE7TFPjRocpM=
-X-Google-Smtp-Source: AGHT+IEohiT6l/U6Q6cSeQX1Sd4BBaq0PAFAEVh2j8GuYXQZDYJogJ/Y0Dgu8WSYVH4jJhCDgr7O2w==
-X-Received: by 2002:a17:902:e804:b0:296:1beb:6776 with SMTP id d9443c01a7336-2984edf314amr25324145ad.58.1762927747094;
-        Tue, 11 Nov 2025 22:09:07 -0800 (PST)
-Received: from dw-tp ([49.207.219.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dbd8cd0sm18094405ad.4.2025.11.11.22.09.02
+        d=1e100.net; s=20230601; t=1762930515; x=1763535315;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7+2aDAgNNpvmztVWzyWU67msD40mML9fNw2pd7SfUBM=;
+        b=DEsGr1ZwbGjneYlwrlUP9XuTmEAS8haCSp6q+5KfJafxTFQjWbjyxwozsV2xxTzCf5
+         3l8j1tiLA6fyozHLsSp9ZwEClDXPwP5YaWjY/CmZx8NusG/nTUYCqDlfw2Em0k024FsW
+         vfOkm69XXr3FOpgPuEQzIeVFdpBaR9cMtluAemQIx5c4Z8bK7wKxYDzJ+hr5lzDdTro6
+         Y/LLxtXa0rcQ4iYnsCk8iRyFZDw86FDRwE7T/CbXdbb+oasl4aRzbULFBiiJvLi883hK
+         P/ik+2uNEXjXMvnbjOzzJLVjl3zuCsHxgOVdwEF80RS6wAG/mYa1v1H+rut/cqyMhhFF
+         Uwng==
+X-Forwarded-Encrypted: i=1; AJvYcCXFSMI+BvH7L1A0BFWjCckh5B47U6ULhU5rwoh1g3cqqttb1tHJuogcpjYEjHgvZCT3PU+dA2ozeg==@kvack.org
+X-Gm-Message-State: AOJu0Yx5W2sF8/PmS2hgeNqKdVDndhMYb2hMKgAd+VQXvziugLXQlWkM
+	xXm7YrW4QEsI9tUfabNpJNrBsgDSbW0C6XcDZnPB28Yf/6wFLGLiSAdZ2OxqUMEzhQ==
+X-Gm-Gg: ASbGncuQuIV1ZTUSLmxok4yUReAMVfKnVMnv3tY+okXl+3/aIpgJYIzsooF7yINOQr2
+	7QQH8BRG736WSz5PcwavJTDmwwk4UuW9dsBUe/BgAlPJMtHkuHKDbLlBHZ63k3OqvrW2QV3KkzW
+	c64Prhu5JLVZj/R0+0CiOqxuNBN/sTJCGSoQntVNaKQKJrAXWX5SK/996CYOsYLAh52tEK8sMrz
+	vZst9OprCmup1bm3HODkDRXP2kUtKzgdKV3jaBx0DugdGTcotlBnO5cKnKtg5jzprho8Vii/lAN
+	o7VvEEbsKrWQ3tQjD/Vts8Ei7QBc/c3ErkHLN/+sCAMWQhsreB5dzxbpeR974W7Rha74TbXQAPL
+	bVp0bwyG4tHBsC9r8SjkUA+rxNbV/LM9CZm93ZmgHmczD0ZKaiSH2/oXEL1JMRrvYqA2j8UDMeB
+	+ekDyVtnPSpZB2hQpyOc0h6/zbrDq3XYd8gkVEzYY28E3pHZmsUxS55IXl7/IzGe/PbO8/JdyKv
+	szHXwIUpg==
+X-Google-Smtp-Source: AGHT+IGlVji64Q31PvxWDCE9wnYJAoL0csM/OHEk9a+ewKFIhSRNh79LwM5t6tm3Rf59bL7Nc/bffA==
+X-Received: by 2002:a05:690c:6f8c:b0:786:6b92:b20a with SMTP id 00721157ae682-7881363f6e5mr17172437b3.24.1762930514888;
+        Tue, 11 Nov 2025 22:55:14 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-787d69c0455sm39373027b3.37.2025.11.11.22.55.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 22:09:06 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Dave Vasilevsky <dave@vasilevsky.ca>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nadav Amit <nadav.amit@gmail.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-mm@kvack.org, Dave Vasilevsky <dave@vasilevsky.ca>
-Subject: Re: [PATCH v2] powerpc, mm: Fix mprotect on book3s 32-bit
-In-Reply-To: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
-Date: Wed, 12 Nov 2025 11:03:52 +0530
-Message-ID: <87ikff95mn.ritesh.list@gmail.com>
-References: <20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca>
+        Tue, 11 Nov 2025 22:55:13 -0800 (PST)
+Date: Tue, 11 Nov 2025 22:55:03 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+    David Hildenbrand <david@redhat.com>
+cc: Deepanshu Kartikey <kartikey406@gmail.com>, 
+    Vivek Kasireddy <vivek.kasireddy@intel.com>, hughd@google.com, 
+    baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+    syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/memfd: clear hugetlb pages on allocation
+In-Reply-To: <20251112031631.2315651-1-kartikey406@gmail.com>
+Message-ID: <2a10f8c9-dbdf-7bac-b387-e134890983df@google.com>
+References: <20251112031631.2315651-1-kartikey406@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 4t1qf1bgh7im335jea41gq1rye5gytzh
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9985A40005
-X-Stat-Signature: ajp4u8sdupwz1pz96esrfuq9xxkco7qw
-X-HE-Tag: 1762927748-495563
-X-HE-Meta: U2FsdGVkX1+xrNZ6PSqTkKEMEYvmAFxR+jZvCvIrbrdl9Nx7ImrnqNAhk4T5QGpT7THdMjErYsKZMepAqm1Vd6y8U/QLuDWUwjycE0EsupLHJjLKW7OrAvaVQeglE2i0DzQhD5iTZR1pUHefHlNHIhpPFg2UwABNB4CzDzGwMiFnDD4Q7wj98uWVJGnIXLD3dP+MLtnkkZsHM/Vsqu2fM6CEsak1czvGaQ85KWx86AfqYy7QLFsFGG9HS5UrJNeXKc2A863O6muopB8ntVPpfr/TbEQsqknb9z0UINM+he6dbOdDEzuhtECESVIqSLLvYGXneKi3ti8gNCUpFas1EfjDLf0I4P0xkjilOmMfX5d7/U7LvlR0UIX0QktC0urJHden7QTwUovu9h3891LuDq2FlfDCPqkUzeIo8alS4up5iwrgnrlS/nu+8U/pNqE27ejrXvjMtBprboDBXvWO3JWeyBWhZ/BauOB4mv676cPVlnNxbFntZ4k7PFh5/qtk6sP5QsUfldAD74pXvRV3Oef89+iO4eRAthcxuUQ7zNQ8VJclzuww+rWPTLHUtY8cBHJKbCpm2/aRf5bMWjR+Lwzs8ULiOGQuJC3PSMBSKOghUbO+mWX0PRoJ7IDhhqAx7t6kSKq8mzI7Oz+cgfayonVAMvq7jX+fjsWSp/bT4VAdVi4F7u8fYijo9qPvAOqyDoEbiQms1wObIJxE+I8Fk88q8eDCFO9SLGdu5/Co7JRKDF5jHM+iXm0N8WFfj9NdBbWJUApOjAAvtKOx2dcPQd8D7KZ8JncgVzpZyJ2vIJP+c0IFn9eMsmUKNoLti19KMllmi0pmJ0ylf74u9hpgkPD5OxpOF5GeARLAElE5047qfCn/RE/lYVwrHHct2xN9oI9v8AbPxc4i+WhPCfte3eaed6l7zgKBXHniZ55/ZuBJp5Q4hsOGwrFMNT/RiJK1BOPBv4zOGASRlPbsqLk
- J7aDNLJx
- nlWdK+gNKc4/mqT4fOouHm4cc5CyTBrrdevyYYeChqzjV1pYBkxlD3UVZrBsLoah46V+MBC9LEbMT0MD8wpwq7x0RRjgDWNbbvx8Z0FQqQRIbE0J4Zg43sMJZMPjJ+5scbZz+BCgP+g3x8qXRFMgisg5xXsjGHexyvwY558m4dTTXn7CG9VVh+uys7pBClicuGF0UlhAGAAgpU/DVhKTka3qOJHud0RYfAZEMlReOy1IAsx0nvOi6RbVCgUX+z/wbRjWl/iMNPPt4+AAIF8ZmCZoLkH0+YFPM4qTr7+imEfF3hV555Twu/Qq/wym6xi83pKaRfkKjh8Zwl63SlZEcRNHdHddFbxS5dGoSQPasyE/dulyIdloDwvcTDvK40efgwM7Oh5gUUPf/vpIBtDNXB+RMnUculOWGTJ8RclvXJGzxIMIXbHhw0ey/pAofB6NVuvumPFjZCiV6C+xBvXcn8H359aBQDcmQ7cTVjb9P8oxwzRXVtxz1U48RIE89CKXzIdmsKJ3C7/a/kfuB3WoN2Ep2Sf1pkr6XJecMSdjeCrHMaazL2wj65WQ2LFTZYnMxcZAWx6GqRZowa4jZ8CO3mcUJXA==
+X-Rspamd-Queue-Id: 3B7C71A0002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762930516-525834
+X-HE-Meta: U2FsdGVkX18BfcydVE/xjPbUcgVFgfCUYcNjB2QxVEkOay0JQFt9N6UlsBts20qQNCGbanjdgSaALF5g1KhME1NHLJ8U4X2QSxRKmRARq7n/q4pg/8ObSC6y9o3JOep/g+Xhykk2j1IqN4chGcIDMlmCFqchp3ghxCOl8UeECsc5c+ccGnnJlXsNl12EVU9A664+9dkN9Kj8Qrl5uOgAlRxse6GAg6O+ZUTlzgOJpiN8qPKPqLvIBZfVWvp/UzRFbV89z1rU1/4EsA+Qo8eC2mt7TaZVC9YHiL6toB6Ven31nJl6MVRi2f4xOeR87xV9xeLoM6MkAp5zcqd61Z06PQVXqWhSkuAlg3Zg+HnEHNuxewPM0+lxkkaKWP3/qrNOp64yODSwdlj+dDgnTp7cUuMaMvyNxgY4Spcu+YIDrcfFEl+Hna59A420zYegCgQ1DPAGje7NyUyZPlQBfintKvMUh91rIbkDxNspyV+qa2nB+V+IKNiyP2aG3kUd9ACsrnRcw1SEUFybgxcD00wBHirZ5YzFIP+2QXpna2WAxBEY41sroKVc8xn6Lnx05j4Ob7LcFgeMY/ioIX9cB3HMfRUDWphisS9IK0iFgNID6bgNXlD4xBN5/jvdBz3MNmODr41N0wzrBSMqfDktVs0gZ2xFU8XiFqF93/Lbua5DnD21kJmj/mk8s0P/d1rBIgkNfbJxw5xfEabHAgf5SpJmB3l1dFKQPQBoskWakO1KdLJPh5TCkYAvgeORB8zuNHZCex6gQy4P9V4IcdOOLzOPyT7IfI17r2V2yzzh7LFrLkO/e+/PdBvUQDJSSukAa/hRd9IBFZPQXFHagaRE43WygdBVako58Z5N70sDGCgzbV9qUQ1hafJ1PwM2TIyF0sCpTEh1EgwvJvffrHVrz+f9mBhKFpK62HM0Ek9gRZxzsPXlx2bda8YaJ3cRvlob5B9K7rsEZ3mhimVE8syixAy
+ DOxfoYOC
+ nbeu8t88A+TOIQ08utE9vOWL77ytoTlDJjmauP6H76a0QZVyHCT05pLPk4Bl66UMDnB6jWbxy3r4lxI8jGXPs7HDWzh8wBb6Su7/QBOQyMDQ0D3EGjtdDpN9hS/+LD6ulxz5YXKkHbqklKJ6jnMZhct4ji8G4D0HgDyog0SLRJJIwzDwXl9RR+GgDDvbWsmkFG9FZu2kSRmnGK94cm8/ZWpo3OW5Pdsls1N1cQUZlkvFgQH62CzoMtIj+LvRokNS3sE1Wj9ez4MOPtMBOGIJqwdF0A9toSMSkZcxxmpwMuaaCcghsodmneh5/gSmLNBUGosj4kBEYq+lfU2WzSZx1X0Xv73H5Tz7pqgbWsvYi22kn2Bte/OcFQdMGWFm3iaIhehhqWiQQWPmk9FkILDdJwDCxTiV1lmtj8Ct5lvOi5EwJhjlk/gjmW/yg/z7/pmjjgfqkHgYBUoZy7j6EQz1NHa15wb2VFgofBA2y95HxXnx4w+5J6/hskGirHLJ6dOrFNiYLr4iib7JN8YP+DrWoyRFgYoWKXsffCbkh9lCi/HK6sIdFBImYbcsSkbsyRjisofU6EAyPVXZM2h54fixq2DCrYKZEEduzm24e
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,58 +122,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dave Vasilevsky <dave@vasilevsky.ca> writes:
+On Wed, 12 Nov 2025, Deepanshu Kartikey wrote:
 
-> On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
-> unnoticed because all uses until recently were for unmaps, and thus
-> handled by __tlb_remove_tlb_entry().
->
-> After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
-> tlb_gather_mmu() started being used for mprotect as well. This caused
-> mprotect to simply not work on these machines:
->
->   int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
->                   MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
->   *ptr = 1; // force HPTE to be created
->   mprotect(ptr, 4096, PROT_READ);
->   *ptr = 2; // should segfault, but succeeds
->
-> Fixed by making tlb_flush() actually flush TLB pages. This finally
-> agrees with the behaviour of boot3s64's tlb_flush().
->
-> Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
-> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
-> Cc: stable@vger.kernel.org
+> When allocating hugetlb pages for memfd, the pages are not zeroed,
+> which leads to uninitialized kernel memory being exposed to userspace
+> through read() or mmap() operations.
+> 
+> The issue arises because hugetlb_reserve_pages() can allocate pages
+> through the surplus allocation path without the __GFP_ZERO flag. These
+> pages are added to the reservation pool and later returned by
+> alloc_hugetlb_folio_reserve() without being cleared, resulting in
+> uninitialized memory being accessible to userspace.
+> 
+> This is a security vulnerability as it allows information disclosure of
+> potentially sensitive kernel data. Fix it by explicitly zeroing the
+> folio after allocation using folio_zero_range().
+> 
+> This is particularly important for udmabuf use cases where these pages
+> are pinned and directly accessed by userspace via DMA buffers.
+> 
+> Reproducer:
+>  - Create memfd with MFD_HUGETLB flag
+>  - Use UDMABUF_CREATE ioctl to pin the hugetlb pages
+>  - Read from the memfd using preadv()
+>  - KMSAN detects uninitialized memory being copied to userspace
+> 
+> Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
+> Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+
+Thanks a lot, Deepanshu and syzbot: this sounds horrid, and important
+to fix very soon; and wlll need a Fixes tag (with stable Cc'ed when
+the fix goes into mm.git), I presume it's
+
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+
+But although my name appears against mm/memfd.c, the truth is I know
+little of hugetlb (maintainers now addressed), and when its folios
+are supposed to get zeroed (would a __GFP_ZERO somewhere be better?).
+
+I was puzzled by how udmabuf came into the picture, since hugetlbfs
+has always supported the read (not write) system call: but see now
+that there is this surprising backdoor into the hugetlb subsystem,
+via memfd and GUP pinning.
+
+And where does that folio get marked uptodate, or is "uptodate"
+irrelevant on hugetlbfs?  Are the right locks taken, or could
+there be races when adding to hugetlbfs cache in this way?
+
+Muchun, Oscar, David, I think this needs your eyes please!  I sense
+that there could easily be other bugs hereabouts, but perhaps the
+lack of zeroing needs to be addressed before worrying further.
+
+Thanks,
+Hugh
+
 > ---
-> Changes in v2:
-> - Flush entire TLB if full mm is requested.
-> - Link to v1: https://lore.kernel.org/r/20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca
-> ---
->  arch/powerpc/include/asm/book3s/32/tlbflush.h | 8 ++++++--
->  arch/powerpc/mm/book3s32/tlb.c                | 9 +++++++++
->  2 files changed, 15 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-> index e43534da5207aa3b0cb3c07b78e29b833c141f3f..b8c587ad2ea954f179246a57d6e86e45e91dcfdc 100644
-> --- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
-> +++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-> @@ -11,6 +11,7 @@
->  void hash__flush_tlb_mm(struct mm_struct *mm);
->  void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
->  void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
-> +void hash__flush_gather(struct mmu_gather *tlb);
-
-Maybe I would have preferred the following naming convention for hash
-specific tlb_flush w.r.t mmu_gather, which is also similar to what
-book3s64 uses ;)
-
-- hash__tlb_flush() 
-
-But no strong objection on this either. BTW - I did run your test
-program in Qemu and I was able to reproduce the problem, and this patch
-fixes it.
-
-The change overall looks good to me. So, please feel free to add:
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>  mm/memfd.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index 1d109c1acf21..f8cfc2909507 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -96,6 +96,12 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+>  						    NULL,
+>  						    gfp_mask);
+>  		if (folio) {
+> +			/*
+> +			 * Zero the folio to prevent information leaks to userspace.
+> +			 * The folio may have been allocated during hugetlb_reserve_pages()
+> +			 * without __GFP_ZERO, so explicitly clear it here.
+> +			 */
+> +			folio_zero_range(folio, 0, folio_size(folio));
+>  			err = hugetlb_add_to_page_cache(folio,
+>  							memfd->f_mapping,
+>  							idx);
+> -- 
+> 2.43.0
 
