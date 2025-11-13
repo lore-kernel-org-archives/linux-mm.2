@@ -4,115 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80EEBCDB462
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 23:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA0B0CDB462
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 23:47:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFBD18E000C; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
+	id 34D348E000D; Thu, 13 Nov 2025 18:47:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAC9B8E0002; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
+	id 2D72A8E0002; Thu, 13 Nov 2025 18:47:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9B238E000C; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
+	id 19ED08E000D; Thu, 13 Nov 2025 18:47:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B47A48E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F6C612CA78
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 08B488E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:47:34 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B1FE21601C4
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:47:33 +0000 (UTC)
+X-FDA: 84107223186.06.15AA53C
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6426B1C0005
 	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:47:30 +0000 (UTC)
-X-FDA: 84107223060.27.C279CA3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 97E221A0009
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:47:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UON8YVR4;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWrykRig;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763077648;
+	s=arc-20220608; t=1763077652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nWT1FvU0sBzkn1kQJ9RzDNaGTHMLE02ERIatRdBAS7w=;
-	b=Rc4ez/phdIHttHYFEjGqdoBbnie1mXB/dsdmo7k/hE0gRAJONgYufzLjFZFdNnD/Gs6YtD
-	S122Chr68ANtnVF7p/yypCOLqD/OX/fKppvjyNlhZlhJ095Kscz4iyxJavjPFPvKYhBQN4
-	+8D7lqjG7lVKAx0uOcHnBtd3rb6aMJ8=
+	bh=50zTCKY9mXOYH+V0hxkxUPJ13z23m/hLgMpOeKyQKJg=;
+	b=WKqmOTPxi9G5h6IQlpllqNFC4BxQ+pn7C0EPD3EQ9uHketsoGdBQmRyFvzfjDvKhEZY5MV
+	PLEH5qwuJEWCsnMJpfgyXHyx3+1/kbsthCSLv8wgIvI4prmXPI2QU3VqZuEY5BMe4rsIH+
+	3ba7rdQ7ygaVmlMwiI9FGpOrptFq0hM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UON8YVR4;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763077648; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWrykRig;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763077652; a=rsa-sha256;
 	cv=none;
-	b=e2sIac3aLaG/hoPmvhAVaMXuPNya2Bfe4AjLiSrAHAlYiwNjwFjSZyUZV6YtQGANSbMBZ2
-	6HjvEN4I9mXrvNz1ZbugWFSZ6VBdJS7s79WGNv08xWIQ07mpQh12Md3/hCMhj/NjdvujJw
-	65fJ+bkts6l7Mr8Q9LepOIr8VGiY2gE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763077648; x=1794613648;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Y0Rj4ZRe5ERECMPOL/Tf/uw4avMT1HmU7UJTbesrIqc=;
-  b=UON8YVR4V16bxO3Uox52s/QuZco0v0afneG08u5XLnoGsbcsXs4nS5ya
-   v2ogCaulgp3fCk5xQsYNymYydYcfj8OYZN8jVccfDXtNn52e7Tz1xSvaz
-   HkzjXmQg30E1IW00skQtqN5IUkCvW3axGIKhvo3UTfe+x6PzJy+M5R4na
-   hoeOnQB0lOPFxac+ZUDqMEDbQEcBfDC8U2K3qRIhuSJGhNxEAbGe7raXV
-   CU6gm52XYPO3D0FZHQWUAEtaSJnrxa3u7qT2D8Pw7P64Bu6TlmzLLRZdP
-   rvmkFoEaDSL4hbpsHTPd5lrDA/HKuBcXwpB9kFRjOYh0rucznn9FaRTVT
-   g==;
-X-CSE-ConnectionGUID: TtduAWj5RIGZJt3ZraB4SA==
-X-CSE-MsgGUID: 05+ENoh7Tciw9Z9pVzNpTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="87816440"
-X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="87816440"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 15:47:26 -0800
-X-CSE-ConnectionGUID: Dq9YV3/3QBC9a11GdiOapg==
-X-CSE-MsgGUID: nXbXL0z/T6OqbjgYjMo1qQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="189267507"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 13 Nov 2025 15:47:21 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJh27-0005zX-2L;
-	Thu, 13 Nov 2025 23:47:19 +0000
-Date: Fri, 14 Nov 2025 07:46:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yuntao Wang <yuntao.wang@linux.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	AKASHI Takahiro <takahiro.akashi@linaro.org>,
-	James Morse <james.morse@arm.com>,
-	Chen Zhou <chenzhou10@huawei.com>, Baoquan He <bhe@redhat.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Alexander Graf <graf@amazon.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Yuntao Wang <yuntao.wang@linux.dev>
-Subject: Re: [PATCH 04/10] of/reserved_mem: Use dt_root_addr_size_bytes()
- instead of open-coding it
-Message-ID: <202511140700.auD70FDr-lkp@intel.com>
-References: <20251112143520.233870-5-yuntao.wang@linux.dev>
+	b=YczQ5p1C4gvhtm8lEzYrc6ie7EPdKlQ7Z3QRK+aAGPrTzG1hi7P1v0Ia65gakN6geMIXuW
+	TOs6fXWCHcEPIQCb77ao6EwbuM5xFhaGgWQVYyg6d6NHvQydTnei92hTzwW2bM4+9FD94g
+	DDXgFZMoV/l59i2sJuMq8Qn212fKW6E=
+Date: Thu, 13 Nov 2025 15:47:01 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763077648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=50zTCKY9mXOYH+V0hxkxUPJ13z23m/hLgMpOeKyQKJg=;
+	b=XWrykRigyyr6vrW9l+zaS+D4oHmXaqZUR40pFrw9eNiXDNVi6P6aUgiDrDVih6xOax4D2F
+	ijfTUMKtebk9YTlFVnhF+CYcJINhXPJ+yBhozfU5TxbGthgqApaNerO3c2MmJWTcZGXFAw
+	qS6tl3BCH+JTgBlIEJlGCiemwIRnpg4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmscan: skip increasing kswapd_failures when
+ reclaim was boosted
+Message-ID: <lqcwz26ajddhoaq3gfuyt3mzwfn7waeqksoz6k55jrtn32u42z@pdf3dor7ntb6>
+References: <20251024022711.382238-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251112143520.233870-5-yuntao.wang@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 97E221A0009
-X-Stat-Signature: zjgumjf67m4s71sn19r7pj9b5yhe4oy6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251024022711.382238-1-jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6426B1C0005
+X-Stat-Signature: ij1517kmf49hn7qc7ekj1suwpietqr71
 X-Rspam-User: 
-X-HE-Tag: 1763077647-145080
-X-HE-Meta: U2FsdGVkX1/0Dszm8LG3+4Qmr1UklY+PSbzCMrusTJmGbk5csWwdcS8cHkADNcygHkiley2LBjJoAV0hFkB8FvJkU2eucjB7Wp/5F3ELKjgAqi+pVo08FtuQHx4oKMfqOC1o+05XiUNnQ22zojP5vuR82G8Uxj7ITnNDXqnGX2bl5tvUqLznbv+on9YmezpBUFYJ42TKJRAIXugPjYh9ujeVvck7omaBCvKZkcu1W/TNSsqzbbIA5XS25rPoBnMlvdkji4XgvML6Fwi5dNkoX2C6KgcrzYkwpOOg5PE7LMDivSbwyZakd3gz3TjirOpuqBgY80L4u/u647tFTbYZVNZyCJxGSQOMXbw6RQzhnQf5T8qjmlHyR/wSyzp+23wjpoGWB1V8FZCKCrgCBEkvaNYlO/CfBcwjhukb7+Cdv5poS45blgbgq7c2K0cLhw42umrHZmRVM8s97Vl6Koz1XFwnPn+7wz1kMitIi8ziz/GKQWi6OufzKtGZS6FxFnVSSni8vBQOIg3c3CqT7Iw2ko1JGoMb/nnVMhsE9NTnD0X4V/Ypo7FixVFGIrWlZidLTrCU4zK0RKPKaOpVvoSlcYNcJnKSaPNlPZSQsHDwlchC8ywToS8kcQw5REmr6HzHgvzRluY4TO9i7UVpOtfZI8cD8ZD6mA5r/Ap7Tpbw5s98v4klnmV5BibXlpASkFagNvv1/VejbPgLYFqX6McJ8SQQwVRwBBYWozzeNdq53DLGJU++yzxjB5emsJlstuIH5UfKsX5lLF5n2ggf9cjaUMZ91uzvDH5xiUVEn/Ai1wshpO5Jx5AxF4Etxi4kcrRp2efKHkex3r2AzdFJ1xwt9Q5IzS37LN+W1gX/Vm5N4oHj+gDuYHYTQjxedC6JxR0SHBqJD8EqOiD6rI5D6GjGlwSK8ZP8J5GACFxT6YK3dSG1+AH5z0rr/AlnX/s0CD8nibIwsG74hLAVQQuZpaZ
- jBsdjdSP
- /VoK4dow2VU2PUyLwnQcfxFQiFGMr25fY5vJQRPc9Q/Vh5yam0ZTvDY+TO3HGInccgQJ/Xo84UgXXuF+nx0we7gh5p7JfSMP9x+UdcsJnPv3U7JPk0/ZpZbp/r4eyMtdFps3tc7hYhN15xLHEXUAo5TQdVfvU/h1tn9pIfnvWXA0fWE9FTIQAW+WVAsvlDC7G0PpKnUpSLrebIc2b3WPyrN7V//ExSF+QqwYxMQMjl73lsvh+X+4XAw/KmWk6uzTs9REaWfWl2nIkPZoescopgve/acG8G2nuoF0oDEPP7omhz0rIdTfixlaRxYD9lgGYmj0mBHTzblXfrRV2fNWbNG3RCtUgyy9VI+LyUTBXrm4X/w9XRDmJMFEifvqX5f6MyFqSDpvuYIdud75rjjPalWn3/Ye98j+855tdCXYdzDZlucTu2Zg4YEFZaEnmp8HmBu8CA/HWs+pwggyLXV7YMNUNap4/QdFqaUx2
+X-HE-Tag: 1763077650-774068
+X-HE-Meta: U2FsdGVkX1/dEZFg8hIrclMAZBge5kxfHbF8T378lpkAlLXBPWo+7Q9E5eH+e16jMqMlNBf4ol2MjbcPR/qZYXHk70SqKeAmgSEpocHxVaXmHFK8rVK/rmgCETo4BBEK4KkJuPaGIrpG/oukEQFWFlZ9WahbXU8mmYhT2EV5ngrodIiRfDu8NZtyXEkbtehIsQ+3obRKAdnxTgWo2nVvLZhvWd6dRaylKUn1f52d414aD0scHDYD+dV7ntSUqHz9AeDDG1lPjRx0MxEH+hof+dyI3YQ5icMS2DTRkUWfSjjDthXlzyt7lQGCRDb+rmWVzWsZpmj+5PC4HS+SFtgNAPMBDr09xTC0LXU41TukEEHxAp4ci4c1/qgMyaH3BC8nKt3bDX0c+Lunph503Szc0iddKFzbEN/YHO1utbnMg0s9ViQNvWyWWO6QFzLvjq9Um6OP6X1kwmO1pw5JsTG3NYj/hRZJvDbO54FQWHxWsls5UeTD7RLuWe9mxOQkNGX4uVu2FL+4XvPhCEHr5otdTRBm7DYpD+/yYc5vOs2pQHm9T54vrnqSVZ4vGf3aA4KDUHeCHHn2/F9mpuPR1USq03zdQysDL3QZ47MjQzCg9Ocw9ku5BDVYZtFmfkgsBD4eeZ3XCNfJ14BTLazpjKYOqHh3ZPs6GwgviPJhFYuwd8xF5XAP/LK6w+ng8dmmLu2F1Epf22/WQOtbO9S9RDS4Sx73qwi1fo8SITFMffJ7g4Mhyxbk83zZnUXqJAPbfvzc599/EZXz21hyV+CUyc42/ZmVZw+5Z7euethVOiS9rbenf/wgVrOz3d3UZkQkbqrCzkz8TOpFUnronjdsfkxKbz+XWBt9JvgR8XJd36sHRc60jEzVytn7SJMQAmAAgqvxAkSAdCYGQeZXqLJk+c9nFjVlsxwOI4B7TNrKFMTuov7HX6szo/y3nugQ16Y6n8VestKxMKM+3Rk/pkFVQoD
+ MenC3ypS
+ JHEDFHMQ0EieidbWtx6mIU+LzndTeZhR2PS7haNUyouWorzKxZnBAcvK3Y+vGzG79zXuILWCbVu0A2VUQlAXYG0F6lUN9zRY/tVE8Neq+KqpH03cAhHNv6xHG37zRazhrXz3dQFUhKLjumH0F89GJ1P1+yLcqE2XJ0H5dZ/hn2dzHqEO5MCUX6kowhk1dwDvSHLTau+kbs8s5wLA+iZGknrZ0ARPmbZH8WeBzbzkyiZKSWzua/Cmt9H3TQyDRvJRKZN3FXPdh3+pooAf18wGkidkByQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,35 +94,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yuntao,
+On Fri, Oct 24, 2025 at 10:27:11AM +0800, Jiayuan Chen wrote:
+> We encountered a scenario where direct memory reclaim was triggered,
+> leading to increased system latency:
+> 
+> 1. The memory.low values set on host pods are actually quite large, some
+>    pods are set to 10GB, others to 20GB, etc.
+> 2. Since most pods have memory protection configured, each time kswapd is
+>    woken up, if a pod's memory usage hasn't exceeded its own memory.low,
+>    its memory won't be reclaimed.
+> 3. When applications start up, rapidly consume memory, or experience
+>    network traffic bursts, the kernel reaches steal_suitable_fallback(),
+>    which sets watermark_boost and subsequently wakes kswapd.
+> 4. In the core logic of kswapd thread (balance_pgdat()), when reclaim is
+>    triggered by watermark_boost, the maximum priority is 10. Higher
+>    priority values mean less aggressive LRU scanning, which can result in
+>    no pages being reclaimed during a single scan cycle:
+> 
+> if (nr_boost_reclaim && sc.priority == DEF_PRIORITY - 2)
+>     raise_priority = false;
+> 
+> 5. This eventually causes pgdat->kswapd_failures to continuously
+>    accumulate, exceeding MAX_RECLAIM_RETRIES, and consequently kswapd stops
+>    working. At this point, the system's available memory is still
+>    significantly above the high watermark — it's inappropriate for kswapd
+>    to stop under these conditions.
+> 
+> The final observable issue is that a brief period of rapid memory
+> allocation causes kswapd to stop running, ultimately triggering direct
+> reclaim and making the applications unresponsive.
+> 
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-kernel test robot noticed the following build warnings:
+Please resolve Andrew's comment and add couple of lines on boosted
+watermark increasing the chances of kswapd failures and the patch only
+targets that particular scenario, the general solution TBD in the commit
+message.
 
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.18-rc5 next-20251113]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+With that, you can add:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yuntao-Wang/of-fdt-Introduce-dt_root_addr_size_cells-and-dt_root_addr_size_bytes/20251112-232000
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20251112143520.233870-5-yuntao.wang%40linux.dev
-patch subject: [PATCH 04/10] of/reserved_mem: Use dt_root_addr_size_bytes() instead of open-coding it
-config: i386-randconfig-011-20251114 (https://download.01.org/0day-ci/archive/20251114/202511140700.auD70FDr-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511140700.auD70FDr-lkp@intel.com/reproduce)
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511140700.auD70FDr-lkp@intel.com/
-
-All warnings (new ones prefixed by >>, old ones prefixed by <<):
-
->> WARNING: modpost: vmlinux: section mismatch in reference: dt_root_addr_size_bytes+0x1 (section: .text) -> dt_root_size_cells (section: .init.data)
->> WARNING: modpost: vmlinux: section mismatch in reference: dt_root_addr_size_bytes+0x7 (section: .text) -> dt_root_addr_cells (section: .init.data)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
