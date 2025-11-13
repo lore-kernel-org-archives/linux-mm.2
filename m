@@ -4,98 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A37CD4F35
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 01:27:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1379BCD4F35
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 01:33:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 954EC8E0003; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
+	id 6A5DB8E0008; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 905EA8E0002; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
+	id 67D558E0002; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81BAD8E0003; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
+	id 5BA868E0008; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FE078E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 207CDC0743
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:27:26 +0000 (UTC)
-X-FDA: 84103846092.03.D80CF08
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 574D080008
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:27:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j9EZH2it;
-	spf=pass (imf30.hostedemail.com: domain of "SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762997244;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjDSWhETJLY023FMAUhr1MZo/3CZ2QjEBxmSshluYZs=;
-	b=jYolSe5yXdRYuMJ5r8bf3OItFhOJzlK3MKPq5tUNkVXBc9MX5imGmBfp1XbkbXrCfbhQUV
-	wlX22XKfLmtgahbvhrfq/Xn+KsfkDi8D7tnrlYuX/LQ2WOlyQDMGizz1d0ErCA1thKwrn+
-	AKcuJ3xMFyOK5wUgj+qqTa8LOyYnyIM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j9EZH2it;
-	spf=pass (imf30.hostedemail.com: domain of "SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762997244; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AC558E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6E795A8F9
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:33:36 +0000 (UTC)
+X-FDA: 84103861632.05.9E28875
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 845781C000C
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:33:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762997615; a=rsa-sha256;
 	cv=none;
-	b=KognxldzSi94cMToGE9SivgUfQHZ65Mu5Vi1RsMjPMClYo9NegYbB+UeEUi38lmXdajYv3
-	STCglWGAEEpS/ito7IyvQWsLf4fo+9GHsnehvz2tqHAPMV83Ri3kGxBZbFJKDlFeBRfvFN
-	wgpdApUOeHHS+7DTtt4KrX/XiL0FQOA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13D8141ACE;
-	Thu, 13 Nov 2025 01:27:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E905BC4AF0B;
-	Thu, 13 Nov 2025 01:27:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762997243;
-	bh=TF5Nr0Z6ILPUdtsJnj/5x/ih/OKOmW3hFeReBsHZthk=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=j9EZH2itZecujLn0J/BBW/POwZhnFbrrB7plrJIULMFOn289/jDaE6KBDiy8QUOII
-	 ncfIj4xIPZJNS2b2G52A6EF7rfMYg2wUB1sCWY9CGd199fQcSpBu60OdPVwm9WL5/z
-	 fpsZS5sTaPyuGt6y8ul+eVQrvOWPFUsAjDeLuTeGXHI7MewSLhMxIET9AjEYh1Tl2Z
-	 cv7RTUNLtfaT+EEtsWEdyyxnfQaudACiQMZEzx1dvAgB2aRGPlwujPcWZW3x+dS2va
-	 kD2YZ3HmtwaynqlRFn0Sf2RsDvKxiXqu0T0z1OKJfiK6icIGMsOaqyciq1hvzYPYLZ
-	 UmfN5Cwn5vszg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 631BFCE0876; Wed, 12 Nov 2025 17:27:22 -0800 (PST)
-Date: Wed, 12 Nov 2025 17:27:22 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-	stable@vger.kernel.org,
-	syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Message-ID: <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
- <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
- <aRUggwAQJsnQV_07@casper.infradead.org>
+	b=4QvqMsSuf+VB5GNLmmw1PJxkP2a0y5VhGre6oZVIMAdYEBm8GyVlvJ/99NxS+tsn1svbuX
+	lElT2up4WrHqu46RVjoCbx1Z6owWci8r8BUXwOxbHAhK+LxTKLnT/gLsQcegP/Mmnd1K4G
+	sme1S+/21Y92XHOA4z21vSILUmsZSQQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762997615;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5Fi3qOQUMh4P2pt8VGNkEYIim9KYTs0ww4k+osQ2CWg=;
+	b=CfdGe3vPCzo3e2glXywgGho68Os5ToSbC7hwNjfbW+l2sbbRPGexQwwCBaaCZmMrqj3Ypz
+	SiOARjRXNisVZB1NK3LTWYmAGpTVuengjTX0Y8fiEqGG/35Q36/jT5UnFspqYyhT9aMz2I
+	9O4eZIeaXIeNBLUpcqKp28nv3P+eofI=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 13 Nov 2025 10:33:29 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 13 Nov 2025 10:33:29 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kasong@tencent.com,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com
+Subject: Re: [RFC] mm/swap, memcg: Introduce swap tiers for cgroup based swap
+ control
+Message-ID: <aRU1abZaS+c1rK4R@yjaykim-PowerEdge-T330>
+References: <20251109124947.1101520-1-youngjun.park@lge.com>
+ <CACePvbV80ZtC2FL6Z-Y4Rg=5bzdi1O8zqQSMEGuxqhj5P0txsA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aRUggwAQJsnQV_07@casper.infradead.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 574D080008
-X-Stat-Signature: 34khg73psycjwnw9bh6p3m5xg5iirh97
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACePvbV80ZtC2FL6Z-Y4Rg=5bzdi1O8zqQSMEGuxqhj5P0txsA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1762997244-192578
-X-HE-Meta: U2FsdGVkX1/JVndkDXUlKk3TYdxakkGLlbvakylDHPjdI6tBl2qpr669tnEDDxyfhLiUJ43e/SGQ8S694002OO/0edk5gtsv3Rzs+sJJetTmKsV7grgoZ+gkHPEIDbdG2gQXtBuL0dtGrzazHD1WFOmdZ2cnsysQyrGmDPZs4mllCwXu5uZMfOeHCxPQGVZ249iMIVjz5aFhbMa0QSBGVkctcJJgcLsgesRlZ1JWewcS8TIwfSIFk6oQKNpGlIy7x8BO+6KY1U9W/rJuFZEgbToxzxC4+VVyvFZ9ALmhQcOE8VBunjJJauQs5ud7WqDkwCeConia1JsZ8NpqqNC6Ay4fgSQBWFMMJfSokHAJGoq9lZmEnh/v2MtxSvdmeuVmihvZJtYc0DHqE6Z55Z1RyiRPsxZrXCepK2425sve/QUWyE5kGcf7sczGpuRDtw3lb8fUCo91deJFwrDLU/GXvx9lBItoB3xRwi/uFAkB9Ib60phn4IsQUMsBqz+zYNoBQ8XxMVTzE9s9K6eIalfJlNSekUO7E1KOplGV5N1QsO1Ajkke2bJtbuGAgjkuzFz1pRnX++OcDnMXF0gFJ53nDQ4l4vZl7dZYtT47Ithns+5AFMLG57SaMrBJimp4DSz2ZIMLqrTiHnJDsTPyRcFFwkXyzXVnseZCOtEHRuPlQPDhONxbDhOD7Sx02p7uKxZt17wC5PeYr5nGhYJNqxyOVIGoOl+5CqAOf4Pznw0rm8SuWET35ZcTuLHqGI1Q8ayXdwmMICdo5vVxoo3L8Pn5ecFn0A6hHWErAjR7mJ6RPa+6MNXOdM6CKuu0GpjEYhMxn/zqQx3WtFnbS2TrShyVm6bPofDxeSw5yzpjUgyqS6RNcVxAFZQ5JOgqy77/RqKu6pE1MQqdHSyUIiUue/4B5/NClC9pw88/DCg1TQ+cQqt1rTS/Unu0q4Om2DHud/hPEbEZiC055at9g4z+9pc
- T3oWBI8e
- nNityIA+RA061ygzFzJ7670EeaKb5JCzVFrW+hroBJkFwlUMFlMGBzL1dF3gZZXM4SCWS7MsHeASD6N2QGeppU1NrPlLEGXdjhxUK6VaavrwOnW9MK5r/aD/7/9ReCx2ICK3WCdhqQebw12Rk3qz+33GOkvL2vLKaUOEWBa34fLDfKUrWK8pFWTfwRnGQqq0K2pIWj+zFa0t0er+pArG7Jj4fXkfLra+mD6H1dVWdVB3l1T+wNiSeJlrPRbP6iNP9ktvCSjrVCaL6+cWbncYQU3CfO2U53BQv/9GTEupKuypO40EGbbC4Asn3m3AYMarIK1kFuLIw1FT3PgUErbkCp7cUGiRsp/FChN56Dp0T/evlk9Lu2jpO93DGzjOXkwoYXMssrmMJwRRqJ8S9Oa68HYnIY2Z8Smm4HnU00B9uAWmVvC0D3qHxGDJJprAVrQak3bjPPWiwrIyYAsQYzLjKLfIJaVVoi1abzW/+9OyayvkcH4JTNWJRFvimmbDmrROL45V1rdZvbmxBohtXR4eByxc2HNNcjSWyFwAE/6Vikx5KHRIJtZaEhLYgFyj+8uLwpxFBtfI2K4FDRqtg9sZjHRCYnZoGDtf/AneBqLdStZrBgnt1xqV8uC/9T8AGuv/MZ76t0mqTqpdqCCvHR2R+qhWUVBrbSa4JsUE1O+0zd5KkaBpqLTh8g/7NTjlsHXouqZaBpaNqjWW4HnEdZStMIdBubulIfwhkQxRjaJTQYADChzA0FDPRGh9wGUZyebVzP6Zsf6KyL4rLIVQLyscDMyhFTtM35AjS7zCg
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 845781C000C
+X-Stat-Signature: xa75b9g54aekpaqofrfm1s6jpjix9cs9
+X-HE-Tag: 1762997613-483799
+X-HE-Meta: U2FsdGVkX1+I607pwgLKEpmi5yMlshqLTMAD8+2EGUKHqiF6S/tShDnrqyxCnvIHva9sO6mJ51584yvZ8XGFpw+gnN8WaZxggJ542URbw04v0N2aATdz2gTKcDLsuZiM8uAuwUkLtuA8kJdnNEMSGzZ5xqCHCeKn9aUjMvxYCCvhkpNH/kFJTlKyag9O8i/+hi91Uev4KMGjx1ZIa17b60kJ+z3F5i2BQqri7oRsEgH4LfcoCX23OLNYARzjeTpuxU4ENAU7rsv6r2akF0XGW96AqWZWZFaNGlxjWxCUuN14dzKoDhtN51IwakagWrTermITCiWTjTi7peETvMl6UNZRomMindwBLzveNWSAVprH69T2g3NTa7+/7SsprksAgKScoeR2ek5J2H483RQ7w1VX8TgzzGYUmRO7N2unRfvWLOXJ6IEdqNXR41dmEWFw7LsSRV4LTXsQrnG5ZS+72E3HU6D4rV+riW2y+OP6RW4lUkiTy/zwBMyFmbGlfOR8AV4FF1hKeiNctqDYtc/zUN4k7cE1hRlR5Ce7fjPM2bKIh7icKJnKf0q7YR/g4kSdcNPCaJNEgBEEmsifWeS+VOkjC3UTVCJu4in4aYE3yW9HBhrJhJ5GsNAZ+/Q6NWd0wlv1FZbNKDrYSVLujadhAvBstPkNSG/BvU52cDk780xS9of/Xn3wNfzSLuZJqHax+uocBr6w8p4bsT0b96SP9dvkFCRPkhNAXhk/1x/QJ46FM6Z0RUJKxiLoR4uQpBt61OLYOXzRfcksAfGDWBY6GzJChnMAvR5VubM4b7kb+LV0svjaW/Z5H4SZw8ofCQH25dRtYnSQBFP2oMvW6+ehLorK8xOXwYI5RI4YzaukC5K7vL3PqRYZXXADJjpuc6su2qBY6sCqsguAMcuWHh6slhT22bLs8pNmvcNsDKgjS6wIeiTX8mzsbU2AZGKswHWjz0aeXt7rrUFcHt30sQO
+ Npc4yyVH
+ 9pnQ8nAx5Z/0Difrnxt/IxlA1aNAhoR9rvCDiPqpbf6F87MxhT3JxqzypbbiGxwDhYDxFX0+GSkOpKtkzZ1hqLNhOlPaoA7M8bVW2OZOde8pe3vHDC+A1pD5ZCigCgpn4hBKYwlmoChM8657w0lGgBmcY1CnnjLNjykM74MI4fWrLHnPprJJDF11oIho0l1e7zVOM7VShvXIbfoIEOn088kIbxqdLg8PetgiJLh1V9vEVB/rNQDz3DhoZlNUjd/Fz22xe9fZ+yVc/1zs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,63 +88,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 12:04:19AM +0000, Matthew Wilcox wrote:
-> On Wed, Nov 12, 2025 at 03:06:38PM +0000, Lorenzo Stoakes wrote:
-> > > Any time the rcu read lock is dropped, the maple state must be
-> > > invalidated.  Resetting the address and state to MA_START is the safest
-> > > course of action, which will result in the next operation starting from
-> > > the top of the tree.
-> > 
-> > Since we all missed it I do wonder if we need some super clear comment
-> > saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
-> > by doing 'blah'.
-> 
-> I mean, this really isn't an RCU thing.  This is also bad:
-> 
-> 	spin_lock(a);
-> 	p = *q;
-> 	spin_unlock(a);
-> 	spin_lock(a);
-> 	b = *p;
-> 
-> p could have been freed while you didn't hold lock a.  Detecting this
-> kind of thing needs compiler assistence (ie Rust) to let you know that
-> you don't have the right to do that any more.
+On Wed, Nov 12, 2025 at 05:34:05AM -0800, Chris Li wrote:
 
-While in no way denigrating Rust's compile-time detection of this sort
-of thing, use of KASAN combined with CONFIG_RCU_STRICT_GRACE_PERIOD=y
-(which restricts you to four CPUs) can sometimes help.
+Hello Chris :)
 
-> > I think one source of confusion for me with maple tree operations is - what
-> > to do if we are in a position where some kind of reset is needed?
-> > 
-> > So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
-> > to me that we ought to set to the address.
+> Thanks for the patches. I notice that your cover letter does not have
+> [0/3] on it. One tool I found useful is using the b4 to send out
+> patches in series. Just for your consideration, it is not an ask. I
+> can review patches not sent out from b4 just fine.
+
+I manually edited the cover letter title, but made a human error.
+Thanks for the tip.
+ 
+> On Sun, Nov 9, 2025 at 4:50 AM Youngjun Park <youngjun.park@lge.com> wrote:
+> >
+> > Hi all,
+> >
+> > In constrained environments, there is a need to improve workload
+> > performance by controlling swap device usage on a per-process or
+> > per-cgroup basis. For example, one might want to direct critical
+> > processes to faster swap devices (like SSDs) while relegating
+> > less critical ones to slower devices (like HDDs or Network Swap).
+> >
+> > Initial approach was to introduce a per-cgroup swap priority
+> > mechanism [1]. However, through review and discussion, several
+> > drawbacks were identified:
+> >
+> > a. There is a lack of concrete use cases for assigning a fine-grained,
+> >    unique swap priority to each cgroup.
+> > b. The implementation complexity was high relative to the desired
+> >    level of control.
+> > c. Differing swap priorities between cgroups could lead to LRU
+> >    inversion problems.
+> >
+> > To address these concerns, I propose the "swap tiers" concept,
+> > originally suggested by Chris Li [2] and further developed through
+> > collaborative discussions. I would like to thank Chris Li and
+> > He Baoquan for their invaluable contributions in refining this
+> > approach, and Kairui Song, Nhat Pham, and Michal Koutný for their
+> > insightful reviews of earlier RFC versions.
+> >
+> > Concept
+> > -------
+> > A swap tier is a grouping mechanism that assigns a "named id" to a
+> > range of swap priorities. For example, all swap devices with a
+> > priority of 100 or higher could be grouped into a tier named "SSD",
+> > and all others into a tier named "HDD".
+> >
+> > Cgroups can then select which named tiers they are permitted to use for
+> > swapping via a new cgroup interface. This effectively restricts a
+> > cgroup's swap activity to a specific subset of the available swap
+> > devices.
+> >
+> > Proposed Interface
+> > ------------------
+> > 1. Global Tier Definition: /sys/kernel/mm/swap/tiers
+> >
+> > This file is used to define the global swap tiers and their associated
+> > minimum priority levels.
+> >
+> > - To add tiers:
+> >   Format: + 'tier_name':'prio'[,|' ']'tier_name 2':'prio']...
+> >   Example:
+> >   # echo "+ SSD:100,HDD:2" > /sys/kernel/mm/swap/tiers
 > 
-> I think that's a separate problem.
+> I think a lot of this documentation nature of the cover letter should
+> move into a kernel document commit. Maybe
+> Documentation/mm/swap_tiers.rst
+
+I will create a Documentation file based on what is mentioned here.
+
+> Another suggestion is use "+SSD:100,+HDD:2,-SD" that kind of flavor
+> similar to "cgroup.subtree_control" interface, which allows adding or
+> removing cgroups. That way you can add and remove in one line action.
+
+Your suggested format is more familiar. I have no objections and will
+change it accordingly.
+
+> >
+> >   There are several rules for defining tiers:
+> >   - Priority ranges for tiers must not overlap.
 > 
-> > > +++ b/mm/mmap_lock.c
-> > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-> > >  		if (PTR_ERR(vma) == -EAGAIN) {
-> > >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
-> > >  			/* The area was replaced with another one */
-> > > +			mas_set(&mas, address);
-> > 
-> > I wonder if we could detect that the RCU lock was released (+ reacquired) in
-> > mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
+> We can add that we suggest allocating a higher priority range for
+> faster swap devices. That way more swap page faults will likely be
+> served by faster swap devices.
+
+It would be good to explicitly state this in the Documentation.
+
+> >   - The combination of all defined tiers must cover the entire valid
+> >     priority range (DEF_SWAP_PRIO to SHRT_MAX) to ensure every swap device
+> >     can be assigned to a tier.
+> >   - A tier's prio value is its inclusive lower bound,
+> >     covering priorities up to the next tier's prio.
+> >     The highest tier extends to SHRT_MAX, and the lowest tier extends to DEF_SWAP_PRIO.
+> >   - If the specified tiers do not cover the entire priority range,
+> >     the priority of the tier with the lowest specified priority value
+> >     is set to SHRT_MIN
+> >   - The total number of tiers is limited.
+> >
+> > - To remove tiers:
+> >   Format: - 'tier_name'[,|' ']'tier_name2']...
+> >   Example:
+> >   # echo "- SSD,HDD" > /sys/kernel/mm/swap/tiers
 > 
-> Dropping and reacquiring the RCU read lock should have been a big red
-> flag.  I didn't have time to review the patches, but if I had, I would
-> have suggested passing the mas down to the routine that drops the rcu
-> read lock so it can be invalidated before dropping the readlock.
+> See above, make the '-SSD, -HDD' similar to the "cgroup.subtree_control"
 
-There has been some academic efforts to check for RCU-protected pointers
-leaking from one RCU read-side critical section to another, but nothing
-useful has come from this.  :-/
+Ack as I said before commenct. Thanks for suggestion again.
 
-But rcu_pointer_handoff() and unrcu_pointer() are intended not only for
-documentation, but also to suppress the inevitable false positives should
-anyone figure out how to detect leaking of RCU-protected pointers.
+> >   Note: A tier cannot be removed if it is currently in use by any
+> >   cgroup or if any active swap device is assigned to it. This acts as
+> >   a reference count to prevent disruption.
+> >
+> > - To show current tiers:
+> >   Reading the file displays the currently configured tiers, their
+> >   internal index, and the priority range they cover.
+> >   Example:
+> >   # echo "+ SSD:100,HDD:2" > /sys/kernel/mm/swap/tiers
+> >   # cat /sys/kernel/mm/swap/tiers
+> >   Name      Idx   PrioStart   PrioEnd
+> >             0
+> >   SSD       1    100         32767
+> >   HDD       2     -1         99
+> >
+> >   - `Name`: The name of the tier. The unnamed entry is a default tier.
+> >   - `Idx`: The internal index assigned to the tier.
+> >   - `PrioStart`: The starting priority of the range covered by this tier.
+> >   - `PrioEnd`: The ending priority of the range covered by this tier.
+> >
+> > Two special tiers are predefined:
+> > - "": Represents the default inheritance behavior in cgroups.
+> This belongs to the memory.swap.tiers section.
+> "" is not a real tier's name. It is just a wide cast to refer to all tiers.
 
-							Thanx, Paul
+I will manage it separately as a logical tier that is not exposed to
+users, and also handle it at the code level.
+
+> > - "zswap": Reserved for zswap integration.
+>
+> One thing I realize is that, we might need to have per swap tier have
+> a matching zswap tier. Otherwise when we refer to zswap, there is no
+> way for the cgroup to select which backing swapfile does this zswap
+> use for allocating the swap entry.
+
+From the perspective of per-cgroup swap control,
+if a ZSWAP tier is assigned and a cgroup selects that tier,
+it determines whether to use zswap or not.
+
+However, since the zswap backend does not know which tier it is linked
+to, there could be a mismatch between the zswap tier (1), the backend
+storage (2), and possibly another layer (3).  
+This could lead to a contradiction where the cgroup-selected tier may
+or may not correspond to the actual backend tier.  
+Is this the correct understanding?
+
+> We can avoid this complexity by providing a dedicated ghost swapfile,
+> which only zswap can use to allocate swap entries.
+
+From what I understood when youpreviously mentioned this concept,
+the “ghost swapfile” is not a real swap device.  
+It exists conceptually so that zswap can operate as if there is a swap
+device, but in reality, only compressed swap entries are managed by
+zswap itself. (zswap needs actual swap for compress swap)
+
+Considering both points above, could you please clarify the intended
+direction?  
+
+Are you suggesting removing the zswap tier entirely, or defining a
+specific way to manage it?  
+
+I would appreciate a bit more explanation on how you envision the zswap
+tier being handled.
+
+Best Regards,
+Youngjun Park
 
