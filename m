@@ -4,138 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E07D6CD5BC7
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:19:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D43FCD5BCE
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:28:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B86A8E0003; Thu, 13 Nov 2025 06:19:48 -0500 (EST)
+	id B91A88E0007; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18FCA8E0002; Thu, 13 Nov 2025 06:19:48 -0500 (EST)
+	id B42618E0002; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A5A08E0003; Thu, 13 Nov 2025 06:19:48 -0500 (EST)
+	id 9E2878E0007; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC2998E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:19:47 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 944CA5BC87
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:19:47 +0000 (UTC)
-X-FDA: 84105338814.04.CE19E33
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3E63F40005
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:19:44 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 86A818E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 404D55B9D0
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:28:17 +0000 (UTC)
+X-FDA: 84105360234.09.2027640
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0139440010
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:28:14 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tEx0PXpS;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LOUAPU0D;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TPAANJvU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IMDALd4J;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CcWgcm7l;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1Aa1hX44;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1eAivxcY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IuZwNtvu;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763032785;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
-	b=4cBeO/r2dMbVi3M7H1Zx82HAsFnaMiduCcZVW10GEFapkByCtoCwBK7fsu6gHdnEXiuFLJ
-	ZuMn1+1cdQnyPQGNys6dW00WLMUu8ZkAlYydBhrCmgksCjKb0RUr/8F1Dn7ohwewdPHzcv
-	9bUeq/bEIUMs1sVbTYZGh7RPetjESn4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763032785; a=rsa-sha256;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763033295; a=rsa-sha256;
 	cv=none;
-	b=SD+y0qzpbTPzBOJJjsvoJlGTuERhtDAq/N4XJWhWBXCzzsFgKnA2gpgT+qgChVVl1rBh1y
-	H4g4TOVjnCQB2NoN4+6EQXtabJDEuwztEl46NKELZ26zVj8x/u7HRacz+HRcsTGfXm+SlN
-	Smsv/moQKwmhXJrLyZpv9BIkLqLhSRc=
+	b=0hAUv/jiBEF96OGfVZCIRvgXg0kTe42IalecwQ+2L7EyHxMR/dFVADpXw8bDsnSsv6VTYB
+	rXqylf+0mUq2YUvqhku6CGNPiRgVs4PSmtOvx7sTnAYyI6QkiXxAGfvo89Bbc4q7HowA/O
+	o5kxzi/OKOCg3n7SovjUDGI+4rFQob0=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tEx0PXpS;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LOUAPU0D;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TPAANJvU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IMDALd4J;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CcWgcm7l;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1Aa1hX44;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1eAivxcY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IuZwNtvu;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763033295;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
+	b=bfGr0q19MjZVJnwlP9elphGzVz/PRH7Co9JNC0PKROoiQjrsoCS5/I7WEQdAA3Kc2BBAsw
+	llEK/8cEUujvN9Yq7xZWMXtcZmnt5PPyF4Z6NLwGgSBMcLoeBIZv5RqXod52SqFPPTymN/
+	+8v242OO9VFXR+JfD1KsK4csybTHra0=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B45DC21281;
-	Thu, 13 Nov 2025 11:19:40 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4CFA71F388;
+	Thu, 13 Nov 2025 11:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763032782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1763033293; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
-	b=tEx0PXpSR9fC2UvG0u7MJFp2BSlhdeqm6tfjJPlZS4pzGQmOwabgT+ii7BsgRYsefYOMF3
-	VvsJYx6JmgiNnIkc2NCbUzK9WMs4Iesgm99E+qFwo8H8q29+lEmIo9rS5V2MjR+2UAS7Qp
-	XFnzrWjacC8RlMPSp7qTqHvuw+qVCws=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
+	b=CcWgcm7lYtpNs7mn73pBoa4nRC8JiQrK+gO212GsQjTat0FrQM1OCG4BRRt7yM3ghkreYC
+	G98ydEB2YR7oK02EbnS/Ud96j243sM86TYmAaqc09XzlZNSAHZA+M47pi0z+3HrBDFwQtu
+	y6P0XaEu3S2CdVlkODt/avi1tZ/VX8U=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763032782;
+	s=susede2_ed25519; t=1763033293;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
-	b=LOUAPU0DI5ldL7amV9RP5y5ZRcrOsqlJWe+yGqm+w1F5fGBdUOw3+MjMsiQwLq6RLZlsah
-	z1b+3BWuTShjlLBQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
+	b=1Aa1hX44yVJ5tkE3C4qtHRTR+e71Hkl8ZeuTLjfs+C1gqSlvpuRdU+xGbS9xsg/kIuwkp+
+	QbNYOZ6ce6ow/yCw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763032780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1763033292; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
-	b=TPAANJvULtvZbKY9kTlFDj3fHaqwcTQ7QSHepORPj1SmGNXAVQl+h4cThVAzOE6Yl7BCLK
-	P+mNsKLJnjLZvTwsl3qRAtpBElJ625a6hag5mPaMbQZLS4fmnximef6W0ci53Jrf6gupH/
-	2n45l6UZt9TFhva3h8X/wtCXAWukFSU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
+	b=1eAivxcYZdOvsb13dmiwOsw03pon37+OH62VadJlazQwIP8FE4t2ULR0VDAEwS639Io/GH
+	ya92J9EXRQ82sU09acZhfaFWGsAFWmcnvAVMLIOaeHDtfHNyM4X2p14LUAiYU9dYaUQYXA
+	WIkExtJsRxhknS8bdpTt0OSSfliAhgE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763032780;
+	s=susede2_ed25519; t=1763033292;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
-	b=IMDALd4JeMlPI9Mxv0/hWb4imPPdPuOJsIg/iIEqAN8lny7MqpgtZO9x5EjyCnO6vYkjJ5
-	0uFVDgatEsam+WBg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
+	b=IuZwNtvu0oVqb9CEGDTa5frhvA7e2kRSAobrJWLWBoLuIJR3633WHQYXP17CvqA5OhIdt2
+	WX/7eqWoDh2xiCBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A65493EA61;
-	Thu, 13 Nov 2025 11:19:40 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3BB243EA61;
+	Thu, 13 Nov 2025 11:28:12 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2zOKKMy+FWnVYgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 13 Nov 2025 11:19:40 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 63A30A0976; Thu, 13 Nov 2025 12:19:40 +0100 (CET)
-Date: Thu, 13 Nov 2025 12:19:40 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: syzbot <syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com>, 
-	akpm@linux-foundation.org, bpf@vger.kernel.org, bsegall@google.com, david@redhat.com, 
-	dietmar.eggemann@arm.com, jack@suse.cz, jsavitz@redhat.com, juri.lelli@redhat.com, 
-	kartikey406@gmail.com, kees@kernel.org, liam.howlett@oracle.com, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, lorenzo.stoakes@oracle.com, mgorman@suse.de, mhocko@suse.com, 
-	mingo@redhat.com, mjguzik@gmail.com, oleg@redhat.com, paul@paul-moore.com, 
-	peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org, sergeh@kernel.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
-	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
-	syzbot+0a8655a80e189278487e@syzkaller.appspotmail.com
-Subject: Re: [PATCH] nsproxy: fix free_nsproxy() and simplify
- create_new_namespaces()
-Message-ID: <3yjawi3c72ieiss7ivefckuua55e2yvo55z4m4ykp2pzw2snpa@ym34e3d7cnoi>
-References: <691360cc.a70a0220.22f260.013e.GAE@google.com>
- <20251111-sakralbau-guthaben-7dcc277d337f@brauner>
+	id dThCDszAFWmtawAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 13 Nov 2025 11:28:12 +0000
+Message-ID: <c5a8b713-70e2-4ed8-8573-27e818de0ef4@suse.cz>
+Date: Thu, 13 Nov 2025 12:28:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251111-sakralbau-guthaben-7dcc277d337f@brauner>
-X-Rspamd-Action: no action
-X-Stat-Signature: zw4rrj3y15o7wyfz5j7q1s6c71bnmndj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/16] Prepare slab for memdescs
+Content-Language: en-US
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org
+References: <20251113000932.1589073-1-willy@infradead.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251113000932.1589073-1-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0139440010
+X-Stat-Signature: 18ty9wha91ib478eobik5e7azzfm3j8c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3E63F40005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763032784-16013
-X-HE-Meta: U2FsdGVkX18v7NCOaMSwtVNk2eGPL+oxqBYzPSY+XMWKyxkuP9+Zxs1AP6j8Yn5K15Cl04nUx2Km0iw5w5FcOv6XHkSGUOxHRKdrIh1wsEUqMGVl8ZXVf94bA4vSh3YiDzn76KuwMPoqxm3278t5Pol6xhwN0ZIbqm1vvRx70Lzh9zWy/+8Y+/qExIFA0krs2deH2s45qETxMTQhLdG/OyuJ028Rd9L486dApgt0rCNKsBQo2Z+ezoqBxVYmVVZf0FLUCKcb1T0vgUBW24/TsRYPBdmsbfYBafaDZNCH26uaH7AiyzpD7/lTeHfN4V3elZXbIp6NqwJzZFAp7vnhM2eEn1Xs0BOXoWZsYsR6EtWtP5YnVayJWs0yIUDAu4N52o8f1cOdyCGiB/EtHnV9Ir4Qo7R9EdFH1YWOvWR+35sKzYYUdlMorD69t4L+U8GDDHm/RduFJia0TsFxzy6SmL/sMQonNQzQ7igc1hwH6fFrn2Lw0csuE8IRCPWoRH9whC4/WcScZtd+q91vYOK/szPHaJBftC2X1+K9Hjc2NaFJ65LFjmmlXiqOa6McbEIZ3SoOXXdN2dwCgTiiuTKwlMES5DCdRPq8049GMRyUz3r1TAJr9TJxHoQzPkTP3PgpRji5L3tczNvqG005N47S814dzbe5YoAY0wlq0X7kPEe5cHwBnvVZu+z3Ib2h12ZPCh8aIOp610rc4jEvcGokF/2/TFOOvVMbzecQzvs1eSqzI55DxCMji0kjwKETVZvRow3QHfHmSamLrIA7pnOagC1CB7MZv/YKaABMV2Dw2VwaekycWvuS0i28I21LsP4kDhZHkOVrAVgm7RwHXH4ExR0YFFa1XZaPs4fqmipVvwjGQgjjaQRns0wuKs1p4pfSKqYRPFsCHrwVWzF2EFzwy4Q9jWuW+LdzRJgXmMeXsIMNfC2EB/G/hIlefbUqLnoU+syiWKsFT7mJ2T3lVDn
- +pwEkeAk
- 5OKrI5x8DAxgcYHK/1cs9bKrWgX5av49fN90QuzuLkS+egNljvQlCV4hS4vg6eJ/+rTju5XDQUnUc7esyZCZekpiOGbYx6q5i25mqBs1iB0Rh6QOhmcQpBs3QFqXa9G72ps540jd9itJUnJ+sRoPp1Tt/+ypJZ+cgdGyVO5WV6IeWfzeS9shRx+pSn8upIIgVFaVaspCYlIzNuuZ1qspHEECXc2FS7heLp4naGgz2j54K57H0WdLjXWKfSA3FL9aWq6CATx+UV+Nz2YqxNPqNx0M3DQBnFvQjE1ZkgDuQs48Kg93E2TH2/0lcTLa8UnbnenzWjtAOXCWR4tt4QaVmDVQUGHqtqrxnr+eYQIdb26ThZ5g3iPx3VI3Rbhy2IrSjXYV+QuQ+jLj/e6NEz+kIP5B45xdqghHlB1bBaYpzCElhl4EExjfu0TMFB3Ekepe8ujOdbiRkP0VVHuxdwmH1P2HnsnustNZqLQHwrhbo9DcrAAGRGd9gNht57tUGKdYNKGXrk6TdH6Y+G53q8zlqZot2j+bELcMSzG2Z0JAE5lGvSpD8KfxA0N7kkeER+YRZakGjBv5VBH7NX6Kx2nV8zE17S09+z5GpmqbmQ+qVhAvkkor1ipUD6ZJ8YonKWIZI08N6OlFLOpcrWQ4a7Gq7Zj73OA==
+X-HE-Tag: 1763033294-671248
+X-HE-Meta: U2FsdGVkX1/aAPW8WrdZCMkMC7KkEyYjBklPyrfOZn01obYHwc4IXArrTcfjlVGVILSjlNIs8lxeGrqTfyj3APtmRUno6Rl3YWK0AXseBlRPatfuy4YHqtOj/2oH1J8plQMPT59GHqr+WPf8dipIm/wMYSuYAKUztZaJCSO9nUc+tefdlTxHog646G/1H8rSDDGXfgwCHXQp0sqXiF6QEZwK0tKZH0behVipH+7rG5vf26qismFtndW7zUn4goZn+4lBIpli8uos1VnhYrR/HcmMGOJwAnxb6/+OKmLB6pDJyddMXOQ7nlgAvWhaYj55ONhkf8rRyeTuNvpmTYCWFbCFD1UsjbzBoqaKuNvLKFxv7exto/NfNwG8rdLDBjtpwD6oAv6LzUUoLQ/N/FFX4aUE3Ky3aZgLZtAGoTsPdBYGVEs2KjReYvWxPIqyKmCLgUz9jKzfayl7AvDTYnH8xqMLk5TVT7S847n1wwxTizbIbVN/eHnYE6SDXBZSWLzh80PVijKMEYnDXKqs4Te9gFO7HvUt1XgoVnDmOHRO+tqG8NNMAbqInrGtl7YAC8EDHOow/DQ5dyJNJMnTDGziG43V0KWmzJ4QhF2rs8C+4DL0fOnM1390uzJcCactx3gjRlDoRYuMMDiMwMTtxVKslitdCU65XRm+YODImdwrc2ZpkRq6hxdMUmtpHvLYqgXjAaXcPyX+By7sndeBY0TrN2JE8HjUegRjYQW8Z0784FY+2XjxzS9ZQRXZnuwf+GsVr4opWqF00ZegVMjQmQIKxUqtIuYeuVyTZzEYnKoo6Ag3MDfiY7tGA9Kdk2DItHR2zsGYhryXyRzkf+FXNSLSDUYYYEABK7kfwQ5k8E6W92LHFh5kot5xQgpq8nGiAKbqIfo/vVCf1zsrl7XEAxv8iRJ0g+gs09yAeubfqqNhIYhDozd1FW5taQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,223 +176,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 11-11-25 22:29:44, Christian Brauner wrote:
-> Make it possible to handle NULL being passed to the reference count
-> helpers instead of forcing the caller to handle this. Afterwards we can
-> nicely allow a cleanup guard to handle nsproxy freeing.
+On 11/13/25 01:09, Matthew Wilcox (Oracle) wrote:
+> When we separate struct folio, struct page and struct slab from each
+> other, converting to folios then to slabs will be nonsense.  It made
+> sense under the 'folio is just a head page' interpretation, but with
+> full separation, page_folio() will return NULL for a page which belongs
+> to a slab.
 > 
-> Active reference count handling is not done in nsproxy_free() but rather
-> in free_nsproxy() as nsproxy_free() is also called from setns() failure
-> paths where a new nsproxy has been prepared but has not been marked as
-> active via switch_task_namespaces().
+> This patch series removes almost all mentions of folio from slab.
+> There are a few folio_test_slab() invocations left around the tree that
+> I haven't decided how to handle yet.  We're not yet quite at the point
+> of separately allocating struct slab, but that's what I'll be working
+> on next.
 > 
-> Fixes: 3c9820d5c64a ("ns: add active reference count")
-> Reported-by: syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com
-> Reported-by: syzbot+0a8655a80e189278487e@syzkaller.appspotmail.com
-> Link: https://lore.kernel.org/690bfb9e.050a0220.2e3c35.0013.GAE@google.com
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> v4:
+>  - Rebased on next-20251110 + a couple of fixes
+>  - Fixed compilation warnings when CONFIG_MEMCG not set
+>  - Picked up R-b tags from Harry (thanks!)
+>  - Restored the order of slab vs large_kmalloc tests (Vlastimil)
+>  - Removed setting of LargeKmalloc on tail pages (Vlastimil)
+>  - Restored handling of non-slab, non-kmalloc checks in
+>    check_heap_object() (me)
 
-I believe having free_nsproxy() and nsproxy_free() functions with
-the same signature and slightly different semantics is making things too
-easy to get wrong. Maybe call free_nsproxy() say deactivate_nsproxy()?
+All LGTM now. Added to slab/for-next, thanks!
 
-Otherwise the patch looks correct to me. Feel free to add:
+Vlastimil
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  include/linux/ns_common.h |  11 ++--
->  kernel/nsproxy.c          | 107 +++++++++++++++-----------------------
->  2 files changed, 48 insertions(+), 70 deletions(-)
+> Matthew Wilcox (Oracle) (16):
+>   slab: Reimplement page_slab()
+>   slab: Remove folio references from __ksize()
+>   slab: Remove folio references in memcg_slab_post_charge()
+>   slab: Remove folio references in slab alloc/free
+>   slab: Remove folio references from ___kmalloc_large_node()
+>   slab: Remove folio references from free_large_kmalloc()
+>   slab: Remove folio references from kvfree_rcu_cb()
+>   slab: Remove folio references from kfree()
+>   slab: Remove folio references from __do_krealloc()
+>   slab: Remove folio references from build_detached_freelist()
+>   slab: Remove folio references from kfree_rcu_sheaf()
+>   slab: Remove folio references from kfree_nolock()
+>   usercopy: Remove folio references from check_heap_object()
+>   memcg: Convert mem_cgroup_from_obj_folio() to
+>     mem_cgroup_from_obj_slab()
+>   kasan: Remove references to folio in __kasan_mempool_poison_object()
+>   slab: Remove references to folios from virt_to_slab()
 > 
-> diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
-> index 136f6a322e53..825f5865bfc5 100644
-> --- a/include/linux/ns_common.h
-> +++ b/include/linux/ns_common.h
-> @@ -114,11 +114,14 @@ static __always_inline __must_check bool __ns_ref_dec_and_lock(struct ns_common
->  }
->  
->  #define ns_ref_read(__ns) __ns_ref_read(to_ns_common((__ns)))
-> -#define ns_ref_inc(__ns) __ns_ref_inc(to_ns_common((__ns)))
-> -#define ns_ref_get(__ns) __ns_ref_get(to_ns_common((__ns)))
-> -#define ns_ref_put(__ns) __ns_ref_put(to_ns_common((__ns)))
-> +#define ns_ref_inc(__ns) \
-> +	do { if (__ns) __ns_ref_inc(to_ns_common((__ns))); } while (0)
-> +#define ns_ref_get(__ns) \
-> +	((__ns) ? __ns_ref_get(to_ns_common((__ns))) : false)
-> +#define ns_ref_put(__ns) \
-> +	((__ns) ? __ns_ref_put(to_ns_common((__ns))) : false)
->  #define ns_ref_put_and_lock(__ns, __ns_lock) \
-> -	__ns_ref_dec_and_lock(to_ns_common((__ns)), __ns_lock)
-> +	((__ns) ? __ns_ref_dec_and_lock(to_ns_common((__ns)), __ns_lock) : false)
->  
->  #define ns_ref_active_read(__ns) \
->  	((__ns) ? __ns_ref_active_read(to_ns_common(__ns)) : 0)
-> diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
-> index 94c2cfe0afa1..2c94452dc793 100644
-> --- a/kernel/nsproxy.c
-> +++ b/kernel/nsproxy.c
-> @@ -60,6 +60,27 @@ static inline struct nsproxy *create_nsproxy(void)
->  	return nsproxy;
->  }
->  
-> +static inline void nsproxy_free(struct nsproxy *ns)
-> +{
-> +	put_mnt_ns(ns->mnt_ns);
-> +	put_uts_ns(ns->uts_ns);
-> +	put_ipc_ns(ns->ipc_ns);
-> +	put_pid_ns(ns->pid_ns_for_children);
-> +	put_time_ns(ns->time_ns);
-> +	put_time_ns(ns->time_ns_for_children);
-> +	put_cgroup_ns(ns->cgroup_ns);
-> +	put_net(ns->net_ns);
-> +	kmem_cache_free(nsproxy_cachep, ns);
-> +}
-> +
-> +DEFINE_FREE(nsproxy_free, struct nsproxy *, if (_T) nsproxy_free(_T))
-> +
-> +void free_nsproxy(struct nsproxy *ns)
-> +{
-> +	nsproxy_ns_active_put(ns);
-> +	nsproxy_free(ns);
-> +}
-> +
->  /*
->   * Create new nsproxy and all of its the associated namespaces.
->   * Return the newly created nsproxy.  Do not attach this to the task,
-> @@ -69,76 +90,45 @@ static struct nsproxy *create_new_namespaces(u64 flags,
->  	struct task_struct *tsk, struct user_namespace *user_ns,
->  	struct fs_struct *new_fs)
->  {
-> -	struct nsproxy *new_nsp;
-> -	int err;
-> +	struct nsproxy *new_nsp __free(nsproxy_free) = NULL;
->  
->  	new_nsp = create_nsproxy();
->  	if (!new_nsp)
->  		return ERR_PTR(-ENOMEM);
->  
->  	new_nsp->mnt_ns = copy_mnt_ns(flags, tsk->nsproxy->mnt_ns, user_ns, new_fs);
-> -	if (IS_ERR(new_nsp->mnt_ns)) {
-> -		err = PTR_ERR(new_nsp->mnt_ns);
-> -		goto out_ns;
-> -	}
-> +	if (IS_ERR(new_nsp->mnt_ns))
-> +		return ERR_CAST(new_nsp->mnt_ns);
->  
->  	new_nsp->uts_ns = copy_utsname(flags, user_ns, tsk->nsproxy->uts_ns);
-> -	if (IS_ERR(new_nsp->uts_ns)) {
-> -		err = PTR_ERR(new_nsp->uts_ns);
-> -		goto out_uts;
-> -	}
-> +	if (IS_ERR(new_nsp->uts_ns))
-> +		return ERR_CAST(new_nsp->uts_ns);
->  
->  	new_nsp->ipc_ns = copy_ipcs(flags, user_ns, tsk->nsproxy->ipc_ns);
-> -	if (IS_ERR(new_nsp->ipc_ns)) {
-> -		err = PTR_ERR(new_nsp->ipc_ns);
-> -		goto out_ipc;
-> -	}
-> +	if (IS_ERR(new_nsp->ipc_ns))
-> +		return ERR_CAST(new_nsp->ipc_ns);
->  
-> -	new_nsp->pid_ns_for_children =
-> -		copy_pid_ns(flags, user_ns, tsk->nsproxy->pid_ns_for_children);
-> -	if (IS_ERR(new_nsp->pid_ns_for_children)) {
-> -		err = PTR_ERR(new_nsp->pid_ns_for_children);
-> -		goto out_pid;
-> -	}
-> +	new_nsp->pid_ns_for_children = copy_pid_ns(flags, user_ns,
-> +						   tsk->nsproxy->pid_ns_for_children);
-> +	if (IS_ERR(new_nsp->pid_ns_for_children))
-> +		return ERR_CAST(new_nsp->pid_ns_for_children);
->  
->  	new_nsp->cgroup_ns = copy_cgroup_ns(flags, user_ns,
->  					    tsk->nsproxy->cgroup_ns);
-> -	if (IS_ERR(new_nsp->cgroup_ns)) {
-> -		err = PTR_ERR(new_nsp->cgroup_ns);
-> -		goto out_cgroup;
-> -	}
-> +	if (IS_ERR(new_nsp->cgroup_ns))
-> +		return ERR_CAST(new_nsp->cgroup_ns);
->  
->  	new_nsp->net_ns = copy_net_ns(flags, user_ns, tsk->nsproxy->net_ns);
-> -	if (IS_ERR(new_nsp->net_ns)) {
-> -		err = PTR_ERR(new_nsp->net_ns);
-> -		goto out_net;
-> -	}
-> +	if (IS_ERR(new_nsp->net_ns))
-> +		return ERR_CAST(new_nsp->net_ns);
->  
->  	new_nsp->time_ns_for_children = copy_time_ns(flags, user_ns,
-> -					tsk->nsproxy->time_ns_for_children);
-> -	if (IS_ERR(new_nsp->time_ns_for_children)) {
-> -		err = PTR_ERR(new_nsp->time_ns_for_children);
-> -		goto out_time;
-> -	}
-> +						     tsk->nsproxy->time_ns_for_children);
-> +	if (IS_ERR(new_nsp->time_ns_for_children))
-> +		return ERR_CAST(new_nsp->time_ns_for_children);
->  	new_nsp->time_ns = get_time_ns(tsk->nsproxy->time_ns);
->  
-> -	return new_nsp;
-> -
-> -out_time:
-> -	put_net(new_nsp->net_ns);
-> -out_net:
-> -	put_cgroup_ns(new_nsp->cgroup_ns);
-> -out_cgroup:
-> -	put_pid_ns(new_nsp->pid_ns_for_children);
-> -out_pid:
-> -	put_ipc_ns(new_nsp->ipc_ns);
-> -out_ipc:
-> -	put_uts_ns(new_nsp->uts_ns);
-> -out_uts:
-> -	put_mnt_ns(new_nsp->mnt_ns);
-> -out_ns:
-> -	kmem_cache_free(nsproxy_cachep, new_nsp);
-> -	return ERR_PTR(err);
-> +	return no_free_ptr(new_nsp);
->  }
->  
->  /*
-> @@ -185,21 +175,6 @@ int copy_namespaces(u64 flags, struct task_struct *tsk)
->  	return 0;
->  }
->  
-> -void free_nsproxy(struct nsproxy *ns)
-> -{
-> -	nsproxy_ns_active_put(ns);
-> -
-> -	put_mnt_ns(ns->mnt_ns);
-> -	put_uts_ns(ns->uts_ns);
-> -	put_ipc_ns(ns->ipc_ns);
-> -	put_pid_ns(ns->pid_ns_for_children);
-> -	put_time_ns(ns->time_ns);
-> -	put_time_ns(ns->time_ns_for_children);
-> -	put_cgroup_ns(ns->cgroup_ns);
-> -	put_net(ns->net_ns);
-> -	kmem_cache_free(nsproxy_cachep, ns);
-> -}
-> -
->  /*
->   * Called from unshare. Unshare all the namespaces part of nsproxy.
->   * On success, returns the new nsproxy.
-> @@ -338,7 +313,7 @@ static void put_nsset(struct nsset *nsset)
->  	if (nsset->fs && (flags & CLONE_NEWNS) && (flags & ~CLONE_NEWNS))
->  		free_fs_struct(nsset->fs);
->  	if (nsset->nsproxy)
-> -		free_nsproxy(nsset->nsproxy);
-> +		nsproxy_free(nsset->nsproxy);
->  }
->  
->  static int prepare_nsset(unsigned flags, struct nsset *nsset)
-> -- 
-> 2.47.3
+>  include/linux/page-flags.h |  16 +----
+>  mm/kasan/common.c          |  12 ++--
+>  mm/kfence/core.c           |  14 ++--
+>  mm/memcontrol.c            |  36 ++++------
+>  mm/slab.h                  |  58 ++++++++--------
+>  mm/slab_common.c           |  29 ++++----
+>  mm/slub.c                  | 137 +++++++++++++++++++------------------
+>  mm/usercopy.c              |  24 ++++---
+>  8 files changed, 153 insertions(+), 173 deletions(-)
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+
 
