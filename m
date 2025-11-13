@@ -4,89 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49364CD4F2F
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 05:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3278BCCFA18
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 05:47:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A7B38E000A; Thu, 13 Nov 2025 00:40:35 -0500 (EST)
+	id 670A88E000C; Thu, 13 Nov 2025 00:47:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 858DD8E0003; Thu, 13 Nov 2025 00:40:35 -0500 (EST)
+	id 621BF8E0003; Thu, 13 Nov 2025 00:47:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76E008E000A; Thu, 13 Nov 2025 00:40:35 -0500 (EST)
+	id 5102F8E000C; Thu, 13 Nov 2025 00:47:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6743C8E0003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:40:35 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 127F214084A
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 05:40:35 +0000 (UTC)
-X-FDA: 84104484030.13.CFED442
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4BCE6100003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 05:40:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pZoNjiu9;
-	spf=pass (imf14.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D4248E0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:47:35 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E14DB4D17E
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 05:47:34 +0000 (UTC)
+X-FDA: 84104501628.17.8A7F703
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2530340002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 05:47:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QW1M3Roj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763012853; a=rsa-sha256;
+	cv=none;
+	b=mU2R2i7C61eVB6UBuH/KMWfSBqJ2CSjvpln2h0v1IRsrtDUszFgq0k+Oq/VbXC2NKS0LQ1
+	UL0pUYI6ssyOWl34d7YNnqQy7J8Xx8zQX2ktJZRCCyeatB9LN2FJGmVT23AYVnFIyuZJFt
+	SU+yVCdDTaOt8GSBrucHP616azlsPh8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QW1M3Roj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763012433;
+	s=arc-20220608; t=1763012853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=exUfCIX9jRZ89akGu0d0ZLHOGWyAZrz04MaBSLQFa5o=;
-	b=BkfAaRO891BS8e4qYE3qBZYJyq2KuKVrtvZ+myNQ47ndI+2J7tx3sl/YWe2z9ZVlV//cCq
-	XaptFxHGXK9ELGH6fz9A/s3k4PCdGzCkIvx92yRNP+vwATVfCse8EDQP5N1DZ/1im7JyEX
-	BIvpY0eQGbP+x9wlN+y1kshXxXkx/Sc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pZoNjiu9;
-	spf=pass (imf14.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763012433; a=rsa-sha256;
-	cv=none;
-	b=w44Wjv2Sel68hXsGVHkuVAfacy1qu4gmHlJBuTlZ5bl5tS0wA3Aj/8keIjliQEGFwLxxCl
-	k8eD2GzSytn5W3pXp70L2wG91P6benu0GLl86AYTQwNmFr5Uq6xS2zW97Iq6P0ECRDKlz1
-	NwrVWw0o+mjVrPp2AOvXAY+uMblFsRw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 00F9240900;
-	Thu, 13 Nov 2025 05:40:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95759C4CEF5;
-	Thu, 13 Nov 2025 05:40:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763012431;
-	bh=a3h6BHX+oSOhZ34yChd9xpbZyosXGG/OAK6w+LJKvCY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pZoNjiu90jdZjq+DpfkIFGNOZVjevmyqrbw4dp0xl8R+XiAfhO0prbegb5AlW16sz
-	 5+Fh/FOK6EghZyyWDoNfbeldqcgJVZZjHwL0hgkt6SVhvzu4xdFEeN28fdQXlHdAnX
-	 45P47uhJ2KcwgJ5LkOLChNqw6HraS3UujUnS6LILLr57CWXoU9/0j33aJggfpLdum2
-	 mGAMNRdzD6Q5/U+C3a7j6LkaseNw7Lobvq6vW5uVXNEM2ra/wRig9MPcMCw6AoL+DO
-	 E5fwpw3jATvm9ZVxV3ReW2VpgpEtNnDjwh4Qxa/DJqv6518G3NnRR/00ZkRYKfXlSw
-	 QQPXm6aQQKb0g==
-Date: Wed, 12 Nov 2025 21:40:28 -0800
-From: Minchan Kim <minchan@kernel.org>
-To: Yuwen Chen <ywen.chen@foxmail.com>
-Cc: axboe@kernel.dk, akpm@linux-foundation.org, bgeffon@google.com,
-	licayy@outlook.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	liumartin@google.com, richardycc@google.com,
-	senozhatsky@chromium.org
-Subject: Re: [PATCH v4] zram: Implement multi-page write-back
-Message-ID: <aRVvTCCZSjPyAF_2@google.com>
-References: <83d64478-d53c-441f-b5b4-55b5f1530a03@kernel.dk>
- <tencent_0FBBFC8AE0B97BC63B5D47CE1FF2BABFDA09@qq.com>
+	bh=rMIpkLf+xD1Mc0agqjkJt7aE1fhoIkeOo6UUcn6faR4=;
+	b=CFHsAaNind5q26x8TpOYFTc/IZCPXkGDbYcIN/p2rKFZ5sfZGu+87/yHdsxYUL9xG48Zq+
+	/s+qDpAMKsI3i8WjTOfOvsQoFXt7zxV62i1ahj0LY8fT+lnu1j7tLYCzku5jNPfYSSU+aj
+	AfVJen5TDLdAqChRM9zHkXmYaD5HqZs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763012852; x=1794548852;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tYTHNNf+YGbTSSvqqxsTBUg/KkDpiG6hdbKFlnGdIzE=;
+  b=QW1M3Roj/itA+usVSkGhEIvetCOsmJI8itaeHbG5bInNJ6w6Gwx0PmNa
+   mMRra88CXrVXPS8t3uvRxi4Au8HnV1MhpDKDlbHgaiA1ecKeggIw188BH
+   l9XT4BCh9zUufOgn5N4KuvgaWmdxtya/b+C37W3RmSLgLZd22lOOECLAI
+   o94FPx0qfXBeoU7KrwbDAlRLL5nFfek8KnjkZsJBSXwIr1/8by2ZY5/LA
+   IhyiQAkpUIBPlxsqZ0jG8/Woit3oX8Nc0LufvkGMqQqzOS9Z6s4R+QaqS
+   VhHsQQkpX+mgQLqw+ed4l6d5exLnLQ/xR2rnuMnkOfeKNnm0ehuPH1WTY
+   g==;
+X-CSE-ConnectionGUID: xHvRFhSfR8+wDJsz5Q6vIw==
+X-CSE-MsgGUID: PYlDFFfSQU6HwR74LAnxHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="65011345"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="65011345"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 21:47:30 -0800
+X-CSE-ConnectionGUID: LZMRPt/QQRmtXvbcDjngVg==
+X-CSE-MsgGUID: uhQmO3RJRcaWuElWg0Lv/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; 
+   d="scan'208";a="189689750"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 12 Nov 2025 21:47:25 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vJQB1-0004wl-2L;
+	Thu, 13 Nov 2025 05:47:23 +0000
+Date: Thu, 13 Nov 2025 13:46:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+	linux-riscv@lists.infradead.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Rob Herring <robh+dt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>
+Subject: Re: [PATCH v3 06/22] mm: Always use page table accessor functions
+Message-ID: <202511131118.UUi1EVXL-lkp@intel.com>
+References: <20251113014656.2605447-7-samuel.holland@sifive.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_0FBBFC8AE0B97BC63B5D47CE1FF2BABFDA09@qq.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4BCE6100003
-X-Stat-Signature: 3whrw795k4hdor4cjxbrmixpjdbxhmjh
+In-Reply-To: <20251113014656.2605447-7-samuel.holland@sifive.com>
 X-Rspam-User: 
-X-HE-Tag: 1763012433-801468
-X-HE-Meta: U2FsdGVkX1+W3+z4Yr2yn7/LUkzHrXBDSI3+6k6AZje3aF16ZeCGEE0p+gzBb85Sk3umV7vXgl+2JhBTk7jcPmrJs+ZSSLnkr9qxR7VJSFBuscyCU3YL1c5rl8KTkhuy11ZR1ox2zvtJDti17oMDCSpjEShFKCoaEzyW40mMOolU+/tTkacJgMDBkkOFvVMpdbyGWNax5WWvFpvhR7DmXSj2kMRkR9s+gnL5NLJPxFl8yjlBAr89r/Yu+XUpIFohI6cD580IxfA53P0bOITPYUy3Lp6tVkpKcc6HiZYR6OwV5P6JZZGd5QC6N9hifAEjyM+MmMIf/r5yjc6v+WUizVYCNwTQlx6x6xWz/lmMesaEG3aiNsL6izjpvotHxFc8GcZ+xFaAr7+6YyqpbjepD0d+8wUx+OfK7hkEuxTS0TdL3dTEpGt65vNnBDgMlIU+75mD27+Kx9ionZ7HmKWp3xFWbpr8NDe9dtT8VePPwFB1NjxdC8EcPtdaLfLe/dKsPI2NTdwE1Goi2aftggV54D2WJIKYxs7M9ooYNt6CwABVjkfdWwfMHMMkKCa5+o5oEoXIKY/EJhUxpVkqGIV26MSgRRHhMC6lKSHBWh9A5NUy6pLp/0UwB/+8GFN8l+3WGp05ZYqB5ELidYvSrQn4SqO2ePE1ihqK+lKU85C0eRZcv2pgrsL8XySBw0j8xSR0xIs5lKPD/EtUj8Klnzn8ARMTNyqSEgnqTj32BAoKlhiX8hVC12R6kWfN/4fLMviSVoPREHg6EoZgMHcJnDkVucpciWc7Zdnh4T1AuoHALXG0EJ9qEWdrxxFHfwL19zCu9sbPuwwf8HvqthNRHlasETMDPV9UrISO3GCqsSwFIQUKY3bRHDFr0bDoxgg0uYMADGwbA+rbRBltZ99LLJr7HH0HMPOIIHE3j8SvFUfAh+7UrFCktV4R3ByDPazZTp/ea2DVj8Cmv+yHLqe5PzW
- 4GL8kQNv
- 4rjdc7/Fg/RA3JPVVd3fwiMBqvzeUgOwrLswbYHrRN36mwcDgXVCYN4b67v2czREpxR0rRNcubWJHlz4Ypx7M46QptKUWF7aE+ZmSeBEphDUL1X5vxpMrTLQ6AUyib/mnJmAsK4j1SZnsHHgolYWCZr1dum7advozI9F8m/cM68cwF1fp/Bya2hpvQlBy6AIjndepKQNgJvbI8B2GoRRv12AdbwP3QVeUNI3sS3s5YtluFRZgDg1/lh+5uvyA2j8rZy0rq+oYl+OJQYzX2KwfhdNVLjJDeSLBt1p96VxJgxvyPGPG8XTBzBdDC1LUDdlfJLH1cvbs0FpN6bObw+B9yQYC6Q==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2530340002
+X-Stat-Signature: eayeteydmou3ht3y9uq9w5uuphagngch
+X-HE-Tag: 1763012851-634114
+X-HE-Meta: U2FsdGVkX1/2mj481tIsRpNX0RR/QcT7HaxrPEeLFkDwF1109nvHPZVNeVRXL3GegdKUIgB2kDQm2m9ici0IS4S8p+ijwyEWKBMa1Iqa/8ycx6lCl88Is15t2M3OLYBK2MQzViicj7tA3twjbwfy/Gf/oxqBVM206qXG7jU1iB8B/SvVDthO73wI1F8goidwRiSnSAzCTAdFO3HTiv7/8ijZQITlfOC86njcdTBt5e+CN1eYg4RFaUGVgJu01xaVqLH3jEYvd1dceQNRc6FRG68l6xD2y8lNa/m2jJFzFmRj0WhH7/sF/F+3Cj/72ArsaqiaVInDPaZpi24W0NClHIbMw9yNusMn4Kg1VGrYN6K47RQudyQrcFLQ8U4424VAzXAJBAVfzyuKYFZmrysbk3UFNrA3z8j9bAUCakTU0O9agyTLgZKPwvVbIKRJX8H6rHkufqvaE38HHv7af2jLAKhUTnnbkfmXUeAFPLKd/LxNV24RpsUmk56A9vWq1Rsg5xI4QVdDTkVn/xAQNwK680+JavcsREnFXLN0609xMMCivfpxwr3n3aPUWHVia2kyCLkiHW+XOGGSIC/3YwPcPZ0kuRBZGDDZd+FdaX470Aj+ArayZravkXuP56XfJXiojWnWUQAi/2thQGnL/BOMzqOv6vySrCQHaBnv76EcSSdXGkISz4CP72pqn6BX+wUGB5hfaCe95GBZaD38B53qbssPCWcyjv1BO3vqmYf+0fg/NqnWXfgruVQ06m8cAZZRr95KpsyxwYkB+HXij7TUSZlDf/aexg7iXjwzWEY832SKpRTb9duiBc1nehzJwU7LO9itSg26baoyY21UIC5Q3uawandQRTHyNmpHo0RAJnOFr/Tp0x8f8vIvTXnNvECzNZo2/OmSol+ba9MRilL3/CYTrUU7lJBcZ9LorV6x7ktnojQu3sh/UJuHVVPgsRDtGgbCDPwA6U+LOI4sq7a
+ 2782kZ7d
+ oPQ4qj9VjyvhX+HYpl+hladlpz+ZjtfMPisnhOjLa9+86KeZZZYJFgCxxo9PdmIHs0RrKSSDjOYv9o8a0FAo3wS3XN8MsCZqGyq9sId5xFNrofJCJnXcqTulOMl+c4MY6pzm4HNgJ5x8cuNWTKIRtNKNh+/RiCnOT1T+HVKPB6DHlhO+3yGCvB4SG2rrS8mo9g+5jLOtl8oJdZ2LVjH5VRNMZq9ec2a9n6JzSCmMUWPuzl7l4wVllX/0Thn5ChPx35phYwBcthJ3tCpDdy6HiprrGfG2Sj1EvWjzcftjJzFQmQUGfKSyqA/b/s5rIUXEr09wezovXyzmR9RaFM5OwdMybyV2cUPxwoGlpCCMIXW8+oNbCJQjgnL+3Xw+54SFoR0AU/Q0Axn+kZ7RfLmwtfeUCwgDQ7G9wBQcwhiwOsEpCut4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,359 +123,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Yuwen,
+Hi Samuel,
 
-On Thu, Nov 06, 2025 at 09:49:01AM +0800, Yuwen Chen wrote:
-> For block devices, sequential write performance is significantly
-> better than random write. Currently, zram's write-back function
-> only supports single-page operations, which fails to leverage
-> the sequential write advantage and leads to suboptimal performance.
-> 
-> This patch implements multi-page batch write-back for zram to
-> leverage sequential write performance of block devices.
-> 
-> After applying this patch, a large number of pages being merged
-> into batch write operations can be observed via the following test
-> code, which effectively improves write-back performance.
-> 
-> We used the following instructions to conduct a performance test
-> on the write-back function of zram in the QEMU environment.
-> $ echo "/dev/sdb" > /sys/block/zram0/backing_dev
-> $ echo "1024000000" > /sys/block/zram0/disksize
-> $ dd if=/dev/random of=/dev/zram0
-> $ time echo "page_indexes=1-100000" > /sys/block/zram0/writeback
-> 
-> before modification:
-> real	0m 16.62s
-> user	0m 0.00s
-> sys	0m 5.98s
-> 
-> real	0m 15.38s
-> user	0m 0.00s
-> sys	0m 5.31s
-> 
-> real	0m 15.58s
-> user	0m 0.00s
-> sys	0m 5.49s
-> 
-> after modification:
-> real	0m 1.36s
-> user	0m 0.00s
-> sys	0m 1.13s
-> 
-> real	0m 1.36s
-> user	0m 0.00s
-> sys	0m 1.11s
-> 
-> real	0m 1.39s
-> user	0m 0.00s
-> sys	0m 1.16s
+kernel test robot noticed the following build errors:
 
-That's the great improvement. Thanks.
+[auto build test ERROR on 24172e0d79900908cf5ebf366600616d29c9b417]
 
-Have you check the other effort?
-https://lore.kernel.org/lkml/20250731064949.1690732-3-richardycc@google.com/
+url:    https://github.com/intel-lab-lkp/linux/commits/Samuel-Holland/mm-ptdump-replace-READ_ONCE-with-standard-page-table-accessors/20251113-095117
+base:   24172e0d79900908cf5ebf366600616d29c9b417
+patch link:    https://lore.kernel.org/r/20251113014656.2605447-7-samuel.holland%40sifive.com
+patch subject: [PATCH v3 06/22] mm: Always use page table accessor functions
+config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20251113/202511131118.UUi1EVXL-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251113/202511131118.UUi1EVXL-lkp@intel.com/reproduce)
 
-In my opinion, it's much simpler and strightforward align with current zram
-writeback utility functions.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511131118.UUi1EVXL-lkp@intel.com/
 
-Do you have any issue with that?
+All errors (new ones prefixed by >>):
 
-> 
-> Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
-> Reviewed-by: Fengyu Lian <licayy@outlook.com>
-> ---
-> Changes in v4:
->   - Add performance test data.
-> Changes in v3:
->   - Postpone the page allocation.
-> Changes in v2:
->   - Rename some data structures.
->   - Fix an exception caused by accessing a null pointer.
-> ---
->  drivers/block/zram/zram_drv.c | 224 ++++++++++++++++++++++++++--------
->  1 file changed, 170 insertions(+), 54 deletions(-)
-> 
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index 4f2824a..ce8fc3c 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -751,21 +751,131 @@ static void read_from_bdev_async(struct zram *zram, struct page *page,
->  	submit_bio(bio);
->  }
->  
-> -static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
-> -{
-> -	unsigned long blk_idx = 0;
-> -	struct page *page = NULL;
-> +enum {
-> +	/* Indicate that the request has been allocated */
-> +	ZRAM_WB_REQUEST_ALLOCATED = 0,
-> +
-> +	/* the request has been processed by the block device layer */
-> +	ZRAM_WB_REQUEST_COMPLETED,
-> +};
-> +
-> +struct zram_wb_request {
-> +	struct completion *done;
-> +	unsigned long blk_idx;
-> +	struct page *page;
->  	struct zram_pp_slot *pps;
->  	struct bio_vec bio_vec;
->  	struct bio bio;
-> -	int ret = 0, err;
-> -	u32 index;
-> +	unsigned long flags;
-> +};
->  
-> -	page = alloc_page(GFP_KERNEL);
-> -	if (!page)
-> -		return -ENOMEM;
-> +static int zram_writeback_complete(struct zram *zram, struct zram_wb_request *req)
-> +{
-> +	u32 index = 0;
-> +	int err;
->  
-> -	while ((pps = select_pp_slot(ctl))) {
-> +	if (!test_and_clear_bit(ZRAM_WB_REQUEST_COMPLETED, &req->flags))
-> +		return 0;
-> +
-> +	err = blk_status_to_errno(req->bio.bi_status);
-> +	if (err)
-> +		return err;
-> +
-> +	index = req->pps->index;
-> +	atomic64_inc(&zram->stats.bd_writes);
-> +	zram_slot_lock(zram, index);
-> +	/*
-> +	 * Same as above, we release slot lock during writeback so
-> +	 * slot can change under us: slot_free() or slot_free() and
-> +	 * reallocation (zram_write_page()). In both cases slot loses
-> +	 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
-> +	 * ZRAM_PP_SLOT on such slots until current post-processing
-> +	 * finishes.
-> +	 */
-> +	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
-> +		goto next;
-> +
-> +	zram_free_page(zram, index);
-> +	zram_set_flag(zram, index, ZRAM_WB);
-> +	zram_set_handle(zram, index, req->blk_idx);
-> +	req->blk_idx = 0;
-> +	atomic64_inc(&zram->stats.pages_stored);
-> +	spin_lock(&zram->wb_limit_lock);
-> +	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
-> +		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
-> +	spin_unlock(&zram->wb_limit_lock);
-> +
-> +next:
-> +	zram_slot_unlock(zram, index);
-> +	release_pp_slot(zram, req->pps);
-> +	req->pps = NULL;
-> +	return 0;
-> +}
-> +
-> +static void zram_writeback_endio(struct bio *bio)
-> +{
-> +	struct zram_wb_request *req = bio->bi_private;
-> +
-> +	set_bit(ZRAM_WB_REQUEST_COMPLETED, &req->flags);
-> +	clear_bit(ZRAM_WB_REQUEST_ALLOCATED, &req->flags);
-> +	complete(req->done);
-> +}
-> +
-> +static struct zram_wb_request *zram_writeback_next_request(struct zram_wb_request *pool,
-> +	int pool_cnt, int *cnt_off)
-> +{
-> +	struct zram_wb_request *req = NULL;
-> +	int i = 0;
-> +
-> +	for (i = *cnt_off; i < pool_cnt + *cnt_off; i++) {
-> +		req = &pool[i % pool_cnt];
-> +		if (!req->page) {
-> +			/* This memory should be freed by the caller. */
-> +			req->page = alloc_page(GFP_KERNEL);
-> +			if (!req->page)
-> +				continue;
-> +		}
-> +
-> +		if (!test_and_set_bit(ZRAM_WB_REQUEST_ALLOCATED, &req->flags)) {
-> +			*cnt_off = (i + 1) % pool_cnt;
-> +			return req;
-> +		}
-> +	}
-> +	return NULL;
-> +}
-> +
-> +#define ZRAM_WB_REQ_CNT (32)
-> +static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
-> +{
-> +	int ret = 0, err, i = 0, cnt_off = 0;
-> +	int req_pool_cnt = 0;
-> +	struct zram_wb_request req_prealloc[2] = {0};
-> +	struct zram_wb_request *req = NULL, *req_pool = NULL;
-> +	DECLARE_COMPLETION_ONSTACK(done);
-> +	u32 index = 0;
-> +	struct blk_plug plug;
-> +
-> +	/* allocate memory for req_pool */
-> +	req_pool = kzalloc(sizeof(*req) * ZRAM_WB_REQ_CNT, GFP_KERNEL);
-> +	if (req_pool) {
-> +		req_pool_cnt = ZRAM_WB_REQ_CNT;
-> +	} else {
-> +		req_pool = req_prealloc;
-> +		req_pool_cnt = ARRAY_SIZE(req_prealloc);
-> +	}
-> +
-> +	for (i = 0; i < req_pool_cnt; i++) {
-> +		req_pool[i].done = &done;
-> +		req_pool[i].flags = 0;
-> +	}
-> +	req = zram_writeback_next_request(req_pool, req_pool_cnt, &cnt_off);
-> +	if (!req) {
-> +		ret = -ENOMEM;
-> +		goto out_free_req_pool;
-> +	}
-> +
-> +	blk_start_plug(&plug);
-> +	while ((req->pps = select_pp_slot(ctl))) {
->  		spin_lock(&zram->wb_limit_lock);
->  		if (zram->wb_limit_enable && !zram->bd_wb_limit) {
->  			spin_unlock(&zram->wb_limit_lock);
-> @@ -774,15 +884,15 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
->  		}
->  		spin_unlock(&zram->wb_limit_lock);
->  
-> -		if (!blk_idx) {
-> -			blk_idx = alloc_block_bdev(zram);
-> -			if (!blk_idx) {
-> +		if (!req->blk_idx) {
-> +			req->blk_idx = alloc_block_bdev(zram);
-> +			if (!req->blk_idx) {
->  				ret = -ENOSPC;
->  				break;
->  			}
->  		}
->  
-> -		index = pps->index;
-> +		index = req->pps->index;
->  		zram_slot_lock(zram, index);
->  		/*
->  		 * scan_slots() sets ZRAM_PP_SLOT and relases slot lock, so
-> @@ -792,22 +902,32 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
->  		 */
->  		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
->  			goto next;
-> -		if (zram_read_from_zspool(zram, page, index))
-> +		if (zram_read_from_zspool(zram, req->page, index))
->  			goto next;
->  		zram_slot_unlock(zram, index);
->  
-> -		bio_init(&bio, zram->bdev, &bio_vec, 1,
-> +		bio_init(&req->bio, zram->bdev, &req->bio_vec, 1,
->  			 REQ_OP_WRITE | REQ_SYNC);
-> -		bio.bi_iter.bi_sector = blk_idx * (PAGE_SIZE >> 9);
-> -		__bio_add_page(&bio, page, PAGE_SIZE, 0);
-> -
-> -		/*
-> -		 * XXX: A single page IO would be inefficient for write
-> -		 * but it would be not bad as starter.
-> -		 */
-> -		err = submit_bio_wait(&bio);
-> +		req->bio.bi_iter.bi_sector = req->blk_idx * (PAGE_SIZE >> 9);
-> +		req->bio.bi_end_io = zram_writeback_endio;
-> +		req->bio.bi_private = req;
-> +		__bio_add_page(&req->bio, req->page, PAGE_SIZE, 0);
-> +
-> +		list_del_init(&req->pps->entry);
-> +		submit_bio(&req->bio);
-> +
-> +		do {
-> +			req = zram_writeback_next_request(req_pool, req_pool_cnt, &cnt_off);
-> +			if (!req) {
-> +				blk_finish_plug(&plug);
-> +				wait_for_completion_io(&done);
-> +				blk_start_plug(&plug);
-> +			}
-> +		} while (!req);
-> +		err = zram_writeback_complete(zram, req);
->  		if (err) {
-> -			release_pp_slot(zram, pps);
-> +			release_pp_slot(zram, req->pps);
-> +			req->pps = NULL;
->  			/*
->  			 * BIO errors are not fatal, we continue and simply
->  			 * attempt to writeback the remaining objects (pages).
-> @@ -817,43 +937,39 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
->  			 * the most recent BIO error.
->  			 */
->  			ret = err;
-> -			continue;
->  		}
-> +		cond_resched();
-> +		continue;
->  
-> -		atomic64_inc(&zram->stats.bd_writes);
-> -		zram_slot_lock(zram, index);
-> -		/*
-> -		 * Same as above, we release slot lock during writeback so
-> -		 * slot can change under us: slot_free() or slot_free() and
-> -		 * reallocation (zram_write_page()). In both cases slot loses
-> -		 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
-> -		 * ZRAM_PP_SLOT on such slots until current post-processing
-> -		 * finishes.
-> -		 */
-> -		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
-> -			goto next;
-> -
-> -		zram_free_page(zram, index);
-> -		zram_set_flag(zram, index, ZRAM_WB);
-> -		zram_set_handle(zram, index, blk_idx);
-> -		blk_idx = 0;
-> -		atomic64_inc(&zram->stats.pages_stored);
-> -		spin_lock(&zram->wb_limit_lock);
-> -		if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
-> -			zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
-> -		spin_unlock(&zram->wb_limit_lock);
->  next:
->  		zram_slot_unlock(zram, index);
-> -		release_pp_slot(zram, pps);
-> -
-> +		release_pp_slot(zram, req->pps);
-> +		req->pps = NULL;
->  		cond_resched();
->  	}
-> +	blk_finish_plug(&plug);
->  
-> -	if (blk_idx)
-> -		free_block_bdev(zram, blk_idx);
-> -	if (page)
-> -		__free_page(page);
-> +	if (req)
-> +		clear_bit(ZRAM_WB_REQUEST_ALLOCATED, &req->flags);
-> +	for (i = 0; i < req_pool_cnt; i++) {
-> +		while (test_bit(ZRAM_WB_REQUEST_ALLOCATED, &req_pool[i].flags))
-> +			wait_for_completion_io(&done);
-> +		err = zram_writeback_complete(zram, &req_pool[i]);
-> +		if (err) {
-> +			release_pp_slot(zram, req_pool[i].pps);
-> +			req->pps = NULL;
-> +			ret = err;
-> +		}
-> +
-> +		if (req_pool[i].blk_idx)
-> +			free_block_bdev(zram, req_pool[i].blk_idx);
-> +		if (req_pool[i].page)
-> +			__free_page(req_pool[i].page);
-> +	}
->  
-> +out_free_req_pool:
-> +	if (req_pool != req_prealloc)
-> +		kfree(req_pool);
->  	return ret;
->  }
->  
-> -- 
-> 2.34.1
-> 
+   mm/madvise.c: In function 'guard_install_set_pte':
+>> mm/madvise.c:1119:9: error: implicit declaration of function 'set_pte'; did you mean 'set_ptes'? [-Wimplicit-function-declaration]
+    1119 |         set_pte(ptep, make_pte_marker(PTE_MARKER_GUARD));
+         |         ^~~~~~~
+         |         set_ptes
+
+
+vim +1119 mm/madvise.c
+
+  1112	
+  1113	static int guard_install_set_pte(unsigned long addr, unsigned long next,
+  1114					 pte_t *ptep, struct mm_walk *walk)
+  1115	{
+  1116		unsigned long *nr_pages = (unsigned long *)walk->private;
+  1117	
+  1118		/* Simply install a PTE marker, this causes segfault on access. */
+> 1119		set_pte(ptep, make_pte_marker(PTE_MARKER_GUARD));
+  1120		(*nr_pages)++;
+  1121	
+  1122		return 0;
+  1123	}
+  1124	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
