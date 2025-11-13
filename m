@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AB65CD4F2C
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 00:43:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5123BCD3445
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 00:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E6878E0003; Wed, 12 Nov 2025 19:43:46 -0500 (EST)
+	id B1F6D8E0011; Wed, 12 Nov 2025 19:43:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AFBB8E0011; Wed, 12 Nov 2025 19:43:46 -0500 (EST)
+	id A0C938E0012; Wed, 12 Nov 2025 19:43:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 502B18E0012; Wed, 12 Nov 2025 19:43:46 -0500 (EST)
+	id 614328E000F; Wed, 12 Nov 2025 19:43:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 222BF8E000F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 43A298E0003
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:43:46 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D706789949
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:45 +0000 (UTC)
-X-FDA: 84103736010.19.014CF9B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D1E9980003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=feYpVEt5;
-	spf=pass (imf02.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1628512E239
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:46 +0000 (UTC)
+X-FDA: 84103736052.08.D08FC1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 290E5C0005
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fgh2lu/q";
+	spf=pass (imf10.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762994624;
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=01TF3C3IWbmDJQaVCIvSXOwIY4WyGGy+JpyFPRSFpf0=;
-	b=sm9fAW4OMiOWTHooQ5O5huugA5IYxiDGazBvRuQmV6t+QtsoRsJ84p+BeKpeRvh46yAaMD
-	jyChx1V8NbDgRbl4BVj92nBfzLvyIqk0K7YXp4tclBSbweGNPti7f9zPYV4GyvREnIUWGA
-	rxXRNWNtAgui66PNoqc6vionnJ864X4=
+	bh=UupePdgYh7jBN7QzBPs45mdHzf8g/GuQ731Ho0zix4w=;
+	b=lSYB+MfH6o3+lcTqIFyAIHJaC490r/pjdsM4qOE3YDPZI6C9cs93Rv0a9QrsbWOvYljdcT
+	cZIzUp512+jwu7z0okpeSyzDkq6NvcqTPHAFnsoGbaxpayEb9V3/Vnc95wMGMAZC60Z2Pa
+	xmmscCDrIExmjhxEqdWH9K1Rr8udCo4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fgh2lu/q";
+	spf=pass (imf10.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762994624; a=rsa-sha256;
 	cv=none;
-	b=sPrlAuWBSu4MxwJgl+shKXLOS4W8KjVxeD8YANjuhbk9SfK8RyEza9u8IVpRIpekHvKrU2
-	cm1j3eMen3Od/R4czuaUGbQmSoys//DPCgCxXX2fBBoYIAvI+wizQ4AtWYlHfWfB5V2WxY
-	WDmE+NbynoMXHo87ssIxemOJFl9r1dE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=feYpVEt5;
-	spf=pass (imf02.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=e03mkS+tPdjKGWkP74EcrGXpr+C9MrNFBpN1HpRHldC8Gjn0OLD/apv2jWaYDB7Dia5UwT
+	LSvjs5od58nMpzrypGz7PQhecHyrPXegBcRAn0keuyeyroD4i7dka5Uk8cq04SXwTb6fKc
+	SwB8iDqCVbjZEICiQEiHYDVnM7ydMW0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E9DF4375E;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A268601E6;
+	Thu, 13 Nov 2025 00:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E8DDAC2BCB3;
 	Thu, 13 Nov 2025 00:43:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C74ECC2BCB5;
-	Thu, 13 Nov 2025 00:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762994621;
-	bh=B6oYBetl6TQXfW1dNsiK6ccjw9VFfFfmPrPyliUaQyM=;
+	s=k20201202; t=1762994623;
+	bh=JxdFhs6m+jpZSuVM0h6LrugZL2h/LmWZ4qPYhd8l21c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=feYpVEt5T6Pt6mtjJ2lbU3mQ02+3hD+t3XYKC3ke4n79qNkv8EevgsZfxjjBoUohk
-	 0cF9/zjyktU78jI7tzLQbKJ6WekCa4hMHiTYQSVD6RDD5CsnojJf5zurLnKF99J5WY
-	 /zlm5soAE+eP41XOpYdN52gjHm5BwUATyYTnUUaKxfz+onSkAD5ocXHES/hpQNIJdn
-	 iKWTYnQzcn05lmVCc99NMoiboaB0zQ/yAH9iIog0ds57/a/hiyhnaQGJbuefHNMXJ9
-	 ajFABArm6CgOvJhujF2tSzAsLE7+OiQj/Ot7sV2eZ409DQjRijDiJ2r7QSI98ZiBog
-	 W95PacosRmKWg==
+	b=fgh2lu/qNW1n3Yrn7JE50LdHalw2ZRF1TPsUgv2ZpfXLQK+rJQcBfqtzek32YbqHu
+	 lFtvRGeXpP7L0abUsAORsLqOFAB+BXL1jKL+O1OLq5sDU/NqpqjQC/8vkyRFLCn2GE
+	 lE2BvJ3NF+93vj1eckd+Mw9qiqNYxQAEAdvj2f61U/eSgxHMAsJKGmnrNBGdTR+Zec
+	 OtXmNCWgvw4Shww9JGBOKjDvdut+UajeQDYWN+ZPsQ6M/dEA6VRdMLfzbaZ1mRTnav
+	 qyROzjo2PiRXb8KsnX8BVBiM082oLxI6n84W761KFN+iqwLA3gVJ3MUJ12MlMohiNh
+	 mwiEduYHo27yQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1F7DCD3445;
-	Thu, 13 Nov 2025 00:43:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7E91CD4F2F;
+	Thu, 13 Nov 2025 00:43:42 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Wed, 12 Nov 2025 16:43:00 -0800
-Subject: [PATCH v23 02/28] dt-bindings: riscv: zicfilp and zicfiss in
- dt-bindings (extensions.yaml)
+Date: Wed, 12 Nov 2025 16:43:11 -0800
+Subject: [PATCH v23 13/28] prctl: arch-agnostic prctl for indirect branch
+ tracking
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251112-v5_user_cfi_series-v23-2-b55691eacf4f@rivosinc.com>
+Message-Id: <20251112-v5_user_cfi_series-v23-13-b55691eacf4f@rivosinc.com>
 References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
 In-Reply-To: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -107,27 +107,27 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
  alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Deepak Gupta <debug@rivosinc.com>
+ Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762994618; l=1500;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762994618; l=5257;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=onQZPDO/5PI+EGQWomoauY3V7EJZG9au2H7fkbOgnBs=;
- b=OnT/qV3NRR+X1tWh8ldGuMTLiLCvfigqvKHaNt+5sZqvMoTbXTa23m7SnLPqA3vEWfUvkZtqO
- Qi9cVcJvwN5BhFiBc3Ochx1g8K5SeWHMPQklKtSvMY87j+SRFEATuoC
+ bh=//BKFL/B5DGzgzNcxCALX3+BH8HxJjmHBkOpM1C2zRA=;
+ b=MFE+OH7s8d3C0mGAMBW7da0nB/Ejbk+aUDEMmNBt0w+cStTv6kfU6zTDH6ZyOeYoC0n8n0zcO
+ bhRuKgVEZ0wCPTKC0B0yTXd5ISraJjRTNSJrG8d3F6TwaAIRv/66oO4
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
  auth_id=553
 X-Original-From: Deepak Gupta <debug@rivosinc.com>
 Reply-To: debug@rivosinc.com
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D1E9980003
-X-Stat-Signature: f5fm3tuw4nyy41x55yu3ha8r9cdwzh3b
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 290E5C0005
+X-Stat-Signature: nf8r87fh3i9y61omxos7d1zmmfjt7tpu
 X-Rspam-User: 
-X-HE-Tag: 1762994623-49806
-X-HE-Meta: U2FsdGVkX18X+YTuNFso67lNXiFY4u76MN7Bnv4rmNi/e1qV+Pm8lrsATtERBkMrmGYrxBn9cPNs/N1cBrd3vldKhPtKGfF2N4YPSk1EBbTv7ZW8BCBTWfiONpCVTNHVOlO0Kp/wqWaDAseRxd6CHqAj3XgYVBkXF8MRHdaqJWZzwmqdgaw8x8y98vIG32j8vVFfl2X3TBgot3YJ18a8nbvW+9PX/rO2VKQu+Aso9E878Mu3phZjBnMRXZt7gJpU82o6pU7+/y+DmcbyA/KE1nSJ9RAMmv7r/gFlbDRXpqSUSsjD2+gKPK65dyone5Eof2iJ74oKLdp2BzXQBC/aKGNZfr3aAT8LSpRQNikioOD2wePsZT9/iWEBrfDi0zbrmG96T9hnFR6n9aHIH1KR6xWRZ6afYiK8Mi1y7HhBdlebfzNn1YlMn5IHRTSU3qLaKEAbtxUu5H1IRYTi2zGFKRJMhsByhHv8QZHJ8c4epWS/p4Da/iL0cQVCT55vQ9OKe33g1CgfQ7bkpytKarfLOwBv7lsLtakIrClAHqfqK8jH3rB4MXSXMwmuYhPCWP6iYxi0mnEl79mUYanAIewENTosoUXYGVE4DSNepArswb2OmZTGPVpgQQmXCdR/Sitw9QqL2RLHahqOFy1q3gmJd5whEJ7taNKNFL2mdmWFf21LQOakR7P2auuheK/07qk/mLAJL31I4iUWXcIMabj/kLqv5UgtjyBKexyGDrDv1ekPIX3ppeR3t09Y2L74wjW9UERJw0VPeGKXMmx+5aul/cxLyIPAJqBscFl2OFU0WTHzemgFAs7oCVziijgEXApl6m5i0+2rS1rzBPcSJqxe6zUNaVvJudtvJFjSq0sWK1LxfcQaVMSe9Iu83dYn8FQ8iDDAmSEcHT1wMdjmGhEMAZkTLgowywEvlieE4jucPjjIkDtOo4uKA3vXsR/szQKO+O94wkPbbEru/11vPWo
- UcsBBZZK
- PcGVREOv8BSb8oUrUhk5pe+rpAeQA5HlK22N0h7n2nrSrNDKTy9gMuEW+NZ0AK9xs47iv1w4gkJZbHC4XyLukuaQaHjgS4oBYSaRS326xUsJxb4cCt3b56aErCZaVlZVnCkpsgl8R0qSXp/A7AUYeM7nwbX6sCCRrO0H9JVSzhY8c0wzAuN6sujZP2s5Ee4LrrEAnkUHizLJ54JpyeRrA2VGidZFeoBbMYlyXlFhSG+9k8Ys1jHSWvRpzWJ3s+h8jepGYROcxssyoXj5nkTOygbjdFXpvp2tbgH0SHG/HKQHfezJg9I0QOnN1c9Jkh56HZQxQSTk+ONR+YN0mivLCgmUZTR5oy/f0HOytYD+lGBidfnt2lXFzFcsg1THgeqHQkc1fRq/ON96NRZDt0l8cbr9xgCFohQDdCIRQCOWh33DA307FYYqpLRlJ531iMxIL48JYJRDbL7Mbn7TMS2rM1Zi6WywFoHpbjB2h4Nx8tMre4MCXMtpK1FO37Xg4oB4rMvm/
+X-HE-Tag: 1762994624-235180
+X-HE-Meta: U2FsdGVkX19BDJ2nDhy/PduqI7spY3WNlvaqhFLJ7NbXKm69hbWWqCpiSVr2CSYoFyRdt/It3k3+uPgBWlwSkJapg+TOjsbvv3RI/Xg1P73CS7hp0mmJGg9Y5Wh0FdsKor5qGVIl6zbNmR1nmQGEmqOh3tJJg9OlLsuJpPhY6MHxVzXOpSpW+6AJ7eR9On1V40Ao5BQfcZFoNzXgroly++vNf6ueFp8ykSLk/VKeHeiyfGXGwY8gOOL4BM+giAo0aDLcNGPMg2pLAAk90iSb91E1ArLOplu2PblnzAY01Fy/qLbd7f5B6XhfgafnoI+VouJuy4bKc0OzoqPcKmO8KnZht0Qob0KaN6DShZ2mNC4eDwJ95L2+lvexbLcu4enpOIY0AAgzAPLZRKe6yV3EB7qBSBnSFViu6VJZH/foDTyD9IoCYItMR50xHIgGflhtJ9WfZ7sNFcgNk0burfYohmFgS69uJSUjyfNPfxR5pJGms16PXUpJm/BsdiMGpsL/t/rXFLzeJJr8WDDcgXgI5oryq8ztyz1fygxp2ybeFhM5r9X/Qhnhjgj4KhrTAF2MYcpLNx/Kt+Ly0hLV/kMvoa9ok/I7bBAjUWOkjC2/Bt/WdiHfp/B2V4OLLKdqYzyN/LAhcT50I85fCntBLrRIxV10uppraHFUBjvrcKR56xv31bdeSxd1agw41wvy65gWzUU7xOs/Ve1WvWK4pS/fKP72mYELhj1vp5tEyB9TQBVVlvWfL8ZZoNSoprCVI1lfSfCmi+KX6SwqtY5/M/dDjZ5pXlzSGqTD3lTZisWe19Z3dHUK5nWZY8pIU+BEVoH0RDtRiV1SRq754/EqHN/GbLEgRv2P9Utys44OyuKifbrqkrFaudQ/HrZ8EyoJDZ/t7NCZmUnBtZ08lMWkptifeHNpO99EKOk/FTMPU2k7C5gI7OHchUQhDh1QhRJ10tAI3hF3ZDuuZx8OO10rsHH
+ XWBn0jhk
+ tVtVHiYf8YVdieaWtP8grj5n3ltP7sCBKKvpddThlWzfGx2nihVVO4Pijlr0bMovTg9oyu0VB3eHIUw2mlq2a6WWY9ez7wRveZENV7HSojX9duf+2hMA1u/AzrAcqbzDpOr/Bekzut8Sj21T6DOEgAKj4tfD+RB7Vdql1iJaL75fSvNXXwMVJ+h7PLBLvpjKoT3JTQubRONZRW5cV4a1atXeOMT5A+Yjab/N9Jwn7sQIdzqNEelOSlXwf+Y8CwwdsLvHAMIYKD4iwGJ4Yx6KuZ4i2XG+oGxfjFUythkpJKelSqdxjusry2bQfsPloZWnMJ2gUAszm73i6jUcgZsoyWlp77v3c9SK10P8ZRpMomo+hXc7feOFir8GBrsFpkopBH38AqJupEd/NnIRkZ50DkYHR43L1xbRFU7imxtM/9Vn1yBw7CRffGAw12CQExCpOlqEKyy9etcfDzakzfUYJD3/fkSZezbRzoiAMUmyLRzT8c3yMr6TEajOr3SCa3CNE25DeMBr7lTqk2CsLdzCeO8l8rT4iA6wmLyIikPjVrxAdLfY0DhKoXa2Gqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,39 +138,141 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-Make an entry for cfi extensions in extensions.yaml.
+Three architectures (x86, aarch64, riscv) have support for indirect branch
+tracking feature in a very similar fashion. On a very high level, indirect
+branch tracking is a CPU feature where CPU tracks branches which uses
+memory operand to perform control transfer in program. As part of this
+tracking on indirect branches, CPU goes in a state where it expects a
+landing pad instr on target and if not found then CPU raises some fault
+(architecture dependent)
 
+x86 landing pad instr - `ENDBRANCH`
+arch64 landing pad instr - `BTI`
+riscv landing instr - `lpad`
+
+Given that three major arches have support for indirect branch tracking,
+This patch makes `prctl` for indirect branch tracking arch agnostic.
+
+To allow userspace to enable this feature for itself, following prtcls are
+defined:
+ - PR_GET_INDIR_BR_LP_STATUS: Gets current configured status for indirect
+   branch tracking.
+ - PR_SET_INDIR_BR_LP_STATUS: Sets a configuration for indirect branch
+   tracking.
+   Following status options are allowed
+       - PR_INDIR_BR_LP_ENABLE: Enables indirect branch tracking on user
+         thread.
+       - PR_INDIR_BR_LP_DISABLE; Disables indirect branch tracking on user
+         thread.
+ - PR_LOCK_INDIR_BR_LP_STATUS: Locks configured status for indirect branch
+   tracking for user thread.
+
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Zong Li <zong.li@sifive.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/riscv/extensions.yaml | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/linux/cpu.h        |  4 ++++
+ include/uapi/linux/prctl.h | 27 +++++++++++++++++++++++++++
+ kernel/sys.c               | 30 ++++++++++++++++++++++++++++++
+ 3 files changed, 61 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/riscv/extensions.yaml b/Documentation/devicetree/bindings/riscv/extensions.yaml
-index 543ac94718e8..3222326e32eb 100644
---- a/Documentation/devicetree/bindings/riscv/extensions.yaml
-+++ b/Documentation/devicetree/bindings/riscv/extensions.yaml
-@@ -444,6 +444,20 @@ properties:
-             The standard Zicboz extension for cache-block zeroing as ratified
-             in commit 3dd606f ("Create cmobase-v1.0.pdf") of riscv-CMOs.
+diff --git a/include/linux/cpu.h b/include/linux/cpu.h
+index 487b3bf2e1ea..8239cd95a005 100644
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -229,4 +229,8 @@ static inline bool cpu_attack_vector_mitigated(enum cpu_attack_vectors v)
+ #define smt_mitigations SMT_MITIGATIONS_OFF
+ #endif
  
-+        - const: zicfilp
-+          description: |
-+            The standard Zicfilp extension for enforcing forward edge
-+            control-flow integrity as ratified in commit 3f8e450 ("merge
-+            pull request #227 from ved-rivos/0709") of riscv-cfi
-+            github repo.
++int arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *status);
++int arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status);
++int arch_lock_indir_br_lp_status(struct task_struct *t, unsigned long status);
 +
-+        - const: zicfiss
-+          description: |
-+            The standard Zicfiss extension for enforcing backward edge
-+            control-flow integrity as ratified in commit 3f8e450 ("merge
-+            pull request #227 from ved-rivos/0709") of riscv-cfi
-+            github repo.
+ #endif /* _LINUX_CPU_H_ */
+diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
+index 51c4e8c82b1e..9b4afdc85099 100644
+--- a/include/uapi/linux/prctl.h
++++ b/include/uapi/linux/prctl.h
+@@ -386,4 +386,31 @@ struct prctl_mm_map {
+ # define PR_FUTEX_HASH_SET_SLOTS	1
+ # define PR_FUTEX_HASH_GET_SLOTS	2
+ 
++/*
++ * Get the current indirect branch tracking configuration for the current
++ * thread, this will be the value configured via PR_SET_INDIR_BR_LP_STATUS.
++ */
++#define PR_GET_INDIR_BR_LP_STATUS      79
 +
-         - const: zicntr
-           description:
-             The standard Zicntr extension for base counters and timers, as
++/*
++ * Set the indirect branch tracking configuration. PR_INDIR_BR_LP_ENABLE will
++ * enable cpu feature for user thread, to track all indirect branches and ensure
++ * they land on arch defined landing pad instruction.
++ * x86 - If enabled, an indirect branch must land on `ENDBRANCH` instruction.
++ * arch64 - If enabled, an indirect branch must land on `BTI` instruction.
++ * riscv - If enabled, an indirect branch must land on `lpad` instruction.
++ * PR_INDIR_BR_LP_DISABLE will disable feature for user thread and indirect
++ * branches will no more be tracked by cpu to land on arch defined landing pad
++ * instruction.
++ */
++#define PR_SET_INDIR_BR_LP_STATUS      80
++# define PR_INDIR_BR_LP_ENABLE		   (1UL << 0)
++
++/*
++ * Prevent further changes to the specified indirect branch tracking
++ * configuration.  All bits may be locked via this call, including
++ * undefined bits.
++ */
++#define PR_LOCK_INDIR_BR_LP_STATUS      81
++
+ #endif /* _LINUX_PRCTL_H */
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 8b58eece4e58..9071422c1609 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2388,6 +2388,21 @@ int __weak arch_lock_shadow_stack_status(struct task_struct *t, unsigned long st
+ 	return -EINVAL;
+ }
+ 
++int __weak arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *status)
++{
++	return -EINVAL;
++}
++
++int __weak arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status)
++{
++	return -EINVAL;
++}
++
++int __weak arch_lock_indir_br_lp_status(struct task_struct *t, unsigned long status)
++{
++	return -EINVAL;
++}
++
+ #define PR_IO_FLUSHER (PF_MEMALLOC_NOIO | PF_LOCAL_THROTTLE)
+ 
+ static int prctl_set_vma(unsigned long opt, unsigned long addr,
+@@ -2868,6 +2883,21 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 	case PR_FUTEX_HASH:
+ 		error = futex_hash_prctl(arg2, arg3, arg4);
+ 		break;
++	case PR_GET_INDIR_BR_LP_STATUS:
++		if (arg3 || arg4 || arg5)
++			return -EINVAL;
++		error = arch_get_indir_br_lp_status(me, (unsigned long __user *)arg2);
++		break;
++	case PR_SET_INDIR_BR_LP_STATUS:
++		if (arg3 || arg4 || arg5)
++			return -EINVAL;
++		error = arch_set_indir_br_lp_status(me, arg2);
++		break;
++	case PR_LOCK_INDIR_BR_LP_STATUS:
++		if (arg3 || arg4 || arg5)
++			return -EINVAL;
++		error = arch_lock_indir_br_lp_status(me, arg2);
++		break;
+ 	default:
+ 		trace_task_prctl_unknown(option, arg2, arg3, arg4, arg5);
+ 		error = -EINVAL;
 
 -- 
 2.43.0
