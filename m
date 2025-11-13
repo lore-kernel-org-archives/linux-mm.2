@@ -4,234 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8CA5CD5BC2
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E07D6CD5BC7
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:19:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB4A78E0011; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
+	id 1B86A8E0003; Thu, 13 Nov 2025 06:19:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8BF78E0002; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
+	id 18FCA8E0002; Thu, 13 Nov 2025 06:19:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D53A58E0011; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
+	id 0A5A08E0003; Thu, 13 Nov 2025 06:19:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BABD18E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 768701A08E4
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:06:07 +0000 (UTC)
-X-FDA: 84105304374.20.3D686FD
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0CC8218000B
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:06:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=irCgD2Z+;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GMmkXhvn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763031964;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC2998E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:19:47 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 944CA5BC87
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:19:47 +0000 (UTC)
+X-FDA: 84105338814.04.CE19E33
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3E63F40005
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:19:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tEx0PXpS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LOUAPU0D;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TPAANJvU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IMDALd4J;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763032785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3YksbRrcn+aa3fv+C32v5pkARAuIagi47ZTMQl0uyng=;
-	b=liQe5awJJgmf/y0SJDwYurjFKNi/N12GqN7kBS3h99+b5A7ayK8Y3R6md1M0gx2IvsMpgz
-	FpvdiRtcQWt20TdX2sxMKwk21zqxz6WUnsv8fw3JKPVOdCLitFSI1JH5OkU1aultS3mQ3S
-	Fi2Lqkz6TxMb1TawLWGd7q0LYtVYd+4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763031964; a=rsa-sha256;
-	cv=pass;
-	b=UdI0cKVvGwoJi1gR2oP5r4uB2iBfgJm7bo8UKKDHyh9qt7HYqozp6EWhV7duUyHEDgf6vi
-	+3sOV3vIb52N2yXo3btaFxR0KPR9bIx9u5EHR6l1ZknkOGLMDwpGdVbC90qIx4xmVFM11x
-	Z6IM4cxPTl01Bh+6QK/o/uVyxyE9fMI=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=irCgD2Z+;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GMmkXhvn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD1gHA5020810;
-	Thu, 13 Nov 2025 11:05:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=3YksbRrcn+aa3fv+C3
-	2v5pkARAuIagi47ZTMQl0uyng=; b=irCgD2Z+kDH6wCmEZkkn4fneWvEJ9oqiYS
-	/7EI5UJ3PfnkoyP7PnsRhpPmJYZ9oYEwDqZxxbo7aoHaXEZkbB1CMLQNmyJT7YDT
-	TNyX+ZWawKM1bLwFcEaLiVe5zo0T2ol1Ioq60npgw3CgcHZuOZMDcL2gg1bZoaUu
-	1IeUK3ru1NokvCkW/no579j6P2JAzCyJ1utRSdL6CO/ZnzbAu7mNqxPoQ0XlL9ZH
-	//BAiPbsX2KmTxDLnCe4fRcnuOFgwTNMBb6DhoG2dUqDDw6XzHzHkx29GagbNyKB
-	AHNMyZ/Q6MbmiHTiWvSBlKZh4zXAwMarhRrXKvF+u8f+sawczuMg==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4acyjt9etw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Nov 2025 11:05:35 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD9hr9W003299;
-	Thu, 13 Nov 2025 11:05:34 GMT
-Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012031.outbound.protection.outlook.com [52.101.43.31])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vacgwxt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Nov 2025 11:05:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V1Mo8wOW96jrG77xVOvk45ZKRqzybFb6/7NkEXDz0SlLxUOxLE7o2ibVu5skk4U1sAYANoPw+7XY0QyPS2ekxFGSYzIg9YMPETKT+QQiITtgSSaZjTCXhSXZOY4RCJOqrPQRBT14Cc67vORqlmbqpCQ+v8Hg85Yzqwa7Q4jIYI6QL5xZHH+9hZfPyOszPGRvVB74yXNKw1kM6IkuIS1kF8KsnQg6qVgbecQ92nfPMr7JvHaiw7pDcicUMb3BGmU0QsNgzJDuZnwsLBPfCQHXbKkaGpU2TVMc7gwt9WmyinFnW5a9OLEXgLLwBuqkV2L54DbMHLCmCLl8m8tSDRzayA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3YksbRrcn+aa3fv+C32v5pkARAuIagi47ZTMQl0uyng=;
- b=SS1JPza+1xiA16ibRflt1Q3RlZrLXqUSimcmKj/XPHr3hw9NmIARLaGnNEpxHsKUEm66mK8rl7h9iRKCAFYRyYpn7Sn/MbnyXSJ98K3vupRuJo+wKKc42Wxtb7XZA8KX8ZmIYpd8Z7QZV/TuMQfzYbmuCUsHkXw8zhDbdb8RW0MzCB9kNz3WC2n2bc5yYIWHgCMoZOSdlgeA9PbD1zvqGcLlAfyvIh7FnkrZuTnj/B6WyUzhjNKJByhbaRMaKKKpxMBS7eU0GjHMctrLFUho1oVZuFtg2sRCcox6+/XsbGhVHIUGqZlQmQxn9eOOvYrdekIzvpVYseYdyL5pr9hR9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3YksbRrcn+aa3fv+C32v5pkARAuIagi47ZTMQl0uyng=;
- b=GMmkXhvn4xXBgPZ7ZWdHET679UK5XStjKdyJpMrSiXyMT9nRk1SEungxA0z1mpqv8CmEToFOXf1qiVeIbZPbzSGOzfxpwvzU96ODtf4eDeW9sXoYE3nDZMFfPwPU+s+acZscbQD+tOFvHNadH238i3k7hjO//lE7k9foL4OzapM=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ5PPF6A2C0CCA1.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::7a4) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Thu, 13 Nov
- 2025 11:05:32 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9320.013; Thu, 13 Nov 2025
- 11:05:30 +0000
-Date: Thu, 13 Nov 2025 11:05:28 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-        stable@vger.kernel.org,
-        syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Message-ID: <f7abdb4c-b7e2-4fe4-9198-f313d0cacacb@lucifer.local>
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
- <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
- <aRUggwAQJsnQV_07@casper.infradead.org>
- <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
+	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
+	b=4cBeO/r2dMbVi3M7H1Zx82HAsFnaMiduCcZVW10GEFapkByCtoCwBK7fsu6gHdnEXiuFLJ
+	ZuMn1+1cdQnyPQGNys6dW00WLMUu8ZkAlYydBhrCmgksCjKb0RUr/8F1Dn7ohwewdPHzcv
+	9bUeq/bEIUMs1sVbTYZGh7RPetjESn4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763032785; a=rsa-sha256;
+	cv=none;
+	b=SD+y0qzpbTPzBOJJjsvoJlGTuERhtDAq/N4XJWhWBXCzzsFgKnA2gpgT+qgChVVl1rBh1y
+	H4g4TOVjnCQB2NoN4+6EQXtabJDEuwztEl46NKELZ26zVj8x/u7HRacz+HRcsTGfXm+SlN
+	Smsv/moQKwmhXJrLyZpv9BIkLqLhSRc=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tEx0PXpS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=LOUAPU0D;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TPAANJvU;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IMDALd4J;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B45DC21281;
+	Thu, 13 Nov 2025 11:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763032782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
+	b=tEx0PXpSR9fC2UvG0u7MJFp2BSlhdeqm6tfjJPlZS4pzGQmOwabgT+ii7BsgRYsefYOMF3
+	VvsJYx6JmgiNnIkc2NCbUzK9WMs4Iesgm99E+qFwo8H8q29+lEmIo9rS5V2MjR+2UAS7Qp
+	XFnzrWjacC8RlMPSp7qTqHvuw+qVCws=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763032782;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
+	b=LOUAPU0DI5ldL7amV9RP5y5ZRcrOsqlJWe+yGqm+w1F5fGBdUOw3+MjMsiQwLq6RLZlsah
+	z1b+3BWuTShjlLBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763032780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
+	b=TPAANJvULtvZbKY9kTlFDj3fHaqwcTQ7QSHepORPj1SmGNXAVQl+h4cThVAzOE6Yl7BCLK
+	P+mNsKLJnjLZvTwsl3qRAtpBElJ625a6hag5mPaMbQZLS4fmnximef6W0ci53Jrf6gupH/
+	2n45l6UZt9TFhva3h8X/wtCXAWukFSU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763032780;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lczhD1MzObRMKndPkZG3oPhNpz/T85+A7Y0PvHv3zA4=;
+	b=IMDALd4JeMlPI9Mxv0/hWb4imPPdPuOJsIg/iIEqAN8lny7MqpgtZO9x5EjyCnO6vYkjJ5
+	0uFVDgatEsam+WBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A65493EA61;
+	Thu, 13 Nov 2025 11:19:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2zOKKMy+FWnVYgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 13 Nov 2025 11:19:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 63A30A0976; Thu, 13 Nov 2025 12:19:40 +0100 (CET)
+Date: Thu, 13 Nov 2025 12:19:40 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: syzbot <syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com>, 
+	akpm@linux-foundation.org, bpf@vger.kernel.org, bsegall@google.com, david@redhat.com, 
+	dietmar.eggemann@arm.com, jack@suse.cz, jsavitz@redhat.com, juri.lelli@redhat.com, 
+	kartikey406@gmail.com, kees@kernel.org, liam.howlett@oracle.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, lorenzo.stoakes@oracle.com, mgorman@suse.de, mhocko@suse.com, 
+	mingo@redhat.com, mjguzik@gmail.com, oleg@redhat.com, paul@paul-moore.com, 
+	peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org, sergeh@kernel.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
+	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
+	syzbot+0a8655a80e189278487e@syzkaller.appspotmail.com
+Subject: Re: [PATCH] nsproxy: fix free_nsproxy() and simplify
+ create_new_namespaces()
+Message-ID: <3yjawi3c72ieiss7ivefckuua55e2yvo55z4m4ykp2pzw2snpa@ym34e3d7cnoi>
+References: <691360cc.a70a0220.22f260.013e.GAE@google.com>
+ <20251111-sakralbau-guthaben-7dcc277d337f@brauner>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
-X-ClientProxiedBy: LO4P123CA0382.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18f::9) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ5PPF6A2C0CCA1:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c83af6c-552e-4fae-74d2-08de22a48f2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nmPBvepWXzOb39e4BVa1IR6/zE1zuoeELnxir3S+onSzGn327ETI4YDnqmRE?=
- =?us-ascii?Q?x1ePl/ooYg7zgg7SLbxCQ2NPCCzbaDSsnIeMtQysJyyQdHRvZMoB2nT2j6tO?=
- =?us-ascii?Q?eewPKbyB/GTtuuiELVQ9CCs5hdX8aplmOLDFoIIx7kPLGMsUH1vksB0pblru?=
- =?us-ascii?Q?w8Qrt1e8KErr54akggwSmRp/kEPq9En5egOSJNuXCCJZxPWn7oOWc+8OvCnc?=
- =?us-ascii?Q?Y09yzKeAGHbg3fOyjsC0kM173cyNc6m0VRyKbCxTxpJOfC0nygHU/rPTCSdy?=
- =?us-ascii?Q?x3IBDXWM508e+qx0GYda0wdhrOFMQT5nw3XYvy8myN9boDJP02Y4NXtNi4V7?=
- =?us-ascii?Q?nmiem+AO1B57fWPx0S3r/tca2qaOiLx7AIvxFwg4Y9atblcGKjf3mcTyg+BX?=
- =?us-ascii?Q?rZPsw70OspTvtJ1SfHZy12Z7MniRqy5iZxln3ywpJJD98Eegtky2GnEg4IIV?=
- =?us-ascii?Q?ghDj9kp9jvhT651LSWUhv2X3LIuMUviQMKYukMVQWpt4KsEUOpWg7Q4esDB+?=
- =?us-ascii?Q?r6/5wRdq/MEMqxiZtGkMmXBqxuQMvSJ2Y+lPbuNPnruScu1XdcOSqL6PP9XN?=
- =?us-ascii?Q?GL+y4bFP1EzmyFC0qvEUZgPJdpVAO5EGv2vZuTEljj3Ik8UPPPkOSjIV8GYD?=
- =?us-ascii?Q?wprYvJjNQoXz26Sjt2yZwXPfQicCxqMOdnJ9JcjKMR0Ltx7GOqm5kHo4Isab?=
- =?us-ascii?Q?PcPrYuBr3CyTDrUpIB8G520wYPIQu1HsTLp8DvVhKtriuajWyVlDY9ycPPkm?=
- =?us-ascii?Q?EzKd4ItE+z2W/5loMrL1TsuawWcWveeJXfMc3wAwo/JxF8q+cKzKBqdE+LPW?=
- =?us-ascii?Q?OfoPDmoBK5bUjqmfKwgzm6mLLWcirVubBeHQ/Bvz0v3kYn84C1QIGbPlzAKz?=
- =?us-ascii?Q?e/ooHqBqzTUbtxA8DbA7JHvXCywch4yuM2EZAAmY5jDNjB977X4QMlSH8y6u?=
- =?us-ascii?Q?1nFf4flmd/TVHQVXpLlsi9wLpCm93Ku3aajtBqsomi2/AxrIa1ccM1q/pjNQ?=
- =?us-ascii?Q?HPlolWf1p7/6oEqSw1P/M2nb8FvWSpusSHfbHFzdiY+yG6tB2pv7RNoqFAGy?=
- =?us-ascii?Q?YU4SBNILKS1X9TNhZPNRNjUUGKedumzxOcEfUr6HJRvSBUjox8/cU5mc/bR8?=
- =?us-ascii?Q?nTCuUYyhgykxXCWbiL6bTJjBkrAOTT+9jyOZpInUPTMIYbgcN6XWnEP/c6qr?=
- =?us-ascii?Q?G8LRIP0kTB/IW2hD2RKyYeyNG3wzpYptVmBVIRVPSFRLlq87BlgyLzt6/Ttl?=
- =?us-ascii?Q?wvIUmumeIAhtYb1Su5cowobCG7qfC5eMpXyvD2dBYIiS5w4wFfxjaCC3gHCF?=
- =?us-ascii?Q?9D44uua7yRbNPzjhD1IH8cVou+AyNoAwWQ2kp3BNTBbXoLDFPwYhsWoCgWpH?=
- =?us-ascii?Q?Z6LiEfZIKLQBpBXOHyhJI1puPZMYeLf3IludWZl4WN2+sbG6F56ZEUZ26V3d?=
- =?us-ascii?Q?HlKoFJysKT0TWpkkUwBaVqRk7vXQZEph?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CQJSy7XlB1Q5tZHrCvh3dXSQtG0jok9BREOq2HUh07C9Kq+bRsSjfeYKKbdf?=
- =?us-ascii?Q?Ah8+lZ4gfGgV5rMWBptuXzOP8VIzyza2Sxj++QbMqFD0lw/NylzxL+IZaYor?=
- =?us-ascii?Q?20+iZjeHopLAaI7DCqOCnsngzpH7cs0/Fj6FUCd+mY0aVpw/zoa9IAUa97zl?=
- =?us-ascii?Q?GGYy7q0pr0TN/cOmiL64JzpfgXvGU+rfe0EC+w+NfrjGaVMRXxYaXhrFvWB1?=
- =?us-ascii?Q?r6m4VAG9W7SdxD677JjXX6UFSUzVD31rXQESgPQ49iNZ+pSShJYUYR+LWCCf?=
- =?us-ascii?Q?ClRMKAS1G+fK4vzSSWhBpm3Gdb1k6+/fXDDcSIuRtdpOsjekvZk+pYixfJHg?=
- =?us-ascii?Q?TIbIcwYOo8op+mi3k+VU0OszsjGRVWVFta06WdsQ9++fdcWu0OyGpm1znRly?=
- =?us-ascii?Q?BRY/d9wcYKI24aRA5mB0s4c/Emhja93Ai38DMo1oggxEe5kRA6CXO+lcnAc3?=
- =?us-ascii?Q?fZfxKJwRLsQUAepkE2ByRJeQEtZ5Uzr7klZ4KJKWHzwFl5tpn0DV9/eq96ms?=
- =?us-ascii?Q?fwLP8LeUtIRziIYN6neUOOTuTPtbqsf5s+tph5zQGGjJWOQbqILLfoJ7Bu1D?=
- =?us-ascii?Q?eF1ONqdzWxQoBKcjLJvYyOqpU61PBJ12XLIQJZx5k/u4YZd3z1QjuML3nxQa?=
- =?us-ascii?Q?XnEdi2p3TNFGa7x07uFjOYN9hj9NMhWUnO90rVMI/LvkcuFx7vtY83ljtjy6?=
- =?us-ascii?Q?auo7MVbBlWxxCUjkQj1iqD30DEJrzmXUmbOXdJlhJDMjFknRcepJqpPklqTM?=
- =?us-ascii?Q?mI5TfR/4TzGVDskX4NUhtF5Z0y681hpKpnyX2s7lul62WGac4hwrO3LI2tNL?=
- =?us-ascii?Q?Hbvb2nB6+e34hgx/TQ9IK3OqYXtTK2FCw950LOTqIqd7M66s0+D4EfyeMT/d?=
- =?us-ascii?Q?NbAo3bcxntx1hMtkr7P3GXoLE7OpttOSLqlzOxy+7x5s5bTY+imvytM/2DV5?=
- =?us-ascii?Q?yVjWzftd3xtXBm4WZrSl1IwR3IeYLDZ9pFFnpPWfk9qeERwBkTYc6kumLjzf?=
- =?us-ascii?Q?ptcD9VIu4ConYXLT9q1zDTXvYhLVIdVt9Yk7zkkowp29l2VRyrd1Ey8GpmuK?=
- =?us-ascii?Q?beymVJBRc5KsXkZfWVuEt7YzAu7vDZ56kzKmaZ9PB1CNOjn1QdQLZX+FpcxH?=
- =?us-ascii?Q?6hxu21yjLE57l138xhxFEjcpPN+oKpz9YOKCSFM6CAVHycNGNDKQg6bZ8iuq?=
- =?us-ascii?Q?u5Cdk7ChpVHOwbBP4iTyFqA/eJIySg9KPbPyFJwyVd4wnwd/1JATH/SKYdRR?=
- =?us-ascii?Q?IhcUp8SR4dwBWWlfxSTmZH0OVmCNtufmVnLIPuS1ycmQ+nfvf4b2FHG673Ip?=
- =?us-ascii?Q?wP29cZUEC/oyIOPGJQkjyqt+aGbDSt7SBYTiGXaUI3xDesJBijYCEChax/ht?=
- =?us-ascii?Q?6uliqt+N4rZksxoqGQrdEmUik4AWOBFhthlvy1xN/4KhP6yXqzOSqmovRtCv?=
- =?us-ascii?Q?6fcnvDOAuLQ0g8HWJUg5mNNYirD9IksA7Q46gu8ceSObYIjVE+RVIr+/l3Tm?=
- =?us-ascii?Q?hkel94B/CvI6S9Y/EP75rcY+wOlqMRfNQquO+OkoZZoMN9Ob6zM+QxRFPLYj?=
- =?us-ascii?Q?IwBSQ1BC6wVEhdNtPLwKoJkNkEoBy6NbJ1kMGSWS3IdQe2O9CV/Df1dxvVNE?=
- =?us-ascii?Q?EA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	IF/wYiTKV66Rus3W8eWcpZpbT47WDuN3IDy4rZq3UcWKy/LkYwIPRbuGfGnbSnWk1kCYUkk8ryHpn0l2gQnp67QHh4O/pfCnpiIh5dOEWpR9xPlxFoyyAlv7HWZxIwHEbR2neLZwNuktL+1wfhj0I/ClRFdiNbu+X4ifZNiUBom+kQPD7lGsoBujqrg6HqwZoSlSvIith03lHOgEkz7ojC32+wIFIgluTfN4JxeITmFlExRkxAbZGSEj6YX2YN7vB9T5yLYf+q1NnNo4Yc9JLvubKr/40yeKE3IH/kwKnGnjRFO7xU0d4/pfjFp0r0C7IIOHFCNCzJ54Ao4wsOu5boCq2so8ytGSGny9WMB9ZIpdfjXMkJTyfvIKigov/BScr9yLtdlhfavrADYzcf5ifIEvtNdwjvFjjBxuBXiLMo9UfeoYWDjgzyaJmogGn9VAGhRFIiro8QJeU4+PVRuQketn79cwonmNVd1+LBnAmCP3aExQ9ilYvkJUJJ2tdJF4/oJjUVq5u3ZfG0PiPWRwH3PeaKPCG7OzpHjYY5g67V7xAAqRztUqK7paoqCtwrTpLnp5zxhLNqXvM9tbrcjdZhDbMunF3pV/XHgACuK8KoQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c83af6c-552e-4fae-74d2-08de22a48f2c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 11:05:30.5805
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NNOFWkebex352Zh2ZzPW2nX0HRsV2mNGw9heCaEaS08J+fyS3qKYmqVVrgnhyYjZ6CIjp4iFMYbpwcXpJ3ZY9nXnGAkda5M3XgPNa4m3AYg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6A2C0CCA1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-13_01,2025-11-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
- mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=932 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511130082
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEyMDE0OSBTYWx0ZWRfX0MHBBetI/ZGT
- rmHGryKMdEyC4Wpq7ztN6wSFmmmEv22lugdRDyjgusIFAqtY8hn/00tgFwMxPjlYqdHufo1S82W
- rjy58KZTR+2FxcxTF+tsSsOGoT6HE8eIRKLYN40LQ6bmH5O781lFG89t2NUzAEbAEybxE64KADQ
- W8d+9ssN0Q5jZMZDltqiazxu5Zsle8DsTwLwXz/J6KGta5Jjq9HGeS9K+acEi6LKOhbFPzM/Oh5
- 4VdqF0Mqscv84mKyhcr2kvd1QPQ24SYYwQR47hYSIoEF/cfJZ6csZGKrt4IZoiYe35GYL0ntbEc
- OYMvNfBy6Y80lVtD/IkGfFwATo9AiNxh30M6T9JeB9eMiM56F04wg4auZwW79yE25uUAbbuTFth
- jfGGSZYpO10nKNmR+73zvI/R9tW6Pw==
-X-Authority-Analysis: v=2.4 cv=S6/UAYsP c=1 sm=1 tr=0 ts=6915bb7f cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=iFKF31hz3x8rsBJF9LwA:9 a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: zZ8MuLIKKP44a2l3MNxh35ne_1P8GN2F
-X-Proofpoint-GUID: zZ8MuLIKKP44a2l3MNxh35ne_1P8GN2F
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0CC8218000B
-X-Stat-Signature: ugk6o61goxb7m3o9hdxa6szj98yuhfzk
+In-Reply-To: <20251111-sakralbau-guthaben-7dcc277d337f@brauner>
+X-Rspamd-Action: no action
+X-Stat-Signature: zw4rrj3y15o7wyfz5j7q1s6c71bnmndj
 X-Rspam-User: 
-X-HE-Tag: 1763031963-291666
-X-HE-Meta: U2FsdGVkX18SkjYGEltFEUureLEAPDD0Lx0OfQZjgOa4nNo/ZiwkMIWLRNODk5vLcPytGq056M06r55T9dKJKsEPQbHx6xzacWFi9nroFQ6sguwH1ELS7+jP76sQc2noqTtPT05wVgCuuaRKIuc/9/bFImBz6AgKqMvqvYPbNNPFqiy8TnAlWA5/fXB5dbsWmG8Pf+Ct3wlrKc8GNVxAbDTo03hNLFFvg4m46zg1uHf3GwsjrXhkep4oIoKIMf5FoFNM5KqBsbYgPdOXOr9Kjgdz3S8LkyyXmwmiJ+NefAwmXyT8RHjM6cerlTgpSeeUsncu4wFKxqUMBa5nyfwR3Se6uVWtbs5bmC9tI8cDdoXsUAt9uFMThIHY7Jsf95cwP533GjKHtguGtygb2dEjZ2D6T2e3wXEbNQiq+8RKSz6f5m2CAuh9zxz3bhBTbvQh4XgLPw5WjSEZ1gC9T++PC9khS82ry5g7RfM8AX0X3XQ9f6OkOH5Qyc2WqLUgwq/CBENoGWZ9ZDbVybmfh+i/P79iC6HGE5NSlIfuz/EryPpxx5tfvIsCmmxoTu7cVVzY3ZyGrg0ocDv+1YEAiq40rIVCjZN6y+Hv7sTzl42Lalzu4JpOaGV8y9I25/pt9A4rMdio8DS2Dt1UtAUu65k5/jnI2gF4nk0vafAmfu9FHDfHYVWF0JSg3SZspHs8JCnmAhAD8NifIVr4PsofV8d//rV/qA5mDv19kSBoJiAmQriVKIo66i2GqkH8BVwaOVASNQiZ51GOZDrvl68njhpeoDw68PeVDikfT6WCTcEcBSQYbnpUQDyUel8aMVYtzQ7Ix8fYybAWIQhBzVSN2pSYd5MIC1RGu2q3w5YqDV3VAYSTrEHZboj1ygQx1fLXCgfvosstTOgTty03mryTGWZ4WAS48xEWUmVRCuqHdbzh9qQsYqZZdgL1bkAElGndQO7grQAbnbwfSFQ5qBzjgCI
- 2qKX1S0+
- 6U8BNEBPHhmeuy8SjmKkrK2zQon2l2xagDp7e96AIwlY+yK17dMYmNJPQqr5Mlvlb1KXYnHbt9Kt8Jn9jxUr5yM2O0M4NxExqJ2Fmo64qiYiLHRkzjNLXRCtaLrnntRt5faABlOhMdKXxvzdhiGFdhq8IQ/f9bWivdgvWdb31tg4ZaE2mpXh2ZV5wDSCwCWioxXkU1++zPPoRu/42mtc2RCsek4V0Oyk6vakD4nW/4qRaO/6tRqHb73BC/3snoKfe2K3b0nroF+nbyEfp+Dmb/c9X69al3qdOfteJukdlv2uQY6VW91pYabA/u3YAIn+pnQf5GGeBnfexQSIhrz7yXS9CApAIMIzCvf8oNbSgVXNLiXk8t5NFIECFbSoejRzH0ZfYOeLOExv1eTiUwwajIJGax8yd7GG77Xd7foN25tzz8l+6SzF77kZpy87vWQieikK8A8W8LoqmXGKoPEN8DKyq8NwBYVSlLGOeHqmOsSwUIBcSbnS0YhmqmxeXoipvF73CCCBt7X7bAoGM/S+JAM5kk7PcDjgl217Dl5U2SoUuWguGeHrFzd7COPzaEawfusATq+gyV7Hol8Yr5h26xaoFT6B17fuhpyIpUai2bpoX52Vd3OQVxXkumq/Kk5eeEgWHxB7wL70Zu67k7e/90ZbjVrDpU1Kv63mo10FZcyIxH/90jiTDTJqw1VV74uBHdv5xM7yVTYBgMDN4MFVkVj7s77hnSmm8PMz5
+X-Rspamd-Queue-Id: 3E63F40005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763032784-16013
+X-HE-Meta: U2FsdGVkX18v7NCOaMSwtVNk2eGPL+oxqBYzPSY+XMWKyxkuP9+Zxs1AP6j8Yn5K15Cl04nUx2Km0iw5w5FcOv6XHkSGUOxHRKdrIh1wsEUqMGVl8ZXVf94bA4vSh3YiDzn76KuwMPoqxm3278t5Pol6xhwN0ZIbqm1vvRx70Lzh9zWy/+8Y+/qExIFA0krs2deH2s45qETxMTQhLdG/OyuJ028Rd9L486dApgt0rCNKsBQo2Z+ezoqBxVYmVVZf0FLUCKcb1T0vgUBW24/TsRYPBdmsbfYBafaDZNCH26uaH7AiyzpD7/lTeHfN4V3elZXbIp6NqwJzZFAp7vnhM2eEn1Xs0BOXoWZsYsR6EtWtP5YnVayJWs0yIUDAu4N52o8f1cOdyCGiB/EtHnV9Ir4Qo7R9EdFH1YWOvWR+35sKzYYUdlMorD69t4L+U8GDDHm/RduFJia0TsFxzy6SmL/sMQonNQzQ7igc1hwH6fFrn2Lw0csuE8IRCPWoRH9whC4/WcScZtd+q91vYOK/szPHaJBftC2X1+K9Hjc2NaFJ65LFjmmlXiqOa6McbEIZ3SoOXXdN2dwCgTiiuTKwlMES5DCdRPq8049GMRyUz3r1TAJr9TJxHoQzPkTP3PgpRji5L3tczNvqG005N47S814dzbe5YoAY0wlq0X7kPEe5cHwBnvVZu+z3Ib2h12ZPCh8aIOp610rc4jEvcGokF/2/TFOOvVMbzecQzvs1eSqzI55DxCMji0kjwKETVZvRow3QHfHmSamLrIA7pnOagC1CB7MZv/YKaABMV2Dw2VwaekycWvuS0i28I21LsP4kDhZHkOVrAVgm7RwHXH4ExR0YFFa1XZaPs4fqmipVvwjGQgjjaQRns0wuKs1p4pfSKqYRPFsCHrwVWzF2EFzwy4Q9jWuW+LdzRJgXmMeXsIMNfC2EB/G/hIlefbUqLnoU+syiWKsFT7mJ2T3lVDn
+ +pwEkeAk
+ 5OKrI5x8DAxgcYHK/1cs9bKrWgX5av49fN90QuzuLkS+egNljvQlCV4hS4vg6eJ/+rTju5XDQUnUc7esyZCZekpiOGbYx6q5i25mqBs1iB0Rh6QOhmcQpBs3QFqXa9G72ps540jd9itJUnJ+sRoPp1Tt/+ypJZ+cgdGyVO5WV6IeWfzeS9shRx+pSn8upIIgVFaVaspCYlIzNuuZ1qspHEECXc2FS7heLp4naGgz2j54K57H0WdLjXWKfSA3FL9aWq6CATx+UV+Nz2YqxNPqNx0M3DQBnFvQjE1ZkgDuQs48Kg93E2TH2/0lcTLa8UnbnenzWjtAOXCWR4tt4QaVmDVQUGHqtqrxnr+eYQIdb26ThZ5g3iPx3VI3Rbhy2IrSjXYV+QuQ+jLj/e6NEz+kIP5B45xdqghHlB1bBaYpzCElhl4EExjfu0TMFB3Ekepe8ujOdbiRkP0VVHuxdwmH1P2HnsnustNZqLQHwrhbo9DcrAAGRGd9gNht57tUGKdYNKGXrk6TdH6Y+G53q8zlqZot2j+bELcMSzG2Z0JAE5lGvSpD8KfxA0N7kkeER+YRZakGjBv5VBH7NX6Kx2nV8zE17S09+z5GpmqbmQ+qVhAvkkor1ipUD6ZJ8YonKWIZI08N6OlFLOpcrWQ4a7Gq7Zj73OA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -240,85 +144,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 05:27:22PM -0800, Paul E. McKenney wrote:
-> On Thu, Nov 13, 2025 at 12:04:19AM +0000, Matthew Wilcox wrote:
-> > On Wed, Nov 12, 2025 at 03:06:38PM +0000, Lorenzo Stoakes wrote:
-> > > > Any time the rcu read lock is dropped, the maple state must be
-> > > > invalidated.  Resetting the address and state to MA_START is the safest
-> > > > course of action, which will result in the next operation starting from
-> > > > the top of the tree.
-> > >
-> > > Since we all missed it I do wonder if we need some super clear comment
-> > > saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
-> > > by doing 'blah'.
-> >
-> > I mean, this really isn't an RCU thing.  This is also bad:
-> >
-> > 	spin_lock(a);
-> > 	p = *q;
-> > 	spin_unlock(a);
-> > 	spin_lock(a);
-> > 	b = *p;
-> >
-> > p could have been freed while you didn't hold lock a.  Detecting this
-> > kind of thing needs compiler assistence (ie Rust) to let you know that
-> > you don't have the right to do that any more.
->
-> While in no way denigrating Rust's compile-time detection of this sort
-> of thing, use of KASAN combined with CONFIG_RCU_STRICT_GRACE_PERIOD=y
-> (which restricts you to four CPUs) can sometimes help.
->
-> > > I think one source of confusion for me with maple tree operations is - what
-> > > to do if we are in a position where some kind of reset is needed?
-> > >
-> > > So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
-> > > to me that we ought to set to the address.
-> >
-> > I think that's a separate problem.
-> >
-> > > > +++ b/mm/mmap_lock.c
-> > > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-> > > >  		if (PTR_ERR(vma) == -EAGAIN) {
-> > > >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
-> > > >  			/* The area was replaced with another one */
-> > > > +			mas_set(&mas, address);
-> > >
-> > > I wonder if we could detect that the RCU lock was released (+ reacquired) in
-> > > mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
-> >
-> > Dropping and reacquiring the RCU read lock should have been a big red
-> > flag.  I didn't have time to review the patches, but if I had, I would
-> > have suggested passing the mas down to the routine that drops the rcu
-> > read lock so it can be invalidated before dropping the readlock.
->
-> There has been some academic efforts to check for RCU-protected pointers
-> leaking from one RCU read-side critical section to another, but nothing
-> useful has come from this.  :-/
+On Tue 11-11-25 22:29:44, Christian Brauner wrote:
+> Make it possible to handle NULL being passed to the reference count
+> helpers instead of forcing the caller to handle this. Afterwards we can
+> nicely allow a cleanup guard to handle nsproxy freeing.
+> 
+> Active reference count handling is not done in nsproxy_free() but rather
+> in free_nsproxy() as nsproxy_free() is also called from setns() failure
+> paths where a new nsproxy has been prepared but has not been marked as
+> active via switch_task_namespaces().
+> 
+> Fixes: 3c9820d5c64a ("ns: add active reference count")
+> Reported-by: syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com
+> Reported-by: syzbot+0a8655a80e189278487e@syzkaller.appspotmail.com
+> Link: https://lore.kernel.org/690bfb9e.050a0220.2e3c35.0013.GAE@google.com
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-Ugh a pity. I was hoping we could do (in debug mode only obv) something
-absolutely roughly like:
+I believe having free_nsproxy() and nsproxy_free() functions with
+the same signature and slightly different semantics is making things too
+easy to get wrong. Maybe call free_nsproxy() say deactivate_nsproxy()?
 
-On init:
+Otherwise the patch looks correct to me. Feel free to add:
 
-mas->rcu_critical_section = rcu_get_critical_section_blah();
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-...
+								Honza
 
-On walk:
-
-	VM_WARN_ON(rcu_critical_section_blah() != mas->rcu_critical_section);
-
-But sounds like that isn't feasible.
-
-I always like the idea of us having debug stuff that helps highlight dumb
-mistakes very quickly, no matter how silly they might be :)
-
->
-> But rcu_pointer_handoff() and unrcu_pointer() are intended not only for
-> documentation, but also to suppress the inevitable false positives should
-> anyone figure out how to detect leaking of RCU-protected pointers.
->
-> 							Thanx, Paul
-
-Cheers, Lorenzo
+> ---
+>  include/linux/ns_common.h |  11 ++--
+>  kernel/nsproxy.c          | 107 +++++++++++++++-----------------------
+>  2 files changed, 48 insertions(+), 70 deletions(-)
+> 
+> diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
+> index 136f6a322e53..825f5865bfc5 100644
+> --- a/include/linux/ns_common.h
+> +++ b/include/linux/ns_common.h
+> @@ -114,11 +114,14 @@ static __always_inline __must_check bool __ns_ref_dec_and_lock(struct ns_common
+>  }
+>  
+>  #define ns_ref_read(__ns) __ns_ref_read(to_ns_common((__ns)))
+> -#define ns_ref_inc(__ns) __ns_ref_inc(to_ns_common((__ns)))
+> -#define ns_ref_get(__ns) __ns_ref_get(to_ns_common((__ns)))
+> -#define ns_ref_put(__ns) __ns_ref_put(to_ns_common((__ns)))
+> +#define ns_ref_inc(__ns) \
+> +	do { if (__ns) __ns_ref_inc(to_ns_common((__ns))); } while (0)
+> +#define ns_ref_get(__ns) \
+> +	((__ns) ? __ns_ref_get(to_ns_common((__ns))) : false)
+> +#define ns_ref_put(__ns) \
+> +	((__ns) ? __ns_ref_put(to_ns_common((__ns))) : false)
+>  #define ns_ref_put_and_lock(__ns, __ns_lock) \
+> -	__ns_ref_dec_and_lock(to_ns_common((__ns)), __ns_lock)
+> +	((__ns) ? __ns_ref_dec_and_lock(to_ns_common((__ns)), __ns_lock) : false)
+>  
+>  #define ns_ref_active_read(__ns) \
+>  	((__ns) ? __ns_ref_active_read(to_ns_common(__ns)) : 0)
+> diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
+> index 94c2cfe0afa1..2c94452dc793 100644
+> --- a/kernel/nsproxy.c
+> +++ b/kernel/nsproxy.c
+> @@ -60,6 +60,27 @@ static inline struct nsproxy *create_nsproxy(void)
+>  	return nsproxy;
+>  }
+>  
+> +static inline void nsproxy_free(struct nsproxy *ns)
+> +{
+> +	put_mnt_ns(ns->mnt_ns);
+> +	put_uts_ns(ns->uts_ns);
+> +	put_ipc_ns(ns->ipc_ns);
+> +	put_pid_ns(ns->pid_ns_for_children);
+> +	put_time_ns(ns->time_ns);
+> +	put_time_ns(ns->time_ns_for_children);
+> +	put_cgroup_ns(ns->cgroup_ns);
+> +	put_net(ns->net_ns);
+> +	kmem_cache_free(nsproxy_cachep, ns);
+> +}
+> +
+> +DEFINE_FREE(nsproxy_free, struct nsproxy *, if (_T) nsproxy_free(_T))
+> +
+> +void free_nsproxy(struct nsproxy *ns)
+> +{
+> +	nsproxy_ns_active_put(ns);
+> +	nsproxy_free(ns);
+> +}
+> +
+>  /*
+>   * Create new nsproxy and all of its the associated namespaces.
+>   * Return the newly created nsproxy.  Do not attach this to the task,
+> @@ -69,76 +90,45 @@ static struct nsproxy *create_new_namespaces(u64 flags,
+>  	struct task_struct *tsk, struct user_namespace *user_ns,
+>  	struct fs_struct *new_fs)
+>  {
+> -	struct nsproxy *new_nsp;
+> -	int err;
+> +	struct nsproxy *new_nsp __free(nsproxy_free) = NULL;
+>  
+>  	new_nsp = create_nsproxy();
+>  	if (!new_nsp)
+>  		return ERR_PTR(-ENOMEM);
+>  
+>  	new_nsp->mnt_ns = copy_mnt_ns(flags, tsk->nsproxy->mnt_ns, user_ns, new_fs);
+> -	if (IS_ERR(new_nsp->mnt_ns)) {
+> -		err = PTR_ERR(new_nsp->mnt_ns);
+> -		goto out_ns;
+> -	}
+> +	if (IS_ERR(new_nsp->mnt_ns))
+> +		return ERR_CAST(new_nsp->mnt_ns);
+>  
+>  	new_nsp->uts_ns = copy_utsname(flags, user_ns, tsk->nsproxy->uts_ns);
+> -	if (IS_ERR(new_nsp->uts_ns)) {
+> -		err = PTR_ERR(new_nsp->uts_ns);
+> -		goto out_uts;
+> -	}
+> +	if (IS_ERR(new_nsp->uts_ns))
+> +		return ERR_CAST(new_nsp->uts_ns);
+>  
+>  	new_nsp->ipc_ns = copy_ipcs(flags, user_ns, tsk->nsproxy->ipc_ns);
+> -	if (IS_ERR(new_nsp->ipc_ns)) {
+> -		err = PTR_ERR(new_nsp->ipc_ns);
+> -		goto out_ipc;
+> -	}
+> +	if (IS_ERR(new_nsp->ipc_ns))
+> +		return ERR_CAST(new_nsp->ipc_ns);
+>  
+> -	new_nsp->pid_ns_for_children =
+> -		copy_pid_ns(flags, user_ns, tsk->nsproxy->pid_ns_for_children);
+> -	if (IS_ERR(new_nsp->pid_ns_for_children)) {
+> -		err = PTR_ERR(new_nsp->pid_ns_for_children);
+> -		goto out_pid;
+> -	}
+> +	new_nsp->pid_ns_for_children = copy_pid_ns(flags, user_ns,
+> +						   tsk->nsproxy->pid_ns_for_children);
+> +	if (IS_ERR(new_nsp->pid_ns_for_children))
+> +		return ERR_CAST(new_nsp->pid_ns_for_children);
+>  
+>  	new_nsp->cgroup_ns = copy_cgroup_ns(flags, user_ns,
+>  					    tsk->nsproxy->cgroup_ns);
+> -	if (IS_ERR(new_nsp->cgroup_ns)) {
+> -		err = PTR_ERR(new_nsp->cgroup_ns);
+> -		goto out_cgroup;
+> -	}
+> +	if (IS_ERR(new_nsp->cgroup_ns))
+> +		return ERR_CAST(new_nsp->cgroup_ns);
+>  
+>  	new_nsp->net_ns = copy_net_ns(flags, user_ns, tsk->nsproxy->net_ns);
+> -	if (IS_ERR(new_nsp->net_ns)) {
+> -		err = PTR_ERR(new_nsp->net_ns);
+> -		goto out_net;
+> -	}
+> +	if (IS_ERR(new_nsp->net_ns))
+> +		return ERR_CAST(new_nsp->net_ns);
+>  
+>  	new_nsp->time_ns_for_children = copy_time_ns(flags, user_ns,
+> -					tsk->nsproxy->time_ns_for_children);
+> -	if (IS_ERR(new_nsp->time_ns_for_children)) {
+> -		err = PTR_ERR(new_nsp->time_ns_for_children);
+> -		goto out_time;
+> -	}
+> +						     tsk->nsproxy->time_ns_for_children);
+> +	if (IS_ERR(new_nsp->time_ns_for_children))
+> +		return ERR_CAST(new_nsp->time_ns_for_children);
+>  	new_nsp->time_ns = get_time_ns(tsk->nsproxy->time_ns);
+>  
+> -	return new_nsp;
+> -
+> -out_time:
+> -	put_net(new_nsp->net_ns);
+> -out_net:
+> -	put_cgroup_ns(new_nsp->cgroup_ns);
+> -out_cgroup:
+> -	put_pid_ns(new_nsp->pid_ns_for_children);
+> -out_pid:
+> -	put_ipc_ns(new_nsp->ipc_ns);
+> -out_ipc:
+> -	put_uts_ns(new_nsp->uts_ns);
+> -out_uts:
+> -	put_mnt_ns(new_nsp->mnt_ns);
+> -out_ns:
+> -	kmem_cache_free(nsproxy_cachep, new_nsp);
+> -	return ERR_PTR(err);
+> +	return no_free_ptr(new_nsp);
+>  }
+>  
+>  /*
+> @@ -185,21 +175,6 @@ int copy_namespaces(u64 flags, struct task_struct *tsk)
+>  	return 0;
+>  }
+>  
+> -void free_nsproxy(struct nsproxy *ns)
+> -{
+> -	nsproxy_ns_active_put(ns);
+> -
+> -	put_mnt_ns(ns->mnt_ns);
+> -	put_uts_ns(ns->uts_ns);
+> -	put_ipc_ns(ns->ipc_ns);
+> -	put_pid_ns(ns->pid_ns_for_children);
+> -	put_time_ns(ns->time_ns);
+> -	put_time_ns(ns->time_ns_for_children);
+> -	put_cgroup_ns(ns->cgroup_ns);
+> -	put_net(ns->net_ns);
+> -	kmem_cache_free(nsproxy_cachep, ns);
+> -}
+> -
+>  /*
+>   * Called from unshare. Unshare all the namespaces part of nsproxy.
+>   * On success, returns the new nsproxy.
+> @@ -338,7 +313,7 @@ static void put_nsset(struct nsset *nsset)
+>  	if (nsset->fs && (flags & CLONE_NEWNS) && (flags & ~CLONE_NEWNS))
+>  		free_fs_struct(nsset->fs);
+>  	if (nsset->nsproxy)
+> -		free_nsproxy(nsset->nsproxy);
+> +		nsproxy_free(nsset->nsproxy);
+>  }
+>  
+>  static int prepare_nsset(unsigned flags, struct nsset *nsset)
+> -- 
+> 2.47.3
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
