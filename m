@@ -4,110 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A22CACD8C9D
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:02:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A42C7CD8C9D
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:10:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC2B28E0008; Thu, 13 Nov 2025 12:02:32 -0500 (EST)
+	id 0DF828E0007; Thu, 13 Nov 2025 12:10:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D72D78E0002; Thu, 13 Nov 2025 12:02:32 -0500 (EST)
+	id 090B58E0002; Thu, 13 Nov 2025 12:10:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB0068E0008; Thu, 13 Nov 2025 12:02:32 -0500 (EST)
+	id E72738E0007; Thu, 13 Nov 2025 12:10:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B99008E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:02:32 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FC7513C035
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:02:32 +0000 (UTC)
-X-FDA: 84106202544.16.76D4866
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 75A2140023
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:02:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RHKrX0eL;
-	spf=pass (imf01.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D12688E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:10:38 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AEE013BF83
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:10:38 +0000 (UTC)
+X-FDA: 84106222956.21.EA862FD
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0E96B1C0012
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:10:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TECEMT2W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XMKnT0Bn;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TECEMT2W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XMKnT0Bn;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763053350;
+	s=arc-20220608; t=1763053836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UIwv+CwuWqLYgHQJzqazscKZkTF1jtywZznxW87RPa0=;
-	b=daNycPvtovkUWwAdQODXiTlTKycJuy5dSrpCWQNzo4ORnFWBaZqJei4zadlDLn5pM8pG0G
-	964ul0KiK/7XIaUIF/4vbNKBezQn8k6f9ScwLvMT7s/afWpvjWjYQjYYs9Ncoc/LkvEW+c
-	0b/uMliXMPNICAIZBkozH87DmisB6iU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RHKrX0eL;
-	spf=pass (imf01.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053350; a=rsa-sha256;
+	bh=SfosqSfA7Ck/rRxcQyj6uQq0w6Nfghu6FH6JEc/unqM=;
+	b=mle6s9Y1RJ2dPCCIa5ajVQTRKhVS5DcEoFAmEQeZZox6SjUBGb5QJ/hYt8neeOmyi1OCQP
+	LKUljFUJfyuUPBc0Q/tqlNut2xNijJLYYcRcHBoEsBwJGdyz+M903tUOOYHdG0kdjOJdFX
+	gbJCF6mwrrmGNrVqAw8TRausq2EBH+A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053836; a=rsa-sha256;
 	cv=none;
-	b=bK7hYKe5v9cJe3zpZg20NFDIFLK6tiGSlTAXV26uI0S9GWHetGRZzZdYIA/hRyDFkUkwZM
-	rZs0KmU+aCYSJiDRXv/k3n5v3r8fVDPTadthpbVgl7LSRhjM3lgueAlY9jqc18uI6HWonv
-	+ypv6gxkrzTBJlSDlt8h6Bh1+r6829g=
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-37b996f6b28so10136211fa.3
-        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 09:02:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763053349; x=1763658149; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UIwv+CwuWqLYgHQJzqazscKZkTF1jtywZznxW87RPa0=;
-        b=RHKrX0eL/rFcnWlDPkNQIMmB+RwzgKk2TVEyCHaiDPpqyg2MdYDLrENiEOTvMel2GZ
-         7fOCKoZuLWQD2iFG3xF76v29BPI+muSzhZbU9hDyLdC8+ZWpBrzcWR3CA764rWsmsPoi
-         yVb5YbnruuO0Jtq5LeQ+wUS/g42hcj82sI4bGLFrg0A8QPztBx99B3GWuD19iaV6KAHP
-         DdRj0/NigIeqCqpFMEDkXNqXzly3Mm96EfLzQaqsYTJYNqDAHA4KET+0QNtO8dWIK8Zj
-         W4Vh0LjjAOt0vbfNY74kKE/ZuV/1EebkysigCsLXemR6bY2xjgUH1zu4e+1MY0QbMk4T
-         8Nlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763053349; x=1763658149;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UIwv+CwuWqLYgHQJzqazscKZkTF1jtywZznxW87RPa0=;
-        b=EVJf9d8rm6DguHU0qSHbAe55zxz3wOmwwTR/NQcO0aj+pMD/Ddo6YVedXYSUr5VgIa
-         O0L8JB1XwRC9wvCQ+N+DP4emGUnOkISL6rxpFs4YreDC/HsCWAGIJGexPBldlPeDynhC
-         cpSL9ijIS9uwPQcy92ls0DASMFecc3NGV4IQZpF5wdK4nVVL+DaLpCzW8NL4HKAE4Qa8
-         zNlbg7IfevJC7yNLD0ZIoDq8xTqjHNnRbG8PAoOoDY3/ho1VtIDxn64rcDvwAVvBjHyA
-         ibNwjl2m95+fNUiapCD8U/y1BZSnOcpUPuBDl9Cl+wxWsjUVQ6M+ADUCsCP3COXniXbJ
-         wkPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQrUdaj0kp4B4XssPcI200TH5oS8p65N1I0rwlIVP0++jk6XJ6uvTnquLIZQ+Ece0eqFxCpfMqeA==@kvack.org
-X-Gm-Message-State: AOJu0YwtSyO0bDOrm3BDUmoWdvsuZYZJWWMPJh0MBojmWTOcW6e6ht1d
-	Il1OwVoTzQInjXI/JPsWFpMV8OCZbtu7vEuCkWg3mYodOHtlEYs9rvlB7LKqyXAyzftStkJ+9pb
-	mT/vQWUVgZ2x/KmrDcPrLm9463KR0K120KuQZHB8=
-X-Gm-Gg: ASbGncu7WecMeFp87ih5ncpbi9KMECtdJakUejPUiSBjEutddt6uJBGkwlaOCno6aZg
-	j6CnYDmofLOVYsoxubpWUL25cj7YKPDuOQpnJqbi+jelSm/m7nnOlKa0nw5O4Qs+GpFwLLt23BG
-	uJCcrvM62rmgM0A60pUO0+hKIafr93dtLb/PWGHD6zpnQXriEoTeQKaWHybThAK1efsIT0tNfvT
-	JwgPzvHNhodabEkPMq6ohwe1QekROaXBti2umAK1zM5o8uRCjqz/DQmotFJoaEokTpHjXY=
-X-Google-Smtp-Source: AGHT+IGGBxEHWN1/dY/0ilx0C2LUOClRwZAU1DnIsWfO/K2WaCmXaO+kwvUV3nGXSDl3HIOu9fGCodamZm0udhozE0E=
-X-Received: by 2002:a05:6512:3d25:b0:592:f5f9:f5a9 with SMTP id
- 2adb3069b0e04-5958423edd9mr45678e87.36.1763053348287; Thu, 13 Nov 2025
- 09:02:28 -0800 (PST)
+	b=L/6mz8nz8ABOOAq+64OY3aybmNgh1Zf7SUo98M9Js3nhOEf2QJCi/OYKJRyUC7EWPutUmw
+	HKRfyUxGLmISLwxT3feODHZAJfT3m0Ie3Kz+rEijBaTYCrBk0LM8/hPGKFr89/852cwukK
+	Cbdgozn1LCXmqtI2AKQLdHeJl7kcS08=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TECEMT2W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XMKnT0Bn;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TECEMT2W;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XMKnT0Bn;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1742121285;
+	Thu, 13 Nov 2025 17:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763053834; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SfosqSfA7Ck/rRxcQyj6uQq0w6Nfghu6FH6JEc/unqM=;
+	b=TECEMT2WYNmEP/lufHSFTJxh92S8n3RCR7o9QmWPOAVl+5vxhVghEL/bF52+/Lme3by9ZY
+	oYoGGEccpj73K2gbawVjkn7OvEDVipG1jx/tTGsriezpIIDXEiJBWWH5NcCXeTY4RidvSS
+	5UDJ2xtA1B+mzOZ/POFUBYokuQBgPHk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763053834;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SfosqSfA7Ck/rRxcQyj6uQq0w6Nfghu6FH6JEc/unqM=;
+	b=XMKnT0BnLtd074BwoCNvUoEOytJdjJvpAQxJPnv4R25vhkdX+rqXbEtRhr00kmWm1QVPPa
+	AD0j0qj4ouPIfSDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763053834; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SfosqSfA7Ck/rRxcQyj6uQq0w6Nfghu6FH6JEc/unqM=;
+	b=TECEMT2WYNmEP/lufHSFTJxh92S8n3RCR7o9QmWPOAVl+5vxhVghEL/bF52+/Lme3by9ZY
+	oYoGGEccpj73K2gbawVjkn7OvEDVipG1jx/tTGsriezpIIDXEiJBWWH5NcCXeTY4RidvSS
+	5UDJ2xtA1B+mzOZ/POFUBYokuQBgPHk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763053834;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SfosqSfA7Ck/rRxcQyj6uQq0w6Nfghu6FH6JEc/unqM=;
+	b=XMKnT0BnLtd074BwoCNvUoEOytJdjJvpAQxJPnv4R25vhkdX+rqXbEtRhr00kmWm1QVPPa
+	AD0j0qj4ouPIfSDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 06E533EA61;
+	Thu, 13 Nov 2025 17:10:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jewkAQoRFmk3RAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 13 Nov 2025 17:10:34 +0000
+Message-ID: <0ddd2ad7-04e5-49f1-9f46-653cee9ecba1@suse.cz>
+Date: Thu, 13 Nov 2025 18:10:33 +0100
 MIME-Version: 1.0
-References: <20251111125331.12246-1-harry.yoo@oracle.com> <20251112184645.GP196391@frogsfrogsfrogs>
- <aRUpqFS8pU0qGIsb@hyeyoo>
-In-Reply-To: <aRUpqFS8pU0qGIsb@hyeyoo>
-From: Tytus Rogalewski <tytanick@gmail.com>
-Date: Thu, 13 Nov 2025 18:02:17 +0100
-X-Gm-Features: AWmQ_bncxnkNUy4AWwVbyPyzKr9BBf9obz1JPoxTOaPSxIu-Yf6AxJaBM3VqGU8
-Message-ID: <CANfXJzsha8NtY6SwVzq=w1fNYSF46x3yeGk-ZuGCUj7CGrn5nw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH V1] mm/slub: fix memory leak in free_to_pcs_bulk()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Content-Type: multipart/alternative; boundary="0000000000008b780e06437cd86f"
-X-Rspamd-Queue-Id: 75A2140023
-X-Stat-Signature: 77emxwrb7gs3botw6yuebwraub99kwnb
-X-Rspamd-Server: rspam02
+Content-Language: en-US
+To: Tytus Rogalewski <tytanick@gmail.com>, Harry Yoo <harry.yoo@oracle.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+References: <20251111125331.12246-1-harry.yoo@oracle.com>
+ <20251112184645.GP196391@frogsfrogsfrogs> <aRUpqFS8pU0qGIsb@hyeyoo>
+ <CANfXJzsha8NtY6SwVzq=w1fNYSF46x3yeGk-ZuGCUj7CGrn5nw@mail.gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <CANfXJzsha8NtY6SwVzq=w1fNYSF46x3yeGk-ZuGCUj7CGrn5nw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: m4jax589dd95s195jif934ah6hk8skif
 X-Rspam-User: 
-X-HE-Tag: 1763053350-549202
-X-HE-Meta: U2FsdGVkX18hmcIM8OYVbBmr16QG8RqCUkG13xsE2NgrZhe9bBrhvpS3uMPNmtkHkcvlrMWvgR80SfGUBuRGFk1srdKSZvdAZXUW7EEYk+gfk1LtacTG2z7KYmjHvbvFYLOvFijsieYrUZsHMzqxNSmy98csOlPy9fXkwso1GRXRQjSsxZUVbcul4bnOdUwenW8PcyjqkHx0B0INlpUnJYHYykVaNkrO5R1zPBSeZMnEv23x7y9Y/Yq1/IP7+mg5wdJPJY/UPnV8OHvJi1WRX+1yaYc2QiSeMNsgd8Sn3+2vLCct3QDaNhMmFGymb3YzFFEZESJqskkdeJFK3kuXQOaRiNiiryJm1Dy7tzdpJTNbgJhmG4efXkeL2mTu/a70KY5UiVFw55v9hBaJqPq+S06Bbe9eIZ1Ba6GTaN67thZ2j69AVR+XyDWa120PfUJwAJ4guzxNfSQSY9JJ4Q3y9RZ2NkcS2wHCVHudZVHYNjL4GoJYIZPl1TMd8I17WsutZh5bzBbBIBHD4qM+VbMQQU55khJ1VGtX+LWfKcBSq38IWHVOACy8HGXN8azyhYTMWPof9HMarEjHxkob4XwtfIU663kN8fcld9L48Fm9VR3+G+hekGD0A2P+na5XU5cGm7w5ONVAa+ng/GYTXYoEvBYVlWUKVjI3R5g4qn/NgiGBSsr/VE5yBmEP7K7zStaDhRpUHUdDEGeEiffDMaTULidUXFlmrnBGC+01U5XU4uegd4c1E0+qHdf7uM/2zaxmzJrZjnjuEfrw1oesX4ug2ydyGm/n/SzfsRNBW5m1OuAGZ1O5u+H6LRVzDvCGHy8CKby275mHD5BlMVM75rrPxHc1ao33N9hh3kUaktLHYzddOb9FJPYoeMIbZZl1ukhkqGNtSnD6C8Yx2YJhMKWLe8S8q1LiHHyPtJ3AexyAbbWBoVtPeH5XOoBNBHlFlxY/vgMR5zy5GeLw/3iv3w6
- v6gbpGjZ
- BhCb8JLREV1/HrdR2a4lY1iB7q+0U1Sw7CBgMPNAjNClqmxHcNXiGMqh8mvpowVw5Qm/nrFTE3AnAJjm+OjIkDlJXwPfACo8svvbEGC6fEcHO1+iqNlsxmHDNDUEC+u9r8mCTVF9+hTgebA51eWdrZDu1ZxeeGSjHfN+UMygUPSnGywAWnXEtHSaQJgfP7q1R7Ev10IsKAoP+IWOHLWhfMw6FGkZJfPoQatx3A16PEze7+wq/p36Onj/aZWs4aRMTOi3SqMp/cQLSihig5iovJB60juJgyAMmK/f7UFU3SiZTQrEBtinaywIPTc+AHYXhU1DS1BO5IRvnvRJIZ4iIHSrDDDP2U/j3E3oCfrbtzXOwSkeVVJDB4nlPydKm0Gss6vJ6KSVZLwB5JB5s8BUwFUn/9fQODT1LkluEdlpIeZ7cX1AuTAnybuJou2HVdSJc5WKwcSnwISryFJWeoTLOzIq7YuqYzfQTUOM4Yv3j/VbNtErauFqs4UQfuPQfWdjtrltOsyoU0U3vgunq+ouc6qJqfA==
+X-Rspamd-Queue-Id: 0E96B1C0012
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763053835-578690
+X-HE-Meta: U2FsdGVkX1+prhGRuZULZ7bm7Uxcn2Ba4R7MuNEMSE1n9wuOs79VGp4Pe5e8ju6G1FnToszjtf3isTqDukHESgc4pFCtWLAxVwNVAZj7o/V3dBGbn5wCm5olMm150LCG36cM1nsvsY8WMBPqI47myrmXc3Ddx3m5H9V0UsEFAOb/rl3shctMiL3Db7SkoEX8zObjJQ2IKAWo71+KcoJx2qdTnZ/fT1Ms8PLbZEthu4fJb+RUGcx+XM0tgpHr4M6fGW+GVeuoEUGyKnAVvbKK9Zzp0yQrj5vIUr5rsOZoMeDJuX9BT3RE9XRjxIUSRZ0vA4pzfWcFtHEdi+HfuzueFdD3rsTZkE029JKPALe4HXPGdIqlnGrnnCUQuP256OUWL1B8LEcqm9uOuoxEs+TUyfPY5u5VFzqBINIvsqcjGvUTttk5tTcGHrnT9VqIQx/BlDL/V4x1sTraObfDsyb6uRLpmOq6zMAwcNEl3SPyD7Xf6lrpAQOGFOE6DGJcVhrMkwbYEvkJ44eDtK//a9SPDiK8eghn3sn9IBtvhUy+/UaJlcDzjogfSaBx2Wkh9KTz6m7O4gcN3GWCwT4zm+/bFXNh3LOjJJQQdSbFNUT5CISz4PkcKCAajkjqRneYmOK7cscz1UnBUT57QqHWvqIWlFvADD2CGMxwTWGkCG2+/xmg0I2UUZc9T8+Z3Ei75CIjl+dRO9z6/rG0pqqImDYcU2gPG9YLS6lGLkRULKxoWTI/A8lXFy7nNR/NBJ9vzUovTqDZ4GBmN59ear2Dq46Gna2Alxmt9fkNMw1NJsejfqirpM3X6UTIc1GEWMKKJWxrdEfpq6e/xvsjIYya54RC5Vrv4wmWTjLPjxlzeZynEc3+jJQ4w2KAciVcp2/DZpyU5Ux6Oysjr05Atn/0WQhpTWxdEMZE1vCsc92scVq4tZgjmiQnTbKhhExIS8no0ffaUIrZT+tvZqLEVXaxNW+
+ nqxMvDIg
+ yMLClpOvHKWMY1r7nuDGE3EBW856F1G05NjtXgBiwvxl/h6kg4ZAJtPYDk4X1y6mXxYMC/q8mVWq78aq5U01eLa/HfMrePHufeZ5UBANhdluvN9BQhNT450I+e7+sf3TRnAXdguulOG6g6P56B70ke4kRBtLvGKLjFA5jxzjiWLYEFNwHkwL6gbrpIJJpofURDa7foW678JhMKlHxStjSqtqtdd1qS1QivcmNcSm/3ZWhEhhI/HwV2xdJHZ8oXpLdlAU1saITKNF5eelSjSAUEtASbWba8RSk0vRn2kH2YPX9NeiRRZz3vkMb+2rNw8/DhFLEyctip23IO44A4A9irf0xmqUYJ4dXg0xChYF8I0Gau80ZfWuL1dqFMi+P1kvb4/Cd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,154 +182,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000008b780e06437cd86f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 11/13/25 18:02, Tytus Rogalewski wrote:
+> Hi,
+> OK it seems that this in deed fixed the issue, and i do not see leak now.
+> Thanks for fixing it :)
 
-Hi,
-OK it seems that this in deed fixed the issue, and i do not see leak now.
-Thanks for fixing it :)
-Btw if you guys need VPS with GPU resources, i can give you free ride on
-SimplePod.ai for helping fixing that issue :)
+Great, thanks a lot! Can I add then this?
 
+Tested-by: Tytus Rogalewski <tytanick@gmail.com>
 
-
-
---
-
-tel. 790 202 300
-
-*Tytus Rogalewski*
-
-Dolina Krzemowa 6A
-
-83-010 Jagatowo
-
-NIP: 9570976234
-
-
-czw., 13 lis 2025 o 01:43 Harry Yoo <harry.yoo@oracle.com> napisa=C5=82(a):
-
-> On Wed, Nov 12, 2025 at 10:46:45AM -0800, Darrick J. Wong wrote:
-> > On Tue, Nov 11, 2025 at 09:53:31PM +0900, Harry Yoo wrote:
-> > > The commit 989b09b73978 ("slab: skip percpu sheaves for remote object
-> > > freeing") introduced the remote_objects array in free_to_pcs_bulk() t=
-o
-> > > skip sheaves when objects from a remote node are freed.
-> > >
-> > > However, the array is flushed only when:
-> > >   1) the array becomes full (++remote_nr >=3D PCS_BATCH_MAX), or
-> > >   2) slab_free_hook() returns false and size becomes zero.
-> > >
-> > > When neither of the conditions is met, objects in the array are leake=
-d.
-> > > This resulted in a memory leak [1], where 82 GiB of memory was
-> allocated
-> > > for the maple_node cache.
-> > >
-> > > Flush the array after successfully freeing objects to sheaves
-> > > in the do_free: path.
-> > >
-> > > In the meantime, move the snippet if (!size) goto flush_remote; outsi=
-de
-> > > the while loop for readability. Let's say all objects in the array ar=
-e
-> > > from a remote node: then we acquire s->cpu_sheaves->lock and try to
-> free
-> > > an object even when size is zero. This doesn't appear to be harmful,
-> > > but isn't really readable.
-> >
-> > I'll put this on my test fleet this evening.  Thank you for the quick
-> > fix! :)
->
-> Thanks for testing, Darrick!
->
-> --
-> Cheers,
-> Harry / Hyeonggon
->
-
---0000000000008b780e06437cd86f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi,</div><div>OK it seems that this in deed fixed the=
- issue, and i do not see leak now.<br>Thanks for fixing it :)<br>Btw if you=
- guys need VPS with GPU resources, i can give you free ride on SimplePod.ai=
- for helping fixing that issue :)<br><br></div><div><br></div><div><br></di=
-v><div><br></div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smart=
-mail=3D"gmail_signature"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"=
-><div dir=3D"ltr">
-
-
-
-
-
-
-
-<p style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-fami=
-ly:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">--</font></p><p =
-style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-family:=
-&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">tel. 790 202 300</f=
-ont></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal;f=
-ont-family:&quot;Helvetica Neue&quot;;margin:0px"><b style=3D"color:rgb(68,=
-68,68);font-size:x-small">Tytus Rogalewski</b><br></p><p style=3D"font-stre=
-tch:normal;font-size:12px;line-height:normal;font-family:&quot;Helvetica Ne=
-ue&quot;;margin:0px"><font size=3D"1" color=3D"#999999">Dolina Krzemowa 6A<=
-/font></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal=
-;font-family:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1" color=
-=3D"#999999">83-010 Jagatowo</font></p><p style=3D"font-stretch:normal;font=
--size:12px;line-height:normal;font-family:&quot;Helvetica Neue&quot;;margin=
-:0px"><font size=3D"1" color=3D"#999999">NIP: 9570976234</font></p></div></=
-div></div></div></div></div><br></div><br><div class=3D"gmail_quote gmail_q=
-uote_container"><div dir=3D"ltr" class=3D"gmail_attr">czw., 13 lis 2025 o 0=
-1:43=C2=A0Harry Yoo &lt;<a href=3D"mailto:harry.yoo@oracle.com">harry.yoo@o=
-racle.com</a>&gt; napisa=C5=82(a):<br></div><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex">On Wed, Nov 12, 2025 at 10:46:45AM -0800, Darrick J. Won=
-g wrote:<br>
-&gt; On Tue, Nov 11, 2025 at 09:53:31PM +0900, Harry Yoo wrote:<br>
-&gt; &gt; The commit 989b09b73978 (&quot;slab: skip percpu sheaves for remo=
-te object<br>
-&gt; &gt; freeing&quot;) introduced the remote_objects array in free_to_pcs=
-_bulk() to<br>
-&gt; &gt; skip sheaves when objects from a remote node are freed.<br>
-&gt; &gt; <br>
-&gt; &gt; However, the array is flushed only when:<br>
-&gt; &gt;=C2=A0 =C2=A01) the array becomes full (++remote_nr &gt;=3D PCS_BA=
-TCH_MAX), or<br>
-&gt; &gt;=C2=A0 =C2=A02) slab_free_hook() returns false and size becomes ze=
-ro.<br>
-&gt; &gt; <br>
-&gt; &gt; When neither of the conditions is met, objects in the array are l=
-eaked.<br>
-&gt; &gt; This resulted in a memory leak [1], where 82 GiB of memory was al=
-located<br>
-&gt; &gt; for the maple_node cache.<br>
-&gt; &gt; <br>
-&gt; &gt; Flush the array after successfully freeing objects to sheaves<br>
-&gt; &gt; in the do_free: path.<br>
-&gt; &gt; <br>
-&gt; &gt; In the meantime, move the snippet if (!size) goto flush_remote; o=
-utside<br>
-&gt; &gt; the while loop for readability. Let&#39;s say all objects in the =
-array are<br>
-&gt; &gt; from a remote node: then we acquire s-&gt;cpu_sheaves-&gt;lock an=
-d try to free<br>
-&gt; &gt; an object even when size is zero. This doesn&#39;t appear to be h=
-armful,<br>
-&gt; &gt; but isn&#39;t really readable.<br>
-&gt; <br>
-&gt; I&#39;ll put this on my test fleet this evening.=C2=A0 Thank you for t=
-he quick<br>
-&gt; fix! :)<br>
-<br>
-Thanks for testing, Darrick!<br>
-<br>
--- <br>
-Cheers,<br>
-Harry / Hyeonggon<br>
-</blockquote></div>
-
---0000000000008b780e06437cd86f--
 
