@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0847FCD8CA7
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 16:37:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBC66CD8CA8
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 16:39:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CEFA8E000C; Thu, 13 Nov 2025 11:37:43 -0500 (EST)
+	id 327138E000D; Thu, 13 Nov 2025 11:39:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 480048E0002; Thu, 13 Nov 2025 11:37:43 -0500 (EST)
+	id 2FF0B8E0002; Thu, 13 Nov 2025 11:39:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BC3C8E000C; Thu, 13 Nov 2025 11:37:43 -0500 (EST)
+	id 23BFD8E000D; Thu, 13 Nov 2025 11:39:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A9CD8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:37:43 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B63D45C3D7
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:37:42 +0000 (UTC)
-X-FDA: 84106139964.27.4649A43
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 06680A000E
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:37:39 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ct6vVd7R;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 11D9C8E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:39:51 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1781C0AB3
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:39:50 +0000 (UTC)
+X-FDA: 84106145340.07.F5EBC8C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 29EB640012
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:39:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FDOUAK+Z;
+	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763051860;
+	s=arc-20220608; t=1763051989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NWPg9BguaMSndys7SpNC2ouAVsPIyce6s3kqntE/0Qk=;
-	b=AiDU28BitqvyMGjrNvzUpF4d24fl4W5lLLARwBofVXHvZWT57gng/KZp5p+88ecM8paEM5
-	Ri9o14XOHsbxS4NsfIX+TUaYqBooQOeR4JnuYT9MrpCqiYPcnLNvWuuLG2UNv3j+WGICIb
-	dAoeTG+WM/K7xkzasGC2P7VNUpAY9gs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763051860; a=rsa-sha256;
-	cv=none;
-	b=a2XR1VBhhofArRGcfckjfovAzOl7QCDbdbmRLXT+6WfGSfLkvaox21sL+VdTSXRCfAdPpw
-	cxbuHBcAezq9qVKwHXfQke61wfjov7U0kH95bnsCL1/hQmwY/d144uv90nIZiLwNXRq8kK
-	6KPy5QUpiBcPFlgvO+8jRLPsEqsWL30=
+	bh=KWiuhOrKURFpDF1jEF6HDs7VsJ1uOu4RR59xEAk1d1I=;
+	b=hc3c7HvLiO4QCQfn5WyYTjfFc9nQQo3M0Fo67rtk3dd5tA0f7WuZjAgcaA/AAkLnLX1jg3
+	XzB2lgMprMt8aEuRU81dtYI+bmWT9IAdey+ZG0upg/2nqwyf7VZSN6KKVoM7URF6FUx1g8
+	Ht8IUncYtH8rUtlKra82+E/TU4Uafsg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ct6vVd7R;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763051860; x=1794587860;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L2dJ8M6bmfI5rWS0eXljqH0I3hgmIRg5+3CvR8yK6O0=;
-  b=ct6vVd7RRE6lT1iDKlA/K4uN35bCOfV5XcO+5A1sY6GKqZ9Yw9qA6w3M
-   T4z8RMRi59NhjGcZW0Mo55JEMqf4KLctgNrrYIHnXOQJ0TJHzEPuIW0Ft
-   FzsGsXKOKIvImoHROjcxkzMdUOJXRUnX07PvvmaS3x2lZPlz6njDZKYOb
-   MnHph4X6xj1gkFqp8o4GaBgtOl4KUtle4Ovnh4OL+31l4K3FvT7GcbuJo
-   EL70O5zxRoGywydbFm9D9OzVskq5ID1gLwYMZEtUr3IBvYYOQQM9yej+Q
-   rqcV8WB8RpznAyQcs+mAFSTCCtZ123V/quvZKCIP7pwJLGuLYoOViWZZt
-   A==;
-X-CSE-ConnectionGUID: 8wP9qw1LQ8ePnhByo3s0bw==
-X-CSE-MsgGUID: Rm8H9ORDRCqr+PxSgW+WLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="65045380"
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="65045380"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 08:37:38 -0800
-X-CSE-ConnectionGUID: AxHjYY+HQ/WDwsFLkMMLsA==
-X-CSE-MsgGUID: +4p+XrXRQaqBFv8amwvoWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="220358822"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 13 Nov 2025 08:37:37 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJaKE-0005Zh-1r;
-	Thu, 13 Nov 2025 16:37:34 +0000
-Date: Fri, 14 Nov 2025 00:37:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, kernel-team@meta.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memory-tiers: multi-definition fixup
-Message-ID: <202511140039.XVfj2ju0-lkp@intel.com>
-References: <20251113145815.2926823-1-gourry@gourry.net>
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FDOUAK+Z;
+	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763051989; a=rsa-sha256;
+	cv=none;
+	b=Nf37JItTh3mM7uMHftTLvGD+RnCOsMY2VsDX4cfZBdQPBRWeAPm8Tay1L/XjKtGtEQt4pE
+	Yr5l4PJBzxogAJWC3ZbH34uagwl5MxyjSHuyYCmup4+d57I9OHv4UEFXwz98eQsKcqxXei
+	ulI47u97x7zrcjuAszHFAF8tj3/suTY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=KWiuhOrKURFpDF1jEF6HDs7VsJ1uOu4RR59xEAk1d1I=; b=FDOUAK+Z6YcXPnG3ObMXyYfXyu
+	pqX9OEVNzDjCVhE7Q6ZtgKXR8HhZY5Wn5qUpkAAeElMhXJZtktRJaQy7bjPuIQ8yot2uMVu3VheQ9
+	7KC6hUJ4UtLhDw/jUPAGtDN0657kI0ZMcCLJArV30LN0fyZAUNqDeR9Q3KVetqPqOy1BrdAVvPTJw
+	DsMw8gAT5540Qhv7dm7yVJ6SJkti2PK/6Mofbg4FvwTm/n8JX03y/lxiFTa1UsHTlL2aI/XmJxkTX
+	fL9a6wmIUwvChVwqoY4b25w8Oa4LPBo4705Eeq3/vLv+orFaQ0yFS08Qz6X0db5M1/F88omJBehbY
+	IviTwLNg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJaMH-00000007oHL-0pG0;
+	Thu, 13 Nov 2025 16:39:41 +0000
+Date: Thu, 13 Nov 2025 16:39:41 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org
+Subject: Re: [PATCH v4 14/16] memcg: Convert mem_cgroup_from_obj_folio() to
+ mem_cgroup_from_obj_slab()
+Message-ID: <aRYJzbZpd-UP3jh9@casper.infradead.org>
+References: <20251113000932.1589073-1-willy@infradead.org>
+ <20251113000932.1589073-15-willy@infradead.org>
+ <20251113161424.GB3465062@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113145815.2926823-1-gourry@gourry.net>
-X-Stat-Signature: okjpdrq3amt7s1ckuhp813d9uaoea9ng
+In-Reply-To: <20251113161424.GB3465062@cmpxchg.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 29EB640012
+X-Stat-Signature: 8u7pdgjeudrqh7n7j1cs6snk76ij7ih5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 06680A000E
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763051859-740947
-X-HE-Meta: U2FsdGVkX18f3BS0E90ExltOesg9im/XG++wMF1C9fkXZWbRrR9l/kgFC/OWuNaIA2YRMXUu9rnsV8Dukvv1AwEoO1hToBrFEVN6RHkhRw0ckZ6YRzEqRXl6lKvyXhJW9NSwMjBYKlj4bvWq3P9cGolk0GSgY7L0TR58oFpkXh+mQYbBfBNB+Snj09hNhlVplOTKCSPHrFuOLrEve33rb54QbbdfPbFcDhT576mWzTm+mTznZRi2cl2awyN1OsubLP7Xvc8GCNp7DCwxCzw4uG5QiH79nay9wukpPcLgm9AX8cpXH/wUgYQUwVfLZT2M85hJMsdd6WlmYR0IX/UnrqT/ODNkt8jcShUhAyjPMHKYDYNXiHCanr8FRtkJkVeuD9arI1lYk47Uzofuo3xtumXxrcom4sjR5NqkLCl6u9/sOM4uM8wwI16B5+Khg2osBihnKKharx0Jt5odaIcSGOMBMTVXLumGZ448Bs7/h3jaSShvnodXmM83g1VFomkWEw8O/DutypyYMAwhO8OhxZkZB3qA6hL62iRBfUdGdFqWVrRc3gAaJ0DOn5QeAQSW6zsycacnhHB6ZU7h6ymMFFCBXmp8exZTkQ4KSo83G3hCoyOfAdzM7DSFy4+W9/rYpbwybhqQbH8RXdcwqd80/zfmbBwr+iANfsRHcSAVHJSWsubc84qaQi8Z4VqDprOXqriodo/GhZydCGpNX6u7/FZsOAXSzO+aDTzlYW770IN09HmVogqQzzC1YpAjPQ74r/PKJl+e6mkfvwyUQMgatTKXVkOXN2q0P9cFTgiFTHaLO5DeMkbQx7Uku/rE3HDpFCj7Q9MGoceXwyUi1lOD9hC8FHo/50k9Pic4ddh6/ZMHx+NJqB8u4xDBDPUDcHr/cD7infuC/J78SG2qugr9VLzp0/q4iExiIjSdx3DnyAwRV1mQjEq9QMn4hQoIqLrzsrCjPRf7qE1JOOQV2bk
- pwWpdQ6x
- ffzapdgjzJsSeLzUXfyaOikk1J/L+jtzsTEXVyyPWM78Lm045QYrj6W8otQ2Qrx2OBWJUrDR3Etsus6tsdEBi8LmQOC5HmZWy8VflsHcvxLR0m/tJJtXDjPbgtYTblmp8czqH9cgepjKupjOCnRl+KadMeM8XgXSlkMaatkEEqqohZt8bqrrB/jP/s4zjvFvq4GIY+pqShDnJUkE6MVlCvScMWsZBCl8JXDA2H+MWOHpexwFeyEizdy1bJPm4sbp50+K+nUwgfaCzHlEIJ1j8Cye0vh3HdSbqu32u+XJNgV2lJogK1wWFRfWiEkN9dlSbkCsbznQOID3cw5GE2s7K/fb7v9HNtmLLOZZPtna9uz3afL91uwvhVDAFee4zF5igPcZJUxrl8QFOi+3o8eYoU4GLgy9akGtO1Lu+WFHtO8/avVw=
+X-HE-Tag: 1763051987-876581
+X-HE-Meta: U2FsdGVkX1+VAffyViKR/e6ffS+6vuDGdlybCjjleywCinEaigDcR7G78/4/Kg5xyiB33UqH/A3r/5Xg15SVF6LAG3Eos+7cfEfrgBCkE96XOuv7t4Rz/HCZ1IPL35vUzQcnFn2xDP5OOvAsLz9qSExfOBNwWt0dAxtIV8pa0DHt2+XP3JuNX0Dqlz+3nB62JHl+y/TsFdXyQf4SUSxue7O/3p5j/lah0HRvT1QJyWS4409rlCHWccLCueR0/WKHVFtjnnShKsyj2dAO2lsoEJ8QnY8I95VozftvXu6uL3CDw5/PIYXFUz64T83Tdh90sWs+5MxWLMF4isdPTjig9gHzoZTYMAMp42d5uUdf71WaIoHkN6RAoDBH25L04NVx06N5IofJgskRfkpQEU7u2JcX9HU+QUuZcwPK+DWY2tDnIwut8R9WO03m+Px4teRTQ49kyoqlj2CWEJwZ0ykOQDTNPoS8rH+WJ9RLBDGDVppBTVJ/tVeHZuUvd3BJnr2r3YBBB3tvtHIaXddGbNgy4PxNXSgL4ilJuy82qmF3GjP1X9G25VtLDeG9d04p7XyQcr9LWvlvgcWKXpOz7a6L1IRtLYqKcfUk+MOa6bJSXH482f+S/IZUyYBNHebT54OUfR8hA+qRWC9coTEYCeexwqIHM+Myt61Q3RDh9hQElG9U3ImSowrrj0NRULiO5acO6gm2nNSkjM4rsgNi8ULNFoQBBG2KJKOU2NQ1JfXg0Q+7ONKH7sGUrg4rx1Hk/hb0N8JZagrxuI9lexk4RQ3lRwkYIT+fXJ6W4P85lwM4BVDnZVEFKFJnrBKacBHA8mSu0NYbboos5WNrXBtPMwGIK1+qfUd/c5XdE6eW1i5PQ7kO3FsNweu5Rtj1ch0RmMZdumYG26FZLV/ddlPAjLdrlz1rosBLuGyaoUuVJ6DYDahdGKbFflxoSYREhZ3cOkXNABDFTZKhpQubCXOk0jS
+ qo8Kl/Ns
+ ldbqrLM11Nyx0nh79DoJnCfyXOjUP3kiCjPuT9UfFWGFi7d4U4HHBJ5tr85dpaoKcYN0DklDxVww9GW2nyDUgpe0yF1DAwYJcgS/3A9AviFhRUeqrPCGi4JiJ6VYNZbhSlDvBLZ5C8TRC9UZZnY9+0TGOnRRYJBRjrhaeUCDmG8w8csySm81wNMVVJr1EUriyM22YMb6N4GQcr0/yKPHXZ8vDOkajCxCoypWrNqAhpkx5YTXNX2ziH3T0t/yaY4dDnkJ9DjtnA1yL+tEVmXgMWN0KsnvxQiMbv0MFCByRo1ikPLrgqgc6VQmHnhBnLly5Akrq+fpriAJN8Z9kN8MIGvIzqFpl2zBz3leK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,39 +99,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Gregory,
+On Thu, Nov 13, 2025 at 11:14:24AM -0500, Johannes Weiner wrote:
+> On Thu, Nov 13, 2025 at 12:09:28AM +0000, Matthew Wilcox (Oracle) wrote:
+> > -	/*
+> > -	 * folio_memcg_check() is used here, because in theory we can encounter
+> > -	 * a folio where the slab flag has been cleared already, but
+> > -	 * slab->obj_exts has not been freed yet
+> > -	 * folio_memcg_check() will guarantee that a proper memory
+> > -	 * cgroup pointer or NULL will be returned.
+> > -	 */
+> > -	return folio_memcg_check(folio);
+> > +	off = obj_to_index(slab->slab_cache, slab, p);
+> > +	if (obj_exts[off].objcg)
+> > +		return obj_cgroup_memcg(obj_exts[off].objcg);
+> > +
+> > +	return NULL;
+> >  }
+> >  
+> >  /*
+> > @@ -2637,7 +2627,7 @@ struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
+> >  	if (mem_cgroup_disabled())
+> >  		return NULL;
+> >  
+> > -	return mem_cgroup_from_obj_folio(virt_to_folio(p), p);
+> > +	return mem_cgroup_from_obj_slab(virt_to_slab(p), p);
+> 
+> The name undoubtedly sucks, but there is a comment above this function
+> that this can be used on non-slab kernel pages as well.
 
-kernel test robot noticed the following build warnings:
+Oh, I see.  Usercopy calls this kind of thing 'heap object', so
+perhaps eventually rename this function to mem_cgroup_from_heap_obj()?
 
+> E.g. !vmap kernel stack pages -> mod_lruvec_kmem_state -> mem_cgroup_from_obj_slab
 
+That actually seems to be the only user ... and I wasn't testing on a
+!VMAP_STACK build, so I wouldn't've caught it.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/UPDATE-20251113-230036/Gregory-Price/mm-constify-oom_control-scan_control-and-alloc_context-nodemask/20251113-033247
-base:   the 8th patch of https://lore.kernel.org/r/20251112192936.2574429-9-gourry%40gourry.net
-patch link:    https://lore.kernel.org/r/20251113145815.2926823-1-gourry%40gourry.net
-patch subject: [PATCH] memory-tiers: multi-definition fixup
-config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20251114/202511140039.XVfj2ju0-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511140039.XVfj2ju0-lkp@intel.com/reproduce)
+> How about:
+> 
+> 	if ((slab = virt_to_slap(p)))
+> 		return mem_cgroup_from_obj_slab(slab, p);
+> 	return folio_memcg_check(virt_to_folio(p), p);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511140039.XVfj2ju0-lkp@intel.com/
+Mild updates, here's my counteroffer:
 
-All warnings (new ones prefixed by >>):
+commit 6ca8243530e4
+Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+Date:   Thu Nov 13 11:30:59 2025 -0500
 
-   In file included from mm/oom_kill.c:37:
->> include/linux/memory-tiers.h:197:12: warning: 'mt_set_node_type' defined but not used [-Wunused-function]
-     197 | static int mt_set_node_type(int node, int type)
-         |            ^~~~~~~~~~~~~~~~
+    fix-memcg-slab
 
-
-vim +/mt_set_node_type +197 include/linux/memory-tiers.h
-
-   196	
- > 197	static int mt_set_node_type(int node, int type)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 597673e272a9..a2e6f409c5e8 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2599,9 +2599,6 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+ 	struct slabobj_ext *obj_exts;
+ 	unsigned int off;
+ 
+-	if (!slab)
+-		return NULL;
+-
+ 	obj_exts = slab_obj_exts(slab);
+ 	if (!obj_exts)
+ 		return NULL;
+@@ -2624,10 +2621,15 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+  */
+ struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
+ {
++	struct slab *slab;
++
+ 	if (mem_cgroup_disabled())
+ 		return NULL;
+ 
+-	return mem_cgroup_from_obj_slab(virt_to_slab(p), p);
++	slab = virt_to_slab(p);
++	if (slab)
++		return mem_cgroup_from_obj_slab(slab, p);
++	return folio_memcg_check(virt_to_folio(p));
+ }
+ 
+ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
 
