@@ -4,84 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3316ECD6E74
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 14:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97A6CD6E73
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 14:58:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 783ED8E0007; Thu, 13 Nov 2025 09:48:16 -0500 (EST)
+	id 303648E0005; Thu, 13 Nov 2025 09:58:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75C128E0005; Thu, 13 Nov 2025 09:48:16 -0500 (EST)
+	id 28DC08E0002; Thu, 13 Nov 2025 09:58:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 699598E0007; Thu, 13 Nov 2025 09:48:16 -0500 (EST)
+	id 155788E0005; Thu, 13 Nov 2025 09:58:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 591E58E0005
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 09:48:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 02EC5140A30
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:48:15 +0000 (UTC)
-X-FDA: 84105864192.14.3586EFE
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EA2DA8000B
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:48:13 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F1A378E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 09:58:26 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 862B6140A30
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:58:26 +0000 (UTC)
+X-FDA: 84105889812.09.946042E
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7BECA12000F
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:58:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ZEC5LOOz;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763045294;
+	s=arc-20220608; t=1763045904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+yu80aoBjpgyBfkACdMGKdLtOv3coC/l3MU9V1i7jMw=;
-	b=eiizvt4pL4cZUJmW70AK7Rxx6JgX2yUTTzr7SbQE7VA1pU7GkHw+kCeKYNXp5D1a2yls+s
-	Ed92+XQfUNN6OSoMkSc8TNyKbA6U5wLJy7kPa37dugyW0epkoJUj/3hqGb81A0DKOslhlo
-	2TMWePyvI3vec0HelAnuSvzphfHVyBY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h95S7y1O/AgiNG3Y8C5QHzJHwFzVPf+f5SdvEJl4g/c=;
+	b=63i6Z2T+i/DaHumS8XTggHL64LJt66NZMBulvhM+1ho0AGkhwmxlnrZpZf8fWuHNQdrVzh
+	NFUSts8FRMBElzMPPKxZtXZRqaFHstj586h/wwqhyvdUPuSDOpgv4h7oFNZlAV2sm33XXz
+	yurZ8KjdgyXc2maXk79Wxepf8dDG45s=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763045294; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ZEC5LOOz;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763045904; a=rsa-sha256;
 	cv=none;
-	b=oexhaz7VmKE7fVt/f06wOch3t35niN6JcsTpQwPbXBZmRZNxyvf2GxbiXuClQxpTvGriuL
-	0DzCbtf6M+CYYZvdJlIVfME5NdtO9XbZB+DGwt92ViqN5g4Y2kV5EEZ/u8L4k7HdKEYUTA
-	TwX2mF6R9Ue/ClAdYoaON/Y3FSzaj68=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 8A319227A88; Thu, 13 Nov 2025 15:48:07 +0100 (CET)
-Date: Thu, 13 Nov 2025 15:48:07 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Oliver Sang <oliver.sang@intel.com>, Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
-	oe-lkp@lists.linux.dev, lkp@intel.com, Jens Axboe <axboe@kernel.dk>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>, linux-block@vger.kernel.org,
+	b=lXIPt5HK+O7y2RR2ghY7mSKlwq9oXmA03q3uh0oUJgAKvd3aGZXRx++lm9VRAW+DIcvNKB
+	lRUMQLeVkh9Hap3Dqb5FQLMVujE9JJ9RSlHHtlOwsXRHWORIHzpQxbFTJ+wFkBpDWYljkI
+	x8RfVOzG4e5qkBc7ekBJwHsuGjUM6TQ=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8b25dd7ab33so64990285a.1
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:58:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1763045903; x=1763650703; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h95S7y1O/AgiNG3Y8C5QHzJHwFzVPf+f5SdvEJl4g/c=;
+        b=ZEC5LOOzLfTkMLD/sH06Ta0BYqKsJ6aLbxCUtS2cXVS92u9oiMokX0qSkNmftf1ly+
+         AcRooVd7w5lkGbmIQL96rWHljywIy5/x3p4tc6qUI2QoM8S4SmJLrSZ1KgCjMknT/ctK
+         0WV0b4SdBYvgskbsh/r2t7o7NGfmIAmIGx3qXIcZMCjmBRkwBjVw1ywaiXnruZPuKqQR
+         +bCVVW9zORJ6n/cP9WQofDQ6PQCtJYlDRAtMFwy4pJTo77xp9nJVPbAOCPTXabdcl1Fb
+         1WT+mKgF7iNjX7rqgUSpaq3nUq46/9fZvU2ettU02nvDXBZ3JO+plh7E1lKxHjPoCNUf
+         x5Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763045903; x=1763650703;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=h95S7y1O/AgiNG3Y8C5QHzJHwFzVPf+f5SdvEJl4g/c=;
+        b=ETtSSQoJ91D8Wq7F2U+8woNvYhbwx003n8nj7OUveYgI7YZij+OlFv0bPAmBkdxDSJ
+         yGgBoemIF2LdWYwYwuwYXL8g+iFsfyuCnP7VIg0tYocVDNi5Sy18jWjPcnRNz8ZLDQsr
+         h62TBJcYpCr4TPOH9dpmZmdt6MIqh4abovMbsqmn4bytnmzo0CEq2OWsGD5wL+QejRMM
+         vME0V6l227f2gnbEBY1ZEtidPGlh1X84NNazokwUbBC2HTANKHtYhDxLNwK6NmE+MFsw
+         +QGuIkgHP29hYrbvnwhvpSE/on5osdzM22dtcBNCy8mIe4oOT/ii5AL7OXfuZ4eAIuQF
+         3m1A==
+X-Gm-Message-State: AOJu0Ywb7eXQ8NxOeBG72zs1JasAK+7KtZDP6Jm1pvlTiDsdLM+s4vu6
+	ARpUt1bmyaYB8u7u/3ErhDxeV6RW7ssWmaqE7xDu7GGVfd3RFzGCFUBJg/XMHzfOxuncCNx0MVf
+	QqqU3
+X-Gm-Gg: ASbGncsKkGVxix9YZOi3NLqxJH6ZDF4xbo/x+rgQ0pzW9yBig/ZMAcPxQq1v97Rxz5A
+	HS5f9HqHqdGXbdCxib2C4zMvDRQf5/bK5G6rKYNdRujVSkZF2Y9z4G0hLFX49vpBY4Z5THhojX/
+	EuQ+4owhn/YFZto5Ap/C2oPYujvyVaJUH6y3+AMu9ciohluxB3rTRZZwmoRnUFNrOy1Y4Bm7eWc
+	oDUpEb7Cb/DnJsO3B6t4d0/RddSEkvcJK6+3npyZKUA1UwQRO9ajj8Q70zam9lwoZjGETcKxHJx
+	xfNawAY0uqM2+XnUlC1JVlCHFj2qigzJl3JILIt9dsp//uydco9hWRynSyd6hzcSWNq4FavRsRc
+	gcQ4KlmOHqjEfxwuOsc2SUDb3cGHhYP1kQeUBsu8ZapVXmX6X62Ri/ZVKZTTy4Ri1d33aEYByro
+	rx4974LeMaDft8qvb4o9rG7f3xyCxfO0sQnZZdLPvms1YgLlFi+MowTopWRsStC3p2
+X-Google-Smtp-Source: AGHT+IE+lDqnvQHUYkAu0XYrmRvZEAyVZPzTEt8PYEgvi5cL1INBsBSk48uifZE1GEdbSXO88lLstg==
+X-Received: by 2002:a05:620a:3941:b0:8ad:3bc8:3cdf with SMTP id af79cd13be357-8b29b77a876mr945204285a.29.1763045903188;
+        Thu, 13 Nov 2025 06:58:23 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2aef2fa3bsm141739185a.36.2025.11.13.06.58.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Nov 2025 06:58:22 -0800 (PST)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: kernel-team@meta.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: poison_element vs highmem, was Re: [linux-next:master] [block]
- ec7f31b2a2: BUG:unable_to_handle_page_fault_for_address
-Message-ID: <20251113144807.GA31071@lst.de>
-References: <202511111411.9ebfa1ba-lkp@intel.com> <20251111074828.GA6596@lst.de> <a90b1707-b97a-454c-bced-a25068b28325@suse.cz> <aRWMT6DTNhAdudn+@xsang-OptiPlex-9020> <e88f9909-cb5e-4205-b4cb-461fdd71120a@suse.cz>
+Subject: [PATCH] memory-tiers: multi-definition fixup
+Date: Thu, 13 Nov 2025 09:58:15 -0500
+Message-ID: <20251113145815.2926823-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251112192936.2574429-9-gourry@gourry.net>
+References: <20251112192936.2574429-9-gourry@gourry.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e88f9909-cb5e-4205-b4cb-461fdd71120a@suse.cz>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EA2DA8000B
-X-Stat-Signature: nowouzyzpe54q91zfztx7dija94hf73j
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7BECA12000F
+X-Stat-Signature: 9mt6tyoj4rmwoq3gey6u6zpsaxk3846c
 X-Rspam-User: 
-X-HE-Tag: 1763045293-640405
-X-HE-Meta: U2FsdGVkX187UrgtTXNvS7UDnzWuTV6//re78xErd+zf/Mp5mExirM9/pLBjhDMvLT24wfiWN7fRuB4CBoKXoatX/tyuakz/+VyQoYomGwvJEYSplBO3JHOfJiChwkIDJLE1ZBSiyEcdElI3GV4YLE30YT+Fo3jAT0eTq695b+EwtL/seCrciL9JnrnZW7xBjvLd+2MwRfgwHgr8Fd7olMOQn9m6Yt0wBR4lOmHF5djIwELEezI66JQ+mhxHyLR47gmXduZ1UBbh+mdmTM8fcJdpdACr1F2oBB9cDMiV7PJApeRsTw5nn8rpw2NxdSAGSRSoZ6JDAs4zZsEKsQsjQWx965egAz4n5EO6jpQoZYZr+97CLh46wRr+aGpkPGvpMWeLa0IE46EHHRqJiiwgQIdDNnFQcJoX6CitLSetOCuMb0BrktcmW7daIuNGx3PCgV6yXvVNHNXhHng3I1B+rLEmw2VeukEy9sU544Fs910hRKDiVj106Paay5Knh/Cmw9VxZIqDp8PMZNsFGkExUbCV/F8HPhKNJea5o+rPxJLKEpDTswj9+Cg5yyvX8I3MW/YvCJBnr06MyLzCjinz3DCwb/0dO58NzRNQvjPn8BtOuVTYwDYnxDYqc9iXbHUvAxmPLOsvt7hWjZLN6W4OgK1peQy/YM8R4HWlF8WYnEfOKUnGhzMdzlXKvX6290NiryrPUch5tzZX7LrHH0rRi3HZD3Yff/kDxiqkyJW3BQcamea+JY0et2G4zPiatS9sAIIi0q0VCU3Aqy1u10OkL8sr6v69326rV5bqcbjHjvQEZ0005coNVli3IsDMQhTO5wPLA9tSkaWAGrGcHpfbgow78zrjVOWuSYuVejwVkYcfFxL2/ojZi/cxQH5eEaCtaUbA0zp79aE5NTVFLIAGbqZjudE3wwx8bYhqhLAIWEfIbw+E+/VCpiOuBakYVT3xmMc/4u3V1zGPo9VaPle
- 5OhXTLN/
- 9FlJLgdw4sGzwjC6X0RKOQiN73i8QxT3ShsEpMglcKpoHNNTtT73dDyyNtxziMAS5xLkCXhm+YYKfzaENGsvP4xzqwVpaKBw3pkanDIW/i3ZyvaoRtP6mQYkNYmHrpdnVpVgW0ANvC/FEtJ8=
+X-HE-Tag: 1763045904-974799
+X-HE-Meta: U2FsdGVkX1/hZLUGfMaCEaBYxlgr8gfVY7aC5K26oJWw6ki2O2d6JPXD5V0wvyRUHEHZCSKuORjoslNDNfP0/Yg7/fAyJ5queS0OQG1tayFFYw0HQAqo/3ONl6jT23jAa7CPm3UXNQ6pfCwL7V9vtBJa4VZcmOCgkAka+Im6HasE2dN8X8xOVnHdoFH8TcvFwjdMocW6oHYJNF72wVGk/ydXYw/CsNdnwfrTnFVcCApBENHGtkV6hshUJqM3XmFfpGgT3iBXVReXS7KfhRKWTT50b06ZjljgnnBU/EYumghdkMdQ8Bh76kE/Rf2WQ4Nevzm8koiJYBZF27MX4VfFh9xrt+EbeMnpiXLeT6qdoRnKsHPbzI1cD0mEgWLq2vDEaxUZCZCe7eWjI1oSOxI4B3ftd91P8xfCOo2c0aTAuVvLs36AHfZbDwLBPD5ZxqfJL2U+ppfIb48Qcej7fbtva68nQbOBl5CLPYTrzyGq/z4PP/7eyagBy51ar7j0kMDZC+w7zw72rxcHmYjlspi9AO3qY9tVWMl6N7NtoKummtDGh3S8okuaRN3uaQptSfFFKjbOtMkJ5xrNBgKLZLkjex8dyaQxiLuc5iAHp0Zj9pWXgTX+AznSIJGzgUNO4MKqdDt0u26u4QTN0t2oJ4n+FnmpHXtC/x7MXZ1vLy72x6xJwI045sF6Q18ygc+Bztm4d21Llk+u4+yy1SQ7RCA4ufIc41CkkgyfhL6vX1ytRJbEFG9cig92u2pZXrvwdo7XmDQv7SX1n7jq6A8a4fgUgze1Q/13RFhguJryKDDraMcsD/kIvibUVtuwHe2YadeEI0B3dCZNFo5CzlYoMdgEEIamajCW2QrdDVuw5OIPJAbig9k8juE4VnCaQGUOIyM3Ed1Gksvk22K/Hf1hdqseLd9OpIeKx/xLl8EbdzbAMYuW4ebZYUCqUI+UmSmjGCvkA/HM4ypmNfEaEkNpWF7
+ 1Xo3GVXX
+ nEjqmxHKDfIxwUe64PqLv6JogsNO7AuU+U3sWdNe0Gbujf6HpAQ2NUeHAgM0auaJI3jg4OYLduKeRvo62uo4l+rqOCAJvcbsDt+MqXRsmatwKRtluhZ7FxnXVKheNk+QyfoySZkx2RzPZj+5oZzaGfzJv2lnk6xYrnUWILiHhCGytzRZOmvLw7QhDWdYLGNvrS3hor7BJ3XVlqjC94JaGQyBn2jafi4S9kvRM1uNoRrrd7eMoQaxgwaqL/DULzbnJI4BRPVyPMqJljpqJeckzY8b5Y3v2sWcHJ8MMuZplsyju+WwB0C5VvzVydAy5xVAboI9+CmD9nEVxrtBRK5683SAk/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,12 +119,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 02:48:06PM +0100, Vlastimil Babka wrote:
-> I'll make this a full patch then. How urgent is it, Christoph? I suppose
-> this is related to the bulk mempool changes, and we discussed the users will
-> target 6.20 (7.0?) merge window? So landing this fix in 6.19 is enough?
+mt_set_node_type should be static
 
-The trigger is a change in the block tree that is in linux-next.  So 6.19
-should be fine, although getting it into linux-next ASAP would be great.
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ include/linux/memory-tiers.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+index 59443cbfaec3..aed9dc9e0c82 100644
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -194,7 +194,7 @@ static inline void mt_put_memory_types(struct list_head *memory_types)
+ {
+ }
+ 
+-int mt_set_node_type(int node, int type)
++static int mt_set_node_type(int node, int type)
+ {
+ 	return 0;
+ }
+-- 
+2.51.1
 
 
