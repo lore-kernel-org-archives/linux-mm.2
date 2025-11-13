@@ -4,98 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C071CD98D3
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:13:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCBF5CD98D2
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:14:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA3288E000E; Thu, 13 Nov 2025 14:13:30 -0500 (EST)
+	id 4675B8E0002; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C53358E0002; Thu, 13 Nov 2025 14:13:30 -0500 (EST)
+	id 43EBE8E0008; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B42B48E000E; Thu, 13 Nov 2025 14:13:30 -0500 (EST)
+	id 381BE8E0002; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CDAD8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:13:30 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29B055C6E4
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:13:30 +0000 (UTC)
-X-FDA: 84106532580.24.D5EF710
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3C99F140014
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:13:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ypy0j+Fx;
-	spf=pass (imf23.hostedemail.com: domain of agruenba@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=agruenba@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 253538E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8392160B44
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:14:03 +0000 (UTC)
+X-FDA: 84106533966.01.E3BC76D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 071554001A
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:14:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cfBzblaG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763061242; a=rsa-sha256;
+	cv=none;
+	b=MX73nlOhOujE7rlrmxbMFWVchdfTv+ZgMUKDkUzUk19awoolH+dUzLWkn+22vH/sNGoBaA
+	f/aFKFPYT4XvqBhlA7XFa6YnY3KLc3vzofhYc2P7YSfbaib+pV1vfsSaGRXB7HwUMY8gxr
+	jR1Bu25aOLC0Py0zo6+6xSpcDQJ+KGE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cfBzblaG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763061208;
+	s=arc-20220608; t=1763061242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=TyHzdpDFZ+y9Xq3UcqZS1nBRZScwrGk9PLsYYKXTicQ=;
-	b=eVEqgGCK/O/Gs9abSF6C/w+mDUsAM09hZRn9Wd6VuT/8vNU5Y748cuUjCpuJYWLvscIHvb
-	AdZAHBbm3NO+krnB118rJGwHwN8NPqM3rPsvO6agmKfQl05OJjHDbe10o+mPNb/BBfyAPM
-	QMqY/aWqwJy/J53k80/fVznvP1I0MBk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763061208; a=rsa-sha256;
-	cv=none;
-	b=gTABybh/LND73/c/8KyNhNtAsAxk2gvGGNMjbYTH5EWuhSEEz4y09eP1OuhK1eJ2DyONpM
-	QNfpq9cGHeOFoxVDAgj8wc3s7f9HpAJaaqxldzcJ/gY1p1NhYsTXA+5wwQlei7u65543Ue
-	mIsZ5I3e1aYllYZLuQ5QBjkVLNsk8qA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ypy0j+Fx;
-	spf=pass (imf23.hostedemail.com: domain of agruenba@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=agruenba@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763061207;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TyHzdpDFZ+y9Xq3UcqZS1nBRZScwrGk9PLsYYKXTicQ=;
-	b=Ypy0j+Fxtqgrw+2RrBDKC8CU142cXxqqCqEcRrK61eScCMePItcE3eruaVcLcoYWw1taOc
-	vDU//F7L8OpkGbSFPZvQeRfre/eye3YHnc8SxNwWsrh7xOUuMB10ljugjS8wa1MvlmUbvo
-	tiMmSu5HC0ot7tcIOb0jKQYEFLZAK/Y=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-422-15YijcbmNi2ii0LkA0cgSg-1; Thu,
- 13 Nov 2025 14:13:26 -0500
-X-MC-Unique: 15YijcbmNi2ii0LkA0cgSg-1
-X-Mimecast-MFC-AGG-ID: 15YijcbmNi2ii0LkA0cgSg_1763061204
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A2DD719560A1;
-	Thu, 13 Nov 2025 19:13:23 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.90])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 097331800451;
-	Thu, 13 Nov 2025 19:13:15 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Dave Chinner <david@fromorbit.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Price <anprice@redhat.com>
-Subject: [PATCH] gfs2: Prevent recursive memory reclaim
-Date: Thu, 13 Nov 2025 19:13:14 +0000
-Message-ID: <20251113191314.1679300-1-agruenba@redhat.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jaTEp5BQ9pTidqO67nAhCgBofDJQ3nltfXA82PxDSB0=;
+	b=j6HRH5IgrUjq0hLdc7Rftx8hEqbTbWvxT3EGgzST8H0Y4F/jbc9yXTUfuL/DGbI487qEhv
+	gKy9KoKxu0/+YScnjKIKimQLZggWLx0oTqlGrjv6jIhg/LDdHk7kq0vhRzY/1hDph+U6bb
+	WD7c6Dp88tVJ+KZhSu8s5u6YXVjrR1M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DB1D844591;
+	Thu, 13 Nov 2025 19:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FAFC113D0;
+	Thu, 13 Nov 2025 19:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763061240;
+	bh=jTWDk+BqohV3m4pXD2Ea/Pvbdh3J2t6AMrMnl8XqWNM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cfBzblaGV5hhZbOf+DAbxa0lXzHi4wNDeV83e/hMffLKgQ9aQzRt5eagWi2nPqVig
+	 +OgYRY0az8+Cx1dALXALokHuXG9h4Ac0KocHu2f2aOFrh5JfP5kb5N2PGQ+jWRkgFZ
+	 sQO5P/6ZVQGgc0tbu/wiJi2+KByxtaQcvyCHWokq7luXvunk4iaagmEBd7E/dILMJ7
+	 O0OEDG02xpXqVoTVHxOJWhrQ1iUwv/awNcNmXnToyD9TD2PPENLItvCkEQZon2ybcL
+	 cBey4qKmDoPGH+bX/4ZC4EIlu/PFZnOgoYOFnwFZ672IwX+pcaSSfkBElCf46zNrZt
+	 56xqzpPXgEojg==
+Message-ID: <7cfd85f6-54e9-42df-8330-d81fbe441ca5@kernel.org>
+Date: Thu, 13 Nov 2025 20:13:52 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3C99F140014
-X-Stat-Signature: fhobg964xijfkx9emaopoyq49txmxquu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/22] riscv: Memory type control for platforms with
+ physical memory aliases
+To: Samuel Holland <samuel.holland@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
+Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Andy Whitcroft <apw@canonical.com>,
+ Dwaipayan Ray <dwaipayanray1@gmail.com>, Joe Perches <joe@perches.com>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Lukas Bulwahn
+ <lukas.bulwahn@gmail.com>, Nicolas Palix <nicolas.palix@imag.fr>
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251113014656.2605447-1-samuel.holland@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 071554001A
+X-Stat-Signature: 35ufsg7boass1jg1zgn3y7xw9e6fyrn1
 X-Rspam-User: 
-X-HE-Tag: 1763061208-832179
-X-HE-Meta: U2FsdGVkX1+gcD04z1ivRbtvqlE0kM7ZGWHbPNtO3MmgJQa8Bz2+0AgLTWOGWDtcus3MaiH6fBNSC6Rot8Skt7IWvJ3VlqlCPQuYq+5Lnz7p8/kjrIBbb157y9HjZMkHOfcvDsW3SjNdUosP2VyaUras8yhYR0Ypv2asepQHQAWIfewCoNfhVstlnvkA8gCPBLfr+noKRRiSvQ4vtnLMnEcgsUwuRObmkr/P6zo+LeS74CjarNNOCyb2EAQd8mzl1Zagm5S3ETLYwCX7pzHV6gJkKa4dPFqoFYv7Zu4nDheHRnBBptKPI0XNU5Ze2mpwC8GzVCZBy7PmP/ihyeIs3+fxGH/m3lsNMUfHyj1moOBfgZ/Mh1Bf7x2GxhcyqMXeXRcUHOneeon4Irt5Pul0WST8om8SJ5PVpGquJwaKm3+GIH3OLOxIq6yhuJLypmsoWDcK2gnzlXbtIRH4VrkQKCdpM4nK6quPSfpNR35ZQ525s90om3WajVQSlR1ApO91u4GuHFN82RhAPBd+YsTiVlRk13oa/T3cFsY9j9hzq8gbDezV41vE7Ez4RdJJuuF+71zmieEBR7ptmx7iOrNekz95LU3nujQOG5Nzu4aiX2ebTpKiB4BjGmD5+FUGT21/seKmC7n1xF0miFViOfXqZdBUsxHsb2MvHdaGXtLgJDwsLvzP/KWqq59zR3zAnGMT4EAJrBdDaEcZrwKvvtGRDil90IROm2YYeCoRtNRznHgQ2WQjehRvxdvjKL2FwpcQunv+SgGI/1IPa81Idcj35zj1J6y0XH0xo/0R7npchKdcgg9joiprTqLOnqUGbLe0qJ8rCqqO5nOuuo5wLWQEWR7w6U9Pnjb8IvNenQxpq0C4YONJB1vYSy32AoxbWwbBi2oAKA1BvoTFNPQWTkDKzFspGca3o0yJIQMVr0KOlMWQSATrJ+0HKLyTLGZk9mQCRSUsAcEWfSmzx1AB0R1
- GZ5UlzsB
- Z0yUo9G2ACcWa7VorzzAV0SxShanuQNtaI/g5D6mT2Dxf+ZQ6GVaR7pDo+gB8J65domyfjMCVqD+UI3PswUu+tY7wYNwGuY7UG51ZiKbUEmHPLh0SNyJ3gSg+GmRyW2Ejb+7bTMQOnUJSoSRKCEf+vAwEEWs3OofS+LAbumu6L54HpiIrVzW7w9r/jwANGz59+2a+pRCLifihOLdcgs1Po0T04iRqYNbIK2IOsh6OYXknFctnTuX5I7eX/UHWGDnepdq1htlYckHsjrDivIICFnGzWrgRHNzGnoXN
+X-HE-Tag: 1763061241-182754
+X-HE-Meta: U2FsdGVkX19GnQaSxBZQiyyp5VjQekmem2D+GvYlS7Ew3epCQyOVrvCBclCZ1jsjnxnrFBsuxmRN3KJFF5eULyUyGx5ru84lKR4jaaqkx8a1jyIR6gMl431n6CML/hx1w0tbHwcL+Z8zKBLSyQ61p/hAzUlh7VB/y/GoqBRyOi8xb91MotIZVavOxZZ3FVrk2FXCMIEeXE6wYQfOk+HxmozW49XKYzpGuDKVpqr1j0VG+LL2uoBVJlqxt2kNVqa0selGezXJXCcoekB7thagOQ4USx6JzdR3yhqFtE1ciWxjpGjep/2CRAD+7MzKb94Cjym/IxNK3jE/wN0vaq/8AZ6eZPLfxSIW9CNfUVsTd2ECReOCS8kUN+tEKZCY0ES1Efki9a0G3fB0Csn0uuSC9JvueJVbrzu0dQN7Ki3o17I2XYG+LX4CiDwLFqPRZRtfiwE5uaB8qJDAMu8of94Yg+t+s9pH74fkYnt2U5ngTqe0naUX0wzBH4N0zPMqmRa4/iSKq9gpjlW8VFAyl8Owtxf2N24jv+iT+jbIYkyMj6CEom7/iZk/aX3uWHvK0lrWjG6L/eTTaMJFelmXKnIz1mRonF0yROcXchW9YfKk8xCKpBdO/KWF8osmHyzFYxFmSAJL5JRf2aOGWs9RJTLpEeQzONrAxbir0UV+cOT0PzNDQIUKX2MbrOOct18YoGIarigpU3Da4VeIuscDR0PlVTqppa9aM86Kn98RABqm6+cklQtxIzwSx/hXPtirmnJNamRWRA3KuKA81svN54tc3zVA2OFh7EP4qqYAEi9xovesP5SeFrI8upOg8YkRmxT8igc7q0D1sm0d/2lrbA1SglHO5Llr7wOsmm9utZr+dL9WpmoZJEup4kKMfirjpFiqFmkIJcPGc7Ww+G05jUJ/dEva7HAUGPI2PDkng6nvzjmjvQtm+Db992AjUs97L3QD918Z/zmZTrYoC/37f3a
+ tuAZlKlj
+ gv5xvQ+QDZf6TDuK4KMtG6mrQ8Jk08IAuJDD5e/M6n/1onKJiaCxZXGtVQyM5rWGRrYHfJ0EXN60uT9QwaxZk9Vsfx9PqEVK9Xu7NjHeAC+Ji9zLEvdUhqTON2bfBd32xynrWzrISluvYsDFw9ZTGxQQ9QmPeknpFSKXzc+koMAUisyDMOU6gQPPuQ5ePtQKXeNArKZLqTfsrhc/1XEvcY0rQ999WkuUbMvHPNVrzZF1JXKe8tmkRKs5PY/tseDbpbnw8ZCvLyDOkKSBcmdUh0fcOTv3tsLQpx92GfXGi5YPsI2CqUe8YAEHktxVlVIw8RdtXbUoUi65aW8w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,129 +107,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Function new_inode() returns a new inode with inode->i_mapping->gfp_mask
-set to GFP_HIGHUSER_MOVABLE.  This value includes the __GFP_FS flag, so
-allocations in that address space can recurse into filesystem memory
-reclaim.  We don't want that to happen because it can consume a
-significant amount of stack memory.
+On 13.11.25 02:45, Samuel Holland wrote:
+> 
+> On some RISC-V platforms, including StarFive JH7100 and ESWIN EIC7700,
+> DRAM is mapped to multiple physical address ranges, with each alias
+> having a different set of statically-determined Physical Memory
+> Attributes (PMAs), such as cacheability. Software can alter the PMAs for
+> a page by selecting a PFN from the corresponding physical address range.
+> On these platforms, this is the only way to allocate noncached memory
+> for use with noncoherent DMA.
+> 
+> These physical memory aliases are only visible to architecture code.
+> Generic MM code only ever sees the primary (cacheable) alias. The major
+> change from v1 of this series is that I was asked to move the hooks from
+> pfn_pXX()/pXX_pfn() to set_pXX()/pXXp_get().
+> 
+>   - Patches 1-10 ensure that architecture-specific code that hooks page
+>     table reads and writes is always called, and the calls are balanced.
 
-Worse than that is that it can also deadlock: for example, in several
-places, gfs2_unstuff_dinode() is called inside filesystem transactions.
-This calls calls filemap_grab_folio(), which can allocate a new folio,
-which can trigger memory reclaim.  If memory reclaim recurses into the
-filesystem and starts another transaction, a deadlock will ensue.
+It is not immediately clear to me from the description why that is 
+required. Can you summarize the core problem here, and why we have to 
+route everything through these accessors?
 
-To fix these kinds of problems, prevent memory reclaim from recursing
-into filesystem code by making sure that the gfp_mask of inode address
-spaces doesn't include __GFP_FS.
-
-The "meta" and resource group address spaces were already using GFP_NOFS
-as their gfp_mask (which doesn't include __GFP_FS).  Inodes allocated by
-new_inode() will have their inode->i_mapping->gfp_mask set to
-GFP_HIGHUSER_MOVABLE, which is less restrictive than GFP_NOFS, though.
-To avoid being overly limiting, use the default value and only knock off
-the __GFP_FS flag.  I'm not sure if this will actually make a
-difference, but it also shouldn't hurt.
-
-This patch is loosely based on commit ad22c7a043c2 ("xfs: prevent stack
-overflows from page cache allocation").
-
-Fixes xfstest generic/273.
-
-Reviewed-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
----
- fs/gfs2/glock.c      |  5 ++++-
- fs/gfs2/inode.c      | 15 +++++++++++++++
- fs/gfs2/inode.h      |  1 +
- fs/gfs2/ops_fstype.c |  2 +-
- 4 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index b677c0e6b9ab..9f2eb7e38569 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1211,10 +1211,13 @@ int gfs2_glock_get(struct gfs2_sbd *sdp, u64 number,
- 
- 	mapping = gfs2_glock2aspace(gl);
- 	if (mapping) {
-+		gfp_t gfp_mask;
-+
-                 mapping->a_ops = &gfs2_meta_aops;
- 		mapping->host = sdp->sd_inode;
- 		mapping->flags = 0;
--		mapping_set_gfp_mask(mapping, GFP_NOFS);
-+		gfp_mask = mapping_gfp_mask(sdp->sd_inode->i_mapping);
-+		mapping_set_gfp_mask(mapping, gfp_mask);
- 		mapping->i_private_data = NULL;
- 		mapping->writeback_index = 0;
- 	}
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 8a7ed80d9f2d..d7e35a05c161 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -89,6 +89,19 @@ static int iget_set(struct inode *inode, void *opaque)
- 	return 0;
- }
- 
-+void gfs2_setup_inode(struct inode *inode)
-+{
-+	gfp_t gfp_mask;
-+
-+	/*
-+	 * Ensure all page cache allocations are done from GFP_NOFS context to
-+	 * prevent direct reclaim recursion back into the filesystem and blowing
-+	 * stacks or deadlocking.
-+	 */
-+	gfp_mask = mapping_gfp_mask(inode->i_mapping);
-+	mapping_set_gfp_mask(inode->i_mapping, gfp_mask & ~__GFP_FS);
-+}
-+
- /**
-  * gfs2_inode_lookup - Lookup an inode
-  * @sb: The super block
-@@ -132,6 +145,7 @@ struct inode *gfs2_inode_lookup(struct super_block *sb, unsigned int type,
- 		struct gfs2_glock *io_gl;
- 		int extra_flags = 0;
- 
-+		gfs2_setup_inode(inode);
- 		error = gfs2_glock_get(sdp, no_addr, &gfs2_inode_glops, CREATE,
- 				       &ip->i_gl);
- 		if (unlikely(error))
-@@ -752,6 +766,7 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	error = -ENOMEM;
- 	if (!inode)
- 		goto fail_gunlock;
-+	gfs2_setup_inode(inode);
- 	ip = GFS2_I(inode);
- 
- 	error = posix_acl_create(dir, &mode, &default_acl, &acl);
-diff --git a/fs/gfs2/inode.h b/fs/gfs2/inode.h
-index e43f08eb26e7..2fcd96dd1361 100644
---- a/fs/gfs2/inode.h
-+++ b/fs/gfs2/inode.h
-@@ -86,6 +86,7 @@ static inline int gfs2_check_internal_file_size(struct inode *inode,
- 	return -EIO;
- }
- 
-+void gfs2_setup_inode(struct inode *inode);
- struct inode *gfs2_inode_lookup(struct super_block *sb, unsigned type,
- 			        u64 no_addr, u64 no_formal_ino,
- 			        unsigned int blktype);
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index aa15183f9a16..1a2db8053da0 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1183,7 +1183,7 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- 	mapping = gfs2_aspace(sdp);
- 	mapping->a_ops = &gfs2_rgrp_aops;
--	mapping_set_gfp_mask(mapping, GFP_NOFS);
-+	gfs2_setup_inode(sdp->sd_inode);
- 
- 	error = init_names(sdp, silent);
- 	if (error)
 -- 
-2.51.0
+Cheers
 
+David
 
