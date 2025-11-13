@@ -4,123 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B9DCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:16:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66053CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:17:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99DF58E0008; Thu, 13 Nov 2025 14:16:42 -0500 (EST)
+	id C5F468E0010; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9764D8E0007; Thu, 13 Nov 2025 14:16:42 -0500 (EST)
+	id C0EFC8E0007; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B1818E0008; Thu, 13 Nov 2025 14:16:42 -0500 (EST)
+	id AFDF58E0010; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 795008E0007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:16:42 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0CAED160B35
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:16:42 +0000 (UTC)
-X-FDA: 84106540644.14.964067F
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 126E240005
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:16:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Oq4qE8gu;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763061400; a=rsa-sha256;
-	cv=none;
-	b=nwfatawlNo0WFRLq6QqjZcp7ae4/0XPzNW8F53BaDwIjR/ywOj8cr2Y6112c1ayiORe5sA
-	A0YXRxsjONNAmu+QneRUBIfFORHn5GJGFR5AUBfYS5mCVJWT55GWnX/vzNGhf9Krt8pX7Z
-	fR3qnlGRhMVjVV34QU6fWHyToL2ysko=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Oq4qE8gu;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.181 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C39C8E0007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 65682160B35
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:17:32 +0000 (UTC)
+X-FDA: 84106542744.12.279D3BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B8103180019
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:17:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dvIhnU76;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763061400;
+	s=arc-20220608; t=1763061450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zxjShYqK0SmvQj3uToI7bKSMFU1VR+C+fw1226ulLGs=;
-	b=3vctwtn08Rdg4C5lomN9fEyggu93Awv2xrKSXy/Bxri/miEmkEXhy8SAOfCpCM1KFLmesu
-	uTwgA6uibLZKUxkmD6K+V0Q9duvNl3swAUnq9Xohyz2F+DsGK9kRvIGv54yj1oyuTKTwJe
-	nBHjA+0WkBPIYgwYWSo6Z8QY4Ss8GSA=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b263ef9ecfso110705585a.0
-        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:16:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1763061399; x=1763666199; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zxjShYqK0SmvQj3uToI7bKSMFU1VR+C+fw1226ulLGs=;
-        b=Oq4qE8gutSUP0ZdEXFdbIEcHu8NQgjawd9l6Tq2YRL034utANGi0TjjOrWHDOWjg8a
-         CbiSBDsA/VuUYaSPp5ETOo0VdhFl+Mw5R+6/L8DfN3srT0G/BpI+DTnTR++fy3sjAXSe
-         uWWQumvmIJjq1CbZYwkh+oe1AIdsthmo8tshthsMx8ztlXTSojg/9sNkFRciryGOw2Y4
-         EBLzy7jtrlq7MfSCPGVpzvPPSFp5r8AtdWSRVt7dJlI9q8SaNwC4itPOmAHI85EIcR/W
-         +QpMSTYpCRLcJ/C7cjP21IKI3ajhNLgUgxHV9bA6VHFSkpUBIIYffU8gBcTOOVF7ne0g
-         lqow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763061399; x=1763666199;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zxjShYqK0SmvQj3uToI7bKSMFU1VR+C+fw1226ulLGs=;
-        b=OegnGhHrXl7I80FxvqO5eQRrV/FICfDSfoo4q+sSKnTVxgf3IS/iR5L3UcI7magDU+
-         NGwwELHv6as+EpJslp8RdOdEzS5iSpbXfyjJxErRTN+lrSE0OAxAh7+2q/OsPGoGtoxg
-         vF8S4tntxZFY4dmKd9LJih1BoqWyhZBkCs0YDfrbb+jVsO5UHsXisIqdTSf208UaWHGr
-         MJqpKlnWYm2/k/giJp0GyXD6nvQYGHlW8z+uKDlcbEW+dUKvf+J0bvl4885xkTX3+4nM
-         +LrPk7eDivxD1wmfl47FLTpkGffwKbX4OAhKVmRhnrZpAlZuS5vkATq5euQA8Fbb6A6L
-         1Sgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUuxoYMT9Kog60B2mMPP834wDZgFFNZe2h1PS3ZBliVHFXnkKKnxRaeAOkiKbqK567VxylAXk7pmQ==@kvack.org
-X-Gm-Message-State: AOJu0YwGVJHnO39wKNgRKOSOQN78SRDVpLg/okQCanZ7RnI5JxPOGq1Z
-	xQjO9XFQ99CcOlX6zJHj3S0Lk2HCmq+ciWq7+zUgx/yZ0vd7OEFvp/w9VSXVku6C1rc=
-X-Gm-Gg: ASbGnctYAH80gD9LwBkW/E4K8+bP9qHrtYXJTq9ivr6/kv3GW+qKGke62Wn681LVFei
-	eelUGqZJc2Vooyo92Bme3XiFeGAIVBPpUES5RTyIeiGE1lak5l+JiaVmOzS+CR49nPr0SewyTWa
-	qgaDXPZSHQmGcSR44U66MZ1Rv+xGpXTTWrHWocaV0w+W1HdqYzEO20H6m/4J2pmr1PoPoHrDiJm
-	BrcM0WDCAwZQMa79QUoUicvH7APaoGmaLu0PMY6+0wMwzc5MI/uH5gV/edIunZ6cbtjGdgpxKQO
-	50xuOiwtoHvY8MyoAEuSlsmowWZ/DuGBEvJ23XXHwC6BXrEdnQBClkLgR4VXeUz6CENI1zwGvp0
-	BrGDO9zhvaCNiGDujYhhA/YCegmNyEDp2+3ESCxzbBT1rAR0IuyOzdDfq5fjfuNkryY7A/GBgxL
-	0=
-X-Google-Smtp-Source: AGHT+IGpEDPemMbTY/tSqdrsw5hKYs/c+DFsc+7Rz7Y9vOLYTYETjGT8tc6BrkQHX26180I021LtWg==
-X-Received: by 2002:a05:620a:404e:b0:8b2:eb2:54e2 with SMTP id af79cd13be357-8b2c31b0e9dmr75851885a.47.1763061399043;
-        Thu, 13 Nov 2025 11:16:39 -0800 (PST)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2af042c9csm185548485a.46.2025.11.13.11.16.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 11:16:38 -0800 (PST)
-Date: Thu, 13 Nov 2025 14:16:37 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org
-Subject: Re: [PATCH v4 14/16] memcg: Convert mem_cgroup_from_obj_folio() to
- mem_cgroup_from_obj_slab()
-Message-ID: <20251113191637.GA1240@cmpxchg.org>
-References: <20251113000932.1589073-1-willy@infradead.org>
- <20251113000932.1589073-15-willy@infradead.org>
- <20251113161424.GB3465062@cmpxchg.org>
- <aRYJzbZpd-UP3jh9@casper.infradead.org>
+	bh=uzsflB0sNLQVC2NratA1sltzAGQt6i0/CD9ALRM46uw=;
+	b=Sqp98ZbxcfZKB6w5XVQLK2R92eWIHJ/0j5GASpNUkP9TlY5I3bPqRma/xhzjgpRS1CYXtE
+	EYx8BNLFkYNpZsG4zQ2M6SK6FhUWPVKpDNY1YFgIk1X9FKUeUT2fIMUbzdDit6oaOhYUmD
+	SFVrPlRUsJVGDxMZBiEFTuSgXUcE8Ac=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dvIhnU76;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763061450; a=rsa-sha256;
+	cv=none;
+	b=P8uWQsmumBvG1TcrpdR1gKnifY75C3u2GCB9m52EI8MmWEyRjCu0/H0IZ1CQHte2j1kKf3
+	OnkIGcc1R5F2BT1WVGNBdssdfnbWSb2d+8/+E5nOqgqUevQnZbtxeKNqWK3o2UBkEmkCHE
+	pEfOCDrFarhjnpxRmrVbz8Q0INs7lsg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 23C31600C4;
+	Thu, 13 Nov 2025 19:17:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDD1C4CEF5;
+	Thu, 13 Nov 2025 19:17:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763061449;
+	bh=kt1jO8UvsULEtaDs/E7EX9tnRAFarugVzSN9GuwH6ro=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dvIhnU76/pW+vCvvgnPNOO2XoQTRK5+zJKW4w6KCqjeswisCxWkZpIiklY0SGPySS
+	 dc4BL0IQw9fjzF4yEHDnzZhbHolCVFhMkJCDkfroC1oOYtZ1AEzdpJNIltye3ymCvr
+	 EoRUENxrYwJSfHaAGwqCFp4xZkLO5vyi37LLaJudOdlSK/ZjLC+8F3TSas9cOVBxw/
+	 b33BvjEkKZPiNKw/m8PlodjOhuvFQf0UXpUiKy2dufHvnPJCEUu7MAIUM+q8ZL3qRP
+	 ySj9jf4v/bQJ/v3kabWXXf5WDP40v48ydCR215Lvnu4LAirAtUi8mxv+N29aZK0vi3
+	 AC64p6ZBMkUBw==
+Message-ID: <273b638e-8251-4faf-929a-87432a48abdc@kernel.org>
+Date: Thu, 13 Nov 2025 20:17:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRYJzbZpd-UP3jh9@casper.infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/22] checkpatch: Warn on page table access without
+ accessors
+To: Samuel Holland <samuel.holland@sifive.com>, Joe Perches
+ <joe@perches.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Andy Whitcroft <apw@canonical.com>,
+ Dwaipayan Ray <dwaipayanray1@gmail.com>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+ <20251113014656.2605447-8-samuel.holland@sifive.com>
+ <1dfa1e3566cafbe43a1d4753defef9c82ddb3b64.camel@perches.com>
+ <a6e7a571-91d2-4e66-bc86-ba30f624294b@sifive.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <a6e7a571-91d2-4e66-bc86-ba30f624294b@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B8103180019
+X-Stat-Signature: bueg3mzp3he65brnh4sk7999jw7nki6m
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 126E240005
-X-Stat-Signature: 64xdurp9n37fcxinadexqc3jxdxs78bk
-X-HE-Tag: 1763061399-910911
-X-HE-Meta: U2FsdGVkX1+lIr5AfUnUcnzzcStWHpoAm6mO9HrxHRhQ9m8XAkXBHV5dEfIfNSnCMb8m4/Pt7H1FvoQZlnMx9q9laFH0S2dB70YqFiwPpvysCits3yj/JdeUjOq7alSydf4l8OAgPg0WF2LmZPQhcZdTGl9fXdq/1vRG7Ixw4c89JZaPHpKuSIqbcM81LmZ77hRgkzkMsPCbjmWqeG8A9KQ/L+6k5MzXNBnMrOVo9AGuaNS0GYVvJbe09nVPpc8ZMUltCNfF93K4BZ+M1ILk1AKs/zeDbyOPWlUX+iXBVHzxAupvUR3OyuQcEK4xofB9A3VUKaZ1uukwdIsPldfD3x8neqqb8cT7HeYoEpGwRM3oesVkMaNTzm+FZTTEOAMrwUwwSPFt9r1obnyVWixArHZ0nNJDPDipymkNeVB2FyY9O0epak+ER4cKPxSVbTgdCXGv9Lr4b6ZsUBBloSGkPfVbHlttX95nWNIo2OJzteV5YHfGGQv78EQoayFbYaoXhUWYXNmAKnWG06wOLpQThsQhYsVgxCD9sKCiV3xhm5CQ2MrA8jDykth1TnygpTpjZQXpaoM4WDkZo8SlYdmST2CDu5yFo5jFC6GWYFfZ0otrPwSpzRSYGKGwu9B314bw/efSghjWh1tCpAddAksGh6K4b9GDXkPOnjqkPfLnUC0/OE8MOCeKUNY9MPATV1ypyB1QYqHW3po+6OhwKPWVmbKloaaSX3RLVIWO//0vKlbsBa/NVYVBb3SYrlIi9DpWdvRIP29XrdS4TAmlnAf2tsU8w2ZQBxtHG0ldRj4UBOD220PH9A7xVJ8dt1tBmZGLVSYq5MbVbd/lai5dkbvFskdKmwvPlhYwWC4jBG3lujt51pouD9uWiHp8hjAQ0U9G+xxZmQ0qRFVvu+lK57XkpnHFLrAWFxwqaXwxIke11sz6ZyQULz/JnS5FneF7qpSQLgb16P2VkJLWXd3GMu5
- KHGo9F/7
- JNle4mW63MunU8c/UvmrD88JTwFbYKpYs+sy5CR36YSlrCIjFqgcRiwvWKQ8FwdIyYvXxK8Q1lplZPxwW7ht4ihTL/H7InaZpAHg2Q/3aDtsvUjuss7bcKDDG4A==
+X-HE-Tag: 1763061450-514994
+X-HE-Meta: U2FsdGVkX19ImzF7zhkPyPOn1IDslLtCFb6aVJ3wRu0KFI2+AkqwrQcBG82F/0N8QczwPlESFWv09GfMvAYKaA/VCd4x7I9jEeLGxxMT72L10ocVfuJthe0KmspiRhpPxOUc/2GiCGGM5HoT85L9GfO8C+ug7bKnPCkLSpgYg04PBXysttj+B+t7VHr+hiHvEwhjSqHjZlUaogN4c+DxGpmQyMSQQ3T2UsM0f70JYki7nNNyTIqWw0WaK3nuEiV3HhrPeRObuZmME7VT0thPt2htcl24p+kHYZE3Lmt6+r8tHMv5Upq/mVN0L3cjRJn4I4O34ScmhhkSwYb0t3M9FhFXbRl6c4Fh57DQESHDiaX+bwWvMfEtMpGEAMuF+0rmDNc3saa3TSF004/3K1WcDrPC6Ro8RRwo6nE3dTJqnIOzVkpmwswW0bMMwsKsrBwK75S8sHZlJVc7VKp83koER9GnrnD4s+7lNZjAlQtW1gZ0QNgeZOpS3h+J0f7Ofdlomm1u7l901eqPMUiWhZZxDyWdH+OroytW1xOWze3Mo/Tf4EXe1TjwzqN9qd197zwoeCWe5afs2L2DBwO3NjKl+Qb1keoJEhgBf2A6tmLZP/r7FY0y3YTuy3Gvx6KxJ5HPjd1ibxXiLv4OOOjGBuOiA6CN+9PaFZypj4DGTz45pqG9wq5tNpuEu5Njs41ZMY3/9dAugu4e5VHPHLSa2dvniuhRPN4qO4m5L3yXjdIhNoS0cylMn/W9krSC3hyDGuKYGZL5w5x1d3vRkq4rpNTnGg4oGkQ/smL5zloMg70PzNscfbRjeAgh23BNLEkRYTIYEKAG3MMHoiAefH7HtM4cXcqU1Kh0Nkvya8JX4yECY7vD1WHk2uITC8A/Pghbajdd4Ish5oZZWraDoDX0cvm19V7psSCNogTDl/1qM2MDrdlySqPdQJBrto2KqEjdz02NQNbkLL5riXUNSWNjqnE
+ ljbCNUmO
+ PjEsS3Wjye5R1+trp3LzbeMSmUcQT239grnKuTHwsEEvI5Oi3jSOwt187EdqAyqOuMRqfltdtHlPLvuy2zRl9FaeMP1YZk3XwzadvmyLhmSFfwEuKLAst9ob1+v46yrJJfuaD8M/RU+y/x6zbZleQ0QvQwO9FZfjZs5CCvrGA95EwQ61zAQHOTY/Q97hIJMceHYTTsCalLG2CvKc+O+qmYmpX5I4mBzW3PwtEMLvlCr55CDMBQddItfCDT7z3Vt9B0WFpstGVasxvM65Jo7s2fE0YwNaXsPAxv7sgWn5NI1v+6aE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,37 +109,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 04:39:41PM +0000, Matthew Wilcox wrote:
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2599,9 +2599,6 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
->  	struct slabobj_ext *obj_exts;
->  	unsigned int off;
->  
-> -	if (!slab)
-> -		return NULL;
-> -
->  	obj_exts = slab_obj_exts(slab);
->  	if (!obj_exts)
->  		return NULL;
-> @@ -2624,10 +2621,15 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
->   */
->  struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
->  {
-> +	struct slab *slab;
-> +
->  	if (mem_cgroup_disabled())
->  		return NULL;
->  
-> -	return mem_cgroup_from_obj_slab(virt_to_slab(p), p);
-> +	slab = virt_to_slab(p);
-> +	if (slab)
-> +		return mem_cgroup_from_obj_slab(slab, p);
-> +	return folio_memcg_check(virt_to_folio(p));
+On 13.11.25 03:36, Samuel Holland wrote:
+> On 2025-11-12 8:21 PM, Joe Perches wrote:
+>> On Wed, 2025-11-12 at 17:45 -0800, Samuel Holland wrote:
+>>> Architectures may have special rules for accessing the hardware page
+>>> tables (for example, atomicity/ordering requirements), so the generic MM
+>>> code provides the pXXp_get() and set_pXX() hooks for architectures to
+>>> implement. These accessor functions are often omitted where a raw
+>>> pointer dereference is believed to be safe (i.e. race-free). However,
+>>> RISC-V needs to use these hooks to rewrite the page table values at
+>>> read/write time on some platforms. A raw pointer dereference will no
+>>> longer produce the correct value on those platforms, so the generic code
+>>> must always use the accessor functions.
+>> []
+>>> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+>> []
+>>> @@ -7721,6 +7721,13 @@ sub process {
+>>>   				ERROR("MISSING_SENTINEL", "missing sentinel in ID array\n" . "$here\n$stat\n");
+>>>   			}
+>>>   		}
+>>> +
+>>> +# check for raw dereferences of hardware page table pointers
+>>> +		if ($realfile !~ m@^arch/@ &&
+>>> +		    $line =~ /(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?(pte|p[mu4g]d)p?\b/) {
+>>> +			WARN("PAGE_TABLE_ACCESSORS",
+>>> +			     "Use $3p_get()/set_$3() instead of dereferencing page table pointers\n" . $herecurr);
+>>> +		}
+>>>   	}
+>>
+>> Seems like a lot of matches
+>>
+>> $ git grep -P '(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?(pte|p[mu4g]d)p?\b' | \
+>>    grep -v '^arch/' | wc -l
+>> 766
 
-Looks good to me, thanks!
+That is indeed concerning.
 
-With that folded in, for the combined patch:
+I recall that we discussed an alternative approach with Ryan in the 
+past: I don't remember all the details, but essentially it was about 
+using separate types, such that dereferencing would not get you the type 
+the other functions would be expecting. Such that the compiler will bark 
+when you try to dereference.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+
+-- 
+Cheers
+
+David
 
