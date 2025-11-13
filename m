@@ -4,116 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B74ECD98D0
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0369CD98D0
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:29:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91CFF8E000C; Thu, 13 Nov 2025 14:28:07 -0500 (EST)
+	id 2B64E8E000F; Thu, 13 Nov 2025 14:29:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F4788E0007; Thu, 13 Nov 2025 14:28:07 -0500 (EST)
+	id 28E808E0007; Thu, 13 Nov 2025 14:29:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 809E68E000C; Thu, 13 Nov 2025 14:28:07 -0500 (EST)
+	id 1CC7F8E000F; Thu, 13 Nov 2025 14:29:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD848E0007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:28:07 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15912160115
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:28:07 +0000 (UTC)
-X-FDA: 84106569414.11.CF2396F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6C44E4000E
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:28:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Z2ZmZeRy;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763062085; a=rsa-sha256;
-	cv=none;
-	b=3Kw41szz67eV2y0IMWJbgyeAtIG3tOVWLvSudibgNIEQSEZ+uKovMyvY93fWUgRWuJrx0H
-	yaBrzExYNNv5oGkSk69/vtHrLS6PMhHZeC9Lhsj6awAYrKvBGEbwfcX4X2doYD/aDeWy0u
-	y5vx1tagZbKthAfUwecwAl7E2G5gXx8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Z2ZmZeRy;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 078928E0007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:29:09 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8648160115
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:29:08 +0000 (UTC)
+X-FDA: 84106571976.26.15975A9
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AE34C1C0007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:29:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FrF77Os2;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763062085;
+	s=arc-20220608; t=1763062147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a8wh3WCZWIkweGCnBOrE+QextEl8ts4DwM+n8GzdUn8=;
-	b=bhBqqGlYFwgVF97Z/xhmLLM0fz1m4+HhshBcoco6aK/IWETiACMXVwNk4a9bf/uZXSMuE7
-	NIFJxdbMSndJ7C3IfNtF3YEGjNIyJL4f82rafuwFZFVO6xv2AtgojIuN8CyDtYVXypp/On
-	MvoCNWYoHtY27sg3qmNKco+6XnzJFEM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763062084; x=1794598084;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WQ1At1+ZjGuWbj1pVi4Tp35itYpuTMRzWkOJLkvIEP0=;
-  b=Z2ZmZeRyofH9oL3Zk+GCbmPSwBqojwTJypnwSUBZQs11+TfIexxZxkEk
-   hEfR1G59kK3sEwZA41OY2FlFtAkK+Rb1NnDl0E9lx6RD83vr9RsTM9DEv
-   IlG0DEczXmM4WRx/MY7Tfi1wlIDAlznkkiqLYacR4JxWwzjC48O4CeXDB
-   uaN6+KwQ9qx8DHOa5TzfTSjn1Dm6RDVOsHap6Eao5e5QNWq/+p5dAijoD
-   9/LfV7hxWrOfwEpHCO1uy/3ngU7/cBDpVp4bTsSzBf0qeeiWM2i+BPH1Q
-   tepCGWMp/KfRfXZP1o0lNVuFXuUOZrJeC3AkMFOvpiLfviV0TzFN/I1H0
-   g==;
-X-CSE-ConnectionGUID: ztTqv4w1StmRRaNiljqjMA==
-X-CSE-MsgGUID: 0Mw3e1L7SzCQ4Yty5Jayaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="90630805"
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="90630805"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 11:28:02 -0800
-X-CSE-ConnectionGUID: 3d1C3fd1Rz+qj/jFYqndfA==
-X-CSE-MsgGUID: VtSMtCfgQNuuzOAK6Zzgfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="220218029"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 13 Nov 2025 11:27:58 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJcz4-0005nP-2S;
-	Thu, 13 Nov 2025 19:27:54 +0000
-Date: Fri, 14 Nov 2025 03:26:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yuntao Wang <yuntao.wang@linux.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	James Morse <james.morse@arm.com>, Baoquan He <bhe@redhat.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Geoff Levand <geoff@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Alexander Graf <graf@amazon.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Yuntao Wang <yuntao.wang@linux.dev>
-Subject: Re: [PATCH v2 3/7] of/fdt: Fix the len check in
- early_init_dt_check_for_usable_mem_range()
-Message-ID: <202511140206.XDGIw3J1-lkp@intel.com>
-References: <20251113155104.226617-4-yuntao.wang@linux.dev>
+	bh=Gn4tP6akjDt+BnDBMVmYBOqJ09Gs42yv7nYdO7lYCwA=;
+	b=YeZI5eJAuoeCYBwiiAyL9fSw5qhTDdKRtPmAA9EMzIZdrEQi/9F5pQcFmzCSCkyjg/W16o
+	i6bN/3ftbjRZH28CoM/WjMHIRk5yHBOV4xui99kkIjdejKiO5ggbO9zWudnyObhyhiXjgQ
+	7KyOnXSCcObElHrxAZ8FywJx7Kyubdg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763062147; a=rsa-sha256;
+	cv=none;
+	b=Rfo0l00b2LH65yqEhL0+dhaN7n6fcG+zWU/F8cBSFCqLZGCoyVbJZ1gjC/7/N/jbFPqwfS
+	XHe6UN2GsS7oAkES+6IqP4U6ZHLNWCJS/Phrz84usJGmhpjB6EGi9B5yA73d8qHXGkpN7i
+	NgEvFfmt2x3cjQ6hJaKL7Xf8DbY3QWk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FrF77Os2;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 13 Nov 2025 11:28:58 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763062144;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gn4tP6akjDt+BnDBMVmYBOqJ09Gs42yv7nYdO7lYCwA=;
+	b=FrF77Os2V2wrof+YbmAjPp/j45H3feInvjlgCe+LUZ4v3Or6L4PJR+RTSZhGf4EquGLn0A
+	RKTs7msdRWJfF/39amd4VHtkWZTYS2bRl5OpvQIRBKnNL7TEYi6I86MZ7kkqpR37quy1XI
+	6tH815UjQvjSwK84o1LoxgWrtWSQvF4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmscan: skip increasing kswapd_failures when
+ reclaim was boosted
+Message-ID: <jbqwxqsqvjqo664s275hcub5wgnjencvqgisiniflylp2fpxz5@imttckfazi7u>
+References: <20251024022711.382238-1-jiayuan.chen@linux.dev>
+ <e5bdgvhyr6ainrwyfybt6szu23ucnsvlgn4pv2xdzikr4p3ka4@hyyhkudfcorw>
+ <aRWswVgIaAqJEvQB@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113155104.226617-4-yuntao.wang@linux.dev>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6C44E4000E
-X-Stat-Signature: e4jy6utk6yndspydstioouyd5fd1drxs
+In-Reply-To: <aRWswVgIaAqJEvQB@tiehlicka>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763062084-908351
-X-HE-Meta: U2FsdGVkX19bEQFt6KO/3gifFT9yi905+FBCfiKvqN/Ljm8w0t4piUYNkFZMz6fcSoMnzNNm9GyD/ktcU1Z+kLF1qHkGCD9wW+UO/CJg1fbzlrBtdAc2gkCr1Sey61iERaBnwyP3haBRBbumLqAD9Ji/K/fdKNlR8LFDYwiUgJUhAVYhsE+uwYWxdzQFcEw9Wq1L/FRKe71rxfFX+oDiK98UfsQ1G0K5W3lXAbW9tPUEz58NRJuY2QcB4VGmMKezgbZlG9m2uPQ8V9lJBg9xul7pKCBfol6lS3iBC5vrzOZS+U71Kn7WUWyGowcQ5MnH4pKhLeNA00yufRA/3zSHMFw8mGbUdZoc8DoQ07Q7hHS5GWCTDA+A2zRsXvyEcKfW9E3F5bxPBUzLYOLsbLHMLpVVsZls4E6ExBTSonQPI7810BGueW/VDu1riayHA45pz3B/2/r/mpvBMb9bTNRA8aHoHobxhz2YAPhqLr/bsgBHI+aY8lY+sZG/+ZTbC0XfCBOy7otykfZ7uJ/PX/FlT3zIRsjgT802Qc5bzP9c3pUiTmrfUfF8T2E5XGz/++dJIHqv1FlpuIpTqugdOAXhmPSVtNB181DVPWjC2ZZUHbI2JDf1JsjOkVoCuWPT4C6dd/KsdFHRVUl8V8aWlW9EoolD07/nYfgqZPAit1rvZlHwyKY4Mz0bWCZP0/lQMff5kEY9isESReExjs/adsNzNPkgPjwFD+vrv5rB02K6pna++D+/r5QVX340ceWlBX7+qgrYNrXmqtXJOQKHKfN/PYS03tkP3DvnAF5Jznt9Z3PO8VZFiQIC0F5SlVo/CMUnz+FFB4uiur7NU5J7Q560DQcknAffQdQ9BJcD3ud8NkIuiUPP02bf9GsrM6tf8hKHfBaYEzH3wypFptFqsIw+sLmvM9i0+iYSCrdS3t9HEtAETBUDSpSjFJy09BdEx3pNXFe+9jbEKieCItNChJm
- 9kDfN4k/
- qsxs7DsIPOEIXsk9BjwxTo9AxO+IuRGJ4Fhg2fjW8u1s0flU8NKhrZHjmqRkCdjayBvdcb1Acn9A/BWl0aWBks3sZT598gNnqEPG3CKFuSjpWCkgE/dRGUXKRprEUvKg2V84dUzZD8e3tehKtp+i8yyI5mrkKogehJ6KwoBqcMRI1CaGqns6U1rR56fpCIdK86l0vuoDo1+TJ3Kz8bZXic0wdt0AUDdgp7UcymFONhPH03gPAzvZ9/QBk8yWPNL7c47X6qeLgd6X+vh8Y0MrqLTMXGKkm0rjK/P2SqHqHwmiuo6TQo/YoxVesvyhggJa9ZbJD/UQQlzYecxtDyRhKOLPhhVNWB6XEZX8LitsQ11uYNqFJjwGwtOwwRBR+s7f95pJXMiaD6SU4siGlcZ72FuX+n2bPyqv1HVtWaOA6A4ElfSQf/lM4vdJncigPNwR0rtoz9J89Veoioxw9x/3Rw4yeOtN2ZAw2ffPw
+X-Rspamd-Queue-Id: AE34C1C0007
+X-Stat-Signature: sgjb854n9ck7g7poinibcf6s3bupgn5s
+X-HE-Tag: 1763062146-998579
+X-HE-Meta: U2FsdGVkX1+ngq2vPlt0/8vWj+0s2/b+GwpjfYOTqYTWSMGq9D6RrrMyRCfvD5RaMuEw+1Gb8DFpDjj8WThP92zvDG2ZezppFeR/0Dv+G9iciJdUQPh3ly2ZLCZOLrWxWHmJAGzT3AkuHgw/CnYfgsVRsU8GarMmWydF2ruevQBdsFWheOCiUW+44zYT+cK2BaQYktVZJoNCt0iygteU8LvklOXJAO/8to5cMOOlugmR6+d8pzXZC0m5dLDf17WHR6EUoUuJyHboR9Qvhz0SGroHN+xxAdpvnkOdAOH3SMAdfQpmpuL3E6dWOZ7WhfHIe26ha9Lhl05J0mPM7UW6AmMrQsAVuu0F/ihZtnwRT+ZN6cE18QdOZc5K8cJmoT4bV87sz5UNcbxgmYRQlJK3jQgrHMiO2wfnO9qLCDkWwzI7PLPtfkdwpb4CP7oWnVoFtW6uPc+9HK8Ne+W83JSQVYfjwdI0kpfe/ONmgKYrBb14x6oomAni8hIPwaJH5tzGgQOiBvvoKxwZN14yUwpqP9FjW9Qkp8ncWItNa0ALy+ZKYcGa9zVpReNqLfg+MWP8fHcX2/kGjnuaP2fGFsatKFg4o00asSMQDoNBkYa7j3PoNI1MXAtAzOA5rdamBB7q7qkUQLrJgguEb+G5K1B9j+J9sujeyEurE8b8om7oBo7lSiYn164z64+LSQfPY9BuNG7aRsovGGnTI/BURa9+d/KmvUiD/UM7i2h2fXeKA39dGDuPjMT73ak3lF4Jm9Qnvs1mSuGZz32QvhJ6cWvYoeie9NwRstzTkl7nXlk9/zRbAG6DhPB5LdAneMnYfTqkvDze4epQUgaZBDdcFusd32fjCkD2rpC/iMKGgITA6SUTeljwzaTwhUGf7Tq9gq7QisRy5FFabkegxdUFbpwGHM20wIebsRLNtDGoCVuX62q41MWjKexZSBMq/LRQ8bABleR/FkvhB4uvJpMgcPj
+ fxqPmjkT
+ lBOUxkN6/JQLWy+BAT+/6xikZst85kcjLsJk0kA20CyGFZIiVZPgzJrwJsL8aOgd8DdZs7GaySRelMGaPMt2UD8pVoZFk0+xynRX7pqAc/qeK8Jl9v+N7j+USK6jFwIIb6UiF29iIeK/Itm5w/uHPnSO/wCcyaD4DiW+meK1bloIQ5gG9jAKudznOTg2/mlmU71eoYwTVOzt+kI7VH9VbbCF0jbKPkHlbZGV3WVeJJ926SN4I9wR17iKlLDBYad15BWzJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,89 +93,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yuntao,
+On Thu, Nov 13, 2025 at 11:02:41AM +0100, Michal Hocko wrote:
+> > 
+> > In general I think not incrementing the failure for boosted kswapd
+> > iteration is right. If this issue (high protection causing kswap
+> > failures) happen on non-boosted case, I am not sure what should be right
+> > behavior i.e. allocators doing direct reclaim potentially below low
+> > protection or allowing kswapd to reclaim below low. For min, it is very
+> > clear that direct reclaimer has to reclaim as they may have to trigger
+> > oom-kill. For low protection, I am not sure.
+> 
+> Our current documention gives us some room for interpretation. I am
+> wondering whether we need to change the existing implemnetation though.
+> If kswapd is not able to make progress then we surely have direct
+> reclaim happening. So I would only change this if we had examples of
+> properly/sensibly configured systems where kswapd low limit breach could
+> help to reuduce stalls (improve performance) while the end result from
+> the amount of reclaimed memory would be same/very similar.
 
-kernel test robot noticed the following build errors:
+Yes, I think any change here will need much more brainstorming and
+experimentation. There are definitely corner cases which the right
+solution might not be in kernel. One such case I was thinking about is
+unbalanced (memory) numa node where I don't think kswapd of that node
+should do anything because of the disconnect between numa memory usage
+and memcg limits. On such cases either numa balancing or
+promotion/demotion systems under discussion would be more appropriate.
+Anyways this is orthogonal.
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on linus/master v6.18-rc5 next-20251113]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> This specific report is an example where boosting was not low limit
+> aware and I agree that not accounting kswapd_failures for boosted runs
+> is reasonable thing to do. I am not yet sure this is a complete fix but
+> it is certainly a good direction.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yuntao-Wang/of-fdt-Consolidate-duplicate-code-into-helper-functions/20251114-004121
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20251113155104.226617-4-yuntao.wang%40linux.dev
-patch subject: [PATCH v2 3/7] of/fdt: Fix the len check in early_init_dt_check_for_usable_mem_range()
-config: arc-allnoconfig (https://download.01.org/0day-ci/archive/20251114/202511140206.XDGIw3J1-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511140206.XDGIw3J1-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511140206.XDGIw3J1-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/of/fdt.c: In function 'early_init_dt_check_for_usable_mem_range':
->> drivers/of/fdt.c:903:45: error: passing argument 2 of 'of_fdt_read_addr_size' from incompatible pointer type [-Wincompatible-pointer-types]
-     903 |                 of_fdt_read_addr_size(prop, &rgn[i].base, &rgn[i].size);
-         |                                             ^~~~~~~~~~~~
-         |                                             |
-         |                                             phys_addr_t * {aka unsigned int *}
-   drivers/of/fdt.c:663:60: note: expected 'u64 *' {aka 'long long unsigned int *'} but argument is of type 'phys_addr_t *' {aka 'unsigned int *'}
-     663 | void __init of_fdt_read_addr_size(const __be32 *prop, u64 *addr, u64 *size)
-         |                                                       ~~~~~^~~~
-   drivers/of/fdt.c:903:59: error: passing argument 3 of 'of_fdt_read_addr_size' from incompatible pointer type [-Wincompatible-pointer-types]
-     903 |                 of_fdt_read_addr_size(prop, &rgn[i].base, &rgn[i].size);
-         |                                                           ^~~~~~~~~~~~
-         |                                                           |
-         |                                                           phys_addr_t * {aka unsigned int *}
-   drivers/of/fdt.c:663:71: note: expected 'u64 *' {aka 'long long unsigned int *'} but argument is of type 'phys_addr_t *' {aka 'unsigned int *'}
-     663 | void __init of_fdt_read_addr_size(const __be32 *prop, u64 *addr, u64 *size)
-         |                                                                  ~~~~~^~~~
-
-
-vim +/of_fdt_read_addr_size +903 drivers/of/fdt.c
-
-   879	
-   880	/**
-   881	 * early_init_dt_check_for_usable_mem_range - Decode usable memory range
-   882	 * location from flat tree
-   883	 */
-   884	void __init early_init_dt_check_for_usable_mem_range(void)
-   885	{
-   886		struct memblock_region rgn[MAX_USABLE_RANGES] = {0};
-   887		const __be32 *prop;
-   888		int len, i;
-   889		unsigned long node = chosen_node_offset;
-   890	
-   891		if ((long)node < 0)
-   892			return;
-   893	
-   894		pr_debug("Looking for usable-memory-range property... ");
-   895	
-   896		prop = of_fdt_get_addr_size_prop(node, "linux,usable-memory-range", &len);
-   897		if (!prop)
-   898			return;
-   899	
-   900		len = min(len, MAX_USABLE_RANGES);
-   901	
-   902		for (i = 0; i < len; i++) {
- > 903			of_fdt_read_addr_size(prop, &rgn[i].base, &rgn[i].size);
-   904	
-   905			pr_debug("cap_mem_regions[%d]: base=%pa, size=%pa\n",
-   906				 i, &rgn[i].base, &rgn[i].size);
-   907		}
-   908	
-   909		memblock_cap_memory_range(rgn[0].base, rgn[0].size);
-   910		for (i = 1; i < MAX_USABLE_RANGES && rgn[i].size; i++)
-   911			memblock_add(rgn[i].base, rgn[i].size);
-   912	}
-   913	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yes, I think we should move forward with this and keep an eye if this
+situation occurs in non-boosted environment.
 
