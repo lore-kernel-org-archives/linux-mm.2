@@ -4,103 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66053CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFFCBCD98D2
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:26:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5F468E0010; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
+	id 151F28E0008; Thu, 13 Nov 2025 14:26:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0EFC8E0007; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
+	id 129AD8E0007; Thu, 13 Nov 2025 14:26:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFDF58E0010; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
+	id 018568E0008; Thu, 13 Nov 2025 14:26:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C39C8E0007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:17:32 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 65682160B35
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:17:32 +0000 (UTC)
-X-FDA: 84106542744.12.279D3BA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B8103180019
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:17:30 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dvIhnU76;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E3D518E0007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:26:58 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3303AD43B
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:26:58 +0000 (UTC)
+X-FDA: 84106566516.20.21D7F1B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3A80B160010
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:26:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=czRcA7DK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DbmFBU72;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=czRcA7DK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DbmFBU72;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763062016; a=rsa-sha256;
+	cv=none;
+	b=h4DOrwHvcCFyOfhQoOZdD1fSRSQ2UInvIS+l5amPGF8PiBcOnGxxIon+KXRSEew6vq5O2x
+	2i3qS32OGF3rg+rRxDsVuyVNmB2cCMr6SHI96DWSWuJuLaE6CzqR0ivRZ2sNoaJVPZLFzf
+	2KPYzA/CRuEn2wLbWp5YzzeWZfFC1w0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=czRcA7DK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DbmFBU72;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=czRcA7DK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DbmFBU72;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763061450;
+	s=arc-20220608; t=1763062016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uzsflB0sNLQVC2NratA1sltzAGQt6i0/CD9ALRM46uw=;
-	b=Sqp98ZbxcfZKB6w5XVQLK2R92eWIHJ/0j5GASpNUkP9TlY5I3bPqRma/xhzjgpRS1CYXtE
-	EYx8BNLFkYNpZsG4zQ2M6SK6FhUWPVKpDNY1YFgIk1X9FKUeUT2fIMUbzdDit6oaOhYUmD
-	SFVrPlRUsJVGDxMZBiEFTuSgXUcE8Ac=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dvIhnU76;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763061450; a=rsa-sha256;
-	cv=none;
-	b=P8uWQsmumBvG1TcrpdR1gKnifY75C3u2GCB9m52EI8MmWEyRjCu0/H0IZ1CQHte2j1kKf3
-	OnkIGcc1R5F2BT1WVGNBdssdfnbWSb2d+8/+E5nOqgqUevQnZbtxeKNqWK3o2UBkEmkCHE
-	pEfOCDrFarhjnpxRmrVbz8Q0INs7lsg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23C31600C4;
-	Thu, 13 Nov 2025 19:17:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDD1C4CEF5;
-	Thu, 13 Nov 2025 19:17:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763061449;
-	bh=kt1jO8UvsULEtaDs/E7EX9tnRAFarugVzSN9GuwH6ro=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dvIhnU76/pW+vCvvgnPNOO2XoQTRK5+zJKW4w6KCqjeswisCxWkZpIiklY0SGPySS
-	 dc4BL0IQw9fjzF4yEHDnzZhbHolCVFhMkJCDkfroC1oOYtZ1AEzdpJNIltye3ymCvr
-	 EoRUENxrYwJSfHaAGwqCFp4xZkLO5vyi37LLaJudOdlSK/ZjLC+8F3TSas9cOVBxw/
-	 b33BvjEkKZPiNKw/m8PlodjOhuvFQf0UXpUiKy2dufHvnPJCEUu7MAIUM+q8ZL3qRP
-	 ySj9jf4v/bQJ/v3kabWXXf5WDP40v48ydCR215Lvnu4LAirAtUi8mxv+N29aZK0vi3
-	 AC64p6ZBMkUBw==
-Message-ID: <273b638e-8251-4faf-929a-87432a48abdc@kernel.org>
-Date: Thu, 13 Nov 2025 20:17:22 +0100
+	bh=ApmPNMsQ5P8JOyIRSuIZemOyEvUP5woSMa2h7S6We3o=;
+	b=RUxJa4Ackzf6AJqOMi8p5PxqE+OjbmOzvsJnF/im4fggrIBY53lb2JWWN1o7Y1e8v6obDW
+	npS3HZGIjRHvNx8FZVyrIyuZAxjyBJqG6+X/3iHtXd1d/ZNYyKTldxuuZmCOOyXQ7rg0PJ
+	jN5mmJwGcap1/YiwpH7eFG01ajlHptc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4D2611F444;
+	Thu, 13 Nov 2025 19:26:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763062014; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ApmPNMsQ5P8JOyIRSuIZemOyEvUP5woSMa2h7S6We3o=;
+	b=czRcA7DK6KuVnpG2KPuH30sxjstEa7zIOQBmar2zztdjGgMrjAgoq5v9HfqVYDv/2ZyckU
+	23gbIz/PJ0tm8El77LGqu0fhwDF3DLtrNOkDXyIyxApNwPlvDXAZlZIqvakkrj6kssNYn3
+	colFjI8oi2GkG8ccclowaxmS/GW9nJw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763062014;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ApmPNMsQ5P8JOyIRSuIZemOyEvUP5woSMa2h7S6We3o=;
+	b=DbmFBU72tsPlhIt993gyVnbLqLavnPRenY/LE8txH24EiSi+mWhukO1i9If7AIEXTNpb4j
+	U6bzQT0+45syZpDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763062014; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ApmPNMsQ5P8JOyIRSuIZemOyEvUP5woSMa2h7S6We3o=;
+	b=czRcA7DK6KuVnpG2KPuH30sxjstEa7zIOQBmar2zztdjGgMrjAgoq5v9HfqVYDv/2ZyckU
+	23gbIz/PJ0tm8El77LGqu0fhwDF3DLtrNOkDXyIyxApNwPlvDXAZlZIqvakkrj6kssNYn3
+	colFjI8oi2GkG8ccclowaxmS/GW9nJw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763062014;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ApmPNMsQ5P8JOyIRSuIZemOyEvUP5woSMa2h7S6We3o=;
+	b=DbmFBU72tsPlhIt993gyVnbLqLavnPRenY/LE8txH24EiSi+mWhukO1i9If7AIEXTNpb4j
+	U6bzQT0+45syZpDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FF763EA61;
+	Thu, 13 Nov 2025 19:26:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id R2S0Cv4wFmnFRAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 13 Nov 2025 19:26:54 +0000
+Message-ID: <469f1896-00c1-4174-a0e5-4f2987b19b38@suse.cz>
+Date: Thu, 13 Nov 2025 20:26:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/22] checkpatch: Warn on page table access without
- accessors
-To: Samuel Holland <samuel.holland@sifive.com>, Joe Perches
- <joe@perches.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Andy Whitcroft <apw@canonical.com>,
- Dwaipayan Ray <dwaipayanray1@gmail.com>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-8-samuel.holland@sifive.com>
- <1dfa1e3566cafbe43a1d4753defef9c82ddb3b64.camel@perches.com>
- <a6e7a571-91d2-4e66-bc86-ba30f624294b@sifive.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH v4 14/16] memcg: Convert mem_cgroup_from_obj_folio() to
+ mem_cgroup_from_obj_slab()
 Content-Language: en-US
-In-Reply-To: <a6e7a571-91d2-4e66-bc86-ba30f624294b@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org
+References: <20251113000932.1589073-1-willy@infradead.org>
+ <20251113000932.1589073-15-willy@infradead.org>
+ <20251113161424.GB3465062@cmpxchg.org>
+ <aRYJzbZpd-UP3jh9@casper.infradead.org> <20251113191637.GA1240@cmpxchg.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251113191637.GA1240@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B8103180019
-X-Stat-Signature: bueg3mzp3he65brnh4sk7999jw7nki6m
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3A80B160010
+X-Stat-Signature: oxr5hac95tpyntbq9uwew4e17b49qqry
 X-Rspam-User: 
-X-HE-Tag: 1763061450-514994
-X-HE-Meta: U2FsdGVkX19ImzF7zhkPyPOn1IDslLtCFb6aVJ3wRu0KFI2+AkqwrQcBG82F/0N8QczwPlESFWv09GfMvAYKaA/VCd4x7I9jEeLGxxMT72L10ocVfuJthe0KmspiRhpPxOUc/2GiCGGM5HoT85L9GfO8C+ug7bKnPCkLSpgYg04PBXysttj+B+t7VHr+hiHvEwhjSqHjZlUaogN4c+DxGpmQyMSQQ3T2UsM0f70JYki7nNNyTIqWw0WaK3nuEiV3HhrPeRObuZmME7VT0thPt2htcl24p+kHYZE3Lmt6+r8tHMv5Upq/mVN0L3cjRJn4I4O34ScmhhkSwYb0t3M9FhFXbRl6c4Fh57DQESHDiaX+bwWvMfEtMpGEAMuF+0rmDNc3saa3TSF004/3K1WcDrPC6Ro8RRwo6nE3dTJqnIOzVkpmwswW0bMMwsKsrBwK75S8sHZlJVc7VKp83koER9GnrnD4s+7lNZjAlQtW1gZ0QNgeZOpS3h+J0f7Ofdlomm1u7l901eqPMUiWhZZxDyWdH+OroytW1xOWze3Mo/Tf4EXe1TjwzqN9qd197zwoeCWe5afs2L2DBwO3NjKl+Qb1keoJEhgBf2A6tmLZP/r7FY0y3YTuy3Gvx6KxJ5HPjd1ibxXiLv4OOOjGBuOiA6CN+9PaFZypj4DGTz45pqG9wq5tNpuEu5Njs41ZMY3/9dAugu4e5VHPHLSa2dvniuhRPN4qO4m5L3yXjdIhNoS0cylMn/W9krSC3hyDGuKYGZL5w5x1d3vRkq4rpNTnGg4oGkQ/smL5zloMg70PzNscfbRjeAgh23BNLEkRYTIYEKAG3MMHoiAefH7HtM4cXcqU1Kh0Nkvya8JX4yECY7vD1WHk2uITC8A/Pghbajdd4Ish5oZZWraDoDX0cvm19V7psSCNogTDl/1qM2MDrdlySqPdQJBrto2KqEjdz02NQNbkLL5riXUNSWNjqnE
- ljbCNUmO
- PjEsS3Wjye5R1+trp3LzbeMSmUcQT239grnKuTHwsEEvI5Oi3jSOwt187EdqAyqOuMRqfltdtHlPLvuy2zRl9FaeMP1YZk3XwzadvmyLhmSFfwEuKLAst9ob1+v46yrJJfuaD8M/RU+y/x6zbZleQ0QvQwO9FZfjZs5CCvrGA95EwQ61zAQHOTY/Q97hIJMceHYTTsCalLG2CvKc+O+qmYmpX5I4mBzW3PwtEMLvlCr55CDMBQddItfCDT7z3Vt9B0WFpstGVasxvM65Jo7s2fE0YwNaXsPAxv7sgWn5NI1v+6aE=
+X-HE-Tag: 1763062015-576896
+X-HE-Meta: U2FsdGVkX1/6M0Yw4nMwJowfKySOTJH1attwayO8yBCksC5siYzVQDNMpBrSYDatXCMmowc/8vQEgyxVTfs47i7YyXDktNL81QPsUqOb7Ja+PG3zu7nJGvy+cdzVxlgK3cqF5hwX9P25UjYeoIGdxs+tqm3BGMV3AACIQ0ROVMuyAySZpssLjCAG64GyK3PmhtlMaUBzOVjJ72IqV23DZkgEtAcIqFq4gqH46RraWChhVZuq6Ltg3NSJNcKoCEUWAko13efjEMmAQWYSYI0/Ytk9M76AX2tRrn7T7Sv2pe6ucOlxFkTwb7ANh9nymOaSGDhPXvL+08M1qhlW4uldi1BeyZLOb4iIkqQ0uKDMUqjNdbHbyaFX7RZ2p/B/tdvz7dpI7oPBvB6+zgsyb2ZmImxaM2o+vlBQZbB56K30RhAmp6pOjIszWfUjtg94qZa/JPF74VQx92C1uIPkaZ0LvnO70yWGEkudgFMjZhXbWNnachQJVLZHXj2ip0SsPslppeIPsJS3+e0uaTR80Xvwr2MYyyGeF5ucAicSQ7keMZrnPBhSDg8RQd/C8SO87yAbmWGHCd4AD69Ys0s13HrUmrNSf6wokf/asWELAbj6u/jciPQzXW+ehnuwrn9NkGOqinqZSW5ANPjIgO9SviEfDVYJCBdAjBOBVAZQ6N8rnqerTjEPfuGubah/WpE5lD5Oyz/3PcSnYiOKVQz/RzWDKlg+wnbngt3giyrU8sHj6X9elP7c98jJQtaAAkQkZe41m9WEl0serJ5oKLU0JyEneA1HtEeIp0HY+WKr+5hUGrqtr3ncua4RP7eoiduDRxtFhjGSzQhMhHWrYCrL8FtCiQI59/TXPpGlJmq8K8FuqqEw5Z2cR7CASshqmgfxPUK9PCCC0Iu1zGeFOzKdQFGO/pM8IrjoDux9rZZhbRa7AvY3iYaGuJPuzoz+WW7kEXD0hrCQrl0Jh8wX/JYAZm1
+ ik4v/zAp
+ Uhoin64TH6tqMt1B4bzxGfz3eQRbnCluz4RGwL3erv63j8c5rJCQfiINaQ86dJx8JBsmwiyY9AyWzuHV8C/VGhZ6kXJdZdvwxCyRs5Nkras1xrwH6LQKbIKygrYpaSLwUcQMegKpGlnu+n+bGrJf6x1gYAX/rORq9H31yFwL2uixxdB0fysz6D7XVbs9W0St/56Xv3XAuAEZkbNYa/Wdq3BFI0wEeiaFGT1niTnaEjUx52lm1fvvoIC0nGj1T9SESDFS1MSrOZnpXsp/phjNZ6vKPz+PUncK6DNHJnx3c1ZucL0xB6F1A2diGKEekC8j124PC1drEd+6dhKdChBT+aq5W2/4b8a4U8kuQ6pbrKV7q4XjQNLCkilR5717IGtvLQSKFIhu1jFog2sE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,51 +185,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13.11.25 03:36, Samuel Holland wrote:
-> On 2025-11-12 8:21 PM, Joe Perches wrote:
->> On Wed, 2025-11-12 at 17:45 -0800, Samuel Holland wrote:
->>> Architectures may have special rules for accessing the hardware page
->>> tables (for example, atomicity/ordering requirements), so the generic MM
->>> code provides the pXXp_get() and set_pXX() hooks for architectures to
->>> implement. These accessor functions are often omitted where a raw
->>> pointer dereference is believed to be safe (i.e. race-free). However,
->>> RISC-V needs to use these hooks to rewrite the page table values at
->>> read/write time on some platforms. A raw pointer dereference will no
->>> longer produce the correct value on those platforms, so the generic code
->>> must always use the accessor functions.
->> []
->>> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
->> []
->>> @@ -7721,6 +7721,13 @@ sub process {
->>>   				ERROR("MISSING_SENTINEL", "missing sentinel in ID array\n" . "$here\n$stat\n");
->>>   			}
->>>   		}
->>> +
->>> +# check for raw dereferences of hardware page table pointers
->>> +		if ($realfile !~ m@^arch/@ &&
->>> +		    $line =~ /(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?(pte|p[mu4g]d)p?\b/) {
->>> +			WARN("PAGE_TABLE_ACCESSORS",
->>> +			     "Use $3p_get()/set_$3() instead of dereferencing page table pointers\n" . $herecurr);
->>> +		}
->>>   	}
->>
->> Seems like a lot of matches
->>
->> $ git grep -P '(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?(pte|p[mu4g]d)p?\b' | \
->>    grep -v '^arch/' | wc -l
->> 766
+On 11/13/25 20:16, Johannes Weiner wrote:
+> On Thu, Nov 13, 2025 at 04:39:41PM +0000, Matthew Wilcox wrote:
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -2599,9 +2599,6 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+>>  	struct slabobj_ext *obj_exts;
+>>  	unsigned int off;
+>>  
+>> -	if (!slab)
+>> -		return NULL;
+>> -
+>>  	obj_exts = slab_obj_exts(slab);
+>>  	if (!obj_exts)
+>>  		return NULL;
+>> @@ -2624,10 +2621,15 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+>>   */
+>>  struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
+>>  {
+>> +	struct slab *slab;
+>> +
+>>  	if (mem_cgroup_disabled())
+>>  		return NULL;
+>>  
+>> -	return mem_cgroup_from_obj_slab(virt_to_slab(p), p);
+>> +	slab = virt_to_slab(p);
+>> +	if (slab)
+>> +		return mem_cgroup_from_obj_slab(slab, p);
+>> +	return folio_memcg_check(virt_to_folio(p));
+> 
+> Looks good to me, thanks!
+> 
+> With that folded in, for the combined patch:
+> 
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-That is indeed concerning.
-
-I recall that we discussed an alternative approach with Ryan in the 
-past: I don't remember all the details, but essentially it was about 
-using separate types, such that dereferencing would not get you the type 
-the other functions would be expecting. Such that the compiler will bark 
-when you try to dereference.
-
-
--- 
-Cheers
-
-David
+Thanks, folded.
 
