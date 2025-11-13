@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E48BCD8CB5
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:00:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52D02CD8CA4
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:00:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30EDE8E0017; Thu, 13 Nov 2025 12:00:21 -0500 (EST)
+	id 24B468E0018; Thu, 13 Nov 2025 12:00:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D59F8E0002; Thu, 13 Nov 2025 12:00:21 -0500 (EST)
+	id 1FC568E0002; Thu, 13 Nov 2025 12:00:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C41C8E0017; Thu, 13 Nov 2025 12:00:21 -0500 (EST)
+	id 076228E0018; Thu, 13 Nov 2025 12:00:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E839C8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:00:20 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9CD6BC0F3
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:20 +0000 (UTC)
-X-FDA: 84106197000.08.DB2F678
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E0E388E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:00:21 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ADFA6140ACA
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:21 +0000 (UTC)
+X-FDA: 84106197042.01.A59AA14
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B3D33A0020
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=Iv924Bly;
+	by imf22.hostedemail.com (Postfix) with ESMTP id C4AC2C0023
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:19 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=ESswB97U;
 	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf15.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053219; a=rsa-sha256;
+	spf=pass (imf22.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053220; a=rsa-sha256;
 	cv=none;
-	b=zsCOSvQ61oYEWQsZ8y68BK/PrExE5kl47Y6Eg3nQCi1YqwObcUhxWSBj5gSEiM7LteSQJw
-	DdXoFR0u6qxN/0tfJ2foIMZj/b6zZSoQFR8V7CGXnU+P3dp7XGJQynarcY0OeJwD7kZaAZ
-	UN+bIuI17e1CF9WQRSZN/l1IE4Ns4G8=
+	b=X1OYvG54ivnleSugsBh3IEPmoSJt2+U6Arug0fpmBYfzpplC/RunkUsFANNcCKYMs6nq3n
+	rhwb9N3+C0Xy8xVgDpc60viHCbjIuvMgj0l30wUWoqSNVHDrLXfmMecZAscb0X8hBj89uv
+	SAucYR4Y3vHTv4HglXg6p6NUFHBPCzY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=Iv924Bly;
+	imf22.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=ESswB97U;
 	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf15.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+	spf=pass (imf22.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763053219;
+	s=arc-20220608; t=1763053220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TFcLIsoDwMpwUO7Fr36bLvhIO1VSE6FEnyvp/TNTJPk=;
-	b=zNwP53eFFtPO1Mm5ghuD1LDrdhiYRopu4khphonVXNiBiYiK/+iiLH049BNFomrkAT9gCq
-	PFpnTXj+wZXrS3KyjOLeCxH3nSP1wpSnqcUzz40iuQ7NZ27E3n9PPIzDKEUK2VmgkGlGG2
-	WfgL8m4OSKYWAhK1Fb7aRBEA68i/zYI=
+	bh=RL/YvTOV9bq+OGfRes0qO4aHYeqe+HC4hlegWgWO76c=;
+	b=ph1H2Yn1vMZW4BtmIO5d3LY55JX5sZeMEGPazMCADQe1y/MT2iXjRqm3S2K/ZfuY0kXhNb
+	eEilgfVZPLDyrIlKGHkk7LfpPgy1LshP9r3mPTnfVKC552Rjlp4mOyWQufVf4JJkIJb29B
+	+BiExIlsHr3VY0dp3vqbH03qBq4LY3Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1763053217;
-	bh=v6OFrxSoAyYpbjHM20r9xFnmPba+agNd9y5f3ZRnldE=;
+	s=mail; t=1763053218;
+	bh=spYITbrA9e6Nbtm9P1ayDz3RtczGYgXs2HigsbhVHtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iv924BlysCuYVXp9dzNJuYONWp6IS5gK6U9qiyL1IOg11OZW3tnBevE037LSg/YRD
-	 eV1YPYkLXt/qsW2ckdkVz9IWt8LiHkCU6Ui1paOKjBm6E+thJIgrEclNxxDBNPPsny
-	 mFH+ziwp07u2WGklPcFuhGB0EmHYIMKHgn3NMVDzfj+6EtwVpVtYKKuj+3SZutaaUF
-	 Chk2MH6gOgyOEun8HTPaNm4cie8iJJ0XHpuBksAOjX197BTAzk10+dt21sva9whn6N
-	 +QQW3eObP6pV95dbYlX198rCpBxcJcrlhoVYDLUm8G8oKA8UUmbiHirKJfgjnm4Gr7
-	 35HVIuyRPRljQ==
+	b=ESswB97UVNuJhvTUWhWvUKL/54wgzkFp4uvBML+1+SsV/c8YfuBgNzWQ/494lZYOX
+	 3xcgw2DWD6Q/P/OtRAHnRVM3kDvsWImrsmkg4DokweAVvCjINet5J9VsSmW4KJbXqs
+	 m3xj9x8Cfo9x/zi1M/TtrE6R5wovvYhHPOdLa+Wk3cCcgaFealRlA+9w7CVu7IWWjM
+	 vAchCpTBhAZSGm12JBf9Z8jO4HenbIxwPyxq20djau3BXHEg5HyY8Vhcu5/klsUiwz
+	 BpxG69XVMpxjj8GmstX+SoIoms+1JhXSuvKdC1JN98vnh8oryQmR++kIHoKfmu1nue
+	 XUZCirARK8Kag==
 Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2398617E151F;
-	Thu, 13 Nov 2025 18:00:16 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 29DCB17E0202;
+	Thu, 13 Nov 2025 18:00:17 +0100 (CET)
 From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
@@ -101,23 +101,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kernel@collabora.com
-Subject: [PATCH v8 06/11] drm/v3d: Use huge tmpfs mountpoint helpers
-Date: Thu, 13 Nov 2025 18:00:02 +0100
-Message-ID: <20251113170008.79587-7-loic.molinari@collabora.com>
+Subject: [PATCH v8 07/11] drm/gem: Get rid of *_with_mnt helpers
+Date: Thu, 13 Nov 2025 18:00:03 +0100
+Message-ID: <20251113170008.79587-8-loic.molinari@collabora.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251113170008.79587-1-loic.molinari@collabora.com>
 References: <20251113170008.79587-1-loic.molinari@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C4AC2C0023
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qg93555boknfbcc4ada84dpqyxg8ox7i
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B3D33A0020
-X-Stat-Signature: dfhbyxzpd31rwbrdiptx3mjyjzx7zypj
-X-HE-Tag: 1763053218-975540
-X-HE-Meta: U2FsdGVkX18Ej9mfDwtSHBxjAn9ORAhIMP/m5cdo4WQ9/CjNPzmJJmTqQdn6MVSZUkObLZ48UNtbBmcXs3NS2VMsiFANs9WMULV1mK6dDBivErXl95Fw5HWTfTFIqPs6TVuLYClRak8vBsGqJvigGqRu2HzWYzLXa8Vex/sfT1Mex6IpOckw0OGixgitC3Z8txrmiqk+Uw+wc5P7jsRvHqoYsSpM3jDn+b6tOcUTkM3loZz1UyxX0XDdvs/cyhFZEAn4gWhjiI9ISFiEQbYBkCMEVnHbu/eVzAqe8zCXjHvnwI9UsG+yn6r6gv4bfHQ6x7A+GsAWYC56m7L+TNqHIv5xsa1imk2iPM/pwFv5gVCgpQU1eB4kbV7aWEDndulKAB2Lauf6WnMjR/zyC32fW0a/XNjVeoxUaZ51U+UBrUO3GaUXywHtQCeVpkOYN5bNFIqiZVa1xL5bLgVZ0lnSD1gLTZV1B71Qr1w2klV0HwwVPlbNvRzfWAGINC39LVyzpnvMGh6cEinHtt5kSI/TSMIZBHI4MZtAXLA9guobKBPdieCH1xEbXZtxLDJBVJr7vBWcXSi176+rhBA+mVKVtEvV4CIc2ja8qRJAoG8EgPJQN0cR3PQdSQfz4muTwmt1lBMWDXIB9jhA3ytner9xCCBzeiKfPHB8OsJaFeCfn4I4IQOTsnm5T5CLaJeya93h0E5OVYHvpKtEv+kjXUHhgJoX/rCKO238rmOqKtELWBbbrUwfDlEqeO1n95TLiYpcqFkx7XZORIBndGHwCAFjebzztiP7BHvRmk4PkmW91yFLT/Z9EY8x/Pj2Po7nPInZraw71YXQSZxF9DuNaUiBfTF5sNhD4BfhHFJmL9ouek+dL6A1LXWffGvRUO7hRx94gKSXZ/qMbfDF/1sHjQaU9GsdgU6zoewAgoiJMnZ5IoLYBKoN5xjiB+xTn9Q5wh7q0SIjfxL115kGfYBfTgW
- E97COfaI
- aKJyJiSzr5OiCKKQs9DVvZJ7ZNI3BQKVOOxoXArIXFFgMmwgpSl1gi1Yd6/S4V1QAEtvzK8mV4kwFHpXjuF22Bc8/Gs3235tx9B+s6plTbtkvxIoubCtIFBhsCMypBJ6gxPernOeRMBNW3H1zepbOkEvU90UJjvz6/j5GX4Dme+86dDnQP0W4LwPBlB1/QEuNLUMlKksWt/axn+YcNaysFxUYLpgH7kCbji387RF3Lqhp+gy1BPx6YuqcZAQXyfX6iJz423PmYP7AVsl3dFZAZfCl5Ttx6+NLbfXyBkrdM0dq3kHkiDDLo4c4rDzA8b0DUYgEL+r7AH36DDrgKHswwebIv3GhZ1HfyrRVN9+iXkHczxOEV4zB1kumrP2xco558Ua6
+X-HE-Tag: 1763053219-523543
+X-HE-Meta: U2FsdGVkX1+DTTgtaHkQN1EqiVt/B1ijW0Q9aID2lGqq+klkkhNPtMUW6r5dI1XFXZCMqPeh/2x4AfjQnoxqkEZ1MKJarM94CZjoGjOLQSr10wBJe3/B63rhaER13juvigtx8OhtlIbLFDoWrGVo7a9qivog/eD89OYvRjUOUSPiMqlHbIditUuYYVObDvUisu7TpGVZkiWFY94bvLFivOG5OgBJlK0OYjck7uEXvGd1TqhXvWk35goMs7VWcuK+sFA2VXlLxuweOVbQXrHm/1P+Bwxmh/Ap2M0x4z3ftFkDDsYsJ8SfhmgLbtOGPuhrbzRvN/YaPimiNjr8DzkK+7wHiSFzZfHDNS2DGYhSI42cfNFd3OGZvVxe4y275Wa7wQUt2lraEmqQpiBkvLdQ6xiQDStAR4ZHIRg0yAPH5dALQaxKqfs5hgMSqAFCRO+z04FnhynVHxIQmEcxFrJnnORXZ1G4GQ8DQJkJVE6oVufMHdG/FYBqQLJx4cSsF9B7JCtzQACUYIN2537ngC5LJ/W6Y6Pym+BmRBU2r8m1qhcKdOY55sQBYSXEwwpDD/H9kqWA2ofIkJjbjjVdv+bdrQMmgZchjB0GYmdMy81M+x4WTjNStgFKbC2AZ9NKQIVIM+tkedwIKzawchwHygjfkRtleh1Wo+Jp7JhTuS+V73JOi7wYdMYc6EGtrgrPbu4/pWIDUR3GbzY3rXHP6G/SxZmrvQ7AEVvTiqcKfwXqP+JYrBUln9NOhwNLDBY8FJocTtNkQGFdfnk9M3E/WtEtXCRhCjgsEVtqw77zEfhd/pWzn9au8u2ERwf5KBlrjZPVW3xfKN02vJOeQUnUijahA2UKKIj3zewiSAbQVmbSz5Hv3LxUzHVKaD52kE4WtITUQaNDJ5R72MUvS24OmiVy4kF9Xfxi0qaMR2YvLQUTqRG/VuSbbVYMRguOhbFRLnOpJ55N9HCDdsMwyREevDd
+ NTuYipNo
+ fAutYFLm6JI1A2DNY5iY8p1qSmh6GNpACD8aPAKpn8qsGloK04erb/Lc9Cp78R3Ny3VP4np+Yg9HBi6F75JDelB3tkb4cB6MaOfz4t4eS058q8UXTq0GW9axDiSVS3/M3Weub7qkHWZRn3pbP4pjo9h54Zv7YHbRoLkFLvh/4W3K2hSl50svVcEziPy+sYBMZ7CxeeS7o0SRlVUGX2lnoqFrdVwRxWKVzwR6P4BjbNI01WqMpYt0zaYugef4XNKOfjOnYLlIM+TMlG2whPxDQGLSxs8r2Jy+EK0jyKRRcVwAQjsx+42YtR7nkiTWD81Hugi8Esmqsx4styMWb3lt4FcZWPgcIJNPrDQ5U3VtT2YxbNWbyqnON+OOU0A7CYPGeDC6gJj0/FWpNlk7vURcB0K30gBTETZCPEWvGt/QJAowOoCXcNLssFK0vQYDzFZ8svd05ZAub7lIFEnqqrglqoWaAkTvMtgpQ4dy1iZs6v+4xr4VUzFRuNfAyojUrZdgwFyqGzFhsDmhDbz3urdPiM/+3GTMajKbs+zBkAGirfzS9Na4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,250 +126,239 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make use of the new drm_gem_huge_mnt_create() and
-drm_gem_has_huge_mnt() helpers to avoid code duplication. Now that
-it's just a few lines long, the single function in v3d_gemfs.c is
-moved into v3d_gem.c.
-
-v3:
-- use huge tmpfs mountpoint in drm_device
-- move v3d_gemfs.c into v3d_gem.c
-
-v4:
-- clean up mountpoint creation error handling
+drm_gem_object_init_with_mnt() and drm_gem_shmem_create_with_mnt() can
+be removed now that the drivers use the new drm_gem_huge_mnt_create()
+and drm_gem_has_huge_mnt() helpers.
 
 v5:
-- fix CONFIG_TRANSPARENT_HUGEPAGE check
 - use drm_gem_has_huge_mnt() helper
-
-v8:
-- don't access huge_mnt field with CONFIG_TRANSPARENT_HUGEPAGE=n
+- compile out shmem_file_setup_with_mnt() call in builds with
+  CONFIG_TRANSPARENT_HUGEPAGE=n
 
 Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
- drivers/gpu/drm/v3d/Makefile    |  3 +-
- drivers/gpu/drm/v3d/v3d_bo.c    |  9 +++--
- drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
- drivers/gpu/drm/v3d/v3d_drv.h   | 11 +-----
- drivers/gpu/drm/v3d/v3d_gem.c   | 27 ++++++++++++--
- drivers/gpu/drm/v3d/v3d_gemfs.c | 62 ---------------------------------
- 6 files changed, 34 insertions(+), 80 deletions(-)
- delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
+ drivers/gpu/drm/drm_gem.c              | 38 ++++++++------------------
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 38 ++++++--------------------
+ drivers/gpu/drm/v3d/v3d_bo.c           |  5 ----
+ include/drm/drm_gem.h                  |  3 --
+ include/drm/drm_gem_shmem_helper.h     |  3 --
+ 5 files changed, 20 insertions(+), 67 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/Makefile b/drivers/gpu/drm/v3d/Makefile
-index fcf710926057..b7d673f1153b 100644
---- a/drivers/gpu/drm/v3d/Makefile
-+++ b/drivers/gpu/drm/v3d/Makefile
-@@ -13,8 +13,7 @@ v3d-y := \
- 	v3d_trace_points.o \
- 	v3d_sched.o \
- 	v3d_sysfs.o \
--	v3d_submit.o \
--	v3d_gemfs.o
-+	v3d_submit.o
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index bbca2ab9e9a5..1b0b5813acef 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -171,31 +171,33 @@ drm_gem_init(struct drm_device *dev)
+ }
  
- v3d-$(CONFIG_DEBUG_FS) += v3d_debugfs.o
+ /**
+- * drm_gem_object_init_with_mnt - initialize an allocated shmem-backed GEM
+- * object in a given shmfs mountpoint
++ * drm_gem_object_init - initialize an allocated shmem-backed GEM object
+  *
+  * @dev: drm_device the object should be initialized for
+  * @obj: drm_gem_object to initialize
+  * @size: object size
+- * @gemfs: tmpfs mount where the GEM object will be created. If NULL, use
+- * the usual tmpfs mountpoint (`shm_mnt`).
+  *
+  * Initialize an already allocated GEM object of the specified size with
+- * shmfs backing store.
++ * shmfs backing store. A huge mountpoint can be used by calling
++ * drm_gem_huge_mnt_create() beforehand.
+  */
+-int drm_gem_object_init_with_mnt(struct drm_device *dev,
+-				 struct drm_gem_object *obj, size_t size,
+-				 struct vfsmount *gemfs)
++int drm_gem_object_init(struct drm_device *dev, struct drm_gem_object *obj,
++			size_t size)
+ {
+ 	struct file *filp;
  
+ 	drm_gem_private_object_init(dev, obj, size);
+ 
+-	if (gemfs)
+-		filp = shmem_file_setup_with_mnt(gemfs, "drm mm object", size,
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	if (drm_gem_has_huge_mnt(dev))
++		filp = shmem_file_setup_with_mnt(dev->huge_mnt,
++						 "drm mm object", size,
+ 						 VM_NORESERVE);
+ 	else
+ 		filp = shmem_file_setup("drm mm object", size, VM_NORESERVE);
++#else
++	filp = shmem_file_setup("drm mm object", size, VM_NORESERVE);
++#endif
+ 
+ 	if (IS_ERR(filp))
+ 		return PTR_ERR(filp);
+@@ -204,22 +206,6 @@ int drm_gem_object_init_with_mnt(struct drm_device *dev,
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(drm_gem_object_init_with_mnt);
+-
+-/**
+- * drm_gem_object_init - initialize an allocated shmem-backed GEM object
+- * @dev: drm_device the object should be initialized for
+- * @obj: drm_gem_object to initialize
+- * @size: object size
+- *
+- * Initialize an already allocated GEM object of the specified size with
+- * shmfs backing store.
+- */
+-int drm_gem_object_init(struct drm_device *dev, struct drm_gem_object *obj,
+-			size_t size)
+-{
+-	return drm_gem_object_init_with_mnt(dev, obj, size, NULL);
+-}
+ EXPORT_SYMBOL(drm_gem_object_init);
+ 
+ /**
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index 81f4ac7cb8f6..43a80f3fcfd9 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -50,7 +50,7 @@ static const struct drm_gem_object_funcs drm_gem_shmem_funcs = {
+ };
+ 
+ static int __drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shmem,
+-				size_t size, bool private, struct vfsmount *gemfs)
++				size_t size, bool private)
+ {
+ 	struct drm_gem_object *obj = &shmem->base;
+ 	int ret = 0;
+@@ -62,7 +62,7 @@ static int __drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_obj
+ 		drm_gem_private_object_init(dev, obj, size);
+ 		shmem->map_wc = false; /* dma-buf mappings use always writecombine */
+ 	} else {
+-		ret = drm_gem_object_init_with_mnt(dev, obj, size, gemfs);
++		ret = drm_gem_object_init(dev, obj, size);
+ 	}
+ 	if (ret) {
+ 		drm_gem_private_object_fini(obj);
+@@ -103,13 +103,12 @@ static int __drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_obj
+  */
+ int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shmem, size_t size)
+ {
+-	return __drm_gem_shmem_init(dev, shmem, size, false, NULL);
++	return __drm_gem_shmem_init(dev, shmem, size, false);
+ }
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_init);
+ 
+ static struct drm_gem_shmem_object *
+-__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private,
+-		       struct vfsmount *gemfs)
++__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private)
+ {
+ 	struct drm_gem_shmem_object *shmem;
+ 	struct drm_gem_object *obj;
+@@ -129,7 +128,7 @@ __drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private,
+ 		obj = &shmem->base;
+ 	}
+ 
+-	ret = __drm_gem_shmem_init(dev, shmem, size, private, gemfs);
++	ret = __drm_gem_shmem_init(dev, shmem, size, private);
+ 	if (ret) {
+ 		kfree(obj);
+ 		return ERR_PTR(ret);
+@@ -150,31 +149,10 @@ __drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private,
+  */
+ struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size)
+ {
+-	return __drm_gem_shmem_create(dev, size, false, NULL);
++	return __drm_gem_shmem_create(dev, size, false);
+ }
+ EXPORT_SYMBOL_GPL(drm_gem_shmem_create);
+ 
+-/**
+- * drm_gem_shmem_create_with_mnt - Allocate an object with the given size in a
+- * given mountpoint
+- * @dev: DRM device
+- * @size: Size of the object to allocate
+- * @gemfs: tmpfs mount where the GEM object will be created
+- *
+- * This function creates a shmem GEM object in a given tmpfs mountpoint.
+- *
+- * Returns:
+- * A struct drm_gem_shmem_object * on success or an ERR_PTR()-encoded negative
+- * error code on failure.
+- */
+-struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct drm_device *dev,
+-							   size_t size,
+-							   struct vfsmount *gemfs)
+-{
+-	return __drm_gem_shmem_create(dev, size, false, gemfs);
+-}
+-EXPORT_SYMBOL_GPL(drm_gem_shmem_create_with_mnt);
+-
+ /**
+  * drm_gem_shmem_release - Release resources associated with a shmem GEM object.
+  * @shmem: shmem GEM object
+@@ -861,7 +839,7 @@ drm_gem_shmem_prime_import_sg_table(struct drm_device *dev,
+ 	size_t size = PAGE_ALIGN(attach->dmabuf->size);
+ 	struct drm_gem_shmem_object *shmem;
+ 
+-	shmem = __drm_gem_shmem_create(dev, size, true, NULL);
++	shmem = __drm_gem_shmem_create(dev, size, true);
+ 	if (IS_ERR(shmem))
+ 		return ERR_CAST(shmem);
+ 
+@@ -909,7 +887,7 @@ struct drm_gem_object *drm_gem_shmem_prime_import_no_map(struct drm_device *dev,
+ 
+ 	size = PAGE_ALIGN(attach->dmabuf->size);
+ 
+-	shmem = __drm_gem_shmem_create(dev, size, true, NULL);
++	shmem = __drm_gem_shmem_create(dev, size, true);
+ 	if (IS_ERR(shmem)) {
+ 		ret = PTR_ERR(shmem);
+ 		goto fail_detach;
 diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
-index d9547f5117b9..3bc714ea6392 100644
+index 3bc714ea6392..d3b68ee05dbb 100644
 --- a/drivers/gpu/drm/v3d/v3d_bo.c
 +++ b/drivers/gpu/drm/v3d/v3d_bo.c
-@@ -114,7 +114,7 @@ v3d_bo_create_finish(struct drm_gem_object *obj)
- 	if (IS_ERR(sgt))
- 		return PTR_ERR(sgt);
- 
--	if (!v3d->gemfs)
-+	if (!drm_gem_has_huge_mnt(obj->dev))
- 		align = SZ_4K;
- 	else if (obj->size >= SZ_1M)
- 		align = SZ_1M;
-@@ -150,12 +150,15 @@ struct v3d_bo *v3d_bo_create(struct drm_device *dev, struct drm_file *file_priv,
- 			     size_t unaligned_size)
- {
- 	struct drm_gem_shmem_object *shmem_obj;
--	struct v3d_dev *v3d = to_v3d_dev(dev);
+@@ -153,12 +153,7 @@ struct v3d_bo *v3d_bo_create(struct drm_device *dev, struct drm_file *file_priv,
  	struct v3d_bo *bo;
  	int ret;
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
--						  v3d->gemfs);
-+						  dev->huge_mnt);
-+#else
-+	shmem_obj = drm_gem_shmem_create(dev, unaligned_size);
-+#endif
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
+-						  dev->huge_mnt);
+-#else
+ 	shmem_obj = drm_gem_shmem_create(dev, unaligned_size);
+-#endif
  	if (IS_ERR(shmem_obj))
  		return ERR_CAST(shmem_obj);
  	bo = to_v3d_bo(&shmem_obj->base);
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
-index e8a46c8bad8a..30b55a00eeda 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.c
-+++ b/drivers/gpu/drm/v3d/v3d_drv.c
-@@ -107,7 +107,7 @@ static int v3d_get_param_ioctl(struct drm_device *dev, void *data,
- 		args->value = v3d->perfmon_info.max_counters;
- 		return 0;
- 	case DRM_V3D_PARAM_SUPPORTS_SUPER_PAGES:
--		args->value = !!v3d->gemfs;
-+		args->value = drm_gem_has_huge_mnt(dev);
- 		return 0;
- 	case DRM_V3D_PARAM_GLOBAL_RESET_COUNTER:
- 		mutex_lock(&v3d->reset_lock);
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
-index 1884686985b8..99a39329bb85 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.h
-+++ b/drivers/gpu/drm/v3d/v3d_drv.h
-@@ -158,11 +158,6 @@ struct v3d_dev {
- 	struct drm_mm mm;
- 	spinlock_t mm_lock;
+diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+index 58fa1e6b9773..75276a12208e 100644
+--- a/include/drm/drm_gem.h
++++ b/include/drm/drm_gem.h
+@@ -529,9 +529,6 @@ void drm_gem_object_release(struct drm_gem_object *obj);
+ void drm_gem_object_free(struct kref *kref);
+ int drm_gem_object_init(struct drm_device *dev,
+ 			struct drm_gem_object *obj, size_t size);
+-int drm_gem_object_init_with_mnt(struct drm_device *dev,
+-				 struct drm_gem_object *obj, size_t size,
+-				 struct vfsmount *gemfs);
+ void drm_gem_private_object_init(struct drm_device *dev,
+ 				 struct drm_gem_object *obj, size_t size);
+ void drm_gem_private_object_fini(struct drm_gem_object *obj);
+diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shmem_helper.h
+index 589f7bfe7506..6b6478f5ca24 100644
+--- a/include/drm/drm_gem_shmem_helper.h
++++ b/include/drm/drm_gem_shmem_helper.h
+@@ -109,9 +109,6 @@ struct drm_gem_shmem_object {
  
--	/*
--	 * tmpfs instance used for shmem backed objects
--	 */
--	struct vfsmount *gemfs;
--
- 	struct work_struct overflow_mem_work;
+ int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_object *shmem, size_t size);
+ struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev, size_t size);
+-struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct drm_device *dev,
+-							   size_t size,
+-							   struct vfsmount *gemfs);
+ void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
+ void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
  
- 	struct v3d_queue_state queue[V3D_MAX_QUEUES];
-@@ -569,6 +564,7 @@ extern const struct dma_fence_ops v3d_fence_ops;
- struct dma_fence *v3d_fence_create(struct v3d_dev *v3d, enum v3d_queue q);
- 
- /* v3d_gem.c */
-+extern bool super_pages;
- int v3d_gem_init(struct drm_device *dev);
- void v3d_gem_destroy(struct drm_device *dev);
- void v3d_reset_sms(struct v3d_dev *v3d);
-@@ -576,11 +572,6 @@ void v3d_reset(struct v3d_dev *v3d);
- void v3d_invalidate_caches(struct v3d_dev *v3d);
- void v3d_clean_caches(struct v3d_dev *v3d);
- 
--/* v3d_gemfs.c */
--extern bool super_pages;
--void v3d_gemfs_init(struct v3d_dev *v3d);
--void v3d_gemfs_fini(struct v3d_dev *v3d);
--
- /* v3d_submit.c */
- void v3d_job_cleanup(struct v3d_job *job);
- void v3d_job_put(struct v3d_job *job);
-diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
-index 5a180dc6c452..f316f67364d2 100644
---- a/drivers/gpu/drm/v3d/v3d_gem.c
-+++ b/drivers/gpu/drm/v3d/v3d_gem.c
-@@ -259,6 +259,30 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
- 	v3d_invalidate_slices(v3d, 0);
- }
- 
-+static void
-+v3d_huge_mnt_init(struct v3d_dev *v3d)
-+{
-+	int err = 0;
-+
-+	/*
-+	 * By using a huge shmemfs mountpoint when the user wants to
-+	 * enable Super Pages, we can pass in mount flags that better
-+	 * match our usecase.
-+	 */
-+
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && super_pages)
-+		err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
-+
-+	if (drm_gem_has_huge_mnt(&v3d->drm))
-+		drm_info(&v3d->drm, "Using Transparent Hugepages\n");
-+	else if (err)
-+		drm_warn(&v3d->drm, "Can't use Transparent Hugepages (%d)\n",
-+			 err);
-+	else
-+		drm_notice(&v3d->drm,
-+			   "Transparent Hugepage support is recommended for optimal performance on this platform!\n");
-+}
-+
- int
- v3d_gem_init(struct drm_device *dev)
- {
-@@ -310,7 +334,7 @@ v3d_gem_init(struct drm_device *dev)
- 	v3d_init_hw_state(v3d);
- 	v3d_mmu_set_page_table(v3d);
- 
--	v3d_gemfs_init(v3d);
-+	v3d_huge_mnt_init(v3d);
- 
- 	ret = v3d_sched_init(v3d);
- 	if (ret) {
-@@ -330,7 +354,6 @@ v3d_gem_destroy(struct drm_device *dev)
- 	enum v3d_queue q;
- 
- 	v3d_sched_fini(v3d);
--	v3d_gemfs_fini(v3d);
- 
- 	/* Waiting for jobs to finish would need to be done before
- 	 * unregistering V3D.
-diff --git a/drivers/gpu/drm/v3d/v3d_gemfs.c b/drivers/gpu/drm/v3d/v3d_gemfs.c
-deleted file mode 100644
-index bf351fc0d488..000000000000
---- a/drivers/gpu/drm/v3d/v3d_gemfs.c
-+++ /dev/null
-@@ -1,62 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0+
--/* Copyright (C) 2024 Raspberry Pi */
--
--#include <linux/fs.h>
--#include <linux/mount.h>
--#include <linux/fs_context.h>
--
--#include <drm/drm_print.h>
--
--#include "v3d_drv.h"
--
--void v3d_gemfs_init(struct v3d_dev *v3d)
--{
--	struct file_system_type *type;
--	struct fs_context *fc;
--	struct vfsmount *gemfs;
--	int ret;
--
--	/*
--	 * By creating our own shmemfs mountpoint, we can pass in
--	 * mount flags that better match our usecase. However, we
--	 * only do so on platforms which benefit from it.
--	 */
--	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
--		goto err;
--
--	/* The user doesn't want to enable Super Pages */
--	if (!super_pages)
--		goto err;
--
--	type = get_fs_type("tmpfs");
--	if (!type)
--		goto err;
--
--	fc = fs_context_for_mount(type, SB_KERNMOUNT);
--	if (IS_ERR(fc))
--		goto err;
--	ret = vfs_parse_fs_string(fc, "source", "tmpfs");
--	if (!ret)
--		ret = vfs_parse_fs_string(fc, "huge", "within_size");
--	if (!ret)
--		gemfs = fc_mount_longterm(fc);
--	put_fs_context(fc);
--	if (ret)
--		goto err;
--
--	v3d->gemfs = gemfs;
--	drm_info(&v3d->drm, "Using Transparent Hugepages\n");
--
--	return;
--
--err:
--	v3d->gemfs = NULL;
--	drm_notice(&v3d->drm,
--		   "Transparent Hugepage support is recommended for optimal performance on this platform!\n");
--}
--
--void v3d_gemfs_fini(struct v3d_dev *v3d)
--{
--	if (v3d->gemfs)
--		kern_unmount(v3d->gemfs);
--}
 -- 
 2.47.3
 
