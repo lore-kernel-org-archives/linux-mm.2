@@ -4,116 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A54ACD98D0
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:38:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65804CD98D0
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:39:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D52D88E0017; Thu, 13 Nov 2025 14:38:06 -0500 (EST)
+	id BF6628E0011; Thu, 13 Nov 2025 14:39:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D29A98E0007; Thu, 13 Nov 2025 14:38:06 -0500 (EST)
+	id BA7098E0007; Thu, 13 Nov 2025 14:39:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3F598E0017; Thu, 13 Nov 2025 14:38:06 -0500 (EST)
+	id AE3C58E0011; Thu, 13 Nov 2025 14:39:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B34168E0007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:38:06 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 626F014012A
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:38:06 +0000 (UTC)
-X-FDA: 84106594572.29.6AFFD38
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C5B63180011
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:38:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SDTS0g7C;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E1B28E0007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:39:57 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F4E9C0121
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:39:57 +0000 (UTC)
+X-FDA: 84106599234.21.DD4E2FD
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 66AEB4000F
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:39:55 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VZL20QsH;
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763062684;
+	s=arc-20220608; t=1763062795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3AhN2wb7T6jwZnqtd7QyeGvu3i9eVmsxPLBsM9WDtnM=;
-	b=gwdSUn09v2yH/sbuieE1VyUp387puGWzF6/Yu7ddAs0MjmtsfdrMzc8rsiAoP7UVXWGta1
-	iKZbOevLfmRlaqWlWMNaa9QHQiuLmcV18lVNpsMdEs5anQa5Kz4w+xuqqRrpMfdU8taa9/
-	FeR+eMlSG3KFrswGBs/c6Ie2E7o/9lw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SDTS0g7C;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763062684; a=rsa-sha256;
+	bh=FffN7zEr7VpJ+2JoHAoCigjhXI7wqrK/ybSZLdiIYO8=;
+	b=CjAOCnYA5hvHWzcr7gWGwpOCTnqeKqh2PoiCZvfkiQr61dagSez+W4egqHngmpHavc+3Mr
+	JD+sE40caHZRHdqQqmmRLNPyL8X6E3+YhJ7FZm/BgSGYzNxuyn92OX1TLyl51g5hdGUjf4
+	TiPJUcOfXeR8v20AGp4aITRvQhVquGI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763062795; a=rsa-sha256;
 	cv=none;
-	b=S1nKObvfHDKFKoTO2w8TudPof358g1noMuHCSwjpHXndePfnSmVGnex9V6WRWQIkegXK/f
-	s0RMmo8R6WkZZ3ySLFiyWfkALajPyIhK+qBqGkehDn/o3z7sUueH4y1CAYHAnB/gCIXJ6w
-	ROJC4OYRtSPBVSurgewugWc9gFnDvhM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763062684; x=1794598684;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HEJSaA71TuXh1QUGrm04DbY3CyzCazML7OWPoC5lA1M=;
-  b=SDTS0g7CB/avHDLgtiDAtSG8U/CAc9eKrR7rrsWVVZjXFlQT8t7bNnC0
-   1+JQ5lUNkHHrj19J0VC0NrDKou6isYc9ORUblKDxCuLk+SPulbntDGKma
-   s81LA6TE4bxBek4VSq4b68o9Q0dr1UJ4LrbeUPkU4rDrNUz8lfsLHUXMA
-   AZr+u2DbT3iHn7kzFnIkUw4qEziEvU71FnOLEsckQrg/HtPzkN05ta6cA
-   XIE4O2TuHIHWjljFcaM/qYJgntIxP3aTo2OA5NT0K2YJVJXWdUkBSTQhX
-   21wrC5cI9msvDJnfTdaFNMeDpWlmUHNu2izGCpT9EpotsHmUdTh1S42Rn
-   g==;
-X-CSE-ConnectionGUID: HXuTwM7lQWCYcOn4eFfHqA==
-X-CSE-MsgGUID: 0aX+IEiOQgSH2iMr+qY4xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="65250466"
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="65250466"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 11:38:02 -0800
-X-CSE-ConnectionGUID: soxY0Zs6Ty2frP213V6FJQ==
-X-CSE-MsgGUID: CcjC+fnwTheaokIWwwZZ5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
-   d="scan'208";a="193858615"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 13 Nov 2025 11:37:58 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJd8l-0005nn-2B;
-	Thu, 13 Nov 2025 19:37:55 +0000
-Date: Fri, 14 Nov 2025 03:37:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yuntao Wang <yuntao.wang@linux.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	James Morse <james.morse@arm.com>, Baoquan He <bhe@redhat.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Geoff Levand <geoff@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Alexander Graf <graf@amazon.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Yuntao Wang <yuntao.wang@linux.dev>
-Subject: Re: [PATCH v2 6/7] of/reserved_mem: Simplify the logic of
- __reserved_mem_reserve_reg()
-Message-ID: <202511140307.Th0UqUd9-lkp@intel.com>
-References: <20251113155104.226617-7-yuntao.wang@linux.dev>
+	b=sfHdHQ9dHHcUHburXCvfV2QmPirDYZhezJjnpE//5o8XZc0hFhDaaz8zqpLhb3uA1IuZmA
+	p2lHcnpDHOPRkSeg9+h6NvWvXYP6ir+kgc3pChPwD4d1A6EkgcBeJn4YKYEmDJdzaXZ3GU
+	IOMMbWNZUsUdCpoGoFdW6QTTHFiRl0w=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VZL20QsH;
+	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-ba488b064cbso939153a12.1
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:39:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763062794; x=1763667594; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FffN7zEr7VpJ+2JoHAoCigjhXI7wqrK/ybSZLdiIYO8=;
+        b=VZL20QsHlTqCBONWwrtEJUEbA0ie7n2/ALQkZ6OjkUY01MuMFRU/F6p9PY0Y1TyCZ+
+         4eqTQU0oWacgo3pPo4dJLP8oU8bs//C/e3OFLOMjRgqPJJ/50sRRS+Az8lcspFYYWgS7
+         1myqgrVuk/YxiDdZNe+pbHUdGQKK7Om6Guuhk+cKNvIImdHzL3+bYjDSnWP6YMP3wemk
+         YYTyDebGwWor26VfTVYs7KC/aUa4z6iEjur6T85waGC7omsddnPLtjV2HD+9Y12CirT9
+         NJP65V1kh4dRbpaZTcyRDA6XiZt5XXZZ65yr+q1TVHDwa4jBK+8I5e9s+40gDPPzmPGH
+         HAmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763062794; x=1763667594;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FffN7zEr7VpJ+2JoHAoCigjhXI7wqrK/ybSZLdiIYO8=;
+        b=geffJ36yCfq0LMC1yD96Fn2bA/hKNYx3um0qgAgK2xbbI9R9THYSHy3f9CYB1oXlgB
+         6MLcitt5Pz7k5LVe6kQoofE/gQiyF6tHcO7A5wpUwxkRjOQZfU5Go9KcdbkItVx9+B6C
+         BPIOyG7RyDmSqm/o0wEcXVtGALM6F2t7Q+FHKV/8I8lKJzolQtcZMINCSf9blKMqLUQU
+         tkkiElJXqXAJXdtHwydMWqqPY4b/c8GmP+xLSlSnDSeZv+d4OzZ6LvL3RYJ3x0Z2RKn5
+         Qr3uWN6NiVhhXvSQwOoWPr7saCbZl8+8zOcivtxkB77NQCJCsDd1KAETsoSj9KLvbAoS
+         mypw==
+X-Forwarded-Encrypted: i=1; AJvYcCWP8D/jfyuX+CfU+2T9lLCZMCO6Y4VvQIQD4AhwaPHuaAp/oRaDvkoj/c0RCXodlbJmZ+pUZgVMRA==@kvack.org
+X-Gm-Message-State: AOJu0YydimSvsNfM0POHI9fZUxJ7cIWO01drpB5Uk6Sv2WkazUXV88Fz
+	M0R7BxiXiUScgck24Q5s+Y8iUHtoor3ngpk69G0Kw51z3mBdppmkb8bd
+X-Gm-Gg: ASbGnctMa0eNO4kEGl5I7LRhDsEBt5tkFtOC6HM6fwPmpk1Go+jkYIAXNxsNTlka39s
+	ySv1snN5e/bD3n6PyrL+iZzJhWyo+HZuEwCINBHdoa4ZsC2CRHDp2u6bza9U6b786VHrdoNM9Gv
+	PhSwJNzYYdYaGq7ljdK4XHEgrO8GFFKtxKMqEJZY14Redaw2ULNRv9CL9QEUUKzpkCxPJb2CF/T
+	BURP2L5GI7G6ZT1ZQEn0gKMSK58WwThHgycNKDYYfNEWcl3gIerlTEHU4QWG2+la0q9rFE7suTi
+	hTkvPcBqT+u4yw+WxksG0PJuJtelCcmA+qhcurfk7cRYoP8wlQEecdN2kHBwB5yGXnTV+BpMSjG
+	pldxQuvJu0uvxl75vesvER8uoxuJeDm0oSMsS1cjBH2Kv9Y5xdCvNMRfiPnUbD3NgDP6V6ZT4oE
+	YXUzXH5TyaFleNrR9whDp6tMl05UIienvoHlmd4+L3a2c=
+X-Google-Smtp-Source: AGHT+IFVurH0gpbBqQKfv3USlZxh2mlNsqOoitjPChzn16RCIOHtnoQ642edQsTnR0yLON67ctrV8w==
+X-Received: by 2002:a05:7022:3883:b0:119:e569:f60c with SMTP id a92af1059eb24-11b40f9af3cmr231606c88.5.1763062794016;
+        Thu, 13 Nov 2025 11:39:54 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b0608860fsm751098c88.5.2025.11.13.11.39.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Nov 2025 11:39:53 -0800 (PST)
+Date: Thu, 13 Nov 2025 11:39:51 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Will Deacon <will@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH 2/4] mm: Account pagetable memory when allocated
+Message-ID: <aRY0BwgjVM2xrBnD@fedora>
+References: <20251113140448.1814860-1-willy@infradead.org>
+ <20251113140448.1814860-3-willy@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113155104.226617-7-yuntao.wang@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C5B63180011
-X-Stat-Signature: d445urxo957wi6fhrbtqqwksranq887f
+In-Reply-To: <20251113140448.1814860-3-willy@infradead.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 66AEB4000F
+X-Stat-Signature: rtgp1y9mxqgo1w4jggfde6junhuft5es
 X-Rspam-User: 
-X-HE-Tag: 1763062683-425349
-X-HE-Meta: U2FsdGVkX1/LbFtFvTcB5LBak7qr3gq9XdTGdEIxyWsOX+h1Kgpccx6FIkIX6MntFHXoBomOc87dVHtSvPQkBMWcErzGD8brhHlUrtCqCXrbQFcFQZCffl0QDoIi4FuhNU5cmABk1LQycVCT+EnWOheNLaTUQnf6ymXlmqoGaTyZOBvZtJlY0MwWE7CH14EhJ/8mY2t6Ng0V7WxL/tIm7w7N0noRrLkB2GwRA6298EcB/gRXHEH7zJBCByGo/HmoEKL9WyFxGz2uBIIPDbE3/h2sz4e+XX6/JKxm9BMNFJL/jnVog+Rt2juIU05LIx4YiyiFH49t/3fyTytWamR5VEuiBifp1AZRJId/MvP0B2UjH/3RgxhCLYByxKDDGiDOoi460LPn4oXLDxkw3bq25w0g0r5OczxVHccJizYPeujM74bl0K5Ar0SnxsYIUbFQMwZ7YpXqQ6rV6VmagVU5m7Wb0wm6G4Y1qPVLY4ggJlwNWVCAffgJ9mOu2pzaHY2G8Gf4IgW6iLnTNI/S01+kBwBDRlBlbyIVc6ofm2Nw+tjIAs2+uI34DIR/5eStmYECgTGRMWZdnQdYhd5w1tUpOl8cd74jyFDZAlIX0O7TmbxIdq8BTd74RHXiW1I0u9XFrBbxuShahMo7Yet6o5kTsqCOuYstYqU4VIYHLxrBlCdSKfUD3CxQYoj7nB4ig2+LdxXBUM4NJJ+hTlfQj4ulVnwhHMGzCmTTM2Gz+f/16ANFsuMN6kMCa4cER0+RUSejYnLDm5tQibFxiT2PLHsRaXV/ooluyC1LK/qG1zdkIsriA1CrrbrpiqwgchuFbUTRD+9EzZaaSz8fUh+ZNvjKjVjMWidjvjyN7QI6w5O30KuIZO9zvhG5lnDnqEXLxuwYy5ooSjy2kLbUnlmgXVNzJ6DWJOU7nA4cNCqcso7oTuHEDrpxEyudIzdzRhogguG+KgG7DF7uVxmUPqP6c69
- 21N/EAeK
- 1d8sk2hTJHWO4hDyKJAHMDqMAvjjVd0ylkkBXaI6xP3yprPt+I3hduegrNfzwaZBPA8UTF74Tr9R84a/NAJUSm82eYnUkT6B+O/fTUQn8YbroRaxBLtYraAG5VfMy6eOhZEs9Gk8nYVC2JPvzRw9VfAYUCzGfIUxpNCJwYRGWogJAuRiubdbjHMv8oaU46haQpGMcmxSzqBSvjKCSY5rWsCIO/8UxKmmDsod8Ngn+5pIS9+V8WETsR9JPowzB1LnTqHPCilduDFgxP0GYwobM+MqxkMp7MWYm3a92V8/GYJ4ncz8SFp8aZSjOVBvv5wSaSBf94fXF5NdSmDqIiZ1nYxub7FA21PZpWpjdD+KOXrr356dTjmRhYUdHk2JdDEJ0DMZvEjrUuZ3fHHpvFkHVviFtmiv/dF1VFRCGDrlmC+VyHHSJeiNnbhJjv28bWmybnvf8fQ5lpaFlF7HihywlJ60+D2RQA67k2JED
+X-HE-Tag: 1763062795-439986
+X-HE-Meta: U2FsdGVkX19fdJM4Eum5KIl4eeLqTVlBQkU9I0fZDMfh9cqX7QWiUjiQTtg5lQoxLp33Z3zF40IZUdXnhCIuaFArW+2ZnpbV5+pc+cuLZi7AiiYdzXMYLENkAN+/mn3vIgRnLz0I58I14ZIsyCeNL/IPposfG7CQzuFuFcYAAs+ft3zKqBOQZ81M5VkVEtBhpvYw4FbnvB1JSnNXDjBpSa1qrhMLXXi16+XGL2BnxLTbLS6/XxioGMMAXhfaVJuzzAwmi9sFVeVrVxBJ8cM9fSJMUiNJWMsJAZy8GkTraU990LMiASEP4SqaWFs2X6Ol6XrWR82XIrYepR6xJnyJWsuwCp6vmTTcYh/D2WDG37sGhLJMK8VH+9ZAeXOoy5u8+KPfUw6uBgiyZyDKKqDeOqQ3kHa1wrgftcE7jp1tGHrW1q/khLrCIMH3/k86ECIyZQH2v4Lh8afjKhXHde1zS5eO7Vl4zZ1NpZpcj/H5c703SuFQ64ikZcM5QN6FYv4VWo5gn/XvjN/zyfgtRNaA5tsSuiro64zArQCdpebjTwh2dhU2AaSmSiVKdNK3M5bziPtp2SMbNIY5AIqb4u1ePgqhfwGkvIqDUXpuQWcLdFG5thCWNR9fz8uViaBpu7X7XFVLem9NuJ7ZS0R3yn/iWmpP9bvCUpeJ7L2YbRHY7fU9jRNUkdAmdqZlP6FNvUNAw3Vz3IVyb/nAvBuNOigKOJVpwXz1/eXB6Mn0JkvmOD2Ql8LA1HE/3rp+aKKSsVdDKX6KF/rYcnybHfVb7rYoYnHSyvtUWrfv4QWk/L6HSRDz1DLDUVpjaXBKH5h9nGCeo8ArbY+BLuMrCXEANviHWD4e+U1lrVqoa9wZGB+2DGmqAreEZaP7TNA/KQWxi702w8SQ35J3aic7QTAPT5FF+GjfmUObARAH6RPAo2PRZBHKlBdUDrLuWcAVo0m3W/3/GBNO+UU8Kploqksd1eZ
+ 6fBbFrJG
+ 5PeGd4iHG6P+P5AIMwv/0K2Z0VaN5vtgITiXZWoXORvdeiNgAseaE2Z+TZGWXN9/LuI4jYUu7TTNvVqYnIu4Ya0VVEmscrGrBHx62D9Rin3lqdy2NwIbiW2no7azbqkNevOAnL63RME0sVRAr7Ij5Djhi2rwj3CyEwTQxyUTySOBYMDxUSFHe1qHktTQ3cJb8lRX43Q3BDk5vFMEqrbg97cw6audwmHLPTRl3cTHod4VsV4jdODq0Z6JQjmKJ3v1SEhMv3pdcU2X73vX3mY2Vy4eO3DPb6w5KgxNN5waLuXjdj1bURAmTrJ/1aZogpV5yWK3hvFwKDBEJy+qMYF7z+K+a4LGyZtrlv3vejfRuBoQtEhFnuqeS2zU4a3x/9F2ptCosvSlzwj5EVla58qNNmaGikVRMxWcVPO5NGLMEDGBVXHFZC+3ptFHUGh/XQzDsHFAay+XgSJQtGsHrKTB0VtEMTZr5iMC1pPN6bnVWF+GcP+8fLTB9SizuOiz+YHi9kjbfeOhP0DKGsjDqWx24VLXBCosB9Resk4OtUcw04AbPfCU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,92 +121,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yuntao,
+On Thu, Nov 13, 2025 at 02:04:44PM +0000, Matthew Wilcox (Oracle) wrote:
+> Move the accounting from the constructor to the allocation site.
+> Some of the architecture code is a little complex to reason about,
 
-kernel test robot noticed the following build errors:
+I think the patch is correct. After taking a look at all the paths, I
+noticed 2 cases that I'm uncertain about:
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on linus/master v6.18-rc5 next-20251113]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+1) Commit 454b0289c6b5 ("sparc32: mm: Don't try to free page-table pages
+if ctor() fails") implies that sparc32 uses memblock pages, so we never
+actually free them with pagetable_free(). I'm not sure how the
+allocation path looks. Would this break the accounting? +Cc-ing Will.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yuntao-Wang/of-fdt-Consolidate-duplicate-code-into-helper-functions/20251114-004121
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20251113155104.226617-7-yuntao.wang%40linux.dev
-patch subject: [PATCH v2 6/7] of/reserved_mem: Simplify the logic of __reserved_mem_reserve_reg()
-config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20251114/202511140307.Th0UqUd9-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 0bba1e76581bad04e7d7f09f5115ae5e2989e0d9)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511140307.Th0UqUd9-lkp@intel.com/reproduce)
+2) In !CONFIG_MMU_GATHER_TABLE_FREE, tlb_remove_table() calls
+pagetable_dtor() -> tlb_remove_page(). I'm wondering if this may run into
+accounting issues?
+Commit f21bb37afbba0 ("mm: pgtable: make generic tlb_remove_table() use
+struct ptdesc") says it's only an arm thing that needs to be fixed
+anyway. +Cc-ing Qi.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511140307.Th0UqUd9-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/of/of_reserved_mem.c:175:31: error: incompatible pointer types passing 'phys_addr_t *' (aka 'unsigned int *') to parameter of type 'u64 *' (aka 'unsigned long long *') [-Wincompatible-pointer-types]
-     175 |                 of_fdt_read_addr_size(prop, &base, &size);
-         |                                             ^~~~~
-   include/linux/of_fdt.h:62:60: note: passing argument to parameter 'addr' here
-      62 | extern void of_fdt_read_addr_size(const __be32 *prop, u64 *addr, u64 *size);
-         |                                                            ^
-   drivers/of/of_reserved_mem.c:175:38: error: incompatible pointer types passing 'phys_addr_t *' (aka 'unsigned int *') to parameter of type 'u64 *' (aka 'unsigned long long *') [-Wincompatible-pointer-types]
-     175 |                 of_fdt_read_addr_size(prop, &base, &size);
-         |                                                    ^~~~~
-   include/linux/of_fdt.h:62:71: note: passing argument to parameter 'size' here
-      62 | extern void of_fdt_read_addr_size(const __be32 *prop, u64 *addr, u64 *size);
-         |                                                                       ^
-   2 errors generated.
-
-
-vim +175 drivers/of/of_reserved_mem.c
-
-   150	
-   151	/*
-   152	 * __reserved_mem_reserve_reg() - reserve all memory described in 'reg' property
-   153	 */
-   154	static int __init __reserved_mem_reserve_reg(unsigned long node,
-   155						     const char *uname)
-   156	{
-   157		phys_addr_t base, size;
-   158		int len;
-   159		const __be32 *prop;
-   160		bool nomap;
-   161	
-   162		prop = of_fdt_get_addr_size_prop(node, "reg", &len);
-   163		if (!len)
-   164			return -ENOENT;
-   165	
-   166		if (len < 0) {
-   167			pr_err("Reserved memory: invalid reg property in '%s', skipping node.\n",
-   168			       uname);
-   169			return -EINVAL;
-   170		}
-   171	
-   172		nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
-   173	
-   174		while (len-- > 0) {
- > 175			of_fdt_read_addr_size(prop, &base, &size);
-   176	
-   177			if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
-   178				/* Architecture specific contiguous memory fixup. */
-   179				if (of_flat_dt_is_compatible(node, "shared-dma-pool") &&
-   180				    of_get_flat_dt_prop(node, "reusable", NULL))
-   181					dma_contiguous_early_fixup(base, size);
-   182				pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
-   183					uname, &base, (unsigned long)(size / SZ_1M));
-   184			} else {
-   185				pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa, size %lu MiB\n",
-   186				       uname, &base, (unsigned long)(size / SZ_1M));
-   187			}
-   188		}
-   189		return 0;
-   190	}
-   191	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> but I think this is all correct (and slightly more efficient due
+> to having 'order' as an argument instead of having to retrieve it
+> from struct page again).
+>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  include/linux/mm.h | 11 -----------
+>  mm/memory.c        | 16 +++++++++++++---
+>  2 files changed, 13 insertions(+), 14 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index e168ee23091e..17f783c04c87 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3082,26 +3082,15 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+>  static inline void ptlock_free(struct ptdesc *ptdesc) {}
+>  #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+>  
+> -static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
+> -{
+> -	return compound_nr(ptdesc_page(ptdesc));
+> -}
+> -
+>  static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+>  {
+> -	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+> -
+>  	__SetPageTable(ptdesc_page(ptdesc));
+> -	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
+>  }
+>  
+>  static inline void pagetable_dtor(struct ptdesc *ptdesc)
+>  {
+> -	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+> -
+>  	ptlock_free(ptdesc);
+>  	__ClearPageTable(ptdesc_page(ptdesc));
+> -	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
+>  }
+>  
+>  static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 781cd7f607f7..35886fde189c 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -7351,7 +7351,13 @@ long copy_folio_from_user(struct folio *dst_folio,
+>  struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
+>  {
+>  	struct page *page = alloc_frozen_pages_noprof(gfp | __GFP_COMP, order);
+> +	pg_data_t *pgdat;
+>  
+> +	if (!page)
+> +		return NULL;
+> +
+> +	pgdat = NODE_DATA(page_to_nid(page));
+> +	mod_node_page_state(pgdat, NR_PAGETABLE, 1 << order);
+>  	return page_ptdesc(page);
+>  }
+>  
+> @@ -7364,12 +7370,16 @@ struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
+>   */
+>  void pagetable_free(struct ptdesc *pt)
+>  {
+> +	pg_data_t *pgdat = NODE_DATA(memdesc_nid(pt->pt_flags));
+>  	struct page *page = ptdesc_page(pt);
+> +	unsigned int order = compound_order(page);
+>  
+> -	if (ptdesc_test_kernel(pt))
+> +	if (ptdesc_test_kernel(pt)) {
+>  		pagetable_free_kernel(pt);
+> -	else
+> -		free_frozen_pages(page, compound_order(page));
+> +		return;
+> +	}
+> +	mod_node_page_state(pgdat, NR_PAGETABLE, -(1L << order));
+> +	free_frozen_pages(page, order);
+>  }
+>  
+>  #if defined(CONFIG_SPLIT_PTE_PTLOCKS) && ALLOC_SPLIT_PTLOCKS
+> -- 
+> 2.47.2
+> 
 
