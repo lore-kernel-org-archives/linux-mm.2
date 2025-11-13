@@ -4,115 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E9C3CD4F2F
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 13:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63CE5CD6E5D
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 13:38:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A33FD8E000D; Thu, 13 Nov 2025 08:33:38 -0500 (EST)
+	id B9C168E000F; Thu, 13 Nov 2025 08:38:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0B6D8E0002; Thu, 13 Nov 2025 08:33:38 -0500 (EST)
+	id B74898E0002; Thu, 13 Nov 2025 08:38:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 948168E000D; Thu, 13 Nov 2025 08:33:38 -0500 (EST)
+	id AB0958E000F; Thu, 13 Nov 2025 08:38:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 846AD8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:33:38 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F28C12E639
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:33:38 +0000 (UTC)
-X-FDA: 84105676116.07.34D5B11
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 44306180017
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:33:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G7DarnSW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763040816; a=rsa-sha256;
-	cv=none;
-	b=iRsq4Z1EC77afLuuqwDzOWF3C/uz76s6lJjvHDggNUfkeFMUnrqcYtp5IzcRKuuP29LVIB
-	rDR6rdq++/gI7pPkr0TT1Xu9TxFt/gIx7cPKGjSUkt6GsruhkRIopYSXrpUVVFDDyxFio2
-	ZeFXxYUTdS0IUHQuDQkSpGkfha7SnXo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G7DarnSW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 967D18E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:38:13 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A25F12E738
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:38:13 +0000 (UTC)
+X-FDA: 84105687666.23.6E25EE0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 84A4912000E
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:38:11 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U2SPT7ui;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763040816;
+	s=arc-20220608; t=1763041091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MhHd/vd5PilZlak+JY6GVryWSDKciGyRf9y3293OwHk=;
-	b=GYsYR7IhvX1aFq6PvIcppb183zhiZRBtJp8t6sDwPYVCelBIrzPGix/vZjffBhzOgR0LPY
-	7XuxEnTWjV9HPT/ScWbCgsWWk97EWUUrA85DodqAkBF2e8w6OltR03DyefUvCapVzjuZuV
-	BoNNW6nE+nmdTsA7W5Qj66cDwYVqGCg=
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-595825c8eb3so427054e87.0
-        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 05:33:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763040814; x=1763645614; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MhHd/vd5PilZlak+JY6GVryWSDKciGyRf9y3293OwHk=;
-        b=G7DarnSWxdAlXVXnIZjQnwcUWb4ea3yePTJUMQskr35DFzpUjXMfF/ObwmNuZ6Snm0
-         ApzZhe+gko1ahdl58YQthlqn4MxBdjDssD4iHkunEO5JMH7iLJrx3UT0qXnxloSKeWla
-         zHmzMU6u+mOAWvr3isBBWnNYkLSLHJaG6+G2yA7QpjZzSur6Dcin5lj8D+nbusFxAs1C
-         etGPH7f3GXWM/En38vXaogE7mCYrrUr569dO9MvFpC+NuYM7K5tl4nX+GytHZCszJ5KI
-         iyt4GV4tsV1785Qeg796ISMAYvU8uAZtvWZYLZIf/rpp33SsklW4AWSZEybbhrUROsPQ
-         Lp8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763040814; x=1763645614;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MhHd/vd5PilZlak+JY6GVryWSDKciGyRf9y3293OwHk=;
-        b=PhoP/SQJxcnpPB0IMkbqKRjVRPeeVpxnUL3b5TTsUn4DXz7zRWfJyEAqiS3LUAI49Z
-         qR2d4A3LJQHupNYKi3JIHVXBCtfdA/sNnSsRF2AcnRpMiX7QrsZJ0hV/UXRgMcFkwCeT
-         z9QTyIzGHWRdbDczAmW0cKCMFsQP41u+ycWuM5+qRT6EbPZ1nvjeY0gp0+ZUTYId2+GS
-         zAIpCJyBXbWmxGKH/2V9A2COD49reg+iGVNPREZZcvY/RRDAEE2qpsZ5LRGBU9yw5f3I
-         E9rP5xz1z7SLosJvgUAcF8CxgVliAWOWT19WS6Jgd1zGUCiMYXP40Nhy5KrZkClo/7qy
-         A+bg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1S1YceP6/2CScNuQN3JY50eTr6Hgh1jNBjv2F8aA3Cb3NTD1gXoxHBfBKA1P/G0X84LSQOaQuVg==@kvack.org
-X-Gm-Message-State: AOJu0YzQMaUWhHIVZAIVF+4l5QUI9nW/C/Iv/k0g/TYCZcjxPgNW4Iaj
-	98Nr5qdYx1c2QJL7YOUZPBdMjCRpys9SCkEPbMtz9gsCQQwuPqX5uLql
-X-Gm-Gg: ASbGnctOHnkR0bJKqCPzr9w4CB2Pwonyxjm/N9dPDS0/ef0bJAC/8si+BnfWx8fno4y
-	SdJ7brslVF7/3e+Q1nQV5s3ohitwcxE34rjWF/knAdAf8eFm29ZCmAQcMPxgTr2evVPdWeu7nTz
-	sDwpPDJktP4GrcQAT2YnKRrKPYaI5xt9lVz4Ozpls/Y8GjDriDpMeWu8L+tQRwIMzDrMxvJnApn
-	wfvoSlaYKhBU3QGrsPYJygv/h1c+vUuaKfagEJKJM+e6mRI/3Hgbancj8MzooxWBLAnKC+BRyme
-	r99e58VhaepqcQvqliDkrG4KwIjsFa4/9PXJeDDCXHSlDxuPe/o/4OBD7U1kqKuHNCFfi8LVyCw
-	3Qvk9yRSHRo18XlhqTI0zu2HjHEwcPM/oal2A72CNS44=
-X-Google-Smtp-Source: AGHT+IGUL4qC6K+DHAMyAznh1nPqOVVG3vBedGscK4G1HhCq8iWh/Gjrhh8TEulXo726uPx2/aO9Jg==
-X-Received: by 2002:a05:6512:b85:b0:594:34b9:a817 with SMTP id 2adb3069b0e04-59576e19be4mr2460400e87.33.1763040813955;
-        Thu, 13 Nov 2025 05:33:33 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-595804128c6sm394619e87.111.2025.11.13.05.33.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 05:33:33 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 13 Nov 2025 14:33:31 +0100
-To: vishal.moola@gmail.com
-Cc: akpm@linux-foundation.org, bpf@vger.kernel.org, hch@infradead.org,
-	hch@lst.de, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	urezki@gmail.com, vishal.moola@gmail.com, syzbot@lists.linux.dev,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Re: make vmalloc gfp flags usage more apparent
-Message-ID: <aRXeK_C44xGb3ovg@milan>
-References: <20251112185834.32487-1-vishal.moola@gmail.com>
- <69158bb1.a70a0220.3124cb.001e.GAE@google.com>
+	bh=sfD2GOhmqGS/IRFGsSYTtE2Apqd3m8sQLxlr+K/TGnI=;
+	b=Eie5QAS3R/k+bgzaLKG2Kfph5n8StS1UgGucX8UtZpvYyzPYXCgOV0ZKa80CV4ilZN2+bd
+	BBo/A/kcDpxUTm/PuKVdmcOQWoP0dndGyofiKAjeHFrLFch6pkMpPxg47SWMgctOD6buoa
+	nQgcp3EhUqMir0T9OCrH6Y8G8tMJGOQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763041091; a=rsa-sha256;
+	cv=none;
+	b=MTehnXlyr/0qCbXEiG62vwmecrTUqJqnVuZR/3BehmKmTZ6Nh/0aohKWqRw5GhUCcP7sjb
+	2uh46DucwNBCAwkg2RPww5SJt45OkExWI3M/lcqeJZnYBh7heABjF+HGsMhV2CG25232/U
+	4LlQSXEeW7qIrHuQcVAC3KMZacFGwVg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U2SPT7ui;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 441AC403F1;
+	Thu, 13 Nov 2025 13:38:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363CCC16AAE;
+	Thu, 13 Nov 2025 13:37:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763041090;
+	bh=TanqNDDou92JeIIiWS3c/wMf1Ii6b9BkUyE/vwk57VY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U2SPT7uiGDnCCG6zb5qV815Sdj+r/uoSMOEc9j/lDhdWJRl6ShlV3SlTJuqDT9Tgk
+	 RFqKZr6iJlXWjCYWomACcsJ9ChroZfCyo9zV3HtJ+rhsSZp8cOA5ZLSvx9UykS0IlE
+	 sObeATI2JOfkex303JF7L8VsylgtKzcJMtxpc5OB2cLwBE0nBgoPsmDmbuFkOY/lYw
+	 IHqX06nHuXISwbnGRAH11InGI6hhbI8mTYsSN1dTFb5KoYyEe9EtrJBRCEg2qK0fhB
+	 H1BCrwQp8B38S+H3T7Xw/MFbxm0/tJwuhV0uHb4Iaum1bU+pryW8wlml6fPOM/Fadb
+	 TVU+5ngjiikxw==
+Date: Thu, 13 Nov 2025 15:37:44 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v5 01/22] liveupdate: luo_core: luo_ioctl: Live Update
+ Orchestrator
+Message-ID: <aRXfKPfoi96B68Ef@kernel.org>
+References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
+ <20251107210526.257742-2-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69158bb1.a70a0220.3124cb.001e.GAE@google.com>
+In-Reply-To: <20251107210526.257742-2-pasha.tatashin@soleen.com>
+X-Stat-Signature: jya45asp935fen3ux741cjhbe1jy5jqk
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 44306180017
-X-Stat-Signature: 55teukosgo1q8hb4be7qkxat7t4wpw74
-X-HE-Tag: 1763040816-713198
-X-HE-Meta: U2FsdGVkX19GkRD6G702CoDs1mNpWkCQSItmEU0RvyL784twNv01K1GpufSJPfqvddf+iUVUnCh137p8/kCeLH2mwsEc6AuzaKcdURcgdn6rMwHjXFswCPpP/AEx/yRqkFzKbDqks96bmAXhnOAG1Q7NBcnSuM8yhF0OLKXu6FHB6plyrQWFEbMTbTp/DVCPKq7XZRRivtJXVpDUVfQDZRsCk9lYYPLHHu1OOExCky+yw1rQKMnWSCgHg9dCtS5fmCcrxkaaU6k/3UI3286Rx0poEq9ClJIDS+pT0W5XuUj+A7WB3PmpebP/ZJhOIVPwgVZfW6fKoBs9zxbrO3J24qrw0nISDo4a73V/lT87H5DMsuUalWPniBGNleD54WmHCeEg+e6FQTrzw2o65yuQeRzPtPLZBQB7i2WRqlRddKw4ft+EdXU2www1LA5CYf68KGm+o4J8/pNgV2971kR16qE7vWD6txwLHY08GZrCzOJnU89De7BIqA/eMhbLXvjEhacg+CSw4APT7zX46yi3zhJ2wzHuDbePqfdzNm9TMlRXtUWeSHs5rsWs85q2DkH9qzO+lDMol87RMUS2KghxhtZXSXYzxa8A7cb4ndmwf/WNc/MzsmKFStx7toNKu/ya2YzYLggR8HxbKxuEnfJwu92Kj5xYVAlFIvdY1zEWwOx+lBnmi866olCQU7Hw4Pe8q5r+vRlD7pFE4JwZDYVkoN6m2yFlyApqVg0CRq+rgnJGisAChDWOsOK6/9rxiCJWDNiTUF2zJHcbwA7T3rXAp+0IE4KXhyJonIopSG5LY89jKnC9BpXlQDwHTXckGjFLsYI6ud5dMSD+za+ICe3kyTmL6TU58rGYO3PPw3HkHiFmy80tSGFEWpiQqZxT9yQagAn35JGRwMaaaSe5qXH2LGjg1YwAEXXBplxbW/4yRHHrh6W1nQ61IjdKiUmcH/r5g0tcncz2dvLnZKh24Zw
- XfUPJY3g
- 3k5/ck61QMRV3vZGAETcMZzI58iyxM3e65hSqwK5kBEoLCFaCjXnz1wEko7e12G+zGjLmmYaofSSUnmLyqzECeKO+ou6sLgdkovzUjKaCqH6YhlkOqRpNHpUv5dnEl3tyyCNQm5I02z5uVXdjBdXUN3NKxBIhJlTnZgNK0LJuw2EQ7qyJFmILStD0uFzlhmKHAYxPXdLBEsW2hTEmERaCEgHw18Zm4+BaFPNBiwtXsNvNMh9e+FDGvq9q63xToMid7ZO1QVTg817eam8ydLtHArXlRtVufqhZrEP/cUYc1AQ+xAlNqPEslMRHbry7e6zGuo5QcfgfZ4bs2Ng1gYfW1cjcTwzQnZ/ikd5gYA1SyCOD769Ah2lJDq8wOgXPIDZ+sxGHrM0DYZOsMuRx06Wt+x8er6ZOtSB1mQ1rRdNGQh1grL3EvZZDqNKsPCWXK5DgwDHe13aKnap/gyEG6x+r5lfOih9eIAkdIQH9AAElm0542MzPLP2JQS8Ujc/vz8VQjjfezmdyzTdPo2IOy56R//0zVL2D98b+FuOCPydkWjZFwXq2qqaCLpVzencJLGL0rVyXFeGbSFRYX0/Cv7173TE2fT/6v6wDHY/vGb/vP6uUB47UY130kmDODwbLqsp+M72A
+X-Rspamd-Queue-Id: 84A4912000E
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763041091-140800
+X-HE-Meta: U2FsdGVkX197SnFdlCG2E6FVPk8lzctYtQYxPIUJRFjt2c1PrJoIVZ9vDt70SCb2DxuQk230IdZTKCOXOszd4HWiDvoOidovWQkqtKfpReqwQhiTcNrt9nyfXaE4CAPpqv3b0YsMp4p4iK4pPQg4crJhKg0y04WSxuKRsu8AlssbCZzDJ70NxW+tr4Q77GQaRvEfr4ZxaWSyxDL0vXsQpD7HL6nqtczW9++gQgrD+9GDvudIdbvsBFIDHBtdUz2LzV+tcVnZZoBQ3BUe+jBJagKIkujAbI9LoAAgTG2Uy6Vl8rg2B0mS7oX62A0VNquLGWecWT97S6LVp3Bb5tg80r4V5aqVS63fMwt8OrKI10QEBcahATFPqfYtyLCicEx3S5JKuMA3sLIqj4+9598PXeGK3iW+vBn9Q5JZQRzMHFuG3u6M6iAHpwIbLBKVq7PsI5TTYcznevzPXtEAf6GnMQ1bZqEZn3Z1/6qU/J89zHRIJVzM6ZjstX5DOFRm55/bZ2PzCeYqB2wxj4aPoYqC2KtnNRIH1e3kIZoDbu28Hk4LPPbekXJLNPFQZdaZC2SkbCJD3QAihBUssV2uK8DcOtCUO2AF2oEK3G84g8uLZmriBOZJV6SBBHUnorqPHqRpblV28R0D82kEc6wwUs6T+a+LiA9Oz08zK11R+kix7CvJe4FR0ov3LAmN3/twrJdW+w0lZE4YerCvMRXIXVL/F6+2bfLzkcsU7QOy1ame9MPz9YoZSMwTbI/7Z9w6KHSPyjYNk7D9rNieL1AB2pQP+IL74xSQbbO7PIqPnmPqUnK47N6CqJ6Py7W/I2glQTD1TUazJ3QcZZ8c8MtX9ufhlOsjRRaDue/tWsacEcysff8cmGDK1dVNkwyduiQsTyTcE3AftkCHt8h8DU7mnQKQ4mHleG4BUWSFtILZyjCa7IRfpBQXu8T5jloVua63vixl9pWyzo0QIl+qXhgIGBN
+ G04QeAdC
+ OX/6a+yJKczYs4tZ+FvZ0lROaVNgG+dCZW1VwdR695LKY1o/JYjHfECHmq1ahGn8AxAna6chzAuFsUqRbePom25DrBDpqOEHtLdHMQLjhm7K9mVjTxxreWsyuZl+0/Wbuds6MHjR/vxkv7H9ULr0NoPulAAupbnqa51AhyoZ4umtgpDvqH2E3eP2Fcg+hRIsBUQXjaIqn4UGwgBpvtGeJbtFk0wtOsQ0ZXl35lECd3HP+plbugyzKfU4jfWkEx3f16U+hDl72hmqOXI2aDp50fzoOpAdPeXaziiz5rvtAkiofxqTzQhjsUDc/3I8FncP9ltt5hkFLNSvZjyAfPxD0G9Wcv4sWfXoa0QHs7P90pd35i6TMPUQbvPNkc9gMb4ZJH6ISLnOg6/EwaqIIvjNc/qbePuq6hVHcFWsxJjNzZn/oU93o45RaLUMr4XCIDH6amwSYE9FgZyCjPNyCTTKgukpVZg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,43 +119,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 11:41:37PM -0800, syzbot ci wrote:
-> syzbot ci has tested the following series
+On Fri, Nov 07, 2025 at 04:02:59PM -0500, Pasha Tatashin wrote:
+> Introduce LUO, a mechanism intended to facilitate kernel updates while
+> keeping designated devices operational across the transition (e.g., via
+> kexec). The primary use case is updating hypervisors with minimal
+> disruption to running virtual machines. For userspace side of hypervisor
+> update we have copyless migration. LUO is for updating the kernel.
 > 
-> [v2] make vmalloc gfp flags usage more apparent
-> https://lore.kernel.org/all/20251112185834.32487-1-vishal.moola@gmail.com
-> * [PATCH v2 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
-> * [PATCH v2 2/4] mm/vmalloc: Add a helper to optimize vmalloc allocation gfps
-> * [PATCH v2 3/4] mm/vmalloc: cleanup large_gfp in vm_area_alloc_pages()
-> * [PATCH v2 4/4] mm/vmalloc: cleanup gfp flag use in new_vmap_block()
+> This initial patch lays the groundwork for the LUO subsystem.
 > 
-> and found the following issue:
-> WARNING: kmalloc bug in bpf_prog_alloc_no_stats
+> Further functionality, including the implementation of state transition
+> logic, integration with KHO, and hooks for subsystems and file
+> descriptors, will be added in subsequent patches.
 > 
-> Full report is available here:
-> https://ci.syzbot.org/series/46d6cb1a-188d-4ff5-8fab-9c58465d74d3
+> Create a character device at /dev/liveupdate.
 > 
-> ***
+> A new uAPI header, <uapi/linux/liveupdate.h>, will define the necessary
+> structures. The magic number for IOCTL is registered in
+> Documentation/userspace-api/ioctl/ioctl-number.rst.
 > 
-> WARNING: kmalloc bug in bpf_prog_alloc_no_stats
-> 
-> tree:      linux-next
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-> base:      b179ce312bafcb8c68dc718e015aee79b7939ff0
-> arch:      amd64
-> compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> config:    https://ci.syzbot.org/builds/3449e2a5-35e0-4eac-86c6-97ca0ec741d7/config
-> 
-> ------------[ cut here ]------------
-> Unexpected gfp: 0x400000 (__GFP_ACCOUNT). Fixing up to gfp: 0xdc0 (GFP_KERNEL|__GFP_ZERO). Fix your code!
-> WARNING: mm/vmalloc.c:3938 at vmalloc_fix_flags+0x9c/0xe0, CPU#1: syz-executor/6079
-> Modules linked in:
->
-Again bpf :)
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
 
-GFP_KERNEL_ACCOUNT? I saw there have been __GFP_HARDWALL added already,
-IMO it is worth to replace it by "high level flag", which is GFP_USER.
+...
 
---
-Uladzislau Rezki
+> @@ -0,0 +1,46 @@
+> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> +
+> +/*
+> + * Userspace interface for /dev/liveupdate
+> + * Live Update Orchestrator
+> + *
+> + * Copyright (c) 2025, Google LLC.
+> + * Pasha Tatashin <pasha.tatashin@soleen.com>
+> + */
+> +
+> +#ifndef _UAPI_LIVEUPDATE_H
+> +#define _UAPI_LIVEUPDATE_H
+> +
+> +#include <linux/ioctl.h>
+> +#include <linux/types.h>
+> +
+> +/**
+> + * DOC: General ioctl format
+> + *
+
+It seems it's not linked from Documentation/.../liveupdate.rst
+
+> + * The ioctl interface follows a general format to allow for extensibility. Each
+> + * ioctl is passed in a structure pointer as the argument providing the size of
+> + * the structure in the first u32. The kernel checks that any structure space
+> + * beyond what it understands is 0. This allows userspace to use the backward
+> + * compatible portion while consistently using the newer, larger, structures.
+> + *
+> + * ioctls use a standard meaning for common errnos:
+> + *
+> + *  - ENOTTY: The IOCTL number itself is not supported at all
+> + *  - E2BIG: The IOCTL number is supported, but the provided structure has
+> + *    non-zero in a part the kernel does not understand.
+> + *  - EOPNOTSUPP: The IOCTL number is supported, and the structure is
+> + *    understood, however a known field has a value the kernel does not
+> + *    understand or support.
+> + *  - EINVAL: Everything about the IOCTL was understood, but a field is not
+> + *    correct.
+> + *  - ENOENT: A provided token does not exist.
+> + *  - ENOMEM: Out of memory.
+> + *  - EOVERFLOW: Mathematics overflowed.
+> + *
+> + * As well as additional errnos, within specific ioctls.
+
+...
+
+> --- a/kernel/liveupdate/Kconfig
+> +++ b/kernel/liveupdate/Kconfig
+> @@ -1,7 +1,34 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# Copyright (c) 2025, Google LLC.
+> +# Pasha Tatashin <pasha.tatashin@soleen.com>
+> +#
+> +# Live Update Orchestrator
+> +#
+>  
+>  menu "Live Update and Kexec HandOver"
+>  
+> +config LIVEUPDATE
+> +	bool "Live Update Orchestrator"
+> +	depends on KEXEC_HANDOVER
+> +	help
+> +	  Enable the Live Update Orchestrator. Live Update is a mechanism,
+> +	  typically based on kexec, that allows the kernel to be updated
+> +	  while keeping selected devices operational across the transition.
+> +	  These devices are intended to be reclaimed by the new kernel and
+> +	  re-attached to their original workload without requiring a device
+> +	  reset.
+> +
+> +	  Ability to handover a device from current to the next kernel depends
+> +	  on specific support within device drivers and related kernel
+> +	  subsystems.
+> +
+> +	  This feature primarily targets virtual machine hosts to quickly update
+> +	  the kernel hypervisor with minimal disruption to the running virtual
+> +	  machines.
+> +
+> +	  If unsure, say N.
+> +
+
+Not a big deal, but since LIVEUPDATE depends on KEXEC_HANDOVER, shouldn't
+it go after KEXEC_HANDOVER?
+
+>  config KEXEC_HANDOVER
+>  	bool "kexec handover"
+>  	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
+
+-- 
+Sincerely yours,
+Mike.
 
