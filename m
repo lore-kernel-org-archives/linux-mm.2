@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A581ECD4F26
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 00:04:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A131ACD4F26
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 00:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCAFD8E0009; Wed, 12 Nov 2025 19:04:26 -0500 (EST)
+	id D8ABE8E000A; Wed, 12 Nov 2025 19:09:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA2DA8E0003; Wed, 12 Nov 2025 19:04:26 -0500 (EST)
+	id D3ACE8E0003; Wed, 12 Nov 2025 19:09:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE0428E0009; Wed, 12 Nov 2025 19:04:26 -0500 (EST)
+	id C29738E000A; Wed, 12 Nov 2025 19:09:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B957D8E0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:04:26 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4960D4D0BA
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:04:26 +0000 (UTC)
-X-FDA: 84103636932.15.F90F61D
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B08D18E0009
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:09:39 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 616BC1604AD
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:09:39 +0000 (UTC)
+X-FDA: 84103650078.23.3DBC80C
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EA3F84000C
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:04:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sIg+oKfv;
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id B319E20014
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:09:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mry+wbBb;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762992577; a=rsa-sha256;
+	cv=none;
+	b=JZaOgmnVHu8kxP0DrxoaM1DPMtDsPZ2vNgBbl7shPEJrWcLMQaJhy3HdmNU+p4XOOxOwsb
+	FI+BYVHNmasYCiNJ2asG70cJwNaKgnDQn7WYRyomUF5+Vbng0LlNx7Z8tGUd1Yao/oYxOb
+	HenHewJ4D0ORfPSytmKUGawDxNxfTzU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=mry+wbBb;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762992264;
+	s=arc-20220608; t=1762992577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F4Bx1zhXwYb2SedwhCcMZJN0pYhmwiDpj/soRVcSq8c=;
-	b=72ncXh3YR9S+uZhh4JZ5Q1NS2s6R38FPkJP6/e1ytczSC5mz5jnE2g/2zSyroqjCzpMpt8
-	DBq+DU7dLuBVnjWFiIVzMYow7Cu0P3PGAC32mfaI0jPfA7W3O6PXEOhglkbOCZLRQKluKT
-	IMNR48S3vG2rpkaJuYnFm4ksAGcg808=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762992264; a=rsa-sha256;
-	cv=none;
-	b=xeumoDhFdh6cNF7I7xbPLh5V+ZZ7vru8Owx0f5NXuw2xL2PUwIIkic72LtbUv1vn6sIEPu
-	rI0PWGXiSFhiT8SoaxBeC/eLk/ZSoRdRnD0HviTs5J8LPYYmoBqK7YSr0GEIe8P5kTB3YI
-	Mo159jHdlHrcjFr+CDtywWH++iVqna8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sIg+oKfv;
-	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=4Rv8/mXvSM8K0XYdsFjzW9RdHyEewip98MxQa8sbVhw=;
+	b=nSL1r7h0KgrFjEsFnitXIgVLF9ydZMoog5fvsEuyiV6PZ2AF4nvEgmM8JXyPG+v1kc+w/Y
+	7Wq4Ags4Xxu+Cr17O85iEQOaUXZiEpWV7Vt3R3baPvRT9PJQBhowsAGyf/TVuaByAC2LMv
+	tlu499KQ9OW0wbp4Ze7urC/K/NlGFR0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=F4Bx1zhXwYb2SedwhCcMZJN0pYhmwiDpj/soRVcSq8c=; b=sIg+oKfvDmXebc4Lw6XgpP8sfb
-	LxVwm0OsjGvejrPHAwp/c3/nFwBTRLXeqekKQAo8QS0o3Yn9gNs8ZaawuUwEwpz1Ah7OdwJVfChPo
-	s88tAPabJrLsXYskvot5YHhM/9LCLI94W2K2lmcwYzZdV11Zqg35s9PPXdJyrXH8eLyhObn+srGIr
-	KhLKmeMWGBLJjBIag7veDwErVy9n2q447NwdhhAT+dqA7Jlk6cF6zo6rO2QmIpHbdZMWH7QFMrtdz
-	zKi4XbbB9bDuBbGiAtmMMtkjX49SAKHJSgpoAR+MxyGLSsuzOPbiWujePmP8tIB3wA2t4z2IFl4ne
-	TUYG3+iQ==;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=4Rv8/mXvSM8K0XYdsFjzW9RdHyEewip98MxQa8sbVhw=; b=mry+wbBbEVvNeBGh5AR0hl9RY3
+	7wcOiEMYfuv8t/IikJWavX90FwQ1K48D8atzoWACmd3H+qk/GzR7x8jjha/hlLnuXZLBj0qusl9ed
+	K4ksf5VSGAdTaLNtc8eKGbO6kD98byVsEKOZYzFyul3KegUT+ILl50DL7KFP9F7K2CAues0d3FHeg
+	4aWYoqut9rvwdzcCXbGiNc3u0JFnfZTLqYWRBXSnEuisV7Q4wZrMZRKKWXPEQux9r7U+8biAxsqD9
+	U6WedzGFbX77zIEADgS+V9TZKtZ7Rtn6UoyhFD6lxEH8hyJpumkcFrOi9pkkJsoYjqqVvxLtMztjV
+	lGdUdMCA==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJKp1-00000006f8w-0xdi;
-	Thu, 13 Nov 2025 00:04:19 +0000
-Date: Thu, 13 Nov 2025 00:04:19 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-	stable@vger.kernel.org,
-	syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com,
-	"Paul E . McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Message-ID: <aRUggwAQJsnQV_07@casper.infradead.org>
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
- <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
+	id 1vJKu7-00000006fP0-1uZ2;
+	Thu, 13 Nov 2025 00:09:35 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org
+Subject: [PATCH v4 12/16] slab: Remove folio references from kfree_nolock()
+Date: Thu, 13 Nov 2025 00:09:26 +0000
+Message-ID: <20251113000932.1589073-13-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251113000932.1589073-1-willy@infradead.org>
+References: <20251113000932.1589073-1-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EA3F84000C
-X-Stat-Signature: jq7tbggqa4ycsjsd9kfujx3pqr4qaqyb
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1762992263-739399
-X-HE-Meta: U2FsdGVkX1+iPAnK6f9wvLGdjfnpYdJJIqbrqJvJTC+7Ask9wJ0DMcBdqhGzTIAdsxw9m1Tq5XZhxBU5SO0SQgmJBewkRoIYK+UONUxjGHHSRH+LVFgVFptwUig3KPxU3pbNzUh81NkGf9sfSHdEYHNX0/JINZd5PkpWd16ITZHddffECHQHpI6oUJOZziasViQZ4bTXzifx36DSglQdNXfL8ezKw8z8CgaeHBOoTGBmlqdMU+SCNU/QItfd+A/3MazR+wYSNjfiKfGZgzHg9Lsvo+Engq7OgoWlVz/MuNOAljIIptbd2Skd3Z8yGhP48pZb2YSYxYUXiqVgPxt6qKWWBDuKglXKOr7/aLnIdOEBU+KUZoLfF8nKVv9m61yo8l8XFR3vDxcCsTOgC6NzFiKzyCY39D24UbmVC271ueySDwSXe+M6rbmgXNMJWtyh3BOPok2OPI6EbkK30SwJdOoSfI71wSBaUTwx5speIthEb/TqlSLLD2Wzv+iZUKrpMnCxw76ilugPMjSNB4aM1MF/iibev0ysHCo/XZ/P7A7/dXavUEZh2ImfWuL+0uUk0cVr21mWhnDwqdwCScG0oq//5NmZHrNRwlYhOSw3dVnUis5n+7km5jXXL63Teif3vQO508UPYrBSvG+BHymvNDJ+pWPg54bEcQDdrTopxHKlppDKZmGJ+rmHZKg0HAs4N2k6MvKGCovH5jAtbHqsFROT8wx1cSfnTg0hGZMGX1mdhr9+j8qzgz2Dvk/FRhUz/khzwoSVZVlSWYIdyXn+/bQUj9kFEHoNBtOZ2b54a0d1M8PbH3syY8KIkhjGBR6muyHjLjn/08+oUwPVVX5RM3K/XzxnEPGDchn8BdfIstgZJZVc0D57TlLfpeUcdQKn0GNQSFS5yqmRHELSQDVW94RIO3aGirrel6xmQhewptCGygP+7iOg72NoALPXq97Dp/O0gnJxOADE3o1DOg9
- 41ZBkyhG
- HyyUKczDPl05MVtxgKUgQKjJngWonMSOsD2HrvkftQsZTC+OKbSp/K7XJVZUGuqRyhhnU6lkTCDaVdDtLZTu75qhUCR5Yhl1DUij9al5ApW0eM0Y8ez7NlEcxXsR5nHWoUQA44yDXsAoS06IViriVfJnuwItUkuOo0Hf39dU3GBoOv+cjpYESgW3iI4PRCLi8BFsNDnTpZkJi+eGaGvtZg3JDBsBzCisIV7O+G/O9DGxg//wqwPvodDlpTYRrrkDsRGESPYYxvxqGMvJelOW94FCWf6EEsmVQEUMrylW+AKy4qKKp8CdOD0dapVBBJs/BaM/IYYRkgbM5qnWkjv525bdDLm9iFsFAaLzmZ3pttxWJwmA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B319E20014
+X-Stat-Signature: af86g4oo1ehry3qws76wwuyswnxydxm4
+X-HE-Tag: 1762992577-473653
+X-HE-Meta: U2FsdGVkX19K2Yd83wIj05DThHqpCIhS4QuVG0KXwALvLtfZ1TprL6Z/d51l7/08FRgMTTIYlHSO9LvGEOzf0iSuLXENhPldzGb2SxI/6a9mleX8YSlLW6temmNBvjPuzmJ40ofePAehCjmTpfbfRX1OlyQ5mxVSU0GpSpG6XrT2uw+fL3TkuxDuS2x2iSRNg/TooA9vZeNXe3qrZJVel5SyX9dPvt/iVZcNMCRq59wiMsR2G/WeZpnkPbqSrzmp8Uh5CdcFP29gKFXA9bv+oWDOI5IM5j7mlDwvlIqvR7Lc/nSiI5a/oEbVp+8X+6UmR0dpvZHHVvZZkSZXwsJoDC76pMLr2NgqQAw8jJHW8gMI1dcJPID/6c3I+FixO58zCGtbYAS35SS1XCDanH5QhUMU0zhzFRQ7VVnlNR4LP8rL/7d6NrkRNWSesiqkPOSfqLfX9bisjSsRu5sT4YxIc+kfnp1HUuflogBAOsAyQhfEKqy9vErRzkMncuM+vCk8SJZa0NCGxFiZ3uVvh2FVrj85OVdcxh2HwinVnqsgxznBhu9Wy2IXw8evu47O+lkf2rYPM6w03chVgrdPyDGdBc61nvKgypafj7NqMAeBfycFK0FYtT3DLXCl2t7CysJQsolRqlzSNVsGVC43KRXJuwzoIXO1iWtpcZCZlh/qsZXRiWoIMpgWfRL5cNObjihhIj+UVz85wO3aDxWyAYj6MlFjry8DRHeogczSPPPxR4D9BvB5wlG2Y9eRaCCYr4a6L2ssHHcaLap0HcjmQK9RLDMGajWNn7PgxyyeQbtgLMo+a6q6qqElJzinr0B3t0/+xH8wcUPqD4iuTZyHU58qN9L43U+7xdqDO0dFWY2Jaw5RFnp6NS6GMQdS9GEjhrDJTx2Eu2X9ibK3HmmGl+xc0AwplXlZdohI8fUmVNMEyznMPQ3rxhTU3fckSXUTpYC6Ve9skuUUukiG0VTiHYu
+ rjIH6ALE
+ aSyhMn8tjUCFErxAt6l584vY3kvPkrVP++gHIJnxtVa/mXbdHPKvVatnerY8Pvx7MV6VvP6Qn5IQsedVxkkTJbR+6Nd70xRM+rbZ3tbzgsKL20SBV06pIQShm7aRfEKXKeC+WdGeAT/0KZeMduLTYuvI+lSZ4QzmXKeUtU2yy8jVM+V7KF7QwZ8POEv5bp0feP7xoxTzUTSEJ5BrvayhgxSYwn34PhvbhxQUdZOPdLi2EVs8nL89n58AJZC0ctudoqul6KyYk023V1TBRHDauO5x+cpI8VWQnok7ROB+GL/vrAimIhqqpJ/909A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,49 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 03:06:38PM +0000, Lorenzo Stoakes wrote:
-> > Any time the rcu read lock is dropped, the maple state must be
-> > invalidated.  Resetting the address and state to MA_START is the safest
-> > course of action, which will result in the next operation starting from
-> > the top of the tree.
-> 
-> Since we all missed it I do wonder if we need some super clear comment
-> saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
-> by doing 'blah'.
+In preparation for splitting struct slab from struct page and struct
+folio, remove mentions of struct folio from this function.  Since large
+kmalloc objects are not supported here, we can just use virt_to_slab().
 
-I mean, this really isn't an RCU thing.  This is also bad:
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ mm/slub.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-	spin_lock(a);
-	p = *q;
-	spin_unlock(a);
-	spin_lock(a);
-	b = *p;
-
-p could have been freed while you didn't hold lock a.  Detecting this
-kind of thing needs compiler assistence (ie Rust) to let you know that
-you don't have the right to do that any more.
-
-> I think one source of confusion for me with maple tree operations is - what
-> to do if we are in a position where some kind of reset is needed?
-> 
-> So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
-> to me that we ought to set to the address.
-
-I think that's a separate problem.
-
-> > +++ b/mm/mmap_lock.c
-> > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-> >  		if (PTR_ERR(vma) == -EAGAIN) {
-> >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
-> >  			/* The area was replaced with another one */
-> > +			mas_set(&mas, address);
-> 
-> I wonder if we could detect that the RCU lock was released (+ reacquired) in
-> mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
-
-Dropping and reacquiring the RCU read lock should have been a big red
-flag.  I didn't have time to review the patches, but if I had, I would
-have suggested passing the mas down to the routine that drops the rcu
-read lock so it can be invalidated before dropping the readlock.
+diff --git a/mm/slub.c b/mm/slub.c
+index 17b456f6fd4e..d79aa826d3e5 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6899,7 +6899,6 @@ EXPORT_SYMBOL(kfree);
+  */
+ void kfree_nolock(const void *object)
+ {
+-	struct folio *folio;
+ 	struct slab *slab;
+ 	struct kmem_cache *s;
+ 	void *x = (void *)object;
+@@ -6907,13 +6906,12 @@ void kfree_nolock(const void *object)
+ 	if (unlikely(ZERO_OR_NULL_PTR(object)))
+ 		return;
+ 
+-	folio = virt_to_folio(object);
+-	if (unlikely(!folio_test_slab(folio))) {
++	slab = virt_to_slab(object);
++	if (unlikely(!slab)) {
+ 		WARN_ONCE(1, "large_kmalloc is not supported by kfree_nolock()");
+ 		return;
+ 	}
+ 
+-	slab = folio_slab(folio);
+ 	s = slab->slab_cache;
+ 
+ 	memcg_slab_free_hook(s, slab, &x, 1);
+-- 
+2.47.2
 
 
