@@ -4,86 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F258CD6E5C
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 13:54:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA7CCD6E61
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 13:56:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBF168E000B; Thu, 13 Nov 2025 08:54:03 -0500 (EST)
+	id 9CE9A8E0010; Thu, 13 Nov 2025 08:56:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6F7A8E0002; Thu, 13 Nov 2025 08:54:03 -0500 (EST)
+	id 9A5648E0002; Thu, 13 Nov 2025 08:56:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C851E8E000B; Thu, 13 Nov 2025 08:54:03 -0500 (EST)
+	id 8BB4C8E0010; Thu, 13 Nov 2025 08:56:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B8AE38E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:54:03 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60EF412E74B
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:54:03 +0000 (UTC)
-X-FDA: 84105727566.03.B50BF21
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DEB611C0003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:54:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qt+JW73z;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763042041; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 798F68E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:56:43 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1EB65140A09
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:56:43 +0000 (UTC)
+X-FDA: 84105734286.10.162374E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E5E7F2000B
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:56:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NfqGLIP0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6MLVrb1F;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NfqGLIP0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6MLVrb1F;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf03.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763042201; a=rsa-sha256;
 	cv=none;
-	b=fN9fq4GJ6y/4a31SM7EDxGjmQpn4ozxKIKzcTIr484Qu7cpuopyqYKtb/wQOSYrf8mM3EC
-	OrqnitGifHAb3B6L80w9IA0v4Fq6NRpSA93WPwv5M9qOH91oOH7DTDhvgvduSrcomcZSYT
-	NQH9wZzPWVnum8O707VM6DG6TsbI+R4=
+	b=FFIuNizI+s6E22558xGLQtWuJ/jn2OPLOwtvCk+xZUiclp8VBVFs3hzR6bfPIjHooVmxCG
+	ofwzGgZ2pazu8XSyxePCIxMEagnzBwG8wmZ6hg2E4GjQESAhq4iQbHSNx2M7CFUlJUpK9o
+	BSjcKjntpYBErfE/5FDL+XsD/GF6yVI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qt+JW73z;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NfqGLIP0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6MLVrb1F;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NfqGLIP0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6MLVrb1F;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf03.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763042041;
+	s=arc-20220608; t=1763042201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8z4JYdWRN4ri/0vMnrQ+NGdcvUWa/3+Fk5kATs52EYk=;
-	b=xz9KG1NQpmR+cBsJdiKk7sZ9L5zs55i3E8um0Csk0kDMwQvIm5wG8f7A/mB5eTSxsEN/eV
-	DDxmFhQkItejOocdDlmZUaHBXDelQ/84DMCNMCH6nGXuw+Propo3tp2haUjghBoURDOIWj
-	9bmb4lvfSMc6sJu76N3Y3hKn1HXeX5I=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8z4JYdWRN4ri/0vMnrQ+NGdcvUWa/3+Fk5kATs52EYk=; b=qt+JW73zfmr5T1N5Gxy46IqgUN
-	vcuiisSzUZiGWuTjQESTqs5UYc1OaW/4uJRWXzye+eUNv2mdC9SPEt3JOlCBdwiedVVsV+gHv5Vh6
-	IwOJLv48vtnGBwHYqpeWswQNnpnytkmHFLy9DvyYpJm5h+SYp3m8nhXscfLNLi34qXymONdbHurGu
-	jTksSys9QzAIQXnMHglhNA0Sj9VKBoyY4zjqgvAUqdwtwCGAgne8u92dSZu3xABG5AqREOcgR5mjo
-	h21s/KcxLuOqt3y5eCvWdW4dInDUuxgcU8SvUc/XPYczCexX2IWIof4mPlWzFhKW53tpNvzgEGn92
-	aoa0DSCA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJXlu-00000007bMk-1ICk;
-	Thu, 13 Nov 2025 13:53:58 +0000
-Date: Thu, 13 Nov 2025 13:53:58 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Vishal Moola <vishal.moola@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: Re: [RFC PATCH 5/7] x86: Call preallocate_vmalloc_pages() later
-Message-ID: <aRXi9gIwA_eyUFJI@casper.infradead.org>
-References: <20251020001652.2116669-1-willy@infradead.org>
- <20251020001652.2116669-6-willy@infradead.org>
- <29319ba1-9093-4ec4-b84a-3c60d2b00264@arm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zJihWS4w54QfjbnU9sQxaWaLhLGEz1OXZ/jtjdU3dUg=;
+	b=3qEShN+dlU28JhQOeQ+YiAVlC0qvSDeiNaG58L691o0u72khQK4i8jLKQwQF03wdplPvgM
+	2wIUtvhWG0MAqzZwkgzQkfLsZvcEjs4D7tRdeyPL5kbOkH7M1QttqKApCpX71j8bO1eZ6C
+	xg7cQpyuCGBcQ0zCsMhSCUw7RbGxdjo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4D5751F451;
+	Thu, 13 Nov 2025 13:56:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763042199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zJihWS4w54QfjbnU9sQxaWaLhLGEz1OXZ/jtjdU3dUg=;
+	b=NfqGLIP0enj6SYDsbvBYZvNeW3tJSLGRRkky0zrRi8eOsLHiojY27nOPH9RqesLoZDWLaK
+	oxNyfjKw+KID3KGSxg9V74ymNqehcaWh/aTTYgW0xfmh73ApGqaZnskoKiOhz98GKjnx8X
+	h8ZFJH2pdB1ezRFk9DIvhUhfHEGWWXw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763042199;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zJihWS4w54QfjbnU9sQxaWaLhLGEz1OXZ/jtjdU3dUg=;
+	b=6MLVrb1FvqGt7UCqGMbo8+LO9YjSUVaqlHxFVSBRgT/B5H6Id9nDuh9jveOIR3zTbQfHSw
+	eJytEpoEf+crL+Bg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763042199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zJihWS4w54QfjbnU9sQxaWaLhLGEz1OXZ/jtjdU3dUg=;
+	b=NfqGLIP0enj6SYDsbvBYZvNeW3tJSLGRRkky0zrRi8eOsLHiojY27nOPH9RqesLoZDWLaK
+	oxNyfjKw+KID3KGSxg9V74ymNqehcaWh/aTTYgW0xfmh73ApGqaZnskoKiOhz98GKjnx8X
+	h8ZFJH2pdB1ezRFk9DIvhUhfHEGWWXw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763042199;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zJihWS4w54QfjbnU9sQxaWaLhLGEz1OXZ/jtjdU3dUg=;
+	b=6MLVrb1FvqGt7UCqGMbo8+LO9YjSUVaqlHxFVSBRgT/B5H6Id9nDuh9jveOIR3zTbQfHSw
+	eJytEpoEf+crL+Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 201F73EA61;
+	Thu, 13 Nov 2025 13:56:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7xjSBZfjFWloAwAAD6G6ig
+	(envelope-from <jdelvare@suse.de>); Thu, 13 Nov 2025 13:56:39 +0000
+Date: Thu, 13 Nov 2025 14:56:36 +0100
+From: Jean Delvare <jdelvare@suse.de>
+To: linux-mm@kvack.org
+Cc: LKML <linux-kernel@vger.kernel.org>, David Hildenbrand
+ <david@redhat.com>
+Subject: [PATCH] mm/cma: Remove CONFIG_CMA_SYSFS option
+Message-ID: <20251113145636.731a24e4@endymion>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <29319ba1-9093-4ec4-b84a-3c60d2b00264@arm.com>
-X-Rspamd-Queue-Id: DEB611C0003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9ary8fxkeb7wawb4u9yu7j8rzwhkz4ty
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1763042040-670304
-X-HE-Meta: U2FsdGVkX18SOpgcOL978iTxqVAKhItC4DePWIX6aORt52y0ACnNlOhruxx0MJ+tSgt5jmV8BkW3VxYv1uIaygMOuXOmB0EsES93UV4IDswhpJIMz0zGGrnpte+Y7uojQb+HcLtYVkKQU7rWTOj0uzpaUbTWvwRr+x2oTjamaG9AqLkuW/3cd71Q8dhZcpqxdbyC0SU1xGrWDPupwSuLJB2XWeJ5CJuEYkuks/ltPFTbgYfDDL1dgnIQ0mwMDUvlUaI57W8ADw6CgMKQdYP208a3kqBNJPBVq9HjWRzg0fPHiI96kPoxVkL2TZvQkkhgnNEMZrXuEgzvVEYxXYGAaMJkdfyQLryQMoLhxBAk2Rd1L5wH4MYY8dK32FCdgcKMP9Hlt00CIVRnoE8DdIaX7r2ff5LdjRvWe492A3Rw+au18ni/rl6Igcpre3kTENLh22VaWX7JqkaYsuU8MTTiYjon0saxIm7ymvK4JN0+5HLYq8nfNa9/eGwnnt3io3MX7ufOo2MVgBMAefqLXo9IGb7kdjPxEiT8n/pV0oLnEwrmXS899J7rlfnH0niQF4gF/KoMZy2TrvjmXB9huCEpJLESbLBCWaKrWneFpC/f7Tdeh3175RgiFLzAuvLxGJLSxJmTTENSwSuU4abUKyCfNdzDfooDujpZEaz84NiQ2HI/ThW7XejqVGuCJwYnNr/SVHF+L7nin23Yq/mWCCPnWo/iXOiN+wYJpLCZ7c9IJRmBXOmQX3IEVFmf6ko0NX9uE/KuQhscksbMl3QJwaKH+hn2y+tD7JjD+COI6pO9P3QtWs6oLTxF5ZW92xZ7RIO4wcEZJJfpTy9wFIVrkUaenF3aMOFEHR6C2gSOuXK4zWaMaaSWNLJ4f4HWhJaKLUTEfK0DN0c1GsMPRVDgg5DERBdsXpah+MOfZRayQHxaRiABNL/9JeX5tCNp7/rkJD8TwXAYIvPoviBURWz3Y6S
- ztV6D9fZ
- yAbd9MuP5jW+P9BLDUQ3y7SxHDaqQZ9sTa20uHkvaq9jit++ggc2gWoC7CkwKzUVzHDLCL9jZG4izAhyPgYMuTBVpkEZbV59oLt3eyqIZ+c12+BJ0efq7fnmGBscRNTYEHq4GevRc5ZzwIKh0w0t2dUbdLjHoYSTYYJ8h27+NgJkNXqhqm9K1zXEFAfKVnAK7GqAxbJEJuBafovqb+qZI5Njw6lTeG8z6tJIXTVa8a8rWN3pzGfG2H6JXlQuwP3XY5Hz+dXCIlyhRlLMBSNfgVuW818YBAcgy5Nfy3tT4lhrisR8kO7qKvHnxcdrsQ4zE0gNAwrp53qT3cTgUhTlpCet49SJRx9jjrQxA2TLrYV3YzvoZsn2lZ5Bz9E7nDeX1w8hDwmPbG+Ngkt40Hf7R8g/prrhQzI4i7agSwSW5kzLSlHpg0JSJ3qtDt7IMArfD+nk3PLWXQWo7SMQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E5E7F2000B
+X-Stat-Signature: crf4ie7zz4npg93e6y5d6ak5yyqfrizr
+X-HE-Tag: 1763042200-983169
+X-HE-Meta: U2FsdGVkX19LHnv4EZncVPL1gicq3Lc4tqHI7qKV3kFBUiWJ8Ul7FobDf5Z38K7vXR0YsUZbrjmYIQk4UyHff/PCi8Q6p15sVWyTqxQXQfqpsw0bT3/FuHG0lxHlEHdF++gIg13s0U6iSFzVxSqhxyX1lrYYpt+va25uD8lJT9cxzVFf7G6xhMEsVeqbzy18D8/5HqI7EiRjzaUzFKpAhoJ+AKu77jMiOl6pi8u9yYWjodb9vkK8jzqHCiGoojmQlBtrhMQu0x3Kuks191XAcWzh8sM3VPfKLj6MB+JdzerDpP6jcoUolsttUDHa+af8hTHfPCq0iEOkmNSg/V0wrjxwlINr/3YVjppMjcMCaTp4LgNCgAJnTlsD5evah/VE6GbLbne++95DEO3VYaJfj12WlgnNuznO5xr5vo3QelqD4yf+3cWc4G+a5jxqapAOp3esP7RGWsZVuUsjyh6Y2wqbE3ND7j2pIzAQqk/u23bCfo3fTM+gY03WU62llSGRKZuFBx8+tbUdkGX+3VTDNFtctx5zoaydTpzT2IhGc+75VC/exswm3D8GOBSQDjYemuw9AvcusYwnq+SNlCW64lGbfVol/A0qn+MHQDonWVoAchnC+/UgSj0CGTGgHCQVwDgsX6C9kp1dqLG+BUDKmlcdvWgqyLROKsh4RRHhC1SWuVpGjG7ArhcLV9lg2jRfTBl9JMexk4ltcdDHiFSdd7+lqgwAk72N+CsFddfz3Rj0n+QXFWnXgT7XngLYxR0FyeZ7AwK32cm3bnE9FxFtk7D4m3qexJsPnxPYRgkGf5q3kUuT71TmdPVbp7GiuIxFAck9sEWQ+hi6DYujlfgwHxm308C80gN4BHNKg1gs+tFTTrGe6XxbFjJVUpjdI8bPcOI41vWT64yUNxroOX5g1YR8WhP2LoEwu5PjB4JLvJopjDgwOX1Ph4gN3qJ4ThEVJGMEvkjMVeEiBmGZ0Mm
+ SNIIsTVJ
+ 40q6jxwGcy0UdSf3OE48MUHTWousgwOSPdDBLtKMqzXD8dfq2yJMK2xMlOtfui512Frq3dVhsJpyD61LAMRn0TnNRTfY8qSs7knQ8f/Ma6Oa3G741eM+jku/jojocyZMkjIOm2hMMqHe/vUio3EKHWNwVEvYqRSYtXnKbH/lddMKxc9SwR0wWSAsQZOQZZWSf8HxVHxFK+MLebWOZ8Xi9oxzCt/wfQ8O/ugcNeqB8WGd9KOPj6d/2KERArewcsrK5UWvYEime4QjgBZEwmgp17E/ThrHtPcVr9qX1B1Uos7MF9PbQ2XLQ3NKOWsYMu4IUFsXWB5z5eLlPY9G5jibm9zqYRNgiriCEtwwxriK466UqJu3lnsJqM83cBpkJVmh8TjoUq66mC1PaCT4JKFKmJUGR+G6roLC5pG/T
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,84 +130,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 11, 2025 at 02:29:44PM +0530, Anshuman Khandual wrote:
-> pt_page has not been added as an element into ptdesc and hence
-> the build fails upto this patch.
+The sysfs interface to CMA has a marginal runtime cost and a small
+footprint, there's no reason not to include it in all kernels where
+the dependencies are satisfied.
 
-Right, sorry, looks like the commit went astray.  Those lines should
-have been in a lter patch, and this patch should have been as below.
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+---
+As discussed with David:
+  https://lkml.org/lkml/2025/8/6/371
 
-Adding Joerg to the cc to see if this invocation of
-preallocate_vmalloc_pages() is early enough.  Also I'd like feedback on
-whether we want to expose preallocate_vmalloc_pages() like this or if we
-want something more bland as a name like arch_vmalloc_init().
+ arch/loongarch/configs/loongson3_defconfig |    1 -
+ arch/s390/configs/debug_defconfig          |    1 -
+ arch/s390/configs/defconfig                |    1 -
+ mm/Kconfig                                 |    7 -------
+ mm/Makefile                                |    4 +++-
+ mm/cma.h                                   |    4 ++--
+ 6 files changed, 5 insertions(+), 13 deletions(-)
 
-commit b34c228df965
-Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-Date:   Sun Oct 19 18:34:36 2025 -0400
-
-    x86: Call preallocate_vmalloc_pages() later
-    
-    When separately allocating ptdesc from struct page, calling
-    preallocate_vmalloc_pages() from mem_init() is too early as the slab
-    allocator hasn't been set up yet.  Move preallocate_vmalloc_pages() to
-    vmalloc_init() which is called after the slab allocator has been set up.
-    
-    Honestly, this patch is a bit bobbins and I'm sure it'll be reworked
-    before it goes upstream.
-    
-    Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 3d9a5e4ccaa4..0006b2880bc0 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1322,7 +1322,7 @@ static void __init register_page_bootmem_info(void)
-  * Only the level which needs to be synchronized between all page-tables is
-  * allocated because the synchronization can be expensive.
-  */
--static void __init preallocate_vmalloc_pages(void)
-+void __init preallocate_vmalloc_pages(void)
- {
- 	unsigned long addr;
- 	const char *lvl;
-@@ -1390,8 +1390,6 @@ void __init mem_init(void)
- 	/* Register memory areas for /proc/kcore */
- 	if (get_gate_vma(&init_mm))
- 		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
+--- linux-6.17.orig/arch/loongarch/configs/loongson3_defconfig
++++ linux-6.17/arch/loongarch/configs/loongson3_defconfig
+@@ -120,7 +120,6 @@ CONFIG_MEMORY_HOTREMOVE=y
+ CONFIG_KSM=y
+ CONFIG_TRANSPARENT_HUGEPAGE=y
+ CONFIG_CMA=y
+-CONFIG_CMA_SYSFS=y
+ CONFIG_USERFAULTFD=y
+ CONFIG_NET=y
+ CONFIG_PACKET=y
+--- linux-6.17.orig/arch/s390/configs/debug_defconfig
++++ linux-6.17/arch/s390/configs/debug_defconfig
+@@ -103,7 +103,6 @@ CONFIG_MEMORY_HOTREMOVE=y
+ CONFIG_KSM=y
+ CONFIG_TRANSPARENT_HUGEPAGE=y
+ CONFIG_CMA_DEBUGFS=y
+-CONFIG_CMA_SYSFS=y
+ CONFIG_CMA_AREAS=7
+ CONFIG_MEM_SOFT_DIRTY=y
+ CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+--- linux-6.17.orig/arch/s390/configs/defconfig
++++ linux-6.17/arch/s390/configs/defconfig
+@@ -95,7 +95,6 @@ CONFIG_MEMORY_HOTPLUG=y
+ CONFIG_MEMORY_HOTREMOVE=y
+ CONFIG_KSM=y
+ CONFIG_TRANSPARENT_HUGEPAGE=y
+-CONFIG_CMA_SYSFS=y
+ CONFIG_CMA_AREAS=7
+ CONFIG_MEM_SOFT_DIRTY=y
+ CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+--- linux-6.17.orig/mm/Makefile
++++ linux-6.17/mm/Makefile
+@@ -119,6 +119,9 @@ obj-$(CONFIG_ZPOOL)	+= zpool.o
+ obj-$(CONFIG_ZSMALLOC)	+= zsmalloc.o
+ obj-$(CONFIG_GENERIC_EARLY_IOREMAP) += early_ioremap.o
+ obj-$(CONFIG_CMA)	+= cma.o
++ifdef CONFIG_SYSFS
++obj-$(CONFIG_CMA)	+= cma_sysfs.o
++endif
+ obj-$(CONFIG_NUMA) += numa.o
+ obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
+ obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
+@@ -127,7 +130,6 @@ obj-$(CONFIG_PAGE_EXTENSION) += page_ext
+ obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
+ obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
+ obj-$(CONFIG_SECRETMEM) += secretmem.o
+-obj-$(CONFIG_CMA_SYSFS) += cma_sysfs.o
+ obj-$(CONFIG_USERFAULTFD) += userfaultfd.o
+ obj-$(CONFIG_IDLE_PAGE_TRACKING) += page_idle.o
+ obj-$(CONFIG_DEBUG_PAGEALLOC) += debug_page_alloc.o
+--- linux-6.17.orig/mm/cma.h
++++ linux-6.17/mm/cma.h
+@@ -49,7 +49,7 @@ struct cma {
+ 	char name[CMA_MAX_NAME];
+ 	int nranges;
+ 	struct cma_memrange ranges[CMA_MAX_RANGES];
+-#ifdef CONFIG_CMA_SYSFS
++#ifdef CONFIG_SYSFS
+ 	/* the number of CMA page successful allocations */
+ 	atomic64_t nr_pages_succeeded;
+ 	/* the number of CMA page allocation failures */
+@@ -80,7 +80,7 @@ static inline unsigned long cma_bitmap_m
+ 	return cmr->count >> cma->order_per_bit;
+ }
+ 
+-#ifdef CONFIG_CMA_SYSFS
++#ifdef CONFIG_SYSFS
+ void cma_sysfs_account_success_pages(struct cma *cma, unsigned long nr_pages);
+ void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages);
+ void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages);
+--- linux-6.17.orig/mm/Kconfig
++++ linux-6.17/mm/Kconfig
+@@ -981,13 +981,6 @@ config CMA_DEBUGFS
+ 	help
+ 	  Turns on the DebugFS interface for CMA.
+ 
+-config CMA_SYSFS
+-	bool "CMA information through sysfs interface"
+-	depends on CMA && SYSFS
+-	help
+-	  This option exposes some sysfs attributes to get information
+-	  from CMA.
 -
--	preallocate_vmalloc_pages();
- }
- 
- int kernel_set_to_readonly;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 3111344b8d05..00ea79340c0c 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1177,6 +1177,12 @@ static inline int is_vmalloc_or_module_addr(const void *x)
- }
- #endif
- 
-+#ifdef CONFIG_X86
-+void __init preallocate_vmalloc_pages(void);
-+#else
-+static inline void preallocate_vmalloc_pages(void) { }
-+#endif
-+
- /*
-  * How many times the entire folio is mapped as a single unit (eg by a
-  * PMD or PUD entry).  This is probably not what you want, except for
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 0832f944544c..8af051136211 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -5385,6 +5385,8 @@ void __init vmalloc_init(void)
- 	struct vm_struct *tmp;
- 	int i;
- 
-+	preallocate_vmalloc_pages();
-+
- 	/*
- 	 * Create the cache for vmap_area objects.
- 	 */
+ config CMA_AREAS
+ 	int "Maximum count of the CMA areas"
+ 	depends on CMA
+
+
+-- 
+Jean Delvare
+SUSE L3 Support
 
