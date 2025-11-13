@@ -4,101 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCBF5CD98D2
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 628BDCD98D0
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 19:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4675B8E0002; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
+	id B473A8E000F; Thu, 13 Nov 2025 14:14:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43EBE8E0008; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
+	id B1EE88E0008; Thu, 13 Nov 2025 14:14:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 381BE8E0002; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
+	id A343E8E000F; Thu, 13 Nov 2025 14:14:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 253538E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:14:04 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8392160B44
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:14:03 +0000 (UTC)
-X-FDA: 84106533966.01.E3BC76D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 071554001A
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:14:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cfBzblaG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763061242; a=rsa-sha256;
-	cv=none;
-	b=MX73nlOhOujE7rlrmxbMFWVchdfTv+ZgMUKDkUzUk19awoolH+dUzLWkn+22vH/sNGoBaA
-	f/aFKFPYT4XvqBhlA7XFa6YnY3KLc3vzofhYc2P7YSfbaib+pV1vfsSaGRXB7HwUMY8gxr
-	jR1Bu25aOLC0Py0zo6+6xSpcDQJ+KGE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cfBzblaG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 932128E0008
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 14:14:45 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A10001A0AC4
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:14:44 +0000 (UTC)
+X-FDA: 84106535688.15.356BB57
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C69A2A0016
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:14:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KoUrOlvq;
+	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763061242;
+	s=arc-20220608; t=1763061282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jaTEp5BQ9pTidqO67nAhCgBofDJQ3nltfXA82PxDSB0=;
-	b=j6HRH5IgrUjq0hLdc7Rftx8hEqbTbWvxT3EGgzST8H0Y4F/jbc9yXTUfuL/DGbI487qEhv
-	gKy9KoKxu0/+YScnjKIKimQLZggWLx0oTqlGrjv6jIhg/LDdHk7kq0vhRzY/1hDph+U6bb
-	WD7c6Dp88tVJ+KZhSu8s5u6YXVjrR1M=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB1D844591;
-	Thu, 13 Nov 2025 19:14:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FAFC113D0;
-	Thu, 13 Nov 2025 19:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763061240;
-	bh=jTWDk+BqohV3m4pXD2Ea/Pvbdh3J2t6AMrMnl8XqWNM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cfBzblaGV5hhZbOf+DAbxa0lXzHi4wNDeV83e/hMffLKgQ9aQzRt5eagWi2nPqVig
-	 +OgYRY0az8+Cx1dALXALokHuXG9h4Ac0KocHu2f2aOFrh5JfP5kb5N2PGQ+jWRkgFZ
-	 sQO5P/6ZVQGgc0tbu/wiJi2+KByxtaQcvyCHWokq7luXvunk4iaagmEBd7E/dILMJ7
-	 O0OEDG02xpXqVoTVHxOJWhrQ1iUwv/awNcNmXnToyD9TD2PPENLItvCkEQZon2ybcL
-	 cBey4qKmDoPGH+bX/4ZC4EIlu/PFZnOgoYOFnwFZ672IwX+pcaSSfkBElCf46zNrZt
-	 56xqzpPXgEojg==
-Message-ID: <7cfd85f6-54e9-42df-8330-d81fbe441ca5@kernel.org>
-Date: Thu, 13 Nov 2025 20:13:52 +0100
+	bh=VQ+yXI1edJ97AoZpFD1eked/PxAa6sQK7CGRupCejDA=;
+	b=E8wkt5PEh7UAVwFtstnvfoy1GwRkDV7N75BrRlwvxntJJzli1F4Tjfq/CCPlIhTZXI8iuB
+	UX87M0MI6r6a4FZMe6aHf7QF/HQfoW631D6DlmOYbYzL1OkWuN+v3Md9dpT2/ipwsSy+1u
+	v8Ln+AUveLIG6+puE0p20nYU2WHaaD4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763061282; a=rsa-sha256;
+	cv=none;
+	b=uaQUqL5tEqQaV53NzcLbUFCx8WDhDz7v14n+xuF9BBZmuA0Nvui20wnIrJ1nNj8GqUs9ZI
+	HdlK26r0NvoHjA5sFDhVlLxCsb5bQtkaXShMETAlU8U/3d58wuCYmWtn+3XBlqBq85FfgA
+	2Lkmbk4FWThdxO93F80oSATLekY8xOQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KoUrOlvq;
+	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-bc59a785697so457273a12.0
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:14:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763061281; x=1763666081; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VQ+yXI1edJ97AoZpFD1eked/PxAa6sQK7CGRupCejDA=;
+        b=KoUrOlvqcv5WizyHmm+o9tV1dd7FQAsG8C+WUWS4W96CuCpV/t8DQo6tB5lLU5y5ge
+         P82/OIw7VikfT1I5uKAoY3zxlnKTbekK0fzx8R8WyAWkXSNx7HHpfubU4HpicX9oP7TT
+         gZsAK/4ZP+DA3c0j6qpTrqgaExbmgpzURcmvh5/da1EO4fbN8IMjHuBxEdWLZ+1apZwf
+         /gjh/iTJH8Gv39ElihsU050i8QAEiHeo0/R6Fj1vRv/A1ICzgsUBUa9grMynYg7yx+Zp
+         8rzQOi0fGfNncsF/iYGArUjALmVnE9JmyPiEBuF/jWaWdjzinhmqU8mS6JRpSB8uFneW
+         2+gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763061281; x=1763666081;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VQ+yXI1edJ97AoZpFD1eked/PxAa6sQK7CGRupCejDA=;
+        b=La9wKsvA2mwSD+jo33bvOPd9zKHWzKWe7uI7n9DsLq94+OtQjniV3yWDWLiVukxSuW
+         pTJiyBF7RGh/AfOSPFkSalJ7YcRjOSeAaSQssZvM30BTy4yI+mQGltYEy1rhC9PrxwIb
+         QoHrtVe2KUXqeaDtQseMGZjZxY2DWoW3DYKNxN6YTlTA8WRQLjfLgTSEkb0lRHhUkqq0
+         clqxarPYaR+os4tlQpRwzhu3+6XoY+E9xZcfd7zcU91ha/PZTpH0jD/2tpMoBr3JY/Yx
+         l3r8dy04jBhWyJpQQkSjJ2zFeXKlLfJtZvVEYQ2/7g9Zs4iMBNwmAWPKidGfXVh74dXR
+         lrVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzXtHkPXjsfSzAs0Yg/+swxrqCpUdft9thvI5/rfwvB4Po60qE2nG38vC+7bwJtJu8N9pqLiLw+A==@kvack.org
+X-Gm-Message-State: AOJu0YyC2fr6fpiG2x3GvANNfnb7irw8O1Uu70kAQzW8n6T+WVl3caxE
+	myUsETqTYXQ5ASa+YTptI+uJx4iT1i7Ov8iWFci+cIJlAcAZ+jMVYWHy
+X-Gm-Gg: ASbGnctc04L8EVN/7ppqbPYozcC4iM60AXwkchr+fgkvN7TifXFFwAcnoEUcrZxqxSq
+	JuFtVUMvsz00jhy2ySpeN/1AVXNT+bqCaW143N5dLAEuwbQMTfNG51602/EX/jmsfRg6NqTnJPK
+	OEYjgMm37r+U4BShSceiw86YuWRCdbfmixZbManoiX4YVBzVgEwFf5hqiyumIAFL3orNsJGhc2a
+	vI7yk0+ImUrHfuB1LtyOBTtETNbte1U3qtcghf9hbjyR88azLjv3/iYLH3AFwiCcFilGsYkiSsd
+	sikm6+XnPvK8an3H7QEU7BcRqJM6uVTlEoCtxJo7H+2x5IABBvRBHZ7Vnm7HlTR4cfb/IvI55EU
+	gWArxegA9DJ8PqNUXZxB5CRDYTaqjunmdI1j8FUQ18XWhpcwDglFiuYbCpZpAT4K2Dz0EHzjQM8
+	3FJz28Iy8ro1wZ81H7+0RfN4DBKs9L7N0lDbShmuNvU2s=
+X-Google-Smtp-Source: AGHT+IGpMg8McnoePWdkDbXsLJod4sFp+EU6JJgACuTGT2Vise3W0v7UGDs8FHBlHijAHmwT21ZHpg==
+X-Received: by 2002:a05:7022:f684:b0:11a:2e9c:1132 with SMTP id a92af1059eb24-11b4120dba4mr293409c88.37.1763061281447;
+        Thu, 13 Nov 2025 11:14:41 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b060885c0sm711918c88.3.2025.11.13.11.14.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Nov 2025 11:14:40 -0800 (PST)
+Date: Thu, 13 Nov 2025 11:14:38 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 1/4] mm: Use frozen pages for page tables
+Message-ID: <aRYuHl4zKwcwWN7t@fedora>
+References: <20251113140448.1814860-1-willy@infradead.org>
+ <20251113140448.1814860-2-willy@infradead.org>
+ <aRYiW91uAGH02UGL@fedora>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/22] riscv: Memory type control for platforms with
- physical memory aliases
-To: Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org
-Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Andy Whitcroft <apw@canonical.com>,
- Dwaipayan Ray <dwaipayanray1@gmail.com>, Joe Perches <joe@perches.com>,
- Julia Lawall <Julia.Lawall@inria.fr>, Lukas Bulwahn
- <lukas.bulwahn@gmail.com>, Nicolas Palix <nicolas.palix@imag.fr>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251113014656.2605447-1-samuel.holland@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 071554001A
-X-Stat-Signature: 35ufsg7boass1jg1zgn3y7xw9e6fyrn1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRYiW91uAGH02UGL@fedora>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C69A2A0016
+X-Stat-Signature: dfis3er4xx69g6jf7ozdnrn1fbxwuas5
 X-Rspam-User: 
-X-HE-Tag: 1763061241-182754
-X-HE-Meta: U2FsdGVkX19GnQaSxBZQiyyp5VjQekmem2D+GvYlS7Ew3epCQyOVrvCBclCZ1jsjnxnrFBsuxmRN3KJFF5eULyUyGx5ru84lKR4jaaqkx8a1jyIR6gMl431n6CML/hx1w0tbHwcL+Z8zKBLSyQ61p/hAzUlh7VB/y/GoqBRyOi8xb91MotIZVavOxZZ3FVrk2FXCMIEeXE6wYQfOk+HxmozW49XKYzpGuDKVpqr1j0VG+LL2uoBVJlqxt2kNVqa0selGezXJXCcoekB7thagOQ4USx6JzdR3yhqFtE1ciWxjpGjep/2CRAD+7MzKb94Cjym/IxNK3jE/wN0vaq/8AZ6eZPLfxSIW9CNfUVsTd2ECReOCS8kUN+tEKZCY0ES1Efki9a0G3fB0Csn0uuSC9JvueJVbrzu0dQN7Ki3o17I2XYG+LX4CiDwLFqPRZRtfiwE5uaB8qJDAMu8of94Yg+t+s9pH74fkYnt2U5ngTqe0naUX0wzBH4N0zPMqmRa4/iSKq9gpjlW8VFAyl8Owtxf2N24jv+iT+jbIYkyMj6CEom7/iZk/aX3uWHvK0lrWjG6L/eTTaMJFelmXKnIz1mRonF0yROcXchW9YfKk8xCKpBdO/KWF8osmHyzFYxFmSAJL5JRf2aOGWs9RJTLpEeQzONrAxbir0UV+cOT0PzNDQIUKX2MbrOOct18YoGIarigpU3Da4VeIuscDR0PlVTqppa9aM86Kn98RABqm6+cklQtxIzwSx/hXPtirmnJNamRWRA3KuKA81svN54tc3zVA2OFh7EP4qqYAEi9xovesP5SeFrI8upOg8YkRmxT8igc7q0D1sm0d/2lrbA1SglHO5Llr7wOsmm9utZr+dL9WpmoZJEup4kKMfirjpFiqFmkIJcPGc7Ww+G05jUJ/dEva7HAUGPI2PDkng6nvzjmjvQtm+Db992AjUs97L3QD918Z/zmZTrYoC/37f3a
- tuAZlKlj
- gv5xvQ+QDZf6TDuK4KMtG6mrQ8Jk08IAuJDD5e/M6n/1onKJiaCxZXGtVQyM5rWGRrYHfJ0EXN60uT9QwaxZk9Vsfx9PqEVK9Xu7NjHeAC+Ji9zLEvdUhqTON2bfBd32xynrWzrISluvYsDFw9ZTGxQQ9QmPeknpFSKXzc+koMAUisyDMOU6gQPPuQ5ePtQKXeNArKZLqTfsrhc/1XEvcY0rQ999WkuUbMvHPNVrzZF1JXKe8tmkRKs5PY/tseDbpbnw8ZCvLyDOkKSBcmdUh0fcOTv3tsLQpx92GfXGi5YPsI2CqUe8YAEHktxVlVIw8RdtXbUoUi65aW8w=
+X-HE-Tag: 1763061282-532488
+X-HE-Meta: U2FsdGVkX1+IzGzxAYz3veMbq0xLpfb6CVWqzHXt10v5aMEpP6509+qxvntKqbSza/yAHj+vSBntH6J+GdgzvhMQn6bYhjW3ew1UgsJfIx1u7u16NijJJCkabHBj6Jl9ZfDKYtcTG2mbujQihiTXhMefH/Tdvvc4NGVDUUkgnSPjiU5l5Z03agydNuE8RiyRHcAsaNnB8wXE2i4LLFUmnl/LkaVOLTFoO0icUkoZJR40TjlI5yKE6VEEPv4X3rgpxQ81VUy2ecS9MbNpaLyQhahR9CROd36b5yGU3isyCuL0PKIIjItg49xuCpZ3em/uscxA7TJHGdc4METly+lilzT1+26lh7YLNbhFN5Hc+jiYhRYirtpM6JhvYob27Tvze+neWlXimhHdBEzg4M7JD8u2W6QvC0luSlTchMaeK7zEm4fsBD+fVB2EszrqGmvo++Aulrzsbac7gqOOMhTq11kZGIwH93O11SvJNLsB6NhHQFtDTqgyD9mP8g4HmSrYq8rCHmMpH2/ZuYP3S0J3NwV5nAuEyas1nSnh7I4UYdC/lnTSB/51LhCkU0TqOTc+Ye5jGMNxOfIy1pfHJmrQCb0pD41bigAWfko2JHy2HKpydRMW3i5F6Xh3r/IItrWEzzhiSDFjKvHK9z1rbhHgJxvi8WdqCnbOxxLeOwsZzqGLnI6mTO7cpf1lB3ZnjancCAbNgmpAH5MiAuWrlsVsZSji4aHkwXUwLiDrjGk1wyMfDm9Sx4DM+3VBkbhBYGp4pZz7KdxY5x/jpA08JCfVWnclEIw5YW4TSDrzjJK4FFPkz35xT2X2rKn11yUoP6t1J56yVTXotE0ofOxvZshhuxuM0jqkClOQrIuPZ4tiTBVQh6+AZ3CqmwYYMdZcU1Pm0H9HhHPg06UBpnjSzyhFR8uDgyCCqtE6+mdWrjNv6sNE+xAvw+JptBlCSQklo+YKjBVjT2r2DeY5tqKfUXT
+ 1BGzujvy
+ 7fClJ05yPSMdyYDEzDY5hJtvdNFXMxd+NNQOjUVZimKCQC9Cdb8huK5YVnk9jbAmMZcvhJYkSGRED/QnmzITgrIJFQ7MFVIP3KiMk0NduLGtgt7X+KmoXZkFJwC8BM/pc0E0w9+S/m/eYclZfK9GQL3IJBStfsN8V3upa0OECkGiNyq9MIIZaHBgNW0Zk8YhrLRB6uAt4p7y5tcrksODWhpev10agzdbE4GG/FYevXvOaeqRTuPJHIqdGFLauGLqASF4jC9PEFqoKbc6MxVGVDEoiVhxNQfRjjKm/Y+Lcj6O4UJifoZC7MZywQATobQLXPgkZyUrYjS5CfGVUkcc+YE1gIFGRxmoZXKui5dliIBm+isflfHm1CUyZwDWmBjyGOdcretSQ3rlAYupl4hROsvGXC7S8DG+BeFPElwe8YNStKwZWt29b4KOUJGyLGDkn3OiMb/jkpaObZgO/8PCSGCkPkia8rExhg6xEu/hiB0/y8xx1hJtIqob+L/nopIkaWAjAROFEgHRfb6Yiz4KAnpH//nLP4OqhJPnT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,30 +121,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13.11.25 02:45, Samuel Holland wrote:
-> 
-> On some RISC-V platforms, including StarFive JH7100 and ESWIN EIC7700,
-> DRAM is mapped to multiple physical address ranges, with each alias
-> having a different set of statically-determined Physical Memory
-> Attributes (PMAs), such as cacheability. Software can alter the PMAs for
-> a page by selecting a PFN from the corresponding physical address range.
-> On these platforms, this is the only way to allocate noncached memory
-> for use with noncoherent DMA.
-> 
-> These physical memory aliases are only visible to architecture code.
-> Generic MM code only ever sees the primary (cacheable) alias. The major
-> change from v1 of this series is that I was asked to move the hooks from
-> pfn_pXX()/pXX_pfn() to set_pXX()/pXXp_get().
-> 
->   - Patches 1-10 ensure that architecture-specific code that hooks page
->     table reads and writes is always called, and the calls are balanced.
+On Thu, Nov 13, 2025 at 10:24:27AM -0800, Vishal Moola (Oracle) wrote:
+> On Thu, Nov 13, 2025 at 02:04:43PM +0000, Matthew Wilcox (Oracle) wrote:
+> > Page tables do not use the reference count.  That means we can avoid
 
-It is not immediately clear to me from the description why that is 
-required. Can you summarize the core problem here, and why we have to 
-route everything through these accessors?
+While looking into the second patch, I came across this one instance in
+sparc32. Commit 1996d47a0db ("sparc32: mm: Only call ctor()/dtor()
+functions for first and last user") decided to start using the refcount
+for something.
 
--- 
-Cheers
+I'm not certain this code should even be using ptdescs, but theres a
+page_ptdesc() call in there for now :(.
 
-David
+As far as I can tell, this is only a thing for sparc32. Cc-ing Will as
+the author of those commits.
+
+> > two atomic operations (one on alloc, one on free) by allocating frozen
+> > pages here.  This does not interfere with compaction as page tables are
+> > non-movable allocations.
+> > 
+> > pagetable_alloc() and pagetable_free() need to move out of line to make
+> > this work as alloc_frozen_page() and free_frozen_page() are not exported
+> 
+> Nit: s/page/pages/g
+> 
+> > outside the mm for now.  We'll want them out of line anyway soon.
+> > 
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> 
+> LGTM.
+> Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+
+So I guess I retract this for now...
 
