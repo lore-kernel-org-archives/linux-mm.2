@@ -4,87 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99135CD5BD1
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 18:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 242E9CD8C9D
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 18:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9594E8E0003; Thu, 13 Nov 2025 13:00:42 -0500 (EST)
+	id 83F1C8E0005; Thu, 13 Nov 2025 13:12:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 931548E0002; Thu, 13 Nov 2025 13:00:42 -0500 (EST)
+	id 816968E0002; Thu, 13 Nov 2025 13:12:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 846E08E0003; Thu, 13 Nov 2025 13:00:42 -0500 (EST)
+	id 72D3A8E0005; Thu, 13 Nov 2025 13:12:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 74BF68E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:00:42 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DA1D113C068
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:00:41 +0000 (UTC)
-X-FDA: 84106349082.04.3F04904
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E39AB40007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:00:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uExCiw4Q;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FBB18E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:12:09 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E4A713C08E
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:12:08 +0000 (UTC)
+X-FDA: 84106377936.22.31C0250
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7B20A40011
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:12:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=i0CbDAF6;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763056840;
+	s=arc-20220608; t=1763057526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HJUvqMO8KKpU9QC47lrNV/SLCkypRymHIv2x5kPHpBc=;
-	b=dsGPchtuycWMnA1LsK/H9+ihcWzpF+WO20r5RoeVpIgHOVyb/7q0JK1oDY333jwyjWoWE8
-	abUl4s1oAmNeqP8CDbmP0UyF83FLygFV83ksUG598rtCcCLJU7gOBGAs3yyGZU0x5Q7IZP
-	UgO+tpnp07Ba+45eo0zTooi7y3jnsc8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763056840; a=rsa-sha256;
-	cv=none;
-	b=X1C78G/HlrgtXHFtnbJYwv6sqkYVgLVPqaQZhLvHhBPGeG1oGcAtNwcXp2VzmisVjvji9D
-	+BwunytqLQhSv86h6XxoWoW+opgY9C7LPI3pYm6nedVmWfyiR/khtu9rITlhGSIznDk5S6
-	hFWG4CiGbdm+3irGPZO2kFCSrWUWT7I=
+	bh=5eHsuAs5Ho9vLqNPdoKJux8qPl4LGeHAR3Yo6gGLdMU=;
+	b=nRdS0jrsE7cciLeBT2kXzZj+7asHolu5JDRO2H9V19v259ttYxg5Q1grtDr9L0jflU7Aee
+	XkiA2na9pv3z96RHhtrL1OuqcmMzXVZQqyGvH37iuAXX8kYyS+srpdXpOGe7VQJDL+J3y5
+	iIDtTbHXfMaM01DRD/fY5JDvx6Ld80g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uExCiw4Q;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A330B43893;
-	Thu, 13 Nov 2025 18:00:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D9CC19424;
-	Thu, 13 Nov 2025 18:00:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763056838;
-	bh=uQjFI98RyT8QKeb0A93WOgYdgAa+Yip/ms5kSgmOYHU=;
+	imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=i0CbDAF6;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763057526; a=rsa-sha256;
+	cv=none;
+	b=5C6VGUF15KuMAgzvgrc9Dt4AIfFg3QlR2yHAxmvGmVjNlXVtrZGdWnN4jPY43oYwYDaiDF
+	lHbocgBTkwYPDhPDHkSNrcW4vWUUjJzUZpA12a5iSFdgZtVhhbFsaIdzwJOksJ2W8JmtDa
+	Ruy6ogL2rcRg5zsnDFOAap82MJu4ctE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1763057523;
+	bh=eggkhC6mk5737Q6dXVCr1HI04S4YU8Wm2zybbQQ4foA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uExCiw4Q4BfDhC2P1Phi0ydeQQD/Z2M157wiQpSZqyEJAa50R2mYTfgO1od65uQFx
-	 90IICsDHeF4a8g+f4/UNr7G74HP/oHaUcaJdrex8aWcyV0oabXTb0Nj2LrZQydu2qo
-	 woeQYnlt8jT6xu8Z6wznHkCxbenoV9bpfXodR83o=
-Date: Thu, 13 Nov 2025 10:00:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- oe-kbuild-all@lists.linux.dev, Linux Memory Management List
- <linux-mm@kvack.org>, linux-sh@vger.kernel.org
-Subject: Re: [akpm-mm:mm-unstable 36/283] include/uapi/linux/const.h:20:25:
- warning: conversion from 'long long unsigned int' to 'long unsigned int'
- changes value from '17179869184' to '0'
-Message-Id: <20251113100036.70130321f6629ce9cc8956cf@linux-foundation.org>
-In-Reply-To: <202511132024.tfRZgB5P-lkp@intel.com>
-References: <202511132024.tfRZgB5P-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E39AB40007
-X-Stat-Signature: nf6uyqngboeu8qwtr5qm3nayoychm5u1
+	b=i0CbDAF6pCbWEMlJpLb//tNQ6Yv1i+dHQZGVPCJnVkweoEGmlw48d5tZDmSxx333M
+	 nt4GoO0PyuP0bNbEwDVNY98cz438MWKbbxMjCD7dmmefRgQpXVVnQ321Rz9W4WBxr9
+	 hD6NU3aIKykDFuGCJs028cshFoa/0CsSJCbdMtxLP+mtf94jPIFPj5LS8mnmIvR5fB
+	 VrmSy0RLe/MFKL5HKfC7rc6/pcdLWGaZinio6jRZGnk50KKHbPwVoPEHabv3b9fBOs
+	 x+gim+uMWamOOdj/T5PsKDWrMKn3cf9SwpobDBglRpuOtLPfsW2D8s5CBr4bNlbnV2
+	 BuHRmPPV7+XRQ==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9222917E127F;
+	Thu, 13 Nov 2025 19:12:02 +0100 (CET)
+Date: Thu, 13 Nov 2025 19:11:58 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?B?TWHDrXJh?= Canal
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?B?TWlrb8WCYWo=?= Wasiak
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>, Nitin
+ Gote <nitin.r.gote@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, Christopher Healy <healych@amazon.com>,
+ Matthew Wilcox <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH v8 07/11] drm/gem: Get rid of *_with_mnt helpers
+Message-ID: <20251113191158.43328c47@fedora>
+In-Reply-To: <20251113170008.79587-8-loic.molinari@collabora.com>
+References: <20251113170008.79587-1-loic.molinari@collabora.com>
+	<20251113170008.79587-8-loic.molinari@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7B20A40011
+X-Stat-Signature: 8ept59a6i61whwzymhk7k6u35xump8ig
 X-Rspam-User: 
-X-HE-Tag: 1763056839-730910
-X-HE-Meta: U2FsdGVkX18UUKjJrB3TPG1l367PU3iFuvkV8XNpPnTaCNmwW0rA/mr9R7KR85n4PjcFbd+FFXpiIT1W5rnWBQH5zgxT4JwW3YiqXuhXyb3hvHCm/IvWs7bV27Nx2pbeLag/5OgRyMe5968fnjh2nwQDTXGrhkKNzqfoQf8W12rL+if72AJe4q792ki98Il7ZME9p+ewubnjvKJ+SfoDnjjzm4Wrfp5zDMZa2rK+JW7UM3Jx+vOtbuhtZ6O/QSpBGxpRDc/WF/IxmGKaTYuxIK4bz85rCDU2sIEVtybYfuYMtPEtr0eWCN2D5BCnJ0Agbb8do3sMfcKok1mHLcOg9CAlsNgQYIbDmk5HVgiQ//6RZYTi//+FXveoRY+geXhl8bRJsakvzfBXHPdWkz6HCMeN6DhEq/WlnNRBjqY9yV9GWtZ3fT/ANLTwgl/uUzAndIh3DLM6WILGbMPGlaubNgKNWKMqJMA5lZMmccxLA6YRddENsAkSTEPWw3ISd+vZVbFBKMpaO05XSkT/gVwbnCaAOS58QyStjhgBS32uVN3qbRTx26WIJL7dyovs7EydZplSckjiKK+jG0uqi23ibzxsD4Ug1Y1AEu/liN0HzTuIKNJYlZ3MWdww0Q94OyBYjV1ylnMtck5TI8FuSNgLMx75XR653c9+n2zOh/b8qvt4SnB5eLMGjrQZU47/PpBcRK9S2iwAwrBboNu8j5b78Ys5+/+K1SOcRe4npHju1Ylr0Mgkei/5PcHxrBnO7UFY4JluXVLsb3IP3SdDKWKKznCaNhatTgbRjW1z0jdbMnvYU0MEOExVNh6ndRr2j4upAogzDcmeBm7++wjkb025mziwA7pJVVnroOxxYiRTYQxnu5Ry+ipF35LakpmTCyOJRg12558FAZg8mRRQwodxTVbZq+eakNJXkblijpQXNE1pmAABCeDo2hG9WGTetcvm2okXmEQx6yiPSRzs+VS
- P05P8Zn7
- qUT6om3Jro2rIrj7l5oaGt1ynhbeHGKr0G5NI1GXIEepZGg8SfbHRzffbrfgmEHiWAD7KNjKEM/MwreOvZEvnZouHV4SWKHDTwnTrO72YI5blWuOpSNPdpBF7AS40yqfyqdr9Dm+EpTLJAXrt6tstxXhGoS3b0iSDGSm9rETf5apxqBuXh8L98hNr3zJQy0UaP8eu/mJrJ+tFITI4tAT6G7MWyvQiAiCPlwStAY1r8PXjzGW6k5aHl6aUIc5FHD3K3PDN6MDHUc94IFXCSafKz6X51V+agfqmK0qyxDsWV0GhIa+wqAEC05VedPT8SsAPhF+ywawYbr6ZllOl2aFjDRHh8rkkqn9y1KulX0tpp0rhlSP6dOgUWPSJQfiwLBjzSwzBQKQsynftQMUjCA9nJvOeSbZoeHoSnzd76fJd2A+sC0o3JaQUKS5l4CxPi/xlJaWHccgG4FYitq3BN0jBNhtOiFtZOVOeoCauwHmCpyqiUh5x2wH/gpUNrmbcBU9xIwsep+Xt9lIwH8LV+D+iVPHXwZyFLIidvx9thRkCrXEPG+UrzUYs2RYEvvVxmJwB7fSHEgw1C7OwTk7hlseoz2MNRGxZcwna0ct9cGNnWXBUK73+uLO4+VHTXw==
+X-HE-Tag: 1763057526-477300
+X-HE-Meta: U2FsdGVkX18QOrBsVj77X45Ila/fZ3v6MJLrT/CuWM9ztReT7n7wP9KMNRK75M+B8QSm5p7OQRNymA43SdwDG4jEVWnP7/X/pGmbWmqdWHhl4Q8wusYG8jiLYCdurZfgOcuOcvuluYIwNnmtg9SRxt0Am0hu6LRHtP2+IbP9wRqy72cI0x7QJHuaeycfpkdZVAfRRdfZwGqQyESk7o9jwqOHf8x/xGq5mzq3WCCCtD3ZPrGj/0E8lXKIFQhNyhehnEuqPBYa2k0ukd//5y9qnIgl/L0RdAiZ2z3XpLteG46N33x66zjKGevgalRC9VH0xEJULCQw1dCLzGKjC4eIlLnPWrOwwa/IUVZw5MVmQ/jUatQCAyHXisBayF0CbQuYec5NVsDtlNpzTU3jQh15dxFREtlJHANF13VW/OwdElpNqrs3zWZMRhKJTeyYnfzitPQ9HANn7/Y5jGAf+lsM+Jug+04BVdddlrs1fZAprIOS80QldWkcocUQ87Roxv9t78fLz5JItR8kU3/C0bAfImEf9syfZpzn4iLAwDCvfpWltUe9i3OKACkhe+gwH6xHAA3n1TEloqaOTMo5ak3zvEntkmRzMvJ7YYsaRzr2n2ZOBflOj7wY6VBbBTl0Sxbc2yhbSNdjbVX8bxJIiscVVgI549SjKu6j9gELyL/I7Gx6eIJCNKTjCGvC+fZ1UYzjhEb1DdL9KZJ2ctxY3eFL1yfXvVNZTGYW3+9DHdMNYHd2UsZfqsZH6xOEWOcwU8q/+g4ahJOnfEUY2UDOo0CuzUvQFtAXXPHXDNgBk4a2nyfYZMRifGvz2e7jCJDiRQMdvbtTdRkPBexxXrcgt8jI9TYPMjF61DDYlXlDtkzqzoMiYzV9yf27mjM/SVYbcibzc00Te1VLrgjK5/fgobhwQZIv6toc6LlLgJh0/rlIxuyBmxU0CgnIRBCvOForMutVJzHCBhVUAo244zLmTD9
+ JutvAfzn
+ BwNjSXj6s+uMt5GykGUih/XPI5moNEE1hhdbvqK9YKVHa4ly4ta+q/4/cITxDMoPzD7AaIcrC4cMeq6C98vVfwDiu6JNidf8DSl1BJevy7SAPYe87fwb58LaWvDgS5+9wAanDFnDr/IgPUbj6zlCaP99YjnDoIo9l2lpSh8gBr7oHjScC6Nrwc39HdAw3gl0hQtnSAvHVK2meZ2JYD7rSbqIxZHarLa6Mr1phfBfxssis24QZZz0yM0ko4IHK3wSAffIiBk96q+hNqyqvOuZQYRPmyu0Agenfs1x+f5c/eBT0agZCc44tBTnrygNmW/geDJXKXSt1lQUK7dUkU47KGg+yqZOnW1VacT2QMv6NsnR9FlBc+qmWcFmmbE3A8zHqm+mfc51BSF/mqFL/PhPnYM4t7S7oZlHg9NPipsmStSCndyU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,203 +113,291 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Nov 2025 20:26:42 +0800 kernel test robot <lkp@intel.com> wrote:
+On Thu, 13 Nov 2025 18:00:03 +0100
+Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   f58b4cb6b0c11172a25c2ade23477f55596d7138
-> commit: 2f6ff71280ffddb27ad7174d24f573e2683870cd [36/283] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-> config: sh-randconfig-002-20251113 (https://download.01.org/0day-ci/archive/20251113/202511132024.tfRZgB5P-lkp@intel.com/config)
-> compiler: sh4-linux-gcc (GCC) 11.5.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251113/202511132024.tfRZgB5P-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511132024.tfRZgB5P-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->    In file included from arch/sh/include/asm/bug.h:112,
->                     from include/linux/bug.h:5,
->                     from include/linux/mmdebug.h:5,
->                     from include/linux/mm.h:6,
->                     from include/linux/migrate.h:5,
->                     from mm/migrate.c:16:
->    mm/internal.h: In function 'folio_set_order':
-> >> include/uapi/linux/const.h:20:25: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '17179869184' to '0' [-Woverflow]
->       20 | #define __AC(X,Y)       (X##Y)
->          |                         ^~~~~~
->    include/asm-generic/bug.h:111:32: note: in definition of macro 'WARN_ON_ONCE'
->      111 |         int __ret_warn_on = !!(condition);                      \
->          |                                ^~~~~~~~~
->    mm/internal.h:758:9: note: in expansion of macro 'VM_WARN_ON_ONCE'
->      758 |         VM_WARN_ON_ONCE(order > MAX_FOLIO_ORDER);
->          |         ^~~~~~~~~~~~~~~
->    include/uapi/linux/const.h:21:25: note: in expansion of macro '__AC'
->       21 | #define _AC(X,Y)        __AC(X,Y)
->          |                         ^~~~
->    include/linux/sizes.h:56:41: note: in expansion of macro '_AC'
->       56 | #define SZ_16G                          _AC(0x400000000, ULL)
->          |                                         ^~~
->    include/linux/mm.h:2095:43: note: in expansion of macro 'SZ_16G'
->     2095 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
->          |                                           ^~~~~~
->    mm/internal.h:758:33: note: in expansion of macro 'MAX_FOLIO_ORDER'
->      758 |         VM_WARN_ON_ONCE(order > MAX_FOLIO_ORDER);
->          |                                 ^~~~~~~~~~~~~~~
+> drm_gem_object_init_with_mnt() and drm_gem_shmem_create_with_mnt() can
+> be removed now that the drivers use the new drm_gem_huge_mnt_create()
+> and drm_gem_has_huge_mnt() helpers.
+>=20
+> v5:
+> - use drm_gem_has_huge_mnt() helper
+> - compile out shmem_file_setup_with_mnt() call in builds with
+>   CONFIG_TRANSPARENT_HUGEPAGE=3Dn
+>=20
+> Signed-off-by: Lo=C3=AFc Molinari <loic.molinari@collabora.com>
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> ---
+>  drivers/gpu/drm/drm_gem.c              | 38 ++++++++------------------
+>  drivers/gpu/drm/drm_gem_shmem_helper.c | 38 ++++++--------------------
+>  drivers/gpu/drm/v3d/v3d_bo.c           |  5 ----
+>  include/drm/drm_gem.h                  |  3 --
+>  include/drm/drm_gem_shmem_helper.h     |  3 --
+>  5 files changed, 20 insertions(+), 67 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> index bbca2ab9e9a5..1b0b5813acef 100644
+> --- a/drivers/gpu/drm/drm_gem.c
+> +++ b/drivers/gpu/drm/drm_gem.c
+> @@ -171,31 +171,33 @@ drm_gem_init(struct drm_device *dev)
+>  }
+> =20
+>  /**
+> - * drm_gem_object_init_with_mnt - initialize an allocated shmem-backed G=
+EM
+> - * object in a given shmfs mountpoint
+> + * drm_gem_object_init - initialize an allocated shmem-backed GEM object
+>   *
+>   * @dev: drm_device the object should be initialized for
+>   * @obj: drm_gem_object to initialize
+>   * @size: object size
+> - * @gemfs: tmpfs mount where the GEM object will be created. If NULL, use
+> - * the usual tmpfs mountpoint (`shm_mnt`).
+>   *
+>   * Initialize an already allocated GEM object of the specified size with
+> - * shmfs backing store.
+> + * shmfs backing store. A huge mountpoint can be used by calling
+> + * drm_gem_huge_mnt_create() beforehand.
+>   */
+> -int drm_gem_object_init_with_mnt(struct drm_device *dev,
+> -				 struct drm_gem_object *obj, size_t size,
+> -				 struct vfsmount *gemfs)
+> +int drm_gem_object_init(struct drm_device *dev, struct drm_gem_object *o=
+bj,
+> +			size_t size)
+>  {
+>  	struct file *filp;
+> =20
+>  	drm_gem_private_object_init(dev, obj, size);
+> =20
+> -	if (gemfs)
+> -		filp =3D shmem_file_setup_with_mnt(gemfs, "drm mm object", size,
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +	if (drm_gem_has_huge_mnt(dev))
+> +		filp =3D shmem_file_setup_with_mnt(dev->huge_mnt,
+> +						 "drm mm object", size,
+>  						 VM_NORESERVE);
+>  	else
+>  		filp =3D shmem_file_setup("drm mm object", size, VM_NORESERVE);
+> +#else
+> +	filp =3D shmem_file_setup("drm mm object", size, VM_NORESERVE);
+> +#endif
 
-Oh gee.
+I keep thinking it'd be simpler with a drm_gem_get_huge_mnt() helper:
 
-Here's the patch: https://lkml.kernel.org/r/20251112145632.508687-1-david@kernel.org
+static inline struct vfsmount *
+drm_gem_get_huge_mnt(struct drm_device *dev)
+{
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+	return dev->huge_mnt;
+#else
+	return NULL;
+#endif
+}
 
-I'll append a copy below.
+so we can avoid those #ifdef CONFIG_TRANSPARENT_HUGEPAGE in a few other
+places.
 
-For a start, you have found an sh config which sets neither
-CONFIG_32BIT not CONFIG_64BIT.  Should that even be possible?
+For this one that would give you something like:
 
-sh defconfig compiles migrate.c OK.
+	if (drm_gem_get_huge_mnt(dev))
+		filp =3D shmem_file_setup_with_mnt(drm_gem_get_huge_mnt(dev),
+						 "drm mm object", size,
+						 VM_NORESERVE);
+	else
+		filp =3D shmem_file_setup("drm mm object", size, VM_NORESERVE);
 
-I think I'll just pretend I didn't see this email.  Hopefully some sh
-person will hit this soon enough and will figure out how to fix it!
-
-
-
-
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-Date: Wed, 12 Nov 2025 15:56:32 +0100
-
-In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
-runtime allocation of gigantic hugetlb folios.  In the meantime it evolved
-into a generic way for the architecture to state that it supports gigantic
-hugetlb folios.
-
-In commit fae7d834c43c ("mm: add __dump_folio()") we started using
-CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
-have folios larger than what the buddy can handle.  In the context of that
-commit, we started using MAX_FOLIO_ORDER to detect page corruptions when
-dumping tail pages of folios.  Before that commit, we assumed that we
-cannot have folios larger than the highest buddy order, which was
-obviously wrong.
-
-In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
-when registering hstate"), we used MAX_FOLIO_ORDER to detect
-inconsistencies, and in fact, we found some now.
-
-Powerpc allows for configs that can allocate gigantic folio during boot
-(not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
-exceed PUD_ORDER.
-
-To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
-hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
-GiB (possible on arm64 and powerpc).  Note that on some powerpc
-configurations, whether we actually have gigantic pages depends on the
-setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is nothing really
-problematic about setting it unconditionally: we just try to keep the
-value small so we can better detect problems in __dump_folio() and
-inconsistencies around the expected largest folio in the system.
-
-Ideally, we'd have a better way to obtain the maximum hugetlb folio size
-and detect ourselves whether we really end up with gigantic folios.  Let's
-defer bigger changes and fix the warnings first.
-
-While at it, handle gigantic DAX folios more clearly: DAX can only end up
-creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
-
-Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases clearer. 
-In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with HUGETLB_PAGE.
-
-Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
-also allow for runtime allocations of folios in some more powerpc configs.
-I don't think this is a problem, but if it is we could handle it through
-__HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
-
-While __dump_page()/__dump_folio was also problematic (not handling
-dumping of tail pages of such gigantic folios correctly), it doesn't
-relevant critical enough to mark it as a fix.
-
-Link: https://lkml.kernel.org/r/20251112145632.508687-1-david@kernel.org
-Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Closes: https://lore.kernel.org/r/3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu/
-Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Closes: https://lore.kernel.org/r/94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com/
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/powerpc/Kconfig |    1 +
- include/linux/mm.h   |   12 +++++++++---
- mm/Kconfig           |    7 +++++++
- 3 files changed, 17 insertions(+), 3 deletions(-)
-
---- a/arch/powerpc/Kconfig~mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
-+++ a/arch/powerpc/Kconfig
-@@ -137,6 +137,7 @@ config PPC
- 	select ARCH_HAS_DMA_OPS			if PPC64
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
-+	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
- 	select ARCH_HAS_KCOV
- 	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
---- a/include/linux/mm.h~mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
-+++ a/include/linux/mm.h
-@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pag
- 	return folio_large_nr_pages(folio);
- }
- 
--#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
-+#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
- /*
-  * We don't expect any folios that exceed buddy sizes (and consequently
-  * memory sections).
-@@ -2087,10 +2087,16 @@ static inline unsigned long folio_nr_pag
-  * pages are guaranteed to be contiguous.
-  */
- #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
--#else
-+#elif defined(CONFIG_HUGETLB_PAGE)
- /*
-  * There is no real limit on the folio size. We limit them to the maximum we
-- * currently expect (e.g., hugetlb, dax).
-+ * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
-+ */
-+#define MAX_FOLIO_ORDER		get_order(SZ_16G)
-+#else
-+/*
-+ * Without hugetlb, gigantic folios that are bigger than a single PUD are
-+ * currently impossible.
-  */
- #define MAX_FOLIO_ORDER		PUD_ORDER
- #endif
---- a/mm/Kconfig~mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
-+++ a/mm/Kconfig
-@@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
- config PGTABLE_HAS_HUGE_LEAVES
- 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
- 
-+#
-+# We can end up creating gigantic folio.
-+#
-+config HAVE_GIGANTIC_FOLIOS
-+	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
-+		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-+
- # TODO: Allow to be enabled without THP
- config ARCH_SUPPORTS_HUGE_PFNMAP
- 	def_bool n
-_
+> =20
+>  	if (IS_ERR(filp))
+>  		return PTR_ERR(filp);
+> @@ -204,22 +206,6 @@ int drm_gem_object_init_with_mnt(struct drm_device *=
+dev,
+> =20
+>  	return 0;
+>  }
+> -EXPORT_SYMBOL(drm_gem_object_init_with_mnt);
+> -
+> -/**
+> - * drm_gem_object_init - initialize an allocated shmem-backed GEM object
+> - * @dev: drm_device the object should be initialized for
+> - * @obj: drm_gem_object to initialize
+> - * @size: object size
+> - *
+> - * Initialize an already allocated GEM object of the specified size with
+> - * shmfs backing store.
+> - */
+> -int drm_gem_object_init(struct drm_device *dev, struct drm_gem_object *o=
+bj,
+> -			size_t size)
+> -{
+> -	return drm_gem_object_init_with_mnt(dev, obj, size, NULL);
+> -}
+>  EXPORT_SYMBOL(drm_gem_object_init);
+> =20
+>  /**
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm=
+_gem_shmem_helper.c
+> index 81f4ac7cb8f6..43a80f3fcfd9 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -50,7 +50,7 @@ static const struct drm_gem_object_funcs drm_gem_shmem_=
+funcs =3D {
+>  };
+> =20
+>  static int __drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_s=
+hmem_object *shmem,
+> -				size_t size, bool private, struct vfsmount *gemfs)
+> +				size_t size, bool private)
+>  {
+>  	struct drm_gem_object *obj =3D &shmem->base;
+>  	int ret =3D 0;
+> @@ -62,7 +62,7 @@ static int __drm_gem_shmem_init(struct drm_device *dev,=
+ struct drm_gem_shmem_obj
+>  		drm_gem_private_object_init(dev, obj, size);
+>  		shmem->map_wc =3D false; /* dma-buf mappings use always writecombine */
+>  	} else {
+> -		ret =3D drm_gem_object_init_with_mnt(dev, obj, size, gemfs);
+> +		ret =3D drm_gem_object_init(dev, obj, size);
+>  	}
+>  	if (ret) {
+>  		drm_gem_private_object_fini(obj);
+> @@ -103,13 +103,12 @@ static int __drm_gem_shmem_init(struct drm_device *=
+dev, struct drm_gem_shmem_obj
+>   */
+>  int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_obje=
+ct *shmem, size_t size)
+>  {
+> -	return __drm_gem_shmem_init(dev, shmem, size, false, NULL);
+> +	return __drm_gem_shmem_init(dev, shmem, size, false);
+>  }
+>  EXPORT_SYMBOL_GPL(drm_gem_shmem_init);
+> =20
+>  static struct drm_gem_shmem_object *
+> -__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private,
+> -		       struct vfsmount *gemfs)
+> +__drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private)
+>  {
+>  	struct drm_gem_shmem_object *shmem;
+>  	struct drm_gem_object *obj;
+> @@ -129,7 +128,7 @@ __drm_gem_shmem_create(struct drm_device *dev, size_t=
+ size, bool private,
+>  		obj =3D &shmem->base;
+>  	}
+> =20
+> -	ret =3D __drm_gem_shmem_init(dev, shmem, size, private, gemfs);
+> +	ret =3D __drm_gem_shmem_init(dev, shmem, size, private);
+>  	if (ret) {
+>  		kfree(obj);
+>  		return ERR_PTR(ret);
+> @@ -150,31 +149,10 @@ __drm_gem_shmem_create(struct drm_device *dev, size=
+_t size, bool private,
+>   */
+>  struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev=
+, size_t size)
+>  {
+> -	return __drm_gem_shmem_create(dev, size, false, NULL);
+> +	return __drm_gem_shmem_create(dev, size, false);
+>  }
+>  EXPORT_SYMBOL_GPL(drm_gem_shmem_create);
+> =20
+> -/**
+> - * drm_gem_shmem_create_with_mnt - Allocate an object with the given siz=
+e in a
+> - * given mountpoint
+> - * @dev: DRM device
+> - * @size: Size of the object to allocate
+> - * @gemfs: tmpfs mount where the GEM object will be created
+> - *
+> - * This function creates a shmem GEM object in a given tmpfs mountpoint.
+> - *
+> - * Returns:
+> - * A struct drm_gem_shmem_object * on success or an ERR_PTR()-encoded ne=
+gative
+> - * error code on failure.
+> - */
+> -struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct drm_de=
+vice *dev,
+> -							   size_t size,
+> -							   struct vfsmount *gemfs)
+> -{
+> -	return __drm_gem_shmem_create(dev, size, false, gemfs);
+> -}
+> -EXPORT_SYMBOL_GPL(drm_gem_shmem_create_with_mnt);
+> -
+>  /**
+>   * drm_gem_shmem_release - Release resources associated with a shmem GEM=
+ object.
+>   * @shmem: shmem GEM object
+> @@ -861,7 +839,7 @@ drm_gem_shmem_prime_import_sg_table(struct drm_device=
+ *dev,
+>  	size_t size =3D PAGE_ALIGN(attach->dmabuf->size);
+>  	struct drm_gem_shmem_object *shmem;
+> =20
+> -	shmem =3D __drm_gem_shmem_create(dev, size, true, NULL);
+> +	shmem =3D __drm_gem_shmem_create(dev, size, true);
+>  	if (IS_ERR(shmem))
+>  		return ERR_CAST(shmem);
+> =20
+> @@ -909,7 +887,7 @@ struct drm_gem_object *drm_gem_shmem_prime_import_no_=
+map(struct drm_device *dev,
+> =20
+>  	size =3D PAGE_ALIGN(attach->dmabuf->size);
+> =20
+> -	shmem =3D __drm_gem_shmem_create(dev, size, true, NULL);
+> +	shmem =3D __drm_gem_shmem_create(dev, size, true);
+>  	if (IS_ERR(shmem)) {
+>  		ret =3D PTR_ERR(shmem);
+>  		goto fail_detach;
+> diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
+> index 3bc714ea6392..d3b68ee05dbb 100644
+> --- a/drivers/gpu/drm/v3d/v3d_bo.c
+> +++ b/drivers/gpu/drm/v3d/v3d_bo.c
+> @@ -153,12 +153,7 @@ struct v3d_bo *v3d_bo_create(struct drm_device *dev,=
+ struct drm_file *file_priv,
+>  	struct v3d_bo *bo;
+>  	int ret;
+> =20
+> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -	shmem_obj =3D drm_gem_shmem_create_with_mnt(dev, unaligned_size,
+> -						  dev->huge_mnt);
+> -#else
+>  	shmem_obj =3D drm_gem_shmem_create(dev, unaligned_size);
+> -#endif
+>  	if (IS_ERR(shmem_obj))
+>  		return ERR_CAST(shmem_obj);
+>  	bo =3D to_v3d_bo(&shmem_obj->base);
+> diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+> index 58fa1e6b9773..75276a12208e 100644
+> --- a/include/drm/drm_gem.h
+> +++ b/include/drm/drm_gem.h
+> @@ -529,9 +529,6 @@ void drm_gem_object_release(struct drm_gem_object *ob=
+j);
+>  void drm_gem_object_free(struct kref *kref);
+>  int drm_gem_object_init(struct drm_device *dev,
+>  			struct drm_gem_object *obj, size_t size);
+> -int drm_gem_object_init_with_mnt(struct drm_device *dev,
+> -				 struct drm_gem_object *obj, size_t size,
+> -				 struct vfsmount *gemfs);
+>  void drm_gem_private_object_init(struct drm_device *dev,
+>  				 struct drm_gem_object *obj, size_t size);
+>  void drm_gem_private_object_fini(struct drm_gem_object *obj);
+> diff --git a/include/drm/drm_gem_shmem_helper.h b/include/drm/drm_gem_shm=
+em_helper.h
+> index 589f7bfe7506..6b6478f5ca24 100644
+> --- a/include/drm/drm_gem_shmem_helper.h
+> +++ b/include/drm/drm_gem_shmem_helper.h
+> @@ -109,9 +109,6 @@ struct drm_gem_shmem_object {
+> =20
+>  int drm_gem_shmem_init(struct drm_device *dev, struct drm_gem_shmem_obje=
+ct *shmem, size_t size);
+>  struct drm_gem_shmem_object *drm_gem_shmem_create(struct drm_device *dev=
+, size_t size);
+> -struct drm_gem_shmem_object *drm_gem_shmem_create_with_mnt(struct drm_de=
+vice *dev,
+> -							   size_t size,
+> -							   struct vfsmount *gemfs);
+>  void drm_gem_shmem_release(struct drm_gem_shmem_object *shmem);
+>  void drm_gem_shmem_free(struct drm_gem_shmem_object *shmem);
+> =20
 
 
