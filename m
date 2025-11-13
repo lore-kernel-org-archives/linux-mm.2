@@ -4,91 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73D04CD8C9D
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 16:46:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F7FDCD8CA8
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 16:48:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD5728E000D; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
+	id D784A8E0008; Thu, 13 Nov 2025 11:48:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C86738E0002; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
+	id D4FD58E0002; Thu, 13 Nov 2025 11:48:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B75218E000D; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
+	id C65EA8E0008; Thu, 13 Nov 2025 11:48:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FDAA8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D74613C026
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:46:27 +0000 (UTC)
-X-FDA: 84106162014.13.F85B82A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CCBD4C000A
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:46:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ANlFB3Kd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763052385; a=rsa-sha256;
-	cv=none;
-	b=EFfgBIBZBpulowlATUauNj+aROyuDrYFZB4PaqICCLl8Q/LGVJvqEwLTzK2lUf+ND9q3Pt
-	FTl5XixgCebbns+iGKm2c01n12+HnaKnmbEVkNNc8WqhpFh/vn7NNBsS/jU5CGwIsOlG1C
-	nzGoQqj2Pl5WRuo6IM7w/8FQ4rJhppE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ANlFB3Kd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B0A748E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:48:47 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 53A6C12E894
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:48:47 +0000 (UTC)
+X-FDA: 84106167894.22.F8FC89A
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6B23EA0013
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:48:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UqmywQwC;
+	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763052385;
+	s=arc-20220608; t=1763052525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dvDvZB+KwDBmPM2X3XacnEtHWrFypDce/MudTas1Q00=;
-	b=MSjTCFLCoaF4bOXiSFxo9eXsFQQD2yRiBlxE/vCQoZAkiTtQFIZ/e3i5HKWop4DzzO9K6F
-	GE+vB74ec359KgdRKbimLUocyDj+1ZInbxHEMfys6avnE9xJK79vQJuNF6FNBxsnz0DRRb
-	NZ2CV2H+a7Sj8fxmTqdUXbtzR9Hw8Jw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BEF760103;
-	Thu, 13 Nov 2025 16:46:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79371C4CEF5;
-	Thu, 13 Nov 2025 16:46:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763052385;
-	bh=3xOkFRyx8ajSderbZPHE6EZhwEEq/CfQCCTKeRWj+14=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ANlFB3KdmGzi6pRPz/Msov+nrcs+dWmK2IqxUKObhB61zauElfiUr1UU7ct9t6nqV
-	 nnGxLC+uyoz35YrNU0U7ucFPGn5WdCgU3dB1+NAPf/KRBwj+BoZSGUZDgRuKbbn2Nk
-	 n586FtCTMEYY15fU08udtoAB5JdYmyiiG6bQdi7zhzqq+4QlJBLBG5PFPx+vNmB01Z
-	 ndTghWSxlJ/eNyMr4uZGhNvCaD7nfRRgOilnnh4bO8FS6VtKCQTVp4CD5IWbfd7QWP
-	 V9uOK3ldMMyng+FvbS4mcsqcq4fYWbnrWBzUCjvfK7j12aaF4way83aTHQYgFRkst7
-	 +R/ej7dlhrZwQ==
-Date: Thu, 13 Nov 2025 18:46:15 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, shuah@kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com, khalid@kernel.org,
-	linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH v2] selftests/mm/uffd: remove static address usage in
- shmem_allocate_area()
-Message-ID: <aRYLVyR6l-bGCxui@kernel.org>
-References: <20251113142050.108638-1-mehdi.benhadjkhelifa@gmail.com>
+	bh=KtBw2QaKFUcY/ykNwr991VNkMXbEXUIubxDUCz9u1I8=;
+	b=DgQ9SQTXqkyqtXvT6Jo19O80wIQJE0kHpLbUfNbydq0MNVNhozHefaWYCJUZTNGC2hAj2l
+	l0a8N95fswPwXbheHRBMHmWnwLRUscreilLzHL7Dmx7nKzkOdtVgPc7pToktZBWZzR7s5U
+	01EDQuvtjyCYP2/U7XMjBMZFaJmOhl0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UqmywQwC;
+	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763052525; a=rsa-sha256;
+	cv=none;
+	b=5DCYCGF+LsgIXzNyDAkc2TN/n9OzU24FnkjXqCWfMM53GCjaaZMcgihIIYIV+gIK3l1CdO
+	nT8Aqg+dETYewUfto8NQGx4G7xOH2d/I/po4XqF2ygg6uNgl6c1A1j/oygzj/LlX2W+ObH
+	oWHvvCcd5vJHn9MsU/v7+j26TFGcCbs=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-298039e00c2so12686105ad.3
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:48:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763052524; x=1763657324; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KtBw2QaKFUcY/ykNwr991VNkMXbEXUIubxDUCz9u1I8=;
+        b=UqmywQwC1zV0xYE40BvR4IdKN86FHuB/STQQHqO2RPQm8azLbILNDgXtLHMMF9aN3G
+         T/tAnkW1+0AHirMXSMcFib1q2gpMa6TvtOw7B+Whi9EAOkI7Ob5yjCt4kTjFoNe8/Rct
+         GhUF+8p6tKP2UXu9kxKJOWDJ31dcJ7zGilbNheX9ApbhKDGOzmEOLBh9WXc0mplD79Lb
+         L79QsXDfWAxhfaq5YpYkK3MKWAgdps3afEunQTNVwz/4+waJ8zbmuhC03E5igVcodmDs
+         bOUw/0hOkMKg2lBmuyRfxJDASZiLsHZjalnjSSUY9CXCYIg/WUCtlGSBsensz0i+4Dsv
+         KwjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763052524; x=1763657324;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KtBw2QaKFUcY/ykNwr991VNkMXbEXUIubxDUCz9u1I8=;
+        b=lMwDhUJf4tkv0twp7JMv3WWaY7X5SAa0QB5V4Pt8Ky7c3MvVCd4hQn+7RorBAprNB/
+         2igLKzX51MCU7f5U1/alY7vt1scS6S8dc2JwF5FSgJALlHMxprt5TRxY4oNUT6cJnF6Q
+         w7+no9WnSUVtP0zGwW3FsRlNAOGZa+ZCtCDXPbntS7IRkItmXn291jP/Gv/jm2U82aG3
+         Dt9jHM90nMpFOfpVORFRxU7G1H3IcrO8ye/sfArm5TgGoMWYka/5bD98KeDwVqSCUHsb
+         PMLWArEiXjxsxmB2vAQaGzxELMWDOxwa8zYvSz8hCApgVzJ6lJgk29bWNur+okGL024x
+         dXwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXuFo5WLip4ORMpxILeKypGF8X6dwicVtcYf91nPhF8JY2IwtUQdZkHfRxYDpEGLXAciPnnGsBuBg==@kvack.org
+X-Gm-Message-State: AOJu0Yx143kxBJ2ByZ7mbFo/WSEjIgysDNveB70P7G+6A9iwMcaBT1UC
+	f2mgPSr1/tBIzfXBQ8YRXFHHLuE3lLCHLUDNOo6M190//HlFdOrKksrPkiuefQ==
+X-Gm-Gg: ASbGncu7WG3qLQAiz0MWhneMgXebvQpw4qZtQxgi7vCErC8MhFFqnMkpcj4RLuUr9On
+	lOjrfKe0wfg7JYO845hEMzHTMEbyUk2fs61xmmVupi2oH3C3t5ansbmF/UPJ4XXQv1ATAWsVBxg
+	7UfjD5sgdLFqyBpRHtZPflGqdz939VM3012PdBbnls30SXognXOMMPTmkwQm6ZkmKFManVy4cPf
+	MmQDA280Plqlf2J1ERKXPe+NW+f0+Gm8x4tCEZx2epMxac6OtQ0Arpk9bal2DumUOS34RirASrs
+	8QqtmKrud+GZSHIuw0UBT+GSHOsarwjmOxm0BWZwXiMPjzrcL8drQgrSBz4rC1OQBkg9bnFgIlv
+	WoqI0uGQJOqHqBMu0J1P5n/HlGsJnI5pPbXngRXJj7F7fxEanXdWFwCkWvsZ7pKZugjzaltaicb
+	n4+Fdc4Sz68IXdTSjmFwuiQdH7bPeLvbdT
+X-Google-Smtp-Source: AGHT+IHeub5aNCvnanVAkTfvVdmm0rKNrZXKV+kknwHxz7AyPMKPAPWmPtn/96i7E7eHSTeZ/nnwWQ==
+X-Received: by 2002:a17:902:d551:b0:295:82d0:9ba2 with SMTP id d9443c01a7336-2984ed7a01cmr100922265ad.1.1763052524113;
+        Thu, 13 Nov 2025 08:48:44 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bed2esm30948585ad.81.2025.11.13.08.48.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Nov 2025 08:48:43 -0800 (PST)
+Date: Thu, 13 Nov 2025 08:48:41 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: akpm@linux-foundation.org, bpf@vger.kernel.org, hch@infradead.org,
+	hch@lst.de, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot ci] Re: make vmalloc gfp flags usage more apparent
+Message-ID: <aRYL6XVX5pfhLqBX@fedora>
+References: <20251112185834.32487-1-vishal.moola@gmail.com>
+ <69158bb1.a70a0220.3124cb.001e.GAE@google.com>
+ <aRXeK_C44xGb3ovg@milan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113142050.108638-1-mehdi.benhadjkhelifa@gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CCBD4C000A
-X-Stat-Signature: 5obbkxr5mh9nza7djud6bwsejrip4unb
+In-Reply-To: <aRXeK_C44xGb3ovg@milan>
+X-Rspamd-Queue-Id: 6B23EA0013
+X-Stat-Signature: xyyhrhn3spfo6bn8t89my7kn67gse7n6
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763052385-741547
-X-HE-Meta: U2FsdGVkX1/XtXGyANJC1PjGDNZtkkl5GZ3LMBiZkxk4LsceF+IHZRPSyyDPgnlBARM4hga7C+B+RH+YjO9WBOyWT+S1R2+7L2Ji//1rylIS2X257+lme1+SbjTPE3Lq6bNW7t9Ba59mmYarVafjbr+laG/1i0jPTs65NUt3dzhAHo0ts8eGs+AeqkarD2KEOsoY35zZnwKh70L0nvsI3fOAiuNDjXGUVKg5WQ4do/Bg5IVQcBzwgln8vetfSY6MIHgcWJk9U06B8Tu0O+uAYn3UV1G0eVmzB8Tbhk9Ss2vivxNK6NTlyU/qgXeol6wnsHJFa9i0TebAQi7/8NfQbX33agodryXlsQgIX2WqvHjFw70PU3Y6jzDLsLQUxluUt7XDKbedE/7cvGFXzvbmhPJDsrdg9BLN1tsx4QSlUge8f538eMe/hv3IwswaKRWKWhnuQOdA8XIp4ITs4dggY2NBdOq170QrObenvnx//PUbI7tP8k+1C/7CRKiIfQineD0JdOuqT/e2b3Aij7xV4rfB/edYsyocumkVHRTrkn1sR1g4knmfO1A2y9Ppxz9Srn0A0AljfohsV7c254nGlbtsZa+vajV39lIE2mQW492BuExBDh7CYSIeERSf80oK5+zThdZrSWxiir4zpN7bgtZNsBW5GHmIB3awBa0IQbnEaOHQ+EFTX/GXmetAzkWMH1OZ7G5Lui0iFjmZVOGuk2n+XWBzJLS21tlBFIHXKwwqqbz1AZCuq5PjtdDSvfQWNPhceNFjblL68Fpgw573Iia7JMeDHzkbyfafuu2acQzHVsL4UQMB0MzLgqiyowMxB+zd8TthRmyOkUO3WgSz4B0lY/zwQErHMEhjEDKYiKnnPw3xUd06WuR+1eMX35J1IPhe/2fj1HCt2CPyA7ya7wuy4fhgWg7QU0H8yDJnrdN1XWhiaFL1ojouS943a/y4f/FH7z4p/V+j4z+AlD/
- LAFIB1p2
- hyeuWUg31qdpTIpR0avtEL4V/f2Gd4Lmz4ibS8j6RDHgsbtzsz/ShBrrhLYacNuDX/iOCelJCsRPS2Cy7x+uLdM1eu1auE4kSvS36lDZqqmUoW1RSSBdlKsDv05j0JsIp3Z6zJk9iDsSAWBqnIwOlGMLTACdaumP6cugl7xeLQkfxzwwX7gnrkdbLoks4WLQplDBD7Syo7kc6grCD2RETjsc0dzoi6dxlhdVW7JlvPtPLiN0ebzKxlorAYwieByQvTg9/hmye3Iwid+ura9J3mRHB42aBd6nDzddFeL5XiVbcBaolnyezVle+WfdnXtG2KzL9R/vam/zojX1MPA/v5fCBEFskonsUiHOpIkwMKIrNBicnEU9scgE80nQgisAasY+JkSBynB9uznNCaHLbPZOOe890VChq0+ie
+X-HE-Tag: 1763052525-509122
+X-HE-Meta: U2FsdGVkX18SXhEDD8iczVSU4bC+hM8U8rMuZAcivFwl70Nmb4Qnz73cQCPiC6KfBokY4BbY+IZGWvVsdn7jn+qigyq44NPKqJh9h5yvEhJwh0NQsCnxe1ikoASjk+Fh+SNf5tKlLnHHr+jlbC5bJBY5603sppdR3zOsGXT0JIzb4roBNYsuvnrpA8oRe2NagSOfdljTzG9Hm4UwsX9mZ84ilGgR6fWPt7brkdGuHpR+QGvHT5L3w/o5R4XK5kT16LEoOrJtGLj/HBkh9iVH0Fbsr0U3yHY/6Bl/DwNkDATFlVjNqRsF6QnbfrxVdVjF7KmKeEtAOM2VsuVVHydY6NwQg0F31iKhQXQN+wujddsZiW5dx4qoipje5kkKwsBqdv5N4EVkgqVQHhcu9oH4pDnyoXl7tw1jBmZqN6ipDL4ZLJBw2JsfsQnD+j4TKI2VrH88CU7b5KhojFxdbuocDxSCmeEP8ao8I+xUCB5HoOTyLcWVnqMWxOWUE45HjfL45ruew9LLBBwvoP/Islpnu60DqCAupWuDRz/8HgJOXk3KgOHcfe1owqu4iTA3DKqdcpDVrbpSdt+y8MLCRyMxHD3wRt+V7wAtiX/5Be71+G5NtOg0jehtcj8jbxkW7/3fd3jZcRK0urMVIdzmxqRWYmwLPYV3vW/n6lORFALjVP/eSekALgCjumksM+HRyik7FjcGJJXX3Mj+v9+6QmLxDSCcB+zUal9ZKz1B9KrlF8F68hziNgNz5Yh3oDTpAnW4mirFTE5A0Rmo4bCD1aw8WO+t3COe30FbGhIt0B3Kjw2tZocZGcJCo4b92YEPJ2QIfTn0fwZv2AOLABvDZQC8eXTdxiqeLGz8dCW6zrcexiJv6zAC+hEOgSuTiwMYuMeHe0vd+yqTDFBzgVMuFKvQImgqW/ASzr8BlksGtsqK/jsidX7eMTArOiJzPbIcdcBOjQ4zIi//h6MENzaGUcB
+ QD6+1Rck
+ H5SN1joKCW8uAB36kIMh9+KuyJ5WoQU6o/cvq8YA4missjKZWPqGABmZ5FERKXyvBTq4h0tKxBxUDpehYz03PGgCfxLQqowJcE7VosonzQTJeH9lMmUYMOiTYVJieJHS9VIguwP8uJBrv1Md3pxtcO4vY1sf9hUdK3tqiVzcU9W5GJpIZy7miX3MtL0u7EOMB8X8p8eiZ9P2LPcf5x7uZojwuIJUtVVBIZmeUMq7IoI9z+xyloG81cRiVIH6kmND/xvUsuDRt0gC/AAjARtg7B0MpT7Ti5Il3vht8LsD8Q9Aasnk6qKO5KIyQ7IiPdQ3f4bTBVpDzXEjZN8bABqsP7KJx09X2kNCV/Ej9cb4r7kQv4D1U+2dPOggS0LIFTnN8Rqoa8yDcJm4sp5W8BssRrv/X3/e7a14jrjdzAOrW6KG9YxN5QDjJHi05rcf5ud5M6kCQ5IJDr01N+1cty+aFbQdFWItytYFJ5disB78Mwstj1B+XMiaMobjsX7sdEYdNtLNRKYuW2sez/VaPGhLw8beor+iSayzr0hv8mM+gNfvaSsA6XduPyTDT3v+yeOl4oZq0Cd6PcN12Gr96eP7ZFJJ4rgOfc7VW05N7ukj8Bb1u7iKtHXXyFnLWTg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,105 +121,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 03:20:33PM +0100, Mehdi Ben Hadj Khelifa wrote:
-> The current shmem_allocate_area() implementation uses a hardcoded virtual
-> base address (BASE_PMD_ADDR) as a hint for mmap() when creating shmem-backed
-> test areas. This approach is fragile and may fail on systems with ASLR or
-> different virtual memory layouts, where the chosen address is unavailable.
+On Thu, Nov 13, 2025 at 02:33:31PM +0100, Uladzislau Rezki wrote:
+> On Wed, Nov 12, 2025 at 11:41:37PM -0800, syzbot ci wrote:
+> > syzbot ci has tested the following series
+> > 
+> > [v2] make vmalloc gfp flags usage more apparent
+> > https://lore.kernel.org/all/20251112185834.32487-1-vishal.moola@gmail.com
+> > * [PATCH v2 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
+> > * [PATCH v2 2/4] mm/vmalloc: Add a helper to optimize vmalloc allocation gfps
+> > * [PATCH v2 3/4] mm/vmalloc: cleanup large_gfp in vm_area_alloc_pages()
+> > * [PATCH v2 4/4] mm/vmalloc: cleanup gfp flag use in new_vmap_block()
+> > 
+> > and found the following issue:
+> > WARNING: kmalloc bug in bpf_prog_alloc_no_stats
+> > 
+> > Full report is available here:
+> > https://ci.syzbot.org/series/46d6cb1a-188d-4ff5-8fab-9c58465d74d3
+> > 
+> > ***
+> > 
+> > WARNING: kmalloc bug in bpf_prog_alloc_no_stats
+> > 
+> > tree:      linux-next
+> > URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+> > base:      b179ce312bafcb8c68dc718e015aee79b7939ff0
+> > arch:      amd64
+> > compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> > config:    https://ci.syzbot.org/builds/3449e2a5-35e0-4eac-86c6-97ca0ec741d7/config
+> > 
+> > ------------[ cut here ]------------
+> > Unexpected gfp: 0x400000 (__GFP_ACCOUNT). Fixing up to gfp: 0xdc0 (GFP_KERNEL|__GFP_ZERO). Fix your code!
+> > WARNING: mm/vmalloc.c:3938 at vmalloc_fix_flags+0x9c/0xe0, CPU#1: syz-executor/6079
+> > Modules linked in:
+> >
+> Again bpf :)
 > 
-> Replace the static base address with a dynamically reserved address range
-> obtained via mmap(NULL, ..., PROT_NONE). The memfd-backed areas and their
-> alias are then mapped into that reserved region using MAP_FIXED, preserving
-> the original layout and aliasing semantics while avoiding collisions with
-> unrelated mappings.
-> 
-> This change improves robustness and portability of the test suite without
-> altering its behavior or coverage.
-> 
-> Suggested-by: Mike Rapoport <rppt@kernel.org>
-> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+> GFP_KERNEL_ACCOUNT? I saw there have been __GFP_HARDWALL added already,
+> IMO it is worth to replace it by "high level flag", which is GFP_USER.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
-> Testing(Retested):
-> A diff between running the mm selftests on 6.18-rc5 from before and after
-> the change show no regression on x86_64 architecture with 32GB DDR5 RAM.
-> 
-> ChangeLog:
-> 
-> Changes from v1:
-> 
-> -Implemented Mike's suggestions to make cleanup code more clear.
-> 
-> Link:https://lore.kernel.org/all/20251111205739.420009-1-mehdi.benhadjkhelifa@gmail.com/
-> 
->  tools/testing/selftests/mm/uffd-common.c | 24 +++++++++++++++---------
->  1 file changed, 15 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-> index 994fe8c03923..edd02328f77b 100644
-> --- a/tools/testing/selftests/mm/uffd-common.c
-> +++ b/tools/testing/selftests/mm/uffd-common.c
-> @@ -10,7 +10,6 @@
->  uffd_test_ops_t *uffd_test_ops;
->  uffd_test_case_ops_t *uffd_test_case_ops;
->  
-> -#define BASE_PMD_ADDR ((void *)(1UL << 30))
->  
->  /* pthread_mutex_t starts at page offset 0 */
->  pthread_mutex_t *area_mutex(char *area, unsigned long nr, uffd_global_test_opts_t *gopts)
-> @@ -142,30 +141,37 @@ static int shmem_allocate_area(uffd_global_test_opts_t *gopts, void **alloc_area
->  	unsigned long offset = is_src ? 0 : bytes;
->  	char *p = NULL, *p_alias = NULL;
->  	int mem_fd = uffd_mem_fd_create(bytes * 2, false);
-> +	size_t region_size = bytes * 2 + hpage_size;
->  
-> -	/* TODO: clean this up.  Use a static addr is ugly */
-> -	p = BASE_PMD_ADDR;
-> -	if (!is_src)
-> -		/* src map + alias + interleaved hpages */
-> -		p += 2 * (bytes + hpage_size);
-> +	void *reserve = mmap(NULL, region_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS,
-> +			-1, 0);
-> +	if (reserve == MAP_FAILED) {
-> +		close(mem_fd);
-> +		return -errno;
-> +	}
-> +
-> +	p = reserve;
->  	p_alias = p;
->  	p_alias += bytes;
->  	p_alias += hpage_size;  /* Prevent src/dst VMA merge */
->  
-> -	*alloc_area = mmap(p, bytes, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +	*alloc_area = mmap(p, bytes, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_SHARED,
->  			   mem_fd, offset);
->  	if (*alloc_area == MAP_FAILED) {
->  		*alloc_area = NULL;
-> +		munmap(reserve, region_size);
-> +		close(mem_fd);
->  		return -errno;
->  	}
->  	if (*alloc_area != p)
->  		err("mmap of memfd failed at %p", p);
->  
-> -	area_alias = mmap(p_alias, bytes, PROT_READ | PROT_WRITE, MAP_SHARED,
-> +	area_alias = mmap(p_alias, bytes, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_SHARED,
->  			  mem_fd, offset);
->  	if (area_alias == MAP_FAILED) {
-> -		munmap(*alloc_area, bytes);
->  		*alloc_area = NULL;
-> +		munmap(reserve, region_size);
-> +		close(mem_fd);
->  		return -errno;
->  	}
->  	if (area_alias != p_alias)
-> -- 
-> 2.51.2
-> 
-
--- 
-Sincerely yours,
-Mike.
+Yeah I'll replace __GFP_HARDWALL with GFP_USER, and add
+GFP_KERNEL_ACCOUNT. At this point I'll just add GFP_NOFS and GFP_NOIO
+as well so its easier to understand the mask.
 
