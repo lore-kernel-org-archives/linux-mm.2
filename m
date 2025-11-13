@@ -4,30 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D167CD4F2C
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 00:44:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F903CD3445
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 00:44:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D902A8E002A; Wed, 12 Nov 2025 19:43:55 -0500 (EST)
+	id 1813C8E0020; Wed, 12 Nov 2025 19:43:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1A438E002B; Wed, 12 Nov 2025 19:43:55 -0500 (EST)
+	id 133778E002B; Wed, 12 Nov 2025 19:43:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5788E0020; Wed, 12 Nov 2025 19:43:55 -0500 (EST)
+	id D8E3B8E0020; Wed, 12 Nov 2025 19:43:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E1428E002A
+	by kanga.kvack.org (Postfix) with ESMTP id BA8BF8E002A
 	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:43:55 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6DA574C582
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8AE3E5A997
 	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:55 +0000 (UTC)
-X-FDA: 84103736430.07.79E0FA7
+X-FDA: 84103736430.03.896395E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 62196180002
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9CC5C140004
 	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HClatwGe;
-	spf=pass (imf06.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pnpTLGDJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762994633; a=rsa-sha256;
+	cv=none;
+	b=JsHFgLkb0Ax4LnGi3fj3dBmRp//dJ1pleo6cHn14t5T+6ycetN8xWdUmU7BXW70Uuljb5v
+	AEEYi6tazAmzNf0n1HfebXBB0zmwKupH5hxULBopEU0fNB5OToDhxzF3IMW+lxyWVmWMKR
+	vsYmkbnq76OAWh91UYS2lz+wPz/6JlQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pnpTLGDJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762994633;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +45,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AEBGalzf7FT2Mq81F4b+M5GS1+LzcSVDvK9RqOVrcOQ=;
-	b=xLCLJFPH0WRMmsrn6OHHoWgN4kOu7tUvqgKZBoyW+aFHRjO3iTaXoDEMSHaW+dFN4D19GE
-	+ZiV9m8lf/l9efeVEfofU7g7Mz3WddRtfhFRJPzGcJUEXcaYQTE3hPtoqeLwLwX9xsysK3
-	FfF/+9eE67cWC+w++csBXEM+Nd2Y2Pk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HClatwGe;
-	spf=pass (imf06.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762994633; a=rsa-sha256;
-	cv=none;
-	b=uX2EnCkDaxdR37gTKLzvvkm9s/SwOW73XpmW35e51t59IIBsSYE/yT8H1cYuMCgiIELi2v
-	Idbq1mYrBr9PSWRx0nL2TE4ARKJ88CyY+lbz26uHNtb5xRRycrUq1NnHGTZC6xCQWonLKQ
-	veqmcHqw0FfxSpBQ2bQGmqb78YGBUCQ=
+	bh=+8HHWeslD6xj1zXPNREJHWqOHG32Xr/Ks3wLJ2rR7NA=;
+	b=tL01YOroD6iAHVrnN+YXvgwR/arx8XErYON0CbGbqdljfwa2SEUxOlxNKO1YBuo4Z/9w20
+	72uDk9q5xDvIReuIewNmwjDmMm803TXH60f/lIBSRo+g0B2ebijooDi1ayGK4+bAM71UnE
+	vzlI/q6wxq/+HDuRPqslShF3N6Zgr5Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 32D9E4479C;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2DFF844797;
 	Thu, 13 Nov 2025 00:43:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0B180C2BCB4;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3DB9FC4CEF5;
 	Thu, 13 Nov 2025 00:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1762994624;
-	bh=IPjzSuwKw0/IvILddCYwySiXTQZGu/tjP3Sc0NnpRVA=;
+	bh=vz6N485yPKrgHZ+kKlWiFl6fZ4uLMzOsy4Z4Okbzjvo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HClatwGeLgEDkLF0L9q9UC7sGvjRTqnRYNEWUMALMORNuTuJ3huk4PrYDDQftJu9n
-	 0ZYdKq6GdtGf6RoZYv3J+qda6Zruw+B2BktX44bp5m5ICdAnmhyrOyw7/KUeI2D3Mj
-	 k7PO6GWK0ED+zb9ViTcuTwh+VXRItmQwpTLhu4wgZueWmxYJjGdoyJmrNFgmbPYYpd
-	 6R6UaJQsYl+WGozphTPYCKQMonakhEFsGQu4MqCqDfH8TsAZObbWdkveKxj/A3x+64
-	 L0mUOaLyRCwy5SYrpfo/zVXfPCY00Wj3CrDhaQWVHO7SbrLkfd9+ekINTzGO+KsxQ6
-	 SFezk6nHipARA==
+	b=pnpTLGDJJ4S1YuTf0MR4HzTmx0rGq0srHyGlY2/VS082VSi7zune7FUqd2GIf0oCC
+	 UgaVA4DTwnaYHxxgeou1YvAEJy1AMmOi+RVXZe3iEDbGWqzy03sAF0/hDzF4UrEGNR
+	 QDJ8YFsbXF7r1awhUEr2NCpFHp/LnAB4Ac8sNhHnjRq7B+8IcEgOUGfT8TUWj1Ut6U
+	 zlXJAUDxNuzadb7fvdBjqIo1SF7uG6WjAallY3iDPuXf5uOlkWcvFSCZL699Kdxhbf
+	 FgmS9KW+qZYwzVPVf9NSz/qHDQKzRNSk8WZJS9WVZ5eiM0gQj+ue/b0BSwleOWMVwo
+	 Jwq6yoHeNEYjg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D52E6CD4F30;
-	Thu, 13 Nov 2025 00:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E698CD4F35;
+	Thu, 13 Nov 2025 00:43:44 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Wed, 12 Nov 2025 16:43:22 -0800
-Subject: [PATCH v23 24/28] arch/riscv: dual vdso creation logic and select
- vdso based on hw
+Date: Wed, 12 Nov 2025 16:43:25 -0800
+Subject: [PATCH v23 27/28] riscv: Documentation for shadow stack on riscv
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251112-v5_user_cfi_series-v23-24-b55691eacf4f@rivosinc.com>
+Message-Id: <20251112-v5_user_cfi_series-v23-27-b55691eacf4f@rivosinc.com>
 References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
 In-Reply-To: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -107,27 +106,27 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
  alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Deepak Gupta <debug@rivosinc.com>, Charles Mirabile <cmirabil@redhat.com>
+ Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762994618; l=9508;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762994618; l=9680;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=5kW3ppW7X69x7Q0biC+r7pIGZhVe4tEPfC6qDLBYOh8=;
- b=ZUXxP2jWCx9aFYnGqIw4ZsqI92ReGz8O6QXxYZ+AufkCBA+XalcYH6JabYrkZOEtgw87F9Xcu
- ynT+1r2EZu4CmOCea5IVkwApRI+S+9Wm76tPnaNvGxjacIb6AUTi8LA
+ bh=B2WSexk3yw/VKkukKcshyN9jkOKoLBIyBUeyBharWo4=;
+ b=rBO+g7qm45HOnipBOl3LzypOAtulyvvOr6B6aneEu/8tY/1ohkKv15Y7eJyhqB8VtLOy6rOdz
+ wmHHqxhPsPZCxCnqKR2k04y9XceXQikg4j66a3P7HzLEc+JACp4CpBd
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
  auth_id=553
 X-Original-From: Deepak Gupta <debug@rivosinc.com>
 Reply-To: debug@rivosinc.com
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 62196180002
-X-Stat-Signature: ro7gf9wmexf43tp9ybwo5qj8gtn1ne63
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9CC5C140004
+X-Stat-Signature: 3fmf199d91a1xws591r7x4nm87hzwc55
 X-Rspam-User: 
-X-HE-Tag: 1762994633-543603
-X-HE-Meta: U2FsdGVkX18SSjw0AwuLHsNTXk1YD+0qnZZcyzh35vuCpjFpaadC1BX/ObRD1nIiogCy9uSNFrHeDx/XI0YEsQ77dMGTtgIfRK3BWz2jg6DpoKKfuU16h81tWveYA1xy5VEf8RH+o5NsY6nDV4iIALe4XNazFhgo6G9xq1dpxtK058RpkOaCiYLKOMUGda8Xj0eFNaTIWC/+utF2D2roJc5UV3ngyrIbpCht8gR6nv3E8nyGWUmxdkGmePCV19eEAlCJVo40QLtnO00iHOj+32+HHnFt5Lkj8hTpKvLCcIBvF3WSAXJHou0vGhaf/xHyELvinMtVJMN6FpkWZGFa7y1C2A/QYCe0dUJxlBsPni/i70r+/ZonRPYLJHOeXbXmttjuhxyQhEoh62xi1za2DkoN7pMolww/3d5ZC+Ok60RhxWBLQg9Grsxq4fkI26h0Gf1mIT77fCsOsUe3ZrNF0WP8RWcOuQmhCRmxIw0lEu/GBOIrgHdszNVmp1g4KE90OkoRwAiipgeMBVpiBBKQPYmG0UBgyYGceEMxCh+egh0WHMSAbZPI999Tg2igpi3K82kZ2oVB9hv/EJ2Bi9nG1gAkouG0DUDzMwgY9d2UQE9HU4FNUtgyWxBabhkrwDsfae3g72NdDxWRABkjCuvTY+oXg44GJKNnPRcu5Pvha6K1Xod9Zihy19QOL0T0s+jWCVWMSWooTsf6tVfuKMpvYhJ9f4JtlmLFlDfXtTafpd15JJUar9dNrFjvw+PrkOI9iV32SimJ0VkUT3TI3VqyjLfhHxwOyUUbNZEIlvvNjTwEQJFFonxR5LDcunseZnPbMhZdCqFL1LmJ4AANGSLTuuFHybX/2UWzXqG2ntwf7deaGQm9yEv92BYqfzlhohs5Ku8k8Dqqb8Ca2lXdkXdmgsAa3P5y1Qle0gXCQWO0mYiFJDIJJmhdVGx1QoqBJcaLbJ/ND2umngy4MLkB3xF
- NsZiPyLa
- n1knscDp8WVEwT80azJY/DwiQ5M9rDDd/eadcsATSwzi6M8RR8YzuDqAnvh3niGjvT0WzQkrqFDHLcG/NsZAkIdsXK7S85v4pkXMDFAL2H7JulZ4vlfAhmRZuciqL+FLobIFJn4d78sUzFeE4uuoxM0Aa0ay0yMEDIYPsmEkGrGA83LlmN5+ZCbH7Ue7hXh6oV8bqzXXq/zDQWGouUU22aZiAJs3FRRAazTn35fLzohxCK2bqmX4BMrYYwViNuqerDfQ4PLAVvWeO6LoAlqiH+Q6hIhpiGiFghx1DIdLNUVLIeDNsZGpp6+BGLsflWa2Q8ERNCcwsN/ePFQtNCsB3IlumkUHxcUpPAi8Biv0Kbfs4uzLIm2tkEpq6k9NEBPPELpHjookZaiOq1fwkYWfvW579kFo/DEMK6almTeEbdnDcip41wZw9F47S++Cns7F95cZNbyYVZetOgsWKYMNJ3RT05apZXvhPA+Ld1EA1Ap8G45BKvgeeezUsgsYKQySKpo7Q
+X-HE-Tag: 1762994633-286929
+X-HE-Meta: U2FsdGVkX184mDd0Ru6n7CTLBfdGSiBBHNmA5HRYe9Qi4qo7WtIxvL3kMbsmgldX95AUgx/9biNQRVzg5XunPM2/aIU+ToUdw24bKec/7qaZZsylZmSv+ccGTr42P+HJYgBiY/uGgXrj5l4b5BjctP9e7vCHDi7fmtJ8ifPHJ9t3DBGedE2Q70WBv5dwY3hFaFvxulfZ2bNI7mlLqV3rqL1eSDr9EmxJqg0Ixvt52Z701sJVVY4pufzOczJ19S02DwMTZcDgxJkY4lppOUWMfLzy4yXGokE9Im4al7d48vL96HyGUrfjLb1hObh0wJ3O6xrwQQWK/3YqbAmyONzb3mZ20JgLNt4wYt0o3avmDdyvNOhJuuX4Eo43c+U+VLTSXnsCNKYDfc7fDl5+RlhlbzBKQUQvLm7ZGSPV8FzeRJOhQZKgqsUAbprfwwN7NSrR6MgV8DqxbrjWOB9a8oAcFzGLPYLzmoHHZ7MFKi0SeNwTFnMOQ4nnzhtjDxu8E5fT5RPa7TTzjhbtnbHzg4kvzLI/WUSqY4BrRPD6wOLasGuvGDLIuFwSCDRl8glMqKbHPCfF9jDJ2SnPL7powooCuTvn0iuOOkNGaZtG3SSrjVxtNK2V3BCDjHymncI9ucAtga8MkKS4DDC7NM8IcjVnI6TzVfJkVxrgz7F2j8Uh5nAshBfBRoXf/NyPcXsR1Y9GsaZTjsePs2Wd5JlJWt4IwaM6vEdSCWpenDjF20vxpXIgcULBsufumIGo4f/0lfHKAH0qRtaxWs1C7BdO2sN26kprIV0dnUgN4xH5PLVO+IUKNigueunUkyvj8Oqujlk3WqkJUjyE3/Mg4UtP03CSvOl+a+EkzJV7HaJRyYhu+GpN5V5RWOHTEu6rnk+tcVxKcGJyDT39JtMIxlY2Q0wfV2koJvqDYDYYEx4V0k9U1nYEhLRhAflKQuYmv8zkc67AWs0SYAkq9dF8e6JTyYt
+ VaCHEXn7
+ kDRFNaKJZbVoObIPjIwIsVr7oNagvDs4BnV79hIlGr/8CkvImVmqNXXIHWeNOM3Y6RNyGkslePUWnm/rw0apWeH2qgajuU/hlBWadAXPCwEnm8sLqa+lYZoSpBvFCMNhVdxrG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,246 +137,213 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-Shadow stack instructions are taken from zimop (mandated on RVA23).
-Any hardware prior to RVA23 profile will fault on shadow stack instruction.
-Any userspace with shadow stack instruction in it will fault on such
-hardware. Thus such userspace can't be brought onto such a hardware.
+Adding documentation on shadow stack for user mode on riscv and kernel
+interfaces exposed so that user tasks can enable it.
 
-It's not known how userspace will respond to such binary fragmentation.
-However in order to keep kernel portable across such different hardware,
-`arch/riscv/kernel/vdso_cfi` is created which has logic (Makefile) to
-compile `arch/riscv/kernel/vdso` sources with cfi flags and then changes
-in `arch/riscv/kernel/vdso.c` for selecting appropriate vdso depending
-on whether underlying hardware(cpu) implements zimop extension. Offset
-of vdso symbols will change due to having two different vdso binaries,
-there is added logic to include new generated vdso offset header and
-dynamically select offset (like for rt_sigreturn).
-
+Reviewed-by: Zong Li <zong.li@sifive.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-Acked-by: Charles Mirabile <cmirabil@redhat.com>
 ---
- arch/riscv/Makefile                        |  3 +++
- arch/riscv/include/asm/vdso.h              | 13 ++++++++++++-
- arch/riscv/kernel/Makefile                 |  1 +
- arch/riscv/kernel/vdso.c                   |  7 +++++++
- arch/riscv/kernel/vdso/Makefile            | 29 ++++++++++++++++++++---------
- arch/riscv/kernel/vdso/gen_vdso_offsets.sh |  4 +++-
- arch/riscv/kernel/vdso_cfi/Makefile        | 25 +++++++++++++++++++++++++
- arch/riscv/kernel/vdso_cfi/vdso-cfi.S      | 11 +++++++++++
- 8 files changed, 82 insertions(+), 11 deletions(-)
+ Documentation/arch/riscv/index.rst   |   1 +
+ Documentation/arch/riscv/zicfiss.rst | 179 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 180 insertions(+)
 
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index f60c2de0ca08..b74b63da16a7 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -176,6 +176,8 @@ ifeq ($(CONFIG_MMU),y)
- prepare: vdso_prepare
- vdso_prepare: prepare0
- 	$(Q)$(MAKE) $(build)=arch/riscv/kernel/vdso include/generated/vdso-offsets.h
-+	$(if $(CONFIG_RISCV_USER_CFI),$(Q)$(MAKE) \
-+		$(build)=arch/riscv/kernel/vdso_cfi include/generated/vdso-cfi-offsets.h)
- 	$(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
- 		$(build)=arch/riscv/kernel/compat_vdso include/generated/compat_vdso-offsets.h)
+diff --git a/Documentation/arch/riscv/index.rst b/Documentation/arch/riscv/index.rst
+index be7237b69682..e240eb0ceb70 100644
+--- a/Documentation/arch/riscv/index.rst
++++ b/Documentation/arch/riscv/index.rst
+@@ -15,6 +15,7 @@ RISC-V architecture
+     vector
+     cmodx
+     zicfilp
++    zicfiss
  
-@@ -183,6 +185,7 @@ endif
- endif
+     features
  
- vdso-install-y			+= arch/riscv/kernel/vdso/vdso.so.dbg
-+vdso-install-$(CONFIG_RISCV_USER_CFI)	+= arch/riscv/kernel/vdso_cfi/vdso-cfi.so.dbg
- vdso-install-$(CONFIG_COMPAT)	+= arch/riscv/kernel/compat_vdso/compat_vdso.so.dbg
- 
- BOOT_TARGETS := Image Image.gz Image.bz2 Image.lz4 Image.lzma Image.lzo Image.zst Image.xz loader loader.bin xipImage vmlinuz.efi
-diff --git a/arch/riscv/include/asm/vdso.h b/arch/riscv/include/asm/vdso.h
-index f80357fe24d1..35bf830a5576 100644
---- a/arch/riscv/include/asm/vdso.h
-+++ b/arch/riscv/include/asm/vdso.h
-@@ -18,9 +18,19 @@
- 
- #ifndef __ASSEMBLER__
- #include <generated/vdso-offsets.h>
-+#ifdef CONFIG_RISCV_USER_CFI
-+#include <generated/vdso-cfi-offsets.h>
-+#endif
- 
-+#ifdef CONFIG_RISCV_USER_CFI
- #define VDSO_SYMBOL(base, name)							\
--	(void __user *)((unsigned long)(base) + __vdso_##name##_offset)
-+	  (riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP) ?			\
-+	  (void __user *)((unsigned long)(base) + __vdso_##name##_cfi_offset) :	\
-+	  (void __user *)((unsigned long)(base) + __vdso_##name##_offset))
-+#else
-+#define VDSO_SYMBOL(base, name)							\
-+	  ((void __user *)((unsigned long)(base) + __vdso_##name##_offset))
-+#endif
- 
- #ifdef CONFIG_COMPAT
- #include <generated/compat_vdso-offsets.h>
-@@ -33,6 +43,7 @@ extern char compat_vdso_start[], compat_vdso_end[];
- #endif /* CONFIG_COMPAT */
- 
- extern char vdso_start[], vdso_end[];
-+extern char vdso_cfi_start[], vdso_cfi_end[];
- 
- #endif /* !__ASSEMBLER__ */
- 
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index 2d0e0dcedbd3..9026400cba10 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -72,6 +72,7 @@ obj-y	+= vendor_extensions/
- obj-y	+= probes/
- obj-y	+= tests/
- obj-$(CONFIG_MMU) += vdso.o vdso/
-+obj-$(CONFIG_RISCV_USER_CFI) += vdso_cfi/
- 
- obj-$(CONFIG_RISCV_MISALIGNED)	+= traps_misaligned.o
- obj-$(CONFIG_RISCV_MISALIGNED)	+= unaligned_access_speed.o
-diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
-index 3a8e038b10a2..43f70198ac3c 100644
---- a/arch/riscv/kernel/vdso.c
-+++ b/arch/riscv/kernel/vdso.c
-@@ -98,6 +98,13 @@ static struct __vdso_info compat_vdso_info __ro_after_init = {
- 
- static int __init vdso_init(void)
- {
-+	/* Hart implements zimop, expose cfi compiled vdso */
-+	if (IS_ENABLED(CONFIG_RISCV_USER_CFI) &&
-+	    riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) {
-+		vdso_info.vdso_code_start = vdso_cfi_start;
-+		vdso_info.vdso_code_end = vdso_cfi_end;
-+	}
-+
- 	__vdso_init(&vdso_info);
- #ifdef CONFIG_COMPAT
- 	__vdso_init(&compat_vdso_info);
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 272f1d837a80..a842dc034571 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -20,6 +20,10 @@ endif
- ifdef VDSO_CFI_BUILD
- CFI_MARCH = _zicfilp_zicfiss
- CFI_FULL = -fcf-protection=full
-+CFI_SUFFIX = -cfi
-+OFFSET_SUFFIX = _cfi
-+ccflags-y += -DVDSO_CFI=1
-+asflags-y += -DVDSO_CFI=1
- endif
- 
- # Files to link into the vdso
-@@ -48,13 +52,20 @@ endif
- CFLAGS_hwprobe.o += -fPIC
- 
- # Build rules
--targets := $(obj-vdso) vdso.so vdso.so.dbg vdso.lds
-+vdso_offsets := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),)-offsets.h
-+vdso_o := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-+vdso_so := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so
-+vdso_so_dbg := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so.dbg
-+vdso_lds := vdso.lds
-+
-+targets := $(obj-vdso) $(vdso_so) $(vdso_so_dbg) $(vdso_lds)
-+
- obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
- 
--obj-y += vdso.o
--CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
-+obj-y += vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-+CPPFLAGS_$(vdso_lds) += -P -C -U$(ARCH)
- ifneq ($(filter vgettimeofday, $(vdso-syms)),)
--CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
-+CPPFLAGS_$(vdso_lds) += -DHAS_VGETTIMEOFDAY
- endif
- 
- # Disable -pg to prevent insert call site
-@@ -63,12 +74,12 @@ CFLAGS_REMOVE_getrandom.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
- CFLAGS_REMOVE_hwprobe.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
- 
- # Force dependency
--$(obj)/vdso.o: $(obj)/vdso.so
-+$(obj)/$(vdso_o): $(obj)/$(vdso_so)
- 
- # link rule for the .so file, .lds has to be first
--$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) FORCE
-+$(obj)/$(vdso_so_dbg): $(obj)/$(vdso_lds) $(obj-vdso) FORCE
- 	$(call if_changed,vdsold_and_check)
--LDFLAGS_vdso.so.dbg = -shared -soname=linux-vdso.so.1 \
-+LDFLAGS_$(vdso_so_dbg) = -shared -soname=linux-vdso.so.1 \
- 	--build-id=sha1 --eh-frame-hdr
- 
- # strip rule for the .so file
-@@ -79,9 +90,9 @@ $(obj)/%.so: $(obj)/%.so.dbg FORCE
- # Generate VDSO offsets using helper script
- gen-vdsosym := $(src)/gen_vdso_offsets.sh
- quiet_cmd_vdsosym = VDSOSYM $@
--	cmd_vdsosym = $(NM) $< | $(gen-vdsosym) | LC_ALL=C sort > $@
-+	cmd_vdsosym = $(NM) $< | $(gen-vdsosym) $(OFFSET_SUFFIX) | LC_ALL=C sort > $@
- 
--include/generated/vdso-offsets.h: $(obj)/vdso.so.dbg FORCE
-+include/generated/$(vdso_offsets): $(obj)/$(vdso_so_dbg) FORCE
- 	$(call if_changed,vdsosym)
- 
- # actual build commands
-diff --git a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh b/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-index c2e5613f3495..bd5d5afaaa14 100755
---- a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-+++ b/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-@@ -2,4 +2,6 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- LC_ALL=C
--sed -n -e 's/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define \2_offset\t0x\1/p'
-+SUFFIX=${1:-""}
-+sed -n -e \
-+'s/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define \2'$SUFFIX'_offset\t0x\1/p'
-diff --git a/arch/riscv/kernel/vdso_cfi/Makefile b/arch/riscv/kernel/vdso_cfi/Makefile
+diff --git a/Documentation/arch/riscv/zicfiss.rst b/Documentation/arch/riscv/zicfiss.rst
 new file mode 100644
-index 000000000000..8ebd190782b0
+index 000000000000..7fb86d5ba120
 --- /dev/null
-+++ b/arch/riscv/kernel/vdso_cfi/Makefile
-@@ -0,0 +1,25 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+# RISC-V VDSO CFI Makefile
-+# This Makefile builds the VDSO with CFI support when CONFIG_RISCV_USER_CFI is enabled
++++ b/Documentation/arch/riscv/zicfiss.rst
+@@ -0,0 +1,179 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+# setting VDSO_CFI_BUILD triggers build for vdso differently
-+VDSO_CFI_BUILD := 1
++:Author: Deepak Gupta <debug@rivosinc.com>
++:Date:   12 January 2024
 +
-+# Set the source directory to the main vdso directory
-+src := $(srctree)/arch/riscv/kernel/vdso
++=========================================================
++Shadow stack to protect function returns on RISC-V Linux
++=========================================================
 +
-+# Copy all .S and .c files from vdso directory to vdso_cfi object build directory
-+vdso_c_sources := $(wildcard $(src)/*.c)
-+vdso_S_sources := $(wildcard $(src)/*.S)
-+vdso_c_objects := $(addprefix $(obj)/, $(notdir $(vdso_c_sources)))
-+vdso_S_objects := $(addprefix $(obj)/, $(notdir $(vdso_S_sources)))
++This document briefly describes the interface provided to userspace by Linux
++to enable shadow stack for user mode applications on RISC-V
 +
-+$(vdso_S_objects): $(obj)/%.S: $(src)/%.S
-+	$(Q)cp $< $@
++1. Feature Overview
++--------------------
 +
-+$(vdso_c_objects): $(obj)/%.c: $(src)/%.c
-+	$(Q)cp $< $@
++Memory corruption issues usually result into crashes, however when in hands of
++an adversary and if used creatively can result into a variety security issues.
 +
-+# Include the main VDSO Makefile which contains all the build rules and sources
-+# The VDSO_CFI_BUILD variable will be passed to it to enable CFI compilation
-+include $(src)/Makefile
-diff --git a/arch/riscv/kernel/vdso_cfi/vdso-cfi.S b/arch/riscv/kernel/vdso_cfi/vdso-cfi.S
-new file mode 100644
-index 000000000000..d426f6accb35
---- /dev/null
-+++ b/arch/riscv/kernel/vdso_cfi/vdso-cfi.S
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright 2025 Rivos, Inc
-+ */
++One of those security issues can be code re-use attacks on program where
++adversary can use corrupt return addresses present on stack and chain them
++together to perform return oriented programming (ROP) and thus compromising
++control flow integrity (CFI) of the program.
 +
-+#define	vdso_start	vdso_cfi_start
-+#define	vdso_end	vdso_cfi_end
++Return addresses live on stack and thus in read-write memory and thus are
++susceptible to corruption and which allows an adversary to reach any program
++counter (PC) in address space. On RISC-V ``zicfiss`` extension provides an
++alternate stack termed as shadow stack on which return addresses can be safely
++placed in prolog of the function and retrieved in epilog. ``zicfiss`` extension
++makes following changes:
 +
-+#define __VDSO_PATH "arch/riscv/kernel/vdso_cfi/vdso-cfi.so"
++- PTE encodings for shadow stack virtual memory
++  An earlier reserved encoding in first stage translation i.e.
++  PTE.R=0, PTE.W=1, PTE.X=0  becomes PTE encoding for shadow stack pages.
 +
-+#include "../vdso/vdso.S"
++- ``sspush x1/x5`` instruction pushes (stores) ``x1/x5`` to shadow stack.
++
++- ``sspopchk x1/x5`` instruction pops (loads) from shadow stack and compares
++  with ``x1/x5`` and if un-equal, CPU raises ``software check exception`` with
++  ``*tval = 3``
++
++Compiler toolchain makes sure that function prologue have ``sspush x1/x5`` to
++save return address on shadow stack in addition to regular stack. Similarly
++function epilogs have ``ld x5, offset(x2)`` followed by ``sspopchk x5`` to
++ensure that popped value from regular stack matches with popped value from
++shadow stack.
++
++2. Shadow stack protections and linux memory manager
++-----------------------------------------------------
++
++As mentioned earlier, shadow stacks get new page table encodings and thus have
++some special properties assigned to them and instructions that operate on them
++as below:
++
++- Regular stores to shadow stack memory raises access store faults. This way
++  shadow stack memory is protected from stray inadvertent writes.
++
++- Regular loads to shadow stack memory are allowed. This allows stack trace
++  utilities or backtrace functions to read true callstack (not tampered).
++
++- Only shadow stack instructions can generate shadow stack load or shadow stack
++  store.
++
++- Shadow stack load / shadow stack store on read-only memory raises AMO/store
++  page fault. Thus both ``sspush x1/x5`` and ``sspopchk x1/x5`` will raise AMO/
++  store page fault. This simplies COW handling in kernel during fork, kernel
++  can convert shadow stack pages into read-only memory (as it does for regular
++  read-write memory) and as soon as subsequent ``sspush`` or ``sspopchk`` in
++  userspace is encountered, then kernel can perform COW.
++
++- Shadow stack load / shadow stack store on read-write, read-write-execute
++  memory raises an access fault. This is a fatal condition because shadow stack
++  should never be operating on read-write, read-write-execute memory.
++
++3. ELF and psABI
++-----------------
++
++Toolchain sets up :c:macro:`GNU_PROPERTY_RISCV_FEATURE_1_BCFI` for property
++:c:macro:`GNU_PROPERTY_RISCV_FEATURE_1_AND` in notes section of the object file.
++
++4. Linux enabling
++------------------
++
++User space programs can have multiple shared objects loaded in its address space
++and it's a difficult task to make sure all the dependencies have been compiled
++with support of shadow stack. Thus it's left to dynamic loader to enable
++shadow stack for the program.
++
++5. prctl() enabling
++--------------------
++
++:c:macro:`PR_SET_SHADOW_STACK_STATUS` / :c:macro:`PR_GET_SHADOW_STACK_STATUS` /
++:c:macro:`PR_LOCK_SHADOW_STACK_STATUS` are three prctls added to manage shadow
++stack enabling for tasks. prctls are arch agnostic and returns -EINVAL on other
++arches.
++
++* prctl(PR_SET_SHADOW_STACK_STATUS, unsigned long arg)
++
++If arg1 :c:macro:`PR_SHADOW_STACK_ENABLE` and if CPU supports ``zicfiss`` then
++kernel will enable shadow stack for the task. Dynamic loader can issue this
++:c:macro:`prctl` once it has determined that all the objects loaded in address
++space have support for shadow stack. Additionally if there is a
++:c:macro:`dlopen` to an object which wasn't compiled with ``zicfiss``, dynamic
++loader can issue this prctl with arg1 set to 0 (i.e.
++:c:macro:`PR_SHADOW_STACK_ENABLE` being clear)
++
++* prctl(PR_GET_SHADOW_STACK_STATUS, unsigned long * arg)
++
++Returns current status of indirect branch tracking. If enabled it'll return
++:c:macro:`PR_SHADOW_STACK_ENABLE`.
++
++* prctl(PR_LOCK_SHADOW_STACK_STATUS, unsigned long arg)
++
++Locks current status of shadow stack enabling on the task. User space may want
++to run with strict security posture and wouldn't want loading of objects
++without ``zicfiss`` support in it and thus would want to disallow disabling of
++shadow stack on current task. In that case user space can use this prctl to
++lock current settings.
++
++5. violations related to returns with shadow stack enabled
++-----------------------------------------------------------
++
++Pertaining to shadow stack, CPU raises software check exception in following
++condition:
++
++- On execution of ``sspopchk x1/x5``, ``x1/x5`` didn't match top of shadow
++  stack. If mismatch happens then cpu does ``*tval = 3`` and raise software
++  check exception.
++
++Linux kernel will treat this as :c:macro:`SIGSEGV` with code =
++:c:macro:`SEGV_CPERR` and follow normal course of signal delivery.
++
++6. Shadow stack tokens
++-----------------------
++Regular stores on shadow stacks are not allowed and thus can't be tampered
++with via arbitrary stray writes due to bugs. However method of pivoting /
++switching to shadow stack is simply writing to csr ``CSR_SSP`` and that will
++change active shadow stack for the program. Instances of writes to ``CSR_SSP``
++in the address space of the program should be mostly limited to context
++switching, stack unwind, longjmp or similar mechanisms (like context switching
++of green threads) in languages like go, rust. This can be problematic because
++an attacker can use memory corruption bugs and eventually use such context
++switching routines to pivot to any shadow stack. Shadow stack tokens can help
++mitigate this problem by making sure that:
++
++- When software is switching away from a shadow stack, shadow stack pointer
++  should be saved on shadow stack itself and call it ``shadow stack token``
++
++- When software is switching to a shadow stack, it should read the
++  ``shadow stack token`` from shadow stack pointer and verify that
++  ``shadow stack token`` itself is pointer to shadow stack itself.
++
++- Once the token verification is done, software can perform the write to
++  ``CSR_SSP`` to switch shadow stack.
++
++Here software can be user mode task runtime itself which is managing various
++contexts as part of single thread. Software can be kernel as well when kernel
++has to deliver a signal to user task and must save shadow stack pointer. Kernel
++can perform similar procedure by saving a token on user shadow stack itself.
++This way whenever :c:macro:`sigreturn` happens, kernel can read the token and
++verify the token and then switch to shadow stack. Using this mechanism, kernel
++helps user task so that any corruption issue in user task is not exploited by
++adversary by arbitrarily using :c:macro:`sigreturn`. Adversary will have to
++make sure that there is a ``shadow stack token`` in addition to invoking
++:c:macro:`sigreturn`
++
++7. Signal shadow stack
++-----------------------
++Following structure has been added to sigcontext for RISC-V::
++
++    struct __sc_riscv_cfi_state {
++        unsigned long ss_ptr;
++    };
++
++As part of signal delivery, shadow stack token is saved on current shadow stack
++itself and updated pointer is saved away in :c:macro:`ss_ptr` field in
++:c:macro:`__sc_riscv_cfi_state` under :c:macro:`sigcontext`. Existing shadow
++stack allocation is used for signal delivery. During :c:macro:`sigreturn`,
++kernel will obtain :c:macro:`ss_ptr` from :c:macro:`sigcontext` and verify the
++saved token on shadow stack itself and switch shadow stack.
 
 -- 
 2.43.0
