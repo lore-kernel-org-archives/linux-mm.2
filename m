@@ -4,130 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 365B8CD342D
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 00:48:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A37CD4F35
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 01:27:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BAC58E002E; Wed, 12 Nov 2025 19:43:57 -0500 (EST)
+	id 954EC8E0003; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2918E8E002B; Wed, 12 Nov 2025 19:43:57 -0500 (EST)
+	id 905EA8E0002; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 180F48E002E; Wed, 12 Nov 2025 19:43:57 -0500 (EST)
+	id 81BAD8E0003; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2E1C8E002B
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:43:56 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BFD471A0712
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:56 +0000 (UTC)
-X-FDA: 84103736472.28.9326E82
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FE078E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:27:26 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 207CDC0743
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:27:26 +0000 (UTC)
+X-FDA: 84103846092.03.D80CF08
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C2005100002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 00:43:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bXYY0Gtc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762994634; a=rsa-sha256;
-	cv=none;
-	b=NCQQpCpdgfATW+w/MSIZT0fhOkWxXyfewJ7GKfHBk2KbDgWFXJtz59OgTFqTmxBNcMSlcV
-	J61k/gnKArY2DMxxnTnPHPS1DfefCUCmczmflR6LXoHl5msy+QjOPl5qKmwXKGUP858zgZ
-	shj2s1GQ84BR4my0jr2STtRU12kcwe8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bXYY0Gtc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 574D080008
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:27:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j9EZH2it;
+	spf=pass (imf30.hostedemail.com: domain of "SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762994634;
+	s=arc-20220608; t=1762997244;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BgDBHmdHX+ii+XTCRi3AGqTGnWbo6040xDC6AfwliEU=;
-	b=7grdHXXwx6yglVti9OJhs1VVsHIxga9o0hEUSX0Mi/f80s5ZXe+SX3T9iX8njPzZZuNfH2
-	zf6eSKpzbNA9rdcHZWKpMVzuUgrPOZjxUYA/FNaHEO0MIZ8rcxH0ZKiqkbjIS5z8giJnF4
-	ZHO2sGcc/vw5luWA9Q85XqNLkGr7exA=
+	bh=OjDSWhETJLY023FMAUhr1MZo/3CZ2QjEBxmSshluYZs=;
+	b=jYolSe5yXdRYuMJ5r8bf3OItFhOJzlK3MKPq5tUNkVXBc9MX5imGmBfp1XbkbXrCfbhQUV
+	wlX22XKfLmtgahbvhrfq/Xn+KsfkDi8D7tnrlYuX/LQ2WOlyQDMGizz1d0ErCA1thKwrn+
+	AKcuJ3xMFyOK5wUgj+qqTa8LOyYnyIM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j9EZH2it;
+	spf=pass (imf30.hostedemail.com: domain of "SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=9OOz=5V=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762997244; a=rsa-sha256;
+	cv=none;
+	b=KognxldzSi94cMToGE9SivgUfQHZ65Mu5Vi1RsMjPMClYo9NegYbB+UeEUi38lmXdajYv3
+	STCglWGAEEpS/ito7IyvQWsLf4fo+9GHsnehvz2tqHAPMV83Ri3kGxBZbFJKDlFeBRfvFN
+	wgpdApUOeHHS+7DTtt4KrX/XiL0FQOA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7547044711;
-	Thu, 13 Nov 2025 00:43:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 37019C2BCB7;
-	Thu, 13 Nov 2025 00:43:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13D8141ACE;
+	Thu, 13 Nov 2025 01:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E905BC4AF0B;
+	Thu, 13 Nov 2025 01:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762994624;
-	bh=bPL6vxe17/1hYXtbU8DLV1GggN8NhUYMmyQybHsKecI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bXYY0Gtc5m/IgrqvtRhKLkGuY/wa7llxyed0x7yJ/JK6J67dn8RJNzwVbUGRtJbAx
-	 d3wfFC48V66GZtTl/AsAJZCaS832Bauea0UFuQfLimeY9yHT6pA90rDceNE16Mu+Yj
-	 UXID0ePl+vSRyL6Khh7yjWDIOSwJM0YYAaefAeC3w5Iu50A0Oui89O0PmyojQe8oqb
-	 ANe4P79R6lLQ4X6p//vGKAwGzl2CLYDX/5N6OIASA/vCng58EghME3MF+njPhOzEdC
-	 BKVyRYeuI1Pmi6gjhF7MT4B+aS2sGLC5w1Swpt09CgvT97suIxFQWdt6/Xa9ksmaUG
-	 jcPs/0ERD9beg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 096F3CD4F34;
-	Thu, 13 Nov 2025 00:43:44 +0000 (UTC)
-From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Wed, 12 Nov 2025 16:43:24 -0800
-Subject: [PATCH v23 26/28] riscv: Documentation for landing pad / indirect
- branch tracking
+	s=k20201202; t=1762997243;
+	bh=TF5Nr0Z6ILPUdtsJnj/5x/ih/OKOmW3hFeReBsHZthk=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=j9EZH2itZecujLn0J/BBW/POwZhnFbrrB7plrJIULMFOn289/jDaE6KBDiy8QUOII
+	 ncfIj4xIPZJNS2b2G52A6EF7rfMYg2wUB1sCWY9CGd199fQcSpBu60OdPVwm9WL5/z
+	 fpsZS5sTaPyuGt6y8ul+eVQrvOWPFUsAjDeLuTeGXHI7MewSLhMxIET9AjEYh1Tl2Z
+	 cv7RTUNLtfaT+EEtsWEdyyxnfQaudACiQMZEzx1dvAgB2aRGPlwujPcWZW3x+dS2va
+	 kD2YZ3HmtwaynqlRFn0Sf2RsDvKxiXqu0T0z1OKJfiK6icIGMsOaqyciq1hvzYPYLZ
+	 UmfN5Cwn5vszg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 631BFCE0876; Wed, 12 Nov 2025 17:27:22 -0800 (PST)
+Date: Wed, 12 Nov 2025 17:27:22 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+	stable@vger.kernel.org,
+	syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
+ retry
+Message-ID: <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+ <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
+ <aRUggwAQJsnQV_07@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251112-v5_user_cfi_series-v23-26-b55691eacf4f@rivosinc.com>
-References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
-In-Reply-To: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762994618; l=6062;
- i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=7LCUsE6kNUEwcM1QtIZIjQu/BHRL3vY+rwSlBm5MqpY=;
- b=YGn4JF1PeUciH7tnmNDeYMr93FsrQPGK8IBTWaZhdo8Ww5zDMmLFWThqlfokLf4AjqbWK6m3d
- tR0itMlTauECBoy3809z75tX6PjdY0Eyok7/8fsnflHGPHBxu5PJTRl
-X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
- pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
-X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
- auth_id=553
-X-Original-From: Deepak Gupta <debug@rivosinc.com>
-Reply-To: debug@rivosinc.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRUggwAQJsnQV_07@casper.infradead.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 574D080008
+X-Stat-Signature: 34khg73psycjwnw9bh6p3m5xg5iirh97
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C2005100002
-X-Stat-Signature: 6qsubm75bjickxasgz4hdycf8fhmjzkp
-X-HE-Tag: 1762994634-79327
-X-HE-Meta: U2FsdGVkX1/o4adBaCewvD4J5tFtOp4iy7OtcCSP7lcxsEGVeZfNeDK7Nek9FZZu5kPxj1Hwqag1uAZxDaYreb1PvbtNxk4dQBkkiLZHw/dWWjzRBswUVHNleFW54SujKg83mV1srPZxs1qWqkrfDy5clvAv9YA1jioFhwIJGVYLNQ5HLzjH9VT1rEBm7JVHgdyatvexzLuvhLRYfFvlvZdHDeACobojyePSGblaWqfx3AsH7tCdawAIJ3uG9TxPw5jTg6UmmzEB1PjK7VKhwHTAN8hYvUE+Lwr57ySuizrjm0DbckEzGT9Wsk+XrYlUg3T60DL+I7MwyRz5ihE4kAJa2ny/u/SALfxIYMbb1A1a2gm+TuCSU+DGSt5x6JlzfwSpgsEHGTSq+oT/VGjHaWHxcpHpAV8f7bbvuHSC6bKuiD80we2RSbIINw/iwwtg9h/hfS5OTk5XvwzI7xEkCJ8Ar4PjFuXOJ92XJxWNHigdQoyl9XLsBGIEeYJrB3fk2mAWC9ErZuVN906WcOO5tlST2NjBmW7VYsjLIjUhOfbAkOZlC7rzAf+n9K9sxBqS+wmDPknai78D/e1EK7OBUSKu+NltwDjksPtGnIefIqE36C4FxfjJHIce024p6PmERC6N3EoXGqr7Pqt4C4fisXt0kh0r/8Q+YMs2i63p37eWvRhlr3I2ss8BKs4+KzqbDg2+iX5XQsot5lm7NWdrsROAQ9S2YxcIGm1ivnNBpSPyk15BRYdXyBWUuE8GgwAok8FcCFUwfgvA3xx9mVITA9K1z7oKgLA8hSUZOYSyCSl2ACEH4ZRB33W9o+b67bhUfau1WbM7HI0vLDGNzXeBYgynN/jRDWlItaVyVjWoS8mLUV/7k7erUhrdPLpMK8ZOSBBt7UlpMPiJoekjvLGVRhij/4g4vVoFDjIkanK2EOKnOCk4dkC2RApy/rHup1Tw05HGLW8Q/jEVo/mBzsM
- 0r0uU/vb
- 2D8q3XwAWIm0CITvv/sNKWfZIj3TzAbXlw0sk3uxkKVc3L6c0e1/KW+vb+75iM+yLIiEmEI+F1we8eou5r2Hnxo1DbnWf3VUFhjGlXKhQZZUGY6EvFwfEUF5K4hnMMnrBsn96lmrJX0+wyqW6ZB2YuL2LiSB9SEaJGCDf7qxPN8zzCdO8Bua0L6/+DE1O4IIs8ifWwD4DcrObuOAIqEDd+9385mob0DVUhe1QFWQdB0Q314GRt8fQMduMo5Cs7UHuSZFHg1MIE6OmLicSzTV29rv4sjVoUZfsHOk/41XLgfwwMF3IWrKtpbUrF1/7gzX1R1vquhX22xC14dDUbRQvG3o8RHnaY5o5gm/FRRlaZMOuc6P0jB7C9r/h7eKhz7E96a3TCOkx2+ACyJT9VZi9D6stC6zJlc/qlfuajkmGkHc9ALzRwgLLG9w+wEmsUOwdW/4br6HRs36tSgFb+2zn3xfNxJUc9ifv7xBf1BYHwDODsLk/OWCde9g0lr5QbX8A6Vp+fFQSnQfsu5C4RgOSUZAJvcK7ijeh+klc
+X-HE-Tag: 1762997244-192578
+X-HE-Meta: U2FsdGVkX1/JVndkDXUlKk3TYdxakkGLlbvakylDHPjdI6tBl2qpr669tnEDDxyfhLiUJ43e/SGQ8S694002OO/0edk5gtsv3Rzs+sJJetTmKsV7grgoZ+gkHPEIDbdG2gQXtBuL0dtGrzazHD1WFOmdZ2cnsysQyrGmDPZs4mllCwXu5uZMfOeHCxPQGVZ249iMIVjz5aFhbMa0QSBGVkctcJJgcLsgesRlZ1JWewcS8TIwfSIFk6oQKNpGlIy7x8BO+6KY1U9W/rJuFZEgbToxzxC4+VVyvFZ9ALmhQcOE8VBunjJJauQs5ud7WqDkwCeConia1JsZ8NpqqNC6Ay4fgSQBWFMMJfSokHAJGoq9lZmEnh/v2MtxSvdmeuVmihvZJtYc0DHqE6Z55Z1RyiRPsxZrXCepK2425sve/QUWyE5kGcf7sczGpuRDtw3lb8fUCo91deJFwrDLU/GXvx9lBItoB3xRwi/uFAkB9Ib60phn4IsQUMsBqz+zYNoBQ8XxMVTzE9s9K6eIalfJlNSekUO7E1KOplGV5N1QsO1Ajkke2bJtbuGAgjkuzFz1pRnX++OcDnMXF0gFJ53nDQ4l4vZl7dZYtT47Ithns+5AFMLG57SaMrBJimp4DSz2ZIMLqrTiHnJDsTPyRcFFwkXyzXVnseZCOtEHRuPlQPDhONxbDhOD7Sx02p7uKxZt17wC5PeYr5nGhYJNqxyOVIGoOl+5CqAOf4Pznw0rm8SuWET35ZcTuLHqGI1Q8ayXdwmMICdo5vVxoo3L8Pn5ecFn0A6hHWErAjR7mJ6RPa+6MNXOdM6CKuu0GpjEYhMxn/zqQx3WtFnbS2TrShyVm6bPofDxeSw5yzpjUgyqS6RNcVxAFZQ5JOgqy77/RqKu6pE1MQqdHSyUIiUue/4B5/NClC9pw88/DCg1TQ+cQqt1rTS/Unu0q4Om2DHud/hPEbEZiC055at9g4z+9pc
+ T3oWBI8e
+ nNityIA+RA061ygzFzJ7670EeaKb5JCzVFrW+hroBJkFwlUMFlMGBzL1dF3gZZXM4SCWS7MsHeASD6N2QGeppU1NrPlLEGXdjhxUK6VaavrwOnW9MK5r/aD/7/9ReCx2ICK3WCdhqQebw12Rk3qz+33GOkvL2vLKaUOEWBa34fLDfKUrWK8pFWTfwRnGQqq0K2pIWj+zFa0t0er+pArG7Jj4fXkfLra+mD6H1dVWdVB3l1T+wNiSeJlrPRbP6iNP9ktvCSjrVCaL6+cWbncYQU3CfO2U53BQv/9GTEupKuypO40EGbbC4Asn3m3AYMarIK1kFuLIw1FT3PgUErbkCp7cUGiRsp/FChN56Dp0T/evlk9Lu2jpO93DGzjOXkwoYXMssrmMJwRRqJ8S9Oa68HYnIY2Z8Smm4HnU00B9uAWmVvC0D3qHxGDJJprAVrQak3bjPPWiwrIyYAsQYzLjKLfIJaVVoi1abzW/+9OyayvkcH4JTNWJRFvimmbDmrROL45V1rdZvbmxBohtXR4eByxc2HNNcjSWyFwAE/6Vikx5KHRIJtZaEhLYgFyj+8uLwpxFBtfI2K4FDRqtg9sZjHRCYnZoGDtf/AneBqLdStZrBgnt1xqV8uC/9T8AGuv/MZ76t0mqTqpdqCCvHR2R+qhWUVBrbSa4JsUE1O+0zd5KkaBpqLTh8g/7NTjlsHXouqZaBpaNqjWW4HnEdZStMIdBubulIfwhkQxRjaJTQYADChzA0FDPRGh9wGUZyebVzP6Zsf6KyL4rLIVQLyscDMyhFTtM35AjS7zCg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,154 +104,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Deepak Gupta <debug@rivosinc.com>
+On Thu, Nov 13, 2025 at 12:04:19AM +0000, Matthew Wilcox wrote:
+> On Wed, Nov 12, 2025 at 03:06:38PM +0000, Lorenzo Stoakes wrote:
+> > > Any time the rcu read lock is dropped, the maple state must be
+> > > invalidated.  Resetting the address and state to MA_START is the safest
+> > > course of action, which will result in the next operation starting from
+> > > the top of the tree.
+> > 
+> > Since we all missed it I do wonder if we need some super clear comment
+> > saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
+> > by doing 'blah'.
+> 
+> I mean, this really isn't an RCU thing.  This is also bad:
+> 
+> 	spin_lock(a);
+> 	p = *q;
+> 	spin_unlock(a);
+> 	spin_lock(a);
+> 	b = *p;
+> 
+> p could have been freed while you didn't hold lock a.  Detecting this
+> kind of thing needs compiler assistence (ie Rust) to let you know that
+> you don't have the right to do that any more.
 
-Adding documentation on landing pad aka indirect branch tracking on riscv
-and kernel interfaces exposed so that user tasks can enable it.
+While in no way denigrating Rust's compile-time detection of this sort
+of thing, use of KASAN combined with CONFIG_RCU_STRICT_GRACE_PERIOD=y
+(which restricts you to four CPUs) can sometimes help.
 
-Reviewed-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- Documentation/arch/riscv/index.rst   |   1 +
- Documentation/arch/riscv/zicfilp.rst | 115 +++++++++++++++++++++++++++++++++++
- 2 files changed, 116 insertions(+)
+> > I think one source of confusion for me with maple tree operations is - what
+> > to do if we are in a position where some kind of reset is needed?
+> > 
+> > So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
+> > to me that we ought to set to the address.
+> 
+> I think that's a separate problem.
+> 
+> > > +++ b/mm/mmap_lock.c
+> > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+> > >  		if (PTR_ERR(vma) == -EAGAIN) {
+> > >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
+> > >  			/* The area was replaced with another one */
+> > > +			mas_set(&mas, address);
+> > 
+> > I wonder if we could detect that the RCU lock was released (+ reacquired) in
+> > mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
+> 
+> Dropping and reacquiring the RCU read lock should have been a big red
+> flag.  I didn't have time to review the patches, but if I had, I would
+> have suggested passing the mas down to the routine that drops the rcu
+> read lock so it can be invalidated before dropping the readlock.
 
-diff --git a/Documentation/arch/riscv/index.rst b/Documentation/arch/riscv/index.rst
-index eecf347ce849..be7237b69682 100644
---- a/Documentation/arch/riscv/index.rst
-+++ b/Documentation/arch/riscv/index.rst
-@@ -14,6 +14,7 @@ RISC-V architecture
-     uabi
-     vector
-     cmodx
-+    zicfilp
- 
-     features
- 
-diff --git a/Documentation/arch/riscv/zicfilp.rst b/Documentation/arch/riscv/zicfilp.rst
-new file mode 100644
-index 000000000000..3575c7db2cef
---- /dev/null
-+++ b/Documentation/arch/riscv/zicfilp.rst
-@@ -0,0 +1,115 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+:Author: Deepak Gupta <debug@rivosinc.com>
-+:Date:   12 January 2024
-+
-+====================================================
-+Tracking indirect control transfers on RISC-V Linux
-+====================================================
-+
-+This document briefly describes the interface provided to userspace by Linux
-+to enable indirect branch tracking for user mode applications on RISC-V
-+
-+1. Feature Overview
-+--------------------
-+
-+Memory corruption issues usually result into crashes, however when in hands of
-+an adversary and if used creatively can result into a variety security issues.
-+
-+One of those security issues can be code re-use attacks on program where adversary
-+can use corrupt function pointers and chain them together to perform jump oriented
-+programming (JOP) or call oriented programming (COP) and thus compromising control
-+flow integrity (CFI) of the program.
-+
-+Function pointers live in read-write memory and thus are susceptible to corruption
-+and allows an adversary to reach any program counter (PC) in address space. On
-+RISC-V zicfilp extension enforces a restriction on such indirect control
-+transfers:
-+
-+- indirect control transfers must land on a landing pad instruction ``lpad``.
-+  There are two exception to this rule:
-+
-+  - rs1 = x1 or rs1 = x5, i.e. a return from a function and returns are
-+    protected using shadow stack (see zicfiss.rst)
-+
-+  - rs1 = x7. On RISC-V compiler usually does below to reach function
-+    which is beyond the offset possible J-type instruction::
-+
-+      auipc x7, <imm>
-+      jalr (x7)
-+
-+    Such form of indirect control transfer are still immutable and don't rely
-+    on memory and thus rs1=x7 is exempted from tracking and considered software
-+    guarded jumps.
-+
-+``lpad`` instruction is pseudo of ``auipc rd, <imm_20bit>`` with ``rd=x0`` and
-+is a HINT nop. ``lpad`` instruction must be aligned on 4 byte boundary and
-+compares 20 bit immediate with x7. If ``imm_20bit`` == 0, CPU doesn't perform
-+any comparision with ``x7``. If ``imm_20bit`` != 0, then ``imm_20bit`` must
-+match ``x7`` else CPU will raise ``software check exception`` (``cause=18``)
-+with ``*tval = 2``.
-+
-+Compiler can generate a hash over function signatures and setup them (truncated
-+to 20bit) in x7 at callsites and function prologues can have ``lpad`` with same
-+function hash. This further reduces number of program counters a call site can
-+reach.
-+
-+2. ELF and psABI
-+-----------------
-+
-+Toolchain sets up :c:macro:`GNU_PROPERTY_RISCV_FEATURE_1_FCFI` for property
-+:c:macro:`GNU_PROPERTY_RISCV_FEATURE_1_AND` in notes section of the object file.
-+
-+3. Linux enabling
-+------------------
-+
-+User space programs can have multiple shared objects loaded in its address space
-+and it's a difficult task to make sure all the dependencies have been compiled
-+with support of indirect branch. Thus it's left to dynamic loader to enable
-+indirect branch tracking for the program.
-+
-+4. prctl() enabling
-+--------------------
-+
-+:c:macro:`PR_SET_INDIR_BR_LP_STATUS` / :c:macro:`PR_GET_INDIR_BR_LP_STATUS` /
-+:c:macro:`PR_LOCK_INDIR_BR_LP_STATUS` are three prctls added to manage indirect
-+branch tracking. prctls are arch agnostic and returns -EINVAL on other arches.
-+
-+* prctl(PR_SET_INDIR_BR_LP_STATUS, unsigned long arg)
-+
-+If arg1 is :c:macro:`PR_INDIR_BR_LP_ENABLE` and if CPU supports ``zicfilp``
-+then kernel will enable indirect branch tracking for the task. Dynamic loader
-+can issue this :c:macro:`prctl` once it has determined that all the objects
-+loaded in address space support indirect branch tracking. Additionally if there
-+is a `dlopen` to an object which wasn't compiled with ``zicfilp``, dynamic
-+loader can issue this prctl with arg1 set to 0 (i.e.
-+:c:macro:`PR_INDIR_BR_LP_ENABLE` being clear)
-+
-+* prctl(PR_GET_INDIR_BR_LP_STATUS, unsigned long * arg)
-+
-+Returns current status of indirect branch tracking. If enabled it'll return
-+:c:macro:`PR_INDIR_BR_LP_ENABLE`
-+
-+* prctl(PR_LOCK_INDIR_BR_LP_STATUS, unsigned long arg)
-+
-+Locks current status of indirect branch tracking on the task. User space may
-+want to run with strict security posture and wouldn't want loading of objects
-+without ``zicfilp`` support in it and thus would want to disallow disabling of
-+indirect branch tracking. In that case user space can use this prctl to lock
-+current settings.
-+
-+5. violations related to indirect branch tracking
-+--------------------------------------------------
-+
-+Pertaining to indirect branch tracking, CPU raises software check exception in
-+following conditions:
-+
-+- missing ``lpad`` after indirect call / jmp
-+- ``lpad`` not on 4 byte boundary
-+- ``imm_20bit`` embedded in ``lpad`` instruction doesn't match with ``x7``
-+
-+In all 3 cases, ``*tval = 2`` is captured and software check exception is
-+raised (``cause=18``)
-+
-+Linux kernel will treat this as :c:macro:`SIGSEGV` with code =
-+:c:macro:`SEGV_CPERR` and follow normal course of signal delivery.
+There has been some academic efforts to check for RCU-protected pointers
+leaking from one RCU read-side critical section to another, but nothing
+useful has come from this.  :-/
 
--- 
-2.43.0
+But rcu_pointer_handoff() and unrcu_pointer() are intended not only for
+documentation, but also to suppress the inevitable false positives should
+anyone figure out how to detect leaking of RCU-protected pointers.
 
-
+							Thanx, Paul
 
