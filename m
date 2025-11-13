@@ -4,91 +4,234 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7827ACD5BC2
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:00:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8CA5CD5BC2
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:06:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D47C58E000F; Thu, 13 Nov 2025 06:00:39 -0500 (EST)
+	id EB4A78E0011; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD10F8E0002; Thu, 13 Nov 2025 06:00:39 -0500 (EST)
+	id E8BF78E0002; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98AB8E000F; Thu, 13 Nov 2025 06:00:39 -0500 (EST)
+	id D53A58E0011; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A28FE8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:00:39 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 44F0713BECF
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:00:39 +0000 (UTC)
-X-FDA: 84105290598.09.A86088A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5CACDC0010
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:00:37 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XprYqLZl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763031637; a=rsa-sha256;
-	cv=none;
-	b=R6NwF3ivFYVoZBR3jaLIixACgYSiytHCFEkV+8c3pjw1VgvIxbotrUXc/EjfTAA0WipCP+
-	s+YMSWLMSq3Y7lZ9xRKtpMvb6zOWvZDPj52VwDTeXhsaTmWMVYgs7ZGM+6sl1x5Rfr4BbF
-	g2kn/2fd26qfF8Due04cQy5W64qyp+E=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XprYqLZl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763031637;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BABD18E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:06:07 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 768701A08E4
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:06:07 +0000 (UTC)
+X-FDA: 84105304374.20.3D686FD
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0CC8218000B
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:06:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=irCgD2Z+;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GMmkXhvn;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763031964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2OYDlLyDHW2bw4OxASUcB1RSTfdHVv/OWJshaK6ARlo=;
-	b=WhFKlUaxo75CjHs0Y/hl35EAMxAd5S7M5F35xgQuYNYcKkIZ0E4peaV+/bsxpqA4OwoR3U
-	3dZBYFOUket8LnnswWDZ+k5Jdax/IaOLq8IinalFAb0wUggI1gTYhGbz/K4F2Wb3/SedoS
-	vcRMXlQgN10nHBLN2Yi4eU8GV69fRjk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 51658405D3;
-	Thu, 13 Nov 2025 11:00:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830DAC4CEF8;
-	Thu, 13 Nov 2025 11:00:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763031636;
-	bh=60CqqKZhKyJWhvXbxjipGwZaOFWeYx8t/B7NuToA0qM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XprYqLZl0n7S0uKqVe+CWa2LIB6Ck69UtfeF/nby7RAfR2gTWAOCSYAmCXZIkD9NY
-	 p2b9pRk1jOsaovvn4m6GLJ+x1SjWdmxEKkCfo0FZ5rcyfQGOM+Qax1yjUkhljKcjJE
-	 hGFz/mD/buVOCxa4jhShkdYg+2z99ADEx1QIbeg5p/n2pFuEPBeU1gp8YcfYhfHgM4
-	 j5Q+OXwo5qXd8x40MMLMJYQ3tWpSjIYpQUF+O1etquIVAEgFN6dvwAppS4x1bRWBTo
-	 9XmBVzGwaYs+I8qHma7t9haazKdJdjfIRXfpdbmZ0mCTV6jTDFr5ACh2Gt3XXV0deI
-	 aIf2OK9jhTnUA==
-Date: Thu, 13 Nov 2025 11:00:29 +0000
-From: Will Deacon <will@kernel.org>
-To: Mostafa Saleh <smostafa@google.com>
-Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, corbet@lwn.net, joro@8bytes.org,
-	robin.murphy@arm.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, Qinxin Xia <xiaqinxin@huawei.com>
-Subject: Re: [PATCH v2 3/4] drivers/iommu-debug-pagealloc: Track IOMMU pages
-Message-ID: <aRW6Tf_G2ObR__vE@willie-the-truck>
-References: <20251106163953.1971067-1-smostafa@google.com>
- <20251106163953.1971067-4-smostafa@google.com>
-MIME-Version: 1.0
+	bh=3YksbRrcn+aa3fv+C32v5pkARAuIagi47ZTMQl0uyng=;
+	b=liQe5awJJgmf/y0SJDwYurjFKNi/N12GqN7kBS3h99+b5A7ayK8Y3R6md1M0gx2IvsMpgz
+	FpvdiRtcQWt20TdX2sxMKwk21zqxz6WUnsv8fw3JKPVOdCLitFSI1JH5OkU1aultS3mQ3S
+	Fi2Lqkz6TxMb1TawLWGd7q0LYtVYd+4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763031964; a=rsa-sha256;
+	cv=pass;
+	b=UdI0cKVvGwoJi1gR2oP5r4uB2iBfgJm7bo8UKKDHyh9qt7HYqozp6EWhV7duUyHEDgf6vi
+	+3sOV3vIb52N2yXo3btaFxR0KPR9bIx9u5EHR6l1ZknkOGLMDwpGdVbC90qIx4xmVFM11x
+	Z6IM4cxPTl01Bh+6QK/o/uVyxyE9fMI=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=irCgD2Z+;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GMmkXhvn;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD1gHA5020810;
+	Thu, 13 Nov 2025 11:05:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=3YksbRrcn+aa3fv+C3
+	2v5pkARAuIagi47ZTMQl0uyng=; b=irCgD2Z+kDH6wCmEZkkn4fneWvEJ9oqiYS
+	/7EI5UJ3PfnkoyP7PnsRhpPmJYZ9oYEwDqZxxbo7aoHaXEZkbB1CMLQNmyJT7YDT
+	TNyX+ZWawKM1bLwFcEaLiVe5zo0T2ol1Ioq60npgw3CgcHZuOZMDcL2gg1bZoaUu
+	1IeUK3ru1NokvCkW/no579j6P2JAzCyJ1utRSdL6CO/ZnzbAu7mNqxPoQ0XlL9ZH
+	//BAiPbsX2KmTxDLnCe4fRcnuOFgwTNMBb6DhoG2dUqDDw6XzHzHkx29GagbNyKB
+	AHNMyZ/Q6MbmiHTiWvSBlKZh4zXAwMarhRrXKvF+u8f+sawczuMg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4acyjt9etw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Nov 2025 11:05:35 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD9hr9W003299;
+	Thu, 13 Nov 2025 11:05:34 GMT
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012031.outbound.protection.outlook.com [52.101.43.31])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vacgwxt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Nov 2025 11:05:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V1Mo8wOW96jrG77xVOvk45ZKRqzybFb6/7NkEXDz0SlLxUOxLE7o2ibVu5skk4U1sAYANoPw+7XY0QyPS2ekxFGSYzIg9YMPETKT+QQiITtgSSaZjTCXhSXZOY4RCJOqrPQRBT14Cc67vORqlmbqpCQ+v8Hg85Yzqwa7Q4jIYI6QL5xZHH+9hZfPyOszPGRvVB74yXNKw1kM6IkuIS1kF8KsnQg6qVgbecQ92nfPMr7JvHaiw7pDcicUMb3BGmU0QsNgzJDuZnwsLBPfCQHXbKkaGpU2TVMc7gwt9WmyinFnW5a9OLEXgLLwBuqkV2L54DbMHLCmCLl8m8tSDRzayA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3YksbRrcn+aa3fv+C32v5pkARAuIagi47ZTMQl0uyng=;
+ b=SS1JPza+1xiA16ibRflt1Q3RlZrLXqUSimcmKj/XPHr3hw9NmIARLaGnNEpxHsKUEm66mK8rl7h9iRKCAFYRyYpn7Sn/MbnyXSJ98K3vupRuJo+wKKc42Wxtb7XZA8KX8ZmIYpd8Z7QZV/TuMQfzYbmuCUsHkXw8zhDbdb8RW0MzCB9kNz3WC2n2bc5yYIWHgCMoZOSdlgeA9PbD1zvqGcLlAfyvIh7FnkrZuTnj/B6WyUzhjNKJByhbaRMaKKKpxMBS7eU0GjHMctrLFUho1oVZuFtg2sRCcox6+/XsbGhVHIUGqZlQmQxn9eOOvYrdekIzvpVYseYdyL5pr9hR9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3YksbRrcn+aa3fv+C32v5pkARAuIagi47ZTMQl0uyng=;
+ b=GMmkXhvn4xXBgPZ7ZWdHET679UK5XStjKdyJpMrSiXyMT9nRk1SEungxA0z1mpqv8CmEToFOXf1qiVeIbZPbzSGOzfxpwvzU96ODtf4eDeW9sXoYE3nDZMFfPwPU+s+acZscbQD+tOFvHNadH238i3k7hjO//lE7k9foL4OzapM=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SJ5PPF6A2C0CCA1.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::7a4) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Thu, 13 Nov
+ 2025 11:05:32 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9320.013; Thu, 13 Nov 2025
+ 11:05:30 +0000
+Date: Thu, 13 Nov 2025 11:05:28 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+        stable@vger.kernel.org,
+        syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
+ retry
+Message-ID: <f7abdb4c-b7e2-4fe4-9198-f313d0cacacb@lucifer.local>
+References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
+ <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
+ <aRUggwAQJsnQV_07@casper.infradead.org>
+ <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251106163953.1971067-4-smostafa@google.com>
-X-Rspamd-Queue-Id: 5CACDC0010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: y67uinh9q9e7d8zoajnuoyg4mbwmx1i8
+In-Reply-To: <d9e181fe-e3d8-427a-8323-ea979f5a02ad@paulmck-laptop>
+X-ClientProxiedBy: LO4P123CA0382.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18f::9) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ5PPF6A2C0CCA1:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c83af6c-552e-4fae-74d2-08de22a48f2c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nmPBvepWXzOb39e4BVa1IR6/zE1zuoeELnxir3S+onSzGn327ETI4YDnqmRE?=
+ =?us-ascii?Q?x1ePl/ooYg7zgg7SLbxCQ2NPCCzbaDSsnIeMtQysJyyQdHRvZMoB2nT2j6tO?=
+ =?us-ascii?Q?eewPKbyB/GTtuuiELVQ9CCs5hdX8aplmOLDFoIIx7kPLGMsUH1vksB0pblru?=
+ =?us-ascii?Q?w8Qrt1e8KErr54akggwSmRp/kEPq9En5egOSJNuXCCJZxPWn7oOWc+8OvCnc?=
+ =?us-ascii?Q?Y09yzKeAGHbg3fOyjsC0kM173cyNc6m0VRyKbCxTxpJOfC0nygHU/rPTCSdy?=
+ =?us-ascii?Q?x3IBDXWM508e+qx0GYda0wdhrOFMQT5nw3XYvy8myN9boDJP02Y4NXtNi4V7?=
+ =?us-ascii?Q?nmiem+AO1B57fWPx0S3r/tca2qaOiLx7AIvxFwg4Y9atblcGKjf3mcTyg+BX?=
+ =?us-ascii?Q?rZPsw70OspTvtJ1SfHZy12Z7MniRqy5iZxln3ywpJJD98Eegtky2GnEg4IIV?=
+ =?us-ascii?Q?ghDj9kp9jvhT651LSWUhv2X3LIuMUviQMKYukMVQWpt4KsEUOpWg7Q4esDB+?=
+ =?us-ascii?Q?r6/5wRdq/MEMqxiZtGkMmXBqxuQMvSJ2Y+lPbuNPnruScu1XdcOSqL6PP9XN?=
+ =?us-ascii?Q?GL+y4bFP1EzmyFC0qvEUZgPJdpVAO5EGv2vZuTEljj3Ik8UPPPkOSjIV8GYD?=
+ =?us-ascii?Q?wprYvJjNQoXz26Sjt2yZwXPfQicCxqMOdnJ9JcjKMR0Ltx7GOqm5kHo4Isab?=
+ =?us-ascii?Q?PcPrYuBr3CyTDrUpIB8G520wYPIQu1HsTLp8DvVhKtriuajWyVlDY9ycPPkm?=
+ =?us-ascii?Q?EzKd4ItE+z2W/5loMrL1TsuawWcWveeJXfMc3wAwo/JxF8q+cKzKBqdE+LPW?=
+ =?us-ascii?Q?OfoPDmoBK5bUjqmfKwgzm6mLLWcirVubBeHQ/Bvz0v3kYn84C1QIGbPlzAKz?=
+ =?us-ascii?Q?e/ooHqBqzTUbtxA8DbA7JHvXCywch4yuM2EZAAmY5jDNjB977X4QMlSH8y6u?=
+ =?us-ascii?Q?1nFf4flmd/TVHQVXpLlsi9wLpCm93Ku3aajtBqsomi2/AxrIa1ccM1q/pjNQ?=
+ =?us-ascii?Q?HPlolWf1p7/6oEqSw1P/M2nb8FvWSpusSHfbHFzdiY+yG6tB2pv7RNoqFAGy?=
+ =?us-ascii?Q?YU4SBNILKS1X9TNhZPNRNjUUGKedumzxOcEfUr6HJRvSBUjox8/cU5mc/bR8?=
+ =?us-ascii?Q?nTCuUYyhgykxXCWbiL6bTJjBkrAOTT+9jyOZpInUPTMIYbgcN6XWnEP/c6qr?=
+ =?us-ascii?Q?G8LRIP0kTB/IW2hD2RKyYeyNG3wzpYptVmBVIRVPSFRLlq87BlgyLzt6/Ttl?=
+ =?us-ascii?Q?wvIUmumeIAhtYb1Su5cowobCG7qfC5eMpXyvD2dBYIiS5w4wFfxjaCC3gHCF?=
+ =?us-ascii?Q?9D44uua7yRbNPzjhD1IH8cVou+AyNoAwWQ2kp3BNTBbXoLDFPwYhsWoCgWpH?=
+ =?us-ascii?Q?Z6LiEfZIKLQBpBXOHyhJI1puPZMYeLf3IludWZl4WN2+sbG6F56ZEUZ26V3d?=
+ =?us-ascii?Q?HlKoFJysKT0TWpkkUwBaVqRk7vXQZEph?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CQJSy7XlB1Q5tZHrCvh3dXSQtG0jok9BREOq2HUh07C9Kq+bRsSjfeYKKbdf?=
+ =?us-ascii?Q?Ah8+lZ4gfGgV5rMWBptuXzOP8VIzyza2Sxj++QbMqFD0lw/NylzxL+IZaYor?=
+ =?us-ascii?Q?20+iZjeHopLAaI7DCqOCnsngzpH7cs0/Fj6FUCd+mY0aVpw/zoa9IAUa97zl?=
+ =?us-ascii?Q?GGYy7q0pr0TN/cOmiL64JzpfgXvGU+rfe0EC+w+NfrjGaVMRXxYaXhrFvWB1?=
+ =?us-ascii?Q?r6m4VAG9W7SdxD677JjXX6UFSUzVD31rXQESgPQ49iNZ+pSShJYUYR+LWCCf?=
+ =?us-ascii?Q?ClRMKAS1G+fK4vzSSWhBpm3Gdb1k6+/fXDDcSIuRtdpOsjekvZk+pYixfJHg?=
+ =?us-ascii?Q?TIbIcwYOo8op+mi3k+VU0OszsjGRVWVFta06WdsQ9++fdcWu0OyGpm1znRly?=
+ =?us-ascii?Q?BRY/d9wcYKI24aRA5mB0s4c/Emhja93Ai38DMo1oggxEe5kRA6CXO+lcnAc3?=
+ =?us-ascii?Q?fZfxKJwRLsQUAepkE2ByRJeQEtZ5Uzr7klZ4KJKWHzwFl5tpn0DV9/eq96ms?=
+ =?us-ascii?Q?fwLP8LeUtIRziIYN6neUOOTuTPtbqsf5s+tph5zQGGjJWOQbqILLfoJ7Bu1D?=
+ =?us-ascii?Q?eF1ONqdzWxQoBKcjLJvYyOqpU61PBJ12XLIQJZx5k/u4YZd3z1QjuML3nxQa?=
+ =?us-ascii?Q?XnEdi2p3TNFGa7x07uFjOYN9hj9NMhWUnO90rVMI/LvkcuFx7vtY83ljtjy6?=
+ =?us-ascii?Q?auo7MVbBlWxxCUjkQj1iqD30DEJrzmXUmbOXdJlhJDMjFknRcepJqpPklqTM?=
+ =?us-ascii?Q?mI5TfR/4TzGVDskX4NUhtF5Z0y681hpKpnyX2s7lul62WGac4hwrO3LI2tNL?=
+ =?us-ascii?Q?Hbvb2nB6+e34hgx/TQ9IK3OqYXtTK2FCw950LOTqIqd7M66s0+D4EfyeMT/d?=
+ =?us-ascii?Q?NbAo3bcxntx1hMtkr7P3GXoLE7OpttOSLqlzOxy+7x5s5bTY+imvytM/2DV5?=
+ =?us-ascii?Q?yVjWzftd3xtXBm4WZrSl1IwR3IeYLDZ9pFFnpPWfk9qeERwBkTYc6kumLjzf?=
+ =?us-ascii?Q?ptcD9VIu4ConYXLT9q1zDTXvYhLVIdVt9Yk7zkkowp29l2VRyrd1Ey8GpmuK?=
+ =?us-ascii?Q?beymVJBRc5KsXkZfWVuEt7YzAu7vDZ56kzKmaZ9PB1CNOjn1QdQLZX+FpcxH?=
+ =?us-ascii?Q?6hxu21yjLE57l138xhxFEjcpPN+oKpz9YOKCSFM6CAVHycNGNDKQg6bZ8iuq?=
+ =?us-ascii?Q?u5Cdk7ChpVHOwbBP4iTyFqA/eJIySg9KPbPyFJwyVd4wnwd/1JATH/SKYdRR?=
+ =?us-ascii?Q?IhcUp8SR4dwBWWlfxSTmZH0OVmCNtufmVnLIPuS1ycmQ+nfvf4b2FHG673Ip?=
+ =?us-ascii?Q?wP29cZUEC/oyIOPGJQkjyqt+aGbDSt7SBYTiGXaUI3xDesJBijYCEChax/ht?=
+ =?us-ascii?Q?6uliqt+N4rZksxoqGQrdEmUik4AWOBFhthlvy1xN/4KhP6yXqzOSqmovRtCv?=
+ =?us-ascii?Q?6fcnvDOAuLQ0g8HWJUg5mNNYirD9IksA7Q46gu8ceSObYIjVE+RVIr+/l3Tm?=
+ =?us-ascii?Q?hkel94B/CvI6S9Y/EP75rcY+wOlqMRfNQquO+OkoZZoMN9Ob6zM+QxRFPLYj?=
+ =?us-ascii?Q?IwBSQ1BC6wVEhdNtPLwKoJkNkEoBy6NbJ1kMGSWS3IdQe2O9CV/Df1dxvVNE?=
+ =?us-ascii?Q?EA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	IF/wYiTKV66Rus3W8eWcpZpbT47WDuN3IDy4rZq3UcWKy/LkYwIPRbuGfGnbSnWk1kCYUkk8ryHpn0l2gQnp67QHh4O/pfCnpiIh5dOEWpR9xPlxFoyyAlv7HWZxIwHEbR2neLZwNuktL+1wfhj0I/ClRFdiNbu+X4ifZNiUBom+kQPD7lGsoBujqrg6HqwZoSlSvIith03lHOgEkz7ojC32+wIFIgluTfN4JxeITmFlExRkxAbZGSEj6YX2YN7vB9T5yLYf+q1NnNo4Yc9JLvubKr/40yeKE3IH/kwKnGnjRFO7xU0d4/pfjFp0r0C7IIOHFCNCzJ54Ao4wsOu5boCq2so8ytGSGny9WMB9ZIpdfjXMkJTyfvIKigov/BScr9yLtdlhfavrADYzcf5ifIEvtNdwjvFjjBxuBXiLMo9UfeoYWDjgzyaJmogGn9VAGhRFIiro8QJeU4+PVRuQketn79cwonmNVd1+LBnAmCP3aExQ9ilYvkJUJJ2tdJF4/oJjUVq5u3ZfG0PiPWRwH3PeaKPCG7OzpHjYY5g67V7xAAqRztUqK7paoqCtwrTpLnp5zxhLNqXvM9tbrcjdZhDbMunF3pV/XHgACuK8KoQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c83af6c-552e-4fae-74d2-08de22a48f2c
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 11:05:30.5805
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NNOFWkebex352Zh2ZzPW2nX0HRsV2mNGw9heCaEaS08J+fyS3qKYmqVVrgnhyYjZ6CIjp4iFMYbpwcXpJ3ZY9nXnGAkda5M3XgPNa4m3AYg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6A2C0CCA1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-13_01,2025-11-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
+ mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=932 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511130082
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEyMDE0OSBTYWx0ZWRfX0MHBBetI/ZGT
+ rmHGryKMdEyC4Wpq7ztN6wSFmmmEv22lugdRDyjgusIFAqtY8hn/00tgFwMxPjlYqdHufo1S82W
+ rjy58KZTR+2FxcxTF+tsSsOGoT6HE8eIRKLYN40LQ6bmH5O781lFG89t2NUzAEbAEybxE64KADQ
+ W8d+9ssN0Q5jZMZDltqiazxu5Zsle8DsTwLwXz/J6KGta5Jjq9HGeS9K+acEi6LKOhbFPzM/Oh5
+ 4VdqF0Mqscv84mKyhcr2kvd1QPQ24SYYwQR47hYSIoEF/cfJZ6csZGKrt4IZoiYe35GYL0ntbEc
+ OYMvNfBy6Y80lVtD/IkGfFwATo9AiNxh30M6T9JeB9eMiM56F04wg4auZwW79yE25uUAbbuTFth
+ jfGGSZYpO10nKNmR+73zvI/R9tW6Pw==
+X-Authority-Analysis: v=2.4 cv=S6/UAYsP c=1 sm=1 tr=0 ts=6915bb7f cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=iFKF31hz3x8rsBJF9LwA:9 a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: zZ8MuLIKKP44a2l3MNxh35ne_1P8GN2F
+X-Proofpoint-GUID: zZ8MuLIKKP44a2l3MNxh35ne_1P8GN2F
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0CC8218000B
+X-Stat-Signature: ugk6o61goxb7m3o9hdxa6szj98yuhfzk
 X-Rspam-User: 
-X-HE-Tag: 1763031637-648173
-X-HE-Meta: U2FsdGVkX1/6YX3HFfQCJdDDtjHxIIFR/LbWDFmbsjGqr/UR7MNiUXS7VzFJKqMG+PVsVR60Rm+2TkMgb6jUicuzwglxeCbr2esXDfBMGsKCCiJLTwJ1buSLMu/qHUlqGrT0EJ3yd6F853sjVW7okXSuaQzTxVManJD6Qa/FIDnTZd6q0/zLuxZNIR+hM9Sgcube5zV/MyLkGAEFqD8rkZT9FXPu0LWDVgiDpv3mJQ2AkOHwJicMYCyKaeCMaO/nzDIyvo0TCl2KAcXF4XOYUl1D8avgdUP9/dm7Ib8NiH5h85H40sgBVkyj46q8tcSjyHK1txFefxT7WWW0cWp9jT99U7XqCcxRSakSde+cGgfoNukkcfQi51LS6QJK09i4IlHDQyVwfYa7AZrqL3wQlTJSImlvmSniheQQcWRka7FqZ3irakaa6ODYbcr4QY4Mmd7XXCuFp0B3hSo3v2mKrbd340KdDj6x+wpUym10QZTHB5HUqnCAjZ7j4SVEiwPLZl0bzOEu3KWCG+AD0hwiiLL5SEgx/evY/Arc4Ip4PWmhV+TooqllJJJA/TLbUyXow7AZQ9c5ulCN7WkIhyKSEbazsyGyki90J3kGH4nPBMmLl2NBmgXZsq9ihPbk2ID6fnVoBJThIy4YjOKa8aI2At7s9TLBZMPwAO49Y414hMFCYSbJT4sWBc+szp4WA+p187hmBtqOBXH8opwmhvc7kdNcQ8NK8oF2SxT/zPa1TC/tGsCmwg99dbD+/piANf2HLjBkxO0OTgtjAnG3wPxPeGAF2Csi7N4irhgaFaKQ7ZYt+5XuGBoYwOsMbcUHxQqmrtcSENGv4nIOwQwxkm4BJaOcyAGA1h+qpdOLuXqPuhVdesB3w5DDOjGWDsm6LKOJTlYCmCftkipDAqVPd7M7GtMe16Mjoyt8jorB+SJ6C5VhIIIbhLtc0K8cBP+qaoLGwuMFBdSwiY2qEFQA69/
- FV/2ErpG
- pzsxigHHmf7HDnyKBx+kuoPngRw1bhO48LP9u3LULIgu9BBkRotiNq3NxX7ythE5TWnT8K6FhCYSCio3TopjNa5iyQYT5nbXgkvvlYnPprC6qteL2YTz8+3Q0HQvGBT5AbKk/lbAtBjbLQl+Zos/UEsJ4nRxw+END2uv5ZIkts5dFfaBrz2CzdtH1TyoL2Xfin4ASTvmz2I6JSPYMXDgQhs4+PHs6nsOr21OiZbaGhhC51GVRyQ4q4s02cGLreigIu3n62tgNv8olkySWmwYrzqh9GtqXhZgzKRnfHi0kt+tmphU=
+X-HE-Tag: 1763031963-291666
+X-HE-Meta: U2FsdGVkX18SkjYGEltFEUureLEAPDD0Lx0OfQZjgOa4nNo/ZiwkMIWLRNODk5vLcPytGq056M06r55T9dKJKsEPQbHx6xzacWFi9nroFQ6sguwH1ELS7+jP76sQc2noqTtPT05wVgCuuaRKIuc/9/bFImBz6AgKqMvqvYPbNNPFqiy8TnAlWA5/fXB5dbsWmG8Pf+Ct3wlrKc8GNVxAbDTo03hNLFFvg4m46zg1uHf3GwsjrXhkep4oIoKIMf5FoFNM5KqBsbYgPdOXOr9Kjgdz3S8LkyyXmwmiJ+NefAwmXyT8RHjM6cerlTgpSeeUsncu4wFKxqUMBa5nyfwR3Se6uVWtbs5bmC9tI8cDdoXsUAt9uFMThIHY7Jsf95cwP533GjKHtguGtygb2dEjZ2D6T2e3wXEbNQiq+8RKSz6f5m2CAuh9zxz3bhBTbvQh4XgLPw5WjSEZ1gC9T++PC9khS82ry5g7RfM8AX0X3XQ9f6OkOH5Qyc2WqLUgwq/CBENoGWZ9ZDbVybmfh+i/P79iC6HGE5NSlIfuz/EryPpxx5tfvIsCmmxoTu7cVVzY3ZyGrg0ocDv+1YEAiq40rIVCjZN6y+Hv7sTzl42Lalzu4JpOaGV8y9I25/pt9A4rMdio8DS2Dt1UtAUu65k5/jnI2gF4nk0vafAmfu9FHDfHYVWF0JSg3SZspHs8JCnmAhAD8NifIVr4PsofV8d//rV/qA5mDv19kSBoJiAmQriVKIo66i2GqkH8BVwaOVASNQiZ51GOZDrvl68njhpeoDw68PeVDikfT6WCTcEcBSQYbnpUQDyUel8aMVYtzQ7Ix8fYybAWIQhBzVSN2pSYd5MIC1RGu2q3w5YqDV3VAYSTrEHZboj1ygQx1fLXCgfvosstTOgTty03mryTGWZ4WAS48xEWUmVRCuqHdbzh9qQsYqZZdgL1bkAElGndQO7grQAbnbwfSFQ5qBzjgCI
+ 2qKX1S0+
+ 6U8BNEBPHhmeuy8SjmKkrK2zQon2l2xagDp7e96AIwlY+yK17dMYmNJPQqr5Mlvlb1KXYnHbt9Kt8Jn9jxUr5yM2O0M4NxExqJ2Fmo64qiYiLHRkzjNLXRCtaLrnntRt5faABlOhMdKXxvzdhiGFdhq8IQ/f9bWivdgvWdb31tg4ZaE2mpXh2ZV5wDSCwCWioxXkU1++zPPoRu/42mtc2RCsek4V0Oyk6vakD4nW/4qRaO/6tRqHb73BC/3snoKfe2K3b0nroF+nbyEfp+Dmb/c9X69al3qdOfteJukdlv2uQY6VW91pYabA/u3YAIn+pnQf5GGeBnfexQSIhrz7yXS9CApAIMIzCvf8oNbSgVXNLiXk8t5NFIECFbSoejRzH0ZfYOeLOExv1eTiUwwajIJGax8yd7GG77Xd7foN25tzz8l+6SzF77kZpy87vWQieikK8A8W8LoqmXGKoPEN8DKyq8NwBYVSlLGOeHqmOsSwUIBcSbnS0YhmqmxeXoipvF73CCCBt7X7bAoGM/S+JAM5kk7PcDjgl217Dl5U2SoUuWguGeHrFzd7COPzaEawfusATq+gyV7Hol8Yr5h26xaoFT6B17fuhpyIpUai2bpoX52Vd3OQVxXkumq/Kk5eeEgWHxB7wL70Zu67k7e/90ZbjVrDpU1Kv63mo10FZcyIxH/90jiTDTJqw1VV74uBHdv5xM7yVTYBgMDN4MFVkVj7s77hnSmm8PMz5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,134 +240,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 06, 2025 at 04:39:52PM +0000, Mostafa Saleh wrote:
-> Using the new calls, use an atomic refcount to track how many times
-> a page is mapped in any of the IOMMUs.
-> 
-> For unmap we need to use iova_to_phys() to get the physical address
-> of the pages.
-> 
-> We use the smallest supported page size as the granularity of tracking
-> per domain.
-> This is important as it possible to map pages and unmap them with
-> larger sizes (as in map_sg()) cases.
-> 
-> Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> Tested-by: Qinxin Xia <xiaqinxin@huawei.com>
-> ---
->  drivers/iommu/iommu-debug-pagealloc.c | 74 +++++++++++++++++++++++++++
->  1 file changed, 74 insertions(+)
-> 
-> diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-> index a6a2f844b09d..0e14104b971c 100644
-> --- a/drivers/iommu/iommu-debug-pagealloc.c
-> +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> @@ -27,16 +27,90 @@ struct page_ext_operations page_iommu_debug_ops = {
->  	.need = need_iommu_debug,
->  };
->  
-> +static struct page_ext *get_iommu_page_ext(phys_addr_t phys)
-> +{
-> +	struct page *page = phys_to_page(phys);
-> +	struct page_ext *page_ext = page_ext_get(page);
-> +
-> +	return page_ext;
-> +}
-> +
-> +static struct iommu_debug_metadate *get_iommu_data(struct page_ext *page_ext)
-> +{
-> +	return page_ext_data(page_ext, &page_iommu_debug_ops);
-> +}
-> +
-> +static void iommu_debug_inc_page(phys_addr_t phys)
-> +{
-> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
-> +	struct iommu_debug_metadate *d = get_iommu_data(page_ext);
-> +
-> +	WARN_ON(atomic_inc_return(&d->ref) <= 0);
+On Wed, Nov 12, 2025 at 05:27:22PM -0800, Paul E. McKenney wrote:
+> On Thu, Nov 13, 2025 at 12:04:19AM +0000, Matthew Wilcox wrote:
+> > On Wed, Nov 12, 2025 at 03:06:38PM +0000, Lorenzo Stoakes wrote:
+> > > > Any time the rcu read lock is dropped, the maple state must be
+> > > > invalidated.  Resetting the address and state to MA_START is the safest
+> > > > course of action, which will result in the next operation starting from
+> > > > the top of the tree.
+> > >
+> > > Since we all missed it I do wonder if we need some super clear comment
+> > > saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
+> > > by doing 'blah'.
+> >
+> > I mean, this really isn't an RCU thing.  This is also bad:
+> >
+> > 	spin_lock(a);
+> > 	p = *q;
+> > 	spin_unlock(a);
+> > 	spin_lock(a);
+> > 	b = *p;
+> >
+> > p could have been freed while you didn't hold lock a.  Detecting this
+> > kind of thing needs compiler assistence (ie Rust) to let you know that
+> > you don't have the right to do that any more.
+>
+> While in no way denigrating Rust's compile-time detection of this sort
+> of thing, use of KASAN combined with CONFIG_RCU_STRICT_GRACE_PERIOD=y
+> (which restricts you to four CPUs) can sometimes help.
+>
+> > > I think one source of confusion for me with maple tree operations is - what
+> > > to do if we are in a position where some kind of reset is needed?
+> > >
+> > > So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
+> > > to me that we ought to set to the address.
+> >
+> > I think that's a separate problem.
+> >
+> > > > +++ b/mm/mmap_lock.c
+> > > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+> > > >  		if (PTR_ERR(vma) == -EAGAIN) {
+> > > >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
+> > > >  			/* The area was replaced with another one */
+> > > > +			mas_set(&mas, address);
+> > >
+> > > I wonder if we could detect that the RCU lock was released (+ reacquired) in
+> > > mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
+> >
+> > Dropping and reacquiring the RCU read lock should have been a big red
+> > flag.  I didn't have time to review the patches, but if I had, I would
+> > have suggested passing the mas down to the routine that drops the rcu
+> > read lock so it can be invalidated before dropping the readlock.
+>
+> There has been some academic efforts to check for RCU-protected pointers
+> leaking from one RCU read-side critical section to another, but nothing
+> useful has come from this.  :-/
 
-Is it worth dumping some information about the page in addition to the
-WARN_ON()? That way, you might be able to benefit from other debug
-options (e.g. PAGE_OWNER) if they are enabled.
+Ugh a pity. I was hoping we could do (in debug mode only obv) something
+absolutely roughly like:
 
-> +	page_ext_put(page_ext);
-> +}
-> +
-> +static void iommu_debug_dec_page(phys_addr_t phys)
-> +{
-> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
-> +	struct iommu_debug_metadate *d = get_iommu_data(page_ext);
-> +
-> +	WARN_ON(atomic_dec_return(&d->ref) < 0);
+On init:
 
-nit: I can't see why you need memory ordering guarantees for the refcount,
-so you could use the relaxed variants for the inc/dec operations.
+mas->rcu_critical_section = rcu_get_critical_section_blah();
 
-> +	page_ext_put(page_ext);
-> +}
-> +
-> +/*
-> + * IOMMU page size might not match the CPU page size, in that case, we use
-> + * the smallest IOMMU page size to refcount the pages in the vmemmap.
-> + * That is important as both map and unmap has to use the same page size
-> + * to update the refcount to avoid double counting the same page.
-> + * And as we can't know from iommu_unmap() what was the original page size
-> + * used for map, we just use the minimum supported one for both.
-> + */
-> +static size_t iommu_debug_page_size(struct iommu_domain *domain)
-> +{
-> +	return 1UL << __ffs(domain->pgsize_bitmap);
-> +}
-> +
->  void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
->  {
-> +	size_t off;
-> +	size_t page_size = iommu_debug_page_size(domain);
+...
 
-Since this is a debug feature, is it worth checking other properties of
-the arguments too? For example, that phys is non-zero and that phys +
-size doesn't overflow?
+On walk:
 
-> +	for (off = 0 ; off < size ; off += page_size) {
-> +		if (!pfn_valid(__phys_to_pfn(phys + off)))
-> +			continue;
-> +		iommu_debug_inc_page(phys + off);
-> +	}
->  }
->  
->  void __iommu_debug_unmap(struct iommu_domain *domain, unsigned long iova, size_t size)
->  {
-> +	size_t off;
-> +	size_t page_size = iommu_debug_page_size(domain);
-> +
-> +	for (off = 0 ; off < size ; off += page_size) {
-> +		phys_addr_t phys = iommu_iova_to_phys(domain, iova + off);
-> +
-> +		if (!phys || !pfn_valid(__phys_to_pfn(phys + off)))
-> +			continue;
+	VM_WARN_ON(rcu_critical_section_blah() != mas->rcu_critical_section);
 
-Hmm, it looks weird to add 'off' to both 'iova' _and_ the resulting
-physical address. Is that correct?
+But sounds like that isn't feasible.
 
-> +		iommu_debug_dec_page(phys);
-> +	}
->  }
->  
->  void __iommu_debug_remap(struct iommu_domain *domain, unsigned long iova, size_t size)
->  {
-> +	size_t off;
-> +	size_t page_size = iommu_debug_page_size(domain);
-> +
-> +	for (off = 0 ; off < size ; off += page_size) {
-> +		phys_addr_t phys = iommu_iova_to_phys(domain, iova + off);
-> +
-> +		if (!phys || !pfn_valid(__phys_to_pfn(phys + off)))
-> +			continue;
-> +
-> +		iommu_debug_inc_page(phys);
-> +	}
+I always like the idea of us having debug stuff that helps highlight dumb
+mistakes very quickly, no matter how silly they might be :)
 
-You can make the bulk of this code common with the unmap function.
+>
+> But rcu_pointer_handoff() and unrcu_pointer() are intended not only for
+> documentation, but also to suppress the inevitable false positives should
+> anyone figure out how to detect leaking of RCU-protected pointers.
+>
+> 							Thanx, Paul
 
-Will
+Cheers, Lorenzo
 
