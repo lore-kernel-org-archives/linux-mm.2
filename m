@@ -4,229 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9DB7CD4F28
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 07:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2704CD4F28
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 07:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 130758E0007; Thu, 13 Nov 2025 02:23:23 -0500 (EST)
+	id 02F568E000B; Thu, 13 Nov 2025 02:28:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E13D8E0003; Thu, 13 Nov 2025 02:23:23 -0500 (EST)
+	id EF82F8E0008; Thu, 13 Nov 2025 02:28:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F11718E0007; Thu, 13 Nov 2025 02:23:22 -0500 (EST)
+	id D981D8E000C; Thu, 13 Nov 2025 02:28:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E12608E0003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:23:22 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 822DE13BD1F
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:23:22 +0000 (UTC)
-X-FDA: 84104743044.23.E1E4703
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 31553160008
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:23:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=chlb+Qxx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NaxqcM05;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763018599; a=rsa-sha256;
-	cv=pass;
-	b=QeZAUtJPLWtOs5H/pvt7y0eD3kL0h6ca6y+CDIgzb0wbaN/iJMcI78h+zs9WmhQt9DPp7w
-	0Rr/spLvUjEIRzgbSCo7MleKCw7VaZcBOgjpmmryj+KJYQ023pknLKWX8CCo/QBTfWi1Ng
-	5y068nzBQdg8kOqz8F/KKbt8xMH50tQ=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=chlb+Qxx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=NaxqcM05;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763018599;
+	by kanga.kvack.org (Postfix) with ESMTP id B2BBB8E0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:28:36 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60FD81408D3
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:28:36 +0000 (UTC)
+X-FDA: 84104756232.01.46082DE
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 38CB2C0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:28:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763018914; a=rsa-sha256;
+	cv=none;
+	b=GcaByseds5C2qZZvLNp4JNbPKZendMfJjOi75LhqOI0dZdXjvGDToP73vyr/3AgMOEdUFH
+	w3Ath81Lx90QIIQmcwqTHq18blXuNNHY6xBW0OS6qzSWyhKULrQqOfmcZmbojlYn5aCMO7
+	lOyYt72zxRTV17Y2XsBNwq454x19pcc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763018914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fFzT42YeVSEUFDiS6HILCnmqet0kwuNpIRZlA0lWC1U=;
-	b=ql5Emp+0WUJ6wTdaUGBsD4jCLGlz8GYh2qQSmWzzb/y47GE+OWdiceRu6wYMqKCkAu0wHl
-	ofXb9ndfbiJrJYZj8FbIRlmalzbwxIp1rYbMsUu9rJnxQjtGJXcLvVbejs/E4cbtyCigJk
-	rM9YvgLfOFyDB+BK74NLlWQtdczf7eU=
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD1hvKT022199;
-	Thu, 13 Nov 2025 07:23:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=fFzT42YeVSEUFDiS6H
-	ILCnmqet0kwuNpIRZlA0lWC1U=; b=chlb+QxxVXm/ECyZsAnqX1RG7mPi0Czg9n
-	XnvCd1pOsX8k/VENWpwt8tFHy5Lp4kRER5d4CdBc/rUucKqpfcaP9+s6m6WmTwRR
-	e544NH3avaG9zW/EZKSugd6GQoWjXa+sxdUkrwF0174sQOIQHWFqF1+GGOVGbIAc
-	0/PwF05++a0EqFq4c0D/0RRYUbF2OXyPCQChN9eACqnbnK+zZgJsuLUCAktfUcAG
-	yrnIMs2BsxnCBt58oRQUB6N8/4Q1eDNP/U+aT6OZdJY73mFtzEvSPmusknpQmbCe
-	VI4/+7oj3Eq1dU79Nv4D/3XkgZFacjIPDXx4N7R4jOE1Wh0ovmtg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4acyjt92g0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Nov 2025 07:23:16 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AD7GlJK011342;
-	Thu, 13 Nov 2025 07:23:15 GMT
-Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012024.outbound.protection.outlook.com [52.101.43.24])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vaf9kqj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Nov 2025 07:23:14 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hWWWUpENcB+NLLYp5p9mldAB3vZKyrXSXg16wYqtWW3XF0+9obbheeYuyfh9qygMX5kAccSukTTGkSv/HC9cPX9IsA2uZrjXl+MUqQ7P1FCo5tZ87V1xJIZNH8kMP1liIGLoIVAqoxp/V4fbAnRgP7ZgqpfNZ4+xD9uQGuTL3aNyVIexd8DU72r+gariQRY/fUQ7oStMgiQTVMDz6f4m1OONDTZK60mqPohqQgtiQPXf5sGZr47PvTYV+wIuq3Fd7WlVRtll2eAfR3Wla4f7Qy45r+1lUgyLNIB4tdDai5u2jj+cxSHx9yeRPrvmzhRvIPzenpq0yVgt+4F9l683dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fFzT42YeVSEUFDiS6HILCnmqet0kwuNpIRZlA0lWC1U=;
- b=KylGhCFXptlSv+QKgTlwUtwMGAPZnGVFgHGAO8Lqgk0XComFp2grcb1dshfO7L47md6flKNmHmEZqQvfqcXPK/4N9C7v8buB3hwj2WdXQ2EItEeVIFBEd8FvZ0lEZZCJ2Mr3lTsnzfcRuLNQughYHfvuUoTJ15rY7V5j+LxV+qRpVDgmAdzFlU4e6Ywyx5VEZgF96B8gOprqow5MvWDEQ2Di/Ibun4iqx7ciDi8fVShgl9/Q+8DYeo0nUWRU8fxJ5N+tOj76iLIKpBszLHKruvKyaqa/gfBimvBXQZkPjB1CSvKOgxlSWbaHpgzLXF3ml5/44ta4wYQdohzZuvf2SA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fFzT42YeVSEUFDiS6HILCnmqet0kwuNpIRZlA0lWC1U=;
- b=NaxqcM058w7RjBhL9z0zXIMzBm5Hxwt6eQp3wz/9hCRIqE8AVegYs3cWrxkklq1+0YXIy2zgMTYWakpI0MdyqzhGfH9Z7neYIuultTp9zN8Nc2O4huwcsdgT4tSh6x56IICf7sNkkMlCqerwMIe69nCmx1KECh53IePz8k4Vtfs=
-Received: from DS0PR10MB7341.namprd10.prod.outlook.com (2603:10b6:8:f8::22) by
- LV3PR10MB8180.namprd10.prod.outlook.com (2603:10b6:408:286::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Thu, 13 Nov
- 2025 07:22:56 +0000
-Received: from DS0PR10MB7341.namprd10.prod.outlook.com
- ([fe80::3d6b:a1ef:44c3:a935]) by DS0PR10MB7341.namprd10.prod.outlook.com
- ([fe80::3d6b:a1ef:44c3:a935%5]) with mapi id 15.20.9320.013; Thu, 13 Nov 2025
- 07:22:55 +0000
-Date: Thu, 13 Nov 2025 16:22:48 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] slab: separate struct freelist_tid from
- kmem_cache_cpu
-Message-ID: <aRWHSDnLIVsf6ex4@hyeyoo>
-References: <20251107-slab-fms-cleanup-v1-0-650b1491ac9e@suse.cz>
- <20251107-slab-fms-cleanup-v1-1-650b1491ac9e@suse.cz>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107-slab-fms-cleanup-v1-1-650b1491ac9e@suse.cz>
-X-ClientProxiedBy: SL2PR04CA0019.apcprd04.prod.outlook.com
- (2603:1096:100:2d::31) To DS0PR10MB7341.namprd10.prod.outlook.com
- (2603:10b6:8:f8::22)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=Jq5gi6Es7y/gJH8S+62W9syU6/Rmp8modepqjiMosMk=;
+	b=g/Tv2rj3QJog1xbn4jdAmCmeJ/UpfRaRftjiX5dNzEUXNCp/QzA8ZtsAswWz30mg/ch1eQ
+	H+bzQ/EiIxyISJsqjuG2Zq0UI2RQc6sqhWvPqc3TVryHSGB9GADk3lYdpQGkznDvAqcorF
+	2DvyTSn6QDTOrgwDwegypC7QVcym2pM=
+Received: from ubt.. (unknown [210.73.43.101])
+	by APP-05 (Coremail) with SMTP id zQCowABnbG2RiBVpVTOWAA--.33691S2;
+	Thu, 13 Nov 2025 15:28:19 +0800 (CST)
+From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org,
+	Peter Xu <peterx@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	linux-riscv@lists.infradead.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	devicetree@vger.kernel.org,
+	Conor Dooley <conor@kernel.org>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Ved Shanbhogue <ved@rivosinc.com>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	Chunyan Zhang <zhang.lyra@gmail.com>
+Subject: [PATCH V15 0/6] mm: Add soft-dirty and uffd-wp support for RISC-V
+Date: Thu, 13 Nov 2025 15:28:00 +0800
+Message-Id: <20251113072806.795029-1-zhangchunyan@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7341:EE_|LV3PR10MB8180:EE_
-X-MS-Office365-Filtering-Correlation-Id: c1f32c22-d8e4-4f0e-6226-08de22857709
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Q92mFGnnxRI9+kWWM4uEbNpEOOERRxi4XVTzjDLywQaZubMoVYIB8PgXWnYA?=
- =?us-ascii?Q?f7X6grV+nnvxTAN+kGvNf5l63EDenOmXlRublYBji7Yx5rKlk6bdwF+hpxJr?=
- =?us-ascii?Q?g0Oy86gzg0DmclVUu1JIfeHcYkwCWymEyB6NlF3FDhQNFmuQD5q+rVYZ36L3?=
- =?us-ascii?Q?VU/+1nyAgpSx9cOnyFAw/Xjf8x5+2lOVTuTegm4fczytOxMl1hvAeLAZFrNI?=
- =?us-ascii?Q?t8WbxY+iuB1k6hDGNv9NSQkVNP8eX+HA8AyGyjbRm7m2q9R7vl8MJxdXmnh0?=
- =?us-ascii?Q?Jj3ZV+mA2tl8+6ZhN6deUzujKCSaIcgM1zMBunvL8spIFw6R2gza2q7QFWY5?=
- =?us-ascii?Q?eYwhk746yY/HRv67pdwfhtfsX8SkROuuXOeJiJO8Jj8qfKvJEq6rzXVnjUDb?=
- =?us-ascii?Q?HJKcEC8jvNojSIwYgSOyUbyIuzUt9/KeK6MObhrib7M3x3d9242HNLJwsDtX?=
- =?us-ascii?Q?J8ZkRzYcxiR1lfUpOAaPl3vsXYh86exo+Ep8AUFAQlvzZ/Bx5Qxc7H1a9Xoo?=
- =?us-ascii?Q?+KeV/fhuHEyaNF8v0QM+Nq/Zc+P/Aha2DHfkFy8gTFYrXfLw/2hicpw2shzZ?=
- =?us-ascii?Q?j6DbT+4E0847tTE4rQoAQBDPmWGzkBVY5PPMltFtUe9/6Z8DLeuH2Uf7MbEl?=
- =?us-ascii?Q?UpI8qoYibrWofslrgfoNxUdqXkQ9PYYJNDSpn/Ck5Edey1N+151W+mi88MDp?=
- =?us-ascii?Q?4rJJfvwnDDdWdLC80AWnKbFX9ZEc39sOP0KQxiSJIoEeAIAwile1mb7BQvIn?=
- =?us-ascii?Q?27YhLW83IbDTTeHPqZyOnsTvDzV1webtJ0pbmPZbG/4QAvlx5bA73ueR7CuZ?=
- =?us-ascii?Q?scsUikoIsMIZnJx1XwrYzU+U1IImC70Eoie7kSygiWq7MK/OeEC1MXBHScPN?=
- =?us-ascii?Q?/g/nEaT4JgIDneAbm13BPalZN+x81j4EuH0yZeRSviV/JM6Ec6M6wy3f5hqI?=
- =?us-ascii?Q?nt9fuH2y/Q39N7nDJR0bbkWzFL7yTy1AZdJZd4RxO3XfTjBlWM5rq9hIdnSr?=
- =?us-ascii?Q?lTScEgMCL3gZkOMZYlfpzAzvCL4MFRAt+vJ7XDjxAXqS4yXXCxMt/lyDz+cD?=
- =?us-ascii?Q?8GpIvagsdp3YIX6h0NcC2rc1oVm7P6bmof8YTMRZo0Q30J7+upPLTjeXnCSN?=
- =?us-ascii?Q?JwBITCvDsTUliK/YyFAZMTZ7elKs9OOEt6cM45PUBqWgVttte5f8IAlAd3Yn?=
- =?us-ascii?Q?uKKet1byP2BsCjamA3TxOq0Gn1ungBs+WwwgnrWFX5OiWhQDQlkOahOpHjQq?=
- =?us-ascii?Q?uCgmFd/ySteq/dG/Xp1jpvkVDh+5BoIJ9QQOAiGtvAf6HkaKtYXFHJrq8aNG?=
- =?us-ascii?Q?jH82KgF6ZURev0jO8lwa7p9mWDWd7RgfKPpFzLer1lH7KvDJ9vPZR55tQ/dT?=
- =?us-ascii?Q?pURnHEJue4o+/pxFMFubjvc586hUu6lID2UoIMRsCpqpFhNdDX9R+jGpanQG?=
- =?us-ascii?Q?EKhujGkcz/KTA31JXpc98D290tD0LyIi?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7341.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?71nFpr6qKMhd+LM97qC05hG5yg3CjrWyhbN+iSn1gkgk28T1YjSt/rFhuqVZ?=
- =?us-ascii?Q?GqiJ9aYtAPtBdo+9PKw2ncvdtvPjAKNOl39x7Cwy7YbN/H+YA5DIny/eB/LH?=
- =?us-ascii?Q?fthq34XKYnDvs0Q4ea35VJcH/qbW03YxcLePBHh+OiwDCzCujstKakeZHH2R?=
- =?us-ascii?Q?iZIh84+NfDCzb+6NwrLUr+POVedbVG7JrEKyBJ1qMqjA0ntaMrMlzPdVxwAh?=
- =?us-ascii?Q?5D+Z7CW/cNA4B4QsBwkNwF39pxMXS8rvdnEzNFkJyZ0d+jipFOk66oBeH4vp?=
- =?us-ascii?Q?M4R4fcEBsp3S5EOsCG1qrcDEW9sw5QHyFbeJKN9on2KPd2jdwQ/O5vlCoI13?=
- =?us-ascii?Q?dK2UU45Cvz1HahTX3uiENNRH8tMBLSTe3enjP/JW6GVI2cB8Pzhg8GggfSFr?=
- =?us-ascii?Q?/BICKYgckj8oKjY+izbWuOaXlRYpGSW4XdSRzO59lyrI8wBP8/XbL/ae91sX?=
- =?us-ascii?Q?YHRjY2s5Z02hf1aXcdx+t4qf3l2ETZTxljRC1VB6JQcbaX7+xEeHx0+LcfIt?=
- =?us-ascii?Q?rYsYTphMjo9OyYtWclbGkHEdOz5ITaECpvX/sL1ZdfSGB6lrF3vN0aw+QrCr?=
- =?us-ascii?Q?zDv9nmlH7OEvvx82odlsvW/poRN36qUK0GbJqagP52JsXr5ojlezDvYlW7gb?=
- =?us-ascii?Q?jWT17p8skZHj+HUUppfZ6nBMwJM31w0vpxY0JyKe4pKG2L8EHWfGlIGEBVxS?=
- =?us-ascii?Q?5aPRGw5bFulI4aoFw2LlHmHRizwv3oCHaQxGR0+5wNygmsLSLMGWRfxuejk9?=
- =?us-ascii?Q?FyiVchu93mFa4jmLV1xO3OvJLGrJAfhrw45064Z/BY6iNDUmOKcwBs5MM1by?=
- =?us-ascii?Q?E/zIgGiLq6dokDMo+t3yZkZ5woeHqTAyupRGmWV+jxLQbJrPcuZ164cUmBsD?=
- =?us-ascii?Q?4FmVdyssMp/PIUZlgmz5DNzuMXjqiFoNikdASowVaHbiRNq+xs1sui37AnX4?=
- =?us-ascii?Q?Cmmo0NCmLU7Rc90OiTGl7wqngtkiCQav7zxndMxQVUY9lZ5D+sDJb4tUyOYB?=
- =?us-ascii?Q?A78G6lDFRKPeEQXGEaZmIpZvJNajdJjEQGz3W6tK1D1TqDPfdmndPHz/YGI3?=
- =?us-ascii?Q?BhVBZd1efFayvfQhHgbAjff1+YSNMuxmJjx2LqQ1JOr0tm6Eyet+bjTSHq2C?=
- =?us-ascii?Q?ku1D2f82BUt7fiQRb+uqWO0Y1QiFH6UiNMruP5r2Q9htgnhkNpfHpMWRCWJw?=
- =?us-ascii?Q?maoirgt7vcJExl0trShln1S4r3TASJX7MmP/smp0e2VN1/1gXrhRvBhw1Vn2?=
- =?us-ascii?Q?qrUIsQrR8c9KTEEHMUaLCrcxHJTxDw62DKBOGxLNbQOCgt8drqxRUq88BypO?=
- =?us-ascii?Q?OyrRqPf9Je+uEfy7bS0dxA4S3Cy7/ubw052iTSdd3cEMhX/SP3viuvUiI99M?=
- =?us-ascii?Q?V2RDhcxgbig59is+KhSF4m2Vyo3jXEXO+SrGd0LT1rk3UpdMTVvslb8MgWtI?=
- =?us-ascii?Q?wO5HFnOZGdWsCtAFYafHIQkbt5uFJLM4Xm7W6iBBrpjY1iJ/32xjI+/x36ui?=
- =?us-ascii?Q?0ipHfb6M4AOnE15YMDhLmYLwaCQ4yLm2Pz7l49CFjBirw9DbV7Wrxp4OgDqq?=
- =?us-ascii?Q?gezX073ID+p72U0HTe1jSGkHhT3ycxiOyG3rFPIs?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	umMv93AbzeeVhviRvGJiu5IVu8iIevD9SNydNYohmHGWOlhRnnRfeHXGf9B4WCoWAAlXFVnelcOfLiFP/w7vp1uKhm7wlL3AOXLxCPgk9E6cWRqR0y/60So39H9s3xJ4EYnM9x2Ce3b0za65dBi21q0EhzSHdOeSvJv8iqB+W34jArQ+OCGppt5ZwbyFRFNgQPE5U1E+F4SvRgkJ/FYIFWK5+7Yek2zd8fmEUE1Gunrz3DQjuwS2HHqhzvuAGP4X1i0DJDeZtkLii/QOWuKnossfwJa9XeiOW6SdBFqPCcWtedlEU5xylZqVonbPF0+SLVvcv/Smbg/0hMyzVkYaafThu0BnpOkZiUYKmmnysucGnUT8yUGQ/Mbm+npODqc6h+kD0cYxBs1vta83UweOnRXKr4wzTnVJcbEcRXo2eOsabtzKIAsDeFWuezhXKo/4VVYex480fAvByqWg5wcbwB45g8WZ5mNcWSOsX67t3FSx2t0mcXZBSLNSWdo+lnVdVX/nkbJ3Ez8CTarQQS0E+Jmc9y1mckKYRlXcgYnDOYLhukgWh3VQVV16rfe22XdeSSPXn2gUCaVSW00zHqaL1J7gQIZLXapF3w/eEPyiLgg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1f32c22-d8e4-4f0e-6226-08de22857709
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7341.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 07:22:55.8539
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HdlCCyPg+lcfle60q5UmesTb52oq98BoESnbtTgQTD3umlhZuZ9qhpe5cdKbgcr557MIdrNuRnD8cHqZSuYDtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB8180
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-12_06,2025-11-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=908 mlxscore=0 spamscore=0
- phishscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511130051
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEyMDE0OSBTYWx0ZWRfXzSKRI0lxaTSp
- iJJ4zvX0jE6rNMNd5rd+oNeIywGiEcEEeah9uxuN8d5FNmKlwwS9FRgeSe0sys98NNKx7TWQJYg
- sEAj/lvC9sZn3iHrPCSBz1RjmrtGnpdGbAebMswM/y22nbhj0KcGIHssVgn8iDC0lgTENAyVcrl
- caayJ4KOq29i8Fgk6lmAhYlrQu7f+seYh9PhAAK4y5UH2YjyNURJDglJO0I46XrN4Oh89yuQd4e
- FTHg0OT5n/8f5ukaDxphtLYjwvdG72L8nGSV+XVwecqvSQ2kP7PrGKJxoI0RraLk9/YQSWdk9gs
- lYhWCLdUvZk3DWsM76fKdX6OBk1DCOBDuFFEPn2KE+tQA8Rz80GhjpPP9Y8ck7e18TDY4T1CekZ
- JYlGFWFORke4JVZqDotyUi/lJQ7Du3sJhfERyAlU7lxZYHP2aZc=
-X-Authority-Analysis: v=2.4 cv=S6/UAYsP c=1 sm=1 tr=0 ts=69158764 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=qiMz8tWPJYnlGiwox8QA:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:12099
-X-Proofpoint-ORIG-GUID: eYWHPIo9qLNM1PE2_ZmXksUpEEZSbsSz
-X-Proofpoint-GUID: eYWHPIo9qLNM1PE2_ZmXksUpEEZSbsSz
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABnbG2RiBVpVTOWAA--.33691S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Wr18CrWDAF15CF43Zr4DXFb_yoW7tryUpF
+	4UGry3tr4rtr1Iga93Xw109an0qan8tw15Gw1rX34rA3y2k3Wjvrna9a1rWF1DJr4UWryI
+	qrWakr90934qyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9mb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY
+	04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwIxGrwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
+	6r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
+	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07ba4SwUUUUU=
+X-Originating-IP: [210.73.43.101]
+X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiDAYFB2kVaThzyQAAsf
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 31553160008
-X-Stat-Signature: n69qw5anh635ot3tx3k4neeazgunbucw
-X-HE-Tag: 1763018598-441932
-X-HE-Meta: U2FsdGVkX1+8jelmLHl6AzSgzJuRRRRCwOrUnWouF7cEVS4wjABsBd5DzGdLEzOvvt1Vr543Hh1auYQbf2z+j6l5g1A1l+TfRMzpOtgh2x8qlDTL6+nxc0opL2enZhk0AQumLB7U8cQtiaCf4eo+JXAYgo25UpVnJ704UuDvzFH9QjU8A7MGrVvKhomXpMDFPmGCqamaSk88Srv8fUfFjbnIPZzAq6bmk+E/1pIq1Oj6t5nDig4fH/PnYU9MBzeFjokMXBrf4FDW1PUKRLnlJqdielf32uPH5nkb3QP8cNGTwOO1N5NzdD7wFez7lX66WAScHkODtzY1m+cAAEK1gATZ7NegOJzHmQPWNCfRle0pLuF3rUDG53smMYDGNEWiHUXb1wr83LyVPJwbNxTsjjKHH42P+OuLyj4LMNdp639hQ1RUu/HDvy3AWW9jC8VZfdKVIH8xT3xDWlqcfDp6osPP/eGjTVg7HplUFk3fYOrz+kX89KT4Zecx8GTVlCEycBLkUzAbZnh+SbBJbnDsWWwn67kNv9cmFWMx5H88WrLWiculpRzvSG0n8+4vnRUfaY6Ou6+snzdwKiQ3krAkzMxJhVM4xIaxSfrim/EiHXmVig5c9OmTG09QRTYrCYDOfWDWYrl6wLntpi5uWWFsG38cVpgE4Fk1YV1Dfu/bpRhqaqhyfzgLa6O5X0dkrfk0e7DxaYkAuwmFx2CS5ANv+C+jX/b0aR/itMx/85BnnmKFTTVvnJseFBDO2qdeaWzjO6BtnX0lUUVEqirbMkNL1ejh/g6/5tGkdwk8ym6c2teypV5rJvr+Kojrd8npVgwlOCwnShW/L/XTz9QV+lBOFSvTnS5l3X9a084Mk+v3dzO4LGisVw+n2tRt7pE/DuvtSrUKI8AfA1ZR8UXQyP2WYnLziZp6gGmrYSLqIqiHgmNuN2HWS2r36FEHrpZXSJVdgG0BKmEw/uriA06yOBp
- ANxLaGLZ
- +STXecRhTMxHUVz9ittGAEmhl3HGCzCW0+s6PkdCne+T1CrkfV3v6kCj4Ajj57n2+hHw3mZnsj9pvBkxha+9Rnstq8EjqrWVjySac0HIltG3R4Cc8dQc+ZtBiuDZ7OaQCPXw1
+X-Rspamd-Queue-Id: 38CB2C0003
+X-Stat-Signature: ehskj5ida7jhko4a4osx5km8y4icox4s
+X-HE-Tag: 1763018912-531335
+X-HE-Meta: U2FsdGVkX19U9FhQuxu1fiPndXFS/2KQ4bg4uK389etIW6kTyQKbMfApObcriProbTJMe++httPrXxjoUhkrjDqOQvfFs9V5jJRH3hGekIiRH+ywdxVtVaSUUZXSpjY0cGa9wZvEeER/sm8kuwd6wgZD0yr/LVR/U1PRnGGrUnjscgHJ2PhltOKc01BLiJLqsYPGAn+ZSSHwN0v701cM7WVb0oLebcOeGYAIQ9hpVSXdgnvzSRkMLJoqPpThHFb423dFT4KT2gKawoMb3k3mBJ9TU1bXwyinZyn0qa6xMK7oil/PaHtdGbNXG9aNrG8r1RyDbOx4jE2zeCppkxCI5lGuhJf5OmoETSAkE/bnTKwg1GH0qQJDtfL7mq/lMJ1/6JcmQ1CS/Nyvf8KIvi20e/Mwas8DRhWx1+V/HqPDCT2IvrBMn/ERxd5jRmvJ9gMQTnPf6A/rd3iYBfbwNBF4Fi4NcoUxcsKHad0tPktt2Y2f7eQFGETTFLRGss4xCQOXBRtz3O519y27oMQ3o64UdwxJsQncjCW44r5ozhGB1EW61tdMCNOgzIdINrEVInCzQ9Bzhp1T5IuG23uQ0uUs01kTXLryiVNJyDtgyUl/WHaszbX9jg4FSjgt2euMmNg3rtCDTuoDS6ta2AzxPVIG9YyMad9godix/vJJotsPt15hsDvpLRYphP77Z5Bd/eE+M6XmI4oOnIOs23cbTU+tYezm/M7P9xPubv2NVyLXeiebepJ4NZBcXqsneXn7PqZ+4eVhWTEz/vkddN0QZW7vAL5w8vQ9Gdav+IbB8P+Si3lKikVQLijrtTu7mxDdBb8kz6vq18sVtIkDIN7NPyw6AjiAMxaBKCXueIQpnrRPegHhNy+gU8lwU12xqgFxJN5D4sFL/8aIvVMrmgFO3gzBG91rxCtgncYM0uS1czI5ICQ5fIe5+MMdiY62QeDZm3NXPuj4uCtJOYcOZXrZlwU
+ fS8773iI
+ nkFD0QpBHrqcsRAe8yU11nofmeBb43zHfuFxrBSMVCglBbdGYuiu9ssL8U5RXj0N7eqk7e5DeNMBhmAWd/SX+vvFFMk7vg8ZkCyxzJwmjdQqZEy15qeUSRyVVdM3AA8Y12Khrm3lW65JNfcfbc0QatgzI1EnZogONAm2MKzfV+IrqXuldnh3unEEAZ9MZuVVAOFhwchDGQgrJV+jbKDPjoL2PMF7RQ3BevqB19gAcm1+fnJMLHoifZ19KqaomwaBPynOvpGvNyvdwF4Zj+DRssP2ilenchBT2KNGJE/U+rgiP2PirH6LZ6PZfxQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -235,27 +120,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 02:51:23PM +0100, Vlastimil Babka wrote:
-> In kmem_cache_cpu we currently have a union of the freelist+tid pair
-> with freelist_aba_t, relying implicitly on the type compatibility with the
-> freelist+counters pair used in freelist_aba_t.
-> 
-> To allow further changes to freelist_aba_t, we can instead define a
-> separate struct freelist_tid (instead of a typedef, per the coding
-> style) for kmem_cache_cpu, as that affects only a single helper
-> __update_cpu_freelist_fast().
-> 
-> We can add the resulting struct freelist_tid to kmem_cache_cpu as
-> unnamed field thanks to -fms-extensions, so that freelist and tid fields
-> can still be accessed directly.
-> 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
+This patchset adds support for Svrsw60t59b [1] extension which is ratified now,
+also add soft dirty and userfaultfd write protect tracking for RISC-V.
 
-Looks good to me,
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+The patches 1 and 2 add macros to allow architectures to define their own checks
+if the soft-dirty / uffd_wp PTE bits are available, in other words for RISC-V,
+the Svrsw60t59b extension is supported on which device the kernel is running.
+Also patch1-2 are removing "ifdef CONFIG_MEM_SOFT_DIRTY"
+"ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP" and
+"ifdef CONFIG_PTE_MARKER_UFFD_WP" in favor of checks which if not overridden by
+the architecture, no change in behavior is expected.
+
+This patchset has been tested with kselftest mm suite in which soft-dirty, 
+madv_populate, test_unmerge_uffd_wp, and uffd-unit-tests run and pass,
+and no regressions are observed in any of the other tests.
+
+This patchset applies on the mm/mm-new branch commit ea53cb52f919
+("mm/vmalloc: cleanup gfp flag use in new_vmap_block()")
+
+[1] https://github.com/riscv-non-isa/riscv-iommu/pull/543
+
+V15:
+- Rebased on to the latest mm-new branch;
+- Removed a redundant space;
+- Added Conor's Acked-by.
+
+V14: https://lore.kernel.org/all/20250918083731.1820327-1-zhangchunyan@iscas.ac.cn/
+- Fix indent inssues in userfaultfd_k.h;
+- Some descriptions and comments minor changes.
+
+V13: https://lore.kernel.org/all/20250917033703.1695933-1-zhangchunyan@iscas.ac.cn/
+- Rebase on mm-new branch;
+- Fixed build errors;
+- Add more exactly descriptions in commit message in patch 1-2;
+- Replace '__always_inline' with 'inline' for uffd_supports_wp_marker();
+- Add Svrsw60t59b description to the extensions dt-binding in patch 6.
+
+V12: https://lore.kernel.org/all/20250915101343.1449546-1-zhangchunyan@iscas.ac.cn/
+- Rename the macro API to pgtable_supports_soft_dirty/uffd_wp();
+- Add changes for setting VM_SOFTDIRTY flags conditionally;
+- Drop changes to show_smap_vma_flags();
+- Drop CONFIG_MEM_SOFT_DIRTY compile condition of clear_soft_dirty() and clear_soft_dirty_pmd();
+- Fix typos;
+- Add uffd_supports_wp_marker() and drop some ifdef CONFIG_PTE_MARKER_UFFD_WP.
+
+V11: https://lore.kernel.org/all/20250911095602.1130290-1-zhangchunyan@iscas.ac.cn/
+- Rename the macro API to pgtable_*_supported() since we also have PMD support;
+- Change the default implementations of two macros, make CONFIG_MEM_SOFT_DIRTY or
+  CONFIG_HAVE_ARCH_USERFAULTFD_WP part of the macros;
+- Correct the order of insertion of RISCV_ISA_EXT_SVRSW60T59B;
+- Rephrase some comments.
+
+V10: https://lore.kernel.org/all/20250909095611.803898-1-zhangchunyan@iscas.ac.cn/
+- Fixed the issue reported by kernel test irobot <lkp@intel.com>.
+
+V9: https://lore.kernel.org/all/20250905103651.489197-1-zhangchunyan@iscas.ac.cn/
+- Add pte_soft_dirty/uffd_wp_available() API to allow dynamically checking
+  if the PTE bit is available for the platform on which the kernel is running.
+
+V8: https://lore.kernel.org/all/20250619065232.1786470-1-zhangchunyan@iscas.ac.cn/)
+- Rebase on v6.16-rc1;
+- Add dependencies to MMU && 64BIT for RISCV_ISA_SVRSW60T59B;
+- Use 'Svrsw60t59b' instead of 'SVRSW60T59B' in Kconfig help paragraph;
+- Add Alex's Reviewed-by tag in patch 1.
+
+V7: https://lore.kernel.org/all/20250409095320.224100-1-zhangchunyan@iscas.ac.cn/
+- Add Svrsw60t59b [1] extension support;
+- Have soft-dirty and uffd-wp depending on the Svrsw60t59b extension to
+  avoid crashes for the hardware which don't have this extension.
+
+V6: https://lore.kernel.org/all/20250408084301.68186-1-zhangchunyan@iscas.ac.cn/
+- Changes to use bits 59-60 which are supported by extension Svrsw60t59b
+  for soft dirty and userfaultfd write protect tracking.
+
+V5: https://lore.kernel.org/all/20241113095833.1805746-1-zhangchunyan@iscas.ac.cn/
+- Fixed typos and corrected some words in Kconfig and commit message;
+- Removed pte_wrprotect() from pte_swp_mkuffd_wp(), this is a copy-paste
+  error;
+- Added Alex's Reviewed-by tag in patch 2.
+
+V4: https://lore.kernel.org/all/20240830011101.3189522-1-zhangchunyan@iscas.ac.cn/
+- Added bit(4) descriptions into "Format of swap PTE".
+
+V3: https://lore.kernel.org/all/20240805095243.44809-1-zhangchunyan@iscas.ac.cn/
+- Fixed the issue reported by kernel test irobot <lkp@intel.com>.
+
+V2: https://lore.kernel.org/all/20240731040444.3384790-1-zhangchunyan@iscas.ac.cn/
+- Add uffd-wp supported;
+- Make soft-dirty uffd-wp and devmap mutually exclusive which all use
+  the same PTE bit;
+- Add test results of CRIU in the cover-letter.
+
+Chunyan Zhang (6):
+  mm: softdirty: Add pgtable_supports_soft_dirty()
+  mm: userfaultfd: Add pgtable_supports_uffd_wp()
+  riscv: Add RISC-V Svrsw60t59b extension support
+  riscv: mm: Add soft-dirty page tracking support
+  riscv: mm: Add userfaultfd write-protect support
+  dt-bindings: riscv: Add Svrsw60t59b extension description
+
+ .../devicetree/bindings/riscv/extensions.yaml |   6 +
+ arch/riscv/Kconfig                            |  16 ++
+ arch/riscv/include/asm/hwcap.h                |   1 +
+ arch/riscv/include/asm/pgtable-bits.h         |  37 +++++
+ arch/riscv/include/asm/pgtable.h              | 143 +++++++++++++++++-
+ arch/riscv/kernel/cpufeature.c                |   1 +
+ fs/proc/task_mmu.c                            |  15 +-
+ fs/userfaultfd.c                              |  22 +--
+ include/asm-generic/pgtable_uffd.h            |  17 +++
+ include/linux/mm.h                            |   3 +
+ include/linux/mm_inline.h                     |   8 +-
+ include/linux/pgtable.h                       |  12 ++
+ include/linux/userfaultfd_k.h                 |  69 +++++----
+ mm/debug_vm_pgtable.c                         |  10 +-
+ mm/huge_memory.c                              |  13 +-
+ mm/internal.h                                 |   2 +-
+ mm/memory.c                                   |   6 +-
+ mm/mmap.c                                     |   6 +-
+ mm/mremap.c                                   |  13 +-
+ mm/userfaultfd.c                              |  10 +-
+ mm/vma.c                                      |   6 +-
+ mm/vma_exec.c                                 |   5 +-
+ 22 files changed, 337 insertions(+), 84 deletions(-)
 
 -- 
-Cheers,
-Harry / Hyeonggon
+2.34.1
+
 
