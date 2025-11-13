@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 613CECD4F34
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 07:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4587CCD4F28
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 07:28:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FEAD8E0003; Thu, 13 Nov 2025 02:28:37 -0500 (EST)
+	id 3995C8E000C; Thu, 13 Nov 2025 02:28:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 163BC8E0011; Thu, 13 Nov 2025 02:28:37 -0500 (EST)
+	id 337DB8E0008; Thu, 13 Nov 2025 02:28:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E82908E0003; Thu, 13 Nov 2025 02:28:36 -0500 (EST)
+	id 02A5F8E000C; Thu, 13 Nov 2025 02:28:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CBB008E0008
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CDD418E000B
 	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:28:36 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C79F1A0857
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 832FDBBB32
 	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:28:36 +0000 (UTC)
-X-FDA: 84104756232.28.15E3DD9
+X-FDA: 84104756232.25.CDBE9E3
 Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E188F40009
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:28:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+	by imf19.hostedemail.com (Postfix) with ESMTP id EBB9A1A0008
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:28:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763018914; a=rsa-sha256;
 	cv=none;
-	b=ETfOEUvT0YU46TFZMMjZjsdIdsP8RTVVspTclLoUPQrR7U6tUDMl52So5EHD0WnsHj3kUZ
-	7SAfFcRrHwZvGzgVrO5ngm3r3lr0oZ2FO42yIGHCRl3kVH88d031nleSrRLXrxYeBQusfv
-	NjnzzSnwAjkq/cUZLscgLRWcJJD0U6I=
+	b=E7jq8RDgVUWkm4/YEkgIozPzlIJuIOSiWG8bxI4Z//5IgB7KJM1pzyAABAqxXwS71b+dxn
+	745aMTIvVdMAp6BZxLA1ra9x0GLow+hYAIC+dDATT3mSoT8lOy570oeUFHqHLVUOJG9xHN
+	N96baRQ2b8ZvONXdYYhAm9jgGTnTRRQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+	spf=pass (imf19.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763018914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n+ecqTJpJ7219ujfth+L4voUK/J/g1HiZY1obEIy35E=;
-	b=s9oZRovQg4AOsRiqNY6eWc1qXWNwtsOhM37cw8rWT/KGbDamFxc2f0o6Sw2QllEv2t68Xi
-	HM8dvNXwdPbveuIdg4e+JoTtHW/TJLwtWMWqjYIXGowibcygWLHazfti8XpHbkbtzfFweq
-	MsaUf+8PTR6nR4XGp8F3kIKJg/TFh+k=
+	bh=KnEAb2DucAjI7cmEH8YxMebpNNLhSlDLnQDNvBNQzME=;
+	b=78yX4F5H76lD1BJeuEjTrVdXB72Bxx7wBms3T/n0kNuPIBQtVI9Jkzt3kHfOPe9vENR049
+	TfT2VIXE0BCuw5qe3pGgHsUFXDWibU5C62ofS+ysvgQ6I03fZKxm6ZNHhBJoWaz9JXBGWY
+	opgeRcyySDDkUYrQQc7jmRBqEtNpppo=
 Received: from ubt.. (unknown [210.73.43.101])
-	by APP-05 (Coremail) with SMTP id zQCowABnbG2RiBVpVTOWAA--.33691S4;
-	Thu, 13 Nov 2025 15:28:23 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowABnbG2RiBVpVTOWAA--.33691S3;
+	Thu, 13 Nov 2025 15:28:21 +0800 (CST)
 From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
@@ -80,42 +80,42 @@ Cc: linux-mm@kvack.org,
 	Jan Kara <jack@suse.cz>,
 	linux-kernel@vger.kernel.org,
 	Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: [PATCH V15 2/6] mm: userfaultfd: Add pgtable_supports_uffd_wp()
-Date: Thu, 13 Nov 2025 15:28:02 +0800
-Message-Id: <20251113072806.795029-3-zhangchunyan@iscas.ac.cn>
+Subject: [PATCH V15 1/6] mm: softdirty: Add pgtable_supports_soft_dirty()
+Date: Thu, 13 Nov 2025 15:28:01 +0800
+Message-Id: <20251113072806.795029-2-zhangchunyan@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251113072806.795029-1-zhangchunyan@iscas.ac.cn>
 References: <20251113072806.795029-1-zhangchunyan@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABnbG2RiBVpVTOWAA--.33691S4
-X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1DGFWDXr1kZF4UZw1UWrg_yoWfJrWxpF
-	W8Gw45Xw4ktFy8Ga93JF48C3s5Xw4fKFyDGryF93WkAa13t390vFyFkF1Fkr93Jr48Wry7
-	tF4UtrZ3ur42vFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmlb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+X-CM-TRANSID:zQCowABnbG2RiBVpVTOWAA--.33691S3
+X-Coremail-Antispam: 1UD129KBjvJXoW3CFWUJF1xAr1kAr1kXr1rXrb_yoWkCrW7pF
+	WkG3W5J3y8JF92grWxJr4qv343KrZaga4UCr13u348Aay5t345XF1rJFWrZFnIqry8ua4f
+	ZFsFyw43C39rKr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
 	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-	8067AKxVWUXwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
-	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcV
-	CY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280
-	aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzV
-	Aqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S
-	6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mx
-	kF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwIxGrwCFx2IqxVCF
-	s4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r
-	1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWU
-	JVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rV
-	WUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4U
-	JbIYCTnIWIevJa73UjIFyTuYvjxU93EfDUUUU
+	8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
+	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcV
+	CY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv
+	6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
+	02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE
+	4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7
+	CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI48JMxC20s026xCa
+	FVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_Jr
+	Wlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j
+	6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r
+	1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1U
+	YxBIdaVFxhVjvjDU0xZFpf9x07baxRDUUUUU=
 X-Originating-IP: [210.73.43.101]
-X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiDAUFB2kVaThz2QAAsM
+X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiBwwFB2kVabByUgAAsM
+X-Rspamd-Queue-Id: EBB9A1A0008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8o5tgxy1kf935j7csks4f7851ig1mmdi
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E188F40009
-X-Stat-Signature: uhqu14noy7bxjpkouunku9m8i91off44
-X-HE-Tag: 1763018913-575802
-X-HE-Meta: U2FsdGVkX1+dKFbObBkIte6akgM7+R4/yjPQBn3Rz50tXv5O9mZZ+zbicnb1G5kEABYI3VknmUcUJTv2wvAHIIrY2AMZTFzxCGGBKeJVaPLCz3GAoITOjkN2NM2v/9uRxmTNVQNY20/5FC7zC4SjIMJgudMXCx63/3WhEYE+487mW+8tU5mfYgh25qrumMtWM1wVuGm7Po5ji5eQ0vmHHr2ugxO2Cs5xuppW18otsmcj9tpnAynJ6tdMFWV8hCLEnK59x+82QNtHfQPiAAMYY4CFMcBDxDXTxldpLcHrBRu4wiYl1hpeO7cxl5yYxtkIOb2WgDUDLVqNciLdDPOmzuEaYZKWNp5fDkua2GVKAwmfpQJVhf1wPbdVjMgJMnVa1vWlb9V91ToAhoCeThlDt84X5waef7L1Qqw1dg8UJvnWDlLcYyc7AgnvAQ429R0yV95FuK4H8LmUIqfg6n6w0mZ48MO9RQoP4DLSDrV7ri3HgbhMam+/IImTA/Q/YlE529SohgqlS6w1qt7z2yglhdqx86atQKsPJDv13gokv9JSaFNXJnEVSsQx0hYw1/WbXGIS0e9VQ/jpVPuFn1G8zT22HuXlRQH5feh2RHSiok46bbONBW8bv7Ibzj+I5ASu/Q1g5+xMj2hWXxbMWeMN3CIfvCHf6JbUFg2kcwCx2kJkT5gfjxS+e7Mi2W5yedraDvNqzKfNnw82jQUVkwHPYuAW8Rp7bng5jlS9gWke1uwkV1r8YbhUI5t1J+CAVsArWPlMRCEYvp9T8zmCI2hm3EGysNYEz5W70rVqzgfAw49H/e+hHCHP9ujFbigW+OCkP6eExYe0Ug9OqWTAuHNd6zD9GZfELGWqpq6SbO7IZuZrwzFKDFtwJSscw+9BaayLSC/TKhvkQwqBoTU3yrn2aco2FzWfgUXc3oBnvhzrUjVQyCpxwfz5oblwsVYPwTnCpxcGT/DC20lTlimxWhi
- ZZyvkI5c
- fL/SBj20d92IYnEPTC47aAL5PqWnCG2cXraSaTYklei0BBzNUZOTQIR9ZXJaLx/C7gQ2OkUxxfgKbWKqZUg3ALrkgcIQLYJe1k4xpnAuzKtP3d4VEwMbNmLRdfQcXU+UobtLS5qDMT6SCHjSe4HmMPZ1mew1qPiz2oe03UT6BMWw4g3dAQfUlW6IGmh5dyJ/ytt2BZC9bVCN3b9S3miH+vMp9he5u/Bz50af9E1vWLktj0WiZwABEkq9/eheiFL78C5vbaZeFa0aMxZqZGplcrO3offjGpAOFFK4my9gEGJBtgkDsGZXFuSNcj32lytlC9UKmT5cNUXCJ7V3tZ8dHlXr6Fw==
+X-HE-Tag: 1763018912-814361
+X-HE-Meta: U2FsdGVkX1+cdE5+VOON6xNpTTqlxJhBPSZ7TmplFN1jLrEYCfliUP4NccdRQijJm94m5e+Kv4cSrn5oduG46mo3WF+Q8L6iE1plEEHVoPhVMYddksbFYBd/LcPLejoXXaGx66iDBL6p2bX7j3FjsUAw6nQ9eK1vseETBZA/4OsRzGnAcyswPMleFaG3wmTKZCpCtje0jl7sNuQfbx+3OGvoThDjNS9XdmvtzFF7XaUneOubPaCaL3ZmSwEJ2JlFCKvDSGJbEzWg+7y6FktsYhJyspcKEXG6kvnOdbl9Rs9lW/bPt1El7jiiNevIKJ0PnpZm8HHVhD2cyeEBy7T3Uz3PySQds8rCnZkCCUvTGg7sL0MyM5WwYwk8GL5gcbP2NWKWa/h0NgotJAH878UBBrrgtQ1GfheNlInSc1eL9j8MwWuHXXiwZrUq8ZNCMw+ItBnfF+GIoAcngdrr1mQn+4tFR4l5/nj12A4ib7M2xhMd2M7ZHawW8DN0HhLql9mjSL/pULb9/+NMxpngKVhV2LvxLy1j/tunn3bDlHbso00ylEfpy46kjDhs77bjPYf1MrVo8v0mmSfrU1mOTgWV9wk85yPPVXh9kKvue71jLnh+Ve7YYz5QDWncgKcV50rBUktOmkSsUtSU0vH1Oa4zmm1bdk5FPn8dSbDR+V4cLl26Lrb8tk9KawNPM3jBr8Bt/MwBKXEef2qcRjLsufGGmlKXQIKrh3icuszmuS7dDzHCxxaZX74O0S6ooPDaPzIWJQBEjl2YCyZYh27nYYoKCHT5BoDL6pKFIEKW78GxTUy8b5L9RB6fp5YFVr0klaUGcUltX9w1BTD5hS1RAQ0UfwsidIqy0GStKJ1Bd6rp2qKwc0ql/9lUAkXA7w07JuUhan1dDidqgSZ6C3cBVUKnpZEymtG3lW6Z5efCv0vVHQGcIUy6ke2GQz4/vB2b0rufkCCeXVJbI0OIhuUv/I1
+ XApzs2Ei
+ Y3iRrIhvPzU3EzlnefzD4JSFw1gGxCeIYi6aUGX0QMN6SODN3iTkHHavUF7rlT9FC7C4IheDZIzFz+jEy+DOzuYKl41CG61xfTIeHCHucVxL/j7fgjI/2GR8lpEjR5wpOF3Ejwf61B9/4wvGfwDO/rJNoeDQlDNadv1mFjK5TGBUlDn06W1TaswmGOPaAzAaa38A9aCFSQMdsfXOkwaShXCUK+ybfNHxEH8xAsejHkOenWWnSaV3e2cE70l7jQ0WNbqQyM+E1Ov/wHYzoqSuPBBtMD46b+Z1YsWw5M/2tGcAgrUuu7/L2rzmrklCcgW+/hwZ/zUeg2Z6EZ7U3peKSPwU/2x9TJkKJVYoX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,272 +124,329 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some platforms can customize the PTE/PMD entry uffd-wp bit making
-it unavailable even if the architecture provides the resource.
-This patch adds a macro API pgtable_supports_uffd_wp() that allows
-architectures to define their specific implementations to check if
-the uffd-wp bit is available on which device the kernel is running.
+Some platforms can customize the PTE PMD entry soft-dirty bit making it
+unavailable even if the architecture provides the resource.
 
-Also this patch is removing "ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP" and
-"ifdef CONFIG_PTE_MARKER_UFFD_WP" in favor of pgtable_supports_uffd_wp()
-and uffd_supports_wp_marker() checks respectively that default to
-IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_WP) and
-"IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_WP) && IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP)"
-if not overridden by the architecture, no change in behavior is expected.
+Add an API which architectures can define their specific implementations
+to detect if soft-dirty bit is available on which device the kernel is
+running.
+
+This patch is removing "ifdef CONFIG_MEM_SOFT_DIRTY" in favor of
+pgtable_supports_soft_dirty() checks that defaults to
+IS_ENABLED(CONFIG_MEM_SOFT_DIRTY), if not overridden by
+the architecture, no change in behavior is expected.
+
+We make sure to never set VM_SOFTDIRTY if !pgtable_supports_soft_dirty(),
+so we will never run into VM_SOFTDIRTY checks.
 
 Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 ---
- fs/userfaultfd.c                   | 22 +++++-----
- include/asm-generic/pgtable_uffd.h | 17 ++++++++
- include/linux/mm_inline.h          |  8 ++--
- include/linux/userfaultfd_k.h      | 69 ++++++++++++++++++------------
- mm/memory.c                        |  6 ++-
- 5 files changed, 78 insertions(+), 44 deletions(-)
+ fs/proc/task_mmu.c      | 15 ++++++---------
+ include/linux/mm.h      |  3 +++
+ include/linux/pgtable.h | 12 ++++++++++++
+ mm/debug_vm_pgtable.c   | 10 +++++-----
+ mm/huge_memory.c        | 13 +++++++------
+ mm/internal.h           |  2 +-
+ mm/mmap.c               |  6 ++++--
+ mm/mremap.c             | 13 +++++++------
+ mm/userfaultfd.c        | 10 ++++------
+ mm/vma.c                |  6 ++++--
+ mm/vma_exec.c           |  5 ++++-
+ 11 files changed, 57 insertions(+), 38 deletions(-)
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 4e900091849b..1590de993e55 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1289,9 +1289,9 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MISSING)
- 		vm_flags |= VM_UFFD_MISSING;
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_WP) {
--#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--		goto out;
--#endif
-+		if (!pgtable_supports_uffd_wp())
-+			goto out;
-+
- 		vm_flags |= VM_UFFD_WP;
- 	}
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR) {
-@@ -1999,14 +1999,14 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
- 	uffdio_api.features &=
- 		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
- #endif
--#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--	uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
--#endif
--#ifndef CONFIG_PTE_MARKER_UFFD_WP
--	uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
--	uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
--	uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
--#endif
-+	if (!pgtable_supports_uffd_wp())
-+		uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
-+
-+	if (!uffd_supports_wp_marker()) {
-+		uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
-+		uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
-+		uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
-+	}
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 41b062ce6ad8..2b4ab5718ab5 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1584,8 +1584,6 @@ struct clear_refs_private {
+ 	enum clear_refs_types type;
+ };
  
- 	ret = -EINVAL;
- 	if (features & ~uffdio_api.features)
-diff --git a/include/asm-generic/pgtable_uffd.h b/include/asm-generic/pgtable_uffd.h
-index 828966d4c281..0d85791efdf7 100644
---- a/include/asm-generic/pgtable_uffd.h
-+++ b/include/asm-generic/pgtable_uffd.h
-@@ -1,6 +1,23 @@
- #ifndef _ASM_GENERIC_PGTABLE_UFFD_H
- #define _ASM_GENERIC_PGTABLE_UFFD_H
+-#ifdef CONFIG_MEM_SOFT_DIRTY
+-
+ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr, pte_t pte)
+ {
+ 	struct folio *folio;
+@@ -1605,6 +1603,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
+ static inline void clear_soft_dirty(struct vm_area_struct *vma,
+ 		unsigned long addr, pte_t *pte)
+ {
++	if (!pgtable_supports_soft_dirty())
++		return;
+ 	/*
+ 	 * The soft-dirty tracker uses #PF-s to catch writes
+ 	 * to pages, so write-protect the pte as well. See the
+@@ -1630,19 +1630,16 @@ static inline void clear_soft_dirty(struct vm_area_struct *vma,
+ 		set_pte_at(vma->vm_mm, addr, pte, ptent);
+ 	}
+ }
+-#else
+-static inline void clear_soft_dirty(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *pte)
+-{
+-}
+-#endif
+ 
+-#if defined(CONFIG_MEM_SOFT_DIRTY) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
++#if defined(CONFIG_TRANSPARENT_HUGEPAGE)
+ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
+ 		unsigned long addr, pmd_t *pmdp)
+ {
+ 	pmd_t old, pmd = *pmdp;
+ 
++	if (!pgtable_supports_soft_dirty())
++		return;
++
+ 	if (pmd_present(pmd)) {
+ 		/* See comment in change_huge_pmd() */
+ 		old = pmdp_invalidate(vma, addr, pmdp);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 43eec43da66a..687c462f2a71 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -861,6 +861,7 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+ static inline void vm_flags_init(struct vm_area_struct *vma,
+ 				 vm_flags_t flags)
+ {
++	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+ 	ACCESS_PRIVATE(vma, __vm_flags) = flags;
+ }
+ 
+@@ -879,6 +880,7 @@ static inline void vm_flags_reset(struct vm_area_struct *vma,
+ static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+ 				       vm_flags_t flags)
+ {
++	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+ 	vma_assert_write_locked(vma);
+ 	WRITE_ONCE(ACCESS_PRIVATE(vma, __vm_flags), flags);
+ }
+@@ -886,6 +888,7 @@ static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+ static inline void vm_flags_set(struct vm_area_struct *vma,
+ 				vm_flags_t flags)
+ {
++	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+ 	vma_start_write(vma);
+ 	ACCESS_PRIVATE(vma, __vm_flags) |= flags;
+ }
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 32e8457ad535..b13b6f42be3c 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1553,6 +1553,18 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
+ #define arch_start_context_switch(prev)	do {} while (0)
+ #endif
  
 +/*
-+ * Some platforms can customize the uffd-wp bit, making it unavailable
++ * Some platforms can customize the PTE soft-dirty bit making it unavailable
 + * even if the architecture provides the resource.
 + * Adding this API allows architectures to add their own checks for the
 + * devices on which the kernel is running.
-+ * Note: When overriding it, please make sure the
-+ * CONFIG_HAVE_ARCH_USERFAULTFD_WP is part of this macro.
++ * Note: When overriding it, please make sure the CONFIG_MEM_SOFT_DIRTY
++ * is part of this macro.
 + */
-+#ifndef pgtable_supports_uffd_wp
-+#define pgtable_supports_uffd_wp()	IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_WP)
++#ifndef pgtable_supports_soft_dirty
++#define pgtable_supports_soft_dirty()	IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
 +#endif
 +
-+static inline bool uffd_supports_wp_marker(void)
-+{
-+	return pgtable_supports_uffd_wp() && IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP);
-+}
-+
- #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- static __always_inline int pte_uffd_wp(pte_t pte)
+ #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+ #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+ static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 1eae87dbef73..ae9b9310d96f 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -704,7 +704,7 @@ static void __init pte_soft_dirty_tests(struct pgtable_debug_args *args)
  {
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index ca7a18351797..2ced24fc3beb 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -553,7 +553,6 @@ static inline pte_marker copy_pte_marker(
+ 	pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
  
- 	return dstm;
- }
--#endif
+-	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
++	if (!pgtable_supports_soft_dirty())
+ 		return;
  
- /*
-  * If this pte is wr-protected by uffd-wp in any form, arm the special pte to
-@@ -571,9 +570,11 @@ static inline bool
- pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
- 			      pte_t *pte, pte_t pteval)
+ 	pr_debug("Validating PTE soft dirty\n");
+@@ -717,7 +717,7 @@ static void __init pte_swap_soft_dirty_tests(struct pgtable_debug_args *args)
+ 	pte_t pte;
+ 	softleaf_t entry;
+ 
+-	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
++	if (!pgtable_supports_soft_dirty())
+ 		return;
+ 
+ 	pr_debug("Validating PTE swap soft dirty\n");
+@@ -734,7 +734,7 @@ static void __init pmd_soft_dirty_tests(struct pgtable_debug_args *args)
  {
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
- 	bool arm_uffd_pte = false;
+ 	pmd_t pmd;
  
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
- 	/* The current status of the pte should be "cleared" before calling */
- 	WARN_ON_ONCE(!pte_none(ptep_get(pte)));
+-	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
++	if (!pgtable_supports_soft_dirty())
+ 		return;
  
-@@ -602,7 +603,7 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
- 			   make_pte_marker(PTE_MARKER_UFFD_WP));
- 		return true;
- 	}
+ 	if (!has_transparent_hugepage())
+@@ -750,8 +750,8 @@ static void __init pmd_leaf_soft_dirty_tests(struct pgtable_debug_args *args)
+ {
+ 	pmd_t pmd;
+ 
+-	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) ||
+-		!IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
++	if (!pgtable_supports_soft_dirty() ||
++	    !IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
+ 		return;
+ 
+ 	if (!has_transparent_hugepage())
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 0184cd915f44..d04fedbbf799 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2427,12 +2427,13 @@ static inline int pmd_move_must_withdraw(spinlock_t *new_pmd_ptl,
+ 
+ static pmd_t move_soft_dirty_pmd(pmd_t pmd)
+ {
+-#ifdef CONFIG_MEM_SOFT_DIRTY
+-	if (unlikely(pmd_is_migration_entry(pmd)))
+-		pmd = pmd_swp_mksoft_dirty(pmd);
+-	else if (pmd_present(pmd))
+-		pmd = pmd_mksoft_dirty(pmd);
 -#endif
++	if (pgtable_supports_soft_dirty()) {
++		if (unlikely(pmd_is_migration_entry(pmd)))
++			pmd = pmd_swp_mksoft_dirty(pmd);
++		else if (pmd_present(pmd))
++			pmd = pmd_mksoft_dirty(pmd);
++	}
 +
- 	return false;
+ 	return pmd;
  }
  
-@@ -616,6 +617,7 @@ static inline bool vma_has_recency(const struct vm_area_struct *vma)
- 
- 	return true;
- }
-+#endif
- 
- /**
-  * num_pages_contiguous() - determine the number of contiguous pages
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index 96b089dff4ef..fd5f42765497 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -228,15 +228,14 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
- 	if (wp_async && (vm_flags == VM_UFFD_WP))
- 		return true;
- 
--#ifndef CONFIG_PTE_MARKER_UFFD_WP
- 	/*
- 	 * If user requested uffd-wp but not enabled pte markers for
- 	 * uffd-wp, then shmem & hugetlbfs are not supported but only
- 	 * anonymous.
+diff --git a/mm/internal.h b/mm/internal.h
+index 929bc4a5dd98..04c307ee33ae 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1554,7 +1554,7 @@ static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
+ 	 * VM_SOFTDIRTY is defined as 0x0, then !(vm_flags & VM_SOFTDIRTY)
+ 	 * will be constantly true.
  	 */
--	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
-+	if (!uffd_supports_wp_marker() && (vm_flags & VM_UFFD_WP) &&
-+	    !vma_is_anonymous(vma))
+-	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
++	if (!pgtable_supports_soft_dirty())
  		return false;
--#endif
  
- 	/* By default, allow any of anon|shmem|hugetlb */
- 	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
-@@ -291,6 +290,43 @@ void userfaultfd_release_new(struct userfaultfd_ctx *ctx);
- void userfaultfd_release_all(struct mm_struct *mm,
- 			     struct userfaultfd_ctx *ctx);
+ 	/*
+diff --git a/mm/mmap.c b/mm/mmap.c
+index dc51680824ec..4bdb9ffa9e25 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1448,8 +1448,10 @@ static struct vm_area_struct *__install_special_mapping(
+ 		return ERR_PTR(-ENOMEM);
  
-+static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
-+{
-+	/* Only wr-protect mode uses pte markers */
-+	if (!userfaultfd_wp(vma))
-+		return false;
-+
-+	/* File-based uffd-wp always need markers */
-+	if (!vma_is_anonymous(vma))
-+		return true;
-+
-+	/*
-+	 * Anonymous uffd-wp only needs the markers if WP_UNPOPULATED
-+	 * enabled (to apply markers on zero pages).
-+	 */
-+	return userfaultfd_wp_unpopulated(vma);
-+}
-+
-+/*
-+ * Returns true if this is a swap pte and was uffd-wp wr-protected in either
-+ * forms (pte marker or a normal swap pte), false otherwise.
-+ */
-+static inline bool pte_swp_uffd_wp_any(pte_t pte)
-+{
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
-+	if (pte_present(pte))
-+		return false;
-+
-+	if (pte_swp_uffd_wp(pte))
-+		return true;
-+
-+	if (pte_is_uffd_wp_marker(pte))
-+		return true;
-+
-+	return false;
-+}
- #else /* CONFIG_USERFAULTFD */
+ 	vma_set_range(vma, addr, addr + len, 0);
+-	vm_flags_init(vma, (vm_flags | mm->def_flags |
+-		      VM_DONTEXPAND | VM_SOFTDIRTY) & ~VM_LOCKED_MASK);
++	vm_flags |= mm->def_flags | VM_DONTEXPAND;
++	if (pgtable_supports_soft_dirty())
++		vm_flags |= VM_SOFTDIRTY;
++	vm_flags_init(vma, vm_flags & ~VM_LOCKED_MASK);
+ 	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
  
- /* mm helpers */
-@@ -415,23 +451,9 @@ static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
- 	return false;
- }
- 
--#endif /* CONFIG_USERFAULTFD */
--
- static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
- {
--	/* Only wr-protect mode uses pte markers */
--	if (!userfaultfd_wp(vma))
--		return false;
--
--	/* File-based uffd-wp always need markers */
--	if (!vma_is_anonymous(vma))
--		return true;
--
--	/*
--	 * Anonymous uffd-wp only needs the markers if WP_UNPOPULATED
--	 * enabled (to apply markers on zero pages).
--	 */
--	return userfaultfd_wp_unpopulated(vma);
-+	return false;
- }
- 
- /*
-@@ -440,16 +462,7 @@ static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
-  */
- static inline bool pte_swp_uffd_wp_any(pte_t pte)
- {
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
+ 	vma->vm_ops = ops;
+diff --git a/mm/mremap.c b/mm/mremap.c
+index fdb0485ede74..672264807db6 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -165,12 +165,13 @@ static pte_t move_soft_dirty_pte(pte_t pte)
+ 	 * Set soft dirty bit so we can notice
+ 	 * in userspace the ptes were moved.
+ 	 */
+-#ifdef CONFIG_MEM_SOFT_DIRTY
 -	if (pte_present(pte))
--		return false;
--	if (pte_swp_uffd_wp(pte))
--		return true;
--
--	if (pte_is_uffd_wp_marker(pte))
--		return true;
+-		pte = pte_mksoft_dirty(pte);
+-	else
+-		pte = pte_swp_mksoft_dirty(pte);
 -#endif
- 	return false;
- }
--
-+#endif /* CONFIG_USERFAULTFD */
- #endif /* _LINUX_USERFAULTFD_K_H */
-diff --git a/mm/memory.c b/mm/memory.c
-index 50b93b45b174..6675e87eb7dd 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1590,7 +1590,9 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
- {
- 	bool was_installed = false;
- 
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
-+	if (!uffd_supports_wp_marker())
-+		return false;
++	if (pgtable_supports_soft_dirty()) {
++		if (pte_present(pte))
++			pte = pte_mksoft_dirty(pte);
++		else
++			pte = pte_swp_mksoft_dirty(pte);
++	}
 +
- 	/* Zap on anonymous always means dropping everything */
- 	if (vma_is_anonymous(vma))
- 		return false;
-@@ -1607,7 +1609,7 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
- 		pte++;
- 		addr += PAGE_SIZE;
+ 	return pte;
+ }
+ 
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index bd1f74a7a5ac..e6dfd5f28acd 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1119,9 +1119,8 @@ static long move_present_ptes(struct mm_struct *mm,
+ 
+ 		orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+ 		/* Set soft dirty bit so userspace can notice the pte was moved */
+-#ifdef CONFIG_MEM_SOFT_DIRTY
+-		orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+-#endif
++		if (pgtable_supports_soft_dirty())
++			orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+ 		if (pte_dirty(orig_src_pte))
+ 			orig_dst_pte = pte_mkdirty(orig_dst_pte);
+ 		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
+@@ -1208,9 +1207,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
  	}
--#endif
-+
- 	return was_installed;
- }
  
+ 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
+-#ifdef CONFIG_MEM_SOFT_DIRTY
+-	orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
+-#endif
++	if (pgtable_supports_soft_dirty())
++		orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+diff --git a/mm/vma.c b/mm/vma.c
+index 6cb082bc5e29..ad3d905a81db 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2555,7 +2555,8 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
+ 	 * then new mapped in-place (which must be aimed as
+ 	 * a completely new data area).
+ 	 */
+-	vm_flags_set(vma, VM_SOFTDIRTY);
++	if (pgtable_supports_soft_dirty())
++		vm_flags_set(vma, VM_SOFTDIRTY);
+ 
+ 	vma_set_page_prot(vma);
+ }
+@@ -2860,7 +2861,8 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	mm->data_vm += len >> PAGE_SHIFT;
+ 	if (vm_flags & VM_LOCKED)
+ 		mm->locked_vm += (len >> PAGE_SHIFT);
+-	vm_flags_set(vma, VM_SOFTDIRTY);
++	if (pgtable_supports_soft_dirty())
++		vm_flags_set(vma, VM_SOFTDIRTY);
+ 	return 0;
+ 
+ mas_store_fail:
+diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+index 922ee51747a6..8134e1afca68 100644
+--- a/mm/vma_exec.c
++++ b/mm/vma_exec.c
+@@ -107,6 +107,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+ 			  unsigned long *top_mem_p)
+ {
++	unsigned long flags = VM_STACK_FLAGS | VM_STACK_INCOMPLETE_SETUP;
+ 	int err;
+ 	struct vm_area_struct *vma = vm_area_alloc(mm);
+ 
+@@ -137,7 +138,9 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+ 	BUILD_BUG_ON(VM_STACK_FLAGS & VM_STACK_INCOMPLETE_SETUP);
+ 	vma->vm_end = STACK_TOP_MAX;
+ 	vma->vm_start = vma->vm_end - PAGE_SIZE;
+-	vm_flags_init(vma, VM_SOFTDIRTY | VM_STACK_FLAGS | VM_STACK_INCOMPLETE_SETUP);
++	if (pgtable_supports_soft_dirty())
++		flags |= VM_SOFTDIRTY;
++	vm_flags_init(vma, flags);
+ 	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+ 
+ 	err = insert_vm_struct(mm, vma);
 -- 
 2.34.1
 
