@@ -4,170 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D43FCD5BCE
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:28:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36FE2CD5BCF
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:39:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B91A88E0007; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
+	id 8532D8E0009; Thu, 13 Nov 2025 06:39:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B42618E0002; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
+	id 82B458E0002; Thu, 13 Nov 2025 06:39:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E2878E0007; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
+	id 767E88E0009; Thu, 13 Nov 2025 06:39:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 86A818E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:28:17 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 404D55B9D0
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:28:17 +0000 (UTC)
-X-FDA: 84105360234.09.2027640
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0139440010
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:28:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CcWgcm7l;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1Aa1hX44;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1eAivxcY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IuZwNtvu;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763033295; a=rsa-sha256;
-	cv=none;
-	b=0hAUv/jiBEF96OGfVZCIRvgXg0kTe42IalecwQ+2L7EyHxMR/dFVADpXw8bDsnSsv6VTYB
-	rXqylf+0mUq2YUvqhku6CGNPiRgVs4PSmtOvx7sTnAYyI6QkiXxAGfvo89Bbc4q7HowA/O
-	o5kxzi/OKOCg3n7SovjUDGI+4rFQob0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CcWgcm7l;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1Aa1hX44;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1eAivxcY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IuZwNtvu;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6165E8E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:39:39 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E63B3C0952
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:39:38 +0000 (UTC)
+X-FDA: 84105388836.01.9915DB7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 55DC640014
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:39:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIr0rjst;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763033295;
+	s=arc-20220608; t=1763033977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
-	b=bfGr0q19MjZVJnwlP9elphGzVz/PRH7Co9JNC0PKROoiQjrsoCS5/I7WEQdAA3Kc2BBAsw
-	llEK/8cEUujvN9Yq7xZWMXtcZmnt5PPyF4Z6NLwGgSBMcLoeBIZv5RqXod52SqFPPTymN/
-	+8v242OO9VFXR+JfD1KsK4csybTHra0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4CFA71F388;
-	Thu, 13 Nov 2025 11:28:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763033293; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
-	b=CcWgcm7lYtpNs7mn73pBoa4nRC8JiQrK+gO212GsQjTat0FrQM1OCG4BRRt7yM3ghkreYC
-	G98ydEB2YR7oK02EbnS/Ud96j243sM86TYmAaqc09XzlZNSAHZA+M47pi0z+3HrBDFwQtu
-	y6P0XaEu3S2CdVlkODt/avi1tZ/VX8U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763033293;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
-	b=1Aa1hX44yVJ5tkE3C4qtHRTR+e71Hkl8ZeuTLjfs+C1gqSlvpuRdU+xGbS9xsg/kIuwkp+
-	QbNYOZ6ce6ow/yCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763033292; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
-	b=1eAivxcYZdOvsb13dmiwOsw03pon37+OH62VadJlazQwIP8FE4t2ULR0VDAEwS639Io/GH
-	ya92J9EXRQ82sU09acZhfaFWGsAFWmcnvAVMLIOaeHDtfHNyM4X2p14LUAiYU9dYaUQYXA
-	WIkExtJsRxhknS8bdpTt0OSSfliAhgE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763033292;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+guB+4/sbzy+v6qvO1/wFlLMHRMHQDUcietxZJmXw18=;
-	b=IuZwNtvu0oVqb9CEGDTa5frhvA7e2kRSAobrJWLWBoLuIJR3633WHQYXP17CvqA5OhIdt2
-	WX/7eqWoDh2xiCBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3BB243EA61;
-	Thu, 13 Nov 2025 11:28:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dThCDszAFWmtawAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 13 Nov 2025 11:28:12 +0000
-Message-ID: <c5a8b713-70e2-4ed8-8573-27e818de0ef4@suse.cz>
-Date: Thu, 13 Nov 2025 12:28:11 +0100
+	bh=b/W5ZahRkG/Z4iUo99Ieb6Uov8PJ6Mt+84inocbdTGA=;
+	b=leEXdtwTwhxLxDYsM48DEkbeNMSnJuKsdH3mXZjR8Vq7AAMRtlCuB12MkPGlZHPe2IfVBQ
+	zI3dlwsH5PFZoEUT7Ygyrd460vaMJCS7VwFjUr1slb+gvUdW08AZXDWTw+3jYfdVLLfiai
+	NXV1pMVcHvzG+UV5gaYmEl9a4asyeYs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763033977; a=rsa-sha256;
+	cv=none;
+	b=HoVi9twkopPzlgYKwsRhmejau4SgUyQl7VfVYA7HVqJWH3Logh1TEgvZryYljDE05O9QZk
+	c1IUFRDw98ggHEalTrsPL5mZ7GObVq5wLNk69u4Akuylqk06dRKd9Hby5VahWmG35nEYD+
+	NB70yMtEzhgf+8gAc0biUEFDRQWP2xs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIr0rjst;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2862A4322B;
+	Thu, 13 Nov 2025 11:39:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A995C4CEF5;
+	Thu, 13 Nov 2025 11:39:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763033976;
+	bh=ENVhoOS7G7gCzCBUGCoR+ITgrpqX7seulif8UfTBp0Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VIr0rjstKJ3saWpOlCPEj9yrlsSRfWVdSQkR1q6I3ZgbEqEbjPhjAwZARfKCLBEHD
+	 NGXFco0t56DpoMlRyxC4Dv7YU5Dj77k5L5LEk+YeLgg6BmGF3YD/hglGfiBsfuYSL3
+	 WalSNO2wr0gm3B+obfSK4LBPcORjuDCqoqCbXgpv9hONWBGRCQH7Icr1ATqy0Pmb9r
+	 ZMVa4ISTLJXD4HD0aPUFJ3/8+8HfJoZY1kBU/TJZKi4MwFDa1g7A0PisLusFC0HKNg
+	 wdLEn1kFzdFK2Tk27NHIoXVG5ZbkwxsahhpJX0ykb16FldNGhAL4Y2Sxc+/7dRi/YV
+	 dht9+6EHugDgQ==
+Date: Thu, 13 Nov 2025 13:39:26 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@redhat.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, shuah@kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com, khalid@kernel.org,
+	linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH] selftests/mm/uffd: remove static address usage in
+ shmem_allocate_area()
+Message-ID: <aRXDbk9ajOhH7ReX@kernel.org>
+References: <20251111205739.420009-1-mehdi.benhadjkhelifa@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/16] Prepare slab for memdescs
-Content-Language: en-US
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org
-References: <20251113000932.1589073-1-willy@infradead.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <20251113000932.1589073-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0139440010
-X-Stat-Signature: 18ty9wha91ib478eobik5e7azzfm3j8c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111205739.420009-1-mehdi.benhadjkhelifa@gmail.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763033294-671248
-X-HE-Meta: U2FsdGVkX1/aAPW8WrdZCMkMC7KkEyYjBklPyrfOZn01obYHwc4IXArrTcfjlVGVILSjlNIs8lxeGrqTfyj3APtmRUno6Rl3YWK0AXseBlRPatfuy4YHqtOj/2oH1J8plQMPT59GHqr+WPf8dipIm/wMYSuYAKUztZaJCSO9nUc+tefdlTxHog646G/1H8rSDDGXfgwCHXQp0sqXiF6QEZwK0tKZH0behVipH+7rG5vf26qismFtndW7zUn4goZn+4lBIpli8uos1VnhYrR/HcmMGOJwAnxb6/+OKmLB6pDJyddMXOQ7nlgAvWhaYj55ONhkf8rRyeTuNvpmTYCWFbCFD1UsjbzBoqaKuNvLKFxv7exto/NfNwG8rdLDBjtpwD6oAv6LzUUoLQ/N/FFX4aUE3Ky3aZgLZtAGoTsPdBYGVEs2KjReYvWxPIqyKmCLgUz9jKzfayl7AvDTYnH8xqMLk5TVT7S847n1wwxTizbIbVN/eHnYE6SDXBZSWLzh80PVijKMEYnDXKqs4Te9gFO7HvUt1XgoVnDmOHRO+tqG8NNMAbqInrGtl7YAC8EDHOow/DQ5dyJNJMnTDGziG43V0KWmzJ4QhF2rs8C+4DL0fOnM1390uzJcCactx3gjRlDoRYuMMDiMwMTtxVKslitdCU65XRm+YODImdwrc2ZpkRq6hxdMUmtpHvLYqgXjAaXcPyX+By7sndeBY0TrN2JE8HjUegRjYQW8Z0784FY+2XjxzS9ZQRXZnuwf+GsVr4opWqF00ZegVMjQmQIKxUqtIuYeuVyTZzEYnKoo6Ag3MDfiY7tGA9Kdk2DItHR2zsGYhryXyRzkf+FXNSLSDUYYYEABK7kfwQ5k8E6W92LHFh5kot5xQgpq8nGiAKbqIfo/vVCf1zsrl7XEAxv8iRJ0g+gs09yAeubfqqNhIYhDozd1FW5taQ==
+X-Rspamd-Queue-Id: 55DC640014
+X-Stat-Signature: j3i6sehnbcsb3r64dzcup4k1c3asr8go
+X-HE-Tag: 1763033977-92873
+X-HE-Meta: U2FsdGVkX1/690n6cAMXllClSk6V4jqnZLPmAYIa3XUA8cDpSmGX0uCikXamh7Xny3TbnodCcnGrb43rZtc5xYSg369JaNkUsov4o5KqfOkRecMa7hEMzH/rw0UxqBFus0uC+0igDNyGUeooM3vxZnOzX4C91st34YCra2y90i6fa+9QgWrIIykscNuF2yekue3CujD3iPQFJ8KBgg28XyEqlMbKyPpB2OoL6lNpL7hSNBGM33wY32Zx9PY8B51wLTmaQYbMB/RkwdLY8I6zjO09suRsRrcqvzawJ1afM3w9gluKVjHGGDW66djhJ1Vjcayk842QEllvhabdsV1/0Llk06bARhUu6neFZs4SJcPd+WEtrZFGZ8WLeHrzhRxrJGl6c2zleggf+07iy3qwF6KRKaRLl7Yhe4H2i4EuGb7AqCc8unkQu50cNpZkn6NlM4DJPdhZnSU0mnOz0v4zZL8iocHlKW1z1cnTEbovKoPXVeSoaDnoG+kGvAUb3UqnUNzZ22yO3USzgbHi26L59Hw23IuQar6DtIOSylgBuF9DRxa5nnDEd5WQKCvMBsDm7ek319ZqWlsU5PcQtF7iMqdQzbyfzUGwe0X5LLBwmW+Dhq1l4DVKNa+skJuTrwRNJO0ZoTql02dPiykJZeR1vb65StStj/W1/pTXr85xL5cAmmClqPL5zJ5GuyabgJB5k+Ew8V0vI/+ZgsYy/zRPMDAj5g/Npb6Ft5UD7ICotQQbyWtLVOcwxdFOQquQgCl2hB5r2EYLfApNabExP/aewVZy753fegFJQDZf2CWl6A8a4Js7I6sioBwP8Q/lln/sWfwpDJBQJ9a1tWdjfWnIytBHNyXTO80CoNRfZcM7G9t8C4/ZcH0Ly8PMuZuRWYnPSp25pOaYnxBhw/BygL9puyAaRcR7+tttJutfbkVkXmyyLo/aPxE3Xl2TcDA+T7BDY+zgxxubfnbc9g6cv0K
+ fZBVytV2
+ DdBUSWgaxNL2kNJoioIQ4K2lavZn009HmU0GpLg6IKopcLPZewRgRND5k8dTBtNxCl8iTGSymmeBDGXE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,60 +97,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/13/25 01:09, Matthew Wilcox (Oracle) wrote:
-> When we separate struct folio, struct page and struct slab from each
-> other, converting to folios then to slabs will be nonsense.  It made
-> sense under the 'folio is just a head page' interpretation, but with
-> full separation, page_folio() will return NULL for a page which belongs
-> to a slab.
+On Tue, Nov 11, 2025 at 09:54:27PM +0100, Mehdi Ben Hadj Khelifa wrote:
+> The current shmem_allocate_area() implementation uses a hardcoded virtual
+> base address(BASE_PMD_ADDR) as a hint for mmap() when creating shmem-backed
+> test areas. This approach is fragile and may fail on systems with ASLR or
+> different virtual memory layouts, where the chosen address is unavailable.
 > 
-> This patch series removes almost all mentions of folio from slab.
-> There are a few folio_test_slab() invocations left around the tree that
-> I haven't decided how to handle yet.  We're not yet quite at the point
-> of separately allocating struct slab, but that's what I'll be working
-> on next.
+> Replace the static base address with a dynamically reserved address range
+> obtained via mmap(NULL, ..., PROT_NONE). The memfd-backed areas and their
+> alias are then mapped into that reserved region using MAP_FIXED, preserving
+> the original layout and aliasing semantics while avoiding collisions with
+> unrelated mappings.
 > 
-> v4:
->  - Rebased on next-20251110 + a couple of fixes
->  - Fixed compilation warnings when CONFIG_MEMCG not set
->  - Picked up R-b tags from Harry (thanks!)
->  - Restored the order of slab vs large_kmalloc tests (Vlastimil)
->  - Removed setting of LargeKmalloc on tail pages (Vlastimil)
->  - Restored handling of non-slab, non-kmalloc checks in
->    check_heap_object() (me)
-
-All LGTM now. Added to slab/for-next, thanks!
-
-Vlastimil
-
-> Matthew Wilcox (Oracle) (16):
->   slab: Reimplement page_slab()
->   slab: Remove folio references from __ksize()
->   slab: Remove folio references in memcg_slab_post_charge()
->   slab: Remove folio references in slab alloc/free
->   slab: Remove folio references from ___kmalloc_large_node()
->   slab: Remove folio references from free_large_kmalloc()
->   slab: Remove folio references from kvfree_rcu_cb()
->   slab: Remove folio references from kfree()
->   slab: Remove folio references from __do_krealloc()
->   slab: Remove folio references from build_detached_freelist()
->   slab: Remove folio references from kfree_rcu_sheaf()
->   slab: Remove folio references from kfree_nolock()
->   usercopy: Remove folio references from check_heap_object()
->   memcg: Convert mem_cgroup_from_obj_folio() to
->     mem_cgroup_from_obj_slab()
->   kasan: Remove references to folio in __kasan_mempool_poison_object()
->   slab: Remove references to folios from virt_to_slab()
+> This change improves robustness and portability of the test suite without
+> altering its behavior or coverage.
 > 
->  include/linux/page-flags.h |  16 +----
->  mm/kasan/common.c          |  12 ++--
->  mm/kfence/core.c           |  14 ++--
->  mm/memcontrol.c            |  36 ++++------
->  mm/slab.h                  |  58 ++++++++--------
->  mm/slab_common.c           |  29 ++++----
->  mm/slub.c                  | 137 +++++++++++++++++++------------------
->  mm/usercopy.c              |  24 ++++---
->  8 files changed, 153 insertions(+), 173 deletions(-)
+> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+> ---
+> Testing:
+> A diff between running the mm selftests on 6.18-rc5 from before and after
+> the change show no regression on x86_64 architecture with 32GB DDR5 RAM.
+>  tools/testing/selftests/mm/uffd-common.c | 25 +++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
+> index 994fe8c03923..492b21c960bb 100644
+> --- a/tools/testing/selftests/mm/uffd-common.c
+> +++ b/tools/testing/selftests/mm/uffd-common.c
+> @@ -6,11 +6,11 @@
+>   */
+>  
+>  #include "uffd-common.h"
+> +#include "asm-generic/mman-common.h"
+
+Please drop this.
+There's already include <sys/mman.h> via uffd-common.h/vm_util.h.
+
+>  
+>  uffd_test_ops_t *uffd_test_ops;
+>  uffd_test_case_ops_t *uffd_test_case_ops;
+>  
+> -#define BASE_PMD_ADDR ((void *)(1UL << 30))
+>  
+>  /* pthread_mutex_t starts at page offset 0 */
+>  pthread_mutex_t *area_mutex(char *area, unsigned long nr, uffd_global_test_opts_t *gopts)
+> @@ -142,30 +142,37 @@ static int shmem_allocate_area(uffd_global_test_opts_t *gopts, void **alloc_area
+>  	unsigned long offset = is_src ? 0 : bytes;
+>  	char *p = NULL, *p_alias = NULL;
+>  	int mem_fd = uffd_mem_fd_create(bytes * 2, false);
+> +	size_t region_size = bytes * 2 + hpage_size;
+>  
+> -	/* TODO: clean this up.  Use a static addr is ugly */
+> -	p = BASE_PMD_ADDR;
+> -	if (!is_src)
+> -		/* src map + alias + interleaved hpages */
+> -		p += 2 * (bytes + hpage_size);
+> +	void *reserve = mmap(NULL, region_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS,
+> +			-1, 0);
+> +	if (reserve == MAP_FAILED) {
+> +		close(mem_fd);
+> +		return -errno;
+> +	}
+> +
+> +	p = (char *)reserve;
+
+No need for casting here.
+
+>  	p_alias = p;
+>  	p_alias += bytes;
+>  	p_alias += hpage_size;  /* Prevent src/dst VMA merge */
+>  
+> -	*alloc_area = mmap(p, bytes, PROT_READ | PROT_WRITE, MAP_SHARED,
+> +	*alloc_area = mmap(p, bytes, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_SHARED,
+>  			   mem_fd, offset);
+>  	if (*alloc_area == MAP_FAILED) {
+> +		munmap(reserve, region_size);
+
+I think it'll be more readable to put munmap() after setting *alloc_area to
+NULL.
+
+>  		*alloc_area = NULL;
+> +		close(mem_fd);
+>  		return -errno;
+>  	}
+>  	if (*alloc_area != p)
+>  		err("mmap of memfd failed at %p", p);
+>  
+> -	area_alias = mmap(p_alias, bytes, PROT_READ | PROT_WRITE, MAP_SHARED,
+> +	area_alias = mmap(p_alias, bytes, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_SHARED,
+>  			  mem_fd, offset);
+>  	if (area_alias == MAP_FAILED) {
+> -		munmap(*alloc_area, bytes);
+> +		munmap(reserve, region_size);
+
+Here as well.
+
+>  		*alloc_area = NULL;
+> +		close(mem_fd);
+>  		return -errno;
+>  	}
+>  	if (area_alias != p_alias)
+> -- 
+> 2.51.2
 > 
 
+-- 
+Sincerely yours,
+Mike.
 
