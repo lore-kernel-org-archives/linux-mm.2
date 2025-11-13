@@ -4,90 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 477B7CDB462
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 23:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80EEBCDB462
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 23:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EFB58E000A; Thu, 13 Nov 2025 18:46:03 -0500 (EST)
+	id DFBD18E000C; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0408E0002; Thu, 13 Nov 2025 18:46:03 -0500 (EST)
+	id DAC9B8E0002; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DC828E000A; Thu, 13 Nov 2025 18:46:03 -0500 (EST)
+	id C9B238E000C; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA8A8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:46:03 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 11FF2C01CB
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:46:03 +0000 (UTC)
-X-FDA: 84107219406.09.6C50EDE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 657ACA0013
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:46:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VJZPnEtb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763077561; a=rsa-sha256;
-	cv=none;
-	b=ee5riyz/ER6aYrxAcizJTCohQd/XGXrSSMLDlyrKw0+QjyKkkm9QcXfurOvTDCk1rDeTOD
-	yqAIaXeA0Z2zPMNL8e9uSjuTB+nuGMhpZD1xqmWzS4P3iJvAvp5D1PJc8exBPOE9VhZlgh
-	iBa8EaR50dhHpjOkaYCcGz9D4bLa2qc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VJZPnEtb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B47A48E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:47:30 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F6C612CA78
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:47:30 +0000 (UTC)
+X-FDA: 84107223060.27.C279CA3
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 97E221A0009
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:47:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UON8YVR4;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763077561;
+	s=arc-20220608; t=1763077648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a+3DcBLremKK93my8mUkihgucFFq3mdMuGbEMGVBUws=;
-	b=pORWR/TzkpsXjKTFng7RiWL7nwo4QKSamGfCkDKicw5W0fuxHHLqOXtgsnjcxbTzSXFEHX
-	c3qlLdnv8wcAwbYSdMLtFOivfelU8ZTyEVrzOi4HREdk5cU27p835u7GXrAzcaMGbio4MH
-	cK5I9JZQSWH3U9fVOGMP2edvUPmabU8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92BE560153;
-	Thu, 13 Nov 2025 23:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FABC4CEF8;
-	Thu, 13 Nov 2025 23:45:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763077560;
-	bh=YZmw0SFpUrytgIGZJsXG6pQNJXy/A33lKK7OMVHiIxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VJZPnEtbYXJ04UEiC5Vh6amfnoEKz+3gXQP2KfrZ78Rj8FxjZu4hP2wqV+uGjtbyd
-	 sLTzNlSw2pdexAM6SBriuo7y+UZ+iu0BqHLQ8h1AkH8WHaqkfZsVdDY8Y8NAJxqZXI
-	 rrc4wMgIUI0+QnIvDBPPeqh6v3p91pfVT6m2ABVaXBsjydTAP4bD4GxGTj2O7hV+3H
-	 DaIv8/7oxqN8FYGVPP8ARMwxac2luBLSi2YrfqfK4dhPM624OZPgZahXI0hSMist+K
-	 Se1O2FPx6Mg7k4g0WBLHDYLhizj11n1uXWfrAWOw+ryRbD6bivJuiic239RMQ1fGrH
-	 N7rWbnBnX8zGQ==
-Date: Thu, 13 Nov 2025 15:45:57 -0800
-From: Minchan Kim <minchan@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Yuwen Chen <ywen.chen@foxmail.com>,
-	Richard Chang <richardycc@google.com>,
-	Brian Geffon <bgeffon@google.com>, Fengyu Lian <licayy@outlook.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-block@vger.kernel.org
-Subject: Re: [PATCHv2 1/4] zram: introduce writeback bio batching support
-Message-ID: <aRZttTsRG1cZoovl@google.com>
-References: <20251113085402.1811522-1-senozhatsky@chromium.org>
- <20251113085402.1811522-2-senozhatsky@chromium.org>
+	bh=nWT1FvU0sBzkn1kQJ9RzDNaGTHMLE02ERIatRdBAS7w=;
+	b=Rc4ez/phdIHttHYFEjGqdoBbnie1mXB/dsdmo7k/hE0gRAJONgYufzLjFZFdNnD/Gs6YtD
+	S122Chr68ANtnVF7p/yypCOLqD/OX/fKppvjyNlhZlhJ095Kscz4iyxJavjPFPvKYhBQN4
+	+8D7lqjG7lVKAx0uOcHnBtd3rb6aMJ8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UON8YVR4;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763077648; a=rsa-sha256;
+	cv=none;
+	b=e2sIac3aLaG/hoPmvhAVaMXuPNya2Bfe4AjLiSrAHAlYiwNjwFjSZyUZV6YtQGANSbMBZ2
+	6HjvEN4I9mXrvNz1ZbugWFSZ6VBdJS7s79WGNv08xWIQ07mpQh12Md3/hCMhj/NjdvujJw
+	65fJ+bkts6l7Mr8Q9LepOIr8VGiY2gE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763077648; x=1794613648;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Y0Rj4ZRe5ERECMPOL/Tf/uw4avMT1HmU7UJTbesrIqc=;
+  b=UON8YVR4V16bxO3Uox52s/QuZco0v0afneG08u5XLnoGsbcsXs4nS5ya
+   v2ogCaulgp3fCk5xQsYNymYydYcfj8OYZN8jVccfDXtNn52e7Tz1xSvaz
+   HkzjXmQg30E1IW00skQtqN5IUkCvW3axGIKhvo3UTfe+x6PzJy+M5R4na
+   hoeOnQB0lOPFxac+ZUDqMEDbQEcBfDC8U2K3qRIhuSJGhNxEAbGe7raXV
+   CU6gm52XYPO3D0FZHQWUAEtaSJnrxa3u7qT2D8Pw7P64Bu6TlmzLLRZdP
+   rvmkFoEaDSL4hbpsHTPd5lrDA/HKuBcXwpB9kFRjOYh0rucznn9FaRTVT
+   g==;
+X-CSE-ConnectionGUID: TtduAWj5RIGZJt3ZraB4SA==
+X-CSE-MsgGUID: 05+ENoh7Tciw9Z9pVzNpTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="87816440"
+X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
+   d="scan'208";a="87816440"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 15:47:26 -0800
+X-CSE-ConnectionGUID: Dq9YV3/3QBC9a11GdiOapg==
+X-CSE-MsgGUID: nXbXL0z/T6OqbjgYjMo1qQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
+   d="scan'208";a="189267507"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 13 Nov 2025 15:47:21 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vJh27-0005zX-2L;
+	Thu, 13 Nov 2025 23:47:19 +0000
+Date: Fri, 14 Nov 2025 07:46:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yuntao Wang <yuntao.wang@linux.dev>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	AKASHI Takahiro <takahiro.akashi@linaro.org>,
+	James Morse <james.morse@arm.com>,
+	Chen Zhou <chenzhou10@huawei.com>, Baoquan He <bhe@redhat.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Alexander Graf <graf@amazon.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Yuntao Wang <yuntao.wang@linux.dev>
+Subject: Re: [PATCH 04/10] of/reserved_mem: Use dt_root_addr_size_bytes()
+ instead of open-coding it
+Message-ID: <202511140700.auD70FDr-lkp@intel.com>
+References: <20251112143520.233870-5-yuntao.wang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251113085402.1811522-2-senozhatsky@chromium.org>
+In-Reply-To: <20251112143520.233870-5-yuntao.wang@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 97E221A0009
+X-Stat-Signature: zjgumjf67m4s71sn19r7pj9b5yhe4oy6
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 657ACA0013
-X-Stat-Signature: u8n354iruopaaf8kwtsupdo15mcfmijz
-X-HE-Tag: 1763077561-733241
-X-HE-Meta: U2FsdGVkX18DAGi5egt6RZnDnwT6DFW7tsLFDhFdCf+jZYo5WcKjfQ+ZvIYAHU2OpisxBczxMcgiKU1C3iMNDsq8mS/IzHNB8OZJmt8Oos5nAbZJiEFGdIPE04mGTH6PBPSa14Pij86+nxKB1mYG91FtqZFDEldq2G74sSuBkU1M26eNw0K72K0yIfGnpeM71u6G4s9a+qLT4Bgf/HRnUOix8tsXTnfi1fXb79exD4ebm21h+jymG2uxuZmSXElRKeN/vIf+mJf2855K4Dds9I019lHBW1d3bXO1+l+zDrX9qp3N/T8cz2VmEvMwOLgIGI0SogdWjcW0Y1Gft4AcDkLHwXs+LwNE1irj/eIWrYAXIeFLdwswZacEOgUP4RUzJ6yfzh8dMEoCbmNO7ev294A6dsnUE4MD5dFNAGMkr9H8PpGqAPukAPYMdRV3KJAO1cfSDakLTDT9I4cFQeVi1GLQppwEDwlSg22SvFbhekdrllAcdLJ8Bb4ctN61zLPjFR/HA1sNQ+GbnD5ZLFbMuvjij9s1uBkT10NNQMKBVTsORP+VuPd8+JNukGCzF5rNUtrkkBvPZygTpZwOjiGhHJW15GdMrwMpEYMq07n8zCoU3zFz/2rwcT2c0m8zKCEJaoM4fEYVktZKldPnBl6+0AMBsh1apQ323vQVk32GSNsXhqoDT8PL0PhgHjWB4/MTghV+15HVLXkEM4qLuJi+OA2hZD16DieZlxsm2Hg52VfTDZxOZo1teD8aRQkdr7FnPfPoH6fuSRCNFYdDLjCaQZ2pPb9uqESqTAfARb5/QQOFJ/YWxh+8+ZuyRnztwMQyk57MsoJGMsWpb9Z6Au01CYUJ3kRedVoWdQZcPt1bqh9sR7T/q2/8H/zEYBJ2DpcrZsjdkyZtNktmgvfb+Vd4LaqtD224ZpHdWlzQY9qHPA0GvCiZIa/7y/KV0NJpnRJEfAlPi+bdhH/h20FpfhJ
- yoPTNjzw
- GOQ8vPPiidggkBTn7IdHLzZS9wSjP603qNz/phg9cCgp81m43qqQa/d8ukqHV87tw9zcKMhJj7XqMoPMb6r7ukPqjb0bbFoDbB0wodJeHsesNf/DIvdO41Vaz3DQcJT8tx9mmg4ZoQSI5ofldX5hnqbjyfkkTE4NvaWRnkehW6MG0udwiqwvRVWevRMG5u+HLUo2zI3KmkoIH3iEU+0RyDzVMJGNCIiZVpDXfLOnaLbbCiDAV9CzGAMBhBuMZA2ex1FCr3rMjvLBkWZfr0P5xv0/yqx+aY/lPppb56nA7BUyBMB6Wq0jHhzwSv+pzmqMa+E6Vp5j+fo2/T/ts+rX/i72dijfJK9c3JGW4o95srfXNdoQ=
+X-HE-Tag: 1763077647-145080
+X-HE-Meta: U2FsdGVkX1/0Dszm8LG3+4Qmr1UklY+PSbzCMrusTJmGbk5csWwdcS8cHkADNcygHkiley2LBjJoAV0hFkB8FvJkU2eucjB7Wp/5F3ELKjgAqi+pVo08FtuQHx4oKMfqOC1o+05XiUNnQ22zojP5vuR82G8Uxj7ITnNDXqnGX2bl5tvUqLznbv+on9YmezpBUFYJ42TKJRAIXugPjYh9ujeVvck7omaBCvKZkcu1W/TNSsqzbbIA5XS25rPoBnMlvdkji4XgvML6Fwi5dNkoX2C6KgcrzYkwpOOg5PE7LMDivSbwyZakd3gz3TjirOpuqBgY80L4u/u647tFTbYZVNZyCJxGSQOMXbw6RQzhnQf5T8qjmlHyR/wSyzp+23wjpoGWB1V8FZCKCrgCBEkvaNYlO/CfBcwjhukb7+Cdv5poS45blgbgq7c2K0cLhw42umrHZmRVM8s97Vl6Koz1XFwnPn+7wz1kMitIi8ziz/GKQWi6OufzKtGZS6FxFnVSSni8vBQOIg3c3CqT7Iw2ko1JGoMb/nnVMhsE9NTnD0X4V/Ypo7FixVFGIrWlZidLTrCU4zK0RKPKaOpVvoSlcYNcJnKSaPNlPZSQsHDwlchC8ywToS8kcQw5REmr6HzHgvzRluY4TO9i7UVpOtfZI8cD8ZD6mA5r/Ap7Tpbw5s98v4klnmV5BibXlpASkFagNvv1/VejbPgLYFqX6McJ8SQQwVRwBBYWozzeNdq53DLGJU++yzxjB5emsJlstuIH5UfKsX5lLF5n2ggf9cjaUMZ91uzvDH5xiUVEn/Ai1wshpO5Jx5AxF4Etxi4kcrRp2efKHkex3r2AzdFJ1xwt9Q5IzS37LN+W1gX/Vm5N4oHj+gDuYHYTQjxedC6JxR0SHBqJD8EqOiD6rI5D6GjGlwSK8ZP8J5GACFxT6YK3dSG1+AH5z0rr/AlnX/s0CD8nibIwsG74hLAVQQuZpaZ
+ jBsdjdSP
+ /VoK4dow2VU2PUyLwnQcfxFQiFGMr25fY5vJQRPc9Q/Vh5yam0ZTvDY+TO3HGInccgQJ/Xo84UgXXuF+nx0we7gh5p7JfSMP9x+UdcsJnPv3U7JPk0/ZpZbp/r4eyMtdFps3tc7hYhN15xLHEXUAo5TQdVfvU/h1tn9pIfnvWXA0fWE9FTIQAW+WVAsvlDC7G0PpKnUpSLrebIc2b3WPyrN7V//ExSF+QqwYxMQMjl73lsvh+X+4XAw/KmWk6uzTs9REaWfWl2nIkPZoescopgve/acG8G2nuoF0oDEPP7omhz0rIdTfixlaRxYD9lgGYmj0mBHTzblXfrRV2fNWbNG3RCtUgyy9VI+LyUTBXrm4X/w9XRDmJMFEifvqX5f6MyFqSDpvuYIdud75rjjPalWn3/Ye98j+855tdCXYdzDZlucTu2Zg4YEFZaEnmp8HmBu8CA/HWs+pwggyLXV7YMNUNap4/QdFqaUx2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,403 +121,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 05:53:59PM +0900, Sergey Senozhatsky wrote:
-> From: Yuwen Chen <ywen.chen@foxmail.com>
-> 
-> Currently, zram writeback supports only a single bio writeback
-> operation, waiting for bio completion before post-processing
-> next pp-slot.  This works, in general, but has certain throughput
-> limitations.  Implement batched (multiple) bio writeback support
-> to take advantage of parallel requests processing and better
-> requests scheduling.
-> 
-> For the time being the writeback batch size (maximum number of
-> in-flight bio requests) is set to 1, so the behaviors is the
-> same as the previous single-bio writeback.  This is addressed
-> in a follow up patch, which adds a writeback_batch_size device
-> attribute.
-> 
-> Please refer to [1] and [2] for benchmarks.
-> 
-> [1] https://lore.kernel.org/linux-block/tencent_B2DC37E3A2AED0E7F179365FCB5D82455B08@qq.com
-> [2] https://lore.kernel.org/linux-block/tencent_0FBBFC8AE0B97BC63B5D47CE1FF2BABFDA09@qq.com
-> 
-> [senozhatsky: significantly reworked the initial patch so that the
-> approach and implementation resemble current zram post-processing
-> code]
+Hi Yuntao,
 
-This version is much clear than previous series.
-Most below are nits.
+kernel test robot noticed the following build warnings:
 
-> 
-> Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Co-developed-by: Richard Chang <richardycc@google.com>
-> Suggested-by: Minchan Kim <minchan@google.com>
-> ---
->  drivers/block/zram/zram_drv.c | 343 +++++++++++++++++++++++++++-------
->  1 file changed, 278 insertions(+), 65 deletions(-)
-> 
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index a43074657531..a0a939fd9d31 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -734,20 +734,226 @@ static void read_from_bdev_async(struct zram *zram, struct page *page,
->  	submit_bio(bio);
->  }
->  
-> -static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
-> -{
-> -	unsigned long blk_idx = 0;
-> -	struct page *page = NULL;
-> +struct zram_wb_ctl {
-> +	struct list_head idle_reqs;
-> +	struct list_head inflight_reqs;
-> +
-> +	atomic_t num_inflight;
-> +	struct completion done;
-> +	struct blk_plug plug;
-> +};
-> +
-> +struct zram_wb_req {
-> +	unsigned long blk_idx;
-> +	struct page *page;
->  	struct zram_pp_slot *pps;
->  	struct bio_vec bio_vec;
->  	struct bio bio;
-> -	int ret = 0, err;
-> +
-> +	struct list_head entry;
-> +};
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on linus/master v6.18-rc5 next-20251113]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-How about moving structure definition to the upper part of the C file?
-Not only readability to put together data types but also better diff
-for reviewer to know what we changed in this patch.
+url:    https://github.com/intel-lab-lkp/linux/commits/Yuntao-Wang/of-fdt-Introduce-dt_root_addr_size_cells-and-dt_root_addr_size_bytes/20251112-232000
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20251112143520.233870-5-yuntao.wang%40linux.dev
+patch subject: [PATCH 04/10] of/reserved_mem: Use dt_root_addr_size_bytes() instead of open-coding it
+config: i386-randconfig-011-20251114 (https://download.01.org/0day-ci/archive/20251114/202511140700.auD70FDr-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511140700.auD70FDr-lkp@intel.com/reproduce)
 
-> +
-> +static void release_wb_req(struct zram_wb_req *req)
-> +{
-> +	__free_page(req->page);
-> +	kfree(req);
-> +}
-> +
-> +static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
-> +{
-> +	/* We should never have inflight requests at this point */
-> +	WARN_ON(!list_empty(&wb_ctl->inflight_reqs));
-> +
-> +	while (!list_empty(&wb_ctl->idle_reqs)) {
-> +		struct zram_wb_req *req;
-> +
-> +		req = list_first_entry(&wb_ctl->idle_reqs,
-> +				       struct zram_wb_req, entry);
-> +		list_del(&req->entry);
-> +		release_wb_req(req);
-> +	}
-> +
-> +	kfree(wb_ctl);
-> +}
-> +
-> +/* XXX: should be a per-device sysfs attr */
-> +#define ZRAM_WB_REQ_CNT 1
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511140700.auD70FDr-lkp@intel.com/
 
-Understand you will create the knob for the tune but at least,
-let's introduce default number for that here.
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
 
-How about 32 since it's general queue depth for modern storage?
+>> WARNING: modpost: vmlinux: section mismatch in reference: dt_root_addr_size_bytes+0x1 (section: .text) -> dt_root_size_cells (section: .init.data)
+>> WARNING: modpost: vmlinux: section mismatch in reference: dt_root_addr_size_bytes+0x7 (section: .text) -> dt_root_addr_cells (section: .init.data)
 
-> +
-> +static struct zram_wb_ctl *init_wb_ctl(void)
-> +{
-> +	struct zram_wb_ctl *wb_ctl;
-> +	int i;
-> +
-> +	wb_ctl = kmalloc(sizeof(*wb_ctl), GFP_KERNEL);
-> +	if (!wb_ctl)
-> +		return NULL;
-> +
-> +	INIT_LIST_HEAD(&wb_ctl->idle_reqs);
-> +	INIT_LIST_HEAD(&wb_ctl->inflight_reqs);
-> +	atomic_set(&wb_ctl->num_inflight, 0);
-> +	init_completion(&wb_ctl->done);
-> +
-> +	for (i = 0; i < ZRAM_WB_REQ_CNT; i++) {
-> +		struct zram_wb_req *req;
-> +
-> +		/*
-> +		 * This is fatal condition only if we couldn't allocate
-> +		 * any requests at all.  Otherwise we just work with the
-> +		 * requests that we have successfully allocated, so that
-> +		 * writeback can still proceed, even if there is only one
-> +		 * request on the idle list.
-> +		 */
-> +		req = kzalloc(sizeof(*req), GFP_NOIO | __GFP_NOWARN);
-
-Why GFP_NOIO?
-
-> +		if (!req)
-> +			break;
-> +
-> +		req->page = alloc_page(GFP_NOIO | __GFP_NOWARN);
-
-Ditto
-
-> +		if (!req->page) {
-> +			kfree(req);
-> +			break;
-> +		}
-> +
-> +		INIT_LIST_HEAD(&req->entry);
-
-Do we need this reset?
-
-> +		list_add(&req->entry, &wb_ctl->idle_reqs);
-> +	}
-> +
-> +	/* We couldn't allocate any requests, so writeabck is not possible */
-> +	if (list_empty(&wb_ctl->idle_reqs))
-> +		goto release_wb_ctl;
-> +
-> +	return wb_ctl;
-> +
-> +release_wb_ctl:
-> +	release_wb_ctl(wb_ctl);
-> +	return NULL;
-> +}
-> +
-> +static void zram_account_writeback_rollback(struct zram *zram)
-> +{
-> +	spin_lock(&zram->wb_limit_lock);
-> +	if (zram->wb_limit_enable)
-> +		zram->bd_wb_limit +=  1UL << (PAGE_SHIFT - 12);
-> +	spin_unlock(&zram->wb_limit_lock);
-> +}
-> +
-> +static void zram_account_writeback_submit(struct zram *zram)
-> +{
-> +	spin_lock(&zram->wb_limit_lock);
-> +	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
-> +		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
-> +	spin_unlock(&zram->wb_limit_lock);
-> +}
-
-I didn't think about much about this that we really need to be
-accurate like this. Maybe, next time after coffee.
-
-> +
-> +static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
-> +{
->  	u32 index;
-> +	int err;
->  
-> -	page = alloc_page(GFP_KERNEL);
-> -	if (!page)
-> -		return -ENOMEM;
-> +	index = req->pps->index;
-> +	release_pp_slot(zram, req->pps);
-> +	req->pps = NULL;
-> +
-> +	err = blk_status_to_errno(req->bio.bi_status);
-> +	if (err) {
-> +		/*
-> +		 * Failed wb requests should not be accounted in wb_limit
-> +		 * (if enabled).
-> +		 */
-> +		zram_account_writeback_rollback(zram);
-> +		return err;
-> +	}
->  
-> +	atomic64_inc(&zram->stats.bd_writes);
-> +	zram_slot_lock(zram, index);
-> +	/*
-> +	 * We release slot lock during writeback so slot can change under us:
-> +	 * slot_free() or slot_free() and zram_write_page(). In both cases
-> +	 * slot loses ZRAM_PP_SLOT flag. No concurrent post-processing can
-> +	 * set ZRAM_PP_SLOT on such slots until current post-processing
-> +	 * finishes.
-> +	 */
-> +	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
-> +		goto out;
-> +
-> +	zram_free_page(zram, index);
-> +	zram_set_flag(zram, index, ZRAM_WB);
-> +	zram_set_handle(zram, index, req->blk_idx);
-> +	atomic64_inc(&zram->stats.pages_stored);
-> +
-> +out:
-> +	zram_slot_unlock(zram, index);
-> +	return 0;
-> +}
-> +
-> +static void zram_writeback_endio(struct bio *bio)
-> +{
-> +	struct zram_wb_ctl *wb_ctl = bio->bi_private;
-> +
-> +	if (atomic_dec_return(&wb_ctl->num_inflight) == 0)
-> +		complete(&wb_ctl->done);
-> +}
-> +
-> +static void zram_submit_wb_request(struct zram *zram,
-> +				   struct zram_wb_ctl *wb_ctl,
-> +				   struct zram_wb_req *req)
-> +{
-> +	/*
-> +	 * wb_limit (if enabled) should be adjusted before submission,
-> +	 * so that we don't over-submit.
-> +	 */
-> +	zram_account_writeback_submit(zram);
-> +	atomic_inc(&wb_ctl->num_inflight);
-> +	list_add_tail(&req->entry, &wb_ctl->inflight_reqs);
-> +	submit_bio(&req->bio);
-> +}
-> +
-> +static struct zram_wb_req *select_idle_req(struct zram_wb_ctl *wb_ctl)
-> +{
-> +	struct zram_wb_req *req;
-> +
-> +	req = list_first_entry_or_null(&wb_ctl->idle_reqs,
-> +				       struct zram_wb_req, entry);
-> +	if (req)
-> +		list_del(&req->entry);
-> +	return req;
-> +}
-> +
-> +static int zram_wb_wait_for_completion(struct zram *zram,
-> +				       struct zram_wb_ctl *wb_ctl)
-> +{
-> +	int ret = 0;
-> +
-> +	if (atomic_read(&wb_ctl->num_inflight))
-> +		wait_for_completion_io(&wb_ctl->done);
-> +
-> +	reinit_completion(&wb_ctl->done);
-> +	while (!list_empty(&wb_ctl->inflight_reqs)) {
-> +		struct zram_wb_req *req;
-> +		int err;
-> +
-> +		req = list_first_entry(&wb_ctl->inflight_reqs,
-> +				       struct zram_wb_req, entry);
-> +		list_move(&req->entry, &wb_ctl->idle_reqs);
-> +
-> +		err = zram_writeback_complete(zram, req);
-> +		if (err)
-> +			ret = err;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int zram_writeback_slots(struct zram *zram,
-> +				struct zram_pp_ctl *ctl,
-> +				struct zram_wb_ctl *wb_ctl)
-> +{
-> +	struct zram_wb_req *req = NULL;
-> +	unsigned long blk_idx = 0;
-> +	struct zram_pp_slot *pps;
-> +	int ret = 0, err;
-> +	u32 index = 0;
-> +
-> +	blk_start_plug(&wb_ctl->plug);
-
-Why is the plug part of wb_ctl?
-
-The scope of plug is in this function and the purpose is for
-this writeback batch in this function so the plug can be local
-variable in this function.
-
->  	while ((pps = select_pp_slot(ctl))) {
->  		spin_lock(&zram->wb_limit_lock);
->  		if (zram->wb_limit_enable && !zram->bd_wb_limit) {
-> @@ -757,6 +963,26 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
->  		}
->  		spin_unlock(&zram->wb_limit_lock);
->  
-> +		while (!req) {
-> +			req = select_idle_req(wb_ctl);
-> +			if (req)
-> +				break;
-> +
-> +			blk_finish_plug(&wb_ctl->plug);
-> +			err = zram_wb_wait_for_completion(zram, wb_ctl);
-> +			blk_start_plug(&wb_ctl->plug);
-> +			/*
-> +			 * BIO errors are not fatal, we continue and simply
-> +			 * attempt to writeback the remaining objects (pages).
-> +			 * At the same time we need to signal user-space that
-> +			 * some writes (at least one, but also could be all of
-> +			 * them) were not successful and we do so by returning
-> +			 * the most recent BIO error.
-> +			 */
-> +			if (err)
-> +				ret = err;
-> +		}
-> +
->  		if (!blk_idx) {
->  			blk_idx = alloc_block_bdev(zram);
->  			if (!blk_idx) {
-> @@ -765,7 +991,6 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
->  			}
->  		}
->  
-> -		index = pps->index;
->  		zram_slot_lock(zram, index);
->  		/*
->  		 * scan_slots() sets ZRAM_PP_SLOT and relases slot lock, so
-> @@ -775,67 +1000,47 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
->  		 */
->  		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
->  			goto next;
-> -		if (zram_read_from_zspool(zram, page, index))
-> +		if (zram_read_from_zspool(zram, req->page, index))
->  			goto next;
->  		zram_slot_unlock(zram, index);
->  
-> -		bio_init(&bio, zram->bdev, &bio_vec, 1,
-> -			 REQ_OP_WRITE | REQ_SYNC);
-> -		bio.bi_iter.bi_sector = blk_idx * (PAGE_SIZE >> 9);
-> -		__bio_add_page(&bio, page, PAGE_SIZE, 0);
-> -
->  		/*
-> -		 * XXX: A single page IO would be inefficient for write
-> -		 * but it would be not bad as starter.
-> +		 * From now on pp-slot is owned by the req, remove it from
-> +		 * its pps bucket.
->  		 */
-> -		err = submit_bio_wait(&bio);
-
-Yay, finally we remove this submit_bio_wait.
-
-> -		if (err) {
-> -			release_pp_slot(zram, pps);
-> -			/*
-> -			 * BIO errors are not fatal, we continue and simply
-> -			 * attempt to writeback the remaining objects (pages).
-> -			 * At the same time we need to signal user-space that
-> -			 * some writes (at least one, but also could be all of
-> -			 * them) were not successful and we do so by returning
-> -			 * the most recent BIO error.
-> -			 */
-> -			ret = err;
-> -			continue;
-> -		}
-> +		list_del_init(&pps->entry);
->  
-> -		atomic64_inc(&zram->stats.bd_writes);
-> -		zram_slot_lock(zram, index);
-> -		/*
-> -		 * Same as above, we release slot lock during writeback so
-> -		 * slot can change under us: slot_free() or slot_free() and
-> -		 * reallocation (zram_write_page()). In both cases slot loses
-> -		 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
-> -		 * ZRAM_PP_SLOT on such slots until current post-processing
-> -		 * finishes.
-> -		 */
-> -		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
-> -			goto next;
-> +		req->blk_idx = blk_idx;
-> +		req->pps = pps;
-> +		bio_init(&req->bio, zram->bdev, &req->bio_vec, 1,
-> +			 REQ_OP_WRITE | REQ_SYNC);
-
-Can't we drop the REQ_SYNC now?
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
