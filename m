@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FFECD5BA0
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 09:04:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C50F6CD5BA0
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 09:06:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 831258E000B; Thu, 13 Nov 2025 04:04:52 -0500 (EST)
+	id 28CFB8E0012; Thu, 13 Nov 2025 04:06:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E0938E0007; Thu, 13 Nov 2025 04:04:52 -0500 (EST)
+	id 265128E0007; Thu, 13 Nov 2025 04:06:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CF7C8E000B; Thu, 13 Nov 2025 04:04:52 -0500 (EST)
+	id 1A16B8E0012; Thu, 13 Nov 2025 04:06:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 504DC8E0007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 04:04:52 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F38AD1608C6
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 09:04:51 +0000 (UTC)
-X-FDA: 84104998782.20.5627AED
+	by kanga.kvack.org (Postfix) with ESMTP id 07BEF8E0007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 04:06:52 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CCDABBBF2E
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 09:06:51 +0000 (UTC)
+X-FDA: 84105003822.04.31EFA49
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3B2C7100019
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 09:04:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cmvv58qq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763024690; a=rsa-sha256;
-	cv=none;
-	b=5ACZahSo9Q2Kr7dbROIJPqavcZl/iWHUMb4lMPYO3anYS9t/E8gOIiW5D+GtpTd6dlTTnB
-	OYHg+tHvmV0ZLMSIX+2gXNZwTMV6MAQPkLut0yUiEcEYcMJaxoYOkGJAYpPM+dmTmiJmTe
-	b3OQOB9DFgLFtKdSVbW1h0VZqgr3aFI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cmvv58qq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 172BE40009
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 09:06:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rMMueHiG;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763024690;
+	s=arc-20220608; t=1763024810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HkpOCPoBnoxbPm/dHfe1tXIDImknpNkGj0HDeligwvE=;
-	b=Lsm7H+BTpqMjXOsvMniO5TYI63zMf6rSJPnDJP5M/xwcp6NjXU/GxkjbDztpPZcymNfdI0
-	URzCAQaMkOPyCm1Ta7PopSM6cEN2q5NkULZRKjK+kIuxRUm7SYELdaCZvcO1M5CgjY2coW
-	CqlRIlYMCSo6gR8PMHFDmR3pQNLCMm0=
+	bh=tQIM/gVT8bEh1AIFFJP7OHT0HrfQikPAID0lgXiSsVA=;
+	b=wTiJUbXJAH5YuJMjLhmc77ulx4Un1sz8oIwRYRTQZkBCNjWMJRsk/xN+tqQTYz82Yk7wV9
+	vKcXn8ZEoqkkGOjYch0yFsHbRcISsNHjDzP7Ng1A28EQofP2h7VrPZXUMOzLEr2b1ze2/R
+	5VHGsFJAquvc803IjO01eA1avHCF070=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rMMueHiG;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763024810; a=rsa-sha256;
+	cv=none;
+	b=qlbwYh9uRbzGuyiX+C3+apmwEv42Px32gy/dsx1bxcdgjrxmvNKQkeZNSmgDFXNlB6aUkf
+	XYWCZCKY7fJm4Sb5yhX/tasFJMHxTcjdMQGs+Q3eVQuAfFNCgweQ7gJBMoB4mdjlIoB105
+	qZ0WmA3p1WY1wvpbg1CHkouyAptuuh4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09A6041E58;
-	Thu, 13 Nov 2025 09:04:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C15DC4CEFB;
-	Thu, 13 Nov 2025 09:04:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 09EC44448F;
+	Thu, 13 Nov 2025 09:06:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871ABC16AAE;
+	Thu, 13 Nov 2025 09:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763024688;
-	bh=g2ApyTbvFn+O4SPpXvNk6aXSXJ9xS0/6+BQ/w0ijal0=;
+	s=k20201202; t=1763024808;
+	bh=kzjNmKxRv2HTgs2BLleVn+WPjcFHAp+Wpu1+B0RTMcg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Cmvv58qqtEpaPmX3c+SScMrcSzaga0Px1RP5KQeXSey4+8xsMlLqfGCnhbrKKZW/7
-	 1x1IZ5xh793XC0Qc6GHi023xk+rgYW18Lr0xRCEBskq9ppRl11XNfacbYg18/w3gFp
-	 07YVZ1tcjj6/ehzVskFNjBsUZu82L7XE4m3p3DBARMCShxXawh7Z0cBzj7YN0zDcv9
-	 Bs+OsfW8jBuu2hv6YWt6955Q+Fs5eIUKQu0ykTlRVZno4XKwbXRJNuKGVGz7tl4FIG
-	 u1+Wc4NMhVn96vKl45u/9MW2eIjXsajCrvLfmQ1fBWAuBhqprSdMtCwp4TOaNaDvto
-	 4iQF6JIsdz51g==
-Message-ID: <a786cb49-43f6-408e-af32-f05dabff36f5@kernel.org>
-Date: Thu, 13 Nov 2025 10:04:42 +0100
+	b=rMMueHiGvlrNs0GOCrftUTNWmns+IBBzry02OQpjdL86fQD1Vt2a34qjLTyOMa6oO
+	 q2CHwNgbCa4RZFauDEOSNlG6DdPb29aKc8eLeNgi88psiR5iehoQiw3AT5pafglAK0
+	 lV8xWJNCMAzM4IFbXKq8i8lkO+PX4j0xY7uNPy2jrnFpSiV9/3SshWEfIR7tTWsB7H
+	 ioy3iuygOXPiNUqvH1KssnH/7XuxzmU/j1CH+6xt7Nk0uuVQHLjjP1BV1kD7hMbrBv
+	 MTlJDSM+sgcKd0ie3cIVt8OjXBQvoKl0cN7IQdtwUWx8bSlOAodKyl6EOH0A44NfOt
+	 T5l6xJqgvIwgg==
+Message-ID: <e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
+Date: Thu, 13 Nov 2025 10:06:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [linus:master] [mm/huge_memory] adfb6609c6: xfstests.xfs.050.fail
-To: kernel test robot <oliver.sang@intel.com>,
- Catalin Marinas <catalin.marinas@arm.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, Lance Yang
- <lance.yang@linux.dev>, Beleswar Padhi <b-padhi@ti.com>,
- Will Deacon <will@kernel.org>, Mark Brown <broonie@kernel.org>,
- Aishwarya TCV <aishwarya.tcv@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, Jan Polensky <japo@linux.ibm.com>
-References: <202511131537.1a31ee77-lkp@intel.com>
+Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
+To: Carlos Llamas <cmllamas@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Ujwal Kundur <ujwal.kundur@gmail.com>,
+ Brendan Jackman <jackmanb@google.com>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ "open list:MEMORY MANAGEMENT - USERFAULTFD" <linux-mm@kvack.org>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
+References: <20251113034623.3127012-1-cmllamas@google.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <202511131537.1a31ee77-lkp@intel.com>
+In-Reply-To: <20251113034623.3127012-1-cmllamas@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3B2C7100019
-X-Stat-Signature: zrpju7jjxc4mz6azja9y9qi9mwidqrgg
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 172BE40009
+X-Stat-Signature: m58enwdh7w6z737g6b1ssxa1w9gkyitw
 X-Rspam-User: 
-X-HE-Tag: 1763024690-626477
-X-HE-Meta: U2FsdGVkX1/POibD8q9T7geAQ+b6dg4P0KxBIOw+wtD3tjkQAuXzvwLmBngEs7Ut7RP+g4YhGIb4N8sgUEq0jSMi4xRWlQ3cmiQ0+LqfMZ9QfNUG5OH/ICV5Gmlx+2nr0Ego+y3aVv3yW1wwM9eaA5u5nsPOpf1m90Qy1gMddSXdczn+u7dsR6WMECtXDMwdYFxuFhDD4DJLquykP1dnI+UQWspp62oKw/2BoYNS62pXbrRHaa8tlIaXNtliv/2XwddBi/Th1ZLNdF3d4yed9Sws4/9mZfR+msVh2rmbqbEofORk4oyuWSQsupYxUEmd/qWN5X/94HvZIaEdIFzVLT1MJQAYXNXw5lKHEaN56Qja4ez3cKJjUzEWOwNCAOhGLds5B9UMTWfUf+Vpf/dr4g0JGj5vDT+EcbZxRzO0i2ZVRSbSKKUKrqnJe2fbTZ5kv/gDt6DmQlWB51UocRght8UMgwlQ8sczP6kqBzdjKLn2/E6Nd0I6z7r4LOU//26FskoC0uEvbB4sjkEDE/hDE4SbTDpwPkrM+ybDRBg6clhGFnDpC7qRLucfvHyhhdTE9qqSsSK4h0qVLUdX1fYCaXD8fjXzzw2cfS5udVxLrI72V3gga+IKRQT3K2v037oyDWn4vPUm60jC1t1Z3vRBDU4rb/BZhc4ure1tfuh2Dm/6Ae2u6hKp9KnOUFtw5hIqJhxOfYQJD8idBUmvGWKwEvNU3g0qYFrA5MSXvumOTO+Q7hM3fXspWnPo2tVmRGwRclUV5ksZCYgYGSLV72N28g1ck3nQlPGSkvSFKsw3zPqjyJUJKNAJbdaDSDZJbiEvfb/ffyogOXx1JLBnv/3I9DoyBuVnD5M2JfvozLLt6ly8ih6io73ceNXQ5kow3hPkE4CF7SsOILEaWQ5hzVnST3+XcloRB+flb7JABFw99VO4PSHt6jFFWxeV0eeAJ2JwT357/a1fwxu05HkUFK6
- hn334oDw
- Z+T8oDdjYb9VJZZT+XEwnQivAu75O2O52wuEfwLAcC9RUFzsGTmQRPcK3DXQdzzExTNZXgidsu2QHV0OZtKuvOMQHGOWRDl0L1/y/3SO8VQmqw60DJHOVGUpRO9zWlTObq8cAFGVHlQFn6UBJfycURO9m6LrqritJ7edUqEJ5NWInJ9e1B38jE/rwvAqa2gayq/+jzXlC0UULlk/8TeDXIlwzZNp3g67w5qafif2eaHKnzyjGkrglPswQCvYKh6IzaS92Vf+2uc8/4h0O6/kjlI+iGdIgjqBElESG3C65Gvsc3yDXnSniFsJvdQ==
+X-HE-Tag: 1763024809-78482
+X-HE-Meta: U2FsdGVkX1+uvGIBr1oTPupHVoQZG246FJzfzieRruG2PmzEsiZiEiRgEa1eyrts8rxO9L/MKGwso8uejWrrpB1/Qq6FY+i6oDIyUwk1ptoW8Z5SnhYNQ8v20+8ZTgYqY9twc0Sqpi8szyEsBAToOUOhQ/tAOq0FdS7eI92zJnAtpSymRbeU7AqFVEcjkmxLUUCAFxfaUL6asq7nx8UNFl1V6aj0t5OkgjVUNIGzwknvxehs6qrsUcnQ46ES+uFIuru1JJbD2TGhtmwIlZV+3ergT8gbNq3dxUk6PITg4fIJ6P6TynaCXQIdfIZLhmvNaZoksII/DQyRAlXTOQ6CtSa2hw9M5upi6PNUL9lk8a1g3wSyyScTAJdERIJ++vPXUaOMZeacczuvn9NSL9kR5mwxXrYla/a8qbiXxjsJxPrgumNtsN3Lg8/ITqYnNSWSiWTVelDqn0jBsAl1J1VCJZP41cBUqy88ebOKemppI6FgqM1UrFrydm6WsGr/rl4CGl812HOmAnPGvxEdbdyuDEImnGti4PJq3su2cke2YlDJgk32XBsT32Z6ICz5z2dpzSPOM1VHJVDR/bwu3ja5mrfIWaE4krEQAlm3E48SNBKKzTYV7RZK5++hWTqAxM3h2hWrQJpIy7o9rrWKm7JuRFrgsoslAIF+qPRdRGr5H/E764qCIAEMlez0LQZ4Hl4BzwvdFUzuwMohKDvOW8XSCbJQ9bwud9+7NnhKn23ouu/3pHBJeFBbsgGHHHi2KhQlMLb3SVya/F+AeTWQd0hs2J+uX8fMl4LU3CqOrSAJS8yg5AqfDbRgtS4EqMO66K7A6O/rFt7P9F7r1E/4HBgpy5fS44IHTJrqrQPk+qgZwgpt0i+q59vcSbuEBcFGaz3h7ZKaqpCDYh8DBJNO5OyKTnt3TgLDjIQhoAY+LXaaRluwurTC6CpTsHpGDPCkzQQtjIA9S8UJ4yhzeYsKxUj
+ UvQ44P7r
+ KJDzRIOhmBtoF9qZAnFXyn/YJQ3CKwicEM5p55thpN+kkGWU8rFuVcN9q/TkEVOv8zq44UyLkpnr/PpjQYXdbTlzm0/LnFcobHOOQCaeAOgxj+68bTVcIXk7s8nU2xLParYadTsOqhzNiPV4QgPHSvtBNy+n/ERBSilSu8r4ABQ8a8PygLc9R7uO7YnRaVn9VOqqqPyn4lZ5es3blv6Y3NZ6TjEBXpslSoI9vR7iXNQ8f/VMgGW2M6O0bognPdPPXjoeokQu/G2eOmm3gluHwTP/MV40dhzBMiwbB7P9lw6M1AgDUeCz89+f8WRCyaRzmaZw3jrhpVo63LQ4zpbJ8lfw2e8kwXM7ipkBJieIiW8GWOQzGGUVM8CKRhrqtbRL12sTSf3aZEgbvYWHQih/mSg6gTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,22 +103,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13.11.25 09:23, kernel test robot wrote:
+On 13.11.25 04:46, Carlos Llamas wrote:
+> Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
+> vars into struct") moved some of the operations previously implemented
+> in uffd_setup_environment() earlier in the main test loop.
 > 
+> The calculation of nr_pages, which involves a division by page_size, now
+> occurs before checking that default_huge_page_size() returns a non-zero
+> This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
 > 
-> Hello,
+> Fix this by relocating the non-zero page_size check before the nr_pages
+> calculation, as it was originally implemented.
 > 
-> kernel test robot noticed "xfstests.xfs.050.fail" on:
-> 
-> commit: adfb6609c6809e107ded9a1cd46f519c882e64ea ("mm/huge_memory: initialise the tags of the huge zero folio")
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-> 
-> [test failed on      linus/master 24172e0d79900908cf5ebf366600616d29c9b417]
-> [test failed on linux-next/master 2666975a8905776d306bee01c5d98a0395bda1c9]
+> Cc: stable@vger.kernel.org
 
-Fix is in the works, discussed here:
+Do we CC stable on unit tests? From my recollection, no.
 
-https://lkml.kernel.org/r/20251108191948.684586-1-japo@linux.ibm.com
+> Fixes: 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global vars into struct")
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> ---
+
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
