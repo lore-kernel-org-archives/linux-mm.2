@@ -4,107 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B92CD4F2F
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 03:46:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11213CD4F2F
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 03:48:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EF848E0005; Wed, 12 Nov 2025 22:46:30 -0500 (EST)
+	id 5D3BE8E0006; Wed, 12 Nov 2025 22:48:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C7278E0003; Wed, 12 Nov 2025 22:46:30 -0500 (EST)
+	id 585068E0003; Wed, 12 Nov 2025 22:48:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 908EE8E0005; Wed, 12 Nov 2025 22:46:30 -0500 (EST)
+	id 49A2E8E0006; Wed, 12 Nov 2025 22:48:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D6478E0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 22:46:30 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C8E3C07B8
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 03:46:30 +0000 (UTC)
-X-FDA: 84104196540.17.96F5BF2
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6046C16000B
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 03:46:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 351428E0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 22:48:14 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D48364D1D0
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 03:48:13 +0000 (UTC)
+X-FDA: 84104200866.09.45B3C48
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E7766160008
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 03:48:10 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=BNDp9rsJ;
-	spf=pass (imf08.hostedemail.com: domain of 3k1QVaQgKCOAEONNCOCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--cmllamas.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3k1QVaQgKCOAEONNCOCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--cmllamas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763005588;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=adduDIgHwGkFi5eI+DMenkw4/FG0bTrtUTxhLb5vmxg=;
-	b=F77PGm903dGK/AbR4d5R18Nz8u/0oroTehgU5JxaTRKVK9gzDTNCrIlS6gxIM9Jo78D3mg
-	GD3KlfvlIMJTyeE4VKVwtu7bu2ysls4+dzNycFuMFTB4qTryrDkmlGIGvGAarWM9fI7Fdo
-	ROisSqOCmSPepjoItUSc7bihhxuqPkM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763005588; a=rsa-sha256;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EJqmmKf3;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763005692; a=rsa-sha256;
 	cv=none;
-	b=r7bsGnV4ZJ6t7aH7+dQ5vUPJiOkxgekvgI8rCL+yrK3eRy0sEhvviYUkvVuH0lTQTMyq88
-	2HVZEkaHR2n8eSRY3TWDCny+dSISq+qb6yo2xYs6unZ29U0F5sgpnG2xqrqZQY4pepa3AV
-	v3r1SF4WJzlpcbGDphAGx4uZv5dFUhI=
+	b=6mc+Sx+ftPuek5Ug7m1t5g9J3htPvR8mREL4SH8XCtxdS02B2Dx/AmQzL5dfSza0xo96mG
+	txyRn1hKYj12pmIEFFFQRXM7cVmbxxjZKacixcn8P+9Wi/6mxqD7TfKHjnqEs8fMgdcyGA
+	35/EgrMMtpmNtXBsN52yiTjfqNM3NuY=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=BNDp9rsJ;
-	spf=pass (imf08.hostedemail.com: domain of 3k1QVaQgKCOAEONNCOCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--cmllamas.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3k1QVaQgKCOAEONNCOCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--cmllamas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-298535ef0ccso4385345ad.3
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 19:46:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763005587; x=1763610387; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=adduDIgHwGkFi5eI+DMenkw4/FG0bTrtUTxhLb5vmxg=;
-        b=BNDp9rsJFVV1a1jHvHxmidmBoG6++uBU6wZeBt2NRcQS67JDE2SQEKEZeZ48zqXmv+
-         1yEmAeahUc0xW3RLfk1784CijhtcbRqHQ4uBTzUxPYbMa9fYiJFiO4viUUNED3qwQmJf
-         SvOAgjRjb/zeaCxIaaQwUoHQ1JLJo5j2in5yZ2P0aAVN/vgKkQY1sDUYn8YRVUeiuIpN
-         uOa7603AljQKhoxjnVI/KNbELcZZ42RKfDHLdgqYOi+FhBgFQlosIgXZbEMlWf/km91a
-         3BOgTO7nYGzMWbLCNz/5G2VRVmsKsCz4CYAw2K/npRWLS4xXxlV3bfLQ/JvuuV+Ov3/y
-         cpew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763005587; x=1763610387;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=adduDIgHwGkFi5eI+DMenkw4/FG0bTrtUTxhLb5vmxg=;
-        b=TECYJ7kdXG7WEhtbQNIn6h8YsLN07ds84dbK/236BVl0i95rtwh59c1gZgbVWxFuyR
-         wn9QSyoI5WxIoKpGb4ID/UmdgWQvZLo2kP/s92yywKzLbD0DRBIUVjGRbumboQwAwz7R
-         A4NRth2NenGUWhxSvw2MXdpq94p52quRNtIBodU+67+dLOeGRN0Ehf8D/6xObF+nwCQH
-         GZbyHLtKVvk65RetrlnVkwJBWrzAwn4/Qm+On7oxAYWxRyCLAVnUWi6OTApDJBNOuscl
-         cG8CurzqQgo+1O82EM9FSHoRR+cd/IkIVfki/GOfZ2uMlAfKk0Krypifn+p5n9ubKNvP
-         KQaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxexNt1jCfpEMWqowUrfAIyey+AstV7D9M2KTPImcBVvpI87tIr4QpeoSrWG9fpkf2zQKeyYK1BA==@kvack.org
-X-Gm-Message-State: AOJu0YzyjWMg18y8VVGhhs+VL60reO5SigFp+AY3jDboe0YnZyna/oZS
-	9JAN0AfBgXEIHtPjWCdCGGBii7Sjbrp+xnfi8iGI0H0zltPMqF7+xR2Drv0WhBQ7XyP780bAK2L
-	SObsH7b4CknlWsg==
-X-Google-Smtp-Source: AGHT+IGEXQEv1ck2MMfwU6rgK0ZJutzaTXShQnbjZpIAo+t8a2V6IvSghLh5iFSwIMiZroqb5nh669NLVFj+pQ==
-X-Received: from dlbrp1.prod.google.com ([2002:a05:7022:1601:b0:119:49ca:6b84])
- (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2406:b0:298:4f73:d872 with SMTP id d9443c01a7336-2984f73d8d1mr72305215ad.21.1763005587061;
- Wed, 12 Nov 2025 19:46:27 -0800 (PST)
-Date: Thu, 13 Nov 2025 03:46:22 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
-Message-ID: <20251113034623.3127012-1-cmllamas@google.com>
-Subject: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
-From: Carlos Llamas <cmllamas@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Shuah Khan <shuah@kernel.org>, Ujwal Kundur <ujwal.kundur@gmail.com>, 
-	Brendan Jackman <jackmanb@google.com>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	Carlos Llamas <cmllamas@google.com>, stable@vger.kernel.org, 
-	"open list:MEMORY MANAGEMENT - USERFAULTFD" <linux-mm@kvack.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 7bsm3bcrgwun84rp1kfuqyo873b3xyre
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EJqmmKf3;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763005692;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NQ0cb143Fk6+kUWaeT8PET+2Q8tlg6Zp5AevuF4vT2M=;
+	b=10R8OowcuFaoKp+nvWIzwYZTxE7U8orLUM8Dv4Tv6t6S6NMDsenziQsPdv4mwRx8hhIkJT
+	OiEioAnbOivC6z4sORtq5QcQDXm5D0yP4Q1cBkQpSOZmHmyElXp/UaT5eayyFCAA/saEEC
+	lRBPqnkjyQEyyMmSYRNsTVhmrX31MeU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1763005688; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=NQ0cb143Fk6+kUWaeT8PET+2Q8tlg6Zp5AevuF4vT2M=;
+	b=EJqmmKf3QookOou5tNTsO634YhVgLofRWtlh31XJfhK5wnjzgALB0N/USFXp1qJ5mn8IWQNJJ3tRpHEFpp59txcTBKqZgb7DkhcaUqR5/DrFmspTi20nmuxOtnzcjaJlrs55v0taZc9ZcbN6RF+UOAYCGKYcPGJYTQ7dy3WEOsc=
+Received: from 30.180.123.14(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WsI3wdv_1763005686 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 13 Nov 2025 11:48:07 +0800
+Message-ID: <e1d26f84-7ea2-46de-8ab9-31e49b485832@linux.alibaba.com>
+Date: Thu, 13 Nov 2025 11:48:05 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] make vmalloc gfp flags usage more apparent
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Hellwig <hch@infradead.org>
+References: <20251112185834.32487-1-vishal.moola@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251112185834.32487-1-vishal.moola@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6046C16000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763005588-257893
-X-HE-Meta: U2FsdGVkX1/IGOMu/cj9KMHsmGGb1NwoXf2aB0SiQ07+zu9vTmW3o8k6DawaFvunz0ZI2MXerlKNniyJri2jBjYn4cgkX1ZqdyT+N4Ss71ktdeQrDconynWEyD8afO5zRnWHnsR9OQWNJBq3LOgeQfFavRM6hEEES2vNdQYHNivyNqaMf1hQyPAJrzYUGvnxcVDqgIieI8jqMpqHAyFRe7HkmKly5+lx3O8+ZTgDABRh5zWv44ITKqAf+VZ8fgYuU9ojtuFMgvhe/4Y3w6mtRqtWQyDGxRkANEICUb1ulDbM6RoEuc134uZW5ngItL9s6WkHUxWckZ9N2b4C2S34NudHHlBFeb8OjS5nwdg4++1UcQO9XrdP9PrIgCroXTCtCH3vwi+nCZpFPnt+fBZL8tCzy15FwHx6owRqCMen1pYJlLe79pSHR6t/hf95fV6I2Q7F/f157g9F5RyIzoDMv/6rc0/ow4QMBAUyb8gdoS/qnIB6fGdJBDX5uhImY4ErO+yR46ddg9ondNXkX+Til7HuLSk67ypU4aOCYkW5JaEWNQdpfyzLA4RDstx3kH49YEC4vEiqey0m6NrQxo7otElLaevHUP7n9TrVYBVw+dQOPR+GM8arZAURNmJGFK7LWHPW6TaHCOx27cMzEdLC5LMVVzGorHt/WTIhobATCBtG+aGRPw92dRSgpDPhUBatiEcF/uEs8H7ojT2ln9peaqh8Txl/s0AahJ8vjSzAVCmG6m3A0bBuDywr+CUW2FXRgL0vggWjnwoQATX29ApTgtMAsalfoIqOKu9OH1kKHAnw9uUEgvbbLOUgJlNQZfohxggKtFjKAl+nXDlN7CZel2bcBGhVNNqYMq8Tnz2rjj5EU+9ZP0uy+xrTUNzzW4DEwl2WtiVvYp1f7HsS5ZYWXrXE3VE1dLwcyXn4LIhNcEpnmV58xmDQAOA+0KZ3L3X0act8fyJeUaqw6E1NbN6
- Iu+y9J6i
- s2EFWaKkXqSAG9LYGsTEq90dBty0yPJLZSuCSN9Ym9ZiqzDA5r5QbbSP91pBIZL0culI6fdGeBErhFJmYSznxlEj8xV3eS/yjoR+wtdLwGGAv0QDI6R5O9HkLz1+PFHMeahPyihrE3SlSqrctH9R3zpVSeLbQe+X+gIItv+eM/ecCg0bYLDp7ft7Ornh7SCTS+qjDuGMjpF+bqVF4SJP36NOp4FnrcCP5vjJ1nsQB8vkcKluAEUZSzZK1s82uwoGYeAAsewnVO1qO/zkggDOseRhfTbJd/KNVCbRmSPlX2jgEr2+dnEeFJnFWtmv7CdVSe4EZ87Gt04KaVfsrZDVp5kIdGtgUqoxASoht0rlWdfC4HK4wyRQm4Dcmj2H58enebNbcQnNIXFsHMiv7T9ncGxHfExBOCqNcIKb3L/KPuXJD+OC9YzEMz1c637p8/txRHn7knOBDqjzaSliYsX1jAdURYDD1RwHWplsST64h4JMUZM3cbzEetBWCdjCMOwyNa4rYZzdiT+pNQ0R7aGnemC37jASQqBVj3u1sxoPZ+kmXl6SniZz/jc8I9H2OfRAgytxKejXCjz/jnDQOQ9xWBu8Xt5giXh4rHWgNEfC3E+mYs0n/e/qjS4Vlqmfot/yNmWa+70qebqN53jW3kRdZdKH+Xw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E7766160008
+X-Stat-Signature: od1aa3bwk47cbfak99opop51zskcw3s7
+X-HE-Tag: 1763005690-563683
+X-HE-Meta: U2FsdGVkX1+hLcaM9G7FdrJleHO//CR2bkXx5cIk2nBJmlbkYwP3cfzV8gGjc8OhIzs76aKy4XclN/NDZIDtUpxzTHuqFHxGvjceJv0Ibh7+wjnUWefjrIiHg5KCGhMBqOaD7vZDhgah0aLxpkteuehV8hqO2E6OWgKylZLbLNSQDJBkgvV+xPuqk+wtnaaell4CQTj8Qilwg94kvQ62r79OHojs2VkvxJ7v9d39p+CSnzQwQF9BaAIvNeVLE1+hmKcHJ6vwJ+fufCJfmEvYOG81GrEc0I5DRgAHbDeWfyOG/gSPRKdGqN8REQVo47IrlJHHZUN2ndEoQmwoVUtdTDXhlNe2G3Xv5Rl0I/tBpQ5RX/PVoPc+zIkzSa2DaaEUIANczjl4uXYsB53Ed/r5xXSd9UQDp5n4YC5mOpRaLluD5dwRXbQtKUmj0vDB0HMGxysrHnrFXwyeCxiRJalznvA6EJ2R7zUuIeMviz+BmgycpSGbrsU4hfxOD8HxWuH+PTtJeGRXmrfc+zNWawu9vCLQqeH1/rJAODIfXwvOK5Ln9sWTCsV4/zDj8J0vsy3WFtGMNRE6MbXmi+jFQQ8S2oXUcfNwZSLJyZ30xo3+FvY1fsJFvlV9Yf+pVwmTNmVC9pwewKTlBKBho3JTI+0Qx61+wY07Xb6Ez9WJT316TqgBFT8cuOQIKmHFoPMBUJJi7n6ZhpKkAQLyzdlDBuc785gGc3ETLH81HdtRzZNeH+pQYqoSfqgLnqRmVf9UFkT58J7pm0LFc+8osC1Qur8gbEHQVmjEnfbSGxwCCujeK1R9TJXrTmTzJdEQKrRLPi/r75zxrdQHwfGHmayZ8aQ9UooLwSRVI8XYLTst9B9N243WB2B43QPY5tIuKFOMZJZlfWnOXuSEqj1OHoPCs8gJ1EmAs/DKlBd9expL1kKEv76vXEjNxxSv6LvCowGP6CtEBFtCYff9tdi1bHYTtH8
+ MZuBXH+u
+ 5bVAUT5sVakPm7MVFCYPuJxEMDfq3osbUgCMQTXdJpXy4Gxzfwdwz8Lhm9YdeMRv8t1aJrtypVrKeo00RUeexrpoNjWoWTuk9XJBAZCRE+t3OT9P44cLo/Vng5cNHOvxEULVNX1BNVqBZbvFUc2vKMJuY/j/Ez7J1OTSts6WUWS14Md7FIYCZb+jJ5al+FGTD4481p8n5IMyFhm8YIzHAF8M/k9PjUiWG05pPPGZf/93s4I5XThJ2223+cymO/nYDdyC1Uai4gBNh4l0dm1ossmH6MDQh9am1EDuQQXr5aP0T1thFdJ8PaXPYIsaV4Ui0qRc7N18clMmzY0sMy54n7NahNN9GLEaVWAp8h0O+OO56+ROxFfskWrgg6lkJwdpPAl/h
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,60 +88,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
-vars into struct") moved some of the operations previously implemented
-in uffd_setup_environment() earlier in the main test loop.
+Hi,
 
-The calculation of nr_pages, which involves a division by page_size, now
-occurs before checking that default_huge_page_size() returns a non-zero
-This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
+On 2025/11/13 02:58, Vishal Moola (Oracle) wrote:
+> We should do a better job at enforcing gfp flags for vmalloc. Right now, we
+> have a kernel-doc for __vmalloc_node_range(), and hope callers pass in
+> supported flags. If a caller were to pass in an unsupported flag, we may
+> BUG, silently clear it, or completely ignore it.
+> 
+> If we are more proactive about enforcing gfp flags, we can making sure
+> callers know when they may be asking for unsupported behavior.
+> 
+> This patchset lets vmalloc control the incoming gfp flags, and cleans up
+> some hard to read gfp code.
+> 
+> ---
+> Linked rfc [1] and rfc v2[2] for convenience.
 
-Fix this by relocating the non-zero page_size check before the nr_pages
-calculation, as it was originally implemented.
+Just FYI, I hit this warning when booting today's mm-new branch.
 
-Cc: stable@vger.kernel.org
-Fixes: 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global vars into struct")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- tools/testing/selftests/mm/uffd-unit-tests.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 9e3be2ee7f1b..f917b4c4c943 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -1758,10 +1758,15 @@ int main(int argc, char *argv[])
- 			uffd_test_ops = mem_type->mem_ops;
- 			uffd_test_case_ops = test->test_case_ops;
- 
--			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB))
-+			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB)) {
- 				gopts.page_size = default_huge_page_size();
--			else
-+				if (gopts.page_size == 0) {
-+					uffd_test_skip("huge page size is 0, feature missing?");
-+					continue;
-+				}
-+			} else {
- 				gopts.page_size = psize();
-+			}
- 
- 			/* Ensure we have at least 2 pages */
- 			gopts.nr_pages = MAX(UFFD_TEST_MEM_SIZE, gopts.page_size * 2)
-@@ -1776,12 +1781,6 @@ int main(int argc, char *argv[])
- 				continue;
- 
- 			uffd_test_start("%s on %s", test->name, mem_type->name);
--			if ((mem_type->mem_flag == MEM_HUGETLB ||
--			    mem_type->mem_flag == MEM_HUGETLB_PRIVATE) &&
--			    (default_huge_page_size() == 0)) {
--				uffd_test_skip("huge page size is 0, feature missing?");
--				continue;
--			}
- 			if (!uffd_feature_supported(test)) {
- 				uffd_test_skip("feature missing");
- 				continue;
--- 
-2.51.2.1041.gc1ab5b90ca-goog
+[    1.238451] ------------[ cut here ]------------
+[    1.238453] Unexpected gfp: 0x400000 (__GFP_ACCOUNT). Fixing up to 
+gfp: 0xdc0 (GFP_KERNEL|__GFP_ZERO). Fix your code!
+[    1.249347] WARNING: CPU: 27 PID: 338 at mm/vmalloc.c:3937 
+__vmalloc_noprof+0x74/0x80
+[    1.249352] Modules linked in:
+[    1.249354] CPU: 27 UID: 0 PID: 338 Comm: (journald) Not tainted 
+6.18.0-rc5+ #55 PREEMPT(none)
+[    1.249357] RIP: 0010:__vmalloc_noprof+0x74/0x80
+[    1.249359] Code: 00 5d e9 6f f8 ff ff 89 d1 49 89 e0 48 8d 54 24 04 
+89 74 24 04 81 e1 e0 ad 11 00 48 c7 c7 68 b0 75 82 89 0c 24 e8 7c bf ce 
+ff <0f> 0b 8b 14 24 eb ab e8 f0 61 a5 00 90
+  90 90 90 90 90 90 90 90 90
+[    1.249360] RSP: 0018:ffffc90000bebe08 EFLAGS: 00010286
+[    1.249362] RAX: 0000000000000000 RBX: 0000000000001000 RCX: 
+ffffffff82fdee68
+[    1.249363] RDX: 000000000000001b RSI: 0000000000000000 RDI: 
+ffffffff82a5ee60
+[    1.249364] RBP: 0000000000001000 R08: 0000000000000000 R09: 
+ffffc90000bebcb8
+[    1.249364] R10: ffffc90000bebcb0 R11: ffffffff8315eea8 R12: 
+ffff88810aac98c0
+[    1.249365] R13: 0000000000000000 R14: ffffffff8141abe0 R15: 
+fffffffffffffff3
+[    1.249368] FS:  00007fbc9436ee80(0000) GS:ffff88bec00e1000(0000) 
+knlGS:0000000000000000
+[    1.249370] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.249371] CR2: 0000562248eda010 CR3: 00000001028a8005 CR4: 
+0000000000770ef0
+[    1.249371] PKRU: 55555554
+[    1.249372] Call Trace:
+[    1.249373]  <TASK>
+[    1.249374]  bpf_prog_alloc_no_stats+0x37/0x250
+[    1.249377]  ? __pfx_seccomp_check_filter+0x10/0x10
+[    1.249379]  bpf_prog_alloc+0x1a/0xa0
+[    1.249381]  bpf_prog_create_from_user+0x51/0x130
+[    1.249385]  seccomp_set_mode_filter+0x117/0x410
+[    1.249387]  do_syscall_64+0x5b/0xda0
+[    1.249390]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[    1.249392] RIP: 0033:0x7fbc94f4c9cd
 
 
