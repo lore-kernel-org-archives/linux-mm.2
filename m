@@ -4,113 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED41CD8CA4
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:00:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0691CCD8C9D
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:00:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3698E0010; Thu, 13 Nov 2025 12:00:05 -0500 (EST)
+	id 669318E0011; Thu, 13 Nov 2025 12:00:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBACD8E0002; Thu, 13 Nov 2025 12:00:05 -0500 (EST)
+	id 61A188E0002; Thu, 13 Nov 2025 12:00:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFD848E0010; Thu, 13 Nov 2025 12:00:05 -0500 (EST)
+	id 556FF8E0011; Thu, 13 Nov 2025 12:00:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BC0238E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:00:05 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 601C4140AE4
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:05 +0000 (UTC)
-X-FDA: 84106196370.18.9C64ACD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A1AE61C000C
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GKpbgHVA;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 45A5B8E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:00:15 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E35B5C0AC7
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:14 +0000 (UTC)
+X-FDA: 84106196748.12.47970F5
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2159B40009
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=b5XUcaiU;
+	spf=pass (imf01.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763053203;
+	s=arc-20220608; t=1763053213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2wFaJr+fYwPEZ0nwa+8p1GgzdG3z9ueL5OmkW1TZjQo=;
-	b=yap6NIWgKJ7zLgTKciJyRv8vSEG/FAsKmoVBOKcL9EwepKAxGLzbO4xLS0QVLKNOMqFh9l
-	lRkn9swf4XZQxw4rwp2aim2h73inPv5ulPSeoYqUWK8Nja5D21bfbTL3S7BhS/cSW1vB3U
-	CSD2meHLTzpwc2+7JnN5lDsWDqwV5A0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rjTIGg/oYVs9g9qfZypsDKb2niBZEdrRiYtUnVlCfLc=;
+	b=YQAQmmAdFEG3ty6+JA2q/HjeJPeL4ehqD29FtqMjvNb+1FEXpImU66L9fLKkfKjYiFpRTp
+	4FrshMQxM4Za5dHK82KnHtLkYJ262xms+OQsyjqzAVePbxfZIR5Ysi0JhRdbUpCz6yAbwY
+	4HGoDk9UAbGxp/W2ekzpwp7vDMyQ+54=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GKpbgHVA;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053203; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=b5XUcaiU;
+	spf=pass (imf01.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053213; a=rsa-sha256;
 	cv=none;
-	b=ckiwa5yDjV26gUGORqbQI3N+STsYepCh/Xs671vfajHOWrxbj3zfc0YfSzfqcJ/A7bc8/R
-	SO9olrPLE5avP9tFdRD3T/n65bOVHHzwzEoCzC3Y1efFwoKHDmR5WjHzsvQKZ0GNn/Bk9t
-	ITETf89v+4Q3GtYKzVDzFy30CxA7gag=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3544043CD6;
-	Thu, 13 Nov 2025 17:00:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7DAC4CEF5;
-	Thu, 13 Nov 2025 16:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763053202;
-	bh=OBpr4OfEynmd3QPtz7HpqQa1JuoHzfmsOcTyDkjnDvg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GKpbgHVAB96CTF2QAU6gGXB9xyAtOYn7EP9js0Mycon0OeXhF2jqHHtX89c5XmG3n
-	 aI+GsuLi5aWWIqQuOeufUD4aA/2oqU4CL3hOKgWLJISLTlCDKD2fvEzTYvo+4axv1Y
-	 RMC80Z36Upuv7S76Aj7akkAJYpehDBHHl02KtLD9+owbFDV5HjZtX2uU4oNhmImcTZ
-	 TB6NozxahkQlkcbHdVJIiuprn3ewx0G92tYj/3ivDFDMjJkdV5nEmpt/dhUVJduyaG
-	 M6PpSxx1REjCjMlgwB+uTMHEl+k2ror8Zzap/3OLPhR5zcZpm4wrMVCWSYXfzyE61t
-	 +lyMXl3tACR7w==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
-  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
-  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
-Subject: Re: [PATCH v5 18/22] docs: add documentation for memfd preservation
- via LUO
-In-Reply-To: <CA+CK2bBmSD_YftJ-9w1zidLz2=a4NynnLz_gLPsScF145bu5dQ@mail.gmail.com>
-	(Pasha Tatashin's message of "Thu, 13 Nov 2025 11:55:25 -0500")
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
-	<20251107210526.257742-19-pasha.tatashin@soleen.com>
-	<CA+CK2bBmSD_YftJ-9w1zidLz2=a4NynnLz_gLPsScF145bu5dQ@mail.gmail.com>
-Date: Thu, 13 Nov 2025 17:59:51 +0100
-Message-ID: <mafs01pm1amwo.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=dNd5QnuTCcbY8G0dC8SV+lDtzls7Dywg7gl4cFsa0I0hfPtEllDHPB5Hoe+tQF1L4pBme0
+	5u6YH6+J7tAmIjNjE8uPTcvc6GwsGnzxN4KaBG2kr9tMqivVb+STlYEsvZ3TuQ4kEx7d7H
+	1GerDEv704moI6oToBJOQCSoFi5aKJI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1763053210;
+	bh=wAWxUKehyoOSa5G7CZaC6M8sHVmNdvpdgkHlsv1J4NY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b5XUcaiU6Ci5XccBPU968ve8pP6Zxzj6YhRYnx6GmARRnPdFX9fX++w7CvVxpJqi0
+	 fLExxJ0l3Y6AON0qgSYTAdS3UAo6d1rni2UgZuiwmJbSNOc2Jx94UmIj+3sDJRuYDt
+	 XzgeiiEYFqIH/hlKE26bDuOF5/tXVh7Ttm3xzuvDdqWTz7yzEr0TlEfzqJKsO4DyTl
+	 eYaLbnMMh815MYGaiCCQhRboaiLwo5m2kqeCf55dxjhZmXTrKxS2QP5RulU85EgXqE
+	 4gBhYzYgEmPoK7Yu49ZqgfO2d8MMx6xIvxxKBswF8R2gvWTUk8Rt/zW9mm6un2Qj6p
+	 qXBqUvvZ9R8QQ==
+Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 04B8F17E00B0;
+	Thu, 13 Nov 2025 18:00:09 +0100 (CET)
+From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Herring <robh@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	=?UTF-8?q?Miko=C5=82aj=20Wasiak?= <mikolaj.wasiak@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christopher Healy <healych@amazon.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	kernel@collabora.com
+Subject: [PATCH v8 00/11] drm: Reduce page tables overhead with THP
+Date: Thu, 13 Nov 2025 17:59:56 +0100
+Message-ID: <20251113170008.79587-1-loic.molinari@collabora.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A1AE61C000C
-X-Stat-Signature: ce78cnd7hx1ndt673oqwu6qemy4k6x5x
+X-Rspamd-Queue-Id: 2159B40009
+X-Stat-Signature: uokhhzyhp1azm68pi43ujazycrqsppse
 X-Rspam-User: 
-X-HE-Tag: 1763053203-283707
-X-HE-Meta: U2FsdGVkX193LxNoirmPExEEI4CMjdr/vH+2eISm/RlDprLNbNgSvBtPJoDlwh7dCb8+iuiws1LRtE+hn2sdEcFX9oRCGXsuuz/pgn5k0tdN/mzQxoBAFKGxk/UW73vKyRBng2G4+cgrtQVaDwxJMTXgmQR76rA3L6fm+GOdBR+lzHWuTEzD/MT3iaKLSwi2q0odvDCCSwREP9RHhsjAgooPWQFUzufpSMzABqKaQhNohde3Kf8Zzh5g4MTF6crbX+KMPHfjjHhg7zE9i3R994UbC7zhCBtfMM+QFtaGOGbHNqW2RLboMvz5Zf28y4pPb/D3kNYynuJK9zVGQADO42yMNK53T48wB/IvVY/gIpfm2ynsOLElWpX4ciuOZaCY7dDY4I6ypVCch4Aigj2sXnjpRWzu+w0Pt93f6kRv1Jr99xhKWUvbOpzCZKm4U9mSsuTDZTFALN35PorQiz0PMhRyS1rrsAdigqbJqo2BFXYrEcbt5yA9gkgCABeR87V4GuP4bnmCYC9G1f81rh9rqIjBPhJHX4v07oXTFuy+3jdcIcoSXIB+LwjAOlnertt7WAJJhNi5RGIVsnjK4kdStgQDYXOfAkS6KpYnbkpRSC0+6V9x0jU/azVi7/w1fyUYC0lUtjhj1ABRZsNr1Wymruj1/i4KGDpKsTErGqFrz6+cfFfKbR4waU6WcPI4mtCixRiTwTGeSBV3d7ycVg+munEkvWPoVublQGyt7W50Yu2sHB1bZCZ9rWmceMOl6a5KCD4CwEAxxoG8JBVtgyN6jrwbCgqwmWEFf6x7434YOoCRj6awanlPprnKFdZu1zz/UUc45vnHMItvOTeFgJ/ZiRY2xSM+uxNL3teOQgq1tlo0C5c/DO9IZmYbWe4wRVMyuOXkIJbmOPd0pl9WqW1ygFU1gpe0ygLo0LrDo+/t94GaLMaFSgZMbrY7k2BVoPM2uutWlN4YdI01aDcGD0Y
- into0hhB
- JsWD3t+aOmTx4fvHPITXsOPrcOwzp15shZEmJuzKwCNKMSjAHa8OjGL11xpbZ8mFwl+WX0wNbDchI33mAyaVxmVmLYC6UFjk9VplAUh+g2Y32lh6BggFd0SJcR9L34BWXhhw5gces/k/Qq5K8Wd0YfQ4Ch3avO0bpb4cZO7pd0MOomPHHNdaFwWAlDtvDDHQT/B+D/PddEzVH4ZZNCbFuAH2WYPkvPXCmLEuaAEkoIXC/rdY=
+X-HE-Tag: 1763053212-64842
+X-HE-Meta: U2FsdGVkX199zu8++6V9aLqyteu8ylWZa9ChfPv2Fs4L3u5F9reX8J1cVp+SpmbexLK0QwtsaEWd3SpvUdIf5pchZ+Mt9c3EH4lUAiLFCuddGogjNgjDF41JT3fl4ldlat+9pMaA/EW+kwJ6LHix4lKt02G5eQeSwZmgvc9k+hDfvmznAOuoID83w6GZ0PMJyzSTdLjxQbwMIa01cgWZPbtdnxHQ8uNKyTELegK83kgqCFj0XshwHVJ5M3bZ2CKDPH5ANyaDhwoiOpUEkhx1VEsEI1hn2+0EZkDyk3mNyZTghJ8zdRiJWWveSXwnceKL/zrCERUhyj8N7mroHsS8bIsFZGfwP864lL0rfOHEFQDUydF3E+y3dN+R4RT/RCPSHuE3znHmv7A3w4mcEsfWjCXuCrIURsnByfLlfiZQnCmYm82cLw8jP4mgKGy8Poju6iwH6NV2M3jhjuYszS3xD7qXbBWvpe32R7XblVG6H1K1EKVRkqc2HDSXRp8FerR8PCR5gxc5zZMdQ/9r+szOs/Cq3YjvkxaonASTWKR4Y7+D+q0Sb/64ENZdKFlGH4FPhnibOiSJgqWrVwXncLEE5j0zAunfTxCQ9CUh/qGxUsWAh1Ok7H1g4VZ5vIMWVIVIXEHYf0EnHvxvGzJOEtBUQKnb9g2PfQeN/OC7mE9KG/wv4m+vK1VPy4EMy34zEEMI7Xx3t31oRKzlQ3MmxMAP1F1Ti02WIpf5bOYKpfeE8NuNjvad7fNxkigaG7qndX9+4Ikt70q+mbggiSmD3hWWEJCGfcftL2n3UJSYRNg8y2Z0csD/OkPIpIMxhIN5PFU0v/CCodQeFzisOjoQGPSK3SiWOOpwqGlTDGnzDdd+3Z7sUVcKLMVGimfz6Y35Up09xoGSCIcLBUxRowiF3ocAeWAJiGTTehvLMnPCZg/0soTXOADdGJcv4rRVKOmUM3gPbEi3e6BCKoBS2ZYdSqS
+ tdACvZ0W
+ 7jv7R5/M6istxwY7/WE5AIGEu9rJVlEtEWCy/N0BjDb35cxljcNRBFoqiath1+0C3AoWF3MycQevsNlc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,38 +123,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13 2025, Pasha Tatashin wrote:
+This series aims to reduce the page tables overhead of DRM drivers for
+builds with CONFIG_TRANSPARENT_HUGEPAGE enabled and either the sysfs
+knob '/sys/kernel/mm/transparent_hugepage/shmem_enabled' appropriately
+set or drivers using a dedicated huge tmpfs mount point.
 
->> +Limitations
->> +===========
->> +
->> +The current implementation has the following limitations:
->> +
->> +Size
->> +  Currently the size of the file is limited by the size of the FDT. The FDT can
->> +  be at of most ``MAX_PAGE_ORDER`` order. By default this is 4 MiB with 4K
->> +  pages. Each page in the file is tracked using 16 bytes. This limits the
->> +  maximum size of the file to 1 GiB.
->
-> The above should be removed, as we are using KHO vmalloc that resolves
-> this limitation. Pratyush, I suggest for v6 let's move memfd
-> documnetation right into the code: memfd_luo.c and
-> liveupdate/abi/memfd.h, and source it from there.
+It starts by checking whether a faulty address in the page fault
+handler is part of a huge page in order to attempt a PMD sized PFN
+insertion into the VMA. It then introduces a dedicated
+get_unmapped_area file operation on the DRM file descriptor for GEM
+objects to get the best virtual address alignment for the underlying
+shmem buffers.
 
-ACK. I think the section on behavior in different phases is also out of
-date now, and the serialization format too. The format is more
-accurately defined in include/linux/liveupdate/abi/memfd.h. So this
-documentation needs an overhaul.
+The remaining commits propose shmem helpers to create and release huge
+tmpfs mount points and adapt the i915 and V3D drivers. The helpers are
+then used to optionally enable Transparent Hugepage for Panfrost and
+Panthor.
 
-I don't mind moving it to the code and including it in the HTML docs via
-kernel-doc. Will do that for the next revision.
+For Panthor on a Rock 5B, this series makes the first memcpy() to an
+entire BO object mapped in userspace about twice as fast with
+Transparent Hugepage enabled.
 
->
-> Keeping documentation with the code helps reduce code/doc divergence.
->
-> Pasha
+Implementing a fault-around handler using the arm64 contiguous page
+hint (contptes) could also greatly help reduce page tables overhead
+for small pages by mapping several contiguous pages around a faulty
+address at once. This will be proposed in another patch series.
+
+Loïc Molinari (11):
+  drm/shmem-helper: Simplify page offset calculation in fault handler
+  drm/shmem-helper: Map huge pages in fault handler
+  drm/gem: Introduce drm_gem_get_unmapped_area() fop
+  drm/gem: Add huge tmpfs mountpoint helpers
+  drm/i915: Use huge tmpfs mountpoint helpers
+  drm/v3d: Use huge tmpfs mountpoint helpers
+  drm/gem: Get rid of *_with_mnt helpers
+  drm/panthor: Introduce huge tmpfs mountpoint option
+  drm/panthor: Improve IOMMU map/unmap debugging logs
+  drm/panfrost: Introduce huge tmpfs mountpoint option
+  Documentation/gpu/drm-mm: Add THP paragraph to GEM mapping section
+
+ Documentation/gpu/drm-mm.rst                  |  22 +-
+ drivers/gpu/drm/drm_gem.c                     | 203 +++++++++++++-----
+ drivers/gpu/drm/drm_gem_shmem_helper.c        |  97 +++++----
+ drivers/gpu/drm/i915/Makefile                 |   3 +-
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c     |  51 +++--
+ drivers/gpu/drm/i915/gem/i915_gemfs.c         |  71 ------
+ drivers/gpu/drm/i915/gem/i915_gemfs.h         |  14 --
+ .../gpu/drm/i915/gem/selftests/huge_pages.c   |  17 +-
+ drivers/gpu/drm/i915/i915_drv.h               |   5 -
+ drivers/gpu/drm/panfrost/panfrost_device.c    |   3 +
+ drivers/gpu/drm/panfrost/panfrost_drv.c       |   6 +
+ drivers/gpu/drm/panfrost/panfrost_drv.h       |   9 +
+ drivers/gpu/drm/panfrost/panfrost_gem.c       |  18 ++
+ drivers/gpu/drm/panfrost/panfrost_gem.h       |   2 +
+ drivers/gpu/drm/panthor/panthor_device.c      |   3 +
+ drivers/gpu/drm/panthor/panthor_drv.c         |   7 +
+ drivers/gpu/drm/panthor/panthor_drv.h         |   9 +
+ drivers/gpu/drm/panthor/panthor_gem.c         |  18 ++
+ drivers/gpu/drm/panthor/panthor_gem.h         |   2 +
+ drivers/gpu/drm/panthor/panthor_mmu.c         |  19 +-
+ drivers/gpu/drm/v3d/Makefile                  |   3 +-
+ drivers/gpu/drm/v3d/v3d_bo.c                  |   6 +-
+ drivers/gpu/drm/v3d/v3d_drv.c                 |   2 +-
+ drivers/gpu/drm/v3d/v3d_drv.h                 |  11 +-
+ drivers/gpu/drm/v3d/v3d_gem.c                 |  27 ++-
+ drivers/gpu/drm/v3d/v3d_gemfs.c               |  62 ------
+ include/drm/drm_device.h                      |  15 ++
+ include/drm/drm_gem.h                         |  40 +++-
+ include/drm/drm_gem_shmem_helper.h            |   3 -
+ 29 files changed, 452 insertions(+), 296 deletions(-)
+ delete mode 100644 drivers/gpu/drm/i915/gem/i915_gemfs.c
+ delete mode 100644 drivers/gpu/drm/i915/gem/i915_gemfs.h
+ create mode 100644 drivers/gpu/drm/panfrost/panfrost_drv.h
+ create mode 100644 drivers/gpu/drm/panthor/panthor_drv.h
+ delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
 
 -- 
-Regards,
-Pratyush Yadav
+2.47.3
+
 
