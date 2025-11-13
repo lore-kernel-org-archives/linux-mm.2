@@ -4,113 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78D20CCFA18
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 06:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC84BCD4F28
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 07:15:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C77D58E0010; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
+	id 5FE708E0006; Thu, 13 Nov 2025 02:15:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C28DC8E0003; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
+	id 5AE568E0003; Thu, 13 Nov 2025 02:15:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B166A8E0010; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
+	id 49D978E0006; Thu, 13 Nov 2025 02:15:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 999368E0003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D5151A07E0
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:11:27 +0000 (UTC)
-X-FDA: 84104561814.16.4CD1EA2
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 62F9B12000D
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:11:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="PxlU/FxD";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763014285; a=rsa-sha256;
-	cv=none;
-	b=aOTdLbUHBwoPIMQXQDReZEPBZ0L5tsTUOkT0nDSJ5pxOKxnUCuz/RA2FWKtIRma+Thylhz
-	QlrnLXCAfHdBe69xfTLl9JaB7CYRetE0ILBu/TefX3aswJP9otDYOL0qBl6d9YwVrmbtbw
-	x5zn0MeAMBKlNrzXoroK87DBCyolDKM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="PxlU/FxD";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 338018E0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:15:25 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFE16C0896
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:15:24 +0000 (UTC)
+X-FDA: 84104722968.14.9E2CFAF
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B09014000B
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 07:15:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Y0lnWIWV;
+	spf=pass (imf11.hostedemail.com: domain of ubizjak@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=ubizjak@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763014285;
+	s=arc-20220608; t=1763018122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2LqphD8tGRygLilDfD3DdZsx92tK0p16bJTr+js2PHc=;
-	b=IvAYm+pTR2ncM9tVLd26UvbSy60xzRRwkh4Goc9caE1WIHdS21oSm6wqs3PjG2Ua8xKNMD
-	f9xW0ruiBNgmQgTFW4gWQP8aISDPVVO3GyqVrLUMInshb4jWKEuWJlrdYNlxqwfR9jYSlz
-	LoKVbfhs9XCP3JhpYEKGDbm6cbDhjBs=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2953e415b27so4035055ad.2
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 22:11:25 -0800 (PST)
+	bh=lqJtc6nctLL296A0D8g+RFLLJKY4jF/ch+KnAKR18is=;
+	b=jjpC311h8rPjKL8b96/xJvXCz8YosIoEMOGB82mZQj88un5GnJscQgL/W4aQAfnS/UAEGV
+	TqnkN3keTyW/2oaryfimP8e8jMV6A438qtCZnHr0dZavEzZR6M0Ex0zM4wF3vGdMCSIPmg
+	GUkHNNcZQpHdIYbjrvOBODU0JbOYgy4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763018122; a=rsa-sha256;
+	cv=none;
+	b=sIvsIUWjPe6oMREfuIiwrKRFsWsxgDw6zmGbTjWUy8WsqEDGd9JhAk3GMYsa6CNunPEoA3
+	IrRVAc6SAeRsJUxeteaU8t094g1PQHd6/xqXMP47mKeorkE8sKAXgc52aTeAbon52vjRTS
+	uNteKyX26R2czN86FGVg7kjorZ/MTq4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Y0lnWIWV;
+	spf=pass (imf11.hostedemail.com: domain of ubizjak@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=ubizjak@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-37b9d8122fdso2647501fa.3
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 23:15:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763014284; x=1763619084; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2LqphD8tGRygLilDfD3DdZsx92tK0p16bJTr+js2PHc=;
-        b=PxlU/FxDNzDlGdoK9zE6k6awexycGu2pLCeqTg9X0Tex+s9gfYo1YCC3OqtFyClCDo
-         4DkRHnEYubzwmAMs9gYN2pEe2fJdGcsbYKp/ZPLtsrHQwzUDXBDGQ4bJGs5oIoYa8rJO
-         A/v329fYf4ywBtGs7vGkcED8KykDOk9EeoGgE=
+        d=gmail.com; s=20230601; t=1763018121; x=1763622921; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lqJtc6nctLL296A0D8g+RFLLJKY4jF/ch+KnAKR18is=;
+        b=Y0lnWIWVsrsaJCfyUcMh6ZgD/myObdKlXIzeqF5SYNREzzbcv/a/758YN8rCPnb9U3
+         Gya/PF1kGrY1whlpuILpnse4EMIqKQzxyG80a2LDiKFAbw5qnQQNuoX8AQDOm40ij6SY
+         A3Agpf9I2ANnP7V5NbCNxwkNXUqG4oo9bwqRIA8H8CLqR7UFxBVZuNL59eNybMAbeTaM
+         5ynTrBk8RhN+yPzPxM87lJB4qpACW/fmQO+yTzV0GmVn8rUNyDs1k2gThxRkRwpe5ZdR
+         gr+O/1rmUa7XQ8oFp2NxELLYvs0ri0xpKKzAQygwxyFeI/ORPNbHSzYRYbd3doDee947
+         oDaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763014284; x=1763619084;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2LqphD8tGRygLilDfD3DdZsx92tK0p16bJTr+js2PHc=;
-        b=Vd/MmDXE1qj461PzHnvj2pyep3vxewzcR7cXmOUm0QFdZz9rcPhZIBWQpxS4evhrP+
-         qT0fmCIRh+5rhc5cSBqQ/hrdgD15D2dMvaBcfcZZce26SIaZ+/TxUXzqnG9qp/PXYBqO
-         fUH3JxR1jCWfwsrymxKxTcHSH5nnSjC18RBMwb8hWk62P7x+ituvz/ic2OxePwlaDBha
-         6qMarUxe5UOOYcmGRCCykpOogCkpNYcUM6Igobzcwb2rGXpXFUFFidfuZtKjVSZSBpgP
-         PsCz1WjrmUJhIYVeAztHYDWAg4zW0DhAoNlPOtnoFMtwnRVlRzmVa9qsDhDD0+5Dd5au
-         NwEw==
-X-Forwarded-Encrypted: i=1; AJvYcCV160xAj/VFYeMszmH8SCs+ZzG3+CzCZKVyrsrvZgVIQXd+ddMNU2bx8Pr3qVZ8/OBXzJiPeZGcjA==@kvack.org
-X-Gm-Message-State: AOJu0YxU6x8Qp3Qhbc3UJ/RlJEWKUsy6sCir9cqYl/Kr8bEa/wioVl8V
-	CbVcG5ecH/MO1zhlXliaKm0I8OrddMvqKs84YAb5fxLaOSXjTI7C0Ca9OtHxL++JLQ==
-X-Gm-Gg: ASbGnctvPfFaZyzRg4MHcF1Bbs/9XY+LkM4bzMdU/y64aqhR6K88/9/xHbuzCqfkbC8
-	y5Gq/UTw8HE6aaeU6m6yJCP6y02jU+XEcvT/beTRLkvSHFVubmM168cAckd+Au8uxH7YQfQBA1m
-	KUw2dd69+sqWVJ5i2/0H9X6wQn2aed0/nzKJb5Z2XdG+QJ3XlHovtLHcvoplUU9hvgkMMuubQ3e
-	Qq3bSxD48zHWMrakzZQNG8G+yhlckFCrUDQtqAfopaIuBPB5Z1DySEjqI6oWxTSV68g9ojQL2tX
-	oXftsb6C6Qlwz/ZvqogT62SBp8cN67T4bBnAJb2EItHxmF1/C+BI4rzq9YHlUdC0qb56FES0ApJ
-	YjypJg6cZPNwBXoIOggbqMxlIkBd/fGv2m3pXud3hyRJJ/DH/3y08ZUIYSDnuPqEnJPl+mC+YAg
-	t4SdHxE8D60UymmGE=
-X-Google-Smtp-Source: AGHT+IE7hQS37m/XPXlVQ4Foh9+BFb/rN2BBQKZCymZyiayaTIgspcciVj3iEqly3oeCkfBztppdXA==
-X-Received: by 2002:a17:902:da4b:b0:297:d6c0:90b3 with SMTP id d9443c01a7336-2984ed6c342mr74657745ad.23.1763014284214;
-        Wed, 12 Nov 2025 22:11:24 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:6d96:d8c6:55e6:2377])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bed23sm11944775ad.87.2025.11.12.22.11.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 22:11:23 -0800 (PST)
-Date: Thu, 13 Nov 2025 15:11:19 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Minchan Kim <minchan@kernel.org>, Yuwen Chen <ywen.chen@foxmail.com>, 
-	Richard Chang <richardycc@google.com>, Brian Geffon <bgeffon@google.com>, 
-	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org
-Subject: Re: [PATCH 2/2] zram: add writeback batch size device attr
-Message-ID: <otnmm7behvnsbcqmknx45pgonsdvk4fma4o72qui3bjidwfc35@aurhln6nfyyz>
-References: <45b418277c6ae613783b9ecc714c96313ceb841d.1763013260.git.senozhatsky@chromium.org>
- <4b7b8f9c68f1a05ec6ada8aa7be9b735eae57446.1763013260.git.senozhatsky@chromium.org>
+        d=1e100.net; s=20230601; t=1763018121; x=1763622921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lqJtc6nctLL296A0D8g+RFLLJKY4jF/ch+KnAKR18is=;
+        b=pjWYOO5a5oh2a1/08CsMBCNS0om3CNvOsFvoYujmr53osBawW53N/kDE7fL2TNhdvg
+         kw+gT++CUAbtbqHGuW76Kg4ryMMavbCnFBNTlG/0aRdQMtIGzW7yDnK2zlsORNBTg5Wl
+         Mrv+qA6vSZvT7kXgT/CiqVtz71hVsGubO1abjIU09x844/c3L9MNUtB/xDzv6U8wBFwu
+         rKCVNxRFXD7G/o5z8DRa8MbBrjKAOOl1w5GJjVAf2Df7GZ2bOC/cLhCoKK565G9Qt5AK
+         xkIPtoWVl9pXyOAVLMmi26oFeEDPruRHjhvqQ4w0yqYozFlpwq4PDZycXh+dOH8Z0+32
+         RYnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRUC214hXr120YxsHS0bLVEyMppJ252z3lO7obY6awIT2a+DdQ9N/Oblq8xKfg50AJsrgaDLmyeA==@kvack.org
+X-Gm-Message-State: AOJu0YzEMI5tsTN2NN2ZIJyxlQj0YDNAdtQlyfvywGzPS9/ekKelVv/C
+	ewMsI+533LUBuypWPq3PB9vBsXmNHfd0sfr6xU6mLf66qr0vXamQUg6YaCb33LjSyTMcTOsZ2jO
+	SYvTCTwg83CDaKhzxPkqdPnB1TRlRwko=
+X-Gm-Gg: ASbGncucdiYXxNDsIrr1frgiCWO8NuU+x1kggM7gX9ebdokjeD7BRDH9pzhGmHwdgSw
+	lTMZHNUP8USeyO3flf2dMwSYtdRf5aYqPkhcXe6Iza1NpXqF6Bi5NHGKZleiYNovweSnUBkQ2Xf
+	2RIyhL6PiYnEB/4Eb6pEJdUE0Psf2M+2ONrIfzQUbsIPnj4gbb/gxS/uviY2XtSu8lYIyWkVXXw
+	C+wHo8jPidbiMw6wd2CT5MFiZtbWGCvBp2gbS8jK4q6k3hDJ3H9PatCq0eDIrF1Z0nqvLw=
+X-Google-Smtp-Source: AGHT+IH06bOdyKarVLIhwFMJ182ryvbHyCSiMCHvWXATRskyshzs0BRRyhF/MSZVLle+D6Cn1SH8KSCA7r6aIB1kImo=
+X-Received: by 2002:a05:651c:3043:b0:37a:7c41:79e with SMTP id
+ 38308e7fff4ca-37b8c2e5f7bmr13698611fa.13.1763018120526; Wed, 12 Nov 2025
+ 23:15:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4b7b8f9c68f1a05ec6ada8aa7be9b735eae57446.1763013260.git.senozhatsky@chromium.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 62F9B12000D
-X-Stat-Signature: xun3ba8w645m88uh3i6actfuzp9dwnda
+References: <20251112043730.992152-1-hpa@zytor.com> <20251112043730.992152-8-hpa@zytor.com>
+ <CAFULd4aMOueG5y3K7F57ryLtt-JUhE-yfsDODC=5+bgjF_gtSw@mail.gmail.com> <d5531acf-cd79-428d-80d1-eb7562cf3922@zytor.com>
+In-Reply-To: <d5531acf-cd79-428d-80d1-eb7562cf3922@zytor.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Thu, 13 Nov 2025 08:15:08 +0100
+X-Gm-Features: AWmQ_bmJP9AwfP8znrA5yY9Ud6xnrgSPvI_XaneFw49MCSp3ohPB7gxGYKTmaBA
+Message-ID: <CAFULd4bfxaSy0kkVjfjqgHe=3iT-QcGAhbK9WFepPmZu7=ocjw@mail.gmail.com>
+Subject: Re: [PATCH v2 7/9] x86/vdso: abstract out vdso system call internals
+To: "H. Peter Anvin" <hpa@zytor.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>, 
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Brian Gerst <brgerst@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nam Cao <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>, Perry Yuan <perry.yuan@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Huth <thuth@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-sgx@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4qpc13hpczh3jyrprgob67ocxh6piuwj
 X-Rspam-User: 
-X-HE-Tag: 1763014285-110055
-X-HE-Meta: U2FsdGVkX18cBiVpYkpHEjz1ksf+colKbcpcOKjDvfu9whZKFojGjvrS5Ep+7nh7SsdgKgKBHxig9EFm1yfdCe9iYOyWTZqz2b8RlqxQUYa3g0fCM+UHkJ3BDTSy9RTzuCx/kMxbxQTboWPjXm8eNx4ir2DodkfVNhk5rN2+fybvxtTqDQhJWoGeNKr0fLaipNg1uNTzbDXqNBkdLQ1GGerOgMDGEFknZwe784qTh3ioA8sMLDGzjoZw1nlMqzEujuJ3xPNwfLI8tAcAsjW+Xpncgli5jONv513NjkvJYoTczIfh4Ii3RtSr3KwgmfO0xnWwihdHT92wYSbUdN/lqb9vhpyGP3PWlY1LgtPyn/Q/3LD1MYr94jRItvWR+sSDa2k6IeFtMUwE6aYLaCsBdZKp1fdJE7dOnp2VM1qzS9N7DgxRTYWroxnzHPNNCku/7CTAGE83Ds0dkUHR1gxI1jwy17pgKkBhG/tib46pBhcZJyKIKoofXweEOtr8YanU0Qk3CdSU2HAsSqXzdpqqonCCEmo5mltpzFXV7X11FHGP96xZJQI4eE+/C7ZhYFI+dM7bCA+7lnC3BB+QHiSwux43ak6UA3UdIXoUF1VRBc11BoGW36S13e4X0icu2z0zNrWVHWIri6xqc02N1ATnRJOalp6Ap5bvoSOMM3zWAHby1OSQf8W9YnvZhojmkuPY7DCo9UOIVOL0vUr/ti0YDZcHOg8PQotHfDt07v4Y7XC/Rej4Fo2k/v8b6UvM8ZWDBkIDfBptut0kr5iJm7cqONuLEiBoGi0HvgwTuDzHRYkVHshEXnhRr65dFo8MJT3OnbqYlIJr0Tiu/X8Jj+Qt1a7/Zoo1mCWHbS/6LY7l8LALBDEcK46ZGybSW0z3BAqt1wvSVVxuoXiCw9gSsXgxElzN7Ml8F/3XgPGUaku90REvgbtd4AFAQTkJBcjrLVFUgp4NTGs7zN4HUBFiahI
- 2LntnmBL
- oomOqk0GdtJluU0K2Qo1WaZ+y7XQG1aFsJY3gP1FE5zZHwdolXMi8nmj0Mx7hhRAx8wu1kyvjOZ+M9VXsEYkxBANrDLf6gyoImQ7dl3iZy9O/ecw0tu15kX10sbE5Xrc/TpQ83Qm/c6gnTzz4Tk09noQPy2H6Sh0hEeN+ZPr8eIhp9z+LnQNTRe/2KsW8aSbpURM8VDpcnHDhP1IQle1e3ptEavcY1aBOQMtSErpqJvDICWsyWGbuV768nr8RO7ZWU4ZyQ49Wg0ipcwR/AzFq7O+5rrhQTM0IFnLJbOcRqTumzGuLOS8kN/qmMHjVcHkpYBGrMlMLbUhogUTalqHDokzi/qQrD6uyVtSQqJn+Wuy7Meg=
+X-Rspamd-Queue-Id: B09014000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763018122-755003
+X-HE-Meta: U2FsdGVkX18XeN9p9I6bMY++IYuBV/iv/8MSmIhRzp5kiXuttmios2WxB1XrGOH5Ow22hJ+MtFx6SXrDIq4Y/N7lp6qsWLEY03gTKeNb6rqvRC+c7S7bE1dJ/jWYvuTmWActEwMsRQRDYEBRSzRJkG5BP1JiUyIOuVJdT+TdTt4SoUfsxsSixk/5sunCjbHlEg5E51Dcz4JXn790JTibo3ib261hQQrHfFRKkg9wsf7hEvH8rc+aS6K3U4ctSZ0XJZyU3Z30KoWtk7FjMAunXXQZT/sANoo2HFcSu1TzBtvFdOWEH1zklu7Sh7Lvfn4eGgiL8Z0DNXi4SrkbOweoliznyq3mSf7AWKAbaSa7N4oPh+PIm8IIsoqyY0U25Y9TBi0xaE+Lf1BvupDKMAiqTjO8yv6tNt/1KHZmJmuF2m2RWdmrqDIoRGH8DKUs7C1r1eacfIa7WCjS6wJSGreN1W4XQK1OBMcp4WJoxFYkc83DE1OkmBMDooXV7ih1xvVT6Tb+Goc0GLVx00oT+RWy8Q72Ec5RI+z2Bn1ICT0kVqbDZ+Lez+Xz/g6ufWSGQlQB8aEtid2ZLi2WcHDq6E3RY1ghvNSRUfSTdq9EH3p42f6j6qi7/dJ5nSiasPYHXxdQaCU+RfyPj+9aUtNlCpNfdChnDXdkPetvqynSUg6pTZpbqqxkKEUdej5EdPGGoyXy0CUNUBxjugQBK3H2lg9WIN5YMUA2nFMR6ia+ZAjyJ9Pq55iPRZiZ7jZfZg9vhJxzJ5H1g73ad16IKcKPJV2yxIrCgnRBZojcdA2LwLxZ+OEqImMBicnmRIAfsOQizx0qk0eJoLrzhgq+nnRgH/8dXHJOJ8SZA55ZVma9OfuPe2ast/cjApvYhduLkZBnxUqn7o2MwJCy8fNF5VEPMH2cnWzqQKzMB0G/r6x4MuYOPbfdpDoThSIkJXaJO5Xk0uhqpuwmBeKzB1muEf87kiL
+ T8WRLGvv
+ nbC2IWJ4D/JCe5Hg3Uqnmlkx/mkkgpR98sfzHD6QV8lTw7WJDMDFQnaqTvq1LgQZ05R+mDb91hlovUskR18mIKhSy4IxoiQBCplarpL1l6GYOG8UhYxcbd6XLVIY5PBg55ONeRStzEaAMYJxSyBZr/qczg82QGnK4biR95VcO/TXsqQiQUOvaXh0isgPdAMAxj15GcedZh189fLUEhJuIiXGaSqdQrZc+XNEiUdK3y+di5KD7sZHlhPrkPFFCThZOjf3jBPoZVzl2FGWFnhcuhS+P5ee94RTzk4XNxoIqyOb3mJ8MtBG0ECW5Hl6XpywpTHPoQyW2AUtm6Z4hlJXYNYbsNi8c6cX2K+YKDLIRmmFiXJCqHa77+DSMonDQytepaS1KaXuWVplIh4t1adJ51PNaeV4McvdU0enf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,23 +125,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/13 14:59), Sergey Senozhatsky wrote:
-> +static ssize_t writeback_batch_size_show(struct device *dev,
-> +					 struct device_attribute *attr,
-> +					 char *buf)
-> +{
-> +	u32 val;
-> +	struct zram *zram = dev_to_zram(dev);
-> +
-> +	down_read(&zram->init_lock);
-> +	spin_lock(&zram->wb_limit_lock);
-> +	val = zram->wb_batch_size;
-> +	spin_unlock(&zram->wb_limit_lock);
-> +	up_read(&zram->init_lock);
-> +
-> +	return sysfs_emit(buf, "%u\n", val);
-> +}
+On Wed, Nov 12, 2025 at 10:25=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wro=
+te:
+>
+> On 2025-11-12 02:31, Uros Bizjak wrote:
+> >
+> > Unfortunately, %ebp is still special with -fno-omit-frame-pointer, so
+> > using "ebp" as _sys_arg6 on 32-bit targets will result in:
+> >
+> > error: bp cannot be used in =E2=80=98asm=E2=80=99 here
+> >
+> > Please see how %ebp register is handled in
+> > arch/x86/include/asm/vmware.h, vmware_hypercall_hb_out() and
+> > vmware_hypercall_hb_in().
+> >
+>
+> #ifdef CONFIG_X86_64
+> #define VMW_BP_CONSTRAINT "r"
+> #else
+> #define VMW_BP_CONSTRAINT "m"
+> #endif
+>
+>         asm_inline volatile (
+>                 UNWIND_HINT_SAVE
+>                 "push %%" _ASM_BP "\n\t"
+>                 UNWIND_HINT_UNDEFINED
+>                 "mov %[in6], %%" _ASM_BP "\n\t"
+>                 "rep outsb\n\t"
+>                 "pop %%" _ASM_BP "\n\t"
+>                 UNWIND_HINT_RESTORE
+>                 : "=3Da" (out0), "=3Db" (*out1)
+>                 : "a" (VMWARE_HYPERVISOR_MAGIC),
+>                   "b" (cmd),
+>                   "c" (in2),
+>                   "d" (in3 | VMWARE_HYPERVISOR_PORT_HB),
+>                   "S" (in4),
+>                   "D" (in5),
+>                   [in6] VMW_BP_CONSTRAINT (in6)
+>                 : "cc", "memory");
+>         return out0;
+>
+> That code is actually incorrect, in at least two ways:
+>
+>
+> 1. It should be conditioned on frame pointers enabled, not x86-64 vs i386=
+.
+> 2. The compiler is perfectly within its right to emit an %esp-relative
+>    reference for the "m"-constrained [in6]. This is particularly likely
+>    when *not* compiled with frame pointers, see #1.
+>
+> A better sequence might be:
+>
+>         pushl %[in6]
+>         push %ebp
+>         mov 4(%esp),%ebp
+>         <stuff>
+>         pop %ebp
+>         pop %[junk]
+>
+> Then %[in6] can even safely be a "g" constraint (hence pushl).
 
-The ->wb_limit_lock is not needed here, a leftover from an earlier
-version.  Will fix in the next iteration.
+If we want to also handle x86_64, the above code (including push)
+needs to be 64-bit, with "rme" constraint for the pushed value.
+
+I have CC'd the author of the above code, he might be interested in
+the above discussion.
+
+Uros.
 
