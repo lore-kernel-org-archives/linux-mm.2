@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D92E2CD4F28
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 06:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78D20CCFA18
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 06:11:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 434528E000F; Thu, 13 Nov 2025 01:08:53 -0500 (EST)
+	id C77D58E0010; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BCD18E0003; Thu, 13 Nov 2025 01:08:53 -0500 (EST)
+	id C28DC8E0003; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25E1B8E000F; Thu, 13 Nov 2025 01:08:53 -0500 (EST)
+	id B166A8E0010; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D5EF8E0003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:08:53 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9AD312E352
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:08:52 +0000 (UTC)
-X-FDA: 84104555304.07.5773351
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D1142C0004
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:08:50 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=CZ8Ij5zZ;
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 999368E0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:11:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D5151A07E0
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:11:27 +0000 (UTC)
+X-FDA: 84104561814.16.4CD1EA2
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 62F9B12000D
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:11:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="PxlU/FxD";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763014285; a=rsa-sha256;
+	cv=none;
+	b=aOTdLbUHBwoPIMQXQDReZEPBZ0L5tsTUOkT0nDSJ5pxOKxnUCuz/RA2FWKtIRma+Thylhz
+	QlrnLXCAfHdBe69xfTLl9JaB7CYRetE0ILBu/TefX3aswJP9otDYOL0qBl6d9YwVrmbtbw
+	x5zn0MeAMBKlNrzXoroK87DBCyolDKM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="PxlU/FxD";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763014130;
+	s=arc-20220608; t=1763014285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gw80Q3rADiMFZJQ1jC3X078+JYTq1Rdist1GKyxgI/A=;
-	b=MK2oid40uxTl2uojDRm8bLUMpjQu7KfN73+4EE5BWoZ/6UespeSC+szooDuwf2FdApIL1j
-	eR7jPox/mbQmvvbHGXXNibZB1hbBrCYk99vU5z29BqXTAU0FF7fUSYYrLTXSry1xkDWPin
-	rSE3P7XDF3xmwHd0R2F+yFmQoqnuO9k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=CZ8Ij5zZ;
-	spf=pass (imf28.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763014130; a=rsa-sha256;
-	cv=none;
-	b=0FXzN+Bq/ZcDfo40S+IOyV/Z1dFebc3U18x0HEnQp52O85lWU9ctmgX4S5swQVzoCkrjHg
-	191KHoHqvNZTi1zgfKrf3KqwVlvwCsbbGkct0ab9FN3JWoQp8ujRXpCK833yB352LjtKI+
-	Y/QPn4NC2yTf8T/GoGoUP2gZcWcIsNU=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7a9c64dfa6eso295308b3a.3
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 22:08:50 -0800 (PST)
+	bh=2LqphD8tGRygLilDfD3DdZsx92tK0p16bJTr+js2PHc=;
+	b=IvAYm+pTR2ncM9tVLd26UvbSy60xzRRwkh4Goc9caE1WIHdS21oSm6wqs3PjG2Ua8xKNMD
+	f9xW0ruiBNgmQgTFW4gWQP8aISDPVVO3GyqVrLUMInshb4jWKEuWJlrdYNlxqwfR9jYSlz
+	LoKVbfhs9XCP3JhpYEKGDbm6cbDhjBs=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2953e415b27so4035055ad.2
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 22:11:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763014130; x=1763618930; darn=kvack.org;
+        d=chromium.org; s=google; t=1763014284; x=1763619084; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gw80Q3rADiMFZJQ1jC3X078+JYTq1Rdist1GKyxgI/A=;
-        b=CZ8Ij5zZaxAPZAsV0QAQCSofoVTpvFE5RolfHC4wjxLtoGs2O8hkYc0wGNQ/DZz9sZ
-         GFNWPxp4n1yZ3OICkjRKDSCP2ZUi1eunoGniPqVQsV8I/CjWXN1Ft+kCb7chnvLOpsBX
-         A9PAc5jWa0YVn1EDZcp6r6QyfBLjAPE0Pr35s=
+        bh=2LqphD8tGRygLilDfD3DdZsx92tK0p16bJTr+js2PHc=;
+        b=PxlU/FxDNzDlGdoK9zE6k6awexycGu2pLCeqTg9X0Tex+s9gfYo1YCC3OqtFyClCDo
+         4DkRHnEYubzwmAMs9gYN2pEe2fJdGcsbYKp/ZPLtsrHQwzUDXBDGQ4bJGs5oIoYa8rJO
+         A/v329fYf4ywBtGs7vGkcED8KykDOk9EeoGgE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763014130; x=1763618930;
+        d=1e100.net; s=20230601; t=1763014284; x=1763619084;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gw80Q3rADiMFZJQ1jC3X078+JYTq1Rdist1GKyxgI/A=;
-        b=IuTUnUmhVvw3/eTuV3i9n2zVlhOkR68xJwBmRVN0VNhEgLyXARLR5ApA/zEw+G6Jum
-         nVnHWyd64ge/dk61kdTBWiSQGgZ5G1Cqv15YrcP6hstns7iWz0ILl7x3wezn0ZL7URmJ
-         S/37eMz0DxI8tVEyZCKO7GxfDGjExsZxm4qjHqUzRkNt0TYBgdxjyvGyxUCLeD2jGcPW
-         QSpECPwYX94ydLaRBR/X6St8tj9EbYWdoAUHP9l9+pHmmvmLB+dXme/OLP/hy0P5n8AR
-         /tL8DM5B6VfrYDBhbQkGBuY1O9L0dUVRQ4X28ae8+ORZj8Yidexn7BPC92xLBwLa6t0A
-         7Mxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuEju0Iyi70Hmi8/HevOfWGvPjlt7fjgs74vMoDef0iHmMOn5vrcdMZUwNoaJZiLYypPycRk89Xw==@kvack.org
-X-Gm-Message-State: AOJu0YwL71CKRN7zNm/52cthxXXGg46n1/eS/atwEKalvNi6eXmLyHku
-	6NVpNL65ujaBXZvYxc0p6z8a/qfvgfg5Rz+EdHCemUnd1yGCqofRBdTV+8dixNquiQ==
-X-Gm-Gg: ASbGncvwGvxwkhdlU9kLgwD1Q8+s0EK8c3MtsQhCFnoC1TT/vkZm5Mb5DHVwvUnZCEr
-	pZoXqAjLdVBsUJocYW40Cf019a8e1+w6c9lvBoH052dKXKcproBoejwfvx+mg7r5wACrcD4SfgS
-	t5eMHcnno6XZYg2lXqFsldX6WcJj/Yud4f4ujDSCNwJjXvEKA6whbO3thxSgq9WteEKN9C/KtQN
-	C/JP/TKy/pFuLRuAQ44K9nAm0arsH3Q+DIhDyWwd6RVK1AyCRsHfdxDujphSueYZLJbGjDrOJuz
-	94hPQ5/yc+bpO5f420TpwwcqJqi5BeE+OiD73fAKsdope8rQaWcAOWk6vMndmiPX3E/vvt6K5Sm
-	wFmdF9T6/1gh5jTRkOENcGiHjSTNOQRIovJr/lj8ikQ+LDTDwTrini5tXKuLUdoDIBgCD9nqPAh
-	Mtb/GN
-X-Google-Smtp-Source: AGHT+IGowM4k2KBhCbph1UBTZNDjTuE4Z+T0S2CNV/KUAFRo/MaW4AiJx6RQgvWm445j+0v0k5/emw==
-X-Received: by 2002:a05:6a20:3c8e:b0:340:aead:3c with SMTP id adf61e73a8af0-3590b02ae4fmr7840094637.37.1763014129699;
-        Wed, 12 Nov 2025 22:08:49 -0800 (PST)
+        bh=2LqphD8tGRygLilDfD3DdZsx92tK0p16bJTr+js2PHc=;
+        b=Vd/MmDXE1qj461PzHnvj2pyep3vxewzcR7cXmOUm0QFdZz9rcPhZIBWQpxS4evhrP+
+         qT0fmCIRh+5rhc5cSBqQ/hrdgD15D2dMvaBcfcZZce26SIaZ+/TxUXzqnG9qp/PXYBqO
+         fUH3JxR1jCWfwsrymxKxTcHSH5nnSjC18RBMwb8hWk62P7x+ituvz/ic2OxePwlaDBha
+         6qMarUxe5UOOYcmGRCCykpOogCkpNYcUM6Igobzcwb2rGXpXFUFFidfuZtKjVSZSBpgP
+         PsCz1WjrmUJhIYVeAztHYDWAg4zW0DhAoNlPOtnoFMtwnRVlRzmVa9qsDhDD0+5Dd5au
+         NwEw==
+X-Forwarded-Encrypted: i=1; AJvYcCV160xAj/VFYeMszmH8SCs+ZzG3+CzCZKVyrsrvZgVIQXd+ddMNU2bx8Pr3qVZ8/OBXzJiPeZGcjA==@kvack.org
+X-Gm-Message-State: AOJu0YxU6x8Qp3Qhbc3UJ/RlJEWKUsy6sCir9cqYl/Kr8bEa/wioVl8V
+	CbVcG5ecH/MO1zhlXliaKm0I8OrddMvqKs84YAb5fxLaOSXjTI7C0Ca9OtHxL++JLQ==
+X-Gm-Gg: ASbGnctvPfFaZyzRg4MHcF1Bbs/9XY+LkM4bzMdU/y64aqhR6K88/9/xHbuzCqfkbC8
+	y5Gq/UTw8HE6aaeU6m6yJCP6y02jU+XEcvT/beTRLkvSHFVubmM168cAckd+Au8uxH7YQfQBA1m
+	KUw2dd69+sqWVJ5i2/0H9X6wQn2aed0/nzKJb5Z2XdG+QJ3XlHovtLHcvoplUU9hvgkMMuubQ3e
+	Qq3bSxD48zHWMrakzZQNG8G+yhlckFCrUDQtqAfopaIuBPB5Z1DySEjqI6oWxTSV68g9ojQL2tX
+	oXftsb6C6Qlwz/ZvqogT62SBp8cN67T4bBnAJb2EItHxmF1/C+BI4rzq9YHlUdC0qb56FES0ApJ
+	YjypJg6cZPNwBXoIOggbqMxlIkBd/fGv2m3pXud3hyRJJ/DH/3y08ZUIYSDnuPqEnJPl+mC+YAg
+	t4SdHxE8D60UymmGE=
+X-Google-Smtp-Source: AGHT+IE7hQS37m/XPXlVQ4Foh9+BFb/rN2BBQKZCymZyiayaTIgspcciVj3iEqly3oeCkfBztppdXA==
+X-Received: by 2002:a17:902:da4b:b0:297:d6c0:90b3 with SMTP id d9443c01a7336-2984ed6c342mr74657745ad.23.1763014284214;
+        Wed, 12 Nov 2025 22:11:24 -0800 (PST)
 Received: from google.com ([2401:fa00:8f:203:6d96:d8c6:55e6:2377])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b924aea0f8sm1003329b3a.5.2025.11.12.22.08.47
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bed23sm11944775ad.87.2025.11.12.22.11.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 22:08:49 -0800 (PST)
-Date: Thu, 13 Nov 2025 15:08:44 +0900
+        Wed, 12 Nov 2025 22:11:23 -0800 (PST)
+Date: Thu, 13 Nov 2025 15:11:19 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -95,22 +95,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Richard Chang <richardycc@google.com>, Brian Geffon <bgeffon@google.com>, 
 	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	linux-block@vger.kernel.org
-Subject: Re: [PATCH 1/2] zram: introduce bio batching support for faster
- writeback
-Message-ID: <azppxi725gcsjgbmcy6c2zvjwgevzt2ci6ri2bwsdc7x3zrk2r@w5yiry3cy2kc>
+Subject: Re: [PATCH 2/2] zram: add writeback batch size device attr
+Message-ID: <otnmm7behvnsbcqmknx45pgonsdvk4fma4o72qui3bjidwfc35@aurhln6nfyyz>
 References: <45b418277c6ae613783b9ecc714c96313ceb841d.1763013260.git.senozhatsky@chromium.org>
+ <4b7b8f9c68f1a05ec6ada8aa7be9b735eae57446.1763013260.git.senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45b418277c6ae613783b9ecc714c96313ceb841d.1763013260.git.senozhatsky@chromium.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D1142C0004
-X-Stat-Signature: etuq8bitepqnhwfxfozrmwxqp19xadu3
+In-Reply-To: <4b7b8f9c68f1a05ec6ada8aa7be9b735eae57446.1763013260.git.senozhatsky@chromium.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 62F9B12000D
+X-Stat-Signature: xun3ba8w645m88uh3i6actfuzp9dwnda
 X-Rspam-User: 
-X-HE-Tag: 1763014130-5368
-X-HE-Meta: U2FsdGVkX18CItDpSWry9pFU8rDu+qpjH51yQaiG+3xL/ETcvi4kutpIUeDT7wzTL8UGm5fmtP+/TxRtxxWda3/nfv3+VQFHoP1fOvRSyScPGMbo6fUBSkFzi08vPrGaD9nWRJgrAnALZIIMEvODkI9OkPOeE/jnq7kIxwRlDKBDwJLG5x/dQGF9vTILwuGjNscOWJbCSVqgAJ6hSg4hW/cXRIHa7rojxVH8filomeJoWoy+w0ZI9oY9yWjfd0Q6h/zfC4CCecGIcvSvvHyt9zeXFyOGlskIBdzRkW9B3j/h+Q/qsmTClKo5z/yJCc8/CsuqfZw13qPOYMBMmcaGIHM1ZgSuHHDdOS9BFXg1kRGK0GQ+lY5xUUkDx83Jsnufh41zufXNQvmXK1HNNJwqXu7MZX8FQSgpou71M+GjQL+d7rEWye2OZoTTQGPlWujn9H6SYp1zsOA+oK3pi2HDGR5Wz3n6d+PDDTx+40D5L2vIl9R3N2GCRtEx8g03fnPrMW/qDGf12I2lSUfzgFnn839K9JYRW0On3SmuhOclcQEFUeTkCdQgb9g7lU7VHx0ADIjYYTF8KF/n+95fSpjU+wYtRX15EJzKlMVClZ1+AFnTjmkP7Txg16WMvpcXjwlBu9Rlc9hx5S9Ar+AtAIs4wnMRp1ttYhqsjFCUMS3ao1KQ/yb40XDxDcpKo5m2Geg2o1M7Rr3+C2RxTrrMHRynXwQYBKRdEmWtnygrvjx0o3lM4xXHYLbsqocH/y/0JOApSs+RaMSm+m3D0g4MJb1I1v8qb6OMZnfjYO3taB4w0O1ZlTzz7hd9p3sIsmgUFpiJRfLqo5NF+aOWONTnPKFzbMXesyMAmzkcAjDfK7pKr0Ef9eQMOX6lJ8dV6eIrGJJugDQRPLmUt3TLxl2PoqgIxE/JakzMikE/93v5wDZq+uQrJtXaYmRjEmsvy/Z6XMYglufj2b5b/6nFTTa7VQq
- kifYBmy8
- 5xi2Kd7oYCgWlh9JN0M7yOQ/5viFB5XH0GYGK8Dpb7o1nc0ENZNjT+RWibfQKnsQUXan+HppBCGG4qPX8wbS4IkqwJFYa8sst1iM4i2mGyOMFSEf4b0zx/WY5OLjoZmuKJP5WdxB1mrszO5BaeDa7Pv3kh8qhps9Vx/+wF0VoRtGH/ChBGVPFtRr7xd7EzY0MNdClt5sSRTwB1Rhs3dxR91wCz28Y05SDfmHqfy20q9LbeHVXE2UUAHmAsfrWqZDNZrpAikvwb9ywHA/ZyTBEtFqUvOGDXsLaD/SgK1jbqcszlgRaeG6YsKaeiOawhWE4Csd106IDvO7Yj07qeHSjaIaZ2akjGLqw4k6BDIVBT/AQXzg=
+X-HE-Tag: 1763014285-110055
+X-HE-Meta: U2FsdGVkX18cBiVpYkpHEjz1ksf+colKbcpcOKjDvfu9whZKFojGjvrS5Ep+7nh7SsdgKgKBHxig9EFm1yfdCe9iYOyWTZqz2b8RlqxQUYa3g0fCM+UHkJ3BDTSy9RTzuCx/kMxbxQTboWPjXm8eNx4ir2DodkfVNhk5rN2+fybvxtTqDQhJWoGeNKr0fLaipNg1uNTzbDXqNBkdLQ1GGerOgMDGEFknZwe784qTh3ioA8sMLDGzjoZw1nlMqzEujuJ3xPNwfLI8tAcAsjW+Xpncgli5jONv513NjkvJYoTczIfh4Ii3RtSr3KwgmfO0xnWwihdHT92wYSbUdN/lqb9vhpyGP3PWlY1LgtPyn/Q/3LD1MYr94jRItvWR+sSDa2k6IeFtMUwE6aYLaCsBdZKp1fdJE7dOnp2VM1qzS9N7DgxRTYWroxnzHPNNCku/7CTAGE83Ds0dkUHR1gxI1jwy17pgKkBhG/tib46pBhcZJyKIKoofXweEOtr8YanU0Qk3CdSU2HAsSqXzdpqqonCCEmo5mltpzFXV7X11FHGP96xZJQI4eE+/C7ZhYFI+dM7bCA+7lnC3BB+QHiSwux43ak6UA3UdIXoUF1VRBc11BoGW36S13e4X0icu2z0zNrWVHWIri6xqc02N1ATnRJOalp6Ap5bvoSOMM3zWAHby1OSQf8W9YnvZhojmkuPY7DCo9UOIVOL0vUr/ti0YDZcHOg8PQotHfDt07v4Y7XC/Rej4Fo2k/v8b6UvM8ZWDBkIDfBptut0kr5iJm7cqONuLEiBoGi0HvgwTuDzHRYkVHshEXnhRr65dFo8MJT3OnbqYlIJr0Tiu/X8Jj+Qt1a7/Zoo1mCWHbS/6LY7l8LALBDEcK46ZGybSW0z3BAqt1wvSVVxuoXiCw9gSsXgxElzN7Ml8F/3XgPGUaku90REvgbtd4AFAQTkJBcjrLVFUgp4NTGs7zN4HUBFiahI
+ 2LntnmBL
+ oomOqk0GdtJluU0K2Qo1WaZ+y7XQG1aFsJY3gP1FE5zZHwdolXMi8nmj0Mx7hhRAx8wu1kyvjOZ+M9VXsEYkxBANrDLf6gyoImQ7dl3iZy9O/ecw0tu15kX10sbE5Xrc/TpQ83Qm/c6gnTzz4Tk09noQPy2H6Sh0hEeN+ZPr8eIhp9z+LnQNTRe/2KsW8aSbpURM8VDpcnHDhP1IQle1e3ptEavcY1aBOQMtSErpqJvDICWsyWGbuV768nr8RO7ZWU4ZyQ49Wg0ipcwR/AzFq7O+5rrhQTM0IFnLJbOcRqTumzGuLOS8kN/qmMHjVcHkpYBGrMlMLbUhogUTalqHDokzi/qQrD6uyVtSQqJn+Wuy7Meg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,13 +120,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On (25/11/13 14:59), Sergey Senozhatsky wrote:
-[..]
->  		if (!blk_idx) {
->  			blk_idx = alloc_block_bdev(zram);
-> -			if (!blk_idx) {
-> +			if (blk_idx) {
->  				ret = -ENOSPC;
->  				break;
+> +static ssize_t writeback_batch_size_show(struct device *dev,
+> +					 struct device_attribute *attr,
+> +					 char *buf)
+> +{
+> +	u32 val;
+> +	struct zram *zram = dev_to_zram(dev);
+> +
+> +	down_read(&zram->init_lock);
+> +	spin_lock(&zram->wb_limit_lock);
+> +	val = zram->wb_batch_size;
+> +	spin_unlock(&zram->wb_limit_lock);
+> +	up_read(&zram->init_lock);
+> +
+> +	return sysfs_emit(buf, "%u\n", val);
+> +}
 
-This really was not supposed to happen.  Will fix in the next iteration.
+The ->wb_limit_lock is not needed here, a leftover from an earlier
+version.  Will fix in the next iteration.
 
