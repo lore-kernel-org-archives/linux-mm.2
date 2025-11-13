@@ -4,131 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B7C1CD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 02:36:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C860CD4F3C
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 02:44:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 556448E0017; Wed, 12 Nov 2025 21:36:09 -0500 (EST)
+	id 6A4A58E000A; Wed, 12 Nov 2025 21:44:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 506328E0003; Wed, 12 Nov 2025 21:36:09 -0500 (EST)
+	id 67C848E0003; Wed, 12 Nov 2025 21:44:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F5478E0017; Wed, 12 Nov 2025 21:36:09 -0500 (EST)
+	id 591948E000A; Wed, 12 Nov 2025 21:44:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 28F128E0003
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:36:09 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D09B913B965
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:36:08 +0000 (UTC)
-X-FDA: 84104019216.01.8879A32
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CD10040007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:36:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=MluhG3YG;
-	spf=pass (imf11.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.166.180 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
-	dmarc=pass (policy=reject) header.from=sifive.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 45CAF8E0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:44:35 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A9B9512DFA9
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:44:34 +0000 (UTC)
+X-FDA: 84104040468.28.F56290C
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2CE0640008
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:44:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IDov81bE;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763001366;
+	s=arc-20220608; t=1763001873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wU6W1sOwNniOpGHk04oKlDXcIE9zKrR6PDF1cQwJ0Ag=;
-	b=bmBKSxgLRnUOHZPi2X1YV4mmpBvux31txuvunGf6adxigcyXowG5sqSZTjtyPHtnoLoei9
-	K72up2XehjWUmVJ780yan+Kvuzvq/JACLfywuhL/YOXrJHCRgcxkMn6Fl7l1zRV8tmXND1
-	grzQRrj/8SPuQ46HDw/Nga6NyRMy3bo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763001367; a=rsa-sha256;
+	bh=t0D1DAT4URs3QxCO9IZGNlVjEwhL7CqQYRcHQcE4ue4=;
+	b=Iw6thnJu2Q0RKXsatfsou4/X2swoxu0E6zQ1Ii8d9bl1QOFe6PpXxtYmt6TfOAAecqD3kz
+	s/5mcyF/feF6+LGcahMjXxbkBko5lIuFlVL1tIQ6opGahUMQOLN0/vGd/T44YDK0y8f2fH
+	jooqyswZNo3LTGC98fCNhFS2NaL5YkQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763001873; a=rsa-sha256;
 	cv=none;
-	b=0AZFqmkgHEPLLMlFr78OFuw3h0Z6ZlZkS7m5tat608r4IP7QMH5hAHcGOB8bvm2tdZUx8K
-	CFJ8jEZAQh5lNVtrktbRhddymE/GwIP9MmfZocFCGLuRk9ZlR/9+DiS+kyF3+4l3hIGBkn
-	8QSKCoGe7Li5TiAnTya69pY6KuIpNkc=
+	b=XkoKTS3+MajAdxNZqY3ZOIoIenU/TvP2nUu6/b3HcGfEkb0W0v5ikk9KMYSO20/VsEecfO
+	g8sjMNXpL84zR/xnjE2fMVJt9p76bLIHkIxlDP71RmDnFsnTUKyWcwQBJfOyFcZ/wUoaNK
+	6um1YmVeky2GgCKmOsveKFN/sFssANc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=MluhG3YG;
-	spf=pass (imf11.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.166.180 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
-	dmarc=pass (policy=reject) header.from=sifive.com
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-4331b4d5c6eso1641335ab.2
-        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 18:36:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1763001366; x=1763606166; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wU6W1sOwNniOpGHk04oKlDXcIE9zKrR6PDF1cQwJ0Ag=;
-        b=MluhG3YG0MxOcHjNc4i8khO6cL/lbfqGMGrKrGzALEAvD33ZG9dngb5PUcvzqoRPhV
-         LwHpkL78YIpVY12l895+BHWFe0p8AbjOTHFMLzpKorGqTneB9I04TpeEYLZHuhcOWhne
-         lITZXcrRLwuU9QnQN2NfzfqSQPkQOrN+oNxsNC2RrTuIA7gQ9cb6jSxbPPJ/L3q/ah2b
-         oZQTWUdlRE/pdACfL/30+I1ioMnIIi9W61MHR4T1JJqfuLuPyt2NN7Ssr8JaSQ8MBgXr
-         CnuK5zECP9LG37D6cXllPbu+i3j6aLPYC9NdVEeUTN4zDRQ8PDXremecoW6H8E4/h4aD
-         cpog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763001366; x=1763606166;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wU6W1sOwNniOpGHk04oKlDXcIE9zKrR6PDF1cQwJ0Ag=;
-        b=HswFdRW0w15+h0HYi+m5h070EyC/r8O43SwIUUOvOR0IgN/yntHvk11lxW4o1UpKQX
-         IAFyrCPijFPboBNvVTBrre/NyC82dn2lczxCFl4rbaJVUNsempxFZ9+OaDdqJP5FK8rE
-         vBPZMq+WiFJZ8joaXW4rRd1RiLbouI8pwJObxWcN0Ije0LbXXicW3EBLmwKCizYu2ghj
-         PfQhFe9jGXJYCcixkqCCM25qBMv2r3UXs+eOk7j0BBLD7H0L3vnGVVpqly8ktjBBWSC9
-         fcbVYSaYdD3YrV/w0IXZ2xjqXWrqkTxqnua32UQ+WP5QYjWKW+2ZH6M5+rBPDQKqcmt2
-         n70A==
-X-Forwarded-Encrypted: i=1; AJvYcCVyasqzX5InrcDR/3fR7VMf8KJTKSTQnURCZKwgyQwCIKzjcIuZnZXX1IfVz5joNzZCkgEGFzrLtQ==@kvack.org
-X-Gm-Message-State: AOJu0YxCZ3kkOo5SYj1tqDtA0VFTNdCo4/t0GSP3y3V6fWvJKgGF96VN
-	UApxbTWCrlE1sgDKtmVUMajJ3Aa2Tb8Xii82LMIUjfJeX6/4dT5dS5/J+fjahgtoHmk=
-X-Gm-Gg: ASbGnctCNRI/zlVslH4VBVPeksLytcTjb4BpooGfrX9FY+z4PuRSgVR5lIVesOozoLe
-	TtpcB0unjNBLzM3go+8Rqc2g/hm1/TWRdU72R7hbB6dUm3gUWzxDkVuq73nsj3wGoBDTlzCI8dE
-	JLbR/Th481S2bynJRYoi9fEairLjAib9iuXsC+NESJnaMY8rpCfbvdbHSM5jKh/flEODIdL74MO
-	Zk4q4fsT7WckxYMkK+aHX99iiKVlXRHAXsbrM8MYBGuwbHgemap5QPjzgvfiSDgEwAEHKwqF+fR
-	sJ5V0tUt0gzvAV4NoY2Sfx1lAorBFX9d7bzIvCQQjD5jSCzxOLy4T1IJ7f9M2y+HaT6wqvD5Fnv
-	9eDFDz40WJqObK2uFYYTWKDJRgkjjvb9QMBKtyPfOgX48DEDUIXYStxi5mdiMJtqKwlK4bjxIh/
-	IRUIW1qNiRG05zafVg
-X-Google-Smtp-Source: AGHT+IGraeE/bIFHpoWCxTBowHF0q/OZirZ/vsZdNcApHxPGLPbWrFtEzHUR2rGHxEjy2kfVThP5Xg==
-X-Received: by 2002:a92:ca0d:0:b0:433:330a:a572 with SMTP id e9e14a558f8ab-43473d52e46mr77508645ab.13.1763001365760;
-        Wed, 12 Nov 2025 18:36:05 -0800 (PST)
-Received: from [100.64.0.1] ([170.85.6.171])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5b7bd26ff20sm267252173.23.2025.11.12.18.36.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 18:36:05 -0800 (PST)
-Message-ID: <a6e7a571-91d2-4e66-bc86-ba30f624294b@sifive.com>
-Date: Wed, 12 Nov 2025 20:36:03 -0600
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IDov81bE;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1763001868; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=t0D1DAT4URs3QxCO9IZGNlVjEwhL7CqQYRcHQcE4ue4=;
+	b=IDov81bELHRUzh0j3O2nf1magnXZqgUPIS7DtG/cTDcpcP37W0QO3Z05xarUO4qhLw8AXyTVP7W5S/HDw7I9XIejY83SYctAHRQmZrbERzwkTFp/sPQbLp/XXcGE+gPaJjOui9TYYokDelS+wVN/SvA1fZzAP4TDS8/9U+ME0Ho=
+Received: from 30.180.123.14(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WsHpD2I_1763001865 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 13 Nov 2025 10:44:27 +0800
+Message-ID: <c97874a0-2764-409b-a2ce-645ffd7a0e8b@linux.alibaba.com>
+Date: Thu, 13 Nov 2025 10:44:25 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/22] checkpatch: Warn on page table access without
- accessors
-To: Joe Perches <joe@perches.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Cc: devicetree@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Conor Dooley <conor@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Emil Renner Berthing <kernel@esmil.dk>, Rob Herring <robh+dt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Andy Whitcroft <apw@canonical.com>,
- Dwaipayan Ray <dwaipayanray1@gmail.com>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>
-References: <20251113014656.2605447-1-samuel.holland@sifive.com>
- <20251113014656.2605447-8-samuel.holland@sifive.com>
- <1dfa1e3566cafbe43a1d4753defef9c82ddb3b64.camel@perches.com>
-From: Samuel Holland <samuel.holland@sifive.com>
-Content-Language: en-US
-In-Reply-To: <1dfa1e3566cafbe43a1d4753defef9c82ddb3b64.camel@perches.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] mm/khugepaged: continue to collapse on SCAN_PMD_NONE
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+Cc: linux-mm@kvack.org
+References: <20251112020031.25350-1-richard.weiyang@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251112020031.25350-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2CE0640008
+X-Stat-Signature: m9455548zn6ffz47a961xhwfj3tm7dsk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD10040007
-X-Stat-Signature: smow9x6my1u346kafspyszrobmiw1mq3
-X-HE-Tag: 1763001366-118116
-X-HE-Meta: U2FsdGVkX19alh3oGQoko4njg2t7xhFQ+hp1LvdA9j0G1AmlUn1PgJ8X6yD+R0rJbMmuqtLKofzwtHZcQ//zHfH7/uARw/Xig7szjCtpY4PWYbC53BJ/ikXGxZXnvHjkBGTZccF4NWZ80IJtWMwPjWzGkDy7ylHmEO3FTGrajPLX0N1CYB7WZKvu20MFnh8Pz7n6+nIT5nnvSaUhOljZcVckY460R2i2p+5P/tRcDo7dlV1d7R/7Lg1eO88qkE+ymAE/XAEeioNvvn/ub915z7DXCqgFYyum3wKwCs8l8CkuLtKx3aeTzP2GoaKzQdGIOeya8TfIQuYK07JvNsdh4zDekvOYahb1Cv0RbTpca2BgJ6Dbgq3wCvpymHj6KT0ClVoFT8XJs22uULiRCK9adjbDxxle16wJS0OA1Sjj+Syt3aEVBLzneMrkJNIAzqTFR+c9rQDwxGuCydp5iqt7jZSWzY1GrDvZhnZTMzUDVpQFVOWLbhdzhIyE8fBA47ZxGWU2jg3AiCxhGhbfQ4UmEi9aUa+j4te+uQr9+DkOqkN2LU50kw/q4tFW3G+0q+dDCM5MCuLZAy5e576fndQgczspwyA1xe+DMqR5Vcbs3mmLAM8vmwO5SkLLO42k9WNe59Uz7tqQrlX5cCQqHdMzx6REmF98r/ggHvccHoqvIGAE4DPj2PS0CvNwQ3SqXh5SzKq33E/ApT/wNl3NWgIOZ8FzsmzAefF9GJlSmxMhsg2RkaOeYBwGVbgbwyVSPWNwFzOoY4IJILxp70usCU16yTh8m1P0gn3rLzJO3cl4OX8PeRGEGfuC4N5sFn+EUDiNs/a6uY9cX1ye095auzgV1n04PuaxmE6S5FlNuThOdcIdve1ige1c0ozmYBzZewRuDEO3Ma2Zj6/BwkcV+KZbwjBARSvkPV6ZWzSuJQEroZVKrC3tDkkSlsIAXEW/zGymNwiDsJujbqtahhJIXpx
- 9llgG+z7
- fHkjvCpkcEjpx8s15JgX343G+AEHLYCy57AuS/LhXDAVDfIY4881NIULF1L8L5YxhgUDARSbtM1F+25iP77UyR2TfVEU8W2b92DjsVyPp7Ggs8OHWmyZ8FFv6fcW5GfGRPB4jn1YOXYK0hG/+ANGdYSLPsNNoloLcqunLn3QalFKxpkrW3M8zwtygRqzJwm2kTVYdy6wqKoD/sMBMiuFePj9Q0cetAIIYpMfjewpAUP9msTMOXRMqLDsGmS6ACiA2YzLFUKkI2rbgNCaBFH2UUC7n1l4QD4sQre47rEymt3aG/JBOvtpBhkwDsUOavT+euOKRf9YxK0LJeMZtEpArGlBwwvi/ahoo4Sqk
+X-HE-Tag: 1763001871-279486
+X-HE-Meta: U2FsdGVkX19DNcyc2051EEYcWUNIYhEhmlUzGULs3SSLANt/dymPp6/To3+iLQibZBjfEwVXPW1D4xbnKjrktguXacGVvFXCSSudjCEqMxHjLm7YWuUC9p55hSYr31c8z1sL2Ood9K0hjvMWqWZzdQba2ixGkjP7rHl1wDIK8731sTXHJlwrx1bSMP6CgtB9DHNj+YK9iVB6HPSHGyHV0J4L0b1j3bis3GT+Nf7P1lDYT/6oNNUvl7e+80qahH4q8ZDGNlsuo4dc6InDAV1dToTQVlscRhm++iqSOeHNf025CPj66kAq/VF5F+3OeybJPA2qjQT4BU/tMBSBDceKjsHZDwARmlVrrmd8qGdRrhTXyepy6+RjH3IqBjtxXW2F2haCeXjpZPYSfFuUc4IIr4bajkOnz7zHAvuBT3ucV3YihC2YF9MukIT8GAAxnvtsSz3zmNJG1DqwKIk5DfFQJyYoNTfO8bRNtlCg19snEUeJVM+yqG0JIiNGPYc8N6bgzRrRvpSZ6E6fREOJs2kcErQFjzhgwWT47bM+409zvx8sqtF/bzAXXd95Uz/+TWAWulvjFql9BcPEavY7LjlM/lU60iTZOir3hzYZ3H4SBJ5jIbiLDxjk04iknBvXFUpQARqJlccvIB3Oog8EoSIIp+L04PmvnNp/G+LVEEzRTj7LU9US/F5xiMc7p0BMKjBtZyeWTOREnDp6lw9/d0auvuB48C7nL9ug0PgSeR8/3Kw98m5V4gaFqGTnRvVbC+9eKGZN1+YomBTP5Y5IvBiWeOefvnvtfqcEV/KsNT8OIZzq6ua0+Lq4E8pPYjqw6GPfuPRI6QNIiOjIZPIMC8EBTMtL70f5lNwre4nlOC4eAhXh7Br7dZKXhe42EQz0I/UzYDVaISwqWH011OF+GqjBWKT5G+/K3uIbkqp/49X7s0xVZD1qMKYEvSS7JTebHO3u4aUYP9MS+yL2drtWmkm
+ sUnPMptt
+ lqvq9j66Bb8HBXsrI71bVi5DCgTg7QPcpuIrfh2KbtmEgA9Af058fNzDs9Iw0G6MUiQwKdcXAGzgyuo9XP2y2aeIAvzI6Py6XLINU5XcrvrEUXTrGMmyomIM0he8JVI8Cgr0iM4jfGzUqG8ZxpvP4soe9YTsMBI4wkbQGdBwS/Kg7VOKFi7zrknPel+pxz6UiX/oH3Ydj/MTZc/Wk8MF+oce+fuVlnZhb3GpcQw6KDHDauaa8uX6vDq1tXyF/052R+cb60gkUhNVsCLXZrc9M7Neev5gxSic5L1zRSK9RKtdcCB9XI19EgmQj3KiYusJC/tctDe7GMGlEIcqLhfUEgYHbHAD/r/O5C5iX4r2fcvx+UMNoo4BtK4lWGiVso/gN9OQoEXEgq283ai4IgPvQJiKCdxs73KfKwY3KAQd1x7kD8IVGyaPhSSLY4GHeY4NrOxxr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,55 +88,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-12 8:21 PM, Joe Perches wrote:
-> On Wed, 2025-11-12 at 17:45 -0800, Samuel Holland wrote:
->> Architectures may have special rules for accessing the hardware page
->> tables (for example, atomicity/ordering requirements), so the generic MM
->> code provides the pXXp_get() and set_pXX() hooks for architectures to
->> implement. These accessor functions are often omitted where a raw
->> pointer dereference is believed to be safe (i.e. race-free). However,
->> RISC-V needs to use these hooks to rewrite the page table values at
->> read/write time on some platforms. A raw pointer dereference will no
->> longer produce the correct value on those platforms, so the generic code
->> must always use the accessor functions.
-> []
->> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> []
->> @@ -7721,6 +7721,13 @@ sub process {
->>  				ERROR("MISSING_SENTINEL", "missing sentinel in ID array\n" . "$here\n$stat\n");
->>  			}
->>  		}
->> +
->> +# check for raw dereferences of hardware page table pointers
->> +		if ($realfile !~ m@^arch/@ &&
->> +		    $line =~ /(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?(pte|p[mu4g]d)p?\b/) {
->> +			WARN("PAGE_TABLE_ACCESSORS",
->> +			     "Use $3p_get()/set_$3() instead of dereferencing page table pointers\n" . $herecurr);
->> +		}
->>  	}
-> 
-> Seems like a lot of matches
-> 
-> $ git grep -P '(?<!pte_t |p[mu4g]d_t |izeof\()\*\(?(vmf(\.|->))?(pte|p[mu4g]d)p?\b' | \
->   grep -v '^arch/' | wc -l
-> 766
-> 
-> Is this really appropriate?
 
-Other patches in this series remove 277 of these matches. But it looks like a
-couple of driver systems (iommu, dm) use variables that match this pattern as
-well. Limiting the check to include/ and mm/ avoids the false positives.
 
-> trivia:
+On 2025/11/12 10:00, Wei Yang wrote:
+> SCAN_PMD_NONE means current pmd is empty, but we can still continue
+> collapse next pmd range.
 > 
-> izeof is really odd looking.  I'd prefer sizeof.
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> ---
 
-I agree, but my perl complains "Variable length lookbehind not implemented in
-regex m/(?<!pte_t |p[mu4g]d_t |sizeof\()\*\(?(vmf(\.|->))?(pte|p[mu4g]d)p?\b/ at
-scripts/checkpatch.pl line 7727." I could split this into two patterns, which
-would also solve the false positives with multiple variable declarations.
+Make sense to me. And I agree with others' opinions to unify 
+SCAN_PMD_NULL and SCAN_PMD_NONE.
 
-Regards,
-Samuel
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+
+>   mm/khugepaged.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 7e8cb181d5bd..4c2217076ad3 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2835,6 +2835,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   			goto handle_result;
+>   		/* Whitelisted set of results where continuing OK */
+>   		case SCAN_PMD_NULL:
+> +		case SCAN_PMD_NONE:
+>   		case SCAN_PTE_NON_PRESENT:
+>   		case SCAN_PTE_UFFD_WP:
+>   		case SCAN_LACK_REFERENCED_PAGE:
 
 
