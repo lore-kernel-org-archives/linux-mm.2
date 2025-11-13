@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0156CD4F50
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 08:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 398EECD4F5F
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 08:40:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 474D98E0003; Thu, 13 Nov 2025 03:40:38 -0500 (EST)
+	id 9CCB38E0012; Thu, 13 Nov 2025 03:40:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44B9B8E0011; Thu, 13 Nov 2025 03:40:38 -0500 (EST)
+	id 97CF98E0011; Thu, 13 Nov 2025 03:40:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 361148E0003; Thu, 13 Nov 2025 03:40:38 -0500 (EST)
+	id 8B93C8E0012; Thu, 13 Nov 2025 03:40:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 27A7D8E0011
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 03:40:38 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD1074D41D
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:40:37 +0000 (UTC)
-X-FDA: 84104937714.08.1B3581A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F7D98E0011
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 03:40:45 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F73412E5A3
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:40:45 +0000 (UTC)
+X-FDA: 84104938050.13.400B2CB
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 396EB20005
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:40:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3H2qB260;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf13.hostedemail.com: domain of BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id A4B211C0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:40:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wo4KLlMu;
+	spf=none (imf21.hostedemail.com: domain of BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763023236;
+	s=arc-20220608; t=1763023243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oJ3MIZLrxHKL3HXjB9g5ZhKNNJWUlT+3FdxZLvo6TYU=;
-	b=3yDt3kMtend0Xy9LdRJ7+qAF/O6Suzhs+5E7CbJiMd+NmVtNSmP+KVQmIURfjW2+YU2+Q4
-	yJkRkuVV11JFU5hRf824RoEIO/t2MRVqQF9iVFSguEVJ8BGjdR9omIh2u12PNNR4kKmHS6
-	Um72bA58DmCZ/FywaYoyrFfrojjxFPU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763023236; a=rsa-sha256;
+	bh=K12fvQh8pMGfv6CV6QCeUJnLZLoYfhvqBb771xU59eU=;
+	b=GYn8HPmjt0SfK27EUVftqq4Uzy4hwTWxVMzW7t+NByOxwKRjfxnXZzxwzfgbHkI8c/aX5W
+	ulKxf7pa9kGSVPhdWEkNJviZIXezOIDHgo8dV/R6MbJAcQUNL6wBMAhaueAUIQgOvyTyGr
+	ZdUD7L4eETnCJLZbUo1GuMy65JCtIwc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763023243; a=rsa-sha256;
 	cv=none;
-	b=Rw2afOZGgcK5zL+xzOfY350rWSamw8YGLxslnoNc6aVHZOQu+c5OmnQJBQJ8c9r8OFA2E3
-	dOojfHahlgsdugcqwkI8YHcOe+vFreVmbs4bHyWftHKpHSbbphXgDv3koEHiBebop7Q+iB
-	7NZu1kp0zbazHXYb85Hh2JxlVTnHf9M=
+	b=8h33S5pp3zWcjAD2o309MxEez3MMhjlwo5GiOCbkuswLsUC5uIaofJkUPPRS0LCNXqXurg
+	ubK9j+hTBsxpIzfdNDx2AKbceOWAUZPQ+tXDtiMgXwOVzkwTD9BQ0xtBaXT/GP/rMUrilS
+	lmTEtnTtrWz0Of8WoX42yS5+XP9dtFU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=3H2qB260;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf13.hostedemail.com: domain of BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wo4KLlMu;
+	spf=none (imf21.hostedemail.com: domain of BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+fa6b10aa88fb4b0ddc30+8117+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=oJ3MIZLrxHKL3HXjB9g5ZhKNNJWUlT+3FdxZLvo6TYU=; b=3H2qB260bJGzdc+mmZgu7gbjP6
-	1tD87ZP9O2SQYeVz0R5sOPzmZUiDzhxP5hMx4R7leLOcXctMCAKcG5vKLyy9X+ppA+1/z49+ZC2KO
-	2KpYYgSaACQwf4BzVa7sPYVcLw9ABkTLAakb1cSccaVOrDJi6Kpf3gYH4WSokTCp3ib8fsjhaaTDC
-	wAMU/QnGPc05g8wj/PrFiL203dpiEripAEpep5/4LLaxLnUq02mJcdQPKphySrabkUFuQ36qIVpkQ
-	uoB7AeMpdvoml9M8Tp/iYlTBhsLy52Ipw5QoVCCT1q2StYTwG6fR6WbFgVrGOLdjF3q4Ufn5hZWAG
-	OHBPvXbA==;
+	bh=K12fvQh8pMGfv6CV6QCeUJnLZLoYfhvqBb771xU59eU=; b=wo4KLlMuOIxlkDaLjjeymh3m0y
+	Nq5r013Qe/vqol7Ae+oH6KXXU8JBYs6M6ShVrHvucuIwt/gPb755LXeGHvfnK2xQ1lq8dq7UdP83X
+	cJv4p7bVk/jEnPJ5RKv44j81ZNK2dXvzz5b2YafP6XfHC3giifuMzgDj4ge1fzUciqRuvUbIY8HDg
+	6gPQmMucPeyv88rg5viknD6dpAmBt2ZSkV/wXF3ob5vC42mDBSI/waUaejdLWmrn+R/1WL7ryZ2YU
+	+AiAgtPE30hZYmmXkUdWptFyM8/U35hDXMWnUbgZDm+JdojBp+Z41ouDKijXFkMBRwrE47LcoJDVz
+	qPPjtPKw==;
 Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJSsa-0000000A7Nb-3vnA;
-	Thu, 13 Nov 2025 08:40:33 +0000
+	id 1vJSsi-0000000A7OI-00e8;
+	Thu, 13 Nov 2025 08:40:40 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Vlastimil Babka <vbabka@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -76,23 +76,23 @@ Cc: Christoph Lameter <cl@gentwo.org>,
 	Eric Biggers <ebiggers@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 01/11] fault-inject: make enum fault_flags available unconditionally
-Date: Thu, 13 Nov 2025 09:39:42 +0100
-Message-ID: <20251113084022.1255121-2-hch@lst.de>
+Subject: [PATCH 02/11] mm: improve kerneldoc comments for __alloc_pages_bulk
+Date: Thu, 13 Nov 2025 09:39:43 +0100
+Message-ID: <20251113084022.1255121-3-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251113084022.1255121-1-hch@lst.de>
 References: <20251113084022.1255121-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: cijb6nqg8u33gypeimbzsx55dbqcbbp3
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A4B211C0003
+X-Stat-Signature: yxmitcrqehw976pmqnkpr41p4tyu6gg5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 396EB20005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763023236-896190
-X-HE-Meta: U2FsdGVkX191BsKB08q4g8OdTyrwbpfO8labQ6qytLCJ6RlgRRiY9BGhQV3wKEo0UqTSasrOX/AwbjO7upzoPjmj2qXWoC0Tn0CMB71AYdSW7nUWspWLhUBFXNbVqw+Lu9cRMZSWuDOZlp3MpI6Jo13iyoj2qSKyNQB8GoWpgpt4JznmZ4V0lY9k22+rujZyMN/c06FXm2TJQQSiLHKpDUXzZL5+3Cig0YqX95A+1F6feBxNPjf6bAkaBYzdAr4CeeGATko52RhyOb2PLZgrQQlZreWa6wUt9xSQjtE72USBf3vogVAR6Bh7DZSnyHm+/TXIaCi1q/It4ieRzWYc89/A6kkB2jkQv5P+Niz0xZ5Oa19I/inm34K+9rhp5wTerVcTM2FM5j8ffiXXI9OwhgX4Z8SqoQrH6YHE6vUX0lACih8Wkb7KgF/Y1bz0GgjYpvopV6Od/872viUVXcuZoF1gZdzWmHFdEncaW6DnR83/K7wI6kC5SUJ4IhaQBgIVYkW9dKFPEs56uDQiqAm+rxzsDapTNhhKPmWzhnBOcGM4zQo1m9+1/KyeYogkvdNjzj7w8LVUgMsH+jIuvFoaZtnnDHw2invQJGRarX6Y/tSOxCYJwKQzELzjTauyDSQcCb9tCIUKExY09WTSGDLMpZeQnCbZlRpiNzoH/mcb5oTj7JirZvdlPXRwE/r4yEO/0Zz5RF1XVSP70LTF1Hq3yTQK8/HuvOMm7Ggq+lpwUUwUW0McaMmA+L3WQIBBlUnLgOQ+2GJqGh5bbhFqYHbGlvBs0KaywA8foGBlHCI060tUcmHnOqmOyntLh2b+t0ZtwiLX8kaWEZaxoR4g046gLGFKVjt4b+iJTNiWImU8sWCHIlB01tsQYZ9Jz9vs+q00EnLja4UcgH+q7lcL8UKMwN91oTJdhbrxqAT0FbbL0k3DOMhTXcdhOSVnFfF+VEzZtn9PhoFM8NVOae8Ud0r
- UChA6qd5
- Aog98rDBKxqx1/xfVEjyM5jsFn3r8djCLe/K1oWe/i3+9w5JsuDFtdOIPr8yhKF5IZB7njBVhf9cIv57VcH2kUsrsldfscq0qJ19Qp2U86uo1REDQKn8jGE+nJ4RRfBbtbY0uwHjQxEMl7Vii/tmKkOzpF3jHQkLg8/nVrIvweNdaLc1HeLuRuldX6jHqj+zKI0dcPw5GC7opuMXskC66traSP/r3h5aUts+6j3w83IJit27y0WApq+g2bMt/6Ozhav/6dWoI3GbMAQ7RylZC6Q66BORqJJ7yiffqbyWRnLraB6mJcLR/76LFCaxy5AhGaGRhPO6FSPgUcwH6dPdaKsP5761sFUnWi2ryZGQqJyB3kxHUPKt8vTv/yG/z/dBazslJMT+c5R9G8NDgdI2DeJ+JA6ayyapYkzBZsI0shcNdS3fodp/GoRaIU+ViRoDBGcqK7+paY8gvuxgJGVAdtePCk/t+edyd5liFrMz2/ag1MY2LY8O3E6LWMO0ajOZw3MLs8drx5lZt8x9wJO2eJYyN7/iwAhHALp4OewF647ebTvFema9DvQCOEq+ffl5KnM3VcsuGQH7WGXg2ZazmkIPsRowRRuOC5JfNiB1q+WAmzOWQmotPHb4gqAObirOufEhZAhvBnrXJMn4=
+X-HE-Tag: 1763023243-858220
+X-HE-Meta: U2FsdGVkX18ijkIubjQ0bGwt2B+BbYzCarIIP8W/pRcTqGt4zCJnefYMNiA9sZUfAxZrq2zY6IYwvO4pHkH3pvECqTHtN8IseymdQO8VBX7njzBO8QoFprwcPMmKw6qpaoM7GMY9KiAztlZXEw+RzhHlxUVACDd1i5krPfFaFoG7Cc6bgVqzS87H0jEFSX4yUJavzgF/RKS2SQtITUZZ2QRTL5Axim3AZFAB5QtX/CttxI7KqgnZN+dsrEKYkQthtl7FV/JRn72aI7wHVzryx22F6cm7yxieQsINl5ZEhlhHZSgvkhv9hGLFtfHYD7o53L5QF2amss8UogW2UzpR2k0YuSZdw72RG/ViitH20/kGAJNRV69dzUGTMgdPLpVbiVrRfSlJIsV3GWGgsJ4EwXLou3N5GTBjQemGnUINlfcO6QuaHfFAZ3uUHwpACdb03dxyG853KEWgMjvoZcUX4wFHfK/eTzgxs3QXRepWsrHNkDkJlrNRo5AXg8W7LBVQynLo8qwPvVtxVos6yqDK14dh8Ih02dVZtQF/gO2AzcJ+/N3nlp9BWUSKXjnc8iNL6t/JWOfu6FBc6ZB/pqeOoNJZs5r0hdkK9dPHS9xiTntoUHnH8WryKDa6vGJCe/d8VEyzrmIk/CeCiWQoR+KuAHxT5BDDwt2MyieILOATynVTdwj0fSwQgO09OzxNRJQpAF5qBthNVNMhDc0xS6fLR67eySRl1Nb9TNSXk97h5NYgtUHp1XTeq94N2NPFFtQsHfq+OxMV6glFYsY/HEZAQkJzzJWX/mujgULP4Lnpx0SCwfSE2Hv5xPpnqSfkkEr0CEnuScr7cfnRrnAUnNGD/DvNpCPg+y9GtM8BjNBcJqwLPrhVioUnNY+0OW0o4BfzX8aa5PqrrrZu9tk4n0jRmLKXggIt33gytBo9NM7JP5eGv/Yq6Mq+/qouqcSvU6mCN9IcnUP/DZVLF8n1GhS
+ vTVTGzrB
+ QlCzaC1EB93YJLJBRxgremOqTsHQwYnY9TExCd4zDGvnxNmW2BlQKAoladpCeANdnYXWNDVdu1JA7NYHce6ula5h8iysMbKiXZiW5ptK4cKTgy5nILpqIIKn8YR0rSI3OIt9I8S+RWf9CNq/5W7/WC4ddtop+KONT2MHgb2cwIaq/CYjF+bVadTwT/UO3GVeEQfO2dFsDcy6wsDR2p6ZWl9ZipPvy4vQGWd+uJKGvL8KAvjdk8lo7aQs4ni60bdfaqYZF4AkAWd+7Y/jxMwHD1JFRnahWoHGm3sr3lV2/V7JQxULp2NTfxeErFNKv3mS1Q3+pKJT7lNy73M9SkU2Jl29kvHSYQFvcRuSq4vhhdHv00pXsa0rI0J5vHJHHMv9FtVWngtKOQiG2+6/6zvHT+Hw74n2a0PseldHkkaXeLjQjuTwgWHoW/yQmlNql7naELgec03gKDYxNoPEdkHKJD7ZY67b13srfSB0CZYsYx8E9Y3Ij7svAj3CHxPbmlvdTLq7qFW8LeirquM+2G1Gq/d37iN0E80964mQykra7G9mBH2QQo4bKQ+Z0zWWJ4f266UY5biugKIZ/+xyCaifn1JTZgPMb0xbbXhWu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,40 +101,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This will allow using should_fail_ex from code without having to
-make it conditional on CONFIG_FAULT_INJECTION.
+Describe the semantincs in more detail, as the filling empty slots in
+an array scheme is not quite obvious.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/fault-inject.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/page_alloc.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/fault-inject.h b/include/linux/fault-inject.h
-index 8c829d28dcf3..58fd14c82270 100644
---- a/include/linux/fault-inject.h
-+++ b/include/linux/fault-inject.h
-@@ -8,6 +8,10 @@
- struct dentry;
- struct kmem_cache;
- 
-+enum fault_flags {
-+	FAULT_NOWARN =	1 << 0,
-+};
-+
- #ifdef CONFIG_FAULT_INJECTION
- 
- #include <linux/atomic.h>
-@@ -36,10 +40,6 @@ struct fault_attr {
- 	struct dentry *dname;
- };
- 
--enum fault_flags {
--	FAULT_NOWARN =	1 << 0,
--};
--
- #define FAULT_ATTR_INITIALIZER {					\
- 		.interval = 1,						\
- 		.times = ATOMIC_INIT(1),				\
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23..b3d37169a553 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4982,13 +4982,18 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
+  * @nr_pages: The number of pages desired in the array
+  * @page_array: Array to store the pages
+  *
+- * This is a batched version of the page allocator that attempts to
+- * allocate nr_pages quickly. Pages are added to the page_array.
++ * This is a batched version of the page allocator that attempts to allocate
++ * @nr_pages quickly.  Pages are added to @page_array.
+  *
+- * Note that only NULL elements are populated with pages and nr_pages
+- * is the maximum number of pages that will be stored in the array.
++ * Note that only the elements in @page_array that were cleared to %NULL on
++ * entry are populated with newly allocated pages. @nr_pages is the maximum
++ * number of pages that will be stored in the array.
+  *
+- * Returns the number of pages in the array.
++ * Returns the number of pages in @page_array, including ones already
++ * allocated on entry.  This can be less than the number requested in @nr_pages,
++ * but all empty slots are filled from the beginning.  I.e., if all slots in
++ * @page_array were set to %NULL on entry, the slots from 0 to the return value
++ * - 1 will be filled.
+  */
+ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 			nodemask_t *nodemask, int nr_pages,
 -- 
 2.47.3
 
