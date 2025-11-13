@@ -4,80 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 485DCCD4F35
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 02:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F72CD4F35
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 02:04:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C3F68E0020; Wed, 12 Nov 2025 21:01:40 -0500 (EST)
+	id 828DA8E0010; Wed, 12 Nov 2025 21:04:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69B928E001F; Wed, 12 Nov 2025 21:01:40 -0500 (EST)
+	id 8006E8E0003; Wed, 12 Nov 2025 21:04:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D7FD8E0020; Wed, 12 Nov 2025 21:01:40 -0500 (EST)
+	id 73D9F8E0010; Wed, 12 Nov 2025 21:04:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DDCE8E001F
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:01:40 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DEE4312E29B
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:01:39 +0000 (UTC)
-X-FDA: 84103932318.18.82996F9
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A3141C0012
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:01:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63E148E0003
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 21:04:13 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 11B724C958
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:04:13 +0000 (UTC)
+X-FDA: 84103938786.19.8130AEB
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 25DA3A0007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 02:04:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Kyv4VMmG;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762999298;
+	s=arc-20220608; t=1762999451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ulbFeIjMdeHEM952ouEyP8ztwT82uPqA/IHlJd6p1Cc=;
-	b=G1anCc55v7xlZWeCIkseXhQCh/qjkP7UcHj0PmFh7mbl7h13ctUez9bxWWJtZQf7DBw8lJ
-	tPINFLn8M0FvgOv2gq0TB0NdJoBRXsNSm+haYQgY8UEoTZrUxxTNZrCHVp5Z0NZK0YlmFB
-	6p+7ubdgDxFgUDSR5b/BImDzQMgy7BQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762999298; a=rsa-sha256;
-	cv=none;
-	b=4kP3yK8Pp/QkPITnu/2jeAYm3IY8iopvSbeTdYMrY4RnQuDkzPnGlr0gKULd44A5N85B3r
-	H2RzSxeJiHAlyy76ekRUThcxGElOJBiUmU5lk4OMYKxDZEH9KjhNWVzwwAr4jU76+pPAVD
-	xisDsQNqeG6sXuxYhKqOKySlhRWZjz4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CoWXrd8JO+QikmbPgskO6RB2/Wy00bhO0gKhHUyvMV8=;
+	b=p9HiuKGytXhYCj9uZpoNAJEqhEBsiMP5ahxRMR5HQSTwfmtjviRKmACc9PR2xqV62mhyds
+	rgcEfGpITcX/V3PiuW/wC8GKiM95MULyyWnpNTIlEZG+occzhyC0OcTjjv3fR4OwmUsCbp
+	n5OopUUkjzSmzsdcQZWi5RdKthEmuGw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 13 Nov 2025 11:01:34 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 13 Nov 2025 11:01:34 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com
-Subject: Re: [PATCH 2/3] mm: swap: introduce swap tier infrastructure
-Message-ID: <aRU7/ibyrPTn93qV@yjaykim-PowerEdge-T330>
-References: <20251109124947.1101520-1-youngjun.park@lge.com>
- <20251109124947.1101520-3-youngjun.park@lge.com>
- <CACePvbUvDfZgDx-sXkZ+Oa7DwtKg6b1t=owQ1sRZ_FpFrGxA3g@mail.gmail.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Kyv4VMmG;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762999451; a=rsa-sha256;
+	cv=none;
+	b=YXKUgAy7Zyf3fYMHsuK/DOtYPtbaZckBQV8GE+26NEiTj9hl8+OtpdAUO1INOHjpozjvyX
+	chu7t56pDbxtRsxXqL2P7aN7c6Vf3NGhLXd/vLy0kR27AS35/M1RpOEoCc03IU8P7ck+nv
+	SjqqDYTFFdYKq60n5Be5+vEB81F8t+8=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7b80fed1505so223527b3a.3
+        for <linux-mm@kvack.org>; Wed, 12 Nov 2025 18:04:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1762999450; x=1763604250; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CoWXrd8JO+QikmbPgskO6RB2/Wy00bhO0gKhHUyvMV8=;
+        b=Kyv4VMmGUasuOUk6JR1VPIuMGax41bsRuGLMOji7Apmsymg3uBhlLg3yl08w/IVo+D
+         6t2P8yEk13u39j7VS73Fj7PEK2Qaj6Rsf/A1JmLam9jjM1ucDnm/iMfhI36Zpx9UgiPf
+         0tiVQhwav6DN9s0qJznVkk4DnHGe0lAhb7QWM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762999450; x=1763604250;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CoWXrd8JO+QikmbPgskO6RB2/Wy00bhO0gKhHUyvMV8=;
+        b=P4iMrevplx6NGzLlo2pRjKR9wtZScXUaKftAhcXADF/70P4ZubHTIyY8JhJDRh0Kx2
+         Z7ftnVEX4d4eyYhS2PvuxRNNXatbaEv38/a4FjzoB6rmdACZ5rE9jTxwFQwRFunlKmJv
+         fsLHZJO4lFNNdx/yJTWd5hHC+/r5XHkjrDUy2c81SOiPlTmtK3y2OpqluiuMVDf6pvdH
+         zt4+Iv49q+OG40yFpBNTfBfhjrYMQEtVjsEKAqRt8WH+LifM568LH/7fEPjNXibo084D
+         gNWTU/sYUJbDZ9+4Hdjrllls/XofxDmcoZkGlaJfHnXu6f4UUGehp0OH+EN/9ROOfoMH
+         CTSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxThDUsTZY5PfucWFp6T6WC9VJR8d7yXr8WBWL9CDlp9Cfq/u1F9xyjGUTFkiIzpS8dyKa4dYW+g==@kvack.org
+X-Gm-Message-State: AOJu0Yy6ML+pAYTxb4hhj0sGA5GhyBSGtpvQNn/kZW7V+pO+LAC6XCMy
+	V5IY6cr/lSzniytABx2PrN/hq0dXdTJ+NRTd1AvQ5tI6KMXNjbwL1ySyXTscRBtKww==
+X-Gm-Gg: ASbGncvKns8pQXnkJ0jVCJcggpz/ZnRZxtTJ9ZBJgXeNVA1TJ3fCvY0xgLMAc6776yM
+	+7TTI5LkLvZOhLpjDycKDoZen+jx+ywKAFDH9+AkVktgLK++nbVhqtAsyOHszy/aIxJfCXJVVpq
+	weswFH/UgiO4QiYKbDcsMKhCU3pDOsOoFJq9s1mQzcHPV2rklIqzYtROt7gUnxFZcCwPMp1oVMI
+	mrq0zCOYp63NV7uEGwb2BGY7ML6GXuzxH5ys3vz5BJKLla4be/ENEGz6DvykyNobX8qGtX2zFUL
+	oSIfeAIEolWWK84NRxs7aL7P6jNbemj6v72zocSDUYmGbjSXzX+qdYmRBkpfwBI5k+D/Rn4sY4R
+	A0MwZ/GcNbyC/YJLSkexao8AKX8m2KWCRQ1qWM1HKzxfWIu2gh2yRVs6fCLYRnJPOPDYtzJyAVF
+	39PV3t
+X-Google-Smtp-Source: AGHT+IHfZ2N/MAyyzHG3SVOhKMI92QJpBdZOkjEdKOIsG/60o7oByCcoSoeNxaOzOVUQsWD6YUa5pw==
+X-Received: by 2002:a05:6a20:e211:b0:342:5901:fd94 with SMTP id adf61e73a8af0-35909690c20mr6753978637.13.1762999449895;
+        Wed, 12 Nov 2025 18:04:09 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:2495:f9c3:243d:2a7e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b927731a72sm389619b3a.50.2025.11.12.18.04.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 18:04:09 -0800 (PST)
+Date: Thu, 13 Nov 2025 11:04:04 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Yuwen Chen <ywen.chen@foxmail.com>
+Cc: axboe@kernel.dk, akpm@linux-foundation.org, bgeffon@google.com, 
+	licayy@outlook.com, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, liumartin@google.com, minchan@kernel.org, richardycc@google.com, 
+	senozhatsky@chromium.org
+Subject: Re: [PATCH v4] zram: Implement multi-page write-back
+Message-ID: <rjwycg4sfzuroi3yzsovtebwocabyoq4vq4fuc2cbh3w4n3uo3@o7dpmtvqr7fe>
+References: <83d64478-d53c-441f-b5b4-55b5f1530a03@kernel.dk>
+ <tencent_0FBBFC8AE0B97BC63B5D47CE1FF2BABFDA09@qq.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACePvbUvDfZgDx-sXkZ+Oa7DwtKg6b1t=owQ1sRZ_FpFrGxA3g@mail.gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A3141C0012
-X-Stat-Signature: dh95g49999skg53wztzgqgtttc1595mt
+In-Reply-To: <tencent_0FBBFC8AE0B97BC63B5D47CE1FF2BABFDA09@qq.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 25DA3A0007
+X-Stat-Signature: me566y787c8anm9nfsj9wgpcas9tzw4i
 X-Rspam-User: 
-X-HE-Tag: 1762999297-998710
-X-HE-Meta: U2FsdGVkX1+FEDX3x8g6SMv5jZD3lRL907HdFgnLz8BHatHCG00zIIZp+NPvlMOW1uUQz4rOnxPexrBs/wxFZZkUI0szmtz/5myuDbaiK4eeRNB8xHfAAiyonqv1TA0Iq22o5BOpnyJX7nFTL8KKd+cwvzP0ztfpJcve3BwVH1GiU0qN2o92X8hFOfKdnX4TpKHkMAUrulLQXRjrg5hNQFk9OhnLNY8ZBTmMCwxJtZJ4pdr1AtYvUC8V7mVACXpthX/tTlnfOcIoEeZd3fvpuC1NToucatwmdcIjf6gDLpbwuZIz98oCtRPLp87knMlC24GvS+bzjPRfNgzws/L6oukEO/CuVSH0PfGR0oy1ia9Y2RFoJT+kuySe3v6Dii9NW/tnfH8aO28LWS1ngOLx06jIuRIH30ZUOGYWOincZbioK0Jh/tONvSpN/Wfw16Bvhuftytaxs2J40AHXRffbklPvvL8enUKdSyU+9Pz3RL/6PwrLmHS9/KLD8Uis6Ir7dRRaMjhrQdqeUhnHy427ujnTkryYfZwb8HUK1cWUI2d/2MwAxODsGSAMgmo9ErIlHZlJY5BY1oFsYovUf/BP4wXIL4YGd7bRLgUESqV2hbf4B/AJLbBrOBEx6ZV4re04dKENW3ymbmbkBxOZvW4AvENVrkktqmzh6t7IUt4k+yBmDSQMDlkbpTweM9MPIABXJnqtK49uzzxu3iIDopaEx5/upkCs6XrKig4oyKdxQvdeNZ4+rEQ+Wvjd3zGZjIIUJPQS+WhUWRtt0A66nZGa9UzGWpcKFF6sYWjYCHRvg+ZwWUBpstSnoUtFVNtlsaJhd+lg9X9NEbhUXOi9t32ECKZhkXqW495m4EeikpJpDDPtgDCWB1Eafgm45MjmtU7JveH7GgL03Lk9SDD8GGCW6SKppQcXmTqDIKevVqaEwsnUOqoYw/G3Lx+kXItMpbqB13Z3zP2UevljNT1kR1R
- twRCBx6j
- ptqjHcESQELTwxr3BV87mTBRjX/lm+GkBJMPJIPQ9CqFGEetb0aGW4GCTl9mCyN/eKQn7zSDuGftUybQ2YM0w2JMn3qIiX8qFkyP1yfBVtIi1AQWJl6AUVj6tQcwz/QJdDeEhleaLGZNSUvuTymPb9FCVuVrznNrjd7YSeOpXOhV1DFB+Z+ZSnO0jyw==
+X-HE-Tag: 1762999450-936809
+X-HE-Meta: U2FsdGVkX18ln7CHqP4hhkAvt0iiQg84UZp/Cj8AuG3Q3xBRRhdnbPDjbhPo6YE/o+sIpVv/ULJOGLERwNISfO51aEl+RR2FenA5hz63/hqzVsHGKpvbF8m7AwShtd46vPAoJG5e8vYHhn2y2YX+UmcQ4ZYBEmMn1F6Khw/LbA6b+Rfgi6hRAuXlo9iWgMwdVpT6v9cZkBw/HQCfldf7HVb7zICtEY0Q2pAfC1NU9FoZzFxwToO6wZzzfz6ieDh5o0pU/EXx6R+Vc3KJeiLAm/GT5ZDXxsSTFB3fPvA98LNmf/EVmUTo2mhLTvEYbs54Hqtm/fBsSPNbK9feY45T+fnTbr2rGGyEBv7fi2ARSMUtVwJieUALxQbjpircV3zeWro4v5y8Ug+6IuZUi+X+tQYNoOW7cdPJRHqWu0S61q35nIfbuHIT918N7A4btMrDtao7D63AAq0pluZA+cFJcu63MUudL46jm5gnWbduo2G7SxtAeUU4TECcQqzEM61pDa1FL+gEvEgXkRTpbcUC3ndhFWqko7NFO2QXuoLMB9UzHaBb7GM/dQA8oOU76vw54l+ej4nWefl19B0cGRMDiZEw1iefWp0sYg/1MzSmuqmmN619FZn0oskab8DygKSklEJZsJzWFfl9G0f2Gbng9iOGPFGQw2mndB/sr96BYXTNwlxYDJ4su+dHfCJSJ9UDmK4TmKT4mLeuAedhQC4BdbxLMYuWavFPH+RyRbOqFJnSsjr0oFekK5Fys0h8/QM6XuuMCzT8DBNxg+cXWld587fdy3xjYBcPz2xumuFzJ7m+suFCrp97+RmoL1FUO1Q1uHoSsJcyD7XJLiSk1Ns9YY/caLzF2o3aYj9+GOP6QwyxYUBBPgtfLC4xiO7ZNYfuFNDCODzJ1UN5KlHPWR+8XwWUdihU0FzdiIDMOOgBmxs0JhySCwmTRd7t/5Y1Z9lhTGK3Ye6pvw3oG9Hzwev
+ EJsU6vMm
+ rtFA66mUhsGffDgGqJv+pkMWUBVwubd0nya7LEchx4dhfGJ7ViivTnjUgdvVve0IRdcV6FWlfBQ8bwi6LVykzmQoHPTkVj2TBrnVde0z+oi8cgfvWu8mdV6E0lsSeldA9QyJLV+bsioYZGXvt7N37oTD5lO6wJzrXphoHBAM9LFgLN9mBn3MZBgaO2axNAL3pHUB7SHVq0L/V6Pfut8g5nwBDYQlcyXmdiRT/XK7qEa6k+qbcT38Y+pZPBysszZ7Zk4vlsWTOyppHCZvS4TfXSV1CX+gWMj28ccyhbF5bT85j9JLf2QWdJAHqAZ3dmKdYXtw13rR6hO4cS/9bE6m0fWxFBak7v9gwi4lG2cmV4DGol5c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,245 +118,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 06:20:22AM -0800, Chris Li wrote:
-> First of all, for RFC series, please include RFC in each patch subject as well.
-> 
-> For the real patch submission, please consider split it into smaller
-> chunks and have incremental milestones.
-> Only introduce the function needed for each milestone, not define them
-> all together then use it in later patches.
-> 
-> See some feedback as follows.
-> 
-> This patch is too big, to be continued.
-> 
-> Chris
+On (25/11/06 09:49), Yuwen Chen wrote:
+> +
+> +#define ZRAM_WB_REQ_CNT (32)
+> +
 
-Sure, I will take care of it. will make better on real patch submissions.
-
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index 966f7c1a0128..1224029620ed 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -283,6 +283,10 @@ struct mem_cgroup {
-> >         /* per-memcg mm_struct list */
-> >         struct lru_gen_mm_list mm_list;
-> >  #endif
-> > +#ifdef CONFIG_SWAP_TIER
-> 
-> I think we don't need this CONFIG_SWAP_TIER. Making it part of the
-> default swap is fine.
-> By default the memory.swap.tiers is empty and matches the previous
-> swap behavior. The user doesn't need to do anything if they are not
-> using swap tiers. I see no reason to have a separate config option.
-
-Okay I will change it to default kernel option.
-
-> > +       int tiers_onoff;
-> > +       int tiers_mask;
-> > +#endif
-> >
-> >  #ifdef CONFIG_MEMCG_V1
-> >         /* Legacy consumer-oriented counters */
-> > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > index 90fa27bb7796..8911eff9d37a 100644
-> > --- a/include/linux/swap.h
-> > +++ b/include/linux/swap.h
-> > @@ -271,6 +271,9 @@ struct swap_info_struct {
-> >         struct percpu_ref users;        /* indicate and keep swap device valid. */
-> >         unsigned long   flags;          /* SWP_USED etc: see above */
-> >         signed short    prio;           /* swap priority of this type */
-> > +#ifdef CONFIG_SWAP_TIER
-> > +       int tier_idx;
-> > +#endif
-> >         struct plist_node list;         /* entry in swap_active_head */
-> >         signed char     type;           /* strange name for an index */
-> >         unsigned int    max;            /* extent of the swap_map */
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index e1fb11f36ede..78173ffe65d6 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -163,6 +163,19 @@ endmenu
-> >
-> >  endif
-> >
-> > +config SWAP_TIER
-> Same, I think we can remove the SWAP_TIER, just turn it on when swap is enabled.
-
-Ack
-
-> > diff --git a/mm/swap.h b/mm/swap.h
-> > index d034c13d8dd2..b116282690c8 100644
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> > @@ -16,6 +16,10 @@ extern int page_cluster;
-> >  #define swap_entry_order(order)        0
-> >  #endif
-> >
-> > +#define DEF_SWAP_PRIO  -1
-> > +
-> > +extern spinlock_t swap_lock;
-> > +extern struct plist_head swap_active_head;
-> >  extern struct swap_info_struct *swap_info[];
-> >
-> >  /*
-> > diff --git a/mm/swap_tier.c b/mm/swap_tier.c
-> > new file mode 100644
-> > index 000000000000..4301e3c766b9
-> > --- /dev/null
-> > +++ b/mm/swap_tier.c
-> > @@ -0,0 +1,602 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +#include <linux/swap.h>
-> > +#include <linux/rcupdate.h>
-> > +#include <linux/memcontrol.h>
-> > +#include <linux/plist.h>
-> > +#include <linux/sysfs.h>
-> > +#include <linux/sort.h>
-> > +
-> > +#include "swap_tier.h"
-> > +
-> > +/*
-> > + * struct swap_tier - Structure representing a swap tier.
-> > + *
-> > + * @name:              Name of the swap_tier.
-> > + * @prio_st:           Starting value of priority.
-> > + * @prio_end:          Ending value of priority.
-> > + * @list:              Linked list of active tiers.
-> > + * @inactive_list:     Linked list of inactive tiers.
-> > + * @kref:              Reference count (held by swap device and memory cgroup).
-> > + */
-> > +static struct swap_tier {
-> > +       char name[MAX_TIERNAME];
-> > +       short prio_st;
-> > +       short prio_end;
-> 
-> I see a lot of complexity of the code come from this priority range.
-> Having both start and end.
-> We should be able to just keep just one of the start and end,  e.g.
-> high end of the priority, then keep all tier in a sorted list or
-> array. Then use the next tier's priority to indicate the other end of
-> the current tier.
-
-After checking my code, I decide to remove st or end.
-
-> > +       union {
-> > +               struct plist_node list;
-> > +               struct list_head inactive_list;
-> > +       };
-> 
-> Is this the list of swapfiles?
-> Why union, how does it indicate which field of the union is valid?
-
-It is swap_tier itself. The 'list' maintains active tiers, and
-'inactive_list' maintains inactive tiers. One tier exists on either
-'list' or 'inactive_list'. The code ensures that a tier must be on one
-of them.
-
-> > +
-> > +/* swap_tiers initialization */
-> > +void swap_tiers_init(void)
-> > +{
-> > +       struct swap_tier *tier;
-> > +       int idx;
-> > +
-> > +       BUILD_BUG_ON(BITS_PER_TYPE(int) < MAX_SWAPTIER * 2);
-> > +
-> > +       for_each_tier(tier, idx) {
-> > +               if (idx < SWAP_TIER_RESERVED_CNT) {
-> > +                       /* for display fisrt */
-> > +                       plist_node_init(&tier->list, -SHRT_MAX);
-> > +                       plist_add(&tier->list, &swap_tier_active_list);
-> > +                       kref_init(&tier->ref);
-> > +               } else {
-> > +                       INIT_LIST_HEAD(&tier->inactive_list);
-> > +                       list_add_tail(&tier->inactive_list, &swap_tier_inactive_list);
-> > +               }
-> > +       }
-> > +
-> > +       strscpy(swap_tiers[SWAP_TIER_DEFAULT].name, DEFAULT_TIER_NAME);
-> 
-> The default tier is not a real tier. It shouldn't show up in the
-> swap_tiers array.
-> The default tier is only a wide cast for memory.swap.tiers to select
-> tiers to turn on/off swap tiers. It is a wide cast pattern, not an
-> actual tier.
-
-Yeah, as I commented in the previous mail, I will change it to a
-logical concept.
-
-> > +void swap_tiers_show_memcg(struct seq_file *m, struct mem_cgroup *memcg)
-> > +{
-> > +       spin_lock(&swap_tier_lock);
-> > +       if (memcg->tiers_onoff)
-> > +               swap_tier_show_mask(m, memcg->tiers_onoff);
-> > +       else
-> > +               seq_puts(m, "\n");
-> > +       swap_tier_show_mask(m, swap_tier_collect_mask(memcg));
-> > +       spin_unlock(&swap_tier_lock);
-> > +}
-> > +
-> > +void swap_tiers_assign(struct swap_info_struct *swp)
-> > +{
-> > +       struct swap_tier *tier;
-> > +
-> > +       spin_lock(&swap_tier_lock);
-> > +       swp->tier_idx = NULL_TIER;
-> > +
-> > +       for_each_active_tier(tier) {
-> > +               if (swap_tier_is_default(tier))
-> > +                       continue;
-> > +               if (swap_tier_prio_in_range(tier, swp->prio)) {
-> > +                       swp->tier_idx = TIER_IDX(tier);
-> > +                       swap_tier_get(tier);
-> > +                       break;
-> > +               }
-> > +       }
-> > +       spin_unlock(&swap_tier_lock);
-> > +}
-> > +
-> > +void swap_tiers_release(struct swap_info_struct *swp)
-> > +{
-> > +       spin_lock(&swap_tier_lock);
-> > +       if (swp->tier_idx != NULL_TIER)
-> > +               swap_tier_put(&swap_tiers[swp->tier_idx]);
-> > +       spin_unlock(&swap_tier_lock);
-> > +}
-> > +
-> > +/* not incremental, but reset. */
-> > +int swap_tiers_get_mask(struct tiers_desc *desc, int nr, struct mem_cgroup *memcg)
-> 
-> Who is using this function? I can't find the user of this function in
-> this patch.
-> Please introduce this function together with the patch that uses it.
-> Don't introduce a function without a user.
-
-swapoff calls swap_tiers_release. I must improve the readability of my
-RFC patch series.
-
-> 
-> > +{
-> > +       struct swap_tier *tier;
-> > +       int ret = 0;
-> > +       int tiers_mask = 0;
-> > +       int tiers_onoff = 0;
-> > +       int cnt = 0;
-> > +
-> > +       for (int i = 0; i < nr; i++) {
-> > +               for (int j = i+1; j < nr; j++) {
-> > +                       if (!strcmp(desc[i].name, desc[j].name))
-> 
-> These two nested for loops look suspicious. Again because I don't see
-
-For assuring, unique tier name input.
-I will think of making simple.
-
-> the caller, I can't reason what it is doing here.
-
-When a swap tier is designated by the memcg sys interface, it is
-called. I will introduce this logic together with the caller
-implementation.
-
-Best Regards,
-Youngjun Park
+How was this number chosen?  Did you try lower/higher values?
+I think we might want this to be runtime tunable via sysfs, e.g.
+writeback_batch_size attr, with min value of 1.
 
