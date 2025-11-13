@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 280ACCD98D5
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 20:11:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE029CD98D0
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 20:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3577A8E0011; Thu, 13 Nov 2025 15:11:33 -0500 (EST)
+	id 495B48E001C; Thu, 13 Nov 2025 15:14:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32E828E0003; Thu, 13 Nov 2025 15:11:33 -0500 (EST)
+	id 445738E0003; Thu, 13 Nov 2025 15:14:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26B9B8E0011; Thu, 13 Nov 2025 15:11:33 -0500 (EST)
+	id 3356F8E001C; Thu, 13 Nov 2025 15:14:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1434E8E0003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 15:11:33 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 815D11DE6C4
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:11:32 +0000 (UTC)
-X-FDA: 84106678824.26.A506B4B
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 930C44000A
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:11:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=j4PGyJJS;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 20BF28E0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 15:14:02 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C002E14014D
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:14:01 +0000 (UTC)
+X-FDA: 84106685082.01.4356C3D
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0220440014
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:13:59 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Di054Tsu;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763064690;
+	s=arc-20220608; t=1763064840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g1QxTrWXodWBMomxAbAxFA1n4YHk0BckspM2UrA+wSw=;
-	b=1rjjyycnEMIOl+1/H6Ss7zFWDQRxEfC+yZxNq5moisEgNHC5SJzP84174XrZWbhDDWfLEj
-	ufdDPkLPFTIshidalzPKgiKrQAgm0raRuj1h1gEV3F1iVRwY+eq945k8smIaCmhWWHimaj
-	KqV447b3+lCsQl/VZG2cf4vbXP4NQCw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763064690; a=rsa-sha256;
+	bh=f5WVCcQA0Nc9ynxNx/rxTvZahrW/VbsfxFWCQnWaLJk=;
+	b=x3llH4dTOLHDVkwLTrArVEcPHzJG8cMwKKsFEz3ZsKyfnTgpNblFe3kjincQBGgQmz6SsN
+	XH/mYjdYyjV1MlaW1FfgKhGbZ1N7NusRGtImaNQSVAeSoOC26pcXPmQMRv4S1WQmwijwI3
+	R8B/dvTHq3LF5tOjdWjkPBs1wGEyjUs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763064840; a=rsa-sha256;
 	cv=none;
-	b=Wh8S0X+MGZEqlAaCF1RdKCa9Jmy5LlOOjtnJYhZifOPjaOUapHrhFk3cLux0BYxakFOWcw
-	PkRy3kixwLZWSPVMFh0Mqv5WSPV2cW22yagaIVXgU7BBkbKzi6LjGuGMFkaurjgRwBYneP
-	FvuATWwlQ1oW2vHF0wI+c0eDQll96dk=
+	b=BliFhpBHa6WCIZpMcpl+3d2uRjbym+ru9rhBbMRTLeXsCgNBdnMqnSyZ36gtQBArzW3tN7
+	0dW7GP5l1X43CllmIoytGyZhxLBDXA4z6+lYKESeDd6EK342zjC9FBKW2TTv0QO4Fm5SbU
+	G2TLTNfLZO0Lxp50yqvWEu5csIyZT1E=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=j4PGyJJS;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64088c6b309so2143339a12.0
-        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:11:30 -0800 (PST)
+	imf17.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Di054Tsu;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so1968131a12.0
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:13:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763064689; x=1763669489; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=g1QxTrWXodWBMomxAbAxFA1n4YHk0BckspM2UrA+wSw=;
-        b=j4PGyJJSdVyeJ+6b9EecU5Ib9tuXi/sedK7ZJCmrGdeuxjVRYbtW2snJpKgeczEIh5
-         sZ79GZYn51m4c2w4T0fM2P5oTPghXrzFgyYPp9V+0hCxLK97QWKzjXDjqgTGTy77q6HQ
-         dEF1QFe90YdaQ/NWGBwgRkrjytjufABzgT5lIoCuF7GZRIxKqqZjfEZvHMvSwC5lS4h2
-         CR21NPiyvh7xMzD0YNNT5QQeLz/XPhbnnwXe+T66NmQbrXxKHwISw/L9cHCBDHBqKrhw
-         BWpc64plbOSwvHY0rvAsYf+EQIMsXCaeBExhzu6tk02wGLMlOrpWSKyZU/xBh1tCJD5U
-         JtxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763064689; x=1763669489;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1763064838; x=1763669638; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g1QxTrWXodWBMomxAbAxFA1n4YHk0BckspM2UrA+wSw=;
-        b=bn/9QXvO69Asl5Rt30JU/lP8b0svu1xM1X/P38Cr0EKpvxhUM/44tcgfcwdAvDfgQC
-         MXSrWIDietASQGAVU4o7km2U0iQ0enTW2LJc/rNTOLd8VhbLZzdjCdwiqMpedj6jbpON
-         Fc5pNxtWY0amcXfxZCIwkbpKiJPdRtJjgkQqnL3N1qxzSzHZUVYfj/SZIr5on/MPupK7
-         cR3jTKA68wQcsnebJmHPCapFtT07m1IlMuHVVMFy1IUqxQp/jFsF6MHCIhSBFsWJ/BVM
-         VJ+KTggVdKAhHwN/tOOfQvUgxkHOCaRLBYxVx7/H1x1SjIquzAflgxTHuWNHPgDjggGJ
-         Siuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZT9C3d+k+KNIVogtYdKQ7i3T5ZIE8o1d9bvqQZuZxQGF9VtRNcbmOaSiM8g68nF7gTyxsnqfa0Q==@kvack.org
-X-Gm-Message-State: AOJu0YyKG7lXMVkCtacMwQniB4Mu4oNznuA/ocO+Chyl7+U8aCCSWnZp
-	FeTcxfKY319/ps2BOVBcN4BDqFACBup+ALElpIxcRk+yXuOILMNurcBy77PVjk0gOACLkjavkVo
-	LP5AsW05/5ASnaWr9Zjcp1zmj2gVq1HwEHUqSj59J9w==
-X-Gm-Gg: ASbGncsZJm06tq7gCt+r9/UxS9OyUq/3M/N6TyDApWttsW9NmY6lDm5FNUGnJBA5mzd
-	lB3tRtfIMSzf1ywDHq93vYdxVHaES3Br/xtEI13/whqdHmHixM4Cz2wJC2y4iQBmgeGXTBQzla9
-	fxfzBa8bnLymTIm2iWgWBA5J2KbLYlWhIlr0VhXN5rvo13zlquH06VQiV14qtnEn/rBCNcLtSCp
-	ZA3CTQVqwTdKEgFG0PKGZD3UnVTKFV6Dq576PxT2JH2mjCRy0UCbEvgpA==
-X-Google-Smtp-Source: AGHT+IFqOOzcW34Qt5BtLWZl2weqcPZ4vSKaEdo/r8Kg1aP22Cs7VB3g26OtE+gc5XTlHx+GtBN4rDcQMAuYp8I/OQ4=
-X-Received: by 2002:a05:6402:4543:b0:640:ebca:e680 with SMTP id
- 4fb4d7f45d1cf-64350ec0940mr319721a12.37.1763064689030; Thu, 13 Nov 2025
- 12:11:29 -0800 (PST)
+        bh=f5WVCcQA0Nc9ynxNx/rxTvZahrW/VbsfxFWCQnWaLJk=;
+        b=Di054Tsutb/kPgXXFf9T/iI8vaGZZKQhkrahqkHgpFanUOJIDECIKdcYflikyVOyLv
+         j83jggi7UYD7wzG7JMr3jkdRsfMwRzOdOkPyb7g+9vAOxloneSmCTI7MhFebFjpqTfA1
+         WeDk4OTMNgBlvaf/W5lqDIjeyQWZ6EVjbTm5tKLhDO1OmxwJNxiyFXKvftzqQivpN5BB
+         GDEdey3415uxLhEt+IYJFqrRzF4DBWccnO0mIGQe843bWHGCkJHNYV7yaWknsXtwuXuG
+         kHWk1jTaqVDfjbf6iNt8eG69ZCD2Rf5PDBV8ZeSctZPteoFCIqOSnL67mp/IOPRLtQ3E
+         G38w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763064838; x=1763669638;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f5WVCcQA0Nc9ynxNx/rxTvZahrW/VbsfxFWCQnWaLJk=;
+        b=Dmx/b68HVTlj8LCjDdcKR8JKI+M9wEvtIHKyl8MLtS3LIVPKK44Cd7NQq+8YYXOxSt
+         lQyGRq9UMaIfwbv87+weQG+MCzik6RmoFw/jbyI3K8UodXNqOYoFiSaE/MmFu4NWnYFj
+         8nxv2NGsaByayp4BROZyeN4g2RCIdXTnzSVLLAU6sfWX1YkmbsVFWySJEqBewt+9IQoE
+         A555tAaU17KgnehcUEna6AhcTD3oSStBoDj/Vx0PIHb4cRNtdlRLEc22UsWerhrCPaq8
+         r2lBlklAhrc8EHdoCkFViZoO9j1ZXGcAp6xSSodwTz3W8C2/iRv2GLRYUagGcrDhsEIe
+         6iAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWC9MAVej62ydN+3ES8nHScJoTOxQis3gQ2527LmhWZVVdzyuvCqHLhJUWT026liZvXIbP1UtPf6A==@kvack.org
+X-Gm-Message-State: AOJu0YzbD2QvYqJ75O+pT2Qax8B35fRuqelvfOFp/FpRUmL0rlhhmGN4
+	9wXMI0Fy+HH0S39PruoGC5g2Wz4iwAojACJXUHu+Dwx/fAC4SjXu+n445AXB/UZSF39M6wu6pYx
+	uAEGEfc0TyqJUKo7421nDoqNtbKiYVhE4fTkuuyWOFQ==
+X-Gm-Gg: ASbGnctjzHVDADTZhVqSrqbEpxabQ5kNpNKHEWHzzWXzSOGNYYAlU2Rvpi2LlpDMMg1
+	ZE/U0Ug7z7ohe5a5tNxt+y/y0ihFrATWVYVbQc8yFXfdQ7r/g9lK5PCNaYr3wZ/fc0A9VrURvex
+	KZbt+4e/jw6HOL85wahtZfzczl6dUgZdr9yialrYrezWyxpeQwhDi7dOkDyivKhaAFZL1Sb5qI7
+	5nTtpNEojrB6GWD8akCKG/Him5usgjSFSvVYnBUpUsdw4FF2yCyrBLr9g==
+X-Google-Smtp-Source: AGHT+IHk2DiUUy/xNwDtwZautO7acJDvr0M6jMmicQX7WgglAjHdW5I4cD1JskoIx/tv/1OALKLJImDpFRebYAI4FVg=
+X-Received: by 2002:a05:6402:3506:b0:640:9b62:a8bb with SMTP id
+ 4fb4d7f45d1cf-64350e89ad2mr411863a12.22.1763064838507; Thu, 13 Nov 2025
+ 12:13:58 -0800 (PST)
 MIME-Version: 1.0
 References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
  <20251101142325.1326536-2-pasha.tatashin@soleen.com> <d7651272-f979-4972-ae41-bab2faa8473a@linux.dev>
@@ -94,12 +96,12 @@ References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
  <442fa82e-16ef-4bde-84eb-743450222468@linux.dev> <mafs0qzu69gei.fsf@kernel.org>
  <CA+CK2bBEe16x0em1gRxQD3jhfV9t3QA2vx5ifk2pKb_WEoMTeg@mail.gmail.com>
  <0735e1ef-2b65-4a54-b4d5-964fb875cd09@linux.dev> <CA+CK2bBnnGyQ-N8-XS3W3tnSRwvFbstOdo0oDSdkF70KP1AVxw@mail.gmail.com>
- <9e144e21-a5e7-4c12-b8b0-07172787ab37@linux.dev>
-In-Reply-To: <9e144e21-a5e7-4c12-b8b0-07172787ab37@linux.dev>
+ <9e144e21-a5e7-4c12-b8b0-07172787ab37@linux.dev> <CA+CK2bBQxB7ihmhBa76vJbdD988B+8PBrV4arDSNqjv_VB4DVw@mail.gmail.com>
+In-Reply-To: <CA+CK2bBQxB7ihmhBa76vJbdD988B+8PBrV4arDSNqjv_VB4DVw@mail.gmail.com>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 13 Nov 2025 15:10:52 -0500
-X-Gm-Features: AWmQ_blSG7On0GhlPsFoQI0cU4BjzgyhDv68bXpGIzhq4rnHTQGnsGUkDO_x7mo
-Message-ID: <CA+CK2bBQxB7ihmhBa76vJbdD988B+8PBrV4arDSNqjv_VB4DVw@mail.gmail.com>
+Date: Thu, 13 Nov 2025 15:13:20 -0500
+X-Gm-Features: AWmQ_bk1wk0wGCneUvxEMQLoqh3QSRk09hjuZwzxox1hVPC9Dl6J8B2vKcwHXN0
+Message-ID: <CA+CK2bCUN6SH7x=DnTFvCgEYGKoyOrCMzwQjHCY0LK35Hd-_zA@mail.gmail.com>
 Subject: Re: [PATCH v9 1/9] kho: make debugfs interface optional
 To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
 Cc: Pratyush Yadav <pratyush@kernel.org>, akpm@linux-foundation.org, brauner@kernel.org, 
@@ -107,14 +109,13 @@ Cc: Pratyush Yadav <pratyush@kernel.org>, akpm@linux-foundation.org, brauner@ker
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, masahiroy@kernel.org, 
 	ojeda@kernel.org, rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 930C44000A
-X-Stat-Signature: sp7hjw6bhdi76kmeq7r1451j9jsy3jxs
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 94o5stnmyeuxe5i54yse6e9168uhjp9b
 X-Rspam-User: 
-X-HE-Tag: 1763064690-907319
-X-HE-Meta: U2FsdGVkX1/zaqFqnQG0gfBrjY+WvoN+M2HjqqCnmM+d19ItI9fRRgn+u26kouijzisAISF1X5Q2awUcxGfW+7KmV/XuxF3jbjEPIkerr9Y0whJrxqJuo8tiiCQdKa9xwcsz1s8YG7eOjz/w1iHDRQOpaK22rA8nhDuPTu0+kVFUgHRmJs5pBsv4qdupIfi8aiOki5wN5B7yG5CJssDqSbpGdWujRA54EimQY2Uw75bWnb8OkSMn5Ut+Xhy2gqq00zYUr/OYhh5emqVPKBauyZvCb/WQ7etaUYL3tyflueqEncVGEMzB5/Qgf09I5H181cFDP1WjUYJoiPczYBDbV3EH9FhlLcVX44Y4DWIICuSl3vxcN0CERtR9Ixxbgo2lnlQC8m4QyBpoorrJKi/Nl9XLsgjUamI4M1jYpNaV9MhvanqEi47/YE0avon17KUToS+YzcF30KnG58HgGoznHvzQxwaBWtDq7Bbr2fZ6wThKQHjleYcnZkojmr+3D+Usd7urAxzZ8AgGdeSSGmz51kGF4+dAbDIwQHcmTUrmY/K490511TGG+1H6LE2L/nq6lhx9f8Q5+FQIrOksBGNuVngHBxLPwZjiSxElUWWUv4UpwmhZ2PVep4nPDY7/hqq6lhnEXX1Z1kdWGHn7+S0jyPB4AJtdRZu/b+Opk4ce2MjK9iohAh4GBZnzjLymz3VgjVCz00/DrHSHRagfNHqbUzvdpjTmSvBrG8pp2qh4VEMf6lamyyRidMTuEVxFUfMeKcN/pFJVihN+KE8BsJf5w+wVeF3pFL0iSJsxIXizA0KH8Csjnlp7ap0xmQ9n8T7MVoHS9fGEniIN6OCQdU/JDZD1whmb7pQHid/eb3uhSKIDWonIMy/kgAMMgbFHY/ysvGCm3J2iyZgDmUwRZoIThhkG2p/p3Z1oJscmC4st2gyx9tOW5V+1JQ7lao0qSaTF8ScezieSoofW20RyQdX
- 0BcI9FX4
- aTFJ3ilpdAHLKqaH2NrayTMsr059tPq2Daz6zY9o+WOvxK9sWYMlsaR0gLX8HLZjVWhiv4HoHgBdT8tHto8G+5RSZXcJre99Y9oy0dUgdi3wc1S4vrDohZ8f4hdRPW8M+9uCQhF/xnSZ9qFfxbWFCL84kk7Owazo+FZ5Oyq2HnzbXj5r30ZisbIDplnBlEIa0PVB4
+X-Rspamd-Queue-Id: 0220440014
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763064839-494917
+X-HE-Meta: U2FsdGVkX18NOfyi+GbJMD6KWy74p5MNeDDoH7O05WiTcTkGLBxo7Ve95F9PqUPLVAMfGY7FSAczCBsSdZOUl7CQ70H7HlfExTKtYJKvxYFyFv8q9DYaz5VTTUf1igJNyn1/SBcj5SViTMN9FQX8s3POvnXzy7Ltcza2e2qPuA8wHHGdWbQdjFAC8VVH1W5h0p4Z/OFAOTdgaPAXIHjRMgziJO424AEC8LumQ2m7Wvn9IcQW3Q3Iux47DqQrjVK7Cgz3PuzAih8QxlCSbDZwf/O+bNJpf4k+Hy/qCPdsXtrnklQxX8J5vevOJB9QFwuoAW26pcPn0/Ol6rn5I9pJIhPsM+z9t1rGom9J09km+NGbN3P58Jr27QHiwjFYkF0AmjBwL9wUa89Xu9kRodwrW0GerQgZTPBNZ+OvQ8T68sKHAAkmix+as9GTj3JxQWrI3dxm1byesvrpG9bUffQZi7GqG3IC5RwUof9/GaT2F/e4CnYt4liuNoQ6Pnrswek5AjuNZrrH+CtjMNRmhrAZbOU4deeG7btUaP1Ea1QbrNpuRlV41DkhadLVV2nOvdte1hp2tnGKtAxfTw2qTLowGOuVw9NTaIUoB9SIewmBFZOYeIXUnJ5JhSI3XgNrgp3z6bBfhJo4RpTXqVEbuKDwLoDdLWaJlF47HP3lMfDA7M70d727X6AmKoGGAwn6TieefBEsazOYulJM+MtkTdJh9iVZGdj4Wzvhl19TIhDaV2dq/0Q1mBgRFguYsQdgl5j9x58AcBkEz6a6Yw4R2EFgITuPyLmMPns4AoosI7ZzbeO3RU8BMCVXSR4IK4tAb+kucM36oS10/MuTLhmZ68uQKKlzQR85YJFld282K03m1ft0dgguKFSy1khtkBKd9TLvp+aCxXm0Jx1MXUHtwRt/pknF2cv9omLK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,30 +124,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->   set -e
+On Thu, Nov 13, 2025 at 3:10=E2=80=AFPM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
 >
-> -kexec -l -s --reuse-cmdline /boot/bzImage
-> +kexec -l -s --reuse-cmdline /boot/bzImage --initrd
-> /boot/initramfs-`uname -r`.img
+> >   set -e
+> >
+> > -kexec -l -s --reuse-cmdline /boot/bzImage
+> > +kexec -l -s --reuse-cmdline /boot/bzImage --initrd
+> > /boot/initramfs-`uname -r`.img
+>
+> Thank you for your suggestion, in the next version, I am going to add
+> initramfs optionally, I am thinking to update script to something like
 
-Thank you for your suggestion, in the next version, I am going to add
-initramfs optionally, I am thinking to update script to something like
-this:
+Optionally, because in some environments (like in mine), it is built
+into bzImage.
 
-#!/bin/sh
-# SPDX-License-Identifier: GPL-2.0
-set -e
-
-# Use $KERNEL and $INITRAMFS to pass custom Kernel and optional initramfs
-
-KERNEL="${KERNEL:-/boot/bzImage}"
-set -- -l -s --reuse-cmdline "$KERNEL"
-
-INITRAMFS="${INITRAMFS:-/boot/initramfs}"
-if [ -f "$INITRAMFS" ]; then
-    set -- "$@" --initrd="$INITRAMFS"
-fi
-
-kexec "$@"
-kexec -e
+> this:
+>
+> #!/bin/sh
+> # SPDX-License-Identifier: GPL-2.0
+> set -e
+>
+> # Use $KERNEL and $INITRAMFS to pass custom Kernel and optional initramfs
+>
+> KERNEL=3D"${KERNEL:-/boot/bzImage}"
+> set -- -l -s --reuse-cmdline "$KERNEL"
+>
+> INITRAMFS=3D"${INITRAMFS:-/boot/initramfs}"
+> if [ -f "$INITRAMFS" ]; then
+>     set -- "$@" --initrd=3D"$INITRAMFS"
+> fi
+>
+> kexec "$@"
+> kexec -e
 
