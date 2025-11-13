@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1701CD8CA4
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 16:44:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73D04CD8C9D
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 16:46:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A6038E000C; Thu, 13 Nov 2025 11:44:36 -0500 (EST)
+	id CD5728E000D; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 555DA8E0002; Thu, 13 Nov 2025 11:44:36 -0500 (EST)
+	id C86738E0002; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 445478E000C; Thu, 13 Nov 2025 11:44:36 -0500 (EST)
+	id B75218E000D; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AC208E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:44:36 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D3A2A1A0A55
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:44:35 +0000 (UTC)
-X-FDA: 84106157310.09.E1F8EA5
-Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2F0A4C0016
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:44:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FDAA8E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:46:27 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D74613C026
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:46:27 +0000 (UTC)
+X-FDA: 84106162014.13.F85B82A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CCBD4C000A
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 16:46:25 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf22.hostedemail.com: domain of 38QoWaQkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=38QoWaQkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763052274;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=4hWwj6fy0/rB4RTGq3xc0Fnf3TBZ5FQ1+cI6MAHTftw=;
-	b=b8qRqg769ZZqNH6kDfIXZp51tfxXfsnZzqEjSBF4xFDb9zIV250vjFVC2AiJHYXn72pkPA
-	qNLBI/3PGRD/b9FNWhFal4Zo5Q/npIK+GVUVqrZeYG08UK56KUHTgoDWs9lgZ3Q68ZpzZF
-	kYr2mNnoMtkvDEe/VHeVJUbOAUwy5WI=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ANlFB3Kd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763052385; a=rsa-sha256;
+	cv=none;
+	b=EFfgBIBZBpulowlATUauNj+aROyuDrYFZB4PaqICCLl8Q/LGVJvqEwLTzK2lUf+ND9q3Pt
+	FTl5XixgCebbns+iGKm2c01n12+HnaKnmbEVkNNc8WqhpFh/vn7NNBsS/jU5CGwIsOlG1C
+	nzGoQqj2Pl5WRuo6IM7w/8FQ4rJhppE=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf22.hostedemail.com: domain of 38QoWaQkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.206 as permitted sender) smtp.mailfrom=38QoWaQkbAK4gmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763052274; a=rsa-sha256;
-	cv=none;
-	b=5qQUCt/V01lhUxPhbj9qi1he1GL/P7Btb3QDSgKL6NeOTBhnQbo3/l3z5+l8QN7J2Z7jFa
-	kAuNBuP6AC4BMqmQ8zlM6RLD4I1bb4EGisWWMj3pen0wdCEZCv6jbDsUmF5xLRmdL3lWss
-	Wq/cAhbl40ht8qRMIR2NNh7kpons0oU=
-Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-43373024b5eso12600545ab.1
-        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 08:44:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763052273; x=1763657073;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4hWwj6fy0/rB4RTGq3xc0Fnf3TBZ5FQ1+cI6MAHTftw=;
-        b=BxLvEY8LAi1z+AtHipAJwE/althw/Ut3jgcyxUhb6ndf9a4W8HxLCaiVF4N8bUpuhO
-         iIW3xaPZJK5HMXEMXEMXjZURtMZIWoJrKcULuIQ4dcj1N4T9+/oP+FXxgC9UG2xnSIox
-         MZN0zOHCXSgOaBT8C8tr/4pQXaJ18yAOLzz/t4n83NOa6S3reHEytwf77rcwT3lSy/J5
-         1GcbBqSK49mwcY5mDCLZ8X1UnktOQN0n/vOth2Y9GAYO9g5MJHZFipPttUfCO/866K9Y
-         33oVtSEtdmkvHa/V6bcAO6pl4ApPncF+KgzfcERb+aJpaQJ9IKB3avvq7yuFUwvQq9V4
-         EHCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlQxc7Dfqi6C1PQNR3winc4c5xdB6+tCwNeo5m9woD9L93XHM/evPhAtxOUvcvy23OxCCgHSREFQ==@kvack.org
-X-Gm-Message-State: AOJu0YxHDSExl4Kl3Qm5ChtyWPtsK9Lzh/RS57WaUUWE73sKAsholY1t
-	+QKrMyv1EYwE9fTcNGpy7SQG3MINgEO7Z/KVm6lSoQwpetHKpkTCazU+z8AXNApyVgVXmdPEMgN
-	/Vb+vdx7c3V7C70KPeCjve1czNwj5NdrRDfoloeWRJhYJHXOjYIWZBt+wxds=
-X-Google-Smtp-Source: AGHT+IHre4HCgG9GhvCzJ0gFY0mlLiuN0+e+eYoIL2GvRl8FPVjZMC7Eur1YKvNmwVrxt2BFGjOPilXW+o48jPUq2OZKPCwspRhH
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ANlFB3Kd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763052385;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dvDvZB+KwDBmPM2X3XacnEtHWrFypDce/MudTas1Q00=;
+	b=MSjTCFLCoaF4bOXiSFxo9eXsFQQD2yRiBlxE/vCQoZAkiTtQFIZ/e3i5HKWop4DzzO9K6F
+	GE+vB74ec359KgdRKbimLUocyDj+1ZInbxHEMfys6avnE9xJK79vQJuNF6FNBxsnz0DRRb
+	NZ2CV2H+a7Sj8fxmTqdUXbtzR9Hw8Jw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4BEF760103;
+	Thu, 13 Nov 2025 16:46:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79371C4CEF5;
+	Thu, 13 Nov 2025 16:46:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763052385;
+	bh=3xOkFRyx8ajSderbZPHE6EZhwEEq/CfQCCTKeRWj+14=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ANlFB3KdmGzi6pRPz/Msov+nrcs+dWmK2IqxUKObhB61zauElfiUr1UU7ct9t6nqV
+	 nnGxLC+uyoz35YrNU0U7ucFPGn5WdCgU3dB1+NAPf/KRBwj+BoZSGUZDgRuKbbn2Nk
+	 n586FtCTMEYY15fU08udtoAB5JdYmyiiG6bQdi7zhzqq+4QlJBLBG5PFPx+vNmB01Z
+	 ndTghWSxlJ/eNyMr4uZGhNvCaD7nfRRgOilnnh4bO8FS6VtKCQTVp4CD5IWbfd7QWP
+	 V9uOK3ldMMyng+FvbS4mcsqcq4fYWbnrWBzUCjvfK7j12aaF4way83aTHQYgFRkst7
+	 +R/ej7dlhrZwQ==
+Date: Thu, 13 Nov 2025 18:46:15 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@redhat.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	surenb@google.com, mhocko@suse.com, shuah@kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com, khalid@kernel.org,
+	linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH v2] selftests/mm/uffd: remove static address usage in
+ shmem_allocate_area()
+Message-ID: <aRYLVyR6l-bGCxui@kernel.org>
+References: <20251113142050.108638-1-mehdi.benhadjkhelifa@gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a61:b0:433:6c42:1817 with SMTP id
- e9e14a558f8ab-4348c878307mr2690715ab.6.1763052273319; Thu, 13 Nov 2025
- 08:44:33 -0800 (PST)
-Date: Thu, 13 Nov 2025 08:44:33 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69160af1.050a0220.3565dc.002d.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in __page_table_check_ptes_set (3)
-From: syzbot <syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, pasha.tatashin@soleen.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 2F0A4C0016
-X-Stat-Signature: qqtnza5dekhoo61umqrc9h3o9cwfwn69
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251113142050.108638-1-mehdi.benhadjkhelifa@gmail.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CCBD4C000A
+X-Stat-Signature: 5obbkxr5mh9nza7djud6bwsejrip4unb
 X-Rspam-User: 
-X-HE-Tag: 1763052274-476450
-X-HE-Meta: U2FsdGVkX1/M/D0VzWlZ4DiWuj8ukajo2qG4DNw0ZY+xYKfqI4ygfQrvyVpPwH3W/84TLfcZb8dfwNqJix4Ym96kgpfmgKVFPuhXD/U3SB1JDLeiR0jH/qgegNzOdDp475JYMpyoirG3mnMU2vp2pMCak2IHIDu9kTJWc2lV4TUY8tyBpjmk//CLSi7BofqqXtAN7Cf7Sk50SRtcz8CnFmQ9daML8igroEaHs0pejfNvts95ttOnyum9FmnSNjEn1HdmAtmkZt60sFIQtcoidJR4SJ08hxl6/f4iBPrwp1mmQ3ReWW96LwhFL5yHJcfRndBjEYFits9TN9K+5b29B+jTvrFIJV2H9839J921dES1TldEqDmzSL4iW4MC8r5Fc2+Dwu2jBePvQsd2U+1Ogkwd2Jr2eh+OY/TF2rV3/6fHNQyApSHT2Gqd5/u/BcZuFxDvPL790cZaQ+iVWu/yIi2mAzAcPDZnCGQyhxeUH/lXR2FjSrK4merv+XD0X8cqXp4ExJ+S3r5rmaLUrFCX5wqFA9STW0FuIb7aCr67wXf0LYrWpXFiQDiPSNX9OqecpBiz6S2Y4g4oSFtTAEw+rjyBk8PmL0U9c4vPnOIStrIppD+kf2GV1SZ5USBMD85Yj1Z/PXiCp4qUUvmouNDfVNl/cBj/9guLMFg5DFq9QK6USsvV+V0FhFyB2OavoH3gHuV0hUeezhL3Oyx5gfvvCcpngbi1ybnSDoZf9PWDJyWwkpp0J1W8/Ecb38KC4AtC+0EKEDzPBMOrQ6MzCgWlc/qj1/JZExw+J+Zbp3Nv9sYxaeD1RW7b3N+jdkOuTjtAuCnXQaniTgX6KBDQe3BxrHkc1ii2GrlyOdH1b2mIn6tz+yRNUj8AbcyBx+WgtdWqFmpj2GoRrFxBUJCopcQZI19XP4lHxY7yLwE82eFD6Cw/6U31D+aJrWCb7xVg3BUqKSd/LNHGpsJIi74cHV5
- nMBT7yE5
- 10NtugyAVGwux1fTEL4s5HJn94TzMMW6lSVGCY6LjNZ5seD1fo4i1OCR47fxUiRrKGx0u85bnB+FbFihmt5Qflw240nF0RabslsQd5rfEHI2cZOR1WKUOhOnv8rbbB+fWweHjcJYM5Nt5r+KOmqhM1EIqWfQ7F/pWg1n+Y4/G3x52i87L9bRNWMu4//suf3MiID3NUILE76ETPGmoT+8p5wB7Z8RAUjlJcgZfgXjZQ76ccU+fQsjvljq7011wCN9viBkdGtTCZZPVmXCLsJC+7t1DLroerny3Sd8zKsJ0aeQLVM0K3Sb9UKOgTCUUnMiAL/HuQ9bmNPgIymnqbYYrhvkguxJ63g4BEMqslICZQhj19QhKttxua86n1OyPmIpFQtJuEi02zpSyu4+sRX7RS9pN0vqMNlX8/xPC7l/N/lJ7CIM4IiOt7Q8Cs5Uoh9UFydVgdbzBkA657KGF+DxEnCNTmHwcj0cr+f+uPTbyjG465ihAFBDe03ma+KQla/ZYPBEO5GeVSmId6SMH8kEqjeAmdc8d9Qc9JUaW0BaYnV2RLR0ne802MleOwev/zeDw6jEIgGerCnE2tcb2lbicREcsTpeU+G4JMmkJlPk4k8k/wEWFUlO+/SyuvlUIYVav0lIxA7yCYFuNDQyT2seixNYMMtNZ7vZkYH000wZlzZdCmoulAo+TywrdNSzF0Hc4Ow1Z7dfKFTgbSbNns/tq8lDTPhbujtfXpMnrSFRe5Haa8mvKHRdg54HQX4ESjh4V2am1p2YE1Jwv9McDKEi4RGgFUX2ql6CAqz2798cQA2W/WfFeylVjDhoo7CfeEfR1OmMcE4yKD/+VPru5IKxq+F3GSb9cfZnvjNUFdwoB40LlmLzheJCy6wOWW0N1LjTDx1j4AwrN7ea35LXWMPeoUvw0dNYbPKTekydEsb7rjwGSyIesX9qFY5wnjbP2cOZsIgiljd1HxMx5cg7zotWSnMBLLcPj
- zuS4ih8G
- xOEF5eF9S6wKJOjfQaFHfoxQ5cerCGa91UaE6qTs+g/cQJz2XlNJD6KzjZr1qCH28ES9C9MDHyC2Xs3CsWu3dXtVGTpwUX8wx0uDKUle8XZMX3jjdtz4dR5VmIVdAy8wn/LCUELClvjC9kNJLNJeqiZx0wRCkjqnB2AOaOZrbRQz5XF/m2C4HpA8rdnNi/YxL8fC8g6icmURAJqZRrj9YOulC4efCsYm17PHrgnwV4PR6zLdd48kM7We93j84hTr8vTwPjlJb5jI5CNqII0TH95Dj4nAGkytoP2JZe3/zPxNndLGmJi11xOq2Vc7iKYlSEHWUuh+kXUAPzvq3nbjJoR1yvsExADFwnTmcbe9F/tVhGLzNosgUIE5ATgEitvaYg9ukJZUvbUVIWNz90hDxrActISeUp2hHy7jp8z7Zx0=
+X-HE-Tag: 1763052385-741547
+X-HE-Meta: U2FsdGVkX1/XtXGyANJC1PjGDNZtkkl5GZ3LMBiZkxk4LsceF+IHZRPSyyDPgnlBARM4hga7C+B+RH+YjO9WBOyWT+S1R2+7L2Ji//1rylIS2X257+lme1+SbjTPE3Lq6bNW7t9Ba59mmYarVafjbr+laG/1i0jPTs65NUt3dzhAHo0ts8eGs+AeqkarD2KEOsoY35zZnwKh70L0nvsI3fOAiuNDjXGUVKg5WQ4do/Bg5IVQcBzwgln8vetfSY6MIHgcWJk9U06B8Tu0O+uAYn3UV1G0eVmzB8Tbhk9Ss2vivxNK6NTlyU/qgXeol6wnsHJFa9i0TebAQi7/8NfQbX33agodryXlsQgIX2WqvHjFw70PU3Y6jzDLsLQUxluUt7XDKbedE/7cvGFXzvbmhPJDsrdg9BLN1tsx4QSlUge8f538eMe/hv3IwswaKRWKWhnuQOdA8XIp4ITs4dggY2NBdOq170QrObenvnx//PUbI7tP8k+1C/7CRKiIfQineD0JdOuqT/e2b3Aij7xV4rfB/edYsyocumkVHRTrkn1sR1g4knmfO1A2y9Ppxz9Srn0A0AljfohsV7c254nGlbtsZa+vajV39lIE2mQW492BuExBDh7CYSIeERSf80oK5+zThdZrSWxiir4zpN7bgtZNsBW5GHmIB3awBa0IQbnEaOHQ+EFTX/GXmetAzkWMH1OZ7G5Lui0iFjmZVOGuk2n+XWBzJLS21tlBFIHXKwwqqbz1AZCuq5PjtdDSvfQWNPhceNFjblL68Fpgw573Iia7JMeDHzkbyfafuu2acQzHVsL4UQMB0MzLgqiyowMxB+zd8TthRmyOkUO3WgSz4B0lY/zwQErHMEhjEDKYiKnnPw3xUd06WuR+1eMX35J1IPhe/2fj1HCt2CPyA7ya7wuy4fhgWg7QU0H8yDJnrdN1XWhiaFL1ojouS943a/y4f/FH7z4p/V+j4z+AlD/
+ LAFIB1p2
+ hyeuWUg31qdpTIpR0avtEL4V/f2Gd4Lmz4ibS8j6RDHgsbtzsz/ShBrrhLYacNuDX/iOCelJCsRPS2Cy7x+uLdM1eu1auE4kSvS36lDZqqmUoW1RSSBdlKsDv05j0JsIp3Z6zJk9iDsSAWBqnIwOlGMLTACdaumP6cugl7xeLQkfxzwwX7gnrkdbLoks4WLQplDBD7Syo7kc6grCD2RETjsc0dzoi6dxlhdVW7JlvPtPLiN0ebzKxlorAYwieByQvTg9/hmye3Iwid+ura9J3mRHB42aBd6nDzddFeL5XiVbcBaolnyezVle+WfdnXtG2KzL9R/vam/zojX1MPA/v5fCBEFskonsUiHOpIkwMKIrNBicnEU9scgE80nQgisAasY+JkSBynB9uznNCaHLbPZOOe890VChq0+ie
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,115 +97,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Thu, Nov 13, 2025 at 03:20:33PM +0100, Mehdi Ben Hadj Khelifa wrote:
+> The current shmem_allocate_area() implementation uses a hardcoded virtual
+> base address (BASE_PMD_ADDR) as a hint for mmap() when creating shmem-backed
+> test areas. This approach is fragile and may fail on systems with ASLR or
+> different virtual memory layouts, where the chosen address is unavailable.
+> 
+> Replace the static base address with a dynamically reserved address range
+> obtained via mmap(NULL, ..., PROT_NONE). The memfd-backed areas and their
+> alias are then mapped into that reserved region using MAP_FIXED, preserving
+> the original layout and aliasing semantics while avoiding collisions with
+> unrelated mappings.
+> 
+> This change improves robustness and portability of the test suite without
+> altering its behavior or coverage.
+> 
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
 
-syzbot found the following issue on:
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-HEAD commit:    439fc29dfd3b Merge tag 'drm-fixes-2025-11-09' of https://g..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15484412580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e46b8a1c645465a9
-dashboard link: https://syzkaller.appspot.com/bug?extid=18d274a59b87cf80e86d
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-userspace arch: i386
+> ---
+> Testing(Retested):
+> A diff between running the mm selftests on 6.18-rc5 from before and after
+> the change show no regression on x86_64 architecture with 32GB DDR5 RAM.
+> 
+> ChangeLog:
+> 
+> Changes from v1:
+> 
+> -Implemented Mike's suggestions to make cleanup code more clear.
+> 
+> Link:https://lore.kernel.org/all/20251111205739.420009-1-mehdi.benhadjkhelifa@gmail.com/
+> 
+>  tools/testing/selftests/mm/uffd-common.c | 24 +++++++++++++++---------
+>  1 file changed, 15 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
+> index 994fe8c03923..edd02328f77b 100644
+> --- a/tools/testing/selftests/mm/uffd-common.c
+> +++ b/tools/testing/selftests/mm/uffd-common.c
+> @@ -10,7 +10,6 @@
+>  uffd_test_ops_t *uffd_test_ops;
+>  uffd_test_case_ops_t *uffd_test_case_ops;
+>  
+> -#define BASE_PMD_ADDR ((void *)(1UL << 30))
+>  
+>  /* pthread_mutex_t starts at page offset 0 */
+>  pthread_mutex_t *area_mutex(char *area, unsigned long nr, uffd_global_test_opts_t *gopts)
+> @@ -142,30 +141,37 @@ static int shmem_allocate_area(uffd_global_test_opts_t *gopts, void **alloc_area
+>  	unsigned long offset = is_src ? 0 : bytes;
+>  	char *p = NULL, *p_alias = NULL;
+>  	int mem_fd = uffd_mem_fd_create(bytes * 2, false);
+> +	size_t region_size = bytes * 2 + hpage_size;
+>  
+> -	/* TODO: clean this up.  Use a static addr is ugly */
+> -	p = BASE_PMD_ADDR;
+> -	if (!is_src)
+> -		/* src map + alias + interleaved hpages */
+> -		p += 2 * (bytes + hpage_size);
+> +	void *reserve = mmap(NULL, region_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS,
+> +			-1, 0);
+> +	if (reserve == MAP_FAILED) {
+> +		close(mem_fd);
+> +		return -errno;
+> +	}
+> +
+> +	p = reserve;
+>  	p_alias = p;
+>  	p_alias += bytes;
+>  	p_alias += hpage_size;  /* Prevent src/dst VMA merge */
+>  
+> -	*alloc_area = mmap(p, bytes, PROT_READ | PROT_WRITE, MAP_SHARED,
+> +	*alloc_area = mmap(p, bytes, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_SHARED,
+>  			   mem_fd, offset);
+>  	if (*alloc_area == MAP_FAILED) {
+>  		*alloc_area = NULL;
+> +		munmap(reserve, region_size);
+> +		close(mem_fd);
+>  		return -errno;
+>  	}
+>  	if (*alloc_area != p)
+>  		err("mmap of memfd failed at %p", p);
+>  
+> -	area_alias = mmap(p_alias, bytes, PROT_READ | PROT_WRITE, MAP_SHARED,
+> +	area_alias = mmap(p_alias, bytes, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_SHARED,
+>  			  mem_fd, offset);
+>  	if (area_alias == MAP_FAILED) {
+> -		munmap(*alloc_area, bytes);
+>  		*alloc_area = NULL;
+> +		munmap(reserve, region_size);
+> +		close(mem_fd);
+>  		return -errno;
+>  	}
+>  	if (area_alias != p_alias)
+> -- 
+> 2.51.2
+> 
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/87634fccbb6c/disk-439fc29d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/4d7897eed027/vmlinux-439fc29d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/388814b7d484/bzImage-439fc29d.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 23212 at mm/page_table_check.c:191 page_table_check_pte_flags mm/page_table_check.c:191 [inline]
-WARNING: CPU: 0 PID: 23212 at mm/page_table_check.c:191 __page_table_check_ptes_set+0x13e/0x2f0 mm/page_table_check.c:204
-Modules linked in:
-CPU: 0 UID: 0 PID: 23212 Comm: syz.0.4613 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-RIP: 0010:page_table_check_pte_flags mm/page_table_check.c:191 [inline]
-RIP: 0010:__page_table_check_ptes_set+0x13e/0x2f0 mm/page_table_check.c:204
-Code: b8 00 00 00 00 00 00 00 70 49 39 c7 74 21 48 b8 00 00 00 00 00 00 00 6c 49 39 c7 75 1d e8 3a 29 8f ff eb 10 e8 33 29 8f ff 90 <0f> 0b 90 eb 10 e8 28 29 8f ff 90 0f 0b 90 eb 05 e8 1d 29 8f ff 31
-RSP: 0000:ffffc9000fd27990 EFLAGS: 00010287
-RAX: ffffffff8230ea9d RBX: 00000000397c2c67 RCX: 0000000000080000
-RDX: ffffc9000c8da000 RSI: 00000000000042d3 RDI: 00000000000042d4
-RBP: 0000000000000001 R08: ffffea0000e5f087 R09: 1ffffd40001cbe10
-R10: dffffc0000000000 R11: fffff940001cbe11 R12: 0000000000000001
-R13: 00000000397c2c67 R14: ffff8880525baff0 R15: ffff88801a05ab00
-FS:  0000000000000000(0000) GS:ffff88812613b000(0063) knlGS:00000000f54bdb40
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 0000000080ffe000 CR3: 0000000077a7e000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- page_table_check_ptes_set include/linux/page_table_check.h:76 [inline]
- set_ptes include/linux/pgtable.h:292 [inline]
- do_swap_page+0x5248/0x5b20 mm/memory.c:4970
- handle_pte_fault mm/memory.c:6180 [inline]
- __handle_mm_fault+0xe55/0x5400 mm/memory.c:6318
- handle_mm_fault+0x40a/0x8e0 mm/memory.c:6487
- do_user_addr_fault+0xa7c/0x1380 arch/x86/mm/fault.c:1336
- handle_page_fault arch/x86/mm/fault.c:1476 [inline]
- exc_page_fault+0x82/0x100 arch/x86/mm/fault.c:1532
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0023:0xf70ef1f0
-Code: 50 6a 00 e8 c2 10 14 00 8b 5c 24 2c 8b 4c 24 28 83 c4 20 8b 55 40 89 03 03 11 85 f6 74 18 31 c0 8d b4 26 00 00 00 00 8d 76 00 <89> 02 83 c0 01 83 c2 04 39 c6 75 f4 83 c4 1c 89 f8 5b 5e 5f 5d c3
-RSP: 002b:00000000f54bd540 EFLAGS: 00010202
-RAX: 0000000000000800 RBX: 00000000800000c0 RCX: 0000000080000000
-RDX: 0000000080ffdfff RSI: 0000000000000efe RDI: 0000000000000008
-RBP: 0000000080000140 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	50                   	push   %rax
-   1:	6a 00                	push   $0x0
-   3:	e8 c2 10 14 00       	call   0x1410ca
-   8:	8b 5c 24 2c          	mov    0x2c(%rsp),%ebx
-   c:	8b 4c 24 28          	mov    0x28(%rsp),%ecx
-  10:	83 c4 20             	add    $0x20,%esp
-  13:	8b 55 40             	mov    0x40(%rbp),%edx
-  16:	89 03                	mov    %eax,(%rbx)
-  18:	03 11                	add    (%rcx),%edx
-  1a:	85 f6                	test   %esi,%esi
-  1c:	74 18                	je     0x36
-  1e:	31 c0                	xor    %eax,%eax
-  20:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
-  27:	8d 76 00             	lea    0x0(%rsi),%esi
-* 2a:	89 02                	mov    %eax,(%rdx) <-- trapping instruction
-  2c:	83 c0 01             	add    $0x1,%eax
-  2f:	83 c2 04             	add    $0x4,%edx
-  32:	39 c6                	cmp    %eax,%esi
-  34:	75 f4                	jne    0x2a
-  36:	83 c4 1c             	add    $0x1c,%esp
-  39:	89 f8                	mov    %edi,%eax
-  3b:	5b                   	pop    %rbx
-  3c:	5e                   	pop    %rsi
-  3d:	5f                   	pop    %rdi
-  3e:	5d                   	pop    %rbp
-  3f:	c3                   	ret
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+-- 
+Sincerely yours,
+Mike.
 
