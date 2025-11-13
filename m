@@ -4,67 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54ACBCD5BC1
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CAA6CD5BC1
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 11:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99C0D8E0003; Thu, 13 Nov 2025 06:00:08 -0500 (EST)
+	id D46538E000C; Thu, 13 Nov 2025 06:00:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9256C8E0002; Thu, 13 Nov 2025 06:00:08 -0500 (EST)
+	id CF6C68E0002; Thu, 13 Nov 2025 06:00:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ECF18E0003; Thu, 13 Nov 2025 06:00:08 -0500 (EST)
+	id BE5C78E000C; Thu, 13 Nov 2025 06:00:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 68C608E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:00:08 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0F4416094C
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:00:07 +0000 (UTC)
-X-FDA: 84105289254.19.A4A0757
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A78A78E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 06:00:25 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CC7A89C73
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:00:25 +0000 (UTC)
+X-FDA: 84105290010.28.0B790B8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7FDB08001E
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:00:06 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uEENvqv9;
-	spf=pass (imf02.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 983F84001B
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 11:00:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oWSMkeEz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763031623; a=rsa-sha256;
+	cv=none;
+	b=slQQbKJJSgUr6EZXFR8dMJFwl87xtO4aqkklF7qrjC1e+kHkMqAfwB/NYKQPKeNc1P+F0m
+	sASzRta7ITew08FYlJzAj2XZsaH/Jrdy13FVHHg0g++GUhJeFMbn2/2l4LujVADneefDYU
+	6vKXa9kL5i8gmB8g4ftjbxdhfwAN6Us=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oWSMkeEz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763031606;
+	s=arc-20220608; t=1763031623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IdbjYGFKjRHr2ds2JSRKn1vlCKqDSoksRoiAzU+mzIQ=;
-	b=w6i8dssAaCC+uAqD/M1DiNMyjaKUfdhftkliHcnIU60OoZbefKIM78vBMnCdCTxSZczkS2
-	yrTiWE8NFiq2tqSTBpEpOkhcBslA3pLY3P53K2PwvYwI8RrMKmu6HqpDNdlzzqXZkq6Exa
-	+CgoEdfirq9glfpYGeXpfU/x5tmX4eI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763031606; a=rsa-sha256;
-	cv=none;
-	b=EzlqXsdGtQ1kBYAzzcD4LVP1fKaEHIcVJIKMk0sgHw/ih1NMSlNHPirOEMZzf2PG8EASP6
-	1e900oXsCMe5mlAA4jE7eRcDQI05vYguSbwQo0FdpWM8eFMUfDU4NzKS9O/4LZNpvRwLQv
-	lYlFU26eKH0JteaHSz4QA0lo7KXxeOI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uEENvqv9;
-	spf=pass (imf02.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=enKa8R/aOg43tBn/TN1TJVmdvFJxqr+7gETGWCo6Mts=;
+	b=ulFxxlfEPKRWp+ZJIC2+urwEUtCwJ2WsinQOGyJY31OjiXEpGiquYjc50ow6cQf2iEChxx
+	n1uVgyhXo3cwjI+1H2rm5u48hWqD6bed6w/JNi2D44P3iWtt2a1ftKgmOgC+kIcZnEqenG
+	FnZFsImfgb9XkbykREYq6MesPaLogrI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CED7B60210;
-	Thu, 13 Nov 2025 11:00:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F2AC4CEF5;
-	Thu, 13 Nov 2025 11:00:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 11E1060217;
+	Thu, 13 Nov 2025 11:00:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1FAC4AF09;
+	Thu, 13 Nov 2025 11:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763031605;
-	bh=+oFomDfNiypPBJ4AIDYzOAA6/B/jV4Ws0uR6/ZMqwj4=;
+	s=k20201202; t=1763031622;
+	bh=sU+vpaFb7g3JamdPyyLQFH7lkaq5LNFLro/B2yJZ8D4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uEENvqv9HfAuHD1WXdsKCusGJtCe0M2Ji3b8nXPR13TYeZZA4mxGUOfOSfBqQhceY
-	 47poSSR5CIsAcvbTJ6uQzDMDicEQvnD2oKnzxZ/CjpPrYr3MHV13B03P8qRBfdrFKz
-	 tzqJzmOFh/BZIGLPHJMWlUATAyXI42mRv+4ufNiduC5OPYRa9ypmwXNV+/euspTNBq
-	 G020TvDeAO6iJZMOAnDUJIJJjI8SWxbbg5ELBCIktBkC92xoOoyGufr/s98AnW7CXP
-	 pnlFOMV1dXEPugSThOmfoXJdgssakONNpFSJ0q8IgRkBYpkBJMXd0VAjuxnQZbpX1I
-	 wW2CKqZzeekIQ==
-Date: Thu, 13 Nov 2025 10:59:57 +0000
+	b=oWSMkeEziLzsMhyEQr+UK97S9luMDwyWNVRrH+XzbhgHPvSuA3m5VS6+J8auQIGEc
+	 PdjlS4ykBGjKHM3phiQQCUjWphpTKqYeFFY1k4UGdCHRjAnnlEbYIUsRhL8tp2b0cM
+	 lryaa72GaIK7Xyi9o+rV7u8w0A/vPvDP7WX0hGCC4HBdiunMjfc6Wq2KV2zWWIMX+c
+	 a2+i1bF3bVS2Oh41uoThrsQDbZP7q4GkiE+mcAmE5N+3JAIq7r2Zlpt9q5gHH+1trM
+	 ztiKDX3w+JWkxm6N1L4CN3cyvCwaglxI1rhXAdILefnNe+7Sp+2OGuTONTaDvEyBqE
+	 qdVaPbrSZx8+A==
+Date: Thu, 13 Nov 2025 11:00:15 +0000
 From: Will Deacon <will@kernel.org>
 To: Mostafa Saleh <smostafa@google.com>
 Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -74,22 +73,22 @@ Cc: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
 	hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com,
 	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
 	rppt@kernel.org, Qinxin Xia <xiaqinxin@huawei.com>
-Subject: Re: [PATCH v2 4/4] drivers/iommu-debug-pagealloc: Check
- mapped/unmapped kernel memory
-Message-ID: <aRW6LWh_1lTce7kU@willie-the-truck>
+Subject: Re: [PATCH v2 2/4] drivers/iommu: Add calls for IOMMU_DEBUG_PAGEALLOC
+Message-ID: <aRW6P7vhTIZvm2Qf@willie-the-truck>
 References: <20251106163953.1971067-1-smostafa@google.com>
- <20251106163953.1971067-5-smostafa@google.com>
+ <20251106163953.1971067-3-smostafa@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251106163953.1971067-5-smostafa@google.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <20251106163953.1971067-3-smostafa@google.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 983F84001B
+X-Stat-Signature: 3wb9a6cw94sncms6j16wr66gbe8j8jms
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7FDB08001E
-X-Stat-Signature: ypro5qwoqjrirx5dpq4mn34f4zdhi97x
-X-HE-Tag: 1763031606-268338
-X-HE-Meta: U2FsdGVkX1/tYwRMr0SsCZOQ69WgpQTyR4n0zqcNsMSUch1cQr8XDKRnsr1TPGQlLLSgC0JPKz4V8ZijLrA6BPJGQsTiHYrY4mFMlOnI4TJT1ZjkiLb+ZG9PXVm3J+F9oERXBh6R0WJzzXtLMJiF+uqaEBTOrpe+XFeGd0f9w+4MJAPmkUxNcscCOOEI9PU4GrVRAuM6r3JkdeF9LX+zaIedfhxlXwNniAVkXbIPr1Ob0HIgTI9CJR1IeatnBETQu0c6ry+/pgzIsmAvwKmje4jTk0Yll5c3A/AnMIe7CSMozDFh7g5jEHVkCjtqXBDabla+eHFrvRxL8W1PtXLMYRbCik65oY2dQk/62DDIcyAelgAPi7c8ktUVpYd7GwZvke3Zef/dCZmECITczM2/+Kn7wlo+EVLUbIpPHCbd0/Yg34JX2F9+JhQ3tf6ZUVKlzzwrM5KKK8gqPU2ktXF+G1ifpPO5PkZRrzSkaFczIko2IKPr2lPUqsiMg5rA4Q6l49EaLxRsp65HgpcqVs8ZzeMjW6tbLbV3tOBVXrPbh5rqS2CQSyYujsJgdCy1jmXyFCtgW3Mr9lAiimH8hFv7BNLq5okwCdKmPaTuZPQTGZe1QUUrfYYt+tHytwnHRi25twfDDHL/k4HT6GatOIlY67Cpc7/GyDNPqTKexIIVWGR+scq+pzQ2cm04WQNTjW1iEgWsHR/ZowBlkoEHvsaeANLUpWehmZRrH2dhFF23iNZyn3bB4m5l5tZIP1LWbCv2J8/4j3w43yJvtkCIrNRscMqTRZtCOAVO2vo6FEiRMYSi6KKQDVpTecV5cTY02srhHhOPCKIrx67e2vcJ0KspTIEFEGiNSJ5bmqmuBqglwIzKEgs49b4IXPB/f9uhRWLcE0602hSyCMpChMWSSM7DZQ8f+ctXD5jSho4NkfiwWXQ=
+X-HE-Tag: 1763031623-722843
+X-HE-Meta: U2FsdGVkX19BP+dYF7PnXeHdlsoPVEwDChuldZoru1hBagQi/AYhRpnDf0Qc2NWZwSWJOlKZUujG2slI7WDYic7GpzqpRdnLBVm1SiyQOqvK/RzDxBclsgKu8q8Nt3FSlhj4xKXAjow3Tdby76sPUUnHOD2o57HNpkSZAoSIwnTllwJmaOzRvKG5YesszEo/u//2B3cHC0pi0U6gbstjEAtgr26gJl8W4QaHOyeHb0cirQuPcVPLOZhZ5nWYE2WeztuQ2ze0Ia/qcoINIxCfIa1r/zKrydkrAD+NnppmzxnosNQewmlX5j/U+R6dA1f3XSiLOdTfFWVffcyamwY/3He+OlL1AxuxpknZ2+QcV+EmWeejsqi/sq6gG+WKkjRoBseRJsomhgR5VWjYhOtnNwhwWitjgQkR1mIvx1obiAlrVpR47VCe6VHnD+KquGFZvGPgl7zx2aTpZOEjtdrsTjahLd9l2Iu3tI+/PonDzrMl6fLE3i/sVst+6GcsAm4gUBOa3OIkBLGxXZ2pbxv2XQK4WRwjPkyf9DG7DNoo+K6emeVBJXmdHJUI8h6n32k/YazWUkrWZamjAiquef+4T+eLq7J0ZIm8V+qN1rQ7kWdmc/PiWbbp1w0BINDg3dSD723AmjGRbyOHwXLNRau/vD4M4IbxvaEoLniuFjrbsD1hG7OoPX0F5M6jJuaafMn7JfBJWuoRZai/NF1bVYUq4aswwzQS8uNd8h6SODqjPdGHd8vGUcrFgUvhKwkJTKOQrvXuBYbUGbXHuwWD0VDFh8DDAH3OPfqnWc9hLFwx1LZuELiIF4zMinCBeI9Hyrs3L1jbuzaXAkM66+uDVh6coEDTjjn/hjHxzkPNJVM8vYz7In1j2TmN7ApSCKstLipeTWPt1a2uVq8IRL2ZCrMxLYZZD4B+GYYyvLRhtKVNoDKUpEXPEZWi1x0dLKQCCfuHAoshWtDoZKS/LmjtHg/
+ jDVEOSbR
+ Q2aTclfd7jdvfXODI2TlVGgkSYw1PPNIi7ovdE02OpTYsFphXmlAiSet4haaHc7/s5FPdjpa3oz8zUc3nm8f16zCiX+Pz9+a/ymoJw2MnUrnpONlBpgr7ab+C4bio1NrmjHtM3JDuZPlwKkC7fiEXH1cbH7t3P39Jmr3ywrTJYlJQAb4UvxJ350P6vxYgiD4bzfsNdfUy4f5+vdxsmnc0w7scHykhTWhzdojpx6dCQiembIgjwF1HG8/Wjn/ztbG2T2h3oO0PlevqYWrIHCLRjoe4wDvDbJzFmVOpTe6svfpYhhuj9UIoSQcEmg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,57 +97,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 06, 2025 at 04:39:53PM +0000, Mostafa Saleh wrote:
-> Now, as the page_ext holds count of IOMMU mappings, we can use it to
-> assert that any page allocated/freed is indeed not in the IOMMU.
+On Thu, Nov 06, 2025 at 04:39:51PM +0000, Mostafa Saleh wrote:
+> Add calls for the new iommu debug config IOMMU_DEBUG_PAGEALLOC:
+> - iommu_debug_init: Enable the debug mode if configured by the user.
+> - iommu_debug_map: Track iommu pages mapped, using physical address.
+> - iommu_debug_unmap: Track iommu pages unmapped, using IO virtual
+>   address.
+> - iommu_debug_remap: Track iommu pages, already mapped using IOVA.
 > 
-> The sanitizer doesn’t protect against mapping/unmapping during this
-> period. However, that’s less harmful as the page is not used by the
-> kernel.
+> We have to do the unmap/remap as once pages are unmapped we lose the
+> information of the physical address.
+> This is racy, but the API is racy by construction as it uses refcounts
+> and doesn't attempt to lock/synchronize with the IOMMU API as that will
+> be costly, meaning that possibility of false negative exists.
 > 
 > Signed-off-by: Mostafa Saleh <smostafa@google.com>
 > Tested-by: Qinxin Xia <xiaqinxin@huawei.com>
 > ---
->  drivers/iommu/iommu-debug-pagealloc.c | 19 +++++++++++++++++++
->  include/linux/iommu-debug-pagealloc.h | 12 ++++++++++++
->  include/linux/mm.h                    |  5 +++++
->  3 files changed, 36 insertions(+)
+>  drivers/iommu/iommu-debug-pagealloc.c | 23 ++++++++++++
+>  drivers/iommu/iommu.c                 | 14 ++++++-
+>  include/linux/iommu-debug-pagealloc.h | 54 +++++++++++++++++++++++++++
+>  3 files changed, 89 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-debug-pagealloc.c
-> index 0e14104b971c..5b26c84d3a0e 100644
+> index 385c8bfae02b..a6a2f844b09d 100644
 > --- a/drivers/iommu/iommu-debug-pagealloc.c
 > +++ b/drivers/iommu/iommu-debug-pagealloc.c
-> @@ -71,6 +71,25 @@ static size_t iommu_debug_page_size(struct iommu_domain *domain)
->  	return 1UL << __ffs(domain->pgsize_bitmap);
->  }
+> @@ -5,11 +5,13 @@
+>   * IOMMU API debug page alloc sanitizer
+>   */
+>  #include <linux/atomic.h>
+> +#include <linux/iommu.h>
+>  #include <linux/iommu-debug-pagealloc.h>
+>  #include <linux/kernel.h>
+>  #include <linux/page_ext.h>
 >  
-> +static unsigned int iommu_debug_page_count(unsigned long phys)
-
-'phys_addr_t phys' ?
-
-But having said that, wouldn't you be better off taking the
-'struct page *' here rather than converting it to a physical address
-only for get_iommu_page_ext() to convert it straight back again?
-
+>  static bool needed;
+> +DEFINE_STATIC_KEY_FALSE(iommu_debug_initialized);
+>  
+>  struct iommu_debug_metadate {
+>  	atomic_t ref;
+> @@ -25,6 +27,27 @@ struct page_ext_operations page_iommu_debug_ops = {
+>  	.need = need_iommu_debug,
+>  };
+>  
+> +void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size_t size)
 > +{
-> +	unsigned int ref;
-> +	struct page_ext *page_ext = get_iommu_page_ext(phys);
-> +	struct iommu_debug_metadate *d = get_iommu_data(page_ext);
-> +
-> +	ref = atomic_read(&d->ref);
-> +	page_ext_put(page_ext);
-> +	return ref;
 > +}
 > +
-> +void __iommu_debug_check_unmapped(const struct page *page, int numpages)
+> +void __iommu_debug_unmap(struct iommu_domain *domain, unsigned long iova, size_t size)
 > +{
-> +	while (numpages--) {
-> +		WARN_ON(iommu_debug_page_count(page_to_phys(page)));
+> +}
+> +
+> +void __iommu_debug_remap(struct iommu_domain *domain, unsigned long iova, size_t size)
+> +{
+> +}
 
-Since you only care about the count being non-zero, perhaps tweak
-iommu_debug_page_count() to be something like:
-
-	bool iommu_debug_page_referenced(struct page *);
+Since the IOMMU API doesn't really have a "remap" operation, I wonder
+whether it would be clearer to have unmap_begin() and unmap_end()
+functions instead? You'd probably want to call them as a pair, so the
+check for unmapped < size would move into unmap_end().
 
 Will
 
