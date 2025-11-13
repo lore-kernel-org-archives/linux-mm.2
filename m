@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51576CD8CA4
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF92CD8CA4
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 17:00:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9A0D8E001A; Thu, 13 Nov 2025 12:00:23 -0500 (EST)
+	id 0287C8E001C; Thu, 13 Nov 2025 12:00:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4A668E0002; Thu, 13 Nov 2025 12:00:23 -0500 (EST)
+	id F1ABC8E0002; Thu, 13 Nov 2025 12:00:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C3D48E001A; Thu, 13 Nov 2025 12:00:23 -0500 (EST)
+	id DBBBA8E001C; Thu, 13 Nov 2025 12:00:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F85A8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:00:23 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 533B712E822
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:23 +0000 (UTC)
-X-FDA: 84106197126.15.CF294B8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA58B8E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 12:00:24 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82B7A160ABC
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:24 +0000 (UTC)
+X-FDA: 84106197168.01.4416501
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 542A5120007
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=pdb2eHGD;
-	spf=pass (imf29.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5E371C0011
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:00:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=f8C4RoEI;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf10.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763053221;
+	s=arc-20220608; t=1763053222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EK/wGS1Cf29Oc3ddciS9rx3mlCn5RJMoPzJ2ygAIvbU=;
-	b=R/vLyVXDM2yW3KVs3pXLqpeUR1Tt59Jxs17/O7LfQogLYlfCopfRuhBO3aY5Q8rLUUrqow
-	OJ1cChQNtomgjkCEaMR9+P8/g9weySPcQSSnsy2pbWW9xKUAm+I1IypJIkJLdKcDgqchU4
-	gymXT2R6Uk0+Ww5Ahjq3+p5oR+VYR4w=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=pdb2eHGD;
-	spf=pass (imf29.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053221; a=rsa-sha256;
+	bh=++PepNGLjda06HDSzZr6zUMp2L+H8I2WGjEaW+3VRbc=;
+	b=Sn+WIaactqQruZLR1RPCK79XPbRzR61IbBss5inHTDTVZGmXDhhg7j47K1iDA3ZXFJGh11
+	dnkAHdLlwJ5ISCVBACYsdOMBxsd1QTPXu68bM4APBw7lyn8AdyATWi8+LRBcX00PJBTKZ7
+	+4dRkw9viFK/WbjzAdEFZl7zxNBXrhc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763053222; a=rsa-sha256;
 	cv=none;
-	b=KMh0N9w39JHx/O651gFMJMIFNytUT1yOCNxKcquZxBtX6buuwIpsOj1Yy8LI7m3j5wPVAt
-	Z/nMsUZHzWvglRWvJR/saq5EH4rIWDIP5aClb3qtlJD7XWKopIFuSUr4pkxSwNX5T1Uqof
-	syVrJGzRu2rFEp4cIY1YYSKg7hO5hCY=
+	b=p3mLPgG2lbeAo+BG6HwX/DorX2fKuYTSwNse0heVBctL6nE2hkhiQASKMWAkA+BJlwMWxm
+	Al0U4A0C9jESJN46Bnfy678U95oat5iUgXX/S/ZkcFCvphVnCmMDdvPWdVKT8rhbM7UKca
+	9Zs50zyrO7WJA+cVIMDI6Nzdktlv+og=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=f8C4RoEI;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf10.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1763053220;
-	bh=PYci18VlZZ5sru0Tx0m/q5hJzWG4Ytkv44neBev88QY=;
+	s=mail; t=1763053221;
+	bh=zYBl/Dqp6Izqq1kQ5gjEICYJes4BCUnNwwCmCl6OpvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdb2eHGDc3SXjifd/YCj4PTrkKL7xAsYwSXKYf2WvYHoXxuMgPXC2KOL9aoefU+WA
-	 b5gTYL+oUwg6sNzyLRptfHCzQJB7EZ761jQTwHZlJkdoWYhdGt3V8oNQGJsDmCmDNs
-	 LgLXkwd/WroB4zDGXQLKocE979pGEABZSppInfiHXtr8+o20aBtDyiQAobunN6RjNg
-	 DLV9QRjmT3e8n5hvtPNvoIaMc4mY7UGsrYNll6s55m6hxcqrOywq1xLulJeK/Tx1zB
-	 V5nIPbLvDTW8R9DGNV1svUV2QrRW6FnhuZnAfWaNC6hWkqO6+HPlBWzxL4HjbYm6fa
-	 +M5pSsw5SsNwQ==
+	b=f8C4RoEIQl4ixC4AaSJTwU/a73ZdGP3iO7JtymnuRD46ZnGLlrX3zXIkeMEE38ivH
+	 NWbHWsSVmZVNJLMesX2GA2qEEIDBzOywRh7KpHLr1Enc274iJMUSR8OVGNMkmJkUNT
+	 qB4i3GRb1r5qfpBPWiZFYzPrWXoHV2a7w8BWxMzRP7rSAUkUGt7OetJFHHe5bXUwku
+	 xALRb4jhPjFNJBLQAZMkwsEwlSgRMdKiCIVdnq1H3tzw1Sb3Nbjvo0Cynx/QCK2zS3
+	 lK2uWqC1sH6v4LLyNA3y9ph+dmuiy0HOwT/dAnonGddOVEq8rIkVVsDV4dSsUrWABy
+	 PqW485btNwz6w==
 Received: from debian-rockchip-rock5b-rk3588.. (unknown [IPv6:2a01:e0a:5e3:6100:826d:bc07:e98c:84a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 32E5D17E156D;
-	Thu, 13 Nov 2025 18:00:19 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 35F8717E35D3;
+	Thu, 13 Nov 2025 18:00:20 +0100 (CET)
 From: =?UTF-8?q?Lo=C3=AFc=20Molinari?= <loic.molinari@collabora.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
@@ -101,23 +101,23 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	kernel@collabora.com
-Subject: [PATCH v8 09/11] drm/panthor: Improve IOMMU map/unmap debugging logs
-Date: Thu, 13 Nov 2025 18:00:05 +0100
-Message-ID: <20251113170008.79587-10-loic.molinari@collabora.com>
+Subject: [PATCH v8 10/11] drm/panfrost: Introduce huge tmpfs mountpoint option
+Date: Thu, 13 Nov 2025 18:00:06 +0100
+Message-ID: <20251113170008.79587-11-loic.molinari@collabora.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251113170008.79587-1-loic.molinari@collabora.com>
 References: <20251113170008.79587-1-loic.molinari@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 542A5120007
-X-Stat-Signature: gg7ugk96y65n3zm6z8sak3ba8tjpdjdc
-X-Rspamd-Server: rspam02
+X-Stat-Signature: wzaonm3396zsn3r1tn87ed4cza78xk9d
 X-Rspam-User: 
-X-HE-Tag: 1763053221-682894
-X-HE-Meta: U2FsdGVkX19EbudJuXjIFcOT7H8ofU4H2rAqTA3QHFxtuDrbOswGuFhbildPY/vUh7yCmjihqcdqliw6NjQ7CcH/HYHDeObcXcv1GgEUqr4i1sMliZryGT+Ke/OmDPXrF4N8lcVGdUcksFGVT/PcfZpWMPEyJ4dnKArOD/k+zsOmn7bzJACj6FYeDLIpwrucXlPWB+wXCkeieyc/uFM38DEe/Mv+NnXmCM3CEBCyejB5ZucjU5R0zLQPLoAzoKmD3VuFciMF3ClDNMD4nIa3gx4zWGJbNDBkh6oBV3a0jsmmO0+nJgdGpzeMF+iQUW2U0SX+JS20wYJkkjTqEH9DBewR0s9C23jF5XM8bxobtDH4N9dOJuoLTbdnXNXBfF2+CKOXDxCSnUEaACH804M/IB7MmfkJL4D+ekCrCjw0QRuj5f4nENJi9xjUSAiYtZG0RRtgUYp6j2n9yknmGqFC6tEHpG36aNig7WsZ+auq34vyxkEkG3XGqPsmvVObyauxAczUSE8DBF/DUrP+EIWtZRocLyjz6OyEUw6hLGaknaMWUSh+cDYbJxf5jeJJv/JsjQpKF14tKpxDYy3vi02jC+kbcL785pQngAoYy2jcB8o2UlYhMh94uUEkFXNsGh4wX6HdmY4Env2NwTX7bQv+mZ/2ODr287f5uWM4OzgHaNLA4Mp1B4tm6d8g7MiwQqLsp2BiFgis2uORey0pWBnkzdlQpxjGYns37tzFMe3ViuAsobVYI37Toaxk1WTDCaR16E73qfthkZlgIjkdxZ16PmSMRwW6j8reHKO6Q+7C5KvCjZZOGx9jb7bj8YYuqStxcUap8Wfp+/secm0JU/JTDpkMyC7t/yu6mAr7SEWKBEGfrDXoj0oZYWVvv743wA3KQHGwRMMOsz1E/N+LiK90CBOJpQ67CV7O72G4wChbyn8teX9L7LSLE3O/3rwrivyw/bV8NSpm+k4wUzYzYCG
- j+IuCT4h
- SiljLQj9SIuofeuB1MHgZ71BmiW5J/bdRGLfFBf1AKjfnONlpV7LvQ5RiJ2hYSIn26vWSTSGmv/VXjmDAwqns7+XfpKprIrwGpkj7wOvJV1EqDYtgwx+I1+0g0MfGeYyjhLdg/vkyzeSdL3Q2aBHRlFm1sljsw2/wLK+aS1VsElDjgvVm3tJcwswkVO9s5nZlg3cZc0vrmazHx7KpYo/RRXIFwUSdSwqAxNlkLFL0x2k2WwEgzuuk4+j3XY40gJcYcTLMy01NGir0c+KATngf3guF+Buq1nyUTZtdqZ4tHFyu8+WzaToDERXdJApUS2LXkTVwFHrVsL41XxkjTQHhVVlVteOPTqFP5/Dsthq7JRDgsOsQitbHo8/B6lKZhPLoK3Q0O3lkw6sIYiY=
+X-Rspamd-Queue-Id: 5E371C0011
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763053222-177649
+X-HE-Meta: U2FsdGVkX1/8fHZ467KtQZBht6/Ba1xUfX0Jpas6z98taesi7iSN/Y1Jhufty3BEoO+Lk8cpwbVNSruFz0xY8ih8DO4OJP0o6yUT/jSWwThSeU8Y6LvNXqJlIq7/VYD0S2VoXoWO7aaPCQCEj3In40h7gC3+WfbKZ9VeIlxrWL7m0CEcfVmfVVgO2ihJP3JK1YtHuhIkt/3x/b3mSCR80vEA6dQ4IH/mD9LMPuvthHIHQedYxeenWum/qceeixXtRoLXBGUVi21NwQv9harjipJ2+8XleAZu1zfzLl3wM4ARMIW8iRGqcQVcPrNeAZgfoKt1jKMKH8IpzLuyrMCuEXPuKjpafIS0XHudhR0j27uLfetnHMDTb/NZrL+wedLE1nfYAAVU2tyjOq1cCk5nz5r7VZEjLC1RZT63DM6sLLq6myjy8ueLClVuGaGH+mEu+3/B4V/tFs9a+y5XLDBpSjjYyo1sihQnpISLsj2tKeNxzhfNvhU2KE9T3pyIowLsJMyB+8gby8YQqeVkc1zl0FZQ1nCjr4y4HY6uoxlhBwS757G3BbwDrbxPCeVixOpH/dFR9hCeWgNCkAkLLm+yRTCARwXLXzNuro5p00oYEwhYdNrBXehvtMbDmhNXK4uzRIrh0avaHwdh3yoNYs6bB8caIBDm4ab8qrNStPBKQXeWw3LLQxFj04+P4NS+B6sr40mIEhB3MFdEeZySUFAps/letJTgQNuwG3NT1hHwOP8yog8xKVNBRK5OVARBgEDX192S7kEhK70GtgPBWapFmK66+0PWDihOFjDEkBKSbsss46Tpa+MV3PbJFuvERT9qmkj+ZQLc9JwE/wJNg8Rv024AvlQL3PISM8IHC955Tikt9dwch5mjXsUmAJXSYEYf6CZK8u7DOu7BmlNXxiucaRF7sPmigIHnq7ctJJAectSwONtnU++AWDdPnzz4Fvn7pywReaFwezBXY2e437I
+ hW8HflvT
+ VbptxthdNWxos1oCF9/n0GaMeuN192uJkHdkMbaHm0l3TG7FaWzPZsVMFLWg2v/j1qHH4lrlZcM7FhdgL5a9B370IYXYSiJaUhPzPhVhK1Xe5HpjQaVHo/WtapG3XaIHAZbHu6rpHGPyhqUH80xcqDFB5O4SCawuA8JSeiabkroB/qbXXyWPWM3W3v3pQJzXAbLbpCv6HiSuIrFyUqchee4Hz+K+s+Eoaj2mq/PPJMtFLlmcT3riQ9NZkLfUZtCVPkYAOJXFZkBifvzHpoL99W4GN9X3/L+owAYMGBSod0kmOD6Qbhy014DvbwaCkjk9jnh5McESS08ntvpx6PsusReiOH3xTNlKMTvZENxY0xe7LpwT/FnY8ItNA42YO8OlXESs5pdknKE6uYib1Ddwxg8voenolEGJ0XkawDZImalNuOqT7UkLGCc5mBCIMFE3XYUc5omHvTeEq3ALoRnlZYtPwO2fw2pWXZ11+ukxRcUGWb+gQvsQEp7Wu9iVzRcKGEcX4DmojQUrk4wi3Z25Mwfk56aRmDhd772s+b/zVuensEjWMW2iCJ9rwjA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,77 +126,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Log the number of pages and their sizes actually mapped/unmapped by
-the IOMMU page table driver. Since a map/unmap op is often split in
-several ops depending on the underlying scatter/gather table, add the
-start address and the total size to the debugging logs in order to
-help understand which batch an op is part of.
+Introduce the 'panfrost.transparent_hugepage' boolean module parameter
+(false by default). When the parameter is set to true, a new tmpfs
+mountpoint is created and mounted using the 'huge=within_size'
+option. It's then used at GEM object creation instead of the default
+'shm_mnt' mountpoint in order to enable Transparent Hugepage (THP) for
+the object (without having to rely on a system wide parameter).
+
+v3:
+- use huge tmpfs mountpoint in drm_device
+
+v4:
+- fix builds with CONFIG_TRANSPARENT_HUGEPAGE=n
+- clean up mountpoint creation error handling
+- print negative error value
+
+v5:
+- use drm_gem_has_huge_tmp() helper
+- get rid of CONFIG_TRANSPARENT_HUGEPAGE ifdefs
 
 Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
 Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/panfrost/panfrost_device.c |  3 +++
+ drivers/gpu/drm/panfrost/panfrost_drv.c    |  6 ++++++
+ drivers/gpu/drm/panfrost/panfrost_drv.h    |  9 +++++++++
+ drivers/gpu/drm/panfrost/panfrost_gem.c    | 18 ++++++++++++++++++
+ drivers/gpu/drm/panfrost/panfrost_gem.h    |  2 ++
+ 5 files changed, 38 insertions(+)
+ create mode 100644 drivers/gpu/drm/panfrost/panfrost_drv.h
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 58fead90533a..32410713c61c 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -918,10 +918,9 @@ static int panthor_vm_unmap_pages(struct panthor_vm *vm, u64 iova, u64 size)
+diff --git a/drivers/gpu/drm/panfrost/panfrost_device.c b/drivers/gpu/drm/panfrost/panfrost_device.c
+index c61b97af120c..dedc13e56631 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_device.c
++++ b/drivers/gpu/drm/panfrost/panfrost_device.c
+@@ -12,6 +12,7 @@
+ #include "panfrost_device.h"
+ #include "panfrost_devfreq.h"
+ #include "panfrost_features.h"
++#include "panfrost_gem.h"
+ #include "panfrost_issues.h"
+ #include "panfrost_gpu.h"
+ #include "panfrost_job.h"
+@@ -267,6 +268,8 @@ int panfrost_device_init(struct panfrost_device *pfdev)
+ 	if (err)
+ 		goto out_job;
+ 
++	panfrost_gem_init(pfdev);
++
+ 	return 0;
+ out_job:
+ 	panfrost_jm_fini(pfdev);
+diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
+index 7d8c7c337606..7f59568faa05 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_drv.c
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
+@@ -858,6 +858,12 @@ static const struct drm_driver panfrost_drm_driver = {
+ #endif
+ };
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++bool panfrost_transparent_hugepage;
++module_param_named(transparent_hugepage, panfrost_transparent_hugepage, bool, 0400);
++MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount point with Transparent Hugepage enabled (false = default)");
++#endif
++
+ static int panfrost_probe(struct platform_device *pdev)
  {
- 	struct panthor_device *ptdev = vm->ptdev;
- 	struct io_pgtable_ops *ops = vm->pgtbl_ops;
-+	u64 start_iova = iova;
- 	u64 offset = 0;
- 
--	drm_dbg(&ptdev->base, "unmap: as=%d, iova=%llx, len=%llx", vm->as.id, iova, size);
--
- 	while (offset < size) {
- 		size_t unmapped_sz = 0, pgcount;
- 		size_t pgsize = get_pgsize(iova + offset, size - offset, &pgcount);
-@@ -936,6 +935,12 @@ static int panthor_vm_unmap_pages(struct panthor_vm *vm, u64 iova, u64 size)
- 			panthor_vm_flush_range(vm, iova, offset + unmapped_sz);
- 			return  -EINVAL;
- 		}
+ 	struct panfrost_device *pfdev;
+diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.h b/drivers/gpu/drm/panfrost/panfrost_drv.h
+new file mode 100644
+index 000000000000..edeb093eb6da
+--- /dev/null
++++ b/drivers/gpu/drm/panfrost/panfrost_drv.h
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright 2025 Amazon.com, Inc. or its affiliates */
 +
-+		drm_dbg(&ptdev->base,
-+			"unmap: as=%d, iova=0x%llx, sz=%llu, va=0x%llx, pgcnt=%zu, pgsz=%zu",
-+			vm->as.id, start_iova, size, iova + offset,
-+			unmapped_sz / pgsize, pgsize);
++#ifndef __PANFROST_DRV_H__
++#define __PANFROST_DRV_H__
 +
- 		offset += unmapped_sz;
- 	}
- 
-@@ -951,6 +956,7 @@ panthor_vm_map_pages(struct panthor_vm *vm, u64 iova, int prot,
- 	struct scatterlist *sgl;
- 	struct io_pgtable_ops *ops = vm->pgtbl_ops;
- 	u64 start_iova = iova;
-+	u64 start_size = size;
- 	int ret;
- 
- 	if (!size)
-@@ -970,15 +976,18 @@ panthor_vm_map_pages(struct panthor_vm *vm, u64 iova, int prot,
- 		len = min_t(size_t, len, size);
- 		size -= len;
- 
--		drm_dbg(&ptdev->base, "map: as=%d, iova=%llx, paddr=%pad, len=%zx",
--			vm->as.id, iova, &paddr, len);
--
- 		while (len) {
- 			size_t pgcount, mapped = 0;
- 			size_t pgsize = get_pgsize(iova | paddr, len, &pgcount);
- 
- 			ret = ops->map_pages(ops, iova, paddr, pgsize, pgcount, prot,
- 					     GFP_KERNEL, &mapped);
++extern bool panfrost_transparent_hugepage;
 +
-+			drm_dbg(&ptdev->base,
-+				"map: as=%d, iova=0x%llx, sz=%llu, va=0x%llx, pa=%pad, pgcnt=%zu, pgsz=%zu",
-+				vm->as.id, start_iova, start_size, iova, &paddr,
-+				mapped / pgsize, pgsize);
++#endif
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.c b/drivers/gpu/drm/panfrost/panfrost_gem.c
+index 8041b65c6609..d8472a023e05 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gem.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gem.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright 2019 Linaro, Ltd, Rob Herring <robh@kernel.org> */
++/* Copyright 2025 Amazon.com, Inc. or its affiliates */
+ 
+ #include <linux/cleanup.h>
+ #include <linux/err.h>
+@@ -10,9 +11,26 @@
+ #include <drm/panfrost_drm.h>
+ #include <drm/drm_print.h>
+ #include "panfrost_device.h"
++#include "panfrost_drv.h"
+ #include "panfrost_gem.h"
+ #include "panfrost_mmu.h"
+ 
++void panfrost_gem_init(struct panfrost_device *pfdev)
++{
++	int err;
 +
- 			iova += mapped;
- 			paddr += mapped;
- 			len -= mapped;
++	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
++	    !panfrost_transparent_hugepage)
++		return;
++
++	err = drm_gem_huge_mnt_create(&pfdev->base, "within_size");
++	if (drm_gem_has_huge_mnt(&pfdev->base))
++		drm_info(&pfdev->base, "Using Transparent Hugepage\n");
++	else if (err)
++		drm_warn(&pfdev->base, "Can't use Transparent Hugepage (%d)\n",
++			 err);
++}
++
+ #ifdef CONFIG_DEBUG_FS
+ static void panfrost_gem_debugfs_bo_add(struct panfrost_device *pfdev,
+ 					struct panfrost_gem_object *bo)
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.h b/drivers/gpu/drm/panfrost/panfrost_gem.h
+index 8de3e76f2717..1a62529ff06f 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gem.h
++++ b/drivers/gpu/drm/panfrost/panfrost_gem.h
+@@ -124,6 +124,8 @@ drm_mm_node_to_panfrost_mapping(struct drm_mm_node *node)
+ 	return container_of(node, struct panfrost_gem_mapping, mmnode);
+ }
+ 
++void panfrost_gem_init(struct panfrost_device *pfdev);
++
+ struct drm_gem_object *panfrost_gem_create_object(struct drm_device *dev, size_t size);
+ 
+ struct drm_gem_object *
 -- 
 2.47.3
 
