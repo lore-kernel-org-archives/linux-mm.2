@@ -4,98 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4362CD4F3C
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 01:41:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F3E2CD3445
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 01:42:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FEC38E000A; Wed, 12 Nov 2025 20:41:49 -0500 (EST)
+	id ED3148E000F; Wed, 12 Nov 2025 20:42:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B0618E0002; Wed, 12 Nov 2025 20:41:49 -0500 (EST)
+	id EAB038E0002; Wed, 12 Nov 2025 20:42:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6C98E000A; Wed, 12 Nov 2025 20:41:49 -0500 (EST)
+	id DE9328E000F; Wed, 12 Nov 2025 20:42:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F13858E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:41:48 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84A0A12E274
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:41:48 +0000 (UTC)
-X-FDA: 84103882296.03.22121E3
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 783DC80004
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:41:46 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Aspetcsn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762998107; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CFA0D8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:42:49 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5D4A1160772
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:42:49 +0000 (UTC)
+X-FDA: 84103884858.06.FD4101E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6C48C20014
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:42:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Q4lsqY4V;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf13.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762998166; a=rsa-sha256;
 	cv=none;
-	b=TTS2iEccuLMeEw4em8koyy9PeWUVKttKenvYVo2gSEWbZJH6c2NYfx+Y3UJgLoFxf8CkTB
-	u3WHrZvcNu2diFUSDf4V/gcVK4elffzczzZp+tvJYwa39Tw/pVhjh5mxlRiblrit/Ppco8
-	PEdijnUEB4moCU0GjdenMSQR5+Mhw3E=
+	b=1vCKc+7zTCPHbxuPyppsgsq3RzTPWkppf0/JpEHBitQp1fpvj0FkSftCzfnB7F5IyqQP4E
+	TGnuH2SAQ3z9l2Rz+oppabzycMemjSE6tM5Z+eGZLvOBr1WdHxvBImniJXCtZlOnfmgvg6
+	8NbYzBY69vLkO4JgTiv0poasnTa41R8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Aspetcsn;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Q4lsqY4V;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf13.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762998107;
+	s=arc-20220608; t=1762998166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DZOsuzzzQHJpIeK5WeOY1LNAVB/LXukV3KrcVp6/m18=;
-	b=NXLQ0/AuneFwSa3bsPqR/TOMXJJm41B71sQnHsP0YRBYL/npgrBuEqmAQb+1sdVjFb6Tfw
-	h9rdLhXbbUia/DL3ZoBV4yPwETv5UO1fh5bQi2Dre1N67rjsBvF6cJKimWKWnmAzgGWQzD
-	FjgqaM5pBFkociLYhqI3jTKCrWcLIUg=
-Message-ID: <475ed48d-1f62-4983-94a1-64e41c463c36@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762998104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DZOsuzzzQHJpIeK5WeOY1LNAVB/LXukV3KrcVp6/m18=;
-	b=AspetcsnJtR4NjDaUovNH2yMqZTZw0RgLT/JVL7iCXS9oi67IL2u0jl/uOr0dksqvGcvUn
-	YX+fGFhLg27XpwXq2IW5geaCJE3Xio36ngY70VFJY8922A+P+lFwyw1PcZ2+dwpoMhwRKO
-	R85op0rSFY5KSS5iU1NU0AgVIisSR1o=
-Date: Wed, 12 Nov 2025 17:41:38 -0800
+	bh=VT1994pC1494Qkwb45rLrsGK74ygpTSWjtnNzbMc5Mo=;
+	b=4eQe9ZcOBxM89MyvnT13xOsjKYJJ52TZrv5bJxqSLN6IKFk219fUrZ2V/OHD0NmOWMSDhP
+	hq5CpiAjbf0phMJrXMD31j0tSfrfti1YzE4NHdqhrlzGCEFurat+QDpPaf4haPQHwWxL2A
+	+OMr+7vaJVX2XNlKaEiiunIT4xtkBAs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762998166; x=1794534166;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=J6kO8MinoWEoGkaYJTyrYhudby1TwSS/GObHrnk96Qk=;
+  b=Q4lsqY4VXX4igiIgshReZkyUtIgsWlt/3ol98tkOjnkpawdgTu7G5CZs
+   ui2RzS6wPdpnMFN5iQwFkR6HzGCOAvOImdiATC+7tjwBI6hazPLiI+O8U
+   vco0brm5UgrvCLxkxVX/HgaayuGOiKrVyjjFKdib+jDANbt3wA71Css7t
+   bED2XTfJw2/jut2ror+uN0nfcIbKFEuM5AOQlnqVR6sUNJj2f1WGfWLRp
+   psQh/cKHiTwf/rR2pW5orMcOlFlwkDYJeqtOfJluCvGbCmXkGuISNgTmY
+   dvUotlKOeO8l+bWEcYAfFtKtQjMZ1Elge6cFzjB1RnIJEA3JToTFh4COU
+   g==;
+X-CSE-ConnectionGUID: aLpexhvMTcCGVL68e9dgfw==
+X-CSE-MsgGUID: ioWxOhlQS/CBdNNwm9NW9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="65225854"
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="65225854"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 17:42:44 -0800
+X-CSE-ConnectionGUID: UV41EMOGRgSJ6IjRZ/og6g==
+X-CSE-MsgGUID: cb9xlMdyS3Cqc07OKTsBXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="188618989"
+Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 17:42:25 -0800
+Message-ID: <f2bfa5ad-4c74-4b6d-baa7-d0d01d5d9b15@linux.intel.com>
+Date: Thu, 13 Nov 2025 09:42:22 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v9 1/9] kho: make debugfs interface optional
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, akpm@linux-foundation.org,
- brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
- rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org
-References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
- <20251101142325.1326536-2-pasha.tatashin@soleen.com>
- <d7651272-f979-4972-ae41-bab2faa8473a@linux.dev>
- <CA+CK2bDSvtuwrrXGOC07Rj42yGFHWR4Sse7Q5z1z8f1ZFHWQ2Q@mail.gmail.com>
- <CA+CK2bC_+repP-q183hjAuYYB2-Yx7fr_U3zr2cxysAWx5hzpg@mail.gmail.com>
- <029090cf-9a4d-4f79-b857-04c3ada83323@linux.dev>
- <CA+CK2bByYPJXSNOh6R3swqFrGsS02m3Dfh=ZU7YhNjNX6siyqg@mail.gmail.com>
- <442fa82e-16ef-4bde-84eb-743450222468@linux.dev>
- <mafs0qzu69gei.fsf@kernel.org>
- <CA+CK2bBEe16x0em1gRxQD3jhfV9t3QA2vx5ifk2pKb_WEoMTeg@mail.gmail.com>
- <0735e1ef-2b65-4a54-b4d5-964fb875cd09@linux.dev>
- <CA+CK2bBnnGyQ-N8-XS3W3tnSRwvFbstOdo0oDSdkF70KP1AVxw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 03/37] KVM: Enumerate support for PRIVATE memory
+ iff kvm_arch_has_private_mem is defined
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+ akpm@linux-foundation.org, bp@alien8.de, brauner@kernel.org,
+ chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net,
+ dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com,
+ dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com,
+ fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org,
+ hpa@zytor.com, hughd@google.com, ira.weiny@intel.com,
+ isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com,
+ jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com,
+ jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com,
+ kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev,
+ liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+ mail@maciej.szmigiero.name, maobibo@loongson.cn,
+ mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+ mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com,
+ mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev,
+ nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev,
+ palmer@dabbelt.com, pankaj.gupta@amd.com, paul.walmsley@sifive.com,
+ pbonzini@redhat.com, peterx@redhat.com, pgonda@google.com, prsampat@amd.com,
+ pvorel@suse.cz, qperret@google.com, richard.weiyang@gmail.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, rostedt@goodmis.org,
+ roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com,
+ shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+ steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+ tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+ vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
+ wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
+ wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
+ yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <405686bacd68ce6c76aa5e6ef40f0a5324983c5b.1760731772.git.ackerleytng@google.com>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <CA+CK2bBnnGyQ-N8-XS3W3tnSRwvFbstOdo0oDSdkF70KP1AVxw@mail.gmail.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <405686bacd68ce6c76aa5e6ef40f0a5324983c5b.1760731772.git.ackerleytng@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 783DC80004
-X-Stat-Signature: 91uzq5frzg6jhnjmpkptrdaxq1fezczu
+X-Rspamd-Queue-Id: 6C48C20014
+X-Stat-Signature: q1xq1roqekhgakfc4b1kuj8887noow7b
 X-Rspam-User: 
-X-HE-Tag: 1762998106-637372
-X-HE-Meta: U2FsdGVkX181PiifLuzrS1OjrL39D6aRz6Bv+j3kPwv9LPirQNbK8oUdxESnmUQZW+lweSwtuwV/hioGspwC5CbIWZGnGVU+eAeKRomuK70ARolp6EM8sFZiwBTeplG/uCZBVawBxUF28UTD/FCqSX9Xjk1ceeoqDOVMv28nFHEIxmTTFNrzLrnyGHzeCJnB8DeUgYBEKarQbxJ8KEvB5dXWV7AhxyYgOC2vyrEirK5kGcNVdcSmMlseRzhUODOVcxHA+kG2jRMBW6VMJ5d5C24Zs1QOQ37oHaCSIk/KuIImSeRwp+0pTiCinMKrrpp317ReaDGx18DOUMVSSSb3f25kMsOJqZvJ6RRM66AcLZfBkqllChM3HFCjw3sQ0hiAnBhXh1OrNTt9xXRMdH4EH3PCoQaNhAZcuQ1VkqGxWUljk1KWQ84qB4c4Yg/d4fTXP4ad930l72Yv1Bw8AZErRl5uEGaIo66cvBaaxTCHkxicrNrbUglKFiucNzhYuD1vbvcSFmJ3nbBRUMAtiot4wrpxFxTV68tuSqZm/sBkOqHIJyxnMaMfZac3h3hKOsfIbHGyhzp63hlLFnavvldJLMIfjiVs6TOWuGnXSvgkSRlDegRJVHa2bF41+FgmGRZtD0iWeGWnTnvYed6lKW2tLxNKmae1V6SxkTGhxIl3NqCugUa7bI6dHTBbLQSHqsnW1XVjOKikFVPlpohR8MxIGP4ceid6RB9P6kyxMF5jHHwPT4AlCl29+iTCpQRr1KQ+eEWSUBlEt+y7jRybIgPcU5x8hDj5XrbMMU6P7gJHMCxaQCOFyYlZCVy/+S7RqX34na/QVeXPB7e4qeVzkknj1vNT4G3/IF9bEj6Lv0leHY5wttgUJZEGeitkE4GgeuA1K8JvV36wdm4HF3eSXWSzFDlB0I+xuFaDkOdVlBB9H6eioeSGg2nbxuqa1qGyEHdYkiKwV28nwA/A7CKALyO
- dL98EjEM
- vPbqxm+r1mfXpRa1rTLYQ6toyDzjf4vBNNurWuSnngK3H4iOZhzFMkLDpv/0E8seVqLiV0Bpy0H7XAN1lGiV3zRmj+V2jdgrxLzYpwrRmawA1+ROxq8N8KC1wQ5kStxKnGjn/CqPJs+r+thwWHXzU6+IKf7MH42Fu2ZpP3aePoRvA8JVV5iGj+37a99GDdMb+uO80Bod6R56h7JGHOVXlgzm2yOMF0K+hXUh2hPnm/4DLv6KeySrYv06r/iYpWtFb6Tg2j5QXSZUmXc6SXrqfArCftt8JXBoTWuBzw7CmO6NSdnAzsZ4e68mubEIDOvCOSpPKs97+mDLal9QNx2ub4x/ZCw==
+X-HE-Tag: 1762998166-407208
+X-HE-Meta: U2FsdGVkX1/ekGH0p5Y2Pu7L8hTAbMN0QGxYiOcucPUNiAklvE0jwnCFKJ/h830/7NuT5tz7VVmyauMIWmGxdCMIbmpAwHlP+AKw21DV+mkQ0HNUp/6+XEAyYTjjRBgOKmxPJyy72G1sGS6R0jIb89sVP4hvxpO6PKTYS9bPOhGazOzvepnJVYA1ej91P+RqXtkStACC3J44t187N8lit9XzJZOpcmwNkTfIbpN6J9lI2zL1AoRSJMGSelSvdOG82GbjCLDYXRKaZgueJ84OrR0FsJ4hwpBNKtmWX+T2nAsuE5xwobrU0EH6z8VhtlO+ocNJA5FVBf2mhOfiBUG8+jcYfGN/8J09gxMECc/TNXUDGzv9dJ9m23SA0PZW1qnYul6tOsgl2H6JJxsVT2bqyZ0f8ERivzQ8tSa+zVI0klVzGEYL2ThcOHZKY4s7QJVph/w/XvhkgTJHYzuEIejEApIJewWrai/WzmPyyG/fmGfxRGMqwjavmfK3LGYbfw21bDkbzal22s+gSNe3JLpBpYxVZVfXNdkppRSnc1HDXDHaoTa4O191OJNWJQHhJkzifQwG9quo9jjOM7Sl8xuVef6VMw0ZuthUNTOnHGSFgAZ4E6x6B88ivtq5ht2NCvlpTnrKHr1RTdPiPmynroiCNPz2x9HOeXHtFoGcadiW1IZyqDaNsj9Z1DVph4wE/k7GwwFkU3lEUwtL2KLFK92aQvPqoj3EhHQ7LcDL/tp7T5/GfJCUrl2mxphAusA+pQ4TA2S+ynU89o5EKO9d/v4GQLmP2517lK0CH7bec7RS93rdD5PMMZTvOd7JVR6Vi5DvrJXlXIxzjMYu2jCGxMQB5SnhYFipFlWgqnaYl3GixVE2prUibevxAxxnz8CX9qBRbcub/EnfpYY3UQ2i8j6BKwJBKuomee+1mUVatzXfXGT6euDa1VJ2slL3gHFiLPhLvo7A1RHIoqgd1AP72p+
+ yBeOvjVp
+ GMDUE9IJFW8MUrtF/w/hrOOhtQct5Jz4L0oLlIJjjnxFZhjfNpDpS8562/RF5k3t/5JsFfV8Pcpf8t4FiY8QO5oIlag3FtWxHT3vG3+kx3qKR9exoT+Uhi3ykUah8jAtPtL1WHJXVqwbBJfgJKwcEPkDQSscsBtDJJJfQmiapDQodLY8M3XjYWrNgm2OulAIw/poK8yRQUyOZQ4AE1XoddMxDjoFIVYNyZHp8BT5r0kESZ5oC8mj6p8y1M4hdnb103k5V+suKcbA9SWzYz1bVlX3X/H/4xTCkNn7AJSHWj1tJY3g84DpYk37eOZLApXC5cWw0ssp0KCLl0W1NU+xtSV+HawGdTSOrBmhGqQKKQ/02IgQmiVmlQfWh0MMvhA8caRRDjCacr8IXPzR5Dyh0jBFYxA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,125 +139,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 11/11/25 7:26 AM, Pasha Tatashin wrote:
-> On Mon, Nov 10, 2025 at 11:11 PM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
->> In FC42, when I run "./luo_multi_session"
->>
->> # ./luo_multi_session
->> # [STAGE 1] Starting pre-kexec setup for multi-session test...
->> # [STAGE 1] Creating state file for next stage (2)...
->> # [STAGE 1] Creating empty sessions 'multi-test-empty-1' and
->> 'multi-test-empty-2'...
->> # [STAGE 1] Creating session 'multi-test-files-1' with one memfd...
->> # [STAGE 1] Creating session 'multi-test-files-2' with two memfds...
->> # [STAGE 1] Executing kexec...
->>
->> Then the system hang. And via virt-viewer, a calltrace will appear.
-> Looks like mountroot fails, are you passing the same kernel parameters
-> as the during cold boot?
-> i.e. kexec -l -s --reuse-cmdline --initrd=[initramfs] [kernel]
 
-
-Thanks a lot. It can work now.  The logs are as below:
-
-"
-
-# [STAGE 2] Starting post-kexec verification...
-# [STAGE 2] Retrieving all sessions...
-# [STAGE 2] Verifying contents of session 'multi-test-files-1'...
-# [STAGE 2] Verifying contents of session 'multi-test-files-2'...
-# [STAGE 2] Test data verified successfully.
-# [STAGE 2] Finalizing all test sessions...
-# [STAGE 2] Finalizing state session...
-#
---- MULTI-SESSION KEXEC TEST PASSED ---
-"
-
-Yanjun.Zhu
-
+On 10/18/2025 4:11 AM, Ackerley Tng wrote:
+> From: Sean Christopherson <seanjc@google.com>
 >
-> Pasha
+> Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
+> on kvm_arch_has_private_mem being #defined in anticipation of decoupling
+> kvm_supported_mem_attributes() from CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> guest_memfd support for memory attributes will be unconditional to avoid
+> yet more macros (all architectures that support guest_memfd are expect to
+  expect -> expected
+
+> user per-gmem attributes at some point), at which point enumerating support
+    ^
+   use
+> KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory attributes being
+> supported _somewhere_ would result in KVM over-reporting support on arm64.
 >
->> The call trace is in the attachment.
->>
->> Yanjun.Zhu
->>
->> 在 2025/11/10 7:26, Pasha Tatashin 写道:
->>> On Mon, Nov 10, 2025 at 8:16 AM Pratyush Yadav <pratyush@kernel.org> wrote:
->>>> On Sun, Nov 09 2025, Zhu Yanjun wrote:
->>>>
->>>>> 在 2025/11/8 10:13, Pasha Tatashin 写道:
->>>>>> On Fri, Nov 7, 2025 at 6:36 PM Yanjun.Zhu <yanjun.zhu@linux.dev> wrote:
->>>>>>> On 11/7/25 4:02 AM, Pasha Tatashin wrote:
->>>>>>>> On Fri, Nov 7, 2025 at 7:00 AM Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
->>>>>>>>>> Hi, Pasha
->>>>>>>>>>
->>>>>>>>>> In our previous discussion, we talked about counting the number of times
->>>>>>>>>> the kernel is rebooted via kexec. At that time, you suggested adding a
->>>>>>>>>> variable in debugfs to keep track of this count.
->>>>>>>>>> However, since debugfs is now optional, where would be an appropriate
->>>>>>>>>> place to store this variable?
->>>>>>>>> It is an optional config and can still be enabled if the live update
->>>>>>>>> reboot number value needs to be accessed through debugfs. However,
->>>>>>>>> given that debugfs does not guarantee a stable interface, tooling
->>>>>>>>> should not be built to require these interfaces.
->>>>>>>>>
->>>>>>>>> In the WIP LUO [1] I have, I pr_info() the live update number during
->>>>>>>>> boot and also store it in the incoming LUO FDT tree, which can also be
->>>>>>>>> accessed through this optional debugfs interface.
->>>>>>>>>
->>>>>>>>> The pr_info message appears like this during boot:
->>>>>>>>> [    0.000000] luo: Retrieved live update data, liveupdate number: 17
->>>>>>>>>
->>>>>>>>> Pasha
->>>>>>>> Forgot to add link to WIP LUOv5:
->>>>>>>> [1] https://github.com/soleen/linux/tree/luo/v5rc04
->>>>>>> Thanks a lot. I’ve carefully read this commit:
->>>>>>> https://github.com/soleen/linux/commit/60205b9a95c319dc9965f119303a1d83f0ff08fa.
->>>>>>>
->>>>>>> To be honest, I’d like to run some tests with who/luo, including the
->>>>>>> selftest for kho/luo. Could you please share the steps with me?
->>>>>>>
->>>>>>> If the testing steps have already been documented somewhere, could you
->>>>>>> please share the link?
->>>>>> Currently the test performs in-kernel tests for FLB data, it creates a
->>>>>> number of FLB for every registered LUO file-handler, which at the
->>>>>> moment is only memfd.
->>>>>>
->>>>>> It works together with any of the kexec based live update tests. In
->>>>>> v5, I introduce two tests:
->>>>>> luo_kexec_simple
->>>>>> luo_multi_session
->>>>>>
->>>>>> For example, with luo_multi_session:
->>>>> Hi, Pasha
->>>>>
->>>>> I enabled "CONFIG_LIVEUPDATE=y"
->>>>>
->>>>> # ./luo_multi_session
->>>>> 1..0 # SKIP Failed to open /dev/liveupdate. Is the luo module loaded?
->>>>>
->>>>> # ls /dev/liveupdate
->>>>> ls: cannot access '/dev/liveupdate': No such file or directory
->>>>>
->>>>> # grep "LIVEUPDATE" -inrHI /boot/config-`uname -r`
->>>>> /boot/config-next-20251107-luo+:349:CONFIG_LIVEUPDATE=y
->>>>> /boot/config-next-20251107-luo+:11985:CONFIG_LIVEUPDATE_TEST=y
->>>>>
->>>>> I made tests on FC42. But /dev/liveupdate is missing.
->>>> You need to add liveupdate=1 to your kernel cmdline to enable LUO and
->>>> get /dev/liveupdate.
->>> +1, kernel parameters require: kho=1 liveupdate=1
->>>
->>>> Pasha, your LUO series doesn't add the liveupdate parameter to
->>>> kernel-parameters.txt. I think it should be done in the next version to
->>>> this parameter is discoverable.
->>> Yeah, that is missing, I will update that in a standalone patch, or in
->>> a next version.
->>>
->>> Thanks,
->>> Pasha
->> --
->> Best Regards,
->> Yanjun.Zhu
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   include/linux/kvm_host.h | 2 +-
+>   virt/kvm/kvm_main.c      | 2 ++
+>   2 files changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index fddb373fcbaaf..21bf30e8d3cc1 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -721,7 +721,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+>   }
+>   #endif
+>   
+> -#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#ifndef kvm_arch_has_private_mem
+>   static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+>   {
+>   	return false;
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index f73047ea4333e..591795a3fa124 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2428,8 +2428,10 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+>   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>   static u64 kvm_supported_mem_attributes(struct kvm *kvm)
+>   {
+> +#ifdef kvm_arch_has_private_mem
+>   	if (!kvm || kvm_arch_has_private_mem(kvm))
+>   		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +#endif
+>   
+>   	return 0;
+>   }
+
 
