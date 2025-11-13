@@ -4,101 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C999CCD98DA
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 20:29:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0240ACD98DA
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 20:33:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E7428E000F; Thu, 13 Nov 2025 15:29:04 -0500 (EST)
+	id 53D548E0008; Thu, 13 Nov 2025 15:33:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BE6A8E0003; Thu, 13 Nov 2025 15:29:04 -0500 (EST)
+	id 515AF8E0003; Thu, 13 Nov 2025 15:33:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FC348E000F; Thu, 13 Nov 2025 15:29:04 -0500 (EST)
+	id 452628E0008; Thu, 13 Nov 2025 15:33:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E5168E0003
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 15:29:04 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9933585857
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:29:03 +0000 (UTC)
-X-FDA: 84106722966.11.6D1F74F
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BD1654000F
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:29:01 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Q/k9OO3h";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763065742; a=rsa-sha256;
-	cv=none;
-	b=jubyVamejUywp7CSlYWE3jQw6DCgr7VoiYaqzRUeInNk45ZIh38l+moSy2v3QBm6nufyce
-	Z68kPjBHGgeuuBhK/EMtCvDmENXuSrUaVckp67M9hOubxI3D5iV7IrRayTcjuOZ+64+IXn
-	PhvClD1LUpXtBHoUsmwYe7gPOqAPpNk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Q/k9OO3h";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 33F2B8E0003
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 15:33:59 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4B3313862C
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:33:58 +0000 (UTC)
+X-FDA: 84106735356.01.2EDE49F
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 66DE7180009
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:33:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cmim2kzQ;
+	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763065741;
+	s=arc-20220608; t=1763066037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=afgZLvoRPRdV/uLRfyJlQxQwB+pZpdtXmSYXDn8K350=;
-	b=s0mzoBKWBlSxT07x/I/gaiP7f71b20gC/JDghWHevXiEN/UB1+LUuszu8R8wA7Yaq8vfEg
-	P3RHVbP+6w5Ryy5GFPOl89VLvnh9LCtYm6bOhZm474+yH4dvpP9/F+jt/Oh4pjYYmEAGPF
-	9OC6Lrp7ofA/t7wJrH5UHfOnEopf74A=
-Message-ID: <90d5e140-b2a5-4e7e-addb-c4f75912526e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763065739;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=afgZLvoRPRdV/uLRfyJlQxQwB+pZpdtXmSYXDn8K350=;
-	b=Q/k9OO3h2UzYaNYh9XPXo+5JV55ef6V28Qp/4OzYJUxeNlCMcvh/YfWaG6q0Q1eUWT67HO
-	IXSnJ+qalmjNfrhf3lDEdD+uK9jCdBWesmteXEmVvDYkQ20UUdyFtcjOVfL6aGWg4O1Mxi
-	LozeCODbc6HMeh2lP+4beKkZQu3jd4M=
-Date: Thu, 13 Nov 2025 12:28:48 -0800
+	bh=F8BIpsc6+IG97yFUh0oeZRhXpi55aHBEN/P7F13sLV4=;
+	b=aObaMzcRL4kTQ/a+6JdJWKtbslqSWQNPXpQ6kCZMaY/1jkYchF0KCWtclToPOMrFo5y9Dl
+	tt0qS/fYL7kPY2gR6cvKPmSu6A1fuNx7ZfSAV3wvVlNjD0P0EpMQV1I1vxGCjUKkNcHak4
+	AiYqQp5hi4vGA/Sfd0AtVE1ZXkOY094=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763066037; a=rsa-sha256;
+	cv=none;
+	b=8NsiAGYOFRA/cNegiVOV9aM1QoYWkYq4Y0Slaf+9ms6DxHuHImc/riB4aPYYECfFw4bWh0
+	ba2A6Gb8eN++GxmfkjO8nhfh6ChuOMVC+6/55JEv+Reto4uVPY7YkXyAWuI04vrJigHrE8
+	YiWjesSf+QTN7sy7qhs44ePGMGB+oKs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cmim2kzQ;
+	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=F8BIpsc6+IG97yFUh0oeZRhXpi55aHBEN/P7F13sLV4=; b=Cmim2kzQ/sW4COWLNLD/lKBLQv
+	2MktANiZv8HebBFP0xpU2qKed8TiPtexeMWOZ2MU/K/eJZrML5yDAn2gWrpTaVRK3KQ2caJFgtPB2
+	Ezeu3WF06JgYLUNQzucFZluyRU4eXRCwWKB4/rhlUBljeM15gfjkR6tHm3eES6UMShexgB6hSLDta
+	/UPKXtKmgTqB+vRjnhrxsgqUaWd5qmUIx01RbfDijpRQoYH7mTf5VFE6PGqvZ1r9qtp3inSXM3tSU
+	KwLHCFGzL0jFUYwRTUTf8HPsrTJYq8+GIYNJI0uG/AaPm/OiZ4Bqh5tijH0wMZHkLBsMq7llZAub7
+	+JfxJtvg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJe0s-000000086x7-3brw;
+	Thu, 13 Nov 2025 20:33:50 +0000
+Date: Thu, 13 Nov 2025 20:33:50 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org
+Subject: Re: [PATCH v4 14/16] memcg: Convert mem_cgroup_from_obj_folio() to
+ mem_cgroup_from_obj_slab()
+Message-ID: <aRZArvnUeXZulhuX@casper.infradead.org>
+References: <20251113000932.1589073-1-willy@infradead.org>
+ <20251113000932.1589073-15-willy@infradead.org>
+ <20251113161424.GB3465062@cmpxchg.org>
+ <45ea66a3-bf8b-4c12-89cd-d15ba26763fa@suse.cz>
+ <offnmou66hzgrlbb7owyya6n4onn2g5iuv7matbqfvsigg6wv3@3hlu55yai42z>
 MIME-Version: 1.0
-Subject: Re: [PATCH v9 1/9] kho: make debugfs interface optional
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, akpm@linux-foundation.org,
- brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
- rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org
-References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
- <20251101142325.1326536-2-pasha.tatashin@soleen.com>
- <d7651272-f979-4972-ae41-bab2faa8473a@linux.dev>
- <CA+CK2bDSvtuwrrXGOC07Rj42yGFHWR4Sse7Q5z1z8f1ZFHWQ2Q@mail.gmail.com>
- <CA+CK2bC_+repP-q183hjAuYYB2-Yx7fr_U3zr2cxysAWx5hzpg@mail.gmail.com>
- <029090cf-9a4d-4f79-b857-04c3ada83323@linux.dev>
- <CA+CK2bByYPJXSNOh6R3swqFrGsS02m3Dfh=ZU7YhNjNX6siyqg@mail.gmail.com>
- <442fa82e-16ef-4bde-84eb-743450222468@linux.dev>
- <mafs0qzu69gei.fsf@kernel.org>
- <CA+CK2bBEe16x0em1gRxQD3jhfV9t3QA2vx5ifk2pKb_WEoMTeg@mail.gmail.com>
- <0735e1ef-2b65-4a54-b4d5-964fb875cd09@linux.dev>
- <CA+CK2bBnnGyQ-N8-XS3W3tnSRwvFbstOdo0oDSdkF70KP1AVxw@mail.gmail.com>
- <9e144e21-a5e7-4c12-b8b0-07172787ab37@linux.dev>
- <CA+CK2bBQxB7ihmhBa76vJbdD988B+8PBrV4arDSNqjv_VB4DVw@mail.gmail.com>
- <CA+CK2bCUN6SH7x=DnTFvCgEYGKoyOrCMzwQjHCY0LK35Hd-_zA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <CA+CK2bCUN6SH7x=DnTFvCgEYGKoyOrCMzwQjHCY0LK35Hd-_zA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <offnmou66hzgrlbb7owyya6n4onn2g5iuv7matbqfvsigg6wv3@3hlu55yai42z>
+X-Stat-Signature: meqr8qog8hs8aqczinf9tzue1qdzdn17
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BD1654000F
-X-Stat-Signature: qxg9dfaki9j1zmabtdx3ac94sk14pftj
-X-HE-Tag: 1763065741-676465
-X-HE-Meta: U2FsdGVkX18zkB52soHolOF3X1h49cdxQgHmaxL6nFk9pcSgm+k2avhhEV+amr/YrlM8Vv9GOhcEHzp67VJw4k7cBClPeTd9a70Uc363f9iYe4pzU0oc/4Cw4ph9/xqbnddKGe1m3/woAxxivlcYnkR7aOqBknKGc3CKPoebyXDAdyt/Bq96DBZJx1WzAH/ZEGLTWxHuu+OcZq2cNCt28iWvL9xBF3Ay8OGJ25emHodk6K6iGjid2xlroF+gePx6U6jdLDOU+E2ORl1XlZ3/jo9AA+oB+7aDxFGGKPAKe3slRLfGpPHzPt9FluqQ22wLX/wX9tOkir1jVX48efV5e+7cH8TUvjKCWG+fIV7i6P3QfktT/vTuVCQnd9rLBC9A59EM58YMfYrfIQXGbJRK0bcbQAJeBmw/8pdsvMvd2lc3kangiAUY0AUpVls3pwyNoWklRq2FYCYuHXub5fn3fGd3jtBf2sZGgU1e6fa2ZFzWx1nWRy/MDIqYZWCWbA2v83cKDfIIn7JcvbQaiAHMtTcbiJghSsZBwc6Qr/PP7A4i+IkEY44bkssheH0sHrQtanwReqtevbDF5uP7qALdklJo/nQDrTZ/nZ0w4FOZCbvYfiZ3MvCalyuiVJiJ4spF4ee0HpeP9A7x/Ha2nJ3HHoEJu3Sr2NQFDSnF9tJDs5+5N3dYjumoca9QymIS/i5eaxc9cV7wYNUzhEn89L61F1neW+puUsdwAn3kp/7eR8xIBeaDwUdr391o1b1cx3LZeMQKDzElb0gO+BEJaziDV5gj4qg5bUrTPr4TnLK8sOtDLx5URmK+lLoukZg/Ens5cna+oNeItoGqehjR1W7FLIKOclA3JqOYbV9ZW8ULIvhogoDz048KX72j8kqdV+uZgGoHZ6VYPnDKT51ImMPD9hWWlqBjcxw7kLbq9kFDaECVm49w/05/IqGO/dYis//AfeE9OkFBk/oxYnFRx9u
- 5pYZbmdz
- Z7Hh3em5umyuUaGa7bA9Yv5CMcncu1QwOS/nJYGj+uApdtc2F0Gat+L3AZVdCLSSB4JMk0e/65/ALbrc09hTkTWrN8v4yzJcA5C88waOmtArv+ZX2plbTXOG7L/J5AB+Gs/fLlwrtcCJ/l7Y4P0CaRt6B7bz1ImdQxXrtOHQbxWIISGggj0iyTVwJtZsmzKRIygdd9uH27WfyhtQwJu9YK4A75R13TnHFc6Vc7iRJlOSA8NKUytPVnI09MvcookB/V2uY
+X-Rspamd-Queue-Id: 66DE7180009
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763066036-626678
+X-HE-Meta: U2FsdGVkX18PEQBl2ce7F8++xL4o5KG0Ke6WJckCII6w0MM5e45YIPa2/JkwNtmWP6LEI/+lnMOTg/23TfVCN6QUZdFVkZvXbHApSU7QBkIVxDOe2Cw5YlxTJUQ6i9MbDYsqqBAKTpf8rHpzYfUrfsvzjwAh3jYxKVROKNN7QIggJloDe+u1JyVzrniF5uCGcxYf5lRHAS7GhOt+ModYTdcl+r6tuM2n57sLVUSbI8nPKD5YvsMJdVpowrOgT5xfE7t17+fWyQPko4iAgo7qb5v57AB2L+Qyc1gTh+7J1AAzAbO574pL7PRIchtnSuzUDHp2ApWpPUh3xFwstaNlNv7BkkNp5hYyIoRcRd1okABsuCLMGpC1WMiQl+7vujw3gq7SeyOi9U3oNmJdA4Ri6e/3qNedVBSCKMxUduSlc2Pij/O0y5zocBzJl5r+Sxz5chZnSYfHskj9KDcYerE1OlAOgT59xQySc9JbvwGPILF5yq3vkC/g40szT3H666vZy3u1FDuv27LLGrrVUZ9TskUbaU8Hvk1VL+YBoxq6hahizgPWjW+YZYRDzVO+XPRvlbcmchYASLJwyjQsG4LYA5u044/cRbGXCaIjQiynR3LvbHs6qicp1ndbAWcEWLATOwgH3IiwwBE1pef8OmmfH54K63QgQeDVYVQ/YOg+MyvJ8EYQ6WeoMWXyQTjGYE9AkveFINeetA6JZ7EOIo2xkVLrWbF7fjvESEAF/+GRGj3KA8VR2HpZga5kwLcuBa0XlV85SjgVzBCtzCpi0ZxpwZYCFupng/UU6/xyYP265COoVUe544WwtS7qmn5Xw+JFCFpwPmEgXXjnZWXh3zHpb7Eylz96Havts1+T1o+Ie2jVUJ9Ho4zCPhQuNt0deZ4Kd7GPvhPr7GazvS8cuAUOKyxhfH9x3m70HmJ4FP9tYkFlZfBwAiBXaO8dHh03pBxWtQfDKCJdcBfdON04nAT
+ DGI8FWPa
+ CyQKw9eDCUehO8OWw39mHFrRUFqVEPa+BfF0zfXDSIsbiQ2XJQMpoO/ktreYfpdY5ecMC79tx7j+SdBkoxPm18JFlTIqjs84yJQvojPecsApeqLPPLXu89H/zmFeqY0vtWNt50oHt5eCVf156Hn6SMKyCYV+d87fVdakCw+5O2UEtYlHZEH14D3sI0YspyFquMwUJTYFkE+mmnpDLm/S4WH4E5ldGV+OCBWulVveKr8rCvp5ccRA9jDcL//T3IDiokbMTAtng47PLLg+wwvN6/bChOxCA90lnK4ohbB+GR/xVqIA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,47 +100,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Nov 13, 2025 at 11:42:01AM -0800, Shakeel Butt wrote:
+> On Thu, Nov 13, 2025 at 05:28:59PM +0100, Vlastimil Babka wrote:
+> > > E.g. !vmap kernel stack pages -> mod_lruvec_kmem_state -> mem_cgroup_from_obj_slab
+> > > 
+> > > How about:
+> > > 
+> > > 	if ((slab = virt_to_slap(p)))
+> > > 		return mem_cgroup_from_obj_slab(slab, p);
+> > > 	return folio_memcg_check(virt_to_folio(p), p);
+> > 
+> > page_memcg_check() maybe instead? we shouldn't get a tail page here, no?
+> 
+> Do you mean page_memcg_check(virt_to_page(p), p)? But virt_to_page(p)
+> can return tail page, right?
 
-On 11/13/25 12:13 PM, Pasha Tatashin wrote:
-> On Thu, Nov 13, 2025 at 3:10 PM Pasha Tatashin
-> <pasha.tatashin@soleen.com> wrote:
->>>    set -e
->>>
->>> -kexec -l -s --reuse-cmdline /boot/bzImage
->>> +kexec -l -s --reuse-cmdline /boot/bzImage --initrd
->>> /boot/initramfs-`uname -r`.img
->> Thank you for your suggestion, in the next version, I am going to add
->> initramfs optionally, I am thinking to update script to something like
-> Optionally, because in some environments (like in mine), it is built
-> into bzImage.
+Only if it's legitimate to call mod_lruvec_kmem_state() with "a pointer
+to somewhere inside the object" rather than "a pointer to the object".
 
-In my test hosts, the bzImage is vmlinuz-xxx. But with the help of "ln 
--sf ... ...",
-
-this change can work well in my test environments, including x86_64 and 
-arm64 hosts.
-
-Br,
-
-Yanjun.Zhu
-
->
->> this:
->>
->> #!/bin/sh
->> # SPDX-License-Identifier: GPL-2.0
->> set -e
->>
->> # Use $KERNEL and $INITRAMFS to pass custom Kernel and optional initramfs
->>
->> KERNEL="${KERNEL:-/boot/bzImage}"
->> set -- -l -s --reuse-cmdline "$KERNEL"
->>
->> INITRAMFS="${INITRAMFS:-/boot/initramfs}"
->> if [ -f "$INITRAMFS" ]; then
->>      set -- "$@" --initrd="$INITRAMFS"
->> fi
->>
->> kexec "$@"
->> kexec -e
+For example, it's legitimate to call copy_to_user() with a pointer
+somewhere inside the object, so the usercopy code has to handle that
+case.  But it's only legitimate to call kfree() with a pointer that's
+at the start of an object, so kfree() can cheerfully BUG_ON()
+PageTail(virt_to_page(p)).
 
