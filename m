@@ -4,101 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7FCCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 18:44:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC5ABCD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 18:45:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6578E000C; Thu, 13 Nov 2025 13:44:42 -0500 (EST)
+	id 44B008E000D; Thu, 13 Nov 2025 13:45:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CADB38E0002; Thu, 13 Nov 2025 13:44:42 -0500 (EST)
+	id 422698E0002; Thu, 13 Nov 2025 13:45:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEB5F8E000C; Thu, 13 Nov 2025 13:44:42 -0500 (EST)
+	id 35FA58E000D; Thu, 13 Nov 2025 13:45:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ACF548E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:44:42 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 480CA13B94D
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:44:42 +0000 (UTC)
-X-FDA: 84106460004.29.683AA8E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 71A544000A
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:44:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pC0cZpHv;
-	spf=pass (imf04.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 23FD28E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 13:45:02 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACD89140B77
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:45:01 +0000 (UTC)
+X-FDA: 84106460802.02.0DC78B3
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1EE0A180010
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 18:44:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iI2o+pd7;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763059480;
+	s=arc-20220608; t=1763059499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZIbcxtUs2WANG22zdr2IA7CVjhetoWXTZzjAD8xbfKU=;
-	b=3GaX7k0I+8ZQyEuLd8m9hX3/tfb1DoeflyBZr4IiuQm5dnoghbUrBMOgXlTmcmXIunLZZt
-	R+RGIakDcFG8YGCBgIXqiTlEqmwpzS+/0QMWdxBRsbOVl7Nibdigx6UPIhRhf9zPcqHSO2
-	4wmWy/Pphd6YH3NufRyHPm/vEu806T8=
+	bh=zdlMQgwVjsQQokMUoarVWLzYOF89ILJG6lqyPcbeycg=;
+	b=uzkLBf8F6SEgdOUpZ/N0GaSum6T6HN5ScaDLGfqN+tdU0TSIyBgxsglWBcL9X3neDRM2oE
+	1NZE+/K+4Zrss2NB+i8TpHn1yIL67OnwnqamxVHaLxO3dLqcuv1QQoGXdDBJkDgR9PCZg0
+	NkN5g/WO0MuCUnD1D+tGBFD6V8OMe1Q=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pC0cZpHv;
-	spf=pass (imf04.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763059480; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iI2o+pd7;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763059499; a=rsa-sha256;
 	cv=none;
-	b=EfaCbvGDu0IS2E4yn6RcmN43eN/DCs7Qap7BqeoiN+FC2Tx591nv1MXV+uJWQhcvYpSU6E
-	+HyAc1rqh+wB7AFaGZ50hVv8QRRAxmkVJAMQTu5HmBWuGRiYppOincVgUbLR4o4zcS0XZ8
-	EDSCeaaptTrfApUMiP5ca81QUQjorJk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 94237439BA;
-	Thu, 13 Nov 2025 18:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9161C19421;
-	Thu, 13 Nov 2025 18:44:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763059479;
-	bh=RE5P0X9RyxwuZjuBP8m4q0k+WYSIyGbR3hJ44uf4r7s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pC0cZpHvF6d0hLbVgoHS87+c6/lwBz35mdlUvl+etMUkoQnyYhzYKdq2Y6LU9nGsL
-	 TyIbKCToQbXil/j7Hqc2snvjgEbSuvrBmloVgxHooOPwgNH+R0THEcYG4brJgOo6M8
-	 bqZp04im0C6eLsy+xT+Mro2rnnIa+sLi32Njq6GAliFD2kKvOJkNmUSsSp6CSqWxjD
-	 gXUyK8iE4eLp8CE7dWr+FSbvrhhoxms/LwucBVOTfQjAdZGyUEuJe5ycL/jzDB7B5G
-	 c+urL7KgfK111uclHjIboI/TfOcSAS6d252bJxTcdqfHzq3R+2MwtEVtqZJeohqgxr
-	 eCxQROZG94TZg==
-Message-ID: <027b6ac9-836d-4f89-a819-e24d487f9c8e@kernel.org>
-Date: Thu, 13 Nov 2025 19:44:31 +0100
+	b=soqpOtHIQYQOHDA+nBaxR7lTygHv4fd4J0x6ojMlMVYQnlGSOcZvOSluUmdwj2qvfaHsGU
+	L9IMkXhC9WWImx80q7lV0HTWy16/7FsqdONWr9gjYgaRonTtUVFrrZwbK2F06jRPZYnP5S
+	uhKBtOZPCN0KDZtb9b8plvMLdZtLD/w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763059499; x=1794595499;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uJwfz7y+UOjyl3txMn7ctra7YU4BaP0tmmsat+CbBmU=;
+  b=iI2o+pd75clBr0Wnay/oEeb0Bv853/ZKAwRxuekaHXHiXo7MRk6B9/Ky
+   h0HX3QLJhzXHon2jGVM4r/ePJE+CwdCfQjo+NLdgQTFdZ+TvAsAuUTEG3
+   xrzqgp0+CZ1vVD6dsmyEySk+CMd6lC/9YWgcZR6rPn9ha559QI/UizXJ9
+   41zEpq2wKwxDLpeIx01x3VW0cCCrmy/vzTWHmmud7pVzLLeQPcGQ85+fr
+   xjDRRQ9xe071dAo5mUD8g0X5nueFMeoQhUaexhK/MEnjBuEkWDzlc0uSU
+   o3cCnZSZ6FrF5URzfl8JcQOxmTEeGsWDqoA/+lhGX1NPEmIHeX2Mm8Otn
+   g==;
+X-CSE-ConnectionGUID: gEDskzYNSgqoFLFvyhnDtw==
+X-CSE-MsgGUID: qsCb/8lWSSuhSjx00aQmkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="82782230"
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="82782230"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 10:44:57 -0800
+X-CSE-ConnectionGUID: pXRj2ntZQ4eRt1WRIuqYvA==
+X-CSE-MsgGUID: ckktt7N/RVqHdg43JpF33A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="189835423"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 13 Nov 2025 10:44:53 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vJcJO-0005l9-2G;
+	Thu, 13 Nov 2025 18:44:50 +0000
+Date: Fri, 14 Nov 2025 02:43:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yuntao Wang <yuntao.wang@linux.dev>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	James Morse <james.morse@arm.com>, Baoquan He <bhe@redhat.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Geoff Levand <geoff@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Alexander Graf <graf@amazon.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Yuntao Wang <yuntao.wang@linux.dev>
+Subject: Re: [PATCH v2 3/7] of/fdt: Fix the len check in
+ early_init_dt_check_for_usable_mem_range()
+Message-ID: <202511140236.zLyckeBA-lkp@intel.com>
+References: <20251113155104.226617-4-yuntao.wang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: fix MAX_FOLIO_ORDER on powerpc configs with
- hugetlb
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Donet Tom
- <donettom@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20251112145632.508687-1-david@kernel.org>
- <eaf2e733-f967-43bb-88e6-7876a28a370c@lucifer.local>
- <3fa6d496-b9de-4b66-a7db-247eebec92ca@kernel.org>
-From: Christophe Leroy <chleroy@kernel.org>
-Content-Language: fr-FR
-In-Reply-To: <3fa6d496-b9de-4b66-a7db-247eebec92ca@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 71A544000A
-X-Stat-Signature: hd39nauxp9r6ucffr8xo4m1ea8mgsyty
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251113155104.226617-4-yuntao.wang@linux.dev>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1EE0A180010
+X-Stat-Signature: yp4jt7qgza3s7urpit6by5mb8uzhrsxh
 X-Rspam-User: 
-X-HE-Tag: 1763059480-776436
-X-HE-Meta: U2FsdGVkX1+21QAeRX2F+gW+yA8QFNPH56PDDA5Bn55p06qpYh9fxXodfwFsW0kq/KS7mh9G2twOUQpdGl0H9v/J2ubekG2SKDQl7j37vBbWByKMfKFB3tyb4SSdCznSDBkevSX/aqSeJrMTVQ1OnQ635NlWhahxf1vOywLXDcJkTZdJy4jlgOraXdVMccEyazayBf1JzvN5M9shEtz2Q04lRJ8ZmigFWWUVzSx+g2wMker1j0VqgK4nmXOJ7v67JTlQoEZZA5dzxam3T0yL9wBUsmwyD1HSi5AA9X+5KGUaE54Y/ZvZvbcDrh4nVICFUqYjaraBiYMGl9Fg9iDK0u+nlgn7ud0QyKZGE0xE0Okp27lKILa18KRB5RlIEjxnTXNk+ShVQHDVlEzGvP3iigrFCD7auEgIbd1LgIc+qb0JogZXffxUruGnJc0RMc2e323BnPrlwdBQZ/Monnfi1aMN04SfIlkG4tdf2N7BJOyVF7C8rdRuSigv5AoOwsJP3Uv+mXAiDDvgjZ5O9nF3SXyourEl0tDJU45Tfu7y9swAt9wr58V9P2NjdMkzCDHSf8QZu3zV4Pw69cVivvhMYwjuwHmNLonV5C9fDUptrG3qaW/bF7ZU9biMv3OWsJKiRSz4uvggCvciKtsD6pft6wpCnr/so3x9yj1W9w7DoZhw1yWdLGmwdcGEHwNRAfBOrWRyQYnCI5nBoJibDD7qfbDqQD/ccaWK9JUdmX9QSw4+6djYw6d2Y4+LL6h+tWmvjYG7+9Psj9+1FZkY17hbR0eKMra9ZqpF/tJTHcfl/r9Pru0UFP05c+3IwyNpEbi71FSmAPzx6tInaoGAGkWGa+DEirhBKzieIXpzb2XrkLn/6nP8zrSooZGDrb/V0C051KuZeyoEx/HvD2Zhwbdm7URq0+3UBQrdBho/HuY7zl7+I0F2CLVTs5jeUCdpfjEcTDDa4JsM5SeS+C90h7M
- dLjzVSwm
- dtueWHvjGTEnwks3Nbn6dKCE6xGco8NIr7GNvLQeAMkXu2XyShkkGWKJiudFs+sPxM70kQLZ6Dn89zc74lm0pHlD44UPHn5X8KEBgQ7Yh3plKSFDRqR3Q0fSgaTaP6ThALIi/Tq03B//KjufSOuvQff+w8Ept7GRMAsXk7YmL0lPZF+qpUUq76UrscvLwWUdu9eT+IXKP7f1jX1uD9yhHNl3NhmNFjga4LOqlb0djZ1en/7BW0Y93rg/A+FKKbBX3XxMOnqQX//8pakJ7lHWqJtXpsyUu2xyV9sWAplr7O0tQzerWpFpxL0Jv3/w1Xt7o08/FwD7EBfI0HWHpkVe1vkMGXENnb5xziQ54ebUXLmU7Mpe3wWBciZqhcqje3Dz+aDXv1E8FjaMNWsgKqNA9n8sZUQ==
+X-HE-Tag: 1763059498-800144
+X-HE-Meta: U2FsdGVkX1/OdY/mNv7iai4zk+iI4UDWnRlkPuyJ7KOkvzBPyhrIsOFq/MxtGFStTQaFUF6bUQbsBP5agckykEzVxjJCD2hxX5f5clElN6wjlaD1TxMGZ6f2f4ZbqQYzCgnKcKddQg81cdmzKfkW8vfQdvbKJwbC8lTefnmtb5KVCqPodZ+hWUNewYB6wMPGE+wckRIQIx3ee+MCjqXkRMo9P4w1LRryLPQF5sQjfHq5tjkvn++d/kNpVnB9S4cTA3aUH1L4Pah4UDAAnDyRkgsrLV1WLj42AlUUXjSyLCWTEAniBEvW59gi9I2A6eb1lH5hLrQQJEuzL4AQyMcqIk/KhNpC80v8QmDO+yw/MxSOELX8j2fQojYg0jc43/mxru3cLafWhIpRWVY+PppMD9Mn7MzJYVBhhqkj3yjnFUl7RWBEkMLEdLWq5uvKnQB8lvcBgTvmjRAIyqrMphM8Pv47402gcp+fPNmkZXs5dqmA62hyoiA3dk/l2U0WNVZ9Qp+xLx1LO5oi2uPkMX4CIkX/N1hKcrHd8aGdDq73cdcxvBJp3uU/MV3hduw5s1s5CuAb5xymZCOO+CF9Dq+GlBJBIphnU5I+n5r8qWu0MZlqiIQ2GFuHdUmk0ObGJIlI6rGMvurAZN1hjRd9N05mdtV0w3QZRXe62Xh/T9ezwpEf2lA1DCtqUFUWnthBmMPml1TbwofNaL/BkRs4qwewjI6dZyAz9yIajWZPnXP/M9yUBUVs+7pYLMFWtcgMlUXm+NzDq8vL3stYlruOUyQAYJl+87/BOARMM5bmmG9Tfhs+SstYT3pNBA/hYghmr9b00yTbCVIDfMOxPhZ2QZLlvZP39UjmMEOr4UMiw7PhKsHPMd/3O0HTGt15U/GpZxqnkMMU61/Izk28LuDY2yj06AIBnCINUaGUMxtpssn1gv7t1UJtDUSQfgTtQe6xgLn9fkgvOLLywFJ+KljCfUC
+ 8wiTgyFz
+ 96T9wxAbHuQ48oTN6F8Qogym0ldg3kAIL3/d78qxPXw5yViWqzfqtWXIqqPaCVH59QEA5pmBhZyoXGGzcvYSYtzVshv9MX0O5bJ3jSPIEKmgKStvpP66PSW+IlDknqILHITEnGBZzKJYIfG8vygRThclpSpE/ea0MUjgn6sgTfRFhaddguWyOYSD+ZQ9msBkurmypNR3510DGTMqtCHnZhhEW1VHg1g/5uCBebqk4TMKg3/sXPWkO+sxtiiVmQNRUSm0zE6v07KlChWr278MNa8kRUBB2g/Lcgq3FZo+Ai7yWJOpbgHGXTUJMdeXpOCyouvI3gDZTphjAoXw5z9+CARNRuwNX7H08QQ2QUqNmwdaxRck2bGW0rKi8DuDgU/a4jtSbzsNIJAeUwor07lmQFshvtHLrzGKDzh/JZc/OvyV7jVXP6PsMCdRJsx+fmaGWN7buDhh+EtMd6tQPqQ6cpOpBCi9Jda5OZOvG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,75 +122,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Yuntao,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on robh/for-next]
+[also build test ERROR on linus/master v6.18-rc5 next-20251113]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Yuntao-Wang/of-fdt-Consolidate-duplicate-code-into-helper-functions/20251114-004121
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20251113155104.226617-4-yuntao.wang%40linux.dev
+patch subject: [PATCH v2 3/7] of/fdt: Fix the len check in early_init_dt_check_for_usable_mem_range()
+config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20251114/202511140236.zLyckeBA-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 0bba1e76581bad04e7d7f09f5115ae5e2989e0d9)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511140236.zLyckeBA-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511140236.zLyckeBA-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/of/fdt.c:903:31: error: incompatible pointer types passing 'phys_addr_t *' (aka 'unsigned int *') to parameter of type 'u64 *' (aka 'unsigned long long *') [-Wincompatible-pointer-types]
+     903 |                 of_fdt_read_addr_size(prop, &rgn[i].base, &rgn[i].size);
+         |                                             ^~~~~~~~~~~~
+   drivers/of/fdt.c:663:60: note: passing argument to parameter 'addr' here
+     663 | void __init of_fdt_read_addr_size(const __be32 *prop, u64 *addr, u64 *size)
+         |                                                            ^
+   drivers/of/fdt.c:903:45: error: incompatible pointer types passing 'phys_addr_t *' (aka 'unsigned int *') to parameter of type 'u64 *' (aka 'unsigned long long *') [-Wincompatible-pointer-types]
+     903 |                 of_fdt_read_addr_size(prop, &rgn[i].base, &rgn[i].size);
+         |                                                           ^~~~~~~~~~~~
+   drivers/of/fdt.c:663:71: note: passing argument to parameter 'size' here
+     663 | void __init of_fdt_read_addr_size(const __be32 *prop, u64 *addr, u64 *size)
+         |                                                                       ^
+   2 errors generated.
 
 
-Le 13/11/2025 à 16:21, David Hildenbrand (Red Hat) a écrit :
-> On 13.11.25 14:01, Lorenzo Stoakes wrote:
-> 
-> [...]
-> 
->>> @@ -137,6 +137,7 @@ config PPC
->>>       select ARCH_HAS_DMA_OPS            if PPC64
->>>       select ARCH_HAS_FORTIFY_SOURCE
->>>       select ARCH_HAS_GCOV_PROFILE_ALL
->>> +    select ARCH_HAS_GIGANTIC_PAGE        if ARCH_SUPPORTS_HUGETLBFS
->>
->> Given we know the architecture can support it (presumably all powerpc
->> arches or all that can support hugetlbfs anyway?), this seems reasonable.
-> 
-> powerpc allows for quite some different configs, so I assume there are 
-> some configs that don't allow ARCH_SUPPORTS_HUGETLBFS.
+vim +903 drivers/of/fdt.c
 
-Yes indeed. For instance the powerpc 603 and 604 have no huge pages.
+   879	
+   880	/**
+   881	 * early_init_dt_check_for_usable_mem_range - Decode usable memory range
+   882	 * location from flat tree
+   883	 */
+   884	void __init early_init_dt_check_for_usable_mem_range(void)
+   885	{
+   886		struct memblock_region rgn[MAX_USABLE_RANGES] = {0};
+   887		const __be32 *prop;
+   888		int len, i;
+   889		unsigned long node = chosen_node_offset;
+   890	
+   891		if ((long)node < 0)
+   892			return;
+   893	
+   894		pr_debug("Looking for usable-memory-range property... ");
+   895	
+   896		prop = of_fdt_get_addr_size_prop(node, "linux,usable-memory-range", &len);
+   897		if (!prop)
+   898			return;
+   899	
+   900		len = min(len, MAX_USABLE_RANGES);
+   901	
+   902		for (i = 0; i < len; i++) {
+ > 903			of_fdt_read_addr_size(prop, &rgn[i].base, &rgn[i].size);
+   904	
+   905			pr_debug("cap_mem_regions[%d]: base=%pa, size=%pa\n",
+   906				 i, &rgn[i].base, &rgn[i].size);
+   907		}
+   908	
+   909		memblock_cap_memory_range(rgn[0].base, rgn[0].size);
+   910		for (i = 1; i < MAX_USABLE_RANGES && rgn[i].size; i++)
+   911			memblock_add(rgn[i].base, rgn[i].size);
+   912	}
+   913	
 
-> 
-> [...]
-> 
->>>   /*
->>>    * There is no real limit on the folio size. We limit them to the 
->>> maximum we
->>> - * currently expect (e.g., hugetlb, dax).
->>> + * currently expect: with hugetlb, we expect no folios larger than 
->>> 16 GiB.
->>
->> Maybe worth saying 'see CONFIG_HAVE_GIGANTIC_FOLIOS definition' or 
->> something?
-> 
-> To me that's implied from the initial ifdef. But not strong opinion 
-> about spelling that out.
-> 
->>
->>> + */
->>> +#define MAX_FOLIO_ORDER        get_order(SZ_16G)
->>
->> Hmm, is the base page size somehow runtime adjustable on powerpc? Why 
->> isn't
->> PUD_ORDER good enough here?
-> 
-> We tried P4D_ORDER but even that doesn't work. I think we effectively 
-> end up with cont-pmd/cont-PUD mappings (or even cont-p4d, I am not 100% 
-> sure because the folding code complicates that).
-> 
-> See powerpcs variant of huge_pte_alloc() where we have stuff like
-> 
-> p4d = p4d_offset(pgd_offset(mm, addr), addr);
-> if (!mm_pud_folded(mm) && sz >= P4D_SIZE)
->      return (pte_t *)p4d;
-> 
-> As soon as we go to things like P4D_ORDER we're suddenly in the range of 
-> 512 GiB on x86 etc, so that's also not what we want as an easy fix. (and 
-> it didn't work)
-> 
-
-On 32 bits there are only PGDIR et Page Table,
-
-PGDIR_SHIFT = P4D_SHIFT = PUD_SHIFT = PMD_SHIFT
-
-For instance on powerpc 8xx,
-PGDIR_SIZE is 4M
-Largest hugepage is 8M.
-
-So even PGDIR_ORDER isn't enough.
-
-Christophe
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
