@@ -4,82 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1379BCD4F35
-	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 01:33:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E430BCD3445
+	for <linux-mm@archiver.kernel.org>; Thu, 13 Nov 2025 01:37:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A5DB8E0008; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
+	id 3541F8E0009; Wed, 12 Nov 2025 20:37:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D558E0002; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
+	id 304F58E0002; Wed, 12 Nov 2025 20:37:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BA868E0008; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
+	id 1FA348E0009; Wed, 12 Nov 2025 20:37:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AC558E0002
-	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:33:37 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6E795A8F9
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:33:36 +0000 (UTC)
-X-FDA: 84103861632.05.9E28875
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 845781C000C
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:33:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762997615; a=rsa-sha256;
-	cv=none;
-	b=4QvqMsSuf+VB5GNLmmw1PJxkP2a0y5VhGre6oZVIMAdYEBm8GyVlvJ/99NxS+tsn1svbuX
-	lElT2up4WrHqu46RVjoCbx1Z6owWci8r8BUXwOxbHAhK+LxTKLnT/gLsQcegP/Mmnd1K4G
-	sme1S+/21Y92XHOA4z21vSILUmsZSQQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762997615;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C5CF8E0002
+	for <linux-mm@kvack.org>; Wed, 12 Nov 2025 20:37:28 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 95C054CF3B
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:37:27 +0000 (UTC)
+X-FDA: 84103871334.21.D970534
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5C10920007
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 01:37:23 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fgZBJzN1;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of adam.c.preble@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=adam.c.preble@intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762997844; a=rsa-sha256;
+	cv=pass;
+	b=sIAgeu+nC0vJhbyHSGFd8JyTeBiOulu0OviFSeojRmjRySuSscCBVoE4FMRqXei9Ib+Ai4
+	lGwYJCRWS2uZgAuYUCiSVhusIwrQrI4N4sjHZGqiOk5Udzgv46m95vCuKpeEJpzb9/bNAn
+	r7b75KBEi3DeamBeT/umbv0GQex9MDY=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fgZBJzN1;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of adam.c.preble@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=adam.c.preble@intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762997844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5Fi3qOQUMh4P2pt8VGNkEYIim9KYTs0ww4k+osQ2CWg=;
-	b=CfdGe3vPCzo3e2glXywgGho68Os5ToSbC7hwNjfbW+l2sbbRPGexQwwCBaaCZmMrqj3Ypz
-	SiOARjRXNisVZB1NK3LTWYmAGpTVuengjTX0Y8fiEqGG/35Q36/jT5UnFspqYyhT9aMz2I
-	9O4eZIeaXIeNBLUpcqKp28nv3P+eofI=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 13 Nov 2025 10:33:29 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 13 Nov 2025 10:33:29 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com
-Subject: Re: [RFC] mm/swap, memcg: Introduce swap tiers for cgroup based swap
- control
-Message-ID: <aRU1abZaS+c1rK4R@yjaykim-PowerEdge-T330>
-References: <20251109124947.1101520-1-youngjun.park@lge.com>
- <CACePvbV80ZtC2FL6Z-Y4Rg=5bzdi1O8zqQSMEGuxqhj5P0txsA@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/m8RtPtPvC0eS5Xcp12M4mb+vuJCNDYG7aGaGZ/pcR0=;
+	b=zE+arIikG7MAN84Gh7/wUpvMd163YMm2nLMxLH5UP8zYEHRuLqz83tc2A/gZ+0yS2U4VU3
+	oWDfF1lPRFrWdX/nxj3IiG9M8KC3D9hTng/TMmjzzymjMveODmioPm7BAkrQ3xUSB2TM/O
+	+QXYEi/TCPBLtuZdMwXowKG41Lq+hxc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762997843; x=1794533843;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=zaico/NVexc0Yq7KY7q+4jIpFGkmC9QfZ2Z2k7r7vr4=;
+  b=fgZBJzN1ICFBpXkN8IipEZ2r1GLcE94otrj7alBcwp0+4O2M1onRO5Sq
+   9OIP6bOyLLSF5pkcW3qS24zDljjAPj3+0q7Uy21QZ81VIvrS3NgK1LVa8
+   kG1wZUzAYsU1bp6megahdcTVQdiRK5f95r08Zv55wCUhWsxdN1NzaPcal
+   H2yy2oYJFuXxPani+N50QUA04i4UnvQKNHsoHJ2z8sIlQyIlbUQoQZVEH
+   VIXtyiT0PrMCvu/udeoa9gA8xmefKN8vZuUz5edx0ru6QFsfiPfBUMWpi
+   8CAyDvhmKe8pkUwYdnQLaMY9WVp4/LTOoZWfPUmv5BVeSZG95TQ1HCJH2
+   w==;
+X-CSE-ConnectionGUID: LYGZjBbeSGW2XEkRwq/QbQ==
+X-CSE-MsgGUID: /0ECGloHTOyPrG2dZUFupg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="75684413"
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="75684413"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 17:37:21 -0800
+X-CSE-ConnectionGUID: Q6vOOHKvSmyUjyOiObkO7A==
+X-CSE-MsgGUID: aqj5+qXmQVaLdwOhGkqmoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
+   d="scan'208";a="189378329"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 17:37:20 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Wed, 12 Nov 2025 17:37:21 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Wed, 12 Nov 2025 17:37:21 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.12) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Wed, 12 Nov 2025 17:37:15 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ew33szi21K74u72tP/KIBaJvXZO/pzVUBB5GSPmwopZxAGp6GGgLvOQPxLws4wuQjW4mI8IWDCB2+h7ZAfbdqQTmeM8+zVHwWCm6/gFTe+hLbhKcdpRqWTgbXhCJEDhEFD+Zx7KfPJrBf7JRBcthHiCG+YH1Htk4RQC6W1aHvDiBuWgTz4KH1jlb0tZqp8M3KTNfs0y6avMO38DWR82OraCV+oW5HHj6SBHkQGkkTMQHjuTH7QDH7T0+iod7qXZ384RNXgMvgLdNDsp9/Zb9ryiYH4LRSVyqghNxkgv8V9EIKUF6/7q45aeBgs09jva/F+P85DxFeAvflXP461Objg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/m8RtPtPvC0eS5Xcp12M4mb+vuJCNDYG7aGaGZ/pcR0=;
+ b=PdaiOgVxgdSseZAQYahwLWxOH+GJF2nAf8h2yc15vXDi5BSYg1vCN5AEutW3/19DvVk2oVixGXkvL+K5+5GeE5vRktfx+LuRyU70pQ9xJ5rdn4Bq7WQtGsjn1aNtpDvRlppVqGzMmzJ/pSv/e3kFDn/iSfnAPgJxWKX+lFcjs9k50Bd+gtOXdNMfdnE/ytxO/ABJg7/IwubH+TXoNGpoOPk2r/NScSiF7YXZKU5GcTT94H33EkpO4EvM4511FNidpy9790XhjOIBqZwPd+BTZeh8VF1QU+pq7GU6nXofCNptYKoYQchOsHfA2PyIWnLZJ2ApskuLROpalZimcL1oKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6523.namprd11.prod.outlook.com (2603:10b6:510:211::10)
+ by CH3PR11MB7392.namprd11.prod.outlook.com (2603:10b6:610:145::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Thu, 13 Nov
+ 2025 01:37:11 +0000
+Received: from PH7PR11MB6523.namprd11.prod.outlook.com
+ ([fe80::fffc:36ac:37ac:1547]) by PH7PR11MB6523.namprd11.prod.outlook.com
+ ([fe80::fffc:36ac:37ac:1547%4]) with mapi id 15.20.9320.013; Thu, 13 Nov 2025
+ 01:37:11 +0000
+From: "Preble, Adam C" <adam.c.preble@intel.com>
+To: Lance Yang <lance.yang@linux.dev>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, Lance Yang
+	<ioworker0@gmail.com>
+Subject: RE: Accounting for vmap_area object growth when kmemleak doesn't
+ notice any leaks
+Thread-Topic: Accounting for vmap_area object growth when kmemleak doesn't
+ notice any leaks
+Thread-Index: AdxKDzYkrd+pscpNQYqNN7VNL5I8ngAM5uAAAn6bjmA=
+Date: Thu, 13 Nov 2025 01:37:11 +0000
+Message-ID: <PH7PR11MB65239FC7763E954D4AA828A5A9CDA@PH7PR11MB6523.namprd11.prod.outlook.com>
+References: <PH7PR11MB6523C5200943207E879FB5CAA9F8A@PH7PR11MB6523.namprd11.prod.outlook.com>
+ <20251031084616.64054-1-lance.yang@linux.dev>
+In-Reply-To: <20251031084616.64054-1-lance.yang@linux.dev>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6523:EE_|CH3PR11MB7392:EE_
+x-ms-office365-filtering-correlation-id: 55bfcc68-1022-4cf8-752a-08de22552a5a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?I7Hla6fio0B64jUBvatAxpmKlMreWgSZ869xt88hbUIjOIgn1w3b73lvlEaK?=
+ =?us-ascii?Q?1KXc80pO9e4IlB6L7FLubJIgF+q4XGAG4pFnH4omF74IvzvCGkLc+d/yeiwp?=
+ =?us-ascii?Q?CdJnlXwEInOs+NLlekz3Dj2iBoieGbX5kQsNVY1j7HzCKl2zvXE+Z9ARkeHV?=
+ =?us-ascii?Q?37I69jD4MFDrjz5b51HlsUoql2Bba+xp1GVXKUtRoEXi809r84HoOOPtWz4q?=
+ =?us-ascii?Q?vKeOEwkmH0THACf1uOqrDCsckcLDAKDkNg9OcRF1O1nJPUkoBf5VJJPBXWOj?=
+ =?us-ascii?Q?+BYD3tR7V0wVttncuYVBZpo0c7fdODMgl+PRGvUzEZUF6LtTugNtZlrTJHww?=
+ =?us-ascii?Q?YpFltnBWnx1gAqvLFo5YDOmJzc25GiPQAQbUtdqt9687RMH2T1yan3B/OrVK?=
+ =?us-ascii?Q?NX+jWjqVqiz0myQRcqdYJEdHdc9bYTJYLuIOlTMf32e1352Yeam3nHoYszWq?=
+ =?us-ascii?Q?wZjITa7HlKp/5Em3iYHg3yHIQRY/eT6TBT3c/skp7lXdUt5txiFM35qbU4p5?=
+ =?us-ascii?Q?HKGsUD6YLg5Y0ZVIK8HqcAuCX96TwlfLDizt0/rE8ml4H28mLuzsCz1o3676?=
+ =?us-ascii?Q?2AP7cxd2CvwSweqf3Vwiqlktqh52ZCtF9GIo40EF9QFQGMTLnVPcWv3X5E4Z?=
+ =?us-ascii?Q?vZHDeo2F7irmefe8GBT1t//KX9/qT9wOtguCTFAHQMW7cBODvIQrp9vqp6/O?=
+ =?us-ascii?Q?hZByzQkzYAoQKSvikE/OG8LwGjxjb1QM9TYodKT2hgmnDTll9CmLsjeNOuFS?=
+ =?us-ascii?Q?OiAS5lJPanrRNLtuzT8YDOK241CFhKzl0xJGUz2Lf+BrEP1vP4WWyPaIsdfA?=
+ =?us-ascii?Q?1uhYTB6iOPar876pzJvKPSI2yem9UoR7h+IrO/jsdq+ZA1v6NTl4/WoFjzz+?=
+ =?us-ascii?Q?Jyr+rAcCBkAoxDLfkbzz4nfY2QpXe2UJciV4SeCGtF1l1U3x4XRZCm08wrdc?=
+ =?us-ascii?Q?AkRns6Qs6I8fW7wM638YgczaOaT+U3i1K2022PrvgNA1F7U2l2SQb04FldUo?=
+ =?us-ascii?Q?hBj1teR3fIqkUIXNgVSuxyBQGRSA+5DAA36EmP7D0BWRic0C9I+akyr4sjJT?=
+ =?us-ascii?Q?ErMIEI/lZNGRznFM4TSEnidYLXPLoccX7J9SdlwN67+DWFBxWhMEMZs0fuzx?=
+ =?us-ascii?Q?hZXpaiG8ovS5kXO23WLR3GK2gyMH6u57vgyIvgrougbd+WWDzEsppNwO7Czn?=
+ =?us-ascii?Q?ygexemkC3V+5gkj8gfMg0fDXRHwHbdQ+uRPffENkDmUQK3hSPcpbwrmWVipX?=
+ =?us-ascii?Q?ysgo69v7nW2wAUzcIsHzw/SO0EVQWg89EF0XWthqf0A2WX+p9Bo3xz4D1c00?=
+ =?us-ascii?Q?YhUS592x/RN7Yp6vEZQpmgrxzXs+ZaAAA08nH+noOf814u4TXTl34FcpvzyS?=
+ =?us-ascii?Q?8XzZP1TXBLLOLiONjoJ9/IhpV0euxGzaHquka4qgSBB1LxpdostTxYZGXOdg?=
+ =?us-ascii?Q?BuFWlXY6m5aBR5+fykIDi43CyC8xt7ZXeKcK7+gxojyze3kL4JXAOyHl6F9O?=
+ =?us-ascii?Q?x4AJ5MECaQi7X0E6d20HbcFEuVgHn3vZYW7L?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6523.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+KKzyfzfdcsu5DXHToaEVZDJasXPBGZ6/2HPp4YSikE4129pY59EtwkRh453?=
+ =?us-ascii?Q?KNor/vePudcjHZjCMS6tzetIaPzQiZAMtlwOhFxkwXZCCkqRBbbfN4/DEhGW?=
+ =?us-ascii?Q?sDpfYRO5CyNKkKQWRAY1j5AFDk53iwfsHP+0pppY5JTlZMdRI8aUv6lDvnWT?=
+ =?us-ascii?Q?+/E0tPpQySR/6/EtVmVqb98HxwHi9aI2i+ZseD1oaqTieijljhtC5yVR+jUj?=
+ =?us-ascii?Q?MOOe0msQ74ZJB1XflzD34/NRFkDNO6NpgBV1rZzr9kQX4jhQ28eQYhnz8CZK?=
+ =?us-ascii?Q?YhLan8OU+GRjsQinCqT6gu/wmOb2wRLfRU+2qLiWb/N5gnK/o0e+l+QPM8Am?=
+ =?us-ascii?Q?Q0s0kPtztQc7Jz0Nyv4lnmbFnoKEq8IFdSiQCnZmIpcRHojMYo0jSMZHdy5p?=
+ =?us-ascii?Q?yh1bfnzDNdXUtvty08Y7usPQupiIWEJthZG+acbOt7Qp+1K1BdlZ4vgrLV2p?=
+ =?us-ascii?Q?20/jMql4GiCJ80CbLQC2D5CFA7vXJRlz0vH+tyq7Q5vaATRjetMnXSbLaJkU?=
+ =?us-ascii?Q?DEyOC8mbV8oSZWaPHUXz2gv+ucouZk/DspUemLbe7RgHoTuCZOHicnVzZSQX?=
+ =?us-ascii?Q?SD9nMzA17ymGA7FT9rIobFQJ6PJX9axott4iYUpvNSaw0Psf7q0dhMTBCN5E?=
+ =?us-ascii?Q?SAB4W8aJpTtCJR9h91LCfphrpbGfFwSpCc+H+WjsfaKyPT6IypOjVCYOMIH2?=
+ =?us-ascii?Q?9LLZAhVei8cTdmjeobl6H7dbIQYynwTTQVksKeJEUt4d9udSWoXLyPk9LZcR?=
+ =?us-ascii?Q?GNOApn6zslqViqnWF10vNz0IaiIvIaMkx5xUgyJAlEUCnZuG5l+gffV0DvNx?=
+ =?us-ascii?Q?YbwgInXFqQp6CDf8ekftok1nufazt419JnAQjBmBU4qB0ooh5CNVWDMoSCIs?=
+ =?us-ascii?Q?l1R53zoZe7IBAkWuBlYeHTUpgr2qK6pFXBQEXPJEJKfug4bzzSjEJqNC+4QX?=
+ =?us-ascii?Q?u1DiZ0E3AChWF4jYO6+wfmIs3qoGz3MgE1rcXZRi/+Qkxu/YnXA7kpQplZN4?=
+ =?us-ascii?Q?Y9DUzeWW9oezj4C7DzsebBDWGBP26krb+3waDmtC/J6Zw3v9085i2IyQWZgf?=
+ =?us-ascii?Q?J3YV76v5uk3rNkDT9RvwHX8iTM/07P6ZfNMDdTw+DauOTHEYE6VF1+r8QXoJ?=
+ =?us-ascii?Q?0ak8pNSAdeY23fULivxlkIKUlZy8hRHRYqALy33Yo0BLpVjpU+lf1u6McOwr?=
+ =?us-ascii?Q?qFF3e59VsygitF0KiqPi7m96C9A5enr/gAjml6bOo5uhB5y23QFtJRtwYsSC?=
+ =?us-ascii?Q?GgVSQRHfF5bVqGgygRrGiDKDr3vghtVlHvvhyyaIeId/p5aEYs7OYKGQAjro?=
+ =?us-ascii?Q?uopSMWcc32iHXHx7dHA5XWX6xhaEb9PsBdDfrFYJzGXPDKUTff5XejBuk+7R?=
+ =?us-ascii?Q?Mi7yk430iDE1ISAGF6P39IqGDsSZ94TUICxWQwDwKLqK4jvQcaDHuCMvvVGq?=
+ =?us-ascii?Q?t9ZFLtuafepjd/T3DYdyoFOW9Dapbhx4mojpq3u9Had7N27k3J/5L2WH5qJ8?=
+ =?us-ascii?Q?1WWvmYoWNWh8LmWk5NtiWZe/kLCGhRvlUlB20Lnax9/Nssk9GGA2yuI1Xlc+?=
+ =?us-ascii?Q?uqWsnN7CufVp5MQfMKedMVxrNHVbb3HD4E3Zao+q?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbV80ZtC2FL6Z-Y4Rg=5bzdi1O8zqQSMEGuxqhj5P0txsA@mail.gmail.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6523.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55bfcc68-1022-4cf8-752a-08de22552a5a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2025 01:37:11.1225
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Xmo5t8UhVQClRCeixyvcZ0cq6x3BLhL3OGUc6dY/fLL+ahLv25p8kRZHWdIrM/2WpoesVNCGLmM0QjPtL4pjSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7392
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 845781C000C
-X-Stat-Signature: xa75b9g54aekpaqofrfm1s6jpjix9cs9
-X-HE-Tag: 1762997613-483799
-X-HE-Meta: U2FsdGVkX1+I607pwgLKEpmi5yMlshqLTMAD8+2EGUKHqiF6S/tShDnrqyxCnvIHva9sO6mJ51584yvZ8XGFpw+gnN8WaZxggJ542URbw04v0N2aATdz2gTKcDLsuZiM8uAuwUkLtuA8kJdnNEMSGzZ5xqCHCeKn9aUjMvxYCCvhkpNH/kFJTlKyag9O8i/+hi91Uev4KMGjx1ZIa17b60kJ+z3F5i2BQqri7oRsEgH4LfcoCX23OLNYARzjeTpuxU4ENAU7rsv6r2akF0XGW96AqWZWZFaNGlxjWxCUuN14dzKoDhtN51IwakagWrTermITCiWTjTi7peETvMl6UNZRomMindwBLzveNWSAVprH69T2g3NTa7+/7SsprksAgKScoeR2ek5J2H483RQ7w1VX8TgzzGYUmRO7N2unRfvWLOXJ6IEdqNXR41dmEWFw7LsSRV4LTXsQrnG5ZS+72E3HU6D4rV+riW2y+OP6RW4lUkiTy/zwBMyFmbGlfOR8AV4FF1hKeiNctqDYtc/zUN4k7cE1hRlR5Ce7fjPM2bKIh7icKJnKf0q7YR/g4kSdcNPCaJNEgBEEmsifWeS+VOkjC3UTVCJu4in4aYE3yW9HBhrJhJ5GsNAZ+/Q6NWd0wlv1FZbNKDrYSVLujadhAvBstPkNSG/BvU52cDk780xS9of/Xn3wNfzSLuZJqHax+uocBr6w8p4bsT0b96SP9dvkFCRPkhNAXhk/1x/QJ46FM6Z0RUJKxiLoR4uQpBt61OLYOXzRfcksAfGDWBY6GzJChnMAvR5VubM4b7kb+LV0svjaW/Z5H4SZw8ofCQH25dRtYnSQBFP2oMvW6+ehLorK8xOXwYI5RI4YzaukC5K7vL3PqRYZXXADJjpuc6su2qBY6sCqsguAMcuWHh6slhT22bLs8pNmvcNsDKgjS6wIeiTX8mzsbU2AZGKswHWjz0aeXt7rrUFcHt30sQO
- Npc4yyVH
- 9pnQ8nAx5Z/0Difrnxt/IxlA1aNAhoR9rvCDiPqpbf6F87MxhT3JxqzypbbiGxwDhYDxFX0+GSkOpKtkzZ1hqLNhOlPaoA7M8bVW2OZOde8pe3vHDC+A1pD5ZCigCgpn4hBKYwlmoChM8657w0lGgBmcY1CnnjLNjykM74MI4fWrLHnPprJJDF11oIho0l1e7zVOM7VShvXIbfoIEOn088kIbxqdLg8PetgiJLh1V9vEVB/rNQDz3DhoZlNUjd/Fz22xe9fZ+yVc/1zs=
+X-Rspamd-Queue-Id: 5C10920007
+X-Stat-Signature: auhzwhtbwnk1zozm6ps4krbek81i7hci
+X-HE-Tag: 1762997843-82103
+X-HE-Meta: U2FsdGVkX1/YKztEx4Jkr6pmRsqAxUsyYHiZTqcpakdLqvLu4eS0VU+NsBMW2c0SwVnYVLLbCOVkKvOfvszFb8uCJ/PfJfTrSVe7eqHUsiVHxDIT9j5EOiJLHqfdpPcZcZ2JIrS3aqqZ8PskTXqMiVFzFWpYdX7GMa5/5LE2aAsHdhe5sTaAXlBSgkwjkEhr7Fvvt37l+k8pGVRs+nU3hZknfNPpToxWGSIZ5IXzog1heJk+kEL4pFVWbSWxJjp6l5xA3nHW+1W2Jz34+E/tnKNFQyGWoi/wekn6nMnb7rgcasoLxREclS2x+FU67UC79PXTH/51CSdJo2DoEOe2wvj86U36QCvi6C/JCFMpJ+3yfbPGuAQrR6E6yt7iuS7/hvr6VuNGzH/jSM6sAFtIMFcTr7bAEgvmQ2/PJw9i7n2+lqVDKZTHtm9CevRDlFfqgJA5gTMbHGnOz2gh2+kZ3G7Pee83X8s5uHHHPgYsQWCWsSPbtQaTaU07Lc63a2n50tOk/Xopxb9JSEP+TN7dviYAkrtOSgPeHO8vFMGXsZU/QFycw58Eaug0xDow5OPOx2DsNdUnpNOBaOjkasUZFW+DOd1O+2iLwSX2f+jEKpYVzGvAAc6N5Q2KcTo8ZLmk2DdaFwRpLm8LYCcxOdMrvFTG5MFD6bk/0j0IweUTa+2WjQQIV1mZ6R+0QdicsXxTB7NQ+5SQBVpTMZ3RxNLQhCRQJtCAViwPrZmEzO7hxJAyZBehqjfXZ7Jj46Fylr5Ddlu5k8eoHxz9g81pFgffDKek1PbeGbdNLRYTZrB9LzbrkYul4VasiTLDZUngaLxBsV6sGL7Yn8SfDPJdiR+06FWVAAMK84lB5WarFRflILdZAJU+K4kmV3S+yjlooSdScpqA7k0hqSiT8pcLury027HBx400eEYWFtrMp4JBk0LWwVgSjXCrLBl0FXwYHvxuEmUSMxPqQNUwL06iFho
+ rBSppLzG
+ TMkWmPwnBBEKwe/NZBF08vQlHgfS9W3cWHqvoFdUxS5WBnW+SV8o4qSlDUAEysw8GLyn/Y75gDHj7PjKsX4dXN2yj+RtbED6d0auleVM5BD6BBuzhhLM3RyMg+zuM5qERtgRHckU3HZcPcSHyeeORj64OWEmatppTEIwksWfGdkWFlEriDdMsHTB/wK1FwiHShb0OI91epmb1FBWMNGpRQ0PgScoEayC7zoWhXWN3zpzpzBA74zH7vkl6tkRkj+O5kg5E6lFHCkWb+IxXeDch4C+Mbgj0uL42iamf66PtfvYVAha+UEtfMMWWPFkaXtBd4j5e4LgRjju+0yReYGNQzztLaGaIRbLb/XbrRc8IaUZrl0dwLl6BgZsLTJ1H7CH6F5vOfzuXp3cDho2zx4a4yTem+S8EtWGvf15r2DrHTmTpH85f5CLLgWjLDZ8YQIvd5/N2N3EVeqDTxY3+2kXJAxk8bRaAng86DzEHrOcOEK7ZdUJvrcmWUrs5IJOI55zWC38afZgG1JaWPmGgjX/Us88+EjBQmi1VU0wMH12mFiJLqKG+53NEgw77i1jp3u+8ea4t92SZTUvKOe1E/sLacYA9xpGAgSmwo2/GWInWobefUDhM8RyEdsxCx05DBdet6qEkkcwxB9BzW9xYXmhSpk8gPzuezkzXAa+hxfpyt3fYtJ+CqhI6feHbwg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,177 +218,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 05:34:05AM -0800, Chris Li wrote:
+I meant to send a thanks for this, but I got mired in trying to understand =
+the result. I saved /proc/allocinfo before and after a test interval and wr=
+ote a script to correlate and compare the change in sizes between the two f=
+iles. There is definitely growth across the test interval, but I cannot tra=
+ce it back to my own kernel code with stuff like bpftrace dumping kstacks o=
+n or near the given functions (as some of them can't be directly traced). S=
+o I've had to reach out in different directions figure out what's going on.=
+ It didn't help that this was my first introduction to folios and filemaps.
 
-Hello Chris :)
+If anybody is curious, my biggest ones are:
 
-> Thanks for the patches. I notice that your cover letter does not have
-> [0/3] on it. One tool I found useful is using the b4 to send out
-> patches in series. Just for your consideration, it is not an ask. I
-> can review patches not sent out from b4 just fine.
+    Growth    NewSize TagInfo
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+  39407616  109314048 mm/readahead.c:186 func:ractl_alloc_folio
+  35815424   36634624 mm/memory.c:464 func:__pte_alloc_kernel
+  34979840  556675072 mm/slub.c:2492 func:alloc_slab_page
+   9523200   12398592 mm/filemap.c:1981 func:__filemap_get_folio
 
-I manually edited the cover letter title, but made a human error.
-Thanks for the tip.
- 
-> On Sun, Nov 9, 2025 at 4:50 AM Youngjun Park <youngjun.park@lge.com> wrote:
-> >
-> > Hi all,
-> >
-> > In constrained environments, there is a need to improve workload
-> > performance by controlling swap device usage on a per-process or
-> > per-cgroup basis. For example, one might want to direct critical
-> > processes to faster swap devices (like SSDs) while relegating
-> > less critical ones to slower devices (like HDDs or Network Swap).
-> >
-> > Initial approach was to introduce a per-cgroup swap priority
-> > mechanism [1]. However, through review and discussion, several
-> > drawbacks were identified:
-> >
-> > a. There is a lack of concrete use cases for assigning a fine-grained,
-> >    unique swap priority to each cgroup.
-> > b. The implementation complexity was high relative to the desired
-> >    level of control.
-> > c. Differing swap priorities between cgroups could lead to LRU
-> >    inversion problems.
-> >
-> > To address these concerns, I propose the "swap tiers" concept,
-> > originally suggested by Chris Li [2] and further developed through
-> > collaborative discussions. I would like to thank Chris Li and
-> > He Baoquan for their invaluable contributions in refining this
-> > approach, and Kairui Song, Nhat Pham, and Michal Koutný for their
-> > insightful reviews of earlier RFC versions.
-> >
-> > Concept
-> > -------
-> > A swap tier is a grouping mechanism that assigns a "named id" to a
-> > range of swap priorities. For example, all swap devices with a
-> > priority of 100 or higher could be grouped into a tier named "SSD",
-> > and all others into a tier named "HDD".
-> >
-> > Cgroups can then select which named tiers they are permitted to use for
-> > swapping via a new cgroup interface. This effectively restricts a
-> > cgroup's swap activity to a specific subset of the available swap
-> > devices.
-> >
-> > Proposed Interface
-> > ------------------
-> > 1. Global Tier Definition: /sys/kernel/mm/swap/tiers
-> >
-> > This file is used to define the global swap tiers and their associated
-> > minimum priority levels.
-> >
-> > - To add tiers:
-> >   Format: + 'tier_name':'prio'[,|' ']'tier_name 2':'prio']...
-> >   Example:
-> >   # echo "+ SSD:100,HDD:2" > /sys/kernel/mm/swap/tiers
-> 
-> I think a lot of this documentation nature of the cover letter should
-> move into a kernel document commit. Maybe
-> Documentation/mm/swap_tiers.rst
+Anyways, thanks!
 
-I will create a Documentation file based on what is mentioned here.
+-----Original Message-----
+From: Lance Yang <lance.yang@linux.dev>=20
+Sent: Friday, October 31, 2025 1:46 AM
+To: Preble, Adam C <adam.c.preble@intel.com>
+Cc: linux-mm@kvack.org; Lance Yang <ioworker0@gmail.com>
+Subject: Re: Accounting for vmap_area object growth when kmemleak doesn't n=
+otice any leaks
 
-> Another suggestion is use "+SSD:100,+HDD:2,-SD" that kind of flavor
-> similar to "cgroup.subtree_control" interface, which allows adding or
-> removing cgroups. That way you can add and remove in one line action.
+From: Lance Yang <ioworker0@gmail.com>
 
-Your suggested format is more familiar. I have no objections and will
-change it accordingly.
+That's a tricky one. With kmemleak being clean, it seems like a logical lea=
+k.
 
-> >
-> >   There are several rules for defining tiers:
-> >   - Priority ranges for tiers must not overlap.
-> 
-> We can add that we suggest allocating a higher priority range for
-> faster swap devices. That way more swap page faults will likely be
-> served by faster swap devices.
+Might be worth enabling CONFIG_MEM_ALLOC_PROFILING[1], which is perfect for=
+ tracking down the call sites of allocations that are still live.
 
-It would be good to explicitly state this in the Documentation.
+[1] https://docs.kernel.org/mm/allocation-profiling.html
 
-> >   - The combination of all defined tiers must cover the entire valid
-> >     priority range (DEF_SWAP_PRIO to SHRT_MAX) to ensure every swap device
-> >     can be assigned to a tier.
-> >   - A tier's prio value is its inclusive lower bound,
-> >     covering priorities up to the next tier's prio.
-> >     The highest tier extends to SHRT_MAX, and the lowest tier extends to DEF_SWAP_PRIO.
-> >   - If the specified tiers do not cover the entire priority range,
-> >     the priority of the tier with the lowest specified priority value
-> >     is set to SHRT_MIN
-> >   - The total number of tiers is limited.
-> >
-> > - To remove tiers:
-> >   Format: - 'tier_name'[,|' ']'tier_name2']...
-> >   Example:
-> >   # echo "- SSD,HDD" > /sys/kernel/mm/swap/tiers
-> 
-> See above, make the '-SSD, -HDD' similar to the "cgroup.subtree_control"
-
-Ack as I said before commenct. Thanks for suggestion again.
-
-> >   Note: A tier cannot be removed if it is currently in use by any
-> >   cgroup or if any active swap device is assigned to it. This acts as
-> >   a reference count to prevent disruption.
-> >
-> > - To show current tiers:
-> >   Reading the file displays the currently configured tiers, their
-> >   internal index, and the priority range they cover.
-> >   Example:
-> >   # echo "+ SSD:100,HDD:2" > /sys/kernel/mm/swap/tiers
-> >   # cat /sys/kernel/mm/swap/tiers
-> >   Name      Idx   PrioStart   PrioEnd
-> >             0
-> >   SSD       1    100         32767
-> >   HDD       2     -1         99
-> >
-> >   - `Name`: The name of the tier. The unnamed entry is a default tier.
-> >   - `Idx`: The internal index assigned to the tier.
-> >   - `PrioStart`: The starting priority of the range covered by this tier.
-> >   - `PrioEnd`: The ending priority of the range covered by this tier.
-> >
-> > Two special tiers are predefined:
-> > - "": Represents the default inheritance behavior in cgroups.
-> This belongs to the memory.swap.tiers section.
-> "" is not a real tier's name. It is just a wide cast to refer to all tiers.
-
-I will manage it separately as a logical tier that is not exposed to
-users, and also handle it at the code level.
-
-> > - "zswap": Reserved for zswap integration.
->
-> One thing I realize is that, we might need to have per swap tier have
-> a matching zswap tier. Otherwise when we refer to zswap, there is no
-> way for the cgroup to select which backing swapfile does this zswap
-> use for allocating the swap entry.
-
-From the perspective of per-cgroup swap control,
-if a ZSWAP tier is assigned and a cgroup selects that tier,
-it determines whether to use zswap or not.
-
-However, since the zswap backend does not know which tier it is linked
-to, there could be a mismatch between the zswap tier (1), the backend
-storage (2), and possibly another layer (3).  
-This could lead to a contradiction where the cgroup-selected tier may
-or may not correspond to the actual backend tier.  
-Is this the correct understanding?
-
-> We can avoid this complexity by providing a dedicated ghost swapfile,
-> which only zswap can use to allocate swap entries.
-
-From what I understood when youpreviously mentioned this concept,
-the “ghost swapfile” is not a real swap device.  
-It exists conceptually so that zswap can operate as if there is a swap
-device, but in reality, only compressed swap entries are managed by
-zswap itself. (zswap needs actual swap for compress swap)
-
-Considering both points above, could you please clarify the intended
-direction?  
-
-Are you suggesting removing the zswap tier entirely, or defining a
-specific way to manage it?  
-
-I would appreciate a bit more explanation on how you envision the zswap
-tier being handled.
-
-Best Regards,
-Youngjun Park
+Cheers,
+Lance
 
