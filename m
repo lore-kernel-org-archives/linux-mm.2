@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20521CE8D57
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C515CE8D5B
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6547A8E0019; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
+	id 887958E0008; Fri, 14 Nov 2025 11:59:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 604508E0005; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
+	id 837F78E0005; Fri, 14 Nov 2025 11:59:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F3928E0019; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
+	id 727358E0008; Fri, 14 Nov 2025 11:59:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C31C8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 030CA4D059
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:52:42 +0000 (UTC)
-X-FDA: 84109806606.22.E18F6D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 74E7F1C0007
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:52:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dYUKLJgJ;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DBA38E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:59:39 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06C8E13B07E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:59:39 +0000 (UTC)
+X-FDA: 84109824078.05.9CAAD1B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5B8B22001E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:59:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kBi+hiwo;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763139161;
+	s=arc-20220608; t=1763139577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MarKiFtWWXiCJfop2Mp04w6dux4RRrqD8MZucum8wGM=;
-	b=BXFhPErbgETPZXOKWDCEWEw6VG+pcU+SpOUazN19x9796Q9cR04kpddZmvdtRVMIZZi7WV
-	wC0XwgVhWdQ297gXad+Du8CAGSSeYPuH4yf/+xpWEX0R+KY3CAsuVPwYvlRu9HFPy2gUBN
-	lPpklYbZrJPZyTpRgn3ZFZxrTqerQcU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763139161; a=rsa-sha256;
-	cv=none;
-	b=gGaSPtQkBVAMKsJN3i6195CZSu6CgvcYLkFbBUprGUAY0GneybN4Bk7kFC/+VAUP5T6DjE
-	Hi6zQuFuYNznnpp5npStaz7k8zO31bdycVL4VUAUvWcO1RT1av4A36J7Yn2HcFiqU3XGb8
-	w0fLWEso+7dXrOaws8Lr0SDfzy4hFE8=
+	bh=Z116tVXEe9/MkljJcWwj3SfWixMbIZ/hduWK0XTrkIs=;
+	b=z7MlTAv2S776lAhZL/F5kW9tF9oAVWiDp7giy1pd1WihfABkrHw0kDyfqVusfGHQ+wSBDV
+	mnzJ6AbZf6MghiL+Pr2O66ZMzeN4yr/KT6AVsB0B8A2YsS788ZvsBZVEjNYlqqIldqYwJ6
+	Y6wKcPt/wv2Kf30rsLzKGTH4THQDI38=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dYUKLJgJ;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kBi+hiwo;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763139577; a=rsa-sha256;
+	cv=none;
+	b=sNBAPQ9lPePlnq7QJ1/666HiqqQHpbF4JPe+BLClzxGN/6tlt+kK1SsAZQpLYdccaFpVol
+	FcQ5WkxEQP+UoTsT+2jHp49gWlMVTnoLL05gpGndEfhh1B7fNJuMWzWCqbGeEN4inLtIBv
+	1gb7Fj3XP8xJmoFjaZlVdWrne1ZdyeA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D5A1360198;
-	Fri, 14 Nov 2025 16:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32DBC116B1;
-	Fri, 14 Nov 2025 16:52:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3BF4E43DBD;
+	Fri, 14 Nov 2025 16:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4000C4CEF1;
+	Fri, 14 Nov 2025 16:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763139160;
-	bh=ukDtEMQ3h+HhdTJApwHm9gtvXizGx7c4PKt+RTNGPfM=;
+	s=k20201202; t=1763139576;
+	bh=7cmvOMMRkq7ABj9bLQADRb0yWVUhjMz3dsMaV2GWWsY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dYUKLJgJtebr3v2RLEJLGjWo41D48EJ74YaRNQVVcm9EIEADqqQMMJSdMPnkQyRAY
-	 XkyMOmFO3ICqJO7e5Nva3u3qleGxnEKKidN2/N8S3rc1/Nh30kccNHXjEAVPZsadOg
-	 dOiaDloor0qs0YW7KtSIGIMWfqCor3kC3qbk4otQ0YiPgFGwSZCynzXIoJUG4QHN/E
-	 IH4UrA/zU3x42MbWyJqcj2PmtkLUek9tZM/TDt1nf1GFO6ZuOKoUV7X2U3r7+ihKBA
-	 rPf51GRurGrGeTA6XskxG28Z/YZzJAQOnxxY5Dqu65vEFiDcfcKcHdWBmZsUeVhRK3
-	 GxVPiDNBhTPRg==
+	b=kBi+hiwo08/9mOe6EG2q1yq84Ff8LNY2+8836aE5rlJv1D7bXe9pmypkSuifU3fh3
+	 euRqZaH2A3RgYi3jrloTypTJDJhUPQeUGuHW82BCUf2KyIzhyYeeb658jkRzdPQltK
+	 BoOJ1jIdNh+OuaIDgwTIapMLlHt2quM88bE7z6cU25Q0yZjj0ckknCg4fYq3Sf62Yp
+	 JwGmvLddaxWMIQextoL4nvDn5pBlZ3oVE+kUdvU0PafBTjXvBXo5Jt8f6KtG2hRHlk
+	 dfH3RoNx5t9DgwYtIVGi0xW0bHL/YKRb+rCXX7J5BvokHxLQWzvi15ewRV65ck05tr
+	 6IgfkYlkHBIWw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org,  bhe@redhat.com,  rppt@kernel.org,
@@ -70,25 +70,24 @@ Cc: akpm@linux-foundation.org,  bhe@redhat.com,  rppt@kernel.org,
   dave@vasilevsky.ca,  ebiggers@google.com,  graf@amazon.com,
   kees@kernel.org,  linux-kernel@vger.kernel.org,
   kexec@lists.infradead.org,  linux-mm@kvack.org
-Subject: Re: [PATCH v1 04/13] kho: Verify deserialization status and fix FDT
- alignment access
-In-Reply-To: <20251114155358.2884014-5-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 14 Nov 2025 10:53:49 -0500")
+Subject: Re: [PATCH v1 05/13] kho: Always expose output FDT in debugfs
+In-Reply-To: <20251114155358.2884014-6-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 14 Nov 2025 10:53:50 -0500")
 References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
-	<20251114155358.2884014-5-pasha.tatashin@soleen.com>
-Date: Fri, 14 Nov 2025 17:52:37 +0100
-Message-ID: <mafs0tsyw7e0a.fsf@kernel.org>
+	<20251114155358.2884014-6-pasha.tatashin@soleen.com>
+Date: Fri, 14 Nov 2025 17:59:32 +0100
+Message-ID: <mafs0pl9k7dor.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Stat-Signature: wiqh8tgh8r9sb7ywyt9gmzd58769y331
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5B8B22001E
+X-Stat-Signature: 9bp94p3tomw1kryor8mhagagk4gc9use
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 74E7F1C0007
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763139161-374255
-X-HE-Meta: U2FsdGVkX197xgPoTjUCCgHpKlNRXTSHhEFyB24hj15R8Ef2rqt9nzEeGnNheO4O3kgAPQeuiQFO63I2BY8s6DuivgLQaKeTLTYWbmnyaeXQftnhchD3HcX7PvtomLdwE6ONINAJ5g38J/2p+Qz+6KiUXGnX1Wdw1gQHhM9BfE7eDH3xMEaxeKuQ3MymDgsRbzNmjJV+IpBnWcU2/6sGJfbyL3RqRS205ZjUFl2TE+3/qqqZcJVa6/KrPrnN4tzt+MhzNKyoBrhqb9lh/gfG68m5ImbEvBTkoTnNse61Zx4UmHm330yUIMe5ikd2o7G0cQiyaNtyr6BYV2r2cuV7PpCm1MCG4RT7w+1pq0TfhJSjSByFc4Z+tGYuaH1lnmeetOGtHW7mqjaNOuJ3sZqlVRyIXdPtsPi+3pD4WCDMLUrkG7lpiAqG3hmG85RTITVCy+NIglV0FOZm7p2KIqGj9vvsNdWTbqvrcNRuV9FBLgfUSlgD9X7CMc34046Grg1+ZF/4ElfSS4gemgF21HVjGpLAGzMi86pgAp9PxjiFtY4piLv8NSGCcE9IhtDzpWyVLs9dKkT+VRkQHoTXtaCUHpVQsySVMdjYsokJmzP2A5aPtAUdur9tD7THOg8/JSZYnCWOZ5LhwKHDpvg6o4ZhQx18lCUA0VlyfkPxaw9wJmwtonuULJ4ZZA3ZvCmMBoedHpP7A57W06BzR3ZY3dRMHEsKqXmLx+X3DcE7ICya6pcRSb/vBtvd6MLT4lj62BhMV6DEc7HGAq9BfAZicOIpyq16LY3s4k4v82NUh90qh1QNNW2bWM/F3ORbMs/3N8Ha1ruxonmgz/Li7cnmI5h8IALOncz69e18/pno7OLY35bEuSYUDgKCtdCLoARJbpy+ka6M2n21BqrCDYrN4hxaW7/cdiIbpRvuGlnU8QLWW2D1BH6gei8m6dARdMomRPghGSAnZ9w9JA5q7A/8wvO
- bfwWPruT
- TuTz1NnDxFZD6YYIcyQTGMfHzHSBNpXbVsFEC+WoC3/d1RysbJaj0rxlFcSr9E2JFrHTmWj6MkHkbXEKIDL4IhfsaCO4XA8DxV4BMbqhzTCH3M2DXK03IfLL+SAe7kLsW9NtVdzej9qLnpHER29oeqMzY60frnEP8lRqe0MOi3/zI4hRbwvCeGMv5gzVKaxIKslKAtzfgNt72Q4fMNPfJ529ZkkEuh82hZuTOol73UfPLMUpnGixIVd2ovQUlv3R3Cr4w
+X-HE-Tag: 1763139577-918789
+X-HE-Meta: U2FsdGVkX1/glpCkN5rURI8cdkupcZLRgQDkvQkyM8i/k8E/YCcfeozb8DLBKPPO2hyJrDCqLJXyxmyVRnv/ymy782VqjgwihuX2lsuTGyTj+UzKsVClal2jKrn2A+rQdZSccY3hxVZGDi82y5OdbL0mDdjLdIChrbiS0QVwPe0gVp6jPMLf65d1JUO5Bb65v2OZMZueHmv3o8njDQHuIcwv+7FJLIaqIRRBE8IGf9b0J8yMVm7ChetNUOBiOd7X6SFacgCZgL3D3u12TQr1B3QlPkH+gMPj1TCE0lkzvDHP3JJyYDteWoe3K/H3AAi3tYtPhlZsnMYopXIZkGU7lJGenDzTDlhDTdo2WYY8D4dauFlWQF7oPLpieBs4Y7C05omloUa0/zcN6yd0o+0sb04uEhw8dfzVCX9UdYHeQGZgKH7PvTcFlQwBbmyuI0D9lqJMcr6KjrL2Q/TOkF7eLkQnKbVyL3bosDorUphKn739jeBAqmY1SgjSV67onECGxAT/lCcjgzPuUgLuGL4bo2uvkxi+Q0vJZ25yXN/vX8hLVp+PdoBWt8Zf31OxZuvYuj5Fx6a42Qo3oxFT+AJVuyTytu5eXMV/825H+slDXtV/F7lLQQaI5HRba8ChchXEiGSSKOtUfpjH2CPLykillpBFr407BqK3mFJUyKYEQ4ACG/tWgy1poxoKkOE56VL+sbPbeAHptzLaxuN+0Evh6yEdkJAYRig+ln17Vf3h4aCYAFQ4HSpPRHCXcNAHrmumVxoN2Z0MEpWqKD9kXnmUg3RqkDPRwiYIYLkm9LSsG9LfWwI1rybzm1n5Eo1/yp8bRlYp+jqw5mzTcD+aCRTQ0jrlpD3Z0IZSbfG5zZr7nhTKBHjsputlx5hu7BWEYK4lgWRJq+ZLZfeaqa+MXnTIUN7DKjz5q0xjvPgppz/KsgP5unHuSyhDbX1IaQqp/QqzEzxGefT4gukdJsEGI3r
+ n0t7I2tb
+ +RKV6SvdhFTOZtxTheXDtpD8QAeARhZNlVmlgnPou5ZYBDKXbt6JTjJRZTjSNr/jvywzQIDSzdLjMmX0mWCmZqPJYcsf0tcY9FtGSo6FhiZ8VXzFT2c5auhVF1v/Ywuy/X0LkoPJbtjFGx0qQvYMTexI/6YnQM99kqx766C8xbgtnwZgnbcsCLWtamh/rJRnHvH+abzavNx1oRbDeaFEVINoI+zsgKRQLwv+1EIXRzQf1iqHLDRVKrGVnHcd4VS0TsYaY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,106 +98,73 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Nov 14 2025, Pasha Tatashin wrote:
 
-> During boot, kho_restore_folio() relies on the memory map having been
-> successfully deserialized. If deserialization fails or no map is present,
-> attempting to restore the FDT folio is unsafe.
+> Currently, the output FDT is added to debugfs only when KHO is
+> finalized and removed when aborted.
 >
-> Update kho_mem_deserialize() to return a boolean indicating success. Use
-> this return value in kho_memory_init() to disable KHO if deserialization
-> fails. Also, the incoming FDT folio is never used, there is no reason to
-> restore it.
+> There is no need to hide the FDT based on the state. Always expose it
+> starting from initialization. This aids the transition toward removing
+> the explicit abort functionality and converting KHO to be fully
+> stateless.
 >
-> Additionally, use memcpy() to retrieve the memory map pointer from the FDT.
-> FDT properties are not guaranteed to be naturally aligned, and accessing
-> a 64-bit value via a pointer that is only 32-bit aligned can cause faults.
+> Also, pre-zero the FDT tree so we do not expose random bits to the
+> user and to the next kernel.
 >
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
->  kernel/liveupdate/kexec_handover.c | 32 ++++++++++++++++++------------
->  1 file changed, 19 insertions(+), 13 deletions(-)
+>  kernel/liveupdate/kexec_handover.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 >
 > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index a4b33ca79246..83aca3b4af15 100644
+> index 83aca3b4af15..cd8641725343 100644
 > --- a/kernel/liveupdate/kexec_handover.c
 > +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -450,20 +450,28 @@ static void __init deserialize_bitmap(unsigned int order,
->  	}
+> @@ -1147,8 +1147,6 @@ int kho_abort(void)
+>  	__kho_abort();
+>  	kho_out.finalized = false;
+>  
+> -	kho_debugfs_fdt_remove(&kho_out.dbg, kho_out.fdt);
+> -
+>  	return 0;
 >  }
 >  
-> -static void __init kho_mem_deserialize(const void *fdt)
-> +/* Return true if memory was deserizlied */
-> +static bool __init kho_mem_deserialize(const void *fdt)
->  {
->  	struct khoser_mem_chunk *chunk;
-> -	const phys_addr_t *mem;
-> +	const void *mem_ptr;
-> +	u64 mem;
->  	int len;
+> @@ -1219,9 +1217,6 @@ int kho_finalize(void)
 >  
-> -	mem = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
+>  	kho_out.finalized = true;
+>  
+> -	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
+> -					 kho_out.fdt, true));
 > -
-> -	if (!mem || len != sizeof(*mem)) {
-> +	mem_ptr = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
-> +	if (!mem_ptr || len != sizeof(u64)) {
->  		pr_err("failed to get preserved memory bitmaps\n");
-> -		return;
-> +		return false;
->  	}
-> +	/* FDT guarantees 32-bit alignment, have to use memcpy */
-> +	memcpy(&mem, mem_ptr, len);
-
-Perhaps get_unaligned(mem) would have been simpler?
-
-> +
-> +	chunk = mem ? phys_to_virt(mem) : NULL;
-> +
-> +	/* No preserved physical pages were passed, no deserialization */
-> +	if (!chunk)
-> +		return false;
-
-Should we disallow all kho_restore_{folio,pages}() calls too if this
-fails? Ideally those should never happen since kho_retrieve_subtree()
-will fail, so maybe as a debug aid?
-
->  
-> -	chunk = *mem ? phys_to_virt(*mem) : NULL;
->  	while (chunk) {
->  		unsigned int i;
->  
-> @@ -472,6 +480,8 @@ static void __init kho_mem_deserialize(const void *fdt)
->  					   &chunk->bitmaps[i]);
->  		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
->  	}
-> +
-> +	return true;
+>  	return 0;
 >  }
 >  
->  /*
-> @@ -1377,16 +1387,12 @@ static void __init kho_release_scratch(void)
+> @@ -1310,7 +1305,7 @@ static __init int kho_init(void)
+>  	if (!kho_enable)
+>  		return 0;
 >  
->  void __init kho_memory_init(void)
->  {
-> -	struct folio *folio;
-> -
->  	if (kho_in.scratch_phys) {
->  		kho_scratch = phys_to_virt(kho_in.scratch_phys);
->  		kho_release_scratch();
->  
-> -		kho_mem_deserialize(kho_get_fdt());
-> -		folio = kho_restore_folio(kho_in.fdt_phys);
-> -		if (!folio)
-> -			pr_warn("failed to restore folio for KHO fdt\n");
-> +		if (!kho_mem_deserialize(kho_get_fdt()))
-> +			kho_in.fdt_phys = 0;
+> -	fdt_page = alloc_page(GFP_KERNEL);
+> +	fdt_page = alloc_page(GFP_KERNEL | __GFP_ZERO);
 
-The folio restore does serve a purpose: it accounts for that folio in
-the system's total memory. See the call to adjust_managed_page_count()
-in kho_restore_page(). In practice, I don't think it makes much of a
-difference, but I don't see why not.
+If I read the series right, patch 9 will make this a full FDT with no
+subnodes. That makes a lot more sense than a zero page. Thinking out
+loud.
 
->  	} else {
->  		kho_reserve_scratch();
+For this patch,
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+>  	if (!fdt_page) {
+>  		err = -ENOMEM;
+>  		goto err_free_scratch;
+> @@ -1344,6 +1339,9 @@ static __init int kho_init(void)
+>  			init_cma_reserved_pageblock(pfn_to_page(pfn));
 >  	}
+>  
+> +	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
+> +					 kho_out.fdt, true));
+> +
+>  	return 0;
+>  
+>  err_free_fdt:
 
 -- 
 Regards,
