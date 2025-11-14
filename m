@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 305F1CE8D76
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 19:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5114FCEACC1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 19:44:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89CC68E000C; Fri, 14 Nov 2025 14:43:54 -0500 (EST)
+	id 9D7B08E0038; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 874718E000A; Fri, 14 Nov 2025 14:43:54 -0500 (EST)
+	id 9AF278E000A; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78A7C8E000C; Fri, 14 Nov 2025 14:43:54 -0500 (EST)
+	id 8C46F8E0038; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 624BF8E000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 14:43:54 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15419B98A7
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:43:54 +0000 (UTC)
-X-FDA: 84110237988.08.45BB7A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5CF8140012
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:43:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kl3XkPFc;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5278E000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1FFA9C04D6
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:44:29 +0000 (UTC)
+X-FDA: 84110239458.01.7AB2A3B
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1DC038000B
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:44:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oECBROwT;
+	spf=pass (imf30.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763149432;
+	s=arc-20220608; t=1763149467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WE7OlafaKyP96402VgeY55yzAoTAjvVTtmvCVmIIt4U=;
-	b=OXzIBGeMyoOZB+5J8l+J78pOEttq+zFYtK26T9q2mV1Ruh8fh5Cq7Nt6eIPUrGr+k4Y9CX
-	0moR6H8HYh0xWkNQ5Z/EVfuDLCh89vyZIjpx9Ko+X+PrZB/q/SARO4R0UWV2LMetSmuFFX
-	U9wDlRIxgNDZwWGIsvJS+F0voYfn5c8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763149432; a=rsa-sha256;
+	bh=VmtmWeVNeDQubCUVIegKVeaojqJ5R7D+neANaxfZ/xM=;
+	b=t4+qXdoAzM5qgOYgGIpSktj5zk+M688hrS+e+JOW2HVVZNdSJue2FP0qEnE4Z7iQS2TAtK
+	D5oK28IlDlDC6FT28n6HS7PYC/7ewvd1KsYedGkIX/2xmlmyVUHlOw2/cfJVCxa5YS/1T3
+	Tk5Slj38sGs+YgTSt98jLyijsZE0IZs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763149467; a=rsa-sha256;
 	cv=none;
-	b=LHx+1aoZQ3UwsLH2sXHJb+zoE8HLleWKhLPMAhsK+bxFt3mWZCoY4kiQBEd7hiRda8cVVU
-	d47zmjTIu9moGSo2s2ZjWd5lKq7J2c7f63dYLItkLR0DGJAcT0DLOtP5NHdLb6WwSwgezD
-	WtBuD/XwYYWq+3WQRwxUaBu6E3zdTuI=
+	b=7r8mjVqHXcH31KZZYF9aTm8FeHEkofMnCp5vIipQoHF2kS+F7eAs+gFsLj7PFzxm2ynAdK
+	cUOLalu9BqCXxkEjNPYchhw8HvhinjBqknDXLVQk3VVGbOCtr28A1NZveg9trzyMUBOUej
+	QR72PtmUMAZeYMmdEcL61ITca7DMbqs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kl3XkPFc;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C1B9D60192;
-	Fri, 14 Nov 2025 19:43:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E7BC4AF09;
-	Fri, 14 Nov 2025 19:43:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763149431;
-	bh=5T9R+DZ0cAE97xt1xNOrZCDnV4pc9v2U3yy+1/Gkztg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kl3XkPFcbdBd10maRIJsdzkZj9uqLKeoMdgjb9QvwLiqK1GHQ1WyX8ptgPfUApqlB
-	 R89cQ3goj7w10u6RbmRNqHz80ZdiC3QMdR7ZKSikW4Y2FCMxYwXSwFy7rztSUSf5wm
-	 9wFb0/zwsCrwoMkBi8vu0VCDCTuNDUbwgJjcKT5iwmD6gq0DcNH+ZBWmYd1L60vCuf
-	 VwbnDczWUfVWCmBnHL19/wu6T5v/eeABlCsMiQxUHFey05wANwZpdHjdgTVCrdfUg2
-	 3leNoyRrmD8QPFO0W1bQbG+iOJyAdW5Q51EWaKlWfnH2lBASCKIKWwBle5PjtIk+it
-	 eQkz48MRpFi+g==
-Message-ID: <9c86c4ad-2659-4091-9f2a-d166c5e8daa3@kernel.org>
-Date: Fri, 14 Nov 2025 20:43:43 +0100
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oECBROwT;
+	spf=pass (imf30.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 14 Nov 2025 19:44:14 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763149463;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VmtmWeVNeDQubCUVIegKVeaojqJ5R7D+neANaxfZ/xM=;
+	b=oECBROwTZkUKRWuM22PjHPCS/YhfD5lND8hPGbXU6uUs8SYac1gb+XRHmW6iqtkb7imn85
+	sP+Hn5rjdoo/uLNvFcPFpxV42UR9uOTmYsDBn1/R+0bX4O/ZFWcxdT/9FW9mAkZF+7VBI/
+	wC5h61dzOV6ofF+MxRf9zPsBXkYQlSQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: SeongJae Park <sj@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "usamaarif642@gmail.com" <usamaarif642@gmail.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "kasong@tencent.com" <kasong@tencent.com>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
+	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
+	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Message-ID: <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
+ <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
+ <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
+ <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
+ <SJ2PR11MB84727C029B980E5E06F7291EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: fix MAX_FOLIO_ORDER on powerpc configs with
- hugetlb
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Donet Tom
- <donettom@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nathan Chancellor <nathan@kernel.org>
-References: <20251112145632.508687-1-david@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251112145632.508687-1-david@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5tm3btbz4rwgxj4batoqmze8q9qmkegy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ2PR11MB84727C029B980E5E06F7291EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: xm4gxj4fmjwxdesbsqmyqtq5f7shm6qj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CF8140012
+X-Rspamd-Queue-Id: 1DC038000B
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1763149432-686180
-X-HE-Meta: U2FsdGVkX19zO2ik5dkv9D9vd31/RkJLb7vxMZyq1Qo7Jf+m7VFRWcrxE/VpxO7Jpjt5V+6qKEx1t4iSZltUpQVktwc1PPFwy/Ani4oiBzMh2VHvzwQjZG456JO+Pz0n0qNshkjQ9X4ULc7VCyEgQHFT7qT9c0Kcv2okVopUNwILbPbqRDFORerpcGX8BpJuplkM9sF3QVkSp9VhUyoJzp1y0cK/Wcw8V/xSDbIj170HZPCX3LGiLck9IQsnVrO00hc9YXIPEmts/SGdgngYauO+bsQDbbv0xwVedT+FVAjATpciUdrTxbgmXfShVa/1ZDaxeCYMzEeMf/Ou+5enpwXv3HDhFm3u3MxB4+pH+wW8qScdJgEs6Llg6G6QRmsM3fulFnmmdNYQexKo2Ky0dE0ij3w4ZSOdt4H9JMeYfjgOD8NlXG3HfS4itLNJi64k0SvwUIVUV+/yZUPpIyIMwtuCqObpNg8riF+dMKtjKI27SONDBnEajRlpxo36Idu8VSkzWjajwdzWr6ROt3miS+XKqdFAlZTmD4qeg+PZoQEfN0Rf5gIBB8Zgcv36PYls+Ay1HB4fL5j+xkpj0kCadw4o9RcptgicuTv0wCmb6qJNl2950clQACkmPWRMUN4lClWHFm3zLtueBDNS97X5IavdrCUVeonMjCSbFCPoOvJt5aLoFI/w3xJuxYsGaC6SZJBcalgmM05g+i/wVTmPNVvbp8wObha55Rrsmj69HuVrJirVvZgJUFJpa0NmSEzcaeNlq2hnG9ynGX9PMKasu4MBITMVn1p33hA4TIRgm327ZxYCClw0cUxNiicikgHR+n1zuYgLcFMtxaNDPZ3cNGffl/PTrHq95pdIlmNnwyn8eSvJOIy9TcJ0ccLC6ZlfKy/xWpDx2/U1MdI5HVezU5GcwD4fIcmsQ5aD11bmLz7vQus2Uelm14B8tPd6sLNps3gv6KnN6sAZuHN10Da
- 6oZ/ecVm
- ccHtZCpzdIKKTzU7ZhOq3mtUxykEShf2lzbpnhNuoGIcbuUpO+WKSEhIyGrAQhxc42XKeB+9n/C6oGpHe8bAR5p/iEkrUkaRhCn7ICpO1NCrUIwcoYHKlq/CpYVk7a1nMm9kTRqqcDdeXmtGlrebb9zWKdL3dxno24lDK8ersUxAUgsJo/vRWuSVbCzW9CO/GXJxqYa32+A1+yubiGkd0AvEiB6FfVngKgU1cgkPF1E8xMpPXy3pWE/pvYW4LxVj9Af8o+z8s5eeSuTX/So9ZYdO/Gyyrlfh/mKJEbLHBf6DR0c2svn25XdV6JKd+Fx+EhR1GZEYvpaVPbH7ClMoMHcTZvcZ8GB4piZYC7SQHUnFQWU4yiP943909bwU5/i0vA3ZBOlaw66ctmYHFnZLqkXT14Lauv4CesN6DdHu2HQ0dZVDjNg6S6Fs3+x88AQ/3TTDOhknYd18Kko64U/4ClnNOMQW/FUYOBvyUzfL/wp8N8maABVePe741yGNl5HNOB/XE5KWbo8QsbAXhZGbV2LM+jC4QJv00i0r5goj3ub1K9dHA+AfRgkBapjNvF9yI9rGh9HV88TqWJdf3SoMoHUfc2EdaJ7z9vIxEh7Oaqw49NwWMz1zJfvbnvBEboQvUEF5f
+X-HE-Tag: 1763149466-216680
+X-HE-Meta: U2FsdGVkX18pmtBOg5KwjPIwym2r3RgQrvM8VcgrSKXrFt0Dmw7bb4Wz2mKTVMe78GVBufnG+blp1ZPMDau7UTeYBut60nrGPpMRKfoGQtaF03temKMLYmmiCYyzv6mG5aCN5Q6+dgPLiMmaetPkZenrOIfYhD/Jyg3g19atkS0kOasdb3XcsDlz9SX6fp2QlSD9TCWF2ARbg7tkmHF4BwO5W2Gg172RtQd4mAbqNP4SnKmI1cuVKGNzNPlOR8sorp9MOa6S33pPGHk18BfgqgossDD5HTn98g9ORyvltvqjbDkNpGcHXSsoDitlbNRHwCBbCnFwFkaN91MmL0uVMQEJ9G6FmHunTtmuqUHGGZFh1QICYn0G96kpX03thiuw0saGF5DuIHrN5Kx5RBxoa1c+XWVjID79in1rbcuOy5Ez8dYlRxmrkUnDCbXpgUT7HOjLClteZPFjZyw6481QrT6GloW8IWn6FKZZQtXOA+XLWq+5QwY9+Z/LeFzclBWOx/OWL1JJKqBr0U8cUzr6c1nLT62SvltpDLg8F2pSduxe1SD181kYcwlCcxyN+yS3JTA8ryFDfBRO0dDQKlDm53dMxOyoANy4421W2H9051bInmNYKUi+QQHnLGhOjJIAKZ3O4u1kcMeyjqQNNL65tIrO0nKLYatKQOze9MlCQITp0/RLWRGpN35mC/9yjgqevDMVmyxjTpn6LKCVo1PDbSS7dMymD1XUChb83L+gxdvzwG6kh+VgX0K0gb6h66zfgDq0/OgVvVbnqu/tFcbvbgizVlQuFAc60AypXd++Mrg+I8gKrfAAwhyNKN3HcxnR2qPO2ZUfOxQi/zrgh6Az/SkjfkcVAVTK5NNsxwEQo9yUKf5ti7CXeYIWJyqdg+btbq+mjYCgLNdKUEpnIMQLXpmMVNz7jF7/Ad69hg6VCylF2b96bP8qxNp/RORptL+K3k0LnUoHJFAWGCWcqQh
+ 8JsUT91D
+ Xzfztw9tC3TiugV5ib8fbeqvaOy29LIwbCusvqW4qwv+XGL8uTKgm9mpOjJ/6KS3LWCNjgkzeoEub9B8f3tpqYf7q8hQtLYw3bdZIkmfJsp3t5L7mOZA+wkfCajyxEfM6GdJ3gAgY3SAqanOz/UwA/eWvnNxcpGGYc3MfPVdb8OdX5D7TfqTQWN5n5xsO1lp2frexH54GheV+ZZXxfjXudROHvG+rmowBQbNEvjv5S/U9h85IludoDl05p7SWAcxacxOwD25UhMfRVZ1arF4DNWvMdpi+6Ranw8FsuKlxQJoJ2qs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,144 +106,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.11.25 15:56, David Hildenbrand (Red Hat) wrote:
-> In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
-> runtime allocation of gigantic hugetlb folios. In the meantime it evolved
-> into a generic way for the architecture to state that it supports
-> gigantic hugetlb folios.
+On Fri, Nov 14, 2025 at 07:23:42PM +0000, Sridhar, Kanchana P wrote:
+[..]
+ > > > > >
+> > > > > > > +		if (err && !wb_enabled)
+> > > > > > > +			goto compress_error;
+> > > > > > > +
+> > > > > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg,
+> > nr_comps, k) {
+> > > > > > > +			j = k + i;
+> > > > > >
+[..]
+> > > > >
+> > > > > >
+> > > > > > > +			dst = acomp_ctx->buffers[k];
+> > > > > > > +			dlen = sg->length | *errp;
+> > > > > >
+> > > > > > Why are we doing this?
+> > > > > >
+> > > > > > > +
+> > > > > > > +			if (dlen < 0) {
+> > > > > >
+> > > > > > We should do the incompressible page handling also if dlen is
+> > PAGE_SIZE,
+> > > > > > or if the compression failed (I guess that's the intention of bit OR'ing
+> > > > > > with *errp?)
+> > > > >
+> > > > > Yes, indeed: that's the intention of bit OR'ing with *errp.
+> > > >
+> > > > ..and you never really answered my question. In the exising code we
+> > > > store the page as incompressible if writeback is enabled AND
+> > > > crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check above
+> > > > if crypto_wait_req() fails and writeback is disabled, but what about the
+> > > > rest?
+> > >
+> > > Let me explain this some more. The new code only relies on the assumption
+> > > that if dlen is zero or >= PAGE_SIZE, the compressor will not return a 0
+> > > ("successful status"). In other words, the compressor will return an error
+> > status
+> > > in this case, which is expected to be a negative error code.
+> > 
+> > I am not sure if all compressors do that, especially for the case where
+> > dlen >= PAGE_SIZE. The existing code does not assume that there will be
+> > an error code in these cases.
+> > 
+> > For the dlen == 0 case, the check was introduced recently by commit
+> > dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
+> > as-is"). Looking through the history it seems like it was introduced in
+> > v4 of that patch but I don't see the reasoning.
 > 
-> In commit fae7d834c43c ("mm: add __dump_folio()") we started using
-> CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
-> have folios larger than what the buddy can handle. In the context of
-> that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
-> when dumping tail pages of folios. Before that commit, we assumed that
-> we cannot have folios larger than the highest buddy order, which was
-> obviously wrong.
+> The existing code did not check for dlen == 0 and dlen >= PAGE_SIZE
+> prior to commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression
+> failed page as-is") either. We need SeongJae or Herbert to clarify whether
+> this check is needed, or if it is sufficient to rely on comp_ret, the return from
+> crypto_wait_req().
 > 
-> In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
-> when registering hstate"), we used MAX_FOLIO_ORDER to detect
-> inconsistencies, and in fact, we found some now.
+> > 
+> > SeongJae, did you observe any compressors returning dlen == 0 but no
+> > error code? What was the reasoning behind the dlen == 0 check?
+> > 
+> > >
+> > > Under these (hopefully valid) assumptions, the code handles the simple case
+> > > of an error compression return status and writeback is disabled, by the
+> > > "goto compress_error".
+> > >
+> > > The rest is handled by these:
+> > >
+> > > 1) First, I need to adapt the use of sg_outputs->sgl->length to represent the
+> > > compress length for software compressors, so I do this after
+> > crypto_wait_req()
+> > > returns:
+> > >
+> > >                 acomp_ctx->sg_outputs->sgl->length = acomp_ctx->req->dlen;
+> > 
+> > For SW compressors, why is acomp_ctx->sg_outputs->sgl->length not set?
+> > IIUC we are using the same API for SW and HW compressors, why is the
+> > output length in different places for each of them?
 > 
-> Powerpc allows for configs that can allocate gigantic folio during boot
-> (not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
-> exceed PUD_ORDER.
+> This is to first implement the SG lists batching interface in iaa_crypto, while
+> maintaining backward compatibility for SW compressors with the new API.
+> I believe we may want to adapt the crypto API to SW compressors
+> at a later point. I also believe this would be outside the scope of this patch.
+> It would be nice if Herbert can share his vision on this aspect.
 > 
-> To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
-> hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
-> GiB (possible on arm64 and powerpc). Note that on some powerpc
-> configurations, whether we actually have gigantic pages
-> depends on the setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is
-> nothing really problematic about setting it unconditionally: we just try to
-> keep the value small so we can better detect problems in __dump_folio()
-> and inconsistencies around the expected largest folio in the system.
+> > 
+> > >
+> > > I did not want to propose any changes to crypto software compressors
+> > protocols.
+> > >
+> > > 2) After the check for the "if (err && !wb_enabled)" case, the new code has
+> > this:
+> > >
+> > >                 for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
+> > >                         j = k + i;
+> > >                         dst = acomp_ctx->buffers[k];
+> > >                         dlen = sg->length | *errp;
+> > >
+> > >                         if (dlen < 0) {
+> > >                                 dlen = PAGE_SIZE;
+> > >                                 dst = kmap_local_page(folio_page(folio, start + j));
+> > >                         }
+> > >
+> > > For batching compressors, namely, iaa_crypto, the individual output SG
+> > > lists sg->length follows the requirements from Herbert: each sg->length
+> > > is the compressed length or the error status (a negative error code).
+> > >
+> > > Then all I need to know whether to store the page as incompressible
+> > > is to either directly test if sg->length is negative (for batching compressors),
+> > > or sg->length bit-OR'ed with the crypto_wait_req() return status ("err")
+> > > is negative. This is accomplished by the "dlen = sg->length | *errp;".
+> > >
+> > > I believe this maintains backward compatibility with the existing code.
+> > > Please let me know if you agree.
+> > 
+> > For batching compressors, will 'err' be set as well, or just sg->length?
+> > If it's just sg->length, then we need to check again if WB is enabled
+> > here before storing the page uncompressed. Right?
 > 
-> Ideally, we'd have a better way to obtain the maximum hugetlb folio size
-> and detect ourselves whether we really end up with gigantic folios. Let's
-> defer bigger changes and fix the warnings first.
-> 
-> While at it, handle gigantic DAX folios more clearly: DAX can only
-> end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
-> 
-> Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
-> clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
-> HUGETLB_PAGE.
-> 
-> Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
-> also allow for runtime allocations of folios in some more powerpc configs.
-> I don't think this is a problem, but if it is we could handle it through
-> __HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
-> 
-> While __dump_page()/__dump_folio was also problematic (not handling dumping
-> of tail pages of such gigantic folios correctly), it doesn't relevant
-> critical enough to mark it as a fix.
-> 
-> Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
-> Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Closes: https://lore.kernel.org/r/3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu/
-> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Closes: https://lore.kernel.org/r/94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com/
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Donet Tom <donettom@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> ---
->   arch/powerpc/Kconfig |  1 +
->   include/linux/mm.h   | 12 +++++++++---
->   mm/Kconfig           |  7 +++++++
->   3 files changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index e24f4d88885ae..9537a61ebae02 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -137,6 +137,7 @@ config PPC
->   	select ARCH_HAS_DMA_OPS			if PPC64
->   	select ARCH_HAS_FORTIFY_SOURCE
->   	select ARCH_HAS_GCOV_PROFILE_ALL
-> +	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
->   	select ARCH_HAS_KCOV
->   	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
->   	select ARCH_HAS_MEMBARRIER_CALLBACKS
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index d16b33bacc32b..63aea4b3fb5d9 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
->   	return folio_large_nr_pages(folio);
->   }
->   
-> -#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
-> +#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
->   /*
->    * We don't expect any folios that exceed buddy sizes (and consequently
->    * memory sections).
-> @@ -2087,10 +2087,16 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
->    * pages are guaranteed to be contiguous.
->    */
->   #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
-> -#else
-> +#elif defined(CONFIG_HUGETLB_PAGE)
->   /*
->    * There is no real limit on the folio size. We limit them to the maximum we
-> - * currently expect (e.g., hugetlb, dax).
-> + * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
-> + */
-> +#define MAX_FOLIO_ORDER		get_order(SZ_16G)
+> iaa_crypto will set 'err' and set the sg->length as per the batching interface
+> spec from Herbert.
 
-Turns out that's a problem on 32bit builds, because it won't fit into unsigned long. Grml.
+So both 'err' and sg->length will contain the same error? In this case
+why do we need to check if dlen < 0? Shouldn't checking 'err' be
+sufficient? and it would work for both SW and HW and we wouldn't need
+errp. Did I miss something?
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 63aea4b3fb5d9..f595565bdd113 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2090,9 +2090,10 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
-  #elif defined(CONFIG_HUGETLB_PAGE)
-  /*
-   * There is no real limit on the folio size. We limit them to the maximum we
-- * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
-+ * currently expect: with hugetlb, we expect no folios larger than 16 GiB
-+ * on 64bit and 1 GiB on 32bit.
-   */
--#define MAX_FOLIO_ORDER                get_order(SZ_16G)
-+#define MAX_FOLIO_ORDER                get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
-  #else
-  /*
+> 
+> > 
+> > >
+> > > >
+> > > > We don't check again if writeback is enabled before storing the page is
+> > > > incompressible, and we do not check if dlen is zero or PAGE_SIZE. Are
+> > > > these cases no longer possible?
+> > >
+> > > Hope the above explanation clarifies things some more? These case
+> > > are possible, and as long as they return an error status, they should be
+> > > correctly handled by the new code.
+> > 
+> > As mentioned above, I am not sure if that's correct for dlen >=
+> > PAGE_SIZE.
+> 
+> We need to get clarity on this from SeongJae/Herbert.
+> 
+> > 
+> > >
+> > > >
+> > > > Also, why use errp, why not explicitly use the appropriate error code?
+> > > > It's also unclear to me why the error code is always zero with HW
+> > > > compression?
+> > >
+> > > This is because of the sg->length requirements (compressed length/error)
+> > > for the batching interface suggested by Herbert. Hence, I upfront define
+> > > err_sg to 0, and, set errp to &err_sg for batching compressors. For software
+> > > compressors, errp is set to &err, namely, the above check will always apply
+> > > the software compressor's error status to the compressed length via
+> > > the bit-OR to determine if the page needs to be stored uncompressed.
+> > 
+> > Thanks for the clarification. I understand that the error code has
+> > different sources for SW and HW compressors, but I do not like using
+> > errp as an indirection. It makes the code unclear. I would rather we
+> > explicitly check err for SW compressors and dlen for HW compressors.
+> > 
+> > That being said, I thought what Herbert suggested was that the same API
+> > is used for both SW and HW compressors. IOW, either way we submit a
+> > batch of pages (8 pages for SW compressors), and then the crypto API
+> > would either give the entire batch to the compressor if it supports
+> > batching, or loop over them internally and hand them page-by-page to
+> > the compressor.
+> 
+> That was not how I understood Herbert's suggestion for the batching interface.
+> He did suggest the following:
+> 
+> "Before the call to acomp, the destination SG list should contain as
+> many elements as the number of units.  On return, the dst lengths
+> should be stored in each destination SG entry."
+> 
+> I have incorporated this suggestion in the iaa_crypto driver. For SW
+> compressors, I have tried not to propose any API changes, while making
+> sure that the zswap changes for the SG lists batching API work as expected
+> for SW without too much special-casing code.
+> 
+> I suppose I always assumed that we would update SW compressors later,
+> and not as part of this patch-set.
 
-I'll resend the patch ...
+I am not sure I understand what changes lie in the crypto layer and what
+changes lie in the SW compressors. I am not suggesting we do any
+modification to the SW compressors.
 
+I imagined that the crypto layer would present a uniform API regardless
+of whether or not the compressor supports batching. Ideally zswap would
+pass in a batch to crypto and it would figure out if it needs to break
+them down or not. Then the output length and errors would be presented
+uniformly to the caller.
 
--- 
-Cheers
+That being said, I am not at all familiar with how crypto works and how
+straightforward that would be. Herbert, WDYT?
 
-David
+> 
+> > 
+> > This would simplify usage as we do not have to handle the differences in
+> > zswap.
+> 
+> That's the nice thing about SG lists - I think the zswap_compress() calls to
+> the new batching API appears agnostic to SW and HW compressors.
+> Other than the upfront "errp = (pool->compr_batch_size == 1) ? &err : &err_sg;"
+> the logical code organization of the new zswap_compress() is quite similar to
+> the existing code. The post-compress "dlen = sg->length | *errp;" handles the rest.
+
+It would be even nicer if the batches are also abstracted by SG lists.
+
+Also, I don't like how the error codes and output lengths are presented
+differently for HW and SW compressors.
 
