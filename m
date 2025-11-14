@@ -4,112 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CC29CE7AED
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 11:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1412CE7AED
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 11:42:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 888868E0009; Fri, 14 Nov 2025 06:31:23 -0500 (EST)
+	id EE6A58E0003; Fri, 14 Nov 2025 06:42:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 860E38E0002; Fri, 14 Nov 2025 06:31:23 -0500 (EST)
+	id E97768E0002; Fri, 14 Nov 2025 06:42:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 776358E0009; Fri, 14 Nov 2025 06:31:23 -0500 (EST)
+	id D859B8E0003; Fri, 14 Nov 2025 06:42:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6376D8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:31:23 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1270412DE64
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:31:23 +0000 (UTC)
-X-FDA: 84108996846.03.B04808B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5DA2AC0006
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:31:21 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=awS3On4f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763119881; a=rsa-sha256;
-	cv=none;
-	b=n4b+Qylw+75uiGw+CcMRRwj9NJGLNH+OCWepn9DBDdN5h1S4ggUgF+yiwUyf3KfPEXAg+K
-	sKj4wQzg5JkoXWKEeL2CmDLDeI2rq7NPP1lTZkhlojT4AUSmqBeUBl1e2RhiU31GUj3iwE
-	lC4BDVoocaRHlwc71ut886PQ90/zOBQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=awS3On4f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C119A8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:42:51 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4CEA188544
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:42:51 +0000 (UTC)
+X-FDA: 84109025742.16.75518C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BB7E620014
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:42:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q8fkkteN;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763119881;
+	s=arc-20220608; t=1763120569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=afNdsW9MU7zJqHMqx1ZLWRpBncJwmm/vMMXpi4TcjY0=;
-	b=1Mpx2zVN/VZ89YzPljsZ5s1zxJe6/tHjVGIkfm60YrJzQnHlvmtkeIdOnW26WxDVVZoDUa
-	akMS7qQg/09tFporCR+IWCugjyTYUxig+GOXlAEy8METPHxA1nxRPeIjg7KCOgMiuztSui
-	gMjmG5/cE7Wi7BNiRWF15Ga5yHBLrwc=
+	bh=pSa4YzVp8h2bYoRAUikxeeiupwQSNFXdKAeGXPBV9Nw=;
+	b=suIQ0DGdyKvNeP61YETC+A5I9pJF8DrICY1ikPfGbCO/KKfA9UEXxuC8OhWr188U0zBnrp
+	E3zI9GKGmDLEJfy8VZZJzLQBB7WyofCilSYvk7hoDBHkOb1Wv/K8zP5J2lMf0OBL3QHgi7
+	Fdm/oKpJSoQPSSUgaRDT2dmLqr2rzro=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q8fkkteN;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763120569; a=rsa-sha256;
+	cv=none;
+	b=6K2cTP1Nl3xKQjQ2srY9MPN2bHv8rEwMz0BIUTnp2RssnkFiyeh4FqUfq2nbQS6yy2V3b2
+	rDdsnQ3I0TsO+TVKhaztE57gYIVjPUPMWnrlTQf9H11N8kKmJPP2kcer6aAxo9N+bhu3/q
+	1p5eHfYVfhfyIPLfFiCv/96TvN9X/Tw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 51BF3429E2;
-	Fri, 14 Nov 2025 11:31:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E5FC4AF09;
-	Fri, 14 Nov 2025 11:30:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 198CC60175;
+	Fri, 14 Nov 2025 11:42:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05698C4CEF8;
+	Fri, 14 Nov 2025 11:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763119880;
-	bh=GaRt8mZMwQZGrcQ9Qajr5lrJ1sWQayWo13cA4bzwsac=;
+	s=k20201202; t=1763120568;
+	bh=JCJJ+smwYrR2g3QGo7fPrR+zmXOiaWETE6PY6T/Dud0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=awS3On4flAlVPXnqWsYldgKjJTlVNUrXTI2f2IlBW0Mq9huNwec+HzA0o2vnASTRC
-	 s2wSviLIQxbhJS1cgM3qY8D+PSZoNgxQLJMbhP+D59wrYAIcUTPU1nUTw4uc+kF49i
-	 JZl4ja3iTV9+fg9wbvIbbTxkq6hsIQgI5Ek89x+esVIdOSLBBLRZ7QnfRZ0otnljJz
-	 3Wh4BzCs3j8rdc77ctn6nYA6gqtu42YDZ1g0kDPONFM3yPke2HC09711bzh/M3eSqC
-	 3IN+FfC2sw+CV8iY/M1yskLGfYGhXR7k9C8E7qVXe1HT8PbeiIKUpTprYobKNaWtKt
-	 weG4if40H1QMQ==
-Date: Fri, 14 Nov 2025 13:30:53 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v5 03/22] reboot: call liveupdate_reboot() before kexec
-Message-ID: <aRcS7YU0CGc4NdKX@kernel.org>
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-4-pasha.tatashin@soleen.com>
+	b=q8fkkteNmYzK0uACVLTWx5CVyhemcbPv8ndiusq5y7wxdrRHX+D2H9fcpkAKGbyPx
+	 t5aZYId2snhO2ynpmREc1bqI3cU4DdNz17nRX/z5TP+NFY1vcDyPrCXh9/NqUwnFif
+	 Z6wTsOzsxOik8RgVJyp7gpXSEh75s+2HrrOGP3ASjN7IzFCA4pRUKqXxnv5YH2pe3M
+	 L+vwqRdrmBiLxbWOkkw54+LuM8bcNU97McPS4KwqMsEThRjBXbgOcNftN9EmWedDtj
+	 inyCQJSGs2hC3h21FdXNPEG8NpnkR4rLZbURImoTgCWZzgbov37oGW2cpm0piGUfPF
+	 04fJ+m4146kng==
+Date: Fri, 14 Nov 2025 12:42:39 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, bot+bpf-ci@kernel.org, 
+	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net, 
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
+	rostedt@goodmis.org, linux-usb@vger.kernel.org, paul@paul-moore.com, 
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org, ast@kernel.org, 
+	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com, 
+	yonghong.song@linux.dev, ihor.solodrai@linux.dev, Chris Mason <clm@meta.com>
+Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+Message-ID: <20251114-abkehr-rasur-b2eae31c4d57@brauner>
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+ <20251113092636.GX2441659@ZenIV>
+ <2025111316-cornfield-sphinx-ba89@gregkh>
+ <20251114074614.GY2441659@ZenIV>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251107210526.257742-4-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5DA2AC0006
-X-Stat-Signature: we9xanrkwpgddmfrxe7p5g4j7i6hrqi1
+In-Reply-To: <20251114074614.GY2441659@ZenIV>
+X-Rspamd-Queue-Id: BB7E620014
+X-Stat-Signature: xh386fj5s4qp6imfcf5qerm6oux35zfp
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763119881-870090
-X-HE-Meta: U2FsdGVkX1+dH7bcjNaJlaQ5/mYojKZhjTCHvx5eUSJuVcRUHQKSLloYYpdidqaY+m+TguPy8D9j+mIgNJgqIVhahd2NCapOW3bJpecyUj799lmy1akmqhG8qtnmWQS7jaxfuplb4uz68mDuSON6cAs74MnxXwn11ZxZh+95sskr1pu5tuvxOXpXUv+OFNaEdj84PaBz5Wppsa8iNTOSsFiOYOM1J3o8doxFJIGiRjN3qY6NXr/ELx189QBRiPx8UmC/wI4GGNTJmKrlCEUJBlbIvT+y+m7lPyM6RtTkLUdk5cdd6eT/KZA514Z5/eFnn71Xxzk+Jz2zIBM4pS3NLQ0Onr8zT9lAbhhkscaWtBzKyxCRUy52q9VOriwe6QEPEMMHmM6a3ExP0/hJMEe3zSIagopVt3utjUDH8r6PqF/6ECqBQdU+b3VGiIkxTF/38Ena91Q7IBgr8NFymU5KdaNU6RHN6XdWjB7rrn5yAk2X4EZNGsM8gXe7IEELMvmGcl01XRrsPKnlg53cx9VBWs8XvcJrKgOPdy+UhATKjqTluZKbZGiz3p0umeBYupyB4W1UJVLgzkdloV/LxudpERU9eZfzSglQfpxr/suWfiWRacdgzXAgi4r0LiBpoCoEFq6FaulPKblmOPySduOgg5tLDVeSC+jjb2dJfM0DeJn8hgjClcRqte/kc4LZicZVcLc4+V5u9h/mNTsHvGz7y+1U+7aEJTm0Fk8clT/759bXcLUwWUfX2UtQUHwGDBF7T/glYjJh/Zh6it/sJcz6CibEee9Ns9ZysV3geMs/ypyNq5CvCbQ/z5N3PBhh5alIkw/txU/sDT9B3Cakwy5gGgbhotwnoaSLOhLI960Sz8oMuzxHfvWWrsiFTGC4S5PgaD3ueL9K5n+lQ7qY/YW11HVAuDQObf76Uh1jwcqwMKdxfbtCSptmLDqqSamWE5PV2uRzz0UJR+aQHnlTy/T
- Pjp0spYd
- yuc7Htd4MMMVQxzYMnlpgLi1PEnC6srlee9x0+0y4KsnOW9yX4MKkQ3tCDi+BeL+vlhMlcycAAiJgf0Ck4gsflQieIqKffUl6DHLxCMyjjhYXUjUwWttAlRETQuuIS7k33zHPjInWxUEVMS9xUd4abPtuGJvOt1XKpLhvkNdaGgxjRPMmzQyIo125M7ySHZtdepfWsMf5GyJ4IThhrveARLB2oRNXhwNctF0q0gcaQO8KHQwBD3t6EVrlOmkTr//fmtVINZ1NlvN8Hkixqa/dcQd90M2XRn6mJtdgD+YPXI8ckZ++vYB6AnhJ1VyWF6Vw+W1KzetmRTcWcuIXS5vf06fXIg4Ai306A4A5fCyG0MwTDgFip+2wLUNcx/r3F7l4tnVMvI1qx1He1SH4j7kr6ryCFzJIOUT3mzZZSQAZpuAXwS8=
+X-HE-Tag: 1763120569-253524
+X-HE-Meta: U2FsdGVkX1+Eg8maCVOrpali1MkWasjh2CcpOtVfbAoHrRifhkiBQn5OceYXZbjGwGfdLpkFM62PONKWcS3O0c5CF8uM7e+0RXZEDoTxsTrkj5ijPbt0u6/FjRM99cLHaT3evK18G4UxTjGUg9lOGd+CAp6PS2dw1CHUYwz8ruAxYJ2XPVvTYdOg7F9xG/AnwVwIHesbrKvMLi/wGF3rLTAg6wN2bp18nBVneHcK6hasJ/diQsqJ7sQtnkSYJ5ZBwR67oguWtagVbeI6TlHS7u9g1jX+A4d4yTsKfqjsAnqwL8ADLxIR/YQEQq63I3riowKrLKmaayzgk0GJ7BK8bNePH+R60jRdA2C0WfkmSwBxTWq262HF7I5gz0j1kJgRQ5lE4bQ/v6DT3UTFABqJ6W55B7GtOU7236xgvs8hhrgyjfl64Aiv0JivP7g4z4FvnfkrXOvp2kEC4LsBBk5lXfSA9ASkcIrQlXtmGAb4PaRe0XFvuDvz8vC2PpZCt8pa7HDSzvlEvwRr5ywGiilr0lLcdzj1pAfEmYeZb1hHe80KCdOlf9ywejaEHDe2IWcmY51Yjs7tbinmKNlO8fNDgqoRtC00wks3nsoF/0xigAE0UUPL1YaPgtLTVRK+yo4imVNF8sJQ0FcukB+d+ABtvMxL0jbbZR2DTp+antYTcDN692OAUhiCxeSw++LQDV1Hh4FuG68nDRKEy6GZJFS0EWCXR0s354zO1481ZuWT3KLDeL7xVd2/zmwRxFhgr8pKBe7TtNYXUcqPP7CbyNbYXNsT9Fad/CDVYMWZ6OsGbzP9IVwI04fH6F8V9XvEjHJ+jboM9ZA6wdsvRmMFvg1ReADJ8m0GgbDW/al4dtqFGRQBh/jaatk84ZmjSbGHWN1i+GGo2x5CNMmUw9KkUFEj+//713hqaeMEwo8UKIWq67/4aXbTtjN94Iq+B7FiSjwh4vwGniWqorckaG5Rqtw
+ hy9dUOE1
+ wmrvhZ1kP3Ok8rxdJHYG5iFrYAM3aCKoD2rdYSp803Mr0/iW5cD8w75j5B6MiBb6abjrEHkw7X/C4yqJk7ysLwA0e3rjLh2svBgFTl27XnhxCbfvHUME5twMoZbZBOUVLrW3JlSrBAaU7MkFNZ8eOCGoMnFFEMbrV4WpIZBnP+F4E+sxFLzq5t6i4iV2qHpIK/VYYS/G6SqhqPtjpu4XnFkgXhzC/tWJ0cFGXonzY5iyD2kA3sPfN0HnBXpe5hWwCLOvhnNZBLn8N+w6VdaDBMzOrsj1U6phaeZ5lEDgv+rQnitkOweIpVMty/D9Mb6wG8PEKMfLQQeNuvKA5Au4bZ6RilVuLYQ5favlLCeYYnX+87l3COqzSyt5XBKJrOfHjDgVwXTWaVZPSixx8mwLcrOCtPYrJ1qU/XEhcqPqtmUrPJDktXmeLKheEN7nlMQGvw/p50vHB646OfsHir04btIzXqFBvz0mCr37n16eakzD3GJw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,61 +105,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 04:03:01PM -0500, Pasha Tatashin wrote:
-> Modify the reboot() syscall handler in kernel/reboot.c to call
-> liveupdate_reboot() when processing the LINUX_REBOOT_CMD_KEXEC
-> command.
+On Fri, Nov 14, 2025 at 07:46:14AM +0000, Al Viro wrote:
+> On Thu, Nov 13, 2025 at 04:20:08PM -0500, Greg Kroah-Hartman wrote:
 > 
-> This ensures that the Live Update Orchestrator is notified just
-> before the kernel executes the kexec jump. The liveupdate_reboot()
-> function triggers the final freeze event, allowing participating
-> FDs perform last-minute check or state saving within the blackout
-> window.
+> > Sorry for the delay.  Yes, we should be grabing the mutex in there, good
+> > catch.  There's been more issues pointed out with the gadget code in the
+> > past year or so as more people are starting to actually use it and
+> > stress it more.  So if you have a patch for this, I'll gladly take it :)
 > 
-> The call is placed immediately before kernel_kexec() to ensure LUO
-> finalization happens at the latest possible moment before the kernel
-> transition.
+> How about the following?
 > 
-> If liveupdate_reboot() returns an error (indicating a failure during
-> LUO finalization), the kexec operation is aborted to prevent proceeding
-> with an inconsistent state.
+> commit 330837c8101578438f64cfaec3fb85521d668e56
+> Author: Al Viro <viro@zeniv.linux.org.uk>
+> Date:   Fri Nov 14 02:18:22 2025 -0500
 > 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  kernel/reboot.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>     functionfs: fix the open/removal races
+>     
+>     ffs_epfile_open() can race with removal, ending up with file->private_data
+
+Very apt prefix though.
+(Like Paul would say: "Sorry, couldn't resist.")
+
+>     pointing to freed object.
+>     
+>     There is a total count of opened files on functionfs (both ep0 and
+>     dynamic ones) and when it hits zero, dynamic files get removed.
+>     Unfortunately, that removal can happen while another thread is
+>     in ffs_epfile_open(), but has not incremented the count yet.
+>     In that case open will succeed, leaving us with UAF on any subsequent
+>     read() or write().
+>     
+>     The root cause is that ffs->opened is misused; atomic_dec_and_test() vs.
+>     atomic_add_return() is not a good idea, when object remains visible all
+>     along.
+>     
+>     To untangle that
+>             * serialize openers on ffs->mutex (both for ep0 and for dynamic files)
+>             * have dynamic ones use atomic_inc_not_zero() and fail if we had
+>     zero ->opened; in that case the file we are opening is doomed.
+>             * have the inodes of dynamic files marked on removal (from the
+>     callback of simple_recursive_removal()) - clear ->i_private there.
+>             * have open of dynamic ones verify they hadn't been already removed,
+>     along with checking that state is FFS_ACTIVE.
+>     
+>     Fix another abuse of ->opened, while we are at it - it starts equal to 0,
+>     is incremented on opens and decremented on ->release()... *and* decremented
+>     (always from 0 to -1) in ->kill_sb().  Handling that case has no business
+>     in ffs_data_closed() (or to ->opened); just have ffs_kill_sb() do what
+>     ffs_data_closed() would in case of decrement to negative rather than
+>     calling ffs_data_closed() there.
+>     
+>     And don't bother with bumping ffs->ref when opening a file - superblock
+>     already holds the reference and it won't go away while there are any opened
+>     files on the filesystem.
+>     
+>     Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 > 
-> diff --git a/kernel/reboot.c b/kernel/reboot.c
-> index ec087827c85c..bdeb04a773db 100644
-> --- a/kernel/reboot.c
-> +++ b/kernel/reboot.c
-> @@ -13,6 +13,7 @@
->  #include <linux/kexec.h>
->  #include <linux/kmod.h>
->  #include <linux/kmsg_dump.h>
-> +#include <linux/liveupdate.h>
->  #include <linux/reboot.h>
->  #include <linux/suspend.h>
->  #include <linux/syscalls.h>
-> @@ -797,6 +798,9 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+> index 47cfbe41fdff..ed7fa869ea77 100644
+> --- a/drivers/usb/gadget/function/f_fs.c
+> +++ b/drivers/usb/gadget/function/f_fs.c
+> @@ -640,13 +640,22 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
 >  
->  #ifdef CONFIG_KEXEC_CORE
->  	case LINUX_REBOOT_CMD_KEXEC:
-> +		ret = liveupdate_reboot();
-> +		if (ret)
-> +			break;
-
-As we discussed elsewhere, let's move the call to liveupdate_reboot() to
-kernel_kexec().
-
->  		ret = kernel_kexec();
->  		break;
->  #endif
-> -- 
-> 2.51.2.1041.gc1ab5b90ca-goog
-> 
-
--- 
-Sincerely yours,
-Mike.
+>  static int ffs_ep0_open(struct inode *inode, struct file *file)
+>  {
+> -	struct ffs_data *ffs = inode->i_private;
+> +	struct ffs_data *ffs = inode->i_sb->s_fs_info;
+> +	int ret;
+>  
+> -	if (ffs->state == FFS_CLOSING)
+> -		return -EBUSY;
+> +	/* Acquire mutex */
+> +	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+> +	if (ret < 0)
+> +		return ret;
+>  
+> -	file->private_data = ffs;
+>  	ffs_data_opened(ffs);
+> +	if (ffs->state == FFS_CLOSING) {
+> +		ffs_data_closed(ffs);
+> +		mutex_unlock(&ffs->mutex);
+> +		return -EBUSY;
+> +	}
+> +	mutex_unlock(&ffs->mutex);
+> +	file->private_data = ffs;
+>  
+>  	return stream_open(inode, file);
+>  }
+> @@ -1193,14 +1202,33 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+>  static int
+>  ffs_epfile_open(struct inode *inode, struct file *file)
+>  {
+> -	struct ffs_epfile *epfile = inode->i_private;
+> +	struct ffs_data *ffs = inode->i_sb->s_fs_info;
+> +	struct ffs_epfile *epfile;
+> +	int ret;
+>  
+> -	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
+> +	/* Acquire mutex */
+> +	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (!atomic_inc_not_zero(&ffs->opened)) {
+> +		mutex_unlock(&ffs->mutex);
+>  		return -ENODEV;
+> +	}
+> +	/*
+> +	 * we want the state to be FFS_ACTIVE; FFS_ACTIVE alone is
+> +	 * not enough, though - we might have been through FFS_CLOSING
+> +	 * and back to FFS_ACTIVE, with our file already removed.
+> +	 */
+> +	epfile = smp_load_acquire(&inode->i_private);
+> +	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
+> +		mutex_unlock(&ffs->mutex);
+> +		ffs_data_closed(ffs);
+> +		return -ENODEV;
+> +	}
+> +	mutex_unlock(&ffs->mutex);
+>  
+>  	file->private_data = epfile;
+> -	ffs_data_opened(epfile->ffs);
+> -
+>  	return stream_open(inode, file);
+>  }
+>  
+> @@ -1332,7 +1360,7 @@ static void ffs_dmabuf_put(struct dma_buf_attachment *attach)
+>  static int
+>  ffs_epfile_release(struct inode *inode, struct file *file)
+>  {
+> -	struct ffs_epfile *epfile = inode->i_private;
+> +	struct ffs_epfile *epfile = file->private_data;
+>  	struct ffs_dmabuf_priv *priv, *tmp;
+>  	struct ffs_data *ffs = epfile->ffs;
+>  
+> @@ -2071,12 +2099,18 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
+>  	return 0;
+>  }
+>  
+> +static void ffs_data_reset(struct ffs_data *ffs);
+> +
+>  static void
+>  ffs_fs_kill_sb(struct super_block *sb)
+>  {
+>  	kill_litter_super(sb);
+> -	if (sb->s_fs_info)
+> -		ffs_data_closed(sb->s_fs_info);
+> +	if (sb->s_fs_info) {
+> +		struct ffs_data *ffs = sb->s_fs_info;
+> +		ffs->state = FFS_CLOSING;
+> +		ffs_data_reset(ffs);
+> +		ffs_data_put(ffs);
+> +	}
+>  }
+>  
+>  static struct file_system_type ffs_fs_type = {
+> @@ -2114,7 +2148,6 @@ static void functionfs_cleanup(void)
+>  /* ffs_data and ffs_function construction and destruction code **************/
+>  
+>  static void ffs_data_clear(struct ffs_data *ffs);
+> -static void ffs_data_reset(struct ffs_data *ffs);
+>  
+>  static void ffs_data_get(struct ffs_data *ffs)
+>  {
+> @@ -2123,7 +2156,6 @@ static void ffs_data_get(struct ffs_data *ffs)
+>  
+>  static void ffs_data_opened(struct ffs_data *ffs)
+>  {
+> -	refcount_inc(&ffs->ref);
+>  	if (atomic_add_return(1, &ffs->opened) == 1 &&
+>  			ffs->state == FFS_DEACTIVATED) {
+>  		ffs->state = FFS_CLOSING;
+> @@ -2148,11 +2180,11 @@ static void ffs_data_put(struct ffs_data *ffs)
+>  
+>  static void ffs_data_closed(struct ffs_data *ffs)
+>  {
+> -	struct ffs_epfile *epfiles;
+> -	unsigned long flags;
+> -
+>  	if (atomic_dec_and_test(&ffs->opened)) {
+>  		if (ffs->no_disconnect) {
+> +			struct ffs_epfile *epfiles;
+> +			unsigned long flags;
+> +
+>  			ffs->state = FFS_DEACTIVATED;
+>  			spin_lock_irqsave(&ffs->eps_lock, flags);
+>  			epfiles = ffs->epfiles;
+> @@ -2171,12 +2203,6 @@ static void ffs_data_closed(struct ffs_data *ffs)
+>  			ffs_data_reset(ffs);
+>  		}
+>  	}
+> -	if (atomic_read(&ffs->opened) < 0) {
+> -		ffs->state = FFS_CLOSING;
+> -		ffs_data_reset(ffs);
+> -	}
+> -
+> -	ffs_data_put(ffs);
+>  }
+>  
+>  static struct ffs_data *ffs_data_new(const char *dev_name)
+> @@ -2352,6 +2378,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+>  	return 0;
+>  }
+>  
+> +static void clear_one(struct dentry *dentry)
+> +{
+> +	smp_store_release(&dentry->d_inode->i_private, NULL);
+> +}
+> +
+>  static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+>  {
+>  	struct ffs_epfile *epfile = epfiles;
+> @@ -2359,7 +2390,7 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+>  	for (; count; --count, ++epfile) {
+>  		BUG_ON(mutex_is_locked(&epfile->mutex));
+>  		if (epfile->dentry) {
+> -			simple_recursive_removal(epfile->dentry, NULL);
+> +			simple_recursive_removal(epfile->dentry, clear_one);
+>  			epfile->dentry = NULL;
+>  		}
+>  	}
 
