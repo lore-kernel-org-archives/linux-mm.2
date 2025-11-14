@@ -4,103 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 196DDCE8D4D
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:35:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91BF1CE8D4F
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:40:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EFAD8E0014; Fri, 14 Nov 2025 11:35:06 -0500 (EST)
+	id F133F8E0025; Fri, 14 Nov 2025 11:40:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A02E8E0005; Fri, 14 Nov 2025 11:35:06 -0500 (EST)
+	id EC3DE8E0005; Fri, 14 Nov 2025 11:40:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567C88E0014; Fri, 14 Nov 2025 11:35:06 -0500 (EST)
+	id DDA6E8E0025; Fri, 14 Nov 2025 11:40:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EE108E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:35:06 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18FAF140456
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:35:06 +0000 (UTC)
-X-FDA: 84109762212.24.52BB98A
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 073F54000D
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:35:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=AR3YdPu2;
-	spf=pass (imf27.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.252 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CB32F8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:40:51 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 767A213AFA0
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:40:51 +0000 (UTC)
+X-FDA: 84109776702.20.4D320DB
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 776B11C0016
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:40:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Exj5SGjn;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763138104;
+	s=arc-20220608; t=1763138449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LlxEA3NA0HAOLepjkYcqMX4f9qaGo/EYMxJVR02SMAE=;
-	b=Jkx/pMa1c9FnXxGpnxGwz9EdGOnJfu1OUDR4bZkpldBvhUIoTKOr/4fFByaYJJ7TteGyLq
-	KvdBOWl6/gMug23RgRlexoRKzdn8vKUzdMvtPqpILqsV5BI7pmg9I0K4XYJkdE9ejtawRz
-	Vtn+4Gm2a99KGsAe+9DAH8i5D5wXnXA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763138104; a=rsa-sha256;
-	cv=none;
-	b=Ihjx7Amij4wwexMbHO2qsYnmj4KvflBsrH+oS2H90XyeBiZVa/VPmHwyL+wVJG28+LzZ4k
-	XHBsNHF/Cnxqc9YQtlmSmKGn1g42ftF97Kmzy0A+AIzhXigwbNUmiYifnfdbrMTHTJQiw5
-	BDALwNNqsvHgnmCd5jAXQ2r/pEwNcVg=
+	bh=+BmoiZRsuPnGxYJyUhaS8+69dvbkfobIcleZY4sazNI=;
+	b=3Qi6lXl6SkNv8XFOc1OAVeyCSBLJRc/BXjYt2IYox/i3WQBpk2YdtXCoK5rcNBULew4wiJ
+	1PRvLvXacSMbkDdJZ0nkm8jbRx4fU7qQw6o3WjRs9QNnKlwSEHvIgbyG7jsfx6rxTLBJ7c
+	7IGY5eLWmc7eBy99sVWMWdviR10z/uM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=AR3YdPu2;
-	spf=pass (imf27.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.252 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1763138098; bh=LlxEA3NA0HAOLepjkYcqMX4f9qaGo/EYMxJVR02SMAE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AR3YdPu2qiGKhuWuC+u7TqbFqt4ZbGQfYSC1b6hxXM10C/yiYiQxS6DCmZ+Mqo12c
-	 WUaKLzjLP0ww8v67icHdaMeBfMsHG9zqgUg22v6GUNALpVdWXkZJWmUArVXxra6Bfc
-	 MjiHx1DfIVeqwfFhsq2T6ztN0OdfCQlQfjkWtbrA=
-Received: from [10.46.175.116] ([36.112.3.158])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id 8B806648; Sat, 15 Nov 2025 00:34:56 +0800
-X-QQ-mid: xmsmtpt1763138096t8d2hxzsg
-Message-ID: <tencent_DFDA2D92B8F69FEF149FE7593DBC47B46E09@qq.com>
-X-QQ-XMAILINFO: M2SvzgchpLqfEL90zePQbt5GZL2do3GXrz1Ba9+0CFJXDFKFtORXW6vOQ6kcqo
-	 6FORzCN/oyOKc4y9WnO6hkLykuMWKjUXrZ5tcUqE71k5CNwEQj8mCYtsXPzhplWWkbeTkIOJ9HP/
-	 langL1r/XwpuNUHup58wN/AlogUjw9DS9Dt6bnxk77iNnMMBbnzrsUNpy54NVQWgl3b7yKGDYNsc
-	 5CVFQcjqB4uVXxO2VANE0HaqtmkjnPGcgjYiwO4LxR8pLI8TO3ylGKh1TWC6kBttkNquM3YiMr70
-	 ceKxxHVpOxCl5rArQU4lddMG7qywr/1O+CPzGpd0SWEFWxiI9K0hCLKSDK6vUeLK6gR6J18jvjrF
-	 L+c1SqqLRCp73+VuvEgZ9GwG0JhHk0GiTO84/qVQuCswvIgzybWH0VhIxz9xhTQfu9viqA/NsQo2
-	 BrLKy1mV+yJYIAf8r6uJ1ywdsdaK85gaKGqwgHiAjxQ5rM3rb34drroqBjOFL0uyfWO+woPAmKz7
-	 Rbrw+awoOzx028e1EWdLyygaz5t/4qws8SdKVlodGxQE1Fv983krXTDIP83IHcRODNNlD1IUsFB4
-	 pkLEFY8tjT1M8c7/eoIu3FEPmH3AvXTIglKKCQnD4c1ClrbhRPXZVG5J9BIeGmwYmCuaZPHO2YZX
-	 6rnBqAMTzTh5vM+iLNGjR5wwV5qGIE9t60+4LkZnYOki7jXyaOHyQj7lT7SZpsP6Zt0G/fxiv00I
-	 jR3WJQZX9DVvBQDDzZmuu5B2p5hnKzg3EgsyeR6iDvFZfhCuLp9AJrEqgszIkfxmgkZPb6hJdm8u
-	 cg02lAcBKgIECerihRXm4W+5KiKZj4pG8/FAazT+LJNJkziq5QpRwopk8SN3zFydIMO1F20NL7r5
-	 SsTazkNRzQ5tCmi0oHQ51L8U9yFeU5nrlgQbjP1XiYkALNi0PcXsMjzxWwiwsmrFYzQVtXafg+tR
-	 +zko64BFMOjhKwOnr75BxchK7r96zmS15Aguf12uv8iZijPGa/2IrmQQ6HpsN8qyKHAgRDVOFeHg
-	 ngMMRHQQ8pgtV0Wdi3
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-OQ-MSGID: <89d29cb3-5813-441d-b643-734140f841a0@qq.com>
-Date: Sat, 15 Nov 2025 00:34:58 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Exj5SGjn;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763138449; a=rsa-sha256;
+	cv=none;
+	b=i2fU5KZrk57XHZvmak9fIB8nCv8iACb5LIW/Db7eiBJVWiurl8K95TeRSYCRgYB16Qf2/0
+	Hv7YhkuVrNHDX7J9qrG57k0N0Y4I5N7htOsmD7BULfNmIZDeTJASZbe/yE1Nt8pg5wnXdm
+	Sqx4yXOucM9rsrvnzYPyRAsiSXtsTdk=
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so3711495a12.1
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:40:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763138448; x=1763743248; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+BmoiZRsuPnGxYJyUhaS8+69dvbkfobIcleZY4sazNI=;
+        b=Exj5SGjnxYmcVAAO/BXIV+moLoqJ9ZAd988RcbM3fEGhy9YedHXp8DNA3LavZucaFw
+         JZIUwBrxoAVvD0d46W4GwnvmEc34i1aRdl9En083cZh0G40FLi6sarxjv2oZMXvyJLhn
+         WF0LLGYVw6Ow2wSbKyhL8144JA07P2H1oNF/bT6bY6Cf8FXcel3ihTq4EYbDNtfL5myO
+         c37PNMtJmPWTmCEWS+iKUBf0AQz387yiS7pBdSaa92p+L05gzXQscAM+fszbhTQbNWV4
+         tqxs4XsWKiHZZY0YMBZYRGAukxzeiUXTevW6enbukw1RRHWu53dGN6m/EBupWviPa8jb
+         fYvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763138448; x=1763743248;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+BmoiZRsuPnGxYJyUhaS8+69dvbkfobIcleZY4sazNI=;
+        b=B26c8ZSOF0S2GxElsLugVZ6dTv7bQscGxpgFzV7BGhdo1AxdnulNChqZd0Y4vZQsQQ
+         /5C+MKP6YVvsNSbCjqnb8VKFh6Hzd9gtDtlkR4QgfNj1HRLm9OkpphKKtbE4ZSk/ebgH
+         kl2B52zU9hjK5kZYg1bFVhpuLCqEJAqv9pDflyGHLXdMyMuA6AE00/iwntgWmPuCmOVu
+         rGcEM7jplfV/0O7oDXlCradrcvuLf40TvNQZiUeS5kf79WmPzuqxxrDKuMOtIPAagT9g
+         F9a9x45sfAWSriiGId2U1BR9bIkvF4iR6zlt4BU69F0IOdznRwIVDcASDk9EDJVi0xVg
+         KZhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVzavFbJjJaCN4Sa6X3TCiH/8QlQPqN31GAR1FCvO2sssjzZEMyMtYk/jRv5Sa+0CnyY6Ow+GydA==@kvack.org
+X-Gm-Message-State: AOJu0YxhABEZVNNWOqmOmQjVIt+1j//qbplESS28QaC9RbgqpX5Cj1Oj
+	/Fo5BMYStYawcseT2ufBzSiIbrl6cnOGxLI12B1rVHe06xl9pkuQZyvNFBtgMMctBJVXuBMJbfk
+	KPXdKVRf+8AFtUHFXQYsFTEULprMo2CtEA3PQTpe58w==
+X-Gm-Gg: ASbGnctroiqR+D3Ru3qN0JqgzjwJkg9Kgp+UhAHQzK2KzB+RyKZGGFSSFnx/aACJpSN
+	lqcxQLvBn/zb4yzLw5fZlK9z+TW2hAEPtMFeQuwStTq6GkFltEwadbk4JTYDzq4OldFJWzQXthA
+	CzW840SRVYbTc5wlfGDUo+jGkwzQ88//iEyBlSSbbHPB1Rkz4Oo156GSIDm+Dj6Eud/EC1yRoU0
+	PglqrjcNrCSkOP9IgxxGsaZOPaJbFj2aexzJAIEIjQns3tKYS0hhPMm+R2yvr9Mboza
+X-Google-Smtp-Source: AGHT+IEF4x+kZ5m4UBqS5P7FCCGZmYDNBKrsgiFiSFZO70e9s+6ZZ4g35lOr+LKKumUlnwEO9GTykGNdehIw3+hWGOY=
+X-Received: by 2002:a05:6402:458b:b0:63c:1066:8bec with SMTP id
+ 4fb4d7f45d1cf-64350ec7934mr2996599a12.35.1763138447774; Fri, 14 Nov 2025
+ 08:40:47 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: optimize lowmem_reserve max lookup using
- monotonicity
-To: Zi Yan <ziy@nvidia.com>, Brendan Jackman <jackmanb@google.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, hannes@cmpxchg.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <tencent_ED235B379E160A5C2BCF688ADDF3921EC808@qq.com>
- <DE8F7PLNB92Q.1L2EKEK4C6TL5@google.com>
- <912CFDB8-6374-4428-A0F2-29FB00E6ECE2@nvidia.com>
-From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <912CFDB8-6374-4428-A0F2-29FB00E6ECE2@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3z59c5rsw6dfw9umedraagdiob5q749x
+References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+ <20251114155358.2884014-14-pasha.tatashin@soleen.com> <aRdVvxF2bDVjSN8f@kernel.org>
+In-Reply-To: <aRdVvxF2bDVjSN8f@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 14 Nov 2025 11:40:11 -0500
+X-Gm-Features: AWmQ_bnys2iW_PWd1e_-UViHA3MthYV6vwR21vLFLUBBVVOxt0CKBnBQUXPUwcI
+Message-ID: <CA+CK2bB51Df-m3nTOQ8kRh+M7q_fdnpRR5xcRHSEgM3Q2C9LSQ@mail.gmail.com>
+Subject: Re: [PATCH v1 13/13] kho: Introduce high-level memory allocation API
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, bhe@redhat.com, jasonmiu@google.com, 
+	arnd@arndb.de, coxu@redhat.com, dave@vasilevsky.ca, ebiggers@google.com, 
+	graf@amazon.com, kees@kernel.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 776B11C0016
+X-Stat-Signature: m8q4mad3f4osrsokr1ghwrbh6q6o7sgq
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 073F54000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763138102-665507
-X-HE-Meta: U2FsdGVkX1+otBC3osOmLgIToBEBwdnZ6dIejgUxN4p92nhyQwcidfg4cjx7rwcV46ktCMWCXor8sg8aFGFTXm0tgqiMQmNVt7nkmBVuPbfL5rAS0Q74Yxi7fFiBjfZtAmqiCkvhtdMlIhMEJqYBqy9SCynvbcj9HYjRjMGQZ1VaUQee7DnXB/vZNI96fAMct8F/LM8tHqAh7VRj2aqvaBaI66OoEJm4t8bITOfZ+At6DZeOdUHRK8f/q5HKHGtU+uz/TehbkJI83v1y2dq/+ku5D3uyCHk1Aw0Ym2BNWPgHJwOA4tbQEMq22yK3KYeMzTVsxPmcF31P2ITdNpROf7f9Mo9W1NniXkZRovvXoBb1tYLfEORbSF1dn7QSBrNNuRazDNC8/z0uXo5bx+hQI8Pe5hX5lgcZ8FzMf0Hudl4PJuson1bamXFCSrylWkGsvASaxAot+zdK0Dvwyl/W6Z+oiK8mwLkmQlZ/LizpuiPMUvTfcBD+rnIbMOrHvRchug3/Lp79ZQIxKB+OPLvWkSwW568OEAwSYlV5W3I621+u1hPpZmsuCHn4+edhU0LZuGDvLDEIuNe3rUDgCpxG/g4NG0nM28UqUcjzkgw2ya2y77LQpAfjPWAcc822zw4gz/gQuFpcM4EAzUoAowXCJjz5WSPKMWr1r7hVuXuJbgJJ3trpjgIE25yaMdlN5kXP/3cNEMoHbo0GIpaUyE3k4FTJgB0/sQ+Lwq0LCYAlGp+Kk0jApJgqwhtwIjgUTTUFtTYwPwWjLSP9awFcGLFWa+XltBf6pLmz++f+AZJ6/Cd7Sdp60iST0F2XPxzSPwF8/C8AaRuw/APvxhoOcuZSXeO3WzrQ6OnlItUyC3KMKCaDFVnWt5L/6fv7KsIHQwwdVh1e0O7bqK3kLSw725csChuF8cr+Qz5jsUQggbiGCxKYuWVxsfcO8a1tsxStYERY9PyFNTjptxVyY5mLltR
- mv9y3hJS
- UgrCeqUcea/kJmOfVK7Tn5E7Yo8YhjUbL8oK2dG4bBoaDhY1vLPd1kFeH84nynZskhsFJ5Z/luQ1Air7KcUnnQPocEVX6CTxr7moMjmXsCBWUVJlu9MeKroe/OIUECO2jC4ZWyWBKvZhEoILQAr6BSttTBoJZd3bZX5XXCbRtAAEHue7KxElDABVYxVcDXIHjgz67lrOuRK9JYmvNgG9Y1mXGmnycQpUoaa7p5UwwRmBQq8HWEFe88+3OuxAZPBGJ7Ql/69Pd/hFwOIuig//y/zVQ07GyTNtRo4P7uK2IjCoqn5cgpgcojgxbiiHjlMpADJ0Grbv/XSr4vvA/4msRqurzt8KVsP5A0XfihnFyXuPDQeZgC8vUSHDQGaQBHLVV0DtUOXfwijij9okLdNEXXFLehfwsr6bcZjpd54NgoTxpeiw=
+X-HE-Tag: 1763138449-238379
+X-HE-Meta: U2FsdGVkX19aGWls0iueEzzEeTMuhLIqU+jZwC0745UdWNurjUXGv9L2GqS7wWma9mjFnxbKyZFnRXaO+uPtAt/MzLxabAGXpW9gve090qxbo1iCZMDcH4N++7FxNHDodl6Uw7Za/sErYTRuyRCIxknwvVBGcp+zcs40pI0OUTWTWYLmPy8EMVuq3Sfh/etELKG3tW4ExC5Qx6Vf6ZbSqENTFlOu0FU2Zx2UIniVMN+5K+MhT1if8msdwcpaI1dZFQ5pQlVPkzwG7GcEJlBM4JUoGBISL6gxnKaq7uYR7xzJOPW1uZ6yhVejpC1b+aSBL4nb/WNvaJuHIzHMqZG2aa2LxIOt1NAx/7jd2nMYrkLUwcw6WI/yz/gxm54JSgsqVLnVHncZAwN64dW/ykkMK8XPtnuCcib9x1hR2JYD1ACo/liGgZyR/TIAjPToUPg61r4A5fyiuY0EPApsEik7q90Nh0RN9urVusI5Xqg+hFNBQ1aL8i7jFYAp6yjwnmMse0XFVABGEhVPwnNmBKUID5o75IvA8tXOHIq63H8aeBiWR6yVbuBKuGwu8otPecAM4h9hncNdPXi0ybuBfoi82u+WsntfOcG5cjycDftm07/HIjp1pIX0N0WSViw9KrY3ZI3Da1DGE89f9DMyRnqPZD2EzllYyQ2JGzaR1cdrXCVkgYmmiPHGaOLvmviKW/LioO59TvP3Ir9r29zlj4Se9H/6BXXjo+GqVVSe8n4NtmLY6BMCTz8A5DOtoFLhQQCk/hBQCuZ1Mpqjw1vDFV5+icamMPqDKLedF0Oh7sO4D9ZARoDkQxUQFetijBnj096DsCRJ/vsKF1qgrBu9+/XqBQ+0qIZX8x9ecWKil++dfuITD/pTJdIrsawpYnaiU1h1yLgJ5JHFAEXJb6X3Qtdqb51LAcsnKgCO6MQZca22RncijaOABsVK2S5cFmqfvmFYxcOVh7ViGliR5UnHGQH
+ L/EGgiF3
+ POYdns/b9htVdeirG3Tt/hnVseahHp2Gni5SGqrs0apMVaZIsS9NlwueBcli5EMzVywkA1rAwc7uTowDW8qtv5tiYZMpsZrxWzMzwsXGboBD/ZcqdnqLpFPrzWLv4pERNXrg7uFFdC1jjhqWXnCmd+c5oR/E79eH0z8Gzd7iRhv6BkUjdG17iJ93QvpK3b6932lzGpil/xKrxzPy2QYjpUiw/aIyE6+3y6dgSO9LAJIAr2IGPFtxdY1aezrfxoT6S6OAChVp4T4eqhjlCkwCEs+NPYw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,53 +119,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Nov 14, 2025 at 11:16=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
+ote:
+>
+> On Fri, Nov 14, 2025 at 10:53:58AM -0500, Pasha Tatashin wrote:
+> > Currently, clients of KHO must manually allocate memory (e.g., via
+> > alloc_pages), calculate the page order, and explicitly call
+> > kho_preserve_folio(). Similarly, cleanup requires separate calls to
+> > unpreserve and free the memory.
+> >
+> > Introduce a high-level API to streamline this common pattern:
+> >
+> > - kho_alloc_preserve(size): Allocates physically contiguous, zeroed
+> >   memory and immediately marks it for preservation.
+> > - kho_free_unpreserve(ptr, size): Unpreserves and frees the memory
+> >   in the current kernel.
+> > - kho_free_restore(ptr, size): Restores the struct page state of
+> >   preserved memory in the new kernel and immediately frees it to the
+> >   page allocator.
+>
+> It would have been nice to have it before patch 3 (Preserve FDT folio onl=
+y
+> once during initialization) and use kho_alloc_preserve() for KHO's own FD=
+T.
 
+Sure, I will move it before 3.
 
-On Sat Nov 15, 2025 at 00:12 AM UTC, Zi Yan wrote:
-
-> My concern on this change is that the correctness of
-> calculate_totalreserve_pages() now relies on the implementation of
-> setup_per_zone_lowmem_reserve(). How can we make sure in the future
-> this will not break when setup_per_zone_lowmem_reserve() is changed?
-> Hoping people read the comment and do the right thing?
-Thanks for raising this, Zi.
-
-I agree it would be a real problem if calculate_totalreserve_pages()
-were relying on a fragile detail of how setup_per_zone_lowmem_reserve()
-happens to be written today.
-
-What I intended to rely on is not an implementation detail, but the
-semantics of zone->lowmem_reserve[j] for a given zone (with
-zone_idx(zone) == i).
-
-For such a zone "i", zone->lowmem_reserve[j] (j > i) represents how many
-pages in zone "i" must effectively be kept in reserve when deciding
-whether an allocation class that is allowed to allocate from zones up to
-"j" may fall back into zone "i". The purpose of these reserves is to
-protect allocation classes that cannot use higher zones and therefore
-depend more heavily on this lower zone.
-
-When viewed this way, the partial ordering in j comes from the meaning
-of the field: as j increases, we are considering allocation classes that
-can use a strictly larger set of fallback zones. Those more flexible
-allocations should not be allowed to consume more low memory than the
-less flexible ones. It would be quite unexpected—in terms of the reserve
-semantics—if a higher-j allocation class were permitted to deplete zone
-"i" more aggressively than a lower-j one.
-
-So the “non-decreasing in j” property is really a data invariant implied
-by the reserve semantics, rather than an assumption about how
-setup_per_zone_lowmem_reserve() happens to be implemented today.
-
-setup_per_zone_lowmem_reserve() currently encodes this meaning by
-accumulating managed pages from higher zones and applying the configured
-ratio. If some future change were to alter that implementation in a way
-that breaks monotonicity, that would likely reflect a change in the
-intended semantics of lowmem_reserve itself—at which point consumers
-like calculate_totalreserve_pages() would naturally need to be updated
-as well.
-
-Best Regards,
-Junjie,Fu
-
+>
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  include/linux/kexec_handover.h     |  22 +++++--
+> >  kernel/liveupdate/kexec_handover.c | 101 +++++++++++++++++++++++++++++
+> >  2 files changed, 116 insertions(+), 7 deletions(-)
+>
+> --
+> Sincerely yours,
+> Mike.
 
