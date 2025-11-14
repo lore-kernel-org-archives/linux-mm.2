@@ -4,175 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF6F3CE8D56
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20521CE8D57
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 259C78E0010; Fri, 14 Nov 2025 11:51:26 -0500 (EST)
+	id 6547A8E0019; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 231728E0005; Fri, 14 Nov 2025 11:51:26 -0500 (EST)
+	id 604508E0005; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 147588E0010; Fri, 14 Nov 2025 11:51:26 -0500 (EST)
+	id 4F3928E0019; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 029C18E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:51:25 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9C81D8862E
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:51:25 +0000 (UTC)
-X-FDA: 84109803330.24.FA6AB40
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 277DCC0003
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:51:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NpuON5sm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/53GYY7y";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NpuON5sm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/53GYY7y";
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763139083; a=rsa-sha256;
-	cv=none;
-	b=yAENYg93e0+4Zn9XnuHqN6nV+gznRt+HWRD2Su152PWa5eFH0h2USZ1VcWbIRG4Onf+jYn
-	nFTSyLlElPJwlPV7qHN2fQ+7Jjtl90jOtjjXVcusB2TYDVNKyIZuxmpdn0edAfE5jB9iV5
-	hYKJRSYLAp4TMqoS8XREhjlpd0qZyOA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NpuON5sm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/53GYY7y";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NpuON5sm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/53GYY7y";
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by kanga.kvack.org (Postfix) with ESMTP id 3C31C8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:52:43 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 030CA4D059
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:52:42 +0000 (UTC)
+X-FDA: 84109806606.22.E18F6D4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 74E7F1C0007
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:52:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dYUKLJgJ;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763139083;
+	s=arc-20220608; t=1763139161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CtYOFKKSpg2Bb/w+uJqdIAvBphJZ2lroa/jghbQYexs=;
-	b=pt8mqJuh3Gu6RyBQ6tbSYVpLEJ5uRTrojA+3yCTA1RSYDuGVHJQ+Za+FyBdGkECarQZQis
-	CbNA8xdgS5YS5UD0fFXG4NNoVpI0B1KSYZmQ6I8mtK3O9p9lqKRmXQcnduc+zrTbK7RvdF
-	tXWxeYve7zPkrnrIcxFRoLX5IIoaiz4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 589C9211BA;
-	Fri, 14 Nov 2025 16:51:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763139081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CtYOFKKSpg2Bb/w+uJqdIAvBphJZ2lroa/jghbQYexs=;
-	b=NpuON5sm5fpY0XnXC2G0GlCrPXke+mYDn2fyrbH6esINMpwMibsiqwbYsfjdgNc0iVluk1
-	w4vw5hAOsmeweh8/uS0OJ7k/VJJ9pLr78q2MdDMeGyk/K9jmnyO172BP9+Fu7aLb5pAsCj
-	fEqVcprTUjHx3PSVhsCNO1xGdAyVwI0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763139081;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CtYOFKKSpg2Bb/w+uJqdIAvBphJZ2lroa/jghbQYexs=;
-	b=/53GYY7yQnhBr9vvWJq+HNcRaP4799YtMdxrp9sr/Sfpyj8iis7o2v8868rCjov5YgAb6A
-	D7t5jwJYWbw3l0Aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763139081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CtYOFKKSpg2Bb/w+uJqdIAvBphJZ2lroa/jghbQYexs=;
-	b=NpuON5sm5fpY0XnXC2G0GlCrPXke+mYDn2fyrbH6esINMpwMibsiqwbYsfjdgNc0iVluk1
-	w4vw5hAOsmeweh8/uS0OJ7k/VJJ9pLr78q2MdDMeGyk/K9jmnyO172BP9+Fu7aLb5pAsCj
-	fEqVcprTUjHx3PSVhsCNO1xGdAyVwI0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763139081;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CtYOFKKSpg2Bb/w+uJqdIAvBphJZ2lroa/jghbQYexs=;
-	b=/53GYY7yQnhBr9vvWJq+HNcRaP4799YtMdxrp9sr/Sfpyj8iis7o2v8868rCjov5YgAb6A
-	D7t5jwJYWbw3l0Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 35E653EA61;
-	Fri, 14 Nov 2025 16:51:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id o1H3CwleF2khBwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 14 Nov 2025 16:51:21 +0000
-Message-ID: <61d451f7-a54a-4c27-afab-9ae684b4bc6b@suse.cz>
-Date: Fri, 14 Nov 2025 17:51:20 +0100
+	bh=MarKiFtWWXiCJfop2Mp04w6dux4RRrqD8MZucum8wGM=;
+	b=BXFhPErbgETPZXOKWDCEWEw6VG+pcU+SpOUazN19x9796Q9cR04kpddZmvdtRVMIZZi7WV
+	wC0XwgVhWdQ297gXad+Du8CAGSSeYPuH4yf/+xpWEX0R+KY3CAsuVPwYvlRu9HFPy2gUBN
+	lPpklYbZrJPZyTpRgn3ZFZxrTqerQcU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763139161; a=rsa-sha256;
+	cv=none;
+	b=gGaSPtQkBVAMKsJN3i6195CZSu6CgvcYLkFbBUprGUAY0GneybN4Bk7kFC/+VAUP5T6DjE
+	Hi6zQuFuYNznnpp5npStaz7k8zO31bdycVL4VUAUvWcO1RT1av4A36J7Yn2HcFiqU3XGb8
+	w0fLWEso+7dXrOaws8Lr0SDfzy4hFE8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dYUKLJgJ;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D5A1360198;
+	Fri, 14 Nov 2025 16:52:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32DBC116B1;
+	Fri, 14 Nov 2025 16:52:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763139160;
+	bh=ukDtEMQ3h+HhdTJApwHm9gtvXizGx7c4PKt+RTNGPfM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=dYUKLJgJtebr3v2RLEJLGjWo41D48EJ74YaRNQVVcm9EIEADqqQMMJSdMPnkQyRAY
+	 XkyMOmFO3ICqJO7e5Nva3u3qleGxnEKKidN2/N8S3rc1/Nh30kccNHXjEAVPZsadOg
+	 dOiaDloor0qs0YW7KtSIGIMWfqCor3kC3qbk4otQ0YiPgFGwSZCynzXIoJUG4QHN/E
+	 IH4UrA/zU3x42MbWyJqcj2PmtkLUek9tZM/TDt1nf1GFO6ZuOKoUV7X2U3r7+ihKBA
+	 rPf51GRurGrGeTA6XskxG28Z/YZzJAQOnxxY5Dqu65vEFiDcfcKcHdWBmZsUeVhRK3
+	 GxVPiDNBhTPRg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org,  bhe@redhat.com,  rppt@kernel.org,
+  jasonmiu@google.com,  arnd@arndb.de,  coxu@redhat.com,
+  dave@vasilevsky.ca,  ebiggers@google.com,  graf@amazon.com,
+  kees@kernel.org,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org
+Subject: Re: [PATCH v1 04/13] kho: Verify deserialization status and fix FDT
+ alignment access
+In-Reply-To: <20251114155358.2884014-5-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 14 Nov 2025 10:53:49 -0500")
+References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+	<20251114155358.2884014-5-pasha.tatashin@soleen.com>
+Date: Fri, 14 Nov 2025 17:52:37 +0100
+Message-ID: <mafs0tsyw7e0a.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mempool: fix poisoning order>0 pages with HIGHMEM
-To: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel test robot <oliver.sang@intel.com>
-References: <20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz>
- <20251114050410.GA26404@lst.de>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251114050410.GA26404@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 277DCC0003
-X-Stat-Signature: 9kn6sakbauhtj18fydp591p4f4f98fqq
+Content-Type: text/plain
+X-Stat-Signature: wiqh8tgh8r9sb7ywyt9gmzd58769y331
 X-Rspam-User: 
-X-HE-Tag: 1763139082-709930
-X-HE-Meta: U2FsdGVkX1/FzQ2jhcftYY0PjL859O+kA9SlJuzBSGGK8a2jkqXS+QFvNVqQdxZPvpnHynYZ1PomB4xQBSKDO1rFAMbVChOnLr5wWTMELDT4ZAzRvqLtU/+Fam2MNozv1kzmb9+KM/60qwLT6XCGrpppwO+ggwZG8K+DpJo006iryFM8n22rQTFuMsGSVIVmBY5YbrJn9px/xEE8oeLZhT8C5bLcpTUDVmi7a/io/8gi1aUQjdp1w4gBPu8eIlwPX3gc1gfUJoLau70qUSvtsf3wJiLAV80ABnTZ3ipPW+TfX5EMBMwM10URcDrDxBHjVOErbkx+0Nv4ehdYIOIeWDJEHInl7yDrUYpuH21AdDZeOgg5CaO0Yf7kZHGora+aPgnJCX8YCT2OPeXH38HCA6Pb5L4922ge+vkGoT+2WC6i2NjEGRbh1G5/i7QSx2OlD0UOk0kfgBR0AzWabxxI5RuKT5pqVH58rxXF7/uFwvIzSQMyqhkzOhvOmkx+83Xoi2tj4KOyK/T+p23dREgI7dm7qpDFbUr0rEp6UzOLib02Y5JTEdZ+hVN1bM6LYcnmD7J8EQZzEGzxSZo+SXLqrB3ggflpzzUd37TRbRWjgVXsHLK+GgQ8pLPJ2p+pD9MqZ2n+GIaomSz5G/EFlCorv0DNobAOvBbuOyIP9m5FquCPsW4Y8rfSPC+ywr4+gQhD9TJ650BfceOVe190jIiwOiGup9VKG/ntpbaQa13bI0RZ0F3Buu3LcXH54znfys8+UZ4zbJ2cvBDaV3Up06i3LSl1hQyReCI5DZmp6yzX22X9JbNxKxD+8LMS1z2F2Lcs7XN4ucAnvimSMi5GcR9FHpyz+w8y2ykbTpYkSUbZGvlucqwlydXCjs+NS81kTtA+RlzYUki/mcSNX8L+MXx3WVy7XwHx2IDsG0xMHBIE+OuMW5WsUPqo3ZHc2FFvWCqcmg8n36XKDMseBEaYubx
- xW9HQjsa
- bjlOvBsqR1fEzml3vC3vRAg0upLy5i+gx6egQNvxHSNfAV8rRH5O9+48LlRRrhSKf7nZDZVpS6MvDhQSsmcpXCA9L0nldW7mstA4rsE41cPe6tLdoybaxEhhQzgGjJ3+pXd4MAOqobEbKNa1YGagfW4r7wKyRrvG1G3ibH22o0Sp28ERpIpqKjAYwfVtFn3/mLSeZttyYd4fFvJJqP1QurMcwoywgrwAowzwezh868niGykv6uSXSgTmL+XHUuw5uMSRkasg+TmUGHTLWY4wK0xP4j7WE/mZt+lwb
+X-Rspamd-Queue-Id: 74E7F1C0007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763139161-374255
+X-HE-Meta: U2FsdGVkX197xgPoTjUCCgHpKlNRXTSHhEFyB24hj15R8Ef2rqt9nzEeGnNheO4O3kgAPQeuiQFO63I2BY8s6DuivgLQaKeTLTYWbmnyaeXQftnhchD3HcX7PvtomLdwE6ONINAJ5g38J/2p+Qz+6KiUXGnX1Wdw1gQHhM9BfE7eDH3xMEaxeKuQ3MymDgsRbzNmjJV+IpBnWcU2/6sGJfbyL3RqRS205ZjUFl2TE+3/qqqZcJVa6/KrPrnN4tzt+MhzNKyoBrhqb9lh/gfG68m5ImbEvBTkoTnNse61Zx4UmHm330yUIMe5ikd2o7G0cQiyaNtyr6BYV2r2cuV7PpCm1MCG4RT7w+1pq0TfhJSjSByFc4Z+tGYuaH1lnmeetOGtHW7mqjaNOuJ3sZqlVRyIXdPtsPi+3pD4WCDMLUrkG7lpiAqG3hmG85RTITVCy+NIglV0FOZm7p2KIqGj9vvsNdWTbqvrcNRuV9FBLgfUSlgD9X7CMc34046Grg1+ZF/4ElfSS4gemgF21HVjGpLAGzMi86pgAp9PxjiFtY4piLv8NSGCcE9IhtDzpWyVLs9dKkT+VRkQHoTXtaCUHpVQsySVMdjYsokJmzP2A5aPtAUdur9tD7THOg8/JSZYnCWOZ5LhwKHDpvg6o4ZhQx18lCUA0VlyfkPxaw9wJmwtonuULJ4ZZA3ZvCmMBoedHpP7A57W06BzR3ZY3dRMHEsKqXmLx+X3DcE7ICya6pcRSb/vBtvd6MLT4lj62BhMV6DEc7HGAq9BfAZicOIpyq16LY3s4k4v82NUh90qh1QNNW2bWM/F3ORbMs/3N8Ha1ruxonmgz/Li7cnmI5h8IALOncz69e18/pno7OLY35bEuSYUDgKCtdCLoARJbpy+ka6M2n21BqrCDYrN4hxaW7/cdiIbpRvuGlnU8QLWW2D1BH6gei8m6dARdMomRPghGSAnZ9w9JA5q7A/8wvO
+ bfwWPruT
+ TuTz1NnDxFZD6YYIcyQTGMfHzHSBNpXbVsFEC+WoC3/d1RysbJaj0rxlFcSr9E2JFrHTmWj6MkHkbXEKIDL4IhfsaCO4XA8DxV4BMbqhzTCH3M2DXK03IfLL+SAe7kLsW9NtVdzej9qLnpHER29oeqMzY60frnEP8lRqe0MOi3/zI4hRbwvCeGMv5gzVKaxIKslKAtzfgNt72Q4fMNPfJ529ZkkEuh82hZuTOol73UfPLMUpnGixIVd2ovQUlv3R3Cr4w
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,31 +97,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/14/25 06:04, Christoph Hellwig wrote:
-> On Thu, Nov 13, 2025 at 07:54:35PM +0100, Vlastimil Babka wrote:
->> Christoph found out this is due to the poisoning code not dealing
->> properly with CONFIG_HIGHMEM because only the first page is mapped but
->> then the whole potentially high-order page is accessed.
->> 
->> This went unnoticed for years probably because nobody has yet used a
->> mempool for order>0 pages before the new block code in -next.
-> 
-> I did a quick audit: and bcache, dm-integrity (config dependent) and the
-> KASAN unit tests create page based mempools with order > 0.  It looks
-> like none of those ever got much testing on highmem systems.
+On Fri, Nov 14 2025, Pasha Tatashin wrote:
 
-Thanks,
+> During boot, kho_restore_folio() relies on the memory map having been
+> successfully deserialized. If deserialization fails or no map is present,
+> attempting to restore the FDT folio is unsafe.
+>
+> Update kho_mem_deserialize() to return a boolean indicating success. Use
+> this return value in kho_memory_init() to disable KHO if deserialization
+> fails. Also, the incoming FDT folio is never used, there is no reason to
+> restore it.
+>
+> Additionally, use memcpy() to retrieve the memory map pointer from the FDT.
+> FDT properties are not guaranteed to be naturally aligned, and accessing
+> a 64-bit value via a pointer that is only 32-bit aligned can cause faults.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 32 ++++++++++++++++++------------
+>  1 file changed, 19 insertions(+), 13 deletions(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index a4b33ca79246..83aca3b4af15 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -450,20 +450,28 @@ static void __init deserialize_bitmap(unsigned int order,
+>  	}
+>  }
+>  
+> -static void __init kho_mem_deserialize(const void *fdt)
+> +/* Return true if memory was deserizlied */
+> +static bool __init kho_mem_deserialize(const void *fdt)
+>  {
+>  	struct khoser_mem_chunk *chunk;
+> -	const phys_addr_t *mem;
+> +	const void *mem_ptr;
+> +	u64 mem;
+>  	int len;
+>  
+> -	mem = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
+> -
+> -	if (!mem || len != sizeof(*mem)) {
+> +	mem_ptr = fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
+> +	if (!mem_ptr || len != sizeof(u64)) {
+>  		pr_err("failed to get preserved memory bitmaps\n");
+> -		return;
+> +		return false;
+>  	}
+> +	/* FDT guarantees 32-bit alignment, have to use memcpy */
+> +	memcpy(&mem, mem_ptr, len);
 
-KASAN unit tests sounds like something that would have been flagged by
-automated testing long ago, however the mempool-specific poisoning isn't
-compatible with it so poison_element() and check_element() both return
-immediately with kasan_enabled().
+Perhaps get_unaligned(mem) would have been simpler?
 
-bcache and dm-integrity are perhaps too complex setups for the test robots.
-But I'll add cc: stable then.
+> +
+> +	chunk = mem ? phys_to_virt(mem) : NULL;
+> +
+> +	/* No preserved physical pages were passed, no deserialization */
+> +	if (!chunk)
+> +		return false;
 
-> The fix looks good:
-> 
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
+Should we disallow all kho_restore_{folio,pages}() calls too if this
+fails? Ideally those should never happen since kho_retrieve_subtree()
+will fail, so maybe as a debug aid?
 
+>  
+> -	chunk = *mem ? phys_to_virt(*mem) : NULL;
+>  	while (chunk) {
+>  		unsigned int i;
+>  
+> @@ -472,6 +480,8 @@ static void __init kho_mem_deserialize(const void *fdt)
+>  					   &chunk->bitmaps[i]);
+>  		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+>  	}
+> +
+> +	return true;
+>  }
+>  
+>  /*
+> @@ -1377,16 +1387,12 @@ static void __init kho_release_scratch(void)
+>  
+>  void __init kho_memory_init(void)
+>  {
+> -	struct folio *folio;
+> -
+>  	if (kho_in.scratch_phys) {
+>  		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+>  		kho_release_scratch();
+>  
+> -		kho_mem_deserialize(kho_get_fdt());
+> -		folio = kho_restore_folio(kho_in.fdt_phys);
+> -		if (!folio)
+> -			pr_warn("failed to restore folio for KHO fdt\n");
+> +		if (!kho_mem_deserialize(kho_get_fdt()))
+> +			kho_in.fdt_phys = 0;
+
+The folio restore does serve a purpose: it accounts for that folio in
+the system's total memory. See the call to adjust_managed_page_count()
+in kho_restore_page(). In practice, I don't think it makes much of a
+difference, but I don't see why not.
+
+>  	} else {
+>  		kho_reserve_scratch();
+>  	}
+
+-- 
+Regards,
+Pratyush Yadav
 
