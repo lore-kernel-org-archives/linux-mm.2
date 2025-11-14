@@ -4,136 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F8DCDE021
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CD2FCDE021
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:11:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A7528E0009; Fri, 14 Nov 2025 03:02:37 -0500 (EST)
+	id BF1A88E0007; Fri, 14 Nov 2025 03:11:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87F1E8E0002; Fri, 14 Nov 2025 03:02:37 -0500 (EST)
+	id BA21C8E0002; Fri, 14 Nov 2025 03:11:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 794B08E0009; Fri, 14 Nov 2025 03:02:37 -0500 (EST)
+	id A948E8E0007; Fri, 14 Nov 2025 03:11:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 684F68E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:02:37 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D607412CB5E
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:02:36 +0000 (UTC)
-X-FDA: 84108470712.13.D56FF82
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 08EC5180017
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:02:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BtyFPHuv;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763107355;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4KbiNU5yCfEN4FXal09etJPtHEak6Phh1dFiA4B8zJk=;
-	b=7QFb5g0MatLJrlAGNHIG+e1tKMk5vS6tjQWkdDd5HMCZ+WpRKuhthEw1L7g6D1N2Yva6SB
-	YwA2GcszGlzY1cUHF8XYDubnLPeCzjRciHdFssbleHh92qpPu1+SWuUNURpcX1TVytp7jn
-	AICsivsG4kU6Q/HvbBBBEd0hXDjF31c=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BtyFPHuv;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763107355; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9431E8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:11:49 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 31B5D88529
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:11:49 +0000 (UTC)
+X-FDA: 84108493938.25.D77ECDF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8E3FC20002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:11:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MT9IHfhL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763107907; a=rsa-sha256;
 	cv=none;
-	b=Gz5+fmQlxWNQ9JHjmWEEhjQJCad4Uqqt9gYeEba4q7nCN2EnL2369GDJtCiqfJpmJbMr+f
-	kDu4SUBpK1HzfUyU5QbK1UP11gh2TvsesvNIQHHqYRO/5Fm4/uF6Siyb0b3V1KV1uB4hSi
-	EOePayBH0MYPcFS03Gsml26JLu6w/Rs=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-64149f78c0dso2700414a12.3
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:02:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763107353; x=1763712153; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4KbiNU5yCfEN4FXal09etJPtHEak6Phh1dFiA4B8zJk=;
-        b=BtyFPHuvV5qqLcw0hHhdcB3cXMq0goSGGW1fXSktNO2auLCqayB38bLy0YSHW0NSFX
-         RuDtXkDFoaVmFvzLt9KwnhK+8He3AARoQexlo0rRRSmK5zBMdYNnJbKkyOmgBaSoeBO8
-         JIkfY6HaCKR45fkl8KaEev13h7+Rt+YdURZ1aT6WSmPSizRlADKnB9pNbyFnd+X9sSYw
-         qD9siR9fljFzK2zmMe2w8K5473Z2Qyjwe8YMfnyOixGXCZCW/ihsdu+8wXIHTBZdM6C8
-         bLiFOo17IK70i8BxCFWkpN2H0AECwFM7S+Bz3kLP2Zrzv1mY5+pJHRN9xgvHNcVRNw+z
-         jbRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763107353; x=1763712153;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4KbiNU5yCfEN4FXal09etJPtHEak6Phh1dFiA4B8zJk=;
-        b=CvDa19qX6oKhkkl+/MvbWSHS5VfRNyeq1GMtvLhtU6XDhYIn4wG7V5VQo50OU3m+LW
-         zjDnYISgtRm7yMGbPJbqyLY/6ryZFn2DCb43tBnKS4rVR8+Y2Nuo2Jxx8lnCALn7Vj12
-         0Q1XNOcy32LfCKb+L2fMP/31P3WtCz2NNOggGVEMv0RP+TQMB24ueF2TH2wqx8UFgnbj
-         uv/d9yro5oPYWzUlD3uUPcIfBZdxsWFgxXt2GMOyIbiqBTq9vUYUPRhsmtcdKgIMuVvt
-         q/on3bgdLP8ezoPTPJviM4m1jGhx/FJmqn5T6uUjoPU7PZb2HTqczN1KHnrvFhgKlfPZ
-         z0mw==
-X-Forwarded-Encrypted: i=1; AJvYcCXO+XUZzkO80XAXBmUdV/nDPBfSmUeAvxbNes+FI68o9B18NyspksBmwp7QwfVBUNJ9n6viu0AGrQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw5EWULTj+qKft6CZeGJZNjiPZjwCecyhhUuL70wGs79XYXts91
-	kQaARkzry6LM9rioXBFvZA9KEmUzSq3bG5TtQsuSrkponp33elX4QkmX
-X-Gm-Gg: ASbGnctIAw2Al6b9sdZfpJXst/xOI/9gU4CRWCGCtC4bNpzwwtWlwl3VlqRe0/hGQE2
-	TUT+2y250hdQ42BSPjbk+ui6LYQvbzR1fyBz+yjGA8v50bzDP/2UjtMEWjU0Irf1FXM1QQsWlRc
-	PUxAiSMYVONXbcVy6KYyhV1i8dhnV92EMQht+YDt7UpG/OZVaE4nS4muZ28uiQ+JBF1E59Ov6DY
-	XXJ4mzFV9KhP7vL4wuHtYxWaDiZsO++I1HPACsBrxF/LJlH360oDg1NQQ5l2HXppWSk6ahIYUxy
-	CsZEZsBvsuzJsBU4sPjCvOxB0VwkhOdTXjRUK2lBObs/GOGeWMfoD1aQ+AC75gBzCHYCWWfnhRP
-	EOm7HgQvoLCAFs+2HCnT+Q+H9x4dsjqrI2aeWTZIrupvlJsGSE6yIikPV3jSFi0cdItd9YepHUE
-	ka0VrwtQXnpb4P3w==
-X-Google-Smtp-Source: AGHT+IFHp4R0zTwE4dMochE8kl4UmvqdsH7ba7lQ82B8UAtO+/J0teWF71l9ELhwzjeYKUxsrmiq1w==
-X-Received: by 2002:a05:6402:3592:b0:640:7529:b8d3 with SMTP id 4fb4d7f45d1cf-64350e2321amr1683582a12.9.1763107353191;
-        Fri, 14 Nov 2025 00:02:33 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a2d746bsm3123759a12.0.2025.11.14.00.02.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 14 Nov 2025 00:02:32 -0800 (PST)
-Date: Fri, 14 Nov 2025 08:02:32 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Ralph Campbell <rcampbell@nvidia.com>,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [PATCH] mm/huge_memory.c: introduce folio_split_unmapped
-Message-ID: <20251114080232.kxms4vjlkiiuxqpl@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251114012228.2634882-1-balbirs@nvidia.com>
- <20251114032105.sdkjaoiwpdmpynew@master>
- <870151ce-ca90-4cd4-8f21-35f4da329924@nvidia.com>
+	b=aj63b72OJ7ECv5Z23HPZxWmAFLbOM955wfUs79Iod48zk7koKKUMLX3yKnQ+PU04E5Vqss
+	nGqfg6HcolAMivniRHszhjdHsYQZ+uYeFxbPRw5kjz2fcswa7wo/IbT1wmj+thn3RoP0Wx
+	Ltdr3+2ve6TTWMRfkdKa4XL2nVSk7zw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MT9IHfhL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763107907;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=A1F9g0B6grh1pyEbdws2Ys5lAC9QN1XTCTeZvmfIvs8=;
+	b=RALBYueAaSy/ZQbcaKQallNdI2TWVl/P9JPlyL+ua+HUwtjBIYb/LHKjAnzx8Os5TBaXjp
+	+uqF2Wc9XkxeE50N93LkYghtASB3GkcXxHgLR1hYMlfT4ztAjVmgm2VOHcoHwMrrveRPVP
+	eLmNRykS4Fqu7yj1cfBHM7MGQ4Fe8gY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 657B243F09;
+	Fri, 14 Nov 2025 08:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39037C19421;
+	Fri, 14 Nov 2025 08:11:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763107906;
+	bh=OhGJvBDuLbsZuOLjHyEX6xIRl+rLMcdKrk/4+J4TeoY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MT9IHfhLgZNygWpWG+dIRg6p7RUMUEJnK40W4JZjMG0Yi6v+emGp8fU39Dv5V938i
+	 RfBl//v9Ge3H/xItQ2DqNjBiq9ZOnM4UIPaxoDcfBXafM4kkEDITA9SSqc2sSdXGVq
+	 o7Hu4mvfGFxlFKsWc/nNdJvQQlg9sWoXCT9DHE3oYDYq6WZMkCe7PG6unlXomQBHHk
+	 UaXZwAnG6UHtepYc44yd4I52ghf1b8H64CrQCGiRPzXDn9UGEQmvBdJZMaPf1ClPot
+	 aPgBmOUnsHTiqmRoTeu8rOVEFVk+Rd+smmC0ATKdv/AoT0lOdj+uCLIh1F+0T5pdCu
+	 oCyn+0Y2SCsIw==
+Message-ID: <9d30836b-9ddb-4432-aa39-85e32c2ea645@kernel.org>
+Date: Fri, 14 Nov 2025 09:11:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <870151ce-ca90-4cd4-8f21-35f4da329924@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 08EC5180017
-X-Stat-Signature: 3ic1mno3d9tgeswij8jqfh7mg4aamn9u
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Carlos Llamas <cmllamas@google.com>, Peter Xu <peterx@redhat.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Ujwal Kundur <ujwal.kundur@gmail.com>,
+ Brendan Jackman <jackmanb@google.com>, kernel-team@android.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ "open list:MEMORY MANAGEMENT - USERFAULTFD" <linux-mm@kvack.org>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
+References: <20251113034623.3127012-1-cmllamas@google.com>
+ <e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
+ <4a60a703-d9c2-46a8-83b4-a7ecff7f6ba2@lucifer.local>
+ <aRXyxWeh81-aTHaC@google.com>
+ <b4291d0d-b913-4e61-9f9d-fbebd1eb4720@lucifer.local>
+ <20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8E3FC20002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: e7tsjzanx4jdwxxkaejnfpm7usdrndrc
 X-Rspam-User: 
-X-HE-Tag: 1763107354-354695
-X-HE-Meta: U2FsdGVkX1/Fs+sBbxqgyb60EdHElfwvfJutAfre01ztmSE8ZMbpi3AWVVDJDbcrrf5eXRQhZfP4fSxm/rLij6YGHGG2RIh5PAaCJk3hTDUFf3yqUnhul83ahw11R+eaYktIAm5LodTa3LknYWW5e1y36SclLCX4Uim7nnxbOlbypcxlq6jFK3GkW1mMHQ1S2BcKwoUmU1VVFXTzDhl7Sjv1H6C6hNCB6Sr2BILj2hBzaZIepOJ3d9pzSEOJlLNj2bCqnMtkN6TDtOGqVWZzTYNE+/dHPNN/ry0ruTRNCOkMqI3kd5mZq9JijgExF9TMiwGBSI7r4mD7vw2M0j8XVawh/fuAeBZ5P0nICe0yennGEftOHeUdsZpmeP3vj449low0Umv7nETQrvBq465BSFyAehos7U6slASo0605/lEEiPlcCq6w5k8ZOW1P4kieB05Q8WyK/7I80KuCxxyic7Xq2TrswxxOEOzDL93naycll7paE7n5eFLXTcZnSrLrK0yKqJXX0qS71noisWm4awcnYj1iqY2X6DZWYriUNESn3PYLXcrQb9xcKibui2oHsVuCeXQmIC7pP/1yMGuw7891/TZqs9FwzwGOtidW0QikH0YrM1WKWfFalv8ZX8KouG8nu30AcOHfhE4xS7jOkkKETSVqT8Z232cLHSELDvWbLd8FwAhwiCGJW667bwkSZEwBaGlkt1CkWaGkAYVY9JjWhIuacpGTKf/X97DanU2oYnBxpH1RsyKd/P+gbHRb1nie7Daa9AEJ5UMR8dL2sxy7tVK8xp2FRo9YG/W7kL7xNnEwFMk4LYlfQ/l33GMyHNZpQ5u67UQ6AiIE0KRzEiYJt2+quHaxVw9/jgcVmXsLG4r9TuSQXQZBDcwGioPcuPRbMp18lBLYrpe08JelQXL9yibxPtpXiHX6zOatlk8+On8U/6xpx2CHU7n7SulgUb+4MxjuQjRea+BbaTn
- FZVBsNmL
- 0GayeeKfufFzmu+BApuqcZPJGRlGgZY34u3HH4sxtITnlcW/PTkVLeGkR0BYoCeteJuoWF1YEYtxd9EbNyeU0mJLtqMrYtJRPyEk4Xf1LzL6ZKPVoUmF19LtBYbv1aCSxKH3zN9eJhKJRujdg8mcir7Ad7DDFRUBF29pxnX4JcWfVV2+1kiXuIWdxLJUf1Bz8Ajiuuk/4WktK5fQuQVwJTTre9o8FtuemAtB++a4NCjhgLAEDavzXVybjjWzMf5Fq8HfsARTu6UVav7ZhBVJjv0UCMf6ZSyaNvdL1mCsd7o/52Rert80A1/kd3/gN1f4MNWCO
+X-HE-Tag: 1763107907-57582
+X-HE-Meta: U2FsdGVkX1+AAZpWHSK22in5G+bHapa3WbE6TAZQzcqIc6Bczc5E9N/AhOVuiZiL3/2viA53K8LgI942GoTg8VVHMGLW8ZjmlMrVVGkgZHXzO0utVWBUoUkGbZZDiXWre0hlXTrAb53CFusQnpKGtsGDnEmGjhmtP5IFMysjk9tSGKfDAYqexQ9HKictgfVJ85QFQpm7ynz4+2f5rKqpOP7++tXPqw2qwd+a6j3zmzxyWngfPJE/28Z3M6S1hSdpmUMZbbcuVwbtmOCnH8nQnuDoNpjQG3IkZFD6t7BRb4yLc8rCbRi/7ruFzfTwZCbM1GRk363P0oZ0YV82ZHsLYIP9N8Nayea4IA+ASnR3QNskQN+Ohe/Ebeu0RpkFAwcEi2yktEOtuEMjXipjG0IQ9tHdgONasLpsSOieohYlNF5jyWYNItFnNYRYWDPYlZ9PVusXHj3r4RWgeX+PXgLBo/oQ7mmNCQlSDxTN832lJjuZNihg1rA/XxNBOnTQ3+p4Omf71Ao9ugyYs0CvwIokq/hVlbUGOR09VulzSq+scPpK5zchjN306uELVCSbGOkH2+dtFIAhboRbD63maxicaxGxrsNU9tfqqbg49AnIGMHcNPhMXTrB59dRSE36ZxGjXzcyzTkzFt9RtU3W2oEaWIESTJKeJkRkQuzQgiTt/UIDK1KBG3eQO2KHVnPB5yt0/AokiFG1l2TBisqcyofr1uGQBzO5fmJ4wdGiVQt0mC2zyoKTqkfB9BUJ1uAYsqHYkLucsKvMwi5gKCY9smd7RLi7qubCga7eCtj0AKmYDf0BDslw+AYPSGpzQmc5jI2aXf9CUQoOQhXzxwOmPaqoyuP1Wov2+WXJ4B4Sr4GY2LLMbGVqnN+DpaZQATwPCteolqcoq1ETbPKOpowQZuwDOo7L4zYzQKX/AIqJj8hQFwWXAH14ztkUaWKQb/Sr/p2LJi1gK2B42rb7n1voP3d
+ COnjfV7F
+ /luqBcXX9IUvZS+WxXqa3HmPaCWtHx3mVl9mz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,72 +107,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 02:30:03PM +1100, Balbir Singh wrote:
->On 11/14/25 14:21, Wei Yang wrote:
->> On Fri, Nov 14, 2025 at 12:22:28PM +1100, Balbir Singh wrote:
->> [...]
->>> @@ -4079,6 +4091,36 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>> 	return ret;
->>> }
+On 14.11.25 00:32, Andrew Morton wrote:
+> On Thu, 13 Nov 2025 15:03:06 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+> 
+>> On Thu, Nov 13, 2025 at 03:01:25PM +0000, Carlos Llamas wrote:
+>>> On Thu, Nov 13, 2025 at 09:54:37AM +0000, Lorenzo Stoakes wrote:
+>>>> On Thu, Nov 13, 2025 at 10:06:42AM +0100, David Hildenbrand (Red Hat) wrote:
+>>>>> On 13.11.25 04:46, Carlos Llamas wrote:
+>>>>>> Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
+>>>>>> vars into struct") moved some of the operations previously implemented
+>>>>>> in uffd_setup_environment() earlier in the main test loop.
+>>>>>>
+>>>>>> The calculation of nr_pages, which involves a division by page_size, now
+>>>>>> occurs before checking that default_huge_page_size() returns a non-zero
+>>>>>> This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
+>>>>>>
+>>>>>> Fix this by relocating the non-zero page_size check before the nr_pages
+>>>>>> calculation, as it was originally implemented.
+>>>>>>
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>
+>>>>> Do we CC stable on unit tests? From my recollection, no.
+>>>>
+>>>> Yeah please let's not.
 >>>
->>> +/*
->>> + * This function is a helper for splitting folios that have already been unmapped.
->>> + * The use case is that the device or the CPU can refuse to migrate THP pages in
->>> + * the middle of migration, due to allocation issues on either side
->>> + *
->>> + * The high level code is copied from __folio_split, since the pages are anonymous
->>> + * and are already isolated from the LRU, the code has been simplified to not
->>> + * burden __folio_split with unmapped sprinkled into the code.
->>> + *
->>> + * None of the split folios are unlocked
->>> + */
->>> +int folio_split_unmapped(struct folio *folio, unsigned int new_order)
->>> +{
->>> +	int extra_pins, ret = 0;
->>> +
->>> +	VM_WARN_ON_FOLIO(folio_mapped(folio), folio);
->>> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
->>> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
->>> +
->> 
->> Compared with original logic, we did check folio_split_supported() and
->> check whether new_order is supported for the file system.
->> 
->> Currently folio_split_unmapped() only pass 0 as new_order, which looks good.
->> But for a generic helper, it looks reasonable to do the check, IMHO.
->> 
->
->This is meant to be used in the middle of a migration where the src/dst do 
->no agree on the folio_order() due to allocation issues. When mTHP support
->is added to device migration, order support will be added and checked.
->FYI: This routines supports just anonymous pages ATM
->
+>>> Oops, I keep getting confused about this Cc stable thing. Please let me
+>>> know if a v2 dropping the tag is needed.
+>>
+>> No need, Andrew should spot the objection and drop the tag :)
+> 
+> I actually add cc:stable tags to selftests fixes!
+> 
+> Because why not.  Why leave people running known-to-be-buggy code when
+> our backporting processes are so well-functioning and lightweight?
+> 
+> I'm not getting the objection?
 
-OK, I don't see these assumptions. Not sure it would be abused.
-
-Maybe a comment would help? Or remove the new_order now? We can add it when it
-is truly used.
-
->>> +	if (!can_split_folio(folio, 1, &extra_pins))
->>> +		return -EAGAIN;
->>> +
->>> +	local_irq_disable();
->>> +	ret = __folio_freeze_and_split_unmapped(folio, new_order, &folio->page, NULL,
->>> +						NULL, false, NULL, SPLIT_TYPE_UNIFORM,
->>> +						0, extra_pins);
->>> +	local_irq_enable();
->>> +	return ret;
->>> +}
->>> +
->>> /*
->>>  * This function splits a large folio into smaller folios of order @new_order.
->>>  * @page can point to any page of the large folio to split. The split operation
->> 
->> 
->
->Balbir
+I thought we were so inconsistent on that that it ends up being a wasted 
+effort to even try taking care about stability of selfests in stable trees.
 
 -- 
-Wei Yang
-Help you, Help me
+Cheers
+
+David
 
