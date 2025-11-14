@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB686CE7A8E
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AA96CE7A9B
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22E238E0007; Fri, 14 Nov 2025 04:23:13 -0500 (EST)
+	id E1A0B8E0016; Fri, 14 Nov 2025 04:25:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 206648E0002; Fri, 14 Nov 2025 04:23:13 -0500 (EST)
+	id DCA6D8E0002; Fri, 14 Nov 2025 04:25:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 143528E0007; Fri, 14 Nov 2025 04:23:13 -0500 (EST)
+	id CB9788E0016; Fri, 14 Nov 2025 04:25:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F382B8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:23:12 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B53CC1A02F8
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:23:12 +0000 (UTC)
-X-FDA: 84108673824.11.96E727F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B655A8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:25:43 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5FD5213A90D
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:25:43 +0000 (UTC)
+X-FDA: 84108680166.28.4AD9001
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2104D4000D
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:23:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U5lG5vZm;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id BD8894000C
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:25:41 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s03bsySQ;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763112191;
+	s=arc-20220608; t=1763112341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y054mCCQ/pYiXow8IGqMRGCUxvxMhxPHj/jCxz235YY=;
-	b=ad+ZnYed0dtI4yVylxgl4VkJlz1EW/v9h5GzW6o7Sq04zBcZ7tx/4VDPdEP2uGSxVUtSvv
-	w9yinCDn6UqcRwsao2Xkp3YC6rsxyWm70IK/BSnULrTiWyzjgTkh9AR+Wa4pwqbDRDMngb
-	qfJTExO8hbGjj74Nw0s72XOAN+I+TZw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U5lG5vZm;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763112191; a=rsa-sha256;
+	bh=u2vFR8fbbgRJspH1F3SP9Y8Q2Yr/ojxN3mbIJHAXXi8=;
+	b=cx24gy9SE+SPB9YXtDeRoo764gJX3//Gp5SC0pEPdXU4dKUYKDbzNFmMtiZNWU4lVctZwx
+	GJCv5tHjwaHLsWZ+torxW/SmYD+0Rm7NhgWCeBjRyrH6oOpl+XQyIizdr4FGhdhhr3dFYw
+	G/rD+5ZadBkSC2i0aJuXpdiG01iSZ1I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763112341; a=rsa-sha256;
 	cv=none;
-	b=W4B+ifATBZ9fJ6B83iTQBdbDtF2Xy07Xxabx/h/VEcGLKTNMQe3p4f431drBaujgrDVY6R
-	cBUDle3+8iqEa1z5gRlhAabIDzyf20o4gJM8/roEByQqQQcip9pPqmfCpBt7ONVL3lb5jw
-	HTMXXYjgdAiaPo64Nnq3cAlFYesXf6k=
+	b=7tdh4n6TWDq3gR8IdIN9zUJqDF/CMNbc5DcUuk2BR7Hn0ZDJaXkMl8p6K3YZJnlk6BTUo/
+	IHWn98NekCM3aDzC/VgmzxmMl15I4bUGwcw3hU8zkNBiidJyNcjJyqUP8BgDTZ9HQmgSWu
+	Ysg/vo09q8Mqxy7QTKtQL1qFUn35kd0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s03bsySQ;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 953C960169;
-	Fri, 14 Nov 2025 09:23:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2788FC113D0;
-	Fri, 14 Nov 2025 09:23:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F0B9D6016B;
+	Fri, 14 Nov 2025 09:25:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354BAC4CEF5;
+	Fri, 14 Nov 2025 09:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763112190;
-	bh=IZsYdb3J2TG0ZqDwkKnSD/BUdINuFPFPuUpaAFMOshA=;
+	s=k20201202; t=1763112340;
+	bh=AJN2QsVxRz/TV+WD3eMF4eAyBt2EDjnXsaRk0ZwmCAI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U5lG5vZmHFU/SbhlnwtaE/Ua/9v1Q1x9IrvpCzLqE1tFTPWc7qeQ+xIEFlXGBgeH6
-	 7JFdiPfTuDWiz+ixIzfbZHJV0PKCqYR1FT5u0wd5j/DGwSaSLfFjCQugAfx+sgRNv0
-	 zl5tVidOG5e4HexSNVSr8BkCGwXLUUPOR5dStA3h7nMRpwYbqX/QQBYY3vlPMeYN06
-	 KNNS9XXVy1TbWE4adKaPa6oC3hgRQOoBRjip3v9FIYr9DpmhIjIFJPaP6dGUyez+p7
-	 Yhd9W6x7bEAU7pJqATie25fEJ72RDmfKYUNqIJ021w2MG+HdMg1MT1q04paY9ebJAo
-	 0b/B4YnIY1YLg==
-Message-ID: <e8f4546a-5c48-4488-a115-5af65c06f1dc@kernel.org>
-Date: Fri, 14 Nov 2025 10:23:02 +0100
+	b=s03bsySQgTiAmWung3dp0SMdOfELmoPFAkNBYvfYICW4E2AdsUDPeW1N5wv5pYg8s
+	 RFHRi+o66lqRWa1za0aVCmOFXMtLuWNwWvZl90XERNjWwweJUEI6sKsbK7znCC+fHa
+	 Ei+DCdH6Tt80m+NuRmw47o5gYopA4HzQSQbNxglKFTgUQ0exQ3YnLkFzCAYp0JbKfX
+	 NYLfK66+fI4T1o7wppXj6Dxy03xN8oPzvKBj6YsyI4qY+VK8/96v9jQmXoEm3aWJSS
+	 nZqNCPFVSyot/quAG1s5qwXXKdWx028AIDBRfrOHHiHh63B30ihI71WDQmVJyc9aKu
+	 0DELz9P/UFDxw==
+Message-ID: <240b0a40-c0da-4995-b7a8-cc98797dd0a2@kernel.org>
+Date: Fri, 14 Nov 2025 10:25:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/huge_memory: fix override of entry in
@@ -89,19 +89,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
  Francois Dugast <francois.dugast@intel.com>
 References: <20251114012153.2634497-1-balbirs@nvidia.com>
  <20251114012153.2634497-2-balbirs@nvidia.com>
+ <406bad47-1637-4891-b418-31f510382384@nvidia.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251114012153.2634497-2-balbirs@nvidia.com>
+In-Reply-To: <406bad47-1637-4891-b418-31f510382384@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2104D4000D
-X-Stat-Signature: hbb8p1ro9z9np5uh4udou1dir48sqg9r
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BD8894000C
+X-Stat-Signature: m9t94mdqhs5qh4qmgturgda4tyhymgcf
 X-Rspam-User: 
-X-HE-Tag: 1763112190-363215
-X-HE-Meta: U2FsdGVkX1/ytNgovSEdu026RPlvrCglmX8DsaPpIQtzSwzXMfx4wWki9qnU56eYl0ya3FQTBNEbyu7kjryA+f/ap2RIZXC3G26T8JYnM8FbUPrbEG/KmAt8a4K7TnqRDN5DwwW2h9Iw8NEzkcHgoMRK527+rWmTC7MfKCpC58hR8BGeUtGj0bKIZfrZ6Pw0Oprck+N7L5SI6YVU8iXTqU59n0tihQHZ2/t1tqoVJeRREgjmmVmOb+zQNODfYfCD13Rh8NnAxD0Lj0kkwqFO8zSPbx93sgVH3u2BubHM8wAqcY2/qdf9H53r0qQNRrAFrwvjzK9EETvDeTZH3xxrPljGvzuAGn39wbUCJ4oMcgf6bQFTsisdNajEwC+hMIshBD8hzMQWOdResdC+/tKXsexvs0RD6ChS8SmBqGFCixPNXrVd+J486PrI0XpUphhVmKACeIK7WlSUbXNhSXvI3NLiNYnkhQexlVr9HWdl7JVbfUp+3BJh1nLHJ/U1eb/Kcchwii/5GM8hLVqqJR1wYOE3FjlWTBCDQTsItU0JIThM6Ls/f2CmjEMWQg1YfcFXv/DAdIohg6amZXXtQFhIzpFBn1ETqrHjhcOI7E7wGsmPPhYEZfu3rae1Kps6TFy8M667SMAbgUmOwlU0ND4NOB9ARhQgdVxUasG2yUjaFXAZeyow2eIE26Pk1wCdLcI2uhpMv98B7VK/85vENanTBbmkE0DFHlFpfcQBt+0ociqNOEuq7akoOUtT3k+nyzW9hEjWsUKQbWRl9pYDAjJWJagYYg2EbzN1hDkKwnX77kR7mK0HLgdLuMMbysIXJZ3zAYeimnWbuW7JWl1ZWIT5Y6JeGAr7oS9r48fjKxLOhdLDNQ/8daLXJh/ZPX9YubvhphPqj9k23zZml6MeANATAjJzgxTVLzUwneBffhNfN5qN3YYM4PIcxgpaw1ea2s9bWSYr8mayPHVECNGN0YC
- oRFGnAiE
- pmumG45X7+khAaV+VSrkt2y7wsXQpNd8OnfK9p8rYL80BuLhFPVmfFkjD46Nf4AeAiNA4ptDVTj9hbMZd3emr2wH3+qmcE+Yy7wcPFkEkG8EgRmsRJbxOVGz9KBJSyCGS6FJUTVmfQbrYLCoIQk+IPVOnCdZgJCaUm/IQS2oCQuAf2oUqtTVUlGAVx4TfHEyyad3oxr874TM2uyLlo8YZ4OGqShATy3lvvUhQonHJ1dtvuEqQ1d8Lkf9NrEErg+6Ka2Kcq8fc9W6l8HOyr7rp2buT+AR8dnrmuGPW55xDdoDoTufZEDvZxU53eTMEIzTaPB2pO2A9vvX67bE2P+j9y4WfjIWWsiAdbGJ3kaXjmm9cbL6UyTG3AawqcUgem/DtT7+dFl1xXirzmSlmD6rM5RMMXYKQkHOO0xIFp8KzsSjV2xPZ0iHa9VUuPBPyKAj0li5NRciqNqeuOHKqAHwMJrhWxJc2QxmCAZaaNNXo5EvKF3Um+USyJcamyKPBbUHD4rQyOTk3pSSMLebDLPuz9k+dnWlyFH1Wb0zmU012qtjpy8pd9C/dGzAerelWWppVCIeCdaZD6K2uKAtrc+VL/KuuviS0GE2sDnsRzVSPG4BEUvI2SyYVd6jrBc5IZ1hWkCyAS9canXyOjPOtQRdij7ZDPxMFibOkViQyN8QjfBZEQ5vTGxkc5rJlSOIOCscaM8V49UfpyaknLTPASlWdDBJooW/ygH3I9+SqdmPaak8bhubqBwGPMxDu+Km4E6AzXLsksTvPzc+KX5rOwB3uZGyUlRL69V9pcxYgzWLojEm5kg4=
+X-HE-Tag: 1763112341-985148
+X-HE-Meta: U2FsdGVkX1/XhT+dSdt1hOF4NLe4xY7Uc5vQ3vNM3HI02aidC+z7z5rk2w2iCGXZ1l1SHDPpO8WDRyudrbKC+gIFhwayQKr5+uRiVF7F6gQdlFNjJQksNleyKYC5jWxT+IXDXrAhVuB4Uw9/Swrko2wBpeOW1juCL60AZZ8Vugoqu7kKW3lj7KpbO7WBF8EgzRqhEw39jfAW740bRC5pcWP405Ffm0iI4kar9IZ0JqarZnPq5Qox1RSUQ1vsffp6mKh3Y4ruXmivEE2oQR6gEpE7vrkPfp3GmyGKp7cY7fUQrmhN4INquyDz3HgFVr0N98ZDbkDU5MzNQROU6oX8EFadcTMqCMwtn9V/cwH95dp5NCsZEe7Tfcodyk1hauliatN8YffP04aC9+RFzwiEhrnkbh61KQCDz/NTr4Ba3Gp9QVyNd4ewDFNm7qkIvMyRScqXvOdhEIXb+syTTM4/0s/QeNeDaZEqePhQy81YqAurqy0oH/KUUApaujgovBOn1o4Vo697re5l4fnLCY3MM/h/I2uSxRezPYGJDTWm2dsZcMHd7I59s+DcDAm6uWRB3YcOHUzaiaptmPdrwTWhfUib0QQR6J2ZyGYQwdwKPN/2MsfmKtX9MCf3UexUwyhaHjluOHf8CtcIyS+z7GdiZnw2OXJS5TI2fZiOaK2v7YIw/Emb/O55FCY7h26XfPao15lR7ujPaGePq2015VzmJFm/vsKC7HsQq/xzU3t6Sy0pD41p664mHtHHiP/MYkC6QxRtWwEm9bE6MJjKQxsFD5eyEgNEt8ezxFz/nRdFc3mWHUumJ4rNzD0NX2xt/iW+UGJhDdHuPMZ9OOLKduWuB5JnabpzUrG9+8puRjH7L29TTkCoH0UJrxdxdlaC1swmAdP6PZkZpAPvx3nPefeZv5t9xsXFTbT9dybUFEUVpr/mdcdsD39qCNtlKqM66PPO9gPf1lKisu/Oi3RVhsL
+ vEfsLsGn
+ HGXidxrC4MH+Izpw2n7eyC70YVG8HiT68zi7VJVdGnK85YfWM4YJEpYKsoIHn73FDLLUhxMIShHckC5Wb3irr82Eejl1URNOiYdQLg6uPJ3YlPdIXPD91pot/6gQeO80xRk0xdCMfLrbDphvyDDUNnz+JA+IrAqcg57wP5NCYw6QCy1MgyFl3qCTo4Naeje5YumzTfp+XCV9Pz0DZAgTFkFGQQBz8MKGSpfyXeqacaNsf8iQQJ3Aaag5yeNOmLq7bmxoBQB+p6XLZZe19EX8IQkrMqremATd0J9cGXA3yCx7o3T3AR8TTxk7p+/vKHLN4Xp5B5PDk9Tog++vAbfLzh6ZKAmMRJ9kKHAFTgq53ZiV8a0bmGaBzOQvA7n3zNI0fwjyYvJ8eAnYjYoW7vEo5CUKDC2psUMH11hew9+05YJ6DsmxJHx3CZuz0HfXptayQcyM9KcnS/5ne7aHH6NCtRYQWDnyFWXGiCm39Sa6QfzPNyaf6tEAkjrkf7sFzlN/7Qvnlm+rfiZ9HtMO/ShrzZ3JrG/WrzvH9LBW39BvdKHXdv3mvfwK/rtUSgHcAEfYDNZo3uqRBM+F9bKUDJhIOdH54zmKfcDqQ7WOLtYyYA33hpY+YbgshI3EJUwRfxHbhmywYWqeC7zg4ESGk2XbU7HqCs1lv4iC7MYsr5Mmf8fKRPCPcQHPzTXOo6CXLGV1NV78clY17XPsjgxOSCPkttgukN3Q/WiSMLCKOux3GEZ0fOpmt8Sa7rHAsydP0bfHaDE/nAtLxxbxMUi7A0B9poI716E0pBqjy6ZMz5GbkwwclJWw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,78 +111,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.11.25 02:21, Balbir Singh wrote:
-> Recent changes exposed a BUG in remove_migration_pmd() where the
-> migration entry was being overridden when the folio is device private.
+On 14.11.25 02:24, Balbir Singh wrote:
+> On 11/14/25 12:21, Balbir Singh wrote:
+>> Recent changes exposed a BUG in remove_migration_pmd() where the
+>> migration entry was being overridden when the folio is device private.
+>>
+>> Use scope local entry for creating the device private pmde. Make the
+>> pmde writable if the migration entry is writable by moving the check
+>> is_migration_write() prior to creating the device private entry.
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+>> Cc: Rakie Kim <rakie.kim@sk.com>
+>> Cc: Byungchul Park <byungchul@sk.com>
+>> Cc: Gregory Price <gourry@gourry.net>
+>> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+>> Cc: Alistair Popple <apopple@nvidia.com>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>> Cc: Nico Pache <npache@redhat.com>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: Dev Jain <dev.jain@arm.com>
+>> Cc: Barry Song <baohua@kernel.org>
+>> Cc: Lyude Paul <lyude@redhat.com>
+>> Cc: Danilo Krummrich <dakr@kernel.org>
+>> Cc: David Airlie <airlied@gmail.com>
+>> Cc: Simona Vetter <simona@ffwll.ch>
+>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>
+>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> ---
+>>   mm/huge_memory.c | 7 +++++--
+>>   1 file changed, 5 insertions(+), 2 deletions(-)
+>>
 > 
-> Use scope local entry for creating the device private pmde. Make the
-> pmde writable if the migration entry is writable by moving the check
-> is_migration_write() prior to creating the device private entry.
+> Hi, Andrew
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Mika Penttilä <mpenttil@redhat.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> 
-> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->   mm/huge_memory.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9dda8c48daca..df93768a6e15 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4698,7 +4698,12 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
->   	folio_get(folio);
->   	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
->   
-> +	if (is_writable_migration_entry(entry))
-> +		pmde = pmd_mkwrite(pmde, vma);
-> +
->   	if (folio_is_device_private(folio)) {
-> +		swp_entry_t entry;
-> +
->   		if (pmd_write(pmde))
->   			entry = make_writable_device_private_entry(
->   							page_to_pfn(new));
-> @@ -4710,8 +4715,6 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
->   
->   	if (pmd_swp_soft_dirty(*pvmw->pmd))
->   		pmde = pmd_mksoft_dirty(pmde);
-> -	if (is_writable_migration_entry(entry))
-> -		pmde = pmd_mkwrite(pmde, vma);
->   	if (pmd_swp_uffd_wp(*pvmw->pmd))
->   		pmde = pmd_mkuffd_wp(pmde);
->   	if (!is_migration_entry_young(entry))
+> This patch fixes a bug in mm/rmap: extend rmap and migration support device-private entries
+> in the thp device-private series.
 
-There are more problems here: you cannot call pmd_mksoft_dirty() etc on 
-something that is not a present pmd! We have pmd_swp_mksoft_dirty() and 
-friends for that.
+When you resend, best to add under the "--" something like
 
-So you'll have to completely split both paths.
+"This fixup should be squashed into the patch "$NAMEOFCOMMIT" in 
+mm/mm-unstable"
+
+It is also helpful to call the patch then
+
+"fixup: $NAMEOFCOMMIT"
+
+So it's immediately clear that this is something to be squashed.
 
 -- 
 Cheers
