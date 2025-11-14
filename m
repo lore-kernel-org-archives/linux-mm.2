@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B7AECE8D4F
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:32:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5511ACE8D4F
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77B378E0020; Fri, 14 Nov 2025 11:32:38 -0500 (EST)
+	id B57AA8E0023; Fri, 14 Nov 2025 11:32:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E8518E0005; Fri, 14 Nov 2025 11:32:38 -0500 (EST)
+	id B07F08E0005; Fri, 14 Nov 2025 11:32:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B14C8E0020; Fri, 14 Nov 2025 11:32:38 -0500 (EST)
+	id 9F7418E0023; Fri, 14 Nov 2025 11:32:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 44FC98E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:32:38 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED25812E142
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:32:37 +0000 (UTC)
-X-FDA: 84109755954.08.5F2C777
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 452DD12000E
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:32:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N7e/jaZ+";
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B10D8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:32:58 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48FCAB9663
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:32:58 +0000 (UTC)
+X-FDA: 84109756836.14.65054F3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A4B6A80013
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:32:56 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VFeoJ6AE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763137956;
+	s=arc-20220608; t=1763137976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dMDWDjt/Wz3SOVfdYzXQII4p8Eg1oPHKPYlKP/wq3Og=;
-	b=CsMBYqqqHlypPftIZxF2LwfCujsuKaNpfpJTwmuaL/oLWDEi1Y1IBX/56oSlNF/nnayTjQ
-	5Kbj6PEI64RinWtSu+NLDeOBDnT4GNjuEj0hHyvnZy/CPhTrLIoa7TfEJzQJZRBRALtnYs
-	QqrwvITRsWWKMD1BYXE+2vSn7xmHXCI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N7e/jaZ+";
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763137956; a=rsa-sha256;
+	bh=eQwUHs9mWvyDTTdNsueei2ITz9BbdtS8MZ3avVTDba0=;
+	b=wxslXP48/9lhMpWYtuHQuoClfmhqP8azL6w6QssXIX2qWuz2hX7up9n4wqcA9wFquyOs0e
+	bGREutZV20Bz+MuGupfxz3bQp6xs/PJfDkJ0OmELkDxI9wiCJTyipjIoZb9fnYkzQxK1mW
+	43wqrL7jeDzvboPb7LnQ0kk6HZw2Qv4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763137976; a=rsa-sha256;
 	cv=none;
-	b=izMi4x9nzgAz7o6iMH9iSxqyrLIrZXbnSMTPcwmMAVXCVnVCPxSqtxSs9C1p8IHvRIzEPu
-	RwOsQker0o8ObG/VX8uAbaeIEulJbxAOBUCzxP0TP1Ux3OAww2f+RarOwj9ZBTlpXI+k4H
-	SFIy9Gf8vLe188j6zs3XQVlW2oPGSdc=
+	b=aEoZgTtqa9lTBqUWG+VtodgKDka6Tm7y8k04PM6nGzZbZ1t5KtPJjLgB/jc7EFb7S7owvH
+	Jn7LvoQOVxmX4c8AMQLLfnT72EfiTDBx4+NJNbMq79oancRL5KmUFIWunSFJG5DX4ToAOv
+	dOVXMpZk+49M9hM0Xa+jdWe59COCZKM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VFeoJ6AE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 540BB442E3;
-	Fri, 14 Nov 2025 16:32:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0422BC4CEF8;
-	Fri, 14 Nov 2025 16:32:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 384276016F;
+	Fri, 14 Nov 2025 16:32:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB46C4CEF1;
+	Fri, 14 Nov 2025 16:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763137955;
-	bh=VPIlJaSoX5ApbSW0ibgqxOo/U0FezlELx52crz4R/Qw=;
+	s=k20201202; t=1763137975;
+	bh=fy9goWnm4WyDrFh6uM2Y7bCHkbvkrMLy5j0RbsMDiTQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=N7e/jaZ+rMWOwEHCWLLgn6TMigcFke3ePmjNIwetydBBTKGd+F39vf5npz3H7ILEq
-	 1B4TPnvmHW7mYSeZPzXCqQza7p6mwzOwSj8Pb3VNtz6bW0QAT/sfippM7ZBNKXQM0E
-	 SYTCq5iaEJuOJmn3jqeBx9l59iFsODi39WZ1liTj25QMX7P6okhIqHvX8VhY3FH6/U
-	 45xztb/IbpZEQDvTL8E2xOIcS822cEatwoJr4O+GRut/NBwbGi5yVPpWW30iakoBQD
-	 Os6KkfwnXowUl1q7K/F1hw4shvEth2riUW5WKPyO/yRcK2ZkQZA2IVo/hNwla0nkqE
-	 flvpsX0Db+vTQ==
+	b=VFeoJ6AE+ab565fJGL0NyGcL684TvXpyQDHI0jD/X4tc9MmYPcp8rhjUchr38DYrC
+	 MlI2XwZfDQ+P7jMolPtXjOxmTwQQY8I7nvHAdffhTA2EMP65mqswANw4qJDeGRTyoh
+	 dOMoEMNKxP24ISiCp3Sq0qKO+N9hkDgNU3n0l3DEeyOL0Cb/ydyjHxyqzPr1MeIO3b
+	 QtG8Y8+hSi6VLjaDZu0KmoJb9ZhqJuk59kasYggKZrt+NI4Zxw6CeNUEGhUQg54ETu
+	 2iIQHOl7RFQP+20PonMZKaD0vpTepVwssKwzQmTalxR6HsH1lHzEbccJJ+YiVmKE5X
+	 RFrxGbK7LM1kw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org,  bhe@redhat.com,  rppt@kernel.org,
@@ -70,24 +70,25 @@ Cc: akpm@linux-foundation.org,  bhe@redhat.com,  rppt@kernel.org,
   dave@vasilevsky.ca,  ebiggers@google.com,  graf@amazon.com,
   kees@kernel.org,  linux-kernel@vger.kernel.org,
   kexec@lists.infradead.org,  linux-mm@kvack.org
-Subject: Re: [PATCH v1 02/13] kho: Convert __kho_abort() to return void
-In-Reply-To: <20251114155358.2884014-3-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 14 Nov 2025 10:53:47 -0500")
+Subject: Re: [PATCH v1 03/13] kho: Preserve FDT folio only once during
+ initialization
+In-Reply-To: <20251114155358.2884014-4-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 14 Nov 2025 10:53:48 -0500")
 References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
-	<20251114155358.2884014-3-pasha.tatashin@soleen.com>
-Date: Fri, 14 Nov 2025 17:32:31 +0100
-Message-ID: <mafs05xbc8ti8.fsf@kernel.org>
+	<20251114155358.2884014-4-pasha.tatashin@soleen.com>
+Date: Fri, 14 Nov 2025 17:32:52 +0100
+Message-ID: <mafs01pm08thn.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 452DD12000E
-X-Stat-Signature: maehcwtk7wgdkj6dbmk83nb8krrna1pa
+X-Stat-Signature: 7iiih48w1fqsy7qycpehddxp4c9rh377
 X-Rspam-User: 
-X-HE-Tag: 1763137956-934859
-X-HE-Meta: U2FsdGVkX19zSAhoQRDfpkfC/WjHn1Hc2RL0hsoIGGqWUrOuF0wn/VxjZaySlAPUG3eFxHKIjlxFhAW0jfUOV8qBNSxfBuY0/fFJ935i0TFiuqYqlo9aJlkg/OLEMWSau7IVnEQI84zh+f4Zf2zDrC8M999cZ0hT+RCVuDy96iTcS0xZflZT4boNlmbEToF6+w/ugZsbRu2ESAAmlDtncEwjeH5R6tTaSjmy9w3/VE7ZfDkHatJfKHjMruCDSs/4aX9nVtz470KoBkAcPpJpaznuVvoFNlPVRFpV491CedvNzOYFNyHwqgqN1cykuz4KPWZaPNtHw6ZFHJw4I9Z7imZO7JRJAaSTp9V8DUe0Xvy40vMVaw+Sut/3KZYqdsxE9AGLwcB2C0EdA1krfM6A9KWqOMQNul0H/lN/KPPyZCkGQyZBwxxKdF39sR8VaQmTWHmgf+VzZtppgQCsxglbAgecIyUBTD9U6reOnZLoZl1ArF4KUaWU2//2e+ihBFrYcduuXIBFg7UXcIAjDGoJrD9+mSrh18UlKiVKcIQjFp+Z/mcszp7CY0MXzz9SLZogOek80RQV61G3WavcXCa5nf+++VzrrDPmnxM0LIzf7h5cvLdvgHBACKASFWJnrS16nNpOIx4J5kf4I22Oqd1X0pd5y1tmzsxJQU82EjzKjzO1jHET7rSaHJ7Iv6BuMY0RHmlJ0JYeCEYMuUmEr9JpNy4VVT/eGDsSQUS96T+TKsFOxBmk2nEPV+OPg8u5waWlriwQ4w6rlE5Wx29cLXuT2T3PZ8jN5VVBUxnu/r6PpizJFv8PFOSwX3rWnsyJxNRUG6hrIKxTfP8YejKftnLY92E3ujapGwemmg2dqC525f2DYtQCFuAwWATzkHYc8/4xvrX5w4kKwWtUsvCR8xDnSk26LBCGg6rSFjbD49G3xG8lcWRvUHQEA/e6tTIi5+FJM0QpvBHKBE8oigEvdhB
- DPpsKRxg
- zUuR35BU0lh0LQXsGm3s/4l4RzgoEXWVFS99LqePWQYsmQOT/F7U++Fl7w8DJ/22RD7gmZLsSZAwiZyP6D9EQ8ogYlLNKkc2oOyQXrKc+df3lD0n9jG7uhEG1Q3R9sDGmiyjHLBNqUl+UVECpnS6T7w2E01edhpaJXopRu0BaK5D7v9oGIbTVIq36Qf3Ng1kdRY9JPVWeJrjOV8HsGGMkm4B6791CVetFatFolfmmXectHCss2gBkk9Uwr6/GJ9IzmIHZDULtIk6H78751a2RBdsJfBDifJUmYIsnbmA7Su9xS5A=
+X-Rspamd-Queue-Id: A4B6A80013
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763137976-707044
+X-HE-Meta: U2FsdGVkX189rZZxpbH7O3fTeqb2NJMeva71WVR6KpHz9wxpot909JmyJwHmfcmdSgy/x7qTMkoupy8y1SN+i1G8/D9WjbI3msTFShHWniqnLi1NnqHvMMAxBvmr42ogq9QSXyIrfOE1E2uv1fX9BgMXlvJ2pol955dYGzA9TCcdcUuIgKN+/0PshWxKSusavGfK5ivhRtw8UdQ8RleYkDs/8hs3Ab+Ch2oGiW89MxTWq0kT1v5FVbxROtuul5t+L475RijbWZA6lAzdaEc+4ku1qu0EBLBlgQfxMCqm9b3JA79yFTs8Aet/WTeMp1JZmV4UnzfvyHQnyhYO6LTcj4E76+p6IB9KqFdareXNZ53kvvSHZ4mP/JC471X0WVsU92axksPPHvJjjk7RURY+hctac7i4IY3Kva4rn+IUDu1n2Zaw6jRe7HgnnplrXYPXt4QYfayf+tV+tihx/vzW1oAUxDt9ERLURb7F1xmlsQP8w8YSmqw8wVXyHsxo64r+NPrAnWjcfh4c0iRKozkyZZnU91JdMb0J80TKYtI2qhFnQwGapSBYAZr1K2hqr+ZozKCeBrMbHuSrK9clPFm/u7ulyen3lMGUrqO4jCAFeFyUK5l3XlCAxRMzZglfzIEQGr+i28TEpiwBGnOxzHWsX252NUMQ235Ro6x4J8LzQwW00wQIo4YwxcBkfE94h2hr1ffr76YKzQbAAcwDAXLtMA3ci5rAeNG0KNXGGQpE5OJaXNIQ7dUu9yPIR7g7yo6XMlfJtRLkLsrQaHNZJ1OhZihVVoyBkd9V8JJreKAABvWLNhIXOS7ilCaNNSqeSOzrwGK2b1FhiOvSiKOJTuL7+6LaIH+mRrnt9F+03/JFxTSnBBHglMse7Ho7P9CHm6hDVMaHhhOBD5iEcIk2e2aohNm/VIJ9ujx2zyeequJ5QVL74ztv1cz4JEhG7kwUwJVBnmBj8Q9uyNAZbk6cKxY
+ hRBzh+SY
+ 4Y/gs2x670kdMbM5qiOWVJDn9qPVj4lLuUbzFHMfhkkBKigLqfygWqngM3bHj/GYzdqGzF+F9/7+OVRZg9Y9ymJsa03m9HVzZII7QyoUAoMWFKfSqdVYAK180dzzdM/zOuLMI9yeFXvmePtVFYB45i15q/Tw61Ve4cE/XtuLLNiE+qN1zlO1LkXgkLGer1Oidz6/W1q+J//oR8SlNIAvhDWJHxVJPM8ZZ+J23PdBDcCYNyHtkaYrj7S0xpuFhkgWaCyXO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,12 +99,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Nov 14 2025, Pasha Tatashin wrote:
 
-> The internal helper __kho_abort() always returns 0 and has no failure
-> paths. Its return value is ignored by __kho_finalize and checked
-> needlessly by kho_abort.
+> Currently, the FDT folio is preserved inside __kho_finalize(). If the
+> user performs multiple finalize/abort cycles, kho_preserve_folio() is
+> called repeatedly for the same FDT folio.
 >
-> Change the return type to void to reflect that this function cannot
-> fail, and simplify kho_abort by removing dead error handling code.
+> Since the FDT folio is allocated once during kho_init(), it should be
+> marked for preservation at the same time. Move the preservation call to
+> kho_init() to align the preservation state with the object's lifecycle
+> and simplify the finalize path.
 >
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
