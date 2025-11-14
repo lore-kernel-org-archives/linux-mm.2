@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DCD8CE8D47
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:38:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C08ECE8D4A
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:48:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ED208E000B; Fri, 14 Nov 2025 10:38:06 -0500 (EST)
+	id B86988E0006; Fri, 14 Nov 2025 10:48:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C58C8E0002; Fri, 14 Nov 2025 10:38:06 -0500 (EST)
+	id B36EC8E0002; Fri, 14 Nov 2025 10:48:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 901DE8E000B; Fri, 14 Nov 2025 10:38:06 -0500 (EST)
+	id A4C988E0006; Fri, 14 Nov 2025 10:48:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AE388E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:38:06 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 329CD58EB9
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:38:06 +0000 (UTC)
-X-FDA: 84109618572.18.057A44C
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E1242180017
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:38:03 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AEsLfZVR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 905848E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:48:10 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4705058E52
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:48:10 +0000 (UTC)
+X-FDA: 84109643940.30.F20A0BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7F659160008
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:48:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxcWREvS;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763134684;
+	s=arc-20220608; t=1763135288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g+QdaGT/kuh4dpaf+w+I3WyS3w+lP4iRnjMTwkXDKFQ=;
-	b=TFligstXTAiDpFejqvBQMxZQFKpAXL//HWRJaU/sT0FK3L6yz96N0qkKuXDy+/ivAH17f/
-	QVlw75P5eBAEWvrgqzYXW+xgXXkTznInL/H3eP2gL/a0fZbYCs9vFmN3xN8l0QShVFCpzJ
-	xxOzfeFbAys68yfWm2YWAfqcQwrUCdA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763134684; a=rsa-sha256;
-	cv=none;
-	b=pLKPxpAuaHMMBBB5i7Iy74gWxv86b7WOb3Wo8o+7q9keGjXXzKJvuN/vvjh1igOYhIOIyZ
-	6SF0rAT85FlA4WtSHiqBLdxgH291YzLa6vl7NrUc5Tjkh/ic5T8BREnO8A+CG+JZIl3sl8
-	ZN1K/w0JePVUEmAJtpwE1kZpt+gtJGw=
+	bh=6k+74ZGA0Vdj/ArmDb05rG1QCFGTYyDawtYFIZo2k7c=;
+	b=uOynY0+/Qlcj622sDYvbqouQJ7CC5IE0FuDwTc7R56lwf6xZXm0tpgh5b5G105+Zr0FMLq
+	xuJuR0AEmgmaqwfDznqtN6jRUXuyxjRbnpVXplaYfFvBe1Rfll3CFqrN7ev278EGUCqJKV
+	bpJ0UJLaQtVAriVQ9EuWZE29R/k7gpM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AEsLfZVR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev
-Date: Fri, 14 Nov 2025 15:37:53 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763134681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g+QdaGT/kuh4dpaf+w+I3WyS3w+lP4iRnjMTwkXDKFQ=;
-	b=AEsLfZVReXi9oJbcRurLiREhWdUCS4oLu0vGOIXNHL9mRlcG3I26iP90MT2vjXwnulM2Af
-	XNShS6As0shmBnbdM86SVp3y7Qn7EIPWuhjEkmCcVgb8E9he1DHZ+Ik8XthS3M3mN9UAeE
-	t+MP6cD0QBOKQsUjplcgdWNhRvbTqK8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>, 
-	SeongJae Park <sj@kernel.org>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
-	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
-	"Gopal, Vinodh" <vinodh.gopal@intel.com>
-Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Message-ID: <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
-References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
- <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
- <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
- <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
- <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxcWREvS;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763135288; a=rsa-sha256;
+	cv=none;
+	b=m+dMWcVcjKwhHq/RVyJvc8Al1Cgunso1lGn5F9nstOIrr2dZfCIWB758hQBArgEGHkY60X
+	TEdW4Ah7nYhy0nuCJBDRnfYVytBatAR9HtI0OEBMdKQp64IGwL6bTA8vgV2Opr104/tEzd
+	PywXNCZ7CAj5xdnkul9xax4cjWrlM8M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D30E409D2;
+	Fri, 14 Nov 2025 15:48:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F007C4CEF1;
+	Fri, 14 Nov 2025 15:48:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763135287;
+	bh=vfbrct6bJzrCc+Mkh/vkmrp/+VzAY67l9cyJGnmW9xQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VxcWREvSw7ifZWkM1yvTpCn19i/Y5OvbOMdF5dRd1xm4xWjctyA0qlMhfljwgDa0D
+	 sGBwq6mnnONS1MdJN/12wMATKfVe26UcSEz9MZ15Kek3n4N9ckGuJtzRiXxnJQJ1iv
+	 tIUATjxQP7CcPG5kHwSWbTrZYGzX/PiuULTrcOZhn1N09OUYY9K0fPz+IN8cOkeJfE
+	 mPZxAQVgSNF3kjFKiQ7BsiEXnWIWfMcJKUukhFgfJpP26TngN5wa4xyGFwGDwSQqtp
+	 YyerKFmxatyqlPXRB71bEldfydWnM05KF3SO8cgbZExX1Stn7bJAsMooKGTtGc6LHu
+	 q2uuxNMhk7S2w==
+From: SeongJae Park <sj@kernel.org>
+To: Jean Delvare <jdelvare@suse.de>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH] mm/cma: Remove CONFIG_CMA_SYSFS option
+Date: Fri, 14 Nov 2025 07:47:57 -0800
+Message-ID: <20251114154759.76541-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251114094814.3b2efb09@endymion>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: fmfbhdyi98buermb9nc8w4tg7rchswak
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7F659160008
+X-Stat-Signature: 4u5jc8tstwaa9thgqf1xegmk5jedum97
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1242180017
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763134683-673099
-X-HE-Meta: U2FsdGVkX1/MUeTeNpYQePzh2UL3++s6TbC33VIyFmYy+0YIJz3zIeVK+hvCeKqGbAQXxsmMzSj006ClB7IrcKA2HjtAuwVv4cIq1OgtLoK6X1sQfvmkRNHTyCGusa/FlVUbh7ghhOnw+1+z++P86JpBmQaCcHKX4y+uVxwtwaM4dTSZkKMCv65Oz7jTAOS4DPFBScAqpTaXLLBQ/dbLYHJEReu9vO8nsYXQWD1HUzdcxLOhSLMUkpMfxvqpfd0FeW8YQL3y9wciiFDqfoKNPNJFYJ7T6iUuZaDAPpEXz2xsMgt/thtY+8Po4NErvO3LcsDp5qFnAP/ueZO3MOv1OBpeXLMPmq4MfLhIQeeu0un1YvPfzfT9kBTFiZKlsiMmzJNduBP0c15cCZTXnrKJiF635tOw5eiCGR0kxW7LiJk1nXAzRNgiii3yEYzJtMvURJkHQmhe6ukAIbpmKKQyTRKLYQ/uPZ4TNKxum1GCK3tUXob9k6cBZUczqbW9HJdPSMiqETpJ6AMMBRbRhKrgH448KsP7ebjJfse5i9v0Rb6x2RgThL6BCVnTOWvczSBjtg2OcrGGOlw+fHyYMslEG7mxvNZfwQzB1vf9UiOPIifoDv0jjMCu4Xo/M4NdCGT9agiWCVC99pKAZjQUWVhcxpH65hG1TrgiRzmSr0uXzoSz66KCKR2mGM3B/N5iUHGw9ZvcqR0h27f47QSFd/Z0D+sLq3CifEUYRfXf5o0dI+1JhOfCzZ68t4akgEV4xrPAihfGUXQ+bzNRyPJ92DK6aSBIIi3UK276K1XuMMW4NIdClxqnNooa0+xCoadBvB4nJ7lYvW91MCa1RhABR+YzRzo4eq/2I6MyZ9sXeTstKaJeS6Us6RI37v8KnhFsfTSGjvBNiwCrjpEzbe0712J3P/PiZAr4YbukDEns/M9c6myz8LBHnRiL3gHSNepFJsi73l0FUggkeCEOx8MRdCz
- zemsFUav
- kJQz6TuHbHulFeWXx/tfGqS4B9xKd9a0ZJdO9gHasbfYWmFnS+TkRINBZc8h1+ZV7LcvYXUgUTjVoRxJ3LWK6N7H66Rr+KhXbqo+sp3sZg2eYgU/O0bEW3Wtw8FueixHFQtKnuDeF2kuXf9FZSCR6UFzdsdYfEvxUkfj0hhA9IRwVGICRrtGL8RBecgdCnIp1SsdahIYNIqew3Ki1D/VxUTx6sCz2CP07jJQSQ4B2FHSOknGuGmrp5vOl/qbI6n/Aevj26IefbeebkTpiyxGdDC/y8odgWNJ1Lu5WOKhHqjkfp9ZcCSStxDbSmdTeLULi8FY+9+O8ErB7nWSE+auWInHzdBsImgTtAbUn0pXBZUHBLSz2OO6QCV7IztITHz3BaUsUBrSxrEmve79o+dg2+xQrErfmF6zc5cB2k2ty7didjH8ade0j+W3AdQuWJBhGvVeXS+/R4bbGvdHlrvEnKltw3b2cFajKk9QTxANCihEmaVcMiWg83NexEm7hDQeI0f/RZg2XS0C3fEhNA/CUtU/KdS4VuSA7kcCOevI6yhEKaH6Bh8JiYnrqQqsNBGEpx4POKoLEkrXvE3D7YyILd7x/MEHi1zsx6LWxFLUItOu1QNK9Fc8Fx80AWDzVe5hltaDy/mKzncDsf8WmjmoCbhGcMI1OWkPS/K0xsFeqyDQp3/hLqqgfp6/N73OeZFoX6VOd/kWbQng8FGFJ+yX1fDAanqvq/4ljEgeZxho3z7OgwLdfKrIqh8ikQX5GpKVfl2uund1JgP/XdhQBd3pmsgWsneKWXkZhpCTZA0bX4r8ceazQAHacBl+togslrQd9qrAO8QuyjO/0rQqFC4gwMk1NTSx4L2H1QTmrm7ljU1YuM/rG1s76q/ISe91m1uaGszgAw7tRloocQjYIm10iYvMoPbozpiMs191u
+X-HE-Tag: 1763135288-760796
+X-HE-Meta: U2FsdGVkX18GIUUcV6FNUPU3asYa1xbqRufYfBiMA1+AKamXzCSQYp/mjzUbvCBor7eKtlKFQJsYD7oxNKa+OVtgXxvmCDUXh7wNfBtbEUCVXf1QfqGHLnsGDWUpELxltoRTiYAa0mdtLr3PbnHI5WrALXa2FZsrOpHkpe/M4CGvn9lWYmOJVgLagRTqGWACDxO0auLnunTal12ZBbwrxz4fDaBRYhgkIfQ6sVb18HuN2u00GWUY30D8YFEye/4sBUvqnKSv0dzp+mRwIGD5m/E9/cE/tczM906lBJQaktUoc6llldrr7uAGY0ThYXNDzoOo7kDT7zMM+bd+Xvy63T4/jR1pKHKgP31O2ySZQf7gRSF4SssWn3u1Bk+Ik1TmPdxyzhcCMjngzpLTnsquPfaQJFVZV62mV3w/INOrLGqx9e1g7AcdUhtYzzcUZCU5/gsDLbaPd1io/IWbZPZ33aLmgBAXOei+aiy8gRslRjRun+NGmtUn8UxC6oHzmqMgIsRDSEoPUi0BpyYZb1vC74FwhQ0IADfcRDfPcMKwLVe/+gJzQOyG+NJRZmMSho5P8CUh7htYgPd2wJzLPjofSLql+o7WBUdRyhZnGqucWFzrUNooahS0kLNiJJZWrXLjdba0zzONRd2da8/ln9+xc89tyKwcyDjtsVS+BUvWI/Ad+0prCyG+w/qaOkaL7EeMH9pH6xzOjUSuYN//n4Dy8bjhi4ihxmuHgJlk0ZqPM/H2f1KwFQ7h7seOX56TySc5qKKLSZrRDw3QsU1YbB1MDsVnxgjIX9xGN+H7TwSEte2w7BuSP7eiEelVfJEZSAarUzGAzaMau7tXta8YjbowYaVctPPLMO8UPRCV9LweFag1cQkSix3/cbrDcPAwT6J64uL472GdKhU3B9wxiuzSskzYjdlMtAMuEKoG7MQY9nD89OzSnHjhxUTA5WzdqyMpTDJ6I8+DsuSQEVLGSZ9
+ 9r5+YZ8Z
+ WpzPqQu8VBH8W0RF6G6F0JBN2f+Urmpie39z1FaANTxMAD2x10V5ZQYI7IdvE7J2t0Hxc0IycrN86SceZiCB9AykDCVGbR/r6RsIC3oEIPN3i+jUHdaJQC8iaMiaYVt42DOmIAkfzSC2iAl3CVBxAAvxk5r5kuiKb0Da3ahQ2+JErHqjfNI84jewUlCr9EkPatdgs5VWW0227sN8JoT5ILTi5X2L5hUNkBkTMKK7W7AWT0vadl2FCZKL23VcrU10oiCp52oy7OkuDfhunZPcjO8LB/Vd9kKmsXrTAPKg8XTrZ5DOrkn6PaoMCdRGMcxwxFUBdFoSrrQiiT+0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,322 +93,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 06:43:21AM +0000, Sridhar, Kanchana P wrote:
+On Fri, 14 Nov 2025 09:48:14 +0100 Jean Delvare <jdelvare@suse.de> wrote:
+
+> Hi Seong Jae,
 > 
-> > -----Original Message-----
-> > From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > Sent: Thursday, November 13, 2025 9:52 PM
-> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
-> > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
-> > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> > <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>;
-> > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> > <vinodh.gopal@intel.com>
-> > Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
-> > compress batching of large folios.
+> On Thu, 13 Nov 2025 17:09:27 -0800, SeongJae Park wrote:
+> > On Thu, 13 Nov 2025 14:56:36 +0100 Jean Delvare <jdelvare@suse.de> wrote:
 > > 
-> > On Thu, Nov 13, 2025 at 11:55:10PM +0000, Sridhar, Kanchana P wrote:
-> > >
-> > > > -----Original Message-----
-> > > > From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > > > Sent: Thursday, November 13, 2025 1:35 PM
-> > > > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > > > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > > > hannes@cmpxchg.org; nphamcs@gmail.com;
-> > chengming.zhou@linux.dev;
-> > > > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> > > > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> > > > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
-> > > > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> > > > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> > > > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> > > > <kristen.c.accardi@intel.com>; Gomes, Vinicius
-> > <vinicius.gomes@intel.com>;
-> > > > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> > > > <vinodh.gopal@intel.com>
-> > > > Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress()
-> > with
-> > > > compress batching of large folios.
-> > > >
-> > [..]
-> > > > > +		/*
-> > > > > +		 * If a page cannot be compressed into a size smaller than
-> > > > > +		 * PAGE_SIZE, save the content as is without a compression,
-> > > > to
-> > > > > +		 * keep the LRU order of writebacks.  If writeback is disabled,
-> > > > > +		 * reject the page since it only adds metadata overhead.
-> > > > > +		 * swap_writeout() will put the page back to the active LRU
-> > > > list
-> > > > > +		 * in the case.
-> > > > > +		 *
-> > > > > +		 * It is assumed that any compressor that sets the output
-> > > > length
-> > > > > +		 * to 0 or a value >= PAGE_SIZE will also return a negative
-> > > > > +		 * error status in @err; i.e, will not return a successful
-> > > > > +		 * compression status in @err in this case.
-> > > > > +		 */
-> > > >
-> > > > Ugh, checking the compression error and checking the compression length
-> > > > are now in separate places so we need to check if writeback is disabled
-> > > > in separate places and store the page as-is. It's ugly, and I think the
-> > > > current code is not correct.
-> > >
-> > > The code is 100% correct. You need to spend more time understanding
-> > > the code. I have stated my assumption above in the comments to
-> > > help in understanding the "why".
-> > >
-> > > From a maintainer, I would expect more responsible statements than
-> > > this. A flippant remark made without understanding the code (and,
-> > > disparaging the comments intended to help you do this), can impact
-> > > someone's career. I am held accountable in my job based on your
-> > > comments.
-> > >
-> > > That said, I have worked tirelessly and innovated to make the code
-> > > compliant with Herbert's suggestions (which btw have enabled an
-> > > elegant batching implementation and code commonality for IAA and
-> > > software compressors), validated it thoroughly for IAA and ZSTD to
-> > > ensure that both demonstrate performance improvements, which
-> > > are crucial for memory savings. I am proud of this work.
-> > >
-> > >
-> > > >
-> > > > > +		if (err && !wb_enabled)
-> > > > > +			goto compress_error;
-> > > > > +
-> > > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
-> > > > > +			j = k + i;
-> > > >
-> > > > Please use meaningful iterator names rather than i, j, and k and the huge
-> > > > comment explaining what they are.
-> > >
-> > > I happen to have a different view: having longer iterator names firstly makes
-> > > code seem "verbose" and detracts from readability, not to mention
-> > exceeding the
-> > > 80-character line limit. The comments are essential for code maintainability
-> > > and avoid out-of-bounds errors when the next zswap developer wants to
-> > > optimize the code.
-> > >
-> > > One drawback of i/j/k iterators is mis-typing errors which cannot be caught
-> > > at compile time. Let me think some more about how to strike a good
-> > balance.
-> > >
-> > > >
-> > > > > +			dst = acomp_ctx->buffers[k];
-> > > > > +			dlen = sg->length | *errp;
-> > > >
-> > > > Why are we doing this?
-> > > >
-> > > > > +
-> > > > > +			if (dlen < 0) {
-> > > >
-> > > > We should do the incompressible page handling also if dlen is PAGE_SIZE,
-> > > > or if the compression failed (I guess that's the intention of bit OR'ing
-> > > > with *errp?)
-> > >
-> > > Yes, indeed: that's the intention of bit OR'ing with *errp.
+> > > The sysfs interface to CMA has a marginal runtime cost and a small
+> > > footprint, there's no reason not to include it in all kernels where
+> > > the dependencies are satisfied.  
 > > 
-> > ..and you never really answered my question. In the exising code we
-> > store the page as incompressible if writeback is enabled AND
-> > crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check above
-> > if crypto_wait_req() fails and writeback is disabled, but what about the
-> > rest?
-> 
-> Let me explain this some more. The new code only relies on the assumption
-> that if dlen is zero or >= PAGE_SIZE, the compressor will not return a 0
-> ("successful status"). In other words, the compressor will return an error status
-> in this case, which is expected to be a negative error code.
-
-I am not sure if all compressors do that, especially for the case where
-dlen >= PAGE_SIZE. The existing code does not assume that there will be
-an error code in these cases.
-
-For the dlen == 0 case, the check was introduced recently by commit
-dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-as-is"). Looking through the history it seems like it was introduced in
-v4 of that patch but I don't see the reasoning.
-
-SeongJae, did you observe any compressors returning dlen == 0 but no
-error code? What was the reasoning behind the dlen == 0 check?
-
-> 
-> Under these (hopefully valid) assumptions, the code handles the simple case
-> of an error compression return status and writeback is disabled, by the
-> "goto compress_error".
-> 
-> The rest is handled by these:
-> 
-> 1) First, I need to adapt the use of sg_outputs->sgl->length to represent the
-> compress length for software compressors, so I do this after crypto_wait_req()
-> returns:
-> 
->                 acomp_ctx->sg_outputs->sgl->length = acomp_ctx->req->dlen;
-
-For SW compressors, why is acomp_ctx->sg_outputs->sgl->length not set?
-IIUC we are using the same API for SW and HW compressors, why is the
-output length in different places for each of them?
-
-> 
-> I did not want to propose any changes to crypto software compressors protocols.
-> 
-> 2) After the check for the "if (err && !wb_enabled)" case, the new code has this:
-> 
->                 for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
->                         j = k + i;
->                         dst = acomp_ctx->buffers[k];
->                         dlen = sg->length | *errp;
-> 
->                         if (dlen < 0) {
->                                 dlen = PAGE_SIZE;
->                                 dst = kmap_local_page(folio_page(folio, start + j));
->                         }
-> 
-> For batching compressors, namely, iaa_crypto, the individual output SG
-> lists sg->length follows the requirements from Herbert: each sg->length
-> is the compressed length or the error status (a negative error code).
-> 
-> Then all I need to know whether to store the page as incompressible
-> is to either directly test if sg->length is negative (for batching compressors),
-> or sg->length bit-OR'ed with the crypto_wait_req() return status ("err")
-> is negative. This is accomplished by the "dlen = sg->length | *errp;".
-> 
-> I believe this maintains backward compatibility with the existing code.
-> Please let me know if you agree.
-
-For batching compressors, will 'err' be set as well, or just sg->length?
-If it's just sg->length, then we need to check again if WB is enabled
-here before storing the page uncompressed. Right?
-
-> 
+> > Overall change looks good to me.  I have a question below, though.
 > > 
-> > We don't check again if writeback is enabled before storing the page is
-> > incompressible, and we do not check if dlen is zero or PAGE_SIZE. Are
-> > these cases no longer possible?
-> 
-> Hope the above explanation clarifies things some more? These case
-> are possible, and as long as they return an error status, they should be
-> correctly handled by the new code.
-
-As mentioned above, I am not sure if that's correct for dlen >=
-PAGE_SIZE.
-
-> 
+> > > 
+> > > Signed-off-by: Jean Delvare <jdelvare@suse.de>
+> > > ---
+> > > As discussed with David:
+> > >   https://lkml.org/lkml/2025/8/6/371
+> > > 
+> > >  arch/loongarch/configs/loongson3_defconfig |    1 -
+> > >  arch/s390/configs/debug_defconfig          |    1 -
+> > >  arch/s390/configs/defconfig                |    1 -
+> > >  mm/Kconfig                                 |    7 -------
+> > >  mm/Makefile                                |    4 +++-
+> > >  mm/cma.h                                   |    4 ++--
+> > >  6 files changed, 5 insertions(+), 13 deletions(-)
+> > > 
+> > > --- linux-6.17.orig/arch/loongarch/configs/loongson3_defconfig
+> > > +++ linux-6.17/arch/loongarch/configs/loongson3_defconfig  
+> > [...]
+> > > --- linux-6.17.orig/mm/cma.h
+> > > +++ linux-6.17/mm/cma.h
+> > > @@ -49,7 +49,7 @@ struct cma {
+> > >  	char name[CMA_MAX_NAME];
+> > >  	int nranges;
+> > >  	struct cma_memrange ranges[CMA_MAX_RANGES];
+> > > -#ifdef CONFIG_CMA_SYSFS
+> > > +#ifdef CONFIG_SYSFS
+> > >  	/* the number of CMA page successful allocations */
+> > >  	atomic64_t nr_pages_succeeded;
+> > >  	/* the number of CMA page allocation failures */
+> > > @@ -80,7 +80,7 @@ static inline unsigned long cma_bitmap_m
+> > >  	return cmr->count >> cma->order_per_bit;
+> > >  }
+> > >  
+> > > -#ifdef CONFIG_CMA_SYSFS
+> > > +#ifdef CONFIG_SYSFS
+> > >  void cma_sysfs_account_success_pages(struct cma *cma, unsigned long nr_pages);
+> > >  void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages);
+> > >  void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages);  
 > > 
-> > Also, why use errp, why not explicitly use the appropriate error code?
-> > It's also unclear to me why the error code is always zero with HW
-> > compression?
-> 
-> This is because of the sg->length requirements (compressed length/error)
-> for the batching interface suggested by Herbert. Hence, I upfront define
-> err_sg to 0, and, set errp to &err_sg for batching compressors. For software
-> compressors, errp is set to &err, namely, the above check will always apply
-> the software compressor's error status to the compressed length via
-> the bit-OR to determine if the page needs to be stored uncompressed.
-
-Thanks for the clarification. I understand that the error code has
-different sources for SW and HW compressors, but I do not like using
-errp as an indirection. It makes the code unclear. I would rather we
-explicitly check err for SW compressors and dlen for HW compressors.
-
-That being said, I thought what Herbert suggested was that the same API
-is used for both SW and HW compressors. IOW, either way we submit a
-batch of pages (8 pages for SW compressors), and then the crypto API
-would either give the entire batch to the compressor if it supports
-batching, or loop over them internally and hand them page-by-page to
-the compressor.
-
-This would simplify usage as we do not have to handle the differences in
-zswap.
-
-If that is not doable, at the very least the API should be consistent.
-Right now the error code and length are propagated differently to the
-caller based on whether or not the compressor support batching.
-
-> 
-> 
+> > Why don't you check CONFIG_CMA together?  I think that makes the change more
+> > complete and safe.
 > > 
-> > >
-> > > >
-> > > > > +				dlen = PAGE_SIZE;
-> > > > > +				dst = kmap_local_page(folio_page(folio, start
-> > > > + j));
-> > > > > +			}
-> > > > > +
-> > > > > +			handle = zs_malloc(pool->zs_pool, dlen, gfp, nid);
-> > > > >
-> > > > > -	zs_obj_write(pool->zs_pool, handle, dst, dlen);
-> > > > > -	entry->handle = handle;
-> > > > > -	entry->length = dlen;
-> > > > > +			if (IS_ERR_VALUE(handle)) {
-> > > > > +				if (PTR_ERR((void *)handle) == -ENOSPC)
-> > > > > +					zswap_reject_compress_poor++;
-> > > > > +				else
-> > > > > +					zswap_reject_alloc_fail++;
-> > > > >
-> > > > > -unlock:
-> > > > > -	if (mapped)
-> > > > > -		kunmap_local(dst);
-> > > > > -	if (comp_ret == -ENOSPC || alloc_ret == -ENOSPC)
-> > > > > -		zswap_reject_compress_poor++;
-> > > > > -	else if (comp_ret)
-> > > > > -		zswap_reject_compress_fail++;
-> > > > > -	else if (alloc_ret)
-> > > > > -		zswap_reject_alloc_fail++;
-> > > > > +				goto err_unlock;
-> > > > > +			}
-> > > > > +
-> > > > > +			zs_obj_write(pool->zs_pool, handle, dst, dlen);
-> > > > > +			entries[j]->handle = handle;
-> > > > > +			entries[j]->length = dlen;
-> > > > > +			if (dst != acomp_ctx->buffers[k])
-> > > > > +				kunmap_local(dst);
-> > > > > +		}
-> > > > > +	} /* finished compress and store nr_pages. */
-> > > > > +
-> > > > > +	mutex_unlock(&acomp_ctx->mutex);
-> > > > > +	return true;
-> > > > > +
-> > > > > +compress_error:
-> > > > > +	for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
-> > > > > +		if ((int)sg->length < 0) {
-> > > > > +			if ((int)sg->length == -ENOSPC)
-> > > > > +				zswap_reject_compress_poor++;
-> > > > > +			else
-> > > > > +				zswap_reject_compress_fail++;
-> > > > > +		}
-> > > > > +	}
-> > > > >
-> > > > > +err_unlock:
-> > > > >  	mutex_unlock(&acomp_ctx->mutex);
-> > > > > -	return comp_ret == 0 && alloc_ret == 0;
-> > > > > +	return false;
-> > > > >  }
-> > > > >
-> > > > >  static bool zswap_decompress(struct zswap_entry *entry, struct folio
-> > > > *folio)
-> > > > > @@ -1488,12 +1604,9 @@ static bool zswap_store_pages(struct folio
-> > > > *folio,
-> > > > >  		INIT_LIST_HEAD(&entries[i]->lru);
-> > > > >  	}
-> > > > >
-> > > > > -	for (i = 0; i < nr_pages; ++i) {
-> > > > > -		struct page *page = folio_page(folio, start + i);
-> > > > > -
-> > > > > -		if (!zswap_compress(page, entries[i], pool, wb_enabled))
-> > > > > -			goto store_pages_failed;
-> > > > > -	}
-> > > > > +	if (unlikely(!zswap_compress(folio, start, nr_pages, entries, pool,
-> > > > > +				     nid, wb_enabled)))
-> > > > > +		goto store_pages_failed;
-> > > > >
-> > > > >  	for (i = 0; i < nr_pages; ++i) {
-> > > > >  		struct zswap_entry *old, *entry = entries[i];
-> > > > > --
-> > > > > 2.27.0
-> > > > >
+> > I found there is no file that can be compiled without CONFIG_CMA but still
+> > including this header file, so I expect no real issue for now, though.
+> 
+> This would actually make no difference. This header file is internal
+> and not expected to be included by any file besides that CMA core
+> itself, so it is assumed that CONFIG_CMA=y whenever this header file
+> is used. If not, then things would break already, even without my
+> proposed changes (due to cma_areas and cma_area_count being declared
+> but never defined).
+
+Makes sense.
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
