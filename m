@@ -4,206 +4,239 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D8BCD8CBF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 02:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA43ECDB470
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 02:17:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD6E88E0003; Thu, 13 Nov 2025 21:11:32 -0500 (EST)
+	id E332C8E0005; Thu, 13 Nov 2025 21:17:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D86A48E0002; Thu, 13 Nov 2025 21:11:32 -0500 (EST)
+	id E0ACB8E0002; Thu, 13 Nov 2025 21:17:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4D5C8E0003; Thu, 13 Nov 2025 21:11:32 -0500 (EST)
+	id CD18C8E0005; Thu, 13 Nov 2025 21:17:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AFB3E8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 21:11:32 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 30EC9140233
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:11:32 +0000 (UTC)
-X-FDA: 84107586024.26.5DAAEAC
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010026.outbound.protection.outlook.com [52.101.46.26])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 57C7A140006
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:11:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QQ1iADLn;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B780A8E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 21:17:27 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 592CC1A01CA
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:17:27 +0000 (UTC)
+X-FDA: 84107600934.04.3B1BB6D
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D6A7420002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:17:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=og0PVXo8;
+	dmarc=pass (policy=reject) header.from=meta.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.26 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763086289; a=rsa-sha256;
+	spf=pass (imf03.hostedemail.com: domain of "prvs=7413481f61=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=7413481f61=clm@meta.com"
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763086644; a=rsa-sha256;
 	cv=pass;
-	b=1GHrYpv583EpcXRK0QOH4Fdhoh3ARsjD2CLvjmTeiwvon6heCQhG4Pr1/Ml+j8aa+JLaq5
-	/IBTWoh7C+gWtMuDHQA4PLKGoefjOOzghzOreAyWpmNJ7qV43mn/RtZXJYwU2GZtHqKwvG
-	RFv7Hg22bZHPGMQWiSiqM48UkYAhGfc=
+	b=aVHtF63y3gZlYxptiAQIAo/eakEYvGr6oLAacx123FKPZdixhxODdTuZlxyre/RYd0P1iO
+	QGw4x2zvQqkO6LfXksfJe0D/2G2bnKc2mApBrvMhZl5S1D3j2bLEmMcsMTvpiyLoZct3pD
+	UPatAsm+T+rfUdkciaUtQbAcApi4NJk=
 ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QQ1iADLn;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=og0PVXo8;
+	dmarc=pass (policy=reject) header.from=meta.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.26 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	spf=pass (imf03.hostedemail.com: domain of "prvs=7413481f61=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=7413481f61=clm@meta.com"
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763086289;
+	s=arc-20220608; t=1763086644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8xMxoFyB1SLKaDRN/WrumEc7KF2HKZJEZW5ll7y1wHE=;
-	b=x/ysZx5Gvi6F/1b7hA0IkBGlZ7Ob7OFCQApS5W6nr6+DJzSBJoshtv3cXCNsmt/45nLXOX
-	VzoaiFs1JxsXna2JjMR3Ckd5G2cRv4HJ1bqJH5gtBqFVi9kDdRKj/KzydcBZbMebF4jYOz
-	lQiZ2Wkd5j6fI1QaAsDSMFwh+aiskGQ=
+	bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=;
+	b=IX972+FPrJy4SzOD2ecTGH1g57cwypySiiP3G3OQ29ktUxrtB/E3PQUhP8meH1yBsOJ00d
+	quwUcfhWlMz1BfEEu4DijN2yo3m9qLnfL4w4q8Tq0ZNS+dlEvcGs0QUp0ZRJLtuI6XQ4uJ
+	+39jBugVrX+hjQmqBxSp1MmPLDbUAR8=
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 5AE150QN2410002;
+	Thu, 13 Nov 2025 18:17:05 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=; b=og0PVXo8WBTd
+	ld0hXmfNs3pS9c4KVvKGgWm5fmxxRxF6kIHLAiXKiLgPWB7DS32915ouPHRxziS5
+	iepUKVt7CorZoFANpCyI18JSXBHiLPWGz/tZH5tcqZ6rcnptJbKjr7zngMF3zYvB
+	dT/bwDAgazKTuSw7BWHlj1t+chZa/iusRT3AUznltwFWZFGmUx2wzCyoR9Cw8QOc
+	V5LUcL6dWVJxNlN3CVBnoSmDRUqi9ij4hIY8/FxOPxdNQeIjnWVzd5eT2wQmUg+m
+	gfCCoUJPr+m6R5PC2qPo5r+fCTIfRSvl5Xvc2mWDiRGzXwxh5tVSZ6qVG2/SKJXJ
+	2a0GCWCAWQ==
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
+	by m0089730.ppops.net (PPS) with ESMTPS id 4adr8a9ehy-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 13 Nov 2025 18:17:05 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ebcCEL795OhYRbPOUMuaIPqFBGEEpux4Qx4PynIzabX6/KDzNcXptaDsJFXxnHjLEADurzABeswAr/fp8cJ9r9BPdkaKSnpyq+Pt+kdl/SdQP6XOE4Z0P6stReMibxwJs0Uu59sK5BcHsJms1peUQ0u3nCmjZ2l5tIWaGhMtvIHNDbJcvgCIpgEJSQd9TBIMkYnDyobMgUuqY05lwUCrlaqMxaTc1wGSP8Jo2tm2BZwUYHarLXhcPcoTGnJjbRX41lg8Adl+aUCGHHrC2tUYfpw6wzawj2NCQJqPcfnH0ge4wSq5IGM2nbz6EGfdL73jH5BIhp8965OsaYUSubMJ9A==
+ b=Wmd9ySpi0+JZ9ycdcKkqoFSA3k9WmypdBSypSwWXMWMiOUEa/jltRo9FNLcrRuFqCw9q8wKpd8UocxwDN9PkrWV/Ns5zfISRehNbqmd/8dcIakd4HX7M0pG4JcL0rNGdrW0VBLIAJs31Lqh6szNJxxIqcAcZXh8llu72AIDx5ro0oAqcfeNmDzTnz0OYsQqPaffhiw0tFsBMPoIFIQzPQT5IzciGpCNAVH1RiFSbl9TDYRBAYMrG5MzMgo3vw5zwdYemXKfIOdnbmTennsUTKT4V16MJh4GoWMdL2AxFm/KfpDexiZwAldkZZsq915BGb5p+hVflmf8xLCQhJpPnDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8xMxoFyB1SLKaDRN/WrumEc7KF2HKZJEZW5ll7y1wHE=;
- b=KV0IY0rH2f3iik1LLediRraZrMGh71Mo4S1YO5CtkBO273J90BfQ3bzbXjyProZF5hofJvjtLLRFWxdAPtJpTM/7JWDiiAqhEmM9/oy7MFHjWrZz7s8PkWaS2L+56wf7gdOHcaNBMUeE5oLgLEIubjN7LHlghUsyFFIgJkFcQcJrBmU7jciE7F6J6owJNpiqDJJa4uvFFVYl6spNO0jaTKk1JYnV/bYtzS/PjzvzNAmLM2tBw3FVSBE+pPLh9hmhwg7fVRTFHDANb9vc+/F5/Q3JWYxY0CAxAz+hjl/u5qINJw/2dwr2XZ6jLz8BoQt3Pl9+D2J9n7GBrAbxbzlgfg==
+ bh=KLIJTHdXgv2IfSmg4UnBBJfMSx01Vk5HC/ZbCVwbofE=;
+ b=ca3qXgu1Mxbj17tVKW4so5Sinv2mazKiHDukFbQgEnwsuG4lkR9oSTdTShXf64n1RS6mZ2CDJ9523TOdTQd7btdJWHTmcz0qaJRjAdWbXGfXDdzG8rzN7/6TwaB9Jkv27zZMyVzsNIfIb1ki8wM7nmytcOkstXS8lz2fjVmyI5t/qsxLwwDiKAfKJrJAQg7Udjr3O/+DVqNzDXZtnQfNKzzYOjbPgXeebrKgzi+7QTjEcGxCuTYxvgFVNulKg/8AstbdKYkpRWcehTih2d6/2wSseqLp7fpVUsmncwaeShoBugMz343Dt8wHdVME+a0GUFst/oxVnEweqhIkPMfIrw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8xMxoFyB1SLKaDRN/WrumEc7KF2HKZJEZW5ll7y1wHE=;
- b=QQ1iADLnEVkJXDYiczandM5jZyWQomqLeFi9FR3fxU5W9p2HBtjjt5dkU4iYCOEpn7jmY0wJKMBGo7K3yokT48ItokJKaWU3v4UQJRkvcwKeNz5gwS9QhexADgjjtuV/7kCNpaoU3rQVOmyDAtn8o6lWuktwq54/E4wMGPUIKeKHMVZDbBEAgKZwhpBck099sD/MXwHINDtUxbaaZiKtBYUkEM8BrIQvty+B9P9gDswbw3yippqD0GZRbo/+91q9JjtjfeFxTzcOvXRCFR42WQ7jz2fLmgIU8wZvNyzOMlEL3PmoseWJ3uultencnxVJ8Hr+P4lCAva/AtQAU5y2wQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SN7PR12MB6789.namprd12.prod.outlook.com (2603:10b6:806:26b::22) with
+ smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
+ dkim=pass header.d=meta.com; arc=none
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com (2603:10b6:408:1ad::10)
+ by DM4PR15MB6034.namprd15.prod.outlook.com (2603:10b6:8:189::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
- 2025 02:11:24 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 02:11:23 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [PATCH] mm/huge_memory.c: introduce folio_split_unmapped
-Date: Thu, 13 Nov 2025 21:11:20 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <210B3EB5-F24C-4A4A-896F-1C9B30A7C6F5@nvidia.com>
-In-Reply-To: <20251114012228.2634882-1-balbirs@nvidia.com>
-References: <20251114012228.2634882-1-balbirs@nvidia.com>
+ 2025 02:17:02 +0000
+Received: from LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::8102:bfca:2805:316e]) by LV3PR15MB6455.namprd15.prod.outlook.com
+ ([fe80::8102:bfca:2805:316e%5]) with mapi id 15.20.9298.007; Fri, 14 Nov 2025
+ 02:17:02 +0000
+Message-ID: <3984c9bd-2ac8-424e-9390-7170fdab3c03@meta.com>
+Date: Thu, 13 Nov 2025 21:16:52 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
+ switch to simple_remove_by_name())
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
+        torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+        raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+        a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org,
+        ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
+        linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com,
+        linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+        selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+        bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
+        daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
+        yonghong.song@linux.dev, ihor.solodrai@linux.dev
+References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
+ <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
+ <20251111092244.GS2441659@ZenIV>
+ <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
+ <20251113092636.GX2441659@ZenIV> <2025111316-cornfield-sphinx-ba89@gregkh>
+From: Chris Mason <clm@meta.com>
+Content-Language: en-US
+In-Reply-To: <2025111316-cornfield-sphinx-ba89@gregkh>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BLAPR03CA0179.namprd03.prod.outlook.com
- (2603:10b6:208:32f::33) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR20CA0050.namprd20.prod.outlook.com
+ (2603:10b6:208:235::19) To LV3PR15MB6455.namprd15.prod.outlook.com
+ (2603:10b6:408:1ad::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SN7PR12MB6789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a65dfaf-466b-4160-e09d-08de23231c21
+X-MS-TrafficTypeDiagnostic: LV3PR15MB6455:EE_|DM4PR15MB6034:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6417f566-8f32-4773-ab84-08de2323e62e
+X-FB-Source: Internal
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z0NGVmRQcHlJLzJqa3Z3TmFmUUZ0ODMzbVNKNjJIN2EwdTRDemFVL2dUV1Na?=
- =?utf-8?B?MmtOUjFLakF5MllmdkdpV2hYbDBuL3EwMlBiUXNyNkFzdGZCdWE2U3BjM0kv?=
- =?utf-8?B?c0IwK2FhOFIvWU8yUTVSZWxhY090VW9zeDhrejl6WFYwNUN4cWpUeU9NNFBn?=
- =?utf-8?B?NEM0RWhKNCtYR2R3bFlPMVZsMGhhWXgwU2tmMW16ZS9OaGVscmFTN1d5UW0w?=
- =?utf-8?B?YU53d1Zzanl6SUhEQzRCRnVUa0dMNHlWM1J5MStyS3dENHd6clhDeWlCdmtR?=
- =?utf-8?B?ZTI1OHNacHZFVVk4QlMrUGMvOTZ5V3F5UmlSa3Q0bFVjN0crbFpTRFl0ZXpY?=
- =?utf-8?B?bktONzhTNmRlRUdXQlpNSGR4dW5BY0d2WVF4UysyUk1IdnNNMEtjTFNkZjhM?=
- =?utf-8?B?Q0ZSYmY5S1RmSjZlZWtOOEhLK3orcVJKNDZzS0MrRzR0WDN4cDRNdEhYV0t1?=
- =?utf-8?B?Mk00NDA4V0piREdFdHEwcGhjcEJrWlVmMDI2UjQrazI2YVR3bmlJUHVjVjdJ?=
- =?utf-8?B?U290QUNIVkRady8wblJWcDNaSWNIMERDYkFPOWZGbmlvMkhwOHFDam9iUVZK?=
- =?utf-8?B?ZmlEMFF2NVl3M2pEN04zYndQQzA4S0ZOVE40WXdnUXlzRjhJMDh1N1NEMGhZ?=
- =?utf-8?B?TGd0b0VsZmttS1RhUFFvVWh0bzcyYSt0dG9mWUJ4dlExeG8rRlZxYk9VOXlm?=
- =?utf-8?B?ZkJqR20zOG5OR2RFT0hpU1F5NFU4SWFCaVRjaWsyaVFLVjA2bDA1cDhqMDBQ?=
- =?utf-8?B?am5waEQzamsvR3h1MmxFL3A2Zzc3UzllajVEU1MrZnBWZTk4azMvSzZhWGR6?=
- =?utf-8?B?UmlNQ05uRnpNaTVzWm92SXhBMkRWZmlyZkcyUEFadzFYa3pwaHMrV3pmcm8y?=
- =?utf-8?B?K2RrUkgwZi91S25VUWg2c0ZwREhNZnd0UTRhUmQzU2ZpLytqWXVEekovMFV5?=
- =?utf-8?B?VWVFWHlqU3FuZjkzT2RNZUM3eVJaYmFWUENiaFMzMy9xTUprQWZ4Uk5RSllw?=
- =?utf-8?B?ZXl6VFR6MnFvTXZsMFQwQUwzTjVIcnJQOUxwTTNQams3Y2VqMDMzOFBxRDE2?=
- =?utf-8?B?Rk9zZkNYMXkxaTNpZDdQSlVvQ3M3YnBKbHltVmJCN2lGZ3NaTHBZQXdwVGsv?=
- =?utf-8?B?dkdlQ3VoK3pDdjY4cExuMlU5T2x3RURGQmtCRlFTdXNYSEJTQ3g1ZkhpQ2VH?=
- =?utf-8?B?OWYvRERVdFVQbE16Rnk2d3BBYUJLQ2ZXdUVRS3YvcWNtNFI4T01iOWhaQWtj?=
- =?utf-8?B?U2pjYVA4dEJnL2lCamk2SWlFcmdlWGJKOGVoUzRrWUR2T0djd3hJS2E0WlJJ?=
- =?utf-8?B?aFpuN0UrY1VpenJHRXJTcmdwTHBJNi9MdTVGNUhSMlRJdVVDTklqR0czTWVo?=
- =?utf-8?B?Q3UxZlF0dDdOSyswRm82ai9jVzdKUExaTTRtOTl3empEcXJkeWlFcGQvOWkz?=
- =?utf-8?B?YlJXbFVDeUt4aloyd1FBT0tKMDVQMHdiZGY5K01aV3lrRWZVbFVORU5nclVi?=
- =?utf-8?B?MS85bGNFZndTWVdkWmtaSTQ4ODV6OWsreEhnU2JxcWNGc0RZTDF2YlFmTDV2?=
- =?utf-8?B?RnJLc0svY3lubjM1NVRuanJkczVEZWtHV0dQZzU1Z0ZVWElkbkRjYTNlTTFi?=
- =?utf-8?B?SmJjYkQxWi9BdE5IY2xOWnE2REQ2UFArdHRhYzk4bCswU3MzQjd6Y2ZWM0F1?=
- =?utf-8?B?TmRaWjlFc1RrYlVGRXpmeWhwNFlYNHFNVVBlVFlGM28wNjJnQTl1WWFKQjQz?=
- =?utf-8?B?ZUI3elRUNE05b1pEbCtvSjVhYXJCMmZMdTYwRnhUVVpVMHNGcFJ3ckhPL1U1?=
- =?utf-8?B?ZFVZcWdQMk9BWHdlM2p1RUkvVDdkSmY0STFvZjhqMnVGTnpTR21VdjhvazRY?=
- =?utf-8?B?RTl0YjA0MWNMZWxNby8yT1QxcHpVUVY5blVpUG1FYXhYRmlKTDJaQ2JoV0Ni?=
- =?utf-8?Q?r1U1+mq+LtGsnlo3XbGejbbRovg8gGZs?=
+	=?utf-8?B?dm41YVg3aHJKQVlhMktwdjJIcUxKd1pMWGd1YVdoazVucVczRkdKM29OaEdD?=
+ =?utf-8?B?Nk5kekJjM1AvbUlJUUdYVXo4ZzlXN09ZYVgwKzExS2E0U1loOGtsS2RXL0VY?=
+ =?utf-8?B?SGttMDRlY2grRktDdktFSEMwbmhZN2dQa3RiNGRHQ2Q2aW9FeXNGRG5ZaE9x?=
+ =?utf-8?B?S2xtQU5BTE9xV3g3d0p4Sit2a3VVL2d2WTA0N3gyRGhkRFFlS1oweDBJNDdv?=
+ =?utf-8?B?anNHUFFRTlB5YWNsUFdQWU84d1ZFdVBlckVoblVxUjBucE5WOUFwUVNFWlJF?=
+ =?utf-8?B?UVVHUktDRWFwaXdwYS9YMHUxR2g2b0IzYWY1NXJ4b1JtMWpvMzhwMGRNZUFK?=
+ =?utf-8?B?MjltNldDL3pkZXFjUHpqdjAzbFRDNVQ5NDc3eDdxWmtNVG14N0NSZHYxSUpY?=
+ =?utf-8?B?MGlLM2YrUWM5YW0zcm40WlY4TlJndUpNY3RaSFJrNzZaUWRxVnJPOVFzTzN1?=
+ =?utf-8?B?T2tCTkFGbTFqZ2hkMXhpcDRIN2grRGZxZVdYQWJJbTNpVkdldm9tc2Y1blYv?=
+ =?utf-8?B?bFo5UjVvRlMrd3NMQzFHZ29NNWlqSmsweU1rbTZtRnNWSFFrM3pwTmlieTJD?=
+ =?utf-8?B?UXZlR3pKdU82L1owbi9GMms1R3lGckRCZGZ1TkpRL3l1N1dhV1EvSmVPQlFO?=
+ =?utf-8?B?YW1pZzZUeENwaTdndjJwV1BxVEh4eEVDZHRpMnU1TGhiWEgvcGpMdUFDSUZh?=
+ =?utf-8?B?UHRGWDhYTjZORHp0amdoYUx0NzZ5LzhlOWpPL3hFc0F3YzZGQjhVWmpJbkNY?=
+ =?utf-8?B?MG1vdHo0MTJCcURGVEw4dFViOE1ha3BINGdzUTUvbUE3eTNYKzlRUUdnMXdq?=
+ =?utf-8?B?aldTc2dXRGxBaWhHM0ZOaElTNG9NdHdMNEJlVmUvVk5CWmljTElpaUxsZXNi?=
+ =?utf-8?B?M2NYbU1HVjZ2Q2RFZThxdnNnYi9GUXZzbUo0WHhLaVBrR2ZNaytHbmhzSkRo?=
+ =?utf-8?B?QzhhWnN0cTQ2MzMzN01jRXAydHZ1ZjV1c1k0clVmVnEzU01vR2NOTjBPck9C?=
+ =?utf-8?B?RXRpUDF3NDFXS25jRktCdEx4VUsxeW5KWDQ1d0pMNVdNR1lhY2dKN1c5WDJk?=
+ =?utf-8?B?c1F3SWZwM2xtdU9KNWUvU0lzZjU0cFpNalc3ZE5VelBtQ0M5N2taNlF2dCtE?=
+ =?utf-8?B?T0tlUWJGQ090b3U5amR5dHF4QkR3THdJVjNKb0puNnJxWEZLb3VTTHFtczRQ?=
+ =?utf-8?B?TGttRHIyRTJUS1NxdGFlU3FlWTBUZWF1Z1hxWUpaMklxZEUwNVhGT0k0UkRi?=
+ =?utf-8?B?a2hKcEF3cnNQTkRQRVI4Wjd1V3FIR1dKeXN5dW9aNVdJR3VmaE1ZSXJMZWpm?=
+ =?utf-8?B?VElVZTVUZTg5d0YraU5wRW5mYzNtTHFmSWhrV1d0dEhzMUlVeDV1Rm0rMURB?=
+ =?utf-8?B?TlJoWmVNa0dzTlZpUktuRGRMaGZSeWZIZ0s2OUJkTURoQS9iZ0RiQ3pITlVX?=
+ =?utf-8?B?V0pudjNtZWNYT28rWlg0V1k1bkRBZmFLZ3ZXMDk0VkMrTDdCU1IxV0R6VzJi?=
+ =?utf-8?B?U1UyVE9mL0U2R0lySUVlbHp4UDhkOHlucndsazhzZDI1ay9saWU4aGhSQjR0?=
+ =?utf-8?B?b2tQaDRncHBJdThLb3pwaXNtdE80N3FmWEhpNGNBc01hQ1ArU1M5QkNkOGht?=
+ =?utf-8?B?M0hsWkh0clQ3aVArOUJ0d2tpZzRRWWRORVRsMGt0U2hTTlUzQnVybDNzTHlB?=
+ =?utf-8?B?QXptS1pHLzByclZETkJqMDgyd1dFbjVYa3Q3andZTy9lNENmT2lHaFhaNzFz?=
+ =?utf-8?B?bENlTUpmU0kzcUZmTjVSbTBiYVFzejdyRGdmUlN5cHRrZGw5LzFQSVlzcEV6?=
+ =?utf-8?B?V21tcXROcVMyU05uNHhwSEpVck8vVG1POGV4c1J2NnZvZ2JmbXdWOFdlaEFq?=
+ =?utf-8?B?YjNSZ3UvZk9jcXhadFZ1aW1zUENYb3JwWkt6TXdVNVh0ckh5RWk2VGhnUTJC?=
+ =?utf-8?Q?bFTauiMkwG7adbET2T0BecyOE/G9joZb?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR15MB6455.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WENjNXlQcThqcTNqOFdPaGliUDFGS25Sb2RnU2NjcUV1c1dNR01yZXZWUmpq?=
- =?utf-8?B?MVRXZUdMNmpkcWFiKzV1OTVwZkVZV3hlTEU2NVAyVlNhbDY0L2UrT0R0Ujc1?=
- =?utf-8?B?YytVQWk1UEJXazFQcVJXV09lYXcxNVRsenY2VzkrclovTjlIWnRmbHhpWFM0?=
- =?utf-8?B?VFZGdUhjVkVTU0hkTk1GYUhqSlI4dlJzeENHeWZBaWt2dmR1dzFNOHFlOFhH?=
- =?utf-8?B?ZXBnWnVVeldudFhTbkZYaFlJMXNJMHNpRlFqMmxrUG1UNFJnODREL1FDUDJW?=
- =?utf-8?B?UTArYjJQV3FZYkRqQTBtZ0Q1Z1JaS2dEZkdwL3NZNXozaVhUQ2JJWTNoazRB?=
- =?utf-8?B?UmRFenVCcmJsclhRelNFaXZuc3ZNZkpYVndqVS80c0RPVDBUUTU4V1hpSS9D?=
- =?utf-8?B?YXlIRHBJTGR1ZUp1RWcwajRjUUpZZDNCUWRXZ05DbFdjYlFRV1lMSjJvVTFD?=
- =?utf-8?B?WWxsbjIyUS94dUo4NlROSTVDSWlPMEhmZWRjcWIyMGdJZlBSaGVYZXpOZGJW?=
- =?utf-8?B?YUFjekJDZ0I5WjFvNW9KZ1FVL2RaNU1nRXE5YVlCSTZPYXRKM2NkSEZNc1g4?=
- =?utf-8?B?MW9wRUxOaHlXSmxtWUl0cjkyU2NwVTVEbDdiU3ZsTndwVWdrcGpZdXBKN2Qz?=
- =?utf-8?B?WDNsY0luZFpBTThHcE52VGl1emhWN1BRQzFXVm1JWkFpa0FhdC81YjloQlhS?=
- =?utf-8?B?YjY2b1J0cWcwbmFqbTNuc3RBcVlFUnAzekRlbnR2cDQ4QWhCRG1XSjk5YWs0?=
- =?utf-8?B?TTh1WlVHdFo0RndYZzV3Vk05eWFsQUZINll1R2dqYmU4Tmh5RWc2K2RNd0hl?=
- =?utf-8?B?eEtmemR0Si9tMTdDRUFwMEZ6eXdrRjJrNk5pSTlwVytlRFNTT2E4RHJLOHdH?=
- =?utf-8?B?VnNBQndPaDYvbUtuR3FWUk83S3pPZkVFaWt1azZLemczUWJlRTRtVER4WTc0?=
- =?utf-8?B?MlZFRndGY0xQazlrc1VqeFd3VTFUYkY1YVNqMEdPeWJ0bHdPenRFYVo3SDc1?=
- =?utf-8?B?aTNhUWVpVUZ3bk9wTTUrVXN5UktUTEhBbVhwVkwxUzlvbW4vcFNzbVVLRVdk?=
- =?utf-8?B?MW9neUdqVnNpM1hOYzlqbDNIZFpvVkVPRXlZWkd4eWE4NnFhQzY5SDVIYkZN?=
- =?utf-8?B?Sm9Neno0ZWpvMmJORDN2aWVXTFNVakE3cVFmRFVRamUxS2tMYVZaZ2Fremxk?=
- =?utf-8?B?L3NBQnNtb0VEMFp3azhoTFhyeDRiRGsxTEdlVkpQVUpHQlo4eEs4eXNzU0Ft?=
- =?utf-8?B?b0RlRjFZWURxdktrajBTTHozcVA2L1FpRWxZamlPNlRuVnlQYUdzTjA2Y0hY?=
- =?utf-8?B?eStSa1c5c2lBWHVxT0dDamQremJYZGpKUEE2eFRic0Rod01mdmFHanhsaEQy?=
- =?utf-8?B?ZmgxUllNekdscDIyVXJXc1NYa3BPL0w4ZFRUUHhLa3J5TDA2dzdmays1eG1y?=
- =?utf-8?B?eFVDeGRFNFkyU0JxbHJXVzB1RU5xR2pzYjVDSEtOMGM4OUJQRnl4K3c1bExQ?=
- =?utf-8?B?bXFRanpQb08rWC9hUVZraEI5YVFXYWJlcnVlK1lERFI2WGswQWl4bkozWXk0?=
- =?utf-8?B?S0NPVHo3anhXVXArdUZVZmxpUXlWeFVxSEdWSFFIWVRCZ2lNRVc2YzlUcExo?=
- =?utf-8?B?Rm4wTEdiMGJKVWxQdFE5anplZEptM0FUcmZ0VEZQZFZrN0lZdUFEVUk5Mmp2?=
- =?utf-8?B?UW9YclFhdlkzbmZITjlBYnBRVUJhNnlLaVVxT2p3OEJScWxFam5FNitFM0tH?=
- =?utf-8?B?MkoyOTc0eUMybEEyU1EydjlwQ2ZIaHNLK1YzRkNhK2VVTGJDTG5sakNNSFdS?=
- =?utf-8?B?bUR6eTlzRWIzaTNPT1c1M1JXWTBvMDFkNEdReEgxb2RCMUtQRUNDWGRNU2R6?=
- =?utf-8?B?ZUdMaGN3VHlXUk5lVitCR2M4TGtrZVBOVDErQnIxY3MvaDdadGJJejhnWXQ1?=
- =?utf-8?B?TXZTUmR2QjNGNE00WTRWZTlXRGJubEdpaGl1T2FhS0E5ODd6LytpZEQxZmFC?=
- =?utf-8?B?V2VzOGdjNWd1OFR3RFE3Z0NyWnNnZlhFUXdWOUt2N3ppUUtPY2puYzAyUE51?=
- =?utf-8?B?MVN1Umw4VUtBd2xuWERRcVJiZzBTbVlZaktTOEpvV3ltWTYwbmI5LzVwdjhX?=
- =?utf-8?Q?a0t0zCImE178Vq5AVuTxeROH/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a65dfaf-466b-4160-e09d-08de23231c21
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+	=?utf-8?B?T1dXelJ6OXV6WlhaS0daT3k3SVArckx0VFRQZnI2akNpMDJlWDFIVTVQUkdh?=
+ =?utf-8?B?bWVYb1RJZ0VIVFBKVkdnTWI2R1EyN24wTlhDdFlqZkVHV0MrSHlrZnM1SGUr?=
+ =?utf-8?B?UVpoNjgzZms2c0ZReTJLU2Z3ZysvcWhheVVZNUhpc2FEYnB6VjlFS2NiaC9r?=
+ =?utf-8?B?VldVVDJFdmJOaThHRzk2eUhsbUxmV2hDWGZtREIrajBpRHF4Ni96RU1tSUtw?=
+ =?utf-8?B?bFhQNjBwTFhxL3NCWEZ4Tm5UR0Z2cCsrVy9kaisvYWhjL2JwaEZzWlRpUzQv?=
+ =?utf-8?B?ZWZwemEvdGQ3SFJBSDFXVWw5NUp3a0h0ZkFNSjZTZkdMdG1FYVlPUFZtUXhj?=
+ =?utf-8?B?VWIvQW1UTGx1N2NUUWZGOEFYbnowVXBKZHQ4aDNUT0VrS0hBM3J5cDI2VHRI?=
+ =?utf-8?B?c3NTaktybnRSRENIRGo1VjQxZkpIUGh6VWFWNHV1KzhwR3ZWbHk2MzhXVnlW?=
+ =?utf-8?B?NTE3L01OMlQ3aDFCcFNrNE5DaHo3OUpGN1lyL2JhS1kyM1h0dlRJTmlOR2Nq?=
+ =?utf-8?B?UDJieGVWR1BKUEdiMzN1aVpOc1VUM2VzeTdVV29YRC9BVjhDUzNKcVZyMlUz?=
+ =?utf-8?B?NUdodE1wUWY3dGdZd3ZjU3QvVWNXaFEvd29ZVlVLT3NIYUdqNTRxZlYvcFhI?=
+ =?utf-8?B?MzFEWnV1L3BEN0JQSks3N1IzeVlwNXhPd1Vpd2crWDZSY1huNlhPQjQxRkdV?=
+ =?utf-8?B?Z0Y5V1JjSysxMm5QdEdYdGVFKytkNWRLQngxUUJpcmo4VWk2YTlWaXpSREds?=
+ =?utf-8?B?S28xZ0gzakhvYVY3cmEvNGlyckV5K1FYY3NFZmEvQW1tTm05UjJkTk1aTzBI?=
+ =?utf-8?B?U0RvaFpFOXpoVm95aGFUQVZka1psN0hpMHN2ZWRzc2U5TFNtU2J2OTR6NlU3?=
+ =?utf-8?B?T1RYZytOZFlNZ282OTFsWi9VSFJvWlppb3dTYUwyOHd2ODZRWTVDZXhxQXd1?=
+ =?utf-8?B?aHE4Q29HU3pzeEdLdGxOTTZZSGcwdnhtcm53ZXRiWnRiY2RRYVdCYS9xUDE3?=
+ =?utf-8?B?dUJJTWlQanhvS2J3ZnNZOUpBWG9lMjk5UVdjWkNVMXRUOW13SUNWSUtva0VZ?=
+ =?utf-8?B?NXBnSkMxdEQ1dTNWbzRYcFlwYjN4T3ZjM3FYS3BOQlZCaTBpazB1OU5GVUhu?=
+ =?utf-8?B?WmZkcktscFd0a2xJZGdIak93WmxwZ2R3UmlwS2prUzlnLzFPZ0VkQ0xqdHEr?=
+ =?utf-8?B?NHBHalQrUjdiSmlmYmRlbytsYnh5TFVJUGZoODVFY0dwc2ZsdnlDSkFWSFBi?=
+ =?utf-8?B?ZXZtTHdBSFV3RWh2YS9tdXNaNFI1QjBuUUw2c2YxZ2d0OVc4NUY5dU0xb0FM?=
+ =?utf-8?B?ajRpeW4za3QxSFkyNlVxSkZtbDZZQ1lpV1NQNy9HUU9md1JSdHArdm8zNytG?=
+ =?utf-8?B?MXZPZ09ubGJqY3FYRzJJWXdWSWJUczlyUFp0dFU0QXJIdmRnMVhqcnFJTzBZ?=
+ =?utf-8?B?TE5pT2lpcFVLWkN4QjhES08zRUdMU3RGeGN4NkZ6akExTm4zL0xVY3Npc05Q?=
+ =?utf-8?B?cE9pZVhmR1FxbmQ1R1F1MFJFaXVocEpIdXF6RWhhRVhZeXEyOVRZanluOGIz?=
+ =?utf-8?B?SHRnbjdydHhwVzIyWXY5YWxpNzV2bXdRVWFTNWNscDlZMXRZRXUyMEZBTEpn?=
+ =?utf-8?B?TGh2OFo5Nm9IaWZrZGtpeFZlNjVQL1daeUlMczhPWUNiMkNyaW9WSldKZWk5?=
+ =?utf-8?B?c0xVVUI4TTVGQnNIem5vUzBoRVVvVWNPczNYWXFBUTBETUNVUkUyUHlOQXV4?=
+ =?utf-8?B?T0RIR3NwMDBzSVdVY0JMd0UvLzdOR3grUlVqRCs3N2djK1crbXBhN1pRbEcr?=
+ =?utf-8?B?ckFzcmZTdGZ2WDF0WEtkc01XRzVIV2V5U1ZLb2N6WUVtTkthNUkwYjR2MzFa?=
+ =?utf-8?B?RWlVTHRxV1p2OFNOUWk4clYxblpzUEFyV0EvZVVSbGQ0TXBZMDlpM3lKYlov?=
+ =?utf-8?B?RjdaSWNoMnlCQnJXU2I3dkM0MWhZS2NkcmdYajRjUXJCc2pBQmRXOWpPcW5G?=
+ =?utf-8?B?c3F5NWF1bVJYMm5OTkNpaG1FWEU4U1kyWXV3WG8xRy9icXlCb0ZZUmNKVmZM?=
+ =?utf-8?B?WG1FdW5LV3NDZEdYK0drcitJY1pZa3E2d21iSXJjNm5SOXM4TEs5dGxZamda?=
+ =?utf-8?Q?1F/Y=3D?=
+X-OriginatorOrg: meta.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6417f566-8f32-4773-ab84-08de2323e62e
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR15MB6455.namprd15.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 02:11:23.7269
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 02:17:02.7318
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wyxUd85dNpQqB0k/x9j+IvyzPcUYk20OYjiEYTvEFeFHmtf2LzYtVhR8PZjd5+sG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6789
+X-MS-Exchange-CrossTenant-UserPrincipalName: pYLw/u3nKvioSDvRjATEeS9uQEUtBZetlLSS93smUfy712etiCym4+/0ZzQOe39q
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR15MB6034
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDAxNSBTYWx0ZWRfX/LgSfRDtyDtH
+ TJldFCceGiPepvc5+GYTmiA+ziCmMbslSwzmdE0KNBGdPCPQJiUGU7kdFmnOw5aTu8UXaObGRfv
+ AfA5kGdkbNCsLP42gsWr0f1rB3Ek0Zu0fWF2+MOLSqU+EbtQ1zU+w/rma9oWJ5p2VMPNur98zly
+ AST8ncLmaz+CL2l1wCTLWh0oQ7KMjY8NAZztPR/BvDQCM2Qg8T/PFqNyWjG0fYAOgAisLPEZFKr
+ JX7FaKYBXyFl3ZAGyGsqHZNFFQSX/WtdoExQ8glbfrJUc2oz2IMDMI11vvZIk3fs0M+f0fBQU/U
+ I+XD3Wld35P6Ln9+ElaAPL2cUTU/UsZb+7j6ALH85T/2UgjXZ6JCDL3EKt0Nr3ZpUOZpzfcqlMD
+ cSuY9CCeaqyUfpXJhY1YiIIVS4aM+Q==
+X-Proofpoint-ORIG-GUID: xfVBWqs8FqkI4eRp4g7C46DxVwzWVErM
+X-Authority-Analysis: v=2.4 cv=I69ohdgg c=1 sm=1 tr=0 ts=69169121 cx=c_pps
+ a=nvwb1BjkeYK3HDx+lqLWkw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=wJNMY6CPLibaGjMAeTcA:9 a=QEXdDO2ut3YA:10
+ a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-GUID: xfVBWqs8FqkI4eRp4g7C46DxVwzWVErM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-13_07,2025-11-13_02,2025-10-01_01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 57C7A140006
-X-Stat-Signature: aphmp3c3bu54qz39dxrsrmkfm8hqi6z7
-X-HE-Tag: 1763086289-654797
-X-HE-Meta: U2FsdGVkX18YaZAMDQTiDZeiVJesOuu5QC0+HWYeJm/7SoMOW4JR4kxBKF3s5uh3GDkXZePFa0ZTBsU37bvThdvcZQw+I2tPA+dHSXgEX4/Irifec3Exe043rJ3pqaWsPPT9fALmnQmjTp+6AJ3UrcCVI38fLD2ToJWI4vRxOVN6UoUCOZYrU+sjyZyLVDHng5Zb/BIT6fQkcw/0W/QCtgR5iGrcXDJaJgW7MeBpU/42ICOxqxaEThHpGgoU9I1c/8Zgm/hO6BgMJbRkkJ47kEwtIqgKtNacWtPQ9YnB4qVffS0ki+xCXuTF9nFijKb/RZhCQ7KJjnS4RuLi/+3CgwAY57WYFaCvFk7U4LQn3rnh4OB9Cedxwcf72XLrZ9JzNbsDf1+ecI0pZmNVnKMfOygNwB4FkC2BB/FhCb637PLko3BbKgsGDuPNUjsyOls7cMIbNn0yUFm7o8/2E48Y/IGP/l+C9bsij9BRC4gFfDRbNjpCwiyRJN/gYj+cfocySk7+dfFofjKlXeMclaGvf5lpVhx4EGTDlpXiM0U0od4u6dirs30nMiDdnXfHEYF9zWvKReDZ2uz8DnjVQF6te80+6OVk7vY1HU9kgJDuURLqrQNleer+MsK0w28zbhaca5cotEA1832HJpFQOEpW90GZNP8WqHGsL3pQ6pkMMij/ICDe7tNqZbDihLpO6es/96nqTZpq9HGL8C1xME9KfjrGy3oc9USF32Ro2lFdQUDqMT6dR/Nh+V6rEyKq6bVxz7Bu72+lvExElpWcTHNQ66tdKwRIhnTbSDCtmcUAcVbVVTkKkhYH7YhaZtsdmQAueYgR3lwCYjZ8tBcaBwuu6s2yvXmMJ91VEterTJPsZoU0MMmVF48xUW9PETS/ez/avhRYhebOwst9V6i/qE3g6ChUWKAoB2l/ANWg36WJyqlNfC9BSY3WE2Y0oisdIh4QFguBs7iWr9BexxY0Ebm
- jsZ1m1Qh
- BPBhwBtqsl+AEfxjaxdaeAVZjnmyThr8+KNqAZprSn2SvtmDkQCsm4BboAteVNLjGdMF0lQ2Ds5BWa0dl7nUSqFbW8tnKAxpga4E4NmAL8hXGcAyRIcXYi9OukRfstsgWwdLsz8k9rN0JgLa0LQCotcrIy5Y2E6bLjBxxxIAZtyYImiEmcrBqEkBiRZimLxcBoK4qpM0zT/AflhVt7e/P+1kGc4JfkC4dSriomB4zOOuH6Uf7w+3q5OWvSFcZpBMJo8DOLZeY9NvvoSXBYDrs+0NbQ4fGYjvcxXOBpPDVHUzrmP/EvB+PmfiNIqHoaB6Kxl0deifX5CQ4nJVgTrdfjxXrN6jQJz2fyvUo5GP2pnMSkaJd0q94i12He2eOchaWtJDTcBaSKQcyuGOOKgzRoADb3P+FvbQ6tSjWIjFRzhlP471h9/2+ktkWPsEfOSQ8cE8KnM99Dl1ybQYPL6X3exUP5gq9y/3IZ19YMxoqwYu5KdPh2hes7hyESRBFyp42/kXUX4bC20zeNz9E27NXh1wxvpAkxQX8AsXSvAiM2qjVnNQnE73s/DSIOQcJdZ4nht2k1LlfdYEWGV0Npq+Wy3RRcH+J89KleM3r2puRiz7FqNVO5QVcKwjC7wELAHlREP72aPKjZS9t3AqCEiA1USruSTqdwduWgwekthVd0Zi9zAOcP0ojpaVT3uByGMClg93+GIQNgzhRl5L+iLqvYtimC4nOajpGWRk1Qneancl22TZg+Uk7j28YzdY7r+lH7nzSMtfT1i8wgrdXOjLps37ehJYVlFcgpAJQE9dFuXiQu/3VZKBze8bFOffWTaO8DVXMDl32coa1z1pGXlpjOp+WKd87kCgTLp+r6q9gHqDLYC7aG2evw2eR88gbf8ZjnfIFngKnXiGMXV1IL+LF0Lpe78qCkxXGxEqr
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D6A7420002
+X-Stat-Signature: dfumqtgtbmppa5i7ooarekm4qmno8x6f
+X-HE-Tag: 1763086643-116105
+X-HE-Meta: U2FsdGVkX18sSD4+ON6x/2Rlxmimt3jG52KBWN5kBSQLyQ/aVEnwhXiTBSZnc5KGVVZuBB3oIT8TZZtF2BEEmGsvjjbzlmrbGfv4iKkpnhpjknEE7yxORP6H5chgo58wOc+UVmdtoaFLx67qp+yrObZfYUWFz2doPInpURpzX/uWtT1GdDB7eETydv7XSi5DUfw7kT+THkPGRjrCxjmJf/7jq6lTKJZ/g3iysAbvC4xtP+209U02PEgXOg7fEzq1lbXPjfKpGKx87G7RWBFeBpPm+VBHTRXHK+ciRAnNJMyQxkvn7YN1sZV/2FurBKsyg6AWWe4pSqgXQplN4uNrXfS7JS82maWYK2bGJRcGIWgJn+ChrOYFExJbr3VGEMbf60favRY3Dso9xt2lQ6q7tO0qJRZ9haMHtgKYvawRA60dswgKmbV8cy8bCO17KXz1IQXEQ00y6D+LoTK0nrOycWtDhvuQNnKmndcRc1du5aswgObe1jwoJw3uMxZdutw+P1XezA71HDHlAlAMuQkUK2VB5W7Sjp2BD8+k3UVA0ULx45CgbxR/y1EBJ9Kuhm/xt/EnIg4lfWOl2rf3q+ANZcPJIhv7CMBJ+qbvQH6E1AxOH8KbHX8uDETtaTRFaIbgBi0cS3skq7P9m5dXyoUUP73nJmRjX5JGfY+/rbiXcwWVCtse6J+Xl8niGfjc01s3WtZAhUDksVFPBFjRAmtQ7oyU0U/4gZC/82MrT3HqOjlNvuK7fkA4gyZfMcmTWPhXVwVGvnEkTg+ooFY8l/6rVYz7kxe7rrS+uDF4rneaO5SAJ624i4UjupDesJ4kNROWKIQchZXurP4LE62s72H1s6Ve9LKW6FTzzEQLUFAClOw2M3hJ/Om5xydkC5PUfjtGtMerNQ0VIoKSrmLkjsD4Bca81uRE/izDCaJeDHNw4PpnY8v08HnwgvROzYai3qs23eQqm0MvVFD7b32ipcx
+ erXFr/qX
+ Yu/nr1QQQ5iOo0QJsSHm2MM7JUMncs/8gBbn9UDAsm1jaPpwo4LD50GPQ41WGkAba/tDPuBn+NsmgiteoJ+yY5I8A82nzgeJ5lgGGRZwaR9L1n5oGoQwQf3cJYx4No/l8qImZMW7nY9yunkzo4sGRP3twspKvqQkDIQfpcQvnHRza1o9k/pkmeMQfANeRwQrGe+yUMOoScINvf8GCUnZDu22Ju5JDO+HUgmasNk2fRfwPzm+g37wEfIgpTmdbX3CJXWIbD1P4RkItOkQvUzclRJOrt5VHotBPZuGTIkayVUvnNYZy21Ch8w89Ztd5b7C2Pv6i0/6vTBAw/S44tLlnRSaLNFp0lMg6sNgqhcOgx7v+OkBgfje1S8D1j9T2vjuhublaqHtkisE8q1xxchkNIwirFXaq1EX3byCU2RUqeGRak07PuwPP7i7KP3sply6kD8L/g/15iz16IP/uJJ3SPnFiNmy5c50Sk3/Yi977jkemCh/BIfE+9sDgXKX2dacvtu9aiwEtlrRvJaJmmpFwVZ6Wp3srD/rO4LT2tMw9A0LCNaave7X8z9r5Tlo3two6vy+5EdlQCPRccPcWtgZEkno7yJTvLBMS59IQsiIHu4d9cjVzuev6MNpAGbcmarema5kzAFcjWVT1vCil1096rOkZJTlSSYw6YQfzhZ5vMWGWJK0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -212,57 +245,323 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13 Nov 2025, at 20:22, Balbir Singh wrote:
+On 11/13/25 4:20 PM, Greg Kroah-Hartman wrote:
+> On Thu, Nov 13, 2025 at 09:26:36AM +0000, Al Viro wrote:
+>> On Tue, Nov 11, 2025 at 10:44:26PM -0500, Chris Mason wrote:
+>>
+>>> We're wandering into fuzzing territory here, and I honestly have no idea
+>>> if this is a valid use of any of this code, but AI managed to make a
+>>> repro that crashes only after your patch.  So, I'll let you decide.
+>>>
+>>> The new review:
+>>>
+>>> Can this dereference ZERO_SIZE_PTR when eps_count is 0?
+>>>
+>>> When ffs->eps_count is 0, ffs_epfiles_create() calls kcalloc(0, ...) which
+>>> returns ZERO_SIZE_PTR (0x10). The loop never executes so epfiles[0].ffs is
+>>> never initialized. Later, cleanup paths (ffs_data_closed and ffs_data_clear)
+>>> check if (epfiles) which is true for ZERO_SIZE_PTR, and call
+>>> ffs_epfiles_destroy(epfiles, 0).
+>>>
+>>> In the old code, the for loop condition prevented any dereferences when
+>>> count=0. In the new code, "root = epfile->ffs->sb->s_root" dereferences
+>>> epfile before checking count, which would fault on ZERO_SIZE_PTR.
+>>
+>> Lovely.  OK, this is a bug.  It is trivial to work around (all callers
+>> have ffs avaible, so just passing it as an explicit argument solves
+>> the problem), but there is a real UAF in functionfs since all the way
+>> back to original merge.  Take a look at
+>>
+>> static int
+>> ffs_epfile_open(struct inode *inode, struct file *file)
+>> {
+>> 	struct ffs_epfile *epfile = inode->i_private;
+>>
+>> 	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
+>> 		return -ENODEV;
+>>
+>> 	file->private_data = epfile;
+>> 	ffs_data_opened(epfile->ffs);
+>>
+>> 	return stream_open(inode, file);
+>> }
+>>
+>> and think what happens if that (->open() of dynamic files in there)
+>> races with file removal.  Specifically, if we get called with ffs->opened
+>> equal to 1 due to opened ep0 and get preempted away just before the
+>> call ffs_data_opened().  Another thread closes ep0, hitting
+>> ffs_data_closed(), dropping ffs->opened to 0 and getting
+>> 			ffs->state = FFS_CLOSING;
+>> 			ffs_data_reset(ffs);
+>> which calls ffs_data_clear(), where we hit
+>> 		ffs_epfiles_destroy(epfiles, ffs->eps_count);
+>> All files except ep0 are removed and epfiles gets freed, leaving the
+>> first thread (in ffs_epfile_open()) with file->private_data pointing
+>> into a freed array.
+>>
+>> open() succeeds, with any subsequent IO on the resulting file leading
+>> to calls of
+>> static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+>> {
+>> 	struct ffs_epfile *epfile = file->private_data;
+>>
+>> and a bunch of accesses to *epfile later in that function, all of them
+>> UAF.
+>>
+>> As far as I can tell, the damn thing intends to prevent removals between
+>> ffs_data_opened() and ffs_data_closed(), so other methods would be safe
+>> if ->open() had been done right.  I'm not happy with the way that FSM
+>> is done (the real state is a mix of ffs->state, ffs->opened and ffs->mutex,
+>> and rules bloody awful; I'm still not entirely convinced that ffs itself
+>> can't be freed with ffs->reset_work scheduled for execution), but that's
+>> a separate story.  
+>>
+>> Another variant of that scenario is with ffs->no_disconnect set;
+>> in a sense, it's even nastier.  In that case ffs_data_closed() won't
+>> remove anything - it will set ffs->state to FFS_DEACTIVATED, leaving
+>> the removals for ffs_data_open().  If we have *two* threads in open(),
+>> the first one to call ffs_data_open() will do removal; on another CPU
+>> the second will just get past its increment of ->opened (from 1 to 2)
+>> and move on, without waiting for anything.
+>>
+>> IMO we should just take ffs->mutex in there, getting to ffs via
+>> inode->i_sb->s_fs_info.  And yes, compare ffs->state with FFS_ACTIVE -
+>> under ->mutex, without WARN_ON() and after having bumped ->opened
+>> so that racing ffs_data_closed() would do nothing.  Not FFS_ACTIVE -
+>> call ffs_data_closed() ourselves on failure exit.
 
-> Unmapped was added as a parameter to __folio_split() and related
-> call sites to support splitting of folios already in the midst
-> of a migration. This special case arose for device private folio
-> migration since during migration there could be a disconnect between
-> source and destination on the folio size.
->
-> Introduce folio_split_unmapped() to handle this special case. Also
-> refactor code and add __folio_freeze_and_split_unmapped() helper that
-> is common to both __folio_split() and folio_split_unmapped().
->
-> This in turn removes the special casing introduced by the unmapped
-> parameter in __folio_split().
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Mika Penttilä <mpenttil@redhat.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
->
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-> ---
->  include/linux/huge_mm.h |   5 +-
->  mm/huge_memory.c        | 332 ++++++++++++++++++++++------------------
->  mm/migrate_device.c     |   3 +-
->  3 files changed, 191 insertions(+), 149 deletions(-)
->
-LGTM. Acked-by: Zi Yan <ziy@nvidia.com>
+I was curious what else would get flagged if I ran the whole f_fs.c through
+the review prompt.  It found a variant of Al's bug above, along with additional
+concerns around unprotected ffs->gadget?  BUGS #1 and #2 below look
+the most important, did AI miss some locking there?
 
-Best Regards,
-Yan, Zi
+-chris
+
+================================================================================
+BUG #1: NULL pointer dereference in ffs_dmabuf_find_attachment()
+================================================================================
+
+In ffs_dmabuf_find_attachment(), the gadget pointer is dereferenced without
+a NULL check:
+
+static struct dma_buf_attachment *
+ffs_dmabuf_find_attachment(struct ffs_epfile *epfile, struct dma_buf *dmabuf)
+{
+        struct device *dev = epfile->ffs->gadget->dev.parent;
+                                           ^^^^^^^
+
+Can epfile->ffs->gadget be NULL here? This function is called from dmabuf
+ioctl handlers which can execute at any time the file is open. If the USB
+function is unbound or the gadget is being torn down, gadget will be NULL.
+
+================================================================================
+BUG #2: Race condition in ffs_data_closed()
+================================================================================
+
+In ffs_data_closed(), there's an unsynchronized state modification:
+
+static void ffs_data_closed(struct ffs_data *ffs)
+{
+        ...
+        if (atomic_dec_and_test(&ffs->opened)) {
+                if (ffs->no_disconnect) {
+                        ffs->state = FFS_DEACTIVATED;
+                        ...
+                } else {
+                        ffs->state = FFS_CLOSING;
+                        ffs_data_reset(ffs);
+                }
+        }
+        if (atomic_read(&ffs->opened) < 0) {
+                ffs->state = FFS_CLOSING;
+                ffs_data_reset(ffs);
+        }
+        ...
+}
+
+Can this race with concurrent state changes? The atomic_read() check is not
+synchronized with the subsequent state assignment. Between the read and the
+assignment, another thread could modify the state, potentially causing state
+machine corruption or double cleanup via ffs_data_reset().
+
+================================================================================
+BUG #3: race with gadget pointer in ffs_dmabuf_attach()
+================================================================================
+
+In ffs_dmabuf_attach(), the gadget pointer is checked then used without
+synchronization:
+
+static int ffs_dmabuf_attach(struct file *file, int fd)
+{
+        ...
+        struct usb_gadget *gadget = epfile->ffs->gadget;
+        ...
+        if (!gadget || !gadget->sg_supported)
+                return -EPERM;
+
+        dmabuf = dma_buf_get(fd);
+        if (IS_ERR(dmabuf))
+                return PTR_ERR(dmabuf);
+
+        attach = dma_buf_attach(dmabuf, gadget->dev.parent);
+                                        ^^^^^^^
+
+Can the gadget be freed between the NULL check and use? The gadget pointer
+is cached early in the function, checked for NULL, but then used later
+without any locks. If the function is unbound between the check and use,
+gadget->dev.parent dereferences freed memory.
+
+A mutex is held when ffs->gadget is set to NULL, but ffs_dma_buff_attach
+is Called from ff_epfile_ioctl(), with no locks are held.
+
+================================================================================
+BUG #4: dma_fence_put on uninitialized fence in ffs_dmabuf_transfer()
+================================================================================
+
+In ffs_dmabuf_transfer(), error paths call dma_fence_put() before the fence
+is initialized:
+
+static int ffs_dmabuf_transfer(...)
+{
+        ...
+        fence = kmalloc(sizeof(*fence), GFP_KERNEL);
+        if (!fence) {
+                ret = -ENOMEM;
+                goto err_resv_unlock;
+        }
+
+        fence->priv = priv;
+
+        spin_lock_irq(&epfile->ffs->eps_lock);
+
+        if (epfile->ep != ep) {
+                ret = -ESHUTDOWN;
+                goto err_fence_put;
+        }
+
+        usb_req = usb_ep_alloc_request(ep->ep, GFP_ATOMIC);
+        if (!usb_req) {
+                ret = -ENOMEM;
+                goto err_fence_put;
+        }
+
+        seqno = atomic_add_return(1, &epfile->seqno);
+
+        dma_fence_init(&fence->base, &ffs_dmabuf_fence_ops,
+                       &priv->lock, priv->context, seqno);
+        ...
+
+err_fence_put:
+        spin_unlock_irq(&epfile->ffs->eps_lock);
+        dma_fence_put(&fence->base);
+        ...
+}
+
+Can dma_fence_put() be called on an uninitialized fence? The error paths at
+epfile->ep != ep and usb_ep_alloc_request failure jump to err_fence_put, but
+dma_fence_init() isn't called until after those checks. Calling
+dma_fence_put() on an uninitialized fence violates the DMA fence API and
+likely crashes on uninitialized refcount.
+
+================================================================================
+BUG #5: NULL pointer dereference in ffs_epfile_ioctl()
+================================================================================
+
+In ffs_epfile_ioctl() handling FUNCTIONFS_ENDPOINT_DESC, the gadget pointer
+is dereferenced without a NULL check:
+
+static long ffs_epfile_ioctl(...)
+{
+        ...
+        case FUNCTIONFS_ENDPOINT_DESC:
+        {
+                int desc_idx;
+                struct usb_endpoint_descriptor desc1, *desc;
+
+                switch (epfile->ffs->gadget->speed) {
+                                   ^^^^^^^
+
+Can epfile->ffs->gadget be NULL here? The gadget can be
+NULL if the function is unbound. The function holds eps_lock but this
+doesn't protect against gadget being NULL.
+
+================================================================================
+BUG #6: NULL pointer dereference accessing descriptor array
+================================================================================
+
+In the same FUNCTIONFS_ENDPOINT_DESC handler, the descriptor pointer from
+the array is used without NULL check:
+
+                switch (epfile->ffs->gadget->speed) {
+                case USB_SPEED_SUPER:
+                case USB_SPEED_SUPER_PLUS:
+                        desc_idx = 2;
+                        break;
+                case USB_SPEED_HIGH:
+                        desc_idx = 1;
+                        break;
+                default:
+                        desc_idx = 0;
+                }
+
+                desc = epfile->ep->descs[desc_idx];
+                memcpy(&desc1, desc, desc->bLength);
+                                     ^^^^
+
+Can desc be NULL here? The descs array elements may not all be populated if
+userspace only provided descriptors for certain speeds. Accessing
+desc->bLength without a NULL check can crash.
+
+================================================================================
+BUG #7: Out-of-bounds array access in ffs_func_get_alt()
+================================================================================
+
+In ffs_func_get_alt(), the interface parameter is used to index cur_alt[]
+instead of the validated intf value:
+
+static int ffs_func_get_alt(struct usb_function *f,
+                            unsigned int interface)
+{
+        struct ffs_function *func = ffs_func_from_usb(f);
+        int intf = ffs_func_revmap_intf(func, interface);
+
+        return (intf < 0) ? intf : func->cur_alt[interface];
+                                                    ^^^^^^^^^
+}
+
+Can func->cur_alt[interface] overflow the array? The function calls
+ffs_func_revmap_intf() to validate and map the interface number, returning
+the validated index in intf. However, it then uses the unvalidated
+interface parameter to index cur_alt[] instead of intf.
+
+If interface >= MAX_CONFIG_INTERFACES, this reads beyond the array bounds.
+
+ffs_func_set_alt() follows the same incorrect pattern:
+func->cur_alt[interface] = alt;
+
+Data flow analysis:
+
+The interface parameter originates from the USB HOST (the PC or device that
+the USB gadget is plugged into), NOT from the userspace application. Here's
+the call chain:
+
+1. USB HOST sends USB_REQ_GET_INTERFACE control request over the wire
+2. composite_setup() in drivers/usb/gadget/composite.c handles it
+3. Extracts w_index from ctrl->wIndex (16-bit value from USB packet)
+4. Validates LOW 8 bits: checks intf >= MAX_CONFIG_INTERFACES
+5. Gets function: f = cdev->config->interface[intf]
+6. Calls: value = f->get_alt(f, w_index)
+
+The composite layer validates the low 8 bits (intf), but passes the FULL
+16-bit w_index as the interface parameter. The FunctionFS code:
+
+1. Calls ffs_func_revmap_intf(func, interface) which validates and returns
+   a local index
+2. **But then uses the original interface parameter to index cur_alt[]
+   instead of the validated intf**
+
+The interface number comes from the USB HOST over the wire,
+not from userspace application. It's validated partially by composite, but
+FunctionFS uses the wrong variable for array indexing.
+
 
