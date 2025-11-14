@@ -4,99 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 144CCCD8CBF
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 01:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BAA0CDB46D
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 01:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F1078E0011; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
+	id 9FE0B8E0008; Thu, 13 Nov 2025 20:53:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8678E0002; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
+	id 9D5788E0002; Thu, 13 Nov 2025 20:53:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DE0B8E0011; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
+	id 8EB2A8E0008; Thu, 13 Nov 2025 20:53:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 18B628E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A0D81A0218
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:43:03 +0000 (UTC)
-X-FDA: 84107514246.28.649F187
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EC473100003
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:43:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS+Zbf2B;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763084582; a=rsa-sha256;
-	cv=none;
-	b=yUTfLY2RjbiV+6u16+PXbFUf8el4bd5lLwsecDxZVURX9cFotiTK0K0DsrEQbEIiXQ6hNx
-	e7yKLQ9LUHrWk0jfZW+JB8xrdbUm8aTpvC86+331TsTdsvl3IeIivcogc/9i9Ls769Qk3Q
-	ft2CczOzKsAY87WUyBcFRiBgdn4ci3k=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS+Zbf2B;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7E4C48E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:53:32 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 37DAB85EE2
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:53:32 +0000 (UTC)
+X-FDA: 84107540664.29.CB8A9FD
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 46CE64000E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:53:30 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=l2q6OlkX;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763084582;
+	s=arc-20220608; t=1763085210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IuHTiVk16FNrVyP3pvF2tStE26owMiMpD6cUCyTAlSA=;
-	b=oBCOZeYWw/BJcFXMpeHCALPgBfJrMfzEsQgTYE8lEkhwDkBw9tEP8fFwenwvcSerQS9GX6
-	PMRFTduygVOQuUEsdx69Son5a+dBILjXM+A6aixcRMZPhnKkdLqiRyGOnagx2K6gXGYk/R
-	mxB5O57hKxq+NgUXKGZ9v1h1Tyd2Q10=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44C1F600CB;
-	Fri, 14 Nov 2025 01:43:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A071CC4CEF5;
-	Fri, 14 Nov 2025 01:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763084581;
-	bh=aRE+wMnR2pS1uJvM8oQeGCIiCMvzPKaWlWT5NwcMf4s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IS+Zbf2BOHCCtzc1IhDP4Cfa5hYLs1/tAaydWZPryWHjdiF+3LRrkbsKOkoBRGXM2
-	 uyvnHggyYOKUDY9KfuROn6dFHzdWHSU4ciT95BNQh1fIhx9/IJP1Db6zzsY8vc/M6K
-	 Mv2e7njpt5367w0T1pOMZgewma4iVQfeGalzRLQ5N7sKgvDaxGc2FOKd179R5V2P0h
-	 OVlAWk6aMfsgwcEu1tRjAyw1h+VohQmoBDlLE8jH69HFntnt21qiQTz0HZV75jWuKr
-	 19IwAxko9fHO+rCVsfUqAo77X6v02NB6byt7snP2hdhu62GDiV/lHVnrxfL5wv2Lau
-	 +P7dtW7kJtWNQ==
-From: SeongJae Park <sj@kernel.org>
-To: David Rientjes <rientjes@google.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Fan Ni <nifan.cxl@gmail.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Raghavendra K T <rkodsara@amd.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	Wei Xu <weixugc@google.com>,
-	Xuezheng Chu <xuezhengchu@huawei.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	damon@lists.linux.dev,
-	Honggyu Kim <honggyu.kim@sk.com>,
-	Yunjeong Mun <yunjeong.mun@sk.com>
-Subject: Re: [Linux Memory Hotness and Promotion] Notes from October 23, 2025
-Date: Thu, 13 Nov 2025 17:42:54 -0800
-Message-ID: <20251114014255.72884-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <d952a84f-332e-8f7a-4816-2c1cbd8f5b00@google.com>
-References: 
+	bh=9LDGlt5BP9HGrN5kDVPAodxjrvpp8sHxQXkzmFVXsTw=;
+	b=4iY6kBSNOX5cI5uWyMPuN9sR4aWOUiXFL0mF7Bmp9pz/cx5T8k2l3AGTvY8StOqpi0idvL
+	j/Qwyb1wX12P1FnRu1kHpYIuge0jigGtdh4xKyEvJKJKplrsefXdubzvDNTuWjPs7mYen0
+	NV8wrNoDMQZ0IcIp8drs3C/40lMrH2c=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=l2q6OlkX;
+	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763085210; a=rsa-sha256;
+	cv=none;
+	b=vXM1srAjWHL4+QdwyFcvxTXWb960bQRj0v+lETY//SdcObVZy+dwFW2Oma+bhSrku30H83
+	5RXDcptsR9ov1vOcl0ccL3tBM3d5hDX+i1yMRm+D5Xhm6TIalafPxR2LCZpORnhB1PZ8K1
+	5sKX2pq1SscQfbeZJASzIePDcMOo+6Y=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7aace33b75bso1381909b3a.1
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 17:53:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1763085209; x=1763690009; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9LDGlt5BP9HGrN5kDVPAodxjrvpp8sHxQXkzmFVXsTw=;
+        b=l2q6OlkXj2D1X73YxNkZJaTXUBy2GimlIYS7KsujYIVZuKndTu6Dylph6BVaWzMKyj
+         y/ExqHOE+IoIE5m/Lj3r2ouXciyF3RbghY4hvZekAQtH6TIuFliuV/tue3R4UOfpdilK
+         ZWyQ54A32H/AoSBPml1wKAzrCGuo81SXhFvXk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763085209; x=1763690009;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9LDGlt5BP9HGrN5kDVPAodxjrvpp8sHxQXkzmFVXsTw=;
+        b=YJGI3rI8jfOVSGhKqh3huoQSSP+W5Ek1QrEZ5FnxuJrq0R9UVxb8UW5frzBlj6zuKJ
+         JFpKQL0jxbDcHgx+67bE540k2tCicDlHnRYMSlD8+63QcBEQWerwbNvPRYXw/uBWq0SA
+         rCvQzGAPs+4R6tK5I2Y6chv8IYKUiUjdl6vZKc0cfgrHuylmNxBq/uYfDaBcwtHbf/Ab
+         qqUujewdmflRCT/vfIeQ247lUd++7zIZOSiWPwOPqfXNt+0vpp2rJnJJUIgrMSFFOWvb
+         6XR1/7jJeXSUmiW+VnNDUkp9Gct8TmOPHVR40Aq3hT+7uucWPg/bU03wpFIAP7y2Qrgf
+         gtAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXz+2SNvsB93dfmTP9UQR5yF0AFBRWPdkbKcHFfl/GFr5RRwA0Zhco/jMh1itko69jEaJmMw+YD4g==@kvack.org
+X-Gm-Message-State: AOJu0YyhcLV/v/L4njxx6J9oHw4RFYYHd2bHacW+QGZKHKy4V6LYXVey
+	neocktCI/rP0dclTvhJfzk85KJq6IuTxyH3dCmch8SffFFDwwcGcPXSKK3oFOZC9eA==
+X-Gm-Gg: ASbGnctKoiFzrgcBBO2QjR8iQrwag9OFhNKyvZBzQY9eAY+S/h1E6N46w32AOxw2jaI
+	M7iOGgJ0FXDD7z9THFqhTdAUZCf8voXy+nFsghALnKbFYrgvfzN0/ZTtdVIMM6d+Azy7NyJE9Kf
+	8Tm2wUO/Z+t8lRgW+XUsN53AwtOGSFvjvNK+qf1Zt4yeyb7SOnGN68DBXq/mPlxiXik9aDME+Ka
+	kcTSWSYEnyh0gJCdMhSshFS4xjQGjolgrwkJ67u2B4qyU7kgnBmuEDiyZNQg+YbOIV0UyKtAmW3
+	eYdTYPcCnkPcHTNL2LlAG32ub80fK2WcRreLm+uQXoqIcAYBjo7zIFZERHYoGvRVzLw+5MaT8Av
+	eubQLU3+JKCZZ32BOJPQkz8S6SpHWPWW0H6McOYZfTsGuZDRhEmEWhw8gvLw8eeBNuVOy2+yxHc
+	BJTIXb0Jg3uT+U8sE=
+X-Google-Smtp-Source: AGHT+IF8knbLFGnSfk91LbrxqoXrIXu987LpSYmuVrZv5LzQ+C4wG/KgOmFWJ7dRbgMRz0JhH+7PxA==
+X-Received: by 2002:a05:6a20:6a1d:b0:355:1add:c298 with SMTP id adf61e73a8af0-35ba047db16mr2310631637.21.1763085208913;
+        Thu, 13 Nov 2025 17:53:28 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:6d96:d8c6:55e6:2377])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b92782d39bsm3518611b3a.63.2025.11.13.17.53.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Nov 2025 17:53:28 -0800 (PST)
+Date: Fri, 14 Nov 2025 10:53:23 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuwen Chen <ywen.chen@foxmail.com>, 
+	Richard Chang <richardycc@google.com>, Brian Geffon <bgeffon@google.com>, 
+	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org
+Subject: Re: [PATCHv2 1/4] zram: introduce writeback bio batching support
+Message-ID: <rjowf2hdk7pkmqpslj6jaqm6y4mhvr726dxpjyz7jtcjixv3hi@jyah654foky4>
+References: <20251113085402.1811522-1-senozhatsky@chromium.org>
+ <20251113085402.1811522-2-senozhatsky@chromium.org>
+ <aRZttTsRG1cZoovl@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRZttTsRG1cZoovl@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 46CE64000E
+X-Stat-Signature: gqzdh4bj7enquseezk4x8nsfqea1t414
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EC473100003
-X-Stat-Signature: itq1nir93ibs3ahh6e3zzyzfwhkbbquc
-X-HE-Tag: 1763084581-486476
-X-HE-Meta: U2FsdGVkX18qeyiG0+2fcqTbUWkHIgM1ep+PWtEB+kZiT6zVgQekQH1p7obZNu7ILGB+sgmI2XdICL3FhTJdCNdnc9kSNBdDt4Bx9mhLgmtxN/r5n82uXfphjtl7UhYIlXXhv244SBYfToNUwlTCpEPPRPfUctym6wodEQatVQ9BHq/54dfGaEElvQRauZG9gyX4Q6u6r/SVC9MbUmQOLgqBC+IwTzp4SEQy43OL7voOHlpiGLPqM8SJwmljzM5mg9bC29UHtSRrd2nW9S1bVwIzgnM94WPbOgN2LLGJpqV5TJGMJXh/uIEdMTbxP5k1TwskA9W49vZ4fOnXeu1ZsHc2zgzmEkC9UH5bD5Mk/k6eyrcis1XmMck6cue+CUnErrVtvZF1EEM8bka7EXLl+tnCvtNOTKhu9sZwTkwO3NYOkloNlpVXzsP5XkwI3Fgq48FeEreK2KWOUrAze2ts9Q8G+qc/9qScREPVDsrsvfTAn9+HirB9DuaUALNxHDpS3K740Qx9mh/LzVFwXkwM/VvA9jSOB4itfRqJ85YhC6wZrbwqnKRFz1a0dipjpNhkt5C/SgI+88xJ4NRsAxPhk3gYNKjAlGORxV9RA38aMazjYNGUinVpJFzHiQ01YSv4XqiDstRrst90z3qIpQ6+Ow5MddFRJe9lvbrc2c4XjFuuJntmhBOwaQG5sUQWVc/2f1O/cTkArmAilKkKNv9/m+8BFntBx3C/LVFNoXH1QFzLU35l4aAo6I9RBiH3hWeQivg9cAKNSLke4OQeNM/IoNO6RloXJo6/2MXpqvlZNhPf68gSw/GP68/kp/1BTu6L0KBRrT/SO2ESxONWXQfj0o7z4jGjQcUZTssRrV5UqAXU05FyCPvc/BtzMKTuKHFNF3bW8PnsDV3lIKr7ChLeYy/FjcWbDhxUv86g8Y0lfhq8I/PHUicedd2SwHF6gT8w6xigPlk+K8zUNHQdHfA
- eN6nmEpN
- C9DE/bFL29lePfNMqzvc1QDaeDoH3wLDz0Wb8EE0fIIPPlM7cODxoU/B1rXu1o8y17NKP6s7rpQZx8k1ShabNBbi9wRBMEmUWzerwCNg1eSohOKgKnvY9qAjH7BwuHPYa99W9fhanSh57uGK6JMzz4p42szA0iLfcosGGmtyGM5Rh5wwXxEjUG14GdkMPxDGy6vAddXUeviKDSljckWFEQW3sM1XP7EycxCBGHFdeAQePoohqH3nrsd0RhA2+ez77qn5Tt6lK0qWHWrTa9PPyaQbzUcvSsOl3pJb2b/CjBjrgJpv8TIfiMaOIAiE0jPQfpXS3bkzj5E9IiHFBxutGYgZRzRYCYfVaEAJvptOykpH/VkBiVo/kl4UxTdh2a5aQcGgAKAGuxKXqberaxh5+C9L1lJFr755H4BR0n+g9FNVsqTp1YbhQBENGYFWD59SeGXhQlFh9/adm5ThDFyFVsS6E0/XygLtGLVcq7m4ziNXDWYwUO0quDZ2i2bu++/4S4O8DUNYVYs1NqCu/vU/QJ+dGvg==
+X-HE-Tag: 1763085210-581214
+X-HE-Meta: U2FsdGVkX19iIcfo6byXAmMkkMd7V4WXgwYaizKS8OBVNKwFnPa3owY1zJcYlhm86Bc41mmOfapQFV+2XDyQA1IgoWRXPLuJSblNfMY0kmRE1LU6y0SSyW34jx/DRIuHobbuhqaSVEthbFbcx6+a9MVoMFMr+AvF3gpZEIoul5tBcYf9bR2WPUz9ygCJmZWAEnxsG82JG2nd2H2d2KXX7Bn61o9HWwsisxTHBo72jF/1mzxKKkMsmiVzgXepwwYXnRjDELnMPN/lY11Zriy80CCm6oaOLgAIAFZ6ewV6N4tcfNFOd45fQQlBQdD9sW1wz0nvJ3uNXJTk+um7jYLednYVd8fRho+VvBDB5F1I9Lp3lpfLAGQg0dLiT3wOrt5Gp4Cqb2KZ8Y36K+U+aMHVUVRrCI0bAKGx3cj0xI18i1bkp20h+tJ42PAz8qJ/eFY8Aoq37qnIjBN8PCx+6BKTW96COsQ/AQOpvn5htFTYtaI0+HRVdJmwc1eqPbQhgl1tSd2qKy/+uJUC0cD6AQfNg+rZ6hLWZp3XvfHskOysbsqnGYE7acSzLR/eGykhG1FGCXI5I8yRlxHjpE+aC5OBcubSOSkjpZssku/Q0A9fuIGssFoqAf0jqp0REwtwZDIYWccOHNpTtee19WMtjmYs3Xvu53vyjPVBdkJHHw8/TgKBfw6Y9jCV/NseMQw+1bhK8iW4er0DRiNbbahcz4akfY1bSZK1pBQSGhonSQbIRGipGMrbN11ScC7qKM7nupxpjhZu4mkd0zKuzYzWSS9FmCs1AkoI8dEdOAU+GSHXSWIZMC1CH0ISgHuZTdoumLCBhIjIxMhvT0Dabo/9eL2rHWDcY5tHGtEJQtJSVY1eq5n+RLj1qzYryeYvQQcZPCqk47KJ+5qJtouZgdpRB6k1f8IRfFpWUiYLNpkWDE5fDjxa8kQDv6Zw8UYlx3u9DACeZPOVCnNT6O4FAvkPfBU
+ i/cjig6j
+ vSQor6lkf+OChFPV5rEY1ry4GWRmscl1Eqn9s6W54Yu+OdXeOBIcj4sMlqW+XyE9FtiAQVM888BGRn1XDNxw0uFQyWdG+KRAd81Es5GRlu2XrYfSANeBPo+S3IB6t/XnFtfTpLcX6lpzRx5V648/pduVTcweOmNz8t2BsXJJY+xWWeDAQswMQDE8Anr3dtaq+gY87G023YO45Pd6teTFmL73XMYNmAl5SOtdhp5TBrCzJj71U0BUh2s5pZdhuNzlgs7CvBf1DEYNA6cM5XQqSEtby2tY/zf1fevJr9dPA4zV3I49Eb0SGz1BwRBxHwOzF/cLMHSTsDnaKTUk6uIrPvTidpbw2xmErn5rYNVV28sWLWgo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,193 +120,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cc-ing HMSDK developers and DAMON mailing list.
-
-On Sun, 2 Nov 2025 16:41:19 -0800 (PST) David Rientjes <rientjes@google.com> wrote:
-
-> Hi everybody,
+On (25/11/13 15:45), Minchan Kim wrote:
+[..]
+> > +struct zram_wb_req {
+> > +	unsigned long blk_idx;
+> > +	struct page *page;
+> >  	struct zram_pp_slot *pps;
+> >  	struct bio_vec bio_vec;
+> >  	struct bio bio;
+> > -	int ret = 0, err;
+> > +
+> > +	struct list_head entry;
+> > +};
 > 
-> Here are the notes from the last Linux Memory Hotness and Promotion call
-> that happened on Thursday, October 9.  Thanks to everybody who was 
-> involved!
+> How about moving structure definition to the upper part of the C file?
+> Not only readability to put together data types but also better diff
+> for reviewer to know what we changed in this patch.
+
+This still needs to be under #ifdef CONFIG_ZRAM_WRITEBACK so readability
+is not significantly better.  Do you still prefer moving it up?
+
+[..]
+
+> > +/* XXX: should be a per-device sysfs attr */
+> > +#define ZRAM_WB_REQ_CNT 1
 > 
-> These notes are intended to bring people up to speed who could not attend 
-> the call as well as keep the conversation going in between meetings.
-
-I was unable to join the call due to a conflict.  This note is very helpful.
-Thank you for taking and sharing this note, David!
-
+> Understand you will create the knob for the tune but at least,
+> let's introduce default number for that here.
 > 
-> ----->o-----
-> Ravi Jonnalagadda presented dynamic interleaving slides, co-developed with 
-> Bijan Tabatabai, discussing the current approach of promoting all hot 
-> pages into DRAM tier and demoting all cold pages.  If the bandwidth 
-> utilization is high, it will saturate the top tier even though there is 
-> bandwidth available on the lower tier.  The preference was to demote cold 
-> pages when under-utilizing memory in the top tier and then interleave hot 
-> pages to maximize bandwidth utilization.  For Ravi's experimentation, this 
-> has been 3/4 of maximum write bandwidth for the top tier.  If this 
-> threshold is not reached, memory is demoted.
+> How about 32 since it's general queue depth for modern storage?
 
-I had a grateful chance to discuss about above in more detail with Ravi.
-Sharing my detailed thoughts here, too.
+So this is tricky.  I don't know what number is a good default for
+all, given the variety of devices out there, variety of specs and
+hardware, on both sides of price range.  I don't know if 32 is safe
+wrt to performance/throughput (I may be wrong and 32 is safe for
+everyone).  On the other hand, 1 was our baseline for ages, so I
+wanted to minimize the risks and just keep the baseline behavior.
 
-I agree to the concern.  I also heard similar concerns for general
-latency-aware memory tiering approaches from multiple people in the past.
+Do you still prefer 32 as default?  (here and in the next patch)
 
-The memory capacity extension solution of HMSDK [1], which is developed by SK
-Hynix, is one good example.  To my understanding (please correct me if I'm
-wrong), HMSDK is providing separate solutions for bandwidth and capacity
-expansions.  The user should first understand whether their workload is
-bandwidth-hungry or capacity-hungry, and select a proper solution.  I suspect
-the concern from Ravi was one of the reasons.
-
-I also recently developed a DAMON-based memory tiering approach [2] that
-implementing the main idea of TPP [3]: promoting and demoting hot and cold
-pages aiming a level of the faster node's space utilization.  I didn't see the
-bandwidth issue from my simple tests of it, but I think the very same problem
-can be applied to both DAMON-based approach and the original TPP
-implementation.
-
+[..]
+> > +	for (i = 0; i < ZRAM_WB_REQ_CNT; i++) {
+> > +		struct zram_wb_req *req;
+> > +
+> > +		/*
+> > +		 * This is fatal condition only if we couldn't allocate
+> > +		 * any requests at all.  Otherwise we just work with the
+> > +		 * requests that we have successfully allocated, so that
+> > +		 * writeback can still proceed, even if there is only one
+> > +		 * request on the idle list.
+> > +		 */
+> > +		req = kzalloc(sizeof(*req), GFP_NOIO | __GFP_NOWARN);
 > 
-> Ravi suggested adaptive interleaving of memory to optimize both bandwidth 
-> and capacity utilization.  He suggested an approach of a migrator in 
-> kernel space and a calibrator in userspace.  The calibrator would monitor 
-> system bandwidth utilization and, using different weights, determine the 
-> optimal weights for interleaving the hot pages for the highest bandwidth.  
-> If bandwidth saturation is not hit, only cold pages get demoted.  The 
-> migrator reads the target interleave ratio and rearrange the hot pages 
-> from the calibrator and demotes cold pages to the target node.  Currently 
-> this uses DAMOS policies, Migrate_hot and Migrate_cold.
+> Why GFP_NOIO?
+> 
+> > +		if (!req)
+> > +			break;
+> > +
+> > +		req->page = alloc_page(GFP_NOIO | __GFP_NOWARN);
+> 
+> Ditto
 
-This implementation makes sense to me, especially if the aimed use case is for
-specific virtual address spaces.  Nevertheless, if a physical address space
-based version is also an option, I think there could be yet another way to
-achive the goal (optimizing both bandwidth and capacity).
+So we do this for post-processing, which allocates a bunch of memory
+for post-processing (not only requests lists with physical pages, but
+also candidate slots buckets).  The thing is that post-processing can
+be called under memory pressure and we don't really want to block and
+reclaim memory from the path that is called to relive memory pressure
+(by doing writeback or recompression).
 
-My idea is tweaking TPP idea a little bit: migrate pages among NUMA nodees
-aiming a level of both space and bandwidth utilization of the faster (e.g.,
-DRAM) node.  In more detail, do the hot pages promotion and cold pages
-demotions for the target level of faster node space utilization, same to the
-original TPP idea.  But, stop the hot page promotions if the memory bandwidth
-consumption of the faster node exceeds a level.  In the case, instead, start
-demoting _hot_ pages until the memory bandwidth consumption on the faster node
-decreases below the limit level.
+> > +		if (!req->page) {
+> > +			kfree(req);
+> > +			break;
+> > +		}
+> > +
+> > +		INIT_LIST_HEAD(&req->entry);
+> 
+> Do we need this reset?
 
-I think this idea could easily be prototyped by extending the
-DAMON-based TPP implementation [2].  Let me briefly explain the prototyping
-idea assuming the readers are familiar with the DAMON-based TPP implementation.
-If you are not familiar with, please feel free to ask questions to me, or refer
-to the cover letter [2] of the patch series.
+Let me take a look.
 
-First, add another DAMOS quota goal for the hot pages promotion scheme.  The
-goal will aim to achieve a high level memory bandwidth consumption of the
-faster node.  The target level will be reasonably high but not too high to keep
-head room remained.  So the hot pages promotion scheme will be activated at the
-beginning, promote hot pages, make the faster node's space and bandwidth
-utilization increase.  But if the memory bandwidth consumption of the faster
-node surpasses the target leevel as a result of the hot pages promotion or the
-workload's access pattern change, the hot pages promotion scheme will be less
-aggressive and eventually stop.
+> > +static void zram_account_writeback_rollback(struct zram *zram)
+> > +{
+> > +	spin_lock(&zram->wb_limit_lock);
+> > +	if (zram->wb_limit_enable)
+> > +		zram->bd_wb_limit +=  1UL << (PAGE_SHIFT - 12);
+> > +	spin_unlock(&zram->wb_limit_lock);
+> > +}
+> > +
+> > +static void zram_account_writeback_submit(struct zram *zram)
+> > +{
+> > +	spin_lock(&zram->wb_limit_lock);
+> > +	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
+> > +		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
+> > +	spin_unlock(&zram->wb_limit_lock);
+> > +}
+> 
+> I didn't think about much about this that we really need to be
+> accurate like this. Maybe, next time after coffee.
 
-Second, add another DAMOS scheme to the faster node access monitoring DAMON
-context.  The new scheme does hot pages demotion with a quota goal that aim to
-make unused (free, or available) memory bandwidth of the faster node a headroom
-level.  This scheme will do nothing at the beginning of the system since the
-faster node may have available (unused) memory bandwidth more than the headroom
-level.  This scheme will start the hot pages demotion once the faster node's
-available memory bandwidth becomes less than the desired headroom level, due to
-increased loads or the hot pages promotion.  And once the unused memory
-bandwidth of the faster node becomes higher than the head room level as a
-result of the hot pages demotion or access pattern change, the hot pages
-demotion will be deactivated again.
+Sorry, not sure I understand this comment.
 
-For example, a change like below can be made to the simple DAMON-based TPP
-implementation [4].
+[..]
+> > +static int zram_writeback_slots(struct zram *zram,
+> > +				struct zram_pp_ctl *ctl,
+> > +				struct zram_wb_ctl *wb_ctl)
+> > +{
+> > +	struct zram_wb_req *req = NULL;
+> > +	unsigned long blk_idx = 0;
+> > +	struct zram_pp_slot *pps;
+> > +	int ret = 0, err;
+> > +	u32 index = 0;
+> > +
+> > +	blk_start_plug(&wb_ctl->plug);
+> 
+> Why is the plug part of wb_ctl?
+> 
+> The scope of plug is in this function and the purpose is for
+> this writeback batch in this function so the plug can be local
+> variable in this function.
 
-diff --git a/scripts/mem_tier.sh b/scripts/mem_tier.sh
-index 9e685751..83757fa9 100644
---- a/scripts/mem_tier.sh
-+++ b/scripts/mem_tier.sh
-@@ -30,16 +30,25 @@ fi
- "$damo_bin" module stat write enabled N
- "$damo_bin" start \
-        --numa_node 0 --monitoring_intervals_goal 4% 3 5ms 10s \
-+               `# demote cold pages for faster node headroom space` \
-                --damos_action migrate_cold 1 --damos_access_rate 0% 0% \
-                --damos_apply_interval 1s \
-                --damos_quota_interval 1s --damos_quota_space 200MB \
-                --damos_quota_goal node_mem_free_bp 0.5% 0 \
-                --damos_filter reject young \
-+               `# demote hot pages for faster node headroom bandwidth` \
-+               --damos_action migrate_hot 1 --damos_access_rate 5% max \
-+                       --damos_apply_interval 1s \
-+                       --damos_quota_interval 1s --damos_quota_space 200MB \
-+                       --damos_quota_goal node_membw_free_bp 5% 0 \
-+                       --damos_filter allow young \
-        --numa_node 1 --monitoring_intervals_goal 4% 3 5ms 10s \
-+               `# promote hot pages for faster node space/bandwidth high utilization` \
-                --damos_action migrate_hot 0 --damos_access_rate 5% max \
-                --damos_apply_interval 1s \
-                --damos_quota_interval 1s --damos_quota_space 200MB \
-                --damos_quota_goal node_mem_used_bp 99.7% 0 \
-+               --damos_quota_goal node_membw_used_bp 95% 0 \
-                --damos_filter allow young \
--               --damos_nr_quota_goals 1 1 --damos_nr_filters 1 1 \
--       --nr_targets 1 1 --nr_schemes 1 1 --nr_ctxs 1 1
-+               --damos_nr_quota_goals 1 1 2 --damos_nr_filters 1 1 1 \
-+       --nr_targets 1 1 --nr_schemes 2 1 --nr_ctxs 1 1
+ACK, that's a leftover from when I manipulated plugs outside of this
+function.  Now it's completely local.
 
-"node_membw_free_bp" and "node_membw_used_bp" are _imaginary_ DAMOS quota goal
-metrics representing the available (unused) or consuming level of memory
-bandiwdth of a given NUMA node.  Those are imaginery ones that arenot supported
-on DAMON of today.  If this idea makes sense, we may develop the support of the
-metrics.
+[..]
+> > +		bio_init(&req->bio, zram->bdev, &req->bio_vec, 1,
+> > +			 REQ_OP_WRITE | REQ_SYNC);
+> 
+> Can't we drop the REQ_SYNC now?
 
-But even before the metrics are implemented, we could prototype this for early
-proof of concepts by setting the DAMOS quota goals using the user_input goal
-metric [5] and run a user-space program that measures the memory bandwidth of
-the faster node and feeds it to DAMON using the DAMON sysfs interface.
-
-Implementing both the memory bandwidth/space utilization monitoring and the
-quota auto-tuning logic on user-space, and directly adjusting the quotas of
-DAMOS schemes instead of using the quota goals could also be an option.
-
-I have no plan to implement the "node_membw_{free,used}_bp" quota goal metrics
-or do the user_input based prototyping at the moment.  But, as always, if you
-watn the features and/or willing to step up for development of the features, I
-will be happy to help.
-
-[...]
-> Ravi suggested hotness information need not be used exclusively for 
-> promotion and that there is an advantage seen in rearranging hot pages 
-> based on weights.  He also suggested a standard subsystem that can provide 
-> bandwidth information would be very useful (including sources such as IBS, 
-> PEBS, and PMU sources).
-
-If we decide to implement the above per-node memory bandwidth based DAMOS quota
-goal metrics, I think this standard subsystem could also be useful for the
-implementation.
-
-FYI, users can _estimate_ memory bandwidth of the system or workloads from
-DAMON's monitoring results snapshot.  For example, if DAMON is seeing a 1 GiB
-memory region that is consistently being accessed about 10 times per second, we
-can estimate it is consuming 10 GiB/s memory bandwidth.
-
-DAMON user-space tool provides this estimated bandwidth per monitoring results
-snapshot with 'damo report access' command.  DAMON_STAT module, which is
-recently developed for providing system wide high level data access pattern in
-an easy way, also provides this _estimated_ memory bandwidth usage.
-
-[1] https://events.linuxfoundation.org/open-source-summit-korea/program/schedule/
-[2] https://lore.kernel.org/all/20250420194030.75838-1-sj@kernel.org/
-[3] https://symbioticlab.org/publications/files/tpp:asplos23/tpp-asplos23.pdf
-[4] https://github.com/damonitor/damo/blob/v3.0.4/scripts/mem_tier.sh
-[5] https://docs.kernel.org/mm/damon/design.html#aim-oriented-feedback-driven-auto-tuning
-
-
-Thanks,
-SJ
-
-[...]
+Good catch, I suppose we can.
 
