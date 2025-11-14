@@ -4,93 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 477C2CDE03C
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75781CE7A8B
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA2338E000A; Fri, 14 Nov 2025 03:49:43 -0500 (EST)
+	id C04E08E000C; Fri, 14 Nov 2025 03:50:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A79DD8E0002; Fri, 14 Nov 2025 03:49:43 -0500 (EST)
+	id BDC1F8E0002; Fri, 14 Nov 2025 03:50:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B7408E000A; Fri, 14 Nov 2025 03:49:43 -0500 (EST)
+	id AF24C8E000C; Fri, 14 Nov 2025 03:50:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A3EE8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:49:43 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 354791402EF
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:49:43 +0000 (UTC)
-X-FDA: 84108589446.22.A7637AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 76AE9100012
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:49:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PV9NQ2cE;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ECA68E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:50:46 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4468F87662
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:50:46 +0000 (UTC)
+X-FDA: 84108592092.16.F4D44FF
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 760CBC000B
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:50:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=l8+OEXZ0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110244; a=rsa-sha256;
+	cv=none;
+	b=0+zQcyOMklG8SNxxavHqETZ4T8CdvPbbHcYM10qXPWgMQU5yEJupDFHiRrN6tGAo/Skbws
+	nlgc47GgP6zqgVLJy7ERdSn/gcsGIrCp3PKKgBY24vrYgrpSWt3Yw0fqer0mZ1ND1qhhpe
+	zDDvyzn0rijYwQdFHSqiuAIC486td+c=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=l8+OEXZ0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763110181;
+	s=arc-20220608; t=1763110244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RWx38PnipLzEnx5V8Xgc/qLnRXWn0lzhs9c9FCoUf+c=;
-	b=irCEFHsSrgZteITUS5dlI9moz9Zc0VrVunbdqa2cq/17O3mjIounYPkFWOOmyNCkGYbFaA
-	Mxc0My0TO7Qn4pm5coz2qgUzDN2i5xpajzCVjd2JW4CMLYy5DK2msuoEwjnQp/KShOnT8b
-	2q7aisxnKFYHMfT8Z2184zgOZe4IiYo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PV9NQ2cE;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110181; a=rsa-sha256;
-	cv=none;
-	b=Agpr4u/Mg6WDBF0C4tyoJMLxMLXnKIZbeZPn1JNtH2pbzcDNxfSRWKcmYNsK0SkEmLoAsx
-	gNCi5XAM18EA71yFXs8WtLkkqZa2U4bt0Ew+J1JlNaxj33x6UdSBmdaG4E11oPnVak/k7I
-	NhvYsObBQZOQDEw7UCWwYaVCUQEM6Zw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA8346016C;
-	Fri, 14 Nov 2025 08:49:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F606C4CEF5;
-	Fri, 14 Nov 2025 08:49:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763110180;
-	bh=2VjlPjr4YgqvCmkWdEAljVv3hnLPGuBJoJEbxeGw5+U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PV9NQ2cEFX90//6qK37YDIkkXBgQAEEJbQMTojQ0TzNFMTVGbtV7SzaKE4Q2tJc8j
-	 AlAIsfNfeku+vvPh2SqSDyZ+qP0EBByvPRHDrlyCJxAAEdA/RP2JCTO1xrYrUNIZ1t
-	 0KlSWSrOAkUGXOR9rlWOz0PgYi9Rpb+mHYvKbMB+r9RWyaI22UZvoeqQWWAfJSaYs7
-	 yniXIb8YVCoE914w4nWE6MagSt+ySOBnoFCkKhH4Pq1P68p+sWV9WcJI5zD2Snq7DW
-	 i+kvJbfBXbQd0FO+MHJt+OLFBwZKOvb8jhYEHoSk2y+VfXCa86omdWjOB621C+CDdI
-	 FgxcqMUOUG+fg==
-Message-ID: <827fd8d8-c327-4867-9693-ec06cded55a9@kernel.org>
-Date: Fri, 14 Nov 2025 09:49:34 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DbBO36ew8VvzcbHlpegzL83pZYmO4COvdyAP3ks49tc=;
+	b=u8/uGgu1lWQXD/UAwBhUBNhjNFwXvdXba4O2Hwk08AH2odHvcK32n82Z1jusNLlE5KVrh0
+	5z9OHEjoGvpSiRYDcSpgGpSw2E5XP/Jf5SZAxCpGW6CwMMmI8Sf3i1GR0/Q2WEhZOQ122P
+	cY5gGLQbyf/k0TtfdOY9A8fMsD1babU=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7af603c06easo1934773b3a.0
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:50:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763110243; x=1763715043; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DbBO36ew8VvzcbHlpegzL83pZYmO4COvdyAP3ks49tc=;
+        b=l8+OEXZ0Xn16D2mR9DwsCAMWU/XReEDNc8+kSGu9BkYhf3q40qcKRY6UR9rJ0ygt8b
+         YuTrsNmQDKF2LhWH6DDT/8YSjUTdTTFYGb30nddu2vAnso5rKXRvK5N+OkOFh4gTf7WA
+         5JjmND39P5r363RCeNOI5j1R2r1oP3JUIf7qWwp1yA6V/1qA0EAF2w2pnr5nau7lvgiI
+         ya8RUcM9W0G+fYXvMmWvlsq/nw3n1u7rWLvDy4Y7XWU8P8SrcK2iJ/0cPFnyZOYyYf9f
+         gYRH2GWsBE2y8RxZM1NXv7WJTUOEK96EruhS9+91jIzPQuJ90hgxaT+tu4kYCweBgUOL
+         XhrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763110243; x=1763715043;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DbBO36ew8VvzcbHlpegzL83pZYmO4COvdyAP3ks49tc=;
+        b=U3t/9NzpwmZHLc/eYmvcq+SfEetaoL4ng9AOnHksRxToc+eU+u3lW/UIsjVyE7aieR
+         t3x5pyEIQJEJMp1QDHz1OJ/NLpAOR9FNNmSQjRscQpgs7BR4B9FKm2we5a2AedTdqX7D
+         eHL33L9izYfq0gRmhQM+BquSaBZRk0Yh7jBC/1oPyL4pdIUZnnMXeuuru/AczT290+w4
+         9FdqrNLjH2RBCh5jS6oilFTaxZ5mZf6kg/k0x0pwnZsjYGxTz4PLJLIUm21cz5hWf5W3
+         dV1dCCT7eEWgKJi8hisiQJYMfY1QN1QRgAHwuYrE5uzPxIkSIqNh/4I8v0PyRmKTjKuI
+         Bmiw==
+X-Gm-Message-State: AOJu0Yxvni//gXU+nI4zp4xV6wEU+5xatPxBsAVY2LWUj5kgx48I87ia
+	iVpx6FW1pjNdHavMSudG9MGRZpN7nn7LSsbwGYnu5sGgBOARd29ggqHEkfKMF4FMipyIkrg5
+X-Gm-Gg: ASbGncvcrFT+pgmlQynFSobyKOkLRTUrXe1ebN1BJo+DDDe/ZjfNveq51/+R2p4YoVG
+	4g5sgY+v2eaVwRgYsALoBrTg0Bcprp3OPrIBOasiLdmh1quxM7sqACO8mRQoNIEPO3hfOZw0l0w
+	BBQ3NbxXiC5kglD+xWdxgrPIOqfwf6ua0np6pkIQWlrSOJq3nzohNkkEIqAHyspLooB9tCwepYy
+	l0HhZChHKHQ5jDtt42VExtVPk1mbSlYFGUHz2IYqe1LAprn+zJWkJL3yoKPL6HqPbjVPPA37Lhb
+	CNvYhbO36wkoxP3rDz1IRaZs6A/kb4UtuaZPaHrEj1IbARz26eWXcMN+JU10R705wfY7PSS2KER
+	TCl6vMQeywIZJUii4zDknB8MofVZbRsigTsvgtCbetBUY5owzo+j8qi5mpPyymSbEOR8hAJvjc5
+	39YqBkTyCTRwf9CKOzgYW4
+X-Google-Smtp-Source: AGHT+IEpAf8mh4p6tc0bF2EPa6kquDi0o2K/C4+seZIZFBNIulWX3tLB8uFYJ43/Pckyb+HcJ+hTrA==
+X-Received: by 2002:a05:6a00:94fc:b0:7aa:d1d4:bb7b with SMTP id d2e1a72fcca58-7ba3536b13cmr3366912b3a.16.1763110242963;
+        Fri, 14 Nov 2025 00:50:42 -0800 (PST)
+Received: from gmail.com ([117.147.72.154])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b924aedb73sm4459368b3a.12.2025.11.14.00.50.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Nov 2025 00:50:42 -0800 (PST)
+From: peng8420.li@gmail.com
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Cc: david@redhat.com,
+	osalvador@suse.de,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	linux-kernel@vger.kernel.org,
+	dan.j.williams@intel.com,
+	"peng8420.li" <peng8420.li@gmail.com>
+Subject: [PATCH 1/2] Remove the "FOLL_TOUCH" test code from gup_test.c.
+Date: Fri, 14 Nov 2025 16:50:37 +0800
+Message-ID: <20251114085038.191031-1-peng8420.li@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: consolidate order-related checks into
- folio_split_supported()
-To: Wei Yang <richard.weiyang@gmail.com>, willy@infradead.org,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20251114075703.10434-1-richard.weiyang@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251114075703.10434-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 76AE9100012
-X-Stat-Signature: 77gkij4i4bp66ifp88zmkds4rct88bm1
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1763110181-479839
-X-HE-Meta: U2FsdGVkX19TKmhX1XWqnM0zI9pd7iMiGhjn1/5lJcB9shM2RztZ2dwSkCrpAneKiApM5Q5jDa6/mozKc0Zo/29fa490VLgPHOlphOAmpHbYFWRaCvYW18fyPwao7/BJqwD3ui8iRB8sSJfu5vU0sHZIZRbrdn8sA38C/0ca/+2v6S/GgQbQArO7AJrOpkvN/fnI+sbf0CfTtgzsCyYlHv4qHUjw9hdTVWub8tqq9w5V7g5P6un8cFcpUjZ0uRKxY0+cKl5fjIXkto2n4wep22AIxQlldDIlO4hf4L7Sri1pldlDI2oihLSS2ARtSdCiJTdSEysq6pe3JlW4KY58WofaKO2+/yD/32yPzq3v4eiZ6jqU55EtRtiMHSieRk8RByHylicr4gNAdpAjVhZOw9TngfWVCclS9PlNFCdUzvZChS+dyPp8lYEd9uqaDEUzbx/1lcRJdp+RSWv4vMqCzvdfu6Ia9r5wDc4xd7BiH2GA8AlHglXVgb06h7B6r7UoiYS5sDpnP3GrT17aaO38Voc32F1qRzWRSJEtgKJ7fR572cltN5yT4VbTGMt160Yh8lg0NmF77rMP5tklWxkJxMxId1Detjf5LMkEY3C/eMB0lqJOjzFP0VULvvGfUsU7Mw4TgF0V9a8w61p/mN7j+KTQX6Plsz3aHtBBLp+E2+8XuBmCw9N3htjCs6Q+wSx9teb3pI/doEttVJuAcAc6RPccTAGsL4anT/KNvcDWoFXzOfy7Zp86FhktdWxUCsFWrCIstSe9rntF3nUHU4/poAkZNKETpdR1JOzkS6+idcTgTOkG5HwjU9lpMNgtT1FjDbP8t8/FoLm3ddamoqlI1aa8OxxZ90JUiALEbS/6JlFeMGH3XUNYEHvpaYbogvpETrS5BhrWQ3NUW0yfmXWR/yHBha/l7teKFYgdBFVUd8BLxrnESdCnwqNQnyHKdhIS0lkWCh0t20om8P0pSdi
- 5UwDgcOm
- cgl1IgrbLIrPCAEbP5ZspOFn0OCy6Hm4MVGbI2AdeCI2FWJ84DmrrfFg9Z2QsY/IYGsO12VyaOzGfryjMUQKN4dcxsleUVQwgdSSHiDnqNhL/8VD99LtStX6S6ReNO6oJhP7WI1R8hPgkzhxtNE2TSiImbCinVt+OYkZsk10ezBZgPM/a3cfw4EdYgbN1oKC5TB/xzC7qv1toOvusNuitMzrccPiULNa8gzCgZpfFl1IIG0Da2ROekmoHddIe3c7mgDbBfFU7tdIZ3FjgjEurx8rsS2CTirOQ/4f4rXA/LGIOYFH8yX/KkxThoScN9BZevVBBDCV32CiamNL+jwGrmIP7Ob7NcUdER75aLQcDeCqlWwaD5bZQ+lsHTx3Mhr9sd+GD40raVdFktzU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 760CBC000B
+X-Stat-Signature: 64bma4njexrd4mr34hmtmf7r5ke6579s
+X-HE-Tag: 1763110244-390675
+X-HE-Meta: U2FsdGVkX1+dWomZ0STr/Wl43wshodFHUAGL1bjg+Zoa0OP0rRk9epuZ1QVMdwCi9AbmPzpF17Ka9VEjTT5/OOOQEy8hjFzbxf+wknR8jjZxsqxhQFv+fqmVS1hVroeL0csN4CqlLyRt4jeS5MulQut9kY4DKk2dF0VCzeomo2EnQzRSyVFpiihoYZajChBlXwSUzWhzzH4QXle02tOU6oVfLp2x8zSeIAzA6tzNjUuQo1Mpi6oFGIJlHlRj2japH56xshQFVJ+6RBpyCpyyczD9of05SjTkwT2djChHodwf+9N8So4FFUpzBxqucLEnCYozNjFyRCptAPPcTpoiEwC4QxzqON9HBcGysVENLnYE3zWus0suR3oI0C4Bu6DWw+gJ2Q3gInPtuTzeVgliwpK5PxVzgcOjqbI8lpOsBc5gSBN7MYhnnfxgZMw7L3D1I0vlWwmOoIXNN1PMdz1m/BWqNScXB0O2Jc9wN+cnKYy+vtq6HAupH0Yhkz4r89zcuj/QNPNxR1UsFxMNOR3VXv6CwewjRl1poZtK3mcYvzoYo5U3WXAssomEMeHpV0002cDxOwjNIEH8WU50qnqLDW8pLzUNx1aqVrYbQvxQtn3fH1F6Avch2QlU1YVD5kzmSCkUotFvrxId1mr+A82pf0aNsgQSFdSwLcvBc21l2o0FW4x9bcpufhIyKIfKb9nlPNyEJXtIerAv1X1ffHYlHfmzcb9N/ewxB5dOaHUtkHJuFIYAY1Uu5pgKAxElt1wktXqc7Q/JAzyR7sft7zp2udAWPcNOk7p1BDTLjAcZV4CLGvFIpaPIwWL9luF8l8afrW4HR3NazIEx4/SMb3JyKpPLA9Fi7FKGmYKHA/3qaSxZbGcXvcl4YblWnxwF4KwDPWG9JVDaDb11FSDDJAqEgev1VAqxc73J4dP02H+jt/HtmQmcmwG7g1mElEHxC3wBQFMSMjSo9XCrdBvoiTT
+ 6JNiUxMc
+ aifSXEOTiGT4/PDYy5//vZ6AEV32lEeBw2XWBHScq9ZF/9RsKdR0L5r5yDkk3EXGlMx9PDFDCopUPdNF8TA8nwO7wrf1JaS4tUPq0rv68V7GSDnq+o0diECnD3eq3vDf44+ekLFp/O4OPvkxJ3azefMpIx40YAXqDZu1HFRL6NiZE3r0asQn77QXROhW7kcoJ/0KCU4sIngFxun5ToDY98hX7hKM24VjVoSdXF9bOFdwpGLgG1ZpeBi0XcOQbPWbMsxhMXJBCvd/MVpdxIiSnmzyeTgwOwHdNT63Zciy9Vm0Z+PwPVqPoRdzmvjr0luokw8NJCE/gxGcTXAQGvD0D1y1062lKzHO3XDaRuaL7a/UNyqzcBYTSA6sPYy9i5elxipDcoDv6dRf1W5i3OB8JLTjU/CIZcFAtZUU2DrF5fYS7wa8xmD0wGh8RI4tlpD2RQD/FeAubw1OpBcAQ82slhMqOj66TPT8khyozuecarTTzjTii7q4Y0JueFB0ngaWMD6/lV/RGMvve8O0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,149 +122,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.11.25 08:57, Wei Yang wrote:
-> The primary goal of the folio_split_supported() function is to validate
-> whether a folio is suitable for splitting and to bail out early if it is
-> not.
-> 
-> Currently, some order-related checks are scattered throughout the
-> calling code rather than being centralized in folio_split_supported().
-> 
-> This commit moves all remaining order-related validation logic into
-> folio_split_supported(). This consolidation ensures that the function
-> serves its intended purpose as a single point of failure and improves
-> the clarity and maintainability of the surrounding code.
+From: "peng8420.li" <peng8420.li@gmail.com>
 
-Combining the EINVAL handling sounds reasonable.
+From submission 0f20bba1688bdf3b32df0162511a67d4eda15790, we know that "FOLL_TOUCH" is only for internal scope use;
 
-> 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> ---
->   include/linux/pagemap.h |  6 +++
->   mm/huge_memory.c        | 88 +++++++++++++++++++++--------------------
->   2 files changed, 51 insertions(+), 43 deletions(-)
-> 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 09b581c1d878..d8c8df629b90 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -516,6 +516,12 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
->   	return mapping_max_folio_order(mapping) > 0;
->   }
->   
-> +static inline bool
-> +mapping_folio_order_supported(const struct address_space *mapping, unsigned int order)
-> +{
-> +	return (order >= mapping_min_folio_order(mapping) && order <= mapping_max_folio_order(mapping));
-> +}
+Therefore, remove the "FOLL_TOUCH" test code from gup_test.c;
 
-(unnecessary () and unnecessary long line)
+Otherwise, executing the test command "./gup_test -L -r 100 -z" will report the following warning log:
+TAP version 13
+1..1
+ENCHMARK: Time: [   39.363371] WARNING: CPU: 1 PID: 117 at mm/gup.c:2512 is_valid_gup_args+0x66/0x8c
+get:2818 put:46 [   39.364043] Modules linked in:
+us# , truncated [   39.364311] CPU: 1 UID: 0 PID: 117 Comm: gup_test Not tainted 6.18.0-rc5-00324-gd09eaf415c87 #29 NONE
+(size: 0)#
+[   39.364434] Hardware name: riscv-virtio,qemu (DT)
+[   39.364546] epc : is_valid_gup_args+0x66/0x8c
+[   39.364596]  ra : pin_user_pages+0x38/0x78
+[   39.364630] epc : ffffffff802079e6 ra : ffffffff8020c214 sp : ff2000000041bd20
+[   39.364650]  gp : ffffffff81a26068 tp : ff60000080b3b000 t0 : ff2000000041bdf8
+[   39.364678]  t1 : 000000000000001e t2 : 0000000000000000 s0 : ff2000000041bd30
+[   39.364697]  s1 : ff60000081300000 a0 : ff60000081300000 a1 : 0000000000000000
+[   39.364714]  a2 : ff2000000041bd3c a3 : 0000000000080000 a4 : 0000000000000001
+[   39.364731]  a5 : 0000000000010101 a6 : 0000000000000001 a7 : 0000000000000000
+[   39.364747]  s2 : 00007fff7eeed000 s3 : 0000000000000001 s4 : 00007fff7eeee000
+[   39.364761]  s5 : 00007fff7eeeb838 s6 : 0000000000000000 s7 : 00007fff7eeed000
+[   39.364825]  s8 : ff60000081300000 s9 : 0000000000000000 s10: 0000000000000002
+[   39.364842]  s11: 000000092869bfdc t3 : 2152ffffffffffc0 t4 : 00000000001fffff
+[   39.364855]  t5 : ffffffffffffffff t6 : 0000000000000000
+[   39.364867] status: 0000000200000120 badaddr: ffffffff802079e6 cause: 0000000000000003
+[   39.364949] [<ffffffff802079e6>] is_valid_gup_args+0x66/0x8c
+[   39.365036] [<ffffffff8020c214>] pin_user_pages+0x38/0x78
+[   39.365049] [<ffffffff80278f78>] gup_test_ioctl+0x2b4/0xc08
+[   39.365060] [<ffffffff80297da6>] __riscv_sys_ioctl+0xba/0xc4
+[   39.365072] [<ffffffff80b93f96>] do_trap_ecall_u+0x296/0x370
+[   39.365093] [<ffffffff80b9ef06>] handle_exception+0x146/0x152
+[   39.365220] ---[ end trace 0000000000000000 ]---
+ok 1 ioctl status 0
 
-Style in the file seems to want:
+Signed-off-by: peng8420.li <peng8420.li@gmail.com>
+---
+ tools/testing/selftests/mm/gup_test.c | 22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-static inline bool mapping_folio_order_supported(const struct address_space *mapping,
-						 unsigned int order)
-{
-	return order >= mapping_min_folio_order(mapping) &&
-	       order <= mapping_max_folio_order(mapping);
-}
-
-
-The mapping_max_folio_order() check is new now. What is the default value of that? Is it always initialized properly?
-
-> +
->   /* Return the maximum folio size for this pagecache mapping, in bytes. */
->   static inline size_t mapping_max_folio_size(const struct address_space *mapping)
->   {
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 0184cd915f44..68faac843527 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3690,34 +3690,58 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->   bool folio_split_supported(struct folio *folio, unsigned int new_order,
->   		enum split_type split_type, bool warns)
->   {
-> +	const int old_order = folio_order(folio);
-
-While at it, make it "unsigned int" like new_order.
-
-> +
-> +	if (new_order >= old_order)
-> +		return -EINVAL;
-> +
->   	if (folio_test_anon(folio)) {
->   		/* order-1 is not supported for anonymous THP. */
->   		VM_WARN_ONCE(warns && new_order == 1,
->   				"Cannot split to order-1 folio");
->   		if (new_order == 1)
->   			return false;
-> -	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
-> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -		    !mapping_large_folio_support(folio->mapping)) {
-> -			/*
-> -			 * We can always split a folio down to a single page
-> -			 * (new_order == 0) uniformly.
-> -			 *
-> -			 * For any other scenario
-> -			 *   a) uniform split targeting a large folio
-> -			 *      (new_order > 0)
-> -			 *   b) any non-uniform split
-> -			 * we must confirm that the file system supports large
-> -			 * folios.
-> -			 *
-> -			 * Note that we might still have THPs in such
-> -			 * mappings, which is created from khugepaged when
-> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
-> -			 * case, the mapping does not actually support large
-> -			 * folios properly.
-> -			 */
-> +	} else {
-> +		const struct address_space *mapping = NULL;
-> +
-> +		mapping = folio->mapping;
-
-const struct address_space *mapping = folio->mapping;
-
-> +
-> +		/* Truncated ? */
-> +		/*
-> +		 * TODO: add support for large shmem folio in swap cache.
-> +		 * When shmem is in swap cache, mapping is NULL and
-> +		 * folio_test_swapcache() is true.
-> +		 */
-> +		if (!mapping)
-> +			return false;
-> +
-> +		/*
-> +		 * We have two types of split:
-> +		 *
-> +		 *   a) uniform split: split folio directly to new_order.
-> +		 *   b) non-uniform split: create after-split folios with
-> +		 *      orders from (old_order - 1) to new_order.
-> +		 *
-> +		 * For file system, we encodes it supported folio order in
-> +		 * mapping->flags, which could be checked by
-> +		 * mapping_folio_order_supported().
-> +		 *
-> +		 * With these knowledge, we can know whether folio support
-> +		 * split to new_order by:
-> +		 *
-> +		 *   1. check new_order is supported first
-> +		 *   2. check (old_order - 1) is supported if
-> +		 *      SPLIT_TYPE_NON_UNIFORM
-> +		 */
-> +		if (!mapping_folio_order_supported(mapping, new_order)) {
-> +			VM_WARN_ONCE(warns,
-> +				"Cannot split file folio to unsupported order: %d", new_order);
-
-Is that really worth a VM_WARN_ONCE? We didn't have that previously IIUC, we would only return
--EINVAL.
-
-
-
-
+diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
+index 8900b840c17a..75f7134d529d 100644
+--- a/tools/testing/selftests/mm/gup_test.c
++++ b/tools/testing/selftests/mm/gup_test.c
+@@ -19,7 +19,6 @@
+ 
+ /* Just the flags we need, copied from mm.h: */
+ #define FOLL_WRITE	0x01	/* check pte is writable */
+-#define FOLL_TOUCH	0x02	/* mark page accessed */
+ 
+ #define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
+ 
+@@ -93,7 +92,7 @@ int main(int argc, char **argv)
+ {
+ 	struct gup_test gup = { 0 };
+ 	int filed, i, opt, nr_pages = 1, thp = -1, write = 1, nthreads = 1, ret;
+-	int flags = MAP_PRIVATE, touch = 0;
++	int flags = MAP_PRIVATE;
+ 	char *file = "/dev/zero";
+ 	pthread_t *tid;
+ 	char *p;
+@@ -170,10 +169,6 @@ int main(int argc, char **argv)
+ 		case 'H':
+ 			flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
+ 			break;
+-		case 'z':
+-			/* fault pages in gup, do not fault in userland */
+-			touch = 1;
+-			break;
+ 		default:
+ 			ksft_exit_fail_msg("Wrong argument\n");
+ 		}
+@@ -244,18 +239,9 @@ int main(int argc, char **argv)
+ 	else if (thp == 0)
+ 		madvise(p, size, MADV_NOHUGEPAGE);
+ 
+-	/*
+-	 * FOLL_TOUCH, in gup_test, is used as an either/or case: either
+-	 * fault pages in from the kernel via FOLL_TOUCH, or fault them
+-	 * in here, from user space. This allows comparison of performance
+-	 * between those two cases.
+-	 */
+-	if (touch) {
+-		gup.gup_flags |= FOLL_TOUCH;
+-	} else {
+-		for (; (unsigned long)p < gup.addr + size; p += psize())
+-			p[0] = 0;
+-	}
++	/* Fault them in here, from user space. */
++	for (; (unsigned long)p < gup.addr + size; p += psize())
++		p[0] = 0;
+ 
+ 	tid = malloc(sizeof(pthread_t) * nthreads);
+ 	assert(tid);
 -- 
-Cheers
+2.43.0
 
-David
 
