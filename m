@@ -4,128 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31839CDE032
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:43:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3004CE7A8B
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:48:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BE868E0007; Fri, 14 Nov 2025 03:43:46 -0500 (EST)
+	id 0B41A8E0008; Fri, 14 Nov 2025 03:48:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 896348E0002; Fri, 14 Nov 2025 03:43:46 -0500 (EST)
+	id 066168E0002; Fri, 14 Nov 2025 03:48:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AC5A8E0007; Fri, 14 Nov 2025 03:43:46 -0500 (EST)
+	id E96538E0008; Fri, 14 Nov 2025 03:48:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 691FB8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:43:46 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4FC68E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:48:20 -0500 (EST)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 148D5136DF1
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:43:46 +0000 (UTC)
-X-FDA: 84108574452.14.FC3DDEF
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 376E812000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:43:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bO3pagQh;
-	spf=pass (imf29.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A11687FAE
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:48:20 +0000 (UTC)
+X-FDA: 84108585960.14.EA0016D
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 198A1C000E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:48:17 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ho4enqty;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HsvVl0bC;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ho4enqty;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HsvVl0bC;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf10.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110098; a=rsa-sha256;
+	cv=none;
+	b=bdP403AESzrYTjVbPfqvvV9Q9BHDFvRk4nvfnrJ/Fd0fDhgd8Bbt4e1f/DN4ZfiZKhjUgI
+	LM5LZo4JTqxRbKmHbaWzxS2e/TmZUpLNGm1Du4rW6Cq9wCI0FSrLplJErIH85y77XL3MLE
+	hZoP79W/V/l1i8tv26DPQsm2jZyPUTY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ho4enqty;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HsvVl0bC;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ho4enqty;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HsvVl0bC;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf10.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763109824;
+	s=arc-20220608; t=1763110098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CZqdt41d+LPz+pOMoPWH9r9sMNv7qqAmbnlAWDdsj9s=;
-	b=uFSuhsyI1KR1DcZfUB+uCcb3EAvrShxay19P5eB1x9kUVEo5g0sub65nhjwRIVV+2LL1ua
-	cWQozRoJ8uKKLOO9EmXl3KKBlC4f83SKfzkq+AhPWrQnj3ZlEAhNwC+pFNS/87sJYftJLl
-	a4G5QrA7VXkS5e4SvoSuQBAWrDDO+/M=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bO3pagQh;
-	spf=pass (imf29.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763109824; a=rsa-sha256;
-	cv=none;
-	b=YRv00ws1cX3B6ofdE3+UsntUsRXdyf6ioPGIDQqATnIX21vPCPGnDGlHb4rVNx9cZgm+BX
-	Ci8llPzEeO0/rrif2Z5pazTtzYTJr6y0ZeSJkbt0j3j/6yMnojUph6aNU1WAtSTZCxr4jR
-	Ts+K8+joW4vg33oDlsPSrVClxGG5PP4=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-297f35be2ffso26118195ad.2
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:43:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763109823; x=1763714623; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CZqdt41d+LPz+pOMoPWH9r9sMNv7qqAmbnlAWDdsj9s=;
-        b=bO3pagQhbQwH1sRFQQFMR0bEiZWCbeQjfNm0Bh2oZQhFnTlrCbdYCfUdD27x9TwKYF
-         ybcuoEaMHE1X6goc0bDo32sPZTQXbte4Ckr98hFR1E1PqhlfRVVAQZ94yzfGJmAMJHV5
-         8I3s8pGv5taAm9hWwptSOftWXFDOODzVV2nhsjDd/3EZEotVDY5OviCZGCUEK3PnB8i+
-         5WS/Ic1n5cuswkVOw/lfAkELdoUltQghA28Lophj3GjD5mg73wvbjI6mSDUXXmA0/6Rm
-         ONQRKM51sX+U3o5uD0VR4gpKUKqxGtu0lCeRXWiAYCDwAZIqkuRzirUgFaIqZv0TRXsM
-         Wz/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763109823; x=1763714623;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CZqdt41d+LPz+pOMoPWH9r9sMNv7qqAmbnlAWDdsj9s=;
-        b=Z4Dp1QL5LqpGxHGxhC1rqtSAM0c9NZsSIpMqRBw6mIxLAGTkWg36o5pykbVDqunBOV
-         g8y3WJzpy9Q5nX9JWp/UZe11iCbmbd+xhushe3F1Xjo3sFMcV17oJg3n945JIbplxKY3
-         JwDvYbkgk+1QVpaylveSTtuDfEBhyYspVhtHiHwmmnwczC+ArAH6FkSgpfMm3y/SFuj4
-         BvRB2wJkVLXkmz+GuwYU9x6aZH58oLgsU7kHQ6Y8isKZ4cm7UfyJH0amUNpiOqvRxNVL
-         IsRqfeVW36XY8TVV/dldyxX7rFoDwO7iWrp9qJWVjZgwAtT8yVPCA2dN8vZsDu4rm/qJ
-         xWSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVm1n8L8z8cQHyPBesPQpf3CiMKCYLK56Gmvkv6QUoU73Lz5fzuXeCv+9UUHFTlUYejTmBrrRcn1w==@kvack.org
-X-Gm-Message-State: AOJu0YytawFeXhZWykcQufLS/HiJcTwxlBxFtoBdSzGgc0xtIdzF+4pC
-	knaVoh1L4rv/qy3BnZPmTKX2Ygqj1TYLMsVSrgOOuOGaV/XsWcltJJhg
-X-Gm-Gg: ASbGncvMx8Ro9+SBpcMI2AilqoRDI7VnIi68QQkMqDcktZg3V6NgBUGOumtOdL1Ew7N
-	hrR8yip70L156QmXw1O6lSzBhg2h6fHFGxbBBrHBtuUk0KW26ugh3gNmInuBLcoh+l1cgiumVNp
-	QgDpJHl4kFlomZIKIoFW6rtgP9YghEkHPyVIBq1hM8Y+9BUdrTHxd0u7NttGIVgkUfMJ+EemECa
-	6NLshVyWVy9+PSnDIN8jTAsK9llf6X6xgG4lpLCYRNTm/YVP8TnwMTprw08pTOHAyObb/Pxyesw
-	h7JsVbT0s/4MLe4L2cTKcVcO0BGmHnRE7iON2cGp23lm8POK5+2JNeR46sQbblf4/cCslHY0keb
-	NJg0UXJ0x7dY4AhTsgDPTULDTdT8719ZMTfpt4NuNtdqVzOBztoA8O0eccx9/n8JD1FYNqIxaUN
-	RhXUtPqxk32gu7iVQ=
-X-Google-Smtp-Source: AGHT+IG9/SC6VdPA1FDIVemhgKL/bLY9YjlGaqmfBfHgryKUgf1+YXYjJdmBmW+U8go+rXobjJicqg==
-X-Received: by 2002:a17:903:2349:b0:298:5abe:4b1 with SMTP id d9443c01a7336-2986a76bc5fmr23755615ad.52.1763109822755;
-        Fri, 14 Nov 2025 00:43:42 -0800 (PST)
-Received: from localhost.localdomain ([240f:34:212d:1:4f6a:b780:1077:5032])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b0d17sm48880405ad.72.2025.11.14.00.43.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 00:43:42 -0800 (PST)
-From: Akinobu Mita <akinobu.mita@gmail.com>
-To: akinobu.mita@gmail.com
-Cc: linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com
-Subject: Re: oom-killer not invoked on systems with multiple memory-tiers
-Date: Fri, 14 Nov 2025 17:43:15 +0900
-Message-ID: <20251114084315.155333-1-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAC5umyiA+KkQNTv-mN=mA9BXHmqMH9Trr_07XYOh=QTLLm=zNg@mail.gmail.com>
-References: <CAC5umyiA+KkQNTv-mN=mA9BXHmqMH9Trr_07XYOh=QTLLm=zNg@mail.gmail.com>
+	bh=6NewmV1pcDRKaQJIMUZo/MiTJQZGP+1ogl/0KLlMvZg=;
+	b=djz/flrC0qaOoKm7asnDTHil/MrC6884olY6D4FyubeMl/QvTu5wV9rG9Rqx2ByAHR8SCt
+	h0dP5/xz44XHe84AMMTsEApXXZdzY2bZlx76GuGMJzkQp+ylucER4ccF5a2uAB1IhNe5k9
+	GAtwQf+Glkd0/9qWhpL8E9sc2b1ACow=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1E0581F391;
+	Fri, 14 Nov 2025 08:48:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763110096; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NewmV1pcDRKaQJIMUZo/MiTJQZGP+1ogl/0KLlMvZg=;
+	b=ho4enqty3nkFp0hbRfLy8VUI0H4OOw/xm3G7MPvC+YrDIMw2wXluMTP0oYeycDf3OFJA6O
+	3dgyexc/9pw+jIhrDpDMjF/mpyarhpFoUPY6a3j9/bdjXSVpTVfQYoIFQwMoYnBfIidZa5
+	eyugQI45k0GRdIIIBNO2P5s9YUaXpdg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763110096;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NewmV1pcDRKaQJIMUZo/MiTJQZGP+1ogl/0KLlMvZg=;
+	b=HsvVl0bCZHHZ2oHzggJbblAZniayaB0mjhAn7R3i0UoXoimiTcqqA3YurAndL8yL9yRm0z
+	qUeWaAcJx3AyuTDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763110096; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NewmV1pcDRKaQJIMUZo/MiTJQZGP+1ogl/0KLlMvZg=;
+	b=ho4enqty3nkFp0hbRfLy8VUI0H4OOw/xm3G7MPvC+YrDIMw2wXluMTP0oYeycDf3OFJA6O
+	3dgyexc/9pw+jIhrDpDMjF/mpyarhpFoUPY6a3j9/bdjXSVpTVfQYoIFQwMoYnBfIidZa5
+	eyugQI45k0GRdIIIBNO2P5s9YUaXpdg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763110096;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6NewmV1pcDRKaQJIMUZo/MiTJQZGP+1ogl/0KLlMvZg=;
+	b=HsvVl0bCZHHZ2oHzggJbblAZniayaB0mjhAn7R3i0UoXoimiTcqqA3YurAndL8yL9yRm0z
+	qUeWaAcJx3AyuTDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DC9B33EA61;
+	Fri, 14 Nov 2025 08:48:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TxvgM8/sFmnmKgAAD6G6ig
+	(envelope-from <jdelvare@suse.de>); Fri, 14 Nov 2025 08:48:15 +0000
+Date: Fri, 14 Nov 2025 09:48:14 +0100
+From: Jean Delvare <jdelvare@suse.de>
+To: SeongJae Park <sj@kernel.org>
+Cc: linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>, David
+ Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH] mm/cma: Remove CONFIG_CMA_SYSFS option
+Message-ID: <20251114094814.3b2efb09@endymion>
+In-Reply-To: <20251114010928.151974-1-sj@kernel.org>
+References: <20251113145636.731a24e4@endymion>
+	<20251114010928.151974-1-sj@kernel.org>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 376E812000A
-X-Stat-Signature: utej3xwpd74gdxxa81576rs9i59jmt55
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 198A1C000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: m44x4grif3r5orizoe1pq8fq1zm19o7g
 X-Rspam-User: 
-X-HE-Tag: 1763109824-325214
-X-HE-Meta: U2FsdGVkX18IZoxpYzMVwIgKzFEQdWAq/ifGCy4Q6oOko/8mRX0pThDdAJesMpeEc930K2PaUY52orRlIad4xeBYljonNcKSjkAOe2PZXVT8BMyBdGgOJvSGM9IBCPkAdPBcN1M72PtKnxzqqKRFDNqSEUwxdu9bYygsRww7VUkScKL+v3xcHBaRTLBFTKxCDByi42sERjnh58bERRnpviq95UCI1BkzJ4U5vHh1FpqV4TiTFTLtyRwnbP0H7kvDYHiUNODMKmUyjceM4IZkEGsxmgmUcwcKdslDyEgkJltmvlVR44vtwnoTOpx4q66EuqDEaDePIMUtWLC4kKyjdfWuwmQl1yxbHIFm09IFQVwkBIbrB/Ua/k7iEnSSzDd9912IHW0xhZuf3S5ahumyt/Zno3d3w7dpyxWfng8i1y1PdGJ0PooIYKDwg2ZDHXLoXP4xvYuRqI1pZBCL1capUdZuyTQa4bw5Jf+ebRjlX+UFxJ73H6PGCejvUB8oxJt4M7ISDlK4pBiVznrm3YJIFzrrIq+37gEdqvp4vdI8dbHYISpovdT4NfltRIB61YRA8w9bSq7ihbjcxz3Sti45vs/mJlVho+zCHZEhszKZb4OfxRR4UxlNTjNLcDNqOmqDaLtCH76xZbEitbT8Pp5BygDaKPaQnPlPbqWmj+XgFMC5ZhWwBc1aLteRPa+i7zxmbay+7lZlfWuMr659kOCr2N68divBdBejoQaYovqE8kmjNVoQCszcBHnQnqd7IlBRw0tthpJXQRZElSx3EruEoAYvhHui0FCRUa9rb8jpWZi/LnmDzkb7QSXEGJkCQOyJv0hiFuxXhAAZMPRdeylwa4p0TPpJAoje5zddO17F0lTELGD4YJ7k9kTo06EMEPEKvqfOylVcZZcailC6Io8jHGFGob8wx0L22MUuPp51hs8E8Yi0gsgaC3SwrQpn+MY1EhR08bm3kCt83afdXUf
- 68/DceyJ
- v5eZqx/85tu4dcPNIGL7YDGWVAxd7GTLoatAHv02gZaqHQXjesK+UMWVzbdtzjkZq6eLdRup8HS0WpA+ojOHaVCFIW8ktotcECp+rwkO1xMxlNeX+Kfe/rEz5Z2/xcliWzuZI0rdCLFfrDWvmaAbwwocNBc5f7ThxgKYloFzwUSR4HTSuwv9SLewwAAUbhbQYJbm6VBeohFEO7gVw9BlE0i6QqmnbL75iv71XVmNemNge3McJ11ncOKTus2ayLdqwD/DCcpeeYt8K4p1nnMmcV4KOAvDpOkFJKf5DtoXScCEisaBR+A3fOyJrRzybWkzUuBRoTi/hAnem/JC7jM4CrszYtrvJd8b60X6J9N4uv9s1fJcM4XXAOLZlu0wVhABunSdh1aX4830vLc6BAf6j1D4lNApp6HYDXPW2QUOPUg+yGlqjkj2gi6ACN+lwU4R619lknlCwSJQy7B6C+9Q8dN1978NoK00pHp1CqqQaHgrs0eW3Y4Oj36r+/mhp9DoCx9PQh5lJ00Bl/TPcc2dwvWK/EPu9ZmK3FdEZ
+X-HE-Tag: 1763110097-409137
+X-HE-Meta: U2FsdGVkX1/HXljzrkuFgaHVVhHahxHUwsM8S93OiHIUV67jmcJVeKZynjVFcCJ7UdvXauLTmWh1RhhGwiuo1M33ohB+S2AaFhlGGYZD6BK34tnAanOuYZ/Mns+R+xTKQnSpHlScPzr49ARgRFY4LbLZs0yy+2hpGhsLxb67YbWbxFn7V0R1/GJUFwyNvuehWYBxRQPf5ONtOefFUoU4pG5Zx2xczx2HXMykbiTWDlWsZeG/JwcP7mC1rkvixUstnZfirp9fxZOZ6NqFKdmN5h1eHY1l8LAeuXKGnOBQQiQ55dfSWcYHwPapW3BHTbo1dlenWrmo/YRLa7mVjTQ4izZZeEuQrpbHO/GEzfGr3wRnVAoEtai9T3dRuInP1jG0dsKFfXtHuJqtToN6kM/G6CHK5Y8DId4vcubVnJ0aBtF74Dso1LKd0+tUYcSs9sLGQW+SnyK7jDUi+0kiRtX3MHVve4hoBE30yrNixy1LiOxKsao7Af3EhSpdOYeetadSIqLsIfuUilkieQtRfDtkp7HFH43i/T5Tcy094h/ktD2evhrSS6Cko77PjpnvpcWabAkSDgXP6PnqnfWniC+zajE3Lvr23bwqzcn/jokNvQyphjocyTYSpsS+SkdUyjgNTte/EhfBG2iH3GpJiWWGWZ7eJDlQEAMkiWGMkB0f9DMPuSC+IS7f7a4MQdiy59v9cJ+/K13NiOrQEWmzaEtJjZr3jdjHNxUGLebH4Fz68ffIv3qxAvylfU75/2kZj/xHQrbzBtD8NIrc5PXDUeZ6hccI8oWrtOhKGNzX0u3NYwLLydrTMkl6TMdeaAyQSy4QJk4ZFH6e8RyQW+b/xGaxWBTpJnkb1b+1bY1Zk1x7GYpX9MDqeG4wzBoINLeS0vJuJmbgX8HpdsvzntL/3KO6l/IRqhrzO9HPucdBHT8oB8LS9IULtWJBEBDoeFN5Scm6Y+bJTs+Ogxyh0GthqVL
+ /cxt5E7g
+ nHC5bE/kybr8wTVMG2zbkzkO1b+R6Jv1+Df6t6xeWWJTk+hOvr1FBfBgOzD7xJza/d70FT6SuYBsFsBDyMuvgGwilRec/3kc58x7uOHY32UogbYKFNigCiLeedGfGuf+Pe+cSyPTdoUWOb1IuRPzr1lOpGIn7GXDnMyXANB5AIWjhZAFr6Pdt5Tvg0N2Y1q/wl+6fGzYg4FJ3E0yuozfUV44KW7rRAbc7TRaD3hS+aVcFo4tNPwjdBd1d2ahJW35HR3Tqz8ZGalYkVmHSBS9oQpsaehiAbchSjadDpfVw6QgldbOrYMxNOD20pmxN0Tq9dNvS5xs/UN0GVhV8QvsceYtD4E8VTaRYIy4Dm8QnyVaXRP0mbYEopFWRmz1RQQ66M1C1rR5AQFa5GVqtQylUgBn4QQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,47 +139,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Regarding the issue I reported where processes that run out of memory cannot be
-terminated by OOM when demotion_enabled is true, this can be avoided by not
-demoting if the target node does not have enough free memory.
+Hi Seong Jae,
 
-Specifically, the can_demote() function, which determines whether or not to
-demote, will be changed to also check whether the target node has enough free
-memory (for example, whether the minimum watermark is exceeded).
+On Thu, 13 Nov 2025 17:09:27 -0800, SeongJae Park wrote:
+> On Thu, 13 Nov 2025 14:56:36 +0100 Jean Delvare <jdelvare@suse.de> wrote:
+> 
+> > The sysfs interface to CMA has a marginal runtime cost and a small
+> > footprint, there's no reason not to include it in all kernels where
+> > the dependencies are satisfied.  
+> 
+> Overall change looks good to me.  I have a question below, though.
+> 
+> > 
+> > Signed-off-by: Jean Delvare <jdelvare@suse.de>
+> > ---
+> > As discussed with David:
+> >   https://lkml.org/lkml/2025/8/6/371
+> > 
+> >  arch/loongarch/configs/loongson3_defconfig |    1 -
+> >  arch/s390/configs/debug_defconfig          |    1 -
+> >  arch/s390/configs/defconfig                |    1 -
+> >  mm/Kconfig                                 |    7 -------
+> >  mm/Makefile                                |    4 +++-
+> >  mm/cma.h                                   |    4 ++--
+> >  6 files changed, 5 insertions(+), 13 deletions(-)
+> > 
+> > --- linux-6.17.orig/arch/loongarch/configs/loongson3_defconfig
+> > +++ linux-6.17/arch/loongarch/configs/loongson3_defconfig  
+> [...]
+> > --- linux-6.17.orig/mm/cma.h
+> > +++ linux-6.17/mm/cma.h
+> > @@ -49,7 +49,7 @@ struct cma {
+> >  	char name[CMA_MAX_NAME];
+> >  	int nranges;
+> >  	struct cma_memrange ranges[CMA_MAX_RANGES];
+> > -#ifdef CONFIG_CMA_SYSFS
+> > +#ifdef CONFIG_SYSFS
+> >  	/* the number of CMA page successful allocations */
+> >  	atomic64_t nr_pages_succeeded;
+> >  	/* the number of CMA page allocation failures */
+> > @@ -80,7 +80,7 @@ static inline unsigned long cma_bitmap_m
+> >  	return cmr->count >> cma->order_per_bit;
+> >  }
+> >  
+> > -#ifdef CONFIG_CMA_SYSFS
+> > +#ifdef CONFIG_SYSFS
+> >  void cma_sysfs_account_success_pages(struct cma *cma, unsigned long nr_pages);
+> >  void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages);
+> >  void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages);  
+> 
+> Why don't you check CONFIG_CMA together?  I think that makes the change more
+> complete and safe.
+> 
+> I found there is no file that can be compiled without CONFIG_CMA but still
+> including this header file, so I expect no real issue for now, though.
 
-Does this change make sense?
+This would actually make no difference. This header file is internal
+and not expected to be included by any file besides that CMA core
+itself, so it is assumed that CONFIG_CMA=y whenever this header file
+is used. If not, then things would break already, even without my
+proposed changes (due to cma_areas and cma_area_count being declared
+but never defined).
 
----
- mm/vmscan.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 8890f4b58673..63d751e54b08 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -356,7 +356,20 @@ static bool can_demote(int nid, struct scan_control *sc,
- 		return false;
- 
- 	/* If demotion node isn't in the cgroup's mems_allowed, fall back */
--	return mem_cgroup_node_allowed(memcg, demotion_nid);
-+	if (mem_cgroup_node_allowed(memcg, demotion_nid)) {
-+		int z;
-+		struct zone *zone;
-+		struct pglist_data *pgdat = NODE_DATA(demotion_nid);
-+		unsigned int highest_zoneidx = sc ? sc->reclaim_idx : MAX_NR_ZONES - 1;
-+		int order = sc ? sc->order : 0;
-+
-+		for_each_managed_zone_pgdat(zone, pgdat, z, highest_zoneidx) {
-+			if (zone_watermark_ok(zone, order, min_wmark_pages(zone),
-+						highest_zoneidx, 0))
-+				return true;
-+		}
-+	}
-+	return false;
- }
- 
- static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
 -- 
-2.43.0
-
+Jean Delvare
+SUSE L3 Support
 
