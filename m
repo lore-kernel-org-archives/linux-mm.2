@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FB20CE7B1E
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:16:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85AD1CE7B1F
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:17:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E17C8E0030; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
+	id E34F18E0031; Fri, 14 Nov 2025 10:17:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66A888E0002; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
+	id DE48D8E0002; Fri, 14 Nov 2025 10:17:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5598D8E0030; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
+	id CADEC8E0031; Fri, 14 Nov 2025 10:17:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 41B5D8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0669C4CF5F
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:16:44 +0000 (UTC)
-X-FDA: 84109564728.16.B20DBF3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4EE36C0012
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:16:42 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SfXjFrjy;
-	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B6BBA8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:17:01 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 71FD313AD4F
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:17:01 +0000 (UTC)
+X-FDA: 84109565442.25.048A4BE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A2E8D4000D
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:16:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QzeOcwr9;
+	spf=pass (imf07.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763133402;
+	s=arc-20220608; t=1763133419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uUsWRA0PhCMnZLZEkKPa9puqLJ49gF+6GXOwWTaFVY4=;
-	b=WJPfWIlcQ6fE9fzzG+8xo5UsK3JOBZYuKEu3aw/KJcxTBAFFOoZWciXoIVB4Uk7OySajwN
-	DAR+DlYtkNAn2ii3iErHTLxqre/0tMfs2J0VVepxspn32N4TGLyUEgmft/ov+amRGzFWzu
-	z+IKMhbHo9QmRZr0vGTR0gRLZ+okjWs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133402; a=rsa-sha256;
-	cv=none;
-	b=zs4gkcRc7LzVpyqsz40oxui1NCs1RxtcvdYLxm7BArNfKhfnBzSlGgE6RnVwizleSUDOXC
-	UYqsC8qGmPArvmsem0PB2/1pLBtXSljRoytzwKfshD5Tc/7J1SVEvEHVEEgG7VfjQOJHN0
-	cR214JhmB1J7rokrD/BZ3pHax53RJ2g=
+	bh=KrHUzPGBZEMSREH/RvanIYE5RDDkqwnke9Df1bzomfM=;
+	b=V6aEZm+NklE/hFS/hN6JYHMJ1xocCHWU7ssZ8QxCwkeu8LeI7WgbHmeo6YlcuOjfrtfRLU
+	qLYL5MZKN4tSBRihuI9ezMV+1puDzEYV4DW6hwKwCekK9AGMafbfEFfIGCv6jPZGg6gd/E
+	+44RlzfDnL60gQKQmvkv8bdZwvbf/eY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SfXjFrjy;
-	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QzeOcwr9;
+	spf=pass (imf07.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133419; a=rsa-sha256;
+	cv=none;
+	b=ZTR3vqUUxWny8ulXUHxRURBfoaPsGQn2O9+Q4F+FB1Ah+LeRGihNa1cElMosPWAJwnK9RJ
+	1aS5QZVb9g3JVrKJMR7dU+00oOIH2wpXHuvCQ9xSghrQT1vHWYe8Xa1TUKfmo4p/YpWHhE
+	+Z7Y6DRcief74G6ZNIKV84aoWFa5Sww=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763133401;
+	s=mimecast20190719; t=1763133418;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uUsWRA0PhCMnZLZEkKPa9puqLJ49gF+6GXOwWTaFVY4=;
-	b=SfXjFrjya/UszD5iBGRDB5HTedJ3X3i92R8czttiMSi77npOfj0CzhQqKprYwYYPWDRhXE
-	ahGqzHF1SuQ4HvO+tD2RZxi4Rn7CXoWeT8GY3unyJJ43Hc7lzn41J3utV0iGNBq5PK+h2J
-	U2YQxr3ciiGHV0YoNaYIEeaVPVKbF4o=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=KrHUzPGBZEMSREH/RvanIYE5RDDkqwnke9Df1bzomfM=;
+	b=QzeOcwr9zi8tb3gRRQm+n7RtBgKF0SwwvG0HySMCXlfAy+jMq+z75FPk25AB1GmTK2/El1
+	MdrpLqA33Z+QiHtz56JcGZSmjcVfeUNtbkf/EVX1MD7cmlDPpxE+yukEwY+zh6gmzvCKaU
+	WkUTPH4pGTJzVi02fmLFdR+AnhfRrE0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-ckqYkCrGPcysWf_5rr0BIw-1; Fri,
- 14 Nov 2025 10:16:38 -0500
-X-MC-Unique: ckqYkCrGPcysWf_5rr0BIw-1
-X-Mimecast-MFC-AGG-ID: ckqYkCrGPcysWf_5rr0BIw_1763133392
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-nkLlETgCP3ukpkMvj_2ARA-1; Fri,
+ 14 Nov 2025 10:16:52 -0500
+X-MC-Unique: nkLlETgCP3ukpkMvj_2ARA-1
+X-Mimecast-MFC-AGG-ID: nkLlETgCP3ukpkMvj_2ARA_1763133407
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3CBED180049F;
-	Fri, 14 Nov 2025 15:16:32 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 66EDF18D95D1;
+	Fri, 14 Nov 2025 15:16:47 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.226.10])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BD14A18004D8;
-	Fri, 14 Nov 2025 15:16:16 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF03E180049F;
+	Fri, 14 Nov 2025 15:16:32 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -123,22 +123,22 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [PATCH v7 27/31] x86/mm: Make INVPCID type macros available to assembly
-Date: Fri, 14 Nov 2025 16:14:24 +0100
-Message-ID: <20251114151428.1064524-7-vschneid@redhat.com>
+Subject: [RFC PATCH v7 28/31] x86/mm/pti: Introduce a kernel/user CR3 software signal
+Date: Fri, 14 Nov 2025 16:14:25 +0100
+Message-ID: <20251114151428.1064524-8-vschneid@redhat.com>
 In-Reply-To: <20251114150133.1056710-1-vschneid@redhat.com>
 References: <20251114150133.1056710-1-vschneid@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A2E8D4000D
+X-Stat-Signature: yk33mejfzw3nscym37se8fpgpp9on7mu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4EE36C0012
-X-Stat-Signature: dwki5xx46eakg4e4stmrxncakqp3w583
-X-HE-Tag: 1763133402-156869
-X-HE-Meta: U2FsdGVkX19gf2xCsAqbEBPoXbCDpbvhnhecg4xr+7NoAFIbAYHDrhRZevxw6ePSnVXdHY6e03Lqy4ghpvSJnkh51L3Ybp9+V64mZlIQdkjFIdvCq5OZ9xS3aO4PPfTft2dw17s+S+EWgVGWguKWsJAte7kwgX/XFuHP607Sd8gdoadVijlfqobvEHnXz5FFItzlnGoIhWAtA8qRcDJO4NSWkVCTCMY2v13TCo7K0KM2mr4HtV0exks0vUTR5gM7hf2uD3eRWC9CJfDnmBrewRmvIFmBvpfiLu2ub0a0GzDhN3UUpJhNH4uSHlO1yjNgKNXB3czIONGCyWjl7d3iJNz8swuyCPjhRUVHQvcYoTFnDeGZ/gerDiUT0WX/3380ZpCLG70urij1CzuSbW/WU++tqTtcUmumB+gHArzZy5+LPEBjUXyYDe5Vjo7MrPktNeyYS7zCRkSPniIoXuff/rSn0rsC2EurCIW3k9PEthZHhCs5XAiA5JpZWMh8DNYKN0/2D2ZXmPtkvGH+kIkly1bxuwbsGYYON3SU6PS5tkXMZQig12a2w6S2/2saG07Jo9uOnNOEuzvBT7eAlmJrGSASIxFuzVt6C7fHAOLKhDcdkVmtacdXdKW7zQvH+wFMlBBY/KXRE6eeH/cHuZ4MgTZD5KkCcozcBnQXVl+2gI4bf+1LsbUnwomza05CRNFStY2CfDs0DgYDQzr72qu+to4L6QPV9h+GOZtS9mRXPXMzAmPyMG1PTB3Erm/9vGZrG0HaFMy2s+9Km4YM2wRmVXW/FMmrDNdq+PH/XoSRFNz+I5AmZueblLlHUsg5Dh7wloyErX3AamoLjelGw2URfl/SCNz1MynbdCc31Hl3tcfWM802evM2Pl8Mu1Plrk6c1toML4Bq85p58BrY6i5GV7Pz0nLO5I36hcDIcq71vcgTzQ3il1ICwt6MOXZx6TxaG+KtiUe7J5hda6Zj8mk
- s5TzZllK
- GNaVjYDJFCq+Dwtc9oCKsHCCig5Appop7WOXfcRJ0lwdaKCKwT4LaFjZXpbTbTWfncLvCb2F9WV1ERT9gUpYeZc852I3nC9S7FnC4e5Ib5zxOfRFu1p+HcfrMOzijENRKISGAqz+ia9Oi1085oTvSpuQsIry3IxBbSisUt9OhXfFsFu+6koybCepVP4De2DdSzLHvE+9L1O93+ZRUosJQiMS9tgIhQ5q1UKbBFROpXXndJS6M7+EYKJOYmmXhdtnJpoZSLOBZMXfpuT8X5iFKK/EckdLvyGwN14K6wUeMzRdE3lpnv6vr381CS/VtC6Ou+GMCPq3NSy2CoFbhKUuwV9LGLHbojAbUgsNjhbB0005dcNd4e4cMhwJrB58kQ4p9igm0c8Hv05XCrixNgQmMhfXMTFcpA6HEx2rp79gGH2sxa5s=
+X-HE-Tag: 1763133419-85301
+X-HE-Meta: U2FsdGVkX1/VvH2xwuOIQJ9IbXnUk7J42JL26ZxebtNja+Z0yrTZ337j52QfYlu3DMbA42bHgvBNgaQxOocPGXo/GAQbb+AmuyT8GgWqvTlo8EKTppZshlyZwV1x4ZL3+SC3t+vKXP/D9JEU1yTZ+0XrFzxTkfC4NeY0D6osUUsu3JkkNj9OrmZNUQRN3/VysY7AMvlF1CElGxx2A3u6qErWe2VlQtbQ6x3zkmWVT+C17RgaH65JuTCWuultoF2uXLcNJ3jICFOUS09fVhftaunIHH6/cXeQP3W0NPlnR/YW3GnnuZ+/JyuzsWZai/z8zJQM9fFt1s8m5iQNNP+rGbCapDEKSYkO5JETu1NwGfOCrmnu66yIjvLvy+P9WQHNsvpgzXhZgDJ9ViZxgrGiZVo5gx0pybL8NmiAb0pwxVrEw05ynA111AnewhZZ+rkGgRfxWYzPF/XJg5q0DELeo50jIEMI1dJ07u86GMnjMkbFxQxM5ldyhxKpd0nNNzVHPTSIE9Vl9bWn5LMpVXVHivV38zkqNc+tOKdDu2JYa6y2FBP3R+tc/X+4jPv4Yi+35RdTuj+QrBnRzeJ/oTh7eRJuajL0l6Dh8PCt1E4djwcfPu6W8SYBDB1miO+LhoDYSLrTTtb6KhUhDPhsmvSqHqW+IjzAs1g8FWrkSekKay+a3H638Ii7jW+MAGw9bY/D5u0BBIxsAgcdgju2pbM1mYDKjcEqy42+4S4rteq90VpW4p3X3i5JwlJ7uuA5WpmnvTWwQYB2FhQ/AcMF0bkoZm/UeGSPCCZC568aXF9u7U4XCEaahm2/M9lMqG0UJtB/87XUsXQN5P7WV3YKEE5Ivb/w2Kbxd3Lrqg2beVUhxTIUr+6nEE2yMP6gra0shDnKWOAWuuirNHG3r6+KzBXJvE/mxxyFO9LdQ8twhvpYc9LXHCuD///cfE126Qq5G9DolTpCzvSDRD7FgNDctf9
+ CCTcBuDJ
+ knGQIrn4sx/70X1H1Rntv3XkYBUbU82wq2sdjdmACBxRaVBHMoupZI6FiUpVWgkYnFmYVcoX0ai9iDzvUWK70zlfGmyBU2EqMoOshKlbHo76exPQNIrLB0uAEvOsynoL6Ro2yI6PR2lIdUExNF6/V2f+HVnWPVi80XzvsqqOYELcABwI8Jv0AHC64zbG3Fz6p+tYeypRD9a/9u3GTBpbkqk7M0PK8+olOtPB3tQF7s5Lh/kq+PPT8JJ9EMBAb8gk9aQU7MHLALZUs5CAHza6g4PGK4EzYYVblxB/MiBn9k29uvTHoGaXXrcacb14REkaDcC/u95B5Cyi4QgrGNMW4C9cdYY5uSsTidShk9Dvkph3NJGDOyJHgRq/1jSESlngYApKIXMIN/a6vrmWQlAe3Jpj/ynEYbK1qPoEU+4pd6UhZXkhQDjHQ7CvSQoeNP7tndQIUUKAIQba9Uj/MyVEyTEUhBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,52 +147,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A later commit will introduce a pure-assembly INVPCID invocation, allow
-assembly files to get the type definitions.
+Later commits will rely on this information to defer kernel TLB flush
+IPIs. Update it when switching to and from the kernel CR3.
+
+This will only be really useful for NOHZ_FULL CPUs, but it should be
+cheaper to unconditionally update a never-used per-CPU variable living in
+its own cacheline than to check a shared cpumask such as
+  housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
+at every entry.
+
+Note that the COALESCE_TLBI config option is introduced in a later commit,
+when the whole feature is implemented.
 
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- arch/x86/include/asm/invpcid.h | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+Per the cover letter, I really hate this, but couldn't come up with
+anything better.
+---
+ arch/x86/entry/calling.h        | 21 +++++++++++++++++++++
+ arch/x86/entry/syscall_64.c     |  4 ++++
+ arch/x86/include/asm/tlbflush.h |  3 +++
+ 3 files changed, 28 insertions(+)
 
-diff --git a/arch/x86/include/asm/invpcid.h b/arch/x86/include/asm/invpcid.h
-index 734482afbf81d..27ae75c2d7fed 100644
---- a/arch/x86/include/asm/invpcid.h
-+++ b/arch/x86/include/asm/invpcid.h
-@@ -2,6 +2,13 @@
- #ifndef _ASM_X86_INVPCID
- #define _ASM_X86_INVPCID
- 
-+#define INVPCID_TYPE_INDIV_ADDR		0
-+#define INVPCID_TYPE_SINGLE_CTXT	1
-+#define INVPCID_TYPE_ALL_INCL_GLOBAL	2
-+#define INVPCID_TYPE_ALL_NON_GLOBAL	3
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index 77e2d920a6407..0187c0ea2fddb 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -9,6 +9,7 @@
+ #include <asm/ptrace-abi.h>
+ #include <asm/msr.h>
+ #include <asm/nospec-branch.h>
++#include <asm/jump_label.h>
+
+ /*
+
+@@ -170,11 +171,28 @@ For 32-bit we have the following conventions - kernel is built with
+	andq    $(~PTI_USER_PGTABLE_AND_PCID_MASK), \reg
+ .endm
+
++.macro COALESCE_TLBI
++#ifdef CONFIG_COALESCE_TLBI
++	STATIC_BRANCH_FALSE_LIKELY housekeeping_overridden, .Lend_\@
++	movl     $1, PER_CPU_VAR(kernel_cr3_loaded)
++.Lend_\@:
++#endif // CONFIG_COALESCE_TLBI
++.endm
 +
-+#ifndef __ASSEMBLER__
++.macro NOTE_SWITCH_TO_USER_CR3
++#ifdef CONFIG_COALESCE_TLBI
++	STATIC_BRANCH_FALSE_LIKELY housekeeping_overridden, .Lend_\@
++	movl     $0, PER_CPU_VAR(kernel_cr3_loaded)
++.Lend_\@:
++#endif // CONFIG_COALESCE_TLBI
++.endm
 +
- static inline void __invpcid(unsigned long pcid, unsigned long addr,
- 			     unsigned long type)
+ .macro SWITCH_TO_KERNEL_CR3 scratch_reg:req
+	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
+	mov	%cr3, \scratch_reg
+	ADJUST_KERNEL_CR3 \scratch_reg
+	mov	\scratch_reg, %cr3
++	COALESCE_TLBI
+ .Lend_\@:
+ .endm
+
+@@ -182,6 +200,7 @@ For 32-bit we have the following conventions - kernel is built with
+	PER_CPU_VAR(cpu_tlbstate + TLB_STATE_user_pcid_flush_mask)
+
+ .macro SWITCH_TO_USER_CR3 scratch_reg:req scratch_reg2:req
++	NOTE_SWITCH_TO_USER_CR3
+	mov	%cr3, \scratch_reg
+
+	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
+@@ -241,6 +260,7 @@ For 32-bit we have the following conventions - kernel is built with
+
+	ADJUST_KERNEL_CR3 \scratch_reg
+	movq	\scratch_reg, %cr3
++	COALESCE_TLBI
+
+ .Ldone_\@:
+ .endm
+@@ -257,6 +277,7 @@ For 32-bit we have the following conventions - kernel is built with
+	bt	$PTI_USER_PGTABLE_BIT, \save_reg
+	jnc	.Lend_\@
+
++	NOTE_SWITCH_TO_USER_CR3
+	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
+
+	/*
+diff --git a/arch/x86/entry/syscall_64.c b/arch/x86/entry/syscall_64.c
+index b6e68ea98b839..2589d232e0ba1 100644
+--- a/arch/x86/entry/syscall_64.c
++++ b/arch/x86/entry/syscall_64.c
+@@ -83,6 +83,10 @@ static __always_inline bool do_syscall_x32(struct pt_regs *regs, int nr)
+	return false;
+ }
+
++#ifdef CONFIG_COALESCE_TLBI
++DEFINE_PER_CPU(bool, kernel_cr3_loaded) = true;
++#endif
++
+ /* Returns true to return using SYSRET, or false to use IRET */
+ __visible noinstr bool do_syscall_64(struct pt_regs *regs, int nr)
  {
-@@ -17,11 +24,6 @@ static inline void __invpcid(unsigned long pcid, unsigned long addr,
- 		     :: [desc] "m" (desc), [type] "r" (type) : "memory");
- }
- 
--#define INVPCID_TYPE_INDIV_ADDR		0
--#define INVPCID_TYPE_SINGLE_CTXT	1
--#define INVPCID_TYPE_ALL_INCL_GLOBAL	2
--#define INVPCID_TYPE_ALL_NON_GLOBAL	3
--
- /* Flush all mappings for a given pcid and addr, not including globals. */
- static inline void invpcid_flush_one(unsigned long pcid,
- 				     unsigned long addr)
-@@ -47,4 +49,6 @@ static inline void invpcid_flush_all_nonglobals(void)
- 	__invpcid(0, 0, INVPCID_TYPE_ALL_NON_GLOBAL);
- }
- 
-+#endif /* __ASSEMBLER__ */
-+
- #endif /* _ASM_X86_INVPCID */
--- 
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 00daedfefc1b0..e39ae95b85072 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -17,6 +17,9 @@
+ #include <asm/pgtable.h>
+
+ DECLARE_PER_CPU(u64, tlbstate_untag_mask);
++#ifdef CONFIG_COALESCE_TLBI
++DECLARE_PER_CPU(bool, kernel_cr3_loaded);
++#endif
+
+ void __flush_tlb_all(void);
+
+--
 2.51.0
 
 
