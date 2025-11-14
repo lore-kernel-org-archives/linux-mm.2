@@ -4,162 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F2CCE8D79
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 18:45:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA797CE8D76
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 18:54:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A10CA8E000A; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
+	id 03AFA8E000C; Fri, 14 Nov 2025 13:54:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9993F8E0006; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
+	id 012C38E0006; Fri, 14 Nov 2025 13:54:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83A448E000A; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
+	id E91BD8E000C; Fri, 14 Nov 2025 13:54:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CD128E0006
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1B21A1A04B9
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:45:36 +0000 (UTC)
-X-FDA: 84110091072.14.29C6CD0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0115F10000C
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:45:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NmXzIBIx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763145934; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D71318E0006
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:54:56 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 881B81A04AE
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:54:56 +0000 (UTC)
+X-FDA: 84110114592.02.05FF333
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0D67A40017
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:54:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="EXyj+jX/";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763146494; a=rsa-sha256;
 	cv=none;
-	b=TxL5ZyR+1iyXNGBRqx2z45QlfalQLsWPUsj/EZ6GEiPxx4r70QfJi+zSuu1BaeIfZXnzhE
-	aXLSHz/QyC0dN5zd6IbxfXr89W+lIvVd6TPsvNxYuQIiB6bfyAgGOuCU539o9w7YqDsRN6
-	hJNzK7VB2TdcNPPEW6+tbUl9ZiR/Qqk=
+	b=rb3nWRHQXaFK5FJ//bRaIjmvqN1ExOXkq4/JB3atLa8P6HcOhgy7EFScIeSnyAA5qrtiJ2
+	y75AdtKFaTJw0kgBVUqsgcM4/zHwLJDO3fFKaryLdnQiyopq9Kd6skxM0EYlCGJlZ5Jbb5
+	oAG//qeP7ND1kGZDnHQdpLO7RgBTai4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NmXzIBIx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="EXyj+jX/";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763145934;
+	s=arc-20220608; t=1763146494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7BUWnZ/ZCbjVyfn3i4e133APwx2iUXvKYEsLuJfTQMM=;
-	b=Bt6xiXePRDANeNpzPJH090qS1iWCmxCLPY5cg0I+Qn/xXvLcAVbVR4fXuTFWZN8ceGV6AH
-	wKG42uXCOrJoc4jtWKU+v9DTH+Dgf7VAGW6uK/hOK0uhAcmrWJQKlowEIDFJxWko8Y3re8
-	0wQo6E+m6Y/qiBF5Eogw/2u9YAido8Q=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 421D06018B;
-	Fri, 14 Nov 2025 18:45:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50067C2BC9E;
-	Fri, 14 Nov 2025 18:45:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763145933;
-	bh=byi20PYOU8Ug3I3+51VizebbpMY1mRuELhMsy/6viIU=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=NmXzIBIxYkKv+Zm2Hplq/oXEgO+KIBPrXvPyWF4mH1W6AyfgGld6URlwKQ19wfy4l
-	 v9VkiOzf8pqF7Pbjbt6rEO52Sa3NpKOdpHLHC6l85yryZ4LtLnLPphXIayZfn1yljQ
-	 WDdfzH/KN6LRNYmIjCmPUOYdgQrYIZl97lYR/vx/aAi7mXMYnYkneQ7ZJQh0DUt7X2
-	 AuQK4X3/aAYYx8crM1EGl51YGIRx8LiXjiXP2mg+2+3fWM8aZaRlSpXJdJWF6W/7rK
-	 TwOMGnHiWXvOVEhN4wVCNuFsNuNyzdaPnQoSzMgtzdgDOZFhBakMpWSsz5FVUSl+RF
-	 uNRpHQt+0Yzhg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 50DBCF4006F;
-	Fri, 14 Nov 2025 13:45:30 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Fri, 14 Nov 2025 13:45:30 -0500
-X-ME-Sender: <xms:yngXadYa0d5cGbI-GF27_Y3pl_K-ec-CVH--mkPcMfKEgwOILovMhg>
-    <xme:yngXafOE--nfoTeI9aWy7-fbugqx7rmlOuCEE3dYBVwWTBO-badPGuh_s45x1wnix
-    Oi3npe4N7AfqfBC4gOKUs6WYsXR3j9tWRiWpCjYgSurMl_MUI916Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvuddtheejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehnugih
-    ucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqnecuggftrf
-    grthhtvghrnhepkefhieejfedvueejheehiefgvdfhjeefjeelvdfghfelgeejudevleej
-    uddvvefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghnugihodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduudeiudekheei
-    fedvqddvieefudeiiedtkedqlhhuthhopeepkhgvrhhnvghlrdhorhhgsehlihhnuhigrd
-    hluhhtohdruhhspdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhhtpdhr
-    tghpthhtohepjhgsrghrohhnsegrkhgrmhgrihdrtghomhdprhgtphhtthhopegsphesrg
-    hlihgvnhekrdguvgdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthht
-    ohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrghthhhivg
-    hurdguvghsnhhohigvrhhssegvfhhfihgtihhoshdrtghomhdprhgtphhtthhopegsohhq
-    uhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehurhgviihkihesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehrohhsthgvughtsehgohhoughmihhsrdhorhhgpdhr
-    tghpthhtohepjhgrnhhnhhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:yngXaXq2XXGoOWrpdOjpYOBRQDp11eBfIxc6YeBd6D1nb4uB7cT_jQ>
-    <xmx:yngXaaDWrYDEpEG1p36aT7lISmWaPBkuGN6A-UDoJkiqQR5_EvMgdA>
-    <xmx:yngXaednjzX0ow_radpTUVZupSfYw5vqqcxnghR2QSQFD71g1qZlAw>
-    <xmx:yngXaffQO9hD5bLFULufQL4IF3d4av7lzmsksPXFe5ORmlbBQdgyiQ>
-    <xmx:yngXaUNi8XrrLOoC45OykpNR3g_sQA-aTfSX-Ry-GROO-iHzIaWFxhCy>
-Feedback-ID: ieff94742:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 042D5700054; Fri, 14 Nov 2025 13:45:30 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=BSZ7Nwx1AvWu7mAZVmuradqomXtKIHLL0ikfemFoO2w=;
+	b=E6C5y9ST7nPcinddLB8/+iLUZG3YSOk/lBrF+3RlnxsO8hadG/nxkJ2MkLjHQDsyT+5d7v
+	4d2v8yUczyAf+j8av70sswQHf/ptxM+WNpWUOiRBDC6DpAwNAYEtMSMpEmOhz5F/2LRks4
+	9QOfV9a3kn1728kVqC/3v6J4Gfr9j5g=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BSZ7Nwx1AvWu7mAZVmuradqomXtKIHLL0ikfemFoO2w=; b=EXyj+jX/BCty3AsVD6q8QioIyM
+	2Tu4hXDLT6tK2iLl7v3D8NpDemFXta54A9KS5c/9JTbl/kaYZYgeBcKsuY3S69miBq2y4AXmAv2bL
+	YQD4NgIM7YIim3b0UHSaUhNRz/WimQx7WxGquDaJwIo7MVXyCTLDLjft8/UOa06x5up7w8+pMGpSw
+	y68/Lux4D98y4TT/21m/3RbtLpiIPdbbkbKvR1UMPg15Onw3LD/mL7F2ndcPS9PxptjRtDtDfcio6
+	/OGLs9hEtShvsTvCwTvfTocOLOwo5T+6WGd0vxdCn+uu4DRkTSGzyn6Pz7xZpcmyTbVwWnoXBj/An
+	lkpE5YmQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJywa-00000009mlh-00u6;
+	Fri, 14 Nov 2025 18:54:48 +0000
+Date: Fri, 14 Nov 2025 18:54:47 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: kernel test robot <lkp@intel.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [akpm-mm:mm-unstable 36/283] mm/hugetlb.c:4753:18: warning:
+ implicit conversion from 'unsigned long long' to 'unsigned long' changes
+ value from 17179869184 to 0
+Message-ID: <aRd69_c1pULRoKOU@casper.infradead.org>
+References: <202511141140.LrrRrtIv-lkp@intel.com>
+ <20251114182956.GD2566209@ax162>
 MIME-Version: 1.0
-X-ThreadId: ATddxb8eqn9V
-Date: Fri, 14 Nov 2025 10:45:08 -0800
-From: "Andy Lutomirski" <luto@kernel.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: "Valentin Schneider" <vschneid@redhat.com>,
- "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, rcu@vger.kernel.org,
- "the arch/x86 maintainers" <x86@kernel.org>,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "Arnaldo Carvalho de Melo" <acme@kernel.org>,
- "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Paolo Bonzini" <pbonzini@redhat.com>, "Arnd Bergmann" <arnd@arndb.de>,
- "Frederic Weisbecker" <frederic@kernel.org>,
- "Jason Baron" <jbaron@akamai.com>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Ard Biesheuvel" <ardb@kernel.org>,
- "Sami Tolvanen" <samitolvanen@google.com>,
- "David S. Miller" <davem@davemloft.net>,
- "Neeraj Upadhyay" <neeraj.upadhyay@kernel.org>,
- "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Josh Triplett" <josh@joshtriplett.org>,
- "Boqun Feng" <boqun.feng@gmail.com>,
- "Uladzislau Rezki" <urezki@gmail.com>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- "Mel Gorman" <mgorman@suse.de>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Masahiro Yamada" <masahiroy@kernel.org>,
- "Han Shen" <shenhan@google.com>, "Rik van Riel" <riel@surriel.com>,
- "Jann Horn" <jannh@google.com>,
- "Dan Carpenter" <dan.carpenter@linaro.org>,
- "Oleg Nesterov" <oleg@redhat.com>, "Juri Lelli" <juri.lelli@redhat.com>,
- "Clark Williams" <williams@redhat.com>,
- "Yair Podemsky" <ypodemsk@redhat.com>,
- "Marcelo Tosatti" <mtosatti@redhat.com>,
- "Daniel Wagner" <dwagner@suse.de>, "Petr Tesarik" <ptesarik@suse.com>,
- "Shrikanth Hegde" <sshegde@linux.ibm.com>
-Message-Id: <1a911310-4ca5-45a4-b9bf-5f37c6ab238e@app.fastmail.com>
-In-Reply-To: <89398bdf-4dad-4976-8eb9-1e86032c8794@paulmck-laptop>
-References: <20251114150133.1056710-1-vschneid@redhat.com>
- <c4768cf3-f131-44e6-9b25-ebeb633f32ee@app.fastmail.com>
- <beb46a02-b902-438b-8b6d-b5f0d7ad0ae6@app.fastmail.com>
- <89398bdf-4dad-4976-8eb9-1e86032c8794@paulmck-laptop>
-Subject: Re: [PATCH v7 00/31] context_tracking,x86: Defer some IPIs until a
- user->kernel transition
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0115F10000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251114182956.GD2566209@ax162>
+X-Rspamd-Queue-Id: 0D67A40017
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 53keqsucha9cyz5b8naqyefbyenbmoq1
+X-Stat-Signature: y5mxb4qqahfsjmioaek31dupiabpou8q
 X-Rspam-User: 
-X-HE-Tag: 1763145933-266901
-X-HE-Meta: U2FsdGVkX1+1+x5r/XXXNRGdR8q3VcGooaElTiZvpI/0wKQAy3DJ8Xtvp1Zq5vMKEzqrRCgMx/R/OgXQnvYBZCUxvUqQSi6I2V3GzX3iIObFLXX7CHyrmx843zT3NxlvPLrDtlpM6OfXrBN/D5moMBFGkwG48z+pWYaEeedWYnDdsrazT2CPuqV1MZzcnqCjWXvzlg+7JPIHTIK1aW8EE0hEWKYD5l4ra0VkmeY5SpDzNVT5VXlA/U0vxZHaGp+pt2oxjvh3Q7jyt7OSAjzD1aGb+uT21lesg4CSYZa+6jBPdHVto09L2ceEl3lXq4DKRd8UihjaWNeVm4okQEOpp8tZ2QbqA8omM0pVlHTve6zgvITO6b7WDof3qq5ZAiWflWgIBiBsRMIY91apVlpO4tBtCdy3OvM0LTTmEPqhJl78SAGyCrHbyRS0NnXn+DUnAw0vZglqESbaSQq+61/FX8ZWOqgcaDsqBpBqBFlH6sSSlYfJZR66h8fFjX20KxAej5dKya8idrv7FyH69cFR3KO7oqUsZ9Ht8LdIBv1uxVttdzUzEMVNnrU5yrOjOOHa20u/+ct2UpCivZlDwO/FEpVHTJr3/jPU6wBiPiQq/BKTsLmkRTKhlUhOMpNqtKhHvhLX90hKYQUnO9g6m5esbHfOiCRJ9ldbwp17G/MqXdORzMzHqKAurbwePffA6LSDhv5QAARkrK7wOuJqZYw7ykSolmSpZKCRfctjiM/jDo+0XKFhzjpKC6r6pQn+dVj54pB8EQ102HODer0v4ysa14v4cFrXVJJVSiDB8bbG8rxAsD1e5Ur3busUBpGaw/Kcj5G4Z7g1Zf6PP/g0d1S3vYKN2VbVNGO/+LhI1UNdpllLrCRnZkZxaLMcnwp9eX2Jei1A8G5U/ZkTNsdp25W+oA2cyTRrRrBxFTsarvk8FUthp5KDxKobWtcmMVn0LTvXD2GLw5kHe18NBBE7uSf
- UFldNbPi
- wwNoZlii5ci0dlkIXletUQnSiCoqpvmHnzOHALvOQNGOCkb0/EbThnNkzyo1X3o+k9X6rL7HArcIN7b9RIwAhHOUGviHxJ9lR/1MShn+s6QHMs0p7pWPEFHXV7bp5f0fwFPPTuJpB0HwlZwybTz1HivsVZ1Yw94/N7xyOpdhlAn6KmcWIvUHmuNMpsEckxKMLrdeqHeGc/lsy7R9iH3u+lgdWNlzdMTQRyTGTgx5oIqErdJExa9cl0WJLHfjaHiJ6x5kwU5Dql54z4LQjGk+OfYbRPfcaMAvuXYbc1jKgByYGe5NADpizMe85jVmCa2m2wy22
+X-HE-Tag: 1763146493-331413
+X-HE-Meta: U2FsdGVkX18X1mLjVCv5zMtU6d740mdn4Xlw+iTCfDScGMXc4NhIIcAm4oO3u5+1GT4b0w2fQ7BoOMlM+IyO86T3RKQ7dgOJUrKZ6iyVp7/VGqg/XwnPpDkF8Do2CUfDYVt8qI7loHmzpNO5HFs6PDsalG9uc8LsFUu1ITYoHmqOOUBR8CFaV0hAjtH3GAfOhyQUh5DghRRhhcpvaa4K2M/cPRIm0gcKgcVgo1PiHv3I2FagrTQwJoPKMQ2zkiWVHNMmKddk0wo7i00ntK36AN87WoqNKX3eb742QH6R4xnOYdOcSuOFaE0ItpZfPxi2bIjRSF4mtrzzsSm71BIpsIXliKGCrwsoTcJZGuD2tE0H2kwH6TVupwk5qAiGdoRuvhSVmt1DTdulWg+ShvVEtN7duUWbx4WWa9oXsByXJ9i7765+66Ufu5DvstX7+xR3P/tKOEYvYzlMtcxqTHSPH3IlqlASlC27fUvTpldLuhiVTQ1Y7oYbD08qeR3cAD8FbIwv+6Trkp9y8intGV0lQVjUgBs3vkO2udPdmpIWPJsBVUPQt7GnUGtU+ttcETp0u1KEzes53GzJRLonlTwBrSFS06CkrlFYzK7B54PPuAhb0CIencGlGN68ciDw9YrNOz16sIKwx9Xa4q5w7mA7dfJ3IggqCppwbq9eFUk2rk/N8mXbParEtps8oTXab7gHpolrWdiQvECI9i+hE9f5nlpFi6pIhSscxt+Ef4/cJf3lDZuuDFhBZtwFvV9CO/Zp1+UtBdIN75uZYILQG5FarMB1wO6e7JDiPudPkNA2hvC5yTtXDHuqlq4ZBr3P8lRCRz2ojTYgEU0ffSrJcp1AHNdwdvKMAAB3Jy2rSie2imSpfb0MtnG5VlxJFhbpvGtPLfU8cz/A2UEw7BprzVJg0H65U6a125wULa9SC7TWkK1NgtRevNzDY+eDhn1fD1vPjp0gVGyVXjRYENt7PPQ
+ P0apBphO
+ 2R5bN2oysggN6Z4XlaRgY52DoR06+50tHTdB/5TlACrdtM9DOAhyRYjRHdWCHw14Us+mC07ZG5Sr4WLyhn1w5lSTDt7rvF4WkOTesHr8+svn4JKdKCyEXOUMRu7XzVci2Kc+XUi/nNLunsB0dajkaijmzRruRZk/LoE4rPsrCBkYYd0xLJP92MqN2HbkLvr7ukMGcyHhQKTsqAY4thDHc+hdpsBdkvdILOsIM4sjbmUlserhh04T+DuW4kbnUvLey/HiM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -168,178 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Nov 14, 2025 at 11:29:56AM -0700, Nathan Chancellor wrote:
+> > >> mm/util.c:1263:16: warning: implicit conversion from 'unsigned long long' to 'unsigned long' changes value from 17179869184 to 0 [-Wconstant-conversion]
+> >     1263 |         if (ps->idx < MAX_FOLIO_NR_PAGES) {
+> >          |                       ^~~~~~~~~~~~~~~~~~
+> >    include/linux/mm.h:2104:36: note: expanded from macro 'MAX_FOLIO_NR_PAGES'
+> >     2104 | #define MAX_FOLIO_NR_PAGES      (1UL << MAX_FOLIO_ORDER)
+> >          |                                         ^~~~~~~~~~~~~~~
+> >    include/linux/mm.h:2095:36: note: expanded from macro 'MAX_FOLIO_ORDER'
+> >     2095 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
+> >          |                                 ~~~~~~~~~ ^~~~~~
+> >    include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
+> >       56 | #define SZ_16G                          _AC(0x400000000, ULL)
+> >          |                                         ^~~~~~~~~~~~~~~~~~~~~
 
+Clearly this is a 32-bit build, since otherwise a conversion from
+"unsigned long long" to "unsigned long" is a NOP.  But 32-bit cannot
+support 16GB folios!
 
-On Fri, Nov 14, 2025, at 10:14 AM, Paul E. McKenney wrote:
-> On Fri, Nov 14, 2025 at 09:22:35AM -0800, Andy Lutomirski wrote:
->> 
+I say this is a bug in powerpc32's config.
 
->> > Oh, any another primitive would be possible: one CPU could plausibly 
->> > execute another CPU's interrupts or soft-irqs or whatever by taking a 
->> > special lock that would effectively pin the remote CPU in user mode -- 
->> > you'd set a flag in the target cpu_flags saying "pin in USER mode" and 
->> > the transition on that CPU to kernel mode would then spin on entry to 
->> > kernel mode and wait for the lock to be released.  This could plausibly 
->> > get a lot of the on_each_cpu callers to switch over in one fell swoop: 
->> > anything that needs to synchronize to the remote CPU but does not need 
->> > to poke its actual architectural state could be executed locally while 
->> > the remote CPU is pinned.
->
-> It would be necessary to arrange for the remote CPU to remain pinned
-> while the local CPU executed on its behalf.  Does the above approach
-> make that happen without re-introducing our current context-tracking
-> overhead and complexity?
+#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+#define MAX_FOLIO_ORDER         MAX_PAGE_ORDER
+...
+#else
+#define MAX_FOLIO_ORDER         PUD_ORDER
 
-Using the pseudo-implementation farther down, I think this would be like:
+(PUD_ORDER is 16GB, so I think this will be what's being picked up)
 
-if (my_state->status == INDETERMINATE) {
-   // we were lazy and we never promised to do work atomically.
-   atomic_set(&my_state->status, KERNEL);
-   this_entry_work = 0;
-   /* we are definitely not pinned in this path */
-} else {
-   // we were not lazy and we promised we would do work atomically
-   atomic exchange the entire state to { .work = 0, .status = KERNEL }
-   this_entry_work = (whatever we just read);
-   if (this_entry_work & PINNED) {
-     u32 this_cpu_pin_count = this_cpu_ptr(pin_count);
-     while (atomic_read(&this_cpu_pin_count)) {
-       cpu_relax();
-     }
-   }
- }
+but the only place the mentions ARCH_HAS_GIGANTIC_PAGE is pretty
+clearly dependent on 64bit ...
 
-and we'd have something like:
+config PPC_RADIX_MMU
+        bool "Radix MMU Support"
+        depends on PPC_BOOK3S_64
+        select ARCH_HAS_GIGANTIC_PAGE
 
-bool try_pin_remote_cpu(int cpu)
-{
-    u32 *remote_pin_count = ...;
-    struct fancy_cpu_state *remote_state = ...;
-    atomic_inc(remote_pin_count);  // optimistic
+so I'm a bit stuck about how this comes to be.  Adding the PPC people
+for thoughts.
 
-    // Hmm, we do not want that read to get reordered with the inc, so we probably
-    // need a full barrier or seq_cst.  How does Linux spell that?  C++ has atomic::load
-    // with seq_cst and maybe the optimizer can do the right thing.  Maybe it's:
-    smp_mb__after_atomic();
-
-    if (atomic_read(&remote_state->status) == USER) {
-      // Okay, it's genuinely pinned.
-      return true;
-
-      // egads, if this is some arch with very weak ordering,
-      // do we need to be concerned that we just took a lock but we
-      // just did a relaxed read and therefore a subsequent access
-      // that thinks it's locked might appear to precede the load and therefore
-      // somehow get surprisingly seen out of order by the target cpu?
-      // maybe we wanted atomic_read_acquire above instead?
-    } else {
-      // We might not have successfully pinned it
-      atomic_dec(remote_pin_count);
-    }
-}
-
-void unpin_remote_cpu(int cpu)
-{
-    atomic_dec(remote_pin_count();
-}
-
-and we'd use it like:
-
-if (try_pin_remote_cpu(cpu)) {
-  // do something useful
-} else {
-  send IPI;
-}
-
-but we'd really accumulate the set of CPUs that need the IPIs and do them all at once.
-
-I ran the theorem prover that lives inside my head on this code using the assumption that the machine is a well-behaved x86 system and it said "yeah, looks like it might be correct".  I trust an actual formalized system or someone like you who is genuinely very good at this stuff much more than I trust my initial impression :)
-
->
->> Following up, I think that x86 can do this all with a single atomic (in the common case) per usermode round trip.  Imagine:
->> 
->> struct fancy_cpu_state {
->>   u32 work; // <-- writable by any CPU
->>   u32 status; // <-- readable anywhere; writable locally
->> };
->> 
->> status includes KERNEL, USER, and maybe INDETERMINATE.  (INDETERMINATE means USER but we're not committing to doing work.)
->> 
->> Exit to user mode:
->> 
->> atomic_set(&my_state->status, USER);
->
-> We need ordering in the RCU nohz_full case.  If the grace-period kthread
-> sees the status as USER, all the preceding KERNEL code's effects must
-> be visible to the grace-period kthread.
-
-Sorry, I'm speaking lazy x86 programmer here.  Maybe I mean atomic_set_release.  I want, roughly, the property that anyone who remotely observes USER can rely on the target cpu subsequently going through the atomic exchange path above.  I think even relaxed ought to be good enough for that one most architectures, but there are some potentially nasty complications involving that fact that this mixes operations on a double word and a single word that's part of the double word.
-
->
->> (or, in the lazy case, set to INDETERMINATE instead.)
->> 
->> Entry from user mode, with IRQs off, before switching to kernel CR3:
->> 
->> if (my_state->status == INDETERMINATE) {
->>   // we were lazy and we never promised to do work atomically.
->>   atomic_set(&my_state->status, KERNEL);
->>   this_entry_work = 0;
->> } else {
->>   // we were not lazy and we promised we would do work atomically
->>   atomic exchange the entire state to { .work = 0, .status = KERNEL }
->>   this_entry_work = (whatever we just read);
->> }
->
-> If this atomic exchange is fully ordered (as opposed to, say, _relaxed),
-> then this works in that if the grace-period kthread sees USER, its prior
-> references are guaranteed not to see later kernel-mode references from
-> that CPU.
-
-Yep, that's the intent of my pseudocode.  On x86 this would be a plain 64-bit lock xchg -- I don't think cmpxchg is needed.  (I like to write lock even when it's implicit to avoid needing to trust myself to remember precisely which instructions imply it.)
-
->
->> if (PTI) {
->>   switch to kernel CR3 *and flush if this_entry_work says to flush*
->> } else {
->>   flush if this_entry_work says to flush;
->> }
->> 
->> do the rest of the work;
->> 
->> 
->> 
->> I suppose that a lot of the stuff in ti_flags could merge into here, but it could be done one bit at a time when people feel like doing so.  And I imagine, but I'm very far from confident, that RCU could use this instead of the current context tracking code.
->
-> RCU currently needs pretty heavy-duty ordering to reliably detect the
-> other CPUs' quiescent states without needing to wake them from idle, or,
-> in the nohz_full case, interrupt their userspace execution.  Not saying
-> it is impossible, but it will need extreme care.
-
-Is the thingy above heavy-duty enough?  Perhaps more relevantly, could RCU do this *instead* of the current CT hooks on architectures that implement it, and/or could RCU arrange for the ct hooks to be cheap no-ops on architectures that support the thingy above.  By "could" I mean "could be done without absolutely massive refactoring and without the resulting code being an unmaintainable disaster?  I'm sure any sufficiently motivated human or LLM could pull off the unmaintainable disaster version.  I bet I could even do it myself!)
-
->
->> The idea behind INDETERMINATE is that there are plenty of workloads that frequently switch between user and kernel mode and that would rather accept a few IPIs to avoid the heavyweight atomic operation on user -> kernel transitions.  So the default behavior could be to do KERNEL -> INDETERMINATE instead of KERNEL -> USER, but code that wants to be in user mode for a long time could go all the way to USER.  We could make it sort of automatic by noticing that we're returning from an IRQ without a context switch and go to USER (so we would get at most one unneeded IPI per normal user entry), and we could have some nice API for a program that intends to hang out in user mode for a very long time (cpu isolation users, for example) to tell the kernel to go immediately into USER mode.  (Don't we already have something that could be used for this purpose?)
->
-> RCU *could* do an smp_call_function_single() when the CPU failed
-> to respond, perhaps in a manner similar to how it already forces a
-> given CPU out of nohz_full state if that CPU has been executing in the
-> kernel for too long.  The real-time guys might not be amused, though.
-> Especially those real-time guys hitting sub-microsecond latencies.
-
-It wouldn't be outrageous to have real-time imply the full USER transition.
-
->
->> Hmm, now I wonder if it would make sense for the default behavior of Linux to be like that.  We could call it ONEHZ.  It's like NOHZ_FULL except that user threads that don't do syscalls get one single timer tick instead of many or none.
->> 
->> 
->> Anyway, I think my proposal is pretty good *if* RCU could be made to use it -- the existing context tracking code is fairly expensive, and I don't think we want to invent a new context-tracking-like mechanism if we still need to do the existing thing.
->
-> If you build with CONFIG_NO_HZ_FULL=n, do you still get the heavyweight
-> operations when transitioning between kernel and user execution?
-
-No.  And I even tested approximately this a couple weeks ago for unrelated reasons.  The only unnecessary heavy-weight thing we're doing in a syscall loop with mitigations off is the RDTSC for stack randomization.
-
-But I did that test on a machine that would absolutely benefit from the IPI suppression that the OP is talking about here, and I think it would be really quite nice if a default distro kernel with a more or less default distribution could be easily convinced to run a user thread without interrupting it.  It's a little bit had that NO_HZ_FULL is still an exotic non-default thing, IMO.
-
---Andy
 
