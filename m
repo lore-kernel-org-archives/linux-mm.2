@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F1E1CD98C3
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 00:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E56DCDB462
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 00:38:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 503AA8E000F; Thu, 13 Nov 2025 19:32:07 -0500 (EST)
+	id D9F028E000F; Thu, 13 Nov 2025 19:38:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DAF18E0002; Thu, 13 Nov 2025 19:32:07 -0500 (EST)
+	id D76A68E0002; Thu, 13 Nov 2025 19:38:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 417EF8E000F; Thu, 13 Nov 2025 19:32:07 -0500 (EST)
+	id CB3C18E000F; Thu, 13 Nov 2025 19:38:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F8508E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:32:07 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C912D56F94
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:32:06 +0000 (UTC)
-X-FDA: 84107335452.16.F0136CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 083C0C000D
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:32:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KP0qAHiU;
+	by kanga.kvack.org (Postfix) with ESMTP id BB5B88E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:38:35 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D0B4140224
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:38:35 +0000 (UTC)
+X-FDA: 84107351790.30.9C18EA5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A7C2D14000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:38:33 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XUAnNNjJ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763080325; a=rsa-sha256;
-	cv=none;
-	b=3+FCGdX/dywDwBQauVN3irGQRuz3vDKrGgX6U/M9gO2Z31Fr90gc++Hy5wYXj3qCjEawl8
-	h9OXwL3q6aByYZdj297myVcWgLXAEdk/n4izIAVlwZJ7/lT/SVVTg844U0+8LUTKTPmR4I
-	Bc0HaBhRE2TOhz3XVrBLQGr6SN1R6U0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KP0qAHiU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763080325;
+	s=arc-20220608; t=1763080713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f46rRjObQ2ocCrtweLQC+sXzIOafuapd1t69L9LqSxE=;
-	b=2SXUnoMjXyFfgDjlSPvKg8eiOgJbHjH3R9Zr0L9YQdwOe4ENM8ibq+IWl4ukGzBZ4WHjlp
-	ymekiv1T9MW9YMYP1LyLHW6u4KeZaXS8UGZU8LquphbPCFCyk4vdbwbju5DlkMPuBYoAg1
-	Tv2xS1MagoVECnXXaaoBbG1XCuM9+Yc=
+	bh=DEhuBllf1OvtcL3mYVT8Xouoh2nwMfU2UUWBP2Huj3Y=;
+	b=WimFD5XMJwvMAwsepjgugFhRArcT+emqzluE9uihZLGGAqpFd5xAmipqUtUNvwptM5kXYu
+	TBxia0jmFgxTfqravZwdQ9iQBEWU5WT0qfHOuUg3qZxqRbrERN2fgMpTeh4p5iFxwGVrra
+	+JVnPJWMU5ynKuQr0Ge6bc35sGV19Xk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763080713; a=rsa-sha256;
+	cv=none;
+	b=pMI+uvYA42G+ZNcMpg/kKcAf5Tw6h9+3t2ZA6re0VQatLnXlqinz5d4sjcmLF3iz8ZQ96u
+	Vtu4J30TnNQ22BmxFGjYOqjgCXb0mUh1j3QzCQqy6Y7jp47UGdpBNE7Cm3v4zJy7/B64oj
+	7HQT8PAZTLhI8SSy26WxGCrf/6IHOhA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XUAnNNjJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 636906015D;
-	Fri, 14 Nov 2025 00:32:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B98AC113D0;
-	Fri, 14 Nov 2025 00:32:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 69C9F417A5;
+	Fri, 14 Nov 2025 00:38:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08769C4CEF8;
+	Fri, 14 Nov 2025 00:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763080324;
-	bh=vemPluv3EUqZUNat690foFoJUo/d3oWc4vaEnI0MUEA=;
+	s=k20201202; t=1763080712;
+	bh=VnC/Cpeb7QXhyfiqkSDO4UcZXLs/noIUYMjxye6egB0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KP0qAHiUTfvg82EUnli/odRGIciIEcjFYmZUzQexNdVA/5gAIohyW6j/AzMB9zrmj
-	 117jmLDggBYNn8zEE+BaK4vo6rs6OyAjzjHJHBZx/IAVkZFY5MYkSvGEu+hLvpohsw
-	 gwPcLNnhPyctAy2m3vNOhAcnvEjeRPsJQ7vDTk8epfrFeDrnYezTvbJfZgEBRHLMjk
-	 N5JgyKdrArKKBx5924sGy4qw5H4xQ6d/h8G/kKEWFXp2ZCHBhJ4A5iyY5BQR6EzLHE
-	 Lj3ey+F+QJARs5elpbplC/IXhGXjzcEO955WmprLLox+kOZfAcu8XcOQ2Vu5wBzNjO
-	 bFkaxs/VDo7iA==
-Date: Thu, 13 Nov 2025 16:32:00 -0800
+	b=XUAnNNjJ+3nSCgOJ3PR8vZDu67EvX/FawQM01PvWo/ci8bnmP2rNvE/WsnHqZ6L6S
+	 YKJx52A01ibfJBY+6aDXkc9edSsf4tVWTFBLbBPjeEaaFT4ks/H/cxNgYKplSvAVm/
+	 mF0mzwsc2B7Od1fIZWgDi/uuCqoQhcL7Xc0bIvMf88v59R1GUTwcom7oHYlUEAD2WH
+	 H+ShHpfNNlDzA60Z/AqHCux1aFzH0HUcNYhbKHYBsyiJqZJQR9LHP42oOokHTgpgo5
+	 U7AsaeRG2b0CFIMRJEJZBCZ/D+eV2pKlMQjeWCnkd0ktHmQtIc3FdQZxZiMjn/m2aI
+	 iSJdeGllV5Oaw==
+Date: Thu, 13 Nov 2025 16:37:38 -0800
 From: Eric Biggers <ebiggers@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
 Cc: Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@suse.cz>,
@@ -74,23 +74,22 @@ Cc: Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@suse.cz>,
 	Harry Yoo <harry.yoo@oracle.com>, linux-block@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-fscrypt@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 8/9] blk-crypto: use on-stack skciphers for fallback
- en/decryption
-Message-ID: <20251114003200.GB30712@quark>
+Subject: Re: [PATCH 7/9] blk-crypto: handle the fallback above the block layer
+Message-ID: <20251114003738.GC30712@quark>
 References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-9-hch@lst.de>
+ <20251031093517.1603379-8-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031093517.1603379-9-hch@lst.de>
+In-Reply-To: <20251031093517.1603379-8-hch@lst.de>
+X-Stat-Signature: ycwt8qmt858srtzwknqtonzsxc1zz379
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 083C0C000D
-X-Stat-Signature: ur1wo37dey5hek3gnx3thezaswnb3k5o
-X-HE-Tag: 1763080324-622371
-X-HE-Meta: U2FsdGVkX1+vIvJjFOzvp/7k5FLaKP81Pvvn3ua0+cVNgyyJGB5TXkdIQFwI5VjthHcyRof1fVXHmHCUfoOlgHbO4BYtjnNfQnUaj+7zNQywDTPNx77q2+im4pf5YMjmz24lE+QvNPAsxxXGcy/Pc8vdFO4DfHCNYOdPFKlhpK4cY7K6eRPd52x/SzKMiZDn4f0H5WjtajdYOx13+1lH/skXxKpNXkABgEvvk8r/NaTZLKsBYa/b6RW48tOuh7WLyY0L4xejOswgtjuAbSO3+pS88vA8y44aACumaYgY0VsKobJIV2SvXCf5n5DCl83Cdt0ltGXHkKtA9qa00EkNsYeKOKoekztAqcCGLzcZOCbn4Ov501mV+4sCHfknIKgDENPm5/koMNNOfDULNQUwZs9XxASR1OKblYjqznblvA6dKcdTQQxC2asNK8xe8FBo17ud2ARfz06GsMZ/oHKZksggOLSw5xZdXf0wYFXNtx4gRiQKraGn91OGa8tJsxAAOhv8BMkJ+MNUpbNcCJMz6nlbkJDiz5FWqIlztEpTYLHa5yhflmZju4cSS/RNWU+8Vokb+DBuWCraF0Ht7vKoVToikPuEnqdoBazr5O+iEg3jig2plhLc3GoFf1sDt6TZM90HA30ifnEbrxwAPg6bCOx4ftkILV2n1aItJ4VhGiJRO+uXQzk/c+sCpoUrioA43YCD2BoQctCOo49cTZ8peS8NsbS4N6iHwagdvplQUcFc2lj6iqCK0CMz2M4m5yHx7vDW2hMrW3rkNWFZ6jz5gtDQ9HuyP3ssouMzOETaFTIhDfLQraHg9egcOaqHdt1bkIUoH67E7nfWZsIOMJgmtHhEYwMoB0NqAyluQ24D6xxKmoqDx73NccU14KxB+e7NeMYTs2lYrjgs7wmD0BYCmfo/oll/5iiZAtDUwUrxQADfEbDFJUbmN5RfL6AzJJ9AhgkNKvookCMG8YJMkyc
- ml4/GBQQ
- bB9ETGnrmtqZcT0dMTjPAMOggDKP1VIBWitRr2QQAttibS8F9332sPSGN9Bam1ivv9+8FSoFNfw0xYifFT7ZOmd9LJBqe6XNt089gkxdun6T0ffQC9f1gPp19HrBDovzNQ8IqhY2a4FqBJYqT5GGnwbvzgjeudGxLD0dhVVTfTTqy0LxC0K04QccOmRmVWcFUkJEEcHTDTkgxQKNJRjpsO4Lk6/DW3/CMzZA5VTyAolT6Q6JkiCs+8TVzIzSRY37FBOHo
+X-Rspamd-Queue-Id: A7C2D14000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763080713-172253
+X-HE-Meta: U2FsdGVkX1/K2el8lbYhca2K8u+vqK0+4eXfkRNSEuaKG5hhFlTx8bDGAMyX3wWab2ZddTQ72SJsHZWhNdfUDivr8OQXaNfhKlAzidwW8j6nwepdER3ueayMhmZFJA6bkAdkpKyKMa7LXlTTlRdBqJe0siiNk5WWsecwqRIRABg+h2RAnyMAX3rMzLhlU5Ajtr/PGyvImZARDBXgfPCrUXFYh50aYPy4QEXc/qs9tR/Y9rEmLeJG8/IvrLBNeEN+I6MqQ9cRJejhl1uDoOfUaLbSkfNUuO5nf9RkGmu8MyUeTvYnqa59TRbg9DDTqM4I+YRe+Yef5ygs+1U1EyTgp9z+y0sQOF4BRaNVftDTQmePwLlaBI3Q2EdUy0oZNYJ71+cflFLEj4lBteVSEWqeDVRxP8R5vNDYIulOvgsxq+SkHtjlrtHfC6+zupjXGzsmj5MTi3zNf/K8Frb/M/DnXUoTse3phqrslNiVMkA32kFtCaq6k7+k+8BzB9Ripf+Npj9XiDvCKimeiSbza3KWN0g5PsvmpLZSKcoge5d4Eyi5Fo00Cx3hQV+HNN/QxSLrFdCMO672qdEhScxJF/DKE1KgkaXeFTXYwVbcxhUcLvwLzNb8SXt45tivW7Dk3S3sycoHIEoensJ15C1iCX/oZ9qa2J5V76bbbIVg9bNmvVTnrAi2X12Yy/G+4Z75Dz8Ik6419D2ocnrSUQJlU+lYo7qgDvo1UAXDqWUeGlviDHQCVzSxVYf5uumZ1sTDBx6w0Y8zy88xmLC1YWN900JxNjXARyXOxqyFxVrabfvd078A4GvK0PR11P966b+dNQDUHgeNk5Qxk5kc6OVxTljarbzFwMQTJO4a/exUGS1hTH87VstLsvqtKBFATxpuF7N7xV7/LJ09gNR4vaH/buAOPuDMy7/3CuKVOvE+qznRQtJZ2sQTxsakZkxJo2LZBOq/RTWUynB7Af0izf316yb
+ oHtwFqNs
+ NY3VSKl/tipfUAsXSTFa4ZJYBuogQCiftmyQtkkvVhYWTNK/q5HYZb8+Ra8NmSKiMdmw1smeTac2HFsblznknOInxYPa3WDD95yZAskVjvRDAEEobTIzgL7OlNhtBhkj2pVAUcfHHtjW+Feh7hsGjbZkM9SdJZ0xSX4toZ76EhOTvvino2fhnEznrs3XanJS1Qr9YpsUKgSYXLnvijDBQsvuZX7fwmUN8AD4aqU1R7ctY5xxWbOiD5m3SMKJ2oko8aZJ0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,58 +98,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 10:34:38AM +0100, Christoph Hellwig wrote:
-> Allocating a skcipher dynamically can deadlock or cause unexpected
-> I/O failures when called from writeback context.  Sidestep the
-> allocation by using on-stack skciphers, similar to what the non
-> blk-crypto fscrypt already does.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-skcipher => skcipher request
-
-> @@ -238,12 +223,12 @@ static void blk_crypto_dun_to_iv(const u64 dun[BLK_CRYPTO_DUN_ARRAY_SIZE],
->   * encryption, encrypts the input bio using crypto API and submits the bounce
->   * bio.
+On Fri, Oct 31, 2025 at 10:34:37AM +0100, Christoph Hellwig wrote:
+> -/**
+> - * blk_crypto_fallback_bio_prep - Prepare a bio to use fallback en/decryption
+> - *
+> - * @bio_ptr: pointer to the bio to prepare
+> - *
+> - * If bio is doing a WRITE operation, this splits the bio into two parts if it's
+> - * too big (see blk_crypto_fallback_split_bio_if_needed()). It then allocates a
+> - * bounce bio for the first part, encrypts it, and updates bio_ptr to point to
+> - * the bounce bio.
+> - *
+> - * For a READ operation, we mark the bio for decryption by using bi_private and
+> - * bi_end_io.
+> - *
+> - * In either case, this function will make the bio look like a regular bio (i.e.
+> - * as if no encryption context was ever specified) for the purposes of the rest
+> - * of the stack except for blk-integrity (blk-integrity and blk-crypto are not
+> - * currently supported together).
+> - *
+> - * Return: true on success. Sets bio->bi_status and returns false on error.
+> +/*
+> + * bio READ case: Set up a f_ctx in the bio's bi_private and set the bi_end_io
+> + * appropriately to trigger decryption when the bio is ended.
 >   */
-> -void blk_crypto_fallback_encrypt_bio(struct bio *src_bio)
+> -bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
+> +bool blk_crypto_fallback_prep_decrypt_bio(struct bio *bio)
 
-The above comment needs to be updated too.  Maybe leave the static
-function __blk_crypto_fallback_encrypt_bio() uncommented, and write an
-updated comment for the global function
-blk_crypto_fallback_encrypt_bio().  Maybe something like this:
+This omits some important details.  Maybe:
 
 /*
- * blk-crypto-fallback's encryption routine.  Encrypts the source bio's data
- * into a sequence of bounce bios (usually 1, but there can be multiple if there
- * are more than BIO_MAX_VECS pages).  Submits the bounce bios, then completes
- * the source bio once all the bounce bios are done.  This takes ownership of
- * the source bio, i.e. the caller mustn't continue with submission.
+ * bio READ case: Set up a fallback crypt context in the bio's bi_private, clear
+ * the bio's original crypt context, and set bi_end_io appropriately to trigger
+ * decryption when the bio is ended.  Returns true if bio submission should
+ * continue, or false if aborted with bio_endio already called.
  */
 
-But really that ought to go in the previous commit, not this one.
+> -/**
+> - * __blk_crypto_bio_prep - Prepare bio for inline encryption
+> - *
+> - * @bio_ptr: pointer to original bio pointer
+> - *
+> - * If the bio crypt context provided for the bio is supported by the underlying
+> - * device's inline encryption hardware, do nothing.
+> - *
+> - * Otherwise, try to perform en/decryption for this bio by falling back to the
+> - * kernel crypto API. When the crypto API fallback is used for encryption,
+> - * blk-crypto may choose to split the bio into 2 - the first one that will
+> - * continue to be processed and the second one that will be resubmitted via
+> - * submit_bio_noacct. A bounce bio will be allocated to encrypt the contents
+> - * of the aforementioned "first one", and *bio_ptr will be updated to this
+> - * bounce bio.
+> - *
+> - * Caller must ensure bio has bio_crypt_ctx.
+> - *
+> - * Return: true on success; false on error (and bio->bi_status will be set
+> - *	   appropriately, and bio_endio() will have been called so bio
+> - *	   submission should abort).
+> - */
+> -bool __blk_crypto_bio_prep(struct bio **bio_ptr)
+> +bool __blk_crypto_submit_bio(struct bio *bio)
 
-> +static void blk_crypto_fallback_decrypt_bio(struct work_struct *work)
-> +{
-> +	struct bio_fallback_crypt_ctx *f_ctx =
-> +		container_of(work, struct bio_fallback_crypt_ctx, work);
-> +	struct bio *bio = f_ctx->bio;
-> +	struct bio_crypt_ctx *bc = &f_ctx->crypt_ctx;
-> +	struct blk_crypto_keyslot *slot;
-> +	blk_status_t status;
-> +
-> +	status = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
-> +					bc->bc_key, &slot);
-> +	if (status == BLK_STS_OK) {
-> +		status = __blk_crypto_fallback_decrypt_bio(f_ctx->bio,
-> +				&f_ctx->crypt_ctx, f_ctx->crypt_iter,
-> +				blk_crypto_fallback_tfm(slot));
-> +		blk_crypto_put_keyslot(slot);
-> +	}
-
-This is referencing f_ctx->bio and f_ctx->crypt_ctx when they were
-already loaded into local variables.  Either the local variables should
-be used, or they should be removed and the fields always used.
+Similarly, this could at least use a comment about what the return value
+means.  It's true if the caller should continue with submission, or
+false if blk-crypto took ownership of the bio (either by completing the
+bio right away or by arranging for it to be completed later).
 
 - Eric
 
