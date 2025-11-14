@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A31ECE8D7D
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 19:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 667BCCE8D7F
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 19:35:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6A688E002B; Fri, 14 Nov 2025 14:34:00 -0500 (EST)
+	id C35348E0034; Fri, 14 Nov 2025 14:35:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1AFB8E0021; Fri, 14 Nov 2025 14:34:00 -0500 (EST)
+	id BE55A8E0021; Fri, 14 Nov 2025 14:35:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C09578E002B; Fri, 14 Nov 2025 14:34:00 -0500 (EST)
+	id B22BD8E0034; Fri, 14 Nov 2025 14:35:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ADD178E0021
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 14:34:00 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FCBA592CB
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:34:00 +0000 (UTC)
-X-FDA: 84110213040.02.1876CD6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8B5A5C0019
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:33:58 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="H/FCBFq3";
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A36EA8E0021
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 14:35:34 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 68E6E16047C
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:35:34 +0000 (UTC)
+X-FDA: 84110216988.29.4FB47BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D1FD5120005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:35:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kz1ExJB9;
+	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763148838;
+	s=arc-20220608; t=1763148932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cr/M35xOZt69Rz+1fp2O+fG2oD8FG7boktVqzDGyi4M=;
-	b=fLMD6WV3o+XjYk4z6r1zsjmB2vicAXHOO1gBC6wMuWgjBfQEKaoydYgNwKkc++8oovOdZL
-	ioxb6uc9oc3GN6LF9KA78GwLa9yHwU4M8p49Duf27mOGw4VpTNN9yfJZ7sQnXmdukcTuVk
-	h/69lny8XewwXOa26YxzVa+98WwxHkQ=
+	bh=IVOsGGNev+kFc4fmmK/Sez25eFhPMXojX9JX+N57FXU=;
+	b=MXG0KDOHKz/d8rxY0HAkGjtQOF/6zOWxIMFdaskhZ7mGpG7zhWop1L2SK6fwl4QcNMrUM7
+	rD7zplMlDSTMsH1QjoQ4R+9SZqceWyp1vsJA0EyghLF8AaoJ0TqThKpByysru4goSEkWFR
+	ryCGIpmcue9AGew8nY6RwLgvxRtKWrM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="H/FCBFq3";
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kz1ExJB9;
+	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763148838; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763148932; a=rsa-sha256;
 	cv=none;
-	b=Gu1g3heqni3rzp+kEJF7Kpkot7c1SFlhk2/8UC8qtxID5gL2ZQSfjvJcVhfhJPf+e40Sbo
-	IpbyFp0+BVBBPucEMdg+cnzjZEUWHK6SKKqd2QlOJ69ahlL6aEqqzk6OXNl0WwJ26nIalJ
-	in+VmXLY6xEc1vL9Apj4SDZVjWNvj0g=
+	b=CJ8NvZqZtYpWzqtlua3Xf6JU58072Z/AkzKtJMkCulOOvql6auJl2RFrPAKhqjnan67MnQ
+	Rt+TmMd5tWHvBrJ0TGOeF9pkxWSvofoB8VKS4fi/VkneWifH5PU2IZqQQudy5OzVdUqShA
+	sq8mHHTfUxBe0lFuXlyMs3AjtYSGdWM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9391A42E49;
-	Fri, 14 Nov 2025 19:33:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897F6C113D0;
-	Fri, 14 Nov 2025 19:33:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4077260188;
+	Fri, 14 Nov 2025 19:35:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8BFC4CEF5;
+	Fri, 14 Nov 2025 19:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763148837;
-	bh=FZlWl6qWs90L/x6LrsaPXbIv40QuDF4Bq+k9+9iwvHM=;
+	s=k20201202; t=1763148932;
+	bh=Zc97r0exmktwpRs9kQQA4bpGO3Sc8oaRn9s7KddLdwQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=H/FCBFq3BK4sRDRlJS4qxqxbkJ04z3EUmWnL6nfcRTAYLPQs5LsCcx0P0FWqIeXBf
-	 EY4XCIsjOOtT/LhGn/3+JTNCV2epPhgMYFzcg/B7EJmKYtDDzrxeYBgNF8+EcMvmUu
-	 p4kdbKdYGEPxNOhITYECmyOfJXmBaBqcCx/tDY/UOy66N/SiDku0pMAT9lM72+Wdgt
-	 pnwpKrcyu0OrIYe74l6RQoS896GojkRIgnZtH7zJ1duMnhTVAKcHb5HwvRcgBNzeXc
-	 SzfLqHK/QJEkleADVWXk/ByhAxt7eS4kOINLelj8lcf82ZQmCThm5QSwxz2/DNffuf
-	 b/rZhOGN5SPqQ==
+	b=kz1ExJB9ShhwyZCJrTmzMuqpRjtWv4hW2F7jZNB3rfQUowOAAacUIA9PnkDXUXXGy
+	 xLhcc2rw7hSxiEIqfhbBUcVT9CvKryIbYxKgx8gSDhH6DPxm8qm1u6p2h4NU4y+eCh
+	 jElngR6kvZ1B+ABXKxNxhL3hIGll1aJDF2ueT+YF5Q4Bkr8Q9r9knlbR1fBdFyTVCq
+	 R2ND68jqTTUj1ZeLbaAN4/1I/L/AHp8N6psr/aDGPJdB4iWsFfp4u6FjJE+EFxuFiy
+	 r945l83UMnqUx71Xg0fjH+ULU/gdV0SC6l9m//rhtkFv5zEouCT8tb8KzHp71NJNGW
+	 JstnL8QGZWi/g==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org,  bhe@redhat.com,  rppt@kernel.org,
@@ -70,25 +70,25 @@ Cc: akpm@linux-foundation.org,  bhe@redhat.com,  rppt@kernel.org,
   dave@vasilevsky.ca,  ebiggers@google.com,  graf@amazon.com,
   kees@kernel.org,  linux-kernel@vger.kernel.org,
   kexec@lists.infradead.org,  linux-mm@kvack.org
-Subject: Re: [PATCH v2 05/13] kho: Verify deserialization status and fix FDT
- alignment access
-In-Reply-To: <20251114190002.3311679-6-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 14 Nov 2025 13:59:54 -0500")
+Subject: Re: [PATCH v2 12/13] kho: Allow memory preservation state updates
+ after finalization
+In-Reply-To: <20251114190002.3311679-13-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 14 Nov 2025 14:00:01 -0500")
 References: <20251114190002.3311679-1-pasha.tatashin@soleen.com>
-	<20251114190002.3311679-6-pasha.tatashin@soleen.com>
-Date: Fri, 14 Nov 2025 20:33:54 +0100
-Message-ID: <mafs0ecq05rz1.fsf@kernel.org>
+	<20251114190002.3311679-13-pasha.tatashin@soleen.com>
+Date: Fri, 14 Nov 2025 20:35:28 +0100
+Message-ID: <mafs0a50o5rwf.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 8B5A5C0019
-X-Stat-Signature: p8nrqta9g1fmtsq9efaite3kxwthy9m8
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D1FD5120005
+X-Stat-Signature: za7gy1waa68nc7ken9877grunx359xuq
 X-Rspam-User: 
-X-HE-Tag: 1763148838-880531
-X-HE-Meta: U2FsdGVkX18BltBylQ9fZNKb9bivJ4OGArCHmDxxQ5baR1lBzwyc9ZfsHB/AYoFGEzT/r0xAeQPJtTU03iZJxsgY1+LMBbzouuA52dAup84CPAzKqPdU/N5dvW/iP/epWOwcLPMm2TGYsUSvpBVR7m3oyX3VyZs7O0+xyj2vD7ubjcKd0N8KmuCF9kN3x4OOSZ71NpmZF4asepRSDChWdCYcnANYpwo/aHhQLDfeSfO6242zRFVnpZDq/fsyMD3zSwKW421xc+0M9Dl1sBng8pHO+HUiBXkzFE9K2SB7qq28Qh2nWfyPsb3lpl9kAr7d1p+Q6hT87WdHXh6hvlDrqolvH+wCHG8ST3u/c+NCUrYuP+nUXUjUUeZaTSYpNsTu5SlcnI+ZA8ov6QGVwnQuajkZnnIlhJkwdFGia7sNchirh+2kio3b/LJCkbqFKAbqVRZBrtNv7qa0XA9vcv5ERt6tqx/1ZZ4S+ewYLvVpbx0BmT81TNAgP8THof/ezm05r/7k7+3YxBfdQxSxBwtCa8pZxWeKgXyFVTYqm/7TcPb6DvbieGPmSoOLU7upKqCQ5iGdL8u5HO4kuQdRR2LcU1IDC7LwrKbiPVzVk+qZRwdcZbyU+8OseaSqNOD4Gedg1yqUhuRkjcUqtWR91o7rCZsIx5VGPGvyVsmXgV26Qb//7xsSlPxYJqUreG67jSacn1NFs8R/Krkr0eDoksMLJRDp27b8y+KW1Tnpl20/+lw3dEtuL6E2b4fzZzOHMXyivkxR83skGAVB43L+uF+meiq47A7BPYHlhFhzHVroFyvt48HtUWp0UB5cgKN6D3dSyBdrj9QdRP9JbdfCyoD/2AssqoAK6DQTphbIB+yaqEWMNwlVryYM8Do9m0z8RR9zzwWM23iqn2dBK4eIIhu4nUAd9isuZbZ3ygptsIKswmiRKPw2UA6NZcyK2s5otmxBigEjWtrulvNZFan1G17
- q9AChX60
- rN4WCNTrPJq9bbvFVjQz0SdTctD57kau6yEyBuoKb2d0q8EgOT+cfO/nbJEAg2NGFuGmbq1trdm2o2b9N5Tk1rFDTuuglVn7xm4pWlQ7YMC9ITstZn/SYV0fh4U/zYKY4/A0D0VhDt4zuEIq6ZbwNiW1I/G0tuMKZ1UUxim1vsMALvy8Mw7xsHE+ZLvZeTFqx5FbMXafvFJI980Hc1C4QBdUd3d3k/kAmmY7fG3qIgyO1BDGzd3SQXJWfBj2Ogo6zZlIOWZ34zOGQCcESYq+x8CqUug==
+X-HE-Tag: 1763148932-472958
+X-HE-Meta: U2FsdGVkX1/DlCbvHmv5w9pHHxQfANiXfezi+3SEyXcs3vyR/VSsQrDcC/HgzUDek4GBIrXYQEzfIJwHMYktZn0HjqDK9M+zJ5MfQxtEzu7VSh7mqohsOAF3TxudtmgLBpvivIREgiob24XR19lv+AISQ+KIFN0aGv2P8BXTSOtqKjbVdRbnzDLS5HsUjCmJbkYCaS/VU3hNRiXc/Uy+nMRkhu8OWuKd1GP8eGfwEBPejyZlWbsjHZKi1HlML6dHAg5QekkeIvzJ41SBJNagxqBqCuJS7AoXXEU1lqEE8QmV1BP0IRWVH/Ua+dCRSAWeiN4xuD73tYd+5H3NnBG8/qDI+PkvC4lNy+eFRuarBC8RHnD9obDHxeaFN4ohlimQaOutAHVSwmkoIA7amw25IWl3BXlIAOWubwtXw7XaX1QoXNUOEUTD5gG4oAGqFcEXT21Brt8/rr+MjfbI0sHC852W4DpyXbyQOGsc3C4jTy6p7iMHVVO3frFA81U0PNW53kPV1eW5h8ADgsONrRsdo2EKLa3HI1r8dGbvHCtAdo8Aa23WXsxYkk+JGf8M1fGe2Pwa3HJvrRTDg3jlNmWP6rOJqezgSOrIjpk1KIk/TJZH95h3xecUBpH3t1WF1UCfk0EN/z+cMOc9PQQ7wjXK0lCR10fqOleO8Rbot/3EbNp8ZFhbxJom8zlc+RLwpagRFULyH2BMqtQut36M3LB8O0TlpV31wN1Kh8/oh8M6NiXGaq2PJXZmzqyVrJKVNXNzAaTcTTUkEXTCqkgvBHLWQKPk5gz2bc/ZDgxKbt7FlHWFbfgb/IwRwD3ZcPirfwJYZRuPZ/HLcp9DbkjHydNANjlAQkHnzlz6KRKEdA8NPptlECxm1MRQaGz/koOqBJ0B86vlAj/hQAqoc0ToInAPCxFStXumZDnNb62CccikSDhY3k1JNCmz1muo9SyBuIhtKAxLapVM0mBrsRsRSvg
+ AWXpNxeL
+ mhjElak3HQUF1rhPThN8IiWuV6yr9NOc3yrUTI7R4tGFsSVFziMOWHOGY3pZbH7bFv9bZbwup0Mj9fyPywR0bd6Wo1CvrQayNo0Ss3i4spL6VLqoyIHAjVqntDCpoA+NFOQGD92bxJfBHO3MVf0tGP2CUZriFIUPsTHuATRjDOmfeUqQ/Gg6/BS30w795uwT9onveOqtVmBkhfeRsVhFiJ4fCjioSkiyTdf8E9KYwkNHk1BK4DmZu7J6mRKLsJNvrrmOO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,19 +99,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Nov 14 2025, Pasha Tatashin wrote:
 
-> During boot, kho_restore_folio() relies on the memory map having been
-> successfully deserialized. If deserialization fails or no map is
-> present, attempting to restore the FDT folio is unsafe.
+> Currently, kho_preserve_* and kho_unpreserve_* return -EBUSY if
+> KHO is finalized. This enforces a rigid "freeze" on the KHO memory
+> state.
 >
-> Update kho_mem_deserialize() to return a boolean indicating success. Use
-> this return value in kho_memory_init() to disable KHO if deserialization
-> fails. Also, the incoming FDT folio is never used, there is no reason to
-> restore it.
+> With the introduction of re-entrant finalization, this restriction is
+> no longer necessary. Users should be allowed to modify the preservation
+> set (e.g., adding new pages or freeing old ones) even after an initial
+> finalization.
 >
-> Additionally, use get_unaligned() to retrieve the memory map pointer
-> from the FDT. FDT properties are not guaranteed to be naturally aligned,
-> and accessing a 64-bit value via a pointer that is only 32-bit aligned
-> can cause faults.
+> The intended workflow for updates is now:
+> 1. Modify state (preserve/unpreserve).
+> 2. Call kho_finalize() again to refresh the serialized metadata.
+>
+> Remove the kho_out.finalized checks to enable this dynamic behavior.
+>
+> This also allows to convert kho_unpreserve_* functions to void, as they
+> do not return any error anymore.
 >
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
