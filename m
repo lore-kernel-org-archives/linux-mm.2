@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C1DCE7A8B
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:53:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AF37CE7A8C
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D12E8E000E; Fri, 14 Nov 2025 03:53:10 -0500 (EST)
+	id 94D458E0005; Fri, 14 Nov 2025 03:54:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A8E18E0002; Fri, 14 Nov 2025 03:53:10 -0500 (EST)
+	id 924C88E0002; Fri, 14 Nov 2025 03:54:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E5AA8E000E; Fri, 14 Nov 2025 03:53:10 -0500 (EST)
+	id 862778E0005; Fri, 14 Nov 2025 03:54:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F23098E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:53:09 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 977B94CADC
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:53:09 +0000 (UTC)
-X-FDA: 84108598098.25.5AC4E0F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E0BBB40007
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:53:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GiHZ7Clw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110388; a=rsa-sha256;
-	cv=none;
-	b=FKQWjTWBLdq5PTFPTUGK6x3DxpqhcjpnDtttzvBXIWF8dG0f90L2FnlKM+xb0450EdLFZ8
-	C5tc8Fihb6UTxU9MoTKWGqs8tY3Jdq9KH1LYN9MHrvJ97rH2vskNuqNWjhy/4WJ93OpDKC
-	d3N195lPW44SvAbh9swrQ9u+yC7wyjI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GiHZ7Clw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 76B5C8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:54:14 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F8A54C4BC
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:54:14 +0000 (UTC)
+X-FDA: 84108600828.23.719FD8C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 908AAC0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:54:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uy/K/NwI";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763110388;
+	s=arc-20220608; t=1763110452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F0ZDSLhJMzbN91RjPN1EbDilhkoQXAuNj9rynmBWpuE=;
-	b=H5PCO6Rt4Ci02q/AA4i5AELKbMP3hat7g3LXk7ymoDmax3y2aOKjE0+LfSEHIZm2xkT+Xt
-	REmqcDXE1HexIORwSn+lbHuXOG1v7phpUmcCMUATMiFsU4ZbgaLpSW1VtNaqBPvWm7mjQu
-	S+/pwVXUQU+m3CvQZxJ8EStbFI1f4pQ=
+	bh=kwZzv3y+js47+JZV3i+NA55WAqjJ+5Rkr2Ompy1vDMY=;
+	b=tm0PyoECxKwIjiRw7r+nVfI77RsH9IzGCyfyRnEL+XvEziEj7o8lnNjUymNT2MCiu05NMT
+	ATSvsaPp+bo/DJjVlfy/EVoSFzQbN9tsuKnr7rfji28REUt6lWhBJhkPbzyIQTx7zxyEE1
+	D5HeCO5FZASP9uf9aBJtW5o9yBYlpDQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110452; a=rsa-sha256;
+	cv=none;
+	b=6JgwW6XYK3uOvA6NbpzUrOZRjaS+ts8lCjd2cDHVJ/PjiQfnS/IyPofHHWKeXw4+JhYyfv
+	zr51+3EoyNoAY/iCuLuXvZuKPwoVWk87QApD/J4QGdJhGJOYWJDDResoehY/qWuD/BmwAN
+	FUCJbPJG97/gjdIWE7Z0nNvToYGIZWs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uy/K/NwI";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D50904444D;
-	Fri, 14 Nov 2025 08:53:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A4FC16AAE;
-	Fri, 14 Nov 2025 08:53:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EBAC16016A;
+	Fri, 14 Nov 2025 08:54:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060BAC113D0;
+	Fri, 14 Nov 2025 08:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763110386;
-	bh=MWXd5szugeshV852D+6iJV2/VOZL59gQzQ6IN1NcrI8=;
+	s=k20201202; t=1763110451;
+	bh=chklDexcVxOZTY+O7EjWQWgJiqS4fQfWDXZub1nS3Ec=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GiHZ7Clwa0t4iY7B637Zx733ucT4kzMVGQdk9zVLr0hZm3HOcByGnxZf7x87ZSwAl
-	 Q5n2SW5PCywXHD8aCsjAC8aGObZChB1i6yISgbnwBdFi8olIYu5CTJnV2H7UP/76t/
-	 A9wAqfdvo1R/eEVCKhozOL09tz4rd1ItAjlDkNc4SJUFA1twxkPTS6mbqQbm96MYUz
-	 Ow7EGvQ65qxKA3Dc6Ojp7GVgqpRxpjim85UvD+upUODQg+ueKLTQ0z6jxORfZQBwVe
-	 MVEjxBtx2ApbrnOBA44HQ3u7yVo58o3scOGduG2iUxSdz1+iICyrjzsUU212Q/Sxf/
-	 GyqRqPnXUZiqQ==
-Message-ID: <a154f3ab-36ec-4b5f-8c61-6719808a2a34@kernel.org>
-Date: Fri, 14 Nov 2025 09:53:00 +0100
+	b=uy/K/NwI+6wZozOgdjofH5BAuvB97W2ZxC+/01tdLjf1sJIS1waJ/gDwS8DfirYVc
+	 /+QvJfCve8P8x5tNAOw4PrHLHYejbladqHW1YyMonOz+o19fboHA0ZoAKXhG6eT3x2
+	 N8ohawAwLJ6GXRGsXEr0EzFJMZtBgc/HdlvK0PREeZnUmfi9557O/yyPAMr3E+fY4C
+	 Vr9T28xshR8moGyCPzbbvj+RyzinEeKPNS35ZWgPa/rDeqboUJT3+eu0WKG3hGEyAc
+	 Rrky3YjDVZV7josWR9jfyXXXu84j0l1rEF/NxLuWqz+prZsnlP9Wf8+a4dYjBetzan
+	 iMfBUPGrBXULg==
+Message-ID: <62228641-9e9f-46ce-84f3-a4338dd57a20@kernel.org>
+Date: Fri, 14 Nov 2025 09:54:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 1/3] mm/khugepaged: remove redundant clearing of struct
- collapse_control
+Subject: Re: [Patch v2 2/3] mm/khugepaged: continue to collapse on
+ SCAN_PMD_NONE
 To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
  lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
  Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
@@ -77,20 +77,20 @@ To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
  rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com
 Cc: linux-mm@kvack.org
 References: <20251114030028.7035-1-richard.weiyang@gmail.com>
- <20251114030028.7035-2-richard.weiyang@gmail.com>
+ <20251114030028.7035-3-richard.weiyang@gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251114030028.7035-2-richard.weiyang@gmail.com>
+In-Reply-To: <20251114030028.7035-3-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E0BBB40007
-X-Stat-Signature: 3ucmqhmz44h9r9xewzoegyc3w1p1ro6k
+X-Stat-Signature: mjjbejmbj978i6ypgedfugdnofy6bopt
 X-Rspam-User: 
-X-HE-Tag: 1763110387-947762
-X-HE-Meta: U2FsdGVkX1+7fVvPlS5Wpf6aR6Ftxb95TyD5qjQwcccbWp8900FZyTG5Fp3sLkGl8GPfF/NI2cm9TLG0u7fsq5Rz9td6Nv5u4K8ySHPNLUbBpAx/azEqchdmeo5OW9GXNqbmWm1L1gKI+rj/9A+5dVy1E98Nw+mep5A8zATeWhuYcbl58EzY5H/sGqGfU2NBRJZQumuRwYmka9Wmo072Vy9nSHpybH0eNF7Sth4OMtWgTx4Q66TcNt9cPij+VtKcCxFkVlWlQHHy5W3q2QDQRFMf2SDlNiA82uPOnP2wMi6WSTq4H2AAOT/uR8jDNeSTi2D0f8tnQ8CfC0KRt7BAzAli1g88YTCKq4Wt+6bnvLM+9r97xTTMqJTZTuh9YooUeba8hPiCVZ3uZY5bP/V3j+cLIfzq8CeDBrqOr8Poebx9rTOf+Y1dvkXFOpyuvp7PBW8jjUeCZeQlPEI6hwB4PE6WL9AAXfT8zojuYkdhadAs0VOWBQh4cuOqUgDYVaszWc/qGM5wmoVrdUA6S/McDbUIECN1aBVq0H6GqPwU9/kmq1mV7AT/D+NPkFymBki0ctX6pwB5sjBO+dIXyDhiZTuSiyKWEM2CH5f7ywXecLRWVvTDpwGJmHMshVXLgbSpPDjQqyPeMPUFEMWe2Acro/BncqqvZHgBTNUYZCvAm0DrOrW4gf49B1KsB0Teyh3q+BMdkMTupos29TMlbo5P59w5PYMlEixGUiFSC5B/AMaBxb96TVNss+u6AIy16ugfTr5NgTdWZvusSmNE49THJlQ8cWD1T9aE6/YhpAxFQGqpiO3wJEVbt0DY/9cO/PEH8DmMRPPDFtGtUHj5aoreHIKwp+O9cMepcqyxpIrxZpBVhAH4EknVm0vOsJsHMz8+S/ZskgN7V3N6Y9B2mgzw1Wr22MF2AFbaSXgtb+JZ0uv79G4Vc10XQgeni4et3uav+7zeJR1tws9W3hDqi4i
- WMvY+LsE
- KBrAGLql96ij23p4h5cOm5NMdzEi+WERNESpA4kHvbOWTFN2rEF3t5IdhSPaSCIy+O4XArDuRXrpzGNHHmSWmvIysjQ1oGv0Svs+woOGq1/AYF1zfD36p20kXDOkpVlLzekngvDzF/61EdnuLRr6VnBN1pr9UqbkG/GKcgexjCaMA/4L64jdQQNdns7sYzT7RnMzeyshGRCYOYGmjXxqtGvrADhd91BNis95ECpKC/elfwkOxlB6/jqjoT4P00+QhTbBE/cZPeYsgAIkdgCBr13KWj+2h+b2gXFWW/Ojv4MSeLPlCj/sC/cAcv6H9dr8o6ZbODA69Zz3enFVMN/bQU17Z8HyJO7iL74fTr9Ah7AWFUn39XbgOCX2mldrVrcC4jwfAXJgH8Z80sThQHcyk8MfDSmGK1Oxyw1tzaj5FW7pvgTo=
+X-Rspamd-Queue-Id: 908AAC0005
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763110452-564795
+X-HE-Meta: U2FsdGVkX1+ViQsOmVfPbibHbuo5D/M7sDLUeFGA2YheJnhHBxvxJFZwAn8j3N51UqDofTceDy40QuiGWna/VlrFSofabIlJMn3MggqVDmdUTZJiElgyddyIf7Ltcvr9idpIot50R15mSfzPhGEQcjQtiJ1VExwKYYejoP0bZG4fQeAj4hu6wGzHflwLvWeXvRpw3XLhedwwxskQqOWGg1gNvEFm+4oDhV+frvcVIpBYIVytv2dFrempit4F7zAxphnki4/RTX8cI1dUFg+8IF1fie/N0Q1FxBJU0sz/DY2q4RQ8NzdxXO0GbzAtD5cikysW98mOC0JWwIyngZgOz43TfWmCofZXOSOfubhhnxjIAnRn0tpYjyx3AEad/Dys9vigG7POxBXzq+32WCYf9nU6jZQHSwIaJejx3vbBfWipaDbQYU86BAgetK7LCvuU7J2kstcvVSLFKljotF+z/zWDWVqfrvHwZxPtx6UJfb2op97tYucnU5SBE4Bk9DC1IbF3UYAcWFjP/I4mDWzBF1pVfsG/VJfBgccwPpOSXeLCBdFJIsuRjyRAoE40dp4gmiCa1ey1X0XQmw9MyQn87fd5HqJ9X8fkbjiuLhPAk8XPUV2fMeHA05q/aGOi3FzheCwdmm11LYMpeq4hGJab42FFcIWuGA5SgYQeXqZnOkkq6hEKuLmJz4mPtz1P7q8nZZJW6FkZZ5B82+dE6fzK0zBSIZZ7SZs1YH9Qbyr4a/jlC44Q0/IndDkHLqee6dPx6wxAL0B+mDgd6ezJesKCSFBYx9muYecSRjsgAu1s2RK5X0o2hbxn/K8ASC8jUQyZv82xb2Xf2w2mmVtNmUHB1SptmUW29pNaYW87GWg7PhRXfu6bYniqxCrhySlHO6upGyaKsG9cveMu9FaGTLEtrdpxs/83JNEqJVOynqRdmqjFtebeDE9y4b/STmpeekWgQvfP2aXo888E09Bjazn
+ S7FqdGcM
+ 3uVW2WW6qesSyAQ7yPV5iQxTPXJHcSdsZ0Lri9NtFS03Wkqgtyb9emG6gXB+zto0FYusPWmPGv67Pe/Dp2qF9U1ImfkRCpGmciCB3oZG2zFbnF5ogPsCYRaBv6TleBTffa0SC6DKfQDXX0doTmThFWATrHzgVZUNU4ABWlJo09SBIy5g+ta5FObcX4rUoeRQjls+4cvqLN+rEaamNPnSpT4RcaD50cPLGhU4kIEdYxP+7ilWqQy2S8ZwUNLxX5OBsOjNVMFsPtgNz/T6tJn83cq958W8PEwSfD4ZZu9E0nNKXZw96Voxe6PDtR34M1Xs26mLdqSSallmya1uMNK4znIbxrspfFU61y4EinQg1zx7Gh7GaIzmbIci4eHXbrFqxJ9edZid7tQJRI2es+4+79SBV+bVDhKCYEQQZgmXO66CAwPO5rpaI+Idwwt042Nf5BJbyaOv/eIGqNJVRc4JXkuJ/DV/U5EOidyDh1UxHctF34f0RHHnSmB8JKWMKj7puTcS0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,17 +100,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 14.11.25 04:00, Wei Yang wrote:
-> The structure struct collapse_control is being unnecessarily cleared
-> twice during the huge page collapse process.
-> 
-> Both hpage_collapse_scan_file() and hpage_collapse_scan_pmd() currently
-> perform a clear operation on this structure.
-> 
-> Remove the redundant clear operation.
+> SCAN_PMD_NONE means current pmd is empty, but we can still continue
+> collapse next pmd range.
 > 
 > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-
-Right, and the structure does not seem to get used in between. Thanks!
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
