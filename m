@@ -4,89 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC25ECE8D50
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57B5CCE8D52
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:21:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A54B8E001E; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
+	id 9DA9C8E0009; Fri, 14 Nov 2025 11:21:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27D3F8E0005; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
+	id 9B1AB8E0005; Fri, 14 Nov 2025 11:21:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA348E001E; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
+	id 8C7AE8E0009; Fri, 14 Nov 2025 11:21:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A7078E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B61471403B3
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:17:37 +0000 (UTC)
-X-FDA: 84109718154.18.13155F0
+	by kanga.kvack.org (Postfix) with ESMTP id 7919A8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:21:10 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4C7AE12E166
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:21:10 +0000 (UTC)
+X-FDA: 84109727100.07.0B63D0B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2C55A40008
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:17:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bwrPhz/H";
+	by imf06.hostedemail.com (Postfix) with ESMTP id 46D02180005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:21:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HFKJbFmP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763137056; a=rsa-sha256;
+	spf=pass (imf06.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763137268; a=rsa-sha256;
 	cv=none;
-	b=GCgbbALU3cL+ESe+W/+hi0bJX62l3RB72IgaEuxk/WVtdB/+G00lkzEVitCevXstLQiHmf
-	V2U62Rr+fA+OsSAPnMoDKROOzfW1VM/m2TknhSvshIpM1xtxiAN1WucdOGVGajEaB6JvLH
-	m83YgIGa/s0Tu7mg/ojOH3TZD7G6wdA=
+	b=bWv92fYcqdwBP0qtIDOmMKGOryKdLnzUK+7lsh13Ilj0IA+njc5jQ0GjOwJt5vbQdsvRtQ
+	myQ3HIXNg32+e2JDPY15k55A/O6D6tBcrqTKIUZHKo0k456xIqMJtgvBULXbIrljr7dA5+
+	yAH9iFveJgHGoVFTbKEoikpKGuph1U0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bwrPhz/H";
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HFKJbFmP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763137056;
+	s=arc-20220608; t=1763137268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LzmaurRwXd/FUfjWlIvyc9JKRHbFyjNcTaJdND6zQwk=;
-	b=A/sfqMj6/UH3SmOoQZ9thZHxj5aCUkkhzvjrPhM0X/Crh+omOG728BKRhsBrpEFqll7fqq
-	iZ7zGXsWRxP9NIqiTU9wIjb/lfKIhNfrBOZpC77nt0lDOLnmqGx+d2VJMny86TfSKH0yNa
-	iQQll9Cipir7w5WIXN17p6mabs8sz2M=
+	bh=wqvTff2Pj5HRqpyM5KNpmtDRL7l0ixQO80OhutcIkUI=;
+	b=hlwBjBKwboSA8NxuOiMHu5bjNrSxzw8e9+5QxtBxyFHnkKqD6BlfJLFB1BYv038kmlevl1
+	VMQ/K1bV2UiVbWrtgU7VJ1GL440IhDbCcCglOV21iKLYJUEFI7biyEMvxMBaqGQ/yipXTi
+	tCoPVOWKqIthWDedlbaWplRBfs31/KI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AFFA960150;
-	Fri, 14 Nov 2025 16:17:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFD7C4CEF5;
-	Fri, 14 Nov 2025 16:17:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 926BB6017A;
+	Fri, 14 Nov 2025 16:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D38C4AF09;
+	Fri, 14 Nov 2025 16:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763137055;
-	bh=1TP2PBihBm/xACDWaGTPWhNWAdDdBhE5Owp0RpW0KBw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bwrPhz/H4pWI6GRx+uoYSdBmXA78z+aVv88xUzOIT17tPfm2Ur79PxBbmFmETirvN
-	 6/z2xXhyZKz1WEYyTa9ySylU39jBcxrcd/LaesSsiSgm4WZeP5HMBWX76VJ2mMVnlV
-	 3HVMlBc9re1Z4MtzUQv3z5aLXfQ6beeJ7DdK6fPjtwRoTDJaSFg4Tv1P0K365g6Xnz
-	 lL5wkoVXSMH235A+WDbEaMuUz7+vSIAbl8IqCGrTyxL+ATr3C2IxBwOLW2pnNP+C31
-	 TyvqXGWFVQiKzXHNB8RLx5qPpjPiSbEfZvQ7k5koLM845Ed7SdKJFdjXQ9df1LX8I1
-	 j0YEIpr35ql2w==
-Date: Fri, 14 Nov 2025 18:17:27 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, bhe@redhat.com, jasonmiu@google.com,
-	arnd@arndb.de, coxu@redhat.com, dave@vasilevsky.ca,
-	ebiggers@google.com, graf@amazon.com, kees@kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v1 00/13] kho: simplify state machine and enable dynamic
- updates
-Message-ID: <aRdWF8ck4iq1hc0B@kernel.org>
-References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+	s=k20201202; t=1763137267;
+	bh=sdAOBvzBQbQ58hWdafyr1VicSS+CMEqs0nYJg4IbVNc=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=HFKJbFmP9Ujt3AKc7/UDrJzlJi7JumxeosLUkWEyPeklpq5OZZt72yyohcI3A8DjR
+	 Q5Vh2zAeFMd2IiCnte0N/XnGK6DNbDRQ/7YvQ5lhwqg9RolCuYDSpfKJqS1B0vZukv
+	 WRM5Cfpv4s2uQBT9XQpMmVhLg7RU2QrLO7TehZVkVvfsiLOIriL0AHuR7xxhksMb0r
+	 rQ1Xr54dcBhj8eF/NMqOjBRjmPKn9v4PpWEBURevuz0YH6yMHvvs4zxmhQOC1HiZt1
+	 eaXuznue691T9OUZ0Tb36FWCOYcv7m6yoU4B67wWFVQhqHzZSTrRZF2fY0n7ubjqfK
+	 3ELPPESaDQuog==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2A926F4006D;
+	Fri, 14 Nov 2025 11:21:05 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Fri, 14 Nov 2025 11:21:05 -0500
+X-ME-Sender: <xms:8FYXaX1xeo7cwPzIqK0lN7OWVpvdACGCH0_QR-xqptpdj06yrqDiMg>
+    <xme:8FYXaQ5044wGZzeghlvmdCODRvYE2agaizWczUnN-jUKKWRJl7iq7FAPf_6mDi1Nk
+    _cq58VZC_S-DwQ4rAg_2zGQMltJ_hj7flJjkLTIUdudS5euDrsHNIs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvuddtvdelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehnugih
+    ucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqnecuggftrf
+    grthhtvghrnhepkefhieejfedvueejheehiefgvdfhjeefjeelvdfghfelgeejudevleej
+    uddvvefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghnugihodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduudeiudekheei
+    fedvqddvieefudeiiedtkedqlhhuthhopeepkhgvrhhnvghlrdhorhhgsehlihhnuhigrd
+    hluhhtohdruhhspdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhhtpdhr
+    tghpthhtohepjhgsrghrohhnsegrkhgrmhgrihdrtghomhdprhgtphhtthhopegsphesrg
+    hlihgvnhekrdguvgdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthht
+    ohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrghthhhivg
+    hurdguvghsnhhohigvrhhssegvfhhfihgtihhoshdrtghomhdprhgtphhtthhopegsohhq
+    uhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehurhgviihkihesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehrohhsthgvughtsehgohhoughmihhsrdhorhhgpdhr
+    tghpthhtohepjhgrnhhnhhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:8VYXaavy2Rcw5_KExroGJoSP4RswQNujNsiylB0Zboj1MLJmYGXRMQ>
+    <xmx:8VYXaZY6rZhPaBTbMRdgxZfVoWO_tE57Uf8RTZRFKYMUkM6OhPqO7w>
+    <xmx:8VYXaXq_i9JHyksMPvKjGa4dS9KQQoAc-nePruIhtsmCgMAuL00tWQ>
+    <xmx:8VYXaQqiB1qrgBqZ3MW1P6T2OaapMG_gHq2V-9XZpin12vZyrdLMFw>
+    <xmx:8VYXaUXaaOeVLlHat2d5uQs_qjo-uL7EhSwfZcFtiahVbx-tqC236JT4>
+Feedback-ID: ieff94742:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D4A0C700054; Fri, 14 Nov 2025 11:21:04 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2C55A40008
-X-Stat-Signature: ija5fag14wy5ust1wgqdsiybxq49hzpx
+X-ThreadId: ATddxb8eqn9V
+Date: Fri, 14 Nov 2025 08:20:42 -0800
+From: "Andy Lutomirski" <luto@kernel.org>
+To: "Valentin Schneider" <vschneid@redhat.com>,
+ "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, rcu@vger.kernel.org,
+ "the arch/x86 maintainers" <x86@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Arnd Bergmann" <arnd@arndb.de>,
+ "Frederic Weisbecker" <frederic@kernel.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ "Jason Baron" <jbaron@akamai.com>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Ard Biesheuvel" <ardb@kernel.org>,
+ "Sami Tolvanen" <samitolvanen@google.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Neeraj Upadhyay" <neeraj.upadhyay@kernel.org>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Josh Triplett" <josh@joshtriplett.org>,
+ "Boqun Feng" <boqun.feng@gmail.com>,
+ "Uladzislau Rezki" <urezki@gmail.com>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ "Mel Gorman" <mgorman@suse.de>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Han Shen" <shenhan@google.com>, "Rik van Riel" <riel@surriel.com>,
+ "Jann Horn" <jannh@google.com>,
+ "Dan Carpenter" <dan.carpenter@linaro.org>,
+ "Oleg Nesterov" <oleg@redhat.com>, "Juri Lelli" <juri.lelli@redhat.com>,
+ "Clark Williams" <williams@redhat.com>,
+ "Yair Podemsky" <ypodemsk@redhat.com>,
+ "Marcelo Tosatti" <mtosatti@redhat.com>,
+ "Daniel Wagner" <dwagner@suse.de>, "Petr Tesarik" <ptesarik@suse.com>,
+ "Shrikanth Hegde" <sshegde@linux.ibm.com>
+Message-Id: <c4768cf3-f131-44e6-9b25-ebeb633f32ee@app.fastmail.com>
+In-Reply-To: <20251114150133.1056710-1-vschneid@redhat.com>
+References: <20251114150133.1056710-1-vschneid@redhat.com>
+Subject: Re: [PATCH v7 00/31] context_tracking,x86: Defer some IPIs until a
+ user->kernel transition
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1763137056-276674
-X-HE-Meta: U2FsdGVkX191Tz7IlK3eVmT1aPoukHzpO7dClckAtWBH/BfJAIZHcCrJVF8dTFYD97BWR/zVJlya1FNgpGK3tWrrOiZasAAt4EQf3AqjDdvo+UN705eq7WAQ2w8gXmbx/tn+j3ecSRwLmJuONA3I8puvtGRMu033PVCPTxr7oSdNItfzyfFSXVhEGx8ZFK4HsW6U8yoxNcy4UGfl6nfzt7hG5Ps8NyaJZkBIO91KNmRuGowi4jtGdTwZgHRLleNqYU1W1TxFPBJuY85Nl9QXbpg61ObIYjvGUN0DmaOfq2FQ5ySsy5dviJ01r9o/bDnQ+z+lEzjXPOAG8aVg/xf8lvkECGsbTlcwu67A7k+T18N3hXzbK337fKTa2ypuuQxah/fnC+S4repCfOa3pIhuA4yCFHPApZjukVm0G93q23cIAXrg86AtIREGPsbaj49Ny6JyvVUCo1qxWh/5WXfTHXkI0q2gxIDFKMKBjR4BsCMKbq3Bi2ot4Nwbe+aBDI/qFjlamd9H67YbhR8Uosp//8XVVCrRe9cJLBYC1Lo1mZpdCm8WJoh0ZfiGQ4MNTfzRB2NW/TYus3wIxdpDUv5hQqg7reQ8+IZ5KRBicYZNgD3nXEeCmSC0Ht28gKyjLPE+UDIX/+0xWTmdayHcMxApT6Qjic71/e/6HDPDf1MVH48b7giqO9Wxjw/N5K3k/zikKNz+XAWCTBFTWoOGUlo6BNL3WL1bQKTbHSlSefNucHg7c0N0BgNKi2hJgjNYfooPalJnhf/uaSB+QFbG7lbESBccpa+ZqnN+euafKPBd92ezOr20ve6cIt/sjFrDpswwGnNUitwjLCSFRdsQtcNefcXxbYtzY9N7bkVpfV48SgdK/9+3OiL8nkDRXkBhSq9jy0A6N5BFo75yWKzmFC0Tq0hiIl1/kOJgVNy515f06XdknYyQL5wJcuynpuRhEH2QfDIhsHpm5WeFnDUzrOM
- ZAEBWjUX
- bwwBV8sIa3qvQXteftmT8VI/BON7qmAj9X2jyNKlsC3VzzzFUXShsP9YQN36k632QMl48niGJJ2bHP9T2/WSmrOkVuLCNMV2L7HbCUZ/H4zBNZe2w+hlVMb1HBTqtdQhufd9Q40GGCz0w64gczb1tlvSbjokObrGBHMco8NVGBP4EPfL89VvgQq1aAbwufjfXCne4bVFESQOxf+Dwmgkwu6lML9UVW3cuF2QtizmeViQlPVuavdukTyOE07ipZ71ShbEoxrMaB04wM7k9UQxS8c27JA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 46D02180005
+X-Stat-Signature: emjqww6fzrukijgky18epih9saurgshc
+X-HE-Tag: 1763137268-698323
+X-HE-Meta: U2FsdGVkX1/IpyrfmU3sWEttPZDrtR/oEwQ6Iqgv+F1Wo5QlupkgltC3DI3VoXFOkJed0DxIUz+sOQSocQy/5YkSTp60h721+930uLnsxPEDwhSMC9Zwl1Uv2pbJcSHA4FWJZ9+U0sfbNmX2ww/A8X6YbY0HPz07dWz/FpbxEm3ARrbIUzp4JyGVBi7b44PoNSmYqTkoxYSIy1zebaFtp//6LQ+1TwrnMlQGPdgyPFopIQcw95U5qwK4/uPsH5YXadzQ1Ra0Z3a5Ev/qVTEyf/w6e5xdjpHBu5M5hPONDVPYjr5UfqK8k6dIvAUX1U0sUBB6FrR9Kjtp7Se/U24JEx2jaNuQmeh3lC0wQLckWH9k/Tt3xnaDwNZ8DPtx7wPDP/klbQmPOpYlLZZ5NBU4y75zaehmL4Q1xVZ1ktlJYJ/tkANbZJM824muHR4EU/SO61HhWx1134UonAeTyR+QkkAwkIIZ5j8JPINA9ohD/j6LXZ23SQXnIxJTMHfySUxuXOuggUHXkH5C9pjVxs24+lNArwSm7fk4d7IaSKuwbYDuLTyKRdGdhO9H6cuLzyiWGyD4RrKBEKJ/NKJ+NI4S0hBHbHIvDwSkf2QLGDqtHhLkZRjvQe12Jb0Qy2ZBp5wXmIuuwG/4vIUJaOXCLMgrYPLuLTMJyqc+5le2JaOTDb+/TWJlPTacTI2NNqv7suDMVhTs5M07n1luEbHY7WjseONXHv1anCb/9ondk81/KYTcw3VKGy11Ovk9MmHItUgZ7FJ1ZXJ3OKgXYNE0/8tQvBO5kaZTZaV6NUBV6YuSAjHTjFahaL28uDKf7ZvZiXExQaeSCmpGRVbbR3qfG91Jhd/ePuAlZQCCW3LVYj7hnt5561kQ/WnrDzy4UCY57sTaUUg5OFfOTTD0IJp1RS+w0xRbzzvCEALIGBGMOD6v2BsY0KBJKUjmav0LX9uuvhRomWF7qzVCxwqHHBU33Wq
+ N17EATue
+ lLjMjk0T5/otkXjEq5nJuGhgFe3XEHJ2mcYd3fPGKnApyiLK1Y5K0xXRZwOLFLs1z834Pjl2fYWWOMJdWVXVw6xQN1Hy9C0rGiM6zRBUMZLLdR2LHWf/u5cdl3kGauZINIeDuPSo51NTV8frhOU8NYQ/VzSNQb8fbKim15OSrYOcyDs0XhYI9dfiK1QylHTGwdLLvIrZV0yKRpYSy7McPmKEqjnZhSasE1bek4vpr8/MZCPM6TsUsk6B86I7h6hm0jDdgU7BRmmQUz11TNRAlVDuazZuXteQtVF2SuQbUrDKJRiD56hRCDS+5Ug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,46 +165,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 10:53:45AM -0500, Pasha Tatashin wrote:
-> 
-> This patch series refactors the Kexec Handover subsystem to transition
-> from a rigid, state-locked model to a dynamic, re-entrant architecture.
-> It also introduces usability improvements.
-> 
-> Pasha Tatashin (13):
->   kho: Fix misleading log message in kho_populate()
->   kho: Convert __kho_abort() to return void
->   kho: Preserve FDT folio only once during initialization
->   kho: Verify deserialization status and fix FDT alignment access
->   kho: Always expose output FDT in debugfs
->   kho: Simplify serialization and remove __kho_abort
->   kho: Remove global preserved_mem_map and store state in FDT
->   kho: Remove abort functionality and support state refresh
->   kho: Update FDT dynamically for subtree addition/removal
->   kho: Allow kexec load before KHO finalization
->   kho: Allow memory preservation state updates after finalization
->   kho: Add Kconfig option to enable KHO by default
->   kho: Introduce high-level memory allocation API
 
-For the series:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Fri, Nov 14, 2025, at 7:01 AM, Valentin Schneider wrote:
+> Context
+> =======
+>
+> We've observed within Red Hat that isolated, NOHZ_FULL CPUs running a
+> pure-userspace application get regularly interrupted by IPIs sent from
+> housekeeping CPUs. Those IPIs are caused by activity on the housekeeping CPUs
+> leading to various on_each_cpu() calls, e.g.:
+>
 
-with small nits in patches 9 and 13 in replies to them.
+> The heart of this series is the thought that while we cannot remove NOHZ_FULL
+> CPUs from the list of CPUs targeted by these IPIs, they may not have to execute
+> the callbacks immediately. Anything that only affects kernelspace can wait
+> until the next user->kernel transition, providing it can be executed "early
+> enough" in the entry code.
+>
 
-> 
->  include/linux/kexec_handover.h              |  22 +-
->  kernel/liveupdate/Kconfig                   |  14 +
->  kernel/liveupdate/kexec_handover.c          | 338 ++++++++++++--------
->  kernel/liveupdate/kexec_handover_debugfs.c  |   2 +-
->  kernel/liveupdate/kexec_handover_internal.h |   1 -
->  5 files changed, 232 insertions(+), 145 deletions(-)
-> 
-> -- 
-> 2.52.0.rc1.455.g30608eb744-goog
-> 
+I want to point out that there's another option here, although anyone trying to implement it would be fighting against quite a lot of history.
 
--- 
-Sincerely yours,
-Mike.
+Logically, each CPU is in one of a handful of states: user mode, idle, normal kernel mode (possibly subdivided into IRQ, etc), and a handful of very narrow windows, hopefully uninstrumented and not accessing any PTEs that might be invalid, in the entry and exit paths where any state in memory could be out of sync with actual CPU state.  (The latter includes right after the CPU switches to kernel mode, for example.)  And NMI and MCE and whatever weird "security" entry types that Intel and AMD love to add.
+
+The way the kernel *currently* deals with this has two big historical oddities:
+
+1. The entry and exit code cares about ti_flags, which is per-*task*, which means that atomically poking it from other CPUs involves the runqueue lock or other shenanigans (see the idle nr_polling code for example), and also that it's not accessible from the user page tables if PTI is on.
+
+2. The actual heavyweight atomic part (context tracking) was built for RCU, and it's sort or bolted on, and, as you've observed in this series, it's really quite awkward to do things that aren't RCU using context tracking.
+
+If this were a greenfield project, I think there's a straightforward approach that's much nicer: stick everything into a single percpu flags structure.  Imagine we have cpu_flags, which tracks both the current state of the CPU and what work needs to be done on state changes.  On exit to user mode, we would atomically set the mode to USER and make sure we don't touch anything like vmalloc space after that.  On entry back to kernel mode, we would avoid vmalloc space, etc, then atomically switch to kernel mode and read out whatever deferred work is needed.  As an optimization, if nothing in the current configuration needs atomic state tracking, the state could be left at USER_OR_KERNEL and the overhead of an extra atomic op at entry and exit could be avoided.
+
+And RCU would hook into *that* instead of having its own separate set of hooks.
+
+I think that actually doing this would be a big improvement and would also be a serious project.  There's a lot of code that would get touched, and the existing context tracking code is subtle and confusing.  And, as mentioned, ti_flags has the wrong scope.
+
+It's *possible* that one could avoid making ti_flags percpu either by extensive use of the runqueue locks or by borrowing a kludge from the idle code.  For the latter, right now, the reason that the wake-from-idle code works is that the optimized path only happens if the idle thread/cpu is "polling", and it's impossible for the idle ti_flags to be polling while the CPU isn't actually idle.  We could similarly observe that, if a ti_flags says it's in USER mode *and* is on, say, cpu 3, then cpu 3 is most definitely in USER mode.  So someone could try shoving the CPU number into ti_flags :-p   (USER means actually user or in the late exit / early entry path.)
+
+Anyway, benefits of this whole approach would include considerably (IMO) increased comprehensibility compared to the current tangled ct code and much more straightforward addition of new things that happen to a target CPU conditionally depending on its mode.  And, if the flags word was actually per cpu, it could be mapped such that SWITCH_TO_KERNEL_CR3 would use it -- there could be a single CR3 write (and maybe CR4/invpcid depending on whether a zapped mapping is global) and the flush bit could depend on whether a flush is needed.  And there would be basically no chance that a bug that accessed invalidated-but-not-flushed kernel data could be undetected -- in PTI mode, any such access would page fault!  Similarly, if kernel text pokes deferred the flush and serialization, the only code that could execute before noticing the deferred flush would be the user-CR3 code.
+
+Oh, any another primitive would be possible: one CPU could plausibly execute another CPU's interrupts or soft-irqs or whatever by taking a special lock that would effectively pin the remote CPU in user mode -- you'd set a flag in the target cpu_flags saying "pin in USER mode" and the transition on that CPU to kernel mode would then spin on entry to kernel mode and wait for the lock to be released.  This could plausibly get a lot of the on_each_cpu callers to switch over in one fell swoop: anything that needs to synchronize to the remote CPU but does not need to poke its actual architectural state could be executed locally while the remote CPU is pinned.
+
+--Andy
 
