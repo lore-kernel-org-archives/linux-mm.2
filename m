@@ -4,87 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24375CE7B0D
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 13:45:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F902CE7B0E
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 13:50:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EE928E0007; Fri, 14 Nov 2025 08:45:49 -0500 (EST)
+	id 4152D8E0008; Fri, 14 Nov 2025 08:50:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69F278E0002; Fri, 14 Nov 2025 08:45:49 -0500 (EST)
+	id 3ECD48E0002; Fri, 14 Nov 2025 08:50:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DC3D8E0007; Fri, 14 Nov 2025 08:45:49 -0500 (EST)
+	id 329F38E0008; Fri, 14 Nov 2025 08:50:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D2C08E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:45:49 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CABC01403AA
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:45:48 +0000 (UTC)
-X-FDA: 84109335576.10.6EF909F
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EF631140010
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:45:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wFJYpw7A;
-	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 236D58E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:50:52 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF2564CE61
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:50:51 +0000 (UTC)
+X-FDA: 84109348302.04.5492DAD
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf10.hostedemail.com (Postfix) with ESMTP id ED733C0011
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:50:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="So2HB/Hk";
+	spf=pass (imf10.hostedemail.com: domain of 3tzMXaQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3tzMXaQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763127947;
+	s=arc-20220608; t=1763128250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TOsq8VsP5JBLvdVkh+hvD9nSF/y5uZSmbv6e11sSeRk=;
-	b=Ef8w0wDru/JRm0lf6B8JPf5ZBvLgIdM91kwSpkjFi0Or9mbvxIL2PE/oxCcOKfcy2S3tpf
-	u6TT28F2YCUPIbV3GX1/RuWPi9FjPcywyTCzLeGGmIZeSmka6qrKn4nSRbiFEYqw+0JcKI
-	2frEUgL+mM+s5cG5gjN0B8sHBjoDKj0=
+	bh=aRrI+zvBboCdfdse/X2BfoaixhuDzfAQTP9joVyOmZM=;
+	b=dq6l3M/049RpwdWCYR/EvQ0D8HsM/PuiqJnrB13F9daxJa5i97MAwe0GXl1QbZ6pya+VYm
+	o+1BsTrO6jm27BufJ5KCtPdF9R0x1OmsMApn1Oy5CJC3xOOgBFWYFNeO0TFGaSUbdWrsD4
+	ekpnXzsynRH8ej9hU/0oxxS6ADl3VaE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wFJYpw7A;
-	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763127947; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="So2HB/Hk";
+	spf=pass (imf10.hostedemail.com: domain of 3tzMXaQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3tzMXaQkKCMoq1ysu7Ex1w44w1u.s421y3AD-220Bqs0.47w@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763128250; a=rsa-sha256;
 	cv=none;
-	b=iehwZAdEeXI8NgGkuI3niDS9l4v9HQk1+Kw0INQFR3ZdM/Tl/c4rcIYwfyrc5x6WCRul8k
-	KRiaN9LLKzB5cp7+KyGDaL5eNYLEvBiLD6vQWr4PV7e1tlVaIelx5/gThitg4uopOHe4CF
-	4ATjO17SBfahnUpc2D64OIaFKwgimQw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=TOsq8VsP5JBLvdVkh+hvD9nSF/y5uZSmbv6e11sSeRk=; b=wFJYpw7A1CHhV6mGIynGd09EIb
-	dVyHYk2P+0UywKPD/e9anztoFcZMx2QN7oTpyUCQXgh0EqMJNxnZEft7e8Db8wBD70bVPd5XGF9oo
-	2LAgg/Q0LIQY/0yuLQAA/9hrjZ/rzKlSU37Wh4lDY2AKBth8yIBkhHw0hOXOcAs9RTeeRsQGTGDRy
-	+vP7eqDmnFYMqANHVWlt4Yn2K6EMQYzoVl2lEH5IECCRLWzhXKEVgT25pGtQuaUyKdxja8e4EzU2q
-	PD23xUcyoaz/vDjXHznGVSJjLU0kY2MwJ1Wt0awj1rLG4DlOO6Z/iIgFdE72sJ9zyN+DXypRnd6AP
-	/PQS4DPg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJu7V-00000009P7p-0OHS;
-	Fri, 14 Nov 2025 13:45:45 +0000
-Date: Fri, 14 Nov 2025 13:45:44 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 1/4] mm: Use frozen pages for page tables
-Message-ID: <aRcyiK3paG1vXT7P@casper.infradead.org>
-References: <20251113140448.1814860-1-willy@infradead.org>
- <20251113140448.1814860-2-willy@infradead.org>
- <aRYiW91uAGH02UGL@fedora>
- <aRYuHl4zKwcwWN7t@fedora>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRYuHl4zKwcwWN7t@fedora>
+	b=dGlhQWINfSgnA2EkivTcM5GtkAsh6y7PYdzFzLx7W/7Yw96U+vrVpIZhjr0ijexUv/fCPE
+	w4t4iKFW7RwpeEqiZLPyLjWjUpzw89aj5jH7zbWGBauLO69pdBjqZm1TYEn4Bw8w5nHIsx
+	TgN+heqWB/N9GRYn86nUu+jrx+C8J+g=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42b30184be7so916344f8f.2
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 05:50:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763128248; x=1763733048; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aRrI+zvBboCdfdse/X2BfoaixhuDzfAQTP9joVyOmZM=;
+        b=So2HB/HkFL1PtBE0xoJsvSBCyRSWY6Nxp56sQx3uEEKuOcbTlYSWUuWrNGTplItLaW
+         R4HzC5TDbHxQkO+sj1xHkrJyRi+wocZpNNFLHxPXnvMM5Z3m+kobcynPZYAXz4Pz5QW6
+         dXTN3k33HfSxl8S099FbcbTsEUfTvMxNSWxSErJ2zlkOA0WvR7ppl5OvrD+3WxWU+OH1
+         m2oxX2oPB099oPDC7VCO6LAJbvYNx/S3PobSCmyXGkJ7hGDJ3ySj/w9Xj5XaqlyF+apc
+         mFuPlvxZ4zSdqO7JETEZUdgmN6XncE1TEjb4xpHMiVv1EPhsjTlxFH5tKgoeAPvT02xh
+         XBtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763128248; x=1763733048;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aRrI+zvBboCdfdse/X2BfoaixhuDzfAQTP9joVyOmZM=;
+        b=Bw6GS0MsU0xnlhUk2ALprd1qBGoABFs1NiEo3wY92mWAbWn3a+usrqsOk7Dpe3cRuP
+         UJPFBPwnc8gv2AwzjqAg5JcupQs/Hc7CNwxcHScm48pY0f2MHos1Da0j/BDVHzc3rSzk
+         ypzP/C9aCuUYmPOF4VkVa127+2iEiC7KF4RGrGb2Z+UxWatRiinYij+35KqFG5CVH5jd
+         buX4d3d1Se7KKTpBSPLhz1+xHNxqwHXF4MEdAHLFYwGK3vQnMOAI/9stBKueaI5FvmV7
+         4o2qisUKZJ6pwxHkF4pm+GrcOJGd8aGQblZmJrzfinAu12JtBXqvZCT8eb2UZ9GS0YRL
+         jWlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQVakt+XIUF/+Py3UCe9rmoSt9vZa+f3lWMl2WfaeN5MfvmDWCu9T5HI4csXWkvy9UGGiPPp7SNg==@kvack.org
+X-Gm-Message-State: AOJu0YxzX9wYngrzsbooCcaqdvot6bQBzEFOYup2b0Bhn0GBdEIa2IPd
+	/ZFDlnT2W+CWs/YyxHxZ7ZXz7FMUyPEJ2+HL80YmqC+cikgP8Csmr23uO+uzlSk/SWoRtQ1LggS
+	6LN/g386kX0vPdgKxIg==
+X-Google-Smtp-Source: AGHT+IEy1IzfqWatibDXEefRnIBkZupbkLV4W34pV9YXz3HKgkrUUbyPksPnt2imV3NkIkiiyQrvQWIxaug0o/A=
+X-Received: from wrrn3.prod.google.com ([2002:adf:fe03:0:b0:42b:585e:3ca8])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:144c:b0:42b:39ee:2889 with SMTP id ffacd0b85a97d-42b59374c26mr2988918f8f.48.1763128247691;
+ Fri, 14 Nov 2025 05:50:47 -0800 (PST)
+Date: Fri, 14 Nov 2025 13:50:45 +0000
+In-Reply-To: <6289d60b6731ea7a111c87c87fb8486881151c25.1763126447.git.lorenzo.stoakes@oracle.com>
+Mime-Version: 1.0
+References: <cover.1763126447.git.lorenzo.stoakes@oracle.com> <6289d60b6731ea7a111c87c87fb8486881151c25.1763126447.git.lorenzo.stoakes@oracle.com>
+Message-ID: <aRcztRaDVyiDO7aH@google.com>
+Subject: Re: [PATCH v2 1/4] mm: declare VMA flags by bit
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EF631140010
-X-Stat-Signature: 5tjoybt9kzwqkb1oki1sg6wbfm8u5ij7
+X-Rspamd-Queue-Id: ED733C0011
+X-Stat-Signature: gnw9bmsek6utk5hi9cwg8ebdpd7nu4zr
 X-Rspam-User: 
-X-HE-Tag: 1763127946-528091
-X-HE-Meta: U2FsdGVkX18b3aPFKwMRua/3SKluIoCLe4AOvdonrgI6rdPS3jyuY/G7aqekzxy032A9drhEr1BWAsyFXx+HjwsFn/iA/+hCvlmoTT3TVXrM3XF/XAnWjMT5mi+T87hg8EB5ykXu/5mEo1vMk1rJckxnZDB4foQ6f90Nzf78LMeKLJ8sk9EMRs1nGhKBae1cysI0LL5Fcg5mqPNmbOSxxqIQPDDZdKHPpViMPP0ugajKmoqcsgT/xbZPzj62ZUprHleg/v6FOKv5aU65JJ/RBuHXCUnvzY5Xu6XV5NrvTceSNfbZ1aN5MGDh3ZVWBGEef21HrevdlNdmDz+MWpLn3P1JmzrnRv8KT8x2AQb/oO585zJ7SdITZRsW7Hk77bYaNWlTeDTzCrAzMsYuZLv61PUKpYp/n1HwWDJLAuK1X+tXrIy25J8tDTDnGUahspRqqdAB3mc/97TsM1cuKbfANpZ3XrYGv2UjlpZDDLCmzRRi2X2xGZgVaRA7GbFwILmQjAhXnlJL8rHgMyg0BXu5Fd+pn0V8Wmv2WWx4OJ4ni86DEIP1lIIq/40fYBCeAu82G3Sf+k9zAVH+4or5EhnIvw3/5o9e7F1c0mj7mFPOrPq1LsHb/lL6znb5x9xrvY/KSlouT2S/+4kaKaVu1PRVRkxVXVUny3kXssF7hhBWJMQ/rFuPeh73EyxPQ3phlMIiv3OGcQ2A6I7TsRzMjkdMuXYL1uqxiQLMa2shb212mG8nmuk3ATMSRnVeCzKuKcmLCLzqxlL0TI1habFCB2AzAC8Ax4CWTSCUcC3NwW4X1HkC67D9PpHIIJ/Acbkvwk9Zv+1Qp3ghAP7xk0Pb+afoggio8y74wH9Zd9hDTRO05RA4QdhD3jH95VYqoS+duCgyr5Sbi2T+BYbAo+1P8z5eZgc5Mms2lvPdU6RDkRN2I0SPGt7CF/50Tru+AbNoG8K0B4dFDpAYkELdq1xtvUw
- 3WeBh4HC
- yvTnHVYzZniTkJr7j+dX73IvUxwHpwnNV0fsbqH1Xa9Kvh87IjYoBB2M73gN9tVibqICYvEmioTAs7PcY/myHy0E0HylDqpeziwOE6cnq792aeonCXrt0CRUV7jOen+NdgbBsriu+HkEFhxZ4DJ+YaOoSPcnx3NHkkhLfr8Mo3jT6m4FbYpjbu/PZS3wFTadJZ0S4YOPPmJGxpwTEvZiMdI0vnvgljyoBwc9sevLbRc1WxMA4v1ZhZnT4njACal0EGz9Pq9eopr+pkap4wh3IgNNRo+ccB1tc43lYL4uecKdm+ILyotMAywcps/KFuFqlYxcD
+X-HE-Tag: 1763128249-797740
+X-HE-Meta: U2FsdGVkX187mh0pQ2j5GeEXG1VWi/LGdOAKx9tfpyPSbmMaMKdoEciDP7arFbtcPqk+B47zSWzH/+nl1egOJ2vLHJEp2ELfTnfD+aNJLt462j1NCGOPGNS4IuXpuLEJkd44I5Fo+gJVug6r2dIARlRuANbkQfYqIus6uYLaNCV3aLYk4yx14ruu1GlTcNS1v4vdfw+PMoBeeKLa5JIhw03XOJ35U70eGXOOqbge+Q2tco1899Mv9l9K3o448hWOb8kbJKgW7bM5q/0lZiXTBWyC1+ouKha3McU+vQbmB9kbHGKGpKwh5Jep6+tcz/kVY1P1DQWybFSdYjvrLIPVUCVrFdEsDlkU0OfqTpPOHJSz7vxa/jp+GdHcI18rDlKiNNLXmTBbgF/hVJRXMXbFJCHL/Y0NjbVZsY7Q5mwWeGoyZXx44pa1aE2YKWipZ6leyMCCqwxxN/i631MDmbgwpWTR2fcECF5g23EKtOJLKvtKnIdbd7I2UYy3Md3GPiMNUO/b8Wj4gZmchJU3TG0xbxk1QcUmiM8Po5HwIRNzxm7XrTQM5gItV3KdUCKK/bu0eRzpimW4YXBKmVXWGtNPWgR+di0vBnyKJ0l+157vCPunfU5RU8uk4D/yPpSFqjw23VbNmy5CivGrNxft2G64by5zCnmwAGL7nq8cnghiT8XWshdqMSuYgNkz4EzUSlcyZmSqGaJroaxERjnURekZgg/RP7jcRRkgIJgX06Mnk6lLFoF11/zTYGvGDgF39ooX4WRxY001FsqdmKxY/Ax+IW3gsOU8vBQpfv5Lg1hPyTfiJ+BfZT0ZdVCV+2gb3eTRmEDtWtri1hqqw5EFyrgpLk8fuLgdtSfprt1nd47+h6rF49cEUjcFgUXFFwHk5rXvi51+/MSpTOPJzYQ9RvuGm+UnZCkXqbdlahkYt8c7Jx2+Qqjrt4eb8mH47Rj8988vo+VaD6qCfcTq0+zhG6g
+ NCt6njNd
+ rTSvRGshEHNRzo9blzE0Fdji/6uEJ0Jzt/H4/+xQsEmtSNAu2AnGphD6tvuO2G1PwHQvxDg7m4LjjWHUTvxux7kufyiwLm/3SvnlkMtwsTdtjsbSikHv/lUo4C/p6Aun8RYTWO2tyODXwdBLewjEFRNltsHTusSiZNLo6m2nPt03zN76Rr+GBtRaCzJyHJZu4qdF5jMYAblcf8nH2kOEsRqUYXBrS4zMhP1Hu+CQrXYGkAWX8Ps1mzE2JkX89rRUCQSYfvVXmvzGyRIaqYVTDzb+jWC9uvr4Qf/pgDbsvwYZ1has/4dyyfLWVuDTX4f8F0of67auRi+GlabVBsncjtCdnhX1JlWAQeS1g3j9JHLWhZHFrGEqQu2jKlZ1fPu6wTIbTcrygOAhZ7E4yFISUxra5VyaVOHz6Fw8a23+zPcNzeAFyMM4JNeSm0amkwVbK7g+NiQTd8hWsRkpwSgOeJGoQdtmSR3ZqsDxx4j0J8nqkAO7CW/pB7cmlpxb1JXfOTH2/04MDaewPa0Cuz0b6HxxX+mc940k1oPt3NW3lIAL1Gib01dYZA0HhYFsBgINiPHzEetn1LOYoHIUwxhssc2skntUazJMyuVvI2qgejfJl1KL6sdQosyPqlxgVAcJ8N1AbQFlceNfy+Jc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,36 +136,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 11:14:38AM -0800, Vishal Moola (Oracle) wrote:
-> On Thu, Nov 13, 2025 at 10:24:27AM -0800, Vishal Moola (Oracle) wrote:
-> > On Thu, Nov 13, 2025 at 02:04:43PM +0000, Matthew Wilcox (Oracle) wrote:
-> > > Page tables do not use the reference count.  That means we can avoid
-> 
-> While looking into the second patch, I came across this one instance in
-> sparc32. Commit 1996d47a0db ("sparc32: mm: Only call ctor()/dtor()
-> functions for first and last user") decided to start using the refcount
-> for something.
-> 
-> I'm not certain this code should even be using ptdescs, but theres a
-> page_ptdesc() call in there for now :(.
-> 
-> As far as I can tell, this is only a thing for sparc32. Cc-ing Will as
-> the author of those commits.
+On Fri, Nov 14, 2025 at 01:26:08PM +0000, Lorenzo Stoakes wrote:
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 2e43c66635a2..4c327db01ca0 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -108,7 +108,32 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
+>  
+>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
+>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
+> +
+>  const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
+> +const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
+> +const vm_flags_t RUST_CONST_HELPER_VM_WRITE = VM_WRITE;
+> +const vm_flags_t RUST_CONST_HELPER_VM_EXEC = VM_EXEC;
+> +const vm_flags_t RUST_CONST_HELPER_VM_SHARED = VM_SHARED;
+> +const vm_flags_t RUST_CONST_HELPER_VM_MAYREAD = VM_MAYREAD;
+> +const vm_flags_t RUST_CONST_HELPER_VM_MAYWRITE = VM_MAYWRITE;
+> +const vm_flags_t RUST_CONST_HELPER_VM_MAYEXEC = VM_MAYEXEC;
+> +const vm_flags_t RUST_CONST_HELPER_VM_MAYSHARE = VM_MAYEXEC;
+> +const vm_flags_t RUST_CONST_HELPER_VM_PFNMAP = VM_PFNMAP;
+> +const vm_flags_t RUST_CONST_HELPER_VM_IO = VM_IO;
+> +const vm_flags_t RUST_CONST_HELPER_VM_DONTCOPY = VM_DONTCOPY;
+> +const vm_flags_t RUST_CONST_HELPER_VM_DONTEXPAND = VM_DONTEXPAND;
+> +const vm_flags_t RUST_CONST_HELPER_VM_LOCKONFAULT = VM_LOCKONFAULT;
+> +const vm_flags_t RUST_CONST_HELPER_VM_ACCOUNT = VM_ACCOUNT;
+> +const vm_flags_t RUST_CONST_HELPER_VM_NORESERVE = VM_NORESERVE;
+> +const vm_flags_t RUST_CONST_HELPER_VM_HUGETLB = VM_HUGETLB;
+> +const vm_flags_t RUST_CONST_HELPER_VM_SYNC = VM_SYNC;
+> +const vm_flags_t RUST_CONST_HELPER_VM_ARCH_1 = VM_ARCH_1;
+> +const vm_flags_t RUST_CONST_HELPER_VM_WIPEONFORK = VM_WIPEONFORK;
+> +const vm_flags_t RUST_CONST_HELPER_VM_DONTDUMP = VM_DONTDUMP;
+> +const vm_flags_t RUST_CONST_HELPER_VM_SOFTDIRTY = VM_SOFTDIRTY;
+> +const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP = VM_MIXEDMAP;
+> +const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE = VM_HUGEPAGE;
+> +const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE = VM_NOHUGEPAGE;
 
-I think you're right that this is a problem for the ptdesc project,
-but not (I think) a problem for this patch.  Maybe for the wording.
+I got this error:
 
-This patch changes pagetable_alloc() / pagetable_free() to use frozen
-pages.  But sparc32 doesn't use pagetable_alloc() (sparc64 does).
-So this patch should not break sparc32, and it can continue to use the
-page refcount like this.
+error[E0428]: the name `VM_SOFTDIRTY` is defined multiple times
+      --> rust/bindings/bindings_generated.rs:115967:1
+       |
+13440  | pub const VM_SOFTDIRTY: u32 = 0;
+       | -------------------------------- previous definition of the value `VM_SOFTDIRTY` here
+...
+115967 | pub const VM_SOFTDIRTY: vm_flags_t = 0;
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `VM_SOFTDIRTY` redefined here
+       |
+       = note: `VM_SOFTDIRTY` must be defined only once in the value namespace of this module
 
-Where we do run into problems with this series is in patch 2
-where I move the mod_node_page_state() from pagetable_pte_ctor() to
-pagetable_alloc_noprof().  Since sparc32 doesn't call pagetable_alloc(),
-its page tables will not be accounted.
+Please add the constants in rust/bindgen_parameters next to
+ARCH_KMALLOC_MINALIGN to avoid this error. This ensures that only the
+version from bindings_helper.h is generated.
 
-I think I have a solution, but it'll take at least some build testing.
-Looks like sparc64-linux-gnu-gcc at least accepts a -m32 flag, so I'll
-give it a go.
+Alice
 
