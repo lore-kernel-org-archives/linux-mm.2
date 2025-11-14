@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 991B5CE7B1F
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FB20CE7B1E
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:16:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02A388E002F; Fri, 14 Nov 2025 10:16:32 -0500 (EST)
+	id 6E17C8E0030; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1CA08E0002; Fri, 14 Nov 2025 10:16:31 -0500 (EST)
+	id 66A888E0002; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE4B48E002F; Fri, 14 Nov 2025 10:16:31 -0500 (EST)
+	id 5598D8E0030; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E4F8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:16:31 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52B8312E090
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:16:31 +0000 (UTC)
-X-FDA: 84109564182.09.54E8833
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 41B5D8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:16:44 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0669C4CF5F
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:16:44 +0000 (UTC)
+X-FDA: 84109564728.16.B20DBF3
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8EE881C001C
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:16:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lf0Nu9Pp;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133389; a=rsa-sha256;
-	cv=none;
-	b=8K9ZQ1RhaaYlLIdDrGtPOf0xwFwUZ80lz3pVgcySMP7O5MIxG2QqvZL0zM8bc24FwIukl3
-	8usYqy1q7PDDMhGtgSfXp2ZWdznFBgT0IpX/DTxEC4ieUw1nzl6vIlNE5hXRtqt/eP7XQl
-	uHUOoVClYEauggl53ZPAvpVUVxQVdhs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lf0Nu9Pp;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4EE36C0012
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:16:42 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SfXjFrjy;
+	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763133389;
+	s=arc-20220608; t=1763133402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3wtNiwO7mQgs61ieJ83HPyGKadANIMB4TUgH9LUJTDI=;
-	b=XPe5OiXKCGdIf2C8elmPrchvrFM61ja0LJj83O7/XsTJ3GNs6lWzbKjIj0uI2aNVBfHtKG
-	AHwxn1A1nvayhJXcck9ZknZYxcsdiNAZg30IKOxWgqb/JshAgK60w2CDr3eqROp0Qu56xM
-	E6fa0IS88dzrBN6oZ8hAO2EfEPkD+Ak=
+	bh=uUsWRA0PhCMnZLZEkKPa9puqLJ49gF+6GXOwWTaFVY4=;
+	b=WJPfWIlcQ6fE9fzzG+8xo5UsK3JOBZYuKEu3aw/KJcxTBAFFOoZWciXoIVB4Uk7OySajwN
+	DAR+DlYtkNAn2ii3iErHTLxqre/0tMfs2J0VVepxspn32N4TGLyUEgmft/ov+amRGzFWzu
+	z+IKMhbHo9QmRZr0vGTR0gRLZ+okjWs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133402; a=rsa-sha256;
+	cv=none;
+	b=zs4gkcRc7LzVpyqsz40oxui1NCs1RxtcvdYLxm7BArNfKhfnBzSlGgE6RnVwizleSUDOXC
+	UYqsC8qGmPArvmsem0PB2/1pLBtXSljRoytzwKfshD5Tc/7J1SVEvEHVEEgG7VfjQOJHN0
+	cR214JhmB1J7rokrD/BZ3pHax53RJ2g=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SfXjFrjy;
+	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763133388;
+	s=mimecast20190719; t=1763133401;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3wtNiwO7mQgs61ieJ83HPyGKadANIMB4TUgH9LUJTDI=;
-	b=Lf0Nu9Ppgr1G7QosoyNgchuK6LbIAAmIDLapMhWG2VjoQYSrl2q4tMT0SeuI+biek5sH9S
-	OqwQ35li0cYWh7c3F5hVcBN4fXUYwnP3USLdSnBVCoQjhCzWcKs1Dxax0y9SrpvSMngD9x
-	uGIxLnT5EiZmx6ffir5CvPaznDqrlDI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=uUsWRA0PhCMnZLZEkKPa9puqLJ49gF+6GXOwWTaFVY4=;
+	b=SfXjFrjya/UszD5iBGRDB5HTedJ3X3i92R8czttiMSi77npOfj0CzhQqKprYwYYPWDRhXE
+	ahGqzHF1SuQ4HvO+tD2RZxi4Rn7CXoWeT8GY3unyJJ43Hc7lzn41J3utV0iGNBq5PK+h2J
+	U2YQxr3ciiGHV0YoNaYIEeaVPVKbF4o=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-KUYqLZu4MQq0ZGtzVQ5_Tw-1; Fri,
- 14 Nov 2025 10:16:26 -0500
-X-MC-Unique: KUYqLZu4MQq0ZGtzVQ5_Tw-1
-X-Mimecast-MFC-AGG-ID: KUYqLZu4MQq0ZGtzVQ5_Tw_1763133376
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-ckqYkCrGPcysWf_5rr0BIw-1; Fri,
+ 14 Nov 2025 10:16:38 -0500
+X-MC-Unique: ckqYkCrGPcysWf_5rr0BIw-1
+X-Mimecast-MFC-AGG-ID: ckqYkCrGPcysWf_5rr0BIw_1763133392
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 286521956094;
-	Fri, 14 Nov 2025 15:16:16 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3CBED180049F;
+	Fri, 14 Nov 2025 15:16:32 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.226.10])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EF3DD1800451;
-	Fri, 14 Nov 2025 15:15:59 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BD14A18004D8;
+	Fri, 14 Nov 2025 15:16:16 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -84,8 +84,7 @@ To: linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -96,6 +95,7 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Arnd Bergmann <arnd@arndb.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Jason Baron <jbaron@akamai.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
@@ -123,22 +123,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [PATCH v7 26/31] x86/jump_label: Add ASM support for static_branch_likely()
-Date: Fri, 14 Nov 2025 16:14:23 +0100
-Message-ID: <20251114151428.1064524-6-vschneid@redhat.com>
+Subject: [PATCH v7 27/31] x86/mm: Make INVPCID type macros available to assembly
+Date: Fri, 14 Nov 2025 16:14:24 +0100
+Message-ID: <20251114151428.1064524-7-vschneid@redhat.com>
 In-Reply-To: <20251114150133.1056710-1-vschneid@redhat.com>
 References: <20251114150133.1056710-1-vschneid@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8EE881C001C
-X-Stat-Signature: 978qbwz31yop9x8owtwn13n561hbzotn
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763133389-667781
-X-HE-Meta: U2FsdGVkX19UN3muqYWR1KnCnqdtqvSvJ05UtAFLRb8dtAD3wY8vA1ArhCThBqXXithyVjTFuJnSg42z7R4bUQyvhOSKROF3OdigBFX9D4e2iuau0NIAqYZhiJFqTP83d/Y4l6XGjNLZ0Nf2CZhQTqrP7/1vWUbSYbjGITlWlKxgPklwVuo1gsdG52UpfXppRLqk3BaeClSDH9w3egu4Zq9jjSPTCKmlf7mHtfpDpsAA5EdI0TOFUKIB4idP3GzaPPHUp3xzM492Z6UfDajaReuLzudhh8ctwANDsE0Jg4BAUPqILrciTVp7hPOVANiS/iQFMFYWoc2u/7In0QdAU0wk9R9oyFl8Jg3lwlCVBMEE5sJpqfuCJ6Ijb4sPshtUYKIzgEaQjCfDpSTOV+oAWbWMhVz5on5Qj+yOrJsd16Dt+SFRcaUTLuNMwzOALXBTp9pBcufztBjQy7F0sTrkXOZFiBJNDyMSPERbTFZTR347Y1dnIGSxNXB0mwmgIDJ86EpPmvbBpxCd+eUKRrr+RClBWNGiANL/fwZHKIabxHVeHXvgtGQpN7TAKkLoPCXFqkFp8fk9QHzQQVWxfm1QZAeUaCmglIBPnDQeNttA4RAqGkFxSTU2z84ZWjQVVVcJT8YB7phlZWMeSSJLNW8LsewiWRyeIZqmNVUZFQEWDfHSzc9BaP2OZZnRExt/anNBaG4rrinSBksGO64faw/pwMGO7r8vjKyryGwbYhjTvBXAVFjdEiLTbBUis1LCOluKTx5Fn+eYp4wevtM2ayvbzdmD9zl3s2YqgCxl0VoHrmrCSyy+RdDIXu+DVFsiaz+1COTDKEPHJ3lUGJ+Z0kLhmTjAWX00wZ3YbxIsyHm0x/eFwNi1yWbYMC2GIdZjPeoZsqpn6/e7uAM2JzBL71SQt4qsKYb6qfAcfNKfNpf34WdFqv9nFhc7ZABJGDKEfW8wcRq/B3MuqncEo5CURK3
- 2og2WOhE
- 7MaFhCVLLeIZjp57HEE08RPhtYhCXBoacAdIp/8laEH1clOoKKSmJCF5dW2YXbDdBSKbF1wNjlBt/WRIq+kFHeKT1Yg6vDWpkq9RX6svQAi98NVIzSfDG6Or9eooHxhhxvA1iSesYc/tBFjAaWaevTb8qi3Uy5q+pxy9thQMOr7Q8y446yJuRAe0lMktCog4kiHJeLMHm96VWD0AciJHuQ/hj04dpl6fF77dc9ZupQuQqBQ5nc9QtoIy1008Hrs3cxc9Ct8F7e56aoUPtgCfoWIqmIjQVP2FiLI/S+uaGSgfKd72C7ReTiBju17N239H58Vun3nMPSNTv1MeXKi5gMJvEFQLl9VJF3QCMvqYLRhLHBuvokPylsDaSbUWrcpTWPqTHKG1X3zKhHCFX0ReUuRdPDXYOCzmWxZWHLaw+aB6YgZm1XUsDCzaPvc9uFaXo0g70M17PXTImcXs=
+X-Rspamd-Queue-Id: 4EE36C0012
+X-Stat-Signature: dwki5xx46eakg4e4stmrxncakqp3w583
+X-HE-Tag: 1763133402-156869
+X-HE-Meta: U2FsdGVkX19gf2xCsAqbEBPoXbCDpbvhnhecg4xr+7NoAFIbAYHDrhRZevxw6ePSnVXdHY6e03Lqy4ghpvSJnkh51L3Ybp9+V64mZlIQdkjFIdvCq5OZ9xS3aO4PPfTft2dw17s+S+EWgVGWguKWsJAte7kwgX/XFuHP607Sd8gdoadVijlfqobvEHnXz5FFItzlnGoIhWAtA8qRcDJO4NSWkVCTCMY2v13TCo7K0KM2mr4HtV0exks0vUTR5gM7hf2uD3eRWC9CJfDnmBrewRmvIFmBvpfiLu2ub0a0GzDhN3UUpJhNH4uSHlO1yjNgKNXB3czIONGCyWjl7d3iJNz8swuyCPjhRUVHQvcYoTFnDeGZ/gerDiUT0WX/3380ZpCLG70urij1CzuSbW/WU++tqTtcUmumB+gHArzZy5+LPEBjUXyYDe5Vjo7MrPktNeyYS7zCRkSPniIoXuff/rSn0rsC2EurCIW3k9PEthZHhCs5XAiA5JpZWMh8DNYKN0/2D2ZXmPtkvGH+kIkly1bxuwbsGYYON3SU6PS5tkXMZQig12a2w6S2/2saG07Jo9uOnNOEuzvBT7eAlmJrGSASIxFuzVt6C7fHAOLKhDcdkVmtacdXdKW7zQvH+wFMlBBY/KXRE6eeH/cHuZ4MgTZD5KkCcozcBnQXVl+2gI4bf+1LsbUnwomza05CRNFStY2CfDs0DgYDQzr72qu+to4L6QPV9h+GOZtS9mRXPXMzAmPyMG1PTB3Erm/9vGZrG0HaFMy2s+9Km4YM2wRmVXW/FMmrDNdq+PH/XoSRFNz+I5AmZueblLlHUsg5Dh7wloyErX3AamoLjelGw2URfl/SCNz1MynbdCc31Hl3tcfWM802evM2Pl8Mu1Plrk6c1toML4Bq85p58BrY6i5GV7Pz0nLO5I36hcDIcq71vcgTzQ3il1ICwt6MOXZx6TxaG+KtiUe7J5hda6Zj8mk
+ s5TzZllK
+ GNaVjYDJFCq+Dwtc9oCKsHCCig5Appop7WOXfcRJ0lwdaKCKwT4LaFjZXpbTbTWfncLvCb2F9WV1ERT9gUpYeZc852I3nC9S7FnC4e5Ib5zxOfRFu1p+HcfrMOzijENRKISGAqz+ia9Oi1085oTvSpuQsIry3IxBbSisUt9OhXfFsFu+6koybCepVP4De2DdSzLHvE+9L1O93+ZRUosJQiMS9tgIhQ5q1UKbBFROpXXndJS6M7+EYKJOYmmXhdtnJpoZSLOBZMXfpuT8X5iFKK/EckdLvyGwN14K6wUeMzRdE3lpnv6vr381CS/VtC6Ou+GMCPq3NSy2CoFbhKUuwV9LGLHbojAbUgsNjhbB0005dcNd4e4cMhwJrB58kQ4p9igm0c8Hv05XCrixNgQmMhfXMTFcpA6HEx2rp79gGH2sxa5s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,84 +147,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A later commit will add some early entry code that only needs to be
-executed if nohz_full is present on the cmdline, not just if
-CONFIG_NO_HZ_FULL is compiled in. Add an ASM-callable static branch macro.
+A later commit will introduce a pure-assembly INVPCID invocation, allow
+assembly files to get the type definitions.
 
-Note that I haven't found a way to express unlikely (i.e. out-of-line)
-static branches in ASM macros without using extra jumps, which kind of
-defeats the purpose. Consider:
-
-  .macro FOOBAR
-	  // Key enabled:  JMP .Ldostuff_\@
-	  // Key disabled: NOP
-	  STATIC_BRANCH_UNLIKELY key, .Ldostuff_\@ // Patched to JMP if enabled
-	  jmp .Lend_\@
-  .Ldostuff_\@:
-	  <dostuff>
-  .Lend_\@:
-  .endm
-
-Instead, this should be expressed as a likely (i.e. in-line) static key:
-
-  .macro FOOBAR
-	  // Key enabled:  NOP
-	  // Key disabled: JMP .Lend_\@
-	  STATIC_BRANCH_LIKELY key, .Lend\@ // Patched to NOP if enabled
-	  <dostuff>
-  .Lend_\@:
-  .endm
-
-Suggested-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- arch/x86/include/asm/jump_label.h | 33 ++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/invpcid.h | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/jump_label.h b/arch/x86/include/asm/jump_label.h
-index 61dd1dee7812e..3c9ba3948e225 100644
---- a/arch/x86/include/asm/jump_label.h
-+++ b/arch/x86/include/asm/jump_label.h
-@@ -7,7 +7,38 @@
- #include <asm/asm.h>
- #include <asm/nops.h>
+diff --git a/arch/x86/include/asm/invpcid.h b/arch/x86/include/asm/invpcid.h
+index 734482afbf81d..27ae75c2d7fed 100644
+--- a/arch/x86/include/asm/invpcid.h
++++ b/arch/x86/include/asm/invpcid.h
+@@ -2,6 +2,13 @@
+ #ifndef _ASM_X86_INVPCID
+ #define _ASM_X86_INVPCID
  
--#ifndef __ASSEMBLER__
-+#ifdef __ASSEMBLER__
++#define INVPCID_TYPE_INDIV_ADDR		0
++#define INVPCID_TYPE_SINGLE_CTXT	1
++#define INVPCID_TYPE_ALL_INCL_GLOBAL	2
++#define INVPCID_TYPE_ALL_NON_GLOBAL	3
 +
-+/*
-+ * There isn't a neat way to craft unlikely static branches in ASM, so they
-+ * all have to be expressed as likely (inline) static branches. This macro
-+ * thus assumes a "likely" usage.
-+ */
-+.macro ARCH_STATIC_BRANCH_LIKELY_ASM key, label, jump, hack
-+1:
-+.if \jump || \hack
-+	jmp \label
-+.else
-+	.byte BYTES_NOP5
-+.endif
-+	.pushsection __jump_table, "aw"
-+	_ASM_ALIGN
-+	.long 1b - .
-+	.long \label - .
-+	/* LIKELY so bit0=1, bit1=hack */
-+	_ASM_PTR \key + 1 + (\hack << 1) - .
-+	.popsection
-+.endm
++#ifndef __ASSEMBLER__
 +
-+.macro STATIC_BRANCH_TRUE_LIKELY key, label
-+	ARCH_STATIC_BRANCH_LIKELY_ASM \key, \label, 0, IS_ENABLED(CONFIG_HAVE_JUMP_LABEL_HACK)
-+.endm
-+
-+.macro STATIC_BRANCH_FALSE_LIKELY key, label
-+	ARCH_STATIC_BRANCH_LIKELY_ASM \key, \label, 1, 0
-+.endm
-+
-+#else /* !__ASSEMBLER__ */
+ static inline void __invpcid(unsigned long pcid, unsigned long addr,
+ 			     unsigned long type)
+ {
+@@ -17,11 +24,6 @@ static inline void __invpcid(unsigned long pcid, unsigned long addr,
+ 		     :: [desc] "m" (desc), [type] "r" (type) : "memory");
+ }
  
- #include <linux/stringify.h>
- #include <linux/types.h>
+-#define INVPCID_TYPE_INDIV_ADDR		0
+-#define INVPCID_TYPE_SINGLE_CTXT	1
+-#define INVPCID_TYPE_ALL_INCL_GLOBAL	2
+-#define INVPCID_TYPE_ALL_NON_GLOBAL	3
+-
+ /* Flush all mappings for a given pcid and addr, not including globals. */
+ static inline void invpcid_flush_one(unsigned long pcid,
+ 				     unsigned long addr)
+@@ -47,4 +49,6 @@ static inline void invpcid_flush_all_nonglobals(void)
+ 	__invpcid(0, 0, INVPCID_TYPE_ALL_NON_GLOBAL);
+ }
+ 
++#endif /* __ASSEMBLER__ */
++
+ #endif /* _ASM_X86_INVPCID */
 -- 
 2.51.0
 
