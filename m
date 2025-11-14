@@ -4,81 +4,235 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1985CDE00A
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 05:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13E50CDE014
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 06:43:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59CF78E0007; Fri, 14 Nov 2025 00:57:31 -0500 (EST)
+	id DC1B08E0007; Fri, 14 Nov 2025 01:43:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 526CC8E0002; Fri, 14 Nov 2025 00:57:31 -0500 (EST)
+	id D722B8E0002; Fri, 14 Nov 2025 01:43:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43CAD8E0007; Fri, 14 Nov 2025 00:57:31 -0500 (EST)
+	id C13BB8E0007; Fri, 14 Nov 2025 01:43:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F9288E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:57:31 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A8C578E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:43:38 -0500 (EST)
 Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE55B4C716
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 05:57:30 +0000 (UTC)
-X-FDA: 84108155460.21.99F351E
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4F2B11A0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 05:57:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763099849; a=rsa-sha256;
-	cv=none;
-	b=WYk163Tm/KCZdelN/wYYoabPE5CQ+MYhHdfdII/UZyUT4iZ847BKejQCcNw5atMQj0oA28
-	46g0DN2Vy3KhdIOamrXUflDNWQsDljfVz/0oZiXhDD/UlaoNynz+l/fwthVNoe9D2kVpuI
-	Qyt6/vey22UC2LDLTLmoSlM63qPOqM4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763099849;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4452712D5C5
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:43:38 +0000 (UTC)
+X-FDA: 84108271716.21.61CAA18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 06C6D18000B
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:43:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dnBSI1+b;
+	spf=pass (imf16.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763102614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GeSeawVoEyDjeKYLy5k0PiYyph3mzj31KD17+d+zDNo=;
-	b=sYVqy77zsQlR+bRIzC+aiOXjr2Sh/RXPqRKFK/prqlV1vy42MJfHVq2SJtdL5MGcFTZYrS
-	XAiG4+X3cqMGMpUpGs2jr/Tv4NfE/59tASl9Z2L3rNxfp/CyLNG36Fz68J9NtVCdoXLzpG
-	DsFoqdg87cVVUTmWkhIf+kbeLXTU4sU=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 6DD2B227A88; Fri, 14 Nov 2025 06:57:25 +0100 (CET)
-Date: Fri, 14 Nov 2025 06:57:25 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 8/9] blk-crypto: use on-stack skciphers for fallback
- en/decryption
-Message-ID: <20251114055725.GC27241@lst.de>
-References: <20251031093517.1603379-1-hch@lst.de> <20251031093517.1603379-9-hch@lst.de> <20251114003200.GB30712@quark>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IiPOYWwM+59/4CJHlLZWNewV2Oexe8i7YzcBmtp3LXg=;
+	b=xd8YM2/iXq29gQvy32YKW0UDH4kj33jlTkyLdTbY9E6yrorlhmd3iNp10ORlTGe1KIuGmc
+	h3V3U/XQwbreMcaR2cgGaDWMCLjH5cYS7rlg08+2+IcsY5q0S89nUlRaTBNBBFN8tLnCHK
+	jLw2Txz5WGQLs3eREf4DSuMqiEpHBj8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763102614; a=rsa-sha256;
+	cv=pass;
+	b=0F0QK/2AHBfRTaIaKZQRfH84ZLMyeWOygvV0fC+1X1PBZNXTEzNE/x/yzpTLLTjxAcN8mX
+	U0BRKwKp8DGNsVdqJXXlOJbBFSGF8FfvGxaKjZSjD/lX45i/H4OSi0r0F5SFA1AsXPRStR
+	Z28qBpz/Z0gElSiKaAPxIpjbDacB3qo=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dnBSI1+b;
+	spf=pass (imf16.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763102614; x=1794638614;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=yQxnN+ugW2BSRx17j2ah6TIuY9/tWocy1/NfYJX9bp4=;
+  b=dnBSI1+bqxoSHGwaD8Ukk5G0ZaXTeHuWLHmY3iZrMr95JSrjEarcvtcr
+   ht9RUokH1N2vQrRHypQLndh5S3KcY8pyvdj/72pDdt7Yc2h9FjS6Lh6K7
+   SocBdhZX22KemNV5gWivDrmSpkIVtyRKWXoNbewWL0XagufhNOFSm5kst
+   x3rjRaA2FwktJpZSNriGGy9+FIJsuUCmziCKYcdk+j9w2fsDlkitCuBPt
+   Nxl9jHY3J/9S3MpLjcHFc0API//dCE/4Xtx/SoH8Drhhgd14tpjxpSuXQ
+   ROACuOfdsx3DMTFFW00BReTF+2YiXkEE1Wll3PQg0A7BZppkuEQkjiVYS
+   g==;
+X-CSE-ConnectionGUID: HKHXr04bTcCfHzsXecPG1Q==
+X-CSE-MsgGUID: tnlfXTdsS7e0d3VT/IrewA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="65078960"
+X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
+   d="scan'208";a="65078960"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 22:43:32 -0800
+X-CSE-ConnectionGUID: MbvVs1PtTd2dQgsM1sn+uQ==
+X-CSE-MsgGUID: tMnEwFeyQM63/yB5Kniplg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
+   d="scan'208";a="188993238"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 22:43:32 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 13 Nov 2025 22:43:31 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Thu, 13 Nov 2025 22:43:31 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.60) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 13 Nov 2025 22:43:31 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fhzBsgHoBuKYZ+a+LQJ1bq7ysU3jwfft77Z41gG1rTwZEm/4uRZj0uuXF7k2Uhx3DybTjOJUfxAmC1NdzfJMdOM5qTYo1cLCncs/z5Ft0NRg8Dvun6/0PGUi8kAnViKKoSTXeCINNLyT/w4X7KgCPbf460IR1eakWRkjVrhO85boOiu6ypEcP/6p8ET6g8lvc/gio4ft/NYFSTSF51NGIFc1NuRUn+8fSFgB9WiV0ehB1gCKzH5Kv1L5EF7C7WWN9MPohvShGwVdKEt4D+dFm2h7/70Ltvkb5Ns0QUM8cmOqtVqJUSU6tNWq8kchVB/IhxtMzXFTDVgYhC+QOa5T+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IiPOYWwM+59/4CJHlLZWNewV2Oexe8i7YzcBmtp3LXg=;
+ b=l1uje/J4XBOiL4VTj5QdCdami8+5qqcC1Y6GYHTW85eaqLHVWZ6R6mjyN4tg2K9VcXix8jzAI6ul5DInGNBHJzLqHajP1cdxs73LH0dtNEpzhqRDt7qjrPU2ynn967nbRsAbnnMbQFDAPl/gUCgnwdZ8gSeXf9cVx1bXms9AOBqjPv2fx5CefFfBZhNYTbZEqtTByp4tpuYKJISwTbhJzSQBwXrypfTHQkA/rCnfNzCsp9VDu9ywXZg9Y4B5fACBW5HvJRhdUQrXncAYDdHOpY6xjaQw/p2nV52aDqgH9PtbgXkCPaQUYKWQCdsPgwFPpfmlT+eglqhj/NNacBDRyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com (2603:10b6:a03:574::15)
+ by IA0PR11MB7379.namprd11.prod.outlook.com (2603:10b6:208:431::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Fri, 14 Nov
+ 2025 06:43:22 +0000
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::1871:ff24:a49e:2bbb]) by SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::1871:ff24:a49e:2bbb%4]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 06:43:21 +0000
+From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org"
+	<hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "sj@kernel.org"
+	<sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com"
+	<clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com"
+	<surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K"
+	<wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>,
+	"Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Subject: RE: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Thread-Topic: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Thread-Index: AQHcTWs0Qo3eNl0w/UamTXF2PMbCz7TxL9wAgAAcuzCAAG5HAIAABzqA
+Date: Fri, 14 Nov 2025 06:43:21 +0000
+Message-ID: <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
+ <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
+ <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
+In-Reply-To: <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR11MB8472:EE_|IA0PR11MB7379:EE_
+x-ms-office365-filtering-correlation-id: 63fc8874-ff5f-4067-9fc7-08de23491a42
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?1Wso/Ox+7B5azExQKD07xrUh4J8iL5TMWXN3sGpEmbvNkS0733ru3nnlwhjK?=
+ =?us-ascii?Q?bMEI2xFhfdZegnovpQI8YYYgM9M+nBWnTfzxeSkZ+4tjH9VBBBRckSSooOeF?=
+ =?us-ascii?Q?cTvcDnhlMQCJEqRsP1fSSghLiY+FY7qj+1kpCmNo01VON3ocA5DyBDJ9sa7A?=
+ =?us-ascii?Q?4CWd2a/Zz1xRlSivmDvCLyKfaZY/pb8lQIO/qcDTylQfDA0H4gFUE57xHYDS?=
+ =?us-ascii?Q?v0m+vzNG68l6wNobU9vKNhheinM66nzahWPCKV/+kgGk2I9uSZ2jNaJNygc/?=
+ =?us-ascii?Q?yFNjItYO9LKZY1eS9NYl0SLVxPuD/GR/o1b86PB5PLhVomGvodAnpqJQUDOW?=
+ =?us-ascii?Q?6X/kXbjs1lPdq/mizeTfhdiDdRmpbDDPeej8mzDgA635nEB2sq8iviK2NHaL?=
+ =?us-ascii?Q?4hdFapM6Z2LDzobOG9KRfzGUgYP58LZCiTXDMDyI3fegJlfs27yMzQDe6NR0?=
+ =?us-ascii?Q?sUZ5c/MHDWU94o+EIfhefpl3yvR9oZeQi306HkOE37ZD5aspI52zgtHofdMD?=
+ =?us-ascii?Q?dIiKT1X6cqw56ScXlw7Nbq/i1kb67EIDKoO8D6Hj0IQtMifBnuvrSYGf+arE?=
+ =?us-ascii?Q?iraNAgJBk5+tHBkI1dVkeA1vknMJnTdZ4YMI4YPypvgRpmVMt56ns49z7Z3Z?=
+ =?us-ascii?Q?y4DJJ+hv8bn+p2LoinRs5fTrsAmpb0DZGDYWZN5f0jTsmo0Sb3ETMsEkshxr?=
+ =?us-ascii?Q?mdzgAd0omQpZ5mdHoTInIMluA0ZbsUz0V+5AShZ0d84fy9J5QuvOw/wS1I/4?=
+ =?us-ascii?Q?btOdgV4u1WwDtAcVVyyLfJ1douoZj8E5zeq5RcECRlXI7wH2uxD0nkK1Pl19?=
+ =?us-ascii?Q?4EZKRsYRQXAHoYuRClExZUEPJc4sm803RVOZhImMRokV0IAcN3XpYyuUgTzS?=
+ =?us-ascii?Q?TcDhYgnMhY1+tN6KCGF32nfSfBAeU8xRpbgFFazcG8z144zE5nDBWRk+X0F2?=
+ =?us-ascii?Q?IJ6+rtraKrkc5TA+ouyKhgjbw+JZofL4jMZl7d03RDCXVtCdHe2waL0Be3M6?=
+ =?us-ascii?Q?/ga5ArfIB3sQwKomyIGC+P9DzRMfxpEiPhfkIi9CdK2zVI0HzGIWFEhPuhaf?=
+ =?us-ascii?Q?1YVKhWrCHG5j3EUG2QbgsIEqY5nW6ILeEDZSoT4Pg5zvxdcnmlYb6cCCL7kS?=
+ =?us-ascii?Q?PEwqcz3XEt3zOtzgn/YEacnnNAzLYObqXR/sATyE44C0ZCZFyXREXQoY504B?=
+ =?us-ascii?Q?5ZPwaB47jrpC3vh7berotdj/mqephbylus2MymE77us8Jkk7oLDTxL0Vju0o?=
+ =?us-ascii?Q?g/lq/S0Zbc0oUBWM9auEDvPL3ukcscK1CRS06FPjFXnAWpK1U7a4PUq9yWYt?=
+ =?us-ascii?Q?AX+sGhE0e5AKnLh3T13dXnW0igSChs3hi1qj48Hg8rIW4Vy/NnY6Gs19KvvF?=
+ =?us-ascii?Q?o7vlAMy1fWxTLRQYAJm1VTmO2jxm0Ya0HU+IpwDJ5n2sHJSe41Xs0xXP3NV0?=
+ =?us-ascii?Q?QrD0Fto/5nN9YuA/Kgq4RfiCYhtKa54l+EVwx7HMqD/Ea+xdRDHNVk7h8H8P?=
+ =?us-ascii?Q?8GMTb2ZZDWe2k62OEOxUlYIHLbN0D3bXGcmS?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?8nm2JLcADdK2APqsFXGi1L5UbaaXW0yDz9a12+6+ijmV7bur9vTeFm823aCz?=
+ =?us-ascii?Q?xrYcU5vNUUCzUmxGkve3q7pYWw9U09IpcNosXK0r3C5ngXGt2N3V4VkcdQ3O?=
+ =?us-ascii?Q?J/DWA3/Jk9F397RwWA2Ye+IXqd2dTxcXnsJmd9nl0UWnlJa/ti5UGLeJwz+6?=
+ =?us-ascii?Q?Jo2il/etKWhCxFRTapVC/5ewTgeOj5+H34dUflak67JL5vuKUozKeMuv2lMO?=
+ =?us-ascii?Q?NjP90x4gzAzj3J/Jfpy1230uYf2Wn/3aTVEFic7w9UrCeEMkb1GKTnzQ0Vby?=
+ =?us-ascii?Q?pz1ja4D4iJDlpXpDImYschle9Y9KWrvy0gx4O3ZQLrVvZk+eKFQvR8IZ+8dY?=
+ =?us-ascii?Q?tC9WomsjZhnWlm6uO5oiBGvofdT/CSzclLfZeTjnsqirfOwvtJVUsCdKI5op?=
+ =?us-ascii?Q?e+/BBYinakd2uXlEZcXnszF7Q5vYVT5orjTqVwMq8yfLK9Ucgs9XOd07OYX0?=
+ =?us-ascii?Q?3D9xqmJUvuw5V+Yr2R3Fjvpjg3xZHWYfBfGk3X3IfO9SlUcUhXC5RA4if0lW?=
+ =?us-ascii?Q?e7QqpqXfJwn1S332ONh8NZ2ECq2QC7AaPbS9zPspLFDbtxfMTjFLeBQkLu4B?=
+ =?us-ascii?Q?JAL6B5+/GTRHVBNLj8iPpohHa5K923odgJ17eGKxIw10QM5h6gHP8Ez04Q2Z?=
+ =?us-ascii?Q?e6IuHxRR3H7EpGt2okn+MpcST/kmJhDKmk3iJKfSEw16/c5jmDCahtWC5Myb?=
+ =?us-ascii?Q?PsW20+/oBTc2/tnZtRre3XioKAywzYLf84xpZKG99vp/IOfTtF1eqRSKr82k?=
+ =?us-ascii?Q?bSgr+DiFdiBPo4NJGMpWss6Xw3ZXztmO0yOj6AlCA3i+mR9XWcIzswr1fzmN?=
+ =?us-ascii?Q?Ud31UNvQ3CTfkIit7G+uA16MromVqTxZyPGKd4R8/p9h3HCt2JK91CCX+SHl?=
+ =?us-ascii?Q?lUvWRUEtOQHyWxzJCTHepyrFhupSkrb83zM2oJrE3PyqdB4gQEiDyDJzX07T?=
+ =?us-ascii?Q?68fF4Ryoomw/ome7CDRd9M5qu6/TMhnfft2FnTR359XaOlys6H6X/mv1Kpi5?=
+ =?us-ascii?Q?VgX3LzHeEkm6Zfnqs1csRKV4VZrO089jOJFEgS4dsnP/Mn/pUr67uElACgom?=
+ =?us-ascii?Q?vZFUvOLX+72/viLxG5keDEPBfZXnQ864tEv3PjIpXclDoCEZQGVIbl9yE/AZ?=
+ =?us-ascii?Q?32y30dxhIuJr+iaiofY0l1GgHuF6+EdG4C/t6B24X1m60TY2w3VlWjtz0Bb8?=
+ =?us-ascii?Q?yI5BFzeont/hEAmFjBsl2ogpZuTNtStZE0//U7sd8amAiUH0LrmmijhF4UWf?=
+ =?us-ascii?Q?B6rDcWvfiwcQnNpkC5VCLLReCIkHRsUefbEXwSFPLESw4hWkesOFhWvbaBIB?=
+ =?us-ascii?Q?ew6XkA5yxoDSUFy1TVMrAZeY4xORRplALMOGIVPIjqhUksjAlYDJsqUNT/Re?=
+ =?us-ascii?Q?hYNqBxgUa50pCKz0M6RcxHbHr+SIqme0ATocLVsM4JRlhfse4KnGY51df/ZI?=
+ =?us-ascii?Q?uQzOza3lGAP3GCINx5fSi0PeoiLHXdMCu7YbWc0AL89wQ/HFo3Z5RoJ7Eysb?=
+ =?us-ascii?Q?yTlWr2vxzRfQ5xU8Fw+sCzv5H9LT0hET1iE/Jx/dA9bWCQHywk6+7UgENI3F?=
+ =?us-ascii?Q?o4Nydg0P7tENqR1GEIo5LEl/Ie8jL3a9wcM3NKjgZ3WLiH1kIaCHlH7Ych+0?=
+ =?us-ascii?Q?Tw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251114003200.GB30712@quark>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: 4F2B11A0002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: pyrkrwid749h88fxh1tz5bk3qf7bmfnc
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63fc8874-ff5f-4067-9fc7-08de23491a42
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2025 06:43:21.2945
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CxT+woFb5YiGUMUiDzqICIgbN4sZEtdYS0wkdoKjql/H67zxzLlH3S/vyv56JwiGsB8d93jmQQaToYSx2UNz9jjGPBMMAlnpoONLhV3ZRoU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7379
+X-OriginatorOrg: intel.com
+X-Stat-Signature: hon9x1p81an6bpjyrn7xa84pif9ayksd
 X-Rspam-User: 
-X-HE-Tag: 1763099849-390264
-X-HE-Meta: U2FsdGVkX1/k60Wx1b0XB3t2KEKOs/SNplaBq3OxGe2vsHk+8Du07sdSuqGqpgd2E724zzAq7gbPuYD8kVzJazWVuopKzRLUgUAnethaSYwA+h/RjLx3yr3Ikm6K3cRooyeN3lUG7nAhVwNnnSXn7qeUFu+OUx/Cpa90/rsMgYEoXQB+BML2F5F1qsOkm/uymSj6qgLZfkucagY+sxz6yPQoCqSqKaVBALX18DHo3EggJRivw/BWRHuLJvgLOuvHHumNNcWUxR2AaE5YFqHQVAkWdDA7YU9pBOGKbua/B7AjT/bI0enGxZrlpOqwugjvh1/P/mDYPojXjgnlGmuw7DyD2jK0WBk2+WH29AHJ4Sj7Ea8i71g+vfFsMvpEo5304KFikkDJXbNjluBDrr1jzyjbCZoWijkQMixHrfmBX2cxTPgZbrD4XXcNJRvk8Ed0iSHj9AHcvKxgefs8Jqz0Bak7hbVx+1Uci3oXpw8jDK2MtV9y4Hg8aIYKHfsG03tjc3/qKFaAe+oBc+lBJcxkT0+LlJ2wzlZyVu4vx4w8h/siNog2serGmGzgxixS3C8dEMFycKh+9jQ0xZNe6zutQr7hST2V0DKaU09T9AbYAHzFXbbHtHZu80xRxReCKueNxKRNFbzeuBxKqmBju9eD+zsXJgEjfSBBBWeYu/Hx6bXVvI7QzScb8dUH95yYGHfLIUitG/wa7s0DGAvgoE0P1VvtOK6VvusSONqM0aEI8XZ1Q/3scxEgXaklfwX0QNVVoqQPX9dG7YDko9kdcPR01MCSCts+Z+jfhPcqLXwuZJHd34/GSEXQu/c4lDwTrfuuSgpe13mNh+rG5B05WrVZn7pXbj/rZqC1B6BtjXmurZbeEBk+xxuRr6g79DuaBbmbBHZyyBjxD2KsibBeBnJqzj7M6k4RnuBU/lYRkb9C+SFxZlwfRGTquvqhVc23U7YHKVQybF+MBQYraQenYkh
- yKKYkiDZ
- XlsqoWHkVt1j0dFZTvsT0UPeqGtD68RIxDRPALmYB0O7ZwZO4VE8GXT8/pDqsqzy0PPBjB/klx8eYEpi/mzuHlNCT54jHDJKj7bQB
+X-Rspamd-Queue-Id: 06C6D18000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763102613-406903
+X-HE-Meta: U2FsdGVkX187rV/430S/b1L7COILdJgOERwE25TEIZ8V6nBcYZ6B3dUBd6jVmmyne/GaQxoOUxs1duMq+6nUgMfQ+IuD23q0KqkZ601WBR2kjCcy8mjHRwLvB+gi4/I4GAKQ1KbdMnPMfqOREQudPpfJSVwlvP97Id/Gf3TmZY2RNlF42dOFrQ7So7fGgAicrwSV/ho18O/NGqpmM8T0T+SvT6W/ej3HV9GklRZzCqz8eTXJ+so88xqwoidXG6p1Ufu1qcTwt06lumePP/V0+VpKBIVo3fSICyvxVS9NyaE79uSdMhnpL9LjXRC/6OVObl+m9LmPzu925IlLLSvL48qtz1boAzg7c0zz62W1IB47VuyDit529cBCLJaj8sr75g7JrZgNXUan0fp/yMdA+QiL1UrjKgYtaNXU5k4r0w31KGth5h5EUPMspxX22nGFqlobgSxejtxhR3Ol/0BTY2ph6rcKkYad/6VUFj3cUNclum4h0Gq0Cp0jJeXKlQ0l8I3V2Eg9AdaagwrIRefDtCyuIoIbE6vd6we6S844EayY5W8R3RgtS2j8IVujF9P7YbaaCBwid1He2lUuBs/MoF86x0KjwWVOtDYc8VXR1S+wQc6CGkHoQi84XMYBmCsK6DyU1woW7isWCKBAgNuctShEGB/QCEk+wKhqtj2E3cDfdtbfPuSOGI+jSm5VN9yGUrepn3uzrbjCHDsOJ96HAfuPCHvKf9vxIhAsgQeKJVjl/7TSMydVlYCFFAq+W5dmyBSld6PL7aSPhflQDKRfJ2aHluLcsMm97SXYtELg1qmk9Cs02L79qUBmsGZ1t6cTnDq1dXV0Uxc4dKW0HQoMQ1gG3HudP2KVlRDIMYwzwKS4+F3zo4rDZrauWgszjG4cm2eDUv6/AYw3c3qBrhUKyMKh236jGANtoDj3VDGYmh6wyv8HTzteGNqR3GNEM9PSKJ0x/WaAkScEA+mAaJx
+ Ki8KXwM8
+ ftqY2gAuFV2iYZDHDo6dXtfs0w7WWyYXmjIsB/iScbEydOyYhhVnLP+yEQ0YtWHcphy8MhkgdONT99um3RT/KPqxZn15Vv3WfyTXD7vR+uDUUi+Q9D7ZCPtHgiU76Jekpk4D3yWqugaMR2wGO8vAVhL3mseKiqOkZCwJmZDHNWFToTQ8GWCeIZvpiFV73vRUnQYwzOqYVH2WL8fNKa25BWDkxDqkL0velYX0EIvgFYrlgYxEg56b5S/0rnQYZe5br0lUMNnE445IL2GgVa0jbeeN54SNc/E0sE29xqedh6lIJ62s7eHtJDlsSeu6q7kTOI9gJkeSdeUFGEHGny+4+gll22AAQUagu/g9ZV0rTueH4PnxIzRwU/lpxKxw9aCCRBO6SZeTvRhqX/Ee6MkvORT6Q9tRcb9ZeLsXxrV/6iqqVoYbC+5dZ+1LICVlMTskjs+VSRNNLys1RuNC25WtcTzIp8jAWR1aAQKpKmhoqQ6SK3bYmRlmS/ROBwz0Lg12poUyc9SwSe57ZIX378Js+YZO+n2q0O4yjJLqv0hkUrcY5hzsQ6HgABHGvx/IzXWt3ohqX+wQUWcgAsHhNio4XSXqlzZ+7DttiISPF21DAfxoZLNV7XhzeVZSm6O4qYESKrED0cNPeePYGrOSvBUBfmqUz86iN+pc14La2I0tC0O2FsOPjQmbPeeEZ4bUCS89eSKhFXxno0a89pn6aroux1a/Y9XGgyYuZv8EmPRlgRz8TGTPpzdUkK8cW270UC/r/CrpSmF/V9T/bQ9cLF3jBRIhmE1QM7a3WKzHkj3k+DMQcm0MYTxG74z2XLp1Ygop+6yY+MZS90P4uXPLBeA98w4TI2pEQXndWepA0le8xHjnDew0hIcn8XsIkxIHJCMYpsR3Ldpp8h0h9n/37ZvHJxtz+XxneOYBWRQ04jYS6wtVSMCkuVGJgeE5O6N0+SatOuqnlwkm/yfw2H+OvnR9FgyBL66vK
+ +fEC+LBq
+ K3/NgpumAw7xwNbZmhAm54Y9hV3Kaab9MvYjDr4OpL6xnJIsQFYBQdvF9kjHLrvpDyjzImswe6a/+MkwDlgFL5hNOoyRYdkJvvy2ioTSxmjc1gGjyvXcRyYKJ35pr0WX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,35 +241,295 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 04:32:00PM -0800, Eric Biggers wrote:
-> >   */
-> > -void blk_crypto_fallback_encrypt_bio(struct bio *src_bio)
-> 
-> The above comment needs to be updated too.  Maybe leave the static
-> function __blk_crypto_fallback_encrypt_bio() uncommented, and write an
-> updated comment for the global function
-> blk_crypto_fallback_encrypt_bio().  Maybe something like this:
 
-Make sense.
+> -----Original Message-----
+> From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Sent: Thursday, November 13, 2025 9:52 PM
+> To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> hannes@cmpxchg.org; nphamcs@gmail.com; chengming.zhou@linux.dev;
+> usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
+> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
+> crypto@vger.kernel.org; herbert@gondor.apana.org.au;
+> davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>=
+;
+> Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> <vinodh.gopal@intel.com>
+> Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+> compress batching of large folios.
+>=20
+> On Thu, Nov 13, 2025 at 11:55:10PM +0000, Sridhar, Kanchana P wrote:
+> >
+> > > -----Original Message-----
+> > > From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> > > Sent: Thursday, November 13, 2025 1:35 PM
+> > > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> > > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> > > hannes@cmpxchg.org; nphamcs@gmail.com;
+> chengming.zhou@linux.dev;
+> > > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
+> > > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> > > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
+> > > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
+> > > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> > > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> > > <kristen.c.accardi@intel.com>; Gomes, Vinicius
+> <vinicius.gomes@intel.com>;
+> > > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> > > <vinodh.gopal@intel.com>
+> > > Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress()
+> with
+> > > compress batching of large folios.
+> > >
+> [..]
+> > > > +		/*
+> > > > +		 * If a page cannot be compressed into a size smaller than
+> > > > +		 * PAGE_SIZE, save the content as is without a compression,
+> > > to
+> > > > +		 * keep the LRU order of writebacks.  If writeback is disabled,
+> > > > +		 * reject the page since it only adds metadata overhead.
+> > > > +		 * swap_writeout() will put the page back to the active LRU
+> > > list
+> > > > +		 * in the case.
+> > > > +		 *
+> > > > +		 * It is assumed that any compressor that sets the output
+> > > length
+> > > > +		 * to 0 or a value >=3D PAGE_SIZE will also return a negative
+> > > > +		 * error status in @err; i.e, will not return a successful
+> > > > +		 * compression status in @err in this case.
+> > > > +		 */
+> > >
+> > > Ugh, checking the compression error and checking the compression leng=
+th
+> > > are now in separate places so we need to check if writeback is disabl=
+ed
+> > > in separate places and store the page as-is. It's ugly, and I think t=
+he
+> > > current code is not correct.
+> >
+> > The code is 100% correct. You need to spend more time understanding
+> > the code. I have stated my assumption above in the comments to
+> > help in understanding the "why".
+> >
+> > From a maintainer, I would expect more responsible statements than
+> > this. A flippant remark made without understanding the code (and,
+> > disparaging the comments intended to help you do this), can impact
+> > someone's career. I am held accountable in my job based on your
+> > comments.
+> >
+> > That said, I have worked tirelessly and innovated to make the code
+> > compliant with Herbert's suggestions (which btw have enabled an
+> > elegant batching implementation and code commonality for IAA and
+> > software compressors), validated it thoroughly for IAA and ZSTD to
+> > ensure that both demonstrate performance improvements, which
+> > are crucial for memory savings. I am proud of this work.
+> >
+> >
+> > >
+> > > > +		if (err && !wb_enabled)
+> > > > +			goto compress_error;
+> > > > +
+> > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
+> > > > +			j =3D k + i;
+> > >
+> > > Please use meaningful iterator names rather than i, j, and k and the =
+huge
+> > > comment explaining what they are.
+> >
+> > I happen to have a different view: having longer iterator names firstly=
+ makes
+> > code seem "verbose" and detracts from readability, not to mention
+> exceeding the
+> > 80-character line limit. The comments are essential for code maintainab=
+ility
+> > and avoid out-of-bounds errors when the next zswap developer wants to
+> > optimize the code.
+> >
+> > One drawback of i/j/k iterators is mis-typing errors which cannot be ca=
+ught
+> > at compile time. Let me think some more about how to strike a good
+> balance.
+> >
+> > >
+> > > > +			dst =3D acomp_ctx->buffers[k];
+> > > > +			dlen =3D sg->length | *errp;
+> > >
+> > > Why are we doing this?
+> > >
+> > > > +
+> > > > +			if (dlen < 0) {
+> > >
+> > > We should do the incompressible page handling also if dlen is PAGE_SI=
+ZE,
+> > > or if the compression failed (I guess that's the intention of bit OR'=
+ing
+> > > with *errp?)
+> >
+> > Yes, indeed: that's the intention of bit OR'ing with *errp.
+>=20
+> ..and you never really answered my question. In the exising code we
+> store the page as incompressible if writeback is enabled AND
+> crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check above
+> if crypto_wait_req() fails and writeback is disabled, but what about the
+> rest?
 
-> > +	struct bio *bio = f_ctx->bio;
-> > +	struct bio_crypt_ctx *bc = &f_ctx->crypt_ctx;
-> > +	struct blk_crypto_keyslot *slot;
-> > +	blk_status_t status;
-> > +
-> > +	status = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
-> > +					bc->bc_key, &slot);
-> > +	if (status == BLK_STS_OK) {
-> > +		status = __blk_crypto_fallback_decrypt_bio(f_ctx->bio,
-> > +				&f_ctx->crypt_ctx, f_ctx->crypt_iter,
-> > +				blk_crypto_fallback_tfm(slot));
-> > +		blk_crypto_put_keyslot(slot);
-> > +	}
-> 
-> This is referencing f_ctx->bio and f_ctx->crypt_ctx when they were
-> already loaded into local variables.  Either the local variables should
-> be used, or they should be removed and the fields always used.
+Let me explain this some more. The new code only relies on the assumption
+that if dlen is zero or >=3D PAGE_SIZE, the compressor will not return a 0
+("successful status"). In other words, the compressor will return an error =
+status
+in this case, which is expected to be a negative error code.
 
-Yeah, I actually noticed that myself after sending out the series.
+Under these (hopefully valid) assumptions, the code handles the simple case
+of an error compression return status and writeback is disabled, by the
+"goto compress_error".
 
+The rest is handled by these:
+
+1) First, I need to adapt the use of sg_outputs->sgl->length to represent t=
+he
+compress length for software compressors, so I do this after crypto_wait_re=
+q()
+returns:
+
+                acomp_ctx->sg_outputs->sgl->length =3D acomp_ctx->req->dlen=
+;
+
+I did not want to propose any changes to crypto software compressors protoc=
+ols.
+
+2) After the check for the "if (err && !wb_enabled)" case, the new code has=
+ this:
+
+                for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
+                        j =3D k + i;
+                        dst =3D acomp_ctx->buffers[k];
+                        dlen =3D sg->length | *errp;
+
+                        if (dlen < 0) {
+                                dlen =3D PAGE_SIZE;
+                                dst =3D kmap_local_page(folio_page(folio, s=
+tart + j));
+                        }
+
+For batching compressors, namely, iaa_crypto, the individual output SG
+lists sg->length follows the requirements from Herbert: each sg->length
+is the compressed length or the error status (a negative error code).
+
+Then all I need to know whether to store the page as incompressible
+is to either directly test if sg->length is negative (for batching compress=
+ors),
+or sg->length bit-OR'ed with the crypto_wait_req() return status ("err")
+is negative. This is accomplished by the "dlen =3D sg->length | *errp;".
+
+I believe this maintains backward compatibility with the existing code.
+Please let me know if you agree.
+
+>=20
+> We don't check again if writeback is enabled before storing the page is
+> incompressible, and we do not check if dlen is zero or PAGE_SIZE. Are
+> these cases no longer possible?
+
+Hope the above explanation clarifies things some more? These case
+are possible, and as long as they return an error status, they should be
+correctly handled by the new code.
+
+>=20
+> Also, why use errp, why not explicitly use the appropriate error code?
+> It's also unclear to me why the error code is always zero with HW
+> compression?
+
+This is because of the sg->length requirements (compressed length/error)
+for the batching interface suggested by Herbert. Hence, I upfront define
+err_sg to 0, and, set errp to &err_sg for batching compressors. For softwar=
+e
+compressors, errp is set to &err, namely, the above check will always apply
+the software compressor's error status to the compressed length via
+the bit-OR to determine if the page needs to be stored uncompressed.
+
+
+>=20
+> >
+> > >
+> > > > +				dlen =3D PAGE_SIZE;
+> > > > +				dst =3D kmap_local_page(folio_page(folio, start
+> > > + j));
+> > > > +			}
+> > > > +
+> > > > +			handle =3D zs_malloc(pool->zs_pool, dlen, gfp, nid);
+> > > >
+> > > > -	zs_obj_write(pool->zs_pool, handle, dst, dlen);
+> > > > -	entry->handle =3D handle;
+> > > > -	entry->length =3D dlen;
+> > > > +			if (IS_ERR_VALUE(handle)) {
+> > > > +				if (PTR_ERR((void *)handle) =3D=3D -ENOSPC)
+> > > > +					zswap_reject_compress_poor++;
+> > > > +				else
+> > > > +					zswap_reject_alloc_fail++;
+> > > >
+> > > > -unlock:
+> > > > -	if (mapped)
+> > > > -		kunmap_local(dst);
+> > > > -	if (comp_ret =3D=3D -ENOSPC || alloc_ret =3D=3D -ENOSPC)
+> > > > -		zswap_reject_compress_poor++;
+> > > > -	else if (comp_ret)
+> > > > -		zswap_reject_compress_fail++;
+> > > > -	else if (alloc_ret)
+> > > > -		zswap_reject_alloc_fail++;
+> > > > +				goto err_unlock;
+> > > > +			}
+> > > > +
+> > > > +			zs_obj_write(pool->zs_pool, handle, dst, dlen);
+> > > > +			entries[j]->handle =3D handle;
+> > > > +			entries[j]->length =3D dlen;
+> > > > +			if (dst !=3D acomp_ctx->buffers[k])
+> > > > +				kunmap_local(dst);
+> > > > +		}
+> > > > +	} /* finished compress and store nr_pages. */
+> > > > +
+> > > > +	mutex_unlock(&acomp_ctx->mutex);
+> > > > +	return true;
+> > > > +
+> > > > +compress_error:
+> > > > +	for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
+> > > > +		if ((int)sg->length < 0) {
+> > > > +			if ((int)sg->length =3D=3D -ENOSPC)
+> > > > +				zswap_reject_compress_poor++;
+> > > > +			else
+> > > > +				zswap_reject_compress_fail++;
+> > > > +		}
+> > > > +	}
+> > > >
+> > > > +err_unlock:
+> > > >  	mutex_unlock(&acomp_ctx->mutex);
+> > > > -	return comp_ret =3D=3D 0 && alloc_ret =3D=3D 0;
+> > > > +	return false;
+> > > >  }
+> > > >
+> > > >  static bool zswap_decompress(struct zswap_entry *entry, struct fol=
+io
+> > > *folio)
+> > > > @@ -1488,12 +1604,9 @@ static bool zswap_store_pages(struct folio
+> > > *folio,
+> > > >  		INIT_LIST_HEAD(&entries[i]->lru);
+> > > >  	}
+> > > >
+> > > > -	for (i =3D 0; i < nr_pages; ++i) {
+> > > > -		struct page *page =3D folio_page(folio, start + i);
+> > > > -
+> > > > -		if (!zswap_compress(page, entries[i], pool, wb_enabled))
+> > > > -			goto store_pages_failed;
+> > > > -	}
+> > > > +	if (unlikely(!zswap_compress(folio, start, nr_pages, entries, poo=
+l,
+> > > > +				     nid, wb_enabled)))
+> > > > +		goto store_pages_failed;
+> > > >
+> > > >  	for (i =3D 0; i < nr_pages; ++i) {
+> > > >  		struct zswap_entry *old, *entry =3D entries[i];
+> > > > --
+> > > > 2.27.0
+> > > >
 
