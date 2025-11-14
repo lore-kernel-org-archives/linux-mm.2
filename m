@@ -4,111 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 217B6CE7B1E
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D08BCE8D44
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:24:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81F138E0035; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
+	id 7DB6E8E0026; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F6DC8E0002; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
+	id 7B2DD8E0002; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70C5B8E0035; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
+	id 6EFC48E0026; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B5FA8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26B1A88CC2
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:19:15 +0000 (UTC)
-X-FDA: 84109571070.20.1C5DA17
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 37D0B80010
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:19:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KatCNx+n;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133553; a=rsa-sha256;
-	cv=none;
-	b=kESvUnwiyKDI5UY9RxSPnVMw2N0OjlzbzVa5439Rel7oVHM/akydQzLcVTsG2WDy1QqxC7
-	+7cUN/SSvr2QyXS7ZP1pE+WmLTW5br09NMwwBZnN0Sb82jgiuizKXZ1LhyI/C/2rOEkJch
-	YRGj84ab3ofNXUxqBIONyamV4BFzZZw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KatCNx+n;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DC9B8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 076561A03F3
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:24:33 +0000 (UTC)
+X-FDA: 84109584426.07.D21F407
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5C2AB20002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:24:31 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DfMf1lEE;
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763133553;
+	s=arc-20220608; t=1763133871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vTq8gM0Sr0ljKbDKqif3iDj3cyPF1WfC60KmGWiymxw=;
-	b=IhEMCTEUEBTpBtbvVDbnlZ15lB/fw6HFy3k4cW6kLFoHQ27YY+rXGHYL6jK1SNDtfTagYM
-	la46fEtUi0tkSYi7EbxjowWDL7U1NAY7zoiITUr7NKID8yDSfJ0MzuT3RFLKWfnCo9GP70
-	6cUcSkDhU+GXyoLEI7KwvXLyWNDXjpk=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64074f01a6eso3700935a12.2
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:19:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763133551; x=1763738351; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vTq8gM0Sr0ljKbDKqif3iDj3cyPF1WfC60KmGWiymxw=;
-        b=KatCNx+nTdNpVahDipG8E4xRQw9v/9h1WyJdbOTEZYCze4yDz9s16HmdSwvp9HdClf
-         JT68wRH5h4VRBajRVkBBFU3k2LhpFNxq4EjnPNKqCNW9MmzCfsPECBa7m+BactUzRBPS
-         CefIfZCn2GEhEBeBuKCmZA61yPAxUKIXemGyhmi3Oo4EcUyAQjrk4eyl7YaYj9y7LVUk
-         3EW+9Kc0H6J49CR+gDvOBUpB2MC6OyI0LzJfsXlC+IWjIm22lqRY4kYPjWgcSYE8r8mM
-         4tjkHSymyOjXza5xtn6mbNS1vG70Pp3H4dkOnBWdBoOt+N2+ozE51b7Bh74kJYJ076fp
-         FyyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763133551; x=1763738351;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vTq8gM0Sr0ljKbDKqif3iDj3cyPF1WfC60KmGWiymxw=;
-        b=h2xl230CBACE3uARlXsBB9h6dRTjM05YtmEwKQ9GOsuxu06TpLl+wwvMYcb8Gsgjkh
-         78XzX82IIIRjYF8Nj5wbYwtK9yE5q8JzodldUb65IrQfW7k1WxsP46tuMIbUEAwmmNm7
-         tlsjpZVfvHSfboZKA5OR6Jl7jHRF8XPFrGsPxLJsd0vLN95T0KbBs8CUic4usqp2+1LJ
-         KpX31ca33ainxV7E9J2MgtM/FF2KFpLTAlKXf7XavDxsavK5Kz2pzi/Yrw85ddNRTQpg
-         k0fFMlj5M/WR1ITdGbtmnoZGKHPskF0of9fWqJyCDTJVTMgWng6i2MhfKBY0t6m0dsZv
-         KNtg==
-X-Gm-Message-State: AOJu0Yy0e7gUBpto4VwZWRCKuDqG/hlHzaRGYphPZSNqGb/7LvGhkw86
-	DQczGh9CszaF/isi4/PAxhAAmrsPbYKAKZMIhox6oesBoPZyMhvANJiE4g6htV0ewq8nErZ1jj9
-	xTd17UpShktMSicc6bkKaBLlkiTf5L+k=
-X-Gm-Gg: ASbGncsK+Mgeul6R2p1E8fhWlzufgPf3YOhVfd61WMkALbWI7+h/McAAD7X10rrmfOQ
-	OM7bY1CHf4EtxHwCvOofFkq9Kkh1OoIE5EIFo3V0CRG+JLk17nU7sNQPlplL55Q35H2fofUqmCl
-	WJrTtml5LmcSfTgyFxKap/hTd/0J8+QeCB4eLGxO0cqhaMd5dLyycgHTTz6wqJpmCOPy70pFDC8
-	b+T/zqNcUV61+8oeYMnb0qD7+W1a2MSLME8cALOlbNed5eB6mtoO66XXZfnRmtYUUA1/FE2CIeK
-	TpG22FEDhawQoObpUktMupw7OJzykQUD
-X-Google-Smtp-Source: AGHT+IEudofkKMhkHwKl9gbfdjMpL/6C9s9MIhrHTEp1YeDgjqNJ326ZP82OVuO/bFPMwLmRrZ/AhDXolotLIo/n/50=
-X-Received: by 2002:a17:906:6a0d:b0:b53:e871:f0ea with SMTP id
- a640c23a62f3a-b7367bd9261mr358803266b.56.1763133550733; Fri, 14 Nov 2025
- 07:19:10 -0800 (PST)
+	bh=3ic0h3NZMZNIBp6WsmjUb9XT/3fZ/MM2GYrcCUfaAWY=;
+	b=ml8vw0hXwjku6s0QNPFHquPRyNSnO6dkDoNECzpzvUDbIU6Red3VWRorUM+YQWHoflAOy1
+	C99nZ35hpa9jlG+gQtaykMcll81smAVdtdG57zJdtWvk/imOJ7Bpmt5nnSwHtNIMMihUV2
+	5DuiDDiHHjoeRoRLjK2zYuw//IaTaI0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DfMf1lEE;
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133871; a=rsa-sha256;
+	cv=none;
+	b=j9Dfr9yMIdWmLnakQhXME5JERw3auj4P0uDCSuFaIpCtTPpe++fhrdrvx581k9beYRbV7h
+	d8rSB52W/L1P50lr0EHqZjEJ2of2mUSiHvk6KTsj6yIC09l27pzbgYcD94StIgRMtS95Gi
+	qQvX6Kh7ICFSPiMJoVtrNARdIu4gKnU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 189D740E51;
+	Fri, 14 Nov 2025 15:24:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B65C116B1;
+	Fri, 14 Nov 2025 15:24:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763133869;
+	bh=QBSnPvSO1GNVbt+v4ouKlCcxmuLb1PsUsCj+WCfoziA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DfMf1lEEs2cqFcQ7RTwcJNZB4afx8bxgA1C+4hrJF1QRTh5F8m4fX2UbUFXOnNrmV
+	 DtlzLSCbubbaKxYigDV3/8WZmjOtdrp4ffKdTKPaZEgsb+2PomIQpNnz4OP418GJgF
+	 XU0UK8VTHK0p2jusTvvzsA5Lx9YC9zH+Rhk+bOQEOV7DXFfn2HxnaKixAG5YcmMyvZ
+	 XD985/x5+9w9KVOou+md6yTNlZJ3/nu1Es1KfAig2rriaYqs3hIREXyuCCPHVtb0Bo
+	 JBLH8XAswkzNabET3ueqDRX6gzI5EO/VwpGt8FtT1xe7K5uLO/HmLBzZvsmWHT24Pv
+	 dThWV7yWlWedg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Mitchell Levy <levymitchell0@gmail.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
+ Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin
+ <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, Viresh Kumar
+ <viresh.kumar@linaro.org>
+Cc: Tyler Hicks <code@tyhicks.com>, Allen Pais <apais@linux.microsoft.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-mm@kvack.org, Mitchell Levy <levymitchell0@gmail.com>
+Subject: Re: [PATCH v4 5/9] rust: percpu: introduce a rust API for dynamic
+ per-CPU variables
+In-Reply-To: <20251105-rust-percpu-v4-5-984b1470adcb@gmail.com>
+References: <20251105-rust-percpu-v4-0-984b1470adcb@gmail.com>
+ <9HWB8ewzZ5ZFApS4ggvpeoZmA-oRMmwXv2XOy_c_Ck7HkH7QOR0EaFmGnjNTmk22baplRPX3UcbWj9WnXw0r-A==@protonmail.internalid>
+ <20251105-rust-percpu-v4-5-984b1470adcb@gmail.com>
+Date: Fri, 14 Nov 2025 16:24:16 +0100
+Message-ID: <87jyzs3ae7.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
-In-Reply-To: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 14 Nov 2025 23:18:34 +0800
-X-Gm-Features: AWmQ_bm69zgMxXusRC5P6W5ccXe1vWsyUwTC33BkNeOlyt-WgJRGbcWoOq46v78
-Message-ID: <CAMgjq7Ak2QJ_A-LKOEQkHs_o9VAmjXodAvnmSbNmTGphWZr+WA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
-To: Andrew Morton <akpm@linux-foundation.org>, kasong@tencent.com
-Cc: linux-mm@kvack.org, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Youngjun Park <youngjun.park@lge.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 37D0B80010
-X-Stat-Signature: idm99jwo9zyh9othecd1r53edfibif84
+Content-Type: text/plain
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5C2AB20002
+X-Stat-Signature: piuqkirssq7ceakfm65ad5j11r8g4jh7
 X-Rspam-User: 
-X-HE-Tag: 1763133553-240485
-X-HE-Meta: U2FsdGVkX1/+Ag6Tdr6pSMD21Hgk7+7IAk+ko6gu5N2Cigi8HC6WeialRB6JO7X54WtN1RmRneFQOPHbHxZw6BLM+zsXHS5BvqVUR8Qtk3Lzf4UgbliAvKiXQzxyyxRCdOSPuoqcV+YKvmCT+IY4VHRAEvm7IT8O6tsxsVDbkHBO5CaDL/PUrNnUT9PGHnqTQWR7jYlQoSUui1ChI+dMCnTimMtuxQgnK0bUeS6XnqJ0wxtGoekAUols3NCZN4SHTfQP5PJiYX5E9NyzNAWf2jgEbAEUZcs9qleBhtk/m8ZnpnayxXHur9N5cHjUGvR1GjVuJtb4a8PqdRqiux4ev+XNZDacWK7gpIWRV5B6/CprJFqbWHLj9vlCitb8UlikymdWp4F0qZaUTYbhAON9+UmLNi2l6F1Td0AQ/CiZlNrG4paj5V7iNwfAVE2DlVHyoVM30Ak2+eFx3vkvaFPtWrO4NrSXW3syf+lMNIx/X2/E6frveKIN+PwPbECk+2gkqzYsNI8Ohk+2mOX7iI1wLvmxCrWuwG0vAbrT2Cvf8G0T43NMm34Y+0hsFjB0nu1TJ6Cz/8k/8xp4mjkzfcSm+XxBrAq22zaFHAghyRzk528nf7rcQI3eSA/RU4kntqGEaweq1QvNmgFhSE1KRslDF8g38Vy5wovxyGHO2KnQFPSVumL+SX+bDk1mWSQOp/+mJHLof4mRYGh9d3lJ34f3gd8MVi7RzmMpExiISSb31OfcubeTKV0EaPSZ2Igvaka6Jbz+f4l96Zv2PGi3w9jYdIP9rcOweKg8up46slQpZ9Cn6bu5Sa6MkmjUpHve8o1gRbnFrGiaB3uxWLNsspVc5HVwCsJ+PsHPXowgiPlQicdSQ28rzsm4g3L9L6KPy4AIstWITlmZ5x5rfeqyVxMOcvVw3tZwX7iTiqIshbAaUy95XbesIA8ELJRdlswpex2slq8ZgKgfENydvXSkv/X
- j15ULPff
- kQiwUG9z2aa8z6STY1YQswSzkq3zoFHhSgH8XYm20vjFiyrJ7wNRkD/SUPbiX2w179j3tmpQ52EDLpQK4cl53szvmNmSGF6SJ7hyj6lKNR9X8vtOaRSfnQ36o2dRreQAkOvEMaNRP4N06+poIfkE19w6ARE18G49/kWtT9iOB2Ej91UqM+fWPfMKP9eXMBk8SgW4g/lC+MkPBlHuVG9oNmIb4o7Du6tYH+V9jmmBGbhW0mWby20NuNqOG4F1n82ml8SjspcJjy7Fhz/3LDwSHxmFSxHHDPgZr23gnyhISUCadLFEXSalnobbC6HbqXLWXir1XcLirKkee2NMJeCgVwqByx5EVFV0cD8g677VWOZF6Q6iurHG0G+I0AjSnmv4BvCXQ0TMzSWFLAvRpbgJeHkoZ09UDPHe7P8jmTNR9+s6rkjaWy7omaMylhvzv5fUAx6kZu0HJORGgaowRmB9Vd1p11YA3FHP0tthN7/QY3lUncdo=
+X-HE-Tag: 1763133871-829270
+X-HE-Meta: U2FsdGVkX19SBp+vuy/rEKX5WAJQ6ns8Qr9Sr+VR6ybGxv8aJHDCzXTKUJmEY0XSlGcYAhTtbROEv/y1k9ObZjO/zAAHaDCXYpaX8h8WafrFKR82KOYE50e9oNpyogjRxUcK1X+DfqH8zMD90dgGXie6Gj4sRy/llNbXbuUlglGbRCNqshHO9tHTSn6villZKpku+bwFYzDlcT8413T7zTXdix22yRJKJvloW+qnfaGMdK3uCKmLxaDMxfc6j9wN98UGKex63YIVkLwX8duOKxKKNHKWPBhK6kVeCqdqZ6QSNAV7JBnyX3Nw1aX9kBSiSyUZtyI5TtMIQd9JafgYCrMX6qYebhC3MWoGkRPNnhPlHGhZ8Rkhy44e/QoGmKOz5VQVB3eSypSypsdClcWNwn0TIHKS61bAAZtP/fvFthkoOCZ3CbZlLW8dXDRrHHRRd+uSVDQ+iS1fx04Rm4tObTVBx07BpuPLLzs2d/UZyEI+SXrpUNUVHOqeknEqSplZ8+kxZ5iu3HR7o9WbyzRELptNxA7ztRR8Asi5tnDdUVbRVuZbZCeKFEJsGAgUmjwQHPC4kaDkQN6X2A3HIGu+bsrAkOzeCgCcuCfS5jqzRpe1Kikuce9ybJ/RzfABPm2QucYSVrzX/oQoCeV2kuIwsVMVoXJnOnwNVTbiNnwqtbWKJy+lvN72mYOZbzwHx3cBbH+6VdU7qHT7iCZoZLoOojmCgtvdxqxetM/2vg5vR2ISdcabBTs3QrKzUDGX/V3JNyAiK2uHTwNIVk/x7H/Kosko7KinHieXAnLBVewvaQNH8jCVDYb6YRLC9WsJYYrbgm9AfqU6fw9/gXdH3t5Ymz/y+ykzDemqKf09TU8bMCLbVp0BM6T+eHGdyvoE3QiVzhRPYJzkaV14hGBqYkbP7Th40T3S7MOuii+KOIdxAJALS60scmccRGxDaq8WuCu5t0vhWO7+PKUy6Kwd7R2
+ yAeZM0uS
+ Ng6WmXW0/RmxhPelXIMIGBmNSMxj8UihtgcBBS7JJ1PXTMcSv4ROHqKu9Ytm5fzjQltkBa6zRsXgZj4uL0aYh1PFGoQIVk+Wj+wHym4izmTGGf6MCqTBcue/1lWF77IugBlILV0C6CHVYRWoOO1ki+XrHAhnmlL+xeiIaqlMCzO5zAF/WAvPokKTOPsKdk5OYpBwc/s7ioucHCzfNMJwvYapoLzvuvbetTBbZK7UGOnU6hTawFJfBGsxj2nYDfQo82HCj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,43 +103,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 2:06=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
->
-> While reviewing recent leaf entry changes, I noticed that commit
-> 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
-> correct. It's true that most all callers of __read_swap_cache_async are
-> already holding a swap entry reference, so the repeated swap device
-> pinning isn't needed on the same swap device, but it is possible that
-> VMA readahead (swap_vma_readahead()) may encounter swap entries from a
-> different swap device when there are multiple swap devices, and call
-> __read_swap_cache_async without holding a reference to that swap device.
->
-> So it is possible to cause a UAF if swapoff of device A raced with
-> swapin on device B, and VMA readahead tries to read swap entries from
-> device A. It's not easy to trigger but in theory possible to cause real
-> issues. And besides, that commit made swap more vulnerable to issues
-> like corrupted page tables.
->
-> Just revert it. __read_swap_cache_async isn't that sensitive to
-> performance after all, as it's mostly used for SSD/HDD swap devices with
-> readahead. SYNCHRONOUS_IO devices may fallback onto it for swap count >
-> 1 entries, but very soon we will have a new helper and routine for
-> such devices, so they will never touch this helper or have redundant
-> swap device reference overhead.
->
+"Mitchell Levy" <levymitchell0@gmail.com> writes:
 
-Hi Andrew, I saw you have merged a later UAF fix I posted:
-https://lore.kernel.org/linux-mm/20251111-swap-fix-vma-uaf-v1-1-41c660e5856=
-2@tencent.com/
+> Dynamically allocated per-CPU variables are core to many of the
+> use-cases of per-CPU variables (e.g., ref counting). Add support for
+> them using the core `PerCpuPtr<T>` primitive, implementing the
+> `PerCpu<T>` trait.
+>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> ---
+>  rust/helpers/percpu.c         |  10 ++++
+>  rust/kernel/percpu.rs         |  30 ++++++++--
+>  rust/kernel/percpu/dynamic.rs | 130 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 166 insertions(+), 4 deletions(-)
+>
+> diff --git a/rust/helpers/percpu.c b/rust/helpers/percpu.c
+> index a091389f730f..35656333dfae 100644
 
-So this patch is no longer needed, and should be dropped from
-mm-unstable and mm-new.
+<cut>
 
-Can you help drop this? I'm doing a rebase for the swap table and
-noticed this patch is still there.
+> diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
+> new file mode 100644
+> index 000000000000..1863f31a2817
+> --- /dev/null
+> +++ b/rust/kernel/percpu/dynamic.rs
+> @@ -0,0 +1,130 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//! Dynamically allocated per-CPU variables.
+> +
+> +use super::*;
+> +
+> +use crate::alloc::Flags;
+> +use crate::bindings::{alloc_percpu, free_percpu};
+> +use crate::cpumask::Cpumask;
+> +use crate::prelude::*;
+> +use crate::sync::Arc;
+> +use core::mem::{align_of, size_of, MaybeUninit};
+> +
+> +/// Represents a dynamic allocation of a per-CPU variable via `alloc_percpu`. Calls `free_percpu`
+> +/// when dropped.
+> +///
+> +/// # Contents
+> +/// Note that the allocated memory need not be initialized, and this type does not track when/if
+> +/// the memory location on any particular CPU has been initialized. This means that it cannot tell
+> +/// whether it should drop the *contents* of the allocation when it is dropped. It is up to the
+> +/// user to do this via something like [`core::ptr::drop_in_place`].
+> +pub struct PerCpuAllocation<T>(PerCpuPtr<T>);
+> +
+> +impl<T: Zeroable> PerCpuAllocation<T> {
+> +    /// Dynamically allocates a space in the per-CPU area suitably sized and aligned to hold a `T`,
+> +    /// initially filled with the zero value for `T`.
+> +    ///
+> +    /// Returns [`None`] under the same circumstances the C function `alloc_percpu` returns `NULL`.
+> +    pub fn new_zero() -> Option<PerCpuAllocation<T>> {
+> +        let ptr: *mut MaybeUninit<T> =
+> +            // SAFETY: No preconditions to call `alloc_percpu`; `MaybeUninit<T>` is
+> +            // `#[repr(transparent)]`, so we can cast a `*mut T` to it.
+> +            unsafe { alloc_percpu(size_of::<T>(), align_of::<T>()) }.cast();
+> +        if ptr.is_null() {
+> +            return None;
+> +        }
+> +
+> +        // alloc_percpu returns zero'ed memory
+> +        Some(Self(PerCpuPtr::new(ptr)))
+> +    }
+> +}
+> +
+> +impl<T> PerCpuAllocation<T> {
+> +    /// Makes a per-CPU allocation sized and aligned to hold a `T`.
+> +    ///
+> +    /// Returns [`None`] under the same circumstances the C function `alloc_percpu` returns `NULL`.
+> +    pub fn new_uninit() -> Option<PerCpuAllocation<T>> {
+> +        let ptr: *mut MaybeUninit<T> =
+> +            // SAFETY: No preconditions to call `alloc_percpu`; `MaybeUninit<T>` is
+> +            // `#[repr(transparent)]`, so we can cast a `*mut T` to it.
+> +            unsafe { alloc_percpu(size_of::<T>(), align_of::<T>()) }.cast();
+> +        if ptr.is_null() {
+> +            return None;
+> +        }
+> +
+> +        Some(Self(PerCpuPtr::new(ptr)))
+> +    }
+> +}
+> +
+> +impl<T> Drop for PerCpuAllocation<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: self.0.0 was returned by alloc_percpu, and so was a valid pointer into
+> +        // the percpu area, and has remained valid by the invariants of PerCpuAllocation<T>.
+> +        unsafe { free_percpu(self.0 .0.cast()) }
+> +    }
+> +}
+> +
+> +/// Holds a dynamically-allocated per-CPU variable.
+
+Can we place an example here? It was a bit difficult for me to figure
+out how to use this from browsing the documentation. Perhaps we can lift
+some of the sample out and add it as a documentation example here?
+
+
+Best regards,
+Andreas Hindborg
+
+
 
