@@ -4,100 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9101BCDE01B
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 07:46:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F81CDE01B
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 07:57:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFA818E0005; Fri, 14 Nov 2025 02:46:26 -0500 (EST)
+	id 7DA328E0005; Fri, 14 Nov 2025 02:57:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAB858E0002; Fri, 14 Nov 2025 02:46:26 -0500 (EST)
+	id 78B6C8E0002; Fri, 14 Nov 2025 02:57:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 999F68E0005; Fri, 14 Nov 2025 02:46:26 -0500 (EST)
+	id 679A88E0005; Fri, 14 Nov 2025 02:57:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 89DDF8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:46:26 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C44513A736
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:46:26 +0000 (UTC)
-X-FDA: 84108429972.23.36A1CBB
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 28A2B140004
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:46:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=RmwmpcQV;
-	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 56EB48E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:57:16 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EAA8D884B6
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:57:15 +0000 (UTC)
+X-FDA: 84108457230.03.1B54C37
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3481614000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:57:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gLbl6qvg;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763106384;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h+GY3DA2a89Ro6bK+Ny9JBXd1oGc4240hj01Ocp0k3I=;
-	b=EKrQm7TmBqLODOmRe3pejLxe28TxkwXvA0bl2V5BzqS1Gr9II/bAR+3C1/ErRpIvZh5zGK
-	Ukc8fWvuH/XRYV7wScBKMU4pN3ZqkWX84LUHw7Ps7pfAopH8yExLhyk5wTECGoq2kW1IvK
-	l0GQktGNlbw/ZvzaMtyT3u4GzEElWco=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763106384; a=rsa-sha256;
-	cv=none;
-	b=Wo9womeCxIBEsS7XQbKkJcqqe5Cs1A6X+WpIDxJc521fmKZmUV4myPNmdmJq5kWnhfa8Kx
-	bJDKpTz7ubsmR4wexXmese5BVRIRw17TNysLdKgEF0xktz8gcawHiEC4802b8T8422dpYa
-	WyK30srbLopF1uoLa3utgPoTXZb4XHI=
+	s=arc-20220608; t=1763107034;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=hIvA6yLPnKeWMVPtO7BOt8TNUDdATgcSH5aI0bTFcO0=;
+	b=NL69POGwrdXhT9x/YiWEjoukDBWGJcQFnVE0xJ8d4wgQhkvu+gmcjlFNVgQmPuCn/Jc1JR
+	PgooItVVt1wqaTMALk8EZcVPS1NY1F/95CjpIcCsP8KMKOQZUCJmMCqbMa6N2N9DvuQnB9
+	hahJogu/G3VjKQyr/DDK6iCoYdDRIXw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=RmwmpcQV;
-	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=h+GY3DA2a89Ro6bK+Ny9JBXd1oGc4240hj01Ocp0k3I=; b=RmwmpcQVdyxseRwak/qof99plg
-	19GIkQZH7ChhzOiG3uz8dg2HkAA5N+5/V1UIxXkDLDUEZCoKXkHmJU2jU1s+Q0xxu/tK+e7sPtX1g
-	p9WnhHDcBBVa4n8KLpZIKcLWl1vD6DcEr3NuPGBC/3lFrFbZqBzzS93Vmonf4mXY1YBnwXFMeqSOq
-	0VjFZh3Nht/9wWMlfASZ7/M0BXd2QaeBC84W+1f0gTGtGlmpUd/NgvFb/SFB2rT88CqI0WGcOH1cX
-	adF7Nl5bHG2kHMKYO15y03X/mRHcKujBsb/+YppfEkDblFYHA+Zfb/PsC9CidjgprrT4VBcTnotMR
-	Z1lBwfCw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vJoVa-00000009Pew-1WxF;
-	Fri, 14 Nov 2025 07:46:14 +0000
-Date: Fri, 14 Nov 2025 07:46:14 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
-	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
-	a.hindborg@kernel.org, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org,
-	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
-	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
-	Chris Mason <clm@meta.com>
-Subject: Re: [functionfs] mainline UAF (was Re: [PATCH v3 36/50] functionfs:
- switch to simple_remove_by_name())
-Message-ID: <20251114074614.GY2441659@ZenIV>
-References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
- <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
- <20251111092244.GS2441659@ZenIV>
- <e6b90909-fdd7-4c4d-b96e-df27ea9f39c4@meta.com>
- <20251113092636.GX2441659@ZenIV>
- <2025111316-cornfield-sphinx-ba89@gregkh>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025111316-cornfield-sphinx-ba89@gregkh>
-X-Rspamd-Server: rspam12
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gLbl6qvg;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763107034; a=rsa-sha256;
+	cv=none;
+	b=tlm0uztBV7N9Dbf7Tr3ZQySYElWObT6bHgXrcD6RG9K9uZkWa9ja9cbLnJMd9kKJN7hn2Z
+	a/dOCGLh7Hb4JzaWH8kh/KJMq0kqFNiXkZrPPJn+KEEn2DDNALkHy4/LfAfWcFKN0zVIXH
+	yjPg5H+MZSB4OAAuiU1sGE/+uzYeYTg=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-640bd9039fbso2994674a12.2
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:57:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763107032; x=1763711832; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hIvA6yLPnKeWMVPtO7BOt8TNUDdATgcSH5aI0bTFcO0=;
+        b=gLbl6qvgHyVnQjckjVEg5BJU7cX87n4Ij+AClINI9iYnaTiH/NftcgxrhWuFW5pt71
+         inOZf2zJjlEsQxU9rto7485RtgsdA/6Os7eyo0lqYEcF3f10ZIr0NADcI0HmlzXMw5G1
+         Jc4LhiiWVn+911rjocA6yhPLbeDBTvs99xzP2/hoSgkqxYbyvY2JC7GyKpHcCHNzlfVB
+         tiHpD7wRBNsmdU4VvTpkZHCXy8vplfDo1S9xFGFGIRZR/CvjmjeJOajnwmXmTFxbwGhB
+         op0gfBZvvMMgq+mNIJ+yvqM4PDK4sbbRPrZQk7gmESQoyoxstwjnEv8kf6588liU8/xB
+         /1Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763107032; x=1763711832;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hIvA6yLPnKeWMVPtO7BOt8TNUDdATgcSH5aI0bTFcO0=;
+        b=oYVo1sGhKykeUguVDbWd7nyRzg1Bg8AEVrRrH4OcEVrRNTtbZKA20hE64BBnftgLDT
+         RPhzsTSTS89fjaSjq43wFCFzlyifyJOMBs1FQHMkDDr/gMQihkkshOlAzD51cNxbUsja
+         W8MCRkwU0nEuEsvxe9Iu6aD1d4yh+hV2umdjCQQBw0h4x3Q6sa3Y9RKSPFv3SQbgPet/
+         Juw1CsezewyKTezGJp3knaC1qgk7d2/93vL2p5mNmKKu/r0+u7nUru+DP+pza73f/S5r
+         xg1gCB9I1IhRYQttb05GgvlsJxPpWG52/urDT0ErLeR/g4xx4j234badmELtG+kys0zJ
+         JACQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWosPJZhXriXsPWNB6oGbaYN+6sqlRpLrnOFJoxVTYOGPMKkHKMIvCMQV7wz3X7yNjBSxW2AJaTvQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx6vOnSif5oVrqdgUPHSAlmPrFK2ari0CQhA1Hhu6QpIw/nqe4K
+	7xGuCnm2IC2ssNT/XoE8aBhpnxkUMRBMfdXnIbwKqrASyw8EWhaEpKNP
+X-Gm-Gg: ASbGncs6GwhvR7CHJNSrMnDd5ED0zUYsLtHCmOnDqFwoqmlCGQnQlai+g1+VtMzfHI4
+	ZRBO9wiDDTV8UewBcYPh5m88ChEkDto77QqV+PxZCVTewIlx6c26KHTS6/EMHqa4HYMyvWIKnk4
+	yI2qRbIS/m8IK1eH2RqfXSo0CarHNCfzWt/ApRUzDGh0xY0tT2ULKchKf8FA4Nba7MRLU0JznpU
+	caJLV68MB3LRKWZ2/Iyxe4sHZrfS0ar6enPGu8tR3a/4D/OPijdPkhevqWn4r78iAHbBqr4ZHvP
+	kcBRWWR8zT4mjLXun5ahi/gv4XEP52S0/5AOXYG0ydQaGP3y6YSXxmi5tdA27hX89Nf7z49AXJq
+	97LkPBHHZzwgWMfH4XXuDiMI658RyveQpREYmHZ4ZFZJUwLeoO3EFQcim9lXZc4U51bu76fGSB3
+	rgW1Zvb64CGil1OSIkXYoV+BGR
+X-Google-Smtp-Source: AGHT+IE0vQE/VL4qK0iqmlw9B7Sjp4IFmBy++J8hyg4y18WBO4JJirL38dV5FBI1kNbDqbxwV7fIpg==
+X-Received: by 2002:a17:907:6d22:b0:b04:32ff:5d3a with SMTP id a640c23a62f3a-b73674d2391mr193760566b.0.1763107032366;
+        Thu, 13 Nov 2025 23:57:12 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa80afbsm328466866b.11.2025.11.13.23.57.11
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 13 Nov 2025 23:57:11 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: willy@infradead.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH] mm/huge_memory: consolidate order-related checks into folio_split_supported()
+Date: Fri, 14 Nov 2025 07:57:03 +0000
+Message-Id: <20251114075703.10434-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Queue-Id: 3481614000A
+X-Stat-Signature: 9ozff9mcpgcs66crao8t5eao1r913dy4
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 28A2B140004
-X-Stat-Signature: ag4bxhtgw41pq88a78r4b5s7y1ngtf7i
-X-HE-Tag: 1763106383-115436
-X-HE-Meta: U2FsdGVkX1/ECe9BohAIUbXgMCbVhZua3ADw4L9Dz/h93rev80I3frogCurAya655mGQC3iVGQv4gk4KvwztJAmn9iy4oln+2y1SrpHDzrUEKDCyXE6e6fTUxblWE+jUUSfXko0U0FSvF2rUOPqDwnqn47F43qco58c9FO9NkRXTPB56bxmtXX5iSK+U+l/sLtKfSGkvjYZTQ60ygacIbpkmUbBAwWv84Mscn/gx+hUjY9iPcYqXrMoNYMT2oWDm1Q03hCU5nVBdA3qifWX68so32N+5C2ehGB8W3AYckIDcdIeyf+B3sv4UCH0j4yhRWhWTn0efkAxye6qVeT3XUTYDt+xCvUhR9TkAAL/tOkrwt5TncdvB6opQxBG6Y5W5OJbALAKjRh/SOsowkedNUtwX8pvcPEr0nYBCqqvrCL0TINSmhTIi9XLvX/uFWaPZW2uAhnpbiEKqhiliw+kq6Vc6riBsj3QgSFaO78/TZsSuNRy5dKJ0KjjsrlnwcuRzjyMiHMYuXx2jwJCw3bCu/g+/CCk0wm2DZylohvkp2M+9U0YxGoE6Ye4O2V/+xtDhHBAWorPknpDyziWmzeVmWrwIMOjSzhY9U1ydCo8qj4CvCTfvgyv7f4JEFeHDnalY6HNe897UPM/ytDKXOv5pLWx6hKDBVraUXpUZuLGkrIX26WZiVKFwp5Rs6sguyN7WVs/OkMePVyN8Pfea92vmO0EgDdGwXtBZko2xkIqYL15XMhniS1qH1PmQ7tVOgKmuzaArWRtla2DjRo3TflihwhYJY/OD68h/QJ+CZZR+sIlBEogDIe7CtamGair9OQk4Y+mEVRacn+7V7hrRszAX3WoSHnfgzX1PwcTZSFO2ym8utmdM8Yp39gsHhvkVzP6XN78XmFTezqhvBZ9UclS77UG4LSBPAcZR4zqHirqY0ykjx3ZIFDQp3plsgyYLdNHFe/KcWLhnoMTvzgwgdaZ
- 89HIeVaJ
- RhoZyMPtWwANfidoCQ6rCvyeQcooDztP1cLpZW9m1bCXsNBuKtbZukj+gXq3fFiIJ8dsmSRMkAhBH27y6kJVtV810J4HzynyaahzhDZqo3KQ+MSK9WOdydRP3BstXk77/me/206o97aVeJYHOd34CBLxlOcQcOVd26Ux5oU/o3eu5Da6RPlTzhhnbsYpXnyp9WH+i51YBzERRrNtF8vK7OHnlfnzyWdVRhCbHN7YRNYEp5lEwo05vjNB5+9mKpbwscRuQySnqrixblIfjsahxc+NofLQu732LGj19wZNyr789zja+aTYkYqgslg8Jyv8lztuNIzXhKQlaI2XKnNf8WCdMLFu4GL1y34Fgn3/qoEIrx7GpPe1muOiyECtrMExCuHddnBnIjS74VT/YgzzlwIbDPjaNa2wisD/CEkey/qirhdAymjz8xfnUZegLahRmPI5sW2sK7c9G1buTdB+HRQppZI5aKzgvQRwwX/OS9sq6/Bz162a3IMFpzzpn5Ck8IignI4vLjKNrRvJjreAlovh4X/nvw4QbdjlVIWeVrk2aoI6zm8bjDQwVNYx+S0k+rQM3vzZJqnZMARMI3tQy1RwnUAwynr+2YhXv58JSAnVoC1Rh49K2jPX3+pgapAGEgR3dwkZHs/vRPBg1L+15tpGjSlh5hsghL8tc
+X-HE-Tag: 1763107033-925637
+X-HE-Meta: U2FsdGVkX1+19czwxGO0VA1LnJn+fhC3pTY4w414UjI05wSJTTApBcrpB7fNcN23Dsc5qZx5BH9sPtld70as5JM/r9h5g0+F5m03BxprxQMFi9C/3+n/F78wMDry8Af9sCP3/bbe36dWUYSnvqjHVImu867U2E9FNIEvtqx0Fjlo54wKYn1Rvl9u9B5NWQ2p7n0yYFhrTJvuc9/OzkLk044KnEQo0b6HeQrBT0qUlKLQa46TY5wXCxpphiQIhn0SDsm3RF4gfetUo/NkeIyg/Nvm1oKyb95QL2xolIWlQxftSLSBtVisCok24UEqfjkaOp3G5PLYBBbzLrrWcl/b2+w69Y0dU14NHS15yRFeOORDzU7FMGyqJXhgj3SAcrg2Jc+q3pL3d0rFRdLDoPgleJT4gm31XyrVMdVlGomBiNW1AY5ZOLC3Vhr7xDDRnsmjw4hGO5DjoidfgQm7/L6nkJvQQcaRHCJkwnORddwF7eYq/6slolb7n2sBvyjF8ZihiipgrsUuSR2q2BBPhbxXplnZ87umtqXBYfMY0GbPM8rqa/ZOLj0XrzHNJ0/N2IrkpQAccP4bWTdr1XbHfCeHlNrEnBZaQ7Qv+2K8E2CZq52vE25z8OIOGdiGPcjML7wfr5S5uom4a+BwTwz1NYfYSCGDAu3u4AdsXwAlUJIuzM277dJ2ElKRxl2iJhAB8q1OAeu8GAhUKLlXwX60AogabLTsGgsEy8R4iBRQ0Z+OgKgeT4cm81TG6ufG2VnjgOP1K2zYBCgfPzLv0PSLBX8MMqBGPA4zf/e9Ss9ypeejlBBLf8xiDlKGr42ymoOaN1z1BpBvbqy+zMNVo4athuwkxZUPaYT4divJk9cEU1HD9gBIuLbytmky45w33wfJaE7OeE3bBpGz6wmT7m5p+SoYwzrJJkp/nxTBPdZyQJRk/rGZjRQyFBQ49GbJcqva8GNmfm2wY6emZymF6o/V7aW
+ ijXcqt2I
+ 48nEb5SUayqSImY3GrakCFUbfY7WeYn9WT11MFKsoAP5Tr1DPT0NfnPWFXv1I90DKEuNTmMwK8CbMPxy2dxRvhjZyyW0WCcdg6MJpJhtlNHN4Gyy+1f9nkTA3rwtKFX768FgJ9mhaSj771X01mjOVvHrzsK82KTrfFGSdXjk9HXWiW5rHSje0ZuFsREO8M6WR3JgOjOv/YjIH4YqRhxC4+UvwIkE8xG24mjgLaDRaqvWxHz5lZtcTj7rAC5GdFcfgHn4/QiTPtkduh6aZLH8guynFjdkIXrVpunUE4p/1TpuKp2IyFM3mq/auo2sD1cF2XVgIgsmwpNijXdUvUTFeiEPjRmmRBF4aCCI0kdQ1hRwn/+4BU5vloxkG94NlDA5rqdyrvLl62Lka/O076jVPL7fM5/d9XFMQ/w8bCUK2gYMEcfGsPs7OXrlCLNx/H/hFvg+NnN7mD0s17WMFMaLnWUakgVP4ir3Fj30PxP0bFJzYSgk9PzE89EPIBtlLmq6JjeqPSIXUQlhPQZHyR6IZ9t1vMvVoys3xiMhUuAMq+qznSdHwuzv++Mql7kWQsNxydjq8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,219 +128,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 04:20:08PM -0500, Greg Kroah-Hartman wrote:
+The primary goal of the folio_split_supported() function is to validate
+whether a folio is suitable for splitting and to bail out early if it is
+not.
 
-> Sorry for the delay.  Yes, we should be grabing the mutex in there, good
-> catch.  There's been more issues pointed out with the gadget code in the
-> past year or so as more people are starting to actually use it and
-> stress it more.  So if you have a patch for this, I'll gladly take it :)
+Currently, some order-related checks are scattered throughout the
+calling code rather than being centralized in folio_split_supported().
 
-How about the following?
+This commit moves all remaining order-related validation logic into
+folio_split_supported(). This consolidation ensures that the function
+serves its intended purpose as a single point of failure and improves
+the clarity and maintainability of the surrounding code.
 
-commit 330837c8101578438f64cfaec3fb85521d668e56
-Author: Al Viro <viro@zeniv.linux.org.uk>
-Date:   Fri Nov 14 02:18:22 2025 -0500
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+---
+ include/linux/pagemap.h |  6 +++
+ mm/huge_memory.c        | 88 +++++++++++++++++++++--------------------
+ 2 files changed, 51 insertions(+), 43 deletions(-)
 
-    functionfs: fix the open/removal races
-    
-    ffs_epfile_open() can race with removal, ending up with file->private_data
-    pointing to freed object.
-    
-    There is a total count of opened files on functionfs (both ep0 and
-    dynamic ones) and when it hits zero, dynamic files get removed.
-    Unfortunately, that removal can happen while another thread is
-    in ffs_epfile_open(), but has not incremented the count yet.
-    In that case open will succeed, leaving us with UAF on any subsequent
-    read() or write().
-    
-    The root cause is that ffs->opened is misused; atomic_dec_and_test() vs.
-    atomic_add_return() is not a good idea, when object remains visible all
-    along.
-    
-    To untangle that
-            * serialize openers on ffs->mutex (both for ep0 and for dynamic files)
-            * have dynamic ones use atomic_inc_not_zero() and fail if we had
-    zero ->opened; in that case the file we are opening is doomed.
-            * have the inodes of dynamic files marked on removal (from the
-    callback of simple_recursive_removal()) - clear ->i_private there.
-            * have open of dynamic ones verify they hadn't been already removed,
-    along with checking that state is FFS_ACTIVE.
-    
-    Fix another abuse of ->opened, while we are at it - it starts equal to 0,
-    is incremented on opens and decremented on ->release()... *and* decremented
-    (always from 0 to -1) in ->kill_sb().  Handling that case has no business
-    in ffs_data_closed() (or to ->opened); just have ffs_kill_sb() do what
-    ffs_data_closed() would in case of decrement to negative rather than
-    calling ffs_data_closed() there.
-    
-    And don't bother with bumping ffs->ref when opening a file - superblock
-    already holds the reference and it won't go away while there are any opened
-    files on the filesystem.
-    
-    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 47cfbe41fdff..ed7fa869ea77 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -640,13 +640,22 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
- 
- static int ffs_ep0_open(struct inode *inode, struct file *file)
- {
--	struct ffs_data *ffs = inode->i_private;
-+	struct ffs_data *ffs = inode->i_sb->s_fs_info;
-+	int ret;
- 
--	if (ffs->state == FFS_CLOSING)
--		return -EBUSY;
-+	/* Acquire mutex */
-+	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
-+	if (ret < 0)
-+		return ret;
- 
--	file->private_data = ffs;
- 	ffs_data_opened(ffs);
-+	if (ffs->state == FFS_CLOSING) {
-+		ffs_data_closed(ffs);
-+		mutex_unlock(&ffs->mutex);
-+		return -EBUSY;
-+	}
-+	mutex_unlock(&ffs->mutex);
-+	file->private_data = ffs;
- 
- 	return stream_open(inode, file);
- }
-@@ -1193,14 +1202,33 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
- static int
- ffs_epfile_open(struct inode *inode, struct file *file)
- {
--	struct ffs_epfile *epfile = inode->i_private;
-+	struct ffs_data *ffs = inode->i_sb->s_fs_info;
-+	struct ffs_epfile *epfile;
-+	int ret;
- 
--	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
-+	/* Acquire mutex */
-+	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!atomic_inc_not_zero(&ffs->opened)) {
-+		mutex_unlock(&ffs->mutex);
- 		return -ENODEV;
-+	}
-+	/*
-+	 * we want the state to be FFS_ACTIVE; FFS_ACTIVE alone is
-+	 * not enough, though - we might have been through FFS_CLOSING
-+	 * and back to FFS_ACTIVE, with our file already removed.
-+	 */
-+	epfile = smp_load_acquire(&inode->i_private);
-+	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
-+		mutex_unlock(&ffs->mutex);
-+		ffs_data_closed(ffs);
-+		return -ENODEV;
-+	}
-+	mutex_unlock(&ffs->mutex);
- 
- 	file->private_data = epfile;
--	ffs_data_opened(epfile->ffs);
--
- 	return stream_open(inode, file);
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 09b581c1d878..d8c8df629b90 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -516,6 +516,12 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
+ 	return mapping_max_folio_order(mapping) > 0;
  }
  
-@@ -1332,7 +1360,7 @@ static void ffs_dmabuf_put(struct dma_buf_attachment *attach)
- static int
- ffs_epfile_release(struct inode *inode, struct file *file)
- {
--	struct ffs_epfile *epfile = inode->i_private;
-+	struct ffs_epfile *epfile = file->private_data;
- 	struct ffs_dmabuf_priv *priv, *tmp;
- 	struct ffs_data *ffs = epfile->ffs;
- 
-@@ -2071,12 +2099,18 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
- 	return 0;
- }
- 
-+static void ffs_data_reset(struct ffs_data *ffs);
-+
- static void
- ffs_fs_kill_sb(struct super_block *sb)
- {
- 	kill_litter_super(sb);
--	if (sb->s_fs_info)
--		ffs_data_closed(sb->s_fs_info);
-+	if (sb->s_fs_info) {
-+		struct ffs_data *ffs = sb->s_fs_info;
-+		ffs->state = FFS_CLOSING;
-+		ffs_data_reset(ffs);
-+		ffs_data_put(ffs);
-+	}
- }
- 
- static struct file_system_type ffs_fs_type = {
-@@ -2114,7 +2148,6 @@ static void functionfs_cleanup(void)
- /* ffs_data and ffs_function construction and destruction code **************/
- 
- static void ffs_data_clear(struct ffs_data *ffs);
--static void ffs_data_reset(struct ffs_data *ffs);
- 
- static void ffs_data_get(struct ffs_data *ffs)
- {
-@@ -2123,7 +2156,6 @@ static void ffs_data_get(struct ffs_data *ffs)
- 
- static void ffs_data_opened(struct ffs_data *ffs)
- {
--	refcount_inc(&ffs->ref);
- 	if (atomic_add_return(1, &ffs->opened) == 1 &&
- 			ffs->state == FFS_DEACTIVATED) {
- 		ffs->state = FFS_CLOSING;
-@@ -2148,11 +2180,11 @@ static void ffs_data_put(struct ffs_data *ffs)
- 
- static void ffs_data_closed(struct ffs_data *ffs)
- {
--	struct ffs_epfile *epfiles;
--	unsigned long flags;
--
- 	if (atomic_dec_and_test(&ffs->opened)) {
- 		if (ffs->no_disconnect) {
-+			struct ffs_epfile *epfiles;
-+			unsigned long flags;
-+
- 			ffs->state = FFS_DEACTIVATED;
- 			spin_lock_irqsave(&ffs->eps_lock, flags);
- 			epfiles = ffs->epfiles;
-@@ -2171,12 +2203,6 @@ static void ffs_data_closed(struct ffs_data *ffs)
- 			ffs_data_reset(ffs);
- 		}
- 	}
--	if (atomic_read(&ffs->opened) < 0) {
--		ffs->state = FFS_CLOSING;
--		ffs_data_reset(ffs);
--	}
--
--	ffs_data_put(ffs);
- }
- 
- static struct ffs_data *ffs_data_new(const char *dev_name)
-@@ -2352,6 +2378,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
- 	return 0;
- }
- 
-+static void clear_one(struct dentry *dentry)
++static inline bool
++mapping_folio_order_supported(const struct address_space *mapping, unsigned int order)
 +{
-+	smp_store_release(&dentry->d_inode->i_private, NULL);
++	return (order >= mapping_min_folio_order(mapping) && order <= mapping_max_folio_order(mapping));
 +}
 +
- static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ /* Return the maximum folio size for this pagecache mapping, in bytes. */
+ static inline size_t mapping_max_folio_size(const struct address_space *mapping)
  {
- 	struct ffs_epfile *epfile = epfiles;
-@@ -2359,7 +2390,7 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
- 	for (; count; --count, ++epfile) {
- 		BUG_ON(mutex_is_locked(&epfile->mutex));
- 		if (epfile->dentry) {
--			simple_recursive_removal(epfile->dentry, NULL);
-+			simple_recursive_removal(epfile->dentry, clear_one);
- 			epfile->dentry = NULL;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 0184cd915f44..68faac843527 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3690,34 +3690,58 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ bool folio_split_supported(struct folio *folio, unsigned int new_order,
+ 		enum split_type split_type, bool warns)
+ {
++	const int old_order = folio_order(folio);
++
++	if (new_order >= old_order)
++		return -EINVAL;
++
+ 	if (folio_test_anon(folio)) {
+ 		/* order-1 is not supported for anonymous THP. */
+ 		VM_WARN_ONCE(warns && new_order == 1,
+ 				"Cannot split to order-1 folio");
+ 		if (new_order == 1)
+ 			return false;
+-	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
+-		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+-		    !mapping_large_folio_support(folio->mapping)) {
+-			/*
+-			 * We can always split a folio down to a single page
+-			 * (new_order == 0) uniformly.
+-			 *
+-			 * For any other scenario
+-			 *   a) uniform split targeting a large folio
+-			 *      (new_order > 0)
+-			 *   b) any non-uniform split
+-			 * we must confirm that the file system supports large
+-			 * folios.
+-			 *
+-			 * Note that we might still have THPs in such
+-			 * mappings, which is created from khugepaged when
+-			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
+-			 * case, the mapping does not actually support large
+-			 * folios properly.
+-			 */
++	} else {
++		const struct address_space *mapping = NULL;
++
++		mapping = folio->mapping;
++
++		/* Truncated ? */
++		/*
++		 * TODO: add support for large shmem folio in swap cache.
++		 * When shmem is in swap cache, mapping is NULL and
++		 * folio_test_swapcache() is true.
++		 */
++		if (!mapping)
++			return false;
++
++		/*
++		 * We have two types of split:
++		 *
++		 *   a) uniform split: split folio directly to new_order.
++		 *   b) non-uniform split: create after-split folios with
++		 *      orders from (old_order - 1) to new_order.
++		 *
++		 * For file system, we encodes it supported folio order in
++		 * mapping->flags, which could be checked by
++		 * mapping_folio_order_supported().
++		 *
++		 * With these knowledge, we can know whether folio support
++		 * split to new_order by:
++		 *
++		 *   1. check new_order is supported first
++		 *   2. check (old_order - 1) is supported if
++		 *      SPLIT_TYPE_NON_UNIFORM
++		 */
++		if (!mapping_folio_order_supported(mapping, new_order)) {
++			VM_WARN_ONCE(warns,
++				"Cannot split file folio to unsupported order: %d", new_order);
++			return false;
++		}
++		if (split_type == SPLIT_TYPE_NON_UNIFORM
++		    && !mapping_folio_order_supported(mapping, old_order - 1)) {
+ 			VM_WARN_ONCE(warns,
+-				"Cannot split file folio to non-0 order");
++				"Cannot split file folio to unsupported order: %d", old_order - 1);
+ 			return false;
  		}
  	}
+@@ -3785,9 +3809,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 	if (folio != page_folio(split_at) || folio != page_folio(lock_at))
+ 		return -EINVAL;
+ 
+-	if (new_order >= old_order)
+-		return -EINVAL;
+-
+ 	if (!folio_split_supported(folio, new_order, split_type, /* warn = */ true))
+ 		return -EINVAL;
+ 
+@@ -3819,28 +3840,9 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		}
+ 		mapping = NULL;
+ 	} else {
+-		unsigned int min_order;
+ 		gfp_t gfp;
+ 
+ 		mapping = folio->mapping;
+-
+-		/* Truncated ? */
+-		/*
+-		 * TODO: add support for large shmem folio in swap cache.
+-		 * When shmem is in swap cache, mapping is NULL and
+-		 * folio_test_swapcache() is true.
+-		 */
+-		if (!mapping) {
+-			ret = -EBUSY;
+-			goto out;
+-		}
+-
+-		min_order = mapping_min_folio_order(folio->mapping);
+-		if (new_order < min_order) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
+-
+ 		gfp = current_gfp_context(mapping_gfp_mask(mapping) &
+ 							GFP_RECLAIM_MASK);
+ 
+-- 
+2.34.1
+
 
