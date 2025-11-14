@@ -4,117 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67AADCE8D4A
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:53:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C94CE8D4A
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91E7E8E000A; Fri, 14 Nov 2025 10:53:06 -0500 (EST)
+	id 5C5F98E000C; Fri, 14 Nov 2025 10:54:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F65A8E0002; Fri, 14 Nov 2025 10:53:06 -0500 (EST)
+	id 575C58E0002; Fri, 14 Nov 2025 10:54:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80BA48E000A; Fri, 14 Nov 2025 10:53:06 -0500 (EST)
+	id 43DEA8E000C; Fri, 14 Nov 2025 10:54:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EA7A8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:53:06 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EB805B6A2C
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:53:05 +0000 (UTC)
-X-FDA: 84109656330.21.60890C7
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 002AA40013
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:53:03 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bwXiSQFy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763135584; a=rsa-sha256;
-	cv=none;
-	b=mMVE5kjzEvg81kMQrtT9y7S6slZm7hLLBGjlT4HBMDqcEoR4faA1bmA1wcZ9xlzvJ9CkMi
-	/xKqLEReLqoLZo6rLqyy0gi3gDpjKuTkxqILn3FvqPeJZu3IhX9FOd87IcQxegvkmkz8qN
-	qdhrLG6mVgWKcTohxLsvGa/bcgUMbYo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bwXiSQFy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DBF48E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:54:06 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D745EB9573
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:05 +0000 (UTC)
+X-FDA: 84109658850.20.1A87446
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0D7E51A0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:03 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=B2nZ4q6x;
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763135584;
+	s=arc-20220608; t=1763135644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/VlPRoWA1WNWSkQNV6PSFUUa4QpcAdRo/Ff/t9LGw90=;
-	b=P0TlVbO0iZ+AWmYmSWpETJrouskm2niyi63bw2LovHW16SlwM9BhimbuUoqzRO8XKtbvjX
-	mrtt749/GUDqq1PMOl+yW1E8VDnqtasFiAKFqvKTdCZ7an/WZKCa3aFSKi1lRu1vp3QWap
-	/6oEuJokp8gccCD3222O3Fdu6LjWUO8=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b735b7326e5so262781266b.0
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:53:03 -0800 (PST)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GfZyo9u25oM70F0ygQaaTqn4+hpd1ir7NjzpQRKKylc=;
+	b=B1e8RsNqXgPorHaEWPJkHosUN+8qQ+VOr/VQmAClMjGUnhbiQboZL5CRFJMhbbvVlGejN4
+	bbwg1ixSS/YqO/KIc28h4B2JOQDY8yKRIdDxfv2bxnObU8Kqc5VWA+bXf9p9PQPjPVtTj2
+	KfYnzVRJlum0apuPFHCaQEYY5D7Y6t4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=B2nZ4q6x;
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763135644; a=rsa-sha256;
+	cv=none;
+	b=d2rk/AQl8TgtvxXSntuhG8pZ3NZVH/0FamJLXNfI6ODSgUYgRH7PXn4xP3KP3piXZWU7py
+	n49FvDB63Z7DQNM8RkOrlRDMZjQVrR85zONcmUXHLYFLMQrr4BibVfuKUV/+p55RD4PYm7
+	+WJ+8nzMz8Th7jzN1NtLoqsi0hiiZo0=
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-63fc8c337f2so1923502d50.0
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:54:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763135582; x=1763740382; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/VlPRoWA1WNWSkQNV6PSFUUa4QpcAdRo/Ff/t9LGw90=;
-        b=bwXiSQFyz4oXt0Tm9eR7a/gkJsK1Dav2Ml4+pcmbE/+k+J95YDqFQ0IrY4Qo1PWIBB
-         zmXeyL98zXJyWAq2fvSREr5sSipvsxsS0nSmsBL2UgkT0QkyRO5xKX9BAXz8Aeb8pvR+
-         4SsnHXcrIRTcRqJiaF5OjSDVuoqnL5Q8n1Yx11Y2MFRumzNkUQxTAMBWDd8Y/GR7Kgme
-         rMa8LhR5SXjJwkmBx31hpl3/R76aJ8O8XuDhLjub1brzw5c385UakN1CLM4C2ZajmdlL
-         dWI6NlAxtqyfz8He2DnRZ+G54LK1jIx8D9xqKCbOmMVpAg7JvNyy19T/OtW0ouwnk5lQ
-         TpeQ==
+        d=soleen.com; s=google; t=1763135643; x=1763740443; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GfZyo9u25oM70F0ygQaaTqn4+hpd1ir7NjzpQRKKylc=;
+        b=B2nZ4q6xtcwIPbUbNGeM1K/GGYmirqy9/Lyg9tVOU5g4wWYhZvAslRb2/sdFRsIKbS
+         Mac04h+T+hm7wNVAX0X2CMOlEScTjJDcMEv6F9CzuhQJCu59aOa//zdE993IEAiGMlTk
+         F/pykx9Y1fVwOnxu7ZTAIQdxzmJ0gWSCElugZNmgHjzRj73eMqMX3HIqB5d5Ojwoh2MW
+         iDDBNsM52A0RmiPMyFEPK4JtRGQ3VLqdHuYQq1zqzR4pn2sMiqAoFGvjAH9AFKkdSxmc
+         8icOpHL5gplPZ0+UXklQYCVuaD0PdMubgtkufFKKyeWLVt3ntUZ67O4lvV3z0r6lBHtt
+         AVNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763135582; x=1763740382;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/VlPRoWA1WNWSkQNV6PSFUUa4QpcAdRo/Ff/t9LGw90=;
-        b=JgHpfyGLmHDl6KnisQm7NVcGu3MiGAC1XoKxW33R8f2PuTyU9vo/CrpAZqmyzmj6yb
-         7PvuPi7RXjSrG4olzlMzF/bj8yRqVoN8WiRJvX6miv+MUGCpvzVYE4uqIKuKWM1mdQNz
-         +Rvq5+O26VZEtRQC8L0EdM5emgXQfbtsiCyPruDu0KmnJu+hmNWhlPJttrHwEDpW1ZO6
-         lDwV9vYjpS4ZuCZuvonOt0UYOlmdbGh+EOUCwGr+Kvu40Zh6SKVfs2VWTxKyS+F1jW35
-         kWi4uGHk7WMWI7cvp6MysufXnsij4X12ngedIWjO0xnL9MErvC56wA5a1AUW6ogU50kY
-         Uwng==
-X-Forwarded-Encrypted: i=1; AJvYcCXWZfjBZ9uYXCo/j/VexBIdodJr1RMvtKq0ruxr1yNX8DGzsyQrkzodf25Q3LvBH8+FlR38yr/7SQ==@kvack.org
-X-Gm-Message-State: AOJu0YxwiGNjGtlsisddl4wNrWgpn4/lfYPseygawz7So9LkaU7KqfI8
-	8Gzh5vpqVNYZGYwHHFcXjXuh4Km1J+Os6sUZh4W2ytDV4ys3TrB2DveGTn2CxDJPle47VoLpVN9
-	xG2uWTyVx1G7Z9kOTXO5mvgttLAR2v84=
-X-Gm-Gg: ASbGncs0Nw+62mMYO1858RSu2ohYhshMXh1ja2bSBta+3ctSqudfhBqcVF7ao9PJpJa
-	oe65ruNNb04OGnGi/TrwuBFoSVPjSRJ8jURnzeUMw5phNFN1ydjEmHU5d0QQmg91wLyeBNYK6j5
-	mTYBnSqVHwYBrCmwhbqGd/Sbe2aeLJsg4N1JIeL3K+LegOvAx8HewWtkrQOE80FamDMCWhV8KzV
-	14uV8lRwIqtG5V7gP7wCdS6NUF7oUW6N2nS/sDoiEytDtdpCs8vF/Cz5crpBenGobANTDCKnUtV
-	fbT8pJ13IL6vUdfnesvFdg==
-X-Google-Smtp-Source: AGHT+IH+RgS5OmU/N9XmPnLjJ8PJCZ14oqdXi+3jpdUfxqJElWrDxu4B4etnV+rhcTnlU8pk1OFJ4Dj5jFS0Uqbawvw=
-X-Received: by 2002:a17:907:6d06:b0:b4a:e7c9:84c1 with SMTP id
- a640c23a62f3a-b7365749f00mr442504766b.7.1763135582162; Fri, 14 Nov 2025
- 07:53:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763135643; x=1763740443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GfZyo9u25oM70F0ygQaaTqn4+hpd1ir7NjzpQRKKylc=;
+        b=T5jX/yVZBDAN67VRWAsKMs5w8FvrlmcdjCO2CVv/0hdjmOIKF9KdAjd58sG+dam1/2
+         qNgEGco+Ls/i+w7+6R5nPRoLFlLxREzsTY3SOI+eAKRBCWtxrKaRKEFPPrVfbOUiaoLC
+         gmfLP7FezaSydtgoDnS54qx+r2fCgNYbFy16hIXAbPMJLpCd8+L85Btbl7Vkm4LNJcMu
+         TQkazM4x/Upg5vCRtOpwmHGcacfJTtXUCZUrAbxnBSku8mjhhPa3GHHFYU3DRBSLIShb
+         u8vuk5p1IbMZhhfwJckiIsDcyWHy6lfGfRm/jkESuXAYAuIgpBVOnuSrxg6A8RGGXqiK
+         sKPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAZI5C9M76JgY9xkFmS9mKbN0K2ParkzGsZB9bBvEor9+7bstCoCS4p4bpb1CqeD44xmvrWUewlw==@kvack.org
+X-Gm-Message-State: AOJu0Yxxv+KKareob86q+vx0qqlh3EqXsHIe9agsr5VDshYs1AyKbA2X
+	ofxjdioJB+EYGl4gIrt9nSSXLdKe3uFW5VdE49jiTuf77b3cyAYfwInm9QFazNtiBA4=
+X-Gm-Gg: ASbGncupGZ/UI+KTUEl+yG4o8BWw2jlhtr7JQ3uPw5nF6HoRMCyBD7WBKX4rOqWBbLk
+	tbo3TB4o7hylbfCWMrsHqPd3bTELRosbhdUdU91C4kMtERW8oDZbP08saApwa1Hik1OY3aAdVGU
+	OSKriEYL32BBrr264vqPuKXnN8BoHNWjMggepEcEkn+FMpkgKdtw0r9ZQAzybvqP/fysZf12chr
+	J5KamURotioL2P3BAC7cuT0g/K1V1xxM89vuk9TRChN/iIWfB8tVmHJ9zkmTI4Q19pZIn0nJQ90
+	jPYqHK6PmEhFIFcysgXfNkoBaGvf/jfELoEqbqgEjkBKpJWQWap7OhyGSbNVbIDV4TOhu0yz0Ru
+	jG+J+SJ5ag374EjalU32YJysE6aghZYNsc2RK0Vp+71TkmJZsVhwwtZE27Liy8LrYVfZF94Z4Zp
+	2ep6Q28ubdXx6EhxrUVxR1XdzNlN+/fgI9Kb9jXBIhD/+M6DNlQVIFSCNdNhixdC/kaTiYgtHx0
+	29t7FI=
+X-Google-Smtp-Source: AGHT+IEkRZsenlzrshhmVUXkMssN1FuHmBAG4UEJw+j/0VvWJXbh4MXHIwmGsrrNxwXibEcnyWDXfw==
+X-Received: by 2002:a05:690c:9684:b0:787:cddb:ec2d with SMTP id 00721157ae682-78929e2b535mr63260347b3.19.1763135642698;
+        Fri, 14 Nov 2025 07:54:02 -0800 (PST)
+Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78822125317sm16468577b3.37.2025.11.14.07.54.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Nov 2025 07:54:02 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: akpm@linux-foundation.org,
+	bhe@redhat.com,
+	pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	jasonmiu@google.com,
+	arnd@arndb.de,
+	coxu@redhat.com,
+	dave@vasilevsky.ca,
+	ebiggers@google.com,
+	graf@amazon.com,
+	kees@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: [PATCH v1 00/13] kho: simplify state machine and enable dynamic updates
+Date: Fri, 14 Nov 2025 10:53:45 -0500
+Message-ID: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
 MIME-Version: 1.0
-References: <20251109124947.1101520-1-youngjun.park@lge.com>
- <20251109124947.1101520-2-youngjun.park@lge.com> <CAMgjq7AomHkGAtpvEt_ZrGK6fLUkWgg0vDGZ0B570QU_oNwRGA@mail.gmail.com>
- <aRXE0ppned4Kprnz@yjaykim-PowerEdge-T330> <aRaAW5G7NDWDu5/D@MiWiFi-R3L-srv>
-In-Reply-To: <aRaAW5G7NDWDu5/D@MiWiFi-R3L-srv>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 14 Nov 2025 23:52:25 +0800
-X-Gm-Features: AWmQ_bmvZlTCVtzzPNeqsxwnox4kcDfBHrvuVSpoFgKS95_ykKsOjuSCZG1n81w
-Message-ID: <CAMgjq7D=eULiSQzUo6AQ16DUMtL_EQaRSOXGRhMJrUzakvj5Jg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mm, swap: change back to use each swap device's
- percpu cluster
-To: Baoquan He <bhe@redhat.com>, YoungJun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, chrisl@kernel.org, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 002AA40013
-X-Rspamd-Server: rspam07
-X-Stat-Signature: erw5wcmz85q8qrextaobb9bf5z7crp13
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0D7E51A0002
+X-Stat-Signature: zwa1a8zeh69yxajns69zbxiohx5167cm
 X-Rspam-User: 
-X-HE-Tag: 1763135583-91870
-X-HE-Meta: U2FsdGVkX18Fnq/NvCxJfJ/mJ++69IWw5BSjH3brqGAJ8smTOnf/7DugkYsDrwKYnvXx/3x/Y5wsX9sPEme9otgF1/FeswqJ1py0dIzOB9tRIuulFcovSp77aAFnLvAgXwLhsMiqfWgjDUBEtb5L3/Nk7PuBIeaG8UHd4kmayi0CgoQSSD2huc6/id2n7nAWxfBtr2QHMblOLocNjssn3E3zp3otZfFqh+dW8fBMchp/qf8JZ/WMr00L6BK2nqRHLQBnqZuZ3nVZVoeF5YoAxPUXCoRBCg6hjbyF0gQlqNhLO66oiODabnVEgAFPvzwza7y6ieMfRRQJiQfYHKL1E6RElRnlwq5AJN6186CSG+AAtEjhxPRKvnpmF0O3tYT2WYcb/UahdLHssfuxuQTqd7pyzD0wHRRLKyTcgivIbLBq29yyQp/KB4MZLHDiLUqIOokwnrTB0kZoo3B2/KRQs6MuMpeDE0QnqLAzxdTP3D0EeL0IJuinUrA8jK2nohzWsHztdpJ7otVH79m0At+rIpDI1Junhk50wPO/AQFB0Osv3FAPdNA+WLHl3YVeLtZ+s6pcRy3kRTKJ5g9e4/vOox9p4MjoQNZdFD/diH3u29nye2E5hbic1aUY6fb89OXEEefWMAMWIzNOCZ9N6Bf3PBvvZTOgRpdOi3jxihTb01A21QsAI600KkFzLdRfEaXOByxh125JGomgCk6F8xIU0PJyrYTWHGLsRqNMFtU3126gntgXJNTwKyvkVZH3wEDV4ghVKeJUYnyrs4a4NjVCbF4d6FmlFDLSz79fkgBQUKXWQDsAsTI8bDqnzQtAWd4rzyiQnmX48W2eu8CAzKAOLuHg1/uZv3eb/jjLV9fbymbJAG+EhI5BrwIrOK7zoMYIFURiZ4/vzrgYbn4T1q4xIG8tOA5YTEsDGxEyp/VA9nqwSqEEhq6djtfrTjk0tBjY1+P04bQhUzYNl0NkRsp
- L8RxOda9
- P/SiGXTKnOp6MOmEcgJKNtpCETZvrUolbrAcj6F14MCXyZ3nEgQdwKdk/6tpnBPqmHn/D74doX9UzbnTR+7yj5UhPfcT1wARcIe/BmFEHGjGzK5fdh8MWOve5S9racfj/thniYa0cYnVljqZVAFdX7i3ixyynJHXywFK0sKOCdwq3ThMW5lxSkgl0E70B7H2lM4yvNhdoacPdKwcGTGrfc4gWwVa10z1ihqiaIPgMFfJ9ZYKt3kUsZGlvgkTBOVlGmbwvi+zHXHI6R4KOhiY+WV9PEoaeeg1uhxEIf07ywhtgRG/azwRE4Wj5pW263Q1kuj5qLTWdJMCaXFZ5Y+/qYpTn5GFswri5fxdg1sysRHBuoJKzIlvIUomvHzzpO7ho4ir1gxFL5kcqVtxRg6P6o9yv7l+P2nV5Pry2nJEXBq05fU+Hn8/BZIWXKm/g6FMInW/ZTxBU2ZiIH2jou2h91D7h914ibI6wYBd+oXKUzD3jbOYMZUThsNk8whFHUqmFX4ap9Od15BgiNvPMpmTbZSZztnJ/DBNJ1xEq
+X-HE-Tag: 1763135643-30749
+X-HE-Meta: U2FsdGVkX1934FuMkE37fzkexuBN/gVhOnkoOafyqH8q5LVpc+NZb5gQ/gb//8qRPzVg1u6jAQFypIus4h+Pt13CJZdSyDJQXy994QWzR2mGaKuxDxYydSwZ2oJCpjzcBppcogi0KBgNPD9njLYdDHi7sIqpD9e0MIz/uL50rpLozu5sQtFvsc0zUluV80x+aelDBoRO7Ne1L2puaFhTAMhiva8yFP6O2CfM+6ZX0zfrYkBE61jgFayUtyn8+NHtSfEjRZQBF1rjiNXDOv8Ba59lkFy5SgppUlHkUoSj8dDXb4VyIbrdOmIyGI7Pn0blGsWOsHHTfoJBzVasFRhQBqTQjNVurdoRJk+CnXBl8NMqDjjiRNQ7yavI8cWZ3vBzIirzaJKrNw3Fcr0x5Ftmqy7apHEMrq5sqrmoO6bXIbPJV8mYHTKZ3HLhZ8xYHIt7PZLceb5W9twWWQFrXeGTHEbMrg/fGNzRlqxEdRsBaw1qqJNUdNEbZ6a+NUG7fv9JmdzViTW8I1qkfwsuj4bfXKbjDMM5ie4dHRiRswt7BB3GwGa8WwRmbhF8PBE+1dXPqogh0qUVw4NvO5Q1RNFCx/Xk+AgNziagdEDDjOgaNNsNP2RixXONPhEwfbPUiEDWBgYM4UjSFiRK6TO0j7qPwi4MgEi/NqTzZikPEam2Elt9nv/Cf1HaYzyksXZidLKP/Rp28DnligwasL3S4gOooA3JFQVfZj6osl8DrW87GlJE8jDVkjXdXHpy3mGmr07EBfsEUf9EZJZZIEKb4dI7kn39rK8/Zvj2C9rMcq7s3WC5h/Vs+xaMH0ZGFbt8FuwYvVhccqrrNXpv3TSNri631TmXgC+7jlkgiW6Btn4goFURcOkl8NjR9muWuhtHCal1bsWBplSiTN6XPR+DXqzeeBW9TonS3+lxK6e6uzObeacu/VgUa+Tnu/8ETZOP7aay1n1OsYMC/XAIokm+abb
+ 8IRXb7QS
+ QmGLMASeV/stYr+WV4D2R03uYBULF9mUpel+78YJMAcTxv5RchMQduLSCVUVt0wCK/ER8EZZTuQkD8hQsgt4GzxdY109rWBMiLYQKP15ToltVk3Wy5L4ps6CnMJ8tr8vnXFW9YdbEKZ7Cqw8uQQV4ypU6PqFx5nOZJXkxZuNmxEZOahYwWMFb9aszO1+49g9HpoVE8or1t11ErV2oDVlHcFJFQXpKJ2oCAq5GIAKTtAhR816MvTotnFBfNKxEmk7ve67T/b71uT/vp9w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,87 +127,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 9:05=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
-> On 11/13/25 at 08:45pm, YoungJun Park wrote:
-> > On Thu, Nov 13, 2025 at 02:07:59PM +0800, Kairui Song wrote:
-> > > On Sun, Nov 9, 2025 at 8:54 PM Youngjun Park <youngjun.park@lge.com> =
-wrote:
-> > > >
-> > > > This reverts commit 1b7e90020eb7 ("mm, swap: use percpu cluster as
-> > > > allocation fast path").
-> > > >
-> > > > Because in the newly introduced swap tiers, the global percpu clust=
-er
-> > > > will cause two issues:
-> > > > 1) it will cause caching oscillation in the same order of different=
- si
-> > > >    if two different memcg can only be allowed to access different s=
-i and
-> > > >    both of them are swapping out.
-> > > > 2) It can cause priority inversion on swap devices. Imagine a case =
-where
-> > > >    there are two memcg, say memcg1 and memcg2. Memcg1 can access si=
- A, B
-> > > >    and A is higher priority device. While memcg2 can only access si=
- B.
-> > > >    Then memcg 2 could write the global percpu cluster with si B, th=
-en
-> > > >    memcg1 take si B in fast path even though si A is not exhausted.
-> > > >
-> > > > Hence in order to support swap tier, revert commit 1b7e90020eb7 to =
-use
-> > > > each swap device's percpu cluster.
-> > > >
-> > > > Co-developed-by: Baoquan He <bhe@redhat.com>
-> > > > Suggested-by: Kairui Song <kasong@tencent.com>
-> > > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > >
-> > > Hi Youngjun, Baoquan, Thanks for the work on the percpu cluster thing=
-.
-> >
-> > Hello Kairui,
+Andrew: This series applies against mm-nonmm-unstable, but should
+go right before LUOv5, i.e. on top of:
+"liveupdate: kho: use %pe format specifier for error pointer printing"
 
-...
+It also replaces the following patches, that once applied should be
+dropped from mm-nonmm-unstable:
+"liveupdate: kho: when live update add KHO image during kexec load"
+"liveupdate: Kconfig: make debugfs optional"
+"kho: enable KHO by default"
 
-> >
-> > Yeah... The rotation rule has indeed changed. I remember the
-> > discussion about rotation behavior:
-> > https://lore.kernel.org/linux-mm/aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T33=
-0/
-> >
-> > After that discussion, I've been thinking about the rotation.
-> > Currently, the requeue happens after every priority list traversal, and=
- this logic
-> > is easily affected by changes.
-> > The rotation logic change behavior change is not not mentioned somtimes=
-.
-> > (as you mentioned in commit 1b7e90020eb7).
-> >
-> > I'd like to share some ideas and hear your thoughts:
-> >
-> > 1. Getting rid of the same priority requeue rule
-> >    - same priority devices get priority - 1 or + 1 after requeue
-> >      (more add or remove as needed to handle any overlapping priority a=
-ppropriately)
-> >
-> > 2. Requeue only when a new cluster is allocated
-> >    - Instead of requeueing after every priority list traversal, we
-> >      requeue only when a cluster is fully used
-> >    - This might have some performance impact, but the rotation behavior
-> >      would be similar to the existing one (though slightly different du=
-e
-> >      to synchronization and logic processing changes)
->
-> 2) sounds better to me, and the logic and code change is simpler.
->
-> Removing requeue may change behaviour. Swap devices of the same priority
-> should be round robin to take.
+This patch series refactors the Kexec Handover subsystem to transition
+from a rigid, state-locked model to a dynamic, re-entrant architecture.
+It also introduces usability improvements.
 
-I agree. We definitely need balancing between devices of the same
-priority, cluster based rotation seems good enough.
+Motivation
+Currently, KHO relies on a strict state machine where memory
+preservation is locked upon finalization. If a change is required, the
+user must explicitly "abort" to reset the state. Additionally, the kexec
+image cannot be loaded until KHO is finalized, and the FDT is rebuilt
+from scratch on every finalization.
 
-And I'm thinking if we can have a better rotation mechanism? Maybe
-plist isn't the best way to do rotation if we want to minimize the
-cost of rotation.
+This series simplifies this workflow to support "load early, finalize
+late" scenarios.
+
+Key Changes
+
+State Machine Simplification:
+- Removed kho_abort(). kho_finalize() is now re-entrant; calling it a
+  second time automatically flushes the previous serialized state and
+  generates a fresh one.
+
+- Removed kho_out.finalized checks from preservation APIs, allowing
+  drivers to add/remove pages even after an initial finalization.
+
+- Decoupled kexec_file_load from KHO finalization. The KHO FDT physical
+  address is now stable from boot, allowing the kexec image to be loaded
+  before the handover metadata is finalized.
+
+FDT Management:
+- The FDT is now updated in-place dynamically when subtrees are added or
+  removed, removing the need for complex reconstruction logic.
+
+- The output FDT is always exposed in debugfs (initialized and zeroed at
+  boot), improving visibility and debugging capabilities throughout the
+  system lifecycle.
+
+- Removed the redundant global preserved_mem_map pointer, establishing
+  the FDT property as the single source of truth.
+
+New Features & API Enhancements:
+- High-Level Allocators: Introduced kho_alloc_preserve() and friends to
+  reduce boilerplate for drivers that need to allocate, preserve, and
+  eventually restore simple memory buffers.
+
+- Configuration: Added CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT to allow KHO
+  to be active by default without requiring the kho=on command line
+  parameter.
+
+Fixes:
+- Fixed potential alignment faults when accessing 64-bit FDT properties.
+
+- Fixed the lifecycle of the FDT folio preservation (now preserved once
+  at init).
+
+Pasha Tatashin (13):
+  kho: Fix misleading log message in kho_populate()
+  kho: Convert __kho_abort() to return void
+  kho: Preserve FDT folio only once during initialization
+  kho: Verify deserialization status and fix FDT alignment access
+  kho: Always expose output FDT in debugfs
+  kho: Simplify serialization and remove __kho_abort
+  kho: Remove global preserved_mem_map and store state in FDT
+  kho: Remove abort functionality and support state refresh
+  kho: Update FDT dynamically for subtree addition/removal
+  kho: Allow kexec load before KHO finalization
+  kho: Allow memory preservation state updates after finalization
+  kho: Add Kconfig option to enable KHO by default
+  kho: Introduce high-level memory allocation API
+
+ include/linux/kexec_handover.h              |  22 +-
+ kernel/liveupdate/Kconfig                   |  14 +
+ kernel/liveupdate/kexec_handover.c          | 338 ++++++++++++--------
+ kernel/liveupdate/kexec_handover_debugfs.c  |   2 +-
+ kernel/liveupdate/kexec_handover_internal.h |   1 -
+ 5 files changed, 232 insertions(+), 145 deletions(-)
+
+-- 
+2.52.0.rc1.455.g30608eb744-goog
+
 
