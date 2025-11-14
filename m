@@ -4,97 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65F1CCE7B1F
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 217B6CE7B1E
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:19:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C16208E0010; Fri, 14 Nov 2025 10:19:01 -0500 (EST)
+	id 81F138E0035; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BED248E0002; Fri, 14 Nov 2025 10:19:01 -0500 (EST)
+	id 7F6DC8E0002; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2A848E0010; Fri, 14 Nov 2025 10:19:01 -0500 (EST)
+	id 70C5B8E0035; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F87C8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:19:01 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4CD4112E01B
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:19:01 +0000 (UTC)
-X-FDA: 84109570482.27.806A3F3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C23B1C000D
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:18:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RyPfeDpX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133539; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B5FA8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:19:15 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26B1A88CC2
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:19:15 +0000 (UTC)
+X-FDA: 84109571070.20.1C5DA17
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 37D0B80010
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:19:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KatCNx+n;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133553; a=rsa-sha256;
 	cv=none;
-	b=LwiSQoLzleYgFS5NdYLlsQ2MijcoWfxyJU7fuGAg5cpypnRxBKW64YHYwo7N+G0D61mGBx
-	K9yyxuAo0nahcMZuohITVlYInJO3rYIQvPu8lx7zEwYQOv+op2wajfYVSYwFSSzyve4tSi
-	v4qdf4bJRXhk6HxTnbNhVzliscW/DEE=
+	b=kESvUnwiyKDI5UY9RxSPnVMw2N0OjlzbzVa5439Rel7oVHM/akydQzLcVTsG2WDy1QqxC7
+	+7cUN/SSvr2QyXS7ZP1pE+WmLTW5br09NMwwBZnN0Sb82jgiuizKXZ1LhyI/C/2rOEkJch
+	YRGj84ab3ofNXUxqBIONyamV4BFzZZw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RyPfeDpX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KatCNx+n;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763133539;
+	s=arc-20220608; t=1763133553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2hwC5SbuqU5yHKC2oGkCoPCr5JoKAr3PxjEUSBDGjRc=;
-	b=IXfKoyMz0y8HlWj37UKnIP7NrdN+LRxmeQuyWJLHaAUifGbPNqb4aIup+cLYVzDFwmXNc8
-	KHF1dLtKRhHQ2IHaz5IdX+sJNCBD4xlmCS5tPMnBOkKetUxCJyn+3XiG0ztyDwhx2/M174
-	uao3Y9innCEhT/mqRF5GxPdoO9OX1Vw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFEB060175;
-	Fri, 14 Nov 2025 15:18:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CFDC4CEFB;
-	Fri, 14 Nov 2025 15:18:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763133538;
-	bh=Q7AbNtbSF2oUgYwfiHMSGel7cR2NLanBud5yyhRwB5M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=RyPfeDpXgdma8ly5nBSnAOq7bTR3bx+1HzamCgl4PbcCEMCz8QwFVr1XZ+1uO3PKn
-	 2ucnRdF/OtluPexvPzApZfxV25Su8GWgb6oYZ4X9eBTuCMgxWyQjn/YV7bur+A53v5
-	 7PQgitDLCRG7jW/wsH61M0y9dP4+J2op6YcmZQ6pGzlolUAMM39itAsKqZovcqwlHr
-	 jDCAnKLQ5Gv8/FplaM914qSyHUXlPv4W6DClKc7WqWv3ijSMazklXjXWLWBjmUYM+S
-	 c9KRa3foVW/Q1QeB3y0qVu2zEkuNhPvy1tDL0RInVUKjdErDj/c/0V+FN+2PDp/2gq
-	 4vg+oGPQfV24g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Mitchell Levy <levymitchell0@gmail.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
- Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin
- <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, Viresh Kumar
- <viresh.kumar@linaro.org>
-Cc: Tyler Hicks <code@tyhicks.com>, Allen Pais <apais@linux.microsoft.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org, Mitchell Levy <levymitchell0@gmail.com>
-Subject: Re: [PATCH v4 7/9] rust: percpu: Support non-zeroable types for
- DynamicPerCpu
-In-Reply-To: <20251105-rust-percpu-v4-7-984b1470adcb@gmail.com>
-References: <20251105-rust-percpu-v4-0-984b1470adcb@gmail.com>
- <UXz9LMnhHE_mSMj1Dt_6wr3bB7I0jmR6ynJ2h8pSSiyeusmfuHXPFk5UVOYajJqnW2xhCubkwiRlUU5Q1jFFig==@protonmail.internalid>
- <20251105-rust-percpu-v4-7-984b1470adcb@gmail.com>
-Date: Fri, 14 Nov 2025 16:18:45 +0100
-Message-ID: <87ms4o3ane.fsf@t14s.mail-host-address-is-not-set>
+	bh=vTq8gM0Sr0ljKbDKqif3iDj3cyPF1WfC60KmGWiymxw=;
+	b=IhEMCTEUEBTpBtbvVDbnlZ15lB/fw6HFy3k4cW6kLFoHQ27YY+rXGHYL6jK1SNDtfTagYM
+	la46fEtUi0tkSYi7EbxjowWDL7U1NAY7zoiITUr7NKID8yDSfJ0MzuT3RFLKWfnCo9GP70
+	6cUcSkDhU+GXyoLEI7KwvXLyWNDXjpk=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64074f01a6eso3700935a12.2
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:19:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763133551; x=1763738351; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vTq8gM0Sr0ljKbDKqif3iDj3cyPF1WfC60KmGWiymxw=;
+        b=KatCNx+nTdNpVahDipG8E4xRQw9v/9h1WyJdbOTEZYCze4yDz9s16HmdSwvp9HdClf
+         JT68wRH5h4VRBajRVkBBFU3k2LhpFNxq4EjnPNKqCNW9MmzCfsPECBa7m+BactUzRBPS
+         CefIfZCn2GEhEBeBuKCmZA61yPAxUKIXemGyhmi3Oo4EcUyAQjrk4eyl7YaYj9y7LVUk
+         3EW+9Kc0H6J49CR+gDvOBUpB2MC6OyI0LzJfsXlC+IWjIm22lqRY4kYPjWgcSYE8r8mM
+         4tjkHSymyOjXza5xtn6mbNS1vG70Pp3H4dkOnBWdBoOt+N2+ozE51b7Bh74kJYJ076fp
+         FyyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763133551; x=1763738351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vTq8gM0Sr0ljKbDKqif3iDj3cyPF1WfC60KmGWiymxw=;
+        b=h2xl230CBACE3uARlXsBB9h6dRTjM05YtmEwKQ9GOsuxu06TpLl+wwvMYcb8Gsgjkh
+         78XzX82IIIRjYF8Nj5wbYwtK9yE5q8JzodldUb65IrQfW7k1WxsP46tuMIbUEAwmmNm7
+         tlsjpZVfvHSfboZKA5OR6Jl7jHRF8XPFrGsPxLJsd0vLN95T0KbBs8CUic4usqp2+1LJ
+         KpX31ca33ainxV7E9J2MgtM/FF2KFpLTAlKXf7XavDxsavK5Kz2pzi/Yrw85ddNRTQpg
+         k0fFMlj5M/WR1ITdGbtmnoZGKHPskF0of9fWqJyCDTJVTMgWng6i2MhfKBY0t6m0dsZv
+         KNtg==
+X-Gm-Message-State: AOJu0Yy0e7gUBpto4VwZWRCKuDqG/hlHzaRGYphPZSNqGb/7LvGhkw86
+	DQczGh9CszaF/isi4/PAxhAAmrsPbYKAKZMIhox6oesBoPZyMhvANJiE4g6htV0ewq8nErZ1jj9
+	xTd17UpShktMSicc6bkKaBLlkiTf5L+k=
+X-Gm-Gg: ASbGncsK+Mgeul6R2p1E8fhWlzufgPf3YOhVfd61WMkALbWI7+h/McAAD7X10rrmfOQ
+	OM7bY1CHf4EtxHwCvOofFkq9Kkh1OoIE5EIFo3V0CRG+JLk17nU7sNQPlplL55Q35H2fofUqmCl
+	WJrTtml5LmcSfTgyFxKap/hTd/0J8+QeCB4eLGxO0cqhaMd5dLyycgHTTz6wqJpmCOPy70pFDC8
+	b+T/zqNcUV61+8oeYMnb0qD7+W1a2MSLME8cALOlbNed5eB6mtoO66XXZfnRmtYUUA1/FE2CIeK
+	TpG22FEDhawQoObpUktMupw7OJzykQUD
+X-Google-Smtp-Source: AGHT+IEudofkKMhkHwKl9gbfdjMpL/6C9s9MIhrHTEp1YeDgjqNJ326ZP82OVuO/bFPMwLmRrZ/AhDXolotLIo/n/50=
+X-Received: by 2002:a17:906:6a0d:b0:b53:e871:f0ea with SMTP id
+ a640c23a62f3a-b7367bd9261mr358803266b.56.1763133550733; Fri, 14 Nov 2025
+ 07:19:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
+In-Reply-To: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 14 Nov 2025 23:18:34 +0800
+X-Gm-Features: AWmQ_bm69zgMxXusRC5P6W5ccXe1vWsyUwTC33BkNeOlyt-WgJRGbcWoOq46v78
+Message-ID: <CAMgjq7Ak2QJ_A-LKOEQkHs_o9VAmjXodAvnmSbNmTGphWZr+WA@mail.gmail.com>
+Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
+To: Andrew Morton <akpm@linux-foundation.org>, kasong@tencent.com
+Cc: linux-mm@kvack.org, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Youngjun Park <youngjun.park@lge.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 37D0B80010
+X-Stat-Signature: idm99jwo9zyh9othecd1r53edfibif84
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C23B1C000D
-X-Stat-Signature: 7udnm1ne1ieucfitzedei64wqfd7oeaf
-X-HE-Tag: 1763133539-51541
-X-HE-Meta: U2FsdGVkX1/+60zvIVY5EUVxF43Dan2XFEoMLp2gTwL95d3HHmcS8WFWbS88wAlbCFfX0o+tpdfFPwB/ctvRbnplcng8eh0Zn39jFGGbBB7fa3dGm/x2zztAFx5/N1tGdn2RFF8vwJOmgWY63CeDG0igKRPUpZah7sRB6EMGvgj69tn7izcZEt3UXOxggToGcImFj6aV7VRKJ3LMS2YApp6FBkwzQKhDzuUCPfUeZxIeBaHVyTH8UhVd+qEE9yELMfltsj9Ft4XBSvQKYZDnlFYueoC0uJ64EsvkeW1jtush7kJFVj4hucUbbK6j/f7NFmfL7LqejTedymr6LgTRT60GRxcMXHJOATbxGTNW7ggxpk81RNMnokIGKq96Fa1Y96h17cmAH6/nfrVq8UtSwAQ/OyW3+r/eTHTCAJNd4lTNe8JviZt0NArY0U+VfgEOqLRFQUsYWFdC9wDCOgLB6Q3ykfZoqkdmbWXBS0bA7beND5tzUKP5uUETOrFCmZgZP9PHAPG7QjNMG/x1LJOyMXTg9SkMWzA49BAUb49y0265G4SRTf0GirWyqGla8LWx7sISXqS2dDc7hEDdO3ey+Bl8KIy2dEFN/GGa5Bye92Ug1IYOvkx+CdGu/tOHrbtN1TC7PcPjPAlJenW1l2Mq6z5p6F+mS0UOjpdEMjqglRQhB1BF+hWqoEkIbyE4qrVUGGjRHf7JLyZ3+yXHu8w/vsGRoUH82otPOOyl/8H70EplotHDipZnYHoGkmVU3WI8LQYAwufYkjv+tazI+0+NvBlzg0VbKGZfRiL53yV5YjG4h8fm37YG1yIU8U7aBej2AFXyxGZEqpfb+VprWArAyDOerDUbUy0BKsGuLN/gzEcLaWJLnYRFvmAAAiqwyWaqPP4xb6Pxz8XhVtQot6W+2yasWwIYfoAH5cKVt4RlPygJd8VMLaxlToWRzbU3HqlqMWfQ4ji2BP6j7BE5Uqb
- VBWG6BMY
- TJIZd/q8zBxXZCv5duUUmKUOEPodBqI2NdY48P7A+xmOUdK97jCkCsjNs+aRHwyKZ18Q3+dEJTFneSeZ5B8yE5R6ZC+vO0uVIHAsk6PNtjlVJK5AgwMY7cdTzV7to/bcrh8VmGFqccQo32SjUn7ZOWD5Gjt6iI7Rdqt4+d5bDZ2/G3kyy8kktfN+ULWQg/CmdR4d/Ey17WBP1gtxlGHFwx8MPDfEuFSluVByS49YvyAcYebgdN6jfdasw8aJQ9v3fadeBHMv3NN/Zcg+NymnpUXjpAkiFlyWtvPquNjN1SQxJdX0=
+X-HE-Tag: 1763133553-240485
+X-HE-Meta: U2FsdGVkX1/+Ag6Tdr6pSMD21Hgk7+7IAk+ko6gu5N2Cigi8HC6WeialRB6JO7X54WtN1RmRneFQOPHbHxZw6BLM+zsXHS5BvqVUR8Qtk3Lzf4UgbliAvKiXQzxyyxRCdOSPuoqcV+YKvmCT+IY4VHRAEvm7IT8O6tsxsVDbkHBO5CaDL/PUrNnUT9PGHnqTQWR7jYlQoSUui1ChI+dMCnTimMtuxQgnK0bUeS6XnqJ0wxtGoekAUols3NCZN4SHTfQP5PJiYX5E9NyzNAWf2jgEbAEUZcs9qleBhtk/m8ZnpnayxXHur9N5cHjUGvR1GjVuJtb4a8PqdRqiux4ev+XNZDacWK7gpIWRV5B6/CprJFqbWHLj9vlCitb8UlikymdWp4F0qZaUTYbhAON9+UmLNi2l6F1Td0AQ/CiZlNrG4paj5V7iNwfAVE2DlVHyoVM30Ak2+eFx3vkvaFPtWrO4NrSXW3syf+lMNIx/X2/E6frveKIN+PwPbECk+2gkqzYsNI8Ohk+2mOX7iI1wLvmxCrWuwG0vAbrT2Cvf8G0T43NMm34Y+0hsFjB0nu1TJ6Cz/8k/8xp4mjkzfcSm+XxBrAq22zaFHAghyRzk528nf7rcQI3eSA/RU4kntqGEaweq1QvNmgFhSE1KRslDF8g38Vy5wovxyGHO2KnQFPSVumL+SX+bDk1mWSQOp/+mJHLof4mRYGh9d3lJ34f3gd8MVi7RzmMpExiISSb31OfcubeTKV0EaPSZ2Igvaka6Jbz+f4l96Zv2PGi3w9jYdIP9rcOweKg8up46slQpZ9Cn6bu5Sa6MkmjUpHve8o1gRbnFrGiaB3uxWLNsspVc5HVwCsJ+PsHPXowgiPlQicdSQ28rzsm4g3L9L6KPy4AIstWITlmZ5x5rfeqyVxMOcvVw3tZwX7iTiqIshbAaUy95XbesIA8ELJRdlswpex2slq8ZgKgfENydvXSkv/X
+ j15ULPff
+ kQiwUG9z2aa8z6STY1YQswSzkq3zoFHhSgH8XYm20vjFiyrJ7wNRkD/SUPbiX2w179j3tmpQ52EDLpQK4cl53szvmNmSGF6SJ7hyj6lKNR9X8vtOaRSfnQ36o2dRreQAkOvEMaNRP4N06+poIfkE19w6ARE18G49/kWtT9iOB2Ej91UqM+fWPfMKP9eXMBk8SgW4g/lC+MkPBlHuVG9oNmIb4o7Du6tYH+V9jmmBGbhW0mWby20NuNqOG4F1n82ml8SjspcJjy7Fhz/3LDwSHxmFSxHHDPgZr23gnyhISUCadLFEXSalnobbC6HbqXLWXir1XcLirKkee2NMJeCgVwqByx5EVFV0cD8g677VWOZF6Q6iurHG0G+I0AjSnmv4BvCXQ0TMzSWFLAvRpbgJeHkoZ09UDPHe7P8jmTNR9+s6rkjaWy7omaMylhvzv5fUAx6kZu0HJORGgaowRmB9Vd1p11YA3FHP0tthN7/QY3lUncdo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,48 +117,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Mitchell Levy" <levymitchell0@gmail.com> writes:
-
-> Add functionality to `PerCpuPtr` to compute pointers to per-CPU variable
-> slots on other CPUs. Use this facility to initialize per-CPU variables
-> on all possible CPUs when a dynamic per-CPU variable is created with a
-> non-zeroable type. Since `RefCell` and other `Cell`-like types fall into
-> this category, `impl CheckedPerCpu` on `DynamicPerCpu` for these
-> `InteriorMutable` types since they can now be used. Add examples of
-> these usages to `samples/rust/rust_percpu.rs`. Add a test to ensure
-> dynamic per-CPU variables properly drop their contents, done here since
-> non-trivially dropped types often aren't `Zeroable`.
+On Mon, Nov 10, 2025 at 2:06=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
 >
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
->  rust/kernel/percpu/dynamic.rs |  44 +++++++++++++++++
->  samples/rust/rust_percpu.rs   | 109 +++++++++++++++++++++++++++++++++++++++---
->  2 files changed, 146 insertions(+), 7 deletions(-)
+> From: Kairui Song <kasong@tencent.com>
 >
-> diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
-> index 1863f31a2817..a74c8841aeb2 100644
-> --- a/rust/kernel/percpu/dynamic.rs
-> +++ b/rust/kernel/percpu/dynamic.rs
-> @@ -89,6 +89,36 @@ pub fn new_zero(flags: Flags) -> Option<Self> {
->      }
->  }
+> This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
 >
-> +impl<T: Clone> DynamicPerCpu<T> {
-> +    /// Allocates a new per-CPU variable
-> +    ///
-> +    /// # Arguments
-> +    /// * `val` - The initial value of the per-CPU variable on all CPUs.
-> +    /// * `flags` - Flags used to allocate an [`Arc`] that keeps track of the underlying
-> +    ///   [`PerCpuAllocation`].
-> +    pub fn new_with(val: &T, flags: Flags) -> Option<Self> {
+> While reviewing recent leaf entry changes, I noticed that commit
+> 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
+> correct. It's true that most all callers of __read_swap_cache_async are
+> already holding a swap entry reference, so the repeated swap device
+> pinning isn't needed on the same swap device, but it is possible that
+> VMA readahead (swap_vma_readahead()) may encounter swap entries from a
+> different swap device when there are multiple swap devices, and call
+> __read_swap_cache_async without holding a reference to that swap device.
+>
+> So it is possible to cause a UAF if swapoff of device A raced with
+> swapin on device B, and VMA readahead tries to read swap entries from
+> device A. It's not easy to trigger but in theory possible to cause real
+> issues. And besides, that commit made swap more vulnerable to issues
+> like corrupted page tables.
+>
+> Just revert it. __read_swap_cache_async isn't that sensitive to
+> performance after all, as it's mostly used for SSD/HDD swap devices with
+> readahead. SYNCHRONOUS_IO devices may fallback onto it for swap count >
+> 1 entries, but very soon we will have a new helper and routine for
+> such devices, so they will never touch this helper or have redundant
+> swap device reference overhead.
+>
 
-It would be great to be able to pass a closure here that can be used to
-populate the value. Then the value does not have to be `Clone`.
+Hi Andrew, I saw you have merged a later UAF fix I posted:
+https://lore.kernel.org/linux-mm/20251111-swap-fix-vma-uaf-v1-1-41c660e5856=
+2@tencent.com/
 
+So this patch is no longer needed, and should be dropped from
+mm-unstable and mm-new.
 
-Best regards,
-Andreas Hindborg
-
-
-
+Can you help drop this? I'm doing a rebase for the swap table and
+noticed this patch is still there.
 
