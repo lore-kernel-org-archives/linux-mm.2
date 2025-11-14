@@ -4,110 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D360CE7A8C
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A0DDCE7A96
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:06:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9835F8E0014; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
+	id AED138E0013; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9341C8E0011; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
+	id A9DD58E0011; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84A6A8E0014; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
+	id 9B3488E0013; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 739748E0011
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 38B31581A7
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:01:32 +0000 (UTC)
-X-FDA: 84108619224.15.2A93836
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C5B3D8001E
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:01:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=lDkSCWvG;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=406d4a272=graf@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=406d4a272=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AF218E0011
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2703887D6A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:06:58 +0000 (UTC)
+X-FDA: 84108632916.19.4107438
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5E9694000E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:06:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJmU7D90;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763110890;
+	s=arc-20220608; t=1763111216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EaIGl6EhlQ4V9CUY31LrgRIkIsFC5ga8p6ILWDzFD84=;
-	b=Km26EC6I5KoU5wRYtzr4zigR40BrXcdRSq3wEV7iNp/aSv1fYx7/f0bjZTKo1ijRyGs6Ul
-	vdJ9zwuMYP1Y6cG5xznynZmbCD/81dX31Xf3GIBxNyT4A32f04jlwNR3OIWMztPA6erPLT
-	5TdCXfNSClgyML5jNQ6YEY+MaZwK6RE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110890; a=rsa-sha256;
+	bh=9wg0potO2m5v6oXBfIXmlvWrMNWrRqqdkTc/Rp+NQ/o=;
+	b=R9zs/GCD/T7Fs9AfGVl+1JicnM0ea3zjZ0Fee86EFjDXi/BmBU8tHx1rhgA6YFaF/02RH/
+	6cDbcfusTnx7pWs0SXEFVIMf08pLGp8K7XOmRdAbJQIqz822wWks3agLZeOfaB8o9BKU5U
+	NOIXWiILMoFJOkbk6SlqnBV2bmXsV7A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763111216; a=rsa-sha256;
 	cv=none;
-	b=D3we/0LQWb3/rJ3e6Cm+I3z6FD27hmuKQxo2NTZ4+S0EMVeRpEfFdtxplnBhA8+Uhw1K3a
-	uvNn+2bqwCzlxbIxKJKvvWab5tWh2gZWxlaXA/zmxBg3sq+7RF4O14Dp9NOpkiABMz28GF
-	OKD6C1FZ/T/U1bFGzDPiNsfg7E401bo=
+	b=V/nAk9Yw9My/i7a6Jl9xaDhIK5hsXEQdGjrqq19+9owlTLUt1wRCroyg2k4ldEeEfywK38
+	VN9cplGaGJ1ZcU0iXYDSZ7i15ZVMr+uTth7RbAInFb26E7qG+O3cMjEO4KKAzdZqaf92xr
+	lsDpHRw+wTnqSqp1EV2juFSI2WYeaak=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=lDkSCWvG;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=406d4a272=graf@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=406d4a272=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1763110889; x=1794646889;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EaIGl6EhlQ4V9CUY31LrgRIkIsFC5ga8p6ILWDzFD84=;
-  b=lDkSCWvGS2neFzSWK2iMvyOo1UmmBGhzifdfa5Fh0L5PruYFwSaWhfa3
-   ldLilk2d+8089kA0Hfh8mjiTFMCOEkc88LREpRa915ZvLl+v3Ihc3LZEd
-   GS+lAeft4bAom/cP/AjxIXPf8W4tuYlrebwNajgP3lWh+yRJXz6vearzG
-   +j8B+btaF5kx2JwQCcJNRd8fJf/yu7g3gOevVyEGv8reUR1/apuM7aOw+
-   UmSH+awJ4AJZBiuWszMOnSVHfyR/pHXG43gLPl+LSff09PCIl3ji0tOpZ
-   1WvTy/zGIoTDgPc0Gsj99pgq/2DzbsgVom1H3clKMRPHQ6BLIZkxGHbDc
-   Q==;
-X-CSE-ConnectionGUID: Uq1Ipwx9RJW9zvAJniWZLA==
-X-CSE-MsgGUID: M25iTk7PRVC43yz2Zp6MFQ==
-X-IronPort-AV: E=Sophos;i="6.19,304,1754956800"; 
-   d="scan'208";a="7112418"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 09:01:25 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:22919]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.35.95:2525] with esmtp (Farcaster)
- id 7b41653c-f962-4fb6-9b96-b9676b9afb43; Fri, 14 Nov 2025 09:01:25 +0000 (UTC)
-X-Farcaster-Flow-ID: 7b41653c-f962-4fb6-9b96-b9676b9afb43
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Fri, 14 Nov 2025 09:01:25 +0000
-Received: from [0.0.0.0] (172.19.99.218) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Fri, 14 Nov 2025
- 09:01:23 +0000
-Message-ID: <e6f3c999-7a17-4c6b-8de7-a380cccdde9f@amazon.com>
-Date: Fri, 14 Nov 2025 10:01:20 +0100
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJmU7D90;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5ACEF4054A;
+	Fri, 14 Nov 2025 09:06:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E93FC4CEF1;
+	Fri, 14 Nov 2025 09:06:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763111215;
+	bh=qsV+HCbv7VLcG4YR++E7I2jRabBKbnj46aXS2Ru+c/U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aJmU7D907gIQOowwYqh+AhNkcSDe+ZsooO3peE2t5xQdC/J2LmysdS0aPWlNRGvoU
+	 /HG/u6c2tJDI/yLPsmxIcguM6UJvHesUZItJ+kxMoUvoVWl4a7KYoTOpWwA6BA4a22
+	 5d66fQ17UcPWUoa0Hyz9Ck+hbB02Zxua/mmWAcXe2huVCNWkhJ7fDQNegU+t10mWP4
+	 PHW+wPwy/OzdxmhH72TfIJCrbUTXHkgNolvQFC2jnjlj7LEPPeXe+z01BYT8Kxcv+p
+	 2bSksdXtkmvQIqK3I0c9DGUKwDIUtsDubkYcMnLWBCxJya6TKLVvDOpSsi18emWNpC
+	 btYDfzv5mp/NQ==
+Message-ID: <e5c930a6-f10d-4715-aa80-64152b30d96e@kernel.org>
+Date: Fri, 14 Nov 2025 10:06:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] liveupdate: kho: Enable KHO by default
-To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin
-	<pasha.tatashin@soleen.com>
-CC: <akpm@linux-foundation.org>, <pratyush@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20251110180715.602807-1-pasha.tatashin@soleen.com>
- <aRbag7qR9OVNAQXN@kernel.org>
+Subject: Re: [PATCH 1/2] Remove the "FOLL_TOUCH" test code from gup_test.c.
+To: peng8420.li@gmail.com, linux-mm@kvack.org, akpm@linux-foundation.org
+Cc: osalvador@suse.de, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, dan.j.williams@intel.com
+References: <20251114085038.191031-1-peng8420.li@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <aRbag7qR9OVNAQXN@kernel.org>
-X-Originating-IP: [172.19.99.218]
-X-ClientProxiedBy: EX19D040UWB004.ant.amazon.com (10.13.138.91) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-X-Stat-Signature: rtgw5uqiwgsa5e8qfnqg9kya6ru87pqw
+In-Reply-To: <20251114085038.191031-1-peng8420.li@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5E9694000E
+X-Stat-Signature: y74awc156e71177jbzxhn6471qd8s4uz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5B3D8001E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763110889-568976
-X-HE-Meta: U2FsdGVkX1+DSoDQuYHjqGjUOFa+1vXnVR/xQ3swiVkdxBRWNQHNHsfFnxC0733A9VWt1JLgD3ibitvE6jrwcjWcRRqRrXESJJj3RkIt4umcws9yYnamlIdObzWMFEW3a2rzNlSoc3S1fdGu0BEWZd6x3LlmuXJHayRl2pcaDJL1mUsSAoeIBnWx6mUxFJd/SfQReovZdGYB1gwHwSS+3gQuCkrWSnyXgh/GaqON72U5E5dbAvsBSqim83SAuRKsO8FHg8b/hsjERz5yVX6ZnTjpCl2i44uLYhf+pX9pz9DrucY1f+ZvB17hp+7jr71cRL8/bJVIkCR/HzulYkqB2gcQxuV8IqeypayI8ta9sWtApiTgZhjt8s13+Bugn8Y203Snd508LaO+LTes8DZjzpxwEeLGcqg1rMciCFm1we6bIITODNyPK64IE+k0U1VGtnRe1nFgwMNeoXXiz/5KSVJhjv59BSIapca5kmed1ceHvAMu2grZFQwOWv65y5VaD8cwiK16uHUaSK4vID23c4L1NWLzf2fkxfsonj5+Vxphcs4EK0q3yrjMLV4hdnyxd5FL9yupB7zamDWOdp0HAFpKnrwpJ7uwtqnPQnDSyLnZQNN7nrY5FmYXQgA3zdgxOSIi/Rd4L6ACpZ6c+KTYeMb8Yyfjkp7EnhFKcr2zczTrR4wU8tSIO2CMH2p1uEnBOzgqldKOtEj8mW5GXrUpJTtPxeRnXQgWqwx81Irftt6pfU4wIJrujJZQJKdzUjPtsWcrtjsKWd87K1hfS+FAImKhGe0bdqm/YJgo3IYJZCbgHayghbYwKP6xqhdbH8EpX++A09XYWnrtpJkJoz4ahzQqj1UPyZ7XdkvK8lX1Nkb6ASFBGxA2J5E0v/yVZk6sEK8pRMfn5Rxpqh178XBHrBZtIw+Arzl2jq9Eh5sE521N8nbYMeIvFM/FzI+yt5+OPMWBLJINv1Vocs9kjL5
- R/L/AK76
- BMtJYo4cpV9SmzDcORbI+8dIpcTOgUBK9vkwyw7vIva9WwlfbNkxlGqxJg0yyKM8l7MwuSGpdsG4yYWrNdhHCkYHKIhzYYQCvW6bQZJkOw++Igdc0GYWvmX+DC8kNrChwcLC9XSMiweD6j0yGKUIBdU+opwFlaOCvdqrLqA4eThOpxoKri1CRckeCdCxpkd8k76Pl8TwuzGFMTol5gD1d+gR6IeI25uoMYwnhKqQLfisiATafzKDLd0ZIudkSvEDEyM2+CaQaGPNYEOIYzUaMu6E0RMHxnwFbSQKhmtI9Xf3RpUKRfntA1rH5Gnd2PancgZFDpbx0Lm6mc1tj68yaJAf9IYIxN48iKri7vNC5XpgorMQipRcQBhTa7oUmdpnOtQorrgFGd2auZz3Xjx2K/xq0NyUhrS49l91aMkCBt4kL3eycVaznK/X7y6SUnvuLrvkcrIKekAHySm8jkf19RndyOyOnLYEKIAoyIrBGgknY2d5t4NvrNdu40Mly+QKyD4NkB9xUq51aDYmio5jeVWkqz0mIyu4X/yHPGtEBZSLHRQKjSd8ivCYpz/+aoQ8LxnkLdtPFftAi1vJdDQxatr3hvZCi/20cjoYFFdulKQ61uqlTGlyZFCtFSK8P/zzgIvTauue7+anFJfq0gdPVzEArOYp0ODWsA5FaPdF7Lt7ciJRVHl9ciGLEqoZspFYTb32KrqRN5VCsMfp/ALNoiGn4E6dEFvxPqnZmDD9v+kkQtAbDzcIME/VFTwt6AlbjhSlode0rSiNpacTbbdbb6J5nSiQuY+sGMgGXEENymqo8Ohd/ed96/Aw5kNGJ7s/zkLMQvdOS1t0vqx1KoFOOyK7Okw1h/DNtOatW1I7l9oa+fm0=
+X-HE-Tag: 1763111216-965269
+X-HE-Meta: U2FsdGVkX19L1QBAotsQ06L7/UhpYMcjqB2D2bIqcr8s5r/Ymywj07pwbnSJDk9W11nnD37TUDrOkqxyWJPbdNn5rPk83+cB9iJcj3vmeGVic22S5zUa6zpdUDf1Mmns8YoFoS/uVNzM84l695MaZCSpvnO1FXcYLLP8EXwJbpuuuMwgKdoQBPbL6NocnybfCpsPBp4LmzzKK0mk06a62SGlChHFAWpHwxVfMU68rSzvIJn5itEOaSbWkYCBDffwv3mN84LZ4bH914wpxHo95j+HoYwrRH4k+l6VJdxE5gQV9635Bm/+mWDFxPOrt9W8XFgId/fDExOARqjIO4pugqIIRBBmBd10PcCSoYJbe+kktBJjSfhfzeXIEB+RW6AwbrePz8BAn41XUmz6BHbgS+CeFO1TrzRY+R41RpuEjCz3+lLvFcADRJZ1/IU0ZNzG1kRCilzR40V3U1nyzcqxhgBFr0YyjsVqn8M3kM9zYMUBNrn3wOCOwmDhTY6qDisCYkVzoKbiefIaKeyQ8fguIlnnRll6APVnbGK7BWo6g9rZGAodE7HexCbtsVAbG6hLIooZqIveIPY+2FQmMZfQXHqOFjQkIfrHaYNTQDRTMlIMKUV5c4xWTJHsVNtEnK+i+OkPMbm9WNicu+g6vSY3YXnoYt1VccHLIIOmCaQ+J2h85HpDoIY0P7zTzibSCH6nWAksVAevlxjMuUeMJljklZJZPXLyuvMQhdC0uLyOUTgFoOznAJHjG5tnhL20fZHAmfmVBpBI58t4qB/ie4k4zd4mz48E6xH4MUYIYen9ViEo5Jtoo5FSQiWIJi56qokiSsgrqX/sN0szz0RweGv8u4UcEQjqJ/KsZbQsbKrJJdMZU0Zk0BeIj7Ksf3qR81AL/JxRW937EJotGmfOywoVtLo0i0wm8aDmoZK+MuaL16FCp/Z/4ZYhVeYWyEEqAIyykjntbaoDa/tFMG3q7z7
+ SOoNVsQv
+ c71j77pAttCKrWHQujHLP8b4bPYvzk+KM4saeYd7gT2ADf2a58CaGbbhrrvpMF81KEvc5zN43tcmr6mI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,57 +94,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ck9uIDE0LjExLjI1IDA4OjMwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOgo+IE9uIE1vbiwgTm92IDEw
-LCAyMDI1IGF0IDAxOjA3OjE1UE0gLTA1MDAsIFBhc2hhIFRhdGFzaGluIHdyb3RlOgo+PiBVcGNv
-bWluZyBMVU8gcmVxdWlyZXMgS0hPIGZvciBpdHMgb3BlcmF0aW9ucywgdGhlIHJlcXVpcmVtZW50
-IHRvIHBsYWNlCj4+IGJvdGggS0hPPW9uIGFuZCBsaXZldXBkYXRlPW9uIGJlY29tZXMgcmVkdW5k
-YW50LiBTZXQgS0hPIHRvIGJlIGVuYWJsZWQKPj4gYnkgZGVmYXVsdC4KPiBJIHRob3VnaCBtb3Jl
-IGFib3V0IHRoaXMgYW5kIGl0IHNlZW1zIHRvbyBtdWNoIG9mIGEgY2hhbmdlLiBraG89MSBlbmFi
-bGVzCj4gc2NyYXRjaCBhcmVhcyBhbmQgdGhhdCBzaWduaWZpY2FudGx5IGNoYW5nZXMgaG93IGZy
-ZWUgcGFnZXMgYXJlIGRpc3RyaWJ1dGVkCj4gaW4gdGhlIGZyZWUgbGlzdHMuCj4KPiBMZXQncyBn
-byB3aXRoIGEgS2NvbmZpZyBvcHRpb24gd2UgZGlzY3Vzc2VkIG9mLWxpc3Q6Cj4gKHRoaXMgaXMg
-b24gdG9wIG9mIHRoZSBjdXJyZW50IG1tb3RtL21tLW5vbm1tLXVuc3RhYmxlKQo+Cj4gIEZyb20g
-ODIzMjk5ZDgwYWE0ZjdjMTZlZjZjZmQ3OThhMTllMWRmZTFhOTFhYiBNb24gU2VwIDE3IDAwOjAw
-OjAwIDIwMDEKPiBGcm9tOiBQYXNoYSBUYXRhc2hpbiA8cGFzaGEudGF0YXNoaW5Ac29sZWVuLmNv
-bT4KPiBEYXRlOiBGcmksIDE0IE5vdiAyMDI1IDA5OjI3OjQ3ICswMjAwCj4gU3ViamVjdDogW1BB
-VENIXSBraG86IEFsbG93IEtITyB0byBiZSBlbmFibGVkIGJ5IGRlZmF1bHQKPgo+IFVwY29taW5n
-IExVTyByZXF1aXJlcyBLSE8gZm9yIGl0cyBvcGVyYXRpb25zLCB0aGUgcmVxdWlyZW1lbnQgdG8g
-cGxhY2UKPiBib3RoIEtITz1vbiBhbmQgbGl2ZXVwZGF0ZT1vbiBiZWNvbWVzIHJlZHVudGFudC4g
-TGV0J3MgYWxsb3cgS0hPIHRvIGJlCj4gZW5hYmxlZCBieSBkZWZhdWx0LCBhbmQgQ09ORklHX0xJ
-VkVVUERBVEUgY2FuIHNlbGVjdCB0aGlzIENPTkZJRy4KCgpMb29rcyBtdWNoIGJldHRlciwgeWVz
-IDopLiBZb3UgY2FuIGFsc28gaW1wbHkgdGhpcyBvcHRpb24gYXV0b21hdGljYWxseSAKd2hlbiBM
-VU89eS4KClJldmlld2VkLWJ5OiBBbGV4YW5kZXIgR3JhZiA8Z3JhZkBhbWF6b24uY29tPgoKCkFs
-ZXgKCgo+Cj4gU2lnbmVkLW9mZi1ieTogUGFzaGEgVGF0YXNoaW4gPHBhc2hhLnRhdGFzaGluQHNv
-bGVlbi5jb20+Cj4gU2lnbmVkLW9mZi1ieTogTWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KSA8cnBw
-dEBrZXJuZWwub3JnPgo+IC0tLQo+ICAga2VybmVsL2xpdmV1cGRhdGUvS2NvbmZpZyAgICAgICAg
-ICB8IDggKysrKysrKysKPiAgIGtlcm5lbC9saXZldXBkYXRlL2tleGVjX2hhbmRvdmVyLmMgfCAy
-ICstCj4gICAyIGZpbGVzIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+
-Cj4gZGlmZiAtLWdpdCBhL2tlcm5lbC9saXZldXBkYXRlL0tjb25maWcgYi9rZXJuZWwvbGl2ZXVw
-ZGF0ZS9LY29uZmlnCj4gaW5kZXggZDczNDRkMzQ3ZjY5Li4yNWM5YTRkNzc4MWYgMTAwNjQ0Cj4g
-LS0tIGEva2VybmVsL2xpdmV1cGRhdGUvS2NvbmZpZwo+ICsrKyBiL2tlcm5lbC9saXZldXBkYXRl
-L0tjb25maWcKPiBAQCAtNjMsNCArNjMsMTIgQEAgY29uZmlnIEtFWEVDX0hBTkRPVkVSX0RFQlVH
-RlMKPiAgICAgICAgICAgIEFsc28sIGVuYWJsZXMgaW5zcGVjdGluZyB0aGUgS0hPIGZkdCB0cmVl
-cyB3aXRoIHRoZSBkZWJ1Z2ZzIGJpbmFyeQo+ICAgICAgICAgICAgYmxvYnMuCj4KPiArY29uZmln
-IEtFWEVDX0hBTkRPVkVSX0VOQUJMRV9ERUZBVUxUCj4gKyAgICAgICBib29sICJFbmFibGUga2V4
-ZWMgaGFuZG92ZXIgYnkgZGVmYXVsdCIKPiArICAgICAgIGRlcGVuZHMgb24gS0VYRUNfSEFORE9W
-RVIKPiArICAgICAgIGhlbHAKPiArICAgICAgICAgRW5hYmxlIHRoZSBrZXhlYyBoYW5kb3ZlciBi
-eSBkZWZhdWx0LiBJdCBpcyBlcXVpdmFsZW50IG9mIHBhc3NpbmcKPiArICAgICAgICAga2hvPW9u
-IHZpYSBrZXJuZWwgcGFyYW1ldGVyLCBhbmQgY2FuIGJlIG92ZXJ3cml0dGVuIHRvIG9mZiB2aWEK
-PiArICAgICAgICAga2hvPW9mZi4KPiArCj4gICBlbmRtZW51Cj4gZGlmZiAtLWdpdCBhL2tlcm5l
-bC9saXZldXBkYXRlL2tleGVjX2hhbmRvdmVyLmMgYi9rZXJuZWwvbGl2ZXVwZGF0ZS9rZXhlY19o
-YW5kb3Zlci5jCj4gaW5kZXggNTY4Y2Q5ZmU5YWNhLi4yM2EzZGYyOTdiYjMgMTAwNjQ0Cj4gLS0t
-IGEva2VybmVsL2xpdmV1cGRhdGUva2V4ZWNfaGFuZG92ZXIuYwo+ICsrKyBiL2tlcm5lbC9saXZl
-dXBkYXRlL2tleGVjX2hhbmRvdmVyLmMKPiBAQCAtNTEsNyArNTEsNyBAQCB1bmlvbiBraG9fcGFn
-ZV9pbmZvIHsKPgo+ICAgc3RhdGljX2Fzc2VydChzaXplb2YodW5pb24ga2hvX3BhZ2VfaW5mbykg
-PT0gc2l6ZW9mKCgoc3RydWN0IHBhZ2UgKikwKS0+cHJpdmF0ZSkpOwo+Cj4gLXN0YXRpYyBib29s
-IGtob19lbmFibGUgX19yb19hZnRlcl9pbml0ID0gdHJ1ZTsKPiArc3RhdGljIGJvb2wga2hvX2Vu
-YWJsZSBfX3JvX2FmdGVyX2luaXQgPSBJU19FTkFCTEVEKENPTkZJR19LRVhFQ19IQU5ET1ZFUl9F
-TkFCTEVfREVGQVVMVCk7Cj4KPiAgIGJvb2wga2hvX2lzX2VuYWJsZWQodm9pZCkKPiAgIHsKPiAt
-LQo+IDIuNTAuMQo+Cj4KPgo+IC0tCj4gU2luY2VyZWx5IHlvdXJzLAo+IE1pa2UuCgoKCkFtYXpv
-biBXZWIgU2VydmljZXMgRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApUYW1hcmEtRGFu
-ei1TdHIuIDEzCjEwMjQzIEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hs
-YWVnZXIsIENocmlzdG9mIEhlbGxtaXMKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxv
-dHRlbmJ1cmcgdW50ZXIgSFJCIDI1Nzc2NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1
-MzggNTk3Cg==
+On 14.11.25 09:50, peng8420.li@gmail.com wrote:
+> From: "peng8420.li" <peng8420.li@gmail.com>
+> 
+>  From submission 0f20bba1688bdf3b32df0162511a67d4eda15790, we know that "FOLL_TOUCH" is only for internal scope use;
 
+That is not the proper way to cite commit IDs. Likely checkpatch.pl would complain here.
+
+"Ever since commit 0f20bba1688b ("mm/gup: explicitly define and check
+internal GUP flags, disallow FOLL_TOUCH") we marked FOLL_TOUCH as a GUP-internal flag."
+
+> 
+> Therefore, remove the "FOLL_TOUCH" test code from gup_test.c;
+> 
+> Otherwise, executing the test command "./gup_test -L -r 100 -z" will report the following warning log:
+> TAP version 13
+> 1..1
+> ENCHMARK: Time: [   39.363371] WARNING: CPU: 1 PID: 117 at mm/gup.c:2512 is_valid_gup_args+0x66/0x8c
+> get:2818 put:46 [   39.364043] Modules linked in:
+> us# , truncated [   39.364311] CPU: 1 UID: 0 PID: 117 Comm: gup_test Not tainted 6.18.0-rc5-00324-gd09eaf415c87 #29 NONE
+> (size: 0)#
+> [   39.364434] Hardware name: riscv-virtio,qemu (DT)
+> [   39.364546] epc : is_valid_gup_args+0x66/0x8c
+> [   39.364596]  ra : pin_user_pages+0x38/0x78
+> [   39.364630] epc : ffffffff802079e6 ra : ffffffff8020c214 sp : ff2000000041bd20
+> [   39.364650]  gp : ffffffff81a26068 tp : ff60000080b3b000 t0 : ff2000000041bdf8
+> [   39.364678]  t1 : 000000000000001e t2 : 0000000000000000 s0 : ff2000000041bd30
+> [   39.364697]  s1 : ff60000081300000 a0 : ff60000081300000 a1 : 0000000000000000
+> [   39.364714]  a2 : ff2000000041bd3c a3 : 0000000000080000 a4 : 0000000000000001
+> [   39.364731]  a5 : 0000000000010101 a6 : 0000000000000001 a7 : 0000000000000000
+> [   39.364747]  s2 : 00007fff7eeed000 s3 : 0000000000000001 s4 : 00007fff7eeee000
+> [   39.364761]  s5 : 00007fff7eeeb838 s6 : 0000000000000000 s7 : 00007fff7eeed000
+> [   39.364825]  s8 : ff60000081300000 s9 : 0000000000000000 s10: 0000000000000002
+> [   39.364842]  s11: 000000092869bfdc t3 : 2152ffffffffffc0 t4 : 00000000001fffff
+> [   39.364855]  t5 : ffffffffffffffff t6 : 0000000000000000
+> [   39.364867] status: 0000000200000120 badaddr: ffffffff802079e6 cause: 0000000000000003
+> [   39.364949] [<ffffffff802079e6>] is_valid_gup_args+0x66/0x8c
+> [   39.365036] [<ffffffff8020c214>] pin_user_pages+0x38/0x78
+> [   39.365049] [<ffffffff80278f78>] gup_test_ioctl+0x2b4/0xc08
+> [   39.365060] [<ffffffff80297da6>] __riscv_sys_ioctl+0xba/0xc4
+> [   39.365072] [<ffffffff80b93f96>] do_trap_ecall_u+0x296/0x370
+> [   39.365093] [<ffffffff80b9ef06>] handle_exception+0x146/0x152
+> [   39.365220] ---[ end trace 0000000000000000 ]---
+> ok 1 ioctl status 0
+
+Right, gup_tests simply forward any flags we pass in. I wonder if we would
+want to filter them for ones we expect to test?
+
+
+I guess we should add
+
+Fixes: 0f20bba1688b ("mm/gup: explicitly define and check internal GUP flags, disallow FOLL_TOUCH")
+
+Although it's a bit complicated with gup_tests.
+
+> 
+> Signed-off-by: peng8420.li <peng8420.li@gmail.com>
+> ---
+>   tools/testing/selftests/mm/gup_test.c | 22 ++++------------------
+>   1 file changed, 4 insertions(+), 18 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
+> index 8900b840c17a..75f7134d529d 100644
+> --- a/tools/testing/selftests/mm/gup_test.c
+> +++ b/tools/testing/selftests/mm/gup_test.c
+> @@ -19,7 +19,6 @@
+>   
+>   /* Just the flags we need, copied from mm.h: */
+>   #define FOLL_WRITE	0x01	/* check pte is writable */
+> -#define FOLL_TOUCH	0x02	/* mark page accessed */
+>   
+>   #define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
+>   
+> @@ -93,7 +92,7 @@ int main(int argc, char **argv)
+>   {
+>   	struct gup_test gup = { 0 };
+>   	int filed, i, opt, nr_pages = 1, thp = -1, write = 1, nthreads = 1, ret;
+> -	int flags = MAP_PRIVATE, touch = 0;
+> +	int flags = MAP_PRIVATE;
+>   	char *file = "/dev/zero";
+>   	pthread_t *tid;
+>   	char *p;
+> @@ -170,10 +169,6 @@ int main(int argc, char **argv)
+>   		case 'H':
+>   			flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
+>   			break;
+> -		case 'z':
+> -			/* fault pages in gup, do not fault in userland */
+> -			touch = 1;
+> -			break;
+
+AFAIKT, run_vmtests.sh does not set that flag, so dropping it should be fine.
+
+-- 
+Cheers
+
+David
 
