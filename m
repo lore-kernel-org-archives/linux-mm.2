@@ -4,238 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79016CE7AF7
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 11:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA8A3CE7B03
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 12:36:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C139D8E000B; Fri, 14 Nov 2025 06:51:32 -0500 (EST)
+	id 78F188E0003; Fri, 14 Nov 2025 07:36:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC3C78E0002; Fri, 14 Nov 2025 06:51:32 -0500 (EST)
+	id 73ED98E0002; Fri, 14 Nov 2025 07:36:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8B3B8E000B; Fri, 14 Nov 2025 06:51:32 -0500 (EST)
+	id 62E438E0003; Fri, 14 Nov 2025 07:36:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D0CC8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:51:32 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B5FD4CCFC
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:51:32 +0000 (UTC)
-X-FDA: 84109047624.16.7AC3EBD
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EF7DF140009
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:51:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=jBWlsU0f;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=zPWu4WFm;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763121089; a=rsa-sha256;
-	cv=pass;
-	b=NilAi2CchxeqIgTDy7grmF3ekqkbSf9c9l0M2bFNp0T2EI3pSOo6y9xqHe/roQ1EYO6kLF
-	4+CYNylZJwEUljF+2pONh8H1crTcnzsiakIIn3ucjy0KDb8+rDIm4+Gm9XPQ50uEmzmc7c
-	KIOT2m2GTQtHl+jMCWgwWPhTS1jVx80=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=jBWlsU0f;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=zPWu4WFm;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763121089;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 482548E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:36:13 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E459513A95E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 12:36:12 +0000 (UTC)
+X-FDA: 84109160184.15.2465F49
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3A7B7160009
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 12:36:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Y+33MYuG;
+	spf=pass (imf08.hostedemail.com: domain of 3OSIXaQgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3OSIXaQgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763123771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LxlwXzbWaEQfV1Sr6flTrJ12/n7wbxkVl9QoYN+jeeA=;
-	b=uuAzHMxShq1dSxpT2V4zSwan5K4zgTe4xQi+hVcWGRovTpVQoMCs7TZrSsySiwwz7AWf16
-	Syd7ZDHqq5EjTphL6uWz3hOPfUbm/tgXZP5AZLSaH8+fsEkK6c4Pb2rdzwQaRyWzUiB2WL
-	7RyEKfOq7UCKF1Yut+hfAZXyWvKwiOw=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AE5RgTB021754;
-	Fri, 14 Nov 2025 11:51:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=LxlwXzbWaEQfV1Sr6f
-	lTrJ12/n7wbxkVl9QoYN+jeeA=; b=jBWlsU0f5TjmonLtYN9FHPxPqJkbMvpi1G
-	3tfj1RHsx73H6aYtZvp3mgm1S4AGBQfI1aC8GU9n4Lz6Z9ed7BOvF2a2Epfp0gAS
-	Dz8/Rn6ylXfRTeAHkB/xqycuAKfjjdtiWNBTic3rLY/HbbftVBdfwXBBjE2m9ibJ
-	mI9ZQ4L0necL4bFpnb/6UAWuoYyMHGhX9mfJ0OpwXoI3BsxKe2Oi2nwvtPbgj/vb
-	Zbbp5zxHULWe5k87vvAXubBRu0AEvnf9/k18qfezGvNCuZPGnhMhNjZbt551J+zh
-	AmAhHHGaKD5a7sIRXhUo/8az1InlFa5GGmvVuT3+KBYkUMAsR1Xg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4adr8ss0t7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Nov 2025 11:51:18 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AEAIuLH000546;
-	Fri, 14 Nov 2025 11:51:17 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010047.outbound.protection.outlook.com [52.101.61.47])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vah01ua-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Nov 2025 11:51:17 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=llB8x2IwQEuqLPk1ZRUCZLcKMD290ebhOywf/wx1K4lynlv7lHDtAx+nhl94tqpPwLqA8VR/Gqk0IgSvAk88mA8ydfSU5Eouw/TkYDpawu60ORdON6b95bHHoQYwrKZ426mi0YJ0+TKk8tBHzPCfVL9T8T+Vgay4dNQsw4LTzb9tOMpFWkxnVEUQP/MVbzL3OP5zyEHqkjzUsX2lnS3wt2X86adKQnvft3FyL+ESp0gW3yATvz71rW+RAh5QVbbZ1L1ode8n/jGxVokff+mCzdSZSjAb6y2NlWimIGnEtj50yZ+ZnzsABqjcrnbNeOaf54ORvVnzLGGRHb+mfGe0lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LxlwXzbWaEQfV1Sr6flTrJ12/n7wbxkVl9QoYN+jeeA=;
- b=xjS+/3Znk8BlLKVNgQAw66Fgdvc02yKjdfAnmYU7ROaqKuyWd2r0DCPJ/AHQUFBK+GatBk7XeQdJfN2Y6e4CJNEphTonBE0EVeth0/V0P9hyjb9XNU5VhxS1vyCTQaGARX7l2qdh53mZ2EyMMqWPLmgHY+uO8HJnKUTrI4NMIsTSju6RrISYOmNUsOfDTv/U9TdwTb1JG91q7afyfXEXyHrpnjmIeKpfcQujEjewzfjUO0znmfhpqux0h2FV36rYsWLmhoPHcWH6f0XWL8rKnBdMuzq9QyABrT3TrsRZeekyDkLcfAHGGqcN4cbKuUTdEJkQehTmmAC4TAVwuo/0LA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=IxQT1ueN0Bj88cVZcCku+VDcMMej+3QPEoT+7oXlEUc=;
+	b=Dt8cOfpscJBqShW4WbY1xVMio6Pl56+REI7ActcuL23y4WD57nW5vvDpUVIsQITmeyJH+e
+	dz9IGJ66H7EvSKDwUFvHVZsaLxHZFElvJhX6qGYqsbIprqiH7pf3zWdIBe96wqU42/P+Ov
+	es7OBmBOoA1NyyFTOMOmDAXdL+LFIt8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Y+33MYuG;
+	spf=pass (imf08.hostedemail.com: domain of 3OSIXaQgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3OSIXaQgKCCoPGIQSGTHMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763123771; a=rsa-sha256;
+	cv=none;
+	b=RPl2duTiVA5H/AgQw4nQ4wNGv0olBUIcfaGcMZP9L8ZuaNLmK81GZjwGSdsIpmyLIeVO0L
+	lOHiTI1RFEi8L2wYc8m2TsqNgdz9meElSgsQbm5zEoUW4Kyq8OBN4Tr0+nwR1b/8Hk4MHD
+	jRNrHcXiV4HS0f332nAvotTM9rY6HyE=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477563e531cso17250385e9.1
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:36:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LxlwXzbWaEQfV1Sr6flTrJ12/n7wbxkVl9QoYN+jeeA=;
- b=zPWu4WFmTbby4RdAmgLf7nEWNWMWEfGTqHQUUx4UHP6JekkfGEVmbWUmfHMg7M761wLztWmtDTwG/VzHfweSjTk3qDpTxxSustrG7t42Jct+dxv6Vz8745yARwlev29rJnhoCbYIbMZ5Pu2dTmKhLVyjcV14in1lISBrn8kNYcU=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ0PR10MB5787.namprd10.prod.outlook.com (2603:10b6:a03:3dd::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.18; Fri, 14 Nov
- 2025 11:51:14 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 11:51:14 +0000
-Date: Fri, 14 Nov 2025 11:51:11 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-        stable@vger.kernel.org,
-        syzbot+131f9eb2b5807573275c@syzkaller.appspotmail.com,
-        "Paul E . McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH] mm/mmap_lock: Reset maple state on lock_vma_under_rcu()
- retry
-Message-ID: <1885ac9d-1a5e-45a2-90d7-f4ecb5848937@lucifer.local>
-References: <20251111215605.1721380-1-Liam.Howlett@oracle.com>
- <2d93af49-fd76-4b05-aee7-0b4a32b1048e@lucifer.local>
- <aRUggwAQJsnQV_07@casper.infradead.org>
- <8935c95a-674e-44be-b5cc-dc5154a8db41@lucifer.local>
- <ajnzlk33uzmbt5tdrv7m7cr2hktt7acuruunx4s5fwwvroc5ad@7hnx2ys6gj35>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajnzlk33uzmbt5tdrv7m7cr2hktt7acuruunx4s5fwwvroc5ad@7hnx2ys6gj35>
-X-ClientProxiedBy: LO6P123CA0030.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:313::10) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB5787:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f4de7b9-9243-4367-8a1c-08de23741ce4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ErDTG8kOe3QuU/BAOSNuZh6NSlool/kEUUmrqOLeWQXqJ1fcittGbGtDCxKj?=
- =?us-ascii?Q?JhNWAKQtOLHmr4Dg/kBUIhCxyctefLaoSuIkQnk3d5sEOuYeAU82OFVWu8bs?=
- =?us-ascii?Q?rXZw6E/141c9shyInys443P8xmRBqcSQRLyDmiAfj9J/FWPrXoa4bUBxKgiK?=
- =?us-ascii?Q?+cl4ItmXlDwtrRvS7NbFaborP8fx28MxK/C1kySVpQbGUAZ2hacbQ9Mbel3G?=
- =?us-ascii?Q?IG6jr4w0+xS98DXfEV2eQoNCxHiF7Qugm8uHm1a+34hl7SJJje+KdsnPk1ta?=
- =?us-ascii?Q?G4WJoHLbrD97cIuIp4o1O2KcnLaC32TnXSuddWV7Ov6bHv6TfqdwD/a72T4/?=
- =?us-ascii?Q?ninbXz3dAChMwzq/nSzM8R2GNTYQiglRTx4eabh+/+obxae4UfMbPPMHxO05?=
- =?us-ascii?Q?8u3GrQJGuv+SqiAeFSKbsZ9QyV3PZuHVZeS4JOjP4JBEUETIC5H4OW2yiE/h?=
- =?us-ascii?Q?6R+zQpHqpxd30Dpo19Vlsogqp8dRq1xi72ev/F/5G0imjuHX12DmhGasSjZm?=
- =?us-ascii?Q?cYOR29mfvTQ6dQtKYVnyRH6XwHuRAmgHAL+tEIfMwLjee5tHGJug2GLmGRLm?=
- =?us-ascii?Q?vDLYeniryjkSR5Ls8aip5desOnp9Q/tuMtNZgr+55ktkQ/gM46W0SOpidgZ7?=
- =?us-ascii?Q?15UuBzwYxxYzrh1QvN9FAlrPbESnIQ1GCHdoIx73cL4mwPnJLvKF7CIvmdNc?=
- =?us-ascii?Q?JubKf6gxMAo14fFCBLSg+DUrRCYWcQI+3pwtJGooyNY4rwD/Ve2BBXLa3FE0?=
- =?us-ascii?Q?XjgHWVVNBNnjz7KlXxESXJYmIA1WS/2il7P5wSa5kITok1jnm/MrPLQmJGNw?=
- =?us-ascii?Q?Y21yIPzlGGq1momfKH6npsvhZ8rRBM0/qhd/WPez71AHI2JiXB2IWFbPCxws?=
- =?us-ascii?Q?TEQpaRcdtg1x/AVrIBiVsnDI+oQCMaoCrkyZYHGs3q9D3MiQNpCMRh4bEZA/?=
- =?us-ascii?Q?zaYmgxOTqEJN6cSr9sUoPgdVCVniZQOEBk/PfairmHd0+t2RxweiwcyKXH2n?=
- =?us-ascii?Q?amNADvnHxBZYmOfRjm5eRB5FAU7NqoViY1bq5fPdJVnJFFqK0H8+Riptjjc+?=
- =?us-ascii?Q?6yed577m6Nj83mMacsTtFgN+3fW2AwXhuiSldPCoiKkpGA7EzVh6dUMJ2HYz?=
- =?us-ascii?Q?0zALRrIIeu1hWNHqONJx+EvypgW3EvGTrOJM7oD5lT3jUzjusW9vv5AybpE3?=
- =?us-ascii?Q?ej7HiOlKG44I/4UJTblHpDvYzeKouSBTjw+Wvxvi0BC2fLrIhEQUmttKYhhk?=
- =?us-ascii?Q?paQ9rqPAbcA3ft5YuVZomYR1lhf3EoI0OMgb9wT7Vc/WWMA34dhRFpmBrmwf?=
- =?us-ascii?Q?+ahZC0DBp9qWI0HrNoxMjf2J/Daj00bDkHw/bHFOgVGWIaHABDa5lV/K1zv/?=
- =?us-ascii?Q?9XJuIbLNvTLJG+FIX4kMRRI08fdb1fsE5z/xZldHNRPbkn0Gh3AL9jt7sOKw?=
- =?us-ascii?Q?48eY5yImBOFfBZ1EoJgNsa2RAjNOsViFb7ppq8969isnvt3r2Vm6zekZ407m?=
- =?us-ascii?Q?zSWs4GNsoyF1g6w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?G4STHFctf3/w91Bwlk+dej+XomW6m8Fu7g3dvA7ICiuwv5Qt8rW4tM8UYV9C?=
- =?us-ascii?Q?LtTSDwp8KiQ/ZpOlbb7L+1XAjpXxoA/sh8+nrDangwiXrNTjL7W8/bSIfTwz?=
- =?us-ascii?Q?0nIspvMh7sbMtLlJbt2DJ3iIWd+yUlLrPz0iGfMSIvHcDRa7WTlh9qJEAG38?=
- =?us-ascii?Q?RgdIPM0msxo8Nduf+8c7nzGJGVFU4CCqT33M5E95RFdhS8we+/vfNhZS8VgL?=
- =?us-ascii?Q?Ad4YG/j+I6GhBryuiDoa5IeF3MFvTxQ001n1GmLE7p56n3D1lgYPB2zLB2fZ?=
- =?us-ascii?Q?Ws1R42T2PGbBBSGL6DC/Z8kfE5nHxDDiTrDFEitSGIBbHxje92gu3/hxi5mV?=
- =?us-ascii?Q?pzdyN/TlBVP5nwBryN3Ckp5wpMPMTFVJ6P3WUgAwDVGauA4bG0k3b8Dnxuos?=
- =?us-ascii?Q?zKHx9WrVpZ3ZV19i9NiU7x9CCPexVoGkgt2CH0/Nu9UE8UaxeJoefIVmnCGk?=
- =?us-ascii?Q?wvzhZ8wyyjpGVJTVnXhac+oX6GtxAykGtRwFOsnbUcu8mRdFIEkVWICBWWU6?=
- =?us-ascii?Q?0Bk5IzeSkfewCeGqKKo50RPe6qVsx09TXwI2zNLdD4+erZrsvZ8WdaDyBkr0?=
- =?us-ascii?Q?XTcYT4M7gn4tceXRiGAkZoTc+URg8iuV7zutB/rjjqZSB+aW/pw0LQ6iKMmN?=
- =?us-ascii?Q?5U0PEh0I5ZFZDApW9+9aIg1snqST4x27NpBXJy1hFgNszg/wTqHD040/cqez?=
- =?us-ascii?Q?es0/6oLBffJWrVQYknUlYDCR9a2EUmH9CKPKeLa0zYjMu4Pw4/o8sHc9+8+X?=
- =?us-ascii?Q?gTej3Foh4e2xqeyBZjQltIIeBnDfLgHEfW7o1Tf4BBCvm0s3ph5QZxAuztuZ?=
- =?us-ascii?Q?TvRppXVUe8ntP2r7rJtDtZSAC7Sto+hzuFolYxnVujuNNB94L3StuV/VKUo3?=
- =?us-ascii?Q?C7+Cm+Tfdm0ncu3pJAHojXnH2LSjMsR0B4l0l4KbHG/iD9akYGLKIKmTWl0p?=
- =?us-ascii?Q?dA1Y2AYfkWE9AYYC+EMjAmzbDFZK5JDe+4oAVX/WV9ApfGl/3GqlwmOUY5ft?=
- =?us-ascii?Q?7aV0tUXaVAbzFZiVzLDwRSLzdtz9XBoxwzozy+zzoqqcAnohr7B+T+eTzcDt?=
- =?us-ascii?Q?jXmR1FcvAAkiXXYIWxAo9M4Pu+yZaB9k6ca3yDXcKZc3TxMlH/5+PSvEbYGE?=
- =?us-ascii?Q?mHsMluVlBvda4ko5RGMitlfAJjzpmQOqnT2UWB80e0nI1pztyzC/DKdOULF6?=
- =?us-ascii?Q?kLExeFFi9mVSaOk18dCGVwJwtymUaF9fIoo698qjj3vMefGyhINnxYTRVNRt?=
- =?us-ascii?Q?zHmKrDS+nrHel9AOjoEzixClT7cny8Hlo7+Pb1mwewJXtrGsEJvpgaubaS1f?=
- =?us-ascii?Q?tuAlg0U42Cwlv1AyM5X0EdysKuPknUAiWdZMGlS7l5rXkc1cY1AhVEsq3tvV?=
- =?us-ascii?Q?j5o8vpohAazJLXZMkXgzsXXa+FIQvzwzAdNYR/cawC9ODMTWdcKxL0sR4MpB?=
- =?us-ascii?Q?omEtJovqh4AATSxK9A8zndusYhBdSZ85GwY0drErcpijY6VZ0Wl35457SVzr?=
- =?us-ascii?Q?yhDFYj+Fb4dliB+zXQA9lnnZCer71AvZufyU31lyjh2NNmFVKCN9gbt+xD1j?=
- =?us-ascii?Q?R4t9f/jQLncx73nz73i0c3I5iqDCELHEAoT8/P5JwwTZDm5BdHjgUNaUf5yu?=
- =?us-ascii?Q?vA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	zW97aBbjRg3rC9WJM8094G2m/tZ0rfd/LK8yrPAbATqRnNAYhZPFPlNsxVFsS+7/gT3NvARsvCqr/Rru/7rO6ZaEoVJgsNptB3t/PAToIEU+TVbA043hkwU+zmfmO9+KKE/CjFH4h1RhjZNbGHQ/3PUrN831ZcQq/DTn7B71/JH60O6c/Napc/5uOLd/ANSv/txgT+is03pdTbXrQlS3uSTdCod7bFJgsunLoUJBfrl0Kf91PDmdkfrDc7mYy/uE5tYrZYEBDg6B57x8h+wPac3Q7a95KWs9e/x/jC1aSpohYx8bzBgVy1FA5p1oalBkjLu5K/yUsmYa2gd/XUYucok5aybt0BiNVzijKOErgKLpPmg+iPVuScRjIETwI/ntA1cy5aucwtHr/buB542VeFAWLIthk9x8SUlvmsuL17FcrIgplysvMiFHOBR2MUVKq1HXvg/5WIgaNlXI4nBD4W5fcxXSQXGDkn4CQpn8z4/AQF4N3cHeJ8KWCnumQzYIkVUm6knvv6CK2CD8ElKnATGaX2MSI07qsyF5y7oHtEACC6o5pet6EV0Wd6EB2L5grn7kJ233dLaVLvKoDcqt0vbntrxmlXalDtcbCc5kgXk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f4de7b9-9243-4367-8a1c-08de23741ce4
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 11:51:14.2751
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GlzGMBoDDkNU+G2pv50X6E9RgwI6p3YwWdNNAKC+AHc/NhrjeMZHyekHRQxKwZjTaYIOViOKfftYHGFPy5l2HpPB9jIDddW7pOx0ZomrUEQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5787
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-14_03,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 spamscore=0
- phishscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511140094
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEzMDE3OCBTYWx0ZWRfX1TbveKndgU2B
- pnoHJmz6qAGEWUClMnJKYp+dB85w7j0jfc/jhCXIWuzFpN76NFNBtXq7ndMDUEMqzU58dPcXqxP
- CJfWjiQr1sZWpeEVoXoCcgdu33nVYNBT42D+sQFYyiirLf2JsG0FLxlFjvavEMOEj6iSHnsDuvc
- oYu9dlzL9cQiP+sfgKICTG5itwXL+avoVMvv3IVESd1qYxfsnRzM6esB/MUvPA1kG+2F/T9InBQ
- lxJZ6Q8lnFewU84v1wVzEwNNeLIgSMExMtzyTlWksUz6dzjwRLBNDWbaRHA76scxk1XC4b4TulO
- afzQaLdSsxTISAslLkLJdHxG8Cb5J4iJweGfhW8XMb3eLTCLXbP9xWoKiRv0X5j6+4ZlxC5FHEh
- 5El4v0QS+69mO870NsLPuF3tikd48aOdOhi54bEOyhzIpt5C/5w=
-X-Authority-Analysis: v=2.4 cv=WuYm8Nfv c=1 sm=1 tr=0 ts=691717b6 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=ppERTZZ3S2zD4a8lFBIA:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:12098
-X-Proofpoint-GUID: FpForo53IZPB0_b6Mg4N28KoHsXDhN0U
-X-Proofpoint-ORIG-GUID: FpForo53IZPB0_b6Mg4N28KoHsXDhN0U
+        d=google.com; s=20230601; t=1763123769; x=1763728569; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IxQT1ueN0Bj88cVZcCku+VDcMMej+3QPEoT+7oXlEUc=;
+        b=Y+33MYuGXJilOFJDqDznzkrdyQcF9quhlsx0FNQxvDK0Ynd8j5qLBe8S9qCzGBDx8Z
+         /M5N08QQ+iW9YyJ9oHUftethsCE3chZRTiP6sEEtf1H9VSzwp19rdaYltI1GF2o2pOZp
+         9I6mLRDUqIU2USZPf8xfN0vxRQb9RxHrobokgjvLnu4T0qfinx+xHqk5I/1jVCKcL62H
+         URm5fqIsTby4y6M/WNuJrht/7rx5APbC/qj7BwztoSUra00vRejq31FMsWsL7TDsk//S
+         dQ+2HzVBCnjZ6Fg+QbVSPJj3Rii+mjCrgT3MqphiFDq69WqJFlby+VsIb/nE45ROOL50
+         CPOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763123769; x=1763728569;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IxQT1ueN0Bj88cVZcCku+VDcMMej+3QPEoT+7oXlEUc=;
+        b=QYbBmqGJBwFogaCPULMMqtEl+dHe4mFt3SOqkY+1lpwa+f2L2hChGIRF0CwCVmSr9L
+         Fp1+Misfvdurm2Q4ltAiSZuzr2s6BrjrT77+nfbCy+3AUV+nKWb2UDFXm03Do9IPdDoB
+         b30xrlrtyeK8k5AHoMdPzLWj4DOvub55IRy1jO4oE1FDivHzZKVjrUtom/C6gAscQFdx
+         lY/ULjvwD8mt1Lcpi+9T4EoTaOGDjKAbdwududMbP3VCMGGIEBY/9Y05ZSWIoiq+y7sn
+         zz1ifm9j3W0UVTGRZQ1gV2GOLi1UvDtWLvAvF/69WWStqiDjRn07nkWLD9kp4E06iqku
+         dweg==
+X-Forwarded-Encrypted: i=1; AJvYcCWBO08qHAwNFdGWpMNrGSDkBEjOWNLyxmP/8tswGFVNaS9OeCbW0wnjrKutzzasq60MrarZyd4Ywg==@kvack.org
+X-Gm-Message-State: AOJu0Yy0072ZZYidtEQ6Pv+7dnpQ2oZwkRN7efACB/GHO4Hig178y+ZT
+	JovKlJ1JA3B/Tbo9w3UK2KMrRVaUVpZXqELX7uqKRI79AJamqx0jF9UCM6v4twzdOCG4Zj4QAlE
+	TdPfINdIyyvLnTg==
+X-Google-Smtp-Source: AGHT+IECtIVfoHR4KIma4m4xNaSR56A1fkqF050K07bUAlHAQawhC7HGe3mmGgV7rlzdWxH4OyA8KDgAIxJQhA==
+X-Received: from wmpl35.prod.google.com ([2002:a05:600c:8a3:b0:475:d8de:fe5b])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4744:b0:46e:48fd:a1a9 with SMTP id 5b1f17b1804b1-4778fea8ab2mr28900845e9.33.1763123769520;
+ Fri, 14 Nov 2025 04:36:09 -0800 (PST)
+Date: Fri, 14 Nov 2025 12:36:08 +0000
+In-Reply-To: <tencent_ED235B379E160A5C2BCF688ADDF3921EC808@qq.com>
+Mime-Version: 1.0
+References: <tencent_ED235B379E160A5C2BCF688ADDF3921EC808@qq.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DE8F7PLNB92Q.1L2EKEK4C6TL5@google.com>
+Subject: Re: [PATCH] mm/page_alloc: optimize lowmem_reserve max lookup using monotonicity
+From: Brendan Jackman <jackmanb@google.com>
+To: fujunjie <fujunjie1@qq.com>, <akpm@linux-foundation.org>
+Cc: <vbabka@suse.cz>, <surenb@google.com>, <mhocko@suse.com>, 
+	<jackmanb@google.com>, <hannes@cmpxchg.org>, <ziy@nvidia.com>, 
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 3A7B7160009
+X-Stat-Signature: 6iih5xbwohaip3cxobhajrgxips9xjcb
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EF7DF140009
-X-Stat-Signature: uq497ugxg1whytnobuztxydi38xmz7uu
-X-HE-Tag: 1763121088-18286
-X-HE-Meta: U2FsdGVkX19glUoCO/dy0upnV7xgMMLHFUGAyj0oKUd8eF5L9KkeuDTunjUq1kzlLWGch0gEBBEFe0c/Vw7EVzOZ70I0QkzHkcjp5FW52vul13/sWb7MLfFsVEgg+08gLmyQQBQyWG/t5LZ+nr6tZmwjoc8uYflOYef2GAj1ZAfIgYmcIg6g38LPkWuDZkpbhghpddUkVppp6poONAalWP0JOhzVC8hJVgcxtiRb2uRCCWJoBov59fpaoD1G+SCAAdM12ZpM59E2i6615vZMfhcdHew6DO1C5VKBKzNs3rnzNjFEF9FrsPlwteg9Ss47k980yfDvy5NRdDCbklAZBgu0adWa3P6mjSciOSxIBUzRf+kS2qAIderYNonPkFqJ5jAnBE6nrSC9Q7EGFRCDqwWK8IqnDom2o7qCnHXHccba/W+EEsJtktDOC9mi7wVITPLNF6GCflfGgDR4nGypt31BOBO9VPNLZMoHlx9Xkj51ACPGBIw/G9bvGoF8jzB54ljFjVQCBH/ux57d6GOphVo64X+zzh0zJzT8GKp9WJTF6/dcsFiB31MOzpCZTFg5ZYyYeDlq57rIbp2vhUJB1wAc0OdwoCT0ROTeKh5BOA4SrAGnxoPKHdcP49s5iYK0KetEqoiD1uZUjuctuKgC4slZtB9AAsOOKfkjtl2kKOKJZv8ldMD5B7KP3Apa8/uJkninHMNg1qDGoCQYHGcURBJAhF2lbyP+92KGjbPH0EW6HB2OdRWthut40SXp27ABdJKwWLVsoIhiD7uMMpjh+d15f6FNhtobE2VoogV6MlGG+qiXey6bmIg0pZDNE357sf8OhdAhADzbqoZdE6M+otIVpmLdynecY/4RJHYcGIeh8Ju7c4zYMIx9TGrC/sU1PpNdUhiJiSuY9QYGDwdL6qFWuwvp1uU3fB7wyih/5e+RfcJBw9p9Q8/s0QVce+74C5m5lgVk84GnzxbWJsf
- l+RjaUE+
- /qgbZ1+GoVOr/oguo7hoRzqFz+Szy7myThyG7v1nWzgfUTX/uAqNF1dU2DF07m9IwCizcQCjaFh/kifZ5z96CuwXRk8gAGlL/ymNQJIQ40kFCUINzm8AKyMzI2WjfamaJ5kgoPIRWKptsyhM74/GwQ8eaZuLi6LUh4dxLMWdZ4C+YFos3sh0gBeLNFmx88Yjol45o41kRIoafgBNZ97bfVq879c0RLmTtySbCeY8O4XboPGKntpXokNWlqSJVn6Yu1o/bSu/Eee1+/DBMcYT4gxu9chyZqR0A9crsWUXBmtqsYXnvWIhYf7lAacL036FZHv0X4q93lCKJ8EJ7yTAWVXA3h8PxXICZ1CHXe04wXA2XTQBuWrtZmMXT9sijshnkHaupKFzWXBZM+8QX/yZ5RLOXjxjbjxmsN7he5vgJPR9eubzgmyOyUbLkoVCRAVh+qEgkvXg++YGVcYQb4Y0bevIOixiNa9ef0VAec619erZ2EQf2mdMhU3c2TqszrsyKdhwxwUPxTkQt5mga/Ku6jThO6sUMUsZVQTmafkrl0DWd1cnlGEKraPT7cseR1E/v/P0Mni7+UOxvQONfprC29I7T/8XgzTiBRGDA5hkPN8wq/Qu0P3zSPPu23YZ+zx81PKgvqGd1lln/cye7cvS2bCBLTetOx7UAOWTX391webWJq84sB+BMY0fT0QbOGWxk7RMM818R60wQZHUzZQ8+TdM0Ze0Ibi9vXeOA8nhL4xhBe+rQX17FeOYuqv2V/jupE83U1k5E6TaayVjmHh/h1n6qMgfuJ3vQ6tV8
+X-HE-Tag: 1763123770-250224
+X-HE-Meta: U2FsdGVkX18N4Ywnb4NOs9C9U8/3vIl7VLNM9AOhggJJs6p3YmzqyGplwXdsHFmZ4+1HYwaFov7coMN+iODB0zpDrzo+Znxn2jSJqo+tCXWD6aWTqegd8x8pe6QzoogZiXeynzt70tJlOXmhv/JQxU/lUcdvwmRw+EUFgvwnErL5006cUP+yFMF5yBga5Ueu2Zh/NXLFVwOjfD2iJyHcsaPDWXC8zeFz3uN68o+tHBLezcxIzCTooCjh0+65cdvt7SiFQ55QpsCoVJd4hzvxQqttCWgsN3ZA+VUW72xNc//rb5mvvvk5SPhdzVEW+gYxIEUO2eFgHGoCae+qpGQSiuNt8dfRmJmbMz5rJOMzFjpp28q5voEfAt8EwIH7PQ/ur54zepFA1XNdsmlTkbKjC4O6wSKFyBLwh+/2m4GJ7zyVRaGyK2oc+fcFcky56BNkA2ZDn5VXLGYNssqCVCueAystg0T91CVH2BP5OpjE8FwsrxZy/ISYtbJN7WwwjzikBlYJVN7rGaKhIoRNo+/LlZ9VxibuzCncVwuv1hlx48KY8KgRNY9dpF0ri/Ml9WhMULM24kuuSNqPWExG/nx8exLayL1lIGP3SrUvXkZv1G0oeu+BD1Yv7QfyzyLkbmWUI00SuOjFtWj/7aZk9bMB57osFI/EFTOC8RUUddCltRVt5yCWlu4Rkp2F8jrwiquMjgPXsk02fyIlK5wlrN2qBo2crT+3Dy5f3cF7n7mvsQztsMit4CZ5Qv0we+6UG6eSjn058aZedWkxERdP+xiRyOfgOFsC4MjBOlCSZQc7qSLJ8YP8P1grh+6XAS3gws1P5W6PMGVmgE8d9o7xL4jinIoRigUZ4Tws/JOzWtf+hxPmmHFrcNJgRW2v3Uvryxwmvt/u3yM3vyxPct9sRSZHyKw2wcnlBURskuWbaZ+Zk4JqTut3nYDb3CTWlbIjRIzfNTyVXH6kj8AqwnGY5O0
+ gSHgvMGF
+ IQXVLEGBzef8P6qJf1RgkRIUbnlODhlGAMGF9kN84+HGtNARY2K3aWGw+UyelRbikU9Xkik/aj7zCRL1N66ALtFTp5VOZF7VW4SO4EnADogIfS31KpakM6yp5/vNbpcj6j4TrTzoSXVwhR0sD2d9vGPpEraX4RLRZ6QKp9cncR1eKdxufLLoaxU4+hNyrvdz/cNxkKY7mPgw+ODKlGP5eEjcR7CNw7nD9ommepdlRz8xB/xVxniQKrPICiEp1QY9yvsbJAEbi2VRf3K8ne9/fL6XWY0XXfJEI2en1DTyXVK8lQGp1kbW2rPZ9noFwONbwkHFASR7w7iiml6BHuL/xONJcUXvhqWGGDIcp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -244,263 +110,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 12:28:58PM -0500, Liam R. Howlett wrote:
-> * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [251113 05:45]:
-> > On Thu, Nov 13, 2025 at 12:04:19AM +0000, Matthew Wilcox wrote:
-> > > On Wed, Nov 12, 2025 at 03:06:38PM +0000, Lorenzo Stoakes wrote:
-> > > > > Any time the rcu read lock is dropped, the maple state must be
-> > > > > invalidated.  Resetting the address and state to MA_START is the safest
-> > > > > course of action, which will result in the next operation starting from
-> > > > > the top of the tree.
-> > > >
-> > > > Since we all missed it I do wonder if we need some super clear comment
-> > > > saying 'hey if you drop + re-acquire RCU lock you MUST revalidate mas state
-> > > > by doing 'blah'.
-> > >
-> > > I mean, this really isn't an RCU thing.  This is also bad:
-> > >
-> > > 	spin_lock(a);
-> > > 	p = *q;
-> > > 	spin_unlock(a);
-> > > 	spin_lock(a);
-> > > 	b = *p;
-> > >
-> > > p could have been freed while you didn't hold lock a.  Detecting this
-> > > kind of thing needs compiler assistence (ie Rust) to let you know that
-> > > you don't have the right to do that any more.
-> >
-> > Right but in your example the use of the pointers is _realy clear_. In the
-> > mas situation, the pointers are embedded in the helper struct, there's a
-> > state machine, etc. so it's harder to catch this.
->
-> We could modify the above example to use a helper struct and the same
-> problem would arise...
+On Fri Nov 14, 2025 at 10:40 AM UTC, fujunjie wrote:
+> Although this code is not on a hot path, the revised form is clearer
 
-I disagree.
+Is it...?
 
-It's a helper struct with a state machine, manipulated by API functions. In fact
-it turns out we _can_ recover this state even after dropping/reacquiring the
-lock by calling the appropriate API functions to do so.
+If people do think it is clearer, let's at least write the right comment
+in the right place. Instead of having one piece of code
+(calculate_totalreserve_pages()) describe at a distance the behaviour of
+another piece of code (setup_per_zone_lowmem_reserve()), let's describe
+an invariant of the data ("lowmem_reserve is monotonic, up to the first
+zero value"), at the site where the data is defined.
 
-You manipulate this state via mas_xxx() commands, and in fact we resolve the
-lock issue by issuing the correct one.
-
-So it's a problem of abstraction I think.
-
-HOWEVER, clearly the crux of the problem as you say elsewhere is that we are
-using the 'advanced' API and handling our own lock, which leaves us open to
-mistakes like this.
-
-My thought process here is around 'can we avoid a bunch of mm developers all
-making the same mistake again'.
-
-In this case I mean - it's a unique situation, in some already _very_ hairy VMA
-lock code, that used to be much simpler (*grumble grumble*). We're paying the
-price for rolling our own mechanism here in general.
-
-But I think more broadly, perhaps there's things we can do here to help. You
-need to be able to go on vacation without having to worry about what mistakes we
-might make with this stuff :P
-
->
-> >
-> > There's already a state machine embedded in it, and I think the confusing
-> > bit, at least for me, was a line of thinking like - 'oh there's all this
-> > logic that figures out what's going on and if there's an error rewalks and
-> > etc. - so it'll handle this case too'.
-> >
-> > Obviously, very much wrong.
-> >
-> > Generally I wonder if, when dealing with VMAs, we shouldn't just use the
-> > VMA iterator anyway? Whenever I see 'naked' mas stuff I'm always a little
-> > confused as to why.
->
-> I am not sure why this was left as maple state either.  But translating
-> it to the vma iterator would result in the same bug.  The locking story
-> would be the same.  There isn't much to the vma iterator, it will just
-> call the mas_ functions for you.
-
-Yes I understand it wouldn't fix the bug :) I'm saying this as an aside, and it
-leads into the suggestion I make below.
-
->
-> In other code, the maple state is used when we need to do special
-> operations that would be the single user of a vma iterator function.  I
-> suspect this was the case here at some point.
-
-Right yes. And perhaps so.
-
->
-> >
-> >
-> > >
-> > > > I think one source of confusion for me with maple tree operations is - what
-> > > > to do if we are in a position where some kind of reset is needed?
-> > > >
-> > > > So even if I'd realised 'aha we need to reset this' it wouldn't be obvious
-> > > > to me that we ought to set to the address.
-> > >
-> > > I think that's a separate problem.
-> >
-> > Sure but I think there's a broader issue around confusion arising around
-> > mas state and when we need to do one thing or another, there were a number
-> > of issues that arose in the past where people got confused about what to do
-> > with vma iterator state.
-> >
-> > I think it's a difficult problem - we're both trying to abstract stuff
-> > here but also retain performance, which is a trade-off.
-> >
-> > >
-> > > > > +++ b/mm/mmap_lock.c
-> > > > > @@ -257,6 +257,7 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
-> > > > >  		if (PTR_ERR(vma) == -EAGAIN) {
-> > > > >  			count_vm_vma_lock_event(VMA_LOCK_MISS);
-> > > > >  			/* The area was replaced with another one */
-> > > > > +			mas_set(&mas, address);
-> > > >
-> > > > I wonder if we could detect that the RCU lock was released (+ reacquired) in
-> > > > mas_walk() in a debug mode, like CONFIG_VM_DEBUG_MAPLE_TREE?
-> > >
-> > > Dropping and reacquiring the RCU read lock should have been a big red
-> > > flag.  I didn't have time to review the patches, but if I had, I would
-> >
-> > I think if you have 3 mm developers who all work with VMAs all the time
-> > missing this, that's a signal that something is confusing here :)
-> >
-> > So the issue is we all thought dropping the RCU lock would be OK, and
-> > mas_walk(...) would 'somehow' do the right thing. See above for why I think
-> > perhaps that happened.
->
-> But again, I feel like we could replace the maple state with any helper
-> struct and this could also be missed.
-
-I disagree for the reasons stated above.
-
->
-> I'm not sure there's an easy way to remove this class of errors without
-> changing the basic tooling to be rust or the like...
-
-Well I like to be optimistic that we can find ways forward without that.
-
->
-> vma_start_read() is inherently complicated because of what it does
-> without taking the mmap lock.  Dealing with a potential failure/retry is
-> equally messy.
-
-Yes I agree.
-
->
-> The locking is impossible to do in a clean way since one caller does not
-> take the rcu read lock itself, but may return without it held in many
-> scenarios.
-
-Yes absolutely. I am not necessarily in love with how complicated we've made all
-of this and I am not sure it was justified, but unfortunately I didn't pay
-enough attention to the VMA lock seqcount rework.
-
->
-> >
-> > > have suggested passing the mas down to the routine that drops the rcu
-> > > read lock so it can be invalidated before dropping the readlock.
-> > >
-> >
-> > This would require changing vma_start_read(), which is called by both
-> > lock_vma_under_rcu() and lock_next_vma().
-> >
-> > We could make them consistent and have lock_vma_under_rcu() do something
-> > like:
-> >
-> > 	VMA_ITERATOR(vmi, mm, address);
-> >
-> > 	...
-> >
-> > 	rcu_read_lock();
-> > 	vma = vma_start_read(&vmi);
-> >
-> > And have vma_start_read() handle the:
-> >
-> > 	if (!vma) {
-> > 		rcu_read_unlock();
-> > 		goto inval;
-> > 	}
-> >
-> > Case we have in lock_vma_under_rcu() now.
-> >
-> > We'd need to keep:
-> >
-> > 	vma = vma_next(vmi);
-> > 	if (!vma)
-> > 		return NULL;
-> >
-> > In lock_next_vma().
-> >
-> > Then you could have:
-> >
-> > err:
-> > 	/* Reset so state is valid if reused. */
-> > 	vmi_iter_reset(vmi);
-> > 	rcu_read_unlock();
-> >
-> > In vma_start_read().
-> >
-> > Assuming any/all of this is correct :)
-> >
-> > I _think_ based on what Liam said in other sub-thread the reset should work
-> > here (perhaps not quite maximally efficient).
->
-> No, don't do that.  If you want to go this route, use vma_iter_set() in
-> the error label to set the address.  Which means that we'll need to pass
-> the vma iterator and the address into vma_star_read() from both callers.
-
-Well that's what I'm proposing we do re: passing in the vma iterator, so it
-seems we're generally aligned on this, but sure we should use vma_iter_set(),
-ack on that.
-
->
-> And may as well add this in vma_start_read()..
->
-> err_unstable:
->  	vma_iter_set(&vmi, address);
-
-Ack.
-
->
-> >
-> > If we risk perhaps relying on the optimiser to help us or hope no real perf
-> > impact perhaps we could do both by also having the 'set address' bit happen
-> > in lock_vma_under_rcu() also e.g.:
-> >
-> >
-> > 	VMA_ITERATOR(vmi, mm, address);
-> >
-> > 	...
-> >
-> > retry:
-> > 	rcu_read_lock();
-> > 	vma_iter_set(&vmi, address);
-> > 	vma = vma_start_read(&vmi);
->
-> lock_next_vma() also calls vma_iter_set() in the -EAGAIN case, so
-> passing both through might make more sense.
-
-Yes.
-
->
-> >
-> > Let me know if any of this is sane... :)
->
-> The locking on this function makes it virtually impossible to reuse for
-> anything beyond the two users it has today.  Passing the iterator down
-> might remind people of what to do if the function itself changes.  It
-> does seem like the right way of handling this, since we can't clean up
-> the locking.
-
-OK, I can put forward a patch for this if that'd be helpful!
-
->
-> Thanks,
-> Liam
->
-
-Cheers, Lorenzo
+I know sometimes in code this complex we do need these
+"spooky-action-at-a-distance" comments but this doesn't seem like one of
+those places to me.
 
