@@ -4,102 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDFC0CEACCE
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 20:50:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA15CEACD6
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 20:53:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 361348E000A; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
+	id E3FA78E000C; Fri, 14 Nov 2025 15:53:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3382B8E0005; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
+	id DF00B8E0005; Fri, 14 Nov 2025 15:53:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27AC48E000A; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
+	id C90388E000C; Fri, 14 Nov 2025 15:53:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 142488E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2FA0C0536
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:50:04 +0000 (UTC)
-X-FDA: 84110404728.04.63A794D
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9E21C180010
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:50:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=It51VS1w;
-	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763153403;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B15818E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:53:52 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5614112E54A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:53:52 +0000 (UTC)
+X-FDA: 84110414304.07.8910A96
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010021.outbound.protection.outlook.com [52.101.201.21])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6A9E81C0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:53:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O91S32GI;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763153629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uCubXLGEjf5yNbIg/so5Dl6MiWPjIZCOszTICQIIzp8=;
-	b=n4qH/pDbIBGKvQeJW6Bm/aCwG03b/KFhLO+Fo4Cqsk2zC9o55QHtzQUaBMR5d6xcIbRxnV
-	e8ZTxO/hPEVZPpkKQy6pRXgiI+hz5x4mEga6IUJp4R56BC50Sf/mLmM9FbJZdNLVMoiZVe
-	Gj3IsM1EYxgdiIwTmTSYPfwHhVzZKdI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=It51VS1w;
-	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763153403; a=rsa-sha256;
-	cv=none;
-	b=fdW+T41Go0AFqEzieosNxiGaqzUt2mEljE1lOO7+H+ZBN7tBrzJrcboXcwPCXyNEW1jcN5
-	ZnPUaip0K+8tTZ8EUpqIbch5aKZpHYNr2yvKBz52yV1aY2RKbNXWqsgvGjFGIWalGRnUWr
-	Wv6U8YarXUzi7A8Q5LHjVWkkvmsG70E=
-Date: Fri, 14 Nov 2025 20:49:52 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763153400;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uCubXLGEjf5yNbIg/so5Dl6MiWPjIZCOszTICQIIzp8=;
-	b=It51VS1wlp2x9Qt7YpG8krPvvqoaLDqdqRwhNlKo8zhqqq/V0B5K3FWIMQ3XBjycbofuHC
-	pGAwtOiIS939CuoE805Eqsd1Nkmh0lzAgoH2XeO3Km5Ew9kb+rWySvMgoU3Tox+gw8Nyeq
-	yGJjTREn5JqefyyP7mOBjmOxamJBXaI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Cc: SeongJae Park <sj@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "usamaarif642@gmail.com" <usamaarif642@gmail.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
-	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
-	"Gopal, Vinodh" <vinodh.gopal@intel.com>
-Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Message-ID: <ekilv3urk442lezvzul5dwergk6baubuhgrnflf5j4yfj47lwx@ae6y6mvsvs3v>
-References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
- <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
- <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
- <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
- <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
- <SJ2PR11MB84727C029B980E5E06F7291EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
- <SJ2PR11MB8472CE2B46F08804CF5F2158C9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+	bh=DlOaRvzrTgPOGtLGk1k14RETmsGNHzFq9yeEg6P16OI=;
+	b=O6RTxnluHajilKozxptWhUVQtN4UuPYehPdVjUUY8+ZfKSySnPLWOJRagUu2GDDbmCc5Wa
+	5C14eKVI45v7s8PvZCamdmRV2t3MXaejhzrpaVawiBLgqqUFlaQeu/Av02vdsMbWq4fpDf
+	BuF9CkTgUntJUtLZO05L39MUjZEzFPM=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O91S32GI;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763153629; a=rsa-sha256;
+	cv=pass;
+	b=erpIPiU6m2ihrA8a0nir4k0Jl1K98m6vMEhWAUganbwaZ4qik1i4dzh3JDBJkLNpK+yF9N
+	t0qY6CQ8zUDn1mHtqjEyjXBAddYcYiNNauxCFftOes7heGF5v8HBE0mDkgc5axHtQypXXm
+	R4uhIt+G9ioGJgqzngyHaqDRYHpJzJA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VeeDT/Yq7Tell2M8W72oC7BNt4cK/xkimcY1Ret9UUwcggDq7p0yIv6U8CCRBRggZeI8w7P0K1JJOvKWF2TQvTIRlaY8TrkQqR3N+Uq3LnRZ+PxhdasEHCjkl1+So69hNQiAEEIGEIv+uErVB5bqBBuKzKuc2eVDI+BLIUDfw/ZFMstTGuZqSSophrgzNgzetjpaHnAOifilH09iTibI+8SVm4Xfstusjajcr3B2DtXU1hYwDDX8Ym7wLJWxjWlfEIOnZTozDew8q+/WhaI0igaMcCHB9najr326353L0eUdeJ15/iEIdiGTl+Wl6SX2gYypse7d48umlpmrV675Hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DlOaRvzrTgPOGtLGk1k14RETmsGNHzFq9yeEg6P16OI=;
+ b=cEoXx2l/yzVQadMxs8tvrY/9z4xdfsZf8CCslxoxdInt4ryMU9WsyD4vJE2TaX7NZq8Y2Azi1NExVwYQYKV1wC97faXMVVAYMuj/Dp1Z+hG1ARPk7egHBp0oRjGvs8x5g0FfpPjjF7XmqzNc1Dolsf90QvYXGR8+IZgNT27W4GxUI++7o9Gb4ZXSXF25ijUKKotcZOkGnMrZ4paaWeYVOZTL977cSD5wGXMp9EXBNNCkkviqvQrqGCZGUbGvYbNtqLw+UEi6u+YunyRHty2tgn51U7mra5rgwTRLUiYCsgHniNR+hWsKdnxwVXl0WNsn5FSpxjBVDtSA/hGEG031PQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DlOaRvzrTgPOGtLGk1k14RETmsGNHzFq9yeEg6P16OI=;
+ b=O91S32GIQM72eOHYj2uqpYc4cpIvH1aIs5Mz13nLMJFvR13pAcgFC/u1CC5tRK7liE2Ep/GT00hr4UMy7axIdbeN3qG90ICdOgH2FGS+0sCVoLMi9mTThrbQKS7qwN6J6dCgXQ1HaoY+o9lhwIhSEmhnOMTnDqIwsYnzQ04ExBrrCDwbKdo4+59HccSgZrjbkEskL8xyvyEvI8O0fYWkmbk4bhLImHOa3EELisDgICpLgZwU5GcvXQknFf3RO5ehSRgxsTJF4jlgaEVUKEmmkv5pzy7rGO93U/DH1sKCnpx3+X+Jf38kdta0lqOB2KKTjsJnJxEytldUxkJNGXi6/g==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ IA0PR12MB7676.namprd12.prod.outlook.com (2603:10b6:208:432::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.18; Fri, 14 Nov 2025 20:53:44 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 20:53:44 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, willy@infradead.org,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/huge_memory: consolidate order-related checks into
+ folio_split_supported()
+Date: Fri, 14 Nov 2025 15:53:42 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <AE04E232-34A2-47A2-B202-3F1E32AFAC0C@nvidia.com>
+In-Reply-To: <20251114143015.k46icn247a4azp7s@master>
+References: <20251114075703.10434-1-richard.weiyang@gmail.com>
+ <827fd8d8-c327-4867-9693-ec06cded55a9@kernel.org>
+ <01FABE3A-AD4E-4A09-B971-C89503A848DF@nvidia.com>
+ <20251114143015.k46icn247a4azp7s@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: MN0P222CA0024.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:531::26) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ2PR11MB8472CE2B46F08804CF5F2158C9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9E21C180010
-X-Stat-Signature: 3wzhpb8tbkptkw419ysoyt6h8gyjdr34
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PR12MB7676:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3ba5824-9cf5-49e6-4081-08de23bfe671
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cVRaWCtVWTNlNzBzMWpJbFpPM1JNbjh1MGYwWmtENVEvajAzcHFMN3dmL3g0?=
+ =?utf-8?B?T0RERkEyY1hCSDEyWlNhVk16THJQdVdqMmhkUDlRWDlZTkFDNy9iMlNVMG9h?=
+ =?utf-8?B?OWREcVhIS00weHUzaUhyTFBnU2Jad29rcHF0cVYxbUtPcUMyd2ZhcXRvSjd1?=
+ =?utf-8?B?OXNzZE0vN3BWcUxaQ2VUemhyUmdsRFRVeEIydzNvajg4b2w4VXZYcnRLclN3?=
+ =?utf-8?B?bm12cVFnb1h6aVJybUlqUlFLQkZIbVM5aytGLzRKRGx1NjAzYjMwK09leU9Q?=
+ =?utf-8?B?T3lOSklNdTVUZCtuSzRDWVExM3JtdHZVaGt4R096YlQzSElKWVBjRmZBRUN4?=
+ =?utf-8?B?clNmdmJvajMzSkEzUHFGRFlIRWorQXRiV2dCci9OdW9TZnlMSVlHWTFVNGNS?=
+ =?utf-8?B?RlJnaW55TnIyN1k1MFp4RmpjekFMVVIyQkNVYzQxTHNUM01kanlrZ3RybEJV?=
+ =?utf-8?B?MUVJV3JOTVNTQzBiTXZkdXlsZGpGT28wOWFISUhiY2ZTMjJseXMyYnk3OUI2?=
+ =?utf-8?B?dS9nWVZOT0wzcXcvcXdwZjhLMkNTZEZvWjRCL2g1STU2L2Z1Qi9UVFNsK3JD?=
+ =?utf-8?B?VDcrWFpzM2RRelZ5U2NPTWQ1aCtJMVZWc25vb09WaEVPUG1BWm0xUFVOSTho?=
+ =?utf-8?B?ait0UVZoRVpiMU1ncjdqdGFCV2RkL2RDREwySTlMVFVhSndnNWozMndZWFp4?=
+ =?utf-8?B?aW5vTzdUZk93TnNxaWFXNlYvRHB4Ti81TVljWG1sQmxQamxxLzljZFRMLzlN?=
+ =?utf-8?B?aW1LTTZGenRVMzZKYTdhaTcvM2NrY3dQWGxyLzVoMWdQNHF0MTQvNXQ3V0Nh?=
+ =?utf-8?B?Y2tmVEVWeGZNNjhHWDJHb1R5a2hwVk5BaGpuaU5mMG9OeWdVWjdwRmUzUHFZ?=
+ =?utf-8?B?VW94dHJFNjRoRi9oSUVsWG0rRE1mdTY2TDdoQzNxU3BxTWE5UllGSlg0T1Q2?=
+ =?utf-8?B?dHE4WUNHTURHTzlmYTc4R1daUzEvZnkrT2RpVUZnNFo1NXZiaXozTHVQbjhQ?=
+ =?utf-8?B?RzBpajNHbDRXYlBiRXVybWFhRDAvbXh6bzBzV20xcnZHaFpOQVhVaXZoRWRz?=
+ =?utf-8?B?UmR1T0xXbmJGSFp6NnoySE9aMm52aXVTYkZ0NlNzU0RWYUxEcHp4S1RxRnJJ?=
+ =?utf-8?B?WnBzVEVMbkhrcHg4Z3c2dDFxR1c3UWc4c2tublpBWFFKQmxsZTVmQUwxcjJ1?=
+ =?utf-8?B?REN2ZVlSMzVOUExmbGR3SkttZkV6Z2g2K0ErYXVCRVl4V2pWZWp2eFFTT095?=
+ =?utf-8?B?endJbVNxOVlJT3lGbTBDei91U3F3Y1dvUVh3cndLU2JMankxU1AvcUtlcFJy?=
+ =?utf-8?B?Z2dxa0kzTENTNUZqVnlnOENXSURZeEhtUDFSZmMrMnZrTHY1KzF6alJTbXpS?=
+ =?utf-8?B?VERPdlFUNkZXVXpWQldORkxEOUZsU21DejRPQWduNHZkUS9JaFlmME9aRmdT?=
+ =?utf-8?B?R080Q2N1TTI1Y3dDbzRMbGpQeVpsTkt5cWx3d1Q4Um9rZHRWL1U1Ky93T2s3?=
+ =?utf-8?B?ZkpmdjYvTUp4cndLeVp0amM0eHV4cmJNZlBYd1NZSWJLZmdqckR3RnU4NUtl?=
+ =?utf-8?B?SWIwUlYzeVRpcGkrUGZBay9tdi83UkY0ZGVGYVRWQjhSWWpOYS9JcWJCRUhi?=
+ =?utf-8?B?aVE3ZTNEaTJEVjFuVUhUTkdteWFydWo4VUtISDhBdGRGWnlnRnNvaGFBOURj?=
+ =?utf-8?B?ZmhXOXNocCsyL2ZVRTh3L3hrZ0tFS2VnelFpWlU4cERURTlYL2dVZUZJSmhW?=
+ =?utf-8?B?Z29nRHhDcWlPREQ1UENSeDgrNGljdnhLWTBtMkVMc3RTdGUvemRGTjNMQkRw?=
+ =?utf-8?B?aHVoaEpFdUlpckI4cnJVZ3hvaEMxMzlXNlVlUHFrME1PaHJlOFdiSkFWQ2Z2?=
+ =?utf-8?B?d2xKQktDRmVUL2RIV1BKMTd6ZVFoMVR4RDdvNFpEaVVzR2VUdWRQenRKY1Fm?=
+ =?utf-8?B?ZlhJN0lvdDNlWllDamZMemV5QVVoWEMzWnBnZWVxZmZIMzJ4QVNTVlhqRjUz?=
+ =?utf-8?B?N3ptczYvT3pBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eHArVytJWEdvYmNiTWRSaHZKSzdJT0lRRi9FNlVIZXZWY0I5dFB4VHVjTS9h?=
+ =?utf-8?B?TjVwNGJWOEZsL3pVdjVxYmRiZVg1bWtURGFpSGVxUW1TejF2WFFVd0QwTlJW?=
+ =?utf-8?B?MG5tN25yamJobjF2RmVpRElxdlI4dTRia3NQejAvMllvaHMwVXF4Zy9mRUtn?=
+ =?utf-8?B?eU1KVnY1THVLQlZiWEVMdzUvejNwbnFuaEo1RHVza3BWODlZbGtWZWV1Zzcx?=
+ =?utf-8?B?V0dUb0wyMEFGNjlmVmp1RjN3YVRJVXp4cERtVVd5c3BIRjRCTEhON3lLSkV2?=
+ =?utf-8?B?YktrRWZ4NEVLeVhxVjQ1clV0S0tDdFVTQ1VvQkdnbEduYXRUczdiWERLVmM5?=
+ =?utf-8?B?T1RkNnhMb21VOSs2VnNoNmVNaWFLcmZMTGlUL3BST0R1WXdYMHpWZXJVcTlm?=
+ =?utf-8?B?WUgzeDM5YjVieTMzNjhuN0FMcEF4RlFNRmtqM0FwNzA1V0dKL0NzOFhVdzRO?=
+ =?utf-8?B?OFNRNDBSTllVakxZS01OMzZsYUswVlBmS0txUFJrcXpwdGY1UHFDcVFzSGdk?=
+ =?utf-8?B?MzdsNkxZL2p6RDROdDRBRmU5dDJUejg3TDM3VTJPa09LM0RkcGFiS1k2cHJi?=
+ =?utf-8?B?VHI4VDhmcXFkOUUwanF4Q3pOZktuOGxkemtnZHc0TWpuZVZiZExFR1NWRENP?=
+ =?utf-8?B?YjRWMWx3Z0hlbnR0emhyMmpTemN5S0JocEQxSWhTQ1VpeXBybGZReXRydjQ3?=
+ =?utf-8?B?S0t2K2lFME4xNVFpM2ovajk5R0ZaK2FhTVdFMmNEaDhyZlZwOHErOXBNQmdH?=
+ =?utf-8?B?V2RDbWRqdEZNUTlyM09JUVpmb3NZZXVSSnpHOG9ydzlaY0tHSFEzekZCbGMy?=
+ =?utf-8?B?dENqcHo5U1g0bUdWNVcxQ0o4NzEvQmFaZDBNM3FTRkI5SnYyR2Jua0ZoVjUv?=
+ =?utf-8?B?Wmg3UmcwSVdhUEprcUFRR1EvdEJ4VStTWGxMd0JnUWRsbXVsZnJSM3RnUlJt?=
+ =?utf-8?B?Z1g2UTU5aUtQdkE0RmhzOGRuNVZtdzNFRVlxTkV4MU9sb3ZHRW9hakozZHgr?=
+ =?utf-8?B?YXRzUHpUOGlqcGF5RGlTeHp5YU0ydU00cTIyczZ6ZDJoQ3pXUDhpOFZCbGVm?=
+ =?utf-8?B?RWRyK0l0cldINlpVZU1YWjV5NTVVWHdacnBDaXhqRVhqNzliV244bURKNmFy?=
+ =?utf-8?B?VS9aNVk3UGp4dUNGSzVadE5QMGg3dlFIYURyVmQ4NmpyYWo1UVZxL1JmTWp6?=
+ =?utf-8?B?WVdmbWQrK0hSSXdGYUNXNEVXQTNSNWJ4SVVxTVZWWGY1WTJQdktXYzlnYkJG?=
+ =?utf-8?B?dTRxYXlXNW1TNUVJZ3A0RTdyZHJmU3VNRldISVF4OHRlOFYyY1pSakhSNDFU?=
+ =?utf-8?B?RC9hTEM4M2lLbEFYM2J1aXd2dFlRaTRlUXNNZnRNc3RKWHFNaG5hQTlPYllj?=
+ =?utf-8?B?NEo5VVk1NHZLQldWUG1xL3ZwY0Y1emwrMjg4MEwwRFAyV2VuUDErRGltZWx2?=
+ =?utf-8?B?dHRzNFZlTDRSWXNuZTJDMEdrTTBXMnVRYk95bGRMMkFNZURRNm5oU3hqS2Nr?=
+ =?utf-8?B?OUxNaVhiQ25LL1lJeXM2ZHF3NUpzb0lpamJjTkJIVktSSkpwRkdVMjhpdVN3?=
+ =?utf-8?B?YUdiYm1Bcml3VVlsN0NtcFVyeEl4NXBac01CeExSNFBkTVVTN0E4L1JKNXNy?=
+ =?utf-8?B?Ym0zVjBZT3pGbHlBZXhXWU4rY2tqbGVLRmF0UXB0QkZlSzFhdTZUd1RjUTVV?=
+ =?utf-8?B?UGowV1RHcDlhNUV1MDF2UkZpbFRNRnphSXE4Sjc2c2lnSGVRZXNwWTRBUHFH?=
+ =?utf-8?B?VGxSQiszUEFnSi9pWlEzYktKaHY5YVZmUWdNdnd2ZWhMeHpVdEJNSEt1VnZS?=
+ =?utf-8?B?YzV3cEFReXFjYVhXZUNrVmtXbTBYMVlVUURBOXdaRk9ZZ1J3Q3BRUWVQWE1M?=
+ =?utf-8?B?OWN3NHhNZ201L3FrYW1UTlNraGlIQUVXOTNqQkVvNThqaTNCZHFvYVVvemt5?=
+ =?utf-8?B?MEp2ZDdKblV0anlmTTA5Szd1ZFBHcTA3aC9LUUlsc2xsM3FJOE1tZ2NiSCtU?=
+ =?utf-8?B?WUlOVDE0amQvVjBxRENrRXdmM1EvcldZcUJxeHFWZnZlY1VBR3V1bnFMZjI4?=
+ =?utf-8?B?UVVDdXliWC9wYTJWb1hvbDJacVk2NitNSlpsQlNjanhYV3FhZ0ZMOWJWaDRC?=
+ =?utf-8?Q?LeLKmkrMBGg4H3TMI0XqTq1fa?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3ba5824-9cf5-49e6-4081-08de23bfe671
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 20:53:44.6222
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6YA5mBPZ/LSzMARzSSFy2kiAWUuqDOfNOkZuPQ1Cf2sIEHgAFhCU/YgKKaSbsu5s
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7676
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6A9E81C0002
+X-Stat-Signature: nyczhikwx9e9ze3frkmaf5ti5jfaz3gz
 X-Rspam-User: 
-X-HE-Tag: 1763153402-453094
-X-HE-Meta: U2FsdGVkX19dZc39nVcJvY0Lory5i/7HNTZaGEtOWHOAZDOTfNNVyNKFpO2g//LD1FXT1zTw4zZxNmNqqJzxQf/ba1NJ2wOGNXaUHMFT/buL57lopDHiqOmE6cosjyuMIcjPyiMOPTs8JDKz3HBHux4eEbjvtJEiHbUWy09YqKO5V+8DuSLPqhPJwu+TYWsRtZv4Atw0jYboyRGsTOHmvYwN7fq9/ifkB2Mr82QjUuH0iSTx9U/IoBCfInSoGAmHx9E4S1bUdjE+yUm1b5v3mxS4d916mJR7Jg1yGQ+fdn0ITT7kmCJJPwI7p/+Yh0omSjHHb6/BYFEy69NYZQPGAwfDzzw11mc1UG+VwQQi/1tEFsCjDy9u7IDW4OmlVPu794YkW8HfmofEoyotTLzm29jahkj3109sZ3xO1rIf58gTEvg+d0X7UFL4/KofAtqJL2fWcMcG7hVV7ntXma3lAh3RF+sn5Q+zv+Q6jUQeryBPL1afZDzza6RVfyIFeef6HMNNuex0OJ7FtJOQI1cvsosDY9MPzcrC4/3W57Y8NwXfZ2FOME7a8Nv9BiquPxNaeKYV0cwS0Isvg9Qpd7wLU3g2zMETG9ZJNguZEqvJbxjKE87QUI6lX/rg+aUABVR88fJbz2Qxy4J0z45Pj7pU2fIi2j/TG+JmeitCHQ5AQoaU3SGi6lgAS9/2DLTVYO+TKXS8ntwMDSSoQ3CpumumALam5BFMaZhTWR7F/+SLS422cka1veF9mD0kJfoInBPqGrKArKmoZk/G8H7/KRQHBneaGNcpTZzxQpEPyNTjS29QjxkouLUPk4VBxdTa4cbzLQUZutnJyulpbY+UhApnuwUaOCojweEggxDpsVubE6YHTJ4T1DyGjf4wozHStE1KCpqRqOUcsp1xAxvn0IT53uYgOmtyTbayBIIoIYQdpddHoojZV09B/w1S6rKgsdEfHDcvQE7oaHtx56iWyQz
- GzatYy0b
- kqHH037xNSI5JBmUvMgotmJVP4P20RMi9fU44kOpLdV6ov/Jbeo9KAZFp3fJ1xjnJo9VZqGlAoZ/K0tdR1acUyAmbgP7bxP1vdGBOrtEi003F5Zw9b2fqViBXIekOyuZ3IFc9MXaJuFwSpDmIoGg/lufS8yujicY4OdLS+q9LsEkoWJfBaTHxbJojz/e9uIe3QQwhimQ/C4SMfW6LJr0UoELxh7p3/QLY6J6/9qjdVANt4QxDEbWWhQcAqlJkb3/GmMok4yzaZWDNRWv/XHa3LTxjmTpTpjmiq1WJ9iGtiLbQ0h575tUWusnGVQAioFQ5KOAUTdVGfhgg63zWK6V9FMV4PkAeJfX1Svc7+CAd8vXIkEXJs1i8Vw1TMMqJKj/cYdJnF6S4V/6epAUOvqI/gxlXhVg6+0E+2+CHffvYjx2lElpSKh/81b6Qi7B9E27GFB87yCiSj+vQBZxRappNCoa3MUUh7H6UJb2wO6pk23mz2Ny1nSKB4dJ2uKAYcWgpAbxqsbxlDq1i0vVbD8RByIZoZE0jXahw5ro49tNA2wKXiBPnreWaRFC8uNNChlXh7hJ8bdLWuH6CPaaqYCmGLsmsrTjuPUSCp3OlknxlBXu33mXQ2360aEDNHHnODTIIsUPs6hVHAjIgjkbqP7HOQNE+uZd9+Li1lZO18vQEX3LvBH3XqMh3PXVODjztjAJGN+GaabFF8LmQKSYr/9l+xB4n7TrFVBMBtMuo/3NRaD8EARkeOQwv3YgJS13MMTpfumND/69SAGjuTwbdOTHfCAZcTjh6a4rnrzcI8ezjDXD5Wglseao0Hz+/xVx7XNYkH+pLG3WuMc9BVe2nF/hVrB58EaEcCL2jWAbEg+wZTApXMrmbL78EfxD1kw==
+X-HE-Tag: 1763153629-246975
+X-HE-Meta: U2FsdGVkX194NuF8kTj2gZVVQmtjyXDGBPcURIqNA6yxHUqxs6ewsNsN2waNYSF3SJwGM46eTptnU0OFOZBBSmqNHFbvAE7eTdMI3hnYOXO0Np8bheyQYriegIpUQ1KzPp70/Kqvad+H3cGKprzfxXSBoY4n5YF1Vh7581c4ErJMhKwtQdTZaRcOQRaq/jwcaTuZkjrmH1zCWjwN9WzuRy8q2PTeM0jG7EdsOWZIMcS4vOC0cgSc/bQk2qfYbAIIvbjAcQYs5zkZSOgRBPkX6fA6pTJyx+EflxDXKTKFCoYbe+wy1jUeK9h3HfwVS6slCZypWQKhmPKxW3lSxB1l45cjEL2kioFidQp0ANLxhhePTUjkVcHAF9mpv3ZyWO2jmYzUOKrK91cpDgcPN4I0288d/as6WWV66Z3crDhICNBAFzngXbFiE74Rj/GROux/GMrvxiYnRSPraWoz3WfCj0hAAGzoZvQqA+zw9D7MVI4A3W8kSeABKi99dFgVMP3UxHEHwGuDX6orRR5lF0xgxgXLkUdtTmHyVPdM8hzOi2htlqqJSQfr3jVq72vnVNhgWVvZJ40XF6aKW1Oj5uCEhxGQOTv6a2XLqva2W1qPuObVFWOd8PkQZ9LqB4NqYR3kK408TPMIx2j0i9ldPKokg2lYbtpzCsnGTOhy+QbqTm2znC1y6UYhDaETW92mX7SrIQ7xPL9Ts/P1daEFe3gbCwFlLH8Wlw2HDotrjcQpWCF0Iho8MQ+5SuazYBOXIBvWSjcYBMdOX6L4dLGxcYC1iV+o46CQLb6lav4yFj4MxQtXbN5RTiKrHvwVpPbnUV2ZvQv6adjqwB5Nvi5fzQVPH0dFtZR1iZTOop6NJ8qKa7cbNPDUCNWQMV5yhYvmhMP+SNsvd6iiC2TT6SJO/ZE5eLqLb7ndG6MuZfMn1EoC/yXewELuiQJ95jJX6UvrUqwdapYA4Yi8xJ0aEC7chTd
+ Nrm82JiA
+ m4eJbnHkNfLB2e5/FXmzmRTPdJum51/YOwuEMLT8EbVZDeC53oAkDrSXUbZF/sl9JpaEx6+QRC/fKOVVdaOz1m1otuSvBLwbkBl3O2mIu6i5w+qwNlWoYNPlGCglbUVTmUphAKkIaXYAL/cyurHiCH4KM5rUC4A9OBJbfz16MNT7qq9q7nUAAR8pgeD/x8/IJzBK16thjYPe5xgw75HlAG9+wUuLsIK6HGmWwqtRjIJHSYNZNOLcNZ07FNjAVXYMoCgvmyK+nUv5gbPw6NjSo33++bVDX7UjwsYm2tJ3zlw+OlkpfG8E1E6Bbk91bjhCqN4hbjn/Ke882cwGMko40PN97JR1vzhhB1moA3r+uthDnOapddcV20hZGG4LCO/UHZ/exIZDaGgPzp9Ie4FScvK8aL1mLEPPvTYrucZVZaZs6VX1ZPIofsb5FRGeQtWnsssxDWpXE4qgUWlYckUnnCngIUxgjm6JLObn9ycG6o5bQ8QXrUk9GkJdmOIr+lHFAu5Te2bjJpPs1Ti7L216jNcKA//zFL/FtD9DS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,275 +206,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 07:59:57PM +0000, Sridhar, Kanchana P wrote:
-> 
-> > -----Original Message-----
-> > From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > Sent: Friday, November 14, 2025 11:44 AM
-> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > Cc: SeongJae Park <sj@kernel.org>; linux-kernel@vger.kernel.org; linux-
-> > mm@kvack.org; hannes@cmpxchg.org; nphamcs@gmail.com;
-> > chengming.zhou@linux.dev; usamaarif642@gmail.com;
-> > ryan.roberts@arm.com; 21cnbao@gmail.com;
-> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> > senozhatsky@chromium.org; kasong@tencent.com; linux-
-> > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> > <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>;
-> > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> > <vinodh.gopal@intel.com>
-> > Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
-> > compress batching of large folios.
-> > 
-> > On Fri, Nov 14, 2025 at 07:23:42PM +0000, Sridhar, Kanchana P wrote:
-> > [..]
-> >  > > > > >
-> > > > > > > > > +		if (err && !wb_enabled)
-> > > > > > > > > +			goto compress_error;
-> > > > > > > > > +
-> > > > > > > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg,
-> > > > nr_comps, k) {
-> > > > > > > > > +			j = k + i;
-> > > > > > > >
-> > [..]
-> > > > > > >
-> > > > > > > >
-> > > > > > > > > +			dst = acomp_ctx->buffers[k];
-> > > > > > > > > +			dlen = sg->length | *errp;
-> > > > > > > >
-> > > > > > > > Why are we doing this?
-> > > > > > > >
-> > > > > > > > > +
-> > > > > > > > > +			if (dlen < 0) {
-> > > > > > > >
-> > > > > > > > We should do the incompressible page handling also if dlen is
-> > > > PAGE_SIZE,
-> > > > > > > > or if the compression failed (I guess that's the intention of bit
-> > OR'ing
-> > > > > > > > with *errp?)
-> > > > > > >
-> > > > > > > Yes, indeed: that's the intention of bit OR'ing with *errp.
-> > > > > >
-> > > > > > ..and you never really answered my question. In the exising code we
-> > > > > > store the page as incompressible if writeback is enabled AND
-> > > > > > crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check above
-> > > > > > if crypto_wait_req() fails and writeback is disabled, but what about the
-> > > > > > rest?
-> > > > >
-> > > > > Let me explain this some more. The new code only relies on the
-> > assumption
-> > > > > that if dlen is zero or >= PAGE_SIZE, the compressor will not return a 0
-> > > > > ("successful status"). In other words, the compressor will return an error
-> > > > status
-> > > > > in this case, which is expected to be a negative error code.
-> > > >
-> > > > I am not sure if all compressors do that, especially for the case where
-> > > > dlen >= PAGE_SIZE. The existing code does not assume that there will be
-> > > > an error code in these cases.
-> > > >
-> > > > For the dlen == 0 case, the check was introduced recently by commit
-> > > > dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-> > > > as-is"). Looking through the history it seems like it was introduced in
-> > > > v4 of that patch but I don't see the reasoning.
-> > >
-> > > The existing code did not check for dlen == 0 and dlen >= PAGE_SIZE
-> > > prior to commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression
-> > > failed page as-is") either. We need SeongJae or Herbert to clarify whether
-> > > this check is needed, or if it is sufficient to rely on comp_ret, the return from
-> > > crypto_wait_req().
-> > >
-> > > >
-> > > > SeongJae, did you observe any compressors returning dlen == 0 but no
-> > > > error code? What was the reasoning behind the dlen == 0 check?
-> > > >
-> > > > >
-> > > > > Under these (hopefully valid) assumptions, the code handles the simple
-> > case
-> > > > > of an error compression return status and writeback is disabled, by the
-> > > > > "goto compress_error".
-> > > > >
-> > > > > The rest is handled by these:
-> > > > >
-> > > > > 1) First, I need to adapt the use of sg_outputs->sgl->length to represent
-> > the
-> > > > > compress length for software compressors, so I do this after
-> > > > crypto_wait_req()
-> > > > > returns:
-> > > > >
-> > > > >                 acomp_ctx->sg_outputs->sgl->length = acomp_ctx->req->dlen;
-> > > >
-> > > > For SW compressors, why is acomp_ctx->sg_outputs->sgl->length not set?
-> > > > IIUC we are using the same API for SW and HW compressors, why is the
-> > > > output length in different places for each of them?
-> > >
-> > > This is to first implement the SG lists batching interface in iaa_crypto, while
-> > > maintaining backward compatibility for SW compressors with the new API.
-> > > I believe we may want to adapt the crypto API to SW compressors
-> > > at a later point. I also believe this would be outside the scope of this patch.
-> > > It would be nice if Herbert can share his vision on this aspect.
-> > >
-> > > >
-> > > > >
-> > > > > I did not want to propose any changes to crypto software compressors
-> > > > protocols.
-> > > > >
-> > > > > 2) After the check for the "if (err && !wb_enabled)" case, the new code
-> > has
-> > > > this:
-> > > > >
-> > > > >                 for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
-> > > > >                         j = k + i;
-> > > > >                         dst = acomp_ctx->buffers[k];
-> > > > >                         dlen = sg->length | *errp;
-> > > > >
-> > > > >                         if (dlen < 0) {
-> > > > >                                 dlen = PAGE_SIZE;
-> > > > >                                 dst = kmap_local_page(folio_page(folio, start + j));
-> > > > >                         }
-> > > > >
-> > > > > For batching compressors, namely, iaa_crypto, the individual output SG
-> > > > > lists sg->length follows the requirements from Herbert: each sg->length
-> > > > > is the compressed length or the error status (a negative error code).
-> > > > >
-> > > > > Then all I need to know whether to store the page as incompressible
-> > > > > is to either directly test if sg->length is negative (for batching
-> > compressors),
-> > > > > or sg->length bit-OR'ed with the crypto_wait_req() return status ("err")
-> > > > > is negative. This is accomplished by the "dlen = sg->length | *errp;".
-> > > > >
-> > > > > I believe this maintains backward compatibility with the existing code.
-> > > > > Please let me know if you agree.
-> > > >
-> > > > For batching compressors, will 'err' be set as well, or just sg->length?
-> > > > If it's just sg->length, then we need to check again if WB is enabled
-> > > > here before storing the page uncompressed. Right?
-> > >
-> > > iaa_crypto will set 'err' and set the sg->length as per the batching interface
-> > > spec from Herbert.
-> > 
-> > So both 'err' and sg->length will contain the same error? In this case
-> > why do we need to check if dlen < 0? Shouldn't checking 'err' be
-> > sufficient? and it would work for both SW and HW and we wouldn't need
-> > errp. Did I miss something?
-> 
-> Great question. For a batching compressor, 'err' will contain an error if any
-> page in the batch had a compression error. This allows the early bail-out
-> path for SW and HW compressors if writeback is not enabled for the folio.
-> 
-> Only the specific pages' sg->length will contain an error code. The other
-> batch pages that compressed fine will have the compressed length in
-> sg->length. This enables the post-compression loop with the errp check
-> bit-ORed with the sg->length, which for SW, has been brought up to date
-> with the acomp_req->dlen before we get to the wb_enabled code path.
-> 
-> > 
-> > >
-> > > >
-> > > > >
-> > > > > >
-> > > > > > We don't check again if writeback is enabled before storing the page is
-> > > > > > incompressible, and we do not check if dlen is zero or PAGE_SIZE. Are
-> > > > > > these cases no longer possible?
-> > > > >
-> > > > > Hope the above explanation clarifies things some more? These case
-> > > > > are possible, and as long as they return an error status, they should be
-> > > > > correctly handled by the new code.
-> > > >
-> > > > As mentioned above, I am not sure if that's correct for dlen >=
-> > > > PAGE_SIZE.
-> > >
-> > > We need to get clarity on this from SeongJae/Herbert.
-> > >
-> > > >
-> > > > >
-> > > > > >
-> > > > > > Also, why use errp, why not explicitly use the appropriate error code?
-> > > > > > It's also unclear to me why the error code is always zero with HW
-> > > > > > compression?
-> > > > >
-> > > > > This is because of the sg->length requirements (compressed
-> > length/error)
-> > > > > for the batching interface suggested by Herbert. Hence, I upfront define
-> > > > > err_sg to 0, and, set errp to &err_sg for batching compressors. For
-> > software
-> > > > > compressors, errp is set to &err, namely, the above check will always
-> > apply
-> > > > > the software compressor's error status to the compressed length via
-> > > > > the bit-OR to determine if the page needs to be stored uncompressed.
-> > > >
-> > > > Thanks for the clarification. I understand that the error code has
-> > > > different sources for SW and HW compressors, but I do not like using
-> > > > errp as an indirection. It makes the code unclear. I would rather we
-> > > > explicitly check err for SW compressors and dlen for HW compressors.
-> > > >
-> > > > That being said, I thought what Herbert suggested was that the same API
-> > > > is used for both SW and HW compressors. IOW, either way we submit a
-> > > > batch of pages (8 pages for SW compressors), and then the crypto API
-> > > > would either give the entire batch to the compressor if it supports
-> > > > batching, or loop over them internally and hand them page-by-page to
-> > > > the compressor.
-> > >
-> > > That was not how I understood Herbert's suggestion for the batching
-> > interface.
-> > > He did suggest the following:
-> > >
-> > > "Before the call to acomp, the destination SG list should contain as
-> > > many elements as the number of units.  On return, the dst lengths
-> > > should be stored in each destination SG entry."
-> > >
-> > > I have incorporated this suggestion in the iaa_crypto driver. For SW
-> > > compressors, I have tried not to propose any API changes, while making
-> > > sure that the zswap changes for the SG lists batching API work as expected
-> > > for SW without too much special-casing code.
-> > >
-> > > I suppose I always assumed that we would update SW compressors later,
-> > > and not as part of this patch-set.
-> > 
-> > I am not sure I understand what changes lie in the crypto layer and what
-> > changes lie in the SW compressors. I am not suggesting we do any
-> > modification to the SW compressors.
-> > 
-> > I imagined that the crypto layer would present a uniform API regardless
-> > of whether or not the compressor supports batching. Ideally zswap would
-> > pass in a batch to crypto and it would figure out if it needs to break
-> > them down or not. Then the output length and errors would be presented
-> > uniformly to the caller.
-> 
-> From my understanding, this would require changes to the crypto layer for
-> SW compressors, which again IIUC, does not set the sg->length, only sets
-> the acomp_req->dlen (IIUC, a temporary state until crypto for SW also uses
-> SG lists).
-> 
-> Ideally, batching could be handled similarly by crypto for SW. I believe we
-> will get there, albeit outside the scope of this patch.
-> 
-> > 
-> > That being said, I am not at all familiar with how crypto works and how
-> > straightforward that would be. Herbert, WDYT?
-> > 
-> > >
-> > > >
-> > > > This would simplify usage as we do not have to handle the differences in
-> > > > zswap.
-> > >
-> > > That's the nice thing about SG lists - I think the zswap_compress() calls to
-> > > the new batching API appears agnostic to SW and HW compressors.
-> > > Other than the upfront "errp = (pool->compr_batch_size == 1) ? &err :
-> > &err_sg;"
-> > > the logical code organization of the new zswap_compress() is quite similar to
-> > > the existing code. The post-compress "dlen = sg->length | *errp;" handles
-> > the rest.
-> > 
-> > It would be even nicer if the batches are also abstracted by SG lists.
-> > 
-> > Also, I don't like how the error codes and output lengths are presented
-> > differently for HW and SW compressors.
-> 
-> I do believe this is short-term and is the first step in implementing batching
-> in zswap. We should get Herbert's thoughts on this.
+On 14 Nov 2025, at 9:30, Wei Yang wrote:
 
-If we have to keep the different approaches for now I would still like
-to simplify the error handling. We should remove errp and explicitly
-check sg->length or 'err' based on the batch size.
+> On Fri, Nov 14, 2025 at 07:43:38AM -0500, Zi Yan wrote:
+>> On 14 Nov 2025, at 3:49, David Hildenbrand (Red Hat) wrote:
+>>
+> [...]
+>>>> +
+>>>> +	if (new_order >=3D old_order)
+>>>> +		return -EINVAL;
+>>>> +
+>>>>   	if (folio_test_anon(folio)) {
+>>>>   		/* order-1 is not supported for anonymous THP. */
+>>>>   		VM_WARN_ONCE(warns && new_order =3D=3D 1,
+>>>>   				"Cannot split to order-1 folio");
+>>>>   		if (new_order =3D=3D 1)
+>>>>   			return false;
+>>>> -	} else if (split_type =3D=3D SPLIT_TYPE_NON_UNIFORM || new_order) {
+>>>> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+>>>> -		    !mapping_large_folio_support(folio->mapping)) {
+>>>> -			/*
+>>>> -			 * We can always split a folio down to a single page
+>>>> -			 * (new_order =3D=3D 0) uniformly.
+>>>> -			 *
+>>>> -			 * For any other scenario
+>>>> -			 *   a) uniform split targeting a large folio
+>>>> -			 *      (new_order > 0)
+>>>> -			 *   b) any non-uniform split
+>>>> -			 * we must confirm that the file system supports large
+>>>> -			 * folios.
+>>>> -			 *
+>>>> -			 * Note that we might still have THPs in such
+>>>> -			 * mappings, which is created from khugepaged when
+>>>> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
+>>>> -			 * case, the mapping does not actually support large
+>>>> -			 * folios properly.
+>>>> -			 */
+>>>> +	} else {
+>>>> +		const struct address_space *mapping =3D NULL;
+>>>> +
+>>>> +		mapping =3D folio->mapping;
+>>>
+>>> const struct address_space *mapping =3D folio->mapping;
+>>>
+>>>> +
+>>>> +		/* Truncated ? */
+>>>> +		/*
+>>>> +		 * TODO: add support for large shmem folio in swap cache.
+>>>> +		 * When shmem is in swap cache, mapping is NULL and
+>>>> +		 * folio_test_swapcache() is true.
+>>>> +		 */
+>>>> +		if (!mapping)
+>>>> +			return false;
+>>>> +
+>>>> +		/*
+>>>> +		 * We have two types of split:
+>>>> +		 *
+>>>> +		 *   a) uniform split: split folio directly to new_order.
+>>>> +		 *   b) non-uniform split: create after-split folios with
+>>>> +		 *      orders from (old_order - 1) to new_order.
+>>>> +		 *
+>>>> +		 * For file system, we encodes it supported folio order in
+>>>> +		 * mapping->flags, which could be checked by
+>>>> +		 * mapping_folio_order_supported().
+>>>> +		 *
+>>>> +		 * With these knowledge, we can know whether folio support
+>>>> +		 * split to new_order by:
+>>>> +		 *
+>>>> +		 *   1. check new_order is supported first
+>>>> +		 *   2. check (old_order - 1) is supported if
+>>>> +		 *      SPLIT_TYPE_NON_UNIFORM
+>>>> +		 */
+>>>> +		if (!mapping_folio_order_supported(mapping, new_order)) {
+>>>> +			VM_WARN_ONCE(warns,
+>>>> +				"Cannot split file folio to unsupported order: %d", new_order);
+>>>
+>>> Is that really worth a VM_WARN_ONCE? We didn't have that previously IIU=
+C, we would only return
+>>> -EINVAL.
+>>
+>
+> Sorry for introducing this unpleasant affair.
+>
+> Hope I can explain what I have done.
+>
+>> No, and it causes undesired warning when LBS folio is enabled. I explici=
+tly
+>> removed this warning one month ago in the LBS related patch[1].
+>>
+>
+> Yes, I see you removal of a warning in [1].
+>
+> While in the discussion in [2], you mentioned:
+>
+>   Then, you might want to add a helper function mapping_folio_order_suppo=
+rted()
+>   instead and change the warning message below to "Cannot split file foli=
+o to
+>   unsupported order [%d, %d]", min_order, max_order (showing min/max orde=
+r
+>   is optional since it kinda defeat the purpose of having the helper func=
+tion).
+>   Of course, the comment needs to be changed.
+>
+> I thought you agree to print a warning message here. So I am confused.
+
+This is exactly my point. You need to know what you are doing. You should n=
+ot
+write a patch because of what I said. And my above comment is to
+CONFIG_READ_ONLY_THP_FOR_FS part of code. It has nothing
+to do with the check pulled into folio_split_supported().
+
+>
+>> It is so frustrating to see this part of patch. Wei has RB in the aforem=
+entioned
+>> patch and still add this warning blindly. I am not sure if Wei understan=
+ds
+>> what he is doing, since he threw the idea to me and I told him to just
+>> move the code without changing the logic, but he insisted doing it in hi=
+s
+>> own way and failed[2]. This retry is still wrong.
+>>
+>
+> I think we are still discussing the problem and a patch maybe more conven=
+ient
+> to proceed. I didn't insist anything and actually I am looking forward yo=
+ur
+> option and always respect your insight. Never thought to offend you.
+
+Not offended.
+>
+> In discussion [2], you pointed out two concerns:
+>
+>   1) new_order < min_order is meaning less if min_order is 0
+>   2) how to do the check if new_order is 0 for non-uniform split
+>
+> For 1), you suggested to add mapping_folio_order_supported().
+> For 2), I come up an idea to check (old_order - 1) <=3D max_order. Origin=
+ally,
+> we just check !max_order. I think this could cover it.
+>
+> So I gather them together here to see whether it is suitable.
+>
+> If I missed some part, hope you could let me know.
+
+Based on the discussion in [2], your patch mixes the checks for FS does not
+support large folio and FS supporting large folio has min_order requirement
+and I told you that it does not work well and suggested you to just move
+=E2=80=9Cif (new_order < min_order) {=E2=80=9C part into folio_split_suppor=
+ted() as an
+easy approach. Why not do that?
+
+>
+>> Wei, please make sure you understand the code before sending any patch.
+>>
+>> [1] https://lore.kernel.org/linux-mm/20251017013630.139907-1-ziy@nvidia.=
+com/
+>> [2] https://lore.kernel.org/linux-mm/20251114030301.hkestzrk534ik7q4@mas=
+ter/
+>>
+>> Best Regards,
+>> Yan, Zi
+>
+> --=20
+> Wei Yang
+> Help you, Help me
+
+
+Best Regards,
+Yan, Zi
 
