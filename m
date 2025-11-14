@@ -4,90 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D9DCE7A8E
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D360CE7A8C
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 906758E0013; Fri, 14 Nov 2025 03:57:30 -0500 (EST)
+	id 9835F8E0014; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DE518E0011; Fri, 14 Nov 2025 03:57:30 -0500 (EST)
+	id 9341C8E0011; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81B128E0013; Fri, 14 Nov 2025 03:57:30 -0500 (EST)
+	id 84A6A8E0014; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 72E978E0011
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:57:30 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2C4DF87662
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:57:30 +0000 (UTC)
-X-FDA: 84108609060.29.430C6BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7EFF2120006
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:57:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=To4Kkqr+;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 739748E0011
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:01:32 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 38B31581A7
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:01:32 +0000 (UTC)
+X-FDA: 84108619224.15.2A93836
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C5B3D8001E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:01:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=lDkSCWvG;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=406d4a272=graf@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=406d4a272=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763110648;
+	s=arc-20220608; t=1763110890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I8Re3eB4fDwdgWvTwKhxyvfxNfZY1EffbP1BROq2u1c=;
-	b=srsTIJHxeOhms3NXnaQyqrTdPpZZoCO0XDUTiF2iTVGJsYOYW9nLKfz+6wgXdD7wW/vIK9
-	4xSvT/8vv9ttgAgZJWy9bKNYyNll6YvhYaMXIqUPjkXP0Djns8StLT0GuflRh/l/m9b3nV
-	lV1WUndYpLA/2QKCpcMKgzgBEUNiMv4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=To4Kkqr+;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110648; a=rsa-sha256;
+	bh=EaIGl6EhlQ4V9CUY31LrgRIkIsFC5ga8p6ILWDzFD84=;
+	b=Km26EC6I5KoU5wRYtzr4zigR40BrXcdRSq3wEV7iNp/aSv1fYx7/f0bjZTKo1ijRyGs6Ul
+	vdJ9zwuMYP1Y6cG5xznynZmbCD/81dX31Xf3GIBxNyT4A32f04jlwNR3OIWMztPA6erPLT
+	5TdCXfNSClgyML5jNQ6YEY+MaZwK6RE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110890; a=rsa-sha256;
 	cv=none;
-	b=AKUw/ePuHhodi6MVuSm9alc3tzH7EGpC5EqmbQ7Rk/GNPieurq5/taMwcanbVkiu+1piZN
-	1brxBMZn1FB/puqgADGN20Wc+KuOhQrjJU3tBbC7CnmBLdIzg8vf9peRj+4rQfKkCz6Ycs
-	yhDLCy26rIjteGmXy+PpaK0PuHRwgXE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D51036012A;
-	Fri, 14 Nov 2025 08:57:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FF4C19425;
-	Fri, 14 Nov 2025 08:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763110647;
-	bh=368XzlnWR8kLrxRUK7EBdCdTiTfQn97LAfR3nFHllPs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=To4Kkqr+2c95gKtPy4kewCrPBWnMxgCxCbN+A0O1mulYdiy66DHdKldhOj+ltRBSM
-	 vqg+MODYMmEezjqVU6DQZuL31nAKYUaaHxN7hTxlzhSYXeQjvun5zrQtiPOa0TdkwE
-	 Qb/y/nxowj4bOrSDd3A57psqQgTs/XnbBxGg1GUkm3dzosbZgqqcm1tq4nSeOhcpKy
-	 kJ7v2wkTe2IF2fL2N7TPkoBV3ps8A0Fwu4Aplf2MtDCcmAwPMhR/yQButCuDUpZNl5
-	 0W5hoJVIqA5SKv8yGGd9OhoPNiZLmUnWhY6Yxii9AfgzbQzZ9yvOsE9eBNuI5/ZQXq
-	 wAvtFXjVPoRvw==
-Message-ID: <d0da951c-914c-482a-b5e9-93657b5f7a78@kernel.org>
-Date: Fri, 14 Nov 2025 09:57:23 +0100
+	b=D3we/0LQWb3/rJ3e6Cm+I3z6FD27hmuKQxo2NTZ4+S0EMVeRpEfFdtxplnBhA8+Uhw1K3a
+	uvNn+2bqwCzlxbIxKJKvvWab5tWh2gZWxlaXA/zmxBg3sq+7RF4O14Dp9NOpkiABMz28GF
+	OKD6C1FZ/T/U1bFGzDPiNsfg7E401bo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=lDkSCWvG;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=406d4a272=graf@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=406d4a272=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1763110889; x=1794646889;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EaIGl6EhlQ4V9CUY31LrgRIkIsFC5ga8p6ILWDzFD84=;
+  b=lDkSCWvGS2neFzSWK2iMvyOo1UmmBGhzifdfa5Fh0L5PruYFwSaWhfa3
+   ldLilk2d+8089kA0Hfh8mjiTFMCOEkc88LREpRa915ZvLl+v3Ihc3LZEd
+   GS+lAeft4bAom/cP/AjxIXPf8W4tuYlrebwNajgP3lWh+yRJXz6vearzG
+   +j8B+btaF5kx2JwQCcJNRd8fJf/yu7g3gOevVyEGv8reUR1/apuM7aOw+
+   UmSH+awJ4AJZBiuWszMOnSVHfyR/pHXG43gLPl+LSff09PCIl3ji0tOpZ
+   1WvTy/zGIoTDgPc0Gsj99pgq/2DzbsgVom1H3clKMRPHQ6BLIZkxGHbDc
+   Q==;
+X-CSE-ConnectionGUID: Uq1Ipwx9RJW9zvAJniWZLA==
+X-CSE-MsgGUID: M25iTk7PRVC43yz2Zp6MFQ==
+X-IronPort-AV: E=Sophos;i="6.19,304,1754956800"; 
+   d="scan'208";a="7112418"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 09:01:25 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:22919]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.35.95:2525] with esmtp (Farcaster)
+ id 7b41653c-f962-4fb6-9b96-b9676b9afb43; Fri, 14 Nov 2025 09:01:25 +0000 (UTC)
+X-Farcaster-Flow-ID: 7b41653c-f962-4fb6-9b96-b9676b9afb43
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Fri, 14 Nov 2025 09:01:25 +0000
+Received: from [0.0.0.0] (172.19.99.218) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Fri, 14 Nov 2025
+ 09:01:23 +0000
+Message-ID: <e6f3c999-7a17-4c6b-8de7-a380cccdde9f@amazon.com>
+Date: Fri, 14 Nov 2025 10:01:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] Fix the name of the source file for the "FOLL_WRITE"
- macro copy
-To: peng8420.li@gmail.com, linux-mm@kvack.org, akpm@linux-foundation.org
-Cc: osalvador@suse.de, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
- linux-kernel@vger.kernel.org, dan.j.williams@intel.com
-References: <20251114085038.191031-1-peng8420.li@gmail.com>
- <20251114085038.191031-2-peng8420.li@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH] liveupdate: kho: Enable KHO by default
+To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin
+	<pasha.tatashin@soleen.com>
+CC: <akpm@linux-foundation.org>, <pratyush@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
+	<linux-mm@kvack.org>
+References: <20251110180715.602807-1-pasha.tatashin@soleen.com>
+ <aRbag7qR9OVNAQXN@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251114085038.191031-2-peng8420.li@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7EFF2120006
-X-Stat-Signature: ux66787pjtfz4qatwzfyr58gagr4hmpo
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <aRbag7qR9OVNAQXN@kernel.org>
+X-Originating-IP: [172.19.99.218]
+X-ClientProxiedBy: EX19D040UWB004.ant.amazon.com (10.13.138.91) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+X-Stat-Signature: rtgw5uqiwgsa5e8qfnqg9kya6ru87pqw
 X-Rspam-User: 
-X-HE-Tag: 1763110648-337859
-X-HE-Meta: U2FsdGVkX1/wh/N63hq9mIn5vh/P6oL+ay8clEfHeJqnU15Jgmbr+hDm6uwge5teP8b/FxIgjqHQPE/OToWpWS0MPrDTzFPb/HsYhgF9VkvN8Cq3V1ztZ28diEGa7TagcBhFPWbDtXII6gHtyvP7C411oCo3m+5yGgiLikG5sPcgLtT8UIYQy9rrXr2fUSnzwWqR20HaQ12kKbcm9w+3iAupg/QotycWw6Dez6n/q5lsWHyddwjAQmbZlbWpTAMHiXq6NONNiscR8RZiGz5EfPqWjso02WOkoB/F1Bw1sALq/wfTPsOEWmGi++0Eo/R6wcW0fmGSeRHA3yphqlSU0ay8QAsjFjH0jibeB45YXYKyMs+S+z2vHHOLrTzY+1qwZY1j7nLR+wBhLnoYUg9AYzfYLAv+ESZqUY0GHPTO15Wkze05oiF62TbGG3Ie80wB1SvtiX/jaHHbKDBhQcSm82dGrLfbjWVyLi8tgedgFqdZbFbPav8UA8cAK85kIpAcmvRAyYB8T4Njz33JWFqtzAE8DyuaGZU1Vc00H4B5h5ZfqUqaI9sQ3tDQiDznu8g8EiiGQaZUJjDA8xZ+1ra/t3Vq+Y11lb6oR7dvrwpPkwv/A1d3o1B7ll3xxfff8h8V6d46N5KG3W6WIS5eWk9d82Zi54jbRNws8xtSMuZOWo6Wj+32yGL6Ul1eW6x1Dt6JaIMEPrzWlUNUJqq4cjk0d69Cxv740QJO9xmXZ9rvB6TYoNSMCdxiQulc1T4QrKDujt0rfe3bYzoyqQhx3cyIQy0/+kD1xbQ7WPqK8I+WRChKddJRZUkXfz22x3Dk0Pw8k5IeEYNvXN2FcVKCOBkJEoT79bnly2Bg0+39JVo8FlNULYQBfahp9H4CMbaGu9jusLq/1OUBYjnUX7NtvdiTzmLClH14Jbe8GYd4uAEeGSKrhzRzG/hN8WJE3xFNVvcPE1UYsvAr6UrG9UlyrA+
- gcqp9uEw
- 8iZo7OY/4lucnYhmlIMFzcZMUVD7RVDViczRz5rO9sFpoKuH4HyxZJQI6r2U8Yz3AWwZNC1/w/LQSwWjahv2lVsPzUAWDFxjvTHvJNXXgY6nqcwig5VNRMl7f7KkV+9K+58f4T/XIX/8PPDOLvb7NiHNteoOvszdK1QjLxF3vKFCV7LtdWXI3HsNNp+7xp5nMb7YNhecP3BZ6W049FgXA6Zbe9TSz5ETn6mD2A6ZXWa17T1y9803Ta5t05FR8hYyVS979x0HmtYssp8oCOGe7XT3HXKXnF/nHg3jj1ZfYLRAg4EwXLrz+QH2LMyh1Pk6Q5Afek3piTpiVP78VIki4u3DSu7uYe5vCL+zBUdNLo/gQWTDU2FWBKjuDUOUhKNZmSLGKNb3Jg6Ucq2iKi2e5MPUeomB1kPw6ekkCETyPcJCXfmXvT0Vi4VP8pwOuRsEHaiIHQxxY/hBxG38=
+X-Rspamd-Queue-Id: C5B3D8001E
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763110889-568976
+X-HE-Meta: U2FsdGVkX1+DSoDQuYHjqGjUOFa+1vXnVR/xQ3swiVkdxBRWNQHNHsfFnxC0733A9VWt1JLgD3ibitvE6jrwcjWcRRqRrXESJJj3RkIt4umcws9yYnamlIdObzWMFEW3a2rzNlSoc3S1fdGu0BEWZd6x3LlmuXJHayRl2pcaDJL1mUsSAoeIBnWx6mUxFJd/SfQReovZdGYB1gwHwSS+3gQuCkrWSnyXgh/GaqON72U5E5dbAvsBSqim83SAuRKsO8FHg8b/hsjERz5yVX6ZnTjpCl2i44uLYhf+pX9pz9DrucY1f+ZvB17hp+7jr71cRL8/bJVIkCR/HzulYkqB2gcQxuV8IqeypayI8ta9sWtApiTgZhjt8s13+Bugn8Y203Snd508LaO+LTes8DZjzpxwEeLGcqg1rMciCFm1we6bIITODNyPK64IE+k0U1VGtnRe1nFgwMNeoXXiz/5KSVJhjv59BSIapca5kmed1ceHvAMu2grZFQwOWv65y5VaD8cwiK16uHUaSK4vID23c4L1NWLzf2fkxfsonj5+Vxphcs4EK0q3yrjMLV4hdnyxd5FL9yupB7zamDWOdp0HAFpKnrwpJ7uwtqnPQnDSyLnZQNN7nrY5FmYXQgA3zdgxOSIi/Rd4L6ACpZ6c+KTYeMb8Yyfjkp7EnhFKcr2zczTrR4wU8tSIO2CMH2p1uEnBOzgqldKOtEj8mW5GXrUpJTtPxeRnXQgWqwx81Irftt6pfU4wIJrujJZQJKdzUjPtsWcrtjsKWd87K1hfS+FAImKhGe0bdqm/YJgo3IYJZCbgHayghbYwKP6xqhdbH8EpX++A09XYWnrtpJkJoz4ahzQqj1UPyZ7XdkvK8lX1Nkb6ASFBGxA2J5E0v/yVZk6sEK8pRMfn5Rxpqh178XBHrBZtIw+Arzl2jq9Eh5sE521N8nbYMeIvFM/FzI+yt5+OPMWBLJINv1Vocs9kjL5
+ R/L/AK76
+ BMtJYo4cpV9SmzDcORbI+8dIpcTOgUBK9vkwyw7vIva9WwlfbNkxlGqxJg0yyKM8l7MwuSGpdsG4yYWrNdhHCkYHKIhzYYQCvW6bQZJkOw++Igdc0GYWvmX+DC8kNrChwcLC9XSMiweD6j0yGKUIBdU+opwFlaOCvdqrLqA4eThOpxoKri1CRckeCdCxpkd8k76Pl8TwuzGFMTol5gD1d+gR6IeI25uoMYwnhKqQLfisiATafzKDLd0ZIudkSvEDEyM2+CaQaGPNYEOIYzUaMu6E0RMHxnwFbSQKhmtI9Xf3RpUKRfntA1rH5Gnd2PancgZFDpbx0Lm6mc1tj68yaJAf9IYIxN48iKri7vNC5XpgorMQipRcQBhTa7oUmdpnOtQorrgFGd2auZz3Xjx2K/xq0NyUhrS49l91aMkCBt4kL3eycVaznK/X7y6SUnvuLrvkcrIKekAHySm8jkf19RndyOyOnLYEKIAoyIrBGgknY2d5t4NvrNdu40Mly+QKyD4NkB9xUq51aDYmio5jeVWkqz0mIyu4X/yHPGtEBZSLHRQKjSd8ivCYpz/+aoQ8LxnkLdtPFftAi1vJdDQxatr3hvZCi/20cjoYFFdulKQ61uqlTGlyZFCtFSK8P/zzgIvTauue7+anFJfq0gdPVzEArOYp0ODWsA5FaPdF7Lt7ciJRVHl9ciGLEqoZspFYTb32KrqRN5VCsMfp/ALNoiGn4E6dEFvxPqnZmDD9v+kkQtAbDzcIME/VFTwt6AlbjhSlode0rSiNpacTbbdbb6J5nSiQuY+sGMgGXEENymqo8Ohd/ed96/Aw5kNGJ7s/zkLMQvdOS1t0vqx1KoFOOyK7Okw1h/DNtOatW1I7l9oa+fm0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,34 +116,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.11.25 09:50, peng8420.li@gmail.com wrote:
-> From: "peng8420.li" <peng8420.li@gmail.com>
-> 
-> The 'FOLL_RITE' of the copied source is located in mm_types. h of mm, not mm. h, so fix it.
-> 
-> Signed-off-by: peng8420.li <peng8420.li@gmail.com>
-> ---
->   tools/testing/selftests/mm/gup_test.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-> index 75f7134d529d..9cdcd10d3f6a 100644
-> --- a/tools/testing/selftests/mm/gup_test.c
-> +++ b/tools/testing/selftests/mm/gup_test.c
-> @@ -17,7 +17,7 @@
->   
->   #define MB (1UL << 20)
->   
-> -/* Just the flags we need, copied from mm.h: */
-> +/* Just the flags we need, copied from mm_types.h: */
+Ck9uIDE0LjExLjI1IDA4OjMwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOgo+IE9uIE1vbiwgTm92IDEw
+LCAyMDI1IGF0IDAxOjA3OjE1UE0gLTA1MDAsIFBhc2hhIFRhdGFzaGluIHdyb3RlOgo+PiBVcGNv
+bWluZyBMVU8gcmVxdWlyZXMgS0hPIGZvciBpdHMgb3BlcmF0aW9ucywgdGhlIHJlcXVpcmVtZW50
+IHRvIHBsYWNlCj4+IGJvdGggS0hPPW9uIGFuZCBsaXZldXBkYXRlPW9uIGJlY29tZXMgcmVkdW5k
+YW50LiBTZXQgS0hPIHRvIGJlIGVuYWJsZWQKPj4gYnkgZGVmYXVsdC4KPiBJIHRob3VnaCBtb3Jl
+IGFib3V0IHRoaXMgYW5kIGl0IHNlZW1zIHRvbyBtdWNoIG9mIGEgY2hhbmdlLiBraG89MSBlbmFi
+bGVzCj4gc2NyYXRjaCBhcmVhcyBhbmQgdGhhdCBzaWduaWZpY2FudGx5IGNoYW5nZXMgaG93IGZy
+ZWUgcGFnZXMgYXJlIGRpc3RyaWJ1dGVkCj4gaW4gdGhlIGZyZWUgbGlzdHMuCj4KPiBMZXQncyBn
+byB3aXRoIGEgS2NvbmZpZyBvcHRpb24gd2UgZGlzY3Vzc2VkIG9mLWxpc3Q6Cj4gKHRoaXMgaXMg
+b24gdG9wIG9mIHRoZSBjdXJyZW50IG1tb3RtL21tLW5vbm1tLXVuc3RhYmxlKQo+Cj4gIEZyb20g
+ODIzMjk5ZDgwYWE0ZjdjMTZlZjZjZmQ3OThhMTllMWRmZTFhOTFhYiBNb24gU2VwIDE3IDAwOjAw
+OjAwIDIwMDEKPiBGcm9tOiBQYXNoYSBUYXRhc2hpbiA8cGFzaGEudGF0YXNoaW5Ac29sZWVuLmNv
+bT4KPiBEYXRlOiBGcmksIDE0IE5vdiAyMDI1IDA5OjI3OjQ3ICswMjAwCj4gU3ViamVjdDogW1BB
+VENIXSBraG86IEFsbG93IEtITyB0byBiZSBlbmFibGVkIGJ5IGRlZmF1bHQKPgo+IFVwY29taW5n
+IExVTyByZXF1aXJlcyBLSE8gZm9yIGl0cyBvcGVyYXRpb25zLCB0aGUgcmVxdWlyZW1lbnQgdG8g
+cGxhY2UKPiBib3RoIEtITz1vbiBhbmQgbGl2ZXVwZGF0ZT1vbiBiZWNvbWVzIHJlZHVudGFudC4g
+TGV0J3MgYWxsb3cgS0hPIHRvIGJlCj4gZW5hYmxlZCBieSBkZWZhdWx0LCBhbmQgQ09ORklHX0xJ
+VkVVUERBVEUgY2FuIHNlbGVjdCB0aGlzIENPTkZJRy4KCgpMb29rcyBtdWNoIGJldHRlciwgeWVz
+IDopLiBZb3UgY2FuIGFsc28gaW1wbHkgdGhpcyBvcHRpb24gYXV0b21hdGljYWxseSAKd2hlbiBM
+VU89eS4KClJldmlld2VkLWJ5OiBBbGV4YW5kZXIgR3JhZiA8Z3JhZkBhbWF6b24uY29tPgoKCkFs
+ZXgKCgo+Cj4gU2lnbmVkLW9mZi1ieTogUGFzaGEgVGF0YXNoaW4gPHBhc2hhLnRhdGFzaGluQHNv
+bGVlbi5jb20+Cj4gU2lnbmVkLW9mZi1ieTogTWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KSA8cnBw
+dEBrZXJuZWwub3JnPgo+IC0tLQo+ICAga2VybmVsL2xpdmV1cGRhdGUvS2NvbmZpZyAgICAgICAg
+ICB8IDggKysrKysrKysKPiAgIGtlcm5lbC9saXZldXBkYXRlL2tleGVjX2hhbmRvdmVyLmMgfCAy
+ICstCj4gICAyIGZpbGVzIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+
+Cj4gZGlmZiAtLWdpdCBhL2tlcm5lbC9saXZldXBkYXRlL0tjb25maWcgYi9rZXJuZWwvbGl2ZXVw
+ZGF0ZS9LY29uZmlnCj4gaW5kZXggZDczNDRkMzQ3ZjY5Li4yNWM5YTRkNzc4MWYgMTAwNjQ0Cj4g
+LS0tIGEva2VybmVsL2xpdmV1cGRhdGUvS2NvbmZpZwo+ICsrKyBiL2tlcm5lbC9saXZldXBkYXRl
+L0tjb25maWcKPiBAQCAtNjMsNCArNjMsMTIgQEAgY29uZmlnIEtFWEVDX0hBTkRPVkVSX0RFQlVH
+RlMKPiAgICAgICAgICAgIEFsc28sIGVuYWJsZXMgaW5zcGVjdGluZyB0aGUgS0hPIGZkdCB0cmVl
+cyB3aXRoIHRoZSBkZWJ1Z2ZzIGJpbmFyeQo+ICAgICAgICAgICAgYmxvYnMuCj4KPiArY29uZmln
+IEtFWEVDX0hBTkRPVkVSX0VOQUJMRV9ERUZBVUxUCj4gKyAgICAgICBib29sICJFbmFibGUga2V4
+ZWMgaGFuZG92ZXIgYnkgZGVmYXVsdCIKPiArICAgICAgIGRlcGVuZHMgb24gS0VYRUNfSEFORE9W
+RVIKPiArICAgICAgIGhlbHAKPiArICAgICAgICAgRW5hYmxlIHRoZSBrZXhlYyBoYW5kb3ZlciBi
+eSBkZWZhdWx0LiBJdCBpcyBlcXVpdmFsZW50IG9mIHBhc3NpbmcKPiArICAgICAgICAga2hvPW9u
+IHZpYSBrZXJuZWwgcGFyYW1ldGVyLCBhbmQgY2FuIGJlIG92ZXJ3cml0dGVuIHRvIG9mZiB2aWEK
+PiArICAgICAgICAga2hvPW9mZi4KPiArCj4gICBlbmRtZW51Cj4gZGlmZiAtLWdpdCBhL2tlcm5l
+bC9saXZldXBkYXRlL2tleGVjX2hhbmRvdmVyLmMgYi9rZXJuZWwvbGl2ZXVwZGF0ZS9rZXhlY19o
+YW5kb3Zlci5jCj4gaW5kZXggNTY4Y2Q5ZmU5YWNhLi4yM2EzZGYyOTdiYjMgMTAwNjQ0Cj4gLS0t
+IGEva2VybmVsL2xpdmV1cGRhdGUva2V4ZWNfaGFuZG92ZXIuYwo+ICsrKyBiL2tlcm5lbC9saXZl
+dXBkYXRlL2tleGVjX2hhbmRvdmVyLmMKPiBAQCAtNTEsNyArNTEsNyBAQCB1bmlvbiBraG9fcGFn
+ZV9pbmZvIHsKPgo+ICAgc3RhdGljX2Fzc2VydChzaXplb2YodW5pb24ga2hvX3BhZ2VfaW5mbykg
+PT0gc2l6ZW9mKCgoc3RydWN0IHBhZ2UgKikwKS0+cHJpdmF0ZSkpOwo+Cj4gLXN0YXRpYyBib29s
+IGtob19lbmFibGUgX19yb19hZnRlcl9pbml0ID0gdHJ1ZTsKPiArc3RhdGljIGJvb2wga2hvX2Vu
+YWJsZSBfX3JvX2FmdGVyX2luaXQgPSBJU19FTkFCTEVEKENPTkZJR19LRVhFQ19IQU5ET1ZFUl9F
+TkFCTEVfREVGQVVMVCk7Cj4KPiAgIGJvb2wga2hvX2lzX2VuYWJsZWQodm9pZCkKPiAgIHsKPiAt
+LQo+IDIuNTAuMQo+Cj4KPgo+IC0tCj4gU2luY2VyZWx5IHlvdXJzLAo+IE1pa2UuCgoKCkFtYXpv
+biBXZWIgU2VydmljZXMgRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApUYW1hcmEtRGFu
+ei1TdHIuIDEzCjEwMjQzIEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hs
+YWVnZXIsIENocmlzdG9mIEhlbGxtaXMKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxv
+dHRlbmJ1cmcgdW50ZXIgSFJCIDI1Nzc2NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1
+MzggNTk3Cg==
 
-Can we just avoid the exact name and say "Just the flags we need, copied 
-from the kernel internals."
-
-?
-
--- 
-Cheers
-
-David
 
