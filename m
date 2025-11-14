@@ -4,92 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50DA4CDB473
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 02:24:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A72BFCDB475
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 03:00:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 764F18E0006; Thu, 13 Nov 2025 21:23:59 -0500 (EST)
+	id 6C6468E0007; Thu, 13 Nov 2025 22:00:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73C438E0002; Thu, 13 Nov 2025 21:23:59 -0500 (EST)
+	id 69D4C8E0002; Thu, 13 Nov 2025 22:00:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 679948E0006; Thu, 13 Nov 2025 21:23:59 -0500 (EST)
+	id 5B2DA8E0007; Thu, 13 Nov 2025 22:00:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 539E48E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 21:23:59 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E0F6612D1EB
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:23:58 +0000 (UTC)
-X-FDA: 84107617356.24.7138B84
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E7007120004
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:23:56 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jzeM2aDD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763087037; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49FF98E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 22:00:35 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DAF5FB73C9
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:00:34 +0000 (UTC)
+X-FDA: 84107709588.25.B6BBD63
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5DFDDC0003
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:00:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MkQiZI4s;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763089233; a=rsa-sha256;
 	cv=none;
-	b=sg7vkzb0IgZMDBNdUfdVifFeENQKwbD856O5+h76t6MY9n8f7mnnyXq9z0lQW1I+IeYyXd
-	GWj+hno2zzS2eLwpuVjsBe788mwPMTVh9VhTd2WEzRaIa9fh3XTG6tZK/yfp5zV158ekPz
-	LX2plZtlv6Cdj99ddcZKLyZ+1Fm8PT4=
+	b=8hX8OwTM/z4waStUBKMwhmiOLsz4YQegQf5wGFRTB9o8paztWhMqpA/XXR9uNn1JFs3JDQ
+	s8xP0y7K4jMRy19HvMetV1I4Q+5sF62cDt3RCSlGUtkFmUhfCMUwfaCS7bNI34lPa7g+yd
+	riZEOsrqTw6SYBgmHDtOwFumaPDOYwI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jzeM2aDD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MkQiZI4s;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763087037;
+	s=arc-20220608; t=1763089233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XUjyrKGTpAMxafgaVgeOC05GENR0/pzqji5IeCIQKgw=;
-	b=43yyOjkWUEpPSmieNFnWO9wO7bBMPMjYLx/Rt/pXJCGwib08WV4Dr8EkWuaPuqmazgoqnc
-	KxFG8WgSZdbKAb1opxKpBX4WsE82cIklf83ZcqDwejsBLwRv+YlJ7hOvUt7GoW0SZx9+ln
-	DGT0SwqZePCMs3sd6fLFL6S+cWlHrac=
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763087034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XUjyrKGTpAMxafgaVgeOC05GENR0/pzqji5IeCIQKgw=;
-	b=jzeM2aDD3dtYstJyPJT2s7mVcdSPwYOdCaMcrnkQ5S9LD9TsCsGs1O4cNjttXGfNTho5WN
-	zfZ1VTqaXyL3hAKeOXztLL7cz0dKeFpnHA/BQM6PEsoN8Fap242+ZxlF0aUURfPK68SEhk
-	/cgnE0+uwJUZ/iUglY7UxqXIVmP5MyI=
-Date: Fri, 14 Nov 2025 02:23:50 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <42fca12aec282a64d3b5bd471124a1e94048afc4@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v2] mm/vmscan: skip increasing kswapd_failures when
- reclaim was boosted
-To: "Shakeel Butt" <shakeel.butt@linux.dev>, "Michal Hocko" <mhocko@suse.com>
-Cc: linux-mm@kvack.org, "Andrew Morton" <akpm@linux-foundation.org>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "David Hildenbrand"
- <david@redhat.com>, "Qi Zheng" <zhengqi.arch@bytedance.com>, "Lorenzo
- Stoakes" <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <jbqwxqsqvjqo664s275hcub5wgnjencvqgisiniflylp2fpxz5@imttckfazi7u>
-References: <20251024022711.382238-1-jiayuan.chen@linux.dev>
- <e5bdgvhyr6ainrwyfybt6szu23ucnsvlgn4pv2xdzikr4p3ka4@hyyhkudfcorw>
- <aRWswVgIaAqJEvQB@tiehlicka>
- <jbqwxqsqvjqo664s275hcub5wgnjencvqgisiniflylp2fpxz5@imttckfazi7u>
-X-Migadu-Flow: FLOW_OUT
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=PuIeuczuRJ5d7wk7+9TFQXIGeMdW+kkcrn0L1k8p7b0=;
+	b=vVr6HM7e1agh2q6/QGmDO5L9OlLloSgg1HEpFw0F+6sb88e1Ok4F2VU7VU2SBB87G+7uEe
+	04bpySic4tlbqU9jmVEtHTZeOrf7OOSOC9XPRn0n6UZzivFryQ3gFAQqBC9xKXdXTrSoy+
+	jsEpNasdJmEhvxg2WvZbmra7iAg3NPs=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so2456330a12.1
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:00:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763089232; x=1763694032; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PuIeuczuRJ5d7wk7+9TFQXIGeMdW+kkcrn0L1k8p7b0=;
+        b=MkQiZI4s9PCJOiq7xtq1XzCak0REmSE10kz9bVyDRVTG+9b6FaexdNtxRbhGFmAl2m
+         ZHS9URcZKBxGurz/5ACb2ZzBjwBCGirC3jyIJORcFJN7kDzVAv1jdMMwS4r3veNiuRG8
+         QVWIrhen1x6Rjra+5+JWCcXXAik4yv9Qg4hFIr0T5beVAOeRYmsL0DnnSwshhDJffEcB
+         wr/jd0JDE8dXpftsS7AQzhcyIwGaX443AjmHC79S9NHaI537pP5hIWJlh7XY/AB1arhX
+         9iZPu3iX90LQ2cmgyYuuYgIzKMbUN0FXKyKL/azirmNwYg1fGzaKOKqBt05Z/zdUuZhU
+         /1yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763089232; x=1763694032;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PuIeuczuRJ5d7wk7+9TFQXIGeMdW+kkcrn0L1k8p7b0=;
+        b=wQSJXZWu+Qq1tJ6rrQWkbsBrDYJ4U3+vMSH/ybnvldRGEARdTuf/6u/D5rmNk+NvNO
+         9ESePlNTziCfCHIzeKDjbwSf2YNkKBCH6bCvwGNe/R0L/E/S786vg+wPyd8qKXnJQdOm
+         zA2xQZiEX3zyJk9yvTuydv5Bp9ZuBnhf4P7BiJwrGaItUI4a+/CBntz4r9YIumsaeuSs
+         xY3rudTKEpi/wH0FpB988sW0VfeackPF0AJBvvKBSTU/WXiH2WveUwiaoreQvAmzq4ck
+         s2O5DqnN5P7j8zvp0mwALXnaAd5Y8oIji9+EnFRUytdCQs7gj22p0o3iORPxTnjrTkfv
+         mjyw==
+X-Gm-Message-State: AOJu0YwrOwzCmAzqw/1Td7Xn30cj8QFU5VAA/wqdZ/SWxVTYRJCOj0T1
+	CxzDyRIMuM8PlwbPHY6ljpUsGdsqaASbFVXklP60Bi9hKD94h9ht5tC/
+X-Gm-Gg: ASbGncsZSC94NE3FiU3yno4vju3lazzjRw3OWPjTMmaMUJnOsw7Fd/ByWTTB+Kr8EPK
+	TBLbNQ0SJkmmij6TovIVhNLF0+iQ3SdL4zR85V9uIBpfEDoL3TUY7HTx4DB9OCT+BZEsbP5aeFo
+	wYexK8kVk5QLoxPA9oJ/xNR3fTSFROFfanif+h7yaV4p+IaVcxzdsLb3gp5e5a5OVYc+QVAu0TR
+	LOxFds1OTdb2em7a4chIU5qyxww6XEZIOucsSXhBCJ9hqk+5VZ3R82uZCQRQeCphVm8gBU42XHM
+	zcrouCoCmCQTGfCtHUqogy5d3J1q09EkGTdpBT8gYFxSg//82SVapjhZMwAZZo/BDh3YtZiPJs2
+	dmIwURZIs2Xp0jhCF9kom32a4xPYgqJd3aGWEtF1OCtqh0GeEdWpDv/8z6OE1EhIPAtSe+cUjkq
+	oo6vuTyGemKTAXfQ==
+X-Google-Smtp-Source: AGHT+IG2SmilbrHIlgqpDHDuUXUAkBoaEk1LbT8KmsmHg8EgNbhdH7i5H6dXkTvLhkk8YvUNwLvUdg==
+X-Received: by 2002:a17:907:2d2c:b0:b72:b7e1:5c90 with SMTP id a640c23a62f3a-b7367b8d98cmr152682466b.34.1763089231522;
+        Thu, 13 Nov 2025 19:00:31 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa80e3fsm297802966b.2.2025.11.13.19.00.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 13 Nov 2025 19:00:30 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [Patch v2 0/3] unify PMD scan results and remove redundant cleanup
+Date: Fri, 14 Nov 2025 03:00:25 +0000
+Message-Id: <20251114030028.7035-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5DFDDC0003
+X-Stat-Signature: 7ue46noqq6hjymtxw6zydqmntbujebb7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E7007120004
-X-Stat-Signature: bsyre9k543jaqbt41ta6i7dagsy67b3q
-X-HE-Tag: 1763087036-789973
-X-HE-Meta: U2FsdGVkX1+RVzXlUlowZYSI397yrI9p/Bfzpq9Do5XaUeHMKpgONY/YUi0snW8hUL09h+5nCz0ACNobpFjvhLp/8HIsFweST7vmj9pPFk4g5IrCwu7V+rgqlBPojG7e5Pirta18iOxrxzfAEj43i+weq2LKhWrQwsSo5daxZW0mnFu/n+Ix2phel6xkmLx/5k5OVDVWKelcAd6OHeXYZbHH3JFVKyjD3tEV4yK3Op6YZXPb5CwEqoTuBZzcrSTeMw2N6Dbv4elfQd6moxNts2f3PA3zBd8LWufksMByAtUOAZt/5WjauqQM7ixWNoM3gPw1Gd+6kJF1KuNi4ywgb5eBFUsT2k28ArxulnqDgUIMgN8aCC1vnUnT/GB3joj1wTwmaUvEo4eE8OWwPKhe+y0abPttrcjX9NPcoJQX+58wSiT/rRAcnv2GaPwd8Rre9EBnKpkUyRLkQdZ1z0JfJL7Gpm8dzWeI92i2Q3B5/DYiwIBcW16kF+PyE6eS92K80F2+zz9xqfVU0tJ2KDkv2c4QbpvDQobYzd2YfUGaXjy/T3RGgFkSMEtdfnkWTfUE1b5byrVvzmJ/cY0+y1As8iCarm+2auuf7kPsfVasO0tHzjAj1GJib+bQveOjcvDHISTaO31fiTi44Gb9om04DWa1WWjEpAkmOgtfCDTePXXxlg1R9IloiSOfOgJSzGDiZ/ooJLG7wCRTz4JknguvcUJaaCocmH8smsXqRcKc6fsuqMgTQhogDl5Uy378TYeTiA1vJDcgR5YMlsC/88nJO3tK+SEbFU8BTF5NEIduAX+EFjmwD9N+/6S0nAxZbFqEnE7LkYPeAZyuk0n1x6F6mEzt4W9EriWFFkVJztDsGLGVAZLdOtnuXpbd/EHggVU4hTppZT66n0vnb8bh2HpISucI0NCDWgJ4NPbVVBkvRcGe6318yoIlR7vH3SitUFyEP+JDffiehFtBF5sieRs
- iBgE9p0N
- NTIdCk/rLFcelpf8/EKBkrx75Jjz61kDz+4wSbQ+lZpWFvVWf2ExrX5ZJHBcUW48WdLlcziyAJ5DYdYaxMm6EEi15gLNLp6kP7NsbSJPSqPMFMkLTg5do/uIlp4v06eW8JBOn1K89VW6jGOyRLI+wZVt9/qZThNaqOEzTvsIIQJ23WSaIjkpKcVT1ZRo9OSYv7I+D7mCSb/GkaGsDB34qnbt7qMrthVJiOOYLjIeH67GypjKm44Bd7sIUHZcViCC7+GHE
+X-HE-Tag: 1763089233-827324
+X-HE-Meta: U2FsdGVkX19pZzDgSr4k42+85iqE0TsT0lnqzwmuGQPNjTnvHy6QC+vaNM37hHig7GptaRiUXbnXjrs0gMjMxxf7lFAgmgkSP06zd3e7HliCvScTfNvPIBCjHSR9TOgE7kJbmI7iDXYg2go+ct2qdj3LLFUEpYM6wsg1+UtK5gIWD/V+V4dCjPMWKQxtrNidlFTM8+TqeTte91KP49phXzKnL62Yz5qJnixOr+UwzLhAWdJzZVP6y2D+FgfIYRT31Wx9eBCNBHBullCxJ/bR4DKwHmzeLdPbdHwNoKfusjgv58vcanPeE6FJIN0c8fZRjnIso3F/nydkcJHkLtGv0YojgMJO1ynwzs5WdreGaGBJx/uCLU/cBcpEIemwRWrgAAgpoIcEy/U8l5/mcFEP2HOphGZYwn5GT/OLWzmNUTnLjtGrcUtpAvx4/HuM4pLTALHw72mKycaQeZTgDzUe11g5qjxlkO6jKbAtyxJDT3VLkMl2cztMzimQrCZGp18a4kwdfukA8ZJjmLjnxhHGjBO+2XNB2Ob/L/BhG5VxFfBdQiWEj606Pn6kaGgQEome0weUCVAAKXPaHn8GxO5sRvAbvQoWklC7hO0AhinJcr7M4qHLVy1hXdOCzVRZmWFfpwbhNP6LUsqLpX9XItVhWsSS9QE79PRlOgugxLn25+kdU32vAbAcNRMgshfzi2pZ8xaiGfHyozBJ8RPakp2syPa7GPgCw3n06kcIt0LNNNeN8usnSjLHBx87VH6Yex3fH/bS2P+e+aaBdv8wZr/X/N5rBJwBP5dWNHiobZJOU5ucVkJ7FLaFX5dCV6pOpc8vdFMpzloDgQsSup46/DWpoxcUzwndXa1b7TAElDEjSRFaLDHmXQBZKEWYV6fFvhZWJzbmTyzwJv265f5gRJWv3dcq3wDrq6nDUWQTu6U5nm02u5h3U8/eYUoeH7tvTbZ9aFipa57+roNOi2/c+2P
+ QzPi//hz
+ PrxOT+0l5QT7hr70rWsYTorSjVqY7QYINAq89XkPknSsPr0+KOhAdvA7Y0p5lTDuqZBvWkWQ7/JG3LLisn8R4n+IdkyzF8odT9BK36VPa/FjK121YlGiI4xjIjUwe6Hv09/WaNsjU5OcUXxEQD76kCIU78NKEFjHb3rHXPS/8o0euth5YkwP4VPpFXeBfgDXTkBu0SPwytTuUV/p9mHFAvSfm/YhECEjyPxU3n24mFUHi48QTK75s1Linys+ERf445iJ9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,59 +124,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2025/11/14 03:28, "Shakeel Butt" <shakeel.butt@linux.dev mailto:shakeel.b=
-utt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linux.dev%3E =
-> wrote:
+This small series addresses two minor cleanup opportunities in the hugepage
+collapse logic.
 
+The initial motivation arose during a code review of madvise_collapse(),
+where it was noted that the function was missing a handler for
+SCAN_PMD_NONE. This oversight exposed the inconsistent handling of
+SCAN_PMD_NULL and SCAN_PMD_NONE.
 
->=20
->=20On Thu, Nov 13, 2025 at 11:02:41AM +0100, Michal Hocko wrote:
->=20
->=20>=20
->=20> In general I think not incrementing the failure for boosted kswapd
-> >  iteration is right. If this issue (high protection causing kswap
-> >  failures) happen on non-boosted case, I am not sure what should be r=
-ight
-> >  behavior i.e. allocators doing direct reclaim potentially below low
-> >  protection or allowing kswapd to reclaim below low. For min, it is v=
-ery
-> >  clear that direct reclaimer has to reclaim as they may have to trigg=
-er
-> >  oom-kill. For low protection, I am not sure.
-> >=20=20
->=20>  Our current documention gives us some room for interpretation. I a=
-m
-> >  wondering whether we need to change the existing implemnetation thou=
-gh.
-> >  If kswapd is not able to make progress then we surely have direct
-> >  reclaim happening. So I would only change this if we had examples of
-> >  properly/sensibly configured systems where kswapd low limit breach c=
-ould
-> >  help to reuduce stalls (improve performance) while the end result fr=
-om
-> >  the amount of reclaimed memory would be same/very similar.
-> >=20
->=20Yes, I think any change here will need much more brainstorming and
-> experimentation. There are definitely corner cases which the right
-> solution might not be in kernel. One such case I was thinking about is
-> unbalanced (memory) numa node where I don't think kswapd of that node
-> should do anything because of the disconnect between numa memory usage
-> and memcg limits. On such cases either numa balancing or
-> promotion/demotion systems under discussion would be more appropriate.
-> Anyways this is orthogonal.
+Since both scan results are functionally identical (they indicate the
+absence of a PTE table), the primary patch unifies them into a single,
+clearer identifier, SCAN_NO_PTE_TABLE.
 
-Can I ask for a link or some keywords to search the mailing list regardin=
-g the NUMA
-imbalance you mentioned?=20
+The series also takes the opportunity to remove a redundant clearing of
+the struct collapse_control.
 
-I'm=20not sure if it's similar to a problem I encountered before. We have=
- a system
-with 2 nodes and swap is disabled. After running for a while, we found th=
-at anonymous
-pages occupied over 99% of one node. When kswapd on that node runs, it co=
-ntinuously tries
-to reclaim the 1% file pages. However, these file pages are mostly code p=
-ages and are hot,
-leading to frenzied refaults, which eventually causes sustained high read=
- I/O load on the disk.
+---
+v1: http://lkml.kernel.org/r/20251112020031.25350-1-richard.weiyang@gmail.com
+
+Wei Yang (3):
+  mm/khugepaged: remove redundant clearing of struct collapse_control
+  mm/khugepaged: continue to collapse on SCAN_PMD_NONE
+  mm/khugepaged: unify SCAN_PMD_NONE and SCAN_PMD_NULL into
+    SCAN_NO_PTE_TABLE
+
+ include/trace/events/huge_memory.h |  3 +--
+ mm/khugepaged.c                    | 24 ++++++++++--------------
+ 2 files changed, 11 insertions(+), 16 deletions(-)
+
+-- 
+2.34.1
+
 
