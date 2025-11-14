@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA313CE8D4E
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:54:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA39CE8D4C
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:54:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CDE28E000E; Fri, 14 Nov 2025 10:54:12 -0500 (EST)
+	id 291918E002A; Fri, 14 Nov 2025 10:54:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A5CD8E0029; Fri, 14 Nov 2025 10:54:12 -0500 (EST)
+	id 2694C8E0029; Fri, 14 Nov 2025 10:54:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA2E98E000E; Fri, 14 Nov 2025 10:54:11 -0500 (EST)
+	id 109B28E002A; Fri, 14 Nov 2025 10:54:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D53768E000E
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:54:11 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A77661403EB
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:11 +0000 (UTC)
-X-FDA: 84109659102.27.D421A39
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DB01940003
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:09 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VhV3wnAu;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DE85D8E0029
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:54:12 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A0AFB13AB7E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:12 +0000 (UTC)
+X-FDA: 84109659144.03.4B52C1A
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D951340013
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Wmim7CAZ;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763135650; a=rsa-sha256;
+	cv=none;
+	b=GExgYuEnjQ+9GoihiOLGD4/hQRLX+AUCfvtiV5MRTLUtGaRAwFZCnGQazpd9DGeQM0BD5p
+	nQAUxuTMoBPv7F/TbeSsP705D8a3Oow3BpBb41CzSDImCdY3PiTcfpqpPSoQViRDVwRbFP
+	NElUvp3jGKUWomFzPq8dgxh7BzlFr2M=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Wmim7CAZ;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763135649;
+	s=arc-20220608; t=1763135650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qzmFAH3xmZJhmT0Rkc3uU+e9AsoR0HG7wEejoVF1lJ4=;
-	b=YzTggIl3UtqfiwCoZ2BfEF0j53sIifsRMHARbWI4qkAqb2ZQKoJqDN5u0YgrRi4JetN8QU
-	AJQuQevf4IKPgGuTGjreEYOpRSqLjLhT7bf7eKmGoJ0bafUTix4zq+brpfjyNTWh0ut0MD
-	KERwru+j5AaSZpMs49Yuq3h/586jUH0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VhV3wnAu;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763135649; a=rsa-sha256;
-	cv=none;
-	b=so0qbjxJYfkRFX7ec4DlrBUyVPwZzPXpB1oH1KG02dDqpT5ZQ7P8cVfr8+V7rYVFpoomzP
-	hd/y35t4RocyjUMboKiZ7/DDeziVdGoo5lDkm3iBE5Xl05J/QY+q63HFrjCU8DsyhBUP5w
-	tuQMjtPjOr3LX5cqYqViC3GY6jEY69s=
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7866aca9ff4so22228607b3.3
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:54:09 -0800 (PST)
+	bh=igCLvLEtUCW/UbsBfP3ZrnZSCO09iCMGfzuHZKMcaqM=;
+	b=V6ZGoUUskDPDRPqI2j9y/rcKSPRBPlYKgTNdN4pKWze892TdtbnhPB0Ma4AgzEDJkW37tb
+	rgRYv0taP9p9eoVxl1PwOCcfVyfQCmQGg/+TlRH1H38/K5gJ2JWHysOgs/JnWperrO2P+D
+	7d9RmDHYexWHseWr6hXdThzNLZU1RNo=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-640f88b873bso1927333d50.3
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:54:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763135649; x=1763740449; darn=kvack.org;
+        d=soleen.com; s=google; t=1763135650; x=1763740450; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qzmFAH3xmZJhmT0Rkc3uU+e9AsoR0HG7wEejoVF1lJ4=;
-        b=VhV3wnAuacfFNrGBKNIC2EGt6loh8yU0C7SaCBvbG19GqjBH8jQLOcBp78YDo5e/un
-         N1hlAOirNBSRvvCurY/qgr91KRgn3ybztoPMa7V5C0pE3JOVNhuPfNYT2XZt4Kx4phzI
-         yyMD8w/nZb7VqVGA5vuFpIJqyivs2mVmo8PYudTv0WMlRA7DEKrLbkKeMTChU7Qirjpb
-         IxhUQ5epa86mUbE5rdhn8UHE/IQXCcOS9fNh8dZSbGNTV33+ebOYHabAeHopGMV5YIwd
-         Yl3o3/b379zgMj4lvS+ZuE3sJijxOJw+fMGUdm8Nz6BMqJOsqUIuHYB1p4hi+yavGSpM
-         rUdQ==
+        bh=igCLvLEtUCW/UbsBfP3ZrnZSCO09iCMGfzuHZKMcaqM=;
+        b=Wmim7CAZWkJaH9ghhDCTdRY4mVQgnO9wCVOmp/ZI3RmeyFPkXm5pCMgXgAAlakOYhy
+         /90Io4desV4B96gcXjqhOXNw+5yISpWAxuKA0emHppQ4xsXhj+hPstrDczt29kmAQbqH
+         m2xmNELg5k6J6McMKoYfkY23czHcItvfP/20c1Mnconn8E75AelO7qC3i5lZp5wBJoqy
+         CZRdgvXqd43oerZFvfp+vTy6dhwBA/oHBnH0WX0AdiwwkhCAWmrE3lH54wXagC+WcH/q
+         bRyanKuFXqxoGmH73Et36xSbntD+7PcRUAeh/pXXKKAOQG/nMbvunSRYKiu0g6QsnnYC
+         Mf5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763135649; x=1763740449;
+        d=1e100.net; s=20230601; t=1763135650; x=1763740450;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=qzmFAH3xmZJhmT0Rkc3uU+e9AsoR0HG7wEejoVF1lJ4=;
-        b=p02OaYhN6tZsCF01rN1rm8Yz8GkCJ94H7jmXnUYOit3dEg39za3w1fYQBJRhtXMTqu
-         AakAZBXqI6zNFM563EA8dbuTm9dhu3LjN5Wu4N/B2LGB0Uj9nPiFbp4rIdPh+PMyTBfH
-         zZ4a0kBiWoMYxz8JXD+327H2rNRk8TQYq5XqRweyRci/rAvft8muxu3MNH+CvJPMK0ES
-         q2+8oQBzsoTj2KqVGLR7dHh6Shi0N9LlJiqXQwud3gm9AApQOsX71pNfKpGLVFuiMLm7
-         Dssf2WK97G+/fJ/OST1Y2aIJ3V/xgVHItG1EhxhP6XDCxRRzFf9I5YMCZwkcYDto+mG6
-         r2TA==
-X-Forwarded-Encrypted: i=1; AJvYcCW/GBRm98ATozyRVNoS2shRAtFzApOqgOAi+3G9jhFLwej5q1knNjxV+xLYU8fkGrdkXRWFP6oINQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywm/6X5TFwJGYQ4b2g5GQLt6OdDYF/7W5tDtgxA8NETgSrqMJqU
-	XWnExp10FMaCCKGazB5lAW9kxZ8B0W+/LGSFKaGvI06GmjkfiEyMrALOYHAnZb4qIaU=
-X-Gm-Gg: ASbGncsyFluumApik8yNVcCjWkH+7D4nuyyiGEuFxni6zy+vO4xtj6oVBdqt/vtmtDP
-	DWtGW9Vo82F0JIE0FaC5OmIXCTbGgNym74Nb1fq4FvpdVGo/pyGPvWm/EL+83ZGfgSSvqxj+8IJ
-	XTVCYQLmcVyDBtyURDMl4LCxw4OLs+IS3Y9fyQctPrWScsTuKreMWriaFeT3HgPgDRE/kK8g2Pb
-	3xhaymQqrfNFFzw4RCkrYpfa9t4zlCpBpsxMKRyO6oQJkTtnHrzQMKQiadPhqFWBifgJGXQjbEF
-	70YSMqFF7Dp21ku6nypaj5+ZfrIFhXX5Ljd+qiZbpTzTr1u15BycbxILG+ZCzllwUoOM0V+TfYp
-	v6eVJ57FmU0/3A0DnBtiW++FZqoY8DB01sMzRIZjik1/Y2q1Dw96xqlH9o5B7oht9vibJxaXwDQ
-	u3HJ/722p3DIZcAlmE5I6Nm0n2lxPJ+EXkcgzQ//UkRoalXPOnlyAaXnLm0kLXZM8BY/1Q
-X-Google-Smtp-Source: AGHT+IHTzr8yE3ggcwxtjOMXBuZ+AkCCbUZfzA+E1WP5d8Pf6HPSzrjQ6c3qDriXPIifvjJMeL/d/w==
-X-Received: by 2002:a05:690c:5885:b0:787:f5c5:c630 with SMTP id 00721157ae682-78929ed6f0bmr24916857b3.41.1763135648927;
-        Fri, 14 Nov 2025 07:54:08 -0800 (PST)
+        bh=igCLvLEtUCW/UbsBfP3ZrnZSCO09iCMGfzuHZKMcaqM=;
+        b=nNOTBGvW2Jna4DF2zKFoeWeuQtn5zwQxMUUi7p1W5jp5Fv1mFZwWo0BPxJ7nzoeF1t
+         ZtW1C6/f7gLjhySSF0MaZzwGirocnzkJWd96BvWnTJel2rb7hGNT3P7RP0L2VwCJKfhq
+         93zbjoG3HOJBzRwfFMyQrrKtvPYFKmEg35/c5Ua7H/AqwyRtcVNiPGs2ZoCaCOAXW2mO
+         k+AVtFTMHKCXcITXHcOGtwXZwpz+nliXbQf0oUCKQKp1sq5Obps/6UKJDK2Rf+p4VzCl
+         J3lRmnhggVsqUhkBElRM40qGCq86buSXWQfpyGCVFAEnipvz5mP+tCQpVoyqWPm939F9
+         2Yqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhkUAug1GufAaYQ62D7/k936H2J1bwzAYz+gbBUZvrySCTv5D5kMlTRGz2qqHCvjNH6bZUSdVInw==@kvack.org
+X-Gm-Message-State: AOJu0YzW7587UgBoNE0SUNgPHlylr9g8tnLYyHYGaDcBSTYIKa8Fn9OF
+	2D9YCNIpkecys/j6eRbdm6VBqoW5ZOTfutn4BtY3n5JAzqr+wUr7FHPGWAt4qOUR1NA=
+X-Gm-Gg: ASbGncsNFdBfrdUPgR1GkbpNwf210YGF4LCqAtDOpe4kCQ9IgUFdH9DOAzHGYFoiY7h
+	Zwd06OR7uWV2TImD5ylTq1uwkkkNlxw09jsopYbxdCzvUkaDAk5K8rspByIVBmKyfpK4ZUAfHUi
+	GrT7w8e1HMUehpSsMRrhqJtn5UfUUJT4PsS9gXPfsebnjU+Tu7iIq10frif+RZso8wOALyQe/rI
+	ZjKLnWbko6c8XBpnR1g8ROwdbGxikOCE6fTVnE2z+NGxWoPYWrY9vlXoFIL+CM5KVD4ewBqjYMR
+	OY98hAWSv427Eokm/ZqDcHfZOuyBpKg3h22CeLk0HyJ+R3KyUtub8n3ZweCVVrNx3Zu1N3fesCY
+	8EdzWSAZ83NCj2Rln7/PkcWN1PDP+u5zuDnRcNgz0st6BeWclmBvfUjJpF11EVbd6veOSFXk/xE
+	iV5iFHZTggJ9+7cATfRvJIIhrwo7b/n8n+Mf92qHRXcvdPtwywhio/2qV12eukBqeIAveUjKF15
+	KOdZxg=
+X-Google-Smtp-Source: AGHT+IHbg7qHrmk7KLr97k4oOuXP3IULJ1XbsWmcMpEHUeh0oxpcL5aioIi8mM1kv7CPvyvvy//CpA==
+X-Received: by 2002:a05:690e:d8a:b0:629:acb6:d8a with SMTP id 956f58d0204a3-641e7562fd0mr2830828d50.26.1763135649967;
+        Fri, 14 Nov 2025 07:54:09 -0800 (PST)
 Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78822125317sm16468577b3.37.2025.11.14.07.54.08
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78822125317sm16468577b3.37.2025.11.14.07.54.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 07:54:08 -0800 (PST)
+        Fri, 14 Nov 2025 07:54:09 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: akpm@linux-foundation.org,
 	bhe@redhat.com,
@@ -106,22 +107,22 @@ To: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v1 06/13] kho: Simplify serialization and remove __kho_abort
-Date: Fri, 14 Nov 2025 10:53:51 -0500
-Message-ID: <20251114155358.2884014-7-pasha.tatashin@soleen.com>
+Subject: [PATCH v1 07/13] kho: Remove global preserved_mem_map and store state in FDT
+Date: Fri, 14 Nov 2025 10:53:52 -0500
+Message-ID: <20251114155358.2884014-8-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
 In-Reply-To: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
 References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DB01940003
-X-Stat-Signature: iqyq8hxfe8haq54q6kwyg5ypdgmqu8t9
 X-Rspam-User: 
-X-HE-Tag: 1763135649-394280
-X-HE-Meta: U2FsdGVkX1/sIvgVmmXQFaVq0cMo5rLiTiDli4mkHo9i2Jflgrq4mcG+7gGWyPvp4ikidG/A4ARzFrFBKP/VWm/ZU81CBziXG2vuI3F22R4ip0xXuCn8iT0SHK4TNw8Ybxzm+AdWW6Tm+IsPP7iTAPLWB/b7o1pUIVYFcKrn43sRb5E4qzwQOBo79reCqDG2IF9plZUbM3IEtxUepFuMMCp0SDa8RVI3KJuKFQm0n1k6OtEGDCZDo/1G8v3SO/h5rU+jOZ3PrM6hwgLLfeHkYeiexX4itd0rCgYBPlFwd5/Bl9H+MxwHe0hIUWmDlGeNthjIvW+8uXkrUyOJgiQEtxtRt9cRANjSaSmVr5lojbK+iogfFACIuNRNjoYDggYqMk26aJLB9onWv6S+wZ19TunQXc4SX9SgUx1wjWyx8ym1H138yh3F9UkBvOiiaJo0AZ+QP5EDmH3aYLh+wKZi7/8LWKt8Y7KJj3Kubub2DCVwTdO/gWIqrVrb0IAZnqwOnilJU2EsJu2hHARgw7Khh8wa7wZiaYXZ+onUqueUgQ6pUvwShbokl9eaI2aOzr0RLGDI8vebUZaPHXhLDTl/G4OciBMp9FpfNuJY0ohumqd9pBoLARzGShtt8wjpMVubRqPefLrTFw19Hz1jtb58kmhkKPt9XE5n5Ab3HBANq3/sTlcxzZhpYV+JbfD57JYSc918BJTnVERCsPGVRnQJDlA8mZNtXRTMECFlamAJr7A+/tWi8Zp+wWZ1BczbtJIjzw2IUOqeL7GPiBTNz1LVgU/HAq8GVpvmL8l5D/+Z7VEsp2QtIjsPYJhVfvuRMnPyg6r7c71CekGjRCow8L/4+C+fzHqQEIiJkGIvsH5QBKuyE1nVG/AMdTL3VMLHakIIcIUPzuujjT60C0I9gyMINJ2MackUmpCYN42B5WAvgmnSbIxS0uDE9FS71LGrjBqXXtSTTH2J4fyk7qxvGsP
- P4uvWFbw
- KbfuM+tG12FKfj62QFquDaPXquJIyvEJ07WQ0BdJ2k1keJkS1XwIm1mTMaGu0K2CMYYgIEj3KjfoRGBydC1/hF3aaw4dmgEQOncNau6Lqb6rNDjYS8bfYxagEUXDAqBE/G8/uLoQyzAgq34K7ApHuijzZ2/ETUyRJIj/FMpP9a94Fly6hm9EWRiT3Be1oObKx5gklhZU+ep/m+miE7PyD9bUMh41hdjdY5sYNbqrh256i9sp0TBq37FahGjp8YGAYEyVxhSaGQlPKi114egq363Di400fWfE9cTLT1U9pLmCaTnlgFgqp9mEbqlhEGh0NsuMxqpnQRZ4ycaP3KQ28GqczYg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D951340013
+X-Stat-Signature: efpdsprr3weh9jzckzt7gittuqetddrf
+X-HE-Tag: 1763135650-996933
+X-HE-Meta: U2FsdGVkX1/p4RDICYDY89+nCfspM74/S2bE4EVBqp9DcCWQ2qrK6MmrVXVOEJAIlb+yiY0sIw1pQ1D8v/ZAYrqHA3CCWaBIByivsA1M6nM06FYq6wBJssvfTwY8TAWlLb5KULDvRfcfcZIOllYTghn7eWpM5LNGv9OzVU1LVNIKvTK4Bw+CwOcXhQZjAKhKRjMIV0goB9DjPpWN8XR0j5Y+Jel4FD4aHh6xd3VdqvbZbcExRjP2IHqixXMPbN1WzVPpsuMbgagc7GqlRT21SC/eX6ytXM46zhMQzGwzcjrlX0c0z24NGR9xCjMJ8LuM+3O0peROlfQwvjxAvzhSpeMx8xFPHQBQruaA2IGDv22OzP4xxHe1B1t6CHNZxWaWCcLnxTPZvWeAfRT6cDQGDQY3FRR+IpoVBsXFt0PFzWdcNFPfX9x2xEFk4mYUs/WWe6T3Q1MihSIO/rNY8Q2OuN7FrJZRjFuJjoUfc+06o2qk8sBxAbuC9emt+oDo1kSxCNtI4YSfFO0EmaLbp8MiNFcxSBWSOkPq9A0FdFlXYBqU4Fe8SeCK3F+DKTphX/SGRTsosEnE+DxMOwMxJAPqSzb63lmBpneGY33wj3yT+zBwipt/tLfYTCoiA1Yn2zFurm669xKDoATqFCoouxrTkYPoRbu0Uk1OmRegyZWxUL4kKXSjv2uLgKqiX+NSW44lr8gaP9ELHaat2xvjMMTjIfTi+3cGuoTjTL9R8ZfxjpGWd/5ol3PiXIvMiJQKbTjOI0nW07ytR4d5VnIRybvXAsuDrh/ivZlhsbooAAuDIBp3QPJ38h+jbGnjc2Ob8r/yhnHLAW3HDvxfF/3wMA99YE/mFHXy0bhfVefBKknA/cFFU8u6t3rQherA99YbWSUblgyKtjtGyFRh95yt3qyJ+5cPh/R8Xd8NfsdEZb9vWWo7To26iUdK5v4SoVqStS3rBH9TQPhh1fVHSq4MOLK
+ RmMMCZHe
+ ozaCAbx3ydlFct7aSlCkYx4BM+s0JjjHriU1nDQH96faR078Fmct6hqzEOXpiYRm3vRvtRTKwGzk2I1KtsyDnzA6328bl2jqWmXBVvIt1IOp010EolG8IepGTHecAn4CHbFG/tGteM64c7v7jqsztfEv6gk9vgrwyDI/hYmw0S3pgMUJVv6CbSTAv3VlCLQO4noE79Lufe1w/fmfhYMfXsHmv7E6JBqtCu0Z1a+8M8YLtwsLG0jK65TfTnfXh079hPkDmcuC3660nEcx+Xb4CyyQ13u60jOfK4y1/NAckWA+p7SOS0miE8ZlnFjebqU1Pi2QEvdc+phMUSZw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,110 +131,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, __kho_finalize() performs memory serialization in the middle
-of FDT construction. If FDT construction fails later, the function must
-manually clean up the serialized memory via __kho_abort().
+Currently, the serialized memory map is tracked via
+kho_out.preserved_mem_map and copied to the FDT during finalization.
+This double tracking is redundant.
 
-Refactor __kho_finalize() to perform kho_mem_serialize() only after the
-FDT has been successfully constructed and finished. This reordering has
-two benefits:
-1. It avoids expensive serialization work if FDT generation fails.
-2. It removes the need for cleanup in the FDT error path.
+Remove preserved_mem_map from kho_out. Instead, maintain the physical
+address of the head chunk directly in the preserved-memory-map FDT
+property.
 
-As a result, the internal helper __kho_abort() is no longer needed for
-internal error handling. Inline its remaining logic (cleanup of the
-preserved memory map) directly into kho_abort() and remove the helper.
+Introduce kho_update_memory_map() to manage this property. This function
+handles:
+1. Retrieving and freeing any existing serialized map (handling the
+   abort/retry case).
+2. Updating the FDT property with the new chunk address.
+
+This establishes the FDT as the single source of truth for the handover
+state.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/kexec_handover.c | 41 +++++++++++++-----------------
- 1 file changed, 17 insertions(+), 24 deletions(-)
+ kernel/liveupdate/kexec_handover.c | 43 ++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 17 deletions(-)
 
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index cd8641725343..aea58e5a6b49 100644
+index aea58e5a6b49..f1c3dd1ef680 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -1127,14 +1127,6 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
- }
- EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+@@ -117,9 +117,6 @@ struct kho_out {
+ 	struct mutex fdts_lock;
  
--static void __kho_abort(void)
--{
--	if (kho_out.preserved_mem_map) {
--		kho_mem_ser_free(kho_out.preserved_mem_map);
--		kho_out.preserved_mem_map = NULL;
--	}
--}
+ 	struct kho_mem_track track;
+-	/* First chunk of serialized preserved memory map */
+-	struct khoser_mem_chunk *preserved_mem_map;
 -
- int kho_abort(void)
+ 	struct kho_debugfs dbg;
+ };
+ 
+@@ -380,6 +377,27 @@ static void kho_mem_ser_free(struct khoser_mem_chunk *first_chunk)
+ 	}
+ }
+ 
++/*
++ *  Update memory map property, if old one is found discard it via
++ *  kho_mem_ser_free().
++ */
++static void kho_update_memory_map(struct khoser_mem_chunk *first_chunk)
++{
++	void *ptr;
++	u64 phys;
++
++	ptr = fdt_getprop_w(kho_out.fdt, 0, PROP_PRESERVED_MEMORY_MAP, NULL);
++
++	/* Check and discard previous memory map */
++	memcpy(&phys, ptr, sizeof(u64));
++	if (phys)
++		kho_mem_ser_free((struct khoser_mem_chunk *)phys_to_virt(phys));
++
++	/* Update with the new value */
++	phys = first_chunk ? (u64)virt_to_phys(first_chunk) : 0;
++	memcpy(ptr, &phys, sizeof(u64));
++}
++
+ static int kho_mem_serialize(struct kho_out *kho_out)
  {
- 	if (!kho_enable)
-@@ -1144,7 +1136,8 @@ int kho_abort(void)
+ 	struct khoser_mem_chunk *first_chunk = NULL;
+@@ -420,7 +438,7 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+ 		}
+ 	}
+ 
+-	kho_out->preserved_mem_map = first_chunk;
++	kho_update_memory_map(first_chunk);
+ 
+ 	return 0;
+ 
+@@ -1136,8 +1154,7 @@ int kho_abort(void)
  	if (!kho_out.finalized)
  		return -ENOENT;
  
--	__kho_abort();
-+	kho_mem_ser_free(kho_out.preserved_mem_map);
-+	kho_out.preserved_mem_map = NULL;
+-	kho_mem_ser_free(kho_out.preserved_mem_map);
+-	kho_out.preserved_mem_map = NULL;
++	kho_update_memory_map(NULL);
  	kho_out.finalized = false;
  
  	return 0;
-@@ -1152,12 +1145,12 @@ int kho_abort(void)
- 
- static int __kho_finalize(void)
+@@ -1147,21 +1164,15 @@ static int __kho_finalize(void)
  {
--	int err = 0;
--	u64 *preserved_mem_map;
  	void *root = kho_out.fdt;
  	struct kho_sub_fdt *fdt;
-+	u64 *preserved_mem_map;
-+	int err;
+-	u64 *preserved_mem_map;
++	u64 empty_mem_map = 0;
+ 	int err;
  
--	err |= fdt_create(root, PAGE_SIZE);
-+	err = fdt_create(root, PAGE_SIZE);
+ 	err = fdt_create(root, PAGE_SIZE);
  	err |= fdt_finish_reservemap(root);
  	err |= fdt_begin_node(root, "");
  	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-@@ -1170,13 +1163,7 @@ static int __kho_finalize(void)
- 					sizeof(*preserved_mem_map),
- 					(void **)&preserved_mem_map);
+-	/**
+-	 * Reserve the preserved-memory-map property in the root FDT, so
+-	 * that all property definitions will precede subnodes created by
+-	 * KHO callers.
+-	 */
+-	err |= fdt_property_placeholder(root, PROP_PRESERVED_MEMORY_MAP,
+-					sizeof(*preserved_mem_map),
+-					(void **)&preserved_mem_map);
++	err |= fdt_property(root, PROP_PRESERVED_MEMORY_MAP, &empty_mem_map,
++			    sizeof(empty_mem_map));
  	if (err)
--		goto abort;
--
--	err = kho_mem_serialize(&kho_out);
--	if (err)
--		goto abort;
--
+ 		goto err_exit;
+ 
+@@ -1184,8 +1195,6 @@ static int __kho_finalize(void)
+ 	if (err)
+ 		goto err_exit;
+ 
 -	*preserved_mem_map = (u64)virt_to_phys(kho_out.preserved_mem_map);
-+		goto err_exit;
+-
+ 	return 0;
  
- 	mutex_lock(&kho_out.fdts_lock);
- 	list_for_each_entry(fdt, &kho_out.sub_fdts, l) {
-@@ -1190,13 +1177,19 @@ static int __kho_finalize(void)
- 
- 	err |= fdt_end_node(root);
- 	err |= fdt_finish(root);
-+	if (err)
-+		goto err_exit;
- 
--abort:
--	if (err) {
--		pr_err("Failed to convert KHO state tree: %d\n", err);
--		__kho_abort();
--	}
-+	err = kho_mem_serialize(&kho_out);
-+	if (err)
-+		goto err_exit;
-+
-+	*preserved_mem_map = (u64)virt_to_phys(kho_out.preserved_mem_map);
-+
-+	return 0;
- 
-+err_exit:
-+	pr_err("Failed to convert KHO state tree: %d\n", err);
- 	return err;
- }
- 
+ err_exit:
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
