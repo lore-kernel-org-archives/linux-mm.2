@@ -4,84 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06C83CD4F49
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:37:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16B48CDE00D
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:38:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 146578E0005; Thu, 13 Nov 2025 23:37:43 -0500 (EST)
+	id 789A38E0006; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F72C8E0002; Thu, 13 Nov 2025 23:37:43 -0500 (EST)
+	id 7130F8E0002; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00C7B8E0005; Thu, 13 Nov 2025 23:37:42 -0500 (EST)
+	id 601E78E0006; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E0AD28E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:37:42 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 887FD87704
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:37:42 +0000 (UTC)
-X-FDA: 84107954364.06.E58FDC1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8D10212000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:37:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 46B6C8E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D169D57BF5
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:38:13 +0000 (UTC)
+X-FDA: 84107955666.26.05398B7
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CF201C000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:38:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=g2rTefQg;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763095060;
+	s=arc-20220608; t=1763095092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lIDs2V/QQ3l52abqYbeogadc6hSYp+ftV1zJ8fAMj7Q=;
-	b=klP58sdwXe2qsU5Qr/1O2UURdJUGdXwcsFIQTWsWOed46TagcqTmfUhfXvFvYy7qVDSNhG
-	6s8sD2kyAc2waMEH2LHhZ02/bKY+1wr92v7yDHIA5dBEiJg0Im+qB+cT6D7MMN3oXNIsW8
-	fDDM7j1jqq3BAoK8VY0bxeP87Ac8daE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763095060; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=75LsZlrkz19mYBMXdx3jHbjL15XI4sQkrG/ZqqsZljk=;
+	b=w37rDGT+hJhstt6aIYxnfrHo9QkHP/4ccEIxYv0dL0I1leG3d7TYZFstv1WvUU+M6U8kiQ
+	1jbDhjuFP8PaAv7YsLnxR8rYLguFA7NFtx9R0awJJ2HExblp8c9dKKTgv9Ln+gokF/diJV
+	QppT86l+SG+MdmaTfRHN24BeBnDlxhA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763095092; a=rsa-sha256;
 	cv=none;
-	b=xYnVdZqvBE6GNZO+DV3HPbKV5N1xqC7yXl88PmatYWFUxpKiEa7OUeO9EOBOyqCUYEioQv
-	zKwtGbUq/HXwswd1cCktm24LFk8xDF3Zr7YoDuF9RKwRQ8Y5pNKpwKo9ilSf7Ot1763r/t
-	jK/fonGCqggdoiPfNjIdCuIz1HDaswQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF838106F;
-	Thu, 13 Nov 2025 20:37:31 -0800 (PST)
-Received: from [10.164.18.47] (unknown [10.164.18.47])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 825873F63F;
-	Thu, 13 Nov 2025 20:37:35 -0800 (PST)
-Message-ID: <7eb23e67-e8a2-4f58-9a2b-8e78eb9a3d3f@arm.com>
-Date: Fri, 14 Nov 2025 10:07:32 +0530
+	b=Mk6TXmMm4pozgdPLP+wBpADjs7fxRsep7DmvT6eJQzY9YyWd7XePOpGfYByAPy+Gd+nEWQ
+	dQN/03VN77aOpKHG7OfFnSoV44GynwrUKJUp7xcisofhyxquIoo0RlKAiuSvRWZ/uf95+y
+	YBACSpMAdC6CIpQEBSnfP/U4Brru+Xw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=g2rTefQg;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-641677916b5so2819746a12.0
+        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:38:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763095090; x=1763699890; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=75LsZlrkz19mYBMXdx3jHbjL15XI4sQkrG/ZqqsZljk=;
+        b=g2rTefQgyfpqRXZlc2JMyqebSYT7XuPkNXOvW1CjpsGtR6p/7RB+lWQ3vl8Z5gUNR6
+         ko3YI8OCR89MI9e5mN4XDV+fQ+ylf71nZuajls7+8M+XpGFiBx42g+xZWp4otKQ3tORM
+         AUX7GxfNPFtMYOOvr0frfK7Rn7S2lq3+uioS+RSzqrPKtxkgv70EEOH0f4NaIjd94ZLX
+         bJ9w7jJtbkABxalzJJ8djp3wRUVrMjhMn1mxD/RPfytQt0kMm3FM7agQQc+zwZ+v3NLF
+         32D9As3hkqM6sbRQvTKnI2MROav4z2JsCsnFXZPeSowOeh6vBgiwB9FPC8ckl9o4YOFI
+         twVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763095090; x=1763699890;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=75LsZlrkz19mYBMXdx3jHbjL15XI4sQkrG/ZqqsZljk=;
+        b=LxfM64EU/RsjDNdCno/omH87Y0X19mxzCnKuf6/Ls0c+qnYX4Um6OsuHrkV5zjEjtp
+         1gDf9yIyzF6Np050SZ6/EWr2S7kjEIYmCMJn2gZ5YSsynXhvEb5jDZT6h+utrhGycRfC
+         nXl5PcM3dAI3fWWl7pddME5fn3dbUXzrh9af6xnnhN4kd4lQeOkXYKaSYpzjXn/lmxoJ
+         3s+OfnAzKZjcAX9XljXwawJ/xwPmh1dKs7r9m3hNRdnkqJ3UHQLXrNA7+GsJV8eSenMr
+         VpeSQANymbOpZPieqQg1RNZkYB5K8oMubHc2gp9TbpdKgcbjpeuiAmZctfER9P816uYW
+         /4PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVGeAgiqTFj6J3B/1i69XuWIJitCif6u3Xn2ZtslVF9Rl+89q2n2mWqBaSBIECcdn92+2uO8p4uSw==@kvack.org
+X-Gm-Message-State: AOJu0YyIier8vPW48VX3XRQoIV5ecnuemMsUACeBjGfCFgZvvb2VwnaM
+	COXNJWrKMVTVRSrLZyHLiqq1HJO4FRRTpMoo0hG3CfJ6Qr8gjRUi1xezjII8DP4IWqjO3z6zyQc
+	X7yZ4gXgSqBk6grKCOx1SeXVwHy+NE/PsAkU9p3IGDA==
+X-Gm-Gg: ASbGncvKfVa+zQr0WN3YVyXpu9NZOIuS8SSSCBm0fUpSrPXudTfAqY+iRFWOrCOOOj+
+	LI9uV0tOv4yugn0QErG2AD93r0oNl95NjOVPzbhTneAWPlsCYk6dObgqO7Jj5Uy3zUpHMZyc9h8
+	yJILi2oBzqzLPDoubQ9e/fP2z9l93tqQUIvECDK6OPJu1eMqh2X5TA3EosOgKoYonoXHr6IlPTX
+	+xV0yKpGL6yiK8YUCjEtFMA4/lY3h1lc1UJ9tImiD+GlZEkrqKF7GPQxQofBMPifhV+
+X-Google-Smtp-Source: AGHT+IH5rJ8YaoOZJ/bljbGnJEtpsMqaJ/zjTHTHaUgm7y1k6s4PlCcpG4rSsf9/sg1rVEhMd6xOPfkaRP0BAtS2RLE=
+X-Received: by 2002:a05:6402:2115:b0:640:ef03:82c9 with SMTP id
+ 4fb4d7f45d1cf-64350e1fa2cmr1323111a12.11.1763095089974; Thu, 13 Nov 2025
+ 20:38:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 1/3] mm/khugepaged: remove redundant clearing of struct
- collapse_control
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com
-Cc: linux-mm@kvack.org
-References: <20251114030028.7035-1-richard.weiyang@gmail.com>
- <20251114030028.7035-2-richard.weiyang@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251114030028.7035-2-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8D10212000A
-X-Stat-Signature: ph5fc8uzx3ciub8tdupykywuccuy6nzn
+References: <202511140809.4JN2GCxV-lkp@intel.com>
+In-Reply-To: <202511140809.4JN2GCxV-lkp@intel.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 13 Nov 2025 23:37:32 -0500
+X-Gm-Features: AWmQ_bmvVrEBXZ1NreajG0yZ7MNUMcDUJEYu2_AG45IpCCW1b9-zmyc88OFNQWY
+Message-ID: <CA+CK2bBR5qqRMNKVYezCn3RsHx4=YLGsPaCb5DhveEQi3k6N+Q@mail.gmail.com>
+Subject: Re: [akpm-mm:mm-nonmm-unstable 84/106] kernel/liveupdate/luo_session.c:101:3:
+ sparse: sparse: symbol 'luo_session_global' was not declared. Should it be static?
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CF201C000A
+X-Stat-Signature: esib5qnmpmthndixwustcbmju9wofxuh
 X-Rspam-User: 
-X-HE-Tag: 1763095060-996690
-X-HE-Meta: U2FsdGVkX1+HX95buULn2vpGOmeTdhtWnjzOgNZ+5nRdg90fTfswu+9mX+gp/TJrLDHmVraICbBI9j/cdw8QIR6XvO/atgf8L4f3uXfaw8uUBfJBDeDO8IFaXI9WP9Z9xxElOvSTVOoKWhTHpWboNJ36I3fqmxNWmxJZf5eecvgqcJWkSv1FB0WjGpcpH1AChv1tUTJ01kJm3csdrrlRTUd180AIgb7QGfsQOZOK2aeMcthWlZv6GCwbKDKxpnIqMIR40jKuOPeW0rXCu08Qv1jvKtnHFdQVfa/wEan8FGBCJ3oUCx6gOi+uVW8TkUWBwJw53C9KWoNy6itVIF1UpD5fCJwQwXx/3/KGXDqRCwvF2QXwidZUcGZadTvNdZG9hGidHc8SN4xmzcrnh1dPb6ycp4LhLVSqsI/3hCpBwDDr+C/1ifVgbTBlz/MFhQVtyQeZIsGBSVGssrdaihuHaq0CjRXkxwgBNKGENsrA4UP6gqbj3HlCPBj7OEUPOu3W9Ovziq6yxa3maAAx4nFdHcgFyfFif7GpefyggXC0m9s7BKwvi/8Qozy8Fl9MAa6QfkbYcdd/ls/PJQ8lBGP5iHzaO0A6Q3gvDGVpjrLn+YeJknpN/g5PafR7kKzGyuDV6bkmrHAsdqzuyq9WiE+e+jc943Lk11yT7Wy39z89tbF7+bqcE4vkgERuq8qwygLdNlkkDPRPTlNLhwOD/1w/by+OrLzKIk0RIAi+8heGMOzAJf4nCD4+QvcgMgjHINJiyTqvw0b5Re/SCbVazthtLixkxSwsEr6EKnz/n22B1NKBR6kwatnV2MPBFolyvdqIP6kWAlWL5aW6kj3HKnFk2Ea2vuhh+64NDP7eOR75OL42qtoB3pCC0X7CUCe73xTI6BJiTZmCKC594ktX0p/3COggqTsaOnxxJW6SpLbnHS+t5VjYbMk9D0WOrDqg7Zt9XGK35Z+3tQnqVBAM6DA
- roItMOTB
- RNqzmNytaojYT5D8p3sHy899Tzlvy0OyB/B0jDdXFPRTu/DhUid+wuAyL6InVHEYrzo9h6qNAVPe4U2LwuAR/aSY1EJ5izlLjCWr1ooLT2VDTMxpItKUvlm3Jfu96KcMqEcHyoLuLdBKh7GIncPIfTNrkm+Q1rUjeR2yn1bsAe54zpWmq+VnL+DZppBPPd4pClvTZ7c7RYl4iKbYzmguL5nKxi1j5ilw2eTPuH8g6UC57GLvlq3ODwmHVvkbdug+rqvEysbEbe1nRjx1523TwCic589k2qFUDJllWA03R9uhnQyLRhZd9mCcN42PT9GhkRJPdExa87Vm0/+Lg/gRx559faw==
+X-HE-Tag: 1763095091-209776
+X-HE-Meta: U2FsdGVkX1+G9zqw1uhiweoa1vNgNLRv971xkl85yRmW1WOPi4hWFs3YlwKh0IAbWAdyDwaZlW68i3uMQJU2xxk+efPgmegDXBZqR/i79kduELyIi+zrBzZjysZ4s1lZwg5gN2h7GC33yCJpgNzLwD9SVtpONVfuKEVKQQDrm8oe7F39yYL27cVWdyT7APV5dFpoccZFJDqbxkZpgZSF0n7s/uhnWMnSFj+xQ1k9nUj7CoZIZ0aAwvdDDLQARWcZ2lj8L/thBlBtFHDrMMfhffLgsOHndldv6bKFfQYWTMtMkZ7WzQgrI/JAaVFYGTxBuJTBrepavL9TmyyGusKYBpwsaYQy+daqQTKWTGK5fJ3/y1B23J5F3qSBlEgQ+SuQ1Fltu3ZdhxBPKMTAcBLv+1gj+NWOh6amNtgMh5TDIzAE2cihLkWwB2Qmm/HtjK/xSB42gmbCTCuaESj8zx9SZCcfMmlvuiX/tvYHgb4TX9dSxNme+CucIICsFlunGXwOQfnvTfSTfmhQHf0jY0nGxBi9NPhuauOtgZp5/plRLNCqS44CR46R9VGb8DARWdYD9s0hP7fmzeJjczOVBxG+NsD+RcSzvBUqulTnzNSQg5VgC3CHW9cAT4/TQAl2+kTj5/8djnVMaZCkFoTzjzcH9406SuF41R3LMsla2kQTpmv9cHVAYewDkYhzEau2RwN3mwpeS2D24tVz5DxdWcibcAoYOtI86/EJtj/q+Kq4FaLpRe98CIy00ti6GL2uu1eTxchgIFUSsfVhf8IdfVgZW7Ws8SwZywAaoc4QquMLYW/pblO6LSUpYX88TLXtJI6XL7UBEB5ccg2154m1yxNETupqhmCK8PnQWhiSWz/1rKltqNQZcroJb1iaqKAVYuxbM0+IVrm5dLHH8z0MtBNr5EUxmi4fIQW0WBbyfJhgPoVzc/XSGUuznbRLC9qinTZWk/Af75Iu9+oj0Zib89S
+ wct9/u7o
+ G+F4CNU6qRvaR1Bu6aQ7MUCfHv8Lq2FXUfdvUMyVQQxM75kUX5BaA30Y7HX3d1TupqdeXQC8lHM0pg8Yx1reeNnYzMGpgfEFhxUwr47nJ8Mw8gJuAMh8u01n3lifK9yY/v9xYH0/9GFlOISh0hi1N3MlKCE0HQg1luxrTym6/Kgp84l+A+OrsICo6Hjnz2/Id8xiakjzWG3EXNUJzVIAuwQssSjBSYsrdCyK7gaUdj0Hi6UJodEPUbuczFHGHKf2bBrvaorQI5qFRsOu2jcnNYMIJr51urRTtu2rfhKFwvf0tDRZd7nIL0kRnqyCGt1oivKl9L6wnNVuIuZHvZv6fay4MnvIWTv51qP/4zcHmLTGG+O3Z579ikzIMVZ1P+e8i6UnFQp5S6MczAnJjCLKLPkdS1c00WQKEEtM83cvZ4EPvMvn1vFdONcej7cacUaohSCHxDOGUsJkVpy+rMicNO7VPCA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,35 +117,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Nov 13, 2025 at 7:29=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+rote:
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-no=
+nmm-unstable
+> head:   c3e0350a1f9934c5e56d859a26bf37a15ab7bb25
+> commit: 877409d046405d44ba7e15e19345239c1affa4a5 [84/106] liveupdate: luo=
+_session: add sessions support
+> config: x86_64-randconfig-123-20251114 (https://download.01.org/0day-ci/a=
+rchive/20251114/202511140809.4JN2GCxV-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0=
+227cb60147a26a1eeb4fb06e3b505e9c7261)
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20251114/202511140809.4JN2GCxV-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511140809.4JN2GCxV-lkp=
+@intel.com/
+>
+> sparse warnings: (new ones prefixed by >>)
+> >> kernel/liveupdate/luo_session.c:101:3: sparse: sparse: symbol 'luo_ses=
+sion_global' was not declared. Should it be static?
+>
+> vim +/luo_session_global +101 kernel/liveupdate/luo_session.c
+>
+>     89
+>     90  /**
+>     91   * struct luo_session_global - Global container for managing LUO =
+sessions.
+>     92   * @incoming:     The sessions passed from the previous kernel.
+>     93   * @outgoing:     The sessions that are going to be passed to the=
+ next kernel.
+>     94   * @deserialized: The sessions have been deserialized once /dev/l=
+iveupdate
+>     95   *                has been opened.
+>     96   */
+>     97  struct luo_session_global {
+>     98          struct luo_session_head incoming;
+>     99          struct luo_session_head outgoing;
+>    100          bool deserialized;
+>  > 101  } luo_session_global;
+>    102
 
-On 14/11/25 8:30 am, Wei Yang wrote:
-> The structure struct collapse_control is being unnecessarily cleared
-> twice during the huge page collapse process.
->
-> Both hpage_collapse_scan_file() and hpage_collapse_scan_pmd() currently
-> perform a clear operation on this structure.
->
-> Remove the redundant clear operation.
->
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> ---
->   mm/khugepaged.c | 2 --
->   1 file changed, 2 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 7e8cb181d5bd..1fc8986a28b3 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2803,8 +2803,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
->   		}
->   		mmap_assert_locked(mm);
-> -		memset(cc->node_load, 0, sizeof(cc->node_load));
-> -		nodes_clear(cc->alloc_nmask);
->   		if (!vma_is_anonymous(vma)) {
->   			struct file *file = get_file(vma->vm_file);
->   			pgoff_t pgoff = linear_page_index(vma, addr);
+Thank you, the fix is:
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+From 3c561cef2649c368b8aeb8e6e16fd096fd8634a7 Mon Sep 17 00:00:00 2001
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 13 Nov 2025 23:29:18 -0500
+Subject: [PATCH] Fixup: liveupdate: luo_session: add sessions support
 
+---
+ kernel/liveupdate/luo_session.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_sessio=
+n.c
+index ec526de83987..e1a45af892eb 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -98,7 +98,9 @@ struct luo_session_global {
+  struct luo_session_head incoming;
+  struct luo_session_head outgoing;
+  bool deserialized;
+-} luo_session_global;
++};
++
++static struct luo_session_global luo_session_global;
+
+ static struct luo_session *luo_session_alloc(const char *name)
+ {
+--=20
+2.52.0.rc1.455.g30608eb744-goog
 
