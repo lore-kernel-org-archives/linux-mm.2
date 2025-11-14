@@ -4,88 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A0DDCE7A96
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:06:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78B4BCE7A96
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:08:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AED138E0013; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
+	id CC3098E000A; Fri, 14 Nov 2025 04:08:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9DD58E0011; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
+	id C73DA8E0002; Fri, 14 Nov 2025 04:08:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B3488E0013; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
+	id B8A138E000A; Fri, 14 Nov 2025 04:08:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AF218E0011
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:06:58 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2703887D6A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:06:58 +0000 (UTC)
-X-FDA: 84108632916.19.4107438
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5E9694000E
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:06:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJmU7D90;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A23788E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:08:14 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 362BD1A02A5
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:08:14 +0000 (UTC)
+X-FDA: 84108636108.07.F1787B5
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6C13AC0011
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:08:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ArVZC0zv;
+	spf=pass (imf22.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.167.172 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763111216;
+	s=arc-20220608; t=1763111292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wg0potO2m5v6oXBfIXmlvWrMNWrRqqdkTc/Rp+NQ/o=;
-	b=R9zs/GCD/T7Fs9AfGVl+1JicnM0ea3zjZ0Fee86EFjDXi/BmBU8tHx1rhgA6YFaF/02RH/
-	6cDbcfusTnx7pWs0SXEFVIMf08pLGp8K7XOmRdAbJQIqz822wWks3agLZeOfaB8o9BKU5U
-	NOIXWiILMoFJOkbk6SlqnBV2bmXsV7A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763111216; a=rsa-sha256;
+	bh=Fk9hjlAKCp2Nkb/I2nP50EjbfMYVmooA2v6BOAwtQI8=;
+	b=eOnsHdlEZMYF+itBpoa+hbhzDtItI5WnhLmPiH3bZXlOTfWZBSD14KsMw4tquF+x9P1ZfW
+	7jKltJDBLqnH8S3LbtFFQUxYN25bOWkVw7fPCO2PZnEys5U3iH5XpR2JhZ6j8H6NyJVMUA
+	JXP/JyctZqqrchf4+OeA+IZF2fJKtxQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763111292; a=rsa-sha256;
 	cv=none;
-	b=V/nAk9Yw9My/i7a6Jl9xaDhIK5hsXEQdGjrqq19+9owlTLUt1wRCroyg2k4ldEeEfywK38
-	VN9cplGaGJ1ZcU0iXYDSZ7i15ZVMr+uTth7RbAInFb26E7qG+O3cMjEO4KKAzdZqaf92xr
-	lsDpHRw+wTnqSqp1EV2juFSI2WYeaak=
+	b=HvEC/xnIq2NYZDvjYUbnQp27nmUSf4e1ylHQhgtgOEt0bdvq+5CXt7GJw0jSshEuHHjuoL
+	ra5kLLfCKn4FzS9sTWSthHBq69dtXj45AvumxvtzuPOKioQuwQWHBWIomqJBSTa9NyZGy5
+	Ul+87Ieov51Qt4Q9CANp20lQ+5FFA/E=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJmU7D90;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5ACEF4054A;
-	Fri, 14 Nov 2025 09:06:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E93FC4CEF1;
-	Fri, 14 Nov 2025 09:06:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763111215;
-	bh=qsV+HCbv7VLcG4YR++E7I2jRabBKbnj46aXS2Ru+c/U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aJmU7D907gIQOowwYqh+AhNkcSDe+ZsooO3peE2t5xQdC/J2LmysdS0aPWlNRGvoU
-	 /HG/u6c2tJDI/yLPsmxIcguM6UJvHesUZItJ+kxMoUvoVWl4a7KYoTOpWwA6BA4a22
-	 5d66fQ17UcPWUoa0Hyz9Ck+hbB02Zxua/mmWAcXe2huVCNWkhJ7fDQNegU+t10mWP4
-	 PHW+wPwy/OzdxmhH72TfIJCrbUTXHkgNolvQFC2jnjlj7LEPPeXe+z01BYT8Kxcv+p
-	 2bSksdXtkmvQIqK3I0c9DGUKwDIUtsDubkYcMnLWBCxJya6TKLVvDOpSsi18emWNpC
-	 btYDfzv5mp/NQ==
-Message-ID: <e5c930a6-f10d-4715-aa80-64152b30d96e@kernel.org>
-Date: Fri, 14 Nov 2025 10:06:51 +0100
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ArVZC0zv;
+	spf=pass (imf22.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.167.172 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-45033024e59so795932b6e.3
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:08:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763111291; x=1763716091; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fk9hjlAKCp2Nkb/I2nP50EjbfMYVmooA2v6BOAwtQI8=;
+        b=ArVZC0zvyf2pPSdA+6wAFOzQD9kx4jnoA0zNWkbak8EfSbMzrwvFarALfKdoew+3Ul
+         YYQ16fJfz1ab7okAfA+GwkWoENaa/NvA4r0Fdk7O0UshJhjkEH0UCPfpnJfl/81Avis4
+         C1LMoIMuUh3IWK18uMUlWhLS9MjxC9r7GgemR+LIdrElztAbvJlOaNqZN3THJncGd81W
+         LmQ69aVb58ch49KVaGgxm6rROV/cXv+K+B6egAvO0Xd9fYWhMMyzPZ/8otgc/c8U+sTt
+         elkRiYVaRGM6PzSFg0LiITqfy1ezAdadpuDLKIX9jbvjXtf80sA8MLlClX1XfL6XmAUj
+         kCaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763111291; x=1763716091;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fk9hjlAKCp2Nkb/I2nP50EjbfMYVmooA2v6BOAwtQI8=;
+        b=aDgyQTS/f6RZVig0kHr+1EnxufaUnU9klT2coUQOv7/jnssUhqvU4EM5i/3g/KqAMn
+         VU99Q2XwTRGRrFJ8UpyNp9gV4Xs5V1mTaSct/0aTPhrKe+8ea4rviavxACJuHNJ0T3lj
+         9gdnSmW4jKYZYZ9sD92KB7JgvdR3sAgLQNDcE8rT76E1HG7h4kI9koPh/EENLRLNtRn7
+         oGAcoIJdz8rOOGcyj3KfDa2j4uXjtXu5Po7i7Jppb5QRJeU6zpa4Ehpbq/n+s0AwY7N0
+         N/G8fUwnSyd61SiGhe5BLJfOC27xZsGHjnk+BjBxb7XUbL+zoHtH51My8cWyZB7Iz9qp
+         dbfA==
+X-Gm-Message-State: AOJu0YwaHrmut3bTl6izAJ9rMtdglowDad648Nf8EcDJDbuApEBM2zhb
+	Ei+CPzfBP8pzWpsp10eJbgHrkFW4BGfHpzcjY4zij1c+pQ/HqCKETD891Fa3vwjpI3GzXDZ0YnM
+	xi6C525OnfYV36kbs+1p1dCYYiF3YTD0=
+X-Gm-Gg: ASbGncv5gaTtSTyUX0o0eAxqC50ROEJIiSjCQ63Rs6V6cicsMxdQia7GTWw48Ef+RMH
+	pm/720McH5Xt/4vaa6/aD39hyd5/gMYgOEAQH8cve2hjDZiOW0W10gb2MzuMF6AdAt4NA75FNOS
+	L/nEJtzh7vGtQeYH9HH2ME8p36s2WF2ybp0Mk3+w1eymjhca0EFrIQDqf1iLe9+U5H3zrQAX0AJ
+	b3LxXDNAW3GAMtXyjQ1zmALpeFIA0CLFIKmcpn6tqspDs2jw4MsMNrlxavSykVbjeqUKf4=
+X-Google-Smtp-Source: AGHT+IGFPkKomgOK8gZAZxGDjFMv0lYwO3oXF4CbVYN8PckamHP+Gm8rIRyeJ+0DujrhIZ9abKJLwqFvSPDQCbQ2c88=
+X-Received: by 2002:a05:6808:4705:b0:43f:9c34:fba2 with SMTP id
+ 5614622812f47-450974510edmr1299342b6e.12.1763111291363; Fri, 14 Nov 2025
+ 01:08:11 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] Remove the "FOLL_TOUCH" test code from gup_test.c.
-To: peng8420.li@gmail.com, linux-mm@kvack.org, akpm@linux-foundation.org
-Cc: osalvador@suse.de, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
- linux-kernel@vger.kernel.org, dan.j.williams@intel.com
 References: <20251114085038.191031-1-peng8420.li@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251114085038.191031-1-peng8420.li@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5E9694000E
-X-Stat-Signature: y74awc156e71177jbzxhn6471qd8s4uz
+ <20251114085038.191031-2-peng8420.li@gmail.com> <d0da951c-914c-482a-b5e9-93657b5f7a78@kernel.org>
+In-Reply-To: <d0da951c-914c-482a-b5e9-93657b5f7a78@kernel.org>
+From: peng li <peng8420.li@gmail.com>
+Date: Fri, 14 Nov 2025 17:08:02 +0800
+X-Gm-Features: AWmQ_bmd0H8_9vQM2x_o2DVsoxdbOxPwX-8S_385b8qp3bIGwoHihvTgtmLiyWM
+Message-ID: <CAJFsz5zJefLH5jCV3tZH+07ZH20oNtEY6kbGKP5QzFmhf0oTXQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] Fix the name of the source file for the "FOLL_WRITE"
+ macro copy
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, osalvador@suse.de, 
+	jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, 
+	linux-kernel@vger.kernel.org, dan.j.williams@intel.com
+Content-Type: multipart/alternative; boundary="00000000000038a5ac06438a5604"
+X-Stat-Signature: ufh3a8kcteegzb5g764ep9c6y83wyapy
 X-Rspam-User: 
-X-HE-Tag: 1763111216-965269
-X-HE-Meta: U2FsdGVkX19L1QBAotsQ06L7/UhpYMcjqB2D2bIqcr8s5r/Ymywj07pwbnSJDk9W11nnD37TUDrOkqxyWJPbdNn5rPk83+cB9iJcj3vmeGVic22S5zUa6zpdUDf1Mmns8YoFoS/uVNzM84l695MaZCSpvnO1FXcYLLP8EXwJbpuuuMwgKdoQBPbL6NocnybfCpsPBp4LmzzKK0mk06a62SGlChHFAWpHwxVfMU68rSzvIJn5itEOaSbWkYCBDffwv3mN84LZ4bH914wpxHo95j+HoYwrRH4k+l6VJdxE5gQV9635Bm/+mWDFxPOrt9W8XFgId/fDExOARqjIO4pugqIIRBBmBd10PcCSoYJbe+kktBJjSfhfzeXIEB+RW6AwbrePz8BAn41XUmz6BHbgS+CeFO1TrzRY+R41RpuEjCz3+lLvFcADRJZ1/IU0ZNzG1kRCilzR40V3U1nyzcqxhgBFr0YyjsVqn8M3kM9zYMUBNrn3wOCOwmDhTY6qDisCYkVzoKbiefIaKeyQ8fguIlnnRll6APVnbGK7BWo6g9rZGAodE7HexCbtsVAbG6hLIooZqIveIPY+2FQmMZfQXHqOFjQkIfrHaYNTQDRTMlIMKUV5c4xWTJHsVNtEnK+i+OkPMbm9WNicu+g6vSY3YXnoYt1VccHLIIOmCaQ+J2h85HpDoIY0P7zTzibSCH6nWAksVAevlxjMuUeMJljklZJZPXLyuvMQhdC0uLyOUTgFoOznAJHjG5tnhL20fZHAmfmVBpBI58t4qB/ie4k4zd4mz48E6xH4MUYIYen9ViEo5Jtoo5FSQiWIJi56qokiSsgrqX/sN0szz0RweGv8u4UcEQjqJ/KsZbQsbKrJJdMZU0Zk0BeIj7Ksf3qR81AL/JxRW937EJotGmfOywoVtLo0i0wm8aDmoZK+MuaL16FCp/Z/4ZYhVeYWyEEqAIyykjntbaoDa/tFMG3q7z7
- SOoNVsQv
- c71j77pAttCKrWHQujHLP8b4bPYvzk+KM4saeYd7gT2ADf2a58CaGbbhrrvpMF81KEvc5zN43tcmr6mI=
+X-Rspamd-Queue-Id: 6C13AC0011
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763111292-436003
+X-HE-Meta: U2FsdGVkX1+ZTdvUteU7sXQ3s4nDt0/dykZ2BnLFYYGEHMX6raSIxbsIsJGvnM0EjouziwzbrthzOoYKWNakQkZ+gWbg42+v80FrQGjgZQrM9TCrJcWvlsXPlFwCP3LyxqC5/H6AQUq+0c5VxqFKHUsqQAqn/sP4HjBxsKQPjRC+PqkcyqOWd3YQO5M/YcKpLUPkKSmzsfnC6OkmvdSKcUTJTKDLAQpAY6w6EtVKf02u9H63s0tfXqPcs43H6L0U669uOIVJ/lS0SZsd2c5m8l0gNITzDOJwvqPS6Frba32N9OG6307x/vxFpErRF56fWoCr24aCDftzyVD92GD6PXXzvoW2nErmBU8KeMqEIMnTL5U1zgOLHEfxp/k3G1h69t6+w5MrOBLOfTPUNdopcY/jSlsIYH7LhN6OKSPrg2OEl9FtEJSHy13tjldq64kU+EKdqZX9Fq5wokwoDMW3fmdBLTBo6a5EzEbnUYG9xNxr6Ky8aUaTdiGaosK+MpiTmkuZmGeu78rEIUSZwh2w3GxVKFrAr1VZe8rUYB7q1El/5TRdPMxrljWWAZvTdcA4XCBeBD5RcbgLAeSYd2CJQV61WiQ4ufhGZni7QLlSpgVKXfyjJEsMKnr6O0D8oaH265P5naP203cM+iRNwXKPRVh3Mz63M1J4+2jArfBo19qm0uZ+10bgSC6B7SdAs3ydpiMoeM1SxaTHn7bhTroWcgayBlzPBBwlqRFCHmMToxOzNmHygdtaHRq4M7nfY527znNtg0RWZckaYex7LP319J2CGJsT0bBbcSLo9HC2c7nIFXVKhC8h3zt4u6GCbEjcUy6/UAQilh96sS/ypU/n1pOOfc1ygmx+TSJR3v7AB7N6Gu87qLbFkZe9UTnp6a9uPkdf3XRSMYOgVlqjUNwRwFKJdrFEbm9/cKH6fqOTZi6kyk0phnD41h208H5m1YsIHWVSIRGzPI73HDI6KNx
+ KtVi5WWr
+ iIH4UYq6YsjpE7d/TTUtaTzvf2hpgvCKJ1uTEjLvbvp7NJI+5y5ag0OAlbs/5HgrTb4oIBLNHxJ4f0uN1ZDy67MuBaigiA2vjmttztUtroh44c+3d0wew1I0cYQ0ZMHc/ZMgsQlt0XMy2mlSkhXMjDnFfpWU9QMuKHTSf1mI6LXyb+aRoliEtJm4rLKnhGEI1f3VQ0GhT7QYjGdU2kB9D/yjsVmnIEdwj3VqV77nSY+AzEloj0CGljx8PZT/BS8iWJKJ6cHgsGZwnIqYyQs7gByw+Sa4uoZKyRHhDlsVa/wZaNwk0jNUoYw/GDonvSNPyjPSwaTu9zk5VHhc7jHzODz65ZkzHYWcJ6j3HB4vzmd1jojZuRy84JkpPNNSnQYSDrHFPt54dgS9SUJsWSW9lchV02Cdu5S/d2isKiOuSgh4ZNi2c18eeRGT6/eLq6pGXG8/c0SysTOQr5eGMucEiDyx659DusC6nEYhF/RxSp7KUa6P0+auzUkwj1DFQOWo0qGU2zTaYDCTAemKmClVfC0EgJTXpuQ2NIcZyCghcr0SdhyXAe4T3YBiiis0y5L4O/d0R/73IoLHfS7uaEYnb+eRWirlab5SAKiNPrS29H8vWEGDukI+fKVBMMKsrv05UR7bz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,100 +115,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.11.25 09:50, peng8420.li@gmail.com wrote:
-> From: "peng8420.li" <peng8420.li@gmail.com>
-> 
->  From submission 0f20bba1688bdf3b32df0162511a67d4eda15790, we know that "FOLL_TOUCH" is only for internal scope use;
+--00000000000038a5ac06438a5604
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-That is not the proper way to cite commit IDs. Likely checkpatch.pl would complain here.
+Hi David
 
-"Ever since commit 0f20bba1688b ("mm/gup: explicitly define and check
-internal GUP flags, disallow FOLL_TOUCH") we marked FOLL_TOUCH as a GUP-internal flag."
-
-> 
-> Therefore, remove the "FOLL_TOUCH" test code from gup_test.c;
-> 
-> Otherwise, executing the test command "./gup_test -L -r 100 -z" will report the following warning log:
-> TAP version 13
-> 1..1
-> ENCHMARK: Time: [   39.363371] WARNING: CPU: 1 PID: 117 at mm/gup.c:2512 is_valid_gup_args+0x66/0x8c
-> get:2818 put:46 [   39.364043] Modules linked in:
-> us# , truncated [   39.364311] CPU: 1 UID: 0 PID: 117 Comm: gup_test Not tainted 6.18.0-rc5-00324-gd09eaf415c87 #29 NONE
-> (size: 0)#
-> [   39.364434] Hardware name: riscv-virtio,qemu (DT)
-> [   39.364546] epc : is_valid_gup_args+0x66/0x8c
-> [   39.364596]  ra : pin_user_pages+0x38/0x78
-> [   39.364630] epc : ffffffff802079e6 ra : ffffffff8020c214 sp : ff2000000041bd20
-> [   39.364650]  gp : ffffffff81a26068 tp : ff60000080b3b000 t0 : ff2000000041bdf8
-> [   39.364678]  t1 : 000000000000001e t2 : 0000000000000000 s0 : ff2000000041bd30
-> [   39.364697]  s1 : ff60000081300000 a0 : ff60000081300000 a1 : 0000000000000000
-> [   39.364714]  a2 : ff2000000041bd3c a3 : 0000000000080000 a4 : 0000000000000001
-> [   39.364731]  a5 : 0000000000010101 a6 : 0000000000000001 a7 : 0000000000000000
-> [   39.364747]  s2 : 00007fff7eeed000 s3 : 0000000000000001 s4 : 00007fff7eeee000
-> [   39.364761]  s5 : 00007fff7eeeb838 s6 : 0000000000000000 s7 : 00007fff7eeed000
-> [   39.364825]  s8 : ff60000081300000 s9 : 0000000000000000 s10: 0000000000000002
-> [   39.364842]  s11: 000000092869bfdc t3 : 2152ffffffffffc0 t4 : 00000000001fffff
-> [   39.364855]  t5 : ffffffffffffffff t6 : 0000000000000000
-> [   39.364867] status: 0000000200000120 badaddr: ffffffff802079e6 cause: 0000000000000003
-> [   39.364949] [<ffffffff802079e6>] is_valid_gup_args+0x66/0x8c
-> [   39.365036] [<ffffffff8020c214>] pin_user_pages+0x38/0x78
-> [   39.365049] [<ffffffff80278f78>] gup_test_ioctl+0x2b4/0xc08
-> [   39.365060] [<ffffffff80297da6>] __riscv_sys_ioctl+0xba/0xc4
-> [   39.365072] [<ffffffff80b93f96>] do_trap_ecall_u+0x296/0x370
-> [   39.365093] [<ffffffff80b9ef06>] handle_exception+0x146/0x152
-> [   39.365220] ---[ end trace 0000000000000000 ]---
-> ok 1 ioctl status 0
-
-Right, gup_tests simply forward any flags we pass in. I wonder if we would
-want to filter them for ones we expect to test?
+Thank you for your prompt review.
+That's great. I will update it in the next version.
 
 
-I guess we should add
+Thanks&Cheers
 
-Fixes: 0f20bba1688b ("mm/gup: explicitly define and check internal GUP flags, disallow FOLL_TOUCH")
 
-Although it's a bit complicated with gup_tests.
+David Hildenbrand (Red Hat) <david@kernel.org> =E4=BA=8E2025=E5=B9=B411=E6=
+=9C=8814=E6=97=A5=E5=91=A8=E4=BA=94 16:57=E5=86=99=E9=81=93=EF=BC=9A
 
-> 
-> Signed-off-by: peng8420.li <peng8420.li@gmail.com>
-> ---
->   tools/testing/selftests/mm/gup_test.c | 22 ++++------------------
->   1 file changed, 4 insertions(+), 18 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-> index 8900b840c17a..75f7134d529d 100644
-> --- a/tools/testing/selftests/mm/gup_test.c
-> +++ b/tools/testing/selftests/mm/gup_test.c
-> @@ -19,7 +19,6 @@
->   
->   /* Just the flags we need, copied from mm.h: */
->   #define FOLL_WRITE	0x01	/* check pte is writable */
-> -#define FOLL_TOUCH	0x02	/* mark page accessed */
->   
->   #define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
->   
-> @@ -93,7 +92,7 @@ int main(int argc, char **argv)
->   {
->   	struct gup_test gup = { 0 };
->   	int filed, i, opt, nr_pages = 1, thp = -1, write = 1, nthreads = 1, ret;
-> -	int flags = MAP_PRIVATE, touch = 0;
-> +	int flags = MAP_PRIVATE;
->   	char *file = "/dev/zero";
->   	pthread_t *tid;
->   	char *p;
-> @@ -170,10 +169,6 @@ int main(int argc, char **argv)
->   		case 'H':
->   			flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
->   			break;
-> -		case 'z':
-> -			/* fault pages in gup, do not fault in userland */
-> -			touch = 1;
-> -			break;
+> On 14.11.25 09:50, peng8420.li@gmail.com wrote:
+> > From: "peng8420.li" <peng8420.li@gmail.com>
+> >
+> > The 'FOLL_RITE' of the copied source is located in mm_types. h of mm,
+> not mm. h, so fix it.
+> >
+> > Signed-off-by: peng8420.li <peng8420.li@gmail.com>
+> > ---
+> >   tools/testing/selftests/mm/gup_test.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/tools/testing/selftests/mm/gup_test.c
+> b/tools/testing/selftests/mm/gup_test.c
+> > index 75f7134d529d..9cdcd10d3f6a 100644
+> > --- a/tools/testing/selftests/mm/gup_test.c
+> > +++ b/tools/testing/selftests/mm/gup_test.c
+> > @@ -17,7 +17,7 @@
+> >
+> >   #define MB (1UL << 20)
+> >
+> > -/* Just the flags we need, copied from mm.h: */
+> > +/* Just the flags we need, copied from mm_types.h: */
+>
+> Can we just avoid the exact name and say "Just the flags we need, copied
+> from the kernel internals."
+>
+> ?
+>
+> --
+> Cheers
+>
+> David
+>
 
-AFAIKT, run_vmtests.sh does not set that flag, so dropping it should be fine.
+--00000000000038a5ac06438a5604
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Cheers
+<div dir=3D"ltr"><div dir=3D"ltr"><div><div style=3D""><span style=3D"paddi=
+ng:5px 0px" class=3D"gmail-">Hi=C2=A0</span>David</div><div style=3D""><br>=
+</div><div style=3D""><span style=3D"padding:5px 0px" class=3D"gmail-">Than=
+k you for your prompt review.</span></div><div style=3D""><span style=3D"pa=
+dding:5px 0px" class=3D"gmail-">That&#39;s great. I will update it in the n=
+ext version.</span></div><div style=3D""><span style=3D"padding:5px 0px" cl=
+ass=3D"gmail-"><br></span></div><div style=3D""><span style=3D"padding:5px =
+0px" class=3D"gmail-"><br></span></div><div style=3D""><span style=3D"paddi=
+ng:5px 0px" class=3D"gmail-">Thanks&amp;Cheers</span></div><div style=3D"">=
+<span style=3D"padding:5px 0px">
+</span></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D=
+"gmail_attr"><br></div><div dir=3D"ltr" class=3D"gmail_attr">David Hildenbr=
+and (Red Hat) &lt;<a href=3D"mailto:david@kernel.org" target=3D"_blank">dav=
+id@kernel.org</a>&gt; =E4=BA=8E2025=E5=B9=B411=E6=9C=8814=E6=97=A5=E5=91=A8=
+=E4=BA=94 16:57=E5=86=99=E9=81=93=EF=BC=9A<br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">On 14.11.25 09:50, <a href=3D"mailto:peng8420.li=
+@gmail.com" target=3D"_blank">peng8420.li@gmail.com</a> wrote:<br>
+&gt; From: &quot;<a href=3D"http://peng8420.li" rel=3D"noreferrer" target=
+=3D"_blank">peng8420.li</a>&quot; &lt;<a href=3D"mailto:peng8420.li@gmail.c=
+om" target=3D"_blank">peng8420.li@gmail.com</a>&gt;<br>
+&gt; <br>
+&gt; The &#39;FOLL_RITE&#39; of the copied source is located in mm_types. h=
+ of mm, not mm. h, so fix it.<br>
+&gt; <br>
+&gt; Signed-off-by: <a href=3D"http://peng8420.li" rel=3D"noreferrer" targe=
+t=3D"_blank">peng8420.li</a> &lt;<a href=3D"mailto:peng8420.li@gmail.com" t=
+arget=3D"_blank">peng8420.li@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0tools/testing/selftests/mm/gup_test.c | 2 +-<br>
+&gt;=C2=A0 =C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+&gt; <br>
+&gt; diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/sel=
+ftests/mm/gup_test.c<br>
+&gt; index 75f7134d529d..9cdcd10d3f6a 100644<br>
+&gt; --- a/tools/testing/selftests/mm/gup_test.c<br>
+&gt; +++ b/tools/testing/selftests/mm/gup_test.c<br>
+&gt; @@ -17,7 +17,7 @@<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0#define MB (1UL &lt;&lt; 20)<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; -/* Just the flags we need, copied from mm.h: */<br>
+&gt; +/* Just the flags we need, copied from mm_types.h: */<br>
+<br>
+Can we just avoid the exact name and say &quot;Just the flags we need, copi=
+ed <br>
+from the kernel internals.&quot;<br>
+<br>
+?<br>
+<br>
+-- <br>
+Cheers<br>
+<br>
+David<br>
+</blockquote></div></div>
+</div>
 
-David
+--00000000000038a5ac06438a5604--
 
