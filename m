@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C2C2CEACCC
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 21:37:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 803A2CEACD2
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 21:39:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BCC98E0009; Fri, 14 Nov 2025 16:37:25 -0500 (EST)
+	id C796A8E000C; Fri, 14 Nov 2025 16:39:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56CEA8E0005; Fri, 14 Nov 2025 16:37:25 -0500 (EST)
+	id C51058E0005; Fri, 14 Nov 2025 16:39:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45C168E0009; Fri, 14 Nov 2025 16:37:25 -0500 (EST)
+	id B8DA18E000C; Fri, 14 Nov 2025 16:39:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 305E58E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:37:25 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C389013A878
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:37:24 +0000 (UTC)
-X-FDA: 84110524008.10.B033450
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A90928E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:39:40 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A831312E57F
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:39:39 +0000 (UTC)
+X-FDA: 84110529678.22.E429825
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E357DA0006
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:37:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YWpmgr6F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763156243; a=rsa-sha256;
-	cv=none;
-	b=6ifjaDKEEcsVaxfEte/SmmCjV7FyEz81Q7VME5rvONF2ZpvjXPvH4yxH/UGZ99AR8O/bfz
-	CGXrPgIYTGtk9ZAdjD7yddfC8LDBUwx0djL3eqBgwx4ocVOKvFEyQg8mgePz2xkQydb/eP
-	5jKHjfZpT26dg99dORd6kwImTpJjUsg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YWpmgr6F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id DBA0F40015
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:39:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iTkj1d7L;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763156243;
+	s=arc-20220608; t=1763156378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sSvOH+KEbo6eWuuWM3tJc+ORZh6TtJUmTBZnjyCLf4s=;
-	b=d1jX8+u7YNg/VQfR8E1wgtPoB0JwiBHLS0qXby04NYhQk4aIxUojv+a5aPZnycOBOhmQjb
-	G01FTr+uhQ2RoiWXPWxFyR3fs3QX+1cg5rJsIPQRipL2XwFY4wbUol9cNFvrKYl1oHdv9p
-	QFYr5Oq1lTZQZPPR1aZyv8Z50xrKZhA=
+	bh=UUdtZTocKVmEDOOa/rvnXi6/2ebT6zwe4Vtw0yfLdss=;
+	b=WYX4D6pxq+bJ0y4OWX+1WkGKVpaNKzQ+e+mlYLweqXhiG24qSzpqf2iuLh9M7xJTg5Ocjy
+	OQLprn2wWz3NOo19t3jHwqsFAPiR6waxgYr+A3EB/npOaX8mK1CYqT13aUoSbU8tnMOIHg
+	BlR3HSyxVrFaSPP1kmcL4qaGiDqK97I=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iTkj1d7L;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763156378; a=rsa-sha256;
+	cv=none;
+	b=6D1wEnE3wHIV+sZesRbcvSw2ksOjTkglHAmlfG+TxtKcw51Z+XVsqQkS1mYHbjVmF/jN9u
+	+l+Hiz4Ra+YCEDRzBrlHvmsFbP1Hf6lv7L2rjeUvDqz8wFFIuTKjZAT6e80/9Tj7vS2CCK
+	/MTLhSQ3D4qZebbwB7CUeGBU6Pu/OsQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C5B9343CEC;
-	Fri, 14 Nov 2025 21:37:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A533C4CEF1;
-	Fri, 14 Nov 2025 21:37:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F1B354400B;
+	Fri, 14 Nov 2025 21:39:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF97C4CEF5;
+	Fri, 14 Nov 2025 21:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763156241;
-	bh=p2PaaE4qNapim90sAx+ok6tRDh5qKA1VIjCfbABRA5o=;
+	s=k20201202; t=1763156376;
+	bh=+CpQ+UMnmBXgdQjJo6/hU2rUsL4j7qOY0MVx7GNiZU0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YWpmgr6F8/RqO+TG+ExgFsKIqwU2jK/1MuM4h0lj44jVzcDpbGaBYf9Gt8KuYPhyg
-	 J+QUj1iUuhF5aCUuU+etXWwDT/p64coRtYH+MvjSygH7bt+np/ydqYkOzkjwTjfcBB
-	 gAacq0OrjE+9uCawPsTUOHa9nHNp4uzVwvLMOgwf0oifM5ptMCCAidA2fz5A8fD4MM
-	 oJS7GBpiUyY6/Qugx8VaB14yQ+BSJ0caWCvBiNz6NK1rprEN9VdkvmhumWbVX7iyyC
-	 OFMUBl1gVIAnAIEzZkAyLNZKIqxoOAioYYZKoVlEiXW9Bz9jp8TeP0ZH3OaZ2kRwlg
-	 C/4vEz09ymByA==
-Message-ID: <0e0fb943-1d42-4b4b-a4e4-32e95a0dbe6a@kernel.org>
-Date: Fri, 14 Nov 2025 22:37:16 +0100
+	b=iTkj1d7LUUOTcKpGB1JvfX/zdGa2H/zujUHfxtRKx1uSMr9Q9IkIrF+U68PTv4sAA
+	 93vtvLyvRNnp1ub/gRaZ83s/mY2S1VU/b1lRD9UKLqPwmtBrcbbnBGomJ8KL6sji0l
+	 Dg1Gct9hh5r5zPbB3JVZT3B7y4YAMB76IUQMgn1kAUmkStk3XZISpnfROqiDsrLZjf
+	 xDvisWSacEwbQqDaxLeMCoXLcWToJSBK4XlXV8udnsSWVUAGwg9rSajOuc6ov7UWZS
+	 JhhpfGW3VhjT26cHNi7tBDE22VIFtM7EbiavJqL8RF3YjlO3n/2ew2eoQroU432kbJ
+	 RrmtEZ3hmVP0Q==
+Message-ID: <de65f1c5-8547-40fa-91e8-6acb06faa163@kernel.org>
+Date: Fri, 14 Nov 2025 22:39:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/2] Remove the "FOLL_TOUCH" test code from gup_test.c.
@@ -80,14 +80,14 @@ Content-Language: en-US
 In-Reply-To: <6869aee5-0093-489d-bac7-fa718bdcb362@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E357DA0006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: yakkokftu3os8quxpsp8fb95y84r3115
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DBA0F40015
+X-Stat-Signature: 5hiot961cfg8444ii4btmbzif3rcrxpa
 X-Rspam-User: 
-X-HE-Tag: 1763156242-561536
-X-HE-Meta: U2FsdGVkX1//DaO+J9nnJkWfzJDt1dmRLb3rynuoy+jytdPaHeGvEROYjjVu89/maBKWOBvU552eBxRkl2OpdS07H7eFrCCxzz0DZXDSdCN8jfonjh00U8FqD3UwDOJbA33uM0+hxi1Bza12g2QJEOFU/33zuwDyIEjXNwyt84cNTpPUQuR1xE+jifPV80a9APZW2baxna/ZPP1N/De41jdl+Gh74g11JjqGnjRm8/PF3HwzYWGLtUzlL0t1gyWDZN5M0qTd+MAaySO04Bw+XQilRw5tTem5V3n1KEIPTWcpp2BT7vIJFut+gUYGFGtP/DXpMyj2g7WHbnRyE8kETI6Rl4Ow9kczdOdzdMqZEGqMMnriNhKLtU+rMRk3uH5GSUQKtd72AxqlpIzZ/NBfFDjdeFr3apWFpJzsqyCVhI0pQ0+wou28TejUNobBmpKYZ96yhQFXrV8w2l0tjIWqJNOmEHUTU+gEjP3JBnDnrBwH3zSaVdpSbUYXGVDTIjnGSorudi1na87AFg8MMX8Qo4tClXj8tPy2/g8jWWALDzCJISFmDwu2Y85T94OIeFjcjcN0HpgBSd+n6E7uVgAdt+I+dxHjw+XF4aYe/Jp9AmpQrfhp9Yok7vhWqzBBpTJYOoNJDsLY79wpaiTzMRMXlSfJaYR6mOdId4I0D3/osYSTAVZOzTbjg2r0PmATO1Fhul/HSO2LBqwxWEWcNmOFRAlfZhUQjiGkz51ttWpU756kaegIgm1q8vbs/uOQBiePjokOOnqEfwoy5fA+9iMpOw6l3iKVK96lqxi0QAwFlT9PigztkblkKnoSoaHCE8Tj2JMZmlXhjTE2B/W0brGJENaTL1nLaA8Hp/2AAfzueHLVjRHlv+fwPp/h0m7YE5yIzPx3oT4YGOeQUgmuUadIi7+4pZI7rWNsms6GPxcnyB3Ky1wlMNPs+YFavSyewNKaI8SiYBXbvykB5IGRQ7J
- z6gd0VyQ
- 0yoEypwPLOiOYlJPD5nOhmYgkf77h+chodC98u6dvDLbGYkit5SofHOiOnmfS0trXQR7ho9k98hrqjecZumEotXuwzv7aMQEPdOoh8WujYlgOM9F936xp503+8dXk+6iC94As/gTxemyspq/4NX7fC67O8vudQ3JFTvuiiORxhKjBS4bm+NyHMuLfuuQOsXTVvbrqXEuamPyGZxnp47tnm5AqFDk9KZjokonDlLtPTb4s1TAEJZ2ChxX36wXBj8If5NQFvvf9DHWoFPCRwQiFGUjXL/jltFUPQOIMltaFS225H+ifGgVn77FP2Hnmbvb+/JUDJ/pN/9Q8I8cvoXMHoDLxLI31P4iSgNm5+g7dUhw3AJ6amc3zqnzL6j+Cba7I9+bUrWvxKuVJknadGv3kGzEPcnKd1nI9EX6GVrHjqLy0EdowhFjXca3O22Dwf6A7SQj+
+X-HE-Tag: 1763156377-595366
+X-HE-Meta: U2FsdGVkX18U9ZCc67HcOP8KQzRkYN3xq04v45MQNxOj94d1BmtLGAYGB0VecHFH+yIrYUqLF2+jOFzsSb2tNCkTphQs7zMBrP3X+MPLdI/btFTA+xxn4GhW2K/bi0xbmcZVtxybJjoYD9tkQEhAs5nXce1Qumn+J7m6mweNDMdwDZDhRPEUqbyVTn/D8cexm89Pjg/xD//XuLq9vxHNFSzMwCHGd47Kwsj2kw7UY5JU16W7zqst3Y4jJ3m+8knbO8dE9I4+BtnDOLt5MnZte546SCBLyIZcF0X350JWDFqGOgLzBms5xM5AvlBPoiPHAg2uEoaG/Zx54chN6A8M92wZhpgf9uOHZxkDFGBgZoRvq9CpMDL+08JtinEs5Qkuj1dSjk9X8+dT4Oo9xA1CHTHODSu77olyUniDD9J9WkUHB+uRx7gPdroldjvQOZUcHbLrOaybWgteTnI73cjYkd62YZYB1ER1X3V0DBntxOdKLtlUMyG60+cbjomx1UJNC8CUNhfXKIc1DlfORRgUvNG7Cc235Lr+4XD8CoOri0WMv2oqIM/NLcHxWy2q4lN+cOn2EwGAwkygGd9AAyujxbUlVkDr7bk/Xjsyhss2xktJ2bhVp26YER+0pkB86Q/WimU2OxCCeGx7CI7eOWzRX4WOhtetb+UWeMwfmQyXao6vqJ8Lkoamoa0cvJ4xa5UAekDMMZ57TCFfK8VmpQ8KtTG1HevghJSSHjPp/30uwikPuscR3ZeLxwITAK6LFi972F0VXkl25m+oWkEY/eL0uQHkUYOcPAWrngE7kq81YSPF+XGgJpb+ca1Ft/RNeyLD7v3epQLypUAZ5qiZMRB3HC/9bfS0+dCstJgpxUssS0Skucz19C83JSrGxVgj7zUdQ7+ObnzpDSnRCUn1dP+gEyUzMXRNh+zU07s/ONraR4emGJ6k+y4uFggm6OYUUCLVN3/i3+n/50hiGauPZHf
+ kcGplYcw
+ BgpWkODZ48fFIuBgItwFCdQU3wNEqp4BYFV27g+aJOaVsBIcz3CFDZ29RNuzTsGw/AoPonAulGw6zuSIV1Y4egdy1VF5kPDu/ITyhF/iVYEnzGdrj0cMFoLMJTOBW40Ntl9ul22uojMDBjahidAF/Xb5SHSOx9azAp5GKj9cXgSc0Nk0wvjYapO4+7P5V1eFUsE8iWJZPVLLhIaLSFQyFE935B8x4iRNK64flt1R0DUtW8JthnVZstgtUP3SA1E5vpBb3aVNrR4QI/vvDWDvihhYo477SVqxkAo3V0X2Y+v5RSUcUTpa2OtXF9sRwac8VaPsORJc8Vto7AldxNhe49TUPe1h3bcuNOE6780dpYrX0Ll1+ed9gBlB74KN1Be6r23RA8+XWiWrxWxtiKj4z/onTpVwCQMEn+c+y3nIXYxUxd5mDTHz+fpfZcQTHqBJSy8mI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,11 +201,9 @@ On 14.11.25 21:24, John Hubbard wrote:
 > 
 > Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 
-Thanks John!
+Oh, one thing, subject should be something like
 
-With that
-
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+"selftests/mm: gup_test: stop testing FOLL_TOUCH"
 
 -- 
 Cheers
