@@ -4,89 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76D1CE8D77
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 18:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F2CCE8D79
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 18:45:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D93088E0007; Fri, 14 Nov 2025 13:30:04 -0500 (EST)
+	id A10CA8E000A; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D435E8E0006; Fri, 14 Nov 2025 13:30:04 -0500 (EST)
+	id 9993F8E0006; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32B08E0007; Fri, 14 Nov 2025 13:30:04 -0500 (EST)
+	id 83A448E000A; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B00618E0006
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:30:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66CAC12DB74
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:30:04 +0000 (UTC)
-X-FDA: 84110051928.17.0542B2D
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CD128E0006
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 13:45:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1B21A1A04B9
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:45:36 +0000 (UTC)
+X-FDA: 84110091072.14.29C6CD0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D666480016
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:30:02 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XUbzaX8m;
-	spf=pass (imf02.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0115F10000C
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:45:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NmXzIBIx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763145934; a=rsa-sha256;
+	cv=none;
+	b=TxL5ZyR+1iyXNGBRqx2z45QlfalQLsWPUsj/EZ6GEiPxx4r70QfJi+zSuu1BaeIfZXnzhE
+	aXLSHz/QyC0dN5zd6IbxfXr89W+lIvVd6TPsvNxYuQIiB6bfyAgGOuCU539o9w7YqDsRN6
+	hJNzK7VB2TdcNPPEW6+tbUl9ZiR/Qqk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NmXzIBIx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of luto@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=luto@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763145002;
+	s=arc-20220608; t=1763145934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=60HYXH6bByFI92d3pGZh5EfxTOesIAaHrVoMastvzas=;
-	b=MJO7LKaSjIQyqi6fl39YkxPKJ8nJFyAbcYQwFQieCQ8WaaEn++8Ba5AQ62335vjmDch+LF
-	vdRfXsIDF0iFwU/l7hWMumTbpuObtSahMh6H1tvtjw6myzatscW4z0bm2c/VZGVXnU+aZt
-	oIFSWpLTlivu/oZ3IgAnv50ov2Idkg4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XUbzaX8m;
-	spf=pass (imf02.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763145002; a=rsa-sha256;
-	cv=none;
-	b=vtlw2UTn4pWfTSDQ3xPzE1mbKl0ZieUOJc4GkFPo2LaIx5VyUBWODgBeTTzT9oTO+Mby8A
-	GIhCqRRV3xWMzyG1kgm3bE/w7aX8K6QO2z7Mj/QA2tnfLJR1gyqmmkBVCphMHuZzrFkJLs
-	/xZ4yCx09bA24c//yEsyFp++4nmW2pE=
+	bh=7BUWnZ/ZCbjVyfn3i4e133APwx2iUXvKYEsLuJfTQMM=;
+	b=Bt6xiXePRDANeNpzPJH090qS1iWCmxCLPY5cg0I+Qn/xXvLcAVbVR4fXuTFWZN8ceGV6AH
+	wKG42uXCOrJoc4jtWKU+v9DTH+Dgf7VAGW6uK/hOK0uhAcmrWJQKlowEIDFJxWko8Y3re8
+	0wQo6E+m6Y/qiBF5Eogw/2u9YAido8Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BEAB6018A;
-	Fri, 14 Nov 2025 18:30:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20FCC2BCB0;
-	Fri, 14 Nov 2025 18:29:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 421D06018B;
+	Fri, 14 Nov 2025 18:45:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50067C2BC9E;
+	Fri, 14 Nov 2025 18:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763145001;
-	bh=TIbxS6C7c5fCvewEBNrOfoVYvU8etxkoLMi7WDCMwqM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XUbzaX8m+OtqpsLPNs4j9vqpnhAj756anYr+ws9QRRC/gShZkuLDg58Le5LCNNOa1
-	 n4jCOkbVMhKaWWj9qU7dXy8wpVeGFYJXtbXNwZhfk6xIjcSVkxK2uZLHKkagIMWu0R
-	 OMypIBkw2zA6BlG3lCYRBGXmbSiqfBXaddUbPs0bWSJeo0n3xu8WXwrRYAzVeAKxc8
-	 WQVM1aaDL5blFOtwVV8vVjP/MpfoZD7Yb3sa1NWV/vE6DjJG3Ut2+QvuIlLSJ1dzWT
-	 uvqKSARrhe+FRNDJeD8NbrWcQyUVxLtQuXe+qEniZEsZRtwYU4X34TtqyJxUYbXwH9
-	 w49/0qdtqNGeA==
-Date: Fri, 14 Nov 2025 11:29:56 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-unstable 36/283] mm/hugetlb.c:4753:18: warning:
- implicit conversion from 'unsigned long long' to 'unsigned long' changes
- value from 17179869184 to 0
-Message-ID: <20251114182956.GD2566209@ax162>
-References: <202511141140.LrrRrtIv-lkp@intel.com>
+	s=k20201202; t=1763145933;
+	bh=byi20PYOU8Ug3I3+51VizebbpMY1mRuELhMsy/6viIU=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=NmXzIBIxYkKv+Zm2Hplq/oXEgO+KIBPrXvPyWF4mH1W6AyfgGld6URlwKQ19wfy4l
+	 v9VkiOzf8pqF7Pbjbt6rEO52Sa3NpKOdpHLHC6l85yryZ4LtLnLPphXIayZfn1yljQ
+	 WDdfzH/KN6LRNYmIjCmPUOYdgQrYIZl97lYR/vx/aAi7mXMYnYkneQ7ZJQh0DUt7X2
+	 AuQK4X3/aAYYx8crM1EGl51YGIRx8LiXjiXP2mg+2+3fWM8aZaRlSpXJdJWF6W/7rK
+	 TwOMGnHiWXvOVEhN4wVCNuFsNuNyzdaPnQoSzMgtzdgDOZFhBakMpWSsz5FVUSl+RF
+	 uNRpHQt+0Yzhg==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 50DBCF4006F;
+	Fri, 14 Nov 2025 13:45:30 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Fri, 14 Nov 2025 13:45:30 -0500
+X-ME-Sender: <xms:yngXadYa0d5cGbI-GF27_Y3pl_K-ec-CVH--mkPcMfKEgwOILovMhg>
+    <xme:yngXafOE--nfoTeI9aWy7-fbugqx7rmlOuCEE3dYBVwWTBO-badPGuh_s45x1wnix
+    Oi3npe4N7AfqfBC4gOKUs6WYsXR3j9tWRiWpCjYgSurMl_MUI916Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvuddtheejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehnugih
+    ucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqnecuggftrf
+    grthhtvghrnhepkefhieejfedvueejheehiefgvdfhjeefjeelvdfghfelgeejudevleej
+    uddvvefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghnugihodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduudeiudekheei
+    fedvqddvieefudeiiedtkedqlhhuthhopeepkhgvrhhnvghlrdhorhhgsehlihhnuhigrd
+    hluhhtohdruhhspdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhhtpdhr
+    tghpthhtohepjhgsrghrohhnsegrkhgrmhgrihdrtghomhdprhgtphhtthhopegsphesrg
+    hlihgvnhekrdguvgdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthht
+    ohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrghthhhivg
+    hurdguvghsnhhohigvrhhssegvfhhfihgtihhoshdrtghomhdprhgtphhtthhopegsohhq
+    uhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehurhgviihkihesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehrohhsthgvughtsehgohhoughmihhsrdhorhhgpdhr
+    tghpthhtohepjhgrnhhnhhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:yngXaXq2XXGoOWrpdOjpYOBRQDp11eBfIxc6YeBd6D1nb4uB7cT_jQ>
+    <xmx:yngXaaDWrYDEpEG1p36aT7lISmWaPBkuGN6A-UDoJkiqQR5_EvMgdA>
+    <xmx:yngXaednjzX0ow_radpTUVZupSfYw5vqqcxnghR2QSQFD71g1qZlAw>
+    <xmx:yngXaffQO9hD5bLFULufQL4IF3d4av7lzmsksPXFe5ORmlbBQdgyiQ>
+    <xmx:yngXaUNi8XrrLOoC45OykpNR3g_sQA-aTfSX-Ry-GROO-iHzIaWFxhCy>
+Feedback-ID: ieff94742:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 042D5700054; Fri, 14 Nov 2025 13:45:30 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202511141140.LrrRrtIv-lkp@intel.com>
-X-Rspamd-Queue-Id: D666480016
-X-Stat-Signature: 1m95x38kzswwbs1s453jhf9n33ty3z6s
-X-Rspamd-Server: rspam02
+X-ThreadId: ATddxb8eqn9V
+Date: Fri, 14 Nov 2025 10:45:08 -0800
+From: "Andy Lutomirski" <luto@kernel.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: "Valentin Schneider" <vschneid@redhat.com>,
+ "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, rcu@vger.kernel.org,
+ "the arch/x86 maintainers" <x86@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Arnd Bergmann" <arnd@arndb.de>,
+ "Frederic Weisbecker" <frederic@kernel.org>,
+ "Jason Baron" <jbaron@akamai.com>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Ard Biesheuvel" <ardb@kernel.org>,
+ "Sami Tolvanen" <samitolvanen@google.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Neeraj Upadhyay" <neeraj.upadhyay@kernel.org>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Josh Triplett" <josh@joshtriplett.org>,
+ "Boqun Feng" <boqun.feng@gmail.com>,
+ "Uladzislau Rezki" <urezki@gmail.com>,
+ "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+ "Mel Gorman" <mgorman@suse.de>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Han Shen" <shenhan@google.com>, "Rik van Riel" <riel@surriel.com>,
+ "Jann Horn" <jannh@google.com>,
+ "Dan Carpenter" <dan.carpenter@linaro.org>,
+ "Oleg Nesterov" <oleg@redhat.com>, "Juri Lelli" <juri.lelli@redhat.com>,
+ "Clark Williams" <williams@redhat.com>,
+ "Yair Podemsky" <ypodemsk@redhat.com>,
+ "Marcelo Tosatti" <mtosatti@redhat.com>,
+ "Daniel Wagner" <dwagner@suse.de>, "Petr Tesarik" <ptesarik@suse.com>,
+ "Shrikanth Hegde" <sshegde@linux.ibm.com>
+Message-Id: <1a911310-4ca5-45a4-b9bf-5f37c6ab238e@app.fastmail.com>
+In-Reply-To: <89398bdf-4dad-4976-8eb9-1e86032c8794@paulmck-laptop>
+References: <20251114150133.1056710-1-vschneid@redhat.com>
+ <c4768cf3-f131-44e6-9b25-ebeb633f32ee@app.fastmail.com>
+ <beb46a02-b902-438b-8b6d-b5f0d7ad0ae6@app.fastmail.com>
+ <89398bdf-4dad-4976-8eb9-1e86032c8794@paulmck-laptop>
+Subject: Re: [PATCH v7 00/31] context_tracking,x86: Defer some IPIs until a
+ user->kernel transition
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0115F10000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 53keqsucha9cyz5b8naqyefbyenbmoq1
 X-Rspam-User: 
-X-HE-Tag: 1763145002-134156
-X-HE-Meta: U2FsdGVkX1/npcJKvECiECVIz3EiyzfIAtS7730JIESK/81hXOn+7ERs6TkM+7IOUgrUTf3/ufKyS/WeuC9X8lE3emC3cSXcavG0bn3T/FvKqMFVAMGc4wVwQXnD49AUR6Xt3p4zqp5h6dbWnXKSSKbF/ipzLoF8V9X40HAsHB6FVz6V9VbHKuKlUybTUZnLJqO0iI6WDisY3kx6Ed+YXhNMsq0NS6bEy1NrqsxghSv843FkkJpDeoV0TV82ikWgFxyE4qVfZ9IAP7NLz0li8hwlFiNdKY4yOsr6c2e/SiLVy3WrkZBI0NUexO2d2v1xS6r4WZcTUsuxLws0D0Pw8yp5XArrdCmI72K+qV4n8McdMXE+jVlb3ugrjdEG0wI2K3CuzfCjkPIkWMaVIUrpdovlVUkOgGTRm7RhIiB+9CKqWnUlKqXHPOw+1X7TVGvSVYaR1pRM4vzXaclCZA+tXtvs54asJx5cUrkvq4QfqYF8aKbJxjnuKOBFS4lJGYOsoLowAIvs6t1SzSm9JBp3piFU5jCLnMwCO9a2VF8uYxR3W02Oa0A0meEBepaLq4XNKvgJ6Bf9pAeUI3JiHIwQW4rwQjyxJl5qS/JlN2/LlRqbIGPKBMtnrnxT62r/4OooIhFd+NBuHhfNT5LkyWPzzc01cdicfoej9/fEMhRIuf4+5ctl3dFzcMdJYWqBmhX33yhxWdoCDJ1ulWRf5NHrS9XNIp8vQb8VMWoDCgXC/gpFt1yhZjoZPL9pOG1edcUYfbHFHyaY25qM0lnDE9B9QmyoYLGQzGRUxKb+jGdVzO5BvAR+KhMrabXE5EM/i0ByZtVsykzv0BoSWYAIzrHRmTHErCuQ/4me3UqtRkvazupbEz4AnsbIsIGrSUdyZ+HS5KEuRsciJnuxaWLyar8cXyT/0tmHWSvVGCliovjZVbt/N9KSgpfyuP2ba8BHN2KFZX4B6x0Dh6P73hViHPQ
- 9kPwkK2n
- rYSimgk2xfI5n50nEw5PuBcsBj+hA/FSXf/8BwYQPY3CHYjW+kY7bUXTMKTp2HdR+D2lplReq6rDqj4c792O4Eymgg5W2JpqD3wq+tT6K+itmdLyU49JX6WbO9yvGKHvr2JdiTxENXpqscSHIhO1ZeMAY/y7UlAe6AG7SeO/w9mWOu5Eyjv0bqcS9Dq7pFNWyrWkLOPMThRk8LRnqb/a5Igl1rny2kFL45utD+Yva64li5ALgTwJK44lRcViToxbri6dvgsQBxOPI/q7gNuLbIrRkwNHGszQZ6Vnfq08h1v3AwUpxVt+6Yg3cAmEv3oeFRvt28jNiQHMl3hfIRolRFdVLwBA7spmtzSqJMZGJ5Tv+FR10ccAbuSTovA==
+X-HE-Tag: 1763145933-266901
+X-HE-Meta: U2FsdGVkX1+1+x5r/XXXNRGdR8q3VcGooaElTiZvpI/0wKQAy3DJ8Xtvp1Zq5vMKEzqrRCgMx/R/OgXQnvYBZCUxvUqQSi6I2V3GzX3iIObFLXX7CHyrmx843zT3NxlvPLrDtlpM6OfXrBN/D5moMBFGkwG48z+pWYaEeedWYnDdsrazT2CPuqV1MZzcnqCjWXvzlg+7JPIHTIK1aW8EE0hEWKYD5l4ra0VkmeY5SpDzNVT5VXlA/U0vxZHaGp+pt2oxjvh3Q7jyt7OSAjzD1aGb+uT21lesg4CSYZa+6jBPdHVto09L2ceEl3lXq4DKRd8UihjaWNeVm4okQEOpp8tZ2QbqA8omM0pVlHTve6zgvITO6b7WDof3qq5ZAiWflWgIBiBsRMIY91apVlpO4tBtCdy3OvM0LTTmEPqhJl78SAGyCrHbyRS0NnXn+DUnAw0vZglqESbaSQq+61/FX8ZWOqgcaDsqBpBqBFlH6sSSlYfJZR66h8fFjX20KxAej5dKya8idrv7FyH69cFR3KO7oqUsZ9Ht8LdIBv1uxVttdzUzEMVNnrU5yrOjOOHa20u/+ct2UpCivZlDwO/FEpVHTJr3/jPU6wBiPiQq/BKTsLmkRTKhlUhOMpNqtKhHvhLX90hKYQUnO9g6m5esbHfOiCRJ9ldbwp17G/MqXdORzMzHqKAurbwePffA6LSDhv5QAARkrK7wOuJqZYw7ykSolmSpZKCRfctjiM/jDo+0XKFhzjpKC6r6pQn+dVj54pB8EQ102HODer0v4ysa14v4cFrXVJJVSiDB8bbG8rxAsD1e5Ur3busUBpGaw/Kcj5G4Z7g1Zf6PP/g0d1S3vYKN2VbVNGO/+LhI1UNdpllLrCRnZkZxaLMcnwp9eX2Jei1A8G5U/ZkTNsdp25W+oA2cyTRrRrBxFTsarvk8FUthp5KDxKobWtcmMVn0LTvXD2GLw5kHe18NBBE7uSf
+ UFldNbPi
+ wwNoZlii5ci0dlkIXletUQnSiCoqpvmHnzOHALvOQNGOCkb0/EbThnNkzyo1X3o+k9X6rL7HArcIN7b9RIwAhHOUGviHxJ9lR/1MShn+s6QHMs0p7pWPEFHXV7bp5f0fwFPPTuJpB0HwlZwybTz1HivsVZ1Yw94/N7xyOpdhlAn6KmcWIvUHmuNMpsEckxKMLrdeqHeGc/lsy7R9iH3u+lgdWNlzdMTQRyTGTgx5oIqErdJExa9cl0WJLHfjaHiJ6x5kwU5Dql54z4LQjGk+OfYbRPfcaMAvuXYbc1jKgByYGe5NADpizMe85jVmCa2m2wy22
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,78 +168,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 02:46:06PM +0800, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   1c571d1c4c7e042c3c313d1a2058a17848ccebac
-> commit: 2f6ff71280ffddb27ad7174d24f573e2683870cd [36/283] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-> config: powerpc-randconfig-002-20251114 (https://download.01.org/0day-ci/archive/20251114/202511141140.LrrRrtIv-lkp@intel.com/config)
-> compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 0bba1e76581bad04e7d7f09f5115ae5e2989e0d9)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511141140.LrrRrtIv-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511141140.LrrRrtIv-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-...
-> >> mm/util.c:1263:16: warning: implicit conversion from 'unsigned long long' to 'unsigned long' changes value from 17179869184 to 0 [-Wconstant-conversion]
->     1263 |         if (ps->idx < MAX_FOLIO_NR_PAGES) {
->          |                       ^~~~~~~~~~~~~~~~~~
->    include/linux/mm.h:2104:36: note: expanded from macro 'MAX_FOLIO_NR_PAGES'
->     2104 | #define MAX_FOLIO_NR_PAGES      (1UL << MAX_FOLIO_ORDER)
->          |                                         ^~~~~~~~~~~~~~~
->    include/linux/mm.h:2095:36: note: expanded from macro 'MAX_FOLIO_ORDER'
->     2095 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
->          |                                 ~~~~~~~~~ ^~~~~~
->    include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
->       56 | #define SZ_16G                          _AC(0x400000000, ULL)
->          |                                         ^~~~~~~~~~~~~~~~~~~~~
->    include/uapi/linux/const.h:21:18: note: expanded from macro '_AC'
->       21 | #define _AC(X,Y)        __AC(X,Y)
->          |                         ^~~~~~~~~
->    include/uapi/linux/const.h:20:20: note: expanded from macro '__AC'
->       20 | #define __AC(X,Y)       (X##Y)
->          |                          ^~~~
->    <scratch space>:39:1: note: expanded from here
->       39 | 0x400000000ULL
->          | ^~~~~~~~~~~~~~
->    1 warning generated.
 
-For the record, this is not a clang specific warning, as it happens when
-building the same configuration with GCC:
 
-  In file included from include/vdso/const.h:5,
-                   from include/vdso/bits.h:5,
-                   from include/linux/bits.h:5,
-                   from include/linux/ratelimit_types.h:5,
-                   from include/linux/printk.h:9,
-                   from include/asm-generic/bug.h:28,
-                   from arch/powerpc/include/asm/bug.h:116,
-                   from include/linux/bug.h:5,
-                   from include/linux/mmdebug.h:5,
-                   from include/linux/mm.h:6,
-                   from mm/util.c:2:
-  mm/util.c: In function 'snapshot_page':
-  include/uapi/linux/const.h:20:25: warning: conversion from 'long long unsigned int' to 'long unsigned int' changes value from '17179869184' to '0' [-Woverflow]
-     20 | #define __AC(X,Y)       (X##Y)
-        |                         ^~~~~~
-  include/uapi/linux/const.h:21:25: note: in expansion of macro '__AC'
-     21 | #define _AC(X,Y)        __AC(X,Y)
-        |                         ^~~~
-  include/linux/sizes.h:56:41: note: in expansion of macro '_AC'
-     56 | #define SZ_16G                          _AC(0x400000000, ULL)
-        |                                         ^~~
-  include/linux/mm.h:2214:43: note: in expansion of macro 'SZ_16G'
-   2214 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
-        |                                           ^~~~~~
-  include/linux/mm.h:2223:41: note: in expansion of macro 'MAX_FOLIO_ORDER'
-   2223 | #define MAX_FOLIO_NR_PAGES      (1UL << MAX_FOLIO_ORDER)
-        |                                         ^~~~~~~~~~~~~~~
-  mm/util.c:1266:23: note: in expansion of macro 'MAX_FOLIO_NR_PAGES'
-   1266 |         if (ps->idx < MAX_FOLIO_NR_PAGES) {
-        |                       ^~~~~~~~~~~~~~~~~~
+On Fri, Nov 14, 2025, at 10:14 AM, Paul E. McKenney wrote:
+> On Fri, Nov 14, 2025 at 09:22:35AM -0800, Andy Lutomirski wrote:
+>> 
 
-Cheers,
-Nathan
+>> > Oh, any another primitive would be possible: one CPU could plausibly 
+>> > execute another CPU's interrupts or soft-irqs or whatever by taking a 
+>> > special lock that would effectively pin the remote CPU in user mode -- 
+>> > you'd set a flag in the target cpu_flags saying "pin in USER mode" and 
+>> > the transition on that CPU to kernel mode would then spin on entry to 
+>> > kernel mode and wait for the lock to be released.  This could plausibly 
+>> > get a lot of the on_each_cpu callers to switch over in one fell swoop: 
+>> > anything that needs to synchronize to the remote CPU but does not need 
+>> > to poke its actual architectural state could be executed locally while 
+>> > the remote CPU is pinned.
+>
+> It would be necessary to arrange for the remote CPU to remain pinned
+> while the local CPU executed on its behalf.  Does the above approach
+> make that happen without re-introducing our current context-tracking
+> overhead and complexity?
+
+Using the pseudo-implementation farther down, I think this would be like:
+
+if (my_state->status == INDETERMINATE) {
+   // we were lazy and we never promised to do work atomically.
+   atomic_set(&my_state->status, KERNEL);
+   this_entry_work = 0;
+   /* we are definitely not pinned in this path */
+} else {
+   // we were not lazy and we promised we would do work atomically
+   atomic exchange the entire state to { .work = 0, .status = KERNEL }
+   this_entry_work = (whatever we just read);
+   if (this_entry_work & PINNED) {
+     u32 this_cpu_pin_count = this_cpu_ptr(pin_count);
+     while (atomic_read(&this_cpu_pin_count)) {
+       cpu_relax();
+     }
+   }
+ }
+
+and we'd have something like:
+
+bool try_pin_remote_cpu(int cpu)
+{
+    u32 *remote_pin_count = ...;
+    struct fancy_cpu_state *remote_state = ...;
+    atomic_inc(remote_pin_count);  // optimistic
+
+    // Hmm, we do not want that read to get reordered with the inc, so we probably
+    // need a full barrier or seq_cst.  How does Linux spell that?  C++ has atomic::load
+    // with seq_cst and maybe the optimizer can do the right thing.  Maybe it's:
+    smp_mb__after_atomic();
+
+    if (atomic_read(&remote_state->status) == USER) {
+      // Okay, it's genuinely pinned.
+      return true;
+
+      // egads, if this is some arch with very weak ordering,
+      // do we need to be concerned that we just took a lock but we
+      // just did a relaxed read and therefore a subsequent access
+      // that thinks it's locked might appear to precede the load and therefore
+      // somehow get surprisingly seen out of order by the target cpu?
+      // maybe we wanted atomic_read_acquire above instead?
+    } else {
+      // We might not have successfully pinned it
+      atomic_dec(remote_pin_count);
+    }
+}
+
+void unpin_remote_cpu(int cpu)
+{
+    atomic_dec(remote_pin_count();
+}
+
+and we'd use it like:
+
+if (try_pin_remote_cpu(cpu)) {
+  // do something useful
+} else {
+  send IPI;
+}
+
+but we'd really accumulate the set of CPUs that need the IPIs and do them all at once.
+
+I ran the theorem prover that lives inside my head on this code using the assumption that the machine is a well-behaved x86 system and it said "yeah, looks like it might be correct".  I trust an actual formalized system or someone like you who is genuinely very good at this stuff much more than I trust my initial impression :)
+
+>
+>> Following up, I think that x86 can do this all with a single atomic (in the common case) per usermode round trip.  Imagine:
+>> 
+>> struct fancy_cpu_state {
+>>   u32 work; // <-- writable by any CPU
+>>   u32 status; // <-- readable anywhere; writable locally
+>> };
+>> 
+>> status includes KERNEL, USER, and maybe INDETERMINATE.  (INDETERMINATE means USER but we're not committing to doing work.)
+>> 
+>> Exit to user mode:
+>> 
+>> atomic_set(&my_state->status, USER);
+>
+> We need ordering in the RCU nohz_full case.  If the grace-period kthread
+> sees the status as USER, all the preceding KERNEL code's effects must
+> be visible to the grace-period kthread.
+
+Sorry, I'm speaking lazy x86 programmer here.  Maybe I mean atomic_set_release.  I want, roughly, the property that anyone who remotely observes USER can rely on the target cpu subsequently going through the atomic exchange path above.  I think even relaxed ought to be good enough for that one most architectures, but there are some potentially nasty complications involving that fact that this mixes operations on a double word and a single word that's part of the double word.
+
+>
+>> (or, in the lazy case, set to INDETERMINATE instead.)
+>> 
+>> Entry from user mode, with IRQs off, before switching to kernel CR3:
+>> 
+>> if (my_state->status == INDETERMINATE) {
+>>   // we were lazy and we never promised to do work atomically.
+>>   atomic_set(&my_state->status, KERNEL);
+>>   this_entry_work = 0;
+>> } else {
+>>   // we were not lazy and we promised we would do work atomically
+>>   atomic exchange the entire state to { .work = 0, .status = KERNEL }
+>>   this_entry_work = (whatever we just read);
+>> }
+>
+> If this atomic exchange is fully ordered (as opposed to, say, _relaxed),
+> then this works in that if the grace-period kthread sees USER, its prior
+> references are guaranteed not to see later kernel-mode references from
+> that CPU.
+
+Yep, that's the intent of my pseudocode.  On x86 this would be a plain 64-bit lock xchg -- I don't think cmpxchg is needed.  (I like to write lock even when it's implicit to avoid needing to trust myself to remember precisely which instructions imply it.)
+
+>
+>> if (PTI) {
+>>   switch to kernel CR3 *and flush if this_entry_work says to flush*
+>> } else {
+>>   flush if this_entry_work says to flush;
+>> }
+>> 
+>> do the rest of the work;
+>> 
+>> 
+>> 
+>> I suppose that a lot of the stuff in ti_flags could merge into here, but it could be done one bit at a time when people feel like doing so.  And I imagine, but I'm very far from confident, that RCU could use this instead of the current context tracking code.
+>
+> RCU currently needs pretty heavy-duty ordering to reliably detect the
+> other CPUs' quiescent states without needing to wake them from idle, or,
+> in the nohz_full case, interrupt their userspace execution.  Not saying
+> it is impossible, but it will need extreme care.
+
+Is the thingy above heavy-duty enough?  Perhaps more relevantly, could RCU do this *instead* of the current CT hooks on architectures that implement it, and/or could RCU arrange for the ct hooks to be cheap no-ops on architectures that support the thingy above.  By "could" I mean "could be done without absolutely massive refactoring and without the resulting code being an unmaintainable disaster?  I'm sure any sufficiently motivated human or LLM could pull off the unmaintainable disaster version.  I bet I could even do it myself!)
+
+>
+>> The idea behind INDETERMINATE is that there are plenty of workloads that frequently switch between user and kernel mode and that would rather accept a few IPIs to avoid the heavyweight atomic operation on user -> kernel transitions.  So the default behavior could be to do KERNEL -> INDETERMINATE instead of KERNEL -> USER, but code that wants to be in user mode for a long time could go all the way to USER.  We could make it sort of automatic by noticing that we're returning from an IRQ without a context switch and go to USER (so we would get at most one unneeded IPI per normal user entry), and we could have some nice API for a program that intends to hang out in user mode for a very long time (cpu isolation users, for example) to tell the kernel to go immediately into USER mode.  (Don't we already have something that could be used for this purpose?)
+>
+> RCU *could* do an smp_call_function_single() when the CPU failed
+> to respond, perhaps in a manner similar to how it already forces a
+> given CPU out of nohz_full state if that CPU has been executing in the
+> kernel for too long.  The real-time guys might not be amused, though.
+> Especially those real-time guys hitting sub-microsecond latencies.
+
+It wouldn't be outrageous to have real-time imply the full USER transition.
+
+>
+>> Hmm, now I wonder if it would make sense for the default behavior of Linux to be like that.  We could call it ONEHZ.  It's like NOHZ_FULL except that user threads that don't do syscalls get one single timer tick instead of many or none.
+>> 
+>> 
+>> Anyway, I think my proposal is pretty good *if* RCU could be made to use it -- the existing context tracking code is fairly expensive, and I don't think we want to invent a new context-tracking-like mechanism if we still need to do the existing thing.
+>
+> If you build with CONFIG_NO_HZ_FULL=n, do you still get the heavyweight
+> operations when transitioning between kernel and user execution?
+
+No.  And I even tested approximately this a couple weeks ago for unrelated reasons.  The only unnecessary heavy-weight thing we're doing in a syscall loop with mitigations off is the RDTSC for stack randomization.
+
+But I did that test on a machine that would absolutely benefit from the IPI suppression that the OP is talking about here, and I think it would be really quite nice if a default distro kernel with a more or less default distribution could be easily convinced to run a user thread without interrupting it.  It's a little bit had that NO_HZ_FULL is still an exotic non-default thing, IMO.
+
+--Andy
 
