@@ -4,99 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42C25CE8D4D
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30C77CE8D52
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:46:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C53E8E0028; Fri, 14 Nov 2025 11:42:47 -0500 (EST)
+	id 8B7FF8E000B; Fri, 14 Nov 2025 11:46:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79C728E0005; Fri, 14 Nov 2025 11:42:47 -0500 (EST)
+	id 8681B8E0005; Fri, 14 Nov 2025 11:46:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B2C18E0028; Fri, 14 Nov 2025 11:42:47 -0500 (EST)
+	id 7578F8E000B; Fri, 14 Nov 2025 11:46:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A2E48E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:42:47 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F280713AF47
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:42:46 +0000 (UTC)
-X-FDA: 84109781532.21.A33A6B7
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0763B18001D
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:42:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="AUyJsr5/";
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 62A6A8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:46:53 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08D00C03EF
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:46:53 +0000 (UTC)
+X-FDA: 84109791906.28.0A16D2F
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 144E0A0017
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:46:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=GODjJiDT;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763138565;
+	s=arc-20220608; t=1763138811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hNYC6T9taYLQmC4NDLJeJFJYG67obOWlv+u1sIQ+ETY=;
-	b=0x8ERfe0jLt0i152MJv3BjG61oADu9C1aHJpo5CHyU11ZVdY3vnjvag+ve6FYGfybxykeq
-	DTZyRKFg1DgHzT4yyzendMlbBhtRK8/G5q2A48RKhoWTLXScRHxEiQ7Q/6VdaLLJ2NuCzN
-	KI0qmyCRmwpNOH7HHA22b1ZmD7JBekA=
+	bh=yDQtpO0LuGRtA7x4zSaAXPnOMeh5Kiwvod9aseLK5Gg=;
+	b=cCjUapapDFriDlQExprL2C5VWOL1mZjyNs5zWdcbF4sVkt92JJ+pCRp+qkgCimLfgQ4KUH
+	Xy95j6Nk0MqweXz9uu9xu2i6jTplT4iqP8pwi0N7pPCjbtNInhNBW4uZ6kQmWvxRWcOn4l
+	OPukutyICEdKun7/FLDhRpQbdojHdUE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="AUyJsr5/";
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=GODjJiDT;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763138565; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763138811; a=rsa-sha256;
 	cv=none;
-	b=n75i/s2lXpYaxAselipIWiKpJa2s8TyTubJ0+rPrRdN8IZEuYIXeq2LKr0FpayYRrCHu0f
-	AsQPf8KjNjtdmYLOLMIvtEi+CQ/RtfFkwd9uPVsCHWV1UfDwX6/muGE7HVfyIVcmXOtJXY
-	wzSh+NEKlGD1fKOa34uF2L3/s+Adb/4=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64180bd67b7so3098808a12.0
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:42:44 -0800 (PST)
+	b=sE2py2ar0/lnTDUafEl6+xVMixbMhOdC9/OO/fxTQjAiXvvFm1J0J4voLd2ft6bq8J8lPo
+	yZUTHJg1n1N9RjTYnP2A8z8u9dAGLM6YtwGZ8utEZ34XGPRPVj0JIIqvcHlUvvf4qtlwhQ
+	+9RV67yMyLkrS6iy4rnCdwAuBdJ9kvs=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64074f01a6eso3846938a12.2
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:46:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763138563; x=1763743363; darn=kvack.org;
+        d=soleen.com; s=google; t=1763138809; x=1763743609; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hNYC6T9taYLQmC4NDLJeJFJYG67obOWlv+u1sIQ+ETY=;
-        b=AUyJsr5/Lz1Jp37cBGrGtiqTbFvwf85pQOiHP8N/Yh+L+OrYuKzk48pryQ2lDvuwHN
-         weJHgOH3knVqfzk0nN9F36OXWqNnbJ3/cO6EpDu3uzana1DFXuFTyqxDju7KtlwRXFOf
-         G/KYDFItB1wYm1wAfNwus5ht4kVfAijHJ8g8rVYjDBz2Nw8UWzVsu51GiQPT6Orbjudn
-         1tDkK0IaCg9n3C+7Htw1PKsK+3AjVCSs1/h5Ed7H8M/5vQLlgunWSIw4RBuUyJa0joz0
-         6rnBgomIcqnpOxEYLmrvjwthgywrOxkXjt3IIEc5qxKWAE7gtOmlZBhab8yf3aUWkLQ6
-         0wzg==
+        bh=yDQtpO0LuGRtA7x4zSaAXPnOMeh5Kiwvod9aseLK5Gg=;
+        b=GODjJiDTxXmSKjPdQH9zyDqNkv89NOAe0T9mdCsPaHHk3A5kVagcx8R8G//HyqgK8i
+         U+YQ2otGL6AU34sLrqlTIh5x/eyC5V7alNWuLMwPRFrGM+v8SIaetR/svQsj5qk7zEdO
+         79sSs4jFClrpdmJiQNSMpUcWImqvqXG2MvPTGG/1/SBC8Kj5PLz465JW0KjVsSGPA1rr
+         NqejUKMZB23oHj/mznQ1/0HGYCdjwghW14tsC375fpHLVicxAcQd3y4WLhZkY/0YQxt+
+         CvycYX2aqyEV+C769g3zIS48gqG8eqPKLB0dsdUabVSd+TrWwGkQ0o/kLgekEK+FG2Jw
+         x3PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763138563; x=1763743363;
+        d=1e100.net; s=20230601; t=1763138809; x=1763743609;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hNYC6T9taYLQmC4NDLJeJFJYG67obOWlv+u1sIQ+ETY=;
-        b=NIff6qRkXchTNxu7R+YdQKQ0SajPJ7frZz2bbprxTG5C4OaMNs/wcx5ae396ZExfr3
-         hMSgcFNxjV3/tVfihVQR+/x71ffIMUd0ilFKi8QukJ97eBmz5nlR90c00Q8RFpIhomvW
-         oJUpj92f9/7+hbqHByhWrdJE2W7qX9utmjlxov2xL0rW3jPv0NKFF52Up86mKmWBpIoP
-         Bje9p30/WNlaWQHWBPndQk6sRPSoKlF450TJz6XRlD56RBECHSUtN3egmZI9TNh3MpL1
-         j8YbJusHW9qgM4qXxu/C1XLxzXF2FliQ+GwrulATW1ZLgx9skhKxqMtR5rqNPJL2OS5Z
-         Z7yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHmahdAc0On2K0PAW8GkQtWGgcfCPZciQ8gHNKV4+9tPElJGn2V9vr72dJdgQkutZDIH8Sa41r/g==@kvack.org
-X-Gm-Message-State: AOJu0YzrZb64jZeAr1aVmHNPquT59isWNH4AL3MmCncB9G0YoeGT/pFM
-	1yq253PPIRX75lOkbkm4a8uEZTuI41J5gyyhvUtF0ao3/MVeycBu9pm1MDuZObdbiIzgm0S+M3b
-	MjzRfgLft46s1qVChfwRvS+/dJxpozVIUUKfyu+28cg==
-X-Gm-Gg: ASbGncvNtCpmOiPjwPgHylPYVLYTRA7f4MqhO1CmHn9DT/jwTY/2tVnIePKz7r3Qd0R
-	uzzLiCe3cmn7Hz+mBavMxup82xI1vxraANxqnXwzrFTnZEPGVvWUX1j8mU8xxns/HJz62ljIju1
-	tijcQ3FRehTvX89EuDLdm9n++RTDYKi2tiV0/qnW998Ng7G27GpQ8/oq5WXb6PUxadsME5LlgC+
-	zvacJYcqY37hhnGQUtQd6cjvURA9VAN/KHpqOOR24470Nx284rDVsgxsIJ8GU+PkSROIdGk3F8v
-	6Jo=
-X-Google-Smtp-Source: AGHT+IHlfh4YdqFOb4m8lf+EaR+1dZhpIJjcSDucXM3q8/9kzn/c1d1ehTKfSLxh6hZh8WmQ8CCr+tqptNyxuPatxRM=
-X-Received: by 2002:a05:6402:3507:b0:640:fb00:9b0b with SMTP id
- 4fb4d7f45d1cf-64350ec2ff9mr3541795a12.32.1763138563523; Fri, 14 Nov 2025
- 08:42:43 -0800 (PST)
+        bh=yDQtpO0LuGRtA7x4zSaAXPnOMeh5Kiwvod9aseLK5Gg=;
+        b=krtjZ9bs7IOAdDbfuqMLS+4MU71USi1LCMP9Abb9avgsxiYTP7hvdXCO+Ty2qgySC4
+         nUH2Xj/y028HvltRHy5o+87fEsO3D2F+/gvx/CaIlflps98ng0IiuHO+AiCSHX+5nDME
+         1SN6ZK/gKrupZ/MDq5R3nCb35uuXjfnaq4i56CTGBiOYZR+MCeDpM2uHYEC2fTUAgVcV
+         eqYcBYHyk2cbyCrWsiF5YgUB/mpgqgRgBEbdhXcbWfsct4Pr1llTQqAaDtRILMyBXlDo
+         ZgxTUszahM7mRRtmmqY8R98aMdJef5lNM0D0Vwp3voVmWrwQLIHe92tEUh636zToNZLx
+         S4kA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNl2zqIo1XskqcWSBNqvC4fK2VBnyZl5OXz3/Wa0fXLbLItrWCroSjCe8pTBtd0QLPCFMcGrsayw==@kvack.org
+X-Gm-Message-State: AOJu0YxlDbI7yMGxaXChYBtCNBmLc1+7+x14l7JfzHJssXfQRoWQ3Iec
+	3HYPdCdeoiwNHsNVnAQFNKoWtayFkjLI0jqdKattBS1i4aLCeqURQFIA0SbeRCUQ3fo4rXXwp5/
+	HlI05EYoXBRfrujBKE/ik/Yed8UQO0GYqwA02tcYtkQ==
+X-Gm-Gg: ASbGncv6Syl3jUCnCjH3IHtdFei048EPzm+gPHBm5IKwoC4aUKQ0KnhVBzrJ/3KlNGd
+	xAnZbZ45femZo8F0ZYnX7XLdW/blBnpxThtHQ2ZzivApRX6h4e3iP9r2BVpKXAQlMvj1zZMpF2a
+	pa3JXUNmvtTStMPWS8hWGBXZ4mKbPdbU4PAV2E1buNr9PqHSAK5oHcDY8LgwoaR60Z/nwTcI+xt
+	YfZ8KUf2j4z4+nAvmERLbweGZyhZUsA4J5FWaKqBPA7FsIJ8n69N/Lrdg==
+X-Google-Smtp-Source: AGHT+IFbJ/KZEyWmM8d4Tn7qAbyKy89sED/8mpiPp9IrefIs6/m2O49OIJhrycbebbsgWFvmsokzshBL66RF2COnksA=
+X-Received: by 2002:a05:6402:34d5:b0:643:18db:1d82 with SMTP id
+ 4fb4d7f45d1cf-64350e2159emr3167393a12.11.1763138809509; Fri, 14 Nov 2025
+ 08:46:49 -0800 (PST)
 MIME-Version: 1.0
-References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
- <20251114155358.2884014-10-pasha.tatashin@soleen.com> <aRdVn-e3Wu_pFdmZ@kernel.org>
-In-Reply-To: <aRdVn-e3Wu_pFdmZ@kernel.org>
+References: <20251114155358.2884014-1-pasha.tatashin@soleen.com> <aRdWF8ck4iq1hc0B@kernel.org>
+In-Reply-To: <aRdWF8ck4iq1hc0B@kernel.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 14 Nov 2025 11:42:07 -0500
-X-Gm-Features: AWmQ_blP7H688ljOem3Nsegg0ERAgHCS_X90A9If73ZSR4mI64llwOx6i_IsE_w
-Message-ID: <CA+CK2bCHoHRX9wM+hF-G5G2prVYdDSWzLETPmVXooKsXda5xbw@mail.gmail.com>
-Subject: Re: [PATCH v1 09/13] kho: Update FDT dynamically for subtree addition/removal
+Date: Fri, 14 Nov 2025 11:46:12 -0500
+X-Gm-Features: AWmQ_bnccF6a3b19rd__cNBKQXa9KGCdbhYFEGJJeXr8Oiyaq_gWPptNojqbe4c
+Message-ID: <CA+CK2bCgdz3Hv90axzuSThRtEF17oSj-RKHgVwu5rQ7TXcoKcQ@mail.gmail.com>
+Subject: Re: [PATCH v1 00/13] kho: simplify state machine and enable dynamic updates
 To: Mike Rapoport <rppt@kernel.org>
 Cc: akpm@linux-foundation.org, bhe@redhat.com, jasonmiu@google.com, 
 	arnd@arndb.de, coxu@redhat.com, dave@vasilevsky.ca, ebiggers@google.com, 
@@ -104,14 +102,14 @@ Cc: akpm@linux-foundation.org, bhe@redhat.com, jasonmiu@google.com,
 	kexec@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0763B18001D
-X-Stat-Signature: k4fufijx88mx8366ho7oqheznc3osakk
+X-Rspamd-Queue-Id: 144E0A0017
+X-Stat-Signature: mhu4hpjw7pxbwaryooagmtopx54aqnw3
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763138564-6100
-X-HE-Meta: U2FsdGVkX1+8mGx1A5WDbU22PjvhCb+0zo3L8fMKx4/c46gHWSNrbhyutDxUr4j3/sCy+oVkJxzixzgBQ7wjpvBCzEtaVIkBWhTkL695B4v5Ta0eiUk7xCRIbDNPvACoYHiGHDS5bXLUxEwCvHUjohfNykUJYndFyP/Dr5Fgga2IQMNfoF1rppuVEBL1Gcb9iflJTCSx123+sz/h3ltHOT/5WM+9CJoKXQ+od3IzAf6pwkpip3Hz0AnzXh/CkVdEMWPDX39YOkLfAoyLBrSAs7ExysZOo8+5h6VyKMG4x5L5sUuuH0IdbTU57uT3ovMYC3y96nUhHRvtpO59ysmQQC7PoGTMAqGm7Kp2IxyGrQ3uAB6AdQmafRmfxpcw1jcxxQCOc6qqZvPLcIJ/7tAytYnnZT8HX4KgjH/CLjv6pocd2/iDdtKx6ozw5j+L0RNvROAzXQ8QH8WZagW4tRCJxjkAMdnZtq/1QtSWkGmEh/I4bpryJh2q27fEj+hjwsG+F7bP98QNucUGaEIyfoVFTywqi/PxZpeALkacx6pk23PwvhUiWJutx5mkjNE9wJVEvqRgqndbweIG89X0MQVR9M/FHPcusI6oGW/n0y0G3KuHabkL6w5sRhnsoHvnRuUrzOi9Q1rRTdnEw08WgzrRjDU1Y95WrJ+/sdugqWy1p2tzoeoT/0Q+2L261dipkLa+pI1Tx/qBE2WFlQGJQkmJWjiMSVtrQ4EDGBzA6U5T01kxiXtS6aF3t164mwuZw4rd2KXiPSXS6xPAN6Ui6eUmHHjDysFjN+Lp4yYuCjpq+bjtV1yG5KkJ8Zx8IleK8nO1joVbmVd+kuCSCH+U1vJ13/RJ1NfFN+0u2Q+McTf5XfXysFYcrPHLmGD6KWlD/WKMl04EcyfMxiXgSQPTYPOyEA7acYcL1Eu1SBkipsxV9PuuBcfgUB5wUjGlplSIEoYlTZdP18IRhuPr/3UN67Z
- uGMJYlI9
- Z4SbXafiOI1+K+/5k6Pb8JasxS9j4My9u2/ZtGT2KEHYih34dWB6ZyCJk6XvE9ATG5lFVE+CRZuH/sshWP0H3Mb5wqzw+sBfSO43PO6EymRlKxYrLSONrgpG93HocGqwYysHg+ujdX+sLdVREObP4WrnzQW10qr2DHv/BZcp83YhCVfZcPcGoHhcu9qm5r7JUKj1W6wuZZrpUvbtq/jIuJVViLqQghrFUwvOmudbS2xdjDdLUuByX+Qhto24iGU5zV3nJ0RsjWqAcxfBafDKnw8FwKw==
+X-HE-Tag: 1763138810-138210
+X-HE-Meta: U2FsdGVkX1+JZBrBGPHpiRwGZQySnRupTGW3XOsXUeNu1981S3Hbz9JEjwJcMdWckWA6JhOVOpYSo5qMxZKF3UGeF+LdyDcey+Ken6qlAyyfA7Ok9sSXk+f85NXR8PZ2vOvbLTfhHmIFJ2HX+Kf8ADjvnFfDravJhhY5M3iKeMB7bDgfL7v/pQZM7DbzK+UsVDglJDDzAfA/PCZfS/WfT7/T7k5IYLYlsgEKeEhf94a4UL+cuTWzSnIzwWoOz6dCE7UV8W7bLpy6zjhwEVyr2TdgRHBFSUnbwVrtuKmWqNyCU+ooxz1mtbhAXsjPkNQQBtwpc6Lf0xRV76PblpQPW+om6BjhoD3CFurvcGu6PK1DHEg4XoYsnhp9du1qcoBr9JTN8uF7VGVXigstsWqjSqdDJZQGPOoOv6EGDUiW6Xeot0ndBRRrZWCXtftnLnfXFmyLRdv2PAia5ujyKC+wqF1iUo2RrSmpkCm6Kb2tprEY6yZEP1alBGbUrg4w9UE1h46K0Zza4+yQmv9uVdec/FgApatuALlofyA/biuwOsECwUtqM3lRKBoogPsBToPf45F7exBiwOWqSLksxH5BdM2JzSUuCi5N5lvHAklffDGo7PoY1TvBO2T7f7bUo9qiQnw8ycsDLbkS8rLBZ5ha7F+KptMwkFzend7eB0CkS2A+hUo9tulsBNa6txvHcTauGAs6SfMFZug4Wx7yuYBhC1Y5F1tj1DcjZK5SJau6d/USZRwskbfFqsjI9qW/LCJASTritt2NZqw63xF+6DmuSvwQRUXOnmAou9YdlyFvwcy3KrFMFl2eFZB81AQvnGADmapV4mPoqTDTBaf1SfGlbHP8h2tF6mB7EeDKSflq3mYHiEJpwoU26eAnc4hvAvFg4FPEWqE0lfJu1zO9Jki9TtvXJeUl33aCdYoA6pgHqebjYzcA9RL7TIUgVnZK2eyhwe1AkyiRxA7Cp7Kpal3
+ mQvymWNQ
+ x3FPE/HK2tpXJDytU0LVBXdTQSN0I6t2CKr4tC475KkxeH4JdfFFw9vwl2pXHea0w7u9SQo58Ev/TiUPAwGLEVFEToNmqyHEkvs06u94NfQhAoajfTVrEGTxXBjOhkNRUa0WVWdFwMrL1tle4LUCJA3tGqbQFFwwwo5TOzdAZPrdH08URD1ydB660SHO6Hb3f8BKNgN9tjkX6Vcsyi9Cp4VUDqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,93 +118,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 11:15=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
+On Fri, Nov 14, 2025 at 11:17=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
 ote:
 >
-> On Fri, Nov 14, 2025 at 10:53:54AM -0500, Pasha Tatashin wrote:
-> > Currently, sub-FDTs were tracked in a list (kho_out.sub_fdts) and the
-> > final FDT is constructed entirely from scratch during kho_finalize().
+> On Fri, Nov 14, 2025 at 10:53:45AM -0500, Pasha Tatashin wrote:
 > >
-> > We can maintain the FDT dynamically:
-> > 1. Initialize a valid, empty FDT in kho_init().
-> > 2. Use fdt_add_subnode and fdt_setprop in kho_add_subtree to
-> >    update the FDT immediately when a subsystem registers.
-> > 3. Use fdt_del_node in kho_remove_subtree to remove entries.
+> > This patch series refactors the Kexec Handover subsystem to transition
+> > from a rigid, state-locked model to a dynamic, re-entrant architecture.
+> > It also introduces usability improvements.
 > >
-> > This removes the need for the intermediate sub_fdts list and the
-> > reconstruction logic in kho_finalize(). kho_finalize() now
-> > only needs to trigger memory map serialization.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  kernel/liveupdate/kexec_handover.c | 144 ++++++++++++++---------------
-> >  1 file changed, 68 insertions(+), 76 deletions(-)
-> >
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kex=
-ec_handover.c
-> > index 8ab77cb85ca9..822da961d4c9 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -724,37 +713,67 @@ static void __init kho_reserve_scratch(void)
-> >   */
-> >  int kho_add_subtree(const char *name, void *fdt)
-> >  {
-> > -     struct kho_sub_fdt *sub_fdt;
-> > +     phys_addr_t phys =3D virt_to_phys(fdt);
-> > +     void *root_fdt =3D kho_out.fdt;
-> > +     int err =3D -ENOMEM;
-> > +     int off, fdt_err;
-> >
-> > -     sub_fdt =3D kmalloc(sizeof(*sub_fdt), GFP_KERNEL);
-> > -     if (!sub_fdt)
-> > -             return -ENOMEM;
-> > +     guard(mutex)(&kho_out.lock);
-> > +
-> > +     fdt_err =3D fdt_open_into(root_fdt, root_fdt, PAGE_SIZE);
-> > +     if (fdt_err < 0)
-> > +             return err;
-> > -     INIT_LIST_HEAD(&sub_fdt->l);
-> > -     sub_fdt->name =3D name;
-> > -     sub_fdt->fdt =3D fdt;
-> > +     off =3D fdt_add_subnode(root_fdt, 0, name);
+> > Pasha Tatashin (13):
+> >   kho: Fix misleading log message in kho_populate()
+> >   kho: Convert __kho_abort() to return void
+> >   kho: Preserve FDT folio only once during initialization
+> >   kho: Verify deserialization status and fix FDT alignment access
+> >   kho: Always expose output FDT in debugfs
+> >   kho: Simplify serialization and remove __kho_abort
+> >   kho: Remove global preserved_mem_map and store state in FDT
+> >   kho: Remove abort functionality and support state refresh
+> >   kho: Update FDT dynamically for subtree addition/removal
+> >   kho: Allow kexec load before KHO finalization
+> >   kho: Allow memory preservation state updates after finalization
+> >   kho: Add Kconfig option to enable KHO by default
+> >   kho: Introduce high-level memory allocation API
 >
->         fdt_err =3D fdt_add_subnode();
+> For the series:
 >
-> and then we don't need off
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 >
-> > +     if (off < 0) {
-> > +             if (off =3D=3D -FDT_ERR_EXISTS)
-> > +                     err =3D -EEXIST;
->
-> Is it really -ENOMEM for other FDT_ERR values?
+> with small nits in patches 9 and 13 in replies to them.
 
-In practice, yes. There are some other errors like format mismatch,
-magic values etc, but all of them are internal FDT problems. The only
-error that really matters to users is the -ENOMEM one.
+Thank you Mike! I will update the series, and post v2 shortly.
 
 Pasha
 
 >
-> > +             goto out_pack;
-> > +     }
-> > +
-> > +     err =3D fdt_setprop(root_fdt, off, PROP_SUB_FDT, &phys, sizeof(ph=
-ys));
-> > +     if (err < 0)
-> > +             goto out_pack;
 > >
-> > -     guard(mutex)(&kho_out.fdts_lock);
-> > -     list_add_tail(&sub_fdt->l, &kho_out.sub_fdts);
-> >       WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false))=
-;
+> >  include/linux/kexec_handover.h              |  22 +-
+> >  kernel/liveupdate/Kconfig                   |  14 +
+> >  kernel/liveupdate/kexec_handover.c          | 338 ++++++++++++--------
+> >  kernel/liveupdate/kexec_handover_debugfs.c  |   2 +-
+> >  kernel/liveupdate/kexec_handover_internal.h |   1 -
+> >  5 files changed, 232 insertions(+), 145 deletions(-)
 > >
-> > -     return 0;
-> > +out_pack:
-> > +     fdt_pack(root_fdt);
-> > +
-> > +     return err;
-> >  }
-> >  EXPORT_SYMBOL_GPL(kho_add_subtree);
+> > --
+> > 2.52.0.rc1.455.g30608eb744-goog
+> >
 >
 > --
 > Sincerely yours,
