@@ -4,79 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5114FCEACC1
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 19:44:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CCBDCEACC9
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 20:00:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D7B08E0038; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
+	id A645D8E002B; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AF278E000A; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
+	id A14938E000A; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C46F8E0038; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
+	id 88E718E002B; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A5278E000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 14:44:29 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1FFA9C04D6
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:44:29 +0000 (UTC)
-X-FDA: 84110239458.01.7AB2A3B
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1DC038000B
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:44:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oECBROwT;
-	spf=pass (imf30.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763149467;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 717B68E000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1BF33B9CA3
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:00:06 +0000 (UTC)
+X-FDA: 84110278812.19.D01979E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 401CF160002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:00:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SEkhJ6Qz;
+	spf=pass (imf08.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763150402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VmtmWeVNeDQubCUVIegKVeaojqJ5R7D+neANaxfZ/xM=;
-	b=t4+qXdoAzM5qgOYgGIpSktj5zk+M688hrS+e+JOW2HVVZNdSJue2FP0qEnE4Z7iQS2TAtK
-	D5oK28IlDlDC6FT28n6HS7PYC/7ewvd1KsYedGkIX/2xmlmyVUHlOw2/cfJVCxa5YS/1T3
-	Tk5Slj38sGs+YgTSt98jLyijsZE0IZs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763149467; a=rsa-sha256;
-	cv=none;
-	b=7r8mjVqHXcH31KZZYF9aTm8FeHEkofMnCp5vIipQoHF2kS+F7eAs+gFsLj7PFzxm2ynAdK
-	cUOLalu9BqCXxkEjNPYchhw8HvhinjBqknDXLVQk3VVGbOCtr28A1NZveg9trzyMUBOUej
-	QR72PtmUMAZeYMmdEcL61ITca7DMbqs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oECBROwT;
-	spf=pass (imf30.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Fri, 14 Nov 2025 19:44:14 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763149463;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VmtmWeVNeDQubCUVIegKVeaojqJ5R7D+neANaxfZ/xM=;
-	b=oECBROwTZkUKRWuM22PjHPCS/YhfD5lND8hPGbXU6uUs8SYac1gb+XRHmW6iqtkb7imn85
-	sP+Hn5rjdoo/uLNvFcPFpxV42UR9uOTmYsDBn1/R+0bX4O/ZFWcxdT/9FW9mAkZF+7VBI/
-	wC5h61dzOV6ofF+MxRf9zPsBXkYQlSQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Cc: SeongJae Park <sj@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "usamaarif642@gmail.com" <usamaarif642@gmail.com>, 
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
-	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
-	"Gopal, Vinodh" <vinodh.gopal@intel.com>
-Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+	bh=uaQNtSNtl7u2XYN689Y01EV/DD085kK1e9t+e9ze1aE=;
+	b=zsDH99aHjD5DTWVYE5F3VVCRnrD0MTaPIKOQxXbATxg8ueWpCOaihOjAnXZvrmQEdSwTYB
+	wOWzxdveNycYgMluXqGJjRNJqlut1VgpzNRLiGWPbnabgFgJXUS9pW9PHR64Cyiv61aPyW
+	Ue0+HjTR2RBxYEPtHkyqLitFNJycQX4=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SEkhJ6Qz;
+	spf=pass (imf08.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763150402; a=rsa-sha256;
+	cv=pass;
+	b=E/e0uiP/KKK1LqgkiomaXUxZ3XgIibwasYnXedanvJ7LT86r81/I+RX1YVP2wpQd23FbrX
+	dV0Fbt7hjJpfwFV0Xds6aLSn6RUVfn4x5aq5jvnBFle+lth4MCzNGtHOD2vhBM7OBI97yD
+	aPPCc8TYmYiFLOUMmCJ+sbAJkiw2WTs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763150402; x=1794686402;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=nJ/Hv6y/Z3BBqtg7+jqs23hqAEvGaEu3VUUUz2wCQ5w=;
+  b=SEkhJ6QzZv2z+dD6CnpQZi+WzP6YV+y9rhMUCM02QE8IZH+zFKED4KPp
+   DSsCIYDw76ocAMTgD6jAK8NkpSpUJafeD+xdrs9nbcs1YkZU1RH526aY4
+   QU03ugynK4owZl1p9N5yWCvxi4G/c3eBCz2hLFfPQWtnRJOByeVtS3GEb
+   42/uo5KlnshKF1h3oLywpxBSFVJzmlG1M5oSz8HkomeYbCxCsPob62IVM
+   a01PzZxIAVvWBKd1LXr3TnCAJ+l96KajqlCJXJzAStU1w22PTWSqacEt/
+   HzdsM8oWjyYaDy7hS5M0VbEiJ1wBQRwAO8gMbAMAIe5355WoUSnmk9C43
+   w==;
+X-CSE-ConnectionGUID: hz0FjnjASSicYW88Jz41PA==
+X-CSE-MsgGUID: OpZtTlydR8GNfpzOrd4O2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="69099832"
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
+   d="scan'208";a="69099832"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 12:00:01 -0800
+X-CSE-ConnectionGUID: OBG+YFySRmGHhf6U/Fd21A==
+X-CSE-MsgGUID: nCJl+SrMSwKfEV961fXXfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
+   d="scan'208";a="189685062"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 12:00:00 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 14 Nov 2025 12:00:00 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Fri, 14 Nov 2025 12:00:00 -0800
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.66) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 14 Nov 2025 12:00:00 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qBFNKJhKoHmRzw0yDH9MzlgffVAkivcNjwlz4n3r20/6hVa3M1wzf2oSzzPzwo1SGoPjl5AUxI+iSGDvGQ6Ju9fHT1BA14dwSW04pV/32hREweQ3NbsBMx9/RzkKEAaW5SJ4iUvEikOGYOzcgcfqojNK60kpctZtCzBgafo1XJPbsL1/tmM4Mfli3MGOWkwp1/NnQsF/zoSxXaBqijtaEsisk+DzAJUuYAnCOf1wARQRhzoD+t4s34Pk4Zd5anbDaxoHkzuCQ3vYu2K2Ji6bjgBwrJaYZxiNRL/Vis5pJHV7CjgYIZffu7Zq3znHosdMll7I14RxnzDjiwnX2W4RWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uaQNtSNtl7u2XYN689Y01EV/DD085kK1e9t+e9ze1aE=;
+ b=HA7hjOIPpQe/qbWd9Q9IiQB3xp7UECmkVl/GMQj+3pjIz7bCxJMoHZ833JQS2hOxT6ar7p+bPQy2o5yrsqJBQqrxRgIaA+/rLBjVzcCRW8LCWXIARvvsPpsV44NeiZzIHC45XdEqXBLGq6nVkm5254iGl90qOYtNrEE3eH2ofzggwGgLu09+UbG3+fEWS8sGfua8kT0sBAKWVdbzsiSXCbh/1wq3x/mD4rxyrhF9GnWMjiu1LzuRc9EjN+fDqf4GbEWU1LibBceBNAqqieA8fYJEelaTvZvZFHBGf8SLJXOzlvM3q9H/v0PFpzhJJJ1rZ6CNjkbeJN3ZXNwYpoXjDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com (2603:10b6:a03:574::15)
+ by DM6PR11MB4755.namprd11.prod.outlook.com (2603:10b6:5:2ae::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Fri, 14 Nov
+ 2025 19:59:57 +0000
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::1871:ff24:a49e:2bbb]) by SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::1871:ff24:a49e:2bbb%4]) with mapi id 15.20.9320.018; Fri, 14 Nov 2025
+ 19:59:57 +0000
+From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+CC: SeongJae Park <sj@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "nphamcs@gmail.com"
+	<nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
+	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "kasong@tencent.com"
+	<kasong@tencent.com>, "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au"
+	<herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>,
+	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org"
+	<ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>,
+	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C"
+	<kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh"
+	<vinodh.gopal@intel.com>, "Sridhar, Kanchana P"
+	<kanchana.p.sridhar@intel.com>
+Subject: RE: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
  compress batching of large folios.
-Message-ID: <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
+Thread-Topic: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Thread-Index: AQHcTWs0Qo3eNl0w/UamTXF2PMbCz7TxL9wAgAAcuzCAAG5HAIAABzqAgACcWYCAADiUEIAADEAAgAABFWA=
+Date: Fri, 14 Nov 2025 19:59:57 +0000
+Message-ID: <SJ2PR11MB8472CE2B46F08804CF5F2158C9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
 References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
  <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
  <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
@@ -85,19 +145,98 @@ References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
  <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
  <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
  <SJ2PR11MB84727C029B980E5E06F7291EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
+In-Reply-To: <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR11MB8472:EE_|DM6PR11MB4755:EE_
+x-ms-office365-filtering-correlation-id: ca0dff85-72f4-4166-5869-08de23b86304
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?49KRLW96ZIM+XHE5BEqrEkFv3E7A5Fcw0GAda7L3IhcDV6nMuTGpyo931wXT?=
+ =?us-ascii?Q?gTKAwZrlr+0aT66NAIHcbHtkpHloYRk+ZHccSUPHjPYqlqS3Doel7W0Umyp5?=
+ =?us-ascii?Q?YZcJGcIOr54bDgQ4b3R+s1c8izg2GJMj+kb6o+KxgQBD1qtR62JuS20+UOCg?=
+ =?us-ascii?Q?kbxqKGuGqiHS9lubQvJ+R2Xt384rUJFIqor0+9Tiix+Zr+gJxF0cepV/heQ6?=
+ =?us-ascii?Q?B07MTsFetnZZvuJJJMlELRQcM2+mKExF+QztqkGHRhCjIA26XP2Vh+zwbvJC?=
+ =?us-ascii?Q?MFNS6344RyTKiwQueHjG0PXKrV8BmjarFc7d82oNkC8ifhfypxI7Zf//DnRi?=
+ =?us-ascii?Q?3bF2hoZ18KLfPbSHlpWlpv/vT4H5586b46mDrx+3pQdq0e4bito1450MGwhc?=
+ =?us-ascii?Q?n02T7NM/FF3dlpmtplEDEAVgocnJ4ZFBY1qaYeDGlBBmNjbP4WZPJ5zZ5bJN?=
+ =?us-ascii?Q?XninG15VnrLUOlD9s0WF3jx8XaoRTd/35Q9Zqq/1Aa3VcTeWYINxuxfAZLMe?=
+ =?us-ascii?Q?cY7f2yUNTCxhJyP3WTI/Fwas+oXmYal6qd/0/JWpeYPqnG/6Egy8ZAxRkJZ8?=
+ =?us-ascii?Q?NsGy6DpZJKu4RXQW4y+QLlO+y/quDKOvshg3vQkI+/A/2hPaoHCAuvQvnvvv?=
+ =?us-ascii?Q?riCcgNQg/le8L103JfTwERHegvR6F/7I7op+gxStQPC692+SCSKPd5HKmWwb?=
+ =?us-ascii?Q?41S5lsbpU863zg9CoiaaBXwgjSbI5DOwiBwFIerJ7mAGo3BsQsPI76PKuhmj?=
+ =?us-ascii?Q?2tkAzuLNvR1BeUqjqAO5Di/nnQ8gPxICFOjD6NA3mzvsPLbxG3esLBWwN6/A?=
+ =?us-ascii?Q?FpkX1GGUJJaG0MAqSg7BTk1zI4iHxnzlowMHOurrYpnpJiM8VbLD1wJ5+c5n?=
+ =?us-ascii?Q?2uxJwMNFsr3NaEAMIuWUO9ZI0kevXHi7HozS4g4qwU48lT2uQoRJ02qi1Xyx?=
+ =?us-ascii?Q?Ol55USyzTBiuTKcTg7yPTi6G7Gug+77WVY/YaYCDJyw/zHGa6eYU9sIYcTA4?=
+ =?us-ascii?Q?QS6yF+6ZPntZzNnKbFkDk7bXGjlwBbNJrirsWgVuvuyh2snCyqT9Y6VwX5wd?=
+ =?us-ascii?Q?CgLsq/6BkEftD3jqHuJi5Ct5IhDg4ZhZWi/7TuZ9Uh0866XfNQvmi/2BknA/?=
+ =?us-ascii?Q?MrZ9qbyxHGJtzutLm3Csi9p9mLelf7tipDQuuftMEKKeBI5/4vWfudjAlXL1?=
+ =?us-ascii?Q?HkVeOnF6UJ2kc5iH6+b0ilje6Q0aVVDtn9HPqTUTz9pEnpifuOiPBX1erUWq?=
+ =?us-ascii?Q?HMYuRIpFu/Ch7dskZRscIvGMaqsvPCknHw08Nufcc7yhd/plBer4c7l4cMVT?=
+ =?us-ascii?Q?ITNfw+gSOCiwDJh3HUMDFpm6eRCFc+HkGHKIRaVUO2eOdi6ciXYegerwJIvl?=
+ =?us-ascii?Q?+OI3ob2397EQt8N+Q5LCpUXqCSvlVv4r2xKc/7SAxj7MvfKXYgczsNad55LN?=
+ =?us-ascii?Q?0RN2mTVn7RqQWWmOTMoC1pavjy5s7M9H7kXCaK0hcgpN48mp5YHIB2ebVQHL?=
+ =?us-ascii?Q?ZnKVRnPhlweTDrR/+hbKhMyLzfsA48E3Fd/h?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?RIMl6WOGyUGZPFzP0F4WTzn3lrLXsEBUqQJOp2rtN1nNi682/Hixrsietwfb?=
+ =?us-ascii?Q?QCoD6PTogKeBM4Cg19Ed1vfdI586Aay7xI4NJ3Ttclp7B6pMlNoLl1IjfbGF?=
+ =?us-ascii?Q?1DXhUoDKtLmrpgBZbzRBUocXFIhzWeIjwKEzVORSp02nAU+X8chJ4wvKgxSx?=
+ =?us-ascii?Q?K1G4Tv+w7RbMvvH+MO96dLZLwotT/qelQzcxIKIk/ebGPA4///GXRXBvHD6o?=
+ =?us-ascii?Q?CT7RxPuvZkOIowMBJHUrGKO9t0Ws+l2i7dqgM4uztvGnxyPeC/MNQARezZ6C?=
+ =?us-ascii?Q?lpJEDFZWcANQqHVy2f5Lix2gBgkB5+cPguCANPTSzkUW3Ud6pj5kO2Kejczk?=
+ =?us-ascii?Q?6mBvjeygMNHXru27Qm7XAJypaee9MBGw+V65ZZtWxgtUrm+acGe2HrfVNrOb?=
+ =?us-ascii?Q?EWG7fWgHHQSUisC5c+vhmTS87wFHVT1OjDgWhOoBhgavFRy39f9H5b+5m/IA?=
+ =?us-ascii?Q?GxEXqlmQLgQD6WmWnjuGmqeDjB3HED6lty2a5k0cTCie10z+wVLNlfe0GDBN?=
+ =?us-ascii?Q?XEMDLYWDtZpHtwG93yS5zgTS47zbK3AyPDx97oxEeh+FM7PBGKDwHjxrKonJ?=
+ =?us-ascii?Q?Mj7dVWruxS4A/XbvR1wDZryFq32UdoLRyAMYXfhcbjVdzvHXC29aTDvrmT/Y?=
+ =?us-ascii?Q?xP1/ip6HxhrFiddm6oxGW8t4dEr/Ny5yZ8NLGfos5kCcoVI9FhjLGLoMoMBm?=
+ =?us-ascii?Q?B0FNsFniX4ZHWx1ypz9SMm2CyvD6NlNCpl1NC4urH3wtGGeLodfHUArEZgBQ?=
+ =?us-ascii?Q?pRJGy4XusouxgdcR2/ZdrYVkX2KJZUHg0HJ7kpnE8D6+Pk+qHgcf4/6FVD9w?=
+ =?us-ascii?Q?cATnriiDWAX7cZHG1++NfiQJ2TUuLDVMCzmizNHx7tbMs38ZYJVVgjC1CZO2?=
+ =?us-ascii?Q?43S1EfyTdNmilFHAyROHX4yrXNubvgf5I1sRprMERzGP+0IIZQUk0nEdtNii?=
+ =?us-ascii?Q?M64rGqYffuvgJdz5n60TTb8HqUp4qttSqODOoz//JEt9O7mpLCvc1ozXBR39?=
+ =?us-ascii?Q?novb+JkBWnzoFnuBvPzGeC1hy9p2ITPamDjnS7dpQLnp0vbL3D6/yx1IRgJD?=
+ =?us-ascii?Q?brKdsjHBGmIjpxwhuYmB3bNqDxDtme7m+9bmIXYyUb1M2lovGzAsPxVvM/Z0?=
+ =?us-ascii?Q?RD0QTs/XhLuPDGbbceossGFM7RwsbTFlRpAjZ2Ur4/JeXFzzdYMYn6WyeciM?=
+ =?us-ascii?Q?a7Oe5Poeqs5la/10qQb9aNJvU62mIfxtWAbUnCCLimZTLU9KxKS52Yn/Mq3s?=
+ =?us-ascii?Q?o6c79aNHhA2z9Jse2r4NkNvEXFYB+ji4lnmkN0CQ5qyTBX3qDRvxf8QTmf8o?=
+ =?us-ascii?Q?v+AH6p/k/3LVY2qpIyms1zTb5aJjyk8VQjwJwyVqHyXENCg9Dze4zgR58PEB?=
+ =?us-ascii?Q?IxijDmqHB13m2kqSZncfgEcUTwPhccmI/JZWeNm9L2Ih/gD5+kw+2i2mVeiO?=
+ =?us-ascii?Q?OwGon0BI1DR/Y167WKXxxRGO9W51+KG1D6p9JeRPTxf+SksSL0ISlDjHQ5wF?=
+ =?us-ascii?Q?J4il7f/yPqWfwkJXjrFSAFJD2oZolQ5eNCUICuCTcqzHEAQZpetMLIscGS+5?=
+ =?us-ascii?Q?vxe/AaALaGsKrUdAt/MScT1wrISaKCyzdoOotXVQ24pQNQoe3TPg+BJSZD8e?=
+ =?us-ascii?Q?yw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ2PR11MB84727C029B980E5E06F7291EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: xm4gxj4fmjwxdesbsqmyqtq5f7shm6qj
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca0dff85-72f4-4166-5869-08de23b86304
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2025 19:59:57.4948
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: g3HVSHNV/gUieBK83nsrHX9gopRk0HsJhw5vZIT+23m6RrkFm5JPYQ8ufejqIhL2bu0KO4kGB9RqPKASX9OI3uE5BPExYwKlvu6ArSe44jo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4755
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 401CF160002
+X-Stat-Signature: y9jcp9eh1otsczzrh9pyxxaaun6noben
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1DC038000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763149466-216680
-X-HE-Meta: U2FsdGVkX18pmtBOg5KwjPIwym2r3RgQrvM8VcgrSKXrFt0Dmw7bb4Wz2mKTVMe78GVBufnG+blp1ZPMDau7UTeYBut60nrGPpMRKfoGQtaF03temKMLYmmiCYyzv6mG5aCN5Q6+dgPLiMmaetPkZenrOIfYhD/Jyg3g19atkS0kOasdb3XcsDlz9SX6fp2QlSD9TCWF2ARbg7tkmHF4BwO5W2Gg172RtQd4mAbqNP4SnKmI1cuVKGNzNPlOR8sorp9MOa6S33pPGHk18BfgqgossDD5HTn98g9ORyvltvqjbDkNpGcHXSsoDitlbNRHwCBbCnFwFkaN91MmL0uVMQEJ9G6FmHunTtmuqUHGGZFh1QICYn0G96kpX03thiuw0saGF5DuIHrN5Kx5RBxoa1c+XWVjID79in1rbcuOy5Ez8dYlRxmrkUnDCbXpgUT7HOjLClteZPFjZyw6481QrT6GloW8IWn6FKZZQtXOA+XLWq+5QwY9+Z/LeFzclBWOx/OWL1JJKqBr0U8cUzr6c1nLT62SvltpDLg8F2pSduxe1SD181kYcwlCcxyN+yS3JTA8ryFDfBRO0dDQKlDm53dMxOyoANy4421W2H9051bInmNYKUi+QQHnLGhOjJIAKZ3O4u1kcMeyjqQNNL65tIrO0nKLYatKQOze9MlCQITp0/RLWRGpN35mC/9yjgqevDMVmyxjTpn6LKCVo1PDbSS7dMymD1XUChb83L+gxdvzwG6kh+VgX0K0gb6h66zfgDq0/OgVvVbnqu/tFcbvbgizVlQuFAc60AypXd++Mrg+I8gKrfAAwhyNKN3HcxnR2qPO2ZUfOxQi/zrgh6Az/SkjfkcVAVTK5NNsxwEQo9yUKf5ti7CXeYIWJyqdg+btbq+mjYCgLNdKUEpnIMQLXpmMVNz7jF7/Ad69hg6VCylF2b96bP8qxNp/RORptL+K3k0LnUoHJFAWGCWcqQh
- 8JsUT91D
- Xzfztw9tC3TiugV5ib8fbeqvaOy29LIwbCusvqW4qwv+XGL8uTKgm9mpOjJ/6KS3LWCNjgkzeoEub9B8f3tpqYf7q8hQtLYw3bdZIkmfJsp3t5L7mOZA+wkfCajyxEfM6GdJ3gAgY3SAqanOz/UwA/eWvnNxcpGGYc3MfPVdb8OdX5D7TfqTQWN5n5xsO1lp2frexH54GheV+ZZXxfjXudROHvG+rmowBQbNEvjv5S/U9h85IludoDl05p7SWAcxacxOwD25UhMfRVZ1arF4DNWvMdpi+6Ranw8FsuKlxQJoJ2qs=
+X-HE-Tag: 1763150402-259048
+X-HE-Meta: U2FsdGVkX1/IOCP1ospgx9pezjRSNc+GAgjQrL9I6yeghuC1YyaSUbL53eSyxdMkQbWrMVQaFGtXpGYZ0uzWeefaUAK9uHIu2lK+TFqEuSObF/DGiM5ESZXljUKn3XBIbsKZuuCDT1BwJWvuR2JRoiVNIOSCw7GuLGLhIQ1BOqy3dqsS/La6V+1frYFX3j0+RBmR7N+CitHWSlC1FrPXXWfMsCRBTf7mcg2zi9NXD4+p1vlzqEjcjZPauIr5pQyHSdvfKU5qpjZFBV5lE8M8xMzPmZ41850wsoUVK+roIv6jzzqiQLDDJxUkOFPAiMMfXtRRnIq54VTvqhi5JuoJe6CMMc/JdpaAVNGIuOVbLphCY8vHk1u1jsd+IvYqqcAYRVc7h42+G7HiuAiDuegm2QYlDU0/L1pBdYRg6U2YlFRJoJVFl7+Eeyfk3qFn/KkIzr/qW08bq2v/8E1dHufpNkU0Y1eRXJ93ZAXWeGrob/MYq33QbDvAAaO6ZI5pNXIKYVNBtYWjWjghhOxtNEYoEn6xuIBP1J2sh3RICMeqDTj3fGlzPUo3WmQxFugENhCeqqc52IdZEYnjR1XCHp0XS34fyfVmap6UnMw5CFGQ0l3K0h6TisBi9+FGfJEvjkSAXoysSVDVD7jN7o7zuaodDEo8ScX5lf1ZaY2Yg/xNNyDQflztJHVwF3mQLk35Fad1GpwAQgU3CV5HpEkHHU/PFeRgPUCwxNMvO/obei3q5aSrwp1ru6CTndyY2NCfTINVevphwbKu4CMCOwKVUb4haM41ipk2upEFStHJKgdHR2orGDjQEdZWb6/wrSd3XmTezwJkPBxFpcnTL8eNqOY1DzdZyQB/9faU88Tdx3Xm1OeF1jv0JEMiTpgyxx2rXmWab+cRz31EoAneHuZbt/n3pnNHEptYteuzs90wlY05xmFQncpKjrABWsD127iznY0NeZlL/HLVJsHhjR9Iyoj
+ i/Q+BfX3
+ LtiXafZfdPKoWFeQf6nQ2ntiVVhoJkjAmSyDfhJAeL3LPdvdDXYRLlyL1FEnmAZylvLnWCjWrPn1+dInI+CD+cnWiO0oVsrgGcEABxFfeX/CPBNwdst6SXlOSPPtDr6pbk8z9wLl/Qk/VZHA1zHTwZ0xecXfpxdejAm3epoJ80u4hwfMs9xa06GQwnO6SqB9DBIUPyxKq6hAdtRr38DA6TebKgUhZf73wPxpiBWH7co5Nhs1z/kHCOn58SYNiMIO9aLLkHgRBJNrd1AfmZZ02gKhwaOpMssI7BGwCONz8Wu7B1VRpBessChhPYT9A/t1tAKiYb6R4Rblyv3NarZ9isz17hM+4BUwwskhmqbewFpd8O6ugc+AySflboJSjEyB9OeE4HW2dFAxoM3yfqYxtWVlwtsUDH+G/uWa2fJNIx5tW6TeQkR4UUgp80gSjzdnfHL+uBFSMO7ETPAxKEEmTR5y7iCptmTiJdk13+tuqvP69K4FTtF0jkSin8Yw0GBzRpH3NnndzsX/39ScxYSwPovze6RqA0sjNlqVLzUVnAy4F6UxxThRHqO3XDEYMwYaLBOHrNHn0rlFenmIaXwKi5hFftqxSfCLJjq7QDynn/P5veu2KiMcoMS2ZKWL6pJq0l1dufObaIUreTETwzHd346xvFNrSboh+/9nVwtDobC9NpHxA03PhjRQrrZXy7sN4JpuaTyxh+b3YJlyHO+fizZHfnPMr+kh3SuLoF8sCv5FLdk0TgL6zgAQTnIkMwz1v9AEW661Ku/Hjby71R8GotVe7bt+IW8z6tQnZZKNYYMMiwAbdJi85wfbSA/8kaZKjuqicQ6pjmMX+/g0MbcJBqWHM+fUVoibrmTp6E9qhr8MNkcaNtq+/bBVwSFy5tMWRtaocDkbiiU0mgDuiSF2+qwsxJrKWB7eam8pSPAeV/TCVy+lEytcpGsUPQatanrFDr46kC7cks2Vg++ErtR6WLkEmME+J
+ PBhLYe5x
+ W/8Z9JfFSSfWqv5ttvv+n7OhvMld4NI1kdXKQTJE3RlkJZtB29jl4aTwwzcV/mi7KPWYvLgtOumm+4rv2Esc64+n1xXc6XasZejL8nOVpun4ZQz7aOdzcwrB1DweibjB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,215 +245,323 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 07:23:42PM +0000, Sridhar, Kanchana P wrote:
-[..]
- > > > > >
-> > > > > > > +		if (err && !wb_enabled)
-> > > > > > > +			goto compress_error;
-> > > > > > > +
-> > > > > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg,
-> > nr_comps, k) {
-> > > > > > > +			j = k + i;
+
+> -----Original Message-----
+> From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Sent: Friday, November 14, 2025 11:44 AM
+> To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> Cc: SeongJae Park <sj@kernel.org>; linux-kernel@vger.kernel.org; linux-
+> mm@kvack.org; hannes@cmpxchg.org; nphamcs@gmail.com;
+> chengming.zhou@linux.dev; usamaarif642@gmail.com;
+> ryan.roberts@arm.com; 21cnbao@gmail.com;
+> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> senozhatsky@chromium.org; kasong@tencent.com; linux-
+> crypto@vger.kernel.org; herbert@gondor.apana.org.au;
+> davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>=
+;
+> Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> <vinodh.gopal@intel.com>
+> Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+> compress batching of large folios.
+>=20
+> On Fri, Nov 14, 2025 at 07:23:42PM +0000, Sridhar, Kanchana P wrote:
+> [..]
+>  > > > > >
+> > > > > > > > +		if (err && !wb_enabled)
+> > > > > > > > +			goto compress_error;
+> > > > > > > > +
+> > > > > > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg,
+> > > nr_comps, k) {
+> > > > > > > > +			j =3D k + i;
+> > > > > > >
+> [..]
 > > > > > >
-[..]
+> > > > > > >
+> > > > > > > > +			dst =3D acomp_ctx->buffers[k];
+> > > > > > > > +			dlen =3D sg->length | *errp;
+> > > > > > >
+> > > > > > > Why are we doing this?
+> > > > > > >
+> > > > > > > > +
+> > > > > > > > +			if (dlen < 0) {
+> > > > > > >
+> > > > > > > We should do the incompressible page handling also if dlen is
+> > > PAGE_SIZE,
+> > > > > > > or if the compression failed (I guess that's the intention of=
+ bit
+> OR'ing
+> > > > > > > with *errp?)
+> > > > > >
+> > > > > > Yes, indeed: that's the intention of bit OR'ing with *errp.
 > > > > >
-> > > > > >
-> > > > > > > +			dst = acomp_ctx->buffers[k];
-> > > > > > > +			dlen = sg->length | *errp;
-> > > > > >
-> > > > > > Why are we doing this?
-> > > > > >
-> > > > > > > +
-> > > > > > > +			if (dlen < 0) {
-> > > > > >
-> > > > > > We should do the incompressible page handling also if dlen is
-> > PAGE_SIZE,
-> > > > > > or if the compression failed (I guess that's the intention of bit OR'ing
-> > > > > > with *errp?)
+> > > > > ..and you never really answered my question. In the exising code =
+we
+> > > > > store the page as incompressible if writeback is enabled AND
+> > > > > crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check ab=
+ove
+> > > > > if crypto_wait_req() fails and writeback is disabled, but what ab=
+out the
+> > > > > rest?
+> > > >
+> > > > Let me explain this some more. The new code only relies on the
+> assumption
+> > > > that if dlen is zero or >=3D PAGE_SIZE, the compressor will not ret=
+urn a 0
+> > > > ("successful status"). In other words, the compressor will return a=
+n error
+> > > status
+> > > > in this case, which is expected to be a negative error code.
+> > >
+> > > I am not sure if all compressors do that, especially for the case whe=
+re
+> > > dlen >=3D PAGE_SIZE. The existing code does not assume that there wil=
+l be
+> > > an error code in these cases.
+> > >
+> > > For the dlen =3D=3D 0 case, the check was introduced recently by comm=
+it
+> > > dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
+> > > as-is"). Looking through the history it seems like it was introduced =
+in
+> > > v4 of that patch but I don't see the reasoning.
+> >
+> > The existing code did not check for dlen =3D=3D 0 and dlen >=3D PAGE_SI=
+ZE
+> > prior to commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression
+> > failed page as-is") either. We need SeongJae or Herbert to clarify whet=
+her
+> > this check is needed, or if it is sufficient to rely on comp_ret, the r=
+eturn from
+> > crypto_wait_req().
+> >
+> > >
+> > > SeongJae, did you observe any compressors returning dlen =3D=3D 0 but=
+ no
+> > > error code? What was the reasoning behind the dlen =3D=3D 0 check?
+> > >
+> > > >
+> > > > Under these (hopefully valid) assumptions, the code handles the sim=
+ple
+> case
+> > > > of an error compression return status and writeback is disabled, by=
+ the
+> > > > "goto compress_error".
+> > > >
+> > > > The rest is handled by these:
+> > > >
+> > > > 1) First, I need to adapt the use of sg_outputs->sgl->length to rep=
+resent
+> the
+> > > > compress length for software compressors, so I do this after
+> > > crypto_wait_req()
+> > > > returns:
+> > > >
+> > > >                 acomp_ctx->sg_outputs->sgl->length =3D acomp_ctx->r=
+eq->dlen;
+> > >
+> > > For SW compressors, why is acomp_ctx->sg_outputs->sgl->length not set=
+?
+> > > IIUC we are using the same API for SW and HW compressors, why is the
+> > > output length in different places for each of them?
+> >
+> > This is to first implement the SG lists batching interface in iaa_crypt=
+o, while
+> > maintaining backward compatibility for SW compressors with the new API.
+> > I believe we may want to adapt the crypto API to SW compressors
+> > at a later point. I also believe this would be outside the scope of thi=
+s patch.
+> > It would be nice if Herbert can share his vision on this aspect.
+> >
+> > >
+> > > >
+> > > > I did not want to propose any changes to crypto software compressor=
+s
+> > > protocols.
+> > > >
+> > > > 2) After the check for the "if (err && !wb_enabled)" case, the new =
+code
+> has
+> > > this:
+> > > >
+> > > >                 for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comp=
+s, k) {
+> > > >                         j =3D k + i;
+> > > >                         dst =3D acomp_ctx->buffers[k];
+> > > >                         dlen =3D sg->length | *errp;
+> > > >
+> > > >                         if (dlen < 0) {
+> > > >                                 dlen =3D PAGE_SIZE;
+> > > >                                 dst =3D kmap_local_page(folio_page(=
+folio, start + j));
+> > > >                         }
+> > > >
+> > > > For batching compressors, namely, iaa_crypto, the individual output=
+ SG
+> > > > lists sg->length follows the requirements from Herbert: each sg->le=
+ngth
+> > > > is the compressed length or the error status (a negative error code=
+).
+> > > >
+> > > > Then all I need to know whether to store the page as incompressible
+> > > > is to either directly test if sg->length is negative (for batching
+> compressors),
+> > > > or sg->length bit-OR'ed with the crypto_wait_req() return status ("=
+err")
+> > > > is negative. This is accomplished by the "dlen =3D sg->length | *er=
+rp;".
+> > > >
+> > > > I believe this maintains backward compatibility with the existing c=
+ode.
+> > > > Please let me know if you agree.
+> > >
+> > > For batching compressors, will 'err' be set as well, or just sg->leng=
+th?
+> > > If it's just sg->length, then we need to check again if WB is enabled
+> > > here before storing the page uncompressed. Right?
+> >
+> > iaa_crypto will set 'err' and set the sg->length as per the batching in=
+terface
+> > spec from Herbert.
+>=20
+> So both 'err' and sg->length will contain the same error? In this case
+> why do we need to check if dlen < 0? Shouldn't checking 'err' be
+> sufficient? and it would work for both SW and HW and we wouldn't need
+> errp. Did I miss something?
+
+Great question. For a batching compressor, 'err' will contain an error if a=
+ny
+page in the batch had a compression error. This allows the early bail-out
+path for SW and HW compressors if writeback is not enabled for the folio.
+
+Only the specific pages' sg->length will contain an error code. The other
+batch pages that compressed fine will have the compressed length in
+sg->length. This enables the post-compression loop with the errp check
+bit-ORed with the sg->length, which for SW, has been brought up to date
+with the acomp_req->dlen before we get to the wb_enabled code path.
+
+>=20
+> >
+> > >
+> > > >
 > > > > >
-> > > > > Yes, indeed: that's the intention of bit OR'ing with *errp.
+> > > > > We don't check again if writeback is enabled before storing the p=
+age is
+> > > > > incompressible, and we do not check if dlen is zero or PAGE_SIZE.=
+ Are
+> > > > > these cases no longer possible?
 > > > >
-> > > > ..and you never really answered my question. In the exising code we
-> > > > store the page as incompressible if writeback is enabled AND
-> > > > crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check above
-> > > > if crypto_wait_req() fails and writeback is disabled, but what about the
-> > > > rest?
+> > > > Hope the above explanation clarifies things some more? These case
+> > > > are possible, and as long as they return an error status, they shou=
+ld be
+> > > > correctly handled by the new code.
 > > >
-> > > Let me explain this some more. The new code only relies on the assumption
-> > > that if dlen is zero or >= PAGE_SIZE, the compressor will not return a 0
-> > > ("successful status"). In other words, the compressor will return an error
-> > status
-> > > in this case, which is expected to be a negative error code.
-> > 
-> > I am not sure if all compressors do that, especially for the case where
-> > dlen >= PAGE_SIZE. The existing code does not assume that there will be
-> > an error code in these cases.
-> > 
-> > For the dlen == 0 case, the check was introduced recently by commit
-> > dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-> > as-is"). Looking through the history it seems like it was introduced in
-> > v4 of that patch but I don't see the reasoning.
-> 
-> The existing code did not check for dlen == 0 and dlen >= PAGE_SIZE
-> prior to commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression
-> failed page as-is") either. We need SeongJae or Herbert to clarify whether
-> this check is needed, or if it is sufficient to rely on comp_ret, the return from
-> crypto_wait_req().
-> 
-> > 
-> > SeongJae, did you observe any compressors returning dlen == 0 but no
-> > error code? What was the reasoning behind the dlen == 0 check?
-> > 
-> > >
-> > > Under these (hopefully valid) assumptions, the code handles the simple case
-> > > of an error compression return status and writeback is disabled, by the
-> > > "goto compress_error".
-> > >
-> > > The rest is handled by these:
-> > >
-> > > 1) First, I need to adapt the use of sg_outputs->sgl->length to represent the
-> > > compress length for software compressors, so I do this after
-> > crypto_wait_req()
-> > > returns:
-> > >
-> > >                 acomp_ctx->sg_outputs->sgl->length = acomp_ctx->req->dlen;
-> > 
-> > For SW compressors, why is acomp_ctx->sg_outputs->sgl->length not set?
-> > IIUC we are using the same API for SW and HW compressors, why is the
-> > output length in different places for each of them?
-> 
-> This is to first implement the SG lists batching interface in iaa_crypto, while
-> maintaining backward compatibility for SW compressors with the new API.
-> I believe we may want to adapt the crypto API to SW compressors
-> at a later point. I also believe this would be outside the scope of this patch.
-> It would be nice if Herbert can share his vision on this aspect.
-> 
-> > 
-> > >
-> > > I did not want to propose any changes to crypto software compressors
-> > protocols.
-> > >
-> > > 2) After the check for the "if (err && !wb_enabled)" case, the new code has
-> > this:
-> > >
-> > >                 for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
-> > >                         j = k + i;
-> > >                         dst = acomp_ctx->buffers[k];
-> > >                         dlen = sg->length | *errp;
-> > >
-> > >                         if (dlen < 0) {
-> > >                                 dlen = PAGE_SIZE;
-> > >                                 dst = kmap_local_page(folio_page(folio, start + j));
-> > >                         }
-> > >
-> > > For batching compressors, namely, iaa_crypto, the individual output SG
-> > > lists sg->length follows the requirements from Herbert: each sg->length
-> > > is the compressed length or the error status (a negative error code).
-> > >
-> > > Then all I need to know whether to store the page as incompressible
-> > > is to either directly test if sg->length is negative (for batching compressors),
-> > > or sg->length bit-OR'ed with the crypto_wait_req() return status ("err")
-> > > is negative. This is accomplished by the "dlen = sg->length | *errp;".
-> > >
-> > > I believe this maintains backward compatibility with the existing code.
-> > > Please let me know if you agree.
-> > 
-> > For batching compressors, will 'err' be set as well, or just sg->length?
-> > If it's just sg->length, then we need to check again if WB is enabled
-> > here before storing the page uncompressed. Right?
-> 
-> iaa_crypto will set 'err' and set the sg->length as per the batching interface
-> spec from Herbert.
-
-So both 'err' and sg->length will contain the same error? In this case
-why do we need to check if dlen < 0? Shouldn't checking 'err' be
-sufficient? and it would work for both SW and HW and we wouldn't need
-errp. Did I miss something?
-
-> 
-> > 
+> > > As mentioned above, I am not sure if that's correct for dlen >=3D
+> > > PAGE_SIZE.
+> >
+> > We need to get clarity on this from SeongJae/Herbert.
+> >
 > > >
 > > > >
-> > > > We don't check again if writeback is enabled before storing the page is
-> > > > incompressible, and we do not check if dlen is zero or PAGE_SIZE. Are
-> > > > these cases no longer possible?
-> > >
-> > > Hope the above explanation clarifies things some more? These case
-> > > are possible, and as long as they return an error status, they should be
-> > > correctly handled by the new code.
-> > 
-> > As mentioned above, I am not sure if that's correct for dlen >=
-> > PAGE_SIZE.
-> 
-> We need to get clarity on this from SeongJae/Herbert.
-> 
-> > 
-> > >
+> > > > >
+> > > > > Also, why use errp, why not explicitly use the appropriate error =
+code?
+> > > > > It's also unclear to me why the error code is always zero with HW
+> > > > > compression?
 > > > >
-> > > > Also, why use errp, why not explicitly use the appropriate error code?
-> > > > It's also unclear to me why the error code is always zero with HW
-> > > > compression?
+> > > > This is because of the sg->length requirements (compressed
+> length/error)
+> > > > for the batching interface suggested by Herbert. Hence, I upfront d=
+efine
+> > > > err_sg to 0, and, set errp to &err_sg for batching compressors. For
+> software
+> > > > compressors, errp is set to &err, namely, the above check will alwa=
+ys
+> apply
+> > > > the software compressor's error status to the compressed length via
+> > > > the bit-OR to determine if the page needs to be stored uncompressed=
+.
 > > >
-> > > This is because of the sg->length requirements (compressed length/error)
-> > > for the batching interface suggested by Herbert. Hence, I upfront define
-> > > err_sg to 0, and, set errp to &err_sg for batching compressors. For software
-> > > compressors, errp is set to &err, namely, the above check will always apply
-> > > the software compressor's error status to the compressed length via
-> > > the bit-OR to determine if the page needs to be stored uncompressed.
-> > 
-> > Thanks for the clarification. I understand that the error code has
-> > different sources for SW and HW compressors, but I do not like using
-> > errp as an indirection. It makes the code unclear. I would rather we
-> > explicitly check err for SW compressors and dlen for HW compressors.
-> > 
-> > That being said, I thought what Herbert suggested was that the same API
-> > is used for both SW and HW compressors. IOW, either way we submit a
-> > batch of pages (8 pages for SW compressors), and then the crypto API
-> > would either give the entire batch to the compressor if it supports
-> > batching, or loop over them internally and hand them page-by-page to
-> > the compressor.
-> 
-> That was not how I understood Herbert's suggestion for the batching interface.
-> He did suggest the following:
-> 
-> "Before the call to acomp, the destination SG list should contain as
-> many elements as the number of units.  On return, the dst lengths
-> should be stored in each destination SG entry."
-> 
-> I have incorporated this suggestion in the iaa_crypto driver. For SW
-> compressors, I have tried not to propose any API changes, while making
-> sure that the zswap changes for the SG lists batching API work as expected
-> for SW without too much special-casing code.
-> 
-> I suppose I always assumed that we would update SW compressors later,
-> and not as part of this patch-set.
+> > > Thanks for the clarification. I understand that the error code has
+> > > different sources for SW and HW compressors, but I do not like using
+> > > errp as an indirection. It makes the code unclear. I would rather we
+> > > explicitly check err for SW compressors and dlen for HW compressors.
+> > >
+> > > That being said, I thought what Herbert suggested was that the same A=
+PI
+> > > is used for both SW and HW compressors. IOW, either way we submit a
+> > > batch of pages (8 pages for SW compressors), and then the crypto API
+> > > would either give the entire batch to the compressor if it supports
+> > > batching, or loop over them internally and hand them page-by-page to
+> > > the compressor.
+> >
+> > That was not how I understood Herbert's suggestion for the batching
+> interface.
+> > He did suggest the following:
+> >
+> > "Before the call to acomp, the destination SG list should contain as
+> > many elements as the number of units.  On return, the dst lengths
+> > should be stored in each destination SG entry."
+> >
+> > I have incorporated this suggestion in the iaa_crypto driver. For SW
+> > compressors, I have tried not to propose any API changes, while making
+> > sure that the zswap changes for the SG lists batching API work as expec=
+ted
+> > for SW without too much special-casing code.
+> >
+> > I suppose I always assumed that we would update SW compressors later,
+> > and not as part of this patch-set.
+>=20
+> I am not sure I understand what changes lie in the crypto layer and what
+> changes lie in the SW compressors. I am not suggesting we do any
+> modification to the SW compressors.
+>=20
+> I imagined that the crypto layer would present a uniform API regardless
+> of whether or not the compressor supports batching. Ideally zswap would
+> pass in a batch to crypto and it would figure out if it needs to break
+> them down or not. Then the output length and errors would be presented
+> uniformly to the caller.
 
-I am not sure I understand what changes lie in the crypto layer and what
-changes lie in the SW compressors. I am not suggesting we do any
-modification to the SW compressors.
+From my understanding, this would require changes to the crypto layer for
+SW compressors, which again IIUC, does not set the sg->length, only sets
+the acomp_req->dlen (IIUC, a temporary state until crypto for SW also uses
+SG lists).
 
-I imagined that the crypto layer would present a uniform API regardless
-of whether or not the compressor supports batching. Ideally zswap would
-pass in a batch to crypto and it would figure out if it needs to break
-them down or not. Then the output length and errors would be presented
-uniformly to the caller.
+Ideally, batching could be handled similarly by crypto for SW. I believe we
+will get there, albeit outside the scope of this patch.
 
-That being said, I am not at all familiar with how crypto works and how
-straightforward that would be. Herbert, WDYT?
+>=20
+> That being said, I am not at all familiar with how crypto works and how
+> straightforward that would be. Herbert, WDYT?
+>=20
+> >
+> > >
+> > > This would simplify usage as we do not have to handle the differences=
+ in
+> > > zswap.
+> >
+> > That's the nice thing about SG lists - I think the zswap_compress() cal=
+ls to
+> > the new batching API appears agnostic to SW and HW compressors.
+> > Other than the upfront "errp =3D (pool->compr_batch_size =3D=3D 1) ? &e=
+rr :
+> &err_sg;"
+> > the logical code organization of the new zswap_compress() is quite simi=
+lar to
+> > the existing code. The post-compress "dlen =3D sg->length | *errp;" han=
+dles
+> the rest.
+>=20
+> It would be even nicer if the batches are also abstracted by SG lists.
+>=20
+> Also, I don't like how the error codes and output lengths are presented
+> differently for HW and SW compressors.
 
-> 
-> > 
-> > This would simplify usage as we do not have to handle the differences in
-> > zswap.
-> 
-> That's the nice thing about SG lists - I think the zswap_compress() calls to
-> the new batching API appears agnostic to SW and HW compressors.
-> Other than the upfront "errp = (pool->compr_batch_size == 1) ? &err : &err_sg;"
-> the logical code organization of the new zswap_compress() is quite similar to
-> the existing code. The post-compress "dlen = sg->length | *errp;" handles the rest.
+I do believe this is short-term and is the first step in implementing batch=
+ing
+in zswap. We should get Herbert's thoughts on this.
 
-It would be even nicer if the batches are also abstracted by SG lists.
 
-Also, I don't like how the error codes and output lengths are presented
-differently for HW and SW compressors.
+
 
