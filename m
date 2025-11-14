@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F1EECE8D4B
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD80CE8D4C
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:54:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B4298E003A; Fri, 14 Nov 2025 10:54:18 -0500 (EST)
+	id 5EBF98E003B; Fri, 14 Nov 2025 10:54:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 464F18E0029; Fri, 14 Nov 2025 10:54:18 -0500 (EST)
+	id 59D3B8E0029; Fri, 14 Nov 2025 10:54:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 306458E003A; Fri, 14 Nov 2025 10:54:18 -0500 (EST)
+	id 43EEE8E003B; Fri, 14 Nov 2025 10:54:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 101F98E0029
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:54:18 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE1561A040B
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:17 +0000 (UTC)
-X-FDA: 84109659354.22.7BA4898
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EA14618001D
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CyikO7p5;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DA168E0029
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:54:19 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E450E12DEE8
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:18 +0000 (UTC)
+X-FDA: 84109659396.03.741E18C
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 10706120014
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:54:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=JvzqJgGF;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763135656;
+	s=arc-20220608; t=1763135657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iTGqBwhVIw9stl5AxN+42Iq44gONjHHbYM4Z4BBnC/g=;
-	b=LsgaZxbsTZ9U7xvmLk4zR6UFa72g1e6f1fe08WXNa8Pl4GT1HPrL/H48vr33/BF1YR9Z6O
-	d0N7urg06IpnOOJglwEcQ/ljfYI+2SZUzyrY15SZqhpTkVlkP5NTRnOoF+UXl4UGchimH1
-	24qx6V/2CugY2BW3ahZ6EJbm2W2gIrQ=
+	bh=0Uap8NJrH5Pb6CWLHsw3prb3WSqz01SCPOCj0nxF8f0=;
+	b=Eq+x1STpX6YGMFvy42XVUG8OarGSVZHMMRPryL3uBwjtZbgeI8MqUQkk9LMjaMH1o1ZSln
+	nvCXcO6+FfaPMm+KnwgTgA1BIEZ5+LgPbMnjaZYM9H+fLdVlEZDZQEM4Bu30I9RRue4ZLm
+	/jVd4yg+YJQVNO5IePGkaBlzXkh6Abw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CyikO7p5;
-	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=JvzqJgGF;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763135656; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763135657; a=rsa-sha256;
 	cv=none;
-	b=2TpG5CWoxuCyEVS8YNkPdeQrUNOnhnkBTpGtE+KnljBdS2u+Q1Jpw6kSC4KMa2lEew6mTc
-	/UEDaGsKwntym3Qbdg0B3t5dg0R6Ew4JoNNMlYNVhLYk0KIEVKEm8bS4p86E4lcguCSF1i
-	W5GmES0WJLlEi/2NaGyaVQJSSrqmW3E=
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-63f97c4eccaso2111053d50.2
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:54:15 -0800 (PST)
+	b=085HOS/xh3qMfHGLrzOH+6ITosjQ0fOoj6hQyG1KA0KicFXzreJFtdl+4Hl/mQ5ZkXPo18
+	xk4UNamxCSNXm8e7c4vNZZHP4yao8B3MMdW1mteHpTlbFz9h0g2FuwU6xGrzSx2pgqRN1r
+	WZx31Qp/PsMwCPt5oOaAvW/h2xk4yQU=
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-787e84ceaf7so25406017b3.2
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:54:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763135655; x=1763740455; darn=kvack.org;
+        d=soleen.com; s=google; t=1763135656; x=1763740456; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iTGqBwhVIw9stl5AxN+42Iq44gONjHHbYM4Z4BBnC/g=;
-        b=CyikO7p5GN6DKM/Ls5lUXPLFGbR1mDMaGY6M512attFvHlCXCrexnV4jVysnsfXy/W
-         t6ZqOUbI+DXkbUCK1W1W+L4gJDm4WsVB1CK+BcerHdT3x6z5WP9LKy27UpEjZqXfEAdn
-         qg1aMlRXM1gKDakIY5dXg9u/+JqBKU5KFtjfWsnjXcAU3u/BPEYKg1dVKucVYTogYSZg
-         SXEXpQY0UvUiWJbmo9Z7wJ4uY2b/MVgnAKDSrs6KiSxPsRfEizIjWu39g+vPpuRO9/VU
-         2PkvdNw9qOApckHUbPkuFtwL/Wdm5JclLRmb+m7I1vtUS7xw7a6xR7GrZ6GNNU5ZX8Vo
-         cvng==
+        bh=0Uap8NJrH5Pb6CWLHsw3prb3WSqz01SCPOCj0nxF8f0=;
+        b=JvzqJgGF3zHJk1ZaA2xSVqXhpx/MKXu9cwBM02NJx2ksffjfx3TVzlApOgeRWb7WMs
+         M8e6//siOgRM7NwScUYOIRTcyos6t2BiTHASFzTAGzhlIoVCFz1uPQQSw+PRH0eggIzD
+         HLE5GnRv3aGMt+NUcI0K5NjoK38f3Z7Avuz7Lgj26vo7bD7Os2yaSSb7y+EWVUAtkOi1
+         /1iVGqtL3+d5KZ3+KSASO0SRBDMD5kl0+kvO1LxodazEDXvP9mTC+RqEn1Bo+VT6aGT6
+         wsn7NovU/hG5EiIJ9uGdi1xDdB9ea8miFGx7Vu9Oc9fq8LMRji7vpS+5TNQO/7NQj3QS
+         sICA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763135655; x=1763740455;
+        d=1e100.net; s=20230601; t=1763135656; x=1763740456;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=iTGqBwhVIw9stl5AxN+42Iq44gONjHHbYM4Z4BBnC/g=;
-        b=SISVMIQU3xdMMNuNtI5f/cjB0kQFWo688BsydODmQs8W1ic/VYd+YxuLEiNsZy7G5o
-         4uPiIffkwDIy8DUOhnJDVea8XU2dqcy/rWvABqnb8ejQIPl+3zoulZPuXS5GUivOxOJh
-         hhVl0rYApz8JmVJaHfxi32cKiHS+TJzlYpCvGkTkNfR8Pmv2UmxjttvTcRFOvit1wo9w
-         TZXgCSGAEDnKbkBH9pWJLVOINLeIluk7o0/XDzBKQ/5BfIohOmpq9UVasc3heaXv6LOR
-         HoJrg/u4Y2w1y5KIdypgZ0dP6ghk104pnec9PU/g9eDW/eT9BdQ9G7Zdmy5RnP5fU6l2
-         g3wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX5iUdwEYUIbbIkzdvDyhpmN/i5fn8NGxXU4IxbwGvCdRUIB6d+V5iSX2sy0uygmN7Kqzncs1yLoQ==@kvack.org
-X-Gm-Message-State: AOJu0YwYJku3HcYG2No+ZJ/A5m8eVigIn2fHz7aNAZpyIhBqvWYHfH22
-	agaTlGvrf/dprJG4SIjWm7InG3utI7b8EPPD9oFkHkqQjMiNMT28V0uHhxZZlzbalA8=
-X-Gm-Gg: ASbGncuSIVJjzAlvuyv8UcfYjlD/xdLaIkP6fE+SMHjm9RuxXD4NYJ+VCZnx1YntnF+
-	L4JYsL6V0RJKQkD7ltKesM46cJUT9a8RhWlF9BRODnXmupzHf9B3hoOAxACCm+/mC1dqSX+NsNO
-	KrXdV4y4S9K14oRCbbOnDbYuwsuAeVxpDTHeqHhZn1Ukr08r/iS707oXcu2+d0KCSEoQZNhTj3e
-	OVfsdnVtBE6qY+J25xNGrSYLz4KOiU1Sm07bDf5LyIqauaoy7BAp16yse+eCITB6rrDuzJbva8R
-	2lh49RxyHElzFh8Xjwpcd+BHpjA5KZnMCFGlLCINZ6mSMexWwZn8iJAHa91qHgb5zfiFtUWXd7g
-	DQJw2esNyaFbi8gBj7fl2c3nxRQRNdFRAGoOoTypHJ8bmYUI6pBOggVL3Q2NMVhjAZgVSDcFPka
-	hAslh1qNHyvLFeFZzJoxxevDMZ73bXBCFfB8TnsSayya2OthS7gb+Mn5VIiBHxPGs9um6NM8Z+P
-	Zz2+3k=
-X-Google-Smtp-Source: AGHT+IG4mQw8nEL1m3idlNaAXf7Kc5783jAJw1K5t9cvJ10mUhr5v9D0Cg51BzHrwu9IlD9mh5aUEA==
-X-Received: by 2002:a53:d058:0:20b0:640:db91:33d6 with SMTP id 956f58d0204a3-641e74dc5d1mr2579255d50.8.1763135655068;
-        Fri, 14 Nov 2025 07:54:15 -0800 (PST)
+        bh=0Uap8NJrH5Pb6CWLHsw3prb3WSqz01SCPOCj0nxF8f0=;
+        b=hbuqb3yT7XgXExOOLzdxlNsVPotZ0YewtOzu/7B18Ty1iKF3XZF9oDUPmvudPU4HPC
+         n2SKdf7b52/K98MKVFAO45SYGXvd21IskSEOu6BFZ6RSdbSzZeIuzSXzvGehVqHPGHdr
+         PS2y5Y+iZDHJ9UN6ub6p7iNNgd3bdLDF11yKUzzbVD8ix6ZBSG88jc33YlrUuFGx2Vel
+         iWxls2KlODOiycVh5spgWBIO65NX4Dkac2yMfA6YF+iG+VdbqtNGQvNuPVHb2l5po7oR
+         hW0F7r7QjzccUJCg3kf2oKeOhqhPiA5s5GAuRFC0IIt1hlnplOR0RDBUkDuJwhvwM+Zr
+         +e0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV+GQkg5RZMxmqNT8J95D67Ej+pFYrELVa+xE4s7blq9KHDPHqAqUy8l6qckR+athBTdEiJaaxBmA==@kvack.org
+X-Gm-Message-State: AOJu0YyvCbvaS8twr3cR1/QhBWe5NX3Tkg8iV7vsgAF8ZLZlYfgmDwj9
+	2AMDPvHbj4XKx8DM+up1tT2BmDLpP9AGddIaX7c6/13mDTgiS8ER27fHD2VvU/e5XL0=
+X-Gm-Gg: ASbGncut9/N27eW4up7xT1QYOY4rjLK8gQCb4PXoUaoY1nuBePYOyY/vEtoyfCXbF71
+	BjEP4jcp2n97hyrs5Nn0tQc7VjFv7FqUDwg3chdEZRiedpC8yVuDJsGggTaww+nhkggLJRT6/HD
+	8VSTrdeQNRDh/9hl40qfE5JKdEQ7XMRhC2cEMM9ZeHyaSdqchhYjqpYnQ2GnvtRYvu3+BT9dtWu
+	fRC3sg3ybtvIknLVXVdtbYLIUE8ifhWTmzMRfHXRawOBcb50q5Tl4tE78bAKyYJgriMpKIV+Hlv
+	ey5Aoe+7kTzzBfkXDVNgDQ/3oEgO4AK64fKPSnYebqexwEIANK44Tr9MhUK9c23SEf3gbnjO6xc
+	9stKKnc4abwfSROztOe2aFtlAQ7G39AjFSxBi0zTlyJD1xJGw+ANTcaa6UXpmbJmqtAO5jDMnrq
+	73MPn0NnW0gqJrVhFWbMvbMfbNnMwfaLhYMKBUh6S+TQmgKvobBECA1blPct+aQ1EUl2Bw
+X-Google-Smtp-Source: AGHT+IHNxNYIjWa6M85ng5fm7KdMGmaCp0p2DckarVLQ1uVdBIpVIya/6LO6pSDb2OyOlRX9dHvrhw==
+X-Received: by 2002:a05:690c:5a14:b0:787:deea:1baf with SMTP id 00721157ae682-78929f16b28mr27160997b3.52.1763135656118;
+        Fri, 14 Nov 2025 07:54:16 -0800 (PST)
 Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78822125317sm16468577b3.37.2025.11.14.07.54.14
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78822125317sm16468577b3.37.2025.11.14.07.54.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 07:54:14 -0800 (PST)
+        Fri, 14 Nov 2025 07:54:15 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: akpm@linux-foundation.org,
 	bhe@redhat.com,
@@ -107,22 +106,22 @@ To: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v1 12/13] kho: Add Kconfig option to enable KHO by default
-Date: Fri, 14 Nov 2025 10:53:57 -0500
-Message-ID: <20251114155358.2884014-13-pasha.tatashin@soleen.com>
+Subject: [PATCH v1 13/13] kho: Introduce high-level memory allocation API
+Date: Fri, 14 Nov 2025 10:53:58 -0500
+Message-ID: <20251114155358.2884014-14-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
 In-Reply-To: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
 References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EA14618001D
-X-Stat-Signature: b1yj9oa7w4im88qoeredp4trh7z6m6sw
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 10706120014
+X-Stat-Signature: gczxop3sdodqidngbsq8935xr156qr11
 X-Rspam-User: 
-X-HE-Tag: 1763135655-480930
-X-HE-Meta: U2FsdGVkX19wKN6rnKU7m3efmx78+/sj4te1ll+rYYuIJsZkgwcMkcjXJmAagYnt7k5vC+1d4KQcab7kljffm0m1ZT/y8+GVcvmBInd7gMybHEkJhLFYE1WWpknPZeW0qhjIsW2evA2ELfc3sPU/3tKxC19SswoywyqI4gr5KJJD0m1ABVABtPevLmWS9eXo/z0B+zlD5RH/TnmlDCzcyKfn1Kb97Z4QlbP82I5WapD+ndxom+k3f+oIkfvXxGzFMoo7MIC38vhoni0uGRIVaDQpDIpPgXF3Dt+l0yb1RDqo7lGYiZPl2NSKgv0kFqkWvF1Sr869rfGy8X7YID94lGV8O3lirBRGdNRicsvD4TjYbp+OwUT+QTQfqBFl7TK5ip775TPH8Cn57l1x8x8ropAoPu427UgtlOvkVZ0PgA3O4taLGSs+0sIU7TgRfTB4tPL+RQ4zFqOnJ5zGXV9FbDNQjCa4xlDJ6YsOWqqeumNeW9tTeCjMfgtVyWY6nwf56iyurc9e5K0PVtSokaDlbVko2l2WtDlMwGP+jL6DYQQabyF6X1iLGghjCEJ9puWo7G1siYBJtyJb0K6c8a6rwAzxwZZNvpgEm3EOnIyuBZJjfg5WnzFFO6H/jw2/xd9JsMkadWP8A0sEAZIvFhBaEjrHd+fhXt0NYKLFTSsXICudsze8TvX5/o0xgq2gbLdSohzdJv9nIm+COaSj31BR/VYINHXAzJU0r/ZVd563IOkFJr8CcECbVTGHVypmhLBuVdef4lSazmco/b1NjrimE/KRyAMHLteaL8fJaqptikLKgcTWEAB+1s1fiwIDaAZtTCe4DIy3c7s8YRhFqzGIg7mWEk8Fea8iEpOAUCV36+LgTBhFelo+kQBybaVqK1QOrlNYAToyOg4Jt1FAh7T9/aCwCeoYman4iEIbog8MbPc3sRfn70XDEDiU/w97zYSa08lriGIZXKU734VhLI5
- //+qxvM5
- YXs3wmGTshVYgDzVAUHfiMeEWIpNW34vVuPw904kBHHHFjGavj+EIC1BpQaFAQ2E9N0httMM1wQQ5okb0DvAVCKZ+piYDj97JlPR2wMfvw3eQ5gRo5ouSyzFOX0zKXWj8HivQpoyXwfE/FFWhc1oBdAroXZfNGMQUCQZg41Zy8bUgVMzyOiBuKuy9o7xsR/5kGmnCA7mfcA9keUtSy8BtRpq0N6OXAO3Lszp0AzpyMZWwNf4SbkFTEHSLcd3EHQ/TCJ3dlykZkVMDS2VvAjxfvMHYsp62scdBK/8VH+nacSoI1td+YOzjKh95SUq5UuO3m+wEjbtgHAAGxjo=
+X-HE-Tag: 1763135656-239704
+X-HE-Meta: U2FsdGVkX1+NPwle6LRMnW18gWdH11VQTIcU7PTk8CzEtv9No8rENA3XuYrGL/ATyivG73LVPMWRmjL7jzZk6IKkB3wqmiC28dYvO0hRXnN1qrqMQAXx3gpUyelo3N4gIC3wp8rPfqw79d2rdBn9f6gPmGBvd+wFamBe74rmnhlPk95ye/92SIeepmsur8RtJI6BivNujCLd+HQtA1bM5rdft58ewCiHR+tg35NsHfmmOeKYH51JFmCI7qrpK5ZOh+EsA7Y6BPcUX4oatjQlboAABANv1jh/Qj+L3WiLq/rkEBiR7e+Sc5nFJ4pDPGhpU0rMje+qfb6hK2vMt9ppG4eOX984pgNuAhbm3gIjx5ybJ/H/G6yR4EY3esMk7Cvd1ooCZrNYfihHOLFMo/9Nam+QGaTF71GUv+GR+0A0g10pOrskI1x33JEVnw/gVXbxtWeEkpqL9jP1iMq3C6des8kwuAZrzzASqgyBQjGuna8qCtAvrJnR6zEJ0xUY33GpsiFqzBBZodmSsQMn0Qmd0anUOwU5it/flMhox1RND6bVCefTYk6iDfsfRi4MAIDQp9jIO3t9c3kPl2POcPoEa5uuE8O26O+2TAqIqyfa2axg5c54THy9Vfjee9gPKzwHdV54ivu+V7a7Rsmpb+92ULU3U0DmqP0CrZIUKZXZS4HbFJ6hR74qEoAMU1aa1I7i6oGa9tvAf6sY9V4zpAJKBR61hAWkMrEq0yB1rYXrDvJTYJjg8aJGTUkZuVTbnzvc3XOSZXHPfDCMuYTVaObTGhZFytT0YJa4LvDJ2cwphxBIUDtDcCyFVdM0vfDFgJz7NBZOA0lBcIWEiWoLHe/PtBAvSqkU9ULZ+rujbKijI/bOq8BUOYYkA6AZ1O2fLTW+eL5PKu6wncOkw5CINETR+sDXpxo5jxVbK9GFQkQwF6EH5M1ryxN36gc4Go8p9M/BtT+SmthE7dIwEytkZ6z
+ 9Dj0qQ0D
+ NQ8sSZMuncIsOuHtZumhQ6ZRcISFabP64WXNFfuM1Zm6LYm6ShNX+gbgR528dXdcdeE0f0f31zN9jROazj/G0Zr7hlN8zxjPgGqmYQnb8JVqWZtlz68MKwDW1kHaWA2vv5TNCfUsme9Fg4JPZk5+YbdExDCFrTllZBa8acyuFTzTYB0CqwuALpr+HyFOfUg8MrKo4gFFBpphBaaCyAeDUzlEB8oeTIcV9Fbbufy/Jp/HKJhud9h5psnfMF0sC6n/rN9gKexXbXdx4msgyK/37qya/4UjjOV/A7jURphuruemycYJpwhXpy6mBdUrlhb8kTcp+K0rOmxxpN6/xASiN3IqzFIqcQ532pF7UsdqklLJDkqM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,59 +130,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, Kexec Handover must be explicitly enabled via the kernel
-command line parameter `kho=on`.
+Currently, clients of KHO must manually allocate memory (e.g., via
+alloc_pages), calculate the page order, and explicitly call
+kho_preserve_folio(). Similarly, cleanup requires separate calls to
+unpreserve and free the memory.
 
-For workloads that rely on KHO as a foundational requirement (such as
-the upcoming Live Update Orchestrator), requiring an explicit boot
-parameter adds redundant configuration steps.
+Introduce a high-level API to streamline this common pattern:
 
-Introduce CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT. When selected, KHO
-defaults to enabled. This is equivalent to passing kho=on at boot.
-The behavior can still be disabled at runtime by passing kho=off.
+- kho_alloc_preserve(size): Allocates physically contiguous, zeroed
+  memory and immediately marks it for preservation.
+- kho_free_unpreserve(ptr, size): Unpreserves and frees the memory
+  in the current kernel.
+- kho_free_restore(ptr, size): Restores the struct page state of
+  preserved memory in the new kernel and immediately frees it to the
+  page allocator.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/Kconfig          | 14 ++++++++++++++
- kernel/liveupdate/kexec_handover.c |  2 +-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ include/linux/kexec_handover.h     |  22 +++++--
+ kernel/liveupdate/kexec_handover.c | 101 +++++++++++++++++++++++++++++
+ 2 files changed, 116 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index eae428309332..a973a54447de 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -37,4 +37,18 @@ config KEXEC_HANDOVER_DEBUGFS
- 	  Also, enables inspecting the KHO fdt trees with the debugfs binary
- 	  blobs.
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index 80ece4232617..76c496e01877 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -2,8 +2,9 @@
+ #ifndef LINUX_KEXEC_HANDOVER_H
+ #define LINUX_KEXEC_HANDOVER_H
  
-+config KEXEC_HANDOVER_ENABLE_DEFAULT
-+	bool "Enable kexec handover by default"
-+	depends on KEXEC_HANDOVER
-+	help
-+	  Enable Kexec Handover by default. This avoids the need to
-+	  explicitly pass 'kho=on' on the kernel command line.
+-#include <linux/types.h>
++#include <linux/err.h>
+ #include <linux/errno.h>
++#include <linux/types.h>
+ 
+ struct kho_scratch {
+ 	phys_addr_t addr;
+@@ -48,6 +49,9 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages);
+ int kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
+ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+ int kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
++void *kho_alloc_preserve(size_t size);
++void kho_free_unpreserve(void *mem, size_t size);
++void kho_free_restore(void *mem, size_t size);
+ struct folio *kho_restore_folio(phys_addr_t phys);
+ struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
+ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+@@ -101,6 +105,14 @@ static inline int kho_unpreserve_vmalloc(struct kho_vmalloc *preservation)
+ 	return -EOPNOTSUPP;
+ }
+ 
++void *kho_alloc_preserve(size_t size)
++{
++	return ERR_PTR(-EOPNOTSUPP);
++}
 +
-+	  This is useful for systems where KHO is a prerequisite for other
-+	  features, such as Live Update, ensuring the mechanism is always
-+	  active.
++void kho_free_unpreserve(void *mem, size_t size) { }
++void kho_free_restore(void *mem, size_t size) { }
 +
-+	  The default behavior can still be overridden at boot time by
-+	  passing 'kho=off'.
-+
- endmenu
+ static inline struct folio *kho_restore_folio(phys_addr_t phys)
+ {
+ 	return NULL;
+@@ -122,18 +134,14 @@ static inline int kho_add_subtree(const char *name, void *fdt)
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline void kho_remove_subtree(void *fdt)
+-{
+-}
++static inline void kho_remove_subtree(void *fdt) { }
+ 
+ static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
+ {
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline void kho_memory_init(void)
+-{
+-}
++static inline void kho_memory_init(void) { }
+ 
+ static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 				phys_addr_t scratch_phys, u64 scratch_len)
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 87e9b488237d..a905bccf5f65 100644
+index a905bccf5f65..9f05849fd68e 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -50,7 +50,7 @@ union kho_page_info {
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2023 Alexander Graf <graf@amazon.com>
+  * Copyright (C) 2025 Microsoft Corporation, Mike Rapoport <rppt@kernel.org>
+  * Copyright (C) 2025 Google LLC, Changyuan Lyu <changyuanl@google.com>
++ * Copyright (C) 2025 Pasha Tatashin <pasha.tatashin@soleen.com>
+  */
  
- static_assert(sizeof(union kho_page_info) == sizeof(((struct page *)0)->private));
+ #define pr_fmt(fmt) "KHO: " fmt
+@@ -1151,6 +1152,106 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ }
+ EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
  
--static bool kho_enable __ro_after_init;
-+static bool kho_enable __ro_after_init = IS_ENABLED(CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT);
- 
- bool kho_is_enabled(void)
++/**
++ * kho_alloc_preserve - Allocate, zero, and preserve memory.
++ * @size: The number of bytes to allocate.
++ *
++ * Allocates a physically contiguous block of zeroed pages that is large
++ * enough to hold @size bytes. The allocated memory is then registered with
++ * KHO for preservation across a kexec.
++ *
++ * Note: The actual allocated size will be rounded up to the nearest
++ * power-of-two page boundary.
++ *
++ * @return A virtual pointer to the allocated and preserved memory on success,
++ * or an ERR_PTR() encoded error on failure.
++ */
++void *kho_alloc_preserve(size_t size)
++{
++	struct folio *folio;
++	int order, ret;
++
++	if (!size)
++		return ERR_PTR(-EINVAL);
++
++	order = get_order(size);
++	if (order > MAX_PAGE_ORDER)
++		return ERR_PTR(-E2BIG);
++
++	folio = folio_alloc(GFP_KERNEL | __GFP_ZERO, order);
++	if (!folio)
++		return ERR_PTR(-ENOMEM);
++
++	ret = kho_preserve_folio(folio);
++	if (ret) {
++		folio_put(folio);
++		return ERR_PTR(ret);
++	}
++
++	return folio_address(folio);
++}
++EXPORT_SYMBOL_GPL(kho_alloc_preserve);
++
++/**
++ * kho_free_unpreserve - Unpreserve and free memory.
++ * @mem:  Pointer to the memory allocated by kho_alloc_preserve().
++ * @size: The original size requested during allocation. This is used to
++ *        recalculate the correct order for freeing the pages.
++ *
++ * Unregisters the memory from KHO preservation and frees the underlying
++ * pages back to the system. This function should be called to clean up
++ * memory allocated with kho_alloc_preserve().
++ */
++void kho_free_unpreserve(void *mem, size_t size)
++{
++	struct folio *folio;
++	unsigned int order;
++
++	if (!mem || !size)
++		return;
++
++	order = get_order(size);
++	if (WARN_ON_ONCE(order > MAX_PAGE_ORDER))
++		return;
++
++	folio = virt_to_folio(mem);
++	WARN_ON_ONCE(kho_unpreserve_folio(folio));
++	folio_put(folio);
++}
++EXPORT_SYMBOL_GPL(kho_free_unpreserve);
++
++/**
++ * kho_free_restore - Restore and free memory after kexec.
++ * @mem:  Pointer to the memory (in the new kernel's address space)
++ * that was allocated by the old kernel.
++ * @size: The original size requested during allocation. This is used to
++ * recalculate the correct order for freeing the pages.
++ *
++ * This function is intended to be called in the new kernel (post-kexec)
++ * to take ownership of and free a memory region that was preserved by the
++ * old kernel using kho_alloc_preserve().
++ *
++ * It first restores the pages from KHO (using their physical address)
++ * and then frees the pages back to the new kernel's page allocator.
++ */
++void kho_free_restore(void *mem, size_t size)
++{
++	struct folio *folio;
++	unsigned int order;
++
++	if (!mem || !size)
++		return;
++
++	order = get_order(size);
++	if (WARN_ON_ONCE(order > MAX_PAGE_ORDER))
++		return;
++
++	folio = kho_restore_folio(__pa(mem));
++	if (!WARN_ON(!folio))
++		free_pages((unsigned long)mem, order);
++}
++EXPORT_SYMBOL_GPL(kho_free_restore);
++
+ int kho_finalize(void)
  {
+ 	int ret;
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
