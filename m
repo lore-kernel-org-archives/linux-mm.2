@@ -4,119 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2900CDE03C
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:50:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C1DCE7A8B
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 08:53:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C3308E000D; Fri, 14 Nov 2025 03:50:49 -0500 (EST)
+	id 1D12E8E000E; Fri, 14 Nov 2025 03:53:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59ABE8E0002; Fri, 14 Nov 2025 03:50:49 -0500 (EST)
+	id 1A8E18E0002; Fri, 14 Nov 2025 03:53:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48A0C8E000D; Fri, 14 Nov 2025 03:50:49 -0500 (EST)
+	id 0E5AA8E000E; Fri, 14 Nov 2025 03:53:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3733D8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:50:49 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 109D087C2A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:50:49 +0000 (UTC)
-X-FDA: 84108592218.24.937BC8F
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 470CC1C0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:50:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SVkwwBlW;
-	spf=pass (imf20.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F23098E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 03:53:09 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 977B94CADC
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:53:09 +0000 (UTC)
+X-FDA: 84108598098.25.5AC4E0F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E0BBB40007
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:53:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GiHZ7Clw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110388; a=rsa-sha256;
+	cv=none;
+	b=FKQWjTWBLdq5PTFPTUGK6x3DxpqhcjpnDtttzvBXIWF8dG0f90L2FnlKM+xb0450EdLFZ8
+	C5tc8Fihb6UTxU9MoTKWGqs8tY3Jdq9KH1LYN9MHrvJ97rH2vskNuqNWjhy/4WJ93OpDKC
+	d3N195lPW44SvAbh9swrQ9u+yC7wyjI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GiHZ7Clw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763110247;
+	s=arc-20220608; t=1763110388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5iqlkhn1lw6zbavFQq2qrzo4NEBEKZJ3FEyeS/ztizs=;
-	b=mx5yq1nuPCQqpStQjeRoTPT8sBsWvFZrsZuSvA1UkVmsXlrZJR2QK9c4TmbU7Eor2RqNN8
-	JR1f8kPR4MWtbPiHZ/yzJk9uMlOpz7AYTo1rIBmEoHohBEfrehXYexLR9rPvNiPyUStQkT
-	NNa2Dduk83KNUES6gz5subtt6wqnGBs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763110247; a=rsa-sha256;
-	cv=none;
-	b=IVY0llaKDG+kM16jDAhbN9wq2lShJyT8CiZQ3N1EjOWAsnKf1jtHLn3LPq3uPq3StmHQy+
-	WpVi1/nsDJMlPDA3r5/QTg0Rp7A1Evxw/10qE/FCsCrGGQQRwMBetgaWenf+XsPNCTOsxK
-	agIbwbjjMJwxBVj3scXIdG4G+J1cmCo=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SVkwwBlW;
-	spf=pass (imf20.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2957850c63bso17932885ad.0
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:50:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763110246; x=1763715046; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5iqlkhn1lw6zbavFQq2qrzo4NEBEKZJ3FEyeS/ztizs=;
-        b=SVkwwBlWsUTP4AtCMI4xY7O/wU4l4Bpd7t0yxRWtNQhSUvx+TVvJ7OUOvR9JS4Mh2b
-         CM55PIgZruXy8hyRFvz8kjjq/mR168k3u70P3rA9GgZO3hiagJtXpWDvI5US0vl9hS0F
-         59YhZSLEpInHub5Zk0hZvPnWXha0fKW3LQyz3iwNr8YBcYIQ3RWJulu9U/LuNanfYMTx
-         ZCVK3T9OpxTu7o+a8zQveF67EbO+NdYupiTpaT1Ry5br9+lbCCLbZSr4XOTfgqaYNUOt
-         zVrsOWDFjA3ablxCrxcV4jDARtLVC5rBSqTx1qZcolkizqwaJCu88BEx2djYxTHpbIYU
-         SxLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763110246; x=1763715046;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5iqlkhn1lw6zbavFQq2qrzo4NEBEKZJ3FEyeS/ztizs=;
-        b=vS5c0MH4luVdJ4GZ05mKxlilw/EEROL7nzkw0njrTGULjGqvsZI8oPaoeDwmiHHuf1
-         tGos/AIAz6e3X2g5DO3S5DME70fhdKiWhZe09Agq4IfIiRPBz+0tHkfe4ZvXobr6T/MF
-         SGm8Qq4MNUG3ssQ6XTDwEMWdEXCbGByr62KtAq+aLeHvwLf/OqnzKtJA/8saNkZNvmoK
-         UWSlbhmIQn7nNdZOulRKYNVDvQmPGuTaz2aici/A5SzAloapeQ856FBiO7QhbKgwFYYo
-         6X8J6yTubGZGvzs1+NWjQVYWiyDvuzHw2+3V/gOIDQOom2Z5YWzaHU6WtRLx6alpysmx
-         4aFA==
-X-Gm-Message-State: AOJu0YyffVqfC0uxEr2WEy80l7AMJHB2YBgYG8NLW7rtI8QakKK95/TI
-	2d5jDpfLdRde2SVL1F8puM2iZ8MJW/XVWXf8nN/dChm7UO0qz+j/dchE5ywcsea8WFFxmQ==
-X-Gm-Gg: ASbGncvAZJ0gDagDYyhGc365babEMVawRLq3f1pP+mxuu5h/uRtpJi9FpffhiKBfS3s
-	UBlT9OAWWogrGFuZZldZdDnsX6U5a9+JxvC3BddRg/FbLrmCACgXwi4mtXiAkklstGYGPlMVkEK
-	SpRk0C4YWgRICzOZ0J6iW6VvTGg6hbhkv7b3ezn9TOJJat+DKsFtpVnNFY+5WJuKbPBHX4pkcO4
-	HhI3eyeZOsvuIwFaZnm2cG7xNARZTIPUSKnPzFrs4Fosld43p5AMahn1UOFP+3O+ks+F+XV18sZ
-	hX2cYKGrqiI719o5djWF2om/NCCw36rJABUgfnkgWp1Nvxyt1/rSu08nOxT5h/NPEHrT0Zr2nLY
-	w7qfUWY0J2uBdi69iCAk8+X0rbJ7co8Sp/sjiMfw67zors1oQmwruw9LFefvIthBzrPrCvtfKlg
-	w=
-X-Google-Smtp-Source: AGHT+IEoTb2nBTEj517lc6DIrCLOTCTDzfoLccKyXuEPJE74/I6sGmnlo4wGjvdHF5T53dtdhOD0Jg==
-X-Received: by 2002:a17:903:2a86:b0:282:2c52:508e with SMTP id d9443c01a7336-29867eea832mr29818035ad.8.1763110245849;
-        Fri, 14 Nov 2025 00:50:45 -0800 (PST)
-Received: from gmail.com ([117.147.72.154])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b924aedb73sm4459368b3a.12.2025.11.14.00.50.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 00:50:45 -0800 (PST)
-From: peng8420.li@gmail.com
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Cc: david@redhat.com,
-	osalvador@suse.de,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	linux-kernel@vger.kernel.org,
-	dan.j.williams@intel.com,
-	"peng8420.li" <peng8420.li@gmail.com>
-Subject: [PATCH 2/2] Fix the name of the source file for the "FOLL_WRITE" macro copy
-Date: Fri, 14 Nov 2025 16:50:38 +0800
-Message-ID: <20251114085038.191031-2-peng8420.li@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251114085038.191031-1-peng8420.li@gmail.com>
-References: <20251114085038.191031-1-peng8420.li@gmail.com>
+	bh=F0ZDSLhJMzbN91RjPN1EbDilhkoQXAuNj9rynmBWpuE=;
+	b=H5PCO6Rt4Ci02q/AA4i5AELKbMP3hat7g3LXk7ymoDmax3y2aOKjE0+LfSEHIZm2xkT+Xt
+	REmqcDXE1HexIORwSn+lbHuXOG1v7phpUmcCMUATMiFsU4ZbgaLpSW1VtNaqBPvWm7mjQu
+	S+/pwVXUQU+m3CvQZxJ8EStbFI1f4pQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D50904444D;
+	Fri, 14 Nov 2025 08:53:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A4FC16AAE;
+	Fri, 14 Nov 2025 08:53:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763110386;
+	bh=MWXd5szugeshV852D+6iJV2/VOZL59gQzQ6IN1NcrI8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GiHZ7Clwa0t4iY7B637Zx733ucT4kzMVGQdk9zVLr0hZm3HOcByGnxZf7x87ZSwAl
+	 Q5n2SW5PCywXHD8aCsjAC8aGObZChB1i6yISgbnwBdFi8olIYu5CTJnV2H7UP/76t/
+	 A9wAqfdvo1R/eEVCKhozOL09tz4rd1ItAjlDkNc4SJUFA1twxkPTS6mbqQbm96MYUz
+	 Ow7EGvQ65qxKA3Dc6Ojp7GVgqpRxpjim85UvD+upUODQg+ueKLTQ0z6jxORfZQBwVe
+	 MVEjxBtx2ApbrnOBA44HQ3u7yVo58o3scOGduG2iUxSdz1+iICyrjzsUU212Q/Sxf/
+	 GyqRqPnXUZiqQ==
+Message-ID: <a154f3ab-36ec-4b5f-8c61-6719808a2a34@kernel.org>
+Date: Fri, 14 Nov 2025 09:53:00 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2 1/3] mm/khugepaged: remove redundant clearing of struct
+ collapse_control
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com
+Cc: linux-mm@kvack.org
+References: <20251114030028.7035-1-richard.weiyang@gmail.com>
+ <20251114030028.7035-2-richard.weiyang@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251114030028.7035-2-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E0BBB40007
+X-Stat-Signature: 3ucmqhmz44h9r9xewzoegyc3w1p1ro6k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 470CC1C0005
-X-Stat-Signature: 8rbup9upn7gum7ibdi8ptcimefs55dxi
-X-HE-Tag: 1763110247-323411
-X-HE-Meta: U2FsdGVkX1/zoR6XjHgBzIWdrfJjj2UHKawb2Xa4eoU9CZJI33wKA4hgc8NX0GDKZHfmI6flb67zmQysWl7glHBy89EEgKTVG7SJdYM1fEO8ImAOHlSDJphg4oGChk1FcqUd8fW0q8HC28xz9VkvYC8r/7dymne+jEi8tcAd+1S+zbYxWPRAY6C+vyFr8BIR8s0EibrR6P9fn2X0vYW8LsZ4E/Lo6V/rOnXGk/FGn0kcXMmTTSVAtL/x/kJqS5jvLbW5goexp0ZK210K80KpD9UwWSuFTGWOuGhi6GCZUu8e7B/Nsdl7B3Cfxr0e6mu3fYocv+X/F2junX+U9jzxC/KuD90QQrzDh5G/aVPUZP311IpLgFJi0baEFiB5PRqECkkJJcnoHh/q8hrGtzduRsj7OZSRavxlow9ZWRrBvGHS0beEwl/HKB514wrNImEaqxxDWb9iMp2iyZRr/D933OOC0A2NPyy6zswd/PxxSiDoze6/Ko29avcbhY6FazrDDxzee3fhFr+mTCtr1FYewvqmcIcCWdau9FYWQnn6aJQAE0Z+OmHznoU4TYUtArgG7oR6GZcuLNRthWQMhKpCW4jq5W0NhTXtWajZVj2/o8aJOcK8RqWxzHnPAKF79PHbns4zvGhHd/uCB1Yor2gNv/CXDiqsgXTVe96vcZZvkgadUgR6TjvwbFB77lC1R0zOwRvW/B/6BVlj3Vkp+PB6o7xa5o8+6CGZ0yjoEmPp5EHO9iesFg29mN70a36gdLXssMmmq6AF/x1CuCwY3PvV2LkNxpq//D4ZHFu6xBAbRmCYE/8oCa+RZDZY9KALXgk9zy+Y2pmTlong+AMBwc8lnplAgbGAO0uXgjFqFV7juU7Z6gxTDJB9zhoDHWUN/QSgJ38ISUt+mQSfrNc3bg5fGak0ASV+Cuw6K7vwZRZNWKsweZ67kEsENQNbclrvubzBlId/t0jBn/W+OrReZOy
- 8ZGvsF29
- gm5KhcswXJHH0kV+ZqACpW7GxpHsFERRqewrJF9Rs+OE8LQRB3kjfPIyTZaxaPQ30CW4coe73AH7I9vl5IvPwhT+t/AsX+jnP4PKiV7c6ZZDJXdy+pPNr4rwOJiYMy6OpabFzyvE0V86AQwarfGTzJj6dxJDsCzDAARDiZIls5OjQmmOPsMae0sWo5LYRQ4a/kNwhy7KtJ10kynzVEcA0EanGGZc+sM262bG/Xpi2Q6q+ijWRYDeTGmJWt4M82j2AxFo/pXOuplDqMYQqePinLsHis+fqo+Mw5ruHhhx6dVhsrD1661GoKdT3v+Xxl6TCO26qQCxRm8nxiCrdFgZZalK2NmQLRVuGCTFk1pYGXtDPHMzfypyK0HECy9/Hz+wpftLCzvqcTXBNfKM0aAuqqh6FotcU5gjjYrhIv/cPEq+QbffFM/K3/waClpP8Rn/yEYkYJ2PHvVKIIF8rU6A1KTlp92w691yCvBL8VfYOiLoNUkzr8KuM+wXr6f+h3wlvqxhcuzvNz3LTNxDl/j0/fwwtKiQ0SckMZqx/GEe3D5eyke8=
+X-HE-Tag: 1763110387-947762
+X-HE-Meta: U2FsdGVkX1+7fVvPlS5Wpf6aR6Ftxb95TyD5qjQwcccbWp8900FZyTG5Fp3sLkGl8GPfF/NI2cm9TLG0u7fsq5Rz9td6Nv5u4K8ySHPNLUbBpAx/azEqchdmeo5OW9GXNqbmWm1L1gKI+rj/9A+5dVy1E98Nw+mep5A8zATeWhuYcbl58EzY5H/sGqGfU2NBRJZQumuRwYmka9Wmo072Vy9nSHpybH0eNF7Sth4OMtWgTx4Q66TcNt9cPij+VtKcCxFkVlWlQHHy5W3q2QDQRFMf2SDlNiA82uPOnP2wMi6WSTq4H2AAOT/uR8jDNeSTi2D0f8tnQ8CfC0KRt7BAzAli1g88YTCKq4Wt+6bnvLM+9r97xTTMqJTZTuh9YooUeba8hPiCVZ3uZY5bP/V3j+cLIfzq8CeDBrqOr8Poebx9rTOf+Y1dvkXFOpyuvp7PBW8jjUeCZeQlPEI6hwB4PE6WL9AAXfT8zojuYkdhadAs0VOWBQh4cuOqUgDYVaszWc/qGM5wmoVrdUA6S/McDbUIECN1aBVq0H6GqPwU9/kmq1mV7AT/D+NPkFymBki0ctX6pwB5sjBO+dIXyDhiZTuSiyKWEM2CH5f7ywXecLRWVvTDpwGJmHMshVXLgbSpPDjQqyPeMPUFEMWe2Acro/BncqqvZHgBTNUYZCvAm0DrOrW4gf49B1KsB0Teyh3q+BMdkMTupos29TMlbo5P59w5PYMlEixGUiFSC5B/AMaBxb96TVNss+u6AIy16ugfTr5NgTdWZvusSmNE49THJlQ8cWD1T9aE6/YhpAxFQGqpiO3wJEVbt0DY/9cO/PEH8DmMRPPDFtGtUHj5aoreHIKwp+O9cMepcqyxpIrxZpBVhAH4EknVm0vOsJsHMz8+S/ZskgN7V3N6Y9B2mgzw1Wr22MF2AFbaSXgtb+JZ0uv79G4Vc10XQgeni4et3uav+7zeJR1tws9W3hDqi4i
+ WMvY+LsE
+ KBrAGLql96ij23p4h5cOm5NMdzEi+WERNESpA4kHvbOWTFN2rEF3t5IdhSPaSCIy+O4XArDuRXrpzGNHHmSWmvIysjQ1oGv0Svs+woOGq1/AYF1zfD36p20kXDOkpVlLzekngvDzF/61EdnuLRr6VnBN1pr9UqbkG/GKcgexjCaMA/4L64jdQQNdns7sYzT7RnMzeyshGRCYOYGmjXxqtGvrADhd91BNis95ECpKC/elfwkOxlB6/jqjoT4P00+QhTbBE/cZPeYsgAIkdgCBr13KWj+2h+b2gXFWW/Ojv4MSeLPlCj/sC/cAcv6H9dr8o6ZbODA69Zz3enFVMN/bQU17Z8HyJO7iL74fTr9Ah7AWFUn39XbgOCX2mldrVrcC4jwfAXJgH8Z80sThQHcyk8MfDSmGK1Oxyw1tzaj5FW7pvgTo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,29 +99,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "peng8420.li" <peng8420.li@gmail.com>
+On 14.11.25 04:00, Wei Yang wrote:
+> The structure struct collapse_control is being unnecessarily cleared
+> twice during the huge page collapse process.
+> 
+> Both hpage_collapse_scan_file() and hpage_collapse_scan_pmd() currently
+> perform a clear operation on this structure.
+> 
+> Remove the redundant clear operation.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 
-The 'FOLL_RITE' of the copied source is located in mm_types. h of mm, not mm. h, so fix it.
+Right, and the structure does not seem to get used in between. Thanks!
 
-Signed-off-by: peng8420.li <peng8420.li@gmail.com>
----
- tools/testing/selftests/mm/gup_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-index 75f7134d529d..9cdcd10d3f6a 100644
---- a/tools/testing/selftests/mm/gup_test.c
-+++ b/tools/testing/selftests/mm/gup_test.c
-@@ -17,7 +17,7 @@
- 
- #define MB (1UL << 20)
- 
--/* Just the flags we need, copied from mm.h: */
-+/* Just the flags we need, copied from mm_types.h: */
- #define FOLL_WRITE	0x01	/* check pte is writable */
- 
- #define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
 -- 
-2.43.0
+Cheers
 
+David
 
