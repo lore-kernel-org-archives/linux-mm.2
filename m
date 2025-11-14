@@ -4,125 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF13CCE7AA5
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 10:03:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C063CE7AA8
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 10:40:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A3EA8E0011; Fri, 14 Nov 2025 05:03:09 -0500 (EST)
+	id 2E1C08E0007; Fri, 14 Nov 2025 05:40:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 155CC8E0002; Fri, 14 Nov 2025 05:03:09 -0500 (EST)
+	id 2B90D8E0002; Fri, 14 Nov 2025 05:40:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 042A58E0011; Fri, 14 Nov 2025 05:03:08 -0500 (EST)
+	id 1F5DB8E0007; Fri, 14 Nov 2025 05:40:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E24738E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 05:03:08 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68EB4140351
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:03:08 +0000 (UTC)
-X-FDA: 84108774456.18.B5CAE63
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 23FCE1C000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:03:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RhJWoQcw;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CtnITG5K;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lb7ZddqK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=s7s0V9rW;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf21.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763114586; a=rsa-sha256;
-	cv=none;
-	b=Yg+v1/E3p2WvgRIXcu9QFQGheqR5RQTL2+9OW9O0mOGIobsWKXldhSHIZNjRso72SVlz4o
-	D4w1r5mJWzr7c8pyLlmhrkXqUFrU+PgsO5xcOc0hTRyFTXFm1e8rb+EG6AozB+Xy4PIHOp
-	dKuVMIMbw+eIriRSDSHWeMlB7v9Sbto=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RhJWoQcw;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CtnITG5K;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lb7ZddqK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=s7s0V9rW;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf21.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D5928E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 05:40:55 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 986D813A994
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:40:53 +0000 (UTC)
+X-FDA: 84108869586.16.AED5F78
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 097E140009
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:40:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=iJEAeLjh;
+	spf=pass (imf27.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763114586;
+	s=arc-20220608; t=1763116850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
-	b=L9ZOhGDSfxnn6IGZab7uLFzCCa7Ohpo1/9mdqJGAOHtDSl5H5RGunLG/piXZxgZOktdTef
-	GtEM/aAB5FF+Uj5NxE/Kn0rT3HJPU/WPsZL5lUjmIA/x+ufQCmdRunujpp/mSphpDZQFYQ
-	8scMcWlzIWdtOFhzsNr+4dz74JLEIus=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5A6B61F825;
-	Fri, 14 Nov 2025 10:03:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763114584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
-	b=RhJWoQcwKmg8/lCxpgWTh7JY2lrS49LMNluiat6BCytvZlNKcOgZBZfMl9X2nsXZPmnudW
-	oOWjlUPH9Ci5wp/yurOCmg1HSf8pSje5T2PcHLtsRNu6Q6XreWWHxVnJD4y6600nRqpl60
-	Xy7/Rb83sMazVipRwa7LqEk3JMdgqY4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763114584;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
-	b=CtnITG5KCEtOgDhnMu/NNQ945nOFmxzZOcS7wOCPmF9r6ohzer/CSijfrMDz3bT3kenDxt
-	TTKyTr5ZXHW8fGBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763114583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
-	b=Lb7ZddqKCmztqesegCwYEwbsQA9saZuCJ5QIUwMopp2lhiIZ0H/DNu//izmsy8pqgAukFB
-	9LtfghZQ5boK4hs0C06j2oq7K/zY33PnCZl5El148A4i/nesZqUzmxYMyaHgKjqjCPmNJg
-	h76LwnrUPNrX52WVmzdpTVZomqtqJLk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763114583;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
-	b=s7s0V9rWU4yRh46uFr/eiNcUw6uxVGFaS++ZwXAGpkGH8NkZamvEcjZGr3Do6DH4sXT6cH
-	c2jqyniKkDuQEsAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2471B3EA61;
-	Fri, 14 Nov 2025 10:03:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id F9rhBlf+FmkIcwAAD6G6ig
-	(envelope-from <jdelvare@suse.de>); Fri, 14 Nov 2025 10:03:03 +0000
-Date: Fri, 14 Nov 2025 11:03:01 +0100
-From: Jean Delvare <jdelvare@suse.de>
-To: linux-mm@kvack.org
-Cc: LKML <linux-kernel@vger.kernel.org>, David Hildenbrand
- <david@redhat.com>, Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH] mm/cma: Inline cma_sysfs counter hooks
-Message-ID: <20251114110301.39316246@endymion>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=e3qA8tOoAeoWIDGPeQT0umXZVt3+AbbRL3OHzsWicUc=;
+	b=Q8ELvCVRtxN66bKnM/NKjqotj7SgEOqIQUwaeegnEJOuLphjh7C0WMqYRD6a7DOF/xiIYc
+	evgaPBule66MYj2nBNn9D38Wm/UjoMbPSkQSgpVEKLS3PWEs2f4aIafKfGCbGY8KEUNVHJ
+	r5XIrrFdggqgvm0Zq4MHFe+vaye6tpk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=iJEAeLjh;
+	spf=pass (imf27.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.202 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763116850; a=rsa-sha256;
+	cv=none;
+	b=1RPS9Di0ErOevGWv0UKhAO8JsdqXxkzixMzGT9SmwGelTlLKaIqOCqEqGHy7ybQNvbmZip
+	eo43JDzlejMP7G6GIZL7Trt1DY7K5XZ3G17FTGK1BZSkJzpDoxtlz5WzSlBNmy2gkqy8up
+	TbXwpErPhX7Uu7QnvMUkCoRV4GekK8I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1763116846; bh=e3qA8tOoAeoWIDGPeQT0umXZVt3+AbbRL3OHzsWicUc=;
+	h=From:To:Cc:Subject:Date;
+	b=iJEAeLjh8Uj/XlBiGE+vegcadyjDUTtDbOlmb5s3P2gUva+itO6ad0MwT7jBNFu6H
+	 KoLIIdck8nPaXhUkhahGh86ZJbSpL8z6RBJY07PS5CvytYWOPBk85AQQ9P0QBnRC7f
+	 QqgHnZVhgYJu96EHijvr7KXTPtjzityAyyqtRja8=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
+	id A2B98296; Fri, 14 Nov 2025 18:40:43 +0800
+X-QQ-mid: xmsmtpt1763116843t84na8r37
+Message-ID: <tencent_ED235B379E160A5C2BCF688ADDF3921EC808@qq.com>
+X-QQ-XMAILINFO: MZtEYADUG4AgMgoRmqPjUxGtzBJG3g0Kyyc2+px6B5cZVB9QClxOIYZkpOPEnb
+	 YwpIDGtC1l8v+vzbrhN46OL+VN8GkMR3mm3JkOWyaMUo4s9XejBIR5NVEy4mYb/FzWT4r6A3CDBl
+	 EmcuZDIwThiHiuWgzXK4MNQIXSmBT+7tNWNmvAaqhA5dTrYoKIA7+6K3iRFt/uOBsmdtOiNYvbJY
+	 nKGUvoiN+/LoXT++N9ZB6kftflJBCUEIEcSBQNoNH2rnGBoW0z2aYTx4xXhTuRf7DVBjesFE3buk
+	 X5keZy9EkS5IiSYJOHcr3z43KNS/SY/s8uyqfjSweyPCLDUAO1RszoILHyvS/kaSGlfhgh6jefQS
+	 +O0S4/3uIRM1R+cOa8Ar6f+mFktLvJxAYUfy75U5OPqgsaPGWwvVrbv6hNPB+R5gGuOB8rVtQrcx
+	 iljTEnBOWgnXmli4tkz+g9y3CxPDmsQRd/YOVK5OZfccTHK/05omCjkh8z7kQiJsjmxL3eXne7TK
+	 2LhXwvDkmlm15dsJtFsQ+5LXtN/VdwsLd3l41mzofVU2X4AcLhcpzWcqW4td1LfVpSdaYIXXEkze
+	 xlDEIaziyPOI47agF+CftbquzAj8cXrYbbPw/DtQnzIfNbHoA3EIQdSxKZO2JxUnTntCkaZS7ui3
+	 skLLoVYnnQbTBYvD0ZYNcEvYrp60+5VCmi7hiYSAQfQHfOHKGwdeQZY5Lm4G9DdLrwKHAQ9Cn0I3
+	 dX1jNpW5++tl4tw7M9T94wBuaTuzSA+I+sF6vsqJMKyh6mHxABiBthRTqLUtMMDrG/c7n4YEhrIV
+	 ePCuEX/pbqOITlIpzTDtGnAf4VyAW4NuqunQqEEFu5arl+bY1o6HngHpjzY2JnqekXboQv4c6BVQ
+	 VOIQnmD9WpPOzlkLhNEfhKChNrk5zNnVVaxPXOVDTitQdjTU4QF9B5HGljP1k/kPi7Y0aJdL39eJ
+	 OD57Rw6DjK7gDeg+AfW0TjMd769jAkgg6nPE3uuIWT/fTbqttKqbPTxs8QgB8w0wcQKAdfpVv+Yw
+	 7uhYgQzG+rMFhTSAi06KaMtFcG98wWxfvsRNvfh3dbQ6EbJqyDZ/5o/NyG3FNjdFmXhEOWAA==
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+From: fujunjie <fujunjie1@qq.com>
+To: akpm@linux-foundation.org
+Cc: vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	fujunjie <fujunjie1@qq.com>
+Subject: [PATCH] mm/page_alloc: optimize lowmem_reserve max lookup using monotonicity
+Date: Fri, 14 Nov 2025 10:40:32 +0000
+X-OQ-MSGID: <20251114104032.2740513-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 097E140009
+X-Stat-Signature: dmjmj6dm6ru5ge4e8hb4zt5z896naq1e
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 23FCE1C000A
-X-Stat-Signature: r85suw7sr9jzppr1bxqjf9d44s63c1ro
-X-HE-Tag: 1763114585-708649
-X-HE-Meta: U2FsdGVkX1//CTavurX92c5vXZsiQziASds/nV73Ws56PWf+NUpvvPkqw1QiDILVm7X8uw4wuCHvqdkcwog0ngVdj0Odg10MXz9eLP68WIVLRBLupvsyeaJ+CRpJSwpVjVSUW7dRgAG9evEpKL9FZ2W4s7AbLPrpfFq+83eBd5X2hM2vsuRUy2Lc/26pbBUThpgLLDbYTulfuMphx9N9xpuYbXu0nZrBmBvgFK6C84PLh30mdgSsXUXp5E75jMR50hfdnpzfyuyAQC9NDMMIMu3OIyFzVXp6YJqirHmD5I3v/l7YnevjsO5d5u127WGMIhlvXDQ/Px3jyDGYZyk0lZ9XOCDNL0DlCHH7vgEBjcKsmeBCjHLP4Z+ZGaO/1ESCwNSArxRlI3usfBP21zOxLXgT2qlS23UP0MpCBEc+KOAGb2MR25/f8wr2cOU8nLFqCtElT2vyUM3AUEMcsD4PDXsNG261Yz1is0chrY9YVhOrXvNnG21huErdqa56vI/LQOFzIOwiWHNRPqjJH+BSPLKqIKV+bJhdnUlpxCqxXFEYbIiTd7UgkEW5yQqvlxm/s2710Qyr7mgkFV8z6Vvl/celf31xJjuRo1fg+rL3g9i4q1Ed2YHjinJX4BXcXrmP8d9gskg2U6G+w3hGAhD3j6mn3jCsZoLgjWKoJE1MfkIEaH1b1U3a55y5pgaiEwQL+JaTk4M20q/SegdZ5lsilrFHMOGqm0V8ALTK+Cy3nuMsBskknJmm0MYwO1zH+WJ93VhDF6h0PP0j61eUhLVaaSb+RsTstsiO8PVejZ5PqyTQpfwUmJPmAA6rWyIVbofe4BW1LPXiorCN+xZEy14ChqxaXmwOB0bz2KQlPJf+DwPgp1k31ZChTyyQn8yBkBmsymf0IuYwAJbLCd/2O04IIaI9O74bQxDKEEfWdsullmlkRSUyAFRn7oxNjq81AxSfEKwBbGg9dRKJVBPpsVL
- B0FndoK3
- 4tBIRuLCuWt0pIqimEV13jZAGXfiD9niX9sABQOWlimQWd8Jf9C+4uLh/ML5kPPsV5xdEDvyEdmYpuiX5XKeZmtfV2kVettnvjElOBs8xCOZoFzQ41vpa7QBpaG17FLTPJyBySs2mW0P1fHBLlPJgZwgLxDn7+OwQIQ7sDw6eFR0YqKonOnYy6yt8FrZfD+KFByGJxqKp9taszsLh+9bavCE8atv4kATAS3MKE2EIML6ZK6K+JiUAfbTYvVnQwd1u6k6urvrx7+dBk1JVc7GQV8aSoDbFTVHG0cDHxAZF9wR5dLmcpkT2tglOQWuH4xMMlK92mq+2uXwuETFmtFrsj15wPBa0BbTBNAT86EOZBoh5yRQ6GFGEV2kPxXOO2EdgV8j7
+X-HE-Tag: 1763116849-801502
+X-HE-Meta: U2FsdGVkX19KWrnyahck97McNJl+6uWMQ+unpLn1fhRGBiTfl8zzhD+fLT6v/3PxxMNDhmDZQr/G0Dlurmu9v2Bxtv7OvxV+USttEZEI84DSlrFkwEL8Bq0ig6LXbDC0wxcXufNc0oF8+LwmElDWpS+nHPZcHigHrO6JBLWHm2lpU2oj6dl0qZBJII8ZkRgfE8cNQna4hc+9r75HRKnosGeDHTjQjrz8ho4NC9/BNIHTIBJxG7xanGoTobcld2Vf+yXncN8QCB8rUHo1MxYgSFdt26dBb8LhyUiIjrXr2S7uaaFdJL/IqwjpKu9UkjHO3Q03fb+xQpYHyzRnK10sWrysHJKhauclkAREyH6NrX2Rp1M4jqwgw9Y+IMDynOcMtNaqiSOJgk4snckmxgfDx9j9UZ60WIK5jTdb+c6/pJT2nyB2lJlAEV9nXSbX/cqzo6YdO6ZrV+2T8BdhZxs7FGqlOpMK0W/DRYmoP20Q7aHZzbS3/uqouT+NQOcvvER9Q67hn/Ns1avis2tdTpqklihLmNfRKCgcHTePpBU3MD4uO1GPzSyte/L8acUxvM98XW4/qdy3QG6vzBF8wse/ukyMGBZbslM/SPGrLvSmXOsVKfRBKqcJV37aIziyk76Zg9CLSW2w9ZKRwcRas3qo4rkxFo143t8Px8Fx6stZoX/DDFhu2BFzp00u1MDfSprZy+qn0Gd9KfatkyU9rvy0Go7InoZDcBqYJWQgTMTT5JC7V5ewHSHmst2vKrG0cMkPsRZzhTzHSIvawp5kNfPmqQq2RDsSC6DomGN6wFAGeIay/5gd3xa/Yxzun4A9p9ej4ND0YaAefrI8QQDzK8w3pFhN0DyBnf2Iae4Lw7MYscqx1JG4kCbjNJ74Mk4Q71bs/WdUMEL0S1oYz6PEkzcN9d0ymxqSZfQu6EacuJmoXHrCTUWlOhmTNNa5YgFfMwgQmWb+SklgtN6nJjOCr0N
+ hI35oMjE
+ k6OG90CGZY4AJvvTy9gYgtv8/4r1hQXdtASWuEjYcUP3OC6w+BLDvi14a524d4IEUyJRA4ICpJLgFqk/NvlgJcBUIqStbrjkgo4SP6CCnM/tdZcI4jTe0Dsw5T4mJvlz9pD9DHboifPyd4u1oMbRalUZN4oetz4RIfsUQhi2C0jz+YdUozwLL136rTy5rhwCbuqFtLqCWpdcTzCASyAlOqa7I2eM3cq5CcNBXcjzROEhtOUT2nwNqcXwvuM5ohG5yvIQFNG/RndTjz+cY+nJYYSKFJiWx8CkVLEiH9duhcpz9Z9O+GQ7qChns0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,82 +108,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move cma_sysfs counter hooks from cma_sysfs.c to inline functions in
-cma.h. These one-liner functions are only used once each, but the
-compiler currently can't inline them because they are defined in one
-object and used in another. Letting the compiler inline these
-functions lowers the footprint and runtime cost of the sysfs interface
-to CMA stats even more.
+calculate_totalreserve_pages() currently finds the maximum
+lowmem_reserve[j] for a zone by scanning the full range
+[j = zone_idx .. MAX_NR_ZONES). However,
+setup_per_zone_lowmem_reserve() constructs lowmem_reserve[]
+monotonically increasing in j for a fixed zone (and never populates
+lowmem_reserve[zone_idx] itself). This means the maximum valid reserve
+entry always resides at the highest j > zone_idx that has a non-zero value.
 
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Rewrite the loop to walk backwards from MAX_NR_ZONES - 1 down to
+zone_idx + 1, stopping at the first non-zero lowmem_reserve[j]. This
+avoids a full-range scan and makes the intent clearer. Behavior remains
+unchanged.
+
+Although this code is not on a hot path, the revised form is clearer
+and avoids an unnecessary full scan.
+
+Signed-off-by: fujunjie <fujunjie1@qq.com>
 ---
-Applies on top of my previous patch due to a context change, but
-otherwise independent thereof.
+ mm/page_alloc.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-On second thought, we might as well move these functions to cma.c as
-this is the only place where they are called, so it's hard to justify
-why they should be in a header file. Opinions?
-
- mm/cma.h       |   20 +++++++++++++++++---
- mm/cma_sysfs.c |   15 ---------------
- 2 files changed, 17 insertions(+), 18 deletions(-)
-
---- linux-6.17.orig/mm/cma.h
-+++ linux-6.17/mm/cma.h
-@@ -81,9 +81,23 @@ static inline unsigned long cma_bitmap_m
- }
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23d..414c5ba978418 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6285,10 +6285,22 @@ static void calculate_totalreserve_pages(void)
+ 			long max = 0;
+ 			unsigned long managed_pages = zone_managed_pages(zone);
  
- #ifdef CONFIG_SYSFS
--void cma_sysfs_account_success_pages(struct cma *cma, unsigned long nr_pages);
--void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages);
--void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages);
-+static inline void cma_sysfs_account_success_pages(struct cma *cma,
-+						   unsigned long nr_pages)
-+{
-+	atomic64_add(nr_pages, &cma->nr_pages_succeeded);
-+}
-+
-+static inline void cma_sysfs_account_fail_pages(struct cma *cma,
-+						unsigned long nr_pages)
-+{
-+	atomic64_add(nr_pages, &cma->nr_pages_failed);
-+}
-+
-+static inline void cma_sysfs_account_release_pages(struct cma *cma,
-+						   unsigned long nr_pages)
-+{
-+	atomic64_add(nr_pages, &cma->nr_pages_released);
-+}
- #else
- static inline void cma_sysfs_account_success_pages(struct cma *cma,
- 						   unsigned long nr_pages) {};
---- linux-6.17.orig/mm/cma_sysfs.c
-+++ linux-6.17/mm/cma_sysfs.c
-@@ -14,21 +14,6 @@
- #define CMA_ATTR_RO(_name) \
- 	static struct kobj_attribute _name##_attr = __ATTR_RO(_name)
+-			/* Find valid and maximum lowmem_reserve in the zone */
+-			for (j = i; j < MAX_NR_ZONES; j++)
+-				max = max(max, zone->lowmem_reserve[j]);
++			/*
++			 * Find valid and maximum lowmem_reserve in the zone.
++			 *
++			 * setup_per_zone_lowmem_reserve() builds
++			 * lowmem_reserve[j] monotonically increasing in j
++			 * for a fixed zone, so the maximum lives at the
++			 * highest index that has a non-zero value.  Walk
++			 * backwards and stop at the first hit.
++			 */
++			for (j = MAX_NR_ZONES - 1; j > i; j--) {
++				if (!zone->lowmem_reserve[j])
++					continue;
  
--void cma_sysfs_account_success_pages(struct cma *cma, unsigned long nr_pages)
--{
--	atomic64_add(nr_pages, &cma->nr_pages_succeeded);
--}
--
--void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages)
--{
--	atomic64_add(nr_pages, &cma->nr_pages_failed);
--}
--
--void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages)
--{
--	atomic64_add(nr_pages, &cma->nr_pages_released);
--}
--
- static inline struct cma *cma_from_kobj(struct kobject *kobj)
- {
- 	return container_of(kobj, struct cma_kobject, kobj)->cma;
-
-
++				max = zone->lowmem_reserve[j];
++				break;
++			}
+ 			/* we treat the high watermark as reserved pages. */
+ 			max += high_wmark_pages(zone);
+ 
 -- 
-Jean Delvare
-SUSE L3 Support
+2.34.1
+
 
