@@ -4,97 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D08BCE8D44
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECF35CE8D40
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 15:25:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DB6E8E0026; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
+	id 5B9178E0036; Fri, 14 Nov 2025 10:25:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B2DD8E0002; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
+	id 590DB8E0002; Fri, 14 Nov 2025 10:25:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EFC48E0026; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
+	id 4A6CB8E0036; Fri, 14 Nov 2025 10:25:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DC9B8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:24:33 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 076561A03F3
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:24:33 +0000 (UTC)
-X-FDA: 84109584426.07.D21F407
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5C2AB20002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:24:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DfMf1lEE;
-	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A2488E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:25:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1F2358E3B
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:25:01 +0000 (UTC)
+X-FDA: 84109585602.22.9DFDB96
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DCB8A4000B
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:24:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mp9xrJVd;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763133871;
+	s=arc-20220608; t=1763133899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ic0h3NZMZNIBp6WsmjUb9XT/3fZ/MM2GYrcCUfaAWY=;
-	b=ml8vw0hXwjku6s0QNPFHquPRyNSnO6dkDoNECzpzvUDbIU6Red3VWRorUM+YQWHoflAOy1
-	C99nZ35hpa9jlG+gQtaykMcll81smAVdtdG57zJdtWvk/imOJ7Bpmt5nnSwHtNIMMihUV2
-	5DuiDDiHHjoeRoRLjK2zYuw//IaTaI0=
+	bh=xXCF3+EoXphSvLziu+dT9EKqywwUxlLqM+hyBrRN9TE=;
+	b=TufBBYNzCKFEDE2sC/vV4aGyOAIfHqZNIE1N5keKh05SK4vcmKVpIjf3TqBIxDLvCGEiI6
+	1Fh5VP3z7taAEXaffiIcFhrcV3pfyqDF/0VPfIszDnaYVmnl0iFWRwdJ5HKUSAYT1wsvGu
+	7JkM4keiTs4uxyuUcoWDQ7mWTr5R0Nk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DfMf1lEE;
-	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133871; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mp9xrJVd;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763133899; a=rsa-sha256;
 	cv=none;
-	b=j9Dfr9yMIdWmLnakQhXME5JERw3auj4P0uDCSuFaIpCtTPpe++fhrdrvx581k9beYRbV7h
-	d8rSB52W/L1P50lr0EHqZjEJ2of2mUSiHvk6KTsj6yIC09l27pzbgYcD94StIgRMtS95Gi
-	qQvX6Kh7ICFSPiMJoVtrNARdIu4gKnU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 189D740E51;
-	Fri, 14 Nov 2025 15:24:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B65C116B1;
-	Fri, 14 Nov 2025 15:24:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763133869;
-	bh=QBSnPvSO1GNVbt+v4ouKlCcxmuLb1PsUsCj+WCfoziA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DfMf1lEEs2cqFcQ7RTwcJNZB4afx8bxgA1C+4hrJF1QRTh5F8m4fX2UbUFXOnNrmV
-	 DtlzLSCbubbaKxYigDV3/8WZmjOtdrp4ffKdTKPaZEgsb+2PomIQpNnz4OP418GJgF
-	 XU0UK8VTHK0p2jusTvvzsA5Lx9YC9zH+Rhk+bOQEOV7DXFfn2HxnaKixAG5YcmMyvZ
-	 XD985/x5+9w9KVOou+md6yTNlZJ3/nu1Es1KfAig2rriaYqs3hIREXyuCCPHVtb0Bo
-	 JBLH8XAswkzNabET3ueqDRX6gzI5EO/VwpGt8FtT1xe7K5uLO/HmLBzZvsmWHT24Pv
-	 dThWV7yWlWedg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Mitchell Levy <levymitchell0@gmail.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
- Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin
- <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, Viresh Kumar
- <viresh.kumar@linaro.org>
-Cc: Tyler Hicks <code@tyhicks.com>, Allen Pais <apais@linux.microsoft.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org, Mitchell Levy <levymitchell0@gmail.com>
-Subject: Re: [PATCH v4 5/9] rust: percpu: introduce a rust API for dynamic
- per-CPU variables
-In-Reply-To: <20251105-rust-percpu-v4-5-984b1470adcb@gmail.com>
-References: <20251105-rust-percpu-v4-0-984b1470adcb@gmail.com>
- <9HWB8ewzZ5ZFApS4ggvpeoZmA-oRMmwXv2XOy_c_Ck7HkH7QOR0EaFmGnjNTmk22baplRPX3UcbWj9WnXw0r-A==@protonmail.internalid>
- <20251105-rust-percpu-v4-5-984b1470adcb@gmail.com>
-Date: Fri, 14 Nov 2025 16:24:16 +0100
-Message-ID: <87jyzs3ae7.fsf@t14s.mail-host-address-is-not-set>
+	b=jPAAZVWhb5VVDvA/Smlcyx8Rn7OsWxeRFRseymiZEHQfWbII8urLXQC4Ds1pWg51E01QMd
+	0kkEVog4Fn4SHkO3tkfUbplT/75fdWpOWQ4dYNFzbAerldqmdWnULVhwPAPkSmM9DzWG8p
+	xAZmEja0G/pogGiMu34mkjrInJqPJm8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763133899; x=1794669899;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BiK+fqpRBTWp4mUrFhUYkAdEjCSI4//VP7gZQIis1tM=;
+  b=mp9xrJVdqARaHvyWEAv7IgnxwSy0ivM7tNDDAthwZ/TL0YT2Q9pLogoZ
+   nHxF3R8V+wfVDMRtA7u9pu/rkJ1pjZ2N4px99Ank+xR4JwH2skyWnF9fk
+   eataGt3o1+pFN8jDm+IJ93CZUsWQIfKp6UzTBQCGtrLITTqWGZ/xLtCpY
+   E5Q8SFViEks+X7e3yCC6mMblLEZhDA1lbcSEYncVOufZZsrYoWPihqELJ
+   V6dlPqaMtPeYk1EL8pa5iFmqevbehrbM6zznzQhPDCAfcQTKKA0ysXA+K
+   WlSFQkUdbCEHCO67VPFiare9mtcSpWvzkg8Bua87mo1+5+t5Hzkdn9KSc
+   w==;
+X-CSE-ConnectionGUID: LEpb8lwgQIq4+JhaIii5TA==
+X-CSE-MsgGUID: ycJQUCZuSruVMMsdRnybcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="82861596"
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
+   d="scan'208";a="82861596"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 07:24:56 -0800
+X-CSE-ConnectionGUID: P4ubDkTKSKmCq1wPZrc8iA==
+X-CSE-MsgGUID: lj8S5HHjS6e9N05+APrXRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
+   d="scan'208";a="189990414"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 14 Nov 2025 07:24:50 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vJvfL-0006i5-15;
+	Fri, 14 Nov 2025 15:24:47 +0000
+Date: Fri, 14 Nov 2025 23:23:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v2 1/4] mm: declare VMA flags by bit
+Message-ID: <202511142325.rDmlXFxr-lkp@intel.com>
+References: <6289d60b6731ea7a111c87c87fb8486881151c25.1763126447.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5C2AB20002
-X-Stat-Signature: piuqkirssq7ceakfm65ad5j11r8g4jh7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6289d60b6731ea7a111c87c87fb8486881151c25.1763126447.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DCB8A4000B
+X-Stat-Signature: u7p71dusyywhanguzugyjszrs18wjtky
 X-Rspam-User: 
-X-HE-Tag: 1763133871-829270
-X-HE-Meta: U2FsdGVkX19SBp+vuy/rEKX5WAJQ6ns8Qr9Sr+VR6ybGxv8aJHDCzXTKUJmEY0XSlGcYAhTtbROEv/y1k9ObZjO/zAAHaDCXYpaX8h8WafrFKR82KOYE50e9oNpyogjRxUcK1X+DfqH8zMD90dgGXie6Gj4sRy/llNbXbuUlglGbRCNqshHO9tHTSn6villZKpku+bwFYzDlcT8413T7zTXdix22yRJKJvloW+qnfaGMdK3uCKmLxaDMxfc6j9wN98UGKex63YIVkLwX8duOKxKKNHKWPBhK6kVeCqdqZ6QSNAV7JBnyX3Nw1aX9kBSiSyUZtyI5TtMIQd9JafgYCrMX6qYebhC3MWoGkRPNnhPlHGhZ8Rkhy44e/QoGmKOz5VQVB3eSypSypsdClcWNwn0TIHKS61bAAZtP/fvFthkoOCZ3CbZlLW8dXDRrHHRRd+uSVDQ+iS1fx04Rm4tObTVBx07BpuPLLzs2d/UZyEI+SXrpUNUVHOqeknEqSplZ8+kxZ5iu3HR7o9WbyzRELptNxA7ztRR8Asi5tnDdUVbRVuZbZCeKFEJsGAgUmjwQHPC4kaDkQN6X2A3HIGu+bsrAkOzeCgCcuCfS5jqzRpe1Kikuce9ybJ/RzfABPm2QucYSVrzX/oQoCeV2kuIwsVMVoXJnOnwNVTbiNnwqtbWKJy+lvN72mYOZbzwHx3cBbH+6VdU7qHT7iCZoZLoOojmCgtvdxqxetM/2vg5vR2ISdcabBTs3QrKzUDGX/V3JNyAiK2uHTwNIVk/x7H/Kosko7KinHieXAnLBVewvaQNH8jCVDYb6YRLC9WsJYYrbgm9AfqU6fw9/gXdH3t5Ymz/y+ykzDemqKf09TU8bMCLbVp0BM6T+eHGdyvoE3QiVzhRPYJzkaV14hGBqYkbP7Th40T3S7MOuii+KOIdxAJALS60scmccRGxDaq8WuCu5t0vhWO7+PKUy6Kwd7R2
- yAeZM0uS
- Ng6WmXW0/RmxhPelXIMIGBmNSMxj8UihtgcBBS7JJ1PXTMcSv4ROHqKu9Ytm5fzjQltkBa6zRsXgZj4uL0aYh1PFGoQIVk+Wj+wHym4izmTGGf6MCqTBcue/1lWF77IugBlILV0C6CHVYRWoOO1ki+XrHAhnmlL+xeiIaqlMCzO5zAF/WAvPokKTOPsKdk5OYpBwc/s7ioucHCzfNMJwvYapoLzvuvbetTBbZK7UGOnU6hTawFJfBGsxj2nYDfQo82HCj
+X-HE-Tag: 1763133898-435472
+X-HE-Meta: U2FsdGVkX1+ZJnl9zQE5rujRXhaFQiJYi2KYCBDt+H2GQSkQ0Sl38MGObatnSvkRtyclYjoTz74uk5SjDszLd/v0mRNy+d26Qat6XuHMKSqPXrO97i0HDKy8A4yhdry5OkJf2LGVkrw3xznqrZcF1THZ4GZ62oRu/60E4QNWPmaVoAnuACm4Kbq/Dy3oox+zrz7BNniI3SG65J2iR0gkYCkX+JQKdgYo+RaUWaslavJgG6IRY1zoYjbW2H2nDxBurpX2+cBr+ToPQZtlITHNfzX1OgK4lfVI9YZhuyOmGPjx2C710gn+ZDM+gmEiQeD9sQmYcXQTP/Vt2+Q0B69TUmB7gD8xh31gl+cKOeKxbPlrWxdwRynT1F8oZpfMDhpluGvg8jAFpaIG/u7w++EsABJLAcCCpY6S4bJkneP1SkufFcGmNLD6e0u0y6IBktSWoRMNNG44lUrWUt4xMxRP5VTHfhT/LWaud2z1Uz66yjc/BgpePxkR2vhQm9JDwyaVVI4GlZjzeh6K7LliAhdZzHnQsBVkMuKogZLuE0AKA1sOapZwVLgv6Jq3LfraSKLxqCS/uJlnqXleMLE969ur9bbqgNKBle7I6Hr5s/J0bsSMVssdJpE2NWaefb0rPXWMIuDEhZHGeeh6iCzOwxSInsuIOFcrJYGIw8LkoN9cMXD4QzxiJCNnz0DNp+4LuSqO0QMovdJbt9KM55oaFwFAl+l59eRXLZnC+iQmIXGcHXuKm5ESI++e+I9bHN6+Rlj7+4g4Uz38cRpAw4tGn390VoOwOLTewvU/PQsuyIx56zZ8R+1AOFtWR9tfo7FvYD5TiPUAWMVfVbcUK3To2UQJXY4PDViXQ/OdjZgi8GJS407aT1LHF4lb+mU6EoeJ1ttvRsv012N/76dTXoR4eK1ZSDyn3E+PsWgISx540m6/7Cyg706XUhqtEfsh9MxcAy7LGCT7AL3QnLoIlN/yhr/
+ Yhs63Bso
+ NG2IVAZetoAhxCuaHOkV2WwzGmZ/m+1Ujw4MD6e6YfTkhRmKwjGiC7rNcDO9IULN0pmKHr5CpTvugBoRMPAKi1AaDMsB22Qt9yBipzgPfQ2QFa7Q/+n3SdRqG6C9jZEOLE2RBw12dorhgf4jfb7qUhgWakltghss1caUfQF4kEUQX34WV4h+l8z8wV9zql8/udoSi87PWo+9eqkcdOXisf0F8a4RrOhSerBYYItOdjZ3jO2y0rK0m5h2/5t8CFePohH+IxJzbxVVo3S9xEJGcqm2EjekTV+oc9HKW3NviMzBNpFKvng9GxWfL+JotLUyHHSqvKo7wYpUpFWc04ULblqKfLFTeWdoZpW1uNYDzNb4ha3C1gTkka671vlfSU7psYd2iyHGINJYBENYe0sOceb1NeoNSCe4SkhBT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,108 +129,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Mitchell Levy" <levymitchell0@gmail.com> writes:
+Hi Lorenzo,
 
-> Dynamically allocated per-CPU variables are core to many of the
-> use-cases of per-CPU variables (e.g., ref counting). Add support for
-> them using the core `PerCpuPtr<T>` primitive, implementing the
-> `PerCpu<T>` trait.
->
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
->  rust/helpers/percpu.c         |  10 ++++
->  rust/kernel/percpu.rs         |  30 ++++++++--
->  rust/kernel/percpu/dynamic.rs | 130 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 166 insertions(+), 4 deletions(-)
->
-> diff --git a/rust/helpers/percpu.c b/rust/helpers/percpu.c
-> index a091389f730f..35656333dfae 100644
+kernel test robot noticed the following build errors:
 
-<cut>
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on next-20251114]
+[cannot apply to rust/rust-next tip/sched/core brauner-vfs/vfs.all kees/for-next/execve linus/master v6.18-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
-> new file mode 100644
-> index 000000000000..1863f31a2817
-> --- /dev/null
-> +++ b/rust/kernel/percpu/dynamic.rs
-> @@ -0,0 +1,130 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +//! Dynamically allocated per-CPU variables.
-> +
-> +use super::*;
-> +
-> +use crate::alloc::Flags;
-> +use crate::bindings::{alloc_percpu, free_percpu};
-> +use crate::cpumask::Cpumask;
-> +use crate::prelude::*;
-> +use crate::sync::Arc;
-> +use core::mem::{align_of, size_of, MaybeUninit};
-> +
-> +/// Represents a dynamic allocation of a per-CPU variable via `alloc_percpu`. Calls `free_percpu`
-> +/// when dropped.
-> +///
-> +/// # Contents
-> +/// Note that the allocated memory need not be initialized, and this type does not track when/if
-> +/// the memory location on any particular CPU has been initialized. This means that it cannot tell
-> +/// whether it should drop the *contents* of the allocation when it is dropped. It is up to the
-> +/// user to do this via something like [`core::ptr::drop_in_place`].
-> +pub struct PerCpuAllocation<T>(PerCpuPtr<T>);
-> +
-> +impl<T: Zeroable> PerCpuAllocation<T> {
-> +    /// Dynamically allocates a space in the per-CPU area suitably sized and aligned to hold a `T`,
-> +    /// initially filled with the zero value for `T`.
-> +    ///
-> +    /// Returns [`None`] under the same circumstances the C function `alloc_percpu` returns `NULL`.
-> +    pub fn new_zero() -> Option<PerCpuAllocation<T>> {
-> +        let ptr: *mut MaybeUninit<T> =
-> +            // SAFETY: No preconditions to call `alloc_percpu`; `MaybeUninit<T>` is
-> +            // `#[repr(transparent)]`, so we can cast a `*mut T` to it.
-> +            unsafe { alloc_percpu(size_of::<T>(), align_of::<T>()) }.cast();
-> +        if ptr.is_null() {
-> +            return None;
-> +        }
-> +
-> +        // alloc_percpu returns zero'ed memory
-> +        Some(Self(PerCpuPtr::new(ptr)))
-> +    }
-> +}
-> +
-> +impl<T> PerCpuAllocation<T> {
-> +    /// Makes a per-CPU allocation sized and aligned to hold a `T`.
-> +    ///
-> +    /// Returns [`None`] under the same circumstances the C function `alloc_percpu` returns `NULL`.
-> +    pub fn new_uninit() -> Option<PerCpuAllocation<T>> {
-> +        let ptr: *mut MaybeUninit<T> =
-> +            // SAFETY: No preconditions to call `alloc_percpu`; `MaybeUninit<T>` is
-> +            // `#[repr(transparent)]`, so we can cast a `*mut T` to it.
-> +            unsafe { alloc_percpu(size_of::<T>(), align_of::<T>()) }.cast();
-> +        if ptr.is_null() {
-> +            return None;
-> +        }
-> +
-> +        Some(Self(PerCpuPtr::new(ptr)))
-> +    }
-> +}
-> +
-> +impl<T> Drop for PerCpuAllocation<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: self.0.0 was returned by alloc_percpu, and so was a valid pointer into
-> +        // the percpu area, and has remained valid by the invariants of PerCpuAllocation<T>.
-> +        unsafe { free_percpu(self.0 .0.cast()) }
-> +    }
-> +}
-> +
-> +/// Holds a dynamically-allocated per-CPU variable.
+url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-declare-VMA-flags-by-bit/20251114-213237
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/6289d60b6731ea7a111c87c87fb8486881151c25.1763126447.git.lorenzo.stoakes%40oracle.com
+patch subject: [PATCH v2 1/4] mm: declare VMA flags by bit
+config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20251114/202511142325.rDmlXFxr-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511142325.rDmlXFxr-lkp@intel.com/reproduce)
 
-Can we place an example here? It was a bit difficult for me to figure
-out how to use this from browsing the documentation. Perhaps we can lift
-some of the sample out and add it as a documentation example here?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511142325.rDmlXFxr-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from kernel/sched/sched.h:46,
+                    from kernel/sched/rq-offsets.c:5:
+   include/linux/mm.h: In function 'is_nommu_shared_mapping':
+>> include/linux/mm.h:1734:39: error: 'VM_MAYOVERLAY' undeclared (first use in this function); did you mean 'VMA_MAYOVERLAY_BIT'?
+    1734 |         return flags & (VM_MAYSHARE | VM_MAYOVERLAY);
+         |                                       ^~~~~~~~~~~~~
+         |                                       VMA_MAYOVERLAY_BIT
+   include/linux/mm.h:1734:39: note: each undeclared identifier is reported only once for each function it appears in
+   make[3]: *** [scripts/Makefile.build:182: kernel/sched/rq-offsets.s] Error 1
+   make[3]: Target 'prepare' not remade because of errors.
+   make[2]: *** [Makefile:1280: prepare0] Error 2
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
 
 
-Best regards,
-Andreas Hindborg
+vim +1734 include/linux/mm.h
 
+97a7e4733b9b22 Peter Xu          2021-03-12  1722  
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1723  #ifndef CONFIG_MMU
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1724  static inline bool is_nommu_shared_mapping(vm_flags_t flags)
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1725  {
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1726  	/*
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1727  	 * NOMMU shared mappings are ordinary MAP_SHARED mappings and selected
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1728  	 * R/O MAP_PRIVATE file mappings that are an effective R/O overlay of
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1729  	 * a file mapping. R/O MAP_PRIVATE mappings might still modify
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1730  	 * underlying memory if ptrace is active, so this is only possible if
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1731  	 * ptrace does not apply. Note that there is no mprotect() to upgrade
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1732  	 * write permissions later.
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1733  	 */
+b6b7a8faf05c70 David Hildenbrand 2023-01-02 @1734  	return flags & (VM_MAYSHARE | VM_MAYOVERLAY);
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1735  }
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1736  #endif
+fc4f4be9b5271e David Hildenbrand 2023-01-02  1737  
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
