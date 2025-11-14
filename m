@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B06ECE7AE8
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 11:14:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27553CE7AED
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 11:20:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 884248E0017; Fri, 14 Nov 2025 06:14:13 -0500 (EST)
+	id 846448E0017; Fri, 14 Nov 2025 06:20:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85B948E0002; Fri, 14 Nov 2025 06:14:13 -0500 (EST)
+	id 7F9338E0002; Fri, 14 Nov 2025 06:20:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 798A48E0017; Fri, 14 Nov 2025 06:14:13 -0500 (EST)
+	id 70F408E0017; Fri, 14 Nov 2025 06:20:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 663DE8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:14:13 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2190F58780
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:14:13 +0000 (UTC)
-X-FDA: 84108953586.08.AA76689
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6B168C0012
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:14:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B1fHws4v;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763118851; a=rsa-sha256;
-	cv=none;
-	b=zfDG/gkp3vOprtecJqvq2X5F4agc9qq++yhGbNbpYrO2c+zCtCAC+qTANi+GRVIRiWesV3
-	FfsRCd7TdCZrQ07etF4NUab+mqEWF31j7QUvyldK5jiGby+DVTCay7XtBByRHisdDngqnU
-	gykTjSwzWpcih8c4KSG3qlKeZ/97V5k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B1fHws4v;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 597C38E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:20:37 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05C2FC0325
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:20:37 +0000 (UTC)
+X-FDA: 84108969714.19.3344999
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4DEB91A000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:20:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UXfRqxSY;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763118851;
+	s=arc-20220608; t=1763119235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3MvAZBElD0X3pJk/MX8AXoxW4zTACm8dJmSYdSV26R0=;
-	b=CXQfxrCsFkxML1+G8Pu5p5tIFLRp89rPHo6Ax1SbVa2S6bofaQ1wurG0cQfwZ1QTvyPXhi
-	tiYaDhdLRykBSKPkHfEYGcLIZTiFpxzPAhRF4jvlZxRZnG2kEsQryHq5oVB71WNMSqR/3G
-	u1n2jnBBom4oeu9UAdZz5EEfMMIWsuQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	bh=XNy4CVtGzelyvviljfMndhZwOP8iEHHQBelXlL4nqTk=;
+	b=JRpUQZWoXoOH8Qda7ZjrDJS/1GLtk9Q3EpyKEvjpyCQ6zMbzcYKLYavxFMCD7kj1JTzmg6
+	Vww2OsYxELzyZhyreRKyVUjZQVDPjx7cCKrN6PPtufWMOFKVtOSrOlCOg8CllCr7voHQro
+	dI1zUEiW24KOIwGxnUsvPXfdau24yRc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UXfRqxSY;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763119235; a=rsa-sha256;
+	cv=none;
+	b=4nvVkN0pD/+9USwZ8rpCN7pvRnLui6xjBYmO3Oasyw5CKtNKyI/kuVxvvEMKiTkQt8PTru
+	Ooi4DSiHAZ06synhFbBVb0ff2t9ScqIIsHwoV5wf/IS7WB+FnYyf10iSjYR3KTSkJyyrsi
+	QXHVDTPxE+h8KmDaaTecEDVzrLYQeNs=
+Message-ID: <5199c367-aabb-43e7-951e-452657dcdddc@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763118849;
+	t=1763119233;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3MvAZBElD0X3pJk/MX8AXoxW4zTACm8dJmSYdSV26R0=;
-	b=B1fHws4vdV9SHk7Nm4NMEkMGypQnWt5ebGnT0lkQhYxPSrPX9T5usjJtN8D6xLK5/tENRj
-	6lr6jCeTav9vHkLaX2Cm/MDvr39umGBs008BSWf4p0qasklCP7V5XJNNR/0A712o57bV/X
-	UdgHrzzazzIM8MjWkX4twJlrGaTbo7c=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	peterz@infradead.org,
-	dev.jain@arm.com,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	ioworker0@gmail.com
-Cc: linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH 7/7] mm: make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE && 64BIT
-Date: Fri, 14 Nov 2025 19:11:21 +0800
-Message-ID: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
-In-Reply-To: <cover.1763117269.git.zhengqi.arch@bytedance.com>
-References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
+	bh=XNy4CVtGzelyvviljfMndhZwOP8iEHHQBelXlL4nqTk=;
+	b=UXfRqxSYKG2iIMsq0y7QI0YBpjYVA43NAZ9FotdfgEA7smTT1ii+ka8Donlv0ylAHxiqBn
+	RyGAslbUmXZRKFrWlOaihR1yjcUSTjpJEG9FlXij0/eiQO2C2bzMCPOKJbOhp0uN/N5ZXK
+	KS3JrJ92b7MC5d87CAz8uAxX76wAATE=
+Date: Fri, 14 Nov 2025 19:20:02 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 2/7] arc: mm: enable MMU_GATHER_RCU_TABLE_FREE
+To: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
+ david@redhat.com, ioworker0@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, Vineet Gupta <vgupta@kernel.org>
+References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
+ <6a4192f5cef3049f123f08cb04ef5cd0179c3281.1763117269.git.zhengqi.arch@bytedance.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <6a4192f5cef3049f123f08cb04ef5cd0179c3281.1763117269.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6B168C0012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: e4a7c7c4jkbryaz1bpp6uaaf8pu74568
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4DEB91A000A
+X-Stat-Signature: 6f56jjdtkph1rewdympiqjr9ehc9totg
 X-Rspam-User: 
-X-HE-Tag: 1763118851-946192
-X-HE-Meta: U2FsdGVkX193QQL1CjEaf5ygmfMwOqEkGlg1/XmU+7EgKzzNnoOo98mRXpXNrqOej5NfmCJKb4NRCTC4xzxRLfTEUrgjP5XcGYI61SsRIyRXjLank5VjBs4zERaAlSaAg7XgAsKlY/WsxyFn7Ac9u0+WrtdhvSy8MGDkPHfkwMo5Xh5AOsQbGenb1IkxEBsCHDAgLZ3craR4Ja+ePaI/8ASiXL20Bgp0vcV+E9+uAI3K337JGQsohBxJpPIeWGBSo7W3q1EU56Cy/glPdMACx1cyY98/LHrvyuoeOnzVg4V7SCryOODb4uCBAe7ti/NggrcDewAMmk7jLb1VVF92Gu3XAUIWzJaMQBmn58lpGj7K3QWAQfGJDVvtRbVeBGzNKd1SDkbkmOoVWkLajtnz+2FkGnIgmqOpocjIdr8W8mqdjpOi82JJlgaH7EIGoH50MligsQT2LZuFC3wQDhfi169+3MQzBhadKdhb0HDpc5kjo0Jyxv356YzR9Mmob4fCr8kCIVNSe/nmGYuYwDHKtsE7HbujbBdCnDyrzgUeCZy8Yguo+86uRy2puC+yquOxmAVDR0UVNqVM8/QwxXUiwvamlTfPBJ5T6/iCoIh783wtD1oHOyoe2alDZJkkv7y1X5tX6tHpVTsmriYblszHFKUH5CbPbUqRpNzuedNFYUH06CdT4VBC9O2mwC9WlAXJF7PI50wKYyLSNoEUJpfhHBK3sbc64hJyc5c3iyWN0hPlyfGvT1fxkcDxhAEVlXzY38RP1RvvHD21QZ6D6bL7JuSYzAj3qLp+eb4zCs6H1H8LHqtMhSSPvw9JNFfuL7ThDe0gJ3f/7cLlsUe6UrhpiMj/WgKs0qoFS36Z+t9o/ToZIR9f0KkYilWuPoS2OwktLL3zwYKAnF+2sp+Cq0UqXZBGGBXDp34+nW+N1xVjhcELP33PoPGXf02uiZ0DU+whAVXVIbp/yCZngIqM95L
- 3tY46h41
- vtyF+paA+BSH+dO5BwrTkCC23esjTERMiKG6EiCNJYfLy6k9ste83xuvJH0OMXLEpsGjxXvhReu9AZgBp7oHhMFX8UOItYJ8hA2rPFKUl0hh8lcXq2OT/XEWo2i1azwEppun6pn9liZ31rIdKIXdL8uh7BqX/vmgpHMwsOF/WvwrQ7GV4RWEEh7EkDwd8bd4Thofgfvz6wrTcEtYhSU3RqkO1pAQ3cJVfFYKkp5nFTz7uSwA=
+X-HE-Tag: 1763119235-453652
+X-HE-Meta: U2FsdGVkX1+TmIKPH0hRhY3zvd+jxzreUr4LKDtK2gtwWKERSsBpLooyz9KwS1NE5A4+Kh8wbe1nOiIMvYoF3DeFNXs+chtiRA7SdgVqO5p0xMjckER4qtnxHjuMCOSkMCOgBDww/0vYrR2Bs0FOkBuvo3wwREeW5dcy/EfGmKSVQU/o3mr4v2yqkTGM5rfj3m/u2x3q4+e1/ClwBRFVexPNsRr0iXQmzv5JBHbaLlJ+fwG5tNT2VSN+0olZaSFmJr77PsmRT4aWfgUZ/CSgsPlB9W9KjD5h0rTuZg2l8wq4KxfAo7ljSIfLPejjcszSXuvBZ2uFCIaOSDt8SQ+GP+M+1NFyxFSF9B3NPckqph6eNsYLKtqKzWKPJ1DdBewaKd3mm4z2+ApoWWRgrHnSK61ebTyrM1i0Dn/73l1j/xDFinR+9HY4Yb7qdsfiiFhhw3ltfUaPjdjwd5riDIAXYDSj29BXtfu0bshUTQfPh3fZbsp0RCls4CbjQTpdFx8CucZTLuVTWU5hqFWtFzm3hC6r5wLXMYjlvCMImWtTssonSpqlcwN8B/pBt5DdNrD4wH8ZAFYtgfTDy/sXFeXHcVD5F6m8etHAIebRk04c1EM2f/P4mgoqKyOre6ctBt/GnI9VgHz2l69zB4HOXEfzSknZwG7VT1YiGYlESOYfmj8oSmoUHcQDmz9Hv734tzg+O7Hq3puUVXLet4PdGdO5FXRo3hwPhuwQQJUjFD6DFCJ7fJJMgppOEtgVZTR1xDH624oXrkYEqGKBJaonm7/Qh3SoQBC8Ci6B+Ije0a8NovTMiIQe4wh/7ySG/SuFE0lgSiIwndYRscQz05/qcbtEGVsyxeEbmC8sdZhzG/t2tr+qSN6R80p9pQXHjErwed4ES7O/Ypnoy4sbQa8HofDpoQTDUqviBkbiU4Fv1emq2p4O1Q9r0npYBy0rFMdO3l2XJse7hMgAemoN5RWukO9
+ JKZemdf8
+ iX3uGaonJVADV70+f1d2VurPt2TjVplAYPM81AcUtW3ki46viEPzTkr08srD3IT50St7xtYiZknIQXDyTr6rbNW6L/Yfu+zxp9YqPVR/TEI1gwUG+qqhK9kQ7Weilenh4Jhus0Nf3mFfNP538kTnyq1CHy3cPcE47x4r8u7mJFEffPf6wvRomycmW6qQJwrzrJBkdG53ehrl0D7KXlSwuypIX/QQ1n2FIvSbg1t2TJ3r3vv6syOOEXFnT9Fe0CyiRVAjx/axPPMQibCdEMaQWEiLtQj3RqoUQM8RVIDCPsg+VPQozRei2vnFu5wzPkogk6WJROwwhopYtSKoMd2sYt3uVAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,55 +95,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE so that PT_RECLAIM can
-be enabled by default on all architectures that support
-MMU_GATHER_RCU_TABLE_FREE.
 
-Considering that a large number of PTE page table pages (such as 100GB+)
-can only be caused on a 64-bit system, let PT_RECLAIM also depend on
-64BIT.
+On 11/14/25 7:11 PM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of
+> empty PTE page table pages (such as 100GB+). To resolve this problem,
+> first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
+> PT_RECLAIM feature, which resolves this problem.
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Cc: Vineet Gupta <vgupta@kernel.org>
+> ---
+>   arch/arc/Kconfig               | 1 +
+>   arch/arc/include/asm/pgalloc.h | 9 ++++++---
+>   2 files changed, 7 insertions(+), 3 deletions(-)
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
----
- arch/x86/Kconfig | 1 -
- mm/Kconfig       | 6 +-----
- 2 files changed, 1 insertion(+), 6 deletions(-)
+Strangely, it seems that only ARC does not define CONFIG_64BIT?
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index eac2e86056902..96bff81fd4787 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -330,7 +330,6 @@ config X86
- 	select FUNCTION_ALIGNMENT_4B
- 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
- 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
--	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
- 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
- 	select SCHED_SMT			if SMP
- 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
-diff --git a/mm/Kconfig b/mm/Kconfig
-index a5a90b169435d..e795fbd69e50c 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1440,14 +1440,10 @@ config ARCH_HAS_USER_SHADOW_STACK
- 	  The architecture has hardware support for userspace shadow call
-           stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
- 
--config ARCH_SUPPORTS_PT_RECLAIM
--	def_bool n
--
- config PT_RECLAIM
- 	bool "reclaim empty user page table pages"
- 	default y
--	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
--	select MMU_GATHER_RCU_TABLE_FREE
-+	depends on MMU_GATHER_RCU_TABLE_FREE && MMU && SMP && 64BIT
- 	help
- 	  Try to reclaim empty user page table pages in paths other than munmap
- 	  and exit_mmap path.
--- 
-2.20.1
+Does the ARC architecture support 64-bit? Did I miss something?
+
+> 
+> diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
+> index f27e6b90428e4..47db93952386d 100644
+> --- a/arch/arc/Kconfig
+> +++ b/arch/arc/Kconfig
+> @@ -54,6 +54,7 @@ config ARC
+>   	select HAVE_ARCH_JUMP_LABEL if ISA_ARCV2 && !CPU_ENDIAN_BE32
+>   	select TRACE_IRQFLAGS_SUPPORT
+>   	select HAVE_EBPF_JIT if ISA_ARCV2
+> +	select MMU_GATHER_RCU_TABLE_FREE
+>   
+>   config LOCKDEP_SUPPORT
+>   	def_bool y
+> diff --git a/arch/arc/include/asm/pgalloc.h b/arch/arc/include/asm/pgalloc.h
+> index dfae070fe8d55..b1c6619435613 100644
+> --- a/arch/arc/include/asm/pgalloc.h
+> +++ b/arch/arc/include/asm/pgalloc.h
+> @@ -72,7 +72,8 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
+>   	set_p4d(p4dp, __p4d((unsigned long)pudp));
+>   }
+>   
+> -#define __pud_free_tlb(tlb, pmd, addr)  pud_free((tlb)->mm, pmd)
+> +#define __pud_free_tlb(tlb, pud, addr)	\
+> +	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pud))
+>   
+>   #endif
+>   
+> @@ -83,10 +84,12 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
+>   	set_pud(pudp, __pud((unsigned long)pmdp));
+>   }
+>   
+> -#define __pmd_free_tlb(tlb, pmd, addr)  pmd_free((tlb)->mm, pmd)
+> +#define __pmd_free_tlb(tlb, pmd, addr)	\
+> +	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
+>   
+>   #endif
+>   
+> -#define __pte_free_tlb(tlb, pte, addr)  pte_free((tlb)->mm, pte)
+> +#define __pte_free_tlb(tlb, pte, addr)	\
+> +	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
+>   
+>   #endif /* _ASM_ARC_PGALLOC_H */
 
 
