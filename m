@@ -4,92 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA79ACDE006
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06C83CD4F49
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:37:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02AEE8E0003; Thu, 13 Nov 2025 23:17:54 -0500 (EST)
+	id 146578E0005; Thu, 13 Nov 2025 23:37:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 002948E0002; Thu, 13 Nov 2025 23:17:53 -0500 (EST)
+	id 0F72C8E0002; Thu, 13 Nov 2025 23:37:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E81B38E0003; Thu, 13 Nov 2025 23:17:53 -0500 (EST)
+	id 00C7B8E0005; Thu, 13 Nov 2025 23:37:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D187F8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:17:53 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F1A187062
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:17:53 +0000 (UTC)
-X-FDA: 84107904426.28.5697BC1
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 37BF314000B
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:17:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iNIABp+G;
-	spf=pass (imf23.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E0AD28E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:37:42 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 887FD87704
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:37:42 +0000 (UTC)
+X-FDA: 84107954364.06.E58FDC1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8D10212000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:37:40 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763093871;
+	s=arc-20220608; t=1763095060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8za1Ngk+XgqKIbf8gfc+93lq99ESfyr8n5JBwYJ5ZPM=;
-	b=YPT503HH2a5KcTsBPDAWs6uWOEoP/v7XlgE9m6NkOTzkXbwh+aftIWezUL7bqLYrenFabS
-	ATWA+K3k0x42mYce2N3GsfVwijNt1wT9sTnNXTQaJCQ6Da3ga6YgH86zz0MIdk1jM+/jro
-	vqcFVi3am+PqgCXCxYqLE7erpbTmxjk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iNIABp+G;
-	spf=pass (imf23.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763093871; a=rsa-sha256;
-	cv=none;
-	b=N0oaTgWC/bF5+JCeY6ShiiCsl1uSq6rQorzufMFaEJLKMzeHpJXhJT4MP8Nh3SMaQlAjim
-	7fHnwvaO1AYXAOVhNzoNFfv5R1EYvFYd/lxFcugl7bxQp8p/NjF/CvyB7oEKDppMRHloNy
-	Gq8THkbuyrLpNEuJOGp1fbD9+TwSyhk=
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763093869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8za1Ngk+XgqKIbf8gfc+93lq99ESfyr8n5JBwYJ5ZPM=;
-	b=iNIABp+GOkH+yVV+pP3IoXbtDNwfJUTTE02piniavS0Fy7Izy/QK0JxTWBWs18aeTCj35D
-	YOuLj7hXSFIa1FHKM6rFWRDUu1zHKg7VdDpAJsnbfZpRnzYIehW1LZDZfyd/47wfZhvpwU
-	zN2kne/nWG/Dm4pA59k01JPsvfLL9gU=
-Date: Fri, 14 Nov 2025 04:17:40 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <53de0b3ee0b822418e909db29bfa6513faff9d36@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v2] mm/vmscan: skip increasing kswapd_failures when 
- reclaim was boosted
-To: "Shakeel Butt" <shakeel.butt@linux.dev>, "Andrew Morton"
- <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, "Andrew Morton" <akpm@linux-foundation.org>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "David Hildenbrand"
- <david@redhat.com>, "Michal Hocko" <mhocko@kernel.org>, "Qi Zheng"
- <zhengqi.arch@bytedance.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <lqcwz26ajddhoaq3gfuyt3mzwfn7waeqksoz6k55jrtn32u42z@pdf3dor7ntb6>
-References: <20251024022711.382238-1-jiayuan.chen@linux.dev>
- <lqcwz26ajddhoaq3gfuyt3mzwfn7waeqksoz6k55jrtn32u42z@pdf3dor7ntb6>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 37BF314000B
-X-Stat-Signature: c7k74oabjg8mndqwapjxk8j5wb4zi5tf
-X-Rspamd-Server: rspam02
+	bh=lIDs2V/QQ3l52abqYbeogadc6hSYp+ftV1zJ8fAMj7Q=;
+	b=klP58sdwXe2qsU5Qr/1O2UURdJUGdXwcsFIQTWsWOed46TagcqTmfUhfXvFvYy7qVDSNhG
+	6s8sD2kyAc2waMEH2LHhZ02/bKY+1wr92v7yDHIA5dBEiJg0Im+qB+cT6D7MMN3oXNIsW8
+	fDDM7j1jqq3BAoK8VY0bxeP87Ac8daE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763095060; a=rsa-sha256;
+	cv=none;
+	b=xYnVdZqvBE6GNZO+DV3HPbKV5N1xqC7yXl88PmatYWFUxpKiEa7OUeO9EOBOyqCUYEioQv
+	zKwtGbUq/HXwswd1cCktm24LFk8xDF3Zr7YoDuF9RKwRQ8Y5pNKpwKo9ilSf7Ot1763r/t
+	jK/fonGCqggdoiPfNjIdCuIz1HDaswQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF838106F;
+	Thu, 13 Nov 2025 20:37:31 -0800 (PST)
+Received: from [10.164.18.47] (unknown [10.164.18.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 825873F63F;
+	Thu, 13 Nov 2025 20:37:35 -0800 (PST)
+Message-ID: <7eb23e67-e8a2-4f58-9a2b-8e78eb9a3d3f@arm.com>
+Date: Fri, 14 Nov 2025 10:07:32 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2 1/3] mm/khugepaged: remove redundant clearing of struct
+ collapse_control
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com
+Cc: linux-mm@kvack.org
+References: <20251114030028.7035-1-richard.weiyang@gmail.com>
+ <20251114030028.7035-2-richard.weiyang@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251114030028.7035-2-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8D10212000A
+X-Stat-Signature: ph5fc8uzx3ciub8tdupykywuccuy6nzn
 X-Rspam-User: 
-X-HE-Tag: 1763093870-120434
-X-HE-Meta: U2FsdGVkX1/0Inp+/Ih7mkwpvRRKKAI9e1aPSJciOuolXtyEcsDpsWPwsmpV1g8wX8/YDZlThhvQXyjXF/qpGr9bx7B6ylMB64ZlgGRAqvSLFW/T29PgtOpRIXR8H5Dx4elx3o/8Sq20/dQUjbMZPhpxBEXp9ztxAF+m5/ksA4gKd+Wkpyemkrqtfvumc0nC5jM0hMtLctCvSwFbT5YjOKJ6xkuLuvxns0BjXgQi7lGYab3aLP8ybGg8n5fV/3NTHOrF2m2QCZ5Cylekrvtye1F5JH3sHfyAhWX/PzyuYcyqa3inwK2TUf2bGCLlLE7N5Gwt/GEGe6I7e4N92Vo4aLbnCNnS9zrqCisZbs1mppAwtKQN2Yv/v+pMGIpr6g4LMxpP8sFVEWqZxvbMWB6XvQzhFYQgpwJu1l/gTv+Hn3VUWmp+8rUR0VUq5O2In6IC5wJHxnkxnLnaHpC+RoEj0OpXCe9N/fJLzZzCnYuSWL3Wq4MlgkerdGF3SNPbZ42YCD0aMBhXBeNqFVf+1/Av+WTn69LGYa7PHmIT43iAIGVVdxge7iV2oOb4nRmB4tCUnjffuRpzXDYkV7M2M0tn4ccDrdC7FbMcDrcFHVNg20nC+whLi9oHjiEJrI1BhHq+yvcjPCoDt6qTCuRFIG+ftLoWs2zDcZj8yjW6xaPsh2hNzbhySRvu6NHrEoiSJn2TZyaAoa+Ew8SiPqur2pQexYfXZxDhqyYxV5WxKHqEjyX2n6HLKTH4dNRUGeseuacK8gx3o9PoKQg2I/9p7sBMchNreHo8zB9qVawuxP+nfuBIq/IMlf7GwyhEyeqrw63haxjq2JVjs5K9ryGMccEGXuRdNRX0iFnEOp0sJObSQo2FHqN3necg9A2/lxUhO10GVTJdv/SPhcAE8WFnr4B2odtHetCAejP0guRSHPUPTzOXFsh0CwyQ2N40Aa6QeDalsGMPTUpcr2bYGYyVXnt
- /oNZxUjv
- NcFtGW7iPtjIQSRSd7GU78Ki46OpsmAqc6nON6mZfBGC8z1iCxCiIfZ5lMcioZ223cZM7cCJco8ZCIhpXjTNxNah+goOR8t0gkoZwr9KnVe5nxnBp1x6Cx777Pi/bykRF4DHT9kw6o7alyGvtaO0VWgYdjcb/Rduop3YS0aywUpohHAvUYS8GsvTIgwVDWrv/s9BztgKIdyjkxYkM0ehhklk6b1s+QQyWDDc6kA5I/cReArbDxXHb8Liw9lwxlPCbtVQB4XsoQOsO//scbZZds/JvyAeQRrRsWU2IqFoplzSM1pFqU/H6zzU/rix5bBQI/KuORfUA6AlMx7xVYYtmy6a6/KF24Z3LVWcwChnu+ZWoAySLJ+Tc48RaLtNXUCf8K3R/VnXDQOw9poytb4ArFhAGqy8gAIgTAIJ8f7J59rXbqPfNUnJWtCgcxTUHUGog6CssihX0/n4ZvfMkI6CVunzTPZLa5SQ6kdvKPt/rM2/tZdkjZ7/kY22Maw==
+X-HE-Tag: 1763095060-996690
+X-HE-Meta: U2FsdGVkX1+HX95buULn2vpGOmeTdhtWnjzOgNZ+5nRdg90fTfswu+9mX+gp/TJrLDHmVraICbBI9j/cdw8QIR6XvO/atgf8L4f3uXfaw8uUBfJBDeDO8IFaXI9WP9Z9xxElOvSTVOoKWhTHpWboNJ36I3fqmxNWmxJZf5eecvgqcJWkSv1FB0WjGpcpH1AChv1tUTJ01kJm3csdrrlRTUd180AIgb7QGfsQOZOK2aeMcthWlZv6GCwbKDKxpnIqMIR40jKuOPeW0rXCu08Qv1jvKtnHFdQVfa/wEan8FGBCJ3oUCx6gOi+uVW8TkUWBwJw53C9KWoNy6itVIF1UpD5fCJwQwXx/3/KGXDqRCwvF2QXwidZUcGZadTvNdZG9hGidHc8SN4xmzcrnh1dPb6ycp4LhLVSqsI/3hCpBwDDr+C/1ifVgbTBlz/MFhQVtyQeZIsGBSVGssrdaihuHaq0CjRXkxwgBNKGENsrA4UP6gqbj3HlCPBj7OEUPOu3W9Ovziq6yxa3maAAx4nFdHcgFyfFif7GpefyggXC0m9s7BKwvi/8Qozy8Fl9MAa6QfkbYcdd/ls/PJQ8lBGP5iHzaO0A6Q3gvDGVpjrLn+YeJknpN/g5PafR7kKzGyuDV6bkmrHAsdqzuyq9WiE+e+jc943Lk11yT7Wy39z89tbF7+bqcE4vkgERuq8qwygLdNlkkDPRPTlNLhwOD/1w/by+OrLzKIk0RIAi+8heGMOzAJf4nCD4+QvcgMgjHINJiyTqvw0b5Re/SCbVazthtLixkxSwsEr6EKnz/n22B1NKBR6kwatnV2MPBFolyvdqIP6kWAlWL5aW6kj3HKnFk2Ea2vuhh+64NDP7eOR75OL42qtoB3pCC0X7CUCe73xTI6BJiTZmCKC594ktX0p/3COggqTsaOnxxJW6SpLbnHS+t5VjYbMk9D0WOrDqg7Zt9XGK35Z+3tQnqVBAM6DA
+ roItMOTB
+ RNqzmNytaojYT5D8p3sHy899Tzlvy0OyB/B0jDdXFPRTu/DhUid+wuAyL6InVHEYrzo9h6qNAVPe4U2LwuAR/aSY1EJ5izlLjCWr1ooLT2VDTMxpItKUvlm3Jfu96KcMqEcHyoLuLdBKh7GIncPIfTNrkm+Q1rUjeR2yn1bsAe54zpWmq+VnL+DZppBPPd4pClvTZ7c7RYl4iKbYzmguL5nKxi1j5ilw2eTPuH8g6UC57GLvlq3ODwmHVvkbdug+rqvEysbEbe1nRjx1523TwCic589k2qFUDJllWA03R9uhnQyLRhZd9mCcN42PT9GhkRJPdExa87Vm0/+Lg/gRx559faw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,114 +90,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-November 14, 2025 at 07:47, "Shakeel Butt" <shakeel.butt@linux.dev mailto=
-:shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40lin=
-ux.dev%3E > wrote:
 
-
-[...]
-> >  The final observable issue is that a brief period of rapid memory
-> >  allocation causes kswapd to stop running, ultimately triggering dire=
-ct
-> >  reclaim and making the applications unresponsive.
-> >=20=20
->=20>  Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> >=20
->=20Please resolve Andrew's comment and add couple of lines on boosted
-> watermark increasing the chances of kswapd failures and the patch only
-> targets that particular scenario, the general solution TBD in the commi=
-t
-> message.
->=20
->=20With that, you can add:
->=20
->=20Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+On 14/11/25 8:30 am, Wei Yang wrote:
+> The structure struct collapse_control is being unnecessarily cleared
+> twice during the huge page collapse process.
 >
+> Both hpage_collapse_scan_file() and hpage_collapse_scan_pmd() currently
+> perform a clear operation on this structure.
+>
+> Remove the redundant clear operation.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> ---
+>   mm/khugepaged.c | 2 --
+>   1 file changed, 2 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 7e8cb181d5bd..1fc8986a28b3 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2803,8 +2803,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
+>   		}
+>   		mmap_assert_locked(mm);
+> -		memset(cc->node_load, 0, sizeof(cc->node_load));
+> -		nodes_clear(cc->alloc_nmask);
+>   		if (!vma_is_anonymous(vma)) {
+>   			struct file *file = get_file(vma->vm_file);
+>   			pgoff_t pgoff = linear_page_index(vma, addr);
 
-I see this patch is already in mm-next. I'm not sure how to proceed.
-Perhaps Andrew needs to do a git rebase and then reword the commit messag=
-e?
-But regardless, I'll reword the commit message here and please let me kno=
-w
-how to proceed if possible:
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-'''
-mm/vmscan: skip increasing kswapd_failures when reclaim was boosted
-
-We have a colocation cluster used for deploying both offline and online
-services simultaneously. In this environment, we encountered a scenario
-where direct memory reclamation was triggered due to kswapd not running.
-
-1. When applications start up, rapidly consume memory, or experience
-   network traffic bursts, the kernel reaches steal_suitable_fallback(),
-   which sets watermark_boost and subsequently wakes kswapd.
-
-2. In the core logic of kswapd thread (balance_pgdat()), when reclaim is
-   triggered by watermark_boost, the maximum priority is 10. Higher
-   priority values mean less aggressive LRU scanning, which can result in
-   no pages being reclaimed during a single scan cycle:
-
-   if (nr_boost_reclaim && sc.priority =3D=3D DEF_PRIORITY - 2)
-       raise_priority =3D false;
-
-3. Additionally, many of our pods are configured with memory.low, which
-   prevents memory reclamation in certain cgroups, further increasing the
-   chance of failing to reclaim memory.
-
-4. This eventually causes pgdat->kswapd_failures to continuously
-   accumulate, exceeding MAX_RECLAIM_RETRIES, and consequently kswapd sto=
-ps
-   working. At this point, the system's available memory is still
-   significantly above the high watermark =E2=80=94 it's inappropriate fo=
-r kswapd
-   to stop under these conditions.
-
-The final observable issue is that a brief period of rapid memory
-allocation causes kswapd to stop running, ultimately triggering direct
-reclaim and making the applications unresponsive.
-
-This problem leading to direct memory reclamation has been a long-standin=
-g
-issue in our production environment. We initially held the simple
-assumption that it was caused by applications allocating memory too rapid=
-ly
-for kswapd to keep up with reclamation. However, after we began monitorin=
-g
-kswapd's runtime behavior, we discovered a different pattern:
-'''
-kswapd initially exhibits very aggressive activity even when there is sti=
-ll
-considerable free memory, but it subsequently stops running entirely, eve=
-n
-as memory levels approach the low watermark.
-'''
-
-In summary, both boosted watermarks and memory.low increase the probabili=
-ty
-of kswapd operation failures.
-
-This patch specifically addresses the scenario involving boosted watermar=
-ks
-by not incrementing kswapd_failures when reclamation fails. A more genera=
-l
-solution, potentially addressing memory.low or other cases, requires furt=
-her
-discussion.
-
-Link: https://lkml.kernel.org/r/20251024022711.382238-1-jiayuan.chen@linu=
-x.dev
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-'''
 
