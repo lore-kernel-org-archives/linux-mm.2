@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3129CE8D4F
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC25ECE8D50
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:17:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 030CE8E0019; Fri, 14 Nov 2025 11:16:11 -0500 (EST)
+	id 2A54B8E001E; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0084F8E0005; Fri, 14 Nov 2025 11:16:10 -0500 (EST)
+	id 27D3F8E0005; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E611A8E0019; Fri, 14 Nov 2025 11:16:10 -0500 (EST)
+	id 1BA348E001E; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D4DFD8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:16:10 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 81735B9630
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:16:10 +0000 (UTC)
-X-FDA: 84109714500.16.6BEDE8A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CC1FDC000B
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:16:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RyWrUZmi;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A7078E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:17:38 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B61471403B3
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:17:37 +0000 (UTC)
+X-FDA: 84109718154.18.13155F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2C55A40008
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:17:36 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bwrPhz/H";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763137056; a=rsa-sha256;
+	cv=none;
+	b=GCgbbALU3cL+ESe+W/+hi0bJX62l3RB72IgaEuxk/WVtdB/+G00lkzEVitCevXstLQiHmf
+	V2U62Rr+fA+OsSAPnMoDKROOzfW1VM/m2TknhSvshIpM1xtxiAN1WucdOGVGajEaB6JvLH
+	m83YgIGa/s0Tu7mg/ojOH3TZD7G6wdA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="bwrPhz/H";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763136968;
+	s=arc-20220608; t=1763137056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9ve+WAMq8atN7a13urD4whY2gxe5IxNcUUoYARSAJDk=;
-	b=hLP31BDmYrvyREhoYnw7YJKhmbhbG91lVoSynKgMbItAhgswojBHJlD4TfTYKOHLhjVojV
-	88NkuD1I8suBzkACSPcZscS8DgIgXZy8yooBLxLjmCP8152to2jqZ0m22MkDf5mm9RJxK6
-	u/a1wQh8wPag1TqefRSpcGYs2psiH4Y=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RyWrUZmi;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763136968; a=rsa-sha256;
-	cv=none;
-	b=rxvGGp0DKXUqtMqnzi9NrXYAH/8XKf1z8PK6bFwzXcy/ZkrPNKHavFwHA5uJFb5sWjlhuU
-	sgF/HfT4mVpWW2aw1s617Ds7y/yitX4xBb5878NsYVL80qfWWwCN+lMEmBkkUA09vff3yF
-	skEMsxzMGcVaHCbLs1pntjE96mPu6QY=
+	bh=LzmaurRwXd/FUfjWlIvyc9JKRHbFyjNcTaJdND6zQwk=;
+	b=A/sfqMj6/UH3SmOoQZ9thZHxj5aCUkkhzvjrPhM0X/Crh+omOG728BKRhsBrpEFqll7fqq
+	iZ7zGXsWRxP9NIqiTU9wIjb/lfKIhNfrBOZpC77nt0lDOLnmqGx+d2VJMny86TfSKH0yNa
+	iQQll9Cipir7w5WIXN17p6mabs8sz2M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D442540339;
-	Fri, 14 Nov 2025 16:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AA4C116B1;
-	Fri, 14 Nov 2025 16:16:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AFFA960150;
+	Fri, 14 Nov 2025 16:17:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFD7C4CEF5;
+	Fri, 14 Nov 2025 16:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763136967;
-	bh=tSxN8dD+nQ8F1DqUN5WT//XcohZgIvkWhnqveOTbdS4=;
+	s=k20201202; t=1763137055;
+	bh=1TP2PBihBm/xACDWaGTPWhNWAdDdBhE5Owp0RpW0KBw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RyWrUZmiPavdad5/L4Ku4XTi4TroUF34qqpGQ2vIK5Mb+GKYPyKWzhjiNLEd4eT2e
-	 UVXjYV9X+p75gEgGgQGz51BDugj6dLOcRxf/VtpXcPTXatrH+9uNm5doI0218B3bwk
-	 Y2Hg7roLrSqqgo25csIUK5gOEatcZZsUU3dkiavyuOFbjg48aE5Y2hvGJyyrDDRWsj
-	 2xMxNTw5GvJRhE3w7q4MlB5q8T2wrOI7/qyovv4wx3MUPDtocUVMtWPmRVLXtriwQC
-	 7MQ0J/Goo7rfaJLwR7Of0FxWUIrNKVvaNp8SDsUNbxX54AOCr97HvybItXlgCaUcSZ
-	 u1xzn7yEwSdHw==
-Date: Fri, 14 Nov 2025 18:15:59 +0200
+	b=bwrPhz/H4pWI6GRx+uoYSdBmXA78z+aVv88xUzOIT17tPfm2Ur79PxBbmFmETirvN
+	 6/z2xXhyZKz1WEYyTa9ySylU39jBcxrcd/LaesSsiSgm4WZeP5HMBWX76VJ2mMVnlV
+	 3HVMlBc9re1Z4MtzUQv3z5aLXfQ6beeJ7DdK6fPjtwRoTDJaSFg4Tv1P0K365g6Xnz
+	 lL5wkoVXSMH235A+WDbEaMuUz7+vSIAbl8IqCGrTyxL+ATr3C2IxBwOLW2pnNP+C31
+	 TyvqXGWFVQiKzXHNB8RLx5qPpjPiSbEfZvQ7k5koLM845Ed7SdKJFdjXQ9df1LX8I1
+	 j0YEIpr35ql2w==
+Date: Fri, 14 Nov 2025 18:17:27 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org, bhe@redhat.com, jasonmiu@google.com,
@@ -71,22 +71,22 @@ Cc: akpm@linux-foundation.org, bhe@redhat.com, jasonmiu@google.com,
 	ebiggers@google.com, graf@amazon.com, kees@kernel.org,
 	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v1 13/13] kho: Introduce high-level memory allocation API
-Message-ID: <aRdVvxF2bDVjSN8f@kernel.org>
+Subject: Re: [PATCH v1 00/13] kho: simplify state machine and enable dynamic
+ updates
+Message-ID: <aRdWF8ck4iq1hc0B@kernel.org>
 References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
- <20251114155358.2884014-14-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251114155358.2884014-14-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CC1FDC000B
-X-Stat-Signature: k3tdk9xgsbhofobhz3bdjbjpwin1p3gn
+In-Reply-To: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2C55A40008
+X-Stat-Signature: ija5fag14wy5ust1wgqdsiybxq49hzpx
 X-Rspam-User: 
-X-HE-Tag: 1763136968-10791
-X-HE-Meta: U2FsdGVkX19K1BeM0f2LMaXToxtC5tA6wErFBJU8JA1L4OyVa0IRwcmy74FUb7Lv3RMkETgnJwwgwkV+xoFoLQTZPa1YHAIhej0hNksmZ3rmU0CvSXjxyzRmul1KAnhEDwsGWVTsS1b2n0UmD6gHo3UlNEfi8OPtc9WpEqKL1QjWGPv9USAG0u/SjLJYm0WoTQRR0Mzzx7RpIY95vB/BrPzj2oCnIdjrxh9LMIW4B4tXdaJeddVM5r6HzZ4cz5tGVkQ+bAe7dRRpzA6Q6vDrB6714Gc4tMt1DYnKJ/qrrFGqFRgnNMkPe9Wc7+crCM9BqpZH5dQNTOOkftecfHKj6muUgUQqyIaogFnhJ7qx82NIxHqZ6ijPOy5gQWOjGI9cu+gSjtmyJrfgPy+MaxpfAhJ7az1hmCXNfAcKVSF9CZPP3JAvMOQx6Djo8YNlspcVupZ3rMXUpwnsGHCoajDbjgCiBG10bDY6eHrJsRA167+LYgTKjKFcDdJM+7Lu3520U4XfMV+lbVqyfUC+YrBiVKuWoxbMh8iDDuO9jwGuXX8ml+OrgVaDECbugobhYrYTd5zbznQxJsZQXYLx3Jk7pA98wp2ra12axVWJ3OK1nsmDc6hwMr73eg/8k/fLSl9ZcjqJdUj4NRteKxslWThaplhSXT5vDXkPDKHXYHhA4G0X0wtpRk60lsjEhNxar1HeX6dicvtPq0qGThynYznhuVGsxFenxng/4PAUlkY7r9I6RWyTJf/xSjZjXZp6oN5xc0LY+b/K/4nT5AV0+3pnNb/+ocNy4Mj+aFKGLLQqD+O8Jk52eAAPpE7jLJcAzRn/C/CfTpyL6Oxfnpao4UqNNFj9p1hYICLCoGgU1eJC220xwNQifHplSiFHpcQ6EiPvJ6dQ2XiJS4giF2VN409GzeGLQadoHr7LPQwryakPmR/7hyi9NX6sMspx5fGtuWDMrv1hjW6pcpFKoUAJ4G8
- w8K4WqHz
- Iu/l8kYnUQdMBOZaVjbxVZYuZVPuLkqN7yLiN3FRCXpXuSwPOBTaZYGneukBaJEvuTk3SiZea2kYKAcjwS1jaCn1QypFyScijqh7Bk+qmMNckVByPHeuTdVWPn+ANXZtco1Ql2QoLSC6wxFJyFtXl/INyVgOPw1IRe7rFK/WwfXJBQE90HNoLr4NztKN7JLLm/CXg3DweijVzlvqLiUh+oYoZIsZR8sheLQ0/dca03FuBYjaw8n9DkcIspTRB6/Am16oWlQq4oyerGOqrJ4TQaNMLlx5+7i6xvZdRvUL8PHUXMUQYHVxibW4LlQ==
+X-HE-Tag: 1763137056-276674
+X-HE-Meta: U2FsdGVkX191Tz7IlK3eVmT1aPoukHzpO7dClckAtWBH/BfJAIZHcCrJVF8dTFYD97BWR/zVJlya1FNgpGK3tWrrOiZasAAt4EQf3AqjDdvo+UN705eq7WAQ2w8gXmbx/tn+j3ecSRwLmJuONA3I8puvtGRMu033PVCPTxr7oSdNItfzyfFSXVhEGx8ZFK4HsW6U8yoxNcy4UGfl6nfzt7hG5Ps8NyaJZkBIO91KNmRuGowi4jtGdTwZgHRLleNqYU1W1TxFPBJuY85Nl9QXbpg61ObIYjvGUN0DmaOfq2FQ5ySsy5dviJ01r9o/bDnQ+z+lEzjXPOAG8aVg/xf8lvkECGsbTlcwu67A7k+T18N3hXzbK337fKTa2ypuuQxah/fnC+S4repCfOa3pIhuA4yCFHPApZjukVm0G93q23cIAXrg86AtIREGPsbaj49Ny6JyvVUCo1qxWh/5WXfTHXkI0q2gxIDFKMKBjR4BsCMKbq3Bi2ot4Nwbe+aBDI/qFjlamd9H67YbhR8Uosp//8XVVCrRe9cJLBYC1Lo1mZpdCm8WJoh0ZfiGQ4MNTfzRB2NW/TYus3wIxdpDUv5hQqg7reQ8+IZ5KRBicYZNgD3nXEeCmSC0Ht28gKyjLPE+UDIX/+0xWTmdayHcMxApT6Qjic71/e/6HDPDf1MVH48b7giqO9Wxjw/N5K3k/zikKNz+XAWCTBFTWoOGUlo6BNL3WL1bQKTbHSlSefNucHg7c0N0BgNKi2hJgjNYfooPalJnhf/uaSB+QFbG7lbESBccpa+ZqnN+euafKPBd92ezOr20ve6cIt/sjFrDpswwGnNUitwjLCSFRdsQtcNefcXxbYtzY9N7bkVpfV48SgdK/9+3OiL8nkDRXkBhSq9jy0A6N5BFo75yWKzmFC0Tq0hiIl1/kOJgVNy515f06XdknYyQL5wJcuynpuRhEH2QfDIhsHpm5WeFnDUzrOM
+ ZAEBWjUX
+ bwwBV8sIa3qvQXteftmT8VI/BON7qmAj9X2jyNKlsC3VzzzFUXShsP9YQN36k632QMl48niGJJ2bHP9T2/WSmrOkVuLCNMV2L7HbCUZ/H4zBNZe2w+hlVMb1HBTqtdQhufd9Q40GGCz0w64gczb1tlvSbjokObrGBHMco8NVGBP4EPfL89VvgQq1aAbwufjfXCne4bVFESQOxf+Dwmgkwu6lML9UVW3cuF2QtizmeViQlPVuavdukTyOE07ipZ71ShbEoxrMaB04wM7k9UQxS8c27JA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,30 +95,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 10:53:58AM -0500, Pasha Tatashin wrote:
-> Currently, clients of KHO must manually allocate memory (e.g., via
-> alloc_pages), calculate the page order, and explicitly call
-> kho_preserve_folio(). Similarly, cleanup requires separate calls to
-> unpreserve and free the memory.
+On Fri, Nov 14, 2025 at 10:53:45AM -0500, Pasha Tatashin wrote:
 > 
-> Introduce a high-level API to streamline this common pattern:
+> This patch series refactors the Kexec Handover subsystem to transition
+> from a rigid, state-locked model to a dynamic, re-entrant architecture.
+> It also introduces usability improvements.
 > 
-> - kho_alloc_preserve(size): Allocates physically contiguous, zeroed
->   memory and immediately marks it for preservation.
-> - kho_free_unpreserve(ptr, size): Unpreserves and frees the memory
->   in the current kernel.
-> - kho_free_restore(ptr, size): Restores the struct page state of
->   preserved memory in the new kernel and immediately frees it to the
->   page allocator.
+> Pasha Tatashin (13):
+>   kho: Fix misleading log message in kho_populate()
+>   kho: Convert __kho_abort() to return void
+>   kho: Preserve FDT folio only once during initialization
+>   kho: Verify deserialization status and fix FDT alignment access
+>   kho: Always expose output FDT in debugfs
+>   kho: Simplify serialization and remove __kho_abort
+>   kho: Remove global preserved_mem_map and store state in FDT
+>   kho: Remove abort functionality and support state refresh
+>   kho: Update FDT dynamically for subtree addition/removal
+>   kho: Allow kexec load before KHO finalization
+>   kho: Allow memory preservation state updates after finalization
+>   kho: Add Kconfig option to enable KHO by default
+>   kho: Introduce high-level memory allocation API
 
-It would have been nice to have it before patch 3 (Preserve FDT folio only
-once during initialization) and use kho_alloc_preserve() for KHO's own FDT.
+For the series:
 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  include/linux/kexec_handover.h     |  22 +++++--
->  kernel/liveupdate/kexec_handover.c | 101 +++++++++++++++++++++++++++++
->  2 files changed, 116 insertions(+), 7 deletions(-)
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+with small nits in patches 9 and 13 in replies to them.
+
+> 
+>  include/linux/kexec_handover.h              |  22 +-
+>  kernel/liveupdate/Kconfig                   |  14 +
+>  kernel/liveupdate/kexec_handover.c          | 338 ++++++++++++--------
+>  kernel/liveupdate/kexec_handover_debugfs.c  |   2 +-
+>  kernel/liveupdate/kexec_handover_internal.h |   1 -
+>  5 files changed, 232 insertions(+), 145 deletions(-)
+> 
+> -- 
+> 2.52.0.rc1.455.g30608eb744-goog
+> 
 
 -- 
 Sincerely yours,
