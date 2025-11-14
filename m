@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12F66CE8D4F
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB0DCE8D4F
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 16:11:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CFDD8E0008; Fri, 14 Nov 2025 11:11:38 -0500 (EST)
+	id 3CFC08E000C; Fri, 14 Nov 2025 11:11:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37F658E0005; Fri, 14 Nov 2025 11:11:38 -0500 (EST)
+	id 30AF08E0005; Fri, 14 Nov 2025 11:11:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26DBD8E0008; Fri, 14 Nov 2025 11:11:38 -0500 (EST)
+	id 2213B8E000C; Fri, 14 Nov 2025 11:11:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FC688E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:11:38 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C359513AF36
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:11:37 +0000 (UTC)
-X-FDA: 84109703034.05.CBA2FD2
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 038FF4001A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:11:35 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GyNovPko;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763136696; a=rsa-sha256;
-	cv=none;
-	b=8TlZOX3P5MiE0TQvSaV43rzFuSlKDbUGucfCXNb9RVgE4wsiTt4gleBq0z01Rz1aNZ9e3/
-	iJziBh+J4e1NqjP4lZixW7y4Nqvtzj5TV2MK1Eok8TzKD3JS0q1RNqSUsS7S3cyIDblXp6
-	Lw+KZooOGzvajUaICsPKWrW6KABLs5w=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GyNovPko;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 10B428E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:11:45 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD29188D2F
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:11:44 +0000 (UTC)
+X-FDA: 84109703328.28.1E5EC55
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DE1B8140004
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:11:42 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TM5e+BKI;
+	spf=pass (imf23.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763136696;
+	s=arc-20220608; t=1763136702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sXxLeDqMnDfPoqZmJZs/OvhUlLPpJUJ3x7qA3NQ6GsU=;
-	b=bb6sY6Bnbv/yL9pjDH0gDqItVla39LLJSppAUK7ThUPgVJuZkUIuxGDlLp4LdoMk8BXK4u
-	hMVfOZ65JCjiY8mGsicRIaAdxfHcOMzpyoy29v0GRmGjSHWasPCtyucQmVa2URlIgMrKN1
-	JazZWZ+OkkW8NgwtMkrfm6Q6mieKwQQ=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29845b06dd2so23436995ad.2
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:11:35 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Vhc/zAuTGQVZ8JaTdN8K+Oo0c5+Z/1J3kDu+xR7CKJc=;
+	b=EglZ6z6pXZfjGBZLfTM/Z2sDX+SEd4BE3iUEO7+z+MgQscVGgo6Sgtwqy7+9gsd/BVnFWD
+	E4PNa1zlrUMY7DqCnrAwgScB19xoBe6QwHYOL0O7iJQaGM1xxkAD4086IcqZbFdsMH25ax
+	BxnIZ1K8l12xxtI6eYvwMjMscJpgd3g=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TM5e+BKI;
+	spf=pass (imf23.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763136702; a=rsa-sha256;
+	cv=none;
+	b=EGUTNPYcDeJ5DcyyuJVQ3n1EdWwGcgSZ0rh6ifu2QFcMjWAR9DNa3wr71H2bA7oFFpnahH
+	3hF8kyB+XeRWioYpkQfFWXf6As83FwbF985b3CwvIiBqPHtfpAqglwnblnswEOsudZ3wym
+	Db6RCWBPPJokLk+Ow+jF5/jZ0dWixVo=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297f35be2ffso32212975ad.2
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 08:11:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763136695; x=1763741495; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sXxLeDqMnDfPoqZmJZs/OvhUlLPpJUJ3x7qA3NQ6GsU=;
-        b=GyNovPko7x7WQghC7AU4SYXDbokWocpjXCHwgOZbWndaRjbceZfNXGBLKlZ1jlem0g
-         RLnDXcxDLN0T7QpfhYr0e9ljs2d7PqFCePEVvCeHLF9YGpVKew4fD9JmeXDQP1GDNxM9
-         fmV+x4MLZMyxP5nd+z7P1lqA/q3n7yAI1VDto3j2gDqZNOeGFrPoM6Roc66IVcrJHkaT
-         a2mwukzZYr1ueNaIkBcN+VYIUj1FMrlVNs42EHnV447/k8sm64tGDNWQoh4Gn890RCPZ
-         KuiIHensu7880VEkRSLkq+wY4pHUELeXIa7WnRTohw/94PjtNXJpMfOV0GAxroSpLlgB
-         oOhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763136695; x=1763741495;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1763136702; x=1763741502; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sXxLeDqMnDfPoqZmJZs/OvhUlLPpJUJ3x7qA3NQ6GsU=;
-        b=Bz20ld72e3ABZn5ukorQ5NItnHIn4k0ow7TLb2nVINu3Gc9Pbg2M1mhJhPN9tZ5EDO
-         j0ykzr312A3IgN7OT6ONPlIJG/3+kjnSpObJ+S6JRJOEyC9J5rLfjLdbJQtIXJ0iUxOq
-         Eucxnp2L7UPnvP3x6FB4vg6AegXuDiF8jpdNgeaSqHRFPn0aL3na592/8jVoy4JRgftE
-         W3Esi+Y9wyLFq7xf9R5KqEBmBxpofWQnukZslbSl/gMCW2eYM/PAb8tBsS8qm8u4YYIK
-         0qR7DyLvcV6zEw25AlreT4xgwHCJrx7cRgaIiQufheFF5LCue7r/NCYHLxjHosyeckUc
-         gylw==
-X-Gm-Message-State: AOJu0YwesnfSu+XtmB8ILBPzwG4ut2PZFRK0IHUKjnO3HYMuoch7UOER
-	BEU+fOx+XXW21boGMeSwx1koHJpsgZzm0h7jDFX0K5e4vvX8ZSbehvBz+KBDLLhEp0Q=
-X-Gm-Gg: ASbGncuDc4/rrZASD5z7sMUXSeuoJFVArUE38cB9T8LoZm65H0JDU3rsmiiVFtBhmru
-	cGhob0hiWwk4MMPhsuTfhgib8Lnlw9QbcOcEYnZhH+Ki5NOcI6YrUkcvnAqyWL5XkUt0lwHBAIv
-	9OW8W+dgnKeO62pOoQTylyD3y++YIK4l09mKrSdiqpEFGXhWSXy6it/J0KNNxigZfZZ+rk8BXUp
-	pSg+DU4O7OMSDMbd0Lb99lgDE13lIy8GlMd6K7gyD8cJq4OeA7DEsArJPicdGq2ekC7lfKQzQyq
-	qtRvxmP3XkcW8yxzEg+MZ/mHO+4joipdqxFpmjT94KQ5ypgzqI12eCzvZwsstZHiPWv8MXQ2Sy5
-	g182IoHhHFVvxmMlyMW/fVaB6VHee+K65BmWcU5ItnC4hIA/qLELIjO7mRyyQ2SHHym0jXv5fpR
-	4=
-X-Google-Smtp-Source: AGHT+IF1ElFOKDrihllUTU0L6vNDsk/mc+c3pAUrsYHk9osHh8ET7eTJayTKBR+2Y0pyL5lQdTHUPg==
-X-Received: by 2002:a17:902:f70c:b0:298:3e3a:ae6 with SMTP id d9443c01a7336-2986a7420f6mr41150315ad.48.1763136694526;
-        Fri, 14 Nov 2025 08:11:34 -0800 (PST)
+        bh=Vhc/zAuTGQVZ8JaTdN8K+Oo0c5+Z/1J3kDu+xR7CKJc=;
+        b=TM5e+BKIAnGrgyHRk/8HJUTC1M5XtSJwL8PhR//dpTrzNWPm05D3icuq0VkDVbfL0z
+         kb1fMJcvx5aN8AnURLbqja+rVrghyB0fgIN5BBA1dXNsjswl96Et+bmX0uWiGnZDe0uB
+         vSMCu/BbvrYyXjwFdvddAgIOUlzxkIqw1gcRjwYv27+QNMCOyUgXbPdPs9zMLqOSCYnl
+         VK60p0oJdk7oWaqMHt3euF8VVAtP3/DjoQmCTgrLgi+QaCHE1GPy7qnh1h7cI5NVAjH1
+         GBo/SjQHo5rrLEBQF49/gTQduzuV7IUqZSBdMDHFITOn0ud1qonk76MxtLJCCW7EB3jI
+         yLLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763136702; x=1763741502;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Vhc/zAuTGQVZ8JaTdN8K+Oo0c5+Z/1J3kDu+xR7CKJc=;
+        b=RNwhJF33EoEPwMiJIbZttl5SohdSHoLWV/AGPK4ExL9fhvDS0Uv8gR5GAsuadY9njb
+         GuNWAIZIcf6toGWBxvMCsbCX5sL+rPkKMyYjPQJRFuzCDNhp2pWA2ye2b4XpZuIKdkNX
+         rSV9fjB+cVjKTBWPDPh8tuvV7zM9758+o8N9zhng74ZmfVH3TWHJCaKv9KeEwu32RiIx
+         GfFVWHKqcDr+eyFs44ckn91rxQdnOH7XmCjAeVh8/741ligZePpR00AzIx3oUteR6rv6
+         z5Tsprgdv5Ui+hU/HZUuRO/pCxxnDX4LXpmc+dXclRYjWs73DSYDjOk9PM74WAWcchUn
+         b8Bw==
+X-Gm-Message-State: AOJu0YwQgi9NxNp8jWR6Nru0eccfkF0sKnb3ZjXKQdp+ftMrslEntpaR
+	Pwu2FNJhj63xCpMMt5CRSxijDwdCI07dcrXvkz/T9yq0mw6MKCNkpA2Bf3QbduwApuA=
+X-Gm-Gg: ASbGncs4L0gj3iFxC5UNwJpSupCkQkqgys/M2ERNJH0/OGH/tL6L/YcMY/cdyFQTLHv
+	yBiAHZJ/sT+XIJTeDRPpLkGATtfnXkIorOo3b4WxHoC86uV6BYlSXkQylv6O1/RhgJ1mHSEP6dU
+	/KmDVreOccpPviOzVJkUnURyKEnFJRkSyAiQi+yaDdXilRNFEqp52TBm9jAaERk/ko2vBbGZ2pS
+	g0K60xfaym3FChzEahm0oMRC/zBLAHnHCyen54o3jJyv79upIPYNtGnzz2Y8rzDLGwkT15jmq8q
+	ugkg/Ii3kpOFZXEkszp6f8mOhzE/yu5ug3r+LX1K49MTUk3bI2FuEe+tJn3dfyAZnhqm+vqMy7x
+	QBlPDafxemuydwyZ9Iptj5Xaqrt/q7VAiNMBsQDaiyQYHMSocMNKonhD2Ypcz1Eh7fxtscZ8qSy
+	Q=
+X-Google-Smtp-Source: AGHT+IFlZcha6H/DsVinWBqqf6oWZTx/2Qg/wcFkZfj/srVzxyOPB116oQRPQl6PBozvaWSue3LTWg==
+X-Received: by 2002:a17:903:1786:b0:24b:24dc:91a7 with SMTP id d9443c01a7336-2986a754e70mr40681165ad.45.1763136701667;
+        Fri, 14 Nov 2025 08:11:41 -0800 (PST)
 Received: from gmail.com ([117.147.72.154])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985ce19a20sm58384365ad.84.2025.11.14.08.11.31
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985ce19a20sm58384365ad.84.2025.11.14.08.11.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 08:11:34 -0800 (PST)
+        Fri, 14 Nov 2025 08:11:41 -0800 (PST)
 From: peng8420.li@gmail.com
 To: linux-mm@kvack.org,
 	akpm@linux-foundation.org
@@ -99,21 +100,24 @@ Cc: david@redhat.com,
 	peterx@redhat.com,
 	linux-kernel@vger.kernel.org,
 	dan.j.williams@intel.com,
-	"peng8420.li" <peng8420.li@gmail.com>
-Subject: [PATCH v2 1/2] Remove the "FOLL_TOUCH" test code from gup_test.c.
-Date: Sat, 15 Nov 2025 00:11:26 +0800
-Message-ID: <20251114161127.193707-1-peng8420.li@gmail.com>
+	"peng8420.li" <peng8420.li@gmail.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: [PATCH v2 2/2] Fix the source file annotation information for the "FOLL_WRITE" macro copied.
+Date: Sat, 15 Nov 2025 00:11:27 +0800
+Message-ID: <20251114161127.193707-2-peng8420.li@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251114161127.193707-1-peng8420.li@gmail.com>
+References: <20251114161127.193707-1-peng8420.li@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 038FF4001A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: uttwgdpsbxoz5prs77ktrz9xjhmfsnxa
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DE1B8140004
+X-Stat-Signature: 3mjdz41ih4n94mcxjpp5y6weihxqco17
 X-Rspam-User: 
-X-HE-Tag: 1763136695-871171
-X-HE-Meta: U2FsdGVkX1/8TfuW6Luvki8Tvhb38Bl9YvQLfEa+av3cv1tcA8iLHGufiYruckAyaAZk4YV5DC3TQbLRzbg464pSxCE3AdE6NwuiuQzc4RZm9tp1XCZNow/vYCv9AsjufUcO/D5LIYx22Cpc3YqtODQbZjrnv/v5kXmJIhlSbmNxagqYN6X9K3+Gmuia1WiL5F79SsRF/IsLin9HujK05aDe4ko8f5dSRZ9Yqm42Zz8KBtv8gIyYqmy0XsM5TYdr2R/EWeZxJhQ9bceWiOsm80a9YWxx4ehomllLdslPiHYkVktZtexjXf2IcZBkqB8U/Wsg+WpcI1CODnk+aORUqaZZ5rq5Vos2c6E2CSzEtDaY0W1c946IFviaGRUKruPgAByCBpzgO2b1fYYObxnUjiLKERAT1Cl4gqfAXj57xw8MatacuCCrtVkx7gSwuQHFrflAsilBdSc+h0H+SfZl4+hdxrlPy79UkVCKjW18rm7gWmuaBW8mr+aBMOx5hT1zNVbLoEYze55Xrkmm8nN64TU73cMd/rJ5zP4vqlQa+dVr3pYV8+1Ww6iXJtHZMfioqNZcaJmmneJ1zADwwaMMk2DTQRrY3B577rt+gXdTdEYHLm7FgHRuwJVQ0uFSsvTj2xwBNADeGUOrOlqZ06TPx3vKq4c8MfTPvGYZcVpMlXbQmWPu4LsMhfXtepbOMC4mgbAAUaQXxRwXkMd5kIATHRip34AdNo6QJdahVh9azjCTT9g4j+GYFlAr/tH+1VdYMmk1KGV5TgbwJhLNFZAzXmt3I9V9Ci9VEXuAquXJK2Wqjysfblb/XicjnzbdgNhB2ZtgkH5PZy0cYWFBXS1mH5vXhpVUuVJgzlfAKMoB+ykcV8XLOSrXt8/ILdoVrRcHklRZFngCbd+qRzfjdIOso8hVENnLpRtv0slACbvj3d8koZpVa8a5ActKfH5qTAXcVFu4mbsGFZQXC3GVwVa
- MPwFyQHi
- E+hL9PFqB3E4gxL+EPs31fEbV12Gh9SLa+8BfMuLuHl1s3h3iV3Ah7vN8RnIm/bTOrdxzWFguFTf8IC6F6/GhY/9BBosb9ip87xJv+grvknoyDHf8Qo/SundGJdN9lzbvRaXyF8J/gdup+S933mkML9aLf/afUBHTVFtzEBNvIYSE8pBLYKwZQO+PpdHJtmIxmUMUbMse+AqOBUEnc+IzxzbP+gXBGUjHWmRgMqVcSo7ktQVjgG0FqSWdY1Mv+QOEHcbZJshvfN1b6QlRk8khLRejlZ9lefNwcMhQnVnm0aEI+eQrHxuQcNURYXSbU3YgjXJZa/04ZodMnhAO1o+eO/trhYCntpQkCbbcYomTKtL07zk45yrS2L9xYM/0afciSn1fSoiR40/AHoU/s1zAfnepca/4vt0DfXIEESbBsF/r0UQTB8p75fG7XvcHf3cFTMA9XFvw8lDFTQklSDV+9+HoOmARnKDnPyaWkI5a7m6EPqSfKOIr1uiG1Vw4oCFlF8X/SbzLbfz8DJc=
+X-HE-Tag: 1763136702-262907
+X-HE-Meta: U2FsdGVkX19/O1nDBZVzvCY7F22f+Fz+9zMU8CB7kVs4e1D0NLpRKNZjsCrPQ/vRqlH2mQzCLrfEDvjFVIOxQMytenvnldVyTzibiE6IZfOapt7gbETRuc5Vx7s051HeF65TIdr92AAmnewO+4E3Lj1vUlI3E4CgyOhFbYiRpClptzfSRx+72+BflBwz7pu8QTBkkODD99uoeiD+4g8x9B7TZSfHnVlGbO1RZGmhgHzzwxby+AZZdjoSvddy0LDfoouDmhamKTwBN7gCl8nB5PNWpOyb6mMmQVOzgA4pSi8I4xJKb9QG7DlZdNspJ5INsGeBPTNxP9/q89UJ+Nfm2hykqSrf/E5a/bNdCqQs+/AJmpWo+182izub3hA+JXpSIHeObKNk6l/Bm7F5vgbY8Jl1TyUru5Shk9gbr3+n5+6DhHqGODYxSLUH83DG6KuKIET9nbVVfy04bv7NaXjdAExiNf2k1GTMTXiFDLk2kSKvDib6UYtEJi4Cu7EWxDs/9RsTKQnmY8Tb7e4407ItW//33qL3NRkWWX2F1yimoecwQyqoFcgvii0VjOTxaRmSpJzfdRyuwhyURa4dGjXsAeLI538uwWLNHmh4DAI+PGP6vZC16QtYrqWg2gYI2MaNnHNU8P4EMXGnAyA8A+5xaeMn92EdDlz6ljcz0IYmAvS+9dB0FpTarN5JOI5lGjkewRxT4PlSsvQ/bXoJjhdqKB+/Bmuhhw6t6iKgDbCrIrB99K3DUvqTgLcwNErzSrxMJiIosLXJCjoEwBv9Ac1kz+gcjMC+shX361Y88OFSej0D6i4Cw9KaO6FhrFgC+7m9+KRVCv7RgAMyhJ8gScmBfVRwcD2nuh3/4larkoRIzIKucD3YvyghOLX6FUHJMvIe5DidBXwD4ggwWUvQwfPYRgmGSKgRfehqrd7cEXwKnePegd2iUwdfRUPePK4aytCdfJ2DdFHEO+7ySGBrXtj
+ MusBcHlh
+ HzxjSTUMnY2gGdO1wNQQ/ClqZWhnTk89JEnSeu1kMxjleukorqHRODV74MqLtVdcBtha4YF6nIUiWg8DRZe0ThVkThNYFoN+5qo/ApNf1V6MbgShkG/1furpMMV4Y3jP5/fYtVHTYCKAZQED6prsu+xX9Zx+HY1yv9xK0xAKoCEHq0b5NXfAQiu/wJ30ujufDGkGjlgjY4qTqdCu74HrO4s6Y7uOff3+MKU/6DV93rK7h8lCBVPV5JXuwzSz44x3CcBQTTPljPlb6pH1QyZU03RnezbL22yItBuk1asnn+qFsOGcxGJ7G3XFbw48DI+db8hMMJexZRb89q6UWqmDsly/EueCM6VQeQQ06pELehfmjkSn1bM6YlLhtCXBEA/MuHPl5zLYGQ89KHi3aT77ZB/CthvOkSgzTDIMKiiiVI0Hdp3QwN0wVMfSVmjjXtraNy1vcUOASxn590S1t8ZnlW4d4fb24cpM3rUKish4fPEk1mr3XnE0s/5lc0cz6rfQe8IIzX2kWaOj5ttrFZzDS8+S2MmLKMY3by08m
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,100 +128,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "peng8420.li" <peng8420.li@gmail.com>
 
-Ever since commit 0f20bba1688b ("mm/gup: explicitly define and check
-internal GUP flags, disallow FOLL_TOUCH") we marked FOLL_TOUCH as a GUP-internal flag.
+The 'FOLL_RITE' of the copied source is located in mm_types. h of mm, not mm. h, so fix it.
 
-Therefore, remove the "FOLL_TOUCH" test code from gup_test.c;
-
-Otherwise, executing the test command "./gup_test -L -r 100 -z" will report the following warning log:
-TAP version 13
-1..1
-ENCHMARK: Time: [   39.363371] WARNING: CPU: 1 PID: 117 at mm/gup.c:2512 is_valid_gup_args+0x66/0x8c
-get:2818 put:46 [   39.364043] Modules linked in:
-us# , truncated [   39.364311] CPU: 1 UID: 0 PID: 117 Comm: gup_test Not tainted 6.18.0-rc5-00324-gd09eaf415c87 #29 NONE
-(size: 0)#
-[   39.364434] Hardware name: riscv-virtio,qemu (DT)
-[   39.364546] epc : is_valid_gup_args+0x66/0x8c
-[   39.364596]  ra : pin_user_pages+0x38/0x78
-[   39.364630] epc : ffffffff802079e6 ra : ffffffff8020c214 sp : ff2000000041bd20
-[   39.364650]  gp : ffffffff81a26068 tp : ff60000080b3b000 t0 : ff2000000041bdf8
-[   39.364678]  t1 : 000000000000001e t2 : 0000000000000000 s0 : ff2000000041bd30
-[   39.364697]  s1 : ff60000081300000 a0 : ff60000081300000 a1 : 0000000000000000
-[   39.364714]  a2 : ff2000000041bd3c a3 : 0000000000080000 a4 : 0000000000000001
-[   39.364731]  a5 : 0000000000010101 a6 : 0000000000000001 a7 : 0000000000000000
-[   39.364747]  s2 : 00007fff7eeed000 s3 : 0000000000000001 s4 : 00007fff7eeee000
-[   39.364761]  s5 : 00007fff7eeeb838 s6 : 0000000000000000 s7 : 00007fff7eeed000
-[   39.364825]  s8 : ff60000081300000 s9 : 0000000000000000 s10: 0000000000000002
-[   39.364842]  s11: 000000092869bfdc t3 : 2152ffffffffffc0 t4 : 00000000001fffff
-[   39.364855]  t5 : ffffffffffffffff t6 : 0000000000000000
-[   39.364867] status: 0000000200000120 badaddr: ffffffff802079e6 cause: 0000000000000003
-[   39.364949] [<ffffffff802079e6>] is_valid_gup_args+0x66/0x8c
-[   39.365036] [<ffffffff8020c214>] pin_user_pages+0x38/0x78
-[   39.365049] [<ffffffff80278f78>] gup_test_ioctl+0x2b4/0xc08
-[   39.365060] [<ffffffff80297da6>] __riscv_sys_ioctl+0xba/0xc4
-[   39.365072] [<ffffffff80b93f96>] do_trap_ecall_u+0x296/0x370
-[   39.365093] [<ffffffff80b9ef06>] handle_exception+0x146/0x152
-[   39.365220] ---[ end trace 0000000000000000 ]---
-
+Suggested-by: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Signed-off-by: peng8420.li <peng8420.li@gmail.com>
 ---
- tools/testing/selftests/mm/gup_test.c | 22 ++++------------------
- 1 file changed, 4 insertions(+), 18 deletions(-)
+ tools/testing/selftests/mm/gup_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-index 8900b840c17a..75f7134d529d 100644
+index 75f7134d529d..40c1538a17b4 100644
 --- a/tools/testing/selftests/mm/gup_test.c
 +++ b/tools/testing/selftests/mm/gup_test.c
-@@ -19,7 +19,6 @@
+@@ -17,7 +17,7 @@
  
- /* Just the flags we need, copied from mm.h: */
+ #define MB (1UL << 20)
+ 
+-/* Just the flags we need, copied from mm.h: */
++/* Just the flags we need, copied from the kernel internals. */
  #define FOLL_WRITE	0x01	/* check pte is writable */
--#define FOLL_TOUCH	0x02	/* mark page accessed */
  
  #define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
- 
-@@ -93,7 +92,7 @@ int main(int argc, char **argv)
- {
- 	struct gup_test gup = { 0 };
- 	int filed, i, opt, nr_pages = 1, thp = -1, write = 1, nthreads = 1, ret;
--	int flags = MAP_PRIVATE, touch = 0;
-+	int flags = MAP_PRIVATE;
- 	char *file = "/dev/zero";
- 	pthread_t *tid;
- 	char *p;
-@@ -170,10 +169,6 @@ int main(int argc, char **argv)
- 		case 'H':
- 			flags |= (MAP_HUGETLB | MAP_ANONYMOUS);
- 			break;
--		case 'z':
--			/* fault pages in gup, do not fault in userland */
--			touch = 1;
--			break;
- 		default:
- 			ksft_exit_fail_msg("Wrong argument\n");
- 		}
-@@ -244,18 +239,9 @@ int main(int argc, char **argv)
- 	else if (thp == 0)
- 		madvise(p, size, MADV_NOHUGEPAGE);
- 
--	/*
--	 * FOLL_TOUCH, in gup_test, is used as an either/or case: either
--	 * fault pages in from the kernel via FOLL_TOUCH, or fault them
--	 * in here, from user space. This allows comparison of performance
--	 * between those two cases.
--	 */
--	if (touch) {
--		gup.gup_flags |= FOLL_TOUCH;
--	} else {
--		for (; (unsigned long)p < gup.addr + size; p += psize())
--			p[0] = 0;
--	}
-+	/* Fault them in here, from user space. */
-+	for (; (unsigned long)p < gup.addr + size; p += psize())
-+		p[0] = 0;
- 
- 	tid = malloc(sizeof(pthread_t) * nthreads);
- 	assert(tid);
 -- 
 2.43.0
 
