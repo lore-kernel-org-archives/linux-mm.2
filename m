@@ -4,111 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16B48CDE00D
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:38:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A866CCD4F49
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:38:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 789A38E0006; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
+	id DCBF78E0007; Thu, 13 Nov 2025 23:38:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7130F8E0002; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
+	id D7BBA8E0002; Thu, 13 Nov 2025 23:38:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 601E78E0006; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
+	id C1E468E0007; Thu, 13 Nov 2025 23:38:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 46B6C8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:38:14 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D169D57BF5
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:38:13 +0000 (UTC)
-X-FDA: 84107955666.26.05398B7
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CF201C000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:38:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=g2rTefQg;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A6EF48E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:38:28 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67EA257D13
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:38:28 +0000 (UTC)
+X-FDA: 84107956296.30.01B1647
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9217010000C
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:38:26 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D3U+OeK9;
+	spf=pass (imf14.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763095092;
+	s=arc-20220608; t=1763095106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=75LsZlrkz19mYBMXdx3jHbjL15XI4sQkrG/ZqqsZljk=;
-	b=w37rDGT+hJhstt6aIYxnfrHo9QkHP/4ccEIxYv0dL0I1leG3d7TYZFstv1WvUU+M6U8kiQ
-	1jbDhjuFP8PaAv7YsLnxR8rYLguFA7NFtx9R0awJJ2HExblp8c9dKKTgv9Ln+gokF/diJV
-	QppT86l+SG+MdmaTfRHN24BeBnDlxhA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763095092; a=rsa-sha256;
-	cv=none;
-	b=Mk6TXmMm4pozgdPLP+wBpADjs7fxRsep7DmvT6eJQzY9YyWd7XePOpGfYByAPy+Gd+nEWQ
-	dQN/03VN77aOpKHG7OfFnSoV44GynwrUKJUp7xcisofhyxquIoo0RlKAiuSvRWZ/uf95+y
-	YBACSpMAdC6CIpQEBSnfP/U4Brru+Xw=
+	bh=/KGUOKaMgQGk1AtOrPMAFhEklPPuCbyLaBZCVybPbFQ=;
+	b=Zvd9e+onoDA7oriuxVRCX/b4luEBI6kRH6J53gJFai9w9CYsgVWRjBiUBq5cPg/uFQuJUQ
+	a37Fx7c98U+5k65btjvv6wUL9Xnck+VuyULJoZszwQHrPkbZTjt4smyNKHWSwzbgO0dW1L
+	nJkftTAzqbY8JSfAcnD6sbw2IBjywcs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=g2rTefQg;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-641677916b5so2819746a12.0
-        for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:38:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763095090; x=1763699890; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=75LsZlrkz19mYBMXdx3jHbjL15XI4sQkrG/ZqqsZljk=;
-        b=g2rTefQgyfpqRXZlc2JMyqebSYT7XuPkNXOvW1CjpsGtR6p/7RB+lWQ3vl8Z5gUNR6
-         ko3YI8OCR89MI9e5mN4XDV+fQ+ylf71nZuajls7+8M+XpGFiBx42g+xZWp4otKQ3tORM
-         AUX7GxfNPFtMYOOvr0frfK7Rn7S2lq3+uioS+RSzqrPKtxkgv70EEOH0f4NaIjd94ZLX
-         bJ9w7jJtbkABxalzJJ8djp3wRUVrMjhMn1mxD/RPfytQt0kMm3FM7agQQc+zwZ+v3NLF
-         32D9As3hkqM6sbRQvTKnI2MROav4z2JsCsnFXZPeSowOeh6vBgiwB9FPC8ckl9o4YOFI
-         twVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763095090; x=1763699890;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=75LsZlrkz19mYBMXdx3jHbjL15XI4sQkrG/ZqqsZljk=;
-        b=LxfM64EU/RsjDNdCno/omH87Y0X19mxzCnKuf6/Ls0c+qnYX4Um6OsuHrkV5zjEjtp
-         1gDf9yIyzF6Np050SZ6/EWr2S7kjEIYmCMJn2gZ5YSsynXhvEb5jDZT6h+utrhGycRfC
-         nXl5PcM3dAI3fWWl7pddME5fn3dbUXzrh9af6xnnhN4kd4lQeOkXYKaSYpzjXn/lmxoJ
-         3s+OfnAzKZjcAX9XljXwawJ/xwPmh1dKs7r9m3hNRdnkqJ3UHQLXrNA7+GsJV8eSenMr
-         VpeSQANymbOpZPieqQg1RNZkYB5K8oMubHc2gp9TbpdKgcbjpeuiAmZctfER9P816uYW
-         /4PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGeAgiqTFj6J3B/1i69XuWIJitCif6u3Xn2ZtslVF9Rl+89q2n2mWqBaSBIECcdn92+2uO8p4uSw==@kvack.org
-X-Gm-Message-State: AOJu0YyIier8vPW48VX3XRQoIV5ecnuemMsUACeBjGfCFgZvvb2VwnaM
-	COXNJWrKMVTVRSrLZyHLiqq1HJO4FRRTpMoo0hG3CfJ6Qr8gjRUi1xezjII8DP4IWqjO3z6zyQc
-	X7yZ4gXgSqBk6grKCOx1SeXVwHy+NE/PsAkU9p3IGDA==
-X-Gm-Gg: ASbGncvKfVa+zQr0WN3YVyXpu9NZOIuS8SSSCBm0fUpSrPXudTfAqY+iRFWOrCOOOj+
-	LI9uV0tOv4yugn0QErG2AD93r0oNl95NjOVPzbhTneAWPlsCYk6dObgqO7Jj5Uy3zUpHMZyc9h8
-	yJILi2oBzqzLPDoubQ9e/fP2z9l93tqQUIvECDK6OPJu1eMqh2X5TA3EosOgKoYonoXHr6IlPTX
-	+xV0yKpGL6yiK8YUCjEtFMA4/lY3h1lc1UJ9tImiD+GlZEkrqKF7GPQxQofBMPifhV+
-X-Google-Smtp-Source: AGHT+IH5rJ8YaoOZJ/bljbGnJEtpsMqaJ/zjTHTHaUgm7y1k6s4PlCcpG4rSsf9/sg1rVEhMd6xOPfkaRP0BAtS2RLE=
-X-Received: by 2002:a05:6402:2115:b0:640:ef03:82c9 with SMTP id
- 4fb4d7f45d1cf-64350e1fa2cmr1323111a12.11.1763095089974; Thu, 13 Nov 2025
- 20:38:09 -0800 (PST)
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D3U+OeK9;
+	spf=pass (imf14.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763095106; a=rsa-sha256;
+	cv=none;
+	b=mbACeYvXT3pJZNhBIi4klmAk9KgLDUoSvizPLkrAktqiNEYEw3SEszTaVMYD2CJj7UyrfE
+	KSwVf82fNj5WZeaKnIPDET4ePzJnu35YCuaxZpW7AeXsQxD4wz1KvZMIEsWEkZyGUNcK5j
+	/b42NKpWfiG++0w/nUJNqGc7PMgSkZ0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 267B741B14;
+	Fri, 14 Nov 2025 04:38:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D54CC4AF09;
+	Fri, 14 Nov 2025 04:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763095105;
+	bh=nHpuwrB2PqWoFYl7cIf1QtHauh5mGZ3uTev/Ldhcw+Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D3U+OeK9GhqfWF0+J2jd+muy8AARO4qDhP50T8K6+Ixjl7OYP08hLGOSjvEgNxOBJ
+	 S2GLkZXFLi/O9NjK1ipo/SNFyF/x2q+MTldVC8dPMtD+AzPiMHugVxJM95DcCbrvhf
+	 w+P4TONQUjEMO29loLzdZvpX463OkL/mVZC1yaEqf8ktr2zjE4sZ+5mY+avsykTA+K
+	 YA5I/rS3IC+TdNYYZ7Ei3wdD0P6JsEmLKcGpkSPlRUNbHgBaj0L7XpDuh3mccUNosD
+	 JdIkdst85rXaaJZP3s8sX9A0Gu6//cXcUYjCevnXiDhCSLjMa0X/U4YWXnNUEkL3Gn
+	 Gdnc8kbREu9lw==
+Date: Thu, 13 Nov 2025 21:38:12 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Bill Wendling <morbo@google.com>, Christoph Hellwig <hch@lst.de>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, llvm@lists.linux.dev,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and Locking-Analysis
+Message-ID: <20251114043812.GC2566209@ax162>
+References: <20250918140451.1289454-1-elver@google.com>
+ <CAHk-=wgd-Wcp0GpYaQnU7S9ci+FvFmaNw1gm75mzf0ZWdNLxvw@mail.gmail.com>
+ <aMx4-B_WAtX2aiKx@elver.google.com>
+ <CAHk-=wgQO7c0zc8_VwaVSzG3fEVFFcjWzVBKM4jYjv8UiD2dkg@mail.gmail.com>
+ <aM0eAk12fWsr9ZnV@elver.google.com>
+ <CANpmjNNoKiFEW2VfGM7rdak7O8__U3S+Esub9yM=9Tq=02d_ag@mail.gmail.com>
 MIME-Version: 1.0
-References: <202511140809.4JN2GCxV-lkp@intel.com>
-In-Reply-To: <202511140809.4JN2GCxV-lkp@intel.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 13 Nov 2025 23:37:32 -0500
-X-Gm-Features: AWmQ_bmvVrEBXZ1NreajG0yZ7MNUMcDUJEYu2_AG45IpCCW1b9-zmyc88OFNQWY
-Message-ID: <CA+CK2bBR5qqRMNKVYezCn3RsHx4=YLGsPaCb5DhveEQi3k6N+Q@mail.gmail.com>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 84/106] kernel/liveupdate/luo_session.c:101:3:
- sparse: sparse: symbol 'luo_session_global' was not declared. Should it be static?
-To: kernel test robot <lkp@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CF201C000A
-X-Stat-Signature: esib5qnmpmthndixwustcbmju9wofxuh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNNoKiFEW2VfGM7rdak7O8__U3S+Esub9yM=9Tq=02d_ag@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9217010000C
+X-Stat-Signature: ijm7t7mso31g79pdqdutjhgqg6s5y6gy
 X-Rspam-User: 
-X-HE-Tag: 1763095091-209776
-X-HE-Meta: U2FsdGVkX1+G9zqw1uhiweoa1vNgNLRv971xkl85yRmW1WOPi4hWFs3YlwKh0IAbWAdyDwaZlW68i3uMQJU2xxk+efPgmegDXBZqR/i79kduELyIi+zrBzZjysZ4s1lZwg5gN2h7GC33yCJpgNzLwD9SVtpONVfuKEVKQQDrm8oe7F39yYL27cVWdyT7APV5dFpoccZFJDqbxkZpgZSF0n7s/uhnWMnSFj+xQ1k9nUj7CoZIZ0aAwvdDDLQARWcZ2lj8L/thBlBtFHDrMMfhffLgsOHndldv6bKFfQYWTMtMkZ7WzQgrI/JAaVFYGTxBuJTBrepavL9TmyyGusKYBpwsaYQy+daqQTKWTGK5fJ3/y1B23J5F3qSBlEgQ+SuQ1Fltu3ZdhxBPKMTAcBLv+1gj+NWOh6amNtgMh5TDIzAE2cihLkWwB2Qmm/HtjK/xSB42gmbCTCuaESj8zx9SZCcfMmlvuiX/tvYHgb4TX9dSxNme+CucIICsFlunGXwOQfnvTfSTfmhQHf0jY0nGxBi9NPhuauOtgZp5/plRLNCqS44CR46R9VGb8DARWdYD9s0hP7fmzeJjczOVBxG+NsD+RcSzvBUqulTnzNSQg5VgC3CHW9cAT4/TQAl2+kTj5/8djnVMaZCkFoTzjzcH9406SuF41R3LMsla2kQTpmv9cHVAYewDkYhzEau2RwN3mwpeS2D24tVz5DxdWcibcAoYOtI86/EJtj/q+Kq4FaLpRe98CIy00ti6GL2uu1eTxchgIFUSsfVhf8IdfVgZW7Ws8SwZywAaoc4QquMLYW/pblO6LSUpYX88TLXtJI6XL7UBEB5ccg2154m1yxNETupqhmCK8PnQWhiSWz/1rKltqNQZcroJb1iaqKAVYuxbM0+IVrm5dLHH8z0MtBNr5EUxmi4fIQW0WBbyfJhgPoVzc/XSGUuznbRLC9qinTZWk/Af75Iu9+oj0Zib89S
- wct9/u7o
- G+F4CNU6qRvaR1Bu6aQ7MUCfHv8Lq2FXUfdvUMyVQQxM75kUX5BaA30Y7HX3d1TupqdeXQC8lHM0pg8Yx1reeNnYzMGpgfEFhxUwr47nJ8Mw8gJuAMh8u01n3lifK9yY/v9xYH0/9GFlOISh0hi1N3MlKCE0HQg1luxrTym6/Kgp84l+A+OrsICo6Hjnz2/Id8xiakjzWG3EXNUJzVIAuwQssSjBSYsrdCyK7gaUdj0Hi6UJodEPUbuczFHGHKf2bBrvaorQI5qFRsOu2jcnNYMIJr51urRTtu2rfhKFwvf0tDRZd7nIL0kRnqyCGt1oivKl9L6wnNVuIuZHvZv6fay4MnvIWTv51qP/4zcHmLTGG+O3Z579ikzIMVZ1P+e8i6UnFQp5S6MczAnJjCLKLPkdS1c00WQKEEtM83cvZ4EPvMvn1vFdONcej7cacUaohSCHxDOGUsJkVpy+rMicNO7VPCA==
+X-HE-Tag: 1763095106-681380
+X-HE-Meta: U2FsdGVkX1/CWLFaaJxLM+f4yt537Sf9kWRhjhaKTHgUBmxA4jObOkWqVapov4xHm7JDY7etQsB+4k63GZkb+StuYlDjmMqrasHl+mtezbu13WLjCQZex60NpYcwdC6wfFRntqr4wy9BJW2A4ESTJicM3i+p9i8BqBDgiT7OgfP1gL6Q9ak1S4Cc6J7WlyRP8LZmM7FPI576rNPbxMeVC5s2DWgvfZxSs4YfRE0wCag6mlbuIf0T5Ibj4/kafoGJnf2AtCGVSYP3HmThaSk4/S5GA9vwSzay0X/aFEAm1IKAJaTlfnJdWcNZs8WEJFMq/mutNxjR9FsP61m2uKh7s5qc2w+i93ohpSD6v8POGuff65goSWSGp+C2iYSy1nR09o577ScZ4NA94g6mY19St6h6i9KTzJ7lvOe0NnsUf4FxU36eo0sK405PfTGQ1tXJa92ywWcSoPM9gu84kPgXc8e+r9mKmsJ6mrWitmtP8loS2IA50WEE+t1O/pHV32S5KmE7yoW+rBErPiJmYkrH+xkpqZAgzC8uy8DhW8zhRc3CpN3R6xduO88nzuBM18kFbk49YeRd9y3lN7KVRZcZ43cW5L0fyi3sivl1RVg7DMy7BcFNm1A7X/VjDiOKZg+tW611kySxZVVhY/uGvG8ZLqeXuzAcliO4H+swEQZS8zwv9byk6resHfdtbVD4hmN3XqQO3CT9IRsyd/7zlDCbQ63xOqzMTjbnZcOlEgTQS8u6www2HbL2jxEGenhr8Yk/CVmQLwLcvNzPfhjVu+ILaCU+zecdbLj/878wYGnbWpgkSbt/7O0SVGP7ZjCfqtuMwFc4LUy0Okva4xnVbJbLNl9zSYn3M6TLv+MwIi/pci8I4ZIvnrTxkqx8QlTNThNN9Q/sTmnXYUY0fLJXeMc4AvNSvj57QACGEMhbAxNT2J+24Gzjj56K/1+X1N0zzM2+Zj96X9oPl2UftV4hgLR
+ nFJpgYAW
+ Rq2GUOMHfg5AzfE7vxpZZ/LV1+/ctCpDN3V0QVzpZYktPKOmCcnd9wX0kvmYNhPtNFisoMdNM+9/txfhILnJztP6OLrs3hTUoXkqn5Eu2hEUxkbWsSWBrv4X8KjT0B7SSpBYiWH3cjzradnk8xomTAXWSGwBOZYX8madceqKFrQpMdJSNVtt65qdS/PqBWuyTdFZg7Q5j7bYvizj/kwYGEjKAh2DD+bsw/OJ95L4u87Nas+M2+cNX9P9vNEiNj1xPbuuHrOgipomd2OzsbAnkZyNLewMXhDxthm+E+67e8DhKLrzbSc4G0uec5z0lfYhHAdUQFiU2tqMJe+s/Ps1ZhdF2GDNpm49uCFlufQE83Qo4kNCoIQk2SOuLrg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,79 +131,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 13, 2025 at 7:29=E2=80=AFPM kernel test robot <lkp@intel.com> w=
-rote:
->
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-no=
-nmm-unstable
-> head:   c3e0350a1f9934c5e56d859a26bf37a15ab7bb25
-> commit: 877409d046405d44ba7e15e19345239c1affa4a5 [84/106] liveupdate: luo=
-_session: add sessions support
-> config: x86_64-randconfig-123-20251114 (https://download.01.org/0day-ci/a=
-rchive/20251114/202511140809.4JN2GCxV-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0=
-227cb60147a26a1eeb4fb06e3b505e9c7261)
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20251114/202511140809.4JN2GCxV-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511140809.4JN2GCxV-lkp=
-@intel.com/
->
-> sparse warnings: (new ones prefixed by >>)
-> >> kernel/liveupdate/luo_session.c:101:3: sparse: sparse: symbol 'luo_ses=
-sion_global' was not declared. Should it be static?
->
-> vim +/luo_session_global +101 kernel/liveupdate/luo_session.c
->
->     89
->     90  /**
->     91   * struct luo_session_global - Global container for managing LUO =
-sessions.
->     92   * @incoming:     The sessions passed from the previous kernel.
->     93   * @outgoing:     The sessions that are going to be passed to the=
- next kernel.
->     94   * @deserialized: The sessions have been deserialized once /dev/l=
-iveupdate
->     95   *                has been opened.
->     96   */
->     97  struct luo_session_global {
->     98          struct luo_session_head incoming;
->     99          struct luo_session_head outgoing;
->    100          bool deserialized;
->  > 101  } luo_session_global;
->    102
+On Thu, Nov 13, 2025 at 03:30:08PM +0100, Marco Elver wrote:
+> On Fri, 19 Sept 2025 at 11:10, Marco Elver <elver@google.com> wrote:
+> [..]
+> > I went with "context guard" to refer to the objects themselves, as that
+> > doesn't look too odd. It does match the concept of "guard" in
+> > <linux/cleanup.h>.
+> >
+> > See second attempt below.
+> [..]
+> 
+> I finally got around baking this into a renamed series, that now calls
+> it "Context Analysis" - here's a preview:
+> https://git.kernel.org/pub/scm/linux/kernel/git/melver/linux.git/log/?h=ctx-analysis/dev
+> 
+> As for when we should give this v4 another try: I'm 50/50 on sending
+> this now vs. waiting for final Clang 22 to be released (~March 2026).
+> 
+> Preferences?
 
-Thank you, the fix is:
+For the record, I can continue to upload clang snapshots for testing and
+validating this plus the sooner this hits a tree that goes into -next,
+the sooner the ClangBuiltLinux infrastructure can start testing it. I
+assume there will not need to be many compiler side fixes but if
+__counted_by has shown us anything, it is that getting this stuff
+deployed and into the hands of people who want to use it is the only
+real way to find corner cases to address. No strong objection from me if
+you want to wait for clang-22 to actually be released though for more
+access.
 
-From 3c561cef2649c368b8aeb8e6e16fd096fd8634a7 Mon Sep 17 00:00:00 2001
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 13 Nov 2025 23:29:18 -0500
-Subject: [PATCH] Fixup: liveupdate: luo_session: add sessions support
-
----
- kernel/liveupdate/luo_session.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_sessio=
-n.c
-index ec526de83987..e1a45af892eb 100644
---- a/kernel/liveupdate/luo_session.c
-+++ b/kernel/liveupdate/luo_session.c
-@@ -98,7 +98,9 @@ struct luo_session_global {
-  struct luo_session_head incoming;
-  struct luo_session_head outgoing;
-  bool deserialized;
--} luo_session_global;
-+};
-+
-+static struct luo_session_global luo_session_global;
-
- static struct luo_session *luo_session_alloc(const char *name)
- {
---=20
-2.52.0.rc1.455.g30608eb744-goog
+Cheers,
+Nathan
 
