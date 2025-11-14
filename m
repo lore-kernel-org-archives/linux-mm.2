@@ -4,81 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27A65CD98F7
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 00:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43AE4CD98D1
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 01:05:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 749B78E000E; Thu, 13 Nov 2025 19:46:47 -0500 (EST)
+	id 09CA28E0003; Thu, 13 Nov 2025 20:05:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 721928E0002; Thu, 13 Nov 2025 19:46:47 -0500 (EST)
+	id 04C938E0002; Thu, 13 Nov 2025 20:05:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65ECF8E000E; Thu, 13 Nov 2025 19:46:47 -0500 (EST)
+	id E7DE38E0003; Thu, 13 Nov 2025 20:05:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 535A98E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 19:46:47 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B44E013665C
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:46:46 +0000 (UTC)
-X-FDA: 84107372412.06.D482DB4
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf27.hostedemail.com (Postfix) with ESMTP id F1B1D40009
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 00:46:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LQbrXt32;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D25698E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:05:48 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 336D114022F
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:05:48 +0000 (UTC)
+X-FDA: 84107420376.11.3DB2BDD
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3970640011
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:05:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=G+IIlc2K;
+	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763081205;
+	s=arc-20220608; t=1763082346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=as6UwWBbq9lK8qvRYSOLDFF98BPC/QmrT66bi070wN0=;
-	b=wVqJ1HvQxPqZl8/jyZGgLWVaTKGK4Mkhrne5XhI0LWuPMATfF22f4xCRvN0l+064d8BXkZ
-	Y+eCMuJeUJTOkQpRREXxczm8UZgiu3kPRFh/YBSAaTdhjsTUxuOvIjh/xjx1mLpDAe9M4Z
-	d9qqfrizT/gNE8Q7Kj4I+qxSR2sge7c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763081205; a=rsa-sha256;
-	cv=none;
-	b=nhP1jWwXjlFxaLHnA0bESrePA0TBUL7cMRqcg4dgpPiBXsQsNvd7SUzYoUatn8kqBLq6mr
-	JvC1LbsagmCjjVkFGVzlqDhAolMw09rC5BwlPT02bwCrPVtiyLtEpaicVbgjt4xgZYyDyo
-	wY69sD6RjxhP7ivbM26pu9l2acl6LU8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FHpvy+dt2D7kRucAfZrZc/1IWiFzNfAv62SU5Sy7nig=;
+	b=liBzu9r9/rgpb7Bs/C1Ko06PMA33z3K7l8jTEDyY0ei1D28/TGWo9kJOrlUdDZQMA1hEQt
+	6GUB/SBbz3RZm6XrEVDvqgfz7j6h25w5TZyudHfW4fojUJ15yndLUSqu8PFHnxPjF32gXs
+	Y997vA4wElRP4hjOi+pzkwmn24z5k7I=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LQbrXt32;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1763081200; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=as6UwWBbq9lK8qvRYSOLDFF98BPC/QmrT66bi070wN0=;
-	b=LQbrXt32aypQUAFU6bVJxtap8NuOVlyCYn1WL//AYGm3C7sIi4x1/7egTbz0I96vHN7QgXTbFaFxFey8GBH+nI7SxuA9VUpFJcivieE3LhE/HRRUmbrWrAjQZqwsJGWwzbgNogiHOTO3yA7AmiB/akwKXAyNupLUgNEMab0F6mI=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WsL3Luj_1763081198 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 14 Nov 2025 08:46:39 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	hughd@google.com
-Cc: david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	willy@infradead.org,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm: shmem: allow fallback to smaller large orders for tmpfs mmap() access
-Date: Fri, 14 Nov 2025 08:46:32 +0800
-Message-ID: <283a0bdfd6ac7aa334a491422bcae70919c572bd.1763008453.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=G+IIlc2K;
+	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763082346; a=rsa-sha256;
+	cv=none;
+	b=76y+8u+9HDcoayh91kFH9QUirJTiWi51xfJ81PDWplz3bliW/+xoDmOaTAEf3HW6+bLnLR
+	3z2xsgCKXf7SyvQmQiDHrHZM5nDoeZIE2k97Gmar5mOMM2dk/TNAHqsXYcc4mE/V7VFj3E
+	3TDtn53JCaD/Ck95hBXt/CG434MPi5Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763082345;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FHpvy+dt2D7kRucAfZrZc/1IWiFzNfAv62SU5Sy7nig=;
+	b=G+IIlc2Kh81J8Nk42VakhZ5SQVHxOjxw+3ui8+v9FkiIDj6Hnkt8AgAQRem+UNH60bBO49
+	PcAlBD3/0bd5WhwbwHHVwv24N/yI1iOGsEgD9VqdODQWLQ9RH5mp/A+zLvf+ELJc5mobca
+	1bJxoiQCNgig9LKCeHGjLavD6Sl+Lko=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-596--lLcIvL2NICkYdqatfb8qQ-1; Thu,
+ 13 Nov 2025 20:05:42 -0500
+X-MC-Unique: -lLcIvL2NICkYdqatfb8qQ-1
+X-Mimecast-MFC-AGG-ID: -lLcIvL2NICkYdqatfb8qQ_1763082340
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B56261800451;
+	Fri, 14 Nov 2025 01:05:38 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.59])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2BC00300018D;
+	Fri, 14 Nov 2025 01:05:35 +0000 (UTC)
+Date: Fri, 14 Nov 2025 09:05:31 +0800
+From: Baoquan He <bhe@redhat.com>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, chrisl@kernel.org, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com
+Subject: Re: [PATCH 1/3] mm, swap: change back to use each swap device's
+ percpu cluster
+Message-ID: <aRaAW5G7NDWDu5/D@MiWiFi-R3L-srv>
+References: <20251109124947.1101520-1-youngjun.park@lge.com>
+ <20251109124947.1101520-2-youngjun.park@lge.com>
+ <CAMgjq7AomHkGAtpvEt_ZrGK6fLUkWgg0vDGZ0B570QU_oNwRGA@mail.gmail.com>
+ <aRXE0ppned4Kprnz@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uqdtc8mnp7j4nksipk5co4mgf1zo5dzx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRXE0ppned4Kprnz@yjaykim-PowerEdge-T330>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3970640011
+X-Stat-Signature: wsdjhq3sop3c5pgkhbzfjzs1qiktsfoo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1B1D40009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763081203-861192
-X-HE-Meta: U2FsdGVkX198PnVC3pmiZII/50hhBTKBCpVjXVcQbjZ2OBRSAGEcoLOEU5OcfXJ8Wket3hUC3Pe66vw1vokdmK+85KKGx1D9w1Wh8S4zMSiQ5ssPRigLW2rnwe3VIfFMTzNGtcLdwQ0cCZ3SWnkT+mcgfEOZ4DDz5mE4rx2FuRFsgAC2MRiVf8NHo5znlOnNdOBzS+X54lrMP2YqO8Ad0aIHKcl/Wy7kChahvZQ3hzHk35zEJg51f9v8OI/6Gwixs96VPxXh3EKW3SgZOjG457BB/Dnz0uHkHlnf/Py3/ahyERFWuPR8XuJyHw8r0bhYjy4yMPRfg72vtUPJzimMUs8P/aCAOraSUqiqQJujcjYUa8EPv5FEA/JhAp8nbbGJbXH5cAp/Sr4aYMgBkUh8Vs0ruLTuJM0P1blSoDDoFpwO0owABz5xe9w7zasWrbowP8yOZPvw7wxxVLGvdI2VFnzq8gyefSqf0/JSqU+ssyhvmaxALt9v1YPviv3rDvda8nDlmDchNGQlVEPv2BdIiRk6K3nusBj1J7idcPLqRNHq24vlv9+6lA+RPVNwTizW0stxK9qPDcqYfxDAJL+N3A0JNIyoFcQlp8ZBOYdbiMmUxx/sGJn4RR0x+gTFXjba4lhPdAcxKShrYZ1diLCxZitbH6vzCOB1jLmLEV6/khRpnhe/cqjX9uHoOQVfKlog4vt8g8hDczusp3a3EhJeOKiDFRpWbNRxv35arUi4fPF4UceW0C2aZZdKoCFv8Mw7xGYSwc7ib1/QQ8s16pPviqD0QNJwx/MSNJAFQLLbTaWlu2HJwT0fYQHdLCVNYMDMMiYhbbLvZ+998AY9gpx3ATvI5pBMsGwqTs01L8ShVrDpLdJ3kFvazqKXcafXVi14M2ZdhSaPR8NdAYXKibuEDna/C0S8NQJe4GdK8ib1y/cU4Gu1abMBwSv6JY+o2HNs9dcOK1viR9tHmNX0nAj
- /O9xxhW6
- 9TLPLSPaJZLK50teBSEWbqSMp8vLHWFNLlIdwflRoME+VHua9PtR1JYeaXgSutQJxY7xJzamoaGHiVbPkDyIRe3faYWkbEW8lsU9k7whJB4A20MhWAYlZH3EQf9djaI8kket3B+tDT8PzTlDw8wsnyj71ZsFCujY/JmV/YdlUCvEcI5sFNyQbbW5FftWjlwWppScWXA/HZjdTbaKeqourR8jCaA==
+X-HE-Tag: 1763082346-916972
+X-HE-Meta: U2FsdGVkX1+txfWXJH4RUUFTNXHu9CfgICIGT86ElpKykWLkqYJeH3bpjweXqme8SxnXnVDT6uRMlxCbV3CdE8wBf+Wba0dVpl4lsd5vYP+WMWVYHkDGRukQEk1CyfqlQIgeciBPOkU1olalqbKBaC5K9nlYpQsfICmFKYkvQ+njGbJbvzNRTtKbO341yQHrXsEBywlVlCu3QXH0DaiMBMAwci6iqQ1sRi3EpPWRPeq+OHNmm/Cav2dGrMZvLjl2dJ+8zByKDxd0X9BDjGmo0vDpb6zEmykeeU24yIiZjQotHoN4ifnCZW37VO7z/G+4FxLKKQ8ccxEQJx6uPSOWosJaLi8/yLHIbN4oeSS1UDIXTn1LYLx6njZMDAQVB0f6HNtGSNeb0Eg4TFdBKgsp/egOQrUutIEdOCIwgvTzN3Lk1wW5hyPhEW74KFxjFGoY20pRgHvrNV2y+U0a/JX1xFtaY1V4vmbnKGLIaWnTrWqTw0KK++NQCkO4gIIQQJ3L3GAaahEJeUwB2vBPw4fP9pxnO2sqm++CfiTBz20UxNKsNe7AiZ6cvBhn8VJrNth8h1kYSpM52j2egk7KDryiD7MhiPUsI0G0PiHambCfGS0pRHERy3YqFbmxEvjoYdSRqG7PAMqfwJG3uq1VWIBKnXRpZBaKbGz9P5YraMIGvCKhxlGtUluUoZHLiWkmSkC7TwvDZ+kiq/v7PC00a/s/uu6eb3f9YEkniovWSIiwej4JLHq7f5e1u+G4sWE06bdSM1UZCkGSDD02ytAQKFGiDfBupyoFnOljawZmD6H/AFQ8Q9aC7miC/dfdNmO8wbsFhcV3VnvP+6FWW+y0OOx6WIm5YADfeOpMqiU0KqCX8RBAWLjH2PbhYe/ozJSFrhxG4IC3Ll1NN3deFg7x/3F+vSfjw4hEjdIlMOBpBXmkPJrCAPPEQ/iDFA8MgegIm8mAdW+YEeRsze4iby7+7tG
+ aY8Lgtzm
+ Ljq3FbMr6D7IVdgDs20C0oQzzMoDaUpaLEupG0KIX/scI7YPYeLUyx9kQka72TFJv4Bgy++uRzvw1XAHrL1SklLOtwqh7KADVtGGOq41TvnlF+3N9S/g/SUiMv1eEM+TL+gFRLgnnF1OVxYycjQAqALEhgWlCV6P74kbAJFpFqktN1/iSprvvKWFO4ve6i5vBWMdjLHkdLKeJKkAJcEwbjEdqcDCTtwtg0En98VYXNNZTQ/5PecGDB3jKdUYD7MFgv71muBdwIn6hA+fe5PCJBtsrysO2RGnqsGPyrqGLa9xyyI5fs18r4+MPPvwNjL6altyzWv5nRUdFusrm/V11Zm2fqcGV0HAprT99SYxzQyzgKArCqeLhFD17wl2VsBPPm+akGawEGOObBzVPLZDDyxmEEyFrqHvYKz38+9kdv/LfSZD6DcxVS9nuZSuACj3AdAt7lqRAkkg69YpvJELX18P1D833VHex+TaL8DPZmKNYz3vOSsHYxBfCgQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,63 +110,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After commit 69e0a3b49003 ("mm: shmem: fix the strategy for the tmpfs 'huge='
-options"), we have fixed the large order allocation strategy for tmpfs, which
-always tries PMD-sized large folios first, and if that fails, falls back to
-smaller large folios. For tmpfs large folio allocation via mmap(), we should
-maintain the same strategy as well. Let's unify the large order allocation
-strategy for tmpfs.
+On 11/13/25 at 08:45pm, YoungJun Park wrote:
+> On Thu, Nov 13, 2025 at 02:07:59PM +0800, Kairui Song wrote:
+> > On Sun, Nov 9, 2025 at 8:54 PM Youngjun Park <youngjun.park@lge.com> wrote:
+> > >
+> > > This reverts commit 1b7e90020eb7 ("mm, swap: use percpu cluster as
+> > > allocation fast path").
+> > >
+> > > Because in the newly introduced swap tiers, the global percpu cluster
+> > > will cause two issues:
+> > > 1) it will cause caching oscillation in the same order of different si
+> > >    if two different memcg can only be allowed to access different si and
+> > >    both of them are swapping out.
+> > > 2) It can cause priority inversion on swap devices. Imagine a case where
+> > >    there are two memcg, say memcg1 and memcg2. Memcg1 can access si A, B
+> > >    and A is higher priority device. While memcg2 can only access si B.
+> > >    Then memcg 2 could write the global percpu cluster with si B, then
+> > >    memcg1 take si B in fast path even though si A is not exhausted.
+> > >
+> > > Hence in order to support swap tier, revert commit 1b7e90020eb7 to use
+> > > each swap device's percpu cluster.
+> > >
+> > > Co-developed-by: Baoquan He <bhe@redhat.com>
+> > > Suggested-by: Kairui Song <kasong@tencent.com>
+> > > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> >
+> > Hi Youngjun, Baoquan, Thanks for the work on the percpu cluster thing.
+> 
+> Hello Kairui,
+> 
+> > It will be better if you can provide some benchmark result since the
+> > whole point of global percpu cluster is to improve the performance and
+> > get rid of the swap slot cache.
+> 
+> After RFC stage,
+> I will try to prepare benchmark results.
+> 
+> > I'm fine with a small regression but we better be aware of it. And we
+> > can still figure out some other ways to optimize it. e.g. I remember
+> > Chris once mentioned an idea of having a per device slot cache, that
+> > is different from the original slot cache (swap_slot.c): the allocator
+> > will be aware of it so it will be much cleaner.
+> 
+> Ack, we will work on better optimization.
+> 
+> > > ---
+> > >  include/linux/swap.h |  13 +++-
+> > >  mm/swapfile.c        | 151 +++++++++++++------------------------------
+> > >  2 files changed, 56 insertions(+), 108 deletions(-)
+> > >
+> > > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > > index 38ca3df68716..90fa27bb7796 100644
+> > > --- a/include/linux/swap.h
+> > > +++ b/include/linux/swap.h
+> > > @@ -250,10 +250,17 @@ enum {
+> > >  #endif
+> > >
+> > >  /*
+> > > - * We keep using same cluster for rotational device so IO will be sequential.
+> > > - * The purpose is to optimize SWAP throughput on these device.
+> > > + * We assign a cluster to each CPU, so each CPU can allocate swap entry from
+> > > + * its own cluster and swapout sequentially. The purpose is to optimize swapout
+> > > + * throughput.
+> > >   */
+> > > +struct percpu_cluster {
+> > > +       local_lock_t lock; /* Protect the percpu_cluster above */
+> >
+> > I think you mean "below"?
+> 
+> This comment was originally written this way in the earlier code, and it
+> seems to refer to the percpu_cluster structure itself rather than the
+> fields below. But I agree it's a bit ambiguous. I'll just remove this
+> comment since the structure name is self-explanatory. Or change it to below. :)
+> 
+> > > +       unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offset */
+> > > +};
+> > > +
+> > >
+> > > -/*
+> > > - * Fast path try to get swap entries with specified order from current
+> > > - * CPU's swap entry pool (a cluster).
+> > > - */
+> > > -static bool swap_alloc_fast(swp_entry_t *entry,
+> > > -                           int order)
+> > > -{
+> > > -       struct swap_cluster_info *ci;
+> > > -       struct swap_info_struct *si;
+> > > -       unsigned int offset, found = SWAP_ENTRY_INVALID;
+> > > -
+> > > -       /*
+> > > -        * Once allocated, swap_info_struct will never be completely freed,
+> > > -        * so checking it's liveness by get_swap_device_info is enough.
+> > > -        */
+> > > -       si = this_cpu_read(percpu_swap_cluster.si[order]);
+> > > -       offset = this_cpu_read(percpu_swap_cluster.offset[order]);
+> > > -       if (!si || !offset || !get_swap_device_info(si))
+> > > -               return false;
+> > > -
+> > > -       ci = swap_cluster_lock(si, offset);
+> > > -       if (cluster_is_usable(ci, order)) {
+> > > -               if (cluster_is_empty(ci))
+> > > -                       offset = cluster_offset(si, ci);
+> > > -               found = alloc_swap_scan_cluster(si, ci, offset, order, SWAP_HAS_CACHE);
+> > > -               if (found)
+> > > -                       *entry = swp_entry(si->type, found);
+> > > -       } else {
+> > > -               swap_cluster_unlock(ci);
+> > > -       }
+> > > -
+> > > -       put_swap_device(si);
+> > > -       return !!found;
+> > > -}
+> > > -
+> > >  /* Rotate the device and switch to a new cluster */
+> > > -static bool swap_alloc_slow(swp_entry_t *entry,
+> > > +static void swap_alloc_entry(swp_entry_t *entry,
+> > >                             int order)
+> >
+> > It seems you also changed the rotation rule here so every allocation
+> > of any order is causing a swap device rotation? Before 1b7e90020eb7
+> > every 64 allocation causes a rotation as we had slot cache
+> > (swap_slot.c). The global cluster makes the rotation happen for every
+> > cluster so the overhead is even lower on average. But now a per
+> > allocation rotation seems a rather high overhead and may cause serious
+> > fragmentation.
+> 
+> Yeah... The rotation rule has indeed changed. I remember the
+> discussion about rotation behavior:
+> https://lore.kernel.org/linux-mm/aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330/
+> 
+> After that discussion, I've been thinking about the rotation.
+> Currently, the requeue happens after every priority list traversal, and this logic
+> is easily affected by changes.
+> The rotation logic change behavior change is not not mentioned somtimes.
+> (as you mentioned in commit 1b7e90020eb7).
+> 
+> I'd like to share some ideas and hear your thoughts:
+> 
+> 1. Getting rid of the same priority requeue rule
+>    - same priority devices get priority - 1 or + 1 after requeue
+>      (more add or remove as needed to handle any overlapping priority appropriately)
+> 
+> 2. Requeue only when a new cluster is allocated
+>    - Instead of requeueing after every priority list traversal, we
+>      requeue only when a cluster is fully used
+>    - This might have some performance impact, but the rotation behavior
+>      would be similar to the existing one (though slightly different due
+>      to synchronization and logic processing changes)
 
-There is no functional change for large folio allocation of anonymous shmem.
+2) sounds better to me, and the logic and code change is simpler.
+> 
+> Going further with these approaches, if we remove the requeue mechanism
+> entirely, we could potentially reduce synchronization overhead during
+> plist traversal. (degrade the lock)
 
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- mm/shmem.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 395ca58ac4a5..fc835b3e4914 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -645,34 +645,23 @@ static unsigned int shmem_huge_global_enabled(struct inode *inode, pgoff_t index
- 	 * the mTHP interface, so we still use PMD-sized huge order to
- 	 * check whether global control is enabled.
- 	 *
--	 * For tmpfs mmap()'s huge order, we still use PMD-sized order to
--	 * allocate huge pages due to lack of a write size hint.
--	 *
- 	 * For tmpfs with 'huge=always' or 'huge=within_size' mount option,
- 	 * we will always try PMD-sized order first. If that failed, it will
- 	 * fall back to small large folios.
- 	 */
- 	switch (SHMEM_SB(inode->i_sb)->huge) {
- 	case SHMEM_HUGE_ALWAYS:
--		if (vma)
--			return maybe_pmd_order;
--
- 		return THP_ORDERS_ALL_FILE_DEFAULT;
- 	case SHMEM_HUGE_WITHIN_SIZE:
--		if (vma)
--			within_size_orders = maybe_pmd_order;
--		else
--			within_size_orders = THP_ORDERS_ALL_FILE_DEFAULT;
--
--		within_size_orders = shmem_get_orders_within_size(inode, within_size_orders,
--								  index, write_end);
-+		within_size_orders = shmem_get_orders_within_size(inode,
-+				THP_ORDERS_ALL_FILE_DEFAULT, index, write_end);
- 		if (within_size_orders > 0)
- 			return within_size_orders;
- 
- 		fallthrough;
- 	case SHMEM_HUGE_ADVISE:
- 		if (vm_flags & VM_HUGEPAGE)
--			return maybe_pmd_order;
-+			return THP_ORDERS_ALL_FILE_DEFAULT;
- 		fallthrough;
- 	default:
- 		return 0;
--- 
-2.43.7
+Removing requeue may change behaviour. Swap devices of the same priority
+should be round robin to take.
 
 
