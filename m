@@ -4,213 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36C81CE7A97
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:14:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C3FCCE7A9A
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:20:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D41A8E0015; Fri, 14 Nov 2025 04:14:12 -0500 (EST)
+	id 781E18E0015; Fri, 14 Nov 2025 04:20:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883EE8E0002; Fri, 14 Nov 2025 04:14:12 -0500 (EST)
+	id 738788E0002; Fri, 14 Nov 2025 04:20:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 725CA8E0015; Fri, 14 Nov 2025 04:14:12 -0500 (EST)
+	id 647208E0015; Fri, 14 Nov 2025 04:20:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ABFC8E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:14:12 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3449E1A02F8
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:14:12 +0000 (UTC)
-X-FDA: 84108651144.04.20BC0ED
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010011.outbound.protection.outlook.com [52.101.201.11])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 611891A0007
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:14:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=MGaSKRL3;
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.201.11 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763111649;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DECB8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:20:58 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D853013A6FB
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:20:57 +0000 (UTC)
+X-FDA: 84108668154.06.3907DDF
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D65C840006
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:20:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=O23AHUJz;
+	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763112055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W/XA5wBx+okj4sWDPHbV1fPTlTRajTYCZeswIOgSVzE=;
-	b=dRXwttZHaK/uVmDMCfERrL+7PCBoF2YiweE7peeerMu0k891Fu27B1g6rCj8iW3CUrZonS
-	F7OB2vlwXtwyiOncK5xIX55UnQRPUOrWkKpnkLj4u0L4wlgRZ1JjgQWNQeGfySHe4IF1NC
-	7zKhAXSoJ92Yiqy01WUUSDX6k4qdJQY=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=MGaSKRL3;
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.201.11 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763111649; a=rsa-sha256;
-	cv=pass;
-	b=WjcL3UjbBKWHbA/JXr1x3oMtTaqPSwU353kHqWu8F3otKRICffhS5Bt8sLA4ziSZJlBNN0
-	s42SmlSO8hkmCaZHDInubobUXhvNO1P+wf1uMyNSJQnB0HRWTZqVc/sc/q3odWAK87luji
-	ZAptPbn7yARZrUxqVC+blRS4cCiwgZQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AcvVH3+ZMe5axg3iweV+hWoE/Muzbp+tMhqy1wpiOcARZQu/ygkyvrn4yiC9+JyIyV3N63DDqor9YrX14w0OdjPnS10JaKuUlXEzh82MDaMgS6SRPZSQcTZoNi2x25tv5X76qP+MLRyqYBdaD7WtELfMxSRGvMTsx+IiZ08YtHhoHZgAcqV8jyItgJDEIRfaZESTOwV/CQjarfPNaQthvmPMy4/jTLVog7yJIzPM3zLxUX3Vi3uOXl0yEps77V6mW972TYtHstXT4tIdEQkYIkgCP0GXGK6hJpUApjq34T4Sb1dCRoLxbfBw63bsAhpwb9F77kAR6c4PB5ciKi2RdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W/XA5wBx+okj4sWDPHbV1fPTlTRajTYCZeswIOgSVzE=;
- b=Zwe0zeRrQeDjK2MWlv0xfNNocuRrrkwIoOgaGHTRMKHB5/zSzI9CIYiSHXw8/KnqOVt0ufiMxvVDgmHyh7Y9MnUgcBz1tIoc+7ZjEafJxcQT8MtyiDqVHZr99SpwY11JeAeMxUaP4YbUd5LQi39OReGXdmbKLQR7h0nuFDdieM3cROOiULgit4oe4Xj+SnP/Ee55hiSrjEXF+oqVnDcPVfCbeM+2UTbcyBSRsuFxJcwFvndi9X5C97tYKLIojJ3IWK3wbKaTx2rBBOU0g4cmE/kD8NkJdpNhPbKVWOH5Wb7k6H1QxkNKXgNdCndXe76diYq3NAXCkZPT2MWpQsYvOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W/XA5wBx+okj4sWDPHbV1fPTlTRajTYCZeswIOgSVzE=;
- b=MGaSKRL3Fyk7njYZos+w57FLT1ZILTT+w26LT78L1DvVkkjiu5YcFIM+/EE5fdOQeaGRjeujuh7ANixbSSABpZhipWgFDHVbJ+KX4DONS+sEleGZrwvjdkEVwXbda4Ry7RdgAMPB2Hocd5io79Jx1M0Bv+yzh7JtQS8+vgH5plHSPJspkjWUfAnQ5Te0fXTKTmw+h90PUuvWl87LTdkUHZUd/4lANQUbAGDzRZDWlFS9H24UR24Gj4YLrE2a9QA36Y0m5Mqg6T2UEe4F8mFS/Otf5LuKXn0HjdaEKNxglIj/DMqjhipP8VhZo/LZLjZUnu6wrytvzgRCsVHKoK658g==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by CY8PR12MB8265.namprd12.prod.outlook.com (2603:10b6:930:72::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
- 2025 09:14:05 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 09:14:05 +0000
-Message-ID: <e118987c-431c-4152-89d1-563f1312a574@nvidia.com>
-Date: Fri, 14 Nov 2025 20:13:58 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpu/drm/nouveau: fix return type in
- nouveau_dmem_migrate_to_ram()
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org
-Cc: kernel test robot <lkp@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251114012221.2634832-1-balbirs@nvidia.com>
- <95e27bd3-6ce7-46a3-81d5-0fc830908b10@kernel.org>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <95e27bd3-6ce7-46a3-81d5-0fc830908b10@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR02CA0068.namprd02.prod.outlook.com
- (2603:10b6:a03:54::45) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=qeHXUYMFSy8eRy5hcdz09NbECVSzhUF3RPksa1OX55Y=;
+	b=HM3bOlbz5GZ90f7lFm8o/+5WLOlsO/V8D0f2f1Biwkoh+ZUNbIzg7jVxd6uz1AtmHF1sp8
+	8dXVY14TM1JkyDY1/EXIMs+9C/yl9mQi9iG9U8Y5Mrl0QPiDCiqekguUZQ+BSJJHNRWh1A
+	czXnnkMvcgAbHPHzJWLsG6GPVcFgelk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=O23AHUJz;
+	spf=pass (imf01.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763112055; a=rsa-sha256;
+	cv=none;
+	b=EJ0qdoTunSeA3Xn67a/YnO4grKEmdsOr9aV11vafct63GlrFR/OnlWAWncOpccmAxrX1qF
+	aJG0VTWGU2OJw15nzdUnn0rZYTstn5Ieg5oEgZKY2IC/7ZIJ9EpxwI08OOPT8gsU6TX7UV
+	rY9dbecr/Ht7UTzB/ATZxfUYqNujAKk=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5ADMlP0P000482;
+	Fri, 14 Nov 2025 09:20:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=qeHXUYMFSy8eRy5hcdz09NbECVSzhU
+	F3RPksa1OX55Y=; b=O23AHUJz7ranXNGFgaqbiPJtfqqV1CiruQIzwI/JynZgWW
+	a579AwNYFprV3BVB3XZXRk2K7mQpx4Rj77oF/JDot6EjlcIqCW2AVD2zHXyZ1FMT
+	yVHGyq+vCOUiF/TaBZ20Xism4LSu2geobF55yMydsG7EgsAMdc/1YycnUlfATfrB
+	YR2tKE2Qgbfq/qWFPGDJCUab9xCXx4A1kJ03/vwsRnqnVuGYGRgehbyHXqmnEUXl
+	gnwcWVijQ9oEgVcuqArSQlB8U6Hfe6rKUZ1xEsl6cj/EzfUm4w4ihsPrBepInGRD
+	BSIaGCr6XMAzRyXxBhwNnBmiXzI9KzjaxkqcdTcA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4adrechv90-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Nov 2025 09:20:35 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AE9CBA8001006;
+	Fri, 14 Nov 2025 09:20:35 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4adrechv8u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Nov 2025 09:20:35 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AE8tXwm011441;
+	Fri, 14 Nov 2025 09:20:34 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4aajw1t53e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Nov 2025 09:20:33 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AE9KWVK58327466
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Nov 2025 09:20:32 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 100F620040;
+	Fri, 14 Nov 2025 09:20:32 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F74420043;
+	Fri, 14 Nov 2025 09:20:27 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.212.173])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 14 Nov 2025 09:20:27 +0000 (GMT)
+Date: Fri, 14 Nov 2025 14:50:25 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Dave Chinner <david@fromorbit.com>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, Christoph Hellwig <hch@lst.de>,
+        Christian Brauner <brauner@kernel.org>, djwong@kernel.org,
+        john.g.garry@oracle.com, tytso@mit.edu, willy@infradead.org,
+        dchinner@redhat.com, linux-xfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz,
+        nilay@linux.ibm.com, martin.petersen@oracle.com, rostedt@goodmis.org,
+        axboe@kernel.dk, linux-block@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/8] xfs: single block atomic writes for buffered IO
+Message-ID: <aRb0WQJi4rQQ-Zmo@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1762945505.git.ojaswin@linux.ibm.com>
+ <aRUCqA_UpRftbgce@dread.disaster.area>
+ <20251113052337.GA28533@lst.de>
+ <87frai8p46.ritesh.list@gmail.com>
+ <aRWzq_LpoJHwfYli@dread.disaster.area>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|CY8PR12MB8265:EE_
-X-MS-Office365-Filtering-Correlation-Id: efad51be-2b41-42ad-4ed4-08de235e28fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?V01zOTVhWHQrdUJNTmd1QmJjWW05TFBPZTNFK0NqWDJ6cmsycEJSaWw2b2Jz?=
- =?utf-8?B?Vkp6UUFEWkNkODBzLzc0YzNWbGoyWm5tVkk3UVBLQUQ4ak1XNEhQM0dQenRQ?=
- =?utf-8?B?K2ZtdlVWaXRBN2FyWDJ6RnMwb1M0SE04K2R4b2xTV2ZrSnM3T0N1Y04rOGNz?=
- =?utf-8?B?Mk9tR1JyVk9oZzJWL3dmUzc1SG5NTDcwVTk0SnlNVXlrbzFPcEhLVjkvWHV2?=
- =?utf-8?B?MHZBcU00ZXkvd2R6SXk1cHFaVU96V2VLUGRxSURzMThXTmNudWl3NVBzR1o0?=
- =?utf-8?B?YUliODExbjArVUpxcGVseWI2SEZ6eGVBMFU0cGRZbjlxdCtxalpITnprZ3JE?=
- =?utf-8?B?d1hzc24vbTZ0QXoySWV3WmtTVVNIUWhrK2pSUDNoTGdFeHJ0UkZucWg5QW5U?=
- =?utf-8?B?eER5a3dDM05zaFFUZmVtdmRvZlFXQzl5WUcxK09Qb2FOZjF2T0t6ZlR5cUNS?=
- =?utf-8?B?TWZabTBEU2U1bkZJK1ByQWJkRWZEYkx0Qm9tNThSUEJOd0V5UVJLUU5TQjlI?=
- =?utf-8?B?bXMrN3JMd2JPQ3R2eFZ3WXJHMjYrZEZLTkVoajlWQnAzWUtDUkd4bGlpRFkv?=
- =?utf-8?B?amIxTllieDY4UmtOUFZDNGdSelIwWjFHSXBISDRDWnZrQVVKcG1lc0RKTkYx?=
- =?utf-8?B?Vjl3NEY4bnJaNUxhakQ4N1A2Z1VPRVc2Tks5UG1zUzBTODlndEVsblo4ZTJG?=
- =?utf-8?B?K1RFYUdPNEd4cWV1dW9kaXlGWFlQd2NuV3M2Z3ZpaGtzYUl5WXgxdWt0V0Vw?=
- =?utf-8?B?enRDZ295eUk2MjQvbXNGb3dNdVhsSFpKbk5veFRBemQzNlFCcTkwUGZiUzF0?=
- =?utf-8?B?TTBpZkZVV1FyS2hmTU5mTFVHQmM4bklQcXZNZnlmL0RWb2FNYlVjYkx6TC9a?=
- =?utf-8?B?NndMMC9WK1lRQUp5UUp1dTFsS3dZWXZTWnlhU2JnR0NJbXhzbzJYYlFhTkpq?=
- =?utf-8?B?aGFCbHgzeUxOdWo0NUtOQXlZNGUyZVJmWTRCSmR6eGRvWFJzWlhZSGl5VWlu?=
- =?utf-8?B?U3RFSXgzSDFNaUR5T1ZPN0tQVHVtQ2tkY01vdnByWFI4WmdFK25hRkdrUmFV?=
- =?utf-8?B?RTFsOTBsekpNNU4xa0g1YTEyTjhOOXpjODdzNDFTaGU0SXd1OXRkWnJLcG1F?=
- =?utf-8?B?WWVDa1RZdDhqc0JPZ3hNQjY5N3pGbVN5TzJiYWtPYnpXd3hHTjdxTTVrS1h3?=
- =?utf-8?B?Y1o2R01NUkZDdFc1SThRa3BMUytRZHBRWXhWSVFHNnZNUmFqK1JnQ0g5STVi?=
- =?utf-8?B?U29tMFBSY3I4SWtxcVNRcFZwVGNQYnQ3L2wrc1JvWU1TcTFsNFo0NElmYlIy?=
- =?utf-8?B?QmJiSnRmUGpTQzJWZGtHUk1mSzJmY09uZDhITFhOM0hEOTFYYklUcmhDT2JR?=
- =?utf-8?B?K0E5Q2ZqRXlPSE42dzVvZld6UFNySWl3VnhnNHczMGtZWEJqQzZML0FXb1lD?=
- =?utf-8?B?c21QWmkwdDVIeHBuNlJpV0tSbXo4aGNhT1RTc0FtZFNGSUI0bGIyMnBMeG5w?=
- =?utf-8?B?ZUt0dzIrVERodVNaS3o2aW05SG92SXdxK0hlMHZMOHhwNGdCSkVaTGNXc0JQ?=
- =?utf-8?B?N0JUd21IMUVPT1BWQmEwU0hOcmdpU09TaEJDMFRjSk1reDg0L1Z4NmNqb2tr?=
- =?utf-8?B?WHFaaktjMHZBRkdWM2dSUGxieEhxRDBwdEhiVXdBckxPSWpHYWlmNS8yNDQ2?=
- =?utf-8?B?clhTSUZMampoK1VQeHFCWUlobnBUaG56U2o4TG4vc1IzZ0hJOE0zZUNoSUdF?=
- =?utf-8?B?VUNJNXRtWUFQTFVOcG9xRWtRV3ozaUNRaEIyZ2hQcUNjZGpkbWVRNlVVK0dQ?=
- =?utf-8?B?R0VpcE8rWkYrV0JWTnJQaGVwd3FIQm1sdThEalFiM2g3Tnp0MTg4WGhsQ2dJ?=
- =?utf-8?B?dU4waXJydTJaeVBiZXNzV1IxWmdMSzFuVkl5ZHNqTGl5N21SSENQaGwxVlBy?=
- =?utf-8?Q?dMGdX1bGhh+gC3BJIr2+Cumcs8+dFOZv?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bi95bkdtM0pCTUs3SFJiVVk0VDNma3lYTURTeCtuOEo5U3pyZll1c25DUmVE?=
- =?utf-8?B?K3dGY0tkc2FzbytOWVNmeWorbS81S2lnSWJTZ3AwMkRZRWszRE0xbVZLZGdF?=
- =?utf-8?B?bFBHaFhYWHlQaEFKRjR5UWVPLzcyWUEvc1lIYTBjdzFkNjduWGppK2Z3eis2?=
- =?utf-8?B?YTh3MXFyZVhBdE15elNUSktkbm4yWGRSQk9RWEJNRGY4MWUvUElxT0t0ZzBY?=
- =?utf-8?B?QVhGT0xVVS8xWEtrckZKa3lSY2dDSUlSUkJUMHgwNGFnMWt3TnpkUVp3MDlw?=
- =?utf-8?B?K0hkQlZISDg4aERmUU10dDlFdy9rck1BYVJpVmllYloxSTFrS2VvME1CUXFI?=
- =?utf-8?B?V3lIN0ZIemdlUG9EbDgyRTJlQTZTZWJHZkpPRXYrbVV5SUU1di9UMHdTYnV4?=
- =?utf-8?B?TTVPcDJqQ1hZTE83Nlg1NTBqMFo5K29CMHNCcWtydW02U0NmREloNk1LT3Uv?=
- =?utf-8?B?S0Q2aVFkT0xxT2tsQXBvOTlYOGhtWGIxMEV3eGs4a0hqVDhTWFJwTXdDalVr?=
- =?utf-8?B?aXJSd1lmdGNXUVQxVlRKcERTTFhJVXpIRmlPczVNTUhVSkJ2RmloQ0VmYzI3?=
- =?utf-8?B?NnJIMWdLWkxMUFpJOTkyTmxCSjc4ckpQaXVoQUplZnB3N2tiSDg3Q1BMdm01?=
- =?utf-8?B?cFZUQStQRlJhNEROTmhCekRzOExVMThTQzJJVzdaenhjbGkxN3NvUXp6Vjg2?=
- =?utf-8?B?TFJmUHVEc1o5VGk0UmhxNzgrQ0toOFg5V214NDJ1RjRmbytxakd5a3E1blRE?=
- =?utf-8?B?dzlDQWZncGNtWUFjNWRwbU52bXpMV3d0NlVjOGlQc1RTbzEvTStUczczTm5Z?=
- =?utf-8?B?L2VpM2xQc0NhQ1lnU01TanRlMU1mbFhsR1RlQTdBdkxoZTZYeHM2cnE4eU1s?=
- =?utf-8?B?RWdTOXNOTFRZRWVQcTZYVTNPOVJiR29ML09EVURzNVU4ZHhkWlRuak1jWWpD?=
- =?utf-8?B?dXFsTnluV3A3Y1h0eW5aTVhOMytrVm5VQ0JPMUR5WVpyeUhleVlkbTFRZzVS?=
- =?utf-8?B?STQxRmVPeHhPeG5lS3ZRSVowNjcrdWpYbEpNOVI5TFRjUXM3bHZ0TmRoazlo?=
- =?utf-8?B?SWVwRDQ5Y0k4amJoNDV5VXZFaStCbXRUT2lnZVlKc3grSVpWRGgvZmRRUDhM?=
- =?utf-8?B?L0FVcmVoTlN5N3pTL0dDeHFiWlpyZHBzSEJXUWFwU1RvSWZOSVNkQ1Z6TEpq?=
- =?utf-8?B?NnhRc2JQK0NPZUJQUlAzM0dKWmhxei8rWVNVUW9FN09GL2pyN3hIWjdva0FC?=
- =?utf-8?B?RkVNc2RLd1B4aGpUTUgyKzMzUlVTQ3JNc2dhWlZtcnBLU1JMcXRVRmszelV2?=
- =?utf-8?B?d0ZkSzRVTGZXU1FQZVpzRE1nQ014UnY5TkhCaC9lNVJ5Z2NEVVdaYmhhYzIy?=
- =?utf-8?B?cmtaSEVDOUlVS2F3UGdJNE40MWFFUUN1SkpPbW40RXh5YnQzbVJwbm1oNG96?=
- =?utf-8?B?Q0x0K1dDQTB0SXlWazgzVlFGUXBWdk1rUEhabnJrQ3R6RHZrRmFmeGREalBT?=
- =?utf-8?B?dVFjMDA3Q2xFaG1UUUlrWEFxVFlDQWJ4alBmU3ZEN1Nnb1J5UXV2SitITDNl?=
- =?utf-8?B?eFg5eXc0UHlYdFNYSUJNRFdPQ2RVNDh0UFdZWHIwMmdiRGI4KzRTS25GNThZ?=
- =?utf-8?B?TGZpQjBsYW9YT0crU0V3amtqRUNPdXdGc2RkK1V3UUFsRFdYdU5HQnFHTUVl?=
- =?utf-8?B?SUZCTzQ5VU5NNyszREhQZCtkNzFPOXNma1ZUUmxZQjVqV25NdmtMWlZqNXRZ?=
- =?utf-8?B?a28rMnA3MFlzSjJ5OTdsSmZvMnRSQjNjKzk5TzBJdld2UjFSajRXSUN0NVp6?=
- =?utf-8?B?MXgrV1JRNHB1MERVYzNVK3BKcWhiQ2wxTGQxRllJem5Zc1hqaGRBZWpQbjVw?=
- =?utf-8?B?RnRtY0d6NGxLYkdsMjVhekQ3cTdURm1RRWQ0WDJqNFMwNkoxUVhFWDU1TUpM?=
- =?utf-8?B?WVlCdmx5NCtYNlROTWRIVXo2bUlVTFZCWElsT2dPNXhGNm1BRlBoN3JETjBP?=
- =?utf-8?B?amg0UEVuK1padzkvWTc5YzVTQVAxd1FiRzNPdG1rbUgwcloxSGc2cjg0bERE?=
- =?utf-8?B?bUF5ZzhVeVc3RHdwZkYyb214VnNXa3VhT0VkQzloK2lLZTZnOWFpYXhuNXA5?=
- =?utf-8?B?TzZYNTBDanNOaDJ6UnB6YU5jaVliRzF3RzlaTHJGenNDRVE4ZXlMVmFxSFA5?=
- =?utf-8?Q?8sXsVo9LgQWqC3GgUbv96f9kEQ/e6MpH8zLo8phyHlgT?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: efad51be-2b41-42ad-4ed4-08de235e28fb
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 09:14:05.5705
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dR1aYvjV8KNUr+qKnAgKilEzWktP8fOgGErCG3sc8Yzo8JgMkjbzCxpV4Tl8jesTtIbyzPShk8y+qoJPZfa0qw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8265
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 611891A0007
-X-Stat-Signature: ki59asjssunc3xk1ur7n65ptz78pdn1c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRWzq_LpoJHwfYli@dread.disaster.area>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rsuUkEddEYzblp7K82O2A1ALKBX7yvA8
+X-Proofpoint-ORIG-GUID: Hwgk37d6V1PX3jo4iq9ZXuUVV9Bmk7Vr
+X-Authority-Analysis: v=2.4 cv=RrzI7SmK c=1 sm=1 tr=0 ts=6916f463 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=07d9gI8wAAAA:8 a=7-415B0cAAAA:8 a=wh1SXWFTCzeTCxTICb8A:9 a=CjuIK1q_8ugA:10
+ a=e2CUPOnPG4QKp8I52DXD:22 a=biEYGPWJfzWAr4FL6Ov7:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEzMDE3OSBTYWx0ZWRfX150420s1nCiX
+ 7qQ5hJedJunqCODNeKz66X70QQJ0LdWGXEnS/cA0XqkCNH2SP6XgX8Za4MDcxPoAWtbbtILRwcB
+ tw/ZL5uast4uLcZwLLG/LC/BW7p0HDcasm4eXCM3ZODuI6iR+lslaRCML7uH/FD39jel9jU+9FL
+ hxRGc0iBPZWU19T7ldVHN6v42CtZsIUo6FnMu9EBibki21TQwsg9b4Vq8WtHn1xtyJhuYevVf5n
+ 8N2BBPcReUx/ag+siORfb773p08hMhPx3PIMzKnbsWnTVLVvR78TAdhnbyzCV3z2QU/e/R4Vas+
+ TRC30GJfiU9nnGT4eYsKgornUKStXENev/cBPIBjMh5EVNLqnIP2VrJhouYE8IhZoU05bs+iYN3
+ NI9ZnxRP9FjDNvPYlI1m0afTz8CgOw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-14_02,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1011 malwarescore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 adultscore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511130179
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D65C840006
+X-Stat-Signature: a6xxkqb71doxbg1qpitdr3e6w1yfxros
 X-Rspam-User: 
-X-HE-Tag: 1763111649-558941
-X-HE-Meta: U2FsdGVkX19DhBrhHHbAIn6Z/NxmrHyYLWV3StEJohdSHrL0C1FFze6JBV10JnExW8n6LhVqcSHXrMFgNF2jXhlEX7c3V4XzvN7apV285tK14/j3gE+UJYdCT2hker5Al7su1hQVC0RyL5BNT8C8XZIa/2le0GwdItnmct2y4HmNbyyT3YIo+4ol1qhlumiTR8LQNESy+KvVCpAIe0U0Cpdszmjehj07oAaEIU9a5mYHQhQnab1POlRMAWZQ944X7IXLgam12EC+iu21xWoAFlGqQqyay98jHNMOR+MahD5NFDwhmRHMlCsvZYNDy8RO2bVYAA2RNSuZLMtw8yPuWVlg63k+Kz85ssKCRMz0TLI/0pKInP3HIUqZd9TM87n68XpDI/FoxiwXL/zpoM8H0/ldwScggXM/xni5HWrAM6EbWiFKn1yiwjZX8kLRYsyGVR8ifrSS+7ajZN3WbiLznSzPbrMKY0/MeZ39eQHVseT3UiwdwlBN999U66fD1092azWTphMR7Nsl2wq2dOo2su3CyLTTdXXj6TyzPrV+YsvwkQVMZUbVdQ7HclfBYqH0vlZK/TsyoGUiLgWDZQAXb/Gfegnw5Osb7PtVs+Z/SfKnZZCojC5fZ/WrWHw0t18I9pL5Y3+miGnzSjbV34Mpo6WjLLu6VN0BSq3bJ4LmhHNTI/Zi2VYXLxFpMGWlpPFnJVf0WQ/weQe8rCkeADDNIVbUugY4uV07uzKIMNCXnbmBBoQAMbG661DkkLdfhkuVWuFrW1SvVmn57Q336103VN4bHONuGfvMgzuahTesuGpUBucMHdhOQWHXT+PiX0vO7jG7kqkHddS89V23AlxDngfPoD9NXCi3RuVXlGUKnk0/cI7+cnjApyO6H0MW5Yv9cqtnYueNc5msTaQ1dci5Y4Lx76nCfzVNPyMoEi02fJ1Rsp/fRB6+PcSMv+Wz48P6//ZelAddl+HthhTLxFa
- 7JafS2bI
- 8o62SgkjjN+kmrPAEWN/82r9Y5pqHForxXskbuuCzxMaeR0x0yG9idx83+wroH2XO2n1DQ3RgUkQpMHeLsNirxkezAs06QqQ0eS/BUvF5qWe+aGhXwDKFtRFljHoK3YsX/OPfvIEUhfUy/1ScEUNV5VscnHWaicrKUWCkznLn+rQg2/btbtUk34mpZCMiEu4INsKRyJJuInnSZlI2P77BG8KDm4wx5YlVomTP2TMz3Zg4Kxo73Z2AiSmK/Wq3nUDEwHs2HCzOXOUz2SnjC/D6NbIkzJlqBKzVinHjLQd/tnidNyU1YM9BhqMpYW9I3FgZbnJKSKoQqRSmtCn4fMDFoENuyNWalHrGZzkzfNlvIeZyPgkR3VAkBL8HG0Om21O/XkbwRvFxr+6ZLuVFqPdLbMrjXdl7uAgBOYMDFpHd4gcUAVeJUFk1ungqffU89w32XkQR/jk3n4zZqyTNMIhNkJXTmMS7+1Mq/nEPj5NLAeMTf9S/+2x2mwanq4EPCyHTL03XMLxECw9nV9sBjxVSyWYeARSHBQw/P7F5TmuwR9118CV+Nmnr+yB2Ig==
+X-HE-Tag: 1763112053-455311
+X-HE-Meta: U2FsdGVkX192SLvhpmZCKHGsZ+Kta1oUbo7QY6ZpLFIgAD5bX2KaGREHTiW+rEX/fS35G8s03okduMhlpT16YPWA4UQCZPwM15ALvPjW9eD7WFX2IDaftp0vC+y1GobjS1SDOxAQqQig5cF8y9StzdGbeOoRH7gWYj+IVg1k0TG6GY0YsVuVJ20ROheWA42FC9dacg2FfrtpMBFq/yeqVW03YQOvZpto8AuRtIlSSGatpwc9dCRJkGJ2sB1w3U1vS5hRbSVgiAz8WvQktuFWN26zFpmCiHjO3NsdOPuMLEWZFhmEpMcz3N3uhpEPkO+ggWenzCs968YYGkUpPLJUqzDGHxS1Q27rmaTpzm4jOtLK8ckWekT+2SUp5EfpOySMVCjjeGoQtb4KwQmHbP+J7+ZTGoshc1a1bWqJAXI3YJP0LUKAnguun9zu9OeZZQiLscB4sTUTz06JorJYXTFDXOSPDyGNV02aO+v+XYVcCkn2j8S8Lkuoiy9HVXWo2ei5BhTW+e4vCn//Swdm0+Z75/QN6So7aFiPkWKRn4auzCtUIeiyKQdxTHPrTxJuVeW0P2XwzUC2ih9cBlKeq6lxGD4vu5V4gn9xMcEdmwLf05TAINPchV0a9WhSsyARzbRjx6DcXNPjMmkG0iHNRguIxRckp/NDQGDR3pnKK6EvwbO3KQGbi70iochhby3Q1fQAMdzKVVKeoEPhoHkk2ruVIo3p4cgDZtfJ/bsusmYooaYeVigrodXA4AxRPWIdTFOnPklXVqqUwf4j/nwuNu3NA4Dy43+VY2radhu3O7k8NYocsOxfF7+JXgip+0jlVWI153U4vZ0gMF4+S4OVrjTAG1L5VgFJR/Gp90qLHIehTk+KK/ZW9LqAtn2nPxeeOo/uFcj499S0yJFHNkOYPF+YwEMyJfqkwbOvZq+7Hr2ILOICbxlNPFrY42SLDFusKpmzV4yIEbK2FoK/qByPU3z
+ Yv/kHA2V
+ 180AMYI0lEw01ia3EOBJ/u8+jPpZksTdbx+N+na8ooahj8oCKbHmoy+rra0UOaN0wjk7UvXje9OSuMetp/EKZCvbardxu78K8htT4Rvx/I47Ci5kYkVy5mkT21lUTUjdMv0kxCHBE1iZegpLLCddHAPkY54gYLhyMkrtPvm3LoLa3CE1dfh3cH5nwHylPSOtJJK7gCqpoRKoCOojiSN/CT8hPYhQsvl7vtn4CsG1V73GbbDjJh6HdpxjIgZO/neRuyvikDFKVTKcs8Xd2eyEXkU14WHBLZyleADb0lOKoLI5pfRndHq/5J8eTBIqwxBksQj7X1ByzjEvQmRDVE1nICHJsL+DNCGO6mc/2dWFGmNvxC6pInwhFOqBg0UiNME9PpEzlxMoU0in0lzQGZdyJk0UabVrA1QEJl1iJ6mkTHPi71wOVBryh2x/wkdrpvnya8uGDNELjbWpe4BuKKOhOBWH1fHs1Bl0720S0BCGWDaQ1h5IH8UkF7PsvC4qUFD2q5Bnq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,31 +153,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/14/25 19:33, David Hildenbrand (Red Hat) wrote:
-> On 14.11.25 02:22, Balbir Singh wrote:
->> ret of type vm_fault_t is reused to capture the return value of
->> nouveau_dmem_copy_folio(), which returns an int. Use a new variable
->> err to fix the issue. The issue is not new, prior to this the function
->> called was called nouveau_dmem_copy_one() and ret was used to capture
->> it's value.
->>
->> The bug does not cause a real issue at runtime, the value is used
->> as a boolean to check if nouveau_dmem_copy_folio() succeeded or failed.
->> The different types should not impact the execution of the code at
->> runtime.
->>
+On Thu, Nov 13, 2025 at 09:32:11PM +1100, Dave Chinner wrote:
+> On Thu, Nov 13, 2025 at 11:12:49AM +0530, Ritesh Harjani wrote:
+> > Christoph Hellwig <hch@lst.de> writes:
+> > 
+> > > On Thu, Nov 13, 2025 at 08:56:56AM +1100, Dave Chinner wrote:
+> > >> On Wed, Nov 12, 2025 at 04:36:03PM +0530, Ojaswin Mujoo wrote:
+> > >> > This patch adds support to perform single block RWF_ATOMIC writes for
+> > >> > iomap xfs buffered IO. This builds upon the inital RFC shared by John
+> > >> > Garry last year [1]. Most of the details are present in the respective 
+> > >> > commit messages but I'd mention some of the design points below:
+> > >> 
+> > >> What is the use case for this functionality? i.e. what is the
+> > >> reason for adding all this complexity?
+> > >
+> > > Seconded.  The atomic code has a lot of complexity, and further mixing
+> > > it with buffered I/O makes this even worse.  We'd need a really important
+> > > use case to even consider it.
+> > 
+> > I agree this should have been in the cover letter itself. 
+> > 
+> > I believe the reason for adding this functionality was also discussed at
+> > LSFMM too...  
+> > 
+> > For e.g. https://lwn.net/Articles/974578/ goes in depth and talks about
+> > Postgres folks looking for this, since PostgreSQL databases uses
+> > buffered I/O for their database writes.
 > 
-> Also, as commented previously, the prefix in the subject does not match existing norms. Take a look at
-> 
->     git log --oneline drivers/gpu/drm/nouveau/nouveau_dmem.c
-> 
-> and note how it's commonly something along the lines of "drm/nouveau" or better "drm/nouveau/dmem".
-> 
-> The only patch that uses "gpu/drm/nouveau" is from you recently. In fact, there is no other patch in the codebase that uses that prefix.
-> 
+> Pointing at a discussion about how "this application has some ideas
+> on how it can maybe use it someday in the future" isn't a
+> particularly good justification. This still sounds more like a
+> research project than something a production system needs right now.
 
-I'll fix the subject prefix
+Hi Dave, Christoph,
 
-Thanks for the review,
-Balbir
+There were some discussions around use cases for buffered atomic writes
+in the previous LSFMM covered by LWN here [1]. AFAIK, there are 
+databases that recommend/prefer buffered IO over direct IO. As mentioned
+in the article, MongoDB being one that supports both but recommends
+buffered IO. Further, many DBs support both direct IO and buffered IO
+well and it may not be fair to force them to stick to direct IO to get
+the benefits of atomic writes.
+
+[1] https://lwn.net/Articles/1016015/
+> 
+> Why didn't you use the existing COW buffered write IO path to
+> implement atomic semantics for buffered writes? The XFS
+> functionality is already all there, and it doesn't require any
+> changes to the page cache or iomap to support...
+
+This patch set focuses on HW accelerated single block atomic writes with
+buffered IO, to get some early reviews on the core design.
+
+Just like we did for direct IO atomic writes, the software fallback with
+COW and multi block support can be added eventually.
+
+Regards,
+ojaswin
+
+> 
+> -Dave.
+> -- 
+> Dave Chinner
+> david@fromorbit.com
 
