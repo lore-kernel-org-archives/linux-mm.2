@@ -4,215 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD37CDB463
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 01:27:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 144CCCD8CBF
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 01:43:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0E778E0013; Thu, 13 Nov 2025 20:27:31 -0500 (EST)
+	id 3F1078E0011; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5E38E0002; Thu, 13 Nov 2025 20:27:31 -0500 (EST)
+	id 3C8678E0002; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD6178E0013; Thu, 13 Nov 2025 20:27:31 -0500 (EST)
+	id 2DE0B8E0011; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BBC1B8E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:27:31 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 727EE86DC6
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:27:31 +0000 (UTC)
-X-FDA: 84107475102.15.9747EF5
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012044.outbound.protection.outlook.com [40.107.200.44])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A44A4C0012
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:27:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iCVuhKlT;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.200.44 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763083648; a=rsa-sha256;
-	cv=pass;
-	b=c7XRRBzqe11Hz92mbzsx96DblYcN88n+SpOSf99gTVx9GjltiKhgHdZy9RbjZLayEcobHr
-	0ljlSSX6EZ+ma4EooOf2/HHDWnQyfhdrvmA9vP82cZERzn5uY6EBknvCdxf4y1VjmMtB6Z
-	Z3mxC/hCDhhX0wo8sS5kfj5BOKzN9u4=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iCVuhKlT;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf22.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.200.44 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763083648;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18B628E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 20:43:04 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A0D81A0218
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:43:03 +0000 (UTC)
+X-FDA: 84107514246.28.649F187
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EC473100003
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:43:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS+Zbf2B;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763084582; a=rsa-sha256;
+	cv=none;
+	b=yUTfLY2RjbiV+6u16+PXbFUf8el4bd5lLwsecDxZVURX9cFotiTK0K0DsrEQbEIiXQ6hNx
+	e7yKLQ9LUHrWk0jfZW+JB8xrdbUm8aTpvC86+331TsTdsvl3IeIivcogc/9i9Ls769Qk3Q
+	ft2CczOzKsAY87WUyBcFRiBgdn4ci3k=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IS+Zbf2B;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763084582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m/rjtZ5BOnt3xt12w7EyTHsI18ZxVoHk5QRzcP4bqys=;
-	b=7Bp7HE6ft6iva2RjdWiQDK9J7tJlLrME9EQnTHHjASomk9sNUrSaHnAuZR5mJNvF8uITjl
-	34Tnlwe2ZaWPUBmwN3exYfnYsCV2z3PPfPPHmx0+D+yokSIirLD3DHtO3m8AH0OPNgdMyZ
-	ND/qtd1Gs1ul5lU/tKu/JtwuUljshqw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xXtRO7yiIKuJ822300Nix0CC1imGnVNf7yFOnSTc8N3uDqQAVmMyu6rG7BUXsCl/MqpCvO022I4kUFSTsV7eovH9sWw7lsVX8RY4U2nDbFhejtMYdi0dg7/j5ewDG3sNjUsE6nF1GuNBATBoNQCRObIGzlf5iBBGgvjQCv4aszsvSYYFUqka7W43hUclDQkrxC/KsHQWkJsMjVkI2M9zEDLyw5CL+mO1+HhdZKoFmqfSDSOu2J11jSQbRan3QInyW2Eu0qMLuiZRZHkQSQpRBRWqrZdMcEEPt94SJMDC9Vbb0P6q8BnnOMGN6rwGwedhLo2U0+nA2EkHykqncyjJaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m/rjtZ5BOnt3xt12w7EyTHsI18ZxVoHk5QRzcP4bqys=;
- b=TgN/l8u91aQ3tj1ezPnKzZBelH/peWmC97cOTQRttcg+i/ddgg8sWCb5NM+dHqMnb/H9RfrIhhaKl3mbkIXL9eLm1TsL3MJDnuYRoGJeY+BMoKyEkHK+0KD3cdXmNBDggt13BmNdvx4XpJQJh/X/kLGXp7pY/k7aq5HvnF0oHnlHaal9hGMpXQTXRkkFZDpLblx0VE8MW0VDj97Qfvt4jd2hd6OJI/D0aCRsfe9pTbdo+rIsfEOT0+BJSYO1UFNPaHoxyVukcNZRGRIsWsooVeEBEk8JD1iKoEOL9FIjWC4I+1VbVBIwI7l9pLY3C9Cg/xO/6jlXvs9+0a+mIHFz7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m/rjtZ5BOnt3xt12w7EyTHsI18ZxVoHk5QRzcP4bqys=;
- b=iCVuhKlTUC2jCqlkgObMHaVsNOez71Gp85qkjC2isxRV5B66lbzMvIYI786zCuEUMxEzn00QPBT21SPUUo12Kt60BDhJp47LW0OgCIAwKX6gfzVHOnPTrsM8tErXnGbdIoEvUnWX/4jsyVHQ5WzV5bKUIfvJ5S3jB28KY6F2tgcYWSEAAz7cp1IvSOO8Q1pJsX0SFM/+PdcZLgSmDvpnsJd68eVRS3Gr5zxlx25+o5rwqi84YZ+ZTPMu4qtdcH43g+LHPQakmEZbR+Qs65IGsbn6HTZed/gW8RxMqLvg+n5ahk4Bt9iKf3jcsGW2hcp+1olGSr/BhiUJzk9kinlwrA==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by MN2PR12MB4357.namprd12.prod.outlook.com (2603:10b6:208:262::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
- 2025 01:27:25 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 01:27:25 +0000
-Message-ID: <a208375c-3850-407a-af00-6f67f2c594e9@nvidia.com>
-Date: Fri, 14 Nov 2025 12:27:18 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix override of entry in
- remove_migration_pmd
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, dri-devel@lists.freedesktop.org, Zi Yan
- <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251113051352.1753714-1-balbirs@nvidia.com>
- <ed523668-92a3-4eaa-a999-4fb7a43e197d@lucifer.local>
- <dd1da795-d37a-47d2-87f5-50853ba43519@kernel.org>
- <5092cfb0-ad25-40ff-9a07-3de86d37665f@nvidia.com>
- <20251113150811.081a6dbdcca8b5c474d6e399@linux-foundation.org>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20251113150811.081a6dbdcca8b5c474d6e399@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0004.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::15) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=IuHTiVk16FNrVyP3pvF2tStE26owMiMpD6cUCyTAlSA=;
+	b=oBCOZeYWw/BJcFXMpeHCALPgBfJrMfzEsQgTYE8lEkhwDkBw9tEP8fFwenwvcSerQS9GX6
+	PMRFTduygVOQuUEsdx69Son5a+dBILjXM+A6aixcRMZPhnKkdLqiRyGOnagx2K6gXGYk/R
+	mxB5O57hKxq+NgUXKGZ9v1h1Tyd2Q10=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 44C1F600CB;
+	Fri, 14 Nov 2025 01:43:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A071CC4CEF5;
+	Fri, 14 Nov 2025 01:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763084581;
+	bh=aRE+wMnR2pS1uJvM8oQeGCIiCMvzPKaWlWT5NwcMf4s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IS+Zbf2BOHCCtzc1IhDP4Cfa5hYLs1/tAaydWZPryWHjdiF+3LRrkbsKOkoBRGXM2
+	 uyvnHggyYOKUDY9KfuROn6dFHzdWHSU4ciT95BNQh1fIhx9/IJP1Db6zzsY8vc/M6K
+	 Mv2e7njpt5367w0T1pOMZgewma4iVQfeGalzRLQ5N7sKgvDaxGc2FOKd179R5V2P0h
+	 OVlAWk6aMfsgwcEu1tRjAyw1h+VohQmoBDlLE8jH69HFntnt21qiQTz0HZV75jWuKr
+	 19IwAxko9fHO+rCVsfUqAo77X6v02NB6byt7snP2hdhu62GDiV/lHVnrxfL5wv2Lau
+	 +P7dtW7kJtWNQ==
+From: SeongJae Park <sj@kernel.org>
+To: David Rientjes <rientjes@google.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Fan Ni <nifan.cxl@gmail.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Raghavendra K T <rkodsara@amd.com>,
+	"Rao, Bharata Bhasker" <bharata@amd.com>,
+	Wei Xu <weixugc@google.com>,
+	Xuezheng Chu <xuezhengchu@huawei.com>,
+	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	damon@lists.linux.dev,
+	Honggyu Kim <honggyu.kim@sk.com>,
+	Yunjeong Mun <yunjeong.mun@sk.com>
+Subject: Re: [Linux Memory Hotness and Promotion] Notes from October 23, 2025
+Date: Thu, 13 Nov 2025 17:42:54 -0800
+Message-ID: <20251114014255.72884-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <d952a84f-332e-8f7a-4816-2c1cbd8f5b00@google.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|MN2PR12MB4357:EE_
-X-MS-Office365-Filtering-Correlation-Id: a2de846f-faaa-40dc-53df-08de231cf7a8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dGpiaWtnME9nMkdTVXhXZGl0M3NjVjRwSlZabzhDTityVGowYUJEZ3ZJVjV3?=
- =?utf-8?B?dklRU1pCc282cG1DWTl4TE5kRmZ1Yy9wTzR6aEtwUm5VT0E5eEhjYjU0ZUdj?=
- =?utf-8?B?MEZzcmo1UFdjNU1NYXloeDdpN2tjeUVoZVA4ZHFYOFlkbWhXaDE2dFljSS9V?=
- =?utf-8?B?TTBvRmJ2N0tjaXFOdnlyQytHdGd3dlFMSU5WU3dkazNKbHJtb05TanV5a1VL?=
- =?utf-8?B?ZGRPMDB4OGcrUm5DaVRFcThoMXVUTU9udVZGRjNjY0krYmRRd0F0UWNvdlZC?=
- =?utf-8?B?c3RTOXpRbVJIVEc3MEh1Mjl3bWE5bkcxcHVqbGs3REgzcW5lWklCMjJmYzdv?=
- =?utf-8?B?U3B1ZStEYVFpQmhCMVo1WmdVT2kyRUhNazZmMzdBNyt0QlFuYzl6cGRXVURk?=
- =?utf-8?B?b0pweFJPWmhHaHdMbnhhK3NNRHFvRTFZaXhueXQ2SGt6TFBQd0s0RDZydFNC?=
- =?utf-8?B?RENoNzM5V3A5RzNxaWhXRGY3UktYc3htM0hrNC9GL0tQZExjU1pKbi9md0xN?=
- =?utf-8?B?QlIrblFCbmYxcXYwcDNEUlk0V2tIUVBtMkRPREtvMU1heFVCUUI3TlhPak5p?=
- =?utf-8?B?TnNFSXB3c1J2N0xMd3ZPL0JkbWtWVUlSVFI4NVlFRldTemNwRXllNTRJWU9W?=
- =?utf-8?B?MURFRVllVnI5ZzF6VkZ0VlE3NUNCTlp6dmRZVER5bmdSZGlYNGR1bHpBeUJu?=
- =?utf-8?B?dExRMmgxd1BPcFZRdGpuWWVxcE5oTnovV29NcjFmY3VJaHNPTGlGUERkUHZU?=
- =?utf-8?B?NU1Nai9CQ0pZbTdFK3lRWUp0SEVmL0NrRjRBNHh0d244dEVGakVoeXpINzRn?=
- =?utf-8?B?Q2dpWDlnWWhyd2szbG0zMzZ1QlBFT2I4Z0xoemJIa3BJeDBvckhETFV5UWQr?=
- =?utf-8?B?U3IyTVlocDBhblBodytuK0lFOTNUbGsvNXpadE0rS1BNT3NOSFVUR0s2elhQ?=
- =?utf-8?B?ZzNSSVFHNmwzdFlNaWJ4RktTZGNHdU82RGwvcEl4bFhzQWlSMGtZVWtUVXBa?=
- =?utf-8?B?VVhoV0hQcFAwZGJjM0FUTEpHRmtBMTdxNTNGWWROUjN1SUJYakJDaHJDOEtJ?=
- =?utf-8?B?bHVLdDJwaG5aVE9tQkV5Ym1XNXd6cXlnT1BUd0tmN3dNeWVuRmZ1dnkzcXEr?=
- =?utf-8?B?NnpLRTM3dEkzbXZrd0ZkYXNmQ1ZWT3BBR2VjblV2TmNtRUd5OHNKYTN1aGpp?=
- =?utf-8?B?c0pXb2RtZkttaFVKWGdzVHYyYjRuTkVDZW55U3ZzK3laZ2J0N0hWMXNueFJ2?=
- =?utf-8?B?ZXpleTJzM29iNFNOSitvYkp4enJuaVo1bG9sM25WRnl2NDJYR2kzbmJnWW1K?=
- =?utf-8?B?YlVSODVuQi9pRThjdmhiYzhqS1d2Z3NwV0J4U3h1VzY3Zk9MOHoxT0tYU29W?=
- =?utf-8?B?ZnJHRnBuT0dldmFRRzV1U1djY0p6Nm5wVi9Hem04UitGcTNIbWM4djZhdzBL?=
- =?utf-8?B?TnBkeTBRU3F1MGR5UEVRUWZkL3hZdnRDaWNUTGZBbzd5YzNydy9USHBXbmgw?=
- =?utf-8?B?ZUZQTUZhcVdhZ05rK3lYWmk5QmVkNDJPUmI2WlM2eXVZVjRsK3Nrb2p2VWl2?=
- =?utf-8?B?UWt2SmJBL1cxN1ZzRkRGb3VSUStzd1JpcDhjeGIrRE9VcVhDNVNrTmk1RnFC?=
- =?utf-8?B?b1hjbVVaT1cyOEVySUQ5VG9oeGJjNzcrdk43Q3psM0JjY2wxd0RPL29Qb0gx?=
- =?utf-8?B?aUxIZUtVSS9aeTZYUm1pRnE2YTlWWm1YTTdmaGc0dUJ6aTE3cTFxa1U1YWRa?=
- =?utf-8?B?dWM0RlJwSFNrelU0TE0rRkxFdVkvcDRPMVFVZ2RIWmJCWGtGeDZsT0tuOVp0?=
- =?utf-8?B?UGYvNGQvY01UaHBIVldxU3daTWwzMDR4MVNKb3ZuWkhDaWtnZjVuWjlPSWFL?=
- =?utf-8?B?SXZRRWZkQWt6eGExS2xXQXhWdVBEZjVJYnJ3N1lvcDlHbGNBeDNYUG1sbzJj?=
- =?utf-8?Q?tRHzg0LlvuGB29F7toQkkrxOG4rSte2q?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?clRGaHBRUCtqTlNJd1p6Q29kckovckVpS2JYc3k5Mk1zRzUrZ1VlUkZWTkto?=
- =?utf-8?B?ZllGMVl3dGhuYTVTYjdIcWpUeW1Zd1M3bVVpcGpYZVVGUEljWXplaWdnWktY?=
- =?utf-8?B?ZTdGcXYxWk0yTEtDZFhkdW1wQjhhYVBGVS9KVWRIR2tJWTluN2pzMWdUcHp6?=
- =?utf-8?B?Tjcwdi85b1FKR2d3eGpuZm8wWDc1RE9PRkw5TmZReDVVR0VxUUFKZGhMNnE1?=
- =?utf-8?B?aTZ5STRxemw1cnVMRE15MzFWcS9LQ255bVdNdVJoSUtnUFFTNXhLQnRIczhH?=
- =?utf-8?B?akg3bDZpZlpNM0REQ0lKNHZaRkVWSktyNjBMNWpmdEdaeU8yV0h6aU9ETkV6?=
- =?utf-8?B?OEZxdjIvRWVaajdxdGxwQ2lrOTlZVVRSdzRlUHdCdTBLT0kwdkxuWmZMYXFm?=
- =?utf-8?B?ZFpxWHplVnRxTktSMEtFaTZ6OXFlY3kvTHVlWW04RUp1MFRqYTB2WHIwbm1M?=
- =?utf-8?B?MGRkQ29qNU9HSC9aeGQ5T3IvZTRCUHVZUmhwbjRHZFJvc0s1RzRYN1NySks0?=
- =?utf-8?B?WVBNeTJxd2tORkoyamUyRmM2YjJHWjRmd3hjZTczOFZMekxyTUs4ajNzUWQv?=
- =?utf-8?B?bTZGN2RpY1JKWWVCa255SURoOUREN2tLL0F6b0JvN2ZOWk5xczJmWklTREpR?=
- =?utf-8?B?aWZaVmZKSFFVVks5Szk2REEzRWt0bVRCaDh5OXlKcUNXbit5UFJ1ZTFoUUJv?=
- =?utf-8?B?VGVUTmpKNURkalZEVmxaMkdRc0hTMnBaRk1ISkEyK0p4dk1jMXZuV1pKSSs4?=
- =?utf-8?B?WEhPNG5LQmxMUkRnL3p2d0YzSmlJTFRqanAyek54QnAvMVh3Z2FyTWZMaUxU?=
- =?utf-8?B?ZTF2eEVJOENRL1ZpejNmWVViM0ZUc0g5VlNycTV1aEs0NVlLSW9YZk9wY0oy?=
- =?utf-8?B?b0RUaEN2NlFKNUNFNUs3V0JqN0xnVjkwQmpGV0tsY3h2eVh4SG1wOXhXVm4y?=
- =?utf-8?B?c0RzemU5eU5Oc051ZG9mWUQ3OU4wbU1CTEhPQUlERjBWZlUvaUR5cDg4NDVO?=
- =?utf-8?B?eGNNQk9Ic3JWTjFHK2ZNTnI5cUN0OHc1RHVJT3JsdVo0UDBwWm13MVFBN2lZ?=
- =?utf-8?B?TXRMVnhFZ2VUYWx3cmpOdnNGU2tZMTFTNWhEQlNWT01JcHM3Z05vU2VIZ2Vz?=
- =?utf-8?B?bXorQ1MrVVh5WHdUbDFuekg5Yk44QjdwRUFMMjArOTM4REpQRFZpVTdhbFF5?=
- =?utf-8?B?SFpTV1IzVnhUMmJ3R1NYUm5yazZUMGRCZkdjMW5SVnc5eTA0SjZPSGRMS25k?=
- =?utf-8?B?NWpqMXhjdE1RY1pjdkJJNmJJVGZrQzh6VFExWEJnYjVtZERIc3dlUXM4S2tS?=
- =?utf-8?B?c2dqVzFDQjNHVjJqNkxHRnVDWFlpcXNkbEp4ZjczbTNzMURkR1JDVlhCazU5?=
- =?utf-8?B?dmxxNGFuZXJvcUg1ZWs0dmxUajZxWFFxTGRhdU5JcVlqNytQckRNYkRVcUx3?=
- =?utf-8?B?YUtxZUgwTGl2dXYzWkhpVXQrKzJDZ0VUNUdldkFFcUgrcEZEUGpJVkRSWktI?=
- =?utf-8?B?SWlCbjIvWHBUZHV2UHRaMGZuTlZLL3dHbUcwa3pRdDJ2eUEzUEgybFNkK3dW?=
- =?utf-8?B?djk1Y1EzWFJtWjVaMHBQRWlBdFB0U1lPT1NYRVRROStNZGI5UmJuRVFYRHk1?=
- =?utf-8?B?RDBpWklqQXM2QTJhQkJIN2lHc1NvWDU3Ui9id241TXRyZjN4Z1h2bmVxNXBY?=
- =?utf-8?B?VEhNMnArc3g4OForaXcrVTlNUTdTWGVkUCt1bURIOHpwK0ExRkhiaVB2eGV4?=
- =?utf-8?B?cFRsdk5qL3hHYSt0RjAvRU9vNGFiZFNwV2RIYXNLOWtOWHU4TzdUK1Y2aWRT?=
- =?utf-8?B?OVR3QVpCcE14UnhoL2lWUVJpMmwyMlJzcUhLcDlHdnYza0RtK3Y4ODVZeVZL?=
- =?utf-8?B?REdRbDVzL25BeDE1RkRZQk5BM0hwV3RzUnUycnBteVUzVEY3MlVDdS9UZENL?=
- =?utf-8?B?ZTEyVGxpQTAydUFvcjRiMkRNQ3Z0UXNNSUFLY1R5bU9EUGtxQ1ZMVTUyeTMy?=
- =?utf-8?B?ekU5LzJWK3VreGFaUVVzRlRtcVNaTERrV1E5NWw2OVBYQXRQa0xMSkMyaFpW?=
- =?utf-8?B?cjRxcHZES3hBRjQvbGlRN2dZekNEL24zQ1NQWEM3QXA3c2ZHVGJTb2MyYmdC?=
- =?utf-8?B?U1RyWWtnVDA4L05kQUtONHJBS1JNY1piY25CMjVha3FHYjU2VUxaZXNFWW5V?=
- =?utf-8?Q?35SbmZW3TUKEoChinCGaRjS02x87Wnc5GkJ0zcjicEZa?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2de846f-faaa-40dc-53df-08de231cf7a8
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 01:27:25.5326
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9eZLoZsGyQ7pVKEfDKNwdrunHG6XBUJiVh3OmgMwatPqfeR09RyOzGxScZcDgEbp7v8gvfAGC0fkMZBwAd5TAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4357
-X-Rspamd-Queue-Id: A44A4C0012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 13tumw5j9i13om987xndyhfg511wozx3
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1763083648-288159
-X-HE-Meta: U2FsdGVkX18qNznpgLbS0wIUNvqqwsF0kRVIARWWjoLqI3FIXJ/66DBQxohkA6nWkqs2joddoUsmOgfhwCPsDS9/8UL4xx+HuEFZU76JIXlR0ob5KkNGYYLzWV/E418vBeevAHZrMOxSh9HZaSNXNiSpFoNy/3FhlwxZvQ3Jjg21+semXbwQFAryvaDyz4dqyf5J0gcsFRwJb6UpWSA7j1klybsq9iQ9s7DFL0FpDSKZ3enWaXhKhik07K73mnLWGpAYl/H4yS4PitJbdlghHS3Rh1exT+z1jq2i/Q2Kh88oJwEiUcWT4kMBs9xjIOdljQvYEmFKPLDVR8DjmUc4j2UxuEUvgVMp/qT2ej95sHgBIOzWzWSz9pQuyET0073t3lV5Lu11a7vriIK3diDD/LOlFTnHpiMvrV1lgAX4wdgEMDi8ni/iqK2om45pjXhNDAiWG0QLcKmWGrviopizdD1GXHk3q/Co5+VC61rXujGJwlwjsRDLkAlUv3BpcoRCLYF3dG01b5vTBIiJGbrK7A25XKZ5uscSOK+BulZTBRuItGNuJQcS8zMhyYI5QFLtBcfgo7bD0WwCp0tqffaShKJ1q42qsC5fHgJ0OCVEOulBEZI0tSPqvIpT14/MQFDDkXvHtAnxHN30MbIXhNQiK57GKd1Co5GugRA75+kwxJlMaSjbz9VjmHOSYeMbADLYLBXqxnH8mACuKVZkf8ktyHm9tfW35KhT1Y+2bVDSGOUcfjBNuqK5aUCN+R11vw0Zj+TefC7GTcZDC2q7Y4FMjU0UTcXqxVc/RYjYkUwqM6zI4SNymgKGqP2rab1MkuAoVfka+/4wPePdpTMV0Eqpmp0XWUAnOS4jN4d7fXF3pUJ4JLDVsFQ4aoXWc3Bj3XTkPWtHTe7BZBh+b3ZYrWeBX1XNuudtF7eC+71X9HeyslSoULR1OWo2mU6j+XduroxIRdOfDUAdyZGwziNW8Ve
- 2D/vmtHG
- uhc0rlachMYcuDrcVLwSaNYr2uAmcka7OQ7RBc4Nv77v/TZ9R2wu65Xg6Xv/79jaortCQV2sP5q2FfdQWI/FT//GIVIKj/93CkUsgjIcRfKJWEmAirJ5Hi90FQ1VKzFyd8b80dXn3rEJYQpi6YcJehpKAK3r8SLcoItbLEdMvmOW86sJ/kxGKqYRF47tBy6IFfAxJzKzOpl0knw1S5dQf3JxCI1Uxtn3a9MyGV9P3vTv4ebVGWaE/a0oNmndEAfiXvKQhJBHIsypVXYfCtEBTLGKSV0wEbWRRZ3/ZaxDHiF91YghavH/T0SLsGa9TO+/uApTGVqLBK7QM8zcRDcE5w2IJ8VIeNk8zqRqpGOa1J6/3tg+tQOn3vg/IaCJNj8lJGZvZQ56TqHOaCH3yPJz7QFEFkO4yZBSyEJB0CphAPYXY/J5Gp4up+i/JwaxDBEZ+7yZh/MZw0H/xvUaKk2ORfqkwPKznDBO0B3sY1YE7xxEQLcjp85XfZiKdQBlUKVH9shcGl5iV3iOxbN/j7IpuBNoI5wSL09Pp9F701f546O7+TDw=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EC473100003
+X-Stat-Signature: itq1nir93ibs3ahh6e3zzyzfwhkbbquc
+X-HE-Tag: 1763084581-486476
+X-HE-Meta: U2FsdGVkX18qeyiG0+2fcqTbUWkHIgM1ep+PWtEB+kZiT6zVgQekQH1p7obZNu7ILGB+sgmI2XdICL3FhTJdCNdnc9kSNBdDt4Bx9mhLgmtxN/r5n82uXfphjtl7UhYIlXXhv244SBYfToNUwlTCpEPPRPfUctym6wodEQatVQ9BHq/54dfGaEElvQRauZG9gyX4Q6u6r/SVC9MbUmQOLgqBC+IwTzp4SEQy43OL7voOHlpiGLPqM8SJwmljzM5mg9bC29UHtSRrd2nW9S1bVwIzgnM94WPbOgN2LLGJpqV5TJGMJXh/uIEdMTbxP5k1TwskA9W49vZ4fOnXeu1ZsHc2zgzmEkC9UH5bD5Mk/k6eyrcis1XmMck6cue+CUnErrVtvZF1EEM8bka7EXLl+tnCvtNOTKhu9sZwTkwO3NYOkloNlpVXzsP5XkwI3Fgq48FeEreK2KWOUrAze2ts9Q8G+qc/9qScREPVDsrsvfTAn9+HirB9DuaUALNxHDpS3K740Qx9mh/LzVFwXkwM/VvA9jSOB4itfRqJ85YhC6wZrbwqnKRFz1a0dipjpNhkt5C/SgI+88xJ4NRsAxPhk3gYNKjAlGORxV9RA38aMazjYNGUinVpJFzHiQ01YSv4XqiDstRrst90z3qIpQ6+Ow5MddFRJe9lvbrc2c4XjFuuJntmhBOwaQG5sUQWVc/2f1O/cTkArmAilKkKNv9/m+8BFntBx3C/LVFNoXH1QFzLU35l4aAo6I9RBiH3hWeQivg9cAKNSLke4OQeNM/IoNO6RloXJo6/2MXpqvlZNhPf68gSw/GP68/kp/1BTu6L0KBRrT/SO2ESxONWXQfj0o7z4jGjQcUZTssRrV5UqAXU05FyCPvc/BtzMKTuKHFNF3bW8PnsDV3lIKr7ChLeYy/FjcWbDhxUv86g8Y0lfhq8I/PHUicedd2SwHF6gT8w6xigPlk+K8zUNHQdHfA
+ eN6nmEpN
+ C9DE/bFL29lePfNMqzvc1QDaeDoH3wLDz0Wb8EE0fIIPPlM7cODxoU/B1rXu1o8y17NKP6s7rpQZx8k1ShabNBbi9wRBMEmUWzerwCNg1eSohOKgKnvY9qAjH7BwuHPYa99W9fhanSh57uGK6JMzz4p42szA0iLfcosGGmtyGM5Rh5wwXxEjUG14GdkMPxDGy6vAddXUeviKDSljckWFEQW3sM1XP7EycxCBGHFdeAQePoohqH3nrsd0RhA2+ez77qn5Tt6lK0qWHWrTa9PPyaQbzUcvSsOl3pJb2b/CjBjrgJpv8TIfiMaOIAiE0jPQfpXS3bkzj5E9IiHFBxutGYgZRzRYCYfVaEAJvptOykpH/VkBiVo/kl4UxTdh2a5aQcGgAKAGuxKXqberaxh5+C9L1lJFr755H4BR0n+g9FNVsqTp1YbhQBENGYFWD59SeGXhQlFh9/adm5ThDFyFVsS6E0/XygLtGLVcq7m4ziNXDWYwUO0quDZ2i2bu++/4S4O8DUNYVYs1NqCu/vU/QJ+dGvg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -221,32 +105,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/14/25 10:08, Andrew Morton wrote:
-> On Fri, 14 Nov 2025 07:55:29 +1100 Balbir Singh <balbirs@nvidia.com> wrote:
-> 
->>>> THe logic LGTM but we don't want to have a bisect hazard here by having the bug
->>>> introduced earlier then resolved here.
->>>
->>> Exactly.
->>>
->>
->> The hazard is a VM_WARN_ON() that checks for is_migration_entry() in the
->> call to softleaf_is_migration_young(). I am happy to go down that path,
->> let me send out the fixups, it felt weird to break the rebase, but I
->> am sure Andrew has a better way of dealing with this stuff.
-> 
-> Yes, please tell us which patch introduced the issue then send a fix
-> for that patch.  We can figure out the softleaf changes later.  (Which
-> this patch provides anyway).
-> 
-> Also, confusing that the changelog says "The softleaf changes exposed a
-> BUG in remove_rmap_pmd()" but it's remove_migration_pmd() that gets
-> altered.  Please expand and clarify?
+Cc-ing HMSDK developers and DAMON mailing list.
 
-Sorry, it's remove_migration_pmd() that is effected. I've updated
-the changelog and sent out the patches. I've sent the fix to the
-original patch and the fixup along with it, hopefully I got it
-right :)
+On Sun, 2 Nov 2025 16:41:19 -0800 (PST) David Rientjes <rientjes@google.com> wrote:
 
-Balbir
+> Hi everybody,
+> 
+> Here are the notes from the last Linux Memory Hotness and Promotion call
+> that happened on Thursday, October 9.  Thanks to everybody who was 
+> involved!
+> 
+> These notes are intended to bring people up to speed who could not attend 
+> the call as well as keep the conversation going in between meetings.
+
+I was unable to join the call due to a conflict.  This note is very helpful.
+Thank you for taking and sharing this note, David!
+
+> 
+> ----->o-----
+> Ravi Jonnalagadda presented dynamic interleaving slides, co-developed with 
+> Bijan Tabatabai, discussing the current approach of promoting all hot 
+> pages into DRAM tier and demoting all cold pages.  If the bandwidth 
+> utilization is high, it will saturate the top tier even though there is 
+> bandwidth available on the lower tier.  The preference was to demote cold 
+> pages when under-utilizing memory in the top tier and then interleave hot 
+> pages to maximize bandwidth utilization.  For Ravi's experimentation, this 
+> has been 3/4 of maximum write bandwidth for the top tier.  If this 
+> threshold is not reached, memory is demoted.
+
+I had a grateful chance to discuss about above in more detail with Ravi.
+Sharing my detailed thoughts here, too.
+
+I agree to the concern.  I also heard similar concerns for general
+latency-aware memory tiering approaches from multiple people in the past.
+
+The memory capacity extension solution of HMSDK [1], which is developed by SK
+Hynix, is one good example.  To my understanding (please correct me if I'm
+wrong), HMSDK is providing separate solutions for bandwidth and capacity
+expansions.  The user should first understand whether their workload is
+bandwidth-hungry or capacity-hungry, and select a proper solution.  I suspect
+the concern from Ravi was one of the reasons.
+
+I also recently developed a DAMON-based memory tiering approach [2] that
+implementing the main idea of TPP [3]: promoting and demoting hot and cold
+pages aiming a level of the faster node's space utilization.  I didn't see the
+bandwidth issue from my simple tests of it, but I think the very same problem
+can be applied to both DAMON-based approach and the original TPP
+implementation.
+
+> 
+> Ravi suggested adaptive interleaving of memory to optimize both bandwidth 
+> and capacity utilization.  He suggested an approach of a migrator in 
+> kernel space and a calibrator in userspace.  The calibrator would monitor 
+> system bandwidth utilization and, using different weights, determine the 
+> optimal weights for interleaving the hot pages for the highest bandwidth.  
+> If bandwidth saturation is not hit, only cold pages get demoted.  The 
+> migrator reads the target interleave ratio and rearrange the hot pages 
+> from the calibrator and demotes cold pages to the target node.  Currently 
+> this uses DAMOS policies, Migrate_hot and Migrate_cold.
+
+This implementation makes sense to me, especially if the aimed use case is for
+specific virtual address spaces.  Nevertheless, if a physical address space
+based version is also an option, I think there could be yet another way to
+achive the goal (optimizing both bandwidth and capacity).
+
+My idea is tweaking TPP idea a little bit: migrate pages among NUMA nodees
+aiming a level of both space and bandwidth utilization of the faster (e.g.,
+DRAM) node.  In more detail, do the hot pages promotion and cold pages
+demotions for the target level of faster node space utilization, same to the
+original TPP idea.  But, stop the hot page promotions if the memory bandwidth
+consumption of the faster node exceeds a level.  In the case, instead, start
+demoting _hot_ pages until the memory bandwidth consumption on the faster node
+decreases below the limit level.
+
+I think this idea could easily be prototyped by extending the
+DAMON-based TPP implementation [2].  Let me briefly explain the prototyping
+idea assuming the readers are familiar with the DAMON-based TPP implementation.
+If you are not familiar with, please feel free to ask questions to me, or refer
+to the cover letter [2] of the patch series.
+
+First, add another DAMOS quota goal for the hot pages promotion scheme.  The
+goal will aim to achieve a high level memory bandwidth consumption of the
+faster node.  The target level will be reasonably high but not too high to keep
+head room remained.  So the hot pages promotion scheme will be activated at the
+beginning, promote hot pages, make the faster node's space and bandwidth
+utilization increase.  But if the memory bandwidth consumption of the faster
+node surpasses the target leevel as a result of the hot pages promotion or the
+workload's access pattern change, the hot pages promotion scheme will be less
+aggressive and eventually stop.
+
+Second, add another DAMOS scheme to the faster node access monitoring DAMON
+context.  The new scheme does hot pages demotion with a quota goal that aim to
+make unused (free, or available) memory bandwidth of the faster node a headroom
+level.  This scheme will do nothing at the beginning of the system since the
+faster node may have available (unused) memory bandwidth more than the headroom
+level.  This scheme will start the hot pages demotion once the faster node's
+available memory bandwidth becomes less than the desired headroom level, due to
+increased loads or the hot pages promotion.  And once the unused memory
+bandwidth of the faster node becomes higher than the head room level as a
+result of the hot pages demotion or access pattern change, the hot pages
+demotion will be deactivated again.
+
+For example, a change like below can be made to the simple DAMON-based TPP
+implementation [4].
+
+diff --git a/scripts/mem_tier.sh b/scripts/mem_tier.sh
+index 9e685751..83757fa9 100644
+--- a/scripts/mem_tier.sh
++++ b/scripts/mem_tier.sh
+@@ -30,16 +30,25 @@ fi
+ "$damo_bin" module stat write enabled N
+ "$damo_bin" start \
+        --numa_node 0 --monitoring_intervals_goal 4% 3 5ms 10s \
++               `# demote cold pages for faster node headroom space` \
+                --damos_action migrate_cold 1 --damos_access_rate 0% 0% \
+                --damos_apply_interval 1s \
+                --damos_quota_interval 1s --damos_quota_space 200MB \
+                --damos_quota_goal node_mem_free_bp 0.5% 0 \
+                --damos_filter reject young \
++               `# demote hot pages for faster node headroom bandwidth` \
++               --damos_action migrate_hot 1 --damos_access_rate 5% max \
++                       --damos_apply_interval 1s \
++                       --damos_quota_interval 1s --damos_quota_space 200MB \
++                       --damos_quota_goal node_membw_free_bp 5% 0 \
++                       --damos_filter allow young \
+        --numa_node 1 --monitoring_intervals_goal 4% 3 5ms 10s \
++               `# promote hot pages for faster node space/bandwidth high utilization` \
+                --damos_action migrate_hot 0 --damos_access_rate 5% max \
+                --damos_apply_interval 1s \
+                --damos_quota_interval 1s --damos_quota_space 200MB \
+                --damos_quota_goal node_mem_used_bp 99.7% 0 \
++               --damos_quota_goal node_membw_used_bp 95% 0 \
+                --damos_filter allow young \
+-               --damos_nr_quota_goals 1 1 --damos_nr_filters 1 1 \
+-       --nr_targets 1 1 --nr_schemes 1 1 --nr_ctxs 1 1
++               --damos_nr_quota_goals 1 1 2 --damos_nr_filters 1 1 1 \
++       --nr_targets 1 1 --nr_schemes 2 1 --nr_ctxs 1 1
+
+"node_membw_free_bp" and "node_membw_used_bp" are _imaginary_ DAMOS quota goal
+metrics representing the available (unused) or consuming level of memory
+bandiwdth of a given NUMA node.  Those are imaginery ones that arenot supported
+on DAMON of today.  If this idea makes sense, we may develop the support of the
+metrics.
+
+But even before the metrics are implemented, we could prototype this for early
+proof of concepts by setting the DAMOS quota goals using the user_input goal
+metric [5] and run a user-space program that measures the memory bandwidth of
+the faster node and feeds it to DAMON using the DAMON sysfs interface.
+
+Implementing both the memory bandwidth/space utilization monitoring and the
+quota auto-tuning logic on user-space, and directly adjusting the quotas of
+DAMOS schemes instead of using the quota goals could also be an option.
+
+I have no plan to implement the "node_membw_{free,used}_bp" quota goal metrics
+or do the user_input based prototyping at the moment.  But, as always, if you
+watn the features and/or willing to step up for development of the features, I
+will be happy to help.
+
+[...]
+> Ravi suggested hotness information need not be used exclusively for 
+> promotion and that there is an advantage seen in rearranging hot pages 
+> based on weights.  He also suggested a standard subsystem that can provide 
+> bandwidth information would be very useful (including sources such as IBS, 
+> PEBS, and PMU sources).
+
+If we decide to implement the above per-node memory bandwidth based DAMOS quota
+goal metrics, I think this standard subsystem could also be useful for the
+implementation.
+
+FYI, users can _estimate_ memory bandwidth of the system or workloads from
+DAMON's monitoring results snapshot.  For example, if DAMON is seeing a 1 GiB
+memory region that is consistently being accessed about 10 times per second, we
+can estimate it is consuming 10 GiB/s memory bandwidth.
+
+DAMON user-space tool provides this estimated bandwidth per monitoring results
+snapshot with 'damo report access' command.  DAMON_STAT module, which is
+recently developed for providing system wide high level data access pattern in
+an easy way, also provides this _estimated_ memory bandwidth usage.
+
+[1] https://events.linuxfoundation.org/open-source-summit-korea/program/schedule/
+[2] https://lore.kernel.org/all/20250420194030.75838-1-sj@kernel.org/
+[3] https://symbioticlab.org/publications/files/tpp:asplos23/tpp-asplos23.pdf
+[4] https://github.com/damonitor/damo/blob/v3.0.4/scripts/mem_tier.sh
+[5] https://docs.kernel.org/mm/damon/design.html#aim-oriented-feedback-driven-auto-tuning
+
+
+Thanks,
+SJ
+
+[...]
 
