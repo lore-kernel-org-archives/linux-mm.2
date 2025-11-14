@@ -4,239 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CCBDCEACC9
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 20:00:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B932CEACC9
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 20:04:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A645D8E002B; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
+	id 95C828E0036; Fri, 14 Nov 2025 15:03:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A14938E000A; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
+	id 90AC08E000A; Fri, 14 Nov 2025 15:03:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88E718E002B; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
+	id 7D2438E0036; Fri, 14 Nov 2025 15:03:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 717B68E000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:00:06 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1BF33B9CA3
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:00:06 +0000 (UTC)
-X-FDA: 84110278812.19.D01979E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 401CF160002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:00:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SEkhJ6Qz;
-	spf=pass (imf08.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763150402;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 621948E000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:03:59 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED656140513
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:03:58 +0000 (UTC)
+X-FDA: 84110288556.21.0DE80EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4E80B100010
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:03:57 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GD3Rt3k3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of "SRS0=WocQ=5W=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=WocQ=5W=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763150637; a=rsa-sha256;
+	cv=none;
+	b=lvbZ5XSbnAT1yZi4KrTHM3JImcHArTu/i3ieEERCM1ijzVJ0QhmFxpXBEuXFknZ1hawpne
+	Fv2/yiOJ/ti/vM8pwd5nOK8sdKIfzVOMCMzd9MYXRVXbKmb8R5WBUG2nCPB4cwfLDFkJhx
+	dKPTeWPx12Zik/hEgReO0KaWs+ypg3k=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GD3Rt3k3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of "SRS0=WocQ=5W=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=WocQ=5W=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763150637;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uaQNtSNtl7u2XYN689Y01EV/DD085kK1e9t+e9ze1aE=;
-	b=zsDH99aHjD5DTWVYE5F3VVCRnrD0MTaPIKOQxXbATxg8ueWpCOaihOjAnXZvrmQEdSwTYB
-	wOWzxdveNycYgMluXqGJjRNJqlut1VgpzNRLiGWPbnabgFgJXUS9pW9PHR64Cyiv61aPyW
-	Ue0+HjTR2RBxYEPtHkyqLitFNJycQX4=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SEkhJ6Qz;
-	spf=pass (imf08.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763150402; a=rsa-sha256;
-	cv=pass;
-	b=E/e0uiP/KKK1LqgkiomaXUxZ3XgIibwasYnXedanvJ7LT86r81/I+RX1YVP2wpQd23FbrX
-	dV0Fbt7hjJpfwFV0Xds6aLSn6RUVfn4x5aq5jvnBFle+lth4MCzNGtHOD2vhBM7OBI97yD
-	aPPCc8TYmYiFLOUMmCJ+sbAJkiw2WTs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763150402; x=1794686402;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=nJ/Hv6y/Z3BBqtg7+jqs23hqAEvGaEu3VUUUz2wCQ5w=;
-  b=SEkhJ6QzZv2z+dD6CnpQZi+WzP6YV+y9rhMUCM02QE8IZH+zFKED4KPp
-   DSsCIYDw76ocAMTgD6jAK8NkpSpUJafeD+xdrs9nbcs1YkZU1RH526aY4
-   QU03ugynK4owZl1p9N5yWCvxi4G/c3eBCz2hLFfPQWtnRJOByeVtS3GEb
-   42/uo5KlnshKF1h3oLywpxBSFVJzmlG1M5oSz8HkomeYbCxCsPob62IVM
-   a01PzZxIAVvWBKd1LXr3TnCAJ+l96KajqlCJXJzAStU1w22PTWSqacEt/
-   HzdsM8oWjyYaDy7hS5M0VbEiJ1wBQRwAO8gMbAMAIe5355WoUSnmk9C43
-   w==;
-X-CSE-ConnectionGUID: hz0FjnjASSicYW88Jz41PA==
-X-CSE-MsgGUID: OpZtTlydR8GNfpzOrd4O2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="69099832"
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
-   d="scan'208";a="69099832"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 12:00:01 -0800
-X-CSE-ConnectionGUID: OBG+YFySRmGHhf6U/Fd21A==
-X-CSE-MsgGUID: nCJl+SrMSwKfEV961fXXfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; 
-   d="scan'208";a="189685062"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 12:00:00 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Fri, 14 Nov 2025 12:00:00 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Fri, 14 Nov 2025 12:00:00 -0800
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.66) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Fri, 14 Nov 2025 12:00:00 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qBFNKJhKoHmRzw0yDH9MzlgffVAkivcNjwlz4n3r20/6hVa3M1wzf2oSzzPzwo1SGoPjl5AUxI+iSGDvGQ6Ju9fHT1BA14dwSW04pV/32hREweQ3NbsBMx9/RzkKEAaW5SJ4iUvEikOGYOzcgcfqojNK60kpctZtCzBgafo1XJPbsL1/tmM4Mfli3MGOWkwp1/NnQsF/zoSxXaBqijtaEsisk+DzAJUuYAnCOf1wARQRhzoD+t4s34Pk4Zd5anbDaxoHkzuCQ3vYu2K2Ji6bjgBwrJaYZxiNRL/Vis5pJHV7CjgYIZffu7Zq3znHosdMll7I14RxnzDjiwnX2W4RWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uaQNtSNtl7u2XYN689Y01EV/DD085kK1e9t+e9ze1aE=;
- b=HA7hjOIPpQe/qbWd9Q9IiQB3xp7UECmkVl/GMQj+3pjIz7bCxJMoHZ833JQS2hOxT6ar7p+bPQy2o5yrsqJBQqrxRgIaA+/rLBjVzcCRW8LCWXIARvvsPpsV44NeiZzIHC45XdEqXBLGq6nVkm5254iGl90qOYtNrEE3eH2ofzggwGgLu09+UbG3+fEWS8sGfua8kT0sBAKWVdbzsiSXCbh/1wq3x/mD4rxyrhF9GnWMjiu1LzuRc9EjN+fDqf4GbEWU1LibBceBNAqqieA8fYJEelaTvZvZFHBGf8SLJXOzlvM3q9H/v0PFpzhJJJ1rZ6CNjkbeJN3ZXNwYpoXjDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ2PR11MB8472.namprd11.prod.outlook.com (2603:10b6:a03:574::15)
- by DM6PR11MB4755.namprd11.prod.outlook.com (2603:10b6:5:2ae::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Fri, 14 Nov
- 2025 19:59:57 +0000
-Received: from SJ2PR11MB8472.namprd11.prod.outlook.com
- ([fe80::1871:ff24:a49e:2bbb]) by SJ2PR11MB8472.namprd11.prod.outlook.com
- ([fe80::1871:ff24:a49e:2bbb%4]) with mapi id 15.20.9320.018; Fri, 14 Nov 2025
- 19:59:57 +0000
-From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-CC: SeongJae Park <sj@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "nphamcs@gmail.com"
-	<nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>,
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "kasong@tencent.com"
-	<kasong@tencent.com>, "linux-crypto@vger.kernel.org"
-	<linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au"
-	<herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>,
-	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org"
-	<ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>,
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C"
-	<kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>,
-	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh"
-	<vinodh.gopal@intel.com>, "Sridhar, Kanchana P"
-	<kanchana.p.sridhar@intel.com>
-Subject: RE: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Thread-Topic: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Thread-Index: AQHcTWs0Qo3eNl0w/UamTXF2PMbCz7TxL9wAgAAcuzCAAG5HAIAABzqAgACcWYCAADiUEIAADEAAgAABFWA=
-Date: Fri, 14 Nov 2025 19:59:57 +0000
-Message-ID: <SJ2PR11MB8472CE2B46F08804CF5F2158C9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
-References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
- <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
- <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
- <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
- <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
- <SJ2PR11MB84727C029B980E5E06F7291EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
- <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
-In-Reply-To: <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ2PR11MB8472:EE_|DM6PR11MB4755:EE_
-x-ms-office365-filtering-correlation-id: ca0dff85-72f4-4166-5869-08de23b86304
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?49KRLW96ZIM+XHE5BEqrEkFv3E7A5Fcw0GAda7L3IhcDV6nMuTGpyo931wXT?=
- =?us-ascii?Q?gTKAwZrlr+0aT66NAIHcbHtkpHloYRk+ZHccSUPHjPYqlqS3Doel7W0Umyp5?=
- =?us-ascii?Q?YZcJGcIOr54bDgQ4b3R+s1c8izg2GJMj+kb6o+KxgQBD1qtR62JuS20+UOCg?=
- =?us-ascii?Q?kbxqKGuGqiHS9lubQvJ+R2Xt384rUJFIqor0+9Tiix+Zr+gJxF0cepV/heQ6?=
- =?us-ascii?Q?B07MTsFetnZZvuJJJMlELRQcM2+mKExF+QztqkGHRhCjIA26XP2Vh+zwbvJC?=
- =?us-ascii?Q?MFNS6344RyTKiwQueHjG0PXKrV8BmjarFc7d82oNkC8ifhfypxI7Zf//DnRi?=
- =?us-ascii?Q?3bF2hoZ18KLfPbSHlpWlpv/vT4H5586b46mDrx+3pQdq0e4bito1450MGwhc?=
- =?us-ascii?Q?n02T7NM/FF3dlpmtplEDEAVgocnJ4ZFBY1qaYeDGlBBmNjbP4WZPJ5zZ5bJN?=
- =?us-ascii?Q?XninG15VnrLUOlD9s0WF3jx8XaoRTd/35Q9Zqq/1Aa3VcTeWYINxuxfAZLMe?=
- =?us-ascii?Q?cY7f2yUNTCxhJyP3WTI/Fwas+oXmYal6qd/0/JWpeYPqnG/6Egy8ZAxRkJZ8?=
- =?us-ascii?Q?NsGy6DpZJKu4RXQW4y+QLlO+y/quDKOvshg3vQkI+/A/2hPaoHCAuvQvnvvv?=
- =?us-ascii?Q?riCcgNQg/le8L103JfTwERHegvR6F/7I7op+gxStQPC692+SCSKPd5HKmWwb?=
- =?us-ascii?Q?41S5lsbpU863zg9CoiaaBXwgjSbI5DOwiBwFIerJ7mAGo3BsQsPI76PKuhmj?=
- =?us-ascii?Q?2tkAzuLNvR1BeUqjqAO5Di/nnQ8gPxICFOjD6NA3mzvsPLbxG3esLBWwN6/A?=
- =?us-ascii?Q?FpkX1GGUJJaG0MAqSg7BTk1zI4iHxnzlowMHOurrYpnpJiM8VbLD1wJ5+c5n?=
- =?us-ascii?Q?2uxJwMNFsr3NaEAMIuWUO9ZI0kevXHi7HozS4g4qwU48lT2uQoRJ02qi1Xyx?=
- =?us-ascii?Q?Ol55USyzTBiuTKcTg7yPTi6G7Gug+77WVY/YaYCDJyw/zHGa6eYU9sIYcTA4?=
- =?us-ascii?Q?QS6yF+6ZPntZzNnKbFkDk7bXGjlwBbNJrirsWgVuvuyh2snCyqT9Y6VwX5wd?=
- =?us-ascii?Q?CgLsq/6BkEftD3jqHuJi5Ct5IhDg4ZhZWi/7TuZ9Uh0866XfNQvmi/2BknA/?=
- =?us-ascii?Q?MrZ9qbyxHGJtzutLm3Csi9p9mLelf7tipDQuuftMEKKeBI5/4vWfudjAlXL1?=
- =?us-ascii?Q?HkVeOnF6UJ2kc5iH6+b0ilje6Q0aVVDtn9HPqTUTz9pEnpifuOiPBX1erUWq?=
- =?us-ascii?Q?HMYuRIpFu/Ch7dskZRscIvGMaqsvPCknHw08Nufcc7yhd/plBer4c7l4cMVT?=
- =?us-ascii?Q?ITNfw+gSOCiwDJh3HUMDFpm6eRCFc+HkGHKIRaVUO2eOdi6ciXYegerwJIvl?=
- =?us-ascii?Q?+OI3ob2397EQt8N+Q5LCpUXqCSvlVv4r2xKc/7SAxj7MvfKXYgczsNad55LN?=
- =?us-ascii?Q?0RN2mTVn7RqQWWmOTMoC1pavjy5s7M9H7kXCaK0hcgpN48mp5YHIB2ebVQHL?=
- =?us-ascii?Q?ZnKVRnPhlweTDrR/+hbKhMyLzfsA48E3Fd/h?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?RIMl6WOGyUGZPFzP0F4WTzn3lrLXsEBUqQJOp2rtN1nNi682/Hixrsietwfb?=
- =?us-ascii?Q?QCoD6PTogKeBM4Cg19Ed1vfdI586Aay7xI4NJ3Ttclp7B6pMlNoLl1IjfbGF?=
- =?us-ascii?Q?1DXhUoDKtLmrpgBZbzRBUocXFIhzWeIjwKEzVORSp02nAU+X8chJ4wvKgxSx?=
- =?us-ascii?Q?K1G4Tv+w7RbMvvH+MO96dLZLwotT/qelQzcxIKIk/ebGPA4///GXRXBvHD6o?=
- =?us-ascii?Q?CT7RxPuvZkOIowMBJHUrGKO9t0Ws+l2i7dqgM4uztvGnxyPeC/MNQARezZ6C?=
- =?us-ascii?Q?lpJEDFZWcANQqHVy2f5Lix2gBgkB5+cPguCANPTSzkUW3Ud6pj5kO2Kejczk?=
- =?us-ascii?Q?6mBvjeygMNHXru27Qm7XAJypaee9MBGw+V65ZZtWxgtUrm+acGe2HrfVNrOb?=
- =?us-ascii?Q?EWG7fWgHHQSUisC5c+vhmTS87wFHVT1OjDgWhOoBhgavFRy39f9H5b+5m/IA?=
- =?us-ascii?Q?GxEXqlmQLgQD6WmWnjuGmqeDjB3HED6lty2a5k0cTCie10z+wVLNlfe0GDBN?=
- =?us-ascii?Q?XEMDLYWDtZpHtwG93yS5zgTS47zbK3AyPDx97oxEeh+FM7PBGKDwHjxrKonJ?=
- =?us-ascii?Q?Mj7dVWruxS4A/XbvR1wDZryFq32UdoLRyAMYXfhcbjVdzvHXC29aTDvrmT/Y?=
- =?us-ascii?Q?xP1/ip6HxhrFiddm6oxGW8t4dEr/Ny5yZ8NLGfos5kCcoVI9FhjLGLoMoMBm?=
- =?us-ascii?Q?B0FNsFniX4ZHWx1ypz9SMm2CyvD6NlNCpl1NC4urH3wtGGeLodfHUArEZgBQ?=
- =?us-ascii?Q?pRJGy4XusouxgdcR2/ZdrYVkX2KJZUHg0HJ7kpnE8D6+Pk+qHgcf4/6FVD9w?=
- =?us-ascii?Q?cATnriiDWAX7cZHG1++NfiQJ2TUuLDVMCzmizNHx7tbMs38ZYJVVgjC1CZO2?=
- =?us-ascii?Q?43S1EfyTdNmilFHAyROHX4yrXNubvgf5I1sRprMERzGP+0IIZQUk0nEdtNii?=
- =?us-ascii?Q?M64rGqYffuvgJdz5n60TTb8HqUp4qttSqODOoz//JEt9O7mpLCvc1ozXBR39?=
- =?us-ascii?Q?novb+JkBWnzoFnuBvPzGeC1hy9p2ITPamDjnS7dpQLnp0vbL3D6/yx1IRgJD?=
- =?us-ascii?Q?brKdsjHBGmIjpxwhuYmB3bNqDxDtme7m+9bmIXYyUb1M2lovGzAsPxVvM/Z0?=
- =?us-ascii?Q?RD0QTs/XhLuPDGbbceossGFM7RwsbTFlRpAjZ2Ur4/JeXFzzdYMYn6WyeciM?=
- =?us-ascii?Q?a7Oe5Poeqs5la/10qQb9aNJvU62mIfxtWAbUnCCLimZTLU9KxKS52Yn/Mq3s?=
- =?us-ascii?Q?o6c79aNHhA2z9Jse2r4NkNvEXFYB+ji4lnmkN0CQ5qyTBX3qDRvxf8QTmf8o?=
- =?us-ascii?Q?v+AH6p/k/3LVY2qpIyms1zTb5aJjyk8VQjwJwyVqHyXENCg9Dze4zgR58PEB?=
- =?us-ascii?Q?IxijDmqHB13m2kqSZncfgEcUTwPhccmI/JZWeNm9L2Ih/gD5+kw+2i2mVeiO?=
- =?us-ascii?Q?OwGon0BI1DR/Y167WKXxxRGO9W51+KG1D6p9JeRPTxf+SksSL0ISlDjHQ5wF?=
- =?us-ascii?Q?J4il7f/yPqWfwkJXjrFSAFJD2oZolQ5eNCUICuCTcqzHEAQZpetMLIscGS+5?=
- =?us-ascii?Q?vxe/AaALaGsKrUdAt/MScT1wrISaKCyzdoOotXVQ24pQNQoe3TPg+BJSZD8e?=
- =?us-ascii?Q?yw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	bh=LYUw/3eFXDAFlHulEz7NKdmhrhcmAX+lT8DjEkJ/scc=;
+	b=Ii2/K807yc1GP08+F/2OKoL5p710stegI9NszSo09NhCdDnff9bIgwPPKFz9eKJjrqkNs4
+	EF9Oik4aeEBJvaM5O0mqVVE7kiIgshrsa3vY7ezpeATrT4kGgLEz0NaAXcisKfdqFw5Qjh
+	m7HdOWrqiOm0LrPoTIf2x1ulNscQwa0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 15EEB43C7E;
+	Fri, 14 Nov 2025 20:03:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DECC116B1;
+	Fri, 14 Nov 2025 20:03:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763150635;
+	bh=ltEnvjxgD9o5H99nXke6/+81fhB8uRaYASSf5TBrxjw=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=GD3Rt3k398YaNy0snptghC6M1FcoQLmz1T1NW8gFp2GlUnnx2r1VNwWRF+OrxloKM
+	 Xq0krpMXxGm/MmrdoInP+AJh+3BJtEXQ1dnYis908LSwh/KtKH51I+8cZvUpBysh4U
+	 8S4ZjVPwZduREnryFARAilnYZlF9rkV2TPBW13rkNdvFLLaEMCa17kUiu6kjrXrZpy
+	 sYf3C8mSVL17jK+7+LXWLtbs9y+hoGyedXt2Xi8reo3XgQieX7v8I/gPH95VhJbruo
+	 16YmOAJwpPV/0wptucfhkclY70FCQd76Rm7MoWYNYHPewBIJNSmo1Or/9PBal8ed1M
+	 PaHLt0IphElGw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 4208ECE0C91; Fri, 14 Nov 2025 12:03:55 -0800 (PST)
+Date: Fri, 14 Nov 2025 12:03:55 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Andy Lutomirski <luto@kernel.org>
+Cc: Valentin Schneider <vschneid@redhat.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mm@kvack.org, rcu@vger.kernel.org,
+	the arch/x86 maintainers <x86@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: Re: [PATCH v7 00/31] context_tracking,x86: Defer some IPIs until a
+ user->kernel transition
+Message-ID: <b3472cb3-86fa-4687-bfce-3b9a1bf4ff36@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20251114150133.1056710-1-vschneid@redhat.com>
+ <c4768cf3-f131-44e6-9b25-ebeb633f32ee@app.fastmail.com>
+ <beb46a02-b902-438b-8b6d-b5f0d7ad0ae6@app.fastmail.com>
+ <89398bdf-4dad-4976-8eb9-1e86032c8794@paulmck-laptop>
+ <1a911310-4ca5-45a4-b9bf-5f37c6ab238e@app.fastmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8472.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca0dff85-72f4-4166-5869-08de23b86304
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2025 19:59:57.4948
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: g3HVSHNV/gUieBK83nsrHX9gopRk0HsJhw5vZIT+23m6RrkFm5JPYQ8ufejqIhL2bu0KO4kGB9RqPKASX9OI3uE5BPExYwKlvu6ArSe44jo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4755
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 401CF160002
-X-Stat-Signature: y9jcp9eh1otsczzrh9pyxxaaun6noben
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1a911310-4ca5-45a4-b9bf-5f37c6ab238e@app.fastmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1763150402-259048
-X-HE-Meta: U2FsdGVkX1/IOCP1ospgx9pezjRSNc+GAgjQrL9I6yeghuC1YyaSUbL53eSyxdMkQbWrMVQaFGtXpGYZ0uzWeefaUAK9uHIu2lK+TFqEuSObF/DGiM5ESZXljUKn3XBIbsKZuuCDT1BwJWvuR2JRoiVNIOSCw7GuLGLhIQ1BOqy3dqsS/La6V+1frYFX3j0+RBmR7N+CitHWSlC1FrPXXWfMsCRBTf7mcg2zi9NXD4+p1vlzqEjcjZPauIr5pQyHSdvfKU5qpjZFBV5lE8M8xMzPmZ41850wsoUVK+roIv6jzzqiQLDDJxUkOFPAiMMfXtRRnIq54VTvqhi5JuoJe6CMMc/JdpaAVNGIuOVbLphCY8vHk1u1jsd+IvYqqcAYRVc7h42+G7HiuAiDuegm2QYlDU0/L1pBdYRg6U2YlFRJoJVFl7+Eeyfk3qFn/KkIzr/qW08bq2v/8E1dHufpNkU0Y1eRXJ93ZAXWeGrob/MYq33QbDvAAaO6ZI5pNXIKYVNBtYWjWjghhOxtNEYoEn6xuIBP1J2sh3RICMeqDTj3fGlzPUo3WmQxFugENhCeqqc52IdZEYnjR1XCHp0XS34fyfVmap6UnMw5CFGQ0l3K0h6TisBi9+FGfJEvjkSAXoysSVDVD7jN7o7zuaodDEo8ScX5lf1ZaY2Yg/xNNyDQflztJHVwF3mQLk35Fad1GpwAQgU3CV5HpEkHHU/PFeRgPUCwxNMvO/obei3q5aSrwp1ru6CTndyY2NCfTINVevphwbKu4CMCOwKVUb4haM41ipk2upEFStHJKgdHR2orGDjQEdZWb6/wrSd3XmTezwJkPBxFpcnTL8eNqOY1DzdZyQB/9faU88Tdx3Xm1OeF1jv0JEMiTpgyxx2rXmWab+cRz31EoAneHuZbt/n3pnNHEptYteuzs90wlY05xmFQncpKjrABWsD127iznY0NeZlL/HLVJsHhjR9Iyoj
- i/Q+BfX3
- LtiXafZfdPKoWFeQf6nQ2ntiVVhoJkjAmSyDfhJAeL3LPdvdDXYRLlyL1FEnmAZylvLnWCjWrPn1+dInI+CD+cnWiO0oVsrgGcEABxFfeX/CPBNwdst6SXlOSPPtDr6pbk8z9wLl/Qk/VZHA1zHTwZ0xecXfpxdejAm3epoJ80u4hwfMs9xa06GQwnO6SqB9DBIUPyxKq6hAdtRr38DA6TebKgUhZf73wPxpiBWH7co5Nhs1z/kHCOn58SYNiMIO9aLLkHgRBJNrd1AfmZZ02gKhwaOpMssI7BGwCONz8Wu7B1VRpBessChhPYT9A/t1tAKiYb6R4Rblyv3NarZ9isz17hM+4BUwwskhmqbewFpd8O6ugc+AySflboJSjEyB9OeE4HW2dFAxoM3yfqYxtWVlwtsUDH+G/uWa2fJNIx5tW6TeQkR4UUgp80gSjzdnfHL+uBFSMO7ETPAxKEEmTR5y7iCptmTiJdk13+tuqvP69K4FTtF0jkSin8Yw0GBzRpH3NnndzsX/39ScxYSwPovze6RqA0sjNlqVLzUVnAy4F6UxxThRHqO3XDEYMwYaLBOHrNHn0rlFenmIaXwKi5hFftqxSfCLJjq7QDynn/P5veu2KiMcoMS2ZKWL6pJq0l1dufObaIUreTETwzHd346xvFNrSboh+/9nVwtDobC9NpHxA03PhjRQrrZXy7sN4JpuaTyxh+b3YJlyHO+fizZHfnPMr+kh3SuLoF8sCv5FLdk0TgL6zgAQTnIkMwz1v9AEW661Ku/Hjby71R8GotVe7bt+IW8z6tQnZZKNYYMMiwAbdJi85wfbSA/8kaZKjuqicQ6pjmMX+/g0MbcJBqWHM+fUVoibrmTp6E9qhr8MNkcaNtq+/bBVwSFy5tMWRtaocDkbiiU0mgDuiSF2+qwsxJrKWB7eam8pSPAeV/TCVy+lEytcpGsUPQatanrFDr46kC7cks2Vg++ErtR6WLkEmME+J
- PBhLYe5x
- W/8Z9JfFSSfWqv5ttvv+n7OhvMld4NI1kdXKQTJE3RlkJZtB29jl4aTwwzcV/mi7KPWYvLgtOumm+4rv2Esc64+n1xXc6XasZejL8nOVpun4ZQz7aOdzcwrB1DweibjB
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4E80B100010
+X-Stat-Signature: 3ok986p1ecs6w8qdwm4ps7kjexymg5xr
+X-HE-Tag: 1763150637-70422
+X-HE-Meta: U2FsdGVkX1/DuXq8N8GXIYTu4dtX2I3cu5029UnqH5jtuiWcaE7MvcmSC7ysVvnljjB/StM7wE2ZbkNqLhjdmfNisJhO19/1k8ozQbbZqHyELfEnfAFZWg7wkVML4r36x5GOpjcd2lKV6w/UZgvf65NdVCkQaAWMz4HHl/YJ96o+g13nUDeTFt6ijI4eTP4O6IgpQCCQ+ETYavumzoT+7ydJyXb5zJDafcwrlQN+x30s4QJcR9I5fh2FIGEIwq7yXSJIoO+9Mc6PxrIi39wC9FX9In1/lAGpv6R5265g2PLhmwHPiUb565m/lQmCRwkueK+IaLV7a68yLvoVkMyE3oqSwGnib1densZmp8ldFVD9UaltkJMTaoc7JVYIfGXgPXUot9vik3RLhc+07yxR2jvbXjGKWozJq37SrHLAjZfoTPHfqd8TjygN3j1E5kbH3GR8e/ARVJsaX7Gt1I0DKr4kJqv/4LGiry/ayo3a4RdOX3pGqyfmwGcm79QS7stIlqfwgbowMfA7UIGQ77RW6fKHbWx0G3a3Q4AQ2BcYiNt9FG3GM06Pk+vDYAjNYEPQAfTHFj0m1I0w30dbpmVkL9MynQwzbWltcvSpeWnda4rWwxVtz6IfJ43FpLlOc8c5TjttYkz0FCi/YsNMfibUzYnYx+zvJCBCoP0SvftJPP8J4Ymp4ZQhy/uZo3WsWGZw9K+0aG8TTclt6Z6uIwG0YrbhnrMBu6wVOyk1nFutsyTRbU7jExKbmExs+uKloIKnCGSW4Gpxm0ZBQv269VuY7SdA80Pg1vCWE76sn0z0Qv7GcfawbhE9dJJMSoSBHWtX6ojFMHmIgPAelWKQ1PEo1vr+vNnBEqM0nRpY4AinR97ahVRB9pze400PJVcMCUU8rpri1ZrdtJK+8YgU7dKldaZlUCH06D8QYJDInrtycJECWGRzk79OhKKjpDT0FluDGqGhlZQhEF4m7VqL4SI
+ kM2HpFTp
+ MoGoX0EUwCoFH69TaqMUKl7z46hJsInqWWuuiAXuExM+BullWZaXSrz5gtNCYqhFGfw9WAWpMI7M3j9l2/xiAFqAodBtfDfyPXTYNgIubMAxwc+oom0CMOU9PRs6y2CFpC9G5BHVSZko0MdbZCW6DXT65R4W78b35FV3dkETB6BiI8XsswjC8n/c0IjE1aojY+6TF/zqxw8lnjUZD+5RnTs2yrA6O+DyhYJ5tbuIhS2Yvh4GNF55jdx4OIu6Cc1DRm3uHoReu8McvncvYbi/JAUf12E5ITaN8BSzUSwDM2IluE0Q7bNhVIouwj68Wk7GC8tVVQF7Lenh5oY2DneuY+yb7q9U3gOLq/aEtVCxWY5AYynUZflMrO+bsbtycECP5+ArgLsP80WbZaV8qPHooZP4vxBMjERiVzSfvrcQOh5mSSvjXOhAcOzZ2aSx52CWCkhp2HqW/87brxnGOx1humGaT/wpqLfmvBbg7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,323 +136,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Nov 14, 2025 at 10:45:08AM -0800, Andy Lutomirski wrote:
+> 
+> 
+> On Fri, Nov 14, 2025, at 10:14 AM, Paul E. McKenney wrote:
+> > On Fri, Nov 14, 2025 at 09:22:35AM -0800, Andy Lutomirski wrote:
+> >> 
+> 
+> >> > Oh, any another primitive would be possible: one CPU could plausibly 
+> >> > execute another CPU's interrupts or soft-irqs or whatever by taking a 
+> >> > special lock that would effectively pin the remote CPU in user mode -- 
+> >> > you'd set a flag in the target cpu_flags saying "pin in USER mode" and 
+> >> > the transition on that CPU to kernel mode would then spin on entry to 
+> >> > kernel mode and wait for the lock to be released.  This could plausibly 
+> >> > get a lot of the on_each_cpu callers to switch over in one fell swoop: 
+> >> > anything that needs to synchronize to the remote CPU but does not need 
+> >> > to poke its actual architectural state could be executed locally while 
+> >> > the remote CPU is pinned.
+> >
+> > It would be necessary to arrange for the remote CPU to remain pinned
+> > while the local CPU executed on its behalf.  Does the above approach
+> > make that happen without re-introducing our current context-tracking
+> > overhead and complexity?
+> 
+> Using the pseudo-implementation farther down, I think this would be like:
+> 
+> if (my_state->status == INDETERMINATE) {
+>    // we were lazy and we never promised to do work atomically.
+>    atomic_set(&my_state->status, KERNEL);
+>    this_entry_work = 0;
+>    /* we are definitely not pinned in this path */
+> } else {
+>    // we were not lazy and we promised we would do work atomically
+>    atomic exchange the entire state to { .work = 0, .status = KERNEL }
+>    this_entry_work = (whatever we just read);
+>    if (this_entry_work & PINNED) {
+>      u32 this_cpu_pin_count = this_cpu_ptr(pin_count);
+>      while (atomic_read(&this_cpu_pin_count)) {
+>        cpu_relax();
+>      }
+>    }
+>  }
+> 
+> and we'd have something like:
+> 
+> bool try_pin_remote_cpu(int cpu)
+> {
+>     u32 *remote_pin_count = ...;
+>     struct fancy_cpu_state *remote_state = ...;
+>     atomic_inc(remote_pin_count);  // optimistic
+> 
+>     // Hmm, we do not want that read to get reordered with the inc, so we probably
+>     // need a full barrier or seq_cst.  How does Linux spell that?  C++ has atomic::load
+>     // with seq_cst and maybe the optimizer can do the right thing.  Maybe it's:
+>     smp_mb__after_atomic();
+> 
+>     if (atomic_read(&remote_state->status) == USER) {
+>       // Okay, it's genuinely pinned.
+>       return true;
+> 
+>       // egads, if this is some arch with very weak ordering,
+>       // do we need to be concerned that we just took a lock but we
+>       // just did a relaxed read and therefore a subsequent access
+>       // that thinks it's locked might appear to precede the load and therefore
+>       // somehow get surprisingly seen out of order by the target cpu?
+>       // maybe we wanted atomic_read_acquire above instead?
+>     } else {
+>       // We might not have successfully pinned it
+>       atomic_dec(remote_pin_count);
+>     }
+> }
+> 
+> void unpin_remote_cpu(int cpu)
+> {
+>     atomic_dec(remote_pin_count();
+> }
+> 
+> and we'd use it like:
+> 
+> if (try_pin_remote_cpu(cpu)) {
+>   // do something useful
+> } else {
+>   send IPI;
+> }
+> 
+> but we'd really accumulate the set of CPUs that need the IPIs and do them all at once.
+> 
+> I ran the theorem prover that lives inside my head on this code using the assumption that the machine is a well-behaved x86 system and it said "yeah, looks like it might be correct".  I trust an actual formalized system or someone like you who is genuinely very good at this stuff much more than I trust my initial impression :)
 
-> -----Original Message-----
-> From: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Sent: Friday, November 14, 2025 11:44 AM
-> To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> Cc: SeongJae Park <sj@kernel.org>; linux-kernel@vger.kernel.org; linux-
-> mm@kvack.org; hannes@cmpxchg.org; nphamcs@gmail.com;
-> chengming.zhou@linux.dev; usamaarif642@gmail.com;
-> ryan.roberts@arm.com; 21cnbao@gmail.com;
-> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> senozhatsky@chromium.org; kasong@tencent.com; linux-
-> crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>=
-;
-> Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
-> <vinodh.gopal@intel.com>
-> Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
-> compress batching of large folios.
->=20
-> On Fri, Nov 14, 2025 at 07:23:42PM +0000, Sridhar, Kanchana P wrote:
-> [..]
->  > > > > >
-> > > > > > > > +		if (err && !wb_enabled)
-> > > > > > > > +			goto compress_error;
-> > > > > > > > +
-> > > > > > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg,
-> > > nr_comps, k) {
-> > > > > > > > +			j =3D k + i;
-> > > > > > >
-> [..]
-> > > > > >
-> > > > > > >
-> > > > > > > > +			dst =3D acomp_ctx->buffers[k];
-> > > > > > > > +			dlen =3D sg->length | *errp;
-> > > > > > >
-> > > > > > > Why are we doing this?
-> > > > > > >
-> > > > > > > > +
-> > > > > > > > +			if (dlen < 0) {
-> > > > > > >
-> > > > > > > We should do the incompressible page handling also if dlen is
-> > > PAGE_SIZE,
-> > > > > > > or if the compression failed (I guess that's the intention of=
- bit
-> OR'ing
-> > > > > > > with *errp?)
-> > > > > >
-> > > > > > Yes, indeed: that's the intention of bit OR'ing with *errp.
-> > > > >
-> > > > > ..and you never really answered my question. In the exising code =
-we
-> > > > > store the page as incompressible if writeback is enabled AND
-> > > > > crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check ab=
-ove
-> > > > > if crypto_wait_req() fails and writeback is disabled, but what ab=
-out the
-> > > > > rest?
-> > > >
-> > > > Let me explain this some more. The new code only relies on the
-> assumption
-> > > > that if dlen is zero or >=3D PAGE_SIZE, the compressor will not ret=
-urn a 0
-> > > > ("successful status"). In other words, the compressor will return a=
-n error
-> > > status
-> > > > in this case, which is expected to be a negative error code.
-> > >
-> > > I am not sure if all compressors do that, especially for the case whe=
-re
-> > > dlen >=3D PAGE_SIZE. The existing code does not assume that there wil=
-l be
-> > > an error code in these cases.
-> > >
-> > > For the dlen =3D=3D 0 case, the check was introduced recently by comm=
-it
-> > > dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
-> > > as-is"). Looking through the history it seems like it was introduced =
-in
-> > > v4 of that patch but I don't see the reasoning.
-> >
-> > The existing code did not check for dlen =3D=3D 0 and dlen >=3D PAGE_SI=
-ZE
-> > prior to commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression
-> > failed page as-is") either. We need SeongJae or Herbert to clarify whet=
-her
-> > this check is needed, or if it is sufficient to rely on comp_ret, the r=
-eturn from
-> > crypto_wait_req().
-> >
-> > >
-> > > SeongJae, did you observe any compressors returning dlen =3D=3D 0 but=
- no
-> > > error code? What was the reasoning behind the dlen =3D=3D 0 check?
-> > >
-> > > >
-> > > > Under these (hopefully valid) assumptions, the code handles the sim=
-ple
-> case
-> > > > of an error compression return status and writeback is disabled, by=
- the
-> > > > "goto compress_error".
-> > > >
-> > > > The rest is handled by these:
-> > > >
-> > > > 1) First, I need to adapt the use of sg_outputs->sgl->length to rep=
-resent
-> the
-> > > > compress length for software compressors, so I do this after
-> > > crypto_wait_req()
-> > > > returns:
-> > > >
-> > > >                 acomp_ctx->sg_outputs->sgl->length =3D acomp_ctx->r=
-eq->dlen;
-> > >
-> > > For SW compressors, why is acomp_ctx->sg_outputs->sgl->length not set=
-?
-> > > IIUC we are using the same API for SW and HW compressors, why is the
-> > > output length in different places for each of them?
-> >
-> > This is to first implement the SG lists batching interface in iaa_crypt=
-o, while
-> > maintaining backward compatibility for SW compressors with the new API.
-> > I believe we may want to adapt the crypto API to SW compressors
-> > at a later point. I also believe this would be outside the scope of thi=
-s patch.
-> > It would be nice if Herbert can share his vision on this aspect.
-> >
-> > >
-> > > >
-> > > > I did not want to propose any changes to crypto software compressor=
-s
-> > > protocols.
-> > > >
-> > > > 2) After the check for the "if (err && !wb_enabled)" case, the new =
-code
-> has
-> > > this:
-> > > >
-> > > >                 for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comp=
-s, k) {
-> > > >                         j =3D k + i;
-> > > >                         dst =3D acomp_ctx->buffers[k];
-> > > >                         dlen =3D sg->length | *errp;
-> > > >
-> > > >                         if (dlen < 0) {
-> > > >                                 dlen =3D PAGE_SIZE;
-> > > >                                 dst =3D kmap_local_page(folio_page(=
-folio, start + j));
-> > > >                         }
-> > > >
-> > > > For batching compressors, namely, iaa_crypto, the individual output=
- SG
-> > > > lists sg->length follows the requirements from Herbert: each sg->le=
-ngth
-> > > > is the compressed length or the error status (a negative error code=
-).
-> > > >
-> > > > Then all I need to know whether to store the page as incompressible
-> > > > is to either directly test if sg->length is negative (for batching
-> compressors),
-> > > > or sg->length bit-OR'ed with the crypto_wait_req() return status ("=
-err")
-> > > > is negative. This is accomplished by the "dlen =3D sg->length | *er=
-rp;".
-> > > >
-> > > > I believe this maintains backward compatibility with the existing c=
-ode.
-> > > > Please let me know if you agree.
-> > >
-> > > For batching compressors, will 'err' be set as well, or just sg->leng=
-th?
-> > > If it's just sg->length, then we need to check again if WB is enabled
-> > > here before storing the page uncompressed. Right?
-> >
-> > iaa_crypto will set 'err' and set the sg->length as per the batching in=
-terface
-> > spec from Herbert.
->=20
-> So both 'err' and sg->length will contain the same error? In this case
-> why do we need to check if dlen < 0? Shouldn't checking 'err' be
-> sufficient? and it would work for both SW and HW and we wouldn't need
-> errp. Did I miss something?
+Let's start with requirements, non-traditional though that might be. ;-)
 
-Great question. For a batching compressor, 'err' will contain an error if a=
-ny
-page in the batch had a compression error. This allows the early bail-out
-path for SW and HW compressors if writeback is not enabled for the folio.
+An "RCU idle" CPU is either in deep idle or executing in nohz_full
+userspace.
 
-Only the specific pages' sg->length will contain an error code. The other
-batch pages that compressed fine will have the compressed length in
-sg->length. This enables the post-compression loop with the errp check
-bit-ORed with the sg->length, which for SW, has been brought up to date
-with the acomp_req->dlen before we get to the wb_enabled code path.
+1.	If the RCU grace-period kthread sees an RCU-idle CPU, then:
 
->=20
-> >
-> > >
-> > > >
-> > > > >
-> > > > > We don't check again if writeback is enabled before storing the p=
-age is
-> > > > > incompressible, and we do not check if dlen is zero or PAGE_SIZE.=
- Are
-> > > > > these cases no longer possible?
-> > > >
-> > > > Hope the above explanation clarifies things some more? These case
-> > > > are possible, and as long as they return an error status, they shou=
-ld be
-> > > > correctly handled by the new code.
-> > >
-> > > As mentioned above, I am not sure if that's correct for dlen >=3D
-> > > PAGE_SIZE.
-> >
-> > We need to get clarity on this from SeongJae/Herbert.
-> >
-> > >
-> > > >
-> > > > >
-> > > > > Also, why use errp, why not explicitly use the appropriate error =
-code?
-> > > > > It's also unclear to me why the error code is always zero with HW
-> > > > > compression?
-> > > >
-> > > > This is because of the sg->length requirements (compressed
-> length/error)
-> > > > for the batching interface suggested by Herbert. Hence, I upfront d=
-efine
-> > > > err_sg to 0, and, set errp to &err_sg for batching compressors. For
-> software
-> > > > compressors, errp is set to &err, namely, the above check will alwa=
-ys
-> apply
-> > > > the software compressor's error status to the compressed length via
-> > > > the bit-OR to determine if the page needs to be stored uncompressed=
-.
-> > >
-> > > Thanks for the clarification. I understand that the error code has
-> > > different sources for SW and HW compressors, but I do not like using
-> > > errp as an indirection. It makes the code unclear. I would rather we
-> > > explicitly check err for SW compressors and dlen for HW compressors.
-> > >
-> > > That being said, I thought what Herbert suggested was that the same A=
-PI
-> > > is used for both SW and HW compressors. IOW, either way we submit a
-> > > batch of pages (8 pages for SW compressors), and then the crypto API
-> > > would either give the entire batch to the compressor if it supports
-> > > batching, or loop over them internally and hand them page-by-page to
-> > > the compressor.
-> >
-> > That was not how I understood Herbert's suggestion for the batching
-> interface.
-> > He did suggest the following:
-> >
-> > "Before the call to acomp, the destination SG list should contain as
-> > many elements as the number of units.  On return, the dst lengths
-> > should be stored in each destination SG entry."
-> >
-> > I have incorporated this suggestion in the iaa_crypto driver. For SW
-> > compressors, I have tried not to propose any API changes, while making
-> > sure that the zswap changes for the SG lists batching API work as expec=
-ted
-> > for SW without too much special-casing code.
-> >
-> > I suppose I always assumed that we would update SW compressors later,
-> > and not as part of this patch-set.
->=20
-> I am not sure I understand what changes lie in the crypto layer and what
-> changes lie in the SW compressors. I am not suggesting we do any
-> modification to the SW compressors.
->=20
-> I imagined that the crypto layer would present a uniform API regardless
-> of whether or not the compressor supports batching. Ideally zswap would
-> pass in a batch to crypto and it would figure out if it needs to break
-> them down or not. Then the output length and errors would be presented
-> uniformly to the caller.
+	a.	Everything that this CPU did before entering RCU-idle
+		state must be visible to sufficiently later code executed
+		by the grace-period kthread, and:
 
-From my understanding, this would require changes to the crypto layer for
-SW compressors, which again IIUC, does not set the sg->length, only sets
-the acomp_req->dlen (IIUC, a temporary state until crypto for SW also uses
-SG lists).
+	b.	Everything that the CPU will do after exiting RCU-idle
+		state must *not* have been visible to the grace-period
+		kthread sufficiently prior to having sampled this
+		CPU's state.
 
-Ideally, batching could be handled similarly by crypto for SW. I believe we
-will get there, albeit outside the scope of this patch.
+2.	If the RCU grace-period kthread sees an RCU-nonidle CPU, then
+	it depends on whether this is the same nonidle sojourn as was
+	initially seen.  (If the kthread initially saw the CPU in an
+	RCU-idle state, it would not have bothered resampling.)
 
->=20
-> That being said, I am not at all familiar with how crypto works and how
-> straightforward that would be. Herbert, WDYT?
->=20
+	a.	If this is the same nonidle sojourn, then there are no
+		ordering requirements.	RCU must continue to wait on
+		this CPU.
+
+	b.	Otherwise, everything that this CPU did before entering
+		its last RCU-idle state must be visible to sufficiently
+		later code executed by the grace-period kthread.
+		Similar to (1a) above.
+
+3.	If a given CPU quickly switches into and out of RCU-idle
+	state, and it is always in RCU-nonidle state whenever the RCU
+	grace-period kthread looks, RCU must still realize that this
+	CPU has passed through at least one quiescent state.
+
+	This is why we have a counter for RCU rather than just a
+	simple state.
+
+The usual way to handle (1a) and (2b) is make the update marking entry
+to the RCU-idle state have release semantics and to make the operation
+that the RCU grace-period kthread uses to sample the CPU's state have
+acquire semantics.
+
+The usual way to handle (1b) is to have a full barrier after the update
+marking exit from the RCU-idle state and another full barrier before the
+operation that the RCU grace-period kthread uses to sample the CPU's
+state.  The "sufficiently" allows some wiggle room on the placement
+of both full barriers.  A full barrier can be smp_mb() or some fully
+ordered atomic operation.
+
+I will let Valentin and Frederic check the current code.  ;-)
+
+> >> Following up, I think that x86 can do this all with a single atomic (in the common case) per usermode round trip.  Imagine:
+> >> 
+> >> struct fancy_cpu_state {
+> >>   u32 work; // <-- writable by any CPU
+> >>   u32 status; // <-- readable anywhere; writable locally
+> >> };
+> >> 
+> >> status includes KERNEL, USER, and maybe INDETERMINATE.  (INDETERMINATE means USER but we're not committing to doing work.)
+> >> 
+> >> Exit to user mode:
+> >> 
+> >> atomic_set(&my_state->status, USER);
 > >
-> > >
-> > > This would simplify usage as we do not have to handle the differences=
- in
-> > > zswap.
+> > We need ordering in the RCU nohz_full case.  If the grace-period kthread
+> > sees the status as USER, all the preceding KERNEL code's effects must
+> > be visible to the grace-period kthread.
+> 
+> Sorry, I'm speaking lazy x86 programmer here.  Maybe I mean atomic_set_release.  I want, roughly, the property that anyone who remotely observes USER can rely on the target cpu subsequently going through the atomic exchange path above.  I think even relaxed ought to be good enough for that one most architectures, but there are some potentially nasty complications involving that fact that this mixes operations on a double word and a single word that's part of the double word.
+
+Please see the requirements laid out above.
+
+> >> (or, in the lazy case, set to INDETERMINATE instead.)
+> >> 
+> >> Entry from user mode, with IRQs off, before switching to kernel CR3:
+> >> 
+> >> if (my_state->status == INDETERMINATE) {
+> >>   // we were lazy and we never promised to do work atomically.
+> >>   atomic_set(&my_state->status, KERNEL);
+> >>   this_entry_work = 0;
+> >> } else {
+> >>   // we were not lazy and we promised we would do work atomically
+> >>   atomic exchange the entire state to { .work = 0, .status = KERNEL }
+> >>   this_entry_work = (whatever we just read);
+> >> }
 > >
-> > That's the nice thing about SG lists - I think the zswap_compress() cal=
-ls to
-> > the new batching API appears agnostic to SW and HW compressors.
-> > Other than the upfront "errp =3D (pool->compr_batch_size =3D=3D 1) ? &e=
-rr :
-> &err_sg;"
-> > the logical code organization of the new zswap_compress() is quite simi=
-lar to
-> > the existing code. The post-compress "dlen =3D sg->length | *errp;" han=
-dles
-> the rest.
->=20
-> It would be even nicer if the batches are also abstracted by SG lists.
->=20
-> Also, I don't like how the error codes and output lengths are presented
-> differently for HW and SW compressors.
+> > If this atomic exchange is fully ordered (as opposed to, say, _relaxed),
+> > then this works in that if the grace-period kthread sees USER, its prior
+> > references are guaranteed not to see later kernel-mode references from
+> > that CPU.
+> 
+> Yep, that's the intent of my pseudocode.  On x86 this would be a plain 64-bit lock xchg -- I don't think cmpxchg is needed.  (I like to write lock even when it's implicit to avoid needing to trust myself to remember precisely which instructions imply it.)
 
-I do believe this is short-term and is the first step in implementing batch=
-ing
-in zswap. We should get Herbert's thoughts on this.
+OK, then the atomic exchange provides all the ordering that the update
+ever needs.
 
+> >> if (PTI) {
+> >>   switch to kernel CR3 *and flush if this_entry_work says to flush*
+> >> } else {
+> >>   flush if this_entry_work says to flush;
+> >> }
+> >> 
+> >> do the rest of the work;
+> >> 
+> >> 
+> >> 
+> >> I suppose that a lot of the stuff in ti_flags could merge into here, but it could be done one bit at a time when people feel like doing so.  And I imagine, but I'm very far from confident, that RCU could use this instead of the current context tracking code.
+> >
+> > RCU currently needs pretty heavy-duty ordering to reliably detect the
+> > other CPUs' quiescent states without needing to wake them from idle, or,
+> > in the nohz_full case, interrupt their userspace execution.  Not saying
+> > it is impossible, but it will need extreme care.
+> 
+> Is the thingy above heavy-duty enough?  Perhaps more relevantly, could RCU do this *instead* of the current CT hooks on architectures that implement it, and/or could RCU arrange for the ct hooks to be cheap no-ops on architectures that support the thingy above.  By "could" I mean "could be done without absolutely massive refactoring and without the resulting code being an unmaintainable disaster?  I'm sure any sufficiently motivated human or LLM could pull off the unmaintainable disaster version.  I bet I could even do it myself!)
 
+I write broken and unmaintainable code all the time, having more than 50
+years of experience doing so.  This is one reason we have rcutorture.  ;-)
 
+RCU used to do its own CT-like hooks.  Merging them into the actual
+context-tracking code reduced the entry/exit overhead significantly.
+
+I am not seeing how the third requirement above is met, though.  I have
+not verified the sampling code that the RCU grace-period kthread is
+supposed to use because I am not seeing it right off-hand.
+
+> >> The idea behind INDETERMINATE is that there are plenty of workloads that frequently switch between user and kernel mode and that would rather accept a few IPIs to avoid the heavyweight atomic operation on user -> kernel transitions.  So the default behavior could be to do KERNEL -> INDETERMINATE instead of KERNEL -> USER, but code that wants to be in user mode for a long time could go all the way to USER.  We could make it sort of automatic by noticing that we're returning from an IRQ without a context switch and go to USER (so we would get at most one unneeded IPI per normal user entry), and we could have some nice API for a program that intends to hang out in user mode for a very long time (cpu isolation users, for example) to tell the kernel to go immediately into USER mode.  (Don't we already have something that could be used for this purpose?)
+> >
+> > RCU *could* do an smp_call_function_single() when the CPU failed
+> > to respond, perhaps in a manner similar to how it already forces a
+> > given CPU out of nohz_full state if that CPU has been executing in the
+> > kernel for too long.  The real-time guys might not be amused, though.
+> > Especially those real-time guys hitting sub-microsecond latencies.
+> 
+> It wouldn't be outrageous to have real-time imply the full USER transition.
+
+We could have special code for RT, but this of course increases the
+complexity.  Which might be justified by sufficient speedup.
+
+> >> Hmm, now I wonder if it would make sense for the default behavior of Linux to be like that.  We could call it ONEHZ.  It's like NOHZ_FULL except that user threads that don't do syscalls get one single timer tick instead of many or none.
+> >> 
+> >> 
+> >> Anyway, I think my proposal is pretty good *if* RCU could be made to use it -- the existing context tracking code is fairly expensive, and I don't think we want to invent a new context-tracking-like mechanism if we still need to do the existing thing.
+> >
+> > If you build with CONFIG_NO_HZ_FULL=n, do you still get the heavyweight
+> > operations when transitioning between kernel and user execution?
+> 
+> No.  And I even tested approximately this a couple weeks ago for unrelated reasons.  The only unnecessary heavy-weight thing we're doing in a syscall loop with mitigations off is the RDTSC for stack randomization.
+
+OK, so why not just build your kernels with CONFIG_NO_HZ_FULL=n and be happy?
+
+> But I did that test on a machine that would absolutely benefit from the IPI suppression that the OP is talking about here, and I think it would be really quite nice if a default distro kernel with a more or less default distribution could be easily convinced to run a user thread without interrupting it.  It's a little bit had that NO_HZ_FULL is still an exotic non-default thing, IMO.
+
+And yes, many distros enable NO_HZ_FULL by default.  I will refrain from
+suggesting additional static branches.  ;-)
+
+							Thanx, Paul
 
