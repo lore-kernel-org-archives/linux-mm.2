@@ -4,112 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58291CE8D60
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 17:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92FFACE8D62
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 17:22:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7AF08E0014; Fri, 14 Nov 2025 12:21:32 -0500 (EST)
+	id F26278E0042; Fri, 14 Nov 2025 12:22:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B533C8E0010; Fri, 14 Nov 2025 12:21:32 -0500 (EST)
+	id ED61D8E0010; Fri, 14 Nov 2025 12:22:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8FA18E0014; Fri, 14 Nov 2025 12:21:32 -0500 (EST)
+	id DC5568E0042; Fri, 14 Nov 2025 12:22:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ABBB8E0010
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 12:21:32 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61C50139D01
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 17:21:32 +0000 (UTC)
-X-FDA: 84109879224.28.91ABCD0
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5D2224000A
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 17:21:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=aZEWjh2W;
-	spf=pass (imf01.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C64DE8E0010
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 12:22:02 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7486F88C2C
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 17:22:02 +0000 (UTC)
+X-FDA: 84109880484.21.BDA2808
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7469D140007
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 17:22:00 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=R8sWqb8F;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763140890;
+	s=arc-20220608; t=1763140920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=24kCOvea3EWaJbQNX30SQJO2VhYAAHekLZAG1ARIFTk=;
-	b=oJ3a4n3ejwQO9VSbyYWIGlBRMGlthpx1uhiFrCdCrnd0+Ou7EALaW3qx4diJQ/h61ZdO41
-	JCG/pLhrn00JE0bMnzfCc6S6IPrQy0Nhi/Am40abmeCLri/k48wuSdPSoBGeFalJDQVEXC
-	amFjxkD+Ns1X4Ksogbg6QD+75J7aKW8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763140890; a=rsa-sha256;
-	cv=none;
-	b=xbwJN0ydp4rFQlp/i0rZHkETe5mx16S8f19yJoDzO8F8S1iJtHXVr1z8rZQg77NPRZ7ujG
-	8np1PCVegf92IcxrLd36z2mJFvbaD+nz/N9ACjrk3/p0o5eASUFHXwEF/sIFTq02shr92U
-	q/deF1e7mWvrVAKiMObBj6DfnYm2+kI=
+	bh=0TVgXqLqg97YQ/m1CXUTN7T2KTMv0q/tzdoKWytqb20=;
+	b=0GA1LTewSWGQHX8pSz/anrofLOSqDSlB9IfxY7+HUjNqreMMqg+AM9MOp6kaFP6d3UOQfx
+	OzcW2Xa+tdU7cU/n5ud1SVruqMgHelr8LbRpkl/Y3fIl7SHj94TdjmnD2WIVrv+Pox9JxG
+	AKPBSStBlA+iviyiWxkEGzzZdMC5VbY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=aZEWjh2W;
-	spf=pass (imf01.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1763140888;
-	bh=oj7XvIjYe1pE+bYy9IlB8i4bQFjMilLPQjx7YB4+1fA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aZEWjh2Wv997fvjzfjYyiNTQsFctnvqof5bgUkdK3o3MvxxU3L95EO36ZFtvaekJS
-	 bZAOmQW3lf4woB4mnn3aD5fFsnOqaiwBr6Unx6D28n/OhmaUMcto0pQ09uGJFMv32Q
-	 THqCeF0gelYBNeFeiWVOPdzmBRhLCKoGCqx90SlnQw4cIoeNxTu3IEmqa7QDlKImSY
-	 AYkUwTK58gic2wO1WcZDsdSqxvedDR/kGjwS6x3W8gdDro4c+P5vsMEAtppXec2FjI
-	 QazQ6Ew3Qv4PS3ZhA2FcGOa8jYwJWTS2znHOiR3JtY/3AXrMIoI9xYNIna7rXnbfkb
-	 13A8uW35xzEEA==
-Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 59A9117E01EB;
-	Fri, 14 Nov 2025 18:21:27 +0100 (CET)
-Message-ID: <95ce7e6d-a2f3-4dff-adaf-22455f78a836@collabora.com>
-Date: Fri, 14 Nov 2025 18:21:17 +0100
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=R8sWqb8F;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763140920; a=rsa-sha256;
+	cv=none;
+	b=tStkhjigxQXoLZDTIBblH67m+h8DXqI8Vd4ylFNvXSPn48gDTvLRd87C0HtstSjGGP199r
+	zgBROQ2+8Hegsc2HYFp2UNf8qw2BXX/ghppPNH5GcOjzIoceCAcnrSuMslqvMedsePJw8A
+	0MPORQ+jnIrZlLztqS34CgiQobzdW6c=
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-640b06fa959so4025128a12.3
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:22:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763140919; x=1763745719; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0TVgXqLqg97YQ/m1CXUTN7T2KTMv0q/tzdoKWytqb20=;
+        b=R8sWqb8Fq0Kbq12s37j/U0esggFRttiThvXJHhRzbsjopIto6ec6eebuo2OD60NEfd
+         tCUYEjNL3CridcP0O/WkCmH9mTHGVXKlO9JQO1EEFt3VwrSqw+yStphSxZ6l8c3gqn4E
+         7fFaI5EDzd7XNF2VXZNNy13ixPhjWEQ1MTJ9AquP7L4FMAZ41bVckMfVBisoxFRnGmrP
+         dfFfvypEyDpt+hyQsalheiqtSu0diUyY8A3krlqt3q0AhKKJwGhA0Iuo8Mlv5+l6tj/C
+         GwFlqMX5cUzHtISNj6D7SfgKYEd5IA/r6CCbrorTdqiJH1xpgPSEEWgzM+X+c9OBhdXp
+         OGnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763140919; x=1763745719;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0TVgXqLqg97YQ/m1CXUTN7T2KTMv0q/tzdoKWytqb20=;
+        b=HX9xA/kLJ45krnXE0tdzHrB8sO4LHwBKyJSWXPB2N2f8+Eosmk+g+rYWBaqVfJ9lZl
+         vpnKznAEtbDrFyvBcWa3rtZM6uED0Yb5ymwolcTzE1Aig5e+c8lOwmukLBBxEdolTEou
+         MA2I+3C7n0dYmotiEewKIPWzFMPrCklABX0oULaz/v6JU9bbVeoubDqH2YA5ltk/FM9E
+         33IiDFLHuCpSvVhlWz+34t8gEYLG8+icfudfMrDXG0UrqXTNJ2o6nzEekiU8DYFuoXcD
+         0uTyYcYQqQTs/IO6wMnGXfQvGOY1VGT3Gt0BJbDsrwq5QtEyJ8eGMfW4V2ggd1aJG5lF
+         kdCg==
+X-Forwarded-Encrypted: i=1; AJvYcCXWIyrjPa9ge1nX2aVPUuSm2wqj6pBXlcjmIETawSj0Z8qsnDjS0zlQRvWR9kzV/pr3BELen3XqJg==@kvack.org
+X-Gm-Message-State: AOJu0YwGMpYPfTvV2Vk50rEvh+nJCbAxgUJ+33gnau4cAd8Nn6WY546v
+	KwZEvQ41GDgYgCk+FVr0nXg8AjT8B0/xjBH1clCPZUdRAq+dLDY3Cp1RUbDJvw/ANBy7jpI3/gp
+	jY3/Z/1fgzHbAGE8XONXdmkcEaAkRCipLxKg+eG64VQ==
+X-Gm-Gg: ASbGncs8MJf8uyON1a/MjZtOh1Mj9FdkdPV8wArIMlULYMfqcu4exQLc9SH0PFLr2Kw
+	ht4oXuJHGXaMc6Tjw5qhvL2trKoVdDhi4fVarKTBlK3s6mX9fkOS/zehjEVlxLbhsDVEVemB/mI
+	oGT07nJ+KTjlBNhJPY3I+K86oQJ0AamHBkjQSi7MCgQdU8xfHpeQgkSEKM/J6w8CD5DNe4IkS89
+	92KQV4qQz+rZS0hd98/E5JlVI0lNS387baTQTtoTElT/+k4peLlYihWnbNnmkge3or67vRuT02m
+	HU0=
+X-Google-Smtp-Source: AGHT+IHYCGe5EZttu74Kr7Wh87nzjge4/R6w5u4bJFNP5Xp7DoWHA3m+n/3j2Vr/nlr7+Zv6hOy2EF3HxmxGzlfQyHg=
+X-Received: by 2002:a05:6402:42c8:b0:640:abd5:863d with SMTP id
+ 4fb4d7f45d1cf-64350e869b2mr3251200a12.20.1763140918227; Fri, 14 Nov 2025
+ 09:21:58 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 06/11] drm/v3d: Use huge tmpfs mountpoint helpers
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Al Viro
- <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Matthew Wilcox
- <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kernel@collabora.com
-References: <20251114170303.2800-1-loic.molinari@collabora.com>
- <20251114170303.2800-7-loic.molinari@collabora.com>
- <20251114181144.51b44c8b@fedora>
-Content-Language: fr
-From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
-Organization: Collabora Ltd
-In-Reply-To: <20251114181144.51b44c8b@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+ <20251114155358.2884014-5-pasha.tatashin@soleen.com> <mafs0tsyw7e0a.fsf@kernel.org>
+In-Reply-To: <mafs0tsyw7e0a.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 14 Nov 2025 12:21:22 -0500
+X-Gm-Features: AWmQ_bkwQNcWIMU2RTcQ4saxk90WtRQeCs4SP12Mj6QMS9uqJrYZtq9AM6guyhU
+Message-ID: <CA+CK2bALea-5wDyaU2gMYo==yOvrdj=V6FKc4g7G8KV_vgV6Mw@mail.gmail.com>
+Subject: Re: [PATCH v1 04/13] kho: Verify deserialization status and fix FDT
+ alignment access
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: akpm@linux-foundation.org, bhe@redhat.com, rppt@kernel.org, 
+	jasonmiu@google.com, arnd@arndb.de, coxu@redhat.com, dave@vasilevsky.ca, 
+	ebiggers@google.com, graf@amazon.com, kees@kernel.org, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7469D140007
+X-Stat-Signature: wx77hu5gnd6acaw9abanwxnx584cor98
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D2224000A
-X-Stat-Signature: 7fnhpe5hwda5t6kfu84oybemns4bbnu4
-X-HE-Tag: 1763140890-12380
-X-HE-Meta: U2FsdGVkX19QlThTT4LReRQbeB03ub3xxUAAYvfew2xjCXYifW1/LGN2QPb0rKOXym7Uh8cRnIORBLhuL8FCybIr+YvIFvw0PEuHghf6O/XwlFc2+ih4ufWxidPhrQJ2o6MpuWFI0o/djX160ZKmktB+pM0DJ9bh7iQRyg9BCs1UuvdI+fZGFRaQcSKbhjvviHwvJkU4DEpi3gQZFUWixCvNo9L1pIgBIKG5uSsbtK6Mv9vWUjy3FYOnv0PDkR1hsD2WEp8CrJ8cfpCtxHXUFkfdTTWeI78iA+EGKHxNBJ0mowo5B6o59ujiKw+w4niYi3+RLTlI7FiLSp2WZdgIghBMlrXvzHdQGKCJOcazHdmp4+a0xG4QhCpUn/8giSaga9mj/rr7ihaXpcU6WjaYN5b2yI5Ahda7l9FNGBbaURaeUpxtI89FoFCbv9mtgs3zn434lL2YwYqRhsD3qHGCeVF3uDPPXQsbdd/3HXkAYUBTE75vTRK/wsi5HTObhk5OfrIIBW9X7LqJv2VxigNy2KU0f+J+CY3LeoAAAHBhHRVaKkDzllDNzF3K1mf2+Hg8Xh/63TXWAat3KAKoVjus9yWHpN9Exg+RjeSNYx6kNI1f+MQqGdckmwGKheg9TF3D070E8pwaCRxQEPDhWTCb9Rus+f5HIBDLz7XQSwQHVOsN+rj4Vu4R9CSv3Siw7O9HpSVqc/IfrrTeS1ypmDOoGPOOA6K6SQHxeEr4aFjZ6tZ8T1QLbWE5zbhnYxFwYiU8WxEsggcdeEyRkGKCL5NlcwXf5nakoSK3SyrBfJsPcH9l/bhvfJGujH7zmI6zIfpYtdFKA7M6NuW98mgBaqmWuZWfXB48IGAYlo3YR6KeYPT8dyQx/5H9DMwtJEdFN5KML/wvltAhVfEA7Akiqv09c7Au1wCsjNLh0EMWgiwgLKvanLreahW4HDmAcu4zOo4DTTU0umKfgFP+VX4Q4YN
- HCkh1QLy
- 1Taiw8VAr7ivYo1Z+uUzulZjne0gRqv8zRg7CRSd+Gbovt2KmmzdedyF3vmruEkBtgQE2vCQLIcc/iTiFUTH3OY0ge+B5r8WgPLrBMzBhgl4vQtcRo61kIsX/jj+9fUMTy0OxHm9oxWYqtWMBHLDJLmTJW2j35AH/gnOiRvAAkH38jwBuwbipjWCHXgiYN7RPhiMpyyeH7oLos2mBLhTtAC/OmAa/+ZhGJ+5LHt+lg1sinWPfE39xHxtgPVZ3dQMxe8R7qZIBTgyQLMFMrZpqvEqiQjcrpXW2SPx1cZ5KmfiJpES7KCNadZHT2X0mt4fpJhYHheiZgbldYH4/ICYdtjTHCRPOfgcMFQy2YebKntCCb7r37BksIZKJtW7fuycSyOkgiG4/8c/k6K3lYmybB7xpS3jMMNWRGssoCOFWCZdyCfAoneUKN2TAJve3AUwDJHaXct8ZTFbiJTU=
+X-HE-Tag: 1763140920-521134
+X-HE-Meta: U2FsdGVkX1/9/HyxTrsMwqf3nLXma0/xKK7UTozbggcNxHZGiYPcdd1Kw/r3gc9tpqXX9qNzf08smvO386GHLHjQB6wp503a8M1R4GBPel8L/bKkeNzxrRmluZJv/Q6zTDm49RNIgRhEoCAAvOH4EY+om0ppp4cPgVtxMiqfH6qcP+iDKpfvSliPE64XzMWmtFCujzZKCKOkNzQY+pAVSzbHxQYChRbReost8i1TvqPWKTlHaTF5/BTN5wl+lrteknIL2Lg0rRO0T5z8BCM74bXuA+UXh4UrftXLMLcv2LieXpcqWaPkk2ZPnDOl8KeaIMxfAGh61mOi6oZJzBwmQ3/T+RJ1y/NgQC97jJDaWAKct/B3+7kd3TGOuxrz7RYQMPqR3cU0H/VYZAjZ7tttIricCMjyoYl8nIDhxp3PdOagN7/2VUs1eMZvUL9AD7TECemPzYtasUPeYi9tke9O9BboNLGUEAABnePU9xqwAfdKOZHG+/QB6VcGqa1tFrZDvmZfjSgVKv3c7FUZirFLIAMPKVqsM2LFxN/OJKYG7MkR+BUgPS13uKpK3SgiAW7mUXzsrsuGwdifbb6Re8qZuaYG2TRazSTpUUn86tTn40O8jyrsAAFjhLMmHDsui1aGTy4DTou2NgDWgzWZP3rtUegi/ouGzpNFcJG1NeYGNixNseAfuWwBK6+IxpGcvqsdNMD5jgKHVzRWO/nTDMdOkWtEwT/cNStcqdYp6vUtBqrLSSAZRCYWWrFckPI5DUcGKeVO8EshPlDhKiEkEayKH9+tr0IFzM+2jNrlWfZQwsZgByZPOY/dJER3ZZf/Xad/Rm8JA7skj16G9JJW1YnVpNkmhG+m8GBxp26uXh5Kv77IBFdRTW5SuVdtiFHfTMxlI67CysO8bpkZKbVW6/mkf7ViJHu6D5dbgUiUuTBKXO5XDqu7jKcO5uJv79F47UZbyp3OMyQuKebA+5dK/vb
+ ExZG7kIc
+ 0SoSH7emBksMbmTslPMsHiaJ2HFbQstavfsPfY0y2Tff1lBic8AuUWED6btsgbnayQhsR3eI6ITO6c/35nc8xdglo9kCP79WkKqSMpM2nmLcYHwoGXmqO8X+4sQPTEgiCxuw7ThKf0xsgmt9TwyALz/o01L/ehDdzTe5NytNq9xRCBzmHozJmJ+ZS4TQEesw39I0TowYSNzeBz2fV/LnN4H2t924lhT6ZyBmkXzYKv4cSBh0ItExf9KS0s+sL05DzUpFZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,99 +121,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14/11/2025 18:11, Boris Brezillon wrote:
-> On Fri, 14 Nov 2025 18:02:57 +0100
-> Loïc Molinari <loic.molinari@collabora.com> wrote:
-> 
->> Make use of the new drm_gem_huge_mnt_create() and
->> drm_gem_get_huge_mnt() helpers to avoid code duplication. Now that
->> it's just a few lines long, the single function in v3d_gemfs.c is
->> moved into v3d_gem.c.
->>
->> v3:
->> - use huge tmpfs mountpoint in drm_device
->> - move v3d_gemfs.c into v3d_gem.c
->>
->> v4:
->> - clean up mountpoint creation error handling
->>
->> v5:
->> - fix CONFIG_TRANSPARENT_HUGEPAGE check
->> - use drm_gem_has_huge_mnt() helper
->>
->> v8:
->> - don't access huge_mnt field with CONFIG_TRANSPARENT_HUGEPAGE=n
->>
->> v9:
->> - replace drm_gem_has_huge_mnt() by drm_gem_get_huge_mnt()
->>
->> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
->> ---
->>   drivers/gpu/drm/v3d/Makefile    |  3 +-
->>   drivers/gpu/drm/v3d/v3d_bo.c    |  9 +++--
->>   drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
->>   drivers/gpu/drm/v3d/v3d_drv.h   | 11 +-----
->>   drivers/gpu/drm/v3d/v3d_gem.c   | 27 ++++++++++++--
->>   drivers/gpu/drm/v3d/v3d_gemfs.c | 62 ---------------------------------
->>   6 files changed, 34 insertions(+), 80 deletions(-)
->>   delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
->>
->> diff --git a/drivers/gpu/drm/v3d/Makefile b/drivers/gpu/drm/v3d/Makefile
->> index fcf710926057..b7d673f1153b 100644
->> --- a/drivers/gpu/drm/v3d/Makefile
->> +++ b/drivers/gpu/drm/v3d/Makefile
->> @@ -13,8 +13,7 @@ v3d-y := \
->>   	v3d_trace_points.o \
->>   	v3d_sched.o \
->>   	v3d_sysfs.o \
->> -	v3d_submit.o \
->> -	v3d_gemfs.o
->> +	v3d_submit.o
->>   
->>   v3d-$(CONFIG_DEBUG_FS) += v3d_debugfs.o
->>   
->> diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
->> index d9547f5117b9..211578abf9b6 100644
->> --- a/drivers/gpu/drm/v3d/v3d_bo.c
->> +++ b/drivers/gpu/drm/v3d/v3d_bo.c
->> @@ -114,7 +114,7 @@ v3d_bo_create_finish(struct drm_gem_object *obj)
->>   	if (IS_ERR(sgt))
->>   		return PTR_ERR(sgt);
->>   
->> -	if (!v3d->gemfs)
->> +	if (!drm_gem_get_huge_mnt(obj->dev))
->>   		align = SZ_4K;
->>   	else if (obj->size >= SZ_1M)
->>   		align = SZ_1M;
->> @@ -150,12 +150,15 @@ struct v3d_bo *v3d_bo_create(struct drm_device *dev, struct drm_file *file_priv,
->>   			     size_t unaligned_size)
->>   {
->>   	struct drm_gem_shmem_object *shmem_obj;
->> -	struct v3d_dev *v3d = to_v3d_dev(dev);
->>   	struct v3d_bo *bo;
->>   	int ret;
->>   
->> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>   	shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
->> -						  v3d->gemfs);
->> +						  dev->huge_mnt);
->> +#else
->> +	shmem_obj = drm_gem_shmem_create(dev, unaligned_size);
->> +#endif
-> 
-> Why not drop the ifdef and go for
-> 
-> 	shmem_obj = drm_gem_shmem_create_with_mnt(dev,
-> 						  unaligned_size,
-> 						  drm_gem_get_huge_mnt(obj->dev));
-> 
-> ?
+On Fri, Nov 14, 2025 at 11:52=E2=80=AFAM Pratyush Yadav <pratyush@kernel.or=
+g> wrote:
+>
+> On Fri, Nov 14 2025, Pasha Tatashin wrote:
+>
+> > During boot, kho_restore_folio() relies on the memory map having been
+> > successfully deserialized. If deserialization fails or no map is presen=
+t,
+> > attempting to restore the FDT folio is unsafe.
+> >
+> > Update kho_mem_deserialize() to return a boolean indicating success. Us=
+e
+> > this return value in kho_memory_init() to disable KHO if deserializatio=
+n
+> > fails. Also, the incoming FDT folio is never used, there is no reason t=
+o
+> > restore it.
+> >
+> > Additionally, use memcpy() to retrieve the memory map pointer from the =
+FDT.
+> > FDT properties are not guaranteed to be naturally aligned, and accessin=
+g
+> > a 64-bit value via a pointer that is only 32-bit aligned can cause faul=
+ts.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  kernel/liveupdate/kexec_handover.c | 32 ++++++++++++++++++------------
+> >  1 file changed, 19 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kex=
+ec_handover.c
+> > index a4b33ca79246..83aca3b4af15 100644
+> > --- a/kernel/liveupdate/kexec_handover.c
+> > +++ b/kernel/liveupdate/kexec_handover.c
+> > @@ -450,20 +450,28 @@ static void __init deserialize_bitmap(unsigned in=
+t order,
+> >       }
+> >  }
+> >
+> > -static void __init kho_mem_deserialize(const void *fdt)
+> > +/* Return true if memory was deserizlied */
+> > +static bool __init kho_mem_deserialize(const void *fdt)
+> >  {
+> >       struct khoser_mem_chunk *chunk;
+> > -     const phys_addr_t *mem;
+> > +     const void *mem_ptr;
+> > +     u64 mem;
+> >       int len;
+> >
+> > -     mem =3D fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
+> > -
+> > -     if (!mem || len !=3D sizeof(*mem)) {
+> > +     mem_ptr =3D fdt_getprop(fdt, 0, PROP_PRESERVED_MEMORY_MAP, &len);
+> > +     if (!mem_ptr || len !=3D sizeof(u64)) {
+> >               pr_err("failed to get preserved memory bitmaps\n");
+> > -             return;
+> > +             return false;
+> >       }
+> > +     /* FDT guarantees 32-bit alignment, have to use memcpy */
+> > +     memcpy(&mem, mem_ptr, len);
+>
+> Perhaps get_unaligned(mem) would have been simpler?
 
-Oops, I overlooked that one.
+Hm, it certainly more descriptive. I will see if I can use it.
 
-> 
->>   	if (IS_ERR(shmem_obj))
->>   		return ERR_CAST(shmem_obj);
->>   	bo = to_v3d_bo(&shmem_obj->base);
+>
+> > +
+> > +     chunk =3D mem ? phys_to_virt(mem) : NULL;
+> > +
+> > +     /* No preserved physical pages were passed, no deserialization */
+> > +     if (!chunk)
+> > +             return false;
+>
+> Should we disallow all kho_restore_{folio,pages}() calls too if this
+> fails? Ideally those should never happen since kho_retrieve_subtree()
+> will fail, so maybe as a debug aid?
 
+Right, my thinking was that they should never happen, as they do not
+have a way to know the location of folios to be restored. So,
+preventing FDT access that we do does that.
+
+
+>
+> >
+> > -     chunk =3D *mem ? phys_to_virt(*mem) : NULL;
+> >       while (chunk) {
+> >               unsigned int i;
+> >
+> > @@ -472,6 +480,8 @@ static void __init kho_mem_deserialize(const void *=
+fdt)
+> >                                          &chunk->bitmaps[i]);
+> >               chunk =3D KHOSER_LOAD_PTR(chunk->hdr.next);
+> >       }
+> > +
+> > +     return true;
+> >  }
+> >
+> >  /*
+> > @@ -1377,16 +1387,12 @@ static void __init kho_release_scratch(void)
+> >
+> >  void __init kho_memory_init(void)
+> >  {
+> > -     struct folio *folio;
+> > -
+> >       if (kho_in.scratch_phys) {
+> >               kho_scratch =3D phys_to_virt(kho_in.scratch_phys);
+> >               kho_release_scratch();
+> >
+> > -             kho_mem_deserialize(kho_get_fdt());
+> > -             folio =3D kho_restore_folio(kho_in.fdt_phys);
+> > -             if (!folio)
+> > -                     pr_warn("failed to restore folio for KHO fdt\n");
+> > +             if (!kho_mem_deserialize(kho_get_fdt()))
+> > +                     kho_in.fdt_phys =3D 0;
+>
+> The folio restore does serve a purpose: it accounts for that folio in
+> the system's total memory. See the call to adjust_managed_page_count()
+> in kho_restore_page(). In practice, I don't think it makes much of a
+> difference, but I don't see why not.
+>
+> >       } else {
+> >               kho_reserve_scratch();
+> >       }
+>
+> --
+> Regards,
+> Pratyush Yadav
 
