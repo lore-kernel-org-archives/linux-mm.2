@@ -4,88 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DCBFCEACD2
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 20:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDFC0CEACCE
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 20:50:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74B9F8E0009; Fri, 14 Nov 2025 15:44:55 -0500 (EST)
+	id 361348E000A; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7237E8E0005; Fri, 14 Nov 2025 15:44:55 -0500 (EST)
+	id 3382B8E0005; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6602F8E0009; Fri, 14 Nov 2025 15:44:55 -0500 (EST)
+	id 27AC48E000A; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54FA28E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:44:55 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 00A4189502
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:44:54 +0000 (UTC)
-X-FDA: 84110391750.22.7F983D8
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C654C40014
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:44:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ox9zZpYS;
-	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 142488E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 15:50:05 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2FA0C0536
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:50:04 +0000 (UTC)
+X-FDA: 84110404728.04.63A794D
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9E21C180010
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:50:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=It51VS1w;
+	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763153093;
+	s=arc-20220608; t=1763153403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=avhP2BlDV0WsSq481d4QOJ4qj6ZBZ4/qUpQyCVpZucI=;
-	b=BLC3G3c33MSRV5gnLf38jS8CVUMOy20lloWZ5YDFhQ+PXAlkQCZjT0TfJaDP64S/OS5CWP
-	tlthu0m3Jrj4Qi4LTvol4J1FTlw4Rez3fvluhIYdHv+UZr7cpPGZrkZ9YpkbqVVY/T92TG
-	iUZSn8q4l5JF0XRtbFZOmbVtkS4tUws=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763153093; a=rsa-sha256;
-	cv=none;
-	b=OuIpNqarLr5QWLMBhmzgI68kQ+XjeykCRlib9tcE/ddozQo0S0+RiGsIcHI2ULl84V+fd8
-	AtJRBj3u+2jAkiJ6P1iBnYDL8/fBGujVFop/gLaOEORM4Tz3WL3809lp7g2vsMLOpd8Xzs
-	eLmTLhFMbF7W1aCUZeiTdUdKgev8H2w=
+	bh=uCubXLGEjf5yNbIg/so5Dl6MiWPjIZCOszTICQIIzp8=;
+	b=n4qH/pDbIBGKvQeJW6Bm/aCwG03b/KFhLO+Fo4Cqsk2zC9o55QHtzQUaBMR5d6xcIbRxnV
+	e8ZTxO/hPEVZPpkKQy6pRXgiI+hz5x4mEga6IUJp4R56BC50Sf/mLmM9FbJZdNLVMoiZVe
+	Gj3IsM1EYxgdiIwTmTSYPfwHhVzZKdI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ox9zZpYS;
-	spf=none (imf17.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=avhP2BlDV0WsSq481d4QOJ4qj6ZBZ4/qUpQyCVpZucI=; b=ox9zZpYSOeDXSI8JO8p8p0xM9L
-	hk+LKitvAWv/vcxVHaSHG4VRyN2HpeglgaFVYC8ij4y9mu0dutl/n3Bl0123uduvNbDUUaQxLeeCQ
-	4EOtj11TOd1NgD7gul5dqRT4uiVVbsLIgnj63wtKc720Gqt83valXqg1xSAhYu6aquLE9KJuiFET+
-	DZnVDzOSue8dzQW1YSilSNS/4IjyIJSHBZeT+JrBK9TO6PR5s02OrBlmDQqdan/lP/z+E8F7WAcZ0
-	IPy6/+Mx2PdD/bKSY6fmbKPbOIOcyWT7JES4G6e9ZlMf/FAd5u7PGoq95gQA0XlNy3MG9BVsfIiij
-	mqbMKMIw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vK0f2-00000009u54-04RV;
-	Fri, 14 Nov 2025 20:44:48 +0000
-Date: Fri, 14 Nov 2025 20:44:47 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: ssrane_b23@ee.vjti.ac.in
-Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, eddyz87@gmail.com,
-	andrii@kernel.org, ast@kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com, khalid@kernel.org,
-	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in
- do_read_cache_folio()
-Message-ID: <aReUv1kVACh3UKv-@casper.infradead.org>
-References: <20251114193729.251892-1-ssranevjti@gmail.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=It51VS1w;
+	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763153403; a=rsa-sha256;
+	cv=none;
+	b=fdW+T41Go0AFqEzieosNxiGaqzUt2mEljE1lOO7+H+ZBN7tBrzJrcboXcwPCXyNEW1jcN5
+	ZnPUaip0K+8tTZ8EUpqIbch5aKZpHYNr2yvKBz52yV1aY2RKbNXWqsgvGjFGIWalGRnUWr
+	Wv6U8YarXUzi7A8Q5LHjVWkkvmsG70E=
+Date: Fri, 14 Nov 2025 20:49:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763153400;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uCubXLGEjf5yNbIg/so5Dl6MiWPjIZCOszTICQIIzp8=;
+	b=It51VS1wlp2x9Qt7YpG8krPvvqoaLDqdqRwhNlKo8zhqqq/V0B5K3FWIMQ3XBjycbofuHC
+	pGAwtOiIS939CuoE805Eqsd1Nkmh0lzAgoH2XeO3Km5Ew9kb+rWySvMgoU3Tox+gw8Nyeq
+	yGJjTREn5JqefyyP7mOBjmOxamJBXaI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: SeongJae Park <sj@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "nphamcs@gmail.com" <nphamcs@gmail.com>, 
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, "usamaarif642@gmail.com" <usamaarif642@gmail.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "kasong@tencent.com" <kasong@tencent.com>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
+	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
+	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
+	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+ compress batching of large folios.
+Message-ID: <ekilv3urk442lezvzul5dwergk6baubuhgrnflf5j4yfj47lwx@ae6y6mvsvs3v>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-23-kanchana.p.sridhar@intel.com>
+ <q54bjetgzmwbsqpgbuuovdmcwxjwmtowwgsv7p3ykbodhxpvc7@6mqmz6ji4jja>
+ <SJ2PR11MB8472011B61F644D4662FE980C9CDA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ifqmrypobhqxlkh734md5it22vggmkvqo2t2uy7hgch5hmlyln@flqi75fwmfd4>
+ <SJ2PR11MB8472610CE6EF5BA83BCC8D2EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <ygtejnrci7cnjkpomoqhz3jdtryjffmk3o2avatjppylirbbem@qppr4eybud47>
+ <SJ2PR11MB84727C029B980E5E06F7291EC9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <keys236tojsj7a4lx6tyqtr3hbhvtjtkbpb73zejgzxmegjwrb@i2xkzvgp5ake>
+ <SJ2PR11MB8472CE2B46F08804CF5F2158C9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251114193729.251892-1-ssranevjti@gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C654C40014
-X-Stat-Signature: ixb88i5qtgi1sxydiwmsafkjhg8skhz7
+In-Reply-To: <SJ2PR11MB8472CE2B46F08804CF5F2158C9CAA@SJ2PR11MB8472.namprd11.prod.outlook.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9E21C180010
+X-Stat-Signature: 3wzhpb8tbkptkw419ysoyt6h8gyjdr34
 X-Rspam-User: 
-X-HE-Tag: 1763153092-616453
-X-HE-Meta: U2FsdGVkX1/4GigBaD1hRH95iDCYNqUmlv1EQfdViKuxXa9NXALRxuISQaImj2tfhqmrRukWkLK6jMdUT/zKMzHNLCqUn8xBfg1mGihCzXy2dQCsAo2J64ojadDaLWtxTw15t2t2JrA4TIgeggScapbwO9vEhQ42UnQW3qUYTu/BhPt0ZJ1GcmzylVAq/4Fo4PqZkc2/hml/Y7ujUf17LKbkBupqLOgHT+MAUMa0ZBP+/nZhAlwb3a2q1raC8bLkW7xNWBoEu+4pu6OXzo7Ea/UJC0U6cDm+Se4qxTWyLVf9aGvD+/LpVZsviWFnTZRSN0qR0BkLoSVRrSmAd9QUEwpDc1zzwihW6WaEIchbwjWMxE585VPOA+cAReQIm8x0fISeQ79GTZEU+B8Wobp7jgrHxQucW7EbaY7dvWZDWKo9JVhStXYxUcKnn+Dlxcz4/ZLYSyvEyU+MsJRX9qQYnAPB0+PBKctfuZEgqvpEV10yR1IEmcCvIPbXcnmhQc/ttMQTYuRGA4adtdWZ5EnS2Loe6LOkfTnTKd/ZkQHmOD2Hd5thFcU1EqpyjQivD3tzLjKAJBAjGOKbaGlVguzrgEJCwgZgspXDfqWB5j+dCP+qFRs4Q01aAA3/GDq2e5xZum+0hmMUCV4WnNkGhYyAqQCSIP++sQeZMa1623MeMSGeTAiunUV1NL5dJdRIrMcCZM1iKWh8sFBdwnW1+UCrNWjrsnY4C/1Rls6Ozy7vE5L1HsNybP6Bf4H1dUTG82lHz44NOqku0OkwXOxLVvrOI2xxw+iFrJgRcLWKNyrh4AMUf12YPzisnwnhy5CU4pQIEbh8VpfjuIehPCFzTi6dTKhIvBT++v+ic9TD7daFXCQI9xpqjHo6aHMWRy7tnYNSFMpthYduTeaSzKvc2UZ0bFxWtB2oiqa4mZTXox5yHikNZ6MLYtPjWiu9r5/i5ES1jRqGCBH8LClhEvIpZcf
- ikmGi2Il
- vGGypWq9HPgdibNrC0v+nwQ963EtJ0lWdAxcHB386v449gU+Fg/QJN6wL4RIHGMdPiIi1eMTuM2bq3sMhaVFUgPZ6XtdL3UnWKwIUey8QrQiieZDQ6ToWBEN5Ycdez/qd7E1XlqmP0wm/9GP7dB3XGnKQOL9SSf8wVCzeXb/9pTUBCO+CcfDsi3OV9GbJwha5NkRzOZebi5oWsP1r61T3QhZyOFBTSPaRAiDyibExk2oVjIx9D1CMXip48v65hr8pKXulbyPIl6g2RXx8BnKBGIfWr3gwGCCXISTVTrisksLT67yPbQvPTGo70fWJcXhC7pBOLiyJ0om660lTRCGmNxt+MF2PiiMYovQpoVUFwmgPQJ6vN1o3vAGJbxQk2hJk2TnPOyA7Rjn5kbc=
+X-HE-Tag: 1763153402-453094
+X-HE-Meta: U2FsdGVkX19dZc39nVcJvY0Lory5i/7HNTZaGEtOWHOAZDOTfNNVyNKFpO2g//LD1FXT1zTw4zZxNmNqqJzxQf/ba1NJ2wOGNXaUHMFT/buL57lopDHiqOmE6cosjyuMIcjPyiMOPTs8JDKz3HBHux4eEbjvtJEiHbUWy09YqKO5V+8DuSLPqhPJwu+TYWsRtZv4Atw0jYboyRGsTOHmvYwN7fq9/ifkB2Mr82QjUuH0iSTx9U/IoBCfInSoGAmHx9E4S1bUdjE+yUm1b5v3mxS4d916mJR7Jg1yGQ+fdn0ITT7kmCJJPwI7p/+Yh0omSjHHb6/BYFEy69NYZQPGAwfDzzw11mc1UG+VwQQi/1tEFsCjDy9u7IDW4OmlVPu794YkW8HfmofEoyotTLzm29jahkj3109sZ3xO1rIf58gTEvg+d0X7UFL4/KofAtqJL2fWcMcG7hVV7ntXma3lAh3RF+sn5Q+zv+Q6jUQeryBPL1afZDzza6RVfyIFeef6HMNNuex0OJ7FtJOQI1cvsosDY9MPzcrC4/3W57Y8NwXfZ2FOME7a8Nv9BiquPxNaeKYV0cwS0Isvg9Qpd7wLU3g2zMETG9ZJNguZEqvJbxjKE87QUI6lX/rg+aUABVR88fJbz2Qxy4J0z45Pj7pU2fIi2j/TG+JmeitCHQ5AQoaU3SGi6lgAS9/2DLTVYO+TKXS8ntwMDSSoQ3CpumumALam5BFMaZhTWR7F/+SLS422cka1veF9mD0kJfoInBPqGrKArKmoZk/G8H7/KRQHBneaGNcpTZzxQpEPyNTjS29QjxkouLUPk4VBxdTa4cbzLQUZutnJyulpbY+UhApnuwUaOCojweEggxDpsVubE6YHTJ4T1DyGjf4wozHStE1KCpqRqOUcsp1xAxvn0IT53uYgOmtyTbayBIIoIYQdpddHoojZV09B/w1S6rKgsdEfHDcvQE7oaHtx56iWyQz
+ GzatYy0b
+ kqHH037xNSI5JBmUvMgotmJVP4P20RMi9fU44kOpLdV6ov/Jbeo9KAZFp3fJ1xjnJo9VZqGlAoZ/K0tdR1acUyAmbgP7bxP1vdGBOrtEi003F5Zw9b2fqViBXIekOyuZ3IFc9MXaJuFwSpDmIoGg/lufS8yujicY4OdLS+q9LsEkoWJfBaTHxbJojz/e9uIe3QQwhimQ/C4SMfW6LJr0UoELxh7p3/QLY6J6/9qjdVANt4QxDEbWWhQcAqlJkb3/GmMok4yzaZWDNRWv/XHa3LTxjmTpTpjmiq1WJ9iGtiLbQ0h575tUWusnGVQAioFQ5KOAUTdVGfhgg63zWK6V9FMV4PkAeJfX1Svc7+CAd8vXIkEXJs1i8Vw1TMMqJKj/cYdJnF6S4V/6epAUOvqI/gxlXhVg6+0E+2+CHffvYjx2lElpSKh/81b6Qi7B9E27GFB87yCiSj+vQBZxRappNCoa3MUUh7H6UJb2wO6pk23mz2Ny1nSKB4dJ2uKAYcWgpAbxqsbxlDq1i0vVbD8RByIZoZE0jXahw5ro49tNA2wKXiBPnreWaRFC8uNNChlXh7hJ8bdLWuH6CPaaqYCmGLsmsrTjuPUSCp3OlknxlBXu33mXQ2360aEDNHHnODTIIsUPs6hVHAjIgjkbqP7HOQNE+uZd9+Li1lZO18vQEX3LvBH3XqMh3PXVODjztjAJGN+GaabFF8LmQKSYr/9l+xB4n7TrFVBMBtMuo/3NRaD8EARkeOQwv3YgJS13MMTpfumND/69SAGjuTwbdOTHfCAZcTjh6a4rnrzcI8ezjDXD5Wglseao0Hz+/xVx7XNYkH+pLG3WuMc9BVe2nF/hVrB58EaEcCL2jWAbEg+wZTApXMrmbL78EfxD1kw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,29 +108,275 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 01:07:29AM +0530, ssrane_b23@ee.vjti.ac.in wrote:
-> When read_cache_folio() is called with a NULL filler function on a
-> mapping that does not implement read_folio, a NULL pointer
-> dereference occurs in filemap_read_folio().
+On Fri, Nov 14, 2025 at 07:59:57PM +0000, Sridhar, Kanchana P wrote:
 > 
-> The crash occurs when:
+> > -----Original Message-----
+> > From: Yosry Ahmed <yosry.ahmed@linux.dev>
+> > Sent: Friday, November 14, 2025 11:44 AM
+> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> > Cc: SeongJae Park <sj@kernel.org>; linux-kernel@vger.kernel.org; linux-
+> > mm@kvack.org; hannes@cmpxchg.org; nphamcs@gmail.com;
+> > chengming.zhou@linux.dev; usamaarif642@gmail.com;
+> > ryan.roberts@arm.com; 21cnbao@gmail.com;
+> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> > senozhatsky@chromium.org; kasong@tencent.com; linux-
+> > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
+> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
+> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
+> > <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.com>;
+> > Feghali, Wajdi K <wajdi.k.feghali@intel.com>; Gopal, Vinodh
+> > <vinodh.gopal@intel.com>
+> > Subject: Re: [PATCH v13 22/22] mm: zswap: Batched zswap_compress() with
+> > compress batching of large folios.
+> > 
+> > On Fri, Nov 14, 2025 at 07:23:42PM +0000, Sridhar, Kanchana P wrote:
+> > [..]
+> >  > > > > >
+> > > > > > > > > +		if (err && !wb_enabled)
+> > > > > > > > > +			goto compress_error;
+> > > > > > > > > +
+> > > > > > > > > +		for_each_sg(acomp_ctx->sg_outputs->sgl, sg,
+> > > > nr_comps, k) {
+> > > > > > > > > +			j = k + i;
+> > > > > > > >
+> > [..]
+> > > > > > >
+> > > > > > > >
+> > > > > > > > > +			dst = acomp_ctx->buffers[k];
+> > > > > > > > > +			dlen = sg->length | *errp;
+> > > > > > > >
+> > > > > > > > Why are we doing this?
+> > > > > > > >
+> > > > > > > > > +
+> > > > > > > > > +			if (dlen < 0) {
+> > > > > > > >
+> > > > > > > > We should do the incompressible page handling also if dlen is
+> > > > PAGE_SIZE,
+> > > > > > > > or if the compression failed (I guess that's the intention of bit
+> > OR'ing
+> > > > > > > > with *errp?)
+> > > > > > >
+> > > > > > > Yes, indeed: that's the intention of bit OR'ing with *errp.
+> > > > > >
+> > > > > > ..and you never really answered my question. In the exising code we
+> > > > > > store the page as incompressible if writeback is enabled AND
+> > > > > > crypto_wait_req() fails or dlen is zero or PAGE_SIZE. We check above
+> > > > > > if crypto_wait_req() fails and writeback is disabled, but what about the
+> > > > > > rest?
+> > > > >
+> > > > > Let me explain this some more. The new code only relies on the
+> > assumption
+> > > > > that if dlen is zero or >= PAGE_SIZE, the compressor will not return a 0
+> > > > > ("successful status"). In other words, the compressor will return an error
+> > > > status
+> > > > > in this case, which is expected to be a negative error code.
+> > > >
+> > > > I am not sure if all compressors do that, especially for the case where
+> > > > dlen >= PAGE_SIZE. The existing code does not assume that there will be
+> > > > an error code in these cases.
+> > > >
+> > > > For the dlen == 0 case, the check was introduced recently by commit
+> > > > dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page
+> > > > as-is"). Looking through the history it seems like it was introduced in
+> > > > v4 of that patch but I don't see the reasoning.
+> > >
+> > > The existing code did not check for dlen == 0 and dlen >= PAGE_SIZE
+> > > prior to commit dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression
+> > > failed page as-is") either. We need SeongJae or Herbert to clarify whether
+> > > this check is needed, or if it is sufficient to rely on comp_ret, the return from
+> > > crypto_wait_req().
+> > >
+> > > >
+> > > > SeongJae, did you observe any compressors returning dlen == 0 but no
+> > > > error code? What was the reasoning behind the dlen == 0 check?
+> > > >
+> > > > >
+> > > > > Under these (hopefully valid) assumptions, the code handles the simple
+> > case
+> > > > > of an error compression return status and writeback is disabled, by the
+> > > > > "goto compress_error".
+> > > > >
+> > > > > The rest is handled by these:
+> > > > >
+> > > > > 1) First, I need to adapt the use of sg_outputs->sgl->length to represent
+> > the
+> > > > > compress length for software compressors, so I do this after
+> > > > crypto_wait_req()
+> > > > > returns:
+> > > > >
+> > > > >                 acomp_ctx->sg_outputs->sgl->length = acomp_ctx->req->dlen;
+> > > >
+> > > > For SW compressors, why is acomp_ctx->sg_outputs->sgl->length not set?
+> > > > IIUC we are using the same API for SW and HW compressors, why is the
+> > > > output length in different places for each of them?
+> > >
+> > > This is to first implement the SG lists batching interface in iaa_crypto, while
+> > > maintaining backward compatibility for SW compressors with the new API.
+> > > I believe we may want to adapt the crypto API to SW compressors
+> > > at a later point. I also believe this would be outside the scope of this patch.
+> > > It would be nice if Herbert can share his vision on this aspect.
+> > >
+> > > >
+> > > > >
+> > > > > I did not want to propose any changes to crypto software compressors
+> > > > protocols.
+> > > > >
+> > > > > 2) After the check for the "if (err && !wb_enabled)" case, the new code
+> > has
+> > > > this:
+> > > > >
+> > > > >                 for_each_sg(acomp_ctx->sg_outputs->sgl, sg, nr_comps, k) {
+> > > > >                         j = k + i;
+> > > > >                         dst = acomp_ctx->buffers[k];
+> > > > >                         dlen = sg->length | *errp;
+> > > > >
+> > > > >                         if (dlen < 0) {
+> > > > >                                 dlen = PAGE_SIZE;
+> > > > >                                 dst = kmap_local_page(folio_page(folio, start + j));
+> > > > >                         }
+> > > > >
+> > > > > For batching compressors, namely, iaa_crypto, the individual output SG
+> > > > > lists sg->length follows the requirements from Herbert: each sg->length
+> > > > > is the compressed length or the error status (a negative error code).
+> > > > >
+> > > > > Then all I need to know whether to store the page as incompressible
+> > > > > is to either directly test if sg->length is negative (for batching
+> > compressors),
+> > > > > or sg->length bit-OR'ed with the crypto_wait_req() return status ("err")
+> > > > > is negative. This is accomplished by the "dlen = sg->length | *errp;".
+> > > > >
+> > > > > I believe this maintains backward compatibility with the existing code.
+> > > > > Please let me know if you agree.
+> > > >
+> > > > For batching compressors, will 'err' be set as well, or just sg->length?
+> > > > If it's just sg->length, then we need to check again if WB is enabled
+> > > > here before storing the page uncompressed. Right?
+> > >
+> > > iaa_crypto will set 'err' and set the sg->length as per the batching interface
+> > > spec from Herbert.
+> > 
+> > So both 'err' and sg->length will contain the same error? In this case
+> > why do we need to check if dlen < 0? Shouldn't checking 'err' be
+> > sufficient? and it would work for both SW and HW and we wouldn't need
+> > errp. Did I miss something?
 > 
-> build_id_parse() is called on a VMA backed by a file from a
-> filesystem that does not implement ->read_folio() (e.g. procfs,
-> sysfs, or other virtual filesystems).
+> Great question. For a batching compressor, 'err' will contain an error if any
+> page in the batch had a compression error. This allows the early bail-out
+> path for SW and HW compressors if writeback is not enabled for the folio.
+> 
+> Only the specific pages' sg->length will contain an error code. The other
+> batch pages that compressed fine will have the compressed length in
+> sg->length. This enables the post-compression loop with the errp check
+> bit-ORed with the sg->length, which for SW, has been brought up to date
+> with the acomp_req->dlen before we get to the wb_enabled code path.
+> 
+> > 
+> > >
+> > > >
+> > > > >
+> > > > > >
+> > > > > > We don't check again if writeback is enabled before storing the page is
+> > > > > > incompressible, and we do not check if dlen is zero or PAGE_SIZE. Are
+> > > > > > these cases no longer possible?
+> > > > >
+> > > > > Hope the above explanation clarifies things some more? These case
+> > > > > are possible, and as long as they return an error status, they should be
+> > > > > correctly handled by the new code.
+> > > >
+> > > > As mentioned above, I am not sure if that's correct for dlen >=
+> > > > PAGE_SIZE.
+> > >
+> > > We need to get clarity on this from SeongJae/Herbert.
+> > >
+> > > >
+> > > > >
+> > > > > >
+> > > > > > Also, why use errp, why not explicitly use the appropriate error code?
+> > > > > > It's also unclear to me why the error code is always zero with HW
+> > > > > > compression?
+> > > > >
+> > > > > This is because of the sg->length requirements (compressed
+> > length/error)
+> > > > > for the batching interface suggested by Herbert. Hence, I upfront define
+> > > > > err_sg to 0, and, set errp to &err_sg for batching compressors. For
+> > software
+> > > > > compressors, errp is set to &err, namely, the above check will always
+> > apply
+> > > > > the software compressor's error status to the compressed length via
+> > > > > the bit-OR to determine if the page needs to be stored uncompressed.
+> > > >
+> > > > Thanks for the clarification. I understand that the error code has
+> > > > different sources for SW and HW compressors, but I do not like using
+> > > > errp as an indirection. It makes the code unclear. I would rather we
+> > > > explicitly check err for SW compressors and dlen for HW compressors.
+> > > >
+> > > > That being said, I thought what Herbert suggested was that the same API
+> > > > is used for both SW and HW compressors. IOW, either way we submit a
+> > > > batch of pages (8 pages for SW compressors), and then the crypto API
+> > > > would either give the entire batch to the compressor if it supports
+> > > > batching, or loop over them internally and hand them page-by-page to
+> > > > the compressor.
+> > >
+> > > That was not how I understood Herbert's suggestion for the batching
+> > interface.
+> > > He did suggest the following:
+> > >
+> > > "Before the call to acomp, the destination SG list should contain as
+> > > many elements as the number of units.  On return, the dst lengths
+> > > should be stored in each destination SG entry."
+> > >
+> > > I have incorporated this suggestion in the iaa_crypto driver. For SW
+> > > compressors, I have tried not to propose any API changes, while making
+> > > sure that the zswap changes for the SG lists batching API work as expected
+> > > for SW without too much special-casing code.
+> > >
+> > > I suppose I always assumed that we would update SW compressors later,
+> > > and not as part of this patch-set.
+> > 
+> > I am not sure I understand what changes lie in the crypto layer and what
+> > changes lie in the SW compressors. I am not suggesting we do any
+> > modification to the SW compressors.
+> > 
+> > I imagined that the crypto layer would present a uniform API regardless
+> > of whether or not the compressor supports batching. Ideally zswap would
+> > pass in a batch to crypto and it would figure out if it needs to break
+> > them down or not. Then the output length and errors would be presented
+> > uniformly to the caller.
+> 
+> From my understanding, this would require changes to the crypto layer for
+> SW compressors, which again IIUC, does not set the sg->length, only sets
+> the acomp_req->dlen (IIUC, a temporary state until crypto for SW also uses
+> SG lists).
+> 
+> Ideally, batching could be handled similarly by crypto for SW. I believe we
+> will get there, albeit outside the scope of this patch.
+> 
+> > 
+> > That being said, I am not at all familiar with how crypto works and how
+> > straightforward that would be. Herbert, WDYT?
+> > 
+> > >
+> > > >
+> > > > This would simplify usage as we do not have to handle the differences in
+> > > > zswap.
+> > >
+> > > That's the nice thing about SG lists - I think the zswap_compress() calls to
+> > > the new batching API appears agnostic to SW and HW compressors.
+> > > Other than the upfront "errp = (pool->compr_batch_size == 1) ? &err :
+> > &err_sg;"
+> > > the logical code organization of the new zswap_compress() is quite similar to
+> > > the existing code. The post-compress "dlen = sg->length | *errp;" handles
+> > the rest.
+> > 
+> > It would be even nicer if the batches are also abstracted by SG lists.
+> > 
+> > Also, I don't like how the error codes and output lengths are presented
+> > differently for HW and SW compressors.
+> 
+> I do believe this is short-term and is the first step in implementing batching
+> in zswap. We should get Herbert's thoughts on this.
 
-Not a fan of this approach, to be honest.  This should be caught at
-a higher level.  In __build_id_parse(), there's already a check:
-
-        /* only works for page backed storage  */
-        if (!vma->vm_file)
-                return -EINVAL;
-
-which is funny because the comment is correct, but the code is not.
-I suspect the right answer is to add right after it:
-
-+	if (vma->vm_file->f_mapping->a_ops == &empty_aops)
-+		return -EINVAL;
-
-Want to test that out?
+If we have to keep the different approaches for now I would still like
+to simplify the error handling. We should remove errp and explicitly
+check sg->length or 'err' based on the batch size.
 
