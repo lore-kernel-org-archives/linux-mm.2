@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BB7CDE001
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:41:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A160CDE001
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 04:49:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9A788E0008; Thu, 13 Nov 2025 23:41:30 -0500 (EST)
+	id 448068E0009; Thu, 13 Nov 2025 23:49:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4AF08E0002; Thu, 13 Nov 2025 23:41:30 -0500 (EST)
+	id 420178E0002; Thu, 13 Nov 2025 23:49:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3A998E0008; Thu, 13 Nov 2025 23:41:30 -0500 (EST)
+	id 35BFC8E0009; Thu, 13 Nov 2025 23:49:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F2288E0002
-	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:41:30 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3D48F13A2F8
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:41:30 +0000 (UTC)
-X-FDA: 84107963940.13.A53B3DC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 242608E0002
+	for <linux-mm@kvack.org>; Thu, 13 Nov 2025 23:49:15 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA33D14028A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:49:14 +0000 (UTC)
+X-FDA: 84107983428.10.D879758
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EB838160006
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:41:27 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=K9SDNwe0;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf08.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763095288; a=rsa-sha256;
-	cv=none;
-	b=3t8idclGbYVRuzWoqUhRMO0SYePfRGCNLzflUZe39P3cjE9AETcW/fuSxHF+OTvTzUKwy9
-	nnHtpvcm80avQnQpI9Jce9433o1eaT0DzxnnviJsksnn98uUr097mK5S5+4FcLBMGV+H19
-	TUpr0gh3e0lFvhFEcMtPj8WcCsLgRbA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=K9SDNwe0;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf08.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	by imf12.hostedemail.com (Postfix) with ESMTP id DFC244000E
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:49:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=mcKduUbP;
+	spf=pass (imf12.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763095288;
+	s=arc-20220608; t=1763095753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=97ZI1DV37mgHB4KO9c/1pz2K9royVseEBh1e0LpLLFY=;
-	b=biZAkOxNLVqEaBfU39BgG6Nw5C0dtQHD20RMwtRhjjGPxc5C4Uzia/GN5VLn75pP2N3Tv8
-	tk1WlpIJggaR9hPmoAtsOT+H7nwPw2YxPpgRWy4gl6qwhZxz2aCPiuKyWTYhe1v7pq/UXu
-	fsz6XqL2dk9tbr/si/kyalE1lXBWhVY=
+	bh=K5YWWAVRgN8FQz6Otg8fg4nQaM9D7J06Mu/UbfQ9S4M=;
+	b=aXDc9j0mha+/OQh7t69OOMu1bwedveGLdFaG6nol4ZMJy65BCQTWqMSo1ar9vg5XJJI3F5
+	mojCBzOGgI1jP6IGDq+qEeF+ozhCbUWU3w89rChrpFxWaBT2SOpGk88N3lf2VmDnV3a1vK
+	QSMHI7H3/Oy2I6Pv1l4B00Hb78pbzRY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=mcKduUbP;
+	spf=pass (imf12.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763095753; a=rsa-sha256;
+	cv=none;
+	b=yXJudK46ZpL6zHTe3BqKuWjQEk0fNSeirku5lTLoEfcneGS/6/GR1GC0pNou5v4YEACFry
+	otWkz97A+T+g+0bGYlctymLsvawZbtcDSXiqX9ktUv4qZQF8bimmtFl19uZr+aJp2u7lHI
+	lilx1IPEnAn7luBPlXEGUHpETO2oFDE=
 Received: from ehlo.thunderbird.net (sfsymphony1.static.monkeybrains.net [208.90.214.66])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5AE4ed9U1921817
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5AE4mVO61925023
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 13 Nov 2025 20:40:40 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5AE4ed9U1921817
+	Thu, 13 Nov 2025 20:48:32 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5AE4mVO61925023
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1763095241;
-	bh=97ZI1DV37mgHB4KO9c/1pz2K9royVseEBh1e0LpLLFY=;
+	s=2025102301; t=1763095714;
+	bh=K5YWWAVRgN8FQz6Otg8fg4nQaM9D7J06Mu/UbfQ9S4M=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=K9SDNwe0uGJQ2fMWwnT4JB22olsFwwuaIMoDVSofKYVvzJBQh0AjCIjlGAiTONRFk
-	 pjaXbCJqqa1MzalVsK/xAH0VsE7Wub3xLGOn9jhvIJ521q/yFQ+DeRPGZ2N1RbEURc
-	 /h3oMUwbjuOjC41rjTLUVMjf6P3PBtFTIr0Oc560y2SJUIyjTfJWidv3nTgPjcoU4Z
-	 5EXa5R7UPU7lV9QJq+OVRjEwSDjd93twS2BLsApC7ksEzsvw+MkWLkh5O544nTs+F7
-	 XGxUGP2jHOkcU+eSxsnHCkLkoT0ts0zBCZTZydTumVY6+rDtqLqMOoHhf9XlDIC4Za
-	 4BFNvVnh8j//Q==
-Date: Thu, 13 Nov 2025 20:40:39 -0800
+	b=mcKduUbPOrPu5vaYqEtPHe1BtcZXeJxdyIR7a9GI7ZeS8ygpDymkCX77Tj2qFAQMP
+	 6woF4ACuH/huhgocvVOu9Nz4kk9xQaHRNR8vOc1TdB/caNNuLpACwE1ELrFrInIGwm
+	 MouOk338h7AJquCSfTGQF2J5lcGIwwgYk4G881hOsnjgiQRrYGCiHruN6B3/K318IA
+	 IzBRq/67YGzpfsWpw9SbYErKwB3Ym7gA7MNVhX/wIvctECR/SjKqWpUe3rOJNFG/oI
+	 ZQ9jdQbP1gl56CMw9ysfHI9u5WtR6lzi4gFZPr1FRRN2C/4ieQUJkZdEXYyu+mNdSA
+	 tASa90L+h0omQ==
+Date: Thu, 13 Nov 2025 20:48:31 -0800
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: Uros Bizjak <ubizjak@gmail.com>,
         Alexey Makhalov <alexey.makhalov@broadcom.com>
@@ -88,19 +88,19 @@ Subject: Re: [PATCH v2 7/9] x86/vdso: abstract out vdso system call internals
 User-Agent: K-9 Mail for Android
 In-Reply-To: <CAFULd4bfxaSy0kkVjfjqgHe=3iT-QcGAhbK9WFepPmZu7=ocjw@mail.gmail.com>
 References: <20251112043730.992152-1-hpa@zytor.com> <20251112043730.992152-8-hpa@zytor.com> <CAFULd4aMOueG5y3K7F57ryLtt-JUhE-yfsDODC=5+bgjF_gtSw@mail.gmail.com> <d5531acf-cd79-428d-80d1-eb7562cf3922@zytor.com> <CAFULd4bfxaSy0kkVjfjqgHe=3iT-QcGAhbK9WFepPmZu7=ocjw@mail.gmail.com>
-Message-ID: <B00D1422-204D-4ACE-AE00-94ACEA7430F7@zytor.com>
+Message-ID: <6585D209-A4D7-4201-8E4C-F28DC97AED3F@zytor.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DFC244000E
+X-Stat-Signature: c4fy86sjk63txxgy8cj5akxdseoje8ad
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EB838160006
-X-Stat-Signature: y46nw6oeiraqmf1dy5pczocbkjfm1z9e
-X-HE-Tag: 1763095287-762887
-X-HE-Meta: U2FsdGVkX18Jc1fdi59q3o8d6BoZgmmVgl5IoXYEdhPPZNja4q2qLmNOEfwEbg9J4qMJ6TzfJOFCUpxgICaDIPs8S1KdTehjUFQqmCeQO2OME5rrut5IYSt5R6LHxdjJEWVmjjkjsKkbnZiygkGb88bpU33vPtJcMlgINk4ZAMbu0VhrrL4+LC6BDHdh1NGGwjvAZyEoObkJsF5vjl/hQ8MU+rxVt65rtVir+oSsUl01pv9N6h/4iBnURKo4c6OYAtACdW0pn9V/rmthMVC6RIlsn3KOx7BfVGMZR+qZaxpigvdw0rPxrLhMttwsCwroDFVcscS3bAxs255Ya/I88JYuzsD1RK+3Ri9L2SVYcr+01JzUCoWhVf55jrBq7hsR32fY1lvq4Bt8g0bRta0pobEiwoWHC7cToHAtgmO+szwi1IJ0fa4lqpYRt26sNTOUp08wUQT8uVfDhS7PCPbwT2vmH7hCh5ryeKJuV1M/qs0Stj6/FZYccK65yYbILncOa/YtlGmOLb5kM4Yly/UGLjNHNYBK1geZh+OryvNlBQ3UDudMv5VArCAsz2gIhJKOUXwBD8eaYnp6ldvC8YqkbQSGQWWvcNPoxjusVq0NTmpMUkvz/7TnhhcJPRfdSdTyA0QJjKwgBkcABvawkjo3FNJdX5aMU7Iu8ZQwr7HFQvov9DNlsbRJ/ksm0ylI8ihhdN+Ylp1lhBFRUFt1037cHCEeiCZfnRW40P+pnU3qv9ePnY6qEjZa76lbO9F5sY6BaSsh20dkgCO6cqzT+zL+WjD3fLZZzBpBIujBAdsX/ESxSMSqpTSIHsUqmSa/iDApsngAROWtIaETKDRQy64phfQszAaULJPDX5e09me/T4O67nNNFmvP3Vg9/DrwYOnbe5Zpqig16USjWXDkFOzt3rvXqtp7CNusRGARgi+giHK1omtD+g5S9ZXJxInHBmgdi8iUrWrmMih4AsB7AlZ
- ilxlgfoa
- 1pcAeYUA9DObCk4daKZvQU0aCWjPKNUixfO2V1jpcVB29A/whmrlL1YHXnGC+o1k+FyNrrOU//cmmu6q/sE8xq3ICxDGNDrh9gzz0vsxZu+1w95qZGZPrLPmYHt5O+cTxYDZB3vtXs9snSFYV+DPCjweB5cqzPcjV4WUwAy5sYK3LqdaYTpfIAnMXd04Fuq7ajZ8XPF8ExmYKaZ1eLpk3qvaLv1GP2IcpnNF/MlxifSYWvZH0xAJAdMRtIVIMeZRZ/klaFVUHEsUKshIcQTQxyobjEneEhEBjvahV29lS451NMVlu38jyTuYeyi+GsMHWUwK/cjNkDj5TiH1i8x1ZRoWQPxxir2HS+cIHuYt2Apt80DbBVG7wCxorgpyV5TZHHGFO
+X-HE-Tag: 1763095752-145379
+X-HE-Meta: U2FsdGVkX1/AicfKo15dfNZ/DfXM3kataDA6eV21tK678j4oRLy17aldZHF9M4PzLC89GEUobfrMaGmdUy2ndBq677pd2fUaP+CKBxf/Sb8l7hVxkZz8gafEArL/kwJRl/wwkqCsf8iClgVcZzvIrZOldwH0CMZxbRjyqHyYV/HAPXHh22RPQTE5Bh4aT5pL+nu0R8yvbM27oJFxAJ4sJ6tbebzpiSvovJqSM+jCs7vFKlfY/UhmT2SVfwlYOOG06wVmMWoFCo8b4VbAKZfAIVhTdODhcNK2W+vzE9LxqO6HO1tEIrqWdQTKEBtX+C/ofIyWn+fi+dYhhBQSuIdjnxupfZCT4MFJvgUIkW7el7DhFj6YNS5B0pKCtJv5Oqxhakn5JOgenBQ8Z7+Ix15OmPmwaiTIIDAPg8/KBF5lBX3tYf9w3Tc/Khxpa7RUF+oKee7Rdx8qVkJXyTe/WhOTqp2hg6chtXq/LcZaLpEPe7ctEbYentjI/MafCKeFehoufrU3B39IZyiJZiJ7CcqGIll1hq3O3sX1PlL75d9xH8wjf5/aW1NlDJ/D7J9R7BchUVM9htvs/VzWbdvYNWCsf+GAvnalfKoFn4Zx/GSGoby6vg1BcakLyv+shgKDWk4xvMxlFOq1uRicR3XDGkgjp7vE/O+uzukyGLFw+67Lja6t50Sv7KWCbbatz31llMFJ+sGxBMsEEzik0BJdpPO28prJ36BlqqEZiM8vnixPOnFANKCEBgySivgPP77V16MkoBXLPkjvf5J9mtR5kTK+mkG1t7PjXzDQWlNKXBXDUISTf+7dsdkJyGzIvtoCejYRWf7yoiurqhWlTyldXEKzAYW6V3vYD57AoNtxh4Eh3IL++75PKq+/JQJkHU4ol870F74ZVuUe+pF6nlE6Eymu2V+oaBEzMo7Arrwl32YpsNreVotASzIaCedVf99ptvolMf60PKbJWR7sg+Df6/u
+ 6Hx3b4ZJ
+ hyfdXF3LGepFBmc19N819CKT70xCCfa+U0wfC8OBCKdhd/y9KnCHVwr5TIwOKvD4ocUZJNdV1oeq9cgpsp4f9tcr6lW/qHI9y8pEZJuqrRjApyVH+HZdGd9v13w1l7pXEF/+UPRQjhO9EMzv4aO3+UukOchVvTxdBLnGLN+Ahmq7JjVG/6VrfrZny1/3X5AKtYthbOQs6q83lXUacIHSKpNU4tHYcflBf71+AvFkKe1DqkFMicKTJp3PRtke1/qvPNveMQoCIhNzhF+AR4SOYc1P9FPnPGP2EEEFac4pt/uka4Y5Xhj9/ernPb5lgqmKkXT7sLhv32lIsfHqcMX9QaLRZuhiAPom/zizZ1f469df2Lt7UfCh+QqZBHB+JV8gxEalo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,11 +182,14 @@ ly
 >Uros=2E
 >
 
-For 64 bits, if you need frame pointer support *and* frob %rsp, using:
+Note: for the specific case of VDSO_SYSCALL6 the %eax value is always a co=
+nstant, so:
 
-xchg %[arg],%%rbp
-<stuff>
-xchg %[arg],%%rbp
+push %%ebp
+mov %%eax,%%ebp
+mov %[sysnr],%%eax /* "i" constraint */
+<syscall sequence>
+pop %%ebp
 
-=2E=2E=2E is probably easiest, with %[arg] in a register=2E
+=2E=2E=2E would be easiest=2E
 
