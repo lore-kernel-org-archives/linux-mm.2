@@ -4,94 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4495ECE7AA3
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 09:59:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF13CCE7AA5
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 10:03:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93C2A8E000E; Fri, 14 Nov 2025 04:59:36 -0500 (EST)
+	id 1A3EA8E0011; Fri, 14 Nov 2025 05:03:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EC7C8E0002; Fri, 14 Nov 2025 04:59:36 -0500 (EST)
+	id 155CC8E0002; Fri, 14 Nov 2025 05:03:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DB178E000E; Fri, 14 Nov 2025 04:59:36 -0500 (EST)
+	id 042A58E0011; Fri, 14 Nov 2025 05:03:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 644668E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 04:59:36 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01F57C02B8
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:59:35 +0000 (UTC)
-X-FDA: 84108765552.15.EDC384C
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 205E04000E
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 09:59:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=LqnKDYHJ;
-	spf=pass (imf12.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E24738E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 05:03:08 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68EB4140351
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:03:08 +0000 (UTC)
+X-FDA: 84108774456.18.B5CAE63
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 23FCE1C000A
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 10:03:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RhJWoQcw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CtnITG5K;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lb7ZddqK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=s7s0V9rW;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763114586; a=rsa-sha256;
+	cv=none;
+	b=Yg+v1/E3p2WvgRIXcu9QFQGheqR5RQTL2+9OW9O0mOGIobsWKXldhSHIZNjRso72SVlz4o
+	D4w1r5mJWzr7c8pyLlmhrkXqUFrU+PgsO5xcOc0hTRyFTXFm1e8rb+EG6AozB+Xy4PIHOp
+	dKuVMIMbw+eIriRSDSHWeMlB7v9Sbto=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RhJWoQcw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CtnITG5K;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Lb7ZddqK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=s7s0V9rW;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf21.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=jdelvare@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763114374;
+	s=arc-20220608; t=1763114586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A2r/Q/+wRJ2BFr/BHn0s3SothtWMfgvNhJUxmswYYkc=;
-	b=Kawpq/XBd2YuBBs7ersLnUB3WmEcTwv9qAHNyvQZmuZlGVjk+axTUdkvn1i90aWFWLdB/5
-	R/RbrSaLSOu/iZj9rXFc4F20EjAWQ3tcPp1E7RpShNTPCQA1Ac45MsRwzjjOBq5iYCo1Jr
-	toMxfceX721AiQ7SXaos2ETtS2laXuI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763114374; a=rsa-sha256;
-	cv=none;
-	b=aWEkZDFYh+DMfvb67ATpCffR85npium59AdFT2vhCPU4bxkhOs+zv4xhVKfyZ79UO8rWDU
-	LZNz2lpTaoS2LaxQdCith8JXwwETTF+a2F8WTT3rzDAbM190IUGkC6TP0TeMUIuIZxuSmW
-	7lHPjIYhAatn4VWhZJ2DYY0Wo8PWDHI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=LqnKDYHJ;
-	spf=pass (imf12.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=A2r/Q/+wRJ2BFr/BHn0s3SothtWMfgvNhJUxmswYYkc=; 
-	b=LqnKDYHJ2hV1IWITk+XlcWoHcu2Bw8J4lGqIWsyd9e2uwsdNVw9Yn38Wt/o2M7PcyulnvfUhU39
-	4KxuZBwog498fmSq/U2tuU0k1n2FhhPvnzMSrrDQr7Jml0Grp5VoP6FxpqtpZGKQDMdd2Yt0AjfTr
-	b8ud4vzpnGbgPkdCX7WvJR+hGGpKIU55v5G3xX2WxkSZlqnkmFRg3XEKLH6yztg4cjQUjeCWaTktt
-	LFaXDmsiA1XVetPG1Y0YvcILkSqEt/RLoe1cNVyvZpfYpmgW9p5gKglPeIz6HhQnaFov/u9bkhRB5
-	EKf+ZLk6JT1ynYj6u61PoNfgwjO2ZHji95Eg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vJqaS-002y5g-25;
-	Fri, 14 Nov 2025 17:59:25 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 14 Nov 2025 17:59:24 +0800
-Date: Fri, 14 Nov 2025 17:59:24 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org,
-	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	usamaarif642@gmail.com, ryan.roberts@arm.com, 21cnbao@gmail.com,
-	ying.huang@linux.alibaba.com, akpm@linux-foundation.org,
-	senozhatsky@chromium.org, sj@kernel.org, kasong@tencent.com,
-	linux-crypto@vger.kernel.org, davem@davemloft.net,
-	clabbe@baylibre.com, ardb@kernel.org, ebiggers@google.com,
-	surenb@google.com, kristen.c.accardi@intel.com,
-	vinicius.gomes@intel.com, wajdi.k.feghali@intel.com,
-	vinodh.gopal@intel.com
-Subject: Re: [PATCH v13 13/22] crypto: iaa - IAA Batching for parallel
- compressions/decompressions.
-Message-ID: <aRb9fGDUhgRASTmM@gondor.apana.org.au>
-References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
- <20251104091235.8793-14-kanchana.p.sridhar@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
+	b=L9ZOhGDSfxnn6IGZab7uLFzCCa7Ohpo1/9mdqJGAOHtDSl5H5RGunLG/piXZxgZOktdTef
+	GtEM/aAB5FF+Uj5NxE/Kn0rT3HJPU/WPsZL5lUjmIA/x+ufQCmdRunujpp/mSphpDZQFYQ
+	8scMcWlzIWdtOFhzsNr+4dz74JLEIus=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5A6B61F825;
+	Fri, 14 Nov 2025 10:03:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763114584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
+	b=RhJWoQcwKmg8/lCxpgWTh7JY2lrS49LMNluiat6BCytvZlNKcOgZBZfMl9X2nsXZPmnudW
+	oOWjlUPH9Ci5wp/yurOCmg1HSf8pSje5T2PcHLtsRNu6Q6XreWWHxVnJD4y6600nRqpl60
+	Xy7/Rb83sMazVipRwa7LqEk3JMdgqY4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763114584;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
+	b=CtnITG5KCEtOgDhnMu/NNQ945nOFmxzZOcS7wOCPmF9r6ohzer/CSijfrMDz3bT3kenDxt
+	TTKyTr5ZXHW8fGBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763114583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
+	b=Lb7ZddqKCmztqesegCwYEwbsQA9saZuCJ5QIUwMopp2lhiIZ0H/DNu//izmsy8pqgAukFB
+	9LtfghZQ5boK4hs0C06j2oq7K/zY33PnCZl5El148A4i/nesZqUzmxYMyaHgKjqjCPmNJg
+	h76LwnrUPNrX52WVmzdpTVZomqtqJLk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763114583;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=t5l+Z4OUA4ifKPHX9expiwKnae/6J3vb2pppSaJ+aMU=;
+	b=s7s0V9rWU4yRh46uFr/eiNcUw6uxVGFaS++ZwXAGpkGH8NkZamvEcjZGr3Do6DH4sXT6cH
+	c2jqyniKkDuQEsAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2471B3EA61;
+	Fri, 14 Nov 2025 10:03:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id F9rhBlf+FmkIcwAAD6G6ig
+	(envelope-from <jdelvare@suse.de>); Fri, 14 Nov 2025 10:03:03 +0000
+Date: Fri, 14 Nov 2025 11:03:01 +0100
+From: Jean Delvare <jdelvare@suse.de>
+To: linux-mm@kvack.org
+Cc: LKML <linux-kernel@vger.kernel.org>, David Hildenbrand
+ <david@redhat.com>, Oscar Salvador <osalvador@suse.de>
+Subject: [RFC PATCH] mm/cma: Inline cma_sysfs counter hooks
+Message-ID: <20251114110301.39316246@endymion>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251104091235.8793-14-kanchana.p.sridhar@intel.com>
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 205E04000E
-X-Stat-Signature: gk3y4ajwti9g13xodh3nea6pihmbhwrs
-X-HE-Tag: 1763114372-275331
-X-HE-Meta: U2FsdGVkX1/7x9g/J8ZTP60TjPqPsjO/k9Fa5ASIO0Fxh+Xxlh/zlKa0/PKp1lU6bHaQMC8inytsiG9l7ygIOS9xNpJ+QI98p9AGpI5jamxnfkndeVqxG9uryu4xkmtB2Fq5Aat74OXONf07lqidnm6Vu2vMAfYBeZ2/4WCs6NP1hQlQ01YBYlrtGzWwWpATHIJYLS6fmMRtdJueHpMtH9RI4up8caNSBGaaoiZ2yDzo1eCPVBQWXdK55ZcVNg2GZyFpAUTX1vyZ6DXoe06hVa15nYnylBnrNo9gBtgc/MyqsNv9q0L+qUJ+M7VtUw+hjVmBYDJ42hq+nU39OD/KnUzWv3ud1W4GizIpQ0WVXhM8jspyIUIBvY20hgexWxhmuJN39yRi1hAJDkSZvNPxLKncPw0SHAHqOj57juE4fEw+4/hE136IGjL91VgoF2yAA+MoJ+KHVt233PVhPQyI9qGXq6rNBlC6BvsjCyI0dR2ppaqRp1rDVtDu1oG78eM42KU7kAQfQK/2UBx2fWf4dJMr4jtkycbGp/uKqMUhAuTYN59YblHn6SQv0IKcb58jJ3aK0zzb6Z1ekcNMwTAO3035BTZchBlUm/kdw3T3oZodELVmZDRHRUWck7RRhXuF77trkaiTOY/TyAAHZXpMSpuU0U07ROGoCOygM196soORwrRWl/kYl/j9rwaS3y5YtrwGfAu/AuoZAYCtDTUIbqqtgEgjNkx52uMNKpRJm4q5EUN5H5+kLvItgwEYusKyRXdDgj3JGuf3HR1bkNFyzgJBa/xG0euFnLBoXFpBLhfN7y9BdYKnNgCz/2PANxd+CaOqRKaSdFdMqZRP6uFj2yHa/LjP93qQ0wG+ds+EsNMHDv+U2sGFyoPnIzvPR8L3O3w0LpGHHOvvqQcoJm/Ca9EgYpc0/JAJrjTaPN/mfRkC2PapdL0X5LjB8mv7mPBFq6dupi+Mu8GUNemlpX9
- GB6c0P/D
- iQuMpd304is8ZhF4IgSP6T6WIf0u4DI0B3SwMIPFymZ/tAU14ApWJkDe9ybCdZdUCquqlwKGuqqPxcvhP8+CCoaXw/k4rRsWu6tDKOEQAi7ZfGNPHDLtdMrc2DnhWl+yvUIrd6pQ8wQ7+2qgNJcG+pl9fBNsFD0EvS4O5RN7y78+DXq6zWO1KtnDSHMTUULgs6nXoC2e9nq41OVXW04peXM/X7SnFlrI8yy06AbGqpwXcAbGvUPzrB3kgXjU61ShWhg7A70HJBn2gh/nCDoUoDN8VCgAlGjRiIUa4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 23FCE1C000A
+X-Stat-Signature: r85suw7sr9jzppr1bxqjf9d44s63c1ro
+X-HE-Tag: 1763114585-708649
+X-HE-Meta: U2FsdGVkX1//CTavurX92c5vXZsiQziASds/nV73Ws56PWf+NUpvvPkqw1QiDILVm7X8uw4wuCHvqdkcwog0ngVdj0Odg10MXz9eLP68WIVLRBLupvsyeaJ+CRpJSwpVjVSUW7dRgAG9evEpKL9FZ2W4s7AbLPrpfFq+83eBd5X2hM2vsuRUy2Lc/26pbBUThpgLLDbYTulfuMphx9N9xpuYbXu0nZrBmBvgFK6C84PLh30mdgSsXUXp5E75jMR50hfdnpzfyuyAQC9NDMMIMu3OIyFzVXp6YJqirHmD5I3v/l7YnevjsO5d5u127WGMIhlvXDQ/Px3jyDGYZyk0lZ9XOCDNL0DlCHH7vgEBjcKsmeBCjHLP4Z+ZGaO/1ESCwNSArxRlI3usfBP21zOxLXgT2qlS23UP0MpCBEc+KOAGb2MR25/f8wr2cOU8nLFqCtElT2vyUM3AUEMcsD4PDXsNG261Yz1is0chrY9YVhOrXvNnG21huErdqa56vI/LQOFzIOwiWHNRPqjJH+BSPLKqIKV+bJhdnUlpxCqxXFEYbIiTd7UgkEW5yQqvlxm/s2710Qyr7mgkFV8z6Vvl/celf31xJjuRo1fg+rL3g9i4q1Ed2YHjinJX4BXcXrmP8d9gskg2U6G+w3hGAhD3j6mn3jCsZoLgjWKoJE1MfkIEaH1b1U3a55y5pgaiEwQL+JaTk4M20q/SegdZ5lsilrFHMOGqm0V8ALTK+Cy3nuMsBskknJmm0MYwO1zH+WJ93VhDF6h0PP0j61eUhLVaaSb+RsTstsiO8PVejZ5PqyTQpfwUmJPmAA6rWyIVbofe4BW1LPXiorCN+xZEy14ChqxaXmwOB0bz2KQlPJf+DwPgp1k31ZChTyyQn8yBkBmsymf0IuYwAJbLCd/2O04IIaI9O74bQxDKEEfWdsullmlkRSUyAFRn7oxNjq81AxSfEKwBbGg9dRKJVBPpsVL
+ B0FndoK3
+ 4tBIRuLCuWt0pIqimEV13jZAGXfiD9niX9sABQOWlimQWd8Jf9C+4uLh/ML5kPPsV5xdEDvyEdmYpuiX5XKeZmtfV2kVettnvjElOBs8xCOZoFzQ41vpa7QBpaG17FLTPJyBySs2mW0P1fHBLlPJgZwgLxDn7+OwQIQ7sDw6eFR0YqKonOnYy6yt8FrZfD+KFByGJxqKp9taszsLh+9bavCE8atv4kATAS3MKE2EIML6ZK6K+JiUAfbTYvVnQwd1u6k6urvrx7+dBk1JVc7GQV8aSoDbFTVHG0cDHxAZF9wR5dLmcpkT2tglOQWuH4xMMlK92mq+2uXwuETFmtFrsj15wPBa0BbTBNAT86EOZBoh5yRQ6GFGEV2kPxXOO2EdgV8j7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,118 +131,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 04, 2025 at 01:12:26AM -0800, Kanchana P Sridhar wrote:
->
-> +/**
-> + * This API provides IAA compress batching functionality for use by swap
-> + * modules.
-> + *
-> + * @ctx:  compression ctx for the requested IAA mode (fixed/dynamic).
-> + * @parent_req: The "parent" iaa_req that contains SG lists for the batch's
-> + *              inputs and outputs.
-> + * @unit_size: The unit size to apply to @parent_req->slen to get the number of
-> + *             scatterlists it contains.
-> + *
-> + * The caller should check the individual sg->lengths in the @parent_req for
-> + * errors, including incompressible page errors.
-> + *
-> + * Returns 0 if all compress requests in the batch complete successfully,
-> + * -EINVAL otherwise.
-> + */
-> +static int iaa_comp_acompress_batch(
-> +	struct iaa_compression_ctx *ctx,
-> +	struct iaa_req *parent_req,
-> +	unsigned int unit_size)
-> +{
-> +	struct iaa_batch_ctx *cpu_ctx = raw_cpu_ptr(iaa_batch_ctx);
-> +	int nr_reqs = parent_req->slen / unit_size;
-> +	int errors[IAA_CRYPTO_MAX_BATCH_SIZE];
-> +	int *dlens[IAA_CRYPTO_MAX_BATCH_SIZE];
-> +	bool compressions_done = false;
-> +	struct sg_page_iter sgiter;
-> +	struct scatterlist *sg;
-> +	struct iaa_req **reqs;
-> +	int i, err = 0;
-> +
-> +	mutex_lock(&cpu_ctx->mutex);
-> +
-> +	reqs = cpu_ctx->reqs;
-> +
-> +	__sg_page_iter_start(&sgiter, parent_req->src, nr_reqs,
-> +			     parent_req->src->offset/unit_size);
-> +
-> +	for (i = 0; i < nr_reqs; ++i, ++sgiter.sg_pgoffset) {
-> +		sg_set_page(reqs[i]->src, sg_page_iter_page(&sgiter), PAGE_SIZE, 0);
-> +		reqs[i]->slen = PAGE_SIZE;
-> +	}
-> +
-> +	for_each_sg(parent_req->dst, sg, nr_reqs, i) {
-> +		sg->length = PAGE_SIZE;
-> +		dlens[i] = &sg->length;
-> +		reqs[i]->dst = sg;
-> +		reqs[i]->dlen = PAGE_SIZE;
-> +	}
-> +
-> +	iaa_set_req_poll(reqs, nr_reqs, true);
-> +
-> +	/*
-> +	 * Prepare and submit the batch of iaa_reqs to IAA. IAA will process
-> +	 * these compress jobs in parallel.
-> +	 */
-> +	for (i = 0; i < nr_reqs; ++i) {
-> +		errors[i] = iaa_comp_acompress(ctx, reqs[i]);
-> +
-> +		if (likely(errors[i] == -EINPROGRESS)) {
-> +			errors[i] = -EAGAIN;
-> +		} else if (unlikely(errors[i])) {
-> +			*dlens[i] = errors[i];
-> +			err = -EINVAL;
-> +		} else {
-> +			*dlens[i] = reqs[i]->dlen;
-> +		}
-> +	}
-> +
-> +	/*
-> +	 * Asynchronously poll for and process IAA compress job completions.
-> +	 */
-> +	while (!compressions_done) {
-> +		compressions_done = true;
-> +
-> +		for (i = 0; i < nr_reqs; ++i) {
-> +			/*
-> +			 * Skip, if the compression has already completed
-> +			 * successfully or with an error.
-> +			 */
-> +			if (errors[i] != -EAGAIN)
-> +				continue;
-> +
-> +			errors[i] = iaa_comp_poll(ctx, reqs[i]);
-> +
-> +			if (errors[i]) {
-> +				if (likely(errors[i] == -EAGAIN)) {
-> +					compressions_done = false;
-> +				} else {
-> +					*dlens[i] = errors[i];
-> +					err = -EINVAL;
-> +				}
-> +			} else {
-> +				*dlens[i] = reqs[i]->dlen;
-> +			}
-> +		}
-> +	}
+Move cma_sysfs counter hooks from cma_sysfs.c to inline functions in
+cma.h. These one-liner functions are only used once each, but the
+compiler currently can't inline them because they are defined in one
+object and used in another. Letting the compiler inline these
+functions lowers the footprint and runtime cost of the sysfs interface
+to CMA stats even more.
 
-Why is this polling necessary?
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+---
+Applies on top of my previous patch due to a context change, but
+otherwise independent thereof.
 
-The crypto_acomp interface is async, even if the only user that
-you're proposing is synchronous.
+On second thought, we might as well move these functions to cma.c as
+this is the only place where they are called, so it's hard to justify
+why they should be in a header file. Opinions?
 
-IOW the driver shouldn't care about synchronous polling at all.
-Just invoke the callback once all the sub-requests are complete
-and the wait call in zswap will take care of the rest.
+ mm/cma.h       |   20 +++++++++++++++++---
+ mm/cma_sysfs.c |   15 ---------------
+ 2 files changed, 17 insertions(+), 18 deletions(-)
 
-Cheers,
+--- linux-6.17.orig/mm/cma.h
++++ linux-6.17/mm/cma.h
+@@ -81,9 +81,23 @@ static inline unsigned long cma_bitmap_m
+ }
+ 
+ #ifdef CONFIG_SYSFS
+-void cma_sysfs_account_success_pages(struct cma *cma, unsigned long nr_pages);
+-void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages);
+-void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages);
++static inline void cma_sysfs_account_success_pages(struct cma *cma,
++						   unsigned long nr_pages)
++{
++	atomic64_add(nr_pages, &cma->nr_pages_succeeded);
++}
++
++static inline void cma_sysfs_account_fail_pages(struct cma *cma,
++						unsigned long nr_pages)
++{
++	atomic64_add(nr_pages, &cma->nr_pages_failed);
++}
++
++static inline void cma_sysfs_account_release_pages(struct cma *cma,
++						   unsigned long nr_pages)
++{
++	atomic64_add(nr_pages, &cma->nr_pages_released);
++}
+ #else
+ static inline void cma_sysfs_account_success_pages(struct cma *cma,
+ 						   unsigned long nr_pages) {};
+--- linux-6.17.orig/mm/cma_sysfs.c
++++ linux-6.17/mm/cma_sysfs.c
+@@ -14,21 +14,6 @@
+ #define CMA_ATTR_RO(_name) \
+ 	static struct kobj_attribute _name##_attr = __ATTR_RO(_name)
+ 
+-void cma_sysfs_account_success_pages(struct cma *cma, unsigned long nr_pages)
+-{
+-	atomic64_add(nr_pages, &cma->nr_pages_succeeded);
+-}
+-
+-void cma_sysfs_account_fail_pages(struct cma *cma, unsigned long nr_pages)
+-{
+-	atomic64_add(nr_pages, &cma->nr_pages_failed);
+-}
+-
+-void cma_sysfs_account_release_pages(struct cma *cma, unsigned long nr_pages)
+-{
+-	atomic64_add(nr_pages, &cma->nr_pages_released);
+-}
+-
+ static inline struct cma *cma_from_kobj(struct kobject *kobj)
+ {
+ 	return container_of(kobj, struct cma_kobject, kobj)->cma;
+
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Jean Delvare
+SUSE L3 Support
 
