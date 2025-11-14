@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD8BCCEACCC
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 22:39:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F215CCEACFB
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 23:10:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6E288E000A; Fri, 14 Nov 2025 17:39:13 -0500 (EST)
+	id 027748E0009; Fri, 14 Nov 2025 18:10:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1F218E0005; Fri, 14 Nov 2025 17:39:13 -0500 (EST)
+	id EF39C8E0005; Fri, 14 Nov 2025 18:10:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B348B8E000A; Fri, 14 Nov 2025 17:39:13 -0500 (EST)
+	id DBB8A8E0009; Fri, 14 Nov 2025 18:10:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A26DB8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 17:39:13 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 390181A03EF
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 22:39:13 +0000 (UTC)
-X-FDA: 84110679786.07.FB44B19
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C6D8D8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:10:07 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4993413B4C2
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 23:10:07 +0000 (UTC)
+X-FDA: 84110757654.17.CFBB22A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 73A4120005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 22:39:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i8uaM4bq;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf18.hostedemail.com (Postfix) with ESMTP id 861951C0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 23:10:05 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I9KMTt6r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vgupta@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vgupta@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763159951;
+	s=arc-20220608; t=1763161805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oOfjNAlO0nvilpPyayqmAIFebVDoMM6ym2Gp5aDA3rY=;
-	b=ahTURL6V7vNIKUMW0B1LDyv27ZMyPAw2r0HVbRXBIXlLoW3W81JupPQAXDdKGo/G9S01ka
-	OB5IjKcM7HgRk/F3/K0jgKBeBn+spCF9aaXIYIrOLWUzmdIDWINTDNfP1ltTCMGAlw70oY
-	GqjOHn0a05lfnHgng3fXua5QqYEYEaA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763159951; a=rsa-sha256;
+	bh=Cle4/vff5SB1IWD4HNItwK0bPh/1KZ1BFPh6rOzhPmI=;
+	b=kDWKIfxdJeVwjFZHZ4dRDRe8QGrKElDDZVfXcln7P3n0EC0Hy1ISc5tmgcruJsj2/IOIkm
+	46A2e9KCEsSsGod103i4sOZt1RZNzx+pFLpw5I8u/xJZWKS9LHWBR8eNPVlMZ/yCWhrvXC
+	Qwih5KUbmUE1PAmV71QXHrJZSrkXPc0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763161805; a=rsa-sha256;
 	cv=none;
-	b=0tey+aVqi43eOrxWQGjnq18ej4PHhk6oeac0WQtvFVKrz5a/0xtor4Hov9F9c60dsH7zQK
-	RMFEsRnoisb9ZWJ1/7Dptudq3lFgFMP44AeqprXOHIGsCEVAVRPpJHY3INzemlm0AluVSe
-	1EuQBXZ3zItE0goE9uF1E9DZ2Go8YlI=
+	b=aq+Ao+e8NmSj+lwmul51lMgUX03Ap5oLgGWxFCYe80JHkYerB6MUo9fgIoY86WsYO1KvWi
+	Go47QTxE1zH0S6X/J7KP3vBnjStI5FumGL+ZYSyAGsnNWVdkUDFM7EGb9l8trqY3ICcK67
+	rM0lVKTotTTcGV+sTcO7eL2cSTdJB7U=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i8uaM4bq;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I9KMTt6r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vgupta@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vgupta@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91FEA60192;
-	Fri, 14 Nov 2025 22:39:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF69C4CEF5;
-	Fri, 14 Nov 2025 22:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763159950;
-	bh=MYESjMwsofYhqqquOVfZchs52Vx8aKwvtmP2Lmh5LHE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i8uaM4bqM/bAoszT1IjaRnvMQKaHJOAf2cjkjEQMgfdFGodOKmrvYIXQ72E7IljE2
-	 wMLOmULdxSobtPEPSgdfYKeEuuC2Hw7V/uPUKlTFV0IvsQICMERyNtvFwZHby9fF+p
-	 B/R2us7EVhMEVKTjjFgmroiAhM5yIjim9sXODTgc=
-Date: Fri, 14 Nov 2025 14:39:09 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Carlos Llamas
- <cmllamas@google.com>, Peter Xu <peterx@redhat.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Ujwal Kundur
- <ujwal.kundur@gmail.com>, Brendan Jackman <jackmanb@google.com>,
- kernel-team@android.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, "open list:MEMORY MANAGEMENT - USERFAULTFD"
- <linux-mm@kvack.org>, "open list:KERNEL SELFTEST FRAMEWORK"
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
-Message-Id: <20251114143909.14ecee31b88f179bc2858e30@linux-foundation.org>
-In-Reply-To: <9d30836b-9ddb-4432-aa39-85e32c2ea645@kernel.org>
-References: <20251113034623.3127012-1-cmllamas@google.com>
-	<e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
-	<4a60a703-d9c2-46a8-83b4-a7ecff7f6ba2@lucifer.local>
-	<aRXyxWeh81-aTHaC@google.com>
-	<b4291d0d-b913-4e61-9f9d-fbebd1eb4720@lucifer.local>
-	<20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
-	<9d30836b-9ddb-4432-aa39-85e32c2ea645@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by tor.source.kernel.org (Postfix) with ESMTP id ED0676022B;
+	Fri, 14 Nov 2025 23:10:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FC2C4CEF5;
+	Fri, 14 Nov 2025 23:10:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763161804;
+	bh=Cle4/vff5SB1IWD4HNItwK0bPh/1KZ1BFPh6rOzhPmI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=I9KMTt6rN59cZwQZpJIKV4NcU+T4pQVdUxYGYDSFDoq7S5hRKvRZDbqdzueDrp/2D
+	 QnsIdVuF0CyJUp98esb2rOB3xt20JSx5c0+UvujPCDuRpfeGcXI4HLpJG9QHtg9Hha
+	 kvbE3L7wMltT6S63DUUofMNuw3uQxX+UwDdNoZOH/px2oXTMrbWdSHaAhdoc/5tUux
+	 m9uiBlPSPcXa5xCffROA/hh7TIjTSNpmFmGOwzAgLGNXGj1zG9v9zbpOnBca44bXoP
+	 ByQEpbj+AReGYeuDeLb3RpcJj2vRBfaG0zsHCZKGPdmCjpiMthlrU5NxNtxLBPuNxp
+	 AiwGco9rLD9GA==
+Message-ID: <4e120357-6fa3-436a-8474-b07b473381b6@kernel.org>
+Date: Fri, 14 Nov 2025 15:10:02 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] arc: mm: enable MMU_GATHER_RCU_TABLE_FREE
+To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
+ akpm@linux-foundation.org, david@redhat.com, ioworker0@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, Vineet Gupta <vgupta@kernel.org>
+References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
+ <6a4192f5cef3049f123f08cb04ef5cd0179c3281.1763117269.git.zhengqi.arch@bytedance.com>
+ <5199c367-aabb-43e7-951e-452657dcdddc@linux.dev>
+From: Vineet Gupta <vgupta@kernel.org>
+Content-Language: en-US
+In-Reply-To: <5199c367-aabb-43e7-951e-452657dcdddc@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jbuqjxiotmjbh5xkom7xgw7rpzsmghzs
+X-Stat-Signature: 3uwx3udijp5jzzb8acgdcjwhszuo39ff
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73A4120005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763159951-627398
-X-HE-Meta: U2FsdGVkX19Ro6jNwfgl+IdJKYc5uBxdQuCfho0M6E30d+GnAOnQLbN1ynTcHkEwNAvTDYU4aAYlGFJ86BSST/2CRjrcKUaM2Px3inxc/8KQbUcVq3sQH4jYe2Jg7EK2Ws0PxdMVrYA1LeE45sZGAhX9j8Gge3amSGTn5ddKMYI6NC+RicAX27OzJmIwtXrQ1gax6wcc6eELnRSbzy5Kzctx4KlkWFeb/tvP0mcxo2kKRCR3L1yNtSYw1LySoqlj4TlaYXCohwxwfqvDw8Xi0DSNTJO+6Pm9HlRMLfOEru41LkpoQL1fpty1N9ly4fdnhQJ3vkw3yj9ZO1AkdSBJ3uXZZ5eAEmCL2ta8dbT0R5kno2uLK0kHpF26w2VuBtJACoNY0AVcWYUaK6mWrcFRPr83ABQOPbtu6ilc2dd89dIbosGjZkZa2k4FZFa7wypMBRPP48sJQMcABXPy8L3hAx6m/5tiSQ3v+VUAsCQojSkihc+LG0ZbfkV5z+S/DfEkjVxP0ehlACJ/LxEGTvRAugiHjhTGOZO5EH2HXM5lfMqfOIN2OZ/hErjcuwJoxDz0O4vkVy0V7V4EZg26WDXFmcffk0VfOzd1m9ETmJh424mLkqNVbAH7wuytDWKVzB49iaBrsivySj9ugl22Ni670ult0F1SxdSuGZmCa+TUQnyWi+ilSlaeRQDtdnqnTcZ/JEf2jc8xl+iB4ycL25pCNwkm1h6Ep8mtHNfsEmiz4X0RK+Nb0d7/Dw9UEl1pEEnrQvt+0EzqnqN5LMMB5hNN6mvssGfYHwRkKq+/a3fuwv+NiqpXt8JfcQIB9/t5sdX0bmBzTvsjltgwX1894/sPLP2KyvjvyiwGK7OMBh+lg1oZ6Txh8yfYzGFgomDRQmbuOwkweE9yAv0WDPKVbx6bpfje/gMpdmvh3tMox+5ntEqh3hz8HF7aDrWkKpbsu/PLgI9y1SAhk28DC6BpjZ4
- DIGtd5cU
- u7JMkMB53MkdxC/lOec7poYMUZEWXMlf9HHmb0RS406pHIMm+5beN6rQIt30k2HCzzuPqrui1r+wsXLbZhoUadmRH7ppPW6JZ0llOTfImlZjtiETXbVeam6O47WjUMLkvpcmFpcjBFxX0ur5gtEwf7rG/d7t8OR5GAYK5jBkNI2lJ8VDqfzaR+1IKkXXbWlYnGIKF9RywniTgeUM9CvHQTnEk2rYfEoZjlCHQf6bKFmX+nqkwYuRieriopdRNgr8CS9GoxYOesRGaw/BCaHAD4qEctm0Ex1onAxqLD+VftYqGhh6vYUKyBIN320bES+Fv2C5O353yMRG9P9VFc3vx3YDVnw==
+X-Rspamd-Queue-Id: 861951C0002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763161805-27551
+X-HE-Meta: U2FsdGVkX19pqQCV+MR2yt5yDXyE4c7lfYveBhnDrQ6m6YX69jK3bfglYRObnA1VZqXvvOCyTQwAqGODEsZ4khN/0JtiXA2NBaVo17m0G6hguqH6rJkpZOmS7ipMgLgNvtwT+nrkZkmFT3BZC6rLpiqvIu1U5LahnsXNBdsRRnwUqY8ui43hIIycJxzX0L4cBGoqRaZTSCp4coKOgOBBRIyhR3vjIn2Odj7wfbOjhMbxyK8JoLHm5//9ubK/pIuJLCa/F2/oqvjjRdNYi4xGvHzYf/YhH+fPOwXDXKTEerR+XNBFRbR3YHHFni3VJEljZzkWv1MCjQODxX5hSy8+Lu/0ByoJw/eMu7jHs5rOVzQ4fkaCodQ+SOzu9nyuykn8kcT/smC4+qekPU3IrgVVZmq0ApQCTsBAbUZQW3YwgErCUW7Og0ainnsbqVdIxaO67I8LBh4W7se1eAUiUhbIgcZ22D6A+PrSB4dWICQYtRQQf0Id81cq0/ProCW0cJh7tyWMX9OMdMcDmPoSrRtnGReuvuxq6DFUjv1bfF1vj5ONkN5fYloAXMXqRUnH4BntyMaOisHCGSChvJy5LbIxmnmTRL6aB7oegklhe6DD7f345wvW0sKq8eeCrEeKeFT0M5yJiqI5oaf3iGYfcM7M3bT2Ue9RNCol0Gr8KRTYKJEGQigm9/O7pSOqlIr/5wk5HDp7MYbYkkJOYKuh8OyxdVI2e5SE5Je4kNoVXhQz2FVjlYWOOKCI0Gth7tKiBoCy5+CQ5iQbwdkpjvnfQWz8L2xHC6NR17wzY1/kVzw3hbkJB3ecv3PQ4C7U2a0SI2ghxG+C4oc8OmsBOF6IvIE5pJwANC+SLKrHq/pfP6DeXJKU+xrK+FnO/984UId33XMXnXWbcN2ptZCb7qlGo2MoL17HHngF+qVP1xjcJwBfqvhMIIb1+uUUTbqaTuH1rsdRFyh7LcAgVc3Lqg/9Ath
+ ypnt+iGY
+ WxiqK00nrfiP+LqeqMtO93xbOUdlgEo4hJvyYmiFto9O0hHQMx2rZVwxnxYAbs8hqjVjZzrQMA+wfzw8JUBMo+CQ7n+/Q5dtpYWX07ldt9NfDrVKXqKgr0ObSYNfcyDKy+y7XoFNJa10lrTRGq+Hrctg7SwLv3BK4rWHVg/lO5XnJqHcMDu3+ZhJdoQFJpm5qXU+pTqZtc1B2BON5+EBwdPUBhPnlbD/CxeYLjO6rgVnqfq12mDPyq4jX3Srnmh3LiN4fGUvUOW0sXeLVR3x/EX8xO2c5IF7FgqFmBnjlbLVTDdNJP5PonBnpvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,28 +101,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 14 Nov 2025 09:11:40 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+On 11/14/25 03:20, Qi Zheng wrote:
+> Strangely, it seems that only ARC does not define CONFIG_64BIT?
+>
+> Does the ARC architecture support 64-bit? Did I miss something?
 
-> >>> Oops, I keep getting confused about this Cc stable thing. Please let me
-> >>> know if a v2 dropping the tag is needed.
-> >>
-> >> No need, Andrew should spot the objection and drop the tag :)
-> > 
-> > I actually add cc:stable tags to selftests fixes!
-> > 
-> > Because why not.  Why leave people running known-to-be-buggy code when
-> > our backporting processes are so well-functioning and lightweight?
-> > 
-> > I'm not getting the objection?
-> 
-> I thought we were so inconsistent on that that it ends up being a wasted 
-> effort to even try taking care about stability of selfests in stable trees.
+ARC is 32-bit only !
 
-Oh,  I try to be vigilant about it.
-
-hp2:/usr/src/mm> git log tools/testing/selftests/mm | grep stable@|wc
-     44      89    1462
-
-I pass selftests patches through the same brain algorithm as
-I do everything else, shrug.
+-Vineet
 
