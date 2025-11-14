@@ -4,100 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C898CDE014
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 06:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6DCFCDE019
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 07:30:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035258E0008; Fri, 14 Nov 2025 01:47:05 -0500 (EST)
+	id BC6598E0003; Fri, 14 Nov 2025 02:30:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F27F48E0002; Fri, 14 Nov 2025 01:47:04 -0500 (EST)
+	id B76668E0002; Fri, 14 Nov 2025 02:30:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3E158E0008; Fri, 14 Nov 2025 01:47:04 -0500 (EST)
+	id A8C8E8E0003; Fri, 14 Nov 2025 02:30:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E268E0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 01:47:04 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F1AD1DFFB6
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:47:04 +0000 (UTC)
-X-FDA: 84108280368.11.BB38A4D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 48AE91A0002
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 06:47:02 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=V2TGOG28;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 96ECB8E0002
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 02:30:21 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3DCDD1A02DA
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:30:21 +0000 (UTC)
+X-FDA: 84108389442.25.BE7935A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9B050140006
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 07:30:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dall0xEi;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763102822;
+	s=arc-20220608; t=1763105419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IIOh4maN6KyDGD/hBZLhDdgRlrx5uNeZxSMbOp4/1Ok=;
-	b=ib0nuw5bUr4WUFZ+nFA/HsKX23jscsOnsckv4nVdzu+yPsUpd5s8HQgxq9T6EqI9TIIjFc
-	GFG/MDK6sb0njMlFqJxo4Ux7L6mtvq+/ceRUyXaTMNjN4NyHMKL6e6lJLV9OiaKvkCHyHu
-	bl0fhXIy/OaJuzxtldyav2NoRH0V0v0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=V2TGOG28;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763102822; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jETUsrNOtIYAIHLU5+yC9wox6nnk6e6+1rYc5xFt4DE=;
+	b=LbWMM3xotoHS+Q23vIT8NdAOMuaZwjkvdP7vblPIVCHL38N/yIPy7GyQsXmMFhWv0PKbR/
+	MlpibxVWjx7Q0DhDJDx87vk9vP9m86Z3FY5n0BCqxOAp5yGtSZcf4PZFVBFKbSlF39InU0
+	v4fswcz8L0/0xQuOVkTqmM0KjSaFJ94=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763105419; a=rsa-sha256;
 	cv=none;
-	b=tkwo4xbn0VXMe7xO269kXax8ZYFxOYh90ulqNBjL8V1Aud2vvH/Y/fLtSmGVCMF2xpTsG0
-	yI55ShyBsRoKbB3k0tJ9r/ME7Z8lNBFuHNvP3+6HkA5xvAsT7blcU2M5IY8z68ZgSvL8Yi
-	ILHY1MZ8ZpU2AzMEl06O/J5Sr/Xh2vg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763102823; x=1794638823;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=c63TyLXwQfY+sk3K1HPrm/PP9kevMhREC0lGp84f11I=;
-  b=V2TGOG28yOP4os3XY+jNZEQKWrmgjFjpgL1jCVGVHnnLQIdh+ueqkuAi
-   yIy8u9WF331b2/QYi7xSGeHwcviEZD5+rwZZnq9yB7ejFPxb0rOT2XD7A
-   HfDa9myHOkUXZ8Xhc3eH53rG44aBFHFWbCCWvFl/UHWQcP6Z4T1uRG2Dd
-   ffuXuh5CYpnP4ITFF5+LJ9V3UUkVE7dtZqsHxfovoqtgIzyV/Pii0FfPb
-   tIof6AZHtr4sRoTbqWRM6kGJXmhixhf7FTd5n48PIpIYnQ+8ws/ZHbCc1
-   loMUvJ95uD7lm3tBwOnNsZkrRKT1TQ+h4GiGEthBVwLE3zqus+9/4YP3A
-   A==;
-X-CSE-ConnectionGUID: vHopFzuSRYW1ONKDDUJj9Q==
-X-CSE-MsgGUID: rYF6RfCYTfaKaQO8J5L02g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="64400137"
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
-   d="scan'208";a="64400137"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 22:47:01 -0800
-X-CSE-ConnectionGUID: WqtCRE61R5m5ri9oFThYRQ==
-X-CSE-MsgGUID: 4GiGKfxxRvGpKJkyaAKSTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
-   d="scan'208";a="220359548"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 13 Nov 2025 22:46:59 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJnaD-0006FB-0j;
-	Fri, 14 Nov 2025 06:46:57 +0000
-Date: Fri, 14 Nov 2025 14:46:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-unstable 36/283] mm/hugetlb.c:4753:18: warning: implicit
- conversion from 'unsigned long long' to 'unsigned long' changes value from
- 17179869184 to 0
-Message-ID: <202511141140.LrrRrtIv-lkp@intel.com>
+	b=vGacdqCQtFluhFR22OIi0FafscuIml+XQ02+t7vpt80hKr+pTbRyFZ9jwopELU6EBVVPR5
+	bfiXsxzWcUzu9NuZQ4C7olJCPtQPDbhz/gY0vMD+pCzKlGT7c/3nRWMk4XIfNFgpRmQs5L
+	QYOwApnq1PatI9DXdFFCsvBzywckvj0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dall0xEi;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6BFE341B1D;
+	Fri, 14 Nov 2025 07:30:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD36C4CEF8;
+	Fri, 14 Nov 2025 07:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763105418;
+	bh=ofHq5p9Z3RmRzcDHoqIGOqiKwshUcCL3Eo8rh8N1eow=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dall0xEicEsJMWwgN246NGUG4Wt2t1VsFM3lAbgskABkVYqL1yPKR9ohMLRjTEbgl
+	 tOnE84T+jml7UGQaiA6+qdmCUCBW9t5lNIranNvkvTLuIH65oNGHt51yDu0lqkJVS6
+	 kN34kkvGuzaxDIws+ZwdwOBVQuvj55/E/6rDCUx+nKohXQi2+qcJhgLpcbfho1Ep8r
+	 cPQC7bj+ktc8Kt5wWtbCy2LZiKLVapRNbbTcZBxCyTmocKbHflDyxR/OTFgHkqadeo
+	 NkwzniLBj861/jzwgronYdq5Eh6kVGynd+ps9lYO3/EpVYIg13iY8xZbYtIeR+pNXA
+	 z78J7/QWR2USg==
+Date: Fri, 14 Nov 2025 09:30:11 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, graf@amazon.com, pratyush@kernel.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] liveupdate: kho: Enable KHO by default
+Message-ID: <aRbag7qR9OVNAQXN@kernel.org>
+References: <20251110180715.602807-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 48AE91A0002
-X-Stat-Signature: pniqi39t67x9ahhcgp6uzri8pq1qfktk
-X-Rspamd-Server: rspam02
+In-Reply-To: <20251110180715.602807-1-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9B050140006
+X-Stat-Signature: xjzryy87bmzpopj5b9zuxu38nqdgoziq
 X-Rspam-User: 
-X-HE-Tag: 1763102822-548423
-X-HE-Meta: U2FsdGVkX1/e5mywqRelMEcxy5OtdK0K4gB/eUscQebIOYN4AoSjSB6SGeic1sxhurkyYq+Bp1d3k6pAKzwfHAUj6t2QEVK977nqrELhDzrotKWyqGFlTO8x7PcEP14lWw1B0dGwdZHyGgMqURaXjarmJ5jSes4nk0MY9FRRa3LafTPB3fVAI+nnG1dnbCYrpfmvEH5untXb4fKnrzBbDrGrRI6tl6asvhhstd0/xcOZVuDDRpqB4HHcwH/XFNmKEC0hdidAc5Z9NeSHkxtOeCd/FlI8hka58YKdViDRc8Lxl9GeY6sNr6eSZc+YyLFkvTTaDP4ozDxQL7xize4HtysqiWs3z7U3I+iHWC5gLasB7PVfulFpr8wmZ+Eqq+rqeuVrCviZqCS0IaJrJIVSNqM0sQ9MCG39R8zbGxFcEVh6DfiInRyxqQ1HD5hq1XqhArP4gJGc2oGAtqf3ivegjJNm4s/3IKskaHqBDUyAoPrlnLTq7Pfi1QAyFGi38rqppOtFd5YnrWIBX3DiClZWEyvxuUHwYCP9FneGg97WH1Zc2tZNxKxdCOJlObQ9tMFp1mE0D5NJ4L1Fg3qQJG770BFWdnwNbFl9ZgHG76SsrsGpGFfYZcjibgf7fELaLiz3tpQYk29IC69QNbNHU41ZfrFgUkUnfcti2Ey6p52OvP0Q/LYul5MBazvFfvLNN3NJVRU0ntiSn+Cpwlx9DiQ0OQ/bUwLn6/DWeL1vow+i/OvLlUlKmGcg/5RLv9hwecIJO6R7KmWqu37wnyN+mJS2gBpQZmNiINmcolcG1VjvafMEICX6HDsk4ixPgUEXkasBH/S4YM7wPwn5E1EfBz65z/Dh1B4bAufEd89Rnzqlfzs5+4uOd0kOv2PJ3x3Ud5SiA7k1BX5p8xCGWguTONGn8cV4C6YUqF0yKqKytKiXmxqc0uZrSvd9kTzaD9v2A9XtpMuckcw/rZCK5n3Pb5e
- Xw5gMmoU
- XiFjoJ3wsSvYOUlrNOwpxpetth5T0d4LIfOcWoQI56Qp5eBrBkj8A5mdL/QFHKjVh8ul81Y8ckLgvE7auIWUMnCf4ZEppxGM3qFjbmhJTMusVF8MQoOZDPm+aHJFMxKNvi3Pw+Rh0+euw8qdWBdAWt9A+uAcPMAYjYwzcq0+E2iPoHJTqGNjNSafPbCcvm83fjzTBDazzPqfBA4VieeaVc0suxLD7Tzar0Al5O6JSoVayXPTe7ervEfL7VnxQSJferDzuocLWFs/kOzCQGz+l+wwuGu/2/3LtVkO5cPJWRIn5nmtvlykNJOuN2LL0jCp/ZJVGaXBFHKeaNimdOq/1jTeyULUGv8pawRp7cgzwqgr1NM/S5zkq+YVX6cih7QUdXRyiIncYIE6DXwENjfk+vB8gx9hRSEp2/bQfBNTN3sdpxXl+oHs2wu8ZXNv4j8sA7ns2
+X-HE-Tag: 1763105419-6004
+X-HE-Meta: U2FsdGVkX19R+LVVFCE6a7HdOnS8eVETPUruPSnr/p/r1mcBb29DdqcGvBPd0PL9ORmbpgmAWU/fd2MP5wZo+qxBLRN3Y0/GiHlGJ7AQn7+jcxpZfp7MP31qpiXv0kVXG+WBwBmjzz4k54Uq0L4quCc0bY4Cwmk67O8QR/46dviQZlNSRDKGaC8HSZie29/GZcnDBFbl/N1rTmUrerk4ld7Y6qU2VXjqvogNVIXNetD6RHuGsh+mEjc/o6GfamI83h0inB0bzMeiAul3KTZrA9i9yNzKHr3Ews8CdMKK//lpJ4CWceLj31J8+BnFZNn8PQfaCeczr2tdAley40BAM9ZzMuCslZ/FrdPqCosvIKbzXb66kOWrZ2CM0wXZPjtJAbnA0mp9zPv3zakkLgY8usdaKLUSKsVCtxkZaVCPfQwviH1VekU18QN6vJBq+88M5/6pd2d2q844d7LC3gFK4w/VQ3QmJrTL+2BTNrZUzPbvoJ9ndcw9G9FvTs87bVcw/nf8zMbL7wzDrEXGIZwFPbs0dvMPu88UkE5CA8+3vZPgfx7S/w1gU4IDsvVa45erobs5w8llLFYrfdW1sycLlLH1q2Etu3qTYOne312F5e0DR8k4iqsKb3j87PndRF7vvOLdiZV5VaNBLYjsSGLkLM8HaJqtQslL11YMVD9OaRyFlsxF/9zYxPM1Syfg4RZBz6vXySbwel1xIFGyCBX9uC0ijKaHACnWzuI0Spnmx6HanXq8QyQup3xdBuGbvqlxVkoYTG/XfAgAZWi2gh4P0sk62KX4+tURTgk5RecENXX/grTgMs3epYg1XjN733H5+8DoZvyiUfnOkUaUeqfwHVP8ZZ1ERGGikbRrNXH1HLvKzaC3txb2rOj+XfEJKCeVaVZODsU8JdhFVRGgnwHftv4afhCb+MtQyZ1XICWl46xKmfxueVUq3Oe4SxuF1m1wsLNKgBpZ6iaslJLIFnO
+ vEVaSVJc
+ 45DdY3/uiwYVyUlsDrE8D4x4fkq7iV8MTOOGK68JNpvi8r6AgPXZi1WFnDQiQcX67w6xtpGbAl42VerXhLwfyvFa4wE6qdDV8MLEqs2PTw+2x/VaYD/Nqvwqaq3K2CAjCgQxfKWbUBp9UV+lu9fDjE1znbsblJeBwRbcOkARZmEmoDH3nqgDo2EXBrilpDXme9I8dIUyjMQ9Jl8Ifkrjn/qwcZXubMtmLKJ48+2yTlNhf28TiRFDoTtzuVdZqp9C1PBQg6n0/i8BN/UG0vai6CcnxEgXJD+3ocvYQHwc/Ot3N7Ji2STIE9c/NzXTImwZRKHGKcM7PMH4Xf3tuIdEUMcKsfg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,125 +92,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   1c571d1c4c7e042c3c313d1a2058a17848ccebac
-commit: 2f6ff71280ffddb27ad7174d24f573e2683870cd [36/283] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-config: powerpc-randconfig-002-20251114 (https://download.01.org/0day-ci/archive/20251114/202511141140.LrrRrtIv-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 0bba1e76581bad04e7d7f09f5115ae5e2989e0d9)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511141140.LrrRrtIv-lkp@intel.com/reproduce)
+On Mon, Nov 10, 2025 at 01:07:15PM -0500, Pasha Tatashin wrote:
+> Upcoming LUO requires KHO for its operations, the requirement to place
+> both KHO=on and liveupdate=on becomes redundant. Set KHO to be enabled
+> by default.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511141140.LrrRrtIv-lkp@intel.com/
+I though more about this and it seems too much of a change. kho=1 enables
+scratch areas and that significantly changes how free pages are distributed
+in the free lists.
 
-All warnings (new ones prefixed by >>):
+Let's go with a Kconfig option we discussed of-list:
+(this is on top of the current mmotm/mm-nonmm-unstable)
 
->> mm/hugetlb.c:4753:18: warning: implicit conversion from 'unsigned long long' to 'unsigned long' changes value from 17179869184 to 0 [-Wconstant-conversion]
-    4753 |         WARN_ON(order > MAX_FOLIO_ORDER);
-         |                         ^~~~~~~~~~~~~~~
-   include/linux/mm.h:2095:36: note: expanded from macro 'MAX_FOLIO_ORDER'
-    2095 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
-         |                                 ~~~~~~~~~ ^~~~~~
-   include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
-      56 | #define SZ_16G                          _AC(0x400000000, ULL)
-         |                                         ^~~~~~~~~~~~~~~~~~~~~
-   include/uapi/linux/const.h:21:18: note: expanded from macro '_AC'
-      21 | #define _AC(X,Y)        __AC(X,Y)
-         |                         ^~~~~~~~~
-   include/uapi/linux/const.h:20:20: note: expanded from macro '__AC'
-      20 | #define __AC(X,Y)       (X##Y)
-         |                          ^~~~
-   <scratch space>:85:1: note: expanded from here
-      85 | 0x400000000ULL
-         | ^~~~~~~~~~~~~~
-   include/asm-generic/bug.h:123:25: note: expanded from macro 'WARN_ON'
-     123 |         int __ret_warn_on = !!(condition);                              \
-         |                                ^~~~~~~~~
-   1 warning generated.
---
->> mm/page_alloc.c:6910:54: warning: implicit conversion from 'unsigned long long' to 'unsigned long' changes value from 17179869184 to 0 [-Wconstant-conversion]
-    6910 |         if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
-         |                                                             ^~~~~~~~~~~~~~~
-   include/linux/mm.h:2095:36: note: expanded from macro 'MAX_FOLIO_ORDER'
-    2095 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
-         |                                 ~~~~~~~~~ ^~~~~~
-   include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
-      56 | #define SZ_16G                          _AC(0x400000000, ULL)
-         |                                         ^~~~~~~~~~~~~~~~~~~~~
-   include/uapi/linux/const.h:21:18: note: expanded from macro '_AC'
-      21 | #define _AC(X,Y)        __AC(X,Y)
-         |                         ^~~~~~~~~
-   include/uapi/linux/const.h:20:20: note: expanded from macro '__AC'
-      20 | #define __AC(X,Y)       (X##Y)
-         |                          ^~~~
-   <scratch space>:106:1: note: expanded from here
-     106 | 0x400000000ULL
-         | ^~~~~~~~~~~~~~
-   include/asm-generic/bug.h:111:25: note: expanded from macro 'WARN_ON_ONCE'
-     111 |         int __ret_warn_on = !!(condition);                      \
-         |                                ^~~~~~~~~
-   1 warning generated.
---
->> mm/util.c:1263:16: warning: implicit conversion from 'unsigned long long' to 'unsigned long' changes value from 17179869184 to 0 [-Wconstant-conversion]
-    1263 |         if (ps->idx < MAX_FOLIO_NR_PAGES) {
-         |                       ^~~~~~~~~~~~~~~~~~
-   include/linux/mm.h:2104:36: note: expanded from macro 'MAX_FOLIO_NR_PAGES'
-    2104 | #define MAX_FOLIO_NR_PAGES      (1UL << MAX_FOLIO_ORDER)
-         |                                         ^~~~~~~~~~~~~~~
-   include/linux/mm.h:2095:36: note: expanded from macro 'MAX_FOLIO_ORDER'
-    2095 | #define MAX_FOLIO_ORDER         get_order(SZ_16G)
-         |                                 ~~~~~~~~~ ^~~~~~
-   include/linux/sizes.h:56:19: note: expanded from macro 'SZ_16G'
-      56 | #define SZ_16G                          _AC(0x400000000, ULL)
-         |                                         ^~~~~~~~~~~~~~~~~~~~~
-   include/uapi/linux/const.h:21:18: note: expanded from macro '_AC'
-      21 | #define _AC(X,Y)        __AC(X,Y)
-         |                         ^~~~~~~~~
-   include/uapi/linux/const.h:20:20: note: expanded from macro '__AC'
-      20 | #define __AC(X,Y)       (X##Y)
-         |                          ^~~~
-   <scratch space>:39:1: note: expanded from here
-      39 | 0x400000000ULL
-         | ^~~~~~~~~~~~~~
-   1 warning generated.
+From 823299d80aa4f7c16ef6cfd798a19e1dfe1a91ab Mon Sep 17 00:00:00 2001
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 14 Nov 2025 09:27:47 +0200
+Subject: [PATCH] kho: Allow KHO to be enabled by default
 
+Upcoming LUO requires KHO for its operations, the requirement to place
+both KHO=on and liveupdate=on becomes reduntant. Let's allow KHO to be
+enabled by default, and CONFIG_LIVEUPDATE can select this CONFIG.
 
-vim +4753 mm/hugetlb.c
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ kernel/liveupdate/Kconfig          | 8 ++++++++
+ kernel/liveupdate/kexec_handover.c | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-9fee021d15ddd8 Vaishali Thakkar     2016-05-19  4742  
-d00181b96eb86c Kirill A. Shutemov   2015-11-06  4743  void __init hugetlb_add_hstate(unsigned int order)
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4744  {
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4745  	struct hstate *h;
-8faa8b077b2cdc Andi Kleen           2008-07-23  4746  	unsigned long i;
-8faa8b077b2cdc Andi Kleen           2008-07-23  4747  
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4748  	if (size_to_hstate(PAGE_SIZE << order)) {
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4749  		return;
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4750  	}
-47d38344abd0c7 Aneesh Kumar K.V     2012-07-31  4751  	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
-59838b2566f6d0 Frank van der Linden 2023-10-04  4752  	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
-7b4f21f5e0386d David Hildenbrand    2025-09-01 @4753  	WARN_ON(order > MAX_FOLIO_ORDER);
-47d38344abd0c7 Aneesh Kumar K.V     2012-07-31  4754  	h = &hstates[hugetlb_max_hstate++];
-667574e873b5f7 Miaohe Lin           2024-07-12  4755  	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4756  	h->order = order;
-aca78307bfdaf3 Miaohe Lin           2021-02-24  4757  	h->mask = ~(huge_page_size(h) - 1);
-8faa8b077b2cdc Andi Kleen           2008-07-23  4758  	for (i = 0; i < MAX_NUMNODES; ++i)
-8faa8b077b2cdc Andi Kleen           2008-07-23  4759  		INIT_LIST_HEAD(&h->hugepage_freelists[i]);
-0edaecfab218d7 Aneesh Kumar K.V     2012-07-31  4760  	INIT_LIST_HEAD(&h->hugepage_activelist);
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4761  	snprintf(h->name, HSTATE_NAME_LEN, "hugepages-%lukB",
-c2c3a60a857bfe Miaohe Lin           2022-09-01  4762  					huge_page_size(h)/SZ_1K);
-8faa8b077b2cdc Andi Kleen           2008-07-23  4763  
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4764  	parsed_hstate = h;
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4765  }
-a3437870160cf2 Nishanth Aravamudan  2008-07-23  4766  
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index d7344d347f69..25c9a4d7781f 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -63,4 +63,12 @@ config KEXEC_HANDOVER_DEBUGFS
+ 	  Also, enables inspecting the KHO fdt trees with the debugfs binary
+ 	  blobs.
+ 
++config KEXEC_HANDOVER_ENABLE_DEFAULT
++	bool "Enable kexec handover by default"
++	depends on KEXEC_HANDOVER
++	help
++	  Enable the kexec handover by default. It is equivalent of passing
++	  kho=on via kernel parameter, and can be overwritten to off via
++	  kho=off.
++
+ endmenu
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 568cd9fe9aca..23a3df297bb3 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -51,7 +51,7 @@ union kho_page_info {
+ 
+ static_assert(sizeof(union kho_page_info) == sizeof(((struct page *)0)->private));
+ 
+-static bool kho_enable __ro_after_init = true;
++static bool kho_enable __ro_after_init = IS_ENABLED(CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT);
+ 
+ bool kho_is_enabled(void)
+ {
+-- 
+2.50.1
 
-:::::: The code at line 4753 was first introduced by commit
-:::::: 7b4f21f5e0386dfe02c68c009294d8f26e3c1bad mm/hugetlb: check for unreasonable folio sizes when registering hstate
-
-:::::: TO: David Hildenbrand <david@redhat.com>
-:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+ 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sincerely yours,
+Mike.
 
