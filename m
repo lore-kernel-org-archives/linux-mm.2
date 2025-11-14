@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FBCDCE8D6F
-	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 19:00:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B9FCE8D6F
+	for <linux-mm@archiver.kernel.org>; Fri, 14 Nov 2025 19:00:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F56B8E001B; Fri, 14 Nov 2025 14:00:22 -0500 (EST)
+	id 8F9CD8E0026; Fri, 14 Nov 2025 14:00:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A5218E0023; Fri, 14 Nov 2025 14:00:22 -0500 (EST)
+	id 8AC9A8E0023; Fri, 14 Nov 2025 14:00:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06AC68E001B; Fri, 14 Nov 2025 14:00:22 -0500 (EST)
+	id 6DC5E8E0026; Fri, 14 Nov 2025 14:00:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1C618E001B
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 14:00:21 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B389A13B22B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5403E8E0023
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 14:00:23 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 218AF1404D7
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:00:23 +0000 (UTC)
+X-FDA: 84110128326.23.31A0F25
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 41D5210001D
 	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:00:21 +0000 (UTC)
-X-FDA: 84110128242.17.12EB179
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DA3E5100011
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:00:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QbtIEbIx;
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="aIwkw4U/";
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763146819; a=rsa-sha256;
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763146821; a=rsa-sha256;
 	cv=none;
-	b=y20VF+tB49Ss5dzMdMxtf5+cijcF/Z9B9gD8i0uTujxnH9GwKdxHlJdrdTrGadrMrwCQtN
-	PEuDrIWIqGU6qN2W/e63pu9z7EkHSTMTg78CXZytRyc3zA8xCMhCMkClzm2lqtPAkOLEhi
-	Dl8zBpWzNafkWmpa5JMEoSqUxPD4pVw=
+	b=w5fmURmyPhaNIZwP7XF4a5CJ516TlwRgtvUNN+pyCyhrZQG2QVvc3Sb1QT0ueCzZFgW07L
+	isvMETtDJTJj2pivkyoAtZlIK9CmUX2qXKv6KJJq+QI/GfYJNhRbV1Qs2IEi5rOcWPOP9G
+	5cM7EwpIkfqEsy2AzSldJtbD9EmthNo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=QbtIEbIx;
+	imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="aIwkw4U/";
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763146819;
+	s=arc-20220608; t=1763146821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=osro0vvPDoUw7oalQJZ+pquNaUniT3EqRQtsUW/shDY=;
-	b=QJO9Qijyey3977FwIQolxXS3J/sZoVXLBCX1tf8GkemKm5qjTGUyEqPvtltpM9u+mpiJuY
-	X8w6vWaxoJh4x9DJB6kF2+VznofvFXPnN85eK+6Qn33X/tKhgkYX+7pnkirqZOIUmUmvPj
-	JrDQHVQGmfLlnNTDNcJE8J/u7B8WwXI=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-787da30c50fso23588597b3.3
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:00:19 -0800 (PST)
+	bh=ffjFNwR3lXfHPjG3OmQVmnhwINj2hMoShbrtcOYEMn4=;
+	b=Khx1tyMEkcLbIfWIgJ+XagWAeCBZWSJ99nzWDvV94anB626FdkEbTiQ1kGFHgxxlzT+vOd
+	yNgp5hrmqoPY2my0BRZ5HwfVvaA8KYMlwGUAi+ydBir94B+IMV7hWsTUt1d9xRFO6vHiXw
+	bW2flbguDxrQY5bsA6FhuFmN+WjNiLY=
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-640c9c85255so2494968d50.3
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 11:00:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763146819; x=1763751619; darn=kvack.org;
+        d=soleen.com; s=google; t=1763146820; x=1763751620; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=osro0vvPDoUw7oalQJZ+pquNaUniT3EqRQtsUW/shDY=;
-        b=QbtIEbIxvqPomkli/UGYHqlMY0dBNDA0wP4EqrUmfr17rn/U0Dr+OHlqE78ntHXka0
-         T0NHDwLE+iSCsp0iBDJhE9D5VmycxrFG1f6AUwNuwukN3PNqFkIvocFjs2dS4yUeT1tJ
-         Dy2eCyOcejR/7ASrxsRHW6Fy4rImHyv0bTqS+Jpgjh+QIHRScA7RqYxhyMD6VUP8q/mp
-         v67b07HYly7VFHY9+pFlSbOhqZMpZKiZLuJSoSnvVZkKHKJUVdtpOeqxyPO/5+7zPIVG
-         X3j9tI/S0FlhHNNY2raCct4JtwKTC0IOSahpSABV0xvwPhQzZ3v7baZbSYzPdlNhJdcL
-         slSw==
+        bh=ffjFNwR3lXfHPjG3OmQVmnhwINj2hMoShbrtcOYEMn4=;
+        b=aIwkw4U/dXhXVH46xVld5X2PkVXKhoXfF4H0R6b1t0NFEZwIdn3nsCCXtlRilaX2Os
+         Q6p4cC5z68+EQiu52s4zpyIAIJoBE1TZdQ4/mXLj42bTXF/KF071iJShotWJc9rqQkMC
+         hPFWYNELmxFTeqoaVcZe2iNmABP3TT9UPeia4QQns/W8IIVBvTmYuef1DxKPWD8ta1dt
+         LD+E50JqjYPO063skbXBE/rGtz5nwxLW39D/+0XFO61min+XDJn47nUjKGImX95n2Td7
+         OGN9Kym+280gH1a3URpNJh/lOWehMURT50+mq69eljgUYgSAFJTjkw14jKM8xRYBVz47
+         Xy2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763146819; x=1763751619;
+        d=1e100.net; s=20230601; t=1763146820; x=1763751620;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=osro0vvPDoUw7oalQJZ+pquNaUniT3EqRQtsUW/shDY=;
-        b=qrTAa5wOzRF18MWP4u52z8nm22xXE5GqfqNlS+WDW13E+oJTnxop/N8TURuFZDyVWG
-         mdX/Ud/cRA9XxeBl7YebNfImOYDfzFhRPcvHH3zKWWwZfXEOae1AYwtF1Yf3S1S4w2H6
-         iNk9WYmagFpZCBtT5Gs7DeuWXUorMXI/wR15crb+8pi3JF5xp/Uh6gCA9SoRx/K1dtkh
-         7UZZuEn/Xzn/vMNi1iq7RHUPIHOhp3B+u5OXHi46ducFA4EzpnXBq4ruZPvMwMeDfSXo
-         JSZVrJcR3wpNxg85WlRYFKELB081SsYcG3JUTDQBxNrlKmQreLcdVtIUHaVrJfJ2phJG
-         ZUkw==
-X-Forwarded-Encrypted: i=1; AJvYcCWzXToQU4HCHVBf5+6tzvJcwuPUx7YHWByIV/UA5IdXJWds6pNsh68XrwEZS5BJxbrtRTG7b36j6Q==@kvack.org
-X-Gm-Message-State: AOJu0YzHh5ndQb/fllnTcF+kyrDZgRCvg6V0vCgcwkehL3x0LbRhxWFr
-	m0epFunTYmxulDYlcInUHE28uKN3AzZzTD1iio/3sQBV2PG7gqtyk7uEnKGqZgX1FVI=
-X-Gm-Gg: ASbGncsIF/dE4BU48b2WgLSx70rLI6xRSSsLSQ1AY49vF5PJaYvGDDqDMlW+1kkJNdC
-	+G2Wib5xb5NpKNw0LzmWC9qkgUlwpadbFv+m9C9+oTlMjtu2HQb5gZP5Pw0qGNVkTWibnxQTGTz
-	iHwIIKg/l0KMeP3jYolrmPs7nG7k4xlYdPW23QR5WCy6CMsvaVf51D4VRt5URDsxqCWuwZgVEeI
-	GxsZmakg/xgeZglplEZ/y3TXJf8IlqWlEolFeqIKad5HfzK8r9GZOcXJFIz7+JmszTp9pu0kYyY
-	SXMQj3I5jshWAP++Up2coDsjUTRBJYr3kAjuwfe6keHAPK3IfHrdXKrIxv0m7ttZ9VVL9rgHBeB
-	UyujMk7DTbVpbDSvJxf+6Aw8e8mTDUoVMJWa+AbAJBCG5C2UBuCW8tgYsVrdWnGc6+JcyUk2zPZ
-	/nKxxrL4TWkqnlhwETZLkmsLcWKENyTbxZbDA7XKFSbNP5s0tC0NvK3/AECPUKf1JhgJbbKjeXW
-	QQWEYM=
-X-Google-Smtp-Source: AGHT+IGvr9tG1xjF2akJwFSXf2zHKR6TH3Z9kXWzZ9fYjencDngFKKzCA89Ng2VGtn4u+YBqr0oiew==
-X-Received: by 2002:a05:690c:a0aa:20b0:781:64f:2b18 with SMTP id 00721157ae682-78929f0ce7fmr58794497b3.58.1763146818865;
-        Fri, 14 Nov 2025 11:00:18 -0800 (PST)
+        bh=ffjFNwR3lXfHPjG3OmQVmnhwINj2hMoShbrtcOYEMn4=;
+        b=a39xkwxNu2uxL/SbWZV8a9KkQULcJr2yorDTuiGp0JtSZw6Yd7JjcoW+FpMFW10j1k
+         jte2CJnzTw9dsJ/cCKnQeD1tn9+0SzRsVxmIVcfGy+oi6hOczWzmNzgsoJIiidzC4DTH
+         A83oC5gNgmgsCuqZ1VxDl/XPWe1t4+EfIwH36LFXfLVIiGikHk+olJT+xhAiQvjxDFrx
+         W2uX7XzOxFPS/3SFCLYoX3aw1fEDFYY5N/D2yFzDQXZXCCTy1W26kZWukSqhrT9cdCwG
+         j2e2wohTcY3GP828xDdm+kceIVQh0DY9hpjSFDaWg5q8Dcf0qiFOFpCWA+AXu8EXu8La
+         oLLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzTh7d32T+duzwcL9wPtNY78XtoKFnJlY3DtgwuYYI5fnNmysDVvV7JwwStNU8rQkF9rSTHXxwTg==@kvack.org
+X-Gm-Message-State: AOJu0Yy8g9/zDmnz8xhmNikkjwRAVrlm4Z/bC8TwM62Wk0P2+xruCCKb
+	q4F8DUmzBEd8UyctdQhDj1yhD5JjVN0oT4KTDz3XRSr6aAFzOcPuaZA+i4blbETtrAk=
+X-Gm-Gg: ASbGncuZb0ek7bE+vztl+KU4dfVPMXWrW6ctG8gf8jC70eY7OR0NsDHTnPoXgwPr2Lb
+	PqbiQyJo4fQYZRPHiIf5zC3Y3bxXn2ad9mEqyyxd6rcOMcDgkevj1ge/tM9zc5YBxRjKvZZ0XaX
+	mb6rI9t+fR+rypFrZpRQpM4N8iDZX6KhJRyCd67cHdS3mlSTVjr0FwMZciwbqhK9Q9Yz7wBVOLh
+	hhS32vzWzNUxQ+fyrwcRXCiM8KZ//duHgQQnHv2QPyXRGMLxm7V55Gzg3HhpApudlNU4mfTMFJF
+	/6O3OvNy1IMNfJIM/zutZc7kIM4ve8iLptFajPxkL2lVXmmywZ88Xd/IPu+0s4mvCQcOR8riuuE
+	8JvE2X34IRNSwsgdvbpncb/AMuVsmRgykSkCWdRg3kEXmUSPj6M82a4IEIA+e6vOTySGumNR9Ix
+	VaMdu121+dsWIzI4b1RYBYmWaDcFw/V0v97VC1VvvB6W71ukzAQc1B7U7f6ECLS65Fk0Ry
+X-Google-Smtp-Source: AGHT+IHr72sxnwnDW01eveiKOMN8ReuV1UUnXNulAeH1fLWng/AE/xORbhmHjOyCI/0xtighT8mEng==
+X-Received: by 2002:a05:690e:1546:20b0:640:e5e1:190e with SMTP id 956f58d0204a3-641e769b270mr3139275d50.57.1763146820114;
+        Fri, 14 Nov 2025 11:00:20 -0800 (PST)
 Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6410e8f4f2esm2014058d50.0.2025.11.14.11.00.17
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6410e8f4f2esm2014058d50.0.2025.11.14.11.00.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 11:00:18 -0800 (PST)
+        Fri, 14 Nov 2025 11:00:19 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: akpm@linux-foundation.org,
 	bhe@redhat.com,
@@ -107,9 +106,9 @@ To: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 11/13] kho: Allow kexec load before KHO finalization
-Date: Fri, 14 Nov 2025 14:00:00 -0500
-Message-ID: <20251114190002.3311679-12-pasha.tatashin@soleen.com>
+Subject: [PATCH v2 12/13] kho: Allow memory preservation state updates after finalization
+Date: Fri, 14 Nov 2025 14:00:01 -0500
+Message-ID: <20251114190002.3311679-13-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
 In-Reply-To: <20251114190002.3311679-1-pasha.tatashin@soleen.com>
 References: <20251114190002.3311679-1-pasha.tatashin@soleen.com>
@@ -117,12 +116,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DA3E5100011
-X-Stat-Signature: gwdnmdmo8irsd838cpcgadkgznad997z
-X-HE-Tag: 1763146819-834332
-X-HE-Meta: U2FsdGVkX19m1S0/U57uZoCCZOcPzOso2kUC3b1EuS3m0ani0gCZ94paHexOmfeSoZ2wD7xPw9gO1yn2o4WzSsCJg7FPRHkpYssiHLIE18pYueRtd/jdbBzI746H3wxj/x++ZFjk2SuTpdmZCfyKY/5FXzFvT3o+u8W/+RTvAQTqdG80PQuj99wY2/jJH+KHzKeRLNdznrsXJxLJQyeYHVIbG1AA2zoTeXnUp3yw9nw9FIeKjZ6HyfdHa3WT9qdzQSZvuxGrDKxKAmpWrII/9p1HbNyINItOOP+N8avbI+oe/4NVxHFlVaWAOqZgFOYZfAtnpMwWP/nPrd9JzeLPNE438X5lymeXi2nkC3AXmPsQKeiVPHTk/oco1KyEfvmMwyYtpjHqWkjbxeJcIel3C5Xb8HJ3oun6f2A+MFEj6TmTBfB+2cCmjDcEkt9kx4FUKvIZI54Hbp1E86qXwwysA/SXSoC+PpUj3G1nQJosBTHc1PFro76A6wbLVYE7ldbjHnCZpdaIsNtKu1GnYLwGtQFqmbdHjzRmlaQJIU2ODV5Xh+1SLIN3sTkW0661IiHX08CdfNwxLlPwIjv//34oDdNhrOctb486l9GQuAbYftTXI8bFF5IG0taVOh39LfYQVJCY8G8yugu9oMQHBnhj28q2SLkH+nCXtGDVF7tZkdJ6XPQxteS2Ehqp6rkIfONMXAmZpEUzdFYlF4bNvm4j0wN2mHftOzgZ3kSEIQSMonWIfniWGS0TB5RypQ7qJLhZuYMEBn1x8N+bL9S4AJboWoI+1IdqSGUByoo+u2q1Vex5XXPnkCpy7ka1fGgizA+NvFjqvDse1AjHeQRLXbXRzgpCKtkmujj746EJh+YF2hk0CQ1+NTBUxI3+0MAzjCisynR4CBVALqbYQxVv+hLkUho/FF2qtYCoXO+kZzAJJ+3+uXWd8bt7JEY1V28n7Kz/ScRQFvi6N858DZzjons
- tszdSKdK
- dm1V0MRMZg0jKzrSe1unapnxs7haPahUzIBg6Utcd13VeAyFD9605kEVYUGF+L4LtDtMAH12yUrUEqiuOW08j4xxs+3c1CWuNolqT5LCkYNGSuFp1k+7OUC9iEDQOAjzf9zs0vRFjB4uX02dQcLvkIw7GxxGfMdclx2IzhfvJpufmoVAQOZ5y6smkTXQljSuDMMkn1vgPA9Nx0R+Xgxz53nUZfd2hDAVBrsifYqBJekHp3lS3RwitOuz4eKSvddSWobdID/0E84B8OyP+S/DH3EthCWOWPWrd2Vl/61AIIeXLurvMnDIcNtvpmtyQe5/HVo+xLMrItHDkpcaSEycdkeUiwaRllDQqPH15Nz0Us2wnB94q05YlfBJBN3xfeJqQssDd
+X-Rspamd-Queue-Id: 41D5210001D
+X-Stat-Signature: k4tstghgxpjgd56pdk11ge9xf1xsjipy
+X-HE-Tag: 1763146821-841926
+X-HE-Meta: U2FsdGVkX18XiBmN5a7EnSE2rxSJHL3TOQs8ZqcJCONtVEHx4Ru3DjmC0h7w1PZxZnxxnM+yYqsD9L5pvVDLw7bknMAfMTDu6BmgjJL8mJ33cG7De8qPBNp6ZoVN9s2CDKbHsDcCFALsxLKS3pM+6OAXH9zGlJaQJXcbLEo/c0pk14P+TR19TM3g62lVf7Jkb+y/jlbhov5a5h/uPrTA2KcqH4clrG4bMbQgoMHt79cqNZmXyljNlBhoOfjrKbc1GHExrYwwValXpQp5ANukR+zNS2tjYpNjIyn+XIRfzHk9Mi1tUDK3sqeoyZoBqNn6bC/olU4kd7nNXdeph/4MKCwixoDNm9jqr13RMNd1hqChO40fchvfewji//lx60F4wiJ7HsFJ+WBPyxVWR4gxdi4Fo/7S5XFfdsXwn/ou8bXF0u1EwrI68/13yPsyDcVZ9N2N2Aa+o7YIvML+Olh0cqLtJvVW09uBxN3XuYs1mU5g92O5UhBDaKBbMAn3f7bCDVXS+f6smc5gLhlIEZhH6rU1taZbeRRw/C/Yn51EUzOmH2eqUsjnyAmzW+B6tt2mBa8ntwNp40z4Gk6FYY8kGx/6ii7SMfXoKxmvQFe/b3CIfc+0JHkI4yl4f2L/ExD5fXLeYRMyqVr+G9UVPfUvBPo34dO3r18AEsCetyU+6JG0SEWISPlhgqwaAtFGOhMz4+nlzS7OjxVVk+mEqxfVEd6SvQjowjeDqj03utEbFH8SLRQsh4fv3ejhDrpDOMg33CR1JnA3CeGSEH+pr94VgLMwLCDWKJCwPqeZdtuvb96bAupDeKZ0biXRsB0vfiKkuMduHSV2dlhHSnPAMyOle4K75uDFky+hIOlpE4OJMRADZ4gW7jEiVH+mKKQUA/KoHSviRTTm7loIprGEJdOuwI+WSBxQ8Wq0N/7nVsVYR30moYDnj/DhnFQf3/i21bAQYb5lwyRGYUN7NUVd/wi
+ kx6I7dub
+ Au1wYJ+fSVesXilir9rmwm2l15o5640GS1+iW2QGUn1uzJmlWaXAowuIGZeCDLox6q3XLOp+4g3Dinp9UiHJpbdeqQVDCpbloIQ6ufsYEnkvH5UvHBhT4Cg1FZ+lMBjkDmILUpP+RveAcxt+3wnXwXmYBe8H9DaNu2V7O2UysWgqfRdzsUcyBMKs0j20Oza2xF72oWvhIk4m7CHGAInqMKtuLkGlC6c2qFi2G23CIdt2c37/bHVDiKYX3S4ZV0+dFCNuxXltWmGx8v1etBeJ66/cZ9IVX/HFKHqU97lTN1iRmbLW7yDLOWlcsn8/MG+hzXWYyBY+dirt/a3PpZnqFzYzNCUDlX9MeFicEFzSjXzBfOkuhuTvBryd7gYxQ4MHD/3fX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,41 +130,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, kho_fill_kimage() checks kho_out.finalized and returns
-early if KHO is not yet finalized. This enforces a strict ordering where
-userspace must finalize KHO *before* loading the kexec image.
+Currently, kho_preserve_* and kho_unpreserve_* return -EBUSY if
+KHO is finalized. This enforces a rigid "freeze" on the KHO memory
+state.
 
-This is restrictive, as standard workflows often involve loading the
-target kernel early in the lifecycle and finalizing the state (FDT)
-only immediately before the reboot.
+With the introduction of re-entrant finalization, this restriction is
+no longer necessary. Users should be allowed to modify the preservation
+set (e.g., adding new pages or freeing old ones) even after an initial
+finalization.
 
-Since the KHO FDT resides at a physical address allocated during boot
-(kho_init), its location is stable. We can attach this stable address
-to the kimage regardless of whether the content has been finalized yet.
+The intended workflow for updates is now:
+1. Modify state (preserve/unpreserve).
+2. Call kho_finalize() again to refresh the serialized metadata.
 
-Relax the check to only require kho_enable, allowing kexec_file_load
-to proceed at any time.
+Remove the kho_out.finalized checks to enable this dynamic behavior.
+
+This also allows to convert kho_unpreserve_* functions to void, as they
+do not return any error anymore.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 ---
- kernel/liveupdate/kexec_handover.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/kexec_handover.h     | 21 ++++--------
+ kernel/liveupdate/kexec_handover.c | 55 +++++++-----------------------
+ 2 files changed, 19 insertions(+), 57 deletions(-)
 
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index 38a9487a1a00..6dd0dcdf0ec1 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -44,11 +44,11 @@ bool kho_is_enabled(void);
+ bool is_kho_boot(void);
+ 
+ int kho_preserve_folio(struct folio *folio);
+-int kho_unpreserve_folio(struct folio *folio);
++void kho_unpreserve_folio(struct folio *folio);
+ int kho_preserve_pages(struct page *page, unsigned int nr_pages);
+-int kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
++void kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
+ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+-int kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
++void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
+ void *kho_alloc_preserve(size_t size);
+ void kho_unpreserve_free(void *mem);
+ void kho_restore_free(void *mem);
+@@ -79,20 +79,14 @@ static inline int kho_preserve_folio(struct folio *folio)
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline int kho_unpreserve_folio(struct folio *folio)
+-{
+-	return -EOPNOTSUPP;
+-}
++static inline void kho_unpreserve_folio(struct folio *folio) { }
+ 
+ static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+ {
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
+-{
+-	return -EOPNOTSUPP;
+-}
++static inline void kho_unpreserve_pages(struct page *page, unsigned int nr_pages) { }
+ 
+ static inline int kho_preserve_vmalloc(void *ptr,
+ 				       struct kho_vmalloc *preservation)
+@@ -100,10 +94,7 @@ static inline int kho_preserve_vmalloc(void *ptr,
+ 	return -EOPNOTSUPP;
+ }
+ 
+-static inline int kho_unpreserve_vmalloc(struct kho_vmalloc *preservation)
+-{
+-	return -EOPNOTSUPP;
+-}
++static inline void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation) { }
+ 
+ void *kho_alloc_preserve(size_t size)
+ {
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 461d96084c12..4596e67de832 100644
+index 4596e67de832..a7f876ece445 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -1550,7 +1550,7 @@ int kho_fill_kimage(struct kimage *image)
- 	int err = 0;
- 	struct kexec_buf scratch;
+@@ -185,10 +185,6 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+ 	const unsigned long pfn_high = pfn >> order;
  
--	if (!kho_out.finalized)
-+	if (!kho_enable)
- 		return 0;
+ 	might_sleep();
+-
+-	if (kho_out.finalized)
+-		return -EBUSY;
+-
+ 	physxa = xa_load(&track->orders, order);
+ 	if (!physxa) {
+ 		int err;
+@@ -807,20 +803,14 @@ EXPORT_SYMBOL_GPL(kho_preserve_folio);
+  * Instructs KHO to unpreserve a folio that was preserved by
+  * kho_preserve_folio() before. The provided @folio (pfn and order)
+  * must exactly match a previously preserved folio.
+- *
+- * Return: 0 on success, error code on failure
+  */
+-int kho_unpreserve_folio(struct folio *folio)
++void kho_unpreserve_folio(struct folio *folio)
+ {
+ 	const unsigned long pfn = folio_pfn(folio);
+ 	const unsigned int order = folio_order(folio);
+ 	struct kho_mem_track *track = &kho_out.track;
  
- 	image->kho.fdt = virt_to_phys(kho_out.fdt);
+-	if (kho_out.finalized)
+-		return -EBUSY;
+-
+ 	__kho_unpreserve_order(track, pfn, order);
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
+ 
+@@ -877,21 +867,14 @@ EXPORT_SYMBOL_GPL(kho_preserve_pages);
+  * This must be called with the same @page and @nr_pages as the corresponding
+  * kho_preserve_pages() call. Unpreserving arbitrary sub-ranges of larger
+  * preserved blocks is not supported.
+- *
+- * Return: 0 on success, error code on failure
+  */
+-int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
++void kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
+ {
+ 	struct kho_mem_track *track = &kho_out.track;
+ 	const unsigned long start_pfn = page_to_pfn(page);
+ 	const unsigned long end_pfn = start_pfn + nr_pages;
+ 
+-	if (kho_out.finalized)
+-		return -EBUSY;
+-
+ 	__kho_unpreserve(track, start_pfn, end_pfn);
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
+ 
+@@ -976,20 +959,6 @@ static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
+ 	}
+ }
+ 
+-static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
+-{
+-	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(kho_vmalloc->first);
+-
+-	while (chunk) {
+-		struct kho_vmalloc_chunk *tmp = chunk;
+-
+-		kho_vmalloc_unpreserve_chunk(chunk, kho_vmalloc->order);
+-
+-		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+-		free_page((unsigned long)tmp);
+-	}
+-}
+-
+ /**
+  * kho_preserve_vmalloc - preserve memory allocated with vmalloc() across kexec
+  * @ptr: pointer to the area in vmalloc address space
+@@ -1051,7 +1020,7 @@ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+ 	return 0;
+ 
+ err_free:
+-	kho_vmalloc_free_chunks(preservation);
++	kho_unpreserve_vmalloc(preservation);
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(kho_preserve_vmalloc);
+@@ -1062,17 +1031,19 @@ EXPORT_SYMBOL_GPL(kho_preserve_vmalloc);
+  *
+  * Instructs KHO to unpreserve the area in vmalloc address space that was
+  * previously preserved with kho_preserve_vmalloc().
+- *
+- * Return: 0 on success, error code on failure
+  */
+-int kho_unpreserve_vmalloc(struct kho_vmalloc *preservation)
++void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation)
+ {
+-	if (kho_out.finalized)
+-		return -EBUSY;
++	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
+ 
+-	kho_vmalloc_free_chunks(preservation);
++	while (chunk) {
++		struct kho_vmalloc_chunk *tmp = chunk;
+ 
+-	return 0;
++		kho_vmalloc_unpreserve_chunk(chunk, preservation->order);
++
++		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
++		free_page((unsigned long)tmp);
++	}
+ }
+ EXPORT_SYMBOL_GPL(kho_unpreserve_vmalloc);
+ 
+@@ -1221,7 +1192,7 @@ void kho_unpreserve_free(void *mem)
+ 		return;
+ 
+ 	folio = virt_to_folio(mem);
+-	WARN_ON_ONCE(kho_unpreserve_folio(folio));
++	kho_unpreserve_folio(folio);
+ 	folio_put(folio);
+ }
+ EXPORT_SYMBOL_GPL(kho_unpreserve_free);
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
