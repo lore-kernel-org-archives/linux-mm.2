@@ -4,132 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F23CFCE8D7A
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 02:30:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F14FCEACF9
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 02:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 572A28E001F; Fri, 14 Nov 2025 21:30:38 -0500 (EST)
+	id C7A498E0020; Fri, 14 Nov 2025 21:32:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 522638E0005; Fri, 14 Nov 2025 21:30:38 -0500 (EST)
+	id C51978E0005; Fri, 14 Nov 2025 21:32:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EA7A8E001F; Fri, 14 Nov 2025 21:30:38 -0500 (EST)
+	id B40B98E0020; Fri, 14 Nov 2025 21:32:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AF7B8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:30:38 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B118813B5ED
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:30:37 +0000 (UTC)
-X-FDA: 84111262914.05.F014302
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0BC914000E
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:30:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bKvI9iwP;
-	spf=pass (imf12.hostedemail.com: domain of "SRS0=tNS5=5X=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=tNS5=5X=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763173836;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A3EF08E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:32:15 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5E97C4D876
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:32:15 +0000 (UTC)
+X-FDA: 84111267030.23.D2339D6
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013062.outbound.protection.outlook.com [40.93.196.62])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8B453A0019
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:32:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Ltwwb4We;
+	spf=pass (imf15.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.196.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763173932;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GZwTQBF5988wknKRYLWHjs/juHVUWqEf6qIxH4Qsors=;
-	b=yUnfcZaRtKshnvc95p8anXtvgFIN9eesRpDW/BfBHAtcvSbHx0M58hQGNBRPlGZtsa4QGG
-	hlSXfe7mKxOxvvy/yDdEqK8Aq0LJNhkW/brXkyYHK37MJpNpYQ8YGhsO2C6QfbwAhsrljb
-	WTbu/s3Vd8i8g1ZM+pjKnKuWBDH54Uk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bKvI9iwP;
-	spf=pass (imf12.hostedemail.com: domain of "SRS0=tNS5=5X=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=tNS5=5X=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763173836; a=rsa-sha256;
-	cv=none;
-	b=p6llaGYtjb7BnDHb19/aRxNcPR9uXpADy7QwVKuOmayd0djhENQ8RZRPisLDkzklNq/obi
-	2DqpiQvMbk/Xr88KYD81z0yfEvEWynxh+gVeZhcI2pgty5/pGdNVlWrKYLZJW0O3jnQyLJ
-	8q4bUyq78q6XrB335vYjV8fKbrv4bNQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25C726011F;
-	Sat, 15 Nov 2025 02:30:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE408C4CEF1;
-	Sat, 15 Nov 2025 02:30:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763173834;
-	bh=mO1ZdVZnWjsvWJthzELzsTV32Ev+RejyUQceGtcadCA=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=bKvI9iwPxt7jGyJN+/x9h4ABAVqnNOF8evCkTmxLgPaWLBC6Ai3FhrHhZEqRb/5XD
-	 QA2Jig8hSw0xPK6ir9azDHHkQ0jC4lmwGDZ53debIQxLdruXb0T5lPwISi80LoxuC/
-	 bbp1DdK3JauP007kkx1bbZycMyMytGcLMKamg/GulHKHyfrz1F2xg7qAp60T4GNG8x
-	 HvpXkxoKkv0RInCGzmjCQlVI/R5oG9XopzTEevjYqHGKbUQKcRXpxajPPDlWnkUbDu
-	 i5cyl95DWHBmB9eKL9g3qXut0V58Gvfz97MDTZVIuDRPU6PZcgK6pyn5KonKeWab9e
-	 Ss/NL0GhoEv5Q==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 4DC2BCE09CC; Fri, 14 Nov 2025 18:30:34 -0800 (PST)
-Date: Fri, 14 Nov 2025 18:30:34 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Andy Lutomirski <luto@kernel.org>
-Cc: Valentin Schneider <vschneid@redhat.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mm@kvack.org, rcu@vger.kernel.org,
-	the arch/x86 maintainers <x86@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
-	Jann Horn <jannh@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: Re: [PATCH v7 00/31] context_tracking,x86: Defer some IPIs until a
- user->kernel transition
-Message-ID: <ecc0201e-2fde-4344-9254-89bf29e5054f@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20251114150133.1056710-1-vschneid@redhat.com>
- <c4768cf3-f131-44e6-9b25-ebeb633f32ee@app.fastmail.com>
- <beb46a02-b902-438b-8b6d-b5f0d7ad0ae6@app.fastmail.com>
- <89398bdf-4dad-4976-8eb9-1e86032c8794@paulmck-laptop>
- <1a911310-4ca5-45a4-b9bf-5f37c6ab238e@app.fastmail.com>
- <b3472cb3-86fa-4687-bfce-3b9a1bf4ff36@paulmck-laptop>
- <4f1a7b15-cfdc-478e-8e43-98750608866c@app.fastmail.com>
+	bh=1Q6PE1gpfcYMGrS9+52BaEsIXMogt6o6aT5XF+Ucp1Q=;
+	b=jw67O01QAMUMUP7WRn1gu1YQ4aaAI9NvVVP4gWFIGfhhdrhOthfb7d3aPajJOz6+Km2Z7J
+	CI/ZIRze82k9/pC550N57Zcwt91xDH/ERM8au6PZeWU+Ze9HU8cBdKlltrMrKcSq0BwrqA
+	ld9QL1iPBceI48SdAo4rldyTVSfOoC0=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Ltwwb4We;
+	spf=pass (imf15.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.196.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763173932; a=rsa-sha256;
+	cv=pass;
+	b=kecoMNOlMWqfiqPW82ff9xHQp8zGuZeVVPHpfjqlESbg5gLoUKmqivkUBZRI/oGZSuKEOi
+	tz8ypQ1hZEPj95sbYUDg5OxRZQJxU/CNrJbSiZARnnF57ktKlp6lFNTPqe4BQTH1mgT/WL
+	CgLFc52/W0QUzYXmVmfOKq96akWCy9E=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=y3Wl1bGYdzg8hBtmHipKZTE0BeujBfqcaN1B3mlfL4X3iSDBHr2VYMjKkdy+R+T8Cr7iOB6vSTHsfD/FsNuZqT325HvQ8YPYzi7e0MIr4+GOZ8UdLMjoxlcZwWcZVXXNHeJ02aloroMbM7phj/pysDE4jvyRkO17FIn7NgPZmBg9d0CgFwXZT0TRozGnxG0HBQ5v5GfdLm7fYVs2MEY4NKg1+ZVe47siNZBqeH6tvXFbUT6qNxHII6JeDg/XnJf1Gzq87ktCbbQNq9pzvRwNYJ/+lXQrseg+YZbLMW9LFYER0vM/oSKrpH8/W0QtKw7ISfMVG9CHvqgOEV7B35vG6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1Q6PE1gpfcYMGrS9+52BaEsIXMogt6o6aT5XF+Ucp1Q=;
+ b=SQQXkC4uTSFhWzx3wJ5rqTBBvg01t+2uiJvC5l/K2GDyDw4NQLy7YYTogLr+ntuZLqsKsTNCldwZGGPSQgZd8hYTuiVc7181kKzAcGolvtygmhCR7E/CGNUqcjxbxItpIaggR/5FEnkF35uLhcj+TVYLYg8yYaMDUCe0R1uqqtNN09DT6+aonez27SIIOtfp78Y3sSAz3xJC6ZfzLEGgriDwXZhU0tLKqSJHK82l5ujh0IyPN5LBBBvqk3dZh/ZVBLU4DroMw3s7f59cLCS+HAV1iQ1IHtxJ0EwxvPTCTDiMIWsgAIEOtOQn5b0e7aMlVYlSkcL8U/fADA14GZY9iQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1Q6PE1gpfcYMGrS9+52BaEsIXMogt6o6aT5XF+Ucp1Q=;
+ b=Ltwwb4WeaVqyoutdvy1rYl9DOee72W/1kCeEd6kQ4RjhjJIWdkcS3GBNdLXSW4hVM1Dk1P8Oa/Fc/D6hIDO26nvNOuZiFzVdCRk1MjeoMqyA7mUFRYWtTleEaotJrFDC08f2kfz/Cu5EZ6hIbRREkJV2rKWQtxruE5WQfo2cRJxugAF/4lZHR7jvW1rjETPxfonrR1VnbyW0ZfppjWeRRwbkBY6hqruRSJdvIHZ5RGAQCRdhsIn9YOxnc5sr8jzXsjYzi2O+xC37aqHHWlT7jXJHuXA6VVem/C2cXIXJLscxi3e4J27mIsbV4ME1QxszA4/I3eluMpuxJR+AOA6wzw==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by PH7PR12MB9256.namprd12.prod.outlook.com (2603:10b6:510:2fe::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Sat, 15 Nov
+ 2025 02:32:08 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9320.018; Sat, 15 Nov 2025
+ 02:32:08 +0000
+Message-ID: <e1f3074b-c4d4-47e3-9303-18ba254e3662@nvidia.com>
+Date: Sat, 15 Nov 2025 13:32:00 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fixup: mm/rmap: extend rmap and migration support
+ device-private entries
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org, David Hildenbrand <david@redhat.com>,
+ Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20251115002835.3515194-1-balbirs@nvidia.com>
+ <20251114165146.5c51eeeee200bd37b378bd45@linux-foundation.org>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <20251114165146.5c51eeeee200bd37b378bd45@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR04CA0002.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::12) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4f1a7b15-cfdc-478e-8e43-98750608866c@app.fastmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|PH7PR12MB9256:EE_
+X-MS-Office365-Filtering-Correlation-Id: 93ac5485-f689-44f3-6297-08de23ef2c19
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UGZiODZBQkd0b1NVaWNrVk1uTGVlN0lsOGw2NVJQampuRy9uVlV5bE5lNTNa?=
+ =?utf-8?B?c3pVWktBek1MWC9yTk1pQ1RqWUVCbWpWOGJaTlZBQ1U5V01pUFhhOEV4b1lE?=
+ =?utf-8?B?ZVZxOEFEUkZNeWdsZ1A2aE5VUnkxYUIxM2ZvQkZGR1hha25JdEg3aTZmZVhW?=
+ =?utf-8?B?R2hrWWVnRlZVZDVpYWZPWGsybTFxTVp2bDIyNDdib3pEVzVrOExGMTVEOTBo?=
+ =?utf-8?B?c0Frd0JiY2dETVhoUFAvY0R1WGtOWXB4alZHSHVTY1hMK2gxK1Ryc2ZxV0lK?=
+ =?utf-8?B?YWlxMDJ5cGp0UmZIc1J0WW9oalEwdEVyU1RVeGc4K0hjRkNZekFQVVRrL3A3?=
+ =?utf-8?B?YkhaYXpKc3NWM051VjVWaXpGR3UrOEZqMXRpY3NTcHdIZWdTQWc4RGRxWlox?=
+ =?utf-8?B?MTdTSjJYV094YU4wRlRvVDVzUFhsUTNXL2M1ODBzRmF3SjJJNHBoNlNybFRO?=
+ =?utf-8?B?eis1anhmU3A0bVlrdHFwUGFsVENXbGhjN0ZaVldXZVpKa2IrMzF1TDVKa2Rh?=
+ =?utf-8?B?c3NCcFl5ckVzVlRoRFpZakpKLzhkdXRSVytJbUQ4di80Ni9lZTIzWXphekx1?=
+ =?utf-8?B?SnJlOTAxNFBEM1EzTC9qOVdnMndDK1FDL3QzbjJFRmdDOXBQbWk5NXFXRVNl?=
+ =?utf-8?B?RlVUYy80OHFRYkRidVBBaldHTWhiZ0UrUFl0UHRvMHZISisyVG1iUWs5ZDJI?=
+ =?utf-8?B?dXdHaGg3MFgvRWJBVU5uL3dkRFZXZTZmaXhGUzVhOE1VSWlFVHhTNVBzRUVY?=
+ =?utf-8?B?em41TC9sYU1ZUGRYZ2xRRVBMWUpXcFRKU0tCd3IrVVJXRlBLeU9nTXBUSEFF?=
+ =?utf-8?B?bUtCMjNZbHZ0Ky9DVTdudTdONjNRME1XcFJGVHhicUZDY3dhaE9rWUx2QkpN?=
+ =?utf-8?B?T0FtMyttNm9saVYraklFNmFPbk5DbGY4RFhrQ0F3cys5SzMwcGpIODBaZStQ?=
+ =?utf-8?B?QkVZTjNReWZuZ0UxU1o0Uit6SFh1bjBmeDVqL3pybVE0TUtLTThQeUZrTWY4?=
+ =?utf-8?B?dW9EbGl5Mzh1U05jMlZGYTFSTGo5UkFXVktNWHhUNXkzOXRENkYyM1BsNnZH?=
+ =?utf-8?B?RFAxbmlselFEU1J2bU5FQThESkhldUw1bVhwRTVLU1AwUUJ1WFNESDN6U1F3?=
+ =?utf-8?B?VXRGcDhmalg3VDIvRzBJQWpCbFRDZ3F3VS9YMlhaUFpmVmZwRnhuN3FnaGpm?=
+ =?utf-8?B?NGhMdTQzSTNJaUdzTDBCUWFycUdjcGRpOTJVNkZpS1d5YUFyZkFpUFFHYzcv?=
+ =?utf-8?B?SW1WeTF4T29zU0JWamRLUDYweklwU3IwM0VwY1BzdzRxTFdacDgveVVNMm8r?=
+ =?utf-8?B?d1pTdVllZVB3TFI1TDhreWFXS25ScUJ2dEpjaWVDclNvOEN4NkVqTUVHdlRP?=
+ =?utf-8?B?NGl4eEViRHFJTEE2WDFMdllPNER6TWIzbVRKZHNCNFEzbVFLRGRGNjdPcmQy?=
+ =?utf-8?B?SUFlSVRuY05zdzdPMFpsSkR3djJQUnlZMG5xV2djeklzTUVqeXg4V3V4NFYv?=
+ =?utf-8?B?eUgyb3NyMjlyYkdONVFXNVFLTHk3dm1EUUZIMk9ieDVNOGFrTVQrUG04VVQz?=
+ =?utf-8?B?YmhQUWN4eTBSU0tKTDQrMGhaWjlNWWVBY0JHYStQRmtGR2wvQXhlWFExL0or?=
+ =?utf-8?B?bURvTGJtOHVRN2E5QldoVTdxYXNZRWJ6VWswL09uN2Y5VFQzOWJXWVllY21Y?=
+ =?utf-8?B?NC84SkN4T3dKY3pWNzdEak9vV0gybWRuT2RkTks0dXNEdWVHMEk0alU2MXZo?=
+ =?utf-8?B?TEdoNmVHUjA5czN3U2gvSjJWRmkrVnlWM0VGYkZ2UVNtbzlHTUlEWDh3c3Rn?=
+ =?utf-8?B?VXlIc0JXSzV1MnNhb01EMmxHMGNNc2RGSXhJME80Zk13ZCsvdm8xdzhyalJE?=
+ =?utf-8?B?SWY5REE0bnFsYVUrU0R2dEFKb0NxMVp3R3lPWFhDbGZoQnd2SnZlZUdkSWFn?=
+ =?utf-8?Q?GJcQygFeGmBwHYM1Z/oNn7B7lOqHbDpe?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aGJGWnNMbHNNR0NBbHZvSGVMWThOYlFKa2VjRXJjT3NXNVVlZlFsOTFhNmNY?=
+ =?utf-8?B?NVkydEcvN05NMlZpdjZwQUhoRlZRSnI5d3RkcmJwTTBLRzk5SjUvbW92UER6?=
+ =?utf-8?B?S3F1MkZSMlRnaGxmRWhxTDNKU05qQmJGYW94WEIwcldidXhHMTNoWUtJQjhv?=
+ =?utf-8?B?SERpRm5LRTN3NXo4QjNXK0N6VThBWG5wTjR1RStYTDg4b1BJRUEyRFNlWUI1?=
+ =?utf-8?B?RFRCR3ZYRmNYeWUwNWhIM3V1TVZXTXRWSnRvSSsvbGJCdUZmL2I3TStHOEtU?=
+ =?utf-8?B?ZDdxdWE1SzB3alA3Zkt2a1FmcDRobjBhemRXZzRWUlJ0dEtWQXR3ZFpySkNi?=
+ =?utf-8?B?MzdQRTdKVlloeEhwUUZXcUl2UjBRZWExOW5uR0U4Qm14YVc5YUpjNy9jU0lv?=
+ =?utf-8?B?R0s0Y1dVTUpHVllmOHIvTGtKUUJ3TUx1aTlRSUlpbnZmWm9JVWRyM3l0bENo?=
+ =?utf-8?B?RWhiYWRDeVNHZ1ZqUnJycFZzQk44M2tBYVVzUFVNWUF2OXlUS2E2VEVLUURk?=
+ =?utf-8?B?enpUQVRXcHJCMHlIalJqWWt0MExzRjRaaUZpY0RFV2ZUaXVSWHRLSTBmRGtJ?=
+ =?utf-8?B?S3JjalpaSFI2bFEycEQrQTZoNUJkaFhCYXNJVnNWL2hLQ0R3RzRzTTN4TXc2?=
+ =?utf-8?B?VTRqQzVneGMvZEdJMm52MThSZ2xHa0V5ZlpQNlovdVA3YmhjMGQvUm1ML3k5?=
+ =?utf-8?B?bVNtSVFZSjBxMG5NRkx5MktxMFdRREl1RFI0ZG5HczZZZHR1YzVycVJ3clRM?=
+ =?utf-8?B?M3dYR3BzRjRlRkRzTlZseHpaVkdVTVFacXl0NVBoTU51a1QvcXBKWW1laksz?=
+ =?utf-8?B?WnM0akNzUTA4WFlyYmFFVlRhSHlHL3ByWEFDRWE2T1JzeFFiNHJwQkQvdm5M?=
+ =?utf-8?B?NVpUNE8wa2UwNFdJMjl1eHp1bkNIVGFxQitlNXp6QlFhWlhXTUtFMTltUnp1?=
+ =?utf-8?B?b3FZWkUwRHhzZjVPdHY3VmdYY1BrVU1hSDc1QmdtK2VCaXdiWlJYUk1Sd1cz?=
+ =?utf-8?B?b0pORjhFWjdHVml4d0dJWm5acHJzTGZvQk5ucjBxWkdNeDFobW8yK1cxcW1y?=
+ =?utf-8?B?MVhzKzBsR05rd3I5YW4zc0FmZ2dMTzNYK1ZxRXBKVFBwN2hZdk9FV29WZ29m?=
+ =?utf-8?B?MlpWQkFFdElQTWRqdDlPUzFCMXhUeHpneDNKUzdVc3Fwd2MvaXNNcUE4UXVT?=
+ =?utf-8?B?QmowdzZHUjlTSXgvRCtvTER0MUpjSXBUWWRzZ0dxUXZScHRScFZLZXV4Yy9t?=
+ =?utf-8?B?VFhxRHArdW9qYVFRVHRCVW9hOXVvSXBjblNhU3dsRTF3S1lDVjBRdFIvNEhP?=
+ =?utf-8?B?bHAzRE5CaGNRN3A2RWt6Z0FVRzdKTjZUMEs2MG9ha3lyRU9nR0swamtwWEZh?=
+ =?utf-8?B?dDN3UlhsUTUzSHYzaHlsa2lEdmlkNUpEL1dldU5IWFRoZTJZVFVzZXR6WDdz?=
+ =?utf-8?B?RVU1eGVodEVWV2oyVWhFS1l3Q1h0dDVMTnl6UlNrbWZDMmhZS1pHY2dQd2RT?=
+ =?utf-8?B?My9XUjBIclE0M2RYQVFDakluK1o4bks0SzJ5c2xGT05Ia20vNk9iNzFzcDZy?=
+ =?utf-8?B?RWtHalRvc3JNU05oSmVpV2tOaDhteE5ETmh1ZnVwekxCZS84blE2K2YwaWM3?=
+ =?utf-8?B?ckRhR2JjTlFRRmsrSGlUK1NSbU9HOG94c0R0SlNzdjhsblVVQlJONlkvaHNx?=
+ =?utf-8?B?K3drYTl5VENoWk5LOUVaZGdja3lqWE9vVGpMMlhIbDV6eE5Ic1NhZ3QybUFP?=
+ =?utf-8?B?K0V2TEFlUDNBc0U3eW9iajhPRHFGWkp0MFgzTTEzcXk1VG1uaDJMdGhUcnJa?=
+ =?utf-8?B?cFhKOWZSNldFOUxnYUZnYTBVTndZOGNyU0gzM2YwWnhEYjlyb0FaUmZFeERF?=
+ =?utf-8?B?b3NJRk1sUXJIL0FweUk0NWV1MW9VU3VPaE54djYyRy9Hck5HUUpkTHRUTk1R?=
+ =?utf-8?B?YVk2MFdtdTFtcWRqSDlZV2JaUU5JOWF4ZUx2T01XUDJSVFl6RjBtN1RsSm1V?=
+ =?utf-8?B?eVp0UmJuV3hpd0dwclFvbG03ZTVwLzc5NkYrenNuVnF1cHE1eUl2am4zTGM4?=
+ =?utf-8?B?WXpWRGpQQnJuVDJ3U1lvbTZlYzVEV2lRc0hwSXBsaytQTkZvVlVsdU9ZTWNs?=
+ =?utf-8?B?b2djRTUyNzA2d1pCYTFNMzA5eXBFdHhkeEVlRmhCaUhwcFY3OGRBczBmVE1V?=
+ =?utf-8?Q?fMbCJlwPtXA05T0a4TK13nAZuBeSAyBTx8F0cqxA+DJL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93ac5485-f689-44f3-6297-08de23ef2c19
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 02:32:07.9380
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oID5p6czTOHkzcNCQCwmtuh8/Jlow0JaAm0+XkcVjVvoQAKqHtfE7/dm012MEJ6M2RnkJBC9fK73UP2aDUlWaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9256
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0BC914000E
-X-Stat-Signature: kdd9otit8e746g5c93ta4by5ymj546ni
+X-Rspamd-Queue-Id: 8B453A0019
+X-Stat-Signature: hrqmj34q347p3jc8xhfnbkc4n5rks64k
 X-Rspam-User: 
-X-HE-Tag: 1763173835-783420
-X-HE-Meta: U2FsdGVkX1/RfwWsXqKH3WaLQf8UX0kFxP5h+YRmwZpDcvgtnQmR1/No/IV9uEhhz4UOb+JdFmERnTnmkYktYq2Mz9POqC3MiKqIJNM1uTZDT/xflyyQPs3Mu/tVdmIU6Acqsg5a9InWia/NnDVazfEpHfub8QAv/1x6LBKYGOBIBJoSVv1ZwnR7ChJtRlo85YBR2F0IXzw6y0+U36PDVp9h+iYhiK9h1E27Vny/a5Heei9/qLDJk6uO5RTeBbM6Dk/mirkkM46yrQsuRGmKBO5x6SxFiB5m1Bs6A/5CjxP6Zhkmc/pFnd5k9pQOJmQGVUoiMsuVm2Cyt1wG5DjqC0udjk6rH7M7MGcH4R2Ar35yC8oV3+H+PtQeCBQurvU1HF+PPZkKxpqBj/rRLWx8mht/Kfg9RI35cn5S89oXW5ZK6TUlIQp/SQn7zhSpoDq80LUvMVb/XTtSfdD25Bzh11WxqY9qvkLzX9xmcf+2PVS1NFyLaiW7JgR5ytZls81lCgflvwMsiG7of1f66QFetOcEaL0j9uNJowEx7Rzk1NdDGGq58RwzE3ffiwV+up5UgWMYsTSMCcG7i+doifNLl/zRduDH2rE3vVwaf7RKp8CsjTZCXJjasHVjCkaK1i9uS5lJQYIu9f+75w6it/kiacbROcK3HsHkYMkf02j+In5Lsvjlczd07TVDbJ9VeoGofZ5gw11k8ree3Oic2rJ2gl+0LWEu6WXyyMl9+N0IfBouMzeKvBTgVB8qt1/4jF5NvFxhy7zf239SM37+IoMjy4Sgd99scyPM2oNrPv3Bfnlfa2Q3BDlrScbNh+khhyfwaidsBYsi3wgf354oX/hi1Th3lDa+E62N8qdXqwu/sHBHNvjSuuq0FPvW7Byf481dFBhZfdEkYuCJTsCPgMO2rj9A19F6rzr2zGqb7khFiy1DTd2Hj8/qxt9T6IZyhROsr+4X5zn71b2GRuD04Kf
- MXpHv9ab
- kkH4MorHkqZWnTZHhiNN+I/Tb6CTSVJaHt5Refs552TxbrHyMYf7v5ENKnl+mHquTX/0ABcNQzaPNUMybo5BlBRlpbV63mbRNYNKchCACDJayg6Oo2S8GEZ4NdWLCD75na+auCjqoPsKDFSqzqp7zN+Bp0aFyG1HH4aRiNRzJbw9wEZ1Q8zSxeILYUcH4zz/NIqBRbeCbhdR7t6MVKCCLJcIABQd6emR/DfKJr5NVXkM4KM5kX7cI5pxm4GKC3+5CFFo76imTzXJcDBoYlBQKuQMdU03Q3C9vJv+xfXCSpHSiXILgDyttVpkeped2aUjGBIFzOz6GmrnXJOz5rwDV5Cr2rjQ0zh9LgJxym0v4hqYEMSNANmRJt303h8I0XFq0VbZYE0vVPy27erf8a0Yk1FiNP/1X5PwI4SkC74YvATw8JX9Z9RgG9S+KdoG8rSE8WHOlth/HmcEy/M+SM+kBEZdOf1nvdXeb/bXzp9TOV1ojpXJYhXjnxKb5rSUCoSN3FM/n0yBFhHDOd1x7vah9cOscnIVBtQksWDUutYfGcqevFYoY4jl9bhL/WgCTpS/BGn3x5MHqhDR5+Bca8saI++8e3HdMoK0XjcrrqkiVim6mKxsYXJgrIQBAXoAvOu6qGFwQvsiNnTyPbxFsHk9Yv2RY7b65VxpEvo4lsRrSYuP/89KBCguPeBKTtxgcztN9FpjSULlMCBBAM7GS4wBWdL0EuiGe4ZcoksdDCIDrJe6kiHG2rEE+fb0vaS/MMUGyTe3XFQJsAKsY/38=
+X-HE-Tag: 1763173932-244804
+X-HE-Meta: U2FsdGVkX19XZwRv2uifBzoH+vFWdp6tdVKM+CWf1vjBqJXOPPKHyfsvvCZtBBnBJdOUdbgAuUa6O3Vr3hDjLOV2YVUmBOq5UVWoL5IQ4Pw+8MONsu9ASx9D1XPW003JBRqpRRK81VmfQiLmgX1dUeLPJLMM4aD520ehPCrTcnWw+PoBwNMDm7WqymjgVUPOK6iE8QpUYzcEy46XC5E5iPMyFwGNRj5cZpcxJUyCOWwz0uf8mJW4v4EqYLL1V0QC1vbegXjd1UlYRwKRFW9TGUaRXOYem+hHdBlgNJfVWTl2Dz3JZXGX7prUFuVh8gt1T3+dG7bJXIJ2ElcvXyCYHyvnx8jVpvtuejyvPX2qnADzJudOldKmOaNvdWzHddPT421WGn9oevhmLZRTaWVl0juUOkBIbLcmlxmjJ6Rh/CwazFfRPhSDs1QF1gZ275xx0IanuW3wgdBQOlva4ShaYE7nBeRbHe/RmWXMd0ZXG1oZzUciRDrrtFWNJUXXvfnZ0E1/WuxLuYdHlVfoSmF7OWPntwxrvY9i4U2e2JT5cAn6DnFVLetFlh1sNqwXB7JCkPSRtJ6CgQ2XKQRpaGpK8buWsid9InLIIaEUHCWQbOjJja4ht6XRBARM0UyZP7QTktdSDAlf0C+qDzlXghHd/lwrBG4YJW8KwYgeF6F5oT+o8AW+oDi9iviqaHG0fKfxoJQISTnjSPaaYy7ice43oTur36FRv5ZordC0Eia+3acFka5rlrjarQaUZG7glyhohm3fZx3MXcMshkA/vaPfGm3TVBSzty1mn9i3jrY4KCtPy39FzBjIjvTRTgCsnhs1SMiOf0xzULEnx5J+6YYRCkQcU9zRnq40dp7r2ekSYXFrs2M3Sbv0nILj6CfhbDd2yXKfYPGryZ8F8yB6LTSKUxkNWFLJ2rZkJIBr9/aBrQ7h96dhapbmZMfrO4xmb1F+hgwVw48akMiBqoQmAZw
+ 8PcQGctv
+ OCLEDi1GyLKy2C3TuYbZmDipOrq3jpZViuxzY6K/x2/HMrA1LeH48zadWwqH/00gjlViGr3N1FwrVhXeTd5xMwezcO0KxTE469Y3H4L9khgrthCdXwRiHZ6td1eROCN9bfl2eloMq6YcBvpA6x8svpDPsdm/oUKIuEe/sflwHcuhNCulb+J/lG+9QtIZd6Zasu6zxj/GDVwbUDXshfwmaKL1a4pZL431JnxaGMpLNI90mjk2Jqp+V6Ep0wAJi+ZiZX2VvAkegErpTSa7s0GmOW+Ef2mZ++iO3iSLqkl88ujak2u5ZpQI3korq1gxTcyaWuyKxrv3ahyYsXDHZHNJo3G94aCTwHMgyiHEJV4p6tWyyKaxe3IhsSr5xgKPbz7QZCjOHjsz/LvGauAgRQtbF3v6dguuLypAtSuRfpXy+B+Jv/LiqQhKRdtc3p7bAbHGH8kwsalWDp13WYC/UIm/6xDmQIVavMGJFRLsAtCTPcnxm22MKflZe3vKwHfdqcch7sERl6gXnjBqAdCKvG/CXEOqp51ot17qq0or7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,177 +218,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 04:29:31PM -0800, Andy Lutomirski wrote:
+On 11/15/25 11:51, Andrew Morton wrote:
+> On Sat, 15 Nov 2025 11:28:35 +1100 Balbir Singh <balbirs@nvidia.com> wrote:
+> 
+>> Follow the pattern used in remove_migration_pte() in
+>> remove_migration_pmd(). Process the migration entries and if the entry
+>> type is device private, override the pmde with a device private entry
+>> and set the soft dirty and uffd_wp bits with the pmd_swp_mksoft_dirty
+>> and pmd_swp_mkuffd_wp
+>>
+>> ...
+>>
+>> This fixup should be squashed into the patch "mm/rmap: extend rmap and
+>> migration support" of mm/mm-unstable
+>>
+> 
+> OK.  After fixing up
+> mm-replace-pmd_to_swp_entry-with-softleaf_from_pmd.patch, mm.git's
+> mm/huge_memory.c has the below.  Please double-check.
 > 
 > 
-> On Fri, Nov 14, 2025, at 12:03 PM, Paul E. McKenney wrote:
-> > On Fri, Nov 14, 2025 at 10:45:08AM -0800, Andy Lutomirski wrote:
-> >> 
-> >> 
-> >> On Fri, Nov 14, 2025, at 10:14 AM, Paul E. McKenney wrote:
-> >> > On Fri, Nov 14, 2025 at 09:22:35AM -0800, Andy Lutomirski wrote:
-> >> >> 
-> >> 
-> >> >> > Oh, any another primitive would be possible: one CPU could plausibly 
-> >> >> > execute another CPU's interrupts or soft-irqs or whatever by taking a 
-> >> >> > special lock that would effectively pin the remote CPU in user mode -- 
-> >> >> > you'd set a flag in the target cpu_flags saying "pin in USER mode" and 
-> >> >> > the transition on that CPU to kernel mode would then spin on entry to 
-> >> >> > kernel mode and wait for the lock to be released.  This could plausibly 
-> >> >> > get a lot of the on_each_cpu callers to switch over in one fell swoop: 
-> >> >> > anything that needs to synchronize to the remote CPU but does not need 
-> >> >> > to poke its actual architectural state could be executed locally while 
-> >> >> > the remote CPU is pinned.
-> >> >
-> >> > It would be necessary to arrange for the remote CPU to remain pinned
-> >> > while the local CPU executed on its behalf.  Does the above approach
-> >> > make that happen without re-introducing our current context-tracking
-> >> > overhead and complexity?
-> >> 
-> >> Using the pseudo-implementation farther down, I think this would be like:
-> >> 
-> >> if (my_state->status == INDETERMINATE) {
-> >>    // we were lazy and we never promised to do work atomically.
-> >>    atomic_set(&my_state->status, KERNEL);
-> >>    this_entry_work = 0;
-> >>    /* we are definitely not pinned in this path */
-> >> } else {
-> >>    // we were not lazy and we promised we would do work atomically
-> >>    atomic exchange the entire state to { .work = 0, .status = KERNEL }
-> >>    this_entry_work = (whatever we just read);
-> >>    if (this_entry_work & PINNED) {
-> >>      u32 this_cpu_pin_count = this_cpu_ptr(pin_count);
-> >>      while (atomic_read(&this_cpu_pin_count)) {
-> >>        cpu_relax();
-> >>      }
-> >>    }
-> >>  }
-> >> 
-> >> and we'd have something like:
-> >> 
-> >> bool try_pin_remote_cpu(int cpu)
-> >> {
-> >>     u32 *remote_pin_count = ...;
-> >>     struct fancy_cpu_state *remote_state = ...;
-> >>     atomic_inc(remote_pin_count);  // optimistic
-> >> 
-> >>     // Hmm, we do not want that read to get reordered with the inc, so we probably
-> >>     // need a full barrier or seq_cst.  How does Linux spell that?  C++ has atomic::load
-> >>     // with seq_cst and maybe the optimizer can do the right thing.  Maybe it's:
-> >>     smp_mb__after_atomic();
-> >> 
-> >>     if (atomic_read(&remote_state->status) == USER) {
-> >>       // Okay, it's genuinely pinned.
-> >>       return true;
-> >> 
-> >>       // egads, if this is some arch with very weak ordering,
-> >>       // do we need to be concerned that we just took a lock but we
-> >>       // just did a relaxed read and therefore a subsequent access
-> >>       // that thinks it's locked might appear to precede the load and therefore
-> >>       // somehow get surprisingly seen out of order by the target cpu?
-> >>       // maybe we wanted atomic_read_acquire above instead?
-> >>     } else {
-> >>       // We might not have successfully pinned it
-> >>       atomic_dec(remote_pin_count);
-> >>     }
-> >> }
-> >> 
-> >> void unpin_remote_cpu(int cpu)
-> >> {
-> >>     atomic_dec(remote_pin_count();
-> >> }
-> >> 
-> >> and we'd use it like:
-> >> 
-> >> if (try_pin_remote_cpu(cpu)) {
-> >>   // do something useful
-> >> } else {
-> >>   send IPI;
-> >> }
-> >> 
-> >> but we'd really accumulate the set of CPUs that need the IPIs and do them all at once.
-> >> 
-> >> I ran the theorem prover that lives inside my head on this code using the assumption that the machine is a well-behaved x86 system and it said "yeah, looks like it might be correct".  I trust an actual formalized system or someone like you who is genuinely very good at this stuff much more than I trust my initial impression :)
-> >
-> > Let's start with requirements, non-traditional though that might be. ;-)
+> void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+> {
+> 	struct folio *folio = page_folio(new);
+> 	struct vm_area_struct *vma = pvmw->vma;
+> 	struct mm_struct *mm = vma->vm_mm;
+> 	unsigned long address = pvmw->address;
+> 	unsigned long haddr = address & HPAGE_PMD_MASK;
+> 	pmd_t pmde;
+> 	softleaf_t entry;
 > 
-> That's ridiculous! :-)
-
-;-) ;-) ;-)
-
-> > An "RCU idle" CPU is either in deep idle or executing in nohz_full
-> > userspace.
-> >
-> > 1.	If the RCU grace-period kthread sees an RCU-idle CPU, then:
-> >
-> > 	a.	Everything that this CPU did before entering RCU-idle
-> > 		state must be visible to sufficiently later code executed
-> > 		by the grace-period kthread, and:
-> >
-> > 	b.	Everything that the CPU will do after exiting RCU-idle
-> > 		state must *not* have been visible to the grace-period
-> > 		kthread sufficiently prior to having sampled this
-> > 		CPU's state.
-> >
-> > 2.	If the RCU grace-period kthread sees an RCU-nonidle CPU, then
-> > 	it depends on whether this is the same nonidle sojourn as was
-> > 	initially seen.  (If the kthread initially saw the CPU in an
-> > 	RCU-idle state, it would not have bothered resampling.)
-> >
-> > 	a.	If this is the same nonidle sojourn, then there are no
-> > 		ordering requirements.	RCU must continue to wait on
-> > 		this CPU.
-> >
-> > 	b.	Otherwise, everything that this CPU did before entering
-> > 		its last RCU-idle state must be visible to sufficiently
-> > 		later code executed by the grace-period kthread.
-> > 		Similar to (1a) above.
-> >
-> > 3.	If a given CPU quickly switches into and out of RCU-idle
-> > 	state, and it is always in RCU-nonidle state whenever the RCU
-> > 	grace-period kthread looks, RCU must still realize that this
-> > 	CPU has passed through at least one quiescent state.
-> >
-> > 	This is why we have a counter for RCU rather than just a
-> > 	simple state.
-
-Sigh...
-
-4.	Entering and exiting either idle or nohz_full usermode execution
-	at task level can race with interrupts and NMIs attempting to
-	make this same transition.  (And you had much to do with the
-	current code that mediates the NMI races!)
-
-> ...
+> 	if (!(pvmw->pmd && !pvmw->pte))
+> 		return;
 > 
-> > I am not seeing how the third requirement above is met, though.  I have
-> > not verified the sampling code that the RCU grace-period kthread is
-> > supposed to use because I am not seeing it right off-hand.
+> 	entry = softleaf_from_pmd(*pvmw->pmd);
+> 	folio_get(folio);
+> 	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
 > 
-> This is ct_rcu_watching_cpu_acquire, right?  Lemme think.  Maybe there's even a way to do everything I'm suggesting without changing that interface.
-
-Yes.
-
-Also, the ordering can sometimes be implemnted at a distance, but it
-really does have to be there.
-
-> >> It wouldn't be outrageous to have real-time imply the full USER transition.
-> >
-> > We could have special code for RT, but this of course increases the
-> > complexity.  Which might be justified by sufficient speedup.
+> 	if (pmd_swp_soft_dirty(*pvmw->pmd))
+> 		pmde = pmd_mksoft_dirty(pmde);
+> 	if (softleaf_is_migration_write(entry))
+> 		pmde = pmd_mkwrite(pmde, vma);
+> 	if (pmd_swp_uffd_wp(*pvmw->pmd))
+> 		pmde = pmd_mkuffd_wp(pmde);
+> 	if (!softleaf_is_migration_young(entry))
+> 		pmde = pmd_mkold(pmde);
+> 	/* NOTE: this may contain setting soft-dirty on some archs */
+> 	if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entry))
+> 		pmde = pmd_mkdirty(pmde);
 > 
-> I'm thinking that the code would be arranged so that going to user mode in the USER or the INTERMEDIATE state would be fully valid and would just have different performance characteristics.  So the only extra complexity here would be the actual logic to choose which state to go to. and...
-> >
-> > And yes, many distros enable NO_HZ_FULL by default.  I will refrain from
-> > suggesting additional static branches.  ;-)
+> 	if (folio_is_device_private(folio)) {
+> 		swp_entry_t entry;
 > 
-> I'm not even suggesting a static branch.  I think the potential performance wins are big enough to justify a bona fide ordinary if statement or two :)  I'm also contemplating whether it could make sense to make this whole thing be unconditionally configured in if the performance in the case where no one uses it (i.e. everything is INTERMEDIATE instead of USER) is good enough.
+> 		if (pmd_write(pmde))
+> 			entry = make_writable_device_private_entry(
+> 							page_to_pfn(new));
+> 		else
+> 			entry = make_readable_device_private_entry(
+> 							page_to_pfn(new));
+> 		pmde = swp_entry_to_pmd(entry);
+> 
+> 		if (pmd_swp_soft_dirty(*pvmw->pmd))
+> 			pmde = pmd_swp_mksoft_dirty(pmde);
+> 		if (pmd_swp_uffd_wp(*pvmw->pmd))
+> 			pmde = pmd_swp_mkuffd_wp(pmde);
+> 	}
+> 
+> 	if (folio_test_anon(folio)) {
+> 		rmap_t rmap_flags = RMAP_NONE;
+> 
+> 		if (!softleaf_is_migration_read(entry))
+> 			rmap_flags |= RMAP_EXCLUSIVE;
+> 
+> 		folio_add_anon_rmap_pmd(folio, new, vma, haddr, rmap_flags);
+> 	} else {
+> 		folio_add_file_rmap_pmd(folio, new, vma);
+> 	}
+> 	VM_BUG_ON(pmd_write(pmde) && folio_test_anon(folio) && !PageAnonExclusive(new));
+> 	set_pmd_at(mm, haddr, pvmw->pmd, pmde);
+> 
+> 	/* No need to invalidate - it was non-present before */
+> 	update_mmu_cache_pmd(vma, address, pvmw->pmd);
+> 	trace_remove_migration_pmd(address, pmd_val(pmde));
+> }
 
-Both sound like they would be nice to have...
 
-> I will ponder.
+Thanks, Andrew! Looks good!
 
-...give or take feasibility, of course!  ;-)
-
-							Thanx, Paul
+Balbir
 
