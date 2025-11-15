@@ -4,80 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E67CBCEACFC
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 06:59:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B26CEB2CA
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 08:15:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF8DF8E001F; Sat, 15 Nov 2025 01:59:02 -0500 (EST)
+	id 937A88E0020; Sat, 15 Nov 2025 03:15:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA8F88E0005; Sat, 15 Nov 2025 01:59:02 -0500 (EST)
+	id 8E87B8E0005; Sat, 15 Nov 2025 03:15:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBFC58E001F; Sat, 15 Nov 2025 01:59:02 -0500 (EST)
+	id 7AFCB8E0020; Sat, 15 Nov 2025 03:15:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AC0C18E0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 01:59:02 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6538D8E0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 03:15:44 -0500 (EST)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FBE5BAAA2
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 06:59:02 +0000 (UTC)
-X-FDA: 84111939324.16.7BC1708
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EA397C0003
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 06:58:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763189940; a=rsa-sha256;
-	cv=none;
-	b=t2Rr4KWEQVGJpeW1fRJEsmZLuz2TEcgdbwU0ekyBYrDersKCyBi2GxD7G+YAM7zqY6CF8g
-	wI5lfEHepFaN6CiBR9gqQSGyg1T6lunnNAe5Y5p6Sh79T4a0klDhPxgD3xWa5fjg3vLaZg
-	rZuvoPyXDrhEdVFIIna9Ct0Mhxl5nYM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D851B4D7E0
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 08:15:43 +0000 (UTC)
+X-FDA: 84112132566.16.DDB27BB
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8F2A840012
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 08:15:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WsC9lh83;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763189940;
+	s=arc-20220608; t=1763194541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hBdc4GfvVBfLjLHTqmm1y9yOV6OV75Fod+MPDBYEl0A=;
-	b=jUtQq5tLlPECyr1U62S6dTqLAlyb5KHuZZOXZDmuKNP1L9b5DVP0VTIPHGQ8pUQ36We5Yr
-	howkMfHZ+fcbkz6S+N9mz+r1ALXkG5Pt+LsnXa/Iuznm25ygZQL6FiQLVEssLQWCLeX/xi
-	+bE1Q7ueb8KuGOF4i3nGgUC1Mp+YRZo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 521201063;
-	Fri, 14 Nov 2025 22:58:51 -0800 (PST)
-Received: from [10.164.11.1] (unknown [10.164.11.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 251113F66E;
-	Fri, 14 Nov 2025 22:58:55 -0800 (PST)
-Content-Type: multipart/alternative;
- boundary="------------rX7B232xc21hQHL1v0kVFzn0"
-Message-ID: <aeb5ec99-11b3-4c77-8a04-469faab4210a@arm.com>
-Date: Sat, 15 Nov 2025 12:28:53 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Hit an assertion within lib/xarray.c from lib/test_xarray.c,
- would like help debugging
-To: Ackerley Tng <ackerleytng@google.com>, willy@infradead.org,
- akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: david@redhat.com, michael.roth@amd.com, vannapurve@google.com
-References: <20251028223414.299268-1-ackerleytng@google.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251028223414.299268-1-ackerleytng@google.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EA397C0003
-X-Stat-Signature: m3b5x7woud456e9uzf3rnbyrek7x13wi
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=OIEFz2SXJ6rrJVAHMrYEW0wt2dwLF3WWj5U4yXVTp0A=;
+	b=toaELqBrZc/kwkRLRWNQ/VUnIaq5r6XthaCSmSPCeNqAilvtE8HBa881ewGDGOsWuXOTmu
+	FFTmGT12G1oYFiQGNFanZsq/as8nzulSgXntx1QVag3mPwjbZx2Gkol1vcxt42GAkqi+ij
+	+OWDn/DtJasUlISA1FG2ekXO/+3heF8=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WsC9lh83;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763194541; a=rsa-sha256;
+	cv=none;
+	b=uqIRCmN7cHPdwvChJesSzUEXt28isstjHwicUgNlQmXvCWejGrt2Dt19H9b/DENoGQUQL6
+	60Q7v6+0QtWB/mnbJKJTz+5AXENX0XSqru2pmv/OQzRRCAPm6MZkMEPaP0OL7m4bpqz1+A
+	QSscSD8O4HNPe9OHCiVGumXyEEDTBzY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763194540; x=1794730540;
+  h=date:from:to:cc:subject:message-id;
+  bh=H0eZYJCpoSvX0wKbkFvQT3vWUPm2Bz8A/b6z6GlqE8k=;
+  b=WsC9lh8391f6XlRNv2R/XV0tsFFrtQIUcH+YMQ+U2nvxUvz6zjfL85tR
+   uWZfiUvmdeW+Ss6ZwZT7K9VxUn45n3PStFFstrhOB+VVA7EJvsXRq6bcy
+   titDMErVi38ktu0c8fggGOa4dXXAw9GiHO8dkqdu14a9DgFTe6tLOgTco
+   DJ2ja6KZuDWMkwmkM73CRlSKjxzOZCLsPGR3S+GrJhiiCUba4dXc98/3E
+   RXJVXVa8rKNzG1tC48bwAnu2urN92DhkrFG6bGUbI+LvHWV45khLYE3rz
+   O/C+ZhQ9LqCKu/Ols0Ffol39MyFK0cykA76bIOqEPakSGKtfsKIPmfK3U
+   A==;
+X-CSE-ConnectionGUID: bL1y+gHSRcC+dx/UAuf1jw==
+X-CSE-MsgGUID: 7ntaFz6FTviGvwQy+JupTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="76622778"
+X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
+   d="scan'208";a="76622778"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2025 00:15:38 -0800
+X-CSE-ConnectionGUID: 6YVShjMeRsO3SLeWROokIg==
+X-CSE-MsgGUID: xGP5se9uQna0q14CISzFbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
+   d="scan'208";a="189254008"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 15 Nov 2025 00:15:37 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vKBRX-0007oN-1P;
+	Sat, 15 Nov 2025 08:15:35 +0000
+Date: Sat, 15 Nov 2025 16:15:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 0f2995693867bfb26197b117cd55624ddc57582f
+Message-ID: <202511151652.qJVie0vk-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8F2A840012
+X-Stat-Signature: bmoar94m8n84yb8gdn3dnd17gzkojm7r
 X-Rspam-User: 
-X-HE-Tag: 1763189939-459880
-X-HE-Meta: U2FsdGVkX18h1U2ngv9k0iFcHSY+JuOUWnhJbeeFPd8xKBliphnIKCk4+MKov6xN9o+O0bRyAQ7CK8G5iRX3S5WyG4cVF2+U/eiPq4W5fhVpq26zcfngfcJ6ORNEILhjOPQ2RkHTXSc0rDusoxIi9t6BueamzGQpZyeQvGSnwEGXThCKULQDDZrfqxVRn0nsVYFgWb2qKaO0OxnGWlQAJJMOk+FPX+Ajkkq26V+yL4eOrRnywhS0AuXFpwbQH7zpZnq6FCmiWZ1Ilt21yiZ8BMcSdirxHConAbRlLzeyqln6HMgK6ZjkPH5UUX6f3VtT+BTuELCJlCWhPf/Jr+fRqvUZP5pvxzyLEfF+VhN1y5RvR4FOanIXFf18aHtlh7T6v/sTmVQags/9lS1zR84Puyj8/fewUwQM6FVT3bMdboNL6//S0tkKE/hoKQiFxAN6BEoavYCeUp9lhx2XNbnkpRiAMymk829I511zc8w+bUcwX68JrzqyrXFawogl7jplcCowUpQfIE5/JgLQRQR7WAAfk7CTwGrVvcUJyYLbLD98dB8PQf5Z07rn1vG+2Jq8UTtMSBqglvBbyqi8eVtlu1dJCd1zAD6GhtGSz8pPdlEsBuEiaVVdWZD9zMAeEwipyiFjqvqsUITGSN9Sw6Zv1zPhXNo56R/5RnmluBppIucjsZD5W8kefJJgE8581hP3yzDlRZ9et7NTyPKDrHwCXA0L97naFVZNEOW/kf4735+ajxkhVnz12DoH8cULt5d9792y4C3a4BI22DVYsqSyFGQmAoPoLK4TE8PbfvmsThGalHjLPaJeO90y6E5ygZ9QyTzVzjCNbh8ju2rEl0dUy69VKRzfWHtKZomupBY4PjOoBuADzztq0BXEsyWyyi8p9aM9sB2QlQngm0dyqjTlLRookSKPTmN4/pne7zwSsCDuNJUxmUaGd1/TAJFyD8l8FqbqmbQmZXArSiuEsyf
- K8yMrOL2
- Ha0QpKIg55VFJjFbbjspfSsH2vFwD5g0wsO2TKxjraO/rbZVAhFsC4aMyX4gisrDRWjAhyXSrO3cKHQSpoTYkzibIfubmYGav/NyyIM9zf6+P2DFCbQPe+AklG0n32z4lSZsR+q4gRtNbm/t05g1YxSZUfJOkvD6/Vziextku5s2q1qEby97yiuVmI3J2wecBo9gqVI/Bye3w+CuYUNDOt68BYK1kN16RLAoCdGYsNHv8YIL5XoKjWnFWfIf7Dggr+iGhIxswK+LRmIKV6HNmsheb5Jsy+Y0DOjWhi1CbC3SzmZgcwreoej1hfQ==
+X-HE-Tag: 1763194540-980614
+X-HE-Meta: U2FsdGVkX1/abL4ojE98/IOl87DPNb1SXKu8qjsYS0tlfwg2t8GR0IvscRKpIVrYJs1Tv1hv/BbK6ULXDAvwbDgbOfAR7JDLHYH+oyUd/FeNF47YJyzaslYVGGTEDv4ADGui9/VX+UexB50RRik9Q+d4IiyC34Digsfc82xCzPeN21dtmRMiqbTNTesly8suPrKGdOCkCOniH2lPVXnMRYMzNlXbHrzmiQIJeLzOMwFZG72Hx7sJktgLuK/oz02KLlHEMvQtDM09u5mJNLnqky/AT+De32Z8o8K2ybcdtwD6w2qkH4A1dIClzDwXu5KPscf8rfni0c4w5OOxORI/L5bKcXiNW1Zdy1KuqxbWAhiQ7NvnKEfebeEOZ5PT1JLEELWvloOQR4iRPzjaMvojThEqnSj7SY/GbRBsZDdkXq/ioFYz9hvkPXOiz1cd1M8RYwb07Z+mtnPTP7dHL5tTO6s+s4LkVMVjoLdXwD5CmFpr54TBAxlntS0ovEqyY5E3+8Ar3ip+8YKRhv7ltEwx8Ut2fYFZ4K1qrPhfhX027iHYjH9f3D23gYE7Suo0DKz4y9/YARl69vBeZ/PlmI1o62dGiBvcKuhaj0udAHh+o+VZGh+xxEHL3pj4oZjoPSA0JCZSdBwOt1ZP/4t7nspFm7FczNqa9v4m70lZM4dz1X/v2NvFA5nIR+IFxCpZ5UjYWQJtacAVXJSWaL9/dQ3fk3m7XGB5tFh44hSB3M4sH/TxqUzMrFFQsMR/zigroyPYO5W/mE+844O4U65Lf/GduGOMyWTk2pJ9Ro68MWYMG4mU+0XS4mxdcGSg9OH5yC0XK1kXKy1GGv/xl3xp8ZmMf9hegLvylb3JJVYLxkCPiUeV5E7KLy13auPbTYJQSEUmb2yuFu/i6Uj5gU1Kz13nrIJwAR1y7kH0Jx8Aa8Ooj2c2//lFvm+Vcs5T1ZTHypLPfQDFz5Qlk8s9Koqp/7d
+ DhBsekwu
+ SPRZTZlCqGvxBHc58uvyKjxwNZIVQHB4Opm6rOQDps7CU5I7ZjYv8Eynq0JPJF2cz0vs/wha7UTj78BueSpCh77onnhQVXQaQN5wtlAZM+wNS1giaBD9FBll7y3hB2LskvHchL+L+vIu7d7R0ZhsobiYZ0W453gD2VuK4pCA4YN3Yhd4GkG/zs4dh2Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,256 +101,241 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
---------------rX7B232xc21hQHL1v0kVFzn0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 0f2995693867bfb26197b117cd55624ddc57582f  Add linux-next specific files for 20251114
 
+Error/Warning (recently discovered and may have been fixed):
 
-On 29/10/25 4:04 am, Ackerley Tng wrote:
-> Hi!
->
-> I'm trying to use multi-index xarrays and I was experimenting with
-> test_xarray.c.
->
-> I'm trying to use xa_erase() on every index after splitting the entry in the
-> xarray. (and I commented out every other test case just to focus on this test)
->
-> Should erasing every index within the xarray after splitting be a supported use
-> case?
->
-> Here's the diff:
->
->    diff --git i/lib/test_xarray.c w/lib/test_xarray.c
->    index 5ca0aefee9aa5..fe74f44bbbd92 100644
->    --- i/lib/test_xarray.c
->    +++ w/lib/test_xarray.c
->    @@ -1868,6 +1868,9 @@ static void check_split_1(struct xarray *xa, unsigned long index,
->     	rcu_read_unlock();
->     	XA_BUG_ON(xa, found != 1 << (order - new_order));
->
->    +	for (i = 0; i < (1 << order); i++)
->    +		xa_erase(xa, index + i);
->    +
->     	xa_destroy(xa);
->    }
->
-> And made a call to
->
->    check_split_1(xa, 0, 3, 2);
->
-> Here's the assertion I hit:
->
->    node 0x7c4de89e01c0x offset 0 parent 0x7c4de89e0100x shift 0 count 4 values 254 array 0x55edd2dd8940x list 0x7c4de89e01d8x 0x7c4de89e01d8x marks 0 10 0
->    xarray: ../shared/../../../lib/xarray.c:764: update_node: Assertion `!(1)' failed.
+    https://lore.kernel.org/oe-kbuild-all/202511061542.0LO7xKs8-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202511062036.Ry8Z2APc-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202511150929.3vUi6PEJ-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202511150837.pTOmpYet-lkp@intel.com
 
-I changed that function to the following:
+    ERROR: modpost: "__divdi3" [drivers/gpu/drm/xe/xe.ko] undefined!
+    ERROR: modpost: "ip_send_check" [net/core/selftests.ko] undefined!
+    ERROR: modpost: "udp4_hwcsum" [net/core/selftests.ko] undefined!
+    Warning: drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_hw_sequencer.c:1321 This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+    Warning: drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_eeprom.c:845 expecting prototype for ras_core_eeprom_append(). Prototype was for ras_eeprom_append() instead
+    Warning: drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_eeprom.c:845 function parameter 'ras_core' not described in 'ras_eeprom_append'
+    Warning: kernel/nstree.c:391 expecting prototype for ns_tree_gen_id(). Prototype was for __ns_tree_gen_id() instead
+    drivers/pinctrl/pinctrl-mpfs-iomux0.c:221: undefined reference to `pinconf_generic_dt_node_to_map'
+    include/linux/pinctrl/pinconf-generic.h:235: undefined reference to `pinconf_generic_dt_node_to_map'
+    ld: net/core/selftests.c:148:(.text+0x74d): undefined reference to `udp4_hwcsum'
+    net/core/selftests.c:104:(.text+0x61b): undefined reference to `ip_send_check'
+    pinctrl-mpfs-iomux0.c:(.rodata.cst4+0x4): undefined reference to `pinconf_generic_dt_node_to_map'
 
-staticvoidcheck_split_1(structxarray *xa, unsignedlongindex,
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
-unsignedintorder, unsignedintnew_order)
+    ERROR: modpost: "__udivdi3" [drivers/gpu/drm/xe/xe.ko] undefined!
+    Warning: drivers/dma/ppc4xx/adma.c:1328 expecting prototype for ppc440spe_adma_device_estimate(). Prototype was for ppc440spe_adma_estimate() instead
+    Warning: drivers/dma/ppc4xx/adma.c:1845 expecting prototype for ppc440spe_rxor_set_region_data(). Prototype was for ppc440spe_rxor_set_region() instead
+    Warning: drivers/dma/ppc4xx/adma.c:1845 function parameter 'desc' not described in 'ppc440spe_rxor_set_region'
+    Warning: drivers/dma/ppc4xx/adma.c:1845 function parameter 'mask' not described in 'ppc440spe_rxor_set_region'
+    Warning: drivers/dma/ppc4xx/adma.c:1845 function parameter 'xor_arg_no' not described in 'ppc440spe_rxor_set_region'
+    Warning: drivers/dma/ppc4xx/adma.c:3021 expecting prototype for ppc440spe_adma_pq_zero_sum_set_dest(). Prototype was for ppc440spe_adma_pqzero_sum_set_dest() instead
+    Warning: drivers/dma/ppc4xx/adma.c:3021 function parameter 'paddr' not described in 'ppc440spe_adma_pqzero_sum_set_dest'
+    Warning: drivers/dma/ppc4xx/adma.c:3021 function parameter 'qaddr' not described in 'ppc440spe_adma_pqzero_sum_set_dest'
+    Warning: drivers/dma/ppc4xx/adma.c:3021 function parameter 'sw_desc' not described in 'ppc440spe_adma_pqzero_sum_set_dest'
+    Warning: drivers/firmware/stratix10-svc.c:58 This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+    sound/soc/codecs/cs-amp-lib.c:534 cs_amp_create_debugfs() warn: 'dir' is an error pointer or valid
 
-{
+Error/Warning ids grouped by kconfigs:
 
-XA_STATE_ORDER(xas, xa, index, new_order);
+recent_errors
+|-- arm64-defconfig
+|   `-- Warning:drivers-firmware-stratix10-svc.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|-- i386-randconfig-015-20251114
+|   `-- ERROR:__udivdi3-drivers-gpu-drm-xe-xe.ko-undefined
+|-- i386-randconfig-061-20251114
+|   `-- ERROR:__divdi3-drivers-gpu-drm-xe-xe.ko-undefined
+|-- parisc-randconfig-r112-20251114
+|   `-- pinctrl-mpfs-iomux0.c:(.rodata.cst4):undefined-reference-to-pinconf_generic_dt_node_to_map
+|-- powerpc-randconfig-001-20251115
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-expecting-prototype-for-ppc440spe_adma_device_estimate().-Prototype-was-for-ppc440spe_adma_estimate()-instead
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-expecting-prototype-for-ppc440spe_adma_pq_zero_sum_set_dest().-Prototype-was-for-ppc440spe_adma_pqzero_sum_set_dest()-instead
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-expecting-prototype-for-ppc440spe_rxor_set_region_data().-Prototype-was-for-ppc440spe_rxor_set_region()-instead
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-function-parameter-desc-not-described-in-ppc440spe_rxor_set_region
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-function-parameter-mask-not-described-in-ppc440spe_rxor_set_region
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-function-parameter-paddr-not-described-in-ppc440spe_adma_pqzero_sum_set_dest
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-function-parameter-qaddr-not-described-in-ppc440spe_adma_pqzero_sum_set_dest
+|   |-- Warning:drivers-dma-ppc4xx-adma.c-function-parameter-sw_desc-not-described-in-ppc440spe_adma_pqzero_sum_set_dest
+|   `-- Warning:drivers-dma-ppc4xx-adma.c-function-parameter-xor_arg_no-not-described-in-ppc440spe_rxor_set_region
+|-- um-randconfig-r073-20251115
+|   `-- sound-soc-codecs-cs-amp-lib.c-cs_amp_create_debugfs()-warn:dir-is-an-error-pointer-or-valid
+|-- x86_64-buildonly-randconfig-001-20251115
+|   |-- ld:net-core-selftests.c:(.text):undefined-reference-to-udp4_hwcsum
+|   `-- net-core-selftests.c:(.text):undefined-reference-to-ip_send_check
+|-- x86_64-buildonly-randconfig-005-20251114
+|   |-- ERROR:ip_send_check-net-core-selftests.ko-undefined
+|   `-- ERROR:udp4_hwcsum-net-core-selftests.ko-undefined
+|-- x86_64-kexec
+|   `-- Warning:kernel-nstree.c-expecting-prototype-for-ns_tree_gen_id().-Prototype-was-for-__ns_tree_gen_id()-instead
+|-- x86_64-rhel-9.4
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_hw_sequencer.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-expecting-prototype-for-ras_core_eeprom_append().-Prototype-was-for-ras_eeprom_append()-instead
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-function-parameter-ras_core-not-described-in-ras_eeprom_append
+|   `-- Warning:kernel-nstree.c-expecting-prototype-for-ns_tree_gen_id().-Prototype-was-for-__ns_tree_gen_id()-instead
+|-- x86_64-rhel-9.4-bpf
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_hw_sequencer.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-expecting-prototype-for-ras_core_eeprom_append().-Prototype-was-for-ras_eeprom_append()-instead
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-function-parameter-ras_core-not-described-in-ras_eeprom_append
+|   `-- Warning:kernel-nstree.c-expecting-prototype-for-ns_tree_gen_id().-Prototype-was-for-__ns_tree_gen_id()-instead
+|-- x86_64-rhel-9.4-func
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_hw_sequencer.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-expecting-prototype-for-ras_core_eeprom_append().-Prototype-was-for-ras_eeprom_append()-instead
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-function-parameter-ras_core-not-described-in-ras_eeprom_append
+|   `-- Warning:kernel-nstree.c-expecting-prototype-for-ns_tree_gen_id().-Prototype-was-for-__ns_tree_gen_id()-instead
+|-- x86_64-rhel-9.4-kselftests
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_hw_sequencer.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-expecting-prototype-for-ras_core_eeprom_append().-Prototype-was-for-ras_eeprom_append()-instead
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-function-parameter-ras_core-not-described-in-ras_eeprom_append
+|   `-- Warning:kernel-nstree.c-expecting-prototype-for-ns_tree_gen_id().-Prototype-was-for-__ns_tree_gen_id()-instead
+|-- x86_64-rhel-9.4-kunit
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_hw_sequencer.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-expecting-prototype-for-ras_core_eeprom_append().-Prototype-was-for-ras_eeprom_append()-instead
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-function-parameter-ras_core-not-described-in-ras_eeprom_append
+|   `-- Warning:kernel-nstree.c-expecting-prototype-for-ns_tree_gen_id().-Prototype-was-for-__ns_tree_gen_id()-instead
+|-- x86_64-rhel-9.4-ltp
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_hw_sequencer.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-expecting-prototype-for-ras_core_eeprom_append().-Prototype-was-for-ras_eeprom_append()-instead
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_eeprom.c-function-parameter-ras_core-not-described-in-ras_eeprom_append
+|   `-- Warning:kernel-nstree.c-expecting-prototype-for-ns_tree_gen_id().-Prototype-was-for-__ns_tree_gen_id()-instead
+`-- xtensa-randconfig-001-20251115
+    |-- drivers-pinctrl-pinctrl-mpfs-iomux0.c:undefined-reference-to-pinconf_generic_dt_node_to_map
+    `-- include-linux-pinctrl-pinconf-generic.h:undefined-reference-to-pinconf_generic_dt_node_to_map
 
-unsignedinti;
+elapsed time: 1554m
 
-for(i = 0; i < (1<< order); i += (1<< new_order))
+configs tested: 124
+configs skipped: 8
 
-xa_store_order(xa, i, new_order, xa, GFP_KERNEL);
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20251114    gcc-8.5.0
+arc                   randconfig-002-20251114    gcc-15.1.0
+arc                           tb10x_defconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                                 defconfig    clang-22
+arm                   randconfig-001-20251114    gcc-15.1.0
+arm                   randconfig-002-20251114    gcc-14.3.0
+arm                   randconfig-003-20251114    clang-22
+arm                   randconfig-004-20251114    clang-22
+arm                           sunxi_defconfig    gcc-15.1.0
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+hexagon                           allnoconfig    clang-22
+hexagon                             defconfig    clang-22
+i386                              allnoconfig    gcc-14
+i386        buildonly-randconfig-001-20251114    gcc-14
+i386        buildonly-randconfig-002-20251114    clang-20
+i386        buildonly-randconfig-003-20251114    clang-20
+i386        buildonly-randconfig-004-20251114    gcc-14
+i386        buildonly-randconfig-005-20251114    clang-20
+i386        buildonly-randconfig-006-20251114    gcc-14
+i386                                defconfig    clang-20
+i386                  randconfig-001-20251114    clang-20
+i386                  randconfig-002-20251114    clang-20
+i386                  randconfig-003-20251114    clang-20
+i386                  randconfig-004-20251114    gcc-14
+i386                  randconfig-005-20251114    gcc-14
+i386                  randconfig-006-20251114    clang-20
+i386                  randconfig-007-20251114    clang-20
+i386                  randconfig-011-20251114    gcc-12
+i386                  randconfig-012-20251114    gcc-14
+i386                  randconfig-013-20251114    gcc-14
+i386                  randconfig-014-20251114    clang-20
+i386                  randconfig-015-20251114    gcc-14
+i386                  randconfig-016-20251114    gcc-14
+i386                  randconfig-017-20251114    gcc-14
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+m68k                              allnoconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                            gpr_defconfig    clang-18
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-002-20251114    gcc-8.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20251114    gcc-12.5.0
+parisc                randconfig-002-20251114    gcc-11.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                       ebony_defconfig    clang-22
+powerpc               randconfig-001-20251114    clang-17
+powerpc               randconfig-002-20251114    clang-22
+powerpc                 xes_mpc85xx_defconfig    gcc-15.1.0
+powerpc64             randconfig-001-20251114    gcc-8.5.0
+powerpc64             randconfig-002-20251114    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20251114    gcc-13.4.0
+riscv                 randconfig-002-20251114    clang-22
+s390                              allnoconfig    clang-22
+s390                                defconfig    clang-22
+s390                  randconfig-001-20251114    gcc-8.5.0
+s390                  randconfig-002-20251114    gcc-11.5.0
+sh                                allnoconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                            migor_defconfig    gcc-15.1.0
+sh                    randconfig-001-20251114    gcc-10.5.0
+sh                    randconfig-002-20251114    gcc-15.1.0
+sh                           se7206_defconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20251114    gcc-14.3.0
+sparc                 randconfig-002-20251114    gcc-12.5.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20251114    gcc-8.5.0
+sparc64               randconfig-002-20251114    gcc-14.3.0
+um                                allnoconfig    clang-22
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20251114    gcc-13
+um                    randconfig-002-20251114    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64      buildonly-randconfig-001-20251114    clang-20
+x86_64      buildonly-randconfig-002-20251114    gcc-14
+x86_64      buildonly-randconfig-003-20251114    gcc-14
+x86_64      buildonly-randconfig-004-20251114    clang-20
+x86_64      buildonly-randconfig-005-20251114    clang-20
+x86_64      buildonly-randconfig-006-20251114    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20251114    clang-20
+x86_64                randconfig-002-20251114    gcc-14
+x86_64                randconfig-003-20251114    clang-20
+x86_64                randconfig-004-20251114    clang-20
+x86_64                randconfig-005-20251114    gcc-12
+x86_64                randconfig-006-20251114    gcc-14
+x86_64                randconfig-071-20251114    clang-20
+x86_64                randconfig-072-20251114    clang-20
+x86_64                randconfig-073-20251114    clang-20
+x86_64                randconfig-074-20251114    clang-20
+x86_64                randconfig-075-20251114    gcc-14
+x86_64                randconfig-076-20251114    clang-20
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20251114    gcc-14.3.0
+xtensa                randconfig-002-20251114    gcc-8.5.0
 
-xas_lock(&xas);
-
-for(i = 0; i < (1<< order); i += (1<< new_order))
-
-__xa_store(xa, index + i, xa_mk_index(index + i), 0);
-
-xas_unlock(&xas);
-
-xa_erase(xa, index);
-
-xa_destroy(xa);
-
-} and I still hit the assertion. I think the new function is still a valid code sequence -
-Store multi-indices of new_order, for length = 1 << order.  Then, replace those entries
-with xa_mk_index(index + i). Then erase the first index.
-
->
->
-> I think I've narrowed down the issue to the for (;;) loop in xas_store(), which
-> I believe isn't counting the `values` to be updated in update_node() correctly.
->
-> Is `values += !xa_is_value(first) - !value;` intended to compute the increase in
-> number of values with replacement of every slot being iterated by the new entry?
->
-> Why does the computation of `count` involve next and entry, and why does the
-> computation for `values` only statically depend on the initial value of entry,
-> and on first instead of next?
-
-Yeah there is some issue here only - but the code seems to work, tried a lot of
-different combinations in my head like throwing out a non-value and putting in
-a value, then vice-versa, then putting a NULL entry - can't figure out the problem :(
-
->
-> Thanks,
->
->
-> Ackerley
->
---------------rX7B232xc21hQHL1v0kVFzn0
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 29/10/25 4:04 am, Ackerley Tng
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20251028223414.299268-1-ackerleytng@google.com">
-      <pre wrap="" class="moz-quote-pre">Hi!
-
-I'm trying to use multi-index xarrays and I was experimenting with
-test_xarray.c.
-
-I'm trying to use xa_erase() on every index after splitting the entry in the
-xarray. (and I commented out every other test case just to focus on this test)
-
-Should erasing every index within the xarray after splitting be a supported use
-case?
-
-Here's the diff:
-
-  diff --git i/lib/test_xarray.c w/lib/test_xarray.c
-  index 5ca0aefee9aa5..fe74f44bbbd92 100644
-  --- i/lib/test_xarray.c
-  +++ w/lib/test_xarray.c
-  @@ -1868,6 +1868,9 @@ static void check_split_1(struct xarray *xa, unsigned long index,
-   	rcu_read_unlock();
-   	XA_BUG_ON(xa, found != 1 &lt;&lt; (order - new_order));
-
-  +	for (i = 0; i &lt; (1 &lt;&lt; order); i++)
-  +		xa_erase(xa, index + i);
-  +
-   	xa_destroy(xa);
-  }
-
-And made a call to
-
-  check_split_1(xa, 0, 3, 2);
-
-Here's the assertion I hit:
-
-  node 0x7c4de89e01c0x offset 0 parent 0x7c4de89e0100x shift 0 count 4 values 254 array 0x55edd2dd8940x list 0x7c4de89e01d8x 0x7c4de89e01d8x marks 0 10 0
-  xarray: ../shared/../../../lib/xarray.c:764: update_node: Assertion `!(1)' failed.</pre>
-    </blockquote>
-    <br>
-    <pre wrap="" class="moz-quote-pre">I changed that function to the following:
-
-</pre>
-    <div
-style="color: #000000;background-color: #ffffff;font-family: Menlo, Monaco, 'Courier New', monospace;font-weight: normal;font-size: 12px;line-height: 18px;white-space: pre;"><pre><span
-    style="color: #0000ff;">static</span><span style="color: #000000;"> </span><span
-    style="color: #0000ff;">void</span><span style="color: #000000;"> </span><span
-    style="color: #795e26;">check_split_1</span><span
-    style="color: #000000;">(</span><span style="color: #0000ff;">struct</span><span
-    style="color: #000000;"> xarray *</span><span
-    style="color: #001080;">xa</span><span style="color: #000000;">, </span><span
-    style="color: #0000ff;">unsigned</span><span style="color: #000000;"> </span><span
-    style="color: #0000ff;">long</span><span style="color: #000000;"> </span><span
-    style="color: #001080;">index</span><span style="color: #000000;">,</span></pre><pre><span
-    style="color: #000000;">                                </span><span
-    style="color: #0000ff;">unsigned</span><span style="color: #000000;"> </span><span
-    style="color: #0000ff;">int</span><span style="color: #000000;"> </span><span
-    style="color: #001080;">order</span><span style="color: #000000;">, </span><span
-    style="color: #0000ff;">unsigned</span><span style="color: #000000;"> </span><span
-    style="color: #0000ff;">int</span><span style="color: #000000;"> </span><span
-    style="color: #001080;">new_order</span><span
-    style="color: #000000;">)</span></pre><pre><span
-    style="color: #000000;">{</span></pre><pre><span
-    style="color: #000000;">        </span><span style="color: #795e26;">XA_STATE_ORDER</span><span
-    style="color: #000000;">(xas, xa, index, new_order);</span></pre><pre><span
-    style="color: #000000;">        </span><span style="color: #0000ff;">unsigned</span><span
-    style="color: #000000;"> </span><span style="color: #0000ff;">int</span><span
-    style="color: #000000;"> i;</span></pre><pre>
-</pre><pre><span style="color: #000000;">        </span><span
-    style="color: #af00db;">for</span><span style="color: #000000;"> (i = </span><span
-    style="color: #098658;">0</span><span style="color: #000000;">; i &lt; (</span><span
-    style="color: #098658;">1</span><span style="color: #000000;"> &lt;&lt; order); i += (</span><span
-    style="color: #098658;">1</span><span style="color: #000000;"> &lt;&lt; new_order))</span></pre><pre><span
-    style="color: #000000;">                </span><span
-    style="color: #795e26;">xa_store_order</span><span
-    style="color: #000000;">(xa, i, new_order, xa, GFP_KERNEL);</span></pre><pre>
-</pre><pre><span style="color: #000000;">        </span><span
-    style="color: #795e26;">xas_lock</span><span style="color: #000000;">(&amp;xas);</span></pre><pre><span
-    style="color: #000000;">        </span><span style="color: #af00db;">for</span><span
-    style="color: #000000;"> (i = </span><span style="color: #098658;">0</span><span
-    style="color: #000000;">; i &lt; (</span><span
-    style="color: #098658;">1</span><span style="color: #000000;"> &lt;&lt; order); i += (</span><span
-    style="color: #098658;">1</span><span style="color: #000000;"> &lt;&lt; new_order))</span></pre><pre><span
-    style="color: #000000;">                </span><span
-    style="color: #795e26;">__xa_store</span><span
-    style="color: #000000;">(xa, index + i, </span><span
-    style="color: #795e26;">xa_mk_index</span><span
-    style="color: #000000;">(index + i), </span><span
-    style="color: #098658;">0</span><span style="color: #000000;">);</span></pre><pre><span
-    style="color: #000000;">        </span><span style="color: #795e26;">xas_unlock</span><span
-    style="color: #000000;">(&amp;xas);</span></pre><pre>
-</pre><pre><span style="color: #000000;">                </span><span
-    style="color: #795e26;">xa_erase</span><span style="color: #000000;">(xa, index);</span></pre><pre>
-</pre><pre><span style="color: #000000;">        </span><span
-    style="color: #795e26;">xa_destroy</span><span
-    style="color: #000000;">(xa);</span></pre><pre><span
-    style="color: #000000;">}
-
-</span>and I still hit the assertion. I think the new function is still a valid code sequence -
-Store multi-indices of new_order, for length = 1 &lt;&lt; order.  Then, replace those entries
-with xa_mk_index(index + i). Then erase the first index.
-
-</pre></div>
-    <pre wrap="" class="moz-quote-pre">
-</pre>
-    <blockquote type="cite"
-      cite="mid:20251028223414.299268-1-ackerleytng@google.com">
-      <pre wrap="" class="moz-quote-pre">
-
-
-I think I've narrowed down the issue to the for (;;) loop in xas_store(), which
-I believe isn't counting the `values` to be updated in update_node() correctly.
-
-Is `values += !xa_is_value(first) - !value;` intended to compute the increase in
-number of values with replacement of every slot being iterated by the new entry?
-
-Why does the computation of `count` involve next and entry, and why does the
-computation for `values` only statically depend on the initial value of entry,
-and on first instead of next?</pre>
-    </blockquote>
-    <br>
-    <pre wrap="" class="moz-quote-pre">Yeah there is some issue here only - but the code seems to work, tried a lot of
-different combinations in my head like throwing out a non-value and putting in
-a value, then vice-versa, then putting a NULL entry - can't figure out the problem :(
-
-</pre>
-    <blockquote type="cite"
-      cite="mid:20251028223414.299268-1-ackerleytng@google.com">
-      <pre wrap="" class="moz-quote-pre">
-
-Thanks,
-
-
-Ackerley
-
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------rX7B232xc21hQHL1v0kVFzn0--
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
