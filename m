@@ -4,92 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C05CEACEF
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6158CEACF9
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:47:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 561698E0020; Fri, 14 Nov 2025 19:40:41 -0500 (EST)
+	id 264168E001A; Fri, 14 Nov 2025 19:47:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 539848E0005; Fri, 14 Nov 2025 19:40:41 -0500 (EST)
+	id 213BD8E0005; Fri, 14 Nov 2025 19:47:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 476F58E0020; Fri, 14 Nov 2025 19:40:41 -0500 (EST)
+	id 1033A8E001A; Fri, 14 Nov 2025 19:47:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 33AA38E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:40:41 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4D191A05E7
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:40:40 +0000 (UTC)
-X-FDA: 84110985840.17.6C1DDD5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3F134120004
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:40:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BJQzh+rq;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF2DF8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:47:00 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9543D896F6
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:47:00 +0000 (UTC)
+X-FDA: 84111001800.27.A4139DA
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D7B40C000A
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:46:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lnGdJA6T;
+	spf=pass (imf22.hostedemail.com: domain of 3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763167239;
+	s=arc-20220608; t=1763167618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bN8bDgGJVGh6hWZmpBRr8iBcPy/IkRvr/sv0vG/c/54=;
-	b=NSG0XOR0xNbq9e1yzZx3A2qTtueDGMnJnuWtY941HnF5g/EJKH7vwczUj55/36Dxh6Qs3O
-	WLQDHIo4QVGXYfsGKz/pd3BHvzEiIl+38dSuvFK1n610L6EchgowiLQJkfx+rqnjv38DMA
-	/VNNlx4/HZbzkXUyLzB/JWXctoaFdqo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BJQzh+rq;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167239; a=rsa-sha256;
+	bh=Mr/52DwIA8Vew8AuO0L8R6bm0vR8dQ+5A9WA+WG6t/s=;
+	b=MzKhbl0GJgb2tKpswU5+fCQ2DOCQleTR9+tpmCn+j5tjIic4iwyXTCz3WM4t9YlXH4HdZw
+	TuFmKNRiyPJKB8ht1bumvXPxSK2faB3B6u1UA3kW9SeQ3wpEPJh6wpNrFbQyDkfT/XAazO
+	WwV1SNM2hij5u5RM5vRuWwD3KtAwiCQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167619; a=rsa-sha256;
 	cv=none;
-	b=7mz+D3VIELXJihrAlAD6MIvQRp/ZsixjUSZsmdaOvI95Hwsf3TqMdZPF0DsCgumYi4bI3W
-	V24GCU4DcVgu1jNGbdYZeQ6y4bh05QlLiJdb2Dkqwy45slCSyci/XdYR+KSg5V521u9Whj
-	zg9nQGG/BIUmc6PrXcZIttAC3MKPDCY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8B7E760149;
-	Sat, 15 Nov 2025 00:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7674C4CEFB;
-	Sat, 15 Nov 2025 00:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763167238;
-	bh=jEmxfxbxB+RQClXnrGxIyD6tQR2dATzYojvSYk9o6ck=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BJQzh+rqSgrdY0Fw+0DQg0QRfi1HftOt95vAULsMq/Nh6b5D2ZreaC2uAzbC3Q7TT
-	 yFFZVPTV2lsw0GtFQgGCyPch1iRECfiCnhRHYQslC4gF7/YIVdijwSPtYWtkkhhSfP
-	 rc7UJYRkcv/foeqCahn8h2CV2XJIGXyimxWuU/Vc=
-Date: Fri, 14 Nov 2025 16:40:37 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Cc: "Shakeel Butt" <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- "Johannes Weiner" <hannes@cmpxchg.org>, "David Hildenbrand"
- <david@redhat.com>, "Michal Hocko" <mhocko@kernel.org>, "Qi Zheng"
- <zhengqi.arch@bytedance.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Axel Rasmussen" <axelrasmussen@google.com>,
- "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/vmscan: skip increasing kswapd_failures when 
- reclaim was boosted
-Message-Id: <20251114164037.bdd9551dfae425bc52756832@linux-foundation.org>
-In-Reply-To: <53de0b3ee0b822418e909db29bfa6513faff9d36@linux.dev>
-References: <20251024022711.382238-1-jiayuan.chen@linux.dev>
-	<lqcwz26ajddhoaq3gfuyt3mzwfn7waeqksoz6k55jrtn32u42z@pdf3dor7ntb6>
-	<53de0b3ee0b822418e909db29bfa6513faff9d36@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=lBudM9AXwRBpvVpQbrfG4bg+GXZw4ybw1hddd61FpjVhSzsqbUnc6eCOHeSBivWLW7PQ8o
+	FVb20izLyNgY11ccL1MkySmeCNN2isghon6Cy7gr/wqk4b18MiiLR+IVXPYdch6UIlHYMh
+	X2ewwXClEezWxbbpfRe5nwI8DnBfXtw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lnGdJA6T;
+	spf=pass (imf22.hostedemail.com: domain of 3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-340bb1bf12aso6171740a91.1
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:46:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763167617; x=1763772417; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mr/52DwIA8Vew8AuO0L8R6bm0vR8dQ+5A9WA+WG6t/s=;
+        b=lnGdJA6TU8eKSKoGa+N80kcWIsNXtzsCB844jEh3HYbic+3LkuOC3TJWYMTMMnA+xN
+         Wn/rdwnMGDG5OQt5+SlCqFlqMly8vJqVXNQ2QmTQSUG0hD/rlKjevBTePJ4aeDQpRbyj
+         j65v1CH5QgdcPDFsPy6+6Jv97zFNPrh7pmmCb8RsaDg95BYCVH8LHGKgChA/YKjeBdeh
+         iAJIX0wZQygkasQ4fsGxtgIWuGuvjFNA53CW1MfiUuErrKnUVdLYbHUemAkdoXdwfEpc
+         QXjaEM25MYgL1MMuTL+CT1Y7/ELQG/8W+XoJM7BmdmdMM/hIpDPmDODHl0yz+nGjW70R
+         Clcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763167617; x=1763772417;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mr/52DwIA8Vew8AuO0L8R6bm0vR8dQ+5A9WA+WG6t/s=;
+        b=UTZVqr7Dh5Y48D3GFiwj5SCCvX2u6WXRutE+67e0q6wu++rTT5Am0RDH/1OyMMFk/r
+         /7tSXyNk22DjKJ+tARZv1cgB9tG52xCIhiIAsb61BO8GyiNx9p/FQKZlbtW5sNKc47QV
+         2oPskhdyzDkQYlhpAo/kSTmThO0ITBNMNIT7V617R979bATZWPnqjoFD+rB5qk6Gwfee
+         cgGR8XJqlrqXVc3r0gWkFUfavavHuAmz6QjFd1w/dBKoIML+XMFJL9jBCBxue+aavAXg
+         oJMOBuDYpzOo2BtXifsBZ/FX7E8oUhbgfyWKU0aqM9JRzXgISEXuAR/Hz9beULivL3Xk
+         95bw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDLFKXymu3T4CS4ttISiSFSUflOUEgUsz8LBNW+ph8diHQ4bJGuA7nBEl4SkMvgp0//sFuwDulMg==@kvack.org
+X-Gm-Message-State: AOJu0YwlK3ISeggYDFt3nkGUQMaJq/wYulxA0rACzot2QII/HEI48Hvg
+	8VjJcnWO8TJ9iOesrXb8DrGIpC7eYg9zOZ1BKnMH8d7MLAuNW/NlNuQazST7x26C5OTong9GzZv
+	O2ylJnsgYfAloJW9zeY2AnPHGPQ==
+X-Google-Smtp-Source: AGHT+IHPDsoGUhVWbmh0UerKKIaGr6kr4KuHT3qBmIvhj2MnXtnNCORQphwRQGqEcjJQnhvfFDaRm0g88w6S7pk3mw==
+X-Received: from pjbdb8.prod.google.com ([2002:a17:90a:d648:b0:343:5c2:dd74])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:1dc9:b0:340:29a1:1b0c with SMTP id 98e67ed59e1d1-343f9e93781mr5917746a91.7.1763167617416;
+ Fri, 14 Nov 2025 16:46:57 -0800 (PST)
+Date: Fri, 14 Nov 2025 16:46:56 -0800
+In-Reply-To: <aQnGJ5agTohMijj8@yzhao56-desk.sh.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3F134120004
-X-Stat-Signature: j16bsi7ui9b3bh4c9k6xi31esycypxqb
-X-Rspamd-Server: rspam02
+References: <cover.1760731772.git.ackerleytng@google.com> <5a4dfc265a46959953e6c24730d22584972b1179.1760731772.git.ackerleytng@google.com>
+ <aQnGJ5agTohMijj8@yzhao56-desk.sh.intel.com>
+Message-ID: <diqz346gcebj.fsf@google.com>
+Subject: Re: [RFC PATCH v1 11/37] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES
+From: Ackerley Tng <ackerleytng@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, akpm@linux-foundation.org, 
+	binbin.wu@linux.intel.com, bp@alien8.de, brauner@kernel.org, 
+	chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net, 
+	dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com, 
+	dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
+	haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com, 
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
+	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
+	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
+	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
+	kent.overstreet@linux.dev, liam.merwick@oracle.com, 
+	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, 
+	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
+	mhiramat@kernel.org, mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, 
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au, 
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com, 
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, qperret@google.com, 
+	richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com, 
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com, 
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, wyihan@google.com, 
+	xiaoyao.li@intel.com, yilun.xu@intel.com, yuzenghui@huawei.com, 
+	zhiquan1.li@intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: mrjn4uutt5wyefqt5utgk7uwibhxadup
 X-Rspam-User: 
-X-HE-Tag: 1763167239-963076
-X-HE-Meta: U2FsdGVkX18ayy4bfmReNQXmQPoOJul9YuveI0RrP07IaXBcUjbj2v85u50uddrU4FDaXNCZZ9okEotWjaHb9LU2LtcICE/VD07OFos+sYYS61mSnh0RJqjOmSs/gSOIi1XUP3ZsiIO7zVDopER1sU4dG9wz1h+5u+UmUH6loIYsVlzdOzLPa3S8NylbqDqIk77hFKyjNWXdAtCYPiW7XGzmRFL497YpbK4oJscxeJKsjUGVVgsgxGum3cmVrlRCOf8UP1sA9mzqMpjAO0bEQnlINccih3r80d3GrhqfkXRjUmcesJNTe59Og1zqygoZOAOymWHpTTglkV29y5VIWx8HCP0JrcICSHh0gqU74y6wPfyqhqzBhij3Tl8aFzQBjzWF0vrkAMJhLfo2F6Dmi8LEaLGWFApVZA9ppHt6hb1EmwjtVVpWGwOBnFUMKiwE2Cb9yiBbmTCB9U30Tyu9FNZBUPuQtZDwCL30BwTtEeaNBLcEZbCXpE1s7zDCwT/y6Dc0GJhN6YI/VDgjmXD5qQFCERUDCI1A009ziFBQdBAPAtJr0W9OlLqFC6Ck6MnrwKZYtx3hKLday0drwGJZ05C8NNSGw3AF1COIZcjOjXZN83Ey6duKc1s6nGoM/VfrzeZ9uBfCZjLW16RP3SXNIHt+5H1XHcg3pxKXY9Xm2Nki1EMvEFVjBRL/0mb3uW4if8FKRV6+eDZ8W0FiSRs0BH0Qll3O1FBt71DW02VTeKcQdwKovvJS9PJ2lFJS3+0GxdoSpZxehydhCAhTEEUxu/pFCIAQ7DJXwFpm9SohTIGOlcxwzIqO1HF7NbBf2ZDseeDL0/sFGft5V36aijA8aNVHwcJVZxeEpWpIRY4R3w7JdBKFgCmwzfdF7FyV5IagBPDkPSGi7HVGz5D5zFl1PaWVNS7A8G4am0bZ19HWLYxNVIH8wzxrcXxARFhHWHk09f1n6czaGCAna9xgbRS
- ThafM5XS
- Om23MtesTjPn8Deh+vwZYCAMuR1PjPHZwt3b/NjHoEcxoZ4dyRLKZiwR2zAQADff16K4gCH15BQIT6O/+ShBCSfbWDiGzLE1qdKrJIZW8UMhuunzIq3vz0OHs3SKzI5YhUxTnPyiUK5Z4J4j0K49GIaN5x0DwlSmjfeD+KbwkxPFNJ1PakXRto9iRje7fXvMYaB4k7j0mCQ7u9sPZpMK+ccOSIda2HMdSXfoX5h7azh40lMdUPUdJ4cwMy1C8ObmxPK+E/4ksBgYyjPcWxapBAKJbyAft2AfM5Lz1aK9Hi9SaGPDv8vRiI6s5/DxLxs+x0iTkCW10mnr6aNoRK6JSZd76fwzW384gKy+/AiqM+r7WNkUOhlcIP+Ee5gBL8/Gj5ZhgtHi3HLk1ifl4OVKoaXGIoZgMYqpOsJ9XIA0/tyQm8UlABuRtmV1xq9nNrMj0wjSdCexWRA5LTzSvq1THXtm1K3WPVWc0Ds5aFhHBnFH7tgFXmNhmJSmCW0xCBesXHhEGvh6wd2aFsqqMr11R2oiKPg==
+X-Rspamd-Queue-Id: D7B40C000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763167618-165821
+X-HE-Meta: U2FsdGVkX1+KvTx3TiOyG5K+kCJ0YeIYWXAYOIcidvU7Tqs/GqgysnMEiNy9N6/AO6OU/trX0WtALV1wZ+x+FR1qlR1fPSIlTNZJ+powY6Bs0Gs3CYPHy9KZRly8Itgc5SrXJ5mfCVwKlajbz6JkLpLrpyYaQ1eFuWmGO9ZfrZVbRt/R3o11LnuXvuYucaWK15K95ddMBi1u8tdAgkOq1nlYuF2Qjq4RhGAq0jtlsUt/UOo+sEicvSxGuzcCZMqPA4LFTJ1Cl5w04eH0IrmGGvR5aDRIlGioLWb27laaynyDzTi5g9dglRSPB0ASSYC6inkDH/mELmdEm9wexUcQj2SPuX0PNb5g09PFLbIkAxhRHC/JgaKNk0SbQLZchz11163rnT1Yfcsow5TOxctT9a4KmLzb695MrIuSHcUPaIcKxJHaKNQqsvt1WH3yGSJxI8OxPcN4FuGp+tp6r01xyBDJ0b9AfkIwtWqlQvJTtddkklv68jeljEEVQ17EjyyjY469xRUzfR+JzQHXjEKgH3xHdgm9x7huIKUeWvgv3Jk4sAHO7NqFt7XrpAKzunEBwdDVQRfvTrgFxxpSnDsyrk1eZnM4KjKWtTnrqjDhIfTTmSCXDmGfbqgMiEH0HiwiTfcOwC2Rjcfcx6Ie3eHbSSZLiLHnC7aLfQSOJm8eVyxOGFHbaxsb+JgTxyoVc+VZUUq8sK8JAvA0q5NL8gCDP/AjMOiQ4ZOJpk2ioIBFHVMvQdTWmJbTGltp5tUsYRwuoGByoWdy3dl+9MS6WmbTtsofwV5HngCIGoc7YjOK/VbIx5ZNfdft5vwAStjE3OHFK4IDz+uADAJU/9dyEu6bZ0dwcZOqv1x9LZ2dEnlMMlz+DTZPSOh/3EjMg0y7zQAtN2BF6O7FcqlhH+oh/g93qiAuMs6lMJVqit1rqjnNnNXt2xfNBlNkqjI9Eo6SObOTFTrhFebDnK7E6xkbgXk
+ VmH+LfyP
+ I4k6CE6Qrngqgewz5KHaPzv3iUfHCTKCwa463yNpqLLCWaqHqLEe/yXqHNbOeD+/KmCmtlMl2T6YE8fZVwXVe0FmmRCJGmc8OvD2y/GPtITjGwjFEbYrLqEukwvIjC7ao4ODyJO6fSaRM+Q+DFoAHaU96k5YCrPH8rhnpjqj3q1gtpLnm3L1yoefjTbN43z3zrMTikB3iBEbLPyUQTpFci0WNTf5DZQWB9FoGhzQz1Swnv9Vj3IhKA96xBde9bcASyNGVKd0h4CGzrSJn/eup13CaYPPynxZAFZgZVhlUbrMlULc5IISJSRTgRuITSo1YVSsvbQyIK9sk6F/RZ63LjEs84lC1iowFsd20XxdTodXAvgNRiVQByC2ppQ1jtpWHJNCSbPfaj4rfr5O+PipwrfT82v86V/ixFRBUSENtblKo9soKUwivIFrXSJ33a05BaeUUqKpMCG75sDm9JZJjb5ScNRcRAg4f1shzQ7zIez7KQHx6IgrS4cm0tFfZDrPBNi4oALNPCcyKdoRDWGoFek9CemmqHaSfth4tBbP99096hy+aCj1NZ1/yjuy5z5TqG1nUDmjgvGA/YLN7mAKmGqzUGum9Pg28z5iul2BXuEwg7GDN/JGiUFmL46Wn1X/uZyCR5awmAumf/OIHpmQ3xRJu9d9wh1GSocMpEoqQT3++XWGDpEsiZ7WcSFi6oXAj0WcCzm85F1wNOyJgv/OUH2WyvP96DOQt2S8BdKlXu/5aTgbTHloE9OSfS3c+Izej9R6EvjvJ4IgGJKw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,125 +138,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 14 Nov 2025 04:17:40 +0000 "Jiayuan Chen" <jiayuan.chen@linux.dev> wrote:
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-> > >  Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> > > 
-> > Please resolve Andrew's comment and add couple of lines on boosted
-> > watermark increasing the chances of kswapd failures and the patch only
-> > targets that particular scenario, the general solution TBD in the commit
-> > message.
-> > 
-> > With that, you can add:
-> > 
-> > Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-> >
-> 
-> I see this patch is already in mm-next. I'm not sure how to proceed.
-> Perhaps Andrew needs to do a git rebase and then reword the commit message?
+> On Fri, Oct 17, 2025 at 01:11:52PM -0700, Ackerley Tng wrote:
+>> For shared to private conversions, if refcounts on any of the folios
+>> within the range are elevated, fail the conversion with -EAGAIN.
+>> 
+>> At the point of shared to private conversion, all folios in range are
+>> also unmapped. The filemap_invalidate_lock() is held, so no faulting
+>> can occur. Hence, from that point on, only transient refcounts can be
+>> taken on the folios associated with that guest_memfd.
+>> 
+>> Hence, it is safe to do the conversion from shared to private.
+>> 
+>> After conversion is complete, refcounts may become elevated, but that
+>> is fine since users of transient refcounts don't actually access
+>> memory.
+>> 
+>> For private to shared conversions, there are no refcount checks. any
+>> transient refcounts are expected to drop their refcounts soon. The
+>> conversion process will spin waiting for these transient refcounts to
+>> go away.
+> Where's the code to spin?
+>
 
-A rebase would be needed if the patch had been placed in mm.git's
-mm-stable branch.  But it's still in the mm-unstable branch where
-patches are kept in quilt form and are imported into git for each
-mm.git release.
+Thanks, I will fix the commit message for the next revision.
 
-> But regardless, I'll reword the commit message here and please let me know
-> how to proceed if possible:
+>> +/*
+>> + * Preallocate memory for attributes to be stored on a maple tree, pointed to
+>> + * by mas.  Adjacent ranges with attributes identical to the new attributes
+>> + * will be merged.  Also sets mas's bounds up for storing attributes.
+>> + *
+>> + * This maintains the invariant that ranges with the same attributes will
+>> + * always be merged.
+>> + */
+>> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+>> +				    pgoff_t start, size_t nr_pages)
+>> +{
+>> +	pgoff_t end = start + nr_pages;
+>> +	pgoff_t last = end - 1;
+>> +	void *entry;
+>> +
+>> +	/* Try extending range. entry is NULL on overflow/wrap-around. */
+>> +	mas_set_range(mas, end, end);
+>> +	entry = mas_find(mas, end);
+>> +	if (entry && xa_to_value(entry) == attributes)
+>> +		last = mas->last;
+>> +
+>> +	mas_set_range(mas, start - 1, start - 1);
+> Check start == 0 ?
+>
 
-Which is why I do things this way.
+Thanks!
 
-Easy peasy, edited, thanks.
+>> +	entry = mas_find(mas, start - 1);
+>> +	if (entry && xa_to_value(entry) == attributes)
+>> +		start = mas->index;
+>> +
+>> +	mas_set_range(mas, start, last);
+>> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+>> +}
+> ...
+>
+>> +static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
+>> +{
+>> +	struct gmem_file *f = file->private_data;
+>> +	struct inode *inode = file_inode(file);
+>> +	struct kvm_memory_attributes2 attrs;
+>> +	pgoff_t err_index;
+>> +	size_t nr_pages;
+>> +	pgoff_t index;
+>> +	int r;
+>> +
+>> +	if (copy_from_user(&attrs, argp, sizeof(attrs)))
+>> +		return -EFAULT;
+>> +
+>> +	if (attrs.flags)
+>> +		return -EINVAL;
+>> +	if (attrs.attributes & ~kvm_supported_mem_attributes(f->kvm))
+>> +		return -EINVAL;
+>> +	if (attrs.size == 0 || attrs.offset + attrs.size < attrs.offset)
+>> +		return -EINVAL;
+>> +	if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.offset))
+> Should be
+> if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.size))
+> ?
+>
 
+Thanks!
 
+>> +		return -EINVAL;
+>> +
+>> +	if (attrs.offset > inode->i_size ||
+> Should be
+> if (attrs.offset >= inode->i_size ||
+> ?
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-Subject: mm/vmscan: skip increasing kswapd_failures when reclaim was boosted
-Date: Fri, 24 Oct 2025 10:27:11 +0800
-
-We have a colocation cluster used for deploying both offline and online
-services simultaneously.  In this environment, we encountered a
-scenario where direct memory reclamation was triggered due to kswapd
-not running.
-
-1. When applications start up, rapidly consume memory, or experience
-   network traffic bursts, the kernel reaches steal_suitable_fallback(),
-   which sets watermark_boost and subsequently wakes kswapd.
-
-2. In the core logic of kswapd thread (balance_pgdat()), when reclaim is
-   triggered by watermark_boost, the maximum priority is 10. Higher
-   priority values mean less aggressive LRU scanning, which can result in
-   no pages being reclaimed during a single scan cycle:
-
-   if (nr_boost_reclaim && sc.priority =3D=3D DEF_PRIORITY - 2)
-       raise_priority =3D false;
-
-3. Additionally, many of our pods are configured with memory.low, which
-   prevents memory reclamation in certain cgroups, further increasing the
-   chance of failing to reclaim memory.
-
-4.  This eventually causes pgdat->kswapd_failures to continuously
-   accumulate, exceeding MAX_RECLAIM_RETRIES, and consequently kswapd
-   sto= ps working.  At this point, the system's available memory is
-   still significantly above the high watermark =E2=80=94 it's
-   inappropriate fo= r kswapd to stop under these conditions.
-
-The final observable issue is that a brief period of rapid memory
-allocation causes kswapd to stop running, ultimately triggering direct
-reclaim and making the applications unresponsive.
-
-This problem leading to direct memory reclamation has been a
-long-standing issue in our production environment.  We initially held
-the simple assumption that it was caused by applications allocating
-memory too rapidly for kswapd to keep up with reclamation.  However,
-after we began monitoring kswapd's runtime behavior, we discovered a
-different pattern:
-
-kswapd initially exhibits very aggressive activity even when there is
-still considerable free memory, but it subsequently stops running
-entirely, even as memory levels approach the low watermark.
-
-In summary, both boosted watermarks and memory.low increase the
-probability of kswapd operation failures.
-
-This patch specifically addresses the scenario involving boosted
-watermarks by not incrementing kswapd_failures when reclamation fails. 
-A more general solution, potentially addressing memory.low or other
-cases, requires further discussion.
-
-Link: https://lkml.kernel.org/r/53de0b3ee0b822418e909db29bfa6513faff9d36@linux.dev
-Link: https://lkml.kernel.org/r/20251024022711.382238-1-jiayuan.chen@linux.dev
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/vmscan.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
---- a/mm/vmscan.c~mm-vmscan-skip-increasing-kswapd_failures-when-reclaim-was-boosted
-+++ a/mm/vmscan.c
-@@ -7127,7 +7127,12 @@ restart:
- 		goto restart;
- 	}
- 
--	if (!sc.nr_reclaimed)
-+	/*
-+	 * If the reclaim was boosted, we might still be far from the
-+	 * watermark_high at this point. We need to avoid increasing the
-+	 * failure count to prevent the kswapd thread from stopping.
-+	 */
-+	if (!sc.nr_reclaimed && !boosted)
- 		atomic_inc(&pgdat->kswapd_failures);
- 
- out:
-_
-
+Thanks!
+>> +	    attrs.offset + attrs.size > inode->i_size)
+>> +		return -EINVAL;
+>> +
+>> +	nr_pages = attrs.size >> PAGE_SHIFT;
+>> +	index = attrs.offset >> PAGE_SHIFT;
+>> +	r = __kvm_gmem_set_attributes(inode, index, nr_pages, attrs.attributes,
+>> +				      &err_index);
+>> +	if (r) {
+>> +		attrs.error_offset = err_index << PAGE_SHIFT;
+>> +
+>> +		if (copy_to_user(argp, &attrs, sizeof(attrs)))
+>> +			return -EFAULT;
+>> +	}
+>> +
+>> +	return r;
+>> +}
 
