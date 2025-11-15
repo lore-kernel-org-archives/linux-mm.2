@@ -4,125 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C19EBCE8D6B
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 02:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F60CE8D6B
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 03:05:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F16858E0024; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
+	id B1B268E000C; Fri, 14 Nov 2025 22:05:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC7388E0005; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
+	id AF26C8E0005; Fri, 14 Nov 2025 22:05:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB68B8E0024; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
+	id A07CA8E000C; Fri, 14 Nov 2025 22:05:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C8E298E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66B2616056B
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:51:15 +0000 (UTC)
-X-FDA: 84111314910.08.F48FD8E
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 893B2C0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:51:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=h95mMGL2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763175073; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 91CD88E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 22:05:05 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19EA912EA0B
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 03:05:05 +0000 (UTC)
+X-FDA: 84111349770.26.D4665E3
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7CD87180009
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 03:05:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=t1MQHiTE;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763175903; a=rsa-sha256;
 	cv=none;
-	b=Nv72eavdvTOmvXS7NnuZDbVFvCUNOZDh9stO7hiC4iGa6Si3I2HCFFZd/t/yfzP22jBVIj
-	xxrOZYO7spNBBaMKYgSRjTdk8wx/ykc5XBowtYVS/2QdIl8eC3IeL8t0NkV4DVy1eDv1SM
-	9wRIxGSfhisVacPWKaOWzjg3xhRzlHo=
+	b=NJmdXzn37xoOYijVPfZVkmx1q/wKtTKLUEaVKkLVKQ4dprkL6llXvdvNLDpyYzrfdH6rYR
+	V2z1jT6YJkyuIUJ//2bWirYtcooLogHeylPnnSvlY7Q9uE3J3Kr+k3OJXnfEVhVFM+jo3Q
+	DYCTSnhXiWszqsMyysDSvqYb842YuEM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=h95mMGL2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=t1MQHiTE;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763175073;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763175903;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Au18H467azZy+IfrgSEjSDC4r/H00yPg/dxvvmoSDI8=;
-	b=qXdYhbOuhMAKfzK5Kl9gGmER0eLsiXcRVz+P3P4zkiNlJ1cO36VR2dXEAMf5Ls3Y/eUvbD
-	2ggFLK4feY/3OSixVg85tMboWkOOWCGXzFFCXjfqu1gaT6Gvg2lAzGBuizYPavP1sRJk0z
-	dB3G1L2myeLqxwff/fD+NBMSJhRFZEs=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64312565c10so4034383a12.2
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:51:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763175072; x=1763779872; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Au18H467azZy+IfrgSEjSDC4r/H00yPg/dxvvmoSDI8=;
-        b=h95mMGL2tR/H/UaX9l2CKNNxvlWJwqhiiylDhS/k/Dw2DsjDhmbsaB/S2pvf248Z9y
-         BlzOVLhznmBxegmGHmUbAwewQMvqXcLdTQF+f7ZU5NQVWvw5ztlpFOxP/cunjuX+mb55
-         QgPKaEXVLkRIBEPYEHQPa8I5MIaeAmxMvMGs/Q8m7jdICAbUUay7PX0OooAjbuu5+vl3
-         6X3m3eow30RzMdpU3vbbgUjBolj7qlilZ6Qkfe0dz48HPU+u2WddMaj8Yw2C53wpMiXA
-         lFzKRJUwXGapTkttvcDAAqfBNAgn503nfCbLCFe/GfLTYKvXUb52dmCdGwyfFcNA4qQP
-         vUyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763175072; x=1763779872;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Au18H467azZy+IfrgSEjSDC4r/H00yPg/dxvvmoSDI8=;
-        b=rYH6nu/lqftWU3i+8lEXGFXySvXXsZuuQogeeEdlvbKtBHDZP04bBs7yucVo3TcZQu
-         DpkigVnUGTXxLhs9/hAfqOrktTwtP+86410xdDMPNvkZalZ+y1hJwoXzDa5ylBzAKpF2
-         QA/SPgeD1JlIuFBkcu3cCOu4fT2qEgPKvi5OYvhOEFZhDAAgZUGBVrt8aboK5vN86eRg
-         9uOfzlrELJoJ96xQQl+5D60BxUL0ZcTvRMmf0rpsEfWHnFLFASi1L3TDpnSM5vXrlbvU
-         lXgKcXDzhC6zRnnpTZtMmWyGc+RfgFRnqVQUw8o7SMV4/1pXXJfpyKeRlLkq0soB2uwe
-         H4Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJhWFiN1cYJ/PY73qH0UB5xjuA9bFaDC0LO8kfo6yguwDUX6P/GpUTx2kk50nPJhcX4vgFzbic8Q==@kvack.org
-X-Gm-Message-State: AOJu0YyVMCUVy089ejKB3u1jsCjg099GDSsL3C9BacX0PEM3uW4ikPxW
-	8Ov/hkoNm4MoDL3t8bdLThNRAz9GYEeEu1O7is03eQ7xed32Z1djvGHD
-X-Gm-Gg: ASbGncsZS9BruIR0RDPfoSLPm35yYBlUNUpy3nHGMJsr0C9KYEnK4+gWMkz8PJ+AvZe
-	0cPEb+48yZ0mf6Q24byLvCgwZUvxEOdEQBsO1iOgl9MHlxGd2RQSUULvcx/EStqPMorjx1Tbsmp
-	Rbu0ZSdN4hmuYRp1bXrBtCmFOdrrrWHs+WdCuJnc1ikI3aQv31umTR8mvZuU/LBcZ9cojwTHAx+
-	quS0NnKEa4LvfSyMpz2CoknvEwZil2HyKsfTBCR1E4dvWi8cZoWVHjZrcdeMNc4lHvgRE1YIb1U
-	flc+vkEuvHRAOFMuRX/7VCgdDPPrXed176HJ9KV8fCoN+RK/f/7axUxKZFO6iPtwewJivNd6rH3
-	U91PfSko45Psj5pGMq3QdLHS5goXb/YoDkxtpF2ZhwvJo8W8lwepFs8qwPQEoxD1tQ/TSjemUQq
-	3Njwq5d1zUgVy+93Q8daTISsr5
-X-Google-Smtp-Source: AGHT+IFijYhBosLb31iiGAABudJFyw60Nhzb666Nl93sjFEpO/WA4uHbEpnOI80frPELz2vzKBG3QA==
-X-Received: by 2002:a17:906:478c:b0:b72:dee9:88df with SMTP id a640c23a62f3a-b736793de88mr514948166b.46.1763175071623;
-        Fri, 14 Nov 2025 18:51:11 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fdac50csm506960666b.61.2025.11.14.18.51.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 14 Nov 2025 18:51:11 -0800 (PST)
-Date: Sat, 15 Nov 2025 02:51:09 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, willy@infradead.org,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/huge_memory: consolidate order-related checks into
- folio_split_supported()
-Message-ID: <20251115025109.yerb7gbty4h7h63s@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251114075703.10434-1-richard.weiyang@gmail.com>
- <827fd8d8-c327-4867-9693-ec06cded55a9@kernel.org>
- <20251114150310.eua55tcgxl4mgdnp@master>
- <64b43302-e8cc-4259-9fa1-e27721c0d193@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3pfW+nTPOizp5ae3wU4J9hmG9q649UAuyaxagX4QObQ=;
+	b=zcW4uRePLtTAHauiCjffUBXWAkhLhoKYrr4PAORHE4nBcz80nTiSGJ+tOKh2IXQF6QGQEV
+	pdrY4gW1CYsu2EOfWrtFXLDgnMNfsWhgB/2EzvJBPYSWZBwTRzd3pqF2XKQNveZTieK6Bf
+	A7RMejnR6p7MCnK9fmHiVu9JjgOivik=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1763175897; bh=3pfW+nTPOizp5ae3wU4J9hmG9q649UAuyaxagX4QObQ=;
+	h=From:To:Cc:Subject:Date;
+	b=t1MQHiTETD6Xa4ok9CrCSPmZr6M2rxRVVTU4PWZH0Hjs6No1LX597GLzUKVrS3z6Z
+	 KI1eeefzf29gFyv4WSfCFq4JV1rnHooomlATNRGc71EzWUIOKmGY+YDYWNXKvIcy4I
+	 ylOPWy6P2bzhtGE7KjjIkDu4Njt5sMmLjOlt16x8=
+Received: from node68.. ([166.111.236.25])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 1363F030; Sat, 15 Nov 2025 11:04:54 +0800
+X-QQ-mid: xmsmtpt1763175894tepxfd5gx
+Message-ID: <tencent_EB0FED91B01B1F8B6DAEE96719C5F5797F07@qq.com>
+X-QQ-XMAILINFO: MqswyhUqVe0CRwL+WpQGJ/BSeXOV4C9EFjf4e2HSkVgZOStP1lYvvkia98RTiY
+	 wZiY/DskIq9cTwce7tC1BTsnTCtlmJMFytzRrhLx+fZ3PaJUsOgDvJOn4vymnquFIo8jYpYR1nMp
+	 BugvTTAKGzBuc+puVgx5M4l499kwvWe5G3ZpzAxCp0o+JwNwgGnPxlsZN4CFN/F6bvzzQJ2x7crX
+	 oG33nOh9GevUbZG+f/yjHN96M41Q11K+5TiKQpLc8ueL9L3kpic8KRkX4glIuJKsP0lQN578Aogb
+	 jQ25NUwPkkAcYpzu5X3FAW5flcpiIgJHWmoJ4rQ8AUSHgsw/bsXRtVXmZ1GyfqgPrgIRSYXHl9Js
+	 IzTT/iEA7uF393ygXhJp2+Bq5xGUXlq6kyYdXRQ+lGdl/ytmzDy5k7c03Hj2JiXCXSxCAtvRWPZb
+	 72+es7kBjqoPSmeXZNP/wZhfFdUB4XZTE2d4XctOraxCVtx7gqzbLu+rA2T2RDml1E6Lmms7bE1t
+	 vm3bRpjBmCxuHalHwOabG4LXUeHzQgl2ecCKjYk3laac3EECzZmVyAwhBZTCEKGkok3+Z1yj5Whr
+	 7YDT0E19+gd6Fvcsp7BVQDsnlkSNYBjlDBAQzfiYRgucfQOnswOQNtjet93412ZR+KZ0ca02zyJE
+	 YZYgVvkS0i5d+ywW0tdLfEtTgga0lOnDMtV83Xc5r7Cg2PGLp7bOFAEo4liqyCPC0gjyfb6urfLK
+	 gCki5qVk7rZhnNuBUcJstfFtktnvhCtejaPjUa2GkwsqBKhjRPDl3CGnYrpjuuyWDOe7UXx9y0aQ
+	 HywY8eGDXfmbHlPdfxNE6VLD3hynfjkleeTC/ywfD6dGxkK9oLGqHEKia11Cfdkte1KS6ODtLlJ2
+	 /XQwqOkYy7cLH993eIvv4ggDC2LxHAbcJeTegbpx1Zi2HSkfnY8uPeIaFPW7W+1qXnSs6sMgjzgT
+	 I9nFIsxQMefr7WPk7oS/+DzwudN003PyHmcUJ4g73uqGENPPJd82/QvheNIsGCJz+FTTjMm65zfq
+	 zkGc1fmpmSiiTaJ5qt
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: fujunjie <fujunjie1@qq.com>
+To: akpm@linux-foundation.org
+Cc: vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	fujunjie <fujunjie1@qq.com>
+Subject: [PATCH v2] mm/page_alloc: optimize lowmem_reserve max lookup using its semantic monotonicity
+Date: Sat, 15 Nov 2025 03:02:55 +0000
+X-OQ-MSGID: <20251115030253.3138157-1-fujunjie1@qq.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64b43302-e8cc-4259-9fa1-e27721c0d193@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 893B2C0005
-X-Stat-Signature: wdok9cai64a1omsdqfzicc6iotjsjxmb
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1763175073-493623
-X-HE-Meta: U2FsdGVkX19w7CT/JWEtQ/HkTFB1iQthGqTh3ZfjiMn5UHIHS7cKjeypOBkg7vLFktMh0D2WyJG9DXSnjLTYPzeq+XHXgtAlHd3MAXTDBg08wcFniqnS0gdtuWiKVrNmhNKjM7XgGZtzad7/CHnNvWsMl4dtpNKgJjo1UclPFHDOdZPAvFTTsU/iDoURR6GdcoE3n1xHlIIt5uB73HW05jLUEPmiXSqhY4SFxYCc9BRW3nZhZrQxWCcsy948bVwbdrBhNZpyAaOM3/yljlfF6RT/QstsQgHpbu9WdFDAJpa8gI2gtNTiDnbmFnv356VTz6a7bSoH6AEY57Dje54cC2tIKKIz+BL0ljyNXw/howxIdpZMcmiCv/hKweW1Bo/NUp7zmy1t8cHJbVYabin8lwWOVH5w/YD+OP2NvdMke3Cstv9W79f0eRGTtUmhtu+CP6qSC2noDMlLXYjZT4DnDOlnjgB5/KFuKNhItjkq2XtqKuHUW0/grvZMS9cZnLhgBaq8AjhR+CP8Ez4bwYlaIJf72xVvq5IeA2gONhe6YRwXw8qBpowcRWFNBhDd8H+GMvx3aY73FrM9mLbanRcydG83WGZjUekk2s6kPJ7jbiIrkR0JTLu/TjmHwGs+9Gd/3/plrPyXIgc/KIwey7Bbvt/2hDvAlPXBE/u/WWVQZ26GTb1VpkeCkX6l2fKxJ4+WLCR9BGMDTEAnwGjArEhk4+FlranWwZHFbBsr3Ro7ufBSnGHzIcnpooIRjbKLCxr0oQZXq2CiZDwqzPnueqYOpJs3o/NYHJunUjNBbMUf9z4OJuwuJ+0AiygjjxoU2m5hlta1wKuiUOeKzAaLxwKG3ZnEFtAlFeCIy+TG+40cb+T2s1mxsdmpWIwn8K96qV1I2I4rL+ns9ai2y7Vi95SnfBWuQT3MXumzt35maJcBIxZN3oKchBmyeS/aBDgHi1q+HaXblcGy3NsrM0IB9Gx
- zyPfc/zc
- B4FGXwtrbyOCBp2UQQOl0XjhQ2S3rm81hlMSjoVXa7Q/tk0UkKeYlL8yQCz3VXoqz5VqCcCqGClrM29tqxTCSGu/tp4sJ6yoBhAp4ddTkJvO+TC1XS57OWhXpvkN3rimem7vQu6CamGRd5QeBRWBtquGfhO0TgFcTyLiqOi4G08Dc7TwUe+IPlUxoJVQvbZmq0Rq6NSPIczro+l2wKXHE6Mhh8MAGTg7SWYqYSP4v2cjw2dERm1OOFe0wi5foLcodaCjEcnGVVtEVh3Izv4pkJGHRqP/QRwxN18xboNV9qlaCn3eqm2gONQSM4wG23jO/Cl5m
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7CD87180009
+X-Stat-Signature: hfecan5pi3x4ugc3rjbtws6wuzutyrbh
+X-HE-Tag: 1763175902-835782
+X-HE-Meta: U2FsdGVkX198UeZIIuS7yHBr0/Ea4r5UNC1/Ms54UTY8SZ0FiTOBk6DdiwvLgYccpBkWhRdIBUt3TTwlUaInLTlSUMDkqVGnD7MNElOdchZ3gSrQnNBjL55tSvg6vCQYnpU2+Bon05xmL67GB8cnVmoA2FrwA3PlAs1yw8/AdmpT5gU2xAOh3heuqGoKRpRlUe1K9+16HbRr6fYornj4qMeZFxLLFWojtk3K2aYnPmSFrKtBN4i73jyl4mZpQ6Kno3dBgz12bHHJyRKAJmdgtVCT2mA6/pC52vU07vXyzktyszn/j2Wqi1xOVUR+kmNkzNUQau84HTjELYjBAkthlw+lTVM39C3kDEhTo3G86m+kYzEJvYuA+ykvd1jCz2LHF+0WGWqsJ+On6AD9TcnQP1ecGS3F45qCyGC6bvXh3NmZwIeCqbMSir85RSOMiNe5NApS+cdIV4Bac7sY6oB4n07zINeYHuDyvwyxVBfEFXyns5K10UJMypDQBQaVZxgqGPrZm8F/gAuwy9phXmx28P7mFoWGr8GWKOTl5lb6n0FtlKz2Y5HTWPPzWMvJU2M56jScVjSbEd7oYrQcAr0C/RsUapKm7KlUyjtq8DN0P7yFqMQUcuQMREXBuPYzkIOSYdXwiQ87PzToQbKu/mHFezOKHYTSM+51doTyJ2lDUxapDOsZdv1AAdCCnikY2ExI6Azsf+Hl4TNrtiwPy95Rr2NGS5eh8atipQwcWFP5WL5bEpr64aNQnDSNsECQ2bgNAJ5quMsF+OEQS0Z6FAqd45JySkgITKzj3M8uicaGjMFGD6E2xm/Z//GpRfsfy4VImQ6pa3gLWp9r46vCz1+2SXWHzIR9Ktrk8f16lbKy0TDWiRWXu0jCPu7zdKtP1I2Dn/FzFmWjtBHBcV7tj6oLyMwKxT0En3M9jtoeh45eW16aRBi9b83cybqBXiIEJ0W3REDKiNoqXhjv+OWmhda
+ ISVcT0t4
+ jEkt0tYIOlFStft7ekd61LApwZVBNgINj7aX1NJpORFGPfJfyAvtzZu7qs2+hzmetmOL66PlM9VpRR4O+0WMMyDiOCNJqhia8EF7gE3JZwPHpb5CpvdiGi3q0xRr0fFwf/WNEJbWqYAPvC1rZ5KXn+uTtECUAn+StsSpB0iku8eRX+Bh8Yb0i5b5HoilZvBXvF6A61ioN8Hes2VoT90W6OjRAsVYKgiVkGqrLvLbioSV2lE0/gM0v3j5LzuqCM6fwIl9QeJjBKoKvM4M6/Dw89JwBsatD3G38sRJtn1rdkS/CO6sE8CWwBU44NTUVEvaw1wdg2wR2Cd8klUe1arTZhJV7Rg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,66 +108,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 08:36:20PM +0100, David Hildenbrand (Red Hat) wrote:
->On 14.11.25 16:03, Wei Yang wrote:
->> On Fri, Nov 14, 2025 at 09:49:34AM +0100, David Hildenbrand (Red Hat) wrote:
->> > On 14.11.25 08:57, Wei Yang wrote:
->> > > The primary goal of the folio_split_supported() function is to validate
->> > > whether a folio is suitable for splitting and to bail out early if it is
->> > > not.
->> > > 
->> > > Currently, some order-related checks are scattered throughout the
->> > > calling code rather than being centralized in folio_split_supported().
->> > > 
->> > > This commit moves all remaining order-related validation logic into
->> > > folio_split_supported(). This consolidation ensures that the function
->> > > serves its intended purpose as a single point of failure and improves
->> > > the clarity and maintainability of the surrounding code.
->> > 
->> > Combining the EINVAL handling sounds reasonable.
->> > 
->> 
->> You mean:
->> 
->> This commit combines the EINVAL handling logic into folio_split_supported().
->> This consolidation ... ?
->
->It was not a suggestion to change, it was rather only a comment from my side
->:)
->
->[...]
->
->> > 
->> > The mapping_max_folio_order() check is new now. What is the default value of that? Is it always initialized properly?
->> > 
->> 
->> Not sure "is new now" means what?
->> 
->> Original check use mapping_large_folio_support() which calls
->> mapping_max_folio_order(). It looks not new to me.
->
->Right, but we did not actually care about the exact value.
->
->IOW, we didn't check for order <= mapping_max_folio_order() before.
->
->SO I'm just curious if that is universally fine.
->
+calculate_totalreserve_pages() currently finds the maximum
+lowmem_reserve[j] for a zone by scanning the full forward range
+[j = zone_idx .. MAX_NR_ZONES). However, for a given zone i, the
+lowmem_reserve[j] array (for j > i) is naturally expected to form a
+monotonically non-decreasing sequence in j, not as an implementation
+detail, but as a consequence that naturally arises from the semantics
+of lowmem_reserve[].
 
-Thanks, I got your point.
+For zone "i", lowmem_reserve[j] expresses how many pages in zone i must
+effectively be kept in reserve when deciding whether an allocation class
+that may allocate from zones up to j is allowed to fall back into i. It
+protects less flexible allocation classes (which cannot use higher
+zones) from being starved by more flexible ones.
 
-I am not 100% for sure. While if we trust it returns 0 if folio doesn't
-support large folio, I am afraid we can trust it returns correct value it
-supports. Or that would be the issue to related file system.
+Viewed from this semantics, it is natural to expect a partial ordering in j:
+as j increases, the allocation class gains access to a strictly larger
+set of fallback zones. Therefore lowmem_reserve[j] is expected to be
+monotonically non-decreasing in j: more flexible allocation classes must
+not be allowed to deplete low zones more aggressively than less flexible
+ones.
 
-To be honest, I am lack of the capability to investigate all file system to
-make sure this value is properly setup.
+In other words, if lowmem_reserve[j] were ever observed to *decrease*
+as j grows, that would be unexpected from the reserve semantics' point of
+view and would likely indicate a semantic change or a misconfiguration.
 
->-- 
->Cheers
->
->David
+The current implementation in setup_per_zone_lowmem_reserve() reflects
+this policy by accumulating managed pages from higher zones and applying
+the configured ratio, which results in a non-decreasing sequence. This
+patch makes calculate_totalreserve_pages() rely on that monotonicity
+explicitly and finds the maximum reserve value by scanning backward and
+stopping at the first non-zero entry. This avoids unnecessary iteration
+and reflects the conceptual model more directly. No functional behavior
+changes.
 
+To maintain this assumption explicitly, a comment is added next to
+setup_per_zone_lowmem_reserve() documenting the monotonicity expectation
+and noting that calculate_totalreserve_pages() relies on it.
+
+Changes in v2:
+  - Reword the semantic explanation of lowmem_reserve[] monotonicity to
+    clarify that it arises naturally from its semantics.
+  - Maintain a minimal reference to the invariant in
+    calculate_totalreserve_pages(), with full documentation placed in
+    setup_per_zone_lowmem_reserve().
+
+Signed-off-by: fujunjie <fujunjie1@qq.com>
+---
+ mm/page_alloc.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23d..d13a81de2203b 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6285,10 +6285,21 @@ static void calculate_totalreserve_pages(void)
+ 			long max = 0;
+ 			unsigned long managed_pages = zone_managed_pages(zone);
+ 
+-			/* Find valid and maximum lowmem_reserve in the zone */
+-			for (j = i; j < MAX_NR_ZONES; j++)
+-				max = max(max, zone->lowmem_reserve[j]);
++			/*
++			 * lowmem_reserve[j] is monotonically non-decreasing
++			 * in j for a given zone (see
++			 * setup_per_zone_lowmem_reserve()). The maximum
++			 * valid reserve lives at the highest index with a
++			 * non-zero value, so scan backwards and stop at the
++			 * first hit.
++			 */
++			for (j = MAX_NR_ZONES - 1; j > i; j--) {
++				if (!zone->lowmem_reserve[j])
++					continue;
+ 
++				max = zone->lowmem_reserve[j];
++				break;
++			}
+ 			/* we treat the high watermark as reserved pages. */
+ 			max += high_wmark_pages(zone);
+ 
+@@ -6313,7 +6324,21 @@ static void setup_per_zone_lowmem_reserve(void)
+ {
+ 	struct pglist_data *pgdat;
+ 	enum zone_type i, j;
+-
++	/*
++	 * For a given zone node_zones[i], lowmem_reserve[j] (j > i)
++	 * represents how many pages in zone i must effectively be kept
++	 * in reserve when deciding whether an allocation class that is
++	 * allowed to allocate from zones up to j may fall back into
++	 * zone i.
++	 *
++	 * As j increases, the allocation class can use a strictly larger
++	 * set of fallback zones and therefore must not be allowed to
++	 * deplete low zones more aggressively than a less flexible one.
++	 * As a result, lowmem_reserve[j] is required to be monotonically
++	 * non-decreasing in j for each zone i. Callers such as
++	 * calculate_totalreserve_pages() rely on this monotonicity when
++	 * selecting the maximum reserve entry.
++	 */
+ 	for_each_online_pgdat(pgdat) {
+ 		for (i = 0; i < MAX_NR_ZONES - 1; i++) {
+ 			struct zone *zone = &pgdat->node_zones[i];
 -- 
-Wei Yang
-Help you, Help me
+2.34.1
+
 
