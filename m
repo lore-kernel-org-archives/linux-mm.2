@@ -4,108 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C03DACEACEF
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:52:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98963CEACF9
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:53:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26FFE8E001E; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
+	id EF63A8E0023; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 247538E0005; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
+	id EA5CB8E0005; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 184878E001E; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
+	id D6DC78E0023; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 08AEE8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 938FC1405E1
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:52:05 +0000 (UTC)
-X-FDA: 84111014610.25.C6720E9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E01D740005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:52:02 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=M0PMWwwS;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167923; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BEE7A8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 56164896F6
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:53:00 +0000 (UTC)
+X-FDA: 84111016920.28.92F7E74
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 922EA10000B
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:52:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vhRRHgjH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167978; a=rsa-sha256;
 	cv=none;
-	b=qr7s48QCzigtZG/9alEACrY8mT6H96mo8HwBypajU6fLVRkp6edd7WFHJhSiMOHQMm6GVJ
-	CUzpr2QwhlL+U4WNse6QUiYxSdLDcRbXUlHJG03BBlPCEuNxEgmiQXaP12sLtJbg64BO6c
-	YfNvAbGMen/RWGesvXm9QhDKYufM9xk=
+	b=oLlcmzOrZlZiSgjkFKf7Nbu09mK3QfH7CaGdE+QwGzajRULuyqxprqyYo4UmoOsxEUulZx
+	GTuzAEwH9YSINNKOSwPcxS4zmlJiACO5fvMCA9+z05Z24Rlx/0pKF/yaaDn9E9ovASgJW4
+	27QNWFP4nMmYy2DA84+OmwAfmPzP7p0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=M0PMWwwS;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vhRRHgjH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763167923;
+	s=arc-20220608; t=1763167978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hG+LBwa2EjGLXVqwz8jiIWNeMYXszVida+/9bn2P5ME=;
-	b=6C0D/ClGxvrrSS7f1Bx1kVuQiXc3+EuhX5gTq1y8Hrm64kAZaJKksqsBU6I1gb9AQCcIm4
-	JVkStZzrdSbXch4xBh3yI5oxamm5KCz1fxxdtepG6vRPxyV/H/m1Cmc0dQGbBpIQXqC1MW
-	aZoq15GtJyaf84rofEWN/M/iGV26J2U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763167923; x=1794703923;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vczM4EmXtUbCfHooelDeHpgPNn3rTsFNVUclJSubvyA=;
-  b=M0PMWwwS7U7hhnxResSwDt8vyQZFkryJfP7DTukI21Qari0n38Pg74EG
-   h4p78e6RgqOFqBrvipUkAzpkPlccmqLXfMXDWA4PLR607pOlhpvpTT2DJ
-   tkMhF4eAgngKZ0dXLyMYQ++zRLNEApsG7I7KjgmniiCgAoADBAQ3B3Avn
-   sNd9tDG/C7nbsA3OEY0OBkbT03sUKkCGOTze/wgoom6mBCJNuIFArflPa
-   kPSSFoTj+7vC5FYMubULIsdYrDmd5r6Hj0D4oQHQj13a26wx2+oFokXHP
-   4GCP+5/K8Mh1rOE8GfpuW36UaYEVtAvOgdFmLPsDMyarSE8nGArLrGF7O
-   g==;
-X-CSE-ConnectionGUID: NGz2KV8JRx+S9rCImCvVzQ==
-X-CSE-MsgGUID: FqTzTQFaS/OjOf5DP1MVSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="76730943"
-X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
-   d="scan'208";a="76730943"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 16:52:01 -0800
-X-CSE-ConnectionGUID: nhmJTMybRgykHV04alN3Xw==
-X-CSE-MsgGUID: 35aAR/X3ReWs6zsMfpLkBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
-   d="scan'208";a="227249100"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 14 Nov 2025 16:51:56 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vK4WA-0007YJ-0f;
-	Sat, 15 Nov 2025 00:51:54 +0000
-Date: Sat, 15 Nov 2025 08:51:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
-	npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
-	akpm@linux-foundation.org, david@redhat.com, ioworker0@gmail.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH 7/7] mm: make PT_RECLAIM depend on
- MMU_GATHER_RCU_TABLE_FREE && 64BIT
-Message-ID: <202511150845.XqOxPJxe-lkp@intel.com>
-References: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
+	bh=U9SSTkCfK9gXlKFXxpFitF3UmgPFfqReOkQFg2JXAv8=;
+	b=7B4gRKtq40y2Ua9Yyy4thJcQ6lTt9BN+josOQ5w64hBhYEhzybIp5Ivqqe9elC4Sy9AO1P
+	G74iGx+z8V4RcqWhOxShEvVlE+S69P2Zfa897Lpk2TsNcoyhPW8kVUZXx08sb92aeLbCZO
+	YT5yRaakfClWigPtF72I1OQstvca0/s=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-343e17d7ed5so2773267a91.0
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:52:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763167977; x=1763772777; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=U9SSTkCfK9gXlKFXxpFitF3UmgPFfqReOkQFg2JXAv8=;
+        b=vhRRHgjHxXA+e6noVWq3a6Mz73iczR66SM0VHSI3bRbVln4iZZxIHDRGzJr4Fwmg/E
+         /76LWCQdcMgOP4qw3RnPaTe6u2mOhfS49elZyt4O0gVsbZR6BML74O7aoQtEEwT9Yhvs
+         dZR4GUHspOFBejDxdX4OheKCNkc/TQRst4uWRo8yPASKY1ym0Uz/m20xijAxm/m5dM0a
+         uChNpnPB/ELzUgfgf7dZGRTlvmNZsehikhosAbiC49jlk41tXhhDP/ytqqFIUhff6dQo
+         MfOkHbH9JdPuVrhAPHhWq1pH9/GIUa+RlLESn/YY03Udd7e5nmhDOY2/swYhj4HFxb7C
+         6Ovw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763167977; x=1763772777;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U9SSTkCfK9gXlKFXxpFitF3UmgPFfqReOkQFg2JXAv8=;
+        b=JLuooy4plVDwwOS1Uv/C1jLBiRq4yTn5V9MTp7g3vConwrtmU4h9bbs/trIrGWbKoc
+         7C6+vPHTxj564Uky1Ao7oDInp15GK+j9X3acB/EaEdIKrBqf0nZZqQtDBCYfyravS1dU
+         8DZRjJwCxxVTWkLVOAH48dnqXbMGacYsK/fMncZPxKoBMBJyE87jAngJhLJJseMBcbyR
+         utdW7puS+o90g5ULhfHsOrYX390/w2Un42mmZLbNqhrlbEdeSzG9tNCHdD7+5htMFTns
+         sBUlWrC8JMvHzBVoiOhGRXtAU77n8NUa/9+tBXmz8ZUnf2ZpaQVjiQJmvRlAqPit+3wC
+         yW0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXXLm1ggxMOmod5nK1ujEUqwujhTjocugsi4EwGQ4IAZDWQFgitZPitzobsXwsIdMpKtu6SG4jmJw==@kvack.org
+X-Gm-Message-State: AOJu0YyqbRP+xi3kRWxJftpnoBgqcebQI0SU/PByMZv+EnqDHnIxAHlP
+	qm9sg5c7L0ZnOFJdr2FAdAfKsZjfjAj5Ev9EQszsZdbXTdiWeBrWnpN2xPn4YcFsQ2F2UIfPLWS
+	hgDwr+f1pJ1xJWmJQuqRUlaaEdQ==
+X-Google-Smtp-Source: AGHT+IFQ6ztt0EQFHe4KI+3WuxtLaazXI8OcEuS0OZM8dxl+4bnHUaopiO2H4ku8y1VZu9JaoG1ZZurdE58bMYL0dA==
+X-Received: from pjbpm10.prod.google.com ([2002:a17:90b:3c4a:b0:340:a9b3:320c])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3c89:b0:339:cece:a99 with SMTP id 98e67ed59e1d1-343f9eb3128mr5188244a91.13.1763167977228;
+ Fri, 14 Nov 2025 16:52:57 -0800 (PST)
+Date: Fri, 14 Nov 2025 16:52:55 -0800
+In-Reply-To: <aRG35j3OhMvQo85n@yzhao56-desk.sh.intel.com>
+Mime-Version: 1.0
+References: <cover.1760731772.git.ackerleytng@google.com> <a3795f7fb4f785ced19abe18c2f33aa478c4d202.1760731772.git.ackerleytng@google.com>
+ <aRG35j3OhMvQo85n@yzhao56-desk.sh.intel.com>
+Message-ID: <diqzzf8oazh4.fsf@google.com>
+Subject: Re: [RFC PATCH v1 06/37] KVM: guest_memfd: Update kvm_gmem_populate()
+ to use gmem attributes
+From: Ackerley Tng <ackerleytng@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, akpm@linux-foundation.org, 
+	binbin.wu@linux.intel.com, bp@alien8.de, brauner@kernel.org, 
+	chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net, 
+	dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com, 
+	dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
+	haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com, 
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
+	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
+	jhubbard@nvidia.com, jthoughton@google.com, jun.miao@intel.com, 
+	kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev, 
+	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com, 
+	mail@maciej.szmigiero.name, maobibo@loongson.cn, 
+	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org, 
+	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com, 
+	mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev, 
+	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
+	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
+	peterx@redhat.com, pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, 
+	qperret@google.com, richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, rostedt@goodmis.org, roypat@amazon.co.uk, 
+	rppt@kernel.org, seanjc@google.com, shakeel.butt@linux.dev, shuah@kernel.org, 
+	steven.price@arm.com, suzuki.poulose@arm.com, tabba@google.com, 
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, will@kernel.org, 
+	willy@infradead.org, wyihan@google.com, xiaoyao.li@intel.com, 
+	yilun.xu@intel.com, yuzenghui@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 922EA10000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sqyuj4saybawm4p3qhpoia9i6tpy39fh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E01D740005
-X-Stat-Signature: mtwmd7z444yg44ax34z9crny4no9n6sk
-X-HE-Tag: 1763167922-103130
-X-HE-Meta: U2FsdGVkX1912s0PNbwH7ZaZF/NjP2j2f4UEQrH19aRQx5oCJNcoabklx4TGRQZ12Eow1vGwkzqAfEexB91srxrCrMhx4Zez3ypTii9P+zHLReX6faaOloX4vp6dIMmtJuNanSLSBHGPx+g2RDBFZ8gHqifUYxhGDEjvPa+OD15Knkh1xyLw8HEugJFLgA4/MVmgn1smtfghTtzebxaoLvK/qxR2qWTtGfxO+eLeeWEDm2sIntuZ0Sujo+FavXTyCc5MrU58DsseWkkm8fXS2ReWefhY/v+YeCgbQsx9A4odM3WtsJFJoxqHcGyH8k+Bk8NVk1hiDjlQp4sUBFP1fL2DiOVWMHk0bpf9dIhiK+IP92v4RSz7wOuVFuX2pvAzwDh1CSAZMNyV1VixIDJwQYwx2vv+eHi0AxWAsjNP+7DqxZFSH1I4a4wmQDNDVAM/pejKc768dkYkXJG2LP+zqys1b5Bj8GUl/K2Bxm7ojSf7TJS73mtWiU9IsOzTn3V/Fjv1CaShinw1PLeun7yMJo/Fqp7BIjgCQhp/ey27jL8fWg3fRKcCXncRBvjfbI5Qtt5xgSYb76M/VUOtcx647hTniuoh9RUODdS2oVvo04h+7KsWzRRUpwZxUqsrMBrl6wJ1p63TT4Sic56tkYmmFcgAEdkbAAO3Qim4NkaGAZ6UUOqj8EnLoU+ytIyvAu3oQFaiqii42ED6/5I/EtZkMYLgxXXgbOWrJcI0gaU0l0IZ/RFqalUG/x2TxpweEyGIOTtypTBB1ot0tNcgGXqoPpYZeMQORCSOPk5btUOEdrXStUIMtgQu1/zws1rYvQczVTCJ0YS6KLQbbeCLwFYz00kOTP2KcnCAhWn20cmRJXCvqhrNa2Sv8Ja/bBe0eKxEmIRJXp+aE8VFpK6OAqiJKI0QOzFNgsKFM95/5LsnGMyVsgoJaX6lDYcv/4iIDz/zi1z+ZN9N5mn1Th+HHBR
- C1B2iRKO
- ClRk6U4Y0J+RTvY7Uq5pP4q2vLMXSo/3jF9Hkbkb3/lSutQBYEjeQkBNVvaVGXyjG5dIiAKptbsidtWh6IlDDxlZsRMYAvzBY2Ht7wJkvLNsB1o5AFQytribbryJ7Qk2zsMlshYSWC6PWPwK0Yxl+sT5rxSVqwPTKszfIoBLdNb5FPqKXfEFNEX/Q0SmRJ+ogt7ko2YL0PezVBeft9cHY/tWEUO82eXXZmGZVrKPXfamH/AS+AClVPzgh+944eI/5dnNAofofGvNJ129PSnPslOto3lJuAkpdTmmYR47xlTgDb5gES8HpFECC1SC2j0ozVZbAqiPUNpqLTX+k1oY/fCzEB/LDwpMyGfsMWz6E8ZAIySG+r/PFGdxCwI9KFSsCdx1+HmEL6k17TY1tgqN6Z729kKqC1hD2FO0sNz2HyKCzkjHD9oJVL8LKMOnJoi2tFK1I
+X-HE-Tag: 1763167978-30093
+X-HE-Meta: U2FsdGVkX1+N2FiiJTnvTaUK48AHF8630Wqlhnezrp09OvycwEQVz+tIJ++KQy00W2siWxKCg3zeTC+oGo9mYjxB7KFonRlwtCeXueMIFeOr79+K9j5mk/YnOuEul4GcSuNdD82j1k3wFLbv6ObcSCoHAycxqo/BBuDxdG0c8P+qL7YTqf8JZWeeNKpkk5k2JAQ8PKm/nxbUa7DY4HjH5Y7rlhui0BegjtoxOrJxqm0xTM/Q7CLTs3QwK+YYH2LPmrME3DJ9b52qLsd8FAsiT463JnmEy2xqPVa3+sgX9GWj11siFxSj+C5T4cS1G1lxIAUzBdGv1w6Db9la/AXeYHOBAp+dIqKngfa6cnGg1YGve8V3HuS9HIUM1y0BuGrvq05m8irJIHtxjPzI3XXNbPxaosilWAjb0QUFDmzhS758qlpmHF8PcwfWOq1OLaHk580WHtOKcJEsF5Z08/Va2Q4tBB+SEUyrMCIQdSyz9VXj1mm5U1xQo8HrYjzLfI+fZ6mlOX/D0XcssL44p8cjctl4DprKI/+bkZfOlKuqC1BO10Y6/IF+8uph5oI7ofF9+xqYlcDEAxPMUKL7Qb2MGbkfJmzVhggOW6Nw7XjIqvwoRc1CzVovlA2fz+ZKcART3kHft3nX6hwaRSqYrNzlTyAUukNxKaax8qO8r6WVuheNff7xyoXZkYok0cY7upi+aRye6E+V64KPjZgGBpUD6MnhyN+y5G0BAikLlD3IME/R73N8SURe/qWdrIOpHigYjdpa8OUoA+lg4eOwQkhQx3GK7CXodQInNXLAs+uwnjSfbIMZWeDX1AKf9cGC7pBXhKcfA+wBHLkaIuS3rc5KlxqxovIn3feVbKwnG29/7jZsrWq9EAbdOMg+XNvu1/spVByLqM1c9GLou4HOCK5ehuFrIeNFw2KbzF6FSWmvo80PlfolOeV22/IERnx/tiWGWTu+VzQhOfrorhWwrqx
+ 3kHxWIJ+
+ ZqkDzs3H/LF4ld8AuHsT1nwS8KDl/dj/v5kZp6iyMONir3vwISN9aTe1+fHse2pbEyNd+DZVcdW+GFtuOhvhpjGZ7XVkdsKSUtKDrnt5/fF6B4tn6/At2iBfxlbllGNwSmzzP6eUPWWXJ2+0MyTAfEFjzSY9+h8ZDv9ImK/qpm1PD2sJxPH26pM3dFADTfB5IzsslmhT9H20nLItpTPTN2jlgl5iEkSCsRvfmnoLWMZJIsDLFS7TIMA5MrXgXSmRS18bkiCBBsjk9jqfoTCE2tiyDIx2cyujDLIBWZdj0Jm0VVwC6hEjD/DcWg6+noq1X6GjjImWaAm+bAPVWDwJoenVgrUAYuYlROgJoSF51K4VbVVyuW43lweXNAYP/nGT8UiyK3XVZn9OfRwJFwTlqOr+fabLshP9DvAOBCyHWzXwU1NkCCfK0sAs1jgn9FVw1/qMmNmkBKNsXsWlUS/ZRM1G7OcQNIJ1hRf6lYYwA91usKZ6iaQsWxHLjYqY1b8yFOd2+soRgqWgT4CyQs11+Xwg/QGA52ul7SHftIOrS12TvA847YZpEfLKXPvfSqc2F3ugwZQ8vGGn8EJR/uAeA/OHxGcEyybEG1RCT4UYsQLI99MMxx4OOx+sBKZpNma6uG2ZFw09XiFn19pFKfAMrr8M7ItWfG4NmGuTq283L3UigbPZeH7N+YZd7QhOM7m5lVHNasH99V4xEQKdKJvkcrHOvbHbazLCu6NkEmS8MaaNTEsNlkcHEC11b1Ui2iw6VJOTKRd893O+qp0MUEthMygF8FpD6N5FU0Vzj4XJeOWfsHWBrPd74y9vcwiVvE/4xjCqJmt/92G+PtvUJhryoG0BzCOcGWNcOi3mnCHp0N5kBnK/7nPqqnvjXlXHESANa6UQa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,81 +137,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Qi,
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-kernel test robot noticed the following build errors:
+>>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+>> +static bool kvm_gmem_range_is_private(struct gmem_inode *gi, pgoff_t index,
+>> +				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
+>> +{
+>> +	pgoff_t end = index + nr_pages - 1;
+>> +	void *entry;
+>> +
+>> +	if (vm_memory_attributes)
+>> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+>> +						       KVM_MEMORY_ATTRIBUTE_PRIVATE,
+>> +						       KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> Can't compile kvm_range_has_vm_memory_attributes() if
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set.
 
-[auto build test ERROR on deller-parisc/for-next]
-[also build test ERROR on uml/next tip/x86/core akpm-mm/mm-everything linus/master v6.18-rc5 next-20251114]
-[cannot apply to uml/fixes vgupta-arc/for-next vgupta-arc/for-curr]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/alpha-mm-enable-MMU_GATHER_RCU_TABLE_FREE/20251114-191543
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git for-next
-patch link:    https://lore.kernel.org/r/0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch%40bytedance.com
-patch subject: [PATCH 7/7] mm: make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE && 64BIT
-config: arm64-randconfig-004-20251115 (https://download.01.org/0day-ci/archive/20251115/202511150845.XqOxPJxe-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251115/202511150845.XqOxPJxe-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511150845.XqOxPJxe-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from mm/pt_reclaim.c:3:
-   mm/pt_reclaim.c: In function 'free_pte':
->> include/asm-generic/tlb.h:731:3: error: implicit declaration of function '__pte_free_tlb'; did you mean 'pte_free_tlb'? [-Werror=implicit-function-declaration]
-      __pte_free_tlb(tlb, ptep, address);  \
-      ^~~~~~~~~~~~~~
-   mm/pt_reclaim.c:31:2: note: in expansion of macro 'pte_free_tlb'
-     pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
-     ^~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+Thanks! I will fix this in the next revision.
 
 
-vim +731 include/asm-generic/tlb.h
+We've been discussing HugeTLB support in the guest_memfd upstream calls
+and I'd like to add a quick follow up here, with code, for anyone who
+might be interested. Here's a WIP tree:
 
-a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  701  
-a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  702  #define tlb_remove_pud_tlb_entry(tlb, pudp, address)			\
-a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  703  	do {								\
-2631ed00b04988 Peter Zijlstra (Intel  2020-06-25  704) 		tlb_flush_pud_range(tlb, address, HPAGE_PUD_SIZE);	\
-a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  705  		__tlb_remove_pud_tlb_entry(tlb, pudp, address);		\
-a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  706  	} while (0)
-a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  707  
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  708  /*
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  709   * For things like page tables caches (ie caching addresses "inside" the
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  710   * page tables, like x86 does), for legacy reasons, flushing an
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  711   * individual page had better flush the page table caches behind it. This
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  712   * is definitely how x86 works, for example. And if you have an
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  713   * architected non-legacy page table cache (which I'm not aware of
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  714   * anybody actually doing), you're going to have some architecturally
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  715   * explicit flushing for that, likely *separate* from a regular TLB entry
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  716   * flush, and thus you'd need more than just some range expansion..
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  717   *
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  718   * So if we ever find an architecture
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  719   * that would want something that odd, I think it is up to that
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  720   * architecture to do its own odd thing, not cause pain for others
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  721   * http://lkml.kernel.org/r/CA+55aFzBggoXtNXQeng5d_mRoDnaMBE5Y+URs+PHR67nUpMtaw@mail.gmail.com
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  722   *
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  723   * For now w.r.t page table cache, mark the range_size as PAGE_SIZE
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  724   */
-b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  725  
-a90744bac57c3c Nicholas Piggin        2018-07-13  726  #ifndef pte_free_tlb
-9e1b32caa525cb Benjamin Herrenschmidt 2009-07-22  727  #define pte_free_tlb(tlb, ptep, address)			\
-^1da177e4c3f41 Linus Torvalds         2005-04-16  728  	do {							\
-2631ed00b04988 Peter Zijlstra (Intel  2020-06-25  729) 		tlb_flush_pmd_range(tlb, address, PAGE_SIZE);	\
-22a61c3c4f1379 Peter Zijlstra         2018-08-23  730  		tlb->freed_tables = 1;				\
-9e1b32caa525cb Benjamin Herrenschmidt 2009-07-22 @731  		__pte_free_tlb(tlb, ptep, address);		\
-^1da177e4c3f41 Linus Torvalds         2005-04-16  732  	} while (0)
-a90744bac57c3c Nicholas Piggin        2018-07-13  733  #endif
-^1da177e4c3f41 Linus Torvalds         2005-04-16  734  
+https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+This tree was based off kvm-next (as of 2025-10-08), and includes
+
++ Mmap fixes from Sean
++ NUMA mempolicy support from Shivank Garg (AMD)
++ Some cleanup patches from Sean
++ Conversion series [1] with some cleanups (Thanks for the comments and
+  reviews on this series! Haven't had time to figure out all of it,
+  addressed some first)
++ st_blocks fix for guest_memfd, which was discussed at the guest_memfd
+  upstream call: slides [2]
++ HugeTLB support without conversion: this stage does not yet take into
+  account comments from the upstream call. This stage provides support
+  for HugeTLB to be used through guest_memfd for private memory. This
+  has to be used with the KVM parameter vm_memory_attributes set to
+  true. This stage can be used to test Yan's TDX huge page support by
+  setting up guest_memfd with HugeTLB just for private memory, with
+  shared memory being taken from elsewhere.
++ HugeTLB support with conversion and folio restructuring: this stage
+  also does not take into account comments from the upstream call, so it
+  still disables the INIT_SHARED flag, although HugeTLB can now be used
+  with in-place conversion for both shared and private memory. This can
+  be used to test Yan's TDX huge page support.
+
+[1] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
+[2] https://lpc.events/event/18/contributions/1764/attachments/1409/3715/2025-10-30%20guest_memfd%20upstream%20call_%20guest_memfd%20HugeTLB%20support%20overview.pdf
 
