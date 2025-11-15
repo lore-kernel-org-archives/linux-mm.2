@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38675CEBF73
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 19:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374C7CEBF72
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 19:17:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76A108E000A; Sat, 15 Nov 2025 14:17:50 -0500 (EST)
+	id 1C5168E0005; Sat, 15 Nov 2025 14:17:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 742548E0005; Sat, 15 Nov 2025 14:17:50 -0500 (EST)
+	id 19CEE8E000B; Sat, 15 Nov 2025 14:17:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67EBB8E000A; Sat, 15 Nov 2025 14:17:50 -0500 (EST)
+	id 06E9A8E0005; Sat, 15 Nov 2025 14:17:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 57FF08E0005
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E63758E0005
 	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 14:17:50 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14C6189B11
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A83454DC68
 	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 19:17:50 +0000 (UTC)
-X-FDA: 84113801100.19.41EEA52
+X-FDA: 84113801100.11.65021C5
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 08019140002
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 19:17:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FEMpDJc8;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9551F160009
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 19:17:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FVYuO2mY;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763234268; a=rsa-sha256;
 	cv=none;
-	b=173MdUh6ckUCpEoNTqoFSd1TvvcgEcsMdi0eyJQEz9+1U7kHwR+HfHdV9Vf1ncmplQ1jRa
-	n4O6hOxTMfiDZXodlyMswAcwidZgsLyjLtZ7pW/hiwQ6hES7Fmm4jQzc79Rihn4eqV9oLS
-	ygXMy+FwQGisG1BLSoX8oRcGBIpDeO8=
+	b=G3K4wdBH9nd2OX4nl9c0RaTPCrvXXtmUWxQMtR8iXobotCxMPNOl/+UIV9ROr2XaNns6Sn
+	NrgoSqIum2RZYw3D5bW4PTUfO26/3CveafMBx5RWO9HwZcrX9yrpClYb5+2KrEz0PRsZsP
+	zTmPun9Evi7r6wvyUgehM/aCOJ1fRh0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FEMpDJc8;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FVYuO2mY;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763234268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=iVJifTA1QW4FZQH2ZGslWugBrrBOGanafO4Q56qrwk8=;
-	b=O6LlPmAVRuauK9LOJ3abzXL3D/8o715w1HhFUDXlxyqR9PhilSoq0X1v8ZMHDUoEl3SeML
-	ZDLlhn6ScfJpsaJKMLcXtUOC7BaLxe3OqTZBD8ecT9DCBFbiA4HHsGwxnd+TdoiMMK2sym
-	3aTemjkcaLfebRhDudv4oatHqb2+ne8=
+	 references:dkim-signature; bh=/hkFVHB5LET9PwmQ1y1X1x00oNjyWU6smlRjXH3oD2c=;
+	b=ySpzxanS2frMX4evPb0vBJQdcWSgHe/hPgeIR1xEOYM56+VBRWYrSJ50AP05DcMzz1Z/y4
+	QJzMHQODA+15+kokY+INcbW6DEGxzX8tvvaTndIo2ebS5A7OkyP0YbRZt8nswiAoKwi3Oe
+	AHlw1Nh6fPWStaO6riGf2EIW2S/p8hs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763234268; x=1794770268;
+  t=1763234269; x=1794770269;
   h=date:from:to:cc:subject:message-id:mime-version;
-  bh=5EG307VFCtyUrsbD42l2t63TXPg+JaL+ztkM4EIoaCs=;
-  b=FEMpDJc87PBkv5qipwQcsblRhVR3MHK/XTEMe1+HyV6dPbjcswYFRhZ3
-   XNAJIzIXDHYbibqZW6luOqBXCjk068TChTK/360vKiJ3T4iKs6ukhfIWI
-   EDLzqFGJz6PDVVi8upbbQWeF1xaIQ/g2ZfR/KT1vmwu/kBDrP+CLvCGQX
-   SYK8aZzseWAiPW8guo5aKzzW1ESBVzUQEzmbZh54somUfTOhJukrT7+2t
-   9gJHbYpvZ9ik8lpvqKJhrNX+u8hYYpAAiGgM3tEWLG88CfD3xbTmhnuDv
-   Ck0dVo3jVZpoefb3dgDTVxr6oR6Tt5rQDPAQaMmuD8PKSX437A3PjhYbO
-   A==;
-X-CSE-ConnectionGUID: SX0kVxh8QGWKirYznfLfCw==
-X-CSE-MsgGUID: +MtBFH9/TBOOXmLsqM9wwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11614"; a="67901336"
+  bh=ueBIAissdbE2rNylSIiqjPFYNkDgZ+wha6Yk6wSsQUo=;
+  b=FVYuO2mY3oF6K/KzRnMrAX9MKJSzZx4sNIqyIoLBPhKoYsGBoHdPVAnK
+   ODbNfR/N41oyB6KaaskTc/Zzp9Hk/No8D6dN4T9FaBEK7Xj+LpVr5g/kO
+   BQuX8q9msA5XjYIJmB9NWU8YFEv7fis5on4Qux9OVyU4DQasvA1EhDChl
+   2PYyoixB8VG/vQowBOIlws7G1+A1tZ0OnWeL00BwPvtTwJJOqSrlEyufb
+   4b5qVUltCUtJyW92RURka7O6qOMpbUla5TO5q9XmjhxLlAd51+XtSjE6R
+   6d7Np6jSkqpwxXshgtlY4RmtVWXyNrP8D/3CaHBFSVG6N1TGddBQRgawA
+   g==;
+X-CSE-ConnectionGUID: J7G5naI9QGOs1dWhIohe3Q==
+X-CSE-MsgGUID: zzRNmxZtSKyaU/smW+DTUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11614"; a="67901340"
 X-IronPort-AV: E=Sophos;i="6.19,307,1754982000"; 
-   d="scan'208";a="67901336"
+   d="scan'208";a="67901340"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2025 11:17:44 -0800
-X-CSE-ConnectionGUID: Nz5tmqhLQceFpalXTUx3ew==
-X-CSE-MsgGUID: AfoY6s4fTD2IVdZNa6L21w==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2025 11:17:45 -0800
+X-CSE-ConnectionGUID: IXKnlsu4QUGcwimd1zdiZg==
+X-CSE-MsgGUID: /pnF3jRCT/S4DUOTIlg3xg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,307,1754982000"; 
-   d="scan'208";a="194194211"
+   d="scan'208";a="194194210"
 Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
   by orviesa003.jf.intel.com with ESMTP; 15 Nov 2025 11:17:42 -0800
 Received: from kbuild by 7b01c990427b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1vKLmG-0008CT-17;
+	id 1vKLmG-0008CV-1B;
 	Sat, 15 Nov 2025 19:17:40 +0000
-Date: Sun, 16 Nov 2025 03:17:17 +0800
+Date: Sun, 16 Nov 2025 03:17:18 +0800
 From: kernel test robot <lkp@intel.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: oe-kbuild-all@lists.linux.dev,
@@ -85,21 +85,21 @@ Cc: oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	Pratyush Yadav <pratyush@kernel.org>
-Subject: [akpm-mm:mm-nonmm-unstable 82/133] (.text+0xc00): multiple
- definition of `kho_alloc_preserve'; mm/mm_init.o:(.text+0x0): first defined
- here
-Message-ID: <202511160306.rrgfQf5w-lkp@intel.com>
+Subject: [akpm-mm:mm-nonmm-unstable 82/133] fdt.c:(.text+0x6ac): multiple
+ definition of `kho_alloc_preserve'; mm/mm_init.o:mm_init.c:(.text+0x0):
+ first defined here
+Message-ID: <202511160302.QiMsgMfT-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Rspamd-Queue-Id: 9551F160009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: juyddzyurb9r65kthm7gm3mz7zceqsgc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 08019140002
-X-Stat-Signature: 1acjos4g59y83i5meeay6eh37xpad4ug
-X-HE-Tag: 1763234267-710508
-X-HE-Meta: U2FsdGVkX19NRschZTF6LkcVO66/Ba/sBmPsn/T6ksRqlT//Eg0WC87lRYkHFdnGz9n1K+SbJ2hwVzBSl1v+x4U231q119pMzU0CUbRjnnu0XmlnBiSTEmtp/mknxsWRq72IblXEhvwKJ7kLzaNmG1y7VMTskl6Yk0dmSpvddz0PB2BUPVcaqxDOUor3XbHgTJ6lZMz1dl2ss+EeyLrJ8N5XQpYjkPyCGOAjL04ft9y5ZpapLGxEJK3jOqdX6gsYFskhjqn+t2LLZ1e/E0knqDKsBrK7OHhvNmawK9vq34yah+olHPYkQX7GhXmOUz6BbMpJCxV2y2V15QQTllK0vvZemcQfd2B6OGLkVdw/uLZSIVSFeDnzrq5kF9ljQhzu1GPbO7c/FPYnkk5ETBY21llZOhYmumuKCBLX6P8gGfDSrAhm/DtdjL9o+L2x0hBGXuFZ20IsBGjYhKnOp2SwLar51QTGJLS5sjvV2vieouD348GEWDhx23vhVjTS6TVbVa0FkX+mfFbBX6RPVDZb00dzjcB8jAWq+MLTmAx2Nh19k81CoapRSS7Lpjg4HnvTtPB6kxqRfVlYx3PFya+tjY8+tBKWEaVwDREP/UoG8Z+baI5bWVvBgx2tZspY/EvEd70u5mkt/FkDEES1/EMRF+WQW2eMjAWa4v4FtWvavJzfNki0m4JKAEyixTpoY6CMV5JMKABQyTe1IC+pY3XwJCOvijI3AryLpC7s9Z/xIDRaRwz5kIEtkCyokl0s0zxLouSyysbHtvBp7F4HLv887kfa9HHV6YlNibSsVdzDl7pahAAU0YKgf+ievEyGk7ZaRMvku1hXfinLLBGO21AQ/yKCARWjohc6gX56/0RX5PhfRdRS8rBMOJ749+PewO+Iu9yo0/J6T/7oPmVZcntDPLg+417ArlqTTKW9FtKCQHNWwhHXXiJZw0eEsqU4i/aFXTSx+N+qAVA5NFHjug4
- HJljtxMu
- /x7cQVI8sN9OPOWVeG7dO92xr5yX7LsseN2tZWpm5kVXgJa2UN3y6YONreD3PDPhCfyoYcBPOvXFgc7+p9BYcVMzVkrKk43xGm9NPk391eibYxVoBQmtYeGnGSXzwFQ/n2p+zZwKrvYyDG9Gjgvl0RecLBxtX+52t4sm+Ny2TEgkpWCdIuORO51btExXOroc8sA8Aqqsz1nEgyYnzcNaTEgV3faN63ZpBcSQtW6QC8e4DJ4kDY4lOfahLKD2/9kid/3NmXvcS4bpboouGmXv1hIeXDnY4mpiwDWErsNS8s6MxP2vkX0c7PIM7YWEf/3kdzuj6l8+mFKOzYmRGCxz5a5kMlS2xywORjzIWyvunUehEHR93yxWUDi9/vXEqzwj1dOuVt7c5JACc5Mj2QChMpU0zPh4fe5zcXP06
+X-HE-Tag: 1763234268-805946
+X-HE-Meta: U2FsdGVkX1+6HPjfsGRDw3fqdndYawJKL77+IHOJv4Z8ISfXgV4diFeoUPJA9DDBD65VKU8De4yF2VED/CjaizInJgjc8Hvtfsez3yWFDD5gzef4yYFzQfbGPJ1wxAM8nHXTBAh/oQaopAwjnUkgHOXSCdmNqZ3Jf1lolEQlwsBuC3I3V2ixFJaWA9SHCqhWI3ek+Q2QpqH5J9wglRNeWj2miR9X3JUkIoWPwM5CgVg3kST9o2Bm9qMVki9AEk39cqKv9K9w5zONS9CvAzuJ66xta9haYJvxbiB+zv9CU0hZGRIMdizZQhboqht+xvInpNArnH/5ZXnnL+aO/C3pBQ58J2jj397cQ/KqTO2r2mBtCPVfVDXc3MEpL/KVOW6m9B+rQ6hn1RpSFGoHxRCFr+4v/J5JDEZkudr57wHG5tzFr1qfNU6xyFyXwpUi5vGtF5Ew1Ad4rJorWgussF1QgelJbOc+MXaadR8fT01meE0UpYX+AO63BbcIk1GcWwL1Z884IHT3R09C8Q+aDLka9SyeaYRs9zF9VP/yIS99Y1EGae9Ds7n60YlV7xcvJX9Kv/nFvIE2S4OdEPiQUlUUAgyHIl4HH2RMwptOwcKZCaMsR2wG5OWOaUWwHxCbwzyKzfuNI4V5VOE5n7z0xSjIkid5ztEQtTwxWfE7v1hzNB8KzbAwmbNnUZ89ayErw/FbJRRCRGow1oVZkFDujSmK2ecLypudi4He0WghAozIOXXCuky6DPsesHX5IpKPx5OqBD8o/8eZW8H9r8Nwd6eHL6hROEhrXt+z/zYU698n8Jpa+qsxVEhWPgtO1UcdLnMkMub0GnRLyGmNlYLcLaT/5JxCUxua3vigbAT2gctvb9CBj0qPBZglrjnA/pXEUKAvyKIuk4a2hXcx0xOnAZrIvlJ7DjGtT+uxTTrVyzghJg04RZBm9WrOcp8vizfuAoK+KWxFx9VWf20Cx8OLirT
+ n9k2Wv1t
+ pcnI8jckXHhMeN28HUrgRWephQARGzMHePDP6MINbUlOei5siH9NplVdhkoHAtvH/4LYdgYd9guh7BlFrynKjBXSidi5+AdI6pgK7Lg2LwLf5DQXYOK3n0YRfGqT+247k82/3Bxh+xNkibMGMVyLXcksEUv8s9eI5rMQi/E/gV+/TGUH5Ld5BgW5ZejTgntU2LJpYWA77QnWZdcvkFCTiQjxWa8sdGg+i314IAdKonLxMlzBPU4PxoXwNom81Cf8VssDXdzLz6kBcAYC6wDQxCwj5InVYehiJpizXxlnMTtaTPdwdylRz/lyTpRgpNpHhCRmJaYiI5ancD2U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,23 +111,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
 head:   4fc88c237bfe11bde443e104428aac56e63a997f
 commit: 88316955b5b1b4cb0cb2fad416f7e8dde9b246a0 [82/133] kho: introduce high-level memory allocation API
-config: microblaze-allnoconfig (https://download.01.org/0day-ci/archive/20251116/202511160306.rrgfQf5w-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251116/202511160306.rrgfQf5w-lkp@intel.com/reproduce)
+config: arc-allnoconfig (https://download.01.org/0day-ci/archive/20251116/202511160302.QiMsgMfT-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251116/202511160302.QiMsgMfT-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511160306.rrgfQf5w-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511160302.QiMsgMfT-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   microblaze-linux-ld: drivers/of/fdt.o: in function `kho_alloc_preserve':
->> (.text+0xc00): multiple definition of `kho_alloc_preserve'; mm/mm_init.o:(.text+0x0): first defined here
-   microblaze-linux-ld: drivers/of/fdt.o: in function `kho_unpreserve_free':
->> (.text+0xc08): multiple definition of `kho_unpreserve_free'; mm/mm_init.o:(.text+0x8): first defined here
-   microblaze-linux-ld: drivers/of/fdt.o: in function `kho_restore_free':
->> (.text+0xc10): multiple definition of `kho_restore_free'; mm/mm_init.o:(.text+0x10): first defined here
+   arc-linux-ld: drivers/of/fdt.o: in function `kho_alloc_preserve':
+>> fdt.c:(.text+0x6ac): multiple definition of `kho_alloc_preserve'; mm/mm_init.o:mm_init.c:(.text+0x0): first defined here
+   arc-linux-ld: drivers/of/fdt.o: in function `kho_unpreserve_free':
+>> fdt.c:(.text+0x6b4): multiple definition of `kho_unpreserve_free'; mm/mm_init.o:mm_init.c:(.text+0x8): first defined here
+   arc-linux-ld: drivers/of/fdt.o: in function `kho_restore_free':
+>> fdt.c:(.text+0x6b8): multiple definition of `kho_restore_free'; mm/mm_init.o:mm_init.c:(.text+0xc): first defined here
 
 -- 
 0-DAY CI Kernel Test Service
