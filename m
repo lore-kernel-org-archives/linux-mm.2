@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1913CEB2CA
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 09:28:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CEC4CEB2CA
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 09:36:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 434828E0007; Sat, 15 Nov 2025 04:28:23 -0500 (EST)
+	id E7C328E0007; Sat, 15 Nov 2025 04:36:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E5678E0005; Sat, 15 Nov 2025 04:28:23 -0500 (EST)
+	id E54378E0005; Sat, 15 Nov 2025 04:36:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 322328E0007; Sat, 15 Nov 2025 04:28:23 -0500 (EST)
+	id D90DF8E0007; Sat, 15 Nov 2025 04:36:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 125AF8E0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 04:28:23 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C4F408E0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 04:36:30 -0500 (EST)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B31E91406FB
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:28:22 +0000 (UTC)
-X-FDA: 84112315644.15.DAF4038
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5CD151C0004
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:28:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 756D212EBE3
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:36:30 +0000 (UTC)
+X-FDA: 84112336140.15.46CA5DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 151284000F
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:36:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dGxzfoXl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763199389; a=rsa-sha256;
+	cv=none;
+	b=7nYg/9BGyJ82jqyV63nT8X0msCt2EGUS1JP7f7Llo//1YbvaaAk//GznfH7PviHRq+RtEH
+	hXsKPp49GlAC/J99esol2DzWvxhce5pNuC4rq7XFGjatDqf51z7gQtGsaoKHrVqfRSaKvf
+	Nkz7F0vhg+uqAXkijfhp4TInpbr0AM0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dGxzfoXl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763198901;
+	s=arc-20220608; t=1763199389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GCsUjM4YqgtcQr+0fLcWxDuwTowUb/pwyALixjKDdxU=;
-	b=eBMV3fILtBXpYfEhi/0DzBbBKgmqoB5lfsV3KOiW/3W3s4iisTjzEbGD1B9Zcyb+cIxjRg
-	6RLDOH6KEoRqTeA+pPgoXZPRoCGcy4f7WhA3bj7MOk6hgG+s4ubEyHg3P3XjGr85rMbQuA
-	feKIU34haC6nfiVRhQ+zh2Ndh6G5Nzw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763198901; a=rsa-sha256;
-	cv=none;
-	b=6+Tn7NSbSKZ0YAwsRgH6higEaeNYzPOZJ6/tIZKDaALPtJC32D4INSMuySxNtU1Fc3Ok53
-	DyjwNIKS4ArHRqcp3TD952YJy/16GQChMiN7dgwtKyrq2CTc0Km4khWh4em4HGpmi5HPl+
-	HTd9T+le7bWwWJuGj6QF5NhxzWK1IlY=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 15 Nov 2025 18:28:17 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sat, 15 Nov 2025 18:28:17 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, chrisl@kernel.org, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com
-Subject: Re: [PATCH 1/3] mm, swap: change back to use each swap device's
- percpu cluster
-Message-ID: <aRhHsbh6ZtjCJ3wP@yjaykim-PowerEdge-T330>
-References: <20251109124947.1101520-1-youngjun.park@lge.com>
- <20251109124947.1101520-2-youngjun.park@lge.com>
- <CAMgjq7AomHkGAtpvEt_ZrGK6fLUkWgg0vDGZ0B570QU_oNwRGA@mail.gmail.com>
- <aRXE0ppned4Kprnz@yjaykim-PowerEdge-T330>
- <aRaAW5G7NDWDu5/D@MiWiFi-R3L-srv>
- <CAMgjq7D=eULiSQzUo6AQ16DUMtL_EQaRSOXGRhMJrUzakvj5Jg@mail.gmail.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DKoisX4HLU9dgcXGPM7N3K58Netj8d9bvL1jAWnG9Ew=;
+	b=lOR60c/UoP24PneI/WbMaiygtafukoLjxcY+wntM6P0aLycEkIQxh9BwpjRoWLl1FWRI5A
+	72dbIbYkltE2cVstw1QoNbNidG934jcTpzDRGf/d4PnuzwMhtOEIttQUvvYGNDFdfX8wPn
+	4xXyQqJCuOo46fFE905HBOhsuIAA6ZU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D0FB6014C;
+	Sat, 15 Nov 2025 09:36:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483C6C113D0;
+	Sat, 15 Nov 2025 09:36:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763199387;
+	bh=UQVFeJZr0401KX1N/k/ogaXP4dW5OIP3VmbTx9eJ0p4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dGxzfoXlLnRHLFr5Iy+HgSyVz8Mf24TyR4OMdm2IHhWYyyw5lvhnGu1juDXcxNUkp
+	 QGhzi4JzLJsO3a+Z5xAT7xWd+MWzPyyx6vz4jvLNbTuQ1z76N3iBJpinvuFeHy843t
+	 oTWlLJWPDqqzXfL8c1qC8ZIeGVbv7lhEq4qH4op6A+dTztPFhuvt2s7/V6kahITEd2
+	 3GaNsGO0s/w16mxXH8zmm4SBsTxJDfykXeINuvSgDFhuZM7l2O1Y/qg5XIz4OhiHHE
+	 9G0bjLz0Z9QZFPaZt+OqQXbfhF9gn/h1IHT3Fuz1Jdv5I0MrIxaoqfRmHqymK78Xs+
+	 X5RVw3cugcXIA==
+Date: Sat, 15 Nov 2025 11:36:19 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+	bhe@redhat.com, jasonmiu@google.com, arnd@arndb.de, coxu@redhat.com,
+	dave@vasilevsky.ca, ebiggers@google.com, graf@amazon.com,
+	kees@kernel.org, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1 04/13] kho: Verify deserialization status and fix FDT
+ alignment access
+Message-ID: <aRhJk_Glv2pX2dRo@kernel.org>
+References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+ <20251114155358.2884014-5-pasha.tatashin@soleen.com>
+ <mafs0tsyw7e0a.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7D=eULiSQzUo6AQ16DUMtL_EQaRSOXGRhMJrUzakvj5Jg@mail.gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5CD151C0004
-X-Stat-Signature: d37gqztsukwy8ycd137e8yzuyn8sju68
+In-Reply-To: <mafs0tsyw7e0a.fsf@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 151284000F
+X-Stat-Signature: 3byz5b84xxxyq1jaasrad1wzhsqqs7bx
 X-Rspam-User: 
-X-HE-Tag: 1763198900-117454
-X-HE-Meta: U2FsdGVkX19fwXOyuhjwpYq4EBIvTWrX9nEm4N/qjMQtCumJdRp67r0Sgm49RcCw2MNJrOmTS5d9QrHd5VFsZrT0HDdRjLVk2WDJehApbAzahthmzQUszelYpCEPtzspcS1ZOteRS7YUKUdvRu/FJlsOLuynXbHwrKOeYwpVyf3iKhsThzz8VxEsWGuGJLUOCEwtW3FlNyregSHXpPHJ7XuOzOBQgk9BviE9Iew465RftstzthKF2TRlWIr1rdpsCu8tBXzLnjVuA+FWovyPz2cO28qvEXAFwa3VpBVrvafJvjNAMU0eGWLhc4MmG95Ld9gfQsiY5Ana56syzy4zWGUDjvoCFhUFD8T0mQqAQG7gRwD+P86q4sAcSFgykvU/Mh7q4DXGW6xPXO+fmEurye1H4MMZfN2CDVossq5TAPPvp8xs4figLDtEY6wf2kP8aQL9nnnP4lCQCv7d+6fATLjDF7VdsgvcyIYS/OwR5wJ0Nq+uAUJmNQ40tAND6nE1jdpkrrwcHpgboFm5ENLEIRXz30vY895r7vZS3l6hQwi2yMjkwQnZtmBeVj97t5rW3cjY6iOi6vK92rxtSJM/mWlOwurs3aUxDxtd+810pl8IgcMkftrBRvVb+42Whicr+/U5RR4c/saYRDPyjJljGDb9GD2Tmjd1HCTL3+IGH4epMKOuurJNwQgJMCZ6kVYibtdROKCubYrdxQZ9UfoVYb3oB+P54l1BXhOw07ESpreFr93Y2zsx+ApzZnvLedmx4KX5YK5Nfc+1uzuuuo55xpup4qLNEP6eKFq6NBMkkH2bJU+XhyxdlCAjfoDHGOYTCzEu1fDL5ycnd6/F9B13l9dw3qzKv+O6xBMiPPv90BvL/BbpTa66i2VzYFEnQ0i4v56isScecNoeQ/CrwOlGcj5j/J7Wgf2PhNaOsVyskStCf2n782X1QeFWR36Tbp4l8fa47Kvfvvk/9YQfXZW
- jadtsVmK
- T7fnBd1aXHr1FNzCF2sD4JgNwxLrvchKccTym7+RWjQLybWDxI4cGZtQAymgWWpRGjkgLHJ63OlXzupeIAlpWGYeMfw2uCSUJTm/SViQv7uxAitJyaCQzsVZ+WMOIjvdPQvB5nbtfVumE+sZnpg4t5W3vGo8EQu6PbXu+kwYfB//3xEA0IsGayg5q2+5mzjH3W/QBCCI/RkWaoYnVMw4XYLA+ch7dYlQ//XgJV2bcVyUhekhu5hFbGOugfNn3eLoejhpCWgEYmHFUfBqWOIp5Ue+961Qm6O4SaAb5beivO2DUqCwYCi+XP7rXylXI9qiip2qVYvLPH8K/PQI=
+X-HE-Tag: 1763199388-621148
+X-HE-Meta: U2FsdGVkX1/2o1+rVjW99z/+qVTWFRJCsBFQxwpdmiZQJyDSfQpQBU0QgkKr684cwzHnchSIthnkzw8QNEnCZYYURzU8Y/jah/0wurGod7mqV+oWD7D+/0hHvbjfpgJpE6H9UBo+Vr1AemrD0u9KtHRPTlWzmWFAyZ6yJueF0zcOvWgd9pmSax9FMjJZmkbix8LsSPUyQ756OP7dGS/+B2BJEwHajrmiDxWa9wVxtJA6Jz6I7JpX+5TpSxyaAGFPhf9/zjHjpr3fzgj4L8W3TvsqEAqqFRo5komKO950BvZ4KEuzs0r3enWHXWtsop25insfIAg92OsbdiV6THBsFgxsbY6zz9jTJWDZfSdNMXd54g17cXF/lAj0Ko0wQpfh5zVHolUVfontALNQbYk4+QzTXuhD7Ti9twCMUJLTn7NZaf/o8I29muo+Ht2nxhw27CxULnFswHLag334KInlcv3Nyj+ICn31wCIEg/lPPCvL4fo1Tfh6NdzWZB6eKbVNvgDvtOvcLqsMPX8se/T9rwo05RqQNUcIOOxdOeF94PkYrby/f+Xs4lZxOpi1pIYrG5gNARY6nCQhEeB+H6Mxj+KqVxWTSgjuk/M8ZlYg8NEmCEEe3Xc35OhcRGzY97Owey+R9qsJv7pxnOihhTBDlqi1K/eQcBMXu8CoGUZwell4WVtnPAFNnNFYNgC9eE4dv4Dp9FIVzA1WvweuN7FS/pAoZWb4xZjJVE3JWwE7ccZqo3KYszFlJZUS8sJUMHWg1rMc2DrMFIgUaasar8jcCWxorc0wi7kmh+xvUVg/8xN+zKiQjI1PYhZjbSUtS3l7OQwRa+Q5AWojsfWvWAgtd4MppPCGsem7dNgcofBes7XBHaSX5yzD6KGCgP1EDSivTJu9WoMkA/h3Z9R3hqbih/xzeH6CFLTRyKcDbxdFMIKa54MztT6T3g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,118 +95,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 11:52:25PM +0800, Kairui Song wrote:
-> On Fri, Nov 14, 2025 at 9:05 AM Baoquan He <bhe@redhat.com> wrote:
-> > On 11/13/25 at 08:45pm, YoungJun Park wrote:
-> > > On Thu, Nov 13, 2025 at 02:07:59PM +0800, Kairui Song wrote:
-> > > > On Sun, Nov 9, 2025 at 8:54 PM Youngjun Park <youngjun.park@lge.com> wrote:
-> > > > >
-> > > > > This reverts commit 1b7e90020eb7 ("mm, swap: use percpu cluster as
-> > > > > allocation fast path").
-> > > > >
-> > > > > Because in the newly introduced swap tiers, the global percpu cluster
-> > > > > will cause two issues:
-> > > > > 1) it will cause caching oscillation in the same order of different si
-> > > > >    if two different memcg can only be allowed to access different si and
-> > > > >    both of them are swapping out.
-> > > > > 2) It can cause priority inversion on swap devices. Imagine a case where
-> > > > >    there are two memcg, say memcg1 and memcg2. Memcg1 can access si A, B
-> > > > >    and A is higher priority device. While memcg2 can only access si B.
-> > > > >    Then memcg 2 could write the global percpu cluster with si B, then
-> > > > >    memcg1 take si B in fast path even though si A is not exhausted.
-> > > > >
-> > > > > Hence in order to support swap tier, revert commit 1b7e90020eb7 to use
-> > > > > each swap device's percpu cluster.
-> > > > >
-> > > > > Co-developed-by: Baoquan He <bhe@redhat.com>
-> > > > > Suggested-by: Kairui Song <kasong@tencent.com>
-> > > > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > > > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > > >
-> > > > Hi Youngjun, Baoquan, Thanks for the work on the percpu cluster thing.
-> > >
-> > > Hello Kairui,
+On Fri, Nov 14, 2025 at 05:52:37PM +0100, Pratyush Yadav wrote:
+> On Fri, Nov 14 2025, Pasha Tatashin wrote:
 > 
-> ...
+> > @@ -1377,16 +1387,12 @@ static void __init kho_release_scratch(void)
+> >  
+> >  void __init kho_memory_init(void)
+> >  {
+> > -	struct folio *folio;
+> > -
+> >  	if (kho_in.scratch_phys) {
+> >  		kho_scratch = phys_to_virt(kho_in.scratch_phys);
+> >  		kho_release_scratch();
+> >  
+> > -		kho_mem_deserialize(kho_get_fdt());
+> > -		folio = kho_restore_folio(kho_in.fdt_phys);
+> > -		if (!folio)
+> > -			pr_warn("failed to restore folio for KHO fdt\n");
+> > +		if (!kho_mem_deserialize(kho_get_fdt()))
+> > +			kho_in.fdt_phys = 0;
 > 
-> > >
-> > > Yeah... The rotation rule has indeed changed. I remember the
-> > > discussion about rotation behavior:
-> > > https://lore.kernel.org/linux-mm/aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330/
-> > >
-> > > After that discussion, I've been thinking about the rotation.
-> > > Currently, the requeue happens after every priority list traversal, and this logic
-> > > is easily affected by changes.
-> > > The rotation logic change behavior change is not not mentioned somtimes.
-> > > (as you mentioned in commit 1b7e90020eb7).
-> > >
-> > > I'd like to share some ideas and hear your thoughts:
-> > >
-> > > 1. Getting rid of the same priority requeue rule
-> > >    - same priority devices get priority - 1 or + 1 after requeue
-> > >      (more add or remove as needed to handle any overlapping priority appropriately)
-> > >
-> > > 2. Requeue only when a new cluster is allocated
-> > >    - Instead of requeueing after every priority list traversal, we
-> > >      requeue only when a cluster is fully used
-> > >    - This might have some performance impact, but the rotation behavior
-> > >      would be similar to the existing one (though slightly different due
-> > >      to synchronization and logic processing changes)
-> >
-> > 2) sounds better to me, and the logic and code change is simpler.
-> >
-> > Removing requeue may change behaviour. Swap devices of the same priority
-> > should be round robin to take.
-> 
-> I agree. We definitely need balancing between devices of the same
-> priority, cluster based rotation seems good enough.
+> The folio restore does serve a purpose: it accounts for that folio in
+> the system's total memory. See the call to adjust_managed_page_count()
+> in kho_restore_page(). In practice, I don't think it makes much of a
+> difference, but I don't see why not.
 
-Hello Kairui, Baoquan.
-Thanks for your feedback. 
-
-Okay I try to keep current rotation logic workable on next patch iteration.
-
-Based on Kairui suggested previously,
-We can keep the per-cpu si cache alive.
-(However, since it could pick si from unselected tiers, it should
-exist per tier - per cpu)
-
-Or, following the current code structure, we could also consider,
-Requeue while holding swap_avail_lock when the cluster is consumed.
+This page is never freed, so adding it to zone managed pages or keeping it
+reserved does not change anything.
  
-> And I'm thinking if we can have a better rotation mechanism? Maybe
-> plist isn't the best way to do rotation if we want to minimize the
-> cost of rotation.
+> >  	} else {
+> >  		kho_reserve_scratch();
+> >  	}
+> 
+> -- 
+> Regards,
+> Pratyush Yadav
 
-I did some more ideation.
-(Although it is some workable way, next step idea. like I said just ideation )
-
-I've been thinking about the inefficiencies with plist_requeue during
-rotation, and the plist_for_each_entry traversal structure itself.
-There is also small problem like it can be ended up selecting a lower priority swap device
-while traversing the list, even when a higher priority swap device gets
-inserted into the plist.
-
-So anyway as I think... 
-
-- On the read side (alloc_swap_entry), manage it so only one swap
-  device can be obtained when selecting a swap device. (grabbing
-  read_lock). swap selection logic does not any behavior affecting
-  logic change like current approach. just see swapdevice only.
-
-- On the write side, handle it appropriately using plist or some
-  improved data structure. (grabbing write_lock)
-
-- For rotation, instead of placing a plist per swap device, we could
-  create something like a priority node. In this priority node
-  structure, entries would be rotated each time a cluster is fully used.
-
-- Also, with tiers introduced, since we only need to traverse the
-  selected tier for each I/O, the current single swap_avail_list may
-  not be suitable anymore. This could be changed to a per-tier
-  structure.
-
-
-Thanks,
-YoungJun 
+-- 
+Sincerely yours,
+Mike.
 
