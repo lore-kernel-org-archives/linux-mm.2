@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 805E4CEB2E4
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 16:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A12F6CEB2E4
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 17:24:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E429F8E0009; Sat, 15 Nov 2025 11:56:49 -0500 (EST)
+	id CFE108E0009; Sat, 15 Nov 2025 12:24:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF29F8E0005; Sat, 15 Nov 2025 11:56:49 -0500 (EST)
+	id CAEA78E0005; Sat, 15 Nov 2025 12:24:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBA3B8E0009; Sat, 15 Nov 2025 11:56:49 -0500 (EST)
+	id B9D6A8E0009; Sat, 15 Nov 2025 12:24:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B3B5F8E0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 11:56:49 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2228D12EDC2
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 16:56:49 +0000 (UTC)
-X-FDA: 84113445738.10.BA2D36E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 89B97120004
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 16:56:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0fBrSOT;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A542D8E0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 12:24:44 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41D651407D3
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 17:24:44 +0000 (UTC)
+X-FDA: 84113516088.08.4FB352D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 823AA1C0007
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 17:24:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0opQtSr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763227482; a=rsa-sha256;
+	cv=none;
+	b=e1YJUvdA6WjmoH2al6d8qmKb3JjpmDZN3rmYmBfZ+BypD03hgSnPDvbpyxNybkiaN+BlEw
+	IA+Pdm18+DtWgpGSMgewXNkmwAJ1M2zfFkww2FjOLcPsIt6GooS92Di4sDufUcbeNMDfan
+	oPOFJhZHla/8lcPVwPHzVds4J5p3XkM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0opQtSr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763225807;
+	s=arc-20220608; t=1763227482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iw3vI9BSb/qr+hkziL0vT/cLUCBcRsq6vY5Xd0Wk3Og=;
-	b=79xujvWQNRvOFd5icpE/LmMVJQYJZsj67jBGFsqA4XlBqIcwRNwENgJRx2qnGDtti9KGOt
-	gWS47RmaZElgDB6IwL4bjSLMtgDmaJEWT6FAJbKmpa0C+bhHucCZFRrXBx8e115qfvYGKk
-	r8HI3DNQ8yPrc4gHf/Sxp7mYtgFJrA0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0fBrSOT;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763225807; a=rsa-sha256;
-	cv=none;
-	b=mIzC/FgK+X+XU/0untBVBVBI9uKiInQLQZTt/OXUD8V46gxiFaPLdu/fEdgWwqtJkOBO1+
-	jxfxF2stDDr8bTDh0Avnbt+l5LetGO+livra3ZtXKezPYITRiFE0DD39qyAwYpVEG7kKGO
-	8t9Vmg81QfPlo26zXcj91qQbP+e8d4A=
+	bh=YpbA3l6MoFl1OLqXADjLzvqo5IJP1J87Cgsn4WSN3Qk=;
+	b=0GQppoKCpvAeWJeS/xk7aIWwKHCJhCOrgDXtMqLI1HVitAj/V6HW6JsdfqrsT6jV0wEn71
+	3Ihsv5WJz+f7M5Of3B9up1NbYovmJ1MgIQ7gtEWzRXZspYpqDJ8xI1XIbn6fMSw4riqoS4
+	lwiqAyKi3zqbx1fD3kIb6NEklvCVXDM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD36660008;
-	Sat, 15 Nov 2025 16:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96E7C4CEF5;
-	Sat, 15 Nov 2025 16:56:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 54C264418F;
+	Sat, 15 Nov 2025 17:24:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D101C19423;
+	Sat, 15 Nov 2025 17:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763225806;
-	bh=/gOkGsj7raAQD06iajDMIoQCwWI8rwh1FUuNxXNRiDc=;
+	s=k20201202; t=1763227481;
+	bh=qflNL+o4u7ZS4s+sN0dF13IvClzqLsiakctOn+2j+Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0fBrSOTYwuz2F3C7hEG+BNNJ4ANuNHg5MF4ShyVzawn6gUZ2cv+mqh67Kmp4OfqC
-	 bEMV1qF0avBOwaTJWdmPQ63m4NnPD+GQABzOF8GZN4GfZ9Wx7LVgNlWwvn6vSiXYf4
-	 9ZuWxsvvwd3y5ICUVwyIWwNLpf5XzFSqOMy1ihbWGKajOU8O1GhBlMMaUx4UI/7m1Z
-	 xGk/emq5jpa8fmE9d9mZHp5OzgnkVE5MyKqkNwl3Uh+IU73uI0AIEzNlyyrEeAM0cn
-	 Lc+9MePZszKDSsvlerpFA4E1e4fYpvJnJpoKif0m8edPq6ei27KhYck9PkDzgvzXeY
-	 S2faeXhLNG90w==
+	b=K0opQtSrljGMEXfGx3lu0Ui88SpOIFxaCWiAHegbkZS0iZDgOekiHXFYy2u3SgAML
+	 oEQVFHga+HUeR4ar0sKLoI97SlKHnbQUIst+vnpdXtKq0V/EqFyeBzpRXndaGMT2KC
+	 7zsxcsY6hkXeacRjcYykl+MuHWB2DXTAp7jlXk9QTkeTPYCzQBlwg4gAgIF0BoeRqP
+	 NvSd9hYdgqtf5bDIh/jqahGAVXcy43AjW/+/2ms1YHUcNilRZq0noU6Tr3+NpzJsW7
+	 v/61/70aVkgMizF5dgia2uPp2GbvkrP1Nvcs0aY7RLs+w4g2u6wpmLwu2Q0/L1Ni5f
+	 MPY8cdyVcKUww==
 From: SeongJae Park <sj@kernel.org>
-To: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	chrisl@kernel.org,
 	kasong@tencent.com,
 	hannes@cmpxchg.org,
 	mhocko@kernel.org,
@@ -85,22 +85,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	gunho.lee@lge.com,
 	taejoon.song@lge.com
 Subject: Re: [RFC] mm/swap, memcg: Introduce swap tiers for cgroup based swap control
-Date: Sat, 15 Nov 2025 08:56:35 -0800
-Message-ID: <20251115165637.82966-1-sj@kernel.org>
+Date: Sat, 15 Nov 2025 09:24:30 -0800
+Message-ID: <20251115172431.83156-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aRhLmEKixuKGCUJX@yjaykim-PowerEdge-T330>
+In-Reply-To: <CACePvbUBEQsgoei=ykeM6uX_GWaFywZEXY7dGt+T6Pt4zhiGsA@mail.gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 89B97120004
-X-Stat-Signature: h9g8p6hpze8xnjjihohykfs65aqxgdwh
-X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 823AA1C0007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8hcagiehzbnrdtryrx1taienyj39dfdu
 X-Rspam-User: 
-X-HE-Tag: 1763225807-298654
-X-HE-Meta: U2FsdGVkX19c6wFMJUc2ZQrkB8UPjFBRRITK36i3D9CN/F1N9zQ0AIc/1q6IzBZm1N10AzMGtUNXqeYhM3GV0DNZYDds8sUkD2o14nhYpl8g7hnnmiijFiDtqjFa2iaeri+aEyAvwggDbiggwnEYWhk+gjt6tfAm/oEpXFbAx8AY5fIURJ+JwX1knKLXpSLGjvgGDHEY09D4JRKNeSV5l5AN8NH59RjC5NpU6tABSTDcm1IFjA5ddYeTHSAk67nPaHnLVCl/dsUQ3WGXkEkwTuxMoi0xqopCFbeHTHCJ36QBrYk/+7lz/7ydfdW2MHLiWiOoqB4HgvQ45eB9odIIVFao6ktjduiL/LyMP8ECGtIMFoMIpHaAXG+ZcetKZqgNPDyZ3K9CGbQ8uiwOwnrqNFNJnnqRTJYdKhxyMDhQ3KC9CC/sYKM4JlbpAt2KihaU5wT4day/cEmW+VPWtLrVhCMtlR9AjDWbzX6nqQ7zMdyckPcyGnIax1e2zpXaQtBqqTFlZMmgSgBNbtP+ehaaBlbq/UZoNO0N/lLbodJO5lnUYonmzoaviTUvzI9tfBtoNx/ztYHrHZvMiZpMkfcCCExcyj+pvVMAdSna4621gVGhMLO0N+whADrp+ROENoxdTt+72dsMYLa/17PeV34NHJgB2f2e6yWbaQTfr2QxlGdgjT1DqW6jU9LiB2S2GuiHiBt/k/gmvu79syl26dlbt2mWy6t+lWLNtdDnnrX4XjhJxcBjGB+yse/TdN7UE8JOqErgNEMIwOFlyiNgKnwwNyoL9MTDUMJjbm4pYdauAyGqJaIaSPRRT+8CQTT9uCXVlf/oU2hUFWwBpf4351tDMkFdxXe1unE15QG+NGECSJqSziFySZos4pO+yMInCbnc/6+EGbJeq4RhIY05uujBkXMsxwy2p8VZuRDmqSjkZiEsC/dYy9eBuoYx18Ct+aN0MGW7Uw8OCH0d6NhggxI
- jNciJooj
- CGDN/h3ON0vDqhmi667A+gfLcz3dqFreqW9aWOZ9RyJno5NQmPDcO6ZRyATX+Ce1E+sQPAI+HF5r2dkNxinOvD6ngqkWQzHcINwz2qIqfLNRaAr3jPBNadZlEo+L1jjeEeqZp8N9wW5VLe/FZelEeE+k7q9CJwnwv6Lyn5pgPBaoJh//iCjeLAMZCCxRCxbxCS3SPxEaFbKWLOKEAIh1wrDdDxrzX1S1BGbVKFTga7KOHt3cJqgIMtOJQr36tYTNW4K4WFSGykXTxCekAsPntFCy1HshDtgxl68mDSKUafueVp6KXJJYgMGlpy8tRiDHNzrlJ
+X-HE-Tag: 1763227482-179154
+X-HE-Meta: U2FsdGVkX1+XuVvw26wF2oiXPPCBMlu9LJzlKPoibxr0Y5hd7z8Rn34rOTpS1W6KaKxPbzAkDFxpVr8LPgeB+UHHtLApv9iLyKdJVEt1BBu1TFXuX6a8ndWnwvY34zUx462SaPC8duWY+oRINNAjlar6f3xkAFnrBQ9qC3NbSemMAjMyL7ZagMCPVjja+BGmOis7fNi3iAzbIPZPnMAuUp+/PXE0wcYOeL1eJoEfNAuGLwRqrZkNMgqr+3TXVln0vaFAjfbvaB7ZtQ1C/R7yax8jIIhgusyhd974cbs6z4jeXAuALHYI+GkHdGvJqdsbkbklKucThXlJi7gLKs+S7U9Dhnk2MJK3x76skId9vIqmlH+x1hZT4atbwdITrYptk9/4NZCX+NleVl7DoYc403F6TV8oSWI3dSzlCv3YjunyyHSV2qfgsR8CQT4XwY2nH15oqhAiNosoGVq/GaMgCFnaFj1FFalB0rWZUeZGfMGEkkuSWoiA1P86q+Tgupm0rARAOHQ3eIVUG+x/Kb8LXEJMt719zR9dgTIn7Fh+avRlP6BAwNZsxRN3TZ3GboMgIXQrHj/mOvJh4WI4VzZJiY02faIBbfZ3CWlcI296NjgXRCBQcvuDDbxU5HXkoCIBCSDSE8AGpQoJPoEOTYBsRDUYoIydhFjfQ6e8/RnTmJxirA1GknAoRBvW4dvaU97NB2Xq9sfSldcdE3mtvqvugYEkWCkCJgJthy+yuTxLU0kxpL3BoYteP+sHgCu4b8627zX6E450rPdixE2yac20uV2+Xzl5K7ckIui2YsZJsUStl1yisTqiRrPcCHsVZklUbbqJ0tEV89PzPSbWcBk6MX8fib+L/pXBZfDXOUH+Euyftzxla+8L+id/nx31JXiaJb7STgw6nyWBjhT67wKRvbt0OG7m0Lc7KA/WF+eNMKdR0jmHFxAZP7cD+5iS9x6ATfrh6diE5y/tpCt0aVl
+ 9IK9tB1q
+ bBHimbEYOD2C4j1900yYkrT4NrMO0BtPiOcHMPJ2gfuzH0T6SBwohpuEc6yV4saqpwm4Dd4gYs2Lpfpvqwk1GfshOQ3r7dd6YnM5pKwZM0osdemS2DiQjSquuKPALgiGClB0i0gTfY6tQDEKvBD+D6PRcmSTsiodWYn60COtnmolirVQWD6LC0UgpZ4moDnxJBlGO4xWoTVOqLY4cufA189inhswgurQFBegBASpWx2DnHq67Cg5Sg6ytVkx0bGaU/ExDV65kgGu9/9oTGagOE+Qf/xyUUvY2QmwCa/pDt3iosl5vyGWZTzPfCusnlPdR03EI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,92 +109,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 15 Nov 2025 18:44:56 +0900 YoungJun Park <youngjun.park@lge.com> wrote:
+On Sat, 15 Nov 2025 07:13:49 -0800 Chris Li <chrisl@kernel.org> wrote:
 
-> On Fri, Nov 14, 2025 at 05:22:45PM -0800, SeongJae Park wrote:
+> On Fri, Nov 14, 2025 at 5:22 PM SeongJae Park <sj@kernel.org> wrote:
+> >
 > > On Sun,  9 Nov 2025 21:49:44 +0900 Youngjun Park <youngjun.park@lge.com> wrote:
-> > 
+> >
 > > > Hi all,
-> > > 
+> > >
 > > > In constrained environments, there is a need to improve workload
 > > > performance by controlling swap device usage on a per-process or
 > > > per-cgroup basis. For example, one might want to direct critical
 > > > processes to faster swap devices (like SSDs) while relegating
 > > > less critical ones to slower devices (like HDDs or Network Swap).
-> > > 
+> > >
 > > > Initial approach was to introduce a per-cgroup swap priority
 > > > mechanism [1]. However, through review and discussion, several
 > > > drawbacks were identified:
-> > > 
+> > >
 > > > a. There is a lack of concrete use cases for assigning a fine-grained,
-> > >    unique swap priority to each cgroup. 
+> > >    unique swap priority to each cgroup.
 > > > b. The implementation complexity was high relative to the desired
 > > >    level of control.
 > > > c. Differing swap priorities between cgroups could lead to LRU
 > > >    inversion problems.
-> > > 
-> > > To address these concerns, I propose the "swap tiers" concept, 
-> > > originally suggested by Chris Li [2] and further developed through 
-> > > collaborative discussions. I would like to thank Chris Li and 
-> > > He Baoquan for their invaluable contributions in refining this 
-> > > approach, and Kairui Song, Nhat Pham, and Michal KoutnÃ½ for their 
+> > >
+> > > To address these concerns, I propose the "swap tiers" concept,
+> > > originally suggested by Chris Li [2] and further developed through
+> > > collaborative discussions. I would like to thank Chris Li and
+> > > He Baoquan for their invaluable contributions in refining this
+> > > approach, and Kairui Song, Nhat Pham, and Michal Koutný for their
 > > > insightful reviews of earlier RFC versions.
-> > 
+> >
 > > I think the tiers concept is a nice abstraction.  I'm also interested in how
 > > the in-kernel control mechanism will deal with tiers management, which is not
 > > always simple.  I'll try to take a time to read this series thoroughly.  Thank
 > > you for sharing this nice work!
 > 
-> Hi SeongJae,
-> 
-> Thank you for your feedback and interest in the swap tiers concept
-> I appreciate your willingness to review this series.
-> 
-> Regarding your question about simpler approaches using memory.reclaim,
-> MADV_PAGEOUT, or DAMOS_PAGEOUT with swap device specification - I've
-> looked into this perspective after reading your comments. This approach
-> would indeed be one way to enable per-process swap device selection
-> from a broader standpoint.
+> Thank you for your interest. Please keep in mind that this patch
+> series is RFC. I suspect the current series will go through a lot of
+> overhaul before it gets merged in. I predict the end result will
+> likely have less than half of the code resemble what it is in the
+> series right  now.
+
+Sure, I belive this work will greatly evolve :)
+
 > 
 > > Nevertheless, I'm curious if there is simpler and more flexible ways to achieve
 > > the goal (control of swap device to use).  For example, extending existing
+> Simplicity is one of my primary design principles. The current design
+> is close to the simplest within the design constraints.
+
+I agree the concept is very simple.  But, I was thinking there _could_ be
+complexity for its implementation and required changes to existing code.
+Especially I'm curious about how the control logic for tiers maangement would
+be implemented in a simple but optimum and flexible way.  Hence I was lazily
+thinking what if we just let users make the control.
+
+I'm not saying tiers approach's control part implementation will, or is,
+complex or suboptimum.  I didn't read this series thoroughly yet.
+
+Even if it is at the moment, as you pointed out, I believe it will evolve to a
+simple and optimum one.  That's why I am willing to try to get time for reading
+this series and learn from it, and contribute back to the evolution if I find
+something :)
+
+> 
 > > proactive pageout features, such as memory.reclaim, MADV_PAGEOUT or
 > > DAMOS_PAGEOUT, to let users specify the swap device to use.  Doing such
+> 
+> In my mind that is a later phase. No, per VMA swapfile is not simpler
+> to use, nor is the API simpler to code. There are much more VMA than
+> memcg in the system, no even the same magnitude. It is a higher burden
+> for both user space and kernel to maintain all the per VMA mapping.
+> The VMA and mmap path is much more complex to hack. Doing it on the
+> memcg level as the first step is the right approach.
+> 
 > > extension for MADV_PAGEOUT may be challenging, but it might be doable for
 > > memory.reclaim and DAMOS_PAGEOUT.  Have you considered this kind of options?
 > 
-> Regarding your question about simpler approaches using memory.reclaim,
-> MADV_PAGEOUT, or DAMOS_PAGEOUT with swap device specification - I've
-> looked into this perspective after reading your comments. This approach
-> would indeed be one way to enable per-process swap device selection
-> from a broader standpoint.
-> 
-> However, for our use case, per-process granularity feels too fine-grained,
-> which is why we've been focusing more on the cgroup-based approach.
+> Yes, as YoungJun points out, that has been considered here, but in a
+> later phase. Borrow the link in his email here:
+> https://lore.kernel.org/linux-mm/CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com/
 
-Thank you for kindly sharing your opinion.  That all makes sense.  Nonetheless,
-I think the limitation is only for MADV_PAGEOUT.
+Thank you for kindly sharing your opinion and previous discussion!  I
+understand you believe sub-cgroup (e.g., vma level) control of swap tiers can
+be useful, but there is no expected use case, and you concern about its
+complexity in terms of implementation and interface.  That all makes sense to
+me.
 
-MADV_PAGEOUT would indeed have a limitation at applying it on cgroup level.  In
-case of memory.reclaim and DAMOS_PAGEOUT, however, I think it can work in
-cgroup level, since memory.reclaim exists per cgroup, and DAMOS_PAGEOUT has
-knobs for cgroup level controls, including cgroup based DAMOS filters and
-per-node per-cgroup memory usage based DAMOS quota goal.  Also, if needed for
-swap tiers, extending DAMOS seems doable, to my perspective.
+Nonetheless, I'm not saying about sub-cgroup control.  As I also replied [1] to
+Youngjun, memory.reclaim and DAMOS_PAGEOUT based extension would work in cgroup
+level.  And to my humble perspective, doing the extension could be doable, at
+least for DAMOS_PAGEOUT.
 
-> 
-> That said, if we were to aggressively consider the per-process approach
-> as well in the future, I'm thinking about how we might integrate it with
-> the tier concept(not just indivisual swap device). During discussions with Chris Li, we also talked about
-> potentially tying this to per-VMA control (see the discussion at
-> https://lore.kernel.org/linux-mm/CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com/).
-> This concept could go beyond just selection at the cgroup layer.
+Hmm, I feel like my mail might be read like I'm suggesting you to use
+DAMOS_PAGEOUT.  The decision is yours and I will respect it, of course.  I'm
+saying this though, because I am uncautiously but definitely biased as DAMON
+maintainer. ;)  Again, the decision is yours and I will respect it.
 
-Sounds interesting.  I once thought extending DAMOS for vma level control
-(e.g., asking some DAMOS actions to target only vmas of specific names) could
-be useful, in the past.  I have no real plan to do that at the moment due to
-the absence of expected usage.  But if that could be used for swap tiers, I
-would be happy to help.
+[1] https://lore.kernel.org/20251115165637.82966-1-sj@kernel.org
 
 
 Thanks,
