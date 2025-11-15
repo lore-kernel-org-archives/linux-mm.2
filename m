@@ -4,90 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BB21CEB2C7
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 09:42:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33045CEB2CA
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 09:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 734EA8E000C; Sat, 15 Nov 2025 04:42:11 -0500 (EST)
+	id 785088E0011; Sat, 15 Nov 2025 04:43:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70D158E0005; Sat, 15 Nov 2025 04:42:11 -0500 (EST)
+	id 75C688E0005; Sat, 15 Nov 2025 04:43:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6499A8E000C; Sat, 15 Nov 2025 04:42:11 -0500 (EST)
+	id 6996E8E0011; Sat, 15 Nov 2025 04:43:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 516FA8E0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 04:42:11 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E41CB1406B2
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:42:10 +0000 (UTC)
-X-FDA: 84112350420.26.D2108C0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 352E8A0004
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:42:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JVE7FFfc;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763199729;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hI9GPURT1FrsbraIOg+c5sfJwIq07JD/MQ/pZOvc0Io=;
-	b=5ksj/Eo2Vempftnhf0wQBV4j1wFJ+lkX4sQ01nIb3cx74ykCZzWyAdcnJmkjtSJjXV+2/s
-	dJHh087fWZO8lVEGX52udacBfarIGrHpUV2sGvGFQQJVgcsQmEUdRhLnSJR0fwBCFXWLVC
-	T4+xL7tt9Py2AmGRn317KmQz0L6B/6Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763199729; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 5547C8E0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 04:43:05 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1D2165AAC9
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:43:05 +0000 (UTC)
+X-FDA: 84112352730.01.17608A9
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 18273100012
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:43:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KD3UcUeI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763199783; a=rsa-sha256;
 	cv=none;
-	b=F+i0BZMUMcN/Oj/0+PnA3HbWdOKMCeJ6NPYs9QpHg1tfzBEyGERTa2B0pnkoaWjwzrRJ4D
-	mal1g+HH7YRQP5OJlPUbl6qEPjLlxz/au1vP0yW8m2Pk4daxeP8RjfKbvFtKpY+KetBaRZ
-	iaD6inSKV2a6sI5lSu/z90DIdeS9Ntg=
+	b=CNBkOWscV6R5PmFoHI4lLp7lmI+fiyH69SDlgwP+OS42nBBcn0zvgwn2izZUuszmyhqpiK
+	4ZoP3NE20WhQbOSe4SxLtXybnHxHz/0OYUQKlwF6v43+lx0qXpX54yo/5mi93TCJFGs9Tg
+	3FJXAN2f4Bg/epmbMGaIrcPaPiJoaqU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JVE7FFfc;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0724D43880;
-	Sat, 15 Nov 2025 09:42:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D638C113D0;
-	Sat, 15 Nov 2025 09:42:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763199727;
-	bh=5TLcwJDDFiBtj7lJVJ9lPhvDhUna9We8VbF9X0zLOfI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JVE7FFfcnStH8/zqhoWCvqwopCxelotqfG4sYk/BiaxyZy1UEJbCr94sYXbNJHav4
-	 Y3x4oN5eUZmh/GhUDL2b28zkgS2SIu05fnQ6STStSprGS+E1o2ohQ4DaRgT9bZ1eg2
-	 oV2Fh+N/VH2TdbPJcobloEaC3F6G4cMn1Feev7xyebN+UmwsMLWWj/Up8lenQsdTFn
-	 twFkMiK5B9gfWBoXnKKn8hQcW0k4WwcoqJZV14JAxtpvPKCQKm9iMdmwObnqo5HSV0
-	 991oTRVul8vfpew05xw2F3A5UQbwRWcUrl4F4alp0931iG8fkbF5OnAuro2wJNSzIB
-	 Q9J0OECjcwi+g==
-Date: Sat, 15 Nov 2025 11:42:01 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, graf@amazon.com, pratyush@kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KD3UcUeI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763199783;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bu/YvVGS6f/qPnY5owZrNEIEYGYSg1/BJENMGejEMt0=;
+	b=p12ua4qt6jMDU8elxkYpRZ+TF8Cjs3MqyMyS3FRkBogSVhCA4/pHdShUOllcqkQDCwOftb
+	Eq5KlRq26Q+HAS3vvl3T5kOKiytHN7dX+yo8XhX5JrWanB6tWUNPC0jvLrRKqjAUIfbGEP
+	x8sxNRo94gYYn6HkQV5AxYu06/elj4g=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b7370698a8eso164968666b.0
+        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 01:43:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763199781; x=1763804581; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bu/YvVGS6f/qPnY5owZrNEIEYGYSg1/BJENMGejEMt0=;
+        b=KD3UcUeIfCcuz0nFxVLYPYHfQq44A9WOO7xIcqonjMkt3bh1ctMqUK4ptcIJN4hqer
+         mtDVVJlBV1Nj/aZBEtYUu8iagDF8UJ4ufakhwlLm3L9811mZzk3H2PHX9JxcrGo904iT
+         5WmmlAUTAT1kwJxl90rw8KGjy3YeUerJrWoLjmH3ozZCjEGPjbo/Fd+QUVYxOOCXn4pg
+         5QMKPTwSFBdtAoi+uEeqDrgmXMaHAQDoVXYYd8gm2B1a6xzBW2ZiMlDJeSRtujJVmYzs
+         DS0p05pMfTCkYevB8Iz4B0DaEz0/oZp411y0TVM+G05pQOM81cI/8GXSpIrz2h/QnoPZ
+         kWsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763199781; x=1763804581;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bu/YvVGS6f/qPnY5owZrNEIEYGYSg1/BJENMGejEMt0=;
+        b=Vu9nlh1eG1N3MSlThzGj9LWnq8tegTfM2jy6ihTm1qscy4xPAqqAMovM0dCwFdterf
+         S4JUzU/U7DLl90iMiBoFeNvWj2d3yzV71e3E1WAUPdVdadLsdQjJBelM2Lq5OmFmM99c
+         3CKO9vgXMghjddBAjDZC+1yoi5kZReSoVXhI0XBujC6AoHQrjZ5yQv5RmW2sS/nu/h/w
+         HPqYnFIezc3LWBcdB3fO4LI2am6sqDI7VDuxIG3/wODgOswEwCEipXSCX8NoFHC60T4u
+         bTn/wUtBb2mDfKhwGiZzuQJ+LdVWyAFz7W9i4HCgolB29kpH+Jikitjo8ueVO/1Rz5mO
+         hFKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVrrCFc2UYv1zf2pCFgAnBR6FsHJ066YjvkihM/o4RaambXAU9gJN/lPVD/2hBkLjLKAVZ1nOrRSQ==@kvack.org
+X-Gm-Message-State: AOJu0YwEwKbUv+JtFMUze0zPNzzkgaFnw1xAb5DdvfPUcIAN/bfRBMS3
+	ujs9RILOKAl0Jt8qiVNJUCI6yugPq9zFohYUlE5c/EU4lBUDkraWRRtfgP82CA==
+X-Gm-Gg: ASbGncuJ7HMAO/B4jaJhAf09JM9FrlsXpvD0SfcXaNqm/KKnTqqKKrLdsWJXWNJqjHv
+	2oZTualQosCAlNsQE2mzMeowqYwBKT4r4eos4aj5UfA/O7fsypLd7YQi1sx4TNElTrr+jatKoy/
+	5+FxszqnSEZnopkOTmwCrGbufxrGzLShLMcblO65VdaGhsf0rYT5OXVxXzyKM/m/o2n6zNsO9bp
+	U3WFnsrDwa1WoPLZ7zoCeAeYKy3VlXrKxAT03Rrw21QT7hqjtN5JxGTHRTKFwQ2/pjN/qOZxBGD
+	MIUICmmDSn74MWRmP1Cd/dRd684XymrlXN+zdOfT/+Rdr8latGrQV6bXVqA+NCFiUNyoH3n8aPs
+	n2NsWFz4gFkqhtA+FA1oK6xGYAZfm3C0/fELIg27ZcZDA7hdxCoXqObT9wT06ZWNTqaXRPehrbG
+	qKpPzAmlVctYQjlA==
+X-Google-Smtp-Source: AGHT+IFHioosJ5jTazsiziwouzPq3smTtQsChFlOL19ZuV0U6amI73JZiw1PCFxxEy+MouamqQ1NYQ==
+X-Received: by 2002:a17:907:7f09:b0:b3c:193:820e with SMTP id a640c23a62f3a-b736789d3dcmr582744066b.13.1763199781290;
+        Sat, 15 Nov 2025 01:43:01 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fad48dcsm575104566b.25.2025.11.15.01.43.00
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 15 Nov 2025 01:43:00 -0800 (PST)
+Date: Sat, 15 Nov 2025 09:43:00 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH] liveupdate: kho: Enable KHO by default
-Message-ID: <aRhK6dBs6ZwEz9Md@kernel.org>
-References: <20251110180715.602807-1-pasha.tatashin@soleen.com>
- <aRbag7qR9OVNAQXN@kernel.org>
- <CA+CK2bD+ZseJ_6GUMV7d=8xpUcWW6jzJBdJRy7kQmez_2sMYUQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: consolidate order-related checks into
+ folio_split_supported()
+Message-ID: <20251115094300.rgdhse2v73xoivq5@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251114075703.10434-1-richard.weiyang@gmail.com>
+ <827fd8d8-c327-4867-9693-ec06cded55a9@kernel.org>
+ <20251114150310.eua55tcgxl4mgdnp@master>
+ <64b43302-e8cc-4259-9fa1-e27721c0d193@kernel.org>
+ <20251115025109.yerb7gbty4h7h63s@master>
+ <aRgKoQT2ZYH_x2wa@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bD+ZseJ_6GUMV7d=8xpUcWW6jzJBdJRy7kQmez_2sMYUQ@mail.gmail.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <aRgKoQT2ZYH_x2wa@casper.infradead.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 18273100012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gqha4oo7buudjon5q3azmr3c1bes8cqz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 352E8A0004
-X-Stat-Signature: t3c188mcwccbo9fjt4yd7mzxprzb87zn
-X-HE-Tag: 1763199728-225069
-X-HE-Meta: U2FsdGVkX1+H5nJ25NjfUaf/QZb/mLSkIiGSuPGnvUknbXn62EAyA9Z8gxR3VSiXrmRjMGh8hriiM/qe0+eOljTZg0HlRlFEU4Wa92ibH3s/W0nVUBe7sWtALfiLm1kKo1XkTtpuRDeSL4V+upMmM7ckq34Y025Ry8mTfUvZy5SO1/sUhMGvwWatq/26/hIiL7FvrRDeQWYoWhGNLXvzUqUUJbiFLU7UwVVKQ8K4AUMWh5nsYcAm63SXQ24GpLfMRcA2djlOZJMhsYWv4YrFds1biAAA4pS+swA1Pr5+gKwEmmIQmB0qDtHFdiAMXNu7Fj8pKAOX3iomkaFlVrRt0VfgYpJk19eVYnyl5/pLJ0OoERNhDuXvLUamO/ouqQZA802sqaurb9DiJW41Stxbo/AWCw6kgiLPVPws5b7NdNnbxguR1U/t7kK9sMWbqzbcwoEmVuzt7KyobKfzxFUtodXgtFLPDYyCl0F7B+OMBgp6zM4imBWYa5aDabsFzsA3ST7nasf4N1+KIfJvN2/EMPnEyK9Ah5qh2CpF05eUvmCA2adxCZ4uuLgQwXd1B5xN0kknBt0jxYr44RafKoOKnni5W3uJIQbMxyAvZ0CbBwSOGUr+4Aatukrj0lktFLcDCXfpw2gbFt6uHQbv54itfo+WUdgTogoezdezK1KGVrmuXLNfNxphzI/qX5JHwzpQOIIGGawFBywtUNsHh3XH2z4HfoCky9cO4T+2FelpxKGjXwpkocgmqsJlxCVwxN0tx3sgJ4y5ucRmXiX1zmfPvEIhOKPkhyGMOyzU39YbLJmwx7zRPvfaQHQDU0alZHT/6YB07SdjVWKUZ4me9dHSYNLAb6jG8wzqUx+z3g+/J9CZvHwnF5O4qFG9GJm9xhAd+BJumweU78ZwEfC69IQkK6NzdxswKglOog8tpkO7EE3eE/+gK+GI6ZeJPl9JAPvz+2jNvAfo/HY6/gFpBpe
- Kmej7FFV
- Kqk+lRJ6LzwvOihVqhK+CA7J8o9mrerY1un3fgXNb8OfBP+b13E+FC6q1KoNeBFxd/k4yObK5X+13eJqbPwQPioi0iH8H/OggEliZTeW7kxz45JMTyTrUp3RLp1R+euuulGOyPUgRuC5nomnNdF1CRP5tN4mY5Rp4PKWcSR6Jw2GrUYe1P8RWViUHfRUdEGjjsuklBjr00kLrynFjwHRNqgMmeWT9pLgp1ESIda+O6AtvY2jmuTlxfSPeyw1DXNfUc2w9BXJmxKxXZSseIJjAJs1x+z9yNVoV/w4foqEBwokdDiw=
+X-HE-Tag: 1763199782-945290
+X-HE-Meta: U2FsdGVkX18JYGLb35MxLiOAyXbku+1cwJb9iou8ylWERXV3mdpThkDPH6uemLj11qk+uvoxjTpm1AJ73kTPIMur9WhsRN41/l6u9zTFW0xcrYIRxZhEwbtfm3ICGvcU3g+cxs4jZfw3RNJE5HN8drQeS9dB//W2+RNq5lSxmYQGuJ50Xge1ntcduhm4vGOSZgXUAkDxCP23BGE1Ca7F4UHqS7IvLK7w8GgnmcVPbkT4Yr03rJL7I3Qp1gqzfsnas2PYOHe3b5rHaBG73DdDy7E0NYv966zTdqitR6A1xh3Jrt8SDIm5fUwCDEiVTxXtVPl2LYBIVZrkN9OzX1c5QQ5Z7J1gsj6E8QrhohAZKStax2VKyp2tkPWJThj5xrgjjOhmEDOp6dOgBxQiDZMI0oDI1AJ7I/uJSdPIazLSZc9QEwa0QZe5f0IkE7HqhLLqXUh0XvoeXIhTAqcLzf01RcSlr7XofPAKoD3qxj4jB3cfZ8BKHCk5SsnJFKSo3I65g96lDXFO1UgCICY4KguAXVlJl1+8rRRz3MqdLbgEQuEwNG5YrpnMe2oRHMew37CHuGwbMZcFChCUSKYt6q7sfKppmkzMowBO//+oM/oa1olDOqlXnjhoz3rsCrbwNxx4OCUk4mcz1WSfKFV5uD3maXaTpiJ8Kc57RYWdhjWk5xxyWpHBU31nFqGhuu3vNOwATALFPrC9LbZAfq/xCgKuPToV+WlYtfJnS5kZ9fY/Sqm/+dNDfUJTTXH9V53YXGQvL73jrGwF/cZvKOg/vqg4CN2hwUf5KSd2bdcIJ3XoCkfDbMASmKqeJPRpY1mI1p29KvKUelH0q7nXvZ1qRJoJ9qoTzA4uZZ/MBtHlagLLWR+yuwvBrwVhK6Tvuiig9l/g8jv+TSaAaGNCaUOi6Bnr6nBhzeJbIrb3g08Cjr1X4Qnsi5vqg0NXnIWRjXbg47/eUACdsc0+K7CVGU0C2Dk
+ JlpC7xi2
+ fLLI8QLN9w2WCk28Cfxt+k+5WBha8CkjQ08zNKWGPlAXocC+L8yGVVLTS/T+SeVs0gI8tw2zw38p5hzMyq7kPWvWAuW1N++CnaJ5GbwgCd6OJGqE1usEZ2AbY00Ljxpw6j/a+xnGhjjBZOQUNhwDK4zP0GJd5VlQzxAQwa8wxcSiGhgpNIliiJgzxHjTIX/8XgkE16YGer9EHa4SlVOskPUWPH23i86PZBixTat3fqajcglNFPc8dRWWr7ZGFxHVgajATUqwFozykjn8dfn3RsRjAFXSMNyN2sDZufCgFvY7JLDihwMa/qnqewWpFBYk6O6RBO3H1M8103ng6cIBof2g5L2ru8CpPCslIHlx2NKpvy84t+Nq/dzEmr1Ky8NUalE4NYzf3xotFJYQWRLRwnqrU6tnkK04Kctu/NwAiP33jv2Ur5kn0v+PYOsIz22QBu14hKYHlqa55gjbrJR+5OHkDCOH3nsFOhWUIe+fRuhhIxAppZ5VfdPtawlHa+QiaoYruV1lK4O/S6DxyD7+6pIg7WTgx/mxYlIRu7Qm6CjZCR8Qagz3fkhdMVXSjhNSI8SESIa+8ubtP7eExhnXYu1i3Vi410vGy3tENBG94gse9tJzYXPi+bnqCffRVHgyUbp9FBb+00ydPw3bhBO0M6F5/FiPDMGqlMDe99DEwMHvGguH8yV5bxmbiBMAx/bWFuFFzSf0MOHJvjGZ/ZZyM0BHsNwU7X9T6Tl9d1GZNFtK2OPN3BeSULt1X3V7KN8jDWs9H
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,26 +134,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 09:13:01AM -0500, Pasha Tatashin wrote:
-> On Fri, Nov 14, 2025 at 2:30 AM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > On Mon, Nov 10, 2025 at 01:07:15PM -0500, Pasha Tatashin wrote:
-> > > Upcoming LUO requires KHO for its operations, the requirement to place
-> > > both KHO=on and liveupdate=on becomes redundant. Set KHO to be enabled
-> > > by default.
-> >
-> > I though more about this and it seems too much of a change. kho=1 enables
-> > scratch areas and that significantly changes how free pages are distributed
-> > in the free lists.
-> >
-> > Let's go with a Kconfig option we discussed of-list:
-> > (this is on top of the current mmotm/mm-nonmm-unstable)
-> 
-> I will include this into the KHO simplification series
+On Sat, Nov 15, 2025 at 05:07:45AM +0000, Matthew Wilcox wrote:
+>On Sat, Nov 15, 2025 at 02:51:09AM +0000, Wei Yang wrote:
+>> I am not 100% for sure. While if we trust it returns 0 if folio doesn't
+>> support large folio, I am afraid we can trust it returns correct value it
+>> supports. Or that would be the issue to related file system.
+>> 
+>> To be honest, I am lack of the capability to investigate all file system to
+>> make sure this value is properly setup.
+>
+>Maybe you should just give up on this instead of asking so many
+>questions, misunderstanding the answers, and sending more patches full
+>of mistakes?
 
-Please add Alex's Reviewed-by as well.
+Hi, Matthew
+
+I am glad to see your reply, but your comment makes me feel frustrated.
+
+Well, I think we still talk about the fact. You pointed out three flaws:
+
+  * too many questions
+  * too many misunderstandings
+  * full of mistakes
+
+Per my understanding, there is only one question: whether
+mapping_max_folio_order() works universally. I think it does and also Zi
+suggested to use it. But since I am not sure about this, we can revert it to
+keep the logic same as current.
+
+For misunderstandings, I use the word to be polite and avoid conflict. I
+went through the discussion with Zi and thought I did what he suggested. In
+case I do miss something, Zi would correct me.
+
+For full of mistakes, I am confused. I did some contributions in kernel, small
+of course. Mostly correct and get merged. I know sometimes I made mistakes,
+but full of mistakes, it seems not to be true.
+
+Well, I still think this is a common review process, I am open to comment and
+questions. And also glad to take suggestions from community. I still think it
+is reasonable to combine the EINVAL handling, while the detail need to be
+settled down. 
+
+Have a nice weekend all.
 
 -- 
-Sincerely yours,
-Mike.
+Wei Yang
+Help you, Help me
 
