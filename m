@@ -4,117 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 608D3CEACEF
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 02:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E137CE8D7A
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 02:36:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE3F78E0031; Fri, 14 Nov 2025 21:35:22 -0500 (EST)
+	id 751BF8E0032; Fri, 14 Nov 2025 21:36:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBB208E0005; Fri, 14 Nov 2025 21:35:22 -0500 (EST)
+	id 701C48E0005; Fri, 14 Nov 2025 21:36:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF7EC8E0031; Fri, 14 Nov 2025 21:35:22 -0500 (EST)
+	id 5A3198E0032; Fri, 14 Nov 2025 21:36:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E2D68E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:35:22 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69B6413B76A
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:35:22 +0000 (UTC)
-X-FDA: 84111274884.20.679510C
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8F80240007
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:35:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=P8VtsIp0;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763174120;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 48FE58E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:36:16 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0C3CA1A0622
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:36:16 +0000 (UTC)
+X-FDA: 84111277152.08.2D6E9D7
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011034.outbound.protection.outlook.com [40.107.208.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 47C182000C
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:36:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GYVNgRk4;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.34 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763174173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b4c/dqlofQQ1Cq0Pw+ZOefCVsG4PeXoReJklWLO52f0=;
-	b=M5F9Jkq4eJqJPWSQUH9a+mE/aOB3zi+neNiF4CJyUKLArew01302KbTSu4ADWIobwxPTmZ
-	wyTMMiSu3pKlIP40aj1MiAf3/vRD+x6a0/gpk4k4k/8mOipE+qAPsBw5pAMDkbi/QxsJUd
-	JMcijZQiYQFPmpW+/N8TmTFj0TYBwj4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=P8VtsIp0;
-	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763174120; a=rsa-sha256;
-	cv=none;
-	b=eqt5jb51G7lAILJKNkoSi3D577qPmeIsxsXd2BYL3FyENActJGjsVXzwKh3vtPRisCp2fM
-	oVHz8AhLqIINx0lKGYUZVvakFB9q+RLdDC8dgxRvzTyFKEwIgRbP5FuzncI4sRfoXfuXIA
-	v2IrQdPH1Jc1u3Bp5ZOPbOQMO5KoJyw=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-297e239baecso33800495ad.1
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:35:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763174119; x=1763778919; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b4c/dqlofQQ1Cq0Pw+ZOefCVsG4PeXoReJklWLO52f0=;
-        b=P8VtsIp0dr9KSanJH1REq3alZirCG7hNJKodCvhmcP4cgL/Vh9oO9wxXT66JDcmUoX
-         uljTd+DiSRS+piOBx6wdM4AfB47jFho4KujJf73hpOha7KSlz6gCakk8jXhNWOw+BVSc
-         kKtKw4NlQ+jDbYbjtzbsNkL6qsLWWV1bzDNyI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763174119; x=1763778919;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=b4c/dqlofQQ1Cq0Pw+ZOefCVsG4PeXoReJklWLO52f0=;
-        b=VuJdMMBUkC7/Vsygl80ewIAsrSndaC+rNF5GXa263pOm+4CeSgTtgXtLdkecESxL84
-         VAByRvDJphSmOVZxCfiotAk55PDp1soegTOiGnFPMAEAX8bitl9baoKCSVAmKM+OT+Ms
-         YASuIYrWj1bufYVsWHReILmOaGt3H+59Qzi5KiwfyXgDBmfr7ivYhsIOI/zd5k+VGdSf
-         vr7KqJrw+gU5vkngE1aWbnImods1bjRtDv4/HlJPlVqnWneiD9QstAIOxs5R7NpUlDIN
-         oAZsBN8vvZ+OOIN+Yydt/cFK2vRRVbmvj82djYCRa5qJ/Kx0vkW9/TIfRilq7mtiQ6PZ
-         /e+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUhkOJDFxtDfDxJ7CKQ75yYv0sE0/1CFvRp0Lbj0eglIJ+FJigYGl17NvjzoUO2LsG36jWHBr84cg==@kvack.org
-X-Gm-Message-State: AOJu0Ywhkgn19PnF36Jh1pDkJC7v2/ugUuaD5vTjpwUxew0YK1GYeuoN
-	Ye7KOQMjoswLzqHcGqBTFE3jZTKWwR7NfeYjGnRpXigyx7usnvTh2Pq675NmYdTHrA==
-X-Gm-Gg: ASbGncuYtkCgywYXVKer9N90FMKJp+n5kh5tb9AIlMGr9P5khyYnQKmQrAK7Fk4mgdS
-	GPpyY/SdGGjQYUDArCCyvUPPAl7tardr0eJUg4aiw6pTL2jJmicH2JwGR2/Y3FPw6wTE7f2gN67
-	yuxDypTrSS0LS/b1UTGredfjrYqTx5DlZXQJw4a4clKqULDT+qYjyZaZ+NaHPBieLkcDAWOpQb9
-	JzBkevmyzlYomf+PpDy86T3dg4kD/JyddDqgcm35fFEr83tPrevRkVqU0H9HNJaZ0fZxlSOYQ00
-	xYizkQDc3esDfPshGYq6wvxQ0xv9yokEPk+9AupRxLm4zcxoxF3LekvfuyTqR9QO3+gdwFJbqhj
-	ZHDOr60ieGAeDFRO2dtmLicy1XcsNe3WeqgKfwsuivcSnrJaG6VWcT6w+1w6uTAEF9fBUMdyj2K
-	1fgbFhyWXiKVHRvn88VMBMiDaRfzy/Wi2J+g+spw==
-X-Google-Smtp-Source: AGHT+IErO2AnZLN2sgTOQ83bbSpiNbBMpGFTea0Uu0P8ZBl3yHBz5eWOR7rGBCRpubc/taMzYWS5Lg==
-X-Received: by 2002:a17:903:11c7:b0:281:fd60:807d with SMTP id d9443c01a7336-29867ec97d1mr58658215ad.2.1763174119552;
-        Fri, 14 Nov 2025 18:35:19 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:b069:973b:b865:16a1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b1088sm68641555ad.57.2025.11.14.18.35.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 18:35:19 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Yuwen Chen <ywen.chen@foxmail.com>,
-	Richard Chang <richardycc@google.com>
-Cc: Brian Geffon <bgeffon@google.com>,
-	Fengyu Lian <licayy@outlook.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCHv3 4/4] zram: drop wb_limit_lock
-Date: Sat, 15 Nov 2025 11:34:47 +0900
-Message-ID: <20251115023447.495417-5-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-In-Reply-To: <20251115023447.495417-1-senozhatsky@chromium.org>
-References: <20251115023447.495417-1-senozhatsky@chromium.org>
+	bh=hjbOGOnaYFQpFrbIJzE8hDn3dyPnxqq+kUK+7o9PM9E=;
+	b=cVn7yZUFqYvqB/dsvhrv47RUkW/CVkytaNtp7vxWtPtyr5II9zQsyrDdT2exP66GIueUdw
+	y0b4eZ110nFArCDg+QlEd4XX7gE8eUThZghV6CJFmW/TCdlPs4l3EIL0aAMWHQj0p4Dqp8
+	mjLFBFY907QrqsKFwcbmEXAm3PmS/iY=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GYVNgRk4;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.34 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763174173; a=rsa-sha256;
+	cv=pass;
+	b=E8NISc2jOoRyczrffS2PRinvzYDtPMrwgG1EHN8+b4079XhA3ApKiV3XLma8XjM7O2c7IK
+	vgF++hDtHonR4jKokCnCkYL6zXEZvyoKInWA7GL6ToX8ngxb7Nt5avxNfcFMuRFepEQLux
+	Z5XedBYA70TaburA1IQvBNYSt00g80g=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jSF1BrgVuaogOTPNUwN0MaEs2/YgBYhIWxbqAmgcd0i5s5a+chc7TRzOFf6p57BRFsCa9aJ5VrHdYtxNNP66rgpt0j4gNzoTZD8+aixp0D6baPBS+GLKJN1WN1Fu/pHKc2YSXmq7300ulsQ6IBkBJu9Z+OYnYduJejX1K5TRRcInfpnqFEH5LpFhlxWCT98LStspyb4Q91Wt/9pV98wLNBFAXNVFRNeVSy8Si3ghccq3EhOk0wE7hq59OrzYqceB8xvpB7UjPK/sdxtLjl+Tlkw6GPn879xCPr+QTK0msitzXHWVx4I2C+R8RoMCMcGVYu60mHUa6Pp9RPBFXj2sog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hjbOGOnaYFQpFrbIJzE8hDn3dyPnxqq+kUK+7o9PM9E=;
+ b=FZEBthvfI8cDfpIbjndh/TAvt6Wce2hq3n1dzuMq9EpKnqoFB8LlyM+KAX2DR1C7LU1MBHdNJTLhoxD1PMrUTega8g8GOah4RmMn5CrxMNwAEiRCL4dP6/Pz+vR4FcMsOa6pWFq2e3XLuHhK1yswpz/LOz9pQTntg16tkphr1ORzA3IFD69mJW4QRnatCAARBTVhc/J8+ur1FoqZPjGuXhInxbGjWv4SPQQ+yO527O+YFBSXiZD5cwAl6cKpElW9PvhOelOxjHlEm5SlXCTOCd/i9X+qQqcCHGDcdJMVmH+AaXa31TCtQLwuBklHcFQ26zpacDdY7VC9wc33Rz5bFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hjbOGOnaYFQpFrbIJzE8hDn3dyPnxqq+kUK+7o9PM9E=;
+ b=GYVNgRk4EdNroBG5a++YKkNBrByvbCh68DMJ+1JKmd9LRrj/leg9GMO24reoCiJ4xpd1xHWvTSyY1nNyvgV6UJ/CiW/ILFJqqubbU+V5OdKVS4zHzYUbghXoAZ7Eh0exC2sUnD1uuMCO9mfvtBtD1zKebThNUY6KV1L9qFt/u8XkGMBZ/5WjgigNDGkqr09hkYAR9nps9rVqnT8zHjgOeEVU8KNbrO6cFgWRgoDUeqbrDDMCAB0n/DMMbETsQw7P0gUG0oxAswtpHg75ajRNO3GI5tYEjrC6TUTcK1OqxMhdAbCWMrxmcBus1pcK7S4sZ07FtEZSMTI2y4YugFFPkw==
+Received: from BN5PR12MB9464.namprd12.prod.outlook.com (2603:10b6:408:2ab::10)
+ by PH7PR12MB5656.namprd12.prod.outlook.com (2603:10b6:510:13b::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Sat, 15 Nov
+ 2025 02:36:09 +0000
+Received: from BN5PR12MB9464.namprd12.prod.outlook.com
+ ([fe80::e83f:10b6:1259:d000]) by BN5PR12MB9464.namprd12.prod.outlook.com
+ ([fe80::e83f:10b6:1259:d000%5]) with mapi id 15.20.9320.018; Sat, 15 Nov 2025
+ 02:36:09 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, dri-devel@lists.freedesktop.org, llvm@lists.linux.dev,
+ oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [PATCH] mm/huge_memory.c: introduce folio_split_unmapped
+Date: Fri, 14 Nov 2025 21:36:07 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <60B3DC06-7135-4410-BBDD-9D7B914598CE@nvidia.com>
+In-Reply-To: <c1d57140-fc6f-460a-b017-6662778aeaf7@nvidia.com>
+References: <20251114012228.2634882-1-balbirs@nvidia.com>
+ <202511151007.F1gixfc8-lkp@intel.com>
+ <c1d57140-fc6f-460a-b017-6662778aeaf7@nvidia.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL1PR13CA0003.namprd13.prod.outlook.com
+ (2603:10b6:208:256::8) To BN5PR12MB9464.namprd12.prod.outlook.com
+ (2603:10b6:408:2ab::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN5PR12MB9464:EE_|PH7PR12MB5656:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77563d6a-eed6-45b1-67f6-08de23efbc1a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?0uUwIuP2MEMJN/kUiGLpHXbfr23pBGEcnw6AYCMdVAEhjCFePUMg3y1TXpYC?=
+ =?us-ascii?Q?okU3do/pb6JTG3n5gMCqBMs1CR1iXaXzOamlYAem7UDG/q/ay7AcanbcdXXQ?=
+ =?us-ascii?Q?gmcB8y9xBHELILO6fwVy8gbKVTG3RWSYJbQjzK96TMDvJGbCQDTK536GthMe?=
+ =?us-ascii?Q?CTx2MBv2kUrOZDNTYg6k+LV1J+pVLFYiL3x3m4iFgAEC7Th7UldapfJidabg?=
+ =?us-ascii?Q?RubCCEz5OXPbEvNsh27Z7uU1zKHnhLyi4R/k4lIJttdtRzT5yv0DbkGxwnMd?=
+ =?us-ascii?Q?enCrHfppTVIJ2jbSjsy4FyTO8EDj/SWl+k6sLjdQrO7znCmUsfYI+en6yWPH?=
+ =?us-ascii?Q?eR1fuYzwOkRE7Lvg/7FVR4mIu4K4EkwUYLqfdtiQm0fA/QxShzOAf2E9Vpd/?=
+ =?us-ascii?Q?Z/ZKt8yqSYLEpDjf+2OL3Q8vVtr+EAfURVB4275AqmnB1IriWT2H92LPPbIS?=
+ =?us-ascii?Q?HhllljvzrGpOvaFIUncfC6Qbj48U8S6T4nyHUDS1FFVHHAJylnhBy6BDFm1l?=
+ =?us-ascii?Q?4IfLzUsv3wRjwb+98jLzANy3vLSCB+KnxIbTI9OAIp2FIxO8fcDQd4U+mcAi?=
+ =?us-ascii?Q?NoUsJJ9ucxuIs32RLtt4PyL8j2iJd6jJ2ZSQdJnBWFpJJ7LvtUV0FZHwEB4L?=
+ =?us-ascii?Q?+nSNTR8+dclhYgO/wjQHtviuigTEluxrwSwF+6HHw8ZU33Ugje+ApMASIowV?=
+ =?us-ascii?Q?h/eaARa85OcyzWHxVWNnBLTieRQ6QvXp0KDcGWWv0JKKkVuK4ptDi082T+Yu?=
+ =?us-ascii?Q?u4zhvtj5a4YZs6jpEAFN66tNeWQWmpJvJulM4BLwnWgLZ6lSbURmANth0XXm?=
+ =?us-ascii?Q?3d2PonrKGvSNRh/CrchzsZDJrF3ioT7HHZTz2Kr2w32dOTZo+Vsb3qlJPnqM?=
+ =?us-ascii?Q?P1lochycpJ6+lfhAYow8qV57PLjQjis3YLqeT96gHqv8VA6uw3GXsG84kaSA?=
+ =?us-ascii?Q?ZgPRwCNY+SuaW5jiLfZl28/1ELJfrNU47jmND2Hat/RpB63swNTzcBqOML7V?=
+ =?us-ascii?Q?sTunFvGC7orI/30iWbyZ7EhKScTlI6LWVxMWzVfC6jQ9UFsVqW1wzoJJi9VI?=
+ =?us-ascii?Q?8vFYNPNGYvllDY9mEvQosdU61YCFs7clJ8b1Oec3GTgo+7iigMvOyig7EIP9?=
+ =?us-ascii?Q?hgx1wJwX4n33rFBJ/KdxQSmmjdeAHnomE1puWtGo13SIvi8DfarZ8ktYjNRO?=
+ =?us-ascii?Q?slVHw+223bgfaD9ceG+/rsxkj2pVkJe1o7Tx5YGZgRgfLJ+hWTcB4Y20LVc4?=
+ =?us-ascii?Q?DIxhI8LaywBYHA0QpCGQF5HWB2KHaXLevw7A2kUo3DrTHKWeU4SjA7lZzgaU?=
+ =?us-ascii?Q?oMxi3Urrv4TYD+DJsV7TI+y6qoNlLxNHwSN9xtZrwilqAhmWjPhJMB23ev7N?=
+ =?us-ascii?Q?2eERBByi7qStpm2xbTJR0SP3IxAatXZGrXODfZ4T2ohEWIQp//NlAV5jzTD/?=
+ =?us-ascii?Q?sZfV3Up/hroCYt20rLt8DyhErwtZTjtqrw9N20BzWtNj2A5+37wCAg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN5PR12MB9464.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4usgqySU4PlJ/BrSKPFp54Ia+sLtgGBV0N80kgBbbZdsKOh+Bl4vp514R5uK?=
+ =?us-ascii?Q?YsY/YMsLXB789ZOXCEB5C/KKEhg1ntiFD8jaKD4n/5oHuiT41GYj9Vr5Ztoq?=
+ =?us-ascii?Q?z3rQHCtj/JIN++PeVeYQ1vr8iXSYt+JmRavJMb0bZFwccGyufjMzcAkYJcFG?=
+ =?us-ascii?Q?qHzNbuVEfbpEOPWaRnnHokOuSRDhQRwhX0Pw3blEq3TGlsFD5mQsbJr3aLs3?=
+ =?us-ascii?Q?D6TXtK2Z4Al68zaPwaI2jMoTqTlLzfKndePH+Cr89YlfwM66blfeQ1MXXvvC?=
+ =?us-ascii?Q?ut4NVtCx40XuV8YuaDNoqZW3FaBO0RMgIntiBEwkaDK1U9Y/kv/1IzYT/1zE?=
+ =?us-ascii?Q?OIAxZv2tpJqdMajg8IOdDepGdLeQIHolydvLNlmgwueR7ktBh4JInjPLAfqc?=
+ =?us-ascii?Q?olpXzL5PlpmV8pntn6jfY1UKUs4OaEP9h1CWVxNrHIFnfLcpME2LOrKn0Sun?=
+ =?us-ascii?Q?NtKX06fUWEGpfZaSmlRknA7mH+PvpVMvM0QlyJaTE6qDn36kTfraAQmfWLDV?=
+ =?us-ascii?Q?iBazzVt6jBPamNnsaH6xE/1edM6CFtQGpgPnHavvP2kZj3zh6m48JaCiGqeM?=
+ =?us-ascii?Q?Cpw0FrcohILgvEw+7hPixC/dRASg+i8W+i9hjejk28Ekdrf2UNw4wqyIgEHN?=
+ =?us-ascii?Q?3sp1o+5Y+9SZjPeqZVlFACjiZipHTIySuoKxN4JFMPGbf7BW87c2dHcqnKdZ?=
+ =?us-ascii?Q?ETGvYf4IM6NY0SpcbTH2FZnKD0btWamG1a+kJI9o6jX7MXa+LNGFHHpUhQNQ?=
+ =?us-ascii?Q?AZoTKF2i1BJyiSDa3eNfUQpYu+0t+QaUqHrZ9x3BInPoOKdgPgEU2LtqtgUX?=
+ =?us-ascii?Q?PT1i6mfcViZEm7bGRIZLjkPxLtGP8I907+ijImBvVmplOvP5dxk0S1QntiOu?=
+ =?us-ascii?Q?7kRJze+zJ0MfJAOCiZph0aVPehipJZP4r29ZfUJrCoaGBAczgkgj0wZlWudt?=
+ =?us-ascii?Q?q4BHR5SmDxzwesFEWNgTg+/i8rFiVYQCW6JH5vTOuKYGzfgm0n48Gj5TLvty?=
+ =?us-ascii?Q?U65w0MexZc0rbPZ5bGHkCiE6LdV0o5VnLIYGGWqzuZVbGpSxqEWrM7vypbwM?=
+ =?us-ascii?Q?ZPFqPkgwbJz4dE+72pmbejGiElMKlDXOzHffqJaS4Jtiucq5b4fjD1Ca21No?=
+ =?us-ascii?Q?dcHFl3G1LMOw5bbw7+clq6wZMylfBO0qCreHhtFJXhWYtvmL9QDrQY84iKwq?=
+ =?us-ascii?Q?iszlo2GwYuRo4VlHJKYrCbYfloAeIX5FLgHpn83I6zYd7v9xPjGxAh+I2fy1?=
+ =?us-ascii?Q?TUW/zRYBewOQsbTUiYhZ4XEqrcXZ3GHAltRAf4FuG5KJH33y60BQMBE2Ws26?=
+ =?us-ascii?Q?YZo6/7efMaJ5ldzE/kIcmQ9PfC9prJETZtQ6yO1uR/ozhnxpYXedv60PL0lt?=
+ =?us-ascii?Q?bK4OjUJ0MCOIt5chCQs6GxjFpwryXyqqYq5LNlMEzTTO9QAK/vLv0K7eW6SR?=
+ =?us-ascii?Q?zckTzbk7AyhMkn7fYOKyexbK6WR8VUQSu16+82Ve05GB2K/f63o7RqyJjsIy?=
+ =?us-ascii?Q?vrS3bICQl4EFUQsg3RjUqpJaZHSqB0pKbHfMcc+tP0fChkYmiNoOeL5FtQ9a?=
+ =?us-ascii?Q?Lf11OWFBQ+kDZfMHtSynje3ayo9L3wUTa9A+YSbO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77563d6a-eed6-45b1-67f6-08de23efbc1a
+X-MS-Exchange-CrossTenant-AuthSource: BN5PR12MB9464.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 02:36:09.4315
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ugtx59sw/tVzXsuHN3J1+Zx/83ljpWTqhhytvRUscY/NvdpiaBX9VRowXsLSRE+i
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5656
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8F80240007
-X-Stat-Signature: nxni361gw47i9b3yxkjjphwm9m8d7gur
+X-Rspamd-Queue-Id: 47C182000C
+X-Stat-Signature: rykdqjcgcia6dy4r6gwoymx1tjpucdqu
 X-Rspam-User: 
-X-HE-Tag: 1763174120-229132
-X-HE-Meta: U2FsdGVkX18pDsIcb5kbn+N/kMcjY8B7hl/TKWuFrdk44SFQFZkLn/i73s2N0/Mx09cWG5F+huv3S6jDkRJMetwflwT4rf8m9z7iRML3iWhwqaSFQmTzGMuhuqsCpph0VDoPmZa8eVfDJZ1egYx4AZ0jWCCuj6TkZeF6nZSsMyZ+OQMMD8855ruBbDhmMuvhuM2Xsvl1RvT8lRdyeJ4f3/nEFu6YAxHTZnnYUgiN4aT+2gYyNfTXU5Ha47KdLQh1k0ns97Z/BtZWzI07QAkDU7zFG1+z4Rde8kgpzfbvuDiHppRNQJpEhtr/nkUDHw4TrGE/gKmBsNGaRiwknwwlxFcmkcoDHfK8d0ntZWOeCxs/8BltA021NukDNuhu8V17Hdeh1Ox79LUKSEU7JxKJ/O3233rUX8q5DIiHqvWzBDmHAhdy5NCeD1BBo76dHF3j1Wxf6CfbBuP3ug4BXb7+eaO97zq555yzQ/ycl0OWkGT/llnoGp73kuVuv/gNjrAgLzpdYSzqjgAowxKIMjU0xEYSlaDFE6bWrw/j+WuFGw6Rb1R36lqtR2twTDKdBRYLmWqDn37qObhek8hYDxiG/WYO+tKADRiNWX8k6Pf5rCjUV5iVO4Ckdr8XTWcyhFgUqCQzMC+atRSN/yCHpOqTGZBD5OxvC+FkWb/FaenNaf5FGLg+1Teuvemis5ECJMb1CP2vi/N+mGK2XGmsox9a4fL692P/hVW5yPxpnLuYLTBwKQQDPZZaPxAxKZOgGZT5/jYYfqkd/XCHGNNZOcUnFJEnIu6Kl2Fkz5tfZd5dyTbqxTliPcCR0vzRP0QJFur5THst0AU2JX2Sw5+Dj+kv9Tdj92JeudQ6e4onGrBMWen51jkM5aKExKzuFXDlE+/jpRblbadzlWvoQJCSQMazq9aUPxqkMYoZh0G3L4JEjHZEpWmOXNa8NYZcy1gxyJHLjZYWrc0xHl9tpNfQ5kX
- g8mzE7+I
- lFIHlV+9UTCgDsheGgT7rtLa9HM92aYgNZkPgmU4jghxhdMmc3KXmzFFf1inFF/uH3remDgIKAR6bMnp19Y++o7TWAIta7aKUB3gVt4wmTAmi8YU/MksTdUHIR76EFryq+krMBdlcBSlt6VbhDxNy492yMYQ9RyWeZdKiE3Gy9WMk7Kdz3y+39aSaOLZuTLguLJEcUirg/YwMfsspiIHJqTLRPenA+7mwHBRy49yFpOgvGYtJ/shQmkrDKnjNB/NoXJ1+RdRgmWpft+sMewMKt/ef5ZsJySZByDlfuW+HyxkFpA3N8hreHO62ibByap/Xz20TjxUIwgNNNEZpKgRXzL3qQUkEs6rSTJ+q
+X-HE-Tag: 1763174173-707000
+X-HE-Meta: U2FsdGVkX1/ndbSPAvwDkis2Ajrxmwk3xxgLKEteZhSZaQdq1b1H1AqZkIHcd3arET3gcu4NsLsKcQg0bdL296X5YR4klA7Gl9ztY6nUJY0b18oLrW+co9H3KucIXajIfJa5mvmYOC+IuNyv35ML1TIz8PpEOwXKxaXL8q4WSajGVYF2DuCDvXG6JzKgE+tmLkE9ngp/709X+Zfe+RULy/lbcgjwQBGinquFBzaBFONQo+dpbs1OdqHb9zZY1aGLNIejdb/towthWEdvBRkNIjVKiwNu/Bw8cW8LHMHaw58nXeSsqE4aw54ys0eyjClWdSRN+5JOgnrnLHLCBxTH/z+yK7ENNGWoO2pNntBsSi11FfSYB1HeLe2fx+OaNP4CA4SHB7bK60QtoBuMNc4+1oljwI/lgLX8V5O9pddWDD1m2MH3p9mfgxgOOQjFm5FVwv9XH+SUSET1P/lp8yO9z66NtJGuMMRql9POxGpypLSqS2nuU1nW5PvWQbuhpz7PRursYxPtELz2WNqhkPdkonTUDbLA/AniDaoG2b/OCB0m4qY+R2XXAcNiCVbID81M1g2n+Sd4VdT9wXSJAZRvsNEZg/NP40BapNHKNrJQ0aAvCcxESheysCW64ULHA3es3EZ6ONEhr9aeOy+6Ky4fcFVV275aUyDldp8Plb3WU4XxKUFzCtQbvMbSgMpd8J0hUKZGelckVYCXgXOrfyiIRlmYA+F4zZmCJI9uhEvxawygtntRtQWnnl55miol8m8VLD5hvq4hL4tZWw+MD6cjfGD+sWXfSVPXCCg/496CTKi+rOA/gsyX4VOfZ3LQ9NgxvheEICAtYPlnJcGtPyH+d/iMrZlLy5Kuh1fT+pFMTn87fq/bgWEVBH/60m1SNPFr3Jv4TimVOE7A2j9jGE2MDk3nOhIE5xALzrMHn+mySkCfNSxnreBlqMgKK+1xLz/MwUOj4AAvmFeje+X+Mcv
+ EZ3W5AFy
+ aZTDpT7CIIzx+sWIY1BSCrnFvqBS8/ROjOZeb+QBsuX4m4zSvvhoU2PkXmE+UzazIoulw9a9OLumrmlUkuKe0K9od1N3xB5MTc3+6fXmdekCmdml9+K0w1rPnx8Swi9Jpbfs/YOIW9MhD61vJ9tdqBt1MWGRwHO13HbGeYoGqtNQoGcDtBdg7YKeRQKFmxB6YoKPbuTHWs3qCErphGNTT7yh2PjAlnYxYrAQfQxkKqYVIrC2I2Nua0oeQP1TBzitTySYYU//7yrBugNlHo3F//bYM3hfeMTzxJRozCyzmzhhwwr/TgRkuIl16WR4WrNMLO1QdnGhHXMVkF/D5p6mEE3LR2RZSk4ZPEP52V/vJzXvpVhuaN8lAZ2Bd2LnpK3l6vBFIII8UZhiYcV/HvMG0/YdFyX3br1VA+35xh/eHK2ggsIvv2QJ6NwO9eG2fS37SotKApgz7sNWW7igiclrwmYSaKxHkrgkVzyjJo/JdI+izsce6Ig+u2y3PYy0IdkPIyFVy/CViNZHfchVgWmCNE0OSVUd9jsNhqGVbdjfv3XyJgWeljERSON+qYgTAeVWFGJGz79xo2VFCPUV9zJJQsUJ+fqymIDy10RibqNFOuNWdZjVGWp2pWF0ivmAL4gnL4H2W
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,130 +199,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We don't need wb_limit_lock.  Writeback limit setters take an
-exclusive write zram init_lock, while wb_limit modifications
-happen only from a single task and under zram read init_lock.
-No concurrent wb_limit modifications are possible (we permit
-only one post-processing task at a time).  Add lockdep
-assertions to wb_limit mutators.
+On 14 Nov 2025, at 21:33, Balbir Singh wrote:
 
-While at it, fixup coding styles.
+> On 11/15/25 13:15, kernel test robot wrote:
+>> Hi Balbir,
+>>
+>> kernel test robot noticed the following build warnings:
+>>
+>> [auto build test WARNING on akpm-mm/mm-everything]
+>>
+>> url:    https://github.com/intel-lab-lkp/linux/commits/Balbir-Singh/mm=
+-huge_memory-c-introduce-folio_split_unmapped/20251114-093541
+>> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm=
+-everything
+>> patch link:    https://lore.kernel.org/r/20251114012228.2634882-1-balb=
+irs%40nvidia.com
+>> patch subject: [PATCH] mm/huge_memory.c: introduce folio_split_unmappe=
+d
+>> config: arm64-randconfig-002-20251115 (https://download.01.org/0day-ci=
+/archive/20251115/202511151007.F1gixfc8-lkp@intel.com/config)
+>> compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3=
+b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+>> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/ar=
+chive/20251115/202511151007.F1gixfc8-lkp@intel.com/reproduce)
+>>
+>> If you fix the issue in a separate patch/commit (i.e. not just a new v=
+ersion of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <lkp@intel.com>
+>> | Closes: https://lore.kernel.org/oe-kbuild-all/202511151007.F1gixfc8-=
+lkp@intel.com/
+>>
+>> All warnings (new ones prefixed by >>):
+>>
+>>>> mm/huge_memory.c:3751:6: warning: variable 'nr_shmem_dropped' set bu=
+t not used [-Wunused-but-set-variable]
+>>     3751 |         int nr_shmem_dropped =3D 0;
+>>          |             ^
+>>    1 warning generated.
+>>
+>>
+>> vim +/nr_shmem_dropped +3751 mm/huge_memory.c
+>>
+>
+> [...]
+>
+> Thanks for the report, I'll send an updated version after I investigate=
+ it
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 22 +++++-----------------
- drivers/block/zram/zram_drv.h |  1 -
- 2 files changed, 5 insertions(+), 18 deletions(-)
+nr_shmem_dropped is updated in __folio_freeze_and_split_unmapped() but
+is used in its caller. It needs to be passed into __folio_freeze_and_spli=
+t_unmapped().
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 76daf1e53859..bc268670f852 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -530,9 +530,7 @@ static ssize_t writeback_limit_enable_store(struct device *dev,
- 		return ret;
- 
- 	down_write(&zram->init_lock);
--	spin_lock(&zram->wb_limit_lock);
- 	zram->wb_limit_enable = val;
--	spin_unlock(&zram->wb_limit_lock);
- 	up_write(&zram->init_lock);
- 	ret = len;
- 
-@@ -547,9 +545,7 @@ static ssize_t writeback_limit_enable_show(struct device *dev,
- 	struct zram *zram = dev_to_zram(dev);
- 
- 	down_read(&zram->init_lock);
--	spin_lock(&zram->wb_limit_lock);
- 	val = zram->wb_limit_enable;
--	spin_unlock(&zram->wb_limit_lock);
- 	up_read(&zram->init_lock);
- 
- 	return sysfs_emit(buf, "%d\n", val);
-@@ -567,9 +563,7 @@ static ssize_t writeback_limit_store(struct device *dev,
- 		return ret;
- 
- 	down_write(&zram->init_lock);
--	spin_lock(&zram->wb_limit_lock);
- 	zram->bd_wb_limit = val;
--	spin_unlock(&zram->wb_limit_lock);
- 	up_write(&zram->init_lock);
- 	ret = len;
- 
-@@ -577,15 +571,13 @@ static ssize_t writeback_limit_store(struct device *dev,
- }
- 
- static ssize_t writeback_limit_show(struct device *dev,
--		struct device_attribute *attr, char *buf)
-+				    struct device_attribute *attr, char *buf)
- {
- 	u64 val;
- 	struct zram *zram = dev_to_zram(dev);
- 
- 	down_read(&zram->init_lock);
--	spin_lock(&zram->wb_limit_lock);
- 	val = zram->bd_wb_limit;
--	spin_unlock(&zram->wb_limit_lock);
- 	up_read(&zram->init_lock);
- 
- 	return sysfs_emit(buf, "%llu\n", val);
-@@ -864,18 +856,18 @@ static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
- 
- static void zram_account_writeback_rollback(struct zram *zram)
- {
--	spin_lock(&zram->wb_limit_lock);
-+	lockdep_assert_held_read(&zram->init_lock);
-+
- 	if (zram->wb_limit_enable)
- 		zram->bd_wb_limit +=  1UL << (PAGE_SHIFT - 12);
--	spin_unlock(&zram->wb_limit_lock);
- }
- 
- static void zram_account_writeback_submit(struct zram *zram)
- {
--	spin_lock(&zram->wb_limit_lock);
-+	lockdep_assert_held_read(&zram->init_lock);
-+
- 	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
- 		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
--	spin_unlock(&zram->wb_limit_lock);
- }
- 
- static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
-@@ -990,13 +982,10 @@ static int zram_writeback_slots(struct zram *zram,
- 
- 	blk_start_plug(&io_plug);
- 	while ((pps = select_pp_slot(ctl))) {
--		spin_lock(&zram->wb_limit_lock);
- 		if (zram->wb_limit_enable && !zram->bd_wb_limit) {
--			spin_unlock(&zram->wb_limit_lock);
- 			ret = -EIO;
- 			break;
- 		}
--		spin_unlock(&zram->wb_limit_lock);
- 
- 		while (!req) {
- 			req = select_idle_req(wb_ctl);
-@@ -2942,7 +2931,6 @@ static int zram_add(void)
- 	init_rwsem(&zram->init_lock);
- #ifdef CONFIG_ZRAM_WRITEBACK
- 	zram->wb_batch_size = 32;
--	spin_lock_init(&zram->wb_limit_lock);
- #endif
- 
- 	/* gendisk structure */
-diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-index 1a647f42c1a4..c6d94501376c 100644
---- a/drivers/block/zram/zram_drv.h
-+++ b/drivers/block/zram/zram_drv.h
-@@ -127,7 +127,6 @@ struct zram {
- 	bool claim; /* Protected by disk->open_mutex */
- #ifdef CONFIG_ZRAM_WRITEBACK
- 	struct file *backing_dev;
--	spinlock_t wb_limit_lock;
- 	bool wb_limit_enable;
- 	u32 wb_batch_size;
- 	u64 bd_wb_limit;
--- 
-2.52.0.rc1.455.g30608eb744-goog
-
+--
+Best Regards,
+Yan, Zi
 
