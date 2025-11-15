@@ -4,114 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E30C5CEB2D8
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 14:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC10ACEB2DD
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 15:14:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C8788E0008; Sat, 15 Nov 2025 09:51:49 -0500 (EST)
+	id 07C1A8E0009; Sat, 15 Nov 2025 10:14:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0388E0005; Sat, 15 Nov 2025 09:51:49 -0500 (EST)
+	id 01D168E0005; Sat, 15 Nov 2025 10:14:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DD6C8E0008; Sat, 15 Nov 2025 09:51:49 -0500 (EST)
+	id E9C588E0009; Sat, 15 Nov 2025 10:14:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 69B788E0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:51:49 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 016AA89A0A
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 14:51:48 +0000 (UTC)
-X-FDA: 84113130738.10.F2E0B3C
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EB06C1A0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 14:51:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ZL4wXMtY;
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id D6EE48E0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 10:14:03 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8AFFC12ECDB
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 15:14:03 +0000 (UTC)
+X-FDA: 84113186766.21.278039C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A345EC000B
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 15:14:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZIRNEOYD;
+	spf=pass (imf10.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763218307;
+	s=arc-20220608; t=1763219641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rIydVfx8R0TzH1/4QIZdK5YhW2r+O6Ifbkqz8pnbgWA=;
-	b=ZPBo/9n7uWoqebahnducPYFOHK7spgPutN6WLe+98IpdrXNnFoqFF5MtyA3a2ys3fd/J9s
-	MpVvgeavyaniZMk7cCRbGetVJU7OPorzg+SWT09I1muxfTr0PLXyKatvgcIVkhWv9mGEZw
-	a+K1v3PVJRTySIt/A9yZFpfnxCbT/6E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763218307; a=rsa-sha256;
-	cv=none;
-	b=7x9fVRRvBxSqkc3nqJkVRQbtZAU4mGsVAVOjwrkghtq0pTY6TVxhYygvYH/1MPAgEpiLII
-	wSOrj8wri+yLZYKyoiDNeLclY4dLzOd5WwPWm4dUt7cq/zk1chZo0dKYUVHSSzb2eQfgED
-	+dgXVHWmtQMP9XYCLNPmgQ5oGxSOB08=
+	bh=hBnQopvOT5mIxdgnnbTfateOZzhyTgq1DFwH42u5pe4=;
+	b=kq08Yi1Md+GNEDm/vZi7eMTNEYbPU+zLMhxXNvHe0UveMfcnxkVFDgGERpc2AX3Yz0YJJD
+	S5f/bsQkrPyrtrELvZaq10lifrx7Pl/KV7neRqz3tp4yMs143zVVVlIP51seU2g57N5B+K
+	Px6XSULVPUyW7GRNth1ygCz2bZA/o3g=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ZL4wXMtY;
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640c1fda178so4501574a12.1
-        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 06:51:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763218305; x=1763823105; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rIydVfx8R0TzH1/4QIZdK5YhW2r+O6Ifbkqz8pnbgWA=;
-        b=ZL4wXMtY+qwtdNbaxgJKAz0cFvrWqEOiHlyQt7CYZ+3ua80ivFWe1zzVYgb59aC+5x
-         VnrjQUksvHZi4JlW7RUBMA9IzZZRTTUaSJZge+x/DGSIlayFOBwb8On6XTE1kO7S0C3V
-         BX0hbX5mJfPdYs9YWQvwozO16sLsY8+wp5mXDgJs5LtEELk0D6ULtMoCijNSFQcVJdqy
-         Szo/0CsKCq+jUNpIz9JAcZAo3sBr8mvB7RwdE7JaqSSjAjHp84OYM0SpowDAeHEMrHjg
-         LPpqoTu0C6CdcUbYJ1g4NRlgbjCX+D/l0NHA6SqyNDefuxrhft83no2ISNXX3A+fUcuH
-         GFAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763218305; x=1763823105;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rIydVfx8R0TzH1/4QIZdK5YhW2r+O6Ifbkqz8pnbgWA=;
-        b=hC/1hH2Ivs5GLw84IiqsIpm4Dbx0XQw5SEOFPhdLiFWAsTBXEj5X96RyAg6QIA+PKw
-         rkvZukfPNQmiksCJQ89DzrypO6XL6CA+PLMngd/XaSaxHiEy7UI1nBD9r/D05sS9Yojv
-         QGRXbEgJXCFVnk+QZam529ssXtTrv426OPwMfJslzKFlwENkk+k/YpmuwNnvMnBNKeVl
-         EN8BfFa+cc8G9U+3o0FQ/GeAiVAON4lpixOrGcy504NCJ9Qxons/VtaYu9QrLodXqSKV
-         0ubE5T69WtNIOwFtaAJmJMwcKsO+oy9RmlzezVt0xv5qZIstJP6gvpukKVr2l8TeUdRs
-         Vb5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXSU20a9bSvspSWe+TnPA28lk+JXu9Tvmz79EqlWZf3+kEnPnOVgB+NOOzSwnyeFMY17eOVNLhFbw==@kvack.org
-X-Gm-Message-State: AOJu0YxcPxvBCcMXA9McEfxmCNdva9kZ2l1UHVBiSOwWLqCKHL/EZkcj
-	L6RUd9JkpaGgDte4CPlcoyoVy0PegL1NUl++8awkN3HwDG7bZvRqDK78sCKwWAds8qfKNaPHJil
-	3YY5Ety7n3iTaTeBmyV7EprCsoXiVtnmMvkDUZK1qhA==
-X-Gm-Gg: ASbGncteHx1Wtz49mNbWxuHXeyBRt9AcqB5AI6d+iIMXjUvtTpXLET2ogufvykuxjDm
-	rjBbY7LYPrG9aFrE+4/bMLtkg8iYLjOueE0TPjVkFOYlXfs9UefyZHx1YfunPJq18TJhCrNWLiZ
-	hK4eS1F2mQHZXVB6f2B0lO84BymSim5ZiK0J0G5XXgmrBDC4vd8ERBFPaw+9FPY6krDsxGvm56J
-	GNHF/ASWAWtnruqCfZkYmJlohDQEWl+DhbhCsGgRN2uqzLkJvn9V4JehwDQocXWoJr/bFdlJQuQ
-	dX/UF3jlXaDFn0D4
-X-Google-Smtp-Source: AGHT+IEQMTcydSOnSXEZk6d6DShEuKVDmQ+Bt+sZ1KHZZQpJpDG5mcJNdHvQHscSrYwgga2nJvO8Tcun1n9K19t88R0=
-X-Received: by 2002:a05:6402:2742:b0:643:8183:7912 with SMTP id
- 4fb4d7f45d1cf-64381837d5fmr414948a12.9.1763218304333; Sat, 15 Nov 2025
- 06:51:44 -0800 (PST)
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZIRNEOYD;
+	spf=pass (imf10.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763219641; a=rsa-sha256;
+	cv=none;
+	b=AnpX4TCyXDqDmBcQ3vPuc3KqXE6mBjxZQnewi8MS3Y/8ejMjsxyvoqx2upz+lADPUFVQOC
+	5m9rpPJsHMrUq6ozilYv0YNd10UESI9cgzb7acgLP8dFbkTSbFv0DuGpUQpzEqobAcWGnq
+	byuHwJxIr6L5+ukGsv05i7xzlU7cK7w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id F15AC600AA
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 15:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942D1C113D0
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 15:14:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763219640;
+	bh=/Po9rhXBcisyw1Z/KeQrWHbPXqjNgSyu9tnQaTBxNec=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZIRNEOYDlISacP3LRzj/bJSfFlw+UdHvbtM4kqx8z4Q0dl60KUY44cmihU4is8mYl
+	 3XDj0vOX1F78A9NfmioA38+NAm+Ovvb/IXBWJA70kpq290PMPpKBvOnstbXf5I6GDy
+	 sRFy34MsLjQWxi1y7ZA5ZqYYqqW9A5UkXkt8/2rNpHUnxtcMsQHNm3QJzk4V4PPi78
+	 zMRjEhPhWGaQi+At5kKXY5uClp0WKsi1Dy4eBgErJ9j9N0BhEziXA2RP9PKdUkVlb2
+	 6BWcpOtmAZwFFBgNztjWzSMD5Uc/21ls2uzP8VxqD9SROFH2ncwiiPi9nfOjixHI/G
+	 vRiXMSu2Ii6Tg==
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-640daf41b19so3600913d50.0
+        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 07:14:00 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWRzyoaknW6D7NRAdtTyZgtNiTUb1Pi9dAe8ctAjZR1kC0requqUHLwwvweJlM6m03NJGeZwFhrTw==@kvack.org
+X-Gm-Message-State: AOJu0Yw1P7ourgzhE2TblCXwkJRuFouNfcrqVxRlxRYzHYIEmdwqJ1em
+	Z++jtWa0HAeKr9Jg/qXe19gkQHl0mc+6yiBqpmykBchueUaRBzQ5peFVafYuOKGlq/hyqQGeu8K
+	eMTsrOpdLF+VDImiTQ/t7lTTpJonFwS38q1caZYdLIQ==
+X-Google-Smtp-Source: AGHT+IH1JnpV5QKEs/WPjJU+XSrEnxlODjDSrdDJ/I+MeluASZGuG3v0xBn9frSM87UKfnLcK7THvuciP15/1mEzvps=
+X-Received: by 2002:a05:690e:1289:b0:63f:b988:4a91 with SMTP id
+ 956f58d0204a3-6410d1387f1mr8288888d50.24.1763219639903; Sat, 15 Nov 2025
+ 07:13:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20251114190002.3311679-1-pasha.tatashin@soleen.com>
- <20251114190002.3311679-11-pasha.tatashin@soleen.com> <aRhKeXM5iAswD7oe@kernel.org>
-In-Reply-To: <aRhKeXM5iAswD7oe@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Sat, 15 Nov 2025 09:51:07 -0500
-X-Gm-Features: AWmQ_blhrf5vCj-730ss7a9AIJUQQXQW4QkjWD0eNWJZG1ouYtdeYt5sPgpeEXk
-Message-ID: <CA+CK2bBnEKk_mQOCfDhnqbUCovLCKhFw-p54Q4_Sutk4oieOVA@mail.gmail.com>
-Subject: Re: [PATCH v2 10/13] kho: Update FDT dynamically for subtree addition/removal
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, bhe@redhat.com, jasonmiu@google.com, 
-	arnd@arndb.de, coxu@redhat.com, dave@vasilevsky.ca, ebiggers@google.com, 
-	graf@amazon.com, kees@kernel.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org
+References: <20251109124947.1101520-1-youngjun.park@lge.com> <20251115012247.78999-1-sj@kernel.org>
+In-Reply-To: <20251115012247.78999-1-sj@kernel.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 15 Nov 2025 07:13:49 -0800
+X-Gmail-Original-Message-ID: <CACePvbUBEQsgoei=ykeM6uX_GWaFywZEXY7dGt+T6Pt4zhiGsA@mail.gmail.com>
+X-Gm-Features: AWmQ_bmkrQnsLWN6zZqLHzRrez2-Aopu9cRG6qIT8b5U9CsZP5z3d3-jlWOzyqQ
+Message-ID: <CACePvbUBEQsgoei=ykeM6uX_GWaFywZEXY7dGt+T6Pt4zhiGsA@mail.gmail.com>
+Subject: Re: [RFC] mm/swap, memcg: Introduce swap tiers for cgroup based swap control
+To: SeongJae Park <sj@kernel.org>
+Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com, 
+	taejoon.song@lge.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: cux6yep7691c66knwrpi1abk4sf5aot7
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A345EC000B
+X-Stat-Signature: kn4y6sjq18wp86yzq6kzxk6gzzyn8okh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB06C1A0005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763218306-619863
-X-HE-Meta: U2FsdGVkX1/7X5wl8r3W76W/wnsTsEFbpei/wbfRZqacjJGxQIt0DmFCv4B2fMWSThdqZ+LYV2NVJWBJlBoUiNJGN9DRcPMgNIhSTw9Vxy041XvwAeW0WRNP1s9RpG4m2oOX25MIJJpJaocrxpCcunyFkJeDNyyH9tocWAxLGCex8XCm73NhkVsOQGlVDjMtAvXuQzcgyHF/mqh0w5ux6yGqwC7EmthLtvjFo8jyWASqGslYQEcGEoz/j1mtg8xEykK7eKTPiS0yv0IeF42NTEQAMzz/KrOHz36SqzSQ+HxOQYEnmBVq5KVGn4RIA5q/EYvWIFP4Ekq3hGkJMR1qZ/588SrEJ7Ft9QO3WpRVONVq1h2c+/EfrHM9+s11PPI4Bige6bLArbzeNB1prX9Z+KB17WC1x+jyUj86y7WP2ZRDMtCIF/GHCo9mra/5T2t2FWZuE+LKrO96sLAhj3xh55YXVqEofoT7PUO7KqMATJ3yLtGDN0LPn7qOm/i4KpDJjI3PNjO6duRiD0VadN4ThkVvxWGiUNwuQmpYVmRpbSLqwl0IghFwvVoerZtLGMTuhiSAJqZPT6Oje/uIN15fNIfMAMoNyo8LfgeJQDXcxE5f/niorkVKtXMvgBoshUspGJOrfNXP8zrSgaUc24p6Z/PKQyfPhpHUZ+6bJ6UxpCBR7e/9AU148/dLYDtAYqhhEbpuFvJ7bxWASort6QVYZjzKvhQXo5ZvqTlfHBx2h6jwgGEd8N7SzTlrHeGt4Nd4hSLWkgCVIRdHiW6PT+cUW+yqplbRYHEKEgpr1+KOkA68YEvFNSjPi+b+TjDHIow/qPruiXp4wat+JOnZBNWAhrGBerGWsUpAELwiogGZXcyVmgxsnBSgN3mYaDv9Hxb5XJ6dbq5hRwMCoQV1Kjsj9GUe9MiI7Sa+IpalDSVIGBfBbfW5/f1nWv6JwRQJ6zAwnkHKbDLvVa304Qy4sR9
- cTeKGqb4
- 5UTEX3xr0ubtu6K/ZmT9el9cPprXnGELZ9XwtdCoycs7S/cT1jTtf01c7jKnnO5DBGiSIFQlw4QsTpMiBX/AHlgxNMwf4JcF9cXXmkD1lBKAqrbHa+TPQb7PvqfAb1iTK2a6gVOLYk0PP2BVjg4kAKhlGcRIP37WoOrAPojRuE9I0j9c8O1NNuPiQlwVhH1g8Jp2dvs15NSzmhxzaTZD/L4v+tHBttXIjPJwHfK89DY+pAgJnRqS9vIr6Js5W+O3S/79OhR8oZkaI8es=
+X-HE-Tag: 1763219641-650585
+X-HE-Meta: U2FsdGVkX18kDioN9SqDWaoORCPcrLQcYKWd/kr0G01GQHB5y6abTZL3M6ztB2H1xPCBf63iQoD9HqcPPWxR4bHcs+sGIzg06uZnwGD7GEBuedJuT+c367BbF9MfuKioFLVuLaYTdtlY+plfyIXMuotVjgbCOnae7+kc8GZPfXstxb4fE97JB65pLtO5+0GboYU2eg22HDDADV/9pARSDS0JXDK9xWob1UR8mMZrBQHHuCmHUASX5T0lvXrtl7rTK+DO6ndE0g4mm155VzupRJpLmHu5MxwrHTB3LBhc3yxJmeIBuNqZfzDVT5lNjC1+Z1xRHvW7wdWRG9Hizxwa9p57exx+bWw1/IAemK1Wp+Rp5sBrQK/bjRseZDezs2tuSxxStJPn65ZDTYfJNROG3HGKia56R3/l8rAOLovOpVOurFiYAUkZKhKMJUhP0f1zahKfklbJLuQqJeEFmpNYHNo9RVErFwxDpt3+h9B3MtvtKmyJ/zCcdW3JRGSndBpyPv7JjjH3x73UStMuGp7E0/HMPQLHnzSBtBUt3SleOGOBTjyPg637FFui7ddv/al3cHMLLZ5RcVoK/bkCe/n6w44ifAbcVoKy5hfboJ90ttZYrv7cZ3uJiJWulRYrtDiLy0Q06mSnVVAv6F7CasYXG09YCG1/To/v5CRjZaz2bK4i3ECX3BKL9MQjR7Ms6dh/Q6v2HeUypKGwV3bz6AV5wxKEFo5HtnOUoFp5atV1uZ9H5tbIefXRCGRHR2/6KT3CciR6GjsDjJ+o2Y1uwmrxzF/gYRHxYXk4fcXcSEMqr7wvGk3KorAp+FEYI7F+rWfvjy0k0Hui/IWfw4Ihz5tojbpT/r4e6FPp4vBAt/jzP/NRVyTwG4PEN8dD3xcrUsDWd9qZJc1P+foIOb9mpiOcCeIXMyHT4B0yMAcwAThzNfcn4ByTTD826iU6kPUjrwqm/0mvfg21jPFKNugZlbh
+ gBuzkZoT
+ rjN6sirnqFBYwh84ZJbKHVDfqhJlq0w2xLPk26S6aRV1KIf//Jk+VQMlAgiNe9uXP9MCNKlGkd8L272I+76j5PnDQpTH9u9d8V5Xbo0XxHDfoMwvMVvc2cfsD+mdiu3TG9+yPTXHdqYeDeAOw/xxbC//kH55l0/gRyvcTYYgWVOcTs9wH0wOLjI/jjnxS5cP8Sbh2fVhv56EnzrhDqRQc8+ALz+K8yaPSATgjRXOZQAnrCd0/1yCT2Lq5zc6iLzqRGe4/1IJAunH9uutphqp+oN1vhmtrIZw/Ra21YWvYOU0OCV1rEFXjv1iX7y3xhnLT/2wb8b9umk5yvqK7P5QG8sPcPVEes1LLx6oR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,75 +108,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 4:40=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
+On Fri, Nov 14, 2025 at 5:22=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
+:
 >
-> On Fri, Nov 14, 2025 at 01:59:59PM -0500, Pasha Tatashin wrote:
-> > -     struct kho_sub_fdt *sub_fdt;
-> > +     phys_addr_t phys =3D virt_to_phys(fdt);
-> > +     void *root_fdt =3D kho_out.fdt;
-> > +     int err =3D -ENOMEM;
-> > +     int off, fdt_err;
+> On Sun,  9 Nov 2025 21:49:44 +0900 Youngjun Park <youngjun.park@lge.com> =
+wrote:
+>
+> > Hi all,
 > >
-> > -     sub_fdt =3D kmalloc(sizeof(*sub_fdt), GFP_KERNEL);
-> > -     if (!sub_fdt)
-> > -             return -ENOMEM;
-> > +     guard(mutex)(&kho_out.lock);
-> > +
-> > +     fdt_err =3D fdt_open_into(root_fdt, root_fdt, PAGE_SIZE);
-> > +     if (fdt_err < 0)
-> > +             return err;
+> > In constrained environments, there is a need to improve workload
+> > performance by controlling swap device usage on a per-process or
+> > per-cgroup basis. For example, one might want to direct critical
+> > processes to faster swap devices (like SSDs) while relegating
+> > less critical ones to slower devices (like HDDs or Network Swap).
 > >
-> > -     INIT_LIST_HEAD(&sub_fdt->l);
-> > -     sub_fdt->name =3D name;
-> > -     sub_fdt->fdt =3D fdt;
-> > +     off =3D fdt_add_subnode(root_fdt, 0, name);
+> > Initial approach was to introduce a per-cgroup swap priority
+> > mechanism [1]. However, through review and discussion, several
+> > drawbacks were identified:
+> >
+> > a. There is a lack of concrete use cases for assigning a fine-grained,
+> >    unique swap priority to each cgroup.
+> > b. The implementation complexity was high relative to the desired
+> >    level of control.
+> > c. Differing swap priorities between cgroups could lead to LRU
+> >    inversion problems.
+> >
+> > To address these concerns, I propose the "swap tiers" concept,
+> > originally suggested by Chris Li [2] and further developed through
+> > collaborative discussions. I would like to thank Chris Li and
+> > He Baoquan for their invaluable contributions in refining this
+> > approach, and Kairui Song, Nhat Pham, and Michal Koutn=C3=BD for their
+> > insightful reviews of earlier RFC versions.
 >
-> Why not
->         fdt_err =3D fdt_add_subnode()
->
-> as I asked in v1 review?
->
+> I think the tiers concept is a nice abstraction.  I'm also interested in =
+how
+> the in-kernel control mechanism will deal with tiers management, which is=
+ not
+> always simple.  I'll try to take a time to read this series thoroughly.  =
+Thank
+> you for sharing this nice work!
 
-Oh, I missed that, there is a slight difference between the two:
-'fdt_err' only contains FDT return value, i.e. error if negative. The
-'off' on the other hand in the happy path contains subnode offset, and
-contains error only in the unhappy path. This is why I think it is a
-little cleaner to keep different name, however, if you still prefer
-re-using a single local variable for both, this is fix-up patch:
+Thank you for your interest. Please keep in mind that this patch
+series is RFC. I suspect the current series will go through a lot of
+overhaul before it gets merged in. I predict the end result will
+likely have less than half of the code resemble what it is in the
+series right  now.
 
-diff --git a/kernel/liveupdate/kexec_handover.c
-b/kernel/liveupdate/kexec_handover.c
-index 224bdf5becb6..81f60ccb2dc7 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -713,7 +713,7 @@ int kho_add_subtree(const char *name, void *fdt)
-        phys_addr_t phys =3D virt_to_phys(fdt);
-        void *root_fdt =3D kho_out.fdt;
-        int err =3D -ENOMEM;
--       int off, fdt_err;
-+       int fdt_err;
+> Nevertheless, I'm curious if there is simpler and more flexible ways to a=
+chieve
+> the goal (control of swap device to use).  For example, extending existin=
+g
+Simplicity is one of my primary design principles. The current design
+is close to the simplest within the design constraints.
 
-        guard(mutex)(&kho_out.lock);
+> proactive pageout features, such as memory.reclaim, MADV_PAGEOUT or
+> DAMOS_PAGEOUT, to let users specify the swap device to use.  Doing such
 
-@@ -721,14 +721,14 @@ int kho_add_subtree(const char *name, void *fdt)
-        if (fdt_err < 0)
-                return err;
+In my mind that is a later phase. No, per VMA swapfile is not simpler
+to use, nor is the API simpler to code. There are much more VMA than
+memcg in the system, no even the same magnitude. It is a higher burden
+for both user space and kernel to maintain all the per VMA mapping.
+The VMA and mmap path is much more complex to hack. Doing it on the
+memcg level as the first step is the right approach.
 
--       off =3D fdt_add_subnode(root_fdt, 0, name);
--       if (off < 0) {
--               if (off =3D=3D -FDT_ERR_EXISTS)
-+       fdt_err =3D fdt_add_subnode(root_fdt, 0, name);
-+       if (fdt_err < 0) {
-+               if (fdt_err =3D=3D -FDT_ERR_EXISTS)
-                        err =3D -EEXIST;
-                goto out_pack;
-        }
+> extension for MADV_PAGEOUT may be challenging, but it might be doable for
+> memory.reclaim and DAMOS_PAGEOUT.  Have you considered this kind of optio=
+ns?
 
--       err =3D fdt_setprop(root_fdt, off, PROP_SUB_FDT, &phys, sizeof(phys=
-));
-+       err =3D fdt_setprop(root_fdt, fdt_err, PROP_SUB_FDT, &phys, sizeof(=
-phys));
-        if (err < 0)
-                goto out_pack;
+Yes, as YoungJun points out, that has been considered here, but in a
+later phase. Borrow the link in his email here:
+https://lore.kernel.org/linux-mm/CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFs=
+m9VDr2e_g@mail.gmail.com/
+
+Chris
 
