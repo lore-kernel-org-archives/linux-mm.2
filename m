@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 073AECEB2D2
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 23:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A89CEBF88
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 23:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 478908E000A; Sat, 15 Nov 2025 18:34:18 -0500 (EST)
+	id E63E58E000B; Sat, 15 Nov 2025 18:34:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4290A8E0007; Sat, 15 Nov 2025 18:34:18 -0500 (EST)
+	id E14528E0007; Sat, 15 Nov 2025 18:34:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 318008E000A; Sat, 15 Nov 2025 18:34:18 -0500 (EST)
+	id CB4D88E000B; Sat, 15 Nov 2025 18:34:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 158988E0007
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 18:34:18 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90AE0C0853
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 23:34:17 +0000 (UTC)
-X-FDA: 84114447354.22.2AAC760
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CE4472000C
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 23:34:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OecFU5dW;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AF0E18E0007
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 18:34:20 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7880512EED2
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 23:34:20 +0000 (UTC)
+X-FDA: 84114447480.16.6679FF9
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 973E4A000E
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 23:34:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Q6g0JddE;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763249655; a=rsa-sha256;
-	cv=none;
-	b=H/vAO6SekuHw9EQLAxu0pNV6vHHZlkcWXaSdV5LMkkKp/x0WGuMMomIOmBmIEZD+AlaAyx
-	fRbL7nFWH03zm+Bbgckr/1EqEVnGhFJbc00ioR6ta7ZqgsTaEQTGu0q6IoUbITcRT7qW3v
-	HEDp0mmUJFVPUf8W88SYN+0Pu8xZBAk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OecFU5dW;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763249655;
+	s=arc-20220608; t=1763249658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ee7lz4Om+GPES8DwWVPvUGgIK1alarn+M6wiUgt8ct8=;
-	b=k389puPP9k8yiqyE6bIEivDMXuxHBbDXQUKzAyOuKgnjk6TzWSoy4dClt/UhLR541L3God
-	0hHL8gVsbUVAddSqlQuBp/g0cyz1sM376/4nfUtKUiVHFwRulvrB/CJa3GqYOSCSQt0bAj
-	BYu8Zmr9W1m0WBWA8ztxiUZcTBZzTEI=
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-787da30c53dso28687407b3.0
-        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 15:34:15 -0800 (PST)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DsNyMuhtDAQHyD6UHI66GVXsruEvzFMYKhd6mwZ56OI=;
+	b=sntKhfPaKDCKnK4FIwJWUk0uWh+Ys1wi3V2aHjBv/sTcl/Mv1NO0EZnJEFHNZK7UAMOxGH
+	rrh8UQWNBN49N4KZRodfrgV2QOQ33Fl0YuW9p+xameidHwz09FNGo65t521KiltFZczo8L
+	D8YaTxcNKIhvGIwrYZH9FqN8CS1ro0Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763249658; a=rsa-sha256;
+	cv=none;
+	b=G/T4TdMFP3NC7ZDlbqJ8CZkWZo3uKU4GxCQDMjt6sV51iObbPiiF9wUjHQ+G5r9LDXBb+x
+	EEmn8xxfZzSDk93rTJpqjjxpnpSxMu8yfPyq0xAX8EUpic+JS7GPRhyEHAxGSiC4fy+/tV
+	K8Y74rm6iE8WK2U9oo2MyNj58g2+2H4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Q6g0JddE;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-787e84ceaf7so35530937b3.2
+        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 15:34:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763249655; x=1763854455; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ee7lz4Om+GPES8DwWVPvUGgIK1alarn+M6wiUgt8ct8=;
-        b=OecFU5dW50rPMmjuuoGtWOjgkmSU0yKaPM/mAg41DicRd95mtXyqMZanAnVGtZzbO5
-         bblTS9gZ2bTMMGm5s18IFEB+ykH+OvtooS79GiRDtzN8An4q9aMNE7IhyBXl8eKCrACz
-         qOg89xH3TBfC5EM2H/sfrSq9KGK9ej842NMHOo4MzxyrHNC2e5TWfzNaNmTBzN9JxE+k
-         hcBfPoxmn5ePCWizXhjEeUXgkp8keHi+yy2srSyP0kiwA9zeGT5w3To0JNLdQJeY1zxd
-         +8J7qk/bgn6DL21dz9XHBn7y+T6tOjASG0Us298ijy0Wy9BecxeK/0zNiuOphV/8XaB7
-         puHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763249655; x=1763854455;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=soleen.com; s=google; t=1763249657; x=1763854457; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ee7lz4Om+GPES8DwWVPvUGgIK1alarn+M6wiUgt8ct8=;
-        b=btzgCwqEshxWxr89xu4mTLVhgooGqhbxM8oDuRFq8z2Y/hHGCgrafm8FICLyzn/iHJ
-         PhsIBk/2eBoPRsrNmt4zVdYJbrQy17wA4fsLBSaos6oDqMMmr1ZnUkN/llx24xOyI6hC
-         bhGaxb8cDzj498jJr4y64fAvHoQjl3sr/dW5GzQohAx0FjeJvZFmHfRHFKDAmufYldZt
-         EuhIpFM/4RhyjZdiQVgBAM4Ued3FXTtV4j0AnqUn696lUvdc3EZQDPohuBgqTjpby/Mc
-         S6gZ5gk35SI1t1T/ZVLTWlGo88vWKH80VfUGfWIvym15m0+xFL5Mh27O5cRXHfZbOjsn
-         hk8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUwbITbkwENYq4SLkkjc0Rvu4+FSIVLrugCnqc+zIuf3puFMadrm0uKgpqRgQhzt1Oxxg4MwQi6sw==@kvack.org
-X-Gm-Message-State: AOJu0YzGdWnUL1DiXlmlYwRV1lBNTO6a76GkEfJSH31yGk/cJJA1i3hZ
-	gx109MNMeKIe8JjbTuBaN6xSBVdBOnUCOIckD5QsaquQ1AyscHc1u5IJyxA484qXN1Y=
-X-Gm-Gg: ASbGncvyiDCm1BeuDFEh5pf0jTb1NtZauOCDFrfk6yeFJB8TMLv8Jar3kha/eyfx+x6
-	3Iw5XMx0iycFunE/Pun+f/2PvNe/4G0gPrqlZ4Pq+W/W0lhFOkT6qzhsd4SFSElsLCO5+QUPoZA
-	+a5tSnzhmAykmx6ao4sr8PLrpQtzacx0rgWK4hDxt6jzsse+trA8+O7LNgBrYhrU0GfJ26qKAiJ
-	3/GkfIa9E+Dc+bXqIMs0ltjKcED1UYGe5R4j2QzJ3z1kUxPgLIRHjoxPHvie/EH6s4qF626VVpm
-	oJnAbWTnrRp2qk1sEtXpusTkuU7jSm/ENJMgpksPX+HuquIQI6E/AUU7DFQkQWgx/HoHKZJ4RJH
-	1lAU3n6jVCtmE00ZkFM/z+HcRp/NaRPSch+FqLeVPhVIdia0EaU247NB8Bvg0Yk0uObUHQFevqJ
-	YuFpChLDuPcWq3rcuZPxgBTKRzqdRhxbrVsCOX1j27g19+hYnrIWuWbtmuCLkOhiOy4vCx8ryW7
-	Kn0V9mubTcxr8N+Aw==
-X-Google-Smtp-Source: AGHT+IHY/9H7Rzp2eriASzkL5MJ3Zatp1dgl1eRotDeTufMXyR7gZWjPaOKAzBcpPxEOBX631v43uw==
-X-Received: by 2002:a05:690c:b98:b0:787:f72d:2a57 with SMTP id 00721157ae682-78929e23b6cmr69035687b3.15.1763249654638;
-        Sat, 15 Nov 2025 15:34:14 -0800 (PST)
+        bh=DsNyMuhtDAQHyD6UHI66GVXsruEvzFMYKhd6mwZ56OI=;
+        b=Q6g0JddEcb/d2U1zR8vrVDCztUWnbggih5JVc/NlblGMokw4cg5Jp4VSJ3PkJ63xQE
+         CY+gfOJlfoOB5m48iiBhjZg8YwuO4Im8ftZUGYQzTzquFT2suk99xCOh1RSmn212imxE
+         AmHDmMwVg5yEVzJ/rB3c0iSwe0NUoscPBJmD147Sq7DlZcU/nJO388uc9eazMqXjTc18
+         aBJJb6VeKS0Z6oyKVYsHfYoQ0Mezo60pBqpRR8J3LR82n9MXJqmjO75hRrR8M+DCVufI
+         Xmm0scWSu8L/sdbRS2uxMFlC5dMH+/+0Rknsj6Wvh+S21HcwSmSuC5Hm09l2uvzDq3Sp
+         mwQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763249657; x=1763854457;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DsNyMuhtDAQHyD6UHI66GVXsruEvzFMYKhd6mwZ56OI=;
+        b=bMBtLouGr/gSJkOdJdsJKhb0tY8TrIgJ0VAEmJ5f97n5SsSIimIqkdCkeJUerZ6tIC
+         cXcA/llozsZ5O5D7Puyr5vqUxf3qEBnyTcNymT9k6eNTVpiuQRIZUefeGTt4mn+48woj
+         yXWIldxWzjTb6e5dk/yuzfXJgR27OYRDvHjQhxR4hQQ9QLAi+ueLOpoOUDrQJ3md3229
+         W/wSRiHWJ6guCsb5K/T9k3SngnznDaaKxnQWbDeJ6HxVtE2qAQ6mxZDpJhiPuuZ6CxNF
+         BZeiScgBLKL1+yZM0J1IgSuKEECZ+AwNq+Fn3RrAR6eMOdRM4NHhJXo7KiADn+GkHZRT
+         XXGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXngSAiG5tWNoiKWqxATjgbua7UBOA7VatDZMC/Nr40Df2t97mbzNKZ82NE/H5ub0TNUoImpDUuHw==@kvack.org
+X-Gm-Message-State: AOJu0Ywf4Rm1i2n2O1cNoD8uwnuuVftKVv9w8LxD2v59rbXjGUf4UUsV
+	IolOBZWeB9xoTkQRVfPunm13R5PX064xpJ3afbiYVTnqRy6xlJQClf4Xrs9Rn1JNpRs=
+X-Gm-Gg: ASbGncvei6E+Nowu3r+SH8tvep8k+akkEv+Ac/eNKwaIfWp/B4Ivu3ETK64NFww08vE
+	4L/D4ZccBtNprWgoNUoJN8xMv/MnNypVei8VWMZejyQ21oNM+MelhnfgG0jTzIEO/F4/D6lG/gd
+	wKJijfefn2o3vS+TAYg4sSVrZTKHBrV+9Daqfcwro9at0eRIhK7YE8ORcpUI9DEmDgMa4O9KPpU
+	mOrxl0roVyM3FvdZ0ttifOYK59pIKyK4eaUxyBO2T+Wu4MYZyEIYfrAeTtzXoNbfd4Cooll5lJH
+	8AdXZhAJ5OZEH8FQaS1ThPb/97uxGyT9jkmx/RB+gavBZ0WHpG0p2Akw3BTsjjQoyt9ImZ0vpna
+	/bWML8reT5MBuPjcnXCb8jtfZNz4Bb/jiZoOJG8ZjOoLfXk3cwsuDTQIael+iq32ZzfJaZWLJDD
+	IuwqIBWwmthj1aAMPaxBddk7A/ReqLI6t+muBfPg0cFeE/V2fRjWjaDsX8VNsfbWTr5Qm0
+X-Google-Smtp-Source: AGHT+IHkSgV5Rn6D+sYrviaVQ1zxvVEpwoqTPqlZvJGsTAz/bbXvFVvHMeVFqz6Pbcj3yEwUtgWUWQ==
+X-Received: by 2002:a05:690c:c371:b0:788:143:27d9 with SMTP id 00721157ae682-78929eee242mr60220677b3.44.1763249657444;
+        Sat, 15 Nov 2025 15:34:17 -0800 (PST)
 Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7882218774esm28462007b3.57.2025.11.15.15.34.12
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7882218774esm28462007b3.57.2025.11.15.15.34.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Nov 2025 15:34:14 -0800 (PST)
+        Sat, 15 Nov 2025 15:34:16 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -165,21 +165,22 @@ To: pratyush@kernel.org,
 	hughd@google.com,
 	skhawaja@google.com,
 	chrisl@kernel.org
-Subject: [PATCH v6 00/20] Live Update Orchestrator
-Date: Sat, 15 Nov 2025 18:33:46 -0500
-Message-ID: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+Subject: [PATCH v6 01/20] liveupdate: luo_core: luo_ioctl: Live Update Orchestrator
+Date: Sat, 15 Nov 2025 18:33:47 -0500
+Message-ID: <20251115233409.768044-2-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
+In-Reply-To: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CE4472000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: o9jydo3n9pkcm5qjp8dkyqabauddm4ew
+X-Stat-Signature: 8hpnrd1yfi4iumsk6cjx8q3ikktm41yy
 X-Rspam-User: 
-X-HE-Tag: 1763249655-251194
-X-HE-Meta: U2FsdGVkX1+XrWTR9081Aw6jTkfFb5gD1IxNSP21ESMMM188WCPlQv1s8otnoA5z6xAOVKnbCCUHx2PIL5tv0NodX9b0R6Eqy28XGoKjGSXy/i25hOIeKQz0/V8Riwfs073kq4QQcCqpoOPi0JIWtGgpc+nnc80VejQiRzg8oiDkfDMSBr3CAtes4q99yv73lRFbnLFxQpwdufK8Q1KxZNKEjLk4fOVt1uU61sXkzI6zfnvdnNGDI2SaEneCw+/svm2T+XuUqY8WJrn9h2ZBNAbNEUWcwva5G1BFtLTe5Gi1VCrtf4bJKpPT8jnuqmrSsftdAnSOrmk8G84kPcArszeX/mMpDbHCrX9WfmIuFqZrer97FY61wdtaztphOJgDcImqkB4R3x7K4o3E+L5mlQiN4TK1lKxmBa6wqbkBn+Bo7Z+MJ+B4aympwIc0bP3lCM7JKGm6hDS+CNPfzb/sBKd2yZuvW1nx2RdDheQi1t2PXsFnJIaftFeVRGs2M3759D07qCk3TEgsipwKyHaGM7qnbGafxCaXW82jCafvlHYqCyrYidU6ovaG8Qc3TihY7oQaTHlbwUIJCBv2DNWNwtGMS1Fslx8T20EZkyv5tmu/gds3bLx2BHR8DaVesldkOy6UxSGzNy1iVZvzy6Vl1ewU99olm6fZO1JzGwmeppH5W3t6riYld8opefb1aX2EL36owkVsm7RjLM9Wi/q73mIaWbH4Gc1UKUDV+Ok/h36JdZ74waIqa++qoQS+c2Q/bvyrPp1wmQy0ACptS6mRB0GPMOwMGrw6nsIpr7hIKXvMPUNHqk3vUJsYAVYumi1ytuxzmOBb9p2AxpLqdW6zIuszBwJxnSzT6vwcEnAkN/MLbi30Fv11KYPuH+/CDRPEhxhVso6E5okhH5eIPtvmGnMd23FjT4fEpNQR8VkuWmDqk0C11GRf9KyEuvRyKQb+bFWGS/Js8uwgTZNg2nn
- I1KKH+Z1
- ApVIOWLIYU01mrDF03tiS/atAmFGiKwkJ2fKQC9jSJOQs3lumONHzBASG89Y9VokUpqnsRAHa8yK37CHAnPdzNVtdMuVpzzdVM5p5btRFgBJ7Frbo3HlsOq0Uo2fig57dwLxINMT+yXT/sOycZss4jZUl5McZaAbB1jfBo52IwV6PtJzJ14qMSQ45X2KmxMMGRISStAzomAR8zhb/EnDodDsVEtTeITYAjzDUNPBXYGSYfuxYO1KLO1DD6alXmACAo5tmcgCRmozOFbIxK9gaUz3Bdr61v54KS8wu84vD9DdkFkR2TpQCkXkkSrQHwQD3uRd/DnUh4cM6XyCjEqpPnB/++1uO6xTF+Ot9TFVBv1Y37+tS6KRew86uh3A7hDRx4rFrgdvogRZlqXfRyQ9aujonSGS3v6doHIxNAWtN1yQIDkqg3Oh5+dz59RDWuy+/haN11CRdmlCU0fPqFcU4XWBbVM9tNqNSnQw29D4GHbZEpF2kiMyeKv06wHGpFZ3+nhgeb5QjUIB7lGy+QnxmS3X9LNgTtOInphLWyrH+5mpO6QsI+xiVsM2/6b1jYGOPLgX4DO5C/EYPqd2fvLput+8RkDQJfbAf1LjEVKQsDfM3AEfWfyACczGuw/igHGlOEbP3t+S9u3CuS8yepiKJySJcI6875YGyz+Pu9BBFAkrUoTEq922PH8oRvagma2LZCvTDiHx/eMNtHAWnZmhNFPNWbQ==
+X-Rspamd-Queue-Id: 973E4A000E
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763249658-223017
+X-HE-Meta: U2FsdGVkX18VS8YwCj/hsCLR67hZ+RpOHSDMEAuuz26pXh7xZ0Jps/wANzxNYwq74KBwpPBNLBDpY/Mazmo5KJL0wKkItxzy/5u8ByKoM0FmVsWsscmuiG7/pPjm9HFfJIY6WFxHgsPWhL7g1jUKCncd+szsPD7odnk8KFjiZugF6UwV84sVs6QAAD9LLodkNv+LiGkKGX09iCRKZmi+gWxcUUkwTWBSoD1c5b7a0zLhWouRrnhTyR8zfbnntUAK0mbd//GsW39ar4CPsw5TkR7XLX9Keao6YeGNsj3/Vw4yON/+sxvqVh3/JldfmjCTGvbOssWKTiYuRnXYTeKB/eclLT2q7RRBAUYbJg9b8N5GHRx0Cm+Av0uWaqHipsELJrhOVZlY8hzs2ollf2TWb61PTbTWFzfod7ChltN6oJY1XOXpwv2QpjmZUQ6hVpx4mvHCeotAERuXVZEO93ZC/hTWS1AydD8qDqMUb5XroHRRXYJ1lGs4Vmy6WD3P9laXw+lzFsuA/66yHUgmC8X9CLMShE6YyIB3m2O6OYoNVpvuw+omoSsIEDAWlJMGzoNKqP0UxSjvUEPIKs0WmG5X7TWox5VjBUwkYcfFF+Ki7oWi92TkbOvs1bTEwv8bpDRSLzer94KR9R/1+Jkof9fY85oqBAguBlV5zP43FHXkb/O67wPueJSI0OOFUjQoqqR19/FZ9YLWeCGib9jaNzMC7wdIc6hMHuChg8jxejp1C6l/4urynETGlzfd4yuQ2MekRYN0t9m8JSzberCAsoLMj07pFwjxxzcH0N1ttjWkVJhVlPUWHVWn2JHqzzMkSw13I6bF/nf959LMkLuLXOP8dEDvIsTurQ8nSR5h6zp7ypgdaJGYQ8HZvbjJpyIIOKq0c8UUDYXcFuLKl1qosaNah0+6i+Vml8r6KruJumkSM2mVb8D1QLsen0O3Az7RRjb3ouNNNLHuJtMraG6hl3z
+ ym5e2R4B
+ QxqN05FSE6Tmxqi5k8wdn9zR4m1ecRv6MFivPLtzSH2jXyPLVsH0cdbU1Qzgg5pHSPJt3I/wx442ekV6FiUDx6iBoWDtyNcJtKgppz5N25PzXY71csTvfnlHIYm216QW/JktU85KXEuPQleCkiBB0dYPKSsn7ISk86F1Hq7sE9W+9T5MNtAfezwBqQROryxzU2nJLielgjkCAUZF9a6W60KlueppHA0CN1rlyXtiWD/JS91BKbMsvi3yWmLn6Y+EmP57rt960jURpKhnjYWZtb6pCdnIoo+tk/qi00lnD2x/CSB+0vGdwrz7tVLXpGymAfqdY8o2MsFVT7qYlECxE27c89UKjHf78RlzxfcSldk/aJMZTjalWsaMfdZgUNILljNq4Xncpps36JPt6yYeVxiPqrKbh5/Bi5LS5TsRK3CWzdjg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,174 +189,345 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series introduces the Live Update Orchestrator, a kernel subsystem
-designed to facilitate live kernel updates using a kexec-based reboot.
-This capability is critical for cloud environments, allowing hypervisors
-to be updated with minimal downtime for running virtual machines. LUO
-achieves this by preserving the state of selected resources, such as
-memory, devices and their dependencies, across the kernel transition.
+Introduce LUO, a mechanism intended to facilitate kernel updates while
+keeping designated devices operational across the transition (e.g., via
+kexec). The primary use case is updating hypervisors with minimal
+disruption to running virtual machines. For userspace side of hypervisor
+update we have copyless migration. LUO is for updating the kernel.
 
-As a key feature, this series includes support for preserving memfd file
-descriptors, which allows critical in-memory data, such as guest RAM or
-any other large memory region, to be maintained in RAM across the kexec
-reboot.
+This initial patch lays the groundwork for the LUO subsystem.
 
-The other series that use LUO, are VFIO [1], IOMMU [2], and PCI [3]
-preservations.
+Further functionality, including the implementation of state transition
+logic, integration with KHO, and hooks for subsystems and file
+descriptors, will be added in subsequent patches.
 
-Github repo of this series [4].
+Create a character device at /dev/liveupdate.
 
-The core of LUO is a framework for managing the lifecycle of preserved
-resources through a userspace-driven interface. Key features include:
+A new uAPI header, <uapi/linux/liveupdate.h>, will define the necessary
+structures. The magic number for IOCTL is registered in
+Documentation/userspace-api/ioctl/ioctl-number.rst.
 
-- Session Management
-  Userspace agent (i.e. luod [5]) creates named sessions, each
-  represented by a file descriptor (via centralized agent that controls
-  /dev/liveupdate). The lifecycle of all preserved resources within a
-  session is tied to this FD, ensuring automatic kernel cleanup if the
-  controlling userspace agent crashes or exits unexpectedly.
-
-- File Preservation
-  A handler-based framework allows specific file types (demonstrated
-  here with memfd) to be preserved. Handlers manage the serialization,
-  restoration, and lifecycle of their specific file types.
-
-- File-Lifecycle-Bound State
-  A new mechanism for managing shared global state whose lifecycle is
-  tied to the preservation of one or more files. This is crucial for
-  subsystems like IOMMU or HugeTLB, where multiple file descriptors may
-  depend on a single, shared underlying resource that must be preserved
-  only once.
-
-- KHO Integration
-  LUO drives the Kexec Handover framework programmatically to pass its
-  serialized metadata to the next kernel. The LUO state is finalized and
-  added to the kexec image just before the reboot is triggered. In the
-  future this step will also be removed once stateless KHO is
-  merged [6].
-
-- Userspace Interface
-  Control is provided via ioctl commands on /dev/liveupdate for creating
-  and retrieving sessions, as well as on session file descriptors for
-  managing individual files.
-
-- Testing
-  The series includes a set of selftests, including userspace API
-  validation, kexec-based lifecycle tests for various session and file
-  scenarios, and a new in-kernel test module to validate the FLB logic.
-
-Changelog since v5 [7]
-
-- Moved internal luo_alloc/free_* memory helpers to generic
-  kho_alloc/free_* APIs, and submitted as a separate KHO series [8].
-
-- Moved the liveupdate_reboot() invocation from kernel/reboot.c to
-  kernel_kexec() in kernel/kexec_core.c.
-
-- Moved generic KHO enabling patches (debugfs, kimage logic) out of this
-  series and into the base KHO series.
-
-- Feedback: Addressed review comments from Mike Rapoport and Pratyush
-  Yadav.
-
-[1] https://lore.kernel.org/all/20251018000713.677779-1-vipinsh@google.com/
-[2] https://lore.kernel.org/linux-iommu/20250928190624.3735830-1-skhawaja@google.com
-[3] https://lore.kernel.org/linux-pci/20250916-luo-pci-v2-0-c494053c3c08@kernel.org
-[4] https://github.com/googleprodkernel/linux-liveupdate/tree/luo/v6
-[5] https://tinyurl.com/luoddesign
-[6] https://lore.kernel.org/all/20251020100306.2709352-1-jasonmiu@google.com
-[7] https://lore.kernel.org/all/20251107210526.257742-1-pasha.tatashin@soleen.com
-[8] https://lore.kernel.org/all/20251114190002.3311679-1-pasha.tatashin@soleen.com
-
-Pasha Tatashin (14):
-  liveupdate: luo_core: luo_ioctl: Live Update Orchestrator
-  liveupdate: luo_core: integrate with KHO
-  kexec: call liveupdate_reboot() before kexec
-  liveupdate: luo_session: add sessions support
-  liveupdate: luo_ioctl: add user interface
-  liveupdate: luo_file: implement file systems callbacks
-  liveupdate: luo_session: Add ioctls for file preservation
-  liveupdate: luo_flb: Introduce File-Lifecycle-Bound global state
-  docs: add luo documentation
-  MAINTAINERS: add liveupdate entry
-  selftests/liveupdate: Add userspace API selftests
-  selftests/liveupdate: Add kexec-based selftest for session lifecycle
-  selftests/liveupdate: Add kexec test for multiple and empty sessions
-  tests/liveupdate: Add in-kernel liveupdate test
-
-Pratyush Yadav (6):
-  mm: shmem: use SHMEM_F_* flags instead of VM_* flags
-  mm: shmem: allow freezing inode mapping
-  mm: shmem: export some functions to internal.h
-  liveupdate: luo_file: add private argument to store runtime state
-  mm: memfd_luo: allow preserving memfd
-  docs: add documentation for memfd preservation via LUO
-
- Documentation/core-api/index.rst              |   1 +
- Documentation/core-api/liveupdate.rst         |  71 ++
- Documentation/mm/index.rst                    |   1 +
- Documentation/mm/memfd_preservation.rst       |  23 +
- Documentation/userspace-api/index.rst         |   1 +
- .../userspace-api/ioctl/ioctl-number.rst      |   2 +
- Documentation/userspace-api/liveupdate.rst    |  20 +
- MAINTAINERS                                   |  15 +
- include/linux/liveupdate.h                    | 265 +++++
- include/linux/liveupdate/abi/luo.h            | 238 +++++
- include/linux/liveupdate/abi/memfd.h          |  88 ++
- include/linux/shmem_fs.h                      |  23 +
- include/uapi/linux/liveupdate.h               | 216 +++++
- kernel/kexec_core.c                           |   5 +
- kernel/liveupdate/Kconfig                     |  27 +
- kernel/liveupdate/Makefile                    |   9 +
- kernel/liveupdate/luo_core.c                  | 252 +++++
- kernel/liveupdate/luo_file.c                  | 906 ++++++++++++++++++
- kernel/liveupdate/luo_flb.c                   | 658 +++++++++++++
- kernel/liveupdate/luo_internal.h              |  95 ++
- kernel/liveupdate/luo_ioctl.c                 | 223 +++++
- kernel/liveupdate/luo_session.c               | 600 ++++++++++++
- lib/Kconfig.debug                             |  23 +
- lib/tests/Makefile                            |   1 +
- lib/tests/liveupdate.c                        | 143 +++
- mm/Makefile                                   |   1 +
- mm/internal.h                                 |   6 +
- mm/memfd_luo.c                                | 671 +++++++++++++
- mm/shmem.c                                    |  50 +-
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/liveupdate/.gitignore |   3 +
- tools/testing/selftests/liveupdate/Makefile   |  40 +
- tools/testing/selftests/liveupdate/config     |   5 +
- .../testing/selftests/liveupdate/do_kexec.sh  |  16 +
- .../testing/selftests/liveupdate/liveupdate.c | 348 +++++++
- .../selftests/liveupdate/luo_kexec_simple.c   | 114 +++
- .../selftests/liveupdate/luo_multi_session.c  | 190 ++++
- .../selftests/liveupdate/luo_test_utils.c     | 168 ++++
- .../selftests/liveupdate/luo_test_utils.h     |  39 +
- 39 files changed, 5539 insertions(+), 19 deletions(-)
- create mode 100644 Documentation/core-api/liveupdate.rst
- create mode 100644 Documentation/mm/memfd_preservation.rst
- create mode 100644 Documentation/userspace-api/liveupdate.rst
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ .../userspace-api/ioctl/ioctl-number.rst      |  2 +
+ include/linux/liveupdate.h                    | 35 ++++++++
+ include/uapi/linux/liveupdate.h               | 46 ++++++++++
+ kernel/liveupdate/Kconfig                     | 27 ++++++
+ kernel/liveupdate/Makefile                    |  6 ++
+ kernel/liveupdate/luo_core.c                  | 86 +++++++++++++++++++
+ kernel/liveupdate/luo_ioctl.c                 | 45 ++++++++++
+ 7 files changed, 247 insertions(+)
  create mode 100644 include/linux/liveupdate.h
- create mode 100644 include/linux/liveupdate/abi/luo.h
- create mode 100644 include/linux/liveupdate/abi/memfd.h
  create mode 100644 include/uapi/linux/liveupdate.h
  create mode 100644 kernel/liveupdate/luo_core.c
- create mode 100644 kernel/liveupdate/luo_file.c
- create mode 100644 kernel/liveupdate/luo_flb.c
- create mode 100644 kernel/liveupdate/luo_internal.h
  create mode 100644 kernel/liveupdate/luo_ioctl.c
- create mode 100644 kernel/liveupdate/luo_session.c
- create mode 100644 lib/tests/liveupdate.c
- create mode 100644 mm/memfd_luo.c
- create mode 100644 tools/testing/selftests/liveupdate/.gitignore
- create mode 100644 tools/testing/selftests/liveupdate/Makefile
- create mode 100644 tools/testing/selftests/liveupdate/config
- create mode 100755 tools/testing/selftests/liveupdate/do_kexec.sh
- create mode 100644 tools/testing/selftests/liveupdate/liveupdate.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_kexec_simple.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_multi_session.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.c
- create mode 100644 tools/testing/selftests/liveupdate/luo_test_utils.h
 
+diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+index 7c527a01d1cf..7232b3544cec 100644
+--- a/Documentation/userspace-api/ioctl/ioctl-number.rst
++++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+@@ -385,6 +385,8 @@ Code  Seq#    Include File                                             Comments
+ 0xB8  01-02  uapi/misc/mrvl_cn10k_dpi.h                                Marvell CN10K DPI driver
+ 0xB8  all    uapi/linux/mshv.h                                         Microsoft Hyper-V /dev/mshv driver
+                                                                        <mailto:linux-hyperv@vger.kernel.org>
++0xBA  00-0F  uapi/linux/liveupdate.h                                   Pasha Tatashin
++                                                                       <mailto:pasha.tatashin@soleen.com>
+ 0xC0  00-0F  linux/usb/iowarrior.h
+ 0xCA  00-0F  uapi/misc/cxl.h                                           Dead since 6.15
+ 0xCA  10-2F  uapi/misc/ocxl.h
+diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+new file mode 100644
+index 000000000000..730b76625fec
+--- /dev/null
++++ b/include/linux/liveupdate.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++/*
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++#ifndef _LINUX_LIVEUPDATE_H
++#define _LINUX_LIVEUPDATE_H
++
++#include <linux/bug.h>
++#include <linux/types.h>
++#include <linux/list.h>
++
++#ifdef CONFIG_LIVEUPDATE
++
++/* Return true if live update orchestrator is enabled */
++bool liveupdate_enabled(void);
++
++/* Called during kexec to tell LUO that entered into reboot */
++int liveupdate_reboot(void);
++
++#else /* CONFIG_LIVEUPDATE */
++
++static inline bool liveupdate_enabled(void)
++{
++	return false;
++}
++
++static inline int liveupdate_reboot(void)
++{
++	return 0;
++}
++
++#endif /* CONFIG_LIVEUPDATE */
++#endif /* _LINUX_LIVEUPDATE_H */
+diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
+new file mode 100644
+index 000000000000..df34c1642c4d
+--- /dev/null
++++ b/include/uapi/linux/liveupdate.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++
++/*
++ * Userspace interface for /dev/liveupdate
++ * Live Update Orchestrator
++ *
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++#ifndef _UAPI_LIVEUPDATE_H
++#define _UAPI_LIVEUPDATE_H
++
++#include <linux/ioctl.h>
++#include <linux/types.h>
++
++/**
++ * DOC: General ioctl format
++ *
++ * The ioctl interface follows a general format to allow for extensibility. Each
++ * ioctl is passed in a structure pointer as the argument providing the size of
++ * the structure in the first u32. The kernel checks that any structure space
++ * beyond what it understands is 0. This allows userspace to use the backward
++ * compatible portion while consistently using the newer, larger, structures.
++ *
++ * ioctls use a standard meaning for common errnos:
++ *
++ *  - ENOTTY: The IOCTL number itself is not supported at all
++ *  - E2BIG: The IOCTL number is supported, but the provided structure has
++ *    non-zero in a part the kernel does not understand.
++ *  - EOPNOTSUPP: The IOCTL number is supported, and the structure is
++ *    understood, however a known field has a value the kernel does not
++ *    understand or support.
++ *  - EINVAL: Everything about the IOCTL was understood, but a field is not
++ *    correct.
++ *  - ENOENT: A provided token does not exist.
++ *  - ENOMEM: Out of memory.
++ *  - EOVERFLOW: Mathematics overflowed.
++ *
++ * As well as additional errnos, within specific ioctls.
++ */
++
++/* The ioctl type, documented in ioctl-number.rst */
++#define LIVEUPDATE_IOCTL_TYPE		0xBA
++
++#endif /* _UAPI_LIVEUPDATE_H */
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index a973a54447de..90857dccb359 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -1,4 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++#
++# Copyright (c) 2025, Google LLC.
++# Pasha Tatashin <pasha.tatashin@soleen.com>
++#
++# Live Update Orchestrator
++#
+ 
+ menu "Live Update and Kexec HandOver"
+ 	depends on !DEFERRED_STRUCT_PAGE_INIT
+@@ -51,4 +57,25 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
+ 	  The default behavior can still be overridden at boot time by
+ 	  passing 'kho=off'.
+ 
++config LIVEUPDATE
++	bool "Live Update Orchestrator"
++	depends on KEXEC_HANDOVER
++	help
++	  Enable the Live Update Orchestrator. Live Update is a mechanism,
++	  typically based on kexec, that allows the kernel to be updated
++	  while keeping selected devices operational across the transition.
++	  These devices are intended to be reclaimed by the new kernel and
++	  re-attached to their original workload without requiring a device
++	  reset.
++
++	  Ability to handover a device from current to the next kernel depends
++	  on specific support within device drivers and related kernel
++	  subsystems.
++
++	  This feature primarily targets virtual machine hosts to quickly update
++	  the kernel hypervisor with minimal disruption to the running virtual
++	  machines.
++
++	  If unsure, say N.
++
+ endmenu
+diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
+index f52ce1ebcf86..413722002b7a 100644
+--- a/kernel/liveupdate/Makefile
++++ b/kernel/liveupdate/Makefile
+@@ -1,5 +1,11 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
++luo-y :=								\
++		luo_core.o						\
++		luo_ioctl.o
++
+ obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
+ obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
+ obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
++
++obj-$(CONFIG_LIVEUPDATE)		+= luo.o
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+new file mode 100644
+index 000000000000..0e1ab19fa1cd
+--- /dev/null
++++ b/kernel/liveupdate/luo_core.c
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++/**
++ * DOC: Live Update Orchestrator (LUO)
++ *
++ * Live Update is a specialized, kexec-based reboot process that allows a
++ * running kernel to be updated from one version to another while preserving
++ * the state of selected resources and keeping designated hardware devices
++ * operational. For these devices, DMA activity may continue throughout the
++ * kernel transition.
++ *
++ * While the primary use case driving this work is supporting live updates of
++ * the Linux kernel when it is used as a hypervisor in cloud environments, the
++ * LUO framework itself is designed to be workload-agnostic. Much like Kernel
++ * Live Patching, which applies security fixes regardless of the workload,
++ * Live Update facilitates a full kernel version upgrade for any type of system.
++ *
++ * For example, a non-hypervisor system running an in-memory cache like
++ * memcached with many gigabytes of data can use LUO. The userspace service
++ * can place its cache into a memfd, have its state preserved by LUO, and
++ * restore it immediately after the kernel kexec.
++ *
++ * Whether the system is running virtual machines, containers, a
++ * high-performance database, or networking services, LUO's primary goal is to
++ * enable a full kernel update by preserving critical userspace state and
++ * keeping essential devices operational.
++ *
++ * The core of LUO is a mechanism that tracks the progress of a live update,
++ * along with a callback API that allows other kernel subsystems to participate
++ * in the process. Example subsystems that can hook into LUO include: kvm,
++ * iommu, interrupts, vfio, participating filesystems, and memory management.
++ *
++ * LUO uses Kexec Handover to transfer memory state from the current kernel to
++ * the next kernel. For more details see
++ * Documentation/core-api/kho/concepts.rst.
++ */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/kobject.h>
++#include <linux/liveupdate.h>
++
++static struct {
++	bool enabled;
++} luo_global;
++
++static int __init early_liveupdate_param(char *buf)
++{
++	return kstrtobool(buf, &luo_global.enabled);
++}
++early_param("liveupdate", early_liveupdate_param);
++
++/* Public Functions */
++
++/**
++ * liveupdate_reboot() - Kernel reboot notifier for live update final
++ * serialization.
++ *
++ * This function is invoked directly from the reboot() syscall pathway
++ * if kexec is in progress.
++ *
++ * If any callback fails, this function aborts KHO, undoes the freeze()
++ * callbacks, and returns an error.
++ */
++int liveupdate_reboot(void)
++{
++	return 0;
++}
++
++/**
++ * liveupdate_enabled - Check if the live update feature is enabled.
++ *
++ * This function returns the state of the live update feature flag, which
++ * can be controlled via the ``liveupdate`` kernel command-line parameter.
++ *
++ * @return true if live update is enabled, false otherwise.
++ */
++bool liveupdate_enabled(void)
++{
++	return luo_global.enabled;
++}
+diff --git a/kernel/liveupdate/luo_ioctl.c b/kernel/liveupdate/luo_ioctl.c
+new file mode 100644
+index 000000000000..44d365185f7c
+--- /dev/null
++++ b/kernel/liveupdate/luo_ioctl.c
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Copyright (c) 2025, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++#include <linux/liveupdate.h>
++#include <linux/miscdevice.h>
++
++struct luo_device_state {
++	struct miscdevice miscdev;
++};
++
++static const struct file_operations luo_fops = {
++	.owner		= THIS_MODULE,
++};
++
++static struct luo_device_state luo_dev = {
++	.miscdev = {
++		.minor = MISC_DYNAMIC_MINOR,
++		.name  = "liveupdate",
++		.fops  = &luo_fops,
++	},
++};
++
++static int __init liveupdate_ioctl_init(void)
++{
++	if (!liveupdate_enabled())
++		return 0;
++
++	return misc_register(&luo_dev.miscdev);
++}
++module_init(liveupdate_ioctl_init);
++
++static void __exit liveupdate_exit(void)
++{
++	misc_deregister(&luo_dev.miscdev);
++}
++module_exit(liveupdate_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Pasha Tatashin");
++MODULE_DESCRIPTION("Live Update Orchestrator");
++MODULE_VERSION("0.1");
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
