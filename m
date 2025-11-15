@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14216CEB2CA
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 09:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E63CEB2C9
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 09:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 297858E0008; Sat, 15 Nov 2025 04:13:46 -0500 (EST)
+	id 4E5148E0007; Sat, 15 Nov 2025 04:15:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 246BB8E0005; Sat, 15 Nov 2025 04:13:46 -0500 (EST)
+	id 495768E0005; Sat, 15 Nov 2025 04:15:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 183F68E0008; Sat, 15 Nov 2025 04:13:46 -0500 (EST)
+	id 384C38E0007; Sat, 15 Nov 2025 04:15:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EEFE58E0005
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 04:13:45 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D41BB4DA18
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:07:56 +0000 (UTC)
-X-FDA: 84112264152.04.394BA6C
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2D5FB100003
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:07:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kNysVfHs;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 204A88E0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 04:15:46 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CD0E13BA20
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:09:41 +0000 (UTC)
+X-FDA: 84112268562.24.F4833FA
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AFF0F40008
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 09:09:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="M/YUuAH3";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763197779; a=rsa-sha256;
+	cv=none;
+	b=axuJGvcNKarQqwcJG4z5s5U65g4DF2AWmAsf1paPPd+zbRpeU9cADENjIvEB1wDxe2Ptfg
+	EEkRL7L55vN+u6U7vKSIUcDsgwgCK1hPRCWxJkiga3nkH+V8dPKklCm54957sjVHT6q9PU
+	YxEE8EgK8jBjlhH4gB+Z10noBfbdmY8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="M/YUuAH3";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763197675;
+	s=arc-20220608; t=1763197779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QuGUgkNBhxAyHgvlC2Rtd4xfIzwmCu+LetoLyFbR46Y=;
-	b=tR0UZyOZlTCrqHOKQBWE0acLQEK3hfGQzKhB0qI4YEnKS9RT6EBg7/Zh6k9yQVAYIWasaQ
-	MkPqIJ+Y0xD/j2LSTzDmFZoLpPJCcarHv7Eyox/NbWYwzKKwgzk+grqLCOC4/EqDtYfG0a
-	YradYyKnn0k1K5ESr9Z+GkTAhE1pEbw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kNysVfHs;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763197675; a=rsa-sha256;
-	cv=none;
-	b=Zl5kRQI3W5nOjpiGTFXIyrdNTxHcpBXUh7tcZGllhjH0nmzk9nEWVsfMUziBJOJrqWtaAq
-	5TyqgzWdRGlEIrDFcgy+JLkULe1y7uQsCSaMr7uifM1axoo5VELrhS4PGoq/oJIM5/7/nY
-	Syj1Xv3zkqM+CSAgyZ0iTNj34skhyBk=
-Message-ID: <d58a6475-15f2-4e7c-b384-146623ce55fc@linux.dev>
+	bh=qfm+MQXULvTpw1aaUw2GJFWd+i9+TwJ4lZKozAzdhws=;
+	b=NurpbOqLmDNeQCVXrgssWQfG+3G+nqxWiUq11lZaCPbhLabWfUDEbS74/755wp8jHenSsI
+	0c/Tkm0q/CCqWF+ReGSBfhqGyrItLDuyKti636hoO1+kFp7Yno6KX1EGwrMOjlhDBwCEek
+	hPNvUpnR4bUobYCMC0u3reYZ+qqfbpw=
+Message-ID: <f7bd2dc1-e7a5-4e80-9cad-2acac8065876@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763197672;
+	t=1763197777;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QuGUgkNBhxAyHgvlC2Rtd4xfIzwmCu+LetoLyFbR46Y=;
-	b=kNysVfHsdj+0Qseu6HcgTet+NVlC+EYvKu/FOU10GOWi/nxL8FolfSVt4/dADuwt4v6eGO
-	ihunYFsAestSz7zz/fhdf7/MlU9A15UpPrX0hNXtoFRGbUs2QnpKQ2keo3fNajZYWhiuZW
-	+qGkodE+uZWV2JrmnmGzM7YxCyKUZy4=
-Date: Sat, 15 Nov 2025 17:06:51 +0800
+	bh=qfm+MQXULvTpw1aaUw2GJFWd+i9+TwJ4lZKozAzdhws=;
+	b=M/YUuAH3IyWhHYn5ZNYhvN1s6M7xHKp63PCRpmUrEKXu53qQ1HuLBjIKdBsHH7i0tHGrO2
+	MjXPtZjS13xHfyK5QioHDDtwAUCXkyGqTgTAJkTaZnWGxD0YWfwq7kF4quaoj4fCBUjoDA
+	i6LWMMM3rWw68vjk72a2dDN7mW73xXw=
+Date: Sat, 15 Nov 2025 17:08:35 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/7] alpha: mm: enable MMU_GATHER_RCU_TABLE_FREE
-To: Magnus Lindholm <linmag7@gmail.com>
-Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
- david@redhat.com, ioworker0@gmail.com, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
- Qi Zheng <zhengqi.arch@bytedance.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Matt Turner <mattst88@gmail.com>
+Subject: Re: [PATCH 2/7] arc: mm: enable MMU_GATHER_RCU_TABLE_FREE
+To: Vineet Gupta <vgupta@kernel.org>, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
+ dev.jain@arm.com, akpm@linux-foundation.org, david@redhat.com,
+ ioworker0@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org
 References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
- <66cd5b21aecc3281318b66a3a4aae078c4b9d37b.1763117269.git.zhengqi.arch@bytedance.com>
- <CA+=Fv5SGu_Y-zwryrQiTQDy32SipMk_dfjZezth1=aZmnDKNeA@mail.gmail.com>
+ <6a4192f5cef3049f123f08cb04ef5cd0179c3281.1763117269.git.zhengqi.arch@bytedance.com>
+ <5199c367-aabb-43e7-951e-452657dcdddc@linux.dev>
+ <4e120357-6fa3-436a-8474-b07b473381b6@kernel.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <CA+=Fv5SGu_Y-zwryrQiTQDy32SipMk_dfjZezth1=aZmnDKNeA@mail.gmail.com>
+In-Reply-To: <4e120357-6fa3-436a-8474-b07b473381b6@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 2D5FB100003
-X-Stat-Signature: 8z7dgrp3cuqtad8q8qt5ubzqjnzfoceu
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763197674-114420
-X-HE-Meta: U2FsdGVkX1+Z0MLps3/yoXESM8pC2ao2G1qbDESlAjeXARdTrgFt7OfK8wj+aw0kS3MCyWaG8UqsZUfVH0XQqDriWwM++NZ+Vs75Iak4hyHhh53AYdKVsRVkBDhULKp+sUeWbrL0QIGZkKGW6BjdP9iPGWzJ1PhjOoOfLVJo+bXDLBMtXhmayV1HF3ErlWWwK2YImJbfG/B10qyfneyRzqWpX6w8RNmurkcyzLEGAk6G/8IWPvDTz/q0b9GCU9b2Xg6jWUeN1XrdfmseW8anHhMntgCdua944yfKnADj+V1RSyvOOKlkuZmgRyTOWv6MOvsCzTDtELJMlfKVnyx2NexjESM6v5D7hChWVyxLyyCxVNDbTJnA8jozgxncQd/cHLNHMayGsmCUpw2t6+QslD4OHo6L1oWn5TXUxUaIwSf00o2xEws/nquxU+KxVQZa2oBi9hzsQ7VIQFuV/hdQ3PpRNnH3ELycY2cgEYE/xarj2SEQC/lhv7PxwPKpQwlBInoJSEp23bMxB/KOklkhS2yO/llEPS9PM9FxmIcC8UGPs6ilI1nrYZr8KiUhyXv/I93R7wvsM/3v3FSkgUBwzE0/Lhs2WyCz/CYV2WO+VhmScNG6Gxt/HnYZm9M5NSBKZMHff0Uf9FvsuVcxxEbOSlVUsyNRJA++amvdMsF3vfRYhsI+coQaT7lDVb3n9TPTxYJRfwb20Ql8NUKFD+uzhM/DgFWSkiDJZHxwHR+dNVZ4iRyuos7NqsIJvKMtisGwIqJzngW1RZNtp3YgRtNwxXclorDxUnjhpDnAMnx6+BsKw3R9N/0ImGDTRvBHWsIW+N8fMZVFviqrG5Eh0GagD6Mpkubylo4LRS1FJInEXdKfjT9yKXteRMEkkbSHCUX1x0h0jKaVkM5a7qNee3kBaCGj50I3XjPtT1RKZvRrdzidFe5EXFBiCnmlNvyvJ06V/N2nRXcXXlc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AFF0F40008
+X-Stat-Signature: g7a33n58kbgeyysyojsy93nqan7euq7t
+X-HE-Tag: 1763197779-418029
+X-HE-Meta: U2FsdGVkX19TSzwD5cLXWAf7O2UkZ8ie6rGFkhnw2SGWZbmG1fmL3bo9OE++7EfuhkuLlLbWH1jwIzj9qBwZcXbEdN0mG+kbFYLlroIgp/a3w+JQTbrWzvwagbKXs9NQ8Hmr7Ltl2L2rAutx60drODh3788ynOHJZtEyWRagwvdz1MJDuwqBqIw7gBkBHYUR8DImSfe8GoQoCkeUttezgTij0iBBZdq51KvosCB7ZXGYekeTDhZ7QX7wldSfMFNihlvBInniTqEeSP4nta23sI0r+NkQ//HtNNwiilazswaey4kY4kzdA5lC1Sq8ekMeS2DOaiUjJ5mYLsE+5UsIec0ZvMBm4aimIyfnoYAfoL1IQfnwATqFZ5U9JErG0/9pO41qBib6UpehuUeV8BHxcIrH0Fcg52rtJsnYnhwCu/GKqC6HXW5AgXcMrcQ9A1g/OdAiYmZo+buHiTXGoVE7FnFbwfmYbEH8CkjVUw4P5qFSi1Rq2V4tttsUp6bcruQVBImy5d2hsBMWNPP9K3R3BmENz941FGksOzO1NbSxheS6PJIOACWhtZcLNM6U3fiDl735yb/2b+4dzzBPGtvEaJnAEsR7Zk7tmbv7hAIj1YJggj4R4gGCy1BHJ88+fM3HqBUXfze0vdHyPLBiXKZjAkelXqCJPiZuAni84d7c4Mj04i3RtQNL3Hbn7sacy9zvpW9Er5xNBmse0F4cifEvlPeCrrK4qb5l8CYipEz3KjZXuCeRLlEDYaFVtOlX48XjYkVXfzRNfliUEEIoYui4lk7bF5qOOZzEBmi/V6lVrGVre3SO4SEboz+gQkakztJAfiJfELxYQjABLuPJ5gvrj6tLRzQhvSmctfYvNWS8l8d+MWnqRHhL/MOIXclICL48fJ5RIW8fnSRcjPtgWrsLA2pux4274j+mOLnHxl1/40JXnW4rfgv3PMb7mfTvkC19NeN6ycFtfs24cVORbBU
+ gpGB/5ox
+ scUStDgzjbgBjhM17kTY0fElc3ADMHcVVrWaldpYyyLDNmNkwkmVHkL7uYtsfOeSFDKH9mu4GGRep9adnWxK5nthFlpbTGTn3zmBL+NQVsRKCYVEiwIAFn94K/oqpkKVAzBAjY+Y6573c+6OH60DNeZqq7HQRNt6RT7yKVtz5E+IVkfNHcS6ogdhR3AaTf800dvyxqbZdgX2FzVYYB4V1JOdyK/AwlmoAcp46AAp/NR9kFdmyvTtJBexLsSW94XN8QLZ6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,33 +98,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Magnus,
 
-On 11/15/25 3:13 AM, Magnus Lindholm wrote:
-> Hi,
-> 
-> I applied your patches to a fresh pull of torvalds/linux.git repo but was unable
-> to build the kernel (on Alpha) with this patch applied.
-> 
-> I made the following changes in order to get it to build on Alpha:
 
-Thanks! Will fix it in the next version.
+On 11/15/25 7:10 AM, Vineet Gupta wrote:
+> On 11/14/25 03:20, Qi Zheng wrote:
+>> Strangely, it seems that only ARC does not define CONFIG_64BIT?
+>>
+>> Does the ARC architecture support 64-bit? Did I miss something?
+> 
+> ARC is 32-bit only !
+
+Got it! Will drop this patch in the next version.
+
+Thanks!
 
 > 
-> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
-> index 7e9455a18aae..6761b0c282bf 100644
-> --- a/mm/pt_reclaim.c
-> +++ b/mm/pt_reclaim.c
-> @@ -1,7 +1,7 @@
->   // SPDX-License-Identifier: GPL-2.0
->   #include <linux/hugetlb.h>
-> -#include <asm-generic/tlb.h>
->   #include <asm/pgalloc.h>
-> +#include <asm/tlb.h>
-> 
->   #include "internal.h"
-> 
-> 
-> /Magnus
+> -Vineet
 
 
