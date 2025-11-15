@@ -4,131 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98963CEACF9
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:53:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E7C6CEACFD
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 01:13:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF63A8E0023; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
+	id 7D3BC8E001A; Fri, 14 Nov 2025 20:13:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5CB8E0005; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
+	id 7AB378E0005; Fri, 14 Nov 2025 20:13:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6DC78E0023; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
+	id 6E7BD8E001A; Fri, 14 Nov 2025 20:13:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BEE7A8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:53:00 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 56164896F6
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:53:00 +0000 (UTC)
-X-FDA: 84111016920.28.92F7E74
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 922EA10000B
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:52:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vhRRHgjH;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167978; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D7738E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 20:13:08 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D0F6516058C
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 01:13:07 +0000 (UTC)
+X-FDA: 84111067614.19.2E62855
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4556520005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 01:13:05 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dPqc7lYJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763169185; a=rsa-sha256;
 	cv=none;
-	b=oLlcmzOrZlZiSgjkFKf7Nbu09mK3QfH7CaGdE+QwGzajRULuyqxprqyYo4UmoOsxEUulZx
-	GTuzAEwH9YSINNKOSwPcxS4zmlJiACO5fvMCA9+z05Z24Rlx/0pKF/yaaDn9E9ovASgJW4
-	27QNWFP4nMmYy2DA84+OmwAfmPzP7p0=
+	b=Tzbs8/qzwZCwg+opYymLbDmMJQWqkAO3r17SZueBln0YZXf/H0h9Ic26lfe7aB8vId1yFX
+	CRmj/xGAkdMzHTviWC+jYKOoi3RIcQ6XwrArgFHQYyek2bEfUIA9a8VMjWDFZ2gI3Bz8Cm
+	aWqdbBR+kGC8rUz9QDuyZPUtH6XqzFM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vhRRHgjH;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=36c4XaQsKCDYSUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dPqc7lYJ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763167978;
+	s=arc-20220608; t=1763169185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U9SSTkCfK9gXlKFXxpFitF3UmgPFfqReOkQFg2JXAv8=;
-	b=7B4gRKtq40y2Ua9Yyy4thJcQ6lTt9BN+josOQ5w64hBhYEhzybIp5Ivqqe9elC4Sy9AO1P
-	G74iGx+z8V4RcqWhOxShEvVlE+S69P2Zfa897Lpk2TsNcoyhPW8kVUZXx08sb92aeLbCZO
-	YT5yRaakfClWigPtF72I1OQstvca0/s=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-343e17d7ed5so2773267a91.0
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:52:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763167977; x=1763772777; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U9SSTkCfK9gXlKFXxpFitF3UmgPFfqReOkQFg2JXAv8=;
-        b=vhRRHgjHxXA+e6noVWq3a6Mz73iczR66SM0VHSI3bRbVln4iZZxIHDRGzJr4Fwmg/E
-         /76LWCQdcMgOP4qw3RnPaTe6u2mOhfS49elZyt4O0gVsbZR6BML74O7aoQtEEwT9Yhvs
-         dZR4GUHspOFBejDxdX4OheKCNkc/TQRst4uWRo8yPASKY1ym0Uz/m20xijAxm/m5dM0a
-         uChNpnPB/ELzUgfgf7dZGRTlvmNZsehikhosAbiC49jlk41tXhhDP/ytqqFIUhff6dQo
-         MfOkHbH9JdPuVrhAPHhWq1pH9/GIUa+RlLESn/YY03Udd7e5nmhDOY2/swYhj4HFxb7C
-         6Ovw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763167977; x=1763772777;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U9SSTkCfK9gXlKFXxpFitF3UmgPFfqReOkQFg2JXAv8=;
-        b=JLuooy4plVDwwOS1Uv/C1jLBiRq4yTn5V9MTp7g3vConwrtmU4h9bbs/trIrGWbKoc
-         7C6+vPHTxj564Uky1Ao7oDInp15GK+j9X3acB/EaEdIKrBqf0nZZqQtDBCYfyravS1dU
-         8DZRjJwCxxVTWkLVOAH48dnqXbMGacYsK/fMncZPxKoBMBJyE87jAngJhLJJseMBcbyR
-         utdW7puS+o90g5ULhfHsOrYX390/w2Un42mmZLbNqhrlbEdeSzG9tNCHdD7+5htMFTns
-         sBUlWrC8JMvHzBVoiOhGRXtAU77n8NUa/9+tBXmz8ZUnf2ZpaQVjiQJmvRlAqPit+3wC
-         yW0A==
-X-Forwarded-Encrypted: i=1; AJvYcCXXLm1ggxMOmod5nK1ujEUqwujhTjocugsi4EwGQ4IAZDWQFgitZPitzobsXwsIdMpKtu6SG4jmJw==@kvack.org
-X-Gm-Message-State: AOJu0YyqbRP+xi3kRWxJftpnoBgqcebQI0SU/PByMZv+EnqDHnIxAHlP
-	qm9sg5c7L0ZnOFJdr2FAdAfKsZjfjAj5Ev9EQszsZdbXTdiWeBrWnpN2xPn4YcFsQ2F2UIfPLWS
-	hgDwr+f1pJ1xJWmJQuqRUlaaEdQ==
-X-Google-Smtp-Source: AGHT+IFQ6ztt0EQFHe4KI+3WuxtLaazXI8OcEuS0OZM8dxl+4bnHUaopiO2H4ku8y1VZu9JaoG1ZZurdE58bMYL0dA==
-X-Received: from pjbpm10.prod.google.com ([2002:a17:90b:3c4a:b0:340:a9b3:320c])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3c89:b0:339:cece:a99 with SMTP id 98e67ed59e1d1-343f9eb3128mr5188244a91.13.1763167977228;
- Fri, 14 Nov 2025 16:52:57 -0800 (PST)
-Date: Fri, 14 Nov 2025 16:52:55 -0800
-In-Reply-To: <aRG35j3OhMvQo85n@yzhao56-desk.sh.intel.com>
-Mime-Version: 1.0
-References: <cover.1760731772.git.ackerleytng@google.com> <a3795f7fb4f785ced19abe18c2f33aa478c4d202.1760731772.git.ackerleytng@google.com>
- <aRG35j3OhMvQo85n@yzhao56-desk.sh.intel.com>
-Message-ID: <diqzzf8oazh4.fsf@google.com>
-Subject: Re: [RFC PATCH v1 06/37] KVM: guest_memfd: Update kvm_gmem_populate()
- to use gmem attributes
-From: Ackerley Tng <ackerleytng@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org, akpm@linux-foundation.org, 
-	binbin.wu@linux.intel.com, bp@alien8.de, brauner@kernel.org, 
-	chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net, 
-	dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com, 
-	dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
-	haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com, 
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
-	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
-	jhubbard@nvidia.com, jthoughton@google.com, jun.miao@intel.com, 
-	kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev, 
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com, 
-	mail@maciej.szmigiero.name, maobibo@loongson.cn, 
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org, 
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com, 
-	mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev, 
-	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	peterx@redhat.com, pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, 
-	qperret@google.com, richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, rostedt@goodmis.org, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shakeel.butt@linux.dev, shuah@kernel.org, 
-	steven.price@arm.com, suzuki.poulose@arm.com, tabba@google.com, 
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, will@kernel.org, 
-	willy@infradead.org, wyihan@google.com, xiaoyao.li@intel.com, 
-	yilun.xu@intel.com, yuzenghui@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 922EA10000B
+	bh=YHiX1X/OH2B97KYDjNGeXl/+3uOQJEMtQdEIGNbLMqM=;
+	b=OBAQx+3MeRdC0poq2Oqlj8jPxrMgA25H0xgOmisJX/c84WHOzneeXTAYrxnhVlsk8Id230
+	jre5kO/YivE3ht70RMlgrXlikOlMfQTXoLMuGdrXudiB4XKPVZb+QsB+hvzjYB6j56OXDp
+	acg61WOuOECgGVVm3REgAEkZ63jwluk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763169186; x=1794705186;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZYpyydEIKJdUZcKYOQA153wYBuCQw3r8OGWjWBD7bf0=;
+  b=dPqc7lYJluAen6/03LeiCqZityRJO6jJ/yRTs4vS+1KkSQRt1ppG9TQh
+   beTpnfmhE2Ilss+FmwiRb7cpDFXzLuN+UYZaCrDWGnTxq3Yhrsi3yh52d
+   wsXwI5Nu0cdMu/+kRNvHhGK1Mo3eefKqiaokkjetqJCZznGweVFIaq0I3
+   kdzxf4YumjRV+23zBfGAD/cseeemRfJ20iOwWlGXYdWEd5bz6Dp+AP/Qe
+   DxaVfKZ2sCgryKFAeZzyLqocyYI+jkNz7SFDqTg20Tg2gFi13VJabP4nC
+   AefZNA1nvrR1nv+yEeYrzZm9Y/XwVciytZJ074df4awS9at9t+WqdV4mM
+   g==;
+X-CSE-ConnectionGUID: vpIoNuaGQdizB+uxzsG+og==
+X-CSE-MsgGUID: 8ey4m1MQTke7uXwstMx/3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="65152395"
+X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
+   d="scan'208";a="65152395"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 17:13:03 -0800
+X-CSE-ConnectionGUID: OyXkE+18SIC4r9bUHnq2cQ==
+X-CSE-MsgGUID: 7wNDei3wRnCT1vSqROvBmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
+   d="scan'208";a="194228351"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 14 Nov 2025 17:12:59 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vK4qW-0007Zv-1X;
+	Sat, 15 Nov 2025 01:12:56 +0000
+Date: Sat, 15 Nov 2025 09:12:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
+	npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
+	akpm@linux-foundation.org, david@redhat.com, ioworker0@gmail.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH 7/7] mm: make PT_RECLAIM depend on
+ MMU_GATHER_RCU_TABLE_FREE && 64BIT
+Message-ID: <202511150832.iAyO0SAW-lkp@intel.com>
+References: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Queue-Id: 4556520005
 X-Rspamd-Server: rspam07
-X-Stat-Signature: sqyuj4saybawm4p3qhpoia9i6tpy39fh
+X-Stat-Signature: hayfichtsm9zdgnf5qut9aphwca1g6rn
 X-Rspam-User: 
-X-HE-Tag: 1763167978-30093
-X-HE-Meta: U2FsdGVkX1+N2FiiJTnvTaUK48AHF8630Wqlhnezrp09OvycwEQVz+tIJ++KQy00W2siWxKCg3zeTC+oGo9mYjxB7KFonRlwtCeXueMIFeOr79+K9j5mk/YnOuEul4GcSuNdD82j1k3wFLbv6ObcSCoHAycxqo/BBuDxdG0c8P+qL7YTqf8JZWeeNKpkk5k2JAQ8PKm/nxbUa7DY4HjH5Y7rlhui0BegjtoxOrJxqm0xTM/Q7CLTs3QwK+YYH2LPmrME3DJ9b52qLsd8FAsiT463JnmEy2xqPVa3+sgX9GWj11siFxSj+C5T4cS1G1lxIAUzBdGv1w6Db9la/AXeYHOBAp+dIqKngfa6cnGg1YGve8V3HuS9HIUM1y0BuGrvq05m8irJIHtxjPzI3XXNbPxaosilWAjb0QUFDmzhS758qlpmHF8PcwfWOq1OLaHk580WHtOKcJEsF5Z08/Va2Q4tBB+SEUyrMCIQdSyz9VXj1mm5U1xQo8HrYjzLfI+fZ6mlOX/D0XcssL44p8cjctl4DprKI/+bkZfOlKuqC1BO10Y6/IF+8uph5oI7ofF9+xqYlcDEAxPMUKL7Qb2MGbkfJmzVhggOW6Nw7XjIqvwoRc1CzVovlA2fz+ZKcART3kHft3nX6hwaRSqYrNzlTyAUukNxKaax8qO8r6WVuheNff7xyoXZkYok0cY7upi+aRye6E+V64KPjZgGBpUD6MnhyN+y5G0BAikLlD3IME/R73N8SURe/qWdrIOpHigYjdpa8OUoA+lg4eOwQkhQx3GK7CXodQInNXLAs+uwnjSfbIMZWeDX1AKf9cGC7pBXhKcfA+wBHLkaIuS3rc5KlxqxovIn3feVbKwnG29/7jZsrWq9EAbdOMg+XNvu1/spVByLqM1c9GLou4HOCK5ehuFrIeNFw2KbzF6FSWmvo80PlfolOeV22/IERnx/tiWGWTu+VzQhOfrorhWwrqx
- 3kHxWIJ+
- ZqkDzs3H/LF4ld8AuHsT1nwS8KDl/dj/v5kZp6iyMONir3vwISN9aTe1+fHse2pbEyNd+DZVcdW+GFtuOhvhpjGZ7XVkdsKSUtKDrnt5/fF6B4tn6/At2iBfxlbllGNwSmzzP6eUPWWXJ2+0MyTAfEFjzSY9+h8ZDv9ImK/qpm1PD2sJxPH26pM3dFADTfB5IzsslmhT9H20nLItpTPTN2jlgl5iEkSCsRvfmnoLWMZJIsDLFS7TIMA5MrXgXSmRS18bkiCBBsjk9jqfoTCE2tiyDIx2cyujDLIBWZdj0Jm0VVwC6hEjD/DcWg6+noq1X6GjjImWaAm+bAPVWDwJoenVgrUAYuYlROgJoSF51K4VbVVyuW43lweXNAYP/nGT8UiyK3XVZn9OfRwJFwTlqOr+fabLshP9DvAOBCyHWzXwU1NkCCfK0sAs1jgn9FVw1/qMmNmkBKNsXsWlUS/ZRM1G7OcQNIJ1hRf6lYYwA91usKZ6iaQsWxHLjYqY1b8yFOd2+soRgqWgT4CyQs11+Xwg/QGA52ul7SHftIOrS12TvA847YZpEfLKXPvfSqc2F3ugwZQ8vGGn8EJR/uAeA/OHxGcEyybEG1RCT4UYsQLI99MMxx4OOx+sBKZpNma6uG2ZFw09XiFn19pFKfAMrr8M7ItWfG4NmGuTq283L3UigbPZeH7N+YZd7QhOM7m5lVHNasH99V4xEQKdKJvkcrHOvbHbazLCu6NkEmS8MaaNTEsNlkcHEC11b1Ui2iw6VJOTKRd893O+qp0MUEthMygF8FpD6N5FU0Vzj4XJeOWfsHWBrPd74y9vcwiVvE/4xjCqJmt/92G+PtvUJhryoG0BzCOcGWNcOi3mnCHp0N5kBnK/7nPqqnvjXlXHESANa6UQa
+X-HE-Tag: 1763169185-202251
+X-HE-Meta: U2FsdGVkX19EK0iIDDlE8X9j4bWgnA+MFLZ3hpwI6DjHzU8UjDG2Lh+OC8pglGB+JisSyJS5k3rNAHv086hXmjPqmGYDHTKc5/tAmhRUVXZhV1YoFfmaAjckomfP0J0aSwis5nXRKKfA2YrGVt4UqZGU69qe7Y8YBfHmwN2t2qFrguwPIE+jlPVnK/tNMuKLGoq4KI+lPEOZ9gle8l5jwpg0QoSp8cO/XSeJ34yz+Gc11gnBI6+p19U4eYAhl42LlX4Af2SMbTcN7y+soV3Zmh6w7cpjhvdxtfpzRXToIunnX/4NwX2j3/5RFgVkB9MRRUdqOFqA5vpP/zDpB/KN5+GbPE48xylTsNEY120/9yEJezSJLC9Wrc+QPSSNda7hYCgYH2aj5iGprFTWu5F2zeXoqAp6qZed1+8ZfrPvASL511ccnacvu4qazSfzGongKKTOFEcHPfn7dESYuBW4T5/ifG9tk3bnuRchoed8M9Sdi27wyY5GNU5wLVTw11+UkQePsw+IIP+H/7oGSKM5b6R4jAwXBHkXpeNts7wBX43MTbuRdELBI5kHBlmQcZuChvalEqxFIR0bR5Jhx8fObvbciP1TyFBwpftkG3ncUCb3r9vISvA/9kxwylKHUvFKEfnS+KfEqtkkicQOxKJADauNxzfcVlXcECEnSy4mwgFiRY3nEoRgXlj7eyUm16iBt9LmDV4vmFo106BcN8xG6v3Vv41TTT1fVZPcLMwbOu6c0SxYtFHNAHJdFJe2IRO+SQDqvM3L7ZEi32nWQ62DmwvkgozUJLpbjDsMVl8kU/F9O/4svgKA9WhoOQ25ebsrltXM3mO7qBd0l7sCNBjBO06nXBV3rFMczSAucTpiAxk49EclR9nvyBtXTjYqcTRGt512/ZO5bkmC4D3t54D/7TdjKONf5jQ43blyhpEZZeVaQjsyXlPC6xtQ7xV7dbVksQrCOS9XB+Mvsvn0WR9
+ KHu+UPcQ
+ ra3k0S1rrVAbjsyDiy0t9qLn45eaXrdVbeEKJN0y4wsTJNAEXpSHycxIuaM+Qp0RMZDQhSsbJHmCmSNouJGtjbv7r3gBJadNzMLjgjGdBC1IwVTyy8Q3+pnnYDpY0fssHXRvbT3uF1qcOv1QvQYXLdi8648tCToLFpaZ+aVlcWyTdrbRkmDmRiU0J7EH2kMYbh/qWwyaoGOIoQTbe0VHGJFf5K1LuBHmD4dbsw1GiTwmuGrLMY+MZwJ3a8BKZ6sOyiZ32DKTMeRr+lSskjAeajqDJ+b67iTROdMqAZwNxhnZ6+ryz9jeQJU32S8JXun8VAPPgdrh+mmgtSkaVSiAgKVd1+uqXPG2bWKSFqzLabulXpdawDtA0lbBbxIflxJweiiW4vkHpsgv7njmi9z8Udun65pd9rNyO2Sn2W5iUXixtWJE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,54 +114,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yan Zhao <yan.y.zhao@intel.com> writes:
+Hi Qi,
 
->>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
->> +static bool kvm_gmem_range_is_private(struct gmem_inode *gi, pgoff_t index,
->> +				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
->> +{
->> +	pgoff_t end = index + nr_pages - 1;
->> +	void *entry;
->> +
->> +	if (vm_memory_attributes)
->> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->> +						       KVM_MEMORY_ATTRIBUTE_PRIVATE,
->> +						       KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> Can't compile kvm_range_has_vm_memory_attributes() if
-> CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set.
+kernel test robot noticed the following build errors:
 
-Thanks! I will fix this in the next revision.
+[auto build test ERROR on deller-parisc/for-next]
+[also build test ERROR on uml/next tip/x86/core akpm-mm/mm-everything linus/master v6.18-rc5 next-20251114]
+[cannot apply to uml/fixes vgupta-arc/for-next vgupta-arc/for-curr]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/alpha-mm-enable-MMU_GATHER_RCU_TABLE_FREE/20251114-191543
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git for-next
+patch link:    https://lore.kernel.org/r/0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch%40bytedance.com
+patch subject: [PATCH 7/7] mm: make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE && 64BIT
+config: arm64-randconfig-002-20251115 (https://download.01.org/0day-ci/archive/20251115/202511150832.iAyO0SAW-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251115/202511150832.iAyO0SAW-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511150832.iAyO0SAW-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/pt_reclaim.c:31:2: error: call to undeclared function '__pte_free_tlb'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      31 |         pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
+         |         ^
+   include/asm-generic/tlb.h:731:3: note: expanded from macro 'pte_free_tlb'
+     731 |                 __pte_free_tlb(tlb, ptep, address);             \
+         |                 ^
+   1 error generated.
 
 
-We've been discussing HugeTLB support in the guest_memfd upstream calls
-and I'd like to add a quick follow up here, with code, for anyone who
-might be interested. Here's a WIP tree:
+vim +/__pte_free_tlb +31 mm/pt_reclaim.c
 
-https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring
+6375e95f381e3d Qi Zheng 2024-12-04  27  
+6375e95f381e3d Qi Zheng 2024-12-04  28  void free_pte(struct mm_struct *mm, unsigned long addr, struct mmu_gather *tlb,
+6375e95f381e3d Qi Zheng 2024-12-04  29  	      pmd_t pmdval)
+6375e95f381e3d Qi Zheng 2024-12-04  30  {
+6375e95f381e3d Qi Zheng 2024-12-04 @31  	pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
+6375e95f381e3d Qi Zheng 2024-12-04  32  	mm_dec_nr_ptes(mm);
+6375e95f381e3d Qi Zheng 2024-12-04  33  }
+6375e95f381e3d Qi Zheng 2024-12-04  34  
 
-This tree was based off kvm-next (as of 2025-10-08), and includes
-
-+ Mmap fixes from Sean
-+ NUMA mempolicy support from Shivank Garg (AMD)
-+ Some cleanup patches from Sean
-+ Conversion series [1] with some cleanups (Thanks for the comments and
-  reviews on this series! Haven't had time to figure out all of it,
-  addressed some first)
-+ st_blocks fix for guest_memfd, which was discussed at the guest_memfd
-  upstream call: slides [2]
-+ HugeTLB support without conversion: this stage does not yet take into
-  account comments from the upstream call. This stage provides support
-  for HugeTLB to be used through guest_memfd for private memory. This
-  has to be used with the KVM parameter vm_memory_attributes set to
-  true. This stage can be used to test Yan's TDX huge page support by
-  setting up guest_memfd with HugeTLB just for private memory, with
-  shared memory being taken from elsewhere.
-+ HugeTLB support with conversion and folio restructuring: this stage
-  also does not take into account comments from the upstream call, so it
-  still disables the INIT_SHARED flag, although HugeTLB can now be used
-  with in-place conversion for both shared and private memory. This can
-  be used to test Yan's TDX huge page support.
-
-[1] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
-[2] https://lpc.events/event/18/contributions/1764/attachments/1409/3715/2025-10-30%20guest_memfd%20upstream%20call_%20guest_memfd%20HugeTLB%20support%20overview.pdf
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
