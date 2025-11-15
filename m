@@ -4,132 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6158CEACF9
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:47:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ADD9CEACF9
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:49:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264168E001A; Fri, 14 Nov 2025 19:47:01 -0500 (EST)
+	id A0A838E001F; Fri, 14 Nov 2025 19:49:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 213BD8E0005; Fri, 14 Nov 2025 19:47:01 -0500 (EST)
+	id 9E23E8E0005; Fri, 14 Nov 2025 19:49:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1033A8E001A; Fri, 14 Nov 2025 19:47:01 -0500 (EST)
+	id 91F618E001F; Fri, 14 Nov 2025 19:49:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF2DF8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:47:00 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9543D896F6
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:47:00 +0000 (UTC)
-X-FDA: 84111001800.27.A4139DA
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D7B40C000A
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:46:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lnGdJA6T;
-	spf=pass (imf22.hostedemail.com: domain of 3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F90F8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:49:22 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26D121A05AD
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:49:22 +0000 (UTC)
+X-FDA: 84111007764.18.6A4E5A4
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 71E6CA0004
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:49:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="HFxIY/R6";
+	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763167618;
+	s=arc-20220608; t=1763167760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mr/52DwIA8Vew8AuO0L8R6bm0vR8dQ+5A9WA+WG6t/s=;
-	b=MzKhbl0GJgb2tKpswU5+fCQ2DOCQleTR9+tpmCn+j5tjIic4iwyXTCz3WM4t9YlXH4HdZw
-	TuFmKNRiyPJKB8ht1bumvXPxSK2faB3B6u1UA3kW9SeQ3wpEPJh6wpNrFbQyDkfT/XAazO
-	WwV1SNM2hij5u5RM5vRuWwD3KtAwiCQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167619; a=rsa-sha256;
-	cv=none;
-	b=lBudM9AXwRBpvVpQbrfG4bg+GXZw4ybw1hddd61FpjVhSzsqbUnc6eCOHeSBivWLW7PQ8o
-	FVb20izLyNgY11ccL1MkySmeCNN2isghon6Cy7gr/wqk4b18MiiLR+IVXPYdch6UIlHYMh
-	X2ewwXClEezWxbbpfRe5nwI8DnBfXtw=
+	bh=htUByUHiQNU0PaaZJdOzX/xk7D/ge5gLRVLcI608Ows=;
+	b=YcuzovtfvQOAFiH0TgZxSJhprx7tHh3W5wUZkus/CmQVEJdti9uIAHPuy1JuZulPwSmUlJ
+	ubv5RzpNvmAJpWJ73oCd0lPTEA2+2TT5AFnXpgwL7lZtTr5deeqq0sDsB2BObSjYNo0iDI
+	fQLrLPL3nnizeDu/vNhOxLice50I7Y0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lnGdJA6T;
-	spf=pass (imf22.hostedemail.com: domain of 3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3gc0XaQsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-340bb1bf12aso6171740a91.1
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 16:46:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763167617; x=1763772417; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mr/52DwIA8Vew8AuO0L8R6bm0vR8dQ+5A9WA+WG6t/s=;
-        b=lnGdJA6TU8eKSKoGa+N80kcWIsNXtzsCB844jEh3HYbic+3LkuOC3TJWYMTMMnA+xN
-         Wn/rdwnMGDG5OQt5+SlCqFlqMly8vJqVXNQ2QmTQSUG0hD/rlKjevBTePJ4aeDQpRbyj
-         j65v1CH5QgdcPDFsPy6+6Jv97zFNPrh7pmmCb8RsaDg95BYCVH8LHGKgChA/YKjeBdeh
-         iAJIX0wZQygkasQ4fsGxtgIWuGuvjFNA53CW1MfiUuErrKnUVdLYbHUemAkdoXdwfEpc
-         QXjaEM25MYgL1MMuTL+CT1Y7/ELQG/8W+XoJM7BmdmdMM/hIpDPmDODHl0yz+nGjW70R
-         Clcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763167617; x=1763772417;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mr/52DwIA8Vew8AuO0L8R6bm0vR8dQ+5A9WA+WG6t/s=;
-        b=UTZVqr7Dh5Y48D3GFiwj5SCCvX2u6WXRutE+67e0q6wu++rTT5Am0RDH/1OyMMFk/r
-         /7tSXyNk22DjKJ+tARZv1cgB9tG52xCIhiIAsb61BO8GyiNx9p/FQKZlbtW5sNKc47QV
-         2oPskhdyzDkQYlhpAo/kSTmThO0ITBNMNIT7V617R979bATZWPnqjoFD+rB5qk6Gwfee
-         cgGR8XJqlrqXVc3r0gWkFUfavavHuAmz6QjFd1w/dBKoIML+XMFJL9jBCBxue+aavAXg
-         oJMOBuDYpzOo2BtXifsBZ/FX7E8oUhbgfyWKU0aqM9JRzXgISEXuAR/Hz9beULivL3Xk
-         95bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVDLFKXymu3T4CS4ttISiSFSUflOUEgUsz8LBNW+ph8diHQ4bJGuA7nBEl4SkMvgp0//sFuwDulMg==@kvack.org
-X-Gm-Message-State: AOJu0YwlK3ISeggYDFt3nkGUQMaJq/wYulxA0rACzot2QII/HEI48Hvg
-	8VjJcnWO8TJ9iOesrXb8DrGIpC7eYg9zOZ1BKnMH8d7MLAuNW/NlNuQazST7x26C5OTong9GzZv
-	O2ylJnsgYfAloJW9zeY2AnPHGPQ==
-X-Google-Smtp-Source: AGHT+IHPDsoGUhVWbmh0UerKKIaGr6kr4KuHT3qBmIvhj2MnXtnNCORQphwRQGqEcjJQnhvfFDaRm0g88w6S7pk3mw==
-X-Received: from pjbdb8.prod.google.com ([2002:a17:90a:d648:b0:343:5c2:dd74])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1dc9:b0:340:29a1:1b0c with SMTP id 98e67ed59e1d1-343f9e93781mr5917746a91.7.1763167617416;
- Fri, 14 Nov 2025 16:46:57 -0800 (PST)
-Date: Fri, 14 Nov 2025 16:46:56 -0800
-In-Reply-To: <aQnGJ5agTohMijj8@yzhao56-desk.sh.intel.com>
-Mime-Version: 1.0
-References: <cover.1760731772.git.ackerleytng@google.com> <5a4dfc265a46959953e6c24730d22584972b1179.1760731772.git.ackerleytng@google.com>
- <aQnGJ5agTohMijj8@yzhao56-desk.sh.intel.com>
-Message-ID: <diqz346gcebj.fsf@google.com>
-Subject: Re: [RFC PATCH v1 11/37] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES
-From: Ackerley Tng <ackerleytng@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org, akpm@linux-foundation.org, 
-	binbin.wu@linux.intel.com, bp@alien8.de, brauner@kernel.org, 
-	chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net, 
-	dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com, 
-	dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
-	haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com, 
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
-	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
-	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
-	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
-	kent.overstreet@linux.dev, liam.merwick@oracle.com, 
-	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, 
-	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
-	mhiramat@kernel.org, mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, 
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au, 
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com, 
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, qperret@google.com, 
-	richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com, 
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com, 
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, wyihan@google.com, 
-	xiaoyao.li@intel.com, yilun.xu@intel.com, yuzenghui@huawei.com, 
-	zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: mrjn4uutt5wyefqt5utgk7uwibhxadup
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="HFxIY/R6";
+	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167760; a=rsa-sha256;
+	cv=none;
+	b=PtE87lyFPd56JELU3IeuVl5RWvTr1qCKoWsG0jxKWfPYweJm/s4T6j8qs2y50i3ferCqM4
+	ZZECchY2/MLLN07uzg3nk7Ga5Yr51d3CXfbxrmafSlMFZj/ELamG0MPkrbzQUYQQB+ylst
+	jIs65/QHl0jq5sQOog7xosepIB3y15Y=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1763167756; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=htUByUHiQNU0PaaZJdOzX/xk7D/ge5gLRVLcI608Ows=;
+	b=HFxIY/R6zaU+tEdfztmjxPmjAs/NjtHZmfF8J0i65XeYXWJ6J38OJKOxmyadiZtX/Zjvm3/pDcXrMy853WPt3cQtnrkMIOWF4TODHZu3cJb150x1RaNrxknDOxQvMdB9aL1azHz2C6dp+l811GvhIX7xmaC9/1OBUV9zc8L/u5c=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WsOJfMa_1763167753 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sat, 15 Nov 2025 08:49:14 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>,  Will Deacon <will@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,  Barry Song <baohua@kernel.org>,
+  Zi Yan <ziy@nvidia.com>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+  Vlastimil Babka <vbabka@suse.cz>,  Baolin Wang
+ <baolin.wang@linux.alibaba.com>,  Yang Shi <yang@os.amperecomputing.com>,
+  "Christoph Lameter (Ampere)" <cl@gentwo.org>,  Dev Jain
+ <dev.jain@arm.com>,  Anshuman Khandual <anshuman.khandual@arm.com>,
+  Kefeng Wang <wangkefeng.wang@huawei.com>,  Kevin Brodsky
+ <kevin.brodsky@arm.com>,  Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH -v6 2/2] arm64, tlbflush: don't TLBI broadcast if page
+ reused in write fault
+In-Reply-To: <2bb9f0c2-a258-4a57-882e-9629f9cc81e6@kernel.org> (David
+	Hildenbrand's message of "Fri, 14 Nov 2025 10:49:45 +0100")
+References: <20251114085403.101552-1-ying.huang@linux.alibaba.com>
+	<20251114085403.101552-3-ying.huang@linux.alibaba.com>
+	<2bb9f0c2-a258-4a57-882e-9629f9cc81e6@kernel.org>
+Date: Sat, 15 Nov 2025 08:49:12 +0800
+Message-ID: <87pl9kf7cn.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 71E6CA0004
+X-Stat-Signature: d34rex3p8zqciuaxxm19ctw1esk8zor5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D7B40C000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763167618-165821
-X-HE-Meta: U2FsdGVkX1+KvTx3TiOyG5K+kCJ0YeIYWXAYOIcidvU7Tqs/GqgysnMEiNy9N6/AO6OU/trX0WtALV1wZ+x+FR1qlR1fPSIlTNZJ+powY6Bs0Gs3CYPHy9KZRly8Itgc5SrXJ5mfCVwKlajbz6JkLpLrpyYaQ1eFuWmGO9ZfrZVbRt/R3o11LnuXvuYucaWK15K95ddMBi1u8tdAgkOq1nlYuF2Qjq4RhGAq0jtlsUt/UOo+sEicvSxGuzcCZMqPA4LFTJ1Cl5w04eH0IrmGGvR5aDRIlGioLWb27laaynyDzTi5g9dglRSPB0ASSYC6inkDH/mELmdEm9wexUcQj2SPuX0PNb5g09PFLbIkAxhRHC/JgaKNk0SbQLZchz11163rnT1Yfcsow5TOxctT9a4KmLzb695MrIuSHcUPaIcKxJHaKNQqsvt1WH3yGSJxI8OxPcN4FuGp+tp6r01xyBDJ0b9AfkIwtWqlQvJTtddkklv68jeljEEVQ17EjyyjY469xRUzfR+JzQHXjEKgH3xHdgm9x7huIKUeWvgv3Jk4sAHO7NqFt7XrpAKzunEBwdDVQRfvTrgFxxpSnDsyrk1eZnM4KjKWtTnrqjDhIfTTmSCXDmGfbqgMiEH0HiwiTfcOwC2Rjcfcx6Ie3eHbSSZLiLHnC7aLfQSOJm8eVyxOGFHbaxsb+JgTxyoVc+VZUUq8sK8JAvA0q5NL8gCDP/AjMOiQ4ZOJpk2ioIBFHVMvQdTWmJbTGltp5tUsYRwuoGByoWdy3dl+9MS6WmbTtsofwV5HngCIGoc7YjOK/VbIx5ZNfdft5vwAStjE3OHFK4IDz+uADAJU/9dyEu6bZ0dwcZOqv1x9LZ2dEnlMMlz+DTZPSOh/3EjMg0y7zQAtN2BF6O7FcqlhH+oh/g93qiAuMs6lMJVqit1rqjnNnNXt2xfNBlNkqjI9Eo6SObOTFTrhFebDnK7E6xkbgXk
- VmH+LfyP
- I4k6CE6Qrngqgewz5KHaPzv3iUfHCTKCwa463yNpqLLCWaqHqLEe/yXqHNbOeD+/KmCmtlMl2T6YE8fZVwXVe0FmmRCJGmc8OvD2y/GPtITjGwjFEbYrLqEukwvIjC7ao4ODyJO6fSaRM+Q+DFoAHaU96k5YCrPH8rhnpjqj3q1gtpLnm3L1yoefjTbN43z3zrMTikB3iBEbLPyUQTpFci0WNTf5DZQWB9FoGhzQz1Swnv9Vj3IhKA96xBde9bcASyNGVKd0h4CGzrSJn/eup13CaYPPynxZAFZgZVhlUbrMlULc5IISJSRTgRuITSo1YVSsvbQyIK9sk6F/RZ63LjEs84lC1iowFsd20XxdTodXAvgNRiVQByC2ppQ1jtpWHJNCSbPfaj4rfr5O+PipwrfT82v86V/ixFRBUSENtblKo9soKUwivIFrXSJ33a05BaeUUqKpMCG75sDm9JZJjb5ScNRcRAg4f1shzQ7zIez7KQHx6IgrS4cm0tFfZDrPBNi4oALNPCcyKdoRDWGoFek9CemmqHaSfth4tBbP99096hy+aCj1NZ1/yjuy5z5TqG1nUDmjgvGA/YLN7mAKmGqzUGum9Pg28z5iul2BXuEwg7GDN/JGiUFmL46Wn1X/uZyCR5awmAumf/OIHpmQ3xRJu9d9wh1GSocMpEoqQT3++XWGDpEsiZ7WcSFi6oXAj0WcCzm85F1wNOyJgv/OUH2WyvP96DOQt2S8BdKlXu/5aTgbTHloE9OSfS3c+Izej9R6EvjvJ4IgGJKw=
+X-HE-Tag: 1763167759-399623
+X-HE-Meta: U2FsdGVkX1/9MBQRtezWgpVT9xITF3NyK6SmPoKnbr/cYIcTiLWtmGV0nsutn+7qbcVpZ3dCvokhZmJ8KDekKXLUTrtbFpD0Wnsb6m+HzYh4EBA9nejTl9m8cqbDgNUwHEgTGDxoIfb76sAhpLicjGF1qYCXZdjGfLt6v2u/W1A4SRr8YQsn9ERmQ6vPohiOpLK0UWHbbEJTAkNlX2x2mImSqqdLyLO9l7wgUvuKOisMA80kqRaif8s+aMyx2WG9FVG6c/901R3HKPXJGuxm1EsgYTNpwbHs41Hyb7dJyUqWUKNGeeQv8zNwON/ml8+JJPyDnSMGDVEvve73tVd49VdAQYMRYS5oit9kRw+Z+3Q5TNixEMyNPPjsfziRSjknM2js/fNtic7qrzAWWrE2ZqJe6vFCOQQSfVKlZ2Zs1EsijUHMEFFuiMhJvQD3za7WCXrt0YRvO5tNIACQv/iPheZHeAqMUgc/Dt+hPLlrfXKWNGgR2gOLukjGB3cJh16H39vMAEm0sdeRWW6q+IHiAGN2SsfpcbglaT2oPIIlU9/5PAApLuQlOwTMh8vNAbGNZoMIaHWJJoNOvtrVLBkqVTrh+7ZxF3Psplw+CQtsXRUz/RkeletGdSzNA0MLkRwsnM3n+4fSrLiCpE9M+gedPl0BheeNT4jiAscOb7HvCT/wdLqPxw+2VYB9cO4Gs1PqVqBlvRDRnpaL6+GEBqchWiLmkeeSv0XpUqKJjHRhaEUA/bujcwPoIypZEtSGHVIFWbkVJtlaZODQYlH6cUyft7qbqxIt0mC5g3HG6oeIMd8PFexJ8SH6RVso6PGQ6guJ9qnM3mjn7rzFo4d+9ODska8wuhRiO+R33ChIyJSbENm+BuXmDPwnwiVOQaN886J8RBgdqBzK+98rjEaE4oNuGJyycdGWHIgs7j5BwEMgtUh9JEz6b5hdUavIoCLXD6qLxrYETToIlu/vdjwil8z
+ kJQmFgGg
+ eTuG5kPwkQStIhz0pvAemAufR3/qDxsGfHuG+4jQbm0KO2XAfkETIFEbVI3/md76Fyi9TWiQgyKFclN0sn4jiatY3JbNAzJqhLa01NMt41/spLUhS/+f3Asr8skQeiXLzdvI7JGV6Z/7QiHyxod3QsM9ZboFbTBVbkM8vhMeYIQ4pv1kMh5qo2dCImyqKoorAUpdT1WDyLmJqzeBn4iLXbj8oKus3S6m1HNZVtHw4nZRda/eWeJtYhrKx7wisUh8NHxoaH9sB6nFGxBD2B0eSYsI9OUFq9MH3YFogfuJQ2M0qD1vAf7pk1NrXWaZXn1HBFcfsDm1I6tLkYwIlXx+IQz8EXmOKV52MA+3nkMm0V3BurikOQd0gS1TQTaxLOFjvAxnm//jfbbAbAEYrVq3F1iGf9gtPr022RLxxkHIxjRZMOo2Y2hOF/IjTCCzwuMAqrjRetPqKgVYT8rXZQO9gN7YGgLlaa/7u9SkNw60f2jbZG3vOm+3MDD4W16WSrifU4hn24/9Qyyq/qLTZykQujpvByWS6gPUsnUX3AbdsewJz6C12Bkdg8hrDsJlxJeycZ3STKTIbev7FA1wktzO88ZOb9ev3R1Uw+Z7H1b5FYNTkm+GjhhN8N6Rs/8yDh0Dj4PwK702EOKtYD6uWkiFgSx/U70F7WL3rco2+MdSKem8oYtxcz7SbcC81CjFTIMCqS6IYEYesB0DX+eJtgs/+rZXtwuDxL+62T0RK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,117 +98,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yan Zhao <yan.y.zhao@intel.com> writes:
+"David Hildenbrand (Red Hat)" <david@kernel.org> writes:
 
-> On Fri, Oct 17, 2025 at 01:11:52PM -0700, Ackerley Tng wrote:
->> For shared to private conversions, if refcounts on any of the folios
->> within the range are elevated, fail the conversion with -EAGAIN.
->> 
->> At the point of shared to private conversion, all folios in range are
->> also unmapped. The filemap_invalidate_lock() is held, so no faulting
->> can occur. Hence, from that point on, only transient refcounts can be
->> taken on the folios associated with that guest_memfd.
->> 
->> Hence, it is safe to do the conversion from shared to private.
->> 
->> After conversion is complete, refcounts may become elevated, but that
->> is fine since users of transient refcounts don't actually access
->> memory.
->> 
->> For private to shared conversions, there are no refcount checks. any
->> transient refcounts are expected to drop their refcounts soon. The
->> conversion process will spin waiting for these transient refcounts to
->> go away.
-> Where's the code to spin?
+> On 14.11.25 09:54, Huang Ying wrote:
+>> A multi-thread customer workload with large memory footprint uses
+>> fork()/exec() to run some external programs every tens seconds.  When
+>> running the workload on an arm64 server machine, it's observed that
+>> quite some CPU cycles are spent in the TLB flushing functions.  While
+>> running the workload on the x86_64 server machine, it's not.  This
+>> causes the performance on arm64 to be much worse than that on x86_64.
+>> During the workload running, after fork()/exec() write-protects all
+>> pages in the parent process, memory writing in the parent process
+>> will cause a write protection fault.  Then the page fault handler
+>> will make the PTE/PDE writable if the page can be reused, which is
+>> almost always true in the workload.  On arm64, to avoid the write
+>> protection fault on other CPUs, the page fault handler flushes the TLB
+>> globally with TLBI broadcast after changing the PTE/PDE.  However, this
+>> isn't always necessary.  Firstly, it's safe to leave some stale
+>> read-only TLB entries as long as they will be flushed finally.
+>> Secondly, it's quite possible that the original read-only PTE/PDEs
+>> aren't cached in remote TLB at all if the memory footprint is large.
+>> In fact, on x86_64, the page fault handler doesn't flush the remote
+>> TLB in this situation, which benefits the performance a lot.
+>> To improve the performance on arm64, make the write protection fault
+>> handler flush the TLB locally instead of globally via TLBI broadcast
+>> after making the PTE/PDE writable.  If there are stale read-only TLB
+>> entries in the remote CPUs, the page fault handler on these CPUs will
+>> regard the page fault as spurious and flush the stale TLB entries.
+>> To test the patchset, make the usemem.c from
+>> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
+>> support calling fork()/exec() periodically.  To mimic the behavior of
+>> the customer workload, run usemem with 4 threads, access 100GB memory,
+>> and call fork()/exec() every 40 seconds.  Test results show that with
+>> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
+>> flush functions reduces from ~50.5% to ~0.3% in perf profile.
+>> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
+>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Reviewed-by: Barry Song <baohua@kernel.org>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Cc: Yang Shi <yang@os.amperecomputing.com>
+>> Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+>> Cc: Dev Jain <dev.jain@arm.com>
+>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+>> Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: linux-mm@kvack.org
+>> ---
 >
+> (no need to resend just for acks/rbs, maintainers can pick that up)
 
-Thanks, I will fix the commit message for the next revision.
+Sure.
 
->> +/*
->> + * Preallocate memory for attributes to be stored on a maple tree, pointed to
->> + * by mas.  Adjacent ranges with attributes identical to the new attributes
->> + * will be merged.  Also sets mas's bounds up for storing attributes.
->> + *
->> + * This maintains the invariant that ranges with the same attributes will
->> + * always be merged.
->> + */
->> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
->> +				    pgoff_t start, size_t nr_pages)
->> +{
->> +	pgoff_t end = start + nr_pages;
->> +	pgoff_t last = end - 1;
->> +	void *entry;
->> +
->> +	/* Try extending range. entry is NULL on overflow/wrap-around. */
->> +	mas_set_range(mas, end, end);
->> +	entry = mas_find(mas, end);
->> +	if (entry && xa_to_value(entry) == attributes)
->> +		last = mas->last;
->> +
->> +	mas_set_range(mas, start - 1, start - 1);
-> Check start == 0 ?
->
+> Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-Thanks!
+Thank you David!
 
->> +	entry = mas_find(mas, start - 1);
->> +	if (entry && xa_to_value(entry) == attributes)
->> +		start = mas->index;
->> +
->> +	mas_set_range(mas, start, last);
->> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
->> +}
-> ...
->
->> +static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
->> +{
->> +	struct gmem_file *f = file->private_data;
->> +	struct inode *inode = file_inode(file);
->> +	struct kvm_memory_attributes2 attrs;
->> +	pgoff_t err_index;
->> +	size_t nr_pages;
->> +	pgoff_t index;
->> +	int r;
->> +
->> +	if (copy_from_user(&attrs, argp, sizeof(attrs)))
->> +		return -EFAULT;
->> +
->> +	if (attrs.flags)
->> +		return -EINVAL;
->> +	if (attrs.attributes & ~kvm_supported_mem_attributes(f->kvm))
->> +		return -EINVAL;
->> +	if (attrs.size == 0 || attrs.offset + attrs.size < attrs.offset)
->> +		return -EINVAL;
->> +	if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.offset))
-> Should be
-> if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.size))
-> ?
->
+Hi, Maintainers,
 
-Thanks!
+I have collected some acks/rbs.  What do you think about the patchset?
+What do I need to do for the next step?
 
->> +		return -EINVAL;
->> +
->> +	if (attrs.offset > inode->i_size ||
-> Should be
-> if (attrs.offset >= inode->i_size ||
-> ?
-
-Thanks!
->> +	    attrs.offset + attrs.size > inode->i_size)
->> +		return -EINVAL;
->> +
->> +	nr_pages = attrs.size >> PAGE_SHIFT;
->> +	index = attrs.offset >> PAGE_SHIFT;
->> +	r = __kvm_gmem_set_attributes(inode, index, nr_pages, attrs.attributes,
->> +				      &err_index);
->> +	if (r) {
->> +		attrs.error_offset = err_index << PAGE_SHIFT;
->> +
->> +		if (copy_to_user(argp, &attrs, sizeof(attrs)))
->> +			return -EFAULT;
->> +	}
->> +
->> +	return r;
->> +}
+---
+Best Regards,
+Huang, Ying
 
