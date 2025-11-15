@@ -4,130 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD66FCEACEF
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 02:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C19EBCE8D6B
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 02:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 477058E0034; Fri, 14 Nov 2025 21:42:07 -0500 (EST)
+	id F16858E0024; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 427AD8E0005; Fri, 14 Nov 2025 21:42:07 -0500 (EST)
+	id EC7388E0005; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 317108E0034; Fri, 14 Nov 2025 21:42:07 -0500 (EST)
+	id DB68B8E0024; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A6228E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:42:07 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A72A312DE05
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:42:06 +0000 (UTC)
-X-FDA: 84111291852.27.ED0AAD7
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7CA8C140004
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:42:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mf6wR6ZO;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C8E298E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 21:51:15 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66B2616056B
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:51:15 +0000 (UTC)
+X-FDA: 84111314910.08.F48FD8E
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 893B2C0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 02:51:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h95mMGL2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763175073; a=rsa-sha256;
+	cv=none;
+	b=Nv72eavdvTOmvXS7NnuZDbVFvCUNOZDh9stO7hiC4iGa6Si3I2HCFFZd/t/yfzP22jBVIj
+	xxrOZYO7spNBBaMKYgSRjTdk8wx/ykc5XBowtYVS/2QdIl8eC3IeL8t0NkV4DVy1eDv1SM
+	9wRIxGSfhisVacPWKaOWzjg3xhRzlHo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h95mMGL2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763174524;
+	s=arc-20220608; t=1763175073;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qPMKhOUZaVUnn2C31CanvV6ROA+8+FTIUKMzyBfKTUQ=;
-	b=ESRe1wJhNvYYiZXAPZA6TR1Oopnl6FY4T2knuSwRS4V1s2BhTGvegun7N4ppeWjo14EVUj
-	/QkqXhPmHPBDYJVyO6ksANkntNVfLfXsBqh9IUGM683uTAhNab1VuDkreaH8jT9d3f10Wm
-	WSkmzVSHtaNPHL+tryfEbf7mePKKOwU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mf6wR6ZO;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763174524; a=rsa-sha256;
-	cv=none;
-	b=3u+tjJIIwm0bVg/4uHH+naRJHOd6LKGQ3l45P51GgVJpwrUJe7OhQnamY/fmBu1uTHy7j4
-	heEsGYOh1v6I2YpEjXjI203ruEfg7xdIHXsJZjp92v0ixNUSdi2N7EnGuQJ5EfHXrgRBFe
-	mXEqXlAWRm968wWDuDV8jU4WBU7Gua8=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b736ffc531fso186402466b.1
-        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:42:04 -0800 (PST)
+	bh=Au18H467azZy+IfrgSEjSDC4r/H00yPg/dxvvmoSDI8=;
+	b=qXdYhbOuhMAKfzK5Kl9gGmER0eLsiXcRVz+P3P4zkiNlJ1cO36VR2dXEAMf5Ls3Y/eUvbD
+	2ggFLK4feY/3OSixVg85tMboWkOOWCGXzFFCXjfqu1gaT6Gvg2lAzGBuizYPavP1sRJk0z
+	dB3G1L2myeLqxwff/fD+NBMSJhRFZEs=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64312565c10so4034383a12.2
+        for <linux-mm@kvack.org>; Fri, 14 Nov 2025 18:51:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763174523; x=1763779323; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qPMKhOUZaVUnn2C31CanvV6ROA+8+FTIUKMzyBfKTUQ=;
-        b=mf6wR6ZOSAJWw0LurA3akkLU5aDVmuPMQCjumnEzCKSqcg/aRrv3H5fgLh9xD43vCe
-         Ptn4XRBp+2lNWDv98oBAsE53zQCtS4lPYMfBhMNu73vMl5jmshY1EUgKv4tw8mAe10kH
-         nqhKlHqW0fUkOZBwmrD51JPCqs8YpKhVdgW6aKlNKhTxcYKxZPCjTPloyE8J1r3gV5fh
-         54a0z9ZWu8ezi9aV879PxTvsP4CTJFjQiyDmGrx2m9ruq++aVSIe3Cv3nwwozU/fHxyw
-         uDpoN+KQDxnQpjYoMtbsYjxr3uENR7DHaO6zo9Nwj7k8dHFBNCmt24jh+8Vo7ViDCgPi
-         G4GQ==
+        d=gmail.com; s=20230601; t=1763175072; x=1763779872; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Au18H467azZy+IfrgSEjSDC4r/H00yPg/dxvvmoSDI8=;
+        b=h95mMGL2tR/H/UaX9l2CKNNxvlWJwqhiiylDhS/k/Dw2DsjDhmbsaB/S2pvf248Z9y
+         BlzOVLhznmBxegmGHmUbAwewQMvqXcLdTQF+f7ZU5NQVWvw5ztlpFOxP/cunjuX+mb55
+         QgPKaEXVLkRIBEPYEHQPa8I5MIaeAmxMvMGs/Q8m7jdICAbUUay7PX0OooAjbuu5+vl3
+         6X3m3eow30RzMdpU3vbbgUjBolj7qlilZ6Qkfe0dz48HPU+u2WddMaj8Yw2C53wpMiXA
+         lFzKRJUwXGapTkttvcDAAqfBNAgn503nfCbLCFe/GfLTYKvXUb52dmCdGwyfFcNA4qQP
+         vUyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763174523; x=1763779323;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qPMKhOUZaVUnn2C31CanvV6ROA+8+FTIUKMzyBfKTUQ=;
-        b=D6T76zsmnCW6W/7YgGwJspgjk83P6J/f/zqknrKbSLiRDlVIh09ieNN8ZlIaK9LmMx
-         FrnOE6VMc2nR1vPBzJ4CbvIPAgTjrsM4i+mdajkeS8BDQxvkijJMek1OBemD8KouL2o9
-         afs5JJayMSr3XQq7QkSY2LTxAxTYqBS8MAjlc3Nf+s1Rhx9/xS+1+MUm3O3IA1gwR42T
-         dRtCU3uYHRbsahgKDXUxPRVch7hlWNCYwHDrarpQZoVC9Z9mUOPWetoMuq4sbBs44vLp
-         Og+nd4ex0PjCXTrkZ/Gkj0rLat2JXW77ke4p/bFO4QJ0AMKbTfLDZAiZLNBMf+LbPCAs
-         xSLA==
-X-Forwarded-Encrypted: i=1; AJvYcCXr5G/SvMauD1IeCJg62bWB8xsLIzTKVjgJUOjz53VSxNzrNoxWyTGtW49OOffDbgWj9TLpDKsBJg==@kvack.org
-X-Gm-Message-State: AOJu0YyE4/+CIjrgLHiE19PJMPDZ73U3BWQZ/v5BixzYK85NwLHhfkPM
-	ImVlbMOKYRwlFCB5oAQiqI0bZ0ghhQaLnZIwqMNNoWhSsViq3QW6Ugj6
-X-Gm-Gg: ASbGncsssnJCSVXwqV70MbPBWxAnm/uwq0FqFR1vr12zQot6sX1WFGaFSzfnB3ceJyS
-	GmyzuWYIF8lGW0oF5SsaJOTzXdxQvyXHYiTHstoXyvRV7EU2+MWFsxldTRTuOWrQKAsBmcpb56W
-	wW3BOiVDSQihJVPvLqH3Yr1L4ZfE84QGN4DhwqYcjRngP4r6bLzVzXwX/G+NSRJZUkCnWszKL/1
-	Pw/YHysAZv1W16VSMYwDA5fkjTUz43FdXIAYXUQyltL96IHsYhX7u6lbtCgvM49kfpXeclBwnr+
-	DNvt1n8fX+f+6HsWCdXPSGu1+vvdl5ZAvd/jpGUU7ubNfijq9HUButcv3qWcaJzP2FMNmspJIie
-	r/J7yy2UExGcsyw1fuGq3hGlRpP19xaSR8jSLlwYl2H+pEddI+OOpulA+D7acuFmQCU16kVdU6B
-	RyVwK8y9LyR2mx/A==
-X-Google-Smtp-Source: AGHT+IG0lwtyDR6cW/rRWitLb88FryxT0kFjAGRvlTdFqe0ZdPrZDl1uF/dPMJk2wneDffuOKwEbcA==
-X-Received: by 2002:a17:907:d0d:b0:b73:43ee:a262 with SMTP id a640c23a62f3a-b736794c425mr586316766b.51.1763174522437;
-        Fri, 14 Nov 2025 18:42:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763175072; x=1763779872;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Au18H467azZy+IfrgSEjSDC4r/H00yPg/dxvvmoSDI8=;
+        b=rYH6nu/lqftWU3i+8lEXGFXySvXXsZuuQogeeEdlvbKtBHDZP04bBs7yucVo3TcZQu
+         DpkigVnUGTXxLhs9/hAfqOrktTwtP+86410xdDMPNvkZalZ+y1hJwoXzDa5ylBzAKpF2
+         QA/SPgeD1JlIuFBkcu3cCOu4fT2qEgPKvi5OYvhOEFZhDAAgZUGBVrt8aboK5vN86eRg
+         9uOfzlrELJoJ96xQQl+5D60BxUL0ZcTvRMmf0rpsEfWHnFLFASi1L3TDpnSM5vXrlbvU
+         lXgKcXDzhC6zRnnpTZtMmWyGc+RfgFRnqVQUw8o7SMV4/1pXXJfpyKeRlLkq0soB2uwe
+         H4Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJhWFiN1cYJ/PY73qH0UB5xjuA9bFaDC0LO8kfo6yguwDUX6P/GpUTx2kk50nPJhcX4vgFzbic8Q==@kvack.org
+X-Gm-Message-State: AOJu0YyVMCUVy089ejKB3u1jsCjg099GDSsL3C9BacX0PEM3uW4ikPxW
+	8Ov/hkoNm4MoDL3t8bdLThNRAz9GYEeEu1O7is03eQ7xed32Z1djvGHD
+X-Gm-Gg: ASbGncsZS9BruIR0RDPfoSLPm35yYBlUNUpy3nHGMJsr0C9KYEnK4+gWMkz8PJ+AvZe
+	0cPEb+48yZ0mf6Q24byLvCgwZUvxEOdEQBsO1iOgl9MHlxGd2RQSUULvcx/EStqPMorjx1Tbsmp
+	Rbu0ZSdN4hmuYRp1bXrBtCmFOdrrrWHs+WdCuJnc1ikI3aQv31umTR8mvZuU/LBcZ9cojwTHAx+
+	quS0NnKEa4LvfSyMpz2CoknvEwZil2HyKsfTBCR1E4dvWi8cZoWVHjZrcdeMNc4lHvgRE1YIb1U
+	flc+vkEuvHRAOFMuRX/7VCgdDPPrXed176HJ9KV8fCoN+RK/f/7axUxKZFO6iPtwewJivNd6rH3
+	U91PfSko45Psj5pGMq3QdLHS5goXb/YoDkxtpF2ZhwvJo8W8lwepFs8qwPQEoxD1tQ/TSjemUQq
+	3Njwq5d1zUgVy+93Q8daTISsr5
+X-Google-Smtp-Source: AGHT+IFijYhBosLb31iiGAABudJFyw60Nhzb666Nl93sjFEpO/WA4uHbEpnOI80frPELz2vzKBG3QA==
+X-Received: by 2002:a17:906:478c:b0:b72:dee9:88df with SMTP id a640c23a62f3a-b736793de88mr514948166b.46.1763175071623;
+        Fri, 14 Nov 2025 18:51:11 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa811e2sm516858666b.5.2025.11.14.18.42.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fdac50csm506960666b.61.2025.11.14.18.51.10
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 14 Nov 2025 18:42:01 -0800 (PST)
-Date: Sat, 15 Nov 2025 02:42:01 +0000
+        Fri, 14 Nov 2025 18:51:11 -0800 (PST)
+Date: Sat, 15 Nov 2025 02:51:09 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	willy@infradead.org, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, willy@infradead.org,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
 	baolin.wang@linux.alibaba.com, npache@redhat.com,
 	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
 	lance.yang@linux.dev, linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
 Subject: Re: [PATCH] mm/huge_memory: consolidate order-related checks into
  folio_split_supported()
-Message-ID: <20251115024201.jb5qaenbmlmdfx2y@master>
+Message-ID: <20251115025109.yerb7gbty4h7h63s@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20251114075703.10434-1-richard.weiyang@gmail.com>
  <827fd8d8-c327-4867-9693-ec06cded55a9@kernel.org>
- <01FABE3A-AD4E-4A09-B971-C89503A848DF@nvidia.com>
- <20251114143015.k46icn247a4azp7s@master>
- <AE04E232-34A2-47A2-B202-3F1E32AFAC0C@nvidia.com>
+ <20251114150310.eua55tcgxl4mgdnp@master>
+ <64b43302-e8cc-4259-9fa1-e27721c0d193@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AE04E232-34A2-47A2-B202-3F1E32AFAC0C@nvidia.com>
+In-Reply-To: <64b43302-e8cc-4259-9fa1-e27721c0d193@kernel.org>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7CA8C140004
-X-Stat-Signature: dfkkhec8qtgny3yxz7enqkrnnnfo6y3h
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 893B2C0005
+X-Stat-Signature: wdok9cai64a1omsdqfzicc6iotjsjxmb
 X-Rspam-User: 
-X-HE-Tag: 1763174524-458903
-X-HE-Meta: U2FsdGVkX1/tUWdRurBrKs+jIoHV6OhW6xDBbMy6LyOFXRUg1HRsaDWaeMWyaXEx6gZU6pjq2Htg9lfujiRLcT6O4UwKCl85+oFxXjCV75ZzDaVPzv3lLOX/5uokjy+Ts8CfCjVrDo/fiODPMKsON8kl+eWUQyWfM02dpRnzJUhMOcRRwxJpfu9odU9tX1HtkweAP/DhY46vrgXFX2MZfdjAXJAJnrGIRmPJjWDy5yxMvBGY1zfgv2xXDzAnh2rabbyiIMfCGrrZY0bHZu70C6xvF+dd864ZqGWqeYpmqF868oVw0TSlHmKDSghwDO7NU0ZDO8cL5ah46DEzLSZrx+naMpfHbvlABHqkT3GFkBh9hfhQc/RdULJ4aMZo4rfSaxEkwmJTjJtjCONtbZbvm3EPXzg+4wFrdnT2Jf7xqtS+hhhrikpUx5HQMM024F1vo4AY/5Y7lrBfU+MvQte/+WF5gJgTA/qwF/9siQPJ3pUx7yZ/dHuWn11wB+G7MjUJS2AvrjWjqb2KddgHMcE7eXE1XxXM0lHihkk+9o4FCmMtzAb+CtvyJtZLUcc/SuqQxZ23fzYyvEiMW0EKp+fMX8g5veQYfKmLBxdPLcrkh080UL8jksMtes5FTGWI9FCwfCgbpXG2AF+u+EJQe4Mej5U5wAFIYFo52FhjmRoQDjE3lrtUyyJmTsIcX0F1tIwIU5ByeNoD+XbFVrAelTrjU64IwH8cXmm5pe1griesuyTBdQxw78nikuWMnSr/ZMiDZ3POnitc5jY77b98b9gfntKwB+Ni3N8A9T6iZy8A0g65q3cmqnO+lh/JNAH9ERjXZeLfIgQ51PG4zeBO5ZUvVjJykLL9i7CVNvBkNc9faa3vru+YhuIZgsWFckxoMFT5P0XQBDc/wgkGRI8yrYwLnguY8o7WxjkoSX7gH8haaE07HLodRjFhQvNmMwtnq15KUpMibjvL+sv0oM3raWL
- /1mgsHUG
- hMgVOngoOkj9va8QVLUcntnQ9G1nG3lGJqFhKi6ZGcFfNwchZS3XxvUJ6Ns5B5LGlpbBoBVhHO/uuQ+Dw7qU2Fd1dqZqTCWvOkaHa5upZO6iX19wbe9uIzw82gvEP/BAyofWiV9c4Duyvd17Lm7KswEauaGa+h2AU/Ejc0pdNsAgf5O+QSjyOD1dQhF2s6+8qrEtl5BlVNcrzm5QtMxFpd+jAsxsf/OIJ0JHxvX40COqindROvOaEsyW0/NVFLzagiCKVM9i4WegbxOwyTte+uyK6uAvJ/hx02rIQrHkyav07+6uStmRB6c3A0xxDKMvdWiLVsjl6hqrGOa6HvMv7BKNDT6fNwKi9xLV9x6h3PJzmwSwK9Y+6iSq0BDMmDRXtT+jQ9Vt7XWwJvIiE9pE9J0XlSyfrE7C4E0xssg3LpteBKa+9gqVifBKnRZC73F2TT/yPUHpnbQEnaEudCKnQFy7TuJZ3kWYRS//SpP8svaRVPqK6mdMR55ZQN0ykjhCpBMC4Uw8DQMrFpPty1Xe0o2bOE49olBpdvzgm9hv+U0YXHQ8ht9YRA1NIGQ513u+/s0kMMksR23Pph9GXrpANgFPuPvxjBVX08fR8B4AtEcs5GCxRKYsSiTtV10N8Ysh4H9csx8d5iexvvmjqvG+fGPdq8SzILjwqhrR0PHwNBBn0nc/v9DIzmvRENErghxZwpUwX7sbxni+ZcpOjpbxaIB2kStFyv0kDAOgF5KJSLrCL3b3ykKZLnQxIIjJZ4x9U+1RdLLG/xRfzYhNjCldTJOmT+UtP4/nAc7qS
+X-HE-Tag: 1763175073-493623
+X-HE-Meta: U2FsdGVkX19w7CT/JWEtQ/HkTFB1iQthGqTh3ZfjiMn5UHIHS7cKjeypOBkg7vLFktMh0D2WyJG9DXSnjLTYPzeq+XHXgtAlHd3MAXTDBg08wcFniqnS0gdtuWiKVrNmhNKjM7XgGZtzad7/CHnNvWsMl4dtpNKgJjo1UclPFHDOdZPAvFTTsU/iDoURR6GdcoE3n1xHlIIt5uB73HW05jLUEPmiXSqhY4SFxYCc9BRW3nZhZrQxWCcsy948bVwbdrBhNZpyAaOM3/yljlfF6RT/QstsQgHpbu9WdFDAJpa8gI2gtNTiDnbmFnv356VTz6a7bSoH6AEY57Dje54cC2tIKKIz+BL0ljyNXw/howxIdpZMcmiCv/hKweW1Bo/NUp7zmy1t8cHJbVYabin8lwWOVH5w/YD+OP2NvdMke3Cstv9W79f0eRGTtUmhtu+CP6qSC2noDMlLXYjZT4DnDOlnjgB5/KFuKNhItjkq2XtqKuHUW0/grvZMS9cZnLhgBaq8AjhR+CP8Ez4bwYlaIJf72xVvq5IeA2gONhe6YRwXw8qBpowcRWFNBhDd8H+GMvx3aY73FrM9mLbanRcydG83WGZjUekk2s6kPJ7jbiIrkR0JTLu/TjmHwGs+9Gd/3/plrPyXIgc/KIwey7Bbvt/2hDvAlPXBE/u/WWVQZ26GTb1VpkeCkX6l2fKxJ4+WLCR9BGMDTEAnwGjArEhk4+FlranWwZHFbBsr3Ro7ufBSnGHzIcnpooIRjbKLCxr0oQZXq2CiZDwqzPnueqYOpJs3o/NYHJunUjNBbMUf9z4OJuwuJ+0AiygjjxoU2m5hlta1wKuiUOeKzAaLxwKG3ZnEFtAlFeCIy+TG+40cb+T2s1mxsdmpWIwn8K96qV1I2I4rL+ns9ai2y7Vi95SnfBWuQT3MXumzt35maJcBIxZN3oKchBmyeS/aBDgHi1q+HaXblcGy3NsrM0IB9Gx
+ zyPfc/zc
+ B4FGXwtrbyOCBp2UQQOl0XjhQ2S3rm81hlMSjoVXa7Q/tk0UkKeYlL8yQCz3VXoqz5VqCcCqGClrM29tqxTCSGu/tp4sJ6yoBhAp4ddTkJvO+TC1XS57OWhXpvkN3rimem7vQu6CamGRd5QeBRWBtquGfhO0TgFcTyLiqOi4G08Dc7TwUe+IPlUxoJVQvbZmq0Rq6NSPIczro+l2wKXHE6Mhh8MAGTg7SWYqYSP4v2cjw2dERm1OOFe0wi5foLcodaCjEcnGVVtEVh3Izv4pkJGHRqP/QRwxN18xboNV9qlaCn3eqm2gONQSM4wG23jO/Cl5m
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,237 +131,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 14, 2025 at 03:53:42PM -0500, Zi Yan wrote:
->On 14 Nov 2025, at 9:30, Wei Yang wrote:
+On Fri, Nov 14, 2025 at 08:36:20PM +0100, David Hildenbrand (Red Hat) wrote:
+>On 14.11.25 16:03, Wei Yang wrote:
+>> On Fri, Nov 14, 2025 at 09:49:34AM +0100, David Hildenbrand (Red Hat) wrote:
+>> > On 14.11.25 08:57, Wei Yang wrote:
+>> > > The primary goal of the folio_split_supported() function is to validate
+>> > > whether a folio is suitable for splitting and to bail out early if it is
+>> > > not.
+>> > > 
+>> > > Currently, some order-related checks are scattered throughout the
+>> > > calling code rather than being centralized in folio_split_supported().
+>> > > 
+>> > > This commit moves all remaining order-related validation logic into
+>> > > folio_split_supported(). This consolidation ensures that the function
+>> > > serves its intended purpose as a single point of failure and improves
+>> > > the clarity and maintainability of the surrounding code.
+>> > 
+>> > Combining the EINVAL handling sounds reasonable.
+>> > 
+>> 
+>> You mean:
+>> 
+>> This commit combines the EINVAL handling logic into folio_split_supported().
+>> This consolidation ... ?
 >
->> On Fri, Nov 14, 2025 at 07:43:38AM -0500, Zi Yan wrote:
->>> On 14 Nov 2025, at 3:49, David Hildenbrand (Red Hat) wrote:
->>>
->> [...]
->>>>> +
->>>>> +	if (new_order >= old_order)
->>>>> +		return -EINVAL;
->>>>> +
->>>>>   	if (folio_test_anon(folio)) {
->>>>>   		/* order-1 is not supported for anonymous THP. */
->>>>>   		VM_WARN_ONCE(warns && new_order == 1,
->>>>>   				"Cannot split to order-1 folio");
->>>>>   		if (new_order == 1)
->>>>>   			return false;
->>>>> -	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
->>>>> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->>>>> -		    !mapping_large_folio_support(folio->mapping)) {
->>>>> -			/*
->>>>> -			 * We can always split a folio down to a single page
->>>>> -			 * (new_order == 0) uniformly.
->>>>> -			 *
->>>>> -			 * For any other scenario
->>>>> -			 *   a) uniform split targeting a large folio
->>>>> -			 *      (new_order > 0)
->>>>> -			 *   b) any non-uniform split
->>>>> -			 * we must confirm that the file system supports large
->>>>> -			 * folios.
->>>>> -			 *
->>>>> -			 * Note that we might still have THPs in such
->>>>> -			 * mappings, which is created from khugepaged when
->>>>> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
->>>>> -			 * case, the mapping does not actually support large
->>>>> -			 * folios properly.
->>>>> -			 */
->>>>> +	} else {
->>>>> +		const struct address_space *mapping = NULL;
->>>>> +
->>>>> +		mapping = folio->mapping;
->>>>
->>>> const struct address_space *mapping = folio->mapping;
->>>>
->>>>> +
->>>>> +		/* Truncated ? */
->>>>> +		/*
->>>>> +		 * TODO: add support for large shmem folio in swap cache.
->>>>> +		 * When shmem is in swap cache, mapping is NULL and
->>>>> +		 * folio_test_swapcache() is true.
->>>>> +		 */
->>>>> +		if (!mapping)
->>>>> +			return false;
->>>>> +
->>>>> +		/*
->>>>> +		 * We have two types of split:
->>>>> +		 *
->>>>> +		 *   a) uniform split: split folio directly to new_order.
->>>>> +		 *   b) non-uniform split: create after-split folios with
->>>>> +		 *      orders from (old_order - 1) to new_order.
->>>>> +		 *
->>>>> +		 * For file system, we encodes it supported folio order in
->>>>> +		 * mapping->flags, which could be checked by
->>>>> +		 * mapping_folio_order_supported().
->>>>> +		 *
->>>>> +		 * With these knowledge, we can know whether folio support
->>>>> +		 * split to new_order by:
->>>>> +		 *
->>>>> +		 *   1. check new_order is supported first
->>>>> +		 *   2. check (old_order - 1) is supported if
->>>>> +		 *      SPLIT_TYPE_NON_UNIFORM
->>>>> +		 */
->>>>> +		if (!mapping_folio_order_supported(mapping, new_order)) {
->>>>> +			VM_WARN_ONCE(warns,
->>>>> +				"Cannot split file folio to unsupported order: %d", new_order);
->>>>
->>>> Is that really worth a VM_WARN_ONCE? We didn't have that previously IIUC, we would only return
->>>> -EINVAL.
->>>
->>
->> Sorry for introducing this unpleasant affair.
->>
->> Hope I can explain what I have done.
->>
->>> No, and it causes undesired warning when LBS folio is enabled. I explicitly
->>> removed this warning one month ago in the LBS related patch[1].
->>>
->>
->> Yes, I see you removal of a warning in [1].
->>
->> While in the discussion in [2], you mentioned:
->>
->>   Then, you might want to add a helper function mapping_folio_order_supported()
->>   instead and change the warning message below to "Cannot split file folio to
->>   unsupported order [%d, %d]", min_order, max_order (showing min/max order
->>   is optional since it kinda defeat the purpose of having the helper function).
->>   Of course, the comment needs to be changed.
->>
->> I thought you agree to print a warning message here. So I am confused.
+>It was not a suggestion to change, it was rather only a comment from my side
+>:)
 >
->This is exactly my point. You need to know what you are doing. You should not
->write a patch because of what I said. And my above comment is to
->CONFIG_READ_ONLY_THP_FOR_FS part of code. It has nothing
->to do with the check pulled into folio_split_supported().
+>[...]
+>
+>> > 
+>> > The mapping_max_folio_order() check is new now. What is the default value of that? Is it always initialized properly?
+>> > 
+>> 
+>> Not sure "is new now" means what?
+>> 
+>> Original check use mapping_large_folio_support() which calls
+>> mapping_max_folio_order(). It looks not new to me.
+>
+>Right, but we did not actually care about the exact value.
+>
+>IOW, we didn't check for order <= mapping_max_folio_order() before.
+>
+>SO I'm just curious if that is universally fine.
 >
 
-Yes, I thought they serve the same purpose(checking supported folio order), so
-print the warning both.
+Thanks, I got your point.
 
-If should not, I will remove it.
+I am not 100% for sure. While if we trust it returns 0 if folio doesn't
+support large folio, I am afraid we can trust it returns correct value it
+supports. Or that would be the issue to related file system.
 
->>
->>> It is so frustrating to see this part of patch. Wei has RB in the aforementioned
->>> patch and still add this warning blindly. I am not sure if Wei understands
->>> what he is doing, since he threw the idea to me and I told him to just
->>> move the code without changing the logic, but he insisted doing it in his
->>> own way and failed[2]. This retry is still wrong.
->>>
->>
->> I think we are still discussing the problem and a patch maybe more convenient
->> to proceed. I didn't insist anything and actually I am looking forward your
->> option and always respect your insight. Never thought to offend you.
+To be honest, I am lack of the capability to investigate all file system to
+make sure this value is properly setup.
+
+>-- 
+>Cheers
 >
->Not offended.
->>
->> In discussion [2], you pointed out two concerns:
->>
->>   1) new_order < min_order is meaning less if min_order is 0
->>   2) how to do the check if new_order is 0 for non-uniform split
->>
->> For 1), you suggested to add mapping_folio_order_supported().
->> For 2), I come up an idea to check (old_order - 1) <= max_order. Originally,
->> we just check !max_order. I think this could cover it.
->>
->> So I gather them together here to see whether it is suitable.
->>
->> If I missed some part, hope you could let me know.
->
->Based on the discussion in [2], your patch mixes the checks for FS does not
->support large folio and FS supporting large folio has min_order requirement
->and I told you that it does not work well and suggested you to just move
->“if (new_order < min_order) {“ part into folio_split_supported() as an
->easy approach. Why not do that?
->
-
-I may not follow you. Let me try to clear my mind.
-
-My first approach is :
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index dee416b3f6ed..ef05f246df73 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3704,8 +3704,8 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
- 		if (new_order == 1)
- 			return false;
- 	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
--		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--		    !mapping_large_folio_support(folio->mapping)) {
-+		unsigned int min_order = mapping_min_folio_order(folio->mapping);
-+		if (new_order < min_order) {
- 			/*
- 			 * We can always split a folio down to a single page
- 			 * (new_order == 0) uniformly.
-
-
-Current patch does 3 major changes.
-
-1)
-
-Your comment to above change:
-
-```
-   This check is good for !CONFIG_READ_ONLY_THP_FOR_FS, but for
-   CONFIG_READ_ONLY_THP_FOR_FS and !mapping_large_folio_support(), min_order is
-   always 0.
-
-   ...
-   
-   OK, basically the check should be:
-   
-     if (new_order < mapping_min_folio_order() || new_order > mapping_max_folio_order()).
-   
-   Then, you might want to add a helper function mapping_folio_order_supported().
-```
-
-So in this patch, I introduce mapping_folio_order_supported() and replace the
-(new_order < min_order) check. Still use (new_order < min_order) looks not
-correct. Or I misunderstand your suggestion?
-
-2)
-
-And then you mentioned this check is not enough:
-
-```
-    Hmm, but still how could the above check to trigger the warning when
-    split_type == SPLIT_TYPE_NON_UNIFORM and new_order is 0? It will not
-    trigger, since new_order (as 0) is supported by the mapping.
-```
-
-What come up my mind is to check with old_orer - 1 is also supported. So for
-SPLIT_TYPE_NON_UNIFORM, the after-split folio range [min_order, old_order - 1]
-are all checked.
-
-3)
-
-Also I remove the first "if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order)".
-
-Because in original logic, when split_type == SPLIT_TYPE_UNIFORM && new_order
-== 0, we should still check (new_order < min_order). If not we would miss
-that.
-
-But sounds I misunderstand you insight, I am sorry for that. If not too
-bother, would you mind sharing it again?
-
->>
->>> Wei, please make sure you understand the code before sending any patch.
->>>
->>> [1] https://lore.kernel.org/linux-mm/20251017013630.139907-1-ziy@nvidia.com/
->>> [2] https://lore.kernel.org/linux-mm/20251114030301.hkestzrk534ik7q4@master/
->>>
->>> Best Regards,
->>> Yan, Zi
->>
->> -- 
->> Wei Yang
->> Help you, Help me
->
->
->Best Regards,
->Yan, Zi
+>David
 
 -- 
 Wei Yang
