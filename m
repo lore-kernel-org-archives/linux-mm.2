@@ -4,98 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEBA1CEACF9
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:51:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C03DACEACEF
+	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 00:52:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1853F8E0008; Fri, 14 Nov 2025 19:51:52 -0500 (EST)
+	id 26FFE8E001E; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15D868E0005; Fri, 14 Nov 2025 19:51:52 -0500 (EST)
+	id 247538E0005; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 099DD8E0008; Fri, 14 Nov 2025 19:51:52 -0500 (EST)
+	id 184878E001E; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EEBAD8E0005
-	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:51:51 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 932ECBA138
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:51:51 +0000 (UTC)
-X-FDA: 84111014022.04.0188E67
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BE11D1C0006
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:51:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Yr5VhBnK;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167910; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 08AEE8E0005
+	for <linux-mm@kvack.org>; Fri, 14 Nov 2025 19:52:06 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 938FC1405E1
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:52:05 +0000 (UTC)
+X-FDA: 84111014610.25.C6720E9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E01D740005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 00:52:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=M0PMWwwS;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763167923; a=rsa-sha256;
 	cv=none;
-	b=oU9P0JDDaYC+p7FaXqN5EkqDKJtouYsHDbqGxqRwiSvUzmvo6z9qtzHPbI1p0LAjcL4TjC
-	c72k9N5ZfaoVpB4LHB8adwsr1MWE8+ybfCQp0fznw58HbFYS2sp3kS9MsagtyFqWdvphiM
-	i8naW0/DoLfp2UQwR7GzWGVz6JDWjIQ=
+	b=qr7s48QCzigtZG/9alEACrY8mT6H96mo8HwBypajU6fLVRkp6edd7WFHJhSiMOHQMm6GVJ
+	CUzpr2QwhlL+U4WNse6QUiYxSdLDcRbXUlHJG03BBlPCEuNxEgmiQXaP12sLtJbg64BO6c
+	YfNvAbGMen/RWGesvXm9QhDKYufM9xk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Yr5VhBnK;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=M0PMWwwS;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763167909;
+	s=arc-20220608; t=1763167923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cDlylOnz+ORVorwvLjmMDSiJAZfaaswj3Od3QI7/A8g=;
-	b=DglZh8z3BUZilYgdWmc/r7FXhBTs5Ya/lkNNDjwzL5awJa8/mpEFhp2Kqq+sao3OfyZteL
-	Q3w8vIC12tXjt7cD/MgoFnNiDOJxCNqFapei46ymuKby5uMDFS9t0kTAxqmjX254xHA9hP
-	RnfSSraAStgW4Vd+/oINE2bAUMAYOgc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCA6641AD7;
-	Sat, 15 Nov 2025 00:51:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB6CC4CEF1;
-	Sat, 15 Nov 2025 00:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763167908;
-	bh=c34bXnZOMXHB1/otiiYKeqjSsUyBsx3eTgV6OQSOEQ0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Yr5VhBnKAuzj9cC+8XdpDTsNmuHxB6kbc7gGiLO0L9h/IvJnsYCzBILmm3BDLjQh3
-	 JgU3YmTjZ48ntDuyp2AVorPbLdrmM1POS7rvsWOIFtsRM0MCNuApKBdMCuLns/6tpS
-	 dCWkfu6Fa+z0adCrzQgoXMqGsYM3IW5H52Q76bM0=
-Date: Fri, 14 Nov 2025 16:51:46 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org, David Hildenbrand <david@redhat.com>, Zi
- Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
- <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>, Mika
- =?ISO-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>, Matthew Brost
- <matthew.brost@intel.com>, Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [PATCH] fixup: mm/rmap: extend rmap and migration support
- device-private entries
-Message-Id: <20251114165146.5c51eeeee200bd37b378bd45@linux-foundation.org>
-In-Reply-To: <20251115002835.3515194-1-balbirs@nvidia.com>
-References: <20251115002835.3515194-1-balbirs@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=hG+LBwa2EjGLXVqwz8jiIWNeMYXszVida+/9bn2P5ME=;
+	b=6C0D/ClGxvrrSS7f1Bx1kVuQiXc3+EuhX5gTq1y8Hrm64kAZaJKksqsBU6I1gb9AQCcIm4
+	JVkStZzrdSbXch4xBh3yI5oxamm5KCz1fxxdtepG6vRPxyV/H/m1Cmc0dQGbBpIQXqC1MW
+	aZoq15GtJyaf84rofEWN/M/iGV26J2U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763167923; x=1794703923;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vczM4EmXtUbCfHooelDeHpgPNn3rTsFNVUclJSubvyA=;
+  b=M0PMWwwS7U7hhnxResSwDt8vyQZFkryJfP7DTukI21Qari0n38Pg74EG
+   h4p78e6RgqOFqBrvipUkAzpkPlccmqLXfMXDWA4PLR607pOlhpvpTT2DJ
+   tkMhF4eAgngKZ0dXLyMYQ++zRLNEApsG7I7KjgmniiCgAoADBAQ3B3Avn
+   sNd9tDG/C7nbsA3OEY0OBkbT03sUKkCGOTze/wgoom6mBCJNuIFArflPa
+   kPSSFoTj+7vC5FYMubULIsdYrDmd5r6Hj0D4oQHQj13a26wx2+oFokXHP
+   4GCP+5/K8Mh1rOE8GfpuW36UaYEVtAvOgdFmLPsDMyarSE8nGArLrGF7O
+   g==;
+X-CSE-ConnectionGUID: NGz2KV8JRx+S9rCImCvVzQ==
+X-CSE-MsgGUID: FqTzTQFaS/OjOf5DP1MVSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="76730943"
+X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
+   d="scan'208";a="76730943"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 16:52:01 -0800
+X-CSE-ConnectionGUID: nhmJTMybRgykHV04alN3Xw==
+X-CSE-MsgGUID: 35aAR/X3ReWs6zsMfpLkBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,306,1754982000"; 
+   d="scan'208";a="227249100"
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 14 Nov 2025 16:51:56 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vK4WA-0007YJ-0f;
+	Sat, 15 Nov 2025 00:51:54 +0000
+Date: Sat, 15 Nov 2025 08:51:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
+	npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
+	akpm@linux-foundation.org, david@redhat.com, ioworker0@gmail.com
+Cc: oe-kbuild-all@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH 7/7] mm: make PT_RECLAIM depend on
+ MMU_GATHER_RCU_TABLE_FREE && 64BIT
+Message-ID: <202511150845.XqOxPJxe-lkp@intel.com>
+References: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BE11D1C0006
-X-Stat-Signature: 6d5hbduynpggd3iftjtaz7r3eug53ees
-X-HE-Tag: 1763167909-886808
-X-HE-Meta: U2FsdGVkX1+pFeks5gvMz1Tu2CyhDFhUWHiSFon+IMe0S4gXz8Bqe/DXQPPnu2BIkx5zOxv32za2xpsiAKx2/jTWF9lkLo0ngwfKX0lb0/oYbsHlMDG4nI6XHXKzH4x3JSPBaGqBtQv2lKHHP3FCin6JzSafhYkzenylxEYJteP6fiWoj0N2ehECSOxTtBfsfNtsnxaMUPJzbachkn8D+qHMVcz5kXdxntmo/tGWsw5fmNva05VpU/1pVAzM86vOz1ixKYmMgu3EuXP+k4VdrCqCecWmwnsSo9FQfMwAO+8Z/arlblFKUmFdIny8Hjfpy7S2UeTFOJFifXaAUow4zNUDr+i628lJmM1ypTD/Sk9/u7dIjyLvYxmmnsKdo00g2FGYJO6w9Ln9cTHEwvpCloZZrWZR7mdnDQ6LdnIVK4dccc+NhpnCC7WGrM2htTdwn9Q7Pdkz+XOcCMIM3n+RndcEgSPAPjv7kjud3tmzcp5BGll84gFNb/j4+JnvF9UTznE51dVIKJhA7KkpWnk7e/ZU2NXdjf6ljPzPVO3KoESIMfNckWAYeNuPD/ONfYBiUH0zLclq9BxVdHgrgl0SXF9DRkC64pfC7AEh+EhluzbsXorW+erTPMTNG5n9t6/9PoZATswmoCGMEZTr8CIJn4iUVUp4OeHpU/MQEhXdA9GAXbvDf1OFr5yZrDUtQvIN4eR3wbzFiupW/xGjRYoX20/0V2RMBWNm1nvUQ+SMjPM25t+Pb54OY1OzUv/quH8eYpzfRUhMjYkVghhZ09O+DHFs1M9bVBcAN+nJkACiIz63C9M3hKJWa7rtxuuuyIXCa3Mb6vA9IUMpWSWtrMXCfSEJcMUP22H6ze2n26DfG1qVm1vKGIfrYEiRIhKxRM0ZUMTAJxMizh5Xgw8l8mN3B7SeN5Je6sm70UKIRyvL8/F+eOOsYKnTJl3z1p7GURuf815R5hbhkZjHBtWLspe
- Xv6KQkR8
- rrCfaOMfxWaPdF1lsa75/qlR6B6Yju0FqDOcHyAhC//TtPFyWRd4lKV9mwJNrWUeKTIayNR0qD0oFMLc3r62LviaXpPtVjw/xy/U7bAR10iP/C9pTBPbBM543YB9rfg52xcUDs/whfkVHe1zQpVf9cj6jOGOvsExunve0chg//Alxxqo56zWzZ6W3qYKQ1JvMF8o4C9b+81CKR5dLXGIYDGrljtXqCIJxYEbo99YMLcn6dH2HbueYUitRXyt3YNXUKs2PN/SMrA+35ha11bJJ/rIyjC/Ry5bgUQQ9Zrb59YmDO3/GGKvtmv6cYcLT4iSTg0GkRv46954MQAg5+14NbW9RkIs91ueJIBErJXzGFB+n0unGKt+N//twtsfIuZ6oWaQ+
+X-Rspamd-Queue-Id: E01D740005
+X-Stat-Signature: mtwmd7z444yg44ax34z9crny4no9n6sk
+X-HE-Tag: 1763167922-103130
+X-HE-Meta: U2FsdGVkX1912s0PNbwH7ZaZF/NjP2j2f4UEQrH19aRQx5oCJNcoabklx4TGRQZ12Eow1vGwkzqAfEexB91srxrCrMhx4Zez3ypTii9P+zHLReX6faaOloX4vp6dIMmtJuNanSLSBHGPx+g2RDBFZ8gHqifUYxhGDEjvPa+OD15Knkh1xyLw8HEugJFLgA4/MVmgn1smtfghTtzebxaoLvK/qxR2qWTtGfxO+eLeeWEDm2sIntuZ0Sujo+FavXTyCc5MrU58DsseWkkm8fXS2ReWefhY/v+YeCgbQsx9A4odM3WtsJFJoxqHcGyH8k+Bk8NVk1hiDjlQp4sUBFP1fL2DiOVWMHk0bpf9dIhiK+IP92v4RSz7wOuVFuX2pvAzwDh1CSAZMNyV1VixIDJwQYwx2vv+eHi0AxWAsjNP+7DqxZFSH1I4a4wmQDNDVAM/pejKc768dkYkXJG2LP+zqys1b5Bj8GUl/K2Bxm7ojSf7TJS73mtWiU9IsOzTn3V/Fjv1CaShinw1PLeun7yMJo/Fqp7BIjgCQhp/ey27jL8fWg3fRKcCXncRBvjfbI5Qtt5xgSYb76M/VUOtcx647hTniuoh9RUODdS2oVvo04h+7KsWzRRUpwZxUqsrMBrl6wJ1p63TT4Sic56tkYmmFcgAEdkbAAO3Qim4NkaGAZ6UUOqj8EnLoU+ytIyvAu3oQFaiqii42ED6/5I/EtZkMYLgxXXgbOWrJcI0gaU0l0IZ/RFqalUG/x2TxpweEyGIOTtypTBB1ot0tNcgGXqoPpYZeMQORCSOPk5btUOEdrXStUIMtgQu1/zws1rYvQczVTCJ0YS6KLQbbeCLwFYz00kOTP2KcnCAhWn20cmRJXCvqhrNa2Sv8Ja/bBe0eKxEmIRJXp+aE8VFpK6OAqiJKI0QOzFNgsKFM95/5LsnGMyVsgoJaX6lDYcv/4iIDz/zi1z+ZN9N5mn1Th+HHBR
+ C1B2iRKO
+ ClRk6U4Y0J+RTvY7Uq5pP4q2vLMXSo/3jF9Hkbkb3/lSutQBYEjeQkBNVvaVGXyjG5dIiAKptbsidtWh6IlDDxlZsRMYAvzBY2Ht7wJkvLNsB1o5AFQytribbryJ7Qk2zsMlshYSWC6PWPwK0Yxl+sT5rxSVqwPTKszfIoBLdNb5FPqKXfEFNEX/Q0SmRJ+ogt7ko2YL0PezVBeft9cHY/tWEUO82eXXZmGZVrKPXfamH/AS+AClVPzgh+944eI/5dnNAofofGvNJ129PSnPslOto3lJuAkpdTmmYR47xlTgDb5gES8HpFECC1SC2j0ozVZbAqiPUNpqLTX+k1oY/fCzEB/LDwpMyGfsMWz6E8ZAIySG+r/PFGdxCwI9KFSsCdx1+HmEL6k17TY1tgqN6Z729kKqC1hD2FO0sNz2HyKCzkjHD9oJVL8LKMOnJoi2tFK1I
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,86 +114,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 15 Nov 2025 11:28:35 +1100 Balbir Singh <balbirs@nvidia.com> wrote:
+Hi Qi,
 
-> Follow the pattern used in remove_migration_pte() in
-> remove_migration_pmd(). Process the migration entries and if the entry
-> type is device private, override the pmde with a device private entry
-> and set the soft dirty and uffd_wp bits with the pmd_swp_mksoft_dirty
-> and pmd_swp_mkuffd_wp
-> 
-> ...
->
-> This fixup should be squashed into the patch "mm/rmap: extend rmap and
-> migration support" of mm/mm-unstable
-> 
+kernel test robot noticed the following build errors:
 
-OK.  After fixing up
-mm-replace-pmd_to_swp_entry-with-softleaf_from_pmd.patch, mm.git's
-mm/huge_memory.c has the below.  Please double-check.
+[auto build test ERROR on deller-parisc/for-next]
+[also build test ERROR on uml/next tip/x86/core akpm-mm/mm-everything linus/master v6.18-rc5 next-20251114]
+[cannot apply to uml/fixes vgupta-arc/for-next vgupta-arc/for-curr]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/alpha-mm-enable-MMU_GATHER_RCU_TABLE_FREE/20251114-191543
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git for-next
+patch link:    https://lore.kernel.org/r/0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch%40bytedance.com
+patch subject: [PATCH 7/7] mm: make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE && 64BIT
+config: arm64-randconfig-004-20251115 (https://download.01.org/0day-ci/archive/20251115/202511150845.XqOxPJxe-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251115/202511150845.XqOxPJxe-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511150845.XqOxPJxe-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from mm/pt_reclaim.c:3:
+   mm/pt_reclaim.c: In function 'free_pte':
+>> include/asm-generic/tlb.h:731:3: error: implicit declaration of function '__pte_free_tlb'; did you mean 'pte_free_tlb'? [-Werror=implicit-function-declaration]
+      __pte_free_tlb(tlb, ptep, address);  \
+      ^~~~~~~~~~~~~~
+   mm/pt_reclaim.c:31:2: note: in expansion of macro 'pte_free_tlb'
+     pte_free_tlb(tlb, pmd_pgtable(pmdval), addr);
+     ^~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
-void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
-{
-	struct folio *folio = page_folio(new);
-	struct vm_area_struct *vma = pvmw->vma;
-	struct mm_struct *mm = vma->vm_mm;
-	unsigned long address = pvmw->address;
-	unsigned long haddr = address & HPAGE_PMD_MASK;
-	pmd_t pmde;
-	softleaf_t entry;
+vim +731 include/asm-generic/tlb.h
 
-	if (!(pvmw->pmd && !pvmw->pte))
-		return;
+a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  701  
+a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  702  #define tlb_remove_pud_tlb_entry(tlb, pudp, address)			\
+a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  703  	do {								\
+2631ed00b04988 Peter Zijlstra (Intel  2020-06-25  704) 		tlb_flush_pud_range(tlb, address, HPAGE_PUD_SIZE);	\
+a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  705  		__tlb_remove_pud_tlb_entry(tlb, pudp, address);		\
+a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  706  	} while (0)
+a00cc7d9dd93d6 Matthew Wilcox         2017-02-24  707  
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  708  /*
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  709   * For things like page tables caches (ie caching addresses "inside" the
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  710   * page tables, like x86 does), for legacy reasons, flushing an
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  711   * individual page had better flush the page table caches behind it. This
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  712   * is definitely how x86 works, for example. And if you have an
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  713   * architected non-legacy page table cache (which I'm not aware of
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  714   * anybody actually doing), you're going to have some architecturally
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  715   * explicit flushing for that, likely *separate* from a regular TLB entry
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  716   * flush, and thus you'd need more than just some range expansion..
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  717   *
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  718   * So if we ever find an architecture
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  719   * that would want something that odd, I think it is up to that
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  720   * architecture to do its own odd thing, not cause pain for others
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  721   * http://lkml.kernel.org/r/CA+55aFzBggoXtNXQeng5d_mRoDnaMBE5Y+URs+PHR67nUpMtaw@mail.gmail.com
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  722   *
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  723   * For now w.r.t page table cache, mark the range_size as PAGE_SIZE
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  724   */
+b5bc66b7131087 Aneesh Kumar K.V       2016-12-12  725  
+a90744bac57c3c Nicholas Piggin        2018-07-13  726  #ifndef pte_free_tlb
+9e1b32caa525cb Benjamin Herrenschmidt 2009-07-22  727  #define pte_free_tlb(tlb, ptep, address)			\
+^1da177e4c3f41 Linus Torvalds         2005-04-16  728  	do {							\
+2631ed00b04988 Peter Zijlstra (Intel  2020-06-25  729) 		tlb_flush_pmd_range(tlb, address, PAGE_SIZE);	\
+22a61c3c4f1379 Peter Zijlstra         2018-08-23  730  		tlb->freed_tables = 1;				\
+9e1b32caa525cb Benjamin Herrenschmidt 2009-07-22 @731  		__pte_free_tlb(tlb, ptep, address);		\
+^1da177e4c3f41 Linus Torvalds         2005-04-16  732  	} while (0)
+a90744bac57c3c Nicholas Piggin        2018-07-13  733  #endif
+^1da177e4c3f41 Linus Torvalds         2005-04-16  734  
 
-	entry = softleaf_from_pmd(*pvmw->pmd);
-	folio_get(folio);
-	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
-
-	if (pmd_swp_soft_dirty(*pvmw->pmd))
-		pmde = pmd_mksoft_dirty(pmde);
-	if (softleaf_is_migration_write(entry))
-		pmde = pmd_mkwrite(pmde, vma);
-	if (pmd_swp_uffd_wp(*pvmw->pmd))
-		pmde = pmd_mkuffd_wp(pmde);
-	if (!softleaf_is_migration_young(entry))
-		pmde = pmd_mkold(pmde);
-	/* NOTE: this may contain setting soft-dirty on some archs */
-	if (folio_test_dirty(folio) && softleaf_is_migration_dirty(entry))
-		pmde = pmd_mkdirty(pmde);
-
-	if (folio_is_device_private(folio)) {
-		swp_entry_t entry;
-
-		if (pmd_write(pmde))
-			entry = make_writable_device_private_entry(
-							page_to_pfn(new));
-		else
-			entry = make_readable_device_private_entry(
-							page_to_pfn(new));
-		pmde = swp_entry_to_pmd(entry);
-
-		if (pmd_swp_soft_dirty(*pvmw->pmd))
-			pmde = pmd_swp_mksoft_dirty(pmde);
-		if (pmd_swp_uffd_wp(*pvmw->pmd))
-			pmde = pmd_swp_mkuffd_wp(pmde);
-	}
-
-	if (folio_test_anon(folio)) {
-		rmap_t rmap_flags = RMAP_NONE;
-
-		if (!softleaf_is_migration_read(entry))
-			rmap_flags |= RMAP_EXCLUSIVE;
-
-		folio_add_anon_rmap_pmd(folio, new, vma, haddr, rmap_flags);
-	} else {
-		folio_add_file_rmap_pmd(folio, new, vma);
-	}
-	VM_BUG_ON(pmd_write(pmde) && folio_test_anon(folio) && !PageAnonExclusive(new));
-	set_pmd_at(mm, haddr, pvmw->pmd, pmde);
-
-	/* No need to invalidate - it was non-present before */
-	update_mmu_cache_pmd(vma, address, pvmw->pmd);
-	trace_remove_migration_pmd(address, pmd_val(pmde));
-}
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
