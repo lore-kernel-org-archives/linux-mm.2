@@ -4,118 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32BCBCD4F3E
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 06:40:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7110BCEBF8A
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 06:49:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 702398E002C; Sun, 16 Nov 2025 01:40:54 -0500 (EST)
+	id 8C9728E002D; Sun, 16 Nov 2025 01:49:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DA478E0005; Sun, 16 Nov 2025 01:40:54 -0500 (EST)
+	id 89D778E0005; Sun, 16 Nov 2025 01:49:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EFF68E002C; Sun, 16 Nov 2025 01:40:54 -0500 (EST)
+	id 7B2C38E002D; Sun, 16 Nov 2025 01:49:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B5A28E0005
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 01:40:54 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8940BBFDC
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 06:40:53 +0000 (UTC)
-X-FDA: 84115522386.15.3F88E12
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E78074000D
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 06:40:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of djvasi@gmail.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=djvasi@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 66EDD8E0005
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 01:49:44 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D7B9B5BB5A
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 06:49:43 +0000 (UTC)
+X-FDA: 84115544646.16.A088061
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E48E940002
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 06:49:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KhpkueEv;
+	spf=pass (imf12.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763275252;
+	s=arc-20220608; t=1763275782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=A/TBs7BuWibkRX4L1Mxki9I3H1/n/J1InK7hm63Zqwc=;
-	b=JvXQvGboi0aYsSdLQN/xgfcfyTnlKUcG3mf0HoZcqMURrecyQWCXOoU4BXqRaaLJN4gAul
-	S1hx9rciQl9dRRxC5lR16qy3fuVHUGE5/kC+Yu6FnEODgpPlGFgSQF/WxDYEyRjmYYq9Ut
-	IKopx++ehe76JnQ6ZEeWHExBvcrqWV0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763275252; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9b8IJSYXtBsPcOc3zz//VewvB+A/HFTZrZRLMW1CFbA=;
+	b=MYRvoGtE8P1sDtUwPn86EbcPlQ7kU0qARVXmwM6eGuYl/7zbJSw5qR9zxOLOufQ19Mct6n
+	jMF+1rnAixPRkhn8lEWwVDsR970P1E+Q0C6IKfqbL5VdidIhptikstbeXUsjZJQMkqQnmm
+	LrujIyjvNEdIm2tDb/FCb84r3c9e4ds=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763275782; a=rsa-sha256;
 	cv=none;
-	b=AFztBSgndSgaO8qcwLxUy7yzTZp9r1vPjxURqy52PWP7tm/VO2e91i3yWerocynrGEZErf
-	145K5y4dV7TJISY8R+V9syOmy70vpDp98ziIVnxUVlf/UoN6OIDnrkKecuVdWyE4cMGvL9
-	CEdwlICFSEGMuzcUhT8orEw79TbJ9OE=
+	b=y79ZkUlFtPgbxEvVTDg9XIMFtPiqKnEfjjbMQClB+fg62lZ0uusYP+vZVn29WbOk7rT9/p
+	cWmeSy+4mEFg4MmiF2w3+s0Cbq9OC5SD6c+GuBv8EXMxVBwgnvXuum16+u1D7bOkluIGIW
+	x5f3wgAcIXVz5bQsaW5IUcyioCkbr1Q=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of djvasi@gmail.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=djvasi@gmail.com;
-	dmarc=none
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4e4d9fc4316so29227041cf.2
-        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 22:40:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763275251; x=1763880051;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KhpkueEv;
+	spf=pass (imf12.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7ade456b6abso2867301b3a.3
+        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 22:49:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763275781; x=1763880581; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A/TBs7BuWibkRX4L1Mxki9I3H1/n/J1InK7hm63Zqwc=;
-        b=Wbai1E7CuuFatEhsD3GUpumqXB4kTJQQArDKD0WFbyOiEBckpnHB3fg3aWT0BYCgd5
-         4M0LS3L28uNCBw5YLQrDjIIICXdUeeA4TkCmTR9GSCsanDWSvHZKRJrTzxfQHH5FUPoL
-         XIX3PBMKiKQwVu+StLaDD6/3FSGgVp5NoBfhHSnTaOcC/Exr7TMAMTfPoaf1HFL+tbhZ
-         lFaPZkvKBsYE3ZxDSyZmvCH89z/JaFvDZ+fO/jnJ3MFZToszwoMJUaU1i/6XejdqjwLH
-         o3w1Avek1jjUf+TN71uIBo0w8HrtqxW4xXxHTp7x5RMI8M8hpOVy9ZGwbLJ5li3Tex8l
-         s3Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbf0ltSlNX2Qyyj3zVpha5cAg2lQt1NA2RyFw2ZUDXbnCcCZCUXqB8WzuNbE5Lc59/fIIc1eiCGw==@kvack.org
-X-Gm-Message-State: AOJu0YwwSz6BcI5uNVDeNqjHLdQxmGXU75y37PXLCHSwc6ZOeXYJii0l
-	S2lpwEATHlHBMfFmj61ccFpazHkDMyIcD8Txt+CDUKZXGOkrDAT5Wf6o
-X-Gm-Gg: ASbGncvo6+kiEnYWPcR1wLgSNQNynMb4ZaiS9sidWtaTduHbKOtntYHnPPzCcxt6okn
-	3ll80mb8b+WMmKR4gGczKqLu7jXmm57d+U30j8M9W3xC7laNNzpActcVq511ic4OYWlmn38l05y
-	fOYD+DqlFqCicSLCjf+mxFBuAPpY1dl1gstZ/zBgNm+Kw73PEiGYyAA8EBu/Ef1Xijsu6bCmCxV
-	y5I8cpiS7szMdKfVp/hM73/JRcT30F9cLDadXljuPBgx3bnpUwq05+sVT9A5apXP6ReQbc6mEp4
-	z6HF5ZO3i20hHngjZZ6TQJ2lhsvQnOl7Ez9OqQ7PktPpBGAaAkRLNlNCEHGzEiphwNHaFbdLrPX
-	e3/ljpFG8ozTBCQzv1HqlfOXHoPWgjooxk4OnTSYTgqwIyI4UwDIn7TgeVG0y+aYGW/pCxNUnOG
-	xJ5uFhEFUmyyqhU8z/G9Yvt+zXaQsLnQxXU6okn8RzGmPCvalNHbIRPPxLcKe86uXcVMSTOUbjd
-	g==
-X-Google-Smtp-Source: AGHT+IG+qzsrR+dRWKF4NmoVX7b6CUaR8vMmbs3TLbWswTg9TED3bCbWhUIV58kjiV3MwgK5w6g1yA==
-X-Received: by 2002:a05:622a:1107:b0:4ec:f7de:f5eb with SMTP id d75a77b69052e-4edf20a2ebbmr113268941cf.33.1763275250934;
-        Sat, 15 Nov 2025 22:40:50 -0800 (PST)
-Received: from [192.168.2.45] (bras-base-mtrlpq3141w-grc-10-65-95-13-196.dsl.bell.ca. [65.95.13.196])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ede87e6fecsm61188021cf.18.2025.11.15.22.40.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Nov 2025 22:40:50 -0800 (PST)
-From: Dave Vasilevsky <dave@vasilevsky.ca>
-Date: Sun, 16 Nov 2025 01:40:46 -0500
-Subject: [PATCH v3] powerpc, mm: Fix mprotect on book3s 32-bit
+        bh=9b8IJSYXtBsPcOc3zz//VewvB+A/HFTZrZRLMW1CFbA=;
+        b=KhpkueEvY1c18WVAIVriJDMHDJGYTdlQIbRNJA9X/D8EXIU83RNQSKx3V+d+qSmqwG
+         kECXgw2LqT2qOJuHdboez1TXNeZhyDvx5kFY1x6UxKDaxFuR3Imk/bj1wn1LRIju41MZ
+         pN0cbfOeY1zPr276vu8RuuJ5JlOiOjJHv5DrKZPsBgkZWyC4Gubrue3uu5CHvwHum57v
+         pupA96oj2Kmy+STkmBAkWRA6d6QAoTnO9Bbs8Iy48NI3zAAxYgnjjDzpIb8XB7zb/J4V
+         ZcohYx7iQdQ4OGhmwNy5pgGIWaPeJyX84KkYcBp/cT6xzM64+WO7fWuj7KF+pNLGsxUi
+         9xIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763275781; x=1763880581;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9b8IJSYXtBsPcOc3zz//VewvB+A/HFTZrZRLMW1CFbA=;
+        b=aVKyVwf8hW8M9fdu0ksWyX+53T2c92oxlP3YJUkFFaMfaTZ0YgT8GexHu0SLnnCRD9
+         vC+BZIhE471J9nXQoibPEp3++inB7p9gfILr6IFSg+7R1hXhAS7gYGWTGpLKmp9udTBt
+         JxxY6Zq09XVabzr2MQXttDgIOCC4KCfihryUyJ3ZQszgwdxVb3e18BWYIUZHQ3SPkjS1
+         arE1IsxRB9w8zVj63Z1pj6ckb0IP8BVccfJbZZtZZmNppl2FI9HC9Zh1K8VtA+D/iOw5
+         OyfVBGC2zqEgUq00lbFnmRtz3zevnGXESZqZkMId8umwoMsG0+5b4CLcWlMcX+Up+oav
+         IHEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXPmBAo6JGyW4BkYW1HUvSIDirPnx66M8lydDr8IDh/gSIJS1uEkN7GQVAoXLJLU+iNYI9TZjfYlw==@kvack.org
+X-Gm-Message-State: AOJu0Yxfm4oxnR3vW9xosn8b5UfCGLxt4sADyktyZXT0okxHtsDanmQ3
+	0gPkObeOgvPwbQ0EZ2ZkKMFpAVQtpf3+stBX84Fs1XkbhKkMLSHXd0dw
+X-Gm-Gg: ASbGncvpVQv4ObBqVuvcQn/3YfJvtlyxJKyMMvQ9K22kv9N6Q29zcWH+WWXXRjFBogz
+	2/JN9k3uw/065IJaSSKNVy0BelBRDnogwhF4w71hve7ihtV0zeyWPUMEd2a5OB4DXkFT2pj0Ajr
+	1eEopSDiWvH5F12dJJfOUNqr+zVRO/FATKd3tiNb767TsdYc91xfJGVR6R2WFoHOcrlRxtCmQcD
+	jZOU+LI+u2J908KA9yGRBW9qsf/VVPwsdw1Hc+satA0naAUywrKT96j2zb+FwHWBh+L3iwMqOqS
+	n68PEU+yWIGgarz07JCTe4rZiBACH/H0wWPTeTfGNA9ST33GQanU3F1Awr/K4jF7fsPhe+BUecJ
+	2+zw7cLACA4vkWuCi3wWFZq6PiYpiDhyjRmtI8V7czhbsKLX67pCL/sfOO7XVZ61nuYTHmBCDqQ
+	==
+X-Google-Smtp-Source: AGHT+IFouFg86tnbEJBbixUeQQEONClEEPNYmTk01w9DMsSZyQU+lHf3REEj3Dr3gbQQjBDIKCsHKw==
+X-Received: by 2002:a05:6a21:4ec5:10b0:35e:e604:f787 with SMTP id adf61e73a8af0-35ee61484ccmr465968637.39.1763275780537;
+        Sat, 15 Nov 2025 22:49:40 -0800 (PST)
+Received: from localhost.localdomain ([2403:2c80:17::10:4006])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b9250d2d16sm9578369b3a.22.2025.11.15.22.49.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 15 Nov 2025 22:49:40 -0800 (PST)
+From: Lance Yang <ioworker0@gmail.com>
+To: pasha.tatashin@soleen.com
+Cc: akpm@linux-foundation.org,
+	arnd@arndb.de,
+	bhe@redhat.com,
+	coxu@redhat.com,
+	dave@vasilevsky.ca,
+	ebiggers@google.com,
+	graf@amazon.com,
+	jasonmiu@google.com,
+	kees@kernel.org,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rppt@kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 03/13] kho: Introduce high-level memory allocation API
+Date: Sun, 16 Nov 2025 14:49:18 +0800
+Message-ID: <20251116064918.35549-1-ioworker0@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251114190002.3311679-4-pasha.tatashin@soleen.com>
+References: <20251114190002.3311679-4-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251116-vasi-mprotect-g3-v3-1-59a9bd33ba00@vasilevsky.ca>
-X-B4-Tracking: v=1; b=H4sIAO1xGWkC/33NwQ6CMAwG4FchPTuzli0MT76H8TDHBosKZCOLh
- PDuDi4mxtjb3/z9ukC0wdsIp2KBYJOPfuhzKA8FmE73rWW+yRmIk0ROFUs6evYcwzBZM7G2ZE4
- 5SZVqBAoO+WwM1vnXTl6uOXc+TkOY9w8Jt+0fLCFDVhqJquJKulqft8rDpnifj0bDBib6IHl+I
- JQRpdDUQrubEfSNrOv6BpGaqhz5AAAA
-X-Change-ID: 20251027-vasi-mprotect-g3-f8f5278d4140
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Nadav Amit <nadav.amit@gmail.com>, 
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Ritesh Harjani <ritesh.list@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, linux-mm@kvack.org, 
- Dave Vasilevsky <dave@vasilevsky.ca>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763275249; l=3309;
- i=dave@vasilevsky.ca; s=20251027; h=from:subject:message-id;
- bh=muIWQccO36YRMVeS5U/f/4/TLToyy8blzhH60i2svbE=;
- b=BqibHhRBraGtc5DC4MXisv7cfh+xdLpFWAQQaxC9fzFoJvdvVanpK8QruKXcOddOsTtRvfNgH
- YlQotamK+KoD0aCejzMYbW1umsa7tkoXkMduqh2O3DDT0rZZS39zLZd
-X-Developer-Key: i=dave@vasilevsky.ca; a=ed25519;
- pk=Jsd1btZeqqg6x6y73Dx0YrleQb3A3pCBnUeE0qmoKq4=
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 51cpnjwwxmb9jdibadw4c7dd438xtwyo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E78074000D
-X-Stat-Signature: b9a49euauomdw16ors4mnqoyfim88s98
-X-HE-Tag: 1763275251-651454
-X-HE-Meta: U2FsdGVkX18WuHfQI9tff7QU9sfJKzyZzc+09eBvx2lbDN5cQPu8GuU+BMxQc/1mRFH6tZ7nQ0CAD7FyjIffl1OKskwGDU5LdGRXROJbiYCyxWCzAtwpQReWdnsTWoAp8jW4ixpIK4i+C9okjZP55f6HjVQACbUOWTebMvBlNZjHeL+8rcqU6r5C1oAKVecncZenCZEgI1RPPDIEkCcjkncXMUON72Y8E+KDMDtZ2vUe5VwNP2B2FovGvd4UHHMEhd4+FITnzutdG5RXGV9WnQwGkAJGwbqkouXaLUBgF/x2MRupNamgbdJ10BH2dnVCnPzLaD4BMs2Ar7iRwDhz+LZANBcJS4Idt70eprQMX7g4YdPA5bSk6gX07z/2k2GiGj3v0YzKxe4HmUiJ0M3Gk+WU4dX6xrMN7dZD5OtDSBTI1sri98WEsuPJyBwJ0UcimJwqdhWCyztMZNb/Ky4LULLWL+e7uoKDrPEH3JVKxe+UTVTgxIw5xPWpb8ScGypsyWTBjQsfxr/0uI4XaFGmkDC344ymlGodb4556rAzow4z+Dwxi6kGVoK8+ewdJfDC5KSkP51UUiyVKurxFJpQlIDLsBShWPtasqiVQYELidD/Ucn6IjXFFzgb6uYfFztlS/VqcSDkBFAxrv9r6mQ/btMwQGDpdrYEfRgy7+oBBjHzrZoYZzVIQcE13OkIOKARZgetLDZpt72nK7lQ7qjQIhVkQWH7/JbLf0C+w7kwsTCZWO6DmtA+0v0wlpFUQzhA9lHJow3H5P60eSFgjVpfxNX2kfR1a8rqhUKbIzeZckp1RhmxWQ+pEecwnBToT1D1GZZXhgfLiOIBmiRWK34ditrXDNaSOIa2MTO6Vfw+xDMsYmkCIDpYGxn829p0M+XDK9sQ88PJ8MltROoB3Cje9Wh4ipiqeYo8itA3U6ZoHNT3ia2Jm7oGCCufCY8nvg+PcLTqfkSaxd3VQoJZ2gh
- ezCTC5aw
- UTcd4R5+mjDIa/MIK/N+QLXEChSIAZoqRGgfNMk/jB13injbFcyVadoN+P9MmzcnTtEKuGgamdTfZJnwGsFPGwJduthOtvwJHG1BTcMWTUM0fqgZy5c726Ug35OaL7ScxE2tzlAWpeK424tk39673Wl6KKEB9Yv7AUraox7qAiPr5l9IXixRXNlKh3mtr/1A7ZBGAhTArTtrS2wz0gNxcabeYLSDWOvjUM5BcR+m5aCgdhU/CUaWmwJHJrn9l6Hr/+DtVn5qArFfZrKvxeBhX+QeW5exwY4jy3oOKQ/P1i1LGFLIHwDPx7uSKnpOkrPM/Pc8uV8XCXZ0FbBniqIt+u6+zVRA6bRfExrdXg+sSGQQUKi0Sozh0CUvGdj+LlObFNVKZzUYsg9Boyy02eALVbyYtO3+8ovnVWeQriqxFVLEat98mfNmqyziATlcsE789jUVLz95c8YRCvD3zrz/Tme8/Xk5lI8W8wVJlaRUMhtIUmZ+6GE9qhx4gfYbrWSDbp6a7gKWUyJVty1e3IW8Xfx7VVw==
+X-Rspamd-Queue-Id: E48E940002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763275781-21127
+X-HE-Meta: U2FsdGVkX1/k+NcLWOfY5HUrmbSL+74UkXO6+mj+bSuh//q09E/tAahhaF2ILgDQRAJwtSTjVY3c6AAlaXUuHQZRon7YxUvGrC1NsAljIlpuUHRX1os199bDwBxD2iYCW8RucZPY8uZVkpjmxdkxUpsYSUYEnm6t6HL96Dbo6PPfiTfmvPd2bDTtpFlk6QAZHYo+aN5QXbSEKaUAOEfIWTAl8hoYU7uAyJmyqFEYksnVyxlPfm4o76Z+VHzolR8dbEyvlaUxB8bYX42onHbfpYffbyw+eGBKxcBMxjRfDh1X0dTT6nEAe0eFta0eRDQX8V4wp5yDGO3S6DgSmjKEp53LWKZJ0C7H1t5u2q9BNXLqsfJp/fzazGhncy/kD4z7FgjLXhAkdHNcbIKVSF/+ilr+Jqgpf7BgzPQlMevn/c0NN3PEr6M4hMF9xAxruIXuWAcnIh+EYwb0D9ajbNEyqRPBsc2QCx1ErxOe2mMA2Dvr/dKhP9giU7teEFIWMvMO0TQ0SZXr1Xhsxb7GYv0CUegLUk0d0A0RfTPEjXlap9Z2L/4k2r+45Hk0KX+cP6hFaH3jsaOgYjNyqWeX1zjKKfdQsie0cbqEMPUKSSjSlkmF5zvA32d81hGRPKULbxSn4Vt27CiSz331NhmQmvPsGoGkpA5Qq02FlSdnXAK8/8ssCzk7SlEvxVLiUF7q5uYZMxuR6cPmM1ty5wSlKrJ/04dgzHNZNZj1IQ5+UlSWDpPQD0WAL2evDVOy0dsBdQQ2O2bBxm0FYBdHjvh8Q4TyHZED3zWO1hio2F20B1gNKPO8stut/qOaYv6TpwruTUGYfq6OT1TMtBqTYrbELQQjJRe8EO5vYdU0Yca3wsNpAiUwK1NU/kHvM9mKf9aVIHxNT8loHRpk/fFZATMckLpwBJRdCocXegYXu5bVUp4WT13XMpEjeDV2gvJex97uzKPIYzV02TuAAuHRRkf36yz
+ 2RbBhEYT
+ tog4JrhzBt7qtNoWluf1qD8pKLclEfetBFwhp1Xc6itcRN7wkZTjxho/K6nAax3L4csYI0ouVbKANuXW3t7nNG2vuvYku7c/eG2n9GkrobFqTgoG3+TnCqYY3fUQbfokmT1M/FxMCSpkAOOOmtSy1+95uVx+XJV+4i77xNBvu3FfpNB/ZdrH5eXuKnLP+QpZRzoFn01BVhtf6Y95VtDnFbjCMYFlSEib82Jr/8ABRZUHNvA+FwYqMJgyEkuyZ3NET036932H/+/ggrIV9z8tYJBVqMHs6/0u7kdoehEk9aF8rlWIpGhMGkYOXOZ/CzT4+G2cdP0lYQNBiZq9PWQ8MLbV1v7vi6bLCSJ0PobDn4J5L4St3ulV+tUR/3vuJMLOCv1ZTGxxta+G9ngE6QNYQ54UrDPLVx9Rl06R8MWs5OjRI6et6QJeljqh8HOP7qLr08mBAF6p2qcogRv0rmS/9YRygqXXEFCpAlIXFZFfyotx29PXfFt+RW8uzZsbOeJOo2CuKEEiPigs8KNvxT7kYTg7gMEwxUkQP3FgOpkS/g2kY4O4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,88 +131,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
-unnoticed because all uses until recently were for unmaps, and thus
-handled by __tlb_remove_tlb_entry().
+From: Lance Yang <lance.yang@linux.dev>
 
-After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
-tlb_gather_mmu() started being used for mprotect as well. This caused
-mprotect to simply not work on these machines:
 
-  int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
-                  MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-  *ptr = 1; // force HPTE to be created
-  mprotect(ptr, 4096, PROT_READ);
-  *ptr = 2; // should segfault, but succeeds
+On Fri, 14 Nov 2025 13:59:52 -0500, Pasha Tatashin wrote:
+> Currently, clients of KHO must manually allocate memory (e.g., via
+> alloc_pages), calculate the page order, and explicitly call
+> kho_preserve_folio(). Similarly, cleanup requires separate calls to
+> unpreserve and free the memory.
+> 
+> Introduce a high-level API to streamline this common pattern:
+> 
+> - kho_alloc_preserve(size): Allocates physically contiguous, zeroed
+>   memory and immediately marks it for preservation.
+> - kho_unpreserve_free(ptr): Unpreserves and frees the memory
+>   in the current kernel.
+> - kho_restore_free(ptr): Restores the struct page state of
+>   preserved memory in the new kernel and immediately frees it to the
+>   page allocator.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/linux/kexec_handover.h     | 22 +++++---
+>  kernel/liveupdate/kexec_handover.c | 87 ++++++++++++++++++++++++++++++
+>  2 files changed, 102 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+> index 80ece4232617..38a9487a1a00 100644
+> --- a/include/linux/kexec_handover.h
+> +++ b/include/linux/kexec_handover.h
+> @@ -2,8 +2,9 @@
+>  #ifndef LINUX_KEXEC_HANDOVER_H
+>  #define LINUX_KEXEC_HANDOVER_H
+>  
+> -#include <linux/types.h>
+> +#include <linux/err.h>
+>  #include <linux/errno.h>
+> +#include <linux/types.h>
+>  
+>  struct kho_scratch {
+>  	phys_addr_t addr;
+> @@ -48,6 +49,9 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages);
+>  int kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
+>  int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+>  int kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
+> +void *kho_alloc_preserve(size_t size);
+> +void kho_unpreserve_free(void *mem);
+> +void kho_restore_free(void *mem);
+>  struct folio *kho_restore_folio(phys_addr_t phys);
+>  struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
+>  void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+> @@ -101,6 +105,14 @@ static inline int kho_unpreserve_vmalloc(struct kho_vmalloc *preservation)
+>  	return -EOPNOTSUPP;
+>  }
+>  
+> +void *kho_alloc_preserve(size_t size)
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+> +
+> +void kho_unpreserve_free(void *mem) { }
+> +void kho_restore_free(void *mem) { }
 
-Fixed by making tlb_flush() actually flush TLB pages. This finally
-agrees with the behaviour of boot3s64's tlb_flush().
+The compile is unhapply here when CONFIG_KEXEC_HANDOVER is not set ...
 
-Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
-Cc: stable@vger.kernel.org
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
----
-Changes in v3:
-- Fix formatting
-- Link to v2: https://lore.kernel.org/r/20251111-vasi-mprotect-g3-v2-1-881c94afbc42@vasilevsky.ca
+```
+ld: arch/x86/realmode/rm/video-mode.o: in function `kho_alloc_preserve':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: multiple definition of `kho_alloc_preserve'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: first defined here
+ld: arch/x86/realmode/rm/video-mode.o: in function `kho_unpreserve_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: multiple definition of `kho_unpreserve_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: first defined here
+ld: arch/x86/realmode/rm/video-mode.o: in function `kho_restore_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: multiple definition of `kho_restore_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: first defined here
+ld: arch/x86/realmode/rm/regs.o: in function `kho_alloc_preserve':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/arch/x86/realmode/rm/regs.c:102: multiple definition of `kho_alloc_preserve'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: first defined here
+ld: arch/x86/realmode/rm/regs.o: in function `kho_unpreserve_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/arch/x86/realmode/rm/regs.c:104: multiple definition of `kho_unpreserve_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: first defined here
+ld: arch/x86/realmode/rm/regs.o: in function `kho_restore_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/arch/x86/realmode/rm/regs.c:105: multiple definition of `kho_restore_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: first defined here
+ld: arch/x86/realmode/rm/video-vga.o: in function `kho_alloc_preserve':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: multiple definition of `kho_alloc_preserve'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: first defined here
+ld: arch/x86/realmode/rm/video-vga.o: in function `kho_unpreserve_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: multiple definition of `kho_unpreserve_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: first defined here
+ld: arch/x86/realmode/rm/video-vga.o: in function `kho_restore_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: multiple definition of `kho_restore_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: first defined here
+ld: arch/x86/realmode/rm/video-vesa.o: in function `kho_alloc_preserve':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: multiple definition of `kho_alloc_preserve'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: first defined here
+ld: arch/x86/realmode/rm/video-vesa.o: in function `kho_unpreserve_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: multiple definition of `kho_unpreserve_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: first defined here
+ld: arch/x86/realmode/rm/video-vesa.o: in function `kho_restore_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: multiple definition of `kho_restore_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: first defined here
+ld: arch/x86/realmode/rm/video-bios.o: in function `kho_alloc_preserve':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: multiple definition of `kho_alloc_preserve'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:102: first defined here
+ld: arch/x86/realmode/rm/video-bios.o: in function `kho_unpreserve_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: multiple definition of `kho_unpreserve_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:104: first defined here
+ld: arch/x86/realmode/rm/video-bios.o: in function `kho_restore_free':
+/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: multiple definition of `kho_restore_free'; arch/x86/realmode/rm/wakemain.o:/home/runner/work/mm-test-robot/mm-test-robot/linux/./include/linux/kexec_handover.h:105: first defined here
+make[5]: *** [arch/x86/realmode/rm/Makefile:49: arch/x86/realmode/rm/realmode.elf] Error 1
+make[4]: *** [arch/x86/realmode/Makefile:22: arch/x86/realmode/rm/realmode.bin] Error 2
+make[3]: *** [scripts/Makefile.build:556: arch/x86/realmode] Error 2
+```
 
-Changes in v2:
-- Flush entire TLB if full mm is requested.
-- Link to v1: https://lore.kernel.org/r/20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca
----
- arch/powerpc/include/asm/book3s/32/tlbflush.h | 5 ++++-
- arch/powerpc/mm/book3s32/tlb.c                | 9 +++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+Perhaps these stubs should be declared as static inline? That should make
+the compiler happy and resolve the linking errors :)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-index e43534da5207aa3b0cb3c07b78e29b833c141f3f..4be2200a3c7e1e8307f5ce1f1d5d28047429c106 100644
---- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
-+++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-@@ -11,6 +11,7 @@
- void hash__flush_tlb_mm(struct mm_struct *mm);
- void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
- void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
-+void hash__flush_gather(struct mmu_gather *tlb);
- 
- #ifdef CONFIG_SMP
- void _tlbie(unsigned long address);
-@@ -29,7 +30,9 @@ void _tlbia(void);
- static inline void tlb_flush(struct mmu_gather *tlb)
+----8<----
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index 6dd0dcdf0ec1..5f7b9de97e8d 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -96,13 +96,13 @@ static inline int kho_preserve_vmalloc(void *ptr,
+
+ static inline void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation) { }
+
+-void *kho_alloc_preserve(size_t size)
++static inline void *kho_alloc_preserve(size_t size)
  {
- 	/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
--	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+		hash__flush_gather(tlb);
-+	else
- 		_tlbia();
+        return ERR_PTR(-EOPNOTSUPP);
  }
- 
-diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
-index 9ad6b56bfec96e989b96f027d075ad5812500854..e54a7b0112322e5818d80facd2e3c7722e6dd520 100644
---- a/arch/powerpc/mm/book3s32/tlb.c
-+++ b/arch/powerpc/mm/book3s32/tlb.c
-@@ -105,3 +105,12 @@ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
- 		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
- }
- EXPORT_SYMBOL(hash__flush_tlb_page);
-+
-+void hash__flush_gather(struct mmu_gather *tlb)
-+{
-+	if (tlb->fullmm || tlb->need_flush_all)
-+		hash__flush_tlb_mm(tlb->mm);
-+	else
-+		hash__flush_range(tlb->mm, tlb->start, tlb->end);
-+}
-+EXPORT_SYMBOL(hash__flush_gather);
 
+-void kho_unpreserve_free(void *mem) { }
+-void kho_restore_free(void *mem) { }
++static inline void kho_unpreserve_free(void *mem) { }
++static inline void kho_restore_free(void *mem) { }
+
+ static inline struct folio *kho_restore_folio(phys_addr_t phys)
+ {
 ---
-base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
-change-id: 20251027-vasi-mprotect-g3-f8f5278d4140
 
-Best regards,
--- 
-Dave Vasilevsky <dave@vasilevsky.ca>
+[...]
 
+Cheers,
+Lance
 
