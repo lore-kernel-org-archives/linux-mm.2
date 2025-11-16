@@ -4,119 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D46ACD4F3E
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 16:02:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4CE6CD4F3E
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 17:06:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B4428E0015; Sun, 16 Nov 2025 11:02:09 -0500 (EST)
+	id 5F6DC8E0018; Sun, 16 Nov 2025 12:06:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98C078E0005; Sun, 16 Nov 2025 11:02:09 -0500 (EST)
+	id 5A7C78E0005; Sun, 16 Nov 2025 12:06:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8878E0015; Sun, 16 Nov 2025 11:02:09 -0500 (EST)
+	id 4964F8E0018; Sun, 16 Nov 2025 12:06:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7512A8E0005
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 11:02:09 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41D0FBC65D
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 16:02:09 +0000 (UTC)
-X-FDA: 84116936778.16.45A0693
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 838CE120004
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 16:02:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e3zmONaQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763308927; a=rsa-sha256;
-	cv=none;
-	b=baa4Ve0M0a+mZkMuDmjMVdgEibgvkCj+pBM34OnRH8aIdGjguj1M2kHv1+UYqQvOJKYiAu
-	E89zsB3A950VjwPPoQ//+O9WMqLQmhgz/dCPbAKsIMbNPiskrHnUe1L9+pwmkw2Ml5qo48
-	vQ0Vz1q7qi3afe9548+Bm2JmZlZYygE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e3zmONaQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 303508E0005
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 12:06:26 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D8BDB1609F7
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 17:06:25 +0000 (UTC)
+X-FDA: 84117098730.06.A90565E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4A891140009
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 17:06:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FULWZXYE;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763308927;
+	s=arc-20220608; t=1763312784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gv5LMPLYwFZHYn7ySvTdnW/teh2/r5DB4ESRyn2nfxs=;
-	b=yA6Q93yYUIMiZ4KRZW7uLYnMfD8oVIc4Rd8HYr3TD8G7y4aXJACVEkA/Zf1ng0s8j7LcZF
-	Y+oNh5VeERgtuAvQK53FTQD9xnpcaQtRd3M+ew9PRBIsHEOPNdCtZ5oa7pUcHK6KRpGnIW
-	6PM7kfgD9nnC2ap2//5CF7m/ac77fDQ=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640bd9039fbso5918213a12.2
-        for <linux-mm@kvack.org>; Sun, 16 Nov 2025 08:02:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763308926; x=1763913726; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gv5LMPLYwFZHYn7ySvTdnW/teh2/r5DB4ESRyn2nfxs=;
-        b=e3zmONaQAnXFaejUpdwLVsYep5WS/DWPvyfZBIkDGsIcTQHTiKpp58GpKYpri/An6f
-         o85RcJKksem3wPPyPI/izP41x8VRo8ddX5eMLUsJUTzUSgmOsyBr1jQQC0tn16ZaSHA2
-         YWn8OwXqPqioXwGKDy2W64sK+ABryInQH+w4bEAmWSDOxybekalQnbA8xsREXXKIiBdE
-         1N44aK6LNaDmaUy8pxQcdZP1fndV7y58lWVdZOBoCj/Pibe48NzD43dsAPS6zPdTRzfU
-         3jCTAqfVNdN39mkQWYqy1kwvU17BDW4hxfPqTBoTDSVvFYth+gPB5M4ZJWJWap4AoaK1
-         ohxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763308926; x=1763913726;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Gv5LMPLYwFZHYn7ySvTdnW/teh2/r5DB4ESRyn2nfxs=;
-        b=dVglK273Yb9GZWZfzXCWOIe/qCIvMBIKDGQIs4ePKfHiTk2dlI4KCvFMNZpmsA2U41
-         xoilmvfhn93cczrBLomRFxkhmT/ovaD4NpQaYPzvtCxEmpkizZvr8VPpZj60qS9ayxP2
-         YKfZ+d4twiypv8gGzbWKSYpgBPHmoJ0U0xWxgtHZSmVekmR2O0RitSBJCFAxaei6zWDf
-         A5bxiR1y0772IHRrF6dHFBPOp/BSAm7sv4XarfwAScnjnXwiEnU6kg9LYV53yy+FOjPN
-         A9GaAQjvBlfpEQ4nonqi41uUP3vGdCvNH4lb63zX5w3QLIH11b1ycGuAwQjGxzWrNUo7
-         TdbA==
-X-Gm-Message-State: AOJu0Yyrv0iMbG0jjHd2Jvo51+yJxYYVHQm4yQWi7i9Ew+xOHfuyz00W
-	tFZ0oWw4QDoaDFv3KSJt0cqG5ebP0ZyXLn1VOjtxBXU7x06L8UpALhKRBpVzw4X1GJ+KXc0Ymzq
-	c6PYHbAQbhX/NPmf0oVDnt+lp8Oi/Fnw=
-X-Gm-Gg: ASbGncvtezJmbPPi2nH5RF6ukiA4zP6G31ZkAasznjhG9uKB5vHMHfoXxUUmX2dU3R+
-	2ConLjFCbZPYSW8XumUVgDI6HU5sJlJIuFMVxRPCxM2PNtZoQS+pW4t+EO6fv36q2gNodkcgoIs
-	ARdPmK6GwZB7iYr80Y5YW3zhkrNNnanDB23PZxf53bU9d+uDe7IIzUsVYb2XfqX18879eEgYA9m
-	ekKPSn6XNJr7z+lRudKOr1Ze/bQLxaOjDHFufg3R/ZM9oWn62PCgdlfwS2YqPJh+Pnpv0uDvSaq
-	IOvdmtZorCGTmxOx5czUjm1ouP0gY5w=
-X-Google-Smtp-Source: AGHT+IFkYdruCKLfqa70Y9lQPVv+CmQM798vj8kDcIyt0wQWQh6wbjHwGhWIzNFmal8uvBYjguvEeigF8JQhnnjT1hg=
-X-Received: by 2002:a17:907:72cf:b0:b73:21db:6f52 with SMTP id
- a640c23a62f3a-b73678f5f10mr902546866b.42.1763308925495; Sun, 16 Nov 2025
- 08:02:05 -0800 (PST)
+	bh=gJaOho7BWxj6/3WV5yLLAEfgTCy9ERU6mnlnhb9Xf7Y=;
+	b=ehn/skY8wYL2Yup07DpzRM+3X9xt/LGEegdMAW1iNg1OZ0fJNhxzpJp/LSO/EVzyQESsDT
+	QIl9qQ1NLq6/TEm7l37+TbFJCU4bYoDt8Xn0Dzw/oIPj2lI4mF/6299OGbZB644AiLq5Nr
+	WhbRHOV5Xa9AHanMzK4NqCp7F6Y4lWI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763312784; a=rsa-sha256;
+	cv=none;
+	b=OFzAElXgy1m7hIzbnhC6Ay95Zy1bDSs3tDKjWHQ2gWCtq/a057qdLrnV9oIzfTTjB7qtlE
+	+49hDoeI+aOR0GXBFd//liBIuJqZX1sm2f3iEibE0EOGNd87aBdnZg9Aqyw/O/7wnH2XU3
+	HZKYpinIxEgGGk31TyCuMUtefNqcUjg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FULWZXYE;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 39275601B8;
+	Sun, 16 Nov 2025 17:06:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8822C4CEFB;
+	Sun, 16 Nov 2025 17:06:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763312783;
+	bh=sE5PAkx03kSWVxfn6P/KcKgNoFqgW26StGDSttnoICA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FULWZXYEYNfsWVuphzDEmuHpZCY7ou6y7Z8MsRuLjfoJVtckvvtAsAIwpYVhm6PR4
+	 nJGXcMRZ9wnTVfBToQ6bQgbDhSmeahEcv8PJpTfmJ/ajABcYPPJLJjTvzOnPhwakFC
+	 2UsHX2XgerJB5RoR3lRx8r2krOXsIbuoOGq4cChptjXfzXbB+Mtc3AF3RtKZnIXFUw
+	 +RJKlQbSHDF7u+k47gqrdq50JXRjaE/K54OKknbiCOHrR4MB00n9ur7qCJ/H01t9sv
+	 78sKtPik2J136oJlb9SguRGKwaoeB8RpY2vgEd8LgIgtdMn1Ln2y6jOOe6HiC+lo5w
+	 jMu29QI/z5xEQ==
+Date: Sun, 16 Nov 2025 19:05:58 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v6 04/20] liveupdate: luo_session: add sessions support
+Message-ID: <aRoEduya5EO8Xc1b@kernel.org>
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-5-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
- <20251029-swap-table-p2-v1-13-3d43f3b6ec32@tencent.com> <CAGsJ_4xquj2Kbc2qu0vtY6Q+-q3sg56BgKEdPs8eHtKxLBk0gQ@mail.gmail.com>
- <CAMgjq7CDXh5OWy5BMXzNPCSuMQfODTdFPOhpCDGXrhisNfAGdg@mail.gmail.com> <CAGsJ_4yjU0NmQe0cM2xDkMYVdAWRc2Q1FUMGxpo8cVkEt5ifVQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4yjU0NmQe0cM2xDkMYVdAWRc2Q1FUMGxpo8cVkEt5ifVQ@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 17 Nov 2025 00:01:29 +0800
-X-Gm-Features: AWmQ_blsmpBEQZ-qx-vgaYrW7xwT8kVUvZZuk7LfBUBchsPxLfPrdXeW9EhsQHE
-Message-ID: <CAMgjq7BU5S3cPQSRA2+RriPRNEZzZZK-VeuRiMtAzOgva-ZUKw@mail.gmail.com>
-Subject: Re: [PATCH 13/19] mm, swap: remove workaround for unsynchronized swap
- map cache state
-To: Barry Song <21cnbao@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 838CE120004
-X-Stat-Signature: szwup36tjgzatdw4ooa78imhreuq41zj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251115233409.768044-5-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4A891140009
+X-Stat-Signature: ns5nh6h4ja6fyo1jtj6iehwopa5rqrbc
 X-Rspam-User: 
-X-HE-Tag: 1763308927-796560
-X-HE-Meta: U2FsdGVkX1+Eg4tgr/T4ulGbDdO2i6J0QgTFz9t5QMwLK0wkqNEnmIvNt6VZh/85zpY9peGbLNRINvrgjHA2d8n9NkgtQXeQYpm8ehT+rYXfuOwmspnFj66ZlgQkrtiUKJrn8ivdBqj55+yXopWTuRT2eovz4gVMCEbtpBKygdOBGT/8ucp2/gNmJTQGktYFA6a9Zbd+mJL8c31senyEQw8tExX0+KbgKhzAVpYD0QpU8rjK4SEzBDuZn0syOEQ9we7tUUpB6G5YEDvGpLJ7HZENGUJRmUVM0tCv7YjFQm+uv35p7kHDldiAfBKXopIxtREN2HIZkQ6PVpwIiHfAOqEYMK9KNQdBnE1CZA5Pe6iDGRcHUyvGtmLdr7C6LbrjxfP2sPXshHz4JJjkz4CMvS6ICqUhOnE//yRrU5/XXehxqGKvwQXecGmsJkrn91jUx+pZgt1jkosLBiUmsU+V6If0f6EGb64NGKsAffHr6MCN+Z4DMyX4a38efTELRLw4FyPAfoSiu0bb0p2rH22yYTdXb6StTHU1YmCWewNVXU/tVBKYmUfFWskqJn1gc+mQURF/bWaCez/KX798HRQ2i+FfvHTKbdjZjRSu5fhtcN9itHFLNojmaESjBnQOOnuoRInJm4/8sVo1LYdJdAX7Qv+vmWENd4+rRQ+WBZRDcWahwE67LADDKGUukGprYJIqE+trHmCerNgfDRnyZFmhi4k10uiDns3I3KZ6C5oCFoxvlHYzca1KaXH6VCTphwZ0V+ymsbbFJ/SvPOzxPkIJZKMzbAm0XY0OFGwPG34bZ66tyvBgqA788W2pX67U9W0911CKoJdRkuiXcIxHXDuenCim/LyjsSl+T+nolueeaCcowIzA3+zBU8jtWgIpfM7toXb8t+QDMrnuHGNPTwz/Cv5i+sB76lUNTzA51V/dj74QoLgp56aFyVt/9Q2EWF+AAunim7JBuaTm4WWjdQZ
- bwEEx/Zl
- 48srq3PzhSWsIFi4=
+X-HE-Tag: 1763312784-755927
+X-HE-Meta: U2FsdGVkX19GgNut3k81yLXZa0RnGAo1mgN7fomctqkAJmcGDgcEJ8slkLBqWPQDVkXc8GblVmsYmFxkheN4UXc63bQk3W1rps8i7CU8xECp+eyCAbZA5y85uqeI4O3TFohdVtmKrRj816P4IL7wufsIhIAzGayZHiRNhJZe263al0I8z2+aggs8J9Txk3I1K4bgesnl1tXznvpOCJUYIR//PSQTNhyX1wdcooM3EA7McQGmc11qjjHOn+eWDrqPlm95nPoxkCZpOGcDarTN/iBxuZhm7/NWYVAyjx50pTKog/+P6MqBkdXppYlJUskdepWwAOvZpLeDGJfGyZybNKM7JhJOsdI591IlbsJwxwuw9Vev1hjBrrJb7F0QBx6hpGRF0RcTHBmmhOYVWvW70BQe9l5LG6c3WY1eahVjc5k3RAS9fOsinljL0PcyCBPTnYkRskBsJffnUk8Mq8Ge4AwLoqexJv1p0C3dxYc2daKeCC5pneDTPZ8Yj2ugXMzg9JF4rVzIQA1tDOSPRs1asaW3HqzSQcesjVL5AFL+vt1kbbvM3H3KJzwEqP9ON2CAKU0Mh+9Dq1CTyEIm5e6nlT+/bIyhgn3Ye9qDmOJHE3WthRrveXGGnNoH7TstYO+7goeOGgGr/9qJg6YmvruXvKsh9zI/Wwc8NCWyfbkl+GUNO9Rr9nPLXMXAACjBgGItWoG4MFFiZ0kLrSmB+UQUXMQ3eScHZXNjyuNFnv2SmgrNFs1ZfmBiMvRn8U3M28PmaPCX6/y9Fu5esC1+p5LyzvkXD8AgqOd6Ea4jrj+jgGHCdSyQo9/mS+JCj91S61pTG4+Rtn2XMPTDLuHbFWcfVJehizkzMwgr1AfbwwLk61J1T9TMtM8iHNKDMT1KEYYGebjaZ6IzmvFUHaPklNnSt9/RDY/7TkYVMaju7+0+lWLLnB+eTlRXvKj7v2+vWD2nidj5vBCCsCTXehPCFj0
+ wZO6lN/D
+ p6vLBpJs0TyZvviqhgwkrXZ15t3YmnE88/av+6WsphxPuA5qkv5wCNhAb5Dkv88jP9noJOjfUzndSjWMvsZjma/0V1wxeqB2dVJZk72ME0ZlBHaJmf6+B2TnvzB7CTI1alR7Bu5TJwFixsCD4SXlPwtceP1aP/ZRXMWxMOYnTbpfkWg82QjLYnlSrKDUgoJzUZMumve4QrKZ6OAwU8M+8OIF/C4NZBQGSXnGnXoCuRH8YH8a08oanBle0I/9MXhD4KTvhuTQR9x2fKTQ08ntr5bA8yt3YyYzwiHk1UiD00mGYnP3wkO7iJwzXifxMX4sCqLFa1IP3AkjUEtz0IT7gg0xf0kg/sYKPPPNTl/1MzXZWy2HNZ7nwu3TqERNv2xjYijXprHnhzK4hoIVrLeGrk9zBktvtDOm7m53Igi72qQ/Js+s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,125 +117,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 3:21=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
-e:
->
-> On Sun, Nov 9, 2025 at 10:18=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
-ote:
-> >
-> > On Fri, Nov 7, 2025 at 11:07=E2=80=AFAM Barry Song <21cnbao@gmail.com> =
-wrote:
-> > >
-> > > >  struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_=
-mask,
-> > > >                                      struct mempolicy *mpol, pgoff_=
-t ilx,
-> > > > -                                    bool *new_page_allocated,
-> > > > -                                    bool skip_if_exists)
-> > > > +                                    bool *new_page_allocated)
-> > > >  {
-> > > >         struct swap_info_struct *si =3D __swap_entry_to_info(entry)=
-;
-> > > >         struct folio *folio;
-> > > > @@ -548,8 +542,7 @@ struct folio *swap_cache_alloc_folio(swp_entry_=
-t entry, gfp_t gfp_mask,
-> > > >         if (!folio)
-> > > >                 return NULL;
-> > > >         /* Try add the new folio, returns existing folio or NULL on=
- failure. */
-> > > > -       result =3D __swap_cache_prepare_and_add(entry, folio, gfp_m=
-ask,
-> > > > -                                             false, skip_if_exists=
-);
-> > > > +       result =3D __swap_cache_prepare_and_add(entry, folio, gfp_m=
-ask, false);
-> > > >         if (result =3D=3D folio)
-> > > >                 *new_page_allocated =3D true;
-> > > >         else
-> > > > @@ -578,7 +571,7 @@ struct folio *swapin_folio(swp_entry_t entry, s=
-truct folio *folio)
-> > > >         unsigned long nr_pages =3D folio_nr_pages(folio);
-> > > >
-> > > >         entry =3D swp_entry(swp_type(entry), round_down(offset, nr_=
-pages));
-> > > > -       swapcache =3D __swap_cache_prepare_and_add(entry, folio, 0,=
- true, false);
-> > > > +       swapcache =3D __swap_cache_prepare_and_add(entry, folio, 0,=
- true);
-> > > >         if (swapcache =3D=3D folio)
-> > > >                 swap_read_folio(folio, NULL);
-> > > >         return swapcache;
-> > >
-> > > I wonder if we could also drop the "charged" =E2=80=94 it doesn=E2=80=
-=99t seem
-> > > difficult to move the charging step before
-> > > __swap_cache_prepare_and_add(), even for swap_cache_alloc_folio()?
-> >
-> > Hi Barry, thanks for the review and suggestion.
-> >
-> > It may cause much more serious cgroup thrashing. Charge may cause
-> > reclaim, so races swapin will have a much larger race window and cause
-> > a lot of repeated folio alloc / charge.
-> >
-> > This param exists because anon / shmem does their own charge for large
-> > folio swapin, and then inserts the folio into the swap cache, which is
-> > causing more memory pressure already. I think ideally we want to unify
-> > all alloc & charging for swap in folio allocation, and have a
-> > swap_cache_alloc_folio that supports `orders`. For raced swapin only
-> > one will insert a folio successfully into the swap cache and charge
-> > it, which should make the race window very tiny or maybe avoid
-> > redundant folio allocation completely with further work. I did some
-> > tests and it shows that it will improve the memory usage and avoid
-> > some OOM under pressure for (m)THP.
->
-> This is quite interesting. I wonder if the change below could help reduce
-> mTHP swap thrashing. The fallback order-0 path also changes after
-> swap_cache_add_folio(), as order-0 pages are typically the ones triggerin=
-g
-> memcg reclamation.
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 27d91ae3648a..d97f1a8a5ca3 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4470,11 +4470,13 @@ static struct folio *__alloc_swap_folio(struct
-> vm_fault *vmf)
->                 return NULL;
->
->         entry =3D pte_to_swp_entry(vmf->orig_pte);
-> +#if 0
->         if (mem_cgroup_swapin_charge_folio(folio, vma->vm_mm,
->                                            GFP_KERNEL, entry)) {
->                 folio_put(folio);
->                 return NULL;
->         }
-> +#endif
->
->         return folio;
->  }
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 2bf72d58f6ee..9d0b55deacc6 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -605,7 +605,7 @@ struct folio *swapin_folio(swp_entry_t entry,
-> struct folio *folio)
->         unsigned long nr_pages =3D folio_nr_pages(folio);
->
->         entry =3D swp_entry(swp_type(entry), round_down(offset, nr_pages)=
-);
-> -       swapcache =3D __swap_cache_prepare_and_add(entry, folio, 0, true)=
-;
-> +       swapcache =3D __swap_cache_prepare_and_add(entry, folio, 0,
-> folio_order(folio));
->         if (swapcache =3D=3D folio)
->                 swap_read_folio(folio, NULL);
->         return swapcache;
+On Sat, Nov 15, 2025 at 06:33:50PM -0500, Pasha Tatashin wrote:
+> Introduce concept of "Live Update Sessions" within the LUO framework.
+> LUO sessions provide a mechanism to group and manage `struct file *`
+> instances (representing file descriptors) that need to be preserved
+> across a kexec-based live update.
+> 
+> Each session is identified by a unique name and acts as a container
+> for file objects whose state is critical to a userspace workload, such
+> as a virtual machine or a high-performance database, aiming to maintain
+> their functionality across a kernel transition.
+> 
+> This groundwork establishes the framework for preserving file-backed
+> state across kernel updates, with the actual file data preservation
+> mechanisms to be implemented in subsequent patches.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/liveupdate/abi/luo.h |  83 +++++-
+>  include/uapi/linux/liveupdate.h    |   3 +
+>  kernel/liveupdate/Makefile         |   3 +-
+>  kernel/liveupdate/luo_core.c       |  10 +
+>  kernel/liveupdate/luo_internal.h   |  52 ++++
+>  kernel/liveupdate/luo_session.c    | 421 +++++++++++++++++++++++++++++
+>  6 files changed, 570 insertions(+), 2 deletions(-)
+>  create mode 100644 kernel/liveupdate/luo_internal.h
+>  create mode 100644 kernel/liveupdate/luo_session.c
 
-Yeah, that will surely improve the thrashing issue. Having a
-`folio_order` check as the charged parameter looks strange though.
-Ideally we will have the swap_cache_alloc_folio to do all the folio
-allocation so there won't be many different swap in folio charging
-callsites (currently we have like > 3 callsites, anon THP, anon order
-0, shmem THP, and the common order 0 in swap_cache_alloc_folio). That
-will also help remove a WARN_ON check in Patch 3.
+...
+
+> +/**
+> + * struct luo_session_ser - Represents the serialized metadata for a LUO session.
+> + * @name:    The unique name of the session, copied from the `luo_session`
+> + *           structure.
+
+I'd phase it as
+
+		The unique name of the session provided by the userspace at
+		the time of session creation.
+
+> + * @files:   The physical address of a contiguous memory block that holds
+> + *           the serialized state of files.
+
+Maybe add                                    ^ in this session?
+
+> + * @pgcnt:   The number of pages occupied by the `files` memory block.
+> + * @count:   The total number of files that were part of this session during
+> + *           serialization. Used for iteration and validation during
+> + *           restoration.
+> + *
+> + * This structure is used to package session-specific metadata for transfer
+> + * between kernels via Kexec Handover. An array of these structures (one per
+> + * session) is created and passed to the new kernel, allowing it to reconstruct
+> + * the session context.
+> + *
+> + * If this structure is modified, LUO_SESSION_COMPATIBLE must be updated.
+
+This comment applies to the luo_session_header_ser description as well.
+
+> + */
+> +struct luo_session_ser {
+> +	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +	u64 files;
+> +	u64 pgcnt;
+> +	u64 count;
+> +} __packed;
+> +
+>  #endif /* _LINUX_LIVEUPDATE_ABI_LUO_H */
+> diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
+> index df34c1642c4d..d2ef2f7e0dbd 100644
+> --- a/include/uapi/linux/liveupdate.h
+> +++ b/include/uapi/linux/liveupdate.h
+> @@ -43,4 +43,7 @@
+>  /* The ioctl type, documented in ioctl-number.rst */
+>  #define LIVEUPDATE_IOCTL_TYPE		0xBA
+>  
+> +/* The maximum length of session name including null termination */
+> +#define LIVEUPDATE_SESSION_NAME_LENGTH 56
+
+You decided not to bump it to 64 in the end? ;-)
+
+> +
+>  #endif /* _UAPI_LIVEUPDATE_H */
+> diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
+> index 413722002b7a..83285e7ad726 100644
+> --- a/kernel/liveupdate/Makefile
+> +++ b/kernel/liveupdate/Makefile
+> @@ -2,7 +2,8 @@
+>  
+>  luo-y :=								\
+>  		luo_core.o						\
+> -		luo_ioctl.o
+> +		luo_ioctl.o						\
+> +		luo_session.o
+>  
+>  obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
+>  obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
+
+...
+
+> +int luo_session_retrieve(const char *name, struct file **filep)
+> +{
+> +	struct luo_session_header *sh = &luo_session_global.incoming;
+> +	struct luo_session *session = NULL;
+> +	struct luo_session *it;
+> +	int err;
+> +
+> +	scoped_guard(rwsem_read, &sh->rwsem) {
+> +		list_for_each_entry(it, &sh->list, list) {
+> +			if (!strncmp(it->name, name, sizeof(it->name))) {
+> +				session = it;
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +	if (!session)
+> +		return -ENOENT;
+> +
+> +	scoped_guard(mutex, &session->mutex) {
+> +		if (session->retrieved)
+> +			return -EINVAL;
+> +	}
+> +
+> +	err = luo_session_getfile(session, filep);
+> +	if (!err) {
+> +		scoped_guard(mutex, &session->mutex)
+> +			session->retrieved = true;
+
+Retaking the mutex here seems a bit odd. 
+Do we really have to lock session->mutex in luo_session_getfile()?
+
+> +	}
+> +
+> +	return err;
+> +}
+
+...
+
+> +int __init luo_session_setup_incoming(void *fdt_in)
+> +{
+> +	struct luo_session_header_ser *header_ser;
+> +	int err, header_size, offset;
+> +	u64 header_ser_pa;
+> +	const void *ptr;
+> +
+> +	offset = fdt_subnode_offset(fdt_in, 0, LUO_FDT_SESSION_NODE_NAME);
+> +	if (offset < 0) {
+> +		pr_err("Unable to get session node: [%s]\n",
+> +		       LUO_FDT_SESSION_NODE_NAME);
+> +		return -EINVAL;
+> +	}
+> +
+> +	err = fdt_node_check_compatible(fdt_in, offset,
+> +					LUO_FDT_SESSION_COMPATIBLE);
+> +	if (err) {
+> +		pr_err("Session node incompatible [%s]\n",
+> +		       LUO_FDT_SESSION_COMPATIBLE);
+> +		return -EINVAL;
+> +	}
+> +
+> +	header_size = 0;
+> +	ptr = fdt_getprop(fdt_in, offset, LUO_FDT_SESSION_HEADER, &header_size);
+> +	if (!ptr || header_size != sizeof(u64)) {
+> +		pr_err("Unable to get session header '%s' [%d]\n",
+> +		       LUO_FDT_SESSION_HEADER, header_size);
+> +		return -EINVAL;
+> +	}
+> +
+> +	header_ser_pa = get_unaligned((u64 *)ptr);
+> +	header_ser = phys_to_virt(header_ser_pa);
+> +
+> +	luo_session_global.incoming.header_ser = header_ser;
+> +	luo_session_global.incoming.ser = (void *)(header_ser + 1);
+> +	INIT_LIST_HEAD(&luo_session_global.incoming.list);
+> +	init_rwsem(&luo_session_global.incoming.rwsem);
+> +	luo_session_global.incoming.active = true;
+> +
+> +	return 0;
+> +}
+> +
+> +bool luo_session_is_deserialized(void)
+> +{
+> +	return luo_session_global.deserialized;
+> +}
+> +
+> +int luo_session_deserialize(void)
+> +{
+> +	struct luo_session_header *sh = &luo_session_global.incoming;
+> +	int err;
+> +
+> +	if (luo_session_is_deserialized())
+> +		return 0;
+> +
+> +	luo_session_global.deserialized = true;
+> +	if (!sh->active) {
+> +		INIT_LIST_HEAD(&sh->list);
+> +		init_rwsem(&sh->rwsem);
+> +		return 0;
+
+How this can happen? luo_session_deserialize() is supposed to be called
+from ioctl and luo_session_global.incoming should be set up way earlier.
+
+And, why don't we initialize ->list and ->rwsem statically?
+
+> +	}
+> +
+> +	for (int i = 0; i < sh->header_ser->count; i++) {
+> +		struct luo_session *session;
+> +
+> +		session = luo_session_alloc(sh->ser[i].name);
+> +		if (IS_ERR(session)) {
+> +			pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
+> +				sh->ser[i].name, session);
+> +			return PTR_ERR(session);
+> +		}
+
+The allocated sessions still need to be freed if an insert fails ;-)
+
+> +
+> +		err = luo_session_insert(sh, session); 
+> +		if (err) {
+> +			luo_session_free(session);
+> +			pr_warn("Failed to insert session [%s] %pe\n",
+> +				session->name, ERR_PTR(err));
+> +			return err;
+> +		}
+> +
+> +		session->count = sh->ser[i].count;
+> +		session->files = sh->ser[i].files ? phys_to_virt(sh->ser[i].files) : 0;
+> +		session->pgcnt = sh->ser[i].pgcnt;
+> +	}
+> +
+> +	kho_restore_free(sh->header_ser);
+> +	sh->header_ser = NULL;
+> +	sh->ser = NULL;
+> +
+> +	return 0;
+> +}
+
+-- 
+Sincerely yours,
+Mike.
 
