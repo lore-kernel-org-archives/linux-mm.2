@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFAB1CD4F3E
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 12:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF9D0CD4F3E
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 12:45:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E83788E0009; Sun, 16 Nov 2025 07:43:58 -0500 (EST)
+	id 4C10A8E0015; Sun, 16 Nov 2025 07:45:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E33798E0005; Sun, 16 Nov 2025 07:43:58 -0500 (EST)
+	id 471798E0005; Sun, 16 Nov 2025 07:45:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFB728E0009; Sun, 16 Nov 2025 07:43:58 -0500 (EST)
+	id 361358E0015; Sun, 16 Nov 2025 07:45:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AD7548E0005
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 07:43:58 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38684C093D
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 12:43:58 +0000 (UTC)
-X-FDA: 84116437356.21.2882B3A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9D6FC10000B
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 12:43:56 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ieh1SlTX;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 202DF8E0005
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 07:45:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B35441409B9
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 12:45:08 +0000 (UTC)
+X-FDA: 84116440296.04.15A02C1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id F39B21C000C
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 12:45:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mVUG98NP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763297036; a=rsa-sha256;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763297107; a=rsa-sha256;
 	cv=none;
-	b=kuTELM/N3w3MbiSAha7psQoYzdMySb9jcziwoZlNLamClxfZpq3r1r/imDc161r/VdzOm9
-	9Svhn5YUTUDZ9Lj4oSttIyOGCPtfV7gP+La9kaBNAmAR3qIaSouoln+yWkjhpgF9YjLAvV
-	8T7gbQr0kVkgWT9an4v17EXJgG2J8BU=
+	b=MwbybRgSWn+2XRBubPTeyPYAzMbE6MBN0HQDeM7Np1WxhEMkhxr3MN0nWcGtn2RA6YOMFZ
+	cBthqp7b+0GfwhoafgTl/eShrsi9HcQqGkwRdSyN5NfEYLXzzgEm8akT010rmsVbPIeyhs
+	55q5jY5Wcj613H5jA8QSvgk2H6K0wnc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ieh1SlTX;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mVUG98NP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763297036;
+	s=arc-20220608; t=1763297107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fI614ZEx3jvWeHNeVx6boNFaVRfGcX6oh8FysF0hCGc=;
-	b=wHZy0TK//xrJ0tQqn4s1d0jfwLAj4E/dvSjGtzZdmw7eoQytwQy/9xe2inGukiFxT41oMN
-	D1/A2/8cP29lA1tbOj4k3HynIBwYenX7ecTQOSVn47dY+TxrKeivOsV1ZF2nYyo8phfEo5
-	1xKVMHFh4FljsuOxqGkDNVRp0AImZIE=
+	bh=oFQ6FUygXlY1WAq5qYQ8CDd3XlTo/iHW8M507uWs1Ug=;
+	b=2XDR3MTF5J0CbOjd8kZVYw9lx2wVTx42om3iIstFLQ/jTY8rsyikh4uRiDlGp2nJdD6y9b
+	WxgqafYm9y8TMQiwJclFAHT+k6WLBVnNHevjv5KaMh41p/ufYI86cTgo39Li3I4ib+sNAa
+	XPaDG85PjN8QmJjMGKuYJBVl3CKIgPw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA43860147;
-	Sun, 16 Nov 2025 12:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C659C4CEF1;
-	Sun, 16 Nov 2025 12:43:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BF34243226;
+	Sun, 16 Nov 2025 12:45:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D04C4CEFB;
+	Sun, 16 Nov 2025 12:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763297035;
-	bh=wWgCpDj9fkSDw4SXrRucTxci3O9QnA85j+Vg+gKkTZQ=;
+	s=k20201202; t=1763297105;
+	bh=FQsIjcze7ny/ihNObILffVz/RZYjdBBVaFrGEHeRaGo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ieh1SlTXRyDrT+ZZELMQ4or1AmZFhWxyj0uZvf0u87CtZbeGdiEpozUfnNNr1l+mb
-	 sMrREnOzqiH3M4E0YXtb4+WG+/Tn8ZbGqeMJxNZK2uu4C0EPHlmGSBtACovs10gEaR
-	 dbIJvUIgAOALfJHE7yK/czgKIPoIma6GCIhWXV74j+3uM3Z8UY8R/EqXgcGrEQl/GG
-	 dl9EUPpRD6FQMFDPDUEhCxjwC4KPkRq+y98WArsZWKSjf7/AuHH9IF4TVYL3qbB+5C
-	 Pf262w+HheFYjusQSjF7Z5PIClenH85cNiEddYc2DBJxABYjoDYbtHZbpgH7fvHatP
-	 vzplMQ3ly0JNw==
-Date: Sun, 16 Nov 2025 14:43:31 +0200
+	b=mVUG98NPrWa2ycrlOR5G9KSRrMXg0exikuWmvqW0pl+wMf5e6gUAXY2/KvUstqKbO
+	 wtvi6wt5qqNulwDxLfUPo4BMaCUGq+z2zIwgVh+TRMdnydwcON8f6GBmTRx0l/zAAg
+	 UFDQbW14bn1sS9UftJi+0NltKYWS1bKPrnq9qoOJTMZ0Z3VswFK+5dDsP3cbs6/If3
+	 8KPX2wVrR9h7PlZ0VaxG1ow8eQ7qydDhweuVniORdwFwo4ZGBBVTuQ9zdf9U7kqGhc
+	 yuxWfZY4ycdPogoX/C/ajzJCOuv/BCJBlXjgiUQuQz9ZAps4c3lpYndqioxuKypmq7
+	 mnOM8YWPrG9ag==
+Date: Sun, 16 Nov 2025 14:44:41 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -93,22 +93,22 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
-Message-ID: <aRnG8wDSSAtkEI_z@kernel.org>
+Subject: Re: [PATCH v6 03/20] kexec: call liveupdate_reboot() before kexec
+Message-ID: <aRnHOeL8Es3-9dQ6@kernel.org>
 References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-3-pasha.tatashin@soleen.com>
+ <20251115233409.768044-4-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251115233409.768044-3-pasha.tatashin@soleen.com>
-X-Rspamd-Queue-Id: 9D6FC10000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: xrnu4rhac7dj9kyrhp974wp6qgxnx5uc
+In-Reply-To: <20251115233409.768044-4-pasha.tatashin@soleen.com>
 X-Rspam-User: 
-X-HE-Tag: 1763297036-102656
-X-HE-Meta: U2FsdGVkX18MmvuZl92oQ0+hS1Dr/8TFgpol4xj52o6mz73sZvn8aG1LXHlUw0e/3+LcdeLAwdhsQG+gZoENZ8/q1VTOCxZF8rxoxvPga9SrB6MciA+fP4o0rImaE6+c+rQ6wS8x2/O6/gbezPeaH78cp1GmF7BN5D5/1JJxKwWA8/azJgjcijwYjQGRV1vjgnUNOYVIEpjf3PXxPalI7B2eqRFfu/ejCFTOF8N83+f8MvoL2N/RzWjC7mvNekRBPQ5/XUNufzW3HgW7XqnFUSwvsniNSyV2a8Xm2o++jo2NoVG8mcn9cXws6IrjsBSuxFCxgUAS52ZOQnNtzlQHzmnQ1us2rPBff/SOR83YUPyCZtJLq9UzdY+39oGiohO/82L96nX6/PG2Lsh5RIjkwb46GyWXuE7YQKbHpEP7oCx2l80Jcogx97LbpQRHFHUfNorKngjSxLLtXU5ksPtqov2lpUqpiAEJ7SyD5HcC+EPjBCEKBz/PRdILlvhE465IFOY5ySPb5abF2Hy4mDBAQcmVfEMJguwqYqbqT6oJ0NIyqllBeCI7+JnHt2HeLM8dvjKgX1TLK1wzyks6D8c2Ih8+jeJwB+Ay0lZjMxnPIDSL7uqSlTbAHWF0W/3ACHg/9rPFXgf0AUEEMecx+n76iPjaT7PtQPlY9FV28C3Truyi5bMgE+5OZFsK7N76Ya9qeo0HQNRIbxtziCp/PQlkHQZNuylS3Px73OXLtR0AnCAZjKpplL+hzS/glK/K7YHO3xK8SoN78Z8Sle4AZIlt5YLdrWPaiF9KfdbuZoYvXDm2BChO1YRPFgPkCFmjeFk9tSXML7od2OlxOND2CC1zp0gU9KzRtyWLSCoxMFQS1COS82BZ6LPe9wKIMTBkndeVhysRzWPx1tnG+xGm0to5++c1VFu2a14bRsBYZ0BuQ48GE3NJ+hz9MGN/tlrfvEgCpJW772rHbtY41qUSYTv
- VDDX8awA
- HavtrKRQNnJYQKRxpqbPEW3coXMIyWNn9XWCL7gkKpWgf5Ybl4YvAkra/cjDaj1t4onxn8XqnB261MFjsXkiwsOwB7k9rKNnlvcBE8habhv9AlFTqyLALioODQjPVWsBY1Qg3vHurEBAU2SYIRGMhDt0dfm53K4u7Flx9SXhEg7MXmg7lQxqX6QgtsvuJmJtbFONrHzy4ohqDvg9F8xQnW5hcR8jX+mfb9gKg9pOiV0AjBK4EC9aiTU+4NykeUVrlGSOkE38yPa4O0hmtJkoToBRrdDSQsP0GM82IZbr2X+Hd5h5Ip/T7v5UyouUuHB5YGUSZk9EUNrkkn6W0nEMqcOKbyzphc5DAK/cpZVnlE0bROuxVAQFyEKaB2aF2C2bkWm6tssnznWJudFo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F39B21C000C
+X-Stat-Signature: m94yo8cu86qcyafkdk9uen1af6wx6hef
+X-HE-Tag: 1763297106-952969
+X-HE-Meta: U2FsdGVkX1+LikAF2npk5SYTWZkFbRp51m1AMp2avN1huPfrxqrEEmEory2cIZYmBVFSe/JE6+HpH/TolsrzMKWU6vXgUBuASXlTQYeExIXSYe46oo6wkjSEBUQs8QRKAgGNwd1I40RZocfBOFXHEukWBuE6pINfikmzLUtbmTVw+9Ww/DTIQ7Kz0IL9v9NqCH0Xe2kpd9R7QrfIh74PYNtmHNMZlUUtvOgu6/ZtWz2wvBPjSesSWBYRo1o2Vg5cacxGFhZLcUoDAgB5Ew8nZ+RWpqe0gLJoKok69ew+7+g9wi/375/zeGCLjYOlG58zL7nneOX1uVX46A3pqlBAZtzTVhVBrlQdt9Cf7FhvZzvevcvqR+9GtjPwAlQkAbLDZTdqQGM5H0uYldgZZ1tEksN3xCfapUuRXfCjNgkrS6viEpQkT7A1jDcujsbqdI9iEpYoEGIVSa1UiDDIh+Y0TFUywkx/jRtrNxthFXIT2KOoIlV9MfpEPq8qkrijDfcqj8xWtwRXCZVMPPTN92+wBq7sbpdZCr0s60hAZ/Bi4GD0xh/31jfOcO3nbbcDVPuOvQF5CVpBuFH5moxt4fLviLOiEgEhtnGKrYrIUCdUZVXopR7EAjBdkxb/OM1ZPxwJ0/FNPFSxLvfw2SXqamZEk4lH19BEDwdK3DorI2FlKoxhJ1LjtvUhqNrNWHiF0pXtRDiYE65zAD4vvHxjeUAyWLjrty+iCELhHcJSwoQXcGFVxWTHme9FpBv+aKGr6mYQ3TOXVkAxQJMbv89kbx/f/dvw3XKiJ40BqXJ4NfqRb2jzPomAajqkx7lzTyEeub3bOUF9bxqpac+Ye0K0S36rEvX5orOf5XLv7MDJOtpG9nd4NW+ouwGBuVVDjKKFH008Bx78wiQ9w5Osou6HLqpjpzMdFDrW12GaqbhRKx3sTHevl3kWKit44Xj+Xdz1haRf212W1hLd+z4bTUUemg3
+ Omafoiwy
+ u14eLKgEF7ynZ3yKnbLkxdTVmuV8nt2IO/K5PTOlfOITQDtq2FxoC/QmTYvcKNU0S1uk12zqjVXy72HD4oP+1Zh3bb3bQnn/9KLXL88SaLioRdOg1WnThFelx91KtohAIb+VOdQNddwigkyXtynsX4pLGB9FKy574Ul1uW1QVwrLhXg2RXQ33mAEYl1hHFW5nu6UeZhn1Vzqa5jJ1KEbfZh134qJRTDKcvSpbd4pnvxLb/EZMjviY5qr8Gg6u1+YYfrlcf5J3aS/cFGCeLDS0+M+I6GrTrhaeYNEUUw/4b2x99Vv8KCc7rrt9kVoEaiuW4d5duHNIBOOZDxyNBJY4aJqdpwgY6TdMfqic0/J/0EJvYqD61GGrWabam3M9zFmw3tD+62LtUijK9KvWTOe3b5oImOBd/0cPDD2P7qZlyxRW3J04ScD5wwxFSpsZvTU29p+d6SoGz+duEqk8u/8cqvFi/cW4TgVpxS+g3cB/QVrDM0U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,110 +117,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 06:33:48PM -0500, Pasha Tatashin wrote:
-> Integrate the LUO with the KHO framework to enable passing LUO state
-> across a kexec reboot.
+On Sat, Nov 15, 2025 at 06:33:49PM -0500, Pasha Tatashin wrote:
+> Modify the kernel_kexec() to call liveupdate_reboot().
 > 
-> When LUO is transitioned to a "prepared" state, it tells KHO to
-> finalize, so all memory segments that were added to KHO preservation
-> list are getting preserved. After "Prepared" state no new segments
-> can be preserved. If LUO is canceled, it also tells KHO to cancel the
-> serialization, and therefore, later LUO can go back into the prepared
-> state.
+> This ensures that the Live Update Orchestrator is notified just
+> before the kernel executes the kexec jump. The liveupdate_reboot()
+> function triggers the final freeze event, allowing participating
+> FDs perform last-minute check or state saving within the blackout
+> window.
 > 
-> This patch introduces the following changes:
-> - During the KHO finalization phase allocate FDT blob.
-
-This happens much earlier, isn't it?
-
-> - Populate this FDT with a LUO compatibility string ("luo-v1").
-> 
-> LUO now depends on `CONFIG_KEXEC_HANDOVER`. The core state transition
-> logic (`luo_do_*_calls`) remains unimplemented in this patch.
+> If liveupdate_reboot() returns an error (indicating a failure during
+> LUO finalization), the kexec operation is aborted to prevent proceeding
+> with an inconsistent state. An error is returned to user.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 > ---
->  include/linux/liveupdate/abi/luo.h |  54 ++++++++++
->  kernel/liveupdate/luo_core.c       | 153 ++++++++++++++++++++++++++++-
->  2 files changed, 206 insertions(+), 1 deletion(-)
->  create mode 100644 include/linux/liveupdate/abi/luo.h
+>  kernel/kexec_core.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/include/linux/liveupdate/abi/luo.h b/include/linux/liveupdate/abi/luo.h
-> new file mode 100644
-> index 000000000000..9483a294287f
-> --- /dev/null
-> +++ b/include/linux/liveupdate/abi/luo.h
-> @@ -0,0 +1,54 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
+> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+> index a8890dd03a1d..3122235c225b 100644
+> --- a/kernel/kexec_core.c
+> +++ b/kernel/kexec_core.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/kexec.h>
+>  #include <linux/mutex.h>
+>  #include <linux/list.h>
+> +#include <linux/liveupdate.h>
+>  #include <linux/highmem.h>
+>  #include <linux/syscalls.h>
+>  #include <linux/reboot.h>
+> @@ -1145,6 +1146,10 @@ int kernel_kexec(void)
+>  		goto Unlock;
+>  	}
+>  
+> +	error = liveupdate_reboot();
+> +	if (error)
+> +		goto Unlock;
 > +
-> +/*
-> + * Copyright (c) 2025, Google LLC.
-> + * Pasha Tatashin <pasha.tatashin@soleen.com>
-> + */
-> +
-> +/**
-> + * DOC: Live Update Orchestrator ABI
-> + *
-> + * This header defines the stable Application Binary Interface used by the
-> + * Live Update Orchestrator to pass state from a pre-update kernel to a
-> + * post-update kernel. The ABI is built upon the Kexec HandOver framework
-> + * and uses a Flattened Device Tree to describe the preserved data.
-> + *
-> + * This interface is a contract. Any modification to the FDT structure, node
-> + * properties, compatible strings, or the layout of the `__packed` serialization
-> + * structures defined here constitutes a breaking change. Such changes require
-> + * incrementing the version number in the relevant `_COMPATIBLE` string to
-> + * prevent a new kernel from misinterpreting data from an old kernel.
-
-I'd add a sentence that stresses that ABI changes are possible as long they
-include changes to the FDT version.
-This is indeed implied by the last paragraph, but I think it's worth
-spelling it explicitly.
-
-Another thing that I think this should mention is that compatibility is
-only guaranteed for the kernels that use the same ABI version.
-
-> + *
-> + * FDT Structure Overview:
-> + *   The entire LUO state is encapsulated within a single KHO entry named "LUO".
-> + *   This entry contains an FDT with the following layout:
-> + *
-> + *   .. code-block:: none
-> + *
-> + *     / {
-> + *         compatible = "luo-v1";
-> + *         liveupdate-number = <...>;
-> + *     };
-> + *
-> + * Main LUO Node (/):
-> + *
-> + *   - compatible: "luo-v1"
-> + *     Identifies the overall LUO ABI version.
-> + *   - liveupdate-number: u64
-> + *     A counter tracking the number of successful live updates performed.
-> + */
-...
-
-> +static int __init liveupdate_early_init(void)
-> +{
-> +	int err;
-> +
-> +	err = luo_early_startup();
-> +	if (err) {
-> +		pr_err("The incoming tree failed to initialize properly [%pe], disabling live update\n",
-> +		       ERR_PTR(err));
-
-How do we report this to the userspace?
-I think the decision what to do in this case belongs there. Even if it's
-down to choosing between plain kexec and full reboot, it's still a policy
-that should be implemented in userspace.
-
-> +		luo_global.enabled = false;
-> +	}
-> +
-> +	return err;
-> +}
-> +early_initcall(liveupdate_early_init);
+>  #ifdef CONFIG_KEXEC_JUMP
+>  	if (kexec_image->preserve_context) {
+>  		/*
+> -- 
+> 2.52.0.rc1.455.g30608eb744-goog
+> 
 
 -- 
 Sincerely yours,
