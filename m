@@ -4,116 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07FDFCD4F3E
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 18:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C743CD4F3E
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 18:43:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 626598E0011; Sun, 16 Nov 2025 13:36:55 -0500 (EST)
+	id 460DB8E001F; Sun, 16 Nov 2025 13:43:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FE198E0002; Sun, 16 Nov 2025 13:36:55 -0500 (EST)
+	id 4113E8E0002; Sun, 16 Nov 2025 13:43:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 514048E0011; Sun, 16 Nov 2025 13:36:55 -0500 (EST)
+	id 3268D8E001F; Sun, 16 Nov 2025 13:43:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C6178E0002
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 13:36:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E5EE912F286
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:36:54 +0000 (UTC)
-X-FDA: 84117326748.30.512084F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 306A2C000B
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:36:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fJys7Lvs;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A6178E0002
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 13:43:18 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B8295C261
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:43:17 +0000 (UTC)
+X-FDA: 84117342834.11.0E4EE2F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F34B7160006
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:43:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SaYb1Xl9;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763318596; a=rsa-sha256;
+	cv=none;
+	b=Av7gkFaBZWn2tdbexyq3JKDKwtJ5fdcWzGF4DNoHi8MERYSz68BrqZFgltomE1yoBwZHb+
+	FcNimOWhI5ata+fEy+uyS9urMEaq95UmjO0FDEdRD/5vUaW8Z8OmX8DRxyf6l7SbMOUuda
+	WHJA/CLMvxpKUG+VeQ3GqdGDFCT1SuA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SaYb1Xl9;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763318213;
+	s=arc-20220608; t=1763318596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1KLf9g9eRsyKU3YHNNleyg6ZBr1Q7RxAULhWibcGVbE=;
-	b=1pJx//X1olltJOmvZo+zkeB5kxfFTbTHbkkjoRXwWRLUcTsQYls4CKBF7ZyDYV9HyGgbZ/
-	h9njm0oDMeVyiBWYeZoSzr9k2o8joTCG2J4KtNHtJUp1okaMRnWM1Z5xyp10eecyUoZXDU
-	jYRtPINNviB8mgyIAOwyo9GuwU4St9A=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fJys7Lvs;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763318213; a=rsa-sha256;
-	cv=none;
-	b=HVAI7L85CiBBnaRODRODQ59YBYfLV4y5m5H5BceLh/q6rC9DJSgPJUjjiH8v/8nWMwZLeQ
-	z6dDbDt8i+cgT7eRMR1R0dXQvO2JKtVHoOHIZsUaZeLrCNxZURfx0ZhPHCbqgZCUaU5lMk
-	OGBKp6JBS5s7TkbFYmYWtttBrm3RdZg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=U/fdNCSWbO1nrgWtt1Wum/s3UbE8a9K1BuG2erxkY1M=;
+	b=Go8JTDq4X4qi5Q4Dz8Nio9Kjaab+shL+jsRaUhBWuha8F5iYNwFhUPmwiATxklFWnNuemX
+	SZV74eCtbgAY26hLf76xBlr7FetYOvQbblCdl7Sp3yaB7uXfYYSPybzHvadt+VysHvHq+6
+	peXKTHvRUrHyx7bEIaLHBIsP8GTS+So=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 23DD243C8E;
-	Sun, 16 Nov 2025 18:36:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DB7C113D0;
-	Sun, 16 Nov 2025 18:36:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763318212;
-	bh=pUFOQlfWPQVHlNRZMItbyB86PfyTKPMdohxZA/z8UcA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fJys7LvsoVVVknZjFngPHDcjKFn3LaoAIMuXeiTvlE4PVCSe5jgn0CdghHhAg0i+7
-	 Nq2qRiOkWybWy+d6dFjpmNUOFeenqV4chIXDaxJFsmRi8QxmuCeJmveoJXBeOTxPRX
-	 RvQpXRKnKgfMyhMMLeI3nasaM+2YMYesYC1x13IagcjQBxX4f5mxyem4INd98mDX8c
-	 xSC7aldwdEtvZR8m8wMMPttXxkPwxxcJODN7Sh0tH8UU/kpioNP9NBhkpuNI63jLtT
-	 CnwTwjspBvrn4SdMhyLmlJNsnoJCP+E1Za+iJKk64XotlBKhWUoASH6Lckowy5wylQ
-	 GlPK6D4vo4kmg==
-Date: Sun, 16 Nov 2025 20:36:27 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v5 22/22] tests/liveupdate: Add in-kernel liveupdate test
-Message-ID: <aRoZq2bYYm5MGihy@kernel.org>
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-23-pasha.tatashin@soleen.com>
- <aRTs3ZouoL1CGHst@kernel.org>
- <CA+CK2bBVRHwBu6a77gkvsbmWkQFDcTvNo+5aOT586mie13zqqA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bBVRHwBu6a77gkvsbmWkQFDcTvNo+5aOT586mie13zqqA@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 306A2C000B
-X-Stat-Signature: baaaaipb7yyi5cz87ejug1kfgi3tp3uu
+	by tor.source.kernel.org (Postfix) with ESMTP id 6726160008;
+	Sun, 16 Nov 2025 18:43:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BD1C116B1;
+	Sun, 16 Nov 2025 18:43:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763318595;
+	bh=mlz8XZ5Zk1VrLETXio4E2rnvuua3hukDKbQJ9q2Ss9Y=;
+	h=Date:From:To:Cc:Subject:From;
+	b=SaYb1Xl9buvWv1y1g+OBuDNjTe5Hd7EZ/z82xsMK6QYsoAmART/6uGP+vx+ypof9d
+	 W7/rxllPP0cBmb3b+RjU1Xx07yRVR6YmdyDTIAQL3IMrVoph+WeYzX68FrwTDrKkG3
+	 2dRLst8ZLraOkpx8lNrEysEZeGLUdQVOe0JlCNHg=
+Date: Sun, 16 Nov 2025 10:43:14 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] more hotfixes for 6.18-rc6
+Message-Id: <20251116104314.af398baa1fafa06daee19ce3@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1763318213-846171
-X-HE-Meta: U2FsdGVkX1+27slPpq1gN9XStT40sril9dAK6qnW/cTR63MyfS0/7yADKLb3W8qer6LR8h2B55bRDFH3R3azCIWrdkDAcL6ndpChCcLqf/BZp/ErsSy3KNQ2Xvxa2QKbD0IfnwMTlPcv5VPZ44JxX38aXZ0ToAxuGq8vkfqapMO6E6s6cvyDaKit4Erec3LYjQxpzuSpTfvnjAvSgOqvHBXhO/oE3ctxDBVqNkRz4Pyvf7P/xnP23OGgqjtQDo+iuxJBbFwYapB/bWWPxVJWQoOlmGeupy/vkbYEVwDtFf6N8JmYit6qjgoSFWtZSfFpDma7U+/fsSGah1IoZKcm6loMkC6gSrTGz5SLLcCt0CAhdx7o53FOU6fbdoGkFnaAIn2FkbJKSYi3eDlPvr0llB2/cIiqyEPHb/Lte4p3GJEoJN98vkfLFaV07MtzcYUXmh3VnOjrYNbVlKZUuS4F/ZVsUrSs7dwu5qw0iQDojZMqvr+57j4WV/ta58Xo5OKkyFOsjr7otf+o8+43RH3+KN0G9Xh0w+L7M+CiKDaGSMS4WM7Q1yxMN6qKp6t+VkcI8Cmiwys0buXGv95UJJ4IFePeORwL1WkIz+E589IEtXD5r8pZKihMoabseeyfN5F7bUXC/uwVgmbkwuopP37wx5hgU1rlHqquhSQa4yVUTbIPFRbsZmpmvM3K/Qarfgb4zCFPSuBlG0RIPhRPh2PKR0ZdPAvi7ch8qZ0uSrFwpXWPNkx3qsXmAUhTr3OtcT9xpMsiCsezEz6IffDpjw8pud6miubXPpr+QTdNK9OJsTj0mJ9caFRr1a6T2UAboL/y5Eq67gSCYJ5zG9dJkBeiUJE3nmbL+xwczY2jBPjFfbLfcBlaXkkU/k010Qk0y1XaADwm9BVAORfdAxyWf3EWec25pyaa3HE5qrCbB20SGKYsnKRWeqOqJqDahWVl65KjaSbvtYcFeV/D+8ij6DM
- KmCF/+li
- D5MQdzQMapahyO+Te82hoJxt7Q30fiMz7JnB67rRSNWOWCoSBn+5Tf3J61qKrEz7JIoZnIQO2LE53AlAwHPZxhFEyXDzmcwJCT3OCtOgnBsNSiKVi0Cq8PrhiqlxSJqVOLcgqZpFZCbI0P+x8Ydhgby+QX0pAUASnS+y6rIae3aJaf/lrd+B5dVGp3DVunmRoN45FqyEwMWzZnceLxgypvSGnYRlQyz0HbxGxsNsjWREaTyi2PHKFwixKLTMiFDRySrDzEuN1LFwbR1Ee+ej2X1Ca/mmbg4SoFvpTsfij32Jkmf1PwMTK+v96Un2dytFhzXW89D/HlBf81/qn4WJx3X12V0drdsZVqyzPlf9d5GJ/t1uoFm3/5Jc8o6vJ2/QPgU8DwKkvG8nFyLg+1J86ubvcdQkn+pgRQ4pPM+4/QAAEhyIB8y5ocQphYg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F34B7160006
+X-Stat-Signature: bagbxu4n7x9pzih97bambjzchp9kpj65
+X-HE-Tag: 1763318595-370697
+X-HE-Meta: U2FsdGVkX1+GUEgOQoab37v8Be7UcYS6mZTjzP3K9pvU7zx+SHNG+e6gT78+mytzKl/OOOruwACx6JIL0SKjMLDBzq0FI809nj68YASxuCe5lSMgYiu2ZJVLVO6BqsMCSucAnu0/NynWsrVZ+YnNL/KwAJf+K53MdXA0FOl3KF+8ZCMVmbo1par/kdFiSdGnE0g1tpTZKaR6xish0thJOC/StOW4hvESdZ8cEXrY/JYea47+SADxLDUs5wflIFiQ+HhMfKdQLT54qi+qmVeLYonOiSpjrBfcYmAEuFX+EZYu3ODXgEzDR0qJnfWYw7BSka2Kkvj38AyilJJfT4H98Hi3SpfqU95dTJqhNsuEbP8B/l66lQoB6lOzib/Zt/AhDtWZ5fdSaTngm/Nk/y0fetGJ5P7/Q8Fu/d5IN8W2aj0b13NPjfEzmyLAtbyBEbA+4KyinSNzzODHDu92gjX+N7dJ5ldfBkl7xSV8gqpA5/ssZqDzwJXzrhe3S73ayY4jdfjgnBPqmsfUKN44YIgyg1Ax2bHEZ5jGmWJzSIgFbmroBO6GNBXemjejQqhXVPOjC8P1+yAqSLaRAkzs2Boj75KS3EBNIB6FvqtPmapx1bHDDi0lOsYF41JICcFhX05hv93BbQhjgzh+7ESC25NpvvLTr8kVY88yYvyTmyrxYVRvfLFls1Lsg+W7J5t0kIdeQyIosyAxfWiDmYFX/w3f++HWhEMmCE56RYisZ3pcaqxW/bMJ7X6lBD1t04qVtD541Rh8V7V6D98eG7DNKzy8To05ePpaAId09aYX5qda5Iela45Pcoq1ftCjohahZtRKVGpTkGG5tAl5TGIN6hTTeeGHJE0P3k0LzCx0OARdwxW3S0VRGCg/jesWdPwQSgCp0xohMrDrqG3WztpqX65FiAom4mACm8RUVjve2ps8bmWV3t5Uq7ONxgMxBHjo3C0Z5/TS3B1zFma8DowhB7T
+ Xv1Ktnzz
+ HhzqyUZ1JLHTJmezjkf4FI6KWw5lgv7kggmvEtMmHspHepFgqA9si4JbRQpm6cM8tVR1baUQLRpK/Cub0tmOcbqRRJkTxHWAOUBt8VM80W+HMRPkThUEGAwPQ/2KcbMMk0l8pDPfiXw5YMQSViP1DQhRuqDex0OMHNdzjH5RxPQVZaI/uTlUJqvLi3cS012uvpQmQjT73AiAgw91kOg8oV64qY0/WXnHvcvm/Je0ZN0U3KaItaauas8gNFal1WAdcNdHpur+xXMVzZWg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,53 +87,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 03:40:53PM -0500, Pasha Tatashin wrote:
-> On Wed, Nov 12, 2025 at 3:24 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > On Fri, Nov 07, 2025 at 04:03:20PM -0500, Pasha Tatashin wrote:
-> > > Introduce an in-kernel test module to validate the core logic of the
-> > > Live Update Orchestrator's File-Lifecycle-Bound feature. This
-> > > provides a low-level, controlled environment to test FLB registration
-> > > and callback invocation without requiring userspace interaction or
-> > > actual kexec reboots.
-> > >
-> > > The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
-> > >
-> > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > > ---
-> > >  kernel/liveupdate/luo_file.c     |   2 +
-> > >  kernel/liveupdate/luo_internal.h |   8 ++
-> > >  lib/Kconfig.debug                |  23 ++++++
-> > >  lib/tests/Makefile               |   1 +
-> > >  lib/tests/liveupdate.c           | 130 +++++++++++++++++++++++++++++++
-> > >  5 files changed, 164 insertions(+)
-> > >  create mode 100644 lib/tests/liveupdate.c
-> > >
-> > > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> > > index 713069b96278..4c0a75918f3d 100644
-> > > --- a/kernel/liveupdate/luo_file.c
-> > > +++ b/kernel/liveupdate/luo_file.c
-> > > @@ -829,6 +829,8 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
-> > >       INIT_LIST_HEAD(&fh->flb_list);
-> > >       list_add_tail(&fh->list, &luo_file_handler_list);
-> > >
-> > > +     liveupdate_test_register(fh);
-> > > +
-> >
-> > Do it mean that every flb user will be added here?
-> 
-> No, FLB users will use:
-> 
-> liveupdate_register_flb() from various subsystems. This
-> liveupdate_test_register() is only to allow kernel test to register
-> test-FLBs to every single file-handler for in-kernel testing purpose
-> only.
 
-Why the in kernel test cannot liveupdate_register_flb()?
- 
-> Pasha
+Linus, please merge this small batch of hotfixes for this -rc cyele,
+thanks.
 
--- 
-Sincerely yours,
-Mike.
+
+The following changes since commit b05addf6f0596edb1f82ab4059438c7ef2d2686d:
+
+  kho: warn and exit when unpreserved page wasn't preserved (2025-11-09 21:19:47 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-11-16-10-40
+
+for you to fetch changes up to 1c2a936edd71e133f2806e68324ec81a4eb07588:
+
+  mm, swap: fix potential UAF issue for VMA readahead (2025-11-15 10:52:02 -0800)
+
+----------------------------------------------------------------
+7 hotfixes.  5 are cc:stable, 4 are against mm/.
+
+All are singletons - please see the respective changelogs for details.
+
+----------------------------------------------------------------
+Ankit Khushwaha (1):
+      selftests/user_events: fix type cast for write_index packed member in perf_test
+
+David Hildenbrand (Red Hat) (2):
+      mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
+      MAINTAINERS: update David Hildenbrand's email address
+
+Kairui Song (1):
+      mm, swap: fix potential UAF issue for VMA readahead
+
+Pasha Tatashin (1):
+      lib/test_kho: check if KHO is enabled
+
+Sourabh Jain (1):
+      crash: fix crashkernel resource shrink
+
+Zi Yan (1):
+      mm/huge_memory: fix folio split check for anon folios in swapcache
+
+ .mailmap                                        |  1 +
+ MAINTAINERS                                     | 28 ++++++++++++-------------
+ arch/powerpc/Kconfig                            |  1 +
+ arch/powerpc/platforms/Kconfig.cputype          |  1 -
+ include/linux/mm.h                              | 13 +++++++++---
+ kernel/crash_core.c                             |  2 +-
+ lib/test_kho.c                                  |  3 +++
+ mm/Kconfig                                      |  7 +++++++
+ mm/huge_memory.c                                |  6 ++++--
+ mm/swap_state.c                                 | 13 ++++++++++++
+ tools/testing/selftests/user_events/perf_test.c |  2 +-
+ 11 files changed, 55 insertions(+), 22 deletions(-)
+
 
