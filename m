@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED53ECD4F3E
-	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 18:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CFB9CD4F3E
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 18:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54D5E8E0026; Sun, 16 Nov 2025 13:12:57 -0500 (EST)
+	id DD9FB8E0005; Sun, 16 Nov 2025 13:13:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5250E8E0005; Sun, 16 Nov 2025 13:12:57 -0500 (EST)
+	id D89CD8E0029; Sun, 16 Nov 2025 13:13:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43B2C8E0026; Sun, 16 Nov 2025 13:12:57 -0500 (EST)
+	id C7EAB8E0005; Sun, 16 Nov 2025 13:13:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3142E8E0005
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 13:12:57 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E96C4140A67
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:12:56 +0000 (UTC)
-X-FDA: 84117266352.26.78F41EB
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2ACF820007
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:12:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SaKZg716;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B3E4B8E0005
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 13:13:03 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7546212F1B3
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:13:03 +0000 (UTC)
+X-FDA: 84117266646.15.B865F71
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7DF5440009
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 18:13:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WcFhcLMK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763316781; a=rsa-sha256;
+	cv=none;
+	b=SixFMbwvX9EbX2+bxvm+yO5hkzIpHWw1+NVljz15RQ9YmAbSlBm5eRfjRCgmLqIxRDkXJd
+	K2FFQhooiJ8WA04PWI3jQFWKgixIVmXzz6Kk8MAXXeRWb4fVYBWI3eFHXQ/MZ7XE1WHYw0
+	a8caIvu5gYbGt5hBGHKwe6HwR3Z+0Og=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WcFhcLMK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763316775;
+	s=arc-20220608; t=1763316781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xZOKrPxmb2yknUYuBNcmT2AdChM+0jcdM9YzJtn8wWw=;
-	b=6qzo++Kyre05KSOLc3a0wMekUgDLmVFrOQ8IawWk/tud47ZA6lTNN+KKdt6izxV4PstUiw
-	fjTN7fxGEYJwjmmfd7g+vyeqFS8B0z8xmTaT0wvFvkBxY6Xn9szK1oHRrSPmfRaYHj7isC
-	paGmvWxzijspcgk7ocbCEC7Qg9d+z/k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763316775; a=rsa-sha256;
-	cv=none;
-	b=Q5tm3hbJq4g7jrNZRxU1nsk35BiZVgYxAyBRtIaH5RE2XkVKLK8nJcqQR6LDJz5KDmSSWm
-	1Ip8RLc3A9lYCpmFS94CqXyS18XFND8jxYK2Bn7mTrrK56MfKmYi5bMJwM94e9zclik4TN
-	rjH+OdJexWkQUfXBmUTQuJAQ6otKNNQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SaKZg716;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8b1e54aefc5so312637185a.1
-        for <linux-mm@kvack.org>; Sun, 16 Nov 2025 10:12:54 -0800 (PST)
+	bh=N5dyJSqyOf74su3zx4aCp7vUNrol9ZYcdrrVb5NykSY=;
+	b=LGuLHsHY82QGczEffxl462Hf6xfLogNTQMd7uav1aEGq1qb+WN5gDIT78pj4QPpqFdYNae
+	N3PsLyeqaLkzD9ezcq0KkfV0x3mJw8xg7xDvlX2/0u/q0uvrZrdIHuWXGoCKk+2R/pLckV
+	DLurBQC2Rq4IwGpgYLvcUh1GVKD3D+U=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8b2ec756de0so27842285a.3
+        for <linux-mm@kvack.org>; Sun, 16 Nov 2025 10:13:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763316774; x=1763921574; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763316780; x=1763921580; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xZOKrPxmb2yknUYuBNcmT2AdChM+0jcdM9YzJtn8wWw=;
-        b=SaKZg7162VtiHE1TxaBRUqf2qVPy6lW8UW1L2rMtY9wRjPtTXI5HX+x62otyF6niB7
-         +nmsKI5u4cbzWe+lUsBiYJswGT1TrcKuGpIcXIL9KxAYAV3I1f9rwUvS1OHcc3bqjuhs
-         Rzfe7HNFk3qKTUD8IP0aTODHKRZewUWWEHZKyicmVtzyuQlecBnsS/zM8b6fwe1sCpRT
-         W86ooKjvfeRztm0u2ns7cT4t7CJGF0H5xjkef6imwHNy3dMrvzOZL5bbt/GtE2Ktfhs+
-         0hmxq0ykjHtfznNn4LxwC2Yv163wE/8syTyuxyA1S9gcwl13+2z6wjiKIc6Yb3Z1M7uJ
-         BUQQ==
+        bh=N5dyJSqyOf74su3zx4aCp7vUNrol9ZYcdrrVb5NykSY=;
+        b=WcFhcLMKqABHM3zNMD6AjxvuIlDJib1qGeurCPE86x8sF6ljgDQPp5c+rfcRm36gpw
+         9mgrykmCeJB7ujN2PW9DJVoAw+mqvSLAcCHjEg1twHNqwrJwiKub4b6viUgYSGPFI/Fp
+         nR0BU3HKzGdX4DgKPAdG4xC9kARqb5a1on6LVVqqSFbML9Ei0BdbLJRniOFg5TdNQ+Q2
+         EZFQI7N7aMgim1xrOPtN/J96WzWwDXFniTD+C59jw6XSIsRJKZsPz9zu13dRnzYBsI7y
+         euQXt33ancXf+mpB22VsTkVHNy/VFILKZHXazZ6XVkoI3gbZ28UkrHDS4SHMxBuSCnR0
+         xZqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763316774; x=1763921574;
+        d=1e100.net; s=20230601; t=1763316780; x=1763921580;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=xZOKrPxmb2yknUYuBNcmT2AdChM+0jcdM9YzJtn8wWw=;
-        b=eOHlGMs0kVeE6GW9+c3t30J8W4vMawuLSUHcVKVor1qzJISaspRtEHVINZbscwQQyY
-         RMkRHhhaeQuSF84Eaw6OxrmCRtR/6Poa+4BBMRGOxKceqbHrL/FDNja6WtnKevKmy2/N
-         EGYVKRpFHOPxb+68QRMo+HO8XbeqcNYOIKidEW5pF4GNbHmph7CiSDeFhhlCy+xMpyTF
-         GNVL3M5or6hdFP1Q7UUhfMfaRBIE6gBbgp6lOFSrkg0A9XFlgGCswMmLlLR4pmD8PtZ2
-         u8/RgV6itSUYF2ofbBKEK47nCC1vgogmRCynK935/wYgR3ECALAM+rf2j2wW2WuWaDdR
-         q50g==
-X-Gm-Message-State: AOJu0YypirPaUD5nSQyngTdGI+rlLL3B29F75vm+bKh3AygydSqHnb7R
-	i2IcCSkLPXBmbuuO5DRXFmAgHRYkGrY59CPIuX4uQVeSZZGqV7v1nWqr
-X-Gm-Gg: ASbGncs+dkG8eXDo9PQXuZd9k1ATFoNs6N6m8R3ew3P7GMBl/nNF9RZ+vS7WbCx8ngk
-	eworqnrizYgXif0ZPh0b3+lUzw6pWdg1FKtHHV5oU0NlE6RiltkOUf7tYnunqVph9LI9UtJ+aHG
-	aG3JfRqDBFWPnkCWIiuWKkD1OaEA/N75lNtJwTXWlFSQk9BLSzeh0uDMUzFY9MPZF0u7ROFKvLx
-	rCG428Yem5PiQ8UBnSksPGSsTwKx0gUftmPQmA4t1XSdgnNohvLFDzOxWpqIVHudEZYYSEev9b/
-	QkGqUeRv+jsRw8qp/T7/F44aY1qCQhjqSt1skYEaXV8f2bvWhoQ1Gddh3b42pckm0JnX32LrDLj
-	4CDNzjefhfRwPAkkfiGegadURf+RXA3AufJbnOXOfcfkiMX68qYAM2hxt4uP7y0U1ljhs+p47Ei
-	Aja/J4A/zhHntCHIoCb4s/y/T7VfhnGnWZ+qZNsM+sj7t4DlPEuCf2
-X-Google-Smtp-Source: AGHT+IGOdJP/EsSTwaVr7AFygqAdGBuot84duSfzZCknJi9NXOfM5aRT2Xo2RnGeSbtxqEmDaKfJKQ==
-X-Received: by 2002:a05:620a:370e:b0:88b:72c0:2169 with SMTP id af79cd13be357-8b2c31d26b4mr1257853385a.90.1763316774218;
-        Sun, 16 Nov 2025 10:12:54 -0800 (PST)
+        bh=N5dyJSqyOf74su3zx4aCp7vUNrol9ZYcdrrVb5NykSY=;
+        b=Hh8tQK/PnQImzTXK6twcmFDJppohUmRjmIk/pPRyFpI4PTjMsEQ/TYTwVM0cMiTsAO
+         brCy9a+h8HCm5VWcXcTQjRfqK6ZrrepzMFZvDU/DwnhbpsthcO3rdWMxiMYFvYM58PzM
+         rkuK2QMnFbV3QLAF76AJnk/KbC8ND9m1QGjAIfK/UJgOhmsRHMCiaZtyu8sN5iKlsx72
+         +fnHpj/lZGk1/ZjMGUHSJrLjfhhCykyBko0vkxvSU5h7blcx119PH6h13yFZInaRd/cu
+         BXnVNtkuQXqKx5oNHy20DU0lPsJijTGucdgQEgWVnjiRu+xTkq691PRqQ3WXEzaHL4fG
+         pjtA==
+X-Gm-Message-State: AOJu0YwBGpv61tJYVCmiJK4qllzvBOWLvtsDBvQm/kBBARUIlgnko4iJ
+	92ZeqVmv7XQ4NeEq4fS+McQBHtfmDdE21ingY0PPrgG4fu30+Bftqoqa
+X-Gm-Gg: ASbGncs6yUtFxOHkWh447VTNcMtkgyDZvbOrJku53DtQPl8572ZLOcaNjOY9dYkpKgB
+	KW5ko9VrbBiLN1ZR6DPE8Vj35pij9r9OzuTaI/Kki/Uz/n5PXgbY/ieEdSxJ2YeMY4qFMu1p3jb
+	X6ILkzrebT/l9Luhs/Bf1+22e9pa4C7ARuAdA2Nri9O4fvqBn9aoff82r9jYzwN6EE07NffvfvG
+	f3eMHhdx6N39pIdzjqdbK42DC2tpnGw2NDSfRd1aUoCiiqg/uDkDFTVPBosSBfDlklGOvDr4EO5
+	Z5H8L9QGnK+r122wyXRTVVoh+YkOa4iBm4E3F2dUS9Js940y/XTfV+gZVbpSGs3hwm06uvwTRVJ
+	Yo1r+N7bM45JPyRTWvD0hEWnn9HAPiRs+qE7A/bPztqR0J4GOv7Jjan4yItmQIHwx0JJ8FsnjBY
+	Bh6oZ4/OSvVxIgIbXyR+kMxQ18zL726OvpYNrWqY1rzQ==
+X-Google-Smtp-Source: AGHT+IF6z6G+a6/yk1iW5mtw+5/zL+FuJ/bF3edg1gcNLVbNQRnP7GcktPIDkmFrBLAYTvqyfjba7Q==
+X-Received: by 2002:a05:620a:c41:b0:8b2:7558:409c with SMTP id af79cd13be357-8b2c3162bb8mr1383729985a.36.1763316780354;
+        Sun, 16 Nov 2025 10:13:00 -0800 (PST)
 Received: from [127.0.0.1] ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2e089b436sm305447785a.45.2025.11.16.10.12.48
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2e089b436sm305447785a.45.2025.11.16.10.12.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Nov 2025 10:12:53 -0800 (PST)
+        Sun, 16 Nov 2025 10:12:59 -0800 (PST)
 From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 17 Nov 2025 02:11:50 +0800
-Subject: [PATCH v2 09/19] mm, swap: swap entry of a bad slot should not be
- considered as swapped out
+Date: Mon, 17 Nov 2025 02:11:51 +0800
+Subject: [PATCH v2 10/19] mm, swap: consolidate cluster reclaim and check
+ logic
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251117-swap-table-p2-v2-9-37730e6ea6d5@tencent.com>
+Message-Id: <20251117-swap-table-p2-v2-10-37730e6ea6d5@tencent.com>
 References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
 In-Reply-To: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
 To: linux-mm@kvack.org
@@ -114,20 +114,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763316712; l=4721;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1763316712; l=4184;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=sgwq02tPOBUNRyuiV2R8t3DdMa9GcyMTM6y5wg237JM=;
- b=0sOxzrOyuIFS8YnjIQJYvn9L24bV5TicCy3kyR9s2zrzrBPagFA+d4AP3z8w2OjrrECblyayO
- QKmE5kh6UmBBVxbf83nXuSr+wKaEnOGsK2U7R/mMwC5jEOk60axXTvs
+ bh=XNFtoENDe576WtAy1cTHm6/Bj/RVg2NJetPJJZ7TblY=;
+ b=5N1PHKvjcqHSh3B3QLL//ogepK7lUfOgllKkEU/qtEVGKobcGxAU2lHWLbmdB2VYPYdqPhLBI
+ RQpjpzumpyFCp0HIqbrDd99K3StPeVO3epQvKQeBZ5vOlCM6O4FvHA4
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7DF5440009
+X-Stat-Signature: rexooyx1yu1shbfogk386mdgi6rq879r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2ACF820007
-X-Stat-Signature: f7p6ku5whd91yb1c1578m7pffxe56xha
-X-HE-Tag: 1763316774-695222
-X-HE-Meta: U2FsdGVkX1+MHdzZCoOM/DELt07izhMgy997ETiwUokf9tCYh2AxPKf1q3r0PYnIJiO13CJ4e1/Nj49iFsQjxNe1nWMFrhjlfdLyLnT7oOWwmnAahvHnL2fmWUb06wGGAtSjiFrKxEbhW9QF1WLUwEo7vT7+89KbAAVMe7LV5XCZcj6wLZGBCvnhUmBsvr97z4YK5TWfRFNOH7xRiuEalkoR/jm9q5k3jqcA6vp0nRhYBXhC12HCaU6ZKW1Jgd5nnDC90GQ5625Tefo7zKqFRS45QD32UAT8vXDO+cA6B5Pt3dVmAg/pAnpBqF2dkki5vTfLQlx8b9cNzR/K6Se36xt31cHSDIXjzo1qd4mYEgy/7VBiCg+HNWUsN0+vTgfBotRZ1qUwS64vdfMdlGPX+bebz1s768P9S+V3KoDGuzeE0NXMjSKD43XO1CGcfywZhq7GOmS1YbpgrwxlRYGq4D2KJqQl/Ozs6BvvDlMQT9t5qkPg8ouvXczOKkGaaXpz0Zg4MZL2jGgdGpm6BHBSWChDQgTiEqmCUp8nHWWhwI4ekpTMXZZnqX7aRnB8O/NF/yPRpeDZB5lCseMBDXac09k46pk/IkgKOO+/Lfp+5uVbp9lM90sR52PnwCoa8uzauFxbrl2OX8I4obUDurMupYnxLmKfPASPlYfgOmgPbIsIeGWG2QXjaTTZe2w0eUnbeHhjAdX4WXQA5TKh/4h2dt4v8Lrag7QVaEBM4zemLxSpb0rxuLdPZF2U4E6eEb0CfsQAxwHQfkSY/Desq+JilM2erA9sAer9XIXiJpRKvvzNeT+S2BG5GG9/fOgrtU00DuirjJVLrT81cey8NVgS8hwFHvsZRRGcuzgqVDfM8LIZTDBki+ga82ufCIQfzsz3LEdNkbtktPskAUMxvjtNvwsvkB/u1gQvho1u/6uFL51f7AjoIl7flFfXM9H0A0gk5s43N/WKtsrNj7VcBY+
- 37A==
+X-HE-Tag: 1763316781-387944
+X-HE-Meta: U2FsdGVkX18xZDXaVMGDl7HhQMJz5zeu9gHoL2/AHvidqUZ8jkzB8Er9yIS9td3rcBpROMBd6K2b7q1VVSbR7fNiI1N8qgbWgpfBUaTu2z/RATqt7ISGYTkLt4ptK1eA69FYm41oaK6fGdvPRDgSO+syXB/kTCqg3FUyU4uiGyAcPzKaL1WDjEE7F7CxwmdMqPLyxZ+F7REQcd+YUq0MGSu9/tp6ERoFuUt4v6l/hEubxDvYT/tUH0CXAoPofOL6iuQzFKOGx5ttSgAhY0uzZWCeMLh33BnIbVua6dYvfjkepJccQOj5FemGQ7r8TkCEdwjfd/f0a9wYSvgoCyDJeyu1b3C/dmacORV011BfAJWCKHiKHhYP63pxE8HkhRAvt9tkr7ceud7+nX9sjPhSxOUYKgrCC4NiaANV9pcA6IEKiDAM4ePmldRkzqIXPko6NXvPPAdinN1aF9mN6tkiaRPUbD+DvxeM1eqPvVHL2mCd6XpJYc3kkd0SEWj4qggCBvfFu3UUTy5/Vp38WoLblCWZr01gTWhl+Q4ucHVA6Hg70BNKR3zqoyIC295o8L1qYNNCNqEtGvFnZ8V35TNZi6758eIZAQX7JJCRq7geXtEeD6TvqZukGKyzZmdVwAqG2lb0Z2rmMkK3NbiM2R33O5wzlGdtwWFKsZ6XH5Kjjiu14WeVjNlQHWHY5b0nUJ0CkSqKqvwFA+BIkXQbP8d5KxIAe/qc6eeIm+R12F2AWbQiFNXwdZ0JtygOMm3czxdrJedb1EnVu0+1cmfO/3V2V11WpSIvjs2RYi2BP/tdq0UA+PR+GiwKj6qJ30Mt6v88T8rfA7SWIpNykUWDo00+BJ937voyN4ITobPRZKptwMqgk1aB2dWgJvv+VMIZa2lcKm+Gu2EkKfe158SnCaCmqttbmytAdrXFNT9kyVigVUb+3eF+P/JsgNZQF7QCSAujsh4su8XReV8jJxC+5ZK
+ VUGPFpwp
+ z27JkKAPP2yeDKFlMfKWozFMYTaa1/lpysTQY0SYGstw0uIc4SvgR3RfNZ7VR5AKzNu71K8lTnhtn3JpicaEHtnAV36m4Zp7SDILaAzIkgPnSQZlihUSJtqpTAAkc32A+d4MqwCP0lAJPiP6Du4XsZFHqj0e822yuYiB1fjvYgceqr74q1YYZQXtofX3oZg5icAj2iz+gEJk0B3SYUyOPlatv9jUnaNMOiB9ZdidHpNWkhh3ed4AC2oozKuZ2lSn1Slw6AsrRw/Np4STW7HHg5iUgYuJ34GxYWq+ONB8fz5ZTFdtT+vCaR+x4GT8+tn209bzsCvg9UY0weh7WEx2LkzzSnWTOk0chxoVvurSDbI66vvUhP0iPAWEr9k43C2u+ZPl3LN65v5pYk1Qz6osvKAWiZ6Ad6UZn8lnl9d0/g3wdGwaldl8mopc05g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,128 +139,129 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-When checking if a swap entry is swapped out, we simply check if the
-bitwise result of the count value is larger than 0. But SWAP_MAP_BAD
-will also be considered as a swao count value larger than 0.
+Swap cluster cache reclaim requires releasing the lock, so some extra
+checks are needed after the reclaim. To prepare for checking swap cache
+using the swap table directly, consolidate the swap cluster reclaim and
+check the logic.
 
-SWAP_MAP_BAD being considered as a count value larger than 0 is useful
-for the swap allocator: they will be seen as a used slot, so the
-allocator will skip them. But for the swapped out check, this
-isn't correct.
+Also, adjust it very slightly. By moving the cluster empty and usable
+check into the reclaim helper, it will avoid a redundant scan of the
+slots if the cluster is empty.
 
-There is currently no observable issue. The swapped out check is only
-useful for readahead and folio swapped-out status check. For readahead,
-the swap cache layer will abort upon checking and updating the swap map.
-For the folio swapped out status check, the swap allocator will never
-allocate an entry of bad slots to folio, so that part is fine too. The
-worst that could happen now is redundant allocation/freeing of folios
-and waste CPU time.
+And always scan the whole region during reclaim, don't skip slots
+covered by a reclaimed folio. Because the reclaim is lockless, it's
+possible that new cache lands at any time. And for allocation, we want
+all caches to be reclaimed to avoid fragmentation. And besides, if the
+scan offset is not aligned with the size of the reclaimed folio, we are
+skipping some existing caches.
 
-This also makes it easier to get rid of swap map checking and update
-during folio insertion in the swap cache layer.
+There should be no observable behavior change, which might slightly
+improve the fragmentation issue or performance.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/swap.h |  6 ++++--
- mm/swap_state.c      |  4 ++--
- mm/swapfile.c        | 22 +++++++++++-----------
- 3 files changed, 17 insertions(+), 15 deletions(-)
+ mm/swapfile.c | 45 +++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index bf72b548a96d..936fa8f9e5f3 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -466,7 +466,8 @@ int find_first_swap(dev_t *device);
- extern unsigned int count_swap_pages(int, int);
- extern sector_t swapdev_block(int, pgoff_t);
- extern int __swap_count(swp_entry_t entry);
--extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
-+extern bool swap_entry_swapped(struct swap_info_struct *si,
-+			       unsigned long offset);
- extern int swp_swapcount(swp_entry_t entry);
- struct backing_dev_info;
- extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
-@@ -535,7 +536,8 @@ static inline int __swap_count(swp_entry_t entry)
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index d2e60734ce8f..d57e83a4d0a7 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -778,42 +778,50 @@ static int swap_cluster_setup_bad_slot(struct swap_cluster_info *cluster_info,
  	return 0;
  }
  
--static inline bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
-+static inline bool swap_entry_swapped(struct swap_info_struct *si,
-+				      unsigned long offset)
+-static bool cluster_reclaim_range(struct swap_info_struct *si,
+-				  struct swap_cluster_info *ci,
+-				  unsigned long start, unsigned long end)
++static unsigned int cluster_reclaim_range(struct swap_info_struct *si,
++					  struct swap_cluster_info *ci,
++					  unsigned long start, unsigned int order)
  {
- 	return false;
- }
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 826bec661305..cbcebda22d2e 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -527,8 +527,8 @@ struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
- 	if (folio)
- 		return folio;
++	unsigned int nr_pages = 1 << order;
++	unsigned long offset = start, end = start + nr_pages;
+ 	unsigned char *map = si->swap_map;
+-	unsigned long offset = start;
+ 	int nr_reclaim;
  
--	/* Skip allocation for unused swap slot for readahead path. */
--	if (!swap_entry_swapped(si, entry))
-+	/* Skip allocation for unused and bad swap slot for readahead. */
-+	if (!swap_entry_swapped(si, swp_offset(entry)))
- 		return NULL;
- 
- 	/* Allocate a new folio to be added into the swap cache. */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 580adf9d93bd..d2e60734ce8f 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1765,21 +1765,21 @@ int __swap_count(swp_entry_t entry)
- 	return swap_count(si->swap_map[offset]);
- }
- 
--/*
-- * How many references to @entry are currently swapped out?
-- * This does not give an exact answer when swap count is continued,
-- * but does include the high COUNT_CONTINUED flag to allow for that.
-+/**
-+ * swap_entry_swapped - Check if the swap entry at @offset is swapped.
-+ * @si: the swap device.
-+ * @offset: offset of the swap entry.
-  */
--bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
-+bool swap_entry_swapped(struct swap_info_struct *si, unsigned long offset)
- {
--	pgoff_t offset = swp_offset(entry);
- 	struct swap_cluster_info *ci;
- 	int count;
- 
- 	ci = swap_cluster_lock(si, offset);
- 	count = swap_count(si->swap_map[offset]);
- 	swap_cluster_unlock(ci);
--	return !!count;
-+
-+	return count && count != SWAP_MAP_BAD;
- }
- 
- /*
-@@ -1865,7 +1865,7 @@ static bool folio_swapped(struct folio *folio)
- 		return false;
- 
- 	if (!IS_ENABLED(CONFIG_THP_SWAP) || likely(!folio_test_large(folio)))
--		return swap_entry_swapped(si, entry);
-+		return swap_entry_swapped(si, swp_offset(entry));
- 
- 	return swap_page_trans_huge_swapped(si, entry, folio_order(folio));
- }
-@@ -3677,10 +3677,10 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr)
- 		count = si->swap_map[offset + i];
- 
- 		/*
--		 * swapin_readahead() doesn't check if a swap entry is valid, so the
--		 * swap entry could be SWAP_MAP_BAD. Check here with lock held.
-+		 * Allocator never allocates bad slots, and readahead is guarded
-+		 * by swap_entry_swapped.
- 		 */
--		if (unlikely(swap_count(count) == SWAP_MAP_BAD)) {
-+		if (WARN_ON(swap_count(count) == SWAP_MAP_BAD)) {
- 			err = -ENOENT;
- 			goto unlock_out;
+ 	spin_unlock(&ci->lock);
+ 	do {
+ 		switch (READ_ONCE(map[offset])) {
+ 		case 0:
+-			offset++;
+ 			break;
+ 		case SWAP_HAS_CACHE:
+ 			nr_reclaim = __try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
+-			if (nr_reclaim > 0)
+-				offset += nr_reclaim;
+-			else
++			if (nr_reclaim < 0)
+ 				goto out;
+ 			break;
+ 		default:
+ 			goto out;
  		}
+-	} while (offset < end);
++	} while (++offset < end);
+ out:
+ 	spin_lock(&ci->lock);
++
++	/*
++	 * We just dropped ci->lock so cluster could be used by another
++	 * order or got freed, check if it's still usable or empty.
++	 */
++	if (!cluster_is_usable(ci, order))
++		return SWAP_ENTRY_INVALID;
++	if (cluster_is_empty(ci))
++		return cluster_offset(si, ci);
++
+ 	/*
+ 	 * Recheck the range no matter reclaim succeeded or not, the slot
+ 	 * could have been be freed while we are not holding the lock.
+ 	 */
+ 	for (offset = start; offset < end; offset++)
+ 		if (READ_ONCE(map[offset]))
+-			return false;
++			return SWAP_ENTRY_INVALID;
+ 
+-	return true;
++	return start;
+ }
+ 
+ static bool cluster_scan_range(struct swap_info_struct *si,
+@@ -901,7 +909,7 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 	unsigned long start = ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
+ 	unsigned long end = min(start + SWAPFILE_CLUSTER, si->max);
+ 	unsigned int nr_pages = 1 << order;
+-	bool need_reclaim, ret;
++	bool need_reclaim;
+ 
+ 	lockdep_assert_held(&ci->lock);
+ 
+@@ -913,20 +921,13 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 		if (!cluster_scan_range(si, ci, offset, nr_pages, &need_reclaim))
+ 			continue;
+ 		if (need_reclaim) {
+-			ret = cluster_reclaim_range(si, ci, offset, offset + nr_pages);
+-			/*
+-			 * Reclaim drops ci->lock and cluster could be used
+-			 * by another order. Not checking flag as off-list
+-			 * cluster has no flag set, and change of list
+-			 * won't cause fragmentation.
+-			 */
++			found = cluster_reclaim_range(si, ci, offset, order);
+ 			if (!cluster_is_usable(ci, order))
+ 				goto out;
+-			if (cluster_is_empty(ci))
+-				offset = start;
+ 			/* Reclaim failed but cluster is usable, try next */
+-			if (!ret)
++			if (!found)
+ 				continue;
++			offset = found;
+ 		}
+ 		if (!cluster_alloc_range(si, ci, offset, usage, order))
+ 			break;
 
 -- 
 2.51.2
