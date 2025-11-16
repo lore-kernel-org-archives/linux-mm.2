@@ -4,184 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10F1CCEBF86
-	for <linux-mm@archiver.kernel.org>; Sat, 15 Nov 2025 23:35:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CE72CEBF79
+	for <linux-mm@archiver.kernel.org>; Sun, 16 Nov 2025 01:32:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D6498E0007; Sat, 15 Nov 2025 18:35:05 -0500 (EST)
+	id C3CA18E0029; Sat, 15 Nov 2025 20:32:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75FB28E0029; Sat, 15 Nov 2025 18:35:05 -0500 (EST)
+	id BED5F8E0005; Sat, 15 Nov 2025 20:32:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B778E0007; Sat, 15 Nov 2025 18:35:05 -0500 (EST)
+	id B03228E0029; Sat, 15 Nov 2025 20:32:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E1AE8E0007
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 18:35:05 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D626312EE1A
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 23:35:04 +0000 (UTC)
-X-FDA: 84114449328.08.BD96094
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1D1698000A
-	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 23:35:02 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JxpafL0p;
-	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763249703;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=90EWWx4Mqnqhp1SMDUIMTw5wlXkO7ivVTgHSWLpFw+Q=;
-	b=KWlt0Di9u2pOXy0CrpZUWhYwZP1a19Ba6tOEZtHBba7P+oqNZxSh0rVZZQFspB7tKUQk8+
-	f8D8Xgj8DQOwe1fsvvEvaxgZEEnu3BqNW8rfoiFAkMigL9X7ePSiT13RjY8Vkkv9AIdhzO
-	zbNKCHFY0g4j6L7HrSJlL4yax7wq8DE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JxpafL0p;
-	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763249703; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CBC88E0005
+	for <linux-mm@kvack.org>; Sat, 15 Nov 2025 20:32:30 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3555313BE7F
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 01:32:30 +0000 (UTC)
+X-FDA: 84114745260.02.08ECF14
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7ADB62000C
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 01:32:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eU04kapt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3qykZaQgKCLIbaSiaqSfYggYdW.Ugedafmp-eecnSUc.gjY@flex--jiaqiyan.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3qykZaQgKCLIbaSiaqSfYggYdW.Ugedafmp-eecnSUc.gjY@flex--jiaqiyan.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763256748; a=rsa-sha256;
 	cv=none;
-	b=Lnsi6jf6C3WKy7+wfkdccKsO7Ma5Z4gd0j8lHwVTJvAkjMHuuQpevANv5VmNAhnJ6q0+lQ
-	V5a9909/pFUIFoxqdGIR7nfaCQtAYe1LwxIju4OdwlAluWBsMJ0Jo6OcgkM+UdaO2bl2f3
-	D66/fARv2jTSQXnWcyOLWa7EOy7TuqE=
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-640d4f2f13dso3001824d50.1
-        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 15:35:02 -0800 (PST)
+	b=wqSOn360m7n9JLILgXKDycwDLgm1414TGfTvXTBpQ4Ett+H4vv1MF1F3JwYiAw3sqRIjk0
+	c2Zu/1gl1je+DyrzqAVfbhthpC7kvERc6JRcV3arnumVTW4gPdRVsVutIC4A0nLs7NVgQj
+	fJtiHpJsVJenq9xU+l+Bzv0oH5xI0dk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eU04kapt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3qykZaQgKCLIbaSiaqSfYggYdW.Ugedafmp-eecnSUc.gjY@flex--jiaqiyan.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3qykZaQgKCLIbaSiaqSfYggYdW.Ugedafmp-eecnSUc.gjY@flex--jiaqiyan.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763256748;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nIrByt1VZZMaZX/NwbB12ty+E27e+8Fq3BdD+JwCmdE=;
+	b=UKvi3UV1YcnK6TLxYlXbAZ41jew2O/XLKYWT7Ni10ywArGFVSf/+9n/gJvUobIcLusv1O7
+	87G4FVQBW3l43DVyDGxKurFGnb4uLkwhWO5RSOUAssAS3ArPs94FX3j33moVW9tCDnuNQV
+	rq5MT80HSvaMSgM+iVqZP9oLSW2x/kk=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2955555f73dso30402295ad.0
+        for <linux-mm@kvack.org>; Sat, 15 Nov 2025 17:32:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763249702; x=1763854502; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=90EWWx4Mqnqhp1SMDUIMTw5wlXkO7ivVTgHSWLpFw+Q=;
-        b=JxpafL0pyR0fDNwK/foilrVhcWfLyrgdMQnVytmGDrB6qJ3IJGr3k6XK46+w2/sjuP
-         j0+aI/J++KOYZ8ByQvbnSZqyiBx1vFePnfnWVutgBT0mvaxMFsWairmeWfsz1A3KGrMH
-         WKSomSaTQzO0iLpXNqTE7+SXE//PZGiGfRg8WQdp6Ay/smmKrcXU8yW2pToirZ62AslO
-         U7oV2LtR+gblhK2+2oPPptAzi2PWjFxs2hvubGwEtqhlYpp+5FgamVmGl064+tMPCrQ0
-         j2Nh45DcLErZD+GtImQM/8JC0y8MQRD/yEOo1a/NikgqA3+mkUZNaloANobp8OeX51Ps
-         sYYQ==
+        d=google.com; s=20230601; t=1763256747; x=1763861547; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nIrByt1VZZMaZX/NwbB12ty+E27e+8Fq3BdD+JwCmdE=;
+        b=eU04kaptIy2ZWAImcWUWF7KsqnnoRTnkeQn2m9FpEbGI3eUdaOt9xQMDTVzd4ZCYCI
+         5ZS57CM2nSPI1zEI6w29nj9ldnaNYK4p8IGLLysgInyaVx4lxuTPWf8xlei1L8JSZaM/
+         Dpl1dh9gJnYZ/B/VNqzKt2TDHlAbWFzyx0GXpKvvfvpBiNa6gsHdAwijf7aOgUkL1GyM
+         FKz13aBr1M5fOTedXfSL6eHzbhtsF4oFtznuATzGB+nNvWJNYd9l+P6aVlqq4t+USoIh
+         66d1fELHp4Wbq325WV4+XiwPf8YITVfG16FY600U/Ibs/1Xau7mMRqpnrIsjccaiw/VN
+         im1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763249702; x=1763854502;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=90EWWx4Mqnqhp1SMDUIMTw5wlXkO7ivVTgHSWLpFw+Q=;
-        b=rm4tF80AoUo74w5iGy/KehqODetJ1MZcNlYmkjT9WWxQS1VHU4RKXTjNnFhuzpiXQQ
-         yr0t4mEccGrAz3VPY0eLGEAv+sz5wdQf81hLe3IHmRL9n3QLTenYgwWyLFhZEZlxAUYn
-         Vr6SPEAYdWbrjNxT3KdozQKjkVLMhhYN+DUAMP6OJSDU9JimO3eKMB35dt69IuxolokG
-         jqQdjePf/3xE/bYksT9u7dTwJQASz0rGK13Do2sGmF9krsosZbGr9pBCdCZ2WZcYm0JZ
-         x6fZ2NmxWPrYt7GEwNwWzwtPfzMUUL3TIVLU2bEh2Q1/1MgqOGLQyhXK+i/Elsm1N/5G
-         9wdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWx87l21jaJwMkQrefNK6eivN1XQywipnVm8mIFSfSgZp6J5DkHsvCOOE+krJFCe+ksu+Q1pkVdmw==@kvack.org
-X-Gm-Message-State: AOJu0YzuJCven3fHJCyMqdfwdr0ZUQeq0Eo+7iLFlbdLPwzYkvX/em59
-	3YEd5PSFG+f+80eSuDES2SicyRUF0UHvnlhCSsivJnRCLMYCTVZQWuVsVKVF/RHVgYU=
-X-Gm-Gg: ASbGnctonXYR9wZTdlkItLRIdCZJYRsSHf1T/Ja+nOyD1O9axrisdI7VK2/mzXFirAZ
-	jx7376Gv4noHn6HazIkjm2qxmlqBzhatPzkeclzeH5WAwRmxbo81UqYo+kzkCEefDIj+PYNQmCR
-	o5CxYMzSf1JWVtxinRYiDV+fRXacfquA1Tm6zkxZnkIdstLmt9feqK48Iy1q9B9EopFfW4AKxVO
-	UOT7bqB2r7HmxrQXUmNJXnDU6drf4SpkNr3ldhFmXKkpgNu3BAqSFeFvUjQ3+BPTEqnQqz4BF7n
-	/8i3T+UbvJRiOtRzJwFxrL89OC/58vh49T1NO7kw+Jd75hktbiL2hLeyQPRjmapp5bLv4+NwRv7
-	cIE7k5FUITdyQONgSR06SmgLbzP6mI6Yt/ID9DggC871XppChDDbSJYdT1+nj0Tei+Hc6W/+1Kj
-	zsp5p5a6/rrIyNjoo8Kp39shqlvglEHjFxiahvdigoV3cSExvTAD5ELAFQe4WUH7SnY1ZHdkiH4
-	W9S5Wk=
-X-Google-Smtp-Source: AGHT+IG/UxHvAnv9mWVe8wsyDfZKwfGnjYpnQZh3+Log3+EltTNlF7D6RJztgMPJcAoGZZph5wgzaA==
-X-Received: by 2002:a05:690e:d02:b0:641:f347:5b57 with SMTP id 956f58d0204a3-641f3475ba1mr4093730d50.71.1763249702125;
-        Sat, 15 Nov 2025 15:35:02 -0800 (PST)
-Received: from soleen.c.googlers.com.com (182.221.85.34.bc.googleusercontent.com. [34.85.221.182])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7882218774esm28462007b3.57.2025.11.15.15.34.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Nov 2025 15:35:01 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: pratyush@kernel.org,
-	jasonmiu@google.com,
-	graf@amazon.com,
-	pasha.tatashin@soleen.com,
-	rppt@kernel.org,
-	dmatlack@google.com,
-	rientjes@google.com,
-	corbet@lwn.net,
-	rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com,
-	ojeda@kernel.org,
-	aliceryhl@google.com,
-	masahiroy@kernel.org,
-	akpm@linux-foundation.org,
-	tj@kernel.org,
-	yoann.congal@smile.fr,
-	mmaurer@google.com,
-	roman.gushchin@linux.dev,
-	chenridong@huawei.com,
-	axboe@kernel.dk,
-	mark.rutland@arm.com,
-	jannh@google.com,
-	vincent.guittot@linaro.org,
-	hannes@cmpxchg.org,
-	dan.j.williams@intel.com,
-	david@redhat.com,
-	joel.granados@kernel.org,
-	rostedt@goodmis.org,
-	anna.schumaker@oracle.com,
-	song@kernel.org,
-	linux@weissschuh.net,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	gregkh@linuxfoundation.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	bartosz.golaszewski@linaro.org,
-	cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com,
-	yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com,
-	quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com,
-	ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com,
-	leon@kernel.org,
-	lukas@wunner.de,
-	bhelgaas@google.com,
-	wagi@kernel.org,
-	djeffery@redhat.com,
-	stuart.w.hayes@gmail.com,
-	ptyadav@amazon.de,
-	lennart@poettering.net,
-	brauner@kernel.org,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	saeedm@nvidia.com,
-	ajayachandra@nvidia.com,
-	jgg@nvidia.com,
-	parav@nvidia.com,
-	leonro@nvidia.com,
-	witu@nvidia.com,
-	hughd@google.com,
-	skhawaja@google.com,
-	chrisl@kernel.org
-Subject: [PATCH v6 20/20] tests/liveupdate: Add in-kernel liveupdate test
-Date: Sat, 15 Nov 2025 18:34:06 -0500
-Message-ID: <20251115233409.768044-21-pasha.tatashin@soleen.com>
+        d=1e100.net; s=20230601; t=1763256747; x=1763861547;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nIrByt1VZZMaZX/NwbB12ty+E27e+8Fq3BdD+JwCmdE=;
+        b=TzV8nuy8B/3sqFNL8HnTc4SEnDXpLE7+RhKXA6R1hnTNxR2kG4r3r5dtQgdMCOKlnQ
+         UbFp1EmEqSXjoy/E05+ZaaUYjNPpA6uIj66Wst593FciOVxR2rUUXWZSVEDp2MRDMkoA
+         bhtcvBx6IzVgnUs0RYAUliDsWVitILrc77L2vKL54G/84f4eCCB0w6WzAS2R3ZsxYTRu
+         tXUqQRnBvV684ct8loG6V+2Ii4pHn3rwmSY60jsw7BhjvGAUzfb8EaVYXHwhEPJJ96e2
+         JMdJNqLa8DtAyFKTbxTNSaE9FJbw4qIhR1UqaWniHrWvIEWLMPXwNTH/gh63ZzTrGz+3
+         IWqg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcZLRPa9TC613UanZ3aIUqISFnEYBgKFh908o9Grho0kpHlKzTsm6qBcBFSV/fd8uilhMWMyyftQ==@kvack.org
+X-Gm-Message-State: AOJu0YwPetJrnB0IDD+zy3qjBL9C4xZUN2oL8QxBQyXFzHD3pT5qTiSh
+	f7IgdLy+p68y1RFH9fmhzIfamVzE9UBffeBWYdgrJodcE/G/c+V6DOUmmnjzHC17lJXaGLEJYVF
+	/zHNZ3Q41/h9BkA==
+X-Google-Smtp-Source: AGHT+IGEId8VQV6EnjjzjhQ7E7WrfZaNer4Ithw1tScNmlwXQtjYa6DqLZ/MZlXgCrT12Tsa7zKSgYkd8XexwA==
+X-Received: from plko5.prod.google.com ([2002:a17:902:6b05:b0:296:18d:ea10])
+ (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:17c6:b0:295:1aa7:edf7 with SMTP id d9443c01a7336-2986a73ba63mr89628075ad.30.1763256747026;
+ Sat, 15 Nov 2025 17:32:27 -0800 (PST)
+Date: Sun, 16 Nov 2025 01:32:20 +0000
+Mime-Version: 1.0
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-In-Reply-To: <20251115233409.768044-1-pasha.tatashin@soleen.com>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1D1698000A
-X-Stat-Signature: 53h4c4yfsm8ztmah53ymhfka5xkb1hyf
+Message-ID: <20251116013223.1557158-1-jiaqiyan@google.com>
+Subject: [PATCH v2 0/3] memfd-based Userspace MFR Policy for HugeTLB
+From: Jiaqi Yan <jiaqiyan@google.com>
+To: nao.horiguchi@gmail.com, linmiaohe@huawei.com, william.roche@oracle.com, 
+	harry.yoo@oracle.com
+Cc: tony.luck@intel.com, wangkefeng.wang@huawei.com, willy@infradead.org, 
+	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de, 
+	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
+	jgg@nvidia.com, ankita@nvidia.com, peterx@redhat.com, 
+	sidhartha.kumar@oracle.com, ziy@nvidia.com, david@redhat.com, 
+	dave.hansen@linux.intel.com, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Jiaqi Yan <jiaqiyan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7ADB62000C
+X-Stat-Signature: riymbics49owucqy6sumy8mh9pyg5uym
 X-Rspam-User: 
-X-HE-Tag: 1763249702-374864
-X-HE-Meta: U2FsdGVkX18h672T23PFp5Fwa1H+XdmbacKBPg3v7gMuP0cIpcZZWfzy9xRAlpX3PpA85mS2I3oUbDX1WH1Z5FAWVBsHlGThjSCIWUlad/YK16Jm3oaerUR6MIZGxO7sgMleRnCG9fKJE/DYUFKMX6F/0her/DBNDbREOJS6yF0DdTIVKIIo5gZCfUto0LW3lherjCYU+8M8whdFxNXUYBupoWjwD+bmyKLurgtgfdxMr6S80uovYreS/Es2cFvwQmDhITiCfphkVm9wvsMv2L+J5fFKEILC0ijKgeTo/GVB1ErEs0p9Xfj7im/19aCX3dpzhyCFGW+8pKMgFPR4gf1N3kzcOqy5SdKi/DPPry/xbopxpxVa+tY4KbI0ayESHWazST7B7gLZEHK2vEE/Cm0quK4zOun0qzxFaeTE35/0qLbTLOaM/iRNxsSUtd+9SsnP5cO4zc1V13NFto0hSE82Y61gYKbbC5ujyhKMV4hrcpPxTW+Btc+ZwT+NAVKdIaJhgbgEKGnVdib230KZiQPSZMcd8iiRsAhHQETEvTZoyC4Fh2tuqhk1oWp34DWLzrlOs51mvCGeiE3+9IzTLI2YNSSltkaSPR3ul2eCVzyJpw9cb5QDQq8s996IX6Io8zN5Aemcbws3s/vMp6AnpkXw7q9xDEygkCxtNpscnMPJ6wN5VusAI6oGH9ZnlSl2HXHrEeMsufQ9vDmJdKPdfS20BHs9tWR7A008lh2DHAitfBfShSjJCd3B2IYvM+P089B0vYmeF7IYUqJmMhevM5RHIwpnPqilPRkmQv3fxeoSgFuoKhPZOxP/QyDn4Zo+yFYUNLZQ93Bc3Lem9eWpb2inMiSkV75tvzzYfQJXdi4WwAX3mqaj9pKPnMDI6iR1QCtOKgjuoOykqd/UcwianN5Rr0wB0I1eaTZNHks35LHNK/sA2B1IGILm9XAhn8npo9cjXiaEX1j5KFP07KX
- YDGv9nN7
- n0ADfmfu9kuGtWfx92CZmIQODNfFpAkmFNeY631lUUxSNty28R8VtIgyeMf6TgTTVyoKYg3KxglrsdxFL2B+j0Ma9RfLgxD/G5ctBxaUv4vgviP/1N0AV+YygzA8cE/AJaubOBbmaBaesPcNzdKls9PX4skN4mzzKzPDJaXe2QkWbe5B9xetGzXBRORKmCa2aBeNJ/IQp0nqR/w4uY9Aavfhzr9LuQiP730sQ5jDoQN+odMX2EazNutwiM0DFPpKnwAYMpFjINIGAvCvFah5dAXesjCwsI11uTJbZqaWrHk5XJFJ2Ep9vlLwBa6ig8D5MU/JJriFI2VA3mUID1efvE3sML/LFNb/mR3ihNBSYVgFEw8oQe2FceRyI8Gf6clNYhmA8E/+KBjp8+oc=
+X-HE-Tag: 1763256748-962657
+X-HE-Meta: U2FsdGVkX1+Pk4JHNSsFzIRBHkD91UvmBRmHfyLA12FW2+Em5Yk3FJ/G4buqGQBQFay3VkbeLiCGYGMf3bTA6ZQum+QjYcJaCIwTME5mkdzCQXx1qY0HkeBpztg39L8pRyFhFPqw3DBeDzRlX07TUzal2A2XFMos72kdUfT/qaiWeT2uMdB+hGuKa7UsGJ/zjk5XniLYFl41kTlS7jatM+a63LScc0u0Wl3/RZ9gkKksFfRDyMVeGDyMM3AHCTy6u9+hWNn6NYMTBkKAZ275G/qH88ogYio5SxqE3+9zdYrtbOvrnziOX6DR8en8ZsyME7UqpWPQq/rDiz2aXVJKtErOk+l7ZBD9MnvdOnTB7jZBxrFmb/wMlR9Spe7HognDvy13OD0R+eZHjYS8XfBbYyyyn96efMJDH3TENRv2smb3Ls0Xw6QQTQEX0PI+lnXQzdSdM3ZumIRhOVDnVxK2hFnQyXoe1BEdlzk6b8FmhfesYSaRr1UOM4zxfTVzipsMiMaYCu/LXJ0/eHjRFd0hRoCwDp/nOBwdix3UUjaY7HVGJeK4SZejQKNVWt8A1Bke05S3p4bQPyXRe+xiQBVtvUh6ZyptXMIKyHfDxRexHYRUSZ45v47Wj0pX7eq9jfHRnevoV8DxUgxa1MkZQSivczs826gZuLVpVp5HFGmfJBOuJ5sL/TvKsOeMHjEBTFcoPDZdmHdesl68806yzCzNPsoAX+elZ3b8UEG6x8ERn11JBoLTAA2gmFhIQhEpc6oOAzW/H52kBD7Il/8LjEhtjp6Vrd5vHesC6B0qMdnf13oi+pZ01OabnnoochF26IvAhl1WlUA5iO/3QoE5/O/H0STeLhAL0Sh1QVIwAJY5xbtgiTtLTjQtRMFAEuPZEUWgRPcWbpEgQuc7vnkPRkaVHb1YOVfsTMmzvSG8iO8DDJDQ+HLP2QyUsLu/hJaouakabKonExFmrbr4Yg0S2+S
+ 2UgdHvRy
+ oX/xL+xQXqO90MbQm3zMT2eMBQNeSapK1rTjiZJ+feGOUO4oKBGGJGn88VFuPFDviV4+9uqDrxWn3QQFDQI0lwNGfB/tTc3nH2Ga0SnZlceUzhDWb+fZaluRptwjMzO+VgeqwETeBIeLb+/gGPiORkf1r7JfoTqwcWZqnp0RHBS1Ncq7cMomD31qdd5l8Lz4k2qYlrQfMMQjjgC6yJZ8bfxB491qGTTI9FqZty16arHdQ0/k3udIiX687cOSe8p6t67I2He48kNSfrZ/aSObWUkqIjYid4v1JbRLpNvE9Bzb4o0LzBoZa6+u87A1gc71Zdmo9fhUO/3TuiDVmhylV5ueJMG0641pY/JlRw4fFAGHiibA1hEX4nmcMC9gZvBz9ov0zWAnojLLUPqVZWC3ZksHn+fSRRKdE63sScukz1cRB6N+76J6kYvnTvRvhfdZ5iubonwAMoGZPpddWPeL9/0nPKVf6Q/JzuzuiJDGb05jr3sUeDhY2y1JI+dVd4EspqAeVQ7/CJ4oPh6UpLZBqiLVPLRgdAepAVpqoltrL/K0TAYTnF6WE74YrOXeB11qTwDgbpJ9le1wrkLYVkBux2N3ceSHEFrfSEm25eKitLnw5romxHbWNv8KlSEXbHB01ZLj/IrteGPeLQwTVYoBzzjMTW6cqcVxk4rTcirv9cibKOi8j110X7iy6oP3TEkQpf5mmdHTksM3wSciS/ZA8Z8BULg4ECy4IzpKMKZ45voGah0DAF9AJhpmtbbaoJyFcodgHPVaiGlI91rfQGVscarrdlA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,262 +113,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce an in-kernel test module to validate the core logic of the
-Live Update Orchestrator's File-Lifecycle-Bound feature. This
-provides a low-level, controlled environment to test FLB registration
-and callback invocation without requiring userspace interaction or
-actual kexec reboots.
+Problem
+=======
 
-The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
+This patchset is a follow-up for the userspace memory failure
+recovery (MFR) policy proposed in [1] and [2], but focused on
+a smaller scope: HugeTLB.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- include/linux/liveupdate/abi/luo.h |   5 +
- kernel/liveupdate/luo_file.c       |   2 +
- kernel/liveupdate/luo_internal.h   |   6 ++
- lib/Kconfig.debug                  |  23 +++++
- lib/tests/Makefile                 |   1 +
- lib/tests/liveupdate.c             | 143 +++++++++++++++++++++++++++++
- 6 files changed, 180 insertions(+)
- create mode 100644 lib/tests/liveupdate.c
+To recap the problem for HugeTLB discussed in [1] and [2]:
+Cloud providers like Google and Oracle usually serve capacity-
+and performance-critical guest memory with 1G HugeTLB
+hugepages, as this significantly reduces the overhead
+associated with managing page tables and TLB misses. However,
+the kernel's current MFR behavior for HugeTLB is not ideal.
+Once a byte of memory in a hugepage is hardware corrupted, the
+kernel discards the whole hugepage, including the healthy
+portion, from the HugeTLB system. Customer workload running in
+the VM can hardly recover from such a great loss of memory.
 
-diff --git a/include/linux/liveupdate/abi/luo.h b/include/linux/liveupdate/abi/luo.h
-index 85596ce68c16..cdcace9b48f5 100644
---- a/include/linux/liveupdate/abi/luo.h
-+++ b/include/linux/liveupdate/abi/luo.h
-@@ -230,4 +230,9 @@ struct luo_flb_ser {
- 	u64 count;
- } __packed;
- 
-+/* Kernel Live Update Test ABI */
-+#ifdef CONFIG_LIVEUPDATE_TEST
-+#define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)	"liveupdate-test-flb-v" #i
-+#endif
-+
- #endif /* _LINUX_LIVEUPDATE_ABI_LUO_H */
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index df337c9c4f21..9a531096bdb5 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -834,6 +834,8 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
- 	INIT_LIST_HEAD(&fh->flb_list);
- 	list_add_tail(&fh->list, &luo_file_handler_list);
- 
-+	liveupdate_test_register(fh);
-+
- 	return 0;
- }
- 
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 389fb102775f..c863cb051d49 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -86,4 +86,10 @@ int __init luo_flb_setup_outgoing(void *fdt);
- int __init luo_flb_setup_incoming(void *fdt);
- void luo_flb_serialize(void);
- 
-+#ifdef CONFIG_LIVEUPDATE_TEST
-+void liveupdate_test_register(struct liveupdate_file_handler *h);
-+#else
-+static inline void liveupdate_test_register(struct liveupdate_file_handler *h) { }
-+#endif
-+
- #endif /* _LINUX_LUO_INTERNAL_H */
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 9a087826498a..eaa2af2bd963 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2803,6 +2803,29 @@ config LINEAR_RANGES_TEST
- 
- 	  If unsure, say N.
- 
-+config LIVEUPDATE_TEST
-+	bool "Live Update Kernel Test"
-+	default n
-+	depends on LIVEUPDATE
-+	help
-+	  Enable a built-in kernel test module for the Live Update
-+	  Orchestrator.
-+
-+	  This module validates the File-Lifecycle-Bound subsystem by
-+	  registering a set of mock FLB objects with any real file handlers
-+	  that support live update (such as the memfd handler).
-+
-+	  When live update operations are performed, this test module will
-+	  output messages to the kernel log (dmesg), confirming that its
-+	  registration and various callback functions (preserve, retrieve,
-+	  finish, etc.) are being invoked correctly.
-+
-+	  This is a debugging and regression testing tool for developers
-+	  working on the Live Update subsystem. It should not be enabled in
-+	  production kernels.
-+
-+	  If unsure, say N
-+
- config CMDLINE_KUNIT_TEST
- 	tristate "KUnit test for cmdline API" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
-diff --git a/lib/tests/Makefile b/lib/tests/Makefile
-index f7460831cfdd..8e5c527a94ac 100644
---- a/lib/tests/Makefile
-+++ b/lib/tests/Makefile
-@@ -27,6 +27,7 @@ obj-$(CONFIG_LIST_KUNIT_TEST) += list-test.o
- obj-$(CONFIG_KFIFO_KUNIT_TEST) += kfifo_kunit.o
- obj-$(CONFIG_TEST_LIST_SORT) += test_list_sort.o
- obj-$(CONFIG_LINEAR_RANGES_TEST) += test_linear_ranges.o
-+obj-$(CONFIG_LIVEUPDATE_TEST) += liveupdate.o
- 
- CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
- obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
-diff --git a/lib/tests/liveupdate.c b/lib/tests/liveupdate.c
-new file mode 100644
-index 000000000000..05c05b8c1c22
---- /dev/null
-+++ b/lib/tests/liveupdate.c
-@@ -0,0 +1,143 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (c) 2025, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME " test: " fmt
-+
-+#include <linux/cleanup.h>
-+#include <linux/errno.h>
-+#include <linux/init.h>
-+#include <linux/liveupdate.h>
-+#include <linux/module.h>
-+#include "../../kernel/liveupdate/luo_internal.h"
-+
-+static const struct liveupdate_flb_ops test_flb_ops;
-+#define DEFINE_TEST_FLB(i) {						\
-+	.ops = &test_flb_ops,						\
-+	.compatible = LIVEUPDATE_TEST_FLB_COMPATIBLE(i),		\
-+}
-+
-+/* Number of Test FLBs to register with every file handler */
-+#define TEST_NFLBS 3
-+static struct liveupdate_flb test_flbs[TEST_NFLBS] = {
-+	DEFINE_TEST_FLB(0),
-+	DEFINE_TEST_FLB(1),
-+	DEFINE_TEST_FLB(2),
-+};
-+
-+#define TEST_FLB_MAGIC_BASE 0xFEEDF00DCAFEBEE0ULL
-+
-+static int test_flb_preserve(struct liveupdate_flb_op_args *argp)
-+{
-+	ptrdiff_t index = argp->flb - test_flbs;
-+
-+	pr_info("%s: preserve was triggered\n", argp->flb->compatible);
-+	argp->data = TEST_FLB_MAGIC_BASE + index;
-+
-+	return 0;
-+}
-+
-+static void test_flb_unpreserve(struct liveupdate_flb_op_args *argp)
-+{
-+	pr_info("%s: unpreserve was triggered\n", argp->flb->compatible);
-+}
-+
-+static int test_flb_retrieve(struct liveupdate_flb_op_args *argp)
-+{
-+	ptrdiff_t index = argp->flb - test_flbs;
-+	u64 expected_data = TEST_FLB_MAGIC_BASE + index;
-+
-+	if (argp->data == expected_data) {
-+		pr_info("%s: found flb data from the previous boot\n",
-+			argp->flb->compatible);
-+		argp->obj = (void *)argp->data;
-+	} else {
-+		pr_err("%s: ERROR - incorrect data handle: %llx, expected %llx\n",
-+		       argp->flb->compatible, argp->data, expected_data);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static void test_flb_finish(struct liveupdate_flb_op_args *argp)
-+{
-+	ptrdiff_t index = argp->flb - test_flbs;
-+	void *expected_obj = (void *)(TEST_FLB_MAGIC_BASE + index);
-+
-+	if (argp->obj == expected_obj) {
-+		pr_info("%s: finish was triggered\n", argp->flb->compatible);
-+	} else {
-+		pr_err("%s: ERROR - finish called with invalid object\n",
-+		       argp->flb->compatible);
-+	}
-+}
-+
-+static const struct liveupdate_flb_ops test_flb_ops = {
-+	.preserve	= test_flb_preserve,
-+	.unpreserve	= test_flb_unpreserve,
-+	.retrieve	= test_flb_retrieve,
-+	.finish		= test_flb_finish,
-+	.owner		= THIS_MODULE,
-+};
-+
-+static void liveupdate_test_init(void)
-+{
-+	static DEFINE_MUTEX(init_lock);
-+	static bool initialized;
-+	int i;
-+
-+	guard(mutex)(&init_lock);
-+
-+	if (initialized)
-+		return;
-+
-+	for (i = 0; i < TEST_NFLBS; i++) {
-+		struct liveupdate_flb *flb = &test_flbs[i];
-+		void *obj;
-+		int err;
-+
-+		liveupdate_init_flb(flb);
-+
-+		err = liveupdate_flb_incoming_locked(flb, &obj);
-+		if (!err) {
-+			liveupdate_flb_incoming_unlock(flb, obj);
-+		} else if (err != -ENODATA && err != -ENOENT) {
-+			pr_err("liveupdate_flb_incoming_locked for %s failed: %pe\n",
-+			       flb->compatible, ERR_PTR(err));
-+		}
-+	}
-+	initialized = true;
-+}
-+
-+void liveupdate_test_register(struct liveupdate_file_handler *h)
-+{
-+	int err, i;
-+
-+	liveupdate_test_init();
-+
-+	for (i = 0; i < TEST_NFLBS; i++) {
-+		struct liveupdate_flb *flb = &test_flbs[i];
-+
-+		err = liveupdate_register_flb(h, flb);
-+		if (err)
-+			pr_err("Failed to register %s %pe\n",
-+			       flb->compatible, ERR_PTR(err));
-+	}
-+
-+	err = liveupdate_register_flb(h, &test_flbs[0]);
-+	if (!err || err != -EEXIST) {
-+		pr_err("Failed: %s should be already registered, but got err: %pe\n",
-+		       test_flbs[0].compatible, ERR_PTR(err));
-+	}
-+
-+	pr_info("Registered %d FLBs with file handler: [%s]\n",
-+		TEST_NFLBS, h->compatible);
-+}
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Pasha Tatashin <pasha.tatashin@soleen.com>");
-+MODULE_DESCRIPTION("In-kernel test for LUO mechanism");
+[1] and [2] proposed the idea that the decision to keep or
+discard a large chunk of contiguous memory exclusively owned
+by a userspace process due to a recoverable uncorrected
+memory error (UE) should be controlled by userspace. What this
+means in the Cloud case is that, since a virtual machine
+monitor (VMM) has taken host memory to exclusively back the
+guest memory for a VM, the VMM can keep holding the memory
+even after memory errors occur.
+
+MFD_MF_KEEP_UE_MAPPED for HugeTLB
+=================================
+
+[2] proposed a solution centered around the memfd associated
+with the memory exclusively owned by userspace.
+
+A userspace process must opt into the MFD_MF_KEEP_UE_MAPPED
+policy when it creates a new HugeTLB-backed memfd:
+
+  #define MFD_MF_KEEP_UE_MAPPED	0x0020U
+  int memfd_create(const char *name, unsigned int flags);
+
+For any hugepage associated with the MFD_MF_KEEP_UE_MAPPED
+enabled memfd, whenever it runs into a UE, MFR doesn't hard
+offline the HWPoison-ed huge folio. In other words, the
+HWPoison-ed memory remains accessible via the returned memfd
+or the memory mapping created with that memfd. MFR still sends
+SIGBUS to the userspace process as required. MFR also still
+maintains HWPoison metadata on the hugepage having the UE.
+
+A HWPoison-ed hugepage will be immediately isolated and
+prevented from future allocation once userspace truncates it
+via the memfd, or the owning memfd is closed.
+
+By default MFD_MF_KEEP_UE_MAPPED is not set, and MFR hard
+offlines hugepages having UEs.
+
+Implementation
+==============
+
+Implementation is relatively straightforward with two major parts.
+
+Part 1: When hugepages owned by an MFD_MF_KEEP_UE_MAPPED
+enabled memfd run into a UE:
+
+* MFR defers hard offline operations, i.e., unmapping and
+  dissolving. MFR still sets HWPoison flags and holds a refcount
+  for every raw HWPoison-ed page. MFR still sends SIGBUS to the
+  consuming thread, but si_addr_lsb will be reduced to PAGE_SHIFT.
+* If the memory was not faulted in yet, the fault handler also
+  needs to unblock the fault to the HWPoison-ed folio.
+
+Part 2: When an MFD_MF_KEEP_UE_MAPPED enabled memfd is being
+released, or when a userspace process truncates a range of
+hugepages belonging to an MFD_MF_KEEP_UE_MAPPED enabled memfd:
+
+* When the HugeTLB in-memory file system removes a filemap's
+  folios one by one, it asks MFR to deal with HWPoison-ed folios
+  on the fly, implemented by filemap_offline_hwpoison_folio().
+
+* MFR drops the refcounts being held for the raw HWPoison-ed
+  pages within the folio. Now that the HWPoison-ed folio becomes
+  a free HugeTLB folio, MFR dissolves it into a set of raw pages.
+  dissolve_free_hugetlb_folio() frees them all to the buddy
+  allocator, including the HWPoison-ed raw pages. So MFR also
+  needs to take these HWPoison-ed pages off the buddy allocator.
+
+One thing worthy of note, as pointed out by William Roche:
+During the time window between freeing to the buddy allocator
+and taking off the buddy allocator, a high-order folio with
+HWPoison-ed subpages can be allocated. This racing issue already
+exists today, after buddy allocator reduced sanity checks [3].
+With MFD_MF_KEEP_UE_MAPPED, multiple raw HWPoison-ed pages can
+be allocated. Since MFD_MF_KEEP_UE_MAPPED could exaggerate the
+issue, I have proposed a solution [4] based on discussion with
+Harry Yoo and Miaohe Lin, and will send it out as a separately
+formal patchset.
+
+Changelog
+=========
+
+v2 -> v1 [2]
+- Rebased onto commit 6da43bbeb6918 ("Merge tag 'vfio-v6.18-rc6' of
+  https://github.com/awilliam/linux-vfio").
+- Removed populate_memfd_hwp_folios and offline_memfd_hwp_folios so
+  that no memory allocation is needed during releasing HWPoison-ed
+  memfd.
+- Inserted filemap_offline_hwpoison_folio into remove_inode_single_folio.
+  Now dissolving and offlining HWPoison-ed huge folios is done on the fly.
+- Fixed the bug pointed out by William Roche <william.roche@oracle.com>:
+  call take_page_off_buddy no matter HWPoison-ed page is buddy page or not.
+- Removed update_per_node_mf_stats when dissolve failed.
+- Made hugetlb-mfr allocate 4 1G hugepages to cover new code introduced
+  in remove_inode_hugepages.
+- Made hugetlb-mfr support testing both 1GB and 2MB HugeTLB hugepages.
+- Fixed some typos in documentation.
+
+[1] https://lwn.net/Articles/991513
+[2] https://lore.kernel.org/lkml/20250118231549.1652825-1-jiaqiyan@google.com
+[3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+[4] https://lore.kernel.org/lkml/CACw3F51VGxg4q9nM_eQN7OXs7JaZo9K-nvDwxtZgtjFSNyjQaw@mail.gmail.com
+
+
+Jiaqi Yan (3):
+  mm: memfd/hugetlb: introduce memfd-based userspace MFR policy
+  selftests/mm: test userspace MFR for HugeTLB hugepage
+  Documentation: add documentation for MFD_MF_KEEP_UE_MAPPED
+
+ Documentation/userspace-api/index.rst         |   1 +
+ .../userspace-api/mfd_mfr_policy.rst          |  60 ++++
+ fs/hugetlbfs/inode.c                          |  25 +-
+ include/linux/hugetlb.h                       |   7 +
+ include/linux/pagemap.h                       |  24 ++
+ include/uapi/linux/memfd.h                    |   6 +
+ mm/hugetlb.c                                  |  20 +-
+ mm/memfd.c                                    |  15 +-
+ mm/memory-failure.c                           | 124 ++++++-
+ tools/testing/selftests/mm/.gitignore         |   1 +
+ tools/testing/selftests/mm/Makefile           |   1 +
+ tools/testing/selftests/mm/hugetlb-mfr.c      | 327 ++++++++++++++++++
+ 12 files changed, 592 insertions(+), 19 deletions(-)
+ create mode 100644 Documentation/userspace-api/mfd_mfr_policy.rst
+ create mode 100644 tools/testing/selftests/mm/hugetlb-mfr.c
+
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
