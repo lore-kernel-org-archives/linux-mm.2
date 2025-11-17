@@ -4,128 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7887CCEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:56:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5211ACEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:03:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6D338E0032; Mon, 17 Nov 2025 12:56:10 -0500 (EST)
+	id B0CEA8E0009; Mon, 17 Nov 2025 13:03:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D44D88E0002; Mon, 17 Nov 2025 12:56:10 -0500 (EST)
+	id AE48E8E0002; Mon, 17 Nov 2025 13:03:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5B1C8E0032; Mon, 17 Nov 2025 12:56:10 -0500 (EST)
+	id A20DC8E0009; Mon, 17 Nov 2025 13:03:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B198D8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:56:10 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 63BA8B757C
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:56:10 +0000 (UTC)
-X-FDA: 84120852900.22.112C2C5
-Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
-	by imf24.hostedemail.com (Postfix) with ESMTP id ECFE4180017
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:56:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nPHFR4UM;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=4098d8239=kalyazin@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=4098d8239=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 902C28E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:03:49 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E38E5733E
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:03:49 +0000 (UTC)
+X-FDA: 84120872178.21.D59E579
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 93B9880003
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:03:46 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eHaFn+bN;
+	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763402168;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763402627;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1+C5a3uEh6uVhE5CwBjGHueg7GAsDN4q94fBn9c2N+U=;
-	b=5SpwcU0KrBhChPHBwFxFGxsK67oQjNR4/JYyyo/+52TVtyz4rECUPRgwAqMqj39BQIsk0g
-	gQCY52EaEdmUSdddf1TCw3J25Y7/XTUKD3sJBfZ+pY8lJ5yURKFhO1bCrbVcplvchbtQpv
-	/BE9oIH1Oc5titr2p99O7jBw6c6UP1k=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nPHFR4UM;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=4098d8239=kalyazin@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=4098d8239=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763402168; a=rsa-sha256;
+	bh=U5Cie80ik2JSvccL39+8gipzyyJCojAXux/hEMXLbb0=;
+	b=nthBOqChBjhTJAwg7T0nLqKCnQ7bWw1e+0rIV4BpiYs25r1BC7NaxF/erC494jLjPV4Sra
+	sJ/K6woWbUGAj5bIN4TPm6iurxD+6pLKF/FVveFpVNzm3m1LB1Ae70S4MGgUZ7zLUw0/qA
+	DMuR5pPR0sH14qRFANgtsQbCDAk5qyU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763402627; a=rsa-sha256;
 	cv=none;
-	b=jbuF4fPN5ocl3dPjGzqlCa2BXLD206Vzj0UNq+bsoc/v+GBbDeW5yFBRJnTs+3jBhEbKlx
-	KEGKQjkNr7ngzgfsWByiDzIidBDEu54Uf1pD9hJsU0CuKopMRs1zxlUggHODzAi45aLn5u
-	itLFcbB8GJGmL2s+JYi2Ylo0h6bqE9U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1763402168; x=1794938168;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=1+C5a3uEh6uVhE5CwBjGHueg7GAsDN4q94fBn9c2N+U=;
-  b=nPHFR4UMC8nvNHo4Fnw9rOi4kaQ2UntLOJmp34d63Go0B086RuyGNxTI
-   9Ups/aIMG/+fpDnsKnRvx3i1LNe4lvbVtOI/faG9wpv+mMWqYief6gtxl
-   CD9nODGsAoxjZqkdwHOS2cNcfwN7/ieomLSEe4E+JOtKC6GLWaN77PCAj
-   ezA7A5fCgKAGSy5F7aQe5n4IzQkHKq+Ni6YMHyyAC2V1awrcxksmXcthT
-   m28xfCt/5BI2j2FDGNX8X6q1ZuXxXT4N/xt7CJed4L/HOkqSm7yl8pphs
-   5lO8oPJcxfPYC0PNaVpf5xditTgPEA1T30QvZRN6fEFTjnNAj/8CU6hAz
-   w==;
-X-CSE-ConnectionGUID: AE5RMGScSNWxUyM+wG0ARw==
-X-CSE-MsgGUID: caTuEcgcSBqoUTH9RXgYZg==
-X-IronPort-AV: E=Sophos;i="6.19,312,1754956800"; 
-   d="scan'208";a="5331311"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 17:55:50 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:23472]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.42.72:2525] with esmtp (Farcaster)
- id 7f414123-7287-41e0-add1-f6f5cca5cd00; Mon, 17 Nov 2025 17:55:50 +0000 (UTC)
-X-Farcaster-Flow-ID: 7f414123-7287-41e0-add1-f6f5cca5cd00
-Received: from EX19D022EUC002.ant.amazon.com (10.252.51.137) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Mon, 17 Nov 2025 17:55:48 +0000
-Received: from [192.168.14.35] (10.106.82.32) by EX19D022EUC002.ant.amazon.com
- (10.252.51.137) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Mon, 17 Nov 2025
- 17:55:47 +0000
-Message-ID: <a5531d06-dd11-402b-a701-a7c6a62186a7@amazon.com>
-Date: Mon, 17 Nov 2025 17:55:46 +0000
+	b=CB4SeixJEiYUT0BD8dk00zQuApl6CVyCT9CxfsKixZ67xSGJNHXgFYjCy/b8V414nhHTp4
+	DNvnxuiSSD8UTg8zYpnZvhv7ttHWTqyi48XAxitSchnR0Xf3mt+2Idmg53RjovNSFpF8hM
+	F61+y7JZh/zMKX/FC0JKWbyZp8ZtNXU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=eHaFn+bN;
+	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=U5Cie80ik2JSvccL39+8gipzyyJCojAXux/hEMXLbb0=; b=eHaFn+bNRcbBqqPbDECTU1nha+
+	8ki4ktpeVqfjrOojFTJy4b9CsRE7DSDpiExAIK3uzWeofkrlLPwdhdwxMXhHe3VZW8PtST3ZW88Pl
+	Mb8itCOIMTljNTR12RzQJWDMna902aYOJpxvJyIfpZR96OFCALwZxEM3RMHkbiIXpi8azElvRRL+o
+	LNuvhXUzES1FgnU8cEMpzaBUqAB9XoqOY0mI7SKxuGXU1HMnorWwn+3kNsON1xIn/WQynngm2/gsM
+	s8xKMfEQlUL7uY19UD0Cmucf9uEgC4IVsl3h+psRtvvDS6i942u/P+P+TZbpHXhiD2VdxV8kzrBle
+	XxvP7Akg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vL3Zl-0000000EEaq-0Kni;
+	Mon, 17 Nov 2025 18:03:41 +0000
+Date: Mon, 17 Nov 2025 18:03:40 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org,
+	shakeel.butt@linux.dev, eddyz87@gmail.com, andrii@kernel.org,
+	ast@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in
+ do_read_cache_folio()
+Message-ID: <aRtjfN7sC6_Bv4bx@casper.infradead.org>
+References: <20251114193729.251892-1-ssranevjti@gmail.com>
+ <aReUv1kVACh3UKv-@casper.infradead.org>
+ <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
+ <aRpQ7LTZDP-Xz-Sr@casper.infradead.org>
+ <20251117164155.GB196362@frogsfrogsfrogs>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [RFC PATCH 0/4] mm, kvm: add guest_memfd support for uffd minor
- faults
-To: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>
-CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, "Liam
- R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, Michal Hocko <mhocko@suse.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
-	<seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
-	<surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20251117114631.2029447-1-rppt@kernel.org>
-Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-Autocrypt: addr=kalyazin@amazon.com; keydata=
- xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
- JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
- BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
- IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
- CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
- ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
- ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
- i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <20251117114631.2029447-1-rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.106.82.32]
-X-ClientProxiedBy: EX19D002EUA001.ant.amazon.com (10.252.50.66) To
- EX19D022EUC002.ant.amazon.com (10.252.51.137)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: ECFE4180017
-X-Stat-Signature: iyt81ncmgyiphhm3yizqmdq4t3fpainj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117164155.GB196362@frogsfrogsfrogs>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 93B9880003
+X-Stat-Signature: ergc15ntojk4dbna7g5gd956ypn39iqr
 X-Rspam-User: 
-X-HE-Tag: 1763402167-60887
-X-HE-Meta: U2FsdGVkX1+K2c9pLJB5D0L2hJLML17hIQjXIeK1pTHQpHs9xR2nAlQXQIgzCcXX37sm/gs6r0cDYx3uLa0olgGn/+dzNRNVcnWC1Tce/DErQPiWlFvLLvC4d2mL6OCWgl9xi3a1/hOCA7OnbbBzPK/jWSVaUEHRkPrQx7cUSivg3QcpHIMClUCod+P3nF9saJ9X5nHF9TCcRVBpqofDGmc81szfgSCOgdfDg80u0cRfieWmbj7Oj+IyxC+FziLbncZA+3eSP/MtI+8zpJqS1IV93mPzkRuD6sJbbrRhcaw5ShJL5aDZrBEYcL72dTWd1ORNLseiw1inMeU2Mfvt66oYXjmuMMypodaZ3qhbCJ5eSDEOv83wffWT+EPWBwbeTppZMaGhI7cOBcUChlBj53zpje8EW6MWeUDZRnVzUYlZSflaJO0cu30ieecOzUVPYN/jZXDs8um+uXBtAD7cgGkK1zJCVVt4RifOXcG3y82mCA/f4+SQmqEDrpsRmcu7W6Tno8RRnX2SCzwBHNM0ZvaZM7ODPdx/CgR2SpWJc1r6PYDM/Fy88ci2C8q1fsApaNY6iAUgbJWlSjgVsWOh09e4Ni+xCMmLOeSZyYqI8IhY5RJN7V1PUDThxDy4I9KXZCG5fONAxm0mk/pgUTuziYATerm+2Ak0UBUmkgSsEAPAXiJn86UUiQiMp7qnLmB6OR2qX/Sl+E4pOvd+RMfk6bcfb8hiD+9AkEBr375qLcu5QPnFMuYFxaJyg+byYsivlBp76otSOlUpsMVRDlIj5Ir/zbBZrV3u+D20rPJubmnuHpe1voWounkL+khgB1fPjppvm+u8JKeuIRWfkkA3WHPQYGIH9mvw8X8VZg4SdwrLvBvBbbiY2E2y7itQIguq/djdAFdhBvDudIc2X82tXds3IJkcMmFd+ZBY3mU/klRtxSrkBvaDNv1Lxq31VC0GlIf9HQXJhldJUI1rAlX
- XIABvEph
- rx70GZiCbupL+wFvuFC5TUTKlKwzIxGkvSqeB7/F+Sp3tia05WwK6U9XPwoTtXQ/OvpHUmmsgnL0ddhqrP0ZB0emWQoVjLrWj0ZX7stkEpbstNBJfjYoXJzAqA1AYdBQaBxodIIlCJJNI3pi17P/yp0p56amDSR4jpJv5MIeidTh05Nxn4ZVHaa/E8R1amkhK6kXkzhdAow8vbALmrNOM0DFPPT/0wIcCChBItkMIvRsBew1XWJcvbiujlGE31QHRo2LRo73C9oKpf6Jstd75H4LMkPZIGzwz1hyidFIcaERV1wOJUNCKNps/mY2EyuchM9q9joKnYAqcud0k58J/7EzAGbDsKh41HT+Q0eUt08FMloLVN3P0eHomL3KTWgvmArVBF47hXZHQ3iTvusCZ5pLJUZVxk62nQShPm8btIBFA20Utz8n+Fi2zH0o7SCTp40zVXhUghfjCupiT3m1lTnld7rUdsOcvE8AnZ/jHbNY7BmbPUS5234CXb/VAy7D/9ajlwQC8uOSgnyWz0DfXZyvW3kvKT6SE3nkwjv/pE6mVEKwdR8dP6wUi2BwTUHHx7P0veWHSVR2es5mosWSGpj70C/IX8BsQTNKZKSJyAWBukT4dwK0b7WK3KjeOg5PH7P3BNylioa8xLSGyJFxnl/xLI62lpzFDg5RmQY0AwF3XMvbGQ92AChD45kDMhi5zjPTFEN4RZIqPHabhBqrNLsM0trmSI6aWyfmpsfOfSPyMKU7vo+OWJsUebmA4+nMzmT4mvhXfcoXYTmhNBnvfYMfHCmJvqG1wd1v0+wtpBLR5Lu4Z/WECQ9uqKpXNsceFgsbAg4aA/PdXInYiW7df6Mh3ORpPgm0VKa+k1B70McgP3QhkKba2ORqO9vpBa7OA9pcPzDyjyaoGtW4Snf5zOAjmuRHuUi9ArLSXKHh7XHlmYezdPBo0NE86msmUEv1hyrgoKfJN6lLL9nkrWpiQqFUUMTbJ
- vvxjP6DX
- y2BtMIcrStA=
+X-HE-Tag: 1763402626-611993
+X-HE-Meta: U2FsdGVkX19y+9nb6/lD1G9I3xzuhqZO3x2suD5CN5Y8ouok455SL7y3nTAaWPXzw6Y2H3rDBDHyoughEMJQ1hlzBPvOhuNhVt/xJq//zf96XngtXxgFCWaS64jb2ZncZQjG7cD/grKWwmDSsm43qKGzzlg6jEUdEgj+GTJUbjBm2XrkJ5T0YdEtOtKaLkLkD592OwhTu+uPLMIYqTs8dxn2y28/Yug2FUZ6rFCG++5TlI5LPaEXLLJOboKhXlb3umOQNRpmIJbkMBx8cP4/yG8Lb0E9Xw6xqMDqbnDNtG/A30X1+Usss8M9Ognucl0h/E4Q35qsaRUZp51+bU3ZxWRKiuXW8Kr+TbePmDtLOA25FflB+H1IYfloXFKG4YZ76BdgpfAAYz2lZWjtVrncWBJR6QmY6MtP9GTNpYi6RYkdzfN0OJ9rkPXNSC2gKkThlayp6kR91lpYsvl4S8tCaqUFD9AR5mOHuFkx5mLWJSHKgwI3+uhrfGFYIRmgEQHSLhWs7IvfjYXy90srD/U+3IyLDtiFc2a1yNIQr1vRxPSOwK2tn2yJf+MDeb/qNm9USi31lOpcp4I1devP7MSjGYgwEkNfLjsyDH9EkprJ3rwWj2YKNr5OlAu/mlmGJkptY/M1jmMdaIkwXlnOGRO79QGVSA0J9Q1U67Te8EvM93H1cy8so9Qyfso6mf8sqUDhI91au9wQm7zRTMO6fa7y8gcd67/b9M407g/vwNNz1vjv2m1EBX+EcZWRrX7oV8GgHiT4tecxyG4CGJHJLknBDM57yxJWhgL9lPqqhh6xqBAriQ4IoCu5jHCh5f10C9bBcBcNT49CbjY6kttSVp9GEMmq2wmW+DWU7eT6sbnLn2mtLgmNSDsjA/P1Whibze7xYxIzovy9oGnEnAsylOX9wuVKtlaOM4zHDpMkX33uMxEtC0NdcNDIyzfmC4GiDo6sloB8ZGXOOyvgahT1rIQ
+ qGOaqv8u
+ qK4qkhVmYpBcMb3S0hGzdHJ4ESx2QeRSgfnbThiCgYKYCGtYzctANwSyMPok3kAk0Xu9S2ESupN9O9Qw1H3pm06OGuNnNA5BNTpuWPz78XxdSJxmEIQO7n1YGibBNmQ/CkMEEtLn9LwETkR0F5KQ05eZOmJpYNiMSlgYS/KAFF2r21uoTp7UrJbkh4FImPb2qtAeY4prJfRkpQEc7ANa51UTwxUU+BiBv3NDXHZOS6teB+XUnXVqi2KBuCUrTfaiPsLjuiXoKffVCUmREI+oV2UeCCqxDPsbkK0kFa5PbAtuYSyeRamDiMd/3MCtf7nwL8yd7eaDui177QESQ01I1mFTKGtaO2ENuZwey1e8nLbnEu52CwcwqkLJ/7lTTTP98Rofyiwsvdzh5Dak=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,72 +99,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Nov 17, 2025 at 08:41:55AM -0800, Darrick J. Wong wrote:
+> I wondered why this whole thing opencodes kernel_read, but then I
+> noticed zero fstests for it and decid*******************************
+> *****.
 
+I wondered the same thing!  And the answer is that it's special BPF
+stuff:
 
-On 17/11/2025 11:46, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Hi,
-> 
-> These patches allow guest_memfd to notify userspace about minor page
-> faults using userfaultfd and let userspace to resolve these page faults
-> using UFFDIO_CONTINUE.
-> 
-> To allow UFFDIO_CONTINUE outside of the core mm I added a
-> get_pagecache_folio() callback to vm_ops that allows an address space
-> backing a VMA to return a folio that exists in it's page cache (patch 2)
-> 
-> In order for guest_memfd to notify userspace about page faults, it has to
-> call handle_userfault() and since guest_memfd may be a part of kvm module,
-> handle_userfault() is exported for kvm module (patch 3).
-> 
-> Note that patch 3 changelog does not provide motivation for enabling uffd
-> in guest_memfd, mainly because I can't say I understand why is that
-> required :)
-> Would be great to hear from KVM folks about it.
+        /* if sleeping is allowed, wait for the page, if necessary */
+        if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
+                filemap_invalidate_lock_shared(r->file->f_mapping);
+                r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
+                                            NULL, r->file);
+                filemap_invalidate_unlock_shared(r->file->f_mapping);
+        }
 
-Hi Mike,
+if 'may_fault' (a misnomer since it really means "may sleep"), then we
+essentially do kernel_read().
 
-Thanks for posting it!
+Now, maybe the right thing to do here is rip out almost all of
+lib/buildid.c and replace it with an iocb with IOCB_NOWAIT set (or not).
+I was hesitant to suggest this earlier as it's a bit of a big ask of
+someone who was just trying to submit a one-line change.  But now that
+"it's also shmem" has entered the picture, I'm leaning more towards this
+approach anyway.
 
-In our use case, Firecracker snapshot-restore using UFFD [1], we will 
-use UFFD minor/continue to respond to guest_memfd faults in user 
-mappings primarily due to VMM accesses that are required for PV (virtio) 
-device emulation and also KVM accesses when decoding MMIO operations on x86.
+Looking at it though, it's a bit weird that we don't have a
+kiocb_read().  It feels like __kernel_read() needs to be split into
+half like:
 
-Nikita
-
-[1] 
-https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/handling-page-faults-on-snapshot-resume.md
-
-> 
-> This series is the minimal change I've been able to come up with to allow
-> integration of guest_memfd with uffd and while refactoring uffd and making
-> mfill_atomic() flow more linear would have been a nice improvement, it's
-> way out of the scope of enabling uffd with guest_memfd.
-> 
-> Mike Rapoport (Microsoft) (3):
->    userfaultfd: move vma_can_userfault out of line
->    userfaultfd, shmem: use a VMA callback to handle UFFDIO_CONTINUE
->    userfaultfd, guest_memfd: support userfault minor mode in guest_memfd
-> 
-> Nikita Kalyazin (1):
->    KVM: selftests: test userfaultfd minor for guest_memfd
-> 
->   fs/userfaultfd.c                              |   4 +-
->   include/linux/mm.h                            |   9 ++
->   include/linux/userfaultfd_k.h                 |  36 +-----
->   include/uapi/linux/userfaultfd.h              |   8 +-
->   mm/shmem.c                                    |  20 ++++
->   mm/userfaultfd.c                              |  88 ++++++++++++---
->   .../testing/selftests/kvm/guest_memfd_test.c  | 103 ++++++++++++++++++
->   virt/kvm/guest_memfd.c                        |  30 +++++
->   8 files changed, 245 insertions(+), 53 deletions(-)
-> 
-> 
-> base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
-> --
-> 2.50.1
-> 
-
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 833bae068770..a3bf962836a7 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -503,14 +503,29 @@ static int warn_unsupported(struct file *file, const char *op)
+ 	return -EINVAL;
+ }
+ 
+-ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
++ssize_t kiocb_read(struct kiocb *iocb, void *buf, size_t count)
+ {
++	struct file *file = iocb->ki_filp;
+ 	struct kvec iov = {
+ 		.iov_base	= buf,
+ 		.iov_len	= min_t(size_t, count, MAX_RW_COUNT),
+ 	};
+-	struct kiocb kiocb;
+ 	struct iov_iter iter;
++	int ret;
++
++	iov_iter_kvec(&iter, ITER_DEST, &iov, 1, iov.iov_len);
++	ret = file->f_op->read_iter(iocb, &iter);
++	if (ret > 0) {
++		fsnotify_access(file);
++		add_rchar(current, ret);
++	}
++	inc_syscr(current);
++	return ret;
++}
++
++ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
++{
++	struct kiocb kiocb;
+ 	ssize_t ret;
+ 
+ 	if (WARN_ON_ONCE(!(file->f_mode & FMODE_READ)))
+@@ -526,15 +541,9 @@ ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
+ 
+ 	init_sync_kiocb(&kiocb, file);
+ 	kiocb.ki_pos = pos ? *pos : 0;
+-	iov_iter_kvec(&iter, ITER_DEST, &iov, 1, iov.iov_len);
+-	ret = file->f_op->read_iter(&kiocb, &iter);
+-	if (ret > 0) {
+-		if (pos)
+-			*pos = kiocb.ki_pos;
+-		fsnotify_access(file);
+-		add_rchar(current, ret);
+-	}
+-	inc_syscr(current);
++	ret = kiocb_read(&kiocb, buf, count);
++	if (pos && ret > 0)
++		*pos = kiocb.ki_pos;
+ 	return ret;
+ }
+ 
 
