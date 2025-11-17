@@ -4,225 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13F14CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 06:31:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 290EACE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 06:42:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D7B38E0003; Mon, 17 Nov 2025 01:31:20 -0500 (EST)
+	id 759218E0005; Mon, 17 Nov 2025 01:42:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AFE28E0002; Mon, 17 Nov 2025 01:31:20 -0500 (EST)
+	id 709E98E0002; Mon, 17 Nov 2025 01:42:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB98E8E0003; Mon, 17 Nov 2025 01:31:19 -0500 (EST)
+	id 61F728E0005; Mon, 17 Nov 2025 01:42:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D039E8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 01:31:19 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 601401A0BD9
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:31:19 +0000 (UTC)
-X-FDA: 84119127078.05.9BDB944
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazolkn19010002.outbound.protection.outlook.com [52.103.32.2])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7C9231C0003
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:31:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b="hI2/hDHK";
-	spf=pass (imf18.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.2 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=hotmail.de
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763361076;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 507DE8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 01:42:12 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D9C8C4E290
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:42:11 +0000 (UTC)
+X-FDA: 84119154462.21.B37D966
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F0B90140009
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:42:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LXkvl6fW;
+	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763361730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GILaEO4Zbmg4SMuEfg+2dAClAD5v53IwVJ5Gi8LwMdY=;
-	b=evvgwfWvbUl1ykhRNW4YgNqjmDY0KIJJAOdQ80A/zfyg193H6Yv1QnaXOKdU2mROs5xTZc
-	2EOec2C4M/KIzFrCoP5Tx3p3ALacZh5n5eFIukeEaM0/zSB2sjEZikFCNIGJmlt1g39yuJ
-	oWvdPJGtYclCDjy2Z0FtJpJBhmMkEf4=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=HOTMAIL.DE header.s=selector1 header.b="hI2/hDHK";
-	spf=pass (imf18.hostedemail.com: domain of bernd.edlinger@hotmail.de designates 52.103.32.2 as permitted sender) smtp.mailfrom=bernd.edlinger@hotmail.de;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=hotmail.de
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763361076; a=rsa-sha256;
-	cv=pass;
-	b=8gRv9g9RGd1raGFlt3dzumK3hoR4GEvOpFdpoWWbbAiEyEZ0TtMaDgEvRViB4ehBvX0ROl
-	V1Pcfzmv7myiCvZcJdhzb/+xu6H5u0zJ2xBgoOg9T3jEbBoaWxEJcL8QJIPeRxRHZHmJqx
-	jtr+3L2K5e/lKRNSng7tR9sQTHyiK4E=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q/QAEUjioH+/EvcuUvRXf1DCVL7gk5cpckTWkNC3BK7Iq6roEZwhNVIcFgUCtfA7SCXGkHcMURTrwIftBXYKoLRF+3YaTY8T++Ir97mgFjM2ug/gAoEJnSKu/tjrFjVEgO41hNILJa17+ZXVpNL3T0dfn4LahKK2g4ld0LthdGTfsW8BPvoRzZUmwPiIX8iJxLVFspCnIc+Zyf7+NdX3sdqhsf6QvXuLEKXodtqX51Kiw2GAgwnUkJoTgh4D0iF6Fcoc2AgeABHIjlRot0tsiVQfS1moEXOQ3vfYVlCeAWGtIuHXnKZ4C/XXEgX2xjKSoRuA/F12Y1YnRgJYLSGqTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GILaEO4Zbmg4SMuEfg+2dAClAD5v53IwVJ5Gi8LwMdY=;
- b=iwEaA5C8ZEUFwj/EWNT3c5lvHuvtvjjKqMGg2HhU5jGUQbeWnO58JB/CM9D7YWzo7D0SVukyTc5ag2D8Fl6bHIpezDdJ4qG/JzAgYBljl0UVFJzzAZW5oMopsQfXviGhZhRuMz0qVUGU7pPN1u6h7rNSEvL9nXTmTpiyOY9k558aBTyriRJc9ZCdAsazR6UA1JenrTPvetTZ7xf7IqwStCxnotu9PoWlehJDx2Lo38majUogvRseROb1F7Q2DE3KO6eZvk8yczYNQfzgki1FBkYk3abnabZqCawvhKs5+LEjmC2p7P4VjXuTYp0AQs/Wb11gYQ6rW+BJ4ie3FxeE1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.DE;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GILaEO4Zbmg4SMuEfg+2dAClAD5v53IwVJ5Gi8LwMdY=;
- b=hI2/hDHKBqFdR0KDasoFEfnMETF3tK4uBZ/A0biy875N7xXMVVWmomqlLg3whXnKl8tPaesEYauxzMioeheYfObaNdZ5BCwqouBerREZAR6KIiTeNyD2qHPVKWuJJ/frwXz+Xj1H3ZHl84y7QwHRHYlIkCtIrU+NERXZRW665XNGZk/SXIR0ABgyopaUbI4OK6S7lmN5UWjNyl4i6QqXyXCHt3hePWXtZyNzo/dqneec7SwhwTnll7K2St0oxoGIEUfcYa5U//gbDW9cgKSkLffmYxN0bq0ehQRBGtpgmCSpZupvI6TuRy9lnHH4HaaQKnPKBnIdinDelNMiizabjA==
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4) by VI0P195MB3083.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:800:2d7::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.19; Mon, 17 Nov
- 2025 06:31:12 +0000
-Received: from GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49]) by GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- ([fe80::dde:411d:b5f2:49%8]) with mapi id 15.20.9320.018; Mon, 17 Nov 2025
- 06:31:12 +0000
-Message-ID:
- <GV2PPF74270EBEE4FE6E639B899D01D8870E4C9A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-Date: Mon, 17 Nov 2025 07:31:06 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
-To: Christian Brauner <brauner@kernel.org>, Oleg Nesterov <oleg@redhat.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
- Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Serge Hallyn <serge@hallyn.com>, James Morris
- <jamorris@linux.microsoft.com>, Randy Dunlap <rdunlap@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, Yafang Shao <laoar.shao@gmail.com>,
- Helge Deller <deller@gmx.de>, "Eric W. Biederman" <ebiederm@xmission.com>,
- Adrian Reber <areber@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Jens Axboe <axboe@kernel.dk>, Alexei Starovoitov <ast@kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-security-module@vger.kernel.org, tiozhang <tiozhang@didiglobal.com>,
- Luis Chamberlain <mcgrof@kernel.org>,
- "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Frederic Weisbecker <frederic@kernel.org>, YueHaibing
- <yuehaibing@huawei.com>, Paul Moore <paul@paul-moore.com>,
- Aleksa Sarai <cyphar@cyphar.com>, Stefan Roesch <shr@devkernel.io>,
- Chao Yu <chao@kernel.org>, xu xin <xu.xin16@zte.com.cn>,
- Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
- David Hildenbrand <david@redhat.com>, Dave Chinner <dchinner@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>,
- David Windsor <dwindsor@gmail.com>, Mateusz Guzik <mjguzik@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- "Joel Fernandes (Google)" <joel@joelfernandes.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Hans Liljestrand <ishkamiel@gmail.com>,
- Penglei Jiang <superman.xpt@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Adrian Ratiu <adrian.ratiu@collabora.com>, Ingo Molnar <mingo@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Cyrill Gorcunov <gorcunov@gmail.com>, Eric Dumazet <edumazet@google.com>
-References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <20251105143210.GA25535@redhat.com>
- <20251111-ankreiden-augen-eadcf9bbdfaa@brauner>
-Content-Language: en-US
-From: Bernd Edlinger <bernd.edlinger@hotmail.de>
-In-Reply-To: <20251111-ankreiden-augen-eadcf9bbdfaa@brauner>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0153.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ba::14) To GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:158:401::8d4)
-X-Microsoft-Original-Message-ID:
- <c6b80b7d-9efc-4d81-98b6-d7ab716ca2ed@hotmail.de>
+	bh=F61/44VrimXOAEuXiMeNmI+aj0JYokmyCnACi/yOoLA=;
+	b=xGQCterUeW4gOFqR/dR0eDu3ksw9XXxyOgCiZbmU+t6n9mpi+IhDY9ouAQTN2VCcXmwYFw
+	sEgVHHE4RjTwmjWFr7Df7JStljhjE6snZhEyOhmQPMzsPZdCfX3DLxl2F7Y2R/FXLTFAll
+	jjiNAUGtUMENGxbIt0ILEafQB5hujVo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LXkvl6fW;
+	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763361730; a=rsa-sha256;
+	cv=none;
+	b=7G2JJk1lxN2OCZarH9Kd/hD4Zoi402CmqXc+r129UE0XCzjNeDY7jJbB4e4dnRBCv4cuV6
+	pZ39+CTTweQ+LIaJIwNdrD7BrS4DGiJdWLbaewT70pgAPv59oIdNAJz14mAqqeYI0JPjo4
+	c8dgu1kM8x5QzoWNAhDcFT7RVJjdXUw=
+Message-ID: <8fbeb3e8-7c30-46f6-a0a4-289efbf45ac0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763361727;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F61/44VrimXOAEuXiMeNmI+aj0JYokmyCnACi/yOoLA=;
+	b=LXkvl6fWXks2EBeWBZhRCeAyF3ikTcHZiBnXiOf/E69BeQQS14g5s1Z7/bB8YxlQXeJX97
+	ZSrM63UX77TU+weQcxR68BHoTI37uR0exm53LyIVRGyINLRhjXjK25ABUedOBpfn59DJNX
+	OX6fbBjMivdCT5ijsyT8t8ax4mXTWFY=
+Date: Mon, 17 Nov 2025 14:41:10 +0800
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PPF74270EBEE:EE_|VI0P195MB3083:EE_
-X-MS-Office365-Filtering-Correlation-Id: 254bf897-bd44-4b4d-43aa-08de25a2e6bd
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|12121999013|15080799012|19110799012|461199028|23021999003|51005399006|8060799015|41001999006|5072599009|6090799003|40105399003|440099028|3412199025|12091999003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aGNVaTJzazZ1TUJkcTZ1ejUycVNucUp6N2dORDU0L0QvdUJwZ1YvODRzSjFG?=
- =?utf-8?B?RjhjdkQxUGFCRjhVSkFvUThVQkg1OXd4VlJQd1dMQThhVE5ETGNlbnBUWEVv?=
- =?utf-8?B?NlpsUVVEMHFaMFdOeGJnWlE2VFZXTkJNNThZWXNSYkthSVYvc3VJS3h3OVVL?=
- =?utf-8?B?emkzV0F3VWhXc0FUaGx5VTFQOC9vQkowSkhtUVhsTkFxRU13ZVB1dmdlL0pH?=
- =?utf-8?B?aG1pTktXZmhTajBCcjNYeEtZSEhiS2hETjJ5WmNEOFE4ckpuaGVBRmpRMXk3?=
- =?utf-8?B?eEF4b3gzQWFjSmhXY1B3NHQ0WXNUUWNLTFBUOENyS0ozbi9SelJuYzZvQWZx?=
- =?utf-8?B?cVRWWGliZDRGRFZlV1poeGdHeWU4MFJEVXNmTVN2ZmpzTVZja3ZnTWVPNzBU?=
- =?utf-8?B?dWt4VXhUeW54Q2NiTXdBN250cGlrTm80YnNoNi9aZXRjZWZJcUpaWkdpWWUr?=
- =?utf-8?B?VlorRU9JamozWVVvYzVSbWcvZzJPYVl2UitNQzk2T2JUV1h3OFc5c1AyZmtZ?=
- =?utf-8?B?RUswbW5VZHZQNTJDODRZSG5wV3FqVkt4aUpyc0xrYlVJOEJjWGhhemtwTUty?=
- =?utf-8?B?VjhhZVNGTG91dkJnb2ZVRTRZemJNNlNTWGhFNFdjWWUraEdrcFRmdlpqNm41?=
- =?utf-8?B?KzI3aVg2eEpPYitreURGaHlxeG5hZ1lvR3UwOGVZeE9qU0U1dStYZGdXUmJz?=
- =?utf-8?B?YnpNbm94WmFHTzc2STU3SFZOTGFYVVY3ZkRleHV3UytkYVlIQjZtNUNkUFhu?=
- =?utf-8?B?NnpoSDFoK0ZjeXpnazYwR0FCcDBzMk5Gc0ZnMWhLTEs5S2YrRHp5b3FqVHZk?=
- =?utf-8?B?bVB3ZzN6cVNRQjFhaXpFTmFicWFuQVNnNU1WOGVVcFIwYThhNjV3WXR6SG14?=
- =?utf-8?B?WTRBbXphQmJVV25YVnZKYVU2Y1R1dm1LSDJ5SHZlUXl4RDFuQmxJbmRDUWxV?=
- =?utf-8?B?aVdrT2pMSFlJT0JUU0g4dkttcWE3Zk5BY2thZWNiM1VWRFE2MDBKSlp3UGh3?=
- =?utf-8?B?UUVGY0w5anQzcEZmdjI4RXZOZmRjb2F4Qjdybm14R0pZNWloWXZJc3BYOVYr?=
- =?utf-8?B?dXBLaUpsckhXZjBEVnFwZDZRdGJHdXhpcnArcVpvNnptUUdSaGhvem94NExJ?=
- =?utf-8?B?djlwRFNiWnpVSlBhdW8vSHJKeUVxVWwrL3pnOFEwSzJCeUYrbWsvN1IxaTg1?=
- =?utf-8?B?Y0V3bC8rTkRCRUd6OEZIRmsvN3MyZ2FuYWZZd3V0MFlHUGdEVG83TUtKNkJQ?=
- =?utf-8?B?V0lhTnZyaEEzL2NxNkp4ZjMrMUdOd3hzbUNuNlJyOVByd2QrQzhadjEyQytm?=
- =?utf-8?B?V0dCU05UbWpTUUhGUmJ2YW5QT1pYeG5SVnFPdjBHNmpKZFZUTm5zL014ZmxF?=
- =?utf-8?B?MUFnRFJJSUJjRVdlVmo0dlZZNzNPOVlHU2hlNWhRRWRaeXRrbFBFN2xIbjF2?=
- =?utf-8?B?T1VJakI0QzRFNUlLcVFtUGRBV3hnOFoxYmkrUmFNY1huZlppV01LNHgrQlpL?=
- =?utf-8?B?NXE0TzNMZzFYOTFNMVpCR2NhSkNLQ0pLRGRib3BuSTZoc1JLSzMrMWtXb2Nt?=
- =?utf-8?B?R2JoaE81NXdXdURWdGNYRUZEaW4ySjhNZEUzL3M1aDZZejhUTzlZUTZad1ZQ?=
- =?utf-8?B?MkNLZzhNREx6Q0R1bG5oa2JQZk8rUnpjaDIwOGFIRUdpUVhDRHAyaVB0bTdL?=
- =?utf-8?B?SjhEZVUyUURTVEtFTGJxUURxTVJobjRDekt3dUJHM1N1cnlKOURqUk9VNmR1?=
- =?utf-8?Q?OV4tYGSYFwnIYrBOUokWtKHUig1HhlCE62fE7GL?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NXc1QWdIbVg3bUJSZTJzWGVHQlF2RnFPamNMT3J3Ui9oaHZ4Y2E1VDRUcUZs?=
- =?utf-8?B?alB0ZWVkbjFsdEpDV2ZkUTU1NTdiZ1JTTHpic0dRckxTY0Y5a1NrbEFBRm5W?=
- =?utf-8?B?ZlAwbWw3L1ExNzdBNERZVU84cU16a2gyWkR1S1ZRZzJ3MXRvMG1lTFd3U3hR?=
- =?utf-8?B?S0grbFQ3L1Zqd0tUMjFCQlM5ZEZDVDBGcll6Z0VXSGRYRGgzYVU0bTRPT0Ix?=
- =?utf-8?B?ZFdKQ1lqcUI5ZGNIWEZMU3F0YUVZaXNiNDFWQ0pqVkJWSTN4NG5kWiswSE05?=
- =?utf-8?B?UlZ1eTMraDhMQ2thdGxGazdPZmxGbExTTTJuaWhJTnpReDUrUTQrcVRPOTk0?=
- =?utf-8?B?MDhNZlJRVUVhWVJaZi80RkVpUTFiWThYTU5TL0JKOXZLc0txWm5aZUxrQlFW?=
- =?utf-8?B?eU1ub0wyNmJEaWI4UUdjN0IrVjJYZDE0QXlVMElpZkxzK0hJS2VwVU5TMTFR?=
- =?utf-8?B?YWY5czlXZk96TnVDQkFNcm5vL1RjNUx6YUxlY1JqaGZtZTNSQ01oZTlEcitI?=
- =?utf-8?B?NkdkSC9VQ2ZseDZ4VGtiODJ6Y0dpSjBIUjk1R0xCemhQMDFUbi9RcXhzN25t?=
- =?utf-8?B?RUlxNm02NHhUSnI3SVc4WnA5VzZrM2pGZ2xsQVNFaVFhMHpiVTZqeWlSZ2t2?=
- =?utf-8?B?SEk0YXVUa25pMGVnK3EwVjFHVDNIcSs1YjQwSGh0SnlpZnhIZGRaRVZyVlUw?=
- =?utf-8?B?bkZ5cjNYcGx3ZGxQT0syamw3b2JrQ2NGd293NysvUWIrYUNyWWdQcDJ5dnNq?=
- =?utf-8?B?aXlnaUV3UnRaeUVSdTVvcmp6TGFYR3I4SlE5VHpYVGlYMERHUk9od0dKc2tZ?=
- =?utf-8?B?WTBxUEdDNzViRERzMjFsS3RsN2M3REFxWVVoek5IOWsrdFRhcmtYUVYvL1cz?=
- =?utf-8?B?ZjJsUGFPZG1ZZStKMHV6Y3VoZ1I4bUZMU2U1ZHgvL0x0Z1Z6MVNvaGdla1Fn?=
- =?utf-8?B?dVU4amJiMUx2TkZ2YzVRVTV1VXJXVVNCR010VEY1eWtqYjlMR29KZHpaSUtU?=
- =?utf-8?B?Q1d2aUV1SWRzRXF2UkhqNGdBZkNub3pwWGdkbisxajBVL2hSeTFTL29DcHBw?=
- =?utf-8?B?OFM5RE8xTDVXQnZWNGZDdmx0OWJoMDREMjljYi8vaGNTLzRySEg3MVplR0Ju?=
- =?utf-8?B?aWoyU0xJQ0NkNHRxTU9PKytCV3Q5ZVRHV1BjOWU4MjF2OEtGUzJIZ25LQTVZ?=
- =?utf-8?B?dkdQNWNScEorZVh1Mk9jZXJOTWlYTkNueHhVZkxvdFh0eDRoMFVWYUh1dDJP?=
- =?utf-8?B?c3FqY29MalhlNy9QbXZnVFpkZTIxL1prdVBwZE1qTGRqQ1BDcy9Ra2Jrd1VP?=
- =?utf-8?B?alo1bWxwRkViUHFZdUlyd3l2bmZvTi95d3R1RjVaRjYxMzNEUnNWUHBHQzBI?=
- =?utf-8?B?Sm1uN2UxTTFYc1ZRaEgwaDU5cmVpWjd3M2FNUEp6RkYyQVkzMDVPS3dNczdX?=
- =?utf-8?B?OUVoWVlKcmJnZytIVUs5aUZIcjQ3eFl1UzRsVlI2WDFYNEJha1FiNnI0SGRh?=
- =?utf-8?B?TnJnazBLRG5QR1pmWkZZbFZIbXNGdldsWHUyVEtpNWRSZkljcFBxRVBwTi9U?=
- =?utf-8?B?VFdGSXNLZDIwN2ZUU2ZCRTBVM3cyY1ljSnFsdVkwT1k3YlV4c0hGSDRqMjI2?=
- =?utf-8?B?clAvSk5JbFIzUVpEL2dBQW1HRnVnZzRIcGpQbFFIV01zeEdUdEJRWkdqalFj?=
- =?utf-8?B?QlhhK2NjbUhzQ2Jmb3crNUVKK3duTFA5R0hkL3F3Zit6RkxGZkMyYkIwNUp6?=
- =?utf-8?Q?wPCT5r0N07H7KjVEZBJ1pe7ie/oQ0Z0Kh7aNY7b?=
-X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-87dd8.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 254bf897-bd44-4b4d-43aa-08de25a2e6bd
-X-MS-Exchange-CrossTenant-AuthSource: GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 06:31:12.3732
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P195MB3083
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7C9231C0003
-X-Stat-Signature: mddokuzankgxozmxd68njy3355rj1daf
+Subject: Re: [PATCH 3/7] loongarch: mm: enable MMU_GATHER_RCU_TABLE_FREE
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ peterz@infradead.org, dev.jain@arm.com, akpm@linux-foundation.org,
+ david@redhat.com, ioworker0@gmail.com, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-um@lists.infradead.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, WANG Xuerui <kernel@xen0n.name>
+References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
+ <146b5a0207052b38d04caac6b20756a61c2189b3.1763117269.git.zhengqi.arch@bytedance.com>
+ <CAAhV-H6HL+mXeuLqgo5BOVBB0_GHTUmn7_7NTzdUpLX7NbuQ5w@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <CAAhV-H6HL+mXeuLqgo5BOVBB0_GHTUmn7_7NTzdUpLX7NbuQ5w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: F0B90140009
+X-Stat-Signature: q14hhh3bsneug5wbsiqtaottciiqzxuk
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763361076-573558
-X-HE-Meta: U2FsdGVkX19DrMrpxKRKL0MUAnlPcliHAzds6l3tJFR4HOPEuzKcBp7c5UOlpodwyOITcsax4X6WrVA0bRWEmcGo6oi+lmE3llpI7ikPbTbIsUEp98XAKRl5lDN1NdzP/hel6ketBK/gcDGwd8u70wZWErKdYTYagZXo5d2fbSFuEF8qT4uj+iiUtdH8J3Y6ART62h7KXwBMAEFQNRnevIhdLzRXfISwE/pC9m9b2fZ2F76njafcUP57b9yV9sm8dSd4uMI5y4xi3/tq5edtebtScuxJmG+xI1QGEzZ1ZSWoN/+uth8R+y/4JEWmb2Qy3TLoAOFu+44OgcuMTTJInRdC/La/RLIT4cMXWmhJe1WmJ96jctkLU1D7bcS0cxrqOTp1ryy0K0wyizvWNy0a5OMTH163nFPvlnLmd/di9bAQsxPCgJFGergw4UmgAaQeTrIRPBxuhCVnF2vcKFZeDSg70GYOhvJvohS2CaDX+hsH3c9JKy/MuEUX7PqubT/2KQgdUPTtvkPZGLKojBcd5epy+ppWWwG756p67oaqDlqjWaWTjHtll3CECdlk1o9tlYgOdu2AVz8+gFxXgJ6AoF3SiLsnPP+tjC9fNAkvGMdvzwXDrMVCzhfX33YS1Bd4C7zEKhDSFxTprHMwx0a/dnsnm2F/D/OEj3qVKfn7CQy6p1+GnZWRAyo10sya0CcPZRtZng0IqIBJW40ouZ3iJgX4vqcEOTVR2oi6Fo9ogSZh9ckmeiRJA3hPgMsieU9F9j0eBkHKRS2fR8xnWgngUbUz3ajRFA0M0VJdgLW9yym5MTrz8tawXBbQljs0lz6KTjblVlybAe9zPU11oIK7ndsWNmrO/2wrmdx1fCGnIankBoWgttA2OQgAD/mU2MyleseWQZOPvmRsDLVKi1+5OnHB4ST4yudTaLD8+uuJqY1Uh1qWIJP7U/aXQSWq0ky7f59+uvJ8eFx/wUGlj6o
- d4vVNjIi
- 5+lelURNxmbK2ANTzAQW6R37tKhnlLisWUBU+eivin8DvbWGVmXKyQgn6DSibOErnDKqKOm85pTc6vvI/DORJLWyAN2ke5OXNEMvFJnxv6Ya7SvJ9T2c63VyWsDua06u2j1XOP0yvqqW2nbB1ph7x3sHBFWztwEkJJ2tsItbqoEuhAgytNEXNPpf/D5HD3EyuQnRUlMvl+C2pjRDQIj/FTySiIoYh/8k0v//eUTyyqqjYI5bE0JfGQ5mWSSJGitgZS/ssV7fPyzLq4fT8mc0v6cCcOwFIXSs6FsTT5ZOd0B8mkFIG9ZJrN5lp+BKfMbNTDaRhLOeDIhZWEPQyiteP7Lif75g8s0/Ye88yBShLM1khEzAAXz0Zfio9dBSISMVDWcVkZshUIqRsNvEIfon0UXeULaVaNoeUMmGIfUyb7rJMUfca1eowIcO1Y8UugsVkfJ29GWzr1zdMxTv1X6rDlk7hfP6XVZGkjO5/q7LG8ZDJpi8v6cP0XVIcMs0igOmBHRRxTMjAIcEtbzq2u6p2ayGX5GNzJz8bvWeJiQixrxae0b07COgD0YC6d3mKzhx/SMBfoFQc3DKMB0pRAlazEKrAuQnnsKfP6VbZjCBvnVnPPxB4v+qIubFCX8RktSUw7hwlaRcgLQ4d3vgSBmSxQot6u6LexVT/z4u3
+X-HE-Tag: 1763361729-281074
+X-HE-Meta: U2FsdGVkX18E9sNYWGb7dWWC5h+hHosKmp+UKw0IYUMVOONh3H3HjzepDdxgVxANTtw2rsTZ6njFSV0d8PZ1qnd0+2XivP/dPodTQsE/2aqYsK1jCMdVW4BMS3s9KZVksRyuk6D406jOtFlQmDKxzSChRwsC9j72tmS88ZUlmK/TNptIEB1KI2iHCCXQbew9fgDaB18G2e429eoePxtL00wYEAYhHCZOLrB70WbZ0+zon7fte9Il1x5i3w8fKJmVMaoiPrV9KZQ9T3PFMeq+MKoF1OtvxSf+bBE0R5vmxBIrRLEF+B1YbrkoiqAWb7/q9OxwWVYuljPLakc2Vyqn+z5d5bN0sHd2EePMXo1f32b/D4xVn1UzQi0hOoXcQ9ckaX3QN1J2p43VBqoQQvK+20vczpDxTxPrnN/mlDI7KjowagUBlq6xX1pz1P9bEbfDoN8/jJTlybali71XeRTiewidEnkMeaUyWOsNP2quwiKC98O6HMLPEv5AXNXuyP4SHEdlO+igwfVBVBuaB52yCjpQsnwxyty+nsTEym4M6ChMrzyMU8Fir4ipQj7X8T8JVGADcMS+mVTzyuVY53C7lTTg/lopxXtAgwYggLJzj2i9Bv78XELJTFWJX1CUPTIa/eFmHQFsAWNak6ndSNmBRrJ45co72edkXJZa3CvmayrDGYU6GLVl0WoCE33EZ5GLBe3r6UEspiMq3KN8+w/ex4spgFULIsoD95yC0G3Kw8YdqqCbnkLL3kW/Gs14X3bVSg6kuLzlORdcHDZ2EXHG00+xQ1Qf5VWGgJvHyL0L2YHA1fZNTNXf3V/x5Uw4+HuE2VGDiOo1oJSyXwNRQf/lHSlzNsJu8zmGySIMrtWn8WbUMDaiwapSeo8N3dZA5FTyUANuGM2b2db/AvCN2SZVKv+dppWRcb2PdUzuXeTMDCgRaIZXpVigTQ4jC92Bc0xhXcPOyaB+3NblxsAtqH/
+ N6TPRAOg
+ EzM4Rv1Ny2brnHw+Y2qlGMu59a5EdINf7HrY6vaEPMBWoKmpLh0O8wwuzmkmiWjS1t8HFY/BTwQkmAEjs81VIuhnUe+2BYZrMCWQeiH+igaVFDYrq39hQQ53S492lmaULCjO1uE8ntd437TYhp0OEV40CbN8jIgXsxW/b1OGkdnE6dMDYLSpVzVWYDEEgP1Um9V2IHtGmnHUxtdmFXE+DVGfq7E8sLk7Clk5G77GAUqvTXATexC5rRV3ZLlXYTOo0zBoq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -231,214 +97,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/11/25 10:21, Christian Brauner wrote:
-> On Wed, Nov 05, 2025 at 03:32:10PM +0100, Oleg Nesterov wrote:
->> I am still thinking about another approach, will write another email.
->> But let me take a closer look at your patch.
->>
->> First of all, can you split it? See below.
->>
->> On 08/21, Bernd Edlinger wrote:
->>>
->>> -static int de_thread(struct task_struct *tsk)
->>> +static int de_thread(struct task_struct *tsk, struct linux_binprm *bprm)
->>>  {
->>>  	struct signal_struct *sig = tsk->signal;
->>>  	struct sighand_struct *oldsighand = tsk->sighand;
->>>  	spinlock_t *lock = &oldsighand->siglock;
->>> +	struct task_struct *t;
->>> +	bool unsafe_execve_in_progress = false;
->>>
->>>  	if (thread_group_empty(tsk))
->>>  		goto no_thread_group;
->>> @@ -932,6 +934,19 @@ static int de_thread(struct task_struct *tsk)
->>>  	if (!thread_group_leader(tsk))
->>>  		sig->notify_count--;
->>>
->>> +	for_other_threads(tsk, t) {
->>> +		if (unlikely(t->ptrace)
->>> +		    && (t != tsk->group_leader || !t->exit_state))
->>> +			unsafe_execve_in_progress = true;
->>
->> you can add "break" into the "if ()" block...
->>
+Hi Huacai,
 
-ok.
+On 11/14/25 10:17 PM, Huacai Chen wrote:
+> Hi, Qi Zheng,
 
->> But this is minor. Why do we need "bool unsafe_execve_in_progress" ?
->> If this patch is correct, de_thread() can drop/reacquire cred_guard_mutex
->> unconditionally.
->>
-
-I would not like to drop the mutex when no absolutely necessary for performance reasons.
-But I can at least try out if something crashes immedately if that is always done.
-
->> If you really think it makes sense, please make another patch with the
->> changelog.
->>
->> I'd certainly prefer to avoid this boolean at least for the start. If nothing
->> else to catch the potential problems earlier.
->>
->>> +	if (unlikely(unsafe_execve_in_progress)) {
->>> +		spin_unlock_irq(lock);
->>> +		sig->exec_bprm = bprm;
->>> +		mutex_unlock(&sig->cred_guard_mutex);
->>> +		spin_lock_irq(lock);
->>
->> I don't think spin_unlock_irq() + spin_lock_irq() makes any sense...
->>
-
-Since the spin lock was acquired while holding the mutex, both should be
-unlocked in reverse sequence and the spin lock re-acquired after releasing
-the mutex.
-I'd expect the scheduler to do a task switch after the cred_guard_mutex is
-unlocked, at least in the RT-linux variant, while the spin lock is not yet
-unlocked.
-
->>> @@ -1114,13 +1139,31 @@ int begin_new_exec(struct linux_binprm * bprm)
->>>  	 */
->>>  	trace_sched_prepare_exec(current, bprm);
->>>
->>> +	/* If the binary is not readable then enforce mm->dumpable=0 */
->>> +	would_dump(bprm, bprm->file);
->>> +	if (bprm->have_execfd)
->>> +		would_dump(bprm, bprm->executable);
->>> +
->>> +	/*
->>> +	 * Figure out dumpability. Note that this checking only of current
->>> +	 * is wrong, but userspace depends on it. This should be testing
->>> +	 * bprm->secureexec instead.
->>> +	 */
->>> +	if (bprm->interp_flags & BINPRM_FLAGS_ENFORCE_NONDUMP ||
->>> +	    is_dumpability_changed(current_cred(), bprm->cred) ||
->>> +	    !(uid_eq(current_euid(), current_uid()) &&
->>> +	      gid_eq(current_egid(), current_gid())))
->>> +		set_dumpable(bprm->mm, suid_dumpable);
->>> +	else
->>> +		set_dumpable(bprm->mm, SUID_DUMP_USER);
->>> +
->>
->> OK, we need to do this before de_thread() drops cred_guard_mutex.
->> But imo this too should be done in a separate patch, the changelog should
->> explain this change.
->>
-
-The dumpability need to be determined before de_thread, because ptrace_may_access
-needs this information to determine if the tracer is allowed to ptrace. That is
-part of the core of the patch, it would not work without that.
-I will add more comments to make that more easy to understand. 
-
->>> @@ -1361,6 +1387,11 @@ static int prepare_bprm_creds(struct linux_binprm *bprm)
->>>  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
->>>  		return -ERESTARTNOINTR;
->>>
->>> +	if (unlikely(current->signal->exec_bprm)) {
->>> +		mutex_unlock(&current->signal->cred_guard_mutex);
->>> +		return -ERESTARTNOINTR;
->>> +	}
->>
->> OK, if signal->exec_bprm != NULL, then current is already killed. But
->> proc_pid_attr_write() and ptrace_traceme() do the same. So how about
->> something like
->>
->> 	int lock_current_cgm(void)
->> 	{
->> 		if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
->> 			return -ERESTARTNOINTR;
->>
->> 		if (!current->signal->group_exec_task)
->> 			return 0;
->>
->> 		WARN_ON(!fatal_signal_pending(current));
->> 		mutex_unlock(&current->signal->cred_guard_mutex);
->> 		return -ERESTARTNOINTR;
->> 	}
->>
->> ?
->>
-
-Some use mutex_lock_interruptible and some use mutex_lock_killable here,
-so it wont work for all of them.  I would not consider this a new kind
-of dead-lock free mutex, but just an open-coded state machine, handling
-the state that the tasks have whild de_thread is running.
-
->> Note that it checks ->group_exec_task, not ->exec_bprm. So this change can
->> come in a separate patch too, but I won't insist.
->>
->>> @@ -453,6 +454,28 @@ static int ptrace_attach(struct task_struct *task, long request,
->>>  				return retval;
->>>  		}
->>>
->>> +		if (unlikely(task == task->signal->group_exec_task)) {
->>> +			retval = down_write_killable(&task->signal->exec_update_lock);
->>> +			if (retval)
->>> +				return retval;
->>> +
->>> +			scoped_guard (task_lock, task) {
->>> +				struct linux_binprm *bprm = task->signal->exec_bprm;
->>> +				const struct cred __rcu *old_cred = task->real_cred;
->>> +				struct mm_struct *old_mm = task->mm;
->>> +
->>> +				rcu_assign_pointer(task->real_cred, bprm->cred);
->>> +				task->mm = bprm->mm;
->>> +				retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
->>> +				rcu_assign_pointer(task->real_cred, old_cred);
->>> +				task->mm = old_mm;
->>> +			}
->>
->> This is the most problematic change which I can't review...
->>
->> Firstly, it changes task->mm/real_cred for __ptrace_may_access() and this
->> looks dangerous to me.
-> 
-> Yeah, that is not ok. This is effectively override_creds for real_cred
-> and that is not a pattern I want to see us establish at all! Temporary
-> credential overrides for the subjective credentials is already terrible
-> but at least we have the explicit split between real_cred and cred
-> expressely for that. So no, that's not an acceptable solution.
-> 
-
-Okay I understand your point.
-I did this originally just to avoid to have to change the interface to all
-the security engines, but instead I could add a flag PTRACE_MODE_BPRMCREDS to
-the ptrace_may_access which must be handled in all security engines, to use
-child->signal->exec_bprm->creds instead of __task_cred(child).
+[...]
 
 >>
->> Say, current_is_single_threaded() called by another CLONE_VM process can
->> miss group_exec_task and falsely return true. Probably not that bad, in
->> this case old_mm should go away soon, but still...
->>
+>> -#define __pmd_free_tlb(tlb, x, addr)   pmd_free((tlb)->mm, x)
+>> +#define __pmd_free_tlb(tlb, x, addr)   \
+>> +       tlb_remove_ptdesc((tlb), virt_to_ptdesc(x))
+> I think we can define it in one line.
 
-Oh, that's nice, I was not aware of that one.
-Access to current are not a problem, since the task is trapped in de_thread,
-however by code review I found also other places where task credentials are
-checked and then used without holdning any lock, e.g. in rdtgroup_task_write_permission
-and in quite similar code in __cgroup1_procs_write, I dont know if that is a
-security problem.
+Do we need to change __pte_free_tlb() to a single-line format
+as well?
 
->> And I don't know if this can fool the users of task_cred_xxx/__task_cred
->> somehow.
->>
->> Or. check_unsafe_exec() sets LSM_UNSAFE_PTRACE if ptrace. Is it safe to
->> ptrace the execing task after that? I have no idea what the security hooks
->> can do...
+Thanks,
+Qi
 
-That means the tracee is already ptraced before the execve, and SUID-bits
-do not work as usual, and are more or less ignored.  But in this patch
-the tracee is not yet ptraced.  Only some sibling threads.  But they will
-either be zapped and go away or the tracer wants to attach to the main thread,
-and in that case the tracer is only able to ptrace the main thread if he has
-also access permissions for the credentials that are in effect after the execve
-completes.
 
 >>
->> Again, can't review this part.
->>
->> Oleg.
->>
-
-Thanks
-Bernd.
 
 
