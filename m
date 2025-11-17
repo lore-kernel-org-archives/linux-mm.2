@@ -4,112 +4,238 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24A2CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 10:16:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FC6CCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 10:16:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DD3F8E0018; Mon, 17 Nov 2025 05:16:23 -0500 (EST)
+	id 083A38E001C; Mon, 17 Nov 2025 05:16:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38DA38E0002; Mon, 17 Nov 2025 05:16:23 -0500 (EST)
+	id 033848E0002; Mon, 17 Nov 2025 05:16:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27C7A8E0018; Mon, 17 Nov 2025 05:16:23 -0500 (EST)
+	id DEFAD8E001C; Mon, 17 Nov 2025 05:16:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CF478E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:16:23 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB6F5C0C36
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:16:22 +0000 (UTC)
-X-FDA: 84119694204.12.B4248A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EA16B12000B
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:16:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dVxQd+jd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763374581; a=rsa-sha256;
-	cv=none;
-	b=B9n0X3TeW8wIyfugwLICYmlH/lCOB2uiE6XxvVw5FfUPulqJ67zthXflfpSP3bPQoG+Bgm
-	qmHA+b3aEb/xoUuduA/BbE0DEAMP1gXWUsIphYOpLBJTDKTCTnwq4u0k8EpMJchBTzQkqR
-	lfKqbp50mwlzu/Kr4QxY3/D3DoMIMjc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dVxQd+jd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763374581;
+	by kanga.kvack.org (Postfix) with ESMTP id BBC0B8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:16:51 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CF3213C2C1
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:16:51 +0000 (UTC)
+X-FDA: 84119695422.10.019BD45
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F03F814000B
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:16:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=G6l86Flf;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=tYWf2EEs;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763374608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tWp7zgGwLW6QgF18L6nJjicAsAEpKHmwQ08SmZaA2TE=;
-	b=2gyZRiomCaWMNoKFnTY183h7CEDTjefZJlYXhhkpJIGQH0o6bNPY+ydRYTtOe3vWrqRxIj
-	Ly8JztKSCqIFHfVF0i5doBJ+C6kCa7LzHuEMZrzFDKKzz/dK//Op5FTSeAcfBCWChrIwI6
-	5CWW8mtK8JCqDNS0LeBZyQY288a0rug=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F337A416BD;
-	Mon, 17 Nov 2025 10:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA8CC19422;
-	Mon, 17 Nov 2025 10:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763374579;
-	bh=3pqt/emoxDXMJPc9sIUv8mSiIo4NlUAIW0OPRzW2AvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dVxQd+jd5trmwBgh/3zu4hTlLkx/9p5IL33qFYnWaBIb3WLOyiuAgzqHpcoyY8DvC
-	 ZKiyBaH9cpng8Pso5NAbKGCW1AMqksvLeji0z7vLUtQynPZB7dfXmSo5pGdXpGyo+1
-	 9y1zMypZS9pqu5U01wxSxH6kHOxp1xOme4U3op9CTwfVOcLKDGW9HLxzfcokqvHM1X
-	 N5dXERXMh6/b5uyPBs0Z2qK1b8rH9LyONeVyW6Q8jsrspPSPTwlC3Vk/hn6kNAKrIF
-	 IkGYpSBwyj2A2bCkDZfCTKCKnmMjwvr+Fr8ufs+Q1LYALnWpYdlaUoyTJeOPu56txT
-	 eO8bZlmOwn+hA==
-Date: Mon, 17 Nov 2025 12:15:57 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 14/20] liveupdate: luo_file: add private argument to
- store runtime state
-Message-ID: <aRr13Q1xk9eunilo@kernel.org>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-15-pasha.tatashin@soleen.com>
-MIME-Version: 1.0
+	bh=XQMWMuHdkrI4O0BYfeyTa33hapYWT/0xB77ui7NrTJQ=;
+	b=wiXSa2FcEBdZdnlSidYCS23kGiGGnXPuHogiQsiTDKelH9c51MDrjF2aad6tRCEkVFePwd
+	B0YHbTwdzis5dlTDj7U43+ZBR2uDS7Ua0s7RNBp5aVYD/HkA3N224wxYaOhWNZNo6ETJk4
+	sABj22g8jZ77DBSon4VSYK8e3fjW0Gw=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=G6l86Flf;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=tYWf2EEs;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763374608; a=rsa-sha256;
+	cv=pass;
+	b=K5GSkw2PsMFhI3C7BrzudfNXTzHhsN4QMY6ev0hY6Nz8s39UF2tmMlhA9xFjI3kmPYPIoH
+	Y1NK+ig9bh4VE06VbDYx4b5LO9H0QGqvKmuCSitgNM7FLB7LmkMl98yU5sbI3f9Q34oebv
+	j2y7YIfwt5t9Wvj0oUv5pnjc/GGdGak=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AH9uoms020419;
+	Mon, 17 Nov 2025 10:16:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=XQMWMuHdkrI4O0BYfe
+	yTa33hapYWT/0xB77ui7NrTJQ=; b=G6l86Flfq1fSiEVTR/PbjfVfXkKRwksLJK
+	MqyUDFm3deHg80udp5DoNAMHeBBFcJzo0m3XQYKSFy3YIw9RYPFhc4CZKG42CMPj
+	7XdtkP7NKxEttlzSocW5bnM3uppPCleDcrVvufcLTQ9X2osthBxWwGT5gZG+2zNE
+	l3DBWAJS3DCjFWUJnJnBArZmywuj/WcZ5lL9WbXeJZzPpXwvxtxk/Y27O2C6+39Z
+	LnStB2wk76uzIkzOErE1S536spLrMxKqarV9AAHkMzu9DFDsMSksUl72xFaOs0JK
+	u0zL2kGli2yv1NIt8OpioOyezkzNjFpQ8ecgzofMZNvnx5PpIEPw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aejbba83t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Nov 2025 10:16:31 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AH8u8TS035937;
+	Mon, 17 Nov 2025 10:16:30 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011060.outbound.protection.outlook.com [40.107.208.60])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4aefyhqrfc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Nov 2025 10:16:30 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Krulk7Sm88DYL+b7OGlehBU5KdjSOyypeVuZjCHpfVPXxxaBpjXIYcK5iujfznYjLuj/F9Z/3TtuCma0AUNdSPSbCF+AMVlxTNo0d4XvHF67xjl3tD38gQl7xJli1rkN7UI4ccH8TuRVZR0NLUoRO8pgzBys2rx6nTMasStjDWxj/KRf/rmLvH1E9w+YZ1e+9IUmSo9IXPUsTvaMmKC8lWien+IufUAxyvBBGKSj3rlncAzfH/g2Xw7JgK+R9JpRSc0PqyYJrq0JsdsXe88aO9KzpHNW3W1RGJOqaQN/OBJd0ADZF2QWQf/POkBAznA16rKy5wD+pgE8QB+VenJouQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XQMWMuHdkrI4O0BYfeyTa33hapYWT/0xB77ui7NrTJQ=;
+ b=frBkbHUTBXoZ5sfDNMO7BxEgvv482k7ymg/sOhjj+uNDQ99hcHaZc9fpE0ftFw9MshGAsNx6ORQOi/X9QzZNKhUNvkobpWwzBJm/Kr5zdErq9+RQ6FMFSOK3skwxffp/nL5ky0Nk5z6jUlVZ037SbbLs2bifQUKjTeWaWrJCSSsB/rjgoD2pDVsQrUgVkLA7y9ag3Onl5YkOgoIIyYIs2mWkXyNnrFEuN1tKvLlBd3k5gvylX/WC+QfLkUIj4VrDDqR3F2Pc/mCB+wvD5ykbRNIqiLmIxW2GVss+OMmVeT7lgn5n5MvrtoZvJh678/J039UxTkGvO5x5F98V6LCg2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XQMWMuHdkrI4O0BYfeyTa33hapYWT/0xB77ui7NrTJQ=;
+ b=tYWf2EEsNrWFOR65EwiMk/2ugmcRXJxG46a1OSvbtQ2NYY99G4+DhFCOGFbjZKGGl2ZJB6JDKQw2Gm3PIPPWI55LFPPOIaUB3M61EpTRxXYcKw0qhDQuDGQImorVP1prWb/qi9QyI7NucTrj6KqCe6p/WlC3j2jMBiXG/WsXNtI=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SA1PR10MB7816.namprd10.prod.outlook.com (2603:10b6:806:3a3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.20; Mon, 17 Nov
+ 2025 10:16:26 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
+ 10:16:26 +0000
+Date: Mon, 17 Nov 2025 10:16:09 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Donet Tom <donettom@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v1] mm: fix MAX_FOLIO_ORDER on powerpc configs with
+ hugetlb
+Message-ID: <eb1df7ba-1ab6-4c0d-a54a-52d642595259@lucifer.local>
+References: <20251112145632.508687-1-david@kernel.org>
+ <eaf2e733-f967-43bb-88e6-7876a28a370c@lucifer.local>
+ <3fa6d496-b9de-4b66-a7db-247eebec92ca@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251115233409.768044-15-pasha.tatashin@soleen.com>
-X-Rspamd-Queue-Id: EA16B12000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9hnat7ef1kixpbejesfatzna4hryksgf
+In-Reply-To: <3fa6d496-b9de-4b66-a7db-247eebec92ca@kernel.org>
+X-ClientProxiedBy: LO4P302CA0008.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c2::16) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA1PR10MB7816:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e39b889-3bb0-4af7-7d96-08de25c25dac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?a5QJqRhquhasDT6PfyDdCwsi+hfcmdwf92O2gpiZLCi0qeaIP6LxR5dkVX2M?=
+ =?us-ascii?Q?ukWHdCpRsJZ9SxUU11RLuhfhUp6yoXwHinj/4WRzqqW5Hq3sLMlupSVQ81Im?=
+ =?us-ascii?Q?GXJH8P1VWmu2rBQ7IKO7CLPYRcmXMpL3Swb5qFfkkBIJu5N932ZxrDPLRylv?=
+ =?us-ascii?Q?/e5w+AXaGC2i4A+eQexa6LNf5152rvhpTp2UAulgummerlvi6v4Ge7Q3BehO?=
+ =?us-ascii?Q?L1tuUUPYWSNUg4pJ9jQnP3S9BDCvQ5fjiLC2SJUM6p3is5JFHy5PJi7GkH05?=
+ =?us-ascii?Q?TSkm9eDDn5hnWtEHy1mNxk77iLcUWggXcd9PHZVTFWTLG2kgIozm281DZ0bB?=
+ =?us-ascii?Q?tjyKNiGuNWHrzLvbSCYb0NKxq5iZNBkDKfx32vZJclhUzZaTgrwZuXHAQw23?=
+ =?us-ascii?Q?KX/tW/M0jTYZccvn6jWRUM/9ELpRaxB0B2HF+bgqUxudozwKPqAawDvfuDwO?=
+ =?us-ascii?Q?koLEg0dDDM/jPFBYtYeEfmQTEovpFQIG3Xebsel1Y7sMV0EvRnERv6Tfd+go?=
+ =?us-ascii?Q?KyUBYqK7whaAawxNJXJU4t25xackVdpd0Q6CMMXlpYIUQAm5002Z8H3vLGMM?=
+ =?us-ascii?Q?Y3eTcqPU+jU1EvK/BejG+N2rNHqFA6kd/0CcL+j2kAvSA0Nq1YEqxOyWr40l?=
+ =?us-ascii?Q?xgOtlUHJgXeuL2YaRKvM28qppIFv3CVe7xRSPWnh6Tiyjkg+Vd8OgQ7xM95m?=
+ =?us-ascii?Q?/xqznbnl7w3b3M1e0pk1sWZEh7PHadfZmrHUKCwL2n8Qww1t4Rw4RnJvI9Mf?=
+ =?us-ascii?Q?Uce5X3Ew/fOSwW7NV5LkRyqRlxDCoY66jr6GT/+WzLrjz24xdW1nQ5ssINub?=
+ =?us-ascii?Q?N+UnkhLlQDxhFLmqiacu38NMxUyIHUCUZcnupsi3B0vXE3C+MIicdFaMiFgq?=
+ =?us-ascii?Q?dD43Wnd64M1TV6sYjSFGg4ImK77CCjhYqXgr/GXP5wk5+afaQxrtohiSs6c+?=
+ =?us-ascii?Q?9n9RYnqrWgiF4nAmVdtHwliz33CsGnBY951v94PyhOHjTRAzaBxmOLpnCeh0?=
+ =?us-ascii?Q?vh/q31X/k6RyMdJOG4GNrpmlzlqdhxH/V7qAG09M05+B9IBi3iSr39BT2jNh?=
+ =?us-ascii?Q?Ougy8eCjiAHxuIZVP8oT/rU+/jsauxMIKTVbEMedkzopJO75+tJVnN+SKqFb?=
+ =?us-ascii?Q?cY1F5J1lA0EJQhPQNNUh33hqDkAEifCCRtGsbe+gZpGqUmjIf4DTymYH9j91?=
+ =?us-ascii?Q?rd3RKJw7wLzWbKjk4zrhCvi6wYcSNqBVbTl2gjiwZIfpAh5CHEgcQpWDbZvm?=
+ =?us-ascii?Q?HcwrbA/Ns8YecETTsRYqID8X36Ghro6XkD6c+NV9yiKb3qtX7TEoehSLaeAA?=
+ =?us-ascii?Q?JOrEu+2JwHnVFnb/k2UQI49K/0+f+ApCqlkbzA2owProABW5J7mPC3iVPnqj?=
+ =?us-ascii?Q?W841YB2n7IiRNPFaNHLYCJMxTJBISmyGTT5Nf+MG7SohHVrv/BWR4skaSI91?=
+ =?us-ascii?Q?mA2gvf5v5patLdUchaIZjCMO1K9dwI90?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Od0zN6KnhhAOPvB487Qm8MAdoRi58r7LwPnJsRBk+uZ3Z6/XlThrGyYuQu4Z?=
+ =?us-ascii?Q?vCGV+2oQmF7YVbII1l5QqmqO1KwoDce94rTyS57yl0JJiPeXH4ZtGivjOb2h?=
+ =?us-ascii?Q?67RshTq+QjMGoP1TGbJ3ekLxqKd3TIPMRcii6ijGAoelqkWegxqeMOWvFuAc?=
+ =?us-ascii?Q?/HjSE3jncBJhhKMDGhTIPuNkZ92amJAC4HK1S6rXfVuTHj1olZn/JvKGg/w+?=
+ =?us-ascii?Q?FSN7ZB5foi43bCY7ZqHs7fkyARA4+60NdMSmTIH/qhhcUY0UyDWDVbf57vbC?=
+ =?us-ascii?Q?cY2AxwDAUvU9qTonqRFvR9H20v0flnDVFTz9kJiXFgD/ndRFS2tOoP3OfdaL?=
+ =?us-ascii?Q?kQDgpFglLmRvX5GdTqGhKxR1aBU08hTLvEIKf8oHNTFSw4X88hxmA/3o6vs6?=
+ =?us-ascii?Q?+bGtSK601QZ1oXgNswbmd8H+f/QybFfdXJgo2aH5O7dndIB86+W2P9cq66gg?=
+ =?us-ascii?Q?/u5H2OBqCbUzXOh+4dxLl23EvJMGseM5jM/7oqEnxk3ZoBo7MBDK6fM0tU6C?=
+ =?us-ascii?Q?qu/lANHcoJXSVmG7lT4RvFb5ftwtRjmr6Tk1PWdt+vBRhTT2PRRD93u8csvb?=
+ =?us-ascii?Q?/CfeA8E6vx0ZSoJPaQ+Hb8NaR/CWOWCzeEWR4gxRWUzPk/y5Epzh7PypgOsz?=
+ =?us-ascii?Q?xnu/ZXhkUrViGO5pBhJmifl8l5t9cSsTZg1MdruKlLs6xj6W5iG9i9AIZPh2?=
+ =?us-ascii?Q?oLQbwHAFflZroIqKX1UGp7eRcWvlhbzXPbpuYtUl6w8J+oYbXT6EdA3Ucht7?=
+ =?us-ascii?Q?YOzlavxqCas0FbUJntoajyJcYUcbO/jnxXVSQdkyCrjqN12S9wR2CB0hfZiz?=
+ =?us-ascii?Q?y/xovAGNEYcCf0m3pdhdmbeTLJuC6m8tKphSOxqRcz2hnMpHolJN7eP3AlEE?=
+ =?us-ascii?Q?o/6bnBWTeUGW4L5ok2RkTSy8JHTfFBGU6nf0BGphVGu80A/haHboqLFx7Erh?=
+ =?us-ascii?Q?v0FIY6X528bwamuX+U8xuIEsGag6Mh9KTmtmDXPQBYwzdX4E1K7o2ZgiLrt8?=
+ =?us-ascii?Q?pHUNVlWKrWRT20vxbtNqCc0HBQd+umshBqRX40460EGC8BXu3iUQQu+cOEiP?=
+ =?us-ascii?Q?vNXuUGMc8I/DvYatamp0TBXnhneB7zd2ZvbKk92eHsmr7vNA4dJofi3muHMs?=
+ =?us-ascii?Q?Rd3nX9V1ticzWWgqE8OLI4am+PA0hhTixaVEMln+0QkexPIt1XRQlcTyquY/?=
+ =?us-ascii?Q?OdEt+QY34AkJmGO+O9n0p4KZLKU4iC5oHg3OnfFuuVotDvA/QyVE1dYaTtZv?=
+ =?us-ascii?Q?u3JoSRqlEfqABDVvZCQlTFsTubRgs6P1aV0YOdijmwNR3Tbv0aNdBCVygLJJ?=
+ =?us-ascii?Q?waJDpnSRQ7AxEASDOeOpHK+qreuLPpf8AIvX3V5DtVT6NE3rfCnkRhZ0sNQQ?=
+ =?us-ascii?Q?9NyAZzY0Kuo+hob0tPC5/X/IvAIbKi2UTrg/EhgnetHhnPh4XCil08enBboS?=
+ =?us-ascii?Q?NCbFMnjNDvLVBg+0+b0gdfv2Q2Z5jgNwD/W+eC+RZOJ6v6An1dTfqbUJOe30?=
+ =?us-ascii?Q?F9s67KhS8Zy8sv4Wu201Vn2gR10oNmyMPQm+d/WZqqA8prFNsYyZu2kV2j0A?=
+ =?us-ascii?Q?C6BgyS33DbvSySgb6hwtMJgETzmQZd9yUx0l2MVUEIrkFCC+giocPTRZinRV?=
+ =?us-ascii?Q?IA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	msJRMV2RvHsk/iX3kp8c6x3FVSP2CnnUDuADqkPn44Z+yPbXe5BecziwDfh2X2VrEAULcrFx0vxTAsUzJM7upP1t8Y3foazzV0KJ83/VDqcvSFuLSYUCXkFF/8FQ3cWv3yRo9Pu4N1Ir3Us5CtUKFKt84FEigFFwcamiiwCCCQ0STTDfot1hTu24Ra9hithXglVzVF01bab0GqbY2jtbh1FpHdq/TAWjL4nQfxYuSkFmrbSHcm+iCRitrVRSJuIdKAWsee4+1h3ef/OKPfBMqt2dQ0jYHHlVt6S5EZNGbjgcqR90l1v0M3jJrHwM4aH6b6X4llIrONMbfqmkUbdQom6by20/1m/ez88EHiMfc/vFhMXevkM/mw6iSmqAMhfxme+npGxyMOMEP1yr3+kE+KjUWzMw1lxO6F/DIMEH/7o1LzSn4/65sls4YdPsHlp2OagO5UpA+dpY1r0zUXO+/bQjHCCWDDF23tFohjRucqlposW1vmKgYkm6VdsaW/+aGr9eZ45PkSjYtjaRG5/kiFrkvcGZ977ZLcKApLOczGPbyASlBSVYTwTRr6lU/m8j6e+5f1CtMza9hU8oM5nYeEhZA0cD/BlrFxnpoJHXHUY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e39b889-3bb0-4af7-7d96-08de25c25dac
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 10:16:26.3407
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PZ8pXctKIsIEQ7b4OdROc5g2pjpUNtpAbSRSEIjg/g5nVdfAii75hvsZwp8cZUIowpRUjAqtrz/3jdXzbwJNhW6Ss2Go+lTdkfx5l78Bs5w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB7816
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-17_02,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511170086
+X-Authority-Analysis: v=2.4 cv=BoqQAIX5 c=1 sm=1 tr=0 ts=691af5ff b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pMh7kx767dpSZYzhpRsA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12098
+X-Proofpoint-ORIG-GUID: pJsmWuXk8l9ew4HGeozriIQT4yguP4fR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX5egG/ETN4xGu
+ GtS9Zfh00e68wTGaLD8I/5978s9pJHFNKCXzWtFeLTl3gwHLSsMnrykhMxXoLVui17whNBHz2M/
+ Y0oS8Xp7MBynjO4GfwAJosu7xRTWyghtRlSjFa1G/jp8kgG2/rGjlFuMf0FeIeHThKVXV8yFIsW
+ Fi2YH/K6h13zie51qXf1jGH2gxPMjBTqI+lkhp4j2wf+1v+MKLrgl3f3GU3MsRUxB6TCAhvOrK6
+ hrG9AmQ1S7mXQPk6wHhpY043q4vARmq4bLVToLsFE08Rc+V7sRd2Ev0ev3C1iOHsWUCVRiBYoPb
+ pmFEcfnWBp2yeer8Pwfr8aIAx73mY5e7EsPlt2WsDwBPygM7uy0qEx5G+6+Y7kl6TFckcSQFNgr
+ w/vWn2J/DQZRnNcP33o1yY1JJumpvzM5EWYbp+my/q6E2wpmCM0=
+X-Proofpoint-GUID: pJsmWuXk8l9ew4HGeozriIQT4yguP4fR
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: F03F814000B
+X-Stat-Signature: bye4a9cb8qpyafcm3pyx8cr5ox18mr3o
 X-Rspam-User: 
-X-HE-Tag: 1763374580-910014
-X-HE-Meta: U2FsdGVkX19wd+54WQLQfEGgk07Bk/CjNSHzXCB0X2og5LPVspEChMU3io71g0MCyiNq80nv0wubb0Qrz82v2n5eVg+hLYSBI3Cr5PfFjfsxvKpdITcQ6LJW3GPk3a7JMg1EDYfD3HCF2PGs//z01JpEEnWX04IhwXsMNjI6/JiiE0FxlkEPuWWTh8VmKa9YRQO776zxIrZ9V5ZhFZaeVockpcNDVTTmj0iAtU4NOSunFwcuGzmgjvE+cztkVvhF8CUrn5HP0tslPCzMjCxTDBwsx+H3gv4m1HF6S3bvLXsIdRdydulhLX/5Z6WB67l1nsOR26iGGSAegedwIocnfajjDCZlrX4EZ9qRTZ3crHaeuYMmwjCWqiEDeb4ZK2r4DPA3eVbrtbFOb/UzGX33BfQLDhjmS1Gx5qtXo2a6ANywRtVcaereCeNZ+tB7ZwoptkFAZ8U3JeQELESPgG07BifOF34Z6t8wcgsAySd8vHNEgtcMTbt2kh7V20xUthm+m58pdQ30BD7REe+NLFj8Wssc+5NtTWJdfEfjf33jJkV80R9GpRL/LSqkucu6mzAn79auOlYXvDqiuR1k779eiO62C6VCBF6w5tRiddSfpFPfemcyljYGIF6AkTI/PI0fDkYSNtrm+HIgJ6wTI2qbUoqi34462Mc23JEG8aoNeYASYlbRh8EX7CbsRr9MT2B3Y4CFfoIVfY/3POh+8u10GqXNll88YlwSfFCA9p8m79apQUQJInSDbeoRrOxZDbpzkebWloE71RrxMvNahpzkBrKtufuf7AXxem6kTNYQroEAo92FToXdcCXu3Y9sO63yJIHXc2CzQSh7ssE+fX2ZZKBtgELR95ez86+libbe/vQw8Edt/I3VcqywJVrsxO9lodA2sLLUrAxqKxNGeNVn7hduRhTEYGnWJsNjK91rXCWWWOvv9TzmvcjaNUPMq65SSyoVNsREo95BeQCuayI
- Ak8fjzqs
- EriDFlwAbHa5kKIU/5kdaCNKJhwMGAelAB71PsEgGVop5g46avd/AFPmb2gZ4hEgtfjEdDA0dkA/jYp1PjPywMJhNxmw4jefYzGWQXpZJqHUdTvadeYxd+hH462YKSyrsXQtOygiD3K0MTtrnpoGI99eofA0sZeeAko2J7WYbtKXLib8YP/BJf8P5tnc3lbJa61IAhcF9unnTySjCJzNLvDgFswxQZcAOM8LdZbjMhDaqdtCPD00ez6/YsROyKnDk1+Tp6GIGL02iaF9FMVgkb7ORHvR9hTbpTjwwcZ3DP6qyuLDNNRDRXpGs8pkkNFJlw9yKlFATfBZS9HZPGy/fJ07lyjKTZIOzSd4PQlFgs2e5IVv/T5gw31TXyafp1C9bmI1+OQ4gmuGUQq8YkwJS230L2CFfnAzYAfnttcvDLogSuW2JXdruiosiF+2ennSraUwVgBkEksanXBg=
+X-HE-Tag: 1763374607-939969
+X-HE-Meta: U2FsdGVkX19nmnuFMmUK7HDdXN5dKu+kN2E5gwa3UPFI9MGWEW8wWMUHmTuuCUgU9hhVPxc/AS2aEAgeDS/1AoseQSMlFFeRz5XNQhfyxZWoEThnvubWVuAsx7xzSjjwbbHBNxwKhTcJdoUWMoEOLLl5+r8e3Sr/Hrj7EhUWkd0KUMy/oOuw2Xx5W4EP6CaseqhPGrss6uUL7PMnI/saHZPj+HS9qet3a8WwGVkgeRbHWR9Mkc/mAdZPT++BcV/bAmZQE2QcgQAsCKRBvMjjzD4lV/81DeH3mp+hhEVmK+M4q42O2k5dI5C060NLAm3Z9Ku3V6nSiJM+N3liabHfVjyoD9mni1TWYn+lT/FPsrbdI8e9/aJb8VKyfiZPDI5h9pYDvqXlg6linf7WikMai4m9JJO+1O1DGYk94XbpNTmiSMbBe+NE+/8CkddAMbY2EobGkzFmt/iDXLEYhCCw4scONWC6Z1FR39z7gibKoIl42E8rSo5ix6MjynJBGQsv8xLe1Loo4r3/KjslchoXQ/TlHfeZALTZxJ1lofacpqP/GKgCG+y2smfrQaQaGBN4pmUPKWHIvztCWiADzuVwQo1sktGUoeqmq2wYXEL9P0re+Fz1p2x/sXGmuD7GYhLIPwHbfRWmK5AzUwlUKzWUUvibH/8/J46JuhAefyDuYkVUOJeKjFlzSsJuzdlJ4hxofkZVW2FhM5DB66H73n1y6j0f9hz2mXNqfXrzhve0FLsKD8TUitSekw++ZnN/AEqturFCNtf0MxIYfrXfxcZ36uLHl7VwF6aXT1E4YiUrtcxlT2LF73OTVL6ZFNCWwGAGI38qpENPZeQhr5vZy63ASv2jg/dNJafXp3MQ4zxVkjz3QGDp4MGQyOd5QQcawbHNVnw+Zat52COgGkoo/9lEOqjCk4iXIsQjvpFpr+eTzhQbLgtXxHYSzmFwGeWjpo44k6NuCkLzCuiMOyjjA1P
+ BHPOv3i7
+ mTJb38JBowGM38ePtNyGm2ZVOD0H4UE6cmBzNG97FWDsKG/ROxl9DfgS9AkM0UTLRGrEp+v/h+ZBjZqjp9TgAIFrxxAo1P/Ec2RvACDxDz2YRn3AaT818m5oqmVAf0jw7qb1yzyUHU60td/rw6aFZdspR63DH2yMRuaSj3yLK1kFnfvUccSL7EOprARCfnjQBdY+eAEx71p8flsLjjbQOmDumwcRRJq5+1RXUMl5WAUZ6qKHB5Ozn/Du3Qr5cyfMA3ZV7X9X70GZRHD+l0YmGBoVDnjBtzZzyJ/n896GZh2i4BmEFzPE9V8aqyFhWBniFO5yHZio2vsHXPqlXjrzp4n8KSGVYCx4Cz1MqzfBfeh1RJTfKms0ovN+jEozecd3OCPAM0LMLoMiRMUZZCJEHTR2HzgRwYVBe/2xSn1X0QZ6wXXeJZbx/sb0/KnBdNOSzR23wLfLJlXR1TOJtCF4zPitdNaHGp0VDuroT3Thg9atUYb3C8d6RS4sHSVhH/QJvOL/DEuHeB5FAJ45ttSXvzALzA39y+Hf96xZtHK2HMOTTzwVvM9mRptZ45x8gXCw9P4yrWp0xZjQpZ0rPDBdOD1rq/R+zQzdAthhdcQ92YTBXYFiaN2L+lOFHR6NRHlorksXDd3l5hLrXCDlIknSHUnzHGDJdaWpEJcyRBFxg7eeZTc9oABgnkNWcbtwtA1MNeEQNRmbm2GC+02+mrSeb26nYJzyzubtyT/5+5/LHrRUVITM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,120 +244,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 06:34:00PM -0500, Pasha Tatashin wrote:
-> From: Pratyush Yadav <pratyush@kernel.org>
-> 
-> Currently file handlers only get the serialized_data field to store
-> their state. This field has a pointer to the serialized state of the
-> file, and it becomes a part of LUO file's serialized state.
-> 
-> File handlers can also need some runtime state to track information that
-> shouldn't make it in the serialized data.
-> 
-> One such example is a vmalloc pointer. While kho_preserve_vmalloc()
-> preserves the memory backing a vmalloc allocation, it does not store the
-> original vmap pointer, since that has no use being passed to the next
-> kernel. The pointer is needed to free the memory in case the file is
-> unpreserved.
-> 
-> Provide a private field in struct luo_file and pass it to all the
-> callbacks. The field's can be set by preserve, and must be freed by
-> unpreserve.
-> 
-> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+On Thu, Nov 13, 2025 at 04:21:41PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 13.11.25 14:01, Lorenzo Stoakes wrote:
+> > FYI, trivial to fix but a conflict on mm/Kconfig for mm-new:
+>
+> Thanks for the review!
+>
+> Yeah, this fix will have to obviously go in sooner. And it's easy to
+> resolve.
+>
+> That's why this patch is already in  mm/mm-hotfixes-unstable.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Ack.
 
-> ---
->  include/linux/liveupdate.h   | 5 +++++
->  kernel/liveupdate/luo_file.c | 9 +++++++++
->  2 files changed, 14 insertions(+)
-> 
-> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-> index 36a831ae3ead..defc69a1985d 100644
-> --- a/include/linux/liveupdate.h
-> +++ b/include/linux/liveupdate.h
-> @@ -29,6 +29,10 @@ struct file;
->   *                    this to the file being operated on.
->   * @serialized_data:  The opaque u64 handle, preserve/prepare/freeze may update
->   *                    this field.
-> + * @private_data:     Private data for the file used to hold runtime state that
-> + *                    is not preserved. Set by the handler's .preserve()
-> + *                    callback, and must be freed in the handler's
-> + *                    .unpreserve() callback.
->   *
->   * This structure bundles all parameters for the file operation callbacks.
->   * The 'data' and 'file' fields are used for both input and output.
-> @@ -39,6 +43,7 @@ struct liveupdate_file_op_args {
->  	bool retrieved;
->  	struct file *file;
->  	u64 serialized_data;
-> +	void *private_data;
->  };
->  
->  /**
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index 3d3bd84cb281..df337c9c4f21 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -126,6 +126,10 @@ static LIST_HEAD(luo_file_handler_list);
->   *                 This handle is passed back to the handler's .freeze(),
->   *                 .retrieve(), and .finish() callbacks, allowing it to track
->   *                 and update its serialized state across phases.
-> + * @private_data:  Pointer to the private data for the file used to hold runtime
-> + *                 state that is not preserved. Set by the handler's .preserve()
-> + *                 callback, and must be freed in the handler's .unpreserve()
-> + *                 callback.
->   * @retrieved:     A flag indicating whether a user/kernel in the new kernel has
->   *                 successfully called retrieve() on this file. This prevents
->   *                 multiple retrieval attempts.
-> @@ -152,6 +156,7 @@ struct luo_file {
->  	struct liveupdate_file_handler *fh;
->  	struct file *file;
->  	u64 serialized_data;
-> +	void *private_data;
->  	bool retrieved;
->  	struct mutex mutex;
->  	struct list_head list;
-> @@ -309,6 +314,7 @@ int luo_preserve_file(struct luo_session *session, u64 token, int fd)
->  		goto exit_err;
->  	} else {
->  		luo_file->serialized_data = args.serialized_data;
-> +		luo_file->private_data = args.private_data;
->  		list_add_tail(&luo_file->list, &session->files_list);
->  		session->count++;
->  	}
-> @@ -356,6 +362,7 @@ void luo_file_unpreserve_files(struct luo_session *session)
->  		args.session = (struct liveupdate_session *)session;
->  		args.file = luo_file->file;
->  		args.serialized_data = luo_file->serialized_data;
-> +		args.private_data = luo_file->private_data;
->  		luo_file->fh->ops->unpreserve(&args);
->  		luo_flb_file_unpreserve(luo_file->fh);
->  
-> @@ -384,6 +391,7 @@ static int luo_file_freeze_one(struct luo_session *session,
->  		args.session = (struct liveupdate_session *)session;
->  		args.file = luo_file->file;
->  		args.serialized_data = luo_file->serialized_data;
-> +		args.private_data = luo_file->private_data;
->  
->  		err = luo_file->fh->ops->freeze(&args);
->  		if (!err)
-> @@ -405,6 +413,7 @@ static void luo_file_unfreeze_one(struct luo_session *session,
->  		args.session = (struct liveupdate_session *)session;
->  		args.file = luo_file->file;
->  		args.serialized_data = luo_file->serialized_data;
-> +		args.private_data = luo_file->private_data;
->  
->  		luo_file->fh->ops->unfreeze(&args);
->  	}
-> -- 
-> 2.52.0.rc1.455.g30608eb744-goog
-> 
+>
+> [...]
+>
+> >
+> > On Wed, Nov 12, 2025 at 03:56:32PM +0100, David Hildenbrand (Red Hat) wrote:
+> > > In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
+> > > runtime allocation of gigantic hugetlb folios. In the meantime it evolved
+> > > into a generic way for the architecture to state that it supports
+> > > gigantic hugetlb folios.
+> > >
+> > > In commit fae7d834c43c ("mm: add __dump_folio()") we started using
+> > > CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
+> >
+> > Hm strange commit to introduce this :)
+>
+> The first commit to be confused about what CONFIG_ARCH_HAS_GIGANTIC_PAGE
+> actually means (obviously hugetlb, ... :) ), and which sizes are possible...
 
--- 
-Sincerely yours,
-Mike.
+Yeah, sigh, we love to make things confusing :)
+
+>
+> [...]
+>
+> > >
+> > > To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
+> > > hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
+> > > GiB (possible on arm64 and powerpc). Note that on some powerpc
+> >
+> > I guess this is due to 64 KiB base page possibilities. Fun :)
+> >
+> > Will this cause powerpc to now support gigantic hugetlb pages when it didn't
+> > before?
+>
+> It's not really related to 64K IIRC, just the way
+> CONFIG_ARCH_FORCE_MAX_ORDER and other things interact with powerpcs ways of
+> mapping cont-pmd-like things for hugetlb.
+
+Ah OK, as I was thinking if it's base pages we could just keep order the
+same... if it's somehow possible to get higher sizes even with without then
+makes sense to specify.
+
+Lord... I wonder if we should have a doc somewhere describing all the ins and
+outs of this?
+
+Not that I'm asking my perenially busy co-maintainer to do _even more_ work but
+maybe an idea for the future :P
+
+>
+> This patch here doesn't change any of that, it just makes us now correctly
+> detect that gigantic folios are indeed possible.
+>
+> >
+> > > configurations, whether we actually have gigantic pages
+> > > depends on the setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is
+> > > nothing really problematic about setting it unconditionally: we just try to
+> > > keep the value small so we can better detect problems in __dump_folio()
+> > > and inconsistencies around the expected largest folio in the system.
+> > >
+> > > Ideally, we'd have a better way to obtain the maximum hugetlb folio size
+> > > and detect ourselves whether we really end up with gigantic folios. Let's
+> > > defer bigger changes and fix the warnings first.
+> >
+> > Right.
+> >
+> > >
+> > > While at it, handle gigantic DAX folios more clearly: DAX can only
+> > > end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
+> >
+> > Yes, this is... quite something. Config implying gigantic THP possible but
+> > actually only relevant to DAX...
+> >
+> > >
+> > > Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
+> > > clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
+> > > HUGETLB_PAGE.
+> >
+> > Hm, I see:
+> >
+> > config HUGETLB_PAGE
+> > 	def_bool HUGETLBFS
+> > 	select XARRAY_MULTI
+> >
+> >
+> > Which means (unless I misunderstand Kconfig, very possible :) that this is
+> > always set if HUGETLBFS is specified.
+>
+> Yeah, def_bool enforces that both are set.
+>
+> > Would it be clearer to just check for
+> > CONFIG_HUGETLBFS?
+>
+> IMHO, MM code should focus on CONFIG_HUGETLB_PAGE (especially when dealing
+> with the page/folio aspects), not the FS part of it.
+
+Yeah this is another weird fs/mm split for something that really is ultimately
+an mm thing...
+
+>
+> $ git grep CONFIG_HUGETLB_PAGE | wc -l
+> 45
+> $ git grep CONFIG_HUGETLBFS | wc -l
+> 7
+>
+> Unsurprisingly, we are not being completely consistent :)
+
+Well fair enough :)
+
+>
+> >
+> > >
+> > > Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
+> > > also allow for runtime allocations of folios in some more powerpc configs.
+> >
+> > Ah OK you're answering the above. I mean I don't think it'll be a problem
+> > either.
+> >
+> > > I don't think this is a problem, but if it is we could handle it through
+> > > __HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
+> > >
+> > > While __dump_page()/__dump_folio was also problematic (not handling dumping
+> > > of tail pages of such gigantic folios correctly), it doesn't relevant
+> > > critical enough to mark it as a fix.
+> >
+> > Small typo 'it doesn't relevant critical enough' -> 'it doesn't seem
+> > critical enough' perhaps? Doesn't really matter, only fixup if respin or
+> > easy for Andrew to fix.
+>
+> Ah yes, thanks.
+>
+> >
+> > Are you planning to do follow ups then I guess?
+>
+> As time permits, I think this all needs to be reworked :(
+
+Yup! :)
+
+>
+> [...]
+>
+> > > @@ -137,6 +137,7 @@ config PPC
+> > >   	select ARCH_HAS_DMA_OPS			if PPC64
+> > >   	select ARCH_HAS_FORTIFY_SOURCE
+> > >   	select ARCH_HAS_GCOV_PROFILE_ALL
+> > > +	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
+> >
+> > Given we know the architecture can support it (presumably all powerpc
+> > arches or all that can support hugetlbfs anyway?), this seems reasonable.
+>
+> powerpc allows for quite some different configs, so I assume there are some
+> configs that don't allow ARCH_SUPPORTS_HUGETLBFS.
+
+Ah OK.
+
+>
+> [...]
+>
+> > >   /*
+> > >    * There is no real limit on the folio size. We limit them to the maximum we
+> > > - * currently expect (e.g., hugetlb, dax).
+> > > + * currently expect: with hugetlb, we expect no folios larger than 16 GiB.
+> >
+> > Maybe worth saying 'see CONFIG_HAVE_GIGANTIC_FOLIOS definition' or something?
+>
+> To me that's implied from the initial ifdef. But not strong opinion about
+> spelling that out.
+>
+> >
+> > > + */
+> > > +#define MAX_FOLIO_ORDER		get_order(SZ_16G)
+> >
+> > Hmm, is the base page size somehow runtime adjustable on powerpc? Why isn't
+> > PUD_ORDER good enough here?
+>
+> We tried P4D_ORDER but even that doesn't work. I think we effectively end up
+> with cont-pmd/cont-PUD mappings (or even cont-p4d, I am not 100% sure
+> because the folding code complicates that).
+
+Ah wow, didn't even know such things could be a thing :)
+
+>
+> See powerpcs variant of huge_pte_alloc() where we have stuff like
+>
+> p4d = p4d_offset(pgd_offset(mm, addr), addr);
+> if (!mm_pud_folded(mm) && sz >= P4D_SIZE)
+> 	return (pte_t *)p4d;
+>
+> As soon as we go to things like P4D_ORDER we're suddenly in the range of 512
+> GiB on x86 etc, so that's also not what we want as an easy fix. (and it
+> didn't work)
+
+Yeah... better to be explicit about the ppc case I think you're right.
+
+>
+> >
+> > Or does powerpc have some way of getting 16 GiB gigantic pages even with 4
+> > KiB base page size?
+>
+> IIUC, yes.
+>
+> Take a look at MMU_PAGE_16G.
+
+Ack yeah, surprising, but these arches can be a whole other world... too used to
+basic arm64/x86-64 :)
+
+>
+> There is MMU_PAGE_64G already defined, but it's essentially unused for now.
+
+Hmm :)
+
+>
+> >
+> > > +#else
+> > > +/*
+> > > + * Without hugetlb, gigantic folios that are bigger than a single PUD are
+> > > + * currently impossible.
+> > >    */
+> > >   #define MAX_FOLIO_ORDER		PUD_ORDER
+> > >   #endif
+> > > diff --git a/mm/Kconfig b/mm/Kconfig
+> > > index 0e26f4fc8717b..ca3f146bc7053 100644
+> > > --- a/mm/Kconfig
+> > > +++ b/mm/Kconfig
+> > > @@ -908,6 +908,13 @@ config PAGE_MAPCOUNT
+> > >   config PGTABLE_HAS_HUGE_LEAVES
+> > >   	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
+> > >
+> > > +#
+> > > +# We can end up creating gigantic folio.
+> > > +#
+> > > +config HAVE_GIGANTIC_FOLIOS
+> > > +	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
+> > > +		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+> >
+> > Maybe worth spelling out in a comment these two cases?
+>
+> Not sure if the comments wouldn't just explain what we are reading?
+>
+> "gigantic folios with hugetlb, PUD-sized folios with ZONE_DEVICE"?
+
+Yeah true not vital.
+
+>
+> --
+> Cheers
+>
+> David
+
+Cheers, Lorenzo
 
