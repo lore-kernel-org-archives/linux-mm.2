@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDE2CCEBF61
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 13:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC8FCEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 13:43:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 107F18E0003; Mon, 17 Nov 2025 08:31:04 -0500 (EST)
+	id 4F6FE8E0003; Mon, 17 Nov 2025 08:43:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B80A8E0002; Mon, 17 Nov 2025 08:31:04 -0500 (EST)
+	id 4A7248E0002; Mon, 17 Nov 2025 08:43:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE9A48E0003; Mon, 17 Nov 2025 08:31:03 -0500 (EST)
+	id 395B48E0003; Mon, 17 Nov 2025 08:43:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D8BD78E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 08:31:03 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B24552B46
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:31:03 +0000 (UTC)
-X-FDA: 84120184806.23.69D3686
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 68A081C000A
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:31:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YSl6RqoW;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 20D0F8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 08:43:22 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A90C61DDD4B
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:43:21 +0000 (UTC)
+X-FDA: 84120215802.26.59D2216
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 09D8A2001B
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:43:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Jjh93+km;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763386261;
+	s=arc-20220608; t=1763387000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PaWyh0QzcwKqBgx0baGTRcI+URglOSNILMpQRbc2ndI=;
-	b=G3y8QVSoElb9/Q56sVGJI3NhvRE5EKNCll0VEEqlEZdxlM5GQ/K9iUiZpLhzNSIb1yUomB
-	Dywbiqd8x3y86VzBWW7VKJDcpsQPQTQ7ifYy+eOlRvFUip9m4W+K1GYayrnHyk5s4FSZIX
-	yOHrbhlmbD+sl1kD+r6I0PK6K4uvXtw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763386261; a=rsa-sha256;
+	bh=9YVuu7zAULl0ixowM1tYF4wrONsB1jmbz+W8pAwYhcU=;
+	b=HySqjhNr0CQQvdjh1uT/KeqdXNHNWhkIbLBiQNld7dl94XODvMayvW69sK3fd0TLM0rYKC
+	eMoA7lStPhbyBKBWpRaTeGvhvvCFBZvbaLSq8vFrSnKV4jeUiiqYhJbnjXd2py7lx3/RvM
+	crAAnNjnSlJQ2BipF6sNKtC/cOcIlvM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763387000; a=rsa-sha256;
 	cv=none;
-	b=wc1La48PWVfnPLy6UtwKDt3Ddsaw1Q9Os3F66wL2Lx9ugSON4T0ttj7ZLKKLvf2wDa68TZ
-	MIGBRn6RNBVk1Y57QUsKtrbuEgwC3HAJiDqxgc46DC3SnC8yIrtxVHbKyuCro/Y/y6QZJM
-	DNKFxTYJFq+LuiDDGFO+XBQ0WtSc7cY=
+	b=dfNuo9WeRYiBHMhGqZgO4ag88eNKyJWRDuSyeS+hRI20gPneY+k9jEAcmlk1TS9pVDsX9Y
+	vBK0DeB7LehclEk+6lO6G2FOMs/GWa4AhItQYVuUZho7dlIVKFJePjeHs7o4ja43fHuAox
+	MtdCa999h9KObiIxOddPVfCOHTdEEXQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YSl6RqoW;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64180bd67b7so5951574a12.0
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:31:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763386260; x=1763991060; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PaWyh0QzcwKqBgx0baGTRcI+URglOSNILMpQRbc2ndI=;
-        b=YSl6RqoW3tVvtLlOlact1krvMRANB4xOpI6QJw7ikVPG908Mu2Ug6wbS/3286a7wJq
-         mD17oE23j9hcZEAWhTxicjQn9Z/3Qcr68FjTSlzo9ZfrPGkZg0oPMm83Of3EpbfyAm6l
-         T2R4ZIhaF3wpqh51oa1PQNHfXDyzv42PK98mdC082kAEldqUunx8Ph4hixx7WjABYU/u
-         Nh3iEtXM2xIR/t651B/t6Is6VRw45iRvWzK/zSbOEAW/8S0j+SdwdCYH2RFKkrMl6+2s
-         LA7zgz9y/Cx2Gw4Tc8rxTSxgxUfhpPOI0TlVdV5Ylht8U38Hmux0Qh2i6i9cj9cn+HyB
-         B5tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763386260; x=1763991060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PaWyh0QzcwKqBgx0baGTRcI+URglOSNILMpQRbc2ndI=;
-        b=cGYm/Q6drKUO7ghs01fS2fMEStVriF04gickG8yuAtp/6NbRSPjXronVjaAufb2avd
-         VgRPW8vK4/FI8LVCP83IGw5YR/WOdTxj1Eb+r+9YMwMe9obSLxvHuMP+TU5NXV9+Tl7M
-         yT+V+eXtgL02gAnDsFkTID92xHg2H8uUqHZsmVKL9JJyQIxEif1qBBiD9yJwTAfgFV8Q
-         LgWYZFpboPcn2VE120IN4qmIPa65XZ/l9u1Y7jI1+ZOHpOw84Zczf9nE5fpCaN9uSimQ
-         3tRxxKLddkg9jp9i7KsuspyDIW0NTajtF8Wket/F2dziYZvAmG/yYXBES6Zz7qtfuW/f
-         CJSg==
-X-Gm-Message-State: AOJu0Yz7JXs0Br0WsC541kVhUZnMrZ2u2jVDG5AHC9J1FeDcihzM1HZU
-	lZolBh+Yx+F/XUQUjGVEHjXKnQCON+q7nRRczuE0t1syFA6CTCx5V4C/GWYbpLEq3Z4vYhkhN+Y
-	rRdTshT6hAC1hRxIKcpAMbrcncw+PjwtDUh1lCmQGaQ==
-X-Gm-Gg: ASbGncssSqqeHVZNSqtDf4iBi70xkUkeCrRdyHscDTOwrN+JYLId6eu6mbZNHOZB/r4
-	0FZMLSUiTZCRa+BweO0LU3zYIGlmnw/KBFnR4exie0MNrnQwpPo/j08HnWooMQ2OZv5BQvxdD23
-	4Ce3C2vDKEoBqIWZu1p0eMN70bohgeNGBbQvst1y7bJvoY2M9+Q9IUi0a1RuQhcqqfaVagUvLGQ
-	L8F9BOYaOLS5ciTt+hfhdd5PW0E45A0z+J6/b/AMXDgaZhUywifABBndz2NH87UIb/l07PjvGWE
-	BeaxxAUanYIb9KFdYNpLyK4qexwvlX629gM5a3xFXw==
-X-Google-Smtp-Source: AGHT+IE2q9cxzQ11eFckik+jwI+m8CZlnmGQQBueLgQqdoDLrH76cSm/7gOLaMpuIbhqOlMuKvvP+9chgs8sOX9SjVQ=
-X-Received: by 2002:a05:6402:3507:b0:640:fb00:9b0b with SMTP id
- 4fb4d7f45d1cf-64350ec2ff9mr12960547a12.32.1763386259350; Mon, 17 Nov 2025
- 05:30:59 -0800 (PST)
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Jjh93+km;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9YVuu7zAULl0ixowM1tYF4wrONsB1jmbz+W8pAwYhcU=; b=Jjh93+kmr9SpMk/YF5lvhgC2u1
+	ZlLsFwt+ATReBnLApmCMvDdJSY2oNVNipqTUPFWCQry6k8bU6FXiczgKhMtGrjOEm0kvGhrY+PTH5
+	7aynII8OLBrKH8zYUJV1vdToERpFDa8P6bWYOHLmbH7JpYg29hoM3vHl0jll7oo+MHeVcxV21b3XJ
+	S+kqdLRnmwBA75pDGLJDgsSWUY+NB3F2rS+32Suu8VkMT1mloxKDd1vZ8xc1rMCTp+DIYxKLls+fD
+	oW0POF7znBkybXltQwPWEILV7jBbFvCKGZm952EKG3CmTi+AyRzaylIyPLpvyIbLFobnUvKx10mR9
+	+7DS/e5w==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vKzVY-0000000DtlN-38y7;
+	Mon, 17 Nov 2025 13:43:04 +0000
+Date: Mon, 17 Nov 2025 13:43:04 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>, nao.horiguchi@gmail.com,
+	linmiaohe@huawei.com, ziy@nvidia.com, david@redhat.com,
+	lorenzo.stoakes@oracle.com, william.roche@oracle.com,
+	tony.luck@intel.com, wangkefeng.wang@huawei.com,
+	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de,
+	muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH v1 1/2] mm/huge_memory: introduce
+ uniform_split_unmapped_folio_to_zero_order
+Message-ID: <aRsmaIfCAGy-DRcx@casper.infradead.org>
+References: <20251116014721.1561456-1-jiaqiyan@google.com>
+ <20251116014721.1561456-2-jiaqiyan@google.com>
+ <aRm6shtKizyrq_TA@casper.infradead.org>
+ <aRqTLmJBuvBcLYMx@hyeyoo>
 MIME-Version: 1.0
-References: <20251117-swap-table-p2-v2-18-37730e6ea6d5@tencent.com> <202511171912.yMOEajkV-lkp@intel.com>
-In-Reply-To: <202511171912.yMOEajkV-lkp@intel.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 17 Nov 2025 21:30:22 +0800
-X-Gm-Features: AWmQ_bn6RSoBiaqmn6kqmtyhsS-hftve9ZnkvXr-GPymXU6BoQ87Qrz5mZ6aFLk
-Message-ID: <CAMgjq7BbvKUjZprvP+nOgkF59+KnX5PZwuvcfSUChu4pci_i3g@mail.gmail.com>
-Subject: Re: [PATCH v2 18/19] mm, swap: drop the SWAP_HAS_CACHE flag
-To: linux-mm@kvack.org
-Cc: kernel test robot <lkp@intel.com>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRqTLmJBuvBcLYMx@hyeyoo>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 09D8A2001B
+X-Stat-Signature: uxy7ucuydy3ho39wsg4ja9psauk9dzse
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 68A081C000A
-X-Stat-Signature: jpuy3bdo8dfxb3zgagb3ddc8mhs1hyzb
-X-HE-Tag: 1763386261-551942
-X-HE-Meta: U2FsdGVkX18ZVUhksuzOoDVl2EM1Alo5zBdTPOPiP8hIcUCQktckrLd9/fHXCFtD7mTW8VPY3NPR1KWJCynxRGKNi6PS3QXa+NwFh9c0CTFJ4omFEGBm6aLF3aShiLI+tKlX3PE2v8VOEycKrE4wJRd6uF3y9oCC2zQ+iPRuJqNI1Ooe6gLSGHTECUJZhPQcS4fHIWcPs3I4etQ4yQ2xmZzkOW4gGb5AfF7KozdPSkl3PwN7+JrqCgOSYDyyDPkQXj/6FuS7mg1QcYZj9Es6ilzOWoZIw6/12BNyZQcpv0JHUro6zSIFQgMwt02rS2CoW75ApCk8OTxjrLeDdbZh4dN/K2d/gkfH+SwGPWR5WLnAlCnVp9mBNAbxTAsTg85UyGoGLw3EBSnQ2mhbmmmyYQE+PckdARzpahjIKoq/bwBuPn1eGJvdrZFQlztmnVBpr/Yyj//6kMe/dimXILTj72keY3IHTKqXpZvG4/sFbJaKAaiJMAzsY42DT76hEILGa3SAWg3UuHWimfm5eVizy61tqPG/85iSw7F+Ga5sHsR1nC+7kqk+Ozke8LIoRnzR89FIvD4tgiqK1FLQJ9t04INVV3BWS40aNagEVIHO1rtP++jpZihXDC5h4YGRgY0e7yfW8wvk/fQWyIcIDW0pzHQ4R2GzPnGnyaASJHuLWsPUjuQ0nwOVKC3Y7+MwVY/7W/kRp7PaPZEVZlIY6t2UYR36K73mBxj72FQiajn0LXd1BH2cSfjbf0Ecg489eHxBABGjCt4dMStFYvNK5pDV10wLNDJWI+H62TBMXCSL3ajY7kKW0Yeqo4Sv4Hw3ztd/gopOOvYk8KCHdo+G2ptVngmx609gWaKEBfOFrny2LXKtRAl934bPTQPDlE0myVQeNDEpbR4O9JrfgGpdWc/fdZ/DzrAswYEs161g8KaNt0kPzO+QFSOJMfIREN4q3kB/PFQQRv0HUxrPdygdASz
- xbWXosJd
- A7OLT5RLBskQS6LGeXY1CdeALkv3Da6PYkG7u3MYErKFIc71nkGzXiIS/3VcA9jzUtnpOcDKXsIRXHOaevg0FCtPJ6Kh20EWirFhdpLJntnlhp2YQKPQkuRRPSeZ/ciSfwLjHNj9Evtf8qZsIP0Vyqu7+7aXPulNnxWwSYch5DeuySJvs/33MpH14xroqJtAwVs2XmQdftVORjD90638boIMn1QAvND9AHrO/wrAAdMPTc5e2JpR7b3DaJySvotFr60tFcBGVkPw81dGYbI+YfvBo03q5vJApwy4lW+EhnMRxddgzMT3tuDD+M6IB5er7j6mIpCD6Jqaos6I+hJxjuUMjCEDDb9o7RTL5tBU5S0cYg/RXxDWAo4Vfeag1lNstU4X8isdu194/rxns2Wf7BveKVEUQjR1eLVB9NCf9HyZDaBtgI7YYWmPUsTXHDzA8Cz11CA9GJt/ex11E+C3lXuT1VHAU1gYkre3fleMCW806pWKadTWLkZjy8cJXJNqIqAkScXQKBkz9Q1j7693aLYYfv6YuZ9t/FoJ8yKTGe8B9XUokkm0F0/7SVA==
+X-HE-Tag: 1763386998-749703
+X-HE-Meta: U2FsdGVkX18J6GXTcVXgsDPxgFRYLBZPo7h6zrpdG0gN+Z4V/zT3qt+DC+cXv1J9K2Tvz459YL+bD8v06QDuEwMJseL/9s4IkuF0E4t3oxLxDb0SR3Stlbku8E07oTM4KJeEFT+W/KL1JGoONgmPke8gLaiCABq3wzRTJt5Wky/9UQx0Ch/cUWxFD7qIDm6Pd9LEf/hQS30BeEtbD9wTb5ZmgTzdloqjl/7gP6qCZ0bXEUxVKlWepvYSWcv5xqyHXYYf6X567w/QZB2He7JaGXE5ccfBRJ0bSr3wS2/gA4gotTsGBlpKNVyR5mOI/Uuj2zlibbUIy1Ih8dZiQ/40UtCsXnWzqPZbnhF105Otu+MVPi2nvhYIOyBG7ND8Clbdz7sgEjA4cHsdVnh5IuSp0iuVzXqpeS0EeJ/oGZH0MgVLywhS75USIVLg0v3GiDa1rYUVNnRrvuBMqMnG2yjwuaYQmTdsA3/iqZT+IKGz4Ma/e2TujwRjC4Wx1jB2RCAuyFMRKR80MI715k3TktzLLhg1kYAfV1uDFk06/NDTY+MRd28YOx0M4Xsg6QGeVbCEUwLCKgma5afsT+XFRQRlh/ue31oFZ7Bk5MetvCTbQuGbIz0bCRwwoOr2L9nmG6rOlmszglXaFGyHl7fUh4Didp5aKgazldcA21EbNFrBWgYJMf5MFG4qEk2CwF98Ia6vpUwBmh1Mh3Nk4yoojK29BltkAOlu2DG45v4GG6LJjXRcrlATjW4mktufHzRf3roAhPZOQiewQRsxi2rutal7cxy71bz4fxDNnyL4leLQvu3DFIP6TY7A/jL/I3FGMb6PSm9EZ2BIgRQFuYIaSm/kNkFxnHAHt8y0h5g7BzTfrTfyDA+RurB9mdgVskjkrHoFaFkskbSygf8edB9jX+8nUTHCCRJF0VGfswxGEX7eGx/ddVdX/4vmDdZp+v1HLGGQKjbrGGDYDcvlJBSLcwB
+ rWryM/qA
+ QqEfoOOOivRv6nbgjfRXQ+8yfd6+/wzH+5IILdiuwQ8I0lNYUXBz/E73JPw9zKsgGHEKGhywbwzw87c7CkznfSEaUgnxoISBNTNvymlZYQN2lIQBeKA2ot9kIdftalDylvboNTQfgpJVWlJguF6zjj8LjS6JAxgMvmmCRL+OKX0mlouUCAb+H/yR4Tuww8qXfrTF5m9nt8UtPb3RCDGjKjsPLTPh4aLsKtANWh1MyPChxn4ZvErhgfS8w8ZGQPI067s0ANczUu5lyADfqeY2YXm22DMyi69tz71Jc5gSFPHCyCNm8dvEjfdoNhr9mdOLTCa6fuRP6Yt6lQ+g6spMH68ALjc1FicmxzribGLZPfHkhiBhqwc50axlXSg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,63 +103,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 7:23=E2=80=AFPM kernel test robot <lkp@intel.com> w=
-rote:
->
-> Hi Kairui,
->
-> kernel test robot noticed the following build warnings:
->
-> [auto build test WARNING on 41218ede767f6b218185af65ce919d0cade75f6b]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Kairui-Song/mm-swa=
-p-rename-__read_swap_cache_async-to-swap_cache_alloc_folio/20251117-021532
-> base:   41218ede767f6b218185af65ce919d0cade75f6b
-> patch link:    https://lore.kernel.org/r/20251117-swap-table-p2-v2-18-377=
-30e6ea6d5%40tencent.com
-> patch subject: [PATCH v2 18/19] mm, swap: drop the SWAP_HAS_CACHE flag
-> config: riscv-defconfig (https://download.01.org/0day-ci/archive/20251117=
-/202511171912.yMOEajkV-lkp@intel.com/config)
-> compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 0=
-bba1e76581bad04e7d7f09f5115ae5e2989e0d9)
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20251117/202511171912.yMOEajkV-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511171912.yMOEajkV-lkp=
-@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
-> >> mm/swapfile.c:88:19: warning: unused variable 'Unused_offset' [-Wunuse=
-d-const-variable]
->       88 | static const char Unused_offset[] =3D "Unused swap offset entr=
-y ";
->          |                   ^~~~~~~~~~~~~
->    1 warning generated.
->
->
-> vim +/Unused_offset +88 mm/swapfile.c
->
-> ^1da177e4c3f41 Linus Torvalds 2005-04-16  84
-> ^1da177e4c3f41 Linus Torvalds 2005-04-16  85  static const char Bad_file[=
-] =3D "Bad swap file entry ";
-> ^1da177e4c3f41 Linus Torvalds 2005-04-16  86  static const char Unused_fi=
-le[] =3D "Unused swap file entry ";
-> ^1da177e4c3f41 Linus Torvalds 2005-04-16  87  static const char Bad_offse=
-t[] =3D "Bad swap offset entry ";
-> ^1da177e4c3f41 Linus Torvalds 2005-04-16 @88  static const char Unused_of=
-fset[] =3D "Unused swap offset entry ";
-> ^1da177e4c3f41 Linus Torvalds 2005-04-16  89
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+On Mon, Nov 17, 2025 at 12:15:23PM +0900, Harry Yoo wrote:
+> On Sun, Nov 16, 2025 at 11:51:14AM +0000, Matthew Wilcox wrote:
+> > But since we're only doing this on free, we won't need to do folio
+> > allocations at all; we'll just be able to release the good pages to the
+> > page allocator and sequester the hwpoison pages.
+> 
+> [+Cc PAGE ALLOCATOR folks]
+> 
+> So we need an interface to free only healthy portion of a hwpoison folio.
+> 
+> I think a proper approach to this should be to "free a hwpoison folio
+> just like freeing a normal folio via folio_put() or free_frozen_pages(),
+> then the page allocator will add only healthy pages to the freelist and
+> isolate the hwpoison pages". Oherwise we'll end up open coding a lot,
+> which is too fragile.
 
-My bad, should move the `Unused_offset` related change to the next
-commit, and remove it by then. It's just an unused variable so it can
-be dropped easily.
+Yes, I think it should be handled by the page allocator.  There may be
+some complexity to this that I've missed, eg if hugetlb wants to retain
+the good 2MB chunks of a 1GB allocation.  I'm not sure that's a useful
+thing to do or not.
+
+> In fact, that can be done by teaching free_pages_prepare() how to handle
+> the case where one or more subpages of a folio are hwpoison pages.
+> 
+> How this should be implemented in the page allocator in memdescs world?
+> Hmm, we'll want to do some kind of non-uniform split, without actually
+> splitting the folio but allocating struct buddy?
+
+Let me sketch that out, realising that it's subject to change.
+
+A page in buddy state can't need a memdesc allocated.  Otherwise we're
+allocating memory to free memory, and that way lies madness.  We can't
+do the hack of "embed struct buddy in the page that we're freeing"
+because HIGHMEM.  So we'll never shrink struct page smaller than struct
+buddy (which is fine because I've laid out how to get to a 64 bit struct
+buddy, and we're probably two years from getting there anyway).
+
+My design for handling hwpoison is that we do allocate a struct hwpoison
+for a page.  It looks like this (for now, in my head):
+
+struct hwpoison {
+	memdesc_t original;
+	... other things ...
+};
+
+So we can replace the memdesc in a page with a hwpoison memdesc when we
+encounter the error.  We still need a folio flag to indicate that "this
+folio contains a page with hwpoison".  I haven't put much thought yet
+into interaction with HUGETLB_PAGE_OPTIMIZE_VMEMMAP; maybe "other things"
+includes an index of where the actually poisoned page is in the folio,
+so it doesn't matter if the pages alias with each other as we can recover
+the information when it becomes useful to do so.
+
+> But... for now I think hiding this complexity inside the page allocator
+> is good enough. For now this would just mean splitting a frozen page
+> inside the page allocator (probably non-uniform?). We can later re-implement
+> this to provide better support for memdescs.
+
+Yes, I like this approach.  But then I'm not the page allocator
+maintainer ;-)
 
