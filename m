@@ -4,143 +4,234 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0889FCEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 05:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F7EFCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 05:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C41E6B0005; Mon, 17 Nov 2025 00:21:04 -0500 (EST)
+	id A7F6C8E0003; Mon, 17 Nov 2025 00:47:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19B516B0007; Mon, 17 Nov 2025 00:21:04 -0500 (EST)
+	id A573F8E0002; Mon, 17 Nov 2025 00:47:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B18D6B0008; Mon, 17 Nov 2025 00:21:04 -0500 (EST)
+	id 91E928E0003; Mon, 17 Nov 2025 00:47:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E4D956B0005
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 00:21:03 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 86D721A0B53
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:21:03 +0000 (UTC)
-X-FDA: 84118950006.14.B9EE284
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C3AB04000E
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:20:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763356862; a=rsa-sha256;
-	cv=none;
-	b=NVC/94x6SwzdKpI6mK2B0cvCj5zamkitcW/slca4RXjq9Ta78U4VGorTSsFwA3oIQZjjHi
-	hG86vn/J9y+cxHk1WuOPF8ivHOSUM3dZkzzRLTX2kenEXyUpsPdxI5J1Jj640BDGPdaXlb
-	nAId+RTmiAb/j616f/MszA3GlVYXMIg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763356862;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 822338E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 00:47:53 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DF8ACC023E
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:47:52 +0000 (UTC)
+X-FDA: 84119017584.24.EE637B1
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf27.hostedemail.com (Postfix) with ESMTP id ABCDF40009
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:47:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WDNyX0w0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf27.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763358469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=XLX2Ugj9XFTODH57hZ8ezSqQmBQA0X3Iltju2XYAGv8=;
-	b=HdHCUrAkNobY805cxN8ATqhzgo6w0/Az6hr/l4Im5lhA9CLhADQ9EvWkw9gSX6ieSW/wjd
-	6RUnkOYUWFSSBvbiFACrXHaEi+wHFvjxvB1WQ7GnrBo59mAA/ciCYhdshXlB4l83bDlfjl
-	kRgSp+TP57tc9dJ9Pwt5syZSybJDx6U=
-X-AuditID: a67dfc5b-c2dff70000001609-ac-691ab0b5f189
-From: Byungchul Park <byungchul@sk.com>
-To: linux-mm@kvack.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com,
-	harry.yoo@oracle.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	horms@kernel.org,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ilias.apalodimas@linaro.org,
-	willy@infradead.org,
-	brauner@kernel.org,
-	kas@kernel.org,
-	yuzhao@google.com,
-	usamaarif642@gmail.com,
-	baolin.wang@linux.alibaba.com,
-	almasrymina@google.com,
-	toke@redhat.com,
-	asml.silence@gmail.com,
-	bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au,
-	dw@davidwei.uk,
-	ap420073@gmail.com,
-	dtatulea@nvidia.com
-Subject: [RFC mm v6] mm: introduce a new page type for page pool in page type
-Date: Mon, 17 Nov 2025 14:20:41 +0900
-Message-Id: <20251117052041.52143-1-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1SPnBOGy9qWys8N4IFZsLqJvNqagUJzxTRhfyZmvf4w=;
+	b=qqE1LvCdgf61XZbl9TNLzWnt/ycXD2t1l0PS/LRV9j0Se3LtSkoC9HnDM4c40GRXnGo19N
+	s1zote7zJlscKcAp70UfN7WA5nLqTSZiGRS1brUGyGiwmWNsqW+3Wr0i/QRS4yPnjeE/OL
+	GMCjIxrsg5JaSwDjMAP3SYRnG42/Y9c=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763358469; a=rsa-sha256;
+	cv=pass;
+	b=5z+d03u5Siz/9MgCmKyrjTcFr5vArJxKWYEt6Ymf8eQNlBTIayKlF7VT9PzQOURmbGdQDN
+	OY3pkwhSCMj2cCkmLQYhjkDxtgzmZZupyUUQoJZLO4wtkWZLlTUNqa7ctvzg2uWaCRhNqX
+	CHjn4rkbqLQ1Piqb+7NIWcF53zZNStY=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WDNyX0w0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf27.hostedemail.com: domain of kanchana.p.sridhar@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=kanchana.p.sridhar@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763358469; x=1794894469;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=slLgFNRHAPbToqwXiynYDftNCrg3Jji/AMtk38eAwn0=;
+  b=WDNyX0w04hFVixNuGq83dbRgbLwC7hqBxZE64HZzUW6rJ7fVMeNSzMHF
+   zl9dOSdvOT/fYuyR4EKLmxFDsyWAR7cLvqnUOMXM2YF+UHjYwasEh6//x
+   w5SlIc+nBx92HsV01MInjl3jyTO6KrSvz0A0/dGjY7hTmczfC0+R6NKK9
+   PjTIkB+/9DodZkXfk8xkjXHSGAH8KqMdk1lY8rj2W6OQ9Y4O+/nqUeRs7
+   f5TNMMg7nt+AlQM+Hq8UWjwA4v40WXGGoOilI7Q9QRCH9gbchhS8V7oBN
+   ge+vFaDX6uC8QdFNTYRGuGzKu4sNJZ1XkZ0Y1fLRzzbWq+rOyF/S/6s76
+   A==;
+X-CSE-ConnectionGUID: gFlxvBUpRt2CM2HCsFvOpA==
+X-CSE-MsgGUID: f5ZGo+0uTJ2cnEtWuiHaGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="82738525"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
+   d="scan'208";a="82738525"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2025 21:47:47 -0800
+X-CSE-ConnectionGUID: v1iepJzAQwqZOo0ALtQJ/g==
+X-CSE-MsgGUID: ri1KHe+6S+uKg/y7caAzwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
+   d="scan'208";a="190154532"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2025 21:47:46 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Sun, 16 Nov 2025 21:47:45 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Sun, 16 Nov 2025 21:47:45 -0800
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.38) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Sun, 16 Nov 2025 21:47:45 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Mya1u1tDsxnRrzBgvyNVd2042IN30LsaqBPem5crK2tA5RrECI52ILsMfecYhcvI4fgk5TdOY9vEJgIfnM/fK7QYTnjTjCiq8k9clDf5hwB1EOeQL5tP4B3LZUFdCI/upkFYLiE8vgWTRLnZszeCuG6/9WCDSIR1B+L91K04Mw6FbHIatMC2TnB8hBApyosQ4OHiEtCjMtaQuF0lkmeRK8ivguXODLnV+Iyhk9+HzhNdF5L3zhYT9rjNDUqjZfNin718WbajPk4ZPqGFvRCCZYW3CNLvhXsavTtFP+4vO6t0jgw5KZk7gv4HwW5vSXgHBKtcv3ON7mobApy3jrecaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1SPnBOGy9qWys8N4IFZsLqJvNqagUJzxTRhfyZmvf4w=;
+ b=y32U1O2650o4Puo1qlyNcTjEIIQRDMUswPHCsKD/IRqFUZAHnaYAJrr8EFmobaazYh5awi/6W8fRAde2GKtuvUkqNIjWeQhJxCbsebI9XujC+3gFtK7cNvAD8hUna5oqmvJ1d9rVfJ9aUezy6ntFVdJSZYCWKDmWU194psQ5LKL+k8ew2GNtkfFjDMdOhx5D/ivFA2qnRh68AV8yXcqnORnWYG2jY5kHExTS0j1QEUpjKZ//SafwkVnRhVHLXDGmk42KyqVRYj/1Pi2I+pUQAsJYSR3PkbvUAlEdZqcHdhxu5n5S8YDSieGdQ6piPH8s7WLewrQ7znhYoSXMxz8PEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com (2603:10b6:a03:574::15)
+ by PH7PR11MB6649.namprd11.prod.outlook.com (2603:10b6:510:1a7::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Mon, 17 Nov
+ 2025 05:47:42 +0000
+Received: from SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::1871:ff24:a49e:2bbb]) by SJ2PR11MB8472.namprd11.prod.outlook.com
+ ([fe80::1871:ff24:a49e:2bbb%4]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
+ 05:47:42 +0000
+From: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org"
+	<hannes@cmpxchg.org>, "yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>,
+	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev"
+	<chengming.zhou@linux.dev>, "usamaarif642@gmail.com"
+	<usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"21cnbao@gmail.com" <21cnbao@gmail.com>, "ying.huang@linux.alibaba.com"
+	<ying.huang@linux.alibaba.com>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "senozhatsky@chromium.org"
+	<senozhatsky@chromium.org>, "sj@kernel.org" <sj@kernel.org>,
+	"kasong@tencent.com" <kasong@tencent.com>, "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>, "davem@davemloft.net" <davem@davemloft.net>,
+	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org"
+	<ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>,
+	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C"
+	<kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh"
+	<vinodh.gopal@intel.com>, "Sridhar, Kanchana P"
+	<kanchana.p.sridhar@intel.com>
+Subject: RE: [PATCH v13 13/22] crypto: iaa - IAA Batching for parallel
+ compressions/decompressions.
+Thread-Topic: [PATCH v13 13/22] crypto: iaa - IAA Batching for parallel
+ compressions/decompressions.
+Thread-Index: AQHcTWszo/WY4LO3fkO1jxkjgF2nErTx/98AgAO1Y2CAAI/5gIAAHUdg
+Date: Mon, 17 Nov 2025 05:47:41 +0000
+Message-ID: <SJ2PR11MB8472311D0C7B0B7CAD11B601C9C9A@SJ2PR11MB8472.namprd11.prod.outlook.com>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-14-kanchana.p.sridhar@intel.com>
+ <aRb9fGDUhgRASTmM@gondor.apana.org.au>
+ <SJ2PR11MB8472EB3D482C1455BD5A8EFFC9C8A@SJ2PR11MB8472.namprd11.prod.outlook.com>
+ <aRqSqQxR4eHzvb2g@gondor.apana.org.au>
+In-Reply-To: <aRqSqQxR4eHzvb2g@gondor.apana.org.au>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR11MB8472:EE_|PH7PR11MB6649:EE_
+x-ms-office365-filtering-correlation-id: aed0951b-19b5-49c3-3ca0-08de259cd31e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700021;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?NrfA+DBtqO7nN2SrSLl4RCYR1fmFEVFI15cg8U+yhZa7nVxU5QFndahM0k?=
+ =?iso-8859-1?Q?9ra3H8hoIyfYblVrXyS+3nyh3M3Fbuv0W746M/BY6IOPCc1pD/M0NbCERI?=
+ =?iso-8859-1?Q?KsJBUOX+9o0cGOdkDUF6nDUq/r+In3IIBgGxOWDAt3SmFiqpFTcKtQZyFk?=
+ =?iso-8859-1?Q?9+9saCifICsjguLnCjNSvHBWknZY6mcezVgT96D+cj9EKbkUj6pmWdT50k?=
+ =?iso-8859-1?Q?n/kAk4+pUAdvVDh7Mam9lwfl+9xq+X/0i9QsyMYC9X4L/M9rR6MMKCu0BL?=
+ =?iso-8859-1?Q?ZXKjcEl1IMsDsHhSXDoJZ7JwgaMU4MSkLH59hDWR+9UPn87IU8JKTMsOgs?=
+ =?iso-8859-1?Q?xAyXpaHMiuQWXgLCjF0uCV2l5136Ofg6QGjuPk2bNASsfEI6tBgTHfEvBt?=
+ =?iso-8859-1?Q?bYvBoejZYT8vLavTB/C4afm2JPSsK0ccKQhxyXd0PTEeOtOHetu/TWeMry?=
+ =?iso-8859-1?Q?E2bnCvfIX/1N2LNPiOuqjo4lAD+vHHlWJ5Ovmqex/GOk7tQv0QiOYs6IzZ?=
+ =?iso-8859-1?Q?uX5heu4iuDu8FYaQa3m7A1iAtVMDdQAPKbPXWSqImRT5opEdgLcF1Sy0OL?=
+ =?iso-8859-1?Q?TITUT9Aw20+k32fiF/MMeXndjUwDWswygAQwoNeuX/IogdMCZ+f2C7gd0M?=
+ =?iso-8859-1?Q?Rr4ygeXpFDFIXP7ofDgEuZ3zdr/TtjY8DdcumbZkEiNmPKABiZT7IC/rS9?=
+ =?iso-8859-1?Q?/DCr2TYckRkJRbU95NMWojE/zk1EKK0tHMq6dHfq8rAypJY+uKg3Y86iQ5?=
+ =?iso-8859-1?Q?CiMLlvYiBv5rosbTQd7Am0/FELQFQLYJ6YMrnh+rFOcv9nJ5ZqHZCAzyh7?=
+ =?iso-8859-1?Q?lNxgirTSlB3TOGsDxGexGygD3boUSrVBMjHM9LzheSzwZrJg50YAzUTNYx?=
+ =?iso-8859-1?Q?ECUFOmQB2JcOyGspWZxp/ISEcTPbY8pYc0NDSkfbY25rnmO9FYVzLgWYoK?=
+ =?iso-8859-1?Q?uprS93zyu/y7fA1YFTHqfOdIUNlF4oI7oQQe90ViAE3HyXccqPaiL0Okxb?=
+ =?iso-8859-1?Q?GYk/5f+G793/E/1qiQ30v6Qrusi78A9malNXSIPxm5FNletb5uX0n8vh9X?=
+ =?iso-8859-1?Q?+owqbW0cPuMNolOFv/JUthhBbEhFHX+sRJ11j2apQZ4znx2GFGqwjDNGut?=
+ =?iso-8859-1?Q?uLS4VAqb/nMiL8vN0oYEbfVKU4PB/Yt6xMxkFY/B79BUozLCboYbYHpWEn?=
+ =?iso-8859-1?Q?7dYtj01jgqLQJ6E6gAi8nNwnKo8KEFvo91GMiN3zZRQkobHUc74lLqtIYl?=
+ =?iso-8859-1?Q?oWII3A5LvhaD21u/EdNVlT+lKVuW5oSjGBmr5TfCoTI5zsbrXnMV+0/Qqd?=
+ =?iso-8859-1?Q?8e6xG505XYR7qwOG+aJg0pg1Tm6J4o5VGUeZOYdnYHK+J2EhgDZaaUZulR?=
+ =?iso-8859-1?Q?u7ke6GhPPGUvcxldRQ2P+9YxfOIT6jyNws7zh7g9aHZbD3B6pB5QLB470y?=
+ =?iso-8859-1?Q?imcBUIwUDsu6t8BCEclnk3zNPZq9PUQp5nOm3XR9Zs/kNOdBAFanfhpnig?=
+ =?iso-8859-1?Q?q21xPKt8aAjp/R9FuoVzVOXCXvDr7dfQRlgsuiX/9ZSw=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?lGvOEw/qo/jr2maIPoEq4qXgPr65etfzSlo1KQXy4qerIaTgRqgMoRa7g1?=
+ =?iso-8859-1?Q?mUopaa9PmBZ4PEykONuWYmxwDFEz5Hv3c0Nn1N/fKasmx1xGBnQFGuaYlc?=
+ =?iso-8859-1?Q?sprZj4mPWn5U25VF0hmTwKHHLld0g4UJ/k05jqgKiNHWW8fbA3/Saf6Br4?=
+ =?iso-8859-1?Q?d+sdwP4pWeA82mN8BurYABYHgO565yNvq+JkD0lIDzcmz/TUc8niSG1Rxh?=
+ =?iso-8859-1?Q?Esf/Tef6/EuZUPB4bA5CtgB/Ih29eP41Yl6UZ3xhjYuslSnFo68KHWR3mX?=
+ =?iso-8859-1?Q?ILAdlM6kkXlHOepEZwx5JecYhIIBv9CYE0xdraD/BY6RdBn8kryR/+bTX5?=
+ =?iso-8859-1?Q?5dPp6faNw+DHGczpxVmOfcPgyjr3Di9/Zrd0xZQydV061I1LP3bjZqYFjB?=
+ =?iso-8859-1?Q?bBmjKdtOLFSTC+4vR8OzrqUVyejuH4wLJ76cDTDW2CrMu0UX0fuqTZGf3S?=
+ =?iso-8859-1?Q?tWlnAIJnCh+09Q/ktkcEBU8JKefW+spMs4VlPMJZ/KLnwMn6sNjG78E/9q?=
+ =?iso-8859-1?Q?QzEH18vK6LOspbWaiV5bVCxer3sOD90lnr+dzxf2mSI16JRihLxl8K8c+6?=
+ =?iso-8859-1?Q?m6ho6dTrD8MAWxch9Veu0Hvfw2yP9+mMqD/9jEuBtMBaKtjgsXbVNg5Mns?=
+ =?iso-8859-1?Q?wmU/DW9atTrn+C1LDuEy8WOUBNR5TmpqB43LV4/FiEwkiMHwpTiuIQ5h+P?=
+ =?iso-8859-1?Q?XjcGNYhQ5W+JnCNEym0P82q8dMoi8fRlDCe1Wwmp37WYzTouh7AtOCb60K?=
+ =?iso-8859-1?Q?cjjsev1PDn4uL3FuP1DxkcFpln6As8l/skiyhVbiM2eOkD5eNrqhgjPZ0n?=
+ =?iso-8859-1?Q?Oxj+7B6sj5XIPtfRky+xgHgiOYdD5rQIMiQphnnDCRpgJECI/DM1qMMgqu?=
+ =?iso-8859-1?Q?f5zyNT+IDD9VNgSrjuRuIi7Ukl+uUUMho5VgSBq1mqhqEiAOGux6DIM3sz?=
+ =?iso-8859-1?Q?d/H68h0pw9WMsWaR23AzO6g050RctE9R67pq0vgoGzO1B5aW4A8AQrq3Pj?=
+ =?iso-8859-1?Q?DMSaqtn8T5QLCa5XUt/Yl2o15fsj6LU6qxujl6lb0KDrQuabyDlRiYtY4H?=
+ =?iso-8859-1?Q?P4k1q3s9hzqSURTDc52/kvNFQRpUepy+fMUj1J7d1QYhdv88OUywdA5Del?=
+ =?iso-8859-1?Q?F+Jwtk3MGi8sM7MOwESfBxqqGjbpXOzw9Nious+t9uWhjciL/auB27Voz8?=
+ =?iso-8859-1?Q?cENvIboh+/YW8R+IoaUBUT70b020dXSPYAHX3x2EbiZsFlJ3Yo1i2mY7uM?=
+ =?iso-8859-1?Q?AYABpuSotGa+C1P27jlMg1VwpCn63viGfyPjwmg0Gxr6znso3w84DEPW6D?=
+ =?iso-8859-1?Q?ULDq3MhhZmctYTNuNpf/xlpTT6JVs+ZJKuE5Xuvag5/lDSf/qe/ezCqjXr?=
+ =?iso-8859-1?Q?cy4WXpsCflVvM0WJ98koCT8wJ9I/NpE9oHp3Gt+RZ0Do5JxBvcsrifOMmm?=
+ =?iso-8859-1?Q?3Pdgra4lSXjfoo+CqlUal5MHpNX6CwZolW9DUd15v8HGIL55c0SzZrJ3Ca?=
+ =?iso-8859-1?Q?UWn494E9NiOq3NpQTJFcPdcEU3ivKm/m0vNwSLJwX54Hjlhi/4lQ0kdaOZ?=
+ =?iso-8859-1?Q?8HtB53UokblPHq9tt1pdFIp0vrMn3X5i8kyStKASbj13QLAg97i828H3UN?=
+ =?iso-8859-1?Q?3lixMFWWaquFFJ65/pLb3Fdfl3I8/iCaXZIQ8G4uI5TTh+Adt0hcrXfA?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+5//uTlandbtaEgxCqHILhS8QkhBl383KvpQJJQrT+2Qmmxp
-	KgladltpVho2l6windMyp0tnajbN7iR2YZWlqdnNVi2TpoPalKhvP57nfZ7ny8tjVQUTwsvx
-	eyVdvCZWzSpoxZfRF2bbr4XIc6tMU8BUXsZC6a9kKO6sYcBb9p4Ck/U6gn7vKw5+17cg+NF8
-	h4XPTR4Ely4MYDA9zqThZ/kgBkftewSf8q+w8K6li4NS21roKOqloe5INYauk3dZyMocwlDv
-	dXNwoMbiL65M56D1ejYDuYOXMVSnd3LwpNbEwpuy3wz0OrNouGcsoeFbXjOGjuzF0GKeBAMP
-	+hA0l1dTMHDiPAvPztVSYK9/xsGZNjML3ZkdCNqaumjI8x1loSAjG8HQL3+lO6efgYLbb7jF
-	4STD5WJJU99XTKpKXlDkef4pmrga7lPEYXzNEbMtkVRaZhKDqw0Tm/UYS2ye0xxpf17Hkrv5
-	QzRxvI0gjpofFMk66GbXT9yiWBQjxcpJkm5OZLRCezHDwCQc3prscQelo5trDIjnRWGBWGiJ
-	NqCgYWzsyWcDzAphosvlxQGeIMwVLXn9flbwWDjOi68aKoaN8cJa0Xm7gQkwLcwQW3+WoAAr
-	hYViq+8hGimdKpZea8Qj+jjx3rkeOrCL/QPlhaqAjP0nB+0Fw/2i8JQX29tzmJFssHjL4qJz
-	0Bjjf3Hjv7jxv7gZYStSyfFJcRo5dkG4NiVeTg7fsSfOhvyPVJTmi6pBntaNTiTwSD1a2ekK
-	llWMJkmfEudEIo/VE5RH1oiyShmjSUmVdHu26RJjJb0TTeFp9WTl/IF9MSphl2avtFuSEiTd
-	X5fig0LS0dmL2oxDZzdT5rBF1sqn3aFgr7qysi6smNhPf+lZsT3Hsc6+3aqiNuWaXuqPa9P6
-	+Mjcz1GTI5b18aseLU/1fTB3t+2PWB2Frn4fmzjY6PvoTAkNX5fqCd49bdQM1h0tTl+amlY2
-	bsl4b8WGUb2RctH0qZGhN4oLd64yJMwaM+1tqJrWazXzZmKdXvMHhfad80QDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SXUiTYRiGefd+fy6Hn2vYx4KEURRRalDx9IN0Er1Elp4YCpWrPnQ4rbYS
-	jYKZZma5tJTmnGaZ5l/NVupmajHNsoLEKFZalv1BySxdy6lYWxF5dnE/F9fRw2F5Ca3kNOmH
-	RV26WqtipJR0+4aclS3NSk1UtZsCi7WJgcbJTLj21k6Dr+mzBCwNrQg8vkEWfnX2IpjoecDA
-	1+5xBNWXvRgsT3Mp+GGdwuBo/4zgi+k6Ax97R1hotMXAcO0nCjpOtWEYOfeQgcLcaQydPjcL
-	J+x1/vAtAwvdFX009LcaaSiZqsHQZnjLwrN2CwNvmn7R8MlZSEGfuZ6Cb6U9GIaNm6C3Kgy8
-	j0cR9FjbJOA9W8HA87J2CbR0PmfhwkAVA+9zhxEMdI9QUDqTz0B5thHB9KQ/6S7y0FB+/w27
-	KZJku1wM6R4dw+R2/UsJeWEqpoir65GEOMyvWVJlO0Ju1S0nBa4BTGwNpxliGz/PkqEXHQx5
-	aJqmiOPdOuKwT0hIYY6biQ1LlG7cL2o1GaIuMjpJmnIlu4A+mLc7c9wdZEB3txWgIE7gVwv3
-	PpiYADP8UsHl8uEAK/gooa7U42cph/kznDDYdfPPYT4fIzjvd9EBpvglQv+PehRgGb9G6J95
-	gv5Gw4XG5nv47x4q9JV9oAoQ5w8tFayV8sCM/UpOSzkuQvPMcyzzf8s8x6pCuAEpNOkZaWqN
-	dk2EPjUlK12TGbHvQJoN+X+l9vhMsR15nm1xIp5DqmDZMkGpkdPqDH1WmhMJHFYpZKe2CRq5
-	bL8666ioO7BHd0Qr6p1oIUepFsi27hST5Hyy+rCYKooHRd2/q4QLUhpQcvReZ3LKunfBCkdj
-	gvH70Fj7iqtZXxKrv/dO+CTkZH6I0uLTeu324Tt87Aa+jYTWdhoPXZpKehVxo6LycXzRMmp3
-	eE1igsern9pceTJh0VDe2sXWnjxqfu2OO82z1SGKXcrRjp/xs8nyPMPTwWNhoXGO+q0Xzev3
-	qLWJrXGmSBWlT1GvWo51evVvOoypUScDAAA=
-X-CFilter-Loop: Reflected
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aed0951b-19b5-49c3-3ca0-08de259cd31e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Nov 2025 05:47:42.0070
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eDdiGtkqwQ+b9J+OOdRuoKRGn4xeruX8cspPzyg6/6W8ZRRLNxF+p+v3DAkd/IhY4C6earZuNJ2xwqn8kNKYSjDxX7SG+OvUFXh+QotVXf8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6649
+X-OriginatorOrg: intel.com
+X-Stat-Signature: ido9g1pq5r1ynzstituifrtdc34dttzr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C3AB04000E
-X-Stat-Signature: m9mjk17o9stqxxo8q5kohcbmhgpikm4x
-X-HE-Tag: 1763356858-303782
-X-HE-Meta: U2FsdGVkX19lURbAomqfdYm/8I6JKT5ojK6ugM7lQ5hSiK2m5r9UdWJEGr7YKIcsgnJ6W83HrupoRESuabrJ56gbptA0Lx4P7S8tqFCoxjpZPArm/w/DB9TnCSQCM1Z/ZPjWqN/JuN/zaD5cVzuN86n0Tk8GMCrsVlhPW6fA/KTUi52eBSLpxrICfzuMKkjzJkXUWz26rR4OuywJUpbKSy/xsgJF5e1Rpm2Nz/vdIf9ovJVZ26mu1q6veq4Jh3P/tqHotZ6AiR9t4dC3VvY6WHsMy00xVGOBFI+tkAmEmn/1AhXgIWrj1YBBed81vGIZ0Ww0imhcB3g1JwFrgNS4ck7B0tsbY25B13jiluCXMptjoRWJui3bxUvxC+5V6M+hcPXEFr9Qc8CONfaIwutRMfkUDq2/qiDOhcEOB5+nI3IEusjcX7JOmr6P7VQnTTpTSHJeHKdBurxbt7N/pIP2U/r7EGEGKpA9hqOS2f26V0UWKO/0EEyoNEl9pqnqGThe4BOjSKjTaz1fNOjQdL33nfX+DM8fqAOf8Eck9TZaZpbRQgk7V/NOCG+14LeyNe31ot4E9d/s6u3JgAJeKLMe0Z1mKM3TN/94OVOcPFpHNhCK4Qi//w0jnyJfCrr8a8X5FzF4fWVQnTAfRkRdJV6GowCjkh/Zb2fMTzqcnvqsfU82KG9UgyOAdxGSvqqK7eNbn3jlzf+uF0qZxJZ15i4tP3E6eIcQxE0WQcm6UahMbeTl6gIQj0d9czrYU2exXO7r8YtW0rx1nMaMzTzkAHI2uGpJvx/5ba+iBIpr7CEt0T4Ncmj0x/fIpC/hWeITv26RDAoXc9k0lXfTyPNM6cHlhGg5LpGlheEEDBjaHcP6orCI9vJpJB5cHkEOHBJaSOh8kAGFEbbjYvkvjqZPtoLuEQMaMEskK5qTZl+psBtX0RAwK2Dle61e27ifrc5GKoaHhhCpku0Jqo/i48FH36P
- SPV/dRi9
- 8XJ/U2Yw/qS2mN6CtU+oJypuQq+5KEH7gpfeTOR/mtQyRdal0abWJFLqtFtGNYv29YKw1ocy4kBxNHdgdTkosd/qgd/07cZZEslbHqEbv0cA7i22vx8yhvMdiviom1/CUsbx0DgQOzqNSBFpL5dNKpIFWH+3DwOgfzYDpVWpxmDDlwJIQFA8frJye18ixcMOFzXMTcXwIh2nbvt4HWYCfJ02/7BJVFtHrKk2QHRkrK9fk7Tx5EYhuQqxgDrAGfJzQ+SiwrcZYidhUsBU=
+X-Rspamd-Queue-Id: ABCDF40009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763358468-888189
+X-HE-Meta: U2FsdGVkX18BK1XiFX7sqJwH/D0eMC7X6oPsvqxxuonplv66az1f9by6q2tv2/pP4m8zCifWqCCvxiK6etdu0R8MUTR5SrJNsql4qghyT9JXqYEN5yXqY7JX1qnOilkc1O1b3S8vuWj0WL99yPncLAqkauPmOAqlVRNh/qDexFW6kkptJBhx6Jb9AQm2QOy71w2Ve7aU98+K/eivcChx8dRCuyWRpKpausY5DlJ/DSeUUGR0ujdqZe1VDQE82HilT1GzG8tKLV5XXfbBmmbmKb6nPkGVvM0C8+SQDYEGWocOtyU5JhSPmSbYIkrXhhQq2kLCW/YJ1LNSz+Dly5WhIVyZXkscUYLRRB9Ll+Yz6ReU7ldJ1NAHfk04qbi4cBf/UbuSmIFFJYh0sUdmUS91r4FrZbdkBnNJVDlQLv6Xb46B2+aw/h4/t+5u1C/k7sk+Z4mBidKTeSOskAnwYhvarahtm6QCq3wRqzNsrZFPCwP5nHVFn5uASvIrwaoG+PDHVx+3vIw5B5cvHXYWk0G3LM1eFAp38/AuaLVp8bCeE2Los7q5Tl7MFZsv+4tT0olj0Iz9Ch9bLmzTWhKY9qXlEZxPrR0XtPidNBDIEWDJ6eOZy+AHRHkISYK2ivHrn0TslqGOa0FdnYa1taCInIsaC18LOn9s5NrImDv3Tg9zXXNiJBVNi7TdeliUSKe3KlHhg/dyjH2s/sSaxOUV8QyW3G4Fb8yDgC+Iah2joCJlOcILbupEO6rw3q5OYdzD8sYFlSB5oCN3+piHauLUzGNcE/qG0U+ey+Vm1yWpgJ/Ke0h++tujewA4WLNARS6B+Ko+hfGoaWr8q/xrCMLD4PxsjvdzAnoL41uvhPU8lw1a4x3gauX/aL/o5O3SiNdiFX75SY5fRdvwa5VU7aAZQR72HJ5V2vCWxmwYGWsjJIr82EDRw1cOHABWnz/3dC+ESqxxWrG/7guBWJpfI+96u0L
+ QlzaYqlF
+ pGoHukBkK3b2JaA3GCW6vDO+PO22XHwVUVqPYGBC02ZUwJHw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,310 +240,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-determine if a page belongs to a page pool.  However, with the planned
-removal of @pp_magic, we should instead leverage the page_type in struct
-page, such as PGTY_netpp, for this purpose.
 
-Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-and __ClearPageNetpp() instead, and remove the existing APIs accessing
-@pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-netmem_clear_pp_magic().
+> -----Original Message-----
+> From: Herbert Xu <herbert@gondor.apana.org.au>
+> Sent: Sunday, November 16, 2025 7:13 PM
+> To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> hannes@cmpxchg.org; yosry.ahmed@linux.dev; nphamcs@gmail.com;
+> chengming.zhou@linux.dev; usamaarif642@gmail.com;
+> ryan.roberts@arm.com; 21cnbao@gmail.com;
+> ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
+> senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
+> crypto@vger.kernel.org; davem@davemloft.net; clabbe@baylibre.com;
+> ardb@kernel.org; ebiggers@google.com; surenb@google.com; Accardi,
+> Kristen C <kristen.c.accardi@intel.com>; Gomes, Vinicius
+> <vinicius.gomes@intel.com>; Feghali, Wajdi K <wajdi.k.feghali@intel.com>;
+> Gopal, Vinodh <vinodh.gopal@intel.com>
+> Subject: Re: [PATCH v13 13/22] crypto: iaa - IAA Batching for parallel
+> compressions/decompressions.
+>=20
+> On Sun, Nov 16, 2025 at 06:53:08PM +0000, Sridhar, Kanchana P wrote:
+> >
+> > This is a simple/low-overhead implementation that tries to avail of
+> > hardware parallelism by launching multiple compress/decompress jobs
+> > to the accelerator. Each job runs independently of the other from a
+> > driver perspective. For e.g., no assumptions are made in the driver
+> > about submission order vis-=E0-vis completion order. Completions can
+> > occur asynchronously.
+> >
+> > The polling is intended for exactly the purpose you mention, namely,
+> > to know when all the sub-requests are complete and to set the sg->lengt=
+h
+> > as each sub-request completes. Please let me know if I understood your
+> > question correctly.
+>=20
+> The issue here is that this code is being plugged into the acomp
+> API, but it isn't implementing the acomp API correctly.  The acomp
+> API is supposed to be asynchronous and you should return immediately
+> here and then invoke the callback when every sub-request is complete.
+>=20
+> I know that the ultimate user is synchronous, but still the driver
+> needs to implement the acomp API correctly.
 
-Plus, add @page_type to struct net_iov at the same offset as struct page
-so as to use the page_type APIs for struct net_iov as well.  While at it,
-reorder @type and @owner in struct net_iov to avoid a hole and
-increasing the struct size.
+Thanks Herbert, for this explanation. I think the main problem to solve
+is how to signal the callback with the "err" of all sub-requests, noting
+which of them are still -EINPROGRESS, vs. having completed with
+error/success, set the sg->lengths, etc. I am wondering how this can
+be done since I have already returned after submitting the requests..
 
-This work was inspired by the following link:
+It seems there needs to be a polling mechanism after returning from
+crypto_acomp_compress() once I have submitted the sub-requests.
+This polling would ultimately call acomp_request_complete() after all
+sub-requests have completed. Do you have any suggestions on how
+this can be accomplished?
 
-  https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+Thanks,
+Kanchana
 
-While at it, move the sanity check for page pool to on the free path.
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
----
-I dropped all the Reviewed-by and Acked-by given for network changes
-since I changed how to implement the part on the request from Jakub.
-Can I keep your tags?  Jakub, are you okay with this change?
-
-  Reviewed-by: Mina Almasry <almasrymina@google.com>
-  Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-  Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-
-This set is supposed to go via the mm tree, but it currently also
-depends on patches in the net-next tree.  For now, this set is based
-on linux-next, but will apply cleanly (or get rebased) after mm tree was
-rebased.
-
-Changes from v5:
-	1. Add @page_type to struct net_iov so as to use the page_type
-	   APIs even for struct net_iov. (feedbacked by Jakub)
-
-Changes from v4:
-	1. Rebase on the latest version of linux-next as of Nov 3.
-	2. Improve commit messages. (feedbacked by Jakub and Mina)
-	3. Add Acked-by and Reviewed-by.  Thanks to Mina.
-
-Changes from v3:
-	1. Rebase on next-20251023 of linux-next.
-	2. Split into two, mm changes and network changes.
-	3. Improve the comments (feedbacked by Jakub)
-
-Changes from v2:
-	1. Rebase on linux-next as of Jul 29.
-	2. Skip 'niov->pp = NULL' when it's allocated using __GFP_ZERO.
-	3. Change trivial coding style. (feedbacked by Mina)
-	4. Add Co-developed-by, Acked-by, and Reviewed-by properly.
-	   Thanks to all.
-
-Changes from v1:
-	1. Rebase on linux-next.
-	2. Initialize net_iov->pp = NULL when allocating net_iov in
-	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
-	3. Use ->pp for net_iov to identify if it's pp rather than
-	   always consider net_iov as pp.
-	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
----
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
- include/linux/mm.h                            | 27 +++----------------
- include/linux/page-flags.h                    |  6 +++++
- include/net/netmem.h                          | 15 +++++++++--
- mm/page_alloc.c                               |  8 +++---
- net/core/netmem_priv.h                        | 20 +++++---------
- net/core/page_pool.c                          | 18 +++++++++++--
- 7 files changed, 50 insertions(+), 46 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-index 5d51600935a6..def274f5c1ca 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
- 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
- 				page = xdpi.page.page;
- 
--				/* No need to check page_pool_page_is_pp() as we
-+				/* No need to check PageNetpp() as we
- 				 * know this is a page_pool page.
- 				 */
- 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index a3f97c551ad8..081e365caa1a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4252,10 +4252,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-  * DMA mapping IDs for page_pool
-  *
-  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
-- * stashes it in the upper bits of page->pp_magic. We always want to be able to
-- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
-- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
-- * (since it overlaps with page->lru.next), so we must ensure that we cannot
-+ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
-+ * arbitrary kernel pointers stored in the same field as pp_magic (since
-+ * it overlaps with page->lru.next), so we must ensure that we cannot
-  * mistake a valid kernel pointer with any of the values we write into this
-  * field.
-  *
-@@ -4290,26 +4289,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
- #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
- 				  PP_DMA_INDEX_SHIFT)
- 
--/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
-- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
-- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
-- * bits used for the DMA index. page_is_pfmemalloc() is checked in
-- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-- */
--#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
--
--#ifdef CONFIG_PAGE_POOL
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
--}
--#else
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return false;
--}
--#endif
--
- #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
- #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
- #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 0091ad1986bf..edf5418c91dd 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -934,6 +934,7 @@ enum pagetype {
- 	PGTY_zsmalloc		= 0xf6,
- 	PGTY_unaccepted		= 0xf7,
- 	PGTY_large_kmalloc	= 0xf8,
-+	PGTY_netpp		= 0xf9,
- 
- 	PGTY_mapcount_underflow = 0xff
- };
-@@ -1078,6 +1079,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
- PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
- FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
- 
-+/*
-+ * Marks page_pool allocated pages.
-+ */
-+PAGE_TYPE_OPS(Netpp, netpp, netpp)
-+
- /**
-  * PageHuge - Determine if the page belongs to hugetlbfs
-  * @page: The page to test.
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index 651e2c62d1dd..ab107b05341e 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -114,10 +114,21 @@ struct net_iov {
- 			atomic_long_t pp_ref_count;
- 		};
- 	};
--	struct net_iov_area *owner;
-+
-+	unsigned int page_type;
- 	enum net_iov_type type;
-+	struct net_iov_area *owner;
- };
- 
-+/* Make sure 'the offset of page_type in struct page == the offset of
-+ * type in struct net_iov'.
-+ */
-+#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
-+	static_assert(offsetof(struct page, pg) ==	\
-+		      offsetof(struct net_iov, iov))
-+NET_IOV_ASSERT_OFFSET(page_type, page_type);
-+#undef NET_IOV_ASSERT_OFFSET
-+
- struct net_iov_area {
- 	/* Array of net_iovs for this area. */
- 	struct net_iov *niovs;
-@@ -260,7 +271,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
-  */
- #define pp_page_to_nmdesc(p)						\
- ({									\
--	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
-+	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
- 	__pp_page_to_nmdesc(p);						\
- })
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 600d9e981c23..01dd14123065 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
- #ifdef CONFIG_MEMCG
- 			page->memcg_data |
- #endif
--			page_pool_page_is_pp(page) |
- 			(page->flags.f & check_flags)))
- 		return false;
- 
-@@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
- 	if (unlikely(page->memcg_data))
- 		bad_reason = "page still charged to cgroup";
- #endif
--	if (unlikely(page_pool_page_is_pp(page)))
--		bad_reason = "page_pool leak";
- 	return bad_reason;
- }
- 
-@@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
- 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
- 		folio->mapping = NULL;
- 	}
--	if (unlikely(page_has_type(page)))
-+	if (unlikely(page_has_type(page))) {
-+		/* networking expects to clear its page type before releasing */
-+		WARN_ON_ONCE(PageNetpp(page));
- 		/* Reset the page_type (which overlays _mapcount) */
- 		page->page_type = UINT_MAX;
-+	}
- 
- 	if (is_check_pages_enabled()) {
- 		if (free_page_is_bad(page))
-diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-index 23175cb2bd86..6b7d90b8ebb9 100644
---- a/net/core/netmem_priv.h
-+++ b/net/core/netmem_priv.h
-@@ -8,21 +8,15 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
- 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
- }
- 
--static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
--{
--	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
--}
--
--static inline void netmem_clear_pp_magic(netmem_ref netmem)
--{
--	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
--
--	netmem_to_nmdesc(netmem)->pp_magic = 0;
--}
--
- static inline bool netmem_is_pp(netmem_ref netmem)
- {
--	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
-+	 */
-+	return PageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
- }
- 
- static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 1a5edec485f1..27650ca789d1 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -699,7 +699,14 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
- void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- {
- 	netmem_set_pp(netmem, pool);
--	netmem_or_pp_magic(netmem, PP_SIGNATURE);
-+
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
-+	 */
-+	__SetPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
- 
- 	/* Ensuring all pages have been split into one fragment initially:
- 	 * page_pool_set_pp_info() is only called once for every page when it
-@@ -714,7 +721,14 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- 
- void page_pool_clear_pp_info(netmem_ref netmem)
- {
--	netmem_clear_pp_magic(netmem);
-+	/* XXX: Now that the offset of page_type is shared between
-+	 * struct page and net_iov, just cast the netmem to struct page
-+	 * unconditionally by clearing NET_IOV if any, no matter whether
-+	 * it comes from struct net_iov or struct page.  This should be
-+	 * adjusted once the offset is no longer shared.
-+	 */
-+	__ClearPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
-+
- 	netmem_set_pp(netmem, NULL);
- }
- 
-
-base-commit: e1f5bb196f0b0eee197e06d361f8ac5f091c2963
--- 
-2.17.1
-
+>=20
+> Cheers,
+> --
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
