@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C4F2CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72B02CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:05:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 678F48E0011; Mon, 17 Nov 2025 17:05:03 -0500 (EST)
+	id D584A8E0013; Mon, 17 Nov 2025 17:05:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 650868E0002; Mon, 17 Nov 2025 17:05:03 -0500 (EST)
+	id D2F918E0002; Mon, 17 Nov 2025 17:05:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58ED78E0011; Mon, 17 Nov 2025 17:05:03 -0500 (EST)
+	id C6D858E0013; Mon, 17 Nov 2025 17:05:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E848E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:05:03 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EB451B7BE6
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:05:02 +0000 (UTC)
-X-FDA: 84121480044.19.58FC18A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B53168E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:05:37 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 618471DFEA7
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:05:37 +0000 (UTC)
+X-FDA: 84121481514.21.1F0E85D
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4D50580012
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:05:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=K4pKqDPp;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf30.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763417101; a=rsa-sha256;
-	cv=none;
-	b=xpvbHpLEKiBEdPUDSoB/79Z7hJvreDK+ZsixqaHyRKytzd55rfohYvZXVPfj/cW/Hhp4ti
-	+nlLpcFsZvxjE9TYWRrXXz3EnBtq8ibPKbmJnCsc6LTx5wAKmXqb8ywoIsFBd37azIkwGC
-	RovFRpBApp2AsUS31v3ZZTqgk+RnVLc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=K4pKqDPp;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf30.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	by imf27.hostedemail.com (Postfix) with ESMTP id A567C40014
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:05:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=nBqNNFGf;
+	spf=none (imf27.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763417101;
+	s=arc-20220608; t=1763417135;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YbheTvDaLhIgSaMH09DWUPWaNZLIZj4gJqU2BhcofhA=;
-	b=2xCaV6994pCBxqoMeQSpEj6u3mL+BtT2CgxjYbBtAVmXo77EXSVkGEzHLtpUANrAECqYsa
-	g/yZAuyQvAbT0QNklxBMntDU9Xkh0uhJVHvUEkAkx22IneuNmjjQnvXjqxQ+59Rr6z1Zr+
-	UgJ2YXLqTv9ky4utnqCaQ5XAUYxz+t0=
+	bh=NdoiPvduAJmban0XZT9fHwC8ngtnF/xlF3wyZoQDdKo=;
+	b=CmH41AnAziVEpgjhxHpHrfjKkMDxI9W8PZv07UIkUmuLAx0u5jiuARcRweFCY6lR4fUOLF
+	mSRz5DOwfepjSMqX76DsDR0boTgz7hA25+rAB2Dq04aTIxZjIQA1A8e8rMOch1urmf+hO0
+	dxsxlCAsRACHklKSZrxhWUSn+xOKdmg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=nBqNNFGf;
+	spf=none (imf27.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763417135; a=rsa-sha256;
+	cv=none;
+	b=irYQA0nBm6hr3rJSyFHsnlhnQxxegS5FKLeYvbZRNJg2GDwUNXcC2tcSRinPmUfDlLdXst
+	8nGCmNxQuqLReYN6+9Ruy0DSsSO7F5WKx0iSeP9yOcpqLriRDMxTrloFJC6/xpbUyi+t/2
+	e2a8IdzZ6rqXEo4SnYE5pMJoKXZUIq0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YbheTvDaLhIgSaMH09DWUPWaNZLIZj4gJqU2BhcofhA=; b=K4pKqDPpn8ieOd7dgDMMLcn6hP
-	YNkd5iTaJ9jsJ6HthOi27ouRU1rNzpQpkIHQ1O6A2/2FiLiaAibHOmWkYp/AOXQgfxTiNakwk4VWN
-	NcsWmqf5yGTRpDBy5+7fZnGgnhWR5lt0hFrBwOtoA+FJjR8GJRkDUlO881F4SvvLWjbrq9rxny92x
-	mOXpWfdfvEiGES+7atowUfisqBHjBgAmRr9k8GpIHjJKa1c6uv45lHJl1qsk0q4U6ZanrchMFffNj
-	5hTR+ZeOd97zj4pyRLctc6xo20wRCLS99xBAz8a0141JHzOjSTJAnPJLI14jnX1Xuq+5uvJGlYyD3
-	ubOeBgsg==;
+	bh=NdoiPvduAJmban0XZT9fHwC8ngtnF/xlF3wyZoQDdKo=; b=nBqNNFGfdqKxxSVEFbkYBH7HCK
+	RZfgjjxQt74gHErvaYYpkM2nEVrvPO8Nl+WDX/wqK5bDZXz6a3KmFOoolgEeeFQX8I6N9hEwOstb6
+	eKW568HlCJUscl9G3yajgwQxt1BIpLKjeDl4FAnlEgHfYO7xY5nm8CaGpXgaNtawvouTB0dDnq9JP
+	Iriyh0hzqdr24etHseBuYN8DJhgCquXEdYC8+yw394UMOgRqpndamrmYqV2cUQZeToveKbWGQ82ht
+	jZa05E50eSuXK1dWOd9GvHgd9EgQKMc45jeQKbD3foNOO8qfNDPYv6IxQGLYsKYfSmPxms13r+lI5
+	J/l4QRZw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vL7LD-00000007KkO-3TmK;
-	Mon, 17 Nov 2025 22:04:55 +0000
-Date: Mon, 17 Nov 2025 22:04:55 +0000
+	id 1vL7Ll-00000007Lbh-1xvx;
+	Mon, 17 Nov 2025 22:05:29 +0000
+Date: Mon, 17 Nov 2025 22:05:29 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
@@ -77,8 +77,9 @@ Cc: bot+bpf-ci@kernel.org, linux-fsdevel@vger.kernel.org,
 	daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
 	yonghong.song@linux.dev, ihor.solodrai@linux.dev,
 	Chris Mason <clm@meta.com>
-Subject: [PATCH 1/4] functionfs: don't abuse ffs_data_closed() on fs shutdown
-Message-ID: <20251117220455.GA1745314@ZenIV>
+Subject: [PATCH 2/4] functionfs: don't bother with ffs->ref in
+ ffs_data_{opened,closed}()
+Message-ID: <20251117220529.GB1745314@ZenIV>
 References: <20251111065520.2847791-37-viro@zeniv.linux.org.uk>
  <20754dba9be498daeda5fe856e7276c9c91c271999320ae32331adb25a47cd4f@mail.kernel.org>
  <20251111092244.GS2441659@ZenIV>
@@ -92,14 +93,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20251117220415.GB2441659@ZenIV>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A567C40014
+X-Stat-Signature: is9hkn436x7c3a7is73wkkwj7knto53x
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4D50580012
-X-Stat-Signature: howrnanafzrapwhoa89szzkuy4iek3t5
-X-HE-Tag: 1763417101-43536
-X-HE-Meta: U2FsdGVkX19LnzN3hxD7bnBHwuPBpjWxVm81PNyyHSya9Ng7PQTauD++PJDsFKc7G3WdMpijyYLjTrJ8EcjkVMWuEKYOciyzLaYqj8wayhofOagWQjEESmi66lTfsd9g8zV+E2YIlET9zVk2W68ilalJHf0WNVqtCNqWEI3zUQ7BEKdZVck6MU3L06UO4LW5hodemfPQQSkcaeZ0hqRONUDcdsAbwH8U/hGawdhhLFuYyR/8ynwoqPM7AexoFqKcjIKTYiMiq9Wfd6VMPiQF2stugvqY6T2UmrzflD8G0ZVxFuNLmD4UZyVWZwkBtfHQhYHj+8BdavPAMjirpPxpsl3S9h4eXibvrhfbQ1DzxQJ8nSS/TXWheL1Y2nVRj+56q446DGfntIsukeQttj0WuCji2LhDQOXaXYgVzzgvx8uPM/nWb358TVuYw1BiWMY3mldXnTN3Lvsh5NYBAZvxduG6E/8vrb1qK2aWc7/pveQ2VmIBj2vzff6t0/wh1MFoy/IdzA1qfdeEwhdj1zJ7Q3lsI4vsu6i/pkH32h/gizpgF2Tng1Oxi/qRyETK3wZLc0xjxiy4Fa/kaMd85EIcZzJi5zcHo710pr4T4I8Hu9ZmpZc3H0xOA68gPOSr0GWPaJnakRoDrij7CGkFTkYvn3JJxy8Jw/ud00WM5gGXCnC9mPkfIf94QUIW9VWT6TS2TsxytqX6svhuiYMgblFO+TP3TWlbqzulTdbLh2Tm78EkU8NW7e0t9KQlmhOqrQciEqKAEEFzIQvG8DmTY6vp/odqe6j5FlyWvNWK3/oT0CrsyN2CqxIg8IPVDaOt86O2GSGAewked+gMY0qh4Hg8Du/JFNRf0qPIyfj+AaEXKl/YlyBs8jFTOVtmhRSCOznHjTfa15DvtawacuV57HcM8v7nSezhPV81OeObSbCDTx9iipH+eYEXuR4CYqoH2m+AYUpgtEM8x2Gk/1s6CTh
- 42M6IGjA
- wG4+0So2Vn0moPOkng43sJg+Kkmcgu2C86tGthlrri7m3MEMGhg73rLP7RC1InHlIx5Wi+RXmQ8EF/CyRhT0goi41yczfZQajUHx1vyGfYXgfKcPd7rVGEaGeef1ZPZ6RPC6hiwzxL1MezJDyNqgQtZOsvHigbPbFPVuwUb9KqnQT4t9F8DUxPE5QDlDlpbUUKNwq/SXD5oMHtTEv8w6zl69Pu/wqJNlA+vakaeY5c0WiTLxAFA56DJKOmqBaMaT2+PzazHZ55eqpDhS58qWEI7/U5/z5LcI0fSflbTVOmR6d5XEADPODWQnlzWIjtvpqfY1KkLrOA2Fhjkszmw55uzhN6eJ8Kgvti3HbuviEHmnxoKN6pryIWJIAxLfc8Cv5T8q+hoPdl4PeS/KwC5BXWcUIAaH25Dt4WSgyLaPNtr5vYYRqO5OJZYu9nwyho9CMd3rbHumRgo8u+xpVDAAdUbM0UHtpghTTBggbq2yycxCDnDChECXsHytvEnTHuvnaU7OwZIhNFmkQi2J9nswDAYq7PSDbgJUIQhoWRl2FN6FNdo1hhQVHSC2Cn1vmgzgNeNwpkdWR858VkZtgryHnXUDRh6r59TzSgzrkXC9BdmeTeFtMMneUX4A8ig==
+X-HE-Tag: 1763417135-500045
+X-HE-Meta: U2FsdGVkX1/69CS9I6/su90u1xnyZ01UxyFNb20tL7Ay/Kzcfrj8rTIeBhYkP3mv794qAcOknDojNLHNZewvrQ6iOaqw+aag9ZduAVjLp+u59qcjRFw9UnzaGW6WJ2je0JSnJXwf3QZqQIakWov1C4YPg3FreHiE1tTPataLWaEBAVhOCtX5k41Fbbio+PevZksRU/dXmvQunSkU3zMU7cV2CvDyxGXOwceEsrFsUKs/Qih0qrmfu2mMx6K/kcwgpwjX1frbnw9dbENznd3sAsCC3O0VwDbDAkH6dN65tq8VuLbI+aYV2xAs4CQExKIWEs73UUWkqA49OH879+LxAdTXjgVrfoe8thz4PS6g5Qj7NRlbtE7yQpZGiyzTOSOnlbsa0cE+fUqGlR8CQDUHBu0Z3g3CxEn7i247AdD7peTzSFR/QSHc4Q8mqdsH2rDNRO1vat17EmVpq9d92uH7MWutiqaJkt4ks0s1KKf9GvH6UfVJ5TPmXXQyJr8Y81tpneWCGGigOr0DMP+S6JqA6CuJpEKIOssKXAEJ0pjwPQuxPRn5uUnlC/idLo9RoZY8VDxRtcI/8LjZV8bw5B/cWC+NXS9XTRjk3ZQRZ6X67V7pWRuqk21GK8D/HB3zG62v/417mgmNCdJWCTRhLLI17uZfAXKJ9S4Lzx2ev5gLVva26diDgLr87/QH0eFkvqwyQ76F9OR939em/3xhwxYRdkHXwI0dp70bKqoj3Qx4/QGTFQ4fPrgZtZkKXsZP/+0uyqZdtl+sX/n+PXZSM0FrT7Jda94voU3XawRMIDAQ4aDVjFYQOXyFtcG1vcKbnhIpZzo+sVUb+aSe/PRYnrK1jYzbUuVZ27AVnshcTi5VOL0pyGT2Pg1ygdHsZFQVq9tbghWuDskogKcO0fO44zn9CJIKY5aFQepAtNG6AYmtnmTwuko6saQWYxSgXUk4JQzd9c7QAe0OdybY/hK8RAW
+ 4mRh5aE0
+ 5ZKcaT616UiIrynqHDbJ6Q5oTKO5EU+rRr/Z3YQhyx3GYHg6XUsw6xlERpLZ8wfHxqsektcaKo/x5Yn8lJJxPRUhiGdCKBIfqkAxNZjdXhCJA5dWSnUfheeqV/tX+KrAT56Yb8YwHZialWJmRri5O7qCMMO13BBJFHWJ1i6T4Ocjaof2NoIqWJDaR78w3eIe5rarWwUXUFJqvB78/o/4pjNtIc/Wmm+Hm397ONG25+uxMihAN5kdA1Jo95LePKDYoHgKkDVzEmbXD7WDH01Z7JM02DMZbVOyXGJBLhXWhs1BDp5F6ZQdQn4DVQIqgH2MEWTp1atNKfGUn6AOn3KFJeTaJ1cVMT7/BAW9NPfYmK0cg73rsrkcXdWEXJlvUw7blFMpJaMnt33QIGPADV2tW0LIy99ePXw15X0TQWOfh1H6W0tFgeyE8mlFw1Cs1Ze0onocTiUOPMAdWF1NZtsZu2d3bLvanW1+UAiFppt/vm9bnj+SqwatBNNbYkWZlBuTgPcuvTtH8KIMeL4lUNDBXTsovJTgsenrC4U5/EIYMdRhjR3A0W0qyxl2FbFImfOP6nGNMGjWuPW8WO8+uegy2ZHgonl+vaYagYFP1Ec1bA1F7M6Wwt9oh0RhSrw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,76 +109,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ffs_data_closed() has a seriously confusing logics in it: in addition
-to the normal "decrement a counter and do some work if it hits zero"
-there's "... and if it has somehow become negative, do that" bit.
-
-It's not a race, despite smelling rather fishy.  What really happens
-is that in addition to "call that on close of files there, to match
-the increments of counter on opens" there's one call in ->kill_sb().
-Counter starts at 0 and never goes negative over the lifetime of
-filesystem (or we have much worse problems everywhere - ->release()
-call of some file somehow unpaired with successful ->open() of the
-same).  At the filesystem shutdown it will be 0 or, again, we have
-much worse problems - filesystem instance destroyed with files on it
-still open.  In other words, at that call and at that call alone
-the decrement would go from 0 to -1, hitting that chunk (and not
-hitting the "if it hits 0" part).
-
-So that check is a weirdly spelled "called from ffs_kill_sb()".
-Just expand the call in the latter and kill the misplaced chunk
-in ffs_data_closed().
+A reference is held by the superblock (it's dropped in ffs_kill_sb())
+and filesystem will not get to ->kill_sb() while there are any opened
+files, TYVM...
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- drivers/usb/gadget/function/f_fs.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/usb/gadget/function/f_fs.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 47cfbe41fdff..43926aca8a40 100644
+index 43926aca8a40..0bcff49e1f11 100644
 --- a/drivers/usb/gadget/function/f_fs.c
 +++ b/drivers/usb/gadget/function/f_fs.c
-@@ -2071,12 +2071,18 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
- 	return 0;
- }
+@@ -2128,7 +2128,6 @@ static void ffs_data_get(struct ffs_data *ffs)
  
-+static void ffs_data_reset(struct ffs_data *ffs);
+ static void ffs_data_opened(struct ffs_data *ffs)
+ {
+-	refcount_inc(&ffs->ref);
+ 	if (atomic_add_return(1, &ffs->opened) == 1 &&
+ 			ffs->state == FFS_DEACTIVATED) {
+ 		ffs->state = FFS_CLOSING;
+@@ -2153,11 +2152,11 @@ static void ffs_data_put(struct ffs_data *ffs)
+ 
+ static void ffs_data_closed(struct ffs_data *ffs)
+ {
+-	struct ffs_epfile *epfiles;
+-	unsigned long flags;
+-
+ 	if (atomic_dec_and_test(&ffs->opened)) {
+ 		if (ffs->no_disconnect) {
++			struct ffs_epfile *epfiles;
++			unsigned long flags;
 +
- static void
- ffs_fs_kill_sb(struct super_block *sb)
- {
- 	kill_litter_super(sb);
--	if (sb->s_fs_info)
--		ffs_data_closed(sb->s_fs_info);
-+	if (sb->s_fs_info) {
-+		struct ffs_data *ffs = sb->s_fs_info;
-+		ffs->state = FFS_CLOSING;
-+		ffs_data_reset(ffs);
-+		ffs_data_put(ffs);
-+	}
- }
- 
- static struct file_system_type ffs_fs_type = {
-@@ -2114,7 +2120,6 @@ static void functionfs_cleanup(void)
- /* ffs_data and ffs_function construction and destruction code **************/
- 
- static void ffs_data_clear(struct ffs_data *ffs);
--static void ffs_data_reset(struct ffs_data *ffs);
- 
- static void ffs_data_get(struct ffs_data *ffs)
- {
-@@ -2171,11 +2176,6 @@ static void ffs_data_closed(struct ffs_data *ffs)
+ 			ffs->state = FFS_DEACTIVATED;
+ 			spin_lock_irqsave(&ffs->eps_lock, flags);
+ 			epfiles = ffs->epfiles;
+@@ -2176,7 +2175,6 @@ static void ffs_data_closed(struct ffs_data *ffs)
  			ffs_data_reset(ffs);
  		}
  	}
--	if (atomic_read(&ffs->opened) < 0) {
--		ffs->state = FFS_CLOSING;
--		ffs_data_reset(ffs);
--	}
--
- 	ffs_data_put(ffs);
+-	ffs_data_put(ffs);
  }
  
+ static struct ffs_data *ffs_data_new(const char *dev_name)
 -- 
 2.47.3
 
