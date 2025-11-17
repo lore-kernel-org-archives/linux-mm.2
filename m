@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32650CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 15:44:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5759ECEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 15:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B9AB8E0019; Mon, 17 Nov 2025 10:44:29 -0500 (EST)
+	id B55A48E001A; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86A468E0002; Mon, 17 Nov 2025 10:44:29 -0500 (EST)
+	id B2D4C8E0002; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A78C8E0019; Mon, 17 Nov 2025 10:44:29 -0500 (EST)
+	id A6A3E8E001A; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 634D28E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:44:29 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E9A786D1B
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:44:29 +0000 (UTC)
-X-FDA: 84120521058.14.7B8DFCC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 95BD48E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 732B712D5BD
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:45:47 +0000 (UTC)
+X-FDA: 84120524334.28.60F0763
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 89CA5C0013
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:44:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S0kC8qC5;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id C40EC140018
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:45:45 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aLnlna23;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763394267;
+	s=arc-20220608; t=1763394345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4sXF51nQuWBTQ80rB8jD13OM4EwgwdZcgQ+iXlJH8Bk=;
-	b=Zc/cRz8WAvSOHhxipnin7GsB1+W69jkS5yqBbXDyslP+nk07w3p9cWtEABTVWt6AwPkmRE
-	auPpjbxAIXN3CgxlN/Fdetdr4MN6HT94hU32MGX6bovE3hcR770wlDN3trqe37X5B31xMS
-	eZiSktIBdRs13n/YJ/U6zX0G4/5c7E8=
+	bh=OOASFy8VudqRVqHCveoUNB8IGvERyojY4oDE5V5cHlc=;
+	b=KYL7XMVz6yp2zBZZhEqEauPn9s7/R1Ag6csEDssLPTOoUIsyvTzQaMsftBfRtEmZICeZ3M
+	xqH3Nz03tMng4Un1AzhylFZVi3vbpW6Zc0MinioUMHZ2UOK5ysoN98U6bDG7CtE9N/ztgC
+	+OWQKyeHs9glXZO4P78vuzv6Jd6V2Qw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S0kC8qC5;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aLnlna23;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763394267; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763394345; a=rsa-sha256;
 	cv=none;
-	b=iNDGc9vUBIJYDJIvfDHBf7tijeJgHmk9rxeynYNNf93V6aK8xhwY0hPSuGzdlCr/G6yjYW
-	U4s7CJy1MCt2wJtwwSnw7ZHOmiYXqrNYAXQ/zISY4ZoYyS4HR/VvY2Z+JGx+ZjrHHcGcNS
-	5M0RbhHn5u3uUq1A6BlPwdcLjLiAyW4=
+	b=yxxrNNsLHU4mAfrT1xr+rdK4SzKPHxUZhwoDfeAY7LOFwqbu87LqBWpL3EVdelHQkpEIRZ
+	0xU2qx+nOpNIsTbVbftFosC45SLK/giOuEzDCii07f9ntqO/9dJ4iAiRfJIsbfVPRfGtGi
+	BChhrUm2cXfSGjpxFwJRQAJoRvBlIMA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E896D6023C;
-	Mon, 17 Nov 2025 15:44:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD04C19421;
-	Mon, 17 Nov 2025 15:44:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 492A86023D;
+	Mon, 17 Nov 2025 15:45:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E4EC19423;
+	Mon, 17 Nov 2025 15:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763394266;
-	bh=zyqbmtL+YeLotbFYG+4uyqKs8X8IO2JthwssMUoxfRQ=;
+	s=k20201202; t=1763394345;
+	bh=tj/kdr8wlxOfWSKm75R1BNNXJbnbmo771IOdR00jaco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0kC8qC575+JbYZZeX1l1b++Wl1yn9NtKkKJwPR4cmM0XSPkWGF4wdtHBhjvxc8T2
-	 PukIApM/S5PCV8jJAKvJLpEb22en10Vm7vIQhYj//lvGOFlDgvad6uciazjN7+sZOR
-	 +7wTCHcuHljOW2+IrUq17SeKwRCA48lO6r4FU9adKWnLg6hBPK/iKMiJzqGuz3x1az
-	 EGRkpYvRo1WoqGqBtVK4QI3NduLBdeGWibUx5YJXB9J5sFnIMdDqs8Cqds6H3fDwTO
-	 AB5sLiOqpwTm/Q10IHXsYzBNgmC6ZknSr0hOlVYw4iKVHamAOj3JFN4x2OHK1BEU9W
-	 DTJm6F9HpIX6w==
+	b=aLnlna23QmguzEOWiKyg2KqCqmDk+FtWeTCjEBhwlAkH3Yc57igyJLWRG8xWPb45z
+	 eOyyfDa6qENLdeCm1yl4vzvFN3/cdATdy5dHYOovQrW0L2NJIdjqVthayQJSQzJeJq
+	 b41Ca1Ua+IPapZBX4+v2nhAeBiXnt50QBvs66gYFswEzI4e2jXubzR7OUurh7Fi3Df
+	 +FuL7KEgh2j9lUl39isgKIM3Bnb0jRRaL987kSydNoRHRC5/MMlFGAILA8n+TN0e6h
+	 N1rhIjIsATNbSkjUsphnZd/x8kSEVUBK7aEoewAssjF6X9FSLi4jj7AXcB57C7oDhM
+	 OwQ2lySAGspVg==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Hugh Dickins <hughd@google.com>,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH 3/9] mm/damon/vaddr: cleanup using pmd_trans_huge_lock()
-Date: Mon, 17 Nov 2025 07:44:14 -0800
-Message-ID: <20251117154415.11041-1-sj@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [linux-next:master 8868/9360] arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary '&' operand
+Date: Mon, 17 Nov 2025 07:45:35 -0800
+Message-ID: <20251117154536.11143-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251112154114.66053-4-sj@kernel.org>
+In-Reply-To: <202511172257.CjElDcRX-lkp@intel.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 89CA5C0013
-X-Stat-Signature: yd3gtbh6617xfw6iez5kkza3r4ay5bwi
+X-Rspamd-Queue-Id: C40EC140018
+X-Stat-Signature: ogdp4d6g3ss6jogdzwcoc43mb9fh7jrz
 X-Rspam-User: 
-X-HE-Tag: 1763394267-383020
-X-HE-Meta: U2FsdGVkX18fVOrKVBbFFboNIwy7xgZwewEAzy8JcclqmEp/dzXEdHf/9ozeeFisMRXtICjZ/sEORLMemaCZoT5kaKSnlXs1S5l+5AvmHQg/YN7xFKo7Y/Ey/qIXuxbRJ7lmW/FE3pji/uzo2wlMnlIngrLjdqnUKaOAEXSQLgtv4RAT4Yh3Hw//CQQVBFNAQIlYmbhRb00aFxc28xZLLRewn8pzELxsb5iKqaUgPrmrwovTfhx+zDr88WZsYvye4BPesfsffpNvS3kfM6OHJPUezBt9ytUD9ALrhFm7vjy1xQW6/4LenC0nVz74uTs4HJBPeMUSYDWRBAF42YhgL0MPEdqVtB1fpRzNX3CLWUP91OMEEkQS24hG7zHhhBLA0YCX4juMrUv4UjdUn3/q3+GXjcyFsV3bBbzNCirdzfuW3hoIxJCWM594blcM8t3imv8ruB6kr7VbCEZ1+aGO8eNRHMLXySJHv60hD/nqBIwZ/SHn8jyIfUl8svNJnQ3K3ngDdtlTtWbQkIs+WOQSVRlRfVMdpgwAvPiQ5raTsixFckCr8rKgw6u4afa37DBfnY4CvXl6ciH8mzc6ckiUwsOCQbCNVSaLJp76aYWhP0Ni8GYAyyWaIQz87tBXDOAJrmRYzY8PWRuDszPvavpu9ZZ4nhU7foJQV8xAsaiF+e7oX4Taeng7Fr7yB3D3bzpGw9IcqzELAjWUzG3NK+XDLmte9ZRNcZsCQ3JWzS1EUi6BTwNVLsHowLPEGr8FfkGHfByu1AyL9SRl3gScnzs8NM5NBeLYNRCnIT9LVp6AitRX7YhLF+Btn+NkPluwXRUpHDYh4t7xTm/ugy2c7v1lrNa35RZY20q+p5Sja5wwCkaCqbBSZWk6XEHRNTmM8r7qvD9yDSxvZRoiA5c2bFs8wl4wwpciW6xSrB2pBQU9bO1NES5isRAPBoh/PcFkOl+JtpUk/Vq+vCVsJ3mG8gy
- bVbCprrs
- HV3e0aKN7YS+fR74uLmj1uqnKhZa2I4Yfb2JboWI6kzC+dgs5QAkRNXehFClw2Dni+iDh0bga7XO7xlPzm8B0na+E4zDpm4OJewLMhBgVsqCcUbXoFsZeOWSpTelUKcYgNTN8G3QjaG5b+HT4ZVNodHhT62zMoMcsk5wtJWWrBZqwIryD+QkjM4Ree+GMdAmvEiO0sPCqLQnoY+MBLantpRuaiyJ1QZnfcrDCT4Znmu7xvggpPRuGV8dcrIo5cJIMBEm1MJnS6EFG7SWWGxdRKdCRtwf6zk5RTMyUEnsme8fm3ntw+2TaGVGWHEJT7NIWRhHc
+X-HE-Tag: 1763394345-880148
+X-HE-Meta: U2FsdGVkX19WUy3DQfbi2B3FF0uEmXxm9qgT/JxGBHLPx9J+aFBAEv1jFI0kY2KKv7MVdnGcPyR3jLlrtmhy+tpErWvPZI02YWahKpFcziX2nUSragFsPjNkYQIcz8ujtJGP1S7kDT2gPx1KmeSU3FwcgywhIXSg1KwOzoJa7uUrv2KESuQI95grO4XzmHjvg+PhCviN3qVBTonbA82gnY2WggL22/YSOQP/R7mMBXMVOatQnCyupaPSGc6BkVRlu0g6t4AXuR7+2BTq30lk08+I5b3/quuvGgf1qlQ8+PDnEilprqt7TesNag50TKtbkODeBESk/l/l1Oq6SuNq3r6lBzJbb5fnbGaKic3anAsvJGLZqo1HdFn1n/y34udKbNHUk3UIU3dZtC6G4zJ+zmYwy/BH/gqcR2FH7+p6tmcdlFm7Y+mHn4hy60y7lc3u2KcQ2oIjlhp2ImNvdWzIFFUXW74ZtbAbQiROiycNV9LRA/6AM/GNyVV1RHZQB8S84NEF+6Rz9MKLBuKWUWWUEOOTn5InNXjUG1En+mKBDT/cEgVnVBrqz4gNslZCNXggWVb9obdLDZrcyv6aaeU16nfvH3D0dfXghAZSRRwO/dyMswQxvPJm16/bWA398bDAPvtUn+tcYFTJUELp3WdQJENZD5/7/KkPB8e92PIDzaZ1WU1iNJWjlq2BtdaFeldS7XvLUmeYFl30Ph7tNN93zg7fqzgUSnGn8tda6Do6Upws50CBQKGvDnwthMk2jkvFgQSubbiaLpcnIt8fsPvEHtPieiPoBOqP27nfdloADPE7hEnDj5jklAQlhOmwPoPw2rCvqlwkpZQjYe5v7FoIRlXpJN5hudhGpud6Lt0q7pd+dXe0FQVNyHLO6gUfF5RCBWRy0TbOvTpMzdpSHLvRRvHSmsjl1n1Y73fItsDRx9cW+Jh3om7QPDO1S4bA17oKOzOZ+JPLw7l15MdibXP
+ 3dRWAM7C
+ FfUN80R9c8/UY3PTgwQdk7oSzZkvVL78SasYdlBYEgObqKzPBfAXXhrKdO8nWU5vZdmxMkEqAx4ZAm+qwikDniQgBRHfuTwC4C4vd4CxYHlR05QyQumsEadt9GMbNXXvKCMV/VQigoScUkrEI9XFVAqItQsHomTlEERhmV6SIwu6an7maxpvqkQcfGV4f989S8IE4WQ+b1DFX/Bex3nbVxKo2gB4rZuK9/UMam+auntTPUO8v5tMQCuLV25XKKMhcLJITnA+6j19f4xU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,113 +93,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 12 Nov 2025 07:41:06 -0800 SeongJae Park <sj@kernel.org> wrote:
+On Mon, 17 Nov 2025 22:29:37 +0800 kernel test robot <lkp@intel.com> wrote:
 
-> Three pmd walk functions in vaddr.c are using pmd_trans_huge() and
-> pmd_lock() to handle THPs.  Simplify the code by replacing the two
-> function calls with a single pmd_trans_huge_lock() call.
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   0c1c7a6a83feaf2cf182c52983ffe330ffb50280
+> commit: f54f0efb9d91fa2eee95a7eb29d0051f2176df47 [8868/9360] mm/damon/vaddr: cleanup using pmd_trans_huge_lock()
+> config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20251117/202511172257.CjElDcRX-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 15.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251117/202511172257.CjElDcRX-lkp@intel.com/reproduce)
 > 
-> Note that this cleanup is not only reducing the lines of code, but also
-> simplifies code execution flows for migration entries case, as kindly
-> explained [1] by Hugh, who suggested this cleanup.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511172257.CjElDcRX-lkp@intel.com/
 > 
-> [1] https://lore.kernel.org/296c2b3f-6748-158f-b85d-2952165c0588@google.com
+> All errors (new ones prefixed by >>):
 > 
-> Suggested-by: Hugh Dickins <hughd@google.com>
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  mm/damon/vaddr.c | 48 ++++++++++++------------------------------------
->  1 file changed, 12 insertions(+), 36 deletions(-)
-> 
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 7e834467b2d8..0ad1ce120aa1 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -307,24 +307,14 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
->  		unsigned long next, struct mm_walk *walk)
->  {
->  	pte_t *pte;
-> -	pmd_t pmde;
->  	spinlock_t *ptl;
->  
-> -	if (pmd_trans_huge(pmdp_get(pmd))) {
-> -		ptl = pmd_lock(walk->mm, pmd);
-> -		pmde = pmdp_get(pmd);
-> -
-> -		if (!pmd_present(pmde)) {
-> -			spin_unlock(ptl);
-> -			return 0;
-> -		}
-> -
-> -		if (pmd_trans_huge(pmde)) {
-> +	ptl = pmd_trans_huge_lock(pmd, walk->vma);
-> +	if (ptl) {
-> +		if (pmd_present(pmdp_get(pmd)))
->  			damon_pmdp_mkold(pmd, walk->vma, addr);
-> -			spin_unlock(ptl);
-> -			return 0;
-> -		}
->  		spin_unlock(ptl);
-> +		return 0;
->  	}
->  
->  	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
-> @@ -446,21 +436,12 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
->  	struct damon_young_walk_private *priv = walk->private;
->  
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -	if (pmd_trans_huge(pmdp_get(pmd))) {
-> -		pmd_t pmde;
-> -
-> -		ptl = pmd_lock(walk->mm, pmd);
-> -		pmde = pmdp_get(pmd);
-> +	ptl = pmd_trans_huge_lock(pmd, walk->vma);
-> +	if (ptl) {
-> +		pmd_t pmde = pmdp_get(pmd);
+>    In file included from arch/m68k/include/asm/thread_info.h:6,
+>                     from include/linux/thread_info.h:60,
+>                     from include/asm-generic/preempt.h:5,
+>                     from ./arch/m68k/include/generated/asm/preempt.h:1,
+>                     from include/linux/preempt.h:79,
+>                     from include/linux/spinlock.h:56,
+>                     from include/linux/wait.h:9,
+>                     from include/linux/wait_bit.h:8,
+>                     from include/linux/fs.h:7,
+>                     from include/linux/highmem.h:5,
+>                     from mm/damon/vaddr.c:10:
+>    mm/damon/vaddr.c: In function 'damon_mkold_pmd_entry':
+> >> arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary '&' operand
+>       20 | #define pmd_val(x)      ((&x)->pmd)
+>          |                           ^
+>    arch/m68k/include/asm/motorola_pgtable.h:116:34: note: in expansion of macro 'pmd_val'
+>      116 | #define pmd_present(pmd)        (pmd_val(pmd) & _PAGE_TABLE)
+>          |                                  ^~~~~~~
+>    mm/damon/vaddr.c:314:21: note: in expansion of macro 'pmd_present'
+>      314 |                 if (pmd_present(pmdp_get(pmd)))
+>          |                     ^~~~~~~~~~~
 
-Kernel test robot reported [1] this is making m68k build fails.  Andrew, could
-you please add below attaching patch as a fix?
-
-[1] https://lore.kernel.org/202511172257.CjElDcRX-lkp@intel.com
+Thank you for the report!  I just sent a fix:
+https://lore.kernel.org/20251117154415.11041-1-sj@kernel.org
 
 
 Thanks,
 SJ
 
 [...]
-
----- >8 ----
-From 0908bba1aec11997107af757a34136a14be619b7 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Mon, 17 Nov 2025 07:36:43 -0800
-Subject: [PATCH] mm/damon/vaddr: provide lvalue to pmd_present()
-
-On m68k, vaddr.c build fails since pmd_present() requires lvalue while
-vaddr.c is passing pmdp_get().  Fix it.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202511172257.CjElDcRX-lkp@intel.com/
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/vaddr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index ef57e95eb422..2750c88e7225 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -311,7 +311,9 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
- 
- 	ptl = pmd_trans_huge_lock(pmd, walk->vma);
- 	if (ptl) {
--		if (pmd_present(pmdp_get(pmd)))
-+		pmd_t pmde = pmdp_get(pmd);
-+
-+		if (pmd_present(pmde))
- 			damon_pmdp_mkold(pmd, walk->vma, addr);
- 		spin_unlock(ptl);
- 		return 0;
--- 
-2.47.3
-
 
