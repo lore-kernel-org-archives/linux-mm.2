@@ -4,85 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F59ECEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:41:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE44CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:42:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89B6D8E0003; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
+	id 4CC998E001D; Mon, 17 Nov 2025 13:42:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84BFB8E0002; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
+	id 47D0B8E0002; Mon, 17 Nov 2025 13:42:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 761FA8E0003; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
+	id 345338E001D; Mon, 17 Nov 2025 13:42:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 605238E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F00AC13A0C5
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:41:48 +0000 (UTC)
-X-FDA: 84120967896.10.0B630B8
-Received: from mail-244127.protonmail.ch (mail-244127.protonmail.ch [109.224.244.127])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3A51B40014
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:41:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=JhmaQYtS;
-	spf=pass (imf11.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.127 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+	by kanga.kvack.org (Postfix) with ESMTP id 207A68E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:42:31 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E05D4B7701
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:42:30 +0000 (UTC)
+X-FDA: 84120969660.12.CD24D3F
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EDB5440016
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:42:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jUtbaNey;
+	spf=pass (imf17.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763404907;
+	s=arc-20220608; t=1763404949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drgz0EubZvWbKD4XfDQItOg+MBM3cOXzoADsisa0KIg=;
-	b=bF34KKWaL0o9Oy/oTp7PTgGm95YQLOQtc4K+yTH2Kl10ccUPVQ8vBYClBv57PAtqeSRcyW
-	yaQElPKMZWHz9AObzEayEo6YnguAUnrfucYaUivAWw2faKWEKwkZW6CP0rutC4Pp+5YcX+
-	pP7PZ3x8fCcJ2LpIaGPtsIkzpXTfqUU=
+	bh=+GT+Mvcn48BVfqy5/WD1n2ZA/hN2dz1BCZmhQdhw608=;
+	b=UXerHQEt/A5DXdk3iEJfGlZZOF7lXv/5Nlsz8EhQ6e+qF4jiqrJmtHPzVteeywkHnq/vnj
+	NtJrzeFOdPTQksQW0HC05bBYFL/S+uHD4MoUCF/GgKc4uXFgx2LT2rJDnunB5WX7V/YniT
+	lfGwuxlwmhLgUYaot2x921yRjBdpGco=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=JhmaQYtS;
-	spf=pass (imf11.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.127 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763404907; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jUtbaNey;
+	spf=pass (imf17.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763404949; a=rsa-sha256;
 	cv=none;
-	b=fAHApTojXtUPvo6AoH1XBeMKkQ3EWeThZtViAcw6qmG61RVXLx8QoEBLP+APoJ3oZQXrkk
-	eSzbvL8LS0PeA1ShvyD2HYnq7ajXnb5faletG4Q7CxdXYTXFuYGMWMkeVb+F8a1plDHvMz
-	IHgVXg/OI0lnH6YeyESXBXxP2m60YmI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763404903; x=1763664103;
-	bh=drgz0EubZvWbKD4XfDQItOg+MBM3cOXzoADsisa0KIg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=JhmaQYtSykcyb/YbPWw44tSyjxwvQu5qj9ANFfDbmQQdN+t4wYrSeoPU5wr8awv7w
-	 Nv4+HeHNbI3AYKkBPALDXGd5ua+5005HNaPxAJX8zjyFtD4Bx8B3sNgDDBKPYZWuNR
-	 FgB1Gsw62xTc05ImjhbBcT4QlABgPkgxdGDAvgUqxcsa9ajoSzvQkkJViTm7A06PKT
-	 dz01/x1F8V82geoUmNU9B033ePiTpKpoT+jMsYrUhpoMOl6yknZtWVEU53UOHxjmLk
-	 eDRaMMJ3onhXZSMX+uzVZ2fETutWrQC2UQnuYO5bJ7DY+KapcpkkD/6AI0HVHWxo6q
-	 5jsrnA85HeUWQ==
-Date: Mon, 17 Nov 2025 18:41:35 +0000
-To: Alexander Potapenko <glider@google.com>
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
-	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 06/18] x86/kasan: Add arch specific kasan functions
-Message-ID: <6nifmxti2xfbnrdtxbosojfw52sofc7zkyjcbcyeawz5lt372f@h6ksdfqddk4z>
-In-Reply-To: <CAG_fn=XFXFAvKS2+bc66FR+gw7rfSybETAOBUR_vneaVdF5F9A@mail.gmail.com>
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <5be986faa12ed1176889c3ba25852c42674305f4.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=XFXFAvKS2+bc66FR+gw7rfSybETAOBUR_vneaVdF5F9A@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 24219ab0aedf934d23c98a54e0e420cc21587fb9
+	b=mOtlpcFjUgZFsumKEGX19BtEULAamivJgItNyktxFt4zuaoPQ6IsqN6asGRZrrHZ8quYej
+	y5K0FviWzuJmxi3zL+YqGN6mEyI44vPB6zCM9+cE6PQKlCH7F7cwpiqEYovPh8bH+7pfhd
+	Jo8udP8f94n1CqolHMoGO0fikl6MG2U=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-297dd95ffe4so42056045ad.3
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:42:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763404948; x=1764009748; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+GT+Mvcn48BVfqy5/WD1n2ZA/hN2dz1BCZmhQdhw608=;
+        b=jUtbaNeyHGKc3vISYaVCk952ooNuu3veCqCgmn5Feb0qfOqA6eQowHElI0MqD6/FYk
+         oInBK3qD6wpvRiA4wOfmpBPSRT7naYp7UenQn/Kh8SGaTZQV0xsJ+2C7rr5eBkldfzOk
+         qeri6B7DL0Lr3DsZpwKNAqY8iqSYA4x7bsmTegYZ5Qwy5wI0Ah1AKr62Oisdeb6C5PYv
+         N9E7lXVlSw7o77JCyMrowVBGyyL2djfaOcAvCp/dA/4ldJXvQUdHLE1fTPzfqDCrVkOs
+         Y0RvjlS1MEbSVMuDf4VaPZalEq1tuPJDm1DbbUJH2CPFNfasia45XFV06NGyjhv7qFpn
+         FyUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763404948; x=1764009748;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+GT+Mvcn48BVfqy5/WD1n2ZA/hN2dz1BCZmhQdhw608=;
+        b=k2SkRil61/gwo3vgsUJfcHAeoptxNyBaTDatrJUQXEdfpCmfmwIYr+r/AkaGuZ+5Sz
+         S/dTBOKOwvV2f7wn5x/g6MbkM3Q1w4WmxJxOJ4YBzhyO66o6K42766hCwIEc1SojqnaB
+         jQhKxLtUJ6lx438GrDCkFNHBq7YaANkazjpvCGzRVZUtnXJNf/2uBuYJwxWpjk6OdKeF
+         xdicnboL4wjMBi02IKKtNVy22FutoMndo4KRcjUVC9u+8nBrZm9c3q+GGfw2rN7sjik3
+         30zMBzMYNBQw2TwwEouXQf3oLFb09mCbSOTswyDVdh9HZfrZzKY+dJK1iUEIN1PrxNlc
+         H9lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVc7v6fLzkbuV5rK7uuL97UAtNZ4J1J8sTIKmfnRr0nZl4tGgw9wCE7ATHCGoJkaCZB3zwrCDFAFA==@kvack.org
+X-Gm-Message-State: AOJu0Yy/HLmsAX5lSyJ2dwx8HL370reXvqyMUrNXQ5d7iix7XOx6a1sx
+	eHXz8ZfPr/gKzH9GwCcLtF4Ni2PmbPLVGh9heUboCHvaUUhAVMucaGa98m6I8MBdiWGeQOY4Z8S
+	Di0INjZfjGgEDT0cYX/mWbxEY40a3GbM=
+X-Gm-Gg: ASbGncu+D3HLy81cc8E9npMeG+SAIOvqpjqF5KSAkPSgFz0DFALhaQWXIrrI9GLAxBR
+	ORRrGjQ/rPn7FMCQaQYA9HSjBFDj4uQAThSAT7vKf+3vTzz5/qBC/UR39nGWtkWYfomoIxJNOz+
+	rie1RuQ8FB69kF54jKdznPMH8xK05KRaFQVyU0rTtbXgu96TrxXTQESgS+S8PplH93Ik8Y5t2wv
+	XIzIS9oTItAHLfr97GGoYS3eGMxxdwTWu39Vf9TdhjDbbClkkEf0qoVR8NxkJChgREpEhW0XIwA
+X-Google-Smtp-Source: AGHT+IGlCOta17/ddsZWnD9v3ffWOGOnFpGs6oqmTfDQtnnrJ2sc9E7ozUdVinCK+4CGR9Q0e/Sf5CFPt1dugRYiBPM=
+X-Received: by 2002:a17:903:1aed:b0:297:d764:9874 with SMTP id
+ d9443c01a7336-2986a6cbe5cmr156328205ad.21.1763404947533; Mon, 17 Nov 2025
+ 10:42:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20251114193729.251892-1-ssranevjti@gmail.com> <aReUv1kVACh3UKv-@casper.infradead.org>
+ <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
+ <aRpQ7LTZDP-Xz-Sr@casper.infradead.org> <aRsqwndQ459VN8I9@ranegod-HP-ENVY-x360-Convertible-13-bd0xxx>
+In-Reply-To: <aRsqwndQ459VN8I9@ranegod-HP-ENVY-x360-Convertible-13-bd0xxx>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Mon, 17 Nov 2025 10:42:15 -0800
+X-Gm-Features: AWmQ_blI9jblEa7JMJ2vTFmsIQ2D6lp_5HRLH235a5mwf0VK6MfqNFE0M2tzyYY
+Message-ID: <CAEf4Bzboqf+1KUZCb2fBnLZUkzi5X4zOk+wy72eTu3VLB+z7RQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in do_read_cache_folio()
+To: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, shakeel.butt@linux.dev, 
+	eddyz87@gmail.com, andrii@kernel.org, ast@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev, 
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, khalid@kernel.org, 
+	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com, 
+	bpf <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3A51B40014
-X-Stat-Signature: 6fo18awdphwx3dwtttcs18s9wws5xyqy
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EDB5440016
+X-Stat-Signature: yt133goofnankxskff574ofujjhemtii
 X-Rspam-User: 
-X-HE-Tag: 1763404906-71583
-X-HE-Meta: U2FsdGVkX18rQV8uNgSAXl57zaNrGCsgTMsFJNErcxBwlIO2I+m7FAZPLdX93mr/z/rvfLxbMD4bUsEoeU5IPId6BzIo5enGZEi5TSmtMcmKAQMLik8o+zQIMj0Bn2LBlacsDPlSEuSVQmbv+VJzT7Wt/d9FgrN6lOh0hm0ScRokJLw2gr6MteyQl94j+bGZ6CcCPZVUvR8QXbOxTNLKlt+PqdC+nSLJBqBBlIsG+jxxLsLESrYZ3NVxxF46dUj5rxwa9iiPUpFQY8t+v3VS1b7CQwK2+c348UAYRi5Y7qvLVKHdtzg8CxmX8RmxcJFF7My/ZVfFlFT7jqmwDiPI/lin7IzExUOHZR4dtSVlMpMQK2lTeDgzSvTdAOcef8Bs4k/XexbRWPQdaDlnj8Jt4B1FQR9wy2Ve+KbCq6rif2XqJUZadtgIQb3ldTfPrOwMW52WJ7eylE2QAvdJx/5tMZennvJljSNhRa7P0IzsgKNwYRNhzFyqZZofmR+NFygBGEZM8C7YxB6ZzZmU9ymvsy+jyv+g+j70hPJ5+r2ndbAboZKar1HiIzDTHlAu5gBjjfDATwIkZCJiC3NDVyUPJe2zhTzwxJwXu/Qy3x4ALNdgrNcg76HRuIR9NK/1JRuTSfS8o9tA9wnSyKqBS88I3exPIMB7cltslvnw83OLBVpdwwP2DIWCxO6RZfE2qWDKRqCj9Q+oKHd+x2x2JL0BDeVZ2UAvP3L4VWawjKPWAnk8PA6AZfm7y+l7k3bjxQ2FknJf5jmABO3722A/TWKY54mHcdH2zFanUjSzIOL3VjxmJ3+iTQstw1Vmztc2sVqyolY1lNAQr9B/H3gTxRru4aJL14TzC0DRbdI4/qmBJ2bo9AuIkEjN0Ouku9ubgIA6I6BJjqYIvbevJTMRwVlZEffder+4TCpVJeqK8YI+PZ13FzSLAL4Apc58p52pxeCjRAvUfww+HxZSJqA6Wmc
- +AZs7joa
- gbwo1Q/6moPwFVC7QRnnK3hTyxeyaFJb6WasUujh345aD6OlyKSDFw4K8+J3n9lWe0yJNhXHOFcwBUTsdV1leiSnOVgqvIRoiSaEeiWScuqAhXrlXIDnzK9Udt6FNGNns9/+pOwsrVnmzy4JApxjnMY9wrjal9NwzLRQsRglxzF0j0hXJVa1kU56x+xgdbQCqFKiTJ9qT6v+87tDR18j/DEeaOhO0C2EfPsIgKsGXdMtafrOTEBqSlXOUGXudAzmojshy+4o7ac1b8K4XvzjaJNVFQE+CGKo4e6b83Y4LczhYnqnrCrmAlwWSIM3ibrngPTY1/yfKn9LlZDf6JdLaBMpaeg==
+X-HE-Tag: 1763404948-718063
+X-HE-Meta: U2FsdGVkX1+yTzIG2aFmGjysRvaFzWkOtd7PIjCaqx1CRRYbwpzAoBCRi60aJyJ+vp7FlvBhw/OzwVapXGWKctHWo77oc+0FVzdcfLH5PQoHzz/SP+IK6Tui+Xda99UIfrXB3LjHRA8r5JlR19rTZghK6976zuvPBlWcvYr8mzX1JEfqX4lt/wYkFiCJFOqXT4wbcYYBxGJjB4H7WLQ0B/PfXN+GGQas1xap9POEANkiQYazgiPgc9ZTbItIgaDSFRWqX3GQR5sokgiKKGr7PXesmpMUfxxdNkReJ60HqNkEIC+vpy9MnxwFC3NKRsdCTBRGl1nkg5ASEqRTiISMTS+s+PyVaMLnTH0IGigbOHeJHIY6/hiVw22TYkVOXLbSaMUnyzVlJSQveHE6Y2FIKBK6AFiutheIr2ydItcrDS2WpOrRLNssUe5jP4FT6d0CZZ9dsg3F5+K3ZB5MH/jdQa9wF1n1XuPfKgaXp/0tTSfyrJW3JSK+yYvW43I7YkA2P8dWQdVwUeEP11Q4xbhvKcs8GVol/koqB8dGKInXlqfzUJu/XPug2GTHVCXLG7gHWGJ90pjX4CxBK9RvJProQU74lY2ZzvXe5LebU53hMt9D7uN3pTZEsvurUmuVAS5md4Hu7KskeCgfih45RL0nskGOXcf5hDN5QNdA1JBppo0BINTPNWMrWUi93/sOn3y0sj1RpJyj6Ibai9qRlZ1p80v3MK9uK4jQ6QJfRh1ks1a2GhmMp6WsPf122dbafxr7zL1DWYsZLKc43IdM8RgVQ5Pn95st2WsTcB/R6rSZZHOIf9bun1FGnD7MQD1kuRuMcof0ls2pLgKmi6/TFV79fBreRoyxfHOHX5rg/+W65dccppbtgpnGwE85P9Z0y0yIeDmxknOes1nD+uKvLvO+VbgzGkywp7KbCFT6Dz0SjpdDDKm360Il9GPYMQ1JCB/hUq0cTGIxBfXuKRKuwMk
+ pXYE/vub
+ 8VX9oindpMUxShxeV01vv/fhO+pj6D3Dws+1C4p0zIM4LpNWPCDyJQbuTo1wmw+1NrwTnNElCgq1epc31ekGRlS1RscVigMmmB08L0ufUvNaRVR68zThAMl0tt7n7WX9k6GcRsRxsRkE9siL7bVwgBthq3RI2/o9PB/nKjITmFR6m6ykPe3Jgjpsgf5PmVfY+OA6jyBkVoiX2XC+WzQI5YXxzPZR3NhOrscp+DpxrIUD6johezw/N84KRIJM+X2KtamS1iuEyah5qe+lZUM4cjxEfefHrIuOU4xrDkIqHTP/Wknxd0skTvAWUJh+NeHIkYw6LUbHgMZ+PK/vlpM/dJPt7xHMfl1LBKrIU3/u1qzqyF4LK92b0u8BNAsP0yRZhXm0qkm3DJw6vvxjZdh5GNrZcyrfRmXzjrNRm+LL70ae9Scd2m3oIV+NQUocpzCqxu/lVbI7SSdve1nPeOh7Qxg0K9BTXs/CnJVyHYRJNYr6YneC0q2tHo9hON852aGjni8QhrkkI2Y3ggOAnBoDag4ZYMFcoc9cOOFUIGEjaz4OUbM31K4930msbscmcw05pC0GMSUMSGyYiGrC+Vt6C5wh6kQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,19 +123,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-11 at 10:31:13 +0100, Alexander Potapenko wrote:
->> +#ifdef CONFIG_64BIT
->> +static inline void *__tag_set(const void *__addr, u8 tag)
->> +{
->> +       u64 addr =3D (u64)__addr;
->> +
->> +       addr &=3D ~__tag_shifted(KASAN_TAG_MASK);
++ bpf@
+
+On Mon, Nov 17, 2025 at 6:10=E2=80=AFAM Shaurya Rane <ssrane_b23@ee.vjti.ac=
+.in> wrote:
 >
->KASAN_TAG_MASK is only defined in Patch 07, does this patch compile?
+> On Sun, Nov 16, 2025 at 10:32:12PM +0000, Matthew Wilcox wrote:
+> > First, some process things ;-)
+> >
+> > 1. Thank you for working on this.  Andrii has been ignoring it since
+> > August, which is bad.  So thank you for picking it up.
 
-Seems I forgot to remove it from patch 7. It's originally defined
-in the mmzone.h file and looked cleaner there according to Andrey.
+It is bad, I'm sorry for this. I was surprised to read this, though,
+as I was not aware of any bug related to build ID parsing code, so I
+went looking at syzbot history of the issue. August timeframe you are
+referring to implies those "Monthly fs report" emails, which
+unfortunately I didn't receive as I'm not subscribed to linux-fsdevel,
+but I do see that there was earlier report back in April, which I did
+get in my inbox, apparently. So I'm sorry again for dropping the ball.
+Please feel free to ping me or BPF mailing list next time when you see
+something not being addressed in a timely manner.
 
-Thanks for noticing it's still in patch 7, I'll get rid of it.
+> >
+> > 2. Sending a v2 while we're having a discussion is generally a bad idea=
+.
+> > It's fine to send a patch as a reply, but going as far as a v2 isn't
+> > necessary.  If conversation has died down, then a v2 is definitely
+> > warranted, but you and I are still having a discussion ;-)
+> >
+> > 3. When you do send a v2 (or, now that you've sent a v2, send a v3),
+> > do it as a new thread rather then in reply to the v1 thread.  That play=
+s
+> > better with the tooling we have like b4 which will pull in all patches
+> > in a thread.
+> >
+> Apologies for the process errors regarding the v2 submission. I appreciat=
+e the guidance on the workflow and threading; I will ensure the next versio=
+n is sent as a clean, new thread once we have agreed on the technical solut=
+ion.
+> > With that over with, on to the fun technical stuff.
+> >
+> > On Sun, Nov 16, 2025 at 11:13:42AM +0530, SHAURYA RANE wrote:
+> > > On Sat, Nov 15, 2025 at 2:14=E2=80=AFAM Matthew Wilcox <willy@infrade=
+ad.org> wrote:
+> > > >
+> > > > On Sat, Nov 15, 2025 at 01:07:29AM +0530, ssrane_b23@ee.vjti.ac.in =
+wrote:
+> > > > > When read_cache_folio() is called with a NULL filler function on =
+a
+> > > > > mapping that does not implement read_folio, a NULL pointer
+> > > > > dereference occurs in filemap_read_folio().
+> > > > >
+> > > > > The crash occurs when:
+> > > > >
+> > > > > build_id_parse() is called on a VMA backed by a file from a
+> > > > > filesystem that does not implement ->read_folio() (e.g. procfs,
+> > > > > sysfs, or other virtual filesystems).
+> > > >
+> > > > Not a fan of this approach, to be honest.  This should be caught at
+> > > > a higher level.  In __build_id_parse(), there's already a check:
+> > > >
+> > > >         /* only works for page backed storage  */
+> > > >         if (!vma->vm_file)
+> > > >                 return -EINVAL;
+> > > >
+> > > > which is funny because the comment is correct, but the code is not.
+> > > > I suspect the right answer is to add right after it:
+> > > >
+> > > > +       if (vma->vm_file->f_mapping->a_ops =3D=3D &empty_aops)
+> > > > +               return -EINVAL;
+> > > >
+> > > > Want to test that out?
+> > > Thanks for the suggestion.
+> > > Checking for
+> > >     a_ops =3D=3D &empty_aops
+> > > is not enough. Certain filesystems for example XFS with DAX use
+> > > their own a_ops table (not empty_aops) but still do not implement
+> > > ->read_folio(). In those cases read_cache_folio() still ends up with
+> > > filler =3D NULL and filemap_read_folio(NULL) crashes.
+> >
+> > Ah, right.  I had assumed that the only problem was synthetic
+> > filesystems like sysfs and procfs which can't have buildids because
+> > buildids only exist in executables.  And neither procfs nor sysfs
+> > contain executables.
+> >
+> > But DAX is different.  You can absolutely put executables on a DAX
+> > filesystem.  So we shouldn't filter out DAX here.  And we definitely
+> > shouldn't *silently* fail for DAX.  Otherwise nobody will ever realise
+> > that the buildid people just couldn't be bothered to make DAX work.
+> >
+> > I don't think it's necessarily all that hard to make buildid work
+> > for DAX.  It's probably something like:
+> >
+> >       if (IS_DAX(file_inode(file)))
+> >               kernel_read(file, buf, count, &pos);
+> >
+> > but that's just off the top of my head.
+> >
+> >
+> I agree that DAX needs proper support rather than silent filtering.
+> However, investigating the actual syzbot reproducer revealed that the iss=
+ue extends beyond just DAX. The crash is actually triggering on tmpfs (shme=
+m).I verified via debug logging that the crashing VMA is backed by `shmem_a=
+ops`. Looking at `mm/shmem.c`, tmpfs legitimately lacks a `.read_folio` imp=
+lementation by design.
+> It seems there are several "real" filesystems that can contain executable=
+s/libraries but lack `.read_folio`:
+> 1. tmpfs/shmem
+> 2. OverlayFS (delegates I/O)
+> 3. DAX filesystems
+> Given that this affects multiple filesystem types, handling them all corr=
+ectly via `kernel_read` might be a larger scope than fixing the immediate c=
+rash. I worry about missing edge cases in tmpfs or OverlayFS if we try to i=
+mplement the fallback immediately in this patch.
+> > I really don't want the check for filler being NULL in read_cache_folio=
+().
+> > I want it to crash noisily if callers are doing something stupid.
+> I propose the following approach for v3. It avoids the silent failure you=
+ are concerned about, but prevents the kernel panic:
+>
+> 1. Silent reject for `empty_aops` (procfs/sysfs), as they legitimately ca=
+n't contain build IDs.
+> 2. Loud warning + Error for other cases (DAX, tmpfs, OverlayFS).
+>
 
+Tbh, it seems a bit fragile to have to hard-code such file
+system-specific logic in higher-level build ID fetching logic, where
+all we really ask for from filemap_get_folio() + read_cache_folio()
+combo is to give us requested piece of file or let us know (without
+crashing) that this was not possible.
+
+But if there is no way to abstract this away, then I think Shaurya
+proposed with failing known-not-supported cases and warning on
+unexpected ones would be a reasonable solution, I suppose. I see that
+Matthew is discussing generalizing kernel_read, so maybe that will be
+a better solution, let's see.
+
+
+> The code would look like this:
+>
+>     /* pseudo-filesystems */
+>     if (vma->vm_file->f_mapping->a_ops =3D=3D &empty_aops)
+>         return -EINVAL;
+>
+>     /* Real filesystems missing read_folio (DAX, tmpfs, OverlayFS, etc.) =
+*/
+>     if (!vma->vm_file->f_mapping->a_ops->read_folio) {
+>         /*
+>          * TODO: Implement kernel_read() fallback for DAX/tmpfs.
+>          * For now, fail loudly so we know what we are missing.
+>          */
+>         pr_warn_once("build_id_parse: filesystem %s lacks read_folio supp=
+ort\n",
+>                      vma->vm_file->f_path.dentry->d_sb->s_type->name);
+>         return -EOPNOTSUPP;
+>     }
+>
+> This highlights exactly which filesystems are missing support in the logs=
+ without crashing the machine
+> Thanks,
+> Shaurya
 
