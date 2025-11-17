@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9441DCE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:47:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3F82CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:47:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD17E8E0011; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
+	id 4AA698E0013; Mon, 17 Nov 2025 17:47:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA9B08E0002; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
+	id 3E32F8E0002; Mon, 17 Nov 2025 17:47:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE6648E0011; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
+	id 2875C8E0013; Mon, 17 Nov 2025 17:47:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BC59E8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A8E0160251
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:47:18 +0000 (UTC)
-X-FDA: 84121586556.21.2E9D048
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9AFA616000F
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:47:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KglGifxK;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 19BF98E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:47:20 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C303058438
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:47:19 +0000 (UTC)
+X-FDA: 84121586598.17.87AB4AF
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 02F0412000D
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:47:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NVywDGKZ;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763419636; a=rsa-sha256;
+	spf=pass (imf29.hostedemail.com: domain of 39KUbaQsKCP0fhpjwqj3ysllttlqj.htrqnsz2-rrp0fhp.twl@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=39KUbaQsKCP0fhpjwqj3ysllttlqj.htrqnsz2-rrp0fhp.twl@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763419638; a=rsa-sha256;
 	cv=none;
-	b=VrMkzMwBgfZBf1ksb5kQNy3QGgI/yDABwcbyklORYEcKOz2wtsYHy59Hc+fbJ2LjmOYJcy
-	+wV/FLC6y9N6CzhyDPQMLogxMXhPkn0wnR/Sjey0rfV/gRocQlzlBEgQ8okf0fFW7qa3md
-	N+XO2AexIx7CAz/Js2SKrT2Ra17rdO4=
+	b=1Z3VhSV/u+8ouU5Nc9Cs3KC0YJFS5uK5c3GDTPedgSKVmzr/HOleGwq+KUWUGPK/RmDukq
+	U6ukvbtsSKFJT3JJbIOi9tpsqz/+EaiExrwPy5WKyijBJBPmC/DbyXU0LnbD69orykawlk
+	IuMcWGFbmvTMOlXy83rLus5NgK38Fto=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=KglGifxK;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NVywDGKZ;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com
+	spf=pass (imf29.hostedemail.com: domain of 39KUbaQsKCP0fhpjwqj3ysllttlqj.htrqnsz2-rrp0fhp.twl@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=39KUbaQsKCP0fhpjwqj3ysllttlqj.htrqnsz2-rrp0fhp.twl@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763419636;
+	s=arc-20220608; t=1763419638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lad1asYiF8cA2ZLix/TncpNgjY0XYbNhIlYI0rkVv5A=;
-	b=YsJZRO1yDdLk0yHpbL2JARGHC0OkIT1ECUhV6A2KUJQ0AkVJvwOhHHgjkpDt1vJRihCPfm
-	Wexqh/k2V+MRYP4uiD2V7uQVIT7iaq1QboP8Xi2ImmEyeCWIccALqmq4EYgHA8fVbCL++z
-	zkVmHj6CswF68S0GWbFxbvNwzHFnFxY=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-343fb64cea6so7263310a91.3
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:47:16 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZYrCejxRy7zqyBcb6FQMxX806Q+d7GZ40YGLARpuYbw=;
+	b=q+L1fen3tdK56cfAab4IoM0hY05CbOkJ07R2B60bB9y9HeHG3p8hoEwQCkO1IJ0lKzVN6L
+	x/ZA9JvJjGJTEfNi+z4Egdj1rrXZQGJ8zZCyvvpZOXYeff4eXGzd674+1Hl1J9A079ykPQ
+	sqP0ZDHtlQC8YIEEaekThKYhP+iivbg=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7b82c2c2ca2so7211211b3a.1
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:47:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763419635; x=1764024435; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lad1asYiF8cA2ZLix/TncpNgjY0XYbNhIlYI0rkVv5A=;
-        b=KglGifxKNXoikY+m8vycdfH4eJLup9m9Fmpj1+IrpmW8Nexp+xsNNQ+5NEb7MkPiLa
-         3KpYkigtOrnZ/gBWQLjNcha+lM+4pVjzK0PALWRHbpEyPzrcHGizfS7rv63mYPV/J7jR
-         9UPLgI71yO2qCvAbzLsPY7Okn83pQjY4d3DoPVjm422BD++LHFjszqXuZKI9wVGAZp8l
-         ppe2Nja5y8ORyw1mQ5VbjyoSdyDFF7T3D5z8SfkOI8PSBuyxBFgI2YZZxr1w36+GlDwh
-         XR1pw9xvA8CXAIKtL3SMy1yVR0xz5bH/pgp2BuCMuS6Y7/retNRu3AIbbUwq4EJfKLeN
-         yPSA==
+        d=google.com; s=20230601; t=1763419637; x=1764024437; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZYrCejxRy7zqyBcb6FQMxX806Q+d7GZ40YGLARpuYbw=;
+        b=NVywDGKZeHCwqYoLIVGWB0XKAJ0fm7gSzDitIk6SNpG8pHD8yamtp+jCw3uvQFOP8N
+         /NO+G8EaJyU6380neiIjUCZj/Q05lrcJOfewstaZaoW4v0pOmLV+QlL8Q9P8JN04TFiE
+         X6wCEQGIlaaQXEABmgS6mY4yNcNBk+a9Y64yaeOS6Bk8/70a4KJYN/7JVV5sjooQcMaf
+         jXmlstMifLfm/BcTtNG4irr6cCXbEZ9rLuiOoowcb1i68iKghk+HGYBFo1Vwa/jL6grE
+         SAx/Nmhx1qGKgxDdADxw9aDlh6YQGOY3aqouANnFqcVVq7U2lLBJhrn0tHlnVd1Fujpa
+         fDyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763419635; x=1764024435;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lad1asYiF8cA2ZLix/TncpNgjY0XYbNhIlYI0rkVv5A=;
-        b=qsy5Ywc6M0xlJD3RUtq5E19/lSVwgeSIuPu68rUPzOrvJtIt3c2EceSUxw0CH0CnH0
-         9sk4OkpjLj4y2Emsd15MjkAR/eEVCXbLVzRdU5ilPty4RxMoXZ7IKped1DcQ2hSLZjLI
-         Bq2g2FnEP/G8+LyZS2VKk/urO3kHKzPMUD6hhytsf7CZAW+27GHrqBZe9OS8HnVoyPuM
-         hmjA76g9oJUIhkxe7xI6CaVcUZjodIGbzQ1wpfn2DvDknAeASaGpM7rSRNj9iEeqtBAa
-         22IM2wkkz+cz3rvqHbkHZG6mSFrQ8YvDyrKeWe8IvizVljNJg5MKX0utE/1Fr5vxre/U
-         0h6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWi6lRFPo3P3OS5eoDEs4As34/rWIcqTNql9hT8qv+IV2OjhzIyXQ2OcOCUpOIpH7q1sNhz9Bbmpg==@kvack.org
-X-Gm-Message-State: AOJu0YyGBfo4gFed7QTg6Ed1NdcBSd64ZujuCDF9HgMRHYAnGMOi1r3f
-	/P7lXE1it2sqxaJJ0OJe1LJPZqgXdkk5GuKT69uRLKPG+/yA3YCRoa7/ZgcYFq8SMDCEW4By+K/
-	U+PU7jnFdv6IeUzJ0MUOKBEGFjg==
-X-Google-Smtp-Source: AGHT+IHY//5/zSbJ96y0G1CVtIuXJVFgzUswEPddLr7yG1C8L/6rE6jUZ9/sELe1ezgM/wYNnndev+VmhVo67HX+sA==
-X-Received: from pjboc6.prod.google.com ([2002:a17:90b:1c06:b0:343:387b:f2fb])
+        d=1e100.net; s=20230601; t=1763419637; x=1764024437;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZYrCejxRy7zqyBcb6FQMxX806Q+d7GZ40YGLARpuYbw=;
+        b=c7tPRUXhUd4Jk9fuETXRGr3h0jbVn4ZnOiwF2k3gOk6oNj8/I43uxbhNifEGrZj84T
+         BiFyUy6ShHUi1/F7ZyvUCMoXcR4zNFLdZwaN1MseZZiAbZZ4+Ijq2psHGXUGJhCaWbmN
+         ZT2Z8030Eunbzd4XvdhYOPqkXGkx8eCtGh1yT/olV2nYisK8SLGDuTeQZfewIDAPHhua
+         nNlPOBVu3T2Q3k+yKJVMbBD1DoBeerQItjeoLFxWem9u5SGdeNG7i9ZE7FEPOUhTwGGl
+         TvhqX4n7xo0CQ2t0qhHrs6atMmnE0BvdTB4FEJXelxXPaB6NFrcJCqIQHyNxYMxFB4yc
+         O+qg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUoyJKR3fHbzHJNh3ArWOg0idQGaLSlEMIeNaQseGmIJ5lE05oCzA17uwtQpIEus64Gn5uJA+idg==@kvack.org
+X-Gm-Message-State: AOJu0YyZFX4ymw+r3F2gvObvgo608lj2qtajI+3wlAAnsZ2ikeqUOHLq
+	hm3zy/2dPYYx/BPQf96ItAwCbJCHHyDBkzDHdvzDmaLZo5hKa3Rg61JSxObVBiFoC3p5PRHipMw
+	xBfht4p9s16Qq+qZdBF8G2f481w==
+X-Google-Smtp-Source: AGHT+IF6X8M1O0ViseXJqknBCFgh9mD5b/95Oi6jmON/74K3wmmst3PfgAJtVAD5wgeUf0evNnb0s3MpsbBQZ/irZw==
+X-Received: from pgbfe13.prod.google.com ([2002:a05:6a02:288d:b0:bc8:cea8:200a])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:350c:b0:340:b06f:7134 with SMTP id 98e67ed59e1d1-343fa62bcf6mr15075381a91.20.1763419635363;
- Mon, 17 Nov 2025 14:47:15 -0800 (PST)
-Date: Mon, 17 Nov 2025 14:46:57 -0800
+ 2002:a05:6a21:33a1:b0:344:8ef7:7a03 with SMTP id adf61e73a8af0-35ba2992e6dmr19087812637.56.1763419636821;
+ Mon, 17 Nov 2025 14:47:16 -0800 (PST)
+Date: Mon, 17 Nov 2025 14:46:58 -0800
+In-Reply-To: <20251117224701.1279139-1-ackerleytng@google.com>
 Mime-Version: 1.0
+References: <20251117224701.1279139-1-ackerleytng@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251117224701.1279139-1-ackerleytng@google.com>
-Subject: [RFC PATCH 0/4] Extend xas_split* to support splitting arbitrarily
- large entries
+Message-ID: <20251117224701.1279139-2-ackerleytng@google.com>
+Subject: [RFC PATCH 1/4] XArray: Initialize nodes while splitting instead of
+ while allocating
 From: Ackerley Tng <ackerleytng@google.com>
 To: willy@infradead.org, akpm@linux-foundation.org, 
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
@@ -93,14 +96,14 @@ To: willy@infradead.org, akpm@linux-foundation.org,
 Cc: david@redhat.com, michael.roth@amd.com, vannapurve@google.com, 
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 02F0412000D
+X-Stat-Signature: gqecxcmq1q9xj6rh8f7kqki97uodghqp
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9AFA616000F
-X-Stat-Signature: 16oi5jr366nfwbeheszbwykmnyj43bik
-X-HE-Tag: 1763419636-24831
-X-HE-Meta: U2FsdGVkX1/djxSzJNB7Og7VUWSUB3ZTuhv15KgE+BZu+a6UoOgynTYyAtOnz6uX4+mLT8w3mBcxHCqaIbfSxcitm6TwrqxrdsiQt64HHYM7kekyHdymqvhsoGKr8Y3QEWnfoDY6WxTSL5Uc1nY88vCYkaWM0ZqxGU/BMt+4pAzVJMeBp9XVyzqfgh5lkrJWbA7bv1CioyyXj8rQw1ZmsAnS4B3uinBHEXx80HUZW+QeaD9CE/MxaH0PMcx5OhlBnHJYwC3H3AHyIOd0R8d3DHwABHRv8h0Y80ytkvdhxAXfqUldqW1TLkQ+TlFx3CWLoPRAFzxUdoCDi2h2u5Ggj/Ur4gm91ZYSgCO6dr3e4FyNVBJRxl4hxsVC5L1aoa0OW7TP+4ZvPeUD/UGebgSe3B7/UBsXAxrUid98E4Uabc1+WZ0VAEEgTRYY1PW81phLK5yV1fjOuHhz0dsDiT4uS2OwYtacG5OAPnotcUpN73trTgE2nw4DVutlME9s4/OakHS8EDNDjCLhTZA9Ng0kYxrAHucjCqUrIMZtl0whbKYgYvAPcNsmgxX49jtv6CFf8wwhFHrfFN77z9Y3h2ciAGxZMwK8MyhtzVw6lEB4TqEVlmNDIMcZozBv1AaB+Ja2EgkWWkY1ch3wr1LaLMgLgvAxBjXe/U8eIyJWp5PQP/Sz+PdxwqvpIVLSbZ/6SmbOTryXcET2vpFKl2wFyy3T61HvEQaamJGZHyYc/XmOXJI4ELuox1BZ4nDNr8ZsZRbOo01jmdJkZBT9u4EOHyFQagDlV4bkTaqnUGGtEX5k6yIf6AZMEx6oF17fERtGJnAyS519i30k6JK2yvJz9mh2bwFl2LJVU5Yrg970JHUwMKeDPjLSapYdBZbi56w9zZdfOrNVcU3RBcmXp9oQFYekwR63sC0ivhp9oPt2Opw6LrpDAcNC3m5fHKhx/wEm8GZ3DJb2QrP33hIMUXxQPzV
- oWjv2byU
- tiKX6yswTiV7UJFfxBSxjX4SPB7PgAGDEg1TT3seHzrbJ6+qOe3d7Z2vgerVdlAVp2FVZR2D8rAeaWAStbLoanNeCb0eq5L6ztDq/Zc1jpiNwjRAFk3stNlUUvc4r/Y16cD1rQgGmWSxCVi8slp1MBnB7VM9GuehB0QH567/dyabRnnJ1j+83RtrTkBpm7ZcLFZlm6DtAu2Wjp4vMhf1an25sC39kKblWFfNq8TQtyfiGQRInxdqSd7S9x83+zsBPxYFE53O3Yik7ZPejNfM7nDTX0hy8S0hrbfFpdgWwYrpbcre4Vk1sRoC+ioJ0TNcQXL2WL4LN+UJEXb4IEMC9vTIw6DpwfghDLhk9CmVqC633FrWpB9qe8zXlrMvJxW9YoobDfUhHcStinuEmuzv6dliWXnnmgAG0YJcZZqLJ0ChsaMpVKXOq13QShXQruEOsFVOmgAKWxscGCECRh9ff72alJBwR6bWVJ57E5nXDmW0KiqFqXatc58NI2uebtxJPZed2BFY7AaJycmQZEaHWB2t+FOxIo91WP94EXl3g15EWsXWFpYg6/6D/k5Y6d1ZV0LDYJvT6d9/r37Y69kQtPTvitHierg0qovjCdpVteiYDQBEV//hvQgl3L56l4+NvY/wnUIT7kh/zkGMf/kvOjuomB7YKDDkOF/Q3
+X-HE-Tag: 1763419637-832108
+X-HE-Meta: U2FsdGVkX1/2UNnShffxmbMb19+CeepxYktSrBfr41MqgB2yKQW9uBBZODsnjv6yC9y4J6AkG0m1T16Dpsn5oSEXSYxL4z3EXeIB9PWLQGei0BjKXl/d0eL7NCXW7muLMDIn7JSkAy8xzovtNkqTH0RxKXiF6AYqTHpYcZM9oiX9t0r7wCuWtjljnYPDmMhe99c0DQubRMZvY9S41wEyF7EteB1INrMIiaJ0DtNshkZPLil026VaNUZHi3xvI4XHNLet5DmdMyxCnIX4twSJIUFpqzULE0CjfrqaA2UoFsT6ZTPo5GzY3YJ8WP9YU2OguzS/hBVZXFvvnDFf5InE9jthxA79xthl8X6KFp7mYNktAWqa1Qrr+WT8JmHwLENc28PIIJ4Jjnnjkma5mvl2yFqrkvv/vO7e+hLdHkp+L/9lXyodd2wps3KPLHCozyqS1j4TTIKNt7YIN/N2EWsEVdvD4mjaCSaf2xPiHtuTM/0jrpnot5FlQjocjXYIWqmGcEh6N9LOL6urjBpHTD16rcyGAGYBElH5MDauH+XEAlbyvomqJmCJ6EkQjS2Vi1wF5qDbdk8uMZxo39TfCtn4A+OfHtZYSbkT1DzqoBwdpvYX6a4Yas5EN0h0pIJSbfGkVdXoNiPqTzef9UHv1VQGi8i5SP8WkfyeQ1NWUA2qnSLsHgnoIO+89v0cz3vJViq2+h+5Cm9IHRYLuvev2XMYt5eWTyck4V/UA1rfJPBrdvUAyDF0TXdd0f94YGDWD15quGk7gRkBUmfRxhhncXgEQaRUng2ag6M1GQcVcQtmaMf93Ad2a/yFz37JoJgciXRB4sDSp7ya8CZvFLyEWa1w4jzjOQgNP5JyZ+wbkgFSkerz1LFEhD09xGzIaDc3VQ+mbnC+nEu7WDR0jzX1jM3hNAJqX18jr+Od9ionZPLt4azFEyeNcOLJzIqH6s1t5+ukFUS35yYd5cJuBdR43mp
+ tXfsskSs
+ jj3DyCoG1op9zviX9QxDd29wmFTGRRyOJyGLKSuUbAhDKhLyFAhkv32W86qTkpTFAmC/83881GPH+YGz8b4izBFkPdYhc63J3hZLsFk49WgkOk3eujETFDMuFb45P8c5ZMkBJvEXMvxma6i1LBFPnbTivKG5WGztTtOxEKzqkjPQpqSh+NhpmGfiYpcK+pLu+gAgMi50mSKKhFDNscyNfY/8D6p0Zy/V6AZa32LuPIZSyUpwj/VoWAlO95YotjPgqpR8ckhpTlC6+TpqimXVZ3VNYqkvkVr4YBA6BCbPeGJpWVmLz3AHdhSIG5bstsakujA96637dDIQHoNU694rrD5VcPbPpy2LWgnYolenszHLQl6FQ6BPrTqhO1n75cyv2g0o5V8aEoHxtIhZHsb1TEZo6o/5Sa6lN6ZHxEFf4XvrCSZeLJJ9yb0pdXwJ3uTuEyYzcXEGhrEqSp8SG4eHzrKAQP2g/824nGo1FrRL1Y99B/6kum0byMn0mV6rs7vKSSp99CdeizDsRyAFVoZlFsNxIKyI7DzfLji2NZoGTIsU9gMmXCYws1dBLlujV3nzcl4UWpYELZ5zhsdY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,60 +112,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-guest_memfd is planning to store huge pages in the filemap, and
-guest_memfd's use of huge pages involves splitting of huge pages into
-individual pages. Splitting of huge pages also involves splitting of
-the filemap entries for the pages being split.
+Currently, newly allocated nodes in xas_split_alloc are initialized
+immediately upon allocation. This occurs before the node's specific role,
+shift, and offset within the splitting hierarchy are determined.
 
-To summarize the context of how these patches will be used,
+Move the call to __xas_init_node_for_split() from xas_split_alloc() to
+xas_split(). This removes any dependence on "entry" during node allocation,
+in preparation for extending xa_split* functions to support multi-level
+splits, where intermediate nodes need not have their slots initialized.
 
-+ guest_memfd stores huge pages (up to 1G pages) in the filemap.
-+ During folio splitting, guest_memfd needs split the folios, and
-  approaches that by first splitting the filemap (XArray) entries that
-  the folio occupies, and then splitting the struct folios themselves.
-+ Splitting from a 1G to 4K folio requires splitting an entry in a
-  shift-18 XArray node to a shift-0 node in the xarray, which goes
-  beyond 2 levels of XArray nodes, and is currently not supported.
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
 
-This work-in-progress series at [1] shows the context of how these
-patches for XArray entry splitting will be used.
+After moving the call to __xas_init_node_for_split() from
+xas_split_alloc() to xas_split(), void *entry is unused and no longer
+needs to be passed to xas_split_alloc().
 
-[1] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring
+I would like to get feedback on moving initialization into xas_split()
+before making a full refactoring to remove void *entry as a parameter
+to xas_split_alloc().
 
-This patch series extends xas_split_alloc() to allocate enough nodes
-for splitting an XArray node beyond 2 levels, and extends xas_split()
-to use the allocated nodes in a split beyond 2 levels.
+ lib/xarray.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Merging of XArray entries can be performed with xa_store_order() at
-the original order, and hence no change to the XArray library is
-required.
+diff --git a/lib/xarray.c b/lib/xarray.c
+index edb877c2d51c..636edcf014f1 100644
+--- a/lib/xarray.c
++++ b/lib/xarray.c
+@@ -1060,7 +1060,6 @@ void xas_split_alloc(struct xa_state *xas, void *entry, unsigned int order,
+ 		if (!node)
+ 			goto nomem;
 
-xas_destroy() cleans up any allocated and unused nodes in struct
-xa_state, and so no further changes are necessary there.
+-		__xas_init_node_for_split(xas, node, entry);
+ 		RCU_INIT_POINTER(node->parent, xas->xa_alloc);
+ 		xas->xa_alloc = node;
+ 	} while (sibs-- > 0);
+@@ -1103,6 +1102,7 @@ void xas_split(struct xa_state *xas, void *entry, unsigned int order)
+ 			struct xa_node *child = xas->xa_alloc;
 
-Please let me know
-
-+ If this extension is welcome
-+ Your thoughts on the approach: is it too many nodes to allocate at
-  once? Would a recursive implementation be preferred?
-+ If there are any bugs, particularly around how xas_split() interacts
-  with LRU
-
-
-Thank you!
-
-
-Ackerley Tng (4):
-  XArray: Initialize nodes while splitting instead of while allocating
-  XArray: Update xas_split_alloc() to allocate enough nodes to split
-    large entries
-  XArray: Support splitting for arbitrarily large entries
-  XArray: test: Increase split order test range in check_split()
-
- lib/test_xarray.c |   6 +-
- lib/xarray.c      | 210 ++++++++++++++++++++++++++++++++++------------
- 2 files changed, 162 insertions(+), 54 deletions(-)
-
+ 			xas->xa_alloc = rcu_dereference_raw(child->parent);
++			__xas_init_node_for_split(xas, child, entry);
+ 			child->shift = node->shift - XA_CHUNK_SHIFT;
+ 			child->offset = offset;
+ 			child->count = XA_CHUNK_SIZE;
 --
 2.52.0.rc1.455.g30608eb744-goog
 
