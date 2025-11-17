@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65001CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:47:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A78ACE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:49:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AF578E0020; Mon, 17 Nov 2025 12:47:21 -0500 (EST)
+	id E21388E001A; Mon, 17 Nov 2025 12:49:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 939EA8E0002; Mon, 17 Nov 2025 12:47:21 -0500 (EST)
+	id DD17A8E0002; Mon, 17 Nov 2025 12:49:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 828358E0020; Mon, 17 Nov 2025 12:47:21 -0500 (EST)
+	id CC09F8E001A; Mon, 17 Nov 2025 12:49:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C4308E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:47:21 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 022F65668F
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:47:20 +0000 (UTC)
-X-FDA: 84120830682.16.6D02F5B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 378DA140005
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:47:19 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fviSIzuJ;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B17788E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:49:35 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A8DDD12DD9F
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:49:34 +0000 (UTC)
+X-FDA: 84120836268.13.C9DBD88
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F3710C0011
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:49:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CRd80XJu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763401639; a=rsa-sha256;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763401772; a=rsa-sha256;
 	cv=none;
-	b=iBMxaFaOhi/WlnoJ9qE2iq0Alr91sSFn8Uzfx9numoT5z9RbYizZbmmWTgnh5MV2GdDRcB
-	KcBVLHW3POqmiRQ23LToi9RSNxzIil4owj8+SyGPvgPZvENNHampTztNDhWxHINqaitk1m
-	Up6vZD2KemkCNO2ODAw2oLjuUVp+l7g=
+	b=mL5VcHJ/M9B3W+wJUVL8YlpNnfxAAKrAypfg/JuSHozekn1E9M7DnN56pXfTqkrVAUjpPd
+	in4sXZRE05lBWvfv5nSLd2n2qFnT9jKX77P1C+480CVqxksp+9Yph1OQ04RIvxp1dXfj6J
+	8Cj5Acm4UtLEGzMXYwtI07aYjqBfKbE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fviSIzuJ;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CRd80XJu;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763401639;
+	s=arc-20220608; t=1763401772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m+0764ZtxeeXzMXMyJQmXtDI0MchZde3S2ZMXolpMs0=;
-	b=YOCaCYbS6BTIK6lytcKQXZanU/5BnohC2pdWrBkAleRNQE+mqWHLjSdoW1swlpNfTIy5GZ
-	f8jrap71ToTlRobpZaB6j0Z5/fwws8kkXchcmeeqfQO8R78iCROqewY1QdVpWFdG8+H0EH
-	f5dixz0yLqqfjp2atDTug75b1w9gtOY=
+	bh=8J3279SBKJroVGWVtPnPq6BIgbkbOzXXNhJTme8PTno=;
+	b=8RxBpQVp2KLqcbEQ+FBegVSSiuMpizCDtn0LBmoqZ8vGyTAvs5mAbavCD3yWGi96khL/HC
+	7dgJ10Sv84LNnFl5EEgUOgFEDeo2WNpNHm6zN2t5vGQDryBs+OpA1MvgGE+Xvd9dU4sKtT
+	PA5ZdNZMYfQQ2WhmMCnttRnUnFirBAM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 36AAC4024F;
-	Mon, 17 Nov 2025 17:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABF5C116B1;
-	Mon, 17 Nov 2025 17:47:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 54DAE60051;
+	Mon, 17 Nov 2025 17:49:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFF1C2BCB4;
+	Mon, 17 Nov 2025 17:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763401637;
-	bh=c7HjDFSK6LjsuzFlzgYUzOu7TuhUOCgicu1YzpNUjt4=;
+	s=k20201202; t=1763401770;
+	bh=sw/VEsI4xwBHTiS4b7CI6sSKdSRzzaJkWSJ08JK4UPc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fviSIzuJnpHP2yI+GQzdmjDTEUFRZy2J+Y9Z2X+WTfABUh4piSIttiLPInqvMnHjn
-	 1qh6lCjYkOeYp7PtpOOY1iRnbt/tLBQRJYCiA7pZVs1C2gZgjv+11YURw3It6y9tpv
-	 t2xBMTRn8IEteInxUlCZVY21UKmfjYCU9Xy58bwObeIOC8/HdHJfi1x2lGd01EZ1jU
-	 +r+ffD0ScDQBv2n6mfs6/XONcgOvbj35my0QYLPsn7qBCokaP/J9hYBmJI47Hr9+F8
-	 Q08iq71CUQWp4onZVdieACeHG0VJv4MbSasUjO6fs/3BKqf87kWjBUn0PuTIsc5fUe
-	 QEVJS4eM5LaIA==
-Message-ID: <dac20466-adac-4e47-8f50-87f4774fd57b@kernel.org>
-Date: Mon, 17 Nov 2025 18:47:13 +0100
+	b=CRd80XJu4jzPfgRemoUpSPvnlDpOt6p8SiVSIodbS0bDi0kGr+YZ5ibn5VdzOaJNM
+	 xiAXeBUC5V/lY2oUvsNwb0x0hC1gZFdS5b32Fvuy2m0r+4F3mr3Ug2rYZC9YrpPxTb
+	 Z6yLUxIN5yxQylOFZlgX6yUk9ewEqI5oYQIGfmuFmu17ejORnfArdkkjJApftjTFFJ
+	 7v0WQCMZLeBOoz20FSd6EaPvcb8VaVCD9jobDAmTk0AXFIkvRIm3ri4nEDcyAwMbGp
+	 hkjPUyh+74oprkN24Ty/8egYZiEmmwydtwIdd2O6kCJrEpepuwJHbiGdFZZWK3Gpx6
+	 jfq9UNShdFC/A==
+Message-ID: <58caeb32-f50a-4056-828a-476d958955ad@kernel.org>
+Date: Mon, 17 Nov 2025 18:49:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 09/10] mm: thp: always enable mTHP support
+Subject: Re: [RFC 10/10] mm: thp: x86: cleanup PSE feature bit usage
 To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
  lorenzo.stoakes@oracle.com
 References: <cover.1762464515.git.luizcap@redhat.com>
- <e9a6a123a03a122010cc10708391db901b11c7a7.1762464515.git.luizcap@redhat.com>
+ <8dc0695aa1c1073ec475be18e300ec1046344e84.1762464515.git.luizcap@redhat.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <e9a6a123a03a122010cc10708391db901b11c7a7.1762464515.git.luizcap@redhat.com>
+In-Reply-To: <8dc0695aa1c1073ec475be18e300ec1046344e84.1762464515.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 378DA140005
+X-Rspamd-Queue-Id: F3710C0011
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 3gmxq1keuogw8bi3rbsdajwpnr7m7msz
+X-Stat-Signature: jskfuesoxmquoakx86jps4f1bj6kc4fa
 X-Rspam-User: 
-X-HE-Tag: 1763401639-835361
-X-HE-Meta: U2FsdGVkX18aSsB9nFVUx2ASp5NU2yxX4dYVTRihnDwjvACVCwI6kC1JOEe+8xIczTUtb/UN+UmdASmfug5zJ1OxoGtw4f4SJjoKbRcERbTvigKC5I53UTcQyQye4Fr//kqQDUUQyieV70JszgbUNgYbHpNJ5jDXt/RnbDrImKvkzE77+fqFPKcHaPIxRFMH+yyY0L+C9wMFVmY4xxw4VxCH//V3jT+H3x5omm9GpEr61Y9GupP8EWiXH2ntwW8b8ILga8CSdW6Tt0/W4uQEAPPCNTBp0gkE4NXsJuMvJtSV2oO1reXmmKpCmojutAIT+rPIRyGE7dmsynKYDuQvn2djAQBLSCMz+DsepmS11SB/QRccROJuMPgvaw8mmqHBe1s3giJF9rhbtMFAoxFROGzFfM0tN6tOKelgwDxgF8gBhOlRZPTU/ETtwNT7yg2KRr6jJmsApTgfohk1b9GZ2/XZcD9bWrdX3rDRPAgnU8RbpbEzvg6uFxAkhAOFk97rK2Btm4iEPJcJuyIA+DUoPzLoUyaFVREhMdGuv4tm2OUR3VPT8tVs8I3ulqvFX5eBxvmQRu7DJ5WR9LFNRZexT/RKPYUqKI7yvICiI5ue0BlPK/3lCjcMHO0hfIQOUmc688xaTJW+f4tW3sGrEFslr6IBf9/BIlOk3gtztzWlJba5QmmBLQV7SQKSzEZ6HiVOOvjeG6Yo0RlsK0AgXvIO+JOP+viR7JzkL/lJYyGLluTmQ+fonp47GfRUQcVp/+eAaQb4uK6B2JjaU3t0WKhVIertUa76WyOSoqLIEyL5aR+WIQtKymsS/74cyZE+wauYBPlFpgxA7am7akLVa84rKe9IQnNCUyecLL8H/WlTvImntF90gaPUEOibIl9B8xqwSrSLKZdNw3maPUNlho030MOUCJBPLHldHc7TkjRklLW+smvPy7rtsDZ7OCNb/RLFZU4jWRo4u3legvOL5Oy
- OzaSGS1T
- IZnVbbEO0sF/pEYGUXLDytAuxbtR7yWv05/hNN3UE+QrvmmwgPEEpGdPwrTUpu27SO5Ted5OMDuPmk0rGL4RvOs3u7V7sCem1oYQT3bQbgFQJuLIPmbkRDfp69r2RH5AI4eR5gn2DKMueUEmNBIoECe0TNTGWzs3ZYkL722v1CSDF0m4gNVGnCJTrEAyADhIyRMJmT2W9KTKoZ3QEC7zLgGRhMQZokhcfeBPqMqBmwzuRyYjqd7wNFL+9gNRpL2zVi8MHK+RsmfEhIPpv1UbAEeXJYfMZmAVs4I4qig/rlBH9KEs6g8gu3w/O+Q==
+X-HE-Tag: 1763401771-480870
+X-HE-Meta: U2FsdGVkX1+3ZdGF49wHDR2QgUtlPcKlk3ZBsyoFPUCWh0kK/80ZTV1twRq5No+5WU8byKxKkSiPGfsUulgwhwM6S65BQCXILwlQZwXitHeGLTYZAHA0hWlqNoi3O/35Mr1SnJNtCiV/GFGHycnWCH2mAHNgqFrkqPTAEAyrUAYOebpsPfEdlYWWJo99mSf1dWjPGaMHNrWeiyNPsO8hk9SGPS7lJ8X2UOK0qi5Jc+nTFPwQrlEjWoFBOq0U+iyBbPy3vyCf3hADd1LrNIy6z6yqNTpV4lEagmYayZATG1/KUTTqmtMkNoF11h9Fd9n3Cv7DKS72OQS3f7zLKRiuq3AH3VaQCQKnKJ6i4qqO5glbPFFw6cPSJ6TqBkq4RoeDLp7SxLj3Bzb820BrQbgaxsoPdwFY5zkLoCso3X5dadi79JuUKoe5kXhByaGa0aLFRNo8yENaYmBqeG1XUNluWKSF1R3zNJE5DVkOpjnq2tKhn05VM2TSOIn8sHAaFuX9T+mLwVvtSZCKOkGVGYYZRKCds/wXExxkckG8HJeZQSyWmwghG7uLhrkqc1smyFo4896uRiBg2tUvamui8acleO7QF7NF1H7deJP/2D3FGxsGZ/YuAhQH8s0h4LoUKKdKq+VYPtLq855L2Rt+YALsNIRuA28TcfWMy0yHhdFAJQbmDeuWVFknKkccdonSSyNNY7ulGVaquvtUTitK+1X+7cg0tW+3H1UwQbYY21DOO8tdeIT5d447lNNv8RKWtzhnOoBkNR9VP5yk9v+8wQ11gj0DbPbzGRGbMc02bwkSNkvUGpkOe8h/G2NA/vUbRNtxFo6e2psycjmZBz3ZFpY+ahR9TAve7QK2NNpvjpDzLK6q9i1D00iwoV/9rVhvOlk/2tz50XK4x5I6xlAMQzLrtlzgx/Wp6ia1RgxbztuixN8fMW06/dnk3ZmVIpQJXFeBK0yRvngMDZ1ShCZ/Sbr
+ /AGUTGVY
+ OsFJKW7ir3cbl7qRgb8dul68+NStAj7HRiiSbZQNvYeseRhfpxJ8LtqZcMpMPd6kgQ+iwbJtcKmEhyLaeAAhLTVA75jXmr2Wc/x4H0mLDWQYe+o25sq5OvEJEHpdRCB3QlajozMwu++1PIP0cGuNsJZOURdpnVVAsBKCqoj4L2mFXl1aeREnYtxiDVOhdix5aBnhmL5psaqIl2be+U9OLbudY+lKA0fujAn6tu0tSZq4E+5UQKyLS7/85X86V11gwwsnzBwFvI6XplJzMXHAfNruwqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,43 +97,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 06.11.25 22:28, Luiz Capitulino wrote:
-> If PMD-sized pages are not supported on an architecture (ie. the
-> arch implements arch_has_pmd_leaves() and it returns false) then the
-> current code disables all THP, including mTHP.
+> Historically, THP support on x86 checked the PSE feature bit to enable
+> THP. On 64-bit, this check is redundant since PSE is always enabled by
+> default for compatibility. On 32-bit, PSE enables 4MB page support and
+
+Or 2MB support with 4byte PTEs I guess?
+
+> must be checked. To clean this up, this commit:
 > 
-> This commit fixes this by allowing mTHP to be always enabled for all
-> archs. When PMD-sized pages are not supported, its sysfs entry won't be
-> created and their mapping will be disallowed at page-fault time.
+
+Likely the subject should start with: "x86/mm:"
+
+
+> 1. Drops arch_has_pmd_leaves() from common x86 code. For 64-bit,
+>     we assume PMD-sized pages are always supported
+> 
+> 2. Checks for PSE only on 32-bit, using arch_has_pmd_leaves()
 > 
 > Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
 > ---
->   mm/huge_memory.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
+>   arch/x86/include/asm/pgtable.h    | 6 ------
+>   arch/x86/include/asm/pgtable_32.h | 6 ++++++
+>   2 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 0f016ea7082d..4117833c53ef 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -115,6 +115,9 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->   	else
->   		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
+> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+> index 08d109280e36..55b88de5178f 100644
+> --- a/arch/x86/include/asm/pgtable.h
+> +++ b/arch/x86/include/asm/pgtable.h
+> @@ -313,12 +313,6 @@ static inline int pud_trans_huge(pud_t pud)
+>   }
+>   #endif
 >   
-> +	if (!pgtable_has_pmd_leaves())
-> +		supported_orders &= ~BIT(PMD_ORDER);
+> -#define arch_has_pmd_leaves arch_has_pmd_leaves
+> -static inline int arch_has_pmd_leaves(void)
+> -{
+> -	return boot_cpu_has(X86_FEATURE_PSE);
+> -}
+> -
+>   #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+>   static inline bool pmd_special(pmd_t pmd)
+>   {
+> diff --git a/arch/x86/include/asm/pgtable_32.h b/arch/x86/include/asm/pgtable_32.h
+> index b612cc57a4d3..3bd51cfa431e 100644
+> --- a/arch/x86/include/asm/pgtable_32.h
+> +++ b/arch/x86/include/asm/pgtable_32.h
+> @@ -45,6 +45,12 @@ do {						\
+>   	flush_tlb_one_kernel((vaddr));		\
+>   } while (0)
+>   
+> +#define arch_has_pmd_leaves arch_has_pmd_leaves
+> +static inline int arch_has_pmd_leaves(void)
+> +{
+> +	return boot_cpu_has(X86_FEATURE_PSE);
+> +}
 > +
+>   #endif /* !__ASSEMBLER__ */
+>   
+>   /*
 
-Won't this leave PUD_ORDER set?
-
-Ideally, later we'd also have a
-
-if (!pgtable_has_pud_leaves())
-	supported_orders &= ~BIT(PUD_ORDER);
-
-
-For now you could simply clear PUD_ORDER for now as well.
-
-No PMD leaves -> No PUD leaves, so clear them in all cases to not leave 
-PUD_ORDER set.
+Right, IIUC 64bit should neve rrequire this check.
 
 -- 
 Cheers
