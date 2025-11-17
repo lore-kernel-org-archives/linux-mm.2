@@ -4,112 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9600ACE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 09:48:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEF66CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 10:04:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFB788E0018; Mon, 17 Nov 2025 04:48:51 -0500 (EST)
+	id 1E8A98E0005; Mon, 17 Nov 2025 05:04:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAC1B8E0002; Mon, 17 Nov 2025 04:48:51 -0500 (EST)
+	id 1C0B28E0002; Mon, 17 Nov 2025 05:04:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9B218E0018; Mon, 17 Nov 2025 04:48:51 -0500 (EST)
+	id 0FDAA8E0005; Mon, 17 Nov 2025 05:04:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AB7588E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:48:51 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3668A1A0C93
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:48:51 +0000 (UTC)
-X-FDA: 84119624862.02.1935469
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 79CFCC0012
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:48:49 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EBB228E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:04:52 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B10FD12F77F
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:04:52 +0000 (UTC)
+X-FDA: 84119665224.03.77507CA
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C7064C0012
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:04:50 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SXc3AudH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763372929; a=rsa-sha256;
-	cv=none;
-	b=w2i5xr5qcdYS9iZrvLAd6WUhpLBlqgwixxwlDarIMXaXjegM2fk/VcZreMPSgQlqJpnoGM
-	F7CmmOaytEaXX/qTAMdZdZisx8JkiY576Z+NmkxE8bapQQR97IOGBj/MQ3XjMQB/5X+l44
-	71U7bog2S/u3MiZNXg4E3sh2rskEjkQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SXc3AudH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PrrHP0Yu;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763372929;
+	s=arc-20220608; t=1763373890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fQow2kKcCS8Q2y2TaPEd9Ft+/We17L9s3d7Guxx5ZS8=;
-	b=polKgNSsLFG+nIgsEwfuxL3b9Xnz8kaPpbwhQB+xzsRxFpJsJ0X2dwu7m+QQxIqpoI/Cq9
-	M13ozCDM0rzjjubVlT0jzIhy4U/FjCSXBqT+GrTDdQtXa89LyslfJ93S2C0CgOfaEHmI/4
-	LNqgIznT+neU4RmnQ6SzM3SI0UPvGFg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71BDA40AD1;
-	Mon, 17 Nov 2025 09:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEF7C4CEF5;
-	Mon, 17 Nov 2025 09:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763372928;
-	bh=lm1w5FuS0DFB8h8yriOEHrATD1xOM/lURkIhKIQpwx4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SXc3AudH1OcuTxWg9OhFFVFP1nWirXtdO1p8OrOMzac+67OuDLkRz4ILPP6fVSALp
-	 /FbXlUfKN2ZqyIZO3SFzOhbbbqmC2Z86SKwLoD9XyFGPsHtZU+1VwzcobeHdGPdC5m
-	 54CJLuAlBSE64se+irsZX2F5e70m/vq92kn/oHf3DGlIeWfbhsCCrasmYoDchg7fRR
-	 BY4na8GLM3cbXQevPwcrFoOhVgHiO9zWC/7t8Dh0EgtknybsgJlwU8qjyFgFQP+eV3
-	 ZlRWl0ggiJpxxK7ALwoCwBJzw5EWBAi4stEaB7qIPc7tc6pfgp491Hjf3BtbERlnOu
-	 LCc5gzOIltBsw==
-Date: Mon, 17 Nov 2025 11:48:24 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 11/20] mm: shmem: use SHMEM_F_* flags instead of VM_*
- flags
-Message-ID: <aRrvaHh-cP8jygAF@kernel.org>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-12-pasha.tatashin@soleen.com>
+	bh=L6VEMEq9IfMPXHPv9S3A8GIMsSg3IBK54raGujcJbIU=;
+	b=MW2o0P+whoyODPNVKgVwDGZW8fVEXEsa1JWN13QjNN5l6H4n7Y3OJlgM5m1lk6gz+pdXsm
+	/THaRB6Vr2uq23OhD8xiRaYNslhkn6qpjJjRywd8YSvrvCxl22UhcvClIam2F1fMtZJCt/
+	UOTnys8r2e3M1dIopUdkJpGTgndDaTo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763373890; a=rsa-sha256;
+	cv=none;
+	b=3uXdmsmSfDSyTfu5UDciYPicmLjuG5eoz4zP00ltQ2vtsgx637Gx5JlPS7WZbRCTd0UsKu
+	02UuidoVHPiquoerM1PXu4tQImZESRo349nSaR3C7C41tJ7Lcg3s/Y6X30FtOn8DdXt+w9
+	Ubb5ZVRHSJhECpYIhPWuOr6qmpI16ek=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PrrHP0Yu;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b737502f77bso298452166b.2
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 02:04:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763373889; x=1763978689; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L6VEMEq9IfMPXHPv9S3A8GIMsSg3IBK54raGujcJbIU=;
+        b=PrrHP0YuxMSc2/M14jRlK2R+J+ZQWg2NNOP2nF1OSg6gwa/0tGKBu3sJF2/8cbBlVI
+         5AHoGTTWQQPBh/8a8a58Rp8oHBK76cFZK1L5vuLMN4HyzyBaUpX3J49tYhAFgbPi31Y+
+         84yVDin3XLssvDLN9NIFTxs+HmNWadz+yaKX+S5jmQJJXM7ka0wo0f0stFvudc7toxW6
+         KXquhiJHae44gFHCPwCbUIcY4o81dCyoYG1MteD0XmD+qs7CuVhbDJI2XtMBY60PoDLF
+         0f/nyUYxNJ52ca3dZjtxBcC4u+eGB/v53xHLrYAMqketXv+17Ajq0bPEv56DIrV5Cvkp
+         Dg2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763373889; x=1763978689;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=L6VEMEq9IfMPXHPv9S3A8GIMsSg3IBK54raGujcJbIU=;
+        b=v4gOtgMXj5IFms1mbQ4Mo1HTJ4cgYe2u4hiCOCZoIUDYRS3OKkvLc34QlZ5rDreV6O
+         o32abF4UJSK6jHWyx0zSgdCfhagghyqcoOJjFwLFqnafbwERoO8Y430jYTNoFLKWtE4l
+         iDUoXf/y/RTKrQt3pqZNvT5IE80WU4VjbAGbsjSaxgOFkpatkxKy1vZ69ne+covL7Tpi
+         NUTfeJ7s1DasLuwosWz1hE4ZMjc8G5n9L5ygL7jHNXZwaDkSjLPhD+LJcZxcZ0v/DL39
+         x/YLG0BXZi96qTDk1e0D41GNT6s5QLR7QK956u0KAbn795c7YxkWiZgJljqqJDPNyaq+
+         hCRg==
+X-Gm-Message-State: AOJu0Yw+oOT8KSEMLWNp5F1W7wDF/GBYVH/7azse+e4LsevDk5QWEajH
+	HOriRgiCISkNhy/owRDdcvIk3IU5vCoh1agPZE/HL+/nLwK9rXntulManpRW5dHIA1zwpKdmVqf
+	T3x8fhP7dDgXh6m3dWDlBh8NSZCljcsr7q4ADZns=
+X-Gm-Gg: ASbGncvOOuUB1qsn9xDw3iFfQ9l0TVH48YSkEc1Jlqrd4BcMLr5e16HWvKHIgvGlxzX
+	EiHFV7cBOH+ceyLUai+jAlvaz/XhvEJE1lbW57KB5wT64a/oZC4GLXYjlUAMEvDZNGs3MCB+V47
+	NsoPJNEbiQtpQS/0jprSuEWc389IxD/DR7gdPicxhDXy4GwjKbmPs4d9pVBmS7TtZf7VmG1lX+w
+	xr7dgaO12Fc+1aIeIxosgNPiW3Q4t+Tgti3tLcuixdNgA3glEAu20id5Uz9nOSHMm96YaSZFvqP
+	Khlf9eXchvzP4pMjKqjWFE7HQOGn9kE=
+X-Google-Smtp-Source: AGHT+IGAyqeANGLnKR1YDq4YWgQc6ow+acC1Y36P486noxikq+OTT942b4dWFmXtUmUY3zB2QPOIqUbAjECsDNbiJbg=
+X-Received: by 2002:a17:907:1c81:b0:b73:42e5:a59e with SMTP id
+ a640c23a62f3a-b73677edb7bmr1058753866b.12.1763373888854; Mon, 17 Nov 2025
+ 02:04:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251115233409.768044-12-pasha.tatashin@soleen.com>
+References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
+ <20251117-swap-table-p2-v2-2-37730e6ea6d5@tencent.com> <CAGsJ_4y9sQd9x-kOqPZzaNPTtSOhFSYzFdjiRsJFjT2myYEK7w@mail.gmail.com>
+In-Reply-To: <CAGsJ_4y9sQd9x-kOqPZzaNPTtSOhFSYzFdjiRsJFjT2myYEK7w@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 17 Nov 2025 18:04:12 +0800
+X-Gm-Features: AWmQ_bkCNQO_gSLEfI5CS-8EIvLah7vuMsY5fUjH0rEU9BiAwJlQTJgz6Cd36uE
+Message-ID: <CAMgjq7AKWEqzHtMFWcKPCxWtc7jE1j9qGOQ3izsxRef9FCd_+Q@mail.gmail.com>
+Subject: Re: [PATCH v2 02/19] mm, swap: split swap cache preparation loop into
+ a standalone helper
+To: Barry Song <21cnbao@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 79CFCC0012
-X-Stat-Signature: zmndyma8g7rk7iga1mchkx5eo3rpz6c4
-X-HE-Tag: 1763372929-368510
-X-HE-Meta: U2FsdGVkX189Dn6CqbPuvBSyblLc0GBWIjl9PaZLOc3dE+6AizT1cw3g7NM9ektf+pZ3sbg4ZswPCDha0C1SOJaJZpJzwxYdz7u3R7MDw+pJB1LsrrJA96xMv7cM8gWFDdngqafb9Up1OMCz1h3NCyLhKf/XqoscYzWGHO8mXeGZ/DPcvl68k7UgHv8Aqj3Ha1rL1QSaMssqaQYCEhNur6PYH7CQuAwnLV/lhB8VWgq2t+zhrID5u6+FNJBbG+YN+Z7Z221b85+h2TVsLHbcHL6FdqotwbJ86LAgcT2vAuP6PmhG7ipksvHZWaZF+KcN/AaUFNdzUT/VR8/wqBsVNLYOtlXdkTXlkzMcaOTrO62iNxPwdlKTY/+7on8HPHstLNLg5V1H/2/0DSv+LmbCLCmSYIKghXnOlc0E1iF3q0gBHKW4iFWNbrU2iMFxDgrBsCTUUPV1Vrv8JmhK//45C2tg+I3NTTiNtHRvoocIeq3r+iVetOdTA/P8r4ONScyRoS6XF/sKwkyMUrLY81qQNi4Yt/hn04kIZg/OAvsA0OOkH/tYrBq9mM6H6ROz/Uk+OkfIC0SkYUnpPv21d+b7MiIQZatPGGgUaNPHiaaO9SvA7yTdiwTJqYBja6YmwMcFB0UNNi6ZaEpwvJs8qlq+aNhJWcB+/phHv5s62n/lVS3ybKepQZAhLmS+V4Pa71JxA8iY6BKqHY2LtNplovYitsO5S7zOpAOokL9XCAeQvYCz4wBkzH8gU4CbQeRSa2Ld+fg5aCGcf1bZ7r2rgeD/t2V31qODxpOGpYAe+UZUNHfgtLi1WNgDw6Sw0N+u+yItEAUn0BplSF98QWc2RVPsEYaReR9fT9jwRwIy9xfMaVS2Nsgdp1KnsZivgPQ2YJGLndiftIrzuGvc87+WGgE79y2QhOUxNoEI7oLjK5nndSBua0vrSQWK5mLz3yxUEQx3/3LnyaTYzOETAuGbwvF
- DU7qT10O
- ML/GvF83jCgFROdgoq12miNaOQ2kElExTIvWzpm9/R+fkg7BStbDT8AQmurmZeEmeMv+NMe8tzJ1xfgX7VsPdJwDxaEj5ZJIA+5iqVmsHIHbmBU77maAF9owHSAf5bP9g0BtQDfEr8EdQHAKNqUob+6NSAU89sOHKG/tj7pvDQkh/fe/rVaY0aIyzQtB9L26LlmT7EBpcAAvk5QKvsObV+YfDkP+hKwP9hGvLd+r1AlQjOt6TSujKi7UMi9ujgSSKzYXEpfpx0TyytB9fA3gzpNM3toC9OZa9EOabOyyF1RVaU9KlNFK+OBSwzN0oHDsShJeo7MujUwd1MfV+I+ewosiKFRCASuUphikCS77qCKG7Rpn+PnVmcTI87TW33i5di1i3BAmOyCW4RJaWCPaiceVL4hwFsyenm4QQ/cbQAtbYjdXUVRPa8cAYTNxOTjBBIWCtHCfZFIh9rl4dZ59YGXoB3p1cRkC1nFjT356fuviVVxA=
+X-Rspamd-Queue-Id: C7064C0012
+X-Stat-Signature: sps16yanxkyy3pz5ori6x4obu9rcmmxy
+X-HE-Tag: 1763373890-672432
+X-HE-Meta: U2FsdGVkX1/ttnt07KotRiOgo1GR8EpSH55YVbFVyBl3p+EPR1JXBpHQc6VYyVj+slgsXSSzFtC0ZkZvWhXjU6gjpk6cvR3avmqKNz0tEzJdL5iscV2NKMtFUN+IOW9B66ysPktLJl4hd7537JMR1uDieR7YtiqzjD7a5+30DliorSiN5kajwtrUyWMsGq10BIyrUHPjH0c/0+0d8mBy54IQwcGZD1Mz97tcqz4sixkym/crptLIU2l7qs9jlZqtm2kU+R4Rpr2fo4QvTb9VbmV2PnY7AMzCXW5m7y9YugTXvjcmYfYvKtG6ivjkkBNazcQNk4nJ0LyygTn61klxNN8B5CdCwCjfDwNiAZuvVpM7+zxCx9Tr/5mypk0o41FqU7tQb+Xkx3WyDQ5/keRNbzgEE2TFNnR0jmbAF3vZ5AGwc5axz16XMoMOoWQSfwPrUjzixVJ9bQ9ZTwiKb9byaNDfep4QdZXM5xtPVlT6srbgSmZ858YjZ4ektaozoMRIN2nX514oMyrBMqwPR/ITNSoQ33lvhVxR3PaXeNZ4Me9HCyCL3GptL2u18y/j3tZybpINcapDVZFPbfSbCT2/pMXqdTKkf9DquINRig3fF/7zkVQuARhv/ABb1nwjPcgOs18PB0HJ248/E6bQn0VTf5clLsNUiwZ4KdG3vUWO00BP9hq2IzjOyI6kqbhe8uj9WwyJdhkdQK/4QLjAT64oR0pqcqmiSErXCDfQ0+Fps4WGNSIUvO3LlGO08zU8eVw52+6Re3gOF9clV3S4whRCIfGm4laULpe5vLI7fnrzIp8Vy1C89LEnzPygk00/VN/sDP/8IbpWiqqQuykj1swDWNw26j0aGG4s4fDjxNckyJKRyicBCuDdcK6Qu/C5COfdAJS8O+6vSChJlzxtSiJR4zbtB/ObFlxGSN9yg5k24Xi+6mqXGr8FH6CZ5BW8iF0V9qMn3agIJ8sIqN+9vZE
+ OZe9R4UL
+ thW61QfAbkl6AO9fannMANCtois2od8D2BLM+b4EBscqx6Vj6d+eKRxDYyybX5lwaiikOYGPN1WVzdi3dG9pNmj670+ppp+bgv5Uz24UPFC+fuuj9D2WJWpnMGH/kLge8ASBl47Q+LXAtSYMvHyZjfYh6td6FOBM4l28ItpW90ldz5b/DxfUkpnbZZIryO/TvwVFnjLTx61hRznHgKCL/4UIPjaAHtKPkKejLfFpJwtARotC2F3KUFB3JQPG7jppkMXoN05vvQCp9+CyKdQmgmwRoaagbuOV2g0VGqTXxaSBXGKUNKBimRpBCjIqV/wHS9TMasF/L18W2cWUPlN0GlTiX+tmoF+hj4H6rqa1hPgCjbPn7Qsto5OqLTiaXpV83asv3nSYlksfwrIbY0VIhfq2zr+U3c3DDKhQSCoiuIxm+ewQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,167 +124,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 06:33:57PM -0500, Pasha Tatashin wrote:
-> From: Pratyush Yadav <ptyadav@amazon.de>
-> 
-> shmem_inode_info::flags can have the VM flags VM_NORESERVE and
-> VM_LOCKED. These are used to suppress pre-accounting or to lock the
-> pages in the inode respectively. Using the VM flags directly makes it
-> difficult to add shmem-specific flags that are unrelated to VM behavior
-> since one would need to find a VM flag not used by shmem and re-purpose
-> it.
-> 
-> Introduce SHMEM_F_NORESERVE and SHMEM_F_LOCKED which represent the same
-> information, but their bits are independent of the VM flags. Callers can
-> still pass VM_NORESERVE to shmem_get_inode(), but it gets transformed to
-> the shmem-specific flag internally.
-> 
-> No functional changes intended.
-> 
-> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+On Mon, Nov 17, 2025 at 4:27=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Mon, Nov 17, 2025 at 2:12=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wr=
+ote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > To prepare for the removal of swap cache bypass swapin, introduce a new
+> > helper that accepts an allocated and charged fresh folio, prepares the
+> > folio, the swap map, and then adds the folio to the swap cache.
+> >
+> > This doesn't change how swap cache works yet, we are still depending on
+> > the SWAP_HAS_CACHE in the swap map for synchronization. But all
+> > synchronization hacks are now all in this single helper.
+> >
+> > No feature change.
+> >
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+>
+> Overall,
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> with a few minor nits.
+>
+> > ---
+> >  mm/swap_state.c | 197 +++++++++++++++++++++++++++++++-----------------=
+--------
+> >  1 file changed, 109 insertions(+), 88 deletions(-)
+> >
+> > diff --git a/mm/swap_state.c b/mm/swap_state.c
+> > index 08252eaef32f..7b93704fcbe7 100644
+> > --- a/mm/swap_state.c
+> > +++ b/mm/swap_state.c
+> > @@ -402,6 +402,97 @@ void swap_update_readahead(struct folio *folio, st=
+ruct vm_area_struct *vma,
+> >         }
+> >  }
+> >
+> > +/**
+> > + * __swap_cache_prepare_and_add - Prepare the folio and add it to swap=
+ cache.
+> > + * @entry: swap entry to be bound to the folio.
+> > + * @folio: folio to be added.
+> > + * @gfp: memory allocation flags for charge, can be 0 if @charged if t=
+rue.
+> > + * @charged: if the folio is already charged.
+> > + * @skip_if_exists: if the slot is in a cached state, return NULL.
+> > + *                  This is an old workaround that will be removed sho=
+rtly.
+> > + *
+> > + * Update the swap_map and add folio as swap cache, typically before s=
+wapin.
+> > + * All swap slots covered by the folio must have a non-zero swap count=
+.
+> > + *
+> > + * Context: Caller must protect the swap device with reference count o=
+r locks.
+> > + * Return: Returns the folio being added on success. Returns the exist=
+ing
+> > + * folio if @entry is cached. Returns NULL if raced with swapin or swa=
+poff.
+>
+> Not a native speaker, but I wonder if adding *already* would make the
+> comment clearer, for example: "Returns the existing folio if @entry is
+> already cached."
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Agree, that sounds better, thanks!
 
-> ---
->  include/linux/shmem_fs.h |  6 ++++++
->  mm/shmem.c               | 28 +++++++++++++++-------------
->  2 files changed, 21 insertions(+), 13 deletions(-)
-> 
-> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-> index 0e47465ef0fd..650874b400b5 100644
-> --- a/include/linux/shmem_fs.h
-> +++ b/include/linux/shmem_fs.h
-> @@ -10,6 +10,7 @@
->  #include <linux/xattr.h>
->  #include <linux/fs_parser.h>
->  #include <linux/userfaultfd_k.h>
-> +#include <linux/bits.h>
->  
->  struct swap_iocb;
->  
-> @@ -19,6 +20,11 @@ struct swap_iocb;
->  #define SHMEM_MAXQUOTAS 2
->  #endif
->  
-> +/* Suppress pre-accounting of the entire object size. */
-> +#define SHMEM_F_NORESERVE	BIT(0)
-> +/* Disallow swapping. */
-> +#define SHMEM_F_LOCKED		BIT(1)
-> +
->  struct shmem_inode_info {
->  	spinlock_t		lock;
->  	unsigned int		seals;		/* shmem seals */
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 58701d14dd96..1d5036dec08a 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -175,20 +175,20 @@ static inline struct shmem_sb_info *SHMEM_SB(struct super_block *sb)
->   */
->  static inline int shmem_acct_size(unsigned long flags, loff_t size)
->  {
-> -	return (flags & VM_NORESERVE) ?
-> +	return (flags & SHMEM_F_NORESERVE) ?
->  		0 : security_vm_enough_memory_mm(current->mm, VM_ACCT(size));
->  }
->  
->  static inline void shmem_unacct_size(unsigned long flags, loff_t size)
->  {
-> -	if (!(flags & VM_NORESERVE))
-> +	if (!(flags & SHMEM_F_NORESERVE))
->  		vm_unacct_memory(VM_ACCT(size));
->  }
->  
->  static inline int shmem_reacct_size(unsigned long flags,
->  		loff_t oldsize, loff_t newsize)
->  {
-> -	if (!(flags & VM_NORESERVE)) {
-> +	if (!(flags & SHMEM_F_NORESERVE)) {
->  		if (VM_ACCT(newsize) > VM_ACCT(oldsize))
->  			return security_vm_enough_memory_mm(current->mm,
->  					VM_ACCT(newsize) - VM_ACCT(oldsize));
-> @@ -206,7 +206,7 @@ static inline int shmem_reacct_size(unsigned long flags,
->   */
->  static inline int shmem_acct_blocks(unsigned long flags, long pages)
->  {
-> -	if (!(flags & VM_NORESERVE))
-> +	if (!(flags & SHMEM_F_NORESERVE))
->  		return 0;
->  
->  	return security_vm_enough_memory_mm(current->mm,
-> @@ -215,7 +215,7 @@ static inline int shmem_acct_blocks(unsigned long flags, long pages)
->  
->  static inline void shmem_unacct_blocks(unsigned long flags, long pages)
->  {
-> -	if (flags & VM_NORESERVE)
-> +	if (flags & SHMEM_F_NORESERVE)
->  		vm_unacct_memory(pages * VM_ACCT(PAGE_SIZE));
->  }
->  
-> @@ -1551,7 +1551,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->  	int nr_pages;
->  	bool split = false;
->  
-> -	if ((info->flags & VM_LOCKED) || sbinfo->noswap)
-> +	if ((info->flags & SHMEM_F_LOCKED) || sbinfo->noswap)
->  		goto redirty;
->  
->  	if (!total_swap_pages)
-> @@ -2910,15 +2910,15 @@ int shmem_lock(struct file *file, int lock, struct ucounts *ucounts)
->  	 * ipc_lock_object() when called from shmctl_do_lock(),
->  	 * no serialization needed when called from shm_destroy().
->  	 */
-> -	if (lock && !(info->flags & VM_LOCKED)) {
-> +	if (lock && !(info->flags & SHMEM_F_LOCKED)) {
->  		if (!user_shm_lock(inode->i_size, ucounts))
->  			goto out_nomem;
-> -		info->flags |= VM_LOCKED;
-> +		info->flags |= SHMEM_F_LOCKED;
->  		mapping_set_unevictable(file->f_mapping);
->  	}
-> -	if (!lock && (info->flags & VM_LOCKED) && ucounts) {
-> +	if (!lock && (info->flags & SHMEM_F_LOCKED) && ucounts) {
->  		user_shm_unlock(inode->i_size, ucounts);
-> -		info->flags &= ~VM_LOCKED;
-> +		info->flags &= ~SHMEM_F_LOCKED;
->  		mapping_clear_unevictable(file->f_mapping);
->  	}
->  	retval = 0;
-> @@ -3062,7 +3062,7 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
->  	spin_lock_init(&info->lock);
->  	atomic_set(&info->stop_eviction, 0);
->  	info->seals = F_SEAL_SEAL;
-> -	info->flags = flags & VM_NORESERVE;
-> +	info->flags = (flags & VM_NORESERVE) ? SHMEM_F_NORESERVE : 0;
->  	info->i_crtime = inode_get_mtime(inode);
->  	info->fsflags = (dir == NULL) ? 0 :
->  		SHMEM_I(dir)->fsflags & SHMEM_FL_INHERITED;
-> @@ -5804,8 +5804,10 @@ static inline struct inode *shmem_get_inode(struct mnt_idmap *idmap,
->  /* common code */
->  
->  static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
-> -			loff_t size, unsigned long flags, unsigned int i_flags)
-> +				       loff_t size, unsigned long vm_flags,
-> +				       unsigned int i_flags)
->  {
-> +	unsigned long flags = (vm_flags & VM_NORESERVE) ? SHMEM_F_NORESERVE : 0;
->  	struct inode *inode;
->  	struct file *res;
->  
-> @@ -5822,7 +5824,7 @@ static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
->  		return ERR_PTR(-ENOMEM);
->  
->  	inode = shmem_get_inode(&nop_mnt_idmap, mnt->mnt_sb, NULL,
-> -				S_IFREG | S_IRWXUGO, 0, flags);
-> +				S_IFREG | S_IRWXUGO, 0, vm_flags);
->  	if (IS_ERR(inode)) {
->  		shmem_unacct_size(flags, size);
->  		return ERR_CAST(inode);
-> -- 
-> 2.52.0.rc1.455.g30608eb744-goog
-> 
+>
+> BTW, returning NULL may not be the best option. Returning an ERR_PTR
+> seems more specific?
 
--- 
-Sincerely yours,
-Mike.
+I also don't like the idea of returning NULL, but all existing callers
+are all using this convention already. To not introduce too much
+noise, this maybe better be cleaned up / changed after this series I
+think.
 
