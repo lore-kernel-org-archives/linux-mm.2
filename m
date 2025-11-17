@@ -4,109 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C761FCEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:12:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6442DCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:14:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287D78E001B; Mon, 17 Nov 2025 06:12:55 -0500 (EST)
+	id C4E6A8E001C; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 239258E0002; Mon, 17 Nov 2025 06:12:55 -0500 (EST)
+	id BFF318E0002; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 127BB8E001B; Mon, 17 Nov 2025 06:12:55 -0500 (EST)
+	id AA04F8E001C; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC8B8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:12:54 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D2311A0CB4
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:12:54 +0000 (UTC)
-X-FDA: 84119836668.17.9DBB9B9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 45546C0012
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:12:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kkiQSp6o;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 960768E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37C2D140D1C
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:14:18 +0000 (UTC)
+X-FDA: 84119840196.29.8987BEE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8826640013
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:14:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+36XpUk;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763377972;
+	s=arc-20220608; t=1763378056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QgAtptvokPu4JfYlXnR6E1QfQ21cAL8q8YMREWHrj3o=;
-	b=tVvcu6Gktk+l583GFoijPIeaGcKu6YyZluqdMmRANxvrE1HTKP0rZIT084VeEeOHva7rbU
-	4eX6zY+yHFXRT3Nhp3ciNVkRu08OswVXNHFwhVpY36k/xZGlaaWvvnp9zUQDOlRnH1wIqa
-	YeZzjE6r6SJR/bogGQV0/vcBPNCO0sc=
+	bh=8ADh2GmhPPGw+Ea0z3RTa2FOenTP7OfVYPnpGcbHoe4=;
+	b=FRzwT4+BD8TJqNVuI0zN3fJ9ugaKRJit0knF76e1GKwiC1eg5KqwMBdhXXe+bNZXeTALMf
+	XyteM25tSnHRuBem/F0ZVpIS3hTBSSHW1knN2BOyhyW9huJeybYjPU62E7JlSJUdClPtyL
+	fdgRGCUK6BnK2Qe52pIB633xmsKuwSg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kkiQSp6o;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763377972; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+36XpUk;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763378056; a=rsa-sha256;
 	cv=none;
-	b=gvRIXYZsvlFXE0SPkFIrRXOECQNTPGURMRwsRX/dabzMVwWfIWcxpKb1IUC5/rYAmHeckJ
-	otgFA4ZyQC3YhBOSIFRpfjCPsb9135T1zZilOL2ctAnEtcqh++GfZ2cckz+nfOnPVxB840
-	i2RYFhu+1KEYSBjHV7RTfjGzMVmdOQQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763377972; x=1794913972;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uiVn5O+Z2ckh8lfSZDoQxdciZi4Sh+koQbfl/Op6dYw=;
-  b=kkiQSp6okecN/AgCGIgv1Mbrod1rxbG6dk1PPL3An5KiqledVHqLQcCP
-   8rihnhfTS55/avNsCnyK/IlQcsig2Q7EYZpyGwj/iHvGFApXaZbCkfk+V
-   COOuHrqR0sapB0+1ykvCoIV4v+xezMxhOdE13J+IXFb86oU5nUXl8gAk1
-   NJsH/AM80oUmKY9zdeJ3Mrir33KuOnt3oM6FEpSAFFhelxBIHC9JpxWpL
-   h/PBDlN9TyAsK4PBD7b47FM+LfAELx/unhTMt5ORCEAw3Yyk60JlSj4hO
-   lvy1tb7sP86Yjgayapx+AhX+6ipdWvsH2xxFikEVPoO3gt8e+uhLfQD31
-   w==;
-X-CSE-ConnectionGUID: Ftrqkd2uThKVArzmIOmE0w==
-X-CSE-MsgGUID: XHSBEc3JQce89coD7H1u/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="90851945"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
-   d="scan'208";a="90851945"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 03:12:50 -0800
-X-CSE-ConnectionGUID: LarFWhw6Q7eLzbFJT0IRVQ==
-X-CSE-MsgGUID: Zi9XQFgmQ8u027dmYe6Hwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
-   d="scan'208";a="221317842"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 03:12:47 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vKxA5-0000TH-22;
-	Mon, 17 Nov 2025 11:12:45 +0000
-Date: Mon, 17 Nov 2025 19:12:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Luigi Rizzo <lrizzo@google.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Willem de Bruijn <willemb@google.com>
-Subject: Re: [PATCH v2 2/8] genirq: soft_moderation: add base files, procfs
-Message-ID: <202511171936.CT5XHXPZ-lkp@intel.com>
-References: <20251116182839.939139-3-lrizzo@google.com>
+	b=b1K/NJJhGEaGdphSnGPe9t4Z3fdsIYGVn25X+00qh0FeeLxZLr4kcdrG7mKaRXxeQQ6y15
+	+5LSCyTF6Cc8g7M2dqaIO5kBYP2FEa7rA5k+Kfjx+3vTIxWx0vZb6yhEY4NenIyOmad1dX
+	YlT6oYEh49DEVqHRpuO8kpQeh+8Cwdo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7EAA6601ED;
+	Mon, 17 Nov 2025 11:14:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A25C4CEF5;
+	Mon, 17 Nov 2025 11:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763378055;
+	bh=a+Glbj+KjklqVqK02cJKv38+Iv5JmdqR17E30pDPyGg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d+36XpUkgooOOplYjFcXSlkiRz9QJ9mw3TH5MHjiR6eSeLeykbimRz9eODBPmYD4f
+	 Ej5+lc/S0OkUv84FBV83fgl+AKDrJNl+kGSPHK549sQ8fWypqZkB4JnN2UYUeJDApu
+	 7qry8j+l66Ji7mT8iOgQWAU2FD9W+xkoybuLpEhH/qyA0gfSxOzw7azcWlz9JWNXTP
+	 64UKmeUlQIpxjTIydSTLHMsFBE8EQUgngt5ecZ0+6dOCpxMKxShHCRMDZ3UQICc2Vb
+	 xy5Os9Jr0mPExUf8Ubchkkc3k4+8GbI0RUjVMScWeibdxclYKM23yJpGreGXsCilWw
+	 XrlAzdRBdVg7w==
+Date: Mon, 17 Nov 2025 13:13:51 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v6 20/20] tests/liveupdate: Add in-kernel liveupdate test
+Message-ID: <aRsDb-4bXFQ9Zmtu@kernel.org>
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-21-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251116182839.939139-3-lrizzo@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 45546C0012
-X-Stat-Signature: bg488w7ts749wbfid1e9ci5add3z8obz
+In-Reply-To: <20251115233409.768044-21-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8826640013
+X-Stat-Signature: pxqo4wppqx11ztki9457kwsc68pjm961
 X-Rspam-User: 
-X-HE-Tag: 1763377972-500908
-X-HE-Meta: U2FsdGVkX18pVTQtr0L1aodWRXJUnZNB28Gu2fOgalH8X69pp5YV6cHK9LEqzQuQKQUOY0XtXvwPn53GHUCwxdNZ5Y3bndfWLx2WVFMGoOWEOOlrSI1OD3eFUSstIp3AwulYXPJFcKTYS4HyeyuMn64U8oUTng7Ss0F1J6BgAJ/2qEAniSo2/ypbFNqMrxPG9I6RxtaQ96KelQ/V8SbP3PxG8adXlv/RRUXjEyG0myFYvm7c6GDH6G1egZO4Pa5WkeDcGyisubHoOR0lAZuvr1OuSW2ClepRxk3JYjaQwvs9Kmgqd13lPej7YaWf/GUhaO4s9i6KIFEGlMoxJv08jhcr3PqIyEVoA3S7pPRW/thhV5sjJaXXJb8WrWXvLX84kgYbWgYWtgbzkrLKVW2FGAW8wl641Z3Dvcm0LSZFRV2T0bTw72QDP7MphI5t89LBoOV+hCQSgptyR5J1UdPSXlvg5kdgtK38a+OqqVLhKWJtDDyK88L54JW9nkYpFaMt01li5+nT6iL9nOZrtGeJxTqtJ+H/dJUMQ2XLd+rAUsQKj7pQrcWAXtDkAvlyNjBUreinsuhcWqu/A33DoMako0kEcs7jR5mbis2lz49J1Iwws+logJhb/mFyaye2KPj836f/J0hmJaCH1bULtFxBBhbyaf2DVOlcNv9f5xTdc+9UaULX1jQ5wdrGBXjk+2kh/evMZtoeR10iThZ3DUc8BN5GnDEJyEutNTI4zt+QXRKrx9rlOPbifa5r1x6x1Rjb3sYmogsXq5tEn9u7GMmJx/USuzLrToNP6vGlHUlsFJS9pM8WVfx7w5i+AOL0NzfNr77d+IeXaKD+dtpzltWxS0fKVDxq+DYQ7HoX7447Be+uCrdDJJfPexC46NQUonTOjgiZPqnunsNo0TWX5dhfgi4HeZ4F6xYj2wfLlV7WyE6BZm+HjHv5KPIUyjJEliv22cyUbCbw/4mOnV8Hm75
- S1jNaMBr
- SNvOrFy75rkdVqFqvVz0LBK7IGSAtS0DE325H+3RKkEiifWavNj3BK7YEdcLIiTkm3Q5sPMZSYbsLq8KDZ55BypfThEvlpFz6uGF39RkZPoSykK7UFQWHhaIJsfCpClk+tpm951GmAEuR1mGvqe7ju5xoLQJrA3StAqTcRTa+KTPluQMD+EcHxt1WIdYyL4KRc1OY0l2mPiBNQhW8DMvCVYAc4s4GDIZDiG8XZl/OZsG58hiOC5dKiEmS6MSVkLvczSookAZpJ9xsntrH6dJAHeHN/FEdnwu00r0Fjq0deWpABhPyPKbzJEiaRy8K47xMxra96GWANhktFiqonlS/l28eE352ydr2LwueR0Kf+3gsMyQxQcp/7iZigi+w+8ANqrkjQSlqysM3FnKuT3Sczs3fUMHQETepU5gc7L58k5DgDbB0uViXyydG8c/wu5QghjGnxOUmZSS6AVDPxxiH1moO4pc3mb0tnasK7I9ONglpq02pif9peEXlog==
+X-HE-Tag: 1763378056-514541
+X-HE-Meta: U2FsdGVkX1+n+BEmcHRmltr1Qul4xxxTQjVZbFGeQJZIkdwaav6gigxMxLkG0p9SFEOOMSxH9ggmPJuUQLnIJa6AWFRCK/ZslvXZqJpFxz+4PexA1MXuNqo2BY8abJ2V0PZ+fLsTovYj6ewaZVq7MPA1YT51AGo6pJY3QK7CZ/HeZ+V2Ayg9Txa/qmc97yzmmgrITv0A0Nxln86yR9xL91ctyPXKlj752+/LcudQ6YEqibkNecxmS5lUEyF/PxWs3OgaGwiMIaqHeFWU0cF2hMpXIaikykkHNxvwzdFCs3CxY1gq15LkJ0yTD+vsh5T1R+nK4/YUTxrGpfKWq43oOTExVkLlT+bB711UzFy/hI+UTeHijkFuGYJfTzpeKU1TXK5+dpNl3ITt+9gkwcIDPJ2/KvHANJkhpXFuIZn/Q9t2EF6x+ReOjvMaB/F+0gme56BS8PoSx7+8CYRgB8RSkA9qglOXjPqygW8ns1d2XakRYImL+c1U3SV05mvSoLYiJDWRcebApVypBPPMkcOpspA0rqkNACVfwp4RE2yAmah8HLhMMFr35h2hkXFQmiIjX+Jni0j7zs/Zq9VDiP8eztX4zcYV1gngzl/vXpgbtpzgAVtzMK/LdEiOhS1e/aWUUv4tuSF1f/M7X3S4MCf2D7kPywSpSpCZu/BX0jLZfCkUOwCLoAtBYwt24llqYA8W5FIPcb3fEGElh2eG0rvhP7lv2CnOPYVe7BYaTdltJgHidY44PIE30MxTAjH3jySYLC7hVRPEVxELMON2oqUlY5iBN1A78S4SiIyni7a4RJNC3XJW3PT/kjNyESiIo37K9yhk9ruBmeIXZWky1Zn3dAJd17cyI0cyJCOA8JzRGOfkiqlu9/AUfwzWVIeKH5+npugLRCu0RzHHGALtIO8HS66Lct9bWMp3aDbURgufOitaVu3Hg9ziC/27BEv4gOYz+Hz3tjKzXUVjphpjkDq
+ lNnzBcDF
+ ULP64iFUHjQAxproCcL0cJiIC7CzG765bTKaS1GN1PdUX4zXu0SP20cepyzzScgtijejqqo5v3XHZtbFyMVqXePuLNNyntaSV/Rn/m4IBuY54x/Q7KFMoGxotSsr8mBmdo6Ym2xKRvkeHumQMgo0MCOadTzqcywkHCyrB7uqkc+cMmgr82J90iEOyFzkzJ4m2RDInSZgmjdPl5SPbXj+/1XidC1DiGnThZq9cosewo+l2TVQuuUjd/6uomkZ949ETFShpl1JHreVi/sHJHeroUeQSWpnyGt93KQ5BrlRXMdU/isADIXtz7ycq9HSypd2gedvRsEz7f9Gkjb/7RyAlV1BqB6XUY/vFDrMCO3gPqCAEsfQkTZHIpiPHDcyKWChOTsn1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,68 +117,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Luigi,
+On Sat, Nov 15, 2025 at 06:34:06PM -0500, Pasha Tatashin wrote:
+> Introduce an in-kernel test module to validate the core logic of the
+> Live Update Orchestrator's File-Lifecycle-Bound feature. This
+> provides a low-level, controlled environment to test FLB registration
+> and callback invocation without requiring userspace interaction or
+> actual kexec reboots.
+> 
+> The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/liveupdate/abi/luo.h |   5 +
+>  kernel/liveupdate/luo_file.c       |   2 +
+>  kernel/liveupdate/luo_internal.h   |   6 ++
+>  lib/Kconfig.debug                  |  23 +++++
+>  lib/tests/Makefile                 |   1 +
+>  lib/tests/liveupdate.c             | 143 +++++++++++++++++++++++++++++
+>  6 files changed, 180 insertions(+)
+>  create mode 100644 lib/tests/liveupdate.c
+> 
+> diff --git a/include/linux/liveupdate/abi/luo.h b/include/linux/liveupdate/abi/luo.h
+> index 85596ce68c16..cdcace9b48f5 100644
+> --- a/include/linux/liveupdate/abi/luo.h
+> +++ b/include/linux/liveupdate/abi/luo.h
+> @@ -230,4 +230,9 @@ struct luo_flb_ser {
+>  	u64 count;
+>  } __packed;
+>  
+> +/* Kernel Live Update Test ABI */
+> +#ifdef CONFIG_LIVEUPDATE_TEST
+> +#define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)	"liveupdate-test-flb-v" #i
+> +#endif
+> +
+>  #endif /* _LINUX_LIVEUPDATE_ABI_LUO_H */
+> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+> index df337c9c4f21..9a531096bdb5 100644
+> --- a/kernel/liveupdate/luo_file.c
+> +++ b/kernel/liveupdate/luo_file.c
+> @@ -834,6 +834,8 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+>  	INIT_LIST_HEAD(&fh->flb_list);
+>  	list_add_tail(&fh->list, &luo_file_handler_list);
+>  
+> +	liveupdate_test_register(fh);
+> +
 
-kernel test robot noticed the following build warnings:
+Why this cannot be called from the test?
 
-[auto build test WARNING on tip/irq/core]
-[also build test WARNING on tip/x86/core tip/master linus/master v6.18-rc6 next-20251114]
-[cannot apply to tip/auto-latest]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Luigi-Rizzo/genirq-platform-wide-interrupt-moderation-Documentation-Kconfig-irq_desc/20251117-023148
-base:   tip/irq/core
-patch link:    https://lore.kernel.org/r/20251116182839.939139-3-lrizzo%40google.com
-patch subject: [PATCH v2 2/8] genirq: soft_moderation: add base files, procfs
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20251117/202511171936.CT5XHXPZ-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251117/202511171936.CT5XHXPZ-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511171936.CT5XHXPZ-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> kernel/irq/irq_moderation.c:103: warning: ignoring '#pragma clang diagnostic' [-Wunknown-pragmas]
-     103 | #pragma clang diagnostic error "-Wformat"
-   In file included from include/linux/uaccess.h:10,
-                    from include/linux/sched/task.h:13,
-                    from include/linux/sched/signal.h:9,
-                    from include/linux/rcuwait.h:6,
-                    from include/linux/percpu-rwsem.h:7,
-                    from include/linux/fs.h:34,
-                    from include/linux/seq_file.h:11,
-                    from kernel/irq/irq_moderation.c:8:
-   In function 'check_copy_size',
-       inlined from 'copy_from_user' at include/linux/uaccess.h:207:7,
-       inlined from 'moderation_write' at kernel/irq/irq_moderation.c:169:6:
-   include/linux/ucopysize.h:54:25: error: call to '__bad_copy_to' declared with attribute error: copy destination size is too small
-      54 |                         __bad_copy_to();
-         |                         ^~~~~~~~~~~~~~~
-   In function 'check_copy_size',
-       inlined from 'copy_from_user' at include/linux/uaccess.h:207:7,
-       inlined from 'mode_write' at kernel/irq/irq_moderation.c:223:6:
-   include/linux/ucopysize.h:54:25: error: call to '__bad_copy_to' declared with attribute error: copy destination size is too small
-      54 |                         __bad_copy_to();
-         |                         ^~~~~~~~~~~~~~~
-
-
-vim +103 kernel/irq/irq_moderation.c
-
-   102	
- > 103	#pragma clang diagnostic error "-Wformat"
-   104	/* Print statistics */
-   105	static int moderation_show(struct seq_file *p, void *v)
-   106	{
-   107		uint delay_us = irq_mod_info.delay_us;
-   108		int j;
-   109	
+>  	return 0;
+>  }
+>  
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sincerely yours,
+Mike.
 
