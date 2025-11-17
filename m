@@ -4,231 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2D8FCEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 15:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABC6DCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 15:20:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 351288E0017; Mon, 17 Nov 2025 10:15:54 -0500 (EST)
+	id F16928E0018; Mon, 17 Nov 2025 10:20:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 328E88E0002; Mon, 17 Nov 2025 10:15:54 -0500 (EST)
+	id EC6AC8E0002; Mon, 17 Nov 2025 10:20:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F0708E0017; Mon, 17 Nov 2025 10:15:54 -0500 (EST)
+	id D8E4A8E0018; Mon, 17 Nov 2025 10:20:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 02C2B8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:15:54 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9B21B1D8DA9
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:15:53 +0000 (UTC)
-X-FDA: 84120448986.27.142AF40
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B3439C0004
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:15:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VndREyID;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=mIluxgNJ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763392550;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BFDA58E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:20:02 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D52A1DF0BE
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:20:02 +0000 (UTC)
+X-FDA: 84120459444.24.EDB9DB7
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 79BB0A0017
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:20:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LPr7Ku9H;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=bgeffon@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763392800; a=rsa-sha256;
+	cv=none;
+	b=EtMxXIjp6uie2Xd1PiMAVrah2V42vuFRTBwTr6+0pia6V47Oq/wsei0l2Bsv2GFL9jyICh
+	p3D2lUZIcXnkW9zWs4Xxtaai5FTKezF/XQTdVPQ6NWG1AXy2H3/Aju32yyGWvu1Apa1Epl
+	QtOrRm6JGMiS/weq+Z5TKrgFvqy8/+U=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LPr7Ku9H;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=bgeffon@google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763392800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rftimcRB+f+17fJXy4Lq9OaRfDPfx9Js+X+tkHNfrw4=;
-	b=m9o5abSfiLzrhI/D3zLg8/s2hSiNBeGxpYUC9KYv0ZeBrEX2U7zdAekHAcQeBGKjHaPwPc
-	cWzSaG5GYRuGJLxkgO2dKuRfVuIWi5VRTOresSZhVELZjfWfYJf+1oy1/uxIHq0pwgpWfA
-	3HAWaCbduJWSYAxkpMrByrp9Vl5qQUk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763392550; a=rsa-sha256;
-	cv=pass;
-	b=74ejZDVRGVCkzfl3ZK5LUDEU/PrjqJnxDy24wwc9GvteRqXBfDAqo9lYVeEYDw1OpOwsyp
-	JrWp86J3sJjx9fYD5EzatlBZoox9bVABGcycmb+Ji4iR/wFha9Qqp3RoQA/sctyNcnLEUz
-	cun2pW3XJdcNmS394Z9Qz4ekShO3vMQ=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VndREyID;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=mIluxgNJ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AHC8Sjs002257;
-	Mon, 17 Nov 2025 15:15:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=rftimcRB+f+17fJXy4
-	Lq9OaRfDPfx9Js+X+tkHNfrw4=; b=VndREyIDec+VazoQ2gRTnVrgaAHMUScfWn
-	GSBtv3gSkhvaASZuEnYy/RbIZ/Td3fjtKDzV0rQsEIUHevmrsdoYA5kzJA9Tviqw
-	4xckcV+nF6rLkwdlfxamRQx932akFWhc+L98r6cqsL5yKMckTdUwCJEgdtAupMXh
-	3iUx9WjRNndFRpQ2wuE5HjExq2VgwDji/hd2XX8hnWnbOAvI52Au0E5XfVaQVOYW
-	QraHtJpLd5cD1q9r+n+JDKoTI4GDfflms/fgUawnA9tsM4ITWpzntyjNXxSjJCY+
-	8DiFyolA3MvZb5YxapUwI31Wmkf2oh57XSp51pc7CuMDowwETeXw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aej962m97-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Nov 2025 15:15:45 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AHDUAhx004250;
-	Mon, 17 Nov 2025 15:15:44 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010070.outbound.protection.outlook.com [52.101.46.70])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefy7jd0u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Nov 2025 15:15:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fkRKPlUIvoYyZVwHUvtvJYzPQIH+UHlUhV3Rv5GhnnRKQ8xqkRU37VVuueM/1vartcVWvIb/JfDVa2XrFasY2q744q1niP/WNsqtNxMHL9q/h0S+IXf4uMtxsHCf0LIJVQC+FIlDyy/gAq22/fqvVSqOirTtOFzALf/i5LpwRoKKrxDV9xK1bBBFrjfOkLPydFEZHvL9B+mF0AbGFzf74y2Mlh5a/aP6VEd8U0/qRVY4620HLkA4AyedBQa2PUraYv3Txen7kbrvL9aL8NBufw3zkEweOsjqTShUASXLtHhd/iy3nZT3kp9pniD6MWP9IL/xTXMr077PZCUZmqNpew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rftimcRB+f+17fJXy4Lq9OaRfDPfx9Js+X+tkHNfrw4=;
- b=aCgv5h0Ik4y/ojALpPNyFircKG3MglBvrHANdpZklz8/pdrl+oG6pgIxZl53/tPK50Mta9pUD+5LquU9pRBi62JFZagrlfStolVn8AYAiemFoWp0rLC9A07cUj9EQHzIWreEgZ0lZoMiX1RkCNLvyvAweaWNp/smAsNI/DPFq99Lz/WQVIvgLydw15fYmxAy5Uz9WIhUIpoeLKmreDZe9u2tJ9Hn3Wn4XYDsm+zAP/yV9beZjBKViUVVf41WTl1576q2vJGx13fLyrKO24doqHIu45nXCzj0sngE6rIZph8DZtSf6SIpYaUWsQO6TAUStUZLp/kM9g2KfwV9SrQ5cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=aJ7egRaDVNMSInh9i7/SneIXMiAUZjbeT4p3WDUmNAc=;
+	b=wwLHU2rkLyh5vCkx/ctoAXJT1lJpqvnFsOuZTiPJKJQr9gUceHiVq/6i1+Zvd7stHLmTM+
+	Bae3HdeGRFsggTIHit9Tzp1eAhapVcv41n4V6nlR/K59Hecr6tLZ+L+ByJJHHAYY6QYB+A
+	sMeR28gnhD5SElA9/4AwXFE6Q9aS46U=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-29852dafa7dso357705ad.1
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 07:20:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rftimcRB+f+17fJXy4Lq9OaRfDPfx9Js+X+tkHNfrw4=;
- b=mIluxgNJ3TdfYQvFlCcAq/2G1nbg1sFQvTnNRN5mVgYGq2/EC4BGaUe8z24VqaGPD+3G1b1DlLYlh4HsEfWo8ubvpvkD/zVj4Zg6wn0vBtkm4Qn1OTUpTG3joW2WjXO+UOZyMnOR3tgVqs4CFoL+JC6ipLhhwfy5LwdRJAvUpA8=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by LV0PR10MB997613.namprd10.prod.outlook.com (2603:10b6:408:345::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Mon, 17 Nov
- 2025 15:15:42 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
- 15:15:42 +0000
-Date: Mon, 17 Nov 2025 15:15:39 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] testing/selftests/mm: add soft-dirty merge self-test
-Message-ID: <c5c31abd-98ee-4f10-8990-0f935035b3c3@lucifer.local>
-References: <cover.1763142412.git.lorenzo.stoakes@oracle.com>
- <0db6aeb73d42876756ba73163cc0cc6e7e8c6100.1763142412.git.lorenzo.stoakes@oracle.com>
- <5c1ef450-c9ba-4249-9eda-b38efbd76c3f@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c1ef450-c9ba-4249-9eda-b38efbd76c3f@kernel.org>
-X-ClientProxiedBy: LO4P123CA0028.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:151::15) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=google.com; s=20230601; t=1763392799; x=1763997599; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aJ7egRaDVNMSInh9i7/SneIXMiAUZjbeT4p3WDUmNAc=;
+        b=LPr7Ku9HcvgN7YfXAOLXhz6pIkChwCDd0XhWY10Puq5HTC8m4i655DrsqPkl7gTGJv
+         +3K0J8/jxjlqNFmwcS0tIe82NGMWEi1gmZ4h7ozD3S+1j/NtdxU8rk2DNd0YvN/njpls
+         2f5XuXqaSgKo4MM55A7XEqYvLcs2O20mhIIv+Y90l5RHa0VUlKx7jIJEN8iTcy+ZRKRU
+         C3Xdh0TSP73INX4xG8OZk7H/etMS7FPbVWd0CYKgZQFZz+0oqvAVj4ZybRG4lHJTpAtw
+         v+pkd362SqdKV5puXbVdcyekoyJltrgJDOkXK951rgkn5hi99p2aPhCvPVdi7F6dsmOG
+         LpmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763392799; x=1763997599;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aJ7egRaDVNMSInh9i7/SneIXMiAUZjbeT4p3WDUmNAc=;
+        b=B3wXocLuNo22u7ufa71QDJwdZj4X0O09mWBjH3vo3CgX2yn3pskN0ycMTWOraHuAp4
+         7DDJn4bmCPCTZ2aba+lsYSxs6M34V86PWpmkp9bnIPUoMvnQ8yP5Vqdmxu1zYa55F8dy
+         YQAL8URVGhfdyzaG3vXNPDhmoEMpWZNApHY2zTMziq1SRDGk0lLORhGlN2otOTKSPq2S
+         w/pENlqP3SVxHN3GVmZG09Cl9isR3rNPZD6gYFdyxMFf/Nclu7Y7sFVpyj4Hm/lGHePV
+         Zot+9lURkyej+6YdQwk3PPVT8ox71YUNGyJ10MId/CIdiSUPRDn+WokwMeyakB/S50d/
+         wgiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZQEc6sFZPBeAL5abQYMhagVMGbOBcu8NqlH/QWjZESaj+/thrCpYwxuVi0iqBmjFmMmDUEm1mcg==@kvack.org
+X-Gm-Message-State: AOJu0YwhiRzvrqs7gjN5YNx8s3xGmsAi+zBLtniK4hh9kuuvYIhYYH3q
+	v2Gulr2SN6fMFnLsCdhAWY61G/RNe5UZ2Th9gVpkGogQWt5GkIZOT1qCFLYLIdVw5CPjxuI8rz8
+	V2Aj79W8svRTGv/lwxU8lXZ1hauRhpG5XptS4f1Zp
+X-Gm-Gg: ASbGncuVzPrrQOo+Gu+zC01PPIthaFUun72ifOTqkq61med6ilfa/AZlyzQugIOt2ms
+	Nqwu0a2yi/mp/Qx9FF6J2jaCQolWeh6HZs2sLSivYmV87X3L9ZLbXMJLTtTyFpeurfBtwa5ay++
+	U5BsUPY2fyGXe8sMfHssR8YTSCrrMBSN5dvVzC5i4jvXeieRBynKA81T7TBKpSX+Q7gGXO0JRnp
+	84fIOyGVtdM6QFCM5C+i25t+QvzKZxAC39BmaBiN0yVPj+YSL9snAqUvDXY29/tZKQJGwhgXB1+
+	jQJFsgkkq0LN4Ex/RywhFq/5VBHV8jtSX3qACK6NUCrqIemiS0Zv1YE=
+X-Google-Smtp-Source: AGHT+IFmPbwHa2zdBPFZu54nsAiHmjGzULvhKyvC/0mCK6Fve2sI66TMcNqWFEno0cy2V8XtILG9bMhNxBzcDPxJXoA=
+X-Received: by 2002:a17:902:d4cd:b0:294:f745:fe7b with SMTP id
+ d9443c01a7336-299f4a3eafemr75ad.6.1763392798956; Mon, 17 Nov 2025 07:19:58
+ -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|LV0PR10MB997613:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae413fb0-74ce-4c3a-f63b-08de25ec2c56
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Z/dWFRgHxjC5DNbz6T959b4LH9gjTfm4AvgMrcVto11GFWUkvPOdbwyFVFvv?=
- =?us-ascii?Q?LEHQha0HmZneTiNqmw9MolcZO3TwYniLtMkVVRSDp8UaOoHEvY5G8st/rpJr?=
- =?us-ascii?Q?+nnAp6Kuve7aNOj5y1ABG6FPy5VmCwH105ryPViQQRAKPunMrFOZrze/F2G+?=
- =?us-ascii?Q?MV+BK4kM1Lh31eF2Tq8PZjy9YgOAKJbkxWXPqDJH0El5pF6Yb2vedLxttssF?=
- =?us-ascii?Q?Yj/A8Qm4P0fDFmgs5R/4uieUnjDBh+Q2lshHO0/odjfa3dpjPQD3SivVV485?=
- =?us-ascii?Q?w09fnhq1HPVgOs43b0SVaHwjulgBvINkMx3QdNX2/PPw3zry4bVkiL02F/9C?=
- =?us-ascii?Q?D9ZtUQY2dGjJ+Ly0iR+F70BoSHMTAMGxPX92qIYz6oqFdkHkc71YKDtz61Mv?=
- =?us-ascii?Q?COX4zEM+wWBnMCySzdGh8di8xZ4cagQt7Ea8bFv/xSfq4PKFxKwzBr8Zc9S9?=
- =?us-ascii?Q?warLmEGdhfK65zy0Wrv9zgxudNzT+BN/jKiheI1bUWTS8m8FSDBHDaf/V4rs?=
- =?us-ascii?Q?VT+54TE5K9DWJgdfDp892766FUb1l68f1Jzs9LBok/OeY+qYvZrcrOsNVnII?=
- =?us-ascii?Q?j7q330ad4/YkjwklNR6BA2IOSYqpCElh7TO1FmNLhNoPYfn17HvpXtCRAu2O?=
- =?us-ascii?Q?0dMOGD3m442yCIey04+7SPbz06hLYH7snMa2vRkQyK6/dE57SuDh998Ag4Of?=
- =?us-ascii?Q?6rzQn8fE799oQ8AVke6dK/UpupyBD2GaWd4ew933zmLf4OzVWN5jF/sQvmrg?=
- =?us-ascii?Q?NllFaBRLyjzPtXcLpc2+SFhpYrL4dM8tRCDomvNBjIzI3gynZDhjRD83tgAl?=
- =?us-ascii?Q?eGNOQ61kB6uxhTiGlxNICxpGlLyqptDucn+TZIYxiVv5f42cO5eT7UIyTmAE?=
- =?us-ascii?Q?u/FM0Vj+Ps4NzzJfkvNmqF6kbU/0eUgoidKIe1a5+Y0qJFwke6xh6XrpyDmF?=
- =?us-ascii?Q?/nCeiVsZCiUwY2EUeBmtMh/GNNUaZIIVvQNvH5bgG0wyFp2WHmbNwMtt72yZ?=
- =?us-ascii?Q?1LXFRSeG1tAPNYe+hgu869ukKkcuFgEOiQJFf2RDQHuUxKlaE0GKyHnAZ5cN?=
- =?us-ascii?Q?85SJz8JQqbdGMyp8PEFEDYVc4LBuREQ/e7B/v2sDjLOvO+uyY5WXKeQZUow0?=
- =?us-ascii?Q?fW5FKcUXH9sfda3/S2/7JFBwmOhUSvuDrwcvcTIkD0jPRZCL5+CVK6hAMQvF?=
- =?us-ascii?Q?r9CXkmn8fNyrNL2f190s/4NPfb+PTSM8x0Y6qdxxagMJZ7ALrfF/63dLuN/0?=
- =?us-ascii?Q?CFDUB2sm63dIfsQbC9nHTUvaf16iZfOwuThYc6QQSN483bRdwd8iIG0CoZWb?=
- =?us-ascii?Q?fMpste1QdJtSze+FN5GZdCR/bG19PXP39ILPp4mOGuact2Oyi5dvH4qWgeWp?=
- =?us-ascii?Q?ar8C/tvtSOSLad4RUnyQUU1eQaPGpmnNRS8ckdC4uiDSZL4SseDEImkYfbtg?=
- =?us-ascii?Q?tcNiBCZ4NBLv4Hwd+iaq6GpdHBIW8XhR?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JP6OKfw/+n7whLezxrzat6BvcjicZq37fZnxqSLiM2A60PCOAhJTN5L78fLa?=
- =?us-ascii?Q?3g1lWr2YgUx3k7V9tqHngxwPXUTzEnON7kD6h999sPGIIYJyiMd8e9i2qxtH?=
- =?us-ascii?Q?+C3jgVz3cVBpvKDnUaJ7/GTpPIK+kSMvPzqkUQgxOXf7HL+KI9Gu+V1sSv27?=
- =?us-ascii?Q?6x7CQ4rDBGkh/97K8c5aBUpmROeK1d9VbBsi9W4dTS1MDkxGNY55AjlJD4q9?=
- =?us-ascii?Q?0k9zFMIXQ2ddGGcpYxaZc7EPEY70pp9KC2N+ah1C9+Vrkb1WaYIwZgAX+dAz?=
- =?us-ascii?Q?GCAQaZh3qkI+qwIsjRXvOrJ/xvO648RD0ENK2cKgRzQRiCyM8VCOeXSDh7wS?=
- =?us-ascii?Q?NJqlM8mzU2x6DLP0Ms7dOQ72vVoI7wpaYzTaaNjyhpuBZbcd7h18odAjvl/x?=
- =?us-ascii?Q?5SIkcLUI8hdPRCwlwIKImWh8zKVyLB2vhaw8sIzYJ/C+Qw+Qn9OJy8K8M2Kp?=
- =?us-ascii?Q?bEGYVifCWGi9Tc3yGqLEPUR05vhGu+M4T1AX6cjjPvF2n3RpR+v9VLWB/npL?=
- =?us-ascii?Q?2aQLceq7rO9OKRY1DSchZnulDCOGohEFRDA2mb0HLg+BTFE7dUO/x1gc/U3G?=
- =?us-ascii?Q?fB6ASau3S17kQWGvBDFpZOsA21nVjley/s/ozEBlxM56UZCNGnFokTLTnV1Z?=
- =?us-ascii?Q?A6VeMgvGNsvqPtbFJoX6tqZTWLH7b4tlJZpJ1wBZElac0/sJry0jr78Kffsa?=
- =?us-ascii?Q?Sb0QJGI6t/V4l1OtOPUJGGzhPrDYWdWBx+dpU2t0GPVX/y+qzqSGw5BKAE/s?=
- =?us-ascii?Q?2T/VCQUnLwk5F0+jMIbMw+9qQBzbWmrPsEmEm1GRhrpm20NzP5R972l3p8qX?=
- =?us-ascii?Q?ynb83CcWakIlr3qnCmNXMaVeVl4n8z9zJX4ZMSKbsnfGzI1U3i/Ve4WntqIH?=
- =?us-ascii?Q?XJCeIhv0b3rt7ri4d/2uCrmja8NLbXdZTDEImz3OshA9xceR5Jhcje8BtuXa?=
- =?us-ascii?Q?zByYX5lo0m4cJuQfQo8X/vnQ3oB62J6G76v+8Yavls2jmwgOhuY8p2LhUEy6?=
- =?us-ascii?Q?Wuz3nwVhu2FrztKEfCmDEXP42H82bpsm6JFRQjwUygl0JQ3OnVRkrWrLpul6?=
- =?us-ascii?Q?XQsZJRFPWOeilAMbCWvVK3Pi18awEOGt5pxHIqyUMmUMJT8XQCT+oHCdnw6k?=
- =?us-ascii?Q?8+7CD303cu5z//9TUt8CWgzqCx7O8Yr+GUj3TBdrYrY91vu3nBUexr2RxmTR?=
- =?us-ascii?Q?5UikugsvKvEZM83VH5jtbqphOGN4LWkq3H+kqtJIJZTSe3GtMHSsuE64uzz0?=
- =?us-ascii?Q?oUKuEi6ia4cq6SP9jmbhhxJX+VRNdDByBJ0GiN3Vujmp0u6a6PdYbpdUhm7U?=
- =?us-ascii?Q?DtZlwvXgbEqGXYAavd2h1JRIy68FKEkgbJ8SOBx/0nL0JQ5dnMewVdaJgb/M?=
- =?us-ascii?Q?68u4CSe5ipQQ8QWIRe+EaZnmrxqXi2JgKFKON1b2myRpqJyjqBCm8enDXguY?=
- =?us-ascii?Q?FxvOSKCQTxCeD3BKw77scR3A8ztNhOwnoQVBT4Tz48Bqh2YLfhizlE/E5sfN?=
- =?us-ascii?Q?FMJVsRamouil6PFui1hf5mDOYSVGC6i5o37JzLePTKXOgUKJfCUDFhLKY7cY?=
- =?us-ascii?Q?5dfCjpg/OISqSFFTkmPz5AhOb4qffkQZajAbf5CEI53GfaZVLCqcdl6BtG/A?=
- =?us-ascii?Q?pw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	MbTKw+A85RuFCktm3Z4nHTKo/MzGipeXy6Dr+vQeOlXD5F8Vq9NlDlrlTWFqKOT56b/rzywNu9LB12z1JdI3dBE/L6TVnVt4R8/MDQ6tcgdZSOE98MCLtStHiCeP4WT/3Z66NGQ9RY2UhnPWR9/mRzC7PDk2G5kt8futppEjwc69kKZfhE7nZHsKw3Z/VFTFticfVhTbUcd80Y0BehcKKr/u4YL8wyoclbYYVI7W4xEqT7U1sMQEG4xqQcaLoOvDutwuvwUxD3LnL9NX99+7Cy9K7gdbheD8qajMR8bXu0+E3uEeY2qVq2h8AMJdAY5V+2jv4md/V9w50z6b+3GqsdU60RMHJQ7wItHfrxnFBFdudCurSgXD7EVrec/mFBoQtvq8LGKNYH3z4dNNlBTbTtzqhw9T9sw5J3TyKMZgZIMJrB/vSgxwNJglIHiHRu+e9ACs0CdMaNZI+XuBQrmvsybf2m58s5xSR/dvismjQP2ZpJiAwpaYOXwQ4/KZkb3kj1OSBk99c4n5OF0vJwZFU/kXfLqcisOHxz7qpJD5pLA9jVoG7C6qQ9N8ZmeBOfsm5umUCNr4su/LJvyd/ceR+fKKrqzHfQj4ZC8h4ErSQBA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae413fb0-74ce-4c3a-f63b-08de25ec2c56
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 15:15:42.1529
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y7nbf3hRcHN0jtV9ihfTy3wKy/KhmcrDpJKs7DCjTDDE1tTyueYKq+N/Zj4xtsc4DYM9pk19yK5NxZmkASTT+tN2JBWzdqLkDFIOzWEnVgI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR10MB997613
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-17_03,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=946
- suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2511170129
-X-Authority-Analysis: v=2.4 cv=DYoaa/tW c=1 sm=1 tr=0 ts=691b3c21 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=lEwFJ7TrmBIjYf88vTQA:9 a=CjuIK1q_8ugA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: LfkO-x408tzgfoWNNSHGgPhseusuNrvH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMSBTYWx0ZWRfX+6YP+WL50Ute
- 15UjEUeY1hezO+NAG/s+PCddwjt+CUEbjqMyntPWlPnoDpJ+sQ+GH1FLlkDzfnKk322gLEqKdrc
- xUs2EA/swzZGWIRGdernj5dzyk8ZivBGsqCRy2S3bs7h4qcY26VRkyELhVy0iNtTz92SWFP++JG
- XDqQHMwSNW+dMSByTULuvlUkIsdAV9Y2/CLE7bmp+LO/5A80dQNxLjjXfa5ROcppOXVsZ3zFBu3
- 4FQjEzO1jkJx5ai6OoJ44pKHndr2YmZ0i0iu9fkH63PToqxK9g2U3T6OjZFL/TMA4oToICqVSho
- vSexOqD+1bFx0Q0PS7zM3RUcpGpcx0F6QL+lK3I1X739yiIKeyhi4rDW1Nd3dbpjMpxo91TJ6P4
- 8S+FyuwLP+eC5R7niDUDdM5cLeB+YQ==
-X-Proofpoint-ORIG-GUID: LfkO-x408tzgfoWNNSHGgPhseusuNrvH
-X-Rspamd-Server: rspam12
+References: <20251115023447.495417-1-senozhatsky@chromium.org> <20251115023447.495417-2-senozhatsky@chromium.org>
+In-Reply-To: <20251115023447.495417-2-senozhatsky@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Mon, 17 Nov 2025 10:19:22 -0500
+X-Gm-Features: AWmQ_blDTLoax8uxJhl4MtvN07CDRxv9gzuW7M7HtQx4zJ9mZPC5heCRHsy0Xws
+Message-ID: <CADyq12zxzi+t727B5sm5z-z3SmRQyMDOmr_tTG1GaMVh6VTWbw@mail.gmail.com>
+Subject: Re: [PATCHv3 1/4] zram: introduce writeback bio batching support
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Yuwen Chen <ywen.chen@foxmail.com>, Richard Chang <richardycc@google.com>, 
+	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org, Minchan Kim <minchan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B3439C0004
-X-Stat-Signature: jx9kwxd9cq49nhggjnjsd8suxu8d9bks
-X-HE-Tag: 1763392549-111661
-X-HE-Meta: U2FsdGVkX1/A4gX1ZrkSxown1/MA2CId+Bzx+4bGfsrdKv1jdJHWPreTsmwIvenuqbxeV05hoBzRr+iZvwyDBKPvINPSkU25ycYU+VlQq36/Xprd8oy537L0mZzxfRRuRwqtaBZhlqqFNhC3Dlk1P6ZNBqTgpOLv0MCCRLYIb2G/Wmy6IcJdcEbAHBZOJxDYBG8PuLxjY5s0VgApk5b971+16qUJeZUOyY44TnnI4aNNQBFw/6FKFmhBF0OWJ2ZIKxt6o9jvVt3sahgcRCZtEQvb+g5Z9tgd8gmbV6xX3g8akQSXFe/GfA9rKgD2Jb2mfrUjut1Mak9Xrm7TIvk5eb4/9Wit/ccB2ytzHsy6kxajOCPcvzMP31yAxw+NdB2Nrh3ImRcxifF/j3ULL8ash3fVG8fyov7QMfhnPRh3n3EcvwVHhAUkVXjYfnfax6rFHzvH8vzfN+2IeOuE2CGZ2ppbyas23ETmw3rXugN+jT1B1BS/U4cduFC/p2yjUQla+3qV4wTM6gx+E7b5jNQ4FDlqfQl0d9sc5uiyAePXOVOO5/MS9sWzCIqVFo7h4mVWvci49hLQFBMhyPqWfFhGADwF4Syq5XzWklcKLysi/zMn1CK0m34UnSLtvGQ9gpcQbLMp5T3syO8vhbekC4t6y9g7mCXbZY1qlojYNxwQ7ObY1oUWTGahCx7Hh06qYAo7/KcSOewZUtFIVj6hmHj42LSxknHNA7Zu5fQ/+jxVN0kSAiY3xt3fOLG0IDklYfIHRCTxWpFtfPqrsGFy7h03RkT8QFT7FrRWwBe2lbHcRFkfceP8PqUd/0xPymYWwff+sE3zj6MZm5SytcnS3vXO0fW4Lp3F4RBkEFCprAva/NkpRIzkN+Elsb4PbZmIjF7nk3WnD5jbRsbotw6K24YqJw7TrJ9aikVxTyxB4pavNbhOA7hAFZrTl2yTVt7T8bIS516dckPo9U9K5cvUzTq
- 0mCkz1pM
- IxoAsmYJQ+GRpcsndWZcbr8YUj9gebT/FHKpuycnl4cskYVA/HPVXdaeHCyyiZ0xcs51U5gIUwCo4sqHt1oIYbWB1ZmJBG+17KWPMZNDxuxy7jr0BgyAn3TNi8wE/Sw9f5fRGbJOkT7QRBFU9l4M6MOybYpxSf+yd0ooSapwHoGJyUVa29mgVkP/ucH9ehgXmjbB0RUhyag/CvUBsI2oGXBHTZlF8UwhRydux1k816fKhxvquPMPTTLHCAPY73oMZLOUbaQ/52kshLSycf2T3Ob6tN8B5mB0/2DZstrWPpgG80wOUrYp3XFrObsWJL/Zcro0qyYXA+R6m4GKSOe8NVr5RlTNa5i+3h55OtXMbzGx4XDd/Yn8UIxEYU/tVHxQH8SG9NF3zzoGmOGOGjN7gnBIy10ISpT6fUiQBJ1MJdr5LqGymxpsD3qJfHNcPJcdTVWjPyNulOwDutCPWy6yvqAA6CP3fsLGFaU1jIcLjIcu2zniIm9X/r/NdcUsRvHfOuM2EIU8U9XNultO0O0GqMpJB8YZWGEvdzNMOLfCB5aV2+tzwRTf58Tb9RGytgAvfKa+eDnkmgtMPCcqHGay4roOsPbZhH5/hGNo70d9O2q1VfQM=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 79BB0A0017
+X-Stat-Signature: 67qbje3ww5aiz3usq7aea6upxftuypcf
+X-HE-Tag: 1763392800-396226
+X-HE-Meta: U2FsdGVkX1/8OMR5UnTDJqLkYojGdypVU5p2S+bSJZ5IlWCZorTESUuYSaWGn09AM8B34Zsm/uFPym6tnnvDCyHk/YdhuL70edTkCA8q95H4LizvLYdasyLdU4SQPHhgDmvc64BZkPZZKkbkq4LkVo1jGVO+7r1Wv4GBe0T6UXtjfWuToY1T5WrO7Xq0gW8uoHw9tDmRH8PY0vBQG6GVFzMV51ayf5dshoK3Z99qgfCWoAQsdC+l6y57nFp77iE1f5m2HS+ch17+3ELXe9m8KMjC/UAts8v0cDgkRMb9yhVfrlJdjPBIk4B1EcOmP00CLiPH0o47phUVFJTu+J/QV4z+uEmJVMn9Ar1MRigfzf/xlrxLJY2G/nTBruWghtIJnxCFyNRqESyDnnXZRAG5OoXEiw6iUmiSFvcXyx92dudrI5RHfRTy3g61NWeEmECC71GmA17GfMkuUYuFLDlvSNWQ6yyaxWUInlYMxCgL82JlJwIKcvIxqTbEMreKJ5mHZv8H/H+GCnCtEBa+wOciDaiBCwaoAF/Sx4PSy+xD+Q4D3bCQ9bZVbiwLN26kb8pmMR+WeH/Mg4c+6MNlD7Xpx0+kq6tjGIHHcz7bIkQXskrahV3TITusICo+1347FfbAA90fXYQzwG++OLpJ/ywtnNtet53SpZrsG00DPmoYqnQNkGgu4QC6qXSQCnSWdkePkoBmqvdIirdVKmMTcYZuRPbR8opxleeLMrjgCVIs/bWTT1jodRLWOF3A25TH78Q2AtzZUAzHXAWyfRzD0EKRKXZD3Q2UD67SXMjZ30kXZ1S+ylwq96YGe2j0VFOonhPacayOwJvJh1CaNmwvpJqM3IlN8KxgwmQgj+mDxuox2iKr+cJiKH97vfrC7vThB6AHHg+UCykhfQJDKTEJ2pQsY2fXVbZYVl9h65+ZOh3e0btrk6LF8JSWE9rnaABJBNsythUlih54BHICXwStDzk
+ FrpKgOXr
+ 4fr+cUhMW3GPaYTRc0R6/oYYPKqArzPcr+5KDmUii/DCIuUp05Re+jalaP8koTez+qW29vVjaxYhzba+Od4ciy4WQZLq7L+XHF63yUJ6Bjk/csO3Gdfd6AJurIdAu97veueTqysJWlPtyqguJhkTlQqRmYPa66jSO2bFr3bSb1mM8DJg2QL2yxIot7ARPSgFq3Zb5lj89b0ZXCDqJbHRbOxYA7+SSxlaXlBM40lfQe5uLLXk+XDSHQ3kMkpDchlfzLccwEcc/h+HVG2/bBKrspTsY5Mmz0bLjaY+1cIQa67WyLtVs8smg0Wo2t6U0hiXR3hhLI+HydrD97JVYZEEFMD7m8ecmozJ1cIhb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -237,109 +119,540 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 03:44:46PM +0100, David Hildenbrand (Red Hat) wrote:
-> On 14.11.25 18:53, Lorenzo Stoakes wrote:
-> > Assert that we correctly merge VMAs containing VM_SOFTDIRTY flags now that
-> > we correctly handle these as sticky.
-> >
-> > In order to do so, we have to account for the fact the pagemap interface
-> > checks soft dirty PTEs and additionally that newly merged VMAs are marked
-> > VM_SOFTDIRTY.
-> >
-> > To account for this we use unfaulted anon VMAs, mapping one VMA in and
-> > clearing soft-dirty, then another separate from the first which will be
-> > marked soft-dirty which we then mremap() into place.
-> >
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > ---
-> >   tools/testing/selftests/mm/soft-dirty.c | 51 ++++++++++++++++++++++++-
-> >   1 file changed, 50 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-> > index 4ee4db3750c1..bb29edb1e2a3 100644
-> > --- a/tools/testing/selftests/mm/soft-dirty.c
-> > +++ b/tools/testing/selftests/mm/soft-dirty.c
-> > @@ -184,6 +184,54 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
-> >   		close(test_fd);
-> >   }
-> > +static void test_merge(int pagemap_fd, int pagesize)
-> > +{
-> > +	char *reserved, *map, *map2;
-> > +
-> > +	/* Reserve space. */
+On Fri, Nov 14, 2025 at 9:35=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> It took me a while to figure out why you are using 4 pages. I guess you want
-> to make sure that we don't end up merging to the left (or the right). A
-> diagram would have helped me.
+> From: Yuwen Chen <ywen.chen@foxmail.com>
+>
+> Currently, zram writeback supports only a single bio writeback
+> operation, waiting for bio completion before post-processing
+> next pp-slot.  This works, in general, but has certain throughput
+> limitations.  Implement batched (multiple) bio writeback support
+> to take advantage of parallel requests processing and better
+> requests scheduling.
+>
+> For the time being the writeback batch size (maximum number of
+> in-flight bio requests) is set to 32 for all devices.  A follow
+> up patch adds a writeback_batch_size device attribute, so the
+> batch size becomes run-time configurable.
+>
+> Please refer to [1] and [2] for benchmarks.
+>
+> [1] https://lore.kernel.org/linux-block/tencent_B2DC37E3A2AED0E7F179365FC=
+B5D82455B08@qq.com
+> [2] https://lore.kernel.org/linux-block/tencent_0FBBFC8AE0B97BC63B5D47CE1=
+FF2BABFDA09@qq.com
+>
+> [senozhatsky: significantly reworked the initial patch so that the
+> approach and implementation resemble current zram post-processing
+> code]
+>
+> Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Co-developed-by: Richard Chang <richardycc@google.com>
+> Suggested-by: Minchan Kim <minchan@google.com>
+> ---
+>  drivers/block/zram/zram_drv.c | 343 +++++++++++++++++++++++++++-------
+>  1 file changed, 277 insertions(+), 66 deletions(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index a43074657531..84e72c3bb280 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -500,6 +500,24 @@ static ssize_t idle_store(struct device *dev,
+>  }
+>
+>  #ifdef CONFIG_ZRAM_WRITEBACK
+> +struct zram_wb_ctl {
+> +       struct list_head idle_reqs;
+> +       struct list_head inflight_reqs;
+> +
+> +       atomic_t num_inflight;
+> +       struct completion done;
+> +};
+> +
+> +struct zram_wb_req {
+> +       unsigned long blk_idx;
+> +       struct page *page;
+> +       struct zram_pp_slot *pps;
+> +       struct bio_vec bio_vec;
+> +       struct bio bio;
+> +
+> +       struct list_head entry;
+> +};
+> +
+>  static ssize_t writeback_limit_enable_store(struct device *dev,
+>                 struct device_attribute *attr, const char *buf, size_t le=
+n)
+>  {
+> @@ -734,20 +752,207 @@ static void read_from_bdev_async(struct zram *zram=
+, struct page *page,
+>         submit_bio(bio);
+>  }
+>
+> -static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *c=
+tl)
+> +static void release_wb_req(struct zram_wb_req *req)
+> +{
+> +       __free_page(req->page);
+> +       kfree(req);
+> +}
+> +
+> +static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+> +{
+> +       /* We should never have inflight requests at this point */
+> +       WARN_ON(!list_empty(&wb_ctl->inflight_reqs));
+> +
+> +       while (!list_empty(&wb_ctl->idle_reqs)) {
+> +               struct zram_wb_req *req;
+> +
+> +               req =3D list_first_entry(&wb_ctl->idle_reqs,
+> +                                      struct zram_wb_req, entry);
+> +               list_del(&req->entry);
+> +               release_wb_req(req);
+> +       }
+> +
+> +       kfree(wb_ctl);
+> +}
+> +
+> +/* XXX: should be a per-device sysfs attr */
+> +#define ZRAM_WB_REQ_CNT 32
+> +
+> +static struct zram_wb_ctl *init_wb_ctl(void)
+> +{
+> +       struct zram_wb_ctl *wb_ctl;
+> +       int i;
+> +
+> +       wb_ctl =3D kmalloc(sizeof(*wb_ctl), GFP_KERNEL);
+> +       if (!wb_ctl)
+> +               return NULL;
+> +
+> +       INIT_LIST_HEAD(&wb_ctl->idle_reqs);
+> +       INIT_LIST_HEAD(&wb_ctl->inflight_reqs);
+> +       atomic_set(&wb_ctl->num_inflight, 0);
+> +       init_completion(&wb_ctl->done);
+> +
+> +       for (i =3D 0; i < ZRAM_WB_REQ_CNT; i++) {
+> +               struct zram_wb_req *req;
+> +
+> +               /*
+> +                * This is fatal condition only if we couldn't allocate
+> +                * any requests at all.  Otherwise we just work with the
+> +                * requests that we have successfully allocated, so that
+> +                * writeback can still proceed, even if there is only one
+> +                * request on the idle list.
+> +                */
+> +               req =3D kzalloc(sizeof(*req), GFP_KERNEL | __GFP_NOWARN);
+> +               if (!req)
+> +                       break;
+> +
+> +               req->page =3D alloc_page(GFP_KERNEL | __GFP_NOWARN);
+> +               if (!req->page) {
+> +                       kfree(req);
+> +                       break;
+> +               }
+> +
+> +               list_add(&req->entry, &wb_ctl->idle_reqs);
+> +       }
+> +
+> +       /* We couldn't allocate any requests, so writeabck is not possibl=
+e */
+> +       if (list_empty(&wb_ctl->idle_reqs))
+> +               goto release_wb_ctl;
+> +
+> +       return wb_ctl;
+> +
+> +release_wb_ctl:
+> +       release_wb_ctl(wb_ctl);
+> +       return NULL;
+> +}
+> +
+> +static void zram_account_writeback_rollback(struct zram *zram)
+>  {
+> +       spin_lock(&zram->wb_limit_lock);
+> +       if (zram->wb_limit_enable)
+> +               zram->bd_wb_limit +=3D  1UL << (PAGE_SHIFT - 12);
+> +       spin_unlock(&zram->wb_limit_lock);
+> +}
+> +
+> +static void zram_account_writeback_submit(struct zram *zram)
+> +{
+> +       spin_lock(&zram->wb_limit_lock);
+> +       if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
+> +               zram->bd_wb_limit -=3D  1UL << (PAGE_SHIFT - 12);
+> +       spin_unlock(&zram->wb_limit_lock);
+> +}
+> +
+> +static int zram_writeback_complete(struct zram *zram, struct zram_wb_req=
+ *req)
+> +{
+> +       u32 index;
+> +       int err;
+> +
+> +       index =3D req->pps->index;
+> +       release_pp_slot(zram, req->pps);
+> +       req->pps =3D NULL;
+> +
+> +       err =3D blk_status_to_errno(req->bio.bi_status);
+> +       if (err) {
+> +               /*
+> +                * Failed wb requests should not be accounted in wb_limit
+> +                * (if enabled).
+> +                */
+> +               zram_account_writeback_rollback(zram);
+> +               return err;
+> +       }
+> +
+> +       atomic64_inc(&zram->stats.bd_writes);
+> +       zram_slot_lock(zram, index);
+> +       /*
+> +        * We release slot lock during writeback so slot can change under=
+ us:
+> +        * slot_free() or slot_free() and zram_write_page(). In both case=
+s
+> +        * slot loses ZRAM_PP_SLOT flag. No concurrent post-processing ca=
+n
+> +        * set ZRAM_PP_SLOT on such slots until current post-processing
+> +        * finishes.
+> +        */
+> +       if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
+> +               goto out;
+> +
+> +       zram_free_page(zram, index);
+> +       zram_set_flag(zram, index, ZRAM_WB);
+> +       zram_set_handle(zram, index, req->blk_idx);
+> +       atomic64_inc(&zram->stats.pages_stored);
+> +
+> +out:
+> +       zram_slot_unlock(zram, index);
+> +       return 0;
+> +}
+> +
+> +static void zram_writeback_endio(struct bio *bio)
+> +{
+> +       struct zram_wb_ctl *wb_ctl =3D bio->bi_private;
+> +
+> +       if (atomic_dec_return(&wb_ctl->num_inflight) =3D=3D 0)
+> +               complete(&wb_ctl->done);
+> +}
+> +
+> +static void zram_submit_wb_request(struct zram *zram,
+> +                                  struct zram_wb_ctl *wb_ctl,
+> +                                  struct zram_wb_req *req)
+> +{
+> +       /*
+> +        * wb_limit (if enabled) should be adjusted before submission,
+> +        * so that we don't over-submit.
+> +        */
+> +       zram_account_writeback_submit(zram);
+> +       atomic_inc(&wb_ctl->num_inflight);
+> +       list_add_tail(&req->entry, &wb_ctl->inflight_reqs);
+> +       submit_bio(&req->bio);
+> +}
+> +
+> +static struct zram_wb_req *select_idle_req(struct zram_wb_ctl *wb_ctl)
+> +{
+> +       struct zram_wb_req *req;
+> +
+> +       req =3D list_first_entry_or_null(&wb_ctl->idle_reqs,
+> +                                      struct zram_wb_req, entry);
+> +       if (req)
+> +               list_del(&req->entry);
+> +       return req;
+> +}
+> +
+> +static int zram_wb_wait_for_completion(struct zram *zram,
+> +                                      struct zram_wb_ctl *wb_ctl)
+> +{
+> +       int ret =3D 0;
+> +
+> +       if (atomic_read(&wb_ctl->num_inflight))
+> +               wait_for_completion_io(&wb_ctl->done);
+> +
+> +       reinit_completion(&wb_ctl->done);
+> +       while (!list_empty(&wb_ctl->inflight_reqs)) {
+> +               struct zram_wb_req *req;
+> +               int err;
+> +
+> +               req =3D list_first_entry(&wb_ctl->inflight_reqs,
+> +                                      struct zram_wb_req, entry);
+> +               list_move(&req->entry, &wb_ctl->idle_reqs);
+> +
+> +               err =3D zram_writeback_complete(zram, req);
+> +               if (err)
+> +                       ret =3D err;
+> +       }
+> +
+> +       return ret;
+> +}
+> +
+> +static int zram_writeback_slots(struct zram *zram,
+> +                               struct zram_pp_ctl *ctl,
+> +                               struct zram_wb_ctl *wb_ctl)
+> +{
+> +       struct zram_wb_req *req =3D NULL;
+>         unsigned long blk_idx =3D 0;
+> -       struct page *page =3D NULL;
+>         struct zram_pp_slot *pps;
+> -       struct bio_vec bio_vec;
+> -       struct bio bio;
+> +       struct blk_plug io_plug;
+>         int ret =3D 0, err;
+> -       u32 index;
+> -
+> -       page =3D alloc_page(GFP_KERNEL);
+> -       if (!page)
+> -               return -ENOMEM;
+> +       u32 index =3D 0;
+>
+> +       blk_start_plug(&io_plug);
+>         while ((pps =3D select_pp_slot(ctl))) {
+>                 spin_lock(&zram->wb_limit_lock);
+>                 if (zram->wb_limit_enable && !zram->bd_wb_limit) {
+> @@ -757,6 +962,26 @@ static int zram_writeback_slots(struct zram *zram, s=
+truct zram_pp_ctl *ctl)
+>                 }
+>                 spin_unlock(&zram->wb_limit_lock);
+>
+> +               while (!req) {
+> +                       req =3D select_idle_req(wb_ctl);
+> +                       if (req)
+> +                               break;
+> +
+> +                       blk_finish_plug(&io_plug);
+> +                       err =3D zram_wb_wait_for_completion(zram, wb_ctl)=
+;
+> +                       blk_start_plug(&io_plug);
+> +                       /*
+> +                        * BIO errors are not fatal, we continue and simp=
+ly
+> +                        * attempt to writeback the remaining objects (pa=
+ges).
+> +                        * At the same time we need to signal user-space =
+that
+> +                        * some writes (at least one, but also could be a=
+ll of
+> +                        * them) were not successful and we do so by retu=
+rning
+> +                        * the most recent BIO error.
+> +                        */
+> +                       if (err)
+> +                               ret =3D err;
+> +               }
+> +
+>                 if (!blk_idx) {
+>                         blk_idx =3D alloc_block_bdev(zram);
+>                         if (!blk_idx) {
+> @@ -765,7 +990,6 @@ static int zram_writeback_slots(struct zram *zram, st=
+ruct zram_pp_ctl *ctl)
+>                         }
+>                 }
+>
+> -               index =3D pps->index;
+>                 zram_slot_lock(zram, index);
+>                 /*
+>                  * scan_slots() sets ZRAM_PP_SLOT and relases slot lock, =
+so
+> @@ -775,67 +999,46 @@ static int zram_writeback_slots(struct zram *zram, =
+struct zram_pp_ctl *ctl)
+>                  */
+>                 if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
+>                         goto next;
+> -               if (zram_read_from_zspool(zram, page, index))
+> +               if (zram_read_from_zspool(zram, req->page, index))
+>                         goto next;
+>                 zram_slot_unlock(zram, index);
+>
+> -               bio_init(&bio, zram->bdev, &bio_vec, 1,
+> -                        REQ_OP_WRITE | REQ_SYNC);
+> -               bio.bi_iter.bi_sector =3D blk_idx * (PAGE_SIZE >> 9);
+> -               __bio_add_page(&bio, page, PAGE_SIZE, 0);
+> -
+>                 /*
+> -                * XXX: A single page IO would be inefficient for write
+> -                * but it would be not bad as starter.
+> +                * From now on pp-slot is owned by the req, remove it fro=
+m
+> +                * its pp bucket.
+>                  */
+> -               err =3D submit_bio_wait(&bio);
+> -               if (err) {
+> -                       release_pp_slot(zram, pps);
+> -                       /*
+> -                        * BIO errors are not fatal, we continue and simp=
+ly
+> -                        * attempt to writeback the remaining objects (pa=
+ges).
+> -                        * At the same time we need to signal user-space =
+that
+> -                        * some writes (at least one, but also could be a=
+ll of
+> -                        * them) were not successful and we do so by retu=
+rning
+> -                        * the most recent BIO error.
+> -                        */
+> -                       ret =3D err;
+> -                       continue;
+> -               }
+> +               list_del_init(&pps->entry);
+>
+> -               atomic64_inc(&zram->stats.bd_writes);
+> -               zram_slot_lock(zram, index);
+> -               /*
+> -                * Same as above, we release slot lock during writeback s=
+o
+> -                * slot can change under us: slot_free() or slot_free() a=
+nd
+> -                * reallocation (zram_write_page()). In both cases slot l=
+oses
+> -                * ZRAM_PP_SLOT flag. No concurrent post-processing can s=
+et
+> -                * ZRAM_PP_SLOT on such slots until current post-processi=
+ng
+> -                * finishes.
+> -                */
+> -               if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
+> -                       goto next;
+> +               req->blk_idx =3D blk_idx;
+> +               req->pps =3D pps;
+> +               bio_init(&req->bio, zram->bdev, &req->bio_vec, 1, REQ_OP_=
+WRITE);
+> +               req->bio.bi_iter.bi_sector =3D req->blk_idx * (PAGE_SIZE =
+>> 9);
+> +               req->bio.bi_end_io =3D zram_writeback_endio;
+> +               req->bio.bi_private =3D wb_ctl;
+> +               __bio_add_page(&req->bio, req->page, PAGE_SIZE, 0);
 
-I have spoiled everybody too much with my ASCII diagrams ;)
-
-But _just for you_ I will make one again ;))
-
->
-> > +	reserved = mmap(NULL, 4 * pagesize, PROT_NONE,
-> > +			MAP_ANON | MAP_PRIVATE, -1, 0);
-> > +	if (reserved == MAP_FAILED)
-> > +		ksft_exit_fail_msg("mmap failed\n");
-> > +	munmap(reserved, 4 * pagesize);
-> > +
-> > +	/* Map a page. */
->
-> Note that we are not actually "mapping a page". "Create a new page-sized
-> VMA" or sth like that.
-
-Lol depends on your definition I suppose. Not in the sense of page table
-mappings. I guess this is fairly redundant anyway so can dorp
+Out of curiosity, why are we doing 1 page per bio? Why are we not
+adding BIO_MAX_VECS before submitting? And then, why are we not
+chaining? Do the block layer maintainers have thoughts?
 
 >
-> > +	map = mmap(&reserved[pagesize], pagesize, PROT_READ | PROT_WRITE,
-> > +		   MAP_ANON | MAP_PRIVATE | MAP_FIXED, -1, 0);
-> > +	if (map == MAP_FAILED)
-> > +		ksft_exit_fail_msg("mmap failed\n");
-> > +
-> > +	/* This will clear VM_SOFTDIRTY too. */
-> > +	clear_softdirty();
-> > +
-> > +	/*
-> > +	 * Now place a new mapping which will be marked VM_SOFTDIRTY. Away from
-> > +	 * map.
+> -               zram_free_page(zram, index);
+> -               zram_set_flag(zram, index, ZRAM_WB);
+> -               zram_set_handle(zram, index, blk_idx);
+> +               zram_submit_wb_request(zram, wb_ctl, req);
+>                 blk_idx =3D 0;
+> -               atomic64_inc(&zram->stats.pages_stored);
+> -               spin_lock(&zram->wb_limit_lock);
+> -               if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
+> -                       zram->bd_wb_limit -=3D  1UL << (PAGE_SHIFT - 12);
+> -               spin_unlock(&zram->wb_limit_lock);
+> +               req =3D NULL;
+> +               continue;
+> +
+>  next:
+>                 zram_slot_unlock(zram, index);
+>                 release_pp_slot(zram, pps);
+> -
+>                 cond_resched();
+>         }
 >
-> Could we have something "to the right" of this new VMA that we might be
-> merging with (that might interfere?) and if so, do we care?
+> -       if (blk_idx)
+> -               free_block_bdev(zram, blk_idx);
+> -       if (page)
+> -               __free_page(page);
+> +       /*
+> +        * Selected idle req, but never submitted it due to some error or
+> +        * wb limit.
+> +        */
+> +       if (req)
+> +               release_wb_req(req);
+> +
+> +       blk_finish_plug(&io_plug);
+> +       err =3D zram_wb_wait_for_completion(zram, wb_ctl);
+> +       if (err)
+> +               ret =3D err;
 >
-> Just wondering if we would actually want a reserved area that spans 5 page
-> sizes to rule out these cases.
+>         return ret;
+>  }
+> @@ -948,7 +1151,8 @@ static ssize_t writeback_store(struct device *dev,
+>         struct zram *zram =3D dev_to_zram(dev);
+>         u64 nr_pages =3D zram->disksize >> PAGE_SHIFT;
+>         unsigned long lo =3D 0, hi =3D nr_pages;
+> -       struct zram_pp_ctl *ctl =3D NULL;
+> +       struct zram_pp_ctl *pp_ctl =3D NULL;
+> +       struct zram_wb_ctl *wb_ctl =3D NULL;
+>         char *args, *param, *val;
+>         ssize_t ret =3D len;
+>         int err, mode =3D 0;
+> @@ -970,8 +1174,14 @@ static ssize_t writeback_store(struct device *dev,
+>                 goto release_init_lock;
+>         }
 >
-
-You're right! This is an oversight, will fix.
-
-> mmap1
+> -       ctl =3D init_pp_ctl();
+> -       if (!ctl) {
+> +       pp_ctl =3D init_pp_ctl();
+> +       if (!pp_ctl) {
+> +               ret =3D -ENOMEM;
+> +               goto release_init_lock;
+> +       }
+> +
+> +       wb_ctl =3D init_wb_ctl();
+> +       if (!wb_ctl) {
+>                 ret =3D -ENOMEM;
+>                 goto release_init_lock;
+>         }
+> @@ -1000,7 +1210,7 @@ static ssize_t writeback_store(struct device *dev,
+>                                 goto release_init_lock;
+>                         }
 >
-> [ empty ][ VMA1  ][ empty                   ]
+> -                       scan_slots_for_writeback(zram, mode, lo, hi, ctl)=
+;
+> +                       scan_slots_for_writeback(zram, mode, lo, hi, pp_c=
+tl);
+>                         break;
+>                 }
 >
-> mmap2
+> @@ -1011,7 +1221,7 @@ static ssize_t writeback_store(struct device *dev,
+>                                 goto release_init_lock;
+>                         }
 >
-> [ empty ][ VMA1  ][ empty ][ VMA2  ][ empty ]
+> -                       scan_slots_for_writeback(zram, mode, lo, hi, ctl)=
+;
+> +                       scan_slots_for_writeback(zram, mode, lo, hi, pp_c=
+tl);
+>                         break;
+>                 }
 >
-> mremap
+> @@ -1022,7 +1232,7 @@ static ssize_t writeback_store(struct device *dev,
+>                                 goto release_init_lock;
+>                         }
 >
-> [ empty ][ VMA1  ][ VMA2  ][ empty          ]
+> -                       scan_slots_for_writeback(zram, mode, lo, hi, ctl)=
+;
+> +                       scan_slots_for_writeback(zram, mode, lo, hi, pp_c=
+tl);
+>                         continue;
+>                 }
 >
-> which is after the merge
+> @@ -1033,17 +1243,18 @@ static ssize_t writeback_store(struct device *dev=
+,
+>                                 goto release_init_lock;
+>                         }
 >
-> [ empty ][ VMA (SD)       ][                ]
-
-Yeah this is the purpose of adding space around.
-
-I also want to add an additional test anyway so can do both things at once
-:)
-
+> -                       scan_slots_for_writeback(zram, mode, lo, hi, ctl)=
+;
+> +                       scan_slots_for_writeback(zram, mode, lo, hi, pp_c=
+tl);
+>                         continue;
+>                 }
+>         }
 >
+> -       err =3D zram_writeback_slots(zram, ctl);
+> +       err =3D zram_writeback_slots(zram, pp_ctl, wb_ctl);
+>         if (err)
+>                 ret =3D err;
+>
+>  release_init_lock:
+> -       release_pp_ctl(zram, ctl);
+> +       release_pp_ctl(zram, pp_ctl);
+> +       release_wb_ctl(wb_ctl);
+>         atomic_set(&zram->pp_in_progress, 0);
+>         up_read(&zram->init_lock);
 >
 > --
-> Cheers
+> 2.52.0.rc1.455.g30608eb744-goog
 >
-> David
-
-Cheers, Lorenzo
 
