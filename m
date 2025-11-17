@@ -4,95 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DA4DCEBF61
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 16:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE1B8CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D4CE6B0006; Mon, 17 Nov 2025 11:58:08 -0500 (EST)
+	id 321448E001C; Mon, 17 Nov 2025 12:00:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 984996B0008; Mon, 17 Nov 2025 11:58:08 -0500 (EST)
+	id 2F95D8E0002; Mon, 17 Nov 2025 12:00:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89A726B000C; Mon, 17 Nov 2025 11:58:08 -0500 (EST)
+	id 20F958E001C; Mon, 17 Nov 2025 12:00:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 71D686B0006
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:58:08 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D889160213
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:58:08 +0000 (UTC)
-X-FDA: 84120706656.13.E17BD93
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5C19B140015
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:58:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dPT+kdRJ;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DDBD8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:00:14 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 977EA139AFF
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:00:13 +0000 (UTC)
+X-FDA: 84120711906.18.398AB40
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C6E2D1C0005
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:00:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXRkM0oz;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763398686;
+	s=arc-20220608; t=1763398811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BTWh6KCVX3IOUXWMKrKtbyQgmh8U9cfwOHWJa+mV1OM=;
-	b=uEMOjiAtfkLDDEsOBcttyYZ0TSAPePg7FDsvD///J68umauu/Ir1z0bYi1qd3Dkmdmvdb9
-	QdCfwvalMT8jN4GvFyA3XfmQTL8fv6wCEGWMgStXY8PmyzrcqxVgZrvR5MXYDZmY59XgIb
-	KQRLEaBgBT9a3yjRM+wVLkRCm1LZjLc=
+	bh=EAlaPB0tCEg4Zy+navTIrv3OeeygcARrLMso+2IJFQY=;
+	b=i5+nx/c9y0Ckqr8a/cytwkZH9dE4uGyFPmxlI1+15j3FGkze/6TYcprcpjwIf65RVWhm8i
+	Dvemlh+DeLvQVPOIYA4yJP3laGPl26Rkyg8Jwh36XFg/aISPNA+A+XzYTzAca7JzJwyywM
+	PnriHT7UkUg1Xnzv5pJJVjRf8ddjo34=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dPT+kdRJ;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXRkM0oz;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763398686; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763398811; a=rsa-sha256;
 	cv=none;
-	b=npBovq7j55exFZfiegYNRw7Gk5BNWmpaixg4wwqt7lVvQ9VBLFF8+N9MDTYKa5JIn4MOug
-	j+KN5xpcXHPlSGnhXF+/wQgTrBHPtcUuix/Wo1fdUi4+B0CSGoZBnLQTBeCkMs5RSOU0+L
-	txTb24mBfw+CHun/Gb9MHeNvimIoDZo=
+	b=g4xUmcWiyYuGTcqAZ/NQc4zrJQm+kx4SL1YRMw6L92k1QOLg5SJd1Tj1YHgdNXYRgzUpi6
+	LXx+nKRCrFP3iTfGqV+yun200i+9M9w/UxpUoCUjWel8XaWlvyLOqSJalDt3m9R4o6Jpvz
+	RLzkVMw3Bp8wAWsdicddDDtznVGxbQw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CB7F41AD1;
-	Mon, 17 Nov 2025 16:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11DDC116B1;
-	Mon, 17 Nov 2025 16:58:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 22F806022A;
+	Mon, 17 Nov 2025 17:00:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A21C19423;
+	Mon, 17 Nov 2025 17:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763398685;
-	bh=XI7Dqc8hDG/imiQjwpaa5L5QUXIhiYHcmUsbHNJq770=;
+	s=k20201202; t=1763398810;
+	bh=DD5aJ0CYO5FJNOi0XizsUc+cIpf1vb2XlK1BACSazP0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dPT+kdRJmrc++E4JgaDg0HvOn87ub1fN81aujiL3JuYrC+XABLmrn8IKbujtOxjox
-	 06UW28/7RYwaB1AdZehoyv5pTGVprSBAXjHnoKbjSL+FhOIiMfHk/eazN5xF1ef35L
-	 iI2y5+BgESdTBJPjDJ0iyZWOBGh7c+XsGh6M04pYgwNZsjWk51POupKSyh33gdm0EP
-	 45y5/jkWLrEhutdIoC4OWF5kMcmkisDNjsD7jjLCsAiCX9ZO+pgaVPoMulUmJlaGb9
-	 4LERACYZwJIsl5lju9+IsQAyONXCgmYbWkB3p/ehSBdOllMUN3kNW2OC6dfYrgwBMJ
-	 Dugsm9vMMNdlA==
-Message-ID: <355d3bf3-c6bc-403e-9f19-89259d868611@kernel.org>
-Date: Mon, 17 Nov 2025 17:57:58 +0100
+	b=DXRkM0ozBdjtfmku47EUoC5aecIc/EhtwKbfV03r6i/hnVF43NpNJqwcS5qsIM4sZ
+	 avJzaJxVZPsWIk57vzZFBdJ8qMZwHaZgWPw2J8z1rcKS6opHRvYWcSampBtKJNuyi+
+	 8LbTFQqizNyKlp3G/TpTx3az3+xSzmy585HKNQKygHRc95Spvxd4mCuwtv20Ol0uZ9
+	 0/W56NbOhupcwU+sCxTDUbL9FQ321StUqwAvFcpMbdKax710y+6ZE+Oz+xrxJ/laew
+	 y+8QoolAbRNF4F6Hq9e7TkPvEUMYzfDVNhvgt5o3x+z4NagMG8v7lKnxf7vJF5NP5y
+	 rkUHC+7R4jnJw==
+Message-ID: <4c5a9201-b2dc-4765-bfc7-f89ec095b629@kernel.org>
+Date: Mon, 17 Nov 2025 18:00:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] mm: make PT_RECLAIM depend on
- MMU_GATHER_RCU_TABLE_FREE && 64BIT
-To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
- akpm@linux-foundation.org, ioworker0@gmail.com
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
- <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
+Subject: Re: [RFC PATCH 1/4] userfaultfd: move vma_can_userfault out of line
+To: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Nikita Kalyazin <kalyazin@amazon.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20251117114631.2029447-1-rppt@kernel.org>
+ <20251117114631.2029447-2-rppt@kernel.org>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <20251117114631.2029447-2-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5C19B140015
-X-Stat-Signature: xx9p1u8x1nza3fmwqgqxno399n67sk3r
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C6E2D1C0005
+X-Stat-Signature: d1mdy78fjbxchh1taoq8y6nak436cdtu
 X-Rspam-User: 
-X-HE-Tag: 1763398686-997378
-X-HE-Meta: U2FsdGVkX1+iW0ZdfbPH81yNG7zZTTNpdT9BpjP/byoYN/frysb4mX9YvpXp/QueiIsDwMK3AxgBUkBu9aMPpTtV06yS2d8JbFFAcnoCIOo6an3QTrNd4mFRzvBLCS+LcKH/1CUiz4zWkOoK/99oI1wUB2s9EQC0GtjG+v1A3Fn1MHBJtSZ+CaEmt/3Vk1BTKwukv3Cxe2osHdsCTT6iNIeU8TJELhJCBFNH56iv/EWECsEHRHt1eCI9y8vmVsJiIVD+x0VIP2b6fAnqS96x2deCD6+eMhbw7y1VeHSd+/uk2LeUEOWMJUKtPAUYeuqYfaE/C/yu+nUjF5q/r9wmD1byJiHdOqjL0OUOqFQqppyp9Jc3yy4rlb1Pf0aWKA+qSaB6ehQVtnbrMHqXui2wYakATrX6XICf+P7FhY8MUhQ/9toeT1hHPbs/9VNpp1NZfR+KHMqKQnbD+RvZXxUxCJfke/Utalo5QmpeipzemHJjKVluk660qBNSWKBX6m7loEspERBHD5hrXuZyYWanWpnLDFn0zX000vnfAAXN5CBPnA14oDh4tP/wfJGadGOeyUGr0faij60LcFjcP2r+JCj3Iz4fnPpDgshKEFr9UcYeXn5DIfeZ3Y8yjyWb8RtZkEwZScw762wQ4gK7+aJO4DnC5cW4SdTTWzvStXWK9RTCV4bdpsHmMeYd7EAhMqBzumE5N2TGUuPCWJvsOOeveoHpl5m/KeDMXQ/kfvBqZpWX+XwF8rr6F+Wr9iL0x1d0Te0eYULam2ki6Q8V8ogO7jXmHAHKQ3FXjf/WNbnjVkb7ykfPYS/C/B//DFNG6pHOIdOxC1fateUU2LO02YFHeNs+VYEPCAs9ivnqefKXkQpH86CWNPeKrJ12J4eJsugEJ3Y88SOOss6ESh9KHj43OhWYnmDdZOu3WKAbjOB461217n0jK2KpuY8cd/t+SfDpejsY1zyMNPWnJhpnUig
- ZzKYsDtu
- 5t65FxOvfbJUagpMad+ZW7PrWAyt0uRfZUZZm8v89LKoU6S3nXx89Lwrq5ISdlIDrkVI3IafaO4dK+9dEWbh7ThJCPiPZ5cwOXLL6KRWGYl/wrjTwAkjOZTDkVlx+k0GZwq2BAu4s/SLHrLwgWbr7l18TW8Y6PH07CEGckjNMHWlzzp/eO2+QhbrJntuzqH8N5cGWBfAbCaaXd0tQV7caVrGVCsogHLoHX3xWTqvp0cUqEToPF+5Gg4QD0iGhBiR3p3TqphvlOHR9yqsyTIWGNRyo2L8Q/+JwuklIlIjk5eGE4jjzCMsIzjI0Xb1CtXWkysRRWrrbuUTvpTs=
+X-HE-Tag: 1763398811-88346
+X-HE-Meta: U2FsdGVkX183f6MyidfaGFNGsCzK6737iwHTuVy825W0aT7oIWTCiKioR18yqMSFNcA3/EiXppH663EmJIlX/ylPyqeksLle18Y5cYcieLG3/ZvyCznyenh9n2fL3DrNKadrE/+0Z5XFRIbLhVdJFCEVgwBaqUWQDIeV9/uY2nvMDtDptXl8YI5nGI3dp7kHbBqudQYgpLc54llTFz3HNUfl/6yan9xva462u6KsdZ6etabtZS0jtyFVqMUKZ8v1Jz2pk70JeOuIqNqiEIsNb+xRPA0MvsfpJW5Mm0WefVknIKb8zUbOPwxshvWELimY3slGVLusnIQvabZOMG8N/Z22Wp2nnmMKARsVTuivEz2u/xDNYln+mBGMl9lJw5SaDsMPhN/6e15PCn34zS1BbQy2qMR2o0DqNcX05otOIp7W6UWzD5u+D3wE9MwK5KHwCH09tpnQwMJwpfuyL2FNSfvLQEUbZrK1zDk2wvew24dF1z34mm4X5H9Jz7m3tTMb+fFk/t7XN0/AR0dhaIOCyLGaPYozOSJ5GASeBrAnrv4Pm9ABKIdHqM0NH0CKbYgqtMRpu30ZLVsfX+Yq0G7u2iDmksRCPKAoDEEnE7t1GjDOGQ6nCcmVkEEXjbFX0gj0qv6GrHNwu5gYzksIhKnn9A9dg2jEebZFOJYArZvi1RjSnBeAnR7gjWioRjR/0NT2sc28h2vdpCG7zHBGdpX9PnnGOxAUbSTwhEx1INSpWJW/rTJKSdo3oCVjPytzgPN7eP+zQf63v4sHO9wn6hSAi8l2jslBkb2XWpqsnX8sKUJSo+M2uttB2RkTNcZgqYSnx1pusJ/AbptAR0dQfCpA/Zr8TH06o0dFTA3O5qz5U71enxFTq0K3UFrzRkg+oJ8BJzTa7S5TzhkTw8eKj9QxmO7lKiGWqBqK68VrsxyDM2b2VaIrK+oEOcmLGoL+Tk9eEnt1jflwuJPPLAZ8EbN
+ dp8M4o9z
+ Lln/2e76sMlOc5Mz9vwpRLh9ViyC7twK0Hp+7odE4iDGTuG0mFSqXcKzQV1X7EgUWXHJUagxAYIogNO8FqS+VX4IAoqNyL2GsD2h5EqGTrD/T1DOAXCJN+bopJA3821uxQcmkwJQfmFgj/roBCstZdhW+37NaSP/VHfII/a0SmW8zPV1bsgA5+2D/5XPeySKhjRSI4rLuQwr0HpiVP6gxWtTZvzSyuvGTZoC+FaoncF81gbM2O+wQ+nKaim/CHQX8V/rZN+7maqZsZjAelnY8IV6BRkhbEh/SRgEFrXzFs1BgtBoQxjgKp+rF5iHtN0Lb3wZl1XuiDxSU/II=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,68 +104,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.11.25 12:11, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-
-Subject: s/&&/&/
-
+On 17.11.25 12:46, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE so that PT_RECLAIM can
-> be enabled by default on all architectures that support
-> MMU_GATHER_RCU_TABLE_FREE.
+> vma_can_userfault() has grown pretty big and it's not called on
+> performance critical path.
 > 
-> Considering that a large number of PTE page table pages (such as 100GB+)
-> can only be caused on a 64-bit system, let PT_RECLAIM also depend on
-> 64BIT.
+> Move it out of line.
 > 
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
->   arch/x86/Kconfig | 1 -
->   mm/Kconfig       | 6 +-----
->   2 files changed, 1 insertion(+), 6 deletions(-)
+> No functional changes.
 > 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index eac2e86056902..96bff81fd4787 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -330,7 +330,6 @@ config X86
->   	select FUNCTION_ALIGNMENT_4B
->   	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->   	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
-> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->   	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->   	select SCHED_SMT			if SMP
->   	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index a5a90b169435d..e795fbd69e50c 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1440,14 +1440,10 @@ config ARCH_HAS_USER_SHADOW_STACK
->   	  The architecture has hardware support for userspace shadow call
->             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->   
-> -config ARCH_SUPPORTS_PT_RECLAIM
-> -	def_bool n
-> -
->   config PT_RECLAIM
->   	bool "reclaim empty user page table pages"
->   	default y
-> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
-> -	select MMU_GATHER_RCU_TABLE_FREE
-> +	depends on MMU_GATHER_RCU_TABLE_FREE && MMU && SMP && 64BIT
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Who would we have MMU_GATHER_RCU_TABLE_FREE without MMU? (can we drop 
-the MMU part)
-
-Why do we care about SMP in the first place? (can we frop SMP)
-
-But I also wonder why we need "MMU_GATHER_RCU_TABLE_FREE && 64BIT":
-
-Would it be harmful on 32bit (sure, we might not reclaim as much, but 
-still there is memory to be reclaimed?)?
-
-If all 64BIT support MMU_GATHER_RCU_TABLE_FREE (as you previously 
-state), why can't we only check for 64BIT?
+Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
