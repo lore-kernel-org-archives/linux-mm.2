@@ -4,100 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00E49CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:24:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC55FCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:25:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42B518E0007; Mon, 17 Nov 2025 13:24:30 -0500 (EST)
+	id 31CC78E000B; Mon, 17 Nov 2025 13:25:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4035B8E0002; Mon, 17 Nov 2025 13:24:30 -0500 (EST)
+	id 2CD4E8E0002; Mon, 17 Nov 2025 13:25:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 318D48E0007; Mon, 17 Nov 2025 13:24:30 -0500 (EST)
+	id 194F48E000B; Mon, 17 Nov 2025 13:25:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FD5E8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:24:30 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BDE8C139F1C
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:24:29 +0000 (UTC)
-X-FDA: 84120924258.05.9100DAB
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0445C8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:25:47 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF8A04CA4D
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:25:46 +0000 (UTC)
+X-FDA: 84120927492.30.17B2697
 Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D6DF41C0003
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:24:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="XVDgK/HT";
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id CA87340009
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:25:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YesK7KIM;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763403868;
+	s=arc-20220608; t=1763403944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DSVaYS00Ppz/lXA0EJ/lwtUlZcIIPkWYwoyJByW18bU=;
-	b=VlviLf36zbBuy4NvdB4lWKPaK6A2gUOcsWJBilsfu0myqGVAvYbnxA6sk0g8UqOSRvR9WV
-	Y+LyYoNBUEH0r4Z2AB5E7z3w0wdj3fYaJr1NVfgM/DHYIKo1vNYIV4qosEwu2B70cN4TBo
-	4lNAi94ffa+KxHm4RYgoHq4GzRB1xGc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763403868; a=rsa-sha256;
-	cv=none;
-	b=bfWWi+mIcH8NDsytXeh26mBA03wB2sQYKzrB9Wz/bSlN5Le8ReSND0H1Kn/PaaA4BcgN8l
-	LaVUciKlG48ZtK8KBoZaXmKF6vneFZyyYnJhF0VqNdn7dhRlVIvHEf9qjo+lxmr1qS+AlM
-	lmjM2i+DdRcHLSnYjkhRpGRzWcICkNM=
+	bh=dMycsWk6alcimZ9cye+sIiGHVio6V3dIKHH3BxJbFzo=;
+	b=tf7p9Gi0G4RzIrDiDi00sKtL3NCw7MvrQSip6Z026TbRq2QWFJokg+/dgAkYu86eK42H2l
+	nlVjS2hug7hZghucEzewxz1AMGYhXmuxHA/ucVil11kxZqmkrVknVg5x+141HIzVpkvVmg
+	Zvjr56KrcWVA1H3iK8wypjsd8iywEvY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="XVDgK/HT";
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YesK7KIM;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64074f01a6eso7808083a12.2
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:24:27 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763403944; a=rsa-sha256;
+	cv=none;
+	b=Yl76l+mmX1xmO3PP+FQIz8PkkXAbf4GcwlHhs9Ze8tzLrANZc/LFYIXdJQpkF/HGzAHGqU
+	azSrjZWyi3atfQaEfiIZg0rjW8qlw3LPOdTvcIKwsxg8zWWaTx0tIK143VjcU/2iwBoljL
+	dr7GDZIA9TldDmJ06TYZXjU7iB4xnWc=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64162c04f90so7537652a12.0
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:25:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763403866; x=1764008666; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DSVaYS00Ppz/lXA0EJ/lwtUlZcIIPkWYwoyJByW18bU=;
-        b=XVDgK/HTv8hHz8HpS8vQuFnoIOJCMbtjX3yb6UT9TtozJldxvI9rSobMT8w5Br0ZaO
-         ZnpcqiX8XOnUqmrvUhuitQDXI53K+04QxsphdgddPlJ8M2OPkDcatvnv4SUt5EBocdAt
-         rvk33QQIoPHnwLUwG8pQBMsgo1tC2smUcbQE3o/7YyHv+ved5RjQriV7kb1WhZCzU070
-         YAHTE8QvxbkWHMtiJNEdA2v2mUlfNohfjho76+iyRYxKKssM7mzOgP6n5dI2mDLnob93
-         HaO30KExd5ApdAkI2wgdWnuItjqmn8jn2mBJ0Wi5F3c3uZUd+jOPD7EFNCClWo75EDSO
-         A16A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763403866; x=1764008666;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1763403943; x=1764008743; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DSVaYS00Ppz/lXA0EJ/lwtUlZcIIPkWYwoyJByW18bU=;
-        b=f3ruyQbQftBdKRbgFmSKGAMYZjkPKt+RkjvugDgyP45cvT1Fx3h/CRtVWz4pIRWFzg
-         SPsXmoCGSbGHRgBA7jKgiWbGYnCJz0SOhAKzwYkYiYVReqF5JfijEqf4wBuQA3E1uwUk
-         nAiCHxT3jggl84yM82lP3MuEcHLV+bCirYR+3SEi+sdNjEHpFP31W7BEr5YxPYgIJd6s
-         34HbxpAz5kSHdYjACNdgyD0VcBp/m/niZBrCcGacQhofgsB/AtujW3rP1kAiPk+Vnl/Z
-         d9CO9gkrBkZSoWJsp8naYryzeE2u7F8q9u6PnaLA1DufT/hHAlByBvayd2p1LKKvoSeJ
-         XiXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/9pKwYXPRaeXhFAIP1lyqsHYuOvbTnV4JEGdML7MVulX2MFqLe197+eiq7swdyXz0fC21LH1TqA==@kvack.org
-X-Gm-Message-State: AOJu0YyzfgYzv2yKRkkORY5nLFzv4HchK9cLctMES/nvJ+87LuF99Kzm
-	EZYCDYSUMUM7wzpTKGK5wzuxaJEayCSvjs6sXqLBq7r8USlP88jmBSboedyT9kTt4FAg4jukmx+
-	tevVH0H8XAxUgZVR+yxhvZlaRQmQS3/tM6AgbGHKHoQ==
-X-Gm-Gg: ASbGncvs3HXE2ehdTi3QBHJtaL2xFwx4tUAblHURSJjGekILqPwR27B0grwT3LEijej
-	C4QXQ0HkPhJob84a6cO0QI//GtVoVXbua5yBNJ3hwk0LUcurirp6nIiejgsmwlCqOWoiGyiiC+Z
-	pY8oEs46QsvBYUrJjyul112GMNlDC8WuvOdLkGmfjzoz3uxMGrCaP/TNDAFIRVXsZKFEDm2SWU5
-	bfLBreN5XBwjCTTq1lPBxuRby+KFvqF5+TUg7Xl8UhOe7HF51v7xly3RZSObTUj/fnGCJrD+IhK
-	l7E=
-X-Google-Smtp-Source: AGHT+IEEWqHLyN23GdmGqxp16gOz0H99ycEtpAQL2MFddiKttxJOs0DiTjbKI+yQFgL9TB9EokEIYjSn2RJfB01X0+U=
-X-Received: by 2002:a05:6402:2806:b0:643:60b6:3eed with SMTP id
- 4fb4d7f45d1cf-64360b63f56mr10022358a12.31.1763403866324; Mon, 17 Nov 2025
- 10:24:26 -0800 (PST)
+        bh=dMycsWk6alcimZ9cye+sIiGHVio6V3dIKHH3BxJbFzo=;
+        b=YesK7KIMZ56bS/5F1Q1PQj47MTU4hg7biaJlEKDkxYrFqXvp+EqqpXGPCKqrz5xi5J
+         ezytC0N1K7VkKi3f+MONVXa4e5XJy9+8PtNxLxo1TQkcJ5R54jLY8E27Hgv3uUEM+Crr
+         THssZjV25lCwXZyQ/OUFBShfJ+GGo3xeN5fd/9xaT/bqjgLzoXT2nEM50DeJoFjYaFQF
+         WGZrcSH7pYNO2F9TLXKDhyiDKApKwqxzyjLUtvhTdeTYiqlLoRCR/4pNRSm3oEtrNZj/
+         cIANEmdJsVReIOa/GpTAH+GWGySogvkwz9TYL05k7MUGlsZciuoCRdvXE15BhqBYt8SB
+         46VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763403943; x=1764008743;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dMycsWk6alcimZ9cye+sIiGHVio6V3dIKHH3BxJbFzo=;
+        b=fNcSQj38ATLHMi4a/Q3FeoS5jp7+eylg1p6oL7iDUh+Cm1E6yCJMLzyC6rrG+1dRdu
+         7tUpEIPIZUGIJ+67LFODs90Rb3AzVuAtGfjNgW/X7Ob8As8cSE/lDj6dad+bFxnekmW6
+         MeiR1jGpJSZ9RJ1t6CXCzjaTsKrhvmkxY6jhPNpAVUeKsTZV1ZHDniKb0AoUA05v9/fo
+         t68Cycp+sIGhDGz+tdKMpfv87Mz0fngart6a+kdSgbr0FoKVGlYp8jZ2ds6c5Z2u7jta
+         xLlzp73avhuIR+Mv0CHcvW0lJ2qhcUbBGqRBCN7uYjr8S7E7DpFqLz2dYMKWj7NKuZQf
+         LHcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUH/pxd1LQiJX/5cDP4d0BJ53wXerxJ1+7OZGXas3fEqfjVkPRXnhQha9jsqLAyN8yanBcdUG+qw==@kvack.org
+X-Gm-Message-State: AOJu0YxyR9uRFTEK5BqCcXhbFyDeyzMY+06U7CQuN0nKUxsdSokTM5kn
+	5zQkUJP+5HwrnzusFRvh19rGv2D7KRq/LyeY7JcI1StWmyjJCOBUt8vFx4R8frwmPNO0L5t+DFx
+	ypZVocv/Axb9OYiC0EeqBIr8xDL5RteXyzdXxelLuOg==
+X-Gm-Gg: ASbGncuxIWkzd8pGS59SGlNo33zYLrfvfo8X5j55B3erX5YWV4hqjd7v5LN1GrtgE8B
+	oHnChD2Ht0S2qXmT9hZpRaKcuKzl6FymGyf29uCDC38OzzUru8v+QiF8Oma5c1FD58RfBg3zcAx
+	BB1aLe19Qn7WJn8DZSO93f34HfkwTqXIUv+NGOfn5H7A2fgUS2ogXV0TUK0Co5ulGwjsatnA2y9
+	N1srkcwNMzOTujKbTzBk6eEJsYDCIOG9WOPep5ugnsnGKl14hD97eEWq6XOGp23xSuC50tNKYPp
+	OVM=
+X-Google-Smtp-Source: AGHT+IFhDEducLN7T5Jy1DwFvPprFdHcnJ42WfejgEYNti2gLXiHYmpyBjQ/4t56trSFuAgRCxac7v4hY1mMU4Ka3uY=
+X-Received: by 2002:a05:6402:23cc:b0:640:b497:bf77 with SMTP id
+ 4fb4d7f45d1cf-64350e9eb61mr11509176a12.35.1763403943114; Mon, 17 Nov 2025
+ 10:25:43 -0800 (PST)
 MIME-Version: 1.0
 References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-19-pasha.tatashin@soleen.com> <c8b46600-d40f-41b4-a5a3-99300ef1a2eb@linux.dev>
-In-Reply-To: <c8b46600-d40f-41b4-a5a3-99300ef1a2eb@linux.dev>
+ <20251115233409.768044-12-pasha.tatashin@soleen.com> <aRrvaHh-cP8jygAF@kernel.org>
+In-Reply-To: <aRrvaHh-cP8jygAF@kernel.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 17 Nov 2025 13:23:49 -0500
-X-Gm-Features: AWmQ_bmhggvke7xISGqUn7uC4niyXxh61OdHqC9kU_cJS8AOY1qqJ3NjJ9HlQrw
-Message-ID: <CA+CK2bCUG4BVqPJYL5nxC-Uvomx2JT=sE4DrhqFjrBf+zN_m3A@mail.gmail.com>
-Subject: Re: [PATCH v6 18/20] selftests/liveupdate: Add kexec-based selftest
- for session lifecycle
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
+Date: Mon, 17 Nov 2025 13:25:05 -0500
+X-Gm-Features: AWmQ_blTQifSbVFjHBESf3b3IYzXXqzrvc6uwjRPXvt2KinsJtxmdBdOtqW5SFc
+Message-ID: <CA+CK2bD_a=C0h-y4HDWPYV1VOWjM7V4gcocwekA6M9h5WbiqSg@mail.gmail.com>
+Subject: Re: [PATCH v6 11/20] mm: shmem: use SHMEM_F_* flags instead of VM_* flags
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
 	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
 	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
 	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
@@ -122,14 +123,15 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
 	chrisl@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CA87340009
+X-Stat-Signature: kxdf4rynfw867snz19xumtpdeh5zxdx6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D6DF41C0003
-X-Stat-Signature: y7ssu87az1q8h54wx79jnt1hyfgjguhf
-X-HE-Tag: 1763403867-154040
-X-HE-Meta: U2FsdGVkX1+qgpTvqVqpUMFAzyIOw22PagCTPRI+fgHX0R0BdqKHXz2YiIE6gaTncsP7+Ohm8pH4RjzKSLRnbUP68QoOxzMJEbiQw6+kg7Y+y88fjjzAgQgqwqV8wjvwgsu4xMl4sts888JhTiSSDA6+t2VdZi4a/3XipjeYFZ/daVHICoEJh9l3ftKQSdoiqc+CMWCWIfDWiIqGCwy5gdt56ngK4QNC1RAI6zX9sRxNiUrkeYd9oHHP2gy2cqR/9n2W9h+1xX833yYI/f9vIOX7m01n8YQB3HyxTg2z6DLkPdSNf/P7xl0Z6EqG9wLSCIS+k6XHQ+iX3AsSW1c2lo/vuQ3cg1gEMFbEhb50oKz+7O7SMaNLid0emmo+zliOl3zQV9lth4wTnvbOv6+M/88Imnuz9GHPTQ6kJ2LwSgI/3xkO6F0tAWqjVpAC1gdRmuZvpsdJQInyw/10o0xoQtuwmWiEDwuGiO5FHTL+s9KCEreBReqnMrPB/15MGJfkON0cfnMX0SZI4mfBxAqctrjHxFcpJi7wZvFNiH8THgoomz8XCgOdH7drhu1vxJ3N+AMC80S5jAujCjKtDoiTCgaT4Zddr+6GbBz+Zc9TyF9GUP6JDLSG22dn71f4NeJp5wbzZ1BQlcxMEh13CiSBLngcljp2RUBt5qfxwO5JomLGQaJ60ho229tlYbAgwLuxgfLUQmzvM1ewAt50MJK+TgoD2ZEUa0SqYkZJTD22VTrKRJr1xR2SErq4AeNXcOaFc0UG8F/wEQwnmkvtr7kxnffiYUMPjTo0I40vA4ZZe68VSBX0Dn7yFNj+tFuiFdmnJQ2OXo8Cen36YAVchrqv1At18wkZn454s48vPM/B8Mfk2yLAfWS3WlFZxY2Eo/GD08psZ7KXFdOATJFDgsPzrTm4FbIMofULag0xAS+ITS2yelzsKnFeysXlS3KKcfIvOgZF3VYH7JawV3k5IHi
- RMSf94oj
- avxGc0rDoTwTIcnEWqTMVMnGMAvWRkIya7v6zM4oI+BpB+602FQ7YIxhvxeUbR9YlHiSiyGXrNcXa4AKvDJ0CQ15ixD/nMA87ODTOPNDtVnbSdd9YpUw5yryx4m6VFyzSExDE9Gfdy72LB8PtlJJC2PdRXzK5L7fsg91V9YLSamIcoqqBz1cpPmNkWl3Al+bvCdHLLGQ4bf1bHWFp3y0IFPtbKs6hg+tqQ+KBPr4U2Evq4TfT0E7LtpScDQc2d7sT1Kw4H4t4mN5zERvD9w2dkAHc+9C40OPS+tvsQxG+GeuAKYRZFFF/1EyXaFQUnc5+NtIVNjCD8g1UqFWrA73bIgXIID7PJKsOHUENCWiDFGB7PbrWD11dkZotLzpl6aKKyPJdH922RaRhLWk=
+X-HE-Tag: 1763403944-601305
+X-HE-Meta: U2FsdGVkX1/hO4Jka7sZos4AxnmeIuA/iDMhEca9QNdoFaRAhNOXRsn9mFNjVPKn4OWZghdcWPYQishVyOkaxUWX4uVALve5MXgAIcsMWNvbQiOK3wc/C5pTVWRmfUr1E8r3Q7nsUhq1D/85mRVuBLZy+fh0sdlL3zgkMTrjkK/ITZAOWF20D6fPmelxOrTeh3Z6LAjcTQQl4Z32IUv5qBZs0h30xDJZJ1af/yHly46CqK6UI+Eps58a6rOkfM8lKfm0tneuE4UtBIiJ588vALlTsmel5jiGKaqLoXTeT4DpyV62V3jjfwVFdv+s2GEdQGNSj5/Jsj+mgWgnMIeD2I5pXgz+Vhvxnd35DCp76UpmU1npcasSLQzzZenop7oU7hQN4bCQbE3Qv+Hc8YyWtz1D40u/TDzDoLqqfPkXUpoFY923fmPl6+opmtJXW4HN0ymzkXMpoOfn2wiQXMr97epUyJhyin98m8RlVI+Qb1P6MRTgUraRx/7Npqhs2S8lydMHQjFa9C2L8VAzzc+5zo/F3VD+zucpKZV9xZI4iYsjKDaur+XwKDccGL0T3SDCeqPonouycHcqozx/hKvuw0ACErSOcLXeekaOhkpRD8bV7G2cXdYxV3AeHIYcOcpPAIcfzXYXmatTj0H/uc2eQoXqVU+XXhPwtMvoVDk4z3sjIn6N7AUL8imMbZI2A/gF/G964JeUp254Des0hFl5UzWU36jSliO+/SUqfpfTRkigE+6BDxKQ2cEFLeSDXnyeKP6XGvOadZl60Bxd8dJu4Xb0dNEKtqESFv8bDetPTY1Fks1Nu8zbNZKiBkNsoLOSx/rSG4fZbZ+wYOpXg4qLgYxVFKi6WwNo0qFLhOb9tWS16OjDl3Cz1ZD02+U/gY5A394P1m6GlLWHriVLtXHgm/+UXf8vZ2RmZEv8+YK8pxXJHl6MiTFQiWT+KWao48BiuQj7rGpN3kMCLvvQlCq
+ KidNwQTc
+ 35SFBedDhf9t1ECVgMN2ZxIFL5wMCzKRHfrkE3/S8u+nngyk4tzt0In4LqA0yEGjVOoyIsHsNakVlh5Nu+aKC2amEcRg+vZ+B2VFAReU/hMrl9e1VTM+3NGzj1MkoaBBOC/1y0PhtvT/BSGWS3qRWfoo+13DmvkLG2Rzte/zxgner3AQrkcAt7p6klE3SvnsZgWl/ifiLnHD/iaLWRP85l2EjUH9JViSeoY7Rt7zOzIXc0YfZTGCVOhtAI+IfGS9fCCbTj7LV82xVCobixkneFF/Bqh6ebEUItBHsY66C42bjEy9eAY/Udg76JBxJki2WJZCRf8Ia402h7Kqpqz7z5MUyTyq1oC766dGkfvpAlCiAiWmYKfx9yPFhlnmcubckn6yql60koaeMg+AayRcvwWfFly/GwW0GtWTaZ1jiObiVAttkJCDWV9LxQ3GtM3nBhnYEm8CePnaB1ZQVG1t0nKA5FF4mxcN9/ZBanmGLZNpWCAvHN+O7hKeOWpwenVdlAQWl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,11 +140,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Thanks a lot. Just with kernel image, it is not enough to boot the host.
-> Adding initramfs will avoid the crash when the host boots.
-> I have made tests to verify this.
+On Mon, Nov 17, 2025 at 4:48=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
 >
-> Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+> On Sat, Nov 15, 2025 at 06:33:57PM -0500, Pasha Tatashin wrote:
+> > From: Pratyush Yadav <ptyadav@amazon.de>
+> >
+> > shmem_inode_info::flags can have the VM flags VM_NORESERVE and
+> > VM_LOCKED. These are used to suppress pre-accounting or to lock the
+> > pages in the inode respectively. Using the VM flags directly makes it
+> > difficult to add shmem-specific flags that are unrelated to VM behavior
+> > since one would need to find a VM flag not used by shmem and re-purpose
+> > it.
+> >
+> > Introduce SHMEM_F_NORESERVE and SHMEM_F_LOCKED which represent the same
+> > information, but their bits are independent of the VM flags. Callers ca=
+n
+> > still pass VM_NORESERVE to shmem_get_inode(), but it gets transformed t=
+o
+> > the shmem-specific flag internally.
+> >
+> > No functional changes intended.
+> >
+> > Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Thank you!
+Thank you.
+
+Pasha
 
