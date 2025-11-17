@@ -4,98 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F05A6CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9441DCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 563EF8E000A; Mon, 17 Nov 2025 17:43:39 -0500 (EST)
+	id DD17E8E0011; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53BDE8E0002; Mon, 17 Nov 2025 17:43:39 -0500 (EST)
+	id DA9B08E0002; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4786D8E000A; Mon, 17 Nov 2025 17:43:39 -0500 (EST)
+	id CE6648E0011; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33DBE8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:43:39 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D7C7E12939
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:43:38 +0000 (UTC)
-X-FDA: 84121577316.15.02BB8A7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2CBEE180023
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:43:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FyEeWQ8i;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BC59E8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:47:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A8E0160251
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:47:18 +0000 (UTC)
+X-FDA: 84121586556.21.2E9D048
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9AFA616000F
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:47:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KglGifxK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763419636; a=rsa-sha256;
+	cv=none;
+	b=VrMkzMwBgfZBf1ksb5kQNy3QGgI/yDABwcbyklORYEcKOz2wtsYHy59Hc+fbJ2LjmOYJcy
+	+wV/FLC6y9N6CzhyDPQMLogxMXhPkn0wnR/Sjey0rfV/gRocQlzlBEgQ8okf0fFW7qa3md
+	N+XO2AexIx7CAz/Js2SKrT2Ra17rdO4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KglGifxK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=386UbaQsKCPwegoivpi2xrkksskpi.gsqpmry1-qqozego.svk@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763419417;
+	s=arc-20220608; t=1763419636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fbv04ypCQkVNOLO0sNJ75k/LanFNU8xluYtFmS3Ra4w=;
-	b=goW+dWkwVGUYMiLholSNPn9wzxNIed8oc62BTXmxVQnGu0Ipb6tzvFP2ZrQfK6drPrz0H0
-	l9YICY7VMS1GCFDwgJJHlG/RpLLCF3T486akzPbrYV5BQNQNvCnJVovySb4ijJccDqyhDL
-	/fZqCLFKTp1zv5KftU38o1vbTG7qyUo=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FyEeWQ8i;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763419417; a=rsa-sha256;
-	cv=none;
-	b=YeFhzhiw6KGttE3+aT1uTr0fq18azq2tfM2iyOjn6gOl0U7AKS7QU5Rs01+5/b/Ux3HMqw
-	OVhbjw+eXe48ozAWG4NmPwBHB8xBMk4f1cSOt4s5bENX4+NNZMlttmprBeWYDKcihqEbUv
-	bGygw5AGgDzEyVCA9bx/p8RJKGni4Ik=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88517605E2;
-	Mon, 17 Nov 2025 22:43:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24759C4CEFB;
-	Mon, 17 Nov 2025 22:43:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763419416;
-	bh=fvcx/Gt9WjAEJUY/t8KcGE1aZ2anNZHWj8y8rDypI98=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FyEeWQ8iSZBK+XnCJYC79Ys+cl+vTmK23FjMTSIBT8qxfqwAdGJWPQrUDKKb25F3X
-	 9LOCFYq7rd7q0KO1765OIQTvs/NItDf3p96v++AKHzUHor95T0Ma5HfgoXwMW2St7d
-	 Ck8Z+BeQg9aiz6mwKaoXhpAMMmJ5dCexanDIw1M8=
-Date: Mon, 17 Nov 2025 14:43:32 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Andrei
- Vagin <avagin@gmail.com>
-Subject: Re: [PATCH v3 3/8] mm: implement sticky VMA flags
-Message-Id: <20251117144332.d338e8368d59c3ab665db986@linux-foundation.org>
-In-Reply-To: <cf58c518-05d0-494f-8fe4-571879834031@lucifer.local>
-References: <cover.1762531708.git.lorenzo.stoakes@oracle.com>
-	<1ee529ff912f71b3460d0d21bc5b32ca89d63513.1762531708.git.lorenzo.stoakes@oracle.com>
-	<cf58c518-05d0-494f-8fe4-571879834031@lucifer.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lad1asYiF8cA2ZLix/TncpNgjY0XYbNhIlYI0rkVv5A=;
+	b=YsJZRO1yDdLk0yHpbL2JARGHC0OkIT1ECUhV6A2KUJQ0AkVJvwOhHHgjkpDt1vJRihCPfm
+	Wexqh/k2V+MRYP4uiD2V7uQVIT7iaq1QboP8Xi2ImmEyeCWIccALqmq4EYgHA8fVbCL++z
+	zkVmHj6CswF68S0GWbFxbvNwzHFnFxY=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-343fb64cea6so7263310a91.3
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:47:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763419635; x=1764024435; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lad1asYiF8cA2ZLix/TncpNgjY0XYbNhIlYI0rkVv5A=;
+        b=KglGifxKNXoikY+m8vycdfH4eJLup9m9Fmpj1+IrpmW8Nexp+xsNNQ+5NEb7MkPiLa
+         3KpYkigtOrnZ/gBWQLjNcha+lM+4pVjzK0PALWRHbpEyPzrcHGizfS7rv63mYPV/J7jR
+         9UPLgI71yO2qCvAbzLsPY7Okn83pQjY4d3DoPVjm422BD++LHFjszqXuZKI9wVGAZp8l
+         ppe2Nja5y8ORyw1mQ5VbjyoSdyDFF7T3D5z8SfkOI8PSBuyxBFgI2YZZxr1w36+GlDwh
+         XR1pw9xvA8CXAIKtL3SMy1yVR0xz5bH/pgp2BuCMuS6Y7/retNRu3AIbbUwq4EJfKLeN
+         yPSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763419635; x=1764024435;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lad1asYiF8cA2ZLix/TncpNgjY0XYbNhIlYI0rkVv5A=;
+        b=qsy5Ywc6M0xlJD3RUtq5E19/lSVwgeSIuPu68rUPzOrvJtIt3c2EceSUxw0CH0CnH0
+         9sk4OkpjLj4y2Emsd15MjkAR/eEVCXbLVzRdU5ilPty4RxMoXZ7IKped1DcQ2hSLZjLI
+         Bq2g2FnEP/G8+LyZS2VKk/urO3kHKzPMUD6hhytsf7CZAW+27GHrqBZe9OS8HnVoyPuM
+         hmjA76g9oJUIhkxe7xI6CaVcUZjodIGbzQ1wpfn2DvDknAeASaGpM7rSRNj9iEeqtBAa
+         22IM2wkkz+cz3rvqHbkHZG6mSFrQ8YvDyrKeWe8IvizVljNJg5MKX0utE/1Fr5vxre/U
+         0h6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWi6lRFPo3P3OS5eoDEs4As34/rWIcqTNql9hT8qv+IV2OjhzIyXQ2OcOCUpOIpH7q1sNhz9Bbmpg==@kvack.org
+X-Gm-Message-State: AOJu0YyGBfo4gFed7QTg6Ed1NdcBSd64ZujuCDF9HgMRHYAnGMOi1r3f
+	/P7lXE1it2sqxaJJ0OJe1LJPZqgXdkk5GuKT69uRLKPG+/yA3YCRoa7/ZgcYFq8SMDCEW4By+K/
+	U+PU7jnFdv6IeUzJ0MUOKBEGFjg==
+X-Google-Smtp-Source: AGHT+IHY//5/zSbJ96y0G1CVtIuXJVFgzUswEPddLr7yG1C8L/6rE6jUZ9/sELe1ezgM/wYNnndev+VmhVo67HX+sA==
+X-Received: from pjboc6.prod.google.com ([2002:a17:90b:1c06:b0:343:387b:f2fb])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:350c:b0:340:b06f:7134 with SMTP id 98e67ed59e1d1-343fa62bcf6mr15075381a91.20.1763419635363;
+ Mon, 17 Nov 2025 14:47:15 -0800 (PST)
+Date: Mon, 17 Nov 2025 14:46:57 -0800
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2CBEE180023
-X-Stat-Signature: g8x8y56t89oqzmkfqku3dx8g5guj95sg
+X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
+Message-ID: <20251117224701.1279139-1-ackerleytng@google.com>
+Subject: [RFC PATCH 0/4] Extend xas_split* to support splitting arbitrarily
+ large entries
+From: Ackerley Tng <ackerleytng@google.com>
+To: willy@infradead.org, akpm@linux-foundation.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Cc: david@redhat.com, michael.roth@amd.com, vannapurve@google.com, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1763419416-65919
-X-HE-Meta: U2FsdGVkX1/TiOW7Z2FmMV56V08M+Ka83izRCnYtHAEwF1u5xPno3nofVwh+salgHOYXzlGo6HtCrgPKGtJVjZkHdSy5SF/DFThoHXrilu8hmTpl23cMZ96RuOa4cc/aUMNzp0UISUUsf07iwVi5DXkXssj3S+DcAWVvczVAw5NLAkewBCv5uLwXK/dtM3Hbg2RouscGtTAjgBVQ5zlnp8ZzxJLbooKk6gjDnO/o9eqMcImpzWkHdBFgZIv9gkcX1Lot2EuD7HgaCFPxSmKmaJXPweJFDiaL5BXgwGGCuZG0gPQXpglYAQwsJDR80ybmcKdA5BHU2Cct0oAj6KrzpCrP7leCMlZ6O024A+rkKfHm5ZVNs5uw6VS5Qluy3Hqw2f3lUiMJFWFJ1Mmn+dgH/SsdwHJl7YIjsjuIReZM/pYYE27yqWafuwCBBuZsbOTbQFYXBhNfiTWuz3PO10CCBz/+Jy+J9bE1CKURqWj17eCuehhRc6Bm2TYBCXLtI99irNs9EA+E7L+2WMX6QmITwPGQJyCKKxRGJs+DAr413w4UgUrG8GdlPYOkAvUFTlyZuoFlY2dTN7elzTD0m5XjXoBhUuhw6Ihmz8jQ0Vruu53t+Vpzs1e2ZqR/r1m4UKt748hVR/j2zhp1HevLP9nFIo9xCEZWURyXfdJ3RxslBccSqcqeDNGhaaLbqE4lmyFtJggNKYiYAhe15xFxy/YdLGXo4/QG5pvqcnvSP6lOZd15mXLlK8e8653IGxpSCRBS4QlUqKhgpCLmMAbL2Ls3Jmxl8Nf5K0SjCyu2ptLzKawhqhnBizcvNbRdrZ7Mm3L900rmf3lFp+H3QAxD2Uop5UfLUoZmeAIx55uuXIxlkVcR4n6EEBKGn9hBKxIyvuuQYJ5Co2dQevGk4KBf1qK7VOYN6WHoNaTy9zelrUBTyBc2fjViuo1O5rA3xl3RXb1Ewl4IjFO0YskDbELPMn3
- 5G1SEB8V
- KfT5ujZVOVrJCsv5Ab+PutKRZVBElaN8pmfLYxsqAwulO0szgjaA/oGjN6zbq0+6ZFy5cTd+0hUDplEALLbM+5AFwvxT5co46a+RPjqeyL3rBpZxYbvnhU4OmmxicpNdkgPAzs60aGnWMGb+I459tibeSB5shwzZPu9tQ687aPHzSsGsZ/5O95AEwSd38KbxYom0hP42mnNJM0PrvHU/ZzCbasT9BKoKczY+PburYwSc0R/axtwbIw+XRmsfWHWzbsr4+cU44KbWrKMunBQ68UM1u3A==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9AFA616000F
+X-Stat-Signature: 16oi5jr366nfwbeheszbwykmnyj43bik
+X-HE-Tag: 1763419636-24831
+X-HE-Meta: U2FsdGVkX1/djxSzJNB7Og7VUWSUB3ZTuhv15KgE+BZu+a6UoOgynTYyAtOnz6uX4+mLT8w3mBcxHCqaIbfSxcitm6TwrqxrdsiQt64HHYM7kekyHdymqvhsoGKr8Y3QEWnfoDY6WxTSL5Uc1nY88vCYkaWM0ZqxGU/BMt+4pAzVJMeBp9XVyzqfgh5lkrJWbA7bv1CioyyXj8rQw1ZmsAnS4B3uinBHEXx80HUZW+QeaD9CE/MxaH0PMcx5OhlBnHJYwC3H3AHyIOd0R8d3DHwABHRv8h0Y80ytkvdhxAXfqUldqW1TLkQ+TlFx3CWLoPRAFzxUdoCDi2h2u5Ggj/Ur4gm91ZYSgCO6dr3e4FyNVBJRxl4hxsVC5L1aoa0OW7TP+4ZvPeUD/UGebgSe3B7/UBsXAxrUid98E4Uabc1+WZ0VAEEgTRYY1PW81phLK5yV1fjOuHhz0dsDiT4uS2OwYtacG5OAPnotcUpN73trTgE2nw4DVutlME9s4/OakHS8EDNDjCLhTZA9Ng0kYxrAHucjCqUrIMZtl0whbKYgYvAPcNsmgxX49jtv6CFf8wwhFHrfFN77z9Y3h2ciAGxZMwK8MyhtzVw6lEB4TqEVlmNDIMcZozBv1AaB+Ja2EgkWWkY1ch3wr1LaLMgLgvAxBjXe/U8eIyJWp5PQP/Sz+PdxwqvpIVLSbZ/6SmbOTryXcET2vpFKl2wFyy3T61HvEQaamJGZHyYc/XmOXJI4ELuox1BZ4nDNr8ZsZRbOo01jmdJkZBT9u4EOHyFQagDlV4bkTaqnUGGtEX5k6yIf6AZMEx6oF17fERtGJnAyS519i30k6JK2yvJz9mh2bwFl2LJVU5Yrg970JHUwMKeDPjLSapYdBZbi56w9zZdfOrNVcU3RBcmXp9oQFYekwR63sC0ivhp9oPt2Opw6LrpDAcNC3m5fHKhx/wEm8GZ3DJb2QrP33hIMUXxQPzV
+ oWjv2byU
+ tiKX6yswTiV7UJFfxBSxjX4SPB7PgAGDEg1TT3seHzrbJ6+qOe3d7Z2vgerVdlAVp2FVZR2D8rAeaWAStbLoanNeCb0eq5L6ztDq/Zc1jpiNwjRAFk3stNlUUvc4r/Y16cD1rQgGmWSxCVi8slp1MBnB7VM9GuehB0QH567/dyabRnnJ1j+83RtrTkBpm7ZcLFZlm6DtAu2Wjp4vMhf1an25sC39kKblWFfNq8TQtyfiGQRInxdqSd7S9x83+zsBPxYFE53O3Yik7ZPejNfM7nDTX0hy8S0hrbfFpdgWwYrpbcre4Vk1sRoC+ioJ0TNcQXL2WL4LN+UJEXb4IEMC9vTIw6DpwfghDLhk9CmVqC633FrWpB9qe8zXlrMvJxW9YoobDfUhHcStinuEmuzv6dliWXnnmgAG0YJcZZqLJ0ChsaMpVKXOq13QShXQruEOsFVOmgAKWxscGCECRh9ff72alJBwR6bWVJ57E5nXDmW0KiqFqXatc58NI2uebtxJPZed2BFY7AaJycmQZEaHWB2t+FOxIo91WP94EXl3g15EWsXWFpYg6/6D/k5Y6d1ZV0LDYJvT6d9/r37Y69kQtPTvitHierg0qovjCdpVteiYDQBEV//hvQgl3L56l4+NvY/wnUIT7kh/zkGMf/kvOjuomB7YKDDkOF/Q3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,52 +109,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Nov 2025 20:02:03 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+guest_memfd is planning to store huge pages in the filemap, and
+guest_memfd's use of huge pages involves splitting of huge pages into
+individual pages. Splitting of huge pages also involves splitting of
+the filemap entries for the pages being split.
 
-> Sorry to be a pain here, and can respin if it's easier, but can we update the
-> text of the comments below? As in discussion with Liam off-list we agreed that
-> the current wording is rather unclear and we can do a lot better.
-> 
-> I provide the improved version inline below:
+To summarize the context of how these patches will be used,
 
-np,
++ guest_memfd stores huge pages (up to 1G pages) in the filemap.
++ During folio splitting, guest_memfd needs split the folios, and
+  approaches that by first splitting the filemap (XArray) entries that
+  the folio occupies, and then splitting the struct folios themselves.
++ Splitting from a 1G to 4K folio requires splitting an entry in a
+  shift-18 XArray node to a shift-0 node in the xarray, which goes
+  beyond 2 levels of XArray nodes, and is currently not supported.
 
- include/linux/mm.h               |    7 +++----
- tools/testing/vma/vma_internal.h |    7 +++----
- 2 files changed, 6 insertions(+), 8 deletions(-)
+This work-in-progress series at [1] shows the context of how these
+patches for XArray entry splitting will be used.
 
---- a/include/linux/mm.h~mm-implement-sticky-vma-flags-fix-2
-+++ a/include/linux/mm.h
-@@ -549,10 +549,9 @@ extern unsigned int kobjsize(const void
-  *                pressure on the memory system forcing the kernel to generate
-  *                new VMAs when old one could be extended instead.
-  *
-- *    VM_STICKY - If one VMA has flags which most be 'sticky', that is ones
-- *                which should propagate to all VMAs, but the other does not,
-- *                the merge should still proceed with the merge logic applying
-- *                sticky flags to the final VMA.
-+ *    VM_STICKY - When merging VMAs, VMA flags must match, unless they are
-+ *                'sticky'. If any sticky flags exist in either VMA, we simply
-+ *                set all of them on the merged VMA.
-  */
- #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
- 
---- a/tools/testing/vma/vma_internal.h~mm-implement-sticky-vma-flags-fix-2
-+++ a/tools/testing/vma/vma_internal.h
-@@ -139,10 +139,9 @@ extern unsigned long dac_mmap_min_addr;
-  *                pressure on the memory system forcing the kernel to generate
-  *                new VMAs when old one could be extended instead.
-  *
-- *    VM_STICKY - If one VMA has flags which most be 'sticky', that is ones
-- *                which should propagate to all VMAs, but the other does not,
-- *                the merge should still proceed with the merge logic applying
-- *                sticky flags to the final VMA.
-+ *    VM_STICKY - When merging VMAs, VMA flags must match, unless they are
-+ *                'sticky'. If any sticky flags exist in either VMA, we simply
-+ *                set all of them on the merged VMA.
-  */
- #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
- 
-_
+[1] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring
 
+This patch series extends xas_split_alloc() to allocate enough nodes
+for splitting an XArray node beyond 2 levels, and extends xas_split()
+to use the allocated nodes in a split beyond 2 levels.
+
+Merging of XArray entries can be performed with xa_store_order() at
+the original order, and hence no change to the XArray library is
+required.
+
+xas_destroy() cleans up any allocated and unused nodes in struct
+xa_state, and so no further changes are necessary there.
+
+Please let me know
+
++ If this extension is welcome
++ Your thoughts on the approach: is it too many nodes to allocate at
+  once? Would a recursive implementation be preferred?
++ If there are any bugs, particularly around how xas_split() interacts
+  with LRU
+
+
+Thank you!
+
+
+Ackerley Tng (4):
+  XArray: Initialize nodes while splitting instead of while allocating
+  XArray: Update xas_split_alloc() to allocate enough nodes to split
+    large entries
+  XArray: Support splitting for arbitrarily large entries
+  XArray: test: Increase split order test range in check_split()
+
+ lib/test_xarray.c |   6 +-
+ lib/xarray.c      | 210 ++++++++++++++++++++++++++++++++++------------
+ 2 files changed, 162 insertions(+), 54 deletions(-)
+
+--
+2.52.0.rc1.455.g30608eb744-goog
 
