@@ -4,87 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5759ECEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 15:45:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E88FDCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 15:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B55A48E001A; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
+	id 25A898E001B; Mon, 17 Nov 2025 10:47:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2D4C8E0002; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
+	id 232818E0002; Mon, 17 Nov 2025 10:47:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6A3E8E001A; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
+	id 147F08E001B; Mon, 17 Nov 2025 10:47:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95BD48E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:45:47 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 732B712D5BD
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:45:47 +0000 (UTC)
-X-FDA: 84120524334.28.60F0763
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C40EC140018
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:45:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aLnlna23;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F28BE8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:47:58 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 831A4B6D4A
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:47:58 +0000 (UTC)
+X-FDA: 84120529836.07.441F552
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1C2E440007
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 15:47:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FY8475jq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=abiWHsnZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FY8475jq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=abiWHsnZ;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763394345;
+	s=arc-20220608; t=1763394476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OOASFy8VudqRVqHCveoUNB8IGvERyojY4oDE5V5cHlc=;
-	b=KYL7XMVz6yp2zBZZhEqEauPn9s7/R1Ag6csEDssLPTOoUIsyvTzQaMsftBfRtEmZICeZ3M
-	xqH3Nz03tMng4Un1AzhylFZVi3vbpW6Zc0MinioUMHZ2UOK5ysoN98U6bDG7CtE9N/ztgC
-	+OWQKyeHs9glXZO4P78vuzv6Jd6V2Qw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aLnlna23;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763394345; a=rsa-sha256;
+	bh=N1bp/RkXrWe4ZJfoDRda0he69lBlM2TcxU/1fFjH1cM=;
+	b=fGIRt77kHrjd0FNFonPk9JnqRnjFU4uNMvXn2uPeCLsHOogTHQW9We92M9JB6gxDbP1gA2
+	IEW3U4yM6purl+g/gwjapkWp9zPdnA17fVF5sq4+d1SGy+J5r5xEh53alFxPLbKaHmQUKZ
+	MMy/9wr44LUfh3+FUqN9iIN26qqDcBQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763394476; a=rsa-sha256;
 	cv=none;
-	b=yxxrNNsLHU4mAfrT1xr+rdK4SzKPHxUZhwoDfeAY7LOFwqbu87LqBWpL3EVdelHQkpEIRZ
-	0xU2qx+nOpNIsTbVbftFosC45SLK/giOuEzDCii07f9ntqO/9dJ4iAiRfJIsbfVPRfGtGi
-	BChhrUm2cXfSGjpxFwJRQAJoRvBlIMA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 492A86023D;
-	Mon, 17 Nov 2025 15:45:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E4EC19423;
-	Mon, 17 Nov 2025 15:45:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763394345;
-	bh=tj/kdr8wlxOfWSKm75R1BNNXJbnbmo771IOdR00jaco=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLnlna23QmguzEOWiKyg2KqCqmDk+FtWeTCjEBhwlAkH3Yc57igyJLWRG8xWPb45z
-	 eOyyfDa6qENLdeCm1yl4vzvFN3/cdATdy5dHYOovQrW0L2NJIdjqVthayQJSQzJeJq
-	 b41Ca1Ua+IPapZBX4+v2nhAeBiXnt50QBvs66gYFswEzI4e2jXubzR7OUurh7Fi3Df
-	 +FuL7KEgh2j9lUl39isgKIM3Bnb0jRRaL987kSydNoRHRC5/MMlFGAILA8n+TN0e6h
-	 N1rhIjIsATNbSkjUsphnZd/x8kSEVUBK7aEoewAssjF6X9FSLi4jj7AXcB57C7oDhM
-	 OwQ2lySAGspVg==
-From: SeongJae Park <sj@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [linux-next:master 8868/9360] arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary '&' operand
-Date: Mon, 17 Nov 2025 07:45:35 -0800
-Message-ID: <20251117154536.11143-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <202511172257.CjElDcRX-lkp@intel.com>
-References: 
+	b=0blBkbA/P+kg+7r3g/v7lLTW/6g+JeUdIhjeQUfHjWh2YjvK6svlarqM6OG3eNrB6Iozq1
+	2kRvU+23VhEdPNZKuZEZ9MSAqU+QgsEGQisXw7cKTIlnYTQiubq5QVoGO/mZHJzFcFdvFZ
+	HaEdKSRh+KudMPPnLkEkEWMksy/8OjU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FY8475jq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=abiWHsnZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FY8475jq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=abiWHsnZ;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 039771F44F;
+	Mon, 17 Nov 2025 15:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763394474; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N1bp/RkXrWe4ZJfoDRda0he69lBlM2TcxU/1fFjH1cM=;
+	b=FY8475jqqlxhUjXAagYUzQHZineSTP8SgL138INUdue5TSFHANZA0uqGLnc0pFAVsT7kUc
+	ILQmmRDrVMxclvSUVUFNj9YSOskygLBJon1EeFVUv6DE1Li3Zk67W9AXS0hvRfLepGks7o
+	ZS0+p0Zb0sEypLDQ3/Y0nvlVlpGIigE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763394474;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N1bp/RkXrWe4ZJfoDRda0he69lBlM2TcxU/1fFjH1cM=;
+	b=abiWHsnZgGoX21R3aJEgW3ceIO9ffw7DdSsafJ+5+Yb+a897vWj3DVvdle11Dy+quB/oNt
+	NUdlshBSSoEA5HAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763394474; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N1bp/RkXrWe4ZJfoDRda0he69lBlM2TcxU/1fFjH1cM=;
+	b=FY8475jqqlxhUjXAagYUzQHZineSTP8SgL138INUdue5TSFHANZA0uqGLnc0pFAVsT7kUc
+	ILQmmRDrVMxclvSUVUFNj9YSOskygLBJon1EeFVUv6DE1Li3Zk67W9AXS0hvRfLepGks7o
+	ZS0+p0Zb0sEypLDQ3/Y0nvlVlpGIigE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763394474;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N1bp/RkXrWe4ZJfoDRda0he69lBlM2TcxU/1fFjH1cM=;
+	b=abiWHsnZgGoX21R3aJEgW3ceIO9ffw7DdSsafJ+5+Yb+a897vWj3DVvdle11Dy+quB/oNt
+	NUdlshBSSoEA5HAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 426E63EA61;
+	Mon, 17 Nov 2025 15:47:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7wTVDKlDG2lufAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 17 Nov 2025 15:47:53 +0000
+Date: Mon, 17 Nov 2025 15:47:51 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: propagate VM_SOFTDIRTY on merge
+Message-ID: <hrnnpvhpio6eb27w6xnqpdlyrlivu4xfbghagousys44a5dvgp@urmlfv7dyiqv>
+References: <cover.1763142412.git.lorenzo.stoakes@oracle.com>
+ <addc338c8b33aea3c31202180448ea32ef37956b.1763142412.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C40EC140018
-X-Stat-Signature: ogdp4d6g3ss6jogdzwcoc43mb9fh7jrz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <addc338c8b33aea3c31202180448ea32ef37956b.1763142412.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: jm1dybbfpw5hw3nzz1fugcsf47u7idp7
 X-Rspam-User: 
-X-HE-Tag: 1763394345-880148
-X-HE-Meta: U2FsdGVkX19WUy3DQfbi2B3FF0uEmXxm9qgT/JxGBHLPx9J+aFBAEv1jFI0kY2KKv7MVdnGcPyR3jLlrtmhy+tpErWvPZI02YWahKpFcziX2nUSragFsPjNkYQIcz8ujtJGP1S7kDT2gPx1KmeSU3FwcgywhIXSg1KwOzoJa7uUrv2KESuQI95grO4XzmHjvg+PhCviN3qVBTonbA82gnY2WggL22/YSOQP/R7mMBXMVOatQnCyupaPSGc6BkVRlu0g6t4AXuR7+2BTq30lk08+I5b3/quuvGgf1qlQ8+PDnEilprqt7TesNag50TKtbkODeBESk/l/l1Oq6SuNq3r6lBzJbb5fnbGaKic3anAsvJGLZqo1HdFn1n/y34udKbNHUk3UIU3dZtC6G4zJ+zmYwy/BH/gqcR2FH7+p6tmcdlFm7Y+mHn4hy60y7lc3u2KcQ2oIjlhp2ImNvdWzIFFUXW74ZtbAbQiROiycNV9LRA/6AM/GNyVV1RHZQB8S84NEF+6Rz9MKLBuKWUWWUEOOTn5InNXjUG1En+mKBDT/cEgVnVBrqz4gNslZCNXggWVb9obdLDZrcyv6aaeU16nfvH3D0dfXghAZSRRwO/dyMswQxvPJm16/bWA398bDAPvtUn+tcYFTJUELp3WdQJENZD5/7/KkPB8e92PIDzaZ1WU1iNJWjlq2BtdaFeldS7XvLUmeYFl30Ph7tNN93zg7fqzgUSnGn8tda6Do6Upws50CBQKGvDnwthMk2jkvFgQSubbiaLpcnIt8fsPvEHtPieiPoBOqP27nfdloADPE7hEnDj5jklAQlhOmwPoPw2rCvqlwkpZQjYe5v7FoIRlXpJN5hudhGpud6Lt0q7pd+dXe0FQVNyHLO6gUfF5RCBWRy0TbOvTpMzdpSHLvRRvHSmsjl1n1Y73fItsDRx9cW+Jh3om7QPDO1S4bA17oKOzOZ+JPLw7l15MdibXP
- 3dRWAM7C
- FfUN80R9c8/UY3PTgwQdk7oSzZkvVL78SasYdlBYEgObqKzPBfAXXhrKdO8nWU5vZdmxMkEqAx4ZAm+qwikDniQgBRHfuTwC4C4vd4CxYHlR05QyQumsEadt9GMbNXXvKCMV/VQigoScUkrEI9XFVAqItQsHomTlEERhmV6SIwu6an7maxpvqkQcfGV4f989S8IE4WQ+b1DFX/Bex3nbVxKo2gB4rZuK9/UMam+auntTPUO8v5tMQCuLV25XKKMhcLJITnA+6j19f4xU=
+X-Rspamd-Queue-Id: 1C2E440007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763394475-996258
+X-HE-Meta: U2FsdGVkX18VLej6wql1jdfo0yETlrEU6jSaFBJEnB37gyYk807Jb2dQcbY1EzTkZQthSC5EImNywS0NkBwJaKBhtMiuFeCaucbt0vhIk3k2xefIrypkmmkkD/gtkE/4K5BoQDirvexQTPi/8Bv/tFxR9p0NbFUxLifldJ9WVmvaNHa/1DxQB6VhwSCnU+sBBMno8lvuL+kul8bjuGddy0VqG0DeIDgEPjC+ttlUllMcITe8PneZkSLQsFrfoZ6CXxi6PFyMiFsGHYiTwUQWkLqaVU9FMSZFfRC8gFRHE8vuqozFX1ewR7iS8fFI4aAeZ/X7mMgUMvQOOZJCzCJajt4JWOAcxBpXw0LORf//0dM9ls9MMF4oF0takmESut+yK8d541eHF89JN3BFxmOSFwHKPjxIbXWPn7Duay/eKlCK+KuhCP1D5nH+wvlEC5y+Bth6tpvh/NfwoprXOLlJ7FE0h06PJoMXEYvv7D4Xg/8+8ez7FCjHsCKn/I1wmE69q4qBG0NnoA1bm2zwrKNoYLNgbu4W7bwVczaHNVd4fEcWbW1jrbg6aA6/z3GL5OnfWdpKHAjr9pVv74fRyfPIefke1U+XTLnwWT5lxiQ0ZnN8nXK4xReP1a44esgeVjbM8Q9hSkrvyPUaoqj3b+i1fGn84E6x2nLzRpkkLq2C7FkCie09cTuzc8dSVJTvn6ms5+MUtwgbGZC/MMgfDScXJhTk4qyOL6VzMwKbfDijZp2/D+C+YSrx8YlrTWcVV9pmQ2ZHaxrEz7H53APramUN5KjtJlqEX9AVttrGmKiZL+Tn2nm2XFZmuOloMC2ic7BBOx1H483q79mrIAkfQycx8QMeDBJ+VMx8U1taTXGB+I9JVD2PP+bFSlQc3pYdYNIvc9aq4XrnXgXzrK43fetFokej5eH/eCshoCsFC6A6VoNgOsXvHSXLba3AR+xzbWI4Z+lchLX6EdGkD5nGDHM
+ iBjeogAt
+ e68wyP3R9tvDoRaRFe3E3heVYFfYkvOk1BWYrY4i42FMORoEbbu5Qj5bXXcxYcmxMPNHByj+pvj3VHCrL24CgJ+R68Gv927kIFEQ8o34PHcKBJ27Ij1M3uFHUKCBjPRASY7GnZc0vb8rAvPkh0t8scw8RC37M5vwghcRNwkxQ1Z8HnzZvCOMIaWFStemvFs8vw3tkzcgj97s/ei0GQ4ewNBXmuQ1ouyCy49lIs+QQBwpl/Q5tNeZRjt22R1HS+Iqup7xeZm4m4mFvJ+fZSi8SOGRhSMBBKI+9p14CX3pK9+UMDDwS9Tb6laidV/pAR2vl6Cmb7ha+m+ba0e5l6j1YAnDfUDHFHOckUmxLtkzfhZxVpRT6wDgNJCNTfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,50 +135,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Nov 2025 22:29:37 +0800 kernel test robot <lkp@intel.com> wrote:
-
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> head:   0c1c7a6a83feaf2cf182c52983ffe330ffb50280
-> commit: f54f0efb9d91fa2eee95a7eb29d0051f2176df47 [8868/9360] mm/damon/vaddr: cleanup using pmd_trans_huge_lock()
-> config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20251117/202511172257.CjElDcRX-lkp@intel.com/config)
-> compiler: m68k-linux-gcc (GCC) 15.1.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251117/202511172257.CjElDcRX-lkp@intel.com/reproduce)
+On Fri, Nov 14, 2025 at 05:53:18PM +0000, Lorenzo Stoakes wrote:
+> Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
+> establishing a new VMA, or via merge) as implemented in __mmap_complete()
+> and do_brk_flags().
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511172257.CjElDcRX-lkp@intel.com/
+> However, when performing a merge of existing mappings such as when
+> performing mprotect(), we may lose the VM_SOFTDIRTY flag.
+
+Does it make sense to backport this to stable? A more minimal version, that is.
+
 > 
-> All errors (new ones prefixed by >>):
+> This is because currently we simply ignore VM_SOFTDIRTY for the purposes of
+> merge, so one VMA may possess the flag and another not, and whichever
+> happens to be the target VMA will be the one upon which the merge is
+> performed which may or may not have VM_SOFTDIRTY set.
 > 
->    In file included from arch/m68k/include/asm/thread_info.h:6,
->                     from include/linux/thread_info.h:60,
->                     from include/asm-generic/preempt.h:5,
->                     from ./arch/m68k/include/generated/asm/preempt.h:1,
->                     from include/linux/preempt.h:79,
->                     from include/linux/spinlock.h:56,
->                     from include/linux/wait.h:9,
->                     from include/linux/wait_bit.h:8,
->                     from include/linux/fs.h:7,
->                     from include/linux/highmem.h:5,
->                     from mm/damon/vaddr.c:10:
->    mm/damon/vaddr.c: In function 'damon_mkold_pmd_entry':
-> >> arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary '&' operand
->       20 | #define pmd_val(x)      ((&x)->pmd)
->          |                           ^
->    arch/m68k/include/asm/motorola_pgtable.h:116:34: note: in expansion of macro 'pmd_val'
->      116 | #define pmd_present(pmd)        (pmd_val(pmd) & _PAGE_TABLE)
->          |                                  ^~~~~~~
->    mm/damon/vaddr.c:314:21: note: in expansion of macro 'pmd_present'
->      314 |                 if (pmd_present(pmdp_get(pmd)))
->          |                     ^~~~~~~~~~~
+> Now we have the concept of 'sticky' VMA flags, let's make VM_SOFTDIRTY one
+> which solves this issue.
+> 
+> Additionally update VMA userland tests to propagate changes.
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Thank you for the report!  I just sent a fix:
-https://lore.kernel.org/20251117154415.11041-1-sj@kernel.org
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-
-Thanks,
-SJ
-
-[...]
+-- 
+Pedro
 
