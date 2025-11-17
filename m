@@ -4,109 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C5B1CD4F3E
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 02:54:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 641A0CD4F3E
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 03:12:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96D7E8E003B; Sun, 16 Nov 2025 21:54:12 -0500 (EST)
+	id 8FFEE8E003C; Sun, 16 Nov 2025 22:12:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91DA58E0002; Sun, 16 Nov 2025 21:54:12 -0500 (EST)
+	id 888E18E0002; Sun, 16 Nov 2025 22:12:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E5778E003B; Sun, 16 Nov 2025 21:54:12 -0500 (EST)
+	id 750DC8E003C; Sun, 16 Nov 2025 22:12:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 674788E0002
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 21:54:12 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1598FBD536
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 02:54:12 +0000 (UTC)
-X-FDA: 84118579944.10.05CFA78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 53F634000D
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 02:54:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bQLyaVBd;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763348050; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 564378E0002
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 22:12:53 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00DBE13C191
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 03:12:52 +0000 (UTC)
+X-FDA: 84118627026.09.6EB7BE5
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2AD17180009
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 03:12:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=NDAU33er;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au;
+	spf=pass (imf16.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763349171; a=rsa-sha256;
 	cv=none;
-	b=msqfWmkfcTaP7EIXcjR2Krq+4+VQOXPewsaKJFUVjAi3ZE1ACseoKn9ePckJ2ZEaI808e0
-	iWW7LyqVhQygxAzjOO7yl34G4kPFUrW+p5NAOOncCvgMJ8IXvKvNXzLykV1I7BySIrGt2w
-	ifkWpdpZ3Y0dAlpV1bDvu76mTTfd1bA=
+	b=TodbQo9LucRH38nRa0PhDyzm3Y9/vZzdaawizm36TnITasptLltWx1ZM6p4SrOb3NKxmuE
+	bfXLJfpW0AV++chuOFs89xQGBNAHuHehLEBl2Wyy7C6SIjGuS7MWtQ67sBMJBWfA47gv1y
+	xKccETH1YjnPCq1SzgyQwymN+HQ5GYk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bQLyaVBd;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=NDAU33er;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au;
+	spf=pass (imf16.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763348050;
+	s=arc-20220608; t=1763349171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A4L1uaIyYsdghZvIwpIv4GRabqfCF62SfE+4yz5AG+U=;
-	b=e+aT+olhAxbIrA+j4gA50rOYZyEu4YhEZq2/9xbKJBlC3gBuajIiafuGfnM6caROdBhtSt
-	/iHiCD8LYgFbkishBdVYIoUWqcRTeB0SVFJD7InTGp7bJdXmw6lUyCKvGXUUPOFsvdR9g1
-	4bdkxKdsl4lpOgMWY51ifzkm/mEz8pY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 16FFD444CC;
-	Mon, 17 Nov 2025 02:54:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54D8C116D0;
-	Mon, 17 Nov 2025 02:54:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763348048;
-	bh=gT/Jws3TUOkv78ezuhBECn5hn2F6V7xxYmqRwPANJYE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bQLyaVBdbyyM0oXtWKIvXOqoUHpgxlgK76A/wKmfxsmbwJ8Q8MJDoTghEtIMGocF8
-	 Evr+ry6/+JjQBdutYhbOJrfavqGhrLBedJ7368KUCce+O982gvu3WJH3U9itu8l0qj
-	 ayUgSBpevbPlBYCVx+7S9qMk6srbxSOGxd+WdmWA=
-Date: Sun, 16 Nov 2025 18:54:06 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
- rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
- rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
- kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
- masahiroy@kernel.org, tj@kernel.org, yoann.congal@smile.fr,
- mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
- axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
- vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com,
- david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org,
- anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
- bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
- myungjoo.ham@samsung.com, yesanishhere@gmail.com,
- Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
- aleksander.lobakin@intel.com, ira.weiny@intel.com,
- andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
- bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
- stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
- brauner@kernel.org, linux-api@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, ajayachandra@nvidia.com,
- jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, witu@nvidia.com,
- hughd@google.com, skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 01/20] liveupdate: luo_core: luo_ioctl: Live Update
- Orchestrator
-Message-Id: <20251116185406.0fb85a3c52c16c91af1a0c80@linux-foundation.org>
-In-Reply-To: <20251115233409.768044-2-pasha.tatashin@soleen.com>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
-	<20251115233409.768044-2-pasha.tatashin@soleen.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 53F634000D
-X-Stat-Signature: y4785xhn6cjdzh6qg8by4wmain7r1hk1
+	bh=qlMm7biMHzU/zsZZyzTao9DZXlaYBoqAWcxIHDHPw+g=;
+	b=aPF+S3RoMy8QKFBdVGPw1of3SmiV3BOjqeEz1P+AGV1RWDLKa6rRhxmbC6Xsf2PWVmAGai
+	T/keHsZB+BvSNU8Fmh3XX7B3NIZbO9VvABKIArSSoiGFcIj9aJPKZ4Jo89T73pKcTUAvRx
+	UbJVJjzIfJkIaZ1VMAXfuV+AcVGJiAY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=qlMm7biMHzU/zsZZyzTao9DZXlaYBoqAWcxIHDHPw+g=; 
+	b=NDAU33ermBIPLm0iZPr7ZbtstmHVK1fT8vbiK32I/+TXIudxyEiy95h0Y1MtWBO2gejVIrzFdil
+	tMka9Y3xgSfYjmUr5U/aipQlTEkLslTrbne2RqZ3cgPEmWMpdUNI/rG56P1YQ5DoBLCPkmRc7mNRL
+	/d2mVdaV2HEq1PAbtwJD0Khcs6RmSj3Fioe629km/kUeCKUbxXuNsX3dKzTglEERqW+aWTc5Z/kwN
+	/pAlMMdy/D+oLpWT1CjdVlBPxEVXZrMiLJgCK8PejqfeID3o07oN/IxHy9aplA7+L7z8VRgxjg8pq
+	4xJ0ujuq8J6RxqtFfo4IoH49S66uT2Y4B9BQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1vKpfV-003WMc-26;
+	Mon, 17 Nov 2025 11:12:42 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 17 Nov 2025 11:12:41 +0800
+Date: Mon, 17 Nov 2025 11:12:41 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>,
+	"nphamcs@gmail.com" <nphamcs@gmail.com>,
+	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>,
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+	"21cnbao@gmail.com" <21cnbao@gmail.com>,
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+	"sj@kernel.org" <sj@kernel.org>,
+	"kasong@tencent.com" <kasong@tencent.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"clabbe@baylibre.com" <clabbe@baylibre.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"ebiggers@google.com" <ebiggers@google.com>,
+	"surenb@google.com" <surenb@google.com>,
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>,
+	"Gopal, Vinodh" <vinodh.gopal@intel.com>
+Subject: Re: [PATCH v13 13/22] crypto: iaa - IAA Batching for parallel
+ compressions/decompressions.
+Message-ID: <aRqSqQxR4eHzvb2g@gondor.apana.org.au>
+References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com>
+ <20251104091235.8793-14-kanchana.p.sridhar@intel.com>
+ <aRb9fGDUhgRASTmM@gondor.apana.org.au>
+ <SJ2PR11MB8472EB3D482C1455BD5A8EFFC9C8A@SJ2PR11MB8472.namprd11.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <SJ2PR11MB8472EB3D482C1455BD5A8EFFC9C8A@SJ2PR11MB8472.namprd11.prod.outlook.com>
 X-Rspam-User: 
-X-HE-Tag: 1763348050-682287
-X-HE-Meta: U2FsdGVkX18KjQMFXMJ7oRbfBMhKDDd4wi4yCl9OqFnTP4XNt8CoMEXsVcsyI/g6FptC/a9BtJr5jGJrVXQIY3zv9GQhbXeemcScrY8sDZC7UBaG97ZW8KMaHv0hW1FLsKdHaRtEhVZaaPMt7c9mwGDlKv4RIbHrACH+JImYGnpqPN/CxAB41Dp4SMcnBacWfQ9a0KsC+sh9u83kM8cRW6mdC/lMSgjCuuHsr0RDfOfCN8BNWUDLeelpRc7GzcELeeBI2I9cULUdDEz3cYQgwUtkFvIE3UaaJN0W95crrF4GhDzvbDUHWMBIzusu77SzlC8x3/aXfl8QVviHpkB5j/OrHQVicQ1ozk66hKKazZ2uWuHZ2BGLuuIzgAu7w/VvScmJO8r7BCvGn051uBc00JzkZcuyJioMVaaLAJwOxvxWgQeXqwbcDMWuPlaltVghH6p4Y7h1C5OUZY/5Nux4FI2BoZLrGbR9U1kiQOV7dZYnqg9kiwKAJmE+GkcHox23+SWijIH97jVtwCIb63aZTZyMbZnFzAI0UjWp94l+EtDCbxB3r8fwfr/EV+mtElo+JhfS/8EZR8MymBj2c8VvrUispWaWHPHytpdKBkBxVoDQ6TKC1EJzvcdFKGLKU+ygBsrq77ACcX7CYXUbpLhPgoGcJv3IN0o8FeKONUxQO1sdpFSuqXu+mFuVjldkTAEGRvuS3A1rZGhT2SiDyOMkZUD0cqYMSLLXJcWoenteFOOxqIM+DrW9xPgkghlR7j0ZrYp88HXlbbiuY/29+XGkwEm6jY4L+zt1uAqrc0WcnB4ZgTI5Fa7XTNwMfz+r9T5I/S9ZUcTdi0y8vkpLzV4WKZiPBurYABfaPtRBdii3nBFQrv8FbfYbpmQT9mbERnkk/w6vk+6LFYITHkLgg4SoBEnEl59rhwH/IPXZbdb25oYhDDt+sQCKPyLB9vFAcZ+2aRRT42iFtNzlhpLuQ0C
- stQgMAxj
- 9k+TMiugGjQg9IA5z8rT63b+RjS4orVCdgbOBeUeuDjOvRtf89BoyIxhQb84EA88eRjGc/RgSX+l8NutZWRa6kRBEH/HUBRC5Psahtx7/40lWqCPP9YNTMQiQGVTmgYgm0rqIlsY4aadAiVdCWlhhZaCOkGbih89aOdmOQm1YnICEMyh1WDPnUIfYxD+N2qqDfvnnTJJJXvkRxPZ/AuxAr2Ty0Hn55ty7ulnzF4td8vuvd+7JPOPmPBHk31LdbzvK/l//3MrWkf0XKKLBhOzRqbnO9FCRS/BDDs1JVjIxz9t9OGchAhwU4fd2SJCBBnnkjne6geACOKwltWPrHr7FwHa00orlOYZxwbppOJqUIwaztTeP6oQcwpdWupqCqmSog/dtkwmWDg9jbu35K3rrDGzpIXU1bz/KH/E/hbcsGxXzMPKh2lNkFMOxayn0LcthJM2WAVnODElSY7ZZEzLCkg0GTccCAlDJufSV4dCGI2l0X1qZi41+PURtUmtzVyKsziQM
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2AD17180009
+X-Stat-Signature: w56y93rjdspafpab3ronf3w8ibfozcak
+X-HE-Tag: 1763349169-866378
+X-HE-Meta: U2FsdGVkX1+CsiNmh9OXBTHDiCg7w2pLXc6y2l6tyVd53OzFD2dfJFJJn++1m8L36gagYR9BNxBYIF9JR4KuPZSYNZlKK11+jWabjPfR/i/g71ugus7HQwtVIuvnk5x1CjOEHwFqO/DCMW+0sGya1Z52ZlRzbQyUQHWVQZpwap+us652c4qQR9VIACWffn6FZIkeNt9uHEcRPA7QD7aPBEkOKd6E54SpzzeE69szhX7GRocdP6KvBcrJm5SuLBhf8BHtL2OifB29IerQ2m7rAqF8Zo+1V1kqtqXb0aOzeONTg9ib21fF5qlfW/UZGgFVY7+nqw5fJXgMNsJc5huiS4G1KTOPjw/JfVJAlkZ0kFAvwfIFs29bXOZizHOZJ7cc83iplE4gu7Un/oVpGQ1CPqoOOyG0a8Ug5n73utigVjtQbrIl7OHxvwDbmw2aocbELiqwPS8euYEeDJwqMokhlig02wstt1raDqRtN3/k5vKLrPobk63fefpz1Tc5KbdGXbA9/ksqXBa7hFeXWoZkQNf+iQq5sR+L8jAdPCzqaVBORwPZXWUYFV7pBTMHakchZNbSoZmeXoInNnaHiEbZI2jdp3IJ7zbyffo7rUBlaTKOJpM8It/nxscCIJ2imU1bOrt5RF7B8uhAJ2TxJi93vVNiYyvePKziMrA/YtaMKwhrQMnILIjm1H9jAyDIzMZ3Pw5FK0LBqdRgF80g1KUNya8nnPllWXWqlws3im4ojdjGf3RsK03UtQXPaHpucG/MBb9yEEwyPY9T4SdT/QAczirDWtX8oOqPyrfWVA5OtawA24a0Uakdd6eG2qj4E1/ucpmaXl7NXn/TuDNgHCxWiMFRhZ/jPomgQBnnSgWms+EIHV5oChyLjIoJyxrWJcHcpVKCPu8Wmdn2JZq3DNN+YyHeBwgxjDTzEq7y2yUf2Fivb4Kwhws4erLBzWEn2Of+UL9DNiLRcr91Qjpn3rW
+ WFYtfjDP
+ WNj3NoBXDEl7BOWMfh45BRB3bmx+3Rst58UN6ciDkvYoZBVgScjMl4ylCvm6tEcGypYXL44Jg40IUawWGOzwD3NjJ1/+kJevJYW5ND8Y6+zIpP2XbP8olIoWaRiCg4Saq30NtcTyaGGG17Kis3MhxknizROeeMEZlprN0Q4KbZ3zM4dYIpjgp1cVwzZyKLjUp5O/u3yn69ORn/10yKH2nMFa5aG5WVA+DpKVR6Qy0ySh0LrLGIzvlG35qDqppLD11WtEaefxzeVDtNnWrlvQ6gAf/fPT6MFti8KRD5VMDwPNUchzC1hlj7u/h8KGNEd3YuYfnhu+bERm8rZpCeP4fIV3NtVHdjgraZ0mF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,17 +118,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 15 Nov 2025 18:33:47 -0500 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+On Sun, Nov 16, 2025 at 06:53:08PM +0000, Sridhar, Kanchana P wrote:
+>
+> This is a simple/low-overhead implementation that tries to avail of
+> hardware parallelism by launching multiple compress/decompress jobs
+> to the accelerator. Each job runs independently of the other from a
+> driver perspective. For e.g., no assumptions are made in the driver
+> about submission order vis-à-vis completion order. Completions can
+> occur asynchronously.
+> 
+> The polling is intended for exactly the purpose you mention, namely,
+> to know when all the sub-requests are complete and to set the sg->length
+> as each sub-request completes. Please let me know if I understood your
+> question correctly.
 
-> Introduce LUO, a mechanism intended to facilitate kernel updates while
-> keeping designated devices operational across the transition (e.g., via
-> kexec). 
+The issue here is that this code is being plugged into the acomp
+API, but it isn't implementing the acomp API correctly.  The acomp
+API is supposed to be asynchronous and you should return immediately
+here and then invoke the callback when every sub-request is complete.
 
-Thanks, I updated mm.git's mm-unstable branch to this version.  I
-expect at least one more version as a result of feedback for this v6.
+I know that the ultimate user is synchronous, but still the driver
+needs to implement the acomp API correctly.
 
-I wasn't able to reproduce Stephen's build error
-(https://lkml.kernel.org/r/20251117093614.1490d048@canb.auug.org.au)
-with this series.
-
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
