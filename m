@@ -4,96 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AFBBCE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 08:12:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A67BCEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 08:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 848C28E0011; Mon, 17 Nov 2025 03:12:12 -0500 (EST)
+	id 8D9A38E0005; Mon, 17 Nov 2025 03:27:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F8558E0002; Mon, 17 Nov 2025 03:12:12 -0500 (EST)
+	id 8B0DF8E0002; Mon, 17 Nov 2025 03:27:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C0918E0011; Mon, 17 Nov 2025 03:12:12 -0500 (EST)
+	id 7EDBC8E0005; Mon, 17 Nov 2025 03:27:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 585468E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 03:12:12 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED993160C84
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 08:12:11 +0000 (UTC)
-X-FDA: 84119381262.28.66825F1
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2B44E20005
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 08:12:09 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=U8lok7HA;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E2AA8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 03:27:53 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C4022C0B95
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 08:27:52 +0000 (UTC)
+X-FDA: 84119420784.18.F0A8F18
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf29.hostedemail.com (Postfix) with ESMTP id ED7CB120006
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 08:27:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/NCxRXU";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763367130; a=rsa-sha256;
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763368071; a=rsa-sha256;
 	cv=none;
-	b=m2DhUlDWo18sRMjkXmU6UAGqmiCFv3xAfsRSqA3gDYgptRhv3RWJgCopGwRPWRed8Mm06F
-	2NNP7OQD0JvzhRhgNpFDhdxzK6yK6+EHvzoQYS0f4MdVQU+RnYXIuL1HEUGYHxpNLsZhAe
-	bXrALJgo/sukE9Ha5mVDLmbe3W6SSi8=
+	b=MqA9bcQpHkIVGBRAXPQKqUm9nNfKC77xlNb6suMPhAILw55ZX8PW/BMq8nKgUC3XmhJFEn
+	Gie54uBemOGrtOP3TSlEsCOHMPD1wJ8U99YtW53UeO+y2MOY75T0OebxIjqPToUC1Y5QVP
+	M5yGkOa2zlfErwR0tGLhcbc8HHfeUmM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=U8lok7HA;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/NCxRXU";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763367130;
+	s=arc-20220608; t=1763368071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XgCAZVnIlC2H6WnCWFpjBgYOcv6yKOPLeCyGA9luXMI=;
-	b=A0QP6e3xH6DeaHBSN529cBvVpDspZwbgUI7ATWBl2rXBDkxq7BQAk4mgVmQMCAFjUWEAqc
-	cz1NH+bYLbOcglhEyh7gGAnI8A6yb1NyyBLeXPI8JpVRl4TYugQDROejZoBe9g3Zfp03Sp
-	uq6gQfdJZPyhIzRgnqKkPqeLYR8Qd7o=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b2dcdde698so229240785a.3
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 00:12:09 -0800 (PST)
+	bh=GND20+0Mmpyw4zdDpL4VRtyrLXIbMuGUmWIjNw5QtAo=;
+	b=Uq855cCiSUIEbgDibkM4LVpRUsMaDiE/W/m6ronV8/3/9mQhXMJfRxiLVLi3+OHRcbSTak
+	f1Ka0QjU7572/Yav1D1BAp1b3BWfKp7XY/Du473DZTWOul000y+F4i+Gv4tbcX3ALpC13v
+	W/+1NGAIHw/u5sCYe43GI8F9IQGW928=
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-880570bdef8so39731676d6.3
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 00:27:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763367129; x=1763971929; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763368070; x=1763972870; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XgCAZVnIlC2H6WnCWFpjBgYOcv6yKOPLeCyGA9luXMI=;
-        b=U8lok7HA1YmDJjIqy83cCDscSnaNgYt5vHJ92GhmRx8/13XLcMuEInMPmxZrNaazMg
-         17ELvk/dnmmGPoLVWGmLKn1yVkUu/nvmSnb+YrdHcswXy321AQ3DgwAqjfRv1DKOqbx0
-         R8PX4/Pxq7yX/8j5B84laydEUvqwV1mRKyfcaFHg33Rumddeg+LnabmYdUNt8fiWt+tz
-         g4ZZ48O4Ctajsp7YUPvmbO1a4rc82jwXv+noXCV6EEzdnfkvZ32GcIgOwA7ll8R6i8ri
-         nY24xXqOzfdSDvLEMNE5r2cGt/2XiqaWAdyPgWD3m8SpUac3qavFEgqKyyHquEL7MYSO
-         8CkA==
+        bh=GND20+0Mmpyw4zdDpL4VRtyrLXIbMuGUmWIjNw5QtAo=;
+        b=Z/NCxRXUa4nO0gEyQtY+k56Cu2KOGHwQbhdKW55P08P6LPqq7KUr3WAGn3lLVSD8+/
+         7Wi9IlkcZTrLsBTTvUUIgA+NJICck7S+/wiNnPKtB4GaGxrrKXPqHq4MXAQrHyPVI/v8
+         C082tRs0lyq+hSBC4yu6ciPTJMk6Jk74EjiKc9o3smoCJmMkVMH3hWk2PehXM+uL52jI
+         GRzCo0g1K2937NajDoJNUt5PQSpk3PBaf1bz4ZmD8pdry0cjeiWjnx1g3wogY5FeHNQy
+         ZiI83+h/EomFCN6ikBxS5GXLz2BTnDXs1N2LyBmboYliIGuepp/BCQgDriSPIGQcYCLg
+         Gm1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763367129; x=1763971929;
+        d=1e100.net; s=20230601; t=1763368070; x=1763972870;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XgCAZVnIlC2H6WnCWFpjBgYOcv6yKOPLeCyGA9luXMI=;
-        b=Zxj787Ihr084O4zTmkAzU/Vv22LtwvxnkP+8+PfDdpfYSoYc51sHbxHGI65QHFnp6N
-         mnG7lp5wFr1ogHUxVTMZZrOhrCo6lVP7MqmLuEwPZIsRx85CK6medn6PVfRh9LgWR3S9
-         DcQVdNb42cFM3mKWOUdRzCLN/zzord1MiYlWUJSXdeSiCOognKoMw8NTgOT5ouJ6QIZ6
-         t2mH6sHKqU8O/8wR2rr8FDdexo6H46dNRygRrWsB+/aPPmj3aNT/x0W94IKxfQwVEDbw
-         32uapT6SmdqwNXMisu19N4sofObo7RHbOf2F6LkaXsmtOqnEzvSgh3VDga8gbVXkpPhB
-         vvJw==
-X-Gm-Message-State: AOJu0YwKwpiyrR+4gsQ5MbeGqbuCLlu38RKbjBe2Kh5tYAZ1SoDR7SUt
-	8Z0Pk2v7WAQ6dIHEHMGk7V/ryoYcOxhCtMlVCfm71dgPgJ7lLaPn+jyHGW5vA9yM2zUE4O7kRgm
-	dQ/T525bVzTsmsj0iD+CTbVpdRGKWemU=
-X-Gm-Gg: ASbGncsJyuXCqWHujlyJt+5GA8EVRD/4x15OHmyE7QBYUK4ykEr8yA/IlBA6uFQgsv7
-	fJzvqFyF9AvzOz/mHbRbZh2W2oQGLoXgtHfI9Lh7zZgs/HGJ2CJoa9dof/vUOEqJeezBMgqQcRd
-	ehDlKAcVCsxC3Uvn+qFIZhtwAivta/hhRgIVZ2N5GNrH3og8iMhLJXYtTN4KcLOFn7X4eHnj7sD
-	JUmqW78Ubd9tuWGv2GRrxVqAQ/a+zPF362L8ao6pbfEhlo5JhL4tZ7ngSM=
-X-Google-Smtp-Source: AGHT+IHr8QF0cDxs+vlTdDwahta7o6Orzj28wAbAn1Dzd/AkxYVumEzziVpL1r8+1FfVdkfuu4nPQy7fxGyPKKquEC8=
-X-Received: by 2002:a05:620a:468f:b0:8b2:e8b5:1e9d with SMTP id
- af79cd13be357-8b2e8b521b3mr481345585a.75.1763367128969; Mon, 17 Nov 2025
- 00:12:08 -0800 (PST)
+        bh=GND20+0Mmpyw4zdDpL4VRtyrLXIbMuGUmWIjNw5QtAo=;
+        b=LCFMk03IWPzxY//BFz+FQma7FMpcB8Z553SsNtFqesx7IsPXqI+jj4n5Z1+sPmBkU8
+         yZUgRbp9LqJi6Gusf45cTsTH0lDQ6Vnb3yqmpZ4M+yOwsA17ypzy2c2s50YgLqJ1O1w6
+         09qmJsYOiUf1706cFnzlmo3vbEP7RVdt8YSb/GMCa/El3j8m/YRXWKgPw/9JxE9RIFCQ
+         h+Zq+FTXv4GbCd47jRhiM1xeKWHeE0OS/8pTYUUm1azNfnid8tHAGDtgF8u7YchFknSI
+         d7XWbzW7pOLDXPZAk9ZHFtQgZk88XxhUdwcgsSFIzJKPrGDLLaC6Deo+RfoIrbgxEsUx
+         Q0ug==
+X-Gm-Message-State: AOJu0YzlnnqQ/RcmO3t6POFsSgJU4cYoylNqHfYRhyD/S+Suhyv0f1Pd
+	HnopbKettTNl9RoRC6rI/KiziBW+onorZGw0tWquIaZA6Bdph6XqohK4gLBSBkotHhwUnQ02OOJ
+	Ln4BKfM0eGJbXHtb8NbmLt6r1372hATM=
+X-Gm-Gg: ASbGnct/dinWT1mr1AuKgarg7n/YFTgJOtbrgeOdjjvP9ANGoNvkx1MzyLxonynZUES
+	2xKqBFTXt42nE+WY2DI4Nb6166Tpf4uYbCAAYbjQ2A8Vx0BA93law2IDno6Ohpmcvx3PxYj1gmI
+	Qlf++n/ecYo4edtPg41/j8BMCikUPte4RWeg5KU0MQ1nOtfmUTE6+PdqlTuFvmAG1BOu/g0C0EB
+	u8q/SU2waSxNC4vXGNstnv0VAjgQe3aUhbpp8cRxlkDN/Sxyk+3GPlC4lzow8x01ApWTCRu7CAZ
+	S8Ik
+X-Google-Smtp-Source: AGHT+IEI3TdbG4BeHitiknf6t87SsJf4IZo33I+9ElgJiDYVSJ02trHza6P+cgIbNS6CblJ6nvUVfTqlBHfalQyth9c=
+X-Received: by 2002:ad4:594a:0:b0:880:4eac:8689 with SMTP id
+ 6a1803df08f44-882926b1015mr202109406d6.57.1763368069868; Mon, 17 Nov 2025
+ 00:27:49 -0800 (PST)
 MIME-Version: 1.0
-References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com> <20251117-swap-table-p2-v2-1-37730e6ea6d5@tencent.com>
-In-Reply-To: <20251117-swap-table-p2-v2-1-37730e6ea6d5@tencent.com>
+References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com> <20251117-swap-table-p2-v2-2-37730e6ea6d5@tencent.com>
+In-Reply-To: <20251117-swap-table-p2-v2-2-37730e6ea6d5@tencent.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 17 Nov 2025 16:11:57 +0800
-X-Gm-Features: AWmQ_bkPaqE4eHE0E_7vSkfuNxWarbNXk27NMet-YcDRcMNo3o_J6cYztQJj6o8
-Message-ID: <CAGsJ_4yQ+_hDhF-eVoBKVxWmVa-hghfeOf1BHTbZvZ4Woht18w@mail.gmail.com>
-Subject: Re: [PATCH v2 01/19] mm, swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+Date: Mon, 17 Nov 2025 16:27:38 +0800
+X-Gm-Features: AWmQ_bnPS4HEt9vqQL0zbiROCUXB1DHUHxb2lEPPWXqZ6I99bNw7guWJcIGCAu4
+Message-ID: <CAGsJ_4y9sQd9x-kOqPZzaNPTtSOhFSYzFdjiRsJFjT2myYEK7w@mail.gmail.com>
+Subject: Re: [PATCH v2 02/19] mm, swap: split swap cache preparation loop into
+ a standalone helper
 To: Kairui Song <ryncsn@gmail.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
@@ -106,14 +108,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Kairui Song <kasong@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2B44E20005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3opxjkxhhbxs9achm4hyp7bkfn7pyzcd
 X-Rspam-User: 
-X-HE-Tag: 1763367129-114391
-X-HE-Meta: U2FsdGVkX1/PQ7vhd0ZM50NhEnjoFMHHQvdgGptlssJXUl2kDULJ2R2Lif/DrNzcH8QixTL8OsnQjqIPSVnIIutLRWb5G8WnM5FPc3/H/GPIjx5CT0A+BVBG8kzB9pkD1H5TuQB7URQZrE+1GWzbNGzRw6Y7+pnjiXD3VgZas3FAfmRXbrO3hXC+AL3IAmSDA9U8Pqrtq3fviMUL6R7gzk0VTfApnT/Kze6nE1V8PbHABC/yIv4uijY41rfx27A2mkQw+SXSde1pd+fPQOx/fMbVMfkg9B7HlQtK+JyCommI05qtvh4rjq5s5wz6p8laFAOu+lq74d/7Am4ym7NYL2f7pz0iV7VzL6TrAK3IOInD/BmyJOW2bDqOhwBMy1o7LwgQjOnkCMdfOHk4/LbAZ5FZZoFlpJGxKD4bIx6isFnaSWysUGCdz+oYfmyXBtkilFkvAnbfP/8PGu3byOhZl4gBceBQwIB8unUQktdx7zOEE3cuLpkmP3Ccj+j3jkuxXoItRHRU9x3kbYX6LAytaq6q3/Kiu/+gs6itdU0esnJ2LLyVZxuj2KfLGdb8seADxfqNBorxUokOq6zUHY3a6RHxDv13ZyAKHBdXPgO4VbTJd1GTljpnO+X/INf0S1t+EBS0+AXb+qQ1M65GunnB8lw8kEf0Dqqr5T+/4BXgIOiD1x2/nS4Vd8ECAorHi4KLFxNSoA8e7ERwNEUjgh4s1Xom84N70UN7oopWIEDs1vhgK33lOJhqyaKdxw7SF68ph0UZKIf0XCblWQuGEEMlwQAQFMT/Dp43INXRnZRsiHnvPPMZPyTYslJpzv8vWBAaQfAxxhQUn4f30NHOaJBPhCBmNZtEXG/QItWLEDtUfovzTXmTmwK6nJBZ10Wq+gcnnY1LKhQImMHDD+qPY1myrkoPLL0amCkrIy0re83TamIywjDSNh/9113Jnw1+pf3G6U2+saGhhRnF560M/Jm
- LZtXPPWL
- IttxlOu4H+MWi5MmwhaSpeMPrself5+ju637OHdwlyr8gMBgTkAshTzI0FDOdBTLTMPXttbNcEYJCY/ddl7UkM2LdrU2heY+6q60MhkDlrloMflIDHus5yDYFcpo6T4BGdTdpQsTNzygJS2HAnfP8gkwVh50xAMf40gZNUJwGFdlSQB/Fl8u5Y8Vzr9AMHFACvsiRU5lXqJKB6Oh2/oE2ydCQsNu6OhzUAMnOT/bm75sEhHjEbxcpNfynMKfSryeqFOK94T3lZIRg/Ram99yq747hqyf+D0CYbvgYzKFiLKyIQUoifRXy+EuR0OO29AcNeteBhptBpHMbFw2EUCy6nEPZ9ux2TFfh/OlnJiyEt2AYsCphOpZmZ4LTjdEDesHgpeYiSUdP8p65BenjnBZP3c/hIrwxxlkWLcmSQKq88rSJJnGFjsr9IXuhi36tfYO8Tv/6H8r7Y+NQbGKP+/+KuCobmTFg5JDZa16K
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: ED7CB120006
+X-Stat-Signature: bkxguz6oiyg4xp46abgd8ck1zufr8xi5
+X-HE-Tag: 1763368070-739885
+X-HE-Meta: U2FsdGVkX1/bWJSDWq0Cq3MipHzEspnt9rhZTBg3dwmsA1GvoEMq7CV0RvoD3t9scOfa0Vp7+oEYPoXWYxFAUrNaJL3qZ9i8hr/QU0TslpfdXv7nQ3NN6k1CJZSLAA1XFpmN1BDXMKif3pqobKCrTc9qr7TfDGR5eqct7cxcbP4birKyTaZYpv44sZrlLGkg0e12iuOVEmvu0Z/l1xNUzTjU4BQyzoihjOEv1xOBJSmuXn3jlrHBZHIOlL6lHjwZ5JqYMBvrBHDhRsYVGSBG8+U4YhJpiV103jkhPTvFHbM6+uep5YlCEkjhynEyAfndGUBdYmvhoifvb0Gzt+dJIFfr/n1G3N/6iTF3OvzZ0kCY0Z8mxJmdHaOZFHmeL3rbNJWI/i1fxfsG6vJHkIrekZ2x3Z8VI8TS+1JDoG39UqRhqxuy+4D2p9V4Clf75jUbw97+NPoF0tXGTaeb+cHqHH2Erx4ys/lNOTtHm6zHtoOOU0Cx+D2N9AVusDFEXmn4uiZdVjUhSYZCIdciHBJyRvUQ/ksAV0n278RKW9+KvqWQLvcAjZ13BxS56ERPWr9JWjwcHifIYzogQGOCPgjDUux1F/FSVjVUp/hrs+MrkO8ZWhlucJRvTgYuW6uaDuXsbuOozbLQJP7aCnUcXPZZSmkA8fpzhCDd2/rbY/3Ujln1y1Kx4V5iOq0MCzZyV6GCb/VObkdahqh1V+PuQ6jbIg3M6vPaX3YQnQDg/mi83SgnLeDk5uuP20dyuLOF3RDLZ0KT22tbqUGXEuGo1j++0ZCDCrSrwvWRoh5keHX4/evyQTKKzYdj0pVh67sansUspVIlU0ygX84aTkNv4JedW/i+ZFPC5wzT+YmhT4QtOdVu4eu6uphOnLow4ret4Ca6e0RD8iKCOCvf4vMwqwPjZd8XepBRhIP1ZEPE8WQeWt71rf8xal/lNuG8/1XGi9bux6hYParMWklOgPmNWNB
+ L+g7TmHe
+ sXLpZ8FsXKot2xO6FDQZ8aQTFsKk2yvbBmiXE9VGOy7N8uinvRTJVVojJ2WKm2r60qz2fe8q29jK03xThHtlzYMRODEI3AClyauucTMBWX+mE39mJO5kBXKrQpoTAJpNRDijNYJoeKv7DemvOd/A0mKDZ5lEeICAZnTYcMA7a2ZLlXmp3e1D9uFuc9V2GIPnsComZrB8eT9O+xOQuN1fRAm4JSVM1SoDvtjUtr6o5w7LQbI5Lv0pxD3B1mjm1Him6y4iuDiI4YkOTySKRujiEN60z1CCsLGrER9t7H8GPV+0h/zc1R5ZvctYriFv5pgpxbWPptagEFenxRl5vki81zw/QS+n5kMVIHki7p/5wd0PFMlV3da65tTWIoIKtfn+8FMxbtU8K3RNbOVm/4Ok527FzW8emq9VF5oI80uJOFaY03jg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,19 +129,66 @@ e:
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> __read_swap_cache_async is widely used to allocate and ensure a folio is
-> in swapcache, or get the folio if a folio is already there.
+> To prepare for the removal of swap cache bypass swapin, introduce a new
+> helper that accepts an allocated and charged fresh folio, prepares the
+> folio, the swap map, and then adds the folio to the swap cache.
 >
-> It's not async, and it's not doing any read. Rename it to better present
-> its usage, and prepare to be reworked as part of new swap cache APIs.
+> This doesn't change how swap cache works yet, we are still depending on
+> the SWAP_HAS_CACHE in the swap map for synchronization. But all
+> synchronization hacks are now all in this single helper.
 >
-> Also, add some comments for the function. Worth noting that the
-> skip_if_exists argument is an long existing workaround that will be
-> dropped soon.
+> No feature change.
 >
-> Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
 
+Overall,
 Reviewed-by: Barry Song <baohua@kernel.org>
+with a few minor nits.
+
+> ---
+>  mm/swap_state.c | 197 +++++++++++++++++++++++++++++++-------------------=
+------
+>  1 file changed, 109 insertions(+), 88 deletions(-)
+>
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 08252eaef32f..7b93704fcbe7 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -402,6 +402,97 @@ void swap_update_readahead(struct folio *folio, stru=
+ct vm_area_struct *vma,
+>         }
+>  }
+>
+> +/**
+> + * __swap_cache_prepare_and_add - Prepare the folio and add it to swap c=
+ache.
+> + * @entry: swap entry to be bound to the folio.
+> + * @folio: folio to be added.
+> + * @gfp: memory allocation flags for charge, can be 0 if @charged if tru=
+e.
+> + * @charged: if the folio is already charged.
+> + * @skip_if_exists: if the slot is in a cached state, return NULL.
+> + *                  This is an old workaround that will be removed short=
+ly.
+> + *
+> + * Update the swap_map and add folio as swap cache, typically before swa=
+pin.
+> + * All swap slots covered by the folio must have a non-zero swap count.
+> + *
+> + * Context: Caller must protect the swap device with reference count or =
+locks.
+> + * Return: Returns the folio being added on success. Returns the existin=
+g
+> + * folio if @entry is cached. Returns NULL if raced with swapin or swapo=
+ff.
+
+Not a native speaker, but I wonder if adding *already* would make the
+comment clearer, for example: "Returns the existing folio if @entry is
+already cached."
+
+BTW, returning NULL may not be the best option. Returning an ERR_PTR
+seems more specific?
+
+Thanks
+Barry
 
