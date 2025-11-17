@@ -4,116 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93FABCEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 04:36:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2827CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 04:37:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D66C68E0043; Sun, 16 Nov 2025 23:36:50 -0500 (EST)
+	id 1F6DA8E0044; Sun, 16 Nov 2025 23:37:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1CFD8E0002; Sun, 16 Nov 2025 23:36:50 -0500 (EST)
+	id 1A6DD8E0002; Sun, 16 Nov 2025 23:37:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2D708E0043; Sun, 16 Nov 2025 23:36:50 -0500 (EST)
+	id 0BD198E0044; Sun, 16 Nov 2025 23:37:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA94A8E0002
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 23:36:50 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3D6B913C1A3
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:36:50 +0000 (UTC)
-X-FDA: 84118838580.20.4204462
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 54877140005
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:36:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O86h6axC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763354208; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E84FF8E0002
+	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 23:37:32 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 53723140760
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:37:32 +0000 (UTC)
+X-FDA: 84118840344.28.B16A7BB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3E520120004
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:37:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763354250; a=rsa-sha256;
 	cv=none;
-	b=ihiehG4oFk2DCswG7m8C3g+sRecfhJe4MycxLRkxoRaIDVizaV7N+3u81d3TTHA0ssA5Y1
-	BvjPvgo6FZE6fhifSWRBizOGbj9hwB0TFU/3XRfntdA8ErP2svnXxTdFEhT+/e6leII27N
-	2UFHr29JGsZumi8DsjV7jr/Ux2uaRvA=
+	b=OHnTA3oeS5CsE2bAJXL1/PEasAi19hCCHu8Anv1/OAem/mp4Yo8AjLbwDNzjmXoYaIxDYy
+	7cCQfhG5YYPTumrYOSLdVS4dwuUDEkX1CSoChfc2twMygaccmgoKM7ybV8qhjXelSl4FZx
+	wSpiAGXf035ixWgjCW7QR7cG6uQ49ak=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=O86h6axC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763354208;
+	s=arc-20220608; t=1763354250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Fc3Zu8BNXpaHICfIJf5oLYKBbFHa0OxTAlRc1QvXAw=;
-	b=C1bsUiLxvGGEfmeE9VLXS3CrCPz9AYFBnVpddwsUudDYM3PvvLuXEQ6bH+uTrqUeVrU9bW
-	RBL2tOY4hVyaMplOPNDW6ny+TLsViE08zuwkt0q59ZX6HqrrpyZm+dXHXGg7/LFMOE9WSQ
-	50uVGT1O1s8tUMtAJv6W3bCHjeUPJig=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42b47f662a0so2273841f8f.0
-        for <linux-mm@kvack.org>; Sun, 16 Nov 2025 20:36:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763354207; x=1763959007; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Fc3Zu8BNXpaHICfIJf5oLYKBbFHa0OxTAlRc1QvXAw=;
-        b=O86h6axC57mzJc6dd7zfWOCaPItC/cKDUw0KWf3UZTF8Wt+ZrZLolN16d2vlQUMKNp
-         Wd2WYlWteOEsHQlBTu/utPCcbnBZIPx4S808vQP1adymoAoxgMj2VrOMIBEz4umskk8P
-         yhgR6gEhfndM+/a242K2cFpRZWBxml6wrR2lbH+OS46hRTuheG4wHFMScMxPbyNFphRa
-         WOuPpjKWZ/oTRh7jrdIzM5TYyXN0pBX4AbS8EQdjcwpWJ/yc+BhNahle68Mc5pZnmOA3
-         SGgLRusb3iU84tEnC6E9nC8wk11ulLvlunG4zy+b00OsncJ8KGkfDYtxYSnTq+A83aqZ
-         ZbyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763354207; x=1763959007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6Fc3Zu8BNXpaHICfIJf5oLYKBbFHa0OxTAlRc1QvXAw=;
-        b=Tiu73UCmnuyipRc/Gb2YPLcgwpBP9nVLc5ShVKriEiO74FMd8KD8aqRlhHhO31fAFF
-         57PjoUia1MTI++Gvp213rnkRUKHC1FzH45VmCv2gNWWiEi/w+7y62Ubmu0I8zxf8ANCu
-         yD163Mxi8+1BQDcl8jAXOnqAfzjHKxw+uDOo2bLdMjcCYbbrIiUkIineGPfKP6s1Mjl5
-         K16aG3Gu1OmGPo+LiBqUFMzhLOzrgLaiGW39FIHYEjZYSrZ+6PKJ2zmkRbGTqW/oGyq3
-         5sxEbLyqKsr2dCln12XHE8FUU2DE3LuNDPX2ZEAa7MR2PpPI30Zsv5Mk4599UalGGthj
-         sYZg==
-X-Gm-Message-State: AOJu0YxFL/82N88eBPXuxvwncabNU4jgxNo5W/AvdL3ZnRFLE3/YfaiQ
-	EnWKGbCw5k3XFvANjiIW2uke/2qoj/ZuBFa5vwUKE4hjfofIVX1teVqAE/DhlaKJgkjrXUmSEH0
-	PP+QBEBrkCLEyiAwy6OJXw3s617tBsgA=
-X-Gm-Gg: ASbGncvBzHbBx127rcuHH1dae+n3oN99LbycvEUis+4yaVu1qeQLZQzf2zKib7gIQ1F
-	fZ2NxPFjlny/DruaNlj4iQiFTj8kH4KKJvHj0OspROMbfbmroa7sojnZ0ummLU/0o6jPL2oceAN
-	HFtVigl7QC1f7rfA7KuRTKCFKmKfIpmbNyvmGHYg0F5D8xZ7JtF2Fkg1RQBO565UI1E9KxTwULz
-	naW4NzpEKtOeof+ZeLJ7aXTWo30jD6R+mnLyHpjLbv7FDrY2yJMYL7L2qw=
-X-Google-Smtp-Source: AGHT+IEYkJGTV546sNbvGJ6zr5CbyG79IyzbFyOU3MHUh5V4d0FsACHPhrb/AGiY7YNHmuBQleizjBNvEGdPQixkago=
-X-Received: by 2002:a05:6000:615:b0:425:7e33:b4a9 with SMTP id
- ffacd0b85a97d-42b58cde7camr11933030f8f.0.1763354206483; Sun, 16 Nov 2025
- 20:36:46 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references;
+	bh=YEa3ok515B+qsUceDTHrN94skLf4cHmtq1pzYE+GnwA=;
+	b=jsEroAGJvRtt9d762ZJywQsUsa8pnqfl1xkcd6tpPyEaMbzmN/+yD/aeFaP/aaSDkm6RcN
+	MgltrWYSeAsxneBeYhg8Vm8jTW5NahG/nU3+nhpDfpTmkvBCsxDZri6ssTSSqHWpek2auC
+	jhHdTpkqRy7c3X7iXUOpd5SmbvZnvuM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7382FFEC;
+	Sun, 16 Nov 2025 20:37:21 -0800 (PST)
+Received: from [10.164.18.52] (unknown [10.164.18.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5314C3F63F;
+	Sun, 16 Nov 2025 20:37:25 -0800 (PST)
+Message-ID: <e89eba01-c76c-4ecd-8930-c188d89f4906@arm.com>
+Date: Mon, 17 Nov 2025 10:07:22 +0530
 MIME-Version: 1.0
-References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com> <20251117-swap-table-p2-v2-1-37730e6ea6d5@tencent.com>
-In-Reply-To: <20251117-swap-table-p2-v2-1-37730e6ea6d5@tencent.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 17 Nov 2025 04:36:35 +0000
-X-Gm-Features: AWmQ_bnFLsC97Xw4io2kXWjMaJxDsyoKzPofYIy-vZ1fg6yv_dxUwFEJ5hkO0xk
-Message-ID: <CAKEwX=N2hAOywYhYGXYg7FiDdXT2t3s1tyb8wPE8goYiT=vR3w@mail.gmail.com>
-Subject: Re: [PATCH v2 01/19] mm, swap: rename __read_swap_cache_async to swap_cache_alloc_folio
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] make VM_SOFTDIRTY a sticky VMA flag
+To: Andrei Vagin <avagin@gmail.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, criu@lists.linux.dev
+References: <cover.1763142412.git.lorenzo.stoakes@oracle.com>
+ <CANaxB-yqsphFXvY0diEaHL+Bg4eJ+z_mqezxen9xVyoyL+4NMw@mail.gmail.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <CANaxB-yqsphFXvY0diEaHL+Bg4eJ+z_mqezxen9xVyoyL+4NMw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 54877140005
-X-Stat-Signature: 3qubjw6yc49ibqy1t7sco6njoxeusgid
-X-HE-Tag: 1763354208-790840
-X-HE-Meta: U2FsdGVkX19LSMy/Lat6JsRtQc4EnXI7xsKMgyBQLuQdHlBiWdyl3Zhx0/UGwFk0vtK+i9Bxf0797wzTYd0iS65N6KzBlkdvzfoObiwazN7HwEGqlnWAcCAVfMZconyC4jE+KLnWZZpdYSrThMocNzoX9Dq0U6PE1UHbCu3RDkQ20aoa+BBJhba8kCUeyXeVxGmIsCInaVozyo0JMtv4rre1l1cDYMNaEPQO3iQxwyesS7jH6ehn+IJ90si5Jy2esiHgYLp0iBfJFSTi+QaKQ40Y8JYoNXDQSNuIORqbZECMHBizP/MuAjJXa0im2wlHdrjEIithJJvgIgO+9varJNx2vJNyVfUj6Qe2yT2klNzyFfMvrzGDG851cl43US5AxUhs/J4ONa3QOXh2RNzb8Ao1WBKtXSlyGXeBfaO/TKfi+JvjEhYrDqC1kXa9NoiOEuBHKmgSc0LAP0cQa9jRImXN0uDQpvqHV3S9M3nv14SRd/QLoFPL+m0r5aq994Y3IZ7m6uI4AeaSojlORFRObr6NCXD76DWKxA/E99DxIWgOvAeDhM6Z4WnwFCSeSTkpFVZF57y8hDbXO5Qg+1kdLI33yeJqBZpjJ8FKw3WkoSjxGj2avDqewiWCQkfjvr22jgaBABWXHm9y8+kFQd/OxmsZSXI5qtg01hOVmDnFS77oVHlYyKHMn46/6HNG8DjYZWRqy2vHMg7XXdXPHhv8Joifq5duhfznSVeoV/etYMgT6M/Z1hDT438YR5F4FzLAvCEiSl+3BiV3zFhjy98z+Xhkj45gm86Vkpy+/WmWKhVXgOzTWzCoUZWs7zTqmI43/FsPJfNzwm2XiKZ/8mAZsaa/MSoqDHM6+SGkcNlqe2B/OGa7EtMzEZWQbkd+/BH4Hctr4QvpducZUiyGkIb0Ew4aeWP+x7mRrwHnvjcEac9mfybiIZRbRgQH7Uzqujj7/0cmT4AEAwT6yJJX9bJ
- 3mF6A44k
- YzB2ZY2d8DBZm23XHdcY7rzPN/8ByoRDX3LbClE+U9sy8GJYscskP/+rq1nPXqtcEBmazPTnyeYAvZXlxwp0tcQ0sFWWsjCPIaMutsjOCXzSxTtNokWb9nR2I5F57lVi3LSBfp7wdi3sLYmQeBYmANj3tARcOC/rQG3qRbbRCShwoDZkUvd5z06q1Ns80EAm5eZ3ymwAlsbgR1Q2o/l3/xeQUln+xCZ3mMHFZdDM36VuzDWqaoRNiyw9Qx7R34cYgIzXJBPuEo/Wsd7pMAgKshU07YDkHUsJAbytPJvQTdM7TB1PLzXv8NwC592RBEicGa3xqV8pn9USseBiOzSRBkU5UxbxTE+Mx4Kn/Aaz0H4oQHvv+mvHvBReOe0vf8N4WKcNGvE5dNgdsxvhPyFs1HHlpdHGL4AAturH9PaUDTKZStxoDUvabxo+LU+a+rlKjvwNP3Jd8OuG/b7c=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3E520120004
+X-Stat-Signature: 4qeiabhitgpniqisjk8dikuwgx4q9atm
+X-HE-Tag: 1763354250-292995
+X-HE-Meta: U2FsdGVkX1819cPxsLgzo3sM0AmhQYVJsTEMtQIuyQFGt5vEQ0r1yL3sbGAtyNgaGFNUHcHRi6sWuNjadlZLgUb6wU8W8XF2KjdgVsTUkvaJGYMuryrccApKth/o8SE6CF66XKmWNHnsUuTzwxfzFW5aoy3Ehbohbg9ZkJtVKJ2VyDMsxYpoC69TTiAPzX+gQu3ZRjoSPtBPUX+qAlA/QmuZJrkWHb6npdRj9mG8cZELF5IcgQQuOU74X+5brHsrUBxt/zrbZk/jjkjuCy0dxfkzik3rYMU0OXC2h9J1QmyK3PDnyrU1cZnhYzni2G9a23jMy/i9Dkn1ApMZuwVcG9JbZ6hJXvDRIIpPBolN8aRr8ctoOfq6EZ3AexdWbacZKEnL535nhCSAZYqe2WUwwexuYUYcuYIabo257U0qEZNENXeeyHg1OXYrKoBTrzkIJLDaN31epkMAfaUI/YXAObdthq/InGFvQCq50vmFMbJs3SxAoP69K53U3rTZsMKo+yqqq4FyCgEbriZ2FkX1fMYCcKPno57lcms6HeKcZZovYZaMnuJOE5uFcwzAeaZIcH9VOfM8g7ZohpgaRkUeateHLVSrAnwnZmjjGQK9KkNLUsJA+t7JINjgSjXu2kN7kjCB79/Dx4UGvS2tIMIQC39Jc9mucAayJPHNY6+Lh0N5wTtipzndrYpSjrbn8/wzxPXy3XHb2I3U2PT/Mh6Rd4Ve+6ntR+I6zaBXH/rYQDS6Lr3Yaf/j/wujH1ataj2fHdcKKaeMn8wDcpxw+C2j2o7DZxBRuorh4K1UiB6g4bP/9QVmcw0sgFWzAPXsfiMZBROtdrpcvO61i9Q9SDs1L/qW2h1kHd/l2aQ7FQQ5ORQR+J5hINRSfqslaGL/74bo33WckgCMBbgYLXZdCbFrmasB6r9lkhlg3oVf7x4zX47pJD5aEwDiEqi3X5gzQyesuWaVKFa+rH4K7HB9C+A
+ aXRm/yuY
+ SfV878qwffa9AqjAXIIHZixdhb6ZyzWZgNAX0IA9zmkt2+uNYWsHPLwL7gt5wPJ9uAfaVlXKs547BKOn6948MZ3W7gA9K26n5Zv96Wo+4pJvU+y8UgS3zc1Gs1ad4bQ3t/S8rVJuchj7oTTIA1KfIdXvVUx46GvEZqCB/tmK41abvPKZfSig2XT+Uo+ldFBXlQQSO7c2WvqcjlSKgZUFYsKqAhsZ8FGJZe2/slTSzyaOLpPk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,26 +92,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 16, 2025 at 6:12=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> __read_swap_cache_async is widely used to allocate and ensure a folio is
-> in swapcache, or get the folio if a folio is already there.
->
-> It's not async, and it's not doing any read. Rename it to better present
-> its usage, and prepare to be reworked as part of new swap cache APIs.
->
-> Also, add some comments for the function. Worth noting that the
-> skip_if_exists argument is an long existing workaround that will be
-> dropped soon.
+On 17/11/25 6:23 AM, Andrei Vagin wrote:
+> On Fri, Nov 14, 2025 at 9:59 AM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
+>>
+>> Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
+>> establishing a new VMA, or via merge) as implemented in __mmap_complete()
+>> and do_brk_flags().
+>>
+>> However, when performing a merge of existing mappings such as when
+>> performing mprotect(), we may lose the VM_SOFTDIRTY flag.
+> 
+> Losing VM_SOFTDIRTY is definitely a bug, thank you for fixing it.
+> 
+> A separate concern is whether merging two VMAs should be permitted when
+> one has the VM_SOFTDIRTY flag set and another does not. I think the
+> merging operation should be disallowed.The  issue is that
 
-Yeah I completely forgot about it. It should (hopefully) be dropped soon.
+If merging VM_SOFTDIRTY and non-VM_SOFTDIRTY VMAs would not be allowed then
+what is the point for moving VM_SOFTDIRTY as VM_STICKY ?
+> PAGE_IS_SOFT_DIRTY will be reported for every page in the resulting VMA.
+> Consider a scenario where a large VMA has only a small number of pages
+> marked SOFT_DIRTY. If we merge it with a smaller VMA that does have
+> VM_SOFTDIRTY, all pages in the originally large VMA will subsequently be
+> reported as SOFT_DIRTY. As a result, CRIU will needlessly dump all of
+> these pages again, even though the vast majority of them were unchanged
+> since the prior checkpoint iteration.
+> 
+> Thanks,
+> Andrei
+> 
+>>
+>>
+>> Lorenzo Stoakes (2):
+>>   mm: propagate VM_SOFTDIRTY on merge
+>>   testing/selftests/mm: add soft-dirty merge self-test
+>>
+>>  include/linux/mm.h                      | 23 ++++++-----
+>>  tools/testing/selftests/mm/soft-dirty.c | 51 ++++++++++++++++++++++++-
+>>  tools/testing/vma/vma_internal.h        | 23 ++++++-----
+>>  3 files changed, 72 insertions(+), 25 deletions(-)
+>>
+>> --
+>> 2.51.0
+>>
+> 
 
->
-> Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
