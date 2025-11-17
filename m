@@ -4,85 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30CDBCE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 10:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34080CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 10:08:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AA138E001A; Mon, 17 Nov 2025 05:08:31 -0500 (EST)
+	id 8F80C8E001B; Mon, 17 Nov 2025 05:08:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 859D18E0002; Mon, 17 Nov 2025 05:08:31 -0500 (EST)
+	id 8CF958E0002; Mon, 17 Nov 2025 05:08:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 748F18E001A; Mon, 17 Nov 2025 05:08:31 -0500 (EST)
+	id 80CAB8E001B; Mon, 17 Nov 2025 05:08:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 598578E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:08:31 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 75E078A35A
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:08:30 +0000 (UTC)
-X-FDA: 84119674380.26.3D600A9
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 91C8C4000A
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:08:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=VBYi1Bjp;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf07.hostedemail.com: domain of oliver.mangold@pm.me designates 185.70.43.101 as permitted sender) smtp.mailfrom=oliver.mangold@pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763374108; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DF528E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:08:37 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3558F12F77F
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:08:37 +0000 (UTC)
+X-FDA: 84119674674.21.724D017
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9BD4840003
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:08:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pyjp8I30;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763374115; a=rsa-sha256;
 	cv=none;
-	b=d9W9qQRE7c4q9OUWqujfC5E/Qxo7Lh+9/5mvUZaNxyYM9cmPu8mGXH/EpzsAR13Q1oQaeT
-	KOHaNuCxWAWxwlgSx8OUOxfAh5INBw6YbRgy9YptDbkEc3LU+69xPmr9oD8+Q9Nrg+R6sU
-	8pLdQNeKHZrBEn3lnwGAS6IxDbzyqK4=
+	b=qK8x7aTEoLiWv/SAc+xENAOnow7UJBiCqk+2nAkCDYRSNoRVUg9G5Hyw5j3obtZ9+KM58v
+	OdLrquBatFkJILgklTUvlh+2KlgpTMOubMMzcp2+iHC3z3TAJoaLcIV0TzrvTSr2ixkfaD
+	u4/Bqhb89xfRfuKB65LmfXINiO7f9To=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=VBYi1Bjp;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf07.hostedemail.com: domain of oliver.mangold@pm.me designates 185.70.43.101 as permitted sender) smtp.mailfrom=oliver.mangold@pm.me
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pyjp8I30;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763374108;
+	s=arc-20220608; t=1763374115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F8QmXBD76J3qCzTETOCLiOcAviZpmYBfTlPSLSZilqQ=;
-	b=UH8pbNE9kYF0qS+MSKgCaE1tsq8PbhJCJwfNm+f7WZrfyaT1hCh7pkZfS4tw28LSPaUB2L
-	twtmL55V0peJKaHpSK7tQGV9kVuJgjrhUbMSlkbbcNhT52xLhZOJEOIlD1L+T0x+dFRl73
-	lWLCAjBUxjQpnuYgh96hRstJ3kIVOR4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763374104; x=1763633304;
-	bh=F8QmXBD76J3qCzTETOCLiOcAviZpmYBfTlPSLSZilqQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=VBYi1BjpoQ7qld69aV0aXQzEnwVo9DaT1+BDKXncDZA7KpEWXfpgeyRwuSgTyKMg8
-	 HDsWKEXh1bIxigACIwvmeT6sQEL44CKupLI+0NBo7laHP3n7vvFXmwymi5n4qrzWXW
-	 IDYnfeCfU2g8PC/rPHAGon0TH1+CkUCQ75StfWjuW8r7jqHYMkpqqiK83ug4qWyoCL
-	 Jn8Ok0LE24Oyojjag6WYzvfsPBUBCBFXk77lN+Kt9vMDU92CiZDl5aT9RpMjlsGggm
-	 FTcr6ts48joDB4Vmw+qMnAFE8ylK0CJ+J3KEZoGpXGc7Dac4WRW/c3jp8szCe8xugc
-	 rZZOd7lUFuY5g==
-Date: Mon, 17 Nov 2025 10:08:18 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar
-	<vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, linux-security-module@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
-Subject: [PATCH v13 4/4] rust: Add `OwnableRefCounted`
-Message-ID: <20251117-unique-ref-v13-4-b5b243df1250@pm.me>
-In-Reply-To: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
-References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 2b170fe14f88c3e5d5156d2bc7b77a7cfff96e6f
+	bh=pi4GezqaMjDFJo0KlZmi+2MIbiBBIiefktr23wD9G64=;
+	b=EDbnbQsIDsqWFbK1hGvOhOoUUB2mI8rv+3NNTaP2x1P729jdBzu4C+8s6NJLqzVI3AaJYA
+	ROsTKB0XOOqfsoT70MCRikWzlK+8/1bYfJWiGhWWV7aU63MX83XbPbCt5508s28Wm5VBMW
+	L7msKm6WkwUlCedeZ5y7VQ5yoyRUt0c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6325D409CA;
+	Mon, 17 Nov 2025 10:08:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7080FC4CEF1;
+	Mon, 17 Nov 2025 10:08:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763374114;
+	bh=NfEctPhiqLwKM7Al5ilCJVKY/ooOPtorS0nazjY5qF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pyjp8I30CMsVwAFn9pOiUTamRKt1uRSpOdE7O2jvI4OTBEvKMg4uqklLdOpQB0cTB
+	 7hHYlDan0L0oNCir7r5ZwY4Ze1MUR+Tc6/AcZxyTGFksM/YJQ2xzH4ukZrQxGbhIce
+	 YTJJly5hrZOjWrGCfHCEpIzoGzNCIx8ezeXHddI6w0fZSg1Y/j/jY3eHHyIEI/6J4q
+	 Jxtx9gkWqj7xCl8h+ggjG83fdiZ34qLZTR2P9DcFpD1W5m5qelmcIP6t9o6dcb8Prv
+	 kmHR3mG7h1z19hn9UOwxRdhQdpnkKDudEOZxRksOyz+oRXe8F0db8Dio3oOjHY3CML
+	 zQVyCqEEoWARg==
+Date: Mon, 17 Nov 2025 12:08:09 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v6 12/20] mm: shmem: allow freezing inode mapping
+Message-ID: <aRr0CQsV16usRW1J@kernel.org>
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-13-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251115233409.768044-13-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9BD4840003
+X-Stat-Signature: r1hpejfasou1r73hccrtcsz99mcza9a1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 91C8C4000A
-X-Stat-Signature: j9tatwzr97o1dbzrhyd155btgkewcd4q
-X-HE-Tag: 1763374108-119297
-X-HE-Meta: U2FsdGVkX18iUoBAYccwZaREan55UyScMaBGgvdng6x/Q/nAX+fZ/5sG8UWz5NucSQZiv2jLNee2rAQt68B7INJ+uX4De+vaqga+oQle1Q53BkkcdXlJ4oWCXe4PTlGcRpDU/nCFLqPlb0Skrq+s5bh/pgfYWaogqsyECKCJCRhUhQ9+Ma0PVMWZ1bsUSibHclJ2LXQ2HHvcp901fMf7pbk129fP6CVbndVAZDmjUr/JbQQ46sDwzO+kv9Ov7dN15pmvuFSH/jhiudPSCrBrwvKNIG6V0AAGHXnhh2zNRG+AUx0RghyGnhkkaZCqB3QDVnQzOjnu5CisfOIdq4HkMCQ6yuFu6FDo5F17uF8HqxdUVIWB6c298Ja5Y4LeKfs/bKIqEWoorf/SVZcpwtZxaL+Bz41IP9HcQgv+o808HHqMKzKasX/feMUQksa/9swmQKQ8ttYMo8nHSUspIi+j5SgYgFg711kbxN5HJ8G/pCaD8g0w0xactN/Lygk1hqmCc8gRASSYQtFpPVlTBfzSEC2Zb41ZGrw4/nn2OYsawrpU+yOW2RPtLVedUp7jlD5td2SXpu7+KgRNWr8nVm1Icr9eyGmd8AA+e7y7Q+c1bwA5LFh4NCistenVLadl2TAFLBADTNShoPrgRvmpENdm1ko6O0dvorKm4e+TIvKFrpqbKTfvJFluotooK+xLDIEPQqWJ9hfkDVY3NIz2N+mI9F8/VP3Za1p0q/CBhRj+/bERKsc59y8sc5sUF52EpgYw2977F82auP0+OvftZ2z8MKCC6/lMJs4BvdStPust1+GGfwm8yXBalDZl9CnMKRleW+gb/DJcpOvYaBHTR334Bb9kF849Mpu1KY+s0Np+vswLjypVmh/ihA+rsAH4BGM6PDH5OwE9p8apByDsIvFa5+eDfxwrbO26/i+0k9j3OYGtMoaT/CQct1RblYaWrHTiwsvYQIcR62hnxCQ1bCd
- b19YJ2W7
- LGWEZj150kc0cK8EfcI1ahM/D6fe7ogA35Ow/y3oQXwxqZ1iTAO8cXpbyQ+ssVT2pK3H6M97oVJg3FbO0Fj0UnLt3Ar4Co8f6ICZDhC5fSui5T0QYr+Tonfg2BP2hwYTR5QneM0DTeZ6M5UcB/Zz0LckBIz9Mq0owd1KigW9AktsZdfh9CG9a0L3FpS47k/oYpzkMe6T5qA27uY7aRwGkFMDfQ/WzG9vrfvzwpwUBWDIXqIpyAoivEt/YmS/GJOOBIWHwEEeRuEJl3Uf2wkZqTdKEbu5qUIw09ghvtQaapUsEankZdNpDZzsRiZ2Un021EsdA
+X-HE-Tag: 1763374115-434899
+X-HE-Meta: U2FsdGVkX19S2KfU1wO8GkJZJN8nbOVCkr5Sc9MgenNgpD9muaivixAeIrblvzgE5laYAJL10ERCtCZhB4to5PQALw8e0tywdS2fRNZS5/ebTlEgX4sSkeIovgDJBb0V/KveqCmD8esfchkomRULofl13p6vIPWGjvrm2AHo4sHWvKVppVoISGbBboJhzHj8aMy+bu25aTqEcGoHIIluhNSZV7QqHXh19U4EM5/CpQQVmfiVHRboRqlN5k6tKO4n4phD1CrBiXqJA9YPYRzh2HEEdekURm9iiFSgZziHMamER/qUeRBDObpHEuUzWIrkGmmUUO5Oew+q7HqqptfJC2LZ3Z9YmbvSTWLdABEiXpMdIkNfUqew6TFhdR2+rK45j/COFviWHiBksFuOUtnc+WgFm8UG6L/EyZyN4c3pKC25u2RWZxS21aL1hMXdW0EBoh8tkGb9enQRLfXSWY8HT+qC0Az9TajjiEWXpHiLA5shRoeGEoUzrPtFMoExUCqPp+jzqchr1vie882xrB4RCRxuuFkusSvJ1haus2ICLx5E7my4HqKEK7X5jcVViG/a8dxKmcDmCL2Ccz2UjbruUSzZUFCcsJpRsfJvLxsOStNxDPG4PQjI6/mpolJbaWD4eR9bZPKtn29eFRP9MNP45palYA59eafWUVlQre24vPjEgAoYWvCDGEjsHZ0nEKvUfX6th22B64+NfgNq8zgemiqGas66oCh8/4yKajISYiWHOfZ5PpM1UKkMhH3nqbhnn3nYpCbyZh18C0zYVykTFPbIVexx0HXEoKnm1ZNYwkpMMZV8ParLF8Os3R7xfi+8Uzmv3ZBtwaI+EXUECa7W6ukVKi+9cpetoSoKgOfn152eD7kK65lh9bb1McxTJ7hgmeEBVvMQGGUDgKOhWwkc37c2JXM2lBPN9XNms5sev03vEcW+45jRN6CXynSAwBBX07dUZT2LUgmPhZENCSN
+ XkieIpvb
+ tBehq2o+uuwN5CSNKZ/cxM5NVOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,279 +117,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Types implementing one of these traits can safely convert between an
-`ARef<T>` and an `Owned<T>`.
+On Sat, Nov 15, 2025 at 06:33:58PM -0500, Pasha Tatashin wrote:
+> From: Pratyush Yadav <ptyadav@amazon.de>
+> 
+> To prepare a shmem inode for live update via the Live Update
+> Orchestrator (LUO), its index -> folio mappings must be serialized. Once
+> the mappings are serialized, they cannot change since it would cause the
+> serialized data to become inconsistent. This can be done by pinning the
+> folios to avoid migration, and by making sure no folios can be added to
+> or removed from the inode.
+> 
+> While mechanisms to pin folios already exist, the only way to stop
+> folios being added or removed are the grow and shrink file seals. But
+> file seals come with their own semantics, one of which is that they
+> can't be removed. This doesn't work with liveupdate since it can be
+> cancelled or error out, which would need the seals to be removed and the
+> file's normal functionality to be restored.
+> 
+> Introduce SHMEM_F_MAPPING_FROZEN to indicate this instead. It is
+> internal to shmem and is not directly exposed to userspace. It functions
+> similar to F_SEAL_GROW | F_SEAL_SHRINK, but additionally disallows hole
+> punching, and can be removed.
+> 
+> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/shmem_fs.h | 17 +++++++++++++++++
+>  mm/shmem.c               | 12 +++++++++++-
+>  2 files changed, 28 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+> index 650874b400b5..a9f5db472a39 100644
+> --- a/include/linux/shmem_fs.h
+> +++ b/include/linux/shmem_fs.h
+> @@ -24,6 +24,14 @@ struct swap_iocb;
+>  #define SHMEM_F_NORESERVE	BIT(0)
+>  /* Disallow swapping. */
+>  #define SHMEM_F_LOCKED		BIT(1)
+> +/*
+> + * Disallow growing, shrinking, or hole punching in the inode. Combined with
+> + * folio pinning, makes sure the inode's mapping stays fixed.
+> + *
+> + * In some ways similar to F_SEAL_GROW | F_SEAL_SHRINK, but can be removed and
+> + * isn't directly visible to userspace.
+> + */
+> +#define SHMEM_F_MAPPING_FROZEN	BIT(2)
+>  
+>  struct shmem_inode_info {
+>  	spinlock_t		lock;
+> @@ -186,6 +194,15 @@ static inline bool shmem_file(struct file *file)
+>  	return shmem_mapping(file->f_mapping);
+>  }
+>  
+> +/* Must be called with inode lock taken exclusive. */
+> +static inline void shmem_i_mapping_freeze(struct inode *inode, bool freeze)
 
-This is useful for types which generally are accessed through an `ARef`
-but have methods which can only safely be called when the reference is
-unique, like e.g. `block::mq::Request::end_ok()`.
+_mapping usually refers to operations on struct address_space.
+It seems that all shmem methods that take inode are just shmem_<operation>,
+so shmem_freeze() looks more appropriate.
 
-Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/owned.rs     | 138 +++++++++++++++++++++++++++++++++++++++++++=
-+---
- rust/kernel/sync/aref.rs |  11 +++-
- rust/kernel/types.rs     |   2 +-
- 3 files changed, 141 insertions(+), 10 deletions(-)
+> +{
+> +	if (freeze)
+> +		SHMEM_I(inode)->flags |= SHMEM_F_MAPPING_FROZEN;
+> +	else
+> +		SHMEM_I(inode)->flags &= ~SHMEM_F_MAPPING_FROZEN;
+> +}
+> +
+>  /*
+>   * If fallocate(FALLOC_FL_KEEP_SIZE) has been used, there may be pages
+>   * beyond i_size's notion of EOF, which fallocate has committed to reserving:
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 1d5036dec08a..05c3db840257 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1292,7 +1292,8 @@ static int shmem_setattr(struct mnt_idmap *idmap,
+>  		loff_t newsize = attr->ia_size;
+>  
+>  		/* protected by i_rwsem */
+> -		if ((newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
+> +		if ((info->flags & SHMEM_F_MAPPING_FROZEN) ||
 
-diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
-index a26747cbc13b..26ab2b00ada0 100644
---- a/rust/kernel/owned.rs
-+++ b/rust/kernel/owned.rs
-@@ -5,6 +5,7 @@
- //! These pointer types are useful for C-allocated objects which by API-co=
-ntract
- //! are owned by Rust, but need to be freed through the C API.
-=20
-+use crate::sync::aref::{ARef, RefCounted};
- use core::{
-     mem::ManuallyDrop,
-     ops::{Deref, DerefMut},
-@@ -14,14 +15,16 @@
-=20
- /// Type allocated and destroyed on the C side, but owned by Rust.
- ///
--/// Implementing this trait allows types to be referenced via the [`Owned<=
-Self>`] pointer type. This
--/// is useful when it is desirable to tie the lifetime of the reference to=
- an owned object, rather
--/// than pass around a bare reference. [`Ownable`] types can define custom=
- drop logic that is
--/// executed when the owned reference [`Owned<Self>`] pointing to the obje=
-ct is dropped.
-+/// Implementing this trait allows types to be referenced via the [`Owned<=
-Self>`] pointer type.
-+///  - This is useful when it is desirable to tie the lifetime of an objec=
-t reference to an owned
-+///    object, rather than pass around a bare reference.
-+///  - [`Ownable`] types can define custom drop logic that is executed whe=
-n the owned reference
-+///    of type [`Owned<_>`] pointing to the object is dropped.
- ///
- /// Note: The underlying object is not required to provide internal refere=
-nce counting, because it
- /// represents a unique, owned reference. If reference counting (on the Ru=
-st side) is required,
--/// [`RefCounted`](crate::types::RefCounted) should be implemented.
-+/// [`RefCounted`] should be implemented. [`OwnableRefCounted`] should be =
-implemented if conversion
-+/// between unique and shared (reference counted) ownership is needed.
- ///
- /// # Safety
- ///
-@@ -143,9 +146,7 @@ impl<T: Ownable> Owned<T> {
-     ///   mutable reference requirements. That is, the kernel will not mut=
-ate or free the underlying
-     ///   object and is okay with it being modified by Rust code.
-     pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
--        Self {
--            ptr,
--        }
-+        Self { ptr }
-     }
-=20
-     /// Consumes the [`Owned`], returning a raw pointer.
-@@ -193,3 +194,124 @@ fn drop(&mut self) {
-         unsafe { T::release(self.ptr) };
-     }
- }
-+
-+/// A trait for objects that can be wrapped in either one of the reference=
- types [`Owned`] and
-+/// [`ARef`].
-+///
-+/// # Examples
-+///
-+/// A minimal example implementation of [`OwnableRefCounted`], [`Ownable`]=
- and its usage with
-+/// [`ARef`] and [`Owned`] looks like this:
-+///
-+/// ```
-+/// # #![expect(clippy::disallowed_names)]
-+/// # use core::cell::Cell;
-+/// # use core::ptr::NonNull;
-+/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
-+/// # use kernel::sync::aref::{ARef, RefCounted};
-+/// # use kernel::types::{Owned, Ownable, OwnableRefCounted};
-+///
-+/// // Example internally refcounted struct.
-+/// //
-+/// // # Invariants
-+/// //
-+/// // - `refcount` is always non-zero for a valid object.
-+/// // - `refcount` is >1 if there are more than 1 Rust reference to it.
-+/// //
-+/// struct Foo {
-+///     refcount: Cell<usize>,
-+/// }
-+///
-+/// impl Foo {
-+///     fn new() -> Result<Owned<Self>, AllocError> {
-+///         // We are just using a `KBox` here to handle the actual alloca=
-tion, as our `Foo` is
-+///         // not actually a C-allocated object.
-+///         let result =3D KBox::new(
-+///             Foo {
-+///                 refcount: Cell::new(1),
-+///             },
-+///             flags::GFP_KERNEL,
-+///         )?;
-+///         let result =3D NonNull::new(KBox::into_raw(result))
-+///             .expect("Raw pointer to newly allocation KBox is null, thi=
-s should never happen.");
-+///         // SAFETY: We just allocated the `Self`, thus it is valid and =
-there cannot be any other
-+///         // Rust references. Calling `into_raw()` makes us responsible =
-for ownership and
-+///         // we won't use the raw pointer anymore, thus we can transfer =
-ownership to the `Owned`.
-+///         Ok(unsafe { Owned::from_raw(result) })
-+///     }
-+/// }
-+///
-+/// // SAFETY: We increment and decrement each time the respective functio=
-n is called and only free
-+/// // the `Foo` when the refcount reaches zero.
-+/// unsafe impl RefCounted for Foo {
-+///     fn inc_ref(&self) {
-+///         self.refcount.replace(self.refcount.get() + 1);
-+///     }
-+///
-+///     unsafe fn dec_ref(this: NonNull<Self>) {
-+///         // SAFETY: By requirement on calling this function, the refcou=
-nt is non-zero,
-+///         // implying the underlying object is valid.
-+///         let refcount =3D unsafe { &this.as_ref().refcount };
-+///         let new_refcount =3D refcount.get() - 1;
-+///         if new_refcount =3D=3D 0 {
-+///             // The `Foo` will be dropped when `KBox` goes out of scope=
-.
-+///             // SAFETY: The [`KBox<Foo>`] is still alive as the old ref=
-count is 1. We can pass
-+///             // ownership to the [`KBox`] as by requirement on calling =
-this function,
-+///             // the `Self` will no longer be used by the caller.
-+///             unsafe { KBox::from_raw(this.as_ptr()) };
-+///         } else {
-+///             refcount.replace(new_refcount);
-+///         }
-+///     }
-+/// }
-+///
-+/// impl OwnableRefCounted for Foo {
-+///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<S=
-elf>> {
-+///         if this.refcount.get() =3D=3D 1 {
-+///             // SAFETY: The `Foo` is still alive and has no other Rust =
-references as the refcount
-+///             // is 1.
-+///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-+///         } else {
-+///             Err(this)
-+///         }
-+///     }
-+/// }
-+///
-+/// // SAFETY: This implementation of `release()` is safe for any valid `S=
-elf`.
-+/// unsafe impl Ownable for Foo {
-+///     unsafe fn release(this: NonNull<Self>) {
-+///         // SAFETY: Using `dec_ref()` from [`RefCounted`] to release is=
- okay, as the refcount is
-+///         // always 1 for an [`Owned<Foo>`].
-+///         unsafe{ Foo::dec_ref(this) };
-+///     }
-+/// }
-+///
-+/// let foo =3D Foo::new().expect("Failed to allocate a Foo. This shouldn'=
-t happen");
-+/// let mut foo =3D ARef::from(foo);
-+/// {
-+///     let bar =3D foo.clone();
-+///     assert!(Owned::try_from(bar).is_err());
-+/// }
-+/// assert!(Owned::try_from(foo).is_ok());
-+/// ```
-+pub trait OwnableRefCounted: RefCounted + Ownable + Sized {
-+    /// Checks if the [`ARef`] is unique and convert it to an [`Owned`] it=
- that is that case.
-+    /// Otherwise it returns again an [`ARef`] to the same underlying obje=
-ct.
-+    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>=
->;
-+
-+    /// Converts the [`Owned`] into an [`ARef`].
-+    fn into_shared(this: Owned<Self>) -> ARef<Self> {
-+        // SAFETY: Safe by the requirements on implementing the trait.
-+        unsafe { ARef::from_raw(Owned::into_raw(this)) }
-+    }
-+}
-+
-+impl<T: OwnableRefCounted> TryFrom<ARef<T>> for Owned<T> {
-+    type Error =3D ARef<T>;
-+    /// Tries to convert the [`ARef`] to an [`Owned`] by calling
-+    /// [`try_from_shared()`](OwnableRefCounted::try_from_shared). In case=
- the [`ARef`] is not
-+    /// unique, it returns again an [`ARef`] to the same underlying object=
-.
-+    fn try_from(b: ARef<T>) -> Result<Owned<T>, Self::Error> {
-+        T::try_from_shared(b)
-+    }
-+}
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index 937dcf6ed5de..2dbffe2ed1b8 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -30,7 +30,10 @@
- /// Note: Implementing this trait allows types to be wrapped in an [`ARef<=
-Self>`]. It requires an
- /// internal reference count and provides only shared references. If uniqu=
-e references are required
- /// [`Ownable`](crate::types::Ownable) should be implemented which allows =
-types to be wrapped in an
--/// [`Owned<Self>`](crate::types::Owned).
-+/// [`Owned<Self>`](crate::types::Owned). Implementing the trait
-+/// [`OwnableRefCounted`](crate::types::OwnableRefCounted) allows to conve=
-rt between unique and
-+/// shared references (i.e. [`Owned<Self>`](crate::types::Owned) and
-+/// [`ARef<Self>`](crate::types::Owned)).
- ///
- /// # Safety
- ///
-@@ -180,6 +183,12 @@ fn from(b: &T) -> Self {
-     }
- }
-=20
-+impl<T: crate::types::OwnableRefCounted> From<crate::types::Owned<T>> for =
-ARef<T> {
-+    fn from(b: crate::types::Owned<T>) -> Self {
-+        T::into_shared(b)
-+    }
-+}
-+
- impl<T: RefCounted> Drop for ARef<T> {
-     fn drop(&mut self) {
-         // SAFETY: The type invariants guarantee that the `ARef` owns the =
-reference we're about to
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 8ef01393352b..a9b72709d0d3 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -11,7 +11,7 @@
- };
- use pin_init::{PinInit, Wrapper, Zeroable};
-=20
--pub use crate::owned::{Ownable, Owned};
-+pub use crate::owned::{Ownable, OwnableRefCounted, Owned};
-=20
- pub use crate::sync::aref::{ARef, AlwaysRefCounted, RefCounted};
-=20
+A corner case: if newsize == oldsize this will be a false positive
 
---=20
-2.51.2
+> +		    (newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
+>  		    (newsize > oldsize && (info->seals & F_SEAL_GROW)))
+>  			return -EPERM;
+>  
+> @@ -3289,6 +3290,10 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
+>  			return -EPERM;
+>  	}
+>  
+> +	if (unlikely((info->flags & SHMEM_F_MAPPING_FROZEN) &&
+> +		     pos + len > inode->i_size))
+> +		return -EPERM;
+> +
+>  	ret = shmem_get_folio(inode, index, pos + len, &folio, SGP_WRITE);
+>  	if (ret)
+>  		return ret;
+> @@ -3662,6 +3667,11 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>  
+>  	inode_lock(inode);
+>  
+> +	if (info->flags & SHMEM_F_MAPPING_FROZEN) {
+> +		error = -EPERM;
+> +		goto out;
+> +	}
+> +
+>  	if (mode & FALLOC_FL_PUNCH_HOLE) {
+>  		struct address_space *mapping = file->f_mapping;
+>  		loff_t unmap_start = round_up(offset, PAGE_SIZE);
+> -- 
+> 2.52.0.rc1.455.g30608eb744-goog
+> 
 
-
+-- 
+Sincerely yours,
+Mike.
 
