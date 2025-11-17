@@ -4,105 +4,230 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EDC2CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85F43CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAEC38E0026; Mon, 17 Nov 2025 06:37:08 -0500 (EST)
+	id C8E448E0027; Mon, 17 Nov 2025 06:41:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5EEF8E0003; Mon, 17 Nov 2025 06:37:08 -0500 (EST)
+	id C66018E0003; Mon, 17 Nov 2025 06:41:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94DB38E0026; Mon, 17 Nov 2025 06:37:08 -0500 (EST)
+	id B06188E0027; Mon, 17 Nov 2025 06:41:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 749728E0003
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:37:08 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E59E160D03
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:37:08 +0000 (UTC)
-X-FDA: 84119897736.27.24E1F2B
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 11B2D20005
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:37:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of honggyu.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=honggyu.kim@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763379426; a=rsa-sha256;
-	cv=none;
-	b=2T2kBcwx8l+vNr++vzaRL4w+VVpQ5/4AUEKdaDE4yLk3WrSSdouDl6M7gw+s+VewrnHusZ
-	1KpDQOtGxeczlAVQ/m1KADbKtTx4EK9cI4bx0FsRQqEwKGzrygSkN/Lpjjh77bDZe5P2Tb
-	8jDAcBOIM+hGDeC03ws+rQhKEmsogGM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of honggyu.kim@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=honggyu.kim@sk.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763379426;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98B688E0003
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:41:27 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 453CE12F6A1
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:41:27 +0000 (UTC)
+X-FDA: 84119908614.09.7DD4283
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 17C5F140008
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:41:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Ti7XCJj7;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=v8KNJ6r7;
+	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763379684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o6AvuNyk2iRPuJNt/YHM3ZBe7To2VTJIma6hKC5kzM0=;
-	b=Js7W23KXnrejfzhbdAhQAKuiWrWTbeBZurdzbwtMf1/BUBcUi1z+9nUN+lhfyVFiwC8Shu
-	d13uOZQp6FZI57bayrZ+DTA0XIMi9DNZRL5qJTeLe0czeAKyWV3LqgH30vVs3nQScgf+FG
-	HMLn8524ak905edaF1KfIxeHC78EqgA=
-X-AuditID: a67dfc5b-c2dff70000001609-d6-691b08dbee9d
-Message-ID: <98c0907c-0435-45d2-bd68-e97598b79d0e@sk.com>
-Date: Mon, 17 Nov 2025 20:36:59 +0900
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mpGF3iaffGiMycS8cpr3eUFxoMA07tWDjUwpkMPdUGo=;
+	b=7umbEwMd/OsT3l1Z7OHZdWzyOvk8EEVOnV1uDa0amv8G1sR7fnRRv2w6owaMjpwUAdBiKA
+	ZT0nQhZ+PnTHEpwiTa9+IBW8iXfocI9unWE6IhDK/ELz//WdfLewjwo3WtztmKF9sqUN7Q
+	7y7cW7f2EdL7noTuyo3NfzI8jeYxRBM=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Ti7XCJj7;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=v8KNJ6r7;
+	spf=pass (imf09.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763379684; a=rsa-sha256;
+	cv=pass;
+	b=lUgdvj3B4goOGlEC/+ah7N2el63jDJE1hU/objl8V5urPNujT0RbIUdKBiMm/upQ6YJ6Jg
+	XIvjT2eQu46hP1rLHq98iOagijIpn0Q3d/KoDngKq4T9nks8p68eN9fEnpRgVFRD7+QYL5
+	4iY+hHQ09VjZ+9W7bf8KA63YCdjtpHA=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AHBNXnW012678;
+	Mon, 17 Nov 2025 11:41:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=mpGF3iaffGiMycS8cp
+	r3eUFxoMA07tWDjUwpkMPdUGo=; b=Ti7XCJj7lKpWtqC+q2VCUJ9jauPUAW/9ap
+	XPlMZY01Qv3YD1vP1S2Sm0RRGgdZVBaKW5Wb5PmSocnkkxJJ3/lVjhJSVYHJgYI1
+	5+IcFdTYpvDwKPaTPITwj9ZFUT0SRe5g+U7wy+yMzCOMGDvKm0mFQhGuzRyGVKbO
+	CnkT0oJPEl46poUqksyupSh7L003P1gk+Bs41FQNcO/v6/rLnvZ3zc1coTL0mbVT
+	s1eGdyNimR6KaHrVhQYLTFul9n8InicTn66ALDldBIrepoWt701dWcEdWX5f5o7q
+	TY77nuV/ZXaGgny2QcnIG1bdHF+aPb+6RI7/hzEB1vjmcDHmM4Fw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aej8j2avc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Nov 2025 11:41:19 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AHBCcRs007884;
+	Mon, 17 Nov 2025 11:41:18 GMT
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010001.outbound.protection.outlook.com [52.101.61.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefy7jvs0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Nov 2025 11:41:18 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=npk2IQY/PA5lcHcJbofMlXf59FhBDPjcIIqe5K+cXVawYltIGrFXAwmpEoWaQKRSB2sVbmUPG1Wyms4VVLvRi3FfFidYu1WwwDl9gOuLWzrDVS/SEDNno5dYCh5YgcCxIfYm5mOK+ATTpyYVnsiFWt+RMt9NHEiadbhzqKyNrHDX6Z8WrHSdB7kn5yVvMM7qckApNfYcNqQZUVU68UT4CgkmXFwJcobDSlVnr6ZJOy8QkNL0lPvPE1BB522Lb04kx0TW+1KSgBY4Vr4btn6F+7unfUaUvXwYeeikfj4e90JEYY1DxtCC/lhaJlh+vapIGSMlObRxZF9cbjA3e+AoxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mpGF3iaffGiMycS8cpr3eUFxoMA07tWDjUwpkMPdUGo=;
+ b=LUNGifN75ptdn+1xrQpg3qCOlWSlsf1EZ5U7fzFa5p/lIVSaWiIq74BnueKns1a6F7KY64SLy+rc8Mi1zlYTCJsFn7oH6KlF5/YnwcZ1GDGd3ch7oki3v1PbxV1vUI2gocoUyXdBHIfb/h0a4VjnZSdu3w9Hr6M+ceFT2WIVHT9Y9ASa7HAbN1n2NDd6oUi86a3c26XoMcoUgchTWUhSQkSHvQMMav6yZ79jY5oRXqWkZPnw/faFnsALqwiSXRiKu62d1/vUWtorzLm67Nd0u7vs5+m0xNhYBOmP7VSuFyrrbuBWm/xqm3I3Jonpm54R1rLFd3p+Lc2eSohTsEPyEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mpGF3iaffGiMycS8cpr3eUFxoMA07tWDjUwpkMPdUGo=;
+ b=v8KNJ6r7o0H2JJf2X70DLc4/DiJSPbQJUDqd7o4yYg63H/XPN9HWumpr/hiyERNw0Uj1ndbz2y6ASAwFuxaNky6KeeC4DT+/sLvof7TLxnrAepIAAW6u1lPEKHzKeJo+oBWdXECYqCj7fFWG5ivajBC9l2kpvpkGSyDuhj9lhwY=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CH0PR10MB5004.namprd10.prod.outlook.com (2603:10b6:610:de::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Mon, 17 Nov
+ 2025 11:41:16 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
+ 11:41:16 +0000
+Date: Mon, 17 Nov 2025 11:41:00 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] make VM_SOFTDIRTY a sticky VMA flag
+Message-ID: <e33d341c-5939-4e0d-bb73-cf73a756bcd5@lucifer.local>
+References: <cover.1763142412.git.lorenzo.stoakes@oracle.com>
+ <20251114135303.878b52f6db3dea4596f4c11a@linux-foundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251114135303.878b52f6db3dea4596f4c11a@linux-foundation.org>
+X-ClientProxiedBy: LNXP265CA0038.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:5c::26) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: kernel_team@skhynix.com, Davidlohr Bueso <dave@stgolabs.net>,
- Fan Ni <nifan.cxl@gmail.com>, Gregory Price <gourry@gourry.net>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Raghavendra K T <rkodsara@amd.com>,
- "Rao, Bharata Bhasker" <bharata@amd.com>, Wei Xu <weixugc@google.com>,
- Xuezheng Chu <xuezhengchu@huawei.com>,
- Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, damon@lists.linux.dev, Yunjeong Mun <yunjeong.mun@sk.com>
-Subject: Re: [Linux Memory Hotness and Promotion] Notes from October 23, 2025
-To: SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>
-References: <20251114014255.72884-1-sj@kernel.org>
-Content-Language: ko
-From: Honggyu Kim <honggyu.kim@sk.com>
-In-Reply-To: <20251114014255.72884-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrMIsWRmVeSWpSXmKPExsXC9ZZnke4dDulMg44bzBZLJ75jtnjy/zer
-	xeqbaxgtft49zm6xauE1NovjW+exW9xb85/V4u+2vYwWbUs2MlnM+dvFaHH46xsmi/fXPrJb
-	fH/LbPH1Th+Txeyj99gd+D1aL/1l89g56y67x4JNpR7dbZfZPVqOvGX12LSqk81j06dJ7B4v
-	Ns9k9OhtfsfmMXV2vUfv+ldsAdxRXDYpqTmZZalF+nYJXBlbt35lKfieUnGzexVbA+M2/y5G
-	Tg4JAROJU4uns8LYP+e9YQKxeQUsJX63bGAGsVkEVCVez/rBAhEXlDg58wmYLSogL3H/1gx2
-	EJtZoI9Fout2VhcjB4ewgK/E+wUOIGERAXeJ/YuugI0XEjCS2L7sPlS5iMTszjaw8WwCahJX
-	Xk4CW8spYCxxaf0+NogaM4murV2MELa8xPa3c4DquYDOXMUucfhnHzPEzZISB1fcYJnAKDgL
-	yXmzkOyYhWTWLCSzFjCyrGIUyswry03MzDHRy6jMy6zQS87P3cQIjMpltX+idzB+uhB8iFGA
-	g1GJh/fBDclMIdbEsuLK3EOMEhzMSiK87T4SmUK8KYmVValF+fFFpTmpxYcYpTlYlMR5jb6V
-	pwgJpCeWpGanphakFsFkmTg4pRoY9Sance+Lr13PGBXp+zL97ZlLaU91t2sY/N7Q8ZLh8We7
-	9yqfnFfnmb03lNho+zxr4X+T+35lVs8kLWbIh5lEC2U7pd2M9c25ky4gnWOzNfRhrtd/q2DB
-	V/ozohcqN0hz7NQ61rdQ6vAOg4jjn65pV26LyuDm1D9wg5NrG/dndm03be/eh9+VWIozEg21
-	mIuKEwFdiq2KxgIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsXCNUNLT/c2h3SmQUe3vsXSie+YLZ78/81q
-	sfrmGkaLn3ePs1usWniNzeL41nnsFofnnmS1uLfmP6vF3217GS3almxkspjzt4vR4vDXN0wW
-	7699ZLf4/pbZ4uudPiaL39tWsFnMPnqP3UHQo/XSXzaPnbPusnss2FTq0d12md2j5chbVo9N
-	qzrZPDZ9msTu8WLzTEaP3uZ3bB7fbnt4LH7xgclj6ux6j971r9gCeKO4bFJSczLLUov07RK4
-	MrZu/cpS8D2l4mb3KrYGxm3+XYycHBICJhI/571hArF5BSwlfrdsYAaxWQRUJV7P+sECEReU
-	ODnzCZgtKiAvcf/WDHYQm1mgj0Wi63ZWFyMHh7CAr8T7BQ4gYREBd4n9i66wgthCAkYS25fd
-	hyoXkZjd2QY2nk1ATeLKy0lgazkFjCUurd/HBlFjJtG1tYsRwpaX2P52DvMERr5ZSK6YhWTU
-	LCQts5C0LGBkWcUokplXlpuYmWOqV5ydUZmXWaGXnJ+7iREYdctq/0zcwfjlsvshRgEORiUe
-	Xg0JqUwh1sSy4srcQ4wSHMxKIrztPhKZQrwpiZVVqUX58UWlOanFhxilOViUxHm9wlMThATS
-	E0tSs1NTC1KLYLJMHJxSDYxR762ne2sdy35zPPH7tXWl63h+5pvMW9DNvvLAjfmME6Lu5yfE
-	VKuXSX7zWfVE84yNgOC0p0edvBSZEn+/dus6NHvT9nJNjyW/L+Z/8kw64nTxW+i8jVOnrdTe
-	rH6x7eoE4cvmBzv27jFf26aSsdpPudGrIO+C3sEUr/eMOq+LP62/6CO9+8xKJZbijERDLeai
-	4kQAVyAIsbYCAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: 11B2D20005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bzt7qn3hy3oo6fq4yftc5gebs8ddxrt7
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB5004:EE_
+X-MS-Office365-Filtering-Correlation-Id: 47c1b695-0287-4617-964e-08de25ce3779
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?kftF9l6xwFucZApTPD9hHW67KnqJLYo44yApRzGzMPNFeTALc2UepOE1xdR7?=
+ =?us-ascii?Q?byV1xaiAfQvupFAqcfQz7rQ7eviNnP/KdYrETiwSlL3cb1mBME2AAO2KNq8R?=
+ =?us-ascii?Q?0zkYPjgx6eONzpJIsA0RdXYS4jE/JsUJF6g11cvmNy0H3YqWWWGoMX248HeB?=
+ =?us-ascii?Q?JzxFxe294G+5jJjHdj1+0p9tHiSTK6+V52y6D240swzk7KTWRxn6gfyMUnHO?=
+ =?us-ascii?Q?fAJ2BGEvhqwZgEWbN0ijppiIKPM/m7GnyMMKdiTuBGB/DgW76jZ7imXvh8Jw?=
+ =?us-ascii?Q?Bu8Hxi6TkItSBGAvauHhiVBRj+C7m8EEalSqbCHgvkLX0JJrjXnEqCheKbDy?=
+ =?us-ascii?Q?AA2p1M77dFWnZ8wVRMAVRarfJS87BE+J0RTAYd3Kaffqn35HbodNmt/4f8qU?=
+ =?us-ascii?Q?RyQUZuA/ERjdSlQ1Cyr2H8cgPWCUU46qk96HtQZd1iaJ2FKcuidjsv2E+81Z?=
+ =?us-ascii?Q?0YFf6MJAG9GnqUHP9uL9A5f7YJ2xacELfBykZhV9gIyLv8sprmoMLHND2qjN?=
+ =?us-ascii?Q?gU16e8ylzTuzyjhE7MmcJbyZqSbCE0KONDKsaX/3hDy76ye2zZ6ZdzmsXrED?=
+ =?us-ascii?Q?38oPmfUhOxu9U9tWfCh2huC1UcoRIRr2Ng7YCQYgLeVDNyyW1t1t4XbtQyOA?=
+ =?us-ascii?Q?I+M/d4XhgOVpTNZ+c0+0tGXKDHn4CSGyA6anMclNZCWIGJ9MOqAXJXebM3x5?=
+ =?us-ascii?Q?zh24v0Fcu4iMVW7GameQwo2sk7EDbB0H6jAvWEzqbUpBIdOutMi0rm3tiYEO?=
+ =?us-ascii?Q?k8tcO9241VALyE6jzwjDekLYzcYeEuh3yXMlrDuV1p0jstn/epEJvrik3bSM?=
+ =?us-ascii?Q?vOaO0nmQMLClJ0YeeyZWVL5ldQuHX4YzJRxe9hDOO4cBwExTDx+KVKyipcMD?=
+ =?us-ascii?Q?25n7AdcjzIsrOshhRPtkIyb1PmXhSDLCtRo57IMGFCAWvKDdrnER2XjyYxjm?=
+ =?us-ascii?Q?PysoauoaAHZNbjnT6TV7eyLwrgTltjrlZbciAvwhfrFlYWVA35YTIv0JPX9d?=
+ =?us-ascii?Q?ZQPMceUonMLyu87gFl4cEmQo84pawHrP8SLhsLPd78XhSYBCqKLauNWsHwUg?=
+ =?us-ascii?Q?6BuxGmCiLxiRBcrZF4th6CDY8MSGTggnJZNmBX/THHJkTrDFDA3/8fc07CpK?=
+ =?us-ascii?Q?2ZA5xfVEPAzM1//KG7HedyHauoaEyS/Pzb/u7Ke1iBK+uzTa+I0zKEwCdwWb?=
+ =?us-ascii?Q?orIJSo66ENX79VnU9bo+/EStYfrpEg/ES1Bz6rMlGaQ2lAxMZr/tDIa0z8wl?=
+ =?us-ascii?Q?WspKBzW4qdNZXmrF1gG34WLJOQRj2OICkPfp8Z3vSuQq/nJa0pgMe1yeTTcf?=
+ =?us-ascii?Q?1h70GrTF6mN4nmBO2KTyaqybf2jaC0h2j5bOoGlhMqKWhN4VDE742BfqYjrS?=
+ =?us-ascii?Q?z2mF4Ayo7/Qu+meUS+YepfflxwdzAKXl6AkzIbWsYlhK/iSkrurB9XEpGDOD?=
+ =?us-ascii?Q?KqoV90H43SYrXYitZ2xMwjOHG2yGPMhG?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?L2604a/XEkJAO14bo+5VN4ubJWIZc7o143OfL+1PS6ZHupgkCqhRoZN7X4PO?=
+ =?us-ascii?Q?H4olxNJOZC4Kve6j4BZkd9LNpP8J6BKmpUehwPV9zD+MbzLevmNBCv4VBkBr?=
+ =?us-ascii?Q?xzQ/elYm8BgV+9RX1lY0IwAvv2uQYD9Qz/IcsH8q7m8o4IxFQezyA+aG5Eo9?=
+ =?us-ascii?Q?P8+SLGk4mDGFhxKyRTBrWFeGZdOQZn5ob15M3/b6/TnV3C7ZsRNa2E2mmu/7?=
+ =?us-ascii?Q?s7y1ePPeeZ837mmsA7109geFTZ82l8n6nx9z1r1RqoPuk/JbO/ppshdge/Z7?=
+ =?us-ascii?Q?f5y2c/3hKEYD61Wwd/fc9QTjIXOl1zZzhsrN7Rc3QCmuov3kWke0W8jr323j?=
+ =?us-ascii?Q?DagrnefHIJiHzbLxdXW3f38HerSUqvivgA/Knmw44VCakbKtXOlfvmPNY6CP?=
+ =?us-ascii?Q?AQ0j0tpfWVG4IE3/0BeDdETSNCZXo2CO2EGdUWlLRLXem6AOld/hlYsBGdyL?=
+ =?us-ascii?Q?5krmBdAND/zQBfcf3/vUx6PepDEjC2TYo4qFfkEnPQtGF3K+n2UNa5VcsgLO?=
+ =?us-ascii?Q?DI/XHAH1BgxYMQLY+Mn6oLBz+An/z2h6a7rHCYP6/Y56bqQnjihIGuoW8MVR?=
+ =?us-ascii?Q?F9uht/lbKSZgzzV54IlLlEncsSCnqfZjR0D7w+nXYjbVhyQg+R9KatezSlU6?=
+ =?us-ascii?Q?Czt7plg000BVJ8KuosrjXOc89yjU+5GiqauR0KxtWy1lJXpO95fS0+o0ipmF?=
+ =?us-ascii?Q?9uBdG8dljlde7IXvv33JAZGndwI+JUbIOXzDDk46zV2xps3lcVYi4C8130CK?=
+ =?us-ascii?Q?b7KraR1cXyE9VSBhCBhHLYz2SMmAf3GFUpMwR5I226PIL+saITQK5ajLtCQu?=
+ =?us-ascii?Q?LDdi5V0LxccuMM0pnbJwgqNcnt9SVAcIBp8T9c/meX/eGA3HG/dzZLopuZwC?=
+ =?us-ascii?Q?SSrDpKeZDWr+1CTpDQUOqibMN7AYV5jHJ/akiXkBCmb8aN3z9e7QtAXkayS4?=
+ =?us-ascii?Q?9zwcUYFlI+OFC6JtieErnyaEuo80zo1RBHG7tQQD+WzHWUfVlUlpUsneWXcw?=
+ =?us-ascii?Q?aHEA1xPFGgHqDTkXI5nEzA0+jOEj0ccIttYexBbiXhUKYR8KLZzHc2WJrsf9?=
+ =?us-ascii?Q?kXMwcfax4XZwPT+pQwF83LH9U+VJM/AedBKXzOvFeYVbqU5niEJB+V0eNV31?=
+ =?us-ascii?Q?r4BmFos7iHAukEO/fShe/mqWFQY5JOlewvUZZBA5EKwfHudzaIi/KufWKfGJ?=
+ =?us-ascii?Q?DSyMi7UbTWZzNA7eLW8iGYPjcxwgkBPiskEd88sieqtP6wIxffd9zorE0yJC?=
+ =?us-ascii?Q?Za5YPXAu3bTJmB+AlcMt915lsjbWjbv7m3irYWLOmEinc+tGHqWDLXtaakjv?=
+ =?us-ascii?Q?8COAls3TgloVDzyywb2G12ick9lWChCGpnf8+fLpVqfHKRBiHhNdcWm6aFRq?=
+ =?us-ascii?Q?8KmRuzpXiwc2qGNfgS1ukQ1aOrZ9A20K81t33dt5U7JwhxN3WmWmBZRX8JPL?=
+ =?us-ascii?Q?nOFhmruAX3jyASuLvBIPzg3koZ9dGlSjFzNlG7QuNcxJDYMZ4MhhBR/Oh6Kx?=
+ =?us-ascii?Q?KCpr4by+2AjiU8/zxqc0ZSGaNAjPXOZjlxfoetN5jf7qkYteLT8nKsk9O8Ja?=
+ =?us-ascii?Q?AcVRFoo2kcM6Dl/G0dr7af2ViZ9xoGIqiKHosEfrl99g9qi0rP6RJkPsPqj7?=
+ =?us-ascii?Q?Tw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	QHtSAtSkS03vOZ7OCVbvq4Rk+OM+CgG2x2zyhpBRrSRJcfCzQjCJqoBHabURGjNgX5iak8fdWgxU5CnDlAPZ07q4aUjCmBQdOMakyI4LQGNVq+SBHOx4mMAB+uCg2771RegDXPFfYrKcoyytfg0IIOL6zC0wOLb2JkFEprrxmksREPFt2/CjTroRU5swk448bToivjH2MCAZ7r2gNMX/4z8XqnOB44RscOq/UYBsafu764Y0gbP3YN+5fKDNjrbY842m7RxAGoQS/6eU6AUzwsqHF62DTWUBKMO2lVs3Ic0+m3Vl3/4uCIkM1GR4+cUAEeh1XpJUmiX/8TCFRyRovJRlYFzbWKz2rtX9jG3zFDMf6u86CaPcg0yzvIX3c1NnBFVvQ5KPvysFSH7RW9y8NdVAbgdey4scf1K2x6FHdc8q5V3LRF4DsPOdNnTAZptEdUwJqd6QHcbYehFuHHd7iitoQV6x3RpkoWG/ZSlNX2E8kc/dbG+y6hS7NYYoY1rtTc/59iZN3Jt3ZtARmiyClDm1CWVGd3QQO/MYN1wZFetylmjve7d0P/Q4KvmfTvzneaBjJ99jFcQx2gWL88zq866UUvIDCKqXQkDOwHxeAKs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47c1b695-0287-4617-964e-08de25ce3779
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 11:41:16.0642
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 61/20CVEnDyRED3NYv/upM8TlQMjBUHN6pvQUHaGFtnB3AhgbkK8bP8dHRjfOl72rZfqSvq6ZXKUVP04rfWdDUg42EcSiJGGyZvz9pL7fbw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5004
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-17_02,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
+ mlxscore=0 malwarescore=0 adultscore=0 mlxlogscore=676 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511170098
+X-Proofpoint-ORIG-GUID: owjQjrzFdHrrVt7YSMlmZ3JROh88YOYw
+X-Proofpoint-GUID: owjQjrzFdHrrVt7YSMlmZ3JROh88YOYw
+X-Authority-Analysis: v=2.4 cv=I7xohdgg c=1 sm=1 tr=0 ts=691b09df cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=yPCof4ZbAAAA:8 a=IjnFJQVy4V2Tn0M8FFYA:9 a=CjuIK1q_8ugA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMSBTYWx0ZWRfX0StGZjtfgzVD
+ pAzUYhpv765AgiVR0XknBGY6CEoKzbNQ3HJGAxami7eremmuc6UHe6363ftwGpr0OTceJJsNBVx
+ gWtklWtYwBVOvbQj2wqRwPZQuyqo5PRi6dv0zT2/s6RZqt/pvu0K//6yJtsMj53WGhvhpOM+bfN
+ z5VEVCA3lNo5XSXn47sPIbB/hMeGcMejZu3rQJC5YzuMZAN7iVPDKn8cNXBa4OwJuy8p06hga/M
+ jEvSGDOgh6s39O3oyxwDJwTW2eUqLdZp4yxvkISiyMgnIdJ3dIoG1oBb+iToG0TSamMU1djRDin
+ oNu44LXH42vXWpgX+cRmE5TSmRzD3c1VByX0HEnFAnawZ8tECRvhi+DjoeVj+HzHnWCEnNQXZ3E
+ 5YwtpcHfr0pOc4xJDgLzxGCk3K+c7g==
+X-Rspamd-Queue-Id: 17C5F140008
+X-Stat-Signature: nof5dxnan86pa5xnzbp3ngumzstwyiaa
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763379423-3764
-X-HE-Meta: U2FsdGVkX18a9mugmm3+Aku6kp5z6pQF/uRc6y80nx5hvF9cCQgw1jpMclGHLaWNH7rYmek1o/oWPkQZQ4exIWLP5TKpjMDYlgxd6wuemQ7WMweTprZqFwZ9U1SJYEtq17JpsFIrDSTebL0FCBl+fWfmP0Z7BlOJR0KfwKTOJvXsJoUjR6TD/O4GPRJd+csUAWracIzQ3jyao+gK4q39x/VpqtcYLgxsuHHYY+x90YDVVMPC/F0CVmkH7iwKt9FUHtrh5/5zQYP3esYiV+PZg5/gfcYULbjEuOVrK8qko8kOZJ98SymEhmMWTbqBH8iGqT7fXN5AlFA6178XaaJrvM58hCqrw6AS8U+HgM7k1lL4Nl2ZFiMo8jrKzBtyRd+4sqg5uYCZUI2yQkdxNi6tHO483wch2DWgnACgW+X4K4Ex/KGbikdsRTrmjGBzQpDUlP2fftwpW7N5BmSzPGvSIL4GPGO9RzdnNWpiK4uKByTP0g5p7tKucElOZ0doEZ3wbl8uyUs6cAFg1b88B0wUdmufH4r4DATmICg1utGN1fhjpl46vpZLq6e9zdP+Vk4HbQjSOVq61ZAWSzRrnGOHb+aOfK7JFs3lw+XL5pV30x6yMCh0u9pKIutMCPHqJjAiCPEzUSjFnyCbbqupayGGXJtvrVAiprY61prlepM6bD//jX3Rv8gr6bfz1GtiZ2uaevQ33Yq3kMgmrUBWcKJg54YXTRMVAFOuhadhZ5b3/Sjw7lkYPkwYG3Ahnq8hv/R45EF1H0AQgX0Guxoac0E5qrYe3nVwpircis0fZhDjJbH/cnI3kvxMXLXwxrX97ombn0JT3dWOUTeI/h/kjhesTLGLvHydunFchwVZO8EjMJQQbINuH1M1OHyPEhdK1a9cXD+5I7V0NhS/x2infMDcOe8QgL3jmeqdH2V1BULEblFXwI1PUzkUvjvfUfWKB0EdhUYsxoZ8uZ+N4aT/N+1
- Q+xz11it
- 2lkcXvW1fYIKLTPaIuUjQ1t77ypS7dDLCvYRInZfFxBAhX7VcEhVjbzCZeh5Tu3+PIeZuL6107Y85JTs/m44wXImhnKluIjgECvDO893/B4QtjHV9Qx4BP5SSPK1ZIx+M85SkLHwKCGWUVA1uaC3veHq3yAG9k9K4DlGwpIwy1FtVw7hDguSVHZ+hEXbZ4lpj121jyUkNUF6hlhg0D3DV8gNAw3JeJAmoxO1TmbqZRPtSb3ktrjPK26ObzNY5WMEJ3kl/TmlEZcrpqathSPiXd7ozUxIz4MaZ1pjarCSlB1argEOwq4LRzvVOKDPP9zkVuZ05YktoWG7CcYTH8shh5YzhIg==
+X-HE-Tag: 1763379683-92065
+X-HE-Meta: U2FsdGVkX19gzUgzClG6gvlW9jqpJrT1o4XLw3L1gTLtpkxiLj9iZkk16WwEmYtsXgOaSCUFSf3Gio29TZw+CJy0Vd99UH1EAMmWdVSbkoVRdIkU6Wsb3faxhwvpvv6ctxu4SWcg3VXpNe9CooVoaHA6jLBktWq3egTS74EpgzUBFgJdQSBKhNzR5xzcBvOPUkCn+2D//wvaL3nzkIOUM43lXgveiEi613YChlZh+TnSm3YK86OfWbJSTkc65ozlr5worpEFb7cJDMbxwlkyLFfQ/6VWLaZOqyTQh1CAnVtNMSbavVFLijKerxxrefU6Z7phFw8qMnT8m8kVOBptFAl30xOJT5f/j0KfnZV4by3gyMYvXNiLwTsyHeN2m9aqmVeIuwYnOmQYYsFN4tU2KjLHJ5b9GiLyNMFnIxceHL7lNBCS4MkEQR6VVx4eQIpnhz7Z77S4MlGFb/goxyZzkSNJKHrRXqLD0RwknLKGl3nxoey2+SzMItCd/oxkKS1dxnrgn7CF6AbSI1x5DVvhi4MPAVhS3Z7wPkdvqt98XEUibk8cqvV1Y70WEjlm1sMMF6L2EBJDy5uJxSi9kIWJJQIxmobpRw2RMnU/E+XtRmRqh/zDbagB0pMU8boMvHPfw20dEOdz0Y9WzxgLXE6exupPPOnFTQ/L0ArZVvGZiO5jvckQ3JWzWk3DrXmoxSuiroRQ0ZVHeEcf8n8Dy8jLBXPq8EgjUz+javGSwDWqhZgBx3p6+rvzTKm/wygs95VwglkAlJUkbPDPm+n0V+NaktfnNb9MAS51J++C6mlWVxDinyjB9fKhyIN3JbNrukiKr7B10MjdQ+aumiDulejc2vr2chh4MQnBzmaARxph75N7NpI7KvkJB2K+7ChK9i/b+hcUtBzlZTn5gwn9M3TgS/NkufxGLY3bpEjYRKfVzeqUjK/SO8HEQZtwOzNRwa1VfYKm409uIeqvfYYuy/j
+ u0QjHy8r
+ MHgCeqOtmP76jQQixSk2jaxipE4qgu7NOKbxXeMy8NlI3FYUaQm48eh+r6COjr5Ejfhn9sr1udcxDTiXXAb4rJ8meTg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,255 +236,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ, David, Ravi and all,
+On Fri, Nov 14, 2025 at 01:53:03PM -0800, Andrew Morton wrote:
+> On Fri, 14 Nov 2025 17:53:17 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+>
+> > Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
+> > establishing a new VMA, or via merge) as implemented in __mmap_complete()
+> > and do_brk_flags().
+> >
+> > However, when performing a merge of existing mappings such as when
+> > performing mprotect(), we may lose the VM_SOFTDIRTY flag.
+> >
+>
+> userspace-visible effects?
 
-On 11/14/2025 10:42 AM, SeongJae Park wrote:
-> 
-> Cc-ing HMSDK developers and DAMON mailing list.
+Simply more correct accounting of soft-dirty :)
 
-Thanks for sharing with us.
+>
+> Documentation/admin-guide/mm/soft-dirty.rst tells me that this can
+> already happen in other circumstances so I guess it isn't very serious.
+> CRIU inefficiency.  perhaps?
 
-AFAIU, the discussion is about whether to use bandwidth information as a metric
-for page migration in addition to page temperature information.
+I don't think it should cause inefficiency other than us already _accidentally_
+being more efficient, see the discussion in thread :)
 
-In general, I think this makes sense in theory but would like to find if there
-are some practical workloads that can get benefits from this work.
+>
+> Please review Documentation/admin-guide/mm/soft-dirty.rst, check that
+> it is complete and accurate?
 
-I've left some comments below.
+It LGTM, we are changing some very specific internal implementation detail here
+which I don't think is worth mentioning here (effectively - 'we used to be wrong
+sometimes, now not so much' :)
 
-> On Sun, 2 Nov 2025 16:41:19 -0800 (PST) David Rientjes <rientjes@google.com> wrote:
-> 
->> Hi everybody,
->>
->> Here are the notes from the last Linux Memory Hotness and Promotion call
->> that happened on Thursday, October 9.  Thanks to everybody who was
->> involved!
->>
->> These notes are intended to bring people up to speed who could not attend
->> the call as well as keep the conversation going in between meetings.
-> 
-> I was unable to join the call due to a conflict.  This note is very helpful.
-> Thank you for taking and sharing this note, David!
+(Staring at tihs I realise I _probably_ need to change something very specific
+in the original sticky implementation. The VMA implementation is so
+finnicky... will send follow up fixpatch/respin on that w/details)
 
-I also see that this summary is very helpful. Thanks very much David!
-
-BTW, could anyone please add me and Yunjeong in the cc list? I was aware of this
-meeting but couldn't be able to join because the meeting time is right after
-midnight here in Korea. (1:30am)
-
-If anyone add us in the cc list, then we will try to follow the discussion based
-on the summary.
-
->>
->> ----->o-----
->> Ravi Jonnalagadda presented dynamic interleaving slides, co-developed with
->> Bijan Tabatabai, discussing the current approach of promoting all hot
->> pages into DRAM tier and demoting all cold pages.  If the bandwidth
->> utilization is high, it will saturate the top tier even though there is
->> bandwidth available on the lower tier.  The preference was to demote cold
->> pages when under-utilizing memory in the top tier and then interleave hot
->> pages to maximize bandwidth utilization.  For Ravi's experimentation, this
->> has been 3/4 of maximum write bandwidth for the top tier.  If this
->> threshold is not reached, memory is demoted.
-
-I also think that this sounds right.
-
-> I had a grateful chance to discuss about above in more detail with Ravi.
-> Sharing my detailed thoughts here, too.
-> 
-> I agree to the concern.  I also heard similar concerns for general
-> latency-aware memory tiering approaches from multiple people in the past.
-> 
-> The memory capacity extension solution of HMSDK [1], which is developed by SK
-> Hynix, is one good example.  To my understanding (please correct me if I'm
-> wrong), HMSDK is providing separate solutions for bandwidth and capacity
-> expansions.  The user should first understand whether their workload is
-> bandwidth-hungry or capacity-hungry, and select a proper solution.  I suspect
-> the concern from Ravi was one of the reasons.
-
-Yeah, your understanding is correct in HMSDK cases.
-
-> I also recently developed a DAMON-based memory tiering approach [2] that
-> implementing the main idea of TPP [3]: promoting and demoting hot and cold
-> pages aiming a level of the faster node's space utilization.  I didn't see the
-> bandwidth issue from my simple tests of it, but I think the very same problem
-> can be applied to both DAMON-based approach and the original TPP
-> implementation.
-> 
->>
->> Ravi suggested adaptive interleaving of memory to optimize both bandwidth
->> and capacity utilization.  He suggested an approach of a migrator in
->> kernel space and a calibrator in userspace.  The calibrator would monitor
->> system bandwidth utilization and, using different weights, determine the
->> optimal weights for interleaving the hot pages for the highest bandwidth.
-
-I also think that monitoring bandwidth makes sense.  We recently released a
-tool called bwprof for bandwidth recording and monitoring based on intel pcm.
-https://github.com/skhynix/hmsdk/blob/hmsdk-v4.0/tools/bwprof/bwprof.cc
-
-This tool can be slightly changed to monitor bandwidth and write it to some
-sysfs interface knobs for this purpose.
-
->> If bandwidth saturation is not hit, only cold pages get demoted.  The
->> migrator reads the target interleave ratio and rearrange the hot pages
->> from the calibrator and demotes cold pages to the target node.  Currently
->> this uses DAMOS policies, Migrate_hot and Migrate_cold.
-> 
-> This implementation makes sense to me, especially if the aimed use case is for
-> specific virtual address spaces.
-
-I think the current issues of adaptive weighted interleave are as follows.
-1. The adaptive interleaving only works for virtual address mode.
-2. It scans the entire pages and redistributes them based on the given weight
-    ratios so it limits the general usage as of now.
-
-> Nevertheless, if a physical address space
-> based version is also an option, I think there could be yet another way to
-> achive the goal (optimizing both bandwidth and capacity).
-
-3. As mentioned above, having physical address mode is needed, but it makes
-    scanning the entire physical address space and redistribute them and it
-    might require too much overhead in practice.
-
-> My idea is tweaking TPP idea a little bit: migrate pages among NUMA nodees
-> aiming a level of both space and bandwidth utilization of the faster (e.g.,
-> DRAM) node.  In more detail, do the hot pages promotion and cold pages
-> demotions for the target level of faster node space utilization, same to the
-> original TPP idea.  But, stop the hot page promotions if the memory bandwidth
-> consumption of the faster node exceeds a level.  In the case, instead, start
-> demoting _hot_ pages until the memory bandwidth consumption on the faster node
-> decreases below the limit level.
-
-I also think this approach is more practical because it doesn't scan and
-redistribute the entire pages while lowering bandwidth pressure for the fast
-tier node.
-
-> I think this idea could easily be prototyped by extending the
-> DAMON-based TPP implementation [2].  Let me briefly explain the prototyping
-> idea assuming the readers are familiar with the DAMON-based TPP implementation.
-> If you are not familiar with, please feel free to ask questions to me, or refer
-> to the cover letter [2] of the patch series.
-> 
-> First, add another DAMOS quota goal for the hot pages promotion scheme.  The
-> goal will aim to achieve a high level memory bandwidth consumption of the
-> faster node.  The target level will be reasonably high but not too high to keep
-> head room remained.  So the hot pages promotion scheme will be activated at the
-> beginning, promote hot pages, make the faster node's space and bandwidth
-> utilization increase.  But if the memory bandwidth consumption of the faster
-> node surpasses the target leevel as a result of the hot pages promotion or the
-> workload's access pattern change, the hot pages promotion scheme will be less
-> aggressive and eventually stop.
-> 
-> Second, add another DAMOS scheme to the faster node access monitoring DAMON
-> context.  The new scheme does hot pages demotion with a quota goal that aim to
-> make unused (free, or available) memory bandwidth of the faster node a headroom
-> level.  This scheme will do nothing at the beginning of the system since the
-> faster node may have available (unused) memory bandwidth more than the headroom
-> level.  This scheme will start the hot pages demotion once the faster node's
-> available memory bandwidth becomes less than the desired headroom level, due to
-> increased loads or the hot pages promotion.  And once the unused memory
-> bandwidth of the faster node becomes higher than the head room level as a
-> result of the hot pages demotion or access pattern change, the hot pages
-> demotion will be deactivated again.
-> 
-> For example, a change like below can be made to the simple DAMON-based TPP
-> implementation [4].
-> 
-> diff --git a/scripts/mem_tier.sh b/scripts/mem_tier.sh
-> index 9e685751..83757fa9 100644
-> --- a/scripts/mem_tier.sh
-> +++ b/scripts/mem_tier.sh
-> @@ -30,16 +30,25 @@ fi
->   "$damo_bin" module stat write enabled N
->   "$damo_bin" start \
->          --numa_node 0 --monitoring_intervals_goal 4% 3 5ms 10s \
-> +               `# demote cold pages for faster node headroom space` \
->                  --damos_action migrate_cold 1 --damos_access_rate 0% 0% \
->                  --damos_apply_interval 1s \
->                  --damos_quota_interval 1s --damos_quota_space 200MB \
->                  --damos_quota_goal node_mem_free_bp 0.5% 0 \
->                  --damos_filter reject young \
-> +               `# demote hot pages for faster node headroom bandwidth` \
-> +               --damos_action migrate_hot 1 --damos_access_rate 5% max \
-> +                       --damos_apply_interval 1s \
-> +                       --damos_quota_interval 1s --damos_quota_space 200MB \
-> +                       --damos_quota_goal node_membw_free_bp 5% 0 \
-> +                       --damos_filter allow young \
->          --numa_node 1 --monitoring_intervals_goal 4% 3 5ms 10s \
-> +               `# promote hot pages for faster node space/bandwidth high utilization` \
->                  --damos_action migrate_hot 0 --damos_access_rate 5% max \
->                  --damos_apply_interval 1s \
->                  --damos_quota_interval 1s --damos_quota_space 200MB \
->                  --damos_quota_goal node_mem_used_bp 99.7% 0 \
-> +               --damos_quota_goal node_membw_used_bp 95% 0 \
->                  --damos_filter allow young \
-> -               --damos_nr_quota_goals 1 1 --damos_nr_filters 1 1 \
-> -       --nr_targets 1 1 --nr_schemes 1 1 --nr_ctxs 1 1
-> +               --damos_nr_quota_goals 1 1 2 --damos_nr_filters 1 1 1 \
-> +       --nr_targets 1 1 --nr_schemes 2 1 --nr_ctxs 1 1
-> 
-> "node_membw_free_bp" and "node_membw_used_bp" are _imaginary_ DAMOS quota goal
-> metrics representing the available (unused) or consuming level of memory
-> bandiwdth of a given NUMA node.  Those are imaginery ones that arenot supported
-> on DAMON of today.  If this idea makes sense, we may develop the support of the
-> metrics.
-
-I think this makes sense.
-
-> But even before the metrics are implemented, we could prototype this for early
-> proof of concepts by setting the DAMOS quota goals using the user_input goal
-> metric [5] and run a user-space program that measures the memory bandwidth of
-> the faster node and feeds it to DAMON using the DAMON sysfs interface.
-> 
-> Implementing both the memory bandwidth/space utilization monitoring and the
-> quota auto-tuning logic on user-space, and directly adjusting the quotas of
-> DAMOS schemes instead of using the quota goals could also be an option.
-> 
-> I have no plan to implement the "node_membw_{free,used}_bp" quota goal metrics
-> or do the user_input based prototyping at the moment.  But, as always, if you
-> watn the features and/or willing to step up for development of the features, I
-> will be happy to help.
-> 
-> [...]
->> Ravi suggested hotness information need not be used exclusively for
->> promotion and that there is an advantage seen in rearranging hot pages
->> based on weights.  He also suggested a standard subsystem that can provide
->> bandwidth information would be very useful (including sources such as IBS,
->> PEBS, and PMU sources).
-> 
-> If we decide to implement the above per-node memory bandwidth based DAMOS quota
-> goal metrics, I think this standard subsystem could also be useful for the
-> implementation.
-
-As I mentioned at the top of this mail, I think this work makes sense in theory
-but would like to find some practical workloads that can get benefits from this
-work.  It would be grateful if someone can share practical use cases in large
-scale memory systems.
-
-Thanks,
-Honggyu
-
-> FYI, users can _estimate_ memory bandwidth of the system or workloads from
-> DAMON's monitoring results snapshot.  For example, if DAMON is seeing a 1 GiB
-> memory region that is consistently being accessed about 10 times per second, we
-> can estimate it is consuming 10 GiB/s memory bandwidth.
-> 
-> DAMON user-space tool provides this estimated bandwidth per monitoring results
-> snapshot with 'damo report access' command.  DAMON_STAT module, which is
-> recently developed for providing system wide high level data access pattern in
-> an easy way, also provides this _estimated_ memory bandwidth usage.
-> 
-> [1] https://events.linuxfoundation.org/open-source-summit-korea/program/schedule/
-> [2] https://lore.kernel.org/all/20250420194030.75838-1-sj@kernel.org/
-> [3] https://symbioticlab.org/publications/files/tpp:asplos23/tpp-asplos23.pdf
-> [4] https://github.com/damonitor/damo/blob/v3.0.4/scripts/mem_tier.sh
-> [5] https://docs.kernel.org/mm/damon/design.html#aim-oriented-feedback-driven-auto-tuning
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
-
+Cheers, Lorenzo
 
