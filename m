@@ -4,131 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ABCCCEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 14:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA023CEBF61
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 14:25:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D81198E0009; Mon, 17 Nov 2025 09:22:58 -0500 (EST)
+	id 522CE6B000A; Mon, 17 Nov 2025 09:25:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D30FE8E0002; Mon, 17 Nov 2025 09:22:58 -0500 (EST)
+	id 4FA496B000D; Mon, 17 Nov 2025 09:25:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF8F88E0009; Mon, 17 Nov 2025 09:22:58 -0500 (EST)
+	id 437066B000E; Mon, 17 Nov 2025 09:25:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A79DD8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:22:58 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7BB39855E0
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:22:58 +0000 (UTC)
-X-FDA: 84120315636.14.3F13E3C
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8EB6310000A
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:22:56 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ekHBnW4O;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763389376; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 321476B000A
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:25:13 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5703B61ED
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:25:12 +0000 (UTC)
+X-FDA: 84120321264.18.A9C15E2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 27E4C1C0007
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:25:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c8Isrkiz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763389511; a=rsa-sha256;
 	cv=none;
-	b=VgaEW6oG30tudEaXNpGM+UbrBiPfPPDH75FcmTuxPSNsUDMumzzbG4r3YINCQtYSQMtq8o
-	4Ct+n/ZnEppcuvhWpLsuuJS3EGhOUoq+sk2MwWeqInwh9GtA1Cg9888j2x1dVClMakO5vy
-	hVd+PGUwaXAx8s+1jcMK2l7p6B0x3AE=
+	b=ktTQIegI17OJ7+Zi0cZ/mAGFV7y3TmxEYQBvCmgF24smoCJ+cjWf9J0ksngaq1norsrcR+
+	NysTMOjFEQ6YQimLzchLdI41pmJmaCMOGyLBIRzikF+0SJKsXGssdC41mLNGFvC7Ql23Yq
+	wjPimhaMtzEjlfVYKeePlYKhJKoVnMs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ekHBnW4O;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c8Isrkiz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763389376;
+	s=arc-20220608; t=1763389511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BpEF14JwpgPT7D39g8XJx/NDIOdD//cHw6pm3Wkjf4g=;
-	b=D2qrzt/HHxTuQGW8HkDsqyf9+leGb6NP7Y7bTvyIi62V4wYtRnzKRtLzdl06uctf7B8Q9j
-	XCyZIPnJS0Xdvox2zuEz3CpG3T/h/re+eXWbqRfrumZYrFbabBc+RcnCHqjtyXPxa6RQgW
-	8tjmp4jMy0aD5g6WZOy59GW8QjMvQK0=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so5868286a12.2
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:22:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763389375; x=1763994175; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BpEF14JwpgPT7D39g8XJx/NDIOdD//cHw6pm3Wkjf4g=;
-        b=ekHBnW4O/kL1RimTND+5Il91baPel4PVPd/8i3Ki1+Pwv/uUmfWy+yhbS6my0C/z9U
-         LDoGHZAwpTzlAI71LbFWPTesz1phDbQNP5Usj0e/JRNYZZPZRZo6+3AA0O9e/43LNDHg
-         uqGuDxRYpEac3AF813W5NuS0+t2DSNf6aoxbYstuPg8iorXXKR08J9j2WsXhLzWHIcFW
-         XTdDhclprxdr5FPs5DxFbT7wmavXg/utYGP3ghwTmJy7B7CD0IW4Dv7ZyEsYuk9Rd6nI
-         fbZmSdcOSeWgI+mT7ZqfnBQxkJ5TJZ3RwzocoD3wSrUH43VjZxf9aULJ3sTGHCWn8aEV
-         /vAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763389375; x=1763994175;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BpEF14JwpgPT7D39g8XJx/NDIOdD//cHw6pm3Wkjf4g=;
-        b=kuA9lk6MU0Y0sRWruNd+Nsuv7Xx26D+xkaxrANIatu+kpEq25e5c3ciqeDoBG5c0Ws
-         iJ88fku/JvO+sF43yZuTEuosPNmkrET4nIYQUKalXFmGxmWC3ENDH8yCZ8VEFXqoFUWD
-         MYOgGh4QEi8N+mCX0rayZ6+lcLlhe5yi3MFTrGoleuzxEe2FdDFi6BZFTHdHxh6sClM5
-         Jr0QnO7m5oRz7EwYfaY0iUJXnbI6n0aAlPDP68ajIs6qVtGXrxqm6PSN8rJ0In4ft87c
-         Lr5PNup6FgSWSskVAvbtvQR8ofwH8NTDb/FqhGrg0FGzYQhwQ0OFFTj2YByBdk+tQjW5
-         udkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcpMXwL1kGllsVMhqw/K7a6K+YBkbFfSYw90BakrBI6O+CwgkEzRfw6ctUEJmA52GIfx3tC70NIA==@kvack.org
-X-Gm-Message-State: AOJu0Yz+O6N34I4HcZo8QuyqJEm4E6WTr05YYkJRvgAVKS5xZq5TRC9U
-	2D4Ag9Y4UHtRm5eYWff4eqgTT+nm7JHgscs1f/h40XrJxNQgwJ036N9UeNHzMKsPl1ypleEakyb
-	ATF5hjL2o99C5D851UQGS8320duzeiYXBnaYBQJ8Udg==
-X-Gm-Gg: ASbGnct7epocE3SKtsISwl/fMChV5/0cBMT+X08PWmZoTW1X6Ei0vyd5CZfsCXwXq8e
-	nb2oG62HICi3/NNJBjaZy/NzOq80XX7G141ZyYNwrxWmNNqPmhlWIiLf+r8mWLO3Vg4WyI0/41r
-	qrRRRqbnTBdzULKGuorFOfYO6GT9fq7hKposrhjbx0N/J4H8aOLMKLlX8mip1VWx5dfuGb15Om3
-	su2Sy1G3+oJhXB0L2sVm4DtrNo3N2JleBJnQel3kLpoir0/s80M8RShrkMDRVNzuUkheKze6CdL
-	jF0=
-X-Google-Smtp-Source: AGHT+IHa9YOzj6FRhxpEiiz0OGiVTh00SkAyRkpmpsCgXO3neMf5Hwjy2VuUd0cgFfp3qUhUPORhyn0xLdhCHN4dWSA=
-X-Received: by 2002:a05:6402:1ec8:b0:639:e30c:2498 with SMTP id
- 4fb4d7f45d1cf-64350e23226mr11650950a12.13.1763389374738; Mon, 17 Nov 2025
- 06:22:54 -0800 (PST)
+	bh=zqZUNzfB0WGXqkA564hs30AY01SSI6DyWRRW6+oOOPg=;
+	b=RaJidiZdtcSaQpogK2uECz4a0G51Q1arE64Yy5Hepg23ln/t6fnqSnRi0AAt+wj2dIz7Ev
+	HXqnuNz0CxqPGKt8JZCLBNdbJ+c0q4SEOHLrrSkYH3fDU2Iughl8LmvQl+5acu+FWAxL67
+	9Ot8Jg9TvYP1CFno8MSWMYQsVaFWn3g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4939F41AE8;
+	Mon, 17 Nov 2025 14:25:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A24C116B1;
+	Mon, 17 Nov 2025 14:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763389510;
+	bh=1oClKF3XIx42GRgp2slE9G5qGbMG/nS/e7CJmqp78LY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c8IsrkizjOj8dpvUcAu/mIW04zCRZ9ysG1beerNSeOC3U43y/0YVjnrzcKeCJyqLF
+	 D8BcRk8nfX8zxvbwcPQcW5vmpEipGc82w3h5+TCYJ6zpf4vD4Hd8JI7ZxKaINtwF4U
+	 lolyfp8taUpC7R9/JTdWyqN86jIIv2UU0w1+8JKqiHj6a+q4ueYP0D3BwwWZjgYZPV
+	 Lcj5NE7gRP1Ap23LmbzEg9m54agh4w3OpxYmXiBsP85lfSvOW5UyvDHsEjyTpisPrR
+	 btEaHdbXsKMlz49dhxv6tabHHCbZl81+zK+GC5fzcGNXz9Q6GRwtJBYkwQRMxC0f2U
+	 b+47gQs1Jp93Q==
+Message-ID: <069adbf6-181f-420f-b2b1-0ca22894d904@kernel.org>
+Date: Mon, 17 Nov 2025 15:25:05 +0100
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-6-pasha.tatashin@soleen.com> <aRoGw9gml3vozrbz@kernel.org>
-In-Reply-To: <aRoGw9gml3vozrbz@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 17 Nov 2025 09:22:16 -0500
-X-Gm-Features: AWmQ_bm48MLbx6lEP4m9w_8Roe08ADT3jnLNtB7LP5zXsIF-E2LtaeNOwAhNVDA
-Message-ID: <CA+CK2bA-mA+qnqWKtZdkCpQ5WpWdcEhwU6BTtC_FgRRT=OVVFw@mail.gmail.com>
-Subject: Re: [PATCH v6 05/20] liveupdate: luo_ioctl: add user interface
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: propagate VM_SOFTDIRTY on merge
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1763142412.git.lorenzo.stoakes@oracle.com>
+ <addc338c8b33aea3c31202180448ea32ef37956b.1763142412.git.lorenzo.stoakes@oracle.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <addc338c8b33aea3c31202180448ea32ef37956b.1763142412.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8EB6310000A
-X-Stat-Signature: shub7mfcifkwbo3xgt1g3zhtnbt4mnfi
+X-Rspamd-Queue-Id: 27E4C1C0007
+X-Stat-Signature: z6p4qqsesaauhms6ya9gi4355wgxozog
 X-Rspam-User: 
-X-HE-Tag: 1763389376-813822
-X-HE-Meta: U2FsdGVkX1+66nm3zP3j9IfYc8c/esaTbnWIQvTszekzBuExwPQKMNQa6XxfNSobkvUEWM5ofZWLh6cGSm7F60SKV4ZJv0u7hoTNnIf0i0HPk2ClyLs1RpVhrQuv5WorJdv09PoVKpnPpyHyT1A2ju1uMkOYC7jMUCszpMktY4Sl9yyQfXU0W4T6WTo7FFjaIpDqkwWmImvcNYtk5ncP3lMMi7pcoLwcyauqS4LvGjkMkYtlg24Oab9K4yTYHAEhkmFbC7X9aDyE2qqdRQv8juhbRo+jxAXL8hXcQJCBxR6NzSyXIcMjocUiV78qH0OfKggFNVifH01vcHnwJBVWWnuCTf5KtUiYFID7yeXAVCvlhb6nW3tRuQ/CqkFe+LLSOP+VJYN58y6mYb6BB3M2DbqYtW+k0Y2+IEOKzNSvi9NjXC2N+8S25r6phwpebIliEm4T/0IXo2l0L1HYBeL5YzYgAoEM/52MZtcWZzbSbNCv/lFvq21JLis4FJ5Amb33m4V6NWJg39A23YYP5kYN2I9hiVAIY+QOsmJ3in8yP+fkOklvVD8iYNAm5BMlxLm5M9sWOGQCZY3CIJHq/J3ETlqVqVPlZ0KSxB1cvWwP57vsvCX+gM58rtZhuah/1PjKhy4kMmqQc3gRaq2+iF6dcnTc8GEZt2BwsZnEX4f02m+P0mJ/lO0+Nba3NCZyV1s6IYmIYmutMgUTYB8Qp0FYr79TwA7eCTBlxnOxjLYsbnB76RE1wlMFRHNbkU4WmSUC2s09Be0YxqmbFHRs/fJ4PI2JD1TWCxEUz1nwpq0vdK+yEwFT5/ANdML6J4FugCf3PiaYlY9LcP4Wt7hfmq9BfuGVn0yxszWNgPKr3L3HINJbWAnSe8FTm/xWEXlwG1P1ipDBaGLJCZB1nQ5T3f3+I5xS+QxSrAI+YtS+lRNfvVQj70J6cZq0iF249erKgj/nGjNGWkQS94D3onoJGX8
- JKrMk1Nm
- 82ZO9CDsnURRxd2kOd0v0q+nZDIv/qqB0p94xoNabhw4EqUB06Ol2eiXxIGb7iERt0ulB/1do7gdy7KbeSCVIFQ8HDE/XFW/tifGQYQGXBsVPIgsGVx/18L+W0SnSvpGYxkWiSvYlNNHDoT888DxnNy9hJlBaCzNXCMtBxUHDtdCrfY14Y0jvAWEMa//xNriNBXilJCfiJV5cmQJ3mPGVw1RN1GmGQhCrbdneEpiquPy2B2y8aPGMo7soke2Z6Q2U/Q6XvGLMWfP3RBQvxixMXbvN+NActpbDcYFL3M0/sFTX/yR+RegVbuVAWti0Ltk9OXkLToVzU4mgVTgTLclKVmmkahTmIxj3jQVwg6lK1vVI1HpEOALDC5peUE0NYHre1Y/h1Gp5VH5ASmGfmtiU17mp7tKlOGWJ0V4I7lPE20fGE0o=
+X-HE-Tag: 1763389510-898158
+X-HE-Meta: U2FsdGVkX192x4iSbZzUFovbWqoSHWnmv880iOIUJbs+qGsVJAVi5hbftnSv/9ZmCO01rJXbJe+1KnSMyBe2kZ/EQBxqC5vJ17ggd30jGdLikluE05cGN1Iu0LA9lW7WbwiBcI0uo5l66Mm/gmLwNmB2RHwFHcKAynwvxDsF9PbCpIDT5S/IZQGyMJTohunnG/JBuQR9xN3nxEeq0JWz1GygmbOfABHOoy6rt8FZ86ZSED4xc2sASLPEFrRz/HM8VP3gG86UGz7/ID6dcgrlkZbFYlmxEXBQqDjC//QGUgb0r2eMbhabU7sew1RGjDh7HL5fP66YbOp+10CtAA5G8B6ED5TmnCHtljOcBaHr4Q2V9kdZBRMwPZlsMEcz/JkB2M1sR8pI3zruFn+7rPgTvRxDehVh8enUWMgvds7uDnTiO5Xb65hPnMktVYpDcE0krY8LB8dGVqWZiW+AOz5oCo0NPxw4ipkHZSQ4CppJBZXEfA6jqSosKp5Ii35TJj/aPGiG8YkNDTDwZ4vRVabLMBwJwzqSEBk+RcZBfl7GbWmnDKXGOdtqVg05LmUlsPlFJngdIWE0g6VkEPREVbXF+0nuSCMiMIBkt8vA7cf8ikq2PgWu9oOk39H+cDQCkzoADhTTTGP9WxISQBMJm6bfLuFg045+QelEDABDaXBOp54p0xHO0AcuYSRdreI3sjhCPeRr7j/G9fjIThIJGQLQaee1J4XyHM7uM5Ib+QvAs1QNF9BnDC7K+NBJ7NsvEc/RFL+w/ofTCRxD0ULBT4BVW95QFCX7rk8rzPqIBW+wmu9hrM76XZqymDJmvGdCPoCw88XvrkIs0EXtON0ZE2B31kGvyzCLYZ6TWx/KfcYvhBl8MrGA//BKdg12fdIiw5C6vYUz+8dEfxHmujqkg2pIVuP8xyRg88cDpP2Alt/1AeviUXae0Z/dLCvGzo+TMNNNUrEMUHumVJHp+h/uQ5E
+ 0kxV5FGm
+ fGTvK7Lup7ZU3NflXqe5DHZKTl9ZMEX9Z+WI7KO3EfQovnQPAQyfmPg/KqQvoEaSMdBKS6a1Q1pmodZFqyiC9uY6+dDBPcs5miLDuk9ojRIWXVm0y95DXSfmVLWl8Y97K1j7pEMn/W5QdDvd+2lkvo2e2fMQXLkEsw0QEdslp8JeUES6dMxJ5oN1BinfZxcWZ2USh2vS1jTVaxCN8mwfSZGG4cjiYbwZ3xf9qO+NooBqVVpzC6C/ZtwpMU80ZefF9JXzFEMUrsRU/uG63PJoQy5BFxs5xNRkXW3T12/f/x1mt6tucE7eH3SytpkZG75sb8zaV9Z5pUfyTQUSxk4OG+9HofKERgP1hYSUU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,42 +99,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > --- a/include/uapi/linux/liveupdate.h
-> > +++ b/include/uapi/linux/liveupdate.h
-> > @@ -44,6 +44,70 @@
-> >  #define LIVEUPDATE_IOCTL_TYPE                0xBA
-> >
-> >  /* The maximum length of session name including null termination */
-> > -#define LIVEUPDATE_SESSION_NAME_LENGTH 56
-> > +#define LIVEUPDATE_SESSION_NAME_LENGTH 64
+On 14.11.25 18:53, Lorenzo Stoakes wrote:
+> Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
+> establishing a new VMA, or via merge) as implemented in __mmap_complete()
+> and do_brk_flags().
+> 
+> However, when performing a merge of existing mappings such as when
+> performing mprotect(), we may lose the VM_SOFTDIRTY flag.
+> 
+> This is because currently we simply ignore VM_SOFTDIRTY for the purposes of
+> merge, so one VMA may possess the flag and another not, and whichever
+> happens to be the target VMA will be the one upon which the merge is
+> performed which may or may not have VM_SOFTDIRTY set.
+> 
+> Now we have the concept of 'sticky' VMA flags, let's make VM_SOFTDIRTY one
+> which solves this issue.
+> 
+> Additionally update VMA userland tests to propagate changes.
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
 
-Ah, here I updated the session name length :-) I will move this change
-to the proper patch.
+Looks reasonable to me. I thought that we had that behavior in the past 
+... but I also remember scenarios where we would have imprecise 
+soft-dirty handling. So I assume this was semi-broken for a while 
+(soft-broken :) )
 
-> > +/**
-> > + * struct liveupdate_ioctl_create_session - ioctl(LIVEUPDATE_IOCTL_CREATE_SESSION)
-> > + * @size:    Input; sizeof(struct liveupdate_ioctl_create_session)
-> > + * @fd:              Output; The new file descriptor for the created session.
-> > + * @name:    Input; A null-terminated string for the session name, max
-> > + *           length %LIVEUPDATE_SESSION_NAME_LENGTH including termination
-> > + *           char.
->
-> Nit:          ^ character
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-Done.
+-- 
+Cheers
 
-> > +     if (atomic_cmpxchg(&ldev->in_use, 0, 1))
-> > +             return -EBUSY;
-> > +
-> > +     luo_session_deserialize();
->
-> Why luo_session_deserialize() is tied to the first open of the chardev?
-
-Because at this point, when `/dev/liveupdate` is opened we expect that
-userspace has finished loading modules that might register
-File-Handlers, and FLBs, with LUO, and therefore we can deserialize
-the sessions and find all the rightful owners for FDs. After this
-point, we also forbid registering new FHs and FLBs.
-
-Pasha
+David
 
