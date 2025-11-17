@@ -4,90 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ADF2CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68026CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95E218E0025; Mon, 17 Nov 2025 12:30:21 -0500 (EST)
+	id C212D8E0026; Mon, 17 Nov 2025 12:31:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 935818E0002; Mon, 17 Nov 2025 12:30:21 -0500 (EST)
+	id BF81B8E0002; Mon, 17 Nov 2025 12:31:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8727F8E0025; Mon, 17 Nov 2025 12:30:21 -0500 (EST)
+	id B35CB8E0026; Mon, 17 Nov 2025 12:31:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7521F8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:30:21 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 23E0B87869
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:30:21 +0000 (UTC)
-X-FDA: 84120787842.09.724B9C2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8500040015
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:30:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQBqyY17;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A14B58E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:31:39 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53035C0218
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:31:39 +0000 (UTC)
+X-FDA: 84120791118.10.3D75B43
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 636791C001B
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:31:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IuRJrH7S;
+	spf=pass (imf21.hostedemail.com: domain of ujwal.kundur@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ujwal.kundur@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763400619;
+	s=arc-20220608; t=1763400697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g5AiyBzCDFGeLYBsO2E+I5LeTR/SV7qyYvmw0HBvoy0=;
-	b=TsKLYyM6mRE0Fd4il2RG3IHffrHKWLPPB+CGAFvKbRQelVlH6F2Un8iQTjXiLa9KxbskR6
-	50D8oKzOdCyuTcNexU/gHUReHLqs2BEBk/RCzEFlWCux7LvrfFZb1YGobiCMhjX9YF6kwH
-	PNON6btV2NJyAIche6L9LyD+fxD8Qas=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763400619; a=rsa-sha256;
-	cv=none;
-	b=amRiMlgwjuILOs3QwkTifpPRD8V8smaX+k+7Ddt77zgtlbwKnrI7XQluDdy5vQMO+CAVGq
-	lNM1pokGshfzc0fzm5Vl7G3kbRsINtNz74mD+07gbh+IGSrBr3Rh3/E8sIQJAIqJ6E1LZg
-	ha+pERSC9s3bjqOa249XI5bU1bHKKjA=
+	bh=WV7KJq3JWbWy4X8KgHXwI0VdrSU307t+6yjEnmz/ZNg=;
+	b=iDoLrG2mgTXMJ0aqrlwTXi8Qv2a99uhIaBOOAds1SOLAjpPwL0VqR9ppSuP+ZxTIjkAreA
+	3CTaSWytSadO7Z8yTVG5uRQD2RdC8gL8qraQQz/5JPsiI+DIHVGc24PRQgSDsQw3C9StC9
+	h7e7C+8wGzzdyVnyuttPFzkh8fFRuFQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQBqyY17;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E99E9601EA;
-	Mon, 17 Nov 2025 17:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83573C4CEF1;
-	Mon, 17 Nov 2025 17:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763400618;
-	bh=Ky2Bqm1GzEHmxnMmaXlwbKn6f6wgJEVKqgI6UTZ6Nco=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vQBqyY17/Z8ywTeDYuBxczsTVwi0n2RIJQKG9Cl/i31HW8BITOuHbNqVz5fzfnztP
-	 eCfD28VxUoA+hHKi7NVFVoHfAwk1sAZfXnnttQ06tR5r1Bk6mZAgBDy1WoNxwiMj27
-	 F7NbbzcrT8edW/pXOCABJwzib/AI/c9a3JOl/7sd+dduMfy2xtPdNt0X4cL4EKoaS4
-	 xhVT0hzW/aD0bkHp2ASIbsPZe+3bnJQsB7IlgHY+OT772vTDxqqEqZ1AHHP4Z0EtqZ
-	 pvLKt3NJUco9niAdhM/lLjH1x+v/4yHTM4VHqXfOeHAmX8hETkYOyaAg7iI+USIUVT
-	 wUBvzybgVai4A==
-Message-ID: <8c745e54-1cb1-44d4-abc3-00e6511cf67c@kernel.org>
-Date: Mon, 17 Nov 2025 18:30:13 +0100
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IuRJrH7S;
+	spf=pass (imf21.hostedemail.com: domain of ujwal.kundur@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ujwal.kundur@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763400697; a=rsa-sha256;
+	cv=none;
+	b=ySbkjgQHMEhki4iTnngiCjLQb77YfYwrDwjxxXAlgpAOPlRZtx5r18FGrEJ5R271qTnb/M
+	g4oOinCEc4XskP0ajyuMdLiUN4+BztFNcM8Mf7bjGFmNGbIAtgYq3CSG9VSZCXHhy/X3af
+	kYwoPYrf2FKpLgjZ1NQ8UESWUf7DT7I=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-644fcafdce9so234976a12.1
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:31:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763400696; x=1764005496; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WV7KJq3JWbWy4X8KgHXwI0VdrSU307t+6yjEnmz/ZNg=;
+        b=IuRJrH7S4lT7vW19n/lGrMs3D81u+PpL79DmTuN3+8nm2hy61L0sTd4cQYtqwtr14g
+         Gvq0MjgDUuYMzZpR0hkFM228xTzGZ96DQYIt96WgclroAvFdOprTV6GNkS4CrT5kjGDK
+         decNDpgvZa1T8H4talufu+sahSEXLGdq90yiTugbMl91sk203Qw8eOPA2Ci7OIr5m1R6
+         RF4GpGbklLXTrlhweP7eUzNJtpdRZpQ+9FRbHzxAd9THIUdUs4YkntpMCF3Kq5U3vA9+
+         F9w3HvYRU2yCLCpQsAFCdUly68tGcO3IUbiC2FrmlFzeSsWPz3cqzaz2382HROTmpVzo
+         Lu+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763400696; x=1764005496;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WV7KJq3JWbWy4X8KgHXwI0VdrSU307t+6yjEnmz/ZNg=;
+        b=uvGJKOXeAHcq4RrlcWx5/ydSW8/LMfMtaVna8ta5qD/EI/wRpAwGR2iym3ny9VKuC7
+         ex45trlKGRfRsmsaO7YULJ4lN1fu9tZTW8HuDVUdWZ8sSFvMQGoGVrWSZqyXdlFOiEoZ
+         +hb0XCOBdpOVFdIy0x7z7b2MaXC7Xw55gQ6dxj/8qjtePvv3qnK9XHUsAmcSOk7qA1nP
+         QlUEjh/EdFefemq3QqE9nM4IdbGbuURZP6ax+1raMX/3hVpjrZI2St+PloJP3dHOK9Zm
+         pQsB0hJHaWKjCdA6PXw4AiIkoST0hfBmyNi8+rg1al1MAusmllsBAzX2/qd/epy260oF
+         3l4w==
+X-Forwarded-Encrypted: i=1; AJvYcCU/Yljr1c0t6NOGmVVJNGsVjQ7qJec9MBiuyo5CfzYPpokQmAoe+bVQg9QLynaNiFavbDpXffQYKQ==@kvack.org
+X-Gm-Message-State: AOJu0YyGtND7DHwsHVk5mq9vRXPgYzlQKvUw9lp4kk9e8QFM51lkw0Zx
+	fV7RngKQMaR345/UJ83BPkQBfUncQnELdLYnJC/+QxWlBPjMY/5eezVNw4tbODiDnVJe4k2aG0X
+	5mb3o8MUC1Ca8BqimgzHnzdD6wQ6IBg==
+X-Gm-Gg: ASbGncvZHUrtxtIYxdU/z9CgI2XkrJxC8gFHTGXiHiLqr5luXvmKp/nr6pg9L/gw7/J
+	9t0o1XwQrR+6/gixNyAEFuK5xFVyjkaItDhakq76ggu1JgUoKsjKtiIHUgZ6ZumC0kPAodVlswo
+	czolZD3TxYSsyocmFfTBvN/YCzHwjOxS/nvh3PaR/Jpm9rPbtCzKAvmHKJf6mfyOB2j8TuVfmCA
+	nj53902o7i+rsDmXCSI82o6L8h4iJAuekzkzj4HABi0g8xklVGYLtDsWZE=
+X-Google-Smtp-Source: AGHT+IFVNP2uP6Q0JshZHVUTd8X1+5WDmG7OavAZHYwuqKhkIu2hA2v7ot1RIcdD+T6gGeIwMDW97WO+/8hkBclFsrk=
+X-Received: by 2002:a05:6402:5112:b0:640:a356:e797 with SMTP id
+ 4fb4d7f45d1cf-64350e2092amr11284922a12.13.1763400695483; Mon, 17 Nov 2025
+ 09:31:35 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 04/10] drivers: i915 selftest: use pgtable_has_pmd_leaves()
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <cover.1762464515.git.luizcap@redhat.com>
- <297c6fa3dfc50c28c05c0974c86a205984d752ed.1762464515.git.luizcap@redhat.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <297c6fa3dfc50c28c05c0974c86a205984d752ed.1762464515.git.luizcap@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6tttmx185ujyx4jm3be94w4ag7dmno1w
+References: <20251113034623.3127012-1-cmllamas@google.com> <e0be6864-4260-4843-a432-d47437b5d43f@kernel.org>
+ <4a60a703-d9c2-46a8-83b4-a7ecff7f6ba2@lucifer.local> <aRXyxWeh81-aTHaC@google.com>
+ <b4291d0d-b913-4e61-9f9d-fbebd1eb4720@lucifer.local> <20251113153205.6507ecb308e7d09362905da7@linux-foundation.org>
+ <9d30836b-9ddb-4432-aa39-85e32c2ea645@kernel.org> <20251114143909.14ecee31b88f179bc2858e30@linux-foundation.org>
+In-Reply-To: <20251114143909.14ecee31b88f179bc2858e30@linux-foundation.org>
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
+Date: Mon, 17 Nov 2025 23:01:22 +0530
+X-Gm-Features: AWmQ_blYT_0n6-EoSgb5vkK1TfvHayH6Eh8aX8bnaH1niORp_lD21yGSPt8taXc
+Message-ID: <CALkFLLJP7J7fUsUuo2TYseeDd+4JeC8pqJN9PwfhKFS3jd-TFQ@mail.gmail.com>
+Subject: Re: [PATCH] selftests/mm: fix division-by-zero in uffd-unit-tests
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Carlos Llamas <cmllamas@google.com>, Peter Xu <peterx@redhat.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Shuah Khan <shuah@kernel.org>, Brendan Jackman <jackmanb@google.com>, kernel-team@android.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	"open list:MEMORY MANAGEMENT - USERFAULTFD" <linux-mm@kvack.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 636791C001B
+X-Stat-Signature: szg71k1t8xydk1zbrx79t7uk17nnn5m7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8500040015
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763400619-230354
-X-HE-Meta: U2FsdGVkX1/zykVeeUrKlngJk5x2BprfxlQfjUdQGkoHlfoqXyKvfEMHtIHCwzTSHcaiuJxiVA3nO5W3FwfWXrNHzYd3IiKGdtIkbM+LMrHd40mefSpZQvgBTfkT0decTKCNuMCCo0MvhHVUSKJQocVvYkweFR2zvfRModtB729BtzsNGLxJebQ6MT0suxYd1FBtLnovkDCMeM007A3IcOHy6LvDCvSRJ30wW5bErD2eHQqio9P4VGvix7ilf3cqWEkW7xpr+J5YFeiXrOvGwJDyarz9XOFRsorAWuYZdj3DYZxHK1q9NyoTXng5aJTmtn77N2RqWFx76jmc1CEKaiDFvB6o1hViUs1B5hut46F3rlNwSb8Z1OSHOm4XFbTUG5Emn1ujL3uPnjBAeFHtIrVRlNVrDLpTSe3a70wxEHDCxXrDW4MrpK1QbjPXvA6FBjeEZ12h6a/8o8c3HLjraGHZSbHrAA5Jx8L4Wm9OICgPqH/xAapdcewE3d5V7kavhtsf+EW8zOZ4EZuZftkbGpZ5WTUA5mOxHq7Mif/mkFTZ0KI+nZC9a8+JoUmGtTtD/ZsqzNEcZ2+egl1t3F6Qwsd8hh7CKfNLGzqsfasdrov+xcNEhEjRhr5bx6zlmqW7rj/mgofap9ZJVrxPbiFlpb81abzO6GZwhlSLFu37tbvuYTYxrx2W/OLcnDlLZt/r9Bv9whqpbFgUibgnkTErshGhtc8R9/yKehXkz8L8xse5OhsEyQiXMgTp1PkFIGndumEi+s5i7eBO+uFmRWsE0xxEIah6v6nLQS4OcOmKGn1idcNDirlJ7zgCNvGE8QkGiJrwmbgVvxFgjey0OxfC7gtkhXMfRB16E4YIYvobdUDWe+nkszQlWcXvmN56kLNZglk+JAYFaAR75e3oKnZzBlfugH53Y4PzN9Wm1XxrFuB9Q8Y6Lrp4D3O90UJXKLlOjpvw5rhbAlp1soFiwKS
- XQ6Thdxw
- 6ENl3
+X-HE-Tag: 1763400697-989136
+X-HE-Meta: U2FsdGVkX18+a0D3x7e53mzZOPOEHQ8yJ8UVwJqV3knDnr0ODTJxhtu3OtZKBXuyousclAy2ghyyYvHbYG4M0PFVXfp6+HPHGReNJXN9+Jebn8ae00nY3XCSD+IejDG3++SfqfHjF/M1jT9fL0tyWNEaS6kqgzXNGE2rcqcMF7exJ6nXg7dPXSQjIrxVoMz+I8Ui+JoRxOliCiMS24ijdIUifb2kGJYjoHEaxt1MoMI1DpEAW7cRQk2FuF8Feq7eGGBRi6UcZe+YQnp6rEBAtVFWOc46VgHtDFsxLBRc2EUmYeZIsfDudswJ5mH69uhZgsmQB0UvPc9YmUV5/Pbm0eygd9NE3mQf6l16mO/P0BnqS9vvvHDnjQE5fCSIdyyGfH+3ERMaCwW06y8YAwjAcHlkvv0zG1R1ZagqTISipqJKYCbiBQhqDAsH9+VydLEr2A5E2b049Z2aVVzCRBqe/4wWm/bSDJZjjOVTHvlS0reAZJIjn2duxcoI4bO/XpMsZt583nPos+Ygi9EYiD+cncS1Fe4sNEgDWUnBp9ARBSNNr474Ei+WTi7Q5UDrTq98hBFpXOzPiaeKRsB28C2y9QzpHW6rpICCGy3pWXTLjxuOfcaHdlvOz736TgeU3hZY3eq7RvayF50JDDhqrEzX1l8NyxuOHyAS6R/UFpauuQDN3to0uAby7IJIfNOAaRR2T2tA37hbfqjxJtWCSegx7/VQtdN1yVjU8ccmaGaV/xYibE0Qv7R9Z8RI0EL61aOaursRZY1Cz8OXdR5EvEb7jUWku3aTOeAeUMffSyoVaUUKcnaToV9pVVxtfozfzWxMBo1EvjI1SkwmztQvKvW5oVCpCGQG01EEMD0gCmr3Y8ZBvU1Ha928iWYNGT6QLdjWtWStkSdbmlVQj3/J1Hwrg9SsBMsFHezlfvIONfukq0PYTkns56eT2DU61CgxX5heDNwYhLPgOUWv4famTFX
+ 1pSamvzx
+ GWnxCV9D1u48vZ1cPtDaoKA7utp/vZAu0R5PoXfk6HP/mYPw3C8gR6sEPsmYVzPNVqhV9pqd/UGCjvd1JQNe2Q1vJx0jXFOLYXCBD1LQD+BBReY1kOEoRpO48R1L8T14QniTd94RUTF2//TglOCUQSoV5/Xj2E0qPTEPkFkDibsegFC7+2c7f7dQRJSBL/3SVg7MLfnJOgNb0kFyYP8WzZscNfoe2Oc+61IByO9DqcfM2EBRcEt9ef4MC+CqILNoavxHHRlKR9A6xER98UBczZwjdINuZg/+xftxiWfzvBLRJgqgRnZ0j6PMa0tXv8kfcSMWm9Yk9Uibx8LLNIdG1fwuj7VHYpjDF5/dKm1RhuCwUjkP5KQXElW+9W9whT+h7k3L7mPx0Ua4U7RNdy7Wr/IRgutlvJ8Se620KMSd1zsXTYgUy9+JhnauPKIBWXis9/V7hxy3r4C8LsohJIJI0L0sOo0AXfBruRNJCbwqfkz5sLQie7ny/gUL61sihSmmcgGsE7ObzyGUJWkjt7LkfOl/0+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,31 +122,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06.11.25 22:28, Luiz Capitulino wrote:
-> igt_can_allocate_thp() uses has_transparente_hugepage() to check if
-> PMD-sized pages are supported, use pgtable_has_pmd_leaves() instead.
-> 
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
->   drivers/gpu/drm/i915/gem/selftests/huge_pages.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-> index bd08605a1611..c76aafa36d2b 100644
-> --- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-> +++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-> @@ -1316,7 +1316,7 @@ typedef struct drm_i915_gem_object *
->   
->   static inline bool igt_can_allocate_thp(struct drm_i915_private *i915)
->   {
-> -	return i915->mm.gemfs && has_transparent_hugepage();
-> +	return i915->mm.gemfs && pgtable_has_pmd_leaves();
+> Commit 4dfd4bba8578 ("selftests/mm/uffd: refactor non-composite global
+> vars into struct") moved some of the operations previously implemented
+> in uffd_setup_environment() earlier in the main test loop.
 
-On second thought, is it problematic that we might be losing the 
-CONFIG_TRANSPARENT_HUGEPAGE check? Should we check for that separately?
+> The calculation of nr_pages, which involves a division by page_size, now
+> occurs before checking that default_huge_page_size() returns a non-zero
+> This leads to a division-by-zero error on systems with !CONFIG_HUGETLB.
 
--- 
-Cheers
+> Fix this by relocating the non-zero page_size check before the nr_pages
+> calculation, as it was originally implemented.
 
-David
+Thanks for the fix! I never tested with CONFIG_HUGETLB turned off. We
+now need tests for tests :)
+
+Reviewed-by: Ujwal Kundur <ujwal.kundur@gmail.com>
 
