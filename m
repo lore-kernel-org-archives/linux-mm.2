@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AF1CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 10:49:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE821CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 10:49:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 911AE8E001F; Mon, 17 Nov 2025 05:49:12 -0500 (EST)
+	id 171AC8E0023; Mon, 17 Nov 2025 05:49:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E9698E0002; Mon, 17 Nov 2025 05:49:12 -0500 (EST)
+	id 1496B8E0002; Mon, 17 Nov 2025 05:49:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FEF48E001F; Mon, 17 Nov 2025 05:49:12 -0500 (EST)
+	id 05F6D8E0023; Mon, 17 Nov 2025 05:49:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6717B8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:49:12 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 234845D46C
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:49:12 +0000 (UTC)
-X-FDA: 84119776944.04.14B3DA0
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E4F258E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:49:40 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8676FC0C5F
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:49:40 +0000 (UTC)
+X-FDA: 84119778120.27.78862F1
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 22D2B1C0007
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:49:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id AD3C9140006
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:49:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+	spf=pass (imf09.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763376550;
+	s=arc-20220608; t=1763376579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5m2JTGutddZPS59MX0GXC05NXARwpl5STY5NEfdxd+8=;
-	b=LCEoLXd7RdOpkMJzpicZ9r4Yfo0Xgdix8EdDUTkw3wm2czq/SM3HlzrhL0wZx+/BoYOTuP
-	S8sm1iwpRm9Si4V13juZ449cahwF07zpeYOa6BH6KUR530HxiS3bcUuLwV3CV0oWAlWxPG
-	F7/rJj7fMk/pgZxPTruNvogRGUEtKRs=
+	bh=lteemHYfCFRhmg4sD9kv13oYhFVsuanc2EW7Y1QQ3a8=;
+	b=4p7zaDFVox74khqXjuMUV2m1VF1w94yekavHJMcMFlNymSE2Hvua5a16F4yVvjeHjdCyFE
+	EEJ+I54h+O2nmSaS90RF0dFoEl1I8/5lnpE3qmDT73jFn68ZrXDOroZheSrK5pcMe6MKQa
+	0QmsoJ7oEvYWgFQbK07NA/5/SqHtQTs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763376579; a=rsa-sha256;
+	cv=none;
+	b=Qp3D0Hd+QoIQ4aCjgwQ6AGicpvO1dCt4soOFIId0R7VfhU+0Jsx8mYfMo1/oMBmjxEo5cu
+	FPsHazkimscvRatZEbKavB2FuGLA6+2PfLQAqDhUyj9QIF3J9skwPToVVUx/TZmGC6mk49
+	USBToL14MeiKdzbbjb4hwxLtEuhjHtU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
+	imf09.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf18.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763376550; a=rsa-sha256;
-	cv=none;
-	b=jpgxX9Twf9d2OW7V0KZHSNv/bEDBTSQp7LZ6bpBv4Wi1juwUIOrgd86jTfvkJ09MJASC2R
-	OvWjpeKXyqUkd4Mj9qgZ/XjsELeYVyEm9KLvA3JSbj/EhkCwx1wGaTfr0/ZkriSn+2/qYR
-	zyz8RhocFRuqRr02jiWLXk8HSDMHSKY=
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d94Gd1S7BzJ46tC;
-	Mon, 17 Nov 2025 18:48:25 +0800 (CST)
+	spf=pass (imf09.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d94HS3V5fzHnH5y;
+	Mon, 17 Nov 2025 18:49:08 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id A6B1D14038F;
-	Mon, 17 Nov 2025 18:49:05 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 2DD2414011A;
+	Mon, 17 Nov 2025 18:49:37 +0800 (CST)
 Received: from SecurePC-101-06.huawei.com (10.122.19.247) by
  dubpeml100005.china.huawei.com (7.214.146.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 17 Nov 2025 10:49:04 +0000
+ 15.2.1544.36; Mon, 17 Nov 2025 10:49:35 +0000
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 To: Conor Dooley <conor@kernel.org>, Catalin Marinas
 	<catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
@@ -76,9 +76,9 @@ CC: <james.morse@arm.com>, Will Deacon <will@kernel.org>, Davidlohr Bueso
 	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
 	<luto@kernel.org>, Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH v6 2/7] memregion: Support fine grained invalidate by cpu_cache_invalidate_memregion()
-Date: Mon, 17 Nov 2025 10:47:55 +0000
-Message-ID: <20251117104800.2041329-3-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v6 3/7] lib: Support ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+Date: Mon, 17 Nov 2025 10:47:56 +0000
+Message-ID: <20251117104800.2041329-4-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251117104800.2041329-1-Jonathan.Cameron@huawei.com>
 References: <20251117104800.2041329-1-Jonathan.Cameron@huawei.com>
@@ -88,14 +88,12 @@ Content-Type: text/plain
 X-Originating-IP: [10.122.19.247]
 X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
  dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 22D2B1C0007
-X-Stat-Signature: hn1o3jgtyjdnrqhgi5mdo3mt9q658tn1
+X-Stat-Signature: n3j4a73gtg8jptkgyba7t3k37nq9pw1f
 X-Rspam-User: 
-X-HE-Tag: 1763376549-145361
-X-HE-Meta: U2FsdGVkX1+GYmNGlByZu6S8Mnf1cJhIUpQFXIMKVwZEsB6mSCuL1GldPVgDpBY/K03DEEZzZap9puqYpBWG/oMR4JpOnRLIe/Jq+EIRGYt7R+im+vx3ltWuMXl2mysXKgODPOkAD2k0QuK26PsLxWwl+tPUmfGQrxjnUIkDDBix1PCgf5/NyUcO0ngS26s23E7KuTYe95IYX9p2Q3WuPt0Pk8Gria4dU9ZPqiN6dtXcHFZkD56yJjHwOYBjUHNmCzPvh59VXArSSY5xSAUNc+d6tVeVpO9EXlZqyrYHWymQzxZop7hEZk8xPVeVsGd5VnxYC0nZmT6jdPg2f33g03fIZVayoZ1pyCJgcH/7BLb8AtVxoAAMCQnJDqDW8AlL9EcJ2riqZuNTv+wDmYhMZIk6fBREje+HQBwrMizGHmvoYKA7Nj0/A4nzns9XX/dPOp1c0XkJSXylacJa88R0tKzw7E2VESuFELCpQLc7Dow7PZrvFqaB2OvVOZW3qEqZqdPASmWKUlY1d8fH1GucerJh0NsNDy/W4DHRPgsUmbgUUBIJtviHQP6TO+kzI+1eaMeiHVchhNqIX203hGDb0TYNsfsMyzlq/P8sia181zFD0Niyge16Ak6+TzEYr0qvszN30mkt5FV2ywC8cXVIRD4egtVTlSR9ywsqzvLv2OgQF1eiuEnhy8GhWGNQE3ttvmSWYU74AXJwqXu8SCeRf8sX4b65fxc3qkK/tqCtKiZu088z10x3YLUIcK5Wugj2rHrN9AD5VP8LpIiw8P5pngWVQCeHHZORjrAyAchXOaSr/iPkCUToyQ8eKlGajyVwoPn7P5sObA9Ykw1jOKlXZAIioTKKMCbCEC1jNR3AXgcuJscWCgMEgOwSX4yLWeUevCqKyr8oSWCRzSKhc94PLDiLgmxJ42Pvy3bTn1dFbyMvpSep2DddcL+25yLPvK2TDfAhzE8IPpdgcr3j5RF
- yY8Gs4mH
- 6Ed9TfgYhZLhRGKg+wB62+6nVpJULPgfb9tRhgv5xVp9BchVuUl2PpejuXIF4LYAkiy3+yfbFofHE/EscDvbh2CgnaiqyJ3OTiXu2rPo6NjSxAqdFEaYP8lluoYTHG0uE1V6PMKAB6r+97L3KJM3KbbeCSomycDNjQI3WbsFtlTmuFgLETolyv2Ssb2x1WM1XjIGkZMxLrsR4f9SobauHczTIo4i1wTvoIxeYCKdkEoz6gUpzK20WWaP5Mu0YT7X6HR71C03CPrXxByWzioGgVBPRvjlwNoQjU3vytMWgI3S9M3ayXYK5K3/tXbZe7aOmscMSawxL7esN0j33CUlRUV34ZlvceN+HLNVQfIkdui2iBVm2LEsbU3+YdQ==
+X-Rspamd-Queue-Id: AD3C9140006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763376578-130258
+X-HE-Meta: U2FsdGVkX1+BO4BlJ3gcgXb84QU52rABgKmAxYKXENxFEDICET60yxAa62gfA72gQLAAGtiViYu9dJT98aVzPixCSUO1KRCicw01KBL85iYWxYvLbxnZnpjiLJLkE1F3GJIV6NU05SKVTavXYw9YTxcjQDdSxGkDFgHCQCRCNC6HrfK3MvAvhVpD9BRwdp9vxeMNsSTSB00ff+THXdRGmZAicoJPk+PBXRZxvRKs/EHenllmvXSG81KYdH6rCTYFy0KxDeaN/Ill0Oc39EoYZPHJQkTOed9pDZX0l150ayMV+zXx/xQf3xnIyyoUxypjrX68hK/ReyhM9G5Tvf33FhuoruztLa0hIIgnG78vBP5D/0dS6bf+52lK3/Olr6SfzDYwEIJf94aGRheefTuT+fW9e4DOPmO/xos1OqdQ8C1D+OYlabjQl34LvJAbNbNOt4YxsT4oySuQx9DXRZkClPwzyInMg91N2VwzDSzjirS9EoQLxmkg5WnsZoaTCedIduHZI7JE13qYXqYOk47+2C1aUbV6PlFJ1Mn9e9G956npmaRhzXmSG2YPJu0BiR0kQvvroUgmKr09u7LEGBsUF3LuDTN12rD9OoBDzsmXNUeLnG2tJSa4fc1muFDr2vlwo36290JHmabg5yQpYBPL46nZVaqOu7JY7AqgqyrGJmAtcOavUVuPUfKn700xQjgJ1luGPUxCxxyZ6L6WuVM2vV4wsHvVP9vLGXzW35iQU4tLppYRHpUlSq0KEHsvOoKticONxnqVyjbdEVNGOY1PY0s0sOVNgiEOFKStSBYoLTafqszG8entnllOywfuCd7qjgVcLMDs2YrKMoNXqxt9p242y8+n8ildWCH0CabkKfZuFAkFFnymMPnf2sA9vOosHwv7/dHMh0UTgPEXXlrAVWty+XndYmhCssHAuCrh10RmsjiHKqhbTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,132 +104,305 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Yicong Yang <yangyicong@hisilicon.com>
 
-Extend cpu_cache_invalidate_memregion() to support invalidating a
-particular range of memory by introducing start and length parameters.
-Control of types of invalidation is left for when use cases turn up. For
-now everything is Clean and Invalidate.
+ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION provides the mechanism for
+invalidating certain memory regions in a cache-incoherent manner. Currently
+this is used by NVDIMM and CXL memory drivers in cases where it is
+necessary to flush all data from caches by physical address range.
+The operations in question are effectively memory hotplug, where stale
+data might otherwise remain in the caches.
 
-Where the range is unknown, use the provided cpu_cache_invalidate_all()
-helper to act as documentation of intent in a fashion that is clearer than
-passing (0, -1) to cpu_cache_invalidate_memregion().
+This is separate from the invalidates done to enable use of non-coherent
+DMA masters, primarily in terms of when it is needed (not related to DMA
+mappings) and how deep the flush must push data. The flushes done for
+non-coherent DMA only need to reach the Point of Coherence of a single host
+(which is often nearer CPUs and DMA masters than the physical storage).
+This operation must push the data out of non architectural caches
+(memory-side caches, write buffers etc) and typically all the way to the
+memory device.
+
+In some architectures these operations are supported by system components
+that may become available only later in boot as they are either present
+on a discoverable bus, or via a firmware description of an MMIO interface
+(e.g. ACPI DSDT). Provide a framework to handle this case.
+
+Architectures can opt in for this support via
+CONFIG_GENERIC_CPU_CACHE_MAINTENANCE
+
+Add a registration framework. Each driver provides an ops structure and
+the first op is Write Back and Invalidate by PA Range. The driver may
+over invalidate.
+
+For systems that can perform this operation asynchronously an optional
+completion check operation is also provided. If present that must be called
+to ensure that the action has finished. This provides a considerable
+performance advantage if multiple agents are involved in the maintenance
+operation.
+
+When multiple agents are present in the system each should register with
+this framework and the core code will issue the invalidate to all of them
+before checking for completion on each. This is done to avoid need for
+filtering in the core code which can become complex when interleave,
+potentially across different cache coherency hardware is going on, so it
+is easier to tell everyone and let those who don't care do nothing.
 
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Acked-by: Davidlohr Bueso <dave@stgolabs.net>
+Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
 ---
-v6: No change
-v5: Tiny tweaks to patch description for readability.
-v4: Add cpu_cache_invalidate_all() helper for the (0, -1) case that
-    applies when we don't have the invalidate range so just want to
-    invalidate all caches. - (Thanks to Dan Williams for this suggestion).
-v3: Rebase on top of previous patch that removed the IO_RESDESC_*
-    parameter.
+v6: No change.
+v5: Picked up ack from Conor. Thanks!
+    Add discussion of difference from the existing operations for
+    working with non-coherent DMA (Arnd)
+    Expand a little on asynchronous nature and why it matters for
+    some systems.
 ---
- arch/x86/mm/pat/set_memory.c |  2 +-
- drivers/cxl/core/region.c    |  5 ++++-
- drivers/nvdimm/region.c      |  2 +-
- drivers/nvdimm/region_devs.c |  2 +-
- include/linux/memregion.h    | 13 +++++++++++--
- 5 files changed, 18 insertions(+), 6 deletions(-)
+ include/linux/cache_coherency.h |  61 ++++++++++++++
+ lib/Kconfig                     |   4 +
+ lib/Makefile                    |   2 +
+ lib/cache_maint.c               | 138 ++++++++++++++++++++++++++++++++
+ 4 files changed, 205 insertions(+)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 0cfee2544ad4..05e7704f0128 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -368,7 +368,7 @@ bool cpu_cache_has_invalidate_memregion(void)
- }
- EXPORT_SYMBOL_NS_GPL(cpu_cache_has_invalidate_memregion, "DEVMEM");
- 
--int cpu_cache_invalidate_memregion(void)
-+int cpu_cache_invalidate_memregion(phys_addr_t start, size_t len)
- {
- 	if (WARN_ON_ONCE(!cpu_cache_has_invalidate_memregion()))
- 		return -ENXIO;
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 36489cb086f3..7d0f6f07352f 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -236,7 +236,10 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
- 		return -ENXIO;
- 	}
- 
--	cpu_cache_invalidate_memregion();
-+	if (!cxlr->params.res)
-+		return -ENXIO;
-+	cpu_cache_invalidate_memregion(cxlr->params.res->start,
-+				       resource_size(cxlr->params.res));
- 	return 0;
- }
- 
-diff --git a/drivers/nvdimm/region.c b/drivers/nvdimm/region.c
-index 47e263ecedf7..53567f3ed427 100644
---- a/drivers/nvdimm/region.c
-+++ b/drivers/nvdimm/region.c
-@@ -110,7 +110,7 @@ static void nd_region_remove(struct device *dev)
- 	 * here is ok.
- 	 */
- 	if (cpu_cache_has_invalidate_memregion())
--		cpu_cache_invalidate_memregion();
-+		cpu_cache_invalidate_all();
- }
- 
- static int child_notify(struct device *dev, void *data)
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index c375b11aea6d..1220530a23b6 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -90,7 +90,7 @@ static int nd_region_invalidate_memregion(struct nd_region *nd_region)
- 		}
- 	}
- 
--	cpu_cache_invalidate_memregion();
-+	cpu_cache_invalidate_all();
- out:
- 	for (i = 0; i < nd_region->ndr_mappings; i++) {
- 		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
-diff --git a/include/linux/memregion.h b/include/linux/memregion.h
-index 945646bde825..a55f62cc5266 100644
---- a/include/linux/memregion.h
-+++ b/include/linux/memregion.h
-@@ -27,6 +27,9 @@ static inline void memregion_free(int id)
- /**
-  * cpu_cache_invalidate_memregion - drop any CPU cached data for
-  *     memregion
-+ * @start: start physical address of the target memory region.
-+ * @len: length of the target memory region. -1 for all the regions of
-+ *       the target type.
-  *
-  * Perform cache maintenance after a memory event / operation that
-  * changes the contents of physical memory in a cache-incoherent manner.
-@@ -45,7 +48,7 @@ static inline void memregion_free(int id)
-  * the cache maintenance.
-  */
- #ifdef CONFIG_ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
--int cpu_cache_invalidate_memregion(void);
-+int cpu_cache_invalidate_memregion(phys_addr_t start, size_t len);
- bool cpu_cache_has_invalidate_memregion(void);
- #else
- static inline bool cpu_cache_has_invalidate_memregion(void)
-@@ -53,10 +56,16 @@ static inline bool cpu_cache_has_invalidate_memregion(void)
- 	return false;
- }
- 
--static inline int cpu_cache_invalidate_memregion(void)
-+static inline int cpu_cache_invalidate_memregion(phys_addr_t start, size_t len)
- {
- 	WARN_ON_ONCE("CPU cache invalidation required");
- 	return -ENXIO;
- }
- #endif
+diff --git a/include/linux/cache_coherency.h b/include/linux/cache_coherency.h
+new file mode 100644
+index 000000000000..cc81c5733e31
+--- /dev/null
++++ b/include/linux/cache_coherency.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Cache coherency maintenance operation device drivers
++ *
++ * Copyright Huawei 2025
++ */
++#ifndef _LINUX_CACHE_COHERENCY_H_
++#define _LINUX_CACHE_COHERENCY_H_
 +
-+static inline int cpu_cache_invalidate_all(void)
++#include <linux/list.h>
++#include <linux/kref.h>
++#include <linux/types.h>
++
++struct cc_inval_params {
++	phys_addr_t addr;
++	size_t size;
++};
++
++struct cache_coherency_ops_inst;
++
++struct cache_coherency_ops {
++	int (*wbinv)(struct cache_coherency_ops_inst *cci,
++		     struct cc_inval_params *invp);
++	int (*done)(struct cache_coherency_ops_inst *cci);
++};
++
++struct cache_coherency_ops_inst {
++	struct kref kref;
++	struct list_head node;
++	const struct cache_coherency_ops *ops;
++};
++
++int cache_coherency_ops_instance_register(struct cache_coherency_ops_inst *cci);
++void cache_coherency_ops_instance_unregister(struct cache_coherency_ops_inst *cci);
++
++struct cache_coherency_ops_inst *
++_cache_coherency_ops_instance_alloc(const struct cache_coherency_ops *ops,
++				    size_t size);
++/**
++ * cache_coherency_ops_instance_alloc - Allocate cache coherency ops instance
++ * @ops: Cache maintenance operations
++ * @drv_struct: structure that contains the struct cache_coherency_ops_inst
++ * @member: Name of the struct cache_coherency_ops_inst member in @drv_struct.
++ *
++ * This allocates a driver specific structure and initializes the
++ * cache_coherency_ops_inst embedded in the drv_struct. Upon success the
++ * pointer must be freed via cache_coherency_ops_instance_put().
++ *
++ * Returns a &drv_struct * on success, %NULL on error.
++ */
++#define cache_coherency_ops_instance_alloc(ops, drv_struct, member)	    \
++	({								    \
++		static_assert(__same_type(struct cache_coherency_ops_inst,  \
++					  ((drv_struct *)NULL)->member));   \
++		static_assert(offsetof(drv_struct, member) == 0);	    \
++		(drv_struct *)_cache_coherency_ops_instance_alloc(ops,	    \
++			sizeof(drv_struct));				    \
++	})
++void cache_coherency_ops_instance_put(struct cache_coherency_ops_inst *cci);
++
++#endif
+diff --git a/lib/Kconfig b/lib/Kconfig
+index e629449dd2a3..e11136d188ae 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -542,6 +542,10 @@ config MEMREGION
+ config ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+ 	bool
+ 
++config GENERIC_CPU_CACHE_MAINTENANCE
++	bool
++	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
++
+ config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
+ 	bool
+ 
+diff --git a/lib/Makefile b/lib/Makefile
+index 1ab2c4be3b66..aaf677cf4527 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -127,6 +127,8 @@ obj-$(CONFIG_HAS_IOMEM) += iomap_copy.o devres.o
+ obj-$(CONFIG_CHECK_SIGNATURE) += check_signature.o
+ obj-$(CONFIG_DEBUG_LOCKING_API_SELFTESTS) += locking-selftest.o
+ 
++obj-$(CONFIG_GENERIC_CPU_CACHE_MAINTENANCE) += cache_maint.o
++
+ lib-y += logic_pio.o
+ 
+ lib-$(CONFIG_INDIRECT_IOMEM) += logic_iomem.o
+diff --git a/lib/cache_maint.c b/lib/cache_maint.c
+new file mode 100644
+index 000000000000..9256a9ffc34c
+--- /dev/null
++++ b/lib/cache_maint.c
+@@ -0,0 +1,138 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Generic support for Memory System Cache Maintenance operations.
++ *
++ * Coherency maintenance drivers register with this simple framework that will
++ * iterate over each registered instance to first kick off invalidation and
++ * then to wait until it is complete.
++ *
++ * If no implementations are registered yet cpu_cache_has_invalidate_memregion()
++ * will return false. If this runs concurrently with unregistration then a
++ * race exists but this is no worse than the case where the operations instance
++ * responsible for a given memory region has not yet registered.
++ */
++#include <linux/cache_coherency.h>
++#include <linux/cleanup.h>
++#include <linux/container_of.h>
++#include <linux/export.h>
++#include <linux/kref.h>
++#include <linux/list.h>
++#include <linux/memregion.h>
++#include <linux/module.h>
++#include <linux/rwsem.h>
++#include <linux/slab.h>
++
++static LIST_HEAD(cache_ops_instance_list);
++static DECLARE_RWSEM(cache_ops_instance_list_lock);
++
++static void __cache_coherency_ops_instance_free(struct kref *kref)
 +{
-+	return cpu_cache_invalidate_memregion(0, -1);
++	struct cache_coherency_ops_inst *cci =
++		container_of(kref, struct cache_coherency_ops_inst, kref);
++	kfree(cci);
 +}
 +
- #endif /* _MEMREGION_H_ */
++void cache_coherency_ops_instance_put(struct cache_coherency_ops_inst *cci)
++{
++	kref_put(&cci->kref, __cache_coherency_ops_instance_free);
++}
++EXPORT_SYMBOL_GPL(cache_coherency_ops_instance_put);
++
++static int cache_inval_one(struct cache_coherency_ops_inst *cci, void *data)
++{
++	if (!cci->ops)
++		return -EINVAL;
++
++	return cci->ops->wbinv(cci, data);
++}
++
++static int cache_inval_done_one(struct cache_coherency_ops_inst *cci)
++{
++	if (!cci->ops)
++		return -EINVAL;
++
++	if (!cci->ops->done)
++		return 0;
++
++	return cci->ops->done(cci);
++}
++
++static int cache_invalidate_memregion(phys_addr_t addr, size_t size)
++{
++	int ret;
++	struct cache_coherency_ops_inst *cci;
++	struct cc_inval_params params = {
++		.addr = addr,
++		.size = size,
++	};
++
++	guard(rwsem_read)(&cache_ops_instance_list_lock);
++	list_for_each_entry(cci, &cache_ops_instance_list, node) {
++		ret = cache_inval_one(cci, &params);
++		if (ret)
++			return ret;
++	}
++	list_for_each_entry(cci, &cache_ops_instance_list, node) {
++		ret = cache_inval_done_one(cci);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++struct cache_coherency_ops_inst *
++_cache_coherency_ops_instance_alloc(const struct cache_coherency_ops *ops,
++				    size_t size)
++{
++	struct cache_coherency_ops_inst *cci;
++
++	if (!ops || !ops->wbinv)
++		return NULL;
++
++	cci = kzalloc(size, GFP_KERNEL);
++	if (!cci)
++		return NULL;
++
++	cci->ops = ops;
++	INIT_LIST_HEAD(&cci->node);
++	kref_init(&cci->kref);
++
++	return cci;
++}
++EXPORT_SYMBOL_NS_GPL(_cache_coherency_ops_instance_alloc, "CACHE_COHERENCY");
++
++int cache_coherency_ops_instance_register(struct cache_coherency_ops_inst *cci)
++{
++	guard(rwsem_write)(&cache_ops_instance_list_lock);
++	list_add(&cci->node, &cache_ops_instance_list);
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(cache_coherency_ops_instance_register, "CACHE_COHERENCY");
++
++void cache_coherency_ops_instance_unregister(struct cache_coherency_ops_inst *cci)
++{
++	guard(rwsem_write)(&cache_ops_instance_list_lock);
++	list_del(&cci->node);
++}
++EXPORT_SYMBOL_NS_GPL(cache_coherency_ops_instance_unregister, "CACHE_COHERENCY");
++
++int cpu_cache_invalidate_memregion(phys_addr_t start, size_t len)
++{
++	return cache_invalidate_memregion(start, len);
++}
++EXPORT_SYMBOL_NS_GPL(cpu_cache_invalidate_memregion, "DEVMEM");
++
++/*
++ * Used for optimization / debug purposes only as removal can race
++ *
++ * Machines that do not support invalidation, e.g. VMs, will not have any
++ * operations instance to register and so this will always return false.
++ */
++bool cpu_cache_has_invalidate_memregion(void)
++{
++	guard(rwsem_read)(&cache_ops_instance_list_lock);
++	return !list_empty(&cache_ops_instance_list);
++}
++EXPORT_SYMBOL_NS_GPL(cpu_cache_has_invalidate_memregion, "DEVMEM");
 -- 
 2.48.1
 
