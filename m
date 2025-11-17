@@ -4,103 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B51D9CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:18:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB85CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 22:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD7318E0005; Mon, 17 Nov 2025 17:18:01 -0500 (EST)
+	id 8DF1C8E0009; Mon, 17 Nov 2025 17:39:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAE818E0002; Mon, 17 Nov 2025 17:18:01 -0500 (EST)
+	id 8685D8E0002; Mon, 17 Nov 2025 17:39:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC3C98E0005; Mon, 17 Nov 2025 17:18:01 -0500 (EST)
+	id 709208E0009; Mon, 17 Nov 2025 17:39:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A63C58E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:18:01 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 47C3312E062
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:18:01 +0000 (UTC)
-X-FDA: 84121512762.06.28F51B5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6466212000F
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:17:59 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/JAI73A";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763417879; a=rsa-sha256;
-	cv=none;
-	b=ANitsHyX/AmH350wI7pdBQ/t7cjInwNzz/TG4WBpi+gQbLcxIv5pMmrH0UZMl/ry777HDX
-	a+HEXO0NRMpx6L39W50PmlZTs/MdorNReDe8b2pR1uYpnPKI0hm1ToLHRA7oBWal9haCnQ
-	QtUTzW1hMeTRTw6WtZH4wgsEOyX/6qo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/JAI73A";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763417879;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 588348E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:39:44 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D3E801402FF
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:39:43 +0000 (UTC)
+X-FDA: 84121567446.13.FD0F9C3
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012060.outbound.protection.outlook.com [40.107.209.60])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 054D140004
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:39:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=X1B9M947;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf04.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.60 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763419181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s4G0o6feNFQCHQWlQ0wS7QBi/MIpqVPgOdk0C2pfULw=;
-	b=piEAiblHuPleqfdxtiHkMzmnOIpt7IGEzDqnPYuzIrKIt9ltEXXdtD3Nrqy/f0+cYekP3X
-	YzAHAwL9Hqh5eGqO2paOS4ifNcU7QD4Mvv8Q1wTykZXsT4FlgtHV+5SmFEpVXfGfs+smDr
-	40xe2W6laT9FGyNxjEGVM8uBVv+81Z8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8546F601B0
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A20CC4AF11
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763417878;
-	bh=Iv3NFR3+Iu7BTy0EYf2sC8D85e61Z7PXncB5P+SpuqY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=j/JAI73A3Url87p0yOhA4GnLmRiY/hwUsqIW0Im+c0MvGkdD3hZvS7Nm12jr5u/U1
-	 hcXS0I+WPbIK5fTcqN8X4zKpzZ/1WYkDU/deCprl4rFR05E8yGv2KVMEFa40X/68s2
-	 b4TmruhZqmdD75lRi5x7ziNGPm93x4jTcVEMZAtb6rkvstXXyyCjBeRliZf7U35aOz
-	 EOP6nPrPSLYHnUuP78h86ApZwhYyFJ3u7duKGVjvM2OfmfDpb5rVE4yGfQVBXLKUqs
-	 byQgEI8/nrpEp3DvncsQqhz3pzE0eQGpsHPxJ+Js6rnE+Vcg2Ef78WLm9v3vBA3BnF
-	 z6CtrnZ9qbukw==
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-787c9f90eccso51518687b3.3
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:17:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVHotvFwOukKsxoxws2GiN9TzZomw63RR9ygg6US3S62fG/YZlDOluqp9COnkdYapsM6Z5diEQPDg==@kvack.org
-X-Gm-Message-State: AOJu0YwOlrm+fqYg+OJeu72HMWrox6Rv62qgtnaQguFu+lfPP1cHOZV0
-	i9pMhIAe6e5eSogyO3Netvl52buJ5TcE6B3qB2JBYYtiAgg967zUammrFnJ/bS9Csg9TdJg595g
-	FsrCtK82mE6qJ0k/5DMPgkJ/78LqtM+jkG1x8+MqDOg==
-X-Google-Smtp-Source: AGHT+IFC3T7bPUsKWDSyc/zJmJY47BiOoIQaYL1jmAtft8112JY1ZeeYBWqU8Y48NcMEHH3fevNY3w9fgaSuVPuG/8Q=
-X-Received: by 2002:a05:690e:c45:b0:63f:b2ca:80e1 with SMTP id
- 956f58d0204a3-641e727ff0cmr11828503d50.0.1763417875019; Mon, 17 Nov 2025
- 14:17:55 -0800 (PST)
+	bh=NyN1K/yRMBJE94wEURVQJRyi14HHoS3W/AczYdl9g8I=;
+	b=FrN8xflcbdqZaJMMPdIpmucsnafkk0OTvcAGlLpV5cstiIOZzPtPdMKJHXMhWsY4NPgZO4
+	Jbg3uR9hVd75S0KCcuSkYH3N2CZvU71oHxAqAlXLYylH/ECGQp6Axa+FBo7uZX5+AeTNY4
+	RTp7X2nKtsqiHuHKurO3JDaaapSdRRw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763419181; a=rsa-sha256;
+	cv=pass;
+	b=ufgngQL1DPWwu6DD2LW+4Gz5fYemv6C50nuYnPkXYc2PeTiR40wcmbEY3d/R+AvCSGTFpC
+	2dZYTlZHtEUgx9j+zZOOtbUD6dyYVQVy+SkB4eiNjXTPxqMlz/Qh9SQ6lwWJ2zOR1sYujn
+	8aXqKMCextjshhAnsvwtk8oLcxUkVvs=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=X1B9M947;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf04.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.60 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eHObJDq+j68dofg+acqf83qC31t6Zqnn4YYV2Pj2nO6g5gAt+WPGH6diyc5AnlRNfKkY3MNXrNqZG+lNmEjfDjZNhxLElKZT1SczQ1xot3Q6g7RL023DQGd1Iwh7Nh/ciEwDc0qH+t/Rlbf6DjBz+TBkRVHZkkLLPsvQLgfu597oAFNSaQvVFQy97L995OgiPshbYW6JoJ3wf9/hVGQLiBdiqtj8OvrBC0zmsgwOlrvV6WygA4M8idzSk3doprgJC8HBXrJg8ILgQ2EuKWOh2lS//sz3yUNdnO8oa0kQdlRLJ2/MeJTxgs4X/dhmVJ925+d/klrMwQA5RGzCvOcAjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NyN1K/yRMBJE94wEURVQJRyi14HHoS3W/AczYdl9g8I=;
+ b=TUO1kkGAkfLrC0es39QNLCQUmptY7z9N7rEjtG4iMOKo/l6p0OuI3UrOPC7sLiKo2E/mE1WCB24ubVvTdyCVwSKhkbgXvK64cvf/NMEYrbRm5U0ZPlAl1SvcEGol+fV/7Xb0ca6s/6ApoQF8o+5megnOHQLzZl34iy+wptIDz9iIDKBy8DsYLytQZinr0FVj29M6Kmuz3GcNoJflrxsIwDn00/brSumsw+yLR89RN2u8W9ON2Uf5y78BtssedraKrhkK+zOvTPiyOniMog2TvfKalcQhlYOk1tcopXnAwJiFqWf0xnNBeScLYvxVX+dsrCM9dB+uXcfjhnRv+F2AEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NyN1K/yRMBJE94wEURVQJRyi14HHoS3W/AczYdl9g8I=;
+ b=X1B9M947gsFHHqjnvjF6Ub2i4xMrgWX0YahiBSt+lUB1WvSHFe1zbOz/AGyaGLV63D23OsRQ0I4dB/hBM92QdiiwgRRmnGaF6eFrck0mTotkj4M67RNEkrFaujL9kroKig3bpqtGTLqE3mj/RsdAalelyHdMDV3GkDecwVmf+wON2VTkxHxRANNNNVv2Yide6PhHHn/kZXpbhQC3WUiuA5V07XpK7Lj6BxrpWzGHnQ1XwAyHd/dRIoGtirKA+hJu1WQ6m80rtKlgHJ9uuDlrmEt1x/SoqiYH5ybhd1a2TmVUAwlK3Bn1PeJyB00OGv/UgU1doOlIE0Vn81LTBTfHlQ==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by CYYPR12MB9014.namprd12.prod.outlook.com (2603:10b6:930:bf::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Mon, 17 Nov
+ 2025 22:39:33 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
+ 22:39:33 +0000
+Message-ID: <5b6bd015-538e-471e-b2bb-4a070bdc4c64@nvidia.com>
+Date: Tue, 18 Nov 2025 09:39:16 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fixup: mm/rmap: extend rmap and migration support
+ device-private entries
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20251115002835.3515194-1-balbirs@nvidia.com>
+ <6020005e-8b62-415f-993e-b1d99e0c5158@kernel.org>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <6020005e-8b62-415f-993e-b1d99e0c5158@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SY0PR01CA0009.ausprd01.prod.outlook.com
+ (2603:10c6:10:1bb::10) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
 MIME-Version: 1.0
-References: <CACePvbUBEQsgoei=ykeM6uX_GWaFywZEXY7dGt+T6Pt4zhiGsA@mail.gmail.com>
- <20251115172431.83156-1-sj@kernel.org>
-In-Reply-To: <20251115172431.83156-1-sj@kernel.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 17 Nov 2025 14:17:43 -0800
-X-Gmail-Original-Message-ID: <CACePvbVkBPJBaowW0tQrL0mPqSq5kM1hNx91BX_JroM8ruS7sQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bmnY8z0jUWMzSN-Fi5TsGwGO41754NgluCVPEwQpNeRJicXbhNgs-x2yx0
-Message-ID: <CACePvbVkBPJBaowW0tQrL0mPqSq5kM1hNx91BX_JroM8ruS7sQ@mail.gmail.com>
-Subject: Re: [RFC] mm/swap, memcg: Introduce swap tiers for cgroup based swap control
-To: SeongJae Park <sj@kernel.org>
-Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, gunho.lee@lge.com, 
-	taejoon.song@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|CYYPR12MB9014:EE_
+X-MS-Office365-Filtering-Correlation-Id: babef420-ec45-4030-7f06-08de262a2dd1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S3hTK0plc3hGNkZHZVF3QTh6WlB2bGx6VER1aGQrRDZ6NUwva0R1Q1hQcHhr?=
+ =?utf-8?B?dk9WWktoZFJFSE05bHFUSDBoQ0VreXg2MG5OaEU3c1VBVERPSTd1Y1VGdEpT?=
+ =?utf-8?B?Z1A2dU1KZzZxeUZIeWlERDRqanJDUlhJdENpNWowKzdlUHV0emRJSEVCcWI2?=
+ =?utf-8?B?QVRNV1ZlNUlOL25UeTVlT2RjQWNLa1JjdmVyRmVrbDRVeTF2eUNKdm1PY1Q0?=
+ =?utf-8?B?QXVCL01Yb0lwNTNyZERkWnV2UWVQS0cyZTgwZmVvMEt0dG16WHVxbDZTZEVB?=
+ =?utf-8?B?Y2J4UitMVlU1d01mL3ZvRkw0OEFpZVBDZTBYeWNqTHJ0MjhxVnBYeElGdGk1?=
+ =?utf-8?B?d2pZbUlrVXFwUm1iUFFrR2JZdkNnQ2lPZTMwdWhURk1nNnN3enBBbm9yU3JM?=
+ =?utf-8?B?L05RdG9MVVpTdmdnb2piWjhmSTJhSmtjdHZrY2I0VFVYV01pZmZZMnp1U3R0?=
+ =?utf-8?B?RHd2S29QQjAzV2hrSXNsem01dDZuMHJYZmlLTkpBekNSTWtyNEZJSC9Cd1Zn?=
+ =?utf-8?B?amN4UlhwVDZCQkppb1dHc1RhWG1OejlzekVrTWFxNFBaeHcyZkNUbzI2bnNF?=
+ =?utf-8?B?WG81ek9CQ1loU3A1Nk9XSzZWOFpQOHdyRlJ1bkU5VnRBcURuTUZGSERpcUFR?=
+ =?utf-8?B?a3pCWG1INklaL0lDODdPVVRzNmJsS3FhOGt1WmdCVm55L21VZ2tGdFM5VUtE?=
+ =?utf-8?B?VTlEWVVpdy9neTVCVHJ6UTNWRm5PMnFuUXE4UG5oYnlNTGJTSUY1WFhraFhs?=
+ =?utf-8?B?NzBLUkdRY0lNbDd5cG1IcmxVdDVBL3pwZ3lPMEowSm1HaWhFTURDUGRmUjJv?=
+ =?utf-8?B?amhlRS9BWUdhbHBZVElxUzJrNk85bzdvMnJNR2hWclVXTTRwOE1pbzFFVm12?=
+ =?utf-8?B?bXBpV2tKTjZ5V29ybWRqVDdUTUZQc0JtM2xDaEl0VEk0QVBvUy91YkoxQjlT?=
+ =?utf-8?B?azdHRTMyZ3dSa2NNdGxWSEljM1Y3S2Y0c20zemVIcnVpbjZVNTNPRm8wVkJO?=
+ =?utf-8?B?TFFGdkxuZjBFUXI4RGNVaFE3OFlkTXAxS215eS9XMi84N25NM2R2SFpwTmxx?=
+ =?utf-8?B?Y3g5ZStBNmNhbjRIWHJ0YzRVdkdVczVDWGhLQ2l5cG8xdlJiVGxQak9HcmVi?=
+ =?utf-8?B?MGNldVpZUDdYUjRVenZTd3E3Vmdud1dlVFh5S3hrcVpqd2h2cmlodUkwVzNk?=
+ =?utf-8?B?WS85K1E0RWFsTlhoRlFXNXJlcTFydFF1VGhpU3JEcEtObDRGM0taNG8rRG41?=
+ =?utf-8?B?VmJmNk9aMjkyWmZBRGVydUFIYnNoRmdiUWZCc1RrTkd5YlFhYnJWeE1ucU1D?=
+ =?utf-8?B?UTJ1MzlxWk0yMndwTkVYUjZHZWgzVStTRGFMQTNGU29JcFVWbnlvY3hFSk40?=
+ =?utf-8?B?S0pNbng3bytHdk9ScjVlUEwrNEcvRDFGWUxMWE1qbTg0ZjVxTmJtaWJyMTRj?=
+ =?utf-8?B?VE5YekcvM1BBS25VWWljbDhOTlFVTHJpZWl6QW9BMG1YT3BTOFd4bHZSbldH?=
+ =?utf-8?B?MEtHVzhHNnhDdjA2WkRhMUZwdWo1cHBsOCtiVTVwb0JDbkhrUElrOVN2cGhz?=
+ =?utf-8?B?dEVBL2VVMklvUGRsRk0zVUdKRmZ0emUzTTNNSTd1aUloZmhBd3VKSFpiRlho?=
+ =?utf-8?B?UXYrRmRTU0djL0dDSjFPZTNQMzJPckJGQzhJR1krVXVvYkRhaG1QNWJzaS9r?=
+ =?utf-8?B?NWdoa1dudCsyNUY5TnJ1LytpMWJzSzI4MkUwVVFQcnZTdXgzak9aeHZoTWdE?=
+ =?utf-8?B?UjNHeSt2SlFDeXhHNWdncTUvbWcvZnI2cUYvbDZMbThXckFTaEFPUVJjVDU3?=
+ =?utf-8?B?azF1UmwrMlhBUGR1MjBDTEV4VFU4YndVU2UwZ040TzhJa09VSkJiQ1JnbDc5?=
+ =?utf-8?B?d1NmSWxhTE83Q1dMUTFwTyt0NXptRlJjSGJrZXVxTjMwOFViY01JZ3JSUks5?=
+ =?utf-8?Q?wVQso+L6+vD0QfnbPohk3GCfUPupdzo7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NWZmMGs4eG9pOUlOdnBSelV1OGJOYU5URG9aMGE4Sm1sb1ByeHZjUFNOMWM1?=
+ =?utf-8?B?RDJXazJxcXhOZklIZUluNytoR0VjRFdnS1BoVE5nVXRiKytwbmFFMEVHeDVt?=
+ =?utf-8?B?Qk8vL3hnalZaakh3bUUrMG53cHZsZ0ZaemVINDU0RjV4VEJKVU9WVWdUYVk2?=
+ =?utf-8?B?U2ZZc2w5TzJaYkJvRE1HNllYbUkrTFhVMnAvSFN3b1Bucjc5TzdncXBibTRs?=
+ =?utf-8?B?cERWZ2xpVDErS1R2SndJMDJvQmRMSUFuTHlCV1hhWmh4RTdKTTZ0eFNFZ01l?=
+ =?utf-8?B?WDZUekZ4NUs0VWNNS2hac1FaRk52bEJZMkR6bHhaOXlaMzVzS1Y5RlZITG9h?=
+ =?utf-8?B?U1BjV0s2bjJjUUozVnJWWFZPK0h1dTlibW5SVnRHNU8ycjV5Z2JvZHZHMDhq?=
+ =?utf-8?B?VzhsRmlpZWJDcEt5VGQ4RFNJeVdNTnZsRm4rdmJSR1hjaVMwb3Jqcm1WTTRo?=
+ =?utf-8?B?MFJ3YlQrcnZzWWMzQkprU2c2U3R3U21VNVBvQkI3MUpmbTdVSlhFQUl1ZFRx?=
+ =?utf-8?B?TXlkVGw1NnFSNS9DNnVLaDhzSEV2MUZrUnpKMVdlNXpwbGdVcmtDWkZBOGFl?=
+ =?utf-8?B?bEJUSUEzMS9IQ3VwWlRHbmpzNmVSMlpTUFMyMHVCUnRQSXU3SmdpZmNBUzli?=
+ =?utf-8?B?WlR3emZ4NTI1WHZvZ0RTZE0wc1hnY29FODdSVkJqdEVFazQxSURCS1U2MGxz?=
+ =?utf-8?B?UnIzZ25HNWVSNUNsRjJLZXlEODlTZjhMOFBuYVVMRTlBMUk2YjhCWDY2Y0JN?=
+ =?utf-8?B?Vi9udjBzcUFSTHJVUEIza0FFaWRlV0hoS2JJcXNNdDYwZkdIQmlNaGNyendR?=
+ =?utf-8?B?S2VEOVRXS1JhWGx0RjJURGxJV0s3R1FPM2oxZGlRTWlvZEtpUE83WlF1WHNk?=
+ =?utf-8?B?VUVPT05JdGZ6cXhVMkphcGt0a1I3eWlWa1p1NU9LK1NDUDZ1K2o2bWszODd3?=
+ =?utf-8?B?ek83LzdSR09ENFVKZVBNVFhGTDIwS0I0c2RKbi9aSURUTVJQZnB1cjRwNHBv?=
+ =?utf-8?B?VlBIaWpUQS9zNnJiVnpKRGQ5T1FrVFgxbFcwbW83UU5IU3RML0pHc005WlNy?=
+ =?utf-8?B?SVVtVUV0S3NrQkhGSlp5cjR4ZVZCS0ZlbmZydUdHbmdHZGZVVlNnV01NVUxQ?=
+ =?utf-8?B?bGlqc0hiMUR2cXNESk11TGpXUm5nM1d6U050ZGN5MVNQaWp1NElxcncxK2ti?=
+ =?utf-8?B?dTRjQUFmdzMyNFlRQ1pYYTBldkdSbnV0YWFsdFNCdGIvcVBtYVBZc2V5ditw?=
+ =?utf-8?B?emI4SWNUR2psR0pOZ0ZtK2lEdkJBZkpIZnNaQW5UNVZpdWhDRjBYUVdpaXdD?=
+ =?utf-8?B?VlFTeUlEaUxpT3p1cXM1d0NWNkN3cFc2OUozZkNZYjJKMzg3VktYNjdEb21z?=
+ =?utf-8?B?TGFpZmFDOEthYWJJa2JrZ1VIQUY3S1hHUDRYTHBNN1gyRzhsL256VHFRVllv?=
+ =?utf-8?B?WHYyL3BrZVAyT2FodU5QWmhxSEMzMndOVVZlelRpRzhpVXZuaityWVkwS2Nv?=
+ =?utf-8?B?UmtyU2JmdEt2Z2xrUVd2a3Q2dVBLTmZtR0xZc09vOXROY3dkcDNkRm41Nlhk?=
+ =?utf-8?B?ZTY1L2NnSzdpcU4vOEZvY1MvM2FhMG5RR3U4cmUvT3o1ZWV0TElyNHBQUUR0?=
+ =?utf-8?B?SThWdG1QdE10WXZzdW9DUy8xa2g4cXZJN0UzK1Fpd1o0WkVZaFBUK1VZd0l2?=
+ =?utf-8?B?V0JiUHFPaXN0Q0k1NVNNNE1MYlRseUM4d3Mvd25GMEcvMVovVHN1ODQ5UHNw?=
+ =?utf-8?B?YncrVmp5N1Y5N09XNUZKVEVQdFcxZ0xVMTZDMEFuQnBzTFpEMHg0ak1ibVVG?=
+ =?utf-8?B?RVdBNmQ3MCt5b0R0bXFDQ0FjMXRVRmZvdzNZVitsTXFnOGNTdXQ4MG44N0lL?=
+ =?utf-8?B?b2F3SXVRdXZjaFhHMWFqSmI5OGV4Tm5ZTWpUZHozNDcycEs1dUN2YUhoYTkr?=
+ =?utf-8?B?R2hRUWhONk5BMldzSWIyd0hlSG1NU0pISmU4OHU0K2pBeGphUmRXSDYzb2cy?=
+ =?utf-8?B?c2hqRGJMTXNneVduaEo3U3MxT05meERxcEFXYk9kU3QrN2dFVkZCU2VLUVZZ?=
+ =?utf-8?B?Sm5sUjFwR2FQSWU4eFdPbmhLaktpb3ZZMm10VW5SLytTcGtnNVhsaCtoMHhO?=
+ =?utf-8?B?UGJSMTlnbitUaE9DUTR0RkFscGNuclM0UHltT29TeW5laEc2eTMvb3VBdzQr?=
+ =?utf-8?Q?TjMxFF7sWZ3TrLyAKivBo7xYvwZdYopNes1hXY6cS0sw?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: babef420-ec45-4030-7f06-08de262a2dd1
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 22:39:33.4103
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Rkvf5khGMI6ZNlh/FEh7PocjpvDqzLLuX+5xy8OrU74+kEmhf6KoBmeM+TH2qalyMjMCkVk/aMH039vLRLIFCA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB9014
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 054D140004
+X-Stat-Signature: iszfjcty4w5mnk446r6sox3rg648s3gc
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6466212000F
-X-Stat-Signature: ijdapp56zci89qx5mspw6kq1p9p15hzs
-X-HE-Tag: 1763417879-486418
-X-HE-Meta: U2FsdGVkX1/en0GAYSUk0ozhVFVuTwsK1paKbhvm2CTjc9HFnGmZ2mt6PeIU1zGp2ykS6Nx316xd9Lc9BY+rOZg4H5rQ+lIH025u5aK5d8Rtv6zAD5/MBvkAf/zP89wswXnyoUbpsG76Fgf6GytbXM46+YdERwDbhLTncCweusZQ+QQmHHngb4FQKkHcjjM4R8vJIh+13ayawQ3MwRF8y2x481sAxX7UUg77GooVayX34g8VB11pme5XVnttL7ZzbCbCz5J7QDsKRBni6Ol1VrS8YNGkxzDyVc9cNA3UNDJz/RSk72RoyF6T4IYckxdewuqkIPE3qkJ/Z8dG3yskD4nfVA4tQLoG3p1SP6V10ZR8+qcLqw5sfuHcXVVh0M9vxV2H6ZRjY/emIPzsrKMTtmDKy3VPv1bptj7MoTmKbCUNmUL3Zk0rAT3dxtMLEU75sjBkwKODZfRlJ0f1w4Wz/AWtFp7bH/siT3PXFNwvErGd3LXeZg6vMp4/3c/O8ejrDFXVGn8/XNe1hiW1AU81Fw9/JBiQV9UHnDJtFicwoXJp18SIU9VMWudWSXc1QxnSkxTk+1y86Jvm4GJyRzL/nwUy+oDIwoZAI3EIvp/jAZL9iVu84/cSKgiMIeTXBma7t105B21j8dti3lqXpy1ERQo3VIn7KYEys5Gv0YulB/6QqgUS2SgSmvTtBEZ92HQw3sbQDQ06Y9NVEsbUYvy3MyJ8YzugWwkZ1TZ3tEl70dU7+lXAMyyZQ9c05iBRxgBU5/pcQugwZ2mbK7QyICMewSjyOuGngZjl3/JC5e+0gopLyjxwf6+qfABY16sXC4VMQ1vBRpRR34KvDAs9de28wosYF+wniizxnNmzuBMHjMkhPS9Kalb1L15HeHy0Qo8AP6R+QQXIfwpVHAk09cs9l1DapAYMdmtLBFpTsA6Y+qSsHPwph7I/KoQ3J/R3edWnlSLkVwYNI3hL9Q5Nz6x
- SfWZ/uoi
- 1xp3tKfZIqmzJu8zBeEPv8GkWANYhE8mphzaRf25Q7U/7L4DCJqDzLiwGf8Y4htZbbIxi4ZqwjzofI4VrLatptWRDpropdJKLJPKfW8viz/NwXW2zwsVFoGAutCuyy9szMk5T1N4P6LTeFhCaRs5sFxaVqfYhXSfUWMun2hPXixI8uCdCvMMmGdy7tGaQ/pLHuZhCwZ67zAhp3YKUp++MBuQ5aoBOII6Yau0SxPWMGEjk9sXDXqjVlnVtyGQfCPwa5vukvTeTvqVvNAcil9wwxBSGBRPVWYQLg+VjU/XsCf/JWqAapyvqXaXyV1FV3u+vD0Zl63OK+Bu+2i8=
+X-HE-Tag: 1763419180-204485
+X-HE-Meta: U2FsdGVkX18DGBsa9YNL1GGANGX6uVLK+LNXpdBPytC0jtEsm/ReEZ8c33zCYzwkBI05SQChL1AAwB0jn/7RUSPQywMTs5XEPvrp6yRVymCcjoUd3DirDXX4HjCev+HgDTZhEP0gubCU6iNJi6nM8tyMOy2rHAWhyhMVF1wJvMaGc5S0jXyLhh+VFFrjBkuW9UrCiQc9q/GYXoL8v2NwUimTiMd3rKVrhiUXa2wvEBdM7ecAyVwbkq09WR9vrmlXqzhR80jHFgsIEopQt/2c4VrOBfDyo26N+dPv8NWvdc0VvTty81yDRg0PBu2OAVZHMcObYMDwy6o1/D6Hv5VjxYjxyphppyhBIGQaXC/rnTs6kbwq2gSW+o/Ek2XZ+3GMhCiMKmfCcSIz7/0wUXWi4wcLCD/1DLVkzXvErgGba8FbiHhJZrxpkvbwQxVk4dLL7xweaNAdQe9OQXc+EaldD3CIhj68OzJ4XPcCTvDGAipqQ76kR0DqeOtIeBMh32r3al2S/GBPf6YKM0EE+FaizwRYAOPfwzl2aT11IiVXYAWqSiqHsyqnjk9CjHSNFT1v+mwdso2sbGXNkZULctjbEngCX51cMl9EGo3L2IBpS8bWoB/K6VhY5EldZ9fl8WS9rk+mmDbc3Mz8VoK7BM+y5tqAiRmrBA3S4TwClG8FbdtPAGKUG8RhdKhea3TnuPFxAb+qLvPK9qjdi0UhGNvh4mQqTJE2wSoJ78ILxS/fWyqRLvVI7wnrdpStC2aLqjA97/Logf4thdmGsEWH4bSvtDcnK+Jf0SpBAv32zAG0oDZAbzZM73TOPHiOwY+nwALjI0lW3H8mfipPC6yJGcY4l74dtgxyEdSTJZ2fpMJIRVPlAA7zgeHh0l9+P9cq2xX2fIfPkScMtJ5gYLdKA626TrRvgZiWw2BZxNNnxuA256ZH5Dv5TXaraDcFwm/RlVC5cjqLT9s8S2sPEQf8w/P
+ OMC9yUdR
+ e3JPT5nTRnjAFjLTXpUnkWAL4hNOGmrslxB39
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,145 +218,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 9:24=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
-:
->
-> On Sat, 15 Nov 2025 07:13:49 -0800 Chris Li <chrisl@kernel.org> wrote:
-> > Thank you for your interest. Please keep in mind that this patch
-> > series is RFC. I suspect the current series will go through a lot of
-> > overhaul before it gets merged in. I predict the end result will
-> > likely have less than half of the code resemble what it is in the
-> > series right  now.
->
-> Sure, I belive this work will greatly evolve :)
+On 11/17/25 23:58, David Hildenbrand (Red Hat) wrote:
+> On 15.11.25 01:28, Balbir Singh wrote:
+>> Follow the pattern used in remove_migration_pte() in
+>> remove_migration_pmd(). Process the migration entries and if the entry
+>> type is device private, override the pmde with a device private entry
+>> and set the soft dirty and uffd_wp bits with the pmd_swp_mksoft_dirty
+>> and pmd_swp_mkuffd_wp
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+>> Cc: Rakie Kim <rakie.kim@sk.com>
+>> Cc: Byungchul Park <byungchul@sk.com>
+>> Cc: Gregory Price <gourry@gourry.net>
+>> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+>> Cc: Alistair Popple <apopple@nvidia.com>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>> Cc: Nico Pache <npache@redhat.com>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: Dev Jain <dev.jain@arm.com>
+>> Cc: Barry Song <baohua@kernel.org>
+>> Cc: Lyude Paul <lyude@redhat.com>
+>> Cc: Danilo Krummrich <dakr@kernel.org>
+>> Cc: David Airlie <airlied@gmail.com>
+>> Cc: Simona Vetter <simona@ffwll.ch>
+>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>
+>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>> ---
+>> This fixup should be squashed into the patch "mm/rmap: extend rmap and
+>> migration support" of mm/mm-unstable
+>>
+>>   mm/huge_memory.c | 27 +++++++++++++++++----------
+>>   1 file changed, 17 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 9dda8c48daca..50ba458efcab 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -4698,16 +4698,6 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+>>       folio_get(folio);
+>>       pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
+>>   -    if (folio_is_device_private(folio)) {
+>> -        if (pmd_write(pmde))
+>> -            entry = make_writable_device_private_entry(
+>> -                            page_to_pfn(new));
+>> -        else
+>> -            entry = make_readable_device_private_entry(
+>> -                            page_to_pfn(new));
+>> -        pmde = swp_entry_to_pmd(entry);
+>> -    }
+>> -
+>>       if (pmd_swp_soft_dirty(*pvmw->pmd))
+>>           pmde = pmd_mksoft_dirty(pmde);
+>>       if (is_writable_migration_entry(entry))
+>> @@ -4720,6 +4710,23 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+>>       if (folio_test_dirty(folio) && is_migration_entry_dirty(entry))
+>>           pmde = pmd_mkdirty(pmde);
+>>   +    if (folio_is_device_private(folio)) {
+>> +        swp_entry_t entry;
+> 
+> It's a bit nasty to have the same variable shadowed here.
+> 
+> We could reuse the existing entry by handling the code more similar to remove_migration_pte(): determine RMAP_EXCLUSIVE earlier.
+> 
+>> +
+>> +        if (pmd_write(pmde))
+>> +            entry = make_writable_device_private_entry(
+>> +                            page_to_pfn(new));
+>> +        else
+>> +            entry = make_readable_device_private_entry(
+>> +                            page_to_pfn(new));
+>> +        pmde = swp_entry_to_pmd(entry);
+>> +
+>> +        if (pmd_swp_soft_dirty(*pvmw->pmd))
+>> +            pmde = pmd_swp_mksoft_dirty(pmde);
+>> +        if (pmd_swp_uffd_wp(*pvmw->pmd))
+>> +            pmde = pmd_swp_mkuffd_wp(pmde);
+>> +    }
+>> +
+>>       if (folio_test_anon(folio)) {
+>>           rmap_t rmap_flags = RMAP_NONE;
+>>   
+> 
+> I guess at some point we could separate both parts completely (no need to do all this work on pmdb before the folio_is_device_private(folio) check, so this could be
+> 
+> if (folio_is_device_private(folio)) {
+>     ...
+> } else {
+>     entry = pmd_to_swp_entry(*pvmw->pmd);
+>     folio_get(folio);
+>     ...
+> }
+> 
+> That is something for another day though, and remove_migration_pte() should be cleaned up then as well.
+> 
 
-Yes, we can use any eyes that can help to review or spot bugs.
+Agreed and Thanks for the review!
 
-> > > Nevertheless, I'm curious if there is simpler and more flexible ways =
-to achieve
-> > > the goal (control of swap device to use).  For example, extending exi=
-sting
-> > Simplicity is one of my primary design principles. The current design
-> > is close to the simplest within the design constraints.
->
-> I agree the concept is very simple.  But, I was thinking there _could_ be
-> complexity for its implementation and required changes to existing code.
-> Especially I'm curious about how the control logic for tiers maangement w=
-ould
-> be implemented in a simple but optimum and flexible way.  Hence I was laz=
-ily
-> thinking what if we just let users make the control.
-
-The selection of the swap device will be at the swap allocator. The
-good news is that we just rewrite the whole swap allocator so it is an
-easier code base to work with for us than the previous swap allocator.
-I haven't imagined how to implement swap file selection on the
-previous allocator, I am just glad that I don't need to worry about
-it.
-
-Some feedback on the madvise API that selects one specific device.
-That might sound simple, because you only need to remember one swap
-file. However, the less than ideal part is that, you are pinned to one
-swap file, if that swap file is full, you are stuck. If that swap file
-has been swapoff, you are stuck.
-
-I believe that allowing selection of a tier class, e.g. a QoS aspect
-of the swap latency expectation, is better fit what the user really
-wants to do. So I see selecting swapfile vs swap tier is a separate
-issue of how to select the swap device (madvise vs memory.swap.tiers).
-Your argument is that selecting a tier is more complex than selecting
-a swap file directly. I agree from an implementation point of view.
-However the tiers offer better flexibility and free users from the
-swapfile pinning. e.g. round robin on a few swap files of the same
-tier is better than pinning to one swap file. That has been proven
-from Baoquan's test benchmark.
-
-Another feedback is that user space isn't the primary one to perform
-swap out by madivse PAGEOUT. A lot of swap happens due to the cgroup
-memory usage hitting the memory cgroup limit, which triggers the swap
-out from the memory cgroup that hit the limit. That is an existing
-usage case and we have a need to select which swap file anyway. If we
-extend the madvise for per swapfile selection, that is a question that
-must have an answer for native swap out (by the kernel not madvise)
-anyway.  I can see  the user space wants to set the POLICY about a VMA
-if it ever gets swapped out, what speed of swap file it goes to. That
-is a follow up after we have the swapfile selection at the memory
-cgroup level.
-
-> I'm not saying tiers approach's control part implementation will, or is,
-> complex or suboptimum.  I didn't read this series thoroughly yet.
->
-> Even if it is at the moment, as you pointed out, I believe it will evolve=
- to a
-> simple and optimum one.  That's why I am willing to try to get time for r=
-eading
-> this series and learn from it, and contribute back to the evolution if I =
-find
-> something :)
->
-> >
-> > > proactive pageout features, such as memory.reclaim, MADV_PAGEOUT or
-> > > DAMOS_PAGEOUT, to let users specify the swap device to use.  Doing su=
-ch
-> >
-> > In my mind that is a later phase. No, per VMA swapfile is not simpler
-> > to use, nor is the API simpler to code. There are much more VMA than
-> > memcg in the system, no even the same magnitude. It is a higher burden
-> > for both user space and kernel to maintain all the per VMA mapping.
-> > The VMA and mmap path is much more complex to hack. Doing it on the
-> > memcg level as the first step is the right approach.
-> >
-> > > extension for MADV_PAGEOUT may be challenging, but it might be doable=
- for
-> > > memory.reclaim and DAMOS_PAGEOUT.  Have you considered this kind of o=
-ptions?
-> >
-> > Yes, as YoungJun points out, that has been considered here, but in a
-> > later phase. Borrow the link in his email here:
-> > https://lore.kernel.org/linux-mm/CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T=
-7GFsm9VDr2e_g@mail.gmail.com/
->
-> Thank you for kindly sharing your opinion and previous discussion!  I
-> understand you believe sub-cgroup (e.g., vma level) control of swap tiers=
- can
-> be useful, but there is no expected use case, and you concern about its
-> complexity in terms of implementation and interface.  That all makes sens=
-e to
-> me.
-
-There is some usage request from Android wanting to protect some VMA
-never getting swapped into slower tiers. Otherwise it can cause
-jankiness. Still I consider the cgroup swap file selection is a more
-common one.
-
-> Nonetheless, I'm not saying about sub-cgroup control.  As I also replied =
-[1] to
-> Youngjun, memory.reclaim and DAMOS_PAGEOUT based extension would work in =
-cgroup
-> level.  And to my humble perspective, doing the extension could be doable=
-, at
-> least for DAMOS_PAGEOUT.
-
-I would do it one thing at a time and start from the mem cgroup level
-swap file selection e.g. "memory.swap.tiers". However, if you are
-passionate about VMA level swap file selection, please feel free to
-submit patches for it.
-
-> Hmm, I feel like my mail might be read like I'm suggesting you to use
-> DAMOS_PAGEOUT.  The decision is yours and I will respect it, of course.  =
-I'm
-> saying this though, because I am uncautiously but definitely biased as DA=
-MON
-> maintainer. ;)  Again, the decision is yours and I will respect it.
->
-> [1] https://lore.kernel.org/20251115165637.82966-1-sj@kernel.org
-
-Sorry I haven't read much about the DAMOS_PAGEOUT yet. After reading
-the above thread, I still don't feel I have a good sense of
-DAMOS_PAGEOUT. Who is the actual user that requested that feature and
-what is the typical usage work flow and life cycle? BTW, I am still
-considering the per VMA swap policy should happen after the
-memory.swap.tiers given my current understanding.
-
-Chris
+Balbir
 
