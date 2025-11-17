@@ -4,109 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89345CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 16:34:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 997A5CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 16:42:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F7DE8E001C; Mon, 17 Nov 2025 11:34:11 -0500 (EST)
+	id EE81F6B0008; Mon, 17 Nov 2025 11:41:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D04A8E0002; Mon, 17 Nov 2025 11:34:11 -0500 (EST)
+	id E98706B000C; Mon, 17 Nov 2025 11:41:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E5378E001C; Mon, 17 Nov 2025 11:34:11 -0500 (EST)
+	id D877F6B000D; Mon, 17 Nov 2025 11:41:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 79D358E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:34:11 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F3991A01E4
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:34:11 +0000 (UTC)
-X-FDA: 84120646302.16.258E253
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3C7ABC0016
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:34:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ym2TuohY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3f04baQkKCNg4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3f04baQkKCNg4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763397249; a=rsa-sha256;
-	cv=none;
-	b=uwqNzaJ+SVWXBuarhej6Bx+SY6KUjlaeeuB5IeoPTd9KXSbC1cB2W/p5YQFOp2zpd7qJwg
-	sq8DQC27xHrrq9oNot7acBm2CcQtcYeF0HAkSZSN0x8IR+bb6fOhsHgZRWgtnWAvtFQPeU
-	WW3MrcEMl6QtIC+b+3qZXE1hVs8opwQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ym2TuohY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3f04baQkKCNg4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3f04baQkKCNg4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C45DB6B0008
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:41:59 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7CB278726D
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:41:59 +0000 (UTC)
+X-FDA: 84120665958.05.B43E5F6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B815E100002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:41:57 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="BruVpwO/";
+	spf=pass (imf05.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763397249;
+	s=arc-20220608; t=1763397717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dnt6AMffwSDJMbW+9hMVzLqsThvI95BECbEYPsOm0UQ=;
-	b=UkFbedsMgy+ohLQ609cF2/wMQh6utNeYdah2hh54Vh0Zax6Yx6SFjLjbyRmKt0QSYNnAxn
-	q5q9QjlmSFkPFTRZK3bB9N89wtTwGClorTrizb7Aduwg7czICLvDEAlysMH9oF5BrXlUF7
-	04et5Pz4CQAVacTT33sYgMbeJVkBFto=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-429c5da68e5so2564438f8f.1
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 08:34:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763397247; x=1764002047; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dnt6AMffwSDJMbW+9hMVzLqsThvI95BECbEYPsOm0UQ=;
-        b=Ym2TuohYYSgR9/AEAcKDQcO18veod58/f5x6gYODp/XzABbF8L4Ol8zJXUsyHfwfit
-         EkqfZ1sFTygAMLtQ/1Y4iNmftcjgQweCS9q8LfEY72juUyS6HSfPjxke9xO9dbB4cvPl
-         vVeCh3JrzKnVinffux6BMeRQsf6a6rrE+X9x4ds9etbEDycOBwnuN22/AKsKYA0oG0Cy
-         vIV1f/bLE5TmY/L9xSw6Bya1dpOEHpvJfosD2fKqh9s2dtKwIYkdZuZlhlLbjDvpE1DV
-         VmAshGzM8sA9MPaEvg7pky3Nnbj0rwOG24Y+32SbgO4zghf4aicnZVONtGBwzdFX+X4V
-         VqmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763397247; x=1764002047;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dnt6AMffwSDJMbW+9hMVzLqsThvI95BECbEYPsOm0UQ=;
-        b=QiuoL007c8P/IpM83jo6PlRaoJ3K7oMzyeFr0KXO2CPxFNJRqVgw2JYNMn6HR+20BD
-         fs3gSzMG66OOKDtHMNonl/EmSIvBzkPVzOzt2tPq5sQqLRZ6j6UZvmoegCJcrUIl2YBJ
-         tGG1TmfgX1KNcAl9uqIhRETclsGQkCrpvLgf47zRaHdU/KV0wCj9v70RpzgmFoyLEqlr
-         slpHaRvVyMNLedvJIvXs3+R4Q2gDFZKKU7/qV3QqqQU6AdpkJeXYXyJUe61OP5dSr5vz
-         RxRhOohYfwuYxuToRHplBpWw5O5a/1q9WxFe2Za4Yo+9E28+15LRUjPWWkk+i+VgydNs
-         +1CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpllz73YDt9/O9DE3gAzlFf4GIuaH3CS6Y+c1Y5Enuq0CJU6TMMNR8KC3vLE5NQhaKBLzX5u++bw==@kvack.org
-X-Gm-Message-State: AOJu0YzdwWBO3jKgvEyFv7jtqfZrymCq+t1vUEFK9m+p8Vnn9DDhop2F
-	KTyP8hsCwE9TlTL+7qYvKE4b3aNR0M+siatgVg+qWKUazR59BpU3y2T+iFUt6vqxb1XRfzS7EnW
-	yM3IhjUkcoRCdJR0WbA==
-X-Google-Smtp-Source: AGHT+IGf3SSTcSDNX35lGHyTDeVfIkh75oyqd6PvBpSYTmqxSNGCpLyaYAzVUgwUDnODNmGVYD8Jy8eTO5xF54g=
-X-Received: from wrbeh10.prod.google.com ([2002:a05:6000:410a:b0:42b:33e5:ebb6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2911:b0:429:cc35:7032 with SMTP id ffacd0b85a97d-42b52821778mr17645835f8f.23.1763397247461;
- Mon, 17 Nov 2025 08:34:07 -0800 (PST)
-Date: Mon, 17 Nov 2025 16:34:06 +0000
-In-Reply-To: <8A5C6836-992B-477A-A77C-EE0736166552@collabora.com>
-Mime-Version: 1.0
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com> <8A5C6836-992B-477A-A77C-EE0736166552@collabora.com>
-Message-ID: <aRtOfhNjlCavCTjU@google.com>
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+	bh=6j7NromG03GxCB910sPIHN5CFeKS4e2hh8QlioN0jn0=;
+	b=R3RbMKP8/kYl7KlFNgT3xeEsYa3+wbMIZBvvKrW8BcDbtxHHMNcUvih6R7ScyF7kM+6Hn6
+	QmOXxnIIfmw5BQad7qvlj9OUQFKlJ4I1A1N3Y2wXLWn3VhOEHP9IVh87Nm3YMUgwStRK+i
+	dg+fXidsi7KRTVB2kWQXBdZqwhFwhjk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763397717; a=rsa-sha256;
+	cv=none;
+	b=8kcycpQE9mTCq4zSX2xkMxOpDI1UyP9MxI6zhO+URbFDwyQ2HndivBpvXqwVzkKtGcpNAN
+	ynPYeSQ54qd/RBdwu9pQCKfROT9uUGfDL1TqWgXqImb3fiWgE+4If6V5+bxq8hRjPy7moe
+	d7bMNZCAXbzV3I4rxYpbQ2om6ZWjx/k=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="BruVpwO/";
+	spf=pass (imf05.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 73CD0443E2;
+	Mon, 17 Nov 2025 16:41:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E29C4CEF1;
+	Mon, 17 Nov 2025 16:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763397716;
+	bh=dZ251Jd6bLrB7WwBSwgnKezSZ9PfbBw2z/HUXlRFHck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BruVpwO/difzdwaljwe0afX7jV92ylBmozwdxiXCjvaF6TEIEG5ryBKnybz3fiGT5
+	 I1OH4hkoVayKGLETjl491dwOdYOavboux+e7EUqEou8Jg8sYUgmfKJ/FmilBlMrS3D
+	 gFGjNykzMWImAvhr3OGZ6uXUaGAEN8F4yY+UfU3uS4JHUF2fO8+rcCnLycChGRwdei
+	 u/Ms5MCTO7G36cjNebz8mxWh23JNDqdeNVcacbdpJ26dofOzKHwtIT8k2JzXtdXWco
+	 REQtZBARylVp5ozlrK1R6uXUWIptSeqXw7L682LwSLz46BP9qPHYv4P9l68nYe0baS
+	 4ri6o4cLaXURg==
+Date: Mon, 17 Nov 2025 08:41:55 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org,
+	shakeel.butt@linux.dev, eddyz87@gmail.com, andrii@kernel.org,
+	ast@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in
+ do_read_cache_folio()
+Message-ID: <20251117164155.GB196362@frogsfrogsfrogs>
+References: <20251114193729.251892-1-ssranevjti@gmail.com>
+ <aReUv1kVACh3UKv-@casper.infradead.org>
+ <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
+ <aRpQ7LTZDP-Xz-Sr@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aRpQ7LTZDP-Xz-Sr@casper.infradead.org>
+X-Stat-Signature: eb7x8wgrsc5wjnrrbipyq98kycc3agr1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3C7ABC0016
-X-Stat-Signature: 5kucdcuqr9dy9axmg188i4arigawgf1g
-X-HE-Tag: 1763397248-145041
-X-HE-Meta: U2FsdGVkX1977WLiUU+ZQf1k29bAqMGBP+Ae7LrmBK7n3B+LnGEf1/HJFgUJS2Xekn//zan7yJO139c2HHKjuN6/BSxGHey7wkBKwMyZl0v5pWfYrdEyEO+VwPKZm8h/JU90p+1eVkC0YeUhk190KTb4ohM6+eBxvviEdor9WvUYJsj2odZqUSbqC0whp91SD1NMc+Md1VIv18aTMy4aq/PkhmXX3uyeppHwKYpoWuvxRqvEXkNt9+miJBMDxtRWhc957IqbiWFFrK/6+pmfZ4e8Ujp+DYtonoBkCG/xT38a4Mstb79/9tS8OwK9wEIeFdPVtDs4cAiyNsFxniwxxnOW6Li6zHskbLNlXcUW/CTDst9KjaNbsfWFRX7FN5e0rW/PMS9p+SPRMppZOpmk0La5PKUb8x4vWe16YWY5hJHi86MEofRPwdw/QxKTBlNuieD+RYGjhvFBfDlccoaFsUePZsfrpcgiOxCrRZ/S36yxkg0tnzTu5yyCW+Suq1d9AziT8thghJ2rcKATUOpeFQgC3rt1E77+iUTb/1VP+gStwCCchnHUvr5lGUgx/pHr5hSeYMbhTp2vcIRJFBw+aAXScY3DrVCN9Vk3lNE5DRIvhEFkSYS3zEqJlJH5VF3n1j3wfA6Vh+9HwHo04rHtlR1hvTGypf8m1mpa77gsm6i7IYbIH3QbQu+c0kRgQuqEXmfTcfuaMYxoNy8JYg0KCOM5BCLEDgetiCO7L3w1aQlUZ0EtNqvQU3YYnK4V58bl+PlOC7RSsIamuHfV8r9SwatuzdZIi5Bd9GqiL4nuIUd9tkCmN7um4EjLiSHqSazjbejJsgGnNt8rqQtNeuKHF/xruBUfDOojNdejtnOQKjWnpUM9ugg6gEwHqD/ipCHYbr5KOhMMx160SenTw8/Mhw6yvAba7rPjIdXRf7h0zG4QbN7w4Ir9eSRLOqGVR8yBh7A2h+Ro1WiubZkNISe
- zsYmSQ5X
- 2ilbieyx1yzQ6WDYDOBMeFyrNNsP14MHuv1erm2qib51xAxPXpoBRMylZXe7VyPnK0BCrDLTsb0fyLJOE+cBO3EMijZiNWYBsw9Q11Li2kmKP7S0ekseEmUvElIHv2Jlvg1SaEt7bcKrqKnchiWWBUiFgHi0jUUiHqb8Of6qo2oK0f0dwCQlMJFF50fogCD48RYiBZ5YVLWFB1wPCrIpIEqXrovSnZ8a/WAX75eL6NEdtfk8ZfDa/eQuTq2/7rv4RoTa7J2plq11mKv+XlBDOPS6lS3BpD9PNDrPzsSdDlKGL+HpcVIssDMWtCRuXjGuRvzwImJXoZ373TYwt/4pyCVVoXUnXlRN0TVwE1PQUSJ5BiOANk9L080lPPECB+BlNpAp6ZaWEk1eYxVLPUnD5eChZpGhT6usdQc77/ORr3HktWW9yXCiQnhq2FGXnbRR5qzI/GHB/KyIESJul0Uyfx9yi7RF8tVN33wlSOFSmXuXRoxsbCZCDYhNedDLshTkNT+raGQm3GAFle8jqL7BikrpKL0NbWoXepwzfXZr9mb2Y0EIA0ILdRPdoSXGYlQG2UOyEvB/dEsiwIxgwF085gutf2/ovliIHhvNLU80Ie0X7cMu4mJyLNx5g+b5XHYbv2qgr7e/dYaB6G7o0J/Bk8YnoP82SKqh66IudL2h5B9e5zFH8pGf2yZJ0Ng==
+X-Rspamd-Queue-Id: B815E100002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763397717-914204
+X-HE-Meta: U2FsdGVkX1/oWmg1jmUFbyZFkf9rKy3D0hpfHLlHUjQNRgr7yoHxVzBc3WLPwTeyXRNxZPEyBTSrxlaPxilz/mS92UoD/2Y91KXEWnvnO6IBlEcra9yNGXfTjQgb/mDUmR70KTjGYWkIcYbRYttLkwtA7thlZD7pE8mli57ddiExW65CF6AUi+Zu400xgzg5TwGrtpu5EBR2F+xzDvb0AXudRxiqAvsrLHcRrJgoIkiCW0LYb/zj5/DYpj2WMKoU0fcGvJLgyo0M+yY4NPIFXueb8oRDDCobQ77/7IbGn+eADvY2irviNfOOo1ti6ELZYbpbe+RclR6Z5CkRtENIAJ7u7rclDNFvY5RjptPlFFLo/ZIgYbxDfAMEOGZyMtHJ4GOiev39bl3XsPIhOWJRzKRO7t47lFTlIGudD1Q3VfaKI3Ft+Rx/MzaRJ71F4ubu9x2mbUJBv8Cn1b94Nl51enZKPJl/1FRyWXx8KoavHeDQrY6B+fMaF/j2zTmLibmYriNWb8+yQFs6UOKff9rB/YUI+YTIV2TgYZhkftVENz0uoZYSR9CPJhSUknTa5MF7pdY8Kv1GH9Ur/dQtpeSLe9Y8FM51gy0hQERGSib7Kner6hbpeD4YrO7Y+CHVRHqFZ0OCKx0iGNnLICY7p6Sn9apif/o/bl3FLPgW4S7BrCj+sBYsM2bVvqBp3lB1+RclbILz8gZ3CSIofHU+8H+6Y8qvIPRD4dh2FZk/TvBxossNZd5gdAuPKLAyidtbzBPxBn7jTCLZkJi+Gp5bTnVH7ownQFL8/OKlprBwDwhl7Bzq0bpw55Jgm3f2iGr/Q8kL5C0RsP5Q3tZTc8GHw/slhh8uUe29r+VKF7XPiHBAhsnxOyiHQlqJeV30BgK2rpfEPrjLpi/RLZhuWl+WhY3QaN8Xps+/33H2JQr87J2JzTClT/LwPHcB3glxZ+qM1qD330xeUWC4fUrzjhqhGzT
+ AQTPk/jb
+ 6RYDNvQb/H16+06M4OCr+H2bAK0k7ChxRCos4lg9kiD6PpU9atsMrzpkGc/byPliRtAoeEj9Rla0e4lxTaqPieKqDPbiBCjmenE7GI5YjQqsEJccvAMMlhKlshmg6H17lo80f1pkVAMqxoCke1Nu3n1Y9kRunzYA4woc7p11vbZ/HU2Pzi3uvLfxxwxlLHZCCZdbH7kmgv0EzrhoIOF6UvoSyLc6g+nVpHMS/4tuwpJysqM0mDYBKs6AJ/a1PlH5BOrilgnY/g7N6Dn3GmmJafh8pN6RVL1pw13QYhCBGBG18fpiccWcrJ9hUGAnhXPcftHgJQVGlqFn44HGUMMEhwOxqIk2K7bDqw22YIr77enSNVqXgLWef9h9/Geiao5s8OYdVTxcpHKd8ecO+WU0wdXy+7BtJCMCpZepTzhjO+bpPKx5rB2yiHSKVySPHoUPGsq1GTWxVNIX1imTchuY97qb2cALbOnL8miMW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,29 +102,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 12, 2025 at 09:57:09AM -0300, Daniel Almeida wrote:
-> Hi Alice,
+On Sun, Nov 16, 2025 at 10:32:12PM +0000, Matthew Wilcox wrote:
+> First, some process things ;-)
 > 
-> > On 12 Nov 2025, at 07:15, Alice Ryhl <aliceryhl@google.com> wrote:
-> > +    /// Map a physically contiguous range of pages of the same size.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// * This page table must not contain any mapping that overlaps with the mapping created by
-> > +    ///   this call.
+> 1. Thank you for working on this.  Andrii has been ignoring it since
+> August, which is bad.  So thank you for picking it up.
 > 
-> I don't think there is a restriction that forbids you from mapping a region that has already been mapped.
+> 2. Sending a v2 while we're having a discussion is generally a bad idea.
+> It's fine to send a patch as a reply, but going as far as a v2 isn't
+> necessary.  If conversation has died down, then a v2 is definitely
+> warranted, but you and I are still having a discussion ;-)
 > 
-> If A->B->C are adjacent regions, and you try to map A -> C when B->C is already mapped, I think this
-> call will simply return length(A->B).
+> 3. When you do send a v2 (or, now that you've sent a v2, send a v3),
+> do it as a new thread rather then in reply to the v1 thread.  That plays
+> better with the tooling we have like b4 which will pull in all patches
+> in a thread.
+> 
+> With that over with, on to the fun technical stuff.
+> 
+> On Sun, Nov 16, 2025 at 11:13:42AM +0530, SHAURYA RANE wrote:
+> > On Sat, Nov 15, 2025 at 2:14 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > >
+> > > On Sat, Nov 15, 2025 at 01:07:29AM +0530, ssrane_b23@ee.vjti.ac.in wrote:
+> > > > When read_cache_folio() is called with a NULL filler function on a
+> > > > mapping that does not implement read_folio, a NULL pointer
+> > > > dereference occurs in filemap_read_folio().
+> > > >
+> > > > The crash occurs when:
+> > > >
+> > > > build_id_parse() is called on a VMA backed by a file from a
+> > > > filesystem that does not implement ->read_folio() (e.g. procfs,
+> > > > sysfs, or other virtual filesystems).
+> > >
+> > > Not a fan of this approach, to be honest.  This should be caught at
+> > > a higher level.  In __build_id_parse(), there's already a check:
+> > >
+> > >         /* only works for page backed storage  */
+> > >         if (!vma->vm_file)
+> > >                 return -EINVAL;
+> > >
+> > > which is funny because the comment is correct, but the code is not.
+> > > I suspect the right answer is to add right after it:
+> > >
+> > > +       if (vma->vm_file->f_mapping->a_ops == &empty_aops)
+> > > +               return -EINVAL;
+> > >
+> > > Want to test that out?
+> > Thanks for the suggestion.
+> > Checking for
+> >     a_ops == &empty_aops
+> > is not enough. Certain filesystems for example XFS with DAX use
+> > their own a_ops table (not empty_aops) but still do not implement
+> > ->read_folio(). In those cases read_cache_folio() still ends up with
+> > filler = NULL and filemap_read_folio(NULL) crashes.
+> 
+> Ah, right.  I had assumed that the only problem was synthetic
+> filesystems like sysfs and procfs which can't have buildids because
+> buildids only exist in executables.  And neither procfs nor sysfs
+> contain executables.
+> 
+> But DAX is different.  You can absolutely put executables on a DAX
+> filesystem.  So we shouldn't filter out DAX here.  And we definitely
+> shouldn't *silently* fail for DAX.  Otherwise nobody will ever realise
+> that the buildid people just couldn't be bothered to make DAX work.
+> 
+> I don't think it's necessarily all that hard to make buildid work
+> for DAX.  It's probably something like:
+> 
+> 	if (IS_DAX(file_inode(file)))
+> 		kernel_read(file, buf, count, &pos);
+> 
+> but that's just off the top of my head.
 
-I think that such overlapping ranges are not allowed. It triggers a
-warn:
+I wondered why this whole thing opencodes kernel_read, but then I
+noticed zero fstests for it and decid*******************************
+*****.
 
-        } else if (pte) {                                                           
-                /* We require an unmap first */                                 
-                WARN_ON(!(cfg->quirks & IO_PGTABLE_QUIRK_NO_WARN));             
-                return -EEXIST;
+--D
 
-Alice
+> 
+> I really don't want the check for filler being NULL in read_cache_folio().
+> I want it to crash noisily if callers are doing something stupid.
+> 
 
