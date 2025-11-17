@@ -4,85 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2522FCEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E10CCCE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:30:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B4D08E0011; Mon, 17 Nov 2025 13:27:41 -0500 (EST)
+	id 2D8EC8E001A; Mon, 17 Nov 2025 13:30:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78C5D8E0002; Mon, 17 Nov 2025 13:27:41 -0500 (EST)
+	id 289C78E0002; Mon, 17 Nov 2025 13:30:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A2F08E0011; Mon, 17 Nov 2025 13:27:41 -0500 (EST)
+	id 1A0158E001A; Mon, 17 Nov 2025 13:30:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 57FEE8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:27:41 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 03597B6BB9
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:27:40 +0000 (UTC)
-X-FDA: 84120932322.23.1462485
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 13FE51A0007
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:27:38 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=DweFroUb;
-	spf=pass (imf19.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 07BDC8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:30:29 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5CDF12B656
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:30:28 +0000 (UTC)
+X-FDA: 84120939336.07.F4B5A0B
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AF1C5180002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:30:26 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HDW+9SFR;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763404226; a=rsa-sha256;
+	cv=none;
+	b=v1oXIIe7j13gxzhWq0l+0o7BpKMf0R84LqUW/5gtf9v2SejLqDAPM3yl0In/ZZHDC17Rva
+	Azjr0fYjfT0Z7WZCy3CUTzhT8FR7vA9E1D5e07dn72sSzmrAbcPAtWaJ0IiIvD58uIn2Hd
+	AId6vGajVv6qE0A/AP1QEX7sX8rEQHA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HDW+9SFR;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763404059;
+	s=arc-20220608; t=1763404226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GhZV33r+RQPxcvac5lYHFWgWQCGcX9mvWrodK8gvvLc=;
-	b=U8PwQlnfoAthRIFR4sG6fBPSujH6DJIoK7r4tqAv9HHkhEtucbmYnK/6GfFYS8v8FTmdVl
-	w9bnShoCFgL+VNdLSndo/qLOXbO8Uaqz5ESHpSQPoi0SnRuwD7Y2prd5P/iyge/0iO8aZt
-	iJtDk2owRpnt3B0S6gunErSsQEJaPzc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=DweFroUb;
-	spf=pass (imf19.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763404059; a=rsa-sha256;
-	cv=none;
-	b=jgQ26zwk2qCjrNplRaiciV58sNU1Y4uiPevDQBZLgLCN6H5m+w7G3KSJMjqsFZqcGyBogs
-	ceu5U8XyU3hy8Z4B2ne/eTflQAJVpffFmc4RHO18papWcsNbtNVfWEyr11VBGQB1smgIha
-	KQGQaNrBJb/krn1lU6XmIGfLjDasNCs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763404056; x=1763663256;
-	bh=GhZV33r+RQPxcvac5lYHFWgWQCGcX9mvWrodK8gvvLc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=DweFroUb8uo4PK06n5Wl5fGwhojNY7QszNM7iXFG7EjKvb9GqP59Kp/IQVSd6dPIJ
-	 R7xxMHHCAwnSFusvt8q2csjYAnTNj7gxTwpSolPMogoyXE1bKL5u59danvmqUqUSsW
-	 ToI+LrL+YK42ZNbLleg0ht45BloqOHxM4ZxDO28CNG8x1K77NqVV+E0+CSz1W7GJ+E
-	 G9cevD3xQv7zY3CPjIyxwGsAor1t4RqqX8yW0KcAQ8ltvE2rkXrE4mpVgKNS9IWwkW
-	 fCiVglPffu/+YMy7EF5QrRXfFB1LgpMKvFSBFDcfQzPr+6ef7H8a06OPSOjaENJcHG
-	 sBL89XwygkdmQ==
-Date: Mon, 17 Nov 2025 18:27:30 +0000
-To: Alexander Potapenko <glider@google.com>
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
-	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 03/18] kasan: sw_tags: Use arithmetic shift for shadow computation
-Message-ID: <zxn3unp5foytltq6xpzqmsuijaargjuigcu47fdvlhpgyvwfj4@zwcnws34hjfw>
-In-Reply-To: <CAG_fn=XyQ5Mc_ZvsibN4K0r70xfDAkhPqUJgtojVRcgTt-q0WQ@mail.gmail.com>
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <ab71a0af700c8b83b51a7174fb6fd297e9b5f1ee.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=XyQ5Mc_ZvsibN4K0r70xfDAkhPqUJgtojVRcgTt-q0WQ@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 6ca281a9780caa8602cb87e0c0e4e958f247dc5c
+	bh=mo7Fpew4SCWgreWKkBa60zvQOZX9oGrQ6m1RkCiDUC0=;
+	b=2vLy5pzzGe6LT6kLYTtzBg/FCozoJ08ywlIS+XB+fl+jKiuZm+0aZycLaW5LqGYxNg6l+G
+	fHTj0pkpRSzmb7T07Yr+j8N3+5fAS8xYD3KaI4gdg6tNZQcPUbWYuTH/qzEwlCqR7MPBVi
+	36QTqkHa5aFLgikg+4vtzgkRCjBJCeE=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so7010139a12.0
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:30:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763404225; x=1764009025; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mo7Fpew4SCWgreWKkBa60zvQOZX9oGrQ6m1RkCiDUC0=;
+        b=HDW+9SFR9U3dDY3BNfXJq4O5jmuEAA69OWKm53vb8RpILBLDg0ubIPssag7hxZKH29
+         FUxiIKHVx+c+gY6pMAjgem3DdENHphx9JRwfWdtQFENfwxWSun7ZgguXUTT0/ppIZSIr
+         Mj3PojzMkDjBXVY3/N5PCEdYC7Ds3kwCAVuE/LUPoa4ZAjdbQwb2kh81DtjTHZwui5zL
+         KPQAnIjNNL+2OSpywhUOrWZz5MFJ8qAmrDOuRlUovwV9BjPBzOHPxKYSCatxdJSyAJjC
+         pAuTjoMgvGeQpX3XF9VbWbBIalIM7MGtOs06J4TiJf42NVYToHidphfiRpB22vVF//bR
+         mSgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763404225; x=1764009025;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mo7Fpew4SCWgreWKkBa60zvQOZX9oGrQ6m1RkCiDUC0=;
+        b=VCIzDyJvAi0DDxQnfYewDTDevDCUoNJXQq1Thcd2Og9qhlLMBaiHFXyD0FnHp/ypZY
+         IU5v3pTS2q0NU1uIBlEvfh7qfs6Li6pIY3xThk82vqPcrJ+pBdOUDfMaIQvK3qrU5UI+
+         GXz6G83vKoy0HwVjELDRr+c9Jz9mL499f+3yS5895OziFXhiQSy1dYQJXLQiAxkcKD1B
+         31a6KQ68lBvo0ZnU5jyzlImW5C7IOcRYwAmPxbP02jcWCxSIQpBVydfys522nLuJ4wxy
+         dEl93RraTTtPJFtjyc5avMlY8fElFASwEn5F6i5lE3+16rqrtan/0TBdKYusdMXg5fJF
+         ac1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXxVfBGhEHBcris50/Rz62YbXW+wBF1RRGPn0DYEnmHcJq/BZp97Z+2/YVvfQ44XxLkZE40kzMx8Q==@kvack.org
+X-Gm-Message-State: AOJu0YzhrsYuHv3p5m4LYvdGkssGDuhBHB8rdRiJFGxdZMUfTeRujbB1
+	wTShluidZTvJU357dsTb0bLZEQIfXbiQpUPLXwfQ5+bCLW4jw2YKPXVYjPeCH8p4NIRCsN6VI0N
+	zrx2Kwo5Uw9GK28+pLAFOafY2MOQtIs/Gv0WPKn0/yA==
+X-Gm-Gg: ASbGnctHSQ0wvJ1xDVsQv0ZZpld/1jNZ9qHqfCC7QUDt9+3WC6TH7DWk4eeN0+I3yjZ
+	d/RfRdzGkr/+ugvrPbrJ9PKhT93WtlZC+gvTATaNenn2+Ruhqixm1C650PAzeP1OY1EFHftxKq6
+	2gOz+7i8aiD6ThhJf26/VWjUX/uOZxHWb0JiPA5XNV3Pl/uXxB39wSHBL/Mk4nTQSe9DO1Ciu/e
+	IgRgsFVUbG7S8VX5HZyKmcJ+I3m5S6ledpCEVNtYhhcOWj17qTIym3I8kB+ll6+G6OE
+X-Google-Smtp-Source: AGHT+IGbft8Z+rAKPet8Z4NE8LDyUX4MgwKnPbmIzDODsbkkevdfT0+fNvskHAAOPS9NtBXhUCGNpo/Yz/tzbQHQBNw=
+X-Received: by 2002:a05:6402:27c8:b0:641:8b4d:cc6f with SMTP id
+ 4fb4d7f45d1cf-64350e899b0mr11672843a12.23.1763404225103; Mon, 17 Nov 2025
+ 10:30:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-3-pasha.tatashin@soleen.com> <aRnG8wDSSAtkEI_z@kernel.org>
+ <CA+CK2bDu2FdzyotSwBpGwQtiisv=3f6gC7DzOpebPCxmmpwMYw@mail.gmail.com> <aRoi-Pb8jnjaZp0X@kernel.org>
+In-Reply-To: <aRoi-Pb8jnjaZp0X@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Mon, 17 Nov 2025 13:29:47 -0500
+X-Gm-Features: AWmQ_bmhhbDUMBKFxNnFMOPCeOApSAwekkwuL9HuN6ynW1cSRitKeGbWllXoez0
+Message-ID: <CA+CK2bBEs2nr0TmsaV18S-xJTULkobYgv0sU9=RCdReiS0CbPQ@mail.gmail.com>
+Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 13FE51A0007
-X-Stat-Signature: fy871ow4srcmkp45uydmqtgpdfbirbqk
+X-Rspamd-Queue-Id: AF1C5180002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dnf18qfj7gh6my8u6y66e1q3pddk8117
 X-Rspam-User: 
-X-HE-Tag: 1763404058-824323
-X-HE-Meta: U2FsdGVkX1/rk5/8hKZdStm9YDLQVZzrZU0KOLCRB1/AZCgzC/CusNvbXX9i4MSkc4xqZeK0/OQe9qaK4HfRJpot2AC6Kn/SjgDRq4isFms7FxYBF42TJvs+4caw91YeQ8inDjgcmnSMDLkY7x87Gt8bpnEOfaoaZNPPVXUowtmbN4vRYSorDpFN279BO87AWEKvxrIy0QghhEcmy63e2mk1L7FZNhe9oNdSaNq9bJL/2OVXUULP6NdiPJrVkWvCHlnU+hd+TQcjZf2/KAOPxiFw4geVUgJQ5ZBYl9GxvLwTQ37a7FhtGO+qs5WcyvDJDvuJwD1ZEE2PiVmiX2iFGl9CYDtj6UQBgwUyKFHH1xh87SLFzBUeiU0Dy60MZBL9NGRfbJgo7PTrJ3ppUcV71Q7NPKpoprHvflt8wIMeQLLn0Agvg1Aq+o/1sIQniPOx+vP57xpg2LY9BFUzPsIuX50fAibpl6OHqazDuROitq8N1tV2yGrr8PkphIr8BcmDU+cVEf5nZqvW8i7VGJtHxjtNY3SXIZqZkGXt07H69eOE9LZrXB2otwRYcyREAkOAqU0axdy6BhR6UeGQF1KR/q9ca6TW9GXPh5s4SHps25I/11emnSyP4mrniZaDS38UqUJm6kJ5CczlAZIsPj/N6iIrR3xgxD9zSbbHOglrNh4f+e5FHfpaX6HNqm5fsvOxxas9uyf5xJzyWLdgLzz00FM7/JOvfVFNUhmLTeladJBmpuuKvNmxbxBMUsIUI+E5Necy3VPnYSlkrL8OLURYN5uOjS26ck1/vQdgvJRAH/N2/UaBInBv70dCRQd2WW6tNYbX422Y19Z/E5aj41iRxLzrxBAI7wYQp2stWw2DZd0heqdijhc5+yYBmPkGEECX/yn3xdAbgz+tBYJe05XfJrQSbWvXbltX1CUVA8kzny8k2N0GOycJ5gZsdn08RsTpZN9cJz+Tq7J9wrBRDyX
- NfEBtX23
- C2LXRH+zDlid6LW0NaDnx03VLW4FKGrwTVh+CS1Dl6Kw/xZ2wWmifQ+x1Vl8y5kEFvv6dCsEAusG9n5Y3o+zAFc5mj6osKqtus3AfTvWqx3Wg5v6T445bEPAfnDSaf/afYn5fP1ij2UbJHbsnFE30SQaS2f8ISwV85u8VHQFad8s14LID8bwdugx0Myqvxd/mtxy3g0KjgKZPvF8zose7FhEUG7RPCi8KTrKCngnKr94weJLE44szMkIYeCZ1B7+ia78ImZy5W3J9LcZ28RcoM8gxYz8MdRjJ8dvowATq7yI7JMYZA8CC5g8Dicf7yjnP7maAlpv1AHKFDw85/CTXuJz4PPhLeo8Cx+6Eex1cqV6Y270aZfffQNJHz7aDVR4dwFeEZwmBdPF5KCk=
+X-HE-Tag: 1763404226-700060
+X-HE-Meta: U2FsdGVkX19KLdp5MtwJImg9pq3i0W2xr6l4xQFQcfjldLgNOOJ3q1BDGmrok5x5Hdf6SaB3sMmyCMq99ap1xFAfJR+9b2lXXMiODLqJ8tT6+GF0n7ipGb4kBUSThoHLH/zOWGmYAymNwGA/dearhNwmFJWeDnrgLsXzwsNTHQlS40XAy2XfzdBTQBAtRPc4LlI3xPpiiIPmreXy8PizEjxZrjnqJEsHRSMTaOem2GHA2BOD7cETWlnUJ2FFNC4L9k6D/6nft6CugtRDj12RNEZPDy99IQ1gxSu9wyakr0+EypnEDtGL0u9wYfgBjKUaLy61OwX9LNjlYHJpIRUWcmGPF88Vq3dIV5aNC6cuiykyuGQ3A7nhDyvNY9y6GVlkkMZDfmWC7kC8vnks4/glSTLMKYFZsbgbgj2XeZD43q+M/E8op4ThtjeDKI69cCxX3hr+aQ5oaMRe1kNLpshmlsEBxmiMXI/b5HeS1nFakvzFDAt1vaYtRYUB2qw4vMq4Z8kYd5ZaQImlcvA2pkd3ecNPoBKT1F3f71ldu/ZcRZCC7eGynOXtaH6zedfCXu9XIM8SKpXZifxHlChM1mIq03YKSUKQZI+y7MVYV3Kcsa5SHggxNTedyBR79lPHyiX/HrPHt002x/UavqY5YxjwY9XOKKN0bujbgV/dhv1DJuuOTh3CBIDbMrpx7JDuv2qJ/8OroCJP0tE/10yBS8Olq/GV7t81NRAp6snb5vQC6O5aBNcVLJtvGp7Dtmv+3ZP9eF81k6E3PJlwwLcoSd9BlJSI50RrYiF/444GL9fBHokhaQEBomBWhbpRHogDzgkaqytXppH47qsSgLu8RmgePwOduSRkVKVIEUGyR8tV7LI1u6aN1hURZzmoNMPtZ3QFtOqvVuMfi7zjXj8f7xj2TGWMv23KgYWH9/s8jNnrAgnoda3hEkuyiBbsRHSt+/VKnNad59idEh/WiRX8Brp
+ MSxqWvbo
+ 1p17WtB6QB0UHKDEOoLVkbN6RXODKqCjOWtUoi/V4S81E/n6I8eDTkTYRtnv7BtKQy4NhxkH6rwFg+hzxH/gTiCvH8/t2SKw2vYg7rdGE7/lmCsfuSRHhNulQfzdWaagGtO9k73onC69yEFWlaFQmkFWdxtaIxeAkeMo5yg0TRALlTZ0/tLj1ajvi2rf1F+88pCcutpKNZFduwCYKkKn1wqxaZtj5vHKyjzyBOG2/bdQfL/GegQpjzlD3Y5GGDsacgcNDG5QPhV4OxIL4Kq2KC0EdHudxIBzN6rVTj4A7mQVwJp7oJxUp1dSC1yJPWlGzOjrtgEZv9pSdEBABHHFe5xEehC6gykuYU9yIkRFu2b9XmYJz/OzzjQ1ZoTZP+TP3QCB1/X3o8mIl4Zs+QRQTHqEwegXmpUAAxopREkGGwg5xGYbGPiE4rWZOhZ0MoOgwNaCMWmpq90KyZbg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,34 +140,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-11 at 10:39:12 +0100, Alexander Potapenko wrote:
->> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
->> index b00849ea8ffd..952ade776e51 100644
->> --- a/include/linux/kasan.h
->> +++ b/include/linux/kasan.h
->> @@ -61,8 +61,14 @@ int kasan_populate_early_shadow(const void *shadow_st=
-art,
->>  #ifndef kasan_mem_to_shadow
->>  static inline void *kasan_mem_to_shadow(const void *addr)
->>  {
->> -       return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
->> -               + KASAN_SHADOW_OFFSET;
->> +       void *scaled;
->> +
->> +       if (IS_ENABLED(CONFIG_KASAN_GENERIC))
->> +               scaled =3D (void *)((unsigned long)addr >> KASAN_SHADOW_=
-SCALE_SHIFT);
->> +       else
->> +               scaled =3D (void *)((long)addr >> KASAN_SHADOW_SCALE_SHI=
-FT);
->> +
->> +       return KASAN_SHADOW_OFFSET + scaled;
->>  }
->>  #endif
+On Sun, Nov 16, 2025 at 2:16=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
 >
->As Marco pointed out, this part is reverted in Patch 17. Any reason to do =
-that?
+> On Sun, Nov 16, 2025 at 09:55:30AM -0500, Pasha Tatashin wrote:
+> > On Sun, Nov 16, 2025 at 7:43=E2=80=AFAM Mike Rapoport <rppt@kernel.org>=
+ wrote:
+> > >
+> > > > +static int __init liveupdate_early_init(void)
+> > > > +{
+> > > > +     int err;
+> > > > +
+> > > > +     err =3D luo_early_startup();
+> > > > +     if (err) {
+> > > > +             pr_err("The incoming tree failed to initialize proper=
+ly [%pe], disabling live update\n",
+> > > > +                    ERR_PTR(err));
+> > >
+> > > How do we report this to the userspace?
+> > > I think the decision what to do in this case belongs there. Even if i=
+t's
+> > > down to choosing between plain kexec and full reboot, it's still a po=
+licy
+> > > that should be implemented in userspace.
+> >
+> > I agree that policy belongs in userspace, and that is how we designed
+> > it. In this specific failure case (ABI mismatch or corrupt FDT), the
+> > preserved state is unrecoverable by the kernel. We cannot parse the
+> > incoming data, so we cannot offer it to userspace.
+> >
+> > We report this state by not registering the /dev/liveupdate device.
+> > When the userspace agent attempts to initialize, it receives ENOENT.
+> > At that point, the agent exercises its policy:
+> >
+> > - Check dmesg for the specific error and report the failure to the
+> > fleet control plane.
+>
+> Hmm, this is not nice. I think we still should register /dev/liveupdate a=
+nd
+> let userspace discover this error via /dev/liveupdate ABIs.
 
-I hope I was able to answer that in my reply to Marco
+Not registering the device is the correct approach here for two reasons:
 
+1. This follows the standard Linux driver pattern. If a driver fails
+to initialize its underlying resources (hardware, firmware, or in this
+case, the incoming FDT), it does not register a character device.
+2. Registering a "zombie" device that exists solely to return errors
+adds significant complexity. We would need to introduce a specific
+"broken" state to the state machine and add checks to IOCTLs to reject
+commands with a specific error code.
+
+Pasha
 
