@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E52CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:09:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7BC1CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 17:12:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 001BE8E0011; Mon, 17 Nov 2025 12:09:07 -0500 (EST)
+	id 1B6CF8E0017; Mon, 17 Nov 2025 12:12:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1BC68E0002; Mon, 17 Nov 2025 12:09:06 -0500 (EST)
+	id 18E858E0002; Mon, 17 Nov 2025 12:12:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E58AA8E0011; Mon, 17 Nov 2025 12:09:06 -0500 (EST)
+	id 0CBDA8E0017; Mon, 17 Nov 2025 12:12:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CF7098E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:09:06 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C94EC01ED
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:09:06 +0000 (UTC)
-X-FDA: 84120734292.29.230F359
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A0F37180017
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:09:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ehKeqUsj;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EEF2B8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 12:12:14 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9235C1601DC
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:12:14 +0000 (UTC)
+X-FDA: 84120742188.09.C6002D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BD769180009
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:12:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X38QDWbx;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763399344;
+	s=arc-20220608; t=1763399532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RrerORctnVagLrhTa/S+/pCafgTvRswDFaW4UGVbybQ=;
-	b=UOGyFIOjjgMqTD7nPczq45HfGCIBeKOJGJKqQX+m36OTuIdX8UHgj8ne6SokH9trZnpzjh
-	gpOIxcS2oHysMri/7e7QSGZNBunUGr0ck8d9UDQ7SWrbtQFcetYXYB6WFClxoatAITc+pV
-	ozci2Qbz4nz7nHO02J54PG4wGjwN4bY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763399344; a=rsa-sha256;
+	bh=2r1usUXXtySj602qTx0jfIDfzoRFhbrQSq4T9w+Ee0o=;
+	b=ivQHj+W8WHIr3dCWqSGoWGK8sgRjhKz5Nv1KvypArk5D4aa29n3eCP5wjG68BGGSqDQSIJ
+	SyssogUdjhDbmpx8Y4MM1ttzfL5CSx3UNhTMIKhYll3rwVdQsRkBVEeu7vh7A6+aznBbFg
+	tzf+Pa0UXgkOOkxnUSS7i24JgDTSCzA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763399532; a=rsa-sha256;
 	cv=none;
-	b=MFb6y4z54lu7pvzu3jlq25hHWPtkQTfqiaWWyeT2Mu2ltluBdeD4TLkdZ+F/gz1x0zdckW
-	dvGFm17Jbu/7nWhgpjmWNehYWZ8xsICWZIEdvKaiS2uFuNF9B9/4vwQavHPIGAUKnm9WNx
-	QbGLVfPDJ0rfJYKIRcA5gtvqONn6VoA=
+	b=5Q1Nd0FRol6fTWcbx6ZDmcN4j8nJhmJUEWfZAyMvhdeqZkpG7dj+z4qYkOzN3yREZEzcOh
+	TxIfzriLXmhq8ZIY9CABQzfElnfTJ3yz4a1dfM7oktAXAG5kfv6gErnErMPeicRK5HHPeQ
+	oYqcUa/zOoLeb/NMm1ouw3d8L8p0Diw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ehKeqUsj;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X38QDWbx;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0970A6023A;
-	Mon, 17 Nov 2025 17:09:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79107C4CEF1;
-	Mon, 17 Nov 2025 17:08:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 62B8A41882;
+	Mon, 17 Nov 2025 17:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F953C19423;
+	Mon, 17 Nov 2025 17:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763399343;
-	bh=RuS09nJyeqNS8Db0pvG4BOuHVgtzKyDFtBIV37Zz3OY=;
+	s=k20201202; t=1763399531;
+	bh=d5Mnypq6wDJc2sGNmVWWVeUIAR/ILc0h228u/LGZuww=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ehKeqUsjA8DloYD0X8DNYblCUZB3qIRIlB9+2dqOC1p/8Qa9CCGGCW+1t/ltXQgDt
-	 5OBn9R76l0aDrReC4cD25v5Q9WWbeBZUzO9tfInbVvA70ywWrLmfH13JplaoHoZ8gl
-	 RPMjj+zX9g961agbLV/++/j8252BXeu3IahHFFW3NRFTeL5v9KTwJrz1RY587W6nmp
-	 tCjFr4SeqdXZrXnFjxR5TZUQliuX9f5YcUK9I1TXHM4CTRYjIJtW3NNORwORPCZKH+
-	 A2mN7i4dg+OQ9m/+/vC239WZLil7+E7R+qeZPIN/zC5tw7bBLNZcAf+7DP8X3rpEEd
-	 Cl7SfHIEbl3MQ==
-Message-ID: <94fcc32f-574a-4934-b7a9-1ed8bd32a97f@kernel.org>
-Date: Mon, 17 Nov 2025 18:08:57 +0100
+	b=X38QDWbx7NnvZpofmhjuhcucQQctW3dwbl33jMr22mYBTNe4W4yMzWmwXqeZ+TPYx
+	 18Zd7RdYuMtJC6b1Ova/QprEbncPpveX8fWmPw3S2CrQ+xAlVjGgyGeML8t6+O7NWd
+	 qEnw0hmusYTbsvVwUN6U3Uwyj6duJsHM2Yrwh8SFuYot/p09AjApKIeS+Dxbk26X0O
+	 +PARQdPUaQbJYCdgJIW4hvdIchPfgtu3yFfHzSMtY4E8Xd5LuQBFmDh70p+Pkb7CDF
+	 VqbrAwAWrAYiIhnH/d2y3hbtm92KfhhvqP8GCx8CPiD7Xdt/mjgCxAHbsZAN51k3I2
+	 O+N2LrxCNknHA==
+Message-ID: <5f1e139d-cd6f-438f-8b5f-be356314d9aa@kernel.org>
+Date: Mon, 17 Nov 2025 18:12:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] userfaultfd, shmem: use a VMA callback to handle
- UFFDIO_CONTINUE
-To: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
- <hughd@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Nikita Kalyazin <kalyazin@amazon.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20251117114631.2029447-1-rppt@kernel.org>
- <20251117114631.2029447-3-rppt@kernel.org>
+Subject: Re: [PATCH v1 1/2] mm/huge_memory: introduce
+ uniform_split_unmapped_folio_to_zero_order
+To: Jiaqi Yan <jiaqiyan@google.com>, nao.horiguchi@gmail.com,
+ linmiaohe@huawei.com, ziy@nvidia.com
+Cc: lorenzo.stoakes@oracle.com, william.roche@oracle.com,
+ harry.yoo@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
+ willy@infradead.org, jane.chu@oracle.com, akpm@linux-foundation.org,
+ osalvador@suse.de, muchun.song@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20251116014721.1561456-1-jiaqiyan@google.com>
+ <20251116014721.1561456-2-jiaqiyan@google.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251117114631.2029447-3-rppt@kernel.org>
+In-Reply-To: <20251116014721.1561456-2-jiaqiyan@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A0F37180017
-X-Stat-Signature: j48yrw8iphj95cyqtesjjj73oqu91b4r
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763399344-90440
-X-HE-Meta: U2FsdGVkX1+IvDcDPEonqyENGYe5Zho45qc5/9wtW8MUAqFG0FnvPrOIbgtL2eneIadUpbWoWQA9YCHg4k/ZNYhZVHaJhAaP7k4VfsBCYsisUwo4mgYmmxmBgu0E1eUrdupgbG/6t+FUyhUHZ/iB1GavTL/F0iJIQBvM59vDvsG0qbv/ybSNWnHh3vVBWCa0+bQySl+PCMuNkv0wO3xLE/iUKcFRguPZUpxXv1THpKH//jxxTSUrmkSt+a32BLgugtTdfcCeu9tQ3OhbfagDE/4A6EfiQCeBNTQdBJenJ1X2crCtrLxHUJOsNN+Q+36cF7ajtuMDmy0SxfOThjqF01gnJMTuj6kU92sp5rLJPPcYhzSRo/wokhcPNrTr8E/EHjmgxbRasZ5YXMntVD4EeSDkBSj7rlpTExNcWxiDXedLxWZR/UTVMcDLfXdwiKuc33YO3c3wHGa/p/ffCnQQQQcsbScBqh5tJAR5Ydkw5eof+LlTBSD+IHNVgiricaxEdhocJlRVCbOSTIKV2Lz6AW66qXSR4Yfr2ENmyFJgMzv/jWY6h7NN/4nPaTa3W8qQrFkSy5xs7E5W47/Emhr2fvdArpdzBe9i564fcbnqBeFb6p+gld0cSjMyKAkpjwvqO2/wH9/ALSEEdd9Skgyc1NKpMSpQVt4x690QViR75AZKd0g3QprCoyVK6pcl1p4TvFgGituRHvG7PbdRDlurkIy7g5hhzLFjDawK8GnUmOVwciUuR1V/8B7oFZ+4P2EK8hkkgBkzFuuxKZGFzmHIlj0qMSBlU7yAodtmNX574ktQsm1z9m677nlLzmKEU9GBXma6j6ulJDtIek4RLfm/Ziy9qidiEnnshNoFTcVjUptrDM5ZpV/a5F0pf2v/50aAuo+/XjYj+pPW7n0N3tXronciOjUVWC08yuh3R/BzLVz91sdms/L5XnZOiARxlrvO4iAMycnJRWz9VRpfLTl
- mTmQ5kLO
- 3FU7lSYhzvoCsD5skjWEK3dmxp5ZrYFiH0lS6tMrrosh3R+CP7PP+aPjAYZMj3l/+v/HBaZE/vIY64sW8n8DpreWWITCLjRdYF28I/UBsoDVNLu9O6Hde+8jzK5LfVGd5J3Vys8N0xr6RNsCZP6DABHbIOj5A5mojPUOIiEVlI+r/b4i7cMw0mTZ5owaKMITz3cxWxisDW6Y1uL5pdil0jHqdt3HwtahrLC6EjYwvRyZCaErBmqlCqsOorB4Gr2boLtSiu+1Y+CEhtU3SSt4qXZYArZ+KQE17R5tmYXaRNcOAPdjHdVURM1Xog8tWIAEVdKQA9bzs90FJkiuG8gNaxPOMZpWqfCnA/bt3qBD+aUDi/AU=
+X-Rspamd-Queue-Id: BD769180009
+X-Stat-Signature: 34dqwr8m9ohdz53m3q81ez7bew7q8juu
+X-HE-Tag: 1763399532-137584
+X-HE-Meta: U2FsdGVkX185samcebILgPBs2nIsBKxeRrJE3/rH5F7wff7AQMZFoVGUtYVZatkauSs0Lff08h7pjeWqqto0k+lvVrpNjtIa8PJUHOFcJslJx0k7WIsxEZADMrpg4R6btvCjvyj4gQwfqWEaUyMniZo37znAAHjB9bEptaIpjF6CpA7isZk/1HFZ9FXpRt67ZeynbbjizTbYwcMJOsT6DLZgyCGEN1gHG8zWNGPmvwLCttDFiBPqOJs8U+wBqG8kgb6Kzs7X8CaaeDIUB3Qbhn5hk1gX5v2Spnlt4MrdjEYAGczzadR5PuzPdxJ+NsjQD+MIeLuzyDx11q/1WPSF5N2Ffdrw8zNVVXrFWHBlzgySfN3E+ueELDFDZePqkobTphYkRermEseqoXUeTQFFltt5a9sQI5ogB2Cy42nfzAWwfdij/D+MACYV+JctFQSsYMBkb/BAjo50GmOlpKe9oyX+ewUF/1VNM7IWfDrU79NSw9JB+Pl5fNdMIvYGfAFim03Rsni/WNfWZZsklBZJzh2VjM2NcVSD3yqC6fka2ikgiOAW6yvJhNQVPtVnT3S+lnVg8+DKFnHRrgCK2Sv6HaoD+9W2XgCNfth46HvsE8PdGpMQtg93CD8PnkdsBg9k+Dyq8WPRxU1OizuNJRlvWBsfTTnn5iIKGWsLXEtgAsvkY27OavAzZcae2o+vXFXnLnv8yHiMR6e+GLNSKwZl562JcfrY9Lts/m4RQXsdX4BYx0o5Qp1kul7jb6uY2pQwpjN/yNKxjBZqkqDayv7+fW4tSnO0k06sWE8DAjXBqTVOThU7pt4DsGmaTXdt8a0JbU5uT11HS7/KXCQqQyhLSOg9FhZqSzTmLBNYJZ99UDuuqcQ91XZLZtK7BHh2Q0/Ar0V3+gLQG1Uad+4YW8qt9+SvpVBGY+08lnLny4QQerCgIRcSWtVbz+LsgUhA8RYnRsvlLxUdeKigtu8MM7X
+ PnDuUJfm
+ OEbdpLL/vPXN9x6OrHm76Z3WIF2jZNs/8IrRFp0ToKfUIKjMLNXqmfozoh+CRgKKlfEfCvAyOd5u9IiNeDbgfE5cZfkSyAJdoxrg0JeHHPFyyXDo9YfdUqB0agSohpgDQcXmd3+BnmLKb+iqzF//WVvE4dw5BbCVdJa8KG+gZ41oYTqpJxce/Dupte1cb4JjlrvrMFMdW0LLvyxMFHpy5jUs5WkBgK/w7TgC3mqoVH2Rhrfr3t7G63hZELOv9BiPRnD+V8AHPIyrm5fEsvMHgWCH4TMOjKvfus1mIjAsSagMP1eyfIRYfL2FTUgmbsTCsmZFrJm4rvjCW0BuvvK35CYL4n+4Vabr55vNmfIJelKmf3tf3Ap2ZFn+1V1pIcyx0ewVqHwvpfSYLuEkScuVPSxmqow==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,186 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17.11.25 12:46, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 16.11.25 02:47, Jiaqi Yan wrote:
+> When freeing a high-order folio that contains HWPoison pages,
+> to ensure these HWPoison pages are not added to buddy allocator,
+> we can first uniformly split a free and unmapped high-order folio
+> to 0-order folios first, then only add non-HWPoison folios to
+> buddy allocator and exclude HWPoison ones.
 > 
-> When userspace resolves a page fault in a shmem VMA with UFFDIO_CONTINUE
-> it needs to get a folio that already exists in the pagecache backing
-> that VMA.
+> Introduce uniform_split_unmapped_folio_to_zero_order, a wrapper
+> to the existing __split_unmapped_folio. Caller can use it to
+> uniformly split an unmapped high-order folio into 0-order folios.
 > 
-> Instead of using shmem_get_folio() for that, add a get_pagecache_folio()
-> method to 'struct vm_operations_struct' that will return a folio if it
-> exists in the VMA's pagecache at given pgoff.
+> No functional change. It will be used in a subsequent commit.
 > 
-> Implement get_pagecache_folio() method for shmem and slightly refactor
-> userfaultfd's mfill_atomic() and mfill_atomic_pte_continue() to support
-> this new API.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 > ---
->   include/linux/mm.h |  9 +++++++
->   mm/shmem.c         | 20 ++++++++++++++++
->   mm/userfaultfd.c   | 60 ++++++++++++++++++++++++++++++----------------
->   3 files changed, 69 insertions(+), 20 deletions(-)
+>   include/linux/huge_mm.h | 6 ++++++
+>   mm/huge_memory.c        | 8 ++++++++
+>   2 files changed, 14 insertions(+)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index d16b33bacc32..c35c1e1ac4dd 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -690,6 +690,15 @@ struct vm_operations_struct {
->   	struct page *(*find_normal_page)(struct vm_area_struct *vma,
->   					 unsigned long addr);
->   #endif /* CONFIG_FIND_NORMAL_PAGE */
-> +#ifdef CONFIG_USERFAULTFD
-> +	/*
-> +	 * Called by userfault to resolve UFFDIO_CONTINUE request.
-> +	 * Should return the folio found at pgoff in the VMA's pagecache if it
-> +	 * exists or ERR_PTR otherwise.
-> +	 */
-
-What are the locking +refcount rules? Without looking at the code, I 
-would assume we return with a folio reference held and the folio locked?
-
-> +	struct folio *(*get_pagecache_folio)(struct vm_area_struct *vma,
-> +					     pgoff_t pgoff);
-
-
-The combination of VMA + pgoff looks weird at first. Would vma + addr or 
-vma+vma_offset into vma be better?
-
-But it also makes me wonder if the callback would ever even require the 
-VMA, or actually only vma->vm_file?
-
-
-Thinking out loud, I wonder if one could just call that "get_folio" or 
-"get_shared_folio" (IOW, never an anon folio in a MAP_PRIVATE mapping).
-
-> +#endif
->   };
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 71ac78b9f834f..ef6a84973e157 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -365,6 +365,7 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
+>   		vm_flags_t vm_flags);
 >   
->   #ifdef CONFIG_NUMA_BALANCING
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b9081b817d28..4ac122284bff 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3260,6 +3260,20 @@ int shmem_mfill_atomic_pte(pmd_t *dst_pmd,
->   	shmem_inode_unacct_blocks(inode, 1);
->   	return ret;
->   }
-> +
-> +static struct folio *shmem_get_pagecache_folio(struct vm_area_struct *vma,
-> +					       pgoff_t pgoff)
-> +{
-> +	struct inode *inode = file_inode(vma->vm_file);
-> +	struct folio *folio;
-> +	int err;
-> +
-> +	err = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-> +	if (err)
-> +		return ERR_PTR(err);
-> +
-> +	return folio;
-> +}
->   #endif /* CONFIG_USERFAULTFD */
->   
->   #ifdef CONFIG_TMPFS
-> @@ -5292,6 +5306,9 @@ static const struct vm_operations_struct shmem_vm_ops = {
->   	.set_policy     = shmem_set_policy,
->   	.get_policy     = shmem_get_policy,
->   #endif
-> +#ifdef CONFIG_USERFAULTFD
-> +	.get_pagecache_folio	= shmem_get_pagecache_folio,
-> +#endif
->   };
->   
->   static const struct vm_operations_struct shmem_anon_vm_ops = {
-> @@ -5301,6 +5318,9 @@ static const struct vm_operations_struct shmem_anon_vm_ops = {
->   	.set_policy     = shmem_set_policy,
->   	.get_policy     = shmem_get_policy,
->   #endif
-> +#ifdef CONFIG_USERFAULTFD
-> +	.get_pagecache_folio	= shmem_get_pagecache_folio,
-> +#endif
->   };
->   
->   int shmem_init_fs_context(struct fs_context *fc)
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 8dc964389b0d..60b3183a72c0 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -382,21 +382,17 @@ static int mfill_atomic_pte_continue(pmd_t *dst_pmd,
->   				     unsigned long dst_addr,
->   				     uffd_flags_t flags)
+>   bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
+> +int uniform_split_unmapped_folio_to_zero_order(struct folio *folio);
+>   int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+>   		unsigned int new_order);
+>   int min_order_for_split(struct folio *folio);
+> @@ -569,6 +570,11 @@ can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
 >   {
-> -	struct inode *inode = file_inode(dst_vma->vm_file);
->   	pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
->   	struct folio *folio;
->   	struct page *page;
->   	int ret;
->   
-> -	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-> +	folio = dst_vma->vm_ops->get_pagecache_folio(dst_vma, pgoff);
->   	/* Our caller expects us to return -EFAULT if we failed to find folio */
-> -	if (ret == -ENOENT)
-> -		ret = -EFAULT;
-> -	if (ret)
-> -		goto out;
-> -	if (!folio) {
-> -		ret = -EFAULT;
-> -		goto out;
-> +	if (IS_ERR_OR_NULL(folio)) {
-> +		if (PTR_ERR(folio) == -ENOENT || !folio)
-> +			return -EFAULT;
-> +		return PTR_ERR(folio);
->   	}
->   
->   	page = folio_file_page(folio, pgoff);
-> @@ -411,13 +407,12 @@ static int mfill_atomic_pte_continue(pmd_t *dst_pmd,
->   		goto out_release;
->   
->   	folio_unlock(folio);
-> -	ret = 0;
-> -out:
-> -	return ret;
-> +	return 0;
-> +
->   out_release:
->   	folio_unlock(folio);
->   	folio_put(folio);
-> -	goto out;
-> +	return ret;
+>   	return false;
 >   }
->   
->   /* Handles UFFDIO_POISON for all non-hugetlb VMAs. */
-> @@ -694,6 +689,22 @@ static __always_inline ssize_t mfill_atomic_pte(pmd_t *dst_pmd,
->   	return err;
->   }
->   
-> +static __always_inline bool vma_can_mfill_atomic(struct vm_area_struct *vma,
-> +						 uffd_flags_t flags)
+> +static inline int uniform_split_unmapped_folio_to_zero_order(struct folio *folio)
 > +{
-> +	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE)) {
-> +		if (vma->vm_ops && vma->vm_ops->get_pagecache_folio)
-> +			return true;
-> +		else
-> +			return false;
+> +	VM_WARN_ON_ONCE_PAGE(1, page);
+> +	return -EINVAL;
+> +}
 
-Probably easier to read is
-
-	return vma->vm_ops && vma->vm_ops->get_pagecache_folio;
-
-> +	}
-> +
-> +	if (vma_is_anonymous(vma) || vma_is_shmem(vma))
-> +		return true;
-> +
-> +	return false;
-
-
-Could also be simplified to:
-
-return vma_is_anonymous(vma) || vma_is_shmem(vma);
-
+IIUC this patch won't be required (I agree that ideally the page 
+allocator takes care of this), but for the future, let's consistently 
+name these things "folio_split_XXX".
 
 -- 
 Cheers
