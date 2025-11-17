@@ -4,132 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FBD1CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 14:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6645BCEBF61
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 14:30:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85EE48E0003; Mon, 17 Nov 2025 09:28:39 -0500 (EST)
+	id C0CB58E0010; Mon, 17 Nov 2025 09:30:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 836E48E0002; Mon, 17 Nov 2025 09:28:39 -0500 (EST)
+	id BE4768E0002; Mon, 17 Nov 2025 09:30:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74CC78E0003; Mon, 17 Nov 2025 09:28:39 -0500 (EST)
+	id B217A8E0010; Mon, 17 Nov 2025 09:30:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 639EE8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:28:39 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 11ABA1DE3D1
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:28:39 +0000 (UTC)
-X-FDA: 84120329958.09.378247E
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 24590C000D
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:28:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fcRN+SZA;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A104E8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:30:13 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F86D12CBDE
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:30:13 +0000 (UTC)
+X-FDA: 84120333906.06.D6FFC07
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 556F91C0004
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:30:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ErkA6k3V;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763389811; a=rsa-sha256;
+	cv=none;
+	b=NUwlDRgTbYlhSOwrounns5c6vizdmrcaOWJvaPqAZoc2dm3tV9FK3dMYcbHlhs34v7Nbc8
+	GcjmU/nfLLoizEKfh6GrBBiB5ZBk4v5f3iarFvBCwy98MtDPp8jwJokKX9AE1W1NFZh9Kj
+	+/f3u1xyOUHCQikhmCS3EHLCR1e8sto=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ErkA6k3V;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763389717;
+	s=arc-20220608; t=1763389811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WQVCE/CnnGowlKqCGL6JwWMjWGkEt4E9DF7myhq90M4=;
-	b=bcGTwbZXoyvF+eNIAWI2wsqcm6hXUwwmvImMTBcufcCwI0DVTLB1QV/dMkzp3lTl6D0UIA
-	jyMQHRyEi313mIiuzdjFoSeOsMSjqGjxlrbMY3Qm0xEyLWrNb9EsnFSbO/VRkniVG0rFjo
-	dHtBTzISIggJyxrx/gX6b0mseY6Nwns=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fcRN+SZA;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763389717; a=rsa-sha256;
-	cv=none;
-	b=WwSp1NH+wEBDxo9T+Cgj27l6OD2vBHP9DpaV5BzNHmBtpNH660nKaMNQ3zUG8yxygX30Jf
-	FZ0PbGDc8tYG/xaGv5f6TeiIdgB4YKa4ZFbOq+U9uWWnEhZ/NgXFjUP4nSs45LvMiDVLpK
-	XXoN/HW9DXuNlrfRECjUEMBIsaZv+Y0=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64165cd689eso8406771a12.0
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:28:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763389715; x=1763994515; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WQVCE/CnnGowlKqCGL6JwWMjWGkEt4E9DF7myhq90M4=;
-        b=fcRN+SZALU9WDY8BRl4ddo8OZY+iHanHgERcYIZ3iIIppxFao9lq1vhoqs4uqA51uE
-         NwTdtz2rDctDWgCF8SmXT4lyoAeqbUV6CxSAsVLeDuTA89vKFRsdpzAE4Fd7yg8BGnfp
-         Pz7Z0gr3gX2Z0ahIIUIkYEhudeBOj1eP9q7To/6FNrj+wilUecgVSbY0D0dbDP3cmSgM
-         KG0YgfssxEw9r5/C/uf6r7Q2I+5tgSIULbskieQ8+/2/Je5QdML7FpAFrss2Kd22pPx4
-         g7HdMjuTchcjS7awc4YFOV/SWlyL9LdU+UiPvnIzkUQpWRuwSTwT9RPP+cTKosmqYGiV
-         JFBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763389715; x=1763994515;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WQVCE/CnnGowlKqCGL6JwWMjWGkEt4E9DF7myhq90M4=;
-        b=F7Tx4UlghPZjAn7pAAjXjmPHngWGwVqa6pr5y8/CHwRRBVuhETan+YtyxSHK/p6WQ3
-         H16YJvP0RFbzyJ/C0IJXtGlIWPMcQIHsTheWZq4ADoM0BlKA+hUFwikrP/MeGhZTNWa9
-         4DDTmE350kIWgSDkGwuPrDQy4Qt2MZEK8SRCBPCRw8TiJxB760T9K/o4ts9wCF9vXXro
-         a+P3dJYNMdHF4S2i9xhfap35nw2Pl1CvnVk6Vlsfwq+nt7xbgW+QsBrzQWgSp6yGo2Kr
-         Gdiknha9ugUuCi+sZ1WnmK3HkGp1psA5pHdvkB2ArqMr++RPfpu1dC+aYkWBgbp9SOEt
-         1mLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKk83LOF4g6zSn1d6+scFymWWTfr3D9NM713xv5xesoC/eSXOPK1oZhItw27vjm0xdYuZFUUNN2g==@kvack.org
-X-Gm-Message-State: AOJu0YxZSN+V0V5UWr7XIR+E4x4jmfU5te+FtFkNhQGL4yIxE0a8Ipb6
-	vhJrO0ELkTcdm1wwR96hYOafssbrJDDNVqoYByb237wd5XEtrMWziBIzpp582Js5lozTneEaS78
-	LLbpOyBZ7aMbLb7hX2xEmUFOmlhcWu6eCaGnUYZZDew==
-X-Gm-Gg: ASbGncucs4vKHqucBu64isE624AoQtGbckhvFUPReRoSi3pPua+H3IaX+8/rduJUimg
-	20LuUcA+eBIdUVMChC3mI0jSnqGCTaqzuWSauUSyRKkMRdWuyc38DW7bwo4pceUSspXwHtopn4e
-	SzSYUr+67QLAHcbjyJXqfElOcliIro7PLuBICo3NL2A6uKLhH5e5L0oQh6YGU317Vdj4emRDQjg
-	z6eUnoT4D7jw+LTYMJr097IWHoKpnWrmcDkiAoCUaYksYXS4/edy0KDfQ==
-X-Google-Smtp-Source: AGHT+IHFe/sTuuiJ+53/94QiMySpnxf4UN/E970XTSsHg+BmNQprmENpJq+u5KG4abgGaMQyqcrDGuE+yfqH+ShvDHg=
-X-Received: by 2002:a17:906:fe4d:b0:b72:7e7c:e848 with SMTP id
- a640c23a62f3a-b7348570745mr849235566b.17.1763389715484; Mon, 17 Nov 2025
- 06:28:35 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=JAmH+HL260u2ljM5Xf3dHjRVbhX/X88RtVnRsLk5IIk=;
+	b=YDYerd3c7VcpWjWiLcgYvzIP8dmkgsHGiuwMmduH1hZqQuDtewysRh383UzG+qvt7PtW7P
+	00RE1YCxZ6gVR7be88P52hNNrOFNze+9VUnRp+9+PSEWFw3vSLWNAe+FE028XDMz3agAiR
+	PIpSj1QDdseRE6u7RJg8bSo7ycqA3z8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763389810; x=1794925810;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=PTbbaJoSZw2Ty/iJGv67pSMKbEpK04mxLQb2w4oEG3c=;
+  b=ErkA6k3VTwujepUlrPAXBLIw7EjVXQytmSu+nY+IYVnro/a6d9WoNAYQ
+   agK6iLpheLQRoNzvHuA0i8kpzdsKZEjJO8IEJzBRSpmH3stc4i47fgRwa
+   EOW1cpeDdW6B/mpjl8/3RIdubzXKLuBlyG//doPuISRQhgVXGrPkGaNll
+   2+5roMzTqMg0N3YUKtuW37GyWHyrYUF0kE/APhxzffonaGoVrt23q20eJ
+   G0JHSqHxYCuLTK9Vufdi52tcWTyXXkeZdYPFZ23iqmnNxMkIa7HHgofmz
+   nzfeC3mEYZrLUaaQsmEss22VEOzQAsgwUOjyYrB2x/kr06QhyeZYCpa8d
+   Q==;
+X-CSE-ConnectionGUID: dtzVHsrgSjStZyYMvmO6pw==
+X-CSE-MsgGUID: lhlxTN1aRJmBgH2ZnN0zPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="90866824"
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="90866824"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 06:30:09 -0800
+X-CSE-ConnectionGUID: sWs9Nb5rRjKt3GCAR+eukQ==
+X-CSE-MsgGUID: 20lk6izOTvur9YCCf4rLmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="195404100"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 17 Nov 2025 06:30:08 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vL0F3-0000fL-2b;
+	Mon, 17 Nov 2025 14:30:05 +0000
+Date: Mon, 17 Nov 2025 22:29:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master 8868/9360] arch/m68k/include/asm/page.h:20:27:
+ error: lvalue required as unary '&' operand
+Message-ID: <202511172257.CjElDcRX-lkp@intel.com>
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-2-pasha.tatashin@soleen.com> <20251116185406.0fb85a3c52c16c91af1a0c80@linux-foundation.org>
-In-Reply-To: <20251116185406.0fb85a3c52c16c91af1a0c80@linux-foundation.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 17 Nov 2025 09:27:58 -0500
-X-Gm-Features: AWmQ_blpOVxmRUODWBmJWtPPz2QzcGqIJZJTFHJU9AtpYTtzUk5ADMkO-uE2GJ4
-Message-ID: <CA+CK2bAKm_Mb0Tp3Q5X=B0ngYrrfiT_pQ5P+c0=YVCXymxkqXw@mail.gmail.com>
-Subject: Re: [PATCH v6 01/20] liveupdate: luo_core: luo_ioctl: Live Update Orchestrator
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, tj@kernel.org, 
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev, 
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com, 
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org, 
-	dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org, 
-	rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org, 
-	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 24590C000D
-X-Stat-Signature: 9r1mzhyhca1h5neq5jign8hbh1fe4zeo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 556F91C0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: n1xfgaa94mrya7kigpziwos6iytzyf64
 X-Rspam-User: 
-X-HE-Tag: 1763389716-961479
-X-HE-Meta: U2FsdGVkX1+8Tzxrm44wSJlmN69E3BzW6gjeFIlsm+VzEPSgtSjiQmjiq8nCWQRHQwD/xpRudo8FE/lzqRcEvJhvlVgIosLzIbSZfEztsTKblTC44X7EBz5Qh6qWHLG59xtqw2jvL/6uYtBE0BT6id64bXz2JnCvozMZ0pR68kYcnXPR5RSY4s+asy5RjQO3bnncUexBOU8qQr2ofKtFIhFEuscj6Eh2/3b3LgGcZYXabq8wevwu2CE6xyhN6hCaNY9VlV0GookEc3D78m7A3VWJ+qzyq2m5g8ikmnpCimeYXbF4jmsAlxIyrcxCD7QbfrDcYRWuZHAaR3Cp0pXRrb0GoHClULDapHEVqRvl1pRkopBzFpbPhxVeXxu3BWQ0/HUcsCr4br/IHaFkeB4DOmNP4IHjYoYzhEfv8WsL8HFmm9rDEPdGH2zro0hvoyUXY6aJA4ETcS06jXmu5+pruqFf0EAqZQSj76pBXHek7Pfrq+33igcLpEe0QlOdwqiQmBEirnW4yWpWDUB+ayhQc0CcZRJF1gIpUvEu+Oci+7b12pY8o/cciDPV6AnfBZWksXKSPpmJbE9EBNMECUrvVzlUi9XpJuscKHYrpmVtNT7aNU5666yNuMMiBHrhvhkpv2raqG0PBGZV1mQHWy/e6yN3NEK6e4klD93lgbYqsePM+bmDG85bGRGaJZDUpYJrnxo9qIbDI1hpxdBUc+csOYp+fVqjJbY6KsazIm38oA4ddUeF6JT7eRSsdyyhZxgf+7/XJGk0Lugian9T8eyXmOGauusrKRuJ4prnYOvfb2GFVYmOS9NSfXQ9qs1tzlNRrulJhwsPHpRvwpdqvHx6QCTLQ8mxSGzSfSwTgwdCm4v0zIf/bu5An52uB+2eucWv37QhEw323LW+MXPGAvjQ+RhGvqUimxnXpTs/GSiTIr/U6hUEIS4HAB/1zXNju/YohjuxMygXNzpig7aAXAr
- zb3gvWTb
- v8dhXkthMh20waQaAATHpZqIdNfYOSul/G+EriBc9Y0ZOP879mR/OxUDN8XEQK/ycTSMSmzD6sLJouLPa9C/W6kTV3gySok2ZBaeFpe87lmCEBpEJAMPT16yD1CcGRK02qHbPO4+BX0308zNvVgHOZCPbAe6S0ITuQ7jkm/8QFYHPhYShGRTp4DoRRO4sjHLC/ac0IiKfJ2xRE8FrONb3QcAyDKTjCBAivYtvAZ4y0JJJrzyKUG5a3lwLbaqJF9XxahQMiaXaE3PHVVUGU4O79Xgsstl8SwAyXYzu3Z2jDldm0SqherRFZN07U9njguYjtQg2DqliTR07I7uQklCbrCq7+E+A/Ih6qD+LR3Xq8XO/zueCMgfS5rmJYgYXDwOfH9srmO9YJyvq9Am1B9Gp33GhnSw8eBLHsnrnGkvR28Zyc/EXELlQkV9cPEf0aRmV+4Ybyk/Uoym/O9x0O7iRDhTR4NiIoL53E6ESpwRoF2aHe8uZnFRYJ6c5CJKvUSuHGc8i
+X-HE-Tag: 1763389810-908224
+X-HE-Meta: U2FsdGVkX1+ZN48BzPMnBY+k15ijsxzKSwUBCrlPdH4Qck12pCsjnSfXaU1wwwichIG1YrBbao478CRJEH3nJvgkwOl6vIRtUJ+htSDaNFw9+/0FF/snqwhjT9zs0kB0zq/P3zcMR7gL+gjiB8KeNkAodVq5WrcbXKNUhBFVmleIZ1J2uWW3Xt7WBpb1R3j78wHCUOnuqtpSZJjke5i+XwHrdFqE9EZgB71ox1fGYAkva3O//cbyZhvz4LRAe277aztf/aXphR8rl8QCWvcOD5lHLoyEhnxnoH7kyczELLVNrhfzc43IDMsnWmkA5GSfUY8oVBMJWDAeBXTyg5BVK0kGJqsZvicGiHU6gE2vAzTdP3OTQlGGNyh7Qo0+8gGOFxfs6Z92jbeONaniwGlLk3ZgPsv3wrAPbMD2p4hP9JIqCUdGmYRm7nNEt7uLJGi9mI5PUUPR3ApFoDXRuPttq6m6NiCYImyCMco/M9dCHqoVQUAKaY50XKbNgHbNy9e12lMcA1I4IT5CLjF1SwhqWJnIoLblKg6n0yerqh2ehaOA32HkDIni+jTFQctSYI0nQXF++xcrrL8bb33rdpXkSUMSvb0AaBk7kAxx/RUXh1CqwKJmsPJEwL+lvz0vkzntXIm7jLAXG/6/7HX8xS05Qgy6osf9PKCmBQ/vUpbS06AE8AfKVFOh8M1TvHrtEW8EdRs706pVF6OmNzSvGZUgwksJWqyoaW0WWrKxpB5SyQBtGvNPUEU6/3Iz5JeQNKlpd/Ni+eA72ASDduvo3cNS8kwBip+zfAEKi8fi9AiS9/ehcKu4bpjapIRqo7E8f9J+CBUKRmf57c2nlYs31eqGywh/F5yQJJ+pGlk09U3Dw3MbPyTm9OvyxYUt8sKzWSCR3fRZL2Reoudlwi1264NaZMC9GhbdY1/QAjOwfqYmw0Bwc488MeLqyf5xctmz0rI7uSsVjT9oxl/gOTW1oW+
+ HmFNJMEu
+ r3PhBYlngqFvv7r7jXbRqZCbwszpblFpI7o59JkYbDBeuG0MC2QxRc6A9/Ukr9+/p9GGxIXwBkt4wso6voXSUc45GGxXtrQVv6QZ7+Hg1Jg1DnS2jD55NuysWlc/48mN/lGPxgKhaZyUKaF4SFlFHDfhTUFfqCeS3IsOPS94gqpK3oBp8nlnlKcUJ80zyYvSK/qq7NNgiuqbtB3yggMiGZwSAey7IcgwLKzcygakQh4rHKi6dYFN3m9XD6OZscI3W3iljlUSo7Js/LmEvoXAjVyIQjUB9iNni/FPnRXJUjzDWRDd9uSQiwUyw1zRYI9pb+vh/KoAUC4DjXXAuN1RkOI7z6BZdaNXSwu+JqZ0XBDZnzRrD8jcrIxhR6l6PlyZJz75CPT/SrC6cO2yubmmKa1I2ZA6pz1wdrnxvXcr0cAl4XZhJTlucbSTGHcebbKu0S2rx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,29 +105,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 16, 2025 at 9:54=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Sat, 15 Nov 2025 18:33:47 -0500 Pasha Tatashin <pasha.tatashin@soleen.=
-com> wrote:
->
-> > Introduce LUO, a mechanism intended to facilitate kernel updates while
-> > keeping designated devices operational across the transition (e.g., via
-> > kexec).
->
-> Thanks, I updated mm.git's mm-unstable branch to this version.  I
-> expect at least one more version as a result of feedback for this v6.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   0c1c7a6a83feaf2cf182c52983ffe330ffb50280
+commit: f54f0efb9d91fa2eee95a7eb29d0051f2176df47 [8868/9360] mm/damon/vaddr: cleanup using pmd_trans_huge_lock()
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20251117/202511172257.CjElDcRX-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251117/202511172257.CjElDcRX-lkp@intel.com/reproduce)
 
-Thank you Andrew! I plan to address all comments and send a v7 in
-about a week. The comments/changes so far are minor, so I hope to land
-this during the next merging window
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511172257.CjElDcRX-lkp@intel.com/
 
->
-> I wasn't able to reproduce Stephen's build error
-> (https://lkml.kernel.org/r/20251117093614.1490d048@canb.auug.org.au)
-> with this series.
+All errors (new ones prefixed by >>):
 
-That build error was fixed with the KHO fix-up patch back on Friday.
+   In file included from arch/m68k/include/asm/thread_info.h:6,
+                    from include/linux/thread_info.h:60,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/m68k/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:79,
+                    from include/linux/spinlock.h:56,
+                    from include/linux/wait.h:9,
+                    from include/linux/wait_bit.h:8,
+                    from include/linux/fs.h:7,
+                    from include/linux/highmem.h:5,
+                    from mm/damon/vaddr.c:10:
+   mm/damon/vaddr.c: In function 'damon_mkold_pmd_entry':
+>> arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary '&' operand
+      20 | #define pmd_val(x)      ((&x)->pmd)
+         |                           ^
+   arch/m68k/include/asm/motorola_pgtable.h:116:34: note: in expansion of macro 'pmd_val'
+     116 | #define pmd_present(pmd)        (pmd_val(pmd) & _PAGE_TABLE)
+         |                                  ^~~~~~~
+   mm/damon/vaddr.c:314:21: note: in expansion of macro 'pmd_present'
+     314 |                 if (pmd_present(pmdp_get(pmd)))
+         |                     ^~~~~~~~~~~
 
->
+
+vim +20 arch/m68k/include/asm/page.h
+
+138ff3462f53a7 Greg Ungerer   2010-09-07  14  
+138ff3462f53a7 Greg Ungerer   2010-09-07  15  /*
+138ff3462f53a7 Greg Ungerer   2010-09-07  16   * These are used to make use of C type-checking..
+138ff3462f53a7 Greg Ungerer   2010-09-07  17   */
+60e50f34b13e9e Mike Rapoport  2019-12-04  18  #if !defined(CONFIG_MMU) || CONFIG_PGTABLE_LEVELS == 3
+ef22d8abd876e8 Peter Zijlstra 2020-01-31  19  typedef struct { unsigned long pmd; } pmd_t;
+ef22d8abd876e8 Peter Zijlstra 2020-01-31 @20  #define pmd_val(x)	((&x)->pmd)
+ef22d8abd876e8 Peter Zijlstra 2020-01-31  21  #define __pmd(x)	((pmd_t) { (x) } )
+60e50f34b13e9e Mike Rapoport  2019-12-04  22  #endif
+60e50f34b13e9e Mike Rapoport  2019-12-04  23  
+
+:::::: The code at line 20 was first introduced by commit
+:::::: ef22d8abd876e805b604e8f655127de2beee2869 m68k: mm: Restructure Motorola MMU page-table layout
+
+:::::: TO: Peter Zijlstra <peterz@infradead.org>
+:::::: CC: Geert Uytterhoeven <geert@linux-m68k.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
