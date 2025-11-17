@@ -4,111 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6442DCE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEE12CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:15:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4E6A8E001C; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
+	id 17ACC8E0002; Mon, 17 Nov 2025 06:15:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFF318E0002; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
+	id 12B938E0003; Mon, 17 Nov 2025 06:15:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA04F8E001C; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
+	id 0204C8E0002; Mon, 17 Nov 2025 06:15:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 960768E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:14:18 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37C2D140D1C
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:14:18 +0000 (UTC)
-X-FDA: 84119840196.29.8987BEE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8826640013
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:14:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+36XpUk;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E12E78E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:15:07 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 844E45CF5E
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:15:07 +0000 (UTC)
+X-FDA: 84119842254.15.ED1D50D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5CC804000A
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:15:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fgWmHfwd;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FsHHCzg5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fgWmHfwd;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FsHHCzg5;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=jdelvare@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763378105; a=rsa-sha256;
+	cv=none;
+	b=SNaA9agIMqv6deaaYrzKEUh5GFwQbds4L5IR7SQbJmEceEHJRUUKCXqFNosQwcXovOxP/T
+	Ld6vOBv/1tzFpNo8qX4MGHTCLKdaMdFBcySpPlRDWbp3uNAmp1l638DTTl9Hi2wkHgqby2
+	7QbFjybZHOkx6FcqRN7Mmqm6dptvqCk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fgWmHfwd;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FsHHCzg5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fgWmHfwd;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FsHHCzg5;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of jdelvare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=jdelvare@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763378056;
+	s=arc-20220608; t=1763378105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8ADh2GmhPPGw+Ea0z3RTa2FOenTP7OfVYPnpGcbHoe4=;
-	b=FRzwT4+BD8TJqNVuI0zN3fJ9ugaKRJit0knF76e1GKwiC1eg5KqwMBdhXXe+bNZXeTALMf
-	XyteM25tSnHRuBem/F0ZVpIS3hTBSSHW1knN2BOyhyW9huJeybYjPU62E7JlSJUdClPtyL
-	fdgRGCUK6BnK2Qe52pIB633xmsKuwSg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+36XpUk;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763378056; a=rsa-sha256;
-	cv=none;
-	b=b1K/NJJhGEaGdphSnGPe9t4Z3fdsIYGVn25X+00qh0FeeLxZLr4kcdrG7mKaRXxeQQ6y15
-	+5LSCyTF6Cc8g7M2dqaIO5kBYP2FEa7rA5k+Kfjx+3vTIxWx0vZb6yhEY4NenIyOmad1dX
-	YlT6oYEh49DEVqHRpuO8kpQeh+8Cwdo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7EAA6601ED;
-	Mon, 17 Nov 2025 11:14:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A25C4CEF5;
-	Mon, 17 Nov 2025 11:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763378055;
-	bh=a+Glbj+KjklqVqK02cJKv38+Iv5JmdqR17E30pDPyGg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d+36XpUkgooOOplYjFcXSlkiRz9QJ9mw3TH5MHjiR6eSeLeykbimRz9eODBPmYD4f
-	 Ej5+lc/S0OkUv84FBV83fgl+AKDrJNl+kGSPHK549sQ8fWypqZkB4JnN2UYUeJDApu
-	 7qry8j+l66Ji7mT8iOgQWAU2FD9W+xkoybuLpEhH/qyA0gfSxOzw7azcWlz9JWNXTP
-	 64UKmeUlQIpxjTIydSTLHMsFBE8EQUgngt5ecZ0+6dOCpxMKxShHCRMDZ3UQICc2Vb
-	 xy5Os9Jr0mPExUf8Ubchkkc3k4+8GbI0RUjVMScWeibdxclYKM23yJpGreGXsCilWw
-	 XrlAzdRBdVg7w==
-Date: Mon, 17 Nov 2025 13:13:51 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 20/20] tests/liveupdate: Add in-kernel liveupdate test
-Message-ID: <aRsDb-4bXFQ9Zmtu@kernel.org>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-21-pasha.tatashin@soleen.com>
+	bh=u8LX1CW21QZOgAC8hwcxilXQWcwm8K+BwFeQUI1VU0A=;
+	b=mg/DFDEK8y8NQgXT2pshLfptOALZTmSSugW1lWdRy91czIT0mdvRfvLQb+Gn7Qc4TiG7cg
+	KiMDzVP5CR8jJFvtWvoRwE83VaE2nuEQt3UlsHQIcLFUOFjsxq1RBwh9UH74S7zw45S66O
+	51RaOSkZf0TPgla+0r/yAKivqqOrOGw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C666721224;
+	Mon, 17 Nov 2025 11:15:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763378103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8LX1CW21QZOgAC8hwcxilXQWcwm8K+BwFeQUI1VU0A=;
+	b=fgWmHfwdFCVvoYUGCjyesWkdlVvHfuKOodgpWU00s3MQhoLQWa5rTchwzSMXsew026IAz/
+	VbRooUVi1WbJY6rTy49h2SXvSTZuCcpN25GGMiQXFUO02HEdbR0ZssFAQ2r00yW5G5cY1a
+	mHl35KmEQxZps38AKb2eKH9MQk4cjDk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763378103;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8LX1CW21QZOgAC8hwcxilXQWcwm8K+BwFeQUI1VU0A=;
+	b=FsHHCzg5meUB/o4OdfBARNkCJMJCr9yjawIEZtb1Op3vKvvEO3x9oi90LI4rCJZDQwl+sz
+	VYX+LKWMLidYagDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1763378103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8LX1CW21QZOgAC8hwcxilXQWcwm8K+BwFeQUI1VU0A=;
+	b=fgWmHfwdFCVvoYUGCjyesWkdlVvHfuKOodgpWU00s3MQhoLQWa5rTchwzSMXsew026IAz/
+	VbRooUVi1WbJY6rTy49h2SXvSTZuCcpN25GGMiQXFUO02HEdbR0ZssFAQ2r00yW5G5cY1a
+	mHl35KmEQxZps38AKb2eKH9MQk4cjDk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1763378103;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8LX1CW21QZOgAC8hwcxilXQWcwm8K+BwFeQUI1VU0A=;
+	b=FsHHCzg5meUB/o4OdfBARNkCJMJCr9yjawIEZtb1Op3vKvvEO3x9oi90LI4rCJZDQwl+sz
+	VYX+LKWMLidYagDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 87FCC3EA61;
+	Mon, 17 Nov 2025 11:15:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id EOAsH7cDG2lDcwAAD6G6ig
+	(envelope-from <jdelvare@suse.de>); Mon, 17 Nov 2025 11:15:03 +0000
+Date: Mon, 17 Nov 2025 12:15:02 +0100
+From: Jean Delvare <jdelvare@suse.de>
+To: linux-mm@kvack.org
+Cc: LKML <linux-kernel@vger.kernel.org>, David Hildenbrand
+ <david@redhat.com>, Oscar Salvador <osalvador@suse.de>, SeongJae Park
+ <sj@kernel.org>
+Subject: [PATCH RFC 2/2] mm/cma: Consolidate accounting in dedicated
+ functions
+Message-ID: <20251117121502.6db0fd7a@endymion>
+In-Reply-To: <20251117115602.7b9c7ccd@endymion>
+References: <20251117115602.7b9c7ccd@endymion>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251115233409.768044-21-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8826640013
-X-Stat-Signature: pxqo4wppqx11ztki9457kwsc68pjm961
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1763378056-514541
-X-HE-Meta: U2FsdGVkX1+n+BEmcHRmltr1Qul4xxxTQjVZbFGeQJZIkdwaav6gigxMxLkG0p9SFEOOMSxH9ggmPJuUQLnIJa6AWFRCK/ZslvXZqJpFxz+4PexA1MXuNqo2BY8abJ2V0PZ+fLsTovYj6ewaZVq7MPA1YT51AGo6pJY3QK7CZ/HeZ+V2Ayg9Txa/qmc97yzmmgrITv0A0Nxln86yR9xL91ctyPXKlj752+/LcudQ6YEqibkNecxmS5lUEyF/PxWs3OgaGwiMIaqHeFWU0cF2hMpXIaikykkHNxvwzdFCs3CxY1gq15LkJ0yTD+vsh5T1R+nK4/YUTxrGpfKWq43oOTExVkLlT+bB711UzFy/hI+UTeHijkFuGYJfTzpeKU1TXK5+dpNl3ITt+9gkwcIDPJ2/KvHANJkhpXFuIZn/Q9t2EF6x+ReOjvMaB/F+0gme56BS8PoSx7+8CYRgB8RSkA9qglOXjPqygW8ns1d2XakRYImL+c1U3SV05mvSoLYiJDWRcebApVypBPPMkcOpspA0rqkNACVfwp4RE2yAmah8HLhMMFr35h2hkXFQmiIjX+Jni0j7zs/Zq9VDiP8eztX4zcYV1gngzl/vXpgbtpzgAVtzMK/LdEiOhS1e/aWUUv4tuSF1f/M7X3S4MCf2D7kPywSpSpCZu/BX0jLZfCkUOwCLoAtBYwt24llqYA8W5FIPcb3fEGElh2eG0rvhP7lv2CnOPYVe7BYaTdltJgHidY44PIE30MxTAjH3jySYLC7hVRPEVxELMON2oqUlY5iBN1A78S4SiIyni7a4RJNC3XJW3PT/kjNyESiIo37K9yhk9ruBmeIXZWky1Zn3dAJd17cyI0cyJCOA8JzRGOfkiqlu9/AUfwzWVIeKH5+npugLRCu0RzHHGALtIO8HS66Lct9bWMp3aDbURgufOitaVu3Hg9ziC/27BEv4gOYz+Hz3tjKzXUVjphpjkDq
- lNnzBcDF
- ULP64iFUHjQAxproCcL0cJiIC7CzG765bTKaS1GN1PdUX4zXu0SP20cepyzzScgtijejqqo5v3XHZtbFyMVqXePuLNNyntaSV/Rn/m4IBuY54x/Q7KFMoGxotSsr8mBmdo6Ym2xKRvkeHumQMgo0MCOadTzqcywkHCyrB7uqkc+cMmgr82J90iEOyFzkzJ4m2RDInSZgmjdPl5SPbXj+/1XidC1DiGnThZq9cosewo+l2TVQuuUjd/6uomkZ949ETFShpl1JHreVi/sHJHeroUeQSWpnyGt93KQ5BrlRXMdU/isADIXtz7ycq9HSypd2gedvRsEz7f9Gkjb/7RyAlV1BqB6XUY/vFDrMCO3gPqCAEsfQkTZHIpiPHDcyKWChOTsn1
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5CC804000A
+X-Stat-Signature: xzpi4bkn16fbapki8cmr3411z7g9zwm7
+X-HE-Tag: 1763378105-552357
+X-HE-Meta: U2FsdGVkX18DNJHkOBwv69E2lKbyAPA1utr5BRosbnkXedw4V2GTEqDLnz7DkuHsajHhxUAajcdT4K/Nvr3Gwj+UPzDNdxslk24qMWKF3taP+xMhNe/avE2xmrtguF2oSfejWg603ZqgcON4+b8T6rKGwuwlScx+oFvJJXDM3ehlOXgqpxbWHjyIysyDzim5c+qc3SJqxdGRVx0Fsulp8zC6xGKL1QGDZ8NgphJCqwF12O5CmIPQ4OzVLnJ9kBGRBC/wfJft36geFFvfOLkkpQ3kc8bZlpJe/sFO92inP1byEwc0p6f+YqcRUD8rTwICrmVYMsWfaoqd+No/kcltShWz5wzr0s+GiI9AwnC5HLzjwvG3H9blJa0HpxsazO/7aACGdZk4xjeVQYfIvc6uyuPfvJ4H7codsVKpgO4YcZh5sCXt3QVGCNMpzKgFr/ggH0p90KB7Idc5CJzoOc4fokoUjH4TyHyQu6Ktn/p7zKjSizikb6wFT60kiQwT3cn1K6hfkCo/B0F7T7FoCOXD4BzOsiP0DGfZSkZpufvgawfSO+mlT6xqyF7X4Em1ddF5t522LUt+AHeEW0UgzHcSwSuYLUMoJmjSwuos1oErnkcmbiOTsu69cUvkaSe8xUE/ZqkLQsGSgxiHMEBV6ZPYBiJdpdomLyfMuhYYi9u5L/O7LplHUoeH/5l0TvydnwYA2RoFbqtQ9xJA6Ue0a+W7hLnlXus9R3lNEQhzknL7IrwgDtKEXS9nI+6HMp8EmcsR5VCiWKBELOAP7pbOMP5uLnTNhQnNUM96w5UhCpt0gf6IBtbd0UB1oJ57TyUOKe8RXQ183M/MLmdxp7800jy3h7BGIRKaXdFCyI7HEGo9hvZiHS2szCGeYz7xK2EqYVjwRvA+GjbZarsJcoO6hSGSMx8wVcvJPj2EDCYxBekb2aghtuyo3SZvV6bFdsUPxOIbGSRCJWX9G+E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,58 +137,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 06:34:06PM -0500, Pasha Tatashin wrote:
-> Introduce an in-kernel test module to validate the core logic of the
-> Live Update Orchestrator's File-Lifecycle-Bound feature. This
-> provides a low-level, controlled environment to test FLB registration
-> and callback invocation without requiring userspace interaction or
-> actual kexec reboots.
-> 
-> The test is enabled by the CONFIG_LIVEUPDATE_TEST Kconfig option.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  include/linux/liveupdate/abi/luo.h |   5 +
->  kernel/liveupdate/luo_file.c       |   2 +
->  kernel/liveupdate/luo_internal.h   |   6 ++
->  lib/Kconfig.debug                  |  23 +++++
->  lib/tests/Makefile                 |   1 +
->  lib/tests/liveupdate.c             | 143 +++++++++++++++++++++++++++++
->  6 files changed, 180 insertions(+)
->  create mode 100644 lib/tests/liveupdate.c
-> 
-> diff --git a/include/linux/liveupdate/abi/luo.h b/include/linux/liveupdate/abi/luo.h
-> index 85596ce68c16..cdcace9b48f5 100644
-> --- a/include/linux/liveupdate/abi/luo.h
-> +++ b/include/linux/liveupdate/abi/luo.h
-> @@ -230,4 +230,9 @@ struct luo_flb_ser {
->  	u64 count;
->  } __packed;
->  
-> +/* Kernel Live Update Test ABI */
-> +#ifdef CONFIG_LIVEUPDATE_TEST
-> +#define LIVEUPDATE_TEST_FLB_COMPATIBLE(i)	"liveupdate-test-flb-v" #i
-> +#endif
-> +
->  #endif /* _LINUX_LIVEUPDATE_ABI_LUO_H */
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index df337c9c4f21..9a531096bdb5 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -834,6 +834,8 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
->  	INIT_LIST_HEAD(&fh->flb_list);
->  	list_add_tail(&fh->list, &luo_file_handler_list);
->  
-> +	liveupdate_test_register(fh);
-> +
+Move all accounting to dedicated functions and rename them
+accordingly.
 
-Why this cannot be called from the test?
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+---
+This is based on a suggestion by SeongJae Park. Comments welcome.
 
->  	return 0;
->  }
->  
+ mm/cma.c |   43 ++++++++++++++++++-------------------------
+ 1 file changed, 18 insertions(+), 25 deletions(-)
+
+--- linux-6.17.orig/mm/cma.c
++++ linux-6.17/mm/cma.c
+@@ -37,31 +37,27 @@ struct cma cma_areas[MAX_CMA_AREAS];
+ unsigned int cma_area_count;
+ 
+ #ifdef CONFIG_SYSFS
+-static void cma_sysfs_account_success_pages(struct cma *cma,
+-					    unsigned long nr_pages)
++#define cma_inc_page_counter(n, a)	atomic64_add((n), (a))
++#else
++#define cma_inc_page_counter(n, a)	do {} while (0)
++#endif
++
++static void cma_account_success(struct cma *cma, unsigned long nr_pages)
+ {
+-	atomic64_add(nr_pages, &cma->nr_pages_succeeded);
++	count_vm_event(CMA_ALLOC_SUCCESS);
++	cma_inc_page_counter(nr_pages, &cma->nr_pages_succeeded);
+ }
+ 
+-static void cma_sysfs_account_fail_pages(struct cma *cma,
+-					 unsigned long nr_pages)
++static void cma_account_fail(struct cma *cma, unsigned long nr_pages)
+ {
+-	atomic64_add(nr_pages, &cma->nr_pages_failed);
++	count_vm_event(CMA_ALLOC_FAIL);
++	cma_inc_page_counter(nr_pages, &cma->nr_pages_failed);
+ }
+ 
+-static void cma_sysfs_account_release_pages(struct cma *cma,
+-					    unsigned long nr_pages)
++static void cma_account_release(struct cma *cma, unsigned long nr_pages)
+ {
+-	atomic64_add(nr_pages, &cma->nr_pages_released);
++	cma_inc_page_counter(nr_pages, &cma->nr_pages_released);
+ }
+-#else
+-static void cma_sysfs_account_success_pages(struct cma *cma,
+-					    unsigned long nr_pages) {};
+-static void cma_sysfs_account_fail_pages(struct cma *cma,
+-					 unsigned long nr_pages) {};
+-static void cma_sysfs_account_release_pages(struct cma *cma,
+-					    unsigned long nr_pages) {};
+-#endif
+ 
+ phys_addr_t cma_get_base(const struct cma *cma)
+ {
+@@ -921,13 +917,10 @@ static struct page *__cma_alloc(struct c
+ 	pr_debug("%s(): returned %p\n", __func__, page);
+ 	trace_cma_alloc_finish(name, page ? page_to_pfn(page) : 0,
+ 			       page, count, align, ret);
+-	if (page) {
+-		count_vm_event(CMA_ALLOC_SUCCESS);
+-		cma_sysfs_account_success_pages(cma, count);
+-	} else {
+-		count_vm_event(CMA_ALLOC_FAIL);
+-		cma_sysfs_account_fail_pages(cma, count);
+-	}
++	if (page)
++		cma_account_success(cma, count);
++	else
++		cma_account_fail(cma, count);
+ 
+ 	return page;
+ }
+@@ -1029,7 +1022,7 @@ bool cma_release(struct cma *cma, const
+ 
+ 	free_contig_range(pfn, count);
+ 	cma_clear_bitmap(cma, cmr, pfn, count);
+-	cma_sysfs_account_release_pages(cma, count);
++	cma_account_release(cma, count);
+ 	trace_cma_release(cma->name, pfn, pages, count);
+ 
+ 	return true;
 
 -- 
-Sincerely yours,
-Mike.
+Jean Delvare
+SUSE L3 Support
 
