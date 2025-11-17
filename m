@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05991CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F59ECEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:41:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 641AC8E001C; Mon, 17 Nov 2025 13:35:48 -0500 (EST)
+	id 89B6D8E0003; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 619DF8E0002; Mon, 17 Nov 2025 13:35:48 -0500 (EST)
+	id 84BFB8E0002; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57D758E001C; Mon, 17 Nov 2025 13:35:48 -0500 (EST)
+	id 761FA8E0003; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 497AB8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:35:48 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E71A14D7A
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:35:47 +0000 (UTC)
-X-FDA: 84120952734.23.E11D3AF
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 384ED1C0009
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:35:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=Ow9517Gl;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf20.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763404546; a=rsa-sha256;
-	cv=none;
-	b=AVehx42Eywv6QORUT5Bgr4rMMTmzaLUia9eiPCj86UAbGYKKM+Dc/deBZY3lHOJVPWQOZ5
-	BnZtSpqU33mShuvo5828eCqjwKhMsYviK8q12KRfYp252cZ63XaAnY0LslKYcjMPk2DjZF
-	tmvAnyF7IAZ+WGJAdM47lv9crfTaxZw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=Ow9517Gl;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf20.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 605238E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:41:49 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F00AC13A0C5
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:41:48 +0000 (UTC)
+X-FDA: 84120967896.10.0B630B8
+Received: from mail-244127.protonmail.ch (mail-244127.protonmail.ch [109.224.244.127])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3A51B40014
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:41:46 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=JhmaQYtS;
+	spf=pass (imf11.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.127 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763404546;
+	s=arc-20220608; t=1763404907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zH5WVIO3cxOwoV7JqKcP1ToXH/X437vo+cbBXaQZW1Q=;
-	b=k6N1Rdd5uoua+SP4b01VU0n0oBbL+mDtwPTogFfcVa23Y4fpCth62jez+PuEW4iaUDG1rD
-	NAmH3niowgRe4j0IWWdehugWS/v+SsuRyCNE2UDY8IZYsnxEVfiVtyJaJ9cpzTFfdk5gGd
-	7B+MplDqfyvmoj9htxuHe+4Ag1lLZ4g=
+	bh=drgz0EubZvWbKD4XfDQItOg+MBM3cOXzoADsisa0KIg=;
+	b=bF34KKWaL0o9Oy/oTp7PTgGm95YQLOQtc4K+yTH2Kl10ccUPVQ8vBYClBv57PAtqeSRcyW
+	yaQElPKMZWHz9AObzEayEo6YnguAUnrfucYaUivAWw2faKWEKwkZW6CP0rutC4Pp+5YcX+
+	pP7PZ3x8fCcJ2LpIaGPtsIkzpXTfqUU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=JhmaQYtS;
+	spf=pass (imf11.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.127 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763404907; a=rsa-sha256;
+	cv=none;
+	b=fAHApTojXtUPvo6AoH1XBeMKkQ3EWeThZtViAcw6qmG61RVXLx8QoEBLP+APoJ3oZQXrkk
+	eSzbvL8LS0PeA1ShvyD2HYnq7ajXnb5faletG4Q7CxdXYTXFuYGMWMkeVb+F8a1plDHvMz
+	IHgVXg/OI0lnH6YeyESXBXxP2m60YmI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763404543; x=1763663743;
-	bh=zH5WVIO3cxOwoV7JqKcP1ToXH/X437vo+cbBXaQZW1Q=;
+	s=protonmail3; t=1763404903; x=1763664103;
+	bh=drgz0EubZvWbKD4XfDQItOg+MBM3cOXzoADsisa0KIg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Ow9517GlVkdXb0QK4zjYxuQOHLNlXBQV1cDfbfieA47R/oZppYFaXLUldJ1Tsq5ih
-	 cSQWOVBUEIXNRzU9Z0PwoISODUhBmTaVt175wXQkO+pXpKxbHzlR9FcwRIpzz9Tqw+
-	 IR2AUVjxkUQt58ykh1SuYyNEC2vg9WKSs0zAWb2vchX/qb4b2aj56AuCLDjILSWJKR
-	 y7thVVzmNLOKb57GussgLz8hjrzaxtGyskBAQgEksXSAQcDYFI0X/MRtnGpRX/UsQ8
-	 0/Q9NgRR+AM3VtjauiR5MqSjMmNx7MddjrniFxSo0IFFpcXYNxvJBOr2L2aXvHBWr7
-	 wsuBdyxI2rtlA==
-Date: Mon, 17 Nov 2025 18:35:38 +0000
+	b=JhmaQYtSykcyb/YbPWw44tSyjxwvQu5qj9ANFfDbmQQdN+t4wYrSeoPU5wr8awv7w
+	 Nv4+HeHNbI3AYKkBPALDXGd5ua+5005HNaPxAJX8zjyFtD4Bx8B3sNgDDBKPYZWuNR
+	 FgB1Gsw62xTc05ImjhbBcT4QlABgPkgxdGDAvgUqxcsa9ajoSzvQkkJViTm7A06PKT
+	 dz01/x1F8V82geoUmNU9B033ePiTpKpoT+jMsYrUhpoMOl6yknZtWVEU53UOHxjmLk
+	 eDRaMMJ3onhXZSMX+uzVZ2fETutWrQC2UQnuYO5bJ7DY+KapcpkkD/6AI0HVHWxo6q
+	 5jsrnA85HeUWQ==
+Date: Mon, 17 Nov 2025 18:41:35 +0000
 To: Alexander Potapenko <glider@google.com>
 From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
 Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
 	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 04/18] kasan: sw_tags: Support tag widths less than 8 bits
-Message-ID: <6rh6ynwrmh7afqkfyfphiy6rv2xjpdpcotzooqfye6lg7rddhe@betrc4geghsk>
-In-Reply-To: <CAG_fn=VUx7GkcjuYO3oRH7ptgKVtzQNChW1xKL+1SPfJ=XvWwQ@mail.gmail.com>
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <8319582016f3e433bf7cd1c88ce7858c4a3c60fa.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=VUx7GkcjuYO3oRH7ptgKVtzQNChW1xKL+1SPfJ=XvWwQ@mail.gmail.com>
+Subject: Re: [PATCH v6 06/18] x86/kasan: Add arch specific kasan functions
+Message-ID: <6nifmxti2xfbnrdtxbosojfw52sofc7zkyjcbcyeawz5lt372f@h6ksdfqddk4z>
+In-Reply-To: <CAG_fn=XFXFAvKS2+bc66FR+gw7rfSybETAOBUR_vneaVdF5F9A@mail.gmail.com>
+References: <cover.1761763681.git.m.wieczorretman@pm.me> <5be986faa12ed1176889c3ba25852c42674305f4.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=XFXFAvKS2+bc66FR+gw7rfSybETAOBUR_vneaVdF5F9A@mail.gmail.com>
 Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 89bdc726c809a41792e2e4dd98d31d2c2e8b87c5
+X-Pm-Message-ID: 24219ab0aedf934d23c98a54e0e420cc21587fb9
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 384ED1C0009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: x8pafzhrubp1obyejz8moxsry97x85n3
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3A51B40014
+X-Stat-Signature: 6fo18awdphwx3dwtttcs18s9wws5xyqy
 X-Rspam-User: 
-X-HE-Tag: 1763404545-863502
-X-HE-Meta: U2FsdGVkX1+pXFYgoXhIdAH4+cX2mToWYVLjc8Aw78WkQN4KzH/Mosk26om3mhn7QpMI5aJfUSvhPMbAk0jBvOKXsfypW0VXbM7tJWaBilPDI7M+W5ArxaRthTXcXpwC+KUcvtArX9zjz2Fk1Qr5Rp8h1NTQnkj9+RJtWHt2xhFypogYYW3xMQuEf5bZTuDDE4QhltZw0VgI5PqiKtEUGK/aI225egqKmNIl7jeMyhzPdqyHihvEaY0KTMcVa0m2mniKZJ5seTwmWCbCVUP3ynBCsDrpevWzO64GzE25hUADh9WlbI1N9xDUSa9fd96bqHoD4xE1LY114xSSGHnKwS8hL2AUsTRcs8Jta27dKZm8bDLwP5mWczt3FtGfrXFGtMoPo/Mhn4Jo7ngPVe9ONnL19wMbo4mfHExEn00xNHmUrzoWAsl2+3WH3PIeTIPfqaTR5GvQjYM251xmtKG2wJ2PCL/5Ix8NyifKq7Ss1gTeR0G39o423xx/k/b3KVxxlXHGMrOZ77fnKhd8NwqpVHSHN/+zARIjs3aLnhBP9GNi1Ti+Otx8iXifppdl3O/B0FRL91lCofPdwgVolEvVMv7unhWVVVCiWprpSYXx59vtRiV3LIhJIrbn+J2thMaS7amE++3LP25qy4aDsEifPlbV1MST/DdPJO03uxL8dHKagiLLzWRVWeLE0Vauu/OgPy9kGaibH0m4FL7wlFNGC5JXhRAFq9gnwXucTLeC9lq5h6/TkOVSnSxgc1RbhZDIJAKkOKP6WCap5ln+TCiNgXTa13NXbVQ39sCuuVti914UR0Ro9biB1yrClAHAB6CM0P6aaPOrjMlZmj1BtHdGMoG0H1/s2dCwxYR6RvUVO84MEiI2YEesRMIuQ9LBqH5Ufi1yKXM/x2zGFifu6VS8+0GCEcFLCByhzV9e2N69vPFn8GIVbmDC+Ik4tMTwwplSsnnNhLyoQVufC+mPph3
- 7ZQ1itTI
- ZDneZ1V/HY0Ph5EvH32ccKBklwjgoC4OuJ+3qGA7MpHh+1Ko66Uy68gRd56GxagyVPYzVi+Ip9CSGX3sYRyC1FcjHJf9kte7CX6tARe6r6cYR3xd6hAeqzHSqxBuWLdBF4irqq+16/hKjCRLNTy6Be7cCUfi/ifci9EdjPXikQJRml1Wqwm+1IAXnGeunKx9q0b/k6EIni5oycLgCsiW4cM/XxJDcvLd6Qim/HVCn+VNU8BZwwQ6St60uEO2PjpZTfKR9LQ0na0X2TpCmBQ4Bf8rb9M2ooLCHgZFzYCbJbADFdNSCSF/JndAba4+6AiYvkxS1FZLB/WbXJCMXFQXUBvjTRG7BPR5F64i+W/JS7OH7398=
+X-HE-Tag: 1763404906-71583
+X-HE-Meta: U2FsdGVkX18rQV8uNgSAXl57zaNrGCsgTMsFJNErcxBwlIO2I+m7FAZPLdX93mr/z/rvfLxbMD4bUsEoeU5IPId6BzIo5enGZEi5TSmtMcmKAQMLik8o+zQIMj0Bn2LBlacsDPlSEuSVQmbv+VJzT7Wt/d9FgrN6lOh0hm0ScRokJLw2gr6MteyQl94j+bGZ6CcCPZVUvR8QXbOxTNLKlt+PqdC+nSLJBqBBlIsG+jxxLsLESrYZ3NVxxF46dUj5rxwa9iiPUpFQY8t+v3VS1b7CQwK2+c348UAYRi5Y7qvLVKHdtzg8CxmX8RmxcJFF7My/ZVfFlFT7jqmwDiPI/lin7IzExUOHZR4dtSVlMpMQK2lTeDgzSvTdAOcef8Bs4k/XexbRWPQdaDlnj8Jt4B1FQR9wy2Ve+KbCq6rif2XqJUZadtgIQb3ldTfPrOwMW52WJ7eylE2QAvdJx/5tMZennvJljSNhRa7P0IzsgKNwYRNhzFyqZZofmR+NFygBGEZM8C7YxB6ZzZmU9ymvsy+jyv+g+j70hPJ5+r2ndbAboZKar1HiIzDTHlAu5gBjjfDATwIkZCJiC3NDVyUPJe2zhTzwxJwXu/Qy3x4ALNdgrNcg76HRuIR9NK/1JRuTSfS8o9tA9wnSyKqBS88I3exPIMB7cltslvnw83OLBVpdwwP2DIWCxO6RZfE2qWDKRqCj9Q+oKHd+x2x2JL0BDeVZ2UAvP3L4VWawjKPWAnk8PA6AZfm7y+l7k3bjxQ2FknJf5jmABO3722A/TWKY54mHcdH2zFanUjSzIOL3VjxmJ3+iTQstw1Vmztc2sVqyolY1lNAQr9B/H3gTxRru4aJL14TzC0DRbdI4/qmBJ2bo9AuIkEjN0Ouku9ubgIA6I6BJjqYIvbevJTMRwVlZEffder+4TCpVJeqK8YI+PZ13FzSLAL4Apc58p52pxeCjRAvUfww+HxZSJqA6Wmc
+ +AZs7joa
+ gbwo1Q/6moPwFVC7QRnnK3hTyxeyaFJb6WasUujh345aD6OlyKSDFw4K8+J3n9lWe0yJNhXHOFcwBUTsdV1leiSnOVgqvIRoiSaEeiWScuqAhXrlXIDnzK9Udt6FNGNns9/+pOwsrVnmzy4JApxjnMY9wrjal9NwzLRQsRglxzF0j0hXJVa1kU56x+xgdbQCqFKiTJ9qT6v+87tDR18j/DEeaOhO0C2EfPsIgKsGXdMtafrOTEBqSlXOUGXudAzmojshy+4o7ac1b8K4XvzjaJNVFQE+CGKo4e6b83Y4LczhYnqnrCrmAlwWSIM3ibrngPTY1/yfKn9LlZDf6JdLaBMpaeg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,23 +91,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-10 at 18:37:59 +0100, Alexander Potapenko wrote:
->> +++ b/include/linux/kasan-tags.h
->> @@ -2,13 +2,16 @@
->>  #ifndef _LINUX_KASAN_TAGS_H
->>  #define _LINUX_KASAN_TAGS_H
->>
->> +#include <asm/kasan.h>
+On 2025-11-11 at 10:31:13 +0100, Alexander Potapenko wrote:
+>> +#ifdef CONFIG_64BIT
+>> +static inline void *__tag_set(const void *__addr, u8 tag)
+>> +{
+>> +       u64 addr =3D (u64)__addr;
+>> +
+>> +       addr &=3D ~__tag_shifted(KASAN_TAG_MASK);
 >
->In Patch 07, this is changed to `#include <asm/kasan-tags.h>` what is
->the point of doing that?
->Wouldn't it be better to move the addition of kasan-tags.h for
->different arches to this patch from Patch 07?
+>KASAN_TAG_MASK is only defined in Patch 07, does this patch compile?
 
-I wanted to keep the split between adding the generalized definitions
-that Samuel did here, and my arch specific changes. Thought it'd be
-easier to review for people if it was kept this way. But maybe it's a
-good idea to just move the asm/kasan-tags changes here too, I'll
-rearange the code a bit between these two patches.
+Seems I forgot to remove it from patch 7. It's originally defined
+in the mmzone.h file and looked cleaner there according to Andrey.
+
+Thanks for noticing it's still in patch 7, I'll get rid of it.
 
 
