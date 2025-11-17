@@ -4,85 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54DF8CEACEF
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 04:39:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0889FCEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 05:21:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD68E8E0045; Sun, 16 Nov 2025 23:39:46 -0500 (EST)
+	id 1C41E6B0005; Mon, 17 Nov 2025 00:21:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAE268E0002; Sun, 16 Nov 2025 23:39:46 -0500 (EST)
+	id 19B516B0007; Mon, 17 Nov 2025 00:21:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C37F8E0045; Sun, 16 Nov 2025 23:39:46 -0500 (EST)
+	id 0B18D6B0008; Mon, 17 Nov 2025 00:21:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 89D3E8E0002
-	for <linux-mm@kvack.org>; Sun, 16 Nov 2025 23:39:46 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2BB13C0B78
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:39:46 +0000 (UTC)
-X-FDA: 84118845972.09.401CFD8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 487B3140004
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:39:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id E4D956B0005
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 00:21:03 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 86D721A0B53
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:21:03 +0000 (UTC)
+X-FDA: 84118950006.14.B9EE284
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C3AB04000E
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 05:20:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763356862; a=rsa-sha256;
+	cv=none;
+	b=NVC/94x6SwzdKpI6mK2B0cvCj5zamkitcW/slca4RXjq9Ta78U4VGorTSsFwA3oIQZjjHi
+	hG86vn/J9y+cxHk1WuOPF8ivHOSUM3dZkzzRLTX2kenEXyUpsPdxI5J1Jj640BDGPdaXlb
+	nAId+RTmiAb/j616f/MszA3GlVYXMIg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
 	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763354384;
+	s=arc-20220608; t=1763356862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bB0JrgIt+WdCJjlUhCH3IRPVdYnGt+gcykmSzqvytv4=;
-	b=mvr9w9om0EJfbYAjCj7AS9HQoIzUqa4+hsW+DTINmXmLhfalIhNEhnGBbsX2MjQ5M6kCLR
-	RsWb1DUL/hMZZQ93W/3E7dwAEh/7NPjHlSWAtulSxtuSJwm69vD5CCVxwvil6BCv3tB8sX
-	IDbRezVzKUoZsCKruPY3FzNCTS/cq9w=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763354384; a=rsa-sha256;
-	cv=none;
-	b=ZrOKPyTs8DQSc+C3Tms+85BIcngEpcdENI6HYvGvOjiKv1N5bu+x+7cptzJlnnHs/nMIjr
-	CJ6c1uhRWf6Qh4jbIctniY/LhAxgm99gkVKL2Qujop4q3qo5FCQ+R/Tq1gy/zxWELAVQBz
-	vhmFV+WwhxDSsZwGOKee8oqcABCXpdk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C693DFEC;
-	Sun, 16 Nov 2025 20:39:35 -0800 (PST)
-Received: from [10.164.18.52] (unknown [10.164.18.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 284213F63F;
-	Sun, 16 Nov 2025 20:39:39 -0800 (PST)
-Message-ID: <f016fc4a-8b95-4064-8808-5ce61bf5b7ec@arm.com>
-Date: Mon, 17 Nov 2025 10:09:37 +0530
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=XLX2Ugj9XFTODH57hZ8ezSqQmBQA0X3Iltju2XYAGv8=;
+	b=HdHCUrAkNobY805cxN8ATqhzgo6w0/Az6hr/l4Im5lhA9CLhADQ9EvWkw9gSX6ieSW/wjd
+	6RUnkOYUWFSSBvbiFACrXHaEi+wHFvjxvB1WQ7GnrBo59mAA/ciCYhdshXlB4l83bDlfjl
+	kRgSp+TP57tc9dJ9Pwt5syZSybJDx6U=
+X-AuditID: a67dfc5b-c2dff70000001609-ac-691ab0b5f189
+From: Byungchul Park <byungchul@sk.com>
+To: linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	horms@kernel.org,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ilias.apalodimas@linaro.org,
+	willy@infradead.org,
+	brauner@kernel.org,
+	kas@kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	almasrymina@google.com,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au,
+	dw@davidwei.uk,
+	ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: [RFC mm v6] mm: introduce a new page type for page pool in page type
+Date: Mon, 17 Nov 2025 14:20:41 +0900
+Message-Id: <20251117052041.52143-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: propagate VM_SOFTDIRTY on merge
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1763142412.git.lorenzo.stoakes@oracle.com>
- <addc338c8b33aea3c31202180448ea32ef37956b.1763142412.git.lorenzo.stoakes@oracle.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <addc338c8b33aea3c31202180448ea32ef37956b.1763142412.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 487B3140004
-X-Stat-Signature: m3qbqtynkk6dh4rdk3wmp53k5f66jj5k
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+5//uTlandbtaEgxCqHILhS8QkhBl383KvpQJJQrT+2Qmmxp
+	KgladltpVho2l6windMyp0tnajbN7iR2YZWlqdnNVi2TpoPalKhvP57nfZ7ny8tjVQUTwsvx
+	eyVdvCZWzSpoxZfRF2bbr4XIc6tMU8BUXsZC6a9kKO6sYcBb9p4Ck/U6gn7vKw5+17cg+NF8
+	h4XPTR4Ely4MYDA9zqThZ/kgBkftewSf8q+w8K6li4NS21roKOqloe5INYauk3dZyMocwlDv
+	dXNwoMbiL65M56D1ejYDuYOXMVSnd3LwpNbEwpuy3wz0OrNouGcsoeFbXjOGjuzF0GKeBAMP
+	+hA0l1dTMHDiPAvPztVSYK9/xsGZNjML3ZkdCNqaumjI8x1loSAjG8HQL3+lO6efgYLbb7jF
+	4STD5WJJU99XTKpKXlDkef4pmrga7lPEYXzNEbMtkVRaZhKDqw0Tm/UYS2ye0xxpf17Hkrv5
+	QzRxvI0gjpofFMk66GbXT9yiWBQjxcpJkm5OZLRCezHDwCQc3prscQelo5trDIjnRWGBWGiJ
+	NqCgYWzsyWcDzAphosvlxQGeIMwVLXn9flbwWDjOi68aKoaN8cJa0Xm7gQkwLcwQW3+WoAAr
+	hYViq+8hGimdKpZea8Qj+jjx3rkeOrCL/QPlhaqAjP0nB+0Fw/2i8JQX29tzmJFssHjL4qJz
+	0Bjjf3Hjv7jxv7gZYStSyfFJcRo5dkG4NiVeTg7fsSfOhvyPVJTmi6pBntaNTiTwSD1a2ekK
+	llWMJkmfEudEIo/VE5RH1oiyShmjSUmVdHu26RJjJb0TTeFp9WTl/IF9MSphl2avtFuSEiTd
+	X5fig0LS0dmL2oxDZzdT5rBF1sqn3aFgr7qysi6smNhPf+lZsT3Hsc6+3aqiNuWaXuqPa9P6
+	+Mjcz1GTI5b18aseLU/1fTB3t+2PWB2Frn4fmzjY6PvoTAkNX5fqCd49bdQM1h0tTl+amlY2
+	bsl4b8WGUb2RctH0qZGhN4oLd64yJMwaM+1tqJrWazXzZmKdXvMHhfad80QDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SXUiTYRiGefd+fy6Hn2vYx4KEURRRalDx9IN0Er1Elp4YCpWrPnQ4rbYS
+	jYKZZma5tJTmnGaZ5l/NVupmajHNsoLEKFZalv1BySxdy6lYWxF5dnE/F9fRw2F5Ca3kNOmH
+	RV26WqtipJR0+4aclS3NSk1UtZsCi7WJgcbJTLj21k6Dr+mzBCwNrQg8vkEWfnX2IpjoecDA
+	1+5xBNWXvRgsT3Mp+GGdwuBo/4zgi+k6Ax97R1hotMXAcO0nCjpOtWEYOfeQgcLcaQydPjcL
+	J+x1/vAtAwvdFX009LcaaSiZqsHQZnjLwrN2CwNvmn7R8MlZSEGfuZ6Cb6U9GIaNm6C3Kgy8
+	j0cR9FjbJOA9W8HA87J2CbR0PmfhwkAVA+9zhxEMdI9QUDqTz0B5thHB9KQ/6S7y0FB+/w27
+	KZJku1wM6R4dw+R2/UsJeWEqpoir65GEOMyvWVJlO0Ju1S0nBa4BTGwNpxliGz/PkqEXHQx5
+	aJqmiOPdOuKwT0hIYY6biQ1LlG7cL2o1GaIuMjpJmnIlu4A+mLc7c9wdZEB3txWgIE7gVwv3
+	PpiYADP8UsHl8uEAK/gooa7U42cph/kznDDYdfPPYT4fIzjvd9EBpvglQv+PehRgGb9G6J95
+	gv5Gw4XG5nv47x4q9JV9oAoQ5w8tFayV8sCM/UpOSzkuQvPMcyzzf8s8x6pCuAEpNOkZaWqN
+	dk2EPjUlK12TGbHvQJoN+X+l9vhMsR15nm1xIp5DqmDZMkGpkdPqDH1WmhMJHFYpZKe2CRq5
+	bL8666ioO7BHd0Qr6p1oIUepFsi27hST5Hyy+rCYKooHRd2/q4QLUhpQcvReZ3LKunfBCkdj
+	gvH70Fj7iqtZXxKrv/dO+CTkZH6I0uLTeu324Tt87Aa+jYTWdhoPXZpKehVxo6LycXzRMmp3
+	eE1igsern9pceTJh0VDe2sXWnjxqfu2OO82z1SGKXcrRjp/xs8nyPMPTwWNhoXGO+q0Xzev3
+	qLWJrXGmSBWlT1GvWo51evVvOoypUScDAAA=
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-HE-Tag: 1763354384-555602
-X-HE-Meta: U2FsdGVkX1/SlRFLZtU2XBmH6ayHbw/u/ok/682eIno18jczHae/oOTpXGGJCUHDGMjCvaS9Q7hMmEbRtCNX9F+N0nuDCyrCJBk6rPGzEm5tB6daC+377/dnkWX6+AcODEPqtply4yrqbAzR0RRZrEHxmAiRUxQBtkXnILCfELwi2HEDLhv4kiO4CYUscZ/F615oOOAAIrkY63hUogVLeYrfYyT8fp0YM2T6niu9fWUlPnocDVsAR7oUOC/PtJSy/u1gwTNsFlu5HRMWmMcMgBK6DJMjnhPj8XkcEuROjp8DQ0CK0JiSZevHiEK502YsfQLBP5PvQC2Qom5cIV9IYm9k/gldxM2WNRdp2wRrBGJwdQngj5knoFBBpLufmZbe4jMhxsWZnEHzlpJ+xNjJDWGJ3x2q5JmWdrx3msrygsWfBzywVyjoCaqj3daNooPbovvo8cHHsUqu1ynt/8rdk5MifEh7k+oD0vVEdiNU8MgrYe0rEQh3+xz8/TIfKh1C9y/n5yoAoSgPWwfQsG+2FIqFbGs5iAqixmxvmWjF48ZOT8hR0kEatDDE73NUxiAgNC0Abqi3s7RFTTWCSicqpk7fcmFxmMCdIQWQeaL7CBx4BjvcLwmqIYUMqhr9TSBMKYMcLP0UgWa2Pd0nlyzIXyWCGF1jf3etPZQCZkFyvw4Dxq4GtKIR+s1cfcDMqq8izFAvfiqQeSSpMZ9OAKkDa/o7/mVfJVQzp0TUTZKkv7k1iPXWi7H6C4bJbd0/cuv9ex7NMWjrcTUns+iuVrDbFVrx0SFKkC7UE7xwBP7OypSB6Fkj89CGWiTaB1FepkP8neG7M2v9nWvTYrqlc4cFYTzJy/fKM+90VZiWapvcV10ks3foKpXNfVD7oeeVZqiwu3kVjcrelbx7lujKa0bMzn/TT/Ce0i9lQCGDFOmPSt9i36B3EgRWYTCBVOqwmDJGsOiDcrASaNW/aDSjP/z
- mA+OE20f
- Sz+OVSYWAJWZxh9DXBv5UZT9Mlm7khOYXQDXZP45tpy4hgKlRlhvcnY5BUGMaqVpKOEXn6kzWZeHBBb8HZisl718HyNyNnKNTdjQANMrQ424wGnKbECakhAbpqbGxx6U1ikxyUq46b39J3itNNi0ozYo9LTcMHl24WI4ASrWcdiPEYcBcv0rCQeoFAZshey7kSJ+cdbAa7Hg33HD8YCEsLrwpvw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C3AB04000E
+X-Stat-Signature: m9mjk17o9stqxxo8q5kohcbmhgpikm4x
+X-HE-Tag: 1763356858-303782
+X-HE-Meta: U2FsdGVkX19lURbAomqfdYm/8I6JKT5ojK6ugM7lQ5hSiK2m5r9UdWJEGr7YKIcsgnJ6W83HrupoRESuabrJ56gbptA0Lx4P7S8tqFCoxjpZPArm/w/DB9TnCSQCM1Z/ZPjWqN/JuN/zaD5cVzuN86n0Tk8GMCrsVlhPW6fA/KTUi52eBSLpxrICfzuMKkjzJkXUWz26rR4OuywJUpbKSy/xsgJF5e1Rpm2Nz/vdIf9ovJVZ26mu1q6veq4Jh3P/tqHotZ6AiR9t4dC3VvY6WHsMy00xVGOBFI+tkAmEmn/1AhXgIWrj1YBBed81vGIZ0Ww0imhcB3g1JwFrgNS4ck7B0tsbY25B13jiluCXMptjoRWJui3bxUvxC+5V6M+hcPXEFr9Qc8CONfaIwutRMfkUDq2/qiDOhcEOB5+nI3IEusjcX7JOmr6P7VQnTTpTSHJeHKdBurxbt7N/pIP2U/r7EGEGKpA9hqOS2f26V0UWKO/0EEyoNEl9pqnqGThe4BOjSKjTaz1fNOjQdL33nfX+DM8fqAOf8Eck9TZaZpbRQgk7V/NOCG+14LeyNe31ot4E9d/s6u3JgAJeKLMe0Z1mKM3TN/94OVOcPFpHNhCK4Qi//w0jnyJfCrr8a8X5FzF4fWVQnTAfRkRdJV6GowCjkh/Zb2fMTzqcnvqsfU82KG9UgyOAdxGSvqqK7eNbn3jlzf+uF0qZxJZ15i4tP3E6eIcQxE0WQcm6UahMbeTl6gIQj0d9czrYU2exXO7r8YtW0rx1nMaMzTzkAHI2uGpJvx/5ba+iBIpr7CEt0T4Ncmj0x/fIpC/hWeITv26RDAoXc9k0lXfTyPNM6cHlhGg5LpGlheEEDBjaHcP6orCI9vJpJB5cHkEOHBJaSOh8kAGFEbbjYvkvjqZPtoLuEQMaMEskK5qTZl+psBtX0RAwK2Dle61e27ifrc5GKoaHhhCpku0Jqo/i48FH36P
+ SPV/dRi9
+ 8XJ/U2Yw/qS2mN6CtU+oJypuQq+5KEH7gpfeTOR/mtQyRdal0abWJFLqtFtGNYv29YKw1ocy4kBxNHdgdTkosd/qgd/07cZZEslbHqEbv0cA7i22vx8yhvMdiviom1/CUsbx0DgQOzqNSBFpL5dNKpIFWH+3DwOgfzYDpVWpxmDDlwJIQFA8frJye18ixcMOFzXMTcXwIh2nbvt4HWYCfJ02/7BJVFtHrKk2QHRkrK9fk7Tx5EYhuQqxgDrAGfJzQ+SiwrcZYidhUsBU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,76 +149,310 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+determine if a page belongs to a page pool.  However, with the planned
+removal of @pp_magic, we should instead leverage the page_type in struct
+page, such as PGTY_netpp, for this purpose.
 
+Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+and __ClearPageNetpp() instead, and remove the existing APIs accessing
+@pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+netmem_clear_pp_magic().
 
-On 14/11/25 11:23 PM, Lorenzo Stoakes wrote:
-> Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
-> establishing a new VMA, or via merge) as implemented in __mmap_complete()
-> and do_brk_flags().
-> 
-> However, when performing a merge of existing mappings such as when
-> performing mprotect(), we may lose the VM_SOFTDIRTY flag.
-> 
-> This is because currently we simply ignore VM_SOFTDIRTY for the purposes of
-> merge, so one VMA may possess the flag and another not, and whichever
-> happens to be the target VMA will be the one upon which the merge is
-> performed which may or may not have VM_SOFTDIRTY set.
-> 
-> Now we have the concept of 'sticky' VMA flags, let's make VM_SOFTDIRTY one
-> which solves this issue.
-> 
-> Additionally update VMA userland tests to propagate changes.
-> 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  include/linux/mm.h               | 23 +++++++++++------------
->  tools/testing/vma/vma_internal.h | 23 +++++++++++------------
->  2 files changed, 22 insertions(+), 24 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 43eec43da66a..fd9eeff07eb5 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -532,29 +532,28 @@ extern unsigned int kobjsize(const void *objp);
->   * possesses it but the other does not, the merged VMA should nonetheless have
->   * applied to it:
->   *
-> + *   VM_SOFTDIRTY - if a VMA is marked soft-dirty, that is has not had its
-> + *                  references cleared via /proc/$pid/clear_refs, any merged VMA
-> + *                  should be considered soft-dirty also as it operates at a VMA
-> + *                  granularity.
-> + *
->   * VM_MAYBE_GUARD - If a VMA may have guard regions in place it implies that
->   *                  mapped page tables may contain metadata not described by the
->   *                  VMA and thus any merged VMA may also contain this metadata,
->   *                  and thus we must make this flag sticky.
->   */
-> -#define VM_STICKY VM_MAYBE_GUARD
-> +#define VM_STICKY (VM_SOFTDIRTY | VM_MAYBE_GUARD)
->  
->  /*
->   * VMA flags we ignore for the purposes of merge, i.e. one VMA possessing one
->   * of these flags and the other not does not preclude a merge.
->   *
-> - * VM_SOFTDIRTY - Should not prevent from VMA merging, if we match the flags but
-> - *                dirty bit -- the caller should mark merged VMA as dirty. If
-> - *                dirty bit won't be excluded from comparison, we increase
-> - *                pressure on the memory system forcing the kernel to generate
-> - *                new VMAs when old one could be extended instead.
-> - *
-> - *    VM_STICKY - If one VMA has flags which most be 'sticky', that is ones
-> - *                which should propagate to all VMAs, but the other does not,
-> - *                the merge should still proceed with the merge logic applying
-> - *                sticky flags to the final VMA.
-> + * VM_STICKY - If one VMA has flags which most be 'sticky', that is ones
-> + *             which should propagate to all VMAs, but the other does not,
-> + *             the merge should still proceed with the merge logic applying
-> + *             sticky flags to the final VMA.
->   */
-> -#define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
-> +#define VM_IGNORE_MERGE VM_STICKY
+Plus, add @page_type to struct net_iov at the same offset as struct page
+so as to use the page_type APIs for struct net_iov as well.  While at it,
+reorder @type and @owner in struct net_iov to avoid a hole and
+increasing the struct size.
 
-Logically VM_STICKY should be the only flag qualifying for VM_IGNORE_MERGE. In that
-case should not VM_IGNORE_MERGE flag be dropped all together ?
+This work was inspired by the following link:
+
+  https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+
+While at it, move the sanity check for page pool to on the free path.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+---
+I dropped all the Reviewed-by and Acked-by given for network changes
+since I changed how to implement the part on the request from Jakub.
+Can I keep your tags?  Jakub, are you okay with this change?
+
+  Reviewed-by: Mina Almasry <almasrymina@google.com>
+  Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+  Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+
+This set is supposed to go via the mm tree, but it currently also
+depends on patches in the net-next tree.  For now, this set is based
+on linux-next, but will apply cleanly (or get rebased) after mm tree was
+rebased.
+
+Changes from v5:
+	1. Add @page_type to struct net_iov so as to use the page_type
+	   APIs even for struct net_iov. (feedbacked by Jakub)
+
+Changes from v4:
+	1. Rebase on the latest version of linux-next as of Nov 3.
+	2. Improve commit messages. (feedbacked by Jakub and Mina)
+	3. Add Acked-by and Reviewed-by.  Thanks to Mina.
+
+Changes from v3:
+	1. Rebase on next-20251023 of linux-next.
+	2. Split into two, mm changes and network changes.
+	3. Improve the comments (feedbacked by Jakub)
+
+Changes from v2:
+	1. Rebase on linux-next as of Jul 29.
+	2. Skip 'niov->pp = NULL' when it's allocated using __GFP_ZERO.
+	3. Change trivial coding style. (feedbacked by Mina)
+	4. Add Co-developed-by, Acked-by, and Reviewed-by properly.
+	   Thanks to all.
+
+Changes from v1:
+	1. Rebase on linux-next.
+	2. Initialize net_iov->pp = NULL when allocating net_iov in
+	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
+	3. Use ->pp for net_iov to identify if it's pp rather than
+	   always consider net_iov as pp.
+	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
+---
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
+ include/linux/mm.h                            | 27 +++----------------
+ include/linux/page-flags.h                    |  6 +++++
+ include/net/netmem.h                          | 15 +++++++++--
+ mm/page_alloc.c                               |  8 +++---
+ net/core/netmem_priv.h                        | 20 +++++---------
+ net/core/page_pool.c                          | 18 +++++++++++--
+ 7 files changed, 50 insertions(+), 46 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 5d51600935a6..def274f5c1ca 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+ 				page = xdpi.page.page;
+ 
+-				/* No need to check page_pool_page_is_pp() as we
++				/* No need to check PageNetpp() as we
+ 				 * know this is a page_pool page.
+ 				 */
+ 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a3f97c551ad8..081e365caa1a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4252,10 +4252,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+  * DMA mapping IDs for page_pool
+  *
+  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
+- * stashes it in the upper bits of page->pp_magic. We always want to be able to
+- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
+- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
+- * (since it overlaps with page->lru.next), so we must ensure that we cannot
++ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
++ * arbitrary kernel pointers stored in the same field as pp_magic (since
++ * it overlaps with page->lru.next), so we must ensure that we cannot
+  * mistake a valid kernel pointer with any of the values we write into this
+  * field.
+  *
+@@ -4290,26 +4289,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+ #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+ 				  PP_DMA_INDEX_SHIFT)
+ 
+-/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+- * bits used for the DMA index. page_is_pfmemalloc() is checked in
+- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+- */
+-#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+-
+-#ifdef CONFIG_PAGE_POOL
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+-}
+-#else
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return false;
+-}
+-#endif
+-
+ #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+ #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+ #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 0091ad1986bf..edf5418c91dd 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -934,6 +934,7 @@ enum pagetype {
+ 	PGTY_zsmalloc		= 0xf6,
+ 	PGTY_unaccepted		= 0xf7,
+ 	PGTY_large_kmalloc	= 0xf8,
++	PGTY_netpp		= 0xf9,
+ 
+ 	PGTY_mapcount_underflow = 0xff
+ };
+@@ -1078,6 +1079,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+ PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+ FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
+ 
++/*
++ * Marks page_pool allocated pages.
++ */
++PAGE_TYPE_OPS(Netpp, netpp, netpp)
++
+ /**
+  * PageHuge - Determine if the page belongs to hugetlbfs
+  * @page: The page to test.
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 651e2c62d1dd..ab107b05341e 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -114,10 +114,21 @@ struct net_iov {
+ 			atomic_long_t pp_ref_count;
+ 		};
+ 	};
+-	struct net_iov_area *owner;
++
++	unsigned int page_type;
+ 	enum net_iov_type type;
++	struct net_iov_area *owner;
+ };
+ 
++/* Make sure 'the offset of page_type in struct page == the offset of
++ * type in struct net_iov'.
++ */
++#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
++	static_assert(offsetof(struct page, pg) ==	\
++		      offsetof(struct net_iov, iov))
++NET_IOV_ASSERT_OFFSET(page_type, page_type);
++#undef NET_IOV_ASSERT_OFFSET
++
+ struct net_iov_area {
+ 	/* Array of net_iovs for this area. */
+ 	struct net_iov *niovs;
+@@ -260,7 +271,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
+  */
+ #define pp_page_to_nmdesc(p)						\
+ ({									\
+-	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
++	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
+ 	__pp_page_to_nmdesc(p);						\
+ })
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23..01dd14123065 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
+ #ifdef CONFIG_MEMCG
+ 			page->memcg_data |
+ #endif
+-			page_pool_page_is_pp(page) |
+ 			(page->flags.f & check_flags)))
+ 		return false;
+ 
+@@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+ 	if (unlikely(page->memcg_data))
+ 		bad_reason = "page still charged to cgroup";
+ #endif
+-	if (unlikely(page_pool_page_is_pp(page)))
+-		bad_reason = "page_pool leak";
+ 	return bad_reason;
+ }
+ 
+@@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
+ 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+ 		folio->mapping = NULL;
+ 	}
+-	if (unlikely(page_has_type(page)))
++	if (unlikely(page_has_type(page))) {
++		/* networking expects to clear its page type before releasing */
++		WARN_ON_ONCE(PageNetpp(page));
+ 		/* Reset the page_type (which overlays _mapcount) */
+ 		page->page_type = UINT_MAX;
++	}
+ 
+ 	if (is_check_pages_enabled()) {
+ 		if (free_page_is_bad(page))
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 23175cb2bd86..6b7d90b8ebb9 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -8,21 +8,15 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
+ 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
+ }
+ 
+-static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
+-{
+-	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
+-}
+-
+-static inline void netmem_clear_pp_magic(netmem_ref netmem)
+-{
+-	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
+-
+-	netmem_to_nmdesc(netmem)->pp_magic = 0;
+-}
+-
+ static inline bool netmem_is_pp(netmem_ref netmem)
+ {
+-	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	return PageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
+ }
+ 
+ static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a5edec485f1..27650ca789d1 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -699,7 +699,14 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
+ 	netmem_set_pp(netmem, pool);
+-	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	__SetPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+ 	 * page_pool_set_pp_info() is only called once for every page when it
+@@ -714,7 +721,14 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 
+ void page_pool_clear_pp_info(netmem_ref netmem)
+ {
+-	netmem_clear_pp_magic(netmem);
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	__ClearPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
++
+ 	netmem_set_pp(netmem, NULL);
+ }
+ 
+
+base-commit: e1f5bb196f0b0eee197e06d361f8ac5f091c2963
+-- 
+2.17.1
+
 
