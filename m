@@ -4,129 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1514BCE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 19:15:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12AE6CE8D6B
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 19:28:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76B538E0009; Mon, 17 Nov 2025 14:15:50 -0500 (EST)
+	id 16E236B0006; Mon, 17 Nov 2025 14:28:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 742BB8E0002; Mon, 17 Nov 2025 14:15:50 -0500 (EST)
+	id 145386B000C; Mon, 17 Nov 2025 14:28:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 631E38E0009; Mon, 17 Nov 2025 14:15:50 -0500 (EST)
+	id 05B1B6B000E; Mon, 17 Nov 2025 14:28:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 512118E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:15:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 050EB12DA6A
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:15:50 +0000 (UTC)
-X-FDA: 84121053660.08.A5005D0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 90BCE40009
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:15:47 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KFnY8QGn;
-	spf=pass (imf07.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id E9DB46B0006
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 14:28:21 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BFC3C025E
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:28:21 +0000 (UTC)
+X-FDA: 84121085202.06.5349CCE
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BA9B91C0011
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:28:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IPbmk6XH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763407699; a=rsa-sha256;
+	cv=none;
+	b=RQZjPknumIt507VHGegmQ2kpaJNm0rJ3suVECujCCKZuFEL60Y6N0pvQEisFDHWdTsxzaZ
+	iTIpDhIiPhvSDzqiBEkHoj8VPl5N6u+Pahsno/fOd+8Q3mfWMXnjApqwlEV1Xer8M1VmEV
+	WxPiDPo6qiyfOiJrCNVYrVyeIFyWr9I=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IPbmk6XH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=dmatlack@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763406947;
+	s=arc-20220608; t=1763407699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VgXj9j8UIpfH8qRYNNbd8ocQ5iSZL8eoT+nYWqQuZVE=;
-	b=Ggu10AEhrSjndiPeAgv5XNsfgKyKMYtWOVF3iiHOcENhHC6jFaMQfbz8s7un375Hij3YJM
-	Rt5KcZB8kYb0uHS5Lndzn38/pLJ7d7hxOpmYVuk/LC/4vRbALNZkCLTbpaO91vpbEb48dd
-	Qj6+5mrsMWIe7VyTDIMF4Ges4/t1EvQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KFnY8QGn;
-	spf=pass (imf07.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763406947; a=rsa-sha256;
-	cv=none;
-	b=AqAPot76TK5M32LJ3oIGD8BwAOSNvBQfYpIAA+OdeNgvVtV6lzxhQ1bfzDbknRSn2uJlqn
-	LallHqiHoGxGeklEGNq7sBFeKvURNgUDWTL7ArXi+p/KXCoGzIIK9rKQrilsJgoVFFuvLa
-	ATtVjhtGUlRRsdpWpv1h7qReefxVouY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763406947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VgXj9j8UIpfH8qRYNNbd8ocQ5iSZL8eoT+nYWqQuZVE=;
-	b=KFnY8QGnZKY5GpBYCAh4C/QoOLLZELrjGQoAyKAJecnNlkFW9RzFgWNFx5llyJXZYNE1Sa
-	80I8I0sCq2Be7Bbrm/3UOGyW+qN6kq2Crmzhiuk2J0VfrsYCn0kAoYGAHez54rA0DuNdwN
-	hUoFL3TUy4c8VHYFkgfyagFhQWS041M=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-gBlUe94QOTajJnQpyirvaQ-1; Mon, 17 Nov 2025 14:15:45 -0500
-X-MC-Unique: gBlUe94QOTajJnQpyirvaQ-1
-X-Mimecast-MFC-AGG-ID: gBlUe94QOTajJnQpyirvaQ_1763406945
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b2d2c91215so798520985a.1
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:15:45 -0800 (PST)
+	bh=4BRv+8HFratcORC0sQfd604lhFEiEUlZ0QaYy4EdL4s=;
+	b=19d6gwhYsBg5n9cxAzCjFDgDzzk7wo6G3F8rh4fVK9MxywNRIwd3Le1E4S18TKubR5NWXU
+	CQxZm/KNkiTQPCBjH/TA5gKHAZI9jyidRIVsxWeK08H9aS8WXjZTSVafguGkeVWpHpMntU
+	uklIgjgGaIOgDHeDCHAt7fBKTGPMETc=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-595910c9178so1181673e87.1
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:28:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763407698; x=1764012498; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4BRv+8HFratcORC0sQfd604lhFEiEUlZ0QaYy4EdL4s=;
+        b=IPbmk6XHlK8G9ow0GpS3rMD3qzUc4jGv5aOyUo3W08bKRojO9rOspbVJ/Zi3YUzW3P
+         keVIJeYBdH02gHRrJtNvWkPwzY1c4X0y+USNhmzBATUs3rP3hqBCaAQY8pL6dMISYvzw
+         LAI9v9U5MJZOafSpjlqcvvAqsaaXQgeZRWewN87+cCmog/l+yabEOKBFQ7BdPpC01R3d
+         rvjxI1OSSZ4MlvOLbQSSIa4vCqGvcafTM1MpoRTM1lir1xUXFpwE5XS3O/6gEX5+xfuM
+         nqqnkbKn8y1yOEd5TWtXSA0b/PaiQgA8zcb49PEFS2gWskS5Q+8Mbt4KZqlRb8cTwAIg
+         TJNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763406945; x=1764011745;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VgXj9j8UIpfH8qRYNNbd8ocQ5iSZL8eoT+nYWqQuZVE=;
-        b=AW7Uco1RneaCQWd0+wwz30yoFxsb9BxOPJtVzSZiDnLWE2/P9Gi3iyUms1fC2y8uRb
-         4yRln0cbjES91eJTADpAVlPVVlAPeMvqWnfrR1GHXkGAaq3vHCNx8guUpTcVESzvwQD0
-         ANJCyR0M8MDLFCgDy1iNbrpRxxXo7G8uXnKkC8MzxOuAhSSjs3LImO1oPAAzCJxlUPH/
-         Kj3BGQ8VXodwYK7Ix3Bk/eCoKqq6jzfvWIvunHun7uvG4ToyXNWE4aHrLWXyRG4Cy8vx
-         z7eKt2vp2zeIhkRHTvDBI7heKzvAUMXjJYEhI+STuqfc0H/Qvj7xZfwsTJCUGr6IAjJ3
-         bhRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjeRE7W/QkCz51JuNgClGHFma4q+QZX2IaQk9rVh5OTmZozJCNc4fycYv423zle6S+FtzyUZyPAA==@kvack.org
-X-Gm-Message-State: AOJu0YxcLaYEq22mT1vbqk2yxr3LFuq/jsVPEnQ5Gs8Nvn8xxgRGtRz9
-	yGV3+nyy4q/coPoKFOCS1ZP4MNPPyH9+FJlRM/O7Pev7oSJHdhK6IhnJZoqsusIjON+CVGjIA2c
-	vWCDxYphE3wAjuHEDRplE+LHFv4u4oMnPOgZ9W2W9q3uooTDA6TQK
-X-Gm-Gg: ASbGncvMkR+SIfraqHGdRzejbbm1QP+wZiR3jESw8eD2deWCGUZcwetKm+uRYgAalZO
-	oQibjHmRrxUXC/dWx8y2Nojwws36VimvY3mCQaEtmxsC6Mh+H7li5HNiG1OAazYu0OBk5KKT3s7
-	kyct+53ruqb5ZTYapFKEedp81u/Z4iCliSpzcwJRbK8okARUokGtbxFZR/qXKUTO4hm8IOGaaox
-	d2DwG+ayhEJ20H44blUBT1z3fBvzRiP37CmcrJrgIj8Ioar2VmzwrG/75A6yOBCMbRsqVGhyUbA
-	5UPSlTMXZAVJKQkiNpFDe6t+aILBJ9SSNOzaXR0ZlITHSCxStmq8GKUSZfmR8x/EtPxx6AmxNQu
-	gnEZlcyHFWs8=
-X-Received: by 2002:a05:620a:4708:b0:8b2:f31f:ae18 with SMTP id af79cd13be357-8b2f31fb082mr429792085a.34.1763406945095;
-        Mon, 17 Nov 2025 11:15:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEqsiIgJU6/qZqFx0ELIF8xrwp5k3EMVSYp5628XWNgHz3g2dIiOlJwNHDX+EKM6sNAUe91Lg==
-X-Received: by 2002:a05:620a:4708:b0:8b2:f31f:ae18 with SMTP id af79cd13be357-8b2f31fb082mr429786685a.34.1763406944538;
-        Mon, 17 Nov 2025 11:15:44 -0800 (PST)
-Received: from [192.168.2.110] ([76.65.77.217])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2e519bb84sm476682585a.34.2025.11.17.11.15.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Nov 2025 11:15:44 -0800 (PST)
-Message-ID: <fe0ced4d-170b-4144-84f9-88fcb4722936@redhat.com>
-Date: Mon, 17 Nov 2025 14:15:41 -0500
+        d=1e100.net; s=20230601; t=1763407698; x=1764012498;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4BRv+8HFratcORC0sQfd604lhFEiEUlZ0QaYy4EdL4s=;
+        b=sIuKufGrxOTsA8ORUvtgjeM48HcDwOFbZoasTq9VA42imkB22WVG8yka9xzSkcVDpy
+         iNjmtaLT4hIucJ9lwmPBXJayqqoU+2JBnMzyLeBEKxTr6t8agMvk3wE08PimxzuDYA+w
+         7MSO9jQ3luNf27lfTU+lIX98A1x7DC3sXUxPcyJSpb/p91ueFztcDsB7M7XNrxZItUSj
+         Juh2k19j8qe/2Pvdl0Dk+/nH22nyCT82SYZ1Ebmad82xcoQSTTzsWynIARGaMizYBjaQ
+         UV7lirkjEuBlYfSk2nRtRNJdw6VjLURdz+dbUNV4fiEoICvpzgcVqCy3DsqfEbwwSkg1
+         T/gw==
+X-Forwarded-Encrypted: i=1; AJvYcCVF4uRvAejnjClUXbioz8tj4E/Qk39UxUW+jpSmVFXXxKfCexyRW9B02tFu0aiHFoVbARuL/WjEGQ==@kvack.org
+X-Gm-Message-State: AOJu0YwZ0VTZVoc04xpY1mS3N304nDmlwFOfY2ZiaTZhan8wWjaML7Q8
+	1OLJWQ6xh/TnPo5a3GaRwRnDncY/dTUdZA5fOOKcEhDFAVATub9sL5Ond6fdoAitLwmZ9gyEQ6m
+	szLRy2WhAXfehwVpvw1Nw6fvm2a9PmKfj0Nne5R4l
+X-Gm-Gg: ASbGnctv4JCNjWBv6LOmnBQPB9j6+2uXm2ANd8UGRZLZI8CCa4nNQACGFJqupr7SgRy
+	wu2MMYb/Gx1JOWKviB1ysyKnlpkAKjc55WrL330B2a928Rv1QFddnLFtcjpgFrdQ2amBKCS8lG0
+	7bNaDa9Kv5uW/CqpecIfMY0GMFL3P4NaN/9ZA93FLiPtIkdjVwpUxvqSZuaaehuWZatq55pm2o3
+	ePoRh5UrjKDZpQ7v0fKn1Itr426btzhYN1IA9ECz5NOIed+mauawrnOuJXRxt/cuPBpdR2nODP4
+	/arxGQ==
+X-Google-Smtp-Source: AGHT+IGG0IuV9djGbvzmPZdLLDSHaSz0ZC8Mlezk0LH8epioFYDWl+Qb1KTas1rmPphaGx6WZjM3247aMHYjmr5MYwI=
+X-Received: by 2002:a05:6512:114f:b0:595:7dc5:165e with SMTP id
+ 2adb3069b0e04-595841a77femr4400958e87.25.1763407697311; Mon, 17 Nov 2025
+ 11:28:17 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 10/10] mm: thp: x86: cleanup PSE feature bit usage
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <cover.1762464515.git.luizcap@redhat.com>
- <8dc0695aa1c1073ec475be18e300ec1046344e84.1762464515.git.luizcap@redhat.com>
- <58caeb32-f50a-4056-828a-476d958955ad@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <58caeb32-f50a-4056-828a-476d958955ad@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KNZvfXyDeefDMGUD-lIvIjndkyNhehI5sODFpoJNYKU_1763406945
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 90BCE40009
-X-Stat-Signature: ptwhduoqg83bmjq3fnymmj6kfqyztwuk
-X-Rspamd-Server: rspam02
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com> <20251115233409.768044-19-pasha.tatashin@soleen.com>
+In-Reply-To: <20251115233409.768044-19-pasha.tatashin@soleen.com>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 17 Nov 2025 11:27:44 -0800
+X-Gm-Features: AWmQ_blZR7KFsAxkxa-ZIGOEZap3-3haAeROnQQby7Ige8teO6F_2irScEIZ73g
+Message-ID: <CALzav=edxTsa7uO7XxiUSx+DZiX169T4WL39vYsn3_WcUuVKrg@mail.gmail.com>
+Subject: Re: [PATCH v6 18/20] selftests/liveupdate: Add kexec-based selftest
+ for session lifecycle
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
+	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BA9B91C0011
+X-Stat-Signature: i9xtek8m3e6uzpkeie7jy8qthepoj7j8
 X-Rspam-User: 
-X-HE-Tag: 1763406947-12204
-X-HE-Meta: U2FsdGVkX1+7GK+2d9X/RUgPx7Lfebvw3+7OihnfAgF1QXhRTjsO4yARzO3tJgw6+w3nbLB/nHBYXGugTR5WkcPqP97ETQ6p70pGf07YXn51LsacGwNB6jP/2bDPKWpibUQJXS0FvPkKD1OT9KfpWVVgPL1T0yixiDWkiZZ1jC2jpq0Ff8cCpMq5SdCf3XbHaOXLwmDQYBsqGFrwo3PdW140pwrCMPMzcMoLzVlOJ24yLzQHhpQ4YOP6I6lX5Dds5x0Te4MzWAC0pILChxiQeW+WYkw277prfnAfEB2HVz91HT//UW9zH0n0i8i+ep9e57yLN/zrHb0nR3UvkioU5UBKceqr7Bwh/y56/muF5zAGm7t2KA2RhrpAEDdCJupXfZoiYq9gzG+0Mz0NtiE7PcraJEb8uoC2axfgl2M0TyCQcOvasniHyxxUKp9gBObUGgAO2QmzkeyymNcjfmzqfUPRs1ynz+jVTvskQcxSsINj372YBwBVE/nSiDWTtw2RES0MPqDhS2t07D8RTGdug746gn5xAwA1vwFHvi5H8oecOOu4vfiw5uwQiBPlH9pfKQfEK6nXfdNArKog3vQjbsRchqdXysPNSO9j/iEMqGTQU0VF2KJpJ+JyVT/4lxPpaCy5xLNiHiryZP6LGZH9zdUqPIeBqdYno0SmSTz5PB54Ssit7JddzSYHVFd6dzbU6pyi4xVqachven0y8KBnuptnnwsSG9P57E/TmR74xkRkfNohdxa2GB2jqaSK3Wpmjr9/f8V5aLdV9uXyeDlW1mURXuYtT/oVgHlxw9RR8yh6Rh2xU9cFfdgKI3zEKomKbgA92VygiqnrkfwAr1GXJ+mrjmDbSLzQeGiMTiIquXq0gBcWOHTHMY91+bxKXsUywmQb8DlxisbOZ/2FGjJlypCoalv2M9Ycdt9PZCQr7EN2K9hSSfqeq2aJNcYfgf513+dVXFHu8NJmKHG28cR
- VLkEoBvb
- Eot5EkSk5VyH8LSI83p+9Pbpa6fvAwjf83ljJhAD6D50MkqBQugYYNcM7YbkYeFlyBH69P0czj9uCoIjCAZpezclwsAitcSmkeC8e7Owc4oazSWFara6H881nVcKvgtuneS9dOaWPuuhzbTaQCcdbmsPPNpCDVDP/dMZQYcLSjJ0hLuMqgDCRC077Entb4GIebqbuqPdlkjwC/6YK+yVJLrkv21wClv3rECOEZtnu6Md93R+d6PPu9f0fOO5OB/cTbFpmm4TRYX6AiCAqORyAr2JowsB8vWqS40A8aIzLUpNsf0+C8I1mPsSTgyId11fd+lROTHQJP5AOqAcZmCdR+ytW6qL+TIBiKX+r8cgyqXZgjmrrK3RJUn//RJ75YM/NjP6Cn+C5T7bt23f/4MADxoyq7ZucPZZMcxyYWzR97acAdCjCEeb2WI61kpAD6HT5zMiqprzAwnEZBW/7tX8lGGgcjxYktVl/n5/6kUAZNbygreHsrxK2np+Qmw==
+X-HE-Tag: 1763407699-393049
+X-HE-Meta: U2FsdGVkX19xf+QNXy0ZoyShVXPzmwC0fENkV2m8agTfE5jMz/AzXCZKS/J36fDeO9HJQwjfsFLDwlgDmQu2A42zk3YYY+4o5sPFSXqvJgJTEV94BRKSk5zk/xdh7yMRr4T5CBcF5iINqK4kFw9svmhKEnnL3iDpfNiz8djDl97Zs0C3PCoHysOK8Z4g2PErgqE3CvAUt+Gmx6UHhwcHgOhK1SYD7LJr+6HK+4po6hBhBH4713sCmH2FUJnHJ0fB3/S26srL9yfZPy8Sk73cDFMSCou3LamfAwSua6U7Kk4m3TnOxpGPqzWU9tCL+ggWvWJV44Ln4AsXcn18WmTn/r5RgcuYS5dng+IKmYezBJczuks12UkoWrqJk9CV6qYOig8OijYCcW8WhC/ENu2wC/yvOEKEkx5XUucjRbDjSNAhA0jIowSbBmdV0/RpznxCWJGhmj6gyf6Ap+7T248tcxY5C6ROF/T8VMNnJmMOSZkcuejiCxFGEouIHmIF0IEnQdzjNe3Mh7EwRZ1fn9fTrTyHyLTIjMSxAmIlHVfkXH/dzlsdfkz5VTolacUbNWcOV/GmymFLi5JjulcUiZusjk90cy11o1AmgM5n0WmLD9VfSzpqjPbVkVtgpXAj+RbKW+D4eFgolAkKWihJFT740GCU3n5lv4ZKjty2uJHh/3AeQpQkqV5xUnRsiirB/AUP7MlGko2tcU0Ys/Q5ezIgj289PLQTw0b6JogYDJADQJt+uhSS17xF760+cJyeqfCn2HA2z7o1vwCxO5y3ivl/FUoxz13sFxQgFvHQ0edXlRtE+/KftHUM3pZYrqQ7N9OHA4tiXpAtN5sUde28lVZUTpmRp+7hAeiMEbYFMtHJC/Gf+kZOHQ9kcEsH/l/FjMHuKPyueQG7BQhjaMvyoB24tvuZ+nhpsDQrqQqTK//5+bcXTIR9jrKoHw+5XByMfYW1Wv81kGByP6P7UhYVN8w
+ ZIythyO8
+ Uo8y0IcwHJ5QulW0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,68 +139,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-17 12:49, David Hildenbrand (Red Hat) wrote:
-> On 06.11.25 22:28, Luiz Capitulino wrote:
->> Historically, THP support on x86 checked the PSE feature bit to enable
->> THP. On 64-bit, this check is redundant since PSE is always enabled by
->> default for compatibility. On 32-bit, PSE enables 4MB page support and
-> 
-> Or 2MB support with 4byte PTEs I guess?
-> 
->> must be checked. To clean this up, this commit:
->>
-> 
-> Likely the subject should start with: "x86/mm:"
+On Sat, Nov 15, 2025 at 3:34=E2=80=AFPM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
 
-You're right on both points. I'll fix the changelog for the next
-version.
+> diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/=
+selftests/liveupdate/Makefile
+> index 2a573c36016e..1563ac84006a 100644
+> --- a/tools/testing/selftests/liveupdate/Makefile
+> +++ b/tools/testing/selftests/liveupdate/Makefile
+> @@ -1,7 +1,39 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> +
+> +KHDR_INCLUDES ?=3D -I../../../../usr/include
 
-> 
-> 
->> 1. Drops arch_has_pmd_leaves() from common x86 code. For 64-bit,
->>     we assume PMD-sized pages are always supported
->>
->> 2. Checks for PSE only on 32-bit, using arch_has_pmd_leaves()
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->>   arch/x86/include/asm/pgtable.h    | 6 ------
->>   arch/x86/include/asm/pgtable_32.h | 6 ++++++
->>   2 files changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
->> index 08d109280e36..55b88de5178f 100644
->> --- a/arch/x86/include/asm/pgtable.h
->> +++ b/arch/x86/include/asm/pgtable.h
->> @@ -313,12 +313,6 @@ static inline int pud_trans_huge(pud_t pud)
->>   }
->>   #endif
->> -#define arch_has_pmd_leaves arch_has_pmd_leaves
->> -static inline int arch_has_pmd_leaves(void)
->> -{
->> -    return boot_cpu_has(X86_FEATURE_PSE);
->> -}
->> -
->>   #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
->>   static inline bool pmd_special(pmd_t pmd)
->>   {
->> diff --git a/arch/x86/include/asm/pgtable_32.h b/arch/x86/include/asm/pgtable_32.h
->> index b612cc57a4d3..3bd51cfa431e 100644
->> --- a/arch/x86/include/asm/pgtable_32.h
->> +++ b/arch/x86/include/asm/pgtable_32.h
->> @@ -45,6 +45,12 @@ do {                        \
->>       flush_tlb_one_kernel((vaddr));        \
->>   } while (0)
->> +#define arch_has_pmd_leaves arch_has_pmd_leaves
->> +static inline int arch_has_pmd_leaves(void)
->> +{
->> +    return boot_cpu_has(X86_FEATURE_PSE);
->> +}
->> +
->>   #endif /* !__ASSEMBLER__ */
->>   /*
-> 
-> Right, IIUC 64bit should neve rrequire this check.
-> 
+You shouldn't need to set this variable and $(OUTPUT). Both should be
+provided by lib.mk. Maybe the include is too far down?
 
+>  CFLAGS +=3D -Wall -O2 -Wno-unused-function
+>  CFLAGS +=3D $(KHDR_INCLUDES)
+> +LDFLAGS +=3D -static
+
+Is static build really required or just for your setup? If it's
+setup-specific, I would recommend letting the user pass in -static via
+EXTRA_CFLAGS. That what we do in the KVM and VFIO selftests.
+
+CFLAGS +=3D $(EXTRA_CFLAGS)
+
+Then the user can pass EXTRA_CFLAGS=3D-static on the command line.
+
+> +OUTPUT ?=3D .
+> +
+> +# --- Test Configuration (Edit this section when adding new tests) ---
+> +LUO_SHARED_SRCS :=3D luo_test_utils.c
+> +LUO_SHARED_HDRS +=3D luo_test_utils.h
+
+I would suggest using the -MD flag and Make's -include directive to
+automatically handle headers. That way you don't need to add every
+header to Makefile for Make to detect changes. See the end of my email
+for how to do this.
+
+> +
+> +LUO_MANUAL_TESTS +=3D luo_kexec_simple
+> +
+> +TEST_FILES +=3D do_kexec.sh
+>
+>  TEST_GEN_PROGS +=3D liveupdate
+>
+> +# --- Automatic Rule Generation (Do not edit below) ---
+> +
+> +TEST_GEN_PROGS_EXTENDED +=3D $(LUO_MANUAL_TESTS)
+> +
+> +# Define the full list of sources for each manual test.
+> +$(foreach test,$(LUO_MANUAL_TESTS), \
+> +       $(eval $(test)_SOURCES :=3D $(test).c $(LUO_SHARED_SRCS)))
+
+This does not build with Google's gbuild wrapper around make. I get
+these errors (after fixing the semi-colon issue below):
+
+clang: error: no such file or directory: 'luo_kexec_simple.c'
+clang: error: no such file or directory: 'luo_test_utils.c'
+clang: error: no such file or directory: 'luo_test_utils.h'
+
+> +
+> +# This loop automatically generates an explicit build rule for each manu=
+al test.
+> +# It includes dependencies on the shared headers and makes the output
+> +# executable.
+> +# Note the use of '$$' to escape automatic variables for the 'eval' comm=
+and.
+> +$(foreach test,$(LUO_MANUAL_TESTS), \
+> +       $(eval $(OUTPUT)/$(test): $($(test)_SOURCES) $(LUO_SHARED_HDRS) \
+> +               $(call msg,LINK,,$$@) ; \
+> +               $(Q)$(LINK.c) $$^ $(LDLIBS) -o $$@ ; \
+> +               $(Q)chmod +x $$@ \
+
+These semi-colons swollow any errors. I would recommend against using
+a foreach and eval. Make supports pattern-based targets so there's
+really no need for loops. See below.
+
+> +       ) \
+> +)
+> +
+>  include ../lib.mk
+
+Putting it all together, here is what I'd recommend for this Makefile
+(drop-in replacement for the current Makefile). This will also make it
+easier for me to share the library code with VFIO selftests, which
+I'll need to do in the VFIO series.
+
+(Sorry in advance for the line wrap. I had to send this through gmail.)
+
+# SPDX-License-Identifier: GPL-2.0-only
+
+LIBLIVEUPDATE_C +=3D luo_test_utils.c
+
+TEST_GEN_PROGS_EXTENDED +=3D luo_kexec_simple
+TEST_GEN_PROGS_EXTENDED +=3D luo_multi_session
+
+TEST_FILES +=3D do_kexec.sh
+
+include ../lib.mk
+
+CFLAGS +=3D $(KHDR_INCLUDES)
+CFLAGS +=3D -Wall -O2 -Wno-unused-function
+CFLAGS +=3D -MD
+CFLAGS +=3D $(EXTRA_CFLAGS)
+
+LIBLIVEUPDATE_O :=3D $(patsubst %.c, $(OUTPUT)/%.o, $(LIBLIVEUPDATE_C))
+TEST_GEN_PROGS_EXTENDED_O +=3D $(patsubst %, %.o, $(TEST_GEN_PROGS_EXTENDED=
+))
+
+TEST_DEP_FILES +=3D $(patsubst %.o, %.d, $(LIBLIVEUPDATE_O))
+TEST_DEP_FILES +=3D $(patsubst %.o, %.d, $(TEST_GEN_PROGS_EXTENDED_O))
+-include $(TEST_DEP_FILES)
+
+$(LIBLIVEUPDATE_O): $(OUTPUT)/%.o: %.c
+        $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+
+$(TEST_GEN_PROGS_EXTENDED): %: %.o $(LIBLIVEUPDATE_O)
+        $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH) $<
+$(LIBLIVEUPDATE_O) $(LDLIBS) -o $@
+
+EXTRA_CLEAN +=3D $(LIBLIVEUPDATE_O) $(TEST_GEN_PROGS_EXTENDED_O) $(TEST_DEP=
+_FILES)
 
