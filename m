@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F081ACE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 09:39:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15466CEBF61
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 09:41:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44F938E0017; Mon, 17 Nov 2025 04:39:47 -0500 (EST)
+	id 5B1BA8E0018; Mon, 17 Nov 2025 04:41:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4004D8E0002; Mon, 17 Nov 2025 04:39:47 -0500 (EST)
+	id 589A58E0002; Mon, 17 Nov 2025 04:41:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EEBF8E0017; Mon, 17 Nov 2025 04:39:47 -0500 (EST)
+	id 4C70F8E0018; Mon, 17 Nov 2025 04:41:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F4168E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:39:47 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 987B8160CEA
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:39:46 +0000 (UTC)
-X-FDA: 84119601972.17.7712E0B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C8DEFA000E
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:39:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VrIcBjkn;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A5578E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 04:41:11 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C969EBDE52
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:41:10 +0000 (UTC)
+X-FDA: 84119605500.06.5075BF4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 42926180009
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 09:41:09 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WZw1HmSe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763372469; a=rsa-sha256;
+	cv=none;
+	b=adXXR9xd2oJky3YV8U6sc7s+PlpTqK+Bi+yiI15H626US0/LOV1hnSEGNFevpqOtlWZ8iq
+	qUEkVVZcNRyK6iSFYxThlYITp/R/6fUrow/S44n3RfotbDWsMoMV6NhFtvYt3w64Ir6YlE
+	1BFidvk7huPpYlW28efyMnlcHXVrrF4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WZw1HmSe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763372385;
+	s=arc-20220608; t=1763372469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iV/FimtO7U/otW9cCTARA/7ioIIQY0YAPNh26uSzNbM=;
-	b=2Ty9UIHaWaHjqno5NopM0/CWZ/0Dceg1ofcsoNg/xfv3jnfQshahdAnblywDT2I4JcWEuA
-	CneoK/SAzV2nUv4mfDkkmErEQiiatt3B2q6Z4La/zZec37fQPfCVbHxH163zPMfgWagyGQ
-	TqUD+LG0P8qlBmZ7lvGNfZnBJDY4c0c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763372385; a=rsa-sha256;
-	cv=none;
-	b=cWQF+Anlgu2x+JccTTnOI8aB7uXBnrzSX/oCLi2Iz5JCAmdBBg0+obR6fZesfDD4Ox9e8i
-	e1Ubmvm8w42QPOiPiiSfHwsLnivlJszSpI+Ky3SDPh34Ir1CfRBeOvo+dqsc4gKMyLbdk9
-	EnlVwrtIkTnEYwsMnwHnkNuotHyXbX4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VrIcBjkn;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=8r4Dt6eTV56zOHcv9pZBlwFiP5MsCGLM4hQ8wg14fm8=;
+	b=xfO74MC4vqgYC2wKipqeVWhUSh1RTn9TWFDoKyxRfIfxA5BuY2Geul567CI4sCHM7lOIzg
+	hueSPon0QSoyVZox9z8hR5I6gsQ+yQ+3c2dLg1kwz4KkOjzQ4IzcVHrkDuqXQDdcrGNswA
+	SL78xGyJ0IeFrv0KHvB1flHzDpNeD+Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76CBC43AD2;
-	Mon, 17 Nov 2025 09:39:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41A8C4CEF5;
-	Mon, 17 Nov 2025 09:39:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C987601A0;
+	Mon, 17 Nov 2025 09:41:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294ACC4CEF5;
+	Mon, 17 Nov 2025 09:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763372383;
-	bh=MueF4AgwT93dApePMMTWoYsPIe8Jukq3D2A3XYfg2mA=;
+	s=k20201202; t=1763372468;
+	bh=LD55be3edOh4ynHvlMDm/XHjOHztjZ05X5TLRldv6n4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VrIcBjknGsBFyF62JCtHoJY3dAG2Ln2SAikRzI11A3XlsD6lsGRXvqSfFwWWtK3MF
-	 jVeMd4xHNYU5FQYXyJTBawhoCDnBoHVZRnk3ONkOYPQcc14xghwDicmJdEbRv54HL2
-	 hfDuxsODEfXAHlUf7l4qhxUXT7kbgUjKA6zjub9wZXXbozuCBWjVEsAUfsBrfVOkuI
-	 dtvXTg9fEj57GfoAafCoeA3Rw1iQRf0AQ/4Hk9pqGraPC8FG5JB75HvFNTSMcRA+sK
-	 qYrEdZyA5gn0XRsdpf9P6AMOQZ/BD3eZzSCZcaRkP9WcPE8lOrU/w8NIKCtdsjzTID
-	 wzcGaQDTnfO+A==
-Date: Mon, 17 Nov 2025 11:39:17 +0200
+	b=WZw1HmSe6e5SFAhumoJoHd0IXoPQTP7+MM7Y+b8c2vcXdarBS83di9/hyntP8Bwin
+	 QoUWbpZMGv8BUQLEhg5/B1QhjlObNdlqeqG91VFVurp9EWnhWkrfPd+wi4VUWtf3HO
+	 l5tPEffj4bxsk3DE84PYjUHLcb9eQokPwtApJ8+RsXygkP3/+K2tUR2j2V+GkAS/rx
+	 8hVpFGSKb16yzjkjNRPW9MAxWCY1qHhILkXy91NV+lQrn0avug6sJRmSAbrWCZE0Us
+	 /cwZ1J7nuJ9g5szal7SnFP7JqhWGSgsgSX5FVOj5dyIHN1vYwYt9xNndhqpSqSQ7dX
+	 VsczE/cGhyjIA==
+Date: Mon, 17 Nov 2025 11:40:43 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -93,23 +93,22 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 08/20] liveupdate: luo_flb: Introduce
- File-Lifecycle-Bound global state
-Message-ID: <aRrtRfJaaIHw5DZN@kernel.org>
+Subject: Re: [PATCH v6 10/20] MAINTAINERS: add liveupdate entry
+Message-ID: <aRrtmy--AWCEEbtg@kernel.org>
 References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-9-pasha.tatashin@soleen.com>
+ <20251115233409.768044-11-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251115233409.768044-9-pasha.tatashin@soleen.com>
-X-Stat-Signature: xxzg4414mgg54u8qg44hpw6zhyuy7rik
+In-Reply-To: <20251115233409.768044-11-pasha.tatashin@soleen.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8DEFA000E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763372384-903248
-X-HE-Meta: U2FsdGVkX1/7YT7YOK/vbOQotjn+5COgqruhgQjDCU1C8i7wk+bLt/JwoedTsXhll5yAJoO+QjtBPUWNDJNMVj5cFX5jJD40iue8w/LGsOEAc1YKo0mLKgemBJzi0ipAI1KBwEBAlPQJtd8FPRdGo04Ag+CS8Y/9wOJjOyroQv6ohQsjx/ChTuGUlSNhfDz6cW5z0BhP+GymHNfQ/d9Xpa1Pq7H6DPNwSSaqSEcBX8T8PmMVkRzd9bz1AxYZh1ln/B5iZ9m1isxrHQ3oF7/rd9cV+jm6Ae3/98XeZfOALQ0rP5ng7+OO0oH51Q4oxif/en81yHFVBwyOkDDcTKk+mHDk5Tptzh8PaPu+4YUuSaEUzDBEsOtJzECUg/dSQIgNLWjtG56TAqSgtILp5lpGMEqYwL7rGEUvPJfj3iF8lUKsOi7sv5sHrphaThZ9xGi/H9Wgq+nTzYv5mTQ7iFVL8UQnFX3Jem3pvnEwelMDK6aExSTl4xb4gU76T4Nv0355b5aLhaFAMob7ofIYNVIGLz1COV+oY3WKqJDXLiqMv05+VR5C6Sm8YTlpOcM5uxcTL6XFjy5I/SxFyBE1tI1gEwr1STKqHIib04PU/EMKSzqWQEdCZTtT/TRHtDAVxR6c+MF5aPMHa9qHZWRopD3skypbU3kgLcwYIpnHAszgqkRwnWxXu8x5vOn3FfaX/IT6fd2UVnZs32xuG8f0dxsxGksybf00AnMir1x6QpYKVteJNbK5xyToZcUuH41zjpk4bhjXZ/5RIg6aIJdgX/kAbXKWD9xB/dR9bMGzDy4jPzIUz+0xQ79FzW7wrKLLd8EizoAkXVt8S8WBuGYe5ftPXfPJXw3TQvRdGaO6CTpQ77N9iQQoBux1q68TMJo7Gy9W1rIh0gYNkUsXxo679n4PDlMtMsvLpdy2zyfszCf7APZ3RprbWEzM+hM0ML95CbE99bg2gDganAvuisGVGJg
- tgFaaRVV
- AOsfZOq42IQPYy1Z5c5AERl2CoDexpLGCgIzQjQtdBEPDdKwODZFPATRUJwtcIMZKbG9Abky/JqLdsuQiNuL2Nm1DP+61R1rci+01gJ2mexUg9LMRlIyv226eFjJk2gO8QmDXknx/6byLql8b/kkuWMiDzsUUQ7DqtKVhsdGlLrRvzbTozSo5Y7P3mqDw+OWuOmv6ySC/hh+4LAbUvC3Em0xRe4fCIbwIaaEPxCuszd+y7c4SaJaaY40cob49sjJRH9ZnfHijEHZ6cKhdNdwXkeKtJML87lqEePu+v8I5xjY0xCXK2BplCNF/N4Rjd0X7UntofUqSqAlTqKWXZfRqKpArUJ8v8eMYsRu876Behzhcz9XDQ95QQag1hVzymX8wdxMpWj09OxdV02X/DsB/2jZ/ktq/ahQREZI76FD73lVfAuKPou8wEv5+ww==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 42926180009
+X-Stat-Signature: 6aift9q4ebp1b4cqmu1qikupf595fczw
+X-HE-Tag: 1763372469-278381
+X-HE-Meta: U2FsdGVkX18t3XafeDKF7f9GdolXCuX3SOTht4PrrPIHj585fy7/EkHgasr+W82i1XBBvnbucb6Q2T2eblib6pY8kQNyyHBlPjjHrOdM6KIuR7xOKOPa3DYUJvfbKILpN7pjkMkKFD60eruLnGixSUt4BfjjhDt4inXexdOAm6f6q/s+afLXkbnbyIom3SEk65noBtVbeU/KN3jZMW3TI4WlDcWzy6GdspBoex7iR23MBemiicBkgfQjiAQT8Cprji4QUtPvlfnj1Pur8qCS2PcKLpvwyC6F9h7dri8Iroto2uJwKbSKNSZqV5/EUG/ncqABgpkVIQFyV5pSipfKPsha0X4RlTiTgjwscyrE1BPuFZP5UhFmAlRgngsBUV/ebXQ5r1DFeZ5QD85cXeK5V5evNpKOwpxzB4QdeIbNo16PnGV7Z8f+3/qSEUgj6j8IbdQ7iV41NuQUQzXk5Ff+blEfbAqPmMcHJfrUPeANJ/UrHSM8HFriCzqubSxh+QrONrgQtNrI/0QicYS/+EEZWoLh1zVJzO0AFOIZaZN/HZy5QVwyrJgUEe3Mqncny4qrXvqVI7HtQzqcn+vfjSayB6/ClTR+DKoYWFSkXlQEanUHUul/VzWL9JxdtI5kEMWx95m6Pu+2AK5WE5kDS5sqiYPs6aLZ6ieBrLIGfCWslLsYOgkhxfHopLwPhzAzFKr/DR3A/3rACslnG7O2dTpyxHgu8lYxpZGSYNJI3C0gBIXizWy7ZxZtu1vs0YQzY5dl39PXCFOGYXvczVhGq9aLVU0kAIplTk7XTINIopRptOMEU4MFQcCAm6NX9UM9sv34/v4w8G/4tYrgAVneHDFG7Kzb2NjklPXBXGSon66AfT6RhqYvJ3dHOrsiWYcYW1kSwsgT6cR6n8DLKVEqz7OZ0E66N57r+4nPzZQD/O3k/jchOtA+gn3Nz6K9Cph4FHFTio6u4+5QVLsjy4Xo98j
+ sXvkIKmy
+ wVRANvnSzIRwjGISee6DJINvvVfgi0zErf48pzsiyEitD4U/fudC7XlDQdjCFJWBUIc/bKf6CYi7TUIMNUDWQiHU4oyvrmfU/qMYfIKyYokiHMjMeEim7Fz25mNLYlpqMNBP5x+NaDQ24FMVoyA4CGZ4iyX3rGMGvxbcSpEj+zodAQiB4CeKxb78gQMmAkh97+m0mh7YroPm7uFj7Z1AQ9qfnoui4ItXxsNHAF3W6/q3TZjJ5IU3u4M0ATFexZt4UMu81xlMcTjeZuzuUXXeKq71dJ2av/0b2NJt23jTXfhUTz9fGGRw4GSPAFXB+eM64VlShcKDFstG+M4ucJm/U/82+dsB8lsr+SHk5sHHezT153H4RDFBMc4MQBqYmvPHGAYG6SSXuIETNltsXJftPu2INNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,403 +117,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 06:33:54PM -0500, Pasha Tatashin wrote:
-> Introduce a mechanism for managing global kernel state whose lifecycle
-> is tied to the preservation of one or more files. This is necessary for
-> subsystems where multiple preserved file descriptors depend on a single,
-> shared underlying resource.
+On Sat, Nov 15, 2025 at 06:33:56PM -0500, Pasha Tatashin wrote:
+> Add a MAINTAINERS file entry for the new Live Update Orchestrator
+> introduced in previous patches.
 > 
-> An example is HugeTLB, where multiple file descriptors such as memfd and
-> guest_memfd may rely on the state of a single HugeTLB subsystem.
-> Preserving this state for each individual file would be redundant and
-> incorrect. The state should be preserved only once when the first file
-> is preserved, and restored/finished only once the last file is handled.
-> 
-> This patch introduces File-Lifecycle-Bound (FLB) objects to solve this
-> problem. An FLB is a global, reference-counted object with a defined set
-> of operations:
-> 
-> - A file handler (struct liveupdate_file_handler) declares a dependency
->   on one or more FLBs via a new registration function,
->   liveupdate_register_flb().
-> - When the first file depending on an FLB is preserved, the FLB's
->   .preserve() callback is invoked to save the shared global state. The
->   reference count is then incremented for each subsequent file.
-> - Conversely, when the last file is unpreserved (before reboot) or
->   finished (after reboot), the FLB's .unpreserve() or .finish() callback
->   is invoked to clean up the global resource.
-> 
-> The implementation includes:
-> 
-> - A new set of ABI definitions (luo_flb_ser, luo_flb_head_ser) and a
->   corresponding FDT node (luo-flb) to serialize the state of all active
->   FLBs and pass them via Kexec Handover.
-> - Core logic in luo_flb.c to manage FLB registration, reference
->   counting, and the invocation of lifecycle callbacks.
-> - An API (liveupdate_flb_*_locked/*_unlock) for other kernel subsystems
->   to safely access the live object managed by an FLB, both before and
->   after the live update.
-> 
-> This framework provides the necessary infrastructure for more complex
-> subsystems like IOMMU, VFIO, and KVM to integrate with the Live Update
-> Orchestrator.
-
-The concept makes sense to me, but it's hard to review the implementation
-without an actual user.
- 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
->  include/linux/liveupdate.h         | 116 +++++
->  include/linux/liveupdate/abi/luo.h |  76 ++++
->  kernel/liveupdate/Makefile         |   1 +
->  kernel/liveupdate/luo_core.c       |   7 +-
->  kernel/liveupdate/luo_file.c       |   8 +
->  kernel/liveupdate/luo_flb.c        | 658 +++++++++++++++++++++++++++++
->  kernel/liveupdate/luo_internal.h   |   7 +
->  7 files changed, 872 insertions(+), 1 deletion(-)
->  create mode 100644 kernel/liveupdate/luo_flb.c
+>  MAINTAINERS | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-> index 4a5d4dd9905a..36a831ae3ead 100644
-> --- a/include/linux/liveupdate.h
-> +++ b/include/linux/liveupdate.h
-> @@ -14,6 +14,7 @@
->  #include <uapi/linux/liveupdate.h>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 500789529359..bc9f5c6f0e80 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14464,6 +14464,17 @@ F:	kernel/module/livepatch.c
+>  F:	samples/livepatch/
+>  F:	tools/testing/selftests/livepatch/
 >  
->  struct liveupdate_file_handler;
-> +struct liveupdate_flb;
->  struct liveupdate_session;
->  struct file;
->  
-> @@ -81,6 +82,7 @@ struct liveupdate_file_ops {
->   *                      associated with individual &struct file instances.
->   * @list:               Used for linking this handler instance into a global
->   *                      list of registered file handlers.
-> + * @flb_list:           A list of FLB dependencies.
->   *
->   * Modules that want to support live update for specific file types should
->   * register an instance of this structure. LUO uses this registration to
-> @@ -91,6 +93,80 @@ struct liveupdate_file_handler {
->  	const struct liveupdate_file_ops *ops;
->  	const char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
->  	struct list_head list;
-> +	struct list_head flb_list;
-> +};
-> +
-> +/**
-> + * struct liveupdate_flb_op_args - Arguments for FLB operation callbacks.
-> + * @flb:       The global FLB instance for which this call is performed.
-> + * @data:      For .preserve():    [OUT] The callback sets this field.
-> + *             For .unpreserve():  [IN]  The handle from .preserve().
-> + *             For .retrieve():    [IN]  The handle from .preserve().
-> + * @obj:       For .preserve():    [OUT] Sets this to the live object.
-> + *             For .retrieve():    [OUT] Sets this to the live object.
-> + *             For .finish():      [IN]  The live object from .retrieve().
-> + *
-> + * This structure bundles all parameters for the FLB operation callbacks.
-> + */
-> +struct liveupdate_flb_op_args {
-> +	struct liveupdate_flb *flb;
-> +	u64 data;
-> +	void *obj;
-> +};
-> +
-> +/**
-> + * struct liveupdate_flb_ops - Callbacks for global File-Lifecycle-Bound data.
-> + * @preserve:        Called when the first file using this FLB is preserved.
-> + *                   The callback must save its state and return a single,
-> + *                   self-contained u64 handle by setting the 'argp->data'
-> + *                   field and 'argp->obj'.
-> + * @unpreserve:      Called when the last file using this FLB is unpreserved
-> + *                   (aborted before reboot). Receives the handle via
-> + *                   'argp->data' and live object via 'argp->obj'.
-> + * @retrieve:        Called on-demand in the new kernel, the first time a
-> + *                   component requests access to the shared object. It receives
-> + *                   the preserved handle via 'argp->data' and must reconstruct
-> + *                   the live object, returning it by setting the 'argp->obj'
-> + *                   field.
-> + * @finish:          Called in the new kernel when the last file using this FLB
-> + *                   is finished. Receives the live object via 'argp->obj' for
-> + *                   cleanup.
-> + * @owner:           Module reference
-> + *
-> + * Operations that manage global shared data with file bound lifecycle,
-> + * triggered by the first file that uses it and concluded by the last file that
-> + * uses it, across all sessions.
-> + */
-> +struct liveupdate_flb_ops {
-> +	int (*preserve)(struct liveupdate_flb_op_args *argp);
-> +	void (*unpreserve)(struct liveupdate_flb_op_args *argp);
-> +	int (*retrieve)(struct liveupdate_flb_op_args *argp);
-> +	void (*finish)(struct liveupdate_flb_op_args *argp);
-> +	struct module *owner;
-> +};
-> +
-> +/**
-> + * struct liveupdate_flb - A global definition for a shared data object.
-> + * @ops:         Callback functions
-> + * @compatible:  The compatibility string (e.g., "iommu-core-v1"
-> + *               that uniquely identifies the FLB type this handler
-> + *               supports. This is matched against the compatible string
-> + *               associated with individual &struct liveupdate_flb
-> + *               instances.
-> + * @list:        A global list of registered FLBs.
-> + * @internal:    Internal state, set in liveupdate_init_flb().
-> + *
-> + * This struct is the "template" that a driver registers to define a shared,
-> + * file-lifecycle-bound object. The actual runtime state (the live object,
-> + * refcount, etc.) is managed internally by the LUO core.
-> + * Use liveupdate_init_flb() to initialize this struct before using it in
-> + * other functions.
-> + */
-> +struct liveupdate_flb {
-> +	const struct liveupdate_flb_ops *ops;
-> +	const char compatible[LIVEUPDATE_FLB_COMPAT_LENGTH];
-> +	struct list_head list;
-> +	void *internal;
+> +LIVE UPDATE
+> +M:	Pasha Tatashin <pasha.tatashin@soleen.com>
 
-Can't list be a part of internal?
-And don't we usually call this .private rather than .internal?
+Please count me in :)
 
->  };
->  
->  #ifdef CONFIG_LIVEUPDATE
-> @@ -111,6 +187,17 @@ int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
->  int liveupdate_get_token_outgoing(struct liveupdate_session *s,
->  				  struct file *file, u64 *tokenp);
->  
-> +/* Before using FLB for the first time it should be initialized */
-> +int liveupdate_init_flb(struct liveupdate_flb *flb);
+> +L:	linux-kernel@vger.kernel.org
+> +S:	Maintained
+> +F:	Documentation/core-api/liveupdate.rst
+> +F:	Documentation/userspace-api/liveupdate.rst
+> +F:	include/linux/liveupdate.h
+> +F:	include/linux/liveupdate/
+> +F:	include/uapi/linux/liveupdate.h
+> +F:	kernel/liveupdate/
 > +
-> +int liveupdate_register_flb(struct liveupdate_file_handler *h,
-> +			    struct liveupdate_flb *flb);
-
-While these are obvious ...
-
-> +
-> +int liveupdate_flb_incoming_locked(struct liveupdate_flb *flb, void **objp);
-> +void liveupdate_flb_incoming_unlock(struct liveupdate_flb *flb, void *obj);
-> +int liveupdate_flb_outgoing_locked(struct liveupdate_flb *flb, void **objp);
-> +void liveupdate_flb_outgoing_unlock(struct liveupdate_flb *flb, void *obj);
-> +
-
-... it's not very clear what these APIs are for and how they are going to be
-used.
-
->  #else /* CONFIG_LIVEUPDATE */
-  
-...
-
-> +int liveupdate_register_flb(struct liveupdate_file_handler *h,
-> +			    struct liveupdate_flb *flb)
-> +{
-> +	struct luo_flb_internal *internal = flb->internal;
-> +	struct luo_flb_link *link __free(kfree) = NULL;
-> +	static DEFINE_MUTEX(register_flb_lock);
-> +	struct liveupdate_flb *gflb;
-> +	struct luo_flb_link *iter;
-> +
-> +	if (!liveupdate_enabled())
-> +		return -EOPNOTSUPP;
-> +
-> +	if (WARN_ON(!h || !flb || !internal))
-> +		return -EINVAL;
-> +
-> +	if (WARN_ON(!flb->ops->preserve || !flb->ops->unpreserve ||
-> +		    !flb->ops->retrieve || !flb->ops->finish)) {
-> +		return -EINVAL;
-> +	}
-> +
-> +	/*
-> +	 * Once session/files have been deserialized, FLBs cannot be registered,
-> +	 * it is too late. Deserialization uses file handlers, and FLB registers
-> +	 * to file handlers.
-> +	 */
-> +	if (WARN_ON(luo_session_is_deserialized()))
-> +		return -EBUSY;
-> +
-> +	/*
-> +	 * File handler must already be registered, as it is initializes the
-> +	 * flb_list
-> +	 */
-> +	if (WARN_ON(list_empty(&h->list)))
-> +		return -EINVAL;
-> +
-> +	link = kzalloc(sizeof(*link), GFP_KERNEL);
-> +	if (!link)
-> +		return -ENOMEM;
-> +
-> +	guard(mutex)(&register_flb_lock);
-> +
-> +	/* Check that this FLB is not already linked to this file handler */
-> +	list_for_each_entry(iter, &h->flb_list, list) {
-> +		if (iter->flb == flb)
-> +			return -EEXIST;
-> +	}
-> +
-> +	/* Is this FLB linked to global list ? */
-
-Maybe:
-
-	/*
-	 * If this FLB is not linked to global list it's first time the FLB
-	 * is registered
-	 */
-
-> +	if (list_empty(&flb->list)) {
-> +		if (luo_flb_global.count == LUO_FLB_MAX)
-> +			return -ENOSPC;
-> +
-> +		/* Check that compatible string is unique in global list */
-> +		list_for_each_entry(gflb, &luo_flb_global.list, list) {
-> +			if (!strcmp(gflb->compatible, flb->compatible))
-> +				return -EEXIST;
-> +		}
-> +
-> +		if (!try_module_get(flb->ops->owner))
-> +			return -EAGAIN;
-> +
-> +		list_add_tail(&flb->list, &luo_flb_global.list);
-> +		luo_flb_global.count++;
-> +	}
-> +
-> +	/* Finally, link the FLB to the file handler */
-> +	link->flb = flb;
-> +	list_add_tail(&no_free_ptr(link)->list, &h->flb_list);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * liveupdate_flb_incoming_locked - Lock and retrieve the incoming FLB object.
-> + * @flb:  The FLB definition.
-> + * @objp: Output parameter; will be populated with the live shared object.
-> + *
-> + * Acquires the FLB's internal lock and returns a pointer to its shared live
-> + * object for the incoming (post-reboot) path.
-> + *
-> + * If this is the first time the object is requested in the new kernel, this
-> + * function will trigger the FLB's .retrieve() callback to reconstruct the
-> + * object from its preserved state. Subsequent calls will return the same
-> + * cached object.
-> + *
-> + * The caller MUST call liveupdate_flb_incoming_unlock() to release the lock.
-> + *
-> + * Return: 0 on success, or a negative errno on failure. -ENODATA means no
-> + * incoming FLB data, -ENOENT means specific flb not found in the incoming
-> + * data, and -EOPNOTSUPP when live update is disabled or not configured.
-> + */
-> +int liveupdate_flb_incoming_locked(struct liveupdate_flb *flb, void **objp)
-> +{
-> +	struct luo_flb_internal *internal = flb->internal;
-> +
-> +	if (!liveupdate_enabled())
-> +		return -EOPNOTSUPP;
-> +
-> +	if (WARN_ON(!internal))
-> +		return -EINVAL;
-> +
-> +	if (!internal->incoming.obj) {
-> +		int err = luo_flb_retrieve_one(flb);
-> +
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	mutex_lock(&internal->incoming.lock);
-> +	*objp = internal->incoming.obj;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * liveupdate_flb_incoming_unlock - Unlock an incoming FLB object.
-> + * @flb: The FLB definition.
-> + * @obj: The object that was returned by the _locked call (used for validation).
-> + *
-> + * Releases the internal lock acquired by liveupdate_flb_incoming_locked().
-> + */
-> +void liveupdate_flb_incoming_unlock(struct liveupdate_flb *flb, void *obj)
-> +{
-> +	struct luo_flb_internal *internal = flb->internal;
-> +
-> +	lockdep_assert_held(&internal->incoming.lock);
-> +	internal->incoming.obj = obj;
-
-The comment says obj is for validation and here it's assigned to flb.
-Something is off here :)
-
-> +	mutex_unlock(&internal->incoming.lock);
-> +}
-> +
-> +/**
-> + * liveupdate_flb_outgoing_locked - Lock and retrieve the outgoing FLB object.
-> + * @flb:  The FLB definition.
-> + * @objp: Output parameter; will be populated with the live shared object.
-> + *
-> + * Acquires the FLB's internal lock and returns a pointer to its shared live
-> + * object for the outgoing (pre-reboot) path.
-> + *
-> + * This function assumes the object has already been created by the FLB's
-> + * .preserve() callback, which is triggered when the first dependent file
-> + * is preserved.
-> + *
-> + * The caller MUST call liveupdate_flb_outgoing_unlock() to release the lock.
-> + *
-> + * Return: 0 on success, or a negative errno on failure.
-> + */
-> +int liveupdate_flb_outgoing_locked(struct liveupdate_flb *flb, void **objp)
-> +{
-> +	struct luo_flb_internal *internal = flb->internal;
-> +
-> +	if (!liveupdate_enabled())
-> +		return -EOPNOTSUPP;
-> +
-> +	if (WARN_ON(!internal))
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&internal->outgoing.lock);
-> +
-> +	/* The object must exist if any file is being preserved */
-> +	if (WARN_ON_ONCE(!internal->outgoing.obj)) {
-> +		mutex_unlock(&internal->outgoing.lock);
-> +		return -ENOENT;
-> +	}
-
-_incoming_locked() and outgoing_locked() are nearly identical, it seems we
-can have the common part in a 
-static liveupdate_flb_locked(struct luo_flb_state *state).
-
-liveupdate_flb_incoming_locked() will be oneline wrapper and
-liveupdate_flb_outgoing_locked() will have this WARN_ON if obj is NULL.
-
-> +
-> +	*objp = internal->outgoing.obj;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * liveupdate_flb_outgoing_unlock - Unlock an outgoing FLB object.
-> + * @flb: The FLB definition.
-> + * @obj: The object that was returned by the _locked call (used for validation).
-> + *
-> + * Releases the internal lock acquired by liveupdate_flb_outgoing_locked().
-> + */
-> +void liveupdate_flb_outgoing_unlock(struct liveupdate_flb *flb, void *obj)
-> +{
-> +	struct luo_flb_internal *internal = flb->internal;
-> +
-> +	lockdep_assert_held(&internal->outgoing.lock);
-> +	internal->outgoing.obj = obj;
-
-So it is assignment or validation? ;-)
-
-This one is a copy of liveupdate_flb_incoming_unlock(), 
-
-> +	mutex_unlock(&internal->outgoing.lock);
-> +}
-> +
+>  LLC (802.2)
+>  L:	netdev@vger.kernel.org
+>  S:	Odd fixes
+> -- 
+> 2.52.0.rc1.455.g30608eb744-goog
+> 
 
 -- 
 Sincerely yours,
