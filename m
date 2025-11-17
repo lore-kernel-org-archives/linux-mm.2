@@ -4,132 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2E9CCE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C4F1CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EFD08E0023; Mon, 17 Nov 2025 13:46:06 -0500 (EST)
+	id B4BA68E0028; Mon, 17 Nov 2025 13:51:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C7EB8E0002; Mon, 17 Nov 2025 13:46:06 -0500 (EST)
+	id B237E8E0027; Mon, 17 Nov 2025 13:51:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DD7B8E0023; Mon, 17 Nov 2025 13:46:06 -0500 (EST)
+	id A60348E0028; Mon, 17 Nov 2025 13:51:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA5168E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:46:05 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2EC386DC6
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:46:05 +0000 (UTC)
-X-FDA: 84120978690.04.2C9816F
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C7CD118000F
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:46:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CjCXQzL6;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FC2B8E0027
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:51:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4B0ABB771A
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:51:18 +0000 (UTC)
+X-FDA: 84120991836.18.B79BDEF
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E0AAE40011
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:51:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lSk8kQ2u;
+	spf=none (imf27.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763405163;
+	s=arc-20220608; t=1763405476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9L0PWDNFpIwYA9Tdoy4gSq9mMo+JaoLTYqKodPhceek=;
-	b=GQRJbTVaiV5eEo2t/NSGmMtHJ8Yhw5nyRgtRzrX5VLu7hcuI55regMSDh+0u1kBAVij2PU
-	czQUktisSdQzP9gKRxhwgLlu3/foi8afmswWQ26nKNhrFEWkF+TQT9fU4bqWhWpZwgVjkj
-	nUbKKLFYOEIsB1gts2vu1t/4jXRNGLU=
+	bh=7aNsSoqL4Oh9FppblaXOE+GKfYhRL9+dtetncwBHI7I=;
+	b=aAR9C5u0uNCuZa1+EjvY+8kO46wS9J2iUD1Frxhlxxv2p6kxo+HQ1fhCONWs9POmiVHNbo
+	XtWs0ZL9VnCumcrRapD+FM3Yvy6skSyAIT44mS6XdQH6FjjrTY7G9z3SnE/WAAZPijzmfC
+	5bcyaiNxgGTuhkYPKtQuglXp7F8a4sw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CjCXQzL6;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763405163; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lSk8kQ2u;
+	spf=none (imf27.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763405476; a=rsa-sha256;
 	cv=none;
-	b=NzgLa91Kvd7/sLKCf+Gvqclh900qu05m1WiD8w/I5sB0lwHdvuSlmEF3anWzNAdfsGeb0z
-	Ojw4gY6USnYQhKY8UxwzPHgnUkwL72iqlGCKJaDO3aK8gj64/Z42jyg7zn7qiA7PLHCMPn
-	pNPkIleGPAynrMCgBduApdeFRqJHiXc=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so8035124a12.1
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:46:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763405162; x=1764009962; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9L0PWDNFpIwYA9Tdoy4gSq9mMo+JaoLTYqKodPhceek=;
-        b=CjCXQzL6wJ7XG5kb5f2K6Rru31jYJ5jZITYUdwvh+heatBwGvQwkL13bAccVpw6rTn
-         +iE/SAMqLWQvQAPZ5QOsX5Noj4/i6oi1FbxxUa6OLxgQajK0su62SwzNqorNSZR5j4Wt
-         tqeoXyhkTkSoYmK7iMJ5Nd24vHE6hgpLmgU2P/dBYj7KFombzbDFnHiOoFJ3QqC/cDHe
-         k+WwusMCi6preI+6aQ/Sct2EhUwxIsC7KkQXz6+F3QfzQqMfLQNj8kwfJKsZQmvtrBBV
-         YjFBKSvNpmGsXnbeKBSgWAY/vzo36tgVWp5ciSNGELn+rLdfTGrjBOvusAKCb5WyQKVU
-         EIQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763405162; x=1764009962;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9L0PWDNFpIwYA9Tdoy4gSq9mMo+JaoLTYqKodPhceek=;
-        b=PjOY+UlBOnCH/+ZVgFWE6IAcToAJdXJRv08nSD96LuaJW4ueu1zwa7QiVrPdHupBbd
-         gzDjJUdMUA4NMUOTCmTrbwqK54sPAmCVhlf10FzR2o9jBLXE+HhEPQvpsIn6ycFggnsa
-         Pd5hoVtFPJWrCe/bz/ZoZquSOhiAc/jP161QTPiYJNeqHlV1j8tfZ6nmmsDLROqTY0mF
-         mBB6LgrOYq9MzRXGqPciSZQNCxC5d2hXUxd5N+NSJCgn9LmOFjZARf/r5hQ0jjfSiLI2
-         iOpJkoJAGWDEWKgMiTo3/t6qT3ihgqFLazZTedCYKhTG91pzIimTVOiVJv5vDVYi5QY3
-         dH1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWCe0LOuzl9/5EVo4V5aV9hKVqQUnF8LsnC2j06OcMoLkVygglCOhaR90aIdfEtrD13HAdUoKopfA==@kvack.org
-X-Gm-Message-State: AOJu0YxChxo9zTF0ouMToUI2QrCAzEer1WJe3PZy52jWwdwx82VRBr0f
-	fu43Tei1TQsqxa15E5IuagHKD0swdqLS4CdmX+JOUmbcowbty1jHS11JQ+e2zzjIkPcRw/oUqI2
-	J0gA7DbMpdcPCL1FzQTNqjTwB8jHixLQQWKkvuiNjaA==
-X-Gm-Gg: ASbGncvOtIBsA6+IhiThsn4Eue+fwkoOg2KmCnobDZq7nMuZOUrRMr5diqDKpGgkmce
-	YnDPT3qLDZc/icyR2FYM3EquzKMo7Cdslrl8hclQ1B5UEsnjlWnJtc6qp/zW3gIG/hhZC2ewDX6
-	1HpfsnD/iRw9K/D5rqKnUCYOmPaWdQxcmZ/PacXQJLs11v/G/BSaAFm6vGewtMd6/QF3BY/4Oh0
-	9FU+Bx1m3w75mw7wonAPl/maSTTnYeJ9e+gyeerTkSyQp2Yk9pOTG3Msr1X4EFCu/Z6DfrapS33
-	IDk=
-X-Google-Smtp-Source: AGHT+IHTS9jPR539K9D88biPeBpW9OArAzo2mtlZDaqK9aFcfZt0G8LfWzYGUIJ/Wa0xrvoSHRJmq2qQHBOC/QtRtDw=
-X-Received: by 2002:a05:6402:50cf:b0:640:c9ff:c06a with SMTP id
- 4fb4d7f45d1cf-64350e1e3c6mr13108669a12.15.1763405162259; Mon, 17 Nov 2025
- 10:46:02 -0800 (PST)
+	b=XLiQXcmKUjNla8MA7hxNGpamDEmibpF9Fo6QRl4XrWZ4Z3qr+FVYdSeC8zM1ExQN60Sd4t
+	2Dc2GmnWllBWyD+9QWryg1gTTbh1DABeoMf1yvz6L3g3wxpzJ/rAqwIafDyP0v3FZIpe3R
+	QKBajMaR6T8cNVKs62DEvS3e/iakimg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=7aNsSoqL4Oh9FppblaXOE+GKfYhRL9+dtetncwBHI7I=; b=lSk8kQ2uqPCfHJcpdG530/aCCq
+	O14UG2HC5+fxKf5XeN0v+ppv0P4u9+RBP9YpGI1a5LDxmwzUBtpGJDmS+rLQ68GNJD8f0DKvhuoy/
+	GQroSx1idJ6x7HDdAgVbHT5Tunx2PeqJZg5Z6kRzgJPlRf4ljfC9iXNBUAEHuIGYEote0t3nnPSuG
+	BJoAEJNwGOCDH/5xx58ixucIcTUZhJJs1yTvdZC9DbaU/x2XjUPlV8PIfY//v+7q+IrHS2+WQcTze
+	YkeXb0EGr5ryOu+SttJr4o7uES7Pq4mhbdO2QGFAfYg5GPWcH247xbr/4WeMPu16SoUGDN8RELLVX
+	16fnJYMA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vL4Jk-0000000Gflu-13Cq;
+	Mon, 17 Nov 2025 18:51:12 +0000
+Message-ID: <3bf1793a-2ffd-4017-b4bf-dc63f3a2a7c8@infradead.org>
+Date: Mon, 17 Nov 2025 10:51:11 -0800
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-15-pasha.tatashin@soleen.com> <aRr13Q1xk9eunilo@kernel.org>
-In-Reply-To: <aRr13Q1xk9eunilo@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 17 Nov 2025 13:45:24 -0500
-X-Gm-Features: AWmQ_bmw4ppe8XlI-hroPbUkA515iug7-539nPCKhJSWJUeaHTdUDKi6DO6pH6k
-Message-ID: <CA+CK2bC2_r4Nbjh0CuJwcMeGxpctSZMTodG8Cf=zoue6zj-gyw@mail.gmail.com>
-Subject: Re: [PATCH v6 14/20] liveupdate: luo_file: add private argument to
- store runtime state
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/7] lib: Support
+ ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Conor Dooley <conor@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ Dan Williams <dan.j.williams@intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Drew Fustini <fustini@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: james.morse@arm.com, Will Deacon <will@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, linuxarm@huawei.com,
+ Yushan Wang <wangyushan12@huawei.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ Andy Lutomirski <luto@kernel.org>, Dave Jiang <dave.jiang@intel.com>
+References: <20251117104800.2041329-1-Jonathan.Cameron@huawei.com>
+ <20251117104800.2041329-4-Jonathan.Cameron@huawei.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20251117104800.2041329-4-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C7CD118000F
-X-Stat-Signature: bx6skm1rz89r96npsc8cm7y7ysy66o6u
+X-Rspamd-Queue-Id: E0AAE40011
+X-Stat-Signature: wkwc17e3qkcpkay6jfxp5y5my8zhgaws
 X-Rspam-User: 
-X-HE-Tag: 1763405163-436267
-X-HE-Meta: U2FsdGVkX1+Sh+kBXMKzEdV7jFx0xNrsD1rzM9fcj3tkr4wKWVIbajaBhcEQAwgmNUzinv5fhNPIEHG3T9DOh/pS9rzOvQP1v4PU7U6YaLqZvRLi10rEAkZeaiCa19mNK0aSMv2EZcsVJhk6ToHPuH0KEBLBMGWjnL+Vmsh6eeaWavK8Fo7/tFjCuZWTsQU1kjZtYOqeTGz6WH2ybMVaVkOzvt0FJn6qrcDRU2VyDbFEmiB0tiZi0qHbHGypqcjZQIPb9dOJehbGNtr0HR/3VTZHwrp7KYjobSQwcbrjw0spbzeS9012k+Mi2i6rjw1cm/U/PLAMKzdNrXrbuIC2Eb93W7J/SFTcEJeipyuaFbOW0CRvtFcVCdobBC5OV1smovXNDLdzC21uuPXL5rGTZCOisi3J9pYGHfQDzgI84rRUAkKW3YRFf9iw+s2ARkmE5Fn8/yAGHQ3JRwKVfoYuSTPyc82UUDQo52YZ7zDJXBOSODxdL1XlB0BeuUXWp4qs39bxtoKJoW/wswi3MOUTNJQby5EVELV+wqy9qLlpDOmN1fEzpgh4eDMYCPabeGZZ5H3Ux33UbWPCDKdIEZHh2Cjgl0/AgbPWjaRN8pFwB6ZwSdPLcA7obDowdU50G7NtKEaQXDowBy1eTz3KkgYt0FZ8Z3pT9p6QPmZB3LGKgAKgURhUMqw0QdDIZEIGzzJjfmA96fIKzsmWRhvH2Okm6jYS+DLR9m4CqgvYWVWy2VIHeOshlx+0jwlCeir9b4LjEIPaIjf5uc0JHRdil8kKxwmQ8aip2TwkiDqU5T5C1AgGBGhVvk2qSgcN1EhhVjFi8cFmk4S8c5SYYTt6gXSoa7N4jJN94zEdjnknGjaf41wgYH3tgrUW8m+h9FctAkXKq5D5WIX0ufYpGu4p8k+Cja9yhqTBX1zYm/5W1KzYQjbQjSZVElWCP2zRVlT3OZABe9KllxHo+4nnpINQXyt
- PmdFTGeA
- bvjMQNwkiNXt6jv205DaU8WjPYm+vLwhmq+XGzrd6gqa+eKlV3OlrNEPBbpYM+mFSVcq7avqDJ1jVFkbshSlfuekHB1HVpi0ynI8kJPsFnUvRmeyy2o40DkUnaTiwNXd4yMJHHwaEr5GlZYraplQ5C0XfM9vZHZYq6ynRKhtxjKhvADofvF0vzyHQ7pmJP8VQocrsCEBjs0zGMGWz7f7DtNY/vTousS0JbdjFQ9JnB9sdqn+YYxLMtXbpRU7u02B/v5z9HwZZKC2E4J8DEspo7wcQbk/4sqDmFPkQSjvZFfGd08UtdR8Pf3FQ4b1I9Aox1wUwPfz/v1tAFgKiCgkBK9x4QucrIQVg/KuDSXCwwj8Wnadwv6Z7k8Uf0/3NorBE/aDiIkue/5DJS4mFn5MLjMYq3kbBPXB1n3GI5y40ljsr7A9cF/8qd02zTqle5Hwq1kHaKQaMwYZz2fosXFYIaIL470/Speni9QyvOyiyrD5r4PG9lizvSjqAZgTOua7UVT0A672aR35bE8YUGqomDZrA89sDAWGnU3QM
+X-HE-Tag: 1763405475-786278
+X-HE-Meta: U2FsdGVkX18KLQsRZ8M7WILQPRC6bgKTpUkJvCXZoyXp8YWnyFeapy1lusZliz7BWsGa/KmZHsDf3pDJasTcavDmbJFhGufsGjXxdaWuSszt0/jW+bcLilQ8eT/GTR0jlPoOjaU7jUMhyFYiUH98lCUKyibmpzsaq1+A48Ob/wH+bzrpsR06Dmr3fmGCFMOItYzpuW5obDgDcbN5++q2XH539X4/357FrVWxh+xP0TLUus5sYXT7ZvGIfNh8IN1qL7V1wCjgx0p90qQ/m24mk+tRhvFdR48EwLkO1aQszcvb/fa+k7NQaYNpdd13m9rLXi8BXkSmHhKYyUlsAqDXVwNPJidMlOHIlhwUkJQZy688Yo5KdvM0YrhTbbYRLtqHKZqahOf89usNY01HTzugjUOosaoFs4lhkvCXrwH9seiLK8I5miDUU9PviEiEsgElTZRWnxGIhODr6deLs21bUL/AJJ0FHKlU9tsll5+R4i6OVc9u5YACLWRGUN4cwievvJ4TDFHrOpl3T1XpvagmQekfkVd87zMY+PUQ3n/SrKRJuQoPIUYCtymgyyOHYgEwUTzA0rTyBZib6ITwlMBwYKttPMzMhH3v6y+mZURD/KqT0z/nOs7QvsFxEIKl+I1+VdpBULfVbHWBbpTu6KdbBmgOxvzg7Qll9Z5ndzKTuB1IAMUJ7iGdFSkcPSlMV8SnlgowgUmwHqjQQPhNLq1GIhFOaxs0L8nyhFtoGxVvkVBoSciIYzN7osn0wZP6ltQUF+KGhxoZGrEG3NNEqBL+uBbJfezY3YHQ+8EniCRAnxeCCXCHQZIpc+YdeRrBqD6x4wqVUCcXT/5UR3MpJdhZAUrl9nzj/cqbXmon1M5qTBr+rywTC8W5Jo9qO7/wtLBljDaJKl+bbjJ5+xDNcV0PXK89VN0AfDRdhUDkP2LL3NMzcmJBZ1DXgEg7y4+ox1VG26dCy/Gn9xvH0yh1/nP
+ q+fhNuJB
+ 7IouIgES7zuuwka1otWXJu86i7C7f7LcnaA4uKJwbJPTXEH/oXsUiZmtuG9CEFhopUIMPL99b22WxR+/wiyGvnLiMQCaW+XEX2z5xvPfDt93qx2zDRXey/azolss+PZEY15R6VREIEbFAcnkufIXSC4TGEC4XtviU+W7MOVVUzQetffV/bDmo/c+w0iS975pz/D80F7LQoxDA77Oq+/xd11PMdoDR1qFCeqGqCP3Hg+ZEGmhBVSageBgGgLYjFElvCn0AHexox11X1WzbnfFFsGr/kxZIF8U4ZJemipM+Yc0wsmfekvcdJrBAxLmE9LgA5dF9zx+I26xMfuf091Fe+Dm9sw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,13 +111,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-> > Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Hi,
 
-Thank you!
+On 11/17/25 2:47 AM, Jonathan Cameron wrote:
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index e629449dd2a3..e11136d188ae 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -542,6 +542,10 @@ config MEMREGION
+>  config ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+>  	bool
+>  
+> +config GENERIC_CPU_CACHE_MAINTENANCE
+> +	bool
+> +	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+> +
+>  config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
+>  	bool
 
-Pasha
+Architectures and/or platforms select ARCH_HAS_*.
+
+With this change above, it becomes the only entry in
+lib/Kconfig that does "select ARCH_HAS_anytning".
+
+so I think this is wrong, back*wards.
+
+-- 
+~Randy
+
 
