@@ -4,111 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24785CE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:04:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C761FCEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 11:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 844D38E001A; Mon, 17 Nov 2025 06:04:27 -0500 (EST)
+	id 287D78E001B; Mon, 17 Nov 2025 06:12:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81C598E0002; Mon, 17 Nov 2025 06:04:27 -0500 (EST)
+	id 239258E0002; Mon, 17 Nov 2025 06:12:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 759718E001A; Mon, 17 Nov 2025 06:04:27 -0500 (EST)
+	id 127BB8E001B; Mon, 17 Nov 2025 06:12:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 668E28E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:04:27 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 28F4A160D2F
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:04:27 +0000 (UTC)
-X-FDA: 84119815374.23.570DEDE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5CF331C0006
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:04:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L0k3QEKi;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EBC8B8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 06:12:54 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D2311A0CB4
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:12:54 +0000 (UTC)
+X-FDA: 84119836668.17.9DBB9B9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 45546C0012
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 11:12:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kkiQSp6o;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763377465;
+	s=arc-20220608; t=1763377972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DN802ksBnrqB+PCZ/mLlzCfyvO2R+PrmSUbbyDL1eN4=;
-	b=Wv+OE1hJ/pL70TTL+BQFyRgjzW4gitbiH4onfwfuOk+X5QlVoIwVT/wVpZLeoJeIfgz1TI
-	SElYzqjHXWxztaYs32VQRfVNYab3sGvl20GBgKVWzFSil0jkrpp6hj+z2l37xeyGV8pgHL
-	6F0cQcjRt5dwu8oyycPUTKrdqnApuzY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763377465; a=rsa-sha256;
-	cv=none;
-	b=p8x5Blg8XfO3ezwuyFVNbyg0zufBft6WkNl+VDWm0jwGFebzPVKSRVJtgcQ8rZENr7BB0N
-	36kIVnbMICc3Qtp1adyQDrB6NQDMSy97FTxDZtMc/axFiTZhCqZMIysnnF3T63nv8MP0Hp
-	wQapmM710HcHBr9nX2Dats5lKnAPw3w=
+	bh=QgAtptvokPu4JfYlXnR6E1QfQ21cAL8q8YMREWHrj3o=;
+	b=tVvcu6Gktk+l583GFoijPIeaGcKu6YyZluqdMmRANxvrE1HTKP0rZIT084VeEeOHva7rbU
+	4eX6zY+yHFXRT3Nhp3ciNVkRu08OswVXNHFwhVpY36k/xZGlaaWvvnp9zUQDOlRnH1wIqa
+	YeZzjE6r6SJR/bogGQV0/vcBPNCO0sc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L0k3QEKi;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39B95435AD;
-	Mon, 17 Nov 2025 11:04:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E08C4CEF5;
-	Mon, 17 Nov 2025 11:04:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763377464;
-	bh=WWE3t7I3SF3DlAE8BdmFrmCS1M/rFEV0vnSNWTBc5tM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L0k3QEKiD+rh0bxxX4fVCaTPVujvmto8tLg1+BtAac2R9g3v1tykJEAkfem0Pb348
-	 5J7cMEYG97oQY/jmtHQL4hq0YWVyu9sjQ+bamnEw24il8JGqUNljNbi2tNf1SE8M1o
-	 7kIb025ro7tzRhVKkfhrdWEt81mbmyXnC92DQCJfsIuoZ8JOBHVNmGYkW/+mcu+44H
-	 vlDwPn8Ru9Iwj+/+x4jmCovyEDM6GMzKw5WJR2gC21oZNSZMie6FbcjuKvoCZqs1zS
-	 vNI33MsNbl0wbkQ3l3Ms5VR1t1pU7GIybR5Pnkqj3TfEUhoojMKF9MbrI6OEw9HmVl
-	 BTlC8ggjtSRNQ==
-Date: Mon, 17 Nov 2025 13:03:59 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 15/20] mm: memfd_luo: allow preserving memfd
-Message-ID: <aRsBHy5aQ_Ypyy9r@kernel.org>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-16-pasha.tatashin@soleen.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kkiQSp6o;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763377972; a=rsa-sha256;
+	cv=none;
+	b=gvRIXYZsvlFXE0SPkFIrRXOECQNTPGURMRwsRX/dabzMVwWfIWcxpKb1IUC5/rYAmHeckJ
+	otgFA4ZyQC3YhBOSIFRpfjCPsb9135T1zZilOL2ctAnEtcqh++GfZ2cckz+nfOnPVxB840
+	i2RYFhu+1KEYSBjHV7RTfjGzMVmdOQQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763377972; x=1794913972;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uiVn5O+Z2ckh8lfSZDoQxdciZi4Sh+koQbfl/Op6dYw=;
+  b=kkiQSp6okecN/AgCGIgv1Mbrod1rxbG6dk1PPL3An5KiqledVHqLQcCP
+   8rihnhfTS55/avNsCnyK/IlQcsig2Q7EYZpyGwj/iHvGFApXaZbCkfk+V
+   COOuHrqR0sapB0+1ykvCoIV4v+xezMxhOdE13J+IXFb86oU5nUXl8gAk1
+   NJsH/AM80oUmKY9zdeJ3Mrir33KuOnt3oM6FEpSAFFhelxBIHC9JpxWpL
+   h/PBDlN9TyAsK4PBD7b47FM+LfAELx/unhTMt5ORCEAw3Yyk60JlSj4hO
+   lvy1tb7sP86Yjgayapx+AhX+6ipdWvsH2xxFikEVPoO3gt8e+uhLfQD31
+   w==;
+X-CSE-ConnectionGUID: Ftrqkd2uThKVArzmIOmE0w==
+X-CSE-MsgGUID: XHSBEc3JQce89coD7H1u/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="90851945"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
+   d="scan'208";a="90851945"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 03:12:50 -0800
+X-CSE-ConnectionGUID: LarFWhw6Q7eLzbFJT0IRVQ==
+X-CSE-MsgGUID: Zi9XQFgmQ8u027dmYe6Hwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
+   d="scan'208";a="221317842"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 17 Nov 2025 03:12:47 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vKxA5-0000TH-22;
+	Mon, 17 Nov 2025 11:12:45 +0000
+Date: Mon, 17 Nov 2025 19:12:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Luigi Rizzo <lrizzo@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Willem de Bruijn <willemb@google.com>
+Subject: Re: [PATCH v2 2/8] genirq: soft_moderation: add base files, procfs
+Message-ID: <202511171936.CT5XHXPZ-lkp@intel.com>
+References: <20251116182839.939139-3-lrizzo@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251115233409.768044-16-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <20251116182839.939139-3-lrizzo@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 45546C0012
+X-Stat-Signature: bg488w7ts749wbfid1e9ci5add3z8obz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CF331C0006
-X-Stat-Signature: i3r1kgx5qo3p3bbrgrm6cnyqec97q9tm
-X-HE-Tag: 1763377465-52723
-X-HE-Meta: U2FsdGVkX1/9iuhCHwLtOrykJAhBR5aiRl6FtarIUIAWP5fkinHIww2COliDiz+GG9UIpbe7ZqVtw8ytbIqn75VghS6E16icd/UOGz5MoxAEFMf6UNQFQDgBgTSiD1QqaCJmcurjjzA7O3E/TRLeyY+t6jylZ3ddX0dQqfsnR52oMI7VVVIqj99fQ1qcOXdp7uwTatiZZXpmtbYa7zDOLb5YeFTxQiAZN7ZDnHLBJDqm1DI78AMYQpABb3n+BGa9orh7jNjbPnUhvRnQ91FAGqlc54MnwE8X4jY0dpmrk/c6l6+l7uYhcb/kG70fkunTevgNToeY+0x4gbaDxNwito/EPBP0b99TatC6ROrECQ0nrF3VlmQuF5WSNg/EXKOvvuRa1Ez/HQg6fWOLGzUqkBezpMC8nx8NlOfMgZ8c+S2ufYd1US/h1hD0HXINBIXWAe6ZrsBo0tlLZ9G5F63DrNutleXrkC7bs1WlTuEbcIYOVv0i0jhxUOyXv9/mZAtM3E1RVy1h9tKU2tMzR7+0U9BOTMIxi//sLwxT9QZKSZMjpsQNWD9UD4UNlq7Fq+RxWnA6/pg/b8mNfEZp0S++xfPmsgZaJYSXivBdTCj759N1u9yYmoytpSfsrHXvp+sJ1sncIOU/8usXk3pMoGI23IBvBA+vHXrlNDGlVwN/UATTI7a1aRJDdytTE2bv10TzQc4VAksbumIyrB7kEIAO4ev+5/Hr7TzsyArmPL0OS4D5aQRy5Vypg/nOP/cMRWYT8DuXlMpSJ4QSjUjT2uVJlrUsCSNxdBHKbyZpRBXM4yml4mCQqU+ADQ2OiAykBpBIPoXzvd7Q2t5iEHrX7LvM0pOwitFbJrVGekbUsCy/NehbukOvV/szRFzlkTf0M1wVvvpdOqQRe2iTuDaryA4lckhunYYfbbe5w134ExP97gwWKJtkiYY0EeFEOxZIEZHHmzsahNVUoLoWgFf4LWi
- HEdjW1cW
- XR7yLgBr1o/fLvZnFD9REjch8FhkPifaOT83trJR6ydy4mcxrHrfCASEMzE+4dA+2mb84N/3kaPLsof11KRsz0t91Ex5cH3Rq6teHJGzIXONcLi75GDYGYdVrnk2i+uR3TQ6yIvPTqYDroj740E5i1tbmBEX6w1u3WRwVtdAxiDvwtHAZk+k+2MMA9Ka0t+WKvCReo04qtDH12eVpqfBWQHKH8GTz7KK6fAPZeSpscPqsgWQlnDf2Xxj/AwwC8vmAgIkYn0NXTyGgVUAcSJh0hiKCnbdUQcasJGRfUXNuX9yz9yhUxo9pl7QqFJw0/lxqYnkpGKMpOqSmAp0Po+NkuFQC302JNFkFiBYy5U8FlUA71HIGEl74hrCIHmCRRrpNhIwoD8eZBmUiA4W7/XAaAX+CUDk2m3O5+uoEUJx8Mowo3ErB3+F+yBW02sMtlohKIzJrRC62+n0wEao=
+X-HE-Tag: 1763377972-500908
+X-HE-Meta: U2FsdGVkX18pVTQtr0L1aodWRXJUnZNB28Gu2fOgalH8X69pp5YV6cHK9LEqzQuQKQUOY0XtXvwPn53GHUCwxdNZ5Y3bndfWLx2WVFMGoOWEOOlrSI1OD3eFUSstIp3AwulYXPJFcKTYS4HyeyuMn64U8oUTng7Ss0F1J6BgAJ/2qEAniSo2/ypbFNqMrxPG9I6RxtaQ96KelQ/V8SbP3PxG8adXlv/RRUXjEyG0myFYvm7c6GDH6G1egZO4Pa5WkeDcGyisubHoOR0lAZuvr1OuSW2ClepRxk3JYjaQwvs9Kmgqd13lPej7YaWf/GUhaO4s9i6KIFEGlMoxJv08jhcr3PqIyEVoA3S7pPRW/thhV5sjJaXXJb8WrWXvLX84kgYbWgYWtgbzkrLKVW2FGAW8wl641Z3Dvcm0LSZFRV2T0bTw72QDP7MphI5t89LBoOV+hCQSgptyR5J1UdPSXlvg5kdgtK38a+OqqVLhKWJtDDyK88L54JW9nkYpFaMt01li5+nT6iL9nOZrtGeJxTqtJ+H/dJUMQ2XLd+rAUsQKj7pQrcWAXtDkAvlyNjBUreinsuhcWqu/A33DoMako0kEcs7jR5mbis2lz49J1Iwws+logJhb/mFyaye2KPj836f/J0hmJaCH1bULtFxBBhbyaf2DVOlcNv9f5xTdc+9UaULX1jQ5wdrGBXjk+2kh/evMZtoeR10iThZ3DUc8BN5GnDEJyEutNTI4zt+QXRKrx9rlOPbifa5r1x6x1Rjb3sYmogsXq5tEn9u7GMmJx/USuzLrToNP6vGlHUlsFJS9pM8WVfx7w5i+AOL0NzfNr77d+IeXaKD+dtpzltWxS0fKVDxq+DYQ7HoX7447Be+uCrdDJJfPexC46NQUonTOjgiZPqnunsNo0TWX5dhfgi4HeZ4F6xYj2wfLlV7WyE6BZm+HjHv5KPIUyjJEliv22cyUbCbw/4mOnV8Hm75
+ S1jNaMBr
+ SNvOrFy75rkdVqFqvVz0LBK7IGSAtS0DE325H+3RKkEiifWavNj3BK7YEdcLIiTkm3Q5sPMZSYbsLq8KDZ55BypfThEvlpFz6uGF39RkZPoSykK7UFQWHhaIJsfCpClk+tpm951GmAEuR1mGvqe7ju5xoLQJrA3StAqTcRTa+KTPluQMD+EcHxt1WIdYyL4KRc1OY0l2mPiBNQhW8DMvCVYAc4s4GDIZDiG8XZl/OZsG58hiOC5dKiEmS6MSVkLvczSookAZpJ9xsntrH6dJAHeHN/FEdnwu00r0Fjq0deWpABhPyPKbzJEiaRy8K47xMxra96GWANhktFiqonlS/l28eE352ydr2LwueR0Kf+3gsMyQxQcp/7iZigi+w+8ANqrkjQSlqysM3FnKuT3Sczs3fUMHQETepU5gc7L58k5DgDbB0uViXyydG8c/wu5QghjGnxOUmZSS6AVDPxxiH1moO4pc3mb0tnasK7I9ONglpq02pif9peEXlog==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,210 +115,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 15, 2025 at 06:34:01PM -0500, Pasha Tatashin wrote:
-> From: Pratyush Yadav <ptyadav@amazon.de>
-> 
-> The ability to preserve a memfd allows userspace to use KHO and LUO to
-> transfer its memory contents to the next kernel. This is useful in many
-> ways. For one, it can be used with IOMMUFD as the backing store for
-> IOMMU page tables. Preserving IOMMUFD is essential for performing a
-> hypervisor live update with passthrough devices. memfd support provides
-> the first building block for making that possible.
-> 
-> For another, applications with a large amount of memory that takes time
-> to reconstruct, reboots to consume kernel upgrades can be very
-> expensive. memfd with LUO gives those applications reboot-persistent
-> memory that they can use to quickly save and reconstruct that state.
-> 
-> While memfd is backed by either hugetlbfs or shmem, currently only
-> support on shmem is added. To be more precise, support for anonymous
-> shmem files is added.
-> 
-> The handover to the next kernel is not transparent. All the properties
-> of the file are not preserved; only its memory contents, position, and
-> size. The recreated file gets the UID and GID of the task doing the
-> restore, and the task's cgroup gets charged with the memory.
-> 
-> Once preserved, the file cannot grow or shrink, and all its pages are
-> pinned to avoid migrations and swapping. The file can still be read from
-> or written to.
-> 
-> Use vmalloc to get the buffer to hold the folios, and preserve
-> it using kho_preserve_vmalloc(). This doesn't have the size limit.
-> 
-> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+Hi Luigi,
 
-The order of signed-offs seems wrong, Pasha's should be the last one.
+kernel test robot noticed the following build warnings:
 
-> ---
+[auto build test WARNING on tip/irq/core]
+[also build test WARNING on tip/x86/core tip/master linus/master v6.18-rc6 next-20251114]
+[cannot apply to tip/auto-latest]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-...
+url:    https://github.com/intel-lab-lkp/linux/commits/Luigi-Rizzo/genirq-platform-wide-interrupt-moderation-Documentation-Kconfig-irq_desc/20251117-023148
+base:   tip/irq/core
+patch link:    https://lore.kernel.org/r/20251116182839.939139-3-lrizzo%40google.com
+patch subject: [PATCH v2 2/8] genirq: soft_moderation: add base files, procfs
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20251117/202511171936.CT5XHXPZ-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251117/202511171936.CT5XHXPZ-lkp@intel.com/reproduce)
 
-> +/**
-> + * DOC: memfd Live Update ABI
-> + *
-> + * This header defines the ABI for preserving the state of a memfd across a
-> + * kexec reboot using the LUO.
-> + *
-> + * The state is serialized into a Flattened Device Tree which is then handed
-> + * over to the next kernel via the KHO mechanism. The FDT is passed as the
-> + * opaque `data` handle in the file handler callbacks.
-> + *
-> + * This interface is a contract. Any modification to the FDT structure,
-> + * node properties, compatible string, or the layout of the serialization
-> + * structures defined here constitutes a breaking change. Such changes require
-> + * incrementing the version number in the MEMFD_LUO_FH_COMPATIBLE string.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511171936.CT5XHXPZ-lkp@intel.com/
 
-The same comment about contract as for the generic LUO documentation
-applies here (https://lore.kernel.org/all/aRnG8wDSSAtkEI_z@kernel.org/)
+All warnings (new ones prefixed by >>):
 
-> + *
-> + * FDT Structure Overview:
-> + *   The memfd state is contained within a single FDT with the following layout:
+>> kernel/irq/irq_moderation.c:103: warning: ignoring '#pragma clang diagnostic' [-Wunknown-pragmas]
+     103 | #pragma clang diagnostic error "-Wformat"
+   In file included from include/linux/uaccess.h:10,
+                    from include/linux/sched/task.h:13,
+                    from include/linux/sched/signal.h:9,
+                    from include/linux/rcuwait.h:6,
+                    from include/linux/percpu-rwsem.h:7,
+                    from include/linux/fs.h:34,
+                    from include/linux/seq_file.h:11,
+                    from kernel/irq/irq_moderation.c:8:
+   In function 'check_copy_size',
+       inlined from 'copy_from_user' at include/linux/uaccess.h:207:7,
+       inlined from 'moderation_write' at kernel/irq/irq_moderation.c:169:6:
+   include/linux/ucopysize.h:54:25: error: call to '__bad_copy_to' declared with attribute error: copy destination size is too small
+      54 |                         __bad_copy_to();
+         |                         ^~~~~~~~~~~~~~~
+   In function 'check_copy_size',
+       inlined from 'copy_from_user' at include/linux/uaccess.h:207:7,
+       inlined from 'mode_write' at kernel/irq/irq_moderation.c:223:6:
+   include/linux/ucopysize.h:54:25: error: call to '__bad_copy_to' declared with attribute error: copy destination size is too small
+      54 |                         __bad_copy_to();
+         |                         ^~~~~~~~~~~~~~~
 
-...
 
-> +static struct memfd_luo_folio_ser *memfd_luo_preserve_folios(struct file *file, void *fdt,
-> +							     u64 *nr_foliosp)
-> +{
+vim +103 kernel/irq/irq_moderation.c
 
-If we are already returning nr_folios by reference, we might do it for
-memfd_luo_folio_ser as well and make the function return int.
-
-> +	struct inode *inode = file_inode(file);
-> +	struct memfd_luo_folio_ser *pfolios;
-> +	struct kho_vmalloc *kho_vmalloc;
-> +	unsigned int max_folios;
-> +	long i, size, nr_pinned;
-> +	struct folio **folios;
-
-pfolios and folios read like the former is a pointer to latter.
-I'd s/pfolios/folios_ser/
-
-> +	int err = -EINVAL;
-> +	pgoff_t offset;
-> +	u64 nr_folios;
-
-...
-
-> +	kvfree(folios);
-> +	*nr_foliosp = nr_folios;
-> +	return pfolios;
-> +
-> +err_unpreserve:
-> +	i--;
-> +	for (; i >= 0; i--)
-
-Maybe a single line
-
-	for (--i; i >= 0; --i)
-
-> +		kho_unpreserve_folio(folios[i]);
-> +	vfree(pfolios);
-> +err_unpin:
-> +	unpin_folios(folios, nr_folios);
-> +err_free_folios:
-> +	kvfree(folios);
-> +	return ERR_PTR(err);
-> +}
-> +
-> +static void memfd_luo_unpreserve_folios(void *fdt, struct memfd_luo_folio_ser *pfolios,
-> +					u64 nr_folios)
-> +{
-> +	struct kho_vmalloc *kho_vmalloc;
-> +	long i;
-> +
-> +	if (!nr_folios)
-> +		return;
-> +
-> +	kho_vmalloc = (struct kho_vmalloc *)fdt_getprop(fdt, 0, MEMFD_FDT_FOLIOS, NULL);
-> +	/* The FDT was created by this kernel so expect it to be sane. */
-> +	WARN_ON_ONCE(!kho_vmalloc);
-
-The FDT won't have FOLIOS property if size was zero, will it?
-I think that if we add kho_vmalloc handle to struct memfd_luo_private and
-pass that around it will make things easier and simpler.
-
-> +	kho_unpreserve_vmalloc(kho_vmalloc);
-> +
-> +	for (i = 0; i < nr_folios; i++) {
-> +		const struct memfd_luo_folio_ser *pfolio = &pfolios[i];
-> +		struct folio *folio;
-> +
-> +		if (!pfolio->foliodesc)
-> +			continue;
-
-How can this happen? Can pfolios be a sparse array?
-
-> +		folio = pfn_folio(PRESERVED_FOLIO_PFN(pfolio->foliodesc));
-> +
-> +		kho_unpreserve_folio(folio);
-> +		unpin_folio(folio);
-> +	}
-> +
-> +	vfree(pfolios);
-> +}
-
-...
-
-> +static void memfd_luo_finish(struct liveupdate_file_op_args *args)
-> +{
-> +	const struct memfd_luo_folio_ser *pfolios;
-> +	struct folio *fdt_folio;
-> +	const void *fdt;
-> +	u64 nr_folios;
-> +
-> +	if (args->retrieved)
-> +		return;
-> +
-> +	fdt_folio = memfd_luo_get_fdt(args->serialized_data);
-> +	if (!fdt_folio) {
-> +		pr_err("failed to restore memfd FDT\n");
-> +		return;
-> +	}
-> +
-> +	fdt = folio_address(fdt_folio);
-> +
-> +	pfolios = memfd_luo_fdt_folios(fdt, &nr_folios);
-> +	if (!pfolios)
-> +		goto out;
-> +
-> +	memfd_luo_discard_folios(pfolios, nr_folios);
-
-Does not this free the actual folios that were supposed to be preserved?
-
-> +	vfree(pfolios);
-> +
-> +out:
-> +	folio_put(fdt_folio);
-> +}
-
-...
-
-> +static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
-> +{
-> +	struct folio *fdt_folio;
-> +	const u64 *pos, *size;
-> +	struct file *file;
-> +	int len, ret = 0;
-> +	const void *fdt;
-> +
-> +	fdt_folio = memfd_luo_get_fdt(args->serialized_data);
-
-Why do we need to kho_restore_folio() twice? Here and in
-memfd_luo_finish()?
-
-> +	if (!fdt_folio)
-> +		return -ENOENT;
-> +
-> +	fdt = page_to_virt(folio_page(fdt_folio, 0));
-
-folio_address()
-
+   102	
+ > 103	#pragma clang diagnostic error "-Wformat"
+   104	/* Print statistics */
+   105	static int moderation_show(struct seq_file *p, void *v)
+   106	{
+   107		uint delay_us = irq_mod_info.delay_us;
+   108		int j;
+   109	
 
 -- 
-Sincerely yours,
-Mike.
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
