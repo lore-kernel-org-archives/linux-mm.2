@@ -4,135 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECCDECE8D6B
-	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:17:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09239CEACEF
+	for <linux-mm@archiver.kernel.org>; Mon, 17 Nov 2025 18:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1B328E0003; Mon, 17 Nov 2025 13:17:26 -0500 (EST)
+	id 66E706B0011; Mon, 17 Nov 2025 13:20:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF30A8E0002; Mon, 17 Nov 2025 13:17:26 -0500 (EST)
+	id 645C38E0002; Mon, 17 Nov 2025 13:20:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E081E8E0003; Mon, 17 Nov 2025 13:17:26 -0500 (EST)
+	id 535476B0022; Mon, 17 Nov 2025 13:20:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C93C28E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:17:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B430C0212
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:17:26 +0000 (UTC)
-X-FDA: 84120906492.27.9E12511
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1751314000E
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:17:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gwX0PiRT;
-	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 429106B0011
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 13:20:49 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A19E3B76CF
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:20:48 +0000 (UTC)
+X-FDA: 84120914976.18.4FBD39C
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A5AA8100019
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:20:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="fIK/i39s";
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763403444;
+	s=arc-20220608; t=1763403646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bLkBFyQphttyBlL0MaxtfpIa2M3df8GEH89TkAXYszg=;
-	b=RxDKYT5jRg59GJUKY923oQpEFBoTVWTCM6TIQTre7xfeTQijVDvramHH8K9ZEYrAUgk9Co
-	bqvs4au7f6ooLbI4HsUN6XSQzib1U8Wsan3c3T+yFz1ZDJRp10ZL8ylGH97HJoPTMVvuAi
-	cMNOk9QP+jvSr2dkuSw9vumsjzbodxE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763403444; a=rsa-sha256;
+	bh=j8uyJ9UgvBm8P+z5AaxjU/5GgC74k2Y8kBRaWb+wv/8=;
+	b=J7ZVSIpeWCm1cSfp+qGtnf/IaPwxjq68FTmt6/K5Fyzt8zVlyaHuPQb21Mvie4IZ7FD8Mo
+	dkILv/IeifQ0mS05v9xECVmFtvjZ1EkiTsRSt35xdJwdd2+2kg4cHuno5xVePpqxukCk0v
+	X/z/HjrBHUWvZHDJxDgb8s/JAB4tzYE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763403646; a=rsa-sha256;
 	cv=none;
-	b=mzYCezUHGYrU3yO74b51pbmX/eG6rJ0hyVhM/4jTv3quIL5mnx9+Uy5emo9OeMuzSW6GbR
-	rJEYVR5e/as8DsLOu0k+4WVcWVB6JOEACUkGL6ZmTyZVT9F3YBn2HVeLvKBLCB5s792TbF
-	mMwfASENXamTTWq6BSmHgtahgcfARAs=
+	b=bRwxFf4Xr2Nli4brb73ndgYwDdv9nmyS/hOKnLFYWCXVMP+fg0ohqLAchRclPJEdV5nax/
+	HVbT5anmNqjc7+Oo4LJDcfNfrN6muMO+cKMJ+NZXxzaZZnm0T4srZcMxNmFArZbZKnC+fP
+	2CnDZF8dD3BzHyv2jdSL5K2nnVmEnRI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gwX0PiRT;
-	spf=pass (imf09.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763403443;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bLkBFyQphttyBlL0MaxtfpIa2M3df8GEH89TkAXYszg=;
-	b=gwX0PiRThPBeMPUXt7yVKVmVN52mV7H8+nmnId647GHRiCNTcZ9PrOVQ1qeihBLf/K6wPb
-	F1sJkxyQ95U0o7wD6jtUtJz5lcNxzVpe+sQi9H5BmLn5HobmpVuxsE8yI458XOROSaw9aH
-	bEF6HKvGE/kLjQxEcMFH4bwhjzL4Zv4=
-Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
- [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-aDK5tlp6PGa1-G4Ox9e2-Q-1; Mon, 17 Nov 2025 13:17:20 -0500
-X-MC-Unique: aDK5tlp6PGa1-G4Ox9e2-Q-1
-X-Mimecast-MFC-AGG-ID: aDK5tlp6PGa1-G4Ox9e2-Q_1763403439
-Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-640d2ff4acdso7470908d50.3
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:17:20 -0800 (PST)
+	imf14.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="fIK/i39s";
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640bd9039fbso7887376a12.2
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 10:20:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763403645; x=1764008445; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j8uyJ9UgvBm8P+z5AaxjU/5GgC74k2Y8kBRaWb+wv/8=;
+        b=fIK/i39sFR9J5dJE6KO9uAeiKxnMM/fMRk8A1LZVGxwvtJbXKJEfHtD4UmXu1ybbwy
+         245UMmRXvXUVPv5bg437rkntRom0ca0Oq/drkN1Qh1mdJkgctDaa21+XhG9la0JyC2YS
+         GBvv1If1iUVJipCiHYdldCORAsl1nJITcdTUNzoIM3Suv/JUNbEcqGqBcCJwCyP2CDqL
+         2Rqp+uvb3AthARvIE5LMBq5WQABWNtp9lwJV4sTWmvmkANa21xG3HVZx6sE+N/XK/8PH
+         cnV86h67EMt4wi1Kq2gN2/kIcBESXuJok9MPtATmSGZ1IwPCt4xSnhYUWJVt6VVdq+07
+         s42g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763403439; x=1764008239;
+        d=1e100.net; s=20230601; t=1763403645; x=1764008445;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bLkBFyQphttyBlL0MaxtfpIa2M3df8GEH89TkAXYszg=;
-        b=wWcSxBdaU+7ArdaA8olyWRqqeaVjap9AmeK+G4ZMxsRje2d7Xwx27x4u6+AeumH9It
-         MLmYQO0UOaRunfRbMSrhw6m/thUOtZXBm7oISZj5ILuvpCR3hGz0nPSji985AOKqf8Qi
-         nsaA84r0RWjZe7RWiK8ZXBPpNsKaCEH2EC4W1ZEq+9sVgh1HZDpzAaQUpPLX718s3lUl
-         bt8PUS50HTnb/qLB+8sZVgHdJx4qZrnAPFvpiHPt5TkYQC5y8fuVfJ7/I6XTa1UlwtDF
-         aTYWoXxeoQAsfE043xU1yANTXKvGXh9OMBx1DwK9TWoLovk1MPMO1KyED0/vqJtj7u7W
-         oc8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUSJ2KBAZ2G3DbImElkpS59LyuJ56YiEhA1F1B+be1duxKjtx05QuXglSwIhXhBw/NEN3+t7xw6fQ==@kvack.org
-X-Gm-Message-State: AOJu0YxgsBaQoMo635CG1dcQQSP/73X2oG8WTf0RhRhiDh+dA5cFlE+/
-	AFUwR9JgIf+7yVkGCrlkmfnRTFBHaawxqv9pRj09FOYro+sxy6EsnHh9JvHaWc4Y86XbGlzkYVA
-	hHtwLna7aMsPrIFkqa0c4n5NMRix/T0dMm5UaFFErHhLFtCWSKUNXKgGLg/zTRUBppOtknUJA0Q
-	2eiUUCp+Ardm8FtCvBKgwfInGibqA=
-X-Gm-Gg: ASbGncuHdzQmkVGC/C3aZfNLY8j0c07tjDKLT7NjBTnBPX7/TTFM5KuKfcvyauTu7ue
-	z93qdqA1IH99GHdPBmbupyzhfVnb8wgJPV0q5UZnXJkS4x0A9oT96r9PEVqor20KD6FxioXqEAp
-	LMyE6Pxv7wxly8yLDaW1AjB6bFsb2JErDs9jEpPoi+gFwYul50VNUpfIBOmCWbCVPrawfF/A==
-X-Received: by 2002:a05:690e:d8a:b0:629:acb6:d8a with SMTP id 956f58d0204a3-641e7562fd0mr10867446d50.26.1763403439596;
-        Mon, 17 Nov 2025 10:17:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGqkBOn29yUwcPzlRUfZrCy2cM1EilWOd6JVaHoD7tCDRXb4G11MerU3OGL9P/y0HInk6+3E4wc78Xi4FqeiDU=
-X-Received: by 2002:a05:690e:d8a:b0:629:acb6:d8a with SMTP id
- 956f58d0204a3-641e7562fd0mr10867430d50.26.1763403439239; Mon, 17 Nov 2025
- 10:17:19 -0800 (PST)
+        bh=j8uyJ9UgvBm8P+z5AaxjU/5GgC74k2Y8kBRaWb+wv/8=;
+        b=PLVVOydZTXuzdb/JjvI2ofreafDilX2h8O0SQLVNfDJhuGLCXzTmXoY7U9ZF7Z+DNJ
+         FdR9mlVK3CGY59NXyjX182GfOQKqz9MtcBqEWc6DJ1uggP6ia91MPp66Y0Cfp+GOywQE
+         OZhGays5l/Zf/c14SWXJNmB/P7j+v1993GkNrf4m4i1KXTJ67X6GuuJLZTB3w48LroYi
+         xGK2vvuo5EadaSyE252vS4JCjR8xZR/JMU/aIoyhteUXjx2XtKxk7qtO0msEzys5jvSC
+         93AfMTkU/YAHqkLGw98apU7PKNUxyrjw2Aa6mtIvtBhFArCGnvGEH0o3L6w0DxrYHoYY
+         E9qw==
+X-Forwarded-Encrypted: i=1; AJvYcCWP78lHbS859Fk7v0vhr40VJEtEhLDrgkAYrfyQfv8CbOtdd2ZdS1OfYUkSwxna81kOMsw1KEZ7zQ==@kvack.org
+X-Gm-Message-State: AOJu0YyQjea1QuFEbWvpUhEhverefRPw58pklomLnU6L6NLoaLXyxtvY
+	bUVHPuw7PhuW7uGmu4A8gyhNDBBLkQN4CC9eLQtxC+nQubJawVExYpH/Vhhr8kQkCBMe4+7zEO3
+	9wSnUb8QQd9gg/Pwz96yLi6x88m8woRzHAtrsxI2wJw==
+X-Gm-Gg: ASbGncvXG/YTDEew35VPfuFuAuTLJhFMJqU7FYwwQH/JEb3HnYLxVQGDOIODktunwE2
+	Y2476oD4IAZUdsazhwCE5Ys5AnOCT5M1RtvbvOniDI8Ygt6jLuOuczP7dAIiEroJShS6HOD4uUg
+	PWOLMbBHJJKQFjhrV4ls1XsvsvEZCtQy1I3u1TRWKvE3bOONMz+95GoI/QIQ3n6ZHFFozh7kQlo
+	LcTjJgRjlzZKXuCOSCP5Vu5YGgx2SW2ZaFRSdk0p8NhgnktUj2vWZ1hBqHWVES5jNHF
+X-Google-Smtp-Source: AGHT+IGM1Tr15Cbgk4QQHnvYqnvMCGG164LW1Q1ssAN2iVzR9VtHS4h71YwFJlzXxkn+A9bvWz6u1Z5jGfTyNzSIJ9I=
+X-Received: by 2002:a05:6402:50d1:b0:640:c807:6af8 with SMTP id
+ 4fb4d7f45d1cf-64350e9c5c3mr10832591a12.30.1763403644857; Mon, 17 Nov 2025
+ 10:20:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-14-npache@redhat.com>
- <20251109024013.fzt7xxpmxwi75xgr@master>
-In-Reply-To: <20251109024013.fzt7xxpmxwi75xgr@master>
-From: Nico Pache <npache@redhat.com>
-Date: Mon, 17 Nov 2025 11:16:53 -0700
-X-Gm-Features: AWmQ_bnbDA-LvF9eb5QkiR_KgOmDIKODHM2kGY-8vhaQuyICX8DSbvUaiKBYszo
-Message-ID: <CAA1CXcA9zaGqLPHnJWH=fKPUjb02dV+rKgfmsRZOGdeukiC8eg@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 13/15] khugepaged: avoid unnecessary mTHP
- collapse attempts
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
-	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com, 
-	pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: A8G6TGHBPn6KMMoAVY_xz9s-Y9cp21Vxwg6r6JuLCo4_1763403439
-X-Mimecast-Originator: redhat.com
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-11-pasha.tatashin@soleen.com> <aRrtmy--AWCEEbtg@kernel.org>
+In-Reply-To: <aRrtmy--AWCEEbtg@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Mon, 17 Nov 2025 13:20:07 -0500
+X-Gm-Features: AWmQ_bngMkZtOLXtzvbIhDYg36rxAp3uf7c25ogdWq8dWGd7IJgw-yYh-gP9XSc
+Message-ID: <CA+CK2bCVf2RppZbALAuFZyZarWukzhwkmOgtG2PcKqUQuao6uw@mail.gmail.com>
+Subject: Re: [PATCH v6 10/20] MAINTAINERS: add liveupdate entry
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1751314000E
-X-Stat-Signature: 3q6gt3ngchgntt9usrqf1b8saeqp79f4
+X-Stat-Signature: qhge7prfb5jdi7ah8fb9sr18fj6mhutm
 X-Rspam-User: 
-X-HE-Tag: 1763403443-629560
-X-HE-Meta: U2FsdGVkX1+WyV+sIh+dxCYdU3TeuvDriyRu3vfUvrwUHBavath8lRbkaGd9kRfePh8hjS7HYaDUi27/4PVp4DtkSXeaBa3cju6R0FsjYc0fnPKc91e6UNX1Sy4TIePJ6JzY9ylZ6vcRq4Lj5HG4vfic64nBA0SiOHYukQsMm1O3avbSnaz3QdjXdM3Ls++hmCgpX9pJ5f/2xCcgXxRNa2vfElKMVDf9jneLYqokznHohj0xqhFrYz7fA7woI74w2+VNdkAJl86x3mOn6CzintHpVbdooRZFWXfFO7WRM+V8jFHuHSoSpEFxi8qhenXgdtErilP2ZNDzSin4+5GUQF0tW4SqjpvvcjXB9VuRUD08hMT198+4bHPek5WYhELBqdMrCu0OCdUxI2YhtM91me6H8a+1hyNLG0ndpu9HUXU5fDhJUp9N06pXjBLDuBJL6bm3mdjGakF/e5NrzqaoJST10+awF4UDdu3g2B69FKMN5gOJfBpokrj8En+X6U8/ic7DPNpZjX7b3anNF8NZv08vIVsldKPHsvT7Xe1OWb/Fu1vP++s2fFDXXw05/gVEoXem/hHdSRdjjn/VcEyFTV5XgjfX7L7xminIhSdJP2wdT7A2G3v4S6JdxIBKZ+6vhjbuQ/py4yAoLLeKjHxRuymX2n6/u97hoaTQelXErnoe0KKUz9Nmq4v/kZx3QAFZiTCfRnb/bZ4nd8UsFy6jSM+wGb9n/l1bRgX0kFjjYHuGt7yLznKCMcKkmlEO/3O6OIbd7vRt9s60yA9vA7f7fdPSGSQA6Gzp2A4Q74bjPMw0X+0r7Z9MeHzAs7Vvha1FWCsj2Dg6A7PaQncd/9+bQuDe41hYTjMIztdd5Eg2FEl4ofnODTMUfSQQpbbVEpCSiFoXUTHvylB0poCujUaTrAg5Pkto6Z0USWUnTIa9o9NVOAniAtaduLZRkXKoF407nsQsosfsFjrIlGdtAMs
- YHQh7404
- DVTsgBMf0/7X+hqTLKGvAW0ico3TsJn/DxVKXlnJhSUzDK84gRO0ex4WHqglbv2vG77zz9gt9YNjkFMbIwaNuV68ZeQb5peDwe+nRREcI/awVrnJwjZjZ+bbBC6H0YnCSXJlYc59/dZqVHn+167wkmyGyPZLW253oEdbXW2R8NuH3Tj0Y+eZhMrQCRUXB2rOI+ixCrLxPeTZyHq5WSlmpWo5Wcgtq5J0IeP4LMZYNqSxAB+kRycfo5177YAF6BXP0EjwS0F3Drjkrv4uCCBoZjAPLKKtiS+4ewSq9Qsh/OktKl7Pf7oR2ZEewcjZi1uvH+gLSC2tKZfZdbZkJESO6Jce0Qm+POVHwV5a6vOZ006Yp/wraXpc+FgGDGw==
+X-Rspamd-Queue-Id: A5AA8100019
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763403646-597868
+X-HE-Meta: U2FsdGVkX1/u76bWbwf8j4zVVQQipR9AglGj17fEmQ3LB1dBYNuhoCVC8gJ1D5JXXv11LxBlF2HdG8xWEZMc0f35hkiCuWgXY2bBs4mxZ4q1Gcbc52YP516DJiDfNaERKEzEYDUYiL/eUXt3gC9XC6aUUW7iXSghx1hAJPbmz3YxQJlIxaGyM7oBw3SBlraTAZ8CjT8Py1PE/dskEYil7CxLzoVlY8YR1/d/eJtHtVW9P28oZNwxB6xj0yOJ5bW9Twcr451TpefYwlFiTr3bCm1ul823c+FXq2ul/rkF3n9ngbVBO3Alin5JlakOdGposu9wQAr2UKhE8vMsAJJQ3NcqHhkkxVD7EuuYu6Sjoym3nMPHcZXQBzrTkLIbl+qypcbDntV/d0xHlJhkO/+Ox6C0pvh0+ZhQ4TCrSQ0BAs0SSVbtTRt66bs7+DHpuTpNkl8CSE1krgbCEOn2DS6tRug4sTniSlaBOxvMydMEZynxiqcmL5U29pkyltdCPs9WpzE9lGEaG5ACLE7LV2B1aAyuEVYWATfZEtblSEQ+Z5Z2fOiLZFFVqYsPd8+AC/T4ffbJRvPxbYVPH3iovIfPni2DlfEl4FVOuUnv66wPU4eNNm3O4K4j2BuCP2hno3FnekkEIgxqQPa8r2dQbRj2hV7kTj/0CPAbC1h/9lUYMTOGxShwf5N1+1DdrZVkAQsEwfstg/mZ/9rr1Y4ZnrJN8XN7lNXzIam+KxxvUQp+eTZDzkJkRIuWV6c2PNqBVJF+aolZNVN/DX8dFXShfwdXANgqkzogxSUn6H6NR4dK7jNKizFzggvbnNSQWgGLvwthFaxdWzeFf+BbQ4q2XmeCv7XXk6Yqpmu09W7T+EFJ52L7IvdlE4u+IwvU0MR0JA9HLA8dxfHTPPp1Go27TmFkUMbrlWSaWDR3OCDpbq0VkRlihcjAVoirxYONFWdRMFziH7dtdKzx8/fZiq18rEt
+ FUcqjUHL
+ OyCvvqJD3FxJ4M1n4Lz4F30UMS9x4kptkxRfqdY1Y9N/sE8LS42rD6/B/xwUXBaW8pN6SfA1GeKWFq6dbpSz9hzwbQfuBynu4q0kl8TIc9h+o2YliDYr9gTC1+ORvPklw3mqX60cRcXObLGrjYhVS1pw2P5eh4oLXBfED8yhwx9q4XEngsSgc4frsnwQjNne4fh6yhweeTdskEwgv2fqCGN63YJfaWdpRnMWQtABYclcEVrrhVb4Q8cPE3VFaR/vo6H+4wtnhqlECMfdsPG8KaHAexxjoR+sGricrsRqlZRkz8xn7gXzTkdv8HEpF8TkFhk5CSf/b6+t5PRr9nqEheR7wDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,162 +139,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 8, 2025 at 7:40=E2=80=AFPM Wei Yang <richard.weiyang@gmail.com>=
- wrote:
+On Mon, Nov 17, 2025 at 4:41=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
 >
-> On Wed, Oct 22, 2025 at 12:37:15PM -0600, Nico Pache wrote:
-> >There are cases where, if an attempted collapse fails, all subsequent
-> >orders are guaranteed to also fail. Avoid these collapse attempts by
-> >bailing out early.
+> On Sat, Nov 15, 2025 at 06:33:56PM -0500, Pasha Tatashin wrote:
+> > Add a MAINTAINERS file entry for the new Live Update Orchestrator
+> > introduced in previous patches.
 > >
-> >Signed-off-by: Nico Pache <npache@redhat.com>
-> >---
-> > mm/khugepaged.c | 31 ++++++++++++++++++++++++++++++-
-> > 1 file changed, 30 insertions(+), 1 deletion(-)
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  MAINTAINERS | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
 > >
-> >diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> >index e2319bfd0065..54f5c7888e46 100644
-> >--- a/mm/khugepaged.c
-> >+++ b/mm/khugepaged.c
-> >@@ -1431,10 +1431,39 @@ static int collapse_scan_bitmap(struct mm_struct=
- *mm, unsigned long address,
-> >                       ret =3D collapse_huge_page(mm, address, reference=
-d,
-> >                                                unmapped, cc, mmap_locke=
-d,
-> >                                                order, offset);
-> >-                      if (ret =3D=3D SCAN_SUCCEED) {
-> >+
-> >+                      /*
-> >+                       * Analyze failure reason to determine next actio=
-n:
-> >+                       * - goto next_order: try smaller orders in same =
-region
-> >+                       * - continue: try other regions at same order
-> >+                       * - break: stop all attempts (system-wide failur=
-e)
-> >+                       */
-> >+                      switch (ret) {
-> >+                      /* Cases were we should continue to the next regi=
-on */
-> >+                      case SCAN_SUCCEED:
-> >                               collapsed +=3D 1UL << order;
-> >+                              fallthrough;
-> >+                      case SCAN_PTE_MAPPED_HUGEPAGE:
-> >                               continue;
-> >+                      /* Cases were lower orders might still succeed */
-> >+                      case SCAN_LACK_REFERENCED_PAGE:
-> >+                      case SCAN_EXCEED_NONE_PTE:
-> >+                      case SCAN_EXCEED_SWAP_PTE:
-> >+                      case SCAN_EXCEED_SHARED_PTE:
-> >+                      case SCAN_PAGE_LOCK:
-> >+                      case SCAN_PAGE_COUNT:
-> >+                      case SCAN_PAGE_LRU:
-> >+                      case SCAN_PAGE_NULL:
-> >+                      case SCAN_DEL_PAGE_LRU:
-> >+                      case SCAN_PTE_NON_PRESENT:
-> >+                      case SCAN_PTE_UFFD_WP:
-> >+                      case SCAN_ALLOC_HUGE_PAGE_FAIL:
-> >+                              goto next_order;
-> >+                      /* All other cases should stop collapse attempts =
-*/
-> >+                      default:
-> >+                              break;
-> >                       }
-> >+                      break;
->
-> One question here:
-
-Hi Wei Yang,
-
-Sorry I forgot to get back to this email.
-
->
-> Suppose we have iterated several orders and not collapse successfully yet=
-. So
-> the mthp_bitmap_stack[] would look like this:
->
-> [8 7 6 6]
->        ^
->        |
-
-so we always pop before pushing. So it would go
-
-[9]
-pop
-if (collapse fails)
-[8 8]
-lets say we pop and successfully collapse a order 8
-[8]
-Then we fail the other order 8
-[7 7]
-now if we succeed the first order 7
-[7 6 6]
-I believe we are now in the state you wanted to describe.
-
->
-> Now we found this one pass the threshold check, but it fails with other
-> result.
-
-ok lets say we pass the threshold checks, but the collapse fails for
-any reason that is described in the
-/* Cases were lower orders might still succeed */
-In this case we would continue to order 5 (or lower). Once we are done
-with this branch of the tree we go back to the other order 6 collapse.
-and eventually the order 7.
-
->
-> Current code looks it would give up at all, but we may still have a chanc=
-e to
-> collapse the above 3 range?
-
-for cases under /* All other cases should stop collapse attempts */
-Yes we would bail out and skip some collapses. I tried to think about
-all the cases were we would still want to continue trying, vs cases
-where the system is probably out of resources or hitting some major
-failure, and we should just break out (as others will probably fail
-too).
-
-But this is also why I separated this patch out on its own. I was
-hoping to have some more focus on the different cases, and make sure I
-handled them in the best possible way. So I really appreciate the
-question :)
-
-* I did some digging through old message to find this *
-
-I believe these are the remaining cases. If these are hit I figured
-it's better to abort.
-
-/* cases where we must stop collapse attempts */
-case SCAN_CGROUP_CHARGE_FAIL:
-case SCAN_COPY_MC:
-case SCAN_ADDRESS_RANGE:
-case SCAN_PMD_NULL:
-case SCAN_ANY_PROCESS:
-case SCAN_VMA_NULL:
-case SCAN_VMA_CHECK:
-case SCAN_SCAN_ABORT:
-case SCAN_PMD_NONE:
-case SCAN_PAGE_ANON:
-case SCAN_PMD_MAPPED:
-case SCAN_FAIL:
-
-Please let me know if you think we should move these to either the
-`continue` or `next order` cases.
-
-Cheers,
--- Nico
-
->
-> >               }
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 500789529359..bc9f5c6f0e80 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -14464,6 +14464,17 @@ F:   kernel/module/livepatch.c
+> >  F:   samples/livepatch/
+> >  F:   tools/testing/selftests/livepatch/
 > >
-> > next_order:
-> >--
-> >2.51.0
+> > +LIVE UPDATE
+> > +M:   Pasha Tatashin <pasha.tatashin@soleen.com>
+>
+> Please count me in :)
+>
+
+Sure, added.
+
+> > +L:   linux-kernel@vger.kernel.org
+> > +S:   Maintained
+> > +F:   Documentation/core-api/liveupdate.rst
+> > +F:   Documentation/userspace-api/liveupdate.rst
+> > +F:   include/linux/liveupdate.h
+> > +F:   include/linux/liveupdate/
+> > +F:   include/uapi/linux/liveupdate.h
+> > +F:   kernel/liveupdate/
+> > +
+> >  LLC (802.2)
+> >  L:   netdev@vger.kernel.org
+> >  S:   Odd fixes
+> > --
+> > 2.52.0.rc1.455.g30608eb744-goog
+> >
 >
 > --
-> Wei Yang
-> Help you, Help me
->
-
+> Sincerely yours,
+> Mike.
 
