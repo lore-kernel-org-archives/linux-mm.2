@@ -4,131 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44AAACEBF9A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 02:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50CE5CED240
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 03:19:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66C4B8E0011; Mon, 17 Nov 2025 21:59:11 -0500 (EST)
+	id 4C9138E0013; Mon, 17 Nov 2025 22:19:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 642C68E0002; Mon, 17 Nov 2025 21:59:11 -0500 (EST)
+	id 479688E0002; Mon, 17 Nov 2025 22:19:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57FE98E0011; Mon, 17 Nov 2025 21:59:11 -0500 (EST)
+	id 3B6FF8E0013; Mon, 17 Nov 2025 22:19:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48B118E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 21:59:11 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E4A5AC0243
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:59:10 +0000 (UTC)
-X-FDA: 84122221260.08.C1395DB
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2ED0080004
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:59:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CgI5qOdJ;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1388E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:19:10 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D729160371
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:19:09 +0000 (UTC)
+X-FDA: 84122271618.02.24B2700
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C2F7120002
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:19:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=Bkl9jlVe;
+	spf=pass (imf13.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.252 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763434749;
+	s=arc-20220608; t=1763435947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uyA/z3+NX1r8lmPy90ZzbFhLB6Y/TGoAYT7nzfduTWI=;
-	b=en19iPdlFidLQ8h7eAtN2hoMggM9Elkk9xwnYE8y3BvAmIGOmkq6bOgmnNMi2yBcXP/5ET
-	M30CoPwpyz5jQR3ECYDNFYsdDBjSNteXMxONF+yffOcebkrM7wnwu6aCwEWYZ8+RAV1CTK
-	oBwGI6HZ8BB0dc7BwOXu9n7yNeXY3fg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763434749; a=rsa-sha256;
+	bh=jn2tYAr/EHfM0hmtO9W5VlUn1ZQ1mGdkQfHiF3xGSKY=;
+	b=BF4f0BhfGZmxaWcmuCaKVKUifTd/J4EKtCE8mtsqjwOVGNOJP4KoVhHiYtCbNQA1GQoB+3
+	99+PlIXO/W4wAOiscRftYKFnZiRXC8V9hX7w8wTWOEuMfQYbmC+JpfKgR86dUm9v7Hv3Xp
+	kCq9wy6AseKk5vNoY7fFznMvjSBMsbE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763435947; a=rsa-sha256;
 	cv=none;
-	b=hv99DvE0vXkY+2PxjzkMbL6AH29QcHkbQEwUtCC61VY4+uB6vD0dmxnK81Pvf+xBJu72Vf
-	y+uHyCdPumhdhBxThhHXN5/NWFFzBP8VjbwE/vezDtHFnP7L1VXiSHE0gf/XkDPYzIEh/Q
-	btAF+OB1VYTPapUkA+mGpjz9naE0pUA=
+	b=qshcUq5Q5cj6ocXHI56DQNrlgnAhRMt2TQsZDoPtGt5TRCKqUIlwSEar1u3ou4hV+jjbrq
+	bB68lG5nORAUDdfDZu6324MkaGjzt8FdoaO0yoq5ROMD3sV0PSceuu4HjCDFOLQJx+eUfe
+	8EjrqPTgv5lwfk6jw0jOe4QYARAZytU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CgI5qOdJ;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b7370698a8eso479079866b.0
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:59:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763434747; x=1764039547; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uyA/z3+NX1r8lmPy90ZzbFhLB6Y/TGoAYT7nzfduTWI=;
-        b=CgI5qOdJQ7ITGKxplCwMuOOZ3Pvs//Xhm1Dg7xMhPXvL3dAJt70uhAAiWo5SPZN73f
-         d11cCREK88N4aOJ3WSGpC4kDYcCokgPrk2nDE1zMoT8b90T8gfzO8YV5jmovDYoRR6A4
-         wQ3oWz7avZNNHZ/1Paw8l7jv23J7GM2sUuWnhdtUIX8Ka+R3HSiIddBJ/5sg7YI05lQY
-         VDDSU5aCc4oQd2J/HnrSsqmDsQXAT4z7/WT6WJfgyzriybpka1ROLn5kGxveYSG/LEnq
-         PClRH0vqcqsUDIuNmveCUo2mg2AU5nlWPZBOYeKnvRZPVicQJ7mA/a5L6PhBS7eYSd1J
-         wJ4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763434747; x=1764039547;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uyA/z3+NX1r8lmPy90ZzbFhLB6Y/TGoAYT7nzfduTWI=;
-        b=g8bdWsRPH0cStkp8pWb1nn8XpZ4lYmOlCKK8D5FocsezYSZcM4XlEnnvkjAYHTTISc
-         WILGXhsqR41pXYVLuYcYNBDDKnjEoJDpHBDIHLsp523xtFChKhG/6cVi2boOcgufEOHj
-         fzPlIrIFS6VwafbxUwFXgXZ3d89Lpdgt0oqW3+nTRkJPrx6tvVT5qr4duVstAtg9mj9F
-         AtcqXfFEcb7BnzgkOwE/pbyn8rA8bBeDpPW5KI6msk3/ArQQpz7+elBpk38DtKpUHez5
-         ZBZwai+mNEQupVNGtVs5LVUdguEj2FcXx4+ea4gYr8Jj4y1RPc9A3v+naR/4uA/l9kzG
-         HqDg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8Idlv/4E13z0eJwFJ3uVSAIP/NpOGQlG5FTACOjk6A4jtqSffqMOc0ikooeerii6z4e+6qY/QTw==@kvack.org
-X-Gm-Message-State: AOJu0YwxlV5JLe+1oGoYHo6JCkejpx0IFKDR1WUB0LoMtdaLk/AwbBLo
-	kCZ5uRsaDDTNZs8XSXRTzozLhmLStJRaXAnlOFBVCQu5n4qvDspByYsU+NmNE3iQysxlXclTvWc
-	RYtv8qXoc1+fW6VxmdFV5kLdGh+5oeGx59xOsioXr2Q==
-X-Gm-Gg: ASbGnctJKSHtxHFNYmHyDN+Izh32ERwwdUTgR9i+bnOojNDAppViOqHna+K5WgvWeBY
-	OQo3vlbEubszLmEWOjEnLo6O5S6rejZC0+DKgs+W1OzDbtoP091hkgnHTTMdOuvdMbdfaS3o1sZ
-	yd40Xaol8cLgSKfC4+WdFDMkv7Wlxk95bECHKf8tKTaXMm7NoWHu65mWA2xUTReMaCocigV0yAI
-	CZhaww6c+v+mNWqOBKEeR+q1ehgCBn3zwUoOhAEdnMoR6+MfSRkk73WGH4N2wmnHFj1TYqWACgN
-	+mc=
-X-Google-Smtp-Source: AGHT+IE+Xmu/XKzqDItZxK55uKODQ4pXWe1jCDf3/zyE5l7HA0zpyHUAc1wH5fOIbLOq/qTekDcDuTCEd4KGgBq5NiA=
-X-Received: by 2002:a17:907:d9e:b0:b73:9792:919b with SMTP id
- a640c23a62f3a-b739792959cmr714211466b.13.1763434747412; Mon, 17 Nov 2025
- 18:59:07 -0800 (PST)
+	imf13.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=Bkl9jlVe;
+	spf=pass (imf13.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.252 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1763435939;
+	bh=jn2tYAr/EHfM0hmtO9W5VlUn1ZQ1mGdkQfHiF3xGSKY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Bkl9jlVeKdYI9eoOrlOfaZk9tih2w5sT2uJaAMYdTx3EAIbg5+oqVlcmUlQk6/f0r
+	 egPBODPeWRG5TSO0dPQeN60IuTt/n55xJ2b05W6zBBQkF6nuPZBuSKkHmTVeUCO8zj
+	 o2CrbRNu5rO0jSXGVlSzG3XcfT00LVK/0hIFh604=
+Received: from meizu-Precision-3660.meizu.com ([14.21.33.152])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 4B8BC81D; Tue, 18 Nov 2025 11:18:56 +0800
+X-QQ-mid: xmsmtpt1763435936tgfvowgug
+Message-ID: <tencent_295C252FFDABBAEBA3088D5B72DCDE15EB05@qq.com>
+X-QQ-XMAILINFO: MZtEYADUG4AgfdWAQf+qZ54lVhebfHhdDMGqPAgwFiuq0THzTSkCBhdmMX+SzQ
+	 1SMlm3v0OKFNJFAywHUKrnww5srPjcJKEuNPl5ssQDpyPwRFYQFAyNWb+Hi2s8m8/upmOCtNGZWo
+	 MYFdkvoPZll66ZQWSoxSdb1MKDUN1Qb7u5ekc6t0/bA/151Hzwn4FDtNAgHCTRqn7h17cTuNm6/d
+	 aGQgL5VFUhc3+Nak/vIhzxIsrf6t7Ben2Bbzo3rqbjn6SC3/DyXyYgKLcsrb0iBmfa74TcMgQNUd
+	 JDIdSJyymmnksCOl2o+PVXLzbQJFZFW0rjI9n0fmD8zmO/E5dUTveZNx7sFl2hvKPNx+3Fjkoxja
+	 F7Oy5ud5aJpm/2ImpuNF9Ugl3MzRinRokeL3t7Ciw1Ie9Ki2QjilnsI82UOLogfxGQbSTKL1oDZR
+	 aqy26wiEF0aJJiw92pCiysZs7lVadk7dxhZPk5uXmlLYegvO1R0Ku7yr0UtjWKDbTqG+5nQ+vDHE
+	 Uo4bq3PepD28JYo0GimguFkNK6GqbZxZoGO9mNpmExkqm2xjjveRPjoVfrHmtMtnQv2KUxk3gACx
+	 C/x1DQZP2PoJ+M5B/qmb5X+WPjJBdg6o5C5+RXR1jpViwwS30oRO46bNk2TbuedQ74XSAw96oQQB
+	 w5jlrwlF8kziX3U3O6vd8RA/zqZoiToME5olPsKSlceYPpSvpE/QJZo+6B9MXgYKXFBroZ0CkWFs
+	 3BTyKG2kCy0fAf2g69unnmGYoOrryIeWUZR7IHIqwKOLfK4+DdgOn01JpEb8H+FTU0UvURTp568+
+	 KnUah8O+bw0dEvVczYY+oDlD067lJtAWTgfrnjNsQiIoIcNWh0M6S1US68rMv9l4YPzQMgRXEXBy
+	 Uoa2krF+hrMVlLlCCDjjBKr5Y/tkUfhSx1wPDaQH52XUGqm+XlweLMrxmnpVlo+pP844URwp4p9G
+	 MILv8NTKReA9a7vz7A8huLjGzCwiPEXYc3mW0gvAHX8/azugwb+Tgi/FqOESEyOSUIq/xf2BncZ9
+	 9m26ENYI0ZrIB4E7YdytTSiU45cwzzzu1zZH3uLOpfuJPaSMgHjG9+f4If712p8XqGEJDF6w==
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+From: Yuwen Chen <ywen.chen@foxmail.com>
+To: senozhatsky@chromium.org
+Cc: akpm@linux-foundation.org,
+	bgeffon@google.com,
+	licayy@outlook.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	minchan@google.com,
+	minchan@kernel.org,
+	richardycc@google.com,
+	ywen.chen@foxmail.com
+Subject: Re: [PATCHv3 1/4] zram: introduce writeback bio batching support
+Date: Tue, 18 Nov 2025 11:18:56 +0800
+X-OQ-MSGID: <20251118031856.2800796-1-ywen.chen@foxmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <3nqzi2v72dsef2dte7iqe7wahrbzam33druh7klsh45zvefdm3@ab6stznzdxmh>
+References: <3nqzi2v72dsef2dte7iqe7wahrbzam33druh7klsh45zvefdm3@ab6stznzdxmh>
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-8-pasha.tatashin@soleen.com> <aRoXGYC4GeAoNKPl@kernel.org>
-In-Reply-To: <aRoXGYC4GeAoNKPl@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 17 Nov 2025 21:58:31 -0500
-X-Gm-Features: AWmQ_bmEx3-y1qL666uuCkHAOhqd8xREWBuFy8c9Q6i-THXVQGPt4k4Gmg9IHVA
-Message-ID: <CA+CK2bDyKzeZBZvNM7OdSm5dBt3ADjsyXc2X3_YedV_xnphMww@mail.gmail.com>
-Subject: Re: [PATCH v6 07/20] liveupdate: luo_session: Add ioctls for file preservation
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rydtuwnukw6dprknwte8imhngjxf8gbk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2ED0080004
-X-Stat-Signature: ahna5e5dn3wnkxc8z6ngm13byfrkooo5
-X-HE-Tag: 1763434748-826660
-X-HE-Meta: U2FsdGVkX1+8f3Yj193OjnivNH9tFRx+TxJQ3CjX4l+kXLuZH5Mg4NGO26MBggOPmKBKAaBHmTxd4M+IUOHW6YphHG78S+TG+lZYP4U27aqq1eVebcNFJgYsQw7aaW8AafCluoSQR+o+XAoDkb5B4edk1azyYHB9cdH8qc3YVeGNDqGmA/7gkZ/63qKkItZ/uFlAlh6EKwHu83lNjYPt3Tc9+TxoQy1jUdflv1y7M8XCc74cTeSKNLkMbhq9xQcLrnDNGt0eSHMLzzq0CctapCkaElY5/91iVU6bpAVp9VdgKGTu12PK/5AYIBTe9W5M2qNyxOcilsmDkw5T6xQ+UVqiPkzcopI2/VFr445cJqKX1jmLvQl2kzZj7fBV91kkc3hlTme86FWkpoMIPkP+lPWxL+4NOQOHIKf9WaqFv4BnedVO7bWE8Sg3ms6O0nBrASzjFbuQJa+51zJXbvX3XLVrJKBvGQ+X6JPEcV4or7QKCd2xIGwJEmKRqmwjbf5Xpu0O6F9kA43F04+4LNFkK1WGlEK0s64uw/VWQgshGHxIAKNd8lkGjpUvCz+1sl2vuxVpSyU3obDG06/oplZWTbVScXmLsPhoAYx4Bjgj6bjrcQwLfKQcy/6z1An9hZCt1BuOrChyn8+QZDanvc9cjrEAtQYrnVQmyBawDn3Be+GAQhS3Ym+ZIfzQVnk2GPZls1CBkWk167nfs972YcX8YnQOkl9JNPKb95e5IUziH9/Z1KOq+sl4CYPMGjhAdIZgUMgCsLSEUamhVKgjM6j3fnMBad1LpKI1vZMSdBQrpWoTdCtf7eKutOHPcQm1puGbQAedM5r66Ox9olkDUcU4g5ZP9yhL6V/aEj3izKnq7Jgh/Tcz4UW76uLKZs/aAh6KODrQ+5xkqUbiTJOQEy4t9+j5+KEl6lRc7ctUyFUITouQOnVz1HaBBBDRA3k0YtefXVt0/5GcepLK9pXcpq4
- r9mbiYr+
- XvolG/nLpdfie0bjXLNvrk5YFHU0G46W4KbH2lMgA4iqSUGULLgPghm5peA==
+X-Rspamd-Queue-Id: C2F7120002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763435944-91301
+X-HE-Meta: U2FsdGVkX1/rHjPLXL9Sq01p3NSFpLCtfNdvqBZDZIRakEbLr4KJ0filKgKdXjhLMe5ZlWmpXbYMW0fYQoMCqRApvRy17vL3U5kzVUmg5qQAaW9p9dYBYQTJpWDmjUyCSzi30K4J/13ZJcnnoPRebBU0NfT7EezQiV6GL7X5rbU+gghDNxfKBxcpkzrY2HVG6IMSksZO8afh+s3VI9X0zP+AVzE0rGnZanjctdKAuBCX1P4qrLgTgYlC08QyzZwBLHq7yAXVyGWrsIVVRJ2LSQ5GbdD7Sm2K1S/qThuLGnT/QFfPVHtt0+lw/XDCpGDMm/eLOQ4jycNQS5HFFvjXIYrVisEB+lnr81WMe5SHUG//+gFb7a7OAui0g3pQaHHMFJyA9gqYH186aRg/D7DrXsRXlCWFnYfHTBssbH6VNXR+o5WG+xXVuye/NJVBAffej5M8mAASAYyciRKn+0zMDkUd4yvXfyYZ4SpKt+VYeZ+urqBgHe8Q3KSSzNliR4/bKaCC72AqDwfBbQaNbqutOv8MeezBsfrlB6tp6rRzaWVKEhEDC+V+Kvu3vhXZ1Ja5dG4ATHMT9pozEMVnMjwbsWHipW57vu4zaPsKATFv0lSTD3ygm0gkR0WBehV+O6mqgI53EBWtSuL3MZONQDtSqDG7RxDQQmBQ/xCty+L3TAqyVE8CIqHxGhrm08Fp6Am9mXtBWn7pBWRiSVq3BBhT4eFkxKm186CMn5GmqDmqtsGgZjKg6U/pHifDPjjLGOpfnHABCcCJm4jQ2Pu5jgee+pb/xyhBt4STgCqYdrZV/gkuWqIA+U1u3uOWL+GEfvKYNq3FtG2Q1gdl2RBxy6je/SHUpbKiJ/Wm99zew7Cw7v2SVPlEMPDZodNojWNY/wYmGlK/VMFjnavZhGL0IQDDC0F1e1i6/cBFLSNRi+tVm46TWISpYz+8QLAaxGiJTVFSRJS+LcPk+57R3C5ruhh
+ 3r8BpODC
+ qUmKXBOwXe46FDoWS8p5ZmHCr8IgrF3eYu+kzsiF/aYtjg8Xkc5MzoM0lYe9NAtAxINPVfaR9AXstH3mQ3ss083hgXL0NzlQgATzJJi2gcX5zPsGD01rrxPnPzpTzCnxOBqamy6T2V6+Db3VENR4IAFrqZ5qu9GDaLSuJEjzEBhqBkEen8LzU11fldDJRzhwi+ZHlKO/71R1sdOv+YX72GUm4ow==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,30 +112,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >  static int luo_session_release(struct inode *inodep, struct file *filep)
-> >  {
-> >       struct luo_session *session = filep->private_data;
-> >       struct luo_session_header *sh;
-> > +     int err = 0;
-> >
-> >       /* If retrieved is set, it means this session is from incoming list */
-> > -     if (session->retrieved)
-> > +     if (session->retrieved) {
-> >               sh = &luo_session_global.incoming;
-> > -     else
-> > +
-> > +             err = luo_session_finish_one(session);
-> > +             if (err) {
-> > +                     pr_warn("Unable to finish session [%s] on release\n",
-> > +                             session->name);
->
->                         return err;
->
-> and then else can go away here and luo_session_remove() and
-> luo_session_free() can be moved outside if (session->retrieved).
+On Mon, 17 Nov 2025 10:19:22 -0500, Sergey Senozhatsky wrote:
+> +static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+> +{
+> +	u32 index;
+> +	int err;
+> +
+> +	index = req->pps->index;
+> +	release_pp_slot(zram, req->pps);
+> +	req->pps = NULL;
+> +
+> +	err = blk_status_to_errno(req->bio.bi_status);
+> +	if (err) {
+> +		/*
+> +		 * Failed wb requests should not be accounted in wb_limit
+> +		 * (if enabled).
+> +		 */
+> +		zram_account_writeback_rollback(zram);
+In this place, the index may be leaked.
 
-Done.
+> +		return err;
+> +	}
+> +
+> +	atomic64_inc(&zram->stats.bd_writes);
+> +	zram_slot_lock(zram, index);
+> +	/*
+> +	 * We release slot lock during writeback so slot can change under us:
+> +	 * slot_free() or slot_free() and zram_write_page(). In both cases
+> +	 * slot loses ZRAM_PP_SLOT flag. No concurrent post-processing can
+> +	 * set ZRAM_PP_SLOT on such slots until current post-processing
+> +	 * finishes.
+> +	 */
+> +	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
+> +		goto out;
+In this place, the index may be leaked.
 
-Thanks,
-Pasha
+> +
+> +	zram_free_page(zram, index);
+> +	zram_set_flag(zram, index, ZRAM_WB);
+> +	zram_set_handle(zram, index, req->blk_idx);
+> +	atomic64_inc(&zram->stats.pages_stored);
+> +
+> +out:
+> +	zram_slot_unlock(zram, index);
+> +	return 0;
+> +}
+
 
