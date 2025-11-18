@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B56F3CEE343
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 18:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B292CEE343
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 18:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DB976B00A1; Tue, 18 Nov 2025 13:22:26 -0500 (EST)
+	id 032776B00A6; Tue, 18 Nov 2025 13:24:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B32F6B00A5; Tue, 18 Nov 2025 13:22:26 -0500 (EST)
+	id F25A76B00A8; Tue, 18 Nov 2025 13:24:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F01A6B00A6; Tue, 18 Nov 2025 13:22:26 -0500 (EST)
+	id E3B726B00A9; Tue, 18 Nov 2025 13:24:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F31C36B00A1
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:22:25 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB395B65B4
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:22:25 +0000 (UTC)
-X-FDA: 84124547850.25.65571B8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2874B1C0004
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:22:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N2Lpuo2g;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D60056B00A6
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:24:25 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D7BF1DF0E9
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:24:25 +0000 (UTC)
+X-FDA: 84124552890.28.CEDB2B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0ED76C0006
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:24:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ud8H5qWj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763490144; a=rsa-sha256;
-	cv=none;
-	b=iq3pvs1Tuu1ZREeuAlBkMmQVf40LDwFRHLIyn6qpS9KqvCXFAXf5xLEbHvMY7I7+vITosv
-	v4gKq82oKwaxaTp/MrddHv4DChh2ztTgFcuRPXneS/jvTxdE/QsI0ZdEzHH6CcPlqq58VW
-	RdvPDSJOWi3l4lXmYFrhCkFUzzA83g4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N2Lpuo2g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763490144;
+	s=arc-20220608; t=1763490264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=394+H/Toca3IhEDlevEbnwpMVzzRkjVMci3ILAhLtJM=;
-	b=bRhknod11Zot9JJXxbJP1iN/OpXN/idnyJZhhYuOQMA9gBt5Hdxm3LgHPYgnLSKO0bZNjq
-	NGNCColug5+8gxFCwAYQlkTPAiewVJEG8SdfR4avkSeWPqRgLR3bRdrTr4z+DSUWMRAl73
-	Ve+6ifvb0hd2lBW9w2kLyP8n9FPWogA=
+	bh=KzLyoYUtaV7JmG91OXsljbaoJdcsWdUcTqfEyos/6Ws=;
+	b=pZZxMtUdnccboC40mYcZfRhOgeP+ERqauom12WN6hlwRm6SRUnOCV5MFQaozVum2c33QFA
+	OFCtjTiAvgHFZWyUWy0nolLEl6vhYeT7PrP72Fq3pW7uij63zZn+AwPaffVLmT99UX/EKs
+	rb0NXHzM7ks0fQs+RXlbbdez/62BmEs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763490264; a=rsa-sha256;
+	cv=none;
+	b=Lu/+S9SQ+ZPeSAoP0ZNMFswogUNM3xeo/LHbvielKrykG2S6vWiOZfRosMepef45eU82id
+	uDuB68G7sw9EbyBPRSvp0par6dd5l4Tfcb1cA+G4N91cE9zk+0ipCnyPFFK/WZMo/jPaLV
+	VtT4U5YryQUKd1RaL5/+Oqmw/MWdVzg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ud8H5qWj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A8F841A35;
-	Tue, 18 Nov 2025 18:22:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E85EC116B1;
-	Tue, 18 Nov 2025 18:22:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6A4A260129;
+	Tue, 18 Nov 2025 18:24:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01115C4CEF1;
+	Tue, 18 Nov 2025 18:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763490142;
-	bh=uzS720AirCAjrMk0zf7E+fhaADPKoEUqjQkc9kLBcHM=;
+	s=k20201202; t=1763490263;
+	bh=fyLPAFBoJghiBCAB3NIk/qOCqx6vFu5htUaGPEmW1JU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=N2Lpuo2gjYgnW1qXmgvYExPmrxjrbXMnmciJEvMO2ppCTNo9jYroJ4Qt5fNf5Dejm
-	 2Eoi5IKxD7jLGCpyN49cQ3ynn7AyFb4n9DveQ+GsmXnBX4wsVd/0yJXJ4PbYF3JCOU
-	 2HbUAWCaJtfVer2FyB7TzlipCCzuWoMpHlykP8oVOjdtALt6fBOrzVJN5WU55CbhYW
-	 pYd4sovXWm1lsYK/3pSbyup1udeW0/RTPfRXV/OIgaKEcs1qCDPQPStXxyJPCpyEL1
-	 g63+BWAOExeD3zpDrPJyBSmqeX6T3Rk+RMfbwdTvw48MsE1DlszyWusQ/efDdc0vS7
-	 yP49q1AvL5VJA==
+	b=Ud8H5qWjDYrgvHTvxseFOcZjgnjvjPGE1Fykjj2L3tZ23bYArNT/loOO2SCHFtK5P
+	 w8elLHh/xQkRtb7pm9R/ENzwvEJ/Q4jdibfgTTbSUuxcoYp5161ptrIgl9lVTpfiKe
+	 XAcBZjmcqoVSU4XlyyFhMLA5EQV3TzQRwtGMQFIa4w/oxdiBpJj3Ua7Tv8kx13dmTj
+	 RKJ7Cd1LN20q19SqqR44PqI7P7ME7BLMvghYPQQxjJDdeLA8Q2Fl72kd7/E6EbBChw
+	 B1pX3lxVWLtHFLwTLvQonK4zdPySJTLBVj4hTzXoKXOo4Lmb7uCB8hEvX5Xwq9VNKG
+	 4wnNBXcBob2fw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Alexander Graf <graf@amazon.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	David Matlack <dmatlack@google.com>
+	Pratyush Yadav <pratyush@kernel.org>
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] kho: free chunks using free_page() instead of kfree()
-Date: Tue, 18 Nov 2025 19:22:16 +0100
-Message-ID: <20251118182218.63044-1-pratyush@kernel.org>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: add test_kho to KHO's entry
+Date: Tue, 18 Nov 2025 19:24:15 +0100
+Message-ID: <20251118182416.70660-1-pratyush@kernel.org>
 X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: erawegu1yi5se5gemg366co85uxn8ana
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2874B1C0004
-X-Stat-Signature: 53riniike5aptwai7wgi7p3ut16c1jug
-X-HE-Tag: 1763490143-266172
-X-HE-Meta: U2FsdGVkX19tqLlynNUHi9dm734GB1gMSd1ETr8TH2wG0RPJUztNcPoNIEPBa5XeCZXjQXB8x5vHbfaMm7gPIZbGMvSq9iythq1az0dxhUKVuBhirXBoPr0ulYqeC5qGOVaBJs8Oww+uEYXjV7ID6nkl9Kl3UEXE52+6sxQO04iyP1+Be1W5iASuyPXzRprLSfHsLE1gOsErJqRdzM7eHoU79dMtfF18sQuSuVmBpoAErIjlm1RA23sSVKPXCO8WGq6Yvxvvvk7j7G865MCVS4O4wFPqIyUCH5I1R2fwbby4TKD2vikKn3FMXZu6tMcJ+n95JZ8Rup87ptEjlTcI2w5CkvrDsZq4iD31Nb4bAp3m3qF9YRVVEd/0DYwNaq1FsVXU30ks/kHa06G6QGTYj3SllIzr9Rj1PIB69QODE6FF2EvLDM0yjmIGSYoQYl5DsYEj2ZeHrPyhyj495hs4wSc3xRisFIYThhmsRrN2X8NdkPlZL8+8ytmcLue5e/khst76VLc2To+yy4gOqUQzVc6alqATtd81XzB3f378LT13dX8ZRhb6/mo1WPkQu9Ck5vbNNPlx+KuHPI3XlL68ZidRQK4+NEBbNMbSQrOlCwKcgiSSZ1PrIHhYyPaipRS2PlVHmPtoirTEwT89Kggjo62e2+Hz8j5BaD8Qyy9jwkdzwBS3p5QV+3GkomvfFzagrkTCTA2IqJwc3znE5g0Go5e9n9fgsnrnreGUuzlqhwl2gj0WD1srVykf/vHnNPgyI7bP0SCJiMu4WES7ayPDHIaw/iOTfSFG/QgvUv3WhqrC8Asb27Le+77ULE/q3Bc8CYKfTU7VRkNcpaD023LI9zjkzXdjF+lXPzcHz/QdaSBlVYpYE4q7npiwPu6gK4aBul0hJNZcyGJfyoVvXdBsGPY0j1+/FbGpQlfaXOow8KFOTGxGHYGjNXgN2O7MeVBvLq/ggWg11u2BIjB3nOL
- 50cw0Jlc
- K9L+3RwlknfcCzdRZdIA64vyih+KYIlO6L6yz/XxB1QPMplKJ/HsKBO68KJnxi8WuutpfFpzQYoQTWaLGR3jFk5lR3z/tmb2c2RGtUbOl09/T2TCtKkZ+lvn5ppK0PjZIItrYZF2VJkgJAiAAT5wt3rdWzJW17xwxr7E2u5HtP6g3kdR76tB6/i+Zw6OYv6MIVqYQndNm/7U52c2KvXzgJIVOglwNxlvetI8ZhNjnziOmVI89ujR8VoxAy/+htDU98oUA5WnBnDN8uczoWEA+ifpsrhYlbYHVaHEhVkPxfxs8yWgmur7HjE4hSQ==
+X-Rspamd-Queue-Id: 0ED76C0006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763490263-161274
+X-HE-Meta: U2FsdGVkX18G/1g5EDy0pPae7AJXSAvgULxcGD7/Wr9mEf5LvmZzbDpbWtzEBvLgu2S6rhBhJG/lB0F5O0aXRqiM0rv2F17VGzs2ezEw3CKll7AMWPaVafhFNQLtc1Zr6desdJ6+zTWCgi4BuMkp5zRPeHOx10oEFQwBfoSSVoTpVAzaL3KyEFSQFIb3YQ1dq4sT4mW6uCGV9Hf8BEOnjbQuhxJJeSFpAnViWTabPexZshLZcFx/QIXwpX5eU02ygmrJJPICCQpDKwRnB4paklX0MFzo98BboCB0rZZ27Mr+LdyvTnm/pzJqDq38ZY9fxHrXkk1uabuvPFpZ+M9NETpELvbhgBJoUxV+ngHI4kYd9Ql7KFEkn0hk4tGu2ZcIfv6nSAFQSJbdpLoYCAOBDVRzmj77g2yWE8EgqZT2vG4C+xJHwCG6JtofqY66JXZYgdIWNaoVihX6146cMB5RjFsTWsYLMNOHDbHzbD4XKFCZbDrTHAKhJR75uZ+Hj1w0RQWPUH476UIMJT9NDJgRJQw8SUj9iERN+C7U8SbWYzi/SMtFJtLbjfhgzdXX79MYNRcDCnH7EymaVS5JhGvBZhbjcTZjvc9PHUEWjRN555DUrXd4+eGaG9p2U279jvlfIHglm4m5WjPunmHzqtlOICWeyokBfCrhszFs7C9QQDdZgVljNcn2OaHsyv5iDhKIz9cg71uT/UaydAtNcbCywJBO/ZaK6rpZaUURtflXx0viZnap5X1M80taaUou9mjL7Tphh7ViOy15VwLUkZSkoSYayNHy4fiSE9o3vcbS41z1h9mvzH0OtcMQA9nvvC8qSgONGWFwgy7JA3F/FtiG4Ts2jApP6YxZ2HrxcIYrxeYBUm8p3pxqKtBwmu+5I+/i8DnMqzH1RJFRHLSRyPA+IVh+9+DuM1jI/bdUpN0oN7fJ+PKSKTmIG3SjJX8XQcAZnmvxNW97kzIwTaylfJS
+ 0WfCjZmC
+ 2lRx21bTu49lNMtZBn0E6iW8geFfHs9pGSHnEQ7NF0C3i1hlkBcuMlPl0pZs5gvTTo0Qf0TFRuKBVITq4+GnByf5JOC6207fsVypxhKepNikYX3J2AqYRfsr44gZAuly04JAnFOp5u8HmY84HAzBYSVTjCmGSxP1LqDlYk/SZJcmhWRlYYjXNu53PvEN1LqYPe9vbdOvsKn2T4OuNtHQZDcKM4YeTxyp4WntnjXOuXNwgk5eOVdvzUlw6A9ZhxtTFadBsw4drlUtv/1TULbP3fGt4ug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,43 +95,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Before commit fa759cd75bce5 ("kho: allocate metadata directly from the
-buddy allocator"), the chunks were allocated from the slab allocator
-using kzalloc(). Those were rightly freed using kfree().
+Commit b753522bed0b7 ("kho: add test for kexec handover") introduced the
+KHO test but missed adding it to KHO's MAINTAINERS entry. Add it so the
+KHO maintainers can get patches for its test.
 
-When the commit switched to using the buddy allocator directly, it
-missed updating kho_mem_ser_free() to use free_page() instead of
-kfree().
-
-Fixes: fa759cd75bce5 ("kho: allocate metadata directly from the buddy allocator")
+Cc: stable@vger.kernel.org
+Fixes: b753522bed0b7 ("kho: add test for kexec handover")
 Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 ---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-Notes:
-    Commit 73976b0f7cefe ("kho: remove abort functionality and support state
-    refresh") made this bug easier to trigger by providing a deterministic
-    method to trigger freeing of the chunks.
-
- kernel/liveupdate/kexec_handover.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 515339fa526e0..6497fe68c2d24 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -360,7 +360,7 @@ static void kho_mem_ser_free(struct khoser_mem_chunk *first_chunk)
- 		struct khoser_mem_chunk *tmp = chunk;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 05e336174ede5..b0873f8ebcda6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13799,6 +13799,7 @@ F:	Documentation/admin-guide/mm/kho.rst
+ F:	Documentation/core-api/kho/*
+ F:	include/linux/kexec_handover.h
+ F:	kernel/liveupdate/kexec_handover*
++F:	lib/test_kho.c
+ F:	tools/testing/selftests/kho/
  
- 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
--		kfree(tmp);
-+		free_page((unsigned long)tmp);
- 	}
- }
- 
-
-base-commit: f0bfdc2b69f5c600b88ee484c01b213712c63d94
-prerequisite-patch-id: f54df1de9bdcb4fe396940cdcc578f5adcc9397c
-prerequisite-patch-id: 800ec910c37120fd77aff1fad8ec10daaeaeddb1
+ KEYS-ENCRYPTED
 -- 
 2.47.3
 
