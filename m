@@ -4,99 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 916C2CEE328
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:37:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E07CEE328
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:38:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE5D56B0029; Tue, 18 Nov 2025 10:37:15 -0500 (EST)
+	id 23E646B0007; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBDB06B002B; Tue, 18 Nov 2025 10:37:15 -0500 (EST)
+	id 216566B000D; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD39E6B002C; Tue, 18 Nov 2025 10:37:15 -0500 (EST)
+	id 12BD16B0011; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CBBCC6B0029
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:37:15 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7FE55896AE
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:37:15 +0000 (UTC)
-X-FDA: 84124131630.29.32D491E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 92F7C20017
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:37:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OnohOJXb;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 02C306B0007
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C732B1405DD
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:38:11 +0000 (UTC)
+X-FDA: 84124133982.04.2BB1F44
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C44D514000F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:38:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Vw8ZZuzd;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763480233;
+	s=arc-20220608; t=1763480289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9qRBOpRFp/y3fjy/IOWET6iwhgiraMFiQ0WP7HK72L8=;
-	b=NOWwn/OD+We9IGobbufrHjYf+Pv4kBsY8wj4a4OGUq9c39NYc+1+58opn8O+x1BQNAeHsS
-	hkADkfzBMSBHgeb3ACSpw/WBeIrQf9yXxkSnDSZzGgVRRPi0oprtkyMRsndxd0ZrhV8Ax2
-	8jnG2y5DjP/eH4g7qaoTvNRje9NHdUM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763480233; a=rsa-sha256;
-	cv=none;
-	b=H2dD4xzfdDPYBW+dWMAfSfBf10NJRdJVm1KbD1QXO5bZxHp6c/0ysS8TG/4WqLKTCkCihb
-	rckrApi/Mw0p95PeDuDPwVtfo3ppfOxc+y1se6tDrZzO9te6He5fo4L2Sq48Y/MAKQ12cb
-	xp1pJ7iI1LK2J5WnhZS+dbHV5KAWXNU=
+	bh=B6uekXVR+jn/Plqa3NW/kjSUDt55yanBt9ufFPxdFs0=;
+	b=A35km+iq+I5Q09QVUKYIGCVFxqjmM0Dfpv9oacwzGAPmaHnbf/E+VmwrLdh6xkH+rUQ09x
+	Zny4c3JfRXXS7uIkn8eDakKnCgFceIBoP3nSniNfzzWHHepkEzZzEiyNz30M8d8SeoG+0n
+	gtjSKLShf67zCt+W3nPZiMyRNJ4Q04s=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OnohOJXb;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=9qRBOpRFp/y3fjy/IOWET6iwhgiraMFiQ0WP7HK72L8=; b=OnohOJXbkOwQ7YKpHLtvPNlxnX
-	zCJ7Gu6R/b6rQm45h7RhZAQIhc9gMHB/1TUz8nEr81ED1rXx55nva88Vg0XwIZPBDpf9i2THDUJQu
-	As49cZ11Y611hd0FpeIdAbKsQLZXJQRWfiJhuM+plSknTqYXy2lxCljOrQrDNstY1KZZbJ1ezrN0l
-	tBlq3e0g4r5B0W6xufYIi3Bovt3Dfyl0BIy8O0VsZOdSN7wVf6g6r7PpOtkPu4lrOLyTTAAMVjBqN
-	YftY6B/THUev24ihZV0FRT/NTZ1YBE4nSACUOZTAc6MnMD+OF85SE6r5iQJzs6OWcshv1/IzCOX9c
-	WsYj+WnA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLNlV-0000000FgQf-2CDq;
-	Tue, 18 Nov 2025 15:37:09 +0000
-Date: Tue, 18 Nov 2025 15:37:09 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org,
-	shakeel.butt@linux.dev, eddyz87@gmail.com, andrii@kernel.org,
-	ast@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com,
-	bpf <bpf@vger.kernel.org>
-Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in
- do_read_cache_folio()
-Message-ID: <aRySpQbNuw3Y5DN-@casper.infradead.org>
-References: <20251114193729.251892-1-ssranevjti@gmail.com>
- <aReUv1kVACh3UKv-@casper.infradead.org>
- <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
- <aRpQ7LTZDP-Xz-Sr@casper.infradead.org>
- <20251117164155.GB196362@frogsfrogsfrogs>
- <aRtjfN7sC6_Bv4bx@casper.infradead.org>
- <CAEf4BzZu+u-F9SjhcY5GN5vumOi6X=3AwUom+KJXeCpvC+-ppQ@mail.gmail.com>
- <aRxunCkc4VomEUdo@infradead.org>
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Vw8ZZuzd;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763480289; a=rsa-sha256;
+	cv=none;
+	b=PFtMJAc/1O96GY/BxZysLXqYYmStt9O5KqUl6IN/6SUOzzjR8UZjdTZJGYu9X5FkMmZBC1
+	bDu6Iz1IIG58XJrtB5hxEItLPnliV7pdX+L0/h0kaK0sDixwPvKg2gsN9HSC/xxJNeRDZD
+	va+kKlkSB4TcL4e5hIUzw2TUVTmxQq0=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-644f90587e5so2207045a12.0
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:38:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763480288; x=1764085088; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B6uekXVR+jn/Plqa3NW/kjSUDt55yanBt9ufFPxdFs0=;
+        b=Vw8ZZuzdYH67dP7PLEg8KIeZBidInL5KGqy/DswtL+GyPT3wbPnmTaGQHA4MAhcRPJ
+         etgh2t8x2WTzaXpeuOtGnYdGmVqnLnc48G2hfhwJGV8+dEgSt6Xhjb779d4l4mBTtALO
+         IwZkUDI618D4Dnt9bFSGcrkS1V8A/N5aIHb9h64O9q0mrFipRgtYHAUmhd3VflHcgj+1
+         HLr4IPlcXPpUSTZO2JAxY0UqYaEhoF+CGBXmSkRWzQXMTxcMesbEXcdwsz6NbVTNVA8y
+         Ug2dc/gf+vw76hF3wYQGlu+SSfGmjlyHdIFegaVsVeSdDR5WJbrCk4WelySrAZPGTlsi
+         cVsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763480288; x=1764085088;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=B6uekXVR+jn/Plqa3NW/kjSUDt55yanBt9ufFPxdFs0=;
+        b=osqAIOBXLBQbXJAH/hWGFdVUNaKphc76LG1zlCK+wrlNj4bvG1PXKP00PN7GHsYT7m
+         Qb5ZTVBIp3QxCrq3unt5odEN8V2fL0K+3Nx10gRqM2RdhzXAoM+TzepKaGSgWwdr+etu
+         9JeLopMbnF2/zswiaI/Jhn+PQHasVFSQpCnNIRW0ggMIWdEneSJND7aG142SYVpuxwHs
+         j3ANNb2amHDw98npiTFiYs3KcJZmk7eqbjpx/GO2mXeXz228MYCzSWlNnRG8PliZUVSu
+         4ez2UmuAaLdV4yeAuq15JPXxoe/bNbk6xyRAyffu5TQ/RAQcigzqRj6dFhXSJiFOojYh
+         WZJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ8tE+02aB/XVaJPeeoJ0mXPrZeHz1u9ObZtH6xfyw502NyadrtadJxXsjXOzkhSQae1eAbhyygg==@kvack.org
+X-Gm-Message-State: AOJu0Yw+D5F0/RoAZ/JmkoTYb3f5RxbFG3qBddmQY+UtzsdtgF0dVNEy
+	g3C7Ke0TnLaVgTC7ypg2IVNIvdTdq4ikGsFLUQgG/cupZnpK1ZsFPgHYWjqf8CtZZgHxmajrz2/
+	pNbpoy3g0+ovZSMPGIAoy9BSyy8vZJot90vWzbCtoDQ==
+X-Gm-Gg: ASbGncvXDNqinwgazTdt3/fBPKn94aNYGOB9oFkkK6Mn+T9d9/JgIRX0DWnKYmN/wWM
+	dgdyDUcaCITZKFlybDlqYhsL5CIrGxbwDBW08W0JLaYmmZv3w6On0HdI9SqwFe77ULHe96aKmh0
+	EO04FVsX3dv9oMaCV3nSoJIzW8muSFnGJuDC1FCUfAwbTBRXbG6sP2IZ620m/n7zJzF9aMFHDmM
+	bvgkWckCIEgts5tTq2Euiq+TEzF7PTCR+rdNzmTJgSpKrsIByVz+kjcHZ7Cyoa2xGeJ8unNwJkj
+	AtA=
+X-Google-Smtp-Source: AGHT+IGrjPyW93BjIwBqBDRqzXa58mN2pSY6sOqPun6CMHKlu12QPm0Wx9wn3sNAxL6K2ljWwKgu92DgB9iBQq14qms=
+X-Received: by 2002:a05:6402:2112:b0:641:1d64:8dce with SMTP id
+ 4fb4d7f45d1cf-64350e8e0fdmr16538410a12.17.1763480287895; Tue, 18 Nov 2025
+ 07:38:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRxunCkc4VomEUdo@infradead.org>
-X-Rspamd-Server: rspam12
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-9-pasha.tatashin@soleen.com> <aRrtRfJaaIHw5DZN@kernel.org>
+ <CA+CK2bBxVNRkJ-8Qv1AzfHEwpxnc4fSxdzKCL_7ku0TMd6Rjow@mail.gmail.com> <aRxYQKrQeP8BzR_2@kernel.org>
+In-Reply-To: <aRxYQKrQeP8BzR_2@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 18 Nov 2025 10:37:30 -0500
+X-Gm-Features: AWmQ_bmD9p5Nn1RKDLqeZ98HzkdyZzvLR0FYSVXPyrJripjLvaLejIY3K1PEUqg
+Message-ID: <CA+CK2bASYtBndN24HZhkndDpsrU1rwjCokE=9eLZUq2Jhj6bag@mail.gmail.com>
+Subject: Re: [PATCH v6 08/20] liveupdate: luo_flb: Introduce
+ File-Lifecycle-Bound global state
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C44D514000F
+X-Stat-Signature: dcy4e8gwsbf1ga3o4enc53ekd1ztz7e4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 92F7C20017
-X-Stat-Signature: 6in5ki9f7n8d3pgq1kr8186rapnimufb
-X-HE-Tag: 1763480233-312964
-X-HE-Meta: U2FsdGVkX1+X0p8kN8Eap5vkCc/jai/1kQnqO0yRxCLoKpJrs+sXCtbqn1unahhU3ms2MRbCVhcTNKjVUu2orKIFcw6TI/WbeR3vl3yavVXJEQlhHQpssebrnD1cj8C2JqkAit+UGVaJdKfG788eBdaGPtmCiY8b7oi4S4g6BSV7+5I0l8ivXIaAWseicwtWy4D0eDk6rYn9ZLRpCGb57NfUUxwcL3x5XHWeUzbRgs4Opne+JLbsrb9u9OBTXJ2co716JYiVEANsFTVGWIilDnSSL5dugoG6YtSb/4MW2oib8vc/TudAKo7nLQl7BGw9ZFIhgPTOC1Avlq0hp8cIDiGK7epbU5VrHtt4hgBcyOe0aYgJG0/ZOjc+UPPiz+Xe705hdT2xEvQFpkWCiy4e/x86Npop8wOGFnTkeoA9CRVjxWMCVmFgaFpt1jbhsrc4EoJCSU9QqWj7OHRUP3+Yk2rPZN1iZ+g2BadX82GftD5T7+ug3ASQrRERohmzFizAvAXeoL9CViK0p4lyEp01dzNmDFmmL2F6AUUCm4Z3SIaeQNvyS2QCwAc4UrrCRYNiP5upta/Wujt99K2xSVD+/KG7HQB3WuaGR5Z8KQWW+VD/l8nZjiBmGFT5yr+tKSBVsImMMASZ75WI0zDwFphydxdkuMUNAqNGYJfY06IjTT2xXP4aDywJU63cdwbaVJC36mNo7uUC8m/EMgy++sWV6hkFGSL8i3sceipgwa434cyh/P0sVSn1GqXKjuZ1Ggynk60IHUVnI6Bl+RiqVSQrU6fn20agkTGu4gQoLeu7IKtWa0JSThjjwx8yZlRQAlKL89FTiBc9xFStYrtECGeLtHw5RUYJ0CUf/OndNwwnzY7aMM9UR1fyGuo0hr8LpBXpid/19/8FcYu5BpscrYtHtqWBzObNcJyqXunJa78W8dTYAsYhW3SbEXJ2s17fdf9SHOkocRHl/54Eeyw9AEk
- gLs/IIl4
- 8Nk/HPQuSbyf9ylE0nbyb3oZWnHVTrUEBXVd+kL8uu2wz4uU5Wj1WB4lE30Ffvh9lZLJQq+O3m5eZ2uvJIgoRljwDHnVA3ghTRpWXWqSU4hC/Ts4/PLjCxzU6+cTDfb3UaKrEpXdVHncq/CKzVEhDup6WjUe5fCdqrSNDPCkKwtyB5XUN2k/39iaVQj5cmzYvtEHSE00ri3bm8s5gS9yKK3SuBmvFRnLhfbmzf1C5NO5GvenjtVrsMS23+9xKTKPXiwZN3MgSxQH0N3iAgCgD92lgPTE5EEF4l/glQPdRW5H7XaBCeT1uwVBH9iaqUkiDhfRVx66Wx4BqAGmbqJ6EObfrJuNUGLRijbZ2EA+vY4Ft3NH60SKImv3yaj5y5bpJtt+U+K/3wUPo78Ck1xlucdlWFAF3/ZYmRno1
+X-HE-Tag: 1763480289-308193
+X-HE-Meta: U2FsdGVkX19Q3UDnRZP2QQSPt1dyiuYrT1YuEn7y2wIgMp/gX0E3pXzNLiA2mV95oIoE6k/FSRcM0E0l4dQfXO8xpebk9c51swypoJASoNpIyB+SMa82LfHbVSPsUoksrlRgDiIIO2eAowFT7jK9494ILCXwa6C3kDU0hQ6xbra/rzQtFdqZi15UC2rD4Dw2JrE9Zr97WtVgKL4prK10DzyLc0XvU9bM4ThA65ADlpL+7zb/lHB2x2TXrCJkpNtb646CzrhHkl3IVNoqc83ONQgbTPEvUGssR/0V8aBnFSJ2ncLHH4pYbIu0KaBhuEosEn0UbdgCn3Nv1jlj9UWBgHRCgotpLLokU1W90p2UhuFtz4F1xVG6DNed7KrV1zH0+U5Iemzk5TDgjtIpuBtx3m94C1RVv0adj9M7BIe5TeQsdXVm0zryRzoCV1M5Xs/xpnW825vlQ6yCby6V/2ULPXQBCh8IaJMEJ7eGN0zh45/08kXyK0fWFV6Yw0dEbNhOsftoD7iYD5UI4nd41Ba4zzeSXPZ6KlBsLefn20Zi8M/w//1aYsTU5aWHkj9qObX5Uz+7SCBzupmEPX8G+MemxtN22IR873yBd/AZz7m4RWa3jq80RhTLGFk8rIGs8TUfVSqceLv/0hq17vx1ZIG8iCjoDtKg5tYTlHAE3UproOatwNlmcqBZyjNiFYSwnsUmEhpHMSSFxBfhzjExW/xZ/dnnQF0nKwUuhb4eZgZxs4uXXqvkSRPnc7LXj8arTHssKiIVHQmhe9IATikm3V1VJ65FSChPIeWiWdiq0UGK04vvwOtvb64cxrNfE71vU68hfoDcQOs9+BexUxypKDdD1L/mv/tgiQmVDh5qJ/RndvjNq55Hpdrk11TSLCyRybqX9bCuazByvLt5zPyYdCulWJ2LZG+M3vmPSy2NcyN/SkaFB+AhzrG00i4wIMxqDF5HYzRuRvcPRIODc6MG/pH
+ OYq3NVMJ
+ tnKkVK8/0LuoaxwgR6XFm0ggp23v9ZNTtKs5S5SRMlQbbjtyef9vwX9VWfBKurLY0iEUh7qNklh99Ojckm6Qoav5OBEPfk/WFVlgOtdYaK0XCklvKjkfFU7b3/clVmXJoInoLEx1OuLFuSzuIF9XIUb2OiMsTIu9/ZHJsmB6H256k4pQokGFVDkmho0VF6myWiXuiNTEjIxoycOKY5L2dbUmNGchmtwyBu1sIDhBNW+5VLSvKUMoZ1dp+POy1qgUMIX/Yn5CMVhOEXZNKWn08AgdQ7oh6bl1frd8ius9acxfTQlwE0kPncQio5cNZqpTs5c57rp8yaUloj9c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,47 +142,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 05:03:24AM -0800, Christoph Hellwig wrote:
-> On Mon, Nov 17, 2025 at 10:45:31AM -0800, Andrii Nakryiko wrote:
-> > As I replied on another email, ideally we'd have some low-level file
-> > reading interface where we wouldn't have to know about secretmem, or
-> > XFS+DAX, or whatever other unusual combination of conditions where
-> > exposed internal APIs like filemap_get_folio() + read_cache_folio()
-> > can crash.
-> 
-> The problem is that you did something totally insane and it kinda works
-> most of the time.
+On Tue, Nov 18, 2025 at 6:28=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Mon, Nov 17, 2025 at 10:54:29PM -0500, Pasha Tatashin wrote:
+> > >
+> > > The concept makes sense to me, but it's hard to review the implementa=
+tion
+> > > without an actual user.
+> >
+> > There are three users: we will have HugeTLB support that is going to
+> > be posted as RFC in a few weeks. Also, in two weeks we are going to
+> > have an updated VFIO and IOMMU series posted both using FLBs. In the
+> > mean time, this series provides an FLB in-kernel test that verifies
+> > that multiple FLBs can be attached to File-Handlers, and the basic
+> > interfaces are working.
+>
+> Which means that essentially there won't be a real kernel user for FLB fo=
+r
+> a while.
+> We usually don't merge dead code because some future patchset depends on
+> it.
 
-... on 64-bit systems.  The HIGHMEM handling is screwed up too.
+I understand the concern. I would prefer to merge FLB with the rest of
+the LUO series; I don't view it as completely dead code since I have
+added the in-kernel test that specifically exercises and validates
+this API.
 
-> But bpf or any other file system consumer has
-> absolutely not business poking into the page cache to start with.
+> I think it should stay in mm-nonmm-unstable if Andrew does not mind keepi=
+ng
+> it there until the first user is going to land and then FLB will move
+> upstream along with that user.
 
-Agreed.
+My reasoning for pushing for inclusion now is that there are many
+developers who currently depend on the FLB functionality. Having it in
+a public tree, preferably upstream, or at least linux-next, would be
+highly beneficial for their development and testing.
 
-> And I'm really pissed off that you wrote and merged this code without
-> ever bothering to talk to a FS or MM person who have immediately told
-> you so.  Let's just rip out this buildid junk for now and restart
-> because the problem isn't actually that easy.
+However, to avoid blocking the entire series, I am going to move the
+FLB patch and the in-kernel test patch to be the last two patches in
+LUOv7.
 
-Oh, they did talk to fs & mm people originally and were told NO, so they
-sneaked it in through the BPF tree.
+This way, the rest of the LUO series can be merged without them if
+they are blocked, however, in this case it would be best if the two
+FLB patches stayed in mm tree to allow VFIO/IOMMU/PCI/HugeTLB
+preservation developers to use them, as they all depend on functional
+FLB.
 
-https://lore.kernel.org/all/20230316170149.4106586-1-jolsa@kernel.org/
-
-> > The only real limitation is that we'd like to be able to control
-> > whether we are ok sleeping or not, as this code can be called from
-> > pretty much anywhere BPF might run, which includes NMI context.
-> > 
-> > Would this kiocb_read() approach work under those circumstances?
-> 
-> No.  IOCB_NOWAIT is just a hint to avoid blocking function calls.
-> It is not guarantee and a guarantee is basically impossible.
-
-I'm not sure I'd go that far -- I think we're pretty good about not
-sleeping when IOCB_NOWAIT is specified and any remaining places can
-be fixed up.
-
-But I am inclined to rip out the buildid code, just because the
-authors have been so rude.
+Pasha
 
