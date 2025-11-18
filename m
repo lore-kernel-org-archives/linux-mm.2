@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD0CFCED240
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 990D2CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA1A58E0039; Tue, 18 Nov 2025 00:16:19 -0500 (EST)
+	id 023668E0025; Tue, 18 Nov 2025 00:16:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2B1E8E0025; Tue, 18 Nov 2025 00:16:19 -0500 (EST)
+	id DA0208E000A; Tue, 18 Nov 2025 00:16:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FFF38E0033; Tue, 18 Nov 2025 00:16:18 -0500 (EST)
+	id F27308E0033; Tue, 18 Nov 2025 00:16:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A4AF8E0037
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 351ED8E0027
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13B2A88BA7
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:16 +0000 (UTC)
-X-FDA: 84122566752.14.CE40A43
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D4014589A0
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:15 +0000 (UTC)
+X-FDA: 84122566710.25.A155AAE
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6E8B2C0008
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="qLj/7H6N";
-	spf=none (imf22.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	by imf20.hostedemail.com (Postfix) with ESMTP id EC2AF1C000C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:13 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=W2ERGgim;
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763442974;
@@ -34,32 +34,32 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bkByHERsS9JuCtqGS9wCvZ7R+EhcIoCC8ci4VG063fc=;
-	b=MlYCK9Njx0hfxk/65XULslapmGX+w3rg0fetwFJRRR35/EdU0ijlyuRHmrhTwBpMKGzQU4
-	nrUFnucgjNh48LBjtqjudvWzdopDsFt2tYyY1obycrO3Tiv5IHTdgGN+sO/Qr1bdBocMpL
-	jprxPslkv+eAHM7arwc15Gukf/VN/Uc=
+	bh=nSvwG6RsfCAVSbS4+/4CBqqk98DhL2WOLYlzO7apNsA=;
+	b=oPlGse+t4r/UTg58LtwD0lykKJAZ2S9PSHZSxSInKkGQtOErPxdJS5e3UJmpYkcAjycDcW
+	dRURLuLVtVmMKPneNSkNloDhwHSqnh17FYN92MMHuTzueKBqOlePd6yXK4sQkmb8v+a23D
+	bEfpM9SqGuIWruEbSshQA307E/efkNY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=W2ERGgim;
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
 	cv=none;
-	b=VW9apilbpZkiTJhZaTrAsx9SBzvvD3L67C6KlhNOYj4ZQa+ckInR7YIcnGMphfSAftMQ0f
-	0s8DRABB3YD3gB24bxGzOLozGfsKZCCcrnQUD5k6R8y806ZePa+uO4Fg/6UBWW2U85HZe9
-	xvKJ+1ImypPeY9/YoGR8aUaRr8nAQeg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="qLj/7H6N";
-	spf=none (imf22.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	b=saB9ohAGWjzpGYi2StGZKSv4f4TK8VfiCLLm0DSjZTFa6RBiThqEEOKpR5o7I8CVTzryn7
+	cY5naEBsqcjeTA+4VSURxlNEZTtqaX6Q8VPszZ2sFEuXWF2jA4QdgmuMbILkviXL5zn9Yq
+	9GsrpA/x/4dacrRuiM58uUeiv0YJ9VQ=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=bkByHERsS9JuCtqGS9wCvZ7R+EhcIoCC8ci4VG063fc=; b=qLj/7H6NiPG0n94Gna+yDrzg5z
-	O8TnSsAYvukbv72G1ptRDOAlg1yKJwNl3/3uOgeYhGYWuSY1Sjr+sp74hJ7lcJG4LR5Y9ZJAscTgd
-	wk0/nHfysG3kQYtOETjk9T2+bxfWxaxebX/saqsiuZLJxJc4D4xRL9WbvCxN7x+sxmsowfAmPEg3W
-	ouJPGUpb0fSN5LBKZCWhMM8N+NdW+eXlflafssE0DC225nLx710DR3qBiIYGK3BBgdb3Zfkml8xcZ
-	eb3nmdV33jV8XJfc527j1AXGZ2F6mA8HtYJFlf3AQyWJ2YRMBV+u9Vv2p4hqit1DT/fuAV9u6PjVc
-	asCtLblw==;
+	bh=nSvwG6RsfCAVSbS4+/4CBqqk98DhL2WOLYlzO7apNsA=; b=W2ERGgimsMitH58MDtj4At5C7m
+	AqrmsCRI0tB62gk9cbxja28U+q92qkZZRPPOWFgOjbaBNTgwT4mTm+dG3YJn1sISa6CtM2bi/6o3O
+	ViQgIj3GJlBhNZdEPOVR2nGRrCSvoxei553xg2qltmCeiyhUKj8dymcAmwjlKeEBGENFa9aRzgs3N
+	ZOAODjoYvidwdGARmbAMYsRgA1w6N/AZ7RmWnNZDX7wPJa502fEkD6qFFxMHJ4pBVlSHY2f5k95fi
+	6THFMoexw3vnADng1aoo1622q9e2rJ6QInxQA4+CHZ8T9OSNINs/F2XTzM643m+C/s9gVSFJC04NV
+	jC3JSXYA==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4V-0000000GERY-0jfj;
+	id 1vLE4V-0000000GERT-0FHY;
 	Tue, 18 Nov 2025 05:16:07 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -85,22 +85,22 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 19/54] convert tracefs
-Date: Tue, 18 Nov 2025 05:15:28 +0000
-Message-ID: <20251118051604.3868588-20-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 18/54] convert pstore
+Date: Tue, 18 Nov 2025 05:15:27 +0000
+Message-ID: <20251118051604.3868588-19-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6E8B2C0008
-X-Stat-Signature: e9rfz6ijhrxw473381pgf6fiz6t4iqed
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EC2AF1C000C
+X-Stat-Signature: 77r11umizdah9i86zp6hytzngu49t3h6
 X-Rspam-User: 
-X-HE-Tag: 1763442974-81570
-X-HE-Meta: U2FsdGVkX1+FMsGMV59jwVsq+OJicosTLw6RoP8phmTrB+Oqn0Vut0pKWevwbue+FZ/3U6ltibXf0CTrWSAsKZ73wLi6LxBxrYe/QASs72ctYX/zjgx7pZQm6TX1FtwU4cOExkMBio8ad+U9ahJ+7J62bnM/qERWleRX8L0/fpHmUKBdBDPNq73HVzAPpdeUo393O907fmGtyaFZu4UHP51GJo85ALqbHh1bryCTK1MBGroSR3rRbF5cO6JGUEjcgDSzMYVy9FlDxs0zf5K7+efGuo6n+tqWzqwcSGMEmv9JdqpSL0aKWo7xWghhlLTt4Q8GlEtrJVXYhV635vPyHxY3LRPYvaHBaR7O6IGeLfFg+nHjis2vRupNFXiG6Y0fVOxQ56knxsJfusheXfHG5foh6rEYAFjAxr1vS4yzoNwjAbrky/fWw/PKNAnDZBdnr8kfIRxeIElse3wTfnPESGiFR5lNYmgbnjlX+EZdnkerJp5PID4Cq8ER0pvKZX23zpoo2qkmJsMQ+CXeCM1F2dshgD0G1P68gROD8fodEuvuJROIHtiEVKmuPpvq0qZ+0GBvuaUa9dbapRu3lZFc8WYhG+t+n9ptipsWb5wUDFxk9rj9/zDt9D4CxNgn2IHxXq4UIDlV6yAHD8wVGMg3MreTtzxGgWqKOo5nKPe6UcuMLuLbd+PYdG5q3z5PANI/rYHbAW8Af4nAmEniCpPJdMgJnoNHaSrHHPN/GS4S8ZvVbTkz9YbalKHxVATzEKMuwEJU5u2hN8UeGV04jlGMhvcwjsb7TEayiWeMsRjdCg4FVrPE7k5twzI5r71F2SHXoR4Ll0VFKb/XaSrX66VNgWj1NjZipeMXhwmfTHhO/CPXWtQiE5sq3eU6dVpxyOwbcAagukf6CdLdjMnKBuTgrsngRhTMt6O2bLzLGcHVrO7DnJ0/QI3f7YlGJtMXr+PjqEmmBfbWgXZArSAnUuA
- 6tg0/4fE
- FF5lQKT6pqfUX5GV8XND4ZpRon1lVRn+v92fNTgYD3KKWX5c+Eu97TWGD1z6/GsV3cl+8NCOdS278XekUrj3JvnMc8lzCSlr5/JJOSyVZOCPi8mZlUCrWlsMVov7lUreYrcDQQIqIpU8E4d7OsUNwGhcCmMRMHsts2zhW9a0mJr6B+2HIQVaCVf24GZCgrDYyL7TG9z2gBkSTmkF7U27clhGxM3hBfEN481+YfU5SNS/2ok5+uzvYPdn8LiO1BHLTvtH5arcYJcygV7i9HL9mvQyUHpfe1AfW9p3PrtSEyISe+dgKkwOwCNqoj2nZeXp19UI5aKAmOjsh3l9GoOKzsjLiyoT2AY2BoJC+JY3CCqzGRcrPH3c/RDiUcXiR3ZxusQeW0W/fpRyi/bfnWJAEqSiDwOe1sqkIIf/g32VckKmAWlvDEflC9H4OdGgWZwaxVW3mTVIyRYRLbFn35iPOfHL8VXnKIO5DdlO/
+X-HE-Tag: 1763442973-496970
+X-HE-Meta: U2FsdGVkX1/+T4nEp7RpQPA65Xld30Cds+0hB2aC7nlw0C+qZkTOAKMd/YGUQQE2pnMpgixa2CeKJT4uG6E5sXQueQtt7X5YGLjbhrMW0FHFgTpMHZ9BFCyWgAXDFmfsEc4KMvA7d/MQ6+rUrwYmerJNXH0lepwjlhgATiiBLPUYn3FHO4R2k8lzt8DvZ/TYs/744X/k8ON+XDfssQI4f663M+8fUT2/Jdc9+igIi2HV4gUOEi3q92hPkGMWSNP4vhjpr0+ZLB94wKrYN/frqNjZPRJ1WR6Am0vkL+2SxUelXPTWcfl2LOC2anLPRNyTt5EfVMxNJF6V5LiUBsvchImor4QIIXuRrqNCId5GZXd2t1/nplLYfjl3NTVHs+V03M2p4yGJUv5FNQc46+W1pm8OIn4j5spYIx4vqsehxmtkcHnsFrp9/SMIsOBItVxyaKaWmXxzTPz/amVWe4NHP7SmaethYgXJCBivzAUL2Tuu1kKKveKK575FCAyhEa4aYUc/JUHZwAUDlC1z98HNtdHuE1ELSyEopE9/rwT04guhJZK358wYpGWHa44pbJYW5oWgMgJ7hRP3VS2zpS4TzosCl8KAjBNmR5EPyQG96auDHqfA0AMI/AYDEPKlLEZDzK8NXOFWswQJXlFOmBnKJxFNKaAHiDHvYgHABfvnRh3+qt6eSoJKQMJCQ3CBn/uSRq3+VdhM9Y5li8Abkg2R2uFXy8oPestwwXFDE3pQpBTn/Qvc1NGc0UR6cMTw/QLoSYjwucnbEPmjd1h2IeArbsi++wQca9AYVPkqioXEg9pQgYDkw0Fc1kLd9s6gwXimlKFejG9KH0jWgUZi40a1O2bb2hWAugdozrX/e+cWG6l8IgRA21CXf2nTqBSplhASPHd3eT5lwIZ3Jtlyz5N9ZKAbH0S/htN4WDUq/yhvP3nOeRh9iMChrILoJx3CetyMczXI2ba72c9+w945bnm
+ VHnZ7Xm6
+ 3x05PepFzfYLW4KAF46+fBpGJ2q16xyxDeFAT6Ih0CXG9ginijxdsVcevkiH4H0ED/z4HFgj+Z85KW4xHfSkGyEQ7q6xQ/gi8/XioA/ido8yWvf/oWBFzIfai5K5COpyA6lf712QK/QQySpbqhGB6YjfiO9OxS9llOqDu1mH+0kjHHB/7zYZSEIq82SltdgLa2J4boJ/Lf3NFQshCGyHFn7D4XJFnmPTXDkkvGbFztI1azcgUoErh1wIMvM7/javJq7RvrF3qkNYd8X3V+XsXqXIeD+8XxQGyDMy0J7+7KwiTqtg7uaFpiV085+PtI9r7rsPfdn3OxBB/L5KQxRDD6xdrlCxqwDtVsEwOQR540xvx2/mU5tEXgytZ4rlZ8jhHhL/mt/MY0/iWeNPgXCGkBVniGK/UVLHelUAWrtjud1J55r3aZAOFNenUQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,96 +109,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A mix of persistent and non-persistent dentries in there.  Strictly
-speaking, no need for kill_litter_super() anyway - it pins an internal
-mount whenever a persistent dentry is created, so at fs shutdown time
-there won't be any to deal with.
+object creation by d_alloc_name()+d_add() in pstore_mkfile(), removal -
+via normal VFS codepaths (with ->unlink() using simple_unlink()) or
+in pstore_put_backend_records() via locked_recursive_removal()
 
-However, let's make it explicit - replace d_instantiate() with
-d_make_persistent() + dput() (the latter in tracefs_end_creating(),
-where it folds with inode_unlock() into simple_done_creating())
-for dentries we want persistent and have d_make_discardable() done
-either by simple_recursive_removal() (used by tracefs_remove())
-or explicitly in eventfs_remove_events_dir().
+Replace d_add() with d_make_persistent()+dput() - that's what really
+happens there.  The reference that goes into record->dentry is valid
+only until the unlink (and explicitly cleared by pstore_unlink()).
 
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/tracefs/event_inode.c |  4 ++--
- fs/tracefs/inode.c       | 13 ++++++-------
- 2 files changed, 8 insertions(+), 9 deletions(-)
+ fs/pstore/inode.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 93c231601c8e..61cbdafa2411 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -823,7 +823,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	 * something not worth much. Keeping directory links at 1
- 	 * tells userspace not to trust the link number.
- 	 */
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 	/* The dentry of the "events" parent does keep track though */
- 	inc_nlink(dentry->d_parent->d_inode);
- 	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
-@@ -910,5 +910,5 @@ void eventfs_remove_events_dir(struct eventfs_inode *ei)
- 	 * and destroyed dynamically.
- 	 */
- 	d_invalidate(dentry);
--	dput(dentry);
-+	d_make_discardable(dentry);
- }
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index 0c023941a316..d9d8932a7b9c 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -538,7 +538,7 @@ static struct file_system_type trace_fs_type = {
- 	.name =		"tracefs",
- 	.init_fs_context = tracefs_init_fs_context,
- 	.parameters	= tracefs_param_specs,
--	.kill_sb =	kill_litter_super,
-+	.kill_sb =	kill_anon_super,
- };
- MODULE_ALIAS_FS("tracefs");
+diff --git a/fs/pstore/inode.c b/fs/pstore/inode.c
+index b4e55c90f8dc..71deffcc3356 100644
+--- a/fs/pstore/inode.c
++++ b/fs/pstore/inode.c
+@@ -373,7 +373,7 @@ int pstore_mkfile(struct dentry *root, struct pstore_record *record)
+ 	if (!dentry)
+ 		return -ENOMEM;
  
-@@ -571,16 +571,15 @@ struct dentry *tracefs_start_creating(const char *name, struct dentry *parent)
+-	private->dentry = dentry;
++	private->dentry = dentry; // borrowed
+ 	private->record = record;
+ 	inode->i_size = private->total_size = size;
+ 	inode->i_private = private;
+@@ -382,7 +382,8 @@ int pstore_mkfile(struct dentry *root, struct pstore_record *record)
+ 		inode_set_mtime_to_ts(inode,
+ 				      inode_set_ctime_to_ts(inode, record->time));
  
- struct dentry *tracefs_failed_creating(struct dentry *dentry)
- {
--	inode_unlock(d_inode(dentry->d_parent));
--	dput(dentry);
-+	simple_done_creating(dentry);
- 	simple_release_fs(&tracefs_mount, &tracefs_mount_count);
- 	return NULL;
- }
+-	d_add(dentry, no_free_ptr(inode));
++	d_make_persistent(dentry, no_free_ptr(inode));
++	dput(dentry);
  
- struct dentry *tracefs_end_creating(struct dentry *dentry)
- {
--	inode_unlock(d_inode(dentry->d_parent));
--	return dentry;
-+	simple_done_creating(dentry);
-+	return dentry;	// borrowed
- }
+ 	list_add(&(no_free_ptr(private))->list, &records_list);
  
- /* Find the inode that this will use for default */
-@@ -661,7 +660,7 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
- 	inode->i_private = data;
- 	inode->i_uid = d_inode(dentry->d_parent)->i_uid;
- 	inode->i_gid = d_inode(dentry->d_parent)->i_gid;
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 	fsnotify_create(d_inode(dentry->d_parent), dentry);
- 	return tracefs_end_creating(dentry);
- }
-@@ -692,7 +691,7 @@ static struct dentry *__create_dir(const char *name, struct dentry *parent,
+@@ -465,7 +466,7 @@ static void pstore_kill_sb(struct super_block *sb)
+ 	guard(mutex)(&pstore_sb_lock);
+ 	WARN_ON(pstore_sb && pstore_sb != sb);
  
- 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
- 	inc_nlink(inode);
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 	inc_nlink(d_inode(dentry->d_parent));
- 	fsnotify_mkdir(d_inode(dentry->d_parent), dentry);
- 	return tracefs_end_creating(dentry);
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ 	pstore_sb = NULL;
+ 
+ 	guard(mutex)(&records_list_lock);
 -- 
 2.47.3
 
