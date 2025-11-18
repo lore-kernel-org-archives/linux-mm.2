@@ -4,116 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B434CCE8D6B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 01:06:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1A2DCEBF61
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 01:07:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BE398E0016; Mon, 17 Nov 2025 20:06:13 -0500 (EST)
+	id 5A3508E0017; Mon, 17 Nov 2025 20:07:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 021A38E0002; Mon, 17 Nov 2025 20:06:12 -0500 (EST)
+	id 553D88E0002; Mon, 17 Nov 2025 20:07:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA1018E0016; Mon, 17 Nov 2025 20:06:12 -0500 (EST)
+	id 442E48E0017; Mon, 17 Nov 2025 20:07:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D876A8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:06:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 736771A030F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:06:12 +0000 (UTC)
-X-FDA: 84121936584.01.A77628B
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 901DD40008
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:06:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RM1Q3dFU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763427970; a=rsa-sha256;
-	cv=none;
-	b=DvhFOMYGtokrpn34QWVORa+KWboML3VIllnTZJ0v4ll+eHHK3GfLn9v0IpfDX6EtXIdksJ
-	oeh8tbVUjtmiKMDFfWAG1+hzIDPtUGd94HY84ugETnIKTIuZf71pLB1c1YSGiVAIMdiRs0
-	vv2fbsRNwmLLeQkStJXhBPsghkOWaNM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RM1Q3dFU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FB1C8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:07:46 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA19A12925
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:07:45 +0000 (UTC)
+X-FDA: 84121940490.29.798DCDD
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 69CE51C0002
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:07:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763427970;
+	s=arc-20220608; t=1763428064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NuT9qaNyEjZfIy16bIhwfj6VRiigeFvL4hxLaIBcqis=;
-	b=1tJ7x6jEDkaoqMwjGVSusAD0HIjjsvnKVRru5Eu1TN430d4BkWe6c1iB/nAYF33J1e2I49
-	cB2Gar22EiqLsxYHqXuNvLHzIoV6CgrJaseS8AyX9xhqQfDNWdBAdbjzx5ckNv75kHNEM9
-	VBejP0IogUTtF+USEf4yB2ZMAi5WjHY=
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-bc29d64b39dso2977507a12.3
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:06:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763427969; x=1764032769; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NuT9qaNyEjZfIy16bIhwfj6VRiigeFvL4hxLaIBcqis=;
-        b=RM1Q3dFUQNtGUIZyYgFgPrPlypcgizBmUtDdBTmSuM+Q/yZnxq+i2Ioe/gn4Kj9meq
-         39iY9fKl8wm/LF7Aj1xCv4ex0a6Z4ZgwWt6MGKUaw6HIBjhMcykoBM47fAF35LQCGe96
-         xM4ZdyKvoDeGD8t/0sTS9bpSknsBUqvN0gazJIFugoVXD9MRs8eTSAp3IZtNYq/1zhNN
-         r8iw4VxKbm1xn+R5PCufaZyGOpv9hC2EINDdjOLtUssBed4s1yPS15FSXxZFxYwdBACh
-         PGlF5N55DMH/P+dDHH5itvQYQdi3oGExdIiLftXAm1O4NWcf4awcGnNleeQ5XKsHBgcc
-         gSgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763427969; x=1764032769;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NuT9qaNyEjZfIy16bIhwfj6VRiigeFvL4hxLaIBcqis=;
-        b=nMo/f7mSszQnvd13BJl8DogQ50cDZPaVoCXRoO7y0JnIwUqaUUAEcJl7yEP7VE+Ejx
-         95QIzyVxSCbYtROlG+TliXW1ta46uJa7fFgtTf7mcCsksJ4/6com8C0D0ORr37GbKAhU
-         GbeFjealq044yLx6RdnLgB6O0WjYtFBk2E/cZSJP75TFjAEAxnSAg7mydipJmJ/GVv6j
-         aGm6N5VmfejEc147RQUIaPR2IMBxsuxz/AdxlbZIvsCB8T4PUo9C0Yk56wtx+JHGGvEM
-         +mu1d2LiOOnNmGuOnT96ptK8NBTVzor5CnUOV8ghc3zVOvvb9d6XoWTJ0MyJzjYGoLq/
-         FIEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYc0LNc8PF6f0Gn3YDF37nyUthj3GTQv3+MOQSPNhTNgLDXL2d3UK+K9wlLygWAdvOX69t3+cDEA==@kvack.org
-X-Gm-Message-State: AOJu0YxAzOZDKUTB+AesPY90ogMWo/pW92dDOui8Utg069MEXV9PvqnT
-	kHsE2p828MJlF7INlYSRUuV/gaaprBEJdH4G50tiDg22ZylPh9CPjRla
-X-Gm-Gg: ASbGncvXWMbXsE03daYk77no0YMsngSy/udDk49eJszA/1rZs98xsrmQsGQZk/qcP85
-	Di7AuQ3fJWrOMg8ZYFuHQ5a3E9XPyF1G34Z65Rlhg3PLPil+2EAOV0XaQGjWHTvReTKYUCfWRE4
-	ievtHhW7ka1bWLQej1qYidIHbtgmVocaO71/J5uliXmyFkYbnG7n9mTKaEsygi35QGj2/yGM2pU
-	yGFce+AeifwjgoTp2znD21TVgIoMatvzQwfJaxhT3/AzgFNQ2HFV6ohCacTGlMQ/LsZsAYOfkoL
-	MWOPy4Z8QEFJMbetqF5PqWqnYjP08yqTM0kQga+/6lNH+neu8QG242SzDJ2Vjf6uNtufFxf+Fsq
-	/OtIX4vAQnv5jRthuiQSSEtEDpP+tJdNTItHleXZebnXAMe17WPmFwaLWY/4Aq3gpZO5jn6K1rC
-	ME+BrvQAqwYw9zjHMnEMZF3EXebnEELkXUD7H50QhRdqKmZjWjahkjgA==
-X-Google-Smtp-Source: AGHT+IFwH0TbW37DQk0Ytd0vjS1rf0XcD6M8DDxMQ9u0ZyqXmO0VVOfpW6HRgHzgDux3Viwk3VROTQ==
-X-Received: by 2002:a05:7301:420c:b0:2a4:3593:ddd5 with SMTP id 5a478bee46e88-2a4abab97bcmr5228685eec.2.1763427969103;
-        Mon, 17 Nov 2025 17:06:09 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a49d695821sm58437307eec.0.2025.11.17.17.06.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 17:06:08 -0800 (PST)
-Date: Mon, 17 Nov 2025 17:06:06 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid
- gfp flags
-Message-ID: <aRvGfsZMRIQuC3TQ@fedora>
-References: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
- <aRu--sVhXRWthmhe@fedora>
- <b7e215ee-fce6-4a7c-995d-8ea6625b1ae8@ixit.cz>
+	 in-reply-to:in-reply-to:references:references;
+	bh=ckikrqg1bG23wToxtL8NccV+Xhzfv1Zjbpd6hkRey4g=;
+	b=MKeh8ToGILfveHOYc/M2/zuXAs7nNOiZFqHH9mX3sHqnh8odO7sAypEk+TaOv/rTJZxr+W
+	EDr6R5S6sTOu3cNJEfzgTgYiKZ/qTB+kdVURimerbe01gyvdECVVdh28QikvVyt94f8A56
+	nkdlPnc+nluCC/MD4uYUVtXAA0Nv3LA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763428064; a=rsa-sha256;
+	cv=none;
+	b=JSelocyDNJQtLZ8QbZzTcEi2WAe7n5Vtd0++tE1RkBaiT5Jh+3b2fZlTTlRmdQ8k+nvWA4
+	fCSszrP6Jifrvv4ggokJ2vXn/0P4NxmvrHQtww76ROkJffrsAOXA4VpoTL7cXcKfXXefmP
+	quTFjJd6pUbLIfWWk88pX61M06gTozk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-02-691bc6dc6af5
+Date: Tue, 18 Nov 2025 10:07:35 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>, linux-mm@kvack.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
+	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, horms@kernel.org,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	ilias.apalodimas@linaro.org, willy@infradead.org,
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: Re: [RFC mm v6] mm: introduce a new page type for page pool in page
+ type
+Message-ID: <20251118010735.GA73807@system.software.com>
+References: <20251117052041.52143-1-byungchul@sk.com>
+ <f25a95a4-5371-40bd-8cc8-d5f7ede9a6ac@kernel.org>
+ <e470c73a-9867-4387-9a9a-a63cd3b2654f@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b7e215ee-fce6-4a7c-995d-8ea6625b1ae8@ixit.cz>
-X-Rspamd-Queue-Id: 901DD40008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: okr7i4147sz9qdgettppuaqoazntwi7q
+In-Reply-To: <e470c73a-9867-4387-9a9a-a63cd3b2654f@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SW0wTaRTH881Mvxkaa8Za9NO+aI0xIYromnhWN17iy7eJJBp90hi3gYmM
+	W9AtgmWzmqJEboKuSNKWkgCiAuIai1BaZaNcveyqywoOKuJWpbICmlqRAkFbiJG3X/7nnN85
+	D0dgtfdUCwU55ZBkTjGaDFjNqYdmVax41q6X44Kn1oLzSi2GS6MWuPiiUQWhWj8DzpoGBMHQ
+	Ux4+N7Uj+NDageFtSwDBufIRFpwPsjjw148h8Hj9CP63Xcbwut3HwyVXPPRd6OfgRrabBd+p
+	2xgKssZZaAoN83CssSosrrPy8LChUAVnx86z4La+4OFfrxPD89rPKuhvLuDgjqOag/fFrSz0
+	FW6C9rJ5MHJvEEHrFTcDIydLMXTZvQzUN3XxUNRZhuFlVh+CzhYfB8UTORhKMgsRjI+GlcOn
+	gyooaXvOb4qlmYqCacvgO5Zeq+5haLftd44qf95lqMfRy9MyVxqtq4qheUonS101uZi6Amd4
+	+qz7Bqa3beMc9fz3PfU0fmBowfFhvC16l/qHRMkkp0vmlRt+UicVnO9gD/boLJ9yb6qsyD87
+	D0UJRFxDrjuC7Fd2u318hDlxKbHahlQRxuIyoiihqR5duOfNZWUqZ8UcgeQ5SYTnijtI1sfj
+	U7lGBJKbXxlmtaAVSxEZsPfh6cIccsf+ipsejiHK5ACTh4Qw68nFSSESR4kbSK+nbWpXtLiE
+	3GzoYCIeIg4KxHHfhacPXUBuVSncaSQ6ZmgdM7SOb9oyxNYgrZySnmyUTWtikzJSZEtswoFk
+	Fwq/2IUjE7sbUeDhjmYkCsgwS0Oj9bJWZUxPzUhuRkRgDTpN9lYiazWJxoxfJfOBveY0k5Ta
+	jPQCZ5ivWT1yOFEr7jMekn6WpIOS+WuVEaIWWtHRNLsrbVzXv7vClDiUXz56TZcAv6zIyUx/
+	Jx39FJed31U82RJY3M2F/lrv3uI/Mbu7d7vO3hscK0zIXDcqLn9SCepFtr93DsJGduC3DtNG
+	Zd3muAX40TxZt2fRFn29tyiw7HHyj5aTV3setV2tdv4x+V1CfPY/x4YmLPu9dSFflYFLTTKu
+	imHNqcYveGMAdF4DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHe967q8XbsnpyUbAuglAZFZyu9CHqKboq0eVLLn3JF92UrUyD
+	YOXItNTu6ZxgVJrLZa1ym6jJNM0kMsN4pcxaF7taqZmmVJsR9e3H/5zf/3w5Aq1xsmGCbNwj
+	mYz6RB2nYlQblqTPftqglSNzzk0Fe3kZB1cGUqHkuYeFwbIuCuyOCgR9g094+FXdgKC3vpGD
+	D3U9CC6c76fB/sDKQNetHwi8lV0I3uc5OXjd4Ofhims9dBa/YaAqw02DP/cuB9nWIRqqB7t5
+	OOS5HCi+YeGhrrCJhZaKHBZO/7hEg9vynIdHlXYOnpX9YuGNL5uBJlspA1/O1NPQmbMCGoom
+	Qn/zRwT15W4K+o8VctCWX0nBreo2Hk61FnHw0tqJoLXOz8CZ4SMcFBzMQTA0EKjsPt7HQsGd
+	Z/yKueSgonCk7uNnmtwsbafI47wTDFFq7lHEa+vgSZFrL7lxOYJkKa00cTkyOeLqOcmTp4+r
+	OHI3b4gh3heLiNfTS5Hs9G5u08QdqqVxUqKcIpnmLo9RxWdfaqST20NTv2fWshbUNTYLhQhY
+	XIDdbj8fZEaciS15n9ggc2I4VpRBOsihgZ23TmUkp8UjAs6y4yCPF6Ox9Vv6SK4WAWcevRhg
+	laARCxF+l9/J/RmMw035r5g/cgRWfr6jspAQYC0u+SkE4xBxOe7w3hm5NUGcjmsrGqnjSG37
+	z7b9Z9v+2UWIdqBQ2Zhi0MuJC+eYE+LTjHLqnNgkgwsFnqj4wPAJD+p7tNqHRAHpxqjJBK2s
+	YfUp5jSDD2GB1oWqM9ZhWaOO06ftl0xJO017EyWzD2kFRjdJvXarFKMRd+v3SAmSlCyZ/k4p
+	ISTMglpqt+yL651RKqdtD+OqrqUsC6v5anTeb++IXvDQMsWXOy22jb4dleARrK2nlkZH5eJd
+	17/Hro+ZVa5drAp3nP3qVCT98OjkwqujRm3KaL4+dnxB9Ko1Ce5t+w5HGorTI9mNk/MHHGM2
+	U3ytoWbtix2ek+Yee9IH78rwym7/wPz9SMeY4/XzImiTWf8bxcwYRUADAAA=
+X-CFilter-Loop: Reflected
+X-Stat-Signature: zeuq57o7hqeydi8e9t5jkigzcybntny8
 X-Rspam-User: 
-X-HE-Tag: 1763427970-576271
-X-HE-Meta: U2FsdGVkX18j0V4lTCBXhAqkKqsnqsf8sQlUf2whOSRmhmFApxyQlm/SSql+P/6gZWAuVZuCv/d7joQLj56UpAfc7bxekauPCKap4zNpIbnOeVjKYoqJNWb6bl/KCrIigd6HVgA7skyshK9pCS19BOa63ZqpGNumWJIyuEsRzadx55PS+03FvZvAEhq1C4/pU6Yp4HplCJeho1ajW5LltlPVhE6hoAD6hASR4NLzt3ojg3Y8+83rY75831Oxli8xv6HCGlY7+/gaWZgwGlsfJDKlY4jOfIE3f7CBtxmqiuNCRnPbT4evvU4QO+VMgwSS4a9lDNEynWvgwctG7oV9T4DzSVVynQqN7yunl/MrkEBvZ/HLiL6DeOsedyeQYrQ3sjc6WCSLWPu51FO8s5cmln8FojPc3z754dwpvgv1ck91JzqNNZQlQFrrBiG5w+HEMfUi5HKys2bb8u3O6L3zgC5jD8lsZVX+BsuIiaPJOPOBuC/DwGbmynbiXl3i9PQWWgzXSH6ob9O4Hf6yfsGzhYCXT1iLv1+j+Ry3sG2ZYsrwvcOCUQQ0Fw+APyOa1cA3BppVXyTywUdIJf1aWqG0y7j628qfUWc+HoQ0sC/mGLnlLktqAEoqCcaW276lgwIndm8lg6r4EdRP66OvcOBNBY5NZErM+YDPVN6KWlHJ6aGLgK0h7Y9uDQamm1Orx0uakNd7QoSu2fGzEfm4VNByXWG8qs2IYV73HRmK1T8LfCXGFf4H+IKCCgTV7Eh0zlaWSMwK0WvSgOwB+0h9comdghirIexqBZhToSs5QIu2NQlnnuUuPI2IxLQw7h9AGRCxDcIMb1xKp8jM3yrgWl9V6XHazZ9PWR7uzQhKrOELsbUo4VKH4qaLp753yLfYwyZQeOztGMEOrvOSGcShaBkH/rmVyD/u8syGlOTrgkTWy0tbmPa4dHWXpPA0RLUqEGX2ArzaCIGtM2aPkS4P4Nj
- 7RFsPhlW
- WBRJYLBlnJ7dqeRFKYPisagTRH9/euSfH2hb4gMLM+azcH1o1qO/FJoajOezSF4I4bhnyVYPl93TGiEOZmb4siaJhIZcM+WXwvDdQTWuKnzu1xjU6KrtLxF/+FsHYLyuS0DWHZq5TciwJRJiyMVpvugKIIK0pmUVfpmJhmm77lfXoBaDGreeTLNLCklPVPLokh8++kNe9aTgGEkeyOPiu8dqC+Gzuz6d5Iuzk6uI6DDFAFtd8hEyl2uIybhk432/gkIYq5Q/91CpjrekNClOH+NqbKjW4kRVGCB0zhiijZbO+33eyBg8Nsm5Z755iYc3syOd64Omv6kz6Wa7qe18Uo7ssypKUSakppPSV1famLkg9a3CBgUL8NBpVbQgVlul1SKQI350fsnYIOnsmQZeU7EfqxTJSf7MaBK8FF79mSMcjzMWCCZv49nguESc/DI2Rl7v5J+OnKYuCbty6jihkZT0AtQ==
+X-Rspamd-Queue-Id: 69CE51C0002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763428063-514174
+X-HE-Meta: U2FsdGVkX18C21qb30hceXENZWQMTrs0UHxQrDkG2Nk0ZbFos8eMiVRHWn2Yt3UfoisBRtAlP1JPklmkx1o5C5Fx9ZMQnSab9+l7zRMzo+8dpXG9br6fYcp/fImwDiOV/om2BPP4LQlg5LLqzWtrlbl6A9VPXvPckTos3mQ30vWhYgxOOpe+Pt2k2soiB7nctLNq41VBJky4wJfNOoxVYMH885q3SG4Vj1pK5U3OTEdTI1vdATo2fpf/9vN/T2vYvKN2SoVGfO56aheX+dowRn2X4yhNSYpe7c+aImGGKZQrroJZy9JgFgX4vRwcCrBrvgbk+EDBJo+PH0Z7antA45vYskexppvOGMVbOLROCMEXJSCXxhze28hdudhba6Sam2V0CMufcVroPo4ziR9uTxtaq7oMT7RfnPl8PeB02hPPEEwEyFysVZYk77QgXiezaKHvfLudapDzIBYbnR/ZrZH7t+3qvqbJI2QuabtmOXISPO/TgZU9ozpNIHVNqToHXed6kvWxvXi81ItWdlXq7hecUSuON/wC0WdV3vWSymSoRadqHyzHCV0QpntnLctOzV67+pzRs2pdL3B0LvOP7e3xVubD6IUFy88Tsb+DgCCTDWUT7bEkulQQYTUBekhpH2BMhCrwdUdCElrkuClnwux7uHjLIX9xs+pMbd5mIyqEZipVtE7N2fyKJCGTTkOa5g+l3KjSim/PY6mTswZ/beJaZ/nkXgbgpnFwOUtt9O8i/Cz+xB/VU/yabbVhvKfdwWOiEe0Zvsl5HF7xQhw5LUQlT/5QeFXXNQWRCAdkBpeAoaa/VT7jzmJZknb6wi7mu9BEY3IUBh9AJzQeSCHvuejIuLzBJ5VnwjVJ/mBULuOmiwR5yrpaL+mMvh5LOIK1HNobgxXKeX/FH0+hlavMMbLQIeXarmj0VShy4SoZtyvqk2xCDxMtgB0/7Vrx1zhTb7bSD7Rsqycy4KOjwnr
+ uEutP9em
+ S8fe66iuWHAyiA9HaOM+IAKZkJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,51 +127,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 01:51:23AM +0100, David Heidelberg wrote:
-> On 18/11/2025 01:34, Vishal Moola (Oracle) wrote:
-> > On Tue, Nov 18, 2025 at 01:05:57AM +0100, David Heidelberg via B4 Relay wrote:
-> > > From: David Heidelberg <david@ixit.cz>
+On Mon, Nov 17, 2025 at 05:47:05PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 17.11.25 17:02, Jesper Dangaard Brouer wrote:
+> > 
+> > On 17/11/2025 06.20, Byungchul Park wrote:
+> > > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > > index 600d9e981c23..01dd14123065 100644
+> > > --- a/mm/page_alloc.c
+> > > +++ b/mm/page_alloc.c
+> > > @@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
+> > >    #ifdef CONFIG_MEMCG
+> > >                      page->memcg_data |
+> > >    #endif
+> > > -                    page_pool_page_is_pp(page) |
+> > >                      (page->flags.f & check_flags)))
+> > >              return false;
 > > > 
-> > > Without WARN_ONCE, the logs get spammed immediately after the boot,
-> > > on devices as OnePlus 6T (Snapdragon 845).
+> > > @@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+> > >      if (unlikely(page->memcg_data))
+> > >              bad_reason = "page still charged to cgroup";
+> > >    #endif
+> > > -    if (unlikely(page_pool_page_is_pp(page)))
+> > > -            bad_reason = "page_pool leak";
+> > >      return bad_reason;
+> > >    }
 > > 
-> > Do you have any snippets of the logs? There'll be a particularly helpful
-> > section that says "Unexpected gfp:"...
+> > This code have helped us catch leaks in the past.
+> > When this happens the result is that the page is marked as a bad page.
+> > 
+> > > 
+> > > @@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
+> > >              mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+> > >              folio->mapping = NULL;
+> > >      }
+> > > -    if (unlikely(page_has_type(page)))
+> > > +    if (unlikely(page_has_type(page))) {
+> > > +            /* networking expects to clear its page type before releasing */
+> > > +            WARN_ON_ONCE(PageNetpp(page));
+> > >              /* Reset the page_type (which overlays _mapcount) */
+> > >              page->page_type = UINT_MAX;
+> > > +    }
+> > > 
+> > >      if (is_check_pages_enabled()) {
+> > >              if (free_page_is_bad(page))
+> > 
+> > What happens to the page? ... when it gets marked with:
+> >     page->page_type = UINT_MAX
+> > 
+> > Will it get freed and allowed to be used by others?
+> > - if so it can result in other hard-to-catch bugs
 > 
-> I didn't save it, thou I'll run the kernel with all logs again tomorrow,
-> what I remember it was "__GFP_ACCOUNT" in unexpected section.
-
-Gotcha. That's particular flag has been added to the whitelist as of
-today. Hopefully there are no others.
-
-> > 
-> > > Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-> > 
-> > For some context, this patch begins enforcing the gfp flags passed into
-> > vmalloc(). If the logs are getting spammed, that means the device is
-> > calling vmalloc() with some unsupported gfp flag, many many times.
+> Yes, just like most other use-after-free from any other subsystem in the
+> kernel :)
 > 
-> Yes, it was full dmesg buffer just after the boot and I think ongoing.
->
-> > 
-> > > Signed-off-by: David Heidelberg <david@ixit.cz>
-> > > ---
-> > > I'm not 100% sure this is the right solution, but having WARN_ONCE or
-> > > rate limited warnings here helps a lot on devices as OnePlus 6 (sdm845).
-> > 
-> > Can you check if it still happens on today's mm-new?
-> > I just sent a new version earlier today that also masks off
-> > __GFP_ACCOUNT, and had an iteration earlier that added
-> > __GFP_HARDWALL.
+> The expectation is that such BUGs are found early during testing
+> (triggering a WARN) such that they can be fixed early.
 > 
-> I can try tomorrow, any chance it'll bubble into next-20251118?
+> But we could also report a bad page here and just stop (return false).
 
-I'm not sure, Andrew should know?
+I think the WARN_ON_ONCE() makes the problematic situation detectable.
+However, if we should prevent the page from being used on the detection,
+sure, I can update the patch.
 
-> Thank you
+Thanks,
+	Byungchul
+
+> 
+> --
+> Cheers
+> 
 > David
-> 
-> -- 
-> David Heidelberg
-> 
 
