@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66922CCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 597B9CED240
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:42:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2988E0013; Tue, 18 Nov 2025 00:42:43 -0500 (EST)
+	id A76038E0005; Tue, 18 Nov 2025 00:42:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73AD8E0005; Tue, 18 Nov 2025 00:42:43 -0500 (EST)
+	id 9623B6B000A; Tue, 18 Nov 2025 00:42:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93B828E0013; Tue, 18 Nov 2025 00:42:43 -0500 (EST)
+	id 831456B0006; Tue, 18 Nov 2025 00:42:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D9E18E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:42:43 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D326589C5
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:42:43 +0000 (UTC)
-X-FDA: 84122633406.22.1F9DF6F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 69AD96B0006
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:42:45 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2561612E904
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:42:45 +0000 (UTC)
+X-FDA: 84122633490.28.811F9EE
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6E0C418000E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:42:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=JV5uJUt1;
-	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	by imf23.hostedemail.com (Postfix) with ESMTP id 83500140003
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:42:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=nbw2hpBO;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763444563; a=rsa-sha256;
+	cv=none;
+	b=RCAZP672fAG1gzFAAA9qCvppeiWq11L9tBpjCi2TcecaFeRHCM0dDuDsoEkJlpbBXyNuIo
+	PT1iOsanUPOIfLQmzVLylkhhsZgQ8P3fz411LseMaA1sTmeAlD71bvtdHrhwwbJmwEn9fl
+	RmtAg4Uwzcy5x0Zjzc3IMPXzScxpepg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=nbw2hpBO;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763444561;
+	s=arc-20220608; t=1763444563;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wpD3/Bm7sGWpOU7mqGoqyLeTupfR9EfJ0JdO0qw2AEQ=;
-	b=0HQlgl6wgXiP4vFAn5d/7qek6qM2PPXaoom01sYTab+d1XROG0GJ4npj1KcPPvUiGZ+6Ri
-	fV4Pb4ObC8ZSHNAv8XtIkX3bXfUXqJYbRqUgW41ZK9TMCJHqOO6beYRXkoRV+2ADEBSE3j
-	oXEqhveYCuL3gMixQa71XWn/Mvzldc4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=JV5uJUt1;
-	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763444561; a=rsa-sha256;
-	cv=none;
-	b=X4Ciy8yQEs2lvg1Bf5sxewXoF2LCYybIwWj++bzwqKJ3UpTN1Pem9gNmuMhpNXI0PrA3VA
-	+DZXgZ+a1V2d19+yIq7CfwuMbKm5ajLrZb0eskXt9eQSHAlQzMzbKaNLjnr7ASNqPpKso2
-	C67yf/VQC9+pkB9urPqnOuMTbetrr18=
+	bh=/QE5WDCT/6E4/9SENMzbAx4/TtK/VNDZoQCVo0AmPFA=;
+	b=3MyG3mn4aen8NDd1uYp2q69mddB6zjtLbsT7c+FqBZf3UkYyjUHhJaHlwaZH6XUufgLK1C
+	WrJz7nH5bKbaa3LXdRh7E3hWge3FII3wa5IrPm0cV0VYfum479DvtzTFURT6RWJVHTmN1p
+	OBNVymqsLdeFUWI7xrYgisOxTwp/5g4=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=wpD3/Bm7sGWpOU7mqGoqyLeTupfR9EfJ0JdO0qw2AEQ=; b=JV5uJUt1ITFYYkAKYlbaasyk0N
-	PW5LOmB0G7kEAnq97/Pz7SL51bNXf0DH11bVMNSSo4VwTsOpOeAHHK4hjh1p3gNPqgDjORQ4PbR8J
-	KK7IVJelLsoIjwKAA7hEb/jarXycA6T50GWykdatgQp0BauELpU7gwCBfVEySxkZarZ3jA74FYqzk
-	14zTBSbWYbuUP+E0SR2hyM5Imgnf1u0+rTSIuPM1/R7wCIuTMjeEEb6IZySpBQnw/dlJz2Ddi015D
-	mo4bEEYz1oWEajNUCAw8mVLVUOHlcTH5qN9tMMRtFWAcpt6zvtZFD+/rj8NlfIFJO8X/JjIUZtHSM
-	ubkRfpiQ==;
+	bh=/QE5WDCT/6E4/9SENMzbAx4/TtK/VNDZoQCVo0AmPFA=; b=nbw2hpBO5FUjslRgDpDLHuqSys
+	mMp4OF+mLp80JjLP4RwNZxq3tU3uTXK6B7LZOCt12xwnyqibPJY69Qk8Fi9+pab8XCpSvSaN3GBST
+	+Njl70OepWLfTkhLZMDAPXxD9ZK5UDhJsIvan2d21SnGbI+fJItPz6jcIfY1xAllTGpgEo83t3zGL
+	qTrHMAp1QgyGZdN7VOcfRHEVPZFiwJ5pYnGouUH9gUQo0P78a9sAOmDAHFHMW/chnqo4+WtCcdi1/
+	u60C5n85obiT/jGBVsA+k2QUfMjjIbr31iJXh5l/ldtJAEvErtLsCRtJAZs4HirNXI/+hx/Vl3Ug3
+	WQmPo/tw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4a-0000000GEfk-1u7R;
+	id 1vLE4a-0000000GEgh-38hT;
 	Tue, 18 Nov 2025 05:16:12 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -85,22 +85,22 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 51/54] get rid of kill_litter_super()
-Date: Tue, 18 Nov 2025 05:16:00 +0000
-Message-ID: <20251118051604.3868588-52-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 52/54] convert securityfs
+Date: Tue, 18 Nov 2025 05:16:01 +0000
+Message-ID: <20251118051604.3868588-53-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6E0C418000E
-X-Stat-Signature: s6x9146sow7m33k8ofanc8ztsfyxmiif
+X-Rspamd-Queue-Id: 83500140003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qwmse6wx5o5jddmmrd9tjn6byijnmfi3
 X-Rspam-User: 
-X-HE-Tag: 1763444561-297011
-X-HE-Meta: U2FsdGVkX1+RhiFbZGTGuv9Bkqv1aZMJOPCjVZjS6Sr5b5UxBzkEUvmCGzKKy3DMOX4Ks0AJQI7ibLb2/LUmjQQol28QqIEkQFg4K7WEYjY10cePKWM5gdGQN6B8dZjXnXDBqxFg4p9CSCuglq5vx1ybN9xp2YkurESG1p63d19R/MlM0333087S+ptc4VvPhuzlMXEFhPBcWBgR1Kql17aZ4y3IUcWcsS1xsMXdzgpL5yGI5e9h40AgZMnsZux6IAUeIyaG1bH5iPMCX0x4IY+p8icVI2cbVTXsJ4dIFGlsCVJhRRtPHdWexe5G3eCloKhUhaL9zwdVKJCsuPBAhmwYEY0AOxJLYSfyoCpaIOmAlOeHrpDAHV+2WS/XUEJlj14hzU0ZicufQBEwhooacU+AW2Vrn8qEKMHHHIyi9+TOZMCodWDGthq13GMivwJeFj0szeowmIU97tYOb5MxzOfzA9iemHw8YC+Dm1k9+48d+iqHqKZP+7/gc/y8C1ZIVaxjZkCWfiIPKRROWEuR6eMfS2xyoTpQ2uUD/Msrz6ClqZhWffqQ8Tv4CVuSnltClCzXK5Ys13sVUhVhyTGKOaQZcLZyas0/AEEPzqxtn9DoxxoknXh4ETouicM1wFIEH3MaCOZpVWZMNya3Fa54kA92zGbuIdJR+8pchpF758qCKQxaGjPUPLnilqi3r/iCll6swvTcacI9Xp78Ea2+EcZDw8xEJ2kXLirb74aeZgLfpj9DE3oIaRhUhFiMQesDF5jAeU+Kv19bwRjEzNdHakB2o8R0HHQ3y6Dnh34hOc33UIq35d6PCzEhoKH+CWtVnleCpvpGBV3gxUhAt7BeTrynhAd9NuljiLO2HRGHr665MxEmgjKgCA90fp1UyGqwkiuqwU9mATtLdezeAO1ez0AroLIScvD8gkYahSWdB1JeXQwtHR88xZD6cHtChYL9Kcy69KPtGiUe6eWYFOn
- 5sagV2Ey
- utJ5pLxMZIgM/KpeO+rXpx2qU+MahNSnlkIizCYg0rw9DwuJLlfkH6xRHMneJNHtvhvQ840i9UmSigDhan6GWsRyOO5fAteA5tAHBuAPARsu4RMTHAYRJGv8AWmyQgBP6ehGAXTqvnQGeKwgiMuLCsTGgDO+X9VIm/N/FX4agV4CsMzx/NLB11S7AGgYTvb5xZtqGrq3N/772/PcJ6i2ONxO0UNEebU/C1EztBjwUvMHkb0xo15Pe9Z2JJnb0YQuHi2kx1BNnC932ty+NSOahNXoYEaxMOlxDCxLEEHRmv4qETDDChWtGvBbbmhSwmgFOW9Z7JaVvvsA/ia1lCNTCgmoCKoS8BQTi0N1vCu/H59Ny3fxcj8fhdjC4mzAStCrfBg3ooPSTxKIKWwjUdar3yZAGdLQ5Tlg9Sg10MZM5PT6StisZMZ//ZFJ9225TsOyzOULz8XN87qbdWo4Px99JpOqKjZoi1glH8V/loDIZEjngyKicI50A6h02vw==
+X-HE-Tag: 1763444563-823960
+X-HE-Meta: U2FsdGVkX1+fR7JXJOHibClR4gXpc1vizw4P3wliDpuAYvmF62vpBsKd9plpkkM3pNGw07E5H1xuhfc097JSPphlUvP+vAncwb4CXzxIHe9xCmlRRM+UWgIVvqMJPh1P8+9GOToLwUEUJaYLTPcjVsy4J7Jd6Ca/buPUghfKlQpN02gqhfcj3DdOATUdCV2QXpznIywEdsF/4uGJF6+N6La9AH1em7nig1BPIf6K0z0mVg+aUOLOCCqKIDTY6/HT4ofo02k57daEljjtcZ1DDelwiV5O7AVRlY9o977vv4ZSdSS37XTZVqavUWP6hfQlC1WKnNcmBdxeBozVhPysIDWL6KzeXOuchXp54r48PSygvGgrwM0hBPI6qJB6B89QYQNxbtF4TomEU0O9tPS17dq5P2VuMMUuq8MN5nk7rlqvGN/mRHCPRH97knd9vZw0z7mMW20XpVcnjkUgPef+9FeJyF93jx/yZH/oyNehlUBdwMAlnu+E8GD/bTVLL3RUtH8UwL4BABX9rK2Bdk5eQALMyCfrKKiDg+e2M9rYdcYFmRdRM9Y7BAB8M4LyAA7q7vRCynJgt0OokZ926JtZthY27a9WqNs9vs2/8tsvdvhVNiERVnbN0rS9abBriz2AIjIupw1QjEbZ+cuTeEfzxMTuFUyIxO+duDIFUZhZKX8VMZCcKu4rZI46Be2jYLQ2qx+nmemchiPFtx7WWaRjJBYj7fU3Ms5DQuhDHARFOkefXlXwHJi/nfgtw2XjP7owj+4qxf53SQGYFMvr1mhJ0QwOUIh8GOB/2mQcZ8/KkcA4E8oWqDpe4bVSdUfG71/6Z3wou9vVhJEulDi2MIEz3Pm1fbrje8eV+4I/umILyDHOILJJwmQoNR02sP9N1WP1YskGZMb/m/YPYB/y8NssC2HHHwHL31CuYMtXfny+uQW145mubg0SOd9WrSAqU9Xsclq2du9y6b2lFifkhnP
+ iqcDSpol
+ hmKCyMhyUiTWxJ4hsDisX9ovpB2ogcg331sc1hpGtGCMTQ7WznTT24Or+3IUo5kINAhxz7HvbHMCUcX2rmeDkGWhua0C7GWjeKlMLxeLarSImx0fHpSK2mvnw5INe+puuccLtp/ZYkaMana4CrgKcTF9tjbLxOzJ8idhB+MzBP+SxeVvNQ5H6oRnKcd7xGxY5EaVOacSa3Qo5moEKyFgC4PjjYO/g+dfMClRXEdtv696MWR3bULQNFdVckjZE61JTNNvboiiZvVI6zF29JvsWxsa+OgQY40KG7XbgW7ACucZuFO/EblNomIDU20kcPV7FzzWoBDPoBZFEvTtu1+nk3QGfltheNLWClgy71ELvsbc9MKDmObd06MxWRqXjvVHu+T1AFUBZnAPNrF9D+cWVK2tyaeVT2sEhOAhBrrYT+VDWQOkKu6hHcj4CASSmMTShQKwvxNDcvx7u1vly68oOEm1WNnl4XIhrYeHB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,120 +109,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Not used anymore.
+securityfs uses simple_recursive_removal(), but does not bother to mark
+dentries persistent.  This is the only place where it still happens; get
+rid of that irregularity.
 
+* use simple_{start,done}_creating() and d_make_persitent(); kill_litter_super()
+use was already gone, since we empty the filesystem instance before it gets
+shut down.
+
+Acked-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- Documentation/filesystems/porting.rst |  7 +++++++
- fs/dcache.c                           | 21 ---------------------
- fs/internal.h                         |  1 -
- fs/super.c                            |  8 --------
- include/linux/dcache.h                |  1 -
- include/linux/fs.h                    |  1 -
- 6 files changed, 7 insertions(+), 32 deletions(-)
+ security/inode.c | 33 ++++++++++++---------------------
+ 1 file changed, 12 insertions(+), 21 deletions(-)
 
-diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
-index 7233b04668fc..4921b3b0662a 100644
---- a/Documentation/filesystems/porting.rst
-+++ b/Documentation/filesystems/porting.rst
-@@ -1309,3 +1309,10 @@ a different length, use
- 	vfs_parse_fs_qstr(fc, key, &QSTR_LEN(value, len))
+diff --git a/security/inode.c b/security/inode.c
+index bf7b5e2e6955..73df5db7f831 100644
+--- a/security/inode.c
++++ b/security/inode.c
+@@ -127,24 +127,19 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
+ 		parent = mount->mnt_root;
+ 	}
  
- instead.
-+
-+---
-+
-+**mandatory**
-+
-+kill_litter_super() is gone; convert to DCACHE_PERSISTENT use (as all
-+in-tree filesystems have done).
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 3cc6c3876177..5ee2e78a91b3 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -3167,27 +3167,6 @@ bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
- }
- EXPORT_SYMBOL(is_subdir);
- 
--static enum d_walk_ret d_genocide_kill(void *data, struct dentry *dentry)
--{
--	struct dentry *root = data;
--	if (dentry != root) {
--		if (d_unhashed(dentry) || !dentry->d_inode ||
--		    dentry->d_flags & DCACHE_PERSISTENT)
--			return D_WALK_SKIP;
+-	dir = d_inode(parent);
 -
--		if (!(dentry->d_flags & DCACHE_GENOCIDE)) {
--			dentry->d_flags |= DCACHE_GENOCIDE;
--			dentry->d_lockref.count--;
--		}
+-	inode_lock(dir);
+-	dentry = lookup_noperm(&QSTR(name), parent);
+-	if (IS_ERR(dentry))
++	inode = new_inode(parent->d_sb);
++	if (unlikely(!inode)) {
++		dentry = ERR_PTR(-ENOMEM);
+ 		goto out;
+-
+-	if (d_really_is_positive(dentry)) {
+-		error = -EEXIST;
+-		goto out1;
+ 	}
+ 
+-	inode = new_inode(dir->i_sb);
+-	if (!inode) {
+-		error = -ENOMEM;
+-		goto out1;
 -	}
--	return D_WALK_CONTINUE;
--}
--
--void d_genocide(struct dentry *parent)
--{
--	d_walk(parent, parent, d_genocide_kill);
--}
--
- void d_mark_tmpfile(struct file *file, struct inode *inode)
- {
- 	struct dentry *dentry = file->f_path.dentry;
-diff --git a/fs/internal.h b/fs/internal.h
-index 9b2b4d116880..144686af6c36 100644
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -227,7 +227,6 @@ extern void shrink_dcache_for_umount(struct super_block *);
- extern struct dentry *__d_lookup(const struct dentry *, const struct qstr *);
- extern struct dentry *__d_lookup_rcu(const struct dentry *parent,
- 				const struct qstr *name, unsigned *seq);
--extern void d_genocide(struct dentry *);
++	dir = d_inode(parent);
  
- /*
-  * pipe.c
-diff --git a/fs/super.c b/fs/super.c
-index 5bab94fb7e03..ee001f684d2a 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -1284,14 +1284,6 @@ void kill_anon_super(struct super_block *sb)
- }
- EXPORT_SYMBOL(kill_anon_super);
++	dentry = simple_start_creating(parent, name);
++	if (IS_ERR(dentry)) {
++		iput(inode);
++		goto out;
++	}
+ 	inode->i_ino = get_next_ino();
+ 	inode->i_mode = mode;
+ 	simple_inode_init_ts(inode);
+@@ -160,15 +155,11 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
+ 	} else {
+ 		inode->i_fop = fops;
+ 	}
+-	d_instantiate(dentry, inode);
+-	inode_unlock(dir);
+-	return dentry;
++	d_make_persistent(dentry, inode);
++	simple_done_creating(dentry);
++	return dentry; // borrowed
  
--void kill_litter_super(struct super_block *sb)
--{
--	if (sb->s_root)
--		d_genocide(sb->s_root);
--	kill_anon_super(sb);
--}
--EXPORT_SYMBOL(kill_litter_super);
--
- int set_anon_super_fc(struct super_block *sb, struct fs_context *fc)
- {
- 	return set_anon_super(sb, NULL);
-diff --git a/include/linux/dcache.h b/include/linux/dcache.h
-index 6ec4066825e3..20a85144a00e 100644
---- a/include/linux/dcache.h
-+++ b/include/linux/dcache.h
-@@ -198,7 +198,6 @@ enum dentry_flags {
- 	DCACHE_REFERENCED		= BIT(6),	/* Recently used, don't discard. */
- 	DCACHE_DONTCACHE		= BIT(7),	/* Purge from memory on final dput() */
- 	DCACHE_CANT_MOUNT		= BIT(8),
--	DCACHE_GENOCIDE			= BIT(9),
- 	DCACHE_SHRINK_LIST		= BIT(10),
- 	DCACHE_OP_WEAK_REVALIDATE	= BIT(11),
- 	/*
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index f5037c556f61..95933ceaae51 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2728,7 +2728,6 @@ void retire_super(struct super_block *sb);
- void generic_shutdown_super(struct super_block *sb);
- void kill_block_super(struct super_block *sb);
- void kill_anon_super(struct super_block *sb);
--void kill_litter_super(struct super_block *sb);
- void deactivate_super(struct super_block *sb);
- void deactivate_locked_super(struct super_block *sb);
- int set_anon_super(struct super_block *s, void *data);
+-out1:
+-	dput(dentry);
+-	dentry = ERR_PTR(error);
+ out:
+-	inode_unlock(dir);
+ 	if (pinned)
+ 		simple_release_fs(&mount, &mount_count);
+ 	return dentry;
 -- 
 2.47.3
 
