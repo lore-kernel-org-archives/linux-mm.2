@@ -4,63 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336ECCED243
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35F6CCCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA4B38E0021; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
+	id CDBA78E0029; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6732A8E0029; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
+	id 8E50C8E0002; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED7A48E0038; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
+	id 3184C8E0021; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 385CC8E002B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4920A8E0034
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DA76012E897
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F394313AB76
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:15 +0000 (UTC)
-X-FDA: 84122566710.22.F706D7C
+X-FDA: 84122566710.07.0EEB820
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E94521A0005
+	by imf14.hostedemail.com (Postfix) with ESMTP id 00B9410000C
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="FE7OJf/U";
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=eyBtxzuw;
+	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763442974;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IpNAvIvaquRQO1Ji53mf5vyLMZJ4O2UIIE/EO15yw64=;
-	b=f2/bqSysS805Z0dc97zZy6MhJ896wOmPDyGJ2v7UHBqMf4GZvxC0i52/4oMprELUq4CNLa
-	q6cxmwce0pitFaZN5PDvhziStb0inS7EfKzWmhDKC9t6IeZ/CbOdel1r6Lk2tV3DvL7kqN
-	iUGi9yty2qUvurua+zObM8y9OyvDh6s=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="FE7OJf/U";
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	bh=X8Ik4zuriSM27g5TIHw6N+EULicED7c6xnS6UrwX7a8=;
+	b=umMN1iiWV6Bm/fW7Zw4POeW06O0jB4lY1eEv9gnCw6zICJ4GwI/n26sHSzL4vLhDLYQ9kp
+	/EXApRmnxiE2iGr8r3+4FNDkMcVbcEW1qVrmvrdRog/KaPi+LWrjJLV2kvJa0VedFOXPRS
+	0kXMOAagFjJ0nQQreMNr1XwQ0BjipBA=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
 	cv=none;
-	b=afTau+H4elOP+TUz67uBRiIc80gOXFYdEhik+SPPpLD2qn621V9XAZl5Gt2JX0Fq/8tfCb
-	WW8OpCOpdftL5UHqLBxK5TM7MNvIHVDku53SPm0foGa1U2z4B504aJOpcPMvBhAu74ysUk
-	OpI/HJmBMxk+/X5uqogpXj2NK+0x2Z8=
+	b=TZSEv3FSgMBzzkO/PXUdczg75NElRQ7QAX/PsyR5hqK0DnnVBGL+H0yL6IFdhuaIYZnC2n
+	YLZDdXwb1a8rN4k/tnqZPu+JqGO6viDSxURs4ZJ5dFyc3Zmhkzkh5tFjIzPoqpeR1YApkf
+	rTf+Me4VqtDze8Y3nHHQ+q/OlfKIPD0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=eyBtxzuw;
+	spf=none (imf14.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=IpNAvIvaquRQO1Ji53mf5vyLMZJ4O2UIIE/EO15yw64=; b=FE7OJf/UU+lFlMVRVRToGhRAzP
-	N8qGXHCOjkSsJDHwHKHBs4K6aMWob5Nbszex9l+s6ZK7OfCYvZ+9TG8qyL4a56MGLrMSV9WS+QFaH
-	s1N/VE1lLOH2Yk6U5H6G2Poh2PqGUWSQ3NEN0RCixCbVN/RP60yPNMYvhHIPBExVfx/5/OZTzs1EE
-	bhLcn7ls1cB8YCrarexnMvFo0q+gbwMu1mw9xNZu/jFbTij+eRpShRImoLn13GuhwUkVAFtVXI+yz
-	d1EdjG7xvDxR5x71JxFMIMLgaP4kB7U4RmZn17NAJrLLzst9bGtt1ub4xZUECV8by7OLH3v8P7leP
-	M9vSGWsg==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=X8Ik4zuriSM27g5TIHw6N+EULicED7c6xnS6UrwX7a8=; b=eyBtxzuw2W0UkWIMfBVDRF5HnN
+	c8pkSZ6zguaEQHjWZ/2YQVWhKYltYMabKcqdaSVO4M4nSBHEvb7H6hrRgv3jmvTtamxHVz3gp99D1
+	z1QxeZmOHNQ69JiTj+PFPMwzsleOAP2O4YCBcNdYzfNZt/xCwQFsAl/k601PI53kDcXYwe/PyYQ+Q
+	fMuF0SZf5Fj5C1eeAww+b1lbhyqIr9kOw39nNvvF1IVvn19yU0aIzYZm6xS2Bwnd6G+iVYXLguIEx
+	ZCo8D8StM6Q9hNTpWs6R14iTEwhLT2QwOIIypZLis6Qeg5Em6Pv2BptOzgrwHZ36gOkTjqOy6RCtr
+	1d6HSJSQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4U-0000000GEQo-1hsg;
-	Tue, 18 Nov 2025 05:16:06 +0000
+	id 1vLE4X-0000000GETc-1Nbr;
+	Tue, 18 Nov 2025 05:16:09 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -85,23 +86,24 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 12/54] convert smackfs
-Date: Tue, 18 Nov 2025 05:15:21 +0000
-Message-ID: <20251118051604.3868588-13-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 40/54] functionfs: switch to simple_remove_by_name()
+Date: Tue, 18 Nov 2025 05:15:49 +0000
+Message-ID: <20251118051604.3868588-41-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E94521A0005
-X-Stat-Signature: u8ok365kspaipsyxtoh315h9xzynpbzc
+X-Stat-Signature: xijomi6tsc6omzosmidto7hyey7p9pgz
 X-Rspam-User: 
-X-HE-Tag: 1763442973-724525
-X-HE-Meta: U2FsdGVkX1/EW95Wiv59Btx0QC+SlsrYrevf2NCS+6Tg53AfBUC12S2kxEDChvkADhwyk/6fplXa8W8ldcXne185Lcl0T/sofJvgWIRG7SL4wWwo4G1WjgUIHKaRLKmlC/W/hXH/JlmRtB/Gwz0er/yNY0w0Szr9E6i160WqniZXRrfBetxperugYcvFu9Et71Qz8OHf1cKpr30aeiP9eKJwW+Kztnkz2aEVd87iJJvQtjMhVqL0I7fZjM+70a7enqIBiBTdiw3GAbfzSF1NJ2/kTPKDvoGoMA5gLexEqNDP1AqtGWLRXDjWYl6gke+oGIY7jCx4uuZoZU+nfIZxM/L1SwhqcbFIAeN2/N8cP2aSts1pjMW+sdiMayvPLvjgGz7+EuzrRZkytUcNuFBlhU+p8Nz++PIPUpQlEDLRDW1k/H/a78GbLQs574TKJnghk3YtL1rLWMjo6TDDr6d12dR64jnD4uMW6CMcyvHgsFYAfAnaZv7CIL190EnO1ye4+r6nrQ1DC9zs1Dw9GPWP3qOk4FrSFmd8agR9IeBkMf10NicAj6Q/sLtp0TYCjFBuPB7LsjwXYSDC1DstpmO0ryacKznDVBK97sdP1eMKdxBwiSBaSEC4otw4HQt5eyHFpyzgagaHpscbO3MESr//lHt+d9a9yqyuoO/aXpzF9sBG36pfbeTNEjKxhrz7lUZRhm9sIyEVxJwfHjG5j7iTxDoPNS6vZU5vF37N2Twh9tcyEGfSPQ9AL/790+NTyAAWiX3btVZpr0ColJQkOqQdXqBtJzPAjO4w7Z1Iiu4O1N/6+uAESOsWHptCLn+1mtRxTTAPMWOvmzFC8hfRlvxuOQkkrVj9AuD9YiTdezzyQqrwJIGltVjJNNazxnMX3JDLYRgidXLk0ch1kTvCG9aFn4aS4E9fYd2skoU1TCchZ0hRr3hxCoB5ZxwtZJGCYVg/gewyGeHI8Dq3S2uXaOg
- GCDz2siv
- j9w1ihGC9bH8oLIcXfERCM252rxnWxtUBAcBm4n9cWYaYfN+tciQwo4LfjDrGmkggCmtI5rVk9UeF8CTf6hSEAKODgGGhY0D0nCOCNN7LFBkfje7jNaV0oicoMwUoKynT4lbRpP/iLCVaacNtoJFWSy8vTnfugtt6O+b4F7XV6pPgrRkABMflqsGS63Xq/S/687xGchxUlwYNQi9kc6HDH3kuI5rgQOIhAceO/xvsDUN99ZBxj5o9Ua2090XEFujHjAZBmIij3i7w+JaNj3xvofjdVhpGNwY+K+/tGTHOoyRl828DJNPWkAZUyUYqjf2CR7dHjItbAlVxR2EosNZ6PFK2AB1VO6gez2FQ9eAsM3hnDDi+sUZRBxDx7mYLJgDCBrDlBy3HsvSALpT/VGdRfp6ELw+MrkUhmqQPCsIpenjE9ebdTuH/UUntdjJFuPUu+ET6WFqFgHFnjmwYPnjRCmwxiCE1q+X1La5HxQkXc7XOzi+g2t3es8JcBw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
+X-Rspamd-Queue-Id: 00B9410000C
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763442973-906423
+X-HE-Meta: U2FsdGVkX1/+eNYBBhf+Xe4O2X9Hnrvgrj0hd7Ox+FmydHuxPtxj2aJ8RwbTJ/Zgp86vSVjcsD4m23GeHsIrr8eEuFwVZwpa2U1Y9VMKwS9f86dOAVkgIuyuuiMr7KbjJePu+0w8GpT8yss3v+MpWkEEwS3bu7BxpTsgvxQqdSKBbcVM9Ng2ZKhu9YxSJxJKhSt7akdN0zV4DBRi/cahtt0qeGSpSZ62qNUby3N0AspZJ2dADjpZcHi/Y5c5D/7ooM9F2nRANiD5i9txwbsceGatt0W3RZJZt4eZTGI7SNPRVjoLk/hWib6dpJmmUReNCKQvUj5hqlkhtJKOnQR/hYh42Mx/iXihfd4HT2syWZFgB6mAM2HHrtpZIpmkIu8Nw6/L8dssciG4l6LzCiuxq1atFOYhJH2VSVBymEFNhCz3fa3FZxA5XNfB6+vf3MG9YqVD4GxL993STzoM07/t1jvJfmjLKfMwKiDplqKvv2+dgAKdRckN4VcLeE22UZOw1zuoG7VYBCF0e6bJ7YTZrL93VDiRca3II14QoiJQjEtxJAR6LWqFI7R8OblE8S4lzVVev74VvcVyfXlXZbBuYTfg/XOEkHU9HuFCaW8dcDBCRbOTKjNcBNSx4Tzo0OcWR3Zvm2XWKr2Z2HxYNhhKsmGs6Wk3P+u4qcvyViSpmPHYoqKabkCVSJV0iv2tNo2d4N0rRml0jdLXfQTA1FIPBYp2PBS0IqKy0+0nYOdhFGXkeyModGNRz9vNqlaJ9sJgM27R6D/475yoSiAcPin/j04NvpqmnV/mgWNLckXTne1BMTOjmYb2yau37ftifGBVk9UI4KUW4m73pt0X0aLgnypYBbUr4OOx6/Voj60LJvxx/vXOE0KMfCWDD+18+BFKdjEQ3qSmkxTWxnZXO/RFL366QjYpiDFYYJmhDwbTNYTMzM2xl2MpPhis+x8X+iAuWA2pWpOofA85Wa5vcj9
+ vVCFLHkj
+ Ib0NbGrs71gDRTIZzS4p064ruKfXRqjQwvdzOfCGlod+wUx63cIM2UmkO22CvKVNk/xEwhHseflfQDhBNXgl0oDLCDR61mg7sWn28UO6tpzwm8fD2R1u4gnWEs5Tb4NsviBDHyJEmd/k1jKmjTCx9WPqJ4vmp8r3qe5Zk7zQWXARX53Hi17ZHBjcE/4snHck6kkStbcAOnL4ItBc62E89HgdhvOUPe0Oms1qKq530Gk6qeRlg9Cv1QA30vC4Bwja6Y3BV1LS4ZuKK3Z8skzg6BIoF85WE4G5BhY0V3CZ8miaQq3k7C6se7ggYbYeM7+Watw2UV13onEX8mo1yX39OfX+6NiucId0J79lGbXsB38cHnkjV3NxCITEth1hQ97BUs7q9ibr9Zf/6UwlgbhIMpBd24jEVNtvy5C/5zip09wq1KpkpMHxocESjGVnuI4KJRr3dQB9UzdL2JIHp/DZF37BaEApfomm9ucRHk8v09K2KrghWwTX4fse5pY5kOTFmgx0KA/q5mQ5TSNnZqIgGQpmi45FNK4hzwbqyDpi2Pq9+SpWuVk/IVuvREUhiMAB3cjqlVOYYZ1saM3Y4M52qG9fe0F3QckNJmHxM
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,28 +111,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Entirely static tree populated by simple_fill_super().  Can use
-kill_anon_super() as-is.
+No need to return dentry from ffs_sb_create_file() or keep it around
+afterwards.
 
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+To avoid subtle issues with getting to ffs from epfiles in
+ffs_epfiles_destroy(), pass the superblock as explicit argument.
+Callers have it anyway.
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- security/smack/smackfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_fs.c | 51 +++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 29 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index b1e5e62f5cbd..e989ae3890c7 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -2960,7 +2960,7 @@ static int smk_init_fs_context(struct fs_context *fc)
- static struct file_system_type smk_fs_type = {
- 	.name		= "smackfs",
- 	.init_fs_context = smk_init_fs_context,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= kill_anon_super,
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index c7cb23a15fd0..40868ceb765c 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -160,8 +160,6 @@ struct ffs_epfile {
+ 	struct ffs_data			*ffs;
+ 	struct ffs_ep			*ep;	/* P: ffs->eps_lock */
+ 
+-	struct dentry			*dentry;
+-
+ 	/*
+ 	 * Buffer for holding data from partial reads which may happen since
+ 	 * we’re rounding user read requests to a multiple of a max packet size.
+@@ -271,11 +269,11 @@ struct ffs_desc_helper {
  };
  
- static struct vfsmount *smackfs_mount;
+ static int  __must_check ffs_epfiles_create(struct ffs_data *ffs);
+-static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count);
++static void ffs_epfiles_destroy(struct super_block *sb,
++				struct ffs_epfile *epfiles, unsigned count);
+ 
+-static struct dentry *
+-ffs_sb_create_file(struct super_block *sb, const char *name, void *data,
+-		   const struct file_operations *fops);
++static int ffs_sb_create_file(struct super_block *sb, const char *name,
++			      void *data, const struct file_operations *fops);
+ 
+ /* Devices management *******************************************************/
+ 
+@@ -1894,9 +1892,8 @@ ffs_sb_make_inode(struct super_block *sb, void *data,
+ }
+ 
+ /* Create "regular" file */
+-static struct dentry *ffs_sb_create_file(struct super_block *sb,
+-					const char *name, void *data,
+-					const struct file_operations *fops)
++static int ffs_sb_create_file(struct super_block *sb, const char *name,
++			      void *data, const struct file_operations *fops)
+ {
+ 	struct ffs_data	*ffs = sb->s_fs_info;
+ 	struct dentry	*dentry;
+@@ -1904,16 +1901,16 @@ static struct dentry *ffs_sb_create_file(struct super_block *sb,
+ 
+ 	dentry = d_alloc_name(sb->s_root, name);
+ 	if (!dentry)
+-		return NULL;
++		return -ENOMEM;
+ 
+ 	inode = ffs_sb_make_inode(sb, data, fops, NULL, &ffs->file_perms);
+ 	if (!inode) {
+ 		dput(dentry);
+-		return NULL;
++		return -ENOMEM;
+ 	}
+ 
+ 	d_add(dentry, inode);
+-	return dentry;
++	return 0;
+ }
+ 
+ /* Super block */
+@@ -1956,10 +1953,7 @@ static int ffs_sb_fill(struct super_block *sb, struct fs_context *fc)
+ 		return -ENOMEM;
+ 
+ 	/* EP0 file */
+-	if (!ffs_sb_create_file(sb, "ep0", ffs, &ffs_ep0_operations))
+-		return -ENOMEM;
+-
+-	return 0;
++	return ffs_sb_create_file(sb, "ep0", ffs, &ffs_ep0_operations);
+ }
+ 
+ enum {
+@@ -2196,7 +2190,7 @@ static void ffs_data_closed(struct ffs_data *ffs)
+ 							flags);
+ 
+ 			if (epfiles)
+-				ffs_epfiles_destroy(epfiles,
++				ffs_epfiles_destroy(ffs->sb, epfiles,
+ 						 ffs->eps_count);
+ 
+ 			if (ffs->setup_state == FFS_SETUP_PENDING)
+@@ -2255,7 +2249,7 @@ static void ffs_data_clear(struct ffs_data *ffs)
+ 	 * copy of epfile will save us from use-after-free.
+ 	 */
+ 	if (epfiles) {
+-		ffs_epfiles_destroy(epfiles, ffs->eps_count);
++		ffs_epfiles_destroy(ffs->sb, epfiles, ffs->eps_count);
+ 		ffs->epfiles = NULL;
+ 	}
+ 
+@@ -2352,6 +2346,7 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ {
+ 	struct ffs_epfile *epfile, *epfiles;
+ 	unsigned i, count;
++	int err;
+ 
+ 	count = ffs->eps_count;
+ 	epfiles = kcalloc(count, sizeof(*epfiles), GFP_KERNEL);
+@@ -2368,12 +2363,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ 			sprintf(epfile->name, "ep%02x", ffs->eps_addrmap[i]);
+ 		else
+ 			sprintf(epfile->name, "ep%u", i);
+-		epfile->dentry = ffs_sb_create_file(ffs->sb, epfile->name,
+-						 epfile,
+-						 &ffs_epfile_operations);
+-		if (!epfile->dentry) {
+-			ffs_epfiles_destroy(epfiles, i - 1);
+-			return -ENOMEM;
++		err = ffs_sb_create_file(ffs->sb, epfile->name,
++					 epfile, &ffs_epfile_operations);
++		if (err) {
++			ffs_epfiles_destroy(ffs->sb, epfiles, i - 1);
++			return err;
+ 		}
+ 	}
+ 
+@@ -2386,16 +2380,15 @@ static void clear_one(struct dentry *dentry)
+ 	smp_store_release(&dentry->d_inode->i_private, NULL);
+ }
+ 
+-static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
++static void ffs_epfiles_destroy(struct super_block *sb,
++				struct ffs_epfile *epfiles, unsigned count)
+ {
+ 	struct ffs_epfile *epfile = epfiles;
++	struct dentry *root = sb->s_root;
+ 
+ 	for (; count; --count, ++epfile) {
+ 		BUG_ON(mutex_is_locked(&epfile->mutex));
+-		if (epfile->dentry) {
+-			simple_recursive_removal(epfile->dentry, clear_one);
+-			epfile->dentry = NULL;
+-		}
++		simple_remove_by_name(root, epfile->name, clear_one);
+ 	}
+ 
+ 	kfree(epfiles);
 -- 
 2.47.3
 
