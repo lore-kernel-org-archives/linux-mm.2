@@ -4,106 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE6FCED620
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 14:12:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DDB6CEDD97
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 14:28:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5287D6B008A; Tue, 18 Nov 2025 09:12:23 -0500 (EST)
+	id C309E6B0093; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 500086B008C; Tue, 18 Nov 2025 09:12:23 -0500 (EST)
+	id BE02B6B0095; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43CED6B00A3; Tue, 18 Nov 2025 09:12:23 -0500 (EST)
+	id A81186B0096; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 307F76B008A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:12:23 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC7EFC0572
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:12:22 +0000 (UTC)
-X-FDA: 84123917724.23.B30D684
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4A24940002
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:12:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Du7LtnY9;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F7F36B0093
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38E1F140594
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:28:54 +0000 (UTC)
+X-FDA: 84123959388.22.7F6BF92
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2F1DB140016
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:28:52 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b="M52/zYpW";
+	spf=pass (imf26.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763475141;
+	s=arc-20220608; t=1763476132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=YJCbMXrFxc4lBmLKP9PfJMMIBxBx2LBYdV5jtGktq70=;
-	b=SMhS1B+irLP8+QPa98qMMePFs9aZyu4pF6muPz74NMI4Yrv0OnY+2EP4MLJr0uCNtIj/Vx
-	vpkUZulV6XodHNyQNLRIr488C4ZPvs3wsSBikeyB5N9CX9XMzp9qaHTUksx8UY9Vw8fQi6
-	eiKOnyPRuU/D7caTgNIJlMx6NXP3veE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Du7LtnY9;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763475141; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=35WpspOv1fAWFINmOzi0AcgEQL1oV2/QEYSJcrH4aSg=;
+	b=a5RrDg34ccCP1f7//WmR7oGtr/ccTrt7VuTJ6ZzTI4N6mwEmgdFZQwE355LNZgsigG0X/8
+	vbJXb/++FSKaeD7x/tE6RuEtiTPK6LnuINQZ5i5WrfhEDZ946PvysrErEZCvG/YC7PjwXn
+	wUGjqG1HNL4smiYnLOefKo1c06LBf+I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763476132; a=rsa-sha256;
 	cv=none;
-	b=jMqTg+qDfEIiTdlTYlLEVXT23uM1+WUzc7MruIY5RNesty1fzwP4hhLPTnMNMjAf9qHDCi
-	CfIwk6clxtTus5wscB1uegXOavrpigd1F6t6QBNI/eflcpBlu+v/0eUAbs+z5OuIADrruc
-	Z13dWEwgoMkuTq5mqErc6zjfodqf5pE=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-34372216275so6027209a91.2
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:12:21 -0800 (PST)
+	b=pvKJXH9zRtqqRnSbxIMEqRhUl1v0Fda50RlV0Dk/raEDPfc3gQJAKFjCe9F+3E8Nsk7xw/
+	uRZfY32CoOaWwX4ZK1ppNtVupFeNsDq8xRf862hnUQ2iClE2EnBXZtAFI/gbi7EXWHHtmF
+	rV5HdIC1+fOJL+cR4piIm7bEO7IczrU=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b="M52/zYpW";
+	spf=pass (imf26.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-88051279e87so59456796d6.3
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:28:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763475140; x=1764079940; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YJCbMXrFxc4lBmLKP9PfJMMIBxBx2LBYdV5jtGktq70=;
-        b=Du7LtnY9KrCDjhf9Q/99pUGDoFDlsSULWTJuhTAhE94kV6CSv+wIgH2dA40HcUCPqk
-         xlUxdNRruKvaTYpAPRBD4YP1BDHUb/Ldjs1hVZgiLY5ndsX5Yw4GdLXCPdYAtYKhsTcB
-         562Iv7N283+gcZ0Eric8VQ6cfmGGu8o4gxpWrosWgyG1kopn8q8CcRcsKuQCRzo4YOcu
-         Kl43X2EYfbAwDtwAAXdutqaR3TmJreSQQuAKAmPIjzDU5Ptl5ZSzR5bJfaa89Tv/H0SD
-         R6aHewp0nexSQyAVQZ7wFPNQC9MfM7uE0eTQcuH3xOPiNpzTwy691d5yOqJkI0k3jP9E
-         GRUg==
+        d=ziepe.ca; s=google; t=1763476131; x=1764080931; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=35WpspOv1fAWFINmOzi0AcgEQL1oV2/QEYSJcrH4aSg=;
+        b=M52/zYpWVGlq0Lwd50XR9sNV41UhGGVCUcp9bVfISnaPPLpKYxKeK4t7SBK3ehhLgl
+         86y6E/m70HnkgGYyfPebUQD6sAZ3svR2HuYTJ2CmsLYacZl74wmjhvJPv61cMh+VtzxG
+         BoWh2Qf6IXlHUJofoQS5eUr+junCRvm0YBUeZ03Lp/Oo/vmPXNwwXGYzxky15B7qrldV
+         BzGl9w/4Zyz8+yTa0v3l0NxKI476w4KlSgr+09zbaeLW0FJPPzsWYwYwmUkAqtAYwAsT
+         XCjhOk6Cx1fi8XoT4jBPjz+jPoVJ2hnKs3dx2K45cUje7fa80rD3b9GmZ6PR3OaJgaLh
+         hvIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763475140; x=1764079940;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YJCbMXrFxc4lBmLKP9PfJMMIBxBx2LBYdV5jtGktq70=;
-        b=MUNBostqh6wEzb52qdI6EUxlS3xPW7vvjnCYuyIGYF0oS3mUsD2vwZAI+Eb3FDyfEw
-         82nptdhN16xd7jAREAlVU2MPN2iYMrkl8wAbc0IVGBZYuq9wMSMZJYmnIHnFCN5BjsFV
-         CNu42AOrPtH4x9oOxgvZLrNTU6pnNIYrnLa3Ecm49BsK2K9Ly9wDSpZQS3bLrzHI+u4T
-         pl2YfK6cuXCQrTSTiuW6dqvTZuaXTLP4CZg5f91r+aV6T7AUQYWczTEaMq59SzAxvg0P
-         5dAFUTjCS8FNJSJtKyb0PZ3QOLW22N035uj9yceyu5WIVSzrk7wUxvBfjaGIPxYaA+Sd
-         MaEQ==
-X-Gm-Message-State: AOJu0YyfVih6HPLPSfrgM/LhFOmWSjeXkcW8hAzVoqMsuz7CV5ikrIsX
-	7BL0eFjHoq1lq/FKrH1CgvwYX0+t+8BiQgjXGs4cL5k9kEeMh++mQkku
-X-Gm-Gg: ASbGnct7nLsehotnj9SVvg+6EAkh2VEuv9zLK897kycJnormoq+Lm7zV/e7yDcVmnRh
-	Y6u+0zfBq4VyiaMqqlxviXEeNvKVX7rAXJ9Fyf7gaxiPgYA/xo3uClgurVi3DtYaBRv5bkqfaPt
-	udydB5kG9jYSXvo4/o+ImcpI136YMR+EY35kqtaofj7YiaLmVfh37M3QwvarA/AV53aabizzcLZ
-	25EV15+6oZDATIDjqRwGBySPu+Pc/Ojo+INHIUHWob244iD91lKagqTfN38+jo8ndTY1h6aUsCx
-	WiyA9Too6Dl4PHmEctVKYvEJI16wxki5XoDAODt/DnAp4RNM540D9Gby1d6pLSczND/gds+0Cll
-	g3T/CI9OjrokpELlbmw+GU18WAYFXs7FVVC/RhiPtsyus+bm5c5kxd/zi/0gjl74QNneGBB/l9S
-	7YjpGeCA==
-X-Google-Smtp-Source: AGHT+IF1qIVKiE8DwAos/+cPYxxS2D1JpAkt4IZSDQhzjgwOLH+AWMhFOTG9x0eI/Lnzwx1Y2YGH7Q==
-X-Received: by 2002:a17:90b:4e8f:b0:32e:3c57:8a9e with SMTP id 98e67ed59e1d1-343fa76c377mr19701586a91.35.1763475139949;
-        Tue, 18 Nov 2025 06:12:19 -0800 (PST)
-Received: from dw-tp ([49.207.232.208])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b92772e713sm16374708b3a.54.2025.11.18.06.12.14
+        d=1e100.net; s=20230601; t=1763476131; x=1764080931;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=35WpspOv1fAWFINmOzi0AcgEQL1oV2/QEYSJcrH4aSg=;
+        b=EAEwEDPsAGXuhhnlG3mfWpxUoR8w+zh/DHDXkJebq4LsTKvHBsj+C3SKj93DcUqqW9
+         O126bhcBY3kd7pLXUY+BMkL0T/CsWF0WRR9I91UALTCZ9ppls0dqGfxmRiqsieiwHqya
+         q+DZ/GqdAIzqb0giKwohEVAh4yINgl0eDAMmRpJSnStyuF4qMajn4Ouv8rbI8w9yI/NN
+         TEhuNm9YDZrG6e3n8ZJipxZ7XNbe99sabWedwgmBSKVDdyzYACKhv7O7At+pEkXvbis9
+         5UX1/fs+buD1s1tuRApqD55Gx20w+jXiIjACi6wgK2cGFQfI/BnHl7i6Q7BKpT+7fK0r
+         9bQw==
+X-Forwarded-Encrypted: i=1; AJvYcCWOtAPIAO3dBvw2pc2hi7BwjK62FZw1lKLf5SM3S3Gg8Fd7V6f9/ImdzrbBpLiuh+yEv5jSjCAmLA==@kvack.org
+X-Gm-Message-State: AOJu0YxcNO7EAdvDIUY8/ERJhTzfD4eVIPQ9FzwwQ7c5+ePWfEzMwoRT
+	8q4wfF7WPS9/HgprFkvtuR1nMkeTvgDsP276pWrVzXFVOutUoKpnoIVZv1wyx3KdWsc=
+X-Gm-Gg: ASbGncu2fMrIcQ44D5K2lMkh9kTLakOaId1XoTn/v1AkBnS/LKJ0YDShnJ3GvTpgLZ9
+	7s/VjGpRVkln0Bz9/FX88+am3Hhb8fCJJIJ/PfQkPwSqyLPtLU0VvdVRXYWUekByk9Gn/cplJe9
+	Bd1bO80OwwTmK8aBGgt5DxIXYs4Q6WTWwjN3nEqUn39IZ1CCMbq98qsTWztmiicgBdMwdRlGZY2
+	2a7TWASes8IaKCdb52t2gjC08PX5RdnI/zkjgNJgUUFTuFr0EsXWJdf4+j2US2JrX1IrRRCVAuR
+	goELC8IlliK3LAophsEYJ8W7GfYXIyaXS5QebiV+9Zr3IRXnH3kQ+nCRJet/Vm1aoJTbEeiUbmq
+	gYE6SZDEnS7MkqxLREozkuB+zPjVJL6kjMTWsRebpPMshQyHND91aBdaS4AIopAWP/Su0WIsj1y
+	HazGqiGhai0UsmispO/xAc7+5tHG77SgUjIP7JfH9jYPP73vP9NU08JF5MFddkOyJCX8o=
+X-Google-Smtp-Source: AGHT+IF+NrfSbYwvwiNh+CC3YngHFJHpwzxC37jBlKkv0sHaTL3i1cld4gWS47y25QRA75BxBaWSvQ==
+X-Received: by 2002:a05:6214:62a:b0:81b:bf92:8df9 with SMTP id 6a1803df08f44-8829269e086mr234228876d6.43.1763476131063;
+        Tue, 18 Nov 2025 06:28:51 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8828652efa4sm114860276d6.39.2025.11.18.06.28.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 06:12:19 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David Hildenbrand (Red Hat)" <david@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Sourabh Jain <sourabhjain@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Donet Tom <donettom@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH v2] mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb
-In-Reply-To: <20251114214920.2550676-1-david@kernel.org>
-Date: Tue, 18 Nov 2025 19:19:01 +0530
-Message-ID: <87a50j30z6.ritesh.list@gmail.com>
-References: <20251114214920.2550676-1-david@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4A24940002
-X-Stat-Signature: rcmos8tea4ci7bmfakem1n5o4984kiep
+        Tue, 18 Nov 2025 06:28:50 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vLMhN-00000000NEc-3Dxs;
+	Tue, 18 Nov 2025 10:28:49 -0400
+Date: Tue, 18 Nov 2025 10:28:49 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	"Kasireddy, Vivek" <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH v8 10/11] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20251118142849.GG17968@ziepe.ca>
+References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
+ <20251111-dmabuf-vfio-v8-10-fd9aa5df478f@nvidia.com>
+ <BN9PR11MB527610F3240E677BE9720C2B8CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BN9PR11MB527610F3240E677BE9720C2B8CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+X-Stat-Signature: wa4t1r8xypqj35abpdgc6rakgypejd5d
 X-Rspam-User: 
-X-HE-Tag: 1763475141-399353
-X-HE-Meta: U2FsdGVkX18ywEZ7Pkh95/73QtNUHGjdwt7ZW/aNSUScWHSYM8L9ItPDS2C8nwj3HpVnXYHg6oBuXSa3XDrziNy0DM7pwn7cb/IYt20yOY4Sbl9x2ku311qukkAqaxeGdX3wavzB9U856d5Q7X8k7FDv8Z+SB9BKtt7adTaY3y9VOM4m2gI0zU88rpRt6nQiNXb86R1D6FtbG8Gi1nw21hxYTCN7yYKA5s00+c+ry9GKJtV9tlBZx6CRFE+g9TwRvkFwSHnFzDCxBpq/VZKiwFFgORxkpJs9xAYME+cBHDi0vDVe7vOitDyQp6AKtnDwQW8Acku00YQSFT/ggXS8J4KfJRR8HcfXOT2YhjHTf9ls3Ks08+MXu/XywGc9dpsPvmoKUizeKOR8Wus9SdYnDYyo6we54/s3QfoeP0A2EAgAzmYTGDr03VpQUxmvz2Gm3r9pyZvd2I5Ts6jd8VzrsTT0/+M++mGMiqu2dn7laiz1glpXvPTMSsTmjiriYHNSRqExPqHMz05mnXH+GxBXkhQ8/O/DRAwrhdEH11ZwbmF8kLVs2HM1XS1xZh2Gg+MUTCCRI7ChnuzbY9f9Jzd/nitiv0Gxk3AviGYB3YrQBLU9/X9BrrPfsPSvlk+NhoRU8x5eUFskwsGfjIJFH7Fh/fOzDusyj8WQ/WhrCFonOgsxIXWbkF8/KOTWsgyNIJJjn0LF9zzh6+6MCbelMW86hH+U4mkrR4NmYWtYU/9EOrp2iw8fnen3xHooxNaPSznoX9Y2VgKzCVgu6BsNkA4hqLQ/1NlG45BeqbMMjHGXeLsc3m+PokTdL5JRnkA/Q6D9JZrHhSFfPdZlmMekNRGTvLiWkmftFVOz1NzfgfMTQn/Ve4knhzddOEBwPxHALKLyfAipRNBNuHO5pYhPejF2F3fomzuadhlH5qsOjkeqcN8OyvVxteFZHPoSQ6+QsO8UVwN0QNEjQcTXITuexFm
- N/fVBVYO
- sXEfH1oZ/roi1svrholcAPgfctrDxL/JJg+nUvX3x/w5h2XPNaTrGKo22rPTUXFftHqO7Oow3FjcysxVeabauqWZyio40ZIqaspTLdkc8BE/mfaIChZ2IqSPva6A2phmsZodJ
+X-Rspamd-Queue-Id: 2F1DB140016
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763476132-865075
+X-HE-Meta: U2FsdGVkX1/LC0KTJARohzITbPpp2HynP5pj8t6KPic0w/q7GzAOlSVMxYWkoyN3m16Goy/MkemkFzOYSWR01SKOhjZGLIHw/fDXxa9dKHwrDWUF1yI4pZ2VtkY4DVXBuL59ZJVUni/t9eGXXBKgz1YG4onctc1SUWFQKTNN2thJpL8BRiqkB1GnRcgsP+fnUSiXI8BcACCojm2TZ6j1U+x9dTzTE5gqOcZ29VS4TTTe2jkmEMJt6Awy7ZRPUCj/yuAsp1b5MjgphCc5XY6bYTX7N7Sb8CBb8QIrFbvJh+UvsAG5DirPy1Viyn0Z0AejzBnjQU2HPxmlqMiR/u5OPYfDj+apyJM4a01FX+FzVJEBzpHHvVsmHYjxYxsnYCe9AJBu6tJwunZ1EH2kPhPXBI7D6MiUHtxSouAcNMmuu3Oz1TUR+hJWjptV+Iffhg2L6SVuljk71/CQAP8pLLTUbIXiIPzW4eozgO8L+yYY4ZZQF/Dve+jHmN8UjOdDqQTejKIPDDNAo7SNR3a8NF4w/eUFK+9dN3OD4vPd16HZlhzObFwO/Uj1MTGXWNQi+RwWkutp6N09vVIfLBaxRjkaZoD8GFND9KV6Whrrv2eBteA+8exEb1epDC2ciKemvfmhB90uydsAkYG3lXSoQwYSFN3iEihqVwQaDZ0Va8HHZts58I2lRLFay4PyBx3gC4x1/uGLjh5rBeHRxJ2jKLU/R95sTNDfEn9z8uBd6gJn3ZBj80TZ1eRp1M9uZy/rIk2J/zzUG6lvqyuV9VaYmO9M6A0R3iQANAGR44HS05mAAuN05qXYAuI99uKxalZaicTW0o38d+7ybtG1HDbMUHSjRO3/OFUYtEt+7PUPsAh3Hg2h1QxAkoGaFfy5tHkQ5LdJEcDGV+CqovcXXUgny4yd3jhVdpUBIsYXAiwuZE9j6Y+rscYmp1VRWfT8Dm7fA241SK3ZrguTH10uRoGhXnO
+ kCsK5+rK
+ /i4IRu3+fuiy9UQSNNOb7bcvnfus6rzFsC7HuDCMk2hZc9Q844nBe0qcG6yhEtQNv6rXK8NWpWsQZbzoYipAZSrz98OC2mogyVp/9h6/+KTh9cMyJq7PC0OIxCLk70eRtzrwVVZt1I8OFYCVFTatZHtjAXtLPe8elO/V25Ole1R3Ypgs2B3IZuQui0q4oWYiP4VQ2YBLHz1BLwv6znd/Hn3jpifZpj/Xg2bFOTcfYb12/8k0DaLQGjqQF1PDUxfvZV5i7ZWswGCgNsymBpFcvhLaHFcHkjcbb2WhKnr9fDNxRFyqowOEPbv34GZ7MSvhlk+WrwoiqnnlkQH5ILBTzC4rHw8drCXfT+zT5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,106 +151,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Red Hat)" <david@kernel.org> writes:
+On Tue, Nov 18, 2025 at 07:33:23AM +0000, Tian, Kevin wrote:
+> > From: Leon Romanovsky <leon@kernel.org>
+> > Sent: Tuesday, November 11, 2025 5:58 PM
+> > 
+> > -		if (!new_mem)
+> > +		if (!new_mem) {
+> >  			vfio_pci_zap_and_down_write_memory_lock(vdev);
+> > -		else
+> > +			vfio_pci_dma_buf_move(vdev, true);
+> > +		} else {
+> >  			down_write(&vdev->memory_lock);
+> > +		}
+> 
+> shouldn't we notify move before zapping the bars? otherwise there is
+> still a small window in between where the exporter already has the
+> mapping cleared while the importer still keeps it...
 
-> In the past, CONFIG_ARCH_HAS_GIGANTIC_PAGE indicated that we support
-> runtime allocation of gigantic hugetlb folios. In the meantime it evolved
-> into a generic way for the architecture to state that it supports
-> gigantic hugetlb folios.
->
-> In commit fae7d834c43c ("mm: add __dump_folio()") we started using
-> CONFIG_ARCH_HAS_GIGANTIC_PAGE to decide MAX_FOLIO_ORDER: whether we could
-> have folios larger than what the buddy can handle. In the context of
-> that commit, we started using MAX_FOLIO_ORDER to detect page corruptions
-> when dumping tail pages of folios. Before that commit, we assumed that
-> we cannot have folios larger than the highest buddy order, which was
-> obviously wrong.
->
-> In commit 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes
-> when registering hstate"), we used MAX_FOLIO_ORDER to detect
-> inconsistencies, and in fact, we found some now.
->
-> Powerpc allows for configs that can allocate gigantic folio during boot
-> (not at runtime), that do not set CONFIG_ARCH_HAS_GIGANTIC_PAGE and can
-> exceed PUD_ORDER.
->
-> To fix it, let's make powerpc select CONFIG_ARCH_HAS_GIGANTIC_PAGE with
-> hugetlb on powerpc, and increase the maximum folio size with hugetlb to 16
-> GiB on 64bit (possible on arm64 and powerpc) and 1 GiB on 32 bit (powerpc).
-> Note that on some powerpc configurations, whether we actually have gigantic
-> pages depends on the setting of CONFIG_ARCH_FORCE_MAX_ORDER, but there is
-> nothing really problematic about setting it unconditionally: we just try to
-> keep the value small so we can better detect problems in __dump_folio()
-> and inconsistencies around the expected largest folio in the system.
->
-> Ideally, we'd have a better way to obtain the maximum hugetlb folio size
-> and detect ourselves whether we really end up with gigantic folios. Let's
-> defer bigger changes and fix the warnings first.
->
-> While at it, handle gigantic DAX folios more clearly: DAX can only
-> end up creating gigantic folios with HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD.
->
-> Add a new Kconfig option HAVE_GIGANTIC_FOLIOS to make both cases
-> clearer. In particular, worry about ARCH_HAS_GIGANTIC_PAGE only with
-> HUGETLB_PAGE.
->
-> Note: with enabling CONFIG_ARCH_HAS_GIGANTIC_PAGE on powerpc, we will now
-> also allow for runtime allocations of folios in some more powerpc configs.
+zapping the VMA and moving/revoking the DMABUF are independent
+operations that can happen in any order. They effect different kinds
+of users. The VMA zap prevents CPU access from userspace, the DMABUF
+move prevents DMA access from devices.
 
-So, book3s64 anyways always default to Radix which by default always select
-CONFIG_ARCH_HAS_GIGANTIC_PAGE. So even if during runtime Hash mmu gets
-selected, we anyways by default had this config enabled on book3s64.
+The order has to be like the above because vfio_pci_dma_buf_move()
+must be called under the memory lock and
+vfio_pci_zap_and_down_write_memory_lock() gets the memory lock..
 
-> I don't think this is a problem, but if it is we could handle it through
-> __HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED.
+> > +static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
+> > +{
+> > +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
+> > +
+> > +	/*
+> > +	 * Either this or vfio_pci_dma_buf_cleanup() will remove from the list.
+> > +	 * The refcount prevents both.
+> 
+> which refcount? I thought it's vdev->memory_lock preventing the race...
 
-Exactly, I see we already have the above config knob at most places where
-this could be needed to prevent runtime gigantic pages.
+Refcount on the dmabuf
 
->
-> While __dump_page()/__dump_folio was also problematic (not handling dumping
-> of tail pages of such gigantic folios correctly), it doesn't seem
-> critical enough to mark it as a fix.
->
-> Fixes: 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when registering hstate")
-> Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Closes: https://lore.kernel.org/r/3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu/
-> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Closes: https://lore.kernel.org/r/94377f5c-d4f0-4c0f-b0f6-5bf1cd7305b1@linux.ibm.com/
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Donet Tom <donettom@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> ---
->
-> v1 -> v2:
+> > +int vfio_pci_core_fill_phys_vec(struct dma_buf_phys_vec *phys_vec,
+> > +				struct vfio_region_dma_range *dma_ranges,
+> > +				size_t nr_ranges, phys_addr_t start,
+> > +				phys_addr_t len)
+> > +{
+> > +	phys_addr_t max_addr;
+> > +	unsigned int i;
+> > +
+> > +	max_addr = start + len;
+> > +	for (i = 0; i < nr_ranges; i++) {
+> > +		phys_addr_t end;
+> > +
+> > +		if (!dma_ranges[i].length)
+> > +			return -EINVAL;
+> 
+> Looks redundant as there is already a check in validate_dmabuf_input().
 
-Sorry, this got delayed a bit as I wanted to run mm selftests and then
-update.
+Agree
 
-As I had updated in previous version, this patch also fixes the warning
-during boot when RADIX MMU config is kept disabled at build time (that
-means only Hash is selected) on book3s64.
+> > +int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32
+> > flags,
+> > +				  struct vfio_device_feature_dma_buf __user
+> > *arg,
+> > +				  size_t argsz)
+> > +{
+> > +	struct vfio_device_feature_dma_buf get_dma_buf = {};
+> > +	struct vfio_region_dma_range *dma_ranges;
+> > +	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+> > +	struct vfio_pci_dma_buf *priv;
+> > +	size_t length;
+> > +	int ret;
+> > +
+> > +	if (!vdev->pci_ops || !vdev->pci_ops->get_dmabuf_phys)
+> > +		return -EOPNOTSUPP;
+> > +
+> > +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
+> > +				 sizeof(get_dma_buf));
+> > +	if (ret != 1)
+> > +		return ret;
+> > +
+> > +	if (copy_from_user(&get_dma_buf, arg, sizeof(get_dma_buf)))
+> > +		return -EFAULT;
+> > +
+> > +	if (!get_dma_buf.nr_ranges || get_dma_buf.flags)
+> > +		return -EINVAL;
+> 
+> unknown flag bits get -EOPNOTSUPP.
 
-No new tests failures were reported on running mm selftests with Hash
-mmu on book3s64. Also verified boot tests on few other ppc configs.
+Agree
 
-So even though I know this patch is already taken in rc6, but still -
+> > +
+> > +void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
+> > +{
+> > +	struct vfio_pci_dma_buf *priv;
+> > +	struct vfio_pci_dma_buf *tmp;
+> > +
+> > +	down_write(&vdev->memory_lock);
+> > +	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm)
+> > {
+> > +		if (!get_file_active(&priv->dmabuf->file))
+> > +			continue;
+> > +
+> > +		dma_resv_lock(priv->dmabuf->resv, NULL);
+> > +		list_del_init(&priv->dmabufs_elm);
+> > +		priv->vdev = NULL;
+> > +		priv->revoked = true;
+> > +		dma_buf_move_notify(priv->dmabuf);
+> > +		dma_resv_unlock(priv->dmabuf->resv);
+> > +		vfio_device_put_registration(&vdev->vdev);
+> > +		fput(priv->dmabuf->file);
+> 
+> dma_buf_put(priv->dmabuf), consistent with other places.
 
-Reviewed-and-tested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Someone else said this, I don't agree, the above got the get via
 
-Thanks again for providing a quick fix!
+get_file_active() instead of a dma_buf version..
 
--ritesh
+So we should pair with get_file_active() vs fput().
+
+Christian rejected the idea of adding a dmabuf wrapper for
+get_file_active(), oh well.
+
+> > +struct vfio_device_feature_dma_buf {
+> > +	__u32	region_index;
+> > +	__u32	open_flags;
+> > +	__u32   flags;
+> 
+> Usually the 'flags' field is put in the start (following argsz if existing).
+
+Yeah, but doesn't really matter.
+
+Thanks,
+Jason
 
