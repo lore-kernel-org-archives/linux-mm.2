@@ -4,138 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B342CCF2561
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 22:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC2DCF2561
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 22:44:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 121D76B0026; Tue, 18 Nov 2025 17:07:57 -0500 (EST)
+	id 106496B002D; Tue, 18 Nov 2025 17:44:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D2346B00A0; Tue, 18 Nov 2025 17:07:57 -0500 (EST)
+	id 0B7956B0089; Tue, 18 Nov 2025 17:44:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDCF76B00A1; Tue, 18 Nov 2025 17:07:56 -0500 (EST)
+	id EE8A76B008C; Tue, 18 Nov 2025 17:44:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D98396B0026
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:07:56 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D874140246
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:07:56 +0000 (UTC)
-X-FDA: 84125116152.01.393F823
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6D3562000C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:07:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IOjLpQnU;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763503674; a=rsa-sha256;
-	cv=none;
-	b=r5nr0CqefZ0OUauJWa9ARZF39PYAsFUhF9WFhGFmG42CmXYENiT4NPHwfu7b8fLpUSIGnX
-	L8tc52fF+VGWaPIL4j39r/8iZuTjlJuTJEpGRVkuPKrGajM9v/S5rTNmYT4CVf4Zlc0Y71
-	TXzZcDKLyHNSq3uSS+qshAMCtRRv30U=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=IOjLpQnU;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id D9F056B002D
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:44:58 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 413FC1A0215
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:44:58 +0000 (UTC)
+X-FDA: 84125209476.29.D79F354
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7D405160009
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:44:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JLTGDx4j;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763503674;
+	s=arc-20220608; t=1763505896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AgyH+nOFFLOOLPQj19SMqqrRCiMHwP0eevW9Zl1x2hs=;
-	b=za1KBuPLDk9BDTkWvBYoe/1ROkmR18RCHxXhI/eqsrSSDc+MQSDcbVAvVLy21hI4Mraw8b
-	nPK1aZgY88KrEq39YEBFQaRvqMhnxTOgwbJyrJU37AVmPbfSFbEDHN8y5rgjgljl1II4g8
-	Xe1wG0iFPmyvTqzJpnrnTwKyemfVFbw=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so776689a12.3
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:07:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763503673; x=1764108473; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AgyH+nOFFLOOLPQj19SMqqrRCiMHwP0eevW9Zl1x2hs=;
-        b=IOjLpQnUXS+aIWwyqqaXO7tkVm2EehfYv29fZ1Ib4Jq9/BSAYGb/i8ILhOivbzEYjB
-         aH5FMRrP456jNwYtYW79CEYLV0AydzSIRdUkKmFYva0k8RoU8Vb0A4kB3jNLmZ5Hsig3
-         S39c92Xfok4VQ5yVtP1Q7fv+ktpJc3ErKMRw91Erfq9rWWsSWoY2hO1O+xrVYS+udmtp
-         Yb4bzfPSxELf2/tmCU71yGq4pCAWAK0hligtiM+9DKiMbyHSqV+quYSD9UDm3EG7KYI5
-         CtbA9P5ntIfsDkS303Ndkk6uQwd+eHVngafgB0yzHx2ZB1twBDMrHq+DoIbf8VWpzTT5
-         yJvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763503673; x=1764108473;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AgyH+nOFFLOOLPQj19SMqqrRCiMHwP0eevW9Zl1x2hs=;
-        b=b+qVKGR4LABWqewR4OPI5LJpq1mSzZi3IVn879j/RAI7zvXGmfJeL5IvDmVk7TsmsM
-         dBs/fBnQgBbzyxAfPweMkwLXFxpBqjCui9U0hLM5NEDGbemwCp8dgGmnGNUo8rkA2t8L
-         J/LGP17tbMoEkVgGaSLX1ndd4UIa/30PbpXwEjUp8b/Yz7KT0mD69jCoFax8BaIgnMLp
-         sA5pJauEAckt8bppOgV6EVD+9zFtAp7yMlwRD4w9mBf2DGwCTyAJnpx7yiffP1fl9vuP
-         wvlD3yLOMibY7BwVpQGIuFv6tHtU8d1cV+Jo8xrrcjbsQ6bXebbodNAwt1Zif05paS22
-         fLvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHHkc7CeTcF0MGIm+0kgqhpoyCRunig82AvpvibrN5IC42Z7BrG35D3PO3QPdCO390LjUmPL8xgw==@kvack.org
-X-Gm-Message-State: AOJu0YypPg5iDLnjyPu6NAzlahdiHxynlXpBB+N2MG7GxWArAbDlquH1
-	8DehAIJP5s3xbKVr6rMqTgtcnBoMJ5aTEuUhQnNcRL+2bVkckob+U5/TfGVhi1RZO2olmyBjLAL
-	yRWViLPv0zxNl9T95QGuxMLp7a3t6ikluFZGFGCqTUg==
-X-Gm-Gg: ASbGnctTyWhMN3ermkAti2wdT2OXHKfIb9+0EQiajpeMHu5xarWDtB8pO+kOcHj4lVo
-	jTsgF4JkCjQoi28eNoobl80mFS52sLdGVHYenfCzkX9LfNs657e6SgKKy6fFpnYmahA7z9ZPRsr
-	oEF+0i0gLkr1W2Hr0RrHEXJV1cQth19/lvzaW3wz96yT0EnFym0rMAsohIGDa/w0eJEybatN5+c
-	bMQMGjSa9UaWu8WBYU3w0Hignu8HKv06k3fOYK+7phuJwdrMQ0GI4ASO69rNnrmqsfyIZod34R5
-	rsY=
-X-Google-Smtp-Source: AGHT+IHtDqrk0qniYZc5AFwR5DqbAOIqGAY4cBt02gO8xxQprKgTQdf+fJMHgzuhx8eUZMd/TIJzeZERktIMHFkuZIY=
-X-Received: by 2002:a05:6402:13cb:b0:640:ca0a:dc1c with SMTP id
- 4fb4d7f45d1cf-64350e04b49mr16432565a12.7.1763503672627; Tue, 18 Nov 2025
- 14:07:52 -0800 (PST)
+	bh=ZHC+YY7yp72sM6fpU4gihGsF2YhBrsRzUBisprz+Z0o=;
+	b=APWmir3eSppVWfWX3Hd1FTjX/4vk7yXaIQEyRSqv7t/hQ2mB7Uiyjbx+2rlZJQTT6orLDX
+	eM/9aDPSISwffqona30iIl9sKbOkAd7Udcr4fcHk3sGH8OPeHcYVyNDWPGow/YKKMSrCoD
+	tigvGVgoGonPBXBRC1Go3zoPtbAjJJU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763505896; a=rsa-sha256;
+	cv=none;
+	b=CL1enM5De7xq35EIuI+jZPjzq6KNvTsOS7a8pJ2yjhk9I2Rw61NklVP8UT2fEp3lPxmZXU
+	GDaTUd8Xs04ScRDwWJJEwied4iJgvgZqnv/K/pg2ITrT8+ZxDy9mQ5/aSy8/OVLyI8TYAO
+	ulYCOdeCNplBKkAGFxoPXARHZjuez0c=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JLTGDx4j;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4FCC741B5F;
+	Tue, 18 Nov 2025 22:44:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3A7C2BCAF;
+	Tue, 18 Nov 2025 22:44:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763505894;
+	bh=KvM4sw5d11P00xzno+X5e9UaJIpcGEJfE9v6laupK1E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JLTGDx4jkYO6rCsLPTkfwcGiYcDeLR7/nVDsghDGniU+c6haoY7REaiN1wy3sBlq9
+	 S1Nx/SQUNHYJzFYW4DRllsixtoyyp/z5EwPSAfaxytqjmLjM5Dyz9qZOt9GuNlhP9S
+	 CEDQmNM5EHH2448doM3f0Cx8X+uz/iUSnP+Ojva/p3O6299cR8zioP7BcoYWpmAUo2
+	 8TrFbVfbFfqiy5367kLCW+wwOTigWd0zQxJceJ5lXZ+N1IwOPma7GgW0fQskrRVRo2
+	 PPso+aj/XoqEE0emE98JGMwkcULoKFxl0uhcw0ahNwqCoY4uoeT7hW5MCZUSasVRxk
+	 Uc9tZlxit/BCg==
+Date: Tue, 18 Nov 2025 15:44:48 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, kvmarm@lists.linux.dev
+Subject: Re: [PATCH v3 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
+Message-ID: <20251118224448.GA998046@ax162>
+References: <20251117173530.43293-1-vishal.moola@gmail.com>
+ <20251117173530.43293-2-vishal.moola@gmail.com>
 MIME-Version: 1.0
-References: <aRoi-Pb8jnjaZp0X@kernel.org> <CA+CK2bBEs2nr0TmsaV18S-xJTULkobYgv0sU9=RCdReiS0CbPQ@mail.gmail.com>
- <aRuODFfqP-qsxa-j@kernel.org> <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
- <aRxWvsdv1dQz8oZ4@kernel.org> <20251118140300.GK10864@nvidia.com>
- <aRyLbB8yoQwUJ3dh@kernel.org> <CA+CK2bBFtG3LWmCtLs-5vfS8FYm_r24v=jJra9gOGPKKcs=55g@mail.gmail.com>
- <20251118153631.GB90703@nvidia.com> <CA+CK2bC6sZe1qYd4=KjqDY-eUb95RBPK-Us+-PZbvkrVsvS5Cw@mail.gmail.com>
- <20251118161526.GD90703@nvidia.com>
-In-Reply-To: <20251118161526.GD90703@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 18 Nov 2025 17:07:15 -0500
-X-Gm-Features: AWmQ_blpcRzsFKrW-N42BrQ1n1NLtjzkNBwejiuKy6hBEe6k9J5ADY-OfS4GodI
-Message-ID: <CA+CK2bCguutAdsXETdDSEPCPT_=OQupgyTfGKQuxi924mOfhTQ@mail.gmail.com>
-Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Mike Rapoport <rppt@kernel.org>, pratyush@kernel.org, jasonmiu@google.com, 
-	graf@amazon.com, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117173530.43293-2-vishal.moola@gmail.com>
+X-Stat-Signature: fmh1d33wqr7617pqmitunj9dmeax4mmb
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6D3562000C
-X-Stat-Signature: mqbopqkx5ajsbrztqm35gf3z6poprd8y
-X-HE-Tag: 1763503674-795112
-X-HE-Meta: U2FsdGVkX18KO+X+3qG25nu5gyNpFQqouVkALLxYhAUw/ZKivItlh1U7rjl82d7fhmX2WXPmDSOYHqO+J4bhTpamPqNYeYe4rCZOQk82mnW5bLhUrLfG22JeSpP034WafeNcKb6u4M1mbuBwf7cf2UdoiWHcxPR/GLZbI6z4ROMdCmMuZp8Y+6oNTiZh4oUVTurQ7Jk1GgheYFHVX6DrvQEHSQ1vFEcsQKPRj31kZBMZ49sRVUkViLujL3fl+e2z7lsSqxGmOPccJ1hxE8OUMHRwb7CtH1jJMprk77JIgLje8PWNBBOy12YVX4Gk7MRn3xDdEFIH75QLWnc5P+EjKElEKjZQwczgLVS82ll/I4h6V5TL8LfLoyH7kZwOd93fUZwePs+VEgs2FNkUR+LR4OJyUCE5T6BO7gQqrgvOheGlE3PVDP43cZ19QZ7Zfqt/fE/w47dwuItbjHDpcyowhl841tbJ1ZS00ZKnyvLpeSZ4L45bBi6AvkZ6CRHJGWzNQnIp1dVdNf6r97w1wv0O9CXiZZUmpmQj3+isSjIny/9Fmtlm7J6OEq+elnRv89gxYbyWUgQsCH+K3QyRUzFZt94gkabvLaiS+c6ldWKZDjnGP50SMnw8RQCfcW61N348TPzcxYEqocZFWjPIFJJKmfne9BMIVc2OQ3YXPjC9WOdbecLzNiennD4BAVhkFVPeyFFmx9efNNLzytiRQp+CblI4PtkcEveyhOHw9T1SHNRZ9pMpjUxirJ09Hf3s3FLylA99qqeAGLmpZXj0X4ZYE6j8V8NI2otcgXqYOo2hBvinjgj/FhYt4/dyFWi2xxr6sCXGf6pwnd/HyZ0Ztxr8OTC8yA0DCbOn+5Nfyo65v2IwYMAlwTeIFn69fRgbjFPGa7tG5NP6pi+qY4DW/7/uBWmwPIWwcvAj8rzgGg3uQLZhCphIT9csbNTsuBtn58nvC09R6F7HtjpmSQq4s1D
- n9itAILc
- IybZXoksoPPJH3VgtW07OPDMuDWA0NQA2VsdXNnb8zF/sBH+hnYoNGVzutVDtZ8Zd7xVqrslRGITJagEd67bjGZVAD0Yl3UhXvCkpLnvT7C0Sncy7t46jWgsumJ+QaYFPhl7v8ohem73QsBgifh/NovJqIq/dREC81SYCVoraNYZVajvkU1sY9Lk09X4fXBheBLHzxDGg8pegDfCB9i/31PDpbrYETtEe43vRiuUp1GKouZn1Gfhf6B+U5D8qJmK4hKMi0vxYx7RfHkiOnrYhMrgVX8p/zkysyJyaUnyzrtj5HqWJwReM/f6dMZ/39qlrwar+JSNJvveVCNk=
+X-Rspamd-Queue-Id: 7D405160009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763505896-393543
+X-HE-Meta: U2FsdGVkX18rB+K+aFAF2bdlJEsnpTzS7zr929El462245in4T1yBxo+Cs0GiNC/Pds71i5kDieZntOzO+FY5UFGTWtAov+jbOruczMkyKK+AC4H95k6lWAr53/8K0fJrwZjqZvfCNKdHH3dMR/oWroIFbYbtDhetlyKyetG6+IPgeC6DvClbKcZwsMpHt4V/C8tJf6cGRXZD4B/Hhg747VFmCTzRnSfeED5GD8lFZu8j4G2VFTOz9FB/5dch7kEasiRgKeoZ9uNIWjdD7Ohai0M0HIckYcAlpG54V0nayvHP7GvwhQRs/d233FugjwWNSMev/vRdbhOB/5cl2+OpK89wWDyiqa0rr/RNfRZV5/mbmVVLEZ++CWQM4Z/rgQ4stNJ+ZU0kA76XLYG5UlgNpWbJvjYSAYG7fjeHnKX+eiVHUU8R2xS8wH4v1yUVtxHePuXvyJ3UmtuPTtHSJAXSBoxNNXmR9Hb5V3u1VjbJxXxqUqAhSd4rhFWVR3PJJ7EqoxTxPtWVKETRUL1QfNTurnsvzqx8NPzryW1/bZyQnJn6RvvtKVES9cSINl0lO20ra5kFqPf6z/wyGMStYYAG/70wsP02KD1j7GlR121Cd/HjhG8YiON2g/AHW4pMTQeDcbFiPBCZESf7RWyIwlbyYVl5cnp9QVHjy2LJVhMRN/Vic9t7j+WG2NtEuiIRBHbgp3CPEX4uWypSrRwqq0xPFh3vBbBofe3SHCr/AOaL+O6wB1/t+QzyNsDbyTlg7v2Gx7nRqDwcWWCJ1p44zNbiIAg9SsH7JxoKK4AddJlGc/9MpxrOCccj5dwg5Kv7asvIWidRjvlsjkAKYFwGBUOYCXW5EEO0AtxUwV8llqIcBtPZMMZUUVVXdJHrD1JXIbIU0cAM68knJ6Rsx1fL/RrA0TMBL9gyxIN6oTy4knPCW51+6mCgV/f/uMI1d1BczoWK1hJoxjOPR1sYXjsns7
+ h26p+PfZ
+ A04tJqW8IV42RUiyFPNqXYoXGRdH4BI5Y3k8do9UtZMBat+FH9KditkEZsCvVOY0ZKcmdCzsmHJgReC+RDBPrtmJO4hCJa194Yn8r7H/jekrOzcArHEBlJM4jFhtWjM61eWx0b0jJwcDr9AXPJ33LBjPZP00AlvUbtYkWJB1kyfs15YsMVakFy79s+77AeAKvPC4b17wTKvNo90WiCwbzdX58/F+okx7KMdlOuhtsH7/TuJqtjw1rsvdP8IA1LQIBOO/23CZy1SOcIcrlBD7dM+KTSPlvg4W1SNp3ulVf/zTzT7jg+y/fxGexYpv9GoOcplco8Hn+oqVsBOhlQGcacspIdpIy9vq9REFIhmbF0TuRkCqi31d+FCPGF9Ew834N1VIeISzR6kstwCr3+NDOqYeA4A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,49 +95,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 11:15=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> w=
-rote:
->
-> On Tue, Nov 18, 2025 at 10:46:35AM -0500, Pasha Tatashin wrote:
-> > > > This won't leak data, as /dev/liveupdate is completely disabled, so
-> > > > nothing preserved in memory will be recoverable.
-> > >
-> > > This seems reasonable, but it is still dangerous.
-> > >
-> > > At the minimum the KHO startup either needs to succeed, panic, or fai=
-l
-> > > to online most of the memory (ie run from the safe region only)
-> >
-> > Allowing degrade booting using only scratch memory sounds like a very
-> > good compromise. This allows the live-update boot to stay alive as a
-> > sort of "crash kernel," particularly since kdump functionality is not
-> > available here. However, it would require some work in KHO to enable
-> > such a feature.
-> >
-> > > The above approach works better for things like VFIO or memfd where
-> > > you can boot significantly safely. Not sure about iommu though, if
-> > > iommu doesn't deserialize properly then it probably corrupts all
-> > > memory too.
-> >
-> > Yes, DMA may corrupt memory if KHO is broken, *but* we are discussing
-> > broken LUO recovering, the KHO preserved memory should still stay as
-> > preserved but unretriable, so DMA activity should only happen to those
-> > regions...
->
-> If the iommu is not preserved then normal iommu boot will possibly set
-> the translation the identiy and it will scribble over random memory.
->
-> You can't rely on the translation being present and only reaching kho
-> preserved memroy if the iommu can't restore itself.
+Hi Vishal,
 
-In this case, we cannot even rely on having "safe" memory, i.e. this
-scratch only boot to preserve dmesg/core etc, this is unfortunate. Is
-there a way to avoid defaulting to identify mode when we are booting
-into the "maintenance" mode?
+On Mon, Nov 17, 2025 at 09:35:27AM -0800, Vishal Moola (Oracle) wrote:
+> Vmalloc explicitly supports a list of flags, but we never enforce them.
+> vmalloc has been trying to handle unsupported flags by clearing and
+> setting flags wherever necessary. This is messy and makes the code
+> harder to understand, when we could simply check for a supported input
+> immediately instead.
+> 
+> Define a helper mask and function telling callers they have passed in
+> invalid flags, and clear those unsupported vmalloc flags.
+> 
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  mm/vmalloc.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 0832f944544c..5dc467c6cab4 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3911,6 +3911,28 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  	return NULL;
+>  }
+>  
+> +/*
+> + * See __vmalloc_node_range() for a clear list of supported vmalloc flags.
+> + * This gfp lists all flags currently passed through vmalloc. Currently,
+> + * __GFP_ZERO is used by BPF and __GFP_NORETRY is used by percpu. Both drm
+> + * and BPF also use GFP_USER. Additionally, various users pass
+> + * GFP_KERNEL_ACCOUNT.
+> + */
+> +#define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+> +				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
+> +				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+> +				GFP_USER)
+> +
+> +static gfp_t vmalloc_fix_flags(gfp_t flags)
+> +{
+> +	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+> +
+> +	flags &= GFP_VMALLOC_SUPPORTED;
+> +	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
+> +			invalid_mask, &invalid_mask, flags, &flags);
+> +	return flags;
+> +}
 
-Thanks,
-Pasha
+I am seeing this warning trigger when starting a VM on one of my arm64
+boxes.
 
->
-> Jason
+  [ 6345.145795] ------------[ cut here ]------------
+  [ 6345.145803] Unexpected gfp: 0x2 (__GFP_HIGHMEM). Fixing up to gfp: 0x400dc0 (GFP_KERNEL_ACCOUNT|__GFP_ZERO). Fix your code!
+  [ 6345.145819] WARNING: mm/vmalloc.c:3940 at vmalloc_fix_flags+0x60/0x90, CPU#32: qemu-system-aar/4325
+  [ 6345.176990] Modules linked in: ...
+  [ 6345.254421] CPU: 32 UID: 1000 PID: 4325 Comm: qemu-system-aar Not tainted 6.18.0-rc6-next-20251118-00002-g2331e73a4769 #1 PREEMPT(voluntary)
+  [ 6345.267101] Hardware name: To be filled by O.E.M Ampere Altra Developer Platform/Ampere Altra Developer Platform, BIOS TianoCore 2.10.100.02 (SYS: 2.10.20
+  [ 6345.280907] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  [ 6345.287856] pc : vmalloc_fix_flags+0x60/0x90
+  [ 6345.292115] lr : vmalloc_fix_flags+0x58/0x90
+  [ 6345.296374] sp : ffff80008d5b3a10
+  [ 6345.299676] x29: ffff80008d5b3a20 x28: ffff07ff8a148000 x27: 0000000000000000
+  [ 6345.306800] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+  [ 6345.313923] x23: 000000000000000b x22: 000000000000ae01 x21: 0000000000000028
+  [ 6345.321047] x20: ffffc682ea643fbc x19: 0000000000001040 x18: ffff800083465050
+  [ 6345.328170] x17: 00000000d949c370 x16: 00000000d949c370 x15: 0000000000000004
+  [ 6345.335294] x14: 0000000000000002 x13: 0000000000000002 x12: 0000000000000000
+  [ 6345.342417] x11: 0000000000000001 x10: ffffc682ec577744 x9 : bf6a46a6bf3b7900
+  [ 6345.349541] x8 : bf6a46a6bf3b7900 x7 : 65646f632072756f x6 : 7920786946202e29
+  [ 6345.356664] x5 : ffff081f6fcdc678 x4 : 0000000000000000 x3 : ffff80008d5b3688
+  [ 6345.363788] x2 : 0000000000000021 x1 : 0000000000000000 x0 : 000000000000006f
+  [ 6345.370911] Call trace:
+  [ 6345.373346]  vmalloc_fix_flags+0x60/0x90 (P)
+  [ 6345.377606]  __vmalloc_noprof+0xa0/0xb0
+  [ 6345.381431]  kvm_arch_alloc_vm+0x64/0x70
+  [ 6345.385344]  kvm_dev_ioctl+0x9c/0x58c
+  [ 6345.388997]  __arm64_sys_ioctl+0xb0/0x100
+  [ 6345.392995]  invoke_syscall+0x84/0xf4
+  [ 6345.396648]  el0_svc_common.llvm.4390888008543260363+0x90/0xf4
+  [ 6345.402469]  do_el0_svc+0x2c/0x3c
+  [ 6345.405773]  el0_svc+0x54/0x2a8
+  [ 6345.408905]  el0t_64_sync_handler+0x88/0x134
+  [ 6345.413164]  el0t_64_sync+0x1b8/0x1bc
+  [ 6345.416815] ---[ end trace 0000000000000000 ]---
+
+where kvm_arch_alloc_vm() from arch/arm64/kvm/arm.c is
+
+  struct kvm *kvm_arch_alloc_vm(void)
+  {
+      size_t sz = sizeof(struct kvm);
+
+      if (!has_vhe())
+          return kzalloc(sz, GFP_KERNEL_ACCOUNT);
+
+      return __vmalloc(sz, GFP_KERNEL_ACCOUNT | __GFP_HIGHMEM | __GFP_ZERO);
+  }
+
+Should __GFP_HIGHMEM be dropped from the call to __vmalloc? It looks
+like it was added by commit 115bae923ac8 ("KVM: arm64: Add memcg
+accounting to KVM allocations") back in 5.16.
+
+Cheers,
+Nathan
 
