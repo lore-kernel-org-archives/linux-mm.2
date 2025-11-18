@@ -4,86 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1465CEE32A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:47:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A834CEE327
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:47:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16C686B0027; Tue, 18 Nov 2025 10:47:00 -0500 (EST)
+	id B585E6B00A7; Tue, 18 Nov 2025 10:47:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F6C26B0098; Tue, 18 Nov 2025 10:47:00 -0500 (EST)
+	id AE0F66B00A8; Tue, 18 Nov 2025 10:47:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F265F6B00A7; Tue, 18 Nov 2025 10:46:59 -0500 (EST)
+	id 981F96B00A9; Tue, 18 Nov 2025 10:47:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D9A476B0027
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:46:59 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5D6012F3A0
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:46:59 +0000 (UTC)
-X-FDA: 84124156158.25.4EC9AFD
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B936180009
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:46:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XCo5NvdN;
-	spf=pass (imf30.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 820F56B00A7
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:47:17 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3751A4E03C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:47:17 +0000 (UTC)
+X-FDA: 84124156914.12.2489FA8
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 501D416000B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:47:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=gv2UgsL4;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763480835; a=rsa-sha256;
+	cv=none;
+	b=at8DLLJHB6Qa5bMtEylXctVwVhLcZo9O3anRHXsK1xsGvl+mZqxm6dk99JFz3e4Yy4lZj/
+	wUBMR48ElmhkyRuo/3UVaYkh0T94zactehzYKmmYqr5tt/84VFlo2l3LZuqxGuOUvlh3on
+	+QdNi/XGSqJKFyJ/rlULtBPY1uGSFq0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=gv2UgsL4;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763480818;
+	s=arc-20220608; t=1763480835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iftpghmgjHK/qlUmjNQt15sHZAbCGUymJIcA6jMTKOY=;
-	b=E5A+tRr50iLgWlXB7qZ2iABcCR2CRJC9jUO/LvzdjJNgXqD5W1x+DRh+gjJ8jTMz7ggzEk
-	FbwSv0GxtW4ihQv4OnzgQ1SU2Dt2E/pitoIHL4+4Wb+y6rqUu9zG+wwzyv++55au8B0knh
-	R7kh5VZWVu7RAk/QTqfyLtno2ciiIaQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XCo5NvdN;
-	spf=pass (imf30.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763480818; a=rsa-sha256;
-	cv=none;
-	b=UtfH/PsIqtZSdqOjnxx47Chfwnu/8kyFmo9SPRlkVCqy8cjcA5pzbtMF8HGbquHLoDaxmf
-	1bNNJ3JwV2EjepWeI/mwjJVPKxSuBI8gJzJ2CDhqZUepNdZ3VtPYMgUNAAQIBUs8m6s2h8
-	wBKRaxleHRs245AeK1qB5nN0pSTswVY=
-Date: Tue, 18 Nov 2025 15:46:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763480815;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iftpghmgjHK/qlUmjNQt15sHZAbCGUymJIcA6jMTKOY=;
-	b=XCo5NvdNn0WSd8lf197dhB6V+YmNH3RyPCdvt8JC5xn4kW2cPJS+7PqzuYuxa6zF7i73ut
-	+bFsQrTuEZju3NAN8pueuz65SG/iQlwkq2wJBEQc3C07kTPb4wE+w7mQmQ5s62hfF7y6UN
-	JFK6Q4c4jviESpx/yQRFGsnw4mCD6Xc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sahil Chandna <chandna.sahil@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, mhocko@suse.com, vbabka@suse.cz, rppt@kernel.org, 
-	surenb@google.com, hannes@cmpxchg.org, shakeel.butt@linux.dev, 
-	zhengqi.arch@bytedance.com, Liam.Howlett@oracle.com, weixugc@google.com, 
-	axelrasmussen@google.com, yuanchu@google.com, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] mm/zswap: use %pe to print PTR_ERR() values
-Message-ID: <dqmiid7ep4b7lchv6qwniedftoqzo6qit5py3dwo6whrcljrbr@kydq6avtuypd>
-References: <cover.1763227530.git.chandna.sahil@gmail.com>
- <555cdbea3a51898e4c84fdc0f444dae0c2e20f24.1763227530.git.chandna.sahil@gmail.com>
+	bh=ZSit9q9L9b/5E+Zs8jJoiIuLjTbwdZ6FtiEGsvw8Sos=;
+	b=KfBY6FvsriAbDjYaJryYuXvrpQyroxSy1eBkKUpFOpWZp9nCqawuPGk/m8pusvgCMc4ws+
+	OBaerTufZ9GGszAAkqCrMeIUhTtvyqLdCYv8dxo343AMtlZ91ZZo6ki/wpDUnv4GW0voLS
+	KQVVE0LMGbwU+LrSmkMlm9fKNHFZGu4=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so9886139a12.1
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:47:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763480834; x=1764085634; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZSit9q9L9b/5E+Zs8jJoiIuLjTbwdZ6FtiEGsvw8Sos=;
+        b=gv2UgsL4qS6DCQk3y/rFAZGWmj4oQZVRVEgf0hh7I9H3Kc8OutFcLr8sLS6X6bzHCJ
+         xHRlMtlVrHMEpemquG8ANj5oazEue/vSElMQwrkdQksY7S7KP+UmmPcV07LfT8av1GY8
+         QtS1rWVTdk65IK8ZlIpwlkCSFkOSWaB7p23Lr7oZEu2NIxAxurUcGJaTHL1E10t1Ymtc
+         qmGZIw5SmHdjVsgFcsG3uHQgojIQeguWLvpucAbCx+llbdnUotKYb71HBZBNnWXcocns
+         3XFsdWHM/RJeLdK2MrXkEii9AgFacl9mH2Ku3EbuaXEkPqXlQqnLPah5iqwir+F9ustz
+         51ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763480834; x=1764085634;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZSit9q9L9b/5E+Zs8jJoiIuLjTbwdZ6FtiEGsvw8Sos=;
+        b=JXFmVswWsxzOfBDujjYQoVZ2ZbuHwiPFHH1gw3S0RBnQztf8zCj6ciixEDVAY3etMd
+         kDe7YuXLz61LKkL1vUimjw+u3n6laHIm/pMlwj8qORh3lbKFwU12EJhJfjjfrCcGCM8F
+         tqo6BhXKn13l14SyTyH8GBFtLKIsUh2Ob0xss288RBjtJgrbzEJ5+4YZWe6mFFWToDHE
+         Wq7hfGJ5+DiUmtYPyxo2+l41mQcMkuWFpsQzovICuyw9ZRJqVidYIEJb+8wl7BxDLKbw
+         WV2erf4swzzwIHEXeUQ6a7vGft+8mid3acLkJHiSGOiSjJrD7oC59UmOTV4olEge8KWO
+         oVkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWPl9FioRcv40+FBtOG4UN0hqIgItHNL/IUKi+aeRcEiFbvm8GsJCN0BZIIroQdolljDSKG1+W/Zw==@kvack.org
+X-Gm-Message-State: AOJu0YwFAjrdq1DQAx/rZ5SN13iNF+f0TiOqqTTqVnfhWagLUe8iPaYM
+	iNARVY3pdXHijIgfQ2wYZgqHeD0CU8M56TUkmgg2+FE15o03rtTsUtlkq/jND5a6UWZd2yVoK6J
+	KTiC8qT4GHvhh6Kwsf2fKPy/Ufum/02N7TXHaga/cog==
+X-Gm-Gg: ASbGncs1PBq4uWI7CUElU+hJu7wr2dx0SU31kKhJZYLKBLnpw2nGGhAy5MtaG2hjVx5
+	E/kgW+RkkiKZ2sSv9h6EiXOrY4GJ/uM1WvjYYD9q6sGHT/6d7SA6kF7N8cZwfnk0K5l17tnavj0
+	fFqssRuH5HYZXcZY+RdYNlqb93Mry17wCNofjmb9pTlRMOMf+cA/bzEY2t05nXaHgAVxdHEAkib
+	iPFxWvx7iXDv0Hf5YjWccfTeh9OqcZsQOwd047uC9Ni0/Ct8HS3RH1icIQY0f6nk9Y/8vQRt0Jv
+	RFk=
+X-Google-Smtp-Source: AGHT+IFl4FaDFqzlx6bWBXZq0K6NpC2OdnYDHICZqNqSZXVeIXY6NixyhYod+1/BeWpybcUus0n1F+KTrSDNCoyB1KE=
+X-Received: by 2002:a05:6402:5c8:b0:641:5bb9:fdfb with SMTP id
+ 4fb4d7f45d1cf-64350e9d8acmr13722597a12.33.1763480833517; Tue, 18 Nov 2025
+ 07:47:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <555cdbea3a51898e4c84fdc0f444dae0c2e20f24.1763227530.git.chandna.sahil@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B936180009
-X-Stat-Signature: 75fmhefhy3s98mmiwzbin353n79fwjyy
+References: <aRnG8wDSSAtkEI_z@kernel.org> <CA+CK2bDu2FdzyotSwBpGwQtiisv=3f6gC7DzOpebPCxmmpwMYw@mail.gmail.com>
+ <aRoi-Pb8jnjaZp0X@kernel.org> <CA+CK2bBEs2nr0TmsaV18S-xJTULkobYgv0sU9=RCdReiS0CbPQ@mail.gmail.com>
+ <aRuODFfqP-qsxa-j@kernel.org> <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
+ <aRxWvsdv1dQz8oZ4@kernel.org> <20251118140300.GK10864@nvidia.com>
+ <aRyLbB8yoQwUJ3dh@kernel.org> <CA+CK2bBFtG3LWmCtLs-5vfS8FYm_r24v=jJra9gOGPKKcs=55g@mail.gmail.com>
+ <20251118153631.GB90703@nvidia.com>
+In-Reply-To: <20251118153631.GB90703@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 18 Nov 2025 10:46:35 -0500
+X-Gm-Features: AWmQ_blpsIaa7po7XSkrfRCPIMZ4WBj-h08xugNazGwsDJ_E9pCQg-N3cDPVz28
+Message-ID: <CA+CK2bC6sZe1qYd4=KjqDY-eUb95RBPK-Us+-PZbvkrVsvS5Cw@mail.gmail.com>
+Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Mike Rapoport <rppt@kernel.org>, pratyush@kernel.org, jasonmiu@google.com, 
+	graf@amazon.com, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 501D416000B
+X-Stat-Signature: jnokn5nqjkrqw41ykdspoijqrk89nkai
 X-Rspam-User: 
-X-HE-Tag: 1763480817-385840
-X-HE-Meta: U2FsdGVkX18IpNeyLvO4WIAMYXiUkQJHdrnU2XrLUNcc6iSV7HonjSN3MFGKsdR5qTpWicHFYHqeW9YxQZtN4So3fATDHjm/aC1w8mzVjzih/3u+PKOvZCk89fE3gj+1dXSbUdeNJrigzLri1huqbvxoRe9YHhtt0idX6QIiTBwR4Khbjh5dUdgCSGUrpCQzQCJQBOXYAhWutnuhtFK5Vb/CTNj3jhcrKncWZ3hC+OrUw/qpiHCAukZrH/1irtMao3NSLpfGfLTMnFG15m+nlyjgFnzSXPVi8pRp52BE56bmcrNumT5xTTrTtgkpKQvywu9uUfINAqc61SYKBUsZjXkIQnef0VVU5c542vCCQ+OzbPq77cPr2+wbMh9RiSEumLetW6tlhB9dkgBmEdWX4e6OnltxD+VPtQN4/6KbywTR/gmI0dldveYu3HhTqiXQMRpfNu1hE+1srwT375bJOHWBpJG+htFw/pwxWnfgD9icqZdcD66BcRdIyg5X3G9wA4IWOuj9tLrUBeWJfEH70Pvo6WTLCjUbwtZ5zty3NmpQr+tX5KG8s57OVUsdhUuuX7jWlPeznu/kFQNw42B9qZ7vlTcYvBPWmZeWir6lHIEgTeX7LQ03v/GbZgetyUNx8WK+e3QR4EMvE/L7J7wBbH/rQQADH7CpQ9wsx0h6l4iSPsax7c6ckXNHndjLpLUUZRuYXZ3mqfX6IJglNRZ0oC6N56WV0GFHTNvUORkpl8BwVm7Uevclph/lbrGzzdfiqVFiBw+diX2bZHVGMq3b9CZCbNK8QrMNWWW3AotYxorBoLz+VFckRErZTG8qOWXvZLsKA6w6RwTvCgbjCl+B1OnHBB0zrlskN/gSno6b9cOKporLRmpQfpsrmRtQIxOghg6QTLGhQ6SFUz9seNvfMneOLbtPoZb9X0zM2ph/CoDlZDBbGHmmKOjs2YWhG4pAIwR/z4inqpawYkMP7aM
- NX474Yf3
- rw60yG0uJofhCqJ2TI7VydWL7TbA2vuMLHUQrH70K6lxIAVjdA1c9tTSxpSgEcPVgbpayNtedDnPEcYUxk65v9bSvX5FdMyuKI2TQgdSLCnrl2ic04ThjDnfboy+Kdo6a1Yaz2/zxdTc5vwxJOwX5X87JMLoLG7gUBpGHqeSslxJbZV8ozmbrAEAH2qJX2eQWa9JEI0C/aZT7GacX+Fbls8Z33Ybk4CJsOBOHasABpzlewAT+CM61FG/LfV1MvO0GFuMDOmy7FL8U3gXraS4McB18/kSNTzMmX/wXQlUOSAyLtOEEpql2uuD7t4/KYNUZxRtW1K8X7Q1etJxurtV9CtA2E9nLuezyoEcn
+X-HE-Tag: 1763480835-734703
+X-HE-Meta: U2FsdGVkX1/wiSmK0xfKoQmm+ulv749kzQyvgnUdkQIcOJrmoXIfVFQ98bMgvimAPqw9CkuXLaLcP15RYyzcR1E5vC6Z499Mb7BME6aEv4BlA51NnI0XWILuiF+66e02tWDMbkk18AIUI8i9KomFpwXwxiAQn0unpInLjPo4ANWzLRqkmAJQID9MQ0VIiqQ2C9Ulo6rR4jWrcqGrOjXICL1ZtVQeg+hz13MlifECpN27nCDBxMc2u26DxhtDfvjYbpWwCHTABCeFzC8mn3eNWfhUy/1mEbUmmJH56xMrUAf79hHtMaVOY1Te8fqsOfobguK2i0anYQlcb4Z7/gM2MzzODsMLzK0OgOKW/7siC45P2r7Pv4uDwOy5MeuU5q5ir+WBHQTf78DiQ4L9OuJE8k6mx4HAhVqh0gtyg6Q4QLQPZzvfiMk0GR/I3VaQEBWiL7wtPIYYa+agtecw5iExbbgRykvujFlkV5iSy5pTQCMgmqdonS/JF04tvZg80U3EdXuYlSg2I4Dv9ZoQ+xONjJOskNxqrDuJgypZOxR5dixdKK0V8VP4y2FSJmeo/Wqdtv3Y8uuhuZQVygvwC2sgtpdGRk99waxp8s9A8FP+nQ2qkhCSqxPQ0wogOln5K95HtVkoG7heIBvn+UNsBsGxYOn90adpF4+60BXjXIioZPY9vD80TS4W5UPQPrpppTg63eRiVr1V0JOumP6EtsrdVKY/IX+uuFdr7CW1EwWTl8vvipfdXB4/vwARFBInLgjhNbS0kg/2loqwaWzD5GNCOPENCVGRtZCyjBn05q/BWdpH80hUwAXixdzN4uXk58/6CmqxDqL4YD3TeB2xRpXfwj7F/Q6HwjBZXpVAt5hNS/IJpvnaHnH4uwTKTmwqh84RhTLyn6+y3qF9qMCirVRgc4zKzVHaaQJkB7DOuXua0PLQSQ9OcO9bAC6mg5TXEeUydZQcIgcmm/joGOv5MKX
+ 5lJYkl8w
+ 3qVLW99IipkYNKz/ChLi7HjmQf/0mIhNk6F5KU6zVKTFELjkjnCkslicgxJlWOICqDmvPVSRO4FeZ1I8OwsrcPH3L7jluw5+j5Ezy+pHwZ8vTLrkqxDHOu2bL/f7pBTJKpkIBwPRpXFzIgVJjly8TdQBga37No5VI7HJ2SY+F6hVua3xIq91Jgw6QKKCtPnlR7n2mr3o26o5bILvPglI2qH3M73U4Wl4trgTR9SezJdlOHwwFzYX8m3fn10+QZc5c4Odg3fj8MwF+34M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,41 +141,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 11:38:51AM +0530, Sahil Chandna wrote:
-> Use the %pe printk format specifier to report error pointers directly
-> instead of printing PTR_ERR() as a long value. This improves clarity,
-> produces more readable error messages.
-> 
-> This instance was flagged by the Coccinelle script
-> (misc/ptr_err_to_pe.cocci) as an opportunity to adopt %pe.
-> 
-> Found by: make coccicheck MODE=report M=mm/
-> No functional change intended.
-> 
-> Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
+> > This won't leak data, as /dev/liveupdate is completely disabled, so
+> > nothing preserved in memory will be recoverable.
+>
+> This seems reasonable, but it is still dangerous.
+>
+> At the minimum the KHO startup either needs to succeed, panic, or fail
+> to online most of the memory (ie run from the safe region only)
 
-Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Allowing degrade booting using only scratch memory sounds like a very
+good compromise. This allows the live-update boot to stay alive as a
+sort of "crash kernel," particularly since kdump functionality is not
+available here. However, it would require some work in KHO to enable
+such a feature.
 
-> ---
->  mm/zswap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index c1af782e54ec..c35604db32ad 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -749,8 +749,8 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
->  
->  	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
->  	if (IS_ERR(acomp)) {
-> -		pr_err("could not alloc crypto acomp %s : %ld\n",
-> -				pool->tfm_name, PTR_ERR(acomp));
-> +		pr_err("could not alloc crypto acomp %s : %pe\n",
-> +				pool->tfm_name, acomp);
->  		ret = PTR_ERR(acomp);
->  		goto fail;
->  	}
-> -- 
-> 2.50.1
-> 
+> The above approach works better for things like VFIO or memfd where
+> you can boot significantly safely. Not sure about iommu though, if
+> iommu doesn't deserialize properly then it probably corrupts all
+> memory too.
+
+Yes, DMA may corrupt memory if KHO is broken, *but* we are discussing
+broken LUO recovering, the KHO preserved memory should still stay as
+preserved but unretriable, so DMA activity should only happen to those
+regions...
+
+Pasha
+
+>
+> Jason
 
