@@ -4,114 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23A4CEE345
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:43:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ECE1CEE347
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:58:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 168536B00A5; Tue, 18 Nov 2025 12:43:31 -0500 (EST)
+	id 57ED06B0008; Tue, 18 Nov 2025 12:58:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 119116B00A6; Tue, 18 Nov 2025 12:43:31 -0500 (EST)
+	id 52FB16B0062; Tue, 18 Nov 2025 12:58:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F22A06B00A8; Tue, 18 Nov 2025 12:43:30 -0500 (EST)
+	id 46C9D6B007B; Tue, 18 Nov 2025 12:58:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF8736B00A5
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:43:30 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 72AA855EFD
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:43:30 +0000 (UTC)
-X-FDA: 84124449780.10.35B0162
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F4906B0008
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:58:27 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC1D784F64
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:58:26 +0000 (UTC)
+X-FDA: 84124487412.08.FB2BF53
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C089C1C0015
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:43:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RoZhDf71;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3F0AD40016
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:58:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tkcpWsQ6;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763487808;
+	s=arc-20220608; t=1763488705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=khPJHfK5uipxqya76ZF76gttJvaXVYIxPf5ciYaNZSw=;
-	b=0KRUo78f3MzVqpxPtB1xWpNxCugWFMOnykiREM68FMvgyn0cBEavc/ubQzvzvxnyfIYvN7
-	F48oz4gLQbZKDJXmvAm9is3aSM+7IMLD4/YFFSn1epErGRL2NOZdIk4uspjXNq62RCWS4y
-	YI/avONCbWlqZNcrE++XWui1K/ErTfQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RoZhDf71;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763487808; a=rsa-sha256;
+	bh=7D4xI2O/bB4EMoFw1Jg1PkaLfb/+AcsO0nuQkdjaCk8=;
+	b=K4Qb2G/DLzl505KKFLCns8PH0oUbkyq1g5UFAqYkofAVqqi4pwTWDsAQlY053zNJy+UJuN
+	Y1viiUO70s5a8RsTHKEpSniPxx8arBdKSNEPh+4WVvimDDJBbpdLUbLinmmn46LNgz37iJ
+	a5LbPIoRjw/lmJAa4Zcm/g2jZJDn7GI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763488705; a=rsa-sha256;
 	cv=none;
-	b=WZHRZKe5NC+XSmKGboBXVLSm3sVHJIRfuoP32M+ytnC2Xn69bMDyob+rDPTV/8pzNukgHJ
-	8CO7/v4WqFLXzoT8KPPcG9jL//KXZGJo25+HcPYBfjMw+xDF80tz1i8Q5y0lbYecuNhgzA
-	VaGjVTDvN68ucPuH6Z62D1OUcdQIi8Q=
+	b=7xY50zLrtjs7d6wZBNmuHsi3MmdbwQJGAFFQ4T9eZxjG3nDaM3+rNbOctfNUliD3kJCpmB
+	+2DzvnvBZ5FwbwY9AlCvSumhaMDqP+jlRz5mXl60fFXUzztM2JhDR6eDwRhPkULtSmARG6
+	aQcGIfnPFKTq3x/oafXVZmf5sjauzPk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tkcpWsQ6;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF33A605F5;
-	Tue, 18 Nov 2025 17:43:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95577C4CEF5;
-	Tue, 18 Nov 2025 17:43:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763487807;
-	bh=1palvEhA7lxPgWRw7JBg2nk+PwUYpMtYYMp2Y2Eh+EI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=RoZhDf71xqImZXulbvoIjZ7yAzxYD/AcTLI06tLkcrHJGhS3n1wuCOf9wx4CJeqaH
-	 TcKaUflrQT4qrs3oIwoEEi619q9+Fi592cRC2H7+B2Yb6e3kiI9VcpxOawkpwyO3Yi
-	 rbm4faU2dCL+7GC4WWBY8oG635z1gnunufw3vIiV0KuNvYm+cTKmQ9rhDHQgFR6dph
-	 hdAL2UoAcdeSJmuaJqhSf898zpIbBTLwKGntsdMpz9Ugl4isTI1G9TJcUmowA2cd8U
-	 zZPkIerB9kg8IBClw5+1dSHyURuVzrsqFmqfVuupgNrgHQBcyYcWg2FA+fH79majJ9
-	 jDsELXhpb/0mw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  pratyush@kernel.org,
-  jasonmiu@google.com,  graf@amazon.com,  rppt@kernel.org,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
-  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
-  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
-  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
-Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems
- callbacks
-In-Reply-To: <aRyvG308oNRVzuN7@google.com> (David Matlack's message of "Tue,
-	18 Nov 2025 17:38:35 +0000")
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
-	<20251115233409.768044-7-pasha.tatashin@soleen.com>
-	<aRyvG308oNRVzuN7@google.com>
-Date: Tue, 18 Nov 2025 18:43:12 +0100
-Message-ID: <mafs05xb744pb.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: C089C1C0015
-X-Stat-Signature: xzxkayqowxrzqa8n4tqmg7yq4c7nji4r
-X-Rspamd-Server: rspam02
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B27260B51;
+	Tue, 18 Nov 2025 17:58:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDAEC19424;
+	Tue, 18 Nov 2025 17:58:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763488704;
+	bh=gXLYFoI5HKY7XzkdKe3wBPCOcpuojDRXTSnfYbyW4Do=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tkcpWsQ6wQ6ft+VT1F4eerpYqic8MpMrWBidA6eNKsiaEuYYzbOBCnXiIjI9MPngY
+	 Bc3J4n5aYkUOXdje5HtrVyQQr5TJpUzkCy1vIM9+bsCW5JR8cDh8dsMoanlYWpLMo9
+	 cBdJ/a/HvkXNNfhHF3kURONhqZwQq8HcSotl9qsI=
+Date: Tue, 18 Nov 2025 09:58:21 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yuwen Chen <ywen.chen@foxmail.com>
+Cc: senozhatsky@chromium.org, bgeffon@google.com, licayy@outlook.com,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, minchan@kernel.org, richardycc@google.com
+Subject: Re: [PATCH v2] zram: Fix the issue that the write - back limits
+ might overflow
+Message-Id: <20251118095821.ebea2deea23aea6921866aa8@linux-foundation.org>
+In-Reply-To: <tencent_2FEBA8888C5B7C3CC495E17C29EFE76BA805@qq.com>
+References: <tencent_2FEBA8888C5B7C3CC495E17C29EFE76BA805@qq.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763487808-918634
-X-HE-Meta: U2FsdGVkX19+Mc/7oN/jRGf/lMQpQ0D99fj1tmfOixkslfGZnnEgL9qvrE2gtDSHY61K+JsN9mYT0r+m/6N3bpSAgh9M6NkVl2e3UJ1JibrCPeoXGScGIR1ucrKBMjF3ZJRXd2/A4XdwW6EMQs121vEG1uH0dDwdORMM57gb6WI/OVY3cJ9cl8sgYa146rrSWEcDLxRF6F97xT+FzjPi/WXUdFmg1+94aTFuL+oxDr6vtFDfQMEJ1dSezgH2S5Ug4vEPGDPkKqAkoIZeD/iK5sbrTD3BL5qN0wsV1ObidsU7ekvf3ZqtAxAbPX4assRfkDJTgNZPUyHLLuhZwKquemq9UlJd5T4e/quokNmEz6Vx0bu9rQoPZTYrMimM3XtuQXFcdycyQDGHF/2htjUFZeYVaLRnjfisdL6EKHLt569vcwJldozCcX45pk/3UPRaiJBvQYQsMMCKgpsqdZw1/fZG04Or2TalFBvmmSNtnM3fepdI2WJjbsXy7nGJL68hF/+nKQc36bHcjd/grMUMk6A99lwBTqZO10LveJAJxBWW2QVw1c41vBA0uDnF/kZ7ErpaGmRfn6Kvd42+McKIAfoJcnZF7+mkrcQPFgxjAPwpwOSnK2NohNBn78a8bPojekMXehUEyAenYoiQuPDxzK1dxOIeztKAPHRa01zJ+V0v3n+vIecnA8P4X7fJFBKR8nRqDcMPyjvxV9fFUoa+BPtbJln3sYLmVOjp2Y+ZCeqcMVoQM+gWvTYX1BKWwkJJtDZ3YLbnWO1LKdW+5xVA3goVMuT4nq+XkzRQin6h/N1jfQujlQPQiS4FLf0pIsse4OuCXgH8uiTP//N9drm9YBIynLjC4jvz19AcxJRLbCFeb9DCt54mztO4gy20gOJh5iOf73PeOi+rL0ompKc1J2kk1CQNKixxjeBFPIhQIBHN6G7ATRJEMEA67k9v2H4T1WQh1Bw3/LGFafatoJx
- 15W0I6Bm
- +Y1brwkCjFdsdY/a4YEX+MrzRbEReAi3GBwDuQHvt09lNRHpvQyeTvvS0Y94g6r4l6gLH+KifyOrlgS889KGWGo3EKPvDx4VmCm3PUqFytLyt2LsfFnhd3QbGmE1oKw+41sctLhge5nrqZR5f0bTq5xcRVBePtYG91VujVPdtgEDzGbEvzSwJfr/+Gh27CIY4JNS52rXF7ZdsFdQC/+lFlxuwUVW2kyPDRboBsVNujtl1/ktp4wKqjLThuSZoIlBsr1a/4+csbLbHVEn27/KERDQxqbyDd8QDgzJ6Xhi2xEe2Tt/K16AA4tAIVOJzTijU+ki381rgmc2ZQfmcpQxiK8EN0wg6s8BIw4UC
+X-Rspamd-Queue-Id: 3F0AD40016
+X-Stat-Signature: dixkxw599ef1b9398ridukrb9zwh5bi7
+X-HE-Tag: 1763488705-912381
+X-HE-Meta: U2FsdGVkX1/xiX+VyLsWebxSWIDWGT8fk0KF7Ei32h6R0FM1ZxXf0teuJ1SQXkjgCMnXQJpzdi5EK5fMBvp5/Zwu0j5zpN4g/FGiwIaQP/WNDjlljwhNDO2a35Ds2ciU6zBz7HdgGZNl9dVjWtZOpjWZ6fvrSoTBI/CQUZA3LuFCIBtHyEf9Ft0ffv0fRTMv6cpESMod7Tn2i5o+hwcjqmykUMyRKf0EIjzYfr8lflaw7hcQobFz+by5q/Y349yYlu3f/8DOpx/Matoc+OZWWkkR3abc43ILT5mRaL35vF7IpwwsOtn7ehJy9zNUemh5HRYJ7L3vxPHVcLeosczt07VDJ7ZJiHmUVM1aZA2t9K2ptR8UzbV37hnfRYvSYEDosLbV0iIr1ZFs0jobOvwHUEbp07Kopa9N3QeRSh/m/v7Rk1mU5XbBYRB08vY2eDHV4bCMLWmYXzctZe0tO6QEV16QbFPV5FM2GlAzZMNgDb9M6hd2ZaGlrBh5uU9qcOz03KClMz3uSop8+9keCeUCotH3r0IEDvNmjrKiZfZiBUVKVyKW7rfTEZnNzyy2ycmMjaWVMs02gvBkG9u+CHwNCLsW673Z+Web4xuOD6OdFVI0fEnXrYu33GKAnFdfqpuK93MGkWXX5l594hbW7AFD0Re5mcpnzj/lYqqboFhoIlBtu2rTqHpP4lf6sJMUx2ZQ+D0faP2oRcScghGFiESM1oPpBBmVOcdfR3tlv6qutqHh1wzrlYvzSG5N0om6f5wLplt0YGN/SGXmc9/s78FitXxH3XNqU0AXbzXl+EyDoG9WFk+O40p3wYiGikLpngKOZ3CYjzLodUxBi3So7RnZ9WpmqHnY7zb6mj8h7TjQ/idguwUXvAbQ0BKBQ0XXEBPgmyBU4o5OfuPEbLBruTAKF/gMpGOULpJKu5h+71cEaHe0dVF9RvkjkjygawNQPeT8b6luZLfpx7UeH7FHWJZ
+ 0ELMxOgo
+ QocRc23FMCQMh6x+FrsqNbp/nsl5PcJPcHkKZZ/cFpesrWadOMutm8lqez+fyqEdATis34pn9jHk4kLkz9cQw+PWqiz3AZF57A11YNqBIefGwj0cJDVQu1drTsKTKwO9WNKmeccDdBVDfFmP3bv1XO39zJmk1YTGP6DxARGv87lgj9buYERXosJn7cE2aUbuQyQ7gOi49lUYDyPr5wwdxbSwP2bOSjGWSrDGAIdEH+e6AbsYYWVXrkZKFBJnNUgsfXyigkIkcDzpZ4nc63Wpx9Dp0CngdOlw+z6rcoWMyLhuIcIVPhGpIPa/LLw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,36 +92,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18 2025, David Matlack wrote:
+On Tue, 18 Nov 2025 16:15:50 +0800 Yuwen Chen <ywen.chen@foxmail.com> wrote:
 
-> On 2025-11-15 06:33 PM, Pasha Tatashin wrote:
->> This patch implements the core mechanism for managing preserved
->> files throughout the live update lifecycle. It provides the logic to
->> invoke the file handler callbacks (preserve, unpreserve, freeze,
->> unfreeze, retrieve, and finish) at the appropriate stages.
->> 
->> During the reboot phase, luo_file_freeze() serializes the final
->> metadata for each file (handler compatible string, token, and data
->> handle) into a memory region preserved by KHO. In the new kernel,
->> luo_file_deserialize() reconstructs the in-memory file list from this
->> data, preparing the session for retrieval.
->> 
->> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->
->> +int liveupdate_register_file_handler(struct liveupdate_file_handler *h);
->
-> Should there be a way to unregister a file handler?
->
-> If VFIO is built as module then I think it  would need to be able to
-> unregister its file handler when the module is unloaded to avoid leaking
-> pointers to its text in LUO.
+> Since the value of bd_wb_limit is an unsigned number, when the
+> page size is larger than 4 KB, it may cause an out-of-bounds situation.
 
-Good point. We also need when using FLB. You would first do
-liveupdate_register_file_handler(), and then do
-liveupdate_register_flb(). If the latter fails, you would want to
-unregister the file handler too.
+Please update the changelog to fully describe this out-of-bounds
+situation.  Where does it occur, why, how, with what effects?
 
--- 
-Regards,
-Pratyush Yadav
+> This patch fixes the issue by limiting bd_wb_limit to be an
+> integer multiple of PAGE_SIZE / 4096.
+
+I don't see at all how clearing the lower 11 bits is related to "page
+size is larger than 4 KB".
+
+All quite confusing!
+
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -579,6 +579,7 @@ static ssize_t writeback_limit_store(struct device *dev,
+>  	if (kstrtoull(buf, 10, &val))
+>  		return ret;
+>  
+> +	val = val & (~((1UL << (PAGE_SHIFT - 12)) - 1));
+
+Needs a little comment, I suggest.
+
+>  	down_write(&zram->init_lock);
+>  	zram->bd_wb_limit = val;
+>  	up_write(&zram->init_lock);
+> -- 
+> 2.34.1
 
