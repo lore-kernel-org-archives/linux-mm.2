@@ -4,102 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB44CED24B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 09:30:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B7F5CED24B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 09:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D90D26B002A; Tue, 18 Nov 2025 04:30:50 -0500 (EST)
+	id 7C5CA6B0095; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D40A56B002B; Tue, 18 Nov 2025 04:30:50 -0500 (EST)
+	id 776046B0096; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2F986B002C; Tue, 18 Nov 2025 04:30:50 -0500 (EST)
+	id 63EA06B0098; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AD19C6B002A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:30:50 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49A5A13AFF1
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:30:50 +0000 (UTC)
-X-FDA: 84123208260.03.3A495C5
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 420F740008
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:30:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763458248; a=rsa-sha256;
-	cv=none;
-	b=4Ej6TaKPI8PEcMjxeeT44HcTld9Noz9FuKgpc7EPwOzHDwPk9yBpHuQ1CQHDYeOv8fYyXh
-	XFKbQG62vq7/6JrzBFJ7LcCAnnRuknNP8zzs9X3I5VEBVh3TUUL89E4UcdC8jqEFNU5s3C
-	PHUXTOActqHOtP46I08Cgku5znZ7NBc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EC396B0095
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F01D1A042F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:31:46 +0000 (UTC)
+X-FDA: 84123210612.05.63E28A3
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1823F40009
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:31:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kh9QNjO4;
+	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763458248;
+	s=arc-20220608; t=1763458304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zgBjRtUaeM1idizUdgBkeMC+v2iP9RJTGkwmFa1FYv0=;
-	b=nr9hlsRxPs4+KQed4CqciFZR56RLFzluwtmvKHgxEr1es9lBx27udTpbStwTCkVEY+yoHx
-	yFm+BnmAeo+by3sQgYSFwfKRwLd//ArMb4GkroqPoozl/yOPxutNiCFQJ8zpqpDhfB/l4E
-	XcSe7pUkV4MFhMAjkdZuIbaKiK++ToA=
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d9fTk1j18zJ46cb;
-	Tue, 18 Nov 2025 17:30:02 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3F92E140277;
-	Tue, 18 Nov 2025 17:30:44 +0800 (CST)
-Received: from localhost (10.48.158.191) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 18 Nov
- 2025 09:30:42 +0000
-Date: Tue, 18 Nov 2025 09:30:41 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Conor Dooley <conor@kernel.org>
-CC: Randy Dunlap <rdunlap@infradead.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>, "H . Peter
- Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, "Drew
- Fustini" <fustini@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Krzysztof Kozlowski
-	<krzk@kernel.org>, <james.morse@arm.com>, Will Deacon <will@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>, <linuxarm@huawei.com>, Yushan Wang
-	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "Mark
- Rutland" <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
-	<luto@kernel.org>, Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH v6 3/7] lib: Support
- ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-Message-ID: <20251118093041.00000c9e@huawei.com>
-In-Reply-To: <20251117-definite-uncounted-7cc07a377a71@spud>
-References: <20251117104800.2041329-1-Jonathan.Cameron@huawei.com>
-	<20251117104800.2041329-4-Jonathan.Cameron@huawei.com>
-	<3bf1793a-2ffd-4017-b4bf-dc63f3a2a7c8@infradead.org>
-	<20251117-definite-uncounted-7cc07a377a71@spud>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
+	b=QCme7eDHwNtfkU1/QeQuVIqOUmuBHfR51PBR9yQUFcoVMju3NOypsAuXggWkxYQZO7RU1D
+	jqPfHWzhgBcWk78GioFbby/7jKZJ7T8Onw5Tr3N+q18t9f9gpBLeHZKY0Lp8VuIOBID9wQ
+	8dkVamKOvQQrvBEjnTEJg/G2PCZdYb4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kh9QNjO4;
+	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763458304; a=rsa-sha256;
+	cv=none;
+	b=UFkCPybgVfJBoWO5J60HIp5nhomQFlNh1Vem5yb+HYkTmT0V87d5jm0e5BhOe45+bH8AGX
+	t/5IKNkJ1LreGaRjX4YG6rXFPvlxPoicmUFE7mG26kPWCYNYuqngCv1D7L/RpYOFT5XoFI
+	tWSQy9TbUeuAsOa6ilWI1e22/hQmTlA=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5942e61f001so5289392e87.1
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:31:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763458302; x=1764063102; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
+        b=kh9QNjO4hkl7ngQG1rFgSjuTPSEHou+tUy3wp7BeIsf4bQg9KjAZ/r16Q4gqXZ7kE4
+         n/9I5YYlblaepamD5rVEzHyGI6hPlhsul+pqacdw5w+gyCPq/CBYXS5wGzy/PY1UMWPs
+         y9FQNd0rp4P3ElE9cVEq4Jss/p2e6g27pQdFgtwOKDjB/RuHO3d0OxUVq7oQG80shx0s
+         T5VfZVZbE1vY8VbPktKviw58Bgr4bDWdLXoLa4cHdUNAbVIYXKDrqu6A7mf4FjZmPAdT
+         1vNg7tIhQ0szUozpEObKtVqyFWF7g6cdwy8T+lVMv9796Gjm/6yxmLTczbqVI1ofk/Ic
+         O+lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763458302; x=1764063102;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
+        b=Q4fuqEUPVOr9yX4Q/69OIYEZWklZphf9RJEuEy3VDDQWDdWGPGCk5NE2jj6kO4eaPI
+         tKuAvudgszKZjp9W62FzXYGIazY3+eD82Cgid1PS+rJftUfgy91egrdQc/vmGZ2pIGnZ
+         M8rb4qdeXFJYAkW+UXDKEnCW4DdHrh2jvep4SbG+jlnU8F/hpstBT0MPnXDh5REYTbgk
+         BlGW+Cw/JMc0BDJ5J8sXxqy6KSBpE1PG5JeaV85e/gRcN+D1mZ/iuDSqj3RvRwd//EiH
+         Ts/sVVPce7CLZMXZxngy+cND7c7dQSEs59WtQVsCUTrEO42qOSX5a7xWsIXmpbltCtYa
+         2pqA==
+X-Forwarded-Encrypted: i=1; AJvYcCXxwu7s/DccCu1I9lclQ4glr4dWtV41Ow/XCaIN3HDNQW/mzGPCI58YRfSUmVbummYLp2DbRxu0CQ==@kvack.org
+X-Gm-Message-State: AOJu0YxuHP257PRYfj0CORmNrx2df7pN5i0Zx1Kj0MrUQbp82vFoFZrb
+	eVIrGTXXEN06hg3CO+kNoQ/EVPROkPMldT5rEkd/XnK74cdMV6J53Tnn
+X-Gm-Gg: ASbGnct5jmoT5exi/L0xGJIIoycxrvB54XmP5xN+JfwWjxIoTiMbsFDQwwlOp2sk4Hn
+	AImiK5a3iVovgTiKU2GzZqHk19N9XCZgSftl6K4XnbSuKfw826LbE2pO7vyht7xKa1lugHdKKzo
+	pUGm/EA5NS3NGj4kFScDqHmjjc4u5W8wvf+UBvNxuwn7RbpACHKK4qvqimAjy5dR3YbFuryYqdq
+	R9VUsauPs2g39bezLUi4oybVLOpqUGxNJcs/2kUVPcBT20al6nPBZLEWTMgu4Oqoz3Eui0NhxFo
+	GFLuxOzqDmOZ7XMkWV5M6DPesoRozXUYSkdpxWpVz0hYBXYqEUtUExFsgUvJcR/klNxvmSf4smH
+	kr8eR9+qIgq/quLAm6SU+I01JmcEfj97srFfmuimkHog=
+X-Google-Smtp-Source: AGHT+IGnlKspAS2We2FABx815t9bNQvFsXJy6XwUcpIvRdQFlzF9XlXS5jEyZ/AKjBb0WZzRlZkYAg==
+X-Received: by 2002:a05:6512:3b0d:b0:594:314d:ac53 with SMTP id 2adb3069b0e04-595841ba374mr5520844e87.23.1763458301885;
+        Tue, 18 Nov 2025 01:31:41 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37b9cef2bb2sm34960441fa.46.2025.11.18.01.31.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Nov 2025 01:31:41 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Tue, 18 Nov 2025 10:31:39 +0100
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: david@ixit.cz, Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid
+ gfp flags
+Message-ID: <aRw8-7Ox5TPewpw_@milan>
+References: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
+ <aRvI_VU3NOUaxfvk@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.158.191]
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 420F740008
-X-Stat-Signature: xxex7ecffxwntk68kjrtsooxbpmhiidj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRvI_VU3NOUaxfvk@fedora>
+X-Rspamd-Queue-Id: 1823F40009
+X-Stat-Signature: 5o6gur5zzgur5whdsnf3dowrrk4kcbni
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763458247-874956
-X-HE-Meta: U2FsdGVkX1+CByMPRb+yOAHmK8FxmwOooOe/Wtofy7Z8kTZGabT+hM5zBu1WoSBPRGlsYDwluv+beutlYX+ssHc2Pj90C5eNoVztOTuhgiCL9zC8fb64+FRDFnIRhg9xiVeUlr70K8cRPSSVbPiboKRL6hu5xCNp4/D8l4FEFSIPOxjqJidHeu+mkdP/2oTwA661AS5hI8ZHj628DNb566frWfsem9jaChGNS55hABMqn/WtXv+6W0V/kcn4HEIa2zpjkodcRW+2OFNUGMSipAXLaW5LLIET/I0O/yU/p4l9ZWULrZ7FdylN3gysdOQzWc9OMN/mMtRfBNyYOEhMjxQfXFPEJRLWHWLvkkq1ydrS4NKFFvYcYmi3ydNpgAIh539iUyCu3HBKcUZlP3BJBhf4Kvegaxms5Dt4GgZLVPPJmmbBkmc8tRBe1a7A+SQo0JtDrT9LnQnlBJSkIZXrBXZvcv7HP7k8Gotwj6YdyZkPd1NlLf9AnkbdtWoUS4uzBME3BwxG/J/7pnGpHdAV6WNI8nce68pho4lfG26nQG6FTypXUeT5Sd0xIz7fb8quf5AK2mdNHIcdiGzHLMnLNhKDJejOIgHUCWaxX+sBn+es/dVpXclzNeSyRALHD8WCIrm8H+wxuY+m/9bi1OafM/65gunC8IHIy3O8VLctYa1iGyLIz6MLnDZwrTl0c7pKMenFJ4TepYEGhXDkFdrT9tZ5zrsD0hOvJ+okBd5s/9E2k6ustJBWoYEgIjsg7kvPflNbFeSBzxjC4eyANanX6ePClAl3LFuuVsz6fifDyVX9Q7AVMnaWQwjSVdjlGvHPGriuZe2J1VXZMnzBKFsG8R+bog4T2NLtJ9j/yq17EWiUr1WMdEKX49pUGWSlWd6gkIPKaIfr4CJFqDfYdyEdacOOjnSxx8D9Dz6AB3LtJ7dXztBUZnEbYxlcgZwcB7dc2smc/DStf6UZSkYa7YK
- m1HcyAno
- O0n868bCCcQAW5dLn8Dv/U/4ncYW3HWFI4k9xhw+PJOVad8gqHOIRkZBiHtmr2IpQv67k4WAg3KFm1HLD8Y/M/B+NamyvOq8Bv1i9ZPFVVxy/cadfWoVUV8sLTna2ObCdGkbecoTYA72TK2nc7JDc2f//AFCllI63rTvoDGRYurZ2XPv3ck3TFuwM0GfP3tmLlkWbTpMrb8q2ZCipmMXY8apDJE/JPkhWzz1h8MzdzI3oPQawJ+Ow7dMVQCggDBOarC6BbBhciGq0z83SDck1Aa4IReEHWoXf4KFrIEDjepKqxFI=
+X-HE-Tag: 1763458303-856551
+X-HE-Meta: U2FsdGVkX1+D6dABo2oWSrDUSjYeBF4pLVCKsWixRxBh7dkav7j6G0O0NM6GEXV7/RqspNaXzwSi0PXuvCJpekn5B6p5CuKXKIZDampvRoDjeTJdE9a21ygATnUMHTMAIufbjOBdRiWVqqCmhOk7gJ0Y4LXvPVwgZ5cWizqqUKB4K2v3PgRA/AdvMqQZI8b6vF81xZGBE/E+oQ7HcnliSYCZ5s0cU5hlFSZQMYWbBd7tnd7HWys9Ef9jYeJ/+RZ4lcWocyBGO2ZUSkFUthXakv9gVvnEnPMy7v+XtVUQlThrfaMUngmYkl0Xcd7CvuSFc+njrDH3I6IUDLFVb16XXwoL7eI7H5TYTVPE/4Vl0Hi7s9zZGtk5OxAvbqVBG47xJBGD/PsYfL3VqfKtvP0AwyWTcWQod4uDVpUq60XI8SQ5jo1i4ROldgVVsRL1Ksfg224a39fI+MkSqrGV3UvLRzy1UXkYUyaPxBwmAgwlFTsb6UYm063nrI+OzyGdJzOEYOOCposHDSSTQ87hXMGNPOewBxyCGFXq46vMNXqcWkv7or43qirBmi4AwWplfwGg81NMR2rupTyIffxXnTjX4svL3Y9dvG8Tp9xJ9FDeRkWLtebzBsxyWB4eQtuidKpQNFj62GEQ6BKQ+u1+wbwAbZLQg4hu2ZlvqFj7WoKeDFAmxK25P56zeVnDtwNTcqCtviAZ6nIQKTBGQOFAGtC/kiC0LmwZCW2+Iuj5lMdoEkVIxeoAGsOw43DFLH0ROer1a7RLlb4UrYL2opdtFAlZBxtifOAjAk1vkKiWOG1lah6wlcmn03qdXhbgerNUljLtraaTrim6OuNGIcs9Wu1UFbXl2v+2763Rqlf7US5oqq8oSPmNRrTL0otbvP2+KyncX2wwIoOaU8hRb+TQ52rsFwncQg24GM/e2/K/HtKC5z2l2K+VfC78+uRj60VZMnGj3M2G6CvF8s1htGi7JER
+ fIIvDHIg
+ ES0uskzNrKDgz3XqdYneUb/hb10/ZarlULiJUdBgbD4JOEly2nIT4pwBNTVVE4GYgPhg2w+s55oV5XcmDGiu86dhexVHTwLgI0CCSB8tfWpovPHw38rPCYOkcv9hRTEuYX68ycqhfoRrmeht3wyHH+I+daaAfzKNtBZIHC/4hxINTVtG3DYv+T9+b6h6ohgLLoVwviq2VcRi5OWDo4ZdDe+BgqZSCCz2jVXhWkxXvils0oDQ71CET0oiqfgNHM41eD1dcBvkaGI3U0M/GaJ1dO+UNoQocA5Y2kV25nIkV9clX95p1JKyAbrV0pHyb99LgcKCkMbjqW41AU/g3R7B1EPSm5vVXW0XpLcxKKfh0lStLpHGmToEkE1BcfoWr9/1NAaWHLJGwBDEYNalbhCUowh9nxlpLWeiaoOk0z7M2P5T0lXZJRHb26yGnkxMrUX0Bip9KsuKXSi5CG1uR4huZexK0Y09JvJ4fJD8mb0QF7GKrltNPi+4VmVNNbThgRS6u+DgN5PAUyGBJLMDoCkyQnxT0DgiQl1awM5ES
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,102 +121,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Nov 2025 00:13:07 +0000
-Conor Dooley <conor@kernel.org> wrote:
-
-> On Mon, Nov 17, 2025 at 10:51:11AM -0800, Randy Dunlap wrote:
-> > Hi,
+On Mon, Nov 17, 2025 at 05:16:45PM -0800, Vishal Moola (Oracle) wrote:
+> On Tue, Nov 18, 2025 at 01:05:57AM +0100, David Heidelberg via B4 Relay wrote:
+> > From: David Heidelberg <david@ixit.cz>
 > > 
-> > On 11/17/25 2:47 AM, Jonathan Cameron wrote:  
-> > > diff --git a/lib/Kconfig b/lib/Kconfig
-> > > index e629449dd2a3..e11136d188ae 100644
-> > > --- a/lib/Kconfig
-> > > +++ b/lib/Kconfig
-> > > @@ -542,6 +542,10 @@ config MEMREGION
-> > >  config ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-> > >  	bool
-> > >  
-> > > +config GENERIC_CPU_CACHE_MAINTENANCE
-> > > +	bool
-> > > +	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-> > > +
-> > >  config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
-> > >  	bool  
+> > Without WARN_ONCE, the logs get spammed immediately after the boot,
+> > on devices as OnePlus 6T (Snapdragon 845).
 > > 
-> > Architectures and/or platforms select ARCH_HAS_*.
+> > Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
+> > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > ---
+> > I'm not 100% sure this is the right solution, but having WARN_ONCE or
+> > rate limited warnings here helps a lot on devices as OnePlus 6 (sdm845).
 > > 
-> > With this change above, it becomes the only entry in
-> > lib/Kconfig that does "select ARCH_HAS_anytning".
+> > Please let me know what you think.
+> > ---
+> >  mm/vmalloc.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > > 
-> > so I think this is wrong, back*wards.  
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index 49e0b68768d73..2a3ee17093d6e 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -3934,8 +3934,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+> >  	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+> >  
+> >  	flags &= GFP_VMALLOC_SUPPORTED;
+> > -	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
+> > -			invalid_mask, &invalid_mask, flags, &flags);
+> > +	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
 > 
-> Maybe it is backwards, but I feel like this way is more logical. ARM64
-> has memregion invalidation only because this generic approach is
-> enabled, so the arch selects what it needs to get the support.
-
-Exactly this. Catalin requested this form in response to an earlier
-version where arm64 Kconfig just had both selects for pretty much that
-reason. This is expected to be used on a subset of architectures.
-It is similar to things like GENERIC_ARCH_NUMA in this respect (though the
-arch_numa_init() etc in there are called only from other arch code
-so no ARCH_HAS_ symbols are associated with them).
-
-> Alternatively, something like
-
-I'm fine with this solution if Randy prefers it.
-
-Thanks for your help with this.
-
-Jonathan
-
-> | diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> | index 5f7f63d24931..75b2507f7eb2 100644
-> | --- a/arch/arm64/Kconfig
-> | +++ b/arch/arm64/Kconfig
-> | @@ -21,6 +21,7 @@ config ARM64
-> |  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
-> |  	select ARCH_HAS_CACHE_LINE_SIZE
-> |  	select ARCH_HAS_CC_PLATFORM
-> | +	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-> |  	select ARCH_HAS_CURRENT_STACK_POINTER
-> |  	select ARCH_HAS_DEBUG_VIRTUAL
-> |  	select ARCH_HAS_DEBUG_VM_PGTABLE
-> | @@ -146,7 +147,6 @@ config ARM64
-> |  	select GENERIC_ARCH_TOPOLOGY
-> |  	select GENERIC_CLOCKEVENTS_BROADCAST
-> |  	select GENERIC_CPU_AUTOPROBE
-> | -	select GENERIC_CPU_CACHE_MAINTENANCE
-> |  	select GENERIC_CPU_DEVICES
-> |  	select GENERIC_CPU_VULNERABILITIES
-> |  	select GENERIC_EARLY_IOREMAP
-> | diff --git a/lib/Kconfig b/lib/Kconfig
-> | index 09aec4a1e13f..ac223e627bc5 100644
-> | --- a/lib/Kconfig
-> | +++ b/lib/Kconfig
-> | @@ -544,8 +544,9 @@ config ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-> |  	bool
-> |  
-> |  config GENERIC_CPU_CACHE_MAINTENANCE
-> | -	bool
-> | -	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-> | +	def_bool y
-> | +	depends on ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-> | +	depends on ARM64
-> |  
-> |  config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
-> |  	bool
-> implies (to me at least) that arm64 has memregion invalidation as an
-> architectural feature and that the GENERIC_CPU_CACHE_MAINTENANCE option
-> is a just common cross-arch code, like generic entry etc, rather than
-> being the option gating the drivers that provide the feature in the
-> first place.
+> You accidentally deleted the comma here. 
 > 
-> I didn't really care which way it went, and was gonna post something to
-> squash and avoid another revision, but I found the resultant Kconfig
-> setup to be make less sense to me than what came before. If the switched
-> around version is less likely to be problematic etc, then sure, but I
-> amn't convinced by switching it at a first glance.
+> Once we've found all gfp the callers currently use, we should never be
+> hitting this warning, so ratelimiting won't matter. Either way is fine
+> by me though if you still want to fix and resend this.
 > 
+IMO, it is worth to use ONCE variant to suppress spamming.
 
-
+--
+Uladzislau Rezki
 
