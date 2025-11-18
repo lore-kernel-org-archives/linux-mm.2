@@ -4,99 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F2B3CED243
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 13:03:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F436CED63B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 13:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 974E16B0024; Tue, 18 Nov 2025 08:03:29 -0500 (EST)
+	id 4669D6B0096; Tue, 18 Nov 2025 08:16:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9254D6B0026; Tue, 18 Nov 2025 08:03:29 -0500 (EST)
+	id 4166C6B0099; Tue, 18 Nov 2025 08:16:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 813E36B002A; Tue, 18 Nov 2025 08:03:29 -0500 (EST)
+	id 2DDE16B00A4; Tue, 18 Nov 2025 08:16:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CD896B0024
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:03:29 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EDCBE5961A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:03:28 +0000 (UTC)
-X-FDA: 84123744096.01.C30EFBA
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 40C951C0016
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:03:27 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PuRCrHji;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763471007; a=rsa-sha256;
-	cv=none;
-	b=HwqnbzXj+d95HkbOIHF+qVXkP7BBzvOBchJs0/qoT5FqjF6pDeCyM/BJPDoYzLptHrj58Z
-	7gks9zREaDuIgOrIx2ifG67+fDfOSlf8phhmNRx6VbDMY3yJydwC1TtwWc/fft4CxJo3uO
-	lX0OtiirLpJ4gcmmdjdO2wOmCsr4ZZo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=PuRCrHji;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf21.hostedemail.com: domain of BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 199256B0096
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:16:31 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B364657EF8
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:16:30 +0000 (UTC)
+X-FDA: 84123776940.25.CA5A004
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8DBF110000F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:16:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=XAeXYZ7H;
+	spf=pass (imf05.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.4 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
+	dmarc=pass (policy=quarantine) header.from=web.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763471007;
+	s=arc-20220608; t=1763471788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLiGOr9ReViRNPVVqlOljGBjm5H3XmMece31/N2QTnE=;
-	b=WFSVIHJz+ZdYTlxfdv2lgmObuuESusEelFZQhxgu07EwX4hidh4e0xQQHY2QzqFP3MOulA
-	EHECZUUg17KTnKBs/7xmJnFUbRdfmKVvhOk9pmKhdsIYLy0R7BGnkzirutShsCoUfPYXuV
-	AQPS75/jXSPV3Upv2b5ySHS2L0RzpVQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=vLiGOr9ReViRNPVVqlOljGBjm5H3XmMece31/N2QTnE=; b=PuRCrHjiJZhUz0PHBhmikSNf97
-	lvqqOO5MQKwp1dGXBXoQdq5yEbbSxfSbY4/Q1tFSKx0c7auNbphvCw08iwxirHCWMgo9N+FLvWl/l
-	7SC9liYmZrp6JDd0V/Hsm/OJbpaQvGTdjgxI3iTMs/soNtcCa39GFFTYibcdh1+qaAFnK9YzWKep4
-	9vTfX/XvoxumxRuSkJV2H+Y62e7avhHbkuggrsHe0Eq07ill7hmRnHA7ttZCMO3WJCYlekkxQo/zs
-	jjW04WW2ZSs3uZeG4UGWs/GYB9VB8t1ZFbmD2YQEFBpU3L6qCqjSc1vF3VYKazSl37ykTkyaf54RU
-	OlQYzSUw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLLMi-00000000S6R-2GYS;
-	Tue, 18 Nov 2025 13:03:24 +0000
-Date: Tue, 18 Nov 2025 05:03:24 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org,
-	shakeel.butt@linux.dev, eddyz87@gmail.com, andrii@kernel.org,
-	ast@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com,
-	bpf <bpf@vger.kernel.org>
-Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in
- do_read_cache_folio()
-Message-ID: <aRxunCkc4VomEUdo@infradead.org>
-References: <20251114193729.251892-1-ssranevjti@gmail.com>
- <aReUv1kVACh3UKv-@casper.infradead.org>
- <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
- <aRpQ7LTZDP-Xz-Sr@casper.infradead.org>
- <20251117164155.GB196362@frogsfrogsfrogs>
- <aRtjfN7sC6_Bv4bx@casper.infradead.org>
- <CAEf4BzZu+u-F9SjhcY5GN5vumOi6X=3AwUom+KJXeCpvC+-ppQ@mail.gmail.com>
+	bh=fGQZu3FbiaJ335e8QsW/UT4FYzm+jhTQbf4DkeqY++4=;
+	b=d+hnH71MYw4hTLGAY+DrJgdIFotzyfxsIkMSi5c5trw/XaIN+NAh0PWTB2z3adzKtz5rjm
+	S4TbVEnQP2bHQpxwdvvakLGqgPcsGQNxE85rVMSyqprUfDkf4+QgSodMPdwTMYiC/rT6zI
+	rlVZyB22CnFunfwJyU6dyQ3uoKf0w6E=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=XAeXYZ7H;
+	spf=pass (imf05.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.4 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
+	dmarc=pass (policy=quarantine) header.from=web.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763471788; a=rsa-sha256;
+	cv=none;
+	b=IQlb+wNnYBd+MhdDgHYnrZmHCRK2TGrLtOhJFKgf+7bPlaPkZcmbOduyV5ch355Ap7k38v
+	2zCJdpjYG9YgBb1xqy1jxPFZRdRvoajTRRHNhwsdAjrBuEC7cN9xHiqQUoBWmgEFg7vftc
+	vKigWhSZ/xopRNjgjhu6IRlg1S8LKMk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1763471742; x=1764076542; i=markus.elfring@web.de;
+	bh=fGQZu3FbiaJ335e8QsW/UT4FYzm+jhTQbf4DkeqY++4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=XAeXYZ7HhXDJzEepPwCPBs3uO7b70umyjzGOOuRpo7dhoSWl2coa/8dEaI7KabWz
+	 i2c6dAHitj5weuxfy0eRV4bWDLHwNxS6XXy8vNiv+nGZWwECrsiJCQESe1t+o4Mie
+	 4Z699CMFKRR8jdcfUbLkDGVo+TGf/VkbK7OTxSUPKOwJAz+StVTHslKAVuvKOxS5t
+	 9ZGHEvyBttQh+FgjXiqK8/l31JGHqOOueTJSZMQA5xaGRUedNFgrjc2yU89Wxx9aD
+	 069PwNqwrehlem2MqH9IkfuhZmm9pbRoyGHC//BZrL2qe0FFpg0KmZOJyVHiW86ol
+	 DniXxKRA0Zyer4TwRQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.234]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mq1CA-1vzaBA2DdS-00dOQA; Tue, 18
+ Nov 2025 14:15:42 +0100
+Message-ID: <76cfa66f-2254-465d-8977-28915ed5cbc1@web.de>
+Date: Tue, 18 Nov 2025 14:15:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEf4BzZu+u-F9SjhcY5GN5vumOi6X=3AwUom+KJXeCpvC+-ppQ@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+To: Sahil Chandna <chandna.sahil@gmail.com>, linux-mm@kvack.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ David Hildenbrand <david@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Wei Xu <weixugc@google.com>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Yuanchu Xie <yuanchu@google.com>
+References: <94ba6ef88d97eb1a5e20eeab9f913be8fdc46fd5.1763227530.git.chandna.sahil@gmail.com>
+Subject: Re: [PATCH 2/3] mm/vmscan: use %pe to print PTR_ERR() values
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <94ba6ef88d97eb1a5e20eeab9f913be8fdc46fd5.1763227530.git.chandna.sahil@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZzZirao3hDsSPFt/T1Mpd8nyRcXx8yf9hmqeo9hlvcWH0jnbOwy
+ izCqJ8MQQvJsORaEJ7QE6FCkqxhOvvppIFLVwVuV5XZGZhl2vaWM6RGi/dj3MtDOVVB9HXN
+ JtNJ4GqfxjmC2RoVikrctrXd7SHG74b+n5SpBAU0ufG9nd9AfD6UJWpRTK8kQXBr4KgXcoO
+ Ai2Y+tO+JHYtLFErHNS+g==
+UI-OutboundReport: notjunk:1;M01:P0:IfmTe5zFKo4=;f1KO+pda3pGSNr9RNtyjRELfws3
+ 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
+ qYkdsHGUt46ZER0CQ=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8DBF110000F
+X-Stat-Signature: pgb4so8aqdopr4yeb1qtodnr85mo1qg8
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 40C951C0016
-X-Stat-Signature: my3oa3pmkzgjp73qqr5sdrm7q9t3gfbe
-X-HE-Tag: 1763471007-794606
-X-HE-Meta: U2FsdGVkX18dSUGF6uuH7ie25B1Lhq7fbE3DD2wky7k5WfN7e9HNu5BttsE9ipR4nGJBRnOxYVA5Kq3DmBdiRhXT4kyQLji6F7M/XAwhuCIfQT6FDcLaRYNtG2VOVqiyQaU7wdsK+AbnWMOo+sDkXGoNSwO7wyUR+x58J+LIgZ3CkA2szWYWDsIv4jHAqJsxm40fuEggviilqub5D2GejYR9B4+LuhXkNVZKrMT3Mnbuu6OAgZ3Mre/znpTrHmt69TPxCQAYkIqsQdjxs4X3yHUTlOIL9QOY7+8TgMLg+nQsKjA5hiBvHDSayODhFsbMCkkAKpFHcEDIL4GGXlzn3rgyaCngAtXaWUgTfrSnHXfqaVmGJLdh+xjBDoSdytjt3fKp5VyvDSMoIpdGIOa6XFocxVp5JARNJx4L4RhF44SASh+EV61gnkRY1xGvm5BneAyOwBPopWXcbwstjKgUzm5CFg7BbMwwrW3ZVnmys0yq2VbgWFq0MHZLn7OBtnoyFcQ2ma/JWgm4hSshs3AOgi4DDDzQVNdqnXlp1a1w7JXq/4Ya1UMTLMwINOcWPDicSZRrgX2cHRJfnlc2wbgkC+l6D+OaG9AzVQBTZ3UUnqOVYUEWCC0fXPutigextgZNAcxoes2bftFZWJ2jRjPslc7T7n0G6loUJqLLjFc/iixs2pYKEn/7Eo/BicFQ5JExakxTkdNlae1MaHxFAnwnknCfmMUc/OyAt2Y8wWlv5ytzbO6MNilN6Eh79/mcEtwgqd2SR40CCH/dVVSCDWwHEkCCanowpsI/IYBz9jfqlmZLVmEhcb2UdVyKYYtI2vjZ5q0zfYhBGOHKAh8g3yCQVmaJPxICpH9O3tCHpeYqA1TnQj/EdCS3dl5fYGkKkmL6CoolcsFHi2DaQ71ICKQEvCX45d5C5Yg6sUf/Oozlvf4sbeQTukOpCekbjuEczb9G78mPMPm+OgKKNmB6PhV
- /Ind4Yxt
- 5mvRyFKM2MltVBAB52WJbgSreaK4ZIi1xKNM+UpKptlDyAUF6WIOcV+vypRTgetQoZtytI/AUWzQ6yt6D1jgyjctpsluKN8LDmgej8LZDkh1IHox9QwCRfTFIk1GgECFW40xT0kTLKCPvXK4vj3vse/R+8DqKZdHBpLlktapdEV8QAkE6H3Xjch9EhV2Yj+JwHbg6VOIwOD1P3xALBlCj+i7+bjh6+R2wkd0GKmT1BwUHTfH3qzOGRYIL48SvbdJAh/lnIRXwy/iZKYyZ51Cxlva6uk1NEZzzEDbEAQuLI4K+lE19d26CCZWbI2VgDJhMDkT65v2YjqKrvfK8XBl6V2ebwXaKr2zU4E5xdIGsmIk+E4U1R9Eup7ndW1lUTTiJ9Il7ZzWZv9bbwLeHNXmZswUym8TE87eM3VnNBCdOg7d5c4U2muCWp1FoeiWWJJZlTATfa+JPDOk6yprV6GhNaO9LT9eNDTOxCMa/LGbAqmrY3EPxvjzruaKcS3T7cF9+eDPd2k7vWf5elhj8Ymy0Rdtontj+PaPCaJC8brYMkdeSRy20IFGh5lehp4VMjNmsQhQhHrgPHfRPMkR9Mzj9IwetioyzyJMotua9ePrFc0WxLbkIe6RNn0yVz1D9QFpW73xEFTi3r676AUA=
+X-HE-Tag: 1763471788-619001
+X-HE-Meta: U2FsdGVkX1+2Mx0mJ0gedW4yEDtLzk74KrTgoyhg3+K6fC5cQaWjpRBteOL3TnpHwWXKH99yxEnfUyqfyXQJpb3MwuzvJKMwytqjM09bmarnhKzBwy0b0T6LR3rF+tSh6b1Y/VxrHl93eC7AYbrR6MvEmKkq8QyKAza17vh1CfAHUJCCcuIh28PuLkH/cm9oIzkwEqoEdBziUZ+lqrrYImolJv9LI/cSfYbw6u4cKpnEcwZ5Ez1VCHiPJR++y4S5hYM/6TlQgfOmMFjD7ZwrmF4/8PjxGfsNw9tKLNW9teQwTfdRU1+uQRVEms0ytOLkkpYDuFRvTaTONvQa54MQpYN3RqT/6XUyjDQwrDEoDrDONOnON8DVEF42qwsR2ttzr+UfBr3T9neq/TeKoMWxPOi9F5+73MwnZGitE1y5AL8ccxMRq8ehb1GyA/UbmwWghQC1Wb07Gm21zLVQZMAlByi/+6usqCs/OTgZX/3qmmZ3IF/IybSseS14podbHCizMghvEFKWGRHIEoI9NNDpa3ihC+sNPYxOHsaK5zmthj9cg2K/RgWjhNn4lW7VLT+7nIr24S4D2RwuXYQesZWzFb+RuPcOfgM7cpiK//uQM/qW7DgysbCWTa3F/m/IVrm+TPmgf9Zgl6pNRCNkbv5lDDprFkpvDg9CwGSmyyPUkp41b3hacxes0iMclYcDTFVTibSCg2k/ChM6wypDConhwGIPY0jJkWaj2O0wOM+jFDUb+59uTgajwzWCPOSMBVM35hVjT4nFFgL5ZO47S+rkxZnJI3AD+gdRT7elnRL7725pmENhqNZp9UC5zQ/xZpLmPFbawBS8re3Jza44X7IPG3rwbnkuYO38xv6Veli3WCmYfiFw6YaGW8oiKbJab7uDOGN5wqohyP5Xg3yHS+RqWbaEndQPEH0OvZHVm79YkgGQiUZAIH/tteExHw8NSP/JDuoCJD+r46VuJ1Bh/LS
+ gsB4bDPU
+ BoDlSsNv7XiWtGp3BsBTf6IHywKYqb1jWWKsIALlw8ZDMW5wA9DLgd9tKn86qIGr0x0LnpyWo/4ymRaTESKFLyH9fhJIebwSMsfoG3jUeme3eJ6eXTqEsO7G2sxzFreOgEDxD4QhDeBJ/85aKsmexkcJMefek9ZN7NZpPVPrq6FsG5czeR7uO5YIgm2V5nJ6YztIQikIoPLjEcDlpW00fd95JmDo/nwM/MOlsO/EcrIpRMaLCyvWhN/+nhJREa58bAMwjh50Fgps16l7HJDqEdO1+Jo3io6aazsDwn6m/jWJaJ/H6XIsnG/gxMVF06u3xHKV7V83ZAlfBrveHsXu7It2PC1/rlabo/d7TiHoXWdNhs8Jd53LhdbMr9UpOsVcgaC03NHuiqrUqNHOUPUwHi7rdLAH2glV8hiiEZrQm/Nc2+3i5X1WCavGlJMi4uI4bFsV8GeP8vZB+KwXwGVaQNt9yLNr5h1ljDc/Fip9k3bCnR+o8gbYTjkroIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,29 +184,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 10:45:31AM -0800, Andrii Nakryiko wrote:
-> As I replied on another email, ideally we'd have some low-level file
-> reading interface where we wouldn't have to know about secretmem, or
-> XFS+DAX, or whatever other unusual combination of conditions where
-> exposed internal APIs like filemap_get_folio() + read_cache_folio()
-> can crash.
+=E2=80=A6
+> +++ b/mm/vmscan.c
+> @@ -7500,8 +7500,8 @@ void __meminit kswapd_run(int nid)
+>  		pgdat->kswapd =3D kthread_create_on_node(kswapd, pgdat, nid, "kswapd%=
+d", nid);
+>  		if (IS_ERR(pgdat->kswapd)) {
+=E2=80=A6
+> +			pr_err("Failed to start kswapd on node %d,ret=3D%pe\n",
+> +				   nid, pgdat->kswapd);
+>  			BUG_ON(system_state < SYSTEM_RUNNING);
+=E2=80=A6
 
-The problem is that you did something totally insane and it kinda works
-most of the time.  But bpf or any other file system consumer has
-absolutely not business poking into the page cache to start with.
+I propose to adjust the indentation for the passed parameters.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?h=3Dv6.18-rc6#n110
 
-And I'm really pissed off that you wrote and merged this code without
-ever bothering to talk to a FS or MM person who have immediately told
-you so.  Let's just rip out this buildid junk for now and restart
-because the problem isn't actually that easy.
-> 
-> The only real limitation is that we'd like to be able to control
-> whether we are ok sleeping or not, as this code can be called from
-> pretty much anywhere BPF might run, which includes NMI context.
-> 
-> Would this kiocb_read() approach work under those circumstances?
-
-No.  IOCB_NOWAIT is just a hint to avoid blocking function calls.
-It is not guarantee and a guarantee is basically impossible.
-
+Regards,
+Markus
 
