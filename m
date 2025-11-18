@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14DE6CE8D6B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 01:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32FD1CE8D6B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 01:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C5178E000A; Mon, 17 Nov 2025 20:35:06 -0500 (EST)
+	id 740408E0016; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29C878E0002; Mon, 17 Nov 2025 20:35:06 -0500 (EST)
+	id 6C9888E0002; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B29D8E000A; Mon, 17 Nov 2025 20:35:06 -0500 (EST)
+	id 5DF718E0016; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B89C8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:35:06 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 888FF88933
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:35:05 +0000 (UTC)
-X-FDA: 84122009370.21.8A2F157
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A1B18E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E750EC031E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:40:29 +0000 (UTC)
+X-FDA: 84122022978.16.8866555
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DB12DC0006
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:35:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VcenCjNg;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 499EE4000E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:40:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0OFoAo9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763430028; a=rsa-sha256;
+	cv=none;
+	b=GDK15WQeaodh0t2T8x1NGGoWzicfptT2dy+jVikgIzBQJnbrt0CdaYC9fC4btFciU7dTJ1
+	yD5jhCbaMv663KGXBlEbnqxNgtSF8qz/Gx298p61u2xiGO0YHdWTSB3h9pnLvBiPrSa9Ij
+	Flm7Nd1z40MDO+XR+Q1DiZsCQCwRJ+U=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0OFoAo9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763429704;
+	s=arc-20220608; t=1763430028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9/SXq/AF7H8y+VoI6kp4MhMaHqiTlt+abCl6XyFVL/M=;
-	b=IjYXFWJSM1xv4Mwhq07WD/Tt+n2fHDTF4tyGawAiPYluKJE32q9LnQZGBF8CbeYb+04I14
-	D03Y/Z7mP6r87fcQbBcj4DG6MQDuD6V/VG+cVNJOYubFr9hNu7mGqr+lKrWximz4aIiruu
-	Iw7NLWxP0d3nFR9UgObuL17MJf455o0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763429704; a=rsa-sha256;
-	cv=none;
-	b=tzqNtSkam4rKskaHudi5fI3OzGpCVmlu4XCbLfpFFfP1WfSb/37RrvywlbKwyMK6Ccukf4
-	7e5KVZOmbAI0U+tTJ7tEWO3pknOJcM2dweWBtuVq0FSyyP3mcmDYhK6Qw4k9e8bJaGAlmL
-	txSSnWl6tSEdcIGjVEdm8U5CSTvzZxg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VcenCjNg;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=m18BP2IdsDGFqKtpfq/YXCq57SkwYNWOh9NFp5h+cQM=;
+	b=pr3re+GdlaIWv69sMgnE9/7lvF9LCgnlOXbAkgC+X4BPXwtfC5sAJ6+o4X+lkr7dQFVzWQ
+	EMdK8Bi+Q2sGkDUvzEeqgS+m1ggHw7lyefS9+xDJn9MFChKkicTU/rB9da4e5KU6WPfDHy
+	XnbGQ/H20lbqqZe+Xr/AdsZYhvao+w8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC74C40903;
-	Tue, 18 Nov 2025 01:35:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FDDC4AF09;
-	Tue, 18 Nov 2025 01:35:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5172541A76;
+	Tue, 18 Nov 2025 01:40:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37554C2BCB7;
+	Tue, 18 Nov 2025 01:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763429702;
-	bh=vNjEVQiizwyx0ZZFgN4+71FpiOQ/CbYlv37kbyN1Apk=;
+	s=k20201202; t=1763430026;
+	bh=HC0wW5cR4LQyHkZxX4Q3FPGBPQk+o6MWSt6ijm5OY7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcenCjNgyZjZb3iq3KdS64DsECxuUc1vrAD2ULBgTScwdwxFljgnOPm7576CCQBnf
-	 97ZFPphC9geA4WkLslRhsJ6dtLbL5WxUhm7Aflx2JEkp6j2VcS8bRu1n4wvvAdd56d
-	 kupAj1Vdv81KSLeZ+TGaCir7A+F+2TJSlRtGsCA4urVhE+ntGsv1lEaPoHgXUPGa3C
-	 yyR4HuamgF/NVrFf2Bl8cSr5T3qpuWrMAdNfs97WsU8tXgaDzTs4i4gzr841SzG0TC
-	 WBmtkw76qM9DeQCsVKDxp+HhHnVdraT9cCX5F57GVGGgauB4KVY6Njd73hRFJx/9H0
-	 Tk/SFqQOLJxFg==
+	b=K0OFoAo9hpMJaYk5dmE4U3o6J0wqXWjvkf49BV9l17fiB/Tw7ezuWPcWRCFpF6+uq
+	 wB0dp0idRFjw1AqdQc5nCqdC01DOyUjjegb/Kxn3XdvGfTnFrm9h+cK8h9D8bbGc8a
+	 8QpsqCE3j3TVhs8W2DjNfqv7TgELBFr4Q1PecDPxpyOrGIZ/r8BB+hNQCRQz94pBjY
+	 H5izwudDqYftYs3d7Wg0AGeaWq1IVd2akkkB4xpKeTxRqlGJF1A4aZDSkcE8d0C4d/
+	 //g9njU4SUGowAIELm7VJEPS+BRjl2e4ZQoCGl3BRZhFdMuz+Xd/VGFYF7u217x+m0
+	 kRfdEb4aQmS9Q==
 From: SeongJae Park <sj@kernel.org>
 To: Jean Delvare <jdelvare@suse.de>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	LKML <linux-kernel@vger.kernel.org>,
 	David Hildenbrand <david@redhat.com>,
 	Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH v2 1/2] mm/cma: Inline cma_sysfs counter hooks
-Date: Mon, 17 Nov 2025 17:34:51 -0800
-Message-ID: <20251118013452.75700-1-sj@kernel.org>
+Subject: Re: [PATCH RFC 2/2] mm/cma: Consolidate accounting in dedicated functions
+Date: Mon, 17 Nov 2025 17:40:20 -0800
+Message-ID: <20251118014021.75804-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251117115602.7b9c7ccd@endymion>
+In-Reply-To: <20251117121502.6db0fd7a@endymion>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: h6moaibn9eih7dqp87gened8e1bcrge1
+X-Rspamd-Queue-Id: 499EE4000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: m3zgy7yaaq5szg9o5pizrejkay68wkq7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DB12DC0006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763429703-4229
-X-HE-Meta: U2FsdGVkX18IqpkwBx2o2/+gxUBiX1dPatTaU326CnVBivww08OUDDxCFA1wTG2YrWZWqmn4S4EE1dIypg/6pGgokbSUWH4h+4Z+YdhMIJ2LEwrzM6Ml6z2V+Ns9kUIoN9S8YLPii8S1TiaFkqya+BEhFY7D3VaEGqYGt64+scee6UtygUbhXiAdWlJ+Nxnq1vkbD3/WTMmmXO8Lqx92s+etFw9Yh6SRFEcNT86Bva/UUAnP0eKoZ9tA+yZo3LXgESy5EohQ8We//Wv2q4eSPtDbO9ys929/jZmgcJjs9W9/wg/bQ/pvls7qX5uJQkhHOVx4a2etuW7nNs1hgHPiZCsEi0byPlrPOeBPtUmpL5LSfBSWgzX5Di1dejAsIZxoFlaYd0ktEv3VaQe8p7Xb1f+reZe1GKgQFP/JlXoUP8+9IKmPExkOod8mjSaWFilfEeTghC4l8lHsEU9HI6FeeeAOeiG+1eH/IFnkOQKif5t6XivUdRxwA7IHX5TtjcgKvQinMD/dZ6jARzvFAWxSq07BQzfBM6DVal9YHjBvPjHikv0NrTMXmTiByoO2DzMNJgMTbn/U2ER+RBe3NrztXIWn3ZOvNMFTYowSQdzjHOmayKtxtSHSPwUTVLXBgTTkPMq1oVXPuKTg7iiR4I46ls5helXg80JRNMZX53n68WY4KG3LECvHLsPPbIvSussDnYtESjfa0vjuMte91hWDA9CtMMf4lu3QK0c6mP0P5bIEn1ZzptRh4DVX5ITTRLz5J6M1JX30tNqA6I1jTGjTKIG2QDWYD8I5RalknnlGOyuRuYnyr6ebpp3IejAzWKCK+VrqILaAJum1J+Al8SZi3SkoJl7Brq46jvhJfaoxPvZjR8j6yh6c3uNOSdwpezoWC3QRdC2osr+9CR5JZheoT55wcq+VEArDtuGI1sfye6KmbVoLqBcyy9T+Ut5SjVRtIEzS+/RMfYnMqaB9GBs
- BvIO6DBz
- PmMjaFNWN3LrjJRbjFmIw/GNgnRYjdYMSmMDKMSGs6x5YF2D/9F52SwJ9a+QPikNqm0oDHYNCGjrceTRLOb3/U3tGReOdsLExstTqRg7bX9CpsfiCrnVzrEAaPuitZJhlw80LV1xgsWM4gXNbB9c07d+HmNE40Iczviwt+2i9SFOScm/LXrQMQDHxo+boxHBUIvoKjQvXkTKHSjEBdvSyWb5+2uSwiDi3QA9cUv8RTpUPzkaapHktI+H8x3Ky15zPaKGeh9+TEZ1m7KOVsi7U7hirIQ==
+X-HE-Tag: 1763430028-349235
+X-HE-Meta: U2FsdGVkX19Q3gI0qnA0OBW9AMme1w1PrP46pw1pUMXaMwFUYWEMI/uUz+NaLPKEMSXwXARHY1qSEZXydDQU/TIrHwvzAazTawhwStj2OFa4YhCL2X2DRTTpPCRYQKnKyFXb4EYYYNUuzsVAblJV05sX26KgN9uGvSqUAIrnVjaZaE2UEBoPJfqX0OMn0aEtuCIms6Z9f4GNkPEM3RKvva8GSuMWvlBcPlMz4ywvM2quP6L2NiyHspb2IZDqmsI5tyUXExqe7nlJ63pfSvuNHxAhNMI0ZYWDrAIEV6bstToBNwbIgYwjlHWbxNCuF24ktovi14PKXMAEPAA4bWzF5KnKwuUQP0H4iFRSE4fDIdalSOZwLcbD/R/yALQk5VouK6YGZO3WCWYEXFdWYrfATaJMJ84G0RXpW1c8WWJ622Oo2GnTlNBBsniY8VaChd7pJoeIFW3ZGNNtzYwJNZu1zDdplIHzjqusuOD7DiqRmfNL24ZOUYRLzpBxOOkf3XTONYnQepsYtgVmlbTnVnZUbGgXtDWnIu0ld5ceD1wfjyQmrTFm0kZUaKV7EjAsOmn6/fC17sF+u7onVdHBqb7nIrHAfvPmiPtXkmvIiVuBtsm61bsanDMumSjT/vB+9jva9Wj2WMxpeL5KGkHVBc47DX7Tf8FE03qozJgQ2lOwSOxufFkYTbB7EPW5lj6oXhQkznxxhiGGMHbc7hBzz2/6rhczG3Jw0VQskSypZvW1s3T6dp8554GRWcH/BfnY0HGbLJOmzevz9RLF1IW4RItV7LFqeRXEZKeJpgqutm9rlIA20JN0tA22Ixx97tHudieuyqjK6wW0b8H6QZ2t/B3mJwK8ybURZoll+h/oA1reNqcqsU4hp9Jwc4oIybPdROEOwiuEIJRMDKoAs0L9wp4DUSQBBzrJLbbAFAjBU7ax7wsrN+QUZ6VV1vZ3921+RBQ3ruogjrbSXmwWLxyZSo6
+ mmGqwq6k
+ jH7bamhKkhNOBXKiljV5MjWjqA7QlKi2N2jns/FBck+4wpoU0mUikbmJNztQRCLKNmpJ/iylGIoktnrvILm8610h5Qvz/331YxD/Q0IfaUrmOOEycu6FHx3o1ulR00noj/9Othfk1jkC9dia1fQSd4fBnIG5QpPDNSvpLN04mSO83z/V38fvZqH8BPKVh2OfwrirPqKcGbZ3cd8GglFRD/Ivvws5gnbFhIbaHQT0EKqbFnEM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,18 +94,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Nov 2025 11:56:02 +0100 Jean Delvare <jdelvare@suse.de> wrote:
+On Mon, 17 Nov 2025 12:15:02 +0100 Jean Delvare <jdelvare@suse.de> wrote:
 
-> Move cma_sysfs counter hooks from cma_sysfs.c to cma.c. These
-> one-liner functions are only used once each, but the compiler
-> currently can't inline them because they are defined in one object and
-> used in another. Letting the compiler inline these functions lowers
-> the footprint and runtime cost of the sysfs interface to CMA stats
-> even more.
+> Move all accounting to dedicated functions and rename them
+> accordingly.
 > 
 > Signed-off-by: Jean Delvare <jdelvare@suse.de>
 
 Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+> This is based on a suggestion by SeongJae Park. Comments welcome.
+> 
+>  mm/cma.c |   43 ++++++++++++++++++-------------------------
+>  1 file changed, 18 insertions(+), 25 deletions(-)
+> 
+> --- linux-6.17.orig/mm/cma.c
+> +++ linux-6.17/mm/cma.c
+[...]
+> @@ -1029,7 +1022,7 @@ bool cma_release(struct cma *cma, const
+>  
+>  	free_contig_range(pfn, count);
+>  	cma_clear_bitmap(cma, cmr, pfn, count);
+> -	cma_sysfs_account_release_pages(cma, count);
+> +	cma_account_release(cma, count);
+>  	trace_cma_release(cma->name, pfn, pages, count);
+
+I was thinking we could further move trace_*() function calls to the new
+functions, but this version also looks good to me.
 
 
 Thanks,
