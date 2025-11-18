@@ -4,117 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 367A6CEE347
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 18:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B64CEE347
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 18:18:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D6806B0092; Tue, 18 Nov 2025 13:18:00 -0500 (EST)
+	id 1F97D6B0011; Tue, 18 Nov 2025 13:18:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 887096B0098; Tue, 18 Nov 2025 13:18:00 -0500 (EST)
+	id 1D0E96B0098; Tue, 18 Nov 2025 13:18:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74EFE6B0099; Tue, 18 Nov 2025 13:18:00 -0500 (EST)
+	id 0E71E6B0099; Tue, 18 Nov 2025 13:18:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 61B4B6B0092
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:18:00 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1C02586213
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:18:00 +0000 (UTC)
-X-FDA: 84124536720.20.F5E6EB6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F052C6B0011
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:18:21 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4D5D56503
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:18:21 +0000 (UTC)
+X-FDA: 84124537602.10.57CA40A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 54DCB80012
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:17:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MrGIWm9L;
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2251CA000F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:18:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hIjpsigb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763489900; a=rsa-sha256;
+	cv=none;
+	b=Mkr/q9NfA2QXrtpEQpcIFjeIhm8N3Wie6nl4nPjBR9TsJIUbCThz7wwH8miZoDwcuEkTMO
+	KsSmHCTKiIChXAr2eWdWPr9jYZM/r7b3aZwYGNhf67sQ7gxcwDSpNgFhn7OXGicZT2M7lX
+	nuurqziLCaPy3CQgOTZoXWs12AbMoTs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hIjpsigb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763489878;
+	s=arc-20220608; t=1763489900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGjVePNx6NWAW+2forpXkshqwgF5+/oxUYTEXmpULJM=;
-	b=VNKk7qZmyBnwUh7wzum/vnPnWdjrLcbM1vMKmnEfBpAHvj/1Q3V3yocDu3ayTGUzBLUAQ4
-	qessDJoqmc3LsLugK8Cdcfvkr6sf/CXgqi0YaBgnZNDZtw0dFgOrjs73tPX65+pPXYeEh3
-	94Yq7Q4q7gPjRD180hjpkTWKCH4qMfw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MrGIWm9L;
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763489878; a=rsa-sha256;
-	cv=none;
-	b=02V09qu5P1ZtJe8HAbkDEgAoxPQCKK6PGdugAlkYgdqf3/sEv5DUgC511oWBvp72aexxdI
-	xe4oCoJ2RxQdUqKNjJMxc/UUE8ZT91y4jLeMo5rJU4D+yhfkbT9fnBBCWNREMCOR1gL0jU
-	lzdLhEIkuD9J630a/K5IzGjCQL0jWlc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JgiFawHTV8sjMcTxgYzGBKzIQAziP/HDriKppK8XrKA=;
+	b=jm1S8VMidIGANnFFwoDOBbnLX2hYWgqukB0WyQfhQ+aIm47TIrzMb7HZ2PiVO5NQO1iDeV
+	Eo9rcNgC3lTIPpr000SVD3J26hQvmH7dlN8D0yVs7jiSXP13yx1JEp+eU5d5GUFR8FXX2o
+	qgQIpRwox516TGSscxES+ebQqhU3638=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E526043300;
-	Tue, 18 Nov 2025 18:17:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F00C4CEFB;
-	Tue, 18 Nov 2025 18:17:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D6D4416DB;
+	Tue, 18 Nov 2025 18:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15735C4CEF1;
+	Tue, 18 Nov 2025 18:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763489876;
-	bh=MuaIcliWFm+wXQbyLOy+ePW5Z5hGnw7S19zVdOoRU9Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MrGIWm9LWqZsfMs7ulgLTqd+vSnlbOrkGvCLSVQRDuELbIodah+F4M3f3FTCxDsYn
-	 ubnteG6atXRRKp8sze6lQ6WYH+8u9RRxKmACuQIsUF/fNgOgsfrvg6HbHIadYL33zl
-	 toHmEIuMukisjBAK6rWuEqeWX+hlpLLONOpACy4sSOUgXkzAModu7TG7oFE4qTZkaD
-	 QjNS5JBnayMhMagSvhPUUG5/NOt4b0LbXnn8v67kdCBH+QUpOE0zhUWa2zlaT7cUHq
-	 JvgpcxfLJiIEoAkXjzZaCmSMloZQu8GTaTAAgOXhJgT4nRevn5hDsdQFhJgF1pvmif
-	 wFptWQwi5kylw==
+	s=k20201202; t=1763489898;
+	bh=FWLUqOdMeWCRKRBg/ecVB9LXW/vLiI6Nwu+aIyQipT8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hIjpsigbCNnQYXYNp8d9ZiAyOO1Zwgsu9A+V1gdsHGNJLBYjlzdFAmsJyyIxCkIrc
+	 dyQx6yhhm3emDdwE8Zq+dJcSTcIJNvIGvlLMTjtw/BURzonlJqWGAoAEsXRLJC0ZYL
+	 dIh5QFwCOWleYdyi9USWnzQ94WEHzrewk/ggEEpK+4MTLdNpb6+VnEHGVd3DlyYsIA
+	 kXrRhIXQRXWPSEQa1gsGhn+lYj20u5z3jAcXU7WlsbQPltws8ptQp8VOoXjADjRtVS
+	 Dg8mUZrezNJApRZ0WpIOptUq95rvLeQPsPIP7d/CYSsHORCkQBD3VJ7OCehG1xyQ8G
+	 +gwgNphc5NjHA==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  David Matlack
- <dmatlack@google.com>,  jasonmiu@google.com,  graf@amazon.com,
-  rppt@kernel.org,  rientjes@google.com,  corbet@lwn.net,
-  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
-  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
-  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
-  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
-Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems
- callbacks
-In-Reply-To: <CA+CK2bAqisSdZ7gSBd7=hGd1VbLHX5WXfBazR=rO8BOVCRx3pg@mail.gmail.com>
-	(Pasha Tatashin's message of "Tue, 18 Nov 2025 12:58:20 -0500")
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
-	<20251115233409.768044-7-pasha.tatashin@soleen.com>
-	<aRyvG308oNRVzuN7@google.com> <mafs05xb744pb.fsf@kernel.org>
-	<CA+CK2bAqisSdZ7gSBd7=hGd1VbLHX5WXfBazR=rO8BOVCRx3pg@mail.gmail.com>
-Date: Tue, 18 Nov 2025 19:17:42 +0100
-Message-ID: <mafs01plv433t.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] kho: free already restored pages when kho_restore_vmalloc() fails
+Date: Tue, 18 Nov 2025 19:18:10 +0100
+Message-ID: <20251118181811.47336-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 54DCB80012
-X-Stat-Signature: 3cxhieotrrtdahomo76rg3gjtjh7ho7r
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2251CA000F
+X-Stat-Signature: sjwu8gyu3z1ynr779i7srksnwfe7qeai
 X-Rspam-User: 
-X-HE-Tag: 1763489878-97440
-X-HE-Meta: U2FsdGVkX18eTQLq361SHP/ifwAZLdlYIkZl4cGkQbSbu9uis5YkG+OzLE3/1TRb1dVF/Rj3vZIbIg5EqIgC+xTGDLZr3+sMo9UVamu+zh+BDqE43QoAtWRb+5A5oY7i7mVMER/dPO3nkuRNhOtjsP5m9WTWrIJ1kt6r52NpT81FB5FVW8G2is5IsjiccOYjgkmNlM7SA/5snNK707yF5QeMgtKYHMZJLY23NwuBO0A9PWbOCoMWtNdrjM8QUi1XoEBvZqBX4B8Xj8iLKL8mdZFJRmH/057l03jzOsGzgAqKdCmWtvDe7g79NlLLwGWPF8KES95d2ofxbrPhnxyjt08Kruy3hEE+VG0RWSOgTY6SDDhlGRRMD38mwMzYCv5UHAMhPVVHfgivCjNXuIyN3N5JpW8tMc8BCs4sQbAD+O/CM7KdrMFsuaKOQdNM39KQgFC790Oz5P3cdLhzFrZfpPxXzKK8TrhiMD9o1lFMCKYQmlsDay95Vzd/nYukNZV/9sgD9Gkn8M1UixI2GRW68TOcEjw+DVSQilQAwGqftQGrglGG0xFabTwup4oef+tHfE4WiIpp+zWNYPYaxS47VCdRqInIQK9gA52qniKb11Q8Go/pzlgksKHel9T74rdTeja18PyuPwKhYozPfGDzSqV3QfLsbfiRRTIlSzBFi+URqY3cgerG4IDiofVUxuWlLUPzqGBJVbRUglUuIZeAGwNgrP42vSWqrrr51migPD+3vFhskyG0uUWkvTbLN8/kpUxZ1JdnajQwIQ/bBe7VNmBAjPfBp+2RY36XPUKQwj7EouwrZgUG8dQpToWApK145CQ3B8/WUNIRMDeV2NRcdpn9yzitX+tKbASrLWubIxzO3Aq4Rz+TMMCT9crIHy0sV3/r6drxrkWEOjvMqrSLhpob3gRrRBzs4sbar27RX7+OEd1khq2E84SzFVcAAp88VOaarXnmZZHyu6JNVWM
- KMrzrZuB
- QKNK1XnIxr1nrCa6osbrRU2PfWE2yFsvE5OD5Eq0i5QnT7yR/d/jMdtzKuLYMlL2ls48Q1kcSWSj+4G76hSXyW+1agsliwq77JdpurUyt8nniM8SX9qcP2kAgkz1mg/n1qJxn0AEoX63d7ANov7guJxMru/zPw3v/EfFjFAOw5TgwWGR5P0dM7rwloWtyAPfRi8F494/kzjfeJ+H/JU/7HNJekYzXuZYeWLZ0Bsyz/loHQan6QInliHkM/oITR8fwkaQwfSP5bYO8vJr9mWetrpRlIghmLVhCoYatOLWZuclc+aTUwK57ZcTlgc+Fy0o24drihQLIeDhIwLwCZ9WgzGc62wYJwFjqR8j0D4VGxwl4nq9jMPl+tFG5YD5ISS6rXGhPgZyyoa9DVYmTdZ8guTrf3chlrSyzwsyKNJ0X8IUNOe8=
+X-HE-Tag: 1763489899-340777
+X-HE-Meta: U2FsdGVkX1+ZHm6hPDNuTvbHHoMcF0U8ClXBvVFzXXn8tKEoq/Q8mJlknJPUOA4aa/LwbLFEPHtL9/NTMIlQUuG/iLQvGEVBzX+ViIbTGN/QdqpXhauCYt2eijCB+lW3FYKC57jzggHhNGIzrNnRemSEaqHl4SqQed4+uhiGhE8tyDlrDHyyZ3ol6yzoX1y3LzTs5ctDBc8K3GWHLuQN/gpd5tm1EsBJYP38hw7/lbJYwdYcQgYZszXCC7pA8WpmzJOhiCqvU//hIq0JP5cpk8/bB9aCsybwP2rIyDipLz9VZSo8suGdnt4AtK5fkrjgHXWULmE4S1LC2nNr7CxkC5zvn1qcK8dYjE1w/PTYKVqp7U9i7m9LuAtzlcmgpDZ+GpeX/Cd1LNRKssQ5j0lLC1BUbr03NVhutgtXoMDFjQ/shCg4KPw0m/Hop8GnNFpEl/Rxgui4GiIG1Aky4ujot/is1tqIairFSv2Y8PGe7nqNqw6ffc2WN55g52CJry3XbTTh9Zebj9+FmoRoO8D/KCiDLcQFNLKjxG8ple6HChIshSLBvGDru9rgBa3vOI7b5Q0zAH6WIbcG1/Nziu9gGqFVuuWTRQJfZCBI64AlZD7xmtF+JExuHZfsWUFyrzfZw8qNLFdzzzZ0DCa+QwBIt4dOsOqtOduPsHN905q1FSzK5M+L6+An+lUKH2/QkJ0URiA/xXjnBHiqfkVb5i77nyynPl1uzjwvzUiZ1PO8YNb5hObIoooHtJFbwXBdT4lUQEILX7C5myy6U+MrtcUuFYaOMJEWy0ofBU7AHq28CwBSL5mtlns+YyuaDVxyi2teNGNduUCeYXQ962+mJPeiCz/30Q/g5bkXQnS2h1UBQllwn11a+354pHJEp7wiKIzO48Yu/Py6cIPb4y4+kvKsmmnjcfkaKRPnwuK/PNPPZ4VLulNFuXn7qKwMNk5p/nQEYs2+rhRWxj8VZm5bCti
+ pg4GWRLJ
+ RQHcJ1/SvyyfC16hMC9vLPn7lZvcOpCGUXJT1iKjRVzkD3GJ/6bZy0KKiqj/gkeMr4tSLFpXJ2uGVEMDapmZLV+G2M2seihn07hakIrOEqMIF0y19PEtk8yaDpDIXGNAmiQF1mVNoH3myG1znopYhlFPh0j4hgWPIC3TIBQkbb2Hy98euuXI+DyQWako2CzTSCG8f+9LCgOngbmCb4wLc4arMY+44Ec5aTrxv0viwJj6i37LzAREAMJYtp2Ys4QsVK8Br/Nx/pp+HQUmfQxrXBFqMnA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,55 +94,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18 2025, Pasha Tatashin wrote:
+When kho_restore_vmalloc() fails, it frees up the pages array, but not
+the pages it contains. These are the pages that were successfully
+restored using kho_restore_pages(). If the failure happens when
+restoring the pages, the ones successfully restored are leaked. If the
+failure happens when allocating the vm_area or when mapping the pages,
+all the pages of the preserved vmalloc buffer are leaked.
 
-> On Tue, Nov 18, 2025 at 12:43=E2=80=AFPM Pratyush Yadav <pratyush@kernel.=
-org> wrote:
->>
->> On Tue, Nov 18 2025, David Matlack wrote:
->>
->> > On 2025-11-15 06:33 PM, Pasha Tatashin wrote:
->> >> This patch implements the core mechanism for managing preserved
->> >> files throughout the live update lifecycle. It provides the logic to
->> >> invoke the file handler callbacks (preserve, unpreserve, freeze,
->> >> unfreeze, retrieve, and finish) at the appropriate stages.
->> >>
->> >> During the reboot phase, luo_file_freeze() serializes the final
->> >> metadata for each file (handler compatible string, token, and data
->> >> handle) into a memory region preserved by KHO. In the new kernel,
->> >> luo_file_deserialize() reconstructs the in-memory file list from this
->> >> data, preparing the session for retrieval.
->> >>
->> >> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->> >
->> >> +int liveupdate_register_file_handler(struct liveupdate_file_handler =
-*h);
->> >
->> > Should there be a way to unregister a file handler?
->> >
->> > If VFIO is built as module then I think it  would need to be able to
->> > unregister its file handler when the module is unloaded to avoid leaki=
-ng
->> > pointers to its text in LUO.
->
-> I actually had full unregister functionality in v4 and earlier, but I
-> dropped it from this series to minimize the footprint and get the core
-> infrastructure landed first.
->
-> For now, safety is guaranteed because
-> liveupdate_register_file_handler() and liveupdate_register_flb() take
-> a module reference. This effectively pins any module that registers
-> with LUO, meaning those driver modules cannot be unloaded or upgraded
-> dynamically, they can only be updated via Live Update or full reboot.
+Free all of the successfully restored pages before returning error.
 
-What if liveupdate_register_flb() fails? It would need to unregister its
-file handler too, since the file handler can't really work without its
-FLB. Shouldn't happen in practice, but still LUO clients need a way to
-handle this failure.
+Fixes: a667300bd53f2 ("kho: add support for preserving vmalloc allocations")
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+---
+ kernel/liveupdate/kexec_handover.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-[...]
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 224bdf5becb68..515339fa526e0 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1088,11 +1088,11 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 			phys_addr_t phys = chunk->phys[i];
+ 
+ 			if (idx + contig_pages > total_pages)
+-				goto err_free_pages_array;
++				goto err_free_pages;
+ 
+ 			page = kho_restore_pages(phys, contig_pages);
+ 			if (!page)
+-				goto err_free_pages_array;
++				goto err_free_pages;
+ 
+ 			for (int j = 0; j < contig_pages; j++)
+ 				pages[idx++] = page;
+@@ -1102,20 +1102,20 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 
+ 		page = kho_restore_pages(virt_to_phys(chunk), 1);
+ 		if (!page)
+-			goto err_free_pages_array;
++			goto err_free_pages;
+ 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+ 		__free_page(page);
+ 	}
+ 
+ 	if (idx != total_pages)
+-		goto err_free_pages_array;
++		goto err_free_pages;
+ 
+ 	area = __get_vm_area_node(total_pages * PAGE_SIZE, align, shift,
+ 				  vm_flags, VMALLOC_START, VMALLOC_END,
+ 				  NUMA_NO_NODE, GFP_KERNEL,
+ 				  __builtin_return_address(0));
+ 	if (!area)
+-		goto err_free_pages_array;
++		goto err_free_pages;
+ 
+ 	addr = (unsigned long)area->addr;
+ 	size = get_vm_area_size(area);
+@@ -1130,7 +1130,10 @@ void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+ 
+ err_free_vm_area:
+ 	free_vm_area(area);
+-err_free_pages_array:
++err_free_pages:
++	for (int i = 0; i < idx; i++)
++		__free_page(pages[i]);
++
+ 	kvfree(pages);
+ 	return NULL;
+ }
 
---=20
-Regards,
-Pratyush Yadav
+base-commit: f0bfdc2b69f5c600b88ee484c01b213712c63d94
+prerequisite-patch-id: f54df1de9bdcb4fe396940cdcc578f5adcc9397c
+-- 
+2.47.3
+
 
