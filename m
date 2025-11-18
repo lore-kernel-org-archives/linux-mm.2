@@ -4,96 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7CF5CED240
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 04:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9861ECED240
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 04:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31FAE8E001B; Mon, 17 Nov 2025 23:14:20 -0500 (EST)
+	id CF6D88E0019; Mon, 17 Nov 2025 23:23:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F7618E0002; Mon, 17 Nov 2025 23:14:20 -0500 (EST)
+	id CA7388E0002; Mon, 17 Nov 2025 23:23:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20D058E001B; Mon, 17 Nov 2025 23:14:20 -0500 (EST)
+	id B96068E0019; Mon, 17 Nov 2025 23:23:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1216C8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 23:14:20 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A293F4D41B
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:14:19 +0000 (UTC)
-X-FDA: 84122410638.23.C85AA7B
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A109E80009
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:14:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=NnwvD0Vb;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763439257; a=rsa-sha256;
-	cv=none;
-	b=J4XaROI8f606GItyv/RVQJHoL963qZRbbZ8BMSkahjSDnlGgR/gB6UKniKUMJiZnl/0/1L
-	W3UjaXpQcvVRbl4s6CsfvIV3yiVf/Fe/XkYynq/AyL0zEww/JyW9Aih6+cMMP1V8zDmbSg
-	SRZJ8KBI2GulhJzwtz8xBtl1na7kGBk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=NnwvD0Vb;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A53138E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 23:23:34 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E858C0351
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:23:34 +0000 (UTC)
+X-FDA: 84122433948.06.BA2BD0D
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 67B75A000E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:23:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=LNaVDu48;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763439257;
+	s=arc-20220608; t=1763439812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=07HeZKjyOA8sg+0j8XO2NQGRkS4H44zMUY+FSrwKOW8=;
-	b=JUSB9AaTwgB+tLVTqFtMvpOzXW4FVA6ufywIfQyfjpmyxgqJ22JPDZ/roEmnD/nCzQ+/y+
-	7h/usnS2q0eM/1fyQ+jsFjM3US3VQmNrPTVyDpvnJB1lrvRGrTHrxl1ufW58oifHa6k+rq
-	CZ5ZIi5t0caIoAXZvb5FVbChVgQnqx0=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so8718436a12.1
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:14:17 -0800 (PST)
+	bh=yHOZfK0pWU/GvMRSsb/xaHbV4r5va663wkrxdVP9VvY=;
+	b=N9qVWFqt2ddvp/bwqjOeCtR9suRLs+hEGTU5ZlRJezaLQJG6aOITDdNkBjbMXuh11uxcir
+	tHOtAeU7Yf8bYBVuYAT9Rr7lGUWDa2S5v1/uG9XqxeDoaVqHc/uy0iAxqfOdJYzmGb3X4H
+	MAsoGf8kohmQOv0QjxCPZ8Au4RgBdOs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=LNaVDu48;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763439812; a=rsa-sha256;
+	cv=none;
+	b=cKbmg9EItsHsN7plDOvG0RJ3+Snjmctp56HLiaNc4zJ11GVpCtHzJz7+faklOfBkYRJvtJ
+	NwtHJ6OPjCwD2/LHt3CPwts80zzZlKKQ3HKgffD3aPLJBB8VFn6CJthYfYqDYErNIEhLor
+	54Ryo2cv/xXmEW6XV2jtQO/bHw8VOvU=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-640aaa89697so6627875a12.3
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:23:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763439256; x=1764044056; darn=kvack.org;
+        d=soleen.com; s=google; t=1763439811; x=1764044611; darn=kvack.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=07HeZKjyOA8sg+0j8XO2NQGRkS4H44zMUY+FSrwKOW8=;
-        b=NnwvD0VbUop4jrSh1J8NpwazXoXNhjhJgYlfTf4KcRz23fTAH+tL6LJnSwu1uGS4Wg
-         sKVI9JAAmfr8ISSEZdkGMLrZsxkV6TYMmfqvZuL6mMdgox38fm7vUIvrzxq4kOfPJED3
-         K0nLqWgClBYeG6cIIEcN7MSSTozzGH4WJebvALZ0SgY+xwuyUwoh7Z47bokp903jknux
-         KRt9PxKpfClAX8bwEKdgL2b8nbvNmn2EJhOJM3igWDcujCAlUWdTTGe/Jv7Or6uYNJ1Z
-         RTk2JBbzEEQ+vkwKEIBL2ek91+fX0an/m01SwxxyA/Opvpgs0r8gZpNQKtXEz9/GjQ0I
-         hOzQ==
+        bh=yHOZfK0pWU/GvMRSsb/xaHbV4r5va663wkrxdVP9VvY=;
+        b=LNaVDu48PKMxk1X5SQGzQUux9KEMxLRAp4AT0URgh9l2fCmly1IiMoEXsMijpCKNMH
+         W4f/03rtvNcL0aYk2J6S39lnwgIoRjGXx5i7zNwyKNLmin5k1rSKjyoAQz58dJ+Bdgoc
+         a/206c0ts3X2UAJxBxWhpxOe1yfwt9uDwQL/hGhueElbx8FFI5mTfAAB3V1es4q4Jkfe
+         zS6JKSknniXwNSv/kiDGVWOy7VJ7Hx29wvVlMY+Zrk79V5jV9Aym4MiQRXNMhsa2hP5M
+         4oBOliQmfJKjBbSJKucNjZswTse+UBXMDBy17dUup5iEfOKH/RHbMQpeKRzYxhRoHkzQ
+         wUnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763439256; x=1764044056;
+        d=1e100.net; s=20230601; t=1763439811; x=1764044611;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=07HeZKjyOA8sg+0j8XO2NQGRkS4H44zMUY+FSrwKOW8=;
-        b=IjDnUJa9/YKlEftrWiNJBZ5WanxKtzZoPWe+jToKbv6mKx8F5V28tKq7+QQd3pvysg
-         b4jEtve73em2MJQp55H2CvJIrZc7SXdff68TcPN3Pb0Ube8/W34OrQ7GvegNDKZ6BqpX
-         l2FuGhgrz6EY1xOi0z4Y7w660tbNumQDK05J8SPNCOIOoyOonJvSuPsGxv3iw/hFQIP3
-         ZnnqcM1jH6sC5roooJgcY0yEuE5gupJRDxyy/Vcxfr0GbyBT+AE83yZ+Q/09+e93tKb6
-         E8WEpJ0RXGb6Xt6cgEq9VLIBeKu4tfdey3gKDgjMlymKnaisLgqnVz91Ev+ztgLOHX15
-         hHFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlSGZtHuwHg8uAHTTJZL0Lpnoqfe+/bAFe6lctHU0oDUfz9rUBiL9UI9GIz5EjQlIzCTtlCh6cKQ==@kvack.org
-X-Gm-Message-State: AOJu0YzpXnJXHUcnBP9fTxjqOohkCqJRUrPfbBOLr2sikoN6QQGuliF0
-	K0FtXCVoN1LgMdLmIt8TulvYNCZEOqrrYET7a8oSP69tc2RQ5DiEICWCupSAKvGyZOuCDuH9gZE
-	F+25DSgk9UlenrxiUA6ysV5Tk0zPbp9Ff+JjJxyPXrw==
-X-Gm-Gg: ASbGncvLB74mn8pFbIXzvVJowBGt5EJNJq4CbWSFrAFdUJsH9uXbnfKXXf8KoDqfVjm
-	zfLDTY+nFzZ4O5FAo+ssA9EyqmNyvNUod4nh7dwlHIZ8zg7QTnD5X01CdTvmjVbfoQuByHp2tA/
-	CBKsCAchEJZGKPIyAJwfF0th/fK4iHWkqvdjeI+NwXgSlHu+zz2h5Itd9hk3JArNKkQcVn8pmbz
-	uKVkv1/XoHjALOJR9hkKYMQlMnmBQ2pRXCNuHJDBPMI/b9zWrQYYbif1UMsMW0895Ow
-X-Google-Smtp-Source: AGHT+IF7odRYhWUKE4hEH/yqZovWuRxLWp+QjpvspuEPYgC7PACIvotSh+56pMkd5f5Wg4bGjW+/7/Gip+y+Hfcb0Tw=
-X-Received: by 2002:a05:6402:1445:b0:640:e75a:f95d with SMTP id
- 4fb4d7f45d1cf-64350e06df6mr15371153a12.15.1763439255422; Mon, 17 Nov 2025
- 20:14:15 -0800 (PST)
+        bh=yHOZfK0pWU/GvMRSsb/xaHbV4r5va663wkrxdVP9VvY=;
+        b=QV5iz728cOfVaEeVc+HG4N9g31biVFf+Mk/jo/A4Em8y8nDWglPom9ZW00Seo5s5fk
+         SMxNxgnLi89l6Pe5KweF+ZxLgki+5spR9Pbqeklz7+iJkJaTAC5UcfgSizy61R538Fqn
+         M5y42GMykj79iy6kpLMWK1ZgVEzT/4MmPwMpX/ZHFqOX4IMO2kN5FRoBXUvKfHajMcOQ
+         gdOypn0cQpvd7/4of0NXnrRm9KOn2A8OHyr5QjyYweiY4bnWM68kw67L5yfaOgkwu65W
+         YwG//iR/YZqJ4UzU2VAyXXADT1r+c5ywlqgLAb78JN4pJ1tQT8eFXfcBZpn5V1/nP+/j
+         8cCw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYTZg5gu4Z4ImB9l2d1TsDg88SOIcFZc13H9aZfQFSdmUiSyBdNE/fP2BgRzlZV5IORdOq3U06lA==@kvack.org
+X-Gm-Message-State: AOJu0YyJ/+mtzceb8qKA/vQ//hzKqDYOSrh+8p4V3YSfN2N1hKevSwGX
+	xNqLczjRfcOr/VeNkX47v43GniuRETatB1+ZJ9zAdfwrdOO+k8pC+mNa4y4gvrVRby4mggD6uNj
+	pQYfbVPxln+Pdqbj/GOGLPOj3NOgikCJeE5t4/Y5QCA==
+X-Gm-Gg: ASbGnctlwc/e+G5cFTQ3LxewzYwBYmdoNAVsktYMvzeRG9EdoUsga3F/FFRSD57L4Hi
+	fBwBaE2NekpYby+2XCB9/QvOSoP/UZ+snJDq863HDRY/jGBGlp/3R7MQobF/0LgWjHM9SpqSGyV
+	YB34txeLdJGdDQ3OdMczcOipLaJlztLw/FVixiXyjDr11gibOOi5JOi+yn0kBoHP5Iwe6xNusQA
+	OG/MMSU6DRcCuKI4WDLv1QU16H+lM+NUGxUh+4xq9Kw5hcJ2JHSUCKBAeam69Lf4sX2lcnd2SPv
+	PHU=
+X-Google-Smtp-Source: AGHT+IHcXQAOPbW77p032BCA1yf03kdrt9TXEreALO4fe3G9Md4L5c16ZrMCE1/XunuQOVa5pqVrU/kpO2uPmj8xqWM=
+X-Received: by 2002:a05:6402:3508:b0:640:c849:cee3 with SMTP id
+ 4fb4d7f45d1cf-64350ec18a5mr12648190a12.34.1763439810816; Mon, 17 Nov 2025
+ 20:23:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-13-pasha.tatashin@soleen.com> <aRr0CQsV16usRW1J@kernel.org>
-In-Reply-To: <aRr0CQsV16usRW1J@kernel.org>
+ <20251115233409.768044-3-pasha.tatashin@soleen.com> <aRnG8wDSSAtkEI_z@kernel.org>
+ <CA+CK2bDu2FdzyotSwBpGwQtiisv=3f6gC7DzOpebPCxmmpwMYw@mail.gmail.com>
+ <aRoi-Pb8jnjaZp0X@kernel.org> <CA+CK2bBEs2nr0TmsaV18S-xJTULkobYgv0sU9=RCdReiS0CbPQ@mail.gmail.com>
+ <aRuODFfqP-qsxa-j@kernel.org>
+In-Reply-To: <aRuODFfqP-qsxa-j@kernel.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 17 Nov 2025 23:13:39 -0500
-X-Gm-Features: AWmQ_blVntX9altpCY4SXrXyEKO7X1UIHIxI-cPMY5rvalxcvtOdur6QxS28SKk
-Message-ID: <CA+CK2bC7O4B=R7Wb2wZ7QYH2_Ujo-REXVqUX1ukfPJ-XDubtLA@mail.gmail.com>
-Subject: Re: [PATCH v6 12/20] mm: shmem: allow freezing inode mapping
+Date: Mon, 17 Nov 2025 23:22:54 -0500
+X-Gm-Features: AWmQ_bmu9XJ4F2q03zVpJ7QCWl2e5iEfuoUmDpvTnYNqaWiEdVtcHIOkeQ1NtZs
+Message-ID: <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
+Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
 To: Mike Rapoport <rppt@kernel.org>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
 	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
@@ -120,14 +124,14 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
 	chrisl@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A109E80009
-X-Stat-Signature: 14i7u3ifee98djcerdrogb1s55t1yup4
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 67B75A000E
+X-Stat-Signature: qwf8dfui8sseq6add59e3drjm9tczww1
 X-Rspam-User: 
-X-HE-Tag: 1763439257-232469
-X-HE-Meta: U2FsdGVkX1+/KLA/8SEKxtuhNVU1XhmsErH31jpOwID+tI5QhtUQ5NTJ/wTUUFyKhdX/buveF9KNt76wEA3GxT1nuJvG69tKWeJ9nI5zPpMq3xwwQJ36MR3XbT+tYy8Ivs3QRDxZM3jb8yEL7rvsMoF2xpr9VJMJ9z7FtJ2Yv2fOFH0kXhn1ms1uSWVA/oyzZkvIChB7j8xlFChuQc5qhbPHPqWGucwvy9Proju5tu0fW2fILY1v2vMDWyrdMd+M6vm4uMFCV+oTr5pmYkjAfzWrYW14zz2ocotJ6Rbz2Vhsr/mLfxTPtLO5aRZ1yMU6rIZWPFLWJRPKqdkXH68hHigiPtQY6RHbiOcW41lLlPRxuIRM0HKud21hUMz7vl45Y4a42h2jzXmj7x75gkCsxjzeA96Vjeh9hM5zmZ8R0tL076KL11PRGgtfJuNdX0WdM2bmLoWM1P1pi5PS/9xBGOM/4bLx1T++eWdMZO0+9Xpv3c7fR287TyBB55bXACFtMmX8YUfvO/xB7aKqo0rALhjhc5IXctdKbmzb/aHz+W1X5AjaFYE78jyEc0r3PFwLSNgFwPfrNfWsDC1R7ysFcAAhX9y/SbQwuIg/bODR3MkGhvsmN+L2DeSY5OLcF4TVswk1fWyfZGu+HVAp1kO2VLzDJd3QA2CD3lhnGF7UTm82ldkzOFiNKRDWLCbIFciFeCwu28PxC/FnVHZX948NJJxTmHrWEfo1lrR8FF49aYC2P+CfrFqlga4CRU7n74zGW2z/AD4DCK66xDW4q9yf2kS+fjbkeR9wVTik8GhGehiwhk0zWWrAC/NeQ6AezpyokHEEDCZ6QfpZKX9DZhP2utvGb/Bmn/GaLbspIQlahu99fViKCY1eJwcs493k/JywezNWI6mecb51gfnygFAbv06NNaiOVQtOWn8h7YNty/+pF8c86wKxJ8hh9kRy7C4/eOak+yritdGk0IBijDm
- ah5yQLnZ
- kF6mBsRQW/MFnzZNk+qV4r73v71Iy8W+axxBBMPYMFDm2NJy0ort4vRvFL/Xja9LNR1xf7hh9eWLdjpQVQNF2y+DAAw9zEqO+e6e5jsnotiuIFlvoExSUSUP5lo4kHnGfYZ2zrOsd6aItpW4byH5XXG9jTofMVtX9rbE1d19zGDC4jzICNF+Rbl/4nyqQDXBzwrHJyhkufRGhUhII4oSHlD/WzSExdeDAhaKr/wRrjf6rHGe/3A51U/feeczeJyz29GA0al8ppw2lEkiefKIiNvyKvZxp990GbLEiagU7VozX8Ws=
+X-HE-Tag: 1763439812-783558
+X-HE-Meta: U2FsdGVkX18nvNzgBvZZvKM2TDr6U7iGagLjj1u2SM78rtz4M6+C91izJPfR7ElAb8JPt5b/Qrv2nq+Z/U9r8lZhiSYY1XXzvdY4WoPPH7Qb9aUOefPI5gae6IxyPOebaRZsVpV9DRmAOORYDf76tc5UuMF9GSi9F0emf3iTLWhM9TZgMTT1tRgTBkNwsWDGD9N4pZht+0sdOD1atBFzWvf8KcTgp9de3r73CRjATt8LrwMFQBkbhK2ufX3MMBm16d+GakYt3M8qPvLKi6eWRbI5TR2CjEL4QOwMLuU1A8AfbksViyktgwOubSRzqJamn+4lURiUr95sMRWsDNN4xLKMPTD/VULAsE4MX+oYcAvbk6r9Fw8Qf9/sdIQDc4NSQlN2jrsVc17F+bJiucXGE5drxBrX1CUfE30sJUeZ+NpCvOlCQ38bD7vEv9ZTdtGMFTX/s1mus0NNSDKaDQts3eOXQt1YQLgMU68soZwa/Wf87lHQP5vSM2e+kOFxzR2ucaibXk+I0DRHEQ61TGMdh+X+SMojqHcx4lmyfs5SQAt1nFjoCS5Jv3KClwaMzbQUeDc0qDaeo5hs4f4Ovq9vvvp7uHJshDsT03pWRKMSLF9QObhUEQ4+Dk1fGUnpRhpy+XAzp7JuhDwmmUQn4ksNJTDL07E5bij8Ceo1qaDWR917ExQhI925x0qVbiQX6WipbCqU3EjY3PH/CETmFBfMdiaAAfTXVQxBOG46OTgceCUNgCeOqlK3glNw8Lrzqv2etUbiP8DIPoybC/HPIEnRB4nzsSfUeR3UzONiDRv3nVfUeTWem5nnSRdq5FjMW/rTsl06A9xxzbi2kUPWjACSazUreK7X+UyW82ym5z0DEkbK8ziP65o8ColO9k0mmZZ2a588AhN2XMJxJyHoSffXdJpdnryoa7yTtI9Q4JzERZYjAt5J1yWFva93eER1RYe3jivR1zZMSHrtRxSJMLe
+ TLLfBlmg
+ Zb6gh6HC46ARCCVyWK2lhS/4nhPwxVQrBbbnj85ovV3KZ2HSBm53puq8Awr++NUeasSbg//WbmDahmZkeCagZgoEqwPnGQioF6zpXUqlQqqLrp/cXbgmNlypS+uzX4K4nEcgJ2lA3+9B/u5090vAX0montcytrmePw3fD/ML1luWYBoajY8FWI0VxQtyzxYGKK8ihP8Ll2H52t3EfkHnMR/fFILYprwQ07BfpwDdpw0VPocAZ+Wxfjm42kw6i6jtqOv6S3eVAH58BoA0wONgqMAeLrYf3dOxpvLhmZXQenCK+8BK7Hq9ieXnxBTvn0TmJJT/UeWLdDL6j0Xs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,77 +140,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +/* Must be called with inode lock taken exclusive. */
-> > +static inline void shmem_i_mapping_freeze(struct inode *inode, bool freeze)
+> You can avoid that complexity if you register the device with a different
+> fops, but that's technicality.
 >
-> _mapping usually refers to operations on struct address_space.
-> It seems that all shmem methods that take inode are just shmem_<operation>,
-> so shmem_freeze() looks more appropriate.
+> Your point about treating the incoming FDT as an underlying resource that
+> failed to initialize makes sense, but nevertheless userspace needs a
+> reliable way to detect it and parsing dmesg is not something we should rely
+> on.
 
-Done, renamed to shmem_freeze()
+I see two solutions:
 
->
-> > +{
-> > +     if (freeze)
-> > +             SHMEM_I(inode)->flags |= SHMEM_F_MAPPING_FROZEN;
-> > +     else
-> > +             SHMEM_I(inode)->flags &= ~SHMEM_F_MAPPING_FROZEN;
-> > +}
-> > +
-> >  /*
-> >   * If fallocate(FALLOC_FL_KEEP_SIZE) has been used, there may be pages
-> >   * beyond i_size's notion of EOF, which fallocate has committed to reserving:
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index 1d5036dec08a..05c3db840257 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -1292,7 +1292,8 @@ static int shmem_setattr(struct mnt_idmap *idmap,
-> >               loff_t newsize = attr->ia_size;
-> >
-> >               /* protected by i_rwsem */
-> > -             if ((newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
-> > +             if ((info->flags & SHMEM_F_MAPPING_FROZEN) ||
->
-> A corner case: if newsize == oldsize this will be a false positive
+1. LUO fails to retrieve the preserved data, the user gets informed by
+not finding /dev/liveupdate, and studying the dmesg for what has
+happened (in reality in fleets version mismatches should not be
+happening, those should be detected in quals).
+2. Create a zombie device to return some errno on open, and still
+study dmesg to understand what really happened.
 
-Added a fix.
+I think that 1 is better
 
-Thanks,
 Pasha
-
->
-> > +                 (newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
-> >                   (newsize > oldsize && (info->seals & F_SEAL_GROW)))
-> >                       return -EPERM;
-> >
-> > @@ -3289,6 +3290,10 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
-> >                       return -EPERM;
-> >       }
-> >
-> > +     if (unlikely((info->flags & SHMEM_F_MAPPING_FROZEN) &&
-> > +                  pos + len > inode->i_size))
-> > +             return -EPERM;
-> > +
-> >       ret = shmem_get_folio(inode, index, pos + len, &folio, SGP_WRITE);
-> >       if (ret)
-> >               return ret;
-> > @@ -3662,6 +3667,11 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
-> >
-> >       inode_lock(inode);
-> >
-> > +     if (info->flags & SHMEM_F_MAPPING_FROZEN) {
-> > +             error = -EPERM;
-> > +             goto out;
-> > +     }
-> > +
-> >       if (mode & FALLOC_FL_PUNCH_HOLE) {
-> >               struct address_space *mapping = file->f_mapping;
-> >               loff_t unmap_start = round_up(offset, PAGE_SIZE);
-> > --
-> > 2.52.0.rc1.455.g30608eb744-goog
-> >
->
-> --
-> Sincerely yours,
-> Mike.
 
