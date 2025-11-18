@@ -4,206 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D1A1CEE35D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 21:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E0E0CF2561
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 22:07:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 437326B0092; Tue, 18 Nov 2025 16:54:43 -0500 (EST)
+	id 84C786B0088; Tue, 18 Nov 2025 17:07:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E6BF6B0098; Tue, 18 Nov 2025 16:54:43 -0500 (EST)
+	id 7FBFD6B0099; Tue, 18 Nov 2025 17:07:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2607A6B0099; Tue, 18 Nov 2025 16:54:43 -0500 (EST)
+	id 6EB276B009D; Tue, 18 Nov 2025 17:07:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D7C56B0092
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 16:54:43 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE8E2139E7D
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 21:54:42 +0000 (UTC)
-X-FDA: 84125082804.19.1BBA024
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012034.outbound.protection.outlook.com [52.101.48.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C6533180014
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 21:54:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sea9Q42T;
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.34 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763502880;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 58C526B0088
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:07:05 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07EDB139F33
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:07:05 +0000 (UTC)
+X-FDA: 84125114010.12.AB4DCF5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5725180004
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:07:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XZpIN2JH;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763503623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dAb/2sCmHYUzUMIbA5Et3A+9T+th+t2umCznMbN5+wA=;
-	b=plA3+dc67Bqu5yzYuD4GOQaJpEmzcx8NV47gO1P0UAklk43TjhsN8WSbdHvhRVWTPpA1+Q
-	TJj+lHv4e+VVPByu5tIMiTxoPsNTd+Ys21Vq7s5XU/21RX81j0AZxGcHR2OK/dNZMHQFFU
-	GSKlCQ3MTzMg0Eha8yv033yz0TKQE0c=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763502880; a=rsa-sha256;
-	cv=pass;
-	b=p3tC2JOlrxJK1HsRir1K0pC28/Q8clN0uEmQYk5bL7fBkGv2lRoPOGreY+KBIHLPg+dlzQ
-	qy4eZM+gV4FwjAjEN0GNjDp4TWXcqhJUoeJomh6VzYKp5+V1COLXyYyg/wHoiiIWvzXu8C
-	KCUTbSZ6aq5BQadxfduh8etGC2J/Lvk=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sea9Q42T;
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.34 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WED2zFTqWMvtAKRmN9eyVUww8usHJ/4ErAnslW26jKXaiHo6K6vNOLP9gqClRiaKCcbPlSWOwowRAAlQyfe5EBdI2V1OKx4YoKImb6vnuci3EnkDHbaj/hW0PSBBxLyti14QYQcAhCRLc/ejJFxlUmbgY7kNTPj3Pzkl8jcWVfMeAnC2Q9QeEyHBfGxa5sIq5a1ik7DJtKvxfPo18TkZNftKoufKTx9jh67+04FNTSmQwW1lsshdrenN3rgverYi3Mz2G7Zo99kWMdHydt6L+7FlqMWvUNRprxTvgPEGcP4cyRHTlQMCiciMbd7IsT2PbKAqmQWRcVsEUwUmL6b4pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dAb/2sCmHYUzUMIbA5Et3A+9T+th+t2umCznMbN5+wA=;
- b=EV0o1IHRFzoTpCB4aySx5GFHob7n7L7+iItrgkpx1sWehOTo+5zZ75oi0HLsjHyaO1uxRKQHiRQkqjKFoTcUPCXwNDQ094t2KpWTWD983niFU4F68Lt9flB84gVNvoIKQESBg2eoJTiO5GDbpm7BAzjilLWXgA++8ULqzA96r4aAUwoQV3C9l5F8P+xnjvLdrZsFT60JDIH/Ga9wONG6MGtSFZtY1gKPY6nF3mKtesSOxRPcVUd4nDZ81KCdMJ/3LJvejKMm9Hzi4vtDDKtrYEGZR1GRsssAJBnrSXtLkLy88gwl4O2q75T1El7lty8ZJe2s8Dj1PBnVa/qWJYCA9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dAb/2sCmHYUzUMIbA5Et3A+9T+th+t2umCznMbN5+wA=;
- b=sea9Q42TVtvY3AlUDltSIIGX364KWMFKgCtFW9ne71wNk1IIIvmfmDruiaHGIU835aVnzXbWCFrTnXc6UGEhrm7P8/vXexoZzbq/YbI9cSp6AluQzn+IFIlke9A7XT82eSKUt0is1R1i61hRrEcClJf3PBvXq7JYnNc9VGT0Fm547m2Sq9bk1V0b+oCqMrTszU0mUYBFutxc+BkdqG14kOkC4icvaf3paTvN3RHihySnqoF24JwOLlHDIIWfNy0tSCBOwwTv9ILE9ry4nhQQq0alCbpO3/SwwksIgvexz8Usq2YCkjsdr+m2KYXWYytVLaFsP+RJzSE8jTt6XAlQVA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SA1PR12MB6797.namprd12.prod.outlook.com (2603:10b6:806:259::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Tue, 18 Nov
- 2025 21:54:35 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
- 21:54:35 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Matthew Wilcox <willy@infradead.org>,
- david@redhat.com, Vlastimil Babka <vbabka@suse.cz>, nao.horiguchi@gmail.com,
- linmiaohe@huawei.com, lorenzo.stoakes@oracle.com, william.roche@oracle.com,
- tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com,
- akpm@linux-foundation.org, osalvador@suse.de, muchun.song@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH v1 1/2] mm/huge_memory: introduce
- uniform_split_unmapped_folio_to_zero_order
-Date: Tue, 18 Nov 2025 16:54:31 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <5D76156D-A84F-493B-BD59-A57375C7A6AF@nvidia.com>
-In-Reply-To: <CACw3F53Rck2Bf_C45Uk=A1NJ4zB1B0R1+GqvkNxsz3h3mDx-pQ@mail.gmail.com>
-References: <20251116014721.1561456-1-jiaqiyan@google.com>
- <20251116014721.1561456-2-jiaqiyan@google.com>
- <aRm6shtKizyrq_TA@casper.infradead.org> <aRqTLmJBuvBcLYMx@hyeyoo>
- <aRsmaIfCAGy-DRcx@casper.infradead.org>
- <CACw3F50E=AZtgfoExCA-nwS6=NYdFFWpf6+GBUYrWiJOz4xwaw@mail.gmail.com>
- <aRxIP7StvLCh-dc2@hyeyoo>
- <CACw3F53Rck2Bf_C45Uk=A1NJ4zB1B0R1+GqvkNxsz3h3mDx-pQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1P223CA0012.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:2c4::17) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA1PR12MB6797:EE_
-X-MS-Office365-Filtering-Correlation-Id: b60e840f-fd7f-4e31-93dc-08de26ed1005
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZDJYbXQ1aVl5Umoyc05rREJrUnR6aER2VHRFcC9xLzdvOXNEeUxybDVXZ0Q5?=
- =?utf-8?B?WTRkaVIyTytXSGcwbzdPdHVlWW9iUVNoWFJmR1JBeEJRRWUwQUJZelVsUnRR?=
- =?utf-8?B?bW0zQVpvZllOakN0Q2N2b3l2N1VHcnhPQmJDdFArb29OanVHZkg4RGhxSFI2?=
- =?utf-8?B?WlJsMnQ5cHM0cTdaVktYdm05bXlpamdVNkh2SUhUU25vNmJaRjJuaURCMzZa?=
- =?utf-8?B?eDIwbHYzVENjYnVCU2R1RUpmM3owbFhoY3gyRE40S3hXemFVZEZ6cnd0UFBH?=
- =?utf-8?B?N1cxYUZMY3NXOWpoQk9XM0MzQktrWWtWVSsvTHpQOThUSXRMdXowSmprNkFZ?=
- =?utf-8?B?ekFOTDB5eXRzayttZjdxbEEvK0NyMzdYZU1QRkFQUkU4U1h1c05zdWtBa0h5?=
- =?utf-8?B?YzlUMXN1cHF5L3pkcTFPTVQxVHRMcHYzRlhoWUJvMFY4QUY4YnNoYW9CZGJl?=
- =?utf-8?B?dlRxWlJ2VnZaSVVNL3I2Wk9ISHJBbTNKZnNpWU5Zcm9QTzcwNnFxYTZOWVpw?=
- =?utf-8?B?UWIwNU1hNG9BQ2Mza3loZmdhV0l3SnZLTzJCU2F1a0ZYdzg2OGlROWl3cS9s?=
- =?utf-8?B?ZE9XMXZxbFI3VWhwa2g3OU16a1doL1Z4bVYrOUFuOWJIczdYTGZLdWxLZTlQ?=
- =?utf-8?B?NkpsNDhJY01BUnZheHpxNW1XdnJHclphcklkWjhWWnkyWVZxS3RGaFdUcWho?=
- =?utf-8?B?dUdLaHhVd0ZtU0FlTTJIZVBaMDZqVWFZdkhUM1RkUUt6clI1ZXh2djVOUFJ1?=
- =?utf-8?B?QnV6VDZxMkttWGlZOFBtU28rb0ovbkhRcDM2YWxLZWVzZ0FHOEtlVFBpRjR1?=
- =?utf-8?B?MkhwVVMrVjR0NXppNHROYk52MjMvSVAxczhsNXRCd2FPaW5wcncvTnFSc0pS?=
- =?utf-8?B?TmxzMnpkd2s1bzVGaWpFV0hSeFBDNGNQdUdCSEtWRllRT2Z2bUxJTzd4WGdo?=
- =?utf-8?B?TFpMYTQxdTc2NHFWVHIxRWp0QVMxRndmSHllb3NxVm5nQTJlcW1DVndpZkR2?=
- =?utf-8?B?c2p3c24za2RpbkEvV1p3bi9FVldNZjB0ek5QelpzS0hpc2V1K0wxMUMvZzd1?=
- =?utf-8?B?VGdpZ1VQV2l6aS9pb0pkbVRzam1tcVVwL3NpMlJkQ0VqeXp1TmVtU0lTQU1W?=
- =?utf-8?B?REhCSG00NE9BQ040Ylljck9QVHNMd3k0YUFGV3ZRdkZDakpTL2J4SnhjQVpN?=
- =?utf-8?B?c05QeGZ2UUxFQnpZZ1dBb3oyMnUwMXkyQXdNd3I5anQ1TTdZQ3NYQnVQL0gv?=
- =?utf-8?B?N3FmR2FTSUs5QkFSSWhhUHJQTGVTZGVoVXZGT0xLRDM1UjFkSVNURkNEaGQy?=
- =?utf-8?B?YlMzZDcrN3gwaXl1eXZ3eE5wZXNtRFNaaExJTVk4TnAwbW02S3BGYU84YnVM?=
- =?utf-8?B?UlFjRkwvTkhBQnliYm5EVkthNVhYQ1BGdDNIa0cwdHo1QWVqYk16aUNyeWtp?=
- =?utf-8?B?ZzlscDZwZTMyMkQremJySjkxZER2TFc5MmpvZmRJSm9NU1owMnd6aHh4bURR?=
- =?utf-8?B?RWZnellDZStiTXRYTnExd1FtVmFzem10czlJeE9mR1Q4L21tOFI3WWNKUUZH?=
- =?utf-8?B?VU9QYXRIeWs3bWNxTzhqZVJVeHNlaW5pQ0Jla2o1V2tCZHZUam8rdnQ1WWdz?=
- =?utf-8?B?aVl2bWJxUURIcy9sODFIUSt6eHhYdEh6dmswQlI1RnBrV1Fta1UyblVSYVJh?=
- =?utf-8?B?Z0ovanFMcWV1ZDc4Z2dMdlBhb25iUDJyL3Aybkdma0h6YjQ3Q1p2WnpHVlpk?=
- =?utf-8?B?L0V3ajM2dFVhdUZsMUV6UDdldFhEdlNiaGE3RURtdWhEVk44WjM0ZDhSbE03?=
- =?utf-8?B?ZlpmRFYvV0l3QmNGdFpodDlrb0NGMzNMbms5TS9wSGZCcCsyd2JsaHozdlRR?=
- =?utf-8?B?dDNJam1IeWJpSC9ZY25FQ3JvT2VBcFhuVUwzSDV4T29EZWJ5Qm00N1IwMmhM?=
- =?utf-8?Q?BpAYuauzpGVSckNFA4zoQw7G5nnANObO?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RkRuZTJwaVRUSXh4Y3NwNUVZeDNqR05tM2czb3dTQXR0UFZMbW43akJtNElN?=
- =?utf-8?B?R1hEZnZoS292N0wxYlFML0VyNjhmZ3Bad3ZGZUtaT1JwOHBlQ2pNYTVseUw0?=
- =?utf-8?B?TndIZC8xUEdZV1M2MjRrV1BMekhrVXpPaWVRU2FHMG9LT1VBQUtqUkNjVlR4?=
- =?utf-8?B?aFpCQzNQZHAvSU13S1ltVU1OZTZoV2JkSFEzL2VsT3d3NlZoeGhrVnV6SWcz?=
- =?utf-8?B?VHprL09NSmgrbC8rREVTclEzT1QrbHBIa1pkYTZrMXJWelUrTk9rSWplaGZa?=
- =?utf-8?B?ak1WcmRBNnFiUmpBQjVnKys2MThQUFUyZ09ZYjNvUmVXc241UzEwNEpVUlRi?=
- =?utf-8?B?cnhISUx2OG5SUDRXbzdKS3RacUJnRTdzcE04LzFLd1c0eHE3cmc5blN4QnNp?=
- =?utf-8?B?eDB1V0xCTVowSEl6Z0drVHdOb2p4ek8yUEFoTUJtUDBtZ3JaaFFHOUVvbFVx?=
- =?utf-8?B?bnVjQlZ3TFJwTFJCNzdlREZFeGJXZEdyNEJkV2srbE1WMWJzODJxWWRIV242?=
- =?utf-8?B?cHB1dDVHOUpjQzU4L2g4TXZNUDA0UncwOHhFTGUzYXpBNC9Ta1kyblZ0M1Aw?=
- =?utf-8?B?UmZkRXlmdEF6ekxEZnh4TmQ2WkNad0JveEtta1V6VmRRWkV4QkRlNWw1aGMr?=
- =?utf-8?B?S1NXREE2NlN2ZXpwRkdvbU9JQkhybEpjNCttdW9KaENPMlgxZmNzb0d4bnRH?=
- =?utf-8?B?NDArNmNPWWd6RHJQOUpiUC9weXQySzZER21qUWtIdFlmOWw5ZnFPNmxxVkJL?=
- =?utf-8?B?VFVwOFB3Vk5Yc25Fc1c3eURHWk5vUUpMMnM2ZHlqZGhpcWRQS3dDSGRRd2Mx?=
- =?utf-8?B?U1duVzcrd1JoMS9rNmxuczNyT3lyYzNoM3M0WkxkWXpzeDhQTTNIczlyMXVD?=
- =?utf-8?B?T0M2S3RCdFZjZXVocStzd2p2VlU5NXRKT202REMzOEY1STkxbVVFb2twUHRr?=
- =?utf-8?B?cGU0dlhWdEY1aklWL3FvSmViT3ZKV0tYZFQ4RTQ4OEpaZ21uWU1JVEJOT2Yr?=
- =?utf-8?B?RUtQYy9UenB4YnF2K3AzVCtOZkhVcXlwbi9Zd2RoYTB1R2hzNW1memJvSkl1?=
- =?utf-8?B?dnF5Qmo2NFlZcDk3NWNPTHhNK3A0eTdLYmF2M0phOHV3cC8yTmRuWTBRQ21G?=
- =?utf-8?B?QkozcjI5VkNObndZWlhGZ29EOWV2NU9VeGYvWTVRalRTREp1RlBRclkxaGJ6?=
- =?utf-8?B?RStFNHBvN25WVkZweUdPblZQUGhKenRacVA0ekFQbWNPeUlGbFFuT3JwNUVm?=
- =?utf-8?B?NldrUjdMNlNVdVl4UWZoeTdNUzkxRG1FVWRxcXBFTFA2aTIrcmZ0Y0pvektv?=
- =?utf-8?B?WThrNWc4SFV3TnVIamk0TDlMcDdWZ3ZvRXUzUEFGa1lSaWxVWWQwTXhtaGx4?=
- =?utf-8?B?MGE5b2ZheU9YQmRDZUhYajl4Ulpud2JDdXdvRFBBcXFrUHpEWGplMzJ3bktx?=
- =?utf-8?B?TGFJS1dkZkZpQXZBT3RBQVc4emdNbWZVTWQxdDhxSGRHc3ZTR2hKYkZ1NVBj?=
- =?utf-8?B?MEtYNmM0Ris5MkZxaDJHMU9DYmJnbkc1UExDajh0bUEyN1RPMzBDNmFLSGll?=
- =?utf-8?B?T3daWDRMYWZSc0tNTTEybHE2Q1ZwSHVSN2Fxb01tN3VPY2RMbVJxdUs4Q3Fm?=
- =?utf-8?B?WndPTDd5ZkNxRkdjemlQZmRHb3hvQ29vajBBVXAzcmthTUxNU0lCTmV3YWFq?=
- =?utf-8?B?TERmMnFmV3h4TDJWU01XLzJweDZFdExkSndRNWgzM1A2cVBxeVcxd3JzTi9s?=
- =?utf-8?B?czB4RDBNbWZidDlhZW85OVMyWisxMmk4Zk9rOGRDcWpMbm0xWjVmVGxXRElj?=
- =?utf-8?B?bmdtMjRkVXhLYVFjdEt1TTdsN3IxbE1BK2dmOFBDUFEreU1uaFJPMTJSQytz?=
- =?utf-8?B?a0RBdUJHMnI0dmVVQ2lObFloeThlWnd3VzhPa2FKZzQ4SUs1UzNWSjd5R2lL?=
- =?utf-8?B?UWFnUjh1Vkg4OHlZV3ZuMHo0OVdhM05JdHQxeFlCNFo3RnMyVXBDNzlvM29t?=
- =?utf-8?B?amRYM2QzbTFmQnJNQzluSU5uQkpRZlRUTDlyZ0RpaU5oaFpLdjdTN1NzeVQ4?=
- =?utf-8?B?N0FRTmxySjAzTjFYL2M2SHh5OWtZMU1RaWNub1JqTzhJSWhXVys4SlBEcUpG?=
- =?utf-8?Q?6nsIr/zukLVitHQCpo8AbZly+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b60e840f-fd7f-4e31-93dc-08de26ed1005
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 21:54:35.2565
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m2ZfAzUScmo+nJV1DuiFe4DTrAEcDe2pGIcG2kApimOVTErbPnmFSv5rE4bSBCYT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6797
-X-Stat-Signature: 4xqqqqg8nqieoua1yzxhoktswdgkmaq6
+	bh=hHskufQ4t3Ccveggkdt2pHiLdFMUb4h/36hkm3yxCkk=;
+	b=1Re6C5cmg0O12V6ed+/IzyJ8Qq0J+fCwg75fWAXzU4cCTZM3akCk6ev8vsMVT3XC3UAjCF
+	ArigJFNso/Yl5A6ZBRBbU4Tvx+gpCPesNKOk7DOU2b/H5buTlE9wDH4b1wIuq9aMTqsrir
+	VROLqDRlhtf/kQ9ok3oOWuaf5apLJh0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XZpIN2JH;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763503623; a=rsa-sha256;
+	cv=none;
+	b=FdkP2/0Q5wuXfEp5xUte2TcmKJLwiAFN89E6c1au5HwiiKsZLOrtoIOeiimH4EP01DJg36
+	3BbBRXjYDDPdyX53AEAPpFJHhSSRDTTTQxF3qNLvwSjoWtGeN6gqEJieQjet4SxV2IJhwb
+	QXh0vuET7c4ye1qKd9KvowVHrBzbsFQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8990460120;
+	Tue, 18 Nov 2025 22:07:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AEDC2BCAF;
+	Tue, 18 Nov 2025 22:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763503622;
+	bh=mPT12zDM8nDxmR3TVyLZH3WE/O8EZY7VNnGrswBABCs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XZpIN2JH/9ymk1OmPJE03A8BlBhL+2OnuRV5NKgYQ39BP7YJ9J4ZKOxQOhK27lEGD
+	 KZtxNh717JE9vnRW3X/TMPWtyZAUhi7sVTW/qU1bthkT/JKQJqCHvCGVJPn9fYiULf
+	 8b+0TqPBHz3i+0f0BmSjKhdsdQ2UcK8FdwZJdwUk=
+Date: Tue, 18 Nov 2025 14:06:58 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, david@kernel.org,
+ lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org
+Subject: Re: [Patch v3 2/2] mm/huge_memory: merge uniform_split_supported()
+ and non_uniform_split_supported()
+Message-Id: <20251118140658.9078de6aab719b2308996387@linux-foundation.org>
+In-Reply-To: <2AD36673-231C-41B9-905D-35BAB4CF63D2@nvidia.com>
+References: <20251106034155.21398-1-richard.weiyang@gmail.com>
+	<20251106034155.21398-3-richard.weiyang@gmail.com>
+	<20251117012239.lqm33uu4vl4y5zqc@master>
+	<337CD281-F5B3-47FE-82C3-ECB236450F60@nvidia.com>
+	<20251118033339.7rukw7vvjvlbj5jb@master>
+	<51358ABE-B0BE-48E1-95E3-C778D1F44622@nvidia.com>
+	<20251118103220.bd90932096d4e36f754de21b@linux-foundation.org>
+	<2AD36673-231C-41B9-905D-35BAB4CF63D2@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5725180004
+X-Stat-Signature: h53q78cog76e9emuq96x3osgfmiqngwr
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C6533180014
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763502879-383291
-X-HE-Meta: U2FsdGVkX1/6LN2UZDsrpCtSf5Okb07o1Fwk3vxZFBO3yf5PvQBmo/Uiiqcgwx8M2K9AhZzBJsh/ZV7Op5UMDbGgXTaT+qYLoxAhHnAroARxEMCVWQvpRGvre1NutJPukk8x81VHwxBydRqaUFHgOavQXqFKHilCN97rpoTDVv2UonT58JN/HUCM9RkZrlKN6CTY2Z0R+yM0LcDalc6a9Os1UjY4HmiBKRA40MOWW/Z5QrNYbdEXM1MTYz7qm9OdVvE4f9BBNMg5OKTZnewJ0uxzIEQpNEyGuB4xBmDKtS/yB8+vZySFM4mjD1IVDfofN2gAjGKYzlN2gouSISxXpZMVZhFxraI/ag6XnwzIukt/fIes/NrhbHrkltbhVZQ3b8VotPdQi14G9NJAE1lQ09CusA6pFZvLauAyc0dia7Rcmbm+tTZ4OcNNYE2PhWsUU70hLgNAbmVcYkA6KgP4afEGUUTE5IE4RHP2WUxfNewtchTnkSZCaAENhbosMJEnjmnerF1QSfyodsyxfAiG5lIrv41W92z53mvRXi6xwu/wa7bQo4z5VlFemVFAHzDsi0AFOhGcQf39nzJt/3NiUqq731dVTX6qovFSQsu3eTRPsp9KpR7QnPMoBetKI+LzkMgC7lAoE5io9JcWPdhv5ycrM85H68Ooh/rEM27dBJz44LR42QJGqKD1dhhA6lk/7QPnx5dEPKpJT5Hz5eVe2Il0z4WAmuNI2OhRj1+epjQ12J7oiuPGUaNBsGMPm9JSLWV7mIICngGFaaS8ab/kc0LoFZ+7D15SephVpqcV3CpzYecDSBZcKpDsXc6n8NtBwL6yrIQETp6S3yhMG3ZmyrkYsuDfJid/hpPbwNsxA3Q64naJWPBuWa+GZz6mxq118qI3hbUDg2nd3EWPj0I5k78Rc+c8KQX9+41R1wgfifHmbP141vu+QOmrraVUEBG3RAPSJbTii3ZazuJMWnK
- FkFUJsvU
- /aYmOiUUyTv44HD5vyqb8yceThy+hkVEVkeYCvqrfWS9LfAxkWGSkByhTa24BmjOtCKdtmvxanZbE9KGjOCmRa8G/6UnIoi0vFLL5wBpBxCnHevM5XtpcK+p1aSOCHSn1MSZZK88AU8wWgeF9SAVLBYAfsG4wM7qU6zjMkh9Gt/qEt0ESSPBLGdW4rnM5m6JGffeN+UltQlBnjdiyWv52qyjag2C1sE6Fzgyq1WNsLcXxKk5drwP6UxNvQQDwVIp0re/5zzSndUq8zxl1DDfCg7YqO+ZWy8YTdjOCy8IZ5G/tGCZXKpFClFWGBo/lrtuISObohNJVm6rbvYeu/JJeFGqlGgvBui62+hwn9Jx2fDHbRtv3EEPAlypYj8txgYafouf58ArmIT7chKVW1sbp7Id3K5/DH5P8KPa6VpdAFH384+IP1cEdcqrU4VLLCla7mjHL8VY9VdRDWWQB0KUWkcjXpO1KZBVT9mkqk9jGj/qHazQiXvH5VylRlAUXCp+fGVHkdJRE+bN93freu0hr6LpLltdFmvTrOdj8czCKiMRh1/Mvpn6g4Z5Y40IqC4JaKBO1WAhDE2BQ32SCNImir9tSsg==
+X-HE-Tag: 1763503623-587314
+X-HE-Meta: U2FsdGVkX18NxJglp9waqarQiQ3waTlzM19/md3LJnePLHTwT55v7tDYmbJ7S58uYorrTOH/Gnj7Mi8I4APc9sRLT+jfucfHn3ytt5oyyK6bpUOEc9Ti4jO8kw5vvguCXao7dawNvx9bAv8WJXqig5yACRy8f7eEyKyV6WqvuINOXh8bzMEIqD939UeTPuq3vIRq2EmzxZmSbGZH/UEotyvAtarZuE8CD8ZV+eG5AazM0o/0/RTJowCzR2TI3f0UI4JmzOYOpu3sMBcMJ8s3Tt9+4kr7VVLngKxjcgyEkEGBO2IqONWIRAEqzDuJ6ZJI24DLVe9qvAOuWf/1goMu+ag8vfATrk7AEiLItIL3Qjkazojl5SEr0kiyNJI8bdjBTtYF42jP8vvE7tGmcE0p2XdF06bTNKgrIymmssasmgX0Zf5jv4//Ft8QN7IifVT6IgNq0E7r3taUEMi/Y/74T8MZ8EeRHuwPIob8G04A2+Td86tfUajDVhQze4bpJsHsUTFJgawA4qljG3zV4Y4wP5SZz4IZH2bND91DHnDLM6xDshq0mi8rzQqLepQL8mDdh2gFeqzWaaWGxAGSVlLHhEGRyMoPp8uiBs4B2OixggQTc7LUjJRcBUUbmGt0RWSYubJdP54uKw9+Ho24/xiY5WkSBE+/lfFYorlhEQt6AcH4FgDS22Env68M7BUrFWKGxMc3T0a2THEvffAzYPX52/gFozB8/QM0a+YxPX0hA01NkbWmtlp22iRbL5eyHzZWYwo87ggVkRc3rD2VjpysvHSdBVOKnhUriVzpQ3Sm61t2anjjF1EJ8NStPAZ5CYV4oEBXIPDLzulaWEZw+znAGwICb8NPL8eNCYxZw+Rtcc040cn3BSy5eyf1t600ejCSG7IvfOKPWG84vhsMn6DghyhM+Ka3LSBe08tG7D2QqC7ryZnEO+oaDV9mab6It4rNXEGu6Xja5ubbVfohCHh
+ 9GqcHYqf
+ QAyiUdqA4O0OaZoVwYvBpHlzFGQszuE3Oj3FkXGEeSZ57zppVH4CFZRkGwJNMsQlcwNvl1xpgSwdKeh8v2HEKIpfSb1AoaqKmJM23jB3FXu1B6QFN1zdxxhXPFnjJdSkaPJQgXs+rFLbciKJ8GGxB6E3PTyvwnCkGWff4i7lxOVhrznKbgW0oqiT/rC50Q572f76OafIu1exnqki4Pp+ofJsDYnk3PR2j8K47ovPwdBSPKJdCSYJ5AXdJwzXaX93ZisYJ/GjJvhkFNzUuf/BAJl2jH7H1b36sOThqDfE1do8cKSZHbyJaoYtrzJw2zRR7/HXnvuM2JDOACKypg5k3a0vHxkPT/9snT3mGOAwLkvonC5r0oDna+4/kYgRTQtwMJocRNKFoyVZxEmpJhMvVab6HUwW9Jy9oREUf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -212,285 +101,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18 Nov 2025, at 14:26, Jiaqi Yan wrote:
+On Tue, 18 Nov 2025 13:55:15 -0500 Zi Yan <ziy@nvidia.com> wrote:
 
-> On Tue, Nov 18, 2025 at 2:20=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> =
-wrote:
->>
->> On Mon, Nov 17, 2025 at 10:24:27PM -0800, Jiaqi Yan wrote:
->>> On Mon, Nov 17, 2025 at 5:43=E2=80=AFAM Matthew Wilcox <willy@infradead=
-.org> wrote:
->>>>
->>>> On Mon, Nov 17, 2025 at 12:15:23PM +0900, Harry Yoo wrote:
->>>>> On Sun, Nov 16, 2025 at 11:51:14AM +0000, Matthew Wilcox wrote:
->>>>>> But since we're only doing this on free, we won't need to do folio
->>>>>> allocations at all; we'll just be able to release the good pages to =
-the
->>>>>> page allocator and sequester the hwpoison pages.
->>>>>
->>>>> [+Cc PAGE ALLOCATOR folks]
->>>>>
->>>>> So we need an interface to free only healthy portion of a hwpoison fo=
-lio.
->>>
->>> +1, with some of my own thoughts below.
->>>
->>>>>
->>>>> I think a proper approach to this should be to "free a hwpoison folio
->>>>> just like freeing a normal folio via folio_put() or free_frozen_pages=
-(),
->>>>> then the page allocator will add only healthy pages to the freelist a=
-nd
->>>>> isolate the hwpoison pages". Oherwise we'll end up open coding a lot,
->>>>> which is too fragile.
->>>>
->>>> Yes, I think it should be handled by the page allocator.  There may be
->>>
->>> I agree with Matthew, Harry, and David. The page allocator seems best
->>> suited to handle HWPoison subpages without any new folio allocations.
->>
->> Sorry I should have been clearer. I don't think adding an **explicit**
->> interface to free an hwpoison folio is worth; instead implicitly
->> handling during freeing of a folio seems more feasible.
->
-> That's fine with me, just more to be taken care of by page allocator.
->
->>
->>>> some complexity to this that I've missed, eg if hugetlb wants to retai=
-n
->>>> the good 2MB chunks of a 1GB allocation.  I'm not sure that's a useful
->>>> thing to do or not.
->>>>
->>>>> In fact, that can be done by teaching free_pages_prepare() how to han=
-dle
->>>>> the case where one or more subpages of a folio are hwpoison pages.
->>>>>
->>>>> How this should be implemented in the page allocator in memdescs worl=
-d?
->>>>> Hmm, we'll want to do some kind of non-uniform split, without actuall=
-y
->>>>> splitting the folio but allocating struct buddy?
->>>>
->>>> Let me sketch that out, realising that it's subject to change.
->>>>
->>>> A page in buddy state can't need a memdesc allocated.  Otherwise we're
->>>> allocating memory to free memory, and that way lies madness.  We can't
->>>> do the hack of "embed struct buddy in the page that we're freeing"
->>>> because HIGHMEM.  So we'll never shrink struct page smaller than struc=
-t
->>>> buddy (which is fine because I've laid out how to get to a 64 bit stru=
-ct
->>>> buddy, and we're probably two years from getting there anyway).
->>>>
->>>> My design for handling hwpoison is that we do allocate a struct hwpois=
-on
->>>> for a page.  It looks like this (for now, in my head):
->>>>
->>>> struct hwpoison {
->>>>         memdesc_t original;
->>>>         ... other things ...
->>>> };
->>>>
->>>> So we can replace the memdesc in a page with a hwpoison memdesc when w=
-e
->>>> encounter the error.  We still need a folio flag to indicate that "thi=
-s
->>>> folio contains a page with hwpoison".  I haven't put much thought yet
->>>> into interaction with HUGETLB_PAGE_OPTIMIZE_VMEMMAP; maybe "other thin=
-gs"
->>>> includes an index of where the actually poisoned page is in the folio,
->>>> so it doesn't matter if the pages alias with each other as we can reco=
-ver
->>>> the information when it becomes useful to do so.
->>>>
->>>>> But... for now I think hiding this complexity inside the page allocat=
-or
->>>>> is good enough. For now this would just mean splitting a frozen page
->>>
->>> I want to add one more thing. For HugeTLB, kernel clears the HWPoison
->>> flag on the folio and move it to every raw pages in raw_hwp_page list
->>> (see folio_clear_hugetlb_hwpoison). So page allocator has no hint that
->>> some pages passed into free_frozen_pages has HWPoison. It has to
->>> traverse 2^order pages to tell, if I am not mistaken, which goes
->>> against the past effort to reduce sanity checks. I believe this is one
->>> reason I choosed to handle the problem in hugetlb / memory-failure.
->>
->> I think we can skip calling folio_clear_hugetlb_hwpoison() and teach the
->
-> Nit: also skip folio_free_raw_hwp so the hugetlb-specific llist
-> containing the raw pages and owned by memory-failure is preserved? And
-> expect the page allocator to use it for whatever purpose then free the
-> llist? Doesn't seem to follow the correct ownership rule.
->
->> buddy allocator to handle this. free_pages_prepare() already handles
->> (PageHWPoison(page) && !order) case, we just need to extend that to
->> support hugetlb folios as well.
->>
->>> For the new interface Harry requested, is it the caller's
->>> responsibility to ensure that the folio contains HWPoison pages (to be
->>> even better, maybe point out the exact ones?), so that page allocator
->>> at least doesn't waste cycles to search non-exist HWPoison in the set
->>> of pages?
->>
->> With implicit handling it would be the page allocator's responsibility
->> to check and handle hwpoison hugetlb folios.
->
-> Does this mean we must bake hugetlb-specific logic in the page
-> allocator's freeing path? AFAICT today the contract in
-> free_frozen_page doesn't contain much hugetlb info.
->
-> I saw there is already some hugetlb-specific logic in page_alloc.c,
-> but perhaps not valid for adding more.
->
->>
->>> Or caller and page allocator need to agree on some contract? Say
->>> caller has to set has_hwpoisoned flag in non-zero order folio to free.
->>> This allows the old interface free_frozen_pages an easy way using the
->>> has_hwpoison flag from the second page. I know has_hwpoison is "#if
->>> defined" on THP and using it for hugetlb probably is not very clean,
->>> but are there other concerns?
->>
->> As you mentioned has_hwpoisoned is used for THPs and for a hugetlb
->> folio. But for a hugetlb folio folio_test_hwpoison() returns true
->> if it has at least one hwpoison pages (assuming that we don't clear it
->> before freeing).
->>
->> So in free_pages_prepare():
->>
->> if (folio_test_hugetlb(folio) && folio_test_hwpoison(folio)) {
->>   /*
->>    * Handle hwpoison hugetlb folios; transfer the error information
->>    * to individual pages, clear hwpoison flag of the folio,
->>    * perform non-uniform split on the frozen folio.
->>    */
->> } else if (PageHWPoison(page) && !order) {
->>   /* We already handle this in the allocator. */
->> }
->>
->> This would be sufficient?
->
-> Wouldn't this confuse the page allocator into thinking the healthy
-> head page is HWPoison (when it actually isn't)? I thought that was one
-> of the reasons has_hwpoison exists.
+> >>> And do we need cc stable?
+> >>
+> >> Yes, please.
+> >
+> > I added:
+> >
+> > Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+> > Cc: <stable@vger.kernel.org>
+> 
+> Hi Andrew,
+> 
+> This patch does not fix the NULL dereferencing issue yet. Wei is going to
+> 1. send a patch to fix the bug on top of mm-stable,
+> 2. resend this patchset on top of the fix in 1.
+> 
+> This might be easier for back porting the fix. Maybe you can drop this series
+> for now.
+> 
+> Wei, do you agree?
 
-Is there a reason why hugetlb does not use has_hwpoison flag?
-
-BTW, __split_unmapped_folio() currently sets has_hwpoison to the after-spli=
-t
-folios by scanning every single page in the to-be-split folio.
-The related code is in __split_folio_to_order(). But the code is not
-efficient for non-uniform split, since it calls __split_folio_to_order()
-multiple time, meaning when non-uniform split order-N to order-0,
-2^(N-1) pages are scanned once, 2^(N-2) pages are scanned twice,
-2^(N-3) pages are scanned 3 times, ..., 4 pages are scanned N-4 times.
-It can be optimized with some additional code in __split_folio_to_order().
-
-Something like the patch below, it assumes PageHWPoison(split_at) =3D=3D tr=
-ue:
-
-From 219466f5d5edc4e8bf0e5402c5deffb584c6a2a0 Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Tue, 18 Nov 2025 14:55:36 -0500
-Subject: [PATCH] mm/huge_memory: optimize hwpoison page scan
-
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- mm/huge_memory.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index d716c6965e27..54a933a20f1b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3233,8 +3233,11 @@ bool can_split_folio(struct folio *folio, int caller=
-_pins, int *pextra_pins)
- 					caller_pins;
- }
-
--static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
-+static bool page_range_has_hwpoisoned(struct page *page, long nr_pages, st=
-ruct page *donot_scan)
- {
-+	if (donot_scan && donot_scan >=3D page && donot_scan < page + nr_pages)
-+		return false;
-+
- 	for (; nr_pages; page++, nr_pages--)
- 		if (PageHWPoison(page))
- 			return true;
-@@ -3246,7 +3249,7 @@ static bool page_range_has_hwpoisoned(struct page *pa=
-ge, long nr_pages)
-  * all the resulting folios.
-  */
- static void __split_folio_to_order(struct folio *folio, int old_order,
--		int new_order)
-+		int new_order, struct page *donot_scan)
- {
- 	/* Scan poisoned pages when split a poisoned folio to large folios */
- 	const bool handle_hwpoison =3D folio_test_has_hwpoisoned(folio) && new_or=
-der;
-@@ -3258,7 +3261,7 @@ static void __split_folio_to_order(struct folio *foli=
-o, int old_order,
-
- 	/* Check first new_nr_pages since the loop below skips them */
- 	if (handle_hwpoison &&
--	    page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages))
-+	    page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages, donot_s=
-can))
- 		folio_set_has_hwpoisoned(folio);
- 	/*
- 	 * Skip the first new_nr_pages, since the new folio from them have all
-@@ -3308,7 +3311,7 @@ static void __split_folio_to_order(struct folio *foli=
-o, int old_order,
- 				 LRU_GEN_MASK | LRU_REFS_MASK));
-
- 		if (handle_hwpoison &&
--		    page_range_has_hwpoisoned(new_head, new_nr_pages))
-+		    page_range_has_hwpoisoned(new_head, new_nr_pages, donot_scan))
- 			folio_set_has_hwpoisoned(new_folio);
-
- 		new_folio->mapping =3D folio->mapping;
-@@ -3438,7 +3441,7 @@ static int __split_unmapped_folio(struct folio *folio=
-, int new_order,
- 		folio_split_memcg_refs(folio, old_order, split_order);
- 		split_page_owner(&folio->page, old_order, split_order);
- 		pgalloc_tag_split(folio, old_order, split_order);
--		__split_folio_to_order(folio, old_order, split_order);
-+		__split_folio_to_order(folio, old_order, split_order, uniform_split ? NU=
-LL : split_at);
-
- 		if (is_anon) {
- 			mod_mthp_stat(old_order, MTHP_STAT_NR_ANON, -1);
---=20
-2.51.0
-
-
->
->>
->> Or do we want to handle THPs as well, in case of split failure in
->> memory_failure()? if so we need to handle folio_test_has_hwpoisoned()
->> case as well...
->
-> Yeah, I think this is another good use case for our request to page alloc=
-ator.
->
->>
->>>>> inside the page allocator (probably non-uniform?). We can later re-im=
-plement
->>>>> this to provide better support for memdescs.
->>>>
->>>> Yes, I like this approach.  But then I'm not the page allocator
->>>> maintainer ;-)
->>>
->>> If page allocator maintainers can weigh in here, that will be very help=
-ful!
->>
->> Yeah, I'm not a maintainer either ;) it'll be great to get opinions
->> from page allocator folks!
-
-I think this is a good approach as long as it does not add too much overhea=
-d
-on the page freeing path. Otherwise dispatch the job to a workqueue?
-
-Best Regards,
-Yan, Zi
+Dropping this series messes up later patches.  I could of course redo
+things but would prefer a fixed up version of this patchset asap, please.
 
