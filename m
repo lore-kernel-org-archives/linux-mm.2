@@ -4,133 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E73CEE343
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D5CDCEE347
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 18:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D95F66B0096; Tue, 18 Nov 2025 12:59:01 -0500 (EST)
+	id D36C56B009E; Tue, 18 Nov 2025 13:10:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF8426B0098; Tue, 18 Nov 2025 12:59:01 -0500 (EST)
+	id CE68C6B00A0; Tue, 18 Nov 2025 13:10:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B723A6B00A3; Tue, 18 Nov 2025 12:59:01 -0500 (EST)
+	id BFC3D6B00A1; Tue, 18 Nov 2025 13:10:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D9896B0096
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:59:01 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42C1355EFD
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:59:01 +0000 (UTC)
-X-FDA: 84124488882.04.8CED97C
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3B271A000D
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:58:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XXZZLFHR;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763488739; a=rsa-sha256;
-	cv=none;
-	b=6mChaKPH4ejYhomolsx2z6yq6Ix+GIMQx5d1JO3xstQNnxhEJePL6zeOVfUqhhAh6BKNri
-	/AgSSqrAmOCw5UMNFeWYEN15KujlzIfjs3fkz/Ii3HGDAktDgBOWQPBwGGsJfbH+ZXnzJb
-	H94XuXsqRvPg69gdeLxBSqkawKB93Ro=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XXZZLFHR;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf15.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AAA7A6B009E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 13:10:54 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3AEFB56500
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:10:54 +0000 (UTC)
+X-FDA: 84124518828.17.D19280A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id ABB6310000E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:10:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KGRhe/9V";
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763488739;
+	s=arc-20220608; t=1763489452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+caJNDkTSm4p2uWmUOI1wRaGCCJeFpF1smMqUtSo0I4=;
-	b=J/ZV6Qrc0RmNrebSoxq2XJIZvaS+pKHm94WVgWTKxmTGp+rwmJTjItkrU/rzvM1gYVNhx2
-	JnkavQcRYeZB2nwxAvpkkd2jeG7ycMwilIBTGYAPvObkatFx7yc6PAOLhu1ElmwCP8ZcTi
-	zaXSjTyjyrvm7WFOfPllW235y4U2xiA=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so8739373a12.0
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:58:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763488737; x=1764093537; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+caJNDkTSm4p2uWmUOI1wRaGCCJeFpF1smMqUtSo0I4=;
-        b=XXZZLFHR5DOQxEdCx4/66qK0GVpAKqb9uYg3lSb4PStNUZkjjTV8V8Vc2ceyVGkKE+
-         RfBwcjJoz7eWu4bg2i26osTNzJd0B2o58lWfOZBkaPgXfZyJ4g+tmSZt+wLnpdJLX/Lo
-         +KAjP/80nDKD23mWjgGvVphOSbAgkzgjWKh3pqhvwxfjlDK6HhF/ebMLtKhAoU60sWVB
-         5Gyx9JbRigBa/nnRtl/YThA8HFhzdikAmV856enuSmd31Y+FOkePBkbx/kYenDecdq4g
-         W5U1Gioy3laMEC26nDfu328tfdW+flMa/TrWxS+hVG7yTaVO2VZnB0pggWdiKF2C38Rj
-         GQiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763488737; x=1764093537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+caJNDkTSm4p2uWmUOI1wRaGCCJeFpF1smMqUtSo0I4=;
-        b=mlEiOorWxh6FweuyZ9fMQhPxCcBLPgp7CgsgYabHvrGfWRZgKbSXeV0svdtL/lNGmw
-         1a2cfHZ5prt/E88XPeFfIKhkojVpo510dr0tiQnsc6JVqF843wm/eCzAmd8WcgPfuGQj
-         tjYsdZSM1F3fp5jkZtxMTinUipTOxgwnDMiCUpv3wMkObA5QeipBTanL6BpkFJReiSDX
-         ku9OgSa5MVtGvXMgncbs13CwX5713b2O2w0rymEbkZ1hRw4PnEcdVqD/L9ZJUQaRwOaM
-         ZSF+xp+wqJZjx1NCzMp8Se2MmReC35CJyNBmMHwF7zgkK3qMsowhLnQrftCJoEsuT3HO
-         odXg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6PKlegKRxV7PfZvfrlpzcG5mH6plELu8Hip4jD+IqOfwDfvZMwQK0saXxwlsw2iZS6TS6lo0okw==@kvack.org
-X-Gm-Message-State: AOJu0YyOsCNEatHXZ8mPhrCUScx/uhHvln8dya0UHWzgbSKhxVBufuX3
-	CuWH/0QEroLQjNJDkKnmVQspnRWut67sUh/+7ukVjnVslPabUzQbUKgVmkymOrwHtg8tazcRGIG
-	/5h4rWGAsMcEqc92sICLDDk7iqCNjOXbv7Z55x13NuQ==
-X-Gm-Gg: ASbGncug7xv6v2vo8DcBSghBxy3cKVAj5Zn1qaNF+eabIJqAZTPzuQGBZ/4A1NfoK1V
-	J1CyjqaW719KY/pNutoQzDkck94VeOxbAgaEATJEGsKASNNzSYTPpVm7BYDbZS7LVXeShqtMADQ
-	2b/qTNOKzCvZXPrRbwBYNYOUf+J9fnsD9T/v8ubYFQgjDWXvxlcAwAy7jH4sgDtmaqy5IzcQ2Qo
-	+/PMOtJElkXc5CV1hIuwdz6Whxlf+Fk2mvfiiW19MmBUtZXXGrK4rlJmrBXknoMp/SWLYOigw3t
-	YFQ=
-X-Google-Smtp-Source: AGHT+IHLtEGa6tvFkUsvSNc6SGJ8gqqqGO2E3eFWqdurGTWqPWn/X+W1lUYZN0I7kpLDC0TLDDfvSxnHQDVTVoLPRis=
-X-Received: by 2002:a05:6402:26d1:b0:634:ce70:7c5 with SMTP id
- 4fb4d7f45d1cf-64350e89998mr16647067a12.17.1763488737365; Tue, 18 Nov 2025
- 09:58:57 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qn+AjTDGoUktBthzjiX+VXPZpfCo/hGYtUUP0NyEVEo=;
+	b=j1rhkZ0yvR9C6bwYS/R2Jhi0lAyCYzx+izj275XL9KQ6NbouaQh4g3y0Z6Y0SeJ0YeFx/T
+	judDW1uwPNWp8H5u2CQR/O9TXGmBTt24t4VVFlb59i53ttYLk9YMnbYdYQDpHWs/0Uq2KV
+	YW0AtoaAYSyUqzjBG5Lb5qbHSQ+CkvA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KGRhe/9V";
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763489452; a=rsa-sha256;
+	cv=none;
+	b=ZC/LDSS3mgBPrAG8yjxz/MKxWXGmH2d9GgNBWtDjh6JfIXY9IdpyorghmJjVJ3Ph9VGTsg
+	LXyH9LEqz6AnVhKVQr3p5e3wN+I7/NzRKMDM796eVIghmW12y+lXuQ/yboxZ9WnnzWtzqi
+	Rb6LY3+SUIxCiFKD7yAhsdOUmqquqEI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 11B456020B;
+	Tue, 18 Nov 2025 18:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D838AC4CEFB;
+	Tue, 18 Nov 2025 18:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763489451;
+	bh=fOpeaPbF1C83S+AnriTWnUlfDJdmGqoTy8hMXQsnkJE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KGRhe/9VTVaNtHgMudCOU5AifM3JUAT8EBLPPuwbH0NsbWJas3sUy6iQkmuBxZ8Z3
+	 rLqAm4yN59fr5UDfbN5AV5nyfzOc4bKV7PjwQc18uDy7+OlaeZVxmXjE7gwP+tA+XN
+	 aYzJ9nGU65SSzcfzjf3PoFjz2Mh9Q3kfT9ZrU2RtvE9Pvegq/Qo6XGzJ+GiL1Zggi1
+	 tMf8mb8g2CsnrTg2c5xan9f7UKsRyfD2hcNoWcL0FUtURxz/pQHXKN5lIz2XJldTG+
+	 QVDZIvnvltc9exEtGnCkUaNCCL88dfNX8RURa5valgM46ZPSq25EkjDkU84BiDVD0T
+	 Cmg/Zb1UfCEcA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>
+Cc: kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] test_kho: always print restore status
+Date: Tue, 18 Nov 2025 19:10:45 +0100
+Message-ID: <20251118181046.23321-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-7-pasha.tatashin@soleen.com> <aRyvG308oNRVzuN7@google.com>
- <mafs05xb744pb.fsf@kernel.org>
-In-Reply-To: <mafs05xb744pb.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 18 Nov 2025 12:58:20 -0500
-X-Gm-Features: AWmQ_bkVrSTIot3zGMN2pIgE0TFCb1-KBBBDf9maAEVJdIwW1B5_ckvdlEwn_pk
-Message-ID: <CA+CK2bAqisSdZ7gSBd7=hGd1VbLHX5WXfBazR=rO8BOVCRx3pg@mail.gmail.com>
-Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems callbacks
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: David Matlack <dmatlack@google.com>, jasonmiu@google.com, graf@amazon.com, 
-	rppt@kernel.org, rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
-	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
-	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3B271A000D
-X-Stat-Signature: hjtkiqagshfx1qmhm1d9ytjfpgyjcwbr
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: ABB6310000E
+X-Stat-Signature: bzcnkqy1ik3mbwcnoiu19gom734o895b
 X-Rspam-User: 
-X-HE-Tag: 1763488738-452611
-X-HE-Meta: U2FsdGVkX1+pAxQXB/OrZTFdu+8V4dbQ7CEUZsSIXK9VczkMS7T44uCqO9fmAkeoVm04ZyO9sZsk3ooPNkTEfTeNJqjxKEjur3Um3L6HRsgNknccEQNu5isv/hmP3q+jZVtD52z/skfyxm1EDsJFJBvuJOq/TI2/7vjuV1dDR4RgUXX9gG0ppBtoviMNfeWLuS5XcDRhboGNV1dUT0JeKkFYOxbAgC0JM+Qi61NRMgEks0ouedBg+/6vspyDll9jbsrR07weNmLbbKV8TlqpTTZgbdBziAsfKbMLt6v7mkEaM43JIKYEyc8H01VSIt93XL7EVgwHN16B0Vi8TK/8GZQtrLFmcgyAliMkv1sHQtT3TU81i/qoLIigIhJJ/z7aT+p312XCW3NW68iaL2fDrWGlvE68uyYZwjbRfbeSQ/eXVGxU0o9Ch33S2773nKoBEW/QrZ5P5KZgutw4mGl5ZjwY8fTH/ZAm7Y8EJg8ersAmiOipEQp1Od778aGisVCRPY6VNxnmp0aplpeNSPjpvF1St/6mPeFEcWYa9vIsUqnm6FcqwkWYvsuldprVPUhc1F4oFy9F3sm/Vti5PO4e4H2FPiG247XVkRoge6z1Dsqny9dTqvhROGN2a0nP9q1QO8FcqGRFCWQGtn4DxQbBsCDiPZyS0O4duaXtfbNpPswzpOHR28NEyWzHUhQW/QXrqONef1T7U6FLfnisTPlOkC0NiHmevlLEL+HhLtqk8sA0xQJDCX2ftYPmZyGSlac/ifaYMX9Nv2xVUaX4uQbcBUTiJyUwoXFn3clQGFi5JfcJJLemxDnVpZwkXFhSg/2unz8SnfZaaOAbXQO4xvkeVlIxXh/zjVYRaovotEYpfCRU78JKtyVVPMCHRpYYLt41Y2mzzXJoIEVbwg2gHb+zWS/MkiwTLn02kIXr8wv6YDTsoOvYRxjqicftL3pCY1jVtiwJIkCksyMpjWcjLll
- pMg+z0/d
- Dxyu5yYpSJkIlZU475qjn+cMAihbkroMsTtzBg5EYgZ/wp3FTU/7Yo4wBfiR7HPOcQHHKrnmFNk2TAUXYzQZAVFTY4v+TV2JheNTVp8xdXqyz5JhgLpAqLX1d3Z1oDngMZl8zva2v78AoEmTSsyYLPFaAaeQcDSEFCDcU78BFvISACVEhKEo6XENQFzDt9m6zR5Wb30SNwvNrMwqUJ//iU1tiZg4y+ADD2ykg400i5/kYam4Av7RktMR3HahwxayOX36DR8DCFT2K5ZzendZ2Lv0VehpuXvd46dDSAAo76hoxmqunzLT5fuBWV/SEiQIwes6l41zJmf+txnvS0s6rbZikV57l9g+uju2844vTqDcNb3GWWL3exBOwjUVuChknj20vvBcZZ0MgdaE=
+X-HE-Tag: 1763489452-160330
+X-HE-Meta: U2FsdGVkX1+oW6ZDpyaOsYvFaN/Ci/kaDHZ/AvGZqu2S/wCkzJD8tiBEi8n/ru6JA8gPb6RWQdsustDqV6cJrfRzWpLx+cnlKzkShXNhKp90V8gl+8jZeyDxk4xjku9WZ2k91JLjsxEU32EvfjHWhPApVVTIQDMmIrxkNLZdeTH7c1gkl67My+WNK1xT0VZZOtj/uUdI/5GB0U71K+Taert/3LFyq4AqtwfOGB+dWZ83DPdB2QcrtM8Q352+RXfHG0w0DXvCiom7BNJ7WjqXRKqGozhLzAwVtXXI5+wpAegSXrjLiXt03HOtBdHpNXP6NPLR2AU4PNdIHqPcv5GHKybzX+c/pvg8PmSGlSS4rSrOXlMG2fVEKTiAgkv7Cl5d1bYUaKiepVxVCJ70EbxQg3Xd2fSJpZXSE0OqqZFR0P1spaFTuW3TilpVBJ50iKPeiTUxVUOYdOKGhxEZkA0DZnHd5F6CZTyumHV/XPxyl2lMLAloI6O1zFWT1zdTVLSmsGNiNtoIhqGR5Bsy0EfnlABmXCFBorT3CZPh7qGx5SJdDKknRk/kOMyHDpDa2GcSUQ31nxmN8JFKB6xTcgvYUsdjtQFxZT1VbYQw/aBxjJPXqKn8H4p5nl6H4YP8w87FJIQfzPiY/Un7TrYMPe7NkJ9aMEHSGGXsr56Bxps6k+C6t7g7hT97I21yg0A2yF5w1xmCkDj8jcxejgfYkrSHoWnKZQ2NbMqdvw9rb6x1tiLwcSeh1+3pdwH0I/2IHIhAS04IRDqYSNo76HChfbQlnJFOmbLypYnomEMuEcKsKB45qWj6xtIBi7yIqeJrvoe6yd1qfk4IXq6NUROZyAvO70pgSomqGzt2nNK6Gm7NGU4LQXGIgiqtAo3J87LkhqLyiVfWMOp5QHtMECWiyqrwWD0jNM/mA2eMpuHNTNdAeDpsYTr+ctoNADozmWeMdul8hg5KqU5onrCq5GjhDyl
+ T4/TqAxY
+ afiV74OM5ZHEyYhvDHL1wKoEGfwSw7mxDF114ETMAIYhWpRD9pqMDORpRD2U/4u0NIaXA2Gq2JQCygpPpFYFMYsgx8Aj0c6yotFdMD2+5fQDjCXUVKY1n6h76BXNVDi9K7q6fUjnU6T1pM0BUU0mYNsFptkOGUfctvYpoSEjogSnIPVpcn6FkbssOpaFRqKBmVTi2qyiRLq4Wh424l7MVMrQ1+iF8Q3hnWKLUCO6qC7SGd6bV8en88mi9TI52MpQpmXiWAUC1rqv0Zy8dg0LZ83JK3w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,61 +94,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 12:43=E2=80=AFPM Pratyush Yadav <pratyush@kernel.or=
-g> wrote:
->
-> On Tue, Nov 18 2025, David Matlack wrote:
->
-> > On 2025-11-15 06:33 PM, Pasha Tatashin wrote:
-> >> This patch implements the core mechanism for managing preserved
-> >> files throughout the live update lifecycle. It provides the logic to
-> >> invoke the file handler callbacks (preserve, unpreserve, freeze,
-> >> unfreeze, retrieve, and finish) at the appropriate stages.
-> >>
-> >> During the reboot phase, luo_file_freeze() serializes the final
-> >> metadata for each file (handler compatible string, token, and data
-> >> handle) into a memory region preserved by KHO. In the new kernel,
-> >> luo_file_deserialize() reconstructs the in-memory file list from this
-> >> data, preparing the session for retrieval.
-> >>
-> >> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> >
-> >> +int liveupdate_register_file_handler(struct liveupdate_file_handler *=
-h);
-> >
-> > Should there be a way to unregister a file handler?
-> >
-> > If VFIO is built as module then I think it  would need to be able to
-> > unregister its file handler when the module is unloaded to avoid leakin=
-g
-> > pointers to its text in LUO.
+Currently the KHO test only prints a message on success, and remains
+silent on failure. This makes it difficult to notice a failing test. A
+failing test is usually more interesting than a successful one.
 
-I actually had full unregister functionality in v4 and earlier, but I
-dropped it from this series to minimize the footprint and get the core
-infrastructure landed first.
+Always print the test status after attempting restore.
 
-For now, safety is guaranteed because
-liveupdate_register_file_handler() and liveupdate_register_flb() take
-a module reference. This effectively pins any module that registers
-with LUO, meaning those driver modules cannot be unloaded or upgraded
-dynamically, they can only be updated via Live Update or full reboot.
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+---
+ lib/test_kho.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-I plan to introduce unregister support in a future improvements to
-relax this constraint. The design I have in mind is:
-1. Unregistration will acquire the singleton lock on /dev/liveupdate
-to ensure no new sessions can be created during teardown.
-2. Verify that there are no incoming/outgoing sessions.
-2.  File-Handler can only be unregistered if there are no FLBs
-currently registered against it.
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index 85b60d87a50ad..47de562807955 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -306,7 +306,6 @@ static int kho_test_restore(phys_addr_t fdt_phys)
+ 	if (err)
+ 		return err;
+ 
+-	pr_info("KHO restore succeeded\n");
+ 	return 0;
+ }
+ 
+@@ -319,8 +318,15 @@ static int __init kho_test_init(void)
+ 		return 0;
+ 
+ 	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
+-	if (!err)
+-		return kho_test_restore(fdt_phys);
++	if (!err) {
++		err = kho_test_restore(fdt_phys);
++		if (err)
++			pr_err("KHO restore failed\n");
++		else
++			pr_info("KHO restore succeeded\n");
++
++		return err;
++	}
+ 
+ 	if (err != -ENOENT) {
+ 		pr_warn("failed to retrieve %s FDT: %d\n", KHO_TEST_FDT, err);
 
-Pasha
+base-commit: f0bfdc2b69f5c600b88ee484c01b213712c63d94
+-- 
+2.47.3
 
-> Good point. We also need when using FLB. You would first do
-> liveupdate_register_file_handler(), and then do
-> liveupdate_register_flb(). If the latter fails, you would want to
-> unregister the file handler too.
->
-> --
-> Regards,
-> Pratyush Yadav
 
