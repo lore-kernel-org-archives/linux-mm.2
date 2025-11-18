@@ -4,104 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDCD1CEE350
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06F37CEE351
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:18:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46DF46B0062; Tue, 18 Nov 2025 15:18:34 -0500 (EST)
+	id 691666B0098; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 446136B007B; Tue, 18 Nov 2025 15:18:34 -0500 (EST)
+	id 668ED6B00A9; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35C4C6B0089; Tue, 18 Nov 2025 15:18:34 -0500 (EST)
+	id 557E26B00AA; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 23E8F6B0062
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:18:34 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EEA2D1601E8
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:18:33 +0000 (UTC)
-X-FDA: 84124840506.16.A4C77AF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 566A6A0003
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:18:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CzkuG0mN;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 41D0F6B0098
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFB9E1A015B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:18:55 +0000 (UTC)
+X-FDA: 84124841430.03.39D4BE1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 72F991C0014
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:18:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jQfDsn61;
+	spf=pass (imf18.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763497112;
+	s=arc-20220608; t=1763497134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BLmsq2NfaIKl1VBZU65/oJ5aA4deK7TKcI+7lhULTzg=;
-	b=P01dAaS5SZ0Nps7uYqCNFucqx1tO4NQs4qL42TDkdZZh5EpXLSGUDFQK48gJELURP+vhYb
-	YcQF1LbcSIzPN1qfeE51qGJzvv4AJ8jPqJrsT9WXKNseGwUpfbQs+8HSoGR2W1WaB8tqJA
-	qO2WQPhTc6Vom7leTiDZ4pwwFdG+Tas=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763497112; a=rsa-sha256;
-	cv=none;
-	b=dxxpy8Yfr1iHK+WHg6MexKx7w47U4mMlHqbWGS/PyJm1MMQfTzcf9QLaB+zgk79Wz89jIY
-	1VBZVKLPqNjSio5YZI9vT8yfiZc/xPhAz/Ulk1AF0ZFBWPbnQbNy2Pc1T9R8ps8h74tC39
-	YKAdd254MssCKm/mPtGYo8iHCoEb7RE=
+	bh=45iaqGzeloD/PkIxgTPLmEveJVPtdH+50bsoXaS0q4A=;
+	b=JWd9OfCrTOgtkyfxFyaolW7euv/UUE6V/sxOWgzLkXVrdG7uiPCDvvwwEpd9VEhamocKTj
+	kiDXTvLI3a+ax9gsR0qQtKB0JSpW9twtDaOLAXp+2lUZM6R8Hko+eMd6uziAvUvBJu7WCR
+	/6snXNRcIXNRZnxSGbpLe1kN60kECog=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CzkuG0mN;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jQfDsn61;
+	spf=pass (imf18.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763497134; a=rsa-sha256;
+	cv=none;
+	b=iNTRQboCX8i0XoDThZlazFjA9mGy3DxN5julmdMRFOuBKbCRXrTWK6PDTeIdpYLI8+1IP6
+	rD6EcYq2iOE3VJMUtlN8wNqFXtvumj2pOtX6S2GmlsWGEV8zkkOYR3L2yt9+wLp239v3tG
+	px76xNA1z0Zi1NWkVOU/xtI/fl0mg/4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92589601B9;
-	Tue, 18 Nov 2025 20:18:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39B5C2BC87;
-	Tue, 18 Nov 2025 20:18:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 63768438BB;
+	Tue, 18 Nov 2025 20:18:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6C3C19423;
+	Tue, 18 Nov 2025 20:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763497111;
-	bh=KdE+M0lVIS0HGmtD8Ko2F3jFdIzWzLb9S0ujof4OTvs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CzkuG0mNeQpbD3Hy+tj4eX/rn/+E3hFsBaVnbuNLfyC/t2+TLwKI8d549T7QP8eW8
-	 sQisDVOZD0G/5KwwegU4hVX5/hojgUlgx3ADXDvOu07qrfjr2KHDTZ0gFdWN8ssswZ
-	 7ETlZ7miEGm+0CO0XPnoARSKuW6XAKd4KL1K8g8jDQbVaFvTIC+vFyIo2f75DpI24l
-	 qeR6dM0weLyxEj3kGSYAmHUkmoFYHnYo+ecYAeor+kZbc2wfhJLOlVOSyRxP7mwcou
-	 +y47JzdCggFaeknWxJA3dsNmvBpaw5REHP4Fm0FuBfRI4Rxskb7TP1LsTX07tEPXGa
-	 BgHC+IGmVtNAw==
-Message-ID: <249625c7-eb2a-41f0-94cd-4551e5a38f73@kernel.org>
-Date: Tue, 18 Nov 2025 21:18:20 +0100
+	s=k20201202; t=1763497133;
+	bh=1gK/eOl0lFoJx/Qsgws6pSF6IokRCQEg1Ra5CF1IxTY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jQfDsn61vufo6YOfQo79y+Ndb5/49pM+Kzub8NVaHCny22FBzQnFTrSLg2XdPo1s4
+	 q4Q7m4B585DTvH5HVWQ0DO/E2wa7u3fFCYB85WskqwPYKBTtnUrrPrWPRE5C2Ymwu9
+	 XI6NikQcB+qyFCqrr5w+MjHt0GyCFcaWHiNnpAZuQe+VtouSDZ9qJ1I29igbCkZOyV
+	 6JDMlf1DxIGJwl0KrKoWkLUy0geHXeEkVLKutwvuAT1n5/hnFBjFl+IVPa8640+D5j
+	 uK0n9LGxWeIjzuFUFMy16vZC128qAY115S6xdY8r0buoE9dRHyEPS8qfYYbszF8xDd
+	 vw0kkKc8fqFoQ==
+Date: Tue, 18 Nov 2025 13:18:46 -0700
+From: Keith Busch <kbusch@kernel.org>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH v8 09/11] vfio/pci: Enable peer-to-peer DMA transactions
+ by default
+Message-ID: <aRzUpmUkDy-qN5c1@kbusch-mbp>
+References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
+ <20251111-dmabuf-vfio-v8-9-fd9aa5df478f@nvidia.com>
+ <BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory.c: introduce folio_split_unmapped
-To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, dri-devel@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251114012228.2634882-1-balbirs@nvidia.com>
- <5b481d76-638d-46d4-ad98-5508fc8b715e@kernel.org>
- <4daec24f-c97e-4c26-819b-e7762b301036@nvidia.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <4daec24f-c97e-4c26-819b-e7762b301036@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 566A6A0003
-X-Stat-Signature: 7te1ige3bmk87azw6hifhwg1iam95rxe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 72F991C0014
+X-Stat-Signature: 6mrshcoz5y31d3k1ejmj6qm1nnhitw7i
 X-Rspam-User: 
-X-HE-Tag: 1763497112-319510
-X-HE-Meta: U2FsdGVkX19ahgVvwe5AHCLPdHNZzGY/3h0oDL34OheyJMXP7wVwzk86OV+dCMDtqmHzQ6pZS6rSQQZHh67wqkJHzkWoSPng8AhB83oZA8yZeFwUOxADfPJngjb6XohbCPDGjxfsx7ApREiPPjbc2VLWuEKklrVLAGQcZxAcQJ+50vAUaBKHXR9eZfkuuOCzjLsKnKVsDT9Ud9yWSQXp2JD/sMuNx03z3n8vJepaUgUs/nrnNp5vAzDBq4A19gu444ichLXpO9NHMJQdYOC+RoRBrzj2bVxERvDOzuUOZz+j+kOGPiJXtHWoZWs65n518HT6fXYLXadGRdX/mBmBDZitt0XTMXJ803mCLW+R6ZbY34VYdz9SWfkg6KOu7TZmlRG1peAwm2OCrzQkozqgHR1q16zbbYMV6x8XslWlQPzQ/uqDwiBfPuURea16gZ18LeRxVJ65vdONGjkM6fzbBf1GrHeE/wgy1aq6MFmJsbUD4PPzTJEQsAFJcCaD3pNMr+8cut2U/BtmAQtwOQEfBAc9LqCyEh6j7qhQQ43ddhsnqvTSIrYN1ZJ2f5VCOPSebVKS/DH/MsEqVfow7o5sAx5DPnkQNlD5JXDkT7v52URiwevGy8IzLoZNdbafjlyOenDG4viKcFvMHKwceKqY6uusrrP4puQ2iTYH55Tsv+FYpYWkilCpsTbWKCKcyDLfRpIoPZey8PnMNtTGNbsla6WxNyZnyikpP1AvWLG94g4afF7d/d6p3SEl+k9gRV55NbPaUR4/zGht3mJzJgzJbEyCPxUcxZsPnWMJxhJ0+p0Jhe8ZdvlqNbRK0Wo7bRPyFEA5I/5XPdClI+WM+qkM5lZOtpRIlTqBFc+Z2rwLDu4UobnjLHtGiQNcz2dIjJ8LUxq9snM/2p6N0sLSyw1QylqrcEY9D3k7HVoYeICKhKBJC7STmdg5TkpzVu9V2jlSGg7iGKVs1/JZJbxlZRc
- 53JSFGOj
- zpU7LbeXfdhGE9DEGW7xjQyK2gYfexo92MzuADtJkdnhknXSQIPMX66YNQBqXp1Wna6bd1ILCEuN8B4BJl16SfUqp/WHBDZKKs44AIDWWSEi5pjoswtVK44feldPh3/Koel965Tc+Z4bOXEn2KV+2ar6nqm7AUPCIYixZUt8pPbJc88jnXt2Plpv9dWBfywCaHQtZ73RJogNLqI4kyjDkmrkPi8Ke3HmhkfPu/iuBhfGbQ0DGLCguDlWFOA33lD3eW/hxsn6Bc2yoVq2K02emW8PbhiV/2tN4ePNK15gzGte8CweIJDGh3/wml+tdO1jT8pUv3nz1aeOw6Z7Qg6nOqjMA7dRh8xQVC8tYFVD5pceP4VVA3oY01Jyi0mAb69oGmp1vel/0eo0fyo01ORzHdRggMw==
+X-HE-Tag: 1763497134-45764
+X-HE-Meta: U2FsdGVkX1/3VgNor1n2lDYI5GIgKrjwkBTM6qDONSdXAQmpmdpDyI7DtDNvy9qVHUGwSIbtl+HY1Cqx3oMFba/iP9lNEOocUlyR8Tyu9HiG2itPtkUhx26p6oAiq+IQjeo8vgFbNs9H3+/tkuZoW5u/NeDXGbuyrgxxFBNxPaP0Rnp9el3tdn9RK6JG76GApoEc6LBsLidzWaR6/TE2D95jBpSo8epBtZ3CPz0dZD9BcEMZdES6N7MlbeIqXo27WyS64QnZQC0Z3FQORWxjYqM1k/JaBNtuZS/U3Q5LsPRwo9AU5C3HQvBOBxNUA/5OVwZvpcSOJHSGqVrMAE6QL7ViNbqajr+LXotCotQr6SSElIdKMQLCE8JGkaPZPbJ7fUv+DA7admDuTDkd+pwg1UzTTjCA342IQlL4tl+UHDQOiCpmDaKi6aYWpfXJ2feVBLRlB4tzNPs4V99xnpNt+M8gBxJZl7QUzXCImzZF+vRmQUZKVJKogXd+qS26a39g23hl3i3XYe+AKihZekTmpKjG0T1y6/OU9F5uGez2Y/01WFuay91njayWtFSo8IQ+C4OEY5nTBRUsOLyx4Bht4fkr5drQdaTIFRoneJpkBbnKHc8SuMja4HPCBJROO4m3uVbOleWl9tVCPHaLW8/SLj0MqSUeSnRef5UXtv1KKIVBWhY2S29+aTUrb/Ge/UNA87TDS7U795ftYYwV8PvSiYq6vNLHPYjigiF4wvkg/7sVYFr9M4v+uQGt94wccY0b5Pf9fRGHUtjvOpxuAiuLVQwIYMhpFbeXxeMLBKs4QiArDhMGcmhMd5TPDMELJnD7ZDLAHbOVZR93kpr8GQt7ZCrUM08yyPbtz1ecmvwEdy3bYQp89ngYiKNi5nE9y/Oj5kiDIo6xc9Snl6RKkh7xvdB+bCVrE5yr3dRdBDH09U1hn4S9HBhZesYpIR2HlCLZLbAKcMH3SkBO/kW59Xl
+ KKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,39 +120,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.11.25 10:10, Balbir Singh wrote:
-> On 11/14/25 19:36, David Hildenbrand (Red Hat) wrote:
->> On 14.11.25 02:22, Balbir Singh wrote:
->>> Unmapped was added as a parameter to __folio_split() and related
->>> call sites to support splitting of folios already in the midst
->>> of a migration. This special case arose for device private folio
->>> migration since during migration there could be a disconnect between
->>> source and destination on the folio size.
->>
->> Didn't I already comment that the subject should start with "mm/huge_memory: introduce ..." ?
->>
+On Tue, Nov 18, 2025 at 07:18:36AM +0000, Tian, Kevin wrote:
+> > From: Leon Romanovsky <leon@kernel.org>
+> > Sent: Tuesday, November 11, 2025 5:58 PM
+> > 
+> > From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> Yeah.. the .c in the prefix is not desirable, I missed that in the subject line
-> 
->> Yes I did: https://lore.kernel.org/all/048134fd-6a3d-4a6c-a2eb-9a9911c3b35f@kernel.org/
->>
->> You know, I'm a busy man, can you *please*
->>
->> * take better care of addressing all previous comments?
->> * wait more than 12 h after asking a question before you resend?
->>
-> 
-> I think addressed most of it, I missed the subject line, but in general addressed
-> 
-> 1. Using folio_split_ as the prefix to split functions, the main function is called folio_split_unmapped and the helper name was suggested by Zi to be __folio_freeze_and_split_unmapped() and it sounded better than what I had __folio_split_unmapped() or even __folio_split_freeze_unmapped()
-> 2. Got rid of _to_order() as the function suffix
-> 
-> Do you have any more outstanding comments that I missed?
+> not required with only your own s-o-b
 
-I'll take a look at v2 now given that I was distracted for 2 days :(
-
--- 
-Cheers
-
-David
+That's automatically appended when the sender and signer don't match.
+It's not uncommon for developers to send from a kernel.org email but
+sign off with a corporate account, or the other way around.
 
