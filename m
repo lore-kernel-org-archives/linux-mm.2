@@ -4,104 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 762D4CCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9492CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:41:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2E266B0006; Tue, 18 Nov 2025 02:39:33 -0500 (EST)
+	id 3BC138E0013; Tue, 18 Nov 2025 02:41:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D04E76B0007; Tue, 18 Nov 2025 02:39:33 -0500 (EST)
+	id 36C688E0005; Tue, 18 Nov 2025 02:41:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C41566B0008; Tue, 18 Nov 2025 02:39:33 -0500 (EST)
+	id 25B708E0013; Tue, 18 Nov 2025 02:41:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B29326B0006
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:39:33 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 616ED160412
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:39:33 +0000 (UTC)
-X-FDA: 84122927826.06.9535518
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E7ECAA0003
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:39:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=cRBLVMLJ;
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf25.hostedemail.com: domain of ywen.chen@foxmail.com designates 203.205.221.231 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763451571; a=rsa-sha256;
-	cv=none;
-	b=G12rzwPjYKRxxIs42Fv473DHIARM3UYP6wGx/G0O2qxxa93UsUvB3eIUEV3cbIcvHrC+QI
-	+QoSdbYU1KR/f4nQCKkpN7DpW2OdpQFz6IPlW3NZvceVCkNykFvuOg04UCKslc+UjTRRZ7
-	ieytZsLss9PNwjGEgpwYbgeqo84YhdE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=cRBLVMLJ;
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf25.hostedemail.com: domain of ywen.chen@foxmail.com designates 203.205.221.231 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 12F2F8E0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:41:33 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE737B904D
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:41:32 +0000 (UTC)
+X-FDA: 84122932824.17.6EAA408
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 076A018000E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:41:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=sCKcYQQF;
+	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763451571;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763451691;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XWMqYs+z3GskzzvBmrAKmgnDeWF6hjh2FG2MoalbIJg=;
-	b=t3/jQUDW0591I/hNvvUDKUaRFa3G0DWC0J8Qevpyt+5GGrDYpxZcNl8tVJf0ka1XUOGqWQ
-	hgFXn0BxaVCZcTyDMSu6J35JvxrGYpVR2H6o65iW8+bxk6EXh7WXRqSVfKSeFz6ag7ELKs
-	cS6szHI2cv0P2YxKzxfNPR1A6PvKs5k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1763451565;
-	bh=XWMqYs+z3GskzzvBmrAKmgnDeWF6hjh2FG2MoalbIJg=;
-	h=From:To:Cc:Subject:Date;
-	b=cRBLVMLJlNqwQNbmUdZkSVdl+5XZlQQskFoaOAOtL/eTNwHYzZHiZRY7JNUqk4h5o
-	 C100fQey+ZMQannKuPQJrlHzD8gJeedFMSa+Ololt7unHqslKFjRkHHJxyHTgOIEap
-	 G7kUBYnWziF14Pzb5d5dEVldnfJw/uVjl+ajwBAI=
-Received: from meizu-Precision-3660.meizu.com ([14.21.33.152])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 9D70BEA7; Tue, 18 Nov 2025 15:39:23 +0800
-X-QQ-mid: xmsmtpt1763451563tvholq72r
-Message-ID: <tencent_80150170978D13BAF69D63E57D7F5175F90A@qq.com>
-X-QQ-XMAILINFO: Mm8VRyTxzGuAnIMbGpNB7YBJ6dXu8LFvRutC8PX9BL3PSBhQH4wdwNunsZI3EP
-	 bQkNBRKBPqJJlTFTJcA0as5jZo7oDGTEdrUohfeVK+cSxg2owbLY2cChKVp94vYeD0exw+sF9Kzd
-	 9XoI15/6sa6NTCIghJ7NdmWKNCDsYcQEXjyqZRbFZYKORi/rQs5KQSOU8rkvE31korAOY6fIRNiZ
-	 4fBsILKOPumNqFaEDef7qTpwQnUfEE8Ijke+gKlZnxijXkoroasehfSPok3vVdt2jAHAfON5Svfq
-	 FyHHHie4iBx8QhNbMJQU80rSWrb45/gB1TTAlWqPIcchztB3ziLEhCLDJLBCH6r7mQX3PKmhFySA
-	 50LGgZTSuqocsP/0SaLIrQAq3kAzsCmnO2yGuWIk8QHTEPlSNPWhApDgnUBYuOGaYD0o22Gk9Dnq
-	 rTYP2riH0MmHQQ2t/l2j01D/7i15i4gTSn65UW3lsMjPHLttExUJwUzCMtQ8ORG/UGT3ZBpMa/zX
-	 0uWuD3J70fBPWrOCFjlsmqubMdRdGE6jePsAT2gisWE0UC6KW0fFcttcl7KTPPgEFzh1PZ6nK6wv
-	 Ad8snX4pZ1PqyIsP0bYvTUxMUszmcDJQPCndRzI44WP17LT25f/ycnntj07GX/QPXijKJLmTDd6d
-	 iO/HdFq64xUkbWBHCFlxCPr2do9b19pJEvdW8HS69VRC0xM4eExn5vb5VCAzHtAlcnsBD6qw1FX5
-	 1L1Er1LP6ixXY2JupnbhsKSZ2V9U2z32BGtnAAuVn68yx4NKGjDWYZJujZLBDEMfDOU64dXkQ/Fp
-	 OWLSp+KyuFo4sfyOQ5FQ4wqfZkoMEjeXNTckWLFMu0EiNf7w2jCqwQIKL9FyDHm1qiHgd13Rp9S+
-	 KejGJO//dxS3gWvVmthS5tcFjXcGA1X8FUOF1pe6rzC+CxNvddYMG1kb37JrVbcT+K6qSk0IiyMD
-	 FRK91ij7sVzwQIrnnK+HarYRxQi1ul2ntYyGyD2DT+BcYMqYART9e7XHn7ko4vmx+8FlA1vSPJWy
-	 jYKzVQnU+Igkzhs+5EAAxZ7YdaKL9Sy+vlpsF2utQh8hxzxCovRPCnXRrkbL4poo1YTu9mGsOzEr
-	 +P9CCh1GD6lZT8bzVOxbMeMvVgX1TwSoGNypMw+pk/Rwy0k38j2TDQmkuJ5Q==
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-From: Yuwen Chen <ywen.chen@foxmail.com>
-To: senozhatsky@chromium.org
-Cc: akpm@linux-foundation.org,
-	bgeffon@google.com,
-	licayy@outlook.com,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nhVZHCo/8A/9+8ahzyAjs/jwjY1fv4im71qjOl+I68U=;
+	b=tqVHf/3UQ+ml7jC35UXLnxy3iJ5MX11CFGE2bvmG7MhyB0ShpOmr9p796VcDuzWcl8zH0x
+	sWch0Sh0V3LDK446dWVE7iXByRP+PRNJPYNV/dY+aXcFnMoHMOSm3qpK7tkOTYd0hJYfjH
+	EMTTbCa0oJyqgHGvRKL0ozbj5eEurpc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763451691; a=rsa-sha256;
+	cv=none;
+	b=ou6adQzkRdMC0n79JSFA/CdRphv/ilbt2al1NgmgIWwPq/MVQBuZB7wVFKfnDcYlIgnOBh
+	nZmmwj1bDKp5VOGRO6lto97fjRgWEzAe73NUpN2FhRq8sZguxbBj2b+Y0DYILRkk7BNMUC
+	Ylv4rAslPShLbCpCBu6wXuW8KY8v9dc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=sCKcYQQF;
+	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=nhVZHCo/8A/9+8ahzyAjs/jwjY1fv4im71qjOl+I68U=; b=sCKcYQQFYhGPvXEzlHhOh9bWij
+	H5MQd9kCPmQVUA6YWHyhBZHmFSCAgXjrZRQ5O81Be72hzvbz5+MzIkc8s8p+CgkyvbFcFAEykozvS
+	bSkfY81PC2r/dBiQSpL+Zc8b1349rLF/vkvf1v6qCpR6l88y/PzzpQiapeFUGqfCBuGZp5zClEjoD
+	WClb7bBiH1DgSW/Mc2GHafGAjiHKsjAlRLA2YAaRfuJjkrtv7291R5S3RfKNjL5csEk2dMPB3enQ5
+	AjSJdzQwK4i/EGNR6ktNkcjwxvexDbo43h13EaNpm4hiRlFK9Q6LiMHALtdId9OHsVb1ApMJr1+nX
+	qBTt8OKA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLE4Z-0000000GEdj-3nX7;
+	Tue, 18 Nov 2025 05:16:11 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
 	linux-mm@kvack.org,
-	minchan@kernel.org,
-	richardycc@google.com,
-	ywen.chen@foxmail.com
-Subject: [PATCH] zram: Fix the issue that the write - back limits might overflow
-Date: Tue, 18 Nov 2025 15:39:20 +0800
-X-OQ-MSGID: <20251118073920.2807954-1-ywen.chen@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org,
+	clm@meta.com
+Subject: [PATCH v4 50/54] convert rust_binderfs
+Date: Tue, 18 Nov 2025 05:15:59 +0000
+Message-ID: <20251118051604.3868588-51-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E7ECAA0003
-X-Stat-Signature: uy8up7pbghnj4wzn33zb5f6rrnrro547
-X-HE-Tag: 1763451568-554742
-X-HE-Meta: U2FsdGVkX1/IvOA2INuqCjePkum1tcekzo9WXXB1MYvUiXwUI6EHJGfjrBzQTD6ze5VKflQmSwxI3ajNE3zRt2KPmGAvXchBzbrT//z7MOgJZWCMdoTwIeNFNyHGSmkdBtTgQlGaKDcTFYxxb+f4qws0I4kRMNNhMODr94b0JThMfyRunXeKTRjuluOTRHNWKtrwLep8B1Tq+4ty5l9+/lazyXRmI1/tlHFsAHRqJLwM6m5MZfGlA/9I2kqJ8U24vfZAqDMrqzrrC1dam3iJAPCsCHB6PVhblEHDS87Z7m05gWS/Sh8HDtZVzQ6BLLHTTF2L4XGDg+lCS5S+IKEOzCiOJuwwXmvgeY6oL6/LnuKfvEXpC37lFc7mR3Khn15acelp+6dqJFO19DCLbsAxvo11E8tAsnl6l9295Gx7TGbS+2xCkWbhcHMpow1kfqTFhCPXlG15lyKFMC7iHFEBGfFxcdrVgtT0h7tx4fOyLgVhu2fOzruuvUY1jzsGvnXb/6gCi1K3ylBkcwIOUytSPetH4U7Cn2vNcYrnoUSK38hMtbWxaKuaXZnmYbVd76r96x8GcJoLSYYHCPduBZBryvJ0e2s/sLYAq1T/6KuiY3FVGEtMtGl/882++4q3t9qYM40tGg/eJcawRL6IuIZx1L4qC0SlETPQ/UpTtxcOOU1fMiSMEQ2OqjUQqdxagcsHY9guFKJlc3DGqW7U/1rvxD3LFShxvLArm457ZitVetAABJ4vXfPWT3oGRQwBvKGPk7QWUeyC8+AW5ZkSB4eA26G4tmFanW3T/KFKpk2N0/2jiMMdkhBOiOlXnBUZ8CqiV5F1oZilExxregCJPNtSjs/pPJgGsLE3NleDV7QaHYQFqbBllSsX7vj40zcTQCUQpVOOxgABMTt9HMWVEe/Nhm+gfV2kSoZsimJHrPtowIh2Pb+ytlMHso3dwS20hyXakNaUfBoSnjgIxUu2nw5
- wekFJTTp
- 46wPWoZ0RRLyeNea/FeZSu2hrgaFkxlOmpYQcgCj1VrhgvHYG/mb4PhfJlcvj4WTPFOim0DFpQtJ2DC6+z6q5kTGDqjBnLcWIDCw2e93J73ugjtsCyK0saD0Hl/7TV0w1rfq5GYntie+RrILjLdYad/4NjAYyz4ax+SwhsKSAyyNI9hZMlebnpPCO9UrW0JEd6pepU976akcB/1YUaUrNJBGHllaEkMU9g+RISKAwikT4igFyWQSZyxg/XUA/Hou+0PecVulbtXdmbgY=
+X-Rspamd-Queue-Id: 076A018000E
+X-Stat-Signature: kazx43hisap8z6afesi7a8ebgzub4jok
+X-HE-Tag: 1763451690-895518
+X-HE-Meta: U2FsdGVkX18PzYIkFqni+Uxo2WtJXEbp5eecVAUSye6D5Dm4Hy2DrsQXHUUTKoUJAl30bOevqpAEZoEvV7h237iytHiJYMrl1LtuIjdVgxfCC6ypgXzORfTOzw6q69cEY7mhqjrpdYJD8/8yMFiB0W5yKnckEG8wmHCqocDOX6Ds3RfYuoN+bRXzihTK8MFTcn/+UZx3gXb7J3YpQNqE/Sqo5cs9FFuE2jKoDKiercPg62ghMqAr7drUmCmrgeljwEUeS+pf0/zxkHugHTlAai/RaJKhAkJfDQ7pFAeq7DuwHE9UGqpNHT7ixsj9JZ04+EUTrUzTczPQVk6jmTkuad0ahfxKc3Rm/BwW9aSI+2r+KiAjI5eieFh45KpMsv1ysYXgp1p7/ygFOwU5e5qc/KlI3WVPlGPsxVmk0pmd84gRauV4etm1yfPTXYGSVivC0EKO9Tg6nkqYPn1ejLWLMfvTkHFH/Tlx6fKazevUVrmE8QMx/sJrvChUFe6uAPcN8rIFH4eINUsm+LdDWnvWwhJSzFyWEEbrN4Y6W4/1E/L0ToDWJmhkbbS2hbe7We1NP+Csc1RdDaZxbE0Jd6FfTN5y+kTP1Z/XE2w282JDXj26BvUyoMJao4tcDQ1Z4JnCaQvMjLzuwgy25scSGZmiqd9nL+hLDnx0ZESizQipb9eprOUsA78VPcaUgM+9MlUYW7aUBtcS1wtT4S8ukyLJQa50aPo2gQvUiSF+MNJNVN/E4mtzhlwGZOgcbcza67JBc6tPiK0UKJgT+CYSvIdHCuqwsTVbO3zVRb9vxjuD4q5eRMa8U/osePAEgD0k9gbuBXrx7nhboaHRFnIxN9OeYGWq5Tq6mBaWZ4bBRSlzEm1MtQ2mmaTTIN51+uIC/p00R1hZKlYBkHJxAAe0PXPs6eQPxZXUui4Brdtl0rY6H24yOWDIONgcIx/muJTbqo1DFS20UZdxKiworHNjQvh
+ SVIAfNFd
+ 7edD6weCHtZwBjQRqwsZ/76qE1V9zJk6voiAnXves/eNExJTnnE/getGpAI39cfU7OndjOyWuG9yOgTRFTZIwgUFkTGtrGRmzUFga4z6ID6dPdeWfez8r+fNCYyO8Mpw5EANZOlVF+m8wuNZk9kjqOE1YuV/VfLQWs+eTbnY0P8Nj790scglJWVDvmkO0/LcvMo3ZyXUNBpSFZbOKBSow16wZgGSXBkWzNDf2Ew1VoQl1eWrhCPSHBra46TrzWEcKxelNPVyV7O/b0hW28gC63jFxADC7Ot5BcEH78TXv9iFt1ZTBKhnVSPIkoW/Vg/XAr5A+3klOXuRgZeGthb+e6bP6vbXZbJ4SVF76wGFZqz6bMK+X6jn5VjpE5WARybCyd1Wx7rWzekgOGWGMadryGqwNz8uQ0J30N4GkM3YouFDBV58F02sZb3keYupx2DwjDiFbIGbKPw9mwjUWHlIvbpgc0w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,31 +109,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since the value of bd_wb_limit is an unsigned number, when the
-page size is larger than 4 KB, it may cause an out-of-bounds situation.
+Parallel to binderfs stuff:
+	* use simple_start_creating()/simple_done_creating()/d_make_persistent()
+instead of manual inode_lock()/lookup_noperm()/d_instanitate()/inode_unlock().
+	* allocate inode first - simpler cleanup that way.
+	* use simple_recursive_removal() instead of open-coding it.
+	* switch to kill_anon_super()
 
-This patch fixes the issue by limiting bd_wb_limit to be an
-integer multiple of PAGE_SIZE / 4096.
-
-Fixes: 1d69a3f8ae77e ("zram: idle writeback fixes and cleanup")
-Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- drivers/block/zram/zram_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/android/binder/rust_binderfs.c | 121 +++++++------------------
+ 1 file changed, 33 insertions(+), 88 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 4f2824a..4ecf2e7 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -562,6 +562,7 @@ static ssize_t writeback_limit_store(struct device *dev,
- 	if (kstrtoull(buf, 10, &val))
- 		return ret;
+diff --git a/drivers/android/binder/rust_binderfs.c b/drivers/android/binder/rust_binderfs.c
+index 6b497146b698..c69026df775c 100644
+--- a/drivers/android/binder/rust_binderfs.c
++++ b/drivers/android/binder/rust_binderfs.c
+@@ -178,28 +178,17 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
+ 	}
  
-+	val = val & (~((1UL << (PAGE_SHIFT - 12)) - 1));
- 	down_read(&zram->init_lock);
- 	spin_lock(&zram->wb_limit_lock);
- 	zram->bd_wb_limit = val;
+ 	root = sb->s_root;
+-	inode_lock(d_inode(root));
+-
+-	/* look it up */
+-	dentry = lookup_noperm(&QSTR(req->name), root);
++	dentry = simple_start_creating(root, req->name);
+ 	if (IS_ERR(dentry)) {
+-		inode_unlock(d_inode(root));
+ 		ret = PTR_ERR(dentry);
+ 		goto err;
+ 	}
+ 
+-	if (d_really_is_positive(dentry)) {
+-		/* already exists */
+-		dput(dentry);
+-		inode_unlock(d_inode(root));
+-		ret = -EEXIST;
+-		goto err;
+-	}
+-
+ 	inode->i_private = device;
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
++
+ 	fsnotify_create(root->d_inode, dentry);
+-	inode_unlock(d_inode(root));
++	simple_done_creating(dentry);
+ 
+ 	return 0;
+ 
+@@ -472,37 +461,9 @@ static struct inode *binderfs_make_inode(struct super_block *sb, int mode)
+ 	return ret;
+ }
+ 
+-static struct dentry *binderfs_create_dentry(struct dentry *parent,
+-					     const char *name)
+-{
+-	struct dentry *dentry;
+-
+-	dentry = lookup_noperm(&QSTR(name), parent);
+-	if (IS_ERR(dentry))
+-		return dentry;
+-
+-	/* Return error if the file/dir already exists. */
+-	if (d_really_is_positive(dentry)) {
+-		dput(dentry);
+-		return ERR_PTR(-EEXIST);
+-	}
+-
+-	return dentry;
+-}
+-
+ void rust_binderfs_remove_file(struct dentry *dentry)
+ {
+-	struct inode *parent_inode;
+-
+-	parent_inode = d_inode(dentry->d_parent);
+-	inode_lock(parent_inode);
+-	if (simple_positive(dentry)) {
+-		dget(dentry);
+-		simple_unlink(parent_inode, dentry);
+-		d_delete(dentry);
+-		dput(dentry);
+-	}
+-	inode_unlock(parent_inode);
++	simple_recursive_removal(dentry, NULL);
+ }
+ 
+ static struct dentry *rust_binderfs_create_file(struct dentry *parent, const char *name,
+@@ -510,31 +471,23 @@ static struct dentry *rust_binderfs_create_file(struct dentry *parent, const cha
+ 						void *data)
+ {
+ 	struct dentry *dentry;
+-	struct inode *new_inode, *parent_inode;
+-	struct super_block *sb;
+-
+-	parent_inode = d_inode(parent);
+-	inode_lock(parent_inode);
+-
+-	dentry = binderfs_create_dentry(parent, name);
+-	if (IS_ERR(dentry))
+-		goto out;
+-
+-	sb = parent_inode->i_sb;
+-	new_inode = binderfs_make_inode(sb, S_IFREG | 0444);
+-	if (!new_inode) {
+-		dput(dentry);
+-		dentry = ERR_PTR(-ENOMEM);
+-		goto out;
+-	}
++	struct inode *new_inode;
+ 
++	new_inode = binderfs_make_inode(parent->d_sb, S_IFREG | 0444);
++	if (!new_inode)
++		return ERR_PTR(-ENOMEM);
+ 	new_inode->i_fop = fops;
+ 	new_inode->i_private = data;
+-	d_instantiate(dentry, new_inode);
+-	fsnotify_create(parent_inode, dentry);
+ 
+-out:
+-	inode_unlock(parent_inode);
++	dentry = simple_start_creating(parent, name);
++	if (IS_ERR(dentry)) {
++		iput(new_inode);
++		return dentry;
++	}
++
++	d_make_persistent(dentry, new_inode);
++	fsnotify_create(parent->d_inode, dentry);
++	simple_done_creating(dentry);
+ 	return dentry;
+ }
+ 
+@@ -556,34 +509,26 @@ static struct dentry *binderfs_create_dir(struct dentry *parent,
+ 					  const char *name)
+ {
+ 	struct dentry *dentry;
+-	struct inode *new_inode, *parent_inode;
+-	struct super_block *sb;
+-
+-	parent_inode = d_inode(parent);
+-	inode_lock(parent_inode);
+-
+-	dentry = binderfs_create_dentry(parent, name);
+-	if (IS_ERR(dentry))
+-		goto out;
++	struct inode *new_inode;
+ 
+-	sb = parent_inode->i_sb;
+-	new_inode = binderfs_make_inode(sb, S_IFDIR | 0755);
+-	if (!new_inode) {
+-		dput(dentry);
+-		dentry = ERR_PTR(-ENOMEM);
+-		goto out;
+-	}
++	new_inode = binderfs_make_inode(parent->d_sb, S_IFDIR | 0755);
++	if (!new_inode)
++		return ERR_PTR(-ENOMEM);
+ 
+ 	new_inode->i_fop = &simple_dir_operations;
+ 	new_inode->i_op = &simple_dir_inode_operations;
+ 
+-	set_nlink(new_inode, 2);
+-	d_instantiate(dentry, new_inode);
+-	inc_nlink(parent_inode);
+-	fsnotify_mkdir(parent_inode, dentry);
++	dentry = simple_start_creating(parent, name);
++	if (IS_ERR(dentry)) {
++		iput(new_inode);
++		return dentry;
++	}
+ 
+-out:
+-	inode_unlock(parent_inode);
++	inc_nlink(parent->d_inode);
++	set_nlink(new_inode, 2);
++	d_make_persistent(dentry, new_inode);
++	fsnotify_mkdir(parent->d_inode, dentry);
++	simple_done_creating(dentry);
+ 	return dentry;
+ }
+ 
+@@ -802,7 +747,7 @@ static void binderfs_kill_super(struct super_block *sb)
+ 	 * During inode eviction struct binderfs_info is needed.
+ 	 * So first wipe the super_block then free struct binderfs_info.
+ 	 */
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ 
+ 	if (info && info->ipc_ns)
+ 		put_ipc_ns(info->ipc_ns);
 -- 
-2.34.1
+2.47.3
 
 
