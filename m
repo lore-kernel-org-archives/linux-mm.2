@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0BBCEE33B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70E7ECEE341
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0997E6B00A3; Tue, 18 Nov 2025 12:08:04 -0500 (EST)
+	id A685A6B00A2; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 049F06B00A4; Tue, 18 Nov 2025 12:08:03 -0500 (EST)
+	id A19C56B00A5; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7B1E6B00A5; Tue, 18 Nov 2025 12:08:03 -0500 (EST)
+	id 956B16B00A6; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D2EB56B00A3
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:08:03 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DC7C4B9A3
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:08:03 +0000 (UTC)
-X-FDA: 84124360446.03.FA6B643
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 822A280009
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:08:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=E2uByqgT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763485681; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 804BF6B00A2
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B44BC0151
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:11:32 +0000 (UTC)
+X-FDA: 84124369224.21.AE6E9AA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A16E120015
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:11:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q45YUTFm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763485890; a=rsa-sha256;
 	cv=none;
-	b=wbQ0Gd/5XWqWPctZ3s09B82DC8YExO1mSwDICFnUH4pBEET5sbWj/wJZsfBCBhM5+MbnlU
-	uiNqQUTkrUjnORvPsNxmaTZaaVb4q0rzkngH0BsXGRb6n0obg09hCWBjaON7NzCQHZ5HeQ
-	mu0JI5efnL/hf5g3ySEur/jiGQLNI2I=
+	b=d498cpz5vgBECA63p2/lKMrDKrtmQm3lvUYamjd51oB4y7DlZ+8TTdI4d/f1ZIrKry09SG
+	4cSa/Sb2t5OrrKxtq9FYnEm4aR3lApHfUaQwiuFJTxRkDbA0AhcV37zYeAypLK39BHd54p
+	g3RKHs70ECpZcVKxTAO8tkT++Dlgkq4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=E2uByqgT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q45YUTFm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763485681;
+	s=arc-20220608; t=1763485890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=irwlmmJ0MMkznpqLMQ8QH3n1XaAIkdzPe81PjobofI4=;
-	b=Zb/ojBpUyRelD9TE6X1BPkxms4pZdR00pY3Sh1q4cdC+nCc384h86Njs+yr/6/AFKw7erk
-	prwBt0KS1eONpZxL9sX0SVIbGHbjVaaZsgX48cgEq5eiJMBaqD4REWXmmv8ONkmlyZl68O
-	AqICPRuJDaATOrVPkvxn+986PjSVpuY=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7b9a98b751eso4319442b3a.1
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:08:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763485680; x=1764090480; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=irwlmmJ0MMkznpqLMQ8QH3n1XaAIkdzPe81PjobofI4=;
-        b=E2uByqgTLwwPg7n68qmofhhmvm+wrkzfGvtk8KdtikW0rjJ2eN+NfOLDpbqtPvp+oR
-         jnv3CtEXpdu5+6A3UWhUVyCx5+l4r1byErhNIjufb79gK/l0YwzGErXOEI3s14/s8h2u
-         HtQoIp4Ugjk+m9MTelSdHsuGcDDtwZ7fAN7wewd0wHewDsH3M6KSbc42Q0oLTXa2Llx3
-         ot4F+gFluU5mzVWFwqwQoZwbma+wZl5f9LDccddPmiw81TkHHcBujjquju7ZO6ow7FmS
-         XC54PceAApMkcGlEpU9cSXiNMPd++82vRD/MPEQY+xgrXXJVvcJNaC1Zfs/WbCUc3tvb
-         YM0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763485680; x=1764090480;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=irwlmmJ0MMkznpqLMQ8QH3n1XaAIkdzPe81PjobofI4=;
-        b=b+i/ydWQlLXvf1DGP065TCiJkXBZCA3A7akA+j4EpIt0XV99tv1+mgM0UQiAVDjCf7
-         gWgcIVGZ/1ckdQQ4T/jtKCGXT7j2WWhyV5X+Xp/bWy5veBG6Hs3KR3cVeF51q9Wr8NCi
-         n3L02c++wbOIDVXGNIFNZ4uoKCi6njxR5sj24msHhxJX7xDB3+Du2igigoRNq2gmyGUo
-         ePnbSb8/rQ6lMwHwgiA05itdngTXkfI0OjSNZHJNai2a3qFRS550w7SPYDjUjsmiTOVf
-         do3MNncbUGBh24jgUrN9mAUFGslpC4MX1gSH2gG/wd4swQuICjN8XpuXX7zVjiih5eDT
-         Nmwg==
-X-Forwarded-Encrypted: i=1; AJvYcCXacZ4Kp3Ykf1MSRINAwBx47bvlI6PW8gQ6Y8H2H2jYKtZfxwsLp7JoPkfVKZgd1D3PNCaTs4hbQA==@kvack.org
-X-Gm-Message-State: AOJu0YzHIRGh6UPdxikFKBGszy/GQPIAjn9xfxQDt5YgmlZAHCY6FtUi
-	IJkH0K7jr8lrjzoSoRJhE57CxIOLTs0rd+LSTxeRRxZGio4oRwqEO2Nd
-X-Gm-Gg: ASbGnctb0nsH5oYrzE9OQZnlvpoY+JZmp4PSDRD7JynLkkOvQoEXYogTKGN2me92uxc
-	mkxFsFLNufWFEQjvGYw6IpcXzcY51GP4nTYC+gXd8IANp6Ws0pZ2iDpo8dFRKhSdP7nHKPFP+kg
-	efXG0pxVaRBk0DwnxmSyErq1Kw5x5qwc7IxkwAgst48zKoOZ27lrkoUsPrk6+vsj31BsYes7cR7
-	WVt8kAcqBw454EdgO7f/0vxmPitBUQwI7hlSc566i+0XlwSZe7NWA2zNRv8jQ2kEHbUWG6f1L17
-	wwymlC+GKwXYjyca2PT/7G0dULKzxEew3Ws8ziXZbiuLZZiJPApTP6KmYZztiFBGBpozNyCuvvZ
-	/DZ4d57kill28WFTT3ZRroFhIhDrfDhmOLhqjgI6Iow+rm4AQmFEyFhrmX7AB4q8Mx5t9NHISIB
-	0hawbuXnJv4X354Kuli54BX/SRaPpLLisuQM1hYwoU5wIf5wmjWBJqhWgB14XDdiZ+
-X-Google-Smtp-Source: AGHT+IFp7aKWRAnpg/nz3uAMMrTccHCEVazeBR6Eybowi+fOK2iM3BI0IvxR7anyhC7bwx7kDFbgOQ==
-X-Received: by 2002:a05:7022:43aa:b0:119:e55a:9be4 with SMTP id a92af1059eb24-11b40b30ecamr9630301c88.0.1763485679910;
-        Tue, 18 Nov 2025 09:07:59 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b0608860fsm52235294c88.5.2025.11.18.09.07.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 09:07:59 -0800 (PST)
-Date: Tue, 18 Nov 2025 09:07:56 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"hch@infradead.org" <hch@infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"urezki@gmail.com" <urezki@gmail.com>
-Subject: Re: [PATCH v3 0/4] make vmalloc gfp flags usage more apparent
-Message-ID: <aRyn7Ibaqa5rlHHx@fedora>
-References: <TY3PR01MB11346E8536B69E11A9A9DAB0886D6A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+	bh=TAuXzOsPqw0m0YAW+RsjDAL9ltpp0Z9O6eBfwFHYa0s=;
+	b=x8BU7kM9E5CLfpN6oznnVgNRq7BP8bnGTeIHwuF+c07K35O6cLzdHA6aBNoyxQFir6AINX
+	f0ciUm42Zb5wZmcfmcNMLHcZf0i3Iw1gDlNxZfh0q4tFK7eT6m64lBO/5pLgBQWfbg/E+S
+	VpnnLfK5iT7jHJlc2fABdOoQEKuHwLA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id F259C60C08;
+	Tue, 18 Nov 2025 17:11:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C666C2BCAF;
+	Tue, 18 Nov 2025 17:11:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763485889;
+	bh=5JkkdNYQ6lS2Vy4m/7JD+soJwbTsSsI1qxv44jf5Qxg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=q45YUTFmc2JS/qJay40kgKnFUmQ23dQg0nbzqsc4QhJBmpbi1vTPRw6OWwKG4BUcX
+	 5BB5rsvuq3xfamLRyekbtfqb5Qq96QILIPWV9ShluHdJqk6L9RaKTwE07NTJBVpN6l
+	 5/6dj8Q1ySwBu0wJdfpl/NMdhwU/fXYcZS/0AhE6+5SYEDR3kPJmeH+ya98T3ciyrH
+	 asJ1TaOt7XbkJEtOe7PWaipWGFnIjO8gZEQOVRVgdx6Kkay1IA0WdBQhqgno8pkkKL
+	 T22fiGxggOUmugSmDqvIFlJx8Qn6vRwPchjhMg7GDxxLmb+KfGjx0t0aiD+8qjyhm9
+	 7+6cJWGnwV8LA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  akpm@linux-foundation.org,  bhe@redhat.com,  jasonmiu@google.com,
+  arnd@arndb.de,  coxu@redhat.com,  dave@vasilevsky.ca,
+  ebiggers@google.com,  graf@amazon.com,  kees@kernel.org,
+  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH v1 04/13] kho: Verify deserialization status and fix FDT
+ alignment access
+In-Reply-To: <CA+CK2bDfrx21=Aw3pwPn4=AKGVeh0O+sB5gp8rvh0fk8C_nsdw@mail.gmail.com>
+	(Pasha Tatashin's message of "Tue, 18 Nov 2025 10:25:37 -0500")
+References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+	<20251114155358.2884014-5-pasha.tatashin@soleen.com>
+	<mafs0tsyw7e0a.fsf@kernel.org> <aRhJk_Glv2pX2dRo@kernel.org>
+	<mafs0qztv4gw9.fsf@kernel.org>
+	<CA+CK2bDfrx21=Aw3pwPn4=AKGVeh0O+sB5gp8rvh0fk8C_nsdw@mail.gmail.com>
+Date: Tue, 18 Nov 2025 18:11:24 +0100
+Message-ID: <mafs0a50j466b.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TY3PR01MB11346E8536B69E11A9A9DAB0886D6A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-X-Rspamd-Queue-Id: 822A280009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ht4fn71wb3aaeeb3camgazwaax6jcgdr
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1763485681-849967
-X-HE-Meta: U2FsdGVkX1+QRPRjdZpNtN+Az5ZYmkTnszqPBXoHwk9QG8rxdUC2yUhYuGHv3Xn3Tne3iY07nuf0CcAP6vFbE5MBtZaLJAPL6nux5bpRdHwNR2qM0RABmgA6a+9dK+l/SNkNN2wfYS0uo8VXT+x2CwkYanDcTuhrblUQyiSlI9XW7ECaha+OAN5WALpDhMwp58FLTZiduAvL2uDa5JgByCrYETRuiEvukOPtcaQWljAmk+ESIUQSWKgvaPB2FXCHzso89h1PGArfsx3ChRkwbV1rrvI3PHebSFmpt8hcyie4gAqeFC9mjCw4VvswC8UVbXYsBz2qs7nM3WsiE4ryNg+263SysTizJiNlxTw67+G8/dXD7PZOvXD03dQDVRt83Wf/V4IMiwyJooCuyNkHClhtRDtFP4JvEd+faJufzt0bDaKyggVOB7ZzZs4MRs3qMtSZe/xl0gxaPMe9urrj1LNbbdtznliV0+Z4k7NUahDTm5p6+WBoZVKIkN+msCaOBy+tUyo5sRet8OA9Y4VBMlLDs/nepW/X0IDa9E9SXI4Q4md7y/fjsxpb3HoJBUURChShJK4PJFzf6G5102gsKeUyYvrM1jtIKhxbVv4t0OHWyfSdXjUKTrLXzAwvu1GuoqlxdxSz5Mn8uKXlEDcz2mmVKSc6D3zvbtB03XkMQpWRfuUX0O0zxiqN3h2bK3PcxKmwE6ivl1dA6GdH8bYEE4KZUzVbYX5VRk5FzzXwukouNu0mEJ7LaMoBR7YASaw+bCpPNxiAGAK29PWG4ZDRhZRmF8h9G2+jIf/a1E+io64pliGgnDPqLZZhUyxObJo/98vK0CnFdq8QfENJlCMYojUhzBKIFpiQ9gpxgfs1HfRzLut35fGgDZWZY7PZcDUsmwggUGiVUumgEbFlco2F4W/CL+AvqPlqpcPI/z/5o/UDXRbL4NV5Gof0CH/1UQIFhvTxGtQ9kn4p9dhEJtQ
- U0nzoWbQ
- wCTDBx7RkV8z5WcLregC/OvaWUo4NNqUTuQ49mwM7dpPrVCYR+oRcvRCurpi4tQJTZLxu+D7q3K2M1aTByaRPZTLbLw8gpGeZQiZUGZVqYevsepxXgHvvnbGTXSQqyg9DppanfU0Mt62tw9V9KxncKQBEFlQaBEYSv1uLTLCKP6Whm0f42+wnNFNWrXZbhFafzwX/56wkP+dsgSFeDwYNupws8G3LWp6H5sS/zhvzMIXqbrnAwFyrg93q/uqu8wa+WgPlMH0wAPRk6VDvsOa4Y87JD4SgKppU5BTxkvRXwsNbow+6Pgrs87xYqeZ8GJIbbAsrkKHIcTEXqta8HYFTQ5/jruXTCETdqeR1RZZqaZctKBKBWu7HUPZ5R1UR/pCz4PW0DGvPiOCPNHEOV+LqE+sOV7HO/oKSlxviinJafkWgWYMwUbKfW+F9hPCcZAk25c4NfV5eDfNyYZTJoJqY0qHPSpjN49nJ/vmVQQL16IGXPK6RUNJSd2YV5lcTdo7KYK6n
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A16E120015
+X-Stat-Signature: pswk763durrty7c36ms4w1n3xueyce91
+X-HE-Tag: 1763485890-888180
+X-HE-Meta: U2FsdGVkX18pUw38DeHIXq034GCo+J/eesMJHf2bXMnLv9/hSf9fwmRvViy8+jURZmWjDKxwAqHrNDBHV4GZJvix6rFFEpvbqkNExThKqnj9gL42JQC2N7CAbtIbVuaddyVMQBog3D3173T72gVy1YXV+eJf6bR2WOL18ulAwPCB74ZG6ddDdNgJ+In5cNdnlm8Lhk33JPdaHeP2dh8PDnGzX77xR0fMk4yVT+9klewELqzqtNZqnebOR7RXXSZyzMLQIA5+1CKCBFXVATEeEJzVedY4J/a4ciN0HAU5bwKAOvAAjwW4qmCSiNkqSGRpn2dKg5+olxnZDxhEjIPWrP2m1WiVQnF+8G0DFCBYDggXCNeyyHpnHOOzFm0RA1A7Zyg1MN5zxyVcV/qVaE2iwH3+IxJok0VKCE1BYkYFcGXYNbp/n/NDwx1gyNjNug42MZZVVuJ8yf33yM2lWnrysDnOhp3rSl2eRhsXvB74lGcJtmXzDKv/OpoWeUqnfrdWOUjAvHDrUA64ZmrWw5NSWQTTf0CivO9a9B8eBxqM8SjQrS2DAcxKKdhdTnWmAXzKqwKq/yNMfB9Ogt7jHqKyYzmEU55uhSNPhLYpq6ZOj007SaOPlnc7pC/6Lg0m4e/U13qGdswUis4H19+XDuQV5ZJ/Yk+ypv5E9PYTGwPNull93hrb31TFXeZ7Ssxdd4qgb6kd/1kXB7M/ADka8Z0jamsFpmKsEt6oauHfTtLKQ+mlLHNIdI5g6gBeRfMM7pv47e8EnDphkJwoPOyGVQ2Ttk/Ggc0kQy9qiaJxcneXKHSTtGQzTnBig24f8UV07TT0Jh7RhlVC0HkEIephI88Vy+fU1eOXrKIlZr5rLQqnzp8UZEpZceMIF/m2xmH5+z00SuCUy2CCimqGPQbW9rCiCvWKkkh9qivJ0hCDLQQDGgHYZzFHbsi2ga2ZOKjDhny+b02+8VYt9ycdCqPa6fI
+ ZXHe6Qrg
+ rDbUoN5rdQo0RHohRGd86iqB/r2wlwhz8sM4U6fIspMD3RIKD8/nr98Qxik8mQt45YdOKIzwadix0/GVY9loiFg12auTXmmgyhO73CcHhFKZPuo5kWxVxuNgugViB7pWX97BOvj1dwbiuvRcyRI/Gw3DV6wR1bUkzYpdSnPeT+STbnZvihLf9gOmYntoHjTBsaxma
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,55 +101,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 04:14:01PM +0000, Biju Das wrote:
-> Hi All,
-> 
-> I get below warning with today's next. Can you please suggest how to fix this warning?
+On Tue, Nov 18 2025, Pasha Tatashin wrote:
 
-Thanks Biju. This has been fixed and will be in whenever Andrews tree
-gets merged again.
+>> > This page is never freed, so adding it to zone managed pages or keeping it
+>> > reserved does not change anything.
+>>
+>> In practice, sure. I still don't see a good reason to _not_ initialize
+>> the page properly. It's not like it costs us much in terms of
+>> performance or code complexity.
+>>
+>> Since kho_restore_folio() makes sure the folio was _actually_ preserved
+>> from KHO, you have a safety check against previous kernel having a bug
+>> and not preserving the FDT properly. And I get that the FDT has already
+>> been used by this point, but at least you would have some known point to
+>> catch this.
+>
+> The kho_alloc_preserve() API is different from kho_preserve_folio().
+> With kho_preserve_folio(), memory is allocated and some time later is
+> preserved, so there is a possibility for that memory to exist and be
+> used where it is not preserved, therefore it is a crucial step for
+> such memory to also do kho_restore_folio() before used. With
+> kho_alloc_preserve(), when the memory exists it is always preserved;
+> it is gurantee of this API. There is no reason to do
+> kho_restore_folio() on such memory at all. It can be released back to
+> the system via kho_free_restore()/kho_free_unpreserve().
 
-> 
-> [   13.122280] systemd[1]: File System Check on Root Device was skipped because of an unmet condition check (ConditionPathIsReadWrite=!/).
-> [   13.142562] ------------[ cut here ]------------
-> [   13.147308] Unexpected gfp: 0x400000 (__GFP_ACCOUNT). Fixing up to gfp: 0x100dc0 (GFP_USER|__GFP_ZERO). Fix your code!
-> [   13.158526] WARNING: mm/vmalloc.c:3937 at vmalloc_fix_flags+0x9c/0xac, CPU#1: systemd/1
-> [   13.166576] Modules linked in: backlight ipv6
-> [   13.170983] CPU: 1 UID: 0 PID: 1 Comm: systemd Not tainted 6.18.0-rc6-next-20251118-gcc318393a5df #175 PREEMPT
-> [   13.181082] Hardware name: Renesas SMARC EVK based on r9a07g054l2 (DT)
-> [   13.187641] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [   13.194675] pc : vmalloc_fix_flags+0x9c/0xac
-> [   13.194705] lr : vmalloc_fix_flags+0x9c/0xac
-> [   13.194715] sp : ffff8000828fbab0
-> [   13.194719] x29: ffff8000828fbad0 x28: 0000000000000000 x27: 0000000000000000
-> [   13.194734] x26: 0000000000000000 x25: 0000000000000000 x24: 000000000000000f
-> [   13.194746] x23: 0000ffffcc595b58 x22: 0000000000001000 x21: 0000000000100cc0
-> [   13.194757] x20: ffff8000801d7af0 x19: 0000000000001000 x18: 0000000000000006
-> [   13.194768] x17: 0000000000000000 x16: 0000000000000000 x15: 006c326703000000
-> [   13.194779] x14: 00000000000001da x13: 00000000000001da x12: 0000000000000000
-> [   13.194790] x11: 00000000000000c0 x10: 0000000000000ac0 x9 : ffff8000828fb920
-> [   13.194802] x8 : ffff00000aca8b20 x7 : 00000000021cb08a x6 : 0000000000000186
-> [   13.194813] x5 : 000000009d17f2f7 x4 : ffff800037e00000 x3 : 0000000000000010
-> [   13.194824] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff00000aca8000
-> [   13.194836] Call trace:
-> [   13.194842]  vmalloc_fix_flags+0x9c/0xac (P)
-> [   13.194855]  __vmalloc_noprof+0x60/0x74
-> [   13.194865]  bpf_prog_alloc_no_stats+0x44/0x218
-> [   13.194879]  bpf_prog_alloc+0x28/0xec
-> [   13.194888]  bpf_prog_load+0x168/0xcdc
-> [   13.194899]  __sys_bpf+0x814/0x211c
-> [   13.194907]  __arm64_sys_bpf+0x24/0x40
-> [   13.194916]  invoke_syscall+0x48/0x104
-> [   13.194927]  el0_svc_common.constprop.0+0x40/0xe0
-> [   13.194935]  do_el0_svc+0x1c/0x28
-> [   13.194943]  el0_svc+0x34/0x108
-> [   13.194955]  el0t_64_sync_handler+0xa0/0xf0
-> [   13.194964]  el0t_64_sync+0x198/0x19c
-> [   13.194975] ---[ end trace 0000000000000000 ]---
-> [   13.328233] fuse: init (API version 7.45)
-> [   13.339395] systemd[1]: Starting Journal Service...
-> 
-> 
-> Cheers,
-> Biju
+Even for those I think there should be a kho_restore_mem() or something
+similar (naming things is hard :/), so they go through the restore,
+their struct page is properly initialized and accounted for, and
+make sure the pages were actually preserved.
+
+Using the memory without restoring it first should be the exception IMO.
+
+-- 
+Regards,
+Pratyush Yadav
 
