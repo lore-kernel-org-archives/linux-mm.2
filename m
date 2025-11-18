@@ -4,96 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 923E7CEE34D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 19:26:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2423CCEE350
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 19:26:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE2C56B000A; Tue, 18 Nov 2025 14:26:10 -0500 (EST)
+	id 7F0B16B0031; Tue, 18 Nov 2025 14:26:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBA966B002D; Tue, 18 Nov 2025 14:26:10 -0500 (EST)
+	id 7A0746B0062; Tue, 18 Nov 2025 14:26:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF70A6B00AD; Tue, 18 Nov 2025 14:26:10 -0500 (EST)
+	id 690456B007B; Tue, 18 Nov 2025 14:26:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BF1AB6B000A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:26:10 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6273D1DF943
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:26:10 +0000 (UTC)
-X-FDA: 84124708500.12.AF78D4E
-Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9F7874000E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:26:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52A5C6B0031
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:26:43 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8C1756838
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:26:42 +0000 (UTC)
+X-FDA: 84124709844.28.C9616D1
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C9386100007
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:26:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QZT3lVSJ;
+	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763493968;
+	s=arc-20220608; t=1763494000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Drmjmt2fMsvwH+OurlcvQJHMCZHB3jWO37bEW6LQKZc=;
-	b=SAuvWZI0K67Wk/5T1cY1mO6tgt0Nl0CUav4fSJz3gwNCYBid1/FAo/Da48IDvXhgbP5d8c
-	G/zhfyQpBSeit07x9Qqv4C68goKalTz15V0hsBsci0ADhGlm0vgT/+dnSh1R27u5o5seG0
-	BynVbeOFt9hLYETZfn7+6zqapJU+W/E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763493968; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GA+zLGNQzKnu3qorDuQDpitiUTXEO0YlCfq5W/VFuZU=;
+	b=xzjDdYOcMfeUwVev1L8J7B2ANPUAPTAeR2LcP4o20f1u+feCIkuBMAkaI3/qvEpY8FetXu
+	MFNNj1TbOR/eRKet0L9K0Tzqps+JBCiICcarwnF2fOy/UddiZZ1VicuwlN19zEGy6Ucxmp
+	Wyl1XkmLTx+mpqX9QL1UCck91nviOpc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763494000; a=rsa-sha256;
 	cv=none;
-	b=RsGNpt5GAMXgbHvPhq2CVeD/MgJ7yV1B+yAqDq+7HifrjMmT7pL4IySA6/AUb8QFRaA8T0
-	yhKjprW/xqlmRJgfhvbirT0uKhlxBSAW3ywweIrgvT5o1TXC9Ts4D/xU3oVHmUADwlXTLW
-	G4vLG4wLw6iOK3JX5IiotMMzrKMHCjU=
+	b=sWJky7mPg3xjckeEEqvLK9a/MbsXAGZQ1E4UPlvSvtB4rjw0TUTIBnijS7iPr4Y2H0HrfA
+	smrXxuFWW5PZQywvLRu3Xw1CcXm6gAtGjJztT56BYa6jiuI6rC/0P5haSkCCaAFp/E6MjI
+	s8VbFEBxYmf2uE6u31kTIHlbDq43s8k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	none
-Received: from omf04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49FED1A01AD;
-	Tue, 18 Nov 2025 19:26:05 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf04.hostedemail.com (Postfix) with ESMTPA id 6318220030;
-	Tue, 18 Nov 2025 19:25:56 +0000 (UTC)
-Date: Tue, 18 Nov 2025 14:26:23 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Jens Remus <jremus@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, Steven Rostedt
- <rostedt@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>,
- Indu Bhagat <indu.bhagat@oracle.com>, "Jose E. Marchesi" <jemarch@gnu.org>,
- Beau Belgrave <beaub@linux.microsoft.com>, Linus Torvalds
- <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>,
- Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>, "Carlos
- O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>, Borislav
- Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, David
- Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
- <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>
-Subject: Re: [PATCH v11 03/15] unwind_user/sframe: Add support for reading
- .sframe headers
-Message-ID: <20251118142623.57a60a62@gandalf.local.home>
-In-Reply-To: <e5c5e17f-1efd-4f9e-be2d-c6f65003ba3d@linux.ibm.com>
-References: <20251022144326.4082059-1-jremus@linux.ibm.com>
-	<20251022144326.4082059-4-jremus@linux.ibm.com>
-	<e5c5e17f-1efd-4f9e-be2d-c6f65003ba3d@linux.ibm.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QZT3lVSJ;
+	spf=pass (imf14.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4779a4fc916so9325e9.1
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:26:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763493999; x=1764098799; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GA+zLGNQzKnu3qorDuQDpitiUTXEO0YlCfq5W/VFuZU=;
+        b=QZT3lVSJnyOZNjXYE7daFDRXHSl4Rba35xXOoFd/XhFD2leb1OOeeI/WWOWgdRNU84
+         ZBpnbTw7S6kNYaO2x9PiRXbRjUx3kk+aJKpfgB67bbG98cxy9ItWwMtESgcPVK5FSGEJ
+         LJPH4+R66SZHojDWhC0aBbeHjn30VCd+3nkfFuwLCC2+KrkXmNGdZWMDl0lLhUUgYskv
+         LqkUon3sxn4BwqMuBzOaehVSJrXbvxRmkioXGBVc1CiLrmqRkP0B+X8WYBS9SL7amaoa
+         2uezWxxqso++edBF1jE/aTt69QuPM4aECgpXBpPzH6z4PEhBpxUlRPx59XgJnmh1uv/W
+         VP5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763493999; x=1764098799;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GA+zLGNQzKnu3qorDuQDpitiUTXEO0YlCfq5W/VFuZU=;
+        b=ftUfYfbls9fdWLfiAVTTKKImj248iUEy2JycFA+LFSiZvdHr2aZCDDx4VZMQ/mrqDs
+         87aMu6dh317aWPoxx/b55iIuLI0knKiYp68BAAc2x4A3tQ28DYs/PJds8U/5lXFo/mbR
+         DD7aQISEJvzxw+rbaE7skfAsD289roimoidFCzoHOGYi/jA6NMXJbygrdfse5uwpdED6
+         1R4ffRiUM/Ve+FopEJ6K6k5dt74IEAa7J3lGBR3MFMyKqbsONJWzwd0BSFBmaMDl1324
+         GkVpWg70EhDi4GKXnA7k+H6gExfT6+3pxTrGYocLKBwgEc47/TbPU0lYYQ3+MiUjENmv
+         nP9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUvxmRvvA8tkE1pY/YetiF0by25Vsv/8+PZ7kXjDjiYfkpb+IMAHEIOor74OpdB2Ye4wLv77MbJXw==@kvack.org
+X-Gm-Message-State: AOJu0YyL7qZFe1Kpm74Z02sTdZpNgHkZjWiAdnc5qo7vWYJz4gbJgwSh
+	6qn4FVaN4+M7kxSyPtjAj/fk5sXzZv8HCfeQWnt/xy6YAi49KvhSwCjd+wTIJ+Txj1xiBJZvLT7
+	GzaYrBu7baA/GrdrrIRWOyXUS7iCVnMpNQEFK6Qn9
+X-Gm-Gg: ASbGncsIqGEI4QvNrJmO8tdTuL0ZIAd4nxdMfwK/WHOaGLA4Fp1uU0lw8FB2/I+rhnQ
+	A8ggqDD41mwSfGTdiLQJdDvk8vR3cjO7Fyxhy1tUXqIwYO6mxbpIUTxJcYTW8YcbzdWi8MkiULJ
+	MGdCON98LEIAZD/RfnGjTWv/4dtHzjeonthWkI/x3aOAE9N4pBt0qj0LzQojTXtJPXD/39K5Rtp
+	nCc1CR66ltrmkraV/SSkaiNY3CPcQecJY5JDeY6MnGSk/O0Y7mlBJwxP3ZQyoj0o3lx0+SB5VYJ
+	5NxwLQmaF0TWXwg4onf457+TiA==
+X-Google-Smtp-Source: AGHT+IEysZiub5Ivc8ctKaVMpHOPlPVzbnxwgaM/P+IFAtMIvhAI17rSqBiFsAeJl5PaeklqKb5lCjoXEtjGGtmWDSc=
+X-Received: by 2002:a05:600d:112:b0:477:255c:bea8 with SMTP id
+ 5b1f17b1804b1-477b1243673mr111675e9.7.1763493998762; Tue, 18 Nov 2025
+ 11:26:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18kMxDuWA1tAF9m0DoMD/Jf6AhXJD9G9Y4=
-X-HE-Meta: U2FsdGVkX187IrvkH90ckrHBgaHws/CDDckN7oWOSHQjYNUrMmyzebyXREW0G5QsO8LWPgB7KUXrlIl53TbVunkyTH7yH6013m9YXFffYOwssCNgJobXZ42EzqvfFBlvuBf1bDwTdo/cPGPnxjh7EcAhSP0F1bNcPPsTwG6CxpKVWybID+0QFOB0gq1aLVm1YKfNghJNuA7rARi3zkYltVvQULz7rE1Ewqmd0/GNKcO+e3P9xl+9pGtp+4dSugY0O4tKiekgg3+E9xuViKe0/aJvKMAdftbtsFgOa2PIxhuKrghkQmTozwPhe97I/b8vgxn0XYhcL7DlbF/TRMZC+t+3ihZyz2MU
-X-HE-Tag-Orig: 1763493956-237256
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9F7874000E
-X-Stat-Signature: g4pc9as7jrd8u1x46p5jdz3xuqpq7gjd
+References: <20251116014721.1561456-1-jiaqiyan@google.com> <20251116014721.1561456-2-jiaqiyan@google.com>
+ <aRm6shtKizyrq_TA@casper.infradead.org> <aRqTLmJBuvBcLYMx@hyeyoo>
+ <aRsmaIfCAGy-DRcx@casper.infradead.org> <CACw3F50E=AZtgfoExCA-nwS6=NYdFFWpf6+GBUYrWiJOz4xwaw@mail.gmail.com>
+ <aRxIP7StvLCh-dc2@hyeyoo>
+In-Reply-To: <aRxIP7StvLCh-dc2@hyeyoo>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Tue, 18 Nov 2025 11:26:27 -0800
+X-Gm-Features: AWmQ_bkGjatHcvMvfv8N94vNdxa0KML4Ogn8iSmfd4AKJOPSCC92qeDqRDaPVwg
+Message-ID: <CACw3F53Rck2Bf_C45Uk=A1NJ4zB1B0R1+GqvkNxsz3h3mDx-pQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] mm/huge_memory: introduce uniform_split_unmapped_folio_to_zero_order
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>, ziy@nvidia.com, david@redhat.com, 
+	Vlastimil Babka <vbabka@suse.cz>, nao.horiguchi@gmail.com, linmiaohe@huawei.com, 
+	lorenzo.stoakes@oracle.com, william.roche@oracle.com, tony.luck@intel.com, 
+	wangkefeng.wang@huawei.com, jane.chu@oracle.com, akpm@linux-foundation.org, 
+	osalvador@suse.de, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: rqxkenshgmfayopged6ibzeox5y5bgf8
 X-Rspam-User: 
-X-HE-Tag: 1763493968-98382
-X-HE-Meta: U2FsdGVkX19q90wHzcSzpRlA0lngaWX2VNzhED8LS3u/53y6hOJjL1VCW5UI9At/4T+maQJMVeDofKj6v/q+Vrtd+nRMLGDrGPOK+1390Y07BmmaL6SU/cVRVIWRhrpzp+f0m8EWuEjhYjVxLFBlA7Y/vZVis0mnIl+pxaq5hJfXMTgIHF0YLZA67krXfaIuQPxG631hxc/EW7zrDCm3vYgEuQBH6uRIoDU2jcP9ibEtDcbXLvJjjXZTQR4j5aH239bDebsXuaZzu/7tav6cmYWUi5dnpWFIKccSkUIaESKv+amHOw4LQNkqN+BBcNolnsnYt+2Br7ALeFvwv1wi1QWGyLmPXX5wnNK2JAx0FkEhfoaIJcSrZ65J6qhDXYYAKBIxauRrsHMaCwppbY9BFzQq8bOxhx5zHzl0/LU/c6sCpwUbjLaXYN/uS6gNHPYzfW6AhNBek5xxrkv7TPbcSpZrD9XLWhP5W6q+P0IhPcBUYzcci/+eudUt+KZrA5cJ5iJwqQrpYhQxjDrU4XQqd3tW6W4M8b6E7/CaWRy+grnwS2xtwNQfRAelIym9/bPN4oYBY5EO2IDZpb1LziSx0SX139MNOC4VpGmP5w3m+pPgbM1OIQ/5Xk3+p7pbuGtm/UkAIN8p3LBSEEbYWCdzjQVhPPT7D0oi1j5aM7h2XLSuMgA2OoCQdiS1lYFgD8HvdNjANoAIqZjQ9UwoJu30aGnI3sCbVfrjSuHIbXYJiXfj4HMaMqHVmtuSG6LtFNty1jI417KCXG8cG9mnQyBIWpltLWPREFWaxzhh7X5QFEUvZEWyp8haBj40dGIraxpiherhFnlA1PnW1jTcJ0p4Jy3GXBoI6KG101T4d3dH34lnEOprF1XXHkgV4e8ThZorxlSUqfsEpHHWX1RQzwfIFZ4DF3XWs2JnPcJTmynNhSz8y/U9UbeR9A==
+X-Rspamd-Queue-Id: C9386100007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763494000-304854
+X-HE-Meta: U2FsdGVkX18EOySrwX7+KX+b2SKWa9KQrxsRuJcyKl+Tdm2KzxPyu92CgbtUHM9nOXbigZD7iY2QO04jPUmTWm8O2kjyyJX5qe9DwmB1qAe2MSt7h+mHOIfCFTbqbkR1j7yaDJ16PbzM+Ba5Je3n1zeOqTUc8d9Ld3cHXchnAEEWc9vd7yz0Pw1BGxSLmYlW2TQVFU5DMdJrE3fHqkWOTxbSoEn63hvJoYycisGGsSts45eulkn2pugaNtH4XsP4owzN6n/oibg8ViI0Gy4zzjBPCM9E8hxzmDtKwjuosg9DRF2obQ4+6EgkyLmj2ld04gxpPWo7Ih5DuDG3htombsNMYEysngiwZ0AU+u1ELCnSeMPSKCgoV/sAlHEWMELrot5Fie1mlsUUk1jkGBbVg5jin5b0HLjirJTpdcZFfLhLCBRJlSrowoPN+M3WlLfsJKcOdWpipcZBpKoqYMq8DgL/7NWDXqAr94HvvA/klqpXO45j7SAEStomjrGYuinm2OXt7705g2hoYv+p9Pw4Uv2C0MfTKah3+gkcTCsvUYgCsnynUx7jCG6ovqYCMU5FPgsNn+JO7d0fuogBeinNobLWPEAYaQLezSs6b8r5gtvt941gWGczVz/C19LgEfeGJp8ynJ+cinSfatIoge/1tF4mCIhbDjUXG+9wsBmXG2emtCncfXZ3pxDP04bIH1wq8urFwNw+ESFg8xdKxFM71VUV1laUQaIekR9T+HtCZ+NNOGt8Le3+A50YTrEStZwmxEGqjq60ysdZTvzSV61vxzH/q1eQ8REgMbmWmdeB5l359nCtv9WCyLdW6/mPmrZx4syfy+54JzhFirsG0kvSvUZFjV3l7mHXRZ8KIABLl9H9xQyEl0+E0QveftkFloOA2VKCPl4tpJYCYbjLAaglJ3ezHL5x0Ly8IFSo0GLDxp5INJa9lZVlzVXazBQoIwrCIaokAtxj1eQYAhBopsR
+ zpg1BL0y
+ duCHZ4BH3CInpVZwH/JElXTNA572pmVmFB4pM2IeAldh1AHZevxlZ4SEF/r+T/6XhYEc2wjIIo1+APZMN/7ZFxZziZyqa/Piwf8QMGJxL1hBmYfcDYpx+cdzLIprF8AAHqeFRo/i0yIQsrVPGkLz7AN3Ygl0n2leJKbsIUFeH+OrvYiEungxS1oMvrpArUaPC8WkY24s8O+paQQiiKw3JX2sCsM7xWn2egMNf9mL5f0mTln5FPjid72JhlFEY91moTpLJKF7ccv9jU4tvrXhtWzsfRpcudUZ50QMeLEBW0gtreRbSLa5m4KK4jsHH1Y4JjSHPuYrZynQFXpmYI6EU+kuP+LAvNzIT66br7mJuRVGKAaSGlZWCPhRWDVT6a3O5LDTFNdCmFFNP1os=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,34 +126,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Nov 2025 18:04:27 +0100
-Jens Remus <jremus@linux.ibm.com> wrote:
+On Tue, Nov 18, 2025 at 2:20=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
+ote:
+>
+> On Mon, Nov 17, 2025 at 10:24:27PM -0800, Jiaqi Yan wrote:
+> > On Mon, Nov 17, 2025 at 5:43=E2=80=AFAM Matthew Wilcox <willy@infradead=
+.org> wrote:
+> > >
+> > > On Mon, Nov 17, 2025 at 12:15:23PM +0900, Harry Yoo wrote:
+> > > > On Sun, Nov 16, 2025 at 11:51:14AM +0000, Matthew Wilcox wrote:
+> > > > > But since we're only doing this on free, we won't need to do foli=
+o
+> > > > > allocations at all; we'll just be able to release the good pages =
+to the
+> > > > > page allocator and sequester the hwpoison pages.
+> > > >
+> > > > [+Cc PAGE ALLOCATOR folks]
+> > > >
+> > > > So we need an interface to free only healthy portion of a hwpoison =
+folio.
+> >
+> > +1, with some of my own thoughts below.
+> >
+> > > >
+> > > > I think a proper approach to this should be to "free a hwpoison fol=
+io
+> > > > just like freeing a normal folio via folio_put() or free_frozen_pag=
+es(),
+> > > > then the page allocator will add only healthy pages to the freelist=
+ and
+> > > > isolate the hwpoison pages". Oherwise we'll end up open coding a lo=
+t,
+> > > > which is too fragile.
+> > >
+> > > Yes, I think it should be handled by the page allocator.  There may b=
+e
+> >
+> > I agree with Matthew, Harry, and David. The page allocator seems best
+> > suited to handle HWPoison subpages without any new folio allocations.
+>
+> Sorry I should have been clearer. I don't think adding an **explicit**
+> interface to free an hwpoison folio is worth; instead implicitly
+> handling during freeing of a folio seems more feasible.
 
-> I wonder whether the series should be restructured as follows:
-> 
-> unwind_user/sframe: Store .sframe section data in per-mm maple tree
-> unwind_user/sframe: Detect .sframe sections in executables
-> unwind_user/sframe: Add support for reading .sframe headers
-> unwind_user/sframe: Add support for reading .sframe contents
-> unwind_user/sframe: Wire up unwind_user to sframe
-> x86/uaccess: Add unsafe_copy_from_user() implementation
-> unwind_user/sframe/x86: Enable sframe unwinding on x86
-> unwind_user: Stop when reaching an outermost frame
-> unwind_user/sframe: Add support for outermost frame indication
-> unwind_user/sframe: Remove .sframe section on detected corruption
-> unwind_user/sframe: Show file name in debug output
-> unwind_user/sframe: Add .sframe validation option
-> unwind_user/sframe: Add prctl() interface for registering .sframe sections
-> 
-> While moving sframe_add_section() and sframe_remove_section() from
-> "unwind_user/sframe: Add support for reading .sframe headers" to
-> "unwind_user/sframe: Store .sframe section data in per-mm maple tree" or
-> into a new second patch, as they depend on the first and are required
-> by the third.
-> 
-> What are your thoughts?  The reordering might be wasted effort.
+That's fine with me, just more to be taken care of by page allocator.
 
-If you feel it makes it better, sure, go ahead and do it.
+>
+> > > some complexity to this that I've missed, eg if hugetlb wants to reta=
+in
+> > > the good 2MB chunks of a 1GB allocation.  I'm not sure that's a usefu=
+l
+> > > thing to do or not.
+> > >
+> > > > In fact, that can be done by teaching free_pages_prepare() how to h=
+andle
+> > > > the case where one or more subpages of a folio are hwpoison pages.
+> > > >
+> > > > How this should be implemented in the page allocator in memdescs wo=
+rld?
+> > > > Hmm, we'll want to do some kind of non-uniform split, without actua=
+lly
+> > > > splitting the folio but allocating struct buddy?
+> > >
+> > > Let me sketch that out, realising that it's subject to change.
+> > >
+> > > A page in buddy state can't need a memdesc allocated.  Otherwise we'r=
+e
+> > > allocating memory to free memory, and that way lies madness.  We can'=
+t
+> > > do the hack of "embed struct buddy in the page that we're freeing"
+> > > because HIGHMEM.  So we'll never shrink struct page smaller than stru=
+ct
+> > > buddy (which is fine because I've laid out how to get to a 64 bit str=
+uct
+> > > buddy, and we're probably two years from getting there anyway).
+> > >
+> > > My design for handling hwpoison is that we do allocate a struct hwpoi=
+son
+> > > for a page.  It looks like this (for now, in my head):
+> > >
+> > > struct hwpoison {
+> > >         memdesc_t original;
+> > >         ... other things ...
+> > > };
+> > >
+> > > So we can replace the memdesc in a page with a hwpoison memdesc when =
+we
+> > > encounter the error.  We still need a folio flag to indicate that "th=
+is
+> > > folio contains a page with hwpoison".  I haven't put much thought yet
+> > > into interaction with HUGETLB_PAGE_OPTIMIZE_VMEMMAP; maybe "other thi=
+ngs"
+> > > includes an index of where the actually poisoned page is in the folio=
+,
+> > > so it doesn't matter if the pages alias with each other as we can rec=
+over
+> > > the information when it becomes useful to do so.
+> > >
+> > > > But... for now I think hiding this complexity inside the page alloc=
+ator
+> > > > is good enough. For now this would just mean splitting a frozen pag=
+e
+> >
+> > I want to add one more thing. For HugeTLB, kernel clears the HWPoison
+> > flag on the folio and move it to every raw pages in raw_hwp_page list
+> > (see folio_clear_hugetlb_hwpoison). So page allocator has no hint that
+> > some pages passed into free_frozen_pages has HWPoison. It has to
+> > traverse 2^order pages to tell, if I am not mistaken, which goes
+> > against the past effort to reduce sanity checks. I believe this is one
+> > reason I choosed to handle the problem in hugetlb / memory-failure.
+>
+> I think we can skip calling folio_clear_hugetlb_hwpoison() and teach the
 
--- Steve
+Nit: also skip folio_free_raw_hwp so the hugetlb-specific llist
+containing the raw pages and owned by memory-failure is preserved? And
+expect the page allocator to use it for whatever purpose then free the
+llist? Doesn't seem to follow the correct ownership rule.
+
+> buddy allocator to handle this. free_pages_prepare() already handles
+> (PageHWPoison(page) && !order) case, we just need to extend that to
+> support hugetlb folios as well.
+>
+> > For the new interface Harry requested, is it the caller's
+> > responsibility to ensure that the folio contains HWPoison pages (to be
+> > even better, maybe point out the exact ones?), so that page allocator
+> > at least doesn't waste cycles to search non-exist HWPoison in the set
+> > of pages?
+>
+> With implicit handling it would be the page allocator's responsibility
+> to check and handle hwpoison hugetlb folios.
+
+Does this mean we must bake hugetlb-specific logic in the page
+allocator's freeing path? AFAICT today the contract in
+free_frozen_page doesn't contain much hugetlb info.
+
+I saw there is already some hugetlb-specific logic in page_alloc.c,
+but perhaps not valid for adding more.
+
+>
+> > Or caller and page allocator need to agree on some contract? Say
+> > caller has to set has_hwpoisoned flag in non-zero order folio to free.
+> > This allows the old interface free_frozen_pages an easy way using the
+> > has_hwpoison flag from the second page. I know has_hwpoison is "#if
+> > defined" on THP and using it for hugetlb probably is not very clean,
+> > but are there other concerns?
+>
+> As you mentioned has_hwpoisoned is used for THPs and for a hugetlb
+> folio. But for a hugetlb folio folio_test_hwpoison() returns true
+> if it has at least one hwpoison pages (assuming that we don't clear it
+> before freeing).
+>
+> So in free_pages_prepare():
+>
+> if (folio_test_hugetlb(folio) && folio_test_hwpoison(folio)) {
+>   /*
+>    * Handle hwpoison hugetlb folios; transfer the error information
+>    * to individual pages, clear hwpoison flag of the folio,
+>    * perform non-uniform split on the frozen folio.
+>    */
+> } else if (PageHWPoison(page) && !order) {
+>   /* We already handle this in the allocator. */
+> }
+>
+> This would be sufficient?
+
+Wouldn't this confuse the page allocator into thinking the healthy
+head page is HWPoison (when it actually isn't)? I thought that was one
+of the reasons has_hwpoison exists.
+
+>
+> Or do we want to handle THPs as well, in case of split failure in
+> memory_failure()? if so we need to handle folio_test_has_hwpoisoned()
+> case as well...
+
+Yeah, I think this is another good use case for our request to page allocat=
+or.
+
+>
+> > > > inside the page allocator (probably non-uniform?). We can later re-=
+implement
+> > > > this to provide better support for memdescs.
+> > >
+> > > Yes, I like this approach.  But then I'm not the page allocator
+> > > maintainer ;-)
+> >
+> > If page allocator maintainers can weigh in here, that will be very help=
+ful!
+>
+> Yeah, I'm not a maintainer either ;) it'll be great to get opinions
+> from page allocator folks!
+>
+> --
+> Cheers,
+> Harry / Hyeonggon
 
