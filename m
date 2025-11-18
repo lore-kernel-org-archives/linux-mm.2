@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 332EBCED617
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 12:03:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B63A1CED617
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 12:11:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76E726B0089; Tue, 18 Nov 2025 07:03:45 -0500 (EST)
+	id 0C8F26B0096; Tue, 18 Nov 2025 07:11:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71ECA6B008A; Tue, 18 Nov 2025 07:03:45 -0500 (EST)
+	id 0A0F66B0099; Tue, 18 Nov 2025 07:11:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 634BD6B0093; Tue, 18 Nov 2025 07:03:45 -0500 (EST)
+	id F1F4F6B00A8; Tue, 18 Nov 2025 07:11:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5159D6B0089
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:03:45 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E09B55952F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:03:44 +0000 (UTC)
-X-FDA: 84123593568.21.91E04D2
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 68E5F180014
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:03:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z9Rbcq7i;
+	by kanga.kvack.org (Postfix) with ESMTP id E0E3C6B0096
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:11:26 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F49F13B243
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:11:26 +0000 (UTC)
+X-FDA: 84123612972.11.B53141C
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3BCDB14000E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:11:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWcpFE9b;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763467883; a=rsa-sha256;
+	cv=none;
+	b=Vyev9+z92gBP8Sv5qv4RISIfIT4BjfDep8KwkfifKYDVj5SnYZA4ddJfjocp5HuZZ5wftw
+	wA9seaT3WqOfYNMg1titn44IchwZZHRiicJG+SFY27oQexJk436DZscda/348cMXHRsS8d
+	fwqohlQgTc0BZXLYiR78mIv7vpY2xxs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWcpFE9b;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763467423;
+	s=arc-20220608; t=1763467883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YSfDkQJHByC5W64S3r1RZBfV7l+QzHRtZt5IkHkWjXM=;
-	b=j/HOK51pFE/+85blaaocQoXEPdD18g6MQ8FZgM30yBVXEkhA2ih+upHiw1veSgSNmFkXwh
-	8dH5FpdakbeTpITy2hCirHCvPb1Pi97SfOiUA+hec0qAtsxAcWFgBon+LaFL2CyIYt449P
-	2afvIY8xWfhgVCLsbWtiTtnPQfoa5bE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763467423; a=rsa-sha256;
-	cv=none;
-	b=bHwmYMctbk4Ze9ZOYF/kdijxXuPV9ANSP3zMOeATUy9Veku/k6tO8i/OgUQD0euayLAIeM
-	6PnzDtWUrk9o/IkJaOkv+AhlOl7yx45XrIjRsWeHOeU5hS2UUDGofQTKTFCl7BdEAJlm6N
-	qNPUuHoBVZoZeD/mBiuf8b5G1HFYiM4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z9Rbcq7i;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-Message-ID: <195baf7c-1f4e-46a4-a4aa-e68e7d00c0f9@linux.dev>
+	bh=+lNwnvmSsPR/k/zhjmVCKNI0fGEACpfEUHv6io9dj+U=;
+	b=jp6yzJ9nWfKXjXyh8EvfhTUyNphA/2Mndn0uQyTjHjHd8J7qpWFd8Tx+4ITzDetQyGwAVU
+	FGYg9t8aGP5YucIAVgSTWP9wVPP6O1rNsjYo6jnGzmnAkeKdm3+ZRFnr1/9dFwhc1qXQ2K
+	zaPmQzNQP/PTftFVrjlVBKTIbUs7JH4=
+Message-ID: <a64d9d17-1706-4936-8742-8ee5bc4988ab@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763467417;
+	t=1763467879;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YSfDkQJHByC5W64S3r1RZBfV7l+QzHRtZt5IkHkWjXM=;
-	b=Z9Rbcq7i2Y1LGHCoUGuTi6ppSLunSulmRKUQ4pjayjy42viyJ+DcXrTYmImrfSRJw+UKR4
-	UVTRGLFHLTlNdVaXnjT3ixLkagqhNZyq0Aqov/I7FCpMijq/fe4cVtkKv+q+YaHP5txxbN
-	qqqQe//KpgfJbRYA+2BGf/imvJ4aYQ4=
-Date: Tue, 18 Nov 2025 20:02:30 +0800
+	bh=+lNwnvmSsPR/k/zhjmVCKNI0fGEACpfEUHv6io9dj+U=;
+	b=XWcpFE9bHyrL3ur4jyLZUcH0ErcPM8hhnMwadsfGMXehkbuBJdkd1yEAxdN/M1/RLt6XPo
+	JcN2VN7T4K7pbMyfxZEYNiIJp5yCrjNpHytpSb2fgcbYS4zRdFg2rqw9uz8Em1YcLAjVAP
+	LarhuYQHkv5JuvBqxHUwezsqqG6aJug=
+Date: Tue, 18 Nov 2025 20:11:04 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 7/7] mm: make PT_RECLAIM depend on
- MMU_GATHER_RCU_TABLE_FREE && 64BIT
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
- dev.jain@arm.com, akpm@linux-foundation.org, ioworker0@gmail.com
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
- <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
- <355d3bf3-c6bc-403e-9f19-89259d868611@kernel.org>
+Subject: Re: [PATCH v1 06/26] mm: memcontrol: return root object cgroup for
+ root memory cgroup
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+ <5e9743f291e7ca7b8f052775e993090ed66cfa80.1761658310.git.zhengqi.arch@bytedance.com>
+ <aRroO9ypxvHsAjug@hyeyoo> <e5edc1b6-4c63-42c7-91ab-f1a28cb0b50d@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <355d3bf3-c6bc-403e-9f19-89259d868611@kernel.org>
+In-Reply-To: <e5edc1b6-4c63-42c7-91ab-f1a28cb0b50d@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 8hppcrzibrrcorxo3o3nh6erf8pn9xx3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 68E5F180014
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763467421-75557
-X-HE-Meta: U2FsdGVkX19Q3gGbrhlJVtcXlvx7a79AUAFGiEo0VSmGS3naame+BSh7LBr1NoON9hoKz4RO5tnEYkXdRS+veBPQBKVbLGnMgyT7xr7R3hfOuAli0ozbNesD47VD/l9x3wDBQLXqq28Zy6RvRpYuXIOhf9wMBp+akvPn1jrdbHNuN7UJaU4GX7MDn1CZ6cwBVV35NhlNA5wFWbh59EC7UstUMFdkbpw4xeti8TJB2hVjqjgF9JLpwTzRO8B3Zn7c9ZWZuGufi4t6upYMyOvvRrXS1AkdZCaRkheu4Kma7tgYNCZJTodgHqdF51eEtd73Au20+dX7OUVSQwRNv3szaa1cVSbH3I+Vv0BjBvtX9NYUKXwIOw+08IaoeV7vcoxnM9S5akGJnBIv2QgISxtIBT8I17nbrIEF+VWiXtNVYB3LY0RxR/Y+y4QhHCuQKzOOk+H2ak3Ml8BF2qZJXBd3Ja2O1vBn1rJ+s+A64Dx0nqXx0CxlGJfP+FdxYmaSN+V4WYs9k6uSgpzFiNuMP7hYh9T5CvkKzH/qhJRQcsnzbSOBPgs0WH/3zf9z2QefwVA6vV1Rv5jpTaBOTIYebElOu+tZyKMhdjN+vb3KlN3D6AC5+TOVKmBVsQ2bqi4TcahazHD49nePel+7agjpd19MCXJRpPvoL07U2LakEDo83VL/Ogd+2YoNqM6cvmdaegshvS3AcNdn9Y6qXfpPQIZLPZYC3x/rSEW0Dneg2AgRp32ADV+5byYAKpxZA+gXT6PB6jPVUz4kWYqP2KymJKhHwepOUz925k70arnLSGdm0t4S3NDFj8QOsqsDAhEiMBBqIkKlzWrpAiiJeKKkGWeiHP8kGIdjrZO8MXTylEpcZ4d34vKiROXn0BSJoMI95x1+qcWljUsyTOiJsXDCocPXu9FmoWtsdyjfGMPU19Y5ywMbbtqVWMogTDBl0qVu307G0jIuPbuJA9AiiNsvvCb
- sEbev0hL
- Q/bTfLSRb0P/qP3bCHG6cG0MLOgKombGy8vAAovvdJuvoDrRTWQcxJZzH1zePWRB8KUbGL7Ch0iF8wHv8OUedQIKc4xdaPfOAG6Bcpe/vhOQhroREvgT5kGuKqdzhh4Hy17VxKYWQj1Pey5AF5x4o03Qm1hSC+wuzta3F5VkQUVfqg1r2mb+vYcNo9muNHM1R1k0nUvfKffopYqpfxX2g0RPlMZxfPJE93vxqqhsaug5C+0pEgRC0AQjmJ/EQK189Ar+fif8J9MkRwnyFkrf4fNnRZ9Z70VrbdJQ0yq3XIVtiKZdItYxV7yV8kA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3BCDB14000E
+X-Stat-Signature: zzgwsm1smqbjxdhxquirwjhzaegpaoe3
+X-HE-Tag: 1763467882-52795
+X-HE-Meta: U2FsdGVkX18HQU3KsFnuOyUa4mF06PwrLTg2FPKQr4ljVj8syo36YdLsH6RKPRVNR+ejVbm6L9Yv5AUOPr9rNmWicNHitPFJewyzdfakmEcDWg5U6oV32tKSniyS68mGH5gNlv/0eAVlhhsByT9ZW3bW+71wOvuIcpH6gbQNWPqBRdJjwLwmVU6vhY+AqSY3ocMZxFsDQ5szW//87bShWZh1oRhDKDlaOzM/wk4ezouAZscFIE/O5L715qAbapo/UHLUdU3pRhUaK8a9Z+F4zGNFzQVO3lT8u9YwowAug8tTuzbOjVFFS+o+NAl0muSBIvjr7HETTIWgXfUVyXrrUNpH3zU3TW2H3O1jRXXGpMeGGPqpqFPaAt3y3dz39JzN2MPlIDIOYItQVVX/vmoFjv1l3FDigUtKg4jYu3W87+Sv+f53IoJgvmT0MSmgmr3+hywVprh+yALiKUTdnu1vFusQFdx2b+spRq40nafSmgWW68+z+eGjxZvSqpR/Azz5maRDegVxivNi1o74xFh3O+vUrDN8KJsu9g49HLUQ1WAziAdZdeq1/ApjV87Su3mAcTqupajPkBuff0R5FFrbaWpCMyJ07i7BkXnIHwFK83msdPGZbizPflIVyvBScWIiwbjdBHKcHM24pKsoDgwndRWAhjFtm+GE/hTVWOuZuAvYOYE/qQFLQq7aoTdNVrzgG+X2YJCOdfDuxerRBqpNQs34zfI7F+2hAVm39by5mbs/P0H3R0eu0/Fnkyu0+289srEN46RaJICVhlfdjG3NFnDmx9qZ0ZlgUPfsozJwRUIyXPPB1TXQ7+b1/hmN7YsMkSo5osh1s6vTYtSnQApecmbF/D6r9r+rhGQIzD2dZyvr38xxeMDwV1JzEicfOSvtWxgmuIs4OpLQYFU1IaKe+xclWImaDr/JQMdnWfVXFEZY68GuNsS9cwpzEG58W5W/ErzVOdUGnGu/bOTbIKM
+ PcuR6K9T
+ Dg/iUVakcFMuWcGU8McpII976B3JoX4EYIZuWmLGZW3Dz/O01JJFfmLKirg2uWEu26EyRlXl+k3GbXa2wU7mDLWABrP6QNSCJ303JXzJ4W/f4jTTiqQ8OFhPZqe1HRsTW4iCe/voGKP5iDAFxffpPcx1xIkO7+iqljLzoD84FCmFzmSKEOeJakX8tpyJ9VYFc+7iCc8boJqgzQCRXYaKuaVmU82ARVyb9o15WMgVtqwOOo4110+rAk9rDlw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,93 +100,104 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 11/18/25 12:57 AM, David Hildenbrand (Red Hat) wrote:
-> On 14.11.25 12:11, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
+On 11/18/25 7:28 PM, Qi Zheng wrote:
+> Hi Harry,
 > 
-> Subject: s/&&/&/
+> On 11/17/25 5:17 PM, Harry Yoo wrote:
+>> On Tue, Oct 28, 2025 at 09:58:19PM +0800, Qi Zheng wrote:
+>>> From: Muchun Song <songmuchun@bytedance.com>
+>>>
+>>> Memory cgroup functions such as get_mem_cgroup_from_folio() and
+>>> get_mem_cgroup_from_mm() return a valid memory cgroup pointer,
+>>> even for the root memory cgroup. In contrast, the situation for
+>>> object cgroups has been different.
+>>>
+>>> Previously, the root object cgroup couldn't be returned because
+>>> it didn't exist. Now that a valid root object cgroup exists, for
+>>> the sake of consistency, it's necessary to align the behavior of
+>>> object-cgroup-related operations with that of memory cgroup APIs.
+>>>
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> ---
+>>>   include/linux/memcontrol.h | 29 +++++++++++++++++-------
+>>>   mm/memcontrol.c            | 45 ++++++++++++++++++++------------------
+>>>   mm/percpu.c                |  2 +-
+>>>   3 files changed, 46 insertions(+), 30 deletions(-)
+>>>
+>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>>> index 6185d8399a54e..9fdbd4970021d 100644
+>>> --- a/include/linux/memcontrol.h
+>>> +++ b/include/linux/memcontrol.h
+>>> @@ -332,6 +332,7 @@ struct mem_cgroup {
+>>>   #define MEMCG_CHARGE_BATCH 64U
+>>>   extern struct mem_cgroup *root_mem_cgroup;
+>>> +extern struct obj_cgroup *root_obj_cgroup;
+>>>   enum page_memcg_data_flags {
+>>>       /* page->memcg_data is a pointer to an slabobj_ext vector */
+>>> @@ -549,6 +550,11 @@ static inline bool mem_cgroup_is_root(struct 
+>>> mem_cgroup *memcg)
+>>>       return (memcg == root_mem_cgroup);
+>>>   }
+>>> +static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+>>> +{
+>>> +    return objcg == root_obj_cgroup;
+>>> +}
+>>
+>> After reparenting, an objcg may satisfy objcg->memcg == root_mem_cgroup
+>> while objcg != root_obj_cgroup. Should they be considered as
+>> root objcgs?
+> 
+> Indeed, it's pointless to charge to root_mem_cgroup (objcg->memcg).
+> 
+> So it should be:
+> 
+> static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+> {
+>      return (objcg == root_obj_cgroup) || (objcg->memcg == 
+> root_mem_cgroup);
+> }
 
-will do.
+Oh, we can't do that because we still need to consider this objcg when
+uncharging. Some pages may be charged before reparenting.
 
 > 
 >>
->> Make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE so that PT_RECLAIM 
->> can
->> be enabled by default on all architectures that support
->> MMU_GATHER_RCU_TABLE_FREE.
+>>>   static inline bool mem_cgroup_disabled(void)
+>>>   {
+>>>       return !cgroup_subsys_enabled(memory_cgrp_subsys);
+>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>>> index 2afd7f99ca101..d484b632c790f 100644
+>>> --- a/mm/memcontrol.c
+>>> +++ b/mm/memcontrol.c
+>>> @@ -2871,7 +2865,7 @@ int __memcg_kmem_charge_page(struct page *page, 
+>>> gfp_t gfp, int order)
+>>>       int ret = 0;
+>>>       objcg = current_obj_cgroup();
+>>> -    if (objcg) {
+>>> +    if (!obj_cgroup_is_root(objcg)) {
 >>
->> Considering that a large number of PTE page table pages (such as 100GB+)
->> can only be caused on a 64-bit system, let PT_RECLAIM also depend on
->> 64BIT.
+>> Now that we support the page and slab allocators support allocating 
+>> memory
+>> in NMI contexts (on some archs), current_obj_cgroup() can return NULL
+>> if (IS_ENABLED(CONFIG_MEMCG_NMI_UNSAFE) && in_nmi()) returns true
+>> (then it leads to a NULL-pointer-deref bug).
 >>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   arch/x86/Kconfig | 1 -
->>   mm/Kconfig       | 6 +-----
->>   2 files changed, 1 insertion(+), 6 deletions(-)
+>> But IIUC this is applied to kmem charging only (as they use this_cpu ops
+>> for stats update), and we don't have to apply the same restriction to
+>> charging LRU pages with objcg.
 >>
->> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->> index eac2e86056902..96bff81fd4787 100644
->> --- a/arch/x86/Kconfig
->> +++ b/arch/x86/Kconfig
->> @@ -330,7 +330,6 @@ config X86
->>       select FUNCTION_ALIGNMENT_4B
->>       imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>       select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
->>       select ARCH_SUPPORTS_SCHED_SMT        if SMP
->>       select SCHED_SMT            if SMP
->>       select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index a5a90b169435d..e795fbd69e50c 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -1440,14 +1440,10 @@ config ARCH_HAS_USER_SHADOW_STACK
->>         The architecture has hardware support for userspace shadow call
->>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->> -config ARCH_SUPPORTS_PT_RECLAIM
->> -    def_bool n
->> -
->>   config PT_RECLAIM
->>       bool "reclaim empty user page table pages"
->>       default y
->> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->> -    select MMU_GATHER_RCU_TABLE_FREE
->> +    depends on MMU_GATHER_RCU_TABLE_FREE && MMU && SMP && 64BIT
+>> Maybe Shakeel has more insight on this.
+>>
+>> Link: https://lore.kernel.org/all/20250519063142.111219-1- 
+>> shakeel.butt@linux.dev
 > 
-> Who would we have MMU_GATHER_RCU_TABLE_FREE without MMU? (can we drop 
-> the MMU part)
-
-OK.
-
+> Thanks for this information, and it seems there's nothing wrong here.
 > 
-> Why do we care about SMP in the first place? (can we frop SMP)
-
-OK.
-
+> Thanks,
+> Qi
 > 
-> But I also wonder why we need "MMU_GATHER_RCU_TABLE_FREE && 64BIT":
-> 
-> Would it be harmful on 32bit (sure, we might not reclaim as much, but 
-> still there is memory to be reclaimed?)?
-
-This is also fine on 32bit, but the benefits are not significant, So I
-chose to enable it only on 64-bit.
-
-I actually tried enabling MMU_GATHER_RCU_TABLE_FREE on all
-architectures, and apart from sparc32 being a bit troublesome (because
-it uses mm->page_table_lock for synchronization within
-__pte_free_tlb()), the modifications were relatively simple.
-
-> 
-> If all 64BIT support MMU_GATHER_RCU_TABLE_FREE (as you previously 
-> state), why can't we only check for 64BIT?
-
-OK, will do.
-
-Thanks,
-Qi
-
+>>
 > 
 
 
