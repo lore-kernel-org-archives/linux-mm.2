@@ -4,111 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28ED8CCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:52:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29254CEBF93
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:55:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8452A8E0026; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
+	id 7FE948E0027; Tue, 18 Nov 2025 02:55:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F5AC8E0005; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
+	id 7AEA48E0005; Tue, 18 Nov 2025 02:55:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E45E8E0026; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
+	id 69E648E0027; Tue, 18 Nov 2025 02:55:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 591EF8E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 520108E0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:55:38 -0500 (EST)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E525312949
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:52:30 +0000 (UTC)
-X-FDA: 84122960460.28.9B07D28
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 402B910000E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:52:29 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=c7PC7sq1;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763452349;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8o0lzY5+KXKP51IAC5h7ABQJPt8SMWT+JESmyEuQ4GM=;
-	b=o1JbwzvsYJb6480c7z+YO8WK2gKm7VXmzrs5xBxWcLz+BZhU2YwJ3djpnnfsZS3JtWHtfm
-	mZpmXXf7aPgU5V+tJN0wkgp18PXSkIg3ZvsIi+xfPIlo048HJclUnyL3tx3rfnVASTkvi6
-	XMJyuQxn/73GqqhluXO6BdFhhytzvrc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763452349; a=rsa-sha256;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E5FEB88EED
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:55:37 +0000 (UTC)
+X-FDA: 84122968314.28.968350B
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5ABA81C0011
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:55:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WP3uKjAt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763452536; a=rsa-sha256;
 	cv=none;
-	b=VJG7sTAA750AyZdAlalitPChqN8LGitMXkUpGC3XM4HeHG6XQxomMHSDn7vMuegkEyx5tg
-	v/tBlby/CiUQjjoUjlHknbCvRwHXJd81jtw/kX0TDWIIMZcEkjgg5lBSVv1pksByDMHaaJ
-	pMCNfd7aMrlPgHM3TXYfB5LypXmTHE0=
+	b=djqaXXNXS5ZkADfhfaZxymEBNa/f2DnmX7PAgB4hauyoUGdAvaNUTyqdSA/dMnrkPAKfsf
+	3UxLbCMGJemR5H83I3WhnnPGtyX9ZaBmNjc6aXDFnjeXDKUpZPFwoODFBzDpR1qORQmt1H
+	aJ80tmfnfgvsIr1RYTupL9OZzWviGrA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=c7PC7sq1;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7a9cdf62d31so6327577b3a.3
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 23:52:28 -0800 (PST)
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WP3uKjAt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763452536;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=o7/syqaVN3OFRUvQzya5/mq097BnRjYmCSiy+yZAENc=;
+	b=h5gS3IkH4Kskaft9sPCZ8kb24WXp9DuI/eD749v13uKeuSwpzfON6JFVd2ssmGQW9MJYJy
+	IE4RAgeROX+OUROWqao7QVXNU0DSmy77oCCzqBtjGgWpSgs6ERdtzEdeV+YNX3/AgRM9+l
+	ZprA93nJ4PWYEUIdC/BvgIPwRSg28uk=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29853ec5b8cso60366705ad.3
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 23:55:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763452348; x=1764057148; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8o0lzY5+KXKP51IAC5h7ABQJPt8SMWT+JESmyEuQ4GM=;
-        b=c7PC7sq1Swab8pZInhMolMgPmpyRoEe7hh2i3s+zhEI6lUUohKtv2bT9iXm2BBpn5o
-         KwWHnFRnuZzHrma/Uf6j19L723LYgpbr0/plymElpSp1cBchSFjiI0pdaK2HJjrKpv6p
-         8i2NbMyLyViw33u/pch+/tXXPfu2wDC+TGmeA=
+        d=gmail.com; s=20230601; t=1763452535; x=1764057335; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=o7/syqaVN3OFRUvQzya5/mq097BnRjYmCSiy+yZAENc=;
+        b=WP3uKjAt2pLr2MhxFMtfIWaZvYxgjPOc/R4uIduDqwQVZT+vIV1Ai7JJrpsveCMMFN
+         riaZtBTLAvgIg+2xh0CaLm4VxC0Lb/94uyIwpnA8hY+m0RmisFNGvPRjzJBiHqx5lYGc
+         ovISahYhj9aOvIcaUbIQxAXRG5uHNaBkCrX48V8lUK5nO/hNj7DHZu7fyN4FNRLsJRIg
+         3L00oKC5DOv+gLQvesMOl76knAnS2zp9FxHIf+qsa/Me6KD2NE2iyXzqvXtUzy+udhLx
+         /rceRl+iLLfoqHOMn2P4BaF6LEaVNc2onjXVk8p6pDNFqFrrQbPkuV9qk3DOKFW2ab3W
+         w0SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763452348; x=1764057148;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8o0lzY5+KXKP51IAC5h7ABQJPt8SMWT+JESmyEuQ4GM=;
-        b=GmRXefDsJlfob1rW+X7XQrA1yar+DbpFHhNayOyjJe+p/cBdxkhRI6wRvhv3/7lC5i
-         goTUEa8Mf4jZiBV/t+Yyf5ULNjAWv/S9EF4IvPMkGVzSsE++PVfc5JZYTDHUUkhsygVW
-         LX1MEX8/JQ/KZZ7IHcqjhEm34Ya8QH3OygaBieFyAI0djUYzhprauzjdlkwmsKOO4RKM
-         vQ8R0+GclDB+kVo30jo+P8Y+WtlFBdWd9Io+CkX+w7xwhCcwylyQSbPuyi/brrh+Iztf
-         rZhIJROSHsar/i6INs6LPmHUZpruvzUJddGLwAOxnz93UTgwQjkmowoA3j8qdBDH/lSa
-         HZJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ/5NqA160p3hFs9S5DRJWnQtPX7OFKdutqLkEjr2skpoPCFW+4CH0CI4oDvEYeNIyxK1yVcLIYw==@kvack.org
-X-Gm-Message-State: AOJu0YxA2YROjXSawy9vnQNv4PZsBnoUaoLEQ2PXXhWi5TVxpzbd4vxW
-	gl6v5AuvoffgMGCoQcehH5LnEWDn4vlWlqkSX3tgHvyA9ewEcuuB7/X98nw5QKvrKA==
-X-Gm-Gg: ASbGncvi4TgJcR0yZr8LjEfThF3a9daraPezzO5gCCr153/k24HMOWLR/f7SC1pMxlv
-	FX8XRzdoOMRH9etHonj6/b92fHmMOm+qVgRZqSpd7EVSt+ngYH6H6t70StlydEhKI2PWUsdTpYx
-	pKECDZWvgAc9iNtbNV0EAMKf3tri+nSchvyotouEq+jCY0XAGbxypeweDgLoQK1TGh6QZF9fklW
-	Wb15T3o8syKcqb5K7pWrTDS1T74t//rf3NWswzjsXk1NB/s1WUzcmfS7S4+cCb6i7VvbFA9t/JQ
-	FPtX9dbN58Jw4hIL3HEXxiWGDX8LIY/vZx8Jubx1d0kaymWb6p0dFda/GVqICdcBAUJLO3rX+l5
-	9kAnjdMxou7hDfP6OMtdBCSy+2Hg9VrrsO5wmtHMRKVczAbYDTniaTG9Jl3SdZOjNQGwqM7J6yW
-	8Av+XaCjQdS5cQyRA=
-X-Google-Smtp-Source: AGHT+IFA5v96ReJAqZwqn5Ht/zD2TwsmTS/QwZ4pMs1RMftRZA4u6b3AE4qcFjb1+ZXHb5341uOCmQ==
-X-Received: by 2002:a05:6a21:6d95:b0:34f:afaa:125b with SMTP id adf61e73a8af0-35ba1f96f23mr19782645637.50.1763452348006;
-        Mon, 17 Nov 2025 23:52:28 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:beba:22fc:d89b:ce14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b924aee147sm15609775b3a.13.2025.11.17.23.52.25
+        d=1e100.net; s=20230601; t=1763452535; x=1764057335;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o7/syqaVN3OFRUvQzya5/mq097BnRjYmCSiy+yZAENc=;
+        b=EUpojLAlsnqDQngABJ6CBG7U14tHS2nVBre9phhs3Tvu8slHxP3i0wbattpB03Oawl
+         PYU0GO0ZKJrBnmst0vm0EqMMsJ2zJ3YoqNnOda1dB7Ra8ML2ZgQboGdk46q7F3xfLm2W
+         gEW5mlrkZcD/Qnw3U8W0iJk2uvI88r7zcxaZ781PIaF15HkD9/Mk0MvMkhyIxAbdGy0d
+         cfUrwjeiUj1E/uxd5WDiZLtx/EbFfV4hz517z9IF6NkmDa6voZo4c5QrE8yAEl/b5W8y
+         qClQ1rIVFiXfVWIFhJ5wJcNDu22viMiNMCnQCcT1R0T6T2OSS3s6M7idTpzpane9XA7C
+         KoUA==
+X-Forwarded-Encrypted: i=1; AJvYcCX4HE46hey5GSV/B57zjsiJzFQlCtFIz4+c8mIQizS00UjqHlbWUkI+puLQ/TBIAQAk5+fk5J6A0Q==@kvack.org
+X-Gm-Message-State: AOJu0YxYA+dHoCqR+SdDuC4wgEBRN2PjpVA7viGECy0Kzkcnk76inD7x
+	/4coXTI6FIOIbsso8WuG9Rsler3CBCY821S+XUtgyttDpNuApoC5cH0y
+X-Gm-Gg: ASbGncsUpEi5XFfIFlez6HmCzhoXw50vMU90wa6E6eLpzJJIurNU6sF9A8Mxg3Li5kJ
+	jTQMG6isAAXctHYnQY3afkzBE604H2iXuIN4BvC735d7GROg4BjZKQ2ihww3IfQosS6B+CorBqv
+	fVmSPmZIshgQPqPZLW0c2J3+qOTgdomQV0GRjGqWkATIkTFENl4AT7y2JlmyVbGhYXXR9gAYUAO
+	LvwvVp6OUjzJ/yHCx2qd5e8w9vFY+1QO01Vc9nOfJ7NGgA2B15BheBrlSm+9DybIHl51Z9eaewt
+	CWu0ZQEaGwpvbVFdyGJHSl8eROXGAIeNBUGYNrGQmEOzomLij3WL0so/yLARUCJBMPFRI3sOmvc
+	m+DYcGUnaMhP0HfwMT8GCHfG/S3NGKPaFF7xOBqblvhDXdMCxbYe0welhBhPRjocpfXW33Tv3e0
+	XlhA==
+X-Google-Smtp-Source: AGHT+IGIAchNoEHFNNrUZtM+TDOe+4ACVDLvPqJloOk/sC0eRCbgmSifY6wNhf27PIzrHEaASBfebw==
+X-Received: by 2002:a17:903:904:b0:295:2276:6704 with SMTP id d9443c01a7336-2986a76821bmr154935035ad.51.1763452535158;
+        Mon, 17 Nov 2025 23:55:35 -0800 (PST)
+Received: from dw-tp ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-345af26d8b1sm764612a91.3.2025.11.17.23.55.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 23:52:27 -0800 (PST)
-Date: Tue, 18 Nov 2025 16:52:23 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yuwen Chen <ywen.chen@foxmail.com>
-Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, 
-	bgeffon@google.com, licayy@outlook.com, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, richardycc@google.com
-Subject: Re: [PATCH] zram: Fix the issue that the write - back limits might
- overflow
-Message-ID: <bo4g7erropsvl7vulufdsjqlkkbjycaounh2vv4a6urttxvubr@f22z5wlgntox>
-References: <tencent_80150170978D13BAF69D63E57D7F5175F90A@qq.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_80150170978D13BAF69D63E57D7F5175F90A@qq.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 402B910000E
-X-Stat-Signature: wwseqz6pgn8bskshecesbrn7n7ihpdj6
+        Mon, 17 Nov 2025 23:55:34 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Misbah Anjum N <misanjum@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-next@vger.kernel.org
+Subject: Re: [REGRESSION] [next-20251117] ppc64le: WARNING in vmalloc_fix_flags with __GFP_ACCOUNT in BPF/seccomp path
+In-Reply-To: <dbe42ce9543dbc3af95f95d6a6d9540b@linux.ibm.com>
+Date: Tue, 18 Nov 2025 13:21:24 +0530
+Message-ID: <87bjkz3hj7.ritesh.list@gmail.com>
+References: <dbe42ce9543dbc3af95f95d6a6d9540b@linux.ibm.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5ABA81C0011
+X-Stat-Signature: 6omoc3gwk33tmyttbf98f787dsmwrnie
 X-Rspam-User: 
-X-HE-Tag: 1763452349-323326
-X-HE-Meta: U2FsdGVkX1/udkd76fd7POjPyx8BFgQN9cwEdOBPUNxxY4XUnRr7kZ4j0dQKtwG/A1WUtJHZXLM3To0ubDIxbcoG4PfKijE4aVkRBVQs7PkNEM8e3ht35I0pTR25Rcx9owJi2eh6onP0GXU6F0TDUAGaqTE6knYlkF4JKZfHidzVvwqvfGQUuR83edMR53m7JNsgwkMvCFZayQYXvETjxcdWsdANSIBJ1Uq1U5VlGsPQje9WZtkRC/N7gTEvXb1TcwqFPyu8Ef3zI6wKNjGCGlnKBHCHkvH8FQABJ3ldsbe4zUm2TGtXLSJviFKuW41eqI2/QJigeZtNfJlWOfqRwjiNcLoT9mLrMD93AXTGo35uDnDYk2l/G/36vbJUdmYntqthXMU5Nbbin6iM6wlryCiR9TtESUb+SXfRNHi6HOLhSfIF0kpiOoTdYpNtgRt7ppXa2h1U5NR8Mb4BTK5e3x28+SmTYlFG4/6OY4UTvrKHZ64hKT7X9KrhnSsSNfkadmSMUFttem07rlKK1Lf7OgB7P1bc6tNmxDJ7lFnDS88kXRBENcDWcDjGBqPmj/XMcP1X/sHjgWoifiLbgvqU36+8kVTgiGEPgtHRs/mOQcsO0QCCJ1UAQahM7IehfQdLGRmwvpTUPI3l45pfVKlKzwOsAf3hqFxHiBgpTuGu+yVklBjXIpjG/7oZWV55eVMH7uZFYCp/Fg+2VIb/WFf9U6QuPyA/bGBACJrYtrQH/zwBP/7XDkREnrfa1nkEKqRpRQ2LOt1T57+erhxZybPffevSSVBoGnR58uSmIg5T651wJ37+IIQsvnAWgt5DD4aWUMRdMJfb8bMm2LgnWJ7Q/QDXfRWKpS60KS/v7MpGRg9i4kx9Ljk+/6szWC13KUTBtatW4voUEdz+ZRkpvr8pxQqU9ciSbzDitQOPjQ19wHS1upxvtUhXOkIjuQxXw0KzbBvc90Pk8k1vHDMxZVQ
- qgMFN9tE
- gdJS9ZpgCE93YrEKZP0/cmKfdRw==
+X-HE-Tag: 1763452536-768217
+X-HE-Meta: U2FsdGVkX1+CoYFTqF9s7cgNL1TLoh/WjW+3YeyXCXv+5kxMv8VbrTzoM+hLXQvggh4IzxqnQswAqULet9DW44p02o6a1udkFuiwOzgQNw40UGErqNHHR/VuX9XfHn606lqIELnbFqnloPw/xNixrIVgfZBSKE336SHGQWdVk+aBwjFjme9FhPLwfl03U/GDIElEMbMRNX/pK1NKU5sJN8OKhWVkWlnVpAiXSFxteQb6W1U6wxlGd1amrOseDJvErHQ5ex0+SGJbWQ6EuG4WsmI625hZTauVqdgDvu74BPfn7DqUGeZm9jwnH3vJ5ydoEb9Cc5MajTvt+CzLu1ULyDS8o2v8aRjmJaHhKqT5HREum3oflTke6wPzfQPS4+7u/6BbIK5tNgJfQ7gmC18U1CYK17JkHjg14L7nsIPWZZwktpAFKyqWvjl6pErrHboUn64XTRKNLYhzLjci8LCvJNWh56up1+LPYsNu3z+MhKS36JA6KfJ1D6+aRlV0mNVtv+9pfxdNDz0ad4gO6ujcye7xZK5gghNW+kdfqwgwmXpHfSM5rT31zyOtikQzSPTmn+6HKoOM7BQmeJ1/ajFnRtICDjyJAojxoZlaqp2VXSRLwJrbGb4UsfZ5H8XFlwL2NcaFJrSaf2v1jQpJ/d1aGk+BhyKk0/9JCiJ7Kt9OYse55n4c+yqM7CDyFkjXJeXWIOleo56LCejKWwvn8h04TkSrHIXbzFmn0MVFeOleJRpnceXvXSiJBqRy4yhaEYg8LMpwby6yyr/cx6+sygdWnJsgyyd3x21KhqTi2MvgIpR0L7DDj1hKt2IDh7phrlKpJzwsP9Bn72/pxuv74LQHe4u3Q39QH0hjD6SG7NU91Yzt2lDgrqixxr3V3U9BwhioaG7/5l6IA2YvXx5AO44C417oZVglldZwc08s14weFCPuw2N3G+7RaNzSOItVAoiKJBWmsA4DKnNE5+Pwm/U
+ aMdTxQV/
+ VlNhKDnEEZ5UoKXPHfR6O0e93bSq6zV9OF1e06x88LamiJcq+6IxbOjcjlbDs7GH3s557pIRKrKPw52tPaWXJoTg1taaZ31eIWeN0JVTcxRxbnqO7DQ38n3zjbneQv7xaQlMP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,15 +113,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/18 15:39), Yuwen Chen wrote:
-> Since the value of bd_wb_limit is an unsigned number, when the
-> page size is larger than 4 KB, it may cause an out-of-bounds situation.
-> 
-> This patch fixes the issue by limiting bd_wb_limit to be an
-> integer multiple of PAGE_SIZE / 4096.
+Misbah Anjum N <misanjum@linux.ibm.com> writes:
 
-I really wish we could just change wb code to use PAGE_SIZE not 4K
-units [1], unfortunately it's probably too late to change that now.
+> Hi,
+>
+> I'm reporting a regression in linux-next that was introduced between 
+> 20251114 and 20251117.
+>
+> Regression Info:
+> - Working: 6.18.0-rc5-next-20251114
+> - Broken: 6.18.0-rc6-next-20251117
+>
+> Environment:
+> - IBM Power11 pSeries (ppc64le)
+> - Fedora43 Distro
+>
+> Issue:
+> WARNING: mm/vmalloc.c:3937 at vmalloc_fix_flags+0x6c/0xa0
+> "Unexpected gfp: 0x400000 (__GFP_ACCOUNT). Fixing up to gfp: 0xdc0 
+> (GFP_KERNEL|__GFP_ZERO). Fix your code!"
+>
+> Call Trace:
+> [  523.921345] Unexpected gfp: 0x400000 (__GFP_ACCOUNT). Fixing up to 
+> gfp: 0xdc0 (GFP_KERNEL|__GFP_ZERO). Fix your code!
+> [  523.921356] WARNING: mm/vmalloc.c:3937 at 
+> vmalloc_fix_flags+0x6c/0xa0, CPU#69: (ostnamed)/6500
 
-[1] https://lore.kernel.org/linux-kernel/20251110052741.92031-1-senozhatsky@chromium.org
+This was reported here too - 
+https://lore.kernel.org/all/69158bb1.a70a0220.3124cb.001e.GAE@google.com/
+
+
+Looks like it should be fixed with v3, which was posted just
+yesterday... 
+https://lore.kernel.org/all/20251117173530.43293-2-vishal.moola@gmail.com/
+
+So, I guess, latest linux-next should not show this warning on ppc64le either.
+
+-ritesh
 
