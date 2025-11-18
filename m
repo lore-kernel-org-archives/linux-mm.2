@@ -4,156 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF747CEE350
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:10:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83ED2CEE351
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:17:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D8BF6B0030; Tue, 18 Nov 2025 15:10:55 -0500 (EST)
+	id E2F2E6B00B1; Tue, 18 Nov 2025 15:17:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AFDC6B0062; Tue, 18 Nov 2025 15:10:55 -0500 (EST)
+	id DDEF46B00B2; Tue, 18 Nov 2025 15:17:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F079A6B00AB; Tue, 18 Nov 2025 15:10:54 -0500 (EST)
+	id CF4DC6B00B3; Tue, 18 Nov 2025 15:17:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF47F6B0030
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:10:54 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7907D56B5D
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:10:54 +0000 (UTC)
-X-FDA: 84124821228.14.BEBC86F
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 44AFF4000F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:10:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=dKsiVfIf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b 4BcgUd";
-	spf=pass (imf01.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.148 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B960A6B00B1
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:17:22 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 56E411A015B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:17:22 +0000 (UTC)
+X-FDA: 84124837524.04.389FEE0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7C8DBA0003
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:17:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KGapez5G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763496652;
+	s=arc-20220608; t=1763497040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKFcF4a+cNbrtlp+FIdvl2Y5hDbZC7BuoipJJsoD+Xg=;
-	b=qgJ39yy6koMpek8Stycb96tUMEZnNKiOBV5xRugux2+9Mkr2qQOxSDQPtTM5o3ZtIKOjnu
-	NJziU5nIyhVcWBgqwKkr9jttJKzmub+yACpyWjbANQnNT4+x/IfeCBmSQjDE6LGBQc/o1x
-	XBY+x9yx7QSXcNN1Btt30Jj8+19FtG8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=dKsiVfIf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="b 4BcgUd";
-	spf=pass (imf01.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.148 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763496652; a=rsa-sha256;
+	bh=Q9TJEHsnuM6YDCKx/V5tYDWOCLmwLmyG2VLIo7T7TWY=;
+	b=x5/HcTYuOfBtckqehUUEDG8vyhA93CiC+qS7qLgJ+pDcGMuZJG8e2PpAWoc2zDSH4z5vus
+	Th281Ua8zl4i3GAsKN/4ekOzDnFeGSau4P+EESV4DOAURVE8PJmuxZHndOf1yocio7o9ro
+	GU8MWnj1UhRLyyMkAnF293eFWR7ncq4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763497040; a=rsa-sha256;
 	cv=none;
-	b=48eA2zP5rBtqlSnAdpwtVoKSylvUNuURq4NHhuCk9U9xmLnqP1PHdA8aBFypBhERo1OSpY
-	8q+G+u5KsyaAZ2Qps2nYKztJmi7hAFIc3uIz5H31l/4t+n9dmEdlQM9tuvFoQ5rW3DrSiN
-	26o3LcNXT7V2ZJB7vM+I+L3UJBco4ZA=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 7E23D1D00011;
-	Tue, 18 Nov 2025 15:10:50 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 18 Nov 2025 15:10:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1763496650;
-	 x=1763583050; bh=JKFcF4a+cNbrtlp+FIdvl2Y5hDbZC7BuoipJJsoD+Xg=; b=
-	dKsiVfIfgRz3kNZHBVLW4w4a09M1An1YvYNcijPZ2AbBFboB1FxX0SwNlWv2rI3m
-	jLV/veDDgOhw9IS/7J8t81UctKoauLfjaXOyWqAp44a4MChEre02HVqGpMlsgIQ5
-	OVDMVHJablLjrzU+B8hL8QqRQ1+FyFvGpkw3BwGVonzwVgBd7NvVAsA+IlLoTNVT
-	kot+Gxju1ZTzga7Bee121GDDqWNUI+lqCGgG89zYk6ckhz8rEtrBbj0mNQhPhOcc
-	4uOd0pLPLZNlB7v3J3DPPBINt8sCnltepxWxkehpeYBA1Harjd8rccj6w8gmbij3
-	nDgGERM8bBQyy2uD5HkTCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1763496650; x=
-	1763583050; bh=JKFcF4a+cNbrtlp+FIdvl2Y5hDbZC7BuoipJJsoD+Xg=; b=b
-	4BcgUdYcPIovWahMuxFSya7KoSim52uHsgehgqj/ncnPhxE3qTN1l9XUmfH5dLA0
-	nA9E0d7Le0Mc4/Xf7R7J2lQ/+CU38ymtFa6iaGShFA8iMhhJds2uyGYsUrmk0AGZ
-	wwHqhNPuDyy3T1wmEKwJ83vo1u1sv9Rg4GlJkbcIEp90cjcQFPESsb71YSlLcyQd
-	UEAV/QlH64EIJ1lqCiYY4cKUDhQBuK7Z/C878cS9zvqM5xyFNzLBS1ECI4FZmTN2
-	zM7jJStJjqi5FJm842MkyHtQUwl7n/Nil39X0PVzn77HpNlgls3inc0qko2NNjgy
-	yxSKoNtyts9q6kzxUKgCg==
-X-ME-Sender: <xms:yNIcaVSvmDTF8VooyebZ_3iAuWJLF1nEpDYA2SFkLVpCRLI7ry-_yQ>
-    <xme:yNIcaVmEGLCY5Y5fPmoEJKQOT9y5RfkjFiDcjDM82fNtYUukk3d8ZO-gnIlZyOOPP
-    GAmhpj4l6gxq2LE9j06pWjqNlxkgm2Z3bZOzOLp7Twv9NJiGOok>
-X-ME-Received: <xmr:yNIcaTzm8Q6mhtNsmKzPVt9MMUAmwOqIQ5a4gIx8lLQ0mWSG2DA3IJH6>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvddvvdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepteetudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudet
-    hffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeefgedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpd
-    hrtghpthhtoheplhgvohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegshhgvlhhg
-    rggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhoghgrnhhgseguvghlthgrth
-    gvvgdrtghomhdprhgtphhtthhopegrgigsohgvsehkvghrnhgvlhdrughkpdhrtghpthht
-    oheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthhtohepjhhorhhose
-    eksgihthgvshdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepmhdrshiihihprhhofihskhhisehsrghmshhunhhgrdgtohhm
-X-ME-Proxy: <xmx:yNIcaf26KhFFpsUivmrVFhTObM-rKgDaEfC2zz-v9EkVExJppHMvwg>
-    <xmx:yNIcaSxvHZrLpODSMU140Px8A7i2ec7wW6bLtqhUmriZmnVfLlueSA>
-    <xmx:yNIcaQJG6BeoorANBFQ22bf_jmYfsKJ4ShsrttygfX-HrSPLvyCzdg>
-    <xmx:yNIcaY_XYy0V85f_vM-5tra11pYCLKaPoalvR53bkh_Q_lBlGmVbiA>
-    <xmx:ytIcabAqBX1IJkm5xY2Na7fzL8IPkzZ-PxplGx_6mGsuM1UBrv418EQg>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Nov 2025 15:10:45 -0500 (EST)
-Date: Tue, 18 Nov 2025 13:10:38 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
- "Robin Murphy" <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- "Jason Gunthorpe" <jgg@ziepe.ca>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- "Ankit Agrawal" <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- "Shameer Kolothum" <skolothumtho@nvidia.com>,
- Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [PATCH v8 09/11] vfio/pci: Enable peer-to-peer DMA transactions
- by default
-Message-ID: <20251118131038.32b7804d.alex@shazbot.org>
-In-Reply-To: <BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
-	<20251111-dmabuf-vfio-v8-9-fd9aa5df478f@nvidia.com>
-	<BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+	b=Dxq3g9fXJFmtZKjzDDKOuiuT9kHtvBJceWO0Ctn1Nlp5QvGCiLUvKoIrySR83DvBBhTXnA
+	/xlI62lgQHQpCXY9m1ziyTAlsPr8wqmapKmTfn0rwnpPY2YcbNWSU2AKQF8L6HVUDQwLDc
+	uZ2wPPkTf1oZVESVKXUd3rN+yE6l63s=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KGapez5G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1824643518;
+	Tue, 18 Nov 2025 20:17:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719D1C16AAE;
+	Tue, 18 Nov 2025 20:17:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763497038;
+	bh=RC7bvzRPZvLD+gGNVvZePs2odrCB3/V0ltzjIa7+7xA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KGapez5GKW+uFPVuEcSI5QGb1+yyj50h9TU1gXrda1EKF+xF5K2sVXNp9NwgvpkQT
+	 hHm/eaagLbpSQJIC46TAMw8m1vWE3M60Ql/KtN6kEn8YI68tdPFzXUeplc8DiIobRO
+	 JfbUaQUH8qQgd16K7ShbkrBmN9z4i+Y2I218EABk4luXs8LG+aKDB7I4YrxZLzN7KZ
+	 EgdDiPQ7e6RcTtq3SQk8fTG+ydC7/i3hMmvi/5ZrL7X5pBMYiCYBf0qcz8MuyTYmMs
+	 xssgniTFLOgQf4CeIgtOT+7CiAlg0YCxyr7C5s6ZoN7DjhJ/rP9fVQRelFgIh8PsJT
+	 PI9wRqR96Sjig==
+Message-ID: <c782bdbf-de29-44c5-a8ad-619ce89c212d@kernel.org>
+Date: Tue, 18 Nov 2025 21:17:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 44AFF4000F
-X-Stat-Signature: 39pxunqadq43mauzrcmikiziannje1x4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory.c: introduce split_unmapped_folio_to_order
+To: Zi Yan <ziy@nvidia.com>, Balbir Singh <balbirs@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20251112044634.963360-1-balbirs@nvidia.com>
+ <048134fd-6a3d-4a6c-a2eb-9a9911c3b35f@kernel.org>
+ <efa37c4d-8c9f-4094-a713-4fd4452ae917@nvidia.com>
+ <826df5b1-b61d-4794-a96c-dcf9ac19e269@kernel.org>
+ <bf8e0c95-15a1-4eac-ba2e-52d361050039@nvidia.com>
+ <20ad8b5c-1bb3-46bb-bc03-8e9222a7f7e1@nvidia.com>
+ <EB4C7FF1-8350-43FC-B879-20EA0E733F09@nvidia.com>
+ <ebdf1926-2e9b-4226-b80d-4f9975f72f7d@nvidia.com>
+ <56BA0323-C976-40D3-B61C-D698FA0720C2@nvidia.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <56BA0323-C976-40D3-B61C-D698FA0720C2@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: yekdz45tgy63ndqbudu6b79713qy3uw6
 X-Rspam-User: 
-X-HE-Tag: 1763496652-160674
-X-HE-Meta: U2FsdGVkX1/xClIwrZHRU6/OB6elYqNzzm4sgDHSq+VdRiFcXnXf+SG+XAdOUH99jC3btzWX+bCRxCYLRb1vo9dzGGDQfNL0qpwvkO8IqKD9WQn/xt/Z6bUAUvUhLuFtQEuN3C0Ej48xJt1+TSqNBVP4+o5Xaa7g2a/gcPc++mzr5NeSNUQiPL4SZ6qZ8Xed/nvNdksYIJXq7AeSWfNLJyEIUJpCDMbEcJrABIeCa9NcuikfLPEiVqLXgDIVX6kFnth8itlfPAJeURuOtLGoUR8/380N/ZQoaJK7kplEVjQrAFF/4SEHD+TMuLYa+t7Eq1Q1iCBHqQEyX87jVf2s+FV8LZ29/22WVDXJVtbovwc46C6BYh3HZvNeFj3K8+qILnGB/DkCZECEhgpqKsSx/Cksc5dXfXmZDqFsKxiWh0gOelN4Q1UTe8FlVZWWq1R/AdzzYk+dnYpsPjm/0IGp2viRiIOmkVRC6x3q6tWXopiqY/Xak6T5AjsF6E1pPjJL1yQJwExgnDdh20Vuc7FepsObBIl59KbPVQgr67+UhRHMPnWeFVknm3Kqdj7tlzxwT/kh3CffozrmU59YS2DkF+WOz457bROsxzL47wCeuUJX11iz9HPuBrBQXL40/Odpskzm+N+i6HRP3/sRFd3qxXG62VzqK9NAkpGUpRH21Cy+zJ0S9GycTbbRWu5Ws8KKNazPYzvt3b+IaUf/yQA5BdgwpM1LgRyFd3FtlCKsxfgF1uVvSeKynrdhp5KAvmGvXrrRDKUbuhab5J6N2CIh+ls9e0CtTk6f9r/E/S1fgJEv1MxRujnqngrcvC7N/F8bIQDrcQvdd9nMFhOU+DGVh5dELZgeQ1qNgMlcUorV3gpQvgyd9aodXx0BJBTmpIbA+DYallGYdSZS4yVEFjJAsdMjb835WpGXjXbv8XEQFTCJcuzHdx79Q1B5vF3mm8odzJ5uJ5zg7p7sqZ+C1lF
- DYb5S0n6
- dhs4t/AZd3IcM/Nz5upHZenVBauv2DOAkjfOOPzXHeNbC8PSzRElhvVbzHNoY+undL+HGlhUDdCshO6f99Lyx62o+btoegLTTh2ywquH4B0Tk0fv5h8XI3OPgYdo+UKLCs8RsG0MauVx3HikDENw7W+dHhig28ULkrvO5c7DuAJxU+axN7gbHinTDUzK1qmMYUzoxrUCqNTgGV8/WmR1n39ydv8HbZIsfv9SVz5EepXa+/ns0QcPY1dP8yuwsZCjT1m8HF8huSsB1xlMHYjQCcTBAfFDlDRHUEyfHRfYEQRLMDIYUrWqKl5P2l9YhD245ii9+jEGaoRpwrlldn0223o1mygCzJyjzdfau6AA62kbhGa06IJVcrElxSalKKVMZhyMdhmu7YVD4X504GhcYReUyxUgRmlMRZao9p0OKIbSwqeZlnRzH5JsV8Cd6DixbOIL6XZQHEKc1ihgOAaJJ8dGS4g==
+X-Rspamd-Queue-Id: 7C8DBA0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763497040-261820
+X-HE-Meta: U2FsdGVkX18zROHlHCgB3xwUBa5iPCGrX2q+h37Cy+AiWq7FLh+gq5UupF1GQv/TsRBjNvUG2ooz4wh9UEH/67x3AzlFQps7QnbJEjT2LDUsFdHAa0aVUtWwEbCfKUrvt01t3xM5pfLXEPW8uxMCDjHjvk9SIaYymj1aKLtlQqiNhemDU2LtEIwA+6yZOvkQ1DKXJ35v1pZyn1Kip9sQI3tq3IF2PsSp983pgc23WDU4zEpCcJpGX7C+/torn2nc2tRwuQYAe+0EB7xKXqAaJ+n+lMscvMFKpC2x7UDHqNpJT4AWqlfqZhBTKM2lQQkAJKfBjOwvL76zE4jijT68M25J+jDRSmZYuxPHRRMukVNfv62OPzZs7Xb0hZwuwcTan94gP25Q6JogFTi70HSH3kSYrLBmt8eOHv0UIYvYiS6oVAgxsacorJkHw2QQDkm7KPl8lzVpFiwfiU5k5sndeXrqMjMcK6PCXudJUUOrkS0b6BoAc73G5ITp7oBQC9LD8tVreWdzghlFQFaMYPimvtmnY4gAQnU+hLsAHso5FIpExzUzATFstgkjVKKoysHR0MmDUOdF4mGc9stJTp+ndauq5XTGg+nojt/r0D5gIWUr9CnocLUXTPcaI3yarCjyyoWqdfhIijIl5cXXGHVnrsuOQv/p15NkUehMtyG11ETkU6Qr48MIobYIuZiLwTTRxiRyXYcwe/ofY4+jA9BBwixO8wpsYQX2jd8aqnjjYG61bHc8Cn752WrMiemlIv8/fwXKBvVwKUYrzx6Jsd8aFNVyb2WHgnS7adxvCpTUWT5dqEYPugcWNdQ4Rl/1GdSKQDxcZbl8mLdQq/YwfolGX7p4x8Ty4GYreT9b7SvKKpgQsjz7iLs9eRNsHq14CaJerNnPnnTk//MV5bBY9hj1QCWqxcmyFRm0bW6juJYJZrQ+pKainxE7I24AwVdddsLVhaxEUSrMfoEoEM8LcTs
+ 07fXB/aa
+ rsc7Pp56AlQrj18LH7LybdCDEIrI+Fbkqe59+SNaIwNkTT5Qs6ovxeKvCqbbCyFRuydG71525ozgKP9CDIHkxR3j8prSFCctfXU5A/6aow4zAC4dhvVA8JBQJERY1QonbLH8dXjcQL7NqLHyip4WpO3pAfUuSQDEHWq+6Lq5Ycb2UJNtd1MTvaQBnni7eFhfvLMVn4dLaJlMPW3hbZdKHbzOPmbT0Z1UAnpayrcJqlpD2k25wvQpMf19kuMbBskckXEj4Ovs4jm6bNAMmaPVhV1Snm0brULO8g2xMS1wQ0OfdH9nKUv1wyNOvtxZkHt4WcAehRGJiuVYz+mJn0TY6myqYYWreobgpoWHbuWIAfYZhSfNywRkKcIFMeGFQAKmCor3aN+3IAjN1VP2SgUG6h3csQ8v5KH1JjBHHkt4pjXrfVUm4A8q+7XXGeNOD3rmVjRpK/OZmDacVrOjWoGIMGQ1rEiUyQ5Ugx+sHk6e4WkCA+b0E7pZn/vXEBBH2jpl3ALpeMdblkiT8yBOdL92jANzVXWQp+/q3QJLSvilVETlegA4Y5nWjVTpgUh0qY43mP/7Fq2K1N83aadldyUjeKARNVP8c65I3/qJ7i2/zfALeittYNB+pWdccgiKSRFbFG7a/Hz6q51QecCdsVhAVS3x84B1YymuYRb26yqeFOWGnW2Cwzc+R0SlzkfaoTqERZoCzjzUyhyPLyNRB78le+4HTxQxNrqRpHR/MyGaDf4wj9L66KBFsrjZHQbkVjYQ8ir+TQENohaWjrWsrwYCcalXOy3ArPWPzGrgzB6WdLTw3kp0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,37 +116,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Nov 2025 07:18:36 +0000
-"Tian, Kevin" <kevin.tian@intel.com> wrote:
-
-> > From: Leon Romanovsky <leon@kernel.org>
-> > Sent: Tuesday, November 11, 2025 5:58 PM
-> > 
-> > From: Leon Romanovsky <leonro@nvidia.com>  
+On 14.11.25 01:23, Zi Yan wrote:
+> On 13 Nov 2025, at 16:56, Balbir Singh wrote:
 > 
-> not required with only your own s-o-b
+>> On 11/14/25 08:45, Zi Yan wrote:
+>>> On 13 Nov 2025, at 16:39, Balbir Singh wrote:
+>>>
+>>>> On 11/13/25 10:49, Balbir Singh wrote:
+>>>>> On 11/12/25 22:34, David Hildenbrand (Red Hat) wrote:
+>>>>>> On 12.11.25 11:17, Balbir Singh wrote:
+>>>>>>> On 11/12/25 21:00, David Hildenbrand (Red Hat) wrote:
+>>>>>>>> On 12.11.25 05:46, Balbir Singh wrote:
+>>>>>>>>> Unmapped was added as a parameter to __folio_split() and related
+>>>>>>>>> call sites to support splitting of folios already in the midst
+>>>>>>>>> of a migration. This special case arose for device private folio
+>>>>>>>>> migration since during migration there could be a disconnect between
+>>>>>>>>> source and destination on the folio size.
+>>>>>>>>>
+>>>>>>>>> Introduce split_unmapped_folio_to_order() to handle this special case.
+>>>>>>>>> This in turn removes the special casing introduced by the unmapped
+>>>>>>>>> parameter in __folio_split().
+>>>>>>>>
+>>>>>>>> As raised recently, I would hope that we can find a way to make all these splitting functions look more similar in the long term, ideally starting with "folio_split" / "folio_try_split".
+>>>>>>>>
+>>>>>>>> What about
+>>>>>>>>
+>>>>>>>>       folio_split_unmapped()
+>>>>>>>>
+>>>>>>>> Do we really have to spell out the "to order" part in the function name?
+>>>>>>>>
+>>>>>>>> And if it's more a mostly-internal helper, maybe
+>>>>>>>>
+>>>>>>>>       __folio_split_unmapped()
+>>>>>>>>
+>>>>>>>> subject: "mm/huge_memory: introduce ..."
+>>>>>>>>
+>>>>>>>
+>>>>>>> I can rename it, but currently it confirms to the split_folio with order in the name
+>>>>>>> The order is there in the name because in the future with mTHP we will want to
+>>>>>>> support splitting to various orders.
+>>>>>>
+>>>>>> I think we should start naming them more consistently regarding folio_split() immediately and cleanup the other ones later.
+>>>>>>
+>>>>>> I don't understand why "_to_order" must be in the name right now. You can add another variant and start using longer names when really required.
+>>>>>>
+>>>>>
+>>>>> Ack
+>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>>>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>>>> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>>>>>>> Cc: Rakie Kim <rakie.kim@sk.com>
+>>>>>>>>> Cc: Byungchul Park <byungchul@sk.com>
+>>>>>>>>> Cc: Gregory Price <gourry@gourry.net>
+>>>>>>>>> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+>>>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>>>>>>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>>>>>>>>> Cc: Nico Pache <npache@redhat.com>
+>>>>>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>>>> Cc: Dev Jain <dev.jain@arm.com>
+>>>>>>>>> Cc: Barry Song <baohua@kernel.org>
+>>>>>>>>> Cc: Lyude Paul <lyude@redhat.com>
+>>>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>>>>>>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>>>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>>>>>>>>
+>>>>>>>>> Suggested-by: Zi Yan <ziy@nvidia.com>
+>>>>>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>>>>>>>>> ---
+>>>>>>>>>     include/linux/huge_mm.h |   5 +-
+>>>>>>>>>     mm/huge_memory.c        | 135 ++++++++++++++++++++++++++++++++++------
+>>>>>>>>>     mm/migrate_device.c     |   3 +-
+>>>>>>>>>     3 files changed, 120 insertions(+), 23 deletions(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>>>>>>>>> index e2e91aa1a042..9155e683c08a 100644
+>>>>>>>>> --- a/include/linux/huge_mm.h
+>>>>>>>>> +++ b/include/linux/huge_mm.h
+>>>>>>>>> @@ -371,7 +371,8 @@ enum split_type {
+>>>>>>>>>       bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
+>>>>>>>>>     int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+>>>>>>>>> -        unsigned int new_order, bool unmapped);
+>>>>>>>>> +        unsigned int new_order);
+>>>>>>>>> +int split_unmapped_folio_to_order(struct folio *folio, unsigned int new_order);
+>>>>>>>>>     int min_order_for_split(struct folio *folio);
+>>>>>>>>>     int split_folio_to_list(struct folio *folio, struct list_head *list);
+>>>>>>>>>     bool folio_split_supported(struct folio *folio, unsigned int new_order,
+>>>>>>>>> @@ -382,7 +383,7 @@ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
+>>>>>>>>>     static inline int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+>>>>>>>>>             unsigned int new_order)
+>>>>>>>>>     {
+>>>>>>>>> -    return __split_huge_page_to_list_to_order(page, list, new_order, false);
+>>>>>>>>> +    return __split_huge_page_to_list_to_order(page, list, new_order);
+>>>>>>>>>     }
+>>>>>>>>>     static inline int split_huge_page_to_order(struct page *page, unsigned int new_order)
+>>>>>>>>>     {
+>>>>>>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>>>>>>> index 0184cd915f44..942bd8410c54 100644
+>>>>>>>>> --- a/mm/huge_memory.c
+>>>>>>>>> +++ b/mm/huge_memory.c
+>>>>>>>>> @@ -3747,7 +3747,6 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
+>>>>>>>>>      * @lock_at: a page within @folio to be left locked to caller
+>>>>>>>>>      * @list: after-split folios will be put on it if non NULL
+>>>>>>>>>      * @split_type: perform uniform split or not (non-uniform split)
+>>>>>>>>> - * @unmapped: The pages are already unmapped, they are migration entries.
+>>>>>>>>>      *
+>>>>>>>>>      * It calls __split_unmapped_folio() to perform uniform and non-uniform split.
+>>>>>>>>>      * It is in charge of checking whether the split is supported or not and
+>>>>>>>>> @@ -3763,7 +3762,7 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
+>>>>>>>>>      */
+>>>>>>>>>     static int __folio_split(struct folio *folio, unsigned int new_order,
+>>>>>>>>>             struct page *split_at, struct page *lock_at,
+>>>>>>>>> -        struct list_head *list, enum split_type split_type, bool unmapped)
+>>>>>>>>> +        struct list_head *list, enum split_type split_type)
+>>>>>>>>
+>>>>>>>> Yeah, nice to see that go.
+>>>>>>>>
+>>>>>>>>>     {
+>>>>>>>>>         struct deferred_split *ds_queue;
+>>>>>>>>>         XA_STATE(xas, &folio->mapping->i_pages, folio->index);
+>>>>>>>>> @@ -3809,14 +3808,12 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>>>>>>>>>              * is taken to serialise against parallel split or collapse
+>>>>>>>>>              * operations.
+>>>>>>>>>              */
+>>>>>>>>> -        if (!unmapped) {
+>>>>>>>>> -            anon_vma = folio_get_anon_vma(folio);
+>>>>>>>>> -            if (!anon_vma) {
+>>>>>>>>> -                ret = -EBUSY;
+>>>>>>>>> -                goto out;
+>>>>>>>>> -            }
+>>>>>>>>> -            anon_vma_lock_write(anon_vma);
+>>>>>>>>> +        anon_vma = folio_get_anon_vma(folio);
+>>>>>>>>> +        if (!anon_vma) {
+>>>>>>>>> +            ret = -EBUSY;
+>>>>>>>>> +            goto out;
+>>>>>>>>>             }
+>>>>>>>>> +        anon_vma_lock_write(anon_vma);
+>>>>>>>>>             mapping = NULL;
+>>>>>>>>>         } else {
+>>>>>>>>>             unsigned int min_order;
+>>>>>>>>> @@ -3882,8 +3879,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>>>>>>>>>             goto out_unlock;
+>>>>>>>>>         }
+>>>>>>>>>     -    if (!unmapped)
+>>>>>>>>> -        unmap_folio(folio);
+>>>>>>>>> +    unmap_folio(folio);
+>>>>>>>>>    
+>>>>>>>>
+>>>>>>>> Hm, I would have hoped that we could factor out the core logic and reuse it for the new helper, instead of duplicating code.
+>>>>>>>>
+>>>>>>>> Did you look into that?
+>>>>>>>>
+>>>>>>>>
+>>>>>>>
+>>>>>>> I did, I ended up with larger spaghetti, I was hoping to look it as a follow up
+>>>>>>> after the series with the mTHP changes and support (that is to be designed and
+>>>>>>> prototyped).
+>>>>>>
+>>>>>> Looking at it in more detail, the code duplication is not desired.
+>>>>>>
+>>>>>> We have to find a way to factor the existing code out and reuse it from any new function.
+>>>>>>
+>>>>>
+>>>>> I came up with a helper, but that ends up with another boolean do_lru.
+>>>>>
+>>>>>
+>>>>
+>>>> Zi, David, any opinions on the approach below?
+>>>
+>>> Looks good to me. We might want a better name instead of
+>>> __folio_split_unmapped(). Or __split_unmapped_folio() should
+>>> be renamed, since these two function names are too similar.
+>>>
+>>> Maybe __folio_split_unmapped() -> __freeze_and_split_unmapped_folio().
+>>>
+>>> Feel free to come up with a better name. :)
+>>>
+>>
+>> I had __folio_split_unfreeze() to indicate we split the folio and unfreeze at the end, but
+>> it does not reflect that we freeze it as well. Looks like we are trending towards folio_split
+>> as the prefix (IIUC Dave correctly), I like your name, but if folio_split is going to be
+>> required then may be __folio_split_unmapped_unfreeze()?
+>>
 > 
-> > @@ -2090,6 +2092,9 @@ int vfio_pci_core_init_dev(struct vfio_device
-> > *core_vdev)
-> >  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
-> >  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
-> >  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-> > +	ret = pcim_p2pdma_init(vdev->pdev);
-> > +	if (ret && ret != -EOPNOTSUPP)
-> > +		return ret;  
-> 
-> Reading the commit msg seems -EOPNOTSUPP is only returned for fake
-> PCI devices, otherwise it implies regression. better add a comment for it?
+> OK, if __folio prefix is a convention,
 
-I think the commit log is saying that if a device comes along that
-can't support this, we'd quirk the init path to return -EOPNOTSUPP for
-that particular device here.  This path is currently used when
-!CONFIG_PCI_P2PDMA to make this error non-fatal to the device init.
+Yes, let's start cleaning all this up.
 
-I don't see a regression if such a device comes along and while we
-could survive other types of failures by disabling p2pdma here, I think
-all such cases are sufficient rare out of memory cases to consider them
-catastrophic.  Thanks,
+> how about
+> __folio_freeze_and_split_unmapped()? __folio_split_unmapped_unfreeze() sounds
+> like folio is frozen when the function is called. Of course, a more accurate
+> one would be __folio_freeze_split_unfreeze_unmapped(). It can work if
+> it is not too long. :)
 
-Alex
+Let me take a look at v2.
+
+-- 
+Cheers
+
+David
 
