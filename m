@@ -4,85 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 857F2CED624
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:48:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E6F5CED624
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:55:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 969876B0098; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
+	id 97B406B00A5; Tue, 18 Nov 2025 06:55:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 919E66B00B3; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
+	id 92B7A6B00A6; Tue, 18 Nov 2025 06:55:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1946B00B4; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
+	id 7CC9C6B00B0; Tue, 18 Nov 2025 06:55:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AA9F6B0098
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 207724DD05
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:48:30 +0000 (UTC)
-X-FDA: 84123555180.21.F26CB25
-Received: from mail-244123.protonmail.ch (mail-244123.protonmail.ch [109.224.244.123])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 29E6420017
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:48:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gQzkmSZT;
-	spf=pass (imf13.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.123 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 637286B00A5
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:55:20 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 083BC13B272
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:55:20 +0000 (UTC)
+X-FDA: 84123572400.23.EF19994
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 13BA5140004
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:55:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E5dyZO7T;
+	spf=pass (imf26.hostedemail.com: domain of arch0.zheng@gmail.com designates 209.85.214.196 as permitted sender) smtp.mailfrom=arch0.zheng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763466508;
+	s=arc-20220608; t=1763466918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n6/kLrRa2f455JqtRCfVFIsy+tm9Wn1NEx703c9jG7s=;
-	b=vbWUnncDzRf8dG91eOvQ388gR+Rv/qYS4Mc1+leOMmrLNOUEMGhfJS59jg2bl2l4Qo0Xi1
-	3x0xSQ1OGQG3tA6yIRLAP1tqmpsZf/ia8FeBoF5smUu8P4dbIdRqPIZnhCCtnUX5mkFibb
-	A/lLyi0q0Z18liDGQgWqAWBzMKWtsfk=
+	bh=9v8UiKRyyvD16t4ENb8APUiQmIzVsGi/FebBj0lOkJ4=;
+	b=m51FWvrdm7yNhn6uGhEDXOjto+d4D7N26LNgQolYO0you0f37P6cQYYDM2Smv83wli48BX
+	tZA1pYoLnSECLoniO1pTnh0f2+fEx3n2BPMwS0wgn7pKGIHk5QQ9aHlLZ57KT+TpMkS2A3
+	7ocuogQiGEmzfm087qG7AV9UzLkx3OM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gQzkmSZT;
-	spf=pass (imf13.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.123 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763466508; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=E5dyZO7T;
+	spf=pass (imf26.hostedemail.com: domain of arch0.zheng@gmail.com designates 209.85.214.196 as permitted sender) smtp.mailfrom=arch0.zheng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763466918; a=rsa-sha256;
 	cv=none;
-	b=jJbT6gRQkyuCkZQJIXJS2LifGwljMLo1tcN4NnkCxijOS3w20TCZGhYv74cmjQq3RKFfnh
-	Lj0b728iqKz0hmW/CiS6/JL3ZBWPMYX+iO45B+7Vii07Zd0AQ/mkNXcNrLQhXN0Hposl6p
-	FfpuuGT5t3mkcCv0fFviF2oyaot4yx0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763466504; x=1763725704;
-	bh=n6/kLrRa2f455JqtRCfVFIsy+tm9Wn1NEx703c9jG7s=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=gQzkmSZTz46BncYFEP31UJ2/MYDxNGPsZbGhkfP7QuAKwi8wAXU1m+gFTGDBW1nrl
-	 DTIv0nmFW1CACxQKrZae+ZvUHuHfe5FxxKl0oXPpOtJU3maELH1R29VkX/LuutU5nv
-	 ArErm4j3DOfExn1nu5YKzs9Ng0eGJwxyVAyUfhOgGSkXSBgvWp5DOqTgp/lCk4cTAB
-	 m7m0PWLxZH8Q2d3dvbLUErergde1da/CWqSwtOMbZa60ZnJJAoYOM2MaYOyEYk83Rr
-	 l1+di0PmSIdW9qsulupjbKBkIDAf/OUoGZfR7ZSfuMhQdLGdsL22Mj9dXyw6gTBrkl
-	 MYdo+Scv2CK2A==
-Date: Tue, 18 Nov 2025 11:48:19 +0000
-To: Alexander Potapenko <glider@google.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
-	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 18/18] x86/kasan: Make software tag-based kasan available
-Message-ID: <bpyudbe6kvzlj37j7c6zo33zxfc537gos3fn5cbr32yz7ebu23@oeaxjofxyeao>
-In-Reply-To: <CAG_fn=WPQZ4ti3Lb+A3jSXFWLtn6291sTKJBwKBiLD2E9YbuKA@mail.gmail.com>
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <d98f04754c3f37f153493c13966c1e02852f551d.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=WPQZ4ti3Lb+A3jSXFWLtn6291sTKJBwKBiLD2E9YbuKA@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 1f509888f40154949953d5f9b6464c2363ca1311
+	b=CFoJRfYz3BfbTi6fsHSShflGXCqkRuiHfLg9P6t56fx+HHpYdb01JJkTG6pXAT71aHcAn7
+	/tTkFdIPrc338M0JBzBj2E+6G1iJGSnyv9Gy+KCSzhIDlnYVnWIiOac7htmop/3Km3aKPB
+	uOD9kjmP4zUrzvWv/85LNR5A5+jk6I0=
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-29568d93e87so48598975ad.2
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:55:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763466917; x=1764071717; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9v8UiKRyyvD16t4ENb8APUiQmIzVsGi/FebBj0lOkJ4=;
+        b=E5dyZO7TCk/whhd1ZpxIgVEMEfdV0O0GHW6CTZI57QZQl3X18qmxvGx2feiNHlHjjY
+         bl2r45pD0L1PNQ94MFZvw/UEf8E4E+g3vmz8TL1voqUvPuWQkxB0ZAeI6Xtslz/k/smb
+         7gjnZgz/IfUbjkL1NzplfIyhpdwoORiMZvTy8WT/X5CD7bNXIskKrUHbx/OzlXKm5Rtu
+         6otx6UO0dTamXRKIfoycEu8XQz4WZZGQNpmrXXzSnToZPzdB5yQVZPXTwF0BPt/AtMFz
+         T9dcso8T3fwDeR3LzncqPDufzEbesQKUjshHviG2eyBkXPq8BGapUtsRTFNtONCY1VKR
+         wWcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763466917; x=1764071717;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9v8UiKRyyvD16t4ENb8APUiQmIzVsGi/FebBj0lOkJ4=;
+        b=g1h8qKqhwkeHmZthSS+I5BdXJ4Tou3MHL9ChgaUaIm2wf+HbNfiteWJv31+CkQv/Ek
+         arYFWFAdvW30ivzafGYu+0g8X7MbovIfH4rAwr7g4po0bHMawIbmoGI3GHPFf979Utpz
+         6Omw1gKdP4DXRIy1ti4ys7IuiLWBCZZ3RnebbwzyNx/YPnQJnGJ091RUT75OmT2Zjo6n
+         Rei8+yi69eU9sgb63TdELLsXu18hPT35koDunOnWwOpB5MtehLXknAhZOLAPBu3k/UZ7
+         ZpEUn784DCRwFQB/XMud+0xZTOGkh2LJAvJSVS1Yq8fiOav6ew8YcZp6iNUaLPbatpYr
+         mBaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJekfMXBTh0p6NaJtLtiPyWYL4q0fx8CtEv44z/nT37pTDJTG5zGoGwCr/4CyrF1c+/jS1ipb0jw==@kvack.org
+X-Gm-Message-State: AOJu0Yxpq+xCTkCx/6xkAoCNhQK+oQ4CO67u2GfG7X9oQPisxC0/vPEl
+	txdORXvRQqhaRHr3dHsVuRlYQowkc0ky5EDvgycpc61wPe7vEsr1yL5D
+X-Gm-Gg: ASbGncs3F/kl1SpF1JDxhzfd7O8aKrU6QBXCdFYcCpeYh8ABt4Jn25rWDqA5XBELcoZ
+	jX/6BhFHOlc5RQiVlJBPhHxrA80z56PGCAHqV3WJ1HzeUdXTjUormcvMs7xZVjlGPUok17abhPL
+	ZD2+eibdYnM0cPs3aOgGCedgh+1t9N8sVaiqCwCHrkOUSGHK6luRQBGIaBnsYRZAm5+y0AL9TKp
+	2cprvbMWRiQpfjqzTxxFttvq0YfTvlheoQ6DHfW8zRj7z5o26TcB/EyswWkH/xXjHEPv6P0kX0Z
+	uX7fCjiXgh0mgV6y3sthDV/OBghFNW02vVpaY6EUUXexhSogeBBG0dwEibFp+Uqg9ZMxsYmkxJe
+	uiGk/5XegCZPGGjOxY636GHI/il7lkCyuMdObp/zVCWiquLkDomlaqBi+WerSa8DgalJlYWAUDt
+	ZiBSh3xoLY+HPOP31vfBKE8fqEdOH0qpH8X1EAlxJ2JmmcEA==
+X-Google-Smtp-Source: AGHT+IGaNSdLxRla9oY02zDdWZQ+dAcjdxohCbg81uqIYBMI/Z6QJtGDDVm6vwOhGnWyaCl6P1ztwQ==
+X-Received: by 2002:a17:903:1b2f:b0:295:3f35:a312 with SMTP id d9443c01a7336-2986a6cfeefmr183341175ad.20.1763466916628;
+        Tue, 18 Nov 2025 03:55:16 -0800 (PST)
+Received: from [10.255.206.79] ([139.177.225.255])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b0d17sm172235585ad.72.2025.11.18.03.55.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 03:55:16 -0800 (PST)
+Message-ID: <f7f0ca8d-bca2-4a3e-8c45-85cba1b0ff18@gmail.com>
+Date: Tue, 18 Nov 2025 19:53:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] enable PT_RECLAIM on all 64-bit architectures
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
+ npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
+ akpm@linux-foundation.org, ioworker0@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
+ <83e88171-54cb-4112-a344-f6a7d7f13784@kernel.org>
+From: Qi Zheng <arch0.zheng@gmail.com>
+In-Reply-To: <83e88171-54cb-4112-a344-f6a7d7f13784@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 29E6420017
-X-Stat-Signature: fpd9nrj6mf6weagw8qu7i5fpci1t5ayh
+X-Rspamd-Queue-Id: 13BA5140004
+X-Stat-Signature: pgx5zshobo8oji5yymqzekqz1594mj85
 X-Rspam-User: 
-X-HE-Tag: 1763466507-679113
-X-HE-Meta: U2FsdGVkX189btSw+NIjsNhtuhZw+aMA1KSgd+0sxJKo7ViElXLg0EbP9XicG3mt2afEUQwqytYelGzA43MpaniIdj17XzN9nZU//RA6UFEQkZndNwNpM9JS1A23DEC7gydpX6wy+xU0Bn43DE/RVyo8RE5wggUvZlRkGChkTCuDH+0sSF2GRjojQfICv5nu8+zkRQvewjrejbyDLNo6ZcJ5h6+ykZUC+ZuMECYI8cgxRF4t19G/SkFPAU+Ka+mnTTv5tgwmiCAzkA24cHBUffSDVxkUlvDrucXnYnNgYNJfyGJuC7bpakZ60BE0MPmAkfyw+29mT/VaJCLS6eOnOSNuj8HrtWeKnq0HMzKDKQn7nwPNi6GXpfyh6+J135H/fb7myEv/5No6LQEttbIzAyw7t5LgaWsTW4neI2f5uVkWyjf4mV32qmg1Cmk0Abu4vag9eefbRpPI9PeL2raq1r4BiwX/r5E7O5MCRKtAHaGQchcLMwpUSNDF8eZnfFpX6EZaNaKUxN/++gVJEkXnTpnug/kMizzUleMJbAIq9WeQutRzNYJeVt9Q5vdXoSoBm+fDZP9SsOKEl/1vzNKhy/5N3ycofyqyBRtWrCepo6RVq3SIhecZLdRP8qSIDN7ihv2qXhldDobQcOYIo/A2ZXsKQGs/oyYmKv5lEOnFinMtVn/0QRD5gMXCZc09mUqyd0p7hj/Y1sMoha392AaCL0VioQKL1ClQKFQFWATIhnmtcA5K7ZFJLUfmVNqCGC2f1Dhk6XbFdQw1uRe8W9nWbVqfzHyT7jbbObKCDgUpQUfXSy0hldTvU03tXrR4UJJGzq5cc7nlErb5A8oaHhSL+3IKENPGSE0oRdr+dpV3z3VzOy8edc9GsEUkGqWX2NFORCktSw3zY8FDW2mzXmbBCkJ6skiGkqOe2xK4mxcfiw0MyldtbQRVgUPsvfioTKuqNLbl0Vtjkx4HSTfRSAf
- +uIPZUXh
- pIWwyz5yngHUo88wuHi1RytSW5r8P8DyQqHaUhfsx+vduzbQ3H/uIEN7C0WXrbfFXVHY8gyaVFMWsbMccTKJTSE7tbPLKS1KCbpy0a2V5pYhnLSPoqH8u7gqDwpwiBOdhyi6ssKIwX3nSCIdpGXLHMfumZzFtDZSpkkNxlaDFj/xEZ4vw4YvtR2CnlNEcXvwQFkIiaR+mTQV6NDYLlU2XQBxzw56EKsPTDt7LSJSqwncj6gcHXx1i+oK6KAwlPSSqDt72YpMKYHFuB39vTwrjpB62NIdidoJoABJl4z7D+IaGDsNzcs9CKt57GA==
+X-HE-Tag: 1763466917-620663
+X-HE-Meta: U2FsdGVkX1/AGDXEzE8MAyZ9J7Sc61jvrlZ3zEkGfLz53o2WI/eH3ZSBTqlueTDu7HQRExobUh2N2tJN+vdbqzCmdnGDFgGscY5yK8qykmp6MKuAk+9bZF45IvnfztR4ewQySpF0s7onHkMkPidWQ0IbHlwKtdvbLhDfTBmj5+axga58BwUuhUxU4xQJyKLnnP8ahr7QGJeaCoOckUVCJ1PGG0218AfMat+5TDv7fB2shIITFuP/AyxMHbpKiv0vd6jh1KHwmEggz087UO14dTWpdsQGhDk/RtVLCqWbOQxwHwsSTQCXcs+zxFdSD0PZ3G9tYTlp7TkUOxqX7nGDZGo4t5ilZefCIDNJaxtfXjsY2jOakBHy38isY7sEx0KMIQKJh3vCc523hkWheO7vWUU97t9Fmvnn89heWXp2QAtJotisxT5xvKxrrH6klYKKPD3JCl1NKL5H72KivWaMZu7pjqdEb0HbylBAB4G5P39Bod5TH3jcgBBoo4AdAPGJn7kBiiPKze52bICtit/9WBbXcY+0jq3Xb6AqjzmTD03c8zSi//49v0BtH6ymiL6hkxANlSxury6wrzAun053HbvZht0Cy5IIN3XSod1G4PEnbMOXsbp84yRwqS85uGcDGF2nhSPUsFbKlBZeqXe8+bnN3g2boW6+Wj2U6SJVimHZrCvIAZcOTKCUQv846G19p2pX4AmOkhsie+p4oQSWuuiNBzmLZSyO5c9uAvIncgUj9mWNPuBWXzldslGRi4ztIUq+ZMv6UGHuCXx7ziCFxC1uigVr5P571hx0v0o5+k2IY209Lm0dNHkrSUDQJm8wbZ5+tyJgqRMmSAbh57r0vNmkBC7pXrc3XhgAriAqoDdHzQZWNPf5V/ljYjuMErHDo24d2BSQjvMOewmgf7H4rm5DlVKM5c6qyvEP29GWWNbojnwQV0/2iR3fduqxg3gySwrWgZP69IJnSdlwL4A
+ 4mPZ4q3E
+ vQQGX8QnWKXBdHjsoAUBnb2d3vDJ8tHkUVK673BbR9gfeKCWdt4XHRe8DtlumulHYn3GUKefUQzUKdMkz9lrB6DieK/J872cwv8MgLoyQw3YzPygDXyeJDAFto4YkuTLHqjMJFk4aqfDY8tlcrY5fpHrKe7D4oJhK2GWRU55JPJm+3QcfxODplgNw3Y/HfSM6VIN9VBhnk7856USHMZiMYFXm7a54LMEzhb3XHfKoIYDNEccpUvLXNlNt5Z2d1Hw9x4kpimsLbSimlQNptvOmlSCZvAuQEs7mz3NbR8PxivFTQdQwpkdkQCLxHKrdPbD45soKGfxEfa16PsGNQqp6ID7NGWlKRZhMBnD0KCqQ9I2i2wGU5pUhRz5ShZf7mJWppryK2dbL2lS+6qaMUaJP6ilH8/MAvMfpOjkfZm09yICXbh9mK8NRe9emHSMDBWe22d8UsC/xybHqgwAQ0wweNjGZeCALvfKIRr40n3LqBhM1VPKEApYXHGC5D/dKZ37xaQ0BSddYBxTC9aZ6c3L0IF2C4jCwljT2agEDgsvTaKPQEVBROLxDCJ12J9HUZbO4V0EwlHcj7DZgvTLYT7Twwi3/5d0yfpwKzKJb9I+gGXjMOs/DE8H5aDkQnl7z1JpNosN6fCcBW4AEBMjpseOmR7+I6TSgkgTkEYee
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,35 +128,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-11 at 10:00:59 +0100, Alexander Potapenko wrote:
->On Wed, Oct 29, 2025 at 9:11=E2=80=AFPM Maciej Wieczor-Retman
-><m.wieczorretman@pm.me> wrote:
->>
->> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->>
->
->> -   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN s=
-hadow memory
->> +   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN s=
-hadow memory (generic mode)
->> +   fffff40000000000 |   -8    TB | fffffbffffffffff |    8 TB | KASAN s=
-hadow memory (software tag-based mode)
->>    __________________|____________|__________________|_________|________=
-____________________________________________________
->
->
->> +   ffdf000000000000 |   -8.25 PB | fffffbffffffffff |   ~8 PB | KASAN s=
-hadow memory (generic mode)
->> +   ffeffc0000000000 |   -6    PB | fffffbffffffffff |    4 PB | KASAN s=
-hadow memory (software tag-based mode)
->>    __________________|____________|__________________|_________|________=
-____________________________________________________
->
->> +       default 0xeffffc0000000000 if KASAN_SW_TAGS
->>         default 0xdffffc0000000000
->
->Please elaborate in the patch description how these values were picked.
 
-Sure, will do :)
+
+On 11/18/25 12:53 AM, David Hildenbrand (Red Hat) wrote:
+> On 14.11.25 12:11, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> Hi all,
+>>
+>> This series aims to enable PT_RECLAIM on all 64-bit architectures.
+>>
+>> On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of 
+>> empty PTE
+>> page table pages (such as 100GB+). To resolve this problem, we need to 
+>> enable
+>> PT_RECLAIM, which depends on MMU_GATHER_RCU_TABLE_FREE.
+>>
+> 
+> Makes sense!
+> 
+>> Therefore, this series first enables MMU_GATHER_RCU_TABLE_FREE on all 
+>> 64-bit
+>> architectures, and finally makes PT_RECLAIM depend on 
+>> MMU_GATHER_RCU_TABLE_FREE
+>> && 64BIT. This way, PT_RECLAIM can be enabled by default on all 64-bit
+>> architectures.
+> 
+> Could we then even go ahead and stop making PT_RECLAIM user-selectable?
+
+OK, will change to:
+
+config PT_RECLAIM
+	def_bool y
+	depends on MMU_GATHER_RCU_TABLE_FREE && MMU && SMP && 64BIT
+
+> 
 
 
