@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C981BCCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28ED8CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30EFE8E0015; Tue, 18 Nov 2025 02:50:08 -0500 (EST)
+	id 8452A8E0026; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E6A28E0005; Tue, 18 Nov 2025 02:50:08 -0500 (EST)
+	id 7F5AC8E0005; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223758E0015; Tue, 18 Nov 2025 02:50:08 -0500 (EST)
+	id 6E45E8E0026; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E7628E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:50:08 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6B5214040C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:50:07 +0000 (UTC)
-X-FDA: 84122954454.15.9D70800
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BC06A1C000A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:50:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=VxebQgt0;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 591EF8E0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:52:31 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E525312949
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:52:30 +0000 (UTC)
+X-FDA: 84122960460.28.9B07D28
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 402B910000E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:52:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=c7PC7sq1;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763452205;
+	s=arc-20220608; t=1763452349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=plNtX4FgCEClMcrKjGfKlLaCiD+LAXHKIrMj02EWGZg=;
-	b=QZVRmJRnvijlrAhcj76WpMlMegdpnV6gMKlfp4lS7g21r0+1RvuIijUeTVdK2TmDt/EMgt
-	UIQtFHPY43G9xjO+V6ZWQZN6LBolJtHO1KYNM4AYREmqYrFiWlUwizuRtf8k1YnIpGcYhi
-	itf8lqs0zIJabxIXRFAuTb5KA5GebWU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763452205; a=rsa-sha256;
+	bh=8o0lzY5+KXKP51IAC5h7ABQJPt8SMWT+JESmyEuQ4GM=;
+	b=o1JbwzvsYJb6480c7z+YO8WK2gKm7VXmzrs5xBxWcLz+BZhU2YwJ3djpnnfsZS3JtWHtfm
+	mZpmXXf7aPgU5V+tJN0wkgp18PXSkIg3ZvsIi+xfPIlo048HJclUnyL3tx3rfnVASTkvi6
+	XMJyuQxn/73GqqhluXO6BdFhhytzvrc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763452349; a=rsa-sha256;
 	cv=none;
-	b=Y7ks3Et4fGnQwGeHJw7m2JFNZpLGIr6SrEdeMBJI26PRL056Y/Xx8OQ9AEFKD6d6p5BpDm
-	S7hOW5pK6QGomP81VCG5VolIl3juyRtnPVfpje7DU5cHRWZbslA/SofXeszu/ZgiIim7gR
-	xopaohO2u6f4NgxFp2+zHaFjk3RhPjs=
+	b=VJG7sTAA750AyZdAlalitPChqN8LGitMXkUpGC3XM4HeHG6XQxomMHSDn7vMuegkEyx5tg
+	v/tBlby/CiUQjjoUjlHknbCvRwHXJd81jtw/kX0TDWIIMZcEkjgg5lBSVv1pksByDMHaaJ
+	pMCNfd7aMrlPgHM3TXYfB5LypXmTHE0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=VxebQgt0;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=c7PC7sq1;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-340bb1cb9ddso4407732a91.2
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 23:50:05 -0800 (PST)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7a9cdf62d31so6327577b3a.3
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 23:52:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763452204; x=1764057004; darn=kvack.org;
+        d=chromium.org; s=google; t=1763452348; x=1764057148; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=plNtX4FgCEClMcrKjGfKlLaCiD+LAXHKIrMj02EWGZg=;
-        b=VxebQgt0LqXbtArkZjGv4zSBVlo6TxrRkdQ+Y6qijffXqA3ujzmbb+jSLGDrNAK9co
-         gXpFvm2HvDpHZG1iCfZAfqmucr0A4XWgSJNCqL7kp+qWbu+tRs9fncAt0X2jbkVN/0Gj
-         jvL467tMrWIBVD3tuxpkz/P1YhwH65cpbPQNc=
+        bh=8o0lzY5+KXKP51IAC5h7ABQJPt8SMWT+JESmyEuQ4GM=;
+        b=c7PC7sq1Swab8pZInhMolMgPmpyRoEe7hh2i3s+zhEI6lUUohKtv2bT9iXm2BBpn5o
+         KwWHnFRnuZzHrma/Uf6j19L723LYgpbr0/plymElpSp1cBchSFjiI0pdaK2HJjrKpv6p
+         8i2NbMyLyViw33u/pch+/tXXPfu2wDC+TGmeA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763452204; x=1764057004;
+        d=1e100.net; s=20230601; t=1763452348; x=1764057148;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=plNtX4FgCEClMcrKjGfKlLaCiD+LAXHKIrMj02EWGZg=;
-        b=FdJGzf940w3pXVkAZtqybUldW8ezfjrSLzn+L18AqvZYyacm65tmyPVjMPEyIDj/Nu
-         Zdc8dyUSjzHoF6/sADeLIxMP8QH3qOvtSNcJAJeyrqI0SuEeokHdPm6kRyLC+t1Rs2Ye
-         GL88jum88PATcpfPQFFvUy99xHj0zGkRo8XNlYiTgq+bVN9WDRe9K71sZKMDMRv+8Gfq
-         DOsh4GVdb/aOSKqpOkJs1jumE6kd2w4PpPvJ7/u/cbsYr2esGSnLXXDv4BpCJs/x6A2U
-         XVnM7P5pba8QS+f+Cf24CFWy+Gmaifk3j4M+vFkt9WNeEpLmWDQz938I1GtreX/phLNG
-         C+zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXs4MonXVY85lWV4Km4omF+UReHeyC+GnJph1qmCB4PwV55JgmvqJJ5dtxgqriyT72a2fwswRtTag==@kvack.org
-X-Gm-Message-State: AOJu0Yx/bACSP0CiP7vqfaxFHw6imyw9+LBYLDr12loY3LYPfrZXnJE9
-	3Zo2g0xFDtVOa6JkavSOSYIenUAkB2tMBHZEXg4ZTOrv6Kzr+SZ9LkY/ABrSvhg/UNbMaB7E3XC
-	nsyk=
-X-Gm-Gg: ASbGncv8kXUE1VFH26Ng3qSKEAXnDhkEOBUnaXfoeP2e6EH34xIvKlBYnyGFSQUjaab
-	DXsrI49ucZTDeTz9b8GRIMW0d3rqhgsNGpRaEAxINmHqU0pn4vWJ8/KygyDR1o5130BQXSG1u0B
-	T4gJiLgGZertoYRIyVbrSENq2qPP6eBn6GT9LbjjrkityeXPYD1Z2qS2AO8RGFnE/v7gKy8kRDv
-	0QF483k0QApDuzD7qGlAMR2emiMf6R27NuinKgw7jmUYAJNErESJyOMf3w5Qeiys95G9BC9XX6i
-	oGU0++OszK3Wfse3wunhI5VtBAsLIg0lWiVLHW7HnlE9kDQusko4oCBgI0/kB5ufXpOIwfjQjid
-	hqppZsEJ5kqFoHczZgTVqNsaybkPNtfLTZuwhHy5LCS7vMpSMSg10cPNZKKCPqmDG70zyWf15nh
-	2PbKpcUo86NYIi04y2luOxkZCKKA==
-X-Google-Smtp-Source: AGHT+IHZwl0OAHHI3jg5IDqTvWIOofVPyV3wFLo/icrQp+7MyguQnHwiS3UU2BMu9Gy23vmm1Zpkbg==
-X-Received: by 2002:a17:90b:2f08:b0:335:2eef:4ca8 with SMTP id 98e67ed59e1d1-343fa769fa1mr17863076a91.33.1763452204610;
-        Mon, 17 Nov 2025 23:50:04 -0800 (PST)
+        bh=8o0lzY5+KXKP51IAC5h7ABQJPt8SMWT+JESmyEuQ4GM=;
+        b=GmRXefDsJlfob1rW+X7XQrA1yar+DbpFHhNayOyjJe+p/cBdxkhRI6wRvhv3/7lC5i
+         goTUEa8Mf4jZiBV/t+Yyf5ULNjAWv/S9EF4IvPMkGVzSsE++PVfc5JZYTDHUUkhsygVW
+         LX1MEX8/JQ/KZZ7IHcqjhEm34Ya8QH3OygaBieFyAI0djUYzhprauzjdlkwmsKOO4RKM
+         vQ8R0+GclDB+kVo30jo+P8Y+WtlFBdWd9Io+CkX+w7xwhCcwylyQSbPuyi/brrh+Iztf
+         rZhIJROSHsar/i6INs6LPmHUZpruvzUJddGLwAOxnz93UTgwQjkmowoA3j8qdBDH/lSa
+         HZJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQ/5NqA160p3hFs9S5DRJWnQtPX7OFKdutqLkEjr2skpoPCFW+4CH0CI4oDvEYeNIyxK1yVcLIYw==@kvack.org
+X-Gm-Message-State: AOJu0YxA2YROjXSawy9vnQNv4PZsBnoUaoLEQ2PXXhWi5TVxpzbd4vxW
+	gl6v5AuvoffgMGCoQcehH5LnEWDn4vlWlqkSX3tgHvyA9ewEcuuB7/X98nw5QKvrKA==
+X-Gm-Gg: ASbGncvi4TgJcR0yZr8LjEfThF3a9daraPezzO5gCCr153/k24HMOWLR/f7SC1pMxlv
+	FX8XRzdoOMRH9etHonj6/b92fHmMOm+qVgRZqSpd7EVSt+ngYH6H6t70StlydEhKI2PWUsdTpYx
+	pKECDZWvgAc9iNtbNV0EAMKf3tri+nSchvyotouEq+jCY0XAGbxypeweDgLoQK1TGh6QZF9fklW
+	Wb15T3o8syKcqb5K7pWrTDS1T74t//rf3NWswzjsXk1NB/s1WUzcmfS7S4+cCb6i7VvbFA9t/JQ
+	FPtX9dbN58Jw4hIL3HEXxiWGDX8LIY/vZx8Jubx1d0kaymWb6p0dFda/GVqICdcBAUJLO3rX+l5
+	9kAnjdMxou7hDfP6OMtdBCSy+2Hg9VrrsO5wmtHMRKVczAbYDTniaTG9Jl3SdZOjNQGwqM7J6yW
+	8Av+XaCjQdS5cQyRA=
+X-Google-Smtp-Source: AGHT+IFA5v96ReJAqZwqn5Ht/zD2TwsmTS/QwZ4pMs1RMftRZA4u6b3AE4qcFjb1+ZXHb5341uOCmQ==
+X-Received: by 2002:a05:6a21:6d95:b0:34f:afaa:125b with SMTP id adf61e73a8af0-35ba1f96f23mr19782645637.50.1763452348006;
+        Mon, 17 Nov 2025 23:52:28 -0800 (PST)
 Received: from google.com ([2401:fa00:8f:203:beba:22fc:d89b:ce14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b92714e298sm15568611b3a.34.2025.11.17.23.50.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b924aee147sm15609775b3a.13.2025.11.17.23.52.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 23:50:04 -0800 (PST)
-Date: Tue, 18 Nov 2025 16:49:58 +0900
+        Mon, 17 Nov 2025 23:52:27 -0800 (PST)
+Date: Tue, 18 Nov 2025 16:52:23 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Yuwen Chen <ywen.chen@foxmail.com>
 Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, 
@@ -96,20 +95,20 @@ Cc: senozhatsky@chromium.org, akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, richardycc@google.com
 Subject: Re: [PATCH] zram: Fix the issue that the write - back limits might
  overflow
-Message-ID: <eebxwjzm5sdej3i5hb7pkj3w2xkacflxkeuetbyb7i4dpmltdl@lkysptw5owko>
+Message-ID: <bo4g7erropsvl7vulufdsjqlkkbjycaounh2vv4a6urttxvubr@f22z5wlgntox>
 References: <tencent_80150170978D13BAF69D63E57D7F5175F90A@qq.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <tencent_80150170978D13BAF69D63E57D7F5175F90A@qq.com>
-X-Stat-Signature: osxrdqajx4799ripw18xb1z66pwn696d
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 402B910000E
+X-Stat-Signature: wwseqz6pgn8bskshecesbrn7n7ihpdj6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC06A1C000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763452205-275314
-X-HE-Meta: U2FsdGVkX1/kwQyrHIH8P3IICIJhUT1AGBRBJFWeMCk4cNEJhcp5whrgqe6n3iJ8poQT8mUvTr0bRySWwocB9MmUB3yYL6xoDoqCRiCnVtqf2xTnWNqMSJkV6UgCZuh2NWDbSxfXB7xDcmIIZ8htbAv5WJjAMG9Jo4KN3mlrR91XvpTaM2m6lDJA+vTGqQT+wxrGjmuRPhEuoTUD/GDt70x4sjVtmdS3a/OTTovuknTRe8MybLlZH48GQjP5vOL5+KdsHEJwykB1hZgwDfdd/husd2Tmn9rOAZazt0orISqrM83unUsg3MPIj6jK+/LegUtqZtPRkU4JW479qXTDDiMkY/LGnxD90sEKGQv4iKZ7Q+xBVWZt/ct1iIV2nMqGsKSnGf1B8LOIN3nnkTuzLUMzdAl8Ui6CMp4h/6QEn0vRGx4C4EFgq6nu7aIB9xumFcPUbXeTsSl6GSq71uiYMQgQqKqPVqZkcSIdSNcARTBI5tpc/z2WlUSPD0Iv2PSpi0OCJ+pViZCv5ED+s408PtBHE5wXG1Zq19XGrji/1bNFlFuaz8q5Iq4NcJsHpETK1FjOdE/7dOchDtJuC7mm04BGGHgMpxfxUEftq4iA/MRyzcaeQtt8vgy8+2XlBHUwxjfqjK3JCw17aexfJl1+DYY8UJ13yjQGgvZ4mZAu9EWqaSLRp/2AntJ4BXp7gXH4drE0dN35rmIABl8jHNSISpFsJB0ySXojP++0VnigRINH/uB0vH1ngVrZHvKg85Q1k2H32MHxTDN2OierqlWGoeDrEbkN8ONyFSV6LBZyQKX9wyuntEN7Vfp2/Zss1MnNJEVpF1GxPvPHIKoPWgiCY/MeaaYuh2dxexHS1RUMyvdeVhOpQNCk6MG6qqOFcfGeSrrrE71J0JFX9fHs0kb7/NjKv19CEel8lA2IKkT0/o7qprrpxqGoAf3FxGObUFDILSPHN4cCd2L2qp/6JEC
- eCfdD4K/
- v0L/txgBMJMQs7UMB6TvRGpAjFpeZ3iav3dAISJ2u7uMOy8/b+8HkM3ltkYr8Rxi9WJJvfY/FjcCtw5a2AmzCm1ZbHb9qVFOGzQ9nQanIt5cP2/bQo6VJhBXL/+tBwaGyR8V1WTie218wbxSfh6I3tsY7jEQPqBT0o3Z2klSXe+r68yI9i7NDdF6ID58iYe4rxQtOAriUeX8VfeQBXBDQ/mH6QfhTXDA7N36Eqv7Wj03ICAffOy9aafCk7JvEAT0Sx34lSaGLRR0mFs6UivsDiPwDJwrBv6iscnL1YG4KGTlBoQJA4SvZHUr9Aosyvn0STMEERWK9Z/xn5nZBuIYnBkyudwdncSbzYZtizuVD0XErCj7uCQiLFenFCTKsog+NokQtyDX8Rr0+CnwcAXmq4PCwUPea1xZR3aW4xgtSIWzt1CQSR1wta+HR+g==
+X-HE-Tag: 1763452349-323326
+X-HE-Meta: U2FsdGVkX1/udkd76fd7POjPyx8BFgQN9cwEdOBPUNxxY4XUnRr7kZ4j0dQKtwG/A1WUtJHZXLM3To0ubDIxbcoG4PfKijE4aVkRBVQs7PkNEM8e3ht35I0pTR25Rcx9owJi2eh6onP0GXU6F0TDUAGaqTE6knYlkF4JKZfHidzVvwqvfGQUuR83edMR53m7JNsgwkMvCFZayQYXvETjxcdWsdANSIBJ1Uq1U5VlGsPQje9WZtkRC/N7gTEvXb1TcwqFPyu8Ef3zI6wKNjGCGlnKBHCHkvH8FQABJ3ldsbe4zUm2TGtXLSJviFKuW41eqI2/QJigeZtNfJlWOfqRwjiNcLoT9mLrMD93AXTGo35uDnDYk2l/G/36vbJUdmYntqthXMU5Nbbin6iM6wlryCiR9TtESUb+SXfRNHi6HOLhSfIF0kpiOoTdYpNtgRt7ppXa2h1U5NR8Mb4BTK5e3x28+SmTYlFG4/6OY4UTvrKHZ64hKT7X9KrhnSsSNfkadmSMUFttem07rlKK1Lf7OgB7P1bc6tNmxDJ7lFnDS88kXRBENcDWcDjGBqPmj/XMcP1X/sHjgWoifiLbgvqU36+8kVTgiGEPgtHRs/mOQcsO0QCCJ1UAQahM7IehfQdLGRmwvpTUPI3l45pfVKlKzwOsAf3hqFxHiBgpTuGu+yVklBjXIpjG/7oZWV55eVMH7uZFYCp/Fg+2VIb/WFf9U6QuPyA/bGBACJrYtrQH/zwBP/7XDkREnrfa1nkEKqRpRQ2LOt1T57+erhxZybPffevSSVBoGnR58uSmIg5T651wJ37+IIQsvnAWgt5DD4aWUMRdMJfb8bMm2LgnWJ7Q/QDXfRWKpS60KS/v7MpGRg9i4kx9Ljk+/6szWC13KUTBtatW4voUEdz+ZRkpvr8pxQqU9ciSbzDitQOPjQ19wHS1upxvtUhXOkIjuQxXw0KzbBvc90Pk8k1vHDMxZVQ
+ qgMFN9tE
+ gdJS9ZpgCE93YrEKZP0/cmKfdRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,28 +123,9 @@ On (25/11/18 15:39), Yuwen Chen wrote:
 > 
 > This patch fixes the issue by limiting bd_wb_limit to be an
 > integer multiple of PAGE_SIZE / 4096.
-> 
-> Fixes: 1d69a3f8ae77e ("zram: idle writeback fixes and cleanup")
-> Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
-> ---
->  drivers/block/zram/zram_drv.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index 4f2824a..4ecf2e7 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -562,6 +562,7 @@ static ssize_t writeback_limit_store(struct device *dev,
->  	if (kstrtoull(buf, 10, &val))
->  		return ret;
->  
-> +	val = val & (~((1UL << (PAGE_SHIFT - 12)) - 1));
->  	down_read(&zram->init_lock);
->  	spin_lock(&zram->wb_limit_lock);
->  	zram->bd_wb_limit = val;
 
-This patch is against unfixed writeback_limit_store() function,
-it will need to be resubmitted once [1] lands.
+I really wish we could just change wb code to use PAGE_SIZE not 4K
+units [1], unfortunately it's probably too late to change that now.
 
-[1] https://lore.kernel.org/linux-mm/20251118073000.1928107-1-senozhatsky@chromium.org
+[1] https://lore.kernel.org/linux-kernel/20251110052741.92031-1-senozhatsky@chromium.org
 
