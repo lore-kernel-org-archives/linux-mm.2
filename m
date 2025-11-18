@@ -4,120 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27AC3CEDDA9
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB50FCEDDA1
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:11:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E89C6B009E; Tue, 18 Nov 2025 10:06:48 -0500 (EST)
+	id 08ABF6B002C; Tue, 18 Nov 2025 10:11:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C0276B009F; Tue, 18 Nov 2025 10:06:48 -0500 (EST)
+	id 062946B00A0; Tue, 18 Nov 2025 10:11:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D59A6B00A0; Tue, 18 Nov 2025 10:06:48 -0500 (EST)
+	id EE1AE6B00A1; Tue, 18 Nov 2025 10:11:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B95F6B009E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:06:48 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D1721A056F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:06:48 +0000 (UTC)
-X-FDA: 84124054896.07.5685633
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 446501C001C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:06:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gVqLXxCo;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DD68A6B002C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:11:54 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78BD71405A2
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:11:54 +0000 (UTC)
+X-FDA: 84124067748.28.EDF5828
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E3DDD10001E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:11:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Fnby0e8v;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763478406;
+	s=arc-20220608; t=1763478712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XWuQ1Gr1da/Ps4043tEOOHSlQCc+Eyc7OTDl03qriVs=;
-	b=e3/4wm7929laUGJM/0qmXFzdPshSiMtwU/WFSB/KpueuYNNZTJnlovyP9cgqNgtyqa3Lli
-	pUL2g32Ti0oy3TUUZYcHYs1M9XKsEXe8Ms8eoZ/TNo6LjlzgPpRJPT0GjTfQ/OEa2iCSbi
-	LR4RWky11xqlt6be450w7drox55NVtg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763478406; a=rsa-sha256;
+	bh=oVir3zPsjlngDgWc+1KJ9Rm7ynvdK1im714lW669uUM=;
+	b=OIKh28QEGCO1bS7j/ZpOibSkLG7YNRoOYAmYp/9/yUPY8nHPb/SSUTKQhp43VkkfuRClR0
+	lpl79N1muF8Vho7mLunG3EDprM13U5nr0UmEg81xEbmNN082m2izQHp0G7CSexItVpBLEV
+	OZUFa8YDjmi/Vf8+JGBTfsbkovwn3OA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763478712; a=rsa-sha256;
 	cv=none;
-	b=NdyscqbpFNhKGOTxuWq8CoIdfwwF2zYiyuiIhnqwBRTKl8flDp1Gt1oPTqKQQVdo3PY7Zv
-	oRg3bD4HrGoGwBrTQCyevZecg7XSHTKDDoR+MCA7PUaYIu0w3GfzwNPpepF8pZQ9ioS+lR
-	BV/xWC0D3bQyasEfOULkMVEla7HIcco=
+	b=G/ElMoJJENvfGloorunsv/q2+pjxkSN6ViUTUkUR6y8jVSj2eRZCKbzWWZXdFVBWwHQ7zi
+	kZB6gZUUVh8F06BGiePbUONMV1MQuG1UK0VJyRYNtR3b9+MWyVl5YcLA8l23jVrMBj//cs
+	SPlCeVNjNWbbWZ4NiBHYXnuKjLhHBxc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gVqLXxCo;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E17264024C;
-	Tue, 18 Nov 2025 15:06:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274F2C19421;
-	Tue, 18 Nov 2025 15:06:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763478404;
-	bh=76+2f+4hsDZ7pFzkCao+UBvMyvqOyAsPTXWZOrXZ64A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gVqLXxCoHubWmmYGMBSppHz6v+K6gOlZuSYxfANkq1RKW8ckeEAIrlml2vKMxAe5L
-	 3C8zjm11dqTah0Vkmy2M8q3igXZkmU+HXuX48hcaI8METAODITZD7cxnwl2IMKPiXP
-	 otr7qxYH6DGeVFsBC2ronbizF4drLwhTO4cKnQUZC7lBlo0I2qlELAAZm/qaFIqsjG
-	 HfRaIi6Y5JnNl3ZWxHIr/R7/kiqKBhKBd1W+81GC9ZMcqhlXX4EWL9wpc7TXvC/n65
-	 fdY1qa4EgfHtTIYbz0kzbq1HE98C977U9Rl1R9Gg51/HhI1YNVY1YoDlShCZkuqVyr
-	 rOJgoCOWRfH0g==
-Date: Tue, 18 Nov 2025 17:06:20 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
-	jasonmiu@google.com, graf@amazon.com, dmatlack@google.com,
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
-	vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com, hughd@google.com, skhawaja@google.com,
-	chrisl@kernel.org
-Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
-Message-ID: <aRyLbB8yoQwUJ3dh@kernel.org>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-3-pasha.tatashin@soleen.com>
- <aRnG8wDSSAtkEI_z@kernel.org>
- <CA+CK2bDu2FdzyotSwBpGwQtiisv=3f6gC7DzOpebPCxmmpwMYw@mail.gmail.com>
- <aRoi-Pb8jnjaZp0X@kernel.org>
- <CA+CK2bBEs2nr0TmsaV18S-xJTULkobYgv0sU9=RCdReiS0CbPQ@mail.gmail.com>
- <aRuODFfqP-qsxa-j@kernel.org>
- <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
- <aRxWvsdv1dQz8oZ4@kernel.org>
- <20251118140300.GK10864@nvidia.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Fnby0e8v;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=oVir3zPsjlngDgWc+1KJ9Rm7ynvdK1im714lW669uUM=; b=Fnby0e8vWvUc4/1n0tiDIDaVdi
+	1qYtPPcT0nQqkCghlZJUTpcsvf83CoayKIT+kTnm0sMHBOMukrCcmbrpxz3fLio9t9qoHK39foL86
+	RTipcuFOc1y4BpLNns/26QlbB5JwLGU0Q35aEfxkTeYXpw4KoOvsa+ntvIbLQvqVjctxPRjhcPIjB
+	ZtLM3AnUhcNc7m841Cm6EfeuyW/tiI6em3AS0jQtjD01ouL4JMcDfMf3+k4aBWgI8F0XcxXl4ACVN
+	fH9VAUy4DTZng0OMrYdzWOPLN/fY9LoXl+TcqHIZSRuKRTwQjAmxM3OtW0I5UPnzP0gNrZ8NRbyVK
+	7SaNPJOA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLNMx-0000000FeMT-0yXu;
+	Tue, 18 Nov 2025 15:11:47 +0000
+Date: Tue, 18 Nov 2025 15:11:47 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Sahil Chandna <chandna.sahil@gmail.com>, linux-mm@kvack.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Wei Xu <weixugc@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Yuanchu Xie <yuanchu@google.com>
+Subject: Re: [PATCH 3/3] mm/zswap: use %pe to print PTR_ERR() values
+Message-ID: <aRyMs5JrQDxmQHJN@casper.infradead.org>
+References: <555cdbea3a51898e4c84fdc0f444dae0c2e20f24.1763227530.git.chandna.sahil@gmail.com>
+ <c5f92735-0e2b-48e7-9181-04bc058c0bde@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251118140300.GK10864@nvidia.com>
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c5f92735-0e2b-48e7-9181-04bc058c0bde@web.de>
+X-Stat-Signature: sxn6mf3zw1xu6d9nwutrkcqso5aea3u5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 446501C001C
-X-Stat-Signature: zufgktez5wweqnqcz57xpocbezsq5hwj
-X-HE-Tag: 1763478406-488901
-X-HE-Meta: U2FsdGVkX1+IVxWkZHp1wUtE8Tivrs4MUZqN5GYdm2w5chSmVrG8KjsNVbpZIAFzz/w9KoJSRSdYMF8FymLy4h2YL5AYTmrV9fULnGtJafKuQixFCpQtutxRYOQL5U5MR3MK3wYZvz9fhHXd1TNmn5zthsvFuqiSJprWUZqmOEXIZ1lv+eV1skdwPLwJfYov8xiN9bir3Lrca9VfSlU0USEJs3rbECZKO1FHl2m7SloOwJio7IhRtde0fjkcahCC78h/uGvE46T5JwZ0IDeivUYUtc4FCf+1u2TQ6o3KxVumr4hWxRLRRpXEzKtSUxMleoohQMa3jj2YfHwEr1RKBSDAEnDirWNln6oDB5B1Et6ODaFfXk0klDo5b/rUMioYM8/EimMN0somby9XUMJJ7lRx6LWube58z98ooRlCT7PV2r5CTf7WiNlLy5EOCAdsLpFg01Y68d3ejRkI2SZCqLcde3D3dhbwUBciXZzJVIH1B4B51/AVNKCfovkrNvzZPOcqfXM7Jm1wz2YumhO46Z8J1ygIQgsSv7IRy3trLlI1RPoa5u+5rWc/1l3zFQGmACVGHXMmFjlrlQEwefVDq0wpywuPlQ+hxM3VzieDRVtozqbUnPXDmt3AraJNNciS6yFNpe6oopXYV0dr4hbPFDde/daHf9mT+K6bqcOKTNIenye9g92lsmy+lgM+zq/MIZAKJBMZIV4cCllLkp56OnphHQaVWehMW1RwDat7rgrjd5MlYTcOHQYVe9LUZAlxn+fi2Xar1yAO4A9bKbHNm4kz57v72didrF3RCVUQZYuYfSHZJG4nq60Sw++dkPIGAS1tvBMKTvbviJQJNzgc4aOrCoNOFi6uxjgTQrCMOOW7BffwtL6flhCyG2rfhRvsbovk+7fWI6Kh/dWWqcbBtrrWfkiyxWkMJESbfFQK0M/IOm15Fp6JREW6ZDSdm+JKuUrFKOYFL52n9okgvh5
- pCW47xTO
- IDlFIj8TndoKUGb+nKXTR/K4kiuOcbxqvIHQ+Tm51Swe35XN2i23+KoWOI/zweGJ3ZpIPHPlP7eeLdL6j/crzTqRiV3HwunwzW3xR8UEIh4F9oUPvGPnTPp5PTN546WxZxM4HvXWGxReHrjdszduJPAlbDoPnP3KI5lz3BCWBVqI/+OE4ownofb1KOtkwqU3AdVyPQPzB6y1ugf3RCtuv9AgjC8DzqVwxS4WkVHjvIdFLkSO4vAEF3x6htxzuC0soPlbx1fk886ytjwndC6yv1+eUh0OYyYIIK4ym73JhA9Psq7gax7ITFtJ2hUhgLx/1/cDMuBx97Xs3zMfKESCyOCV/I6V6IXC905IdYZ2tVkHx17drIR8lqt9TWQ==
+X-Rspamd-Queue-Id: E3DDD10001E
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763478711-482314
+X-HE-Meta: U2FsdGVkX1/kg8MCl4nAciv5FefcFEl7VB8m+izIPGRFRD1DApGIdzTaRNxaAC9lMIkH+CKfvYImN4d3a/tyVO/clmOzPFZ17FSOElade/p6byOcNm1xPhL023UTanqKsDKltYu9wv4tS7Nq0i1mfo9bjl5Lwh8Cxuu4QrmvvVBS26MPDHNB0ve++Kp8f8CTEMBxW8ZK4Zh0bB6rmkbO5WA4yh7MPM/4vd6uawgkUNs9WLvpPNAR98OTnaE9mILChVcaefvm9XrtzQaQoQ7hK+IP0KdeS6nN3cM2l3twhqZ6BykJKIIL6jzOc5RSpkKzek157bLUqACkOf+10yOlitgyfaky6Zm1G1cAQ9+S9ixHa6Y6NziqElQ1w98U44f4qRoETK4UvXS1MeSPwsrNKMVugRpE8tKgTVzu3iCODBar6tJyHuIRaV4/NaI9tIkWD9UqS9jo5VYvKOq6ftNxh39YJC2AbU7oWHnxuge+LnKG8mUfKj7J47rwsH+Zqhq0oYdu7S2MUgropeYcoIXsRTzagY9/DaPrxlUeORvAm78FmAmsuPmX8L+PllCN6yfRTuI7PAkLrLKPc9zzQuqBLILyqv4lLyQ/0ka5QX5KvqqSHYrX3ReB/ljMnZBx/B/CGkqGa6JivvPRH8RV+qAHKMhG/tLFnie7UMsadF39zAnVxHMQXq/C0cR4ftqsUjCK+NvGZ1KqW9chhDEv3T6d5mW/C9njgk8YPQnF5n3y5x2AEv1rODYMNZZ06AVmhK2XBY52f0ToS7whDus6lyIoeG3+Cd5nh/OmbEwdBWB2O10J3SAsxGrS3zS0rEJSAYA1Sj5UOu/11XV+NfOq2IEZwn54/3WgrVrO63mFEIObGEc1/1C43j1vdNiyreYTRwYR66UUAhku5zYqYSFQGbYrAxd4AOnbCAQeBSzxxtBDNoqJHWc6QzIGDpkxFwDh5mfk5tHnk7R2TSDuUZnpexF
+ u9uPahsu
+ U+BXZvP0PJ7Snr1Tq3fiofJdYdjtT3YbGHAQUe+xXMOOScvRIEHepepuilpXwstauHSPCrmydleJBmC8sTkVWVn1GXJMc2ufXCiwfpHIu8k5loXLaLOKqA3b3Aqjf+R1EqCVv1ui5vKi/rY97KNbW7CsoJ0AS7Hn6dLBkJrPahii3XrWBnPFiF9isf1A0ayDmaPiCfxwE/GgW3cfCyvi1GKot+Fv+Uh/Jjsp22r9+O7eceehw0jBluH0UQx6u8ZVUcfRmwKpHsABm3j7aG6RWVv5E1Od0wC9x+rl1LBED2+YZTOwKI1nVPCGK73WzlmgTY/HcWj2/NokzAtX27cWmc2ZDeF/YdJt4pQrMpU+YJInS56UBRpmmbs3d20LGrttfDP5twzNg8vpFcSFQV5Fyw1e2bt84izEYKFgp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,54 +107,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 10:03:00AM -0400, Jason Gunthorpe wrote:
-> On Tue, Nov 18, 2025 at 01:21:34PM +0200, Mike Rapoport wrote:
-> > On Mon, Nov 17, 2025 at 11:22:54PM -0500, Pasha Tatashin wrote:
-> > > > You can avoid that complexity if you register the device with a different
-> > > > fops, but that's technicality.
-> > > >
-> > > > Your point about treating the incoming FDT as an underlying resource that
-> > > > failed to initialize makes sense, but nevertheless userspace needs a
-> > > > reliable way to detect it and parsing dmesg is not something we should rely
-> > > > on.
-> > > 
-> > > I see two solutions:
-> > > 
-> > > 1. LUO fails to retrieve the preserved data, the user gets informed by
-> > > not finding /dev/liveupdate, and studying the dmesg for what has
-> > > happened (in reality in fleets version mismatches should not be
-> > > happening, those should be detected in quals).
-> > > 2. Create a zombie device to return some errno on open, and still
-> > > study dmesg to understand what really happened.
-> > 
-> > User should not study dmesg. We need another solution.
-> > What's wrong with e.g. ioctl()?
+On Tue, Nov 18, 2025 at 02:20:59PM +0100, Markus Elfring wrote:
+> …
+> > +++ b/mm/zswap.c
+> > @@ -749,8 +749,8 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+> >  
+> >  	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+> >  	if (IS_ERR(acomp)) {
+> …
+> > +		pr_err("could not alloc crypto acomp %s : %pe\n",
+> > +				pool->tfm_name, acomp);
+> >  		ret = PTR_ERR(acomp);
+> …
 > 
-> It seems very dangerous to even boot at all if the next kernel doesn't
-> understand the serialization information..
-> 
-> IMHO I think we should not even be thinking about this, it is up to
-> the predecessor environment to prevent it from happening. The ideas to
-> use ELF metadata/etc to allow a pre-flight validation are the right
-> solution.
-> 
-> If we get into the next kernel and it receives information it cannot
-> process it should just BUG_ON and die, or some broad equivalent. 
-> It is a catastrophic orchestration error, and we don't need some fine
-> grain recovery or userspace visibility. Crash dump the system and
-> reboot it.
+> Would you like to reduce the indentation for the passed parameters?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?h=v6.18-rc6#n110
 
-I was under impression Pasha wanted to get up to the userspace no matter
-what.
+That is the exact opposite of what this suggestion is intended to say.
 
-panic() in liveupdate_early_init() makes perfect sense to me. Parsing dmesg
-does not.
- 
-> IOW, I would not invest time in this.
-> 
-> Jason
-
--- 
-Sincerely yours,
-Mike.
+Sahil, you should ignore any suggestion made to you by Markus.  He has
+been told many times to stop making these useless and unhelpful comments,
+and yet he persists.
 
