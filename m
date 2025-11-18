@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87BC4CCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 06:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0B04CED243
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 06:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 925338E0010; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
+	id 3F4A28E0015; Tue, 18 Nov 2025 01:21:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D5B58E0005; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
+	id 3A5928E0005; Tue, 18 Nov 2025 01:21:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C4558E0010; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
+	id 26DE78E0015; Tue, 18 Nov 2025 01:21:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 690618E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0988F1A0397
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:21:33 +0000 (UTC)
-X-FDA: 84122731266.09.7934681
+	by kanga.kvack.org (Postfix) with ESMTP id 142508E0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:21:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6953C039F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:21:35 +0000 (UTC)
+X-FDA: 84122731350.14.F59AD17
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3A7551C0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:21:31 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id 244561C0004
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:21:33 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=UXYzzuo8;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HKkg+A6i;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
 	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763446891; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763446894; a=rsa-sha256;
 	cv=none;
-	b=4QpnY+w8CrVPf08ldrFC6oB/DCqpl8SPi9E3KOO7FisB9crJworBCjlhlYTgNmXtkBrENO
-	l7AWwjTywsy/U1C8UQ3+DofxRfo08WkeiYqt1NLCiqSQViAlNigpPQ8fG+m5RH9J0AZzuE
-	gdOSq4Ig6gT7SJEYoUus9iNgai2xQdU=
+	b=mY7ShrVSjEKxBhe9SbjEIhCqIGNidpOSUVs863pl8gKDrRi1gK/AXlQxOOLIx5h0JFBnhE
+	RPhReAOxUY74Z3w3W3EQFoUxcvaaAO7uxDkeddvv7enhMjkLhw3oiM+P5y1p0+Z4z/1IZY
+	i1dOOq3wOV7wp3/F9K0SRpts78mPvMQ=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=UXYzzuo8;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HKkg+A6i;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
 	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763446891;
+	s=arc-20220608; t=1763446894;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AxXF+ZX7o2qevQIhaj7GgHO9nhvHZfJFLXJ69dxgaxo=;
-	b=HmL0nG8sUCYvt0+zx9L57JT6VMeQaqjD8UBt1irJR1kvVxrJjX+bd44jRdTv/LEF0XqNwj
-	fAfx3607K4kd4/3usFTaBsh4YyGWCubQAlQOKRV20IlcrKLGb083SAURLhDBti4XmLl84l
-	BRSfTDA3U9LgBkSFstYXNMzEiyGHX5M=
+	bh=iatHkZ5szHUbSV6QRCjJzQR1r0SBUitYfnCBfKmo74w=;
+	b=xVqywccuOLG3g1RI9jyio3z11zT3YDYEo7aRurC+9blE+krgMDrQ+1eX/05dIahxdlehtI
+	YyTIKiuT2VVTrI8qcEGTCoYXK7xzH3+O4/zyXn206VUzMw9VhBpb3neqlKeVr7QWNlG4Dk
+	1pdWWGV8jgK8Ch85hEo38ofo7mX3v4M=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=AxXF+ZX7o2qevQIhaj7GgHO9nhvHZfJFLXJ69dxgaxo=; b=UXYzzuo8ARgZIVQ9rqDTjS+9Zu
-	ZEkiGMbJe0UgoAUO6lLrWus+HkKP+ieyHiSPgU0hywf9IVvXoPfvupLVj0g4KkiOxFF12TyERIVK9
-	g2AjuLnHf1N7gO5BI1TQwaEdmgw5AawNtvW41CyzucQfEnD0qkDwx9CRezrcc+VRkEh27ynExd5p9
-	Jf2RkbOPN+pD5DZ6A1uiauFYey2/0hhhOaAZUH1+mP20R5tlGm7I3oOUACVQlZVsKXQCcKz15eyPH
-	NjC/pYKRtsdv1ydnsmCfK/gRSitvMMiuHLa/25onUbAOzpO6aDdyaCtq6/kw3NpEN4UrM1RBJv860
-	+9DceorA==;
+	bh=iatHkZ5szHUbSV6QRCjJzQR1r0SBUitYfnCBfKmo74w=; b=HKkg+A6iw446C1m+bFq5Rf4+zr
+	WtzxBAxyNorJmfhyRzyCutjKbpfkUzb6VIIyZ8TGu3Pv492wCgVw6ATyFzN71gfh3aqxSmOywa+XX
+	hXtWrNHEkFK2PL9+dRu7Z8frLeV186SMrTIwduMMNxQZA9WWgu1Xbuyqc4rH/zZ81ikczrbh/IxW2
+	l/WWnVRxQ8RLKxM4KmzKbRVt4W4vhEj97gnK9cNxyXq1SbFlL+YtfCYjF6ajQqNa5BbTGC4R+ah0y
+	xsxXQFz05BzncgXE23HUlDxD4flK2OxwCSKMJomxPUGuCy8x6RtOchSX9D93+FkOLWlu2GhngN0ZD
+	53y4+dEQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4Y-0000000GEWz-0KHP;
-	Tue, 18 Nov 2025 05:16:10 +0000
+	id 1vLE4X-0000000GETl-1pH7;
+	Tue, 18 Nov 2025 05:16:09 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -85,22 +85,22 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 44/54] hypfs: don't pin dentries twice
-Date: Tue, 18 Nov 2025 05:15:53 +0000
-Message-ID: <20251118051604.3868588-45-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 41/54] convert functionfs
+Date: Tue, 18 Nov 2025 05:15:50 +0000
+Message-ID: <20251118051604.3868588-42-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3A7551C0005
-X-Stat-Signature: tfybexnmbo8mnqemwpncjr41ruy5afem
-X-HE-Tag: 1763446891-701391
-X-HE-Meta: U2FsdGVkX1+/lTkczSbnWDop+D2ZNYn8+CzD92eH0b81HtKxGWyg0LBk1C02KSSxfqZqlLHsfGudF5jwk5vC8+GZ+kXsgu4HmRAQkcyKNKrLiXb9kYf0MfQpktoI8oM0a9i+ZUqinVG35F05dWs9VEGzVeBPzjJIn6L5VLK3cgNAiJAF3BzgaRc66pWBzLML6/xWyPOd2ZMS+vkRD7t3ttVQWl67+e8WN+jUpLiCNJ2DNOW3YWHF+YdbzhGzRrtoInnJfNgLmPLfb+wJx0qdR+1J0nTpIUaZPIU1OyBTyUB6cUStnqdiaFk5VkXdxr3b/nrgjnXiTkQRg9BzJdgaxfgJxipCqKmzVCiMQdUlrnWsJhichghb6Dg4MF+Jiw/NcAourouLGV4EpowKZnTb7KLon4wKHYjhYXGORLNmHp2sDYimja5jg4E6z8hxKVDXZZmhC3LDeOixyc+JBmsHZFa9kTTRF5Hnds6S7w1xwNcR6DnUQgXO4QjOL1dm/CBN8hyE6zUAtMJYcZ6HGufhS2Pl16JJ+0jyam5A4v3HTTfI2ypG4xWoAEaN94YvVcFrV47bWod/ocrmYuvbPEFvsjcCkkUwT3A9PF33KG1kdW09Jp2O8TIv0WjDrhIiSFibbsrlYDraG6amgKfPe+B14P6t8Pn5EauxRsx7+Vuw/72wOJGRU5uV1nHFTwUw8+S7SyN5UGgydHn2+uxPSZJ2XqkSH624vuNPORpMID6Pb8ETpn6/VTfqY57ABn9aQ+HVkOfNPAWNXBTaPft1ud3hwDLLtBHVz8spq2kgq65wCls+ZFkkqKCgAo0OZbgd7I4IVmZ34S+q/US+aVPdqfmUV5gN0pu+SSNyLz9iV0aJrV8upFrO2mJcZigZWuOcUn8lOITW4zxJwEDcl0Dskrggaea3vSvAAV2EKTXpsazRlnRPV8tQBap8M0SGy/RYp7KGXFpw2Tw5OmlI2Ln54K7
- XyPke6cf
- pgHKaxBhmFaIeUW5douXPuiWAJNL+Sf7udgKTVbikJ+5IDw1epGteJxjnthoJnVderbPi+UokzFN01StzDFbLr3r0qUMKtSHNW8RHRHNmKZ7K29hpNxqh86x6MdX/dQ9r8KUfxAPrHvqjLKWz5qmXot7h2oBRgT5wyJ+jv/7ONDxzLm1sYqJx641Adv+8JPLCSo1SzDr6kpWJrjUaE5a9EhZMYi4l4euzQikflLwZgtj1+bd+OYj1NDMfkMx5cK0iTEnyAmQjasJwcMWE6GZhvSymes38Lok3m3Wiagx7v4aFcU3kJwlt/zdPU91bhcpKLfpF3UnW4w/AP8Qiupn+gnyLB7tEqd+6B/vwPIx3/Q2SgFt/g4wZKyf0zfp1jsiLj+l+X/Rh4cLt2I2otCyhitL4PeM8uQbTC9KR
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 244561C0004
+X-Stat-Signature: bqq1xw7mk63su5uee5bu5xcg34ncjmai
+X-HE-Tag: 1763446893-263567
+X-HE-Meta: U2FsdGVkX1/nuMp30C4hHdFmh+7BfhyvKVdmBRoHJI7M7SKLjawPxTmTGGeQ8zPf2nUxbRUVPMlqxY2mbOBRUJ6g/K4cvoiTpOqA1giBhC6nN5WniTwIMzbVUnRILNGa3O908bCjslgyOQctjzTG2dfwP/cTfTyWXkmJRgRYLT8HvH560P9Ut7d1UERtQCc8PWXy2mq03PTmgBW9V4jgX7WNsOrrMrZURW2DU5TRonTJSIkId7VFrDUgUNiSxA+A998UMynj0UEoNP4tSsparc1D4FEkLsvGqVmHGonb94qkaUsO7H9G3m+ljQiIWj8mu8zS0vG0M1XArE1ZdMZLpNrmcuT/HBBsRUy86JEIdaonFu+jSGiRlkSvcyMicHsN/2l5D54CIxPYxrW7UYGuY/ucfLESR2WhqqyULJZOIl8l635CZgeKriv3A3M5zLBMqJgZSYGA/jTe40renehqRRZVVOpHSc/n0kj58IaAeMupez+malOOnwfs5JxdQXbMiXJqL3NO1Kt63m6by/uzqjwrkNVdHZcqAfyP0eyvdRMom7u44kJR2le0RlaACDd3AnXR+s3g/sRg6Oy3R1vLgtzwqrEuJhRRDP+9NUNzm3LE57SJJEZsPxLGLK8YslF/mOFlCeiBl/4lu/4+Sx6aRPYcO489UVwFFwPhpJVUSj9/mKy4OlP1XGNO1Yw/K9D/iI/l3j+vXFrTUYCrrt0BORZDW8cfqJO4thlqE9Tv6YogFcO9729vSZRsxt43Yh5jJuu2WVNKIz+tFK1XtKtRSfvJrE5rP2N5wcMh6rNq4kd9UkOH+8IwOXbN9p36WrFfC9Nry+ZCsI3c83bkYC1c2rkKD7ln5mxSlX6eLqWMj33+0ZYYV/e4IGXsvyo52vdR52nrinxhXpJA8/xUN0nXqU07P1vR79uo9lQ9J8dA+Kb06yV7mCpz8Q71OpbWZN4MzWlqZGeDU7zNQfJ4CfH
+ 2QKYh1es
+ 5C9KiMblGkohL51a1o/uk4a5GY14TcLUwG9xQhrJEJSznnilOY6Jfk/S9SFgbiCvR3f94PxAHVXpwUwi0cngdJHrKOLlv0EBxAGUdDnE9FFtgEhyZoBC+ZTJ9OJl+2CGTe5a92Rcl7P8vDcgISEITPcUhVsvoDcNsZE+cW3cJLij8Uzl5uAoQdkmV/a047CLMMLPVKotw5uFx0KwrelB3uu7jbuwhJIv/t41mwIYVRLWqLGMxq1TUBHx8r802Fl4by6fHuGd+kbGQIFdvNNzJCzl0NSCBLAKSqeN9aYgZXaIGpadMSNJmjp9uS8ZlviWH+QRZ0tU9OWRducW41Tjl7cXKf5qDJ1E8gTIRjadfKWALNDsHLj+8+LfVpCF0ofJPs14hO/aPGX8eRdwWyWHPsCLY6RaSaHyyb6gn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,108 +109,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hypfs dentries end up with refcount 2 when they are not busy.
-Refcount 1 is enough to keep them pinned, and going that way
-allows to simplify things nicely:
-	* don't need to drop an extra reference before the
-call of kill_litter_super() in ->kill_sb(); all we need
-there is to reset the cleanup list - everything on it will
-be taken out automatically.
-	* we can make use of simple_recursive_removal() on
-tree rebuilds; just make sure that only children of root
-end up in the cleanup list and hypfs_delete_tree() becomes
-much simpler
+All files are regular; ep0 is there all along, other ep* may appear
+and go away during the filesystem lifetime; all of those are guaranteed
+to be gone by the time we umount it.
+
+Object creation is in ffs_sb_create_file(), removals - at ->kill_sb()
+time (for ep0) or by simple_remove_by_name() from ffs_epfiles_destroy()
+(for the rest of them).
+
+Switch ffs_sb_create_file() to simple_start_creating()/d_make_persistent()/
+simple_done_creating() and that's it.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/s390/hypfs/inode.c | 41 ++++++++++-------------------------------
- 1 file changed, 10 insertions(+), 31 deletions(-)
+ drivers/usb/gadget/function/f_fs.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/s390/hypfs/inode.c b/arch/s390/hypfs/inode.c
-index 96409573c75d..a4dc8e13d999 100644
---- a/arch/s390/hypfs/inode.c
-+++ b/arch/s390/hypfs/inode.c
-@@ -61,33 +61,17 @@ static void hypfs_update_update(struct super_block *sb)
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 40868ceb765c..4bf61017b42d 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -1899,17 +1899,18 @@ static int ffs_sb_create_file(struct super_block *sb, const char *name,
+ 	struct dentry	*dentry;
+ 	struct inode	*inode;
  
- static void hypfs_add_dentry(struct dentry *dentry)
- {
--	dentry->d_fsdata = hypfs_last_dentry;
--	hypfs_last_dentry = dentry;
--}
+-	dentry = d_alloc_name(sb->s_root, name);
+-	if (!dentry)
+-		return -ENOMEM;
 -
--static void hypfs_remove(struct dentry *dentry)
--{
--	struct dentry *parent;
--
--	parent = dentry->d_parent;
--	inode_lock(d_inode(parent));
--	if (simple_positive(dentry)) {
--		if (d_is_dir(dentry))
--			simple_rmdir(d_inode(parent), dentry);
--		else
--			simple_unlink(d_inode(parent), dentry);
-+	if (IS_ROOT(dentry->d_parent)) {
-+		dentry->d_fsdata = hypfs_last_dentry;
-+		hypfs_last_dentry = dentry;
+ 	inode = ffs_sb_make_inode(sb, data, fops, NULL, &ffs->file_perms);
+-	if (!inode) {
+-		dput(dentry);
++	if (!inode)
+ 		return -ENOMEM;
++	dentry = simple_start_creating(sb->s_root, name);
++	if (IS_ERR(dentry)) {
++		iput(inode);
++		return PTR_ERR(dentry);
  	}
--	d_drop(dentry);
--	dput(dentry);
--	inode_unlock(d_inode(parent));
+ 
+-	d_add(dentry, inode);
++	d_make_persistent(dentry, inode);
++
++	simple_done_creating(dentry);
+ 	return 0;
  }
  
--static void hypfs_delete_tree(struct dentry *root)
-+static void hypfs_delete_tree(void)
+@@ -2098,7 +2099,7 @@ static void ffs_data_reset(struct ffs_data *ffs);
+ static void
+ ffs_fs_kill_sb(struct super_block *sb)
  {
- 	while (hypfs_last_dentry) {
--		struct dentry *next_dentry;
--		next_dentry = hypfs_last_dentry->d_fsdata;
--		hypfs_remove(hypfs_last_dentry);
-+		struct dentry *next_dentry = hypfs_last_dentry->d_fsdata;
-+		simple_recursive_removal(hypfs_last_dentry, NULL);
- 		hypfs_last_dentry = next_dentry;
- 	}
- }
-@@ -184,14 +168,14 @@ static ssize_t hypfs_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 		rc = -EBUSY;
- 		goto out;
- 	}
--	hypfs_delete_tree(sb->s_root);
-+	hypfs_delete_tree();
- 	if (machine_is_vm())
- 		rc = hypfs_vm_create_files(sb->s_root);
- 	else
- 		rc = hypfs_diag_create_files(sb->s_root);
- 	if (rc) {
- 		pr_err("Updating the hypfs tree failed\n");
--		hypfs_delete_tree(sb->s_root);
-+		hypfs_delete_tree();
- 		goto out;
- 	}
- 	hypfs_update_update(sb);
-@@ -326,13 +310,9 @@ static void hypfs_kill_super(struct super_block *sb)
- {
- 	struct hypfs_sb_info *sb_info = sb->s_fs_info;
- 
--	if (sb->s_root)
--		hypfs_delete_tree(sb->s_root);
--	if (sb_info && sb_info->update_file)
--		hypfs_remove(sb_info->update_file);
--	kfree(sb->s_fs_info);
--	sb->s_fs_info = NULL;
-+	hypfs_last_dentry = NULL;
- 	kill_litter_super(sb);
-+	kfree(sb_info);
- }
- 
- static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
-@@ -367,7 +347,6 @@ static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
- 		BUG();
- 	inode->i_private = data;
- 	d_instantiate(dentry, inode);
--	dget(dentry);
- fail:
- 	inode_unlock(d_inode(parent));
- 	return dentry;
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ 	if (sb->s_fs_info) {
+ 		struct ffs_data *ffs = sb->s_fs_info;
+ 		ffs->state = FFS_CLOSING;
 -- 
 2.47.3
 
