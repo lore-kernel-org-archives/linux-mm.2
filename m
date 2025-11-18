@@ -4,114 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06F37CEE351
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:18:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B912CEE34D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691666B0098; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
+	id 7280D6B00A4; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668ED6B00A9; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
+	id 6FEE56B00A5; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 557E26B00AA; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
+	id 63BCA6B00A6; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 41D0F6B0098
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:18:56 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFB9E1A015B
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:18:55 +0000 (UTC)
-X-FDA: 84124841430.03.39D4BE1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 72F991C0014
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:18:54 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 522376B00A4
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CDFAC84585
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:32:14 +0000 (UTC)
+X-FDA: 84124874988.10.0AE6F91
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf18.hostedemail.com (Postfix) with ESMTP id F2C831C000D
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:32:12 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jQfDsn61;
-	spf=pass (imf18.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=soleen.com header.s=google header.b=jjRdqiSz;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763497134;
+	s=arc-20220608; t=1763497933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=45iaqGzeloD/PkIxgTPLmEveJVPtdH+50bsoXaS0q4A=;
-	b=JWd9OfCrTOgtkyfxFyaolW7euv/UUE6V/sxOWgzLkXVrdG7uiPCDvvwwEpd9VEhamocKTj
-	kiDXTvLI3a+ax9gsR0qQtKB0JSpW9twtDaOLAXp+2lUZM6R8Hko+eMd6uziAvUvBJu7WCR
-	/6snXNRcIXNRZnxSGbpLe1kN60kECog=
+	bh=sBWoQMYYG9hFsTtDFMPgr7dIw8C1zg8c5nc9F57mrj0=;
+	b=ZypAGHL5zkVS63nk/KH0aY0NL2r4k/yVxypXGvVmLseuulNrSxOr0znWtnYS9MOrzua+rt
+	P4xMpoSDmSRtUU8XwFUPWIdP3VF6FXH3H1zsv0830H4RQcbtSU3V2uQ/PS+NH2MH+41EuG
+	kZgVG3MNoS12oIoFeNQvoiIOCwUM7cE=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jQfDsn61;
-	spf=pass (imf18.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763497134; a=rsa-sha256;
+	dkim=pass header.d=soleen.com header.s=google header.b=jjRdqiSz;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763497933; a=rsa-sha256;
 	cv=none;
-	b=iNTRQboCX8i0XoDThZlazFjA9mGy3DxN5julmdMRFOuBKbCRXrTWK6PDTeIdpYLI8+1IP6
-	rD6EcYq2iOE3VJMUtlN8wNqFXtvumj2pOtX6S2GmlsWGEV8zkkOYR3L2yt9+wLp239v3tG
-	px76xNA1z0Zi1NWkVOU/xtI/fl0mg/4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63768438BB;
-	Tue, 18 Nov 2025 20:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6C3C19423;
-	Tue, 18 Nov 2025 20:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763497133;
-	bh=1gK/eOl0lFoJx/Qsgws6pSF6IokRCQEg1Ra5CF1IxTY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jQfDsn61vufo6YOfQo79y+Ndb5/49pM+Kzub8NVaHCny22FBzQnFTrSLg2XdPo1s4
-	 q4Q7m4B585DTvH5HVWQ0DO/E2wa7u3fFCYB85WskqwPYKBTtnUrrPrWPRE5C2Ymwu9
-	 XI6NikQcB+qyFCqrr5w+MjHt0GyCFcaWHiNnpAZuQe+VtouSDZ9qJ1I29igbCkZOyV
-	 6JDMlf1DxIGJwl0KrKoWkLUy0geHXeEkVLKutwvuAT1n5/hnFBjFl+IVPa8640+D5j
-	 uK0n9LGxWeIjzuFUFMy16vZC128qAY115S6xdY8r0buoE9dRHyEPS8qfYYbszF8xDd
-	 vw0kkKc8fqFoQ==
-Date: Tue, 18 Nov 2025 13:18:46 -0700
-From: Keith Busch <kbusch@kernel.org>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [PATCH v8 09/11] vfio/pci: Enable peer-to-peer DMA transactions
- by default
-Message-ID: <aRzUpmUkDy-qN5c1@kbusch-mbp>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-9-fd9aa5df478f@nvidia.com>
- <BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+	b=KG0suKLLztyh+z0uAB3nPHh9PpjF62+nMZiMEXuv+4U5RHpWGzr7sCh35rVe4G9r7J4UsN
+	c/xqRz0vQ1gPrecBmFCkxO6VmxG0ZSTGI5eY7HxsNvxgBJKgRtDTzz7S1pFwsQy5bHcv1g
+	f/tfvuRO/3rECd1uOPUO9AvshdYpJkM=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso9070267a12.3
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:32:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763497931; x=1764102731; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sBWoQMYYG9hFsTtDFMPgr7dIw8C1zg8c5nc9F57mrj0=;
+        b=jjRdqiSzvokBA0fKZESoraDERmbAWyH+F6LHiviAwmPBgWKJ20OC9xHJ74jWDjXnp4
+         EkP4NNoqLg/PtKhgu53HcKP5tBwUF8ivAukRFGUh7oQHdrMZ0GwbDGTy8aRTMWHKLoVM
+         /3MPpgLFWRKsG7rzLgNXkAle5t0z4uhYse0AAKKj1dU+f2k08QQbsKorrEP4ygkcoypN
+         +7YAMjBJi3gS9kKIkkaiZldJ884ynrV6Z+UU3fy/Yap6ESCVuMwuU33L1AcZwf4djrY+
+         tpiCxLn54T8qcnaa4vu8CZbfPqCPAm77tzgqnSO9lyj16BgNS30LBovyiF+Pe8QQS4UW
+         Dl0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763497931; x=1764102731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sBWoQMYYG9hFsTtDFMPgr7dIw8C1zg8c5nc9F57mrj0=;
+        b=mmxsGp2NUTTSNN4HsCqQsxnXb0ymman8zJ9v3UPYMtlcXgsYH3H+/oiJ34XKy2bJvU
+         eoWHJail1BJVu/mrrw33MLgNLQLWYtKKoWYth2lg41F9p4G7Kede4DB4NM1vr0wi0PZX
+         1GO58bRpY4OsuGRmy3P/Ifajfeut3CP6Lnoen+IfoJYrE5UVXQTBWS4ykEcTRhYVZShF
+         UvnW5Sv1EngTFl65wuWsxUpUiKQR6d0w/9LtT3sH9L183jqmk8pNqkdJVHImHTyZ1osZ
+         h8Vlm5O0NxL1PdBczgIkoZEHCMIyCgkl0hwlwtLMcUR5Rd2wkl/lgAwXdYLluk04kWom
+         vgyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCd7q6bPtMBd2wMdy7YROO87wmHPuOXz6mw72Y+URllYE70llQonFiTG7Tt7cNygVElh2DCVmxig==@kvack.org
+X-Gm-Message-State: AOJu0Yzxyxb57BkKCOShsAJJ9m5tuvfiTHSdqZdn3i7Ro+K87kkqdJWm
+	g3Wsoqj1enWsra6u1B5X7oiuYxkU6bWjYAysZqTfWA3JusQM7putp6DWKZ4kECsQhS71nB8OwHr
+	KcrMFMkMP86/qYSGqmV/pfSpJH/lfXn5QXGWQveljPw==
+X-Gm-Gg: ASbGncuuXrfOht7Elt+RsC9HYPZNjbX7CT1P34BllmTXW8gSRxwV0Hk8TvCXQFBww6E
+	WlHeOm6dvhtRXva59uygNNwc4MbYrZ8/1LQHgcFDyrTrgObl0p++Svd2xpjAN+tS1almb3qagew
+	p9CCgF+555JiJdpPS4ALKQlPUM6l+cUOr7hKrajexjRrpXquM5VohIOtbwoUXq07k7aIkIgxeTm
+	dBMPStGQMKSTIX7Kvkp0sEkdWXo98lmWIUVTILQYrBVkLC2EVjXlublRXp0RzikfklWHTRXLGgS
+	wOE=
+X-Google-Smtp-Source: AGHT+IHP8X5K/LKC2JInbcbobi0WNd9xLFIh2mdNfhA8rQ0GEk5lHr6mWbEU3+ejjBwErY9sX3j4PxTJ2ml3UKwmUcI=
+X-Received: by 2002:a05:6402:1d48:b0:640:f8a7:aa3f with SMTP id
+ 4fb4d7f45d1cf-64350eaa0e8mr15815608a12.25.1763497931265; Tue, 18 Nov 2025
+ 12:32:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <20251118181046.23321-1-pratyush@kernel.org>
+In-Reply-To: <20251118181046.23321-1-pratyush@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 18 Nov 2025 15:31:34 -0500
+X-Gm-Features: AWmQ_bn8okgSW3sxizgThiqSsWpq9bQwatuGC_QPhuxTvRB32K8-7pbUIwkWJm4
+Message-ID: <CA+CK2bBcgn9j_jPSxXGQgfezx=UFogs-mz0qm2GQwybkFvnpTQ@mail.gmail.com>
+Subject: Re: [PATCH] test_kho: always print restore status
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
+	Mike Rapoport <rppt@kernel.org>, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 72F991C0014
-X-Stat-Signature: 6mrshcoz5y31d3k1ejmj6qm1nnhitw7i
+X-Rspamd-Queue-Id: F2C831C000D
+X-Stat-Signature: 6g4uuonhy7n3e89hque196qxjyn5bqb8
 X-Rspam-User: 
-X-HE-Tag: 1763497134-45764
-X-HE-Meta: U2FsdGVkX1/3VgNor1n2lDYI5GIgKrjwkBTM6qDONSdXAQmpmdpDyI7DtDNvy9qVHUGwSIbtl+HY1Cqx3oMFba/iP9lNEOocUlyR8Tyu9HiG2itPtkUhx26p6oAiq+IQjeo8vgFbNs9H3+/tkuZoW5u/NeDXGbuyrgxxFBNxPaP0Rnp9el3tdn9RK6JG76GApoEc6LBsLidzWaR6/TE2D95jBpSo8epBtZ3CPz0dZD9BcEMZdES6N7MlbeIqXo27WyS64QnZQC0Z3FQORWxjYqM1k/JaBNtuZS/U3Q5LsPRwo9AU5C3HQvBOBxNUA/5OVwZvpcSOJHSGqVrMAE6QL7ViNbqajr+LXotCotQr6SSElIdKMQLCE8JGkaPZPbJ7fUv+DA7admDuTDkd+pwg1UzTTjCA342IQlL4tl+UHDQOiCpmDaKi6aYWpfXJ2feVBLRlB4tzNPs4V99xnpNt+M8gBxJZl7QUzXCImzZF+vRmQUZKVJKogXd+qS26a39g23hl3i3XYe+AKihZekTmpKjG0T1y6/OU9F5uGez2Y/01WFuay91njayWtFSo8IQ+C4OEY5nTBRUsOLyx4Bht4fkr5drQdaTIFRoneJpkBbnKHc8SuMja4HPCBJROO4m3uVbOleWl9tVCPHaLW8/SLj0MqSUeSnRef5UXtv1KKIVBWhY2S29+aTUrb/Ge/UNA87TDS7U795ftYYwV8PvSiYq6vNLHPYjigiF4wvkg/7sVYFr9M4v+uQGt94wccY0b5Pf9fRGHUtjvOpxuAiuLVQwIYMhpFbeXxeMLBKs4QiArDhMGcmhMd5TPDMELJnD7ZDLAHbOVZR93kpr8GQt7ZCrUM08yyPbtz1ecmvwEdy3bYQp89ngYiKNi5nE9y/Oj5kiDIo6xc9Snl6RKkh7xvdB+bCVrE5yr3dRdBDH09U1hn4S9HBhZesYpIR2HlCLZLbAKcMH3SkBO/kW59Xl
- KKA==
+X-HE-Tag: 1763497932-858419
+X-HE-Meta: U2FsdGVkX19og2ycDX6StuuECq9XOUCFuC1dHgjA+Dvquvl4KqmPDc9qxKStRETXi4X1nfTPsExNByENcGexMcw71RnCz84wMFnyfDgNR7hxvs+m+sWSDjSQqkY9QVbjXXSZjkh7metMjbpIPGgOH9g6Yzin67ZsJCE9IiPNiU1tWDCoHYuPxGNdhRQX0TthUKHZgi7AW8aB882u9YNQ3ZMonomAbXHgHTIWdKHkS3ufQ1DnKsAff11itn93PrWymYKTt6gLu/PI6bIXuxc3d3a7YY9934a/No42aSPvkuzbT6jZe0Htl2TB/i5dDLl+BwFxzBxTWLyU5+6BsKLkWAlcSwou0tFwAnRW2UQgMRu/XlIDQNznt6XgjwVxMLxGcyMPSqoZLDnZ5PMIhzHUZppJ6Ikr20utzcqwzTUOInzx3gPsLu/rtuPUgEd86t+t/vu5Nd7lwQqz9Aa9sBG7Tzk0fBdPjmoTTyFuVlecM4eHCfd0wUieiAGj6ge1/AXbxuWtbhcPFYGYPg7aElgyhaR2y80rO62IVoQbRtIJJCdlDaYa/iBS2zs6kS3eTzp8a3tBVi5KRBdkyRyCbRttt849YXGotalI+J8XaXPhh5FJuRPzc9nVzAC5j1wkFs+nics1R4fJJ9Z9dStXB+c1M/e/sTmqKjBcVPOgdo6S8MkmcdjoV/5RNASnvIVowE64AL7ZSSapIMuJ2SG44iwXgChhLgKVX9EVXeqriiW7AIfcrGjgYiwcl22aqemlITMLvbg1pDMtdKBVYJM1HbfLCfvk7U6DycpuGs6f5zkaPpTMAuxJSQPHmpRi7lQhIrziIzdIYhQHojdU4VYFIF/cd9EQgMAFAbj29KMCC8keOVA/coc4/C8LG1aI/FPeTvHA8Whqi56c4OZ7812/E+5+M3B1bYPLl03fj4UqlMw50P/6DHGiX/yLdoLCuonS8nvwwG3SfERXe8M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,15 +116,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 07:18:36AM +0000, Tian, Kevin wrote:
-> > From: Leon Romanovsky <leon@kernel.org>
-> > Sent: Tuesday, November 11, 2025 5:58 PM
-> > 
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> not required with only your own s-o-b
+On Tue, Nov 18, 2025 at 1:10=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
+>
+> Currently the KHO test only prints a message on success, and remains
+> silent on failure. This makes it difficult to notice a failing test. A
+> failing test is usually more interesting than a successful one.
+>
+> Always print the test status after attempting restore.
+>
+> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 
-That's automatically appended when the sender and signer don't match.
-It's not uncommon for developers to send from a kernel.org email but
-sign off with a corporate account, or the other way around.
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
