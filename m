@@ -4,85 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2272CED620
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:37:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C94CED617
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:37:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A5136B002F; Tue, 18 Nov 2025 06:37:10 -0500 (EST)
+	id B70596B00A1; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57BCA6B00A0; Tue, 18 Nov 2025 06:37:10 -0500 (EST)
+	id B47E26B00AF; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B93D6B00A1; Tue, 18 Nov 2025 06:37:10 -0500 (EST)
+	id A5E726B00B0; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A10D6B002F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:37:10 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6F40160528
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:37:09 +0000 (UTC)
-X-FDA: 84123526578.15.D0D3337
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D16391C0006
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:37:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=A62qJ3HV;
-	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 93DC36B00A1
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4BF621A04FF
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:37:22 +0000 (UTC)
+X-FDA: 84123527124.22.F2F29CC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 68C6D80012
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:37:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m3/oj6Kt";
+	spf=pass (imf30.hostedemail.com: domain of devnull+david.ixit.cz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+david.ixit.cz@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763465828;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763465840;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DE/tg0nJoToaNRa0UqK6uA3/ue+ZalTDQdxOe/ZUB5I=;
-	b=w8fNEmDPRBlGPSOD1Cm0guG6YVfHhTBCQ84984C7UHCYpwADLpLTQ05qfZYtgIARQqkJBl
-	yl39HlMLVNsdnApP+bHlPiNBSaRPKB99/3aQG7pe99rSzlbVntIFd7x5dH9N9+r4RSrL9z
-	CB+A2A52ln+FEUjkraNXjKEPYPtIsKA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763465828; a=rsa-sha256;
-	cv=none;
-	b=rlcDn6kmP/Nm/pJXLDX+rzvQtqVFsQ4pJw48zfy8lG5ep8KVxpZ1Fem5Oe2JydKeXu1c68
-	HqvpuGJyFD/ascH4YFKhbAsbkGysTTKk8LBJ6nveueOIK7aM8Qgdi2q3gCmcpbPwLQBeeb
-	AJR0MF+3sWu8ehnqhxdRnr+W6DoXaQQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7hnSdEXh9XWJHB8iniGxuCWx+V/Zk1KRch6S68ZkIQs=;
+	b=2WcU+6OG6+qWiYVbk7zbBpFEseRjRSupa1Cdv3CJHmZRoW+NeMQvOBl2WLenD8qBTsidXv
+	WXjwSQAjm3/R50brTJSvuwvuK/3AjWdLn6trnvl1bA1b0h7g7DkCcWE42jxFWyQPhZkepY
+	jz+DredD/ulH+XOUo+ZCasvn0j/SIX0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=A62qJ3HV;
-	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.16 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763465822; x=1763725022;
-	bh=DE/tg0nJoToaNRa0UqK6uA3/ue+ZalTDQdxOe/ZUB5I=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=A62qJ3HVc/QcFo3EtY8f3xbhHwUHHS73FKrm5NfXWUzkSzKMpPSlwVVOHMs992Ntn
-	 TcokQ5u/tjEK627OMqjj1qaY5+gMYz7abk+5IQtsTR5DpJNASN32IN8GYdQFZXhy0a
-	 smfh1qEFWDrtY7OlyebMVnAL+/VMy8ImKJ0FQo1No/NbT/jAQge7GNBbsmuIBua3Fk
-	 PGJaIMpARX4R4JEW8jciC+zf0IJqnbjhtwItFaSaJl1JYRXvtNbWPPHsQf1MxD4yLR
-	 TuRDUrxA0XL2uIIrSikjiLnz8S4JKgtyCgzLxEoQVqgZh5/J/YPxSzVSiUDoEzwexX
-	 2rOnoL0lhYHzQ==
-Date: Tue, 18 Nov 2025 11:36:54 +0000
-To: Alexander Potapenko <glider@google.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
-	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 14/18] x86: Minimal SLAB alignment
-Message-ID: <wzxmteswfsj3idgwyai7m3ou7kulfmxerxkq56xfhoqhvpz3tq@omy5z7eb3esp>
-In-Reply-To: <CAG_fn=W033hGM7_jnj0irwW0gc6McLw2nbhfZROWfieqKTxVdQ@mail.gmail.com>
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <0ca5d46e292e5074c119c7c58e6ec9901fb0ed73.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=W033hGM7_jnj0irwW0gc6McLw2nbhfZROWfieqKTxVdQ@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 91807d56d4653d1f85cedcda318ac58c40da2783
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m3/oj6Kt";
+	spf=pass (imf30.hostedemail.com: domain of devnull+david.ixit.cz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+david.ixit.cz@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763465840; a=rsa-sha256;
+	cv=none;
+	b=LlBTOIm86v6lG0Pw4jNECyHN9A+rtzP3jzRn3uoyj7XnHhxTHqoqIBhwve4rSuhj+yQiBn
+	qBYGgczi91Tcpz6zR8qn1Xwzy4W7KfFJIgrE+1Gxm38HJKQD1THwgTdvzUPuJ1Y9RHXEn7
+	X1aUptIgHv3CjRUvWdsFLli5J+gOoSw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CCA2960629;
+	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A69FC19425;
+	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763465839;
+	bh=szJd34lUBHLNu9S3WWAy5BrQumAvduXH2t3XIhEX5zw=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=m3/oj6KtwbQaKH8dDXYgw5VwU3rbHBxx+7P3iMX8UaxPoH9oMPkZdKDkUKWE6ajed
+	 AStKA3jRiKg1GsomdZklQmZZcH+RR/bZIP1znZlVdlepZih71RKf6AxV3bUdMdAiEr
+	 qc6IDq1AGUK1DBVvOIQ/69L1jYVf/eXNImv/+JVcHw90L/iVn0iDD17HGjnmbINYBo
+	 1GIZqsG/XpHNtf9Ais8br4WO2fwdVqeMYDn7GC2PYS02+nnkbFRT9tXMHq6Gp9+718
+	 5SFA23FAw5CiRR5bL81vV8C9l588TMwdUVgBjgDXal2EH48DXOAMeVxqRP+bXUPahM
+	 dq/PtlluM8lpg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42487CED624;
+	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Tue, 18 Nov 2025 12:37:16 +0100
+Subject: [PATCH v2] mm/vmalloc: warn only once when vmalloc detect invalid
+ gfp flags
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: getnynmoadzjofkbwx63gjpqd5x4zokk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251118-only-one-vmalloc-v2-1-fe702aa68d8b@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAGtaHGkC/32NQQqDMBBFryKzbooTtJqueo/iQuNYB9JEEglay
+ d2beoBuPrwP//0DAnmmAPfiAE+RAzubQV4K0HNvXyR4zAyylDUitsJZs+cgEd+9MU6LoR2Vasq
+ qbhRCni2eJt5O5bPLPHNYnd/Ph4i/9o8sokAh1dRSr4fqVtYP3ni96g90KaUvfHYjVa4AAAA=
+X-Change-ID: 20251118-only-one-vmalloc-b8d997045791
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, 
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1257; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=54i1YH3FbEzkceweElaDmkfgd6gmC6hf5zbFIJvmoD0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHFpuJ+ejYSTUfSbADLtP9gVRTjv696wsmMt5H
+ LWLalPK7qOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRxabgAKCRBgAj/E00kg
+ cqaeEACisQrL/b2MB5OMb7gMPoBEJzUnsNF3Y6KJ1b8zABV832iROP4kQ71qBkGr2GUG7olBzyY
+ 09YY/DGfZrUcnUnAuf/lhBrqg4WXBznjJDudhxk/zLK3Zv8TYmpysA4KLJquV4sJA2mP/em3O40
+ yKgJjcuwotuyV8Qe8ofP8tcxCSl2jbA/wcOC93prPbxh/0x9u2lLaj7Tm/wti6iMo7hjVZLr60Z
+ 4jsMUKGxJy5/wqr+5e2oN9mzZcce7bGtNw7VKQNqyxpZTFbrqmNmoYdWM5d21B5vuY70I/U9ko6
+ 7mhMDCTIIQeoYiQ1bTrL6hPK1aG4KeLcul2EojTGaVyGAtcYDb7E9u3bLioYJCPJbvgYH27oQHY
+ 8mO4dfzh1g6EO568QqW6+rBbE95s5Rr+puKLSEyI9DPjl1Ynhzw/Sn5MMXX3jWLlv+4s4wePHu0
+ R8NgtmSBOYw8IrwFrbAMk+DYn+6D9pEN81st9xMi3d/f3GaHb5/bVQyh5LgfALbWzDZxWtsUvBM
+ o1jIHhbwodFsYTlx6vEP9YzOozUNDf3JDR0txNSvYHqprZgmsXb30+whk4n3eVUYAqBqIcXwRWO
+ UB4YC+nqOVcCmAoXMFU0JcfCaUyiMcrUA380gFqUUpMB5rs5Lnix3VDAd2saEUNW9T9N0wjilTe
+ khx4navcxX8ASLA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 68C6D80012
+X-Stat-Signature: hgthdaog5ff15dgips1rhwzzasm3p5qd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D16391C0006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763465827-437991
-X-HE-Meta: U2FsdGVkX1+Vr4sOBsafi4DKWGKkiecKgv1gEc1IYuhnxEb8/QpobHXV+zs7M6DwvGrkpHpiSUVz87IUYkTv9MSQptqYsmk9vOwmFSU06lEzN84hqDwhfrUIipt43AhsNfHQGMxz8cjlELIF3vRabF6nxTUUNiA0ABVM+rHa0d4PJTCucQLORN2ZjdbU0H7u9rq8kvoz4EpRhV0vXzHTdBWYDwMmfMj+G7P0+PVdK8YMg3rykhp0ijv/2Qhke+hlO7K+mMqU6d3v8yhpoPoNjY6vVGsy3MUYHVlRAvDpLhJuQoDbbOIDpXkgNsb7hI8rKIwN4uzXqmOGs26xWyP4X9lORc8L2wxwHI6cWdpDBJcgVMYCkteP8oPOygABefR6lQLFAdSP9J+FS4cMUy1U5cUYqHCQqCCcdJaCMYiIZRIUprL8IJlwbehhQjW+jDZKM6RAw4bXbUaH30i1WXxWE3Rog4esnTh4V3dloOqQxxmYL/pSQ6/Hbg4K+BTE8ygLjuOphIVojcE5tJgIYGNb3NnGpjl7ctzl8k01zekUimxqGbmGp1nBJKh3r511ft41P5s7y1kyp3K/NNm8HiP0/EnAbJcSH4k8KmxRxdYhbbKUKfRzPfxWFrSdmhClTpRUTny8AGHUUT5uQDZMp/W7LDq8OSJ/TIrocAiWS/BKscQurHCP0E+Bn9wqj8uJrvQwutpAEmYocSHFTrhHxjz6FAO15knzrHTBTm/hwHfQfEvHNyKRwDPH8MFLbW63+lVJDJt4vVu6N217JIM8USWjfzkFUYHFuwyKxYe7/FskaqaTcTI/2dwD7/4nJq+A+haIMrXtKRgwDS+O838NXVuQibQGD3bBtixvJyZsjVf/DkTK9RLzsfU6CQfGUkK4b1xCevEGBf50n4rLt0PLOqUGeynRQb5e2Vv8uQAV0vjjP1JqlgbZii+1CJeVGmqRiK6dpSopaQ5utWNy/i3OPNQ
- K5r2Z/Ie
- flbxY9SfOLoStwgT5k70Mc1tXC+arIcpCZkanU9uYNhEaoiPNbtTPpZdY+LUiUINC54MofjPIHvtJfgimIZ8HUOEr66v8NFWxbmIN5b2wrj8ek41tJHX5eVa/+TmJQ3YIcQLLVc/SVr6Zdp47dt56mWLEO3CfAmEfhv0NBQYCWUDTB7pBMIhKkDjpaEuxjFYHbPri4g7dKzKWm0+8wMl/9/tTErID0sZsnhQdg44CjugNz5a+BJiZB0zefkU8dOxPjf4IdZJt5zFVUZX11EHoMb6HLctqXCtoE09e
+X-HE-Tag: 1763465840-877214
+X-HE-Meta: U2FsdGVkX183RivHMsp2V6lEjUF8TARAfpl+4ZUuk5F9UxZU+i71F3YVAFVpVwrAS+KOtjG5TTPrUd2tspN+NBlwU7OnFLQgsNOMtaMCNpvN6CDJ0k5roC4LfTTZuZTLr+mJpqWQrMChAUFacaj2d6UsbbjmAj5RCk5qZZbe/IUVkX1pp5hl1CRaLANvFUCKXsP0L0BF9gWda8tiW4dYPNYEmzpagRsAiR2BsuVfUDCzKC/ICkhL7brbMltPGIJ6a8gnWHMizeuzrdjwHSHwQdR1VkKe2ikfqDn9cxyQfhExZ5VRwHeN2Yfjcye4nYaNyIBkiU7BX0NtHmO2UU2gPfrjyJPvcvY1kFc1DaAYzhfCX5fZm/eEMvaX9aiUnIuHvHeq3oAeSBT/rOtjDrqgHvFpX1lMe/VPbHiyZE35rRCRTJ3LTngKedoOUaS7NrS7TmF3EMEQCgNglUKWZoRgbhl7y0QqoLd3DYMQzTHzH8h7989djdZzpFG1UFxMsjCAzBz5G7XrXFmo4RGprg/Sf/HOq4qAVGnnPbuwa70GLUITai6Laos98ch+HkeUGamwxm7Pcowz1soMpFWKyM3rCG9gakek7nSY4B1txeVg7wjDj3yO1brVH+37aRkZ7CClfgllJn1ELv5xiNT056L6961DIavEsqtMu5iEERdmx4/acVXLQKj4gUjlgKETOX5CeaCO9325hmecV+utcdS9K4NeriYuTm5+XW2c2UOHgoKyuxxnOY9hdMS8JgeaivRIb0NIIuHgqH6DYHT5YHw3VzMf8zBRqe+R/dsxgFnBacHsFw4dWAychAMO+p7N5LwTeWFVviPjbJpyjRa3malwOo524PfA5MoV/r1bkf8giJcFkbXGL1Xl9Xi8sCAirFyH4Ol2x4+NU6TYTpUAoqA/2nx3sXXPSvG2xaFgFGuWuZqPrAD3f88eJDb71Zj2fZhJ88I6k0Q6oJTEnPRyZeq
+ xezLTAfq
+ 8/m72Rh9YyJVoY255xv0Hj93sZ2FD/FgeKQKIyJYLeziS8vrgcWZFGTSfsBFL5qzudFkbE60BPY4m5TIbAeI1c8Y1UzVzZCTxJ7noH3d2dcHlK57J1+flIml7DqxA32YEBLk+TJAJl1aX5bjr8zgMjmHsB6hy9K431/8t753EbSzXvHR6PviP2o9Kme6RvGTUoruZWyVoDldPUOGxi6zFE3dUIsJ/3m7FZr32L4LzJiE5PGEGi0AE5fNmDl/bC4nZ2EkI1oSJfFbrkb3DAdLhPYcugTcQGqFksHcUhTGB3Kaa90csKYCk052/m/BhtawXjzyu7AkzduKI/uRFTEujirC12YaoC7668F5UAv0eSfxze1xBSurJZ3bbFmSiV8FB43B9y41y/uwpWiqmjBQBMxm53M1AXlxriuIkVvuhKDgyKtar3qxxV1Vcbh0qnA52Ajw531eCtg6e1eo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,28 +120,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-10 at 18:48:35 +0100, Alexander Potapenko wrote:
->> diff --git a/arch/x86/include/asm/cache.h b/arch/x86/include/asm/cache.h
->> index 69404eae9983..3232583b5487 100644
->> --- a/arch/x86/include/asm/cache.h
->> +++ b/arch/x86/include/asm/cache.h
->> @@ -21,4 +21,8 @@
->>  #endif
->>  #endif
->>
->> +#ifdef CONFIG_KASAN_SW_TAGS
->> +#define ARCH_SLAB_MINALIGN (1ULL << KASAN_SHADOW_SCALE_SHIFT)
->
->I don't think linux/linkage.h (the only header included here) defines
->KASAN_SHADOW_SCALE_SHIFT, does it?
+From: David Heidelberg <david@ixit.cz>
 
-I revised all the x86 and non-arch places where ARCH_SLAB_MINALIGN is used =
-and
-all these places also include linux/slab.h which does include
-KASAN_SHADOW_SCALE_SHIFT. So there are no cases where it's undefined.
+Without WARN_ONCE, the logs get spammed immediately after the boot,
+on devices as OnePlus 6T (Snapdragon 845).
 
-The minalign makes sense defined here but including kasan headers causes
-compilation errors all over the place. And I don't think moving
-KASAN_SHADOW_SCALE_SHIFT here makes much sense?
+Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Resend as requested.
+---
+Changes in v2:
+- Fixed accidentally removed comma.
+- Link to v1: https://lore.kernel.org/r/20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz
+---
+ mm/vmalloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 49e0b68768d73..59a4ea8b7f91f 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3934,8 +3934,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+ 	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+ 
+ 	flags &= GFP_VMALLOC_SUPPORTED;
+-	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
+-			invalid_mask, &invalid_mask, flags, &flags);
++	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
++		  invalid_mask, &invalid_mask, flags, &flags);
+ 	return flags;
+ }
+ 
+
+---
+base-commit: 0c1c7a6a83feaf2cf182c52983ffe330ffb50280
+change-id: 20251118-only-one-vmalloc-b8d997045791
+
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
+
 
 
