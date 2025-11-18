@@ -4,95 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70E7ECEE341
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC6ACCEE341
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:12:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A685A6B00A2; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
+	id 2F0616B0089; Tue, 18 Nov 2025 12:12:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A19C56B00A5; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
+	id 2C7EB6B008A; Tue, 18 Nov 2025 12:12:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 956B16B00A6; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
+	id 1B71E6B008C; Tue, 18 Nov 2025 12:12:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 804BF6B00A2
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:11:32 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B44BC0151
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:11:32 +0000 (UTC)
-X-FDA: 84124369224.21.AE6E9AA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A16E120015
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:11:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q45YUTFm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763485890; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 092FD6B0089
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:12:32 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5DC313862C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:12:31 +0000 (UTC)
+X-FDA: 84124371702.17.778F8CB
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CD7152000F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:12:29 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P8fhswi1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763485949; a=rsa-sha256;
 	cv=none;
-	b=d498cpz5vgBECA63p2/lKMrDKrtmQm3lvUYamjd51oB4y7DlZ+8TTdI4d/f1ZIrKry09SG
-	4cSa/Sb2t5OrrKxtq9FYnEm4aR3lApHfUaQwiuFJTxRkDbA0AhcV37zYeAypLK39BHd54p
-	g3RKHs70ECpZcVKxTAO8tkT++Dlgkq4=
+	b=lGmRLLCHamjyDeF9n3QW5KJ8OQ4GAZ5xGwimYgTww58vU0V1t/3nXixW44Y4eTeXuKDEdA
+	3OJ9m3mA3x/Cxj1Qjiyc2zsYFmoSDkLsRL26HqL2cNryBgpGjtcHDcMVmxZ/NT/lz0Eh7/
+	k+LKOcfc5gTT8rgHbMS9T89xSuOCHr0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q45YUTFm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P8fhswi1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763485890;
+	s=arc-20220608; t=1763485949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TAuXzOsPqw0m0YAW+RsjDAL9ltpp0Z9O6eBfwFHYa0s=;
-	b=x8BU7kM9E5CLfpN6oznnVgNRq7BP8bnGTeIHwuF+c07K35O6cLzdHA6aBNoyxQFir6AINX
-	f0ciUm42Zb5wZmcfmcNMLHcZf0i3Iw1gDlNxZfh0q4tFK7eT6m64lBO/5pLgBQWfbg/E+S
-	VpnnLfK5iT7jHJlc2fABdOoQEKuHwLA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F259C60C08;
-	Tue, 18 Nov 2025 17:11:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C666C2BCAF;
-	Tue, 18 Nov 2025 17:11:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763485889;
-	bh=5JkkdNYQ6lS2Vy4m/7JD+soJwbTsSsI1qxv44jf5Qxg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=q45YUTFmc2JS/qJay40kgKnFUmQ23dQg0nbzqsc4QhJBmpbi1vTPRw6OWwKG4BUcX
-	 5BB5rsvuq3xfamLRyekbtfqb5Qq96QILIPWV9ShluHdJqk6L9RaKTwE07NTJBVpN6l
-	 5/6dj8Q1ySwBu0wJdfpl/NMdhwU/fXYcZS/0AhE6+5SYEDR3kPJmeH+ya98T3ciyrH
-	 asJ1TaOt7XbkJEtOe7PWaipWGFnIjO8gZEQOVRVgdx6Kkay1IA0WdBQhqgno8pkkKL
-	 T22fiGxggOUmugSmDqvIFlJx8Qn6vRwPchjhMg7GDxxLmb+KfGjx0t0aiD+8qjyhm9
-	 7+6cJWGnwV8LA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
-  akpm@linux-foundation.org,  bhe@redhat.com,  jasonmiu@google.com,
-  arnd@arndb.de,  coxu@redhat.com,  dave@vasilevsky.ca,
-  ebiggers@google.com,  graf@amazon.com,  kees@kernel.org,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH v1 04/13] kho: Verify deserialization status and fix FDT
- alignment access
-In-Reply-To: <CA+CK2bDfrx21=Aw3pwPn4=AKGVeh0O+sB5gp8rvh0fk8C_nsdw@mail.gmail.com>
-	(Pasha Tatashin's message of "Tue, 18 Nov 2025 10:25:37 -0500")
-References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
-	<20251114155358.2884014-5-pasha.tatashin@soleen.com>
-	<mafs0tsyw7e0a.fsf@kernel.org> <aRhJk_Glv2pX2dRo@kernel.org>
-	<mafs0qztv4gw9.fsf@kernel.org>
-	<CA+CK2bDfrx21=Aw3pwPn4=AKGVeh0O+sB5gp8rvh0fk8C_nsdw@mail.gmail.com>
-Date: Tue, 18 Nov 2025 18:11:24 +0100
-Message-ID: <mafs0a50j466b.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=4y7c/pUe2lZzCT0WD4KXTZ8Y8+apAqRGrFNn31Nc2Hw=;
+	b=i7EbD8oPWJ1LvG4GusoIVdEk1rdbOSJDd5+Bq1cq1kNg7kBugnWdGSPSEPebOp6ofFGbpG
+	vfT/b6iYSRUfjXtE8h7eQBp6iR0FeTtMo74T5T7nLUXckouKnDPRCtNx3fpGESwKFmxJTC
+	c0AomsKWPsuzFUPkoYKYEZbClaoDDJA=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7aa2170adf9so5001934b3a.0
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:12:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763485949; x=1764090749; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4y7c/pUe2lZzCT0WD4KXTZ8Y8+apAqRGrFNn31Nc2Hw=;
+        b=P8fhswi1sFZDnHly4NrlqYsun/MJJO8YnPxsLjJFy7aXk6IcbRlMmcg9loELoS+fZg
+         O5lAgQDtbRTMpO/r80uA9ocLa8XhFyLTBdLuQsTJDYBfbWYEcXRl9/0zwr+kjIaeETwu
+         OYbYj1AWrgrCYb5MQ4FtvGeAiI5SDmOl+AjU1Ba3OjtkAXgFoA/feVXEnAtvTmPwMT1B
+         RRTjGfBNjkng+uDuejJGVsZ0bk3tLYiFHuklE9Zms5Vyr4wLmJt/5DAUzXqicd2ID36B
+         6TcUknTd5oME1VEDfbwnPDEx7PmjF6X7AwR8OlzBLfmpH3NjrIZU1RYvXn1RV3Y5w8rg
+         ByIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763485949; x=1764090749;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4y7c/pUe2lZzCT0WD4KXTZ8Y8+apAqRGrFNn31Nc2Hw=;
+        b=wIjKivKWq6U7zJVQPaDM4RVEZS6vmprwVk2N4NxyvOn9oPKTXxoO5B3zhxwLEhceVP
+         6EC9EDb2XYs6Yz9IH4R565tooybtFHl2WLdmHwngGwLHfPe6bLUAA1rYlcXLhgDZQwNb
+         +mIExLlF7HmIEgW8F1tW119ptoRQrVqojq2/c+8CQW9alerZ43AWu5YDhxxlo7vb8chr
+         ncnS81/t27XA7KzlOU9IAKIOAk+cyfWrGh83oT+GAN/8lGfih++DJxQ+Q/hwG3FQ5919
+         po8jXpKOF1zPbteRyQqnrB6ZPbQM0DPSEKj9rnKPJ9HXuaRHjtlm7D2Uk1uAuVFxPGhf
+         k8qA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBhSUVLWLl4SvJEQxGMBI5CXovfw+siNGHaWNX7mKVR78A3MB8iiRWaN6lFNSf6XlfEK6xeyJ5+Q==@kvack.org
+X-Gm-Message-State: AOJu0YwWFNdZs5v+zCxPOfyX/qQ7wjiD9Czfh44BpwPFBBoKnxpsN0K+
+	ZPecj4ZW0q8rzC/rjZZGxOGvqPOQJbZuCcecfODJKQSB20b7CHFeZbdL
+X-Gm-Gg: ASbGnctxNR74AXyXsod2okq81Ww1fUhbKsQDF+llEGCYvvytJ77Rk8w0OUXiI69Pvg4
+	Ic+kr1HYK8vBdJKJurowfRyyl1e0W1Pd7BhGJOsjB3bBQ6oPObHcyIeLlUXblzPLSMFO4Ksbi6i
+	9Zl1CZXdazVoBog3+y74BTE0GO5nUIgZ/AWTDEbxPpjicZe8VMUYipf5ht5+STd3KI8hOSE3+Qy
+	uJy6f5aH9ZNNixepXXIqcE+CgqB+CVon0Kd3b/Yig02CtY4grM/+WKH2Fyq92RSJ8DKgjbWEU0B
+	MAoW2/zExlfGX1XHSwMtI5+yQukbhSIJaZSDxPcnWlOfkZotSYBkayvOH8yGVs+31RDnMUN71jY
+	mbj/5f5/XtMJWtmTVpjD4RpUEr8mq26w7cV9cjzAtXHXRJk49rktN8K8tZnMtPpjx1kkfoUh4MS
+	5XYVkMteSXG5i5xptg2AplT6NBsMxffHnmeEWBYQifPqk=
+X-Google-Smtp-Source: AGHT+IE5NnaqnKmma7kD7B9aShWAhvkMoh5NKfXnJg0HqNhBeM3bMSSc4oe2QBLZL1k3KXgz3JVCTA==
+X-Received: by 2002:a05:701b:2514:b0:11b:a36d:a7f7 with SMTP id a92af1059eb24-11ba36da94dmr2687889c88.16.1763485948511;
+        Tue, 18 Nov 2025 09:12:28 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b80fd6790sm34781822c88.10.2025.11.18.09.12.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Nov 2025 09:12:27 -0800 (PST)
+Date: Tue, 18 Nov 2025 09:12:25 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: david@ixit.cz
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmalloc: warn only once when vmalloc detect
+ invalid gfp flags
+Message-ID: <aRyo-d-Sj8i0Trtp@fedora>
+References: <20251118-only-one-vmalloc-v2-1-fe702aa68d8b@ixit.cz>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251118-only-one-vmalloc-v2-1-fe702aa68d8b@ixit.cz>
+X-Rspamd-Queue-Id: CD7152000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: tb1g68a7tzfr33t6sf65uo8ah5ogn87a
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A16E120015
-X-Stat-Signature: pswk763durrty7c36ms4w1n3xueyce91
-X-HE-Tag: 1763485890-888180
-X-HE-Meta: U2FsdGVkX18pUw38DeHIXq034GCo+J/eesMJHf2bXMnLv9/hSf9fwmRvViy8+jURZmWjDKxwAqHrNDBHV4GZJvix6rFFEpvbqkNExThKqnj9gL42JQC2N7CAbtIbVuaddyVMQBog3D3173T72gVy1YXV+eJf6bR2WOL18ulAwPCB74ZG6ddDdNgJ+In5cNdnlm8Lhk33JPdaHeP2dh8PDnGzX77xR0fMk4yVT+9klewELqzqtNZqnebOR7RXXSZyzMLQIA5+1CKCBFXVATEeEJzVedY4J/a4ciN0HAU5bwKAOvAAjwW4qmCSiNkqSGRpn2dKg5+olxnZDxhEjIPWrP2m1WiVQnF+8G0DFCBYDggXCNeyyHpnHOOzFm0RA1A7Zyg1MN5zxyVcV/qVaE2iwH3+IxJok0VKCE1BYkYFcGXYNbp/n/NDwx1gyNjNug42MZZVVuJ8yf33yM2lWnrysDnOhp3rSl2eRhsXvB74lGcJtmXzDKv/OpoWeUqnfrdWOUjAvHDrUA64ZmrWw5NSWQTTf0CivO9a9B8eBxqM8SjQrS2DAcxKKdhdTnWmAXzKqwKq/yNMfB9Ogt7jHqKyYzmEU55uhSNPhLYpq6ZOj007SaOPlnc7pC/6Lg0m4e/U13qGdswUis4H19+XDuQV5ZJ/Yk+ypv5E9PYTGwPNull93hrb31TFXeZ7Ssxdd4qgb6kd/1kXB7M/ADka8Z0jamsFpmKsEt6oauHfTtLKQ+mlLHNIdI5g6gBeRfMM7pv47e8EnDphkJwoPOyGVQ2Ttk/Ggc0kQy9qiaJxcneXKHSTtGQzTnBig24f8UV07TT0Jh7RhlVC0HkEIephI88Vy+fU1eOXrKIlZr5rLQqnzp8UZEpZceMIF/m2xmH5+z00SuCUy2CCimqGPQbW9rCiCvWKkkh9qivJ0hCDLQQDGgHYZzFHbsi2ga2ZOKjDhny+b02+8VYt9ycdCqPa6fI
- ZXHe6Qrg
- rDbUoN5rdQo0RHohRGd86iqB/r2wlwhz8sM4U6fIspMD3RIKD8/nr98Qxik8mQt45YdOKIzwadix0/GVY9loiFg12auTXmmgyhO73CcHhFKZPuo5kWxVxuNgugViB7pWX97BOvj1dwbiuvRcyRI/Gw3DV6wR1bUkzYpdSnPeT+STbnZvihLf9gOmYntoHjTBsaxma
+X-HE-Tag: 1763485949-482445
+X-HE-Meta: U2FsdGVkX1+sO/p5R76U7/05vWZRO4maYT/duZ11jU8i1kssw7hANIbP5aG81yivd2gCWNyJZ7ejTAIk+uViQAyTFB3dtlLy6DmNJXPD/WARmws6KCK6sw4t9OxqHOi2+5CAUu0HLI18VcgnjSbYRKO9Py3krzmn/iBfdzX2eJLWIz1MUma44bb1bc7ltDeEnKeuHGM4dGlPvMuCTEHI8atRVscP+p35VhbtJcYqUy4aP9B/dUdypZw2fyeg4kKN+Dmz1cdUfqsFIBQqBNPekNPLKtF1vHUsVh14Yir/oF31xcvMZG8zCieulNg3GBBYCebqkNB/s6yGmkZ3kDf2FVm3Y7guKA/vZP/Mf5LQ0W2vqZNN4DBMsCXPWDFUFR/dTMLQwf7fVX+5UO4jpPy4CuP//VApGAlJM38/HXSWPZ1n/tKjpIz42DaY6L5IvIOK5/Sdv2PG6CyMIdOMgMnphx9h1G+cS6yFcQYN0OPUIpzMC7JnfBeHMmaA3wESMXycYkE5vvEEov/jqESBND6JpWaS3hrVby02Ij+eqpdeqQgXjPPqm1IvPDFh9X9JJVA5feiDmhzlhted8zdt14aqxKHP5tC9DXAyoT6F4JW3B9QbM+oYNKw6rsCZCpBy0l7tKrhZ6tkRf/nDFnkypGxKOznFkV/2xRiu7ncPGnfNoP6CC4yNWSHchoziE9EnRz8LexUx1YKGRZptm8/WWLDsnI8Iucf6IaP50FTuPvO4lHsmL2BtRRxmUHMjT4wFM+aSPLZ51ljOkyQ58Zw//TgWxrSARvUhMaF6rhmvOl8XgbqHzxCBOUkx+Q++pf2YWQoSdWHRy3FhXi5lV83YXXbe02vZCVNoUAPjW0Nq2qveHgsHTaCBKlq9fAQLMzaUuMJDCYmHikXhdAG5fbgEch6pIWg8NKix1QVkC53GcAXB5z8cT1ShwemAXvmxFprIi5PhAZ82vYH3aRf1VLX/3XA
+ 2nqQSJMq
+ caX7kuwAqBJibS9Mn0bIxrMr6FKJQvXDT46r+rPC2q1A0AvqM9ZDUqlWyh/Y7S2izJum6ZnTu4taWF0GS71hL7O7Oh8kq9Ct3cV0nOwYLxmEb5mxCQvEiM/pIuZsdksc4wz2PJ+EqyPRRjSifhq6jj9EO0AjEa0XsWSQq4oDTFCR4y0QMDz9TOba6Et1P1o7T3bWsl4NQLUNXE7Rp4i1K25t+zlrPxA3uUyDq0EsDqAvUcn/ytAQ5XSEpKAQmsTUr3ykYwnonskDe2PuKQJHsbEx8WV+2AlAvCI3KVcvHRLGvnWydtWleBgWTqGR8X9mOQt51xff5De36WOuDaPPieAuBMN13+aIMPL93btF0bZyYeUEQDd9p3DwCT7oNdAr5mNjJ0LpbS7qXhejjAE3x66xzrjM+M1fA0Du0m16EZOl4e/tgbBMkDEWRVsPZ5/90Zkwh7X6FqO18APWT1fxDYKMtJNCzcv4TfkyroclfZM8swqE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,39 +120,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18 2025, Pasha Tatashin wrote:
+On Tue, Nov 18, 2025 at 12:37:16PM +0100, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> Without WARN_ONCE, the logs get spammed immediately after the boot,
+> on devices as OnePlus 6T (Snapdragon 845).
+> 
+> Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
 
->> > This page is never freed, so adding it to zone managed pages or keeping it
->> > reserved does not change anything.
->>
->> In practice, sure. I still don't see a good reason to _not_ initialize
->> the page properly. It's not like it costs us much in terms of
->> performance or code complexity.
->>
->> Since kho_restore_folio() makes sure the folio was _actually_ preserved
->> from KHO, you have a safety check against previous kernel having a bug
->> and not preserving the FDT properly. And I get that the FDT has already
->> been used by this point, but at least you would have some known point to
->> catch this.
->
-> The kho_alloc_preserve() API is different from kho_preserve_folio().
-> With kho_preserve_folio(), memory is allocated and some time later is
-> preserved, so there is a possibility for that memory to exist and be
-> used where it is not preserved, therefore it is a crucial step for
-> such memory to also do kho_restore_folio() before used. With
-> kho_alloc_preserve(), when the memory exists it is always preserved;
-> it is gurantee of this API. There is no reason to do
-> kho_restore_folio() on such memory at all. It can be released back to
-> the system via kho_free_restore()/kho_free_unpreserve().
-
-Even for those I think there should be a kho_restore_mem() or something
-similar (naming things is hard :/), so they go through the restore,
-their struct page is properly initialized and accounted for, and
-make sure the pages were actually preserved.
-
-Using the memory without restoring it first should be the exception IMO.
-
--- 
-Regards,
-Pratyush Yadav
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
