@@ -4,251 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73FFCCEBF93
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BD72CEBF93
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:21:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA0B8E000A; Tue, 18 Nov 2025 02:11:37 -0500 (EST)
+	id 732A38E0010; Tue, 18 Nov 2025 02:21:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9A9B8E0005; Tue, 18 Nov 2025 02:11:37 -0500 (EST)
+	id 709468E0005; Tue, 18 Nov 2025 02:21:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B14778E000A; Tue, 18 Nov 2025 02:11:37 -0500 (EST)
+	id 6463C8E0010; Tue, 18 Nov 2025 02:21:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B2798E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:11:37 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5173D4D862
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:11:37 +0000 (UTC)
-X-FDA: 84122857434.10.9EF5D49
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 66B3A140003
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:11:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cSWuhFde;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of kevin.tian@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=kevin.tian@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763449893; a=rsa-sha256;
-	cv=pass;
-	b=gkq0xsSi4GzsNHqRra5hU87S70tF3Xd0HNK5qfFF24awffAcUzoGN+o8zeLhiDhWSlQYmn
-	yJ0ruoQnAPUDroBhnCXE44GrNJVd2g6l3c4lqEbH/Pjj7l6PbQtgfyPTMjFzU9HzRinvJp
-	U15JkO+eoUePjCnS8291tEvgrYxdA7M=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cSWuhFde;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of kevin.tian@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=kevin.tian@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763449893;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id 536508E0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:21:33 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F226F1403FD
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:21:32 +0000 (UTC)
+X-FDA: 84122882424.02.8BA58A9
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 39926A0004
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:21:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="kbhU/xYn";
+	spf=none (imf15.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763450491;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/+d8rDrxTLUb2de55TbPT4PEN30txcamEa4bULTAS/k=;
-	b=X2EJroq7aRuGMNbxSIfiS4dHn1uZ5/+T9jC6dHncJ/3qC9McFs1KfU8VgPTQkqp0udCCIS
-	dsoeR7Gm367xjHGWgaSdpWKVD3VQfFypr9zwOd+AkBJO8AtJuF32rMres709KkioqSyqyU
-	dFdWQsNIXxii4BpLH1Uk+GZpikC/vyw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763449894; x=1794985894;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=/+d8rDrxTLUb2de55TbPT4PEN30txcamEa4bULTAS/k=;
-  b=cSWuhFdeQUaQiuNsqr8idsUsCN7uUbSelPVFgqSpgr/bIjee4kilMu9F
-   +R8GXiwnBx5PCq4xKcwdFRU0ztPaP5l0lUxVpeIXFetunxHOCofIdQ/8e
-   Ev3JgDQlJx8tFOLmRjZEVFqc9W4IwOehzOTc3K0D7B/AcND8a9dqsAwi3
-   RrSXShOqx2EbTJTXTM+zfMKDGOtLtxmpBHz5PT7d+U3GD3FY9tymve2fF
-   mpl5xpBMG93e/IHmBC2hD+wdB0qZjsEQ+opTw4n4yY1BN6cq7IjIRUciJ
-   jqTYLotFB7H6n9f6vszgJNyADwyJUbnF2/xIV1vVI6F2k2gn8EHV+ws4m
-   Q==;
-X-CSE-ConnectionGUID: vT8bTCs8SHuh5IXpKLn+FQ==
-X-CSE-MsgGUID: 1PTEBEg0TMa3kNVrTMcl8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="88114054"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="88114054"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 23:11:32 -0800
-X-CSE-ConnectionGUID: 1RZd7xxuTfK+I8E9Q8iTqw==
-X-CSE-MsgGUID: 9IV8+ZnmQaGe9RCq6U/khg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="189942614"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 23:11:31 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 17 Nov 2025 23:11:30 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 17 Nov 2025 23:11:30 -0800
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.24) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 17 Nov 2025 23:11:30 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QPzBS6s7QLJdJoIxQqWs3TCXKikrEntsQKy4CfuBE3IYzuvkNskSq4wjtxYRXVe2trwAdLER0PlpQrZyNj9bOtLUjgm7v0+QIChJ+i9QfD2vBv/wXsrVaTw8bpj+Cd5phcn4jlGa1H6JK6sbnR1FD/eIbS+dhX6JOfjoBmveA8ZL+j6VwdCd/7mrbAG4Yn240N51qAFQu62aLjA/NzBVYFa2Kr4gtaJiCc3c44olCRQsY8fZ2z1sXDt2ySTcfmKIlpA2ma1CP6ielKzfVC6lC+SWbL9Y0r3B0I5P/8Mb9Iv7anNilT5M7hLxxjqeWEx0lur7qUUNk9w+evVrL/d/3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/+d8rDrxTLUb2de55TbPT4PEN30txcamEa4bULTAS/k=;
- b=C/a8P6xRLAm1m+QxyUUIjoYIgPPsn/1auhGJQMclH7ubieolg6PCIdWJpnihKW+RUPRau71CWJOp2grjaNPoL4TrKFRd+p0h5PfGcEzsKr0O4Q+r5inabvnQ/GcwZKHyQCXsZ+Z1bgZ5wwiHk/9wN9TqKnXFFr00q6X26fzbmtRD0BbbZ8Lomw62tVkgu8FewPNgIz3p13yW7ocC0l6G1UqSxTQrWRkE3vptuIp1DaitYF2kpCCMwoNDkFeyjdOAFz1/EEY/4U3GT+0Ivy6eQZZo9o1z48Mu4BkgNQrBofLPwZxWTwvDnMzeafrDrdGS9bmEOcuwyDEtBaRfa5x3CA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
- by CO1PR11MB4980.namprd11.prod.outlook.com (2603:10b6:303:98::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Tue, 18 Nov
- 2025 07:11:28 +0000
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::b576:d3bd:c8e0:4bc1]) by BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::b576:d3bd:c8e0:4bc1%5]) with mapi id 15.20.9343.009; Tue, 18 Nov 2025
- 07:11:28 +0000
-From: "Tian, Kevin" <kevin.tian@intel.com>
-To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>, "Robin
- Murphy" <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?B?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, Kees Cook
-	<kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, "Ankit
- Agrawal" <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, "Shameer
- Kolothum" <skolothumtho@nvidia.com>, Alex Williamson <alex@shazbot.org>
-CC: Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "linaro-mm-sig@lists.linaro.org"
-	<linaro-mm-sig@lists.linaro.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-hardening@vger.kernel.org"
-	<linux-hardening@vger.kernel.org>, "Kasireddy, Vivek"
-	<vivek.kasireddy@intel.com>, Alex Mastro <amastro@fb.com>, Nicolin Chen
-	<nicolinc@nvidia.com>
-Subject: RE: [PATCH v8 08/11] vfio/pci: Share the core device pointer while
- invoking feature functions
-Thread-Topic: [PATCH v8 08/11] vfio/pci: Share the core device pointer while
- invoking feature functions
-Thread-Index: AQHcUvHCw0aHkX9bykuV6gPaTEF38LT4DyRg
-Date: Tue, 18 Nov 2025 07:11:28 +0000
-Message-ID: <BN9PR11MB527664168D1FD4F0DCC922F78CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-8-fd9aa5df478f@nvidia.com>
-In-Reply-To: <20251111-dmabuf-vfio-v8-8-fd9aa5df478f@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|CO1PR11MB4980:EE_
-x-ms-office365-filtering-correlation-id: 56560792-68b4-424e-e9c9-08de2671b18e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014|38070700021|921020;
-x-microsoft-antispam-message-info: =?utf-8?B?dzhSaVFiaTBBaW9rYk5ZQkR2dGxKVFZ6TlJxNFBnS2VERXBpNHNSeWdHME0z?=
- =?utf-8?B?R2pVM2tkcTd0VUdFSGkveGpIQ3doNlVSN01Sei9WNVdIbkIxL0dZMEltNG1w?=
- =?utf-8?B?ckUrd2F2NjVMVzlDQ1d1S1NxaTV5Nm02dlZLZ0tYNTFFVWxWR1MwTjlxeHNP?=
- =?utf-8?B?K29MZjRmaFFkd1Y0aXpVMk93Yjh2T0s2Y0dhalpRdXF2SFptNE5mU3dyRy9D?=
- =?utf-8?B?TnJ2KzdWUTlhSHAvUjZaSUkwYXJuT0txR2JnUHNBa0VBSUNwYVlma2dPZjBY?=
- =?utf-8?B?RzFNYVlTYTJRdDRqZ0FEZnhMdW9OengyckJ2dk4yVUw3NEVzWlNsL1pzaUdL?=
- =?utf-8?B?UUlCYmRHa3J1VXBaRSt4L1JZRUpwVENPdlVMUkppWndrNFpuaGptRFY1bTRv?=
- =?utf-8?B?WlVwek05OGlLdE1QcFJhcUt2aEdraE41K0xWV0p6NElGQ0hHRmJWalM3dG5k?=
- =?utf-8?B?UmhPSTQrRDdOWGxxY2plTFZPZGx3ZlRwY21tWHJkbkx4RFkrT0RQTXZWYmxa?=
- =?utf-8?B?emlsZElYOTMvY0hrOUxmeXIzVjlOeDdKVXZwZXFjR0NUT1JnVzdNbkxrdmRj?=
- =?utf-8?B?NWcxcHFkcUR4OW1ySFlBY0FvN0MzU2NoakRsdmxnamtDU3BxYnBPVzBicVpa?=
- =?utf-8?B?RXFZbnhmWUFiTjZxbldIbGFNTmRSWTcvY3FDSC9yRXlyR0tXYkQvZTZjblh5?=
- =?utf-8?B?bnZ3ZFlJTmpFemdpUnJXUWhyaktmWHZEa3VrZjZaeXdzN0JFK1BXdmE5R0sr?=
- =?utf-8?B?NFNWTU0wbUl0c1BTNE1MRW9nVzhISHhqZ1h2U1FYLzhFVVpsMStndk1yRFhx?=
- =?utf-8?B?QWw1ZmZ5Vmx1bTRJYTVGM2EwMzBTZXM4anRDTTRTalFGT0NMbDQ4WWRQd1RE?=
- =?utf-8?B?LytqOFZPSWoxd2piWDdZMG43cjFDOWlDNmhqc0xETnRHbVpnbnBudnhoOHJK?=
- =?utf-8?B?UWxqSUNWU0ZZcVJReWlTT0oyMHRqM280TlErNzZKVTlxK1BmM2FxTnl0ZkVm?=
- =?utf-8?B?a0U4UFpQRWJNc3BVNEViekJUSDRSb3NvODdydlNpN2dlN2U3OUlKcjc4N05P?=
- =?utf-8?B?a1p2U2hjNm55RExrREI3MEVDMThpMCtMVi9zaks2akhSWkFSbFB0YmJwdGw3?=
- =?utf-8?B?YmxkZ1ZKbWhJZ05vQTBTL0QyVlhDOEY4NklEYU4vUmZOSVk4R3F3bXNkSnVI?=
- =?utf-8?B?Mk5tOVJCdkpwcFErUTJER1daTytrSVBvQ0h5TUNkd3RnQVRKa0dMclF4TEM5?=
- =?utf-8?B?dmJ5aTNiL0hsMGNkam5lZ09vUVFsclF2UE5vanErbUptOWxYSzh6ZXN2dlpL?=
- =?utf-8?B?ZnRxdFFWVTZUZzFLUEI2Y28wSnViaTdlS1N4OGNuSmFTdHJhRTZYT2ttL25r?=
- =?utf-8?B?Zzc1RzJRbS9ySXpQM3NQTXorV1lZODRXWDZ4OHdZRXVnZkxTaUJUa0xHcmJu?=
- =?utf-8?B?ZnhOVlZ6YWpsQWJrWWsvaTNRVk92UGFJTkdmamdVNTFPUUNqQlo5RElyWUhE?=
- =?utf-8?B?aVBLdE00eWR5aVhUT2RaUCtDY0NOaUNPL0xRa2ZFeGQyWDh5RkZ4R3RRYSt5?=
- =?utf-8?B?cDhvS2JqZTJHRVB2RFphSDBwUmw3VWI2NW8vZlpjMUlRL0hCUFFRMVg0YkNK?=
- =?utf-8?B?c01IK01DSkoybWc4MnpBcVFvdzZENmx1amlvRTh4SHdQQWdnbnFiOTZJSk44?=
- =?utf-8?B?VW1UaUNSZlR1OUhjWWc0U2F5QzlNdzFud2xtNjR3NlRFTk1ORWlSVm1TTnVx?=
- =?utf-8?B?Y2NhUlp5bkNtYnZSYzYzUVdaWTJPWi91TXQ4dFh6cXNGaHdKamdVbUM4dldx?=
- =?utf-8?B?Y2dBd2FYZDhJdHduU1h3cEpjWlhrOVYwZzRxVmxVbVB1YlJtVDlvVUQ1YThr?=
- =?utf-8?B?NUhtRGFkVU5sM0gzS3VjamR1dktzQVJsRlNxRFgzRUl2M2pPYitTTUdydEkz?=
- =?utf-8?B?RWhkQzFCSU1pT1AvckFvc0Q2NHRGdW5PcGYvaDFiR3EvYnpBb3N3RS9MN096?=
- =?utf-8?B?VDh1TTJEMUNrSkgrYWJ0ak1NblNYcEpCNzJrdCtLY3hSc1dsZ0tVZFBaMXRG?=
- =?utf-8?B?N1l4dzg5V3JUVFhscUJwc2J6RlhQTWNUeXQrQT09?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(38070700021)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Y1pEZCtoOThkWFRIMWxnUHJGNEpRejZVRGNQQVgrZDhBUDlWVE1SWUFHbkYr?=
- =?utf-8?B?bFM0Z1l1WTdjbHJyT1JQZzc4NHQ0R25hcHJQZGhueUVyMmZmTlFicFdOZG44?=
- =?utf-8?B?WG1PWHU0UUMzSEFiejZjVmh1c1Z2R1JIUXA5NS9RWEpIL0JTYU50U3ZmSTJX?=
- =?utf-8?B?U0UzZGE3S1dWeXFPaHNiYmVYTmRsd21qTHBtSDNpbmJTTFFBNGFnbXdIYXho?=
- =?utf-8?B?Y2g4Si9CTlptblRwV0lha0lVYkhvZXhsQWJ2ZWI4T2QzU1FHYmQrNUZFZ3RR?=
- =?utf-8?B?Z2YrRjAzblZSMEZoR2RhTWZDZUM4dlQ5WGp0eDVpODhDcU4rTDJhWjFiY0Fs?=
- =?utf-8?B?cXNBMUl4dHpqUmkyTXlYRVV5S2F1MzE3a1paVzZybndxNk5tRDFtTDh1ak54?=
- =?utf-8?B?bUlidmh2cU13aW45UWxuSmJ0RHVwdFRDaS9rNitkOFowU2tLaWprMkhzV3BR?=
- =?utf-8?B?VVU3VFVQZjA1QUMyU2Y4UzVzbytxQnBZQzMyc2FTQ2hoZWttVFlid2ljTStx?=
- =?utf-8?B?eXM3dU9XaVk3ME9hV0Vtcmk5Z0hIT0tzR1ZYVW9oaWs0L0tZL1ZoejNOWFJH?=
- =?utf-8?B?RjIyRnFPK3dZOVdWWSsva1FacUpleGxNRFlXMEhPUWQ2bmQrRmxMcEtFYTdH?=
- =?utf-8?B?MzZsYUwwUU1MckUwaGRUckhYcFQyNGpleHlwN1lXVTIyYmVpRDJGdEdYcGRu?=
- =?utf-8?B?ZnBRY3JEcFVZakRKLzRnS3kyTEltWjVhVDR4WmM5bVN0cU9sSXVUeTg3eGdr?=
- =?utf-8?B?RGZjdUtSaVRoWEFyY01rTUpmcHNWQnFaRHNnNWNrQmVCODcwbWpybnlGQjVJ?=
- =?utf-8?B?VGRrekVKWlhSUnFPZjl3SEs3UjMvWXMrQ2RmcGpJWHc2U3RZaDh1V3I5Z1B0?=
- =?utf-8?B?bDRRUnJydjVMTXNyQjMvVk9CcC9KWElvZUZOaFZGSEhYZm1LRWo3SC9RYTlB?=
- =?utf-8?B?QWlrdWNxZnlFbEJHdXhCSm5IZmNrVm5uUnh6ZUU3aDFzb05iM1NlWDJaY1dt?=
- =?utf-8?B?a2NPUDdsRTM2QThOaVhMd1g4L2tPdWxpVU5FZTlwaGZlMXk3UVVVcStzM2Ja?=
- =?utf-8?B?RTVEWmZyU3Rja3h3NTFOWXg4YWU5Vy9DZFJxS3hZOGtUTlpLNlhIY2RVZU1G?=
- =?utf-8?B?bFF6b211SGJLQmRxWlZOWE40VHczZkUxZHk4OGEzZkxZR1h3Wnp5YXBNRWda?=
- =?utf-8?B?UUJZeVJ3N2F2UzdWdk5CTnNTRUc3MUp0NkZ5VE9FWmpreStLYU1kNTUwRnh6?=
- =?utf-8?B?NEc2SHI1VklxbXFkdDFOVnlXVmdOazJvd3RTMzhWY1QybUJHeGlYTDMzOE56?=
- =?utf-8?B?MzROVnhhT0xwMHpoQWZNUFZnNXltSitnWkFXMmlnL2NLemRxRzJFT3RJeThR?=
- =?utf-8?B?WkNrZ2k1WVF5dUdEcUFYSll2L1ZJbDhhdTJXaVQ3dE5EVVBsMElBWkVXQU9y?=
- =?utf-8?B?Vm5pdFZoeFNmbFd1Y0FweDY4L0pEeUIwd0toK2JKaDhacGVINTAwWjk5M0NY?=
- =?utf-8?B?aHRBdlE3d0ZFN0lOeTFpaElOT0tWenFuYWQrSnB6d1Q5SFFKOFhyNjhHa28z?=
- =?utf-8?B?SWVRMFVmRVJxb0tmZG5ia25wQ1YyMzB2U1lBRWN5UnFDa1dteVdQUUFoQllw?=
- =?utf-8?B?WmpTVlFaUU94TVFJdStBQmxOZUdjMkh2TDZ0YlQ4Ti95MWdQdGx5V0czNFVx?=
- =?utf-8?B?Q0xQREt6elZacGt4NC83N2JlM0IxTTZYdUhrUnJOQlpBcm5Pb21WOFVKaXRF?=
- =?utf-8?B?YSt4cXUvN2dQekltYzJzaC95VmV5cUVNeDNGLzVQUGVvbm9yZEx6UExaWUxx?=
- =?utf-8?B?L2hHdm5UeTVCMUlEd0pUNXE0cklwSzV2dFp4dDlsekUxSExHSHduaEcxOVA0?=
- =?utf-8?B?Uzg2RmRZenBsOEpaMmUwUCtlTGJwcy9hZzdwdFNPa00xeVpHMGxZd1kwbGR4?=
- =?utf-8?B?U2dWbXZ5RUxMR2FRdmJGQUZQY0ZoNmJUcUtid1BVdHJBYVNVb1ZIbnpoRXEy?=
- =?utf-8?B?bjBoVitzQm54NU1CWnIvQW01SjhuZUJIZkFGQ1B2bzdrajRkdzMxYVA5VFRU?=
- =?utf-8?B?Ry9qVSthYU1jRFFseFdzSDhlQ1Y0bHdSdUkrdkxtemx6RmpGS0tCY2V3MU1m?=
- =?utf-8?Q?i27JISpGIP3VQumLm1EiGGBvz?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	bh=+re8cgG256R+nyhDcVzLSPRAvzZcH6z0w0ygW9fyGms=;
+	b=3uouB4fFwRdTq6eRsZfE5BW+WjZultskIXtV78XmGesymj3UjViH1WV/ONP3uYJEhow0RP
+	RUkoBcEliOjErZtuWj+I8vYVmMVcqYzQol+siX1h/C6szHU8bh2qCtUoo11S5hNKlMxUHs
+	RXJQjb5kCUn8szaUdnIbmTonGhL4naM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="kbhU/xYn";
+	spf=none (imf15.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763450491; a=rsa-sha256;
+	cv=none;
+	b=5HQW/CXi4XPSCpv9Fr9jPLQTFBiks6qtG8BIhOWVhF4dVP9pLHrk2CV2t3PILpls4/m+ua
+	XEnE1dpjub41K/eBhGqQqcz6L1oZVnzAjtZ/cuzMjaE9qFdMLXDlW68tLBYSOyX6Ea1MUU
+	B8fg4oiyhCkxTj2/tft4RCUTX8lPoxo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=+re8cgG256R+nyhDcVzLSPRAvzZcH6z0w0ygW9fyGms=; b=kbhU/xYnyhIngKBea3/kKla+DP
+	EF4IRivlPSP4d4YskSySn8dMgu8jsC1NotjIvz0miMk1J9eIO1H1jyqqH5P1H+AN2N0P6xZu6GH38
+	DC4Bn5lRAWgJa9ic4jFbQTY1brTcqFCu6u3UjXE51nSrOT3w+G53KZkBXNfU9OlnlLloS8lqdUE1M
+	wYHp4eAwFAyJXnH/tZdeEk5gDrw/EvOkpqADVq8OtqE6ZiKWT0FAYqFERzRmraQ3XSHtSgygvjXZj
+	2iZKvcU01Xve+g8P85heP06Y+NANzkU4tingrfQMGv24fuH/nHyUE8bP9iVlH1guErHdjJ50f9jUO
+	t3wA8qAQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLE4V-0000000GESE-3aMn;
+	Tue, 18 Nov 2025 05:16:07 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org,
+	clm@meta.com
+Subject: [PATCH v4 26/54] convert devpts
+Date: Tue, 18 Nov 2025 05:15:35 +0000
+Message-ID: <20251118051604.3868588-27-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56560792-68b4-424e-e9c9-08de2671b18e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2025 07:11:28.4721
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VJQI3fQM3H/ZCOje9CVRev98zFKc3kJqv3FVZNrOnJ8TdzTBXk+/3kXVRn3J6OikNRK7VHq1v8mm6jqA9MTrQQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4980
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 39926A0004
+X-Stat-Signature: dnwq83ccgazegx4out7yucji8kowci7g
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 66B3A140003
-X-Stat-Signature: oatmg359c61cmh8ugj9j4e9nw458wq9k
-X-HE-Tag: 1763449893-313759
-X-HE-Meta: U2FsdGVkX19GPjOKA+zYDWPPNM56F37oTwajTCDwg+kSn1aNMFon97ILJs96ZAP7DPIqOd/cn0xJ0K89nCZlYj8/+0Feyh+ReuA8vo/rXgApK5GzqRRBqF9n631I2NZ0I9RKle2XXQ0BHkpSnUbF33/TloWwSvowYesBqHrHhxGOnz0DMquplRJ7paEUSJBvi/X69VdVwoG0dyKFveAMUJ4IRdgU1QY69Lvs/uXkFibmFBV7nFOcA/QOM/eYS5Lny2HM47znVgSsWx5lOaIdCcBhumT2kgfydCLQH4p+sEO0H6+Y3rwEFhDMBiIRF3YDMfeiFX5MWrVD1j3y37W0/qwjCZnDLEEhI41k0LWu5sCH5tdymn6V0cTwOCuTjaZa+w3oFRNPK+1PLN7OlKv908IV3CX84IUH+L2+HinuCyasDdYcl0mVC7X5rcMcY5shG83rOpkagwO5z7k2XYK45VGs4tQPiNHlpSd/9opbjMwGDooI2u5djqVxdLAMW83LeiZ1B+RGe0I72/L25x7J1qKZcTPbiK0ZgcTNDlljSbe3m2rCrMGw3CPfU/xdGNe2dju1LMGMgFTfmD/t52aVup5dtYiXptV58ymEPsCeCQbqrL1MvLfuMDxluDDJFxibAd4oXdMjOS8PMOR5rFmWwHN+U8FEXjH0RukZG+N581mIw0TIBEHelQOdVk6sDLI4IZ4E/t4YVKU4jVwu1Rfrzog17ZYK5vKS6X53cha/TPJHkanuCx2G+pu5l0lL2M85LWhBVKWuRrfsghqdnNUIsf8bQ1nEiqb4DBYy0NjVICuSxUB7jOun32i4inMRl++W5HLi+XNhJV5AaWsjzQE+73/gq9q9ijIFgi24e82fmWEb+fMJDaxwSJa82bFjIzv81o5hjvdE1cT26sJVvpOEj+IK72iVnAhhabR+h14XGvbTF5/ij1K8g7WWIFaW6uvFB22c/98zQ02QqRpbo8z
- W7Al3v/L
- rwahgIbiv0KvIuQSX8w7B42FeSnk7D/U2cs1zBXOMMf//FuA6sBu8rFvYaYM7qiskiEZaC2RIPH6ElNn9FWZTkFpn8dJ+ZEAlZDGIKSZ0Tvyiw+yuSu81U1IjXDSR2EPb35GN1o8zj+tAZ+oSvIK+lfF37rPetvsGisf6t1c6I5EzpEQ1SbkD/xkLJpiHStgsup3xo4lsy7FspSIiLpU3IWu8oHa3zMPsxgve2jzoQ+yzBLMgRdh9VniVp+aKLW79NGUiMb1pYeIlfV2emjNqdiuw+8qcfJGRA5+vyi48p0TtTloDzxX/YW4laWCptawAGymSqJU3R6jI9eebwL2AwSDTlVtn3589zJijsyVGBXP3kIbM+EY6QQm8Pfcq4yLTgFKwYUdCN8kpEnMqxdSNMqacO+7gNPcgrPQBbDqcPQ3LwKn7+R01zHgF7BaJZUkxy2xUmttvllCto71yWqUJDnRJhdhbk/EdGdTeBLX8SaLa3MyX61LgOGWFcISvRt5Runt5tyhiQkM+UUq4TOwhpk2qfC2S1BqlBvu6GIPyPZ2V40p1ZH8pcnq6NtGvCkd/c4pNwaKBzy7uuwT/RWVCkDLIdaUOKlmtCukqrlDYkUjEdJ10uxDv4kKaaMmh9lpKE1SJ+9AxmXTr1xRY6OImN8xFmQ/vMg3CZMrK
+X-HE-Tag: 1763450491-963283
+X-HE-Meta: U2FsdGVkX18q1Hlwz8LW7Qo9XtyUh5TafdBhnCkH7I3XCVxBqTCkl+xpElF8QdrgPXMpaaEEu1sZjHwX2gU5WIu09aZOCY+GMaL+CLOFcfoDGAish63NSOMFAT3ymrFnvdSdF/wxJeN52QdBLV25p8mL6IIVZLbJj6rZXjvLQWyOOkhC3NuMOimb15jDrQz0OVM7bcl6u1kyUebIKGo6EkjCv45fHuphC3BQGX1IVFR3kS9tntx9NHnUfbAXh+nFD3Vu/I+HknDN0soKk9eG7Gz/USx6l3ZZRusNit1ABv99sl7/SmKpwQHnt6miln+Duy2I7dIuDrOBpZtQ3V93rZPCW6p0nuM+dGNVBypJj5RabhQVWG/Oa1G28XPopoV1xT0rxG7xferznMeLOsTORw50SATcCEIQald/zwYTHYMaasyTwsimiRS4nuT1BDLMBOtztcTN4ip5qtk+K3jQv1vq1lfSeDNt2lw7XqP95LjoAO1OY69XJFjPOx9SMb083zHAwCE6MEWlA1eBDsR8CnasJzywvVhllwlJNp277nPgGJgJoaOs2l/6rH2LM9uz961Z4D5I32rwnFsjRU+90F4T+0RWsjJXHRgvkIP+gitWxYh+RxuhLmF+hmRfvwSWAh5+zIkpBnjfWYZkW8mpy04Nf0h/x4G4TLEatpao/kFP5pyUC37cdajGrzRZyaSl9eiPiYDtUTAf+WfMRLlYoUKkRlkAp+mS/BCh8Fmus0mNIaqmVhtpMyWXf1M/WlhO0b+9KV6wfwD2UTXNW/h8WJKUZiuJpF5rY4jNE4jDmJdfaXvN6pPOcgYDTgdqT+rnF/keeWDR7O4N0TSce3SaEBTItyw/LIKePFWu7OA2mxoSSYEUYeSHN8rbFZIXE88NGgjXfO6SkFcRkVEWuqBtlG35wNmCSZyG8BTqSgyi7N7J/2z74BMLvirntEsBrLU/S3jtRHYMIHS9laxIIKV
+ +Qo+cVe2
+ 8Ul5H+oT4cyiL2RpDEENH+9uJb8OPh+itbZfqsoe+Dxfoevy9IyB02Wl5VBIMnMZYfJJdo0Y76xIjVUOKUUMjA3sDUY2tnNYz+27AStzF8tNygm7s2joZoXfnzvUiqVj7JFSnqf/txOfNuBd4bATgBMo0QQmL8H02Buq7js7tyyrfPXfoXUqUuxvA4UoccJiB09kDyYUnO35A/Q3GZGHulltGhs3j1Rx0OHRC8QENNwMvmShr+QlWus1Czw5W/04ydlDLZDjgejGv7HNbkV/oThxllhx3IF3NfBW23S6sRUxXS+hOd3JsgftRX7eXiznLTMhvbs4RWAbsIbKVhjBhCb5sp2plC8UKNjIO7eTs88YAJmAzP1gdfSEhNfKbWfgG2H+A
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -257,16 +109,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBGcm9tOiBMZW9uIFJvbWFub3Zza3kgPGxlb25Aa2VybmVsLm9yZz4NCj4gU2VudDogVHVlc2Rh
-eSwgTm92ZW1iZXIgMTEsIDIwMjUgNTo1OCBQTQ0KPiANCj4gRnJvbTogVml2ZWsgS2FzaXJlZGR5
-IDx2aXZlay5rYXNpcmVkZHlAaW50ZWwuY29tPg0KPiANCj4gVGhlcmUgaXMgbm8gbmVlZCB0byBz
-aGFyZSB0aGUgbWFpbiBkZXZpY2UgcG9pbnRlciAoc3RydWN0IHZmaW9fZGV2aWNlICopDQo+IHdp
-dGggYWxsIHRoZSBmZWF0dXJlIGZ1bmN0aW9ucyBhcyB0aGV5IG9ubHkgbmVlZCB0aGUgY29yZSBk
-ZXZpY2UNCj4gcG9pbnRlci4gVGhlcmVmb3JlLCBleHRyYWN0IHRoZSBjb3JlIGRldmljZSBwb2lu
-dGVyIG9uY2UgaW4gdGhlDQo+IGNhbGxlciAodmZpb19wY2lfY29yZV9pb2N0bF9mZWF0dXJlKSBh
-bmQgc2hhcmUgaXQgaW5zdGVhZC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFZpdmVrIEthc2lyZWRk
-eSA8dml2ZWsua2FzaXJlZGR5QGludGVsLmNvbT4NCj4gVGVzdGVkLWJ5OiBBbGV4IE1hc3RybyA8
-YW1hc3Ryb0BmYi5jb20+DQo+IFRlc3RlZC1ieTogTmljb2xpbiBDaGVuIDxuaWNvbGluY0Budmlk
-aWEuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBMZW9uIFJvbWFub3Zza3kgPGxlb25yb0BudmlkaWEu
-Y29tPg0KDQpSZXZpZXdlZC1ieTogS2V2aW4gVGlhbiA8a2V2aW4udGlhbkBpbnRlbC5jb20+DQo=
+Two kinds of objects there - ptmx and everything else (pty).  The former is
+created on mount and kept until the fs shutdown; the latter get created
+and removed by tty layer (the references are borrowed into tty->driver_data).
+The reference to ptmx dentry is also kept, but we only ever use it to
+find ptmx inode on remount.
+
+* turn d_add() into d_make_persistent() + dput()  both in mknod_ptmx() and
+in devpts_pty_new().
+
+* turn dput() to d_make_discardable() in devpts_pty_kill().
+
+* switch mknod_ptmx() to simple_{start,done}_creating().
+
+* instead of storing in pts_fs_info a reference to ptmx dentry, store a reference
+to its inode, seeing that this is what we use it for.
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ fs/devpts/inode.c | 57 +++++++++++++++++------------------------------
+ 1 file changed, 21 insertions(+), 36 deletions(-)
+
+diff --git a/fs/devpts/inode.c b/fs/devpts/inode.c
+index fdf22264a8e9..9f3de528c358 100644
+--- a/fs/devpts/inode.c
++++ b/fs/devpts/inode.c
+@@ -102,7 +102,7 @@ struct pts_fs_info {
+ 	struct ida allocated_ptys;
+ 	struct pts_mount_opts mount_opts;
+ 	struct super_block *sb;
+-	struct dentry *ptmx_dentry;
++	struct inode *ptmx_inode; // borrowed
+ };
+ 
+ static inline struct pts_fs_info *DEVPTS_SB(struct super_block *sb)
+@@ -259,7 +259,6 @@ static int devpts_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ static int mknod_ptmx(struct super_block *sb, struct fs_context *fc)
+ {
+ 	int mode;
+-	int rc = -ENOMEM;
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+ 	struct dentry *root = sb->s_root;
+@@ -268,18 +267,10 @@ static int mknod_ptmx(struct super_block *sb, struct fs_context *fc)
+ 	kuid_t ptmx_uid = current_fsuid();
+ 	kgid_t ptmx_gid = current_fsgid();
+ 
+-	inode_lock(d_inode(root));
+-
+-	/* If we have already created ptmx node, return */
+-	if (fsi->ptmx_dentry) {
+-		rc = 0;
+-		goto out;
+-	}
+-
+-	dentry = d_alloc_name(root, "ptmx");
+-	if (!dentry) {
++	dentry = simple_start_creating(root, "ptmx");
++	if (IS_ERR(dentry)) {
+ 		pr_err("Unable to alloc dentry for ptmx node\n");
+-		goto out;
++		return PTR_ERR(dentry);
+ 	}
+ 
+ 	/*
+@@ -287,9 +278,9 @@ static int mknod_ptmx(struct super_block *sb, struct fs_context *fc)
+ 	 */
+ 	inode = new_inode(sb);
+ 	if (!inode) {
++		simple_done_creating(dentry);
+ 		pr_err("Unable to alloc inode for ptmx node\n");
+-		dput(dentry);
+-		goto out;
++		return -ENOMEM;
+ 	}
+ 
+ 	inode->i_ino = 2;
+@@ -299,23 +290,18 @@ static int mknod_ptmx(struct super_block *sb, struct fs_context *fc)
+ 	init_special_inode(inode, mode, MKDEV(TTYAUX_MAJOR, 2));
+ 	inode->i_uid = ptmx_uid;
+ 	inode->i_gid = ptmx_gid;
++	fsi->ptmx_inode = inode;
+ 
+-	d_add(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 
+-	fsi->ptmx_dentry = dentry;
+-	rc = 0;
+-out:
+-	inode_unlock(d_inode(root));
+-	return rc;
++	simple_done_creating(dentry);
++
++	return 0;
+ }
+ 
+ static void update_ptmx_mode(struct pts_fs_info *fsi)
+ {
+-	struct inode *inode;
+-	if (fsi->ptmx_dentry) {
+-		inode = d_inode(fsi->ptmx_dentry);
+-		inode->i_mode = S_IFCHR|fsi->mount_opts.ptmxmode;
+-	}
++	fsi->ptmx_inode->i_mode = S_IFCHR|fsi->mount_opts.ptmxmode;
+ }
+ 
+ static int devpts_reconfigure(struct fs_context *fc)
+@@ -461,7 +447,7 @@ static void devpts_kill_sb(struct super_block *sb)
+ 	if (fsi)
+ 		ida_destroy(&fsi->allocated_ptys);
+ 	kfree(fsi);
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ }
+ 
+ static struct file_system_type devpts_fs_type = {
+@@ -534,16 +520,15 @@ struct dentry *devpts_pty_new(struct pts_fs_info *fsi, int index, void *priv)
+ 	sprintf(s, "%d", index);
+ 
+ 	dentry = d_alloc_name(root, s);
+-	if (dentry) {
+-		dentry->d_fsdata = priv;
+-		d_add(dentry, inode);
+-		fsnotify_create(d_inode(root), dentry);
+-	} else {
++	if (!dentry) {
+ 		iput(inode);
+-		dentry = ERR_PTR(-ENOMEM);
++		return ERR_PTR(-ENOMEM);
+ 	}
+-
+-	return dentry;
++	dentry->d_fsdata = priv;
++	d_make_persistent(dentry, inode);
++	fsnotify_create(d_inode(root), dentry);
++	dput(dentry);
++	return dentry; // borrowed
+ }
+ 
+ /**
+@@ -573,7 +558,7 @@ void devpts_pty_kill(struct dentry *dentry)
+ 	drop_nlink(dentry->d_inode);
+ 	d_drop(dentry);
+ 	fsnotify_unlink(d_inode(dentry->d_parent), dentry);
+-	dput(dentry);	/* d_alloc_name() in devpts_pty_new() */
++	d_make_discardable(dentry);
+ }
+ 
+ static int __init init_devpts_fs(void)
+-- 
+2.47.3
+
 
