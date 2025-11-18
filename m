@@ -4,135 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04DB4CEE350
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 19:32:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1267CEE350
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 19:38:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D63C6B009B; Tue, 18 Nov 2025 14:32:02 -0500 (EST)
+	id 5BA7D6B008C; Tue, 18 Nov 2025 14:38:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AE3A6B009E; Tue, 18 Nov 2025 14:32:02 -0500 (EST)
+	id 592FC6B0098; Tue, 18 Nov 2025 14:38:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C4076B00A1; Tue, 18 Nov 2025 14:32:02 -0500 (EST)
+	id 4CF8B6B00B5; Tue, 18 Nov 2025 14:38:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BA7A6B009B
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:32:02 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCAD81DFB08
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:32:01 +0000 (UTC)
-X-FDA: 84124723242.14.36F00E9
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0151EC0014
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:31:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=YqN2iCRv;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763494320; a=rsa-sha256;
-	cv=none;
-	b=FJ0uUxOOxgXQBXLY+UuIXkWKU8cGc2cpPrVfNIkGcdbCEw7RQejDhZbPgW6i+tIaNt7Anm
-	7ghlmQodzuhFG8v0qqbzOnPLFUgkxS3ppfWCbx8r7X+op/13OC0qZ3UABDkBg0ddGlr2c7
-	ZG1wpIMu5r1Qx/PnF3DY+NiXu+0wdag=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=YqN2iCRv;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3C85F6B008C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:38:52 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D27F5564E4
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:38:51 +0000 (UTC)
+X-FDA: 84124740462.11.7A0375F
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D8A1A4000F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:38:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K6ztwnWZ;
+	spf=pass (imf01.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763494320;
+	s=arc-20220608; t=1763494729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RYaqzEIQYjC/AA8fKfHRWLmVY/sXnNn+7WATr1cqH64=;
-	b=0oh/QUdIYK7cFHjTTKTJ3BnONmIMJ0DXvRYWpV9EHpmqxOQ/ojry3YFAJs+kOireY9W1RU
-	hXeobM97cOjdYM9KSF5kGkks9eZ09JxoAWr1sqb+TvOiNygKbjCemk5qWGn2NcX5iFTggi
-	5aF7NV1mbF1KB4zzYQr4h/YeW9F5gho=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b75c7cb722aso182468366b.1
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:31:59 -0800 (PST)
+	bh=xP8obOsgLV+Mi7QU5SctjthhRGiNVWVhn+AWfuje1og=;
+	b=BIYCGo5n36juXNOz7K2nIWRBUX+h10wO9aveYrIcg8uM4VrGYlN3Ry5vZWDGWz6AlRpdkF
+	T+ljhFMpjjbvzooXldOtPI9mLkgCC1HnNG5oHLIavFhbuzq6IrKPLWJAqwuY1ioZ4Nqvvt
+	Y+UPkDbEk7ypHsttPVhasNz+lUiXJtc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K6ztwnWZ;
+	spf=pass (imf01.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763494729; a=rsa-sha256;
+	cv=none;
+	b=ha4sQBGEZl8+au3RL3qavmSHcT5qmX28VhXSyMG3JmhEZl81oyG+gY8hSR7GZc3SmZQn0o
+	sEPstYoCJBK7JKMIzjRBYztGu/GLguyTDbOOAvfSV/p7fXR061Ng7PltA88THP1kRNNW4T
+	2OfKfylTnThjUzUKXE8sW3KAzWnLq60=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-343806688c5so6339057a91.0
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:38:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763494318; x=1764099118; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763494729; x=1764099529; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RYaqzEIQYjC/AA8fKfHRWLmVY/sXnNn+7WATr1cqH64=;
-        b=YqN2iCRvtz3P47tnEv+cJXdyuVqfnKj00n7EY228XAJaZdAe1h21XQ0dKyeYtnf5TE
-         cJrgReLpVAG71ULTQFVoJh3DnFUBDyUej1bR6HdKxqeWMWwXcRqak1+GvedNMm7lRJ7k
-         x0xpasfrCaNA0Wu/mVGMAbtDirkshho+Nh1iocindAYf8F3rUYqvD7/1GjMmHaIfdXNY
-         rzU1cTEzuvUFSmIBYoqbdKfsguRLvJHBH7MxyNBZnAsG3hjCZP4zlAasqWRSw6qNTr1q
-         LazceSUSU63kLwJIsoqTnjeLQdBfYa1fifCbQceQgFpO+Hz2ZRpalMdBCc6PS84o54Rz
-         noig==
+        bh=xP8obOsgLV+Mi7QU5SctjthhRGiNVWVhn+AWfuje1og=;
+        b=K6ztwnWZys/nJ9uuksNkQzs1ygMuseh58U03YLY1lX38tk/x9nDL36+lHpmdqV1UxN
+         o7EqHeOHCxJJJrTJmBcRE/fx0QSB07eCso2bh+Zlzbyjb0NkR1OX9fNtjPab64XapT3w
+         jhW7ApHjax3vqCU9QcT/asU61LaDM/NB6c7Qr402Ei9qKipLVvz7VkLelVaHtSVDct/G
+         wHt2Rh6V+NWmPPA3uRM2EFq/tKfGp7PII14rmCjhmPrFpdX7lJ+Lr3nMyh/bHj49qHUk
+         lrut23cENFcWIuj10v5bX1RbDAZsdP2FrLQXqSUVdKjzO1kdaeKAWlTOwABHmJc+Fhwr
+         eIzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763494318; x=1764099118;
+        d=1e100.net; s=20230601; t=1763494729; x=1764099529;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RYaqzEIQYjC/AA8fKfHRWLmVY/sXnNn+7WATr1cqH64=;
-        b=cPGDNAzjz90ws08ipi2MhqGl+07EuohhceUgzCJr9yeDjBrWwXaJtt2leZl3NRle8m
-         fMyWOXntRDf6kisNxgfN6KE5n3LdWDi8Ob0rpsJAih1wOMda2uz0ObOQQbt2zJjwgHGY
-         FAL34pjTM3OfeDTvqw+HZZ+V1WOYMP5unaataMQeyPVQlkLi6mifg9iUOz9Hjsaom1PR
-         4e/788X/un3Q9keAZHLa6i1k2JF/jhZ4gK+ERiqsqcPjkIyB6duIVLTMnEfHm2f6H60f
-         mx1wbOO7emLbUFEL4f36FdFQV5M9lt8NK+U5UI4xvS0IfnxjcFOojT34PURUhQbTGn+y
-         rsCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQFaXXdduUPCWEhaz03Ofbu58FohNYUWreqS74YYKKPSpfMjCt7nF8SRZuxWBN/UuG2jd/w8nVng==@kvack.org
-X-Gm-Message-State: AOJu0Yx6tbU8d9r8DNHn8DE1Udenh/XTJhiVptDoGlR9X2CuLR+9DVoG
-	WArZ+6qWtNp/9LLXpucb4qq4gIBWgn54NAGHbRwVrc2GdOZRpJt6luvxbUEVAYxMoqrjKME4J93
-	tT7T9ObGpojehsZJxigq03IEF3IxjHKAQKbP3uctk6g==
-X-Gm-Gg: ASbGncvWfv4J+n6V6kC/MpKN+CNtDukeuOqxtsoTOVCNPWY3IezIPg1fTYeVjRaoOld
-	KeFedCAXmRts9evEh4RzQxwdvljZ3b8OHPcQIBavQbXXITIHTw15VmB73ZaWlordyYh+JsWIK4c
-	SSz9A20MP17mdhfZo3YXM8nrO0p6E0cSldbsgDu1HQPgLEPmae1ekB85SqTZFaxlox/pv3JuKT0
-	XIUZJwAe5zQIdkCtA8fSO6PUnjFtxB9sMEmeXP7NxRMke2LKbuCNKR4jPp7DZpPgc8PHGPo5O1Y
-	yuk=
-X-Google-Smtp-Source: AGHT+IEoY5GxNNnNMoAylXF6Jyy2pRfpo8iGqzyCOOpRdKPPNoDFYT4pwtFBZN3XqQWL9L3hx4nbDu6IprbOG+APsaM=
-X-Received: by 2002:a17:907:7b83:b0:b73:54b6:f892 with SMTP id
- a640c23a62f3a-b73677edcbfmr1719343266b.4.1763494318109; Tue, 18 Nov 2025
- 11:31:58 -0800 (PST)
+        bh=xP8obOsgLV+Mi7QU5SctjthhRGiNVWVhn+AWfuje1og=;
+        b=FOjlp6jgEhht5rWnUXFrBXZ/9ymCdIaM74ZKaRtRalz94Hi5zeE1pWy+q1EDoepy1n
+         Y7mIxE9kN7+GhfoImdkiQJjK3mVE6hchUkSsCcUI0jbnldxi+gxBIatdk2/U6Aa/S4RY
+         EwNf7HV12iFmHb1Ul4O3bCz26fCouPWiBBuc1UZX/sHVtcZzxkvdnq3N3zC9MModQPQ/
+         m1oRnh4VKR289pdQzRX8AoGxEuJgVGV4YwFBGxLzfHNtWHUmujneecjJjbMRP/KVGLc+
+         VExcpvahfFxPcGU1j/BsUI/1nxIUn4yL2YGdnrEK4VpBGb6Is/XgupRuDQ7ss8coTLG9
+         tOUw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZfWF9cL4VuWzEaf51HOzH+EorAjL11+khxsbEn2UUihPGrsjhvsZHXz5BfmK0e6tUJJ/HrJ+Mqg==@kvack.org
+X-Gm-Message-State: AOJu0YzBoz97dBCSfwJ/YCc4LVkN6La9u6aaDMP3zWAznrBzepci25I4
+	d5fd3iVEaJVXuOcD6RXzu7Orv+99egvMBZdsSTC3zoSIrhT88ueHTIsmrz5qJxLqwFrLYXHQKgQ
+	+2fo0Ja2l4eIOQ9+kIbuXcBqF2fQyPihgzmx2fuM=
+X-Gm-Gg: ASbGnctz2Xa1YfJKO0xcyUcrFeSnwj86zqjaS4n0DHdOE2olAFbBjG6IIzSpgYyLkLI
+	tJty9jQEtVzdIhqv1/RfRVA7sRWSQYm0UPPRvzlayZIRfaJ4rfG/zUEMmt9ly9ggN1ZtAuLTnV6
+	9NCkioz3u5O3vllVDbIyiQMyI9i0UFsy7MaWvGf1rjlCAPHrajySaTnJZFHJwIKN+b+WIH63UJf
+	HvubEonM1969uulhY+pbfUMtZoeHChrJJnSd6uYQsthA7BX+cG60uXcnB1HWGkviqsDxZ+YSRYI
+	ivICMtRGLIgfC2r0gqHm2g==
+X-Google-Smtp-Source: AGHT+IHjQ5qI54V48OaD9lOMuf97MRj94VnLpjJI2NcKNfYtXCw0gbO/k0nfKsSQ9TEAtm7URf1eXdHMpVdLUVZFnJg=
+X-Received: by 2002:a17:90b:58ef:b0:343:7714:4ca6 with SMTP id
+ 98e67ed59e1d1-343fa62be93mr16554523a91.22.1763494728613; Tue, 18 Nov 2025
+ 11:38:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-7-pasha.tatashin@soleen.com> <aRyvG308oNRVzuN7@google.com>
- <mafs05xb744pb.fsf@kernel.org> <CA+CK2bAqisSdZ7gSBd7=hGd1VbLHX5WXfBazR=rO8BOVCRx3pg@mail.gmail.com>
- <20251118190901.GS10864@nvidia.com>
-In-Reply-To: <20251118190901.GS10864@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 18 Nov 2025 14:31:20 -0500
-X-Gm-Features: AWmQ_bmbBbBA2popU7vHmJW9PAVFFPXLJPyntHOLQd2MbOo1GozNXCODJ9I9W2Y
-Message-ID: <CA+CK2bBXRopZBBJi3YgN_PCwe2b98O=0oyu+XjUkfVrffrDVTw@mail.gmail.com>
-Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems callbacks
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, David Matlack <dmatlack@google.com>, jasonmiu@google.com, 
-	graf@amazon.com, rppt@kernel.org, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com, witu@nvidia.com, 
-	hughd@google.com, skhawaja@google.com, chrisl@kernel.org
+References: <20251114193729.251892-1-ssranevjti@gmail.com> <aReUv1kVACh3UKv-@casper.infradead.org>
+ <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
+ <aRpQ7LTZDP-Xz-Sr@casper.infradead.org> <20251117164155.GB196362@frogsfrogsfrogs>
+ <aRtjfN7sC6_Bv4bx@casper.infradead.org> <CAEf4BzZu+u-F9SjhcY5GN5vumOi6X=3AwUom+KJXeCpvC+-ppQ@mail.gmail.com>
+ <aRxunCkc4VomEUdo@infradead.org> <aRySpQbNuw3Y5DN-@casper.infradead.org> <20251118161220.GE196362@frogsfrogsfrogs>
+In-Reply-To: <20251118161220.GE196362@frogsfrogsfrogs>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 18 Nov 2025 11:38:36 -0800
+X-Gm-Features: AWmQ_bk9sXea8jL7B_XWSvq1NtCko5Jbx6_OaVtFvyVo8HnLwKRsCuuE1XHa0Cc
+Message-ID: <CAEf4BzYkPxUcQK2VWEE+8N=U5CXjtUNs6GfbfW2+GoTDebk19A@mail.gmail.com>
+Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in do_read_cache_folio()
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, 
+	SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org, 
+	shakeel.butt@linux.dev, eddyz87@gmail.com, andrii@kernel.org, ast@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev, 
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, khalid@kernel.org, 
+	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com, 
+	bpf <bpf@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D8A1A4000F
+X-Stat-Signature: jnfd685em9ro5d6pjhex4rotz8tghuej
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0151EC0014
-X-Stat-Signature: szwdh4yunooknaz4dujwc4s5a8uuxr65
-X-HE-Tag: 1763494319-457235
-X-HE-Meta: U2FsdGVkX1+Ibg1AnodOpdtrJdL/EZmY3w1BYQgDa478B7knE6WGe6/BWp/OspgbejTdfqDSnTyhGm+HtKIm26gtOeniXS4vCGQYh+q6rzzxjeyprlgKKtX1BjQ32hgcXVAxpJ1+9WbhTvhDA/aLCcVgZchAXpwYsB+JhTGk2sHdKk+w+mRLCXooKJGbLegEUi39dsVWJwhajZrIqvA1MyAiTmTFbVa2RxB5reKZ8nkpAfG2OpzuoEMwwpQJMrIt7f6yQtHKVOHjOrLDA2q9CWbs6RIQEVt1AnwdcmXMmCJUHnR5wS23hdhzbZdgK8zj/CwSjq+cis8be/aA0YbQcSk/JT4AXi2SB/DhKi49mq48T4r1BeDt2DRScKJUHCTE1Ndepsw4oEz1CNlwwroQFU7Rs7kXzwo2r6uE4dSWVW240pNcA8fH8DX3hTaMG1ymxhw+cwVqsPWksqGVJJ0EEmCX8Ez8kIF2dWLEBhtDXfNpDhoi29RTQObwhglNEDW/Vr8QF6lg4zYdYMra9X6X5ZAh9dewlvNDugw8TOuOnTJ3gJ8kWEiVt74FFMTJ+lszt//hWJk+/orDmddB42CYkrjYBZJUrNVKMkB5afmKhgI9y6ad0Ix5l68YGSVA3ZxcZULWieeuKiSfIFr2lbOK5T80LDsQQODbf0X2j9LFVvTrM9/HJmeSE6Z8g0OBagvtlquaUWCSFycE7ICji9satkRWSZ0n73u+Vl7u/d03nE6Y2VhzH/vdunO/0BTNj5WekdK1CcwXB013aOQucHD3q7KbRuA17m9JGA4tJby9ziyvpxts/80V3Wrk8JfawI30d0W4hqv9dEjFzALUq8elhxLaGpovsL5xEb9Z/vST/QukY+wx03aOpSe4+7DKKAKCyx6nHeEF0OFkJYfTvwX7TrBBraZubB9ThAOokV0UJPtha/o79IWQbqDYTDnRNL9MP2KSvicUtLE/Y/X97R6
- 2rmdZHpU
- QSGI7hrJywLOIw7WR6wzoh8vXjrfeErTasy/tTjYi8WAu4+LOYdOS6o8KzA==
+X-HE-Tag: 1763494729-681295
+X-HE-Meta: U2FsdGVkX1+zcKTQ/G1MnoJtbAvqbzYpD6fsaLDwgK9kr5ZAy/pBbmlgPzkJXzgV1nQM3Fa34TRyCWnA8amwnpdXOot7f+uR+VBABLyFcsoeKRcjy1KsJo2xenur383k1i1/3YtIgoUhaaWVD7XpXfgvACMc/2Qr82vtgQBfB5bdmYADkOJCkh9Ku4th4RG28DeEJ6qrGE+RUWC/g1JNKH5V4Q/Dpzzf6zDFl/keb84HcO0aoelboiWMXlhF5qrHSaM3iPFRPTjz1Jmp7MIYlWmnCCpgRLbcUtUBP7HRzj6n1cBCeoknhTkJDLcz3Yhf+ueG6e/0WMmu1oaQjhn/obrMTQ81NPsy+FJhJgtIdE4zzTD2KeZUsDLt6DoQEWLeBYTbgHm+Clc9Ozw/FXJVNcrIJ2kvlmW3XzUN0yIN3zq2F8M65LKvDBFYdSG1q0oRTy3358YcByYMkL3C1JR4NKGTn5wstRPv9lzdqe5yYNUQUVnfXY6zj3bEoElvJduckR54kGBhiBDpaPGtoqmn5i5LPwVqZyAZ5f+DDRPe9wbdG+jKr1oODjj4wLRPHevKK7KcBPvxvcBlS+kbhYZYB4ndFiedyZvBaqT5mlfuNZkK3SJiLN2/uA7qoXq8hXhk11wvFjgWWQ4trdobgqleUKT5QDEJfuoPwOtdVUcdf146R72aPsFcI4ZFXFep0IECBXA7QBl92+gaIVdUM67Pw83TWn9b1lmI8jfYDCHPoPMG1PP2GxrbEp+0GBWecyEafvf3GFm+Cmv6GTlZG5to9V5EGEjQaIEkie/NFsXPCXYoFyATJoHWxuPbjdgD//FoFcHd9Q9LPDdDXbE6KIA6P8P/4ONe0LzatKNYALI9Gsd9+4Sx59R+zfoIdpZk47ibbaZHd0Op0A9yGwyYCe+zwEn2ie2P3+kRASestB5CcmXhc8L1tAVctm/9jJJhtYEkFV8d4cBed97GFNZrIYp
+ KXH4jVxY
+ EPimqx3xd8wT6ocK6h+UoTFpBOF7wHZcthMdazcnZmCglfk00/1ZCWZkM+rN5LbIqJdGSmtdiw/s1nJUNH+dWTgl4yqTJfLw6CHEtzIg+v8xov3XLmSSaJr5Yj0atiNyD0BrqnKtTjNhBJiynkMYEWaA8rTGu46TuotPVLKMdg+5AV/9Y5Cs7gPFrxg8HHgxPPHhS0ckVBr5CQU6ei0x60HKbAOWMEbuCZapiH8hU90BujmYE6lu6lW0m6+mBuICaBrf3OsfCVlFnUnX2E7MHIxdfToZXKrlQUMLKXn3Xeuz5SOW3OFZ0O2QrAa1Y4ycQrezTEV3VlmRtZ/6aPp40+zQQQBh++HjFVHZ3+yeohnp9zoyc3gHD4dz+sqKvMfui87kI0ev2fKNbCFM2wK1KO0hfYQZmX0r4j1+7m0pJuXW9SUL1mf9hXInffzrUn1lVij7OYmlfVmmi22rhzuZkyJ2C6yfTFUFrtStNKxE9n6B/9HKoVGYA7wWnVvZr4g1CJnvXm/LCrwnEkO9C+bDdxUm1v7h/brXH+NQrnI8dGo/eJh0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,19 +127,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 2:09=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
+On Tue, Nov 18, 2025 at 8:12=E2=80=AFAM Darrick J. Wong <djwong@kernel.org>=
+ wrote:
 >
-> On Tue, Nov 18, 2025 at 12:58:20PM -0500, Pasha Tatashin wrote:
-> > I actually had full unregister functionality in v4 and earlier, but I
-> > dropped it from this series to minimize the footprint and get the core
-> > infrastructure landed first.
+> On Tue, Nov 18, 2025 at 03:37:09PM +0000, Matthew Wilcox wrote:
+> > On Tue, Nov 18, 2025 at 05:03:24AM -0800, Christoph Hellwig wrote:
+> > > On Mon, Nov 17, 2025 at 10:45:31AM -0800, Andrii Nakryiko wrote:
+> > > > As I replied on another email, ideally we'd have some low-level fil=
+e
+> > > > reading interface where we wouldn't have to know about secretmem, o=
+r
+> > > > XFS+DAX, or whatever other unusual combination of conditions where
+> > > > exposed internal APIs like filemap_get_folio() + read_cache_folio()
+> > > > can crash.
+> > >
+> > > The problem is that you did something totally insane and it kinda wor=
+ks
+> > > most of the time.
+> >
+> > ... on 64-bit systems.  The HIGHMEM handling is screwed up too.
+> >
+> > > But bpf or any other file system consumer has
+> > > absolutely not business poking into the page cache to start with.
+> >
+> > Agreed.
+> >
+> > > And I'm really pissed off that you wrote and merged this code without
+> > > ever bothering to talk to a FS or MM person who have immediately told
+> > > you so.  Let's just rip out this buildid junk for now and restart
+> > > because the problem isn't actually that easy.
+> >
+> > Oh, they did talk to fs & mm people originally and were told NO, so the=
+y
+> > sneaked it in through the BPF tree.
+> >
+> > https://lore.kernel.org/all/20230316170149.4106586-1-jolsa@kernel.org/
+> >
+> > > > The only real limitation is that we'd like to be able to control
+> > > > whether we are ok sleeping or not, as this code can be called from
+> > > > pretty much anywhere BPF might run, which includes NMI context.
+> > > >
+> > > > Would this kiocb_read() approach work under those circumstances?
+> > >
+> > > No.  IOCB_NOWAIT is just a hint to avoid blocking function calls.
+> > > It is not guarantee and a guarantee is basically impossible.
+> >
+> > I'm not sure I'd go that far -- I think we're pretty good about not
+> > sleeping when IOCB_NOWAIT is specified and any remaining places can
+> > be fixed up.
+> >
+> > But I am inclined to rip out the buildid code, just because the
+> > authors have been so rude.
 >
-> I don't think this will make sense, there are enough error paths we
-> can't have registers without unregisters to unwind them.
+> Which fstest actually checks the functionality of the buildid code?
+> I don't find any, which means none of the fs people have a good signal
+> for breakage in this, um, novel file I/O path.
 
-I will add them back in LUOv7.
+We have plenty of build ID tests in BPF selftest that validate this
+functionality:
+
+  - tools/testing/selftests/bpf/prog_tests/stacktrace_build_id.c
+  - tools/testing/selftests/bpf/prog_tests/stacktrace_build_id_nmi.c
+  - tools/testing/selftests/bpf/prog_tests/build_id.c
+
+This functionality is exposed to BPF (and PROCMAP_QUERY, which has its
+own mm selftests), so that's where we test this. So we'll know at the
+very least when trees merge that something is broken.
 
 >
-> Jason
+> --D
 
