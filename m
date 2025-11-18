@@ -4,99 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DDB6CEDD97
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 14:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A117ECEDD93
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 14:30:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C309E6B0093; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
+	id ECB736B0096; Tue, 18 Nov 2025 09:30:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE02B6B0095; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
+	id E7BE96B0099; Tue, 18 Nov 2025 09:30:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A81186B0096; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
+	id D1CC66B009B; Tue, 18 Nov 2025 09:30:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F7F36B0093
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:28:54 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38E1F140594
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:28:54 +0000 (UTC)
-X-FDA: 84123959388.22.7F6BF92
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2F1DB140016
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:28:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b="M52/zYpW";
-	spf=pass (imf26.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B75A16B0096
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:30:08 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3DC765944A
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:30:08 +0000 (UTC)
+X-FDA: 84123962496.19.D936774
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2FAA8180006
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:30:06 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b="nFXaS/YX";
+	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763476132;
+	s=arc-20220608; t=1763476206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=35WpspOv1fAWFINmOzi0AcgEQL1oV2/QEYSJcrH4aSg=;
-	b=a5RrDg34ccCP1f7//WmR7oGtr/ccTrt7VuTJ6ZzTI4N6mwEmgdFZQwE355LNZgsigG0X/8
-	vbJXb/++FSKaeD7x/tE6RuEtiTPK6LnuINQZ5i5WrfhEDZ946PvysrErEZCvG/YC7PjwXn
-	wUGjqG1HNL4smiYnLOefKo1c06LBf+I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763476132; a=rsa-sha256;
-	cv=none;
-	b=pvKJXH9zRtqqRnSbxIMEqRhUl1v0Fda50RlV0Dk/raEDPfc3gQJAKFjCe9F+3E8Nsk7xw/
-	uRZfY32CoOaWwX4ZK1ppNtVupFeNsDq8xRf862hnUQ2iClE2EnBXZtAFI/gbi7EXWHHtmF
-	rV5HdIC1+fOJL+cR4piIm7bEO7IczrU=
+	bh=gAj/lhLwXUkQIe838UyunLw5D1V/iLtJCJGMnOEEnt8=;
+	b=aX0IK7ETH6x3aaqWVaYZte4o9lYSBQXZIVG0+EypWnbBeYqjLHXcJ+CerhBYgI1D8tkukJ
+	vr2EGbTXQHHDB1UD2nnPKOM3/Y+tOLntIqzZ0vyvH7wiMPdXM5MF4RsU/12pCyveB3ROax
+	vHmMpReJFGs1/pV+ZMhjl6d4sdAzLO4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b="M52/zYpW";
-	spf=pass (imf26.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b="nFXaS/YX";
+	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
 	dmarc=none
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-88051279e87so59456796d6.3
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:28:51 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763476206; a=rsa-sha256;
+	cv=none;
+	b=CnwUtBGCreiRYKbwX+Yo+tje+vnPZeOkMxzYBB++ZxZlkElv0WtkE/560nwdEwPNtrI3zC
+	aCoFsrS99b0qxmUaXYtFWLDU4nqEhervkqwTHMaUswhawuNO/pV1QGXnvqPLOcW5S20VfU
+	9YBhqMDBVIFt9tF/S0kn0Q3PaU5th8Y=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8b2d56eaaceso324858185a.0
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:30:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1763476131; x=1764080931; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=35WpspOv1fAWFINmOzi0AcgEQL1oV2/QEYSJcrH4aSg=;
-        b=M52/zYpWVGlq0Lwd50XR9sNV41UhGGVCUcp9bVfISnaPPLpKYxKeK4t7SBK3ehhLgl
-         86y6E/m70HnkgGYyfPebUQD6sAZ3svR2HuYTJ2CmsLYacZl74wmjhvJPv61cMh+VtzxG
-         BoWh2Qf6IXlHUJofoQS5eUr+junCRvm0YBUeZ03Lp/Oo/vmPXNwwXGYzxky15B7qrldV
-         BzGl9w/4Zyz8+yTa0v3l0NxKI476w4KlSgr+09zbaeLW0FJPPzsWYwYwmUkAqtAYwAsT
-         XCjhOk6Cx1fi8XoT4jBPjz+jPoVJ2hnKs3dx2K45cUje7fa80rD3b9GmZ6PR3OaJgaLh
-         hvIg==
+        d=ziepe.ca; s=google; t=1763476205; x=1764081005; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gAj/lhLwXUkQIe838UyunLw5D1V/iLtJCJGMnOEEnt8=;
+        b=nFXaS/YXPjU6xSOe8S3g7/GeuNxyvTxCNh3TFVIux/D9/NE+A7XhQlsZ7A98//P8fe
+         +0cWW4v5GBgUKeJXYYRxeP63ka6kaH/nDDu/w97+D1MCAd6XckRFSTuUIDrRDwZ6IcSA
+         gFMC5aCsn8P2it3h6+ZVhSRiUnf2w7NtGtG5OkkMyaqqXgeNjVum5RPlpQMxdQGlZTj7
+         +iQlFTJ4u+BfCx0QxREbYweDdZacB1diUq72ddEZtxNEEMwtvGFdRd+ehggBcoHiQee2
+         R/KpWKn5OH0xHUwkBlQ16JDi3asiMDg+1uTf9iKcoB0tbm5HiKbOQpworn4h3/bQ390S
+         H9ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763476131; x=1764080931;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=35WpspOv1fAWFINmOzi0AcgEQL1oV2/QEYSJcrH4aSg=;
-        b=EAEwEDPsAGXuhhnlG3mfWpxUoR8w+zh/DHDXkJebq4LsTKvHBsj+C3SKj93DcUqqW9
-         O126bhcBY3kd7pLXUY+BMkL0T/CsWF0WRR9I91UALTCZ9ppls0dqGfxmRiqsieiwHqya
-         q+DZ/GqdAIzqb0giKwohEVAh4yINgl0eDAMmRpJSnStyuF4qMajn4Ouv8rbI8w9yI/NN
-         TEhuNm9YDZrG6e3n8ZJipxZ7XNbe99sabWedwgmBSKVDdyzYACKhv7O7At+pEkXvbis9
-         5UX1/fs+buD1s1tuRApqD55Gx20w+jXiIjACi6wgK2cGFQfI/BnHl7i6Q7BKpT+7fK0r
-         9bQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOtAPIAO3dBvw2pc2hi7BwjK62FZw1lKLf5SM3S3Gg8Fd7V6f9/ImdzrbBpLiuh+yEv5jSjCAmLA==@kvack.org
-X-Gm-Message-State: AOJu0YxcNO7EAdvDIUY8/ERJhTzfD4eVIPQ9FzwwQ7c5+ePWfEzMwoRT
-	8q4wfF7WPS9/HgprFkvtuR1nMkeTvgDsP276pWrVzXFVOutUoKpnoIVZv1wyx3KdWsc=
-X-Gm-Gg: ASbGncu2fMrIcQ44D5K2lMkh9kTLakOaId1XoTn/v1AkBnS/LKJ0YDShnJ3GvTpgLZ9
-	7s/VjGpRVkln0Bz9/FX88+am3Hhb8fCJJIJ/PfQkPwSqyLPtLU0VvdVRXYWUekByk9Gn/cplJe9
-	Bd1bO80OwwTmK8aBGgt5DxIXYs4Q6WTWwjN3nEqUn39IZ1CCMbq98qsTWztmiicgBdMwdRlGZY2
-	2a7TWASes8IaKCdb52t2gjC08PX5RdnI/zkjgNJgUUFTuFr0EsXWJdf4+j2US2JrX1IrRRCVAuR
-	goELC8IlliK3LAophsEYJ8W7GfYXIyaXS5QebiV+9Zr3IRXnH3kQ+nCRJet/Vm1aoJTbEeiUbmq
-	gYE6SZDEnS7MkqxLREozkuB+zPjVJL6kjMTWsRebpPMshQyHND91aBdaS4AIopAWP/Su0WIsj1y
-	HazGqiGhai0UsmispO/xAc7+5tHG77SgUjIP7JfH9jYPP73vP9NU08JF5MFddkOyJCX8o=
-X-Google-Smtp-Source: AGHT+IF+NrfSbYwvwiNh+CC3YngHFJHpwzxC37jBlKkv0sHaTL3i1cld4gWS47y25QRA75BxBaWSvQ==
-X-Received: by 2002:a05:6214:62a:b0:81b:bf92:8df9 with SMTP id 6a1803df08f44-8829269e086mr234228876d6.43.1763476131063;
-        Tue, 18 Nov 2025 06:28:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763476205; x=1764081005;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gAj/lhLwXUkQIe838UyunLw5D1V/iLtJCJGMnOEEnt8=;
+        b=o9DvOJbNcMwR/1xj+fnaSf+srSyDVKGLTzEl2QerCJYAr8p03VjumsbksGQ8JXjA7D
+         yZKsfCjV/1BpwlFOnqJx3hGioEz6Yzw7uBVnuG6slqlZHZ9ciTgeY4Q8JUuqMeJypBED
+         u4VrwPVVN6wtXWJIoVvjb4Fja5/suU2IAQoCRLiKKk9PYuXJKDD+PYZA0fqkZVwA05G2
+         QWGAZwEHjT/T86N+zfbHKAJhdXEh/HP2vZc9pbl1QDnh7QgtjxQcBNclptSN+GumiOXL
+         kTDpQ30hLuRzZ/G08btlqLBbjzeWo/pN8OII2vcHcUuJAb9ibcJdxENXCwD9bkI9z4Sn
+         IVjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvf15RORYuI85ueuFrKMGSsUfw5dSzzEt/257WS81nJX8LTwrwgYwR1QwRxQHRuGbdjQ97L5pxEw==@kvack.org
+X-Gm-Message-State: AOJu0YxLqpQL8BGhGZ1LoZqP9/lsdaT0rZyPMzIa6GDVbBXf6ZQoH/fl
+	/u0vu0WPATYS1NOQZ6Q55YkoRHvzDgNjxu8jGpdE9iCn3AD6BwnGxyukH0o/Uoq4mII=
+X-Gm-Gg: ASbGncsTZZ8n/jStMqsVfos0kFNHHNZ6N/hv3HmZ0W44LSGuiXLtSaXvQ4UUmJTJGmV
+	TX222HMif9fnA3FDZzVMp5e5l7U2HzDcfaHvINB1VhGlP4nVlV3/cRCcSlyGYVFOvWL7ZlBMOYi
+	QMGyYMjUQqQ3OhgbT8CRtVssIWpJVAmu5byT2g9PSXFcbjVMODn6uxpwBT2BRDoZBO/lh91qaZH
+	YmAZ8My9Hv2RBbXI/ik0FXUFEThUACPA/SwRS1qFHuZoksjhZJpmDyQMVvjb4v/lNKWDbXP0ydW
+	xcDdCatHTJmHmxgmlmFjIIMDxB0uFieb6KwuekeTUEI7ymQrP57KMuYgmc/HRY+TC6QrvSsfpwr
+	BZz3bd+PU/Hyoiod2V9d2YG+JoodViWroBycRL3DcPKysvENuJzc+3eC+0Nnhx9zWVBeZ4tnRDw
+	KH9cahZ3c9Vj2RlQN3ca6+Ea7QsRpuMeoMIaFlCSxswn6QS/PrvFNSUtH1bdsZHkh87MA=
+X-Google-Smtp-Source: AGHT+IGl2QxjkDkgi5jKGR6lwtLy9hLDUjSd3xhjzd2vh/OGWRtCENW0fUVdt2sQ45uUuO7DIyidjQ==
+X-Received: by 2002:a05:622a:4a15:b0:4ed:df82:ca30 with SMTP id d75a77b69052e-4edfc875136mr206770331cf.13.1763476204719;
+        Tue, 18 Nov 2025 06:30:04 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8828652efa4sm114860276d6.39.2025.11.18.06.28.50
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-882862d0944sm115395396d6.9.2025.11.18.06.30.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 06:28:50 -0800 (PST)
+        Tue, 18 Nov 2025 06:30:04 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1vLMhN-00000000NEc-3Dxs;
-	Tue, 18 Nov 2025 10:28:49 -0400
-Date: Tue, 18 Nov 2025 10:28:49 -0400
+	id 1vLMiZ-00000000NFZ-1yj6;
+	Tue, 18 Nov 2025 10:30:03 -0400
+Date: Tue, 18 Nov 2025 10:30:03 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Tian, Kevin" <kevin.tian@intel.com>
+To: Ankit Agrawal <ankita@nvidia.com>
 Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
 	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
@@ -108,9 +110,9 @@ Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
 	Kees Cook <kees@kernel.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
 	Yishai Hadas <yishaih@nvidia.com>,
 	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
 	Alex Williamson <alex@shazbot.org>,
 	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
 	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
@@ -124,25 +126,25 @@ Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
 	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
 	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	"Kasireddy, Vivek" <vivek.kasireddy@intel.com>
-Subject: Re: [PATCH v8 10/11] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <20251118142849.GG17968@ziepe.ca>
+	Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH v8 11/11] vfio/nvgrace: Support get_dmabuf_phys
+Message-ID: <20251118143003.GH17968@ziepe.ca>
 References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-10-fd9aa5df478f@nvidia.com>
- <BN9PR11MB527610F3240E677BE9720C2B8CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <20251111-dmabuf-vfio-v8-11-fd9aa5df478f@nvidia.com>
+ <SA1PR12MB7199A8A0D17CDC980F819CC6B0D6A@SA1PR12MB7199.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <BN9PR11MB527610F3240E677BE9720C2B8CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
-X-Stat-Signature: wa4t1r8xypqj35abpdgc6rakgypejd5d
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <SA1PR12MB7199A8A0D17CDC980F819CC6B0D6A@SA1PR12MB7199.namprd12.prod.outlook.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2FAA8180006
+X-Stat-Signature: m5mrtsbisfpfuc4tmn6gxhkb4goczhdu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F1DB140016
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763476132-865075
-X-HE-Meta: U2FsdGVkX1/LC0KTJARohzITbPpp2HynP5pj8t6KPic0w/q7GzAOlSVMxYWkoyN3m16Goy/MkemkFzOYSWR01SKOhjZGLIHw/fDXxa9dKHwrDWUF1yI4pZ2VtkY4DVXBuL59ZJVUni/t9eGXXBKgz1YG4onctc1SUWFQKTNN2thJpL8BRiqkB1GnRcgsP+fnUSiXI8BcACCojm2TZ6j1U+x9dTzTE5gqOcZ29VS4TTTe2jkmEMJt6Awy7ZRPUCj/yuAsp1b5MjgphCc5XY6bYTX7N7Sb8CBb8QIrFbvJh+UvsAG5DirPy1Viyn0Z0AejzBnjQU2HPxmlqMiR/u5OPYfDj+apyJM4a01FX+FzVJEBzpHHvVsmHYjxYxsnYCe9AJBu6tJwunZ1EH2kPhPXBI7D6MiUHtxSouAcNMmuu3Oz1TUR+hJWjptV+Iffhg2L6SVuljk71/CQAP8pLLTUbIXiIPzW4eozgO8L+yYY4ZZQF/Dve+jHmN8UjOdDqQTejKIPDDNAo7SNR3a8NF4w/eUFK+9dN3OD4vPd16HZlhzObFwO/Uj1MTGXWNQi+RwWkutp6N09vVIfLBaxRjkaZoD8GFND9KV6Whrrv2eBteA+8exEb1epDC2ciKemvfmhB90uydsAkYG3lXSoQwYSFN3iEihqVwQaDZ0Va8HHZts58I2lRLFay4PyBx3gC4x1/uGLjh5rBeHRxJ2jKLU/R95sTNDfEn9z8uBd6gJn3ZBj80TZ1eRp1M9uZy/rIk2J/zzUG6lvqyuV9VaYmO9M6A0R3iQANAGR44HS05mAAuN05qXYAuI99uKxalZaicTW0o38d+7ybtG1HDbMUHSjRO3/OFUYtEt+7PUPsAh3Hg2h1QxAkoGaFfy5tHkQ5LdJEcDGV+CqovcXXUgny4yd3jhVdpUBIsYXAiwuZE9j6Y+rscYmp1VRWfT8Dm7fA241SK3ZrguTH10uRoGhXnO
- kCsK5+rK
- /i4IRu3+fuiy9UQSNNOb7bcvnfus6rzFsC7HuDCMk2hZc9Q844nBe0qcG6yhEtQNv6rXK8NWpWsQZbzoYipAZSrz98OC2mogyVp/9h6/+KTh9cMyJq7PC0OIxCLk70eRtzrwVVZt1I8OFYCVFTatZHtjAXtLPe8elO/V25Ole1R3Ypgs2B3IZuQui0q4oWYiP4VQ2YBLHz1BLwv6znd/Hn3jpifZpj/Xg2bFOTcfYb12/8k0DaLQGjqQF1PDUxfvZV5i7ZWswGCgNsymBpFcvhLaHFcHkjcbb2WhKnr9fDNxRFyqowOEPbv34GZ7MSvhlk+WrwoiqnnlkQH5ILBTzC4rHw8drCXfT+zT5
+X-HE-Tag: 1763476205-335716
+X-HE-Meta: U2FsdGVkX1+m7ftDUTdW6LRdK2Pr0sT8iG6NkqqozHSVUwevbvWC4S3pVXDZX2gldla2iV0CQtkhcGR7YDQg4Tp2P1GQGSxTdvmN795WacWbIgiVkXb4L1e8HGwolsUIiQDadWDjLvMcQrhgWxmSO1fNNsnVtgw7D+NLhH/v9Zd4PePE8oevNt7/VADoRD9jTO+JY4O8zpEWENpOvXCcP45lHfahO783ZR3j9ZvN529oXIKWq6bguOwxRRbTM7JnNs9mrwaYVx3Pwk39CogHvCPDQ6NyINPUvBcBPidgm5ozGnYOAPco+hktBwz5IMo9HwFCOOWVS4sBJCvLl9Ape81/bMYMQGWR/Y4kF1/U91w/NPOogc5ErbkxJ6ZkmISMkrwwwfiUebW6FZUTnUHap94A2DZ2FfZwqVc2LToBwnF3NWBU5KZ1hqOrJRG5zJC6QSER9bAs+kC2tVFv1waeRoJhVHbNUFl2r9DSV+rUsWE97GqQwdCV+VksV+hF83coZjGj2ujKd+74wgabBRPbS0Bzhy6rGGQf4JcSsuUydDXG0o2RLJK8qvqnUxbXH1T1aji/+zwnIeMU2arzTiuc2DWxCSU4qAF77/yYckFczRRDVqtgclGCqUPpmbhGrYtSL61OpCUakoaP3wTSN4GGenM/oYx30jb6lPNLJoDh87/wn6+UrnQZAG59rv6bolbr2YC9HHiL/Un9fAoNmtB2LzyRNcQTLhq7dSzs9Bznpa1xyDqTepJfhdG528stsBmTqDHJlBGFI1yGgN96fkVCN4gH5eXB8Hb2RReE8iP+yUQPnJ7q1c75ZrxoUhhE5OZW7MrfPBC1VzJLD1RT5C7PezgW2h6vVIu5qdcLHhNYjuF1uVOIYeuZLNYgAekH4lOxQe1Yveyx10GTUOjx3NWdC/PFH6h9ObsPaO87qZQPaQ6PctpjQgtRGjjPCJhZpwKRNpOdavn86J6AbtSGC9O
+ ma/h31+s
+ vKi0BYcTY+ezfhGE6Iq1cXGHjZORa+iFdOnU8QDvjkLGFQ4ZMmvpNMlWJFk0NoPC4BUWc1gF2djWdZMmFtAN3AnOLjtrpicGcPbps5ncgj/Ptv8sDva+msXMfWmFoQGurGCXCAYZw5rIs3uXXOg3h+kcaJ25cnRZzYGM1Ro/JLAozabs+AzlS4I3TII6p8PviXWXiJEEMpYoiswzN3iBRvBPDaykPgxstO5FTFh4p8vaMODLoKAo4av3wKv8vZ+7aYtLHE4gNT3M2vIg/08rz9dUUT5SiiHMlIw5Wtrs1KiAfXHo3ibUJlFjTeIVrUKvG3i/qyKLrQR60qi8xtVG/QaSezFSaZhHUuOmdHx3w91T7WP6LNMmIJXvmvqixdCV4QAPYGi6UbT/Ega8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,135 +153,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 07:33:23AM +0000, Tian, Kevin wrote:
-> > From: Leon Romanovsky <leon@kernel.org>
-> > Sent: Tuesday, November 11, 2025 5:58 PM
-> > 
-> > -		if (!new_mem)
-> > +		if (!new_mem) {
-> >  			vfio_pci_zap_and_down_write_memory_lock(vdev);
-> > -		else
-> > +			vfio_pci_dma_buf_move(vdev, true);
-> > +		} else {
-> >  			down_write(&vdev->memory_lock);
-> > +		}
+On Tue, Nov 18, 2025 at 07:59:20AM +0000, Ankit Agrawal wrote:
+> +       if (nvdev->resmem.memlength && region_index == RESMEM_REGION_INDEX) {
+> +               /*
+> +                * The P2P properties of the non-BAR memory is the same as the
+> +                * BAR memory, so just use the provider for index 0. Someday
+> +                * when CXL gets P2P support we could create CXLish providers
+> +                * for the non-BAR memory.
+> +                */
+> +               mem_region = &nvdev->resmem;
+> +       } else if (region_index == USEMEM_REGION_INDEX) {
+> +               /*
+> +                * This is actually cachable memory and isn't treated as P2P in
+> +                * the chip. For now we have no way to push cachable memory
+> +                * through everything and the Grace HW doesn't care what caching
+> +                * attribute is programmed into the SMMU. So use BAR 0.
+> +                */
+> +               mem_region = &nvdev->usemem;
+> +       }
+> +
 > 
-> shouldn't we notify move before zapping the bars? otherwise there is
-> still a small window in between where the exporter already has the
-> mapping cleared while the importer still keeps it...
+> Can we replace this with nvgrace_gpu_memregion()?
 
-zapping the VMA and moving/revoking the DMABUF are independent
-operations that can happen in any order. They effect different kinds
-of users. The VMA zap prevents CPU access from userspace, the DMABUF
-move prevents DMA access from devices.
+Yes, looks like
 
-The order has to be like the above because vfio_pci_dma_buf_move()
-must be called under the memory lock and
-vfio_pci_zap_and_down_write_memory_lock() gets the memory lock..
+But we need to preserve the comments above as well somehow.
 
-> > +static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
-> > +{
-> > +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-> > +
-> > +	/*
-> > +	 * Either this or vfio_pci_dma_buf_cleanup() will remove from the list.
-> > +	 * The refcount prevents both.
-> 
-> which refcount? I thought it's vdev->memory_lock preventing the race...
-
-Refcount on the dmabuf
-
-> > +int vfio_pci_core_fill_phys_vec(struct dma_buf_phys_vec *phys_vec,
-> > +				struct vfio_region_dma_range *dma_ranges,
-> > +				size_t nr_ranges, phys_addr_t start,
-> > +				phys_addr_t len)
-> > +{
-> > +	phys_addr_t max_addr;
-> > +	unsigned int i;
-> > +
-> > +	max_addr = start + len;
-> > +	for (i = 0; i < nr_ranges; i++) {
-> > +		phys_addr_t end;
-> > +
-> > +		if (!dma_ranges[i].length)
-> > +			return -EINVAL;
-> 
-> Looks redundant as there is already a check in validate_dmabuf_input().
-
-Agree
-
-> > +int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32
-> > flags,
-> > +				  struct vfio_device_feature_dma_buf __user
-> > *arg,
-> > +				  size_t argsz)
-> > +{
-> > +	struct vfio_device_feature_dma_buf get_dma_buf = {};
-> > +	struct vfio_region_dma_range *dma_ranges;
-> > +	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
-> > +	struct vfio_pci_dma_buf *priv;
-> > +	size_t length;
-> > +	int ret;
-> > +
-> > +	if (!vdev->pci_ops || !vdev->pci_ops->get_dmabuf_phys)
-> > +		return -EOPNOTSUPP;
-> > +
-> > +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
-> > +				 sizeof(get_dma_buf));
-> > +	if (ret != 1)
-> > +		return ret;
-> > +
-> > +	if (copy_from_user(&get_dma_buf, arg, sizeof(get_dma_buf)))
-> > +		return -EFAULT;
-> > +
-> > +	if (!get_dma_buf.nr_ranges || get_dma_buf.flags)
-> > +		return -EINVAL;
-> 
-> unknown flag bits get -EOPNOTSUPP.
-
-Agree
-
-> > +
-> > +void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
-> > +{
-> > +	struct vfio_pci_dma_buf *priv;
-> > +	struct vfio_pci_dma_buf *tmp;
-> > +
-> > +	down_write(&vdev->memory_lock);
-> > +	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm)
-> > {
-> > +		if (!get_file_active(&priv->dmabuf->file))
-> > +			continue;
-> > +
-> > +		dma_resv_lock(priv->dmabuf->resv, NULL);
-> > +		list_del_init(&priv->dmabufs_elm);
-> > +		priv->vdev = NULL;
-> > +		priv->revoked = true;
-> > +		dma_buf_move_notify(priv->dmabuf);
-> > +		dma_resv_unlock(priv->dmabuf->resv);
-> > +		vfio_device_put_registration(&vdev->vdev);
-> > +		fput(priv->dmabuf->file);
-> 
-> dma_buf_put(priv->dmabuf), consistent with other places.
-
-Someone else said this, I don't agree, the above got the get via
-
-get_file_active() instead of a dma_buf version..
-
-So we should pair with get_file_active() vs fput().
-
-Christian rejected the idea of adding a dmabuf wrapper for
-get_file_active(), oh well.
-
-> > +struct vfio_device_feature_dma_buf {
-> > +	__u32	region_index;
-> > +	__u32	open_flags;
-> > +	__u32   flags;
-> 
-> Usually the 'flags' field is put in the start (following argsz if existing).
-
-Yeah, but doesn't really matter.
-
-Thanks,
 Jason
 
