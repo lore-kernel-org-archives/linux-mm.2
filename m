@@ -4,114 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5249BCEBF92
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 00:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBF34CE8D6B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 00:06:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 756338E000D; Mon, 17 Nov 2025 19:06:04 -0500 (EST)
+	id 1163B8E0011; Mon, 17 Nov 2025 19:06:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7070F8E0002; Mon, 17 Nov 2025 19:06:04 -0500 (EST)
+	id 0C6798E0002; Mon, 17 Nov 2025 19:06:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61CEC8E000D; Mon, 17 Nov 2025 19:06:04 -0500 (EST)
+	id ED0A28E0011; Mon, 17 Nov 2025 19:06:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 516398E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:06:04 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 024C612E2D8
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:06:03 +0000 (UTC)
-X-FDA: 84121785048.16.B5A4938
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1E4FA1C0002
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:06:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OA5b6RS7;
-	spf=pass (imf21.hostedemail.com: domain of devnull+david.ixit.cz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+david.ixit.cz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D7E948E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:06:37 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7BA18B7B33
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:06:37 +0000 (UTC)
+X-FDA: 84121786434.10.2FAA22B
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8E8328001B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:06:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QvLRgSIR;
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763424362;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763424395;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UXmXuZ4pECPeQqy3o+lTuH3pl0EXEQ+j6P92s2NRBNo=;
-	b=09RMMyy0iMwSeXOyHMelperr8AbfLSyr7eV9+ITPPucmSq3ncIgjR/Rzuvdde5hy1YDIYM
-	hos5VRHDyjQUjRyIC7DHRgCVon7ChvEgm/94y9LTLFKNkOzYNZjRb4zdf1B8ZQcJPIKtva
-	cLxzPH0bXlUS+XJvMv5iwmvuZTsQB5U=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OA5b6RS7;
-	spf=pass (imf21.hostedemail.com: domain of devnull+david.ixit.cz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+david.ixit.cz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763424362; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1v4fRZdVLhKe/ktZvpTDlH6fFhc+2rF0aLfRAFXmPdc=;
+	b=k2ooHAsNZ/UXZHp5A88RYXBqWJe6LXKFUdLeFYxkA5Eb44s8k73biyN9Llha40r3lx53Nx
+	XSqAPXPLfCllBUCMmadZLzosrEb5+JXjEoJzRdA/ZfzceV1Y+gtRe8uVUXSMpZq5D7wc6o
+	Ggg1gh/Z7LA804ar7rcxpuVCo4JaFnA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763424395; a=rsa-sha256;
 	cv=none;
-	b=2avZ2jq13SsP7n2b+P3S/bnsN/92hFOZlAbXdcDgo0yEVbCIxRfz4OQ5o4Ink/0VEhvfKu
-	TLR28nOgCnMPboWFRHtfLyXzKh6cliZkCIiL7AP6NXn6pUJUORVLc6coyW8Kt1dhw37LRN
-	QObKhsFKh7JFYQhLEd7IpVdbj7BVsk4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 44B4B601B0;
-	Tue, 18 Nov 2025 00:06:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BA85AC113D0;
-	Tue, 18 Nov 2025 00:06:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763424360;
-	bh=idLT3Sl3hq972dwsE+XR7Moq7/70O5GW00jrAtyDqL8=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=OA5b6RS7emS/mHRyEnDu1izqu7MSozCXz3w6g2ripeMt+xV8s8GdFrWIUB6CLuw6O
-	 dZzXcgnCwxv+s6GDWpwdNTmp0zld42SRHL7oSNJ0OhYiZX6o1NWlXXBSgcDjpw9fQc
-	 AbBYXBq6FGTQcBnB/R7E/czQxCD4v1HsJ8hWbJKzFrJaa7u0PKhujCUf10mycFTlyD
-	 lqkuPIBWv7XXdGXyZ/gagYTzuLPiS/cLbknNp+0W9di5vbKjDesmU9qxNxIVwQp/Bf
-	 gm6H8oKfnRJ8AYjnBPPwRDNRLYywO/DO0L9WpyrHWSrTI61jXcHol3UTWEZP3SKjDU
-	 tZ0qdAGKTa1NA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84848CEBF92;
-	Tue, 18 Nov 2025 00:06:00 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 18 Nov 2025 01:05:57 +0100
-Subject: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid gfp
- flags
+	b=JJ2Z57ikJwa7jcF4sUXbxnHHSdMvuCN12B2a4dl+mmVeSWblzFP4Q157RNS7H4cdN2hrci
+	SJBMB7TPdaMBghhfnec/Qf1nnUqMhNEHJNfPqaWdQ9D9AermVUYTHMq7Teo3YeZwxmGVqF
+	leCg5Ml7sICYyrtNfFJ3qbbfk2wnecU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QvLRgSIR;
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7aad4823079so4436316b3a.0
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:06:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763424394; x=1764029194; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1v4fRZdVLhKe/ktZvpTDlH6fFhc+2rF0aLfRAFXmPdc=;
+        b=QvLRgSIRQKw6MvBx5e91DhbEKl5YyfRdezYAHnGzZwTSp3GF40HVqqpJfrPhzoZaOY
+         UF0OMy+tmg6HFFzBrCCem9gq4kwsMA+LSO82JS7MHxEo1njVHpm+JUiaPrJWuE1gLSgw
+         EcU1k2Da0rjR9g/96y9Pt3YV5CICRwlEmTfmEQ979a2wIbASo5uLi8h90ZYB9tMfjqhe
+         pvG7LVT2E88YT86HAb1rdkUah32j1ao2fnmD1FbpCFHb8cg1TBfiehDmKhxb2UpMj98E
+         W073df14bLUJA5Xj3MjMkZhTZmJZ0u+6mkflqHURHgX1NoLrNIiu1xL3CyPluRgdAeni
+         xXRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763424394; x=1764029194;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1v4fRZdVLhKe/ktZvpTDlH6fFhc+2rF0aLfRAFXmPdc=;
+        b=jkuHLsjbcLRclSfYRLqOF/0rvht6SWDVK36p5nJ8d5ERWEl0GUPFS0MHRcYfeTSoZT
+         c9ru9vLAEsMrcm9JmymIDyQEoK2l7Ds9EI+QoKDRSzZhZ4nB9QUqQvaSnCdF23O2mAjx
+         /evCqn8hlPDlY5HT26H8NGZuaI9gDRHRowDDix2IPAZdlTux7i1QHg8dPQaJ6qAxELLe
+         LPCKeQmkkMSOJ9fH1kWpRtTpezbrMvW2aaJ1kB/UwbG3ngTew5wQS97i9aWwzzoSSw6j
+         eSyN4n6Zy4VfeFyfHQQwLSZqT8qB4hjflOiTnJcYloesHz9a6u57vwwLnBQj+x+wq0GD
+         l8GA==
+X-Forwarded-Encrypted: i=1; AJvYcCURxBamKkdorteN1BkutWqMMXnRVgUsFP6Bz0EE1hi3eF6ajxvvBXf4UDjurICLy8aLC5FPS1e3hA==@kvack.org
+X-Gm-Message-State: AOJu0YxxBSTQez8PJF67lxp5Pym9f6qoP73bmi/py9Etr+u2lS62zyXh
+	buPAuH7SWCJ0/eRVy96q1oF8vbH/9OVhH8EQ5paR+zzkvyVlz7M9g5RtDXO2wxN2Ng==
+X-Gm-Gg: ASbGnct7W/aDxdUnns0oEE31kCOjwkDsTvNsFazLZmV4QtRSZNcvtn0+hWqXnRW9wv/
+	PmMahitQNcdlD/UFnO4Q7wen4+Kz0dzot31iYUIpxQOcq+2Yhmhn9dRtoIvLVwFCSLQtz2r6ewz
+	bZIM9I9kZdvjHhfB/huH7VCzYelqlX+ZvqgnfZUd2RsCN9wnwNsKu53H38vDjTak1+n7IdfJ8Kx
+	k12Nbh9FZAAUvRqa2sjjry2C6vqkBGh7LWJhsOIGDHMGSwtT8G19VBPIOYOcrG1LH1S6f0/L8eH
+	JEwdW7vfUOPRCjVDqL276J+8FsNcBEWszxCke0Y3mxtowg5V+q4FCRWDmDupGG07PQqg0aitGP/
+	RnPZaUs2QYpIKoSthv0EwtvWXjEvQNKvr0GEtS+xDFQz2kpBLg8bYh7Bkdl/KtjgJN27DFCGHNG
+	J+19N7KAS9PLMEVNS0XGfUXw42SSzuIsZDm8/EtV7TJyr8iUwYP7Ibjatyrw/xIa4=
+X-Google-Smtp-Source: AGHT+IHkJBvRbGUG30Kr3T5gR1UjB+qV085NIT1CUVV/7jNIJcaOzKed5XoscCfn8280NZXc0GRAQQ==
+X-Received: by 2002:a05:6a00:2d1e:b0:7b8:c7f7:645e with SMTP id d2e1a72fcca58-7ba3c07eeebmr19714686b3a.17.1763424393959;
+        Mon, 17 Nov 2025 16:06:33 -0800 (PST)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b924be37fbsm14602912b3a.1.2025.11.17.16.06.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Nov 2025 16:06:33 -0800 (PST)
+Date: Tue, 18 Nov 2025 00:06:28 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	rppt@kernel.org, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v6 18/20] selftests/liveupdate: Add kexec-based selftest
+ for session lifecycle
+Message-ID: <aRu4hBPz2g-cealt@google.com>
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-19-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAGS4G2kC/x2MQQqAIBAAvxJ7TmilKPtKdDDdasE0FKKQ/p50G
- ZjDTIZEkSnBWGWIdHHi4ItgXYHZtd9IsC0OspEdIg4iePcUkLgO7VwwYhmsUn3Tdr1CKNkZaeX
- 7X07z+37nDonqYgAAAA==
-X-Change-ID: 20251118-only-one-vmalloc-b8d997045791
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1266; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=+3LV6m3PqRpzFWM6pdP/J/h+Ov5Mmi3IXlzFVsT12F0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpG7hnPrb694PSAtJVrUC41ulsIGwk2mg7uisJn
- XnAjQL2gKSJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRu4ZwAKCRBgAj/E00kg
- cqr2D/9RDSNedfot2LwKkIjnQ1JC5RtS0l4ZwgScYSeT8uLysnaMH8XbHHvgZ2HrEvIvSi1DmYN
- +lRq3yAQDBbAZGPheBtnhq0KR4Tq1vUMg+VUiTjjESM3aPuNZDVTzHSmdFrKNBCq21Rmsa1zCWa
- BXBoMKH/u10LIAn5cYYim3gMZYeTPL9lSsAbIkrnIkWFQnsZ8Gg7xm+3j4EldkLpWYwR2m+NL38
- jsUBtlCxTukzD030BYcXChxL5vTSUa5jYxeZm9l4h5RP8/6C159fE9EJjSI3KVjVRHO8/9P5o/P
- /yRU/gvp90rpTY6iRdMaFhsYcOxJXeCMXvyTJ6tGKLH4b0rP+VicjBzf6rzXEFKAelUEX6VxY3K
- 7qQ0a4KdV7Z7SFOsShotfcZpgH8HWKX5dJxe3wK40Fue+1WzmLfo2gXpf73pLk6/xGjDnodbLem
- Hl9s9W3jnlpbKr7fMbcfW2GSDhK+okv4u84GPYIIK5IMPBDxACjYgouhFxS3SFm8yZDTdF2QtBd
- +DsTlLuL7DaVQlhsYr8vuBxKhyTEkll3U4FTSznfMqaHNqnKBHHgJIecFWfPDoCtaLUPTSPkQ75
- bF4b45mzh/e5Xge43nUsHoJ8JQB/r9KIXXnjsKGLZCy1IGgwbmBS7AAa0XIcMGddxIXT++TFqu1
- ToK0FBKpdHKOnfA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1E4FA1C0002
-X-Stat-Signature: zzibs476azweqrbr8cg1bbikspqn69w7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251115233409.768044-19-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763424361-435214
-X-HE-Meta: U2FsdGVkX1/M1UjlvQ/19AO9d/K0br0IEBvA/nnDSoJ22meCKYjiercVHs+r5aXSd2rBYm/8oA1nPdAJ01Gyp8gFyl37c4v2KykBaKsvewNFKq2TXB4AAsnQdI6m317XZXfpVbvMlFpx2mF4MssnYwykUNxP37ZEUR+vEsGVA0/3CC9xiZAVfnn94pqaHq7XSlMSr+21u2RNbKxmTNrkK4VOplpAgzcqFVMi9imm9r1derPBLn4228dDjwF5rH4rZH+SNNvJcitbHhSPI1sywKuK0UJetCC0ITeF8PQt9OxtftHGheSE4xbgKjvKU8znwDcZsbpf41Bw97T5L0QLtntgYvwE08pkEaPhvTUqP75jYYy0RUijLjQMYvaMBGivRQB8ledrM23c+Gt9kuNIx2YKYX8dxyUGGQKWaKmtqhJ+YRXwXJWBy2Jio0o1pXyWCWF4c0aXe/jCzwCEZVVAwlY3uwr+iBNAD5eX9yJrwQMtY1aqPsgp2KGQExHvuz4cnIPAmFYTyHzVCMn8zcS5o3OLsKOfYdzgZYcaKRkvpmx6m97mfH27D2oxpmeGtn5tuQKF6S/kDxi7orsNfznU3gQVtqoa0bqBf9AWTjcw1vunT0XvDa1CMUpO73Dqt4JbGaDgC3Gksd2AQPDQmavIybkkAdhVvYKKezLrC0Cw5IzzCvm0B3g7eg+EqWo6FK8ag+vTaVwSYbRfFmWckUIT0kn3QsthwE52bYEb4re3Iny1IXq4rb28ClNkk2OoWjP0tHwlZB13/Ms36ZflkXsTzRtWIUuNOFukjOi9wDpXViHVSalbfS8sim0yY6O0oQ29T8cFn7HH5KYJjGaL5UPT8w4iJS2Hlm4nF+FN4O/psnOfAbB8BPha5Cxb30wV+FnJalkhgcA5vSTzbs4BhYEfrRqNPAzLShsbXI0/bwqk/KIgGmwwziuON99L+duwDOZMir/xY+77lyhY2TPslmv
- fEALztYV
- i+DkfRYfjJcSr3qWCAz7V+zQQoDwyvKI5ILoFo6Jew+9/Su7zRShMhryvYfEKmNjwBPn3VpLoFcBkIFZ4J6HtwbxSHcsmaRPwdCMSXn/5SSMt14V0GPF35zvoZRy8kHv/dn8Wu951U3W6Edp9BzfZr/FmAzO8R3mZ1rH5mjfGkZBM3DKfw7tDtBEQ4Wp82ftU0lzIyU4yMHjAHXARXyeYJgXBBfk+3Y6lsQ4Ul6scfiZOVItiOtITe5yp+Wz1uqfacFOLN68NdQAkGQk8dKCAzg4lYQOCWsR3/QCFoXlqtCaCyG/8DLPmUIXzDToPyKXKFFg4EtP3xa0RzUi9baR+4soz1cPDt87ACPuuoHD35oAcxsvxvdhcorxBA6UAaxLk4UCKUD57ugw8K75xoqIfkZ579etQ/nK8ECy4gzrXKYfGuXnGnmBfQ1me4A==
+X-Rspamd-Queue-Id: 8E8328001B
+X-Stat-Signature: 664g9syxgfr4sdsxz7tn7dpheywujsrt
+X-HE-Tag: 1763424395-397226
+X-HE-Meta: U2FsdGVkX19wMGtms7Fa20MnW5bWGlhGzpMEdJ3GLezybze4x27Him2zoK47hY0HW/z1BslE1EXyBHTFxJ64m72PJXqZoaAD48NzivtKFDMFfgfC7N3b4NMiRtOTPz3QeLJgOfutt/UpBilqsaE7nvaWQOksg1oMyLE3QlLUldl1SRMWGbcJbCPqgL9ONhCQrjyA4PMnGZIptBn5AeDHW13RlqCgNz+wEw63Kdyo3Gde+ploiUXomCvcFR681Ds8gyfD1D+fisx65NTuuP4Ei2MGol8Gc6rfXC9Wbi163pwazTbpfTFbMNZEOQkH9LPX9FIsJCpHYWg0jdAAQ7CjwlDtUaCSYoyfm2WlVohSp9SCTyvAThcZqTPy/DMCLJE7w+dS5RHWEjpoa34tA+OUwGTOLqIk7y5AQXe1xG2MA7I7dz12g0/g3oka0BtJOrW4wd0cxV6+wva+iSHTW1g7Gkc4umUtTk1R/4TyiD6A6WfZO+sFY7pQdybfK9gOh9JhCCGUU38HjGC3x6MjCn0YuaGYalNqZ6c95LdI8iM9i8mKu9D/HxqljQ64/8wJcSVHGjxt5n0OS8QZeyxx5XklDaZ1i69e6SIF1cJnv8FXppWhmVTP0VVhOHuyh5Uh2m+iWTKuSqf/GskfCWKqutNRdIU84MFRFIgIwhq/NhoG6vUjrsAKAZCSsW80sr0x4b+p4JpuvrX8dJhrsl05wvRPsfU2QU9HjcK8t+cjzQq3QJUARDq254iqs38b42VhaKWRwE2WkFwL3CCHXRoqa/9AS5ufZpR3UYXGgJ8Rsq09gavL8805WqwxOy2Tbd9jXjVQyg3Bp6iC6XwLwbx6dyywe0NoExDANG19G2344vBB+FQYt3E1lqX347MKofr+w7L6PQqUvANltEG9VYIKiT+r/GLNGvtC9z/FCzyN1U/3qsyICtRxHWerw4y6DjfLiihA+iq3xhRxTy9ELcVQaPc
+ Wy7Dpb1/
+ yVNzQxnNNJFJ01lpT8ClqM7kbwE3VXiypGJjThurnvcxM3bBVmvTamiCqQj84QDRNtNxZuxJ0Wurn+fjvV/Ot1anp3fOY80ELfGgBs5kb9AilN3EVpqOzySWkSIoaIFOVSMGQNkbJIYlyWT7fZvQ7SMqLyb54drmKobOYEqCzFTF9mmdrYCrkp+UuKTkcODpnIZtcdp0RUioDCEA3HQ9oNg4QzJmK4i+/M9e+4Ojfy4OKxnwVTrCq2HIw1fGWT4+j88ihe43DPvq6BCwarBpaaH24wozEBEQaGKTDCLLIkFrARqNpggXEgcZg1CYj3PW2OMe6iN/pSSLN9Xsk16/V3Dbih3klcvTtK3GUFwumqRLfWQCMbv6DvVsQ38CW8nKTvr2kVoeh6QDTq8lLeVqY1jmcq+hu1ViyQWsFgFvAKP/4eVTtqqIE6bNFhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,45 +145,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: David Heidelberg <david@ixit.cz>
+On 2025-11-15 06:34 PM, Pasha Tatashin wrote:
 
-Without WARN_ONCE, the logs get spammed immediately after the boot,
-on devices as OnePlus 6T (Snapdragon 845).
+> +/* Stage 1: Executed before the kexec reboot. */
+> +static void run_stage_1(int luo_fd)
+> +{
+> +	int session_fd;
+> +
+> +	ksft_print_msg("[STAGE 1] Starting pre-kexec setup...\n");
+> +
+> +	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
+> +	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
+> +
+> +	ksft_print_msg("[STAGE 1] Creating session '%s' and preserving memfd...\n",
+> +		       TEST_SESSION_NAME);
+> +	session_fd = luo_create_session(luo_fd, TEST_SESSION_NAME);
+> +	if (session_fd < 0)
+> +		fail_exit("luo_create_session for '%s'", TEST_SESSION_NAME);
+> +
+> +	if (create_and_preserve_memfd(session_fd, TEST_MEMFD_TOKEN,
+> +				      TEST_MEMFD_DATA) < 0) {
+> +		fail_exit("create_and_preserve_memfd for token %#x",
+> +			  TEST_MEMFD_TOKEN);
+> +	}
+> +
+> +	ksft_print_msg("[STAGE 1] Executing kexec...\n");
+> +	if (system(KEXEC_SCRIPT) != 0)
+> +		fail_exit("kexec script failed");
+> +	exit(EXIT_FAILURE);
 
-Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-I'm not 100% sure this is the right solution, but having WARN_ONCE or
-rate limited warnings here helps a lot on devices as OnePlus 6 (sdm845).
+Can we separate the kexec from the test and allow the user/automation to
+trigger it however is appropriate for their system? The current
+do_kexec.sh script does not do any sort of graceful shutdown, and I bet
+everyone will have different ways of initiating kexec on their systems.
 
-Please let me know what you think.
----
- mm/vmalloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+For example, something like this (but sleeping in the child instead of
+busy waiting):
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 49e0b68768d73..2a3ee17093d6e 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3934,8 +3934,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
- 	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+diff --git a/tools/testing/selftests/liveupdate/luo_kexec_simple.c b/tools/testing/selftests/liveupdate/luo_kexec_simple.c
+index 67ab6ebf9eec..513693bfb77b 100644
+--- a/tools/testing/selftests/liveupdate/luo_kexec_simple.c
++++ b/tools/testing/selftests/liveupdate/luo_kexec_simple.c
+@@ -24,6 +24,7 @@
+ static void run_stage_1(int luo_fd)
+ {
+ 	int session_fd;
++	int ret;
  
- 	flags &= GFP_VMALLOC_SUPPORTED;
--	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
--			invalid_mask, &invalid_mask, flags, &flags);
-+	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-+		  invalid_mask, &invalid_mask, flags, &flags);
- 	return flags;
+ 	ksft_print_msg("[STAGE 1] Starting pre-kexec setup...\n");
+ 
+@@ -42,10 +43,17 @@ static void run_stage_1(int luo_fd)
+ 			  TEST_MEMFD_TOKEN);
+ 	}
+ 
+-	ksft_print_msg("[STAGE 1] Executing kexec...\n");
+-	if (system(KEXEC_SCRIPT) != 0)
+-		fail_exit("kexec script failed");
+-	exit(EXIT_FAILURE);
++	ksft_print_msg("[STAGE 1] Forking child process to hold session open\n");
++	ret = fork();
++	if (ret < 0)
++		fail_exit("fork() failed");
++	if (!ret)
++		for (;;) {}
++
++	ksft_print_msg("[STAGE 1] Child Process: %d\n", ret);
++	ksft_print_msg("[STAGE 1] Complete!\n");
++	ksft_print_msg("[STAGE 1] Execute kexec to continue\n");
++	exit(0);
  }
  
+ /* Stage 2: Executed after the kexec reboot. */
 
----
-base-commit: 0c1c7a6a83feaf2cf182c52983ffe330ffb50280
-change-id: 20251118-only-one-vmalloc-b8d997045791
+> +int main(int argc, char *argv[])
+> +{
+> +	int luo_fd;
+> +	int state_session_fd;
+> +
+> +	luo_fd = luo_open_device();
+> +	if (luo_fd < 0)
+> +		ksft_exit_skip("Failed to open %s. Is the luo module loaded?\n",
+> +			       LUO_DEVICE);
+> +
+> +	/*
+> +	 * Determine the stage by attempting to retrieve the state session.
+> +	 * If it doesn't exist (ENOENT), we are in Stage 1 (pre-kexec).
+> +	 */
+> +	state_session_fd = luo_retrieve_session(luo_fd, STATE_SESSION_NAME);
 
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
+I don't think the test should try to infer the stage from the state of
+the system. If a user runs this test, then does the kexec, then runs
+this test again and the session can't be retrieved, that should be a
+test failure (not just run stage 1 again).
 
+I think it'd be better to require the user to pass in what stage of the
+test should be run when invoking the test. e.g.
 
+ $ ./luo_kexec_simple stage_2
 
