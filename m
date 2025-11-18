@@ -4,100 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F15FCEDD9B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 14:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC8B8CEBF97
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 14:59:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87BD66B0008; Tue, 18 Nov 2025 09:40:05 -0500 (EST)
+	id ACF186B007B; Tue, 18 Nov 2025 09:59:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82BEF6B002F; Tue, 18 Nov 2025 09:40:05 -0500 (EST)
+	id A7F606B00A2; Tue, 18 Nov 2025 09:59:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B006B00A2; Tue, 18 Nov 2025 09:40:05 -0500 (EST)
+	id 96E686B00A3; Tue, 18 Nov 2025 09:59:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CFE96B0008
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:40:05 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0842E5977F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:40:05 +0000 (UTC)
-X-FDA: 84123987570.10.7EE8EFA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D5DCE180009
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:40:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aeCBfhXF;
-	spf=pass (imf16.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 808EE6B007B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:59:40 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 364F8BA2C9
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:59:40 +0000 (UTC)
+X-FDA: 84124036920.11.A5CFF2E
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3301380003
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 14:59:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=kPztAiAF;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763476803;
+	s=arc-20220608; t=1763477978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZVTmRvQii60FOo2suFrzGjPzAxPAukOqBRsXtq0Q6E=;
-	b=TmpOA80hDiC6E4bvUow7ckqAtgwc9VbYigOrciVyY5V4p4iKLzq4bsEkm/ABtQumeNvDss
-	d1iTTRcqGRyaJa8uIU2WiWsR/dAmxxvlrxXkoQWrfQw6NOc9HYDH1abXms12aGDHa5191j
-	25dqy61NHSQcko4FcOzxk/4wAs/aF8g=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aeCBfhXF;
-	spf=pass (imf16.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763476803; a=rsa-sha256;
+	bh=6zUAnqwUQ7mMEKfAAq0Pm8CCEggD/qceLgK2oNv/WhY=;
+	b=rlD1X69zI63b9jI1hwUNXlog8ejiKSL66sq9IkagABg7Wj0ria+bmP+3qEx0nSzKv0biZT
+	/73fmaanA884Fmy6K7O1wPhcJ7jYbibQZhq6iv+Koj7vE2fqGryuIJuFxh0g4vjAX1yFMf
+	HPwv2ISevohjXQsIgQXEMT5IHjXYXWQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763477978; a=rsa-sha256;
 	cv=none;
-	b=bQgi9+aUAfmpS5jYV7rN+/nvk5GCAEp7YsctXnDc+MsvH1NwRF7AZmZowCHdK49xS1oTfm
-	2FS2LrG2BkHJZb58N3UUvQruVVg9Vjy6v5wdaRvHMM6L6kxsMBNE+M4LMuRaUnZPuHL8zF
-	Gl+8svXZbMuOf5cuwAqZuf/jIFhR8F4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763476802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OZVTmRvQii60FOo2suFrzGjPzAxPAukOqBRsXtq0Q6E=;
-	b=aeCBfhXFFIdgUOjyRn6vzlHRCgvP8ZOzMaWiuug+0QPpX1QOQnG4JTxTbGJ6ykr7JvtE3L
-	LaM5YSA26j54vPDH2RcdCwHoE85DVAfrK/mApk1w2ltkNaWmlOlbNLgcj3JiVmwa7O9giB
-	yYM4sIS/T3VLIWyK7sVSGnrwMubvBUo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-u1u40BvyNUmrANy5rHhMfA-1; Tue,
- 18 Nov 2025 09:39:59 -0500
-X-MC-Unique: u1u40BvyNUmrANy5rHhMfA-1
-X-Mimecast-MFC-AGG-ID: u1u40BvyNUmrANy5rHhMfA_1763476798
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AD56B180047F;
-	Tue, 18 Nov 2025 14:39:57 +0000 (UTC)
-Received: from bfoster (unknown [10.22.64.29])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CB2ED19540E7;
-	Tue, 18 Nov 2025 14:39:56 +0000 (UTC)
-Date: Tue, 18 Nov 2025 09:39:54 -0500
-From: Brian Foster <bfoster@redhat.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH v2 1/3] tmpfs: zero post-eof uptodate folios on swapout
-Message-ID: <aRyFOsUk--AtbEGM@bfoster>
-References: <20251112162522.412295-1-bfoster@redhat.com>
- <20251112162522.412295-2-bfoster@redhat.com>
- <c1978ef3-251b-4a57-8244-b047e66b6ab3@linux.alibaba.com>
+	b=jaXNY9kJs5/rnOBuzZ0Vfv9VecPl+V2yDwwgATQ8dHMw7ALirrakz4G8EWuIW0tCMywsWZ
+	SDMdsMAmHcxlPyPLMLZZwwV26KZquAkF8CbLHmih6QVM0fZCrYLEfmgW+nzDNxny2h9bWo
+	smCQwal+qlXo6iitr+uVnqe6MdU4gvE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=kPztAiAF;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4edb7c8232aso80251851cf.3
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:59:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1763477977; x=1764082777; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6zUAnqwUQ7mMEKfAAq0Pm8CCEggD/qceLgK2oNv/WhY=;
+        b=kPztAiAFh8YFu62sI0YQqs/4InxbbvatYJzCzYBIY2HYM/wJYeGpCobG1KqOk+Hml+
+         6i2b+jEj2kV9H8FjTeFjh8eY3+iFXlEhLFon+6gieAaAHHEeKQrQem4tWzpTGNopPJHI
+         WT9WaG/s0Rk5q7gnrDYfVkTmennSn5hBI3kJutf2kGeBwJ+152M53e67KV+24zjxp0V8
+         oARscJAvXF89irVUgp2NK3wN1Kz54cvlWzYJK+5YLGmTiNqbMy1xBpmk79KQ27FwCN8W
+         4lb9I1rfTlXwgQZg82DLiO3Gyn1JHKhlrm5Z+1wWZb1mTZPGHeZuw1sqUpsV4pEBsEY8
+         4npQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763477977; x=1764082777;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6zUAnqwUQ7mMEKfAAq0Pm8CCEggD/qceLgK2oNv/WhY=;
+        b=tAUhqZJrA9F/kjrRXMejWyPv3rXzQd+lkCU8vjTUPrSEDf7aP0BS/L0RLeXSMxfQyS
+         QfeDSdhUrITqWKxdRPlset0EyyJHGyKk3En/Zy8hfDYnHTFNhSMLTJy/y5r8wrxGvjwk
+         36nWj6tH+KXJfsSzfXdvlzoGiV/qSvcBoLrRWldeMqIqQsx16yZ9b+ZQodhrDDzMYS67
+         3SEG0TX2I9OAOoLYcYqBE1mtI4ffH8/Jn2pFgwpi2iZ330e8y39MI0s7dIVip4pSm0gA
+         e8SF/M5j7dlkyUjVWHHuZERLdQ7u17aJl1dqjXoHV8AHzSuR5AF8SFREvVWCtwI9OErD
+         MtuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwSRVacXCWxYWBg+w5abMl1HfVHXfjcy2NKHrbr+zooaVje4F9lbCzyb+xgSoyR2htxzrCnzA0ow==@kvack.org
+X-Gm-Message-State: AOJu0YxDNifN8ZMhPK3V9F4bwhL6BGI1sf4KedoQgCA0oShjiQPcTUA/
+	eFsBR2SFXOOhzv56d201uwu/FdnErSpRz56VVVtV5TsyO7wqZk8BDsZukiG0c5BhOm0=
+X-Gm-Gg: ASbGncu1gpCuNcJpXIwE8U+fPOh5TmmhzWQ8zgrqQL7AC6/K4vDI6tIyYYR4Bd9byeP
+	kb4glzhaSkYS6z2sOGJpyOSBmT3DtutfebSwNv3OmMP+fpn86eValmjjIAUXy5B/3777X8e1r/F
+	Xjuxdq6QJHDoEWz5ylEH4cF3WTCQJKhYYKeMf4SG9acQsmu1UK/OfnCWElkMeED4SOrTRb3nkc9
+	+eVom2UPYjBJpnOup6k8HncPfYzy/ennCVKvSAuGoV6FDGUI7UajLdiItqVHaVjSvqdhY1VTlrt
+	laqP6xu6tSXk3nJVMYm3wiEJhyEQnjxxvC6PFpu9UAFdjLXreQL7j2aloZDnyE7NNy9iiWL1Yc0
+	WUSMkE21y0PpNtGRDAK8A6e9n4OANPO6xCAKSzK5FQ6rF5j8RRrreg5wQwEIGROo62WFtylworx
+	iMLbgeeybpJJeLiP1RzA+npEJs6BH4x+rQv2v4kxogglF1/E4iJvYkTXyFZlG108LHCKs=
+X-Google-Smtp-Source: AGHT+IFmOGfhY23WsMGsPUUjQKfSR05e4XRcukJGt61kp9ViFdOBWiVKVUUuzQ+TB82GrGuUAmTsrw==
+X-Received: by 2002:a05:622a:1a08:b0:4ee:1563:2829 with SMTP id d75a77b69052e-4ee15632a6bmr144570871cf.72.1763477977218;
+        Tue, 18 Nov 2025 06:59:37 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ee275abad5sm34184941cf.14.2025.11.18.06.59.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Nov 2025 06:59:36 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vLNB9-00000000NQI-239J;
+	Tue, 18 Nov 2025 10:59:35 -0400
+Date: Tue, 18 Nov 2025 10:59:35 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org, Alex Mastro <amastro@fb.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH v7 00/11] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+Message-ID: <20251118145935.GI17968@ziepe.ca>
+References: <20251106-dmabuf-vfio-v7-0-2503bf390699@nvidia.com>
+ <20251110134218.5e399b0f.alex@shazbot.org>
+ <da399efa-ad5b-4bdc-964d-b6cc4a4fc55d@amd.com>
+ <20251117083620.4660081a.alex@shazbot.org>
+ <20251117171619.GB17968@ziepe.ca>
+ <3599880e-5b50-4bad-949b-0d3b1fb25f3f@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <c1978ef3-251b-4a57-8244-b047e66b6ab3@linux.alibaba.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KBdyti8K6YtGSosCT2DFbi7gXvnAktySU9vjdexa7yk_1763476798
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D5DCE180009
-X-Stat-Signature: y6t5scpwp3btbxd4b3i5yeth6pmrsxo8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3599880e-5b50-4bad-949b-0d3b1fb25f3f@amd.com>
+X-Stat-Signature: efpjmewsnhg1fpqdtazbdc5gkzs3t4k7
 X-Rspam-User: 
-X-HE-Tag: 1763476802-360876
-X-HE-Meta: U2FsdGVkX19rySKqrw1HwQlVcv2hxvGxdj9E/vLos3Agb4T7YEwN2DIfxCcxel7NRIQlKu3nd/idSyJt9kEj/SSJ5Jn2/s97FOv7TcU5A7aepio2R1feh4D0vC7AeGRo3Ir3fWlV43BnQ7c5kHEY7dMX2/OlA5KpmV1Cuq4uclel9V5IBTmxvQlSK1k47XpUgvQTdeKN7KoAQIlScBEUcty43MjiGQ72h8rmuBu/RAB6XDZrh9tznljdXkUpatA5ffNzfGchA9bdO1mXZxR1NNc4dpRD0GM+SL+V0Hmp0RCrBz1SQP2TXlantcZkBR2mNoLHYc0UMoCGHWgmesgbBptDsc1KzHLAjW704QZjfW9PM89DITbSSOWX2aksC1gx2lZae+pgNvL98B86J02bj8IhYLzoc4Tahf8l/NwsqFn6LLDCG5jVHatf2Hxqjvr8USfu/3ganWyIUSQ1HmflsgwOzVNsnGSC/AX2pgdl2GcczqPa5rRrz+Fg421JbEiu9adhH+iI727ZL5+FhoTUJhBEG0uYlFmGZdA66ytwAR5VeK9e3+XfMTbmQS8xDGs5lBdq5MueR11cT5r13Mp0n2jcJK4ydpw7M9RsuM86ibQuWJLzMRskCrMY9FJlV2dsk53vn7Yl7ihxxCSsY8Ok+dyVzra2hrjspD+RYqCrFzdJsEX7eJFRJytjEMXRxgvcdAlvjLEB+ktXygpnkVlsma9U6MIbg6xjpgVl6Q0C6eYu/9o0uAygQ8BoxDA4PBTGO9Dg8dPiUH38AkRqf0yOIvuUwXljuxCDDax+YV+c4BvkIYObWQqrJpe5xGY9nGliZtwT4p76oSTDocNpCsg4eBv5v1WZVOcOgm7ndPvtUk4GVyy/bJ+VYWLEdWHkTGtjL0a+y1vbuNyCRL6myL9mZC/bAKPTiGm3WYyuJ/yXcY5mDUZFNoLHwXYmhMpeEsM3JHm1/K6akSIwpMOuGVP
- YcCZGw5A
- DXXQRPyuQLlqMYqaoxAOVSYlGyyt4tz1uYWPThfUbGkZt3ByAJRvDXQEwxjODt4nnjbdc7Yfh0KMUPXrkv78Q+21/6A/Bse5wp9wCfJhQ9gQiPgRi/FRxpfFj/Pb0rINIwwzuUNMdwfWmyU0KcgS53FYIVo3HsY3WQ8+Xb6ZiPPMWoH6Ngvp8GKeX+ig5+asXXmYcSzw2gSMzOuZ8n6C/WJXxCMYO5bVyq2yZhJEVhen37hKbjcz1rqpwgew4rEZukMdLIp+3NfmyY/JIHEqsxwij9YBzHu+agcVhHL56/1SCWFUfn+em4UJwiymdLlVmRzdu2nygMSZM3p/ky6dx7CjAkFlCvOr+SnNnC2f7NLIpuY/rODAssOqpoN6sCKYTJS5a0o3lNMmLnunjOYJwy4zVG5gRcY4ZhLGt8MJQ65N6aUPp7+awshOcmCQqNTEdNtB+F4lTjX4DriW3WU1vJQi77db+f31UeG0s
+X-Rspamd-Queue-Id: 3301380003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763477978-460282
+X-HE-Meta: U2FsdGVkX18/CN+t2eJLPfM/3kgcQgz0mBGEBQaGZIXgtnAoZFWPe9tm8GiM/LB4Nx+CaHFrfwu+QWdpKVPMdMMzHR2E5ZiI55dkcmlWzjIFqOeq8SoDNy8h3hGtLtQgnj2S/g07C5r7jHh1KFPXSi2CFQc2hOtkUwNE+F/omnbT5S8am+JElr1gvee+1mX+cpIrKUrSHLkxQE1GnjB/u8/qKcj3NJI1DPnVAuW1xkpvhmZBh6OHILyM71Se8TypyEt0rjTbaEJ2/8gn+hQr333ldvCjdTtHrbktDz7gatngWAUCJ0WLtduV+oCufte0fEeZQ9cbUm684KrPoNI4l/IVUlKqrn0oW4Vlb63fUlgbG8UdqWWOgOhW1J3r7i8a5nkfVEj6tKTaUKt6flDLpefYPN24YosZyeoC5s6Sox9ZapolhsjybVAfrJszS1yz7/Xo3iZo4FC+pJrCu/55ZpVFVzSg8sr2LSyuT+N7d4PYzCruy6B4ZfkUHXieNzjyHAo3h+KLXec2SJD+2dDg6s2xR7IHhQ3wUnFXBn9KCSVg9CwyNHJbmHUU0s7iP+gHHmd7oVXHJS25OyhSCoHfoQaCQvd8x/CcmW4OzZUULlhYqCLPW2DJt3j1KFcfLVreY+Me8a6RTJTKAd4HwLZgy0hD9bszgaBANPxXr3Lfe9QixL6pkPDAe2Ru3rKW6GKEjny1xliF4Q6ZzSTVb7PLzqBf+1ftjCn5zya5EfVpeSfiGkc/3ucU8D+ShtYxhtENDecj/e9fT/dO1HW7aOarGorFbYBuQizha5IhPOyodIYzeA/FLdxV0qJkJy/T20OqiP0BLJneZnwG30W8REXFfpVp5/2r7sngZFA+9Vkza/QfpM5wJg3kNGzcEUpesTTlcK/8yvrmJTFRnsjGIlmCnZt/Vy/ZENeSCnWFmv2+LMr4sLCHe/ttw3MkuwOWJw0WsFaVB+3fRnwzvTNSUk1
+ SkF0h2WG
+ vxlAc9SP+jOV7sALSWxoTWvtlW7GbC52T9PXwC9ouM7YlD9dzMuKtkRKwCh6gn4JOK6jvszBpUYokDjt+ITKie2bVtLbErJeGPBxRMk+F9XpoJlKfrEtIQ7m5jhdTAN1TKYu9ujJIIAXJ67BOzr3epyxhPGfauKn/laDJyoZdJ1om1NM4T5uTK1u7GyidZ9uVsRjTyr19Vm6GpHpNofDtFpzvO9vkL8ER7HSYlGTmtrgkMO8MG5SAfKGF2VE0KAF8h/46DxRTD19QE7auqmXrf5KbWPtl+V7hHKsPtOrZ/CC24u4ajWfOestBoQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,87 +152,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 10:33:44AM +0800, Baolin Wang wrote:
-> 
-> 
-> On 2025/11/13 00:25, Brian Foster wrote:
-> > As a first step to facilitate efficient post-eof zeroing in tmpfs,
-> > zero post-eof uptodate folios at swap out time. This ensures that
-> > post-eof ranges are zeroed "on disk" (i.e. analogous to traditional
-> > pagecache writeback) and facilitates zeroing on file size changes by
-> > allowing it to not have to swap in.
-> > 
-> > Note that shmem_writeout() already zeroes !uptodate folios so this
-> > introduces some duplicate logic. We'll clean this up in the next
-> > patch.
-> > 
-> > Signed-off-by: Brian Foster <bfoster@redhat.com>
-> > ---
-> >   mm/shmem.c | 19 +++++++++++++++++--
-> >   1 file changed, 17 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index 0a25ee095b86..5fb3c911894f 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -1577,6 +1577,8 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
-> >   	struct inode *inode = mapping->host;
-> >   	struct shmem_inode_info *info = SHMEM_I(inode);
-> >   	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
-> > +	loff_t i_size = i_size_read(inode);
-> > +	pgoff_t end_index = DIV_ROUND_UP(i_size, PAGE_SIZE);
-> >   	pgoff_t index;
-> >   	int nr_pages;
-> >   	bool split = false;
-> > @@ -1596,8 +1598,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
-> >   	 * (unless fallocate has been used to preallocate beyond EOF).
-> >   	 */
-> >   	if (folio_test_large(folio)) {
-> > -		index = shmem_fallocend(inode,
-> > -			DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE));
-> > +		index = shmem_fallocend(inode, end_index);
-> >   		if ((index > folio->index && index < folio_next_index(folio)) ||
-> >   		    !IS_ENABLED(CONFIG_THP_SWAP))
-> >   			split = true;
-> > @@ -1647,6 +1648,20 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
-> >   		folio_mark_uptodate(folio);
-> >   	}
-> > +	/*
-> > +	 * Ranges beyond EOF must be zeroed at writeout time. This mirrors
-> > +	 * traditional writeback behavior and facilitates zeroing on file size
-> > +	 * changes without having to swap back in.
-> > +	 */
-> > +	if (folio_next_index(folio) >= end_index) {
-> > +		size_t from = offset_in_folio(folio, i_size);
-> > +
-> > +		if (index >= end_index) {
-> > +			folio_zero_segment(folio, 0, folio_size(folio));
-> > +		} else if (from)
-> > +			folio_zero_segment(folio, from, folio_size(folio));
-> > +	}
-> 
-> As I mentioned before[1], if a large folio is beyond EOF, it will be split
-> in shmem_writeout(), and those small folios beyond EOF will be dropped and
-> freed in __folio_split(). Of course, there's another special case as Hugh
-> mentioned: when there's a 'fallocend' beyond i_size (e.g., fallocate()), it
-> will keep the pages allocated beyond EOF after the split. However, your
-> 'end_index' here does not consider 'fallocend,' so it seems to me that this
-> portion of the code doesn't actually take effect.
-> 
+On Tue, Nov 18, 2025 at 03:37:41PM +0100, Christian König wrote:
 
-Hi Boalin,
+> Skimming over it my only concern is patch #6 which adds the helper
+> to the common DMA-buf code and that in turn would need an in-deep
+> review which I currently don't have time for.
 
-So I get that split post-eof folios can fall off depending on fallocate
-status. I'm not sure what you mean by considering fallocend, however.
-ISTM that fallocend contributes to the boundary where we decide to split
-and/or preserve, but i_size is what is relevant for zeroing. It's not
-clear to me if you're suggesting the logic is potentially spurious, or
-this might not actually be zeroing correctly due to falloc interactions.
-Can you clarify the concern please? Thanks.
+I think you should trust Leon on the implementation. He knows what he
+is doing here when it comes to the DMA API, since he made all the
+patches so far to use it.
 
-Brian
+Please consider just reviewing the exported function signature:
 
-> [1] https://lore.kernel.org/linux-mm/097c0b07-1f43-51c3-3591-aaa2015226c2@google.com/
-> 
++struct sg_table *dma_buf_map(struct dma_buf_attachment *attach,
++			     struct p2pdma_provider *provider,
++			     struct dma_buf_phys_vec *phys_vec,
++			     size_t nr_ranges, size_t size,
++			     enum dma_data_direction dir)
 
+If issues are discovered inside the implementation later on then Leon
+will be available to fix them.
+
+The code is intended to implement that basic function signature which
+can be thought of as dma_map_resource() done correctly for PCI
+devices.
+
+> So if we could keep those inside the VFIO driver for now I think
+> that should be good to go.
+
+That was several versions ago. Christoph is very strongly against
+this, he wants to see the new DMA API used by wrapper functions in
+subsytems related to how the subsystem's data structures work rather
+than proliferate into drivers. I agree with this, so we need to go in
+this direction.
+
+Other options, like put the code in the DMA API area, are also not
+going to be agreed because we really don't want this weird DMABUF use
+of no-struct page scatterlist to leak out beyond DMABUF.
+
+So, this is the start of a DMA mapping helper API for DMABUF related
+data structures, it introduces a simplified mapping entry point for
+drivers that only use MMIO.
+
+As I said I expect this API surface to progress as other DRM drivers
+are updated (hopefully DRM community will take on this), but there is
+nothing wrong with starting by having a basic entry point for a narrow
+use case.
+
+Thanks,
+Jason
 
