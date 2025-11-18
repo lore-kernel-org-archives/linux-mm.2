@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 451FDCED606
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:22:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCFACED606
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:28:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57C966B0022; Tue, 18 Nov 2025 06:22:04 -0500 (EST)
+	id BCD416B002B; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 554926B00AF; Tue, 18 Nov 2025 06:22:04 -0500 (EST)
+	id B7E2C6B007B; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46A3E6B00B0; Tue, 18 Nov 2025 06:22:04 -0500 (EST)
+	id A6D166B008A; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 30CAC6B0022
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:22:04 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF991592C2
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:22:03 +0000 (UTC)
-X-FDA: 84123488526.28.1348775
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0E93280009
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:22:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PiVE8uzM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 918A76B002B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D33C14050C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:28:30 +0000 (UTC)
+X-FDA: 84123504780.14.61E70CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7E79EA000E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:28:28 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQLu+9rZ;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763464922;
+	s=arc-20220608; t=1763465308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DxOYts0Fmp5FDQWz0e0QXGnzOFM/fR7pmTcekd0dh2Y=;
-	b=kJnhqhSCIBLlyrPwK18TqjaeWKoK0KXxdI78NOi1Nqy5g2O2dLTWhRXB6TMCxhMMN9sLU8
-	TvB3nLivlKiWafSbunQCmvyOuahqcLKaNNW/GUj404LSXpAF/a1zfs5pyI1/skTagELXDJ
-	uRUZFy0eKalu4PaU589jB4sqmZmXtcY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763464922; a=rsa-sha256;
+	bh=yQuCt/2AXBUtG8XQE7BO4kuhqJFxjKrERJo49LtlSY4=;
+	b=Hcf66FzpXCv9hXQWqC2LDo5y0YIu6gmhZvrUcLDMBgXCNERvRW2FTwKhHCxB3MD6GRfbza
+	y4nB3clAmEA3nk5H2CrfpGcKkU8xDe8Fszax2uWZcwtfpc7kuU4jLNsXHeyOGmR7M5OZHT
+	WdmsqdRVcj1j/f9sPuAfQ2TGplifba4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763465308; a=rsa-sha256;
 	cv=none;
-	b=6D9ZxmkXsb44Fm2h/+OalrVr9grTHB2bYJiIta+x9G9Z6vssCDtrwShqt0Vy2JcyGifyai
-	Kw05ejSQqdIvzzDwxYuUjbJNe3DiUPWakmnSzjvbr2O3JmyhILSIgLJ5aoe7YGLNRFEOH3
-	15fxf2gDFL0RB6Tnpq88xNUZwM8jW30=
+	b=DRiwglmVZORV1SatX9XCjsX0a99Eq6wYQ2dDwIINlIGSJQociNaMahqkz5PVqW4218Y6Mc
+	zWJvguzz/qG3KoGn41ZVJzodsgjBfCjG+mtRawDN0V2NNmNV0AYKtvewpJ4IJ2oeK2j7Rv
+	beYv0PvoaQ1rw+H4OnPsIF8dUOq8QGA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PiVE8uzM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQLu+9rZ;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DE4F60192;
-	Tue, 18 Nov 2025 11:22:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7B3C19423;
-	Tue, 18 Nov 2025 11:21:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 17A7640AFD;
+	Tue, 18 Nov 2025 11:28:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA73C2BCB2;
+	Tue, 18 Nov 2025 11:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763464920;
-	bh=OSqrTzVKPfEphWSOWozqjN2DP6jQ1KyGCt3LKIzrAwA=;
+	s=k20201202; t=1763465306;
+	bh=B3Ck+ZeJMAqa97fGHBodXk952kfsyzlVaAaz1fhsUjU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PiVE8uzMlUpbGMOt63k6vT8hw2abfpbdQAia0dP8s95gP0HGX5fqQBVw6T71VApzj
-	 KxmYgAGG71dqGOdUg4HjnG6IuQfg5PpRaH9zD70xx5QpJ7SyM66AJNLOx41zAmQA76
-	 Se7qyl+Bj42AlkZ9gFU1Kz+G0qbs1PPVvgf6TZpliCSjdo57yFzup0baGiLn44pKgD
-	 ovt78WFggNj7PnxWuPJy7GVjcsYBZ9hWBPefxqqiLlACZYHUOKyU51ZYZ1hV8/c5am
-	 LqW7CgaFMV4iZ3wVEipl+0eGPKrwlgcDDl07AGZJpMGkGhJL2ogQFrtaNtLOsITVkS
-	 VYdo9nZgRP7GA==
-Date: Tue, 18 Nov 2025 13:21:34 +0200
+	b=GQLu+9rZRRAXOUo92WAJWcJwMQwCECdt5VEQNNd+yp5MfU6CT/SCqQGSMA1LzumqT
+	 NfCkJGz3WVbw4jmetvEnNdBIZtFyXHwH0Uv1STbCTH3FpF6egZEea/8IThMQV2AnE7
+	 Xva49r63Ie+VmHsEwIVC3bWqvEFIsND9oBQ2SEDO0+Ttol+YON6Nqe0C0GMP8C0p/x
+	 nFs3/rjxgKCHsFSL3CWTeJs90Qo4ldWBUDxa8ow5mCspZWSwIXVih7aEib8XXJ+3jN
+	 3u9YDrfXHY0BGetjelUPwh1a9YTF4bmTsULA+0awTrM4pf/hzkdGxtAY8qVHPr80PG
+	 yj/Y/ua4PKjzw==
+Date: Tue, 18 Nov 2025 13:28:00 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
@@ -93,28 +93,25 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
 	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
 	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
-Message-ID: <aRxWvsdv1dQz8oZ4@kernel.org>
+Subject: Re: [PATCH v6 08/20] liveupdate: luo_flb: Introduce
+ File-Lifecycle-Bound global state
+Message-ID: <aRxYQKrQeP8BzR_2@kernel.org>
 References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-3-pasha.tatashin@soleen.com>
- <aRnG8wDSSAtkEI_z@kernel.org>
- <CA+CK2bDu2FdzyotSwBpGwQtiisv=3f6gC7DzOpebPCxmmpwMYw@mail.gmail.com>
- <aRoi-Pb8jnjaZp0X@kernel.org>
- <CA+CK2bBEs2nr0TmsaV18S-xJTULkobYgv0sU9=RCdReiS0CbPQ@mail.gmail.com>
- <aRuODFfqP-qsxa-j@kernel.org>
- <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
+ <20251115233409.768044-9-pasha.tatashin@soleen.com>
+ <aRrtRfJaaIHw5DZN@kernel.org>
+ <CA+CK2bBxVNRkJ-8Qv1AzfHEwpxnc4fSxdzKCL_7ku0TMd6Rjow@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
-X-Stat-Signature: jou86b3o417zqxrc5qqzubd6dtgbzcw4
+In-Reply-To: <CA+CK2bBxVNRkJ-8Qv1AzfHEwpxnc4fSxdzKCL_7ku0TMd6Rjow@mail.gmail.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7E79EA000E
+X-Stat-Signature: zo6pb7qt4abfbfx144s66owbo3a17xnm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E93280009
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763464921-747556
-X-HE-Meta: U2FsdGVkX18eC3kPyY8uCcUdtIKHuVe+ppT30PHmRasQutXVuAiwOgdLBhrBT7/O416++Ml0F31JU3VoDkgmrpF+eXoodHGt6lER7Y42H2E+8ioyI8CTzrgZOBkaass4K1kyFWUc9GoOfPiAfZMpcxq2K1q5D3HDYo6MP32PdKHEZbTE46zUqTLk5svtXLrSCNaA539h7AIDjvJh2iaJCU8HU0t371xIqB/3TKXsCDI5GQ7gi33iYZirPXZ7P3fn6TTUrhiN4FtBJb4iRw19Q7RLyMopai3Qzjl/OSoKHAB8biZg3u9yPZb3dxc3+DncckxhB8NZEVmUSF/UZQUb8+gcTdDcakLtZ1Xuxl8yuB+sGOSwgmDKunroAYRyoIqi5Ob1WmCQdtsUuJrwOiO3pQyOvGH82wDsE9PqwFDTOGHhf8RgJWjYT83qzM5brcsnU957XmlVY8tg3aoh889Gvti+J93z6EQTalgaaovZYBZsay5Ck+2xSbC/LTf9+zNqfwAIEU7M4Nt+OAqUy9g0pPyK+tJX4xF/SCJMjwo2Zp/K37gD3/IhLmFu4P2Ctp+TFGgdYUKP9Mto2A7vSIUVPUcLA+twR41FWchgdjMSHg+Gm7OAbCGDwFRA0n4GSmXMEkhElSIhAvGuokr7RSHz7ZISpIZd/dvU1gEuo7QPISrGdFnFGKB1YUoD/HdUPe4ep+pu+AmbEzLN1Va/n3fOB+tU3iO3stTbFYeyOf5NK0ZKIp7m7bM8D4XjsLp78kp19Cl74+IDsJ6KFFoKXJ7zrbuX8vyI1le0WGoYqkaGVXKCbiXmBUAhOkE65YOeESqfxI/pU0FVC+kdnFAlXtd5Av+4MpOfGSRv06U0o8tSfmpVb68bQunLSvWVXacJrUtYYOZOHY5KFTARx35ZWavDGYcX4by9tysVibdOfi1BFaRfRPyYNN1gzXw3Mg5/Jy42OCMxBO8b6qUMHvFym/j
- xwVKZmbL
- OGV5s+nyuxnEHKZWEDNnIq+YVjSePyYNfDITb17CV5ocnsyuOOke4yK7rsUc7le2MRMIhe9XftMShu2q39qN1qY13be2Msu+8Ul99LKKJUm3BmgC1KQgqF4gG/k9ZPDkSRF6sJDIBvgtQUMHgQYLpu8GA8oB8AdrmLVwUJsJ7cDSNIyObcl/KrzsUjU1NogMERmQYW2RudCf8mfMMU3jvUEYJI/v15DUBbvTTLnQqebw7bBy9fz3wXvj1FkjGFx55ST69LJXBP+ZCbvD7B+Xd+HWrpKeCgVM1+CmSA80wdu3wNMEq+M4SFIvq6udbKuIET8IdjwFIhBixXGLjNtjDixhC6SF2v1D2SUJnM6tz8acPrAQ6AYbOwhDXfo/Zcq4jhN7Ak9ZQ5nYxrC8=
+X-HE-Tag: 1763465308-930792
+X-HE-Meta: U2FsdGVkX1/R00gCLRAdgyjR32EyVhLr5tpyLmRoIz6POS4ICagv2kESqUSv8TAwzFP9RGxgXQa0eo6b5HEZn/GaArG0KmWzyMP8wqAaWk8jXEXH0kgQIzXSe73a76PoS5P+pi8oG4O1KXfosaHXNnkDuFZNgskxWAeo31KNJBerPZnVRyHbA8aHRx4DODlBjNQJaDJjMnrtanrmj/KohtRyoHLvXQ+YzaoHXEq+Qv2Oh3n1sRoB0hdKwIyb/LsM/ESrXhfdxanSVj5miAKPggsYkB+h3i5Rw3ReByUvV+bbWs+b+dBvjtNm0z3ezs6ErFC4eDeSs9wOjarO5Ogg0rTfAJAXMdwHMpaGM+u21CY6r/VRyisMxgGs26Gupu5TKfXpg9/n1l5bd2OldzWEDPUIpXFAHJpC1vLGpE3TrVEXKk+c2OpSAqhesI+CiKsnymCgBrDZ9yl+BGyCLN6YGkJpeykAO+gPkGE0oKuezDKvP5hOVpu3gf3eytjZK39J+jMqLLy2qOai0yOEmqWuQszoPaLzSKRWYywJxgudsIVnzw+j1OgfqLgnJQV3YkoNpSfzeNAASlW9CQeFShTYcFXQatzeDFNpQDh4ObWvzC/rfbqSLZ402/PCu/eK49v0UK9HmRFQfCgN3YJkLEVKMKnUSZzmxKU+CTcM1I+6ffzN4nEq1WBDCkUsxl65cWYsFb6d9qS66e9VTCE1cxWzHpNMeKDbPqeFS6PiWKbu9wjSqdwqaX69WkoaoKNQR6lvSVoWlV6+WW9qC7L3inTaGKE1DDnXg+gPJRSgOuzNdCJwPCqJi5YetIGcb8dsaNKhUBKNyJoC6A2P9kRN8WcwSajooG8Nc+C5uGT6b6XzvbbldUJ/v8TehYGo5kBacQLe9f3Gz71G/IyKUIUKsINLbpHyshkktzbYo7hKGlOaSDT/9eEvwlXXf7gshbNEbScbjULssDppaEmvFrm8rgW
+ 77FcFXJc
+ ifJk4ATRf0SdCzeoU6lg8+nbxgtp1upLvuOB9z6DzlJZ4r+tl1+kHsJPvaQ2giQNUh4lZ+XTZ6DSoDYfmTJpLwc6acOMPdTnSK/Mhv6NRgaTOqKbDYKpNbf/6p3SZLpfgbAPu8iadVnrz+3DNnKtNMkDf+94O4xl21rnEMRLkr2YZpbKDsbwsXK1jPRmChZeI1Lr6bXXQdsWTBU+lYxXNmLlR1ywsMueYX7DPq7pgLwayWVLVcLCkpnaPJPQXqZY1sw3HajGdYtZWCX/SWHLZbf2R0eMlVYObveT9uS6TWQJCIMUOOxLBq3OrU8/t7OXvxBTmFDHSp98ySOnQOrksKzZYQur3yfnjbxZH4HQr6A0s3Ltf/o5qOnTwxQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,30 +120,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 11:22:54PM -0500, Pasha Tatashin wrote:
-> > You can avoid that complexity if you register the device with a different
-> > fops, but that's technicality.
+On Mon, Nov 17, 2025 at 10:54:29PM -0500, Pasha Tatashin wrote:
 > >
-> > Your point about treating the incoming FDT as an underlying resource that
-> > failed to initialize makes sense, but nevertheless userspace needs a
-> > reliable way to detect it and parsing dmesg is not something we should rely
-> > on.
+> > The concept makes sense to me, but it's hard to review the implementation
+> > without an actual user.
 > 
-> I see two solutions:
-> 
-> 1. LUO fails to retrieve the preserved data, the user gets informed by
-> not finding /dev/liveupdate, and studying the dmesg for what has
-> happened (in reality in fleets version mismatches should not be
-> happening, those should be detected in quals).
-> 2. Create a zombie device to return some errno on open, and still
-> study dmesg to understand what really happened.
-
-User should not study dmesg. We need another solution.
-What's wrong with e.g. ioctl()?
+> There are three users: we will have HugeTLB support that is going to
+> be posted as RFC in a few weeks. Also, in two weeks we are going to
+> have an updated VFIO and IOMMU series posted both using FLBs. In the
+> mean time, this series provides an FLB in-kernel test that verifies
+> that multiple FLBs can be attached to File-Handlers, and the basic
+> interfaces are working.
  
-> I think that 1 is better
-> 
-> Pasha
+Which means that essentially there won't be a real kernel user for FLB for
+a while.
+We usually don't merge dead code because some future patchset depends on
+it.
+
+I think it should stay in mm-nonmm-unstable if Andrew does not mind keeping
+it there until the first user is going to land and then FLB will move
+upstream along with that user.
+
+If keeping FLB in mm tree is an issue we can set up an integration tree for
+LUO/KHO.
 
 -- 
 Sincerely yours,
