@@ -4,113 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC486CEBF93
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E34CACCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADCB88E0006; Tue, 18 Nov 2025 02:00:42 -0500 (EST)
+	id 314E48E0009; Tue, 18 Nov 2025 02:01:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8C4F8E0005; Tue, 18 Nov 2025 02:00:42 -0500 (EST)
+	id 29DC08E0005; Tue, 18 Nov 2025 02:01:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97B928E0006; Tue, 18 Nov 2025 02:00:42 -0500 (EST)
+	id 165F78E0009; Tue, 18 Nov 2025 02:01:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 828428E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:00:42 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13E00C03C7
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:00:42 +0000 (UTC)
-X-FDA: 84122829924.28.39EBF9F
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D37B62001C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:00:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Rph7KNau;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763449239; a=rsa-sha256;
-	cv=none;
-	b=irWYWzYeLtVqXptqYJW83ubv2zOdmh9eIgEIP6vqQZQE3IaPgwQkEzh3aetYvqTAVvblI2
-	dnbAFrrSHMTaIydWNkDx7QYXffRFrvWDv/qs8jrAhClFhU4BEFLIxUkVjv2dbqgOfw/Flc
-	dDea5zMxegcPsNxXOrlgwKlmlBvkQ3Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Rph7KNau;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf13.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 004768E0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:01:32 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C6C61403EB
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:01:32 +0000 (UTC)
+X-FDA: 84122832024.07.BE03DB2
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D5EA414001B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:01:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Swn8OWC9;
+	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763449239;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763449290;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RmTt4bdcSxqSZRCTcBCbSzCGqQ66VU3Pz/goFqi2reY=;
-	b=fWwiuMB/Vg+SG3XAdmq9BjkKvmyqSIQP4ttXGdRjTTpaimwuQ8idWooyz+OIV6+klmatHF
-	Kr7F2pUzTlPhBqQKd74Ok3rvuFw2H5wcX1xp0+PEVUGsB0j3FgcJYnfI0CkInfHUFgBh4k
-	MziGUBFwJ00cXpH6IeWbrwvGVJgGShE=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-297e239baecso56192235ad.1
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 23:00:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763449239; x=1764054039; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RmTt4bdcSxqSZRCTcBCbSzCGqQ66VU3Pz/goFqi2reY=;
-        b=Rph7KNaunv1hvbcR03LhqdTUp4q5czFMj1wGNu/5ErBoLGqQknxYKTrlw/Ekzc4pPQ
-         bBQhH1GeB7S2sMHs8bLSELGK71NCjDQCuL+wxWujtgg1yPcbmz5HA4o5+cvkhSHZCbsy
-         gxEh06VjHzuwV7hxIW2jLbYgX6sNifSvIJEYA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763449239; x=1764054039;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RmTt4bdcSxqSZRCTcBCbSzCGqQ66VU3Pz/goFqi2reY=;
-        b=ODvoLaReIz6UMfJGQJttRLKHsIJipA3d+xjGMk6wyVqRW8o7LAZiG5W6rs6gBv5cAr
-         PIukjAhkSpdEbw6WGN5LnZjjEGgOzr0osklGqRejcMTeQihaJ2BOoo1EaqdO72CE+Eqi
-         5AtsI97X8yk0NOU7nxMZilnXU8Zbo+PQD4XvqeXbQfOBnJNsa//NR2CHJOABCUDS4xbc
-         mYDVjWwLA0rOjDlvvvGspYmfFiQIClN8FvFa5nVq5BZJZDBN8/QtA2334r23I6qnuDm7
-         Dojnm/nhB3tIkNMQiPpNpizDK2+/JyIwMr2UUncfBS6x3UxAY0lTudfvtP9+jHP0Ky7k
-         +itw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLkSuSQ/RLWFcL0pSeR/a57MJy4Ef2i0DMLbtDqn2bo0B8YADg6i2OSKbx1q30XkWOD4sxTiGrjQ==@kvack.org
-X-Gm-Message-State: AOJu0YyVHyZXijrbta1wzp52noa5etuuThd6FzBOLeQnViS8j4rlIk2c
-	n6zQ5KJGvOia8mnxpk36SkQjUMDjUdEAGXcs7F9GSFpvxsZNxnmxggWE3CiJJ7DVjg==
-X-Gm-Gg: ASbGncstyMwb3ZtYSUI0jF80nrsyYTtb4jbOcEUZO7EIU7eA9YvlHpZ9f3bTtP9YS+N
-	pOzBNrLe5LLjzM66o6WiyeTch594192l0DYz+RgufWD4VtG/cRf+p3/FIYI7iW8R9AZV1vEE6gs
-	6+N6k9JjwsJw3au22RlnviwYQqdBUa1XcdKz0D7dd3NOuJthWA7qKbdpcO8rdQZ3EqKPwZhJ9uC
-	UmmlfzSl6wIdhJ0CrQFf2q3CHAaMCoH6kfPBh8PcrsIJ6ZJbo6ndRn5CrwK68UkJUXNfO0ieUG3
-	wXLFRR3bwEPgqG/Jwz4vM45O9BT1V6aYoqQog7Y/8DfiwAeuFdFdVTlwB+8TX5JT7oQ5GiPsq3b
-	zOI0LIXrtESfpxae/1fi2jZuE8WCwCGzliG7cPq1xrJKWpUg8PvkXEGfBb3IYW+odnNuGkIJmSs
-	BhTzFE
-X-Google-Smtp-Source: AGHT+IF3GB3OuQkSGJQgjd6ndP7i9bypEbEprGds7oNMXJqRWrwJRSq9m+dsDKDeLD7REP6viKq7kw==
-X-Received: by 2002:a17:903:3b88:b0:297:df84:bd18 with SMTP id d9443c01a7336-299f55b8153mr28585875ad.30.1763449238472;
-        Mon, 17 Nov 2025 23:00:38 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:beba:22fc:d89b:ce14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c24941csm161791945ad.41.2025.11.17.23.00.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 23:00:37 -0800 (PST)
-Date: Tue, 18 Nov 2025 16:00:32 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Minchan Kim <minchan@kernel.org>, Yuwen Chen <ywen.chen@foxmail.com>, 
-	Richard Chang <richardycc@google.com>, Brian Geffon <bgeffon@google.com>, 
-	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, Minchan Kim <minchan@google.com>
-Subject: Re: [PATCHv3 1/4] zram: introduce writeback bio batching support
-Message-ID: <hbtjgtrba2elesgfxva63y6g2s3ycnwv5yhxlwknrfpulmljte@ghz2eudf3i7r>
-References: <20251115023447.495417-1-senozhatsky@chromium.org>
- <20251115023447.495417-2-senozhatsky@chromium.org>
+	bh=NN/33ifYl1WumRWtJ01j5wECnyYUZIw+8lYgHF3pdkY=;
+	b=BGg8ghpqKdyHsNUXDOk28YuuXm72qCXLPO01pjIWKg48gYvINIRXYD8F7ItZOF1ZRcF3w/
+	7b1XVsiyA41J6CY9RA3fLCy6TJNpIWGzZfJCH8Bb1H244ww+cPf26rGAx161kjnF+rJG4t
+	/+7HP6IhnuhbmL3BHe7kM7tk0W9e0dI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Swn8OWC9;
+	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763449290; a=rsa-sha256;
+	cv=none;
+	b=uo2gqxvtW23E1J6kzY9kRte27VP8eW6GQuxAXzTYwbEKLbRJhw4JGnsXdW/IoktGbZACI0
+	uZ8jknqX5vtjTkSOnM+f8uSyCqcSg3viwKWk1GyQZqhOfZSBxmUYCgGVMLoOEFqmDsPdYW
+	SONN063jTLAa0LB4P0cZX8UmQFs8eA8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=NN/33ifYl1WumRWtJ01j5wECnyYUZIw+8lYgHF3pdkY=; b=Swn8OWC9emGgXeb+svd6xyIRtH
+	O8+0bfGk7vkeVTnmYyKKioAH2dKMhnaFqOOdCZhfH7DTDKCUSFYkaejYy7x5Ny81bWQhjdQklMl7S
+	Kd0VDr5NDP9eF1J4N8xntap3OHNW7LYMKQSxUanm+oLz2/1oJDnE6dgRVdmQLOR5vLoRgU8+aY8O1
+	+aFljvFS4ROnasgOFbo/ITPdAlXRonmWAtPelnYbpVkk7vcidV3IaRtWRy+plvzUZekKUcxqbxUCM
+	z/GnEDfM/zcm9STlAGaLt6i8N1wM/qw5FGnC6drFm7BAttYg7nCeiSYYhZseGYxd1llCsSW+9Jwv8
+	PU9hcoXw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLE4Z-0000000GEch-2tzA;
+	Tue, 18 Nov 2025 05:16:11 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org,
+	clm@meta.com
+Subject: [PATCH v4 49/54] convert nfsctl
+Date: Tue, 18 Nov 2025 05:15:58 +0000
+Message-ID: <20251118051604.3868588-50-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251115023447.495417-2-senozhatsky@chromium.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D37B62001C
-X-Stat-Signature: q466cdgdpedc5x1bphg6jj8xz9etnh7z
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D5EA414001B
+X-Stat-Signature: i7nkehkd7e9im95qmai3dswb6r4j5pui
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763449239-978170
-X-HE-Meta: U2FsdGVkX1+Lj7hXVz75wFTgX3Q7VParIGoL/ZaR9P4xwu+RMCQ55W0yVbCjt/N/a+klT1HB6OhKR6ZmwDY1IZkLnBFmBEpgrF4QTUTsziLTsaSOJLa2wgYLcuA1JqKKTy4xpRKZ3Gziq3zganL8j5/Qwm3RxW5EyVK5pyWI+jgB2NFrjT+qLW/rFkGAyOfx7pL04qM/q+SKvDH4h0f3tgK4H666Nu1R6VxFUInSMB0DYaCxYFTjjuK1xWyL86J8+86CPRsolX/w2ro84ZGLNYfklL3GX6V9lAlTGLnrmQMYr4ka3HGrp/5j6gZFLBwjBllFX5gXdcmJ58ZNvbNnPgDb67iOmB0GPqhOeeVAPh+7t48PJIxd06z5e6SEExtiau17AaOTGM5M8xxc6K7NFCs36vZ4dputQDzN+lKvBp+8JD8Vq+m9xC3XLanE9829S967b+DiacynkHJcMI/yPVo0Quc5jHC8qr99g7W6WfrRy6Rce0BnCO3KXAxberpDNnzfKp4YCYVXtPmwFqoH94y+os4yQ8511aijE3+bvDtoGUeodAweMycpIoNLKW0mX3ClWUaYpjNvZHiZUJaMHyU74ScL0imwMPCjQtjuHbSc6BKe+3zv3srvu+RmXJCQfoBR93M9WCIfhz0Us6lnLkJ/Hx4KEVavp+4yTSh12xJjYa8jOum1s6+oLz8KakhP3O30dzu710+32cLEzu+OSZtfiYxfCyX9JJnreVw80BMTDzmF4IfoCjaKGsy9tcLhkgC9fRgb34uI6jXpbF1IC79jcnR6lKyXK2cDdaeX0eCK3tJNGDwYMK7/Gw6TBHqu5hEcIusRDTSqHcYNLMVYkGbJIC/zcBSIAKGrAIez10v0Fod0QA0UiR6+5u8XcYlajeL71HsmIG45emxj8se5i3sqislXfqDv1P6qURcqbAX2uiNl2Ir4sQdLkHL1GWXOiZ9la6q0yyUUzQiRGNI
- HRb/PVGW
- 4tnaZdiFluc+ZnaupuHjbmj2wUkc/lWdIin6zmHTBWQf9kJXwIZaaU6bef+Wgi8xwn4UEspEOUF4pN1eWkY4Kk58hb/J4Tz+eK28Hg3IavCv2Ex8feRguH5Z44GSK7m1Jh9zyHSBw1Ko/vPc6sxzN87xJepTee9HMVi9ndlcHWWL/537OzV+3kz49FxPDjLYWhQSTlL8HcaPniq/RQaVjgact8/m49RmWjnMgfCTsApRV62YLCqnDdPBF//EoGbzC2FzxCkuv4NnWaCf6wBUyYe1j/Mbgy+VyvY5a2s+m/qeZgrLFl3yAkSGMXLZxZniwIBNhDxBLQ6ivKy1E+NzFRzyb5SqnaXaCbs+dVaThIByvDVY=
+X-HE-Tag: 1763449290-401885
+X-HE-Meta: U2FsdGVkX19l7WSLCZSHyVu9ivXM8oHY+fGmDrAJVfyqzEula4yi5r5rU87Wt6LzgJpDfko0JmQdwZwObXa0mD2705/S59afFy8tDP3Y5DQVThAKTgqZmgGBqnvx4p0Atjhv1tp1p44dviMTWHWltA/TVlfz0rcbTh++mLB+1xVdolsyLJVz7nhxHZrzn8DGVGVXwihxaCAsRA/fz/9oWYkSDQfq+45m2Eag0UjfCr41Epq5nlDRWWlcEn5rEeSB786Nd/E3L3OJO1xTqZ7uoeSBM6kBY7lmvUvsfwuZBvI1e6sj/quJybfewPr+uzn5MpTUgIbpuko82qEFVLTY+cV1FQBZ8ePc0Yv9eDyGCI6+q5t3J/UzNQ3I29vGopXvufAnVOzldSgxhqVupFqOZXxPO5ptQH3UAvrjrqE0UE29DZNak7mPN6e3kmBLo1Cu+EHB5EE38pGHw94UqVFYu6+HuC8hrbAeLFqVUMxJIdYTDcDi/ZaZCNqTC4sGJHYfVhV/UcNOhg0jjbZwOPtegNS4p+POzlF41KZ/qAaNShVn+uk9hFbQdU15eC4e3A55sSHvDTi/yDnzGcFI18P0hhMoApEyhteVzKfjQTpOuWJ+dgVpJjPLjLLPGCMT3p8728e1Jo/LMku9RHKn6cO2cbTWf1kMyRg7GGYTb8EfbtHESOQRZw5jF2txJnHvFcQcXen4THSy+vktCRD8jqpslbX7crAbtd1Lex+yqzjgBDTfZss4QQF5Kqv412V3Th+RKMwn8SjpxeOZR/el5oUGxl0viDPC4CPVtP1QbsAKacDqDH3rzrbCxGF3N2neLSlQltVwF9Ru8Y05g4fy454OC0KPxdqDPdOWGtDaFtH9q804A0KBZ6r8J+qweKLuogWBSPBiFHPkstPuddN96R3k0rboAVHfcVNmPaID1wA+DPHvawywtXhmzZ35mDkkxhwAUFT+vLqfERUdGtuvMfn
+ uS7bSrA3
+ lXFkFOMkFK0ZNkz5O/A/qAHOk9sRTIhuGBa1CkFdvc/qdAGUEVXHi+IZdPxTV9bARC8T48FvC0qTa3NJNp6q7J9xhfW6qFff7Nnyo8Rd0NVlr8nKGmrHig+Mf/5lOdnJEz2b3bYc0CNwW6HiPQNbvxkNLwlgehWWRUCeyPHvYk6MotH5S//k5Oc+WEUR6Pbw4/HtpLPNYJ2IAhdQUFIQQOKVB4Cu0xiccS+E4rDhevzHdXxEqopf6GTPpux8uVvvwCyIlSN0ZMSvWauAq4midsonbI9ewrkwUZTJklJOL7gRFq/pdhPaY7T1yVfA5ldhYPh4KWMyxm3nhwXC6QYsd548X+IFolF1zLKZhDguWRIhUKRrz3DFOXi+E6lnRxAt3q8PTYoFL4wNgm/R0ioC8lFtJkyHizCWjKbxQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,16 +109,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/15 11:34), Sergey Senozhatsky wrote:
-[..]
-> +static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
-> +{
-> +	u32 index;
-> +	int err;
-> +
-> +	index = req->pps->index;
-> +	release_pp_slot(zram, req->pps);
-> +	req->pps = NULL;
+One instance per net-ns.  There's a fixed subset (several files in root,
+an optional symlink in root + initially empty /clients/) + per-client
+subdirectory in /clients/.  Clients can appear only after the filesystem
+is there and they are all gone before it gets through ->kill_sb().
 
-It's too early to release the pp_slot here.  Will fix in v4.
+Fixed subset created in fill_super(), regular files by simple_fill_super(),
+then a subdirectory and a symlink - manually.  It is removed by
+kill_litter_super().
+
+Per-client subdirectories are created by nfsd_client_mkdir() (populated
+with client-supplied list of files in them).  Removed by nfsd_client_rmdir(),
+which is simple_recursive_removal().
+
+All dentries except for the ones from simple_fill_super() come from
+	* nfsd_mkdir() (subdirectory, dentry from simple_start_creating()).
+	  Called from fill_super() (creates initially empty /clients)
+	  and from nfsd_client_mkdir (creates a per-client subdirectory
+	  in /clients).
+	* _nfsd_symlink() (symlink, dentry from simple_start_creating()), called
+	  from fill_super().
+	* nfsdfs_create_files() (regulars, dentry from simple_start_creating()),
+	  called only from nfsd_client_mkdir().
+
+Turn d_instatiate() + inode_unlock() into d_make_persistent() + simple_done_creating()
+in nfsd_mkdir(), _nfsd_symlink() and nfsdfs_create_files() and we are done.
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ fs/nfsd/nfsctl.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 2b79129703d5..5ce9a49e76ba 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1137,11 +1137,11 @@ static struct dentry *nfsd_mkdir(struct dentry *parent, struct nfsdfs_client *nc
+ 		inode->i_private = ncl;
+ 		kref_get(&ncl->cl_ref);
+ 	}
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	inc_nlink(dir);
+ 	fsnotify_mkdir(dir, dentry);
+-	inode_unlock(dir);
+-	return dentry;
++	simple_done_creating(dentry);
++	return dentry;	// borrowed
+ }
+ 
+ #if IS_ENABLED(CONFIG_SUNRPC_GSS)
+@@ -1170,9 +1170,9 @@ static void _nfsd_symlink(struct dentry *parent, const char *name,
+ 	inode->i_link = (char *)content;
+ 	inode->i_size = strlen(content);
+ 
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	fsnotify_create(dir, dentry);
+-	inode_unlock(dir);
++	simple_done_creating(dentry);
+ }
+ #else
+ static inline void _nfsd_symlink(struct dentry *parent, const char *name,
+@@ -1228,11 +1228,11 @@ static int nfsdfs_create_files(struct dentry *root,
+ 		kref_get(&ncl->cl_ref);
+ 		inode->i_fop = files->ops;
+ 		inode->i_private = ncl;
+-		d_instantiate(dentry, inode);
++		d_make_persistent(dentry, inode);
+ 		fsnotify_create(dir, dentry);
+ 		if (fdentries)
+-			fdentries[i] = dentry;
+-		inode_unlock(dir);
++			fdentries[i] = dentry; // borrowed
++		simple_done_creating(dentry);
+ 	}
+ 	return 0;
+ }
+@@ -1346,7 +1346,7 @@ static void nfsd_umount(struct super_block *sb)
+ 
+ 	nfsd_shutdown_threads(net);
+ 
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ 	put_net(net);
+ }
+ 
+-- 
+2.47.3
+
 
