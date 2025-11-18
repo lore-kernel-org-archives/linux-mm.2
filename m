@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1AD2CED243
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 12:51:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9B10CED63B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 12:56:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E35F6B0099; Tue, 18 Nov 2025 07:51:58 -0500 (EST)
+	id 3961D6B0023; Tue, 18 Nov 2025 07:56:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 894496B00A1; Tue, 18 Nov 2025 07:51:58 -0500 (EST)
+	id 36EC06B0024; Tue, 18 Nov 2025 07:56:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D08F6B00A2; Tue, 18 Nov 2025 07:51:58 -0500 (EST)
+	id 2AAC56B00A2; Tue, 18 Nov 2025 07:56:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 690B96B0099
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:51:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B1D713B151
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:51:58 +0000 (UTC)
-X-FDA: 84123715116.06.6200663
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 598CBA0013
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:51:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UMShjRt3;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 18BD46B0023
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:56:07 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B630213B2C1
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:56:06 +0000 (UTC)
+X-FDA: 84123725532.22.E2FCE46
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 95D6A180008
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:56:04 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=G9T+jZSG;
+	spf=none (imf16.hostedemail.com: domain of BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763470316;
+	s=arc-20220608; t=1763470565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OzxLKs39PWDbcq4Lbqe/ZoP4a39VPMRKYU7TDvRKOxU=;
-	b=GcTOHP63Lbwi7LeTbpfBMV4PjZedsMlhM1bLVcZ+wk/1JS1isDi3efF/uIo40uYOQmFTxQ
-	wZtCI5QcyHj1B+8lPvDv4nsMTFR4VNZMWMFXP0B9y3gqA2zLf4Emy8/VYywD71OphABo6U
-	/VRU8sKpkI9AHh6fsXKFLmFqyY0QW2E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763470316; a=rsa-sha256;
+	bh=ZUndLiRuj8VVDQpGylc0ouZ9CH3E0910nA/n2o+vuEo=;
+	b=OmyjycYmf2b/SJgjhmlmu11a2wqlBAxh58W9RQ/pqpPMYS4UWO/Ywq/DIbMS4kHRaHh+Vl
+	8bEAIE+hSd8YoGdW01YhALPZbo1inIoiplKlqxVQuPGp/r2QCah7+xxEGzg20r/jiKqTDU
+	9a0jp1TKZjUZdsxjJYNyig4kVaotJjY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763470565; a=rsa-sha256;
 	cv=none;
-	b=W0fHjsDl0/+MDaFMAFbluFVcGzH++RdAnGO14Lyo52yCy4PEIal6X3dQ9sFfdOYFMxMrsx
-	vgz3lZoxfWenRlekQZK1eSDbxLlexQDxTCvwcmNz/qIEl+w8BrXfxB00/TD1JveD0qbHSB
-	kE1I7clSSsGBbwZUrQJIpEX6EEGhgbk=
+	b=XaEzhQ/S70+fgNwdrcWwlvrXNEw0Gol7rZnbG5YzQsZZlaXYpP9Eqj+vXdsxNbFVOIO6nb
+	FuRgXfUa5f7rQCKpRxindlPwKTMd3xECLDR2QAHWO7OoYuuNGnunSqs6K7eXHzIX59WfS6
+	EACBMoFySLsRJ2yFDs+qDI6nvKVp7ak=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UMShjRt3;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=G9T+jZSG;
+	spf=none (imf16.hostedemail.com: domain of BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+0812c32a4ab075f64334+8122+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=OzxLKs39PWDbcq4Lbqe/ZoP4a39VPMRKYU7TDvRKOxU=; b=UMShjRt32ga8qnRRWFrepB2Pgz
-	OgEt5WtRa5Trl4ds6e5rKqrXJoP8wUOyus3IVsusUjlJ8oszfliaxlucomDLrBxZrddCOcny5698t
-	BSk1G9c3nnsYTKVX+xuGppqOi7asRlYQlUXF8Ixxt8JQJ7FDjN3VrqSYyoAt7YTOdzNuCrl9YyMEp
-	oP78RDKeE2AElybsO5Dq48Wmb9I7LQVfi5GyMupPE6LqZ3jCUrzYYPt13Y/p5LtLTlhywjQJK7Ywz
-	42dI2tc2yvJD+62zjtzY57kSMr9ERElNlra4MidXQcKbuQNE9yng6enKYvdJf2G92TxwnIFoQhMU5
-	JFgspVcQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLLBW-0000000FUZC-37rp;
-	Tue, 18 Nov 2025 12:51:50 +0000
-Date: Tue, 18 Nov 2025 12:51:50 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org,
+	bh=ZUndLiRuj8VVDQpGylc0ouZ9CH3E0910nA/n2o+vuEo=; b=G9T+jZSGmN2RpYit1OqCM6L1Is
+	EnIgIp4P+aq7z2k/XbFrerQkkzdPKcMkX6oD1q+p6/UaSVDsYLWJHQrilJ4HyeK5jUS3ptbpOncmq
+	F5mXJmRmVnKx9Y646K6Iv9vOh29j8bxtXwemJAS1hvnslqoYIE/b/4l9OrvlBDcW9ogTelDKZtA72
+	7ZkOoRu0tbJ4AygUZ4GIVWaBYDPhzhAL5NmIBwJ2kOFWuzQ1eBsaCZSPB+w7jTajQzGdGDU0oB78D
+	ry/+M8SiSBIlI8y6GyD4fdfnRBxeZYkMRBlzx83EVzFgtKLSsA3tTctQHzb0aa7znpoRuFOlvWy3s
+	xNzus25A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLLFZ-00000000RiH-0tvq;
+	Tue, 18 Nov 2025 12:56:01 +0000
+Date: Tue, 18 Nov 2025 04:56:01 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org,
 	shakeel.butt@linux.dev, eddyz87@gmail.com, andrii@kernel.org,
 	ast@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
@@ -73,24 +74,26 @@ Cc: SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>, akpm@linux-foundation.org,
 	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
 Subject: Re: [PATCH] mm/filemap: fix NULL pointer dereference in
  do_read_cache_folio()
-Message-ID: <aRxr5l-usmPvenbM@casper.infradead.org>
+Message-ID: <aRxs4djsaELyeBf9@infradead.org>
 References: <20251114193729.251892-1-ssranevjti@gmail.com>
  <aReUv1kVACh3UKv-@casper.infradead.org>
  <CANNWa07Y_GPKuYNQ0ncWHGa4KX91QFosz6WGJ9P6-AJQniD3zw@mail.gmail.com>
  <aRpQ7LTZDP-Xz-Sr@casper.infradead.org>
  <aRv-jfh0WkVZLd_d@infradead.org>
+ <aRxr5l-usmPvenbM@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aRv-jfh0WkVZLd_d@infradead.org>
-X-Stat-Signature: tmnho5qcjqihp56gyukbdmotrhdh73o6
+In-Reply-To: <aRxr5l-usmPvenbM@casper.infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 598CBA0013
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763470315-678894
-X-HE-Meta: U2FsdGVkX1/Pq1HMLeSu2D8aymzHC45/bgaSS8vFdnlcueR1j01mTiOhNuq1g+hg38bCJT2sbxR8AMVNrdqZ9EpnoEkdsWePTtwzAUKrP50wCD9F5Zcm4rroOx1FrPuLxgCIeF5m+OqEKtYFl6eKzfnXrTaam4rIlsJ0oIajcXSYeVLQ9VuHqPDWfiOLIuPr/5W9dNnOdCBBwwC9CMOUucGKS3lgF6XAYQ9pbb71PzE7FsWpyNMnv8LAImCJFa7saM5/rsxt1Bf1aV+PdUfSlTV3bZdCwzEzFBPFdhaMHLS89c+Htt59wmBsU+2q9opefkBeKVTviuKwt/esH/RwPPdL4IE7wMCPxekECcXNism1NoWJeuUrjT0+f7t5yIX7OO2kDehXJD1eEHKWL7LnpF092oyCBMUtpTTIBfPR/2C1GtTTq/9YSEKTkPikflc2k93iH7esnZwLbkFLSsozbemiAXf/mqL7X744UeQrPUV403U7KtYRS0pxDBP64Ui5l2B0yAlziTeZJxERcIIi8slEwLWNkw9r81Imo5wc8dO+0Ho4bJ6BLLcvK05Nn2VOrtkLVwmTbOnbf+hr9hwScEIfWAHvKvhZLaClJAmQWfsGVoSzSfDwbYPaMxllZX3e45AHkY4z8CvFliHoHcPathsvp2LpX1jBNE7rTlFji4ctwV0UXQ98DjuzLDyZx7sxQKEk8L6iJ1jgwWnyhocZD9uUPfdZtiQWVG9YbmVXk5YqZ+uQ+BrRPVNmg9gv+jhDoDW14cKfrCLfDYrvDm/olUNiYvh4qo2JB02jBI3sAeZUNj5N6M1zGzDyvd6R/Q49mEdF8Pu/4ArkNwIjhhechHxDeGsCBB0/gvM2Hcmepo0r1ivkk4hC9POACDcaYPjc3cBFyC6x2xB0JikxscGrYoi2Y4oLgJ+X1lq1afcm4qtZvDzs7OV8hB7O2bd55OiEwRghVRaY5aVQLoSA8LX
- tJh4z710
- my+E7moHQ+1JWZSPFYivfOY28IDxdkq0tb4PZMr+KMAuZ+DfuZlv9mJKfHOf2FRcNSfgnvNUWhjWxeTdMSO7YI+aUKr2XeTphIPTxQR9rHVWMLQCg7uBCyEK/bAgbYD3XzRnUpc6nfJAOca+N5iWhA0XyJAEX1O9b+LYtsdeC4O+1mRagZffwr+2CVQGlp+95tnQCJ7m+VJ4Fy4TJ6TSvE5GZPp+uf5/SXr7mBwZyQoX7cnNnc+C0L9wlGP4Nc0Vo6OyCB92TuP/2L4Nxmt+kmj0CgX80Dw+0d9r8lshjbDWOOd82T7cNc+AJXo+Ji7BQb7sTAu/nlJlDhlPCqtE/LCIBjD/w/PQQJGxr1HgghdQFSLTG6X98PwKF6Ajgwr5g1j/CIm2guFCHwa0Tk4/7DFrncBh0It838QFJS7K7dWdeb7NQSPiF4StbCzFIAQdVyP5GuzXXRxKaPlQ=
+X-Rspamd-Queue-Id: 95D6A180008
+X-Stat-Signature: s7jbtahmopxmr6qook6t7udcqzx97sk1
+X-HE-Tag: 1763470564-948152
+X-HE-Meta: U2FsdGVkX1893LtJ1qkzb4rFirKk/Isa7TIdF/gYEdGUoPKrYZ0lWlP8NpJE3FvySTDJUoUurQ7t7vg4oNCcGT8G81r0PsL5Ac8VZqLL9RY8RdbjwJ7H0M3hWQrfM+mTfYDohe/CJAsD1/gVez/3IDbLBCwbN1EAm4qvXCJ5SIRzqe0sLWt8o5mamRqZTY5hcqUxlKbRDaQ0uBZYVxkaib1m4pRAuHcmy5pDHafuEe2rf6aMxPZfzDNxjU+6VMSC7CKjwIs2AAGj3oxtRprUMsRfjl+mrmlN22FwHj/Ajx6buxpNjEFN/pBDQoA7xmE0Y/KisoTySzl3UVfUvl4OsfYxrYe0cpGZBLBDbB9Tj/jpDbcH6Kzh/wWsXYafix+Zjhk8C1/2DGOhvfrESE5f7IPKnH0wZPavGioSQtP5cdFX+H53VPHSJMwl0TcJD9GrRubDEAlkBiskLn5Nyx37/Bx4q+xVLhNDeyngWhJRCGlFyr0WCjLLEalV2J255RXl1VTUOg1XaAuM25teMFEURqcyu7+jOugokM0HGmiLdKVsmvu0aSIcScunhu5UEklxYdR6eSICxAR8vF/48gKJr4wAk8l4jR/4TExsO7sz10l7Frp/dICekXySsIi6857NIaW00xVwIbzJZ2hRsJvwX9c7ezOTZC6RD2gEQ9454g6lpkBHw9wovfBbKtJeBA2ohQw1DDQqNzgayIBtyZqjujdSlC0TB9l2CkjoKX46VKFLWhytHaVowXLjdsztjCzly0+qXbTBlezdnkYYNX1LZyaCJcBXMklvR8nkf8/yWnnnAvXOza4XkHmf0TFHGpr6wBHPld6cRv8FKIZ9mu1fL6CU3v9y3Wt7jqPIajbcv0E9psv6SU1RGV74qOiJSCZQcfBr1H2mEvFlxBI8aiWIB/u/2u7ijXIodQnUI4ayky0P1leMv9MIDxHprATtoT+VpVZ687R+VQiNHm+pcwa
+ nB91/2v9
+ p6OkWapH79vW4vFcra2CYbX2UP44vLLPvOhYpJKZ1w9WAtnfp3g9p+hVeuN/p4ZKBZFTL2OyQquADaydJBvBPAN2C+77eOhigcxKsAQinh9GlBss4sg/otfk97swRN9F7mWRDcyNCFct+rhNcqgP2bejFaVrkPj1ZQe4RPhZx1OpsiiTDrha/Dw5ru76E9UksV3Vimkkw9ardQVcddW1Tl6jz9mzj/hOwKjlrWIAtf41Nv9p9Sp9JDnv3jJBpI//EVzayFtEh0hYK1MM42WQ5j2WQdjI4bfv34ZL7w9tS3j0OUKyMcJzmd7vHyv2qVuDRAa7SXYhYlOzucZ/7bclNSuTHQgRTy6EfHB07SrtUim3bWfkvFLnNBMpePlBvCQos+cqUAXinYXmhQo564ffgjGJC6B24AeZA3fkhm8eCARwex5g0m+CZyjpxyxSSJis8LQ5BRMft28rPdQr7m/0GSLGHcTBT5TqcFxY1VnojMc5jycxNq9q5ciHEd2M57px8VfAu2/TDjLp9cp5eKQvQaOf0hoNSJMA93YU8506MMFs7vrW80ZmZo6T/hAEV+KggaPdOrbVxAkV4EcgS6UraPUPqtaI1dK7K9O55dl6sYzx2DFj8NEqPoPTcXmGRDJQ1B/bOvPJ/+mjMP1o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,23 +102,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 09:05:17PM -0800, Christoph Hellwig wrote:
-> On Sun, Nov 16, 2025 at 10:32:12PM +0000, Matthew Wilcox wrote:
-> > I don't think it's necessarily all that hard to make buildid work
-> > for DAX.  It's probably something like:
-> > 
-> > 	if (IS_DAX(file_inode(file)))
-> > 		kernel_read(file, buf, count, &pos);
-> > 
-> > but that's just off the top of my head.
-> 
-> The code should just unconditionally use kernel_read().  Relying
-> on ->read_folio to just work is only something file system code and
-> library code called by the file systems can assume.
-> 
-> Something reading ELF headers has no bunsiness poking into this layer.
+On Tue, Nov 18, 2025 at 12:51:50PM +0000, Matthew Wilcox wrote:
+> Please read the rest of the thread; this code can be called in contexts
+> that can't block.  That was why I proposed the kiocb_read() refactoring
+> that I would expect you to have an opinion on.
 
-Please read the rest of the thread; this code can be called in contexts
-that can't block.  That was why I proposed the kiocb_read() refactoring
-that I would expect you to have an opinion on.
+Doing file reads from context that can't block is just broken.  Let's
+just kill the code before it causes more harm.
 
