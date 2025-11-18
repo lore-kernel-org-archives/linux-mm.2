@@ -4,103 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 949EACED260
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 10:01:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7D89CED265
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 10:03:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2E7E6B0024; Tue, 18 Nov 2025 05:01:35 -0500 (EST)
+	id 037926B002F; Tue, 18 Nov 2025 05:03:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF3A06B007B; Tue, 18 Nov 2025 05:01:35 -0500 (EST)
+	id F03276B0030; Tue, 18 Nov 2025 05:03:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABBCE6B0095; Tue, 18 Nov 2025 05:01:35 -0500 (EST)
+	id DA4C16B0031; Tue, 18 Nov 2025 05:03:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 933D26B0024
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:01:35 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3963A4DB33
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:01:35 +0000 (UTC)
-X-FDA: 84123285750.18.8EA1E96
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BD23C1A000D
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:01:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=YJuOa56O;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763460093; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C198B6B002F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:03:17 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89EE658FB1
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:03:17 +0000 (UTC)
+X-FDA: 84123290034.06.A07B891
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DE22D10000B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:03:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e4NITz2L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763460195; a=rsa-sha256;
 	cv=none;
-	b=vTYpZIUDQbf0MeQzM0fNugm4ImKYJXSyCgRV6Oo16w0O61aYi60u2BdCJxz0BedzUDsPp1
-	2d+KED37jCHQvBAv0ByaCUCI6RP+UA6r8Vst/xK/Tb0UA5yjwSiUhRTCjEjHvN88Z9B7fE
-	lHlREH5wKfxPqoxOxLiqiDoxhI1ymtg=
+	b=CBE4F6KEmde3xk4YWob1Han9IpfzHEHrHA5VCJpgOc3B1Zc4vIq8KiOuO+/uHTRgnd3EEK
+	ZJg0/tM2r4kEV7SK+WaSuMHE8S4vjt5AlPLXL19/YxVb4CDqsCR5Q5CKi7S3XNBjc5gWGY
+	8mSAVlovo503DImlU0YtgLg/3a9w598=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=YJuOa56O;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e4NITz2L;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763460093;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763460195;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FZUuqKrs+nqWkpfLt5q4RrHggbnk1CWWQm+NX1Cw0DM=;
-	b=WP0rb4E0FX6E+GrT+19cf3gNpp2b25mh4WXc0CXNlcfqU21PXqzzgKhNg+k5bYUWoajFEp
-	m6gOwyVW+8fcYpOBFmAp6ezlo7CRfU86CBCeE366PL1nIdFBb3jrl4nIiWArbVrjP5SRUF
-	kCar0q8aNT5ogU7D7zkzXOLiPk8gbEU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=FZUuqKrs+nqWkpfLt5q4RrHggbnk1CWWQm+NX1Cw0DM=; b=YJuOa56O1MjxYGTgaENOoy61GE
-	pW9BzUrfOK+4o3p4qm+AJO0GBRfVwfQIkuRSUxdY+22Q3QUMcnZIT7TV5oOi/iLqJgLHtYRjjp0Cz
-	icaAAzCWMnLekniPfnn9IyaYt1f9ZUuMsv1I+L50s53kJJCvGsOd5aHDpW1EkZAH+UEd0J0GlZPjs
-	pjfdjwxDOhzoiPPnLnBcovS5mXBMc2w/Pwa8nhiquqr7IPOWftRwjnGCeHNTQ76lgTpBvLJwnm24o
-	GlJGTEgxKAwsZtFGDSsdzA5CdC9Wz+bO6RgwK3mR7wGYbekp/XVbxHmh7icarI9y/w9mr+YZhhyQL
-	2EEZJN9g==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4W-0000000GET9-3lku;
-	Tue, 18 Nov 2025 05:16:08 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org,
-	clm@meta.com
-Subject: [PATCH v4 35/54] convert selinuxfs
-Date: Tue, 18 Nov 2025 05:15:44 +0000
-Message-ID: <20251118051604.3868588-36-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
-References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+	bh=VlM6BoOd5gz3mUiQT8K233bF8Q4ne/KhpQRT0tF08Vo=;
+	b=7Ny1CA6Qi7BVqcQSakO7uYtNrgLBV2WKk93xKC+x0GPn720mpe943c1YnxKSg4N0iNK+1O
+	fAUTx7MErhGplJXVTNsGvEQ5WpWgjKGdhC0B21Kuzl1mZAKKK1MVKKB5/aj5SYq2+LGcB+
+	yjkFynff2l6PpMsY4YYCKgMojKO23zQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F429601AA;
+	Tue, 18 Nov 2025 10:03:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAE7C2BCAF;
+	Tue, 18 Nov 2025 10:03:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763460194;
+	bh=yN17U6/arJFZbWy7v+5E/AzgDQnFBqjDoOQeqwGAn4g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=e4NITz2L4WhpFnnyGQGlVfOhx1ER8y3eEy0+tVBmYypjVn7vXOyhNliG5FvDbCyR5
+	 lxTp0Q1jxhouDc2CwUFz62DVqghmgE2RSmgJITSckOFak9Pf9Ytrqxb3e/YWu9WpPt
+	 ajH4UG6vqcsidnfSaKEoknhVBb+pCYkVdU5YxQIvcIilJzfD3fesuYgRmz2d5VZdcC
+	 bdvcNL6UhkLQKc5LOGCt/xaqTBl/aUsOzvhG8yV0vTNXyXqquSIxe6KW8HyjzhrUpC
+	 NTZi5t3UFIf6emePcwMuRm0xMgv+S+vdfPYFJDY3Bs3fvvTvA3JG4bnSMHYxohnyWW
+	 Ku2CTQFctpeVg==
+Message-ID: <944a09b0-77a6-40c9-8bea-d6b86a438d8a@kernel.org>
+Date: Tue, 18 Nov 2025 11:03:07 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BD23C1A000D
-X-Stat-Signature: 1d959f88e486p7oedb7t4qnirp4tmw16
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>, "Uschakow, Stanislav" <suschako@amazon.de>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com"
+ <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>,
+ "nathan@kernel.org" <nathan@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
+ "liam.howlett@oracle.com" <liam.howlett@oracle.com>,
+ "osalvador@suse.de" <osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
+ <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
+ <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+ <81d096fb-f2c2-4b26-ab1b-486001ee2cac@lucifer.local>
+ <CAG48ez3paQTctuAO1bXWarzvRK33kyLjHbQ6zsQLTWya8Y1=dQ@mail.gmail.com>
+ <a317657d-5c4a-4291-9b53-4435012bd590@lucifer.local>
+ <CAG48ez0ubDysSygbKjUvjR2JU6_UmFJzzXtQfk0=zQeGMPwDEA@mail.gmail.com>
+ <4ebbd082-86e3-4b86-bb01-6325f300fc9c@lucifer.local>
+ <CAG48ez1JEerijaUxDRad6RkVm3TLm8bSuWGxQYs+fc_rsJDpAQ@mail.gmail.com>
+ <2bff49c4-6292-446b-9cd4-1563358fe3b4@redhat.com>
+ <0dabc80e-9c68-41be-b936-8c6e55582c79@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <0dabc80e-9c68-41be-b936-8c6e55582c79@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1763460093-643687
-X-HE-Meta: U2FsdGVkX19kpdPtfO3A2zm1kLkOqcUaZYCq1upWTv2I4UG58SmTWuWvxSwHy+1S42UatnTHe7+JjTPHPNYE6y4ibDZTOCKEJ2QGx8O/t7EwjTkX0bph2wopMLgKBfFPCK/b4nwlQnXuWSipkHR0KoAzSE835i76IroBfQPjs/UqxeM6j74RL2gDn57d29CixMxLjA0QkfueUD8nlg4eTPKgf0yWLN3vStK7oyd7OaTHgkFvG+uJcNVQ073Imly5+PQHBt9Dpebe6DpkHtDzH3rTGsNDSST0IuzA1Ee1q0WJKFNDKwuScDo1EsZ1GUzyLFcH6AtjuPEXFBQ+FdhpEHNGpPT0reyXVcW65kQ2+erPPiSxBPXr9GsnH2+VPG161EXOKLmC+aV9GP26/W1kYyUPo5SlAqEQPjcO8FhuKcQ9QC5oOpkq/4XKeUMiD0J3JE47pCYPNRGTEgvy+9yptgFeMi+oa+lyOpmRsZtaK/Fx8cfKb6u/8m+0SgPrDVa201sIOqeh6yhLlI1i1j1w828NGkIk+kLyx4Vt4cS7KJTsBosxqmWx89GwgmxC7k+emIKsv6g70QeYbwrNedejsdq+a/foPverBCJdWIWhW9eQ93kyC1oRn3at1RlmJZ6U7EAxA58ABbTgQqQUpDfNZv/pbaNMyJAQqRC8DsvxDSisnx/eFetHPQx4fX6UyIFwa+ofqAFgGYX82S4ak3c7Erqd/D/hYE9Dyezr+/+SyNoSI1g4tCTu5G6yrIuObLmDb18Vq3wMN4lsiWme82zKGCvRsYIRanln+tll0kIqmCqtMIqONj7TgPs4fzqp0aUUZCMql4BKZYfb+OrVigxSaVrw+4E6yRfkJYW5zam7PIEDiRBpB2tecO86xUWeKWYEoKlUjRm6wi7bxttCzognsw7RE+1A3p5krxEjV/EOrPb3Ia0yUPMrfenzFwJOOxrfozNW2uq+7no6/+toHy0
- GTTAj2dE
- Hv/Nzn5C5sYBWq+2LV8D13DePEUB4gGo3PXjo8A5dN8X6RS0PDYkCsc7IRdPigGVstGAPXZfIV21ZLoez+a4jpdkTLhPweggaScja8XEM8pDFdZs=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DE22D10000B
+X-Stat-Signature: wqp4oytrcirwjwskarwd3oauag3gnas7
+X-HE-Tag: 1763460195-645804
+X-HE-Meta: U2FsdGVkX1/pMmQKws1NHK9kgbucHy348YOixF5qKZGjBSHW6usNlTFGgreUFBDAzSfQRnY3dkBXisXu64fvIpkM3eFje9ufQ/dJHupUAhBKr27d7hHKUjmRsjnyJlPZ2/1d6Pbh8MITHk+Q7/SH+A4Ou1QBgCcvJap2PQOcTNZB1m0G+LvXWRWaV/GkrpPT2NHDXxCt6HZBf+v9F+VkbQb3DY5NUdaWbJkyZJ5auuFAtnoRkB+K7OBPglnTRp2tCd25dfdLV1gfiUuTrUqPKCkUttaM3r3YkZHZrTGim48q1y8NsJgYNuEFLzbLdluPP0p6vh0dyVJX/oR6KvLqqTYgRRlkUgLAGdaQp1hTgkBoEaNz5u5G5SZ/QeC+AWQ22VXPK7hiCPFX6vd3DqujiCGowOaw37gpBnyzPSz3vVb7AAMKoGJEqO9y/927SyB8TttefEmXoTHa5gGLsvan09BVs1rfNUJ7sBBZOcEoF+VAQIZ3aJoSWW5n7U19rwLKj+qSinCxrzNkQofXOumtLWIAc49BKQT1Re0OTJl4Ow0/IKmIAKZtqvLCpzHfiDR7RQNOjslMNPZQ5fOsDFpRHdC0LZfi4+8D7vA+CX7wtSr3jkzuTULG0bYjMARmSvyOHb488BFklb/leX5+Wr384Fbqp754pEBfXzvkAfZdjSsg4uHp83+boRM3COd0df/l8PdootzFG0dxHU0eG3A+WOjIg0623W+ommZI7XFm0kvSCC7y0yrbTiZOoRYV7e7QiIcOVwtLSx96DmpggXIYEdXVa2hJKyghGkVbdBxYnr+eday7IH/R7+0dXoYLJ+ljHpKy4vxv2Yo1AdnKxSE5P9hXnxnJMjp7MOz0JWihLBbw9ttxVc+8EDXCr4Po+q0Quoj+URlfGEpSnEyEF8znhmMBCPkPOfPkWF/aeFAZAIuMc9VIkeEOYttoEJ/q+PZOmIBuitPIPbOYWoHjZWj
+ PpGeVo4O
+ 0EprVUeJiVQ9EIGnTkwHfOcHgXGQmoEH4wzdW1muAUf9D2Cek4dtHUi5O+lwln3wAqIBl00NtJP54vGyfuvf7EEbD5rouNHhS1EwEgYLZIVwp6dv461cB2w69DWG4XhHZyQdX4wxxbc9koZqUjF8d3eaytz6qSC8wI+xgJy+AAazMCGxLj2LTx6lQHgPuActl1dvihSfEVrjQfIKzt33QLCXWtWM6fmn3dqNVr62/PntoZPh3jruGEnhhGaI6sPAWeCmw8LVcwZSPtAK8c9SorHJsAzS1SaMbhz842rGJob+cqbaxh96cvR75C8lqgJnK+dALpFIFBKk6WbrTC5mVJ6MlJ+2NfehJ5wky
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,62 +113,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Tree has invariant part + two subtrees that get replaced upon each
-policy load.  Invariant parts stay for the lifetime of filesystem,
-these two subdirs - from policy load to policy load (serialized
-on lock_rename(root, ...)).
+On 29.10.25 19:02, Lorenzo Stoakes wrote:
+> On Wed, Oct 29, 2025 at 05:19:54PM +0100, David Hildenbrand wrote:
+>>>>>> Why is a tlb_remove_table_sync_one() needed in huge_pmd_unshare()?
+>>>>>
+>>>>> Because nothing else on that path is guaranteed to send any IPIs
+>>>>> before the page table becomes reusable in another process.
+>>>>
+>>>> I feel that David's suggestion of just disallowing the use of shared page
+>>>> tables like this (I mean really does it actually come up that much?) is the
+>>>> right one then.
+>>>
+>>> Yeah, I also like that suggestion.
+>>
+>> I started hacking on this (only found a bit of time this week), and in
+>> essence, we'll be using the mmu_gather when unsharing to collect the pages
+>> and handle the TLB flushing etc.
+>>
+>> (TLB flushing in that hugetlb area is a mess)
+>>
+>> It almost looks like a cleanup.
+>>
+>> Having that said, it will take a bit longer to finish it and, of course, I
+>> first have to test it then to see if it even works.
+>>
+>> But it looks doable. :)
+> 
+> Ohhhh nice :)
+> 
+> I look forward to it!
 
-All object creations are via d_alloc_name()+d_add() inside selinuxfs,
-all removals are via simple_recursive_removal().
+As shared offline already, it looked simple, but there is one nasty 
+corner case: if we never reuse a shared page table, who will take care 
+of unmapping all pages?
 
-Turn those d_add() into d_make_persistent()+dput() and that's mostly it.
+I played with various ideas, but it just ended up looking more 
+complicated and possibly even slower.
 
-Acked-by: Paul Moore <paul@paul-moore.com>
-Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- security/selinux/selinuxfs.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+So what I am currently looking into is simply reducing (batching) the 
+number of IPIs.
 
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index f088776dbbd3..eae565358db4 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -1205,7 +1205,8 @@ static struct dentry *sel_attach(struct dentry *parent, const char *name,
- 		iput(inode);
- 		return ERR_PTR(-ENOMEM);
- 	}
--	d_add(dentry, inode);
-+	d_make_persistent(dentry, inode);
-+	dput(dentry);
- 	return dentry;
- }
- 
-@@ -1934,10 +1935,11 @@ static struct dentry *sel_make_swapover_dir(struct super_block *sb,
- 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
- 	inc_nlink(inode);
- 	inode_lock(sb->s_root->d_inode);
--	d_add(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 	inc_nlink(sb->s_root->d_inode);
- 	inode_unlock(sb->s_root->d_inode);
--	return dentry;
-+	dput(dentry);
-+	return dentry;	// borrowed
- }
- 
- #define NULL_FILE_NAME "null"
-@@ -2080,7 +2082,7 @@ static int sel_init_fs_context(struct fs_context *fc)
- static void sel_kill_sb(struct super_block *sb)
- {
- 	selinux_fs_info_free(sb);
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
- }
- 
- static struct file_system_type sel_fs_type = {
+In essence, we only have to send one IPI when unsharing multiple page 
+tables, and we only have to send one when we are the last one sharing 
+the page table (before it can get reused).
+
+While at it, I'm looking into making also the TLB flushing easier to 
+understand here.
+
+I'm hacking on a prototype and should likely have something to test this 
+week.
+
+[I guess what I am doing now is aligned with Jann's initial ideas to 
+optimize this ]
+
 -- 
-2.47.3
+Cheers
 
+David
 
