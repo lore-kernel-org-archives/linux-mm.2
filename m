@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BD55CCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D0BCED240
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C4B48E003A; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
+	id B0AA38E0015; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D8898E0038; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
+	id A929F8E0021; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B8388E0009; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
+	id 6C4588E0036; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 07D188E0002
+	by kanga.kvack.org (Postfix) with ESMTP id 4FF9F8E0036
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A4E354D5BB
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:15 +0000 (UTC)
-X-FDA: 84122566710.08.B483AB2
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15496B8B70
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:16 +0000 (UTC)
+X-FDA: 84122566752.17.025B303
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F2E9CC0009
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gJiPdzY0;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	by imf26.hostedemail.com (Postfix) with ESMTP id 650C0140007
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=rzQCg5lh;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
+	cv=none;
+	b=zmWn1AvLUusNhsu/0/DVtVYRZZl29bCPr20jaGU1OauCw5KwbTu/hlf0NQZMNwEoYtliMO
+	C9qrr3A36955TYv308kqvQsKFenRhNz1qbMhQ+gd2u3Y5PMuHcd15F6IOe0+MllWKv4PQb
+	PW7kW96JTfi98uSi2IgVlY7N7xxgUYU=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=rzQCg5lh;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763442974;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o92Omq0psZ3ukvz3ytEXVDnarOtbezsCR+bO9JM0kAQ=;
-	b=FbrG8JD9qJDLocBI8obO8cHhoCqnWSQ0rb0wV307/OyZU+vUskKZB/GJ03CeCVYaFQ3wFR
-	nSWhphXhrbuynZxWbmc4HrDF3NzFmJzlhE6JapAQNNOAI8O8Uap9S7XgGzWg7OGyoV98aW
-	WBivFUHatRAzLzk24I6Dyk7F7C/BOvc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
-	cv=none;
-	b=TxRIByokYtqYTtIrmNaiwVzDDMRMMtN0NzbopKMeR0w0m6jLXL/ADKyCw9A9+SAerTQd/L
-	DoMg/fVCX7zJDE96e95AT96hNIc3tiWvpyAG8MF/VnQGRxvbZ4vHMATAbuCWx4GIeFlhjs
-	CNqNgM5ELIcOWxPTzaRTmtMw3DEMbGU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gJiPdzY0;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	bh=h9ER29fbTJgjBa1gGf0LtXabL8srR/KWhHIa5FKJzwk=;
+	b=KQ5oiFsPlakv5GJDpC9wapETPxHfnEYel8YIt/WF9xfGDq47NseNBB+cO6R/Un3M6aCu8/
+	o5QCD0BZKPtJXmT5eoHVsI3yDdH/Hcr0wn4lJRzrDSraPTl4giE0TPA2FaTSS0twuPVN5e
+	CmlaQexz46hNgwDFyjO7aWypl8oQsWQ=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=o92Omq0psZ3ukvz3ytEXVDnarOtbezsCR+bO9JM0kAQ=; b=gJiPdzY0TRltDme/VDbpmSj937
-	voGiIUGCZf3gef7x1o6bLNE3mWjRZt2mYVc7BPhPcTWRNNQFndEeftSQ/3vYeJLVJT1roZB2tWHmQ
-	URVsY+tmfEYDP9HhZM5fLamP1J8SAp+WeegXyDlN0Z4bVN9uWRFUKgH9GU20hX5GPpD6jfRpmRQC2
-	9QQn+Wp/FsAQcqK8JpkX9h+sEJyr9YtkruhstFYaXO7s79ohZh+nRXaFvYWutUTMwwU6ZHwahXc28
-	I9t7nAb6ObHn41+9ek5a/PWQ21NefE2VCFPt4dTgxTtjkPZp9cgxIOUGFu5a+s2M0zqiGp41lP0qU
-	j3bGGQgQ==;
+	bh=h9ER29fbTJgjBa1gGf0LtXabL8srR/KWhHIa5FKJzwk=; b=rzQCg5lhFgfrMZlOVGl6dExZ/a
+	d0AgChO0Od/vBClGgnOu5Fjd5tl4dza+2pw+6RbcoI/f4TzFLHPjRU5qnY9douyr6yZfFvzXeiNCc
+	eOk1A/AfCZ2Fq9xW+wz6Iqe+G9K+8nuPPSVS6n3g9BfJxSh5M7HlQ7wGAr5JQXKfUHF8uLZ9hy5G+
+	xDwykHVpmx3evybIAKrC1sf5vcsJi02w5hG99QhujDNzHfiDW0+GKIhRq2eSwYG8ZwA8dbSKiOQnk
+	GnJYztrt9p6X2SHG0V2njXC+vTfxmOCaE3Nz/WzhcwmKIAz1BWSlmOecW8XBg5ia5hN5eImMb/kkB
+	7GelKqYg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4V-0000000GERs-2LuP;
-	Tue, 18 Nov 2025 05:16:07 +0000
+	id 1vLE4X-0000000GETr-25uP;
+	Tue, 18 Nov 2025 05:16:09 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -85,22 +85,22 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 23/54] convert spufs
-Date: Tue, 18 Nov 2025 05:15:32 +0000
-Message-ID: <20251118051604.3868588-24-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 42/54] gadgetfs: switch to simple_remove_by_name()
+Date: Tue, 18 Nov 2025 05:15:51 +0000
+Message-ID: <20251118051604.3868588-43-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 650C0140007
+X-Stat-Signature: cetdi9q331ttjhfnhf5cecm78gsr4xes
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2E9CC0009
-X-Stat-Signature: ic13g988ib5ck7znbu1dnc8jkforrtzw
-X-HE-Tag: 1763442973-808237
-X-HE-Meta: U2FsdGVkX18yGM2XgCUFuFsYg6Z8mTMzssEZF7jqd2ofyPbuCXYTh14CVWnH5eL6RgJlrRWkoXxWeNzYBHBjcLdgu+OvNagnrfj2bMIwqNE2mEGJ1QistUwY6M51CC6uJFbhm3QHsWYX2DM+l4cqWLnGiHWyiYPjNxdXKtssT8Cda+ZZJkEL/A9L49SpTd2/Li+/JGMUIOBNN7n7CVJsQUkUDIp1ruaD+Q7AWkA2wAZ9urAhxaoAP5i5ChjDW92X4HPCNt4HxkdEfUicQz+PEWbaDiLVRpSsDVD0ypCzwfW3QXW7/ClykOzu7d23V+RzzyGrZAOTjirOaUvSZYmYOIV57Qt54ec/MaP06X2M1koQ47DoZaV/1+WB4X4p13f5YWHmA0zUOn5+WuiE+6C5+/L02hIxVQcVj2t4L0nan0HoC4rk74jYq2jl+OoGkUjroagauDijmS4+soZl6bH+S4lHQTKliZMdS87eSKKurWaCg8XesqFByw9FSUK6yohL2ntMlrzwqr4lXvWAoMCiHz6j2FFJLK5x7hr9ajVH+JgTt5PKyYueYWFFO+XkoFbjqjKfZUS5W69VTixYO7kuGQqPnYrBi04LsLUmgKUQyYuzqdq2vsit3nTRcoa/xoxgFW9M7tRDsvKoznqvtOQiLTx0AYjFHBHl23IlM1BHS8UXeCcno0qyG0RgM+8oe2z41ZJW6MXBZHmIjIDGO7wC1j0Sp3Uzgh5yQj7JvZSkZwGpJj3ZzzdB9mTmlvj6krJ0oBTZJ0T9wF8+KCXEr3sAIAhOIiAMTamL8Z5+PjVC9MuzkZcAJz66cLFEPBwLIEuBaVMLIIUjGmsd87o5zOJQG04FHQM7qL0gasGa7q/Rf8T9WRtdbYyDH98yOer6VBJw9F8nJk2v89qcl1njiVwQl2x2QpWcxfXHU9EoMfAqo0R6+Q+8pj6znfW4dWKB/eC51AlM6TaAn6jcJ+1xLXJ
- e9/1YS5I
- 6CWD27uvUF/gtz4yZ6zhMZn/2MizbbVQe3WV7RDpeHk7h+hK67tUFQkisC13xwhsASj7/kEr4eu/yVE8NEZdOyysPy7nB10O/CORUks5Em6mhSoE=
+X-HE-Tag: 1763442974-70973
+X-HE-Meta: U2FsdGVkX19IObSxUlpeaMGSuj8pulOJ5W1iwFlSaBUzndbXfh+S/IdUUBm2OWQ8r7rWmiWu9BZ9t+QxwfyZeB4/C2rloxfI+nJsVbwF/rbuBBb6HRG5Q3Wm4c0XzQ9f/wFooZoR9sgwpsou1FzEq55CDW3O4InsuG7pdVWAwFI+JCzlloj2FCVeyZm9YnqsD0VD2V6jFt+B/8akSSnjlRuA/406VNTS50RxeHqC7TCGM5av+bFVNyM7XHByHAXTlBNPy/4znaAJaplkPMMnTbRXI4LDoalTp1hR1vFlFXoJbWh2NhQGV7FKR3jnqkE590uD7MIq+Pn6SRbt/Be7Qt13gsKResRnBtWwMdprj7VwGQcVYDa/SGNn7pJRduGV82A8+A1gHq51uCGuw4Mx7bXX6iSiEjiy+0qAYOsDlyqsmtJn8Lige1yBXEGsadEtJVntbfdJq5IEtkFiJ3d39dFOFzgq1nXaFDohUmzGVz0p0q4XwlzIjXqR/1qrFf+Ke2o4xCJpmUmlqBvW3dIY+wYvFxf8k8bH6GJTZyf9UueGS9JkHcDWTZKx5oAkJFl3vZGi1QTAyt694gO8tUrJyUWHfnhtHTZEcA512gkGYkrKUxjNLBKJOeW5dGukBez6KFSa1/SoJibOcMMGvyNPTB5WDdFI1SWnGTBsJhV99vnJwMZtSK+l3mk0Ccz1MRWUnezDc6KZPe5IYcFaqtqmB5Mi4y91J7aXX4Zg4oNKpcmXNhTrbpXuPaccxlzvvZSoygFMclOlz0AGAX1W2cocubig7RJWiWBSGihLmlIi+DCZsJtjFChxx+C+zZYGG6SLlY3m4X6/Ek9QuCOlMwAdNdo0lYtBKJz80n/mpHIaPyxNFAhud5XTIOv+zBDKNEkUMC6FAqATx9e5SDmbXGvq+dlJiuSI5kz1xBDjqDOKAcLB/gdg2k2yqOu9bqmtCCCdx/TYZXrL4yoB6sQT02t
+ dKmfWhwk
+ 0/0NT/xBibVwkgSKf9IMWkhTlt4JiteGcQtuh7LrkXBt6qZ/FNhbZuljjlDDlmiMr/u5R1IFGGehauYqL2RKCyD0Cfkk7iKWwHRvk75kjcrC1gjuu4zXTTTWoqpXIiHbuopNq/ZUWXV8eagP9uTpLVHK1mdTPdQfhysui/lLJdnynnFMbQgubBL4wxfhYOHPzv5i/A/WXVcmj5nym9d650h5Tep26XQJkwcAhXlXlR9yO3B3SoEyZINiZXtv/AX+lpgBXhDSW2+wIvB+H6YO5+muU/NZdtRCcUvCACyhWCSLnbLViePCccfe7FudjP4VmC/xzwFL9Rj8rWExK572AV8Tmhqy8NUK425VlJrsNCSsxFdENuBT4m1PFn9yswTsdqNu5x78myRCz7h80uPG5wYtgBG11veKbuW43ZOvN2prpPgG+cuarntp4NTr5nw/hvm68xkvoLmyyz4u3t4VwaGbaTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,78 +109,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-have spufs_new_file() use d_make_persistent() instead of d_add() and
-do an uncondition dput() in the caller; the rest is completely
-straightforward.
-
-[a braino in spufs_mkgang() fixed]
+No need to return dentry from gadgetfs_create_file() or keep it around
+afterwards.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/legacy/inode.c | 32 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index 7ec60290abe6..fc8ccf4dc159 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -127,7 +127,7 @@ spufs_new_file(struct super_block *sb, struct dentry *dentry,
- 	inode->i_fop = fops;
- 	inode->i_size = size;
- 	inode->i_private = SPUFS_I(inode)->i_ctx = get_spu_context(ctx);
--	d_add(dentry, inode);
-+	d_make_persistent(dentry, inode);
- out:
- 	return ret;
- }
-@@ -163,10 +163,9 @@ static int spufs_fill_dir(struct dentry *dir,
- 			return -ENOMEM;
- 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
- 					files->mode & mode, files->size, ctx);
--		if (ret) {
--			dput(dentry);
-+		dput(dentry);
-+		if (ret)
- 			return ret;
--		}
- 		files++;
- 	}
- 	return 0;
-@@ -241,11 +240,10 @@ spufs_mkdir(struct inode *dir, struct dentry *dentry, unsigned int flags,
+diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/legacy/inode.c
+index 13c3da49348c..bcc25f13483f 100644
+--- a/drivers/usb/gadget/legacy/inode.c
++++ b/drivers/usb/gadget/legacy/inode.c
+@@ -150,7 +150,6 @@ struct dev_data {
+ 	void				*buf;
+ 	wait_queue_head_t		wait;
+ 	struct super_block		*sb;
+-	struct dentry			*dentry;
  
- 	inode_lock(inode);
- 
--	dget(dentry);
- 	inc_nlink(dir);
- 	inc_nlink(inode);
- 
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 
- 	if (flags & SPU_CREATE_NOSCHED)
- 		ret = spufs_fill_dir(dentry, spufs_dir_nosched_contents,
-@@ -479,10 +477,9 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	inode->i_op = &simple_dir_inode_operations;
- 	inode->i_fop = &simple_dir_operations;
- 
--	d_instantiate(dentry, inode);
--	dget(dentry);
- 	inc_nlink(dir);
--	inc_nlink(d_inode(dentry));
-+	inc_nlink(inode);
-+	d_make_persistent(dentry, inode);
- 	return ret;
- 
- out_iput:
-@@ -780,7 +777,7 @@ static struct file_system_type spufs_type = {
- 	.name = "spufs",
- 	.init_fs_context = spufs_init_fs_context,
- 	.parameters	= spufs_fs_parameters,
--	.kill_sb = kill_litter_super,
-+	.kill_sb = kill_anon_super,
+ 	/* except this scratch i/o buffer for ep0 */
+ 	u8				rbuf[RBUF_SIZE];
+@@ -208,7 +207,6 @@ struct ep_data {
+ 	struct usb_endpoint_descriptor	desc, hs_desc;
+ 	struct list_head		epfiles;
+ 	wait_queue_head_t		wait;
+-	struct dentry			*dentry;
  };
- MODULE_ALIAS_FS("spufs");
  
+ static inline void get_ep (struct ep_data *data)
+@@ -1561,16 +1559,12 @@ static void destroy_ep_files (struct dev_data *dev)
+ 	spin_lock_irq (&dev->lock);
+ 	while (!list_empty(&dev->epfiles)) {
+ 		struct ep_data	*ep;
+-		struct dentry	*dentry;
+ 
+ 		/* break link to FS */
+ 		ep = list_first_entry (&dev->epfiles, struct ep_data, epfiles);
+ 		list_del_init (&ep->epfiles);
+ 		spin_unlock_irq (&dev->lock);
+ 
+-		dentry = ep->dentry;
+-		ep->dentry = NULL;
+-
+ 		/* break link to controller */
+ 		mutex_lock(&ep->lock);
+ 		if (ep->state == STATE_EP_ENABLED)
+@@ -1581,10 +1575,11 @@ static void destroy_ep_files (struct dev_data *dev)
+ 		mutex_unlock(&ep->lock);
+ 
+ 		wake_up (&ep->wait);
+-		put_ep (ep);
+ 
+ 		/* break link to dcache */
+-		simple_recursive_removal(dentry, NULL);
++		simple_remove_by_name(dev->sb->s_root, ep->name, NULL);
++
++		put_ep (ep);
+ 
+ 		spin_lock_irq (&dev->lock);
+ 	}
+@@ -1592,14 +1587,14 @@ static void destroy_ep_files (struct dev_data *dev)
+ }
+ 
+ 
+-static struct dentry *
+-gadgetfs_create_file (struct super_block *sb, char const *name,
++static int gadgetfs_create_file (struct super_block *sb, char const *name,
+ 		void *data, const struct file_operations *fops);
+ 
+ static int activate_ep_files (struct dev_data *dev)
+ {
+ 	struct usb_ep	*ep;
+ 	struct ep_data	*data;
++	int err;
+ 
+ 	gadget_for_each_ep (ep, dev->gadget) {
+ 
+@@ -1622,9 +1617,9 @@ static int activate_ep_files (struct dev_data *dev)
+ 		if (!data->req)
+ 			goto enomem1;
+ 
+-		data->dentry = gadgetfs_create_file (dev->sb, data->name,
++		err = gadgetfs_create_file (dev->sb, data->name,
+ 				data, &ep_io_operations);
+-		if (!data->dentry)
++		if (err)
+ 			goto enomem2;
+ 		list_add_tail (&data->epfiles, &dev->epfiles);
+ 	}
+@@ -1988,8 +1983,7 @@ gadgetfs_make_inode (struct super_block *sb,
+ /* creates in fs root directory, so non-renamable and non-linkable.
+  * so inode and dentry are paired, until device reconfig.
+  */
+-static struct dentry *
+-gadgetfs_create_file (struct super_block *sb, char const *name,
++static int gadgetfs_create_file (struct super_block *sb, char const *name,
+ 		void *data, const struct file_operations *fops)
+ {
+ 	struct dentry	*dentry;
+@@ -1997,16 +1991,16 @@ gadgetfs_create_file (struct super_block *sb, char const *name,
+ 
+ 	dentry = d_alloc_name(sb->s_root, name);
+ 	if (!dentry)
+-		return NULL;
++		return -ENOMEM;
+ 
+ 	inode = gadgetfs_make_inode (sb, data, fops,
+ 			S_IFREG | (default_perm & S_IRWXUGO));
+ 	if (!inode) {
+ 		dput(dentry);
+-		return NULL;
++		return -ENOMEM;
+ 	}
+ 	d_add (dentry, inode);
+-	return dentry;
++	return 0;
+ }
+ 
+ static const struct super_operations gadget_fs_operations = {
+@@ -2059,8 +2053,8 @@ gadgetfs_fill_super (struct super_block *sb, struct fs_context *fc)
+ 		goto Enomem;
+ 
+ 	dev->sb = sb;
+-	dev->dentry = gadgetfs_create_file(sb, CHIP, dev, &ep0_operations);
+-	if (!dev->dentry) {
++	rc = gadgetfs_create_file(sb, CHIP, dev, &ep0_operations);
++	if (rc) {
+ 		put_dev(dev);
+ 		goto Enomem;
+ 	}
 -- 
 2.47.3
 
