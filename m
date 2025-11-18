@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 966FCCEBF92
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 08:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4654CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 09:01:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA67F8E0021; Tue, 18 Nov 2025 03:51:48 -0500 (EST)
+	id 0043B8E0006; Tue, 18 Nov 2025 04:01:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D57588E0002; Tue, 18 Nov 2025 03:51:48 -0500 (EST)
+	id F1D148E0002; Tue, 18 Nov 2025 04:01:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6D018E0021; Tue, 18 Nov 2025 03:51:48 -0500 (EST)
+	id E59718E0006; Tue, 18 Nov 2025 04:01:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B38C98E0002
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:51:48 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48B89160438
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:51:48 +0000 (UTC)
-X-FDA: 84123109896.30.C2797B9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 860A380003
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:51:46 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IwveRkhR;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D327B8E0002
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:01:34 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 864524CD34
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:01:34 +0000 (UTC)
+X-FDA: 84123134508.09.29C3060
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C20FA80016
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:01:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=g0mv9RTw;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763455906;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763456493;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ko6w8NRuUOab8gjKo5K8KVmFbAa/z3euDZDeRBJOjSo=;
-	b=G8dBlhCAp79TF0bfk/ZDWD6ejELC0Q5hTz7pbZcOeQIwbWbw9WkVpjsJvzZGotiK0kXqHm
-	rdpizpE0q4jTjKvisQ4QXI63ep3eCx8SJ4rJjZa0l6M7WueF88R+fVJ4fmUz2kmcECyQOX
-	W1z1ucAEBuU+glk6WFej/XJZMEyJCEM=
+	bh=aIO5z+XlaxOUN+dxGxWKQXIfyt7HKUVO8xN2mehuHOs=;
+	b=bGO/H6avVGg4nrGJKB+KLDrhE+IrfzHBI1PAFV28PT/R6YSgVPi6dOXEYGhPAsAbR/alnN
+	FPiHbLhDRD6vifDh715Q5g0j9RRMGXsogLcwf5ZqjEZKitjGaoUUk3WV2XORnf5e8hcih7
+	VHfU1pamvZAWFeIrXCE7lh2J8zD/ngM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IwveRkhR;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763455906; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=g0mv9RTw;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763456493; a=rsa-sha256;
 	cv=none;
-	b=Sw0N5mAfCMslzKHA7ZFpDzZpprqkERTu2u5ugvmhdQptoGO1eL/lPVblfvLs0YQuFu7cYt
-	tN9WJd7/T7Z15KyaNeDyAj12Sif15PpuYAkHCS7UFt/YbWN4LzDhdf7f6xO6UGVJDoHNoS
-	7D44jD4/krPK8DE47B19u6KklxZAne8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3EED8408F4;
-	Tue, 18 Nov 2025 08:51:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B775C2BCB3;
-	Tue, 18 Nov 2025 08:51:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763455905;
-	bh=qvUA4igN+3L19DyfGE1idHMAssgfS6Bs6bYW7pr0XHc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IwveRkhRugwYpdfit9oT2x8PUOOCVrEXb0545F/qsp/2w4Z8PpQNCqP49Jo5KbUFD
-	 plXuA7r0nSCTJxZdCV8FxqKQYl2sYBBBNUHXLNp8ixPMjXK67ca8ZXMO1u4rairRc3
-	 cUTgW85RYCXI0MwMUJxOAsAOMHgCnXJh1JXQUERyVbFiUOOhLNpEwchHlavt0AdRQc
-	 8fDaSxkhI5AdC9sA1u8+58UuIT0Ce+uFIr/YOTI0q982Tj7vVAim/ZVsOvr9tYrGcG
-	 GcuKpx/gCEDUdIewKXNvNPbVawUqRjyltsq1vinrRty3tgnG8AdcES2vXyfVSmUaLx
-	 LLxYTWBXADAMg==
-Message-ID: <7f89c0cf-0601-4f61-a665-72364629681a@kernel.org>
-Date: Tue, 18 Nov 2025 09:51:39 +0100
+	b=c2ey52u0lSlMc8iDFKfoZcOIlPDYvoTRs0wnJ34JptonoEWthwgzaEbDQUiuIMFKGx0EQZ
+	suXn0199oquqi6jcJVF7CHYTmqyvGrxt9pkjEKN76NKc1YMoPjDBNSQ6B/XkV3jpmdTiUy
+	HVUnJoJtWndOP+DvDrk2YTXumx+HT+c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=aIO5z+XlaxOUN+dxGxWKQXIfyt7HKUVO8xN2mehuHOs=; b=g0mv9RTw6hRIGfNojwuJd8DIlg
+	XAxjmgYDdyfJFsN0XD3Jfka9gaG3VCqgvyJYgUHM3pHn4tE2GkDDLVYWsS1+nG2WOjG/E/QYbPbLm
+	oS8OrknvRjHCSGPkjGufGgVowrmAwSNv3kKFhKSBFVuQ2yuai9WjpyevBpRLNU+NuzLZB55IDIxj2
+	Y3OnvimbyRDK7fSziC0/rbfNELdS8QpJ1dewvrXyb3YNWXwdcSbyOFLAHfhcX7R5nCntGQNYmxIC1
+	DSgxk9NtEWBm4phOxWU9BtEC7870tYpDVsa6Dxw7UUorh+9/ptM/tkE3aLCy7yxa6f6pbKa718xMa
+	Qs6TyoXQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLE4Z-0000000GEaZ-1Umn;
+	Tue, 18 Nov 2025 05:16:11 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org,
+	clm@meta.com
+Subject: [PATCH v4 48/54] convert rpc_pipefs
+Date: Tue, 18 Nov 2025 05:15:57 +0000
+Message-ID: <20251118051604.3868588-49-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/4] Extend xas_split* to support splitting
- arbitrarily large entries
-To: Ackerley Tng <ackerleytng@google.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, michael.roth@amd.com,
- vannapurve@google.com
-References: <20251117224701.1279139-1-ackerleytng@google.com>
- <aRuuRGxw2vuXcVv6@casper.infradead.org> <diqztsysb4zc.fsf@google.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <diqztsysb4zc.fsf@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 860A380003
-X-Stat-Signature: x3gr736g9ho57ffinqyhqp7f5aipgxxe
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C20FA80016
+X-Stat-Signature: 4gwcz1fu54mmj53rbnq8sbpxnqbtij5z
 X-Rspam-User: 
-X-HE-Tag: 1763455906-997244
-X-HE-Meta: U2FsdGVkX19aQxJBfGwVU74N/N+QlB3fYNtWH8s0w5rai7sloIi0o3aAfqORFrEarxRM49DgloozPufhpNC6HBIGbnXD7hHhJhAT8izyA2+S0yXbKseLWTWgiBZwPyWamU4TVtoXajaehJcSaC4GUQ5BNFImS9ZT0iGlvtsDpBBGLQZLe3EbCTz4aPwOmNQaiQo3eQnIIr4ytl9BX1bHdaSugwTSRjix/TfSRSxjxoox3+kXn+pggL7M1Zoz9VpaKNjjYJTiv1tDkavF35YSPC8PKW+lPQusLBoAyqc3ytxRDHIji664k1YOrTGNt42Zn7Pg5UYN0ymJd1FrDvFunj3poySBI10NnIw2+MnOlsKt7c4iOT6XBTks0xSAmGUsgb5hSdf/9vD8gWF3PNd7dS8yfxIeGZ/GNoEQ53iA/pcoXUvOQ0YzFEh6sxDcySbIf7fAZ4+yMJAlzfyESAWMDLWEIzMXVepKebPJj1L9OuUbRZRnW9v7JYRwraFZBQdp5/cGJkSIP4vaE1JFbUGBsAHbL4nye9GsJNRDHpv+08TpceJVUEMd/NV+AaznbsNlvQ3vSCuaMF6r1a/NNnjPmu0lssoeS4IbkIDEyqf2Y6RMycqmWVJnzuv5nnxR3WEq5OsLU8+apzL6K0Tuu1+xPvztj1ENV+AZ+YYaIO+IWvVAsgIjd0N2QFDcFEcr4awqY2hpmLmZe/tgu3fhsyppg5TSar5GJZQkxVQoFTaYYY97UNCHVascfsNQwBEsn56ZCax3R8yKxPhUwSN5PaEop7bCJi1WHfmQi612wg+vlNymKcp9aUhhHgyxTwEetLezn9smR0T070JBGD68X1cl57FAJiGJdtaXCFsUumC0I4ewQlEf1+enYoqWcezWOhy4aPANmgjwloD+ZAeoX95XJf9utKwGqY8N8okJhBSGIEAANI51fsC6dp+eZXPtpG7pTTx8uozclnbrNllOYdz
- 7rkm1O+z
- VGlegm6ecQKnZ7iLZz7L0442miKyCmveq4ZKwfREzw2UYjFOALAFKhGua+nhxwJ4jdCvI7o0+pa9QUq/D/kfjDn7bhr2Io5lPpasHB1d2TU1bi+CQoF3IE9sfOTncFN2biHzgmI+mslwN1S+7B5Jckq+P0475lwhNFMstuMA7PMUGLm5eglCYRpQQ0x/U8Koh86KuyRW1FWAHP4XuHPIGYU8/rtEodYn+rcbsYcz1oF2qpywzm/FZECrY5g0c9/8WGMGb5G7P2KzQ0fO/t4JVKK3MhePxp2lJe/UiTOuFpeZIt3qc5pPCJhpH7URNaaw8mLEHjoIiTH5qIKqM2BwUfLVZ1d43o+NKQbsSjQQ/5R0ljog=
+X-HE-Tag: 1763456492-72832
+X-HE-Meta: U2FsdGVkX1+toekbtpnz+GkxkPcWJYDlPrwALdaoTm8lEihxY5tkshlhyPpmdqdaVqeeMshJxOFSCJkSkxL4ZmkkSgTLlqvdTEJ/4LfVrrrLK20lAyNU+UWmePEogDmw0XWskTxFa+aFBrMxWUtBPqonYkTDpGPevU1MFFqU7UwaiSm+wIjWWgsM6PBac5VxSJYHt+EV8gQN1cdWT4AyFNCuvbqWZZ1yB2qFZ9ZlcvyGbKwoi2RmtEsdiApcLtHZmXWs5yLLS3VvkPYEVrACG+vItJyHlIJXwkKRywBa6VtDx5k8nIwcSIDQ40Lr1dG+DgBieBu0oT6fvCflyIgXNqxSbT4V3hBBPrfvb+pGaIoXAiA6vIcasKdhbvr/ggAwQXjC+CW6RXa6Q5wax0QG9DkYkQHWe3MFRtJDkYwrj6c4WO8wklEzVRxR0TAMIkVbRvwNcKacklXdIWAEXXYCF3b/VDY2bK9k2hCwQ4ITx+DtEAX4M2cixzFUS5hIfiwDEynRjvzOvM1Jo4ffTJ5N0tPku246TzIupvCrbFCyBLhbU0CbBUI2BlE2QyvjA9DCYo5r+J5Ndt1MFL26uEolCzkwBjJS29newkgs46DtCjHQT6dURekTV6q/kZFuj5S+2wL+5Vm3pcQu1DpzUH01TL5wu18fC/0y40veEpNVnPbQjcq5WmtcSgatmt5l1WxSTNHJ/ODWzXjB011ES0EglnwWo7GQUDhQ7ZwIl8HQQZpB6xarEMfo5XaymSfK8H11ZmFy1r1b3Pla1FhWCGQbuGep7pDs5PpFv1/O/Ilfb9kZg0Nxp5gvflQhxhsX11fdRYtUVqX3Q0jrCn191ZJ3jVewqPRn8uS/1w0qQqdBL76ggJRNZ05msvq2IstBPafRIWU4Po8goAaAh2HFMfOILV8O2rdnG5YJtqyYleWOWLx1E7Q90CvBOgD0DHh31YU0KvOTqoSKzjHSKjjZZBT
+ 2rMiNycW
+ jqGJbM6G7/5oM18P4ZWJLPGzmrpIw8dTsSDrRsKiGGPr5NPUle/MqrKeQ1W3dWjNDSM1rG7hLSagVsArmN3ck0ISQkb7eYZBXJARYsFdc6uLqUNtW2tpIEpM1/uRuJpjmiY4SO6irwebe/zQkGp01i6YY6jNzQx+amHTO7HDYNtxL6DTHZKu6ZpofFV/89Y+Mjw+vN7ZQLht80fTeMmMPp2/Xq4mb+Psu45hdlOEb3jeD113xfrq63WTakiNrDRAXGRSiBjiQdxNAqp7W2p68h+Bv6F+u7xsq9pUzElBKi+J9VX4T9gXN8IxM3i9FdtEPeqPATwvda9hrH9Zgg2X7glY5SkxjhbPp+dhJQ/voBp6dBw+MFUf10yaStktNtYgoDZCD8+ShgXDi9i3NRHLogqoGwwi9EiNccG8FcyIK2ntjgFPtSbyDaIumMHqpno1gvWgfQxbgxwWePzErdRQnUcmOlw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,57 +109,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18.11.25 00:43, Ackerley Tng wrote:
-> Matthew Wilcox <willy@infradead.org> writes:
-> 
->> On Mon, Nov 17, 2025 at 02:46:57PM -0800, Ackerley Tng wrote:
->>> guest_memfd is planning to store huge pages in the filemap, and
->>> guest_memfd's use of huge pages involves splitting of huge pages into
->>> individual pages. Splitting of huge pages also involves splitting of
->>> the filemap entries for the pages being split.
-> 
->>
->> Hm, I'm not most concerned about the number of nodes you're allocating.
-> 
-> Thanks for reminding me, I left this out of the original message.
-> 
-> Splitting the xarray entry for a 1G folio (in a shift-18 node for
-> order=18 on x86), assuming XA_CHUNK_SHIFT is 6, would involve
-> 
-> + shift-18 node (the original node will be reused - no new allocations)
-> + shift-12 node: 1 node allocated
-> + shift-6 node : 64 nodes allocated
-> + shift-0 node : 64 * 64 = 4096 nodes allocated
-> 
-> This brings the total number of allocated nodes to 4161 nodes. struct
-> xa_node is 576 bytes, so that's 2396736 bytes or 2.28 MB, so splitting a
-> 1G folio to 4K pages costs ~2.5 MB just in filemap (XArray) entry
-> splitting. The other large memory cost would be from undoing HVO for the
-> HugeTLB folio.
-> 
->> I'm most concerned that, once we have memdescs, splitting a 1GB page
->> into 512 * 512 4kB pages is going to involve allocating about 20MB
->> of memory (80 bytes * 512 * 512).
-> 
-> I definitely need to catch up on memdescs. What's the best place for me
-> to learn/get an overview of how memdescs will describe memory/replace
-> struct folios?
-> 
-> I think there might be a better way to solve the original problem of
-> usage tracking with memdesc support, but this was intended to make
-> progress before memdescs.
-> 
->> Is this necessary to do all at once?
-> 
-> The plan for guest_memfd was to first split from 1G to 4K, then optimize
-> on that by splitting in stages, from 1G to 2M as much as possible, then
-> to 4K only for the page ranges that the guest shared with the host.
+Just use d_make_persistent() + dput() (and fold the latter into
+simple_finish_creating()) and that's it...
 
-Right, we also discussed the non-uniform split as an optimization in the 
-future.
+NOTE: pipe->dentry is a borrowed reference - it does not contribute
+to dentry refcount.
 
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ net/sunrpc/rpc_pipe.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
+
+diff --git a/net/sunrpc/rpc_pipe.c b/net/sunrpc/rpc_pipe.c
+index 0bd1df2ebb47..379daefc4847 100644
+--- a/net/sunrpc/rpc_pipe.c
++++ b/net/sunrpc/rpc_pipe.c
+@@ -536,17 +536,16 @@ static int rpc_new_file(struct dentry *parent,
+ 
+ 	inode = rpc_get_inode(dir->i_sb, S_IFREG | mode);
+ 	if (unlikely(!inode)) {
+-		dput(dentry);
+-		inode_unlock(dir);
++		simple_done_creating(dentry);
+ 		return -ENOMEM;
+ 	}
+ 	inode->i_ino = iunique(dir->i_sb, 100);
+ 	if (i_fop)
+ 		inode->i_fop = i_fop;
+ 	rpc_inode_setowner(inode, private);
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	fsnotify_create(dir, dentry);
+-	inode_unlock(dir);
++	simple_done_creating(dentry);
+ 	return 0;
+ }
+ 
+@@ -563,18 +562,17 @@ static struct dentry *rpc_new_dir(struct dentry *parent,
+ 
+ 	inode = rpc_get_inode(dir->i_sb, S_IFDIR | mode);
+ 	if (unlikely(!inode)) {
+-		dput(dentry);
+-		inode_unlock(dir);
++		simple_done_creating(dentry);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+ 	inode->i_ino = iunique(dir->i_sb, 100);
+ 	inc_nlink(dir);
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
+ 	fsnotify_mkdir(dir, dentry);
+-	inode_unlock(dir);
++	simple_done_creating(dentry);
+ 
+-	return dentry;
++	return dentry; // borrowed
+ }
+ 
+ static int rpc_populate(struct dentry *parent,
+@@ -657,8 +655,7 @@ int rpc_mkpipe_dentry(struct dentry *parent, const char *name,
+ 
+ 	inode = rpc_get_inode(dir->i_sb, umode);
+ 	if (unlikely(!inode)) {
+-		dput(dentry);
+-		inode_unlock(dir);
++		simple_done_creating(dentry);
+ 		err = -ENOMEM;
+ 		goto failed;
+ 	}
+@@ -668,10 +665,10 @@ int rpc_mkpipe_dentry(struct dentry *parent, const char *name,
+ 	rpci->private = private;
+ 	rpci->pipe = pipe;
+ 	rpc_inode_setowner(inode, private);
+-	d_instantiate(dentry, inode);
+-	pipe->dentry = dentry;
++	pipe->dentry = dentry; // borrowed
++	d_make_persistent(dentry, inode);
+ 	fsnotify_create(dir, dentry);
+-	inode_unlock(dir);
++	simple_done_creating(dentry);
+ 	return 0;
+ 
+ failed:
+@@ -1206,7 +1203,7 @@ static void rpc_kill_sb(struct super_block *sb)
+ 					   sb);
+ 	mutex_unlock(&sn->pipefs_sb_lock);
+ out:
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ 	put_net(net);
+ }
+ 
 -- 
-Cheers
+2.47.3
 
-David
 
