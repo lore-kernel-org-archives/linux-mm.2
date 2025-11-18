@@ -4,107 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6547ECEBF61
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 00:54:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FB5ACE8D6B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 01:02:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C9908E0015; Mon, 17 Nov 2025 19:54:18 -0500 (EST)
+	id 919F78E000F; Mon, 17 Nov 2025 20:02:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97A108E0002; Mon, 17 Nov 2025 19:54:18 -0500 (EST)
+	id 8F1A58E0002; Mon, 17 Nov 2025 20:02:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 868AB8E0015; Mon, 17 Nov 2025 19:54:18 -0500 (EST)
+	id 8078A8E000F; Mon, 17 Nov 2025 20:02:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7046D8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:54:18 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14E0613A8BC
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:54:18 +0000 (UTC)
-X-FDA: 84121906596.18.B479FC4
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1B41080017
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:54:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kwvdGA6x;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763427256; a=rsa-sha256;
-	cv=none;
-	b=6PP51qw47o6OrPxmHnnKuw6CkhIHFzGFwlt0u0+7Ej0dyF5aIV2ibRFfROf54p8eZpf+OG
-	w1DIonuG+hTQ0jA2wNi4X3bFjQyzDOqoXTBITkx8TQ1ppp63/ZIMxUWxK7LX6cwnEzyvSV
-	NtPHxrkt7x5a69HeBsMCV+hnH0F4lVI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kwvdGA6x;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 717578E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:02:27 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2C5BAC02FA
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:02:27 +0000 (UTC)
+X-FDA: 84121927134.24.5F5F483
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2D44F1C000D
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:02:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VbdTvpD9;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763427256;
+	s=arc-20220608; t=1763427745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oovfNkjmAihVdDYgRDYf/o1nr/AU/sYXFeJRDw0+kto=;
-	b=em+vx5nbvhIlTCBjlR3cGKvfW0O9wuAwo6KfxAIKhRpn5bVlfVGmBe5cOeNnJ9XMVSDh2g
-	wu1mniiX5cOJI+gaLqO9LiCgExfJGE/bxhmL4Aeeq/4iPUQJ723JnIRP3fzd5pclYLet2r
-	Oa9nJbr8Tz5O5kjuAqzkpbs9B4Y+Kq4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763427255; x=1794963255;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eGWvO7D5EM7ECyIrHX4ktygWBzTzotYEXHtgcB10f5k=;
-  b=kwvdGA6xAeSAY72ZWueYKqE7hJCLGevQWkU6xqZ0Xk03q9ZF9WCheIj7
-   NiLb7H9eYTbuMLBqAktUBMPF4+RIBgrVgNnqVVz5rYT/Xi7gRtQ4KzZwC
-   sylsPoWAubVmO/AqCHO5QG/SmqWuBIhHLMGDuYFhmCyV04L1G5bXRlGyP
-   4vZuirhDpk5yUCX0qYrmUua04i4ICACq/3FA1lqfp4whM/wHR/sWg3vPe
-   YhQpozEDw2csJ/3xnSScx8iFtKthdfi58aO2XULi8OYZwJvoPlj5ARhuj
-   k1OpgJ5Pnm5fvok98zljUMG+VK283t1objsGDWPV+jp1hQiQt5YAX8QnY
-   Q==;
-X-CSE-ConnectionGUID: xb5xVnhYSdqzJz5y11r3yA==
-X-CSE-MsgGUID: kRWBVyL9RlC36BNrnHpsPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65470804"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
-   d="scan'208";a="65470804"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 16:54:14 -0800
-X-CSE-ConnectionGUID: OfzuSc/sTqagsxQEJnRKhA==
-X-CSE-MsgGUID: ZRBnWoAVTR28HjN0L0qnsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
-   d="scan'208";a="213994704"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 17 Nov 2025 16:54:10 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vL9yy-0001CF-2d;
-	Tue, 18 Nov 2025 00:54:08 +0000
-Date: Tue, 18 Nov 2025 08:53:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid
- gfp flags
-Message-ID: <202511180838.vEBLp7Hm-lkp@intel.com>
-References: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
+	bh=+cw+/Wg2GGP58Te+av5x0rFdkRrTQIR2igB2FJ9iW7w=;
+	b=Tmmkmb75j8HFyiPqInkl7Oln6UNiTtPqyw+w97D7j/6ZQWKBMoS4xD4weytJwmmN+JGm0w
+	A70IbFip4jRi3kjplsnOuS5kE6GO4jRIlDRNLPp+Ujar7xSsWiI8xYtHnscyeEJfL/cM0X
+	EH1sci/xB6598Bg06JPNyAKKt449N/4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763427745; a=rsa-sha256;
+	cv=none;
+	b=7qCJayE4nFihELVK6vlIpgPpy0KRk8ocUO/ekSmbVVNvmLmnAk2C70hHFSnoLy3sq5nxSi
+	NUz0maCdBt9soSWD7oiv0SiPwC56NbyEptta9iTgCtlvXEUX9jFs76Q7J8FlV0FZYT6xHK
+	xLF0p/elnUkW6Xbuw8M+1sstvTehrXk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VbdTvpD9;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64165cd689eso9207370a12.0
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 17:02:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763427743; x=1764032543; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+cw+/Wg2GGP58Te+av5x0rFdkRrTQIR2igB2FJ9iW7w=;
+        b=VbdTvpD9QPmLvJdHgk9vRvE1DNMtZ+E69Uwm8ZAtNgjf4rx/9QysuRu2yuMikmJrk0
+         PJkQtkvvm4QyNce5WGayXIxfaamwlv/KhoA/Uiv2mEvcHa7v1vvXNliMxJFoQYoqP6E/
+         TtAijcpKYmPsyUl6rYFx7X2k0tv/fu7Kqv/jK3ViU/OwHiEuQCOGoy9lyD1NOZr7UxNa
+         o+t6HLTCT69nDKCtCe1EjYwlAkShk2b3MRUdZwYz/c90grgEGCFvlYUGiIeu70WtjHMR
+         NxVP2jAAiabb4Tj3Z6jN/obT4bj/JrBTx3+RuDRqNoZrI5nFHHqQcyzKu0z7qLQ9R1SC
+         tTrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763427743; x=1764032543;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+cw+/Wg2GGP58Te+av5x0rFdkRrTQIR2igB2FJ9iW7w=;
+        b=qtliU9v8WjjdHUYyvhut6xWGY3sggGPxQIbZcmL8uxNdGwEo/f/9xXCjGPu/L73WWa
+         a3QtBGkvQSYse6/PcaqXOAT/uK/dRxuYOfr/yMyc5ji3IasezkhVfGY1pb1fADkj0iih
+         R1xXFTI1f3sXDF6axYthbpLTuriTsMyYYdX+WThEoDK5BpRLXcyDu0CJxo3LL79LuhLP
+         m1GITZuxOy7a4BxZ9aphlfCZJU/VQQbo39FYm3nmniaHTnyEo1RIu2V3ELoLUEAWKtbB
+         zC5gPp+nIPjnxkqQix5nTRXOX0nxEckOIwecmMCF/AXQZ0/eCzEUQ/dsy33ygJKLc8wM
+         N+tg==
+X-Forwarded-Encrypted: i=1; AJvYcCWgTc4qWlNWI222QiK8ja7qQM2gxPJPdWVmIRPNEmTKEc4KQMfuvqmiSW9e2euk4rp6LqKPtxR3MA==@kvack.org
+X-Gm-Message-State: AOJu0Yz+QLOspMg0gjZ5uHx0r987iqhImCX27PTYKdIz4+WC8O2EH9X/
+	WXy0JGyU9Y60mvaxnBzP/S9pBuOnc4EEzJTnaAhAzLqSsJoEdI4fsvU8tXA1Ma8wsJ7QQVhSifZ
+	sGrLPwT1kmEiAdb4DxeF5G7Qv24obOWsOF1JUI5zkCg==
+X-Gm-Gg: ASbGncvuAhsaVWGqOLdIlEvyt94u7aDVyUQax9qpuFAhXhDoLIuY0xraGOMtZ1E0kUW
+	OSX4vEJxlM6Mw2gk/l8vYuFWmEDmviM7Oqz3CAVXOa/rIRk1wQYT9aNXdqaZU9SHoLTB+MfLTjn
+	Yx5iDTOXYnTpXcKXLO5GJCssE2nXG+xMEpeFbka8mHxU3A3eYAQdgTIKLD268JuyQtiPnWlq1ln
+	DdNCxA4ERQKH8IEKeC7RJrxyWS2f+fKLrQQ4UjZauuunoW2vp+3Zx+gFNDlQQciOh9c
+X-Google-Smtp-Source: AGHT+IEFucR6Z0lEuhSbJuwGX3vRvxY860i7bZcpqu5KZQIcl4X/kvFT9wlEbXjqZjCXA8pyp+lFBWxPEEnLN4BIodw=
+X-Received: by 2002:a17:906:7953:b0:b70:d1ea:2748 with SMTP id
+ a640c23a62f3a-b758bb55399mr152503266b.11.1763427743312; Mon, 17 Nov 2025
+ 17:02:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-19-pasha.tatashin@soleen.com> <CALzav=edxTsa7uO7XxiUSx+DZiX169T4WL39vYsn3_WcUuVKrg@mail.gmail.com>
+ <CALzav=f+6hQ-UYBpwmAyKHPmtvEq-Q=mOL20_rZmAcTyd87+Vg@mail.gmail.com> <CALzav=ekHM8a3yYHHUJNgtYVwLYf1hFhEmrXJjHUXRt=xrSy4A@mail.gmail.com>
+In-Reply-To: <CALzav=ekHM8a3yYHHUJNgtYVwLYf1hFhEmrXJjHUXRt=xrSy4A@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Mon, 17 Nov 2025 20:01:45 -0500
+X-Gm-Features: AWmQ_blONNqJhD4RUEUKi4TjsBuu-Py_fKb6YYrA1AzgX3PH5Kzk_E-GtwNe-iI
+Message-ID: <CA+CK2bCfuewEA858nG7WTkBG-hSPpAHP6JRgCRSGmyRTL24oNQ@mail.gmail.com>
+Subject: Re: [PATCH v6 18/20] selftests/liveupdate: Add kexec-based selftest
+ for session lifecycle
+To: David Matlack <dmatlack@google.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
+	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1B41080017
-X-Stat-Signature: 1jd98pxsbgcutmnke9esg7kp9zx8t9ad
-X-HE-Tag: 1763427254-556314
-X-HE-Meta: U2FsdGVkX18Qx1bhEKy7Ikr5OHnolASe41u+D1rXtj70/sBJKvc5coV8QhmNwBFZ1x34of4zy7roH/rOf/5Ch7n5KrkzHOMJr9TQIwYz2CwL+vNx/LS+NMd47XhIiCeh3XnWhzt3HBF6k4K5KWRDIY1hOr8muXvezjj9UDX4bo6WQoccM7Y8GuGrzeUvhaltbBHGGaWEbmB859r4BhlKUKWytBbMTbMg3v1RKs1blKoC4KPjV/sPMYY4oAbiB34DVe0JuoqQgwf1v43nS1ZPri/zZePzsB2wQqxMKtpJgxoCAjUjZD7EjgXu/KoP/YLs1igN4SvIWr3UUUafjcnZN/WPJ5T6XIiatl+3D7V/CLZO2m6QME8GkGKMWFhMwU7P4cexSq4m2DRN9PAXgpXkT11mMFQ1LqWcSfpjf8YBukTevBOuuqXOJJrvCj+3BIOYYmqlXN4dvcwTIL1d/ZfyQXXR8if/M3e57yVlPrrGK9yz7mIrG30hv0EZvy/x3IvTPMdgICp9jFHo90OQFeG2bwUgXke26MyB3NV/UuvUXgWYiNwM3eVJZgJmlU/QldXDLK/XUGWhtBemIP41tX8tGnymW/Og6lglHAWYMUc+uNj0FJWod2FLHBlECguBQQpCQ47WD6s2a138adbze2NsuUgspj++C5q6itBd+HtBwJDNmsP6D/kK/H3hjKMhF0BEIDkiZrR9piopWosuVR5RDNQn58gIbJjEi7an+FwkFZGGVW6ab40p3I+aPs+Bvn9SC3boekDbXCcEryeIls/5N15QcAO+yJoP/zdpEyjsDV/ZdvoSM/MPUXYVkdhv/AqQHW5ZiTuK+3L/CdS3CHSDjcvzAES2edj8DzctPcB0I4IUreblPn31JHCI1+5Tt2m75p8IscVKThFV8gLcvQ6X2LocBRi4x0p1oUxjGM0cEyRPS0eyq+1bejeJfOB3NduTssShAJ90H6R/GnbkR6Q
- b5VwB2x2
- JEOYRGDBh+NhC82EsLtpkDRrYQnasjNwJ8NVgfgJim/L8qIUWtxJ6qk4HeU5INYncmHeeT6sObdQdmnRnH/Aa2E5UK83YpAzOHbZk01ZwdAkMe1m8YfbEk2zEp+te0YU2FSeDjlbdu4kptVUfU4ZxUepln5qd5FuqzUlKBuNKaw/1XY0DaemZrq/lF00B3dzdxd5jV8TcRP4liaCXw5xWkDkTEhljkvpDjmlt97TZFxpDPQyLMD8pK7fv3eKauJhjHIyi+LEz4DHcyQR7WtN9uXYHrgp9rPEIuhF+e/9H6iaYcW0IU8vdvMGZvmxunQDWNYYzrC2rRGTxUBoY+EqEvSWGR2KWqwk/IrXEjCNOFYATMslQyLZsZ1TtsQ==
+X-Rspamd-Queue-Id: 2D44F1C000D
+X-Stat-Signature: tk8io13wfog1n3rfmtehnmbncqp8uqa9
+X-HE-Tag: 1763427744-443057
+X-HE-Meta: U2FsdGVkX1+NwMhCwIRDxO1qaJIEVug177qnD/G1yVl3blnLKCHdq1dxp8sfNYjXY0kVPtPgN4qkktjTAdbpSj0+1dQ6QKiYKQmcd3htUn4/DpeVP9YxEbaKaJPL19VC+Y6uhjGOezNVgTUod7EGo9t5ImHVp97wPE1lZHc9k769NF0XQv8ylvF03Y9fWykbYwBB43e1M6pfFuL44lZvKTQ3Levzyj2bpvBECLbjjvibShHab/ouOf2Vck93MJqAAhfovNaxknKcoSkmnz8RO2Oimc1sn+CXe24UvtGyPi2WTcRY8n6whO0opMbldsC3qPp23N6RTZ5Lrpd/L9hLPvUKwqpEjJ/YVKYkcG1RygbPWtqdIBLJKGIF9BXXuyqJZn/1PR2+AjIzqJ7d9obats0JoSqaNEMf25M8LXFKSRa11vA5NyMTc7/D5HujOWCzDBrWMVBSXEQuD51u+8ItiaiavOWJJKgjbFzu/sM37QfAALxu1hAaTZDCb6UudlPtP3XTJdOcQYF2LQWN5vwiAh94/O/FnJPTph33TDjhKEmCjjxa4S69lKDUs13dlm7tEOnSBin/lJhQvOv2hOo87e/LpTOQn9Zo6vhGe44zhtUe4dwYjMf+nDfYPq6QQN7JOWffv+mlCruDAVntfEIEmCUrQxOuSl3r+PnT4M+sGwKNYNpDHvHt1wh7ou+GUmUeMgIu1bTX5lhTyGkZP7BSO5r5Vx69OwFTRXoRlO2cqHINwMI+P8HFE7tnn52jG5+8tcqIhkTzLnOSdc6WScHHgzKz4vN+z11d+0ytI2m1WfeYCPX+wcToGyf7vdWQcb9fljYQD6ro8VKCOkk4yaj6g5nhle6oNx7Kt7z/4BbczUyFLe9Z0FxbakDA9F/69ej+dEqzOIXTsClQJhueFYVVn4NQa9bm7JCIA+PVyO8Z8q2hfw+gYC1JrEl1N0r/jkybuivw4tIXkIBTaMb/toZ
+ SIje2WFO
+ OyYZvcq2wXtEkJByau6l4z1FoThqpnyaUjZtUP/1PVFO1Y562bSIvER/xvwVDJq0snPF4AmhsSvw2hjQSjxZP8DQSd6H4zXNbtuuZB7W4C5wK5rfE0emE4rCHBijWak2qDNw/LlLqQEzOsYg9C90DuiGUdDPdLphz1ACqz78lhCX7wg/DEIqAOS3uvPNRTnG3tJ1FksKC3zDX5cz58vaHqiFcS0zl2QRA/bhnpRFl7Lim/QXdvHbyzLtL90fbOX8YE7L0ozd556NgLFkjOqeZ3PI/ncpYzU8oJpO0YEIuWP5YJA/JaN5j+Rbz1PakkTQY64h4t5xof6NviSMUp8DBUhA8T/4dUkdYFsuJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,173 +137,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+> > TEST_PROGS_O := $(patsubst %, %.o, $(TEST_PROGS))
+> >
+> > TEST_DEP_FILES += $(patsubst %.o, %.d, $(LIBLIVEUPDATE_O))
+> > TEST_DEP_FILES += $(patsubst %.o, %.d, $(TEST_PROGS_O))
+> > -include $(TEST_DEP_FILES)
+> >
+> > $(LIBLIVEUPDATE_O): $(OUTPUT)/%.o: %.c
+> >         $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+> >
+> > $(TEST_PROGS): %: %.o $(LIBLIVEUPDATE_O)
+> >         $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH) $<
+> > $(LIBLIVEUPDATE_O) $(LDLIBS) -o $@
+> >
+> > EXTRA_CLEAN += $(LIBLIVEUPDATE_O)
+> > EXTRA_CLEAN += $(TEST_PROGS_O)
+> > EXTRA_CLEAN += $(TEST_DEP_FILES)
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 0c1c7a6a83feaf2cf182c52983ffe330ffb50280]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Heidelberg-via-B4-Relay/mm-vmalloc-warn-only-once-when-vmalloc-detect-invalid-gfp-flags/20251118-080722
-base:   0c1c7a6a83feaf2cf182c52983ffe330ffb50280
-patch link:    https://lore.kernel.org/r/20251118-only-one-vmalloc-v1-1-29f8eacb4605%40ixit.cz
-patch subject: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid gfp flags
-config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20251118/202511180838.vEBLp7Hm-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251118/202511180838.vEBLp7Hm-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511180838.vEBLp7Hm-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   In file included from arch/alpha/include/asm/bug.h:23,
-                    from include/linux/bug.h:5,
-                    from include/linux/alloc_tag.h:8,
-                    from include/linux/vmalloc.h:5,
-                    from mm/vmalloc.c:11:
-   mm/vmalloc.c: In function 'vmalloc_fix_flags':
->> mm/vmalloc.c:3938:19: error: expected ')' before 'invalid_mask'
-    3938 |                   invalid_mask, &invalid_mask, flags, &flags);
-         |                   ^~~~~~~~~~~~
-   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
-     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
-         |                                                              ^~~
-   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
-      31 |                         func(__VA_ARGS__);                              \
-         |                         ^~~~
-   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
-     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
-         |         ^~~~~~~~~~~~~~~
-   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |         ^~~~~~~~~
-   include/asm-generic/bug.h:105:34: note: to match this '('
-     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
-         |                                  ^
-   include/asm-generic/bug.h:141:17: note: in expansion of macro '__WARN_printf'
-     141 |                 __WARN_printf(TAINT_WARN, format);                      \
-         |                 ^~~~~~~~~~~~~
-   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
-      31 |                         func(__VA_ARGS__);                              \
-         |                         ^~~~
-   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
-     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
-         |         ^~~~~~~~~~~~~~~
-   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |         ^~~~~~~~~
->> mm/vmalloc.c:3937:22: warning: format '%x' expects a matching 'unsigned int' argument [-Wformat=]
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
-     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
-         |                                                              ^~~
-   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
-      31 |                         func(__VA_ARGS__);                              \
-         |                         ^~~~
-   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
-     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
-         |         ^~~~~~~~~~~~~~~
-   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |         ^~~~~~~~~
-   mm/vmalloc.c:3937:41: note: format string is defined here
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                                       ~~^
-         |                                         |
-         |                                         unsigned int
->> mm/vmalloc.c:3937:22: warning: format '%p' expects a matching 'void *' argument [-Wformat=]
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
-     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
-         |                                                              ^~~
-   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
-      31 |                         func(__VA_ARGS__);                              \
-         |                         ^~~~
-   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
-     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
-         |         ^~~~~~~~~~~~~~~
-   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |         ^~~~~~~~~
-   mm/vmalloc.c:3937:45: note: format string is defined here
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                                            ~^
-         |                                             |
-         |                                             void *
->> mm/vmalloc.c:3937:22: warning: format '%x' expects a matching 'unsigned int' argument [-Wformat=]
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
-     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
-         |                                                              ^~~
-   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
-      31 |                         func(__VA_ARGS__);                              \
-         |                         ^~~~
-   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
-     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
-         |         ^~~~~~~~~~~~~~~
-   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |         ^~~~~~~~~
-   mm/vmalloc.c:3937:71: note: format string is defined here
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                                                                     ~~^
-         |                                                                       |
-         |                                                                       unsigned int
->> mm/vmalloc.c:3937:22: warning: format '%p' expects a matching 'void *' argument [-Wformat=]
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/bug.h:105:62: note: in definition of macro '__WARN_printf'
-     105 |                 warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
-         |                                                              ^~~
-   include/linux/once_lite.h:31:25: note: in expansion of macro 'WARN'
-      31 |                         func(__VA_ARGS__);                              \
-         |                         ^~~~
-   include/asm-generic/bug.h:159:9: note: in expansion of macro 'DO_ONCE_LITE_IF'
-     159 |         DO_ONCE_LITE_IF(condition, WARN, 1, format)
-         |         ^~~~~~~~~~~~~~~
-   mm/vmalloc.c:3937:9: note: in expansion of macro 'WARN_ONCE'
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |         ^~~~~~~~~
-   mm/vmalloc.c:3937:75: note: format string is defined here
-    3937 |         WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-         |                                                                          ~^
-         |                                                                           |
-         |                                                                           void *
->> mm/vmalloc.c:3934:15: warning: unused variable 'invalid_mask' [-Wunused-variable]
-    3934 |         gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
-         |               ^~~~~~~~~~~~
-
-
-vim +3938 mm/vmalloc.c
-
-^1da177e4c3f41 Linus Torvalds        2005-04-16  3921  
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3922) /*
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3923)  * See __vmalloc_node_range() for a clear list of supported vmalloc flags.
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3924)  * This gfp lists all flags currently passed through vmalloc. Currently,
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3925)  * __GFP_ZERO is used by BPF and __GFP_NORETRY is used by percpu. Both drm
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3926)  * and BPF also use GFP_USER, which is GFP_KERNEL | __GFP_HARDWALL.
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3927)  */
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3928) #define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3929) 				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3930) 				__GFP_HARDWALL)
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3931) 
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3932) static gfp_t vmalloc_fix_flags(gfp_t flags)
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3933) {
-7179b225631532 Vishal Moola (Oracle  2025-11-12 @3934) 	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3935) 
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3936) 	flags &= GFP_VMALLOC_SUPPORTED;
-bf791000a32caf David Heidelberg      2025-11-18 @3937  	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
-7179b225631532 Vishal Moola (Oracle  2025-11-12 @3938) 		  invalid_mask, &invalid_mask, flags, &flags);
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3939) 	return flags;
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3940) }
-7179b225631532 Vishal Moola (Oracle  2025-11-12  3941) 
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Took your suggestion, thank you!
 
