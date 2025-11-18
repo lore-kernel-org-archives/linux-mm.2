@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54498CED240
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B47CBCED240
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C83E8E0034; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
+	id 8EA528E001E; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DBD98E0002; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
+	id 4C5DF8E0030; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B08A48E0036; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
+	id A1D998E0030; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F6B38E0015
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 33C5C8E0021
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA4F41403A5
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E7EAF16038B
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:15 +0000 (UTC)
-X-FDA: 84122566710.28.A8478BB
+X-FDA: 84122566710.29.B909770
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EE9FD4000A
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0344A180009
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=PSVLx2ZZ;
-	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ZKo+9Obd;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
+	cv=none;
+	b=v2OL3RTTdg4/LBOU8XrPScroBfEKjQdjvzqqFki6zJ+2pcFJ1XqEUImuVtQ1dGHe+ITRYw
+	Ks7hDdHVS7JQ4YA6x2h4l5nTmi3oejnHUtTjbYy+0AXSxRf42M4dsfXoE5YoqlssWKlD+q
+	kRsbcrkhHULTD6JW+tsH8mh8WYPq0yw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ZKo+9Obd;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763442974;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fTvrbo3mOzTGCel3agLEDWiwlpX39p3niSGJ7gA+srw=;
-	b=PhG1E4M1ir9FuqnvaA0yqvTZy3DSTRySi9RKpNaUpjboc5BnaoqSNi1zq3hC4ZnQsM8Zm7
-	GyZNaLCwPffMDBMiW3eqc1rzKfBI6WfjexjqLKxtoZ0TXR7MEmtvIa89awOwchpA9ASpuP
-	szhwXREUe7ngMd0FmdfFnyj0hoU+Ewg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=PSVLx2ZZ;
-	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
-	cv=none;
-	b=JqUpqFGZAgVaVEJWEtnXYYM9PR8JhC6SHY0G3ojFM0AREC9kVlOvFKsot4G/o+sZf+fu7q
-	hKwOtvXY7PMM3t9E3Z1wpVPfrmpkkPjgzpoEAzzg2X1aVVxDRWAlLsJC2iA60pXM4GnL6v
-	OfV1VCN/D17i09vg6iy8AWXxGOLD/f0=
+	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=;
+	b=GWYcuX667i82dEA/pVZQYcei+BEhQRnre5CbWgY/ruPLsMQ9fgjWCNl0oypRl2JOtTHas6
+	/onlr0zNqFud+CNKjyLqoK167m0Twc0RwAhCUYtEeWtV1hTRYv4Dpmh6GOM+a5TiGRWM/I
+	2Tb1pstbkW23lvoVI964h6zKrNHJJ2A=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=fTvrbo3mOzTGCel3agLEDWiwlpX39p3niSGJ7gA+srw=; b=PSVLx2ZZkp601tYQtdf5C5irNi
-	Z7g/rYw0aEK+ZozaQFkjYAFP//abSPM2KmlJ+TGNePUyHuho8LH9yaUIP0+J+fLbezhny0lHLizx4
-	mrcGJ0M5Ypjr1+JCRFDJOHmqmdSgOpN9Epxm7WzGJ66a9Xm8V44lcNCm1pBisA8O7Uw8/ZfWSeJMj
-	Sfz8/geCQxS/BUK2mSCsqUbJi7X2dtzelZd9D7doMF1NTYM5+w+c9G5twuxdJpVfG5x1jUWDXBPPO
-	Qs477BYLAfmVR4HGQqElWBDUdNWUdG2TpTK/gs1R1UXz6h/7z6/DEqZHOoT3++Qn0Dpgqh4saTmnA
-	0DGl3t6g==;
+	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=; b=ZKo+9ObdivkDNkysiYahzyuuss
+	V9yrjHh7tmjMIizFvtgrzU1ew9DKv2ijMXyq/m+VY6kJr1ok4yabwOPGzxZgNPqo1qdCwZH+GGCA9
+	Xtf/YL51cWReDV2QQXM8zEYytJDNiC9btkCVTAfz/42rcVTuGMFe7UWcDLIpuix5YDrac++QHzoXz
+	6v2zGdAVaUgb36aZ1KMpkw4J2jiHmlaq73tuwK2Le9V93bz2apa3mx7aNKqaPIoaPriRmBF0oazpX
+	A4BKfQIDaZjshqkFVaASv2u9+Euguf7X+3JH3/CMgPPVV+/JuZY+mNYWB3ETE4qgxS7s+2dJxIEyv
+	jDie91pw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4U-0000000GEQv-2QWj;
+	id 1vLE4U-0000000GER4-2rTm;
 	Tue, 18 Nov 2025 05:16:06 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -85,22 +85,22 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 13/54] convert hugetlbfs
-Date: Tue, 18 Nov 2025 05:15:22 +0000
-Message-ID: <20251118051604.3868588-14-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 14/54] convert mqueue
+Date: Tue, 18 Nov 2025 05:15:23 +0000
+Message-ID: <20251118051604.3868588-15-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE9FD4000A
-X-Stat-Signature: n6nr9fk3h3ym9mr4fnjzu3yxu9eaqw5y
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0344A180009
+X-Stat-Signature: 8einm4pmm8k5cmg3osk53nm7p15jytno
 X-Rspam-User: 
-X-HE-Tag: 1763442973-60078
-X-HE-Meta: U2FsdGVkX19P+pLzQO1FV+0FlBkLijctJbYDeWDE2HEu2rCQgVsgjLa/b8oOznj0PFCVbz6afsXsixYFsxnMthpklkZAEKxybbYMK7ye9k9+UxnQJ8vnTPCqFi2cUR7Cq7Arhkb4rWtEmXlq7Xp/qOBcoYI3iqI6TjnEoSF4MsVQgAgFZ0wJOIb88fhvI1eNdCLs3b2KZWDYvEcAb2pHz38JS//EVuoojI7m1veztnY9WqIwd+b/Mx65YeXb+DLIYwaMe/6w4Qgf2+Mk4RJm7NvGDEHAeWHV5Bm89Abg88JB9pwJRGpWLyiGzBqRQI1NZAO+hhH+thjDan8ELkRi12P7gJQ/MAmlca/8ByTBQp8yy0t88AqsbzSfiGBFqnoYMmUAVxxm2IsHrtVMJd1XTg2DxRjngavMTCytd3PgLCnCSqGR4NZw7OCRmt3Yjhv0tf9Ei1I7LiCOYB/cFZ5Km1NUdG1UzDdBCv+htO9Rd2McX6qh55GDOZTSPOp/HLU0u73rckGa4IfIrkOd/sxIjrBD2E6AWSikGJKaXNtfKRCHKdH7oXZ09oxZ0HZNqTCPz6hSi4g8TifOUIm7AGPuVsS6sWwedIWXMQYrwiQ/VUk5j5xNBH1klhP8sBHNwqRwtE0N/U94Bj6MKZgWUo6llmKhrDNV9evbC1hsZFgUXT8JHJc9gcTdAhmlNAFgdm3BRN+G1iy1hsVSw7UDU98IZCeOqHbGSUzT40E1hEzkdwXaJvlZl13LLdi7mj0ZeojfPzlab29QVd62zKLkSrlxsxTbW6bxAVcuQHGYtVRlalVUTAWMiV3tKwInIP/js1yAry9lSH4J2y4z0U1fVBzHziLLL2mZPPrQbe/P8Xatcwjvht6hrWc6eVEQ6bm/eNq9A10zXpG7GsJahIQZo3Fh8rra+5OV9m4Id1nuRFmiUl2kpsqfRSxHAjPJCIGle02OqIv1b76vlv1jmjvZ3GZ
- SnTttuvg
- XrAeF7DJoOKh/oG44jMKQ7uboVIVm9biTTmEJTJML10vZ9ObkTc4Cs4p9rgqt3jFGXwSVOGL0lovIQ8abGPc9DKW20QtHOaXLqXA8zZ30xI7u2s5uT9z6RS/K4hEtNCKwCR/bCwAfcQTnnFvYmd2cxV/+fwriuKmswppbkGKHcokBLxEv5VgxSSwqnULk/jQ/y6zvL2BW3JWLPXa2rzXcezx/i2zox7gQTnlaupWa5VFihwtZ6IGZ04U6uARC9HttSmI5KJrVcEpo/6NKf89ZqXhIXP3y9+gv6wFM/Qw2YgvISzVqw4Ux2XdiG+EQDlb+M3RHi84esUk0/ISNEAY/gAx0wiMnKpfb3san2YigwiL2J2h60iQLUWy+GPSeeJfmmozAveyLiBxtHfyvdcvtJSswKkJXG8biG8Zi
+X-HE-Tag: 1763442973-925014
+X-HE-Meta: U2FsdGVkX19XZHRklINggYOjXLTeoH0vpRFjUmRT8ENeyfJe1/HLg2aHbuTSNX55nPWtzgQzhaLRkeVfXPUL5EMFONrXhtHrGOaKosU3WR2nB3rnXLAFp8oGqZ3C7ELqjjAKspxU5lIJWna8d07bGsh06DIJ5p0ojSvThONbKPkYlO5KCCo3Cx4N3LY7T3+GdPE07YwWi4pfuivZ3Z75DlcPNLx65NjpJvORjvOp9lPyw5vpKrUUXMircYRSYQrhRgxvnJbnDOl4W1BlVtTZtrw4mDVZfWXvn5IAwvre6PfkcfHTofDL/x+vKiS/47QvkcmMv2Y1Qa3Ia+4cNfIIUOk+E49bNgKrRjjHqHr0mxIX4muLY5sGxWraimgulwXz3iGDPWIkkA4N3eLfdqATS5l2rRp2lnIetrpYBNXQUEXIeTgQB310hk+MnsMHsMOcq0AT0FeMUCj+xpaU8JTKJBpyhozsJn3WpNXw1q8SyWZoyeb0SYzoZWd5Epe9b2A23uwRo6adJiwaaqm/3iw2FHl+6+PzSCH4tEXnFuzVtpW0D8gTEE/Yn2vbb7SCbDxqIMRsPpl0N653LgBSOwF+X+C6aPHelh2FgDMgI8hwhkQ+4krvnbheHbuH6Xoh0UMMgaoxw/64Cbj9Wo0aQlIAJX2VYJFMgMSfVAUmiLT0FpiZTEGlLmQB2H4u2aeC7rh1GGujCrZ32YMyIWXGc/XNnkRbA1ir0DVKb0dGyG4tFHNrA5vCM/p4dHKIedeB4Pp1mOpAElELRlPJ6hRP54L9AR+F0CHJuVqobLGrZsVUariyD7aOjw/DFBF2Ydz0xM5MYrEg5zL7Athz8WcklQeUQ7eOSt07Ble2Zb0gZnuSZqw/7YZ8wYHL2ywvARq7hTBjsk5FNZal8wAH3hUeQVB+Znot9fDAJeWUAsUclXxPP8IU6A8RZtV9zcLhAfj+vTs5Ehm1w8f5tJcF6ZOBDgS
+ 7Vv3Wkb2
+ 7zruTFoMTUlb7Gf4mbsY4IVvhr7+TNb/TDW/AR4FxU+u3eFzL4meJYs5l1rZuTb4Bi1k/p5idzDdgv6loNq0rqHnGpy+YnQv3H4mlN4Sl4hOwm7Gqjx8EyQqIyNICNcGnoJgy6gZFx1f3BHF7wmsWtYArDz71MvpEiDWNgsFRIXjGYyFRoKH5VvqmkIuhy6z4B5DebLvj51SkEJKRz7AcE3liU8aRggfYCkq+siITTUm1lrf/znSbTNqjunAVqxgL0vV4RzGygF+pjfi5biBrbnud7YjI7iUNVcZ1w4QD9x25Xv97eVl40HRWp6n82k74fl6roT6jCWGfgw13UB+2Q9sN0+C6yE586UhiDL7EmfpHNp2U7JaZK7CLFCGLTdzRpkFUa8jE+P2ZIRemqOXZ8HX5FcNlfz1n1w+a
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,51 +109,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Very much ramfs-like; dget()+d_instantiate() -> d_make_persistent()
-(in two places) is all it takes.
+All modifications via normal VFS codepaths; just take care of making
+persistent in in mqueue_create_attr() and discardable in mqueue_unlink()
+and it doesn't need kill_litter_super() at all.
 
-NB: might make sense to turn its ->put_super() into ->kill_sb().
+mqueue_unlink() side is best handled by having it call simple_unlink()
+rather than duplicating its guts...
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/hugetlbfs/inode.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ ipc/mqueue.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index f42548ee9083..83273677183d 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -975,8 +975,7 @@ static int hugetlbfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	if (!inode)
- 		return -ENOSPC;
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+diff --git a/ipc/mqueue.c b/ipc/mqueue.c
+index 093551fe66a7..5737130137bf 100644
+--- a/ipc/mqueue.c
++++ b/ipc/mqueue.c
+@@ -599,8 +599,7 @@ static int mqueue_create_attr(struct dentry *dentry, umode_t mode, void *arg)
+ 	dir->i_size += DIRENT_SIZE;
+ 	simple_inode_init_ts(dir);
+ 
 -	d_instantiate(dentry, inode);
--	dget(dentry);/* Extra count - pin the dentry in core */
+-	dget(dentry);
 +	d_make_persistent(dentry, inode);
  	return 0;
+ out_unlock:
+ 	spin_unlock(&mq_lock);
+@@ -617,13 +616,8 @@ static int mqueue_create(struct mnt_idmap *idmap, struct inode *dir,
+ 
+ static int mqueue_unlink(struct inode *dir, struct dentry *dentry)
+ {
+-	struct inode *inode = d_inode(dentry);
+-
+-	simple_inode_init_ts(dir);
+ 	dir->i_size -= DIRENT_SIZE;
+-	drop_nlink(inode);
+-	dput(dentry);
+-	return 0;
++	return simple_unlink(dir, dentry);
  }
  
-@@ -1023,10 +1022,9 @@ static int hugetlbfs_symlink(struct mnt_idmap *idmap,
- 	if (inode) {
- 		int l = strlen(symname)+1;
- 		error = page_symlink(inode, symname, l);
--		if (!error) {
--			d_instantiate(dentry, inode);
--			dget(dentry);
--		} else
-+		if (!error)
-+			d_make_persistent(dentry, inode);
-+		else
- 			iput(inode);
- 	}
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
-@@ -1483,7 +1481,7 @@ static struct file_system_type hugetlbfs_fs_type = {
- 	.name			= "hugetlbfs",
- 	.init_fs_context	= hugetlbfs_init_fs_context,
- 	.parameters		= hugetlb_fs_parameters,
+ /*
+@@ -1638,7 +1632,7 @@ static const struct fs_context_operations mqueue_fs_context_ops = {
+ static struct file_system_type mqueue_fs_type = {
+ 	.name			= "mqueue",
+ 	.init_fs_context	= mqueue_init_fs_context,
 -	.kill_sb		= kill_litter_super,
 +	.kill_sb		= kill_anon_super,
- 	.fs_flags               = FS_ALLOW_IDMAP,
+ 	.fs_flags		= FS_USERNS_MOUNT,
  };
  
 -- 
