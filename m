@@ -4,137 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59EA9CED272
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 10:37:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE198CED26E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 10:45:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B14C96B0029; Tue, 18 Nov 2025 05:36:59 -0500 (EST)
+	id 49BAA6B0010; Tue, 18 Nov 2025 05:45:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC5716B00AB; Tue, 18 Nov 2025 05:36:59 -0500 (EST)
+	id 473636B00A5; Tue, 18 Nov 2025 05:45:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4036B00AC; Tue, 18 Nov 2025 05:36:59 -0500 (EST)
+	id 388846B0026; Tue, 18 Nov 2025 05:45:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8882A6B0029
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:36:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D44C1A04B7
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:36:59 +0000 (UTC)
-X-FDA: 84123374958.20.4F2518B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 25FDC6B00A5
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:45:44 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9EF059259
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:45:43 +0000 (UTC)
+X-FDA: 84123396966.23.1FFCE9C
 Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 379751C0003
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:36:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lGXZ36Sb;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763462217; a=rsa-sha256;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 038E740013
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:45:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cVZBBva+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763462742; a=rsa-sha256;
 	cv=none;
-	b=gv1eDdFvqHrh7ss2vGu592iOBpS6BMfT1a2EWWJEk4lCqiOdPPW8ybwAjrwbj4J5m6WlS0
-	ZoaCC1ksrMFoL0gmX+QRo9QbW8f/zpldy5OG0CyfINq9Genww1x9iNNwCQdWqcqCI8stNA
-	9odMCv5hG+DJefOTQJiyC4Whqn9Fs/Y=
+	b=kl4zr3Bigb8792wAPMJqcnIev+3owNmdcJGZ6qz2CCL/s69rdp85GPGzOf7dXtfntIZKy6
+	n7kWwC9o73SJLuwnUZhCb//b9V+2M1Q3uEaX2TArGAjZpCjTA1YVmRRTxkKmOSklZPofUe
+	qZvtJHR/BSOBCZyr2THhgYsUKfaeoLQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lGXZ36Sb;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cVZBBva+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763462217;
+	s=arc-20220608; t=1763462742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3QW3YrzLI1OSdQK0hkzbyW5ur3dKrb2BxfDVA3CM9uI=;
-	b=eTU42A+kQqzrb5irIrtLiiDvFzPRq2PrGXqkSYHQsB5SI8fueeFak7/7OtxU7jEb6sjhkY
-	Z1GHh7QmmFd9NTD7EWMNqwccfYyw3MnXjfEfao+mH0i7u9pLuQulGP0XYLpWv3oI/brgMP
-	onWzCew8CWNcXyhssa4xYE27qQWDi3M=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4779ce2a624so23947635e9.2
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:36:56 -0800 (PST)
+	bh=YSC0++zcwlAEFKF5FAa/y1OLBIMh6DxQaj6lBFEO748=;
+	b=LaIDvVpGzFNEX+wX3sW1GvRayvVzDNKiK3ma28g4YX+tdKjb9GONn9OpbPvI6ErqpY2rG8
+	h+7+3om6umxPmYoVo7p0UcqsCwZ47gdxJNHGh4BkdYERdnMLKC1Lx8wsVMa3CM4jJz6WAo
+	bbDZAFYAkvagzG5Rt7lrYxH6PmfREDk=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47755de027eso36823395e9.0
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:45:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1763462215; x=1764067015; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3QW3YrzLI1OSdQK0hkzbyW5ur3dKrb2BxfDVA3CM9uI=;
-        b=lGXZ36SbE0knyCwcGfOIyA4ivT0yfeS7NTUy99FGaQXnpJdl1MtvNcHZ6HtXSSoDef
-         Z13Xy+ClrV7kTuPs2OTCkzVx0uVF06tvMAWQjYLUzmUk/9huuTKyXCNhFmBc5n0BfZgq
-         50661tmK2vQLlbkl2Oh3a2Hrw76/16s+bhUfrV+/SmnxC9kouIcq0JpDEz/GCreV+ftu
-         194+2DzPbtwfPJtywZ52ATmj90gLQzutWckMlPJfBUBhLJ2YT01GMFfw/aAPpIYH7Sw6
-         bf2DqbGWVGd9wD4twHN4W2OEn9jTF157yo4z6XgC/mjGuAHIbaIs9o5L+4/tCUInF+fs
-         3DkQ==
+        d=gmail.com; s=20230601; t=1763462740; x=1764067540; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YSC0++zcwlAEFKF5FAa/y1OLBIMh6DxQaj6lBFEO748=;
+        b=cVZBBva+QZgRi3BlSN/wW1bV5RW5rll9EYiBu4u7SaPe+9roapDgO3mx9FHjowPTfa
+         OR76z02JLaQTCTfnFucmkPXmIKkgzOY/6U3NQg7kkrKmED+/8JO6xU9ER39liRdEFmTk
+         cgdzBJN3LXfAju0VDPrSZrs41gcg3G+eRDq1Orlcq9NddvI7cntdsSS0u7NFLoiM7ZV7
+         AyZp3ZdQIHu6kUkwWbcEVnt03nJnTyTGxMhgm8OSfE6zseYkZacsALjqvG+f4pWK45e7
+         1G5R5h98guf3gIVcyJw9jkfJQXQHoN6qkuZzAww/wBxc2TVJQgYSYGZshjWYGiHLoRzg
+         vfEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763462215; x=1764067015;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3QW3YrzLI1OSdQK0hkzbyW5ur3dKrb2BxfDVA3CM9uI=;
-        b=ewiRc6q5WQipLWkxfTuyMORM4tPPz/ONwbGM1VM14qO4WeSvR01v8BONeGEjpuyQ0f
-         /cFM9uQ8D40S1xDS60QzVER84EUpH07odhin2zIzh4rGxOnfm0mn/MbDjLxbkp3dpXLw
-         I8BQAfucXCCqndxR5OjjbxPPcR+WAOhEmC7I6+cIubJr9wmSEqHUtGKomUUWds5blkzo
-         qF1LdIwYIemS8hK5qAkwLz2LGNASN1x7ZwxWtKVPe1UrsH6ICWIQwdMckMPLbPsysrQr
-         YL2nrPeAu3ZlQtsh9h8MaRfQv4ubvyQPSKfJL80j8pPJ7t3cDeuBayI1SP5A/NiGviN5
-         Mq5g==
-X-Gm-Message-State: AOJu0YwbQtDsRvVbi6ctR98JXVN1UQtd8fPh6cX1fhXhWWe5WXtsMO2J
-	pWk8h/M4bwQbMAovv9AnXJp8XyBYGEUWZm3CCMitTQ//rS74Yk3YMfJFrtvlmxes6JI=
-X-Gm-Gg: ASbGncu1LfHsAxvN5fI6FiTKKLBL3l0XRQSYE72hTo6cEkX4EypsbGcfhiuLNFb8lir
-	cFVAZU8VrjfoUwJaXUnvUnX1Ep8BL7z4r8VgEGnDGb135k6cMcsuYDAnoCjql5gL4byZbbQvBqo
-	j6ySzmOpCjmJIKTHrYXbM6OoygSI7psDypx1UQtEpm5CnDKQg6EQjmCN64XmQk0/uLenB6d/zoP
-	EZdqX/bydja2qr7ynuru6fMGS7UB2Eib2ZaJiUtevcBjEg5T2Oiox7MkNiE8GtCyNVbMSOQoDMs
-	+C3gzR5k0fw8ahNvBkrISV500DpGqvzn1JiGzuj8axfaNviLY7MP8TNNNTXKHX2cbVkpxyrAHs5
-	ylYUvlFuJwqozA2Ae/AXN3AdCwpQonLjKWcu9ot8A9VGpgVPsKPWUo+IyGf3LqxTy38PzkPIzvl
-	/KzRX9gYDS
-X-Google-Smtp-Source: AGHT+IHcPSG42oTSue/l29JNxRqWkMjwCuc7Im45XklO36HK61beZa9KMPscvjf0ZVFq7e39VGxhYw==
-X-Received: by 2002:a05:600c:350d:b0:475:dd59:d8d8 with SMTP id 5b1f17b1804b1-4778fe4f716mr149402675e9.8.1763462214605;
-        Tue, 18 Nov 2025 02:36:54 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::4:7772])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4779527235esm219825575e9.8.2025.11.18.02.36.52
+        d=1e100.net; s=20230601; t=1763462740; x=1764067540;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YSC0++zcwlAEFKF5FAa/y1OLBIMh6DxQaj6lBFEO748=;
+        b=tEH9om28doWl/tISgBVkgafG5niHgcp6OCB4LagDhC2HfKlwwg6y90rgkA9Z92F41u
+         VwbtIqSufGSGlmqQ9fIdhEAoAbkCnuzWf+PRFmJmQpCbvN/+D+7ZWSTmyeviN9K1e5tk
+         dpAPX71fBar0Ih+zTWl/MnO65irfbUKxY1G29Gi6zL5eR1ASRXouwrW691YfLVkFZrYN
+         UoQFRcqBcuzyJ4EcGkfzJ6X0CTJ4RMf9/Z7KT2RU2VQQRs9CGHlW1/mleKCoVQFl/VTk
+         fke1nTF4mZOeQA7gVcnF0Q6Gt9mCHU8zkCaSSsQmY30Wl+1sOQBDXYubxTOERuw5edLQ
+         ycxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlbCybz9YsWUGE7JiHAIWnQogmvj/rfb0kHZQ1A/SUFQhMVicnBl+C+MUkt1o5q9Tjx++JwwhOVA==@kvack.org
+X-Gm-Message-State: AOJu0YxSUE2b/pSq/3yy1Bt+lcK8AaWvrrQKxR1lGGFZiVhhtTUlIc61
+	IAFs4dO6rvKoUCknZZ+8UDpJQXxGHQjT7H0nmhfYIVu+8aI7tL7J9UiR
+X-Gm-Gg: ASbGncv6esvHg8V+5PS61P0zdYf7+lEvi7Ozzc2J92z4nMyVCEFwu7VTZG5geuPV3px
+	/fiqOqXk5PplW5iMMDYoFvFP0buBK7BM8FXUzQmWfn0qyiqvvYTZvHi7il8k59H830w+2Zcfxtm
+	0YcDZl/xRuwfQM7V45KezC0ZSfqUCDI4tePMEwI1yb2cyqI4bI+Gsbfc1M7RcKASyJuIQEBBe1f
+	mm8AlzWtv9X0l69fQ9Ddvr8sSsvkhkE5VDYhw7ce4Dq78dfU7qgXsCd6tj3q7jBu0JB6T9jmIjN
+	0j2PCWvX/YKAgBJCKuJFyKsICYKZitrs0ChXV9SHCeGE3BHWSWGFII6z/e/5IYgaovkScvMSdlr
+	h9MvY9O8Yo75UMWyqpZqcknP5i3u7rwyRosMuV1ovLIDffyPnw/CJXKk3Mk4TDNS4QrFU4YfTr9
+	on1E+DSun0lqVuPj8JLqh6kLafOo1v0t6pEy1dHF1IJIB30O5lwm6VRP/OqoeUHAY=
+X-Google-Smtp-Source: AGHT+IGts6ykTvFE1YIf5+/taVV8z+p5pVaBDGIqd212np4Jl9wdklMUecq1eWRr8hlVr7tWAtBx6Q==
+X-Received: by 2002:a05:600c:6385:b0:477:9814:6882 with SMTP id 5b1f17b1804b1-477981470c2mr118226955e9.5.1763462740092;
+        Tue, 18 Nov 2025 02:45:40 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e35b7esm366739935e9.4.2025.11.18.02.45.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 02:36:53 -0800 (PST)
-Date: Tue, 18 Nov 2025 04:36:47 -0600
-From: Gregory Price <gourry@gourry.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, kees@kernel.org, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	rientjes@google.com, jackmanb@google.com, cl@gentwo.org,
-	harry.yoo@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, zhengqi.arch@bytedance.com,
-	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	fabio.m.de.francesco@linux.intel.com, rrichter@amd.com,
-	ming.li@zohomail.com, usamaarif642@gmail.com, brauner@kernel.org,
-	oleg@redhat.com, namcao@linutronix.de, escape@linux.alibaba.com,
-	dongjoo.seo1@samsung.com
-Subject: Re: [RFC LPC2026 PATCH v2 00/11] Specific Purpose Memory NUMA Nodes
-Message-ID: <aRxMP_wDRxJIhIiB@gourry-fedora-PF4VCD3F>
-References: <20251112192936.2574429-1-gourry@gourry.net>
- <aktv2ivkrvtrox6nvcpxsnq6sagxnmj4yymelgkst6pazzpogo@aexnxfcklg75>
+        Tue, 18 Nov 2025 02:45:39 -0800 (PST)
+Date: Tue, 18 Nov 2025 10:45:37 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Sahil Chandna <chandna.sahil@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ mhocko@suse.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ hannes@cmpxchg.org, shakeel.butt@linux.dev, zhengqi.arch@bytedance.com,
+ Liam.Howlett@oracle.com, weixugc@google.com, axelrasmussen@google.com,
+ yuanchu@google.com, yosry.ahmed@linux.dev, nphamcs@gmail.com,
+ chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm/pagewalk: use min() macro instead of manual
+ ternary
+Message-ID: <20251118104537.7ebf4422@pumpkin>
+In-Reply-To: <ff24b3c573b766b187b55a38497fbad0a319b9f8.1763227530.git.chandna.sahil@gmail.com>
+References: <cover.1763227530.git.chandna.sahil@gmail.com>
+	<ff24b3c573b766b187b55a38497fbad0a319b9f8.1763227530.git.chandna.sahil@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aktv2ivkrvtrox6nvcpxsnq6sagxnmj4yymelgkst6pazzpogo@aexnxfcklg75>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 038E740013
+X-Stat-Signature: r5p6aih5kwexugnq45t4cdbwm4ueuof3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 379751C0003
-X-Stat-Signature: scqdjxsz3a1ccqit8wcm18c9e7d8f18x
-X-HE-Tag: 1763462217-487410
-X-HE-Meta: U2FsdGVkX1/llaZjPvDE5tdCUQm1/N0uovHlThn/KcDkqyuB+8NYkav6Ad4G8WlKqrdtx0koZHkjnbrnrVtg+2IguzqxzuH8YKi9JGgwVvM1TC1ZVJA2MvS3lrHezJruM8tuJL8oYGxqzil+rRIUZIAozHGiwpSt+Wyjm4xCRdRC/m8j0Pi+k5VMh0J5BrDkmBdknTojhDxnHsgnMWl7g22OM36a4fvnVJnz7SHmhnulRt2xNYUEaCbIiWeB+v1YqdHPyBb3JRaCtWs6W7PXY6pobPNznPRaXIrwLodGBpYFuU1FR3XxueSUmlsWqdLUmQIL00czYeOXjk1FrBHhKNic1jsEPMAmIfRdt17AYXiHLyEbmpdh+m3dLnrTmYeuE/+E59nRWUR19sKG5zB8oTrhbgoFCIoL4fDXVrgbsNv1OdIMJlnGEcncK9zYEmrYo1TB+VueclHUyiCkGhAP5p8HFasuqxGLmHt+6wJbVnWIxEjushsOguwdwTeWpjCMtFVAfVvrg1w9ORSPp3jDqRAEUjPHLy00YBByNDTDNZGg6SEVptq56BCutDrWLV2rZpVZxW6StBWa34VL6XSIJEaM25o1WUUrPb1JGeB2QnIJagbLP/quCNG6YQT7RTTFxGXpreksvd5XPGBIOKbr29awxa/nI3HSR+NjtgQC6Od1zTkndnxcyCBjcVs9znTTn4YjO5Dl2fpKgtiICWveBw2qiYNju5okPs2EJtjfmO6/lKpEYMRxsB5645xU2wZOFq3VOZjcxZdG7XitvXNUOiI0mLb/iL5jGLEYITGeJ/Fhlvnj23sa6vaxEQ+oLGiwqmazSzvn0tWMzIBmFBY8zUZCKi+us2MMINW1xe6TmirKsz2JW/HbdKLCrzBrx2y28SMFUJbYPlZv2iJ2B+U/LdjYMMNug9x8cFrRvYpP5gX/2VxmMStJAw235hk7f5pEyZnnFqVqy4tkjHNu3gh
- 3guqPpIV
- /zPFTB3e/hNsMhfc2fHFpDN7Wyocv7KtOSk0KEruiMMN/naL7vHlqon2x8qVT6VGUcJlGpNsJVxqxUcETErG1FdfpomcOa3ur31aExl/nhVLP/ca84qIiT5/JKDA+CPh0LPmQHYpO42/z5wPjLPjkA5cJE3eoALdrsNrKX7ST//n0CBDOGFn405+eI3G1+mO6aal/IEfqytyU8E6s6LqyFuuhUsgjqoYWzIXTIQBB5LZKXJCnSigIg0ynEr9YbJiQbJ85TkXKq5+7Z41As3IuCm+eCyoi1ZzNRiq85MM0y1+0cxX49bdZz/CmPUlG2abWJb8hegji+lPLMzPFgn2OnFnujz9axjT6oq2So8PpVYtWmvXNWZWhkcUfo5j1nz43CQSfHw073sXRI0niqoj+s8dmgZnYsLv0hoejmUkQDK4wykfCbOmy3KwL+/ht9FqZGODualLFaA+KurJvDjn+riecCQ==
+X-HE-Tag: 1763462741-930829
+X-HE-Meta: U2FsdGVkX19Kff5eVJpxml6NrvBNcvh1aHnpg3wxQAgj5UmnzjavNneaCW1gtl1XR99uVcuPoGTuEN1wUtMOPmnrhMBFHP3YKpk9NhXLSrLCTB4OL2HTbUydahw1X8AE8EDzPmBcscbEClOM5DSbXArqHlnQ8PgraVZy1gVnNGFNwhPZvynozbFzVZAstKBNJpV1U9UreRrgFZGi8lZM3wtWaBqs7slHaphOf0o4HOqbme+zMEricLVoVyROlmHmIEU23Hhn5465v4cFaUlaTYP8wpynbO7suZvErGiMreVRYnwbJ33GE8+hMeF9cTX8vdgrUcODhsFi7FyPRHY9hXSVKWgfgSnmr96oOqtR/0xfq80+TcVOuxvmymqdh81M5bTTu7XXY99M/17CfgFmLSVj9aqmBD8/sxz+5xV+Q0XPI9hlOdw6tfyBVssS80gvMF45ol1ANHsXAec3VnHARn4zN57V9nKhgpnrwl2LkM+FE+Ik/o2qE4VYCyjB6Nz0n69EFBGyJ+S4JmZTwS3tQZylm3ZLTQ5gh7MiUah6Dta5xZZZwp5KNRTfO/WISBxZy+GM6qIZ5SyaK0+4HCm47FUFlA83LlgeQq5qg1a1l1WVriCUS8v3i2TqQMkfgo2ZHh4kQ/aJyl4xsum/kOnG3s3tw2cyGksG8jU1l/8U5tjbYkOszw8m+jta79G3H4M/OlMg1Qqw7SUvI5G07nf1EP27Dqv19wsM1BUJ4Eg/TLEf0sbRTb+FLV8a+YCAkqbKS3ieS+tWE9Y8MlV4gXRWo+RYlDqNCEm6blZhlr6BzBVhb81kYXLCK1r95Drcf5VQQWtHG5T57eTOoKk2HYWQbeXgAQz2zCivyZCQ0/nid/rzD4JlUd0NhBTh+4wHd48xDrTC8WxYGUVC9yxy0PbRIgVZluAT/CkHFs/APwkTjmSmLJyG/Nkfp2lwerWqOriPz+0pW05NK1hCSmMswmo
+ Nn0Wu2Zu
+ SfQKhNM0c8m9fUPq/Y03B3wIhb7CTEzjzFUkAHrlBwhTzPVA9bDyJH2CBOHHnh/jJ9JFwjr4IWSSteKWYAwTvjTjqMSR+cVfjNjZKC+cKBT2dAzD3NHUwMIMSZA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,109 +127,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 06:02:02PM +1100, Alistair Popple wrote:
-> On 2025-11-13 at 06:29 +1100, Gregory Price <gourry@gourry.net> wrote...
-> > - Why? (In short: shunting to DAX is a failed pattern for users)
-> > - Other designs I considered (mempolicy, cpusets, zone_device)
+On Tue, 18 Nov 2025 11:38:49 +0530
+Sahil Chandna <chandna.sahil@gmail.com> wrote:
+
+>  mm: pagewalk: use min() macro instead of manual ternary expression
 > 
-> I'm interested in the contrast with zone_device, and in particular why
-> device_coherent memory doesn't end up being a good fit for this.
->
-
-I did consider zone_device briefly, but if you want sparse allocation
-you end up essentially re-implementing some form of buddy allocator.
-
-That seemed less then ideal, to say the least.
-
-Additionally, pgmap use precludes these pages from using LRU/Reclaim,
-and some devices may very well be compatible with such patterns.
-
-(I think compression will be, but it still needs work)
-
-> > - Why mempolicy.c and cpusets as-is are insufficient
-> > - SPM types seeking this form of interface (Accelerator, Compression)
+> Use the kernel-provided min() macro to compute the minimum value instead
+> of an explicit ternary expression. This improves readability and matches
+> common kernel style.
 > 
-> I'm sure you can guess my interest is in GPUs which also have memory some people
-> consider should only be used for specific purposes :-) Currently our coherent
-> GPUs online this as a normal NUMA noode, for which we have also generally
-> found mempolicy, cpusets, etc. inadequate as well, so it will be interesting to
-> hear what short comings you have been running into (I'm less familiar with the
-> Compression cases you talk about here though).
+> This was flagged by Coccinelle
+> (misc/minmax.cocci) as an opportunity to use min().
 > 
-
-The TL;DR:
-
-cpusets as-designed doesn't really allow the concept of "Nothing can
-access XYZ node except specific things" because this would involve
-removing a node from the root cpusets.mems - and that can't be loosened.
-
-mempolicy is more of a suggestion and can be completely overridden. It
-is entirely ignored by things like demotion/reclaim/etc.
-
-I plan to discuss a bit of the specifics at LPC, but a lot of this stems
-from the zone-iteration logic in page_alloc.c and the rather... ermm...
-"complex" nature of how mempolicy and cpusets interacts with each other.
-
-I may add some additional notes on this thread prior to LPC given that
-time may be too short to get into the nasty bits in the session.
-
-> > - Platform extensions that would be nice to see (SPM-only Bits)
-> > 
-> > Open Questions
-> > - Single SPM nodemask, or multiple based on features?
-> > - Apply SPM/SysRAM bit on-boot only or at-hotplug?
-> > - Allocate extra "possible" NUMA nodes for flexbility?
+> Found by: make coccicheck MODE=report M=mm/
+> No functional change intended.
 > 
-> I guess this might make hotplug easier? Particularly in cases where FW hasn't
-> created the nodes.
->
-
-In cases where you need to reach back to the device for some signal, you
-likely need to have the driver for that device manage the alloc/free
-patterns - so this may (or may not) generalize to 1-device-per-node.
-
-In the scenario where you want some flexibility in managing regions,
-this may require multiple nodes for device.  Maybe one device provides
-multiple types of memory - you want those on separate nodes.
-
-This doesn't seem like something you need to solve right away, just
-something for folks to consider.
-
-> > - Should SPM Nodes be zone-restricted? (MOVABLE only?)
+> Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
+> ---
+>  mm/pagewalk.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> For device based memory I think so - otherwise you can never gurantee devices
-> can be removed or drivers (if required to access the memory) can be unbound as
-> you can't migrate things off the memory.
-> 
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index 9f91cf85a5be..82db421b5b34 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -313,7 +313,7 @@ static unsigned long hugetlb_entry_end(struct hstate *h, unsigned long addr,
+>  				       unsigned long end)
+>  {
+>  	unsigned long boundary = (addr & huge_page_mask(h)) + huge_page_size(h);
+> -	return boundary < end ? boundary : end;
+> +	return min(boundary, end);
 
-Zones in this scenario are bit of a square-peg/round-hole.  Forcing
-everything in ZONE_MOVABLE means you can't do page pinning or things
-like 1GB gigantic pages.  But the device driver should be capable of
-managing hotplug anyway, so what's the point of ZONE_MOVABLE? :shrug:
+You can remove the temporary:
+	return min((addr & huge_page_mask(h)) + huge_page_size(h), end);
 
-> > The ZSwap example demonstrates this with the `mt_spm_nodemask`.  This
-> > hack treats all spm nodes as-if they are compressed memory nodes, and
-> > we bypass the software compression logic in zswap in favor of simply
-> > copying memory directly to the allocated page.  In a real design
-> 
-> So in your example (I get it's a hack) is the main advantage that you can use
-> all the same memory allocation policies (eg. cgroups) when needing to allocate
-> the pages? Given this is ZSwap I guess these pages would never be mapped
-> directly into user-space but would anything in the design prevent that? 
+  David
 
-This is, in-fact, the long term intent. As long as the device can manage
-inline decompression with reasonable latencies, there's no reason you
-shouldn't be able to leave the pages mapped Read-Only in user-space.
+>  }
+>  
+>  static int walk_hugetlb_range(unsigned long addr, unsigned long end,
 
-The driver would be responsible for migrating on write-fault, similar to
-a NUMA Hint Fault on the existing transparent page placement system.
-
-> For example could a driver say allocate SPM memory and then explicitly
-> migrate an existing page to it?
-
-You might even extend migrate_pages with a new flag that simply drops
-the write-able flag from the page table mapping and abstract that entire
-complexity out of the driver :]
-
-~Gregory
 
