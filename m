@@ -4,130 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05EC6CEBF97
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 06:09:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87BC4CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 06:21:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AB9C8E0014; Tue, 18 Nov 2025 01:09:28 -0500 (EST)
+	id 925338E0010; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55C448E0005; Tue, 18 Nov 2025 01:09:28 -0500 (EST)
+	id 8D5B58E0005; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44BBD8E0014; Tue, 18 Nov 2025 01:09:28 -0500 (EST)
+	id 7C4558E0010; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 304D68E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:09:28 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DF08413AB3A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:09:27 +0000 (UTC)
-X-FDA: 84122700774.12.6AE7B61
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0A72A40011
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:09:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=E8tePxgK;
-	spf=pass (imf07.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 690618E0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:21:33 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0988F1A0397
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:21:33 +0000 (UTC)
+X-FDA: 84122731266.09.7934681
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3A7551C0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:21:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=UXYzzuo8;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763446891; a=rsa-sha256;
+	cv=none;
+	b=4QpnY+w8CrVPf08ldrFC6oB/DCqpl8SPi9E3KOO7FisB9crJworBCjlhlYTgNmXtkBrENO
+	l7AWwjTywsy/U1C8UQ3+DofxRfo08WkeiYqt1NLCiqSQViAlNigpPQ8fG+m5RH9J0AZzuE
+	gdOSq4Ig6gT7SJEYoUus9iNgai2xQdU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=UXYzzuo8;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763446166;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763446891;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WEgeRPZ1WVUAmTyDqrYk51gPF5hM55Y+9UDrOi9Fr0c=;
-	b=CREpR1XqsOymxrIYcaUMQvCAJ+fenJYUTLwnXb62MMTeb7MEVkCMXy3IjiH1p9aghfdlDl
-	Vva9dg/aMfWKjvO7U1AMhhMTMxJyYtnV33ahjOh5R/ylLOTgKgZBlbto/OGX0Uw04wBhef
-	7QjK9pCGPgGMbCRs5X0FEK2OhYm43Lg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=E8tePxgK;
-	spf=pass (imf07.hostedemail.com: domain of chandna.sahil@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=chandna.sahil@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763446166; a=rsa-sha256;
-	cv=none;
-	b=1tiF62f4qbVgNWlr9q5L/EVzU+BphAk6JJldB1MbEbJGStb91eWXHQ0qUcubUyQGfgdn5M
-	4MU5yg/tEcGvlGNiNmkd3TFdtJnmU7W5PXPXJ4LPhZ3raj6UR5SJ13KaNn2gLt9KNSHmXN
-	n7vo/2QtLinultqri99MIRprQPd3Bgc=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29845b06dd2so58864775ad.2
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:09:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763446165; x=1764050965; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WEgeRPZ1WVUAmTyDqrYk51gPF5hM55Y+9UDrOi9Fr0c=;
-        b=E8tePxgKYCD2D/4xU7mu/UPXNjB4xruvXjF4YDPl6Vl5rgKyRZ/8rQIo8AbIPGiT4z
-         89DuD6Nr9LjPCRvuW6oi9ajHBmUcdPjGSN0YLlF3LiXHWvcDuWk6NWXyQeXILfkD2cJY
-         gpv9FzlbRhnRxy7T1ACGlmHqpGVm9ihAhTcHF23Krviik0a9HMnDd6Ux4G/GWwtF4rV7
-         IlnjoTrzHpGUNPzUboaFxEabv8f7mJkhBfMgy42oyfKEzrOjxg+6StXlIRHujQOKutgr
-         VS9T37HPpjoW5cIrcTtknI0yrfVnVLQ6KsMNeP6WiFUFKzAd8vlLGPju254xT6zcDBLk
-         /0ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763446165; x=1764050965;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WEgeRPZ1WVUAmTyDqrYk51gPF5hM55Y+9UDrOi9Fr0c=;
-        b=kg8efmVM5DxZCE/bQHukfsMW/+9BliBKNbVxGDBNu6OLLxwDuXpPbDQ9pY4++cnAhN
-         uJKMQGZgNRdoJi4h8EbMyWPz8us/3M6Mye9ZO4ug6sfIL89Y0WeOLGxTqMeFtZe8Am/P
-         Zc5BKgQlVibENiNjjLoa+7ckeekjFIdmlQ30TB0Im3kejB+fF0yPcc5NNZJ78JOhEoZ3
-         iqKnpkWRiSBi2BEgC4HMiiPm2mj4beAE6PUPCvcsW8hNDTpqmv5kYINiCyQxa3IKo7aY
-         4D/YnyzxBJzDG2F+9NR6hAz7bAdXpaHXfFt0I3dpdnQ0pjwl8CptglpbVBZy3B745nxE
-         crEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVobVXIRsv/pXa0DaxrE8sOA9LeWT1TgMibmx9X/udEHJt9e5imrx5M9p4G8iAzrNI6EY9Jnt91Aw==@kvack.org
-X-Gm-Message-State: AOJu0YwUnaJnGYL7GWDs5dkm/qNgw234CVByNWdQ1B+IUGwGEHAUktFk
-	ianTyvR/0XDiOer7vpZEDKaFyqu2fUbrPeQ7HyygsRe6PgQGe6kNmbwY
-X-Gm-Gg: ASbGncvaz3NIVNz3cRb0k42uA58ySFyqvMcuBH3z1TZSstScWO+D3Qk9yQgLIx9MK3F
-	oHrqZB4GXZkSUxqDyVNODwukioXeDKMEMObFyAyyWGHHsx4RIThlbI82d7XFsLmrYbK1kHip52A
-	BXn9A/3MzbSqKVSvc1D0TbfcjfMVMPQd09RiedhEHgQDqpI1B3gHTfyj8vMBwubTXMV2I/yOeav
-	LSyNw+mLb3c6W5m8Ungu02EVqJ4YzER9d5u0qgEcGNscvIMZ4b5meWwksofJfo4Y97FdPEOmjLa
-	ivxQcaejylZLphQ9OLPk2bEBQC9EwY7gXBaFPaKWFmB3rvMFXnboClAiTDQVz7xLbNJyvM5bkNq
-	PSAKmItgguq9TTpfS6yKl4MiNM8kV4SrJmNstH9paJLGjjSdp86+WghZg7sWtS2nCqhJvOYtAIk
-	dcH0HVyqZfvhl/mCI27DyX8kmYq9SXhG2tdhqd
-X-Google-Smtp-Source: AGHT+IHR4jT6grCSM9DxBMtGcN44xRUf9MF6cSjBcdCwzNXajGnSdM3Wt/G53xPYXfmlcguV3TjMNw==
-X-Received: by 2002:a17:902:e84c:b0:295:4d97:84dd with SMTP id d9443c01a7336-2986a742d00mr159697895ad.51.1763446164864;
-        Mon, 17 Nov 2025 22:09:24 -0800 (PST)
-Received: from chandna.localdomain ([106.222.230.39])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2986e5ef32asm124461135ad.39.2025.11.17.22.09.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 22:09:24 -0800 (PST)
-From: Sahil Chandna <chandna.sahil@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	zhengqi.arch@bytedance.com,
-	Liam.Howlett@oracle.com,
-	weixugc@google.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
+	bh=AxXF+ZX7o2qevQIhaj7GgHO9nhvHZfJFLXJ69dxgaxo=;
+	b=HmL0nG8sUCYvt0+zx9L57JT6VMeQaqjD8UBt1irJR1kvVxrJjX+bd44jRdTv/LEF0XqNwj
+	fAfx3607K4kd4/3usFTaBsh4YyGWCubQAlQOKRV20IlcrKLGb083SAURLhDBti4XmLl84l
+	BRSfTDA3U9LgBkSFstYXNMzEiyGHX5M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=AxXF+ZX7o2qevQIhaj7GgHO9nhvHZfJFLXJ69dxgaxo=; b=UXYzzuo8ARgZIVQ9rqDTjS+9Zu
+	ZEkiGMbJe0UgoAUO6lLrWus+HkKP+ieyHiSPgU0hywf9IVvXoPfvupLVj0g4KkiOxFF12TyERIVK9
+	g2AjuLnHf1N7gO5BI1TQwaEdmgw5AawNtvW41CyzucQfEnD0qkDwx9CRezrcc+VRkEh27ynExd5p9
+	Jf2RkbOPN+pD5DZ6A1uiauFYey2/0hhhOaAZUH1+mP20R5tlGm7I3oOUACVQlZVsKXQCcKz15eyPH
+	NjC/pYKRtsdv1ydnsmCfK/gRSitvMMiuHLa/25onUbAOzpO6aDdyaCtq6/kw3NpEN4UrM1RBJv860
+	+9DceorA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLE4Y-0000000GEWz-0KHP;
+	Tue, 18 Nov 2025 05:16:10 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Sahil Chandna <chandna.sahil@gmail.com>
-Subject: [PATCH 3/3] mm/zswap: use %pe to print PTR_ERR() values
-Date: Tue, 18 Nov 2025 11:38:51 +0530
-Message-ID: <555cdbea3a51898e4c84fdc0f444dae0c2e20f24.1763227530.git.chandna.sahil@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1763227530.git.chandna.sahil@gmail.com>
-References: <cover.1763227530.git.chandna.sahil@gmail.com>
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org,
+	clm@meta.com
+Subject: [PATCH v4 44/54] hypfs: don't pin dentries twice
+Date: Tue, 18 Nov 2025 05:15:53 +0000
+Message-ID: <20251118051604.3868588-45-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0A72A40011
-X-Stat-Signature: aug6s1qwyq6zon5a8rw36fn1j9swnfyf
 X-Rspam-User: 
-X-HE-Tag: 1763446165-92414
-X-HE-Meta: U2FsdGVkX1/EBfQYWzFtM7apPsqIt4XkM+A0JhAPPmzQij/OUXqBsVenZioIr/Np4R1h6YmN4uoYjpiHhAPCGP1jk3zfcC2tNPO0s1xnrZDWMkQVJMUxF7PJmibwfBaVjrqNflMSYMAzWNZ3lqXYtBwsBX3z0A7ja71Vd5UIigN3rAn+9KjWL3jDf3G1lRsWN9QRr/okzmLUTp1v/ydug5hrZvHd2PrGoh0hF/yKL4TAukFVb9+//4FW62wLujePq6/5cloD/w/MMAm8ViCQ49scBGqFZKyDDa7NxAScfO20f6K24eRd5+tP/D2zmdBlaE8Tzaxw867qUTGvH4QUdJPmHIdyp4Pxk4tewgTB8RIPy5dNvT03eWYlX41pZaGbkoyJ7Lejz8Vm4NU8R8epd8P52qRVepJKhhOQR2eGgyM0FbOFxrl/MFQlsVWO409+sUJ2YxOc6KYbF5fRIq2NJARJhWfFHdQ0yQ08HYGdvreM0rOgkRSptzoiKUeIfOHLwz/JWOND40hX1Utff5fK7OKEPNKHMw20qgLJJcJKEgSQgePfdlavCGLNbqMQCvuU06QbBFFk33Mmvy3J8pWutFQOXRJKJeGdV/KoGUK8UhgGHbwfTR2X+4rAk4qWzyzM8mEVnsRYzWUfwKxjGmMBQCkYnr/WDsg3FfWwO86nfL4Lwla3OxbaO38wwvxeI6MiazMBM0nV8WqeUVhPtWa1DvPPiLnUHEh71oJxq5z8eTDodW8pKgvNIrjohipmPwaQCzptypb4ouLmlboE7/FMA6p8HXAHdXFtKD6j9K2ct/quO84lFm4prSXG92EpwgLgzA2lKi4CwEFdh2JeE3Zq4SujCPsyEIV0lwaFwpxrNlmGwaDBZTeqL367glYebHIReKcMAG0Tpo3Luei/JT0l3Bm3qF40F4mn2dxK13Kx/SKt1yrBr/sFx6cgtQpo/rcWU1s3SsfRPpsVRDEA30B
- VLx8BTcR
- doGqs9UyzS4gncRAKQ80eqLFYPMha3qh3480nIuYN2VMcJwID3PAXVkpKCOv2mJy/HeTX+jjxMuqjqgrifUOjtZf1BTcT91pWh1XGRduAzQovUy/BxF5nuSkspSWXgWHsLMGT731cDQCrJ9wWg0NFbERsfZV1N8MAp5yDEfPzsHgesFX/3lZjY846sEJPZ3vG/FqjOLEitnRvBuL8e5rkmVWKpf3QLwvsOtWyvmbAxhruL74z3uctVzxYPvAb16TtNy2skbHtS+7h1rHJnnwUEK/J15OG/SjmBeOBekZuPzWtGC8cSITOR6bZK3G1TDjMFT3Qr7Y9kFCGFo3ie0oK6RmOa9R5gRSaxZ7iB+FlNRJodbb+WsTBMprzO+UH8LnP04IamQRT+2rWV941XGrDql0OSoQACakBUDY7bEjTHQHBLlftTTSDd26/F5kxMEvRiCN6ngUddqRFTJ4DEVzePsa+t131Kq3DzmnXlYX458ASFnwuDBkcOme0pxx3Yb18C1rGBJs3NzDnCBwLd3lcYqu/dkAHfxDUUIc9ATG5Le5yd+SAI5J5uFgemw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3A7551C0005
+X-Stat-Signature: tfybexnmbo8mnqemwpncjr41ruy5afem
+X-HE-Tag: 1763446891-701391
+X-HE-Meta: U2FsdGVkX1+/lTkczSbnWDop+D2ZNYn8+CzD92eH0b81HtKxGWyg0LBk1C02KSSxfqZqlLHsfGudF5jwk5vC8+GZ+kXsgu4HmRAQkcyKNKrLiXb9kYf0MfQpktoI8oM0a9i+ZUqinVG35F05dWs9VEGzVeBPzjJIn6L5VLK3cgNAiJAF3BzgaRc66pWBzLML6/xWyPOd2ZMS+vkRD7t3ttVQWl67+e8WN+jUpLiCNJ2DNOW3YWHF+YdbzhGzRrtoInnJfNgLmPLfb+wJx0qdR+1J0nTpIUaZPIU1OyBTyUB6cUStnqdiaFk5VkXdxr3b/nrgjnXiTkQRg9BzJdgaxfgJxipCqKmzVCiMQdUlrnWsJhichghb6Dg4MF+Jiw/NcAourouLGV4EpowKZnTb7KLon4wKHYjhYXGORLNmHp2sDYimja5jg4E6z8hxKVDXZZmhC3LDeOixyc+JBmsHZFa9kTTRF5Hnds6S7w1xwNcR6DnUQgXO4QjOL1dm/CBN8hyE6zUAtMJYcZ6HGufhS2Pl16JJ+0jyam5A4v3HTTfI2ypG4xWoAEaN94YvVcFrV47bWod/ocrmYuvbPEFvsjcCkkUwT3A9PF33KG1kdW09Jp2O8TIv0WjDrhIiSFibbsrlYDraG6amgKfPe+B14P6t8Pn5EauxRsx7+Vuw/72wOJGRU5uV1nHFTwUw8+S7SyN5UGgydHn2+uxPSZJ2XqkSH624vuNPORpMID6Pb8ETpn6/VTfqY57ABn9aQ+HVkOfNPAWNXBTaPft1ud3hwDLLtBHVz8spq2kgq65wCls+ZFkkqKCgAo0OZbgd7I4IVmZ34S+q/US+aVPdqfmUV5gN0pu+SSNyLz9iV0aJrV8upFrO2mJcZigZWuOcUn8lOITW4zxJwEDcl0Dskrggaea3vSvAAV2EKTXpsazRlnRPV8tQBap8M0SGy/RYp7KGXFpw2Tw5OmlI2Ln54K7
+ XyPke6cf
+ pgHKaxBhmFaIeUW5douXPuiWAJNL+Sf7udgKTVbikJ+5IDw1epGteJxjnthoJnVderbPi+UokzFN01StzDFbLr3r0qUMKtSHNW8RHRHNmKZ7K29hpNxqh86x6MdX/dQ9r8KUfxAPrHvqjLKWz5qmXot7h2oBRgT5wyJ+jv/7ONDxzLm1sYqJx641Adv+8JPLCSo1SzDr6kpWJrjUaE5a9EhZMYi4l4euzQikflLwZgtj1+bd+OYj1NDMfkMx5cK0iTEnyAmQjasJwcMWE6GZhvSymes38Lok3m3Wiagx7v4aFcU3kJwlt/zdPU91bhcpKLfpF3UnW4w/AP8Qiupn+gnyLB7tEqd+6B/vwPIx3/Q2SgFt/g4wZKyf0zfp1jsiLj+l+X/Rh4cLt2I2otCyhitL4PeM8uQbTC9KR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,37 +109,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the %pe printk format specifier to report error pointers directly
-instead of printing PTR_ERR() as a long value. This improves clarity,
-produces more readable error messages.
+hypfs dentries end up with refcount 2 when they are not busy.
+Refcount 1 is enough to keep them pinned, and going that way
+allows to simplify things nicely:
+	* don't need to drop an extra reference before the
+call of kill_litter_super() in ->kill_sb(); all we need
+there is to reset the cleanup list - everything on it will
+be taken out automatically.
+	* we can make use of simple_recursive_removal() on
+tree rebuilds; just make sure that only children of root
+end up in the cleanup list and hypfs_delete_tree() becomes
+much simpler
 
-This instance was flagged by the Coccinelle script
-(misc/ptr_err_to_pe.cocci) as an opportunity to adopt %pe.
-
-Found by: make coccicheck MODE=report M=mm/
-No functional change intended.
-
-Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- mm/zswap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/hypfs/inode.c | 41 ++++++++++-------------------------------
+ 1 file changed, 10 insertions(+), 31 deletions(-)
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index c1af782e54ec..c35604db32ad 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -749,8 +749,8 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+diff --git a/arch/s390/hypfs/inode.c b/arch/s390/hypfs/inode.c
+index 96409573c75d..a4dc8e13d999 100644
+--- a/arch/s390/hypfs/inode.c
++++ b/arch/s390/hypfs/inode.c
+@@ -61,33 +61,17 @@ static void hypfs_update_update(struct super_block *sb)
  
- 	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
- 	if (IS_ERR(acomp)) {
--		pr_err("could not alloc crypto acomp %s : %ld\n",
--				pool->tfm_name, PTR_ERR(acomp));
-+		pr_err("could not alloc crypto acomp %s : %pe\n",
-+				pool->tfm_name, acomp);
- 		ret = PTR_ERR(acomp);
- 		goto fail;
+ static void hypfs_add_dentry(struct dentry *dentry)
+ {
+-	dentry->d_fsdata = hypfs_last_dentry;
+-	hypfs_last_dentry = dentry;
+-}
+-
+-static void hypfs_remove(struct dentry *dentry)
+-{
+-	struct dentry *parent;
+-
+-	parent = dentry->d_parent;
+-	inode_lock(d_inode(parent));
+-	if (simple_positive(dentry)) {
+-		if (d_is_dir(dentry))
+-			simple_rmdir(d_inode(parent), dentry);
+-		else
+-			simple_unlink(d_inode(parent), dentry);
++	if (IS_ROOT(dentry->d_parent)) {
++		dentry->d_fsdata = hypfs_last_dentry;
++		hypfs_last_dentry = dentry;
  	}
+-	d_drop(dentry);
+-	dput(dentry);
+-	inode_unlock(d_inode(parent));
+ }
+ 
+-static void hypfs_delete_tree(struct dentry *root)
++static void hypfs_delete_tree(void)
+ {
+ 	while (hypfs_last_dentry) {
+-		struct dentry *next_dentry;
+-		next_dentry = hypfs_last_dentry->d_fsdata;
+-		hypfs_remove(hypfs_last_dentry);
++		struct dentry *next_dentry = hypfs_last_dentry->d_fsdata;
++		simple_recursive_removal(hypfs_last_dentry, NULL);
+ 		hypfs_last_dentry = next_dentry;
+ 	}
+ }
+@@ -184,14 +168,14 @@ static ssize_t hypfs_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 		rc = -EBUSY;
+ 		goto out;
+ 	}
+-	hypfs_delete_tree(sb->s_root);
++	hypfs_delete_tree();
+ 	if (machine_is_vm())
+ 		rc = hypfs_vm_create_files(sb->s_root);
+ 	else
+ 		rc = hypfs_diag_create_files(sb->s_root);
+ 	if (rc) {
+ 		pr_err("Updating the hypfs tree failed\n");
+-		hypfs_delete_tree(sb->s_root);
++		hypfs_delete_tree();
+ 		goto out;
+ 	}
+ 	hypfs_update_update(sb);
+@@ -326,13 +310,9 @@ static void hypfs_kill_super(struct super_block *sb)
+ {
+ 	struct hypfs_sb_info *sb_info = sb->s_fs_info;
+ 
+-	if (sb->s_root)
+-		hypfs_delete_tree(sb->s_root);
+-	if (sb_info && sb_info->update_file)
+-		hypfs_remove(sb_info->update_file);
+-	kfree(sb->s_fs_info);
+-	sb->s_fs_info = NULL;
++	hypfs_last_dentry = NULL;
+ 	kill_litter_super(sb);
++	kfree(sb_info);
+ }
+ 
+ static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
+@@ -367,7 +347,6 @@ static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
+ 		BUG();
+ 	inode->i_private = data;
+ 	d_instantiate(dentry, inode);
+-	dget(dentry);
+ fail:
+ 	inode_unlock(d_inode(parent));
+ 	return dentry;
 -- 
-2.50.1
+2.47.3
 
 
