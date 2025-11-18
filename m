@@ -4,140 +4,208 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8815CF2560
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 23:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAB0BCF2562
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 23:25:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD47F6B0030; Tue, 18 Nov 2025 18:02:58 -0500 (EST)
+	id DFD906B0099; Tue, 18 Nov 2025 18:25:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84866B0093; Tue, 18 Nov 2025 18:02:58 -0500 (EST)
+	id DD5376B009D; Tue, 18 Nov 2025 18:25:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4CF96B0098; Tue, 18 Nov 2025 18:02:58 -0500 (EST)
+	id C9D3C6B009E; Tue, 18 Nov 2025 18:25:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AFCA66B0030
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:02:58 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 592111A0195
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 23:02:58 +0000 (UTC)
-X-FDA: 84125254836.26.F25B40A
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7589340014
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 23:02:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=E+jLdciA;
-	spf=pass (imf27.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763506976;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B758F6B0099
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 18:25:26 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C82B877FD
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 23:25:26 +0000 (UTC)
+X-FDA: 84125311452.17.43E004A
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011004.outbound.protection.outlook.com [40.93.194.4])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6B08740015
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 23:25:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KirDvURg;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.4 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763508323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V9774m00qC+l22EqhxH404c/5WuwECoHlv+7tMAloKg=;
-	b=xNioyv/5BkBsTk1jYdcL+vMAu5TUBHqv9tSAdX1sEx8ZcD8JWd377X+P7OcC82cCVzyvaR
-	vgFtsnpgnn4Bk8aoPvt/rvDNDipQqDq05JLveS3rZ+vh+GvWigpQIrzMQDNLp4raOX7YRj
-	s2+kHUKuJERC4qbzOgqBCYT/fNt2tcM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763506976; a=rsa-sha256;
-	cv=none;
-	b=R1biakLjkiGzsdofpStG+RnkFjPqwmD6ym1VlCIDwkM3ztsY474eYO/cMXdSWN3e+ZsBeW
-	1XZpF0XR/PNi8jcYfczTSR4XrQO/yduBzg5KKJ+2OmmBJuSvy5oc5tz3UxvExYhdhX/wOy
-	BuiFzLAfFuQoZwDcTf3qYPw1lWa4Jeg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=E+jLdciA;
-	spf=pass (imf27.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8b2ed01ba15so233886985a.1
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:02:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1763506975; x=1764111775; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V9774m00qC+l22EqhxH404c/5WuwECoHlv+7tMAloKg=;
-        b=E+jLdciAGHnyGkdMU7bEE9ohAGZYwHbjsBSCVh0UCMMmAhcBofwdWlJ1OXPb/xXbNy
-         qPw2+csBgYuSDC20ZSm75gqPk88fTLBjPKvbhbRs/ouLTroXYmOG+1UTnUbdDldHPi+3
-         stViBhg8+CQpFTeTYH7ZhG4y/pufr5BTGFGX/juDAkEwlAYj5z9QVr6/JOijX7IlguIV
-         vJl2TJDG/CAjBwFrFZZchNg62r+rNEjwJJdAdVO5KltKwogzDE2AwGpzq/D+eTbKDYcp
-         pZykd/uGFJbts/EOjxTM7HgaWmBSMLH9vU+ERne7DbYOBnTzohIxWrlEfcoX7TpvPR7v
-         3pEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763506975; x=1764111775;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V9774m00qC+l22EqhxH404c/5WuwECoHlv+7tMAloKg=;
-        b=CspFZ8u1h9V32S16aqLF3KYPk0xbkt0fbRRJKGRczClKKzw9bZHZcfdABksUnqerHx
-         5ClDWR+yRfZJtvEzhw1iTJOvX5mq3C9MRwD3PK+697H2E9o2BG1OytT2mm6RRRFj0efJ
-         DOK6orImGgaAk3xyispAXfjvh+coSrzyu1c07AMrHZ3F56HyVEy7jY6HHMMKcdygQf3u
-         /luggAeqLsDAkOAsNiVo9uFJGlgXCYIDy3HthZWnlo2kJ6IBLr6piKnPnRFW013zuvQ6
-         VN1MTwGnK+XYt3lwF57egIG4Y5T8DPUgJQUlTKpYGyYBJzbJfVyEoMpSrJUgbnvxTfjs
-         48gQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9KLB66OAJhf5Pn7YcRCqBsNNQfqJuGHlJzf2/OgZCL8URdmFKzhVS4vK5W/O9G/ZNXNZz5rRRFA==@kvack.org
-X-Gm-Message-State: AOJu0Yzae3tN+JahrAelRR8HKk0/GW841cSu2n9316A0SxYjkIGLn9ol
-	IOUTG3tdbWns5mt5mW2nEEIehPtLHNmt/fQ8B8EdBvX3zPHWBXPPkL8TGru6nhx+GI8=
-X-Gm-Gg: ASbGncv7xE84WwhCgWKPY0qbpJ0BmVx3O51SDiWoo/9g6+EKRnHyAM+CWtaHhBCilir
-	JhPAXuw1nS6sVh51hcdt/4QfZes7K2ICwhT94tdHjhKaX6bh7Sl0+AZbAP5Lx4Omjjkz915mf4P
-	nKJucImBfwj6hPySUr36QpwJzNzFrMtAGWFbpqvI7OdpUv5dK1U8IZbDXsO0vD09L+5kj6W5DKj
-	XP+nIhQ37JqlLnneRCmbX1ilTYQD7Rq7Ae+67LAY1bpKTBRYMK30GvIDiit5nLR9i5B/uXT2JRr
-	Tn9Ubw5V6GOFizehIux8tUC80+pLnj8R6BqjFFdseF35aFwoIM6mh3zzIBJ1xFLjgWGJbp+9Nac
-	bEByRo9qJ7bUs8aOHhUZV7u3AceHcZTBiqoD/CuFp74BnwBxnS4iuE9tqsKaRqu15G4fNQx7jM9
-	2Efg1e8qrjZCCcOKiVUmRs4T8SBfMdQOrW/PCP0kxG+0jPdDSHC6xnXLih
-X-Google-Smtp-Source: AGHT+IE7qxNdGTB3O4Cyd9l/l5kqP+7hVSaobWOJQOGThUG/TNMz01RlkEIy242KlmPT6y0A+36Y2Q==
-X-Received: by 2002:a05:620a:4454:b0:8b2:eab0:629a with SMTP id af79cd13be357-8b2eab06506mr1265910785a.70.1763506975311;
-        Tue, 18 Nov 2025 15:02:55 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2da3e4cf4sm883665285a.10.2025.11.18.15.02.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 15:02:54 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vLUiq-00000000W6g-43N6;
-	Tue, 18 Nov 2025 19:02:52 -0400
-Date: Tue, 18 Nov 2025 19:02:52 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org, Alex Mastro <amastro@fb.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [PATCH v8 06/11] dma-buf: provide phys_vec to scatter-gather
- mapping routine
-Message-ID: <20251118230252.GJ17968@ziepe.ca>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
-MIME-Version: 1.0
+	bh=PKxMVNgpbupr8e9R0di3WDFezuWWw8NqTqdSKYvxZVU=;
+	b=uJjI8hynwVl4g42gmAlgdQg0zaRHoAsvvY+wSnPU1ALIbMUS+RB+FG3m3QQ8/kfwSeLbdC
+	akXbATm4ECdQuZ7Qi9nh/P2mMwkW44SjIxFONtnA6YAre9Ow6A2yzQrTBE8pBtd3pPJFbc
+	CpgE8bjTjcobfwQ40G+1MvymA0NCy84=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763508323; a=rsa-sha256;
+	cv=pass;
+	b=Sx1kTImgQpsylp+vxpwFXqmOqByyA5b0wTLe7o9sCb+NZO7ERTIysnceo968S+bUbxUVsK
+	HsBRhZq2ZfoGtOAgbk26dMc7nfVCNULzzPxOX6Hfj4JRvdMwdVoqJMDddN8Q3e/zd9+3Xn
+	jq4T/o/ppS+nPDqDswHXa7QxPwNc3ZI=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KirDvURg;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.4 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W/w4AYP4I8qAZ7BVrkwOuN1K6NmFuAqwzgL1R7zd5GgsiqI/boUvwUXYI2e1ftKWfeiGbiMfRpfrqsTE+HDUUpR21lWwe/85M/9hS5AH3yvxjmeHaIkpZBMgmstQp9UxmvCW5yra5a3ONrNq9xq3cqM522O6E60/iYuZw6AoqVa3pBXsI02mcUYam7KHdBxp+jIC37oG6CA+ejIr9gFBLFXEnDaptFfJgv3VcckUUXS1fuCZxFRlIX0LYppqfLULC0vsVk+OgT+diLiuIBP0pYXwkrkgKPojGIl3nEYFTar6BhrXk2TdRoaXMFzNzzzP5Ujknfg6Pi785avsEKpH+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PKxMVNgpbupr8e9R0di3WDFezuWWw8NqTqdSKYvxZVU=;
+ b=J42Wni+NjICa84laYFBx911f0/UkSSdzkERuFRry+slbNAvyw51jc50uafV6LX235Xw8ywgEUsqenZUtC5N2lNv+vyE1CNxt4s3iYMrk30GM96GUqq4oerqoOrzs+ytNXnwLhLSO8ki+c+65odYl4UI17VstUBOGHcZYbBid2pAASYhPMLtgyfuxCD93imR41GyC9On7cjjOYGQ6D28MLibrCpC/bQZZJL2wNddqjaSlp7BlYGtDq1UzZOU1kFEgrrSoFUXdr5bCm5skkbiKxDcPdHsJjX3LykMas/J/ZUx4YLicOlQ64sKagLQyrSJmpU9Cl6nwwRMDeFadnqBMoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PKxMVNgpbupr8e9R0di3WDFezuWWw8NqTqdSKYvxZVU=;
+ b=KirDvURg92Hg9Z0Jj0jcWjsDScJHMDIkmECBjdTfanU3+r+POTfWH7kWYHNITSSt7brDWAcF8Q6VDBKb02yj6ENNU9vokkcvMS3447a89HptJcJ7wHLkfdNxqvKKl4Vv7dVRd/8tMm0AzRPOgT5X6kKpS/5ZeE4fiSxOVDennMYFtBZfgwkcNrUDf101yi/qoH2Ou6vs8JwNS7AP5NudS7bJcVrPHkfzf1Xkc6eK1aRsQPPrDpuqzCB5w+TQkjp4XWj5FfF1e8ndoVL+icVw2SETVkJbrkEcXW5eDNWBH7ewZFmEgeLVgNa/rnPcJ8Wyn0Fz0olenDEnuMEUsIsILA==
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
+ by SJ1PR12MB6316.namprd12.prod.outlook.com (2603:10b6:a03:455::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Tue, 18 Nov
+ 2025 23:25:18 +0000
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9343.009; Tue, 18 Nov 2025
+ 23:25:18 +0000
+Date: Tue, 18 Nov 2025 19:25:17 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>, pratyush@kernel.org,
+	jasonmiu@google.com, graf@amazon.com, dmatlack@google.com,
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org,
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
+	vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
+	witu@nvidia.com, hughd@google.com, skhawaja@google.com,
+	chrisl@kernel.org
+Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
+Message-ID: <20251118232517.GD120075@nvidia.com>
+References: <aRuODFfqP-qsxa-j@kernel.org>
+ <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
+ <aRxWvsdv1dQz8oZ4@kernel.org>
+ <20251118140300.GK10864@nvidia.com>
+ <aRyLbB8yoQwUJ3dh@kernel.org>
+ <CA+CK2bBFtG3LWmCtLs-5vfS8FYm_r24v=jJra9gOGPKKcs=55g@mail.gmail.com>
+ <20251118153631.GB90703@nvidia.com>
+ <CA+CK2bC6sZe1qYd4=KjqDY-eUb95RBPK-Us+-PZbvkrVsvS5Cw@mail.gmail.com>
+ <20251118161526.GD90703@nvidia.com>
+ <CA+CK2bCguutAdsXETdDSEPCPT_=OQupgyTfGKQuxi924mOfhTQ@mail.gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <CA+CK2bCguutAdsXETdDSEPCPT_=OQupgyTfGKQuxi924mOfhTQ@mail.gmail.com>
+X-ClientProxiedBy: BL1P223CA0028.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c4::33) To MN2PR12MB3613.namprd12.prod.outlook.com
+ (2603:10b6:208:c1::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|SJ1PR12MB6316:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfeeeadd-a33d-4707-7fc4-08de26f9bc7d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?UdMvBiMtbcyMlCSMxiIW/Hj7fYrvzoNjVm/mDl8vykVIsoBMJhQn7hqswb7S?=
+ =?us-ascii?Q?/VmMR4z1BFZEaYgQ7Ot5Pf5InWKQBDncgDv/dc3XGG3FgweThOvBNYCgFBy/?=
+ =?us-ascii?Q?6hrMOrBQ0G+BNRL1DAWhIR8DZ7svax1aURsphCiG6ociB4x/PM1Q+JdvuYwm?=
+ =?us-ascii?Q?roAEuXRBD8f3pzZ4CBw483AXaW8Vk45k/elaLx+n1UAkYO7PCUYvd6mBWfpV?=
+ =?us-ascii?Q?xN2MR9zsnCMZk2Bkj3Jmgz624xYYKCjYP3YjVU+9EEmqKC3vTGn7Wt4SNl+O?=
+ =?us-ascii?Q?trmxRyiD6OXDPvcEO/AFBYo1x5eq7GOn9967kbJqpfQl2uhx+82iLzKpLhZ1?=
+ =?us-ascii?Q?oj0RTu7gUYY9sh8PAlw5Vcd8SJVO2TLCAqR7pxgrLYcg/MGtberBszNHb6SJ?=
+ =?us-ascii?Q?R/u1SjxL5wpYUOFJiFeD95hwfscQCXQLPR3UXrL/5k8n6xWlB+6kdvHpRWxG?=
+ =?us-ascii?Q?Ii/gBgXx17shZHcjUCAaxZTlncrQPQEeNd6s26o0NfcScmbKZrV53am8FGkw?=
+ =?us-ascii?Q?ELclpZkyYsiUA37tsGxYndjb0q7iwLYlSLdTsgmeJcHtYHvORAzS77KDGc51?=
+ =?us-ascii?Q?S/hfFHgveVxMtE2vT1rcI4H0ppG5WcdF8qYb5Ek10NUomtZ9JTJHlepTyRbN?=
+ =?us-ascii?Q?Ap0/EgX5bFQtOCrnIZjV6i/l7BnOIr9M/sMc0gr0Yafno9GewTno7eCyW5YG?=
+ =?us-ascii?Q?v7HlFns0f5ckyYcyfdPvgfcvly8/J6W3yHB1emC7WKeFIcdxJVXTKR/9pmCp?=
+ =?us-ascii?Q?t0CztIA54HYqFgXSlPlZbYKwUTGSxFTpfJyuSKarwX1ep1FoF+fSNHQWZm8t?=
+ =?us-ascii?Q?05nJv351um+3dpu+B5Gt3yt/EnSjSDXTVNmnW3Wz5B9gdFHy+b7sOtxru7iH?=
+ =?us-ascii?Q?ZhzLm/PsF1tuZXR2W2B2zqOYQR6r1ga/JfN+8yURDXIKvwGoGmDxOcfOp897?=
+ =?us-ascii?Q?n+kkPh8vIy6ao6HFbS8R78uMP2XAtJkeCC4rDhtUs+NzSLQyeTdVL+mCBdXb?=
+ =?us-ascii?Q?480AWmBGJ1MmMV4vJzVLOPzqVu4pQKF05XiBp6R7pKf3gCKZvlSxF0YgPMFV?=
+ =?us-ascii?Q?pHXppjdjvTXtSHxg6Avjagn2h/4Sr+X7lwq6ZeEEPDwXgCA5HunPyNqDJquw?=
+ =?us-ascii?Q?Buq2krt2ebX59Rs+KUOODG+71JIS2qMb3HCbn1NsyuQoCuSNsKFQ7H/ObIM4?=
+ =?us-ascii?Q?UYmfaqzvYCY1eWY4Si9ur2yx9uXqOdt2UFx0BGgV7pXMJ+YNiFxrvB4bFSY4?=
+ =?us-ascii?Q?nQoqXiZievq6btvL6ke6bb+PimEsBGhYc1af5hYnGSPi0aFV4CqbYR3BNItY?=
+ =?us-ascii?Q?ELp3z8Su6yjKOsWjoJOQgm/MC8N1ssxo56R5VFxqsALasxlZw8K9QWsZZDi1?=
+ =?us-ascii?Q?Xraio3WkhUL00IVFhNjWK2gJIJfKnBhSfhfbBH+ooSE+lgFqWoxTGmMcGTl7?=
+ =?us-ascii?Q?SmnWpl+ugjeyWhHgjosRzMIIw+u8G8Tb?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qR7gcDsiZE3B/i5IfVFDElltut2+4bHqdQ+UQDy1I71z5BnCnvfaIeQe6vr+?=
+ =?us-ascii?Q?BORIYJTYTocUh/YfZOR2s2pVe70s7EiZZcaPrsbDemv16Fqq5uaQGDVLn2Fb?=
+ =?us-ascii?Q?L9VF7FnqKuiTIXarX2y3oAGOEHrQpxs2uyLi8T1MYUx+oGTTz/NPCAXVTDRq?=
+ =?us-ascii?Q?GXqzVmharGG+fZll0868bvnpfB2Vb9CtgcvpRPDkxGo+c+0CcuIWmsl4/V/Y?=
+ =?us-ascii?Q?Py/hPDyusWoEidtuegonHSKNsAqZMH+cZFtwdtKcWkSaYOBxe/W2J+B4pmK5?=
+ =?us-ascii?Q?PC5ETc3OYOjCYh93Jbs0zI9pRqFzahbXDX3lK56edn7ZmpUOJ0TtqljqtMyn?=
+ =?us-ascii?Q?aU8BiqTacZUoQqHZxvvWNxAQUBVeqId1t9W2NG9ZgBe7XopHsnMeERGys017?=
+ =?us-ascii?Q?cMEkzQSdDmvIDFpwnJ/cmuL3FciPutZ+sXXxWawWrMBvptO6sqodJWRFKq/m?=
+ =?us-ascii?Q?ZgoRG4xhaj+aR0prCrMZ63MgtGJ+4KGOElScmAhPuPNc3R9xfG0jqxTKiUJg?=
+ =?us-ascii?Q?t7YHUbDlH84Mhin2AOI9LMgwc8TZnaeaeSToIacLXudDdkstVYrA/p8JSiAz?=
+ =?us-ascii?Q?GdnAEC74bc/HfFYk16BiTiWKnlDkNuqbpO1CTrdOJ1pChk7/eSZPD7K3dBbt?=
+ =?us-ascii?Q?Rb1B9jfhCHs1sGYdZLBgUM7/k9MNTeNuIiBqSNNPRrhE+OxRpkBRjsH3/inN?=
+ =?us-ascii?Q?HB07v3+897dcU4VYtmpRw6Box1ulxla+VFavryVZF9mkYqtbs54eRTvsjBeS?=
+ =?us-ascii?Q?+AQZosoUbgjsAOpqJlb2gMVZYTBeRM+0L3MP3Rbq4xJmX89ks5UZtwCKeWJH?=
+ =?us-ascii?Q?iaj2KfDAjByKXBhISowZHAhqhhKGrafxbMxJQpgr/+V68j8wADTHd+tZnsut?=
+ =?us-ascii?Q?0HdW2isCETnmRgL5KwJFLVkw30ro8DKdiOLVJz4DoDTx6gl0658Sc8uf3y4C?=
+ =?us-ascii?Q?C8q26qgUKiiD+levvmrqC6jv9k1pXZ+36NKwpnvogbyca20hueR18x7SKwtO?=
+ =?us-ascii?Q?vkVmEO5d1dvlSAI0FWHkyhsmNegILfcE+eH7OY+D38uDMC7c6RWYPv/z+ndy?=
+ =?us-ascii?Q?8KzDKU35Pw3c/HKcKUJC3vAup0ovO20GnDG3ZRokfhcsykSlOv8Uc8tfkRvk?=
+ =?us-ascii?Q?/W9Q9zJ97woho0dII6G4MYVkefg5KkvMyxjS/fUZBDtkKVWn7ZhvXBA4ThAi?=
+ =?us-ascii?Q?kp3m3stlQ/rCqIq4oYNrfXgmWhVI1/XA7HMi9fuMQbu3Oogyk9Da5kjBDmbF?=
+ =?us-ascii?Q?pfNEXA/LdIwT0NVLBaOsiZa2T3WLFDpDPhhyclzwEvb3r+LwnQfqGxHlVJtz?=
+ =?us-ascii?Q?/g0wcxhHJSaq7vjVJy36d+03cgNT2NuLEKSnsu4UBgfiQ0a2LlyueiH3TmbQ?=
+ =?us-ascii?Q?fOhoyULVY0gdxhwbyuCXlFDujXEth36bOly5DOWDFRiNX1S78+UIkqOMlJGh?=
+ =?us-ascii?Q?R8qLq4Bhjh40RiFyZ1URF8s1s6CSMa69WYdOszo4GcK0P3W6xg2wgQcoEay0?=
+ =?us-ascii?Q?fOOK5HllatfVgp/qsAf3jPsD2n/7/nDB2R4/FSvs2FvuEU4bAcUHmotUb/eO?=
+ =?us-ascii?Q?uvwY+FPf8GX6vMr4wbQ=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfeeeadd-a33d-4707-7fc4-08de26f9bc7d
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 23:25:18.7667
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8nGpowmSVjhz5/XQjvwdjURPJd/iVOaVhJ/T0VddUSZpa5+Q1iOUTOWrtLu926Ri
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6316
+X-Stat-Signature: 76i59d4jkbc438oa1gi59iqzy163ezgo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7589340014
-X-Stat-Signature: pexnwnu6jg9tr53m8dqoyi4hbihfn3on
-X-HE-Tag: 1763506976-331565
-X-HE-Meta: U2FsdGVkX187va+8OWuIRvy797GiNWH2YPh7CHH1qR5fJw98sxMvfdNXe4XeFWr+Jghy8+pXlfOn+1f+cnwiB3aInr+bI+bSrK7zOt+HI6DaHuloBUlaWjQIqi7sU6U1q18vHjAlRMk8K13Unztj8JAx94VzhyzeqkhX7sD1AxrBtcbW6fJCtwVlzSVTIBuT/N6GQ2DNvTZEtz78mFK0dt7VsWX5GT2xLleWufBWtnJU0KtMeB+ZqLZyfNRP6f+OQhLPMoJWiLzDh8uNko/fzMssicvPokRn6SvTTBU+X1GWk/7LWfq2h4Ow+EMfgYr5Z6jmXwKLOALdw/WwxFy2Lfm8gNjGJSapuWbaHzOXm+U2jVnd03nLih9aYZHGWTxKuMKcF80+aYHU3Qwj6h8Mr3gYSX1jjtsCAf7nXFeFuTGWe3yzpF5aorN49j0wvOIzDJT8NPOyKqx76g/qR14pmvwCITrewu/x2LOKxjcHMmyea35hnRPj144FsXWndND/GO/hFFTr95CKyrdjDKGmj4JZL1tpPB8KJ8VKAE8HWB/jdq0Hk7t6aZu/tf9wXDqcbo/pzEUX95wIy1ElPc4kIcwWpimn0Ebyz0jHZPqic5TJdMh3FaoXlZ7bggFnM3cv2fHhkDSbIr2rtLKP8tCXXUXNEo+pssTBCJ6l1QX2C1ejuI/u2Ktafsll0RxMJvf/In9jG38b3SmcwUlt6C70kSY5ebhbyHCtZsrZ0FMk+nYpUc+D+pWYlYke+lm0mEHypjxW/5lGRXEPiDTmzkudvh8IY5UoNz0/3vFszhjrNhdIpqxif44zYLsBSYZdIbgB6Ok7cS/ZBR3r/PBJ7lRhTx119wqXuttLnu9G1tZmVWOA8JkTmHeKCaEtDnpdiR+yaUS19kjIj10H7iUv+UwBZXfB+/oli/6e1ywuuBCB4RnLBfxBj52COC4aEZdl9O2JVhoboGVGs7Djw4hMIVW
- lg9oBhtz
- tnz3Npi55xEs8a4mJCn2Gwvz1EIw8RnSZ3rGX
+X-Rspamd-Queue-Id: 6B08740015
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763508323-233256
+X-HE-Meta: U2FsdGVkX1/YrZzyH4LLQzoYZbDxX1Bxvl7xLoyjPvrj60UyTOfB8SJDrS9NRMRnMsGCA/WKd5sEZSfF0dOyy14aNDp6iylOZ7ugQCo/61sZiMJl2n/QEZBGfs2T/+eNiZrSVZuGSliYLf5RjL0umdpr42u0nQxCUppeJjwIUwxMQ2OcpakUhVcs05liim2eWNmzPOVsKidMYlMBGIu1ORy6871Uaox6qFHleo/f7L6ja30uef+H77DtwI6v9VqsCwZE361m8/4+yA9C6PLuxBg/ofoh/9k6D3FjpCroEXLi8CMSU827R1iRY3BNwGQjeY53rx6zpOQwA/3iQCG2F9wGgRPyfx8owbSIgTB5WpAwU7Fg6RyA5qy/Qny+6mOeY05Y5uYDxFXjhAti1oozGXZSCwm2gyCW9ehdGoCM9cQk+JeFXdS6ivvLFBqHdicTdrYLYgZ1YM6t58VmzXyLaVsBw4wucaYic+id8fSu2b8xCqAec36WEhNcEElWsTMwrBfB/mCItAJ8A3x/pGIukhnkkBoh58/DbwFQfDiAh4BQjevcSut7e0YDJlErQQ9qMxser0qlS877ActfCodOAFqfh8rp5KtChY7t9pXcMRSZ2XivYaZGuHlz6rYqrrZ6p4Ch94UqUrqm5L+Y8pF9vOuN54/F+LDwbPUUa3FfYpdpKZXR6QaYmIaYIG9hLazMICHfzabJ7HBlEa8fSJZrfonmBjCp2vplYGZJCuoUrESdtfyCCykLZwaZlaTWSfJoYSmdSCR1BU1UePRCYZVp2oQvtB5n94WTOoypz/Bekcnqx9IF+JlANgP/h7VVLVS9AXpzcH1je7EFahK5TD2oNS0F+Jq0gnlupKML+DTUZncASKdEeRQ4fPj7CvVhyoQzvwziLuAg8zxyZX8onAiYOPJuVZfSc2BGgoX5Vr7+U9zTLjM2vTUckxfERCq4Ik2Ib97AJ2zqixcIkQYH21I
+ 4/8YjWvr
+ lV6XGgoiQBgT1J/RC0jzmsnYC0EYvWT0tUUfN1h4QdyfuzPySv5uEg6K7TDv8CBxxUaooQiLbZObu5yCp9pKldqtIYyWvWCL58fJmZ+LSUxCIs1/W0Yt09S6KbF28UvRgl1ZURz+LboVIjh2bqtsBEcJHSYWxotM8Yh6DEXorRyw/FMnLAvRCWlqY0YheHMsK00SVRpxzffdj3NptBX8r0Am4AAlm6rfsw24REShJvV1gFw36CopO66AvNiSLRZ2syf7gBV7SoAjDyQc9SCw72LKWsMDqQEzptXt6cTUWvIyU3AYD9cZ/iPohPxfNgcy+Y+h0tIdQ19d2RJ3OIbXx7omJ4TRd3Y2yWRa6wmC9o7L5JaPLV6/im9DkumGGVS9bOlneTMqHtTjhu3BlaucG3zuKx2Lk92oB04p3Qx/p3Sm/8y1OuA85rKyZSm/Yt63RSTfQ87GG01L0ouahgTQYbUf+5riMa0wEwHmW50On+OYP8oOmh/ncAbqER1Qx41GWamV7W9khFhXrScvntFf0hQaAJbrh60mrUbDmiF6AMsqnruU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,66 +214,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 11, 2025 at 11:57:48AM +0200, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Add dma_buf_map() and dma_buf_unmap() helpers to convert an array of
-> MMIO physical address ranges into scatter-gather tables with proper
-> DMA mapping.
-> 
-> These common functions are a starting point and support any PCI
-> drivers creating mappings from their BAR's MMIO addresses. VFIO is one
-> case, as shortly will be RDMA. We can review existing DRM drivers to
-> refactor them separately. We hope this will evolve into routines to
-> help common DRM that include mixed CPU and MMIO mappings.
-> 
-> Compared to the dma_map_resource() abuse this implementation handles
-> the complicated PCI P2P scenarios properly, especially when an IOMMU
-> is enabled:
-> 
->  - Direct bus address mapping without IOVA allocation for
->    PCI_P2PDMA_MAP_BUS_ADDR, using pci_p2pdma_bus_addr_map(). This
->    happens if the IOMMU is enabled but the PCIe switch ACS flags allow
->    transactions to avoid the host bridge.
-> 
->    Further, this handles the slightly obscure, case of MMIO with a
->    phys_addr_t that is different from the physical BAR programming
->    (bus offset). The phys_addr_t is converted to a dma_addr_t and
->    accommodates this effect. This enables certain real systems to
->    work, especially on ARM platforms.
-> 
->  - Mapping through host bridge with IOVA allocation and DMA_ATTR_MMIO
->    attribute for MMIO memory regions (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE).
->    This happens when the IOMMU is enabled and the ACS flags are forcing
->    all traffic to the IOMMU - ie for virtualization systems.
-> 
->  - Cases where P2P is not supported through the host bridge/CPU. The
->    P2P subsystem is the proper place to detect this and block it.
-> 
-> Helper functions fill_sg_entry() and calc_sg_nents() handle the
-> scatter-gather table construction, splitting large regions into
-> UINT_MAX-sized chunks to fit within sg->length field limits.
-> 
-> Since the physical address based DMA API forbids use of the CPU list
-> of the scatterlist this will produce a mangled scatterlist that has
-> a fully zero-length and NULL'd CPU list. The list is 0 length,
-> all the struct page pointers are NULL and zero sized. This is stronger
-> and more robust than the existing mangle_sg_table() technique. It is
-> a future project to migrate DMABUF as a subsystem away from using
-> scatterlist for this data structure.
-> 
-> Tested-by: Alex Mastro <amastro@fb.com>
-> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/dma-buf/dma-buf.c | 235 ++++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/dma-buf.h   |  18 ++++
->  2 files changed, 253 insertions(+)
+On Tue, Nov 18, 2025 at 05:07:15PM -0500, Pasha Tatashin wrote:
 
-I've looked at this enough times now, the logic for DMA mapping and
-the construction of the scatterlist is good:
+> In this case, we cannot even rely on having "safe" memory, i.e. this
+> scratch only boot to preserve dmesg/core etc, this is unfortunate. Is
+> there a way to avoid defaulting to identify mode when we are booting
+> into the "maintenance" mode?
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Maybe one could be created?
+
+It's tricky though because you also really want to block drivers from
+using the iommu if you don't know they are quieted and you can't do
+that without parsing the KHO data, which you can't do because it
+doesn't understand it..
+
+IDK, I think the "maintenance" mode is something that is probably best
+effort and shouldn't be relied on. It will work if the iommu data is
+restored or other lucky conditions hit, so it is not useless, but it
+is certainly not robust or guaranteed.
+
+You are better to squirt a panic message out of the serial port and
+hope for the best I guess.
 
 Jason
 
