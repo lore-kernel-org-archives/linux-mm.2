@@ -4,112 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D2D2CED240
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 03:47:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E2ACCCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 03:48:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97CD68E0014; Mon, 17 Nov 2025 22:47:26 -0500 (EST)
+	id 9F4818E0016; Mon, 17 Nov 2025 22:48:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 954C58E0002; Mon, 17 Nov 2025 22:47:26 -0500 (EST)
+	id 9A5178E0002; Mon, 17 Nov 2025 22:48:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 891B18E0014; Mon, 17 Nov 2025 22:47:26 -0500 (EST)
+	id 8E2838E0016; Mon, 17 Nov 2025 22:48:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7829F8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:47:26 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0FD3B12DFBD
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:47:26 +0000 (UTC)
-X-FDA: 84122342892.30.6D0A1BA
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2E004C000E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:47:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="I348p/NX";
-	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.43 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D1518E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 22:48:20 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B8ECC035F
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:48:20 +0000 (UTC)
+X-FDA: 84122345160.17.0C92F36
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 41822180008
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:48:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b="A76Ho/Av";
+	dmarc=pass (policy=none) header.from=foxmail.com;
+	spf=pass (imf16.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763437698; a=rsa-sha256;
+	cv=none;
+	b=yiLV21Xhycay7UA1JQbQk6eylBP8WHZa/yxGNM5EFhkbh3KdjZzGOYgGo2Ckj4tmMU/yBM
+	XtsgtFhRtgvn9RiY/T4Tnke84HREkqk25thKyben+lBP0vnTBb/H2Mq4J8hYyYnrS6xKGP
+	s+dDRV91B6rr4DN4I8AO5f3U6aWB/mg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b="A76Ho/Av";
+	dmarc=pass (policy=none) header.from=foxmail.com;
+	spf=pass (imf16.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.64 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763437644;
+	s=arc-20220608; t=1763437698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DEq4jkpDrS/8x8zOSTD+sdvZrjiLgYoxLssD/Mj00wQ=;
-	b=WhzE/RALs73cOoO+iE79lz49VyjiFGp/aaXsMXWx/AStwiWTzwuB81rRNNecQ3a7XIPF1i
-	v3hsug1XfQsnqBOcmV+E1ZZYlz8McFQLZP7HZRm2ryz684tBtUCa7QhOy8/XZsigskLU6w
-	BGeP7kyc6Ii4r/4W+PrjcWKblyomVeE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="I348p/NX";
-	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.43 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763437644; a=rsa-sha256;
-	cv=none;
-	b=KD/++tN5NSmMEENR9vjKdnY6ao9Dm4UyG57CmVpWCgd/fKH8JrbKWxcqfnVBhyStgYq9l6
-	7W7nAiaSMND8+PtkdPHZxXy2nBDYoeJ9WCYWjkucwwWLolFEa7sEtLvAMJ80WhbKO1qKnl
-	jWaGapzPsIlrL0ozmA2m3OnsA2xQjjk=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3434700be69so6733847a91.1
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:47:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763437643; x=1764042443; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DEq4jkpDrS/8x8zOSTD+sdvZrjiLgYoxLssD/Mj00wQ=;
-        b=I348p/NXwznJBUULiDhQZbWvcWqEvD7DmAvJBs+cT65t+3IU3jAzSVkaGw9xBt7ieS
-         Y40cWeHTIxDJB8R+6kT8jHkMb8gk8t//3ccG4UOHeknGYY8LLJPMPZ1sWKlWpZ3vdOTU
-         X7l37KK9JrJvrMxvC0xPspMIfPwJcgxXYzC40=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763437643; x=1764042443;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DEq4jkpDrS/8x8zOSTD+sdvZrjiLgYoxLssD/Mj00wQ=;
-        b=AnlJ0gSAPTuKh8+OnJZD9kmIuGAKY9mp3Y5XVfm2pkVmYY4+/tn8T2c933uztA7UX9
-         Fms9sy2I+F3yduc4lBOs/zU2IdO+DtCbTTsMAMPqkMIlGSjAwWRL29tlybNmdCESIux+
-         BVg40kXiHBl7x694UFU8GDtKrlar57uZ/gePudZlfkhHVsbftmwJi4PCq+hhJdwcJY6E
-         TVrgXo9N1Avg7pXh03EYF4N1dN6QuwsA0M7RQcfTnt2W4YXHPgz5dOQg6aAykD69OtFh
-         hiqWppU1EZJDr2tNDiZc+aJhm9Ax4ZfjMwkeGeFIvsOnjkJi6TNrflEU+fI5yVUvUxlr
-         Dfcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVU/y9ZUAn+/YgcNBIOXTRYruQI6SX8ehhb6Kgz7+C5Bn/UR4lctrxjuuUkV9ebsONIOr0U6uQK5A==@kvack.org
-X-Gm-Message-State: AOJu0YwpPvyF4dnn4I0e12Fl2d2JpH8yRPed2UKNqk4eKdvOpTsIccFz
-	LsDkSHYWvluCv/GzfQnrW+trAqrGoLW0xIdZKMwLXg6klKbg4Yd3xX78uzjinVc7SA==
-X-Gm-Gg: ASbGnctc5owami1nUZznZigIdqmyWFC5rsrM/FdCfsuux44ZHdbt0X8M5BKKu+/BDce
-	WAwuS+HaGwvJ2t2Bn0DKb0Cm355cWLC3730nuELFo3RjIXgkLF7urgU5zd9PXlBSRhG0ob270IH
-	JJEqAcOGKKQLxlGWmMIST2ushny6ZdaEBaMybB+JRFPLraMsIY5pV7uiMVWTOjVkb/zr6SnICXa
-	G8PgSui4V/FlGmJaSEdxZdRibTuMRtOzBu1eetP/YCeVkNChN9ZfGIT8XXIMrH4YgfLXGUCi2nx
-	Njul5OVMpYOaMuTPpl4LLoZzHnjjPUtjx1sWH+bjgflbENUi/kkxNOz5jQ053Vj3pLeRJ6XU8jC
-	ntlxJRPeR0GrWIEZr0pZWqcUKQcVPmPgzojXTRZl1uWIQr0ej4SS+0CPl7W26GtpLprx+UoOyfF
-	X5bdsS
-X-Google-Smtp-Source: AGHT+IHnpK1ryIze/dfKJb+3lNvusJ/r2/c4HUclDB5JaPM+8XASmzJpE5qTgYhWf0sAgR2kSDaSyg==
-X-Received: by 2002:a17:90b:554b:b0:338:3789:2e7b with SMTP id 98e67ed59e1d1-343f9ea58c7mr16461750a91.13.1763437642955;
-        Mon, 17 Nov 2025 19:47:22 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:beba:22fc:d89b:ce14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-343e07b6dacsm19932738a91.14.2025.11.17.19.47.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 19:47:22 -0800 (PST)
-Date: Tue, 18 Nov 2025 12:47:17 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yuwen Chen <ywen.chen@foxmail.com>
-Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, 
-	bgeffon@google.com, licayy@outlook.com, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@google.com, minchan@kernel.org, 
-	richardycc@google.com
+	bh=9aRquP0k0CRuXMKjlC/JUHDjx6y/fzBBaTS0hUFw9zo=;
+	b=tJzHcCH0EBO/sA8ef2vZ6SpUWs4GmMRb0nSP+BfnZz2UAVAT6ZgZ+NCDXghWj1VVNxMJhK
+	hV/szpJ/NvjnYdDCNhA5fqhfBcvW+AJJkd+CVCOMZ+iKFJCAp4oCqMNdrPniJAFk7/CTPj
+	l4eHWyM5Ye+alFFJztFN1VpVcxBOAu4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1763437691;
+	bh=9aRquP0k0CRuXMKjlC/JUHDjx6y/fzBBaTS0hUFw9zo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=A76Ho/AvuqUMurzKjrXb7KO6fp+MPTsHH9N0meWtZQaAothlKhh3iODPn0ydupTkk
+	 qE11LFYKhBS5nHrxtT4O0hcs6aZeiXwMtRDbNm8jWqa8pBTY3vwINH2Ve8t9AJ4n6O
+	 b88ZSb8bQeGDTu9W+/o3vMZ6ymHjRzcFX9vvt3kQ=
+Received: from meizu-Precision-3660.meizu.com ([112.91.84.72])
+	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
+	id C07A8C22; Tue, 18 Nov 2025 11:48:07 +0800
+X-QQ-mid: xmsmtpt1763437687tw5mmd9sa
+Message-ID: <tencent_3E9743D12F77CFF8B8EBDDB9529EDA975306@qq.com>
+X-QQ-XMAILINFO: MZtEYADUG4Ag7myerlRVic0qoCY5DlUrDcjqxj2ytor3y1jT975wl9ilILPS7d
+	 mAAByoXzaYGiVr/mjqgPuKntmIzMBp5xrlFTKgCQVMb7s7RtU8MlS3QdVSzwaRqghmi2k0IqyKEx
+	 EbObugFHd84YXzikQxBmsq7SeXUf2kg3iNSJEH4enrQEmDMDsGgqPZT3SyGFWFgxuiEDYkJHoJJt
+	 2I9WW77thHAPls+llTWYu8ZOwES+hVjhdniMYITEcSqpVh3ePLcF58bN4vETagcaAmZQ4+mt3gYp
+	 pdat+MjK5ORcsUFzhiRnoOXQ1vmLUXmUdkXQxrK2l6tgWq3SssV/PdFygne/25tK81vVmRG8WxT0
+	 XTbRqDH7bhrUqFEoc5MN5Lk0I1YxbGzFy3gUXCeiijzgpSIQYfQYUi3puW3hzkvFKWXwUGVdxEbV
+	 3KlIaNLz+laETZfO1JGJ/KZuWGaOYV8KAQgkLzuTZq/nKLbrNVj1V05zxgtTD4d1SQXhn1Ih8J3U
+	 bIVB1hArlG0D1TSMWzkbLolS3sKVuH0JS6AdPkde5XCEjvpP6R9wuircNu385+8OHJ9BRrA7tBQH
+	 Hi1JSIyI8gpgI2hY5iub4A8zjXj26LZnJAnZWGPZIoeR/9T5wl1IwU1XjrDkfHiE0Q0VhCFzXM4o
+	 d6tjXuxe1WIZxZ1yj0UzL51kFt03sy8SPyZfqpgzwYB7rcyq8i2wzJc658JmtMy+6SULLChE09j1
+	 PGCreKBUTQJ5RZbyS5ykAp8X+GRlUu44dSSyl057fMbgCGY906xb5gFA6nPY3Pb6t6hZdIB42bVo
+	 2+oo0VxpfKCTJ8LBpgDMKuft0lSTAaebtJjzWL7KbNeEns0NJ/aGH3JIjZei6EE+c7+Hc3fpRuSN
+	 NUMIwDVSCuwHVVv30Ew26G+lFYmVzdQyNSL6B/lb+HQEDALYFD7uar87GSE6Jqx7/ZGu5QjKYMVj
+	 IMtJMhPykSCfgH9XeW01JYT/D/ySE1n/0NQYe+abhXV0pxyhdPsCDCFhe8ZAX5QpRHnjWIntbmXs
+	 nIwvsd2Oc8ohRYAKhXzxpL3gE3/41+kmFAIx2XaTFe1HdY1yDutAXhQwIz+q9/8vnhKri/xjt74C
+	 dd050/
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+From: Yuwen Chen <ywen.chen@foxmail.com>
+To: bgeffon@google.com
+Cc: akpm@linux-foundation.org,
+	licayy@outlook.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	minchan@google.com,
+	minchan@kernel.org,
+	richardycc@google.com,
+	senozhatsky@chromium.org,
+	ywen.chen@foxmail.com
 Subject: Re: [PATCHv3 1/4] zram: introduce writeback bio batching support
-Message-ID: <ysxyj7q5fuwfbvbh2o5ewsl4plzaaw2wcvn3qemjgzz43hvboq@d2k736awhhpi>
-References: <3nqzi2v72dsef2dte7iqe7wahrbzam33druh7klsh45zvefdm3@ab6stznzdxmh>
- <tencent_900337D4388F6BEDF9525EFA974CD7669106@qq.com>
+Date: Tue, 18 Nov 2025 11:48:07 +0800
+X-OQ-MSGID: <20251118034807.2801578-1-ywen.chen@foxmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CADyq12zxzi+t727B5sm5z-z3SmRQyMDOmr_tTG1GaMVh6VTWbw@mail.gmail.com>
+References: <CADyq12zxzi+t727B5sm5z-z3SmRQyMDOmr_tTG1GaMVh6VTWbw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_900337D4388F6BEDF9525EFA974CD7669106@qq.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2E004C000E
-X-Stat-Signature: i3moujmaf3o9mnxu6qk88fdyrqxixu43
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 41822180008
+X-Stat-Signature: cabewea7x7urnacc4ohq4rj6ijz838tt
 X-Rspam-User: 
-X-HE-Tag: 1763437644-356820
-X-HE-Meta: U2FsdGVkX18hnVA8JKColb3LL7T8gOeXukqfTDn7qRIHi5oqn5UuhsZ7HUDV/JsWa9Pw5g24o55fFlQ8Qc8pYYZQhi9NyaY/xjRVsuuLpSxigAJ+OyoYAB3YVNZJiPjefAHr3fxc93N8CdWu5UA1UHfFlJcawcmJhcVENOhbHh3m6+zXvw+2D5cbYFfVAqy2Kvhmg/vAJJUJy2VCWMmdePjDNLfR5Nti0rBvjk0TW06cxh5kBeK2vuaro+p7YzrMWolqH9eGmVdeOE5dbHM85dgwkRfUQJZakz1O+YV0SUKyLKETg6gTzQGiZBrvcZVLX6ZNHrbc8lo93qCU1dj9eFuy4LpDHAMce8/aPlhjPBjTslQD9bCJCydV8kxgpzc9A1/M/Q2lCHtvD3by6u8TnUL3FTYOEbJe0quNAhrFcioKLSCHf8WG00MDm2jpiWQoBXfkXiLkOxWlIovmt5BeQ5RwzqzLyvJT0X73jOaKxuPDyPKvuzPiGgc15aMlpeFzTBANrwQt1hNgOOnepn76kuQeq+EcJ6VFiVP6UYW6tMRpHlEbVAEI0xWj4fTuNT2ish8EAj+gm6lrClSDcTkNOL9kOxD3aDXmxhlPYHVeAIEbWSKjEunIHU+046WJnSnz1FtI0cRTHgt/xbAIh7/ZmOaqwBakr5u1OV5kKobcBJLK1fhegIKgV7hw1+nnOknrJfu3QUJUEk2iZMDqqYZg2/ePL93M8S+Wf/Y9QoVDSMGz26n5iCbm1hwG0xN0kQb9disequQOatSETeGCglcMQFYxvMDoRsRoeYysqk5z719e6oFkOgL/4LDWTmLgu+ZAYnrIb2kFp6SbtjOdEtchNLBYdVyMSuLJy6giuCRGswH7uY3bwOaosCcqjDb3rAgheR7Y5/Q6XIwa0B8Uis7loHtxpA/LCNC1h6nYipD1cOtAKjBt5OxeQPUbGT3A1dnkgrzmyLM33wrNxrQmfoc
- VQHspqnf
- c9buSo03yfVPZzj+QoW+j6eWP1QykmX6TnxJk+kGv3100N9ycUIYe+bxFiubt05nnwB/GTT6dEsk3Mzs0MMPOWa4vR3MJtHBFTuz0FEbyJCabnGEJ/zgfpi/5JbGOHDP+Rb72DH2B5bbz3lDWKCrsesNjPS9RjEN4DtbXyTeQvspPefk3pzkPvkyQc0n81S9TTbiXdDE+C7uyFqJ/8ggfWNtLiPmctNQH8uulREsft4RGchFnMlNJ5fDqSnxXdmlwwoq3eddevRmG2FtVW9G6H9aEzCGgil5eadQ+ypJk/OpuG4Vdh6U+NnT+iGr4g16OWK7GMcPp3x7h8EUhwc53Caas01/dUziSTPbMiLti5/lmSh8=
+X-HE-Tag: 1763437696-460342
+X-HE-Meta: U2FsdGVkX19bvnaLqtNSbWgkA+O7lyRjx9uqQ0V00DaG8QwMhVKOUFveQ/OvJGKqZM6JFPWOnfcDhQ2yF9GBKUvB821Q5kinG2J8XZ4M6fKP1Elo1BCZYe/o244JjBd9IOELgCsbmlJwM+rnvAJpTVEKzWC9sKQv7xjnU9CwRdlSdrNZmdKk5EQwPS7TuvU74gapXs1UjUiq8lW3oGzem0nR3t/49UQjrkaDEfa5d+2h42beVixg95w/z3YIoLM2j8NQn2KF7xKgAeBjLATU1fVqIORSrZHZGq9LlHRTLX+axPPzLzQ+AzdbWOeeABdwCAoHSxu+q01sMZ4XgnpVCvg9PPyjGtnPOzOE18NSPaRBS6Je2gIBU6eQGbx+htPP75XsR9RDCSQSNtlKLDOU3DFavTlh1c0QFzFjKoXWs51EJfs//24d2AEESN/RIwyD4Q3mMEAUl0xKmJEyug278CLjfTb6mwtVProh6v4cI8Eb+olme7qq6LBmUh/Ibzv6iy0UPCISL+72bWdpVgDDKy6FHNY5mK+cSqGvckG0vATomAlftd3UmhI4Rr9MotktvIAFgbaubkYJzJ5esa6hi3T6RNm8W4o35ODBr05dyQWaiIxNBS37cGqwndFBej52d2VjPGX71TCebBDW0rx7Maw99MbSdIEJBN1Vl2uBwXkXRsNNno6sqEKX830IfEXS4At9LNuLE7ouH9EnENUObn3mJwkVqLjSNueZyG1pWJaIUUnN6ObW70HyOpAS6xDrD39HcFTaUR32cLzPSx8lnFLyIUg0JXIUUFieR9aXwnkdhXF5FDeqZOvHjihHwYECS5TexCOMQHA7jjxK89RM4phMIpaEe2WifM5iRU0q0lHPhWyRIPEnFg7/E7ekQyupNXZuap7q6NGEXzqq5yWVCmGdIXBUNQ8iY52wyNIQdCjvs/8tFAmQyoZGMoaMKm6VIRX3p1939d2tMIMjiti
+ SvvcqBGB
+ p6qufrUtCLSwHbPSGKgsKvJdobwEJt15RVTVWaa3uEayUa6NwAsBmuCX8QbSNicBPTGk/1XlLaVoNXFV9NxhtRAdtKEKnnAoQAnPQCfjtJxXZrmR4NoKZxCBgbrNKDtjHgXk514vyYnQuDu0NVPtYE46avA0edqHVSNKPE7VI/eUhQrgRn8zp8Iq019YM+00UAtEhYiRVOFHfm0rkTROadWgGvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,56 +113,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/18 11:36), Yuwen Chen wrote:
-> On Tue, 18 Nov 2025 11:18:56 +0800, Yuwen Chen wrote:
-> >> +	/*
-> >> +	 * We release slot lock during writeback so slot can change under us:
-> >> +	 * slot_free() or slot_free() and zram_write_page(). In both cases
-> >> +	 * slot loses ZRAM_PP_SLOT flag. No concurrent post-processing can
-> >> +	 * set ZRAM_PP_SLOT on such slots until current post-processing
-> >> +	 * finishes.
-> >> +	 */
-> >> +	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
-> >> +		goto out;
-> >In this place, the index may be leaked.
-> 
-> To be precise, blk_idx may be leaked.
+On Mon, 17 Nov 2025 10:19:22 -0500, Brian Geffon wrote:
+> Out of curiosity, why are we doing 1 page per bio? Why are we not
+> adding BIO_MAX_VECS before submitting? And then, why are we not
+> chaining? Do the block layer maintainers have thoughts?
 
-Ah, I see what you mean. Agreed.
-
-I guess I'll just send out v4 later today, given that we have two
-fixups in the queue already.
-
----
- drivers/block/zram/zram_drv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 0a5f11e0c523..8e91dc071b65 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -886,6 +886,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
- 		 * (if enabled).
- 		 */
- 		zram_account_writeback_rollback(zram);
-+		free_block_bdev(zram, req->blk_idx);
- 		return err;
- 	}
- 
-@@ -898,8 +899,10 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
- 	 * set ZRAM_PP_SLOT on such slots until current post-processing
- 	 * finishes.
- 	 */
--	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
-+	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT)) {
-+		free_block_bdev(zram, req->blk_idx);
- 		goto out;
-+	}
- 
- 	zram_free_page(zram, index);
- 	zram_set_flag(zram, index, ZRAM_WB);
--- 
-2.52.0.rc1.455.g30608eb744-goog
-
+Mainly because the zram backend device is quite special. When
+performing the writeback operation, the probability of continuous
+writing is relatively low. If BIO_MAX_VECS is used, it will make
+the logic extremely complex. Thank you very much!
 
 
