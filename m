@@ -4,139 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBF34CE8D6B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 00:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 260C4CE8D6B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 00:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1163B8E0011; Mon, 17 Nov 2025 19:06:38 -0500 (EST)
+	id 84FD18E0014; Mon, 17 Nov 2025 19:13:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C6798E0002; Mon, 17 Nov 2025 19:06:38 -0500 (EST)
+	id 800118E0002; Mon, 17 Nov 2025 19:13:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0A28E0011; Mon, 17 Nov 2025 19:06:37 -0500 (EST)
+	id 73DDC8E0014; Mon, 17 Nov 2025 19:13:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D7E948E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:06:37 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7BA18B7B33
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:06:37 +0000 (UTC)
-X-FDA: 84121786434.10.2FAA22B
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8E8328001B
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:06:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=QvLRgSIR;
-	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 643EA8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 19:13:20 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14EEAC02D8
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:13:20 +0000 (UTC)
+X-FDA: 84121803360.19.F2C3C62
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 35F20C000D
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:13:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NNjrX6GQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763424395;
+	s=arc-20220608; t=1763424798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1v4fRZdVLhKe/ktZvpTDlH6fFhc+2rF0aLfRAFXmPdc=;
-	b=k2ooHAsNZ/UXZHp5A88RYXBqWJe6LXKFUdLeFYxkA5Eb44s8k73biyN9Llha40r3lx53Nx
-	XSqAPXPLfCllBUCMmadZLzosrEb5+JXjEoJzRdA/ZfzceV1Y+gtRe8uVUXSMpZq5D7wc6o
-	Ggg1gh/Z7LA804ar7rcxpuVCo4JaFnA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763424395; a=rsa-sha256;
+	bh=7w+/HNozL8sgeqNf9ymrdYieoYBwVVVObtJdPZdmXlw=;
+	b=gz5Iz1cxrhjshdp4aau+wanZOdEC3oFxE404cBLoi9rC6ZKaKAi/dmm6SX8GRv8ABFuU/H
+	36hdYGSOGUTaw55pUdMLKaUd6hkq85JnLkx/N2JyCJbEBnffq/9/l8gWjymn7elbsxB0QK
+	B/HCX1+9WATUINKa58RtmDVYAuObYu8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763424798; a=rsa-sha256;
 	cv=none;
-	b=JJ2Z57ikJwa7jcF4sUXbxnHHSdMvuCN12B2a4dl+mmVeSWblzFP4Q157RNS7H4cdN2hrci
-	SJBMB7TPdaMBghhfnec/Qf1nnUqMhNEHJNfPqaWdQ9D9AermVUYTHMq7Teo3YeZwxmGVqF
-	leCg5Ml7sICYyrtNfFJ3qbbfk2wnecU=
+	b=5cENnSF++D8jN6HgZ5KvqMex/zenU4lbQ2Cl0qefx6GuNbd7xO6Bn6GoN8W4uEk6ozzaVI
+	kvRlXCV3kJz55zlDMmbAcS2+kRee8MTVeX1m/HasJqVYI3VfvcaQ56MvpBbruBjc6fqH0A
+	6+P5QUZL4YOn6hUQdHQKHAWuFb1fR+w=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=QvLRgSIR;
-	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7aad4823079so4436316b3a.0
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 16:06:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763424394; x=1764029194; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1v4fRZdVLhKe/ktZvpTDlH6fFhc+2rF0aLfRAFXmPdc=;
-        b=QvLRgSIRQKw6MvBx5e91DhbEKl5YyfRdezYAHnGzZwTSp3GF40HVqqpJfrPhzoZaOY
-         UF0OMy+tmg6HFFzBrCCem9gq4kwsMA+LSO82JS7MHxEo1njVHpm+JUiaPrJWuE1gLSgw
-         EcU1k2Da0rjR9g/96y9Pt3YV5CICRwlEmTfmEQ979a2wIbASo5uLi8h90ZYB9tMfjqhe
-         pvG7LVT2E88YT86HAb1rdkUah32j1ao2fnmD1FbpCFHb8cg1TBfiehDmKhxb2UpMj98E
-         W073df14bLUJA5Xj3MjMkZhTZmJZ0u+6mkflqHURHgX1NoLrNIiu1xL3CyPluRgdAeni
-         xXRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763424394; x=1764029194;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1v4fRZdVLhKe/ktZvpTDlH6fFhc+2rF0aLfRAFXmPdc=;
-        b=jkuHLsjbcLRclSfYRLqOF/0rvht6SWDVK36p5nJ8d5ERWEl0GUPFS0MHRcYfeTSoZT
-         c9ru9vLAEsMrcm9JmymIDyQEoK2l7Ds9EI+QoKDRSzZhZ4nB9QUqQvaSnCdF23O2mAjx
-         /evCqn8hlPDlY5HT26H8NGZuaI9gDRHRowDDix2IPAZdlTux7i1QHg8dPQaJ6qAxELLe
-         LPCKeQmkkMSOJ9fH1kWpRtTpezbrMvW2aaJ1kB/UwbG3ngTew5wQS97i9aWwzzoSSw6j
-         eSyN4n6Zy4VfeFyfHQQwLSZqT8qB4hjflOiTnJcYloesHz9a6u57vwwLnBQj+x+wq0GD
-         l8GA==
-X-Forwarded-Encrypted: i=1; AJvYcCURxBamKkdorteN1BkutWqMMXnRVgUsFP6Bz0EE1hi3eF6ajxvvBXf4UDjurICLy8aLC5FPS1e3hA==@kvack.org
-X-Gm-Message-State: AOJu0YxxBSTQez8PJF67lxp5Pym9f6qoP73bmi/py9Etr+u2lS62zyXh
-	buPAuH7SWCJ0/eRVy96q1oF8vbH/9OVhH8EQ5paR+zzkvyVlz7M9g5RtDXO2wxN2Ng==
-X-Gm-Gg: ASbGnct7W/aDxdUnns0oEE31kCOjwkDsTvNsFazLZmV4QtRSZNcvtn0+hWqXnRW9wv/
-	PmMahitQNcdlD/UFnO4Q7wen4+Kz0dzot31iYUIpxQOcq+2Yhmhn9dRtoIvLVwFCSLQtz2r6ewz
-	bZIM9I9kZdvjHhfB/huH7VCzYelqlX+ZvqgnfZUd2RsCN9wnwNsKu53H38vDjTak1+n7IdfJ8Kx
-	k12Nbh9FZAAUvRqa2sjjry2C6vqkBGh7LWJhsOIGDHMGSwtT8G19VBPIOYOcrG1LH1S6f0/L8eH
-	JEwdW7vfUOPRCjVDqL276J+8FsNcBEWszxCke0Y3mxtowg5V+q4FCRWDmDupGG07PQqg0aitGP/
-	RnPZaUs2QYpIKoSthv0EwtvWXjEvQNKvr0GEtS+xDFQz2kpBLg8bYh7Bkdl/KtjgJN27DFCGHNG
-	J+19N7KAS9PLMEVNS0XGfUXw42SSzuIsZDm8/EtV7TJyr8iUwYP7Ibjatyrw/xIa4=
-X-Google-Smtp-Source: AGHT+IHkJBvRbGUG30Kr3T5gR1UjB+qV085NIT1CUVV/7jNIJcaOzKed5XoscCfn8280NZXc0GRAQQ==
-X-Received: by 2002:a05:6a00:2d1e:b0:7b8:c7f7:645e with SMTP id d2e1a72fcca58-7ba3c07eeebmr19714686b3a.17.1763424393959;
-        Mon, 17 Nov 2025 16:06:33 -0800 (PST)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b924be37fbsm14602912b3a.1.2025.11.17.16.06.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 16:06:33 -0800 (PST)
-Date: Tue, 18 Nov 2025 00:06:28 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	rppt@kernel.org, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 18/20] selftests/liveupdate: Add kexec-based selftest
- for session lifecycle
-Message-ID: <aRu4hBPz2g-cealt@google.com>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-19-pasha.tatashin@soleen.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NNjrX6GQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AA08741972;
+	Tue, 18 Nov 2025 00:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7D3C19423;
+	Tue, 18 Nov 2025 00:13:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763424796;
+	bh=FA/B9Ov2AMGG74Hew1VbR3PJqHVMWv8DmTnLRuNyv0Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NNjrX6GQ+2j8/hvb2kxvzwqGZySojwDESUweIZ6sgye6A2Zs8p2VLCSnIY9CWNEge
+	 l6jE1bXGcJlT6JVMl+clC6zD8DQcisfaVPJoALcYuLz//pHVm1DfLtH1js7bZeoH4K
+	 wpqR8wUS/9tKTnGzCLxGS/6NgI3dOU86jdcDrGFJ1DVnaPFPXgAI9vaEnGOUuOLtOu
+	 udFawlouxXWSbfDO4zfuGq9kecgERtnjuIuMMyOQDbKNSZC5mHBPOVGVCFNDbOlmyD
+	 hFXfuHFNBaZIaoM2EWytAijxyehm7iVJP7mXxnnbZEg3uvj5zENTdALE6Wond1oGjZ
+	 n7K3V+abTjNYw==
+Date: Tue, 18 Nov 2025 00:13:07 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Drew Fustini <fustini@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>, james.morse@arm.com,
+	Will Deacon <will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	linuxarm@huawei.com, Yushan Wang <wangyushan12@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Andy Lutomirski <luto@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH v6 3/7] lib: Support
+ ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+Message-ID: <20251117-definite-uncounted-7cc07a377a71@spud>
+References: <20251117104800.2041329-1-Jonathan.Cameron@huawei.com>
+ <20251117104800.2041329-4-Jonathan.Cameron@huawei.com>
+ <3bf1793a-2ffd-4017-b4bf-dc63f3a2a7c8@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="BAm6i4nhj7rGKbyg"
 Content-Disposition: inline
-In-Reply-To: <20251115233409.768044-19-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam12
+In-Reply-To: <3bf1793a-2ffd-4017-b4bf-dc63f3a2a7c8@infradead.org>
+X-Stat-Signature: beb7g6pqc913n6dj6j8unzamku8qac1f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8E8328001B
-X-Stat-Signature: 664g9syxgfr4sdsxz7tn7dpheywujsrt
-X-HE-Tag: 1763424395-397226
-X-HE-Meta: U2FsdGVkX19wMGtms7Fa20MnW5bWGlhGzpMEdJ3GLezybze4x27Him2zoK47hY0HW/z1BslE1EXyBHTFxJ64m72PJXqZoaAD48NzivtKFDMFfgfC7N3b4NMiRtOTPz3QeLJgOfutt/UpBilqsaE7nvaWQOksg1oMyLE3QlLUldl1SRMWGbcJbCPqgL9ONhCQrjyA4PMnGZIptBn5AeDHW13RlqCgNz+wEw63Kdyo3Gde+ploiUXomCvcFR681Ds8gyfD1D+fisx65NTuuP4Ei2MGol8Gc6rfXC9Wbi163pwazTbpfTFbMNZEOQkH9LPX9FIsJCpHYWg0jdAAQ7CjwlDtUaCSYoyfm2WlVohSp9SCTyvAThcZqTPy/DMCLJE7w+dS5RHWEjpoa34tA+OUwGTOLqIk7y5AQXe1xG2MA7I7dz12g0/g3oka0BtJOrW4wd0cxV6+wva+iSHTW1g7Gkc4umUtTk1R/4TyiD6A6WfZO+sFY7pQdybfK9gOh9JhCCGUU38HjGC3x6MjCn0YuaGYalNqZ6c95LdI8iM9i8mKu9D/HxqljQ64/8wJcSVHGjxt5n0OS8QZeyxx5XklDaZ1i69e6SIF1cJnv8FXppWhmVTP0VVhOHuyh5Uh2m+iWTKuSqf/GskfCWKqutNRdIU84MFRFIgIwhq/NhoG6vUjrsAKAZCSsW80sr0x4b+p4JpuvrX8dJhrsl05wvRPsfU2QU9HjcK8t+cjzQq3QJUARDq254iqs38b42VhaKWRwE2WkFwL3CCHXRoqa/9AS5ufZpR3UYXGgJ8Rsq09gavL8805WqwxOy2Tbd9jXjVQyg3Bp6iC6XwLwbx6dyywe0NoExDANG19G2344vBB+FQYt3E1lqX347MKofr+w7L6PQqUvANltEG9VYIKiT+r/GLNGvtC9z/FCzyN1U/3qsyICtRxHWerw4y6DjfLiihA+iq3xhRxTy9ELcVQaPc
- Wy7Dpb1/
- yVNzQxnNNJFJ01lpT8ClqM7kbwE3VXiypGJjThurnvcxM3bBVmvTamiCqQj84QDRNtNxZuxJ0Wurn+fjvV/Ot1anp3fOY80ELfGgBs5kb9AilN3EVpqOzySWkSIoaIFOVSMGQNkbJIYlyWT7fZvQ7SMqLyb54drmKobOYEqCzFTF9mmdrYCrkp+UuKTkcODpnIZtcdp0RUioDCEA3HQ9oNg4QzJmK4i+/M9e+4Ojfy4OKxnwVTrCq2HIw1fGWT4+j88ihe43DPvq6BCwarBpaaH24wozEBEQaGKTDCLLIkFrARqNpggXEgcZg1CYj3PW2OMe6iN/pSSLN9Xsk16/V3Dbih3klcvTtK3GUFwumqRLfWQCMbv6DvVsQ38CW8nKTvr2kVoeh6QDTq8lLeVqY1jmcq+hu1ViyQWsFgFvAKP/4eVTtqqIE6bNFhQ==
+X-Rspamd-Queue-Id: 35F20C000D
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763424797-351418
+X-HE-Meta: U2FsdGVkX196j22ZKosspCfgpJKGlrCfgq0+dYR2KiiayBQBm7SFsLwXeYDn1XX+qXXA74WpbrsCxFBP/NFPgxZpQR7f8O/zqFV+W8Rs4/czv33Gx7k31GIICMUH4uyfFKq8QYlo5UK3gOszHcahNzLoK8ELAYVIL4uvqjP2Ep3oqcAqhktL8HNKY4CW2IV4MBxhVd+fTyRvcOoHcircZpkF61iGcChFGnwaxzo+SLxPPFWVpscO2rfCXfFYc0DeLOje6xs7eeIeT36ZVlUvynFyd+6DQbaIO2DDYnSpnIYImoCHDFkzPKReSUkSwmOSSeVauU6LSdFTFBhATCWXNB0+woCrJAU/1SkGSpCqamLWl1j31PFoH7+FTYjmM0M/8MzPd//zczFwD0Yo3L80vZXhfFSDjR/kUgatD75P48Dpemnj6g2ZSsWCLv4oqJ+av1F+FXmqhUXgAm1fAdBCWZh3+YNCwKXifVd8nxKY7gp/9ob66AAxopqFC8pdVdAy9/z6swF4SPoZI/WysOzK/n+lCZB35tNpXbjyG6hEIpQMb2fDQ77N8hGbaWclyFNt3VCKPg7v1+oPiwucM0NQUMmOkvOP4KFJXDluevnfELObJ5I6Gfz1TID5+bvCnf5JjbqkXJsiyNSty2CXYKkkxT7BNZUR94aTUP6TeD/mqebujRJbDINenpiFoC0wlzEwkxo64Wwp0ZG6zArzWOMOnDw/uyEbZhL+kljkIv1GKjcMI8agqnJBbUU8ar1ARtgxulGW7DBz0j1IUSdrVxNp8aOpnd0uONQXUs0y2t3fEhvtibHyMJ8G9RW/OQTguviT3r8ZhubFOSkoq/JGJOmFIKeJQJTzEKsOl03GSKIAQhUTRloK3u8PCi5zEQSDNuunl6F9Yw+BWKn9DVj6rJ4+R22YpYNGVzPwLoKJm1BPG1RsgWFZF4BNWKkDZdEoJ3bI3hBOa4r5BMjtpay3QvB
+ AO/KvYve
+ cz8lOSgCbTzIoBM0O9InabMcOn6SxD/E41WltfSwd4PEuHyWcIk9C9PlZNXd3kApRr8LwOzxBt+bNsfhcbGgdN3oCycBG7ia4GCXYH+08itA6F6JTy+x881PjOM3FuCG+AD65gU7jbRaUO6nIp7v7r8M0oeBHuURPjg2Q3VLSs3onxkMvorCTgUMQoMVU22RJqS+SpM8tWH4Q2hAVJtrq4I7XscX7uOeNtgcFLt+8NLquj5NTLgQO6G9LFhN4PJW/vqWD0CRulrzdml0CQJR1HXRKRZcMGPkSkb/+L6B5U4GFkg2Zh/d2UFFEdvn3DmtJD3B7GqkAO04WYWqMn4B3v6ceq6vWfLc93CJQ6wLBQfHZQpysA9B7m2EqOyylM/AWo7XgteNB26lt2QsQWvtNtIgc5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,101 +114,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-15 06:34 PM, Pasha Tatashin wrote:
 
-> +/* Stage 1: Executed before the kexec reboot. */
-> +static void run_stage_1(int luo_fd)
-> +{
-> +	int session_fd;
-> +
-> +	ksft_print_msg("[STAGE 1] Starting pre-kexec setup...\n");
-> +
-> +	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
-> +	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
-> +
-> +	ksft_print_msg("[STAGE 1] Creating session '%s' and preserving memfd...\n",
-> +		       TEST_SESSION_NAME);
-> +	session_fd = luo_create_session(luo_fd, TEST_SESSION_NAME);
-> +	if (session_fd < 0)
-> +		fail_exit("luo_create_session for '%s'", TEST_SESSION_NAME);
-> +
-> +	if (create_and_preserve_memfd(session_fd, TEST_MEMFD_TOKEN,
-> +				      TEST_MEMFD_DATA) < 0) {
-> +		fail_exit("create_and_preserve_memfd for token %#x",
-> +			  TEST_MEMFD_TOKEN);
-> +	}
-> +
-> +	ksft_print_msg("[STAGE 1] Executing kexec...\n");
-> +	if (system(KEXEC_SCRIPT) != 0)
-> +		fail_exit("kexec script failed");
-> +	exit(EXIT_FAILURE);
+--BAm6i4nhj7rGKbyg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Can we separate the kexec from the test and allow the user/automation to
-trigger it however is appropriate for their system? The current
-do_kexec.sh script does not do any sort of graceful shutdown, and I bet
-everyone will have different ways of initiating kexec on their systems.
+On Mon, Nov 17, 2025 at 10:51:11AM -0800, Randy Dunlap wrote:
+> Hi,
+>=20
+> On 11/17/25 2:47 AM, Jonathan Cameron wrote:
+> > diff --git a/lib/Kconfig b/lib/Kconfig
+> > index e629449dd2a3..e11136d188ae 100644
+> > --- a/lib/Kconfig
+> > +++ b/lib/Kconfig
+> > @@ -542,6 +542,10 @@ config MEMREGION
+> >  config ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+> >  	bool
+> > =20
+> > +config GENERIC_CPU_CACHE_MAINTENANCE
+> > +	bool
+> > +	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+> > +
+> >  config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
+> >  	bool
+>=20
+> Architectures and/or platforms select ARCH_HAS_*.
+>=20
+> With this change above, it becomes the only entry in
+> lib/Kconfig that does "select ARCH_HAS_anytning".
+>=20
+> so I think this is wrong, back*wards.
 
-For example, something like this (but sleeping in the child instead of
-busy waiting):
+Maybe it is backwards, but I feel like this way is more logical. ARM64
+has memregion invalidation only because this generic approach is
+enabled, so the arch selects what it needs to get the support.
+Alternatively, something like
+| diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+| index 5f7f63d24931..75b2507f7eb2 100644
+| --- a/arch/arm64/Kconfig
+| +++ b/arch/arm64/Kconfig
+| @@ -21,6 +21,7 @@ config ARM64
+|  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+|  	select ARCH_HAS_CACHE_LINE_SIZE
+|  	select ARCH_HAS_CC_PLATFORM
+| +	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+|  	select ARCH_HAS_CURRENT_STACK_POINTER
+|  	select ARCH_HAS_DEBUG_VIRTUAL
+|  	select ARCH_HAS_DEBUG_VM_PGTABLE
+| @@ -146,7 +147,6 @@ config ARM64
+|  	select GENERIC_ARCH_TOPOLOGY
+|  	select GENERIC_CLOCKEVENTS_BROADCAST
+|  	select GENERIC_CPU_AUTOPROBE
+| -	select GENERIC_CPU_CACHE_MAINTENANCE
+|  	select GENERIC_CPU_DEVICES
+|  	select GENERIC_CPU_VULNERABILITIES
+|  	select GENERIC_EARLY_IOREMAP
+| diff --git a/lib/Kconfig b/lib/Kconfig
+| index 09aec4a1e13f..ac223e627bc5 100644
+| --- a/lib/Kconfig
+| +++ b/lib/Kconfig
+| @@ -544,8 +544,9 @@ config ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+|  	bool
+| =20
+|  config GENERIC_CPU_CACHE_MAINTENANCE
+| -	bool
+| -	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+| +	def_bool y
+| +	depends on ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+| +	depends on ARM64
+| =20
+|  config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
+|  	bool
+implies (to me at least) that arm64 has memregion invalidation as an
+architectural feature and that the GENERIC_CPU_CACHE_MAINTENANCE option
+is a just common cross-arch code, like generic entry etc, rather than
+being the option gating the drivers that provide the feature in the
+first place.
 
-diff --git a/tools/testing/selftests/liveupdate/luo_kexec_simple.c b/tools/testing/selftests/liveupdate/luo_kexec_simple.c
-index 67ab6ebf9eec..513693bfb77b 100644
---- a/tools/testing/selftests/liveupdate/luo_kexec_simple.c
-+++ b/tools/testing/selftests/liveupdate/luo_kexec_simple.c
-@@ -24,6 +24,7 @@
- static void run_stage_1(int luo_fd)
- {
- 	int session_fd;
-+	int ret;
- 
- 	ksft_print_msg("[STAGE 1] Starting pre-kexec setup...\n");
- 
-@@ -42,10 +43,17 @@ static void run_stage_1(int luo_fd)
- 			  TEST_MEMFD_TOKEN);
- 	}
- 
--	ksft_print_msg("[STAGE 1] Executing kexec...\n");
--	if (system(KEXEC_SCRIPT) != 0)
--		fail_exit("kexec script failed");
--	exit(EXIT_FAILURE);
-+	ksft_print_msg("[STAGE 1] Forking child process to hold session open\n");
-+	ret = fork();
-+	if (ret < 0)
-+		fail_exit("fork() failed");
-+	if (!ret)
-+		for (;;) {}
-+
-+	ksft_print_msg("[STAGE 1] Child Process: %d\n", ret);
-+	ksft_print_msg("[STAGE 1] Complete!\n");
-+	ksft_print_msg("[STAGE 1] Execute kexec to continue\n");
-+	exit(0);
- }
- 
- /* Stage 2: Executed after the kexec reboot. */
+I didn't really care which way it went, and was gonna post something to
+squash and avoid another revision, but I found the resultant Kconfig
+setup to be make less sense to me than what came before. If the switched
+around version is less likely to be problematic etc, then sure, but I
+amn't convinced by switching it at a first glance.
 
-> +int main(int argc, char *argv[])
-> +{
-> +	int luo_fd;
-> +	int state_session_fd;
-> +
-> +	luo_fd = luo_open_device();
-> +	if (luo_fd < 0)
-> +		ksft_exit_skip("Failed to open %s. Is the luo module loaded?\n",
-> +			       LUO_DEVICE);
-> +
-> +	/*
-> +	 * Determine the stage by attempting to retrieve the state session.
-> +	 * If it doesn't exist (ENOENT), we are in Stage 1 (pre-kexec).
-> +	 */
-> +	state_session_fd = luo_retrieve_session(luo_fd, STATE_SESSION_NAME);
+--BAm6i4nhj7rGKbyg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I don't think the test should try to infer the stage from the state of
-the system. If a user runs this test, then does the kexec, then runs
-this test again and the session can't be retrieved, that should be a
-test failure (not just run stage 1 again).
+-----BEGIN PGP SIGNATURE-----
 
-I think it'd be better to require the user to pass in what stage of the
-test should be run when invoking the test. e.g.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaRu6EgAKCRB4tDGHoIJi
+0nZFAQDM8N23xRqxSRbXxCvV9U3SK6crnsbKb90b4UmJQ3Sp2AD+KZGuSHNYRHyF
+VDJQehUnQg16E9RkkY+PqRspoEYItwc=
+=ZlO7
+-----END PGP SIGNATURE-----
 
- $ ./luo_kexec_simple stage_2
+--BAm6i4nhj7rGKbyg--
 
