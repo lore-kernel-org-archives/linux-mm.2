@@ -4,115 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B7F5CED24B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 09:31:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE10CED25C
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 09:34:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C5CA6B0095; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
+	id BC2726B008C; Tue, 18 Nov 2025 04:34:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 776046B0096; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
+	id B739A6B0093; Tue, 18 Nov 2025 04:34:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63EA06B0098; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
+	id AB0156B00A4; Tue, 18 Nov 2025 04:34:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EC396B0095
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:31:46 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F01D1A042F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:31:46 +0000 (UTC)
-X-FDA: 84123210612.05.63E28A3
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1823F40009
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:31:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kh9QNjO4;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D5806B008C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:34:43 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77FE816019A
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:34:43 +0000 (UTC)
+X-FDA: 84123218046.26.8CB25E5
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6399BC000C
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:34:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Mdlu/5aT";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763458481; a=rsa-sha256;
+	cv=none;
+	b=B+N2TF4JqMqIqRB/7Bss5JcifImSaZPKf3sZQqGzdWfb7DnVwJBaBA30wb2IgRSb4aOyrr
+	U+O8YiRmZXV/bDeIytSqTamjqp6qXQyMDao7XPYeIj7l9bu75G30XSQXhKBeR5yBSvKeSw
+	sMrbGwAiLgMahqyiXZw5OOvdP9LQuW4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Mdlu/5aT";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763458304;
+	s=arc-20220608; t=1763458481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
-	b=QCme7eDHwNtfkU1/QeQuVIqOUmuBHfR51PBR9yQUFcoVMju3NOypsAuXggWkxYQZO7RU1D
-	jqPfHWzhgBcWk78GioFbby/7jKZJ7T8Onw5Tr3N+q18t9f9gpBLeHZKY0Lp8VuIOBID9wQ
-	8dkVamKOvQQrvBEjnTEJg/G2PCZdYb4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kh9QNjO4;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763458304; a=rsa-sha256;
-	cv=none;
-	b=UFkCPybgVfJBoWO5J60HIp5nhomQFlNh1Vem5yb+HYkTmT0V87d5jm0e5BhOe45+bH8AGX
-	t/5IKNkJ1LreGaRjX4YG6rXFPvlxPoicmUFE7mG26kPWCYNYuqngCv1D7L/RpYOFT5XoFI
-	tWSQy9TbUeuAsOa6ilWI1e22/hQmTlA=
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5942e61f001so5289392e87.1
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:31:43 -0800 (PST)
+	bh=SqcgtmKu36yGOEI8Pko6WxzeIhQjSBh9Rhu3pqJUFvQ=;
+	b=wu+xuWkjAO22svwTQcOFzxAg0ZipRuTL+l7vcHHcLpicyUmUqYY5kNyOBqnAanp6LAsDZJ
+	Zf9WJeA3dVdtQpRR0WTv9IJVSes+0Clp9DYDQpZPSiheYxxZqsAXesUrrEoeIKZC7v/Vuh
+	FX87Q6iP/az4d53Ji8+3EGg24huWkjc=
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-37b996f6b28so49469281fa.3
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:34:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763458302; x=1764063102; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763458479; x=1764063279; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
-        b=kh9QNjO4hkl7ngQG1rFgSjuTPSEHou+tUy3wp7BeIsf4bQg9KjAZ/r16Q4gqXZ7kE4
-         n/9I5YYlblaepamD5rVEzHyGI6hPlhsul+pqacdw5w+gyCPq/CBYXS5wGzy/PY1UMWPs
-         y9FQNd0rp4P3ElE9cVEq4Jss/p2e6g27pQdFgtwOKDjB/RuHO3d0OxUVq7oQG80shx0s
-         T5VfZVZbE1vY8VbPktKviw58Bgr4bDWdLXoLa4cHdUNAbVIYXKDrqu6A7mf4FjZmPAdT
-         1vNg7tIhQ0szUozpEObKtVqyFWF7g6cdwy8T+lVMv9796Gjm/6yxmLTczbqVI1ofk/Ic
-         O+lg==
+        bh=SqcgtmKu36yGOEI8Pko6WxzeIhQjSBh9Rhu3pqJUFvQ=;
+        b=Mdlu/5aThZwWJOi+WreqQzI2jEfDyGjUtNu71Pe8WnEzn0GbhzfeyQcidJogp7HrE+
+         FLbyMmjv118xdd+ONsSTBZp6JV+5kezNU9BtloriEZObITVjUltuRwwBe+ndeVLz8F5/
+         nx6FowxZApDcAP4Ys7GEZviRC6D6B7IUvFaq0FxJALi627M8xsmc2yv+XJPbxOiaiRJO
+         d9slTRhoXXY7+ltSktCFb0FKbBncpNes2UZTXtXTDAqr8O8+X6rOa85rrTXcwMCFxeok
+         9Q66NrnWOzUUYIC6oRBC5lRkXxBXaqRpHK0sBcSIcDy01jyb5oSbZr07yRjknQ3kxuDc
+         9xqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763458302; x=1764063102;
+        d=1e100.net; s=20230601; t=1763458479; x=1764063279;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LfSnUyyR+gHh/pyEYOi6VgVjJci+W/poycFy7JdBT/c=;
-        b=Q4fuqEUPVOr9yX4Q/69OIYEZWklZphf9RJEuEy3VDDQWDdWGPGCk5NE2jj6kO4eaPI
-         tKuAvudgszKZjp9W62FzXYGIazY3+eD82Cgid1PS+rJftUfgy91egrdQc/vmGZ2pIGnZ
-         M8rb4qdeXFJYAkW+UXDKEnCW4DdHrh2jvep4SbG+jlnU8F/hpstBT0MPnXDh5REYTbgk
-         BlGW+Cw/JMc0BDJ5J8sXxqy6KSBpE1PG5JeaV85e/gRcN+D1mZ/iuDSqj3RvRwd//EiH
-         Ts/sVVPce7CLZMXZxngy+cND7c7dQSEs59WtQVsCUTrEO42qOSX5a7xWsIXmpbltCtYa
-         2pqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxwu7s/DccCu1I9lclQ4glr4dWtV41Ow/XCaIN3HDNQW/mzGPCI58YRfSUmVbummYLp2DbRxu0CQ==@kvack.org
-X-Gm-Message-State: AOJu0YxuHP257PRYfj0CORmNrx2df7pN5i0Zx1Kj0MrUQbp82vFoFZrb
-	eVIrGTXXEN06hg3CO+kNoQ/EVPROkPMldT5rEkd/XnK74cdMV6J53Tnn
-X-Gm-Gg: ASbGnct5jmoT5exi/L0xGJIIoycxrvB54XmP5xN+JfwWjxIoTiMbsFDQwwlOp2sk4Hn
-	AImiK5a3iVovgTiKU2GzZqHk19N9XCZgSftl6K4XnbSuKfw826LbE2pO7vyht7xKa1lugHdKKzo
-	pUGm/EA5NS3NGj4kFScDqHmjjc4u5W8wvf+UBvNxuwn7RbpACHKK4qvqimAjy5dR3YbFuryYqdq
-	R9VUsauPs2g39bezLUi4oybVLOpqUGxNJcs/2kUVPcBT20al6nPBZLEWTMgu4Oqoz3Eui0NhxFo
-	GFLuxOzqDmOZ7XMkWV5M6DPesoRozXUYSkdpxWpVz0hYBXYqEUtUExFsgUvJcR/klNxvmSf4smH
-	kr8eR9+qIgq/quLAm6SU+I01JmcEfj97srFfmuimkHog=
-X-Google-Smtp-Source: AGHT+IGnlKspAS2We2FABx815t9bNQvFsXJy6XwUcpIvRdQFlzF9XlXS5jEyZ/AKjBb0WZzRlZkYAg==
-X-Received: by 2002:a05:6512:3b0d:b0:594:314d:ac53 with SMTP id 2adb3069b0e04-595841ba374mr5520844e87.23.1763458301885;
-        Tue, 18 Nov 2025 01:31:41 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37b9cef2bb2sm34960441fa.46.2025.11.18.01.31.40
+        bh=SqcgtmKu36yGOEI8Pko6WxzeIhQjSBh9Rhu3pqJUFvQ=;
+        b=HndpK6bfhL9yzULIVHrlTov+rG8mjrBmE+muzDCQ5SrdafwhRb1zwkw460r+ISdRYe
+         P9JTUC0BcWYd1NiYWml3B/deBqZ9ia0+Uu4Klf1TZC2ZFNLoZOkL7F4D2D6ocJbG1ehR
+         sDzx1kB98MvMk998dECn+fbxg9tqTbe68az+lqBivjYvtQ3MlG/660e4R3Ueuiw8w6bv
+         4zs2QHVb/1g0rR82idyA8jBrtKpyiyqcKd+rSGh0th76VT6ou3hHjkgXFIcgCPC99JIe
+         X/ysO7Pf+xTDee+NH9wWQh9HgaT8fI0l1eV4ta5yKthNUvzxFDCfMDSgz0kUhWkpY8yh
+         eLOg==
+X-Forwarded-Encrypted: i=1; AJvYcCXxJIBclY866MNUUmICrr2/u91AnaYSVLblAGcFSGgPeWAl3wLkcKkCeuc0RpyBKpv1IEB7kiLHrA==@kvack.org
+X-Gm-Message-State: AOJu0Yx/94dXJrxTj5BjTZymC8jkV9Fn/FI005K7o3ZAYUA5xiG5w+n/
+	uKAEZLiGYey8X1OQn6X6E7Dhnd74mmIj9e0QkP7wdSmt1NLvjEu+DNzq
+X-Gm-Gg: ASbGncvgqgoMSaqlsE1eaWB6vOx5HaRJTIOygYJr8n014gk8Uy3CXH0Yyy0pJxdLSzy
+	uzjp19O4bWjMCcYUPsIk0qszTFl7WBn/GtqSQDURa4DxdPkaJ6q24oXbbHyS47J2U6A/A7ef2/V
+	czIlgxKm5OHClp9If6i69WBtoul6+t5mBZ3MpByG5wP6oZUYiz6IsxKCAXI/4JqFd+ZvWhpxfxy
+	i/LP8Yb3Gi6kHmytPRtNQk/6rRvBgOdcEuwXGELZcIbu/JvA5mUyinA04eaA2oPuybIlmE4YKLF
+	se74j+js3h1oybKrSS/an2hIVS/OaBmqcO3DMUCzFTPM4x/DLh9Ji+iMhguDCmNayAnwPmyq/hs
+	gwldGzo1sjxFCTUyF6PTZA7ZWiVV2umhFnGASgITavzDQdYAbcX1jELN9I1d33LdqV4a0kNLy22
+	eeMk8NONnrOiK6S971Vnj8so+KOJ5sXQSHtGu0mSdX
+X-Google-Smtp-Source: AGHT+IGkdRAnCzdans0QSjjqeWINwfYXF9anLqr0LKbujqMjX6imLeve1k1SvIKyWvJPxmfqbrqEhg==
+X-Received: by 2002:a05:6512:3d1e:b0:593:4a:a5d3 with SMTP id 2adb3069b0e04-595841ff545mr5445493e87.22.1763458479117;
+        Tue, 18 Nov 2025 01:34:39 -0800 (PST)
+Received: from pc636 (host-90-233-212-127.mobileonline.telia.com. [90.233.212.127])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-595804004aasm3859270e87.60.2025.11.18.01.34.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 01:31:41 -0800 (PST)
+        Tue, 18 Nov 2025 01:34:38 -0800 (PST)
 From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 18 Nov 2025 10:31:39 +0100
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 18 Nov 2025 10:34:36 +0100
 To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: david@ixit.cz, Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: warn only once when vmalloc detect invalid
- gfp flags
-Message-ID: <aRw8-7Ox5TPewpw_@milan>
-References: <20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz>
- <aRvI_VU3NOUaxfvk@fedora>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v3 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
+Message-ID: <aRw9rJ5hx2Wrtq_Y@pc636>
+References: <20251117173530.43293-1-vishal.moola@gmail.com>
+ <20251117173530.43293-2-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aRvI_VU3NOUaxfvk@fedora>
-X-Rspamd-Queue-Id: 1823F40009
-X-Stat-Signature: 5o6gur5zzgur5whdsnf3dowrrk4kcbni
-X-Rspamd-Server: rspam02
+In-Reply-To: <20251117173530.43293-2-vishal.moola@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1763458303-856551
-X-HE-Meta: U2FsdGVkX1+D6dABo2oWSrDUSjYeBF4pLVCKsWixRxBh7dkav7j6G0O0NM6GEXV7/RqspNaXzwSi0PXuvCJpekn5B6p5CuKXKIZDampvRoDjeTJdE9a21ygATnUMHTMAIufbjOBdRiWVqqCmhOk7gJ0Y4LXvPVwgZ5cWizqqUKB4K2v3PgRA/AdvMqQZI8b6vF81xZGBE/E+oQ7HcnliSYCZ5s0cU5hlFSZQMYWbBd7tnd7HWys9Ef9jYeJ/+RZ4lcWocyBGO2ZUSkFUthXakv9gVvnEnPMy7v+XtVUQlThrfaMUngmYkl0Xcd7CvuSFc+njrDH3I6IUDLFVb16XXwoL7eI7H5TYTVPE/4Vl0Hi7s9zZGtk5OxAvbqVBG47xJBGD/PsYfL3VqfKtvP0AwyWTcWQod4uDVpUq60XI8SQ5jo1i4ROldgVVsRL1Ksfg224a39fI+MkSqrGV3UvLRzy1UXkYUyaPxBwmAgwlFTsb6UYm063nrI+OzyGdJzOEYOOCposHDSSTQ87hXMGNPOewBxyCGFXq46vMNXqcWkv7or43qirBmi4AwWplfwGg81NMR2rupTyIffxXnTjX4svL3Y9dvG8Tp9xJ9FDeRkWLtebzBsxyWB4eQtuidKpQNFj62GEQ6BKQ+u1+wbwAbZLQg4hu2ZlvqFj7WoKeDFAmxK25P56zeVnDtwNTcqCtviAZ6nIQKTBGQOFAGtC/kiC0LmwZCW2+Iuj5lMdoEkVIxeoAGsOw43DFLH0ROer1a7RLlb4UrYL2opdtFAlZBxtifOAjAk1vkKiWOG1lah6wlcmn03qdXhbgerNUljLtraaTrim6OuNGIcs9Wu1UFbXl2v+2763Rqlf7US5oqq8oSPmNRrTL0otbvP2+KyncX2wwIoOaU8hRb+TQ52rsFwncQg24GM/e2/K/HtKC5z2l2K+VfC78+uRj60VZMnGj3M2G6CvF8s1htGi7JER
- fIIvDHIg
- ES0uskzNrKDgz3XqdYneUb/hb10/ZarlULiJUdBgbD4JOEly2nIT4pwBNTVVE4GYgPhg2w+s55oV5XcmDGiu86dhexVHTwLgI0CCSB8tfWpovPHw38rPCYOkcv9hRTEuYX68ycqhfoRrmeht3wyHH+I+daaAfzKNtBZIHC/4hxINTVtG3DYv+T9+b6h6ohgLLoVwviq2VcRi5OWDo4ZdDe+BgqZSCCz2jVXhWkxXvils0oDQ71CET0oiqfgNHM41eD1dcBvkaGI3U0M/GaJ1dO+UNoQocA5Y2kV25nIkV9clX95p1JKyAbrV0pHyb99LgcKCkMbjqW41AU/g3R7B1EPSm5vVXW0XpLcxKKfh0lStLpHGmToEkE1BcfoWr9/1NAaWHLJGwBDEYNalbhCUowh9nxlpLWeiaoOk0z7M2P5T0lXZJRHb26yGnkxMrUX0Bip9KsuKXSi5CG1uR4huZexK0Y09JvJ4fJD8mb0QF7GKrltNPi+4VmVNNbThgRS6u+DgN5PAUyGBJLMDoCkyQnxT0DgiQl1awM5ES
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6399BC000C
+X-Stat-Signature: 79gur4nc1849ytg9h4ffy6eskb4dkjh3
+X-HE-Tag: 1763458481-149419
+X-HE-Meta: U2FsdGVkX1+o14WY/xitYv7B3DwrZUmXqqPeEr3GyPJABXDncxpYhyUPuRwvvKMmYY/bS3g9BqQUguTyE3MkLUSdCGlinRKMP3jFm+hVyUIdvkRRVei9LfhWRg992cCKZSvs1HfNAV+bkZ9OiQJqttSv1iH8XDnaSssZze/8+vpSBBXgYRLqSQGDpvn1OQJ6Hfs0OQJraaangmihdRY69hqtLpY6IXIXuUC8yNIAEcAppNWvlnykiiqWYbPbustz7xp3Z1+4sID7YL8cWbdUpim2CueYkl6Qt1cW+8tNIgxtjXTm2wst5iNPIYKTHVs8zXgZ3u2ue8O3XcV2+8rX7+LGoG9XSae9TWPQUl+qPbUYkLxWcIO6EVd3PFMPzA3PlZ0xqwT3evKAvhB6QliBQthTcG4PS1pRcGNFPdXg5rivl934HZNXXUrMnms8fAtyFyeFzKE9GIpsMxZI5qjpV1nbCzdqedTBh7H94a/gVT0Jw9KO4X4QHuNVnBnR8jd8nziiBpXoeQNVDVZ1bxxv6d5ZMYevTIsOhfNXNOTr9QIcYe/peWkzTaVzrDJxT01r2byc/qlTGFVizZLlzdeyFKfCcjifwxKONUj1TooD7wjm3HLDgcZxhtm0NcM0Wqwecb4ngM7MbRsRPN354340mIb/SZSJUMS959bQEQo9y+c7dWaK08dOSM2b1ZwLxK3R8JX6cCBqBoZcRQOXtaSkf3fBDLk+0EQKsOmbHQDxbj6MI1bNdG9BtjyJam+PwRj9Br/zwnWEFi+Pe0qoTAQ0pvHkwO5/eeifvSKHt34XiTR2rcAHBMoKUrc4EW0zUuc9M4OTrwrowjMhxRpKzudNjCL0aYng0IM8+g13f7ebxavg5FSMQbIQo4qCoDebVXW45mjlTGivUigWvUR2ckZFFeS9yI3s55t4KNwv6JSXMv1M/eiGBy/cGtS6NApcRE8pDXgnUDYChKBzkN7JVE/
+ 20Tbob+E
+ NQPNfg1c1lbE+/mNO1Z7BwaIXSfFif3XorcjFfUevwHoVbIW/VZm75Dv18ljRX4Iq+p2Rgn8diZFBrVHA1AD/B3Y7Klm6XUL/o9ESi4diOTkZ3YN5O5vp7OoEXf65bvUumWIDj+SVaoctMix9uriKzbK4cEkbYMIe+QYUsnLSK4QrXuDLE73E5vumBtUxof+YWJutI+LjcYGikyIHRJe49hD1Ey2jLMN0LJq1SfwzEFb+j7CfFSOLXboGIrKDIjcz70gLGahSEGl6kZAGrgAHKY16tc6Ix5eMk8hpfaZQsc6QZ9/dyy0dirU2AwbDM8WJcVTyr3XiBYV5YLV26cayrRO1hDNrWGNMiRmgpXxubTNx+eMeSv8hzu+CqkTHMTeBIIhM2/t1DidDK6kCO7IDUG4qocFbCW0wpNXBexYzVvd/G7yVdfiAGeVP/ydAmes+T0I/d70M8mREC4U0aq78ekfKxuS9C6o182twvmmB0fute/1hxKUQln8qic6x7zp3kBzahK3LVygjgMfxHx4CC1sfdTucbDYRXxTqsJ33AmVwPyI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,43 +123,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 05:16:45PM -0800, Vishal Moola (Oracle) wrote:
-> On Tue, Nov 18, 2025 at 01:05:57AM +0100, David Heidelberg via B4 Relay wrote:
-> > From: David Heidelberg <david@ixit.cz>
-> > 
-> > Without WARN_ONCE, the logs get spammed immediately after the boot,
-> > on devices as OnePlus 6T (Snapdragon 845).
-> > 
-> > Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-> > Signed-off-by: David Heidelberg <david@ixit.cz>
-> > ---
-> > I'm not 100% sure this is the right solution, but having WARN_ONCE or
-> > rate limited warnings here helps a lot on devices as OnePlus 6 (sdm845).
-> > 
-> > Please let me know what you think.
-> > ---
-> >  mm/vmalloc.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 49e0b68768d73..2a3ee17093d6e 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3934,8 +3934,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
-> >  	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
-> >  
-> >  	flags &= GFP_VMALLOC_SUPPORTED;
-> > -	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
-> > -			invalid_mask, &invalid_mask, flags, &flags);
-> > +	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
+On Mon, Nov 17, 2025 at 09:35:27AM -0800, Vishal Moola (Oracle) wrote:
+> Vmalloc explicitly supports a list of flags, but we never enforce them.
+> vmalloc has been trying to handle unsupported flags by clearing and
+> setting flags wherever necessary. This is messy and makes the code
+> harder to understand, when we could simply check for a supported input
+> immediately instead.
 > 
-> You accidentally deleted the comma here. 
+> Define a helper mask and function telling callers they have passed in
+> invalid flags, and clear those unsupported vmalloc flags.
 > 
-> Once we've found all gfp the callers currently use, we should never be
-> hitting this warning, so ratelimiting won't matter. Either way is fine
-> by me though if you still want to fix and resend this.
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  mm/vmalloc.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 > 
-IMO, it is worth to use ONCE variant to suppress spamming.
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 0832f944544c..5dc467c6cab4 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3911,6 +3911,28 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  	return NULL;
+>  }
+>  
+> +/*
+> + * See __vmalloc_node_range() for a clear list of supported vmalloc flags.
+> + * This gfp lists all flags currently passed through vmalloc. Currently,
+> + * __GFP_ZERO is used by BPF and __GFP_NORETRY is used by percpu. Both drm
+> + * and BPF also use GFP_USER. Additionally, various users pass
+> + * GFP_KERNEL_ACCOUNT.
+> + */
+> +#define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+> +				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY |\
+> +				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+> +				GFP_USER)
+> +
+> +static gfp_t vmalloc_fix_flags(gfp_t flags)
+> +{
+> +	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+> +
+> +	flags &= GFP_VMALLOC_SUPPORTED;
+> +	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
+> +			invalid_mask, &invalid_mask, flags, &flags);
+> +	return flags;
+> +}
+> +
+>  /**
+>   * __vmalloc_node_range - allocate virtually contiguous memory
+>   * @size:		  allocation size
+> @@ -4092,6 +4114,8 @@ EXPORT_SYMBOL_GPL(__vmalloc_node_noprof);
+>  
+>  void *__vmalloc_noprof(unsigned long size, gfp_t gfp_mask)
+>  {
+> +	if (unlikely(gfp_mask & ~GFP_VMALLOC_SUPPORTED))
+> +		gfp_mask = vmalloc_fix_flags(gfp_mask);
+>  	return __vmalloc_node_noprof(size, 1, gfp_mask, NUMA_NO_NODE,
+>  				__builtin_return_address(0));
+>  }
+> @@ -4131,6 +4155,8 @@ EXPORT_SYMBOL(vmalloc_noprof);
+>   */
+>  void *vmalloc_huge_node_noprof(unsigned long size, gfp_t gfp_mask, int node)
+>  {
+> +	if (unlikely(gfp_mask & ~GFP_VMALLOC_SUPPORTED))
+> +		gfp_mask = vmalloc_fix_flags(gfp_mask);
+>  	return __vmalloc_node_range_noprof(size, 1, VMALLOC_START, VMALLOC_END,
+>  					   gfp_mask, PAGE_KERNEL, VM_ALLOW_HUGE_VMAP,
+>  					   node, __builtin_return_address(0));
+> -- 
+> 2.51.1
+> 
+Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 
 --
 Uladzislau Rezki
