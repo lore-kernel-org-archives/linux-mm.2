@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB50FCEDDA1
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 525C2CEBF97
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:19:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08ABF6B002C; Tue, 18 Nov 2025 10:11:55 -0500 (EST)
+	id 886A96B0028; Tue, 18 Nov 2025 10:18:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 062946B00A0; Tue, 18 Nov 2025 10:11:55 -0500 (EST)
+	id 85EB26B002F; Tue, 18 Nov 2025 10:18:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE1AE6B00A1; Tue, 18 Nov 2025 10:11:54 -0500 (EST)
+	id 79B4E6B0095; Tue, 18 Nov 2025 10:18:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DD68A6B002C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:11:54 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78BD71405A2
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:11:54 +0000 (UTC)
-X-FDA: 84124067748.28.EDF5828
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AD836B0028
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:18:59 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 097F113B366
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:18:59 +0000 (UTC)
+X-FDA: 84124085598.06.F25E441
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E3DDD10001E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:11:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Fnby0e8v;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 531DC140018
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:18:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bNO1aJeB;
+	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763478712;
+	s=arc-20220608; t=1763479137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oVir3zPsjlngDgWc+1KJ9Rm7ynvdK1im714lW669uUM=;
-	b=OIKh28QEGCO1bS7j/ZpOibSkLG7YNRoOYAmYp/9/yUPY8nHPb/SSUTKQhp43VkkfuRClR0
-	lpl79N1muF8Vho7mLunG3EDprM13U5nr0UmEg81xEbmNN082m2izQHp0G7CSexItVpBLEV
-	OZUFa8YDjmi/Vf8+JGBTfsbkovwn3OA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763478712; a=rsa-sha256;
-	cv=none;
-	b=G/ElMoJJENvfGloorunsv/q2+pjxkSN6ViUTUkUR6y8jVSj2eRZCKbzWWZXdFVBWwHQ7zi
-	kZB6gZUUVh8F06BGiePbUONMV1MQuG1UK0VJyRYNtR3b9+MWyVl5YcLA8l23jVrMBj//cs
-	SPlCeVNjNWbbWZ4NiBHYXnuKjLhHBxc=
+	bh=MLsd4qAXxPWmEcZ//svKd319GCI2W0dgLquvbJUwSxQ=;
+	b=PPhYyhD5Ssu9hAliIK4gcP2pd0zcbNOODYQJhHASzue3YosECEKCqQylwaHVw77en6h18Y
+	7dIvVJ535pCs3CHQHgYiDdByFBb7D7hlM46GGCOQLdwXggFR+fr8Ykomijg4/kVcE5pR3v
+	07yAfusoBO4EUF7hu0A5rFJFXzaqUmQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Fnby0e8v;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf14.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bNO1aJeB;
+	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763479137; a=rsa-sha256;
+	cv=none;
+	b=fBJH16tpsEDbori6Iu77yByOujQL8eUseRPcQyxJ9wCj2yt5v1PkKd46MiczRF77qhbVVG
+	uSmS/a3/6uBZD5g2PDJPKeqTbgyyy2DkHJLNQshStsV3C9KBkx5A7XR3uZgx4snGOWYMoD
+	YWMJfjLA3WR0bySIyZMmNjfrYm/Fv8Q=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=oVir3zPsjlngDgWc+1KJ9Rm7ynvdK1im714lW669uUM=; b=Fnby0e8vWvUc4/1n0tiDIDaVdi
-	1qYtPPcT0nQqkCghlZJUTpcsvf83CoayKIT+kTnm0sMHBOMukrCcmbrpxz3fLio9t9qoHK39foL86
-	RTipcuFOc1y4BpLNns/26QlbB5JwLGU0Q35aEfxkTeYXpw4KoOvsa+ntvIbLQvqVjctxPRjhcPIjB
-	ZtLM3AnUhcNc7m841Cm6EfeuyW/tiI6em3AS0jQtjD01ouL4JMcDfMf3+k4aBWgI8F0XcxXl4ACVN
-	fH9VAUy4DTZng0OMrYdzWOPLN/fY9LoXl+TcqHIZSRuKRTwQjAmxM3OtW0I5UPnzP0gNrZ8NRbyVK
-	7SaNPJOA==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=MLsd4qAXxPWmEcZ//svKd319GCI2W0dgLquvbJUwSxQ=; b=bNO1aJeB7FzN24YGVojvkx4Skl
+	VpJ5urZUM1I38LeqMrNeygkb5J4BRVJ+yKrfBv64R26y1qldwW2BYnsiCt79pWQHnA8sg+e2wvy5q
+	rxx2r8aKOl63+ciDFmH8kto4N0QGRzAoOaXUwK52liB09KtLJfq386EHGEB5T6ZnZYjXg78bcCdEG
+	XchVdDM8HF7pCz5NPzp+aqtSV6metWKBtl2fNU5FnIlqmKKxC70yWPjGoWdA//KdiRyanRK/Jbk9a
+	DcPQe/sK28rUKLOgtWo10gjo56WsKrkb4akz14WqWkWC8ykzYE9t/GgofMoASvvG2lLm6t172YQlu
+	vjRUzVFg==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLNMx-0000000FeMT-0yXu;
-	Tue, 18 Nov 2025 15:11:47 +0000
-Date: Tue, 18 Nov 2025 15:11:47 +0000
+	id 1vLNTm-0000000FeuB-1Mcb;
+	Tue, 18 Nov 2025 15:18:50 +0000
+Date: Tue, 18 Nov 2025 15:18:50 +0000
 From: Matthew Wilcox <willy@infradead.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Sahil Chandna <chandna.sahil@gmail.com>, linux-mm@kvack.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Wei Xu <weixugc@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Yuanchu Xie <yuanchu@google.com>
-Subject: Re: [PATCH 3/3] mm/zswap: use %pe to print PTR_ERR() values
-Message-ID: <aRyMs5JrQDxmQHJN@casper.infradead.org>
-References: <555cdbea3a51898e4c84fdc0f444dae0c2e20f24.1763227530.git.chandna.sahil@gmail.com>
- <c5f92735-0e2b-48e7-9181-04bc058c0bde@web.de>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Sahil Chandna <chandna.sahil@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com, mhocko@suse.com,
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+	hannes@cmpxchg.org, shakeel.butt@linux.dev,
+	zhengqi.arch@bytedance.com, Liam.Howlett@oracle.com,
+	weixugc@google.com, axelrasmussen@google.com, yuanchu@google.com,
+	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm/pagewalk: use min() macro instead of manual
+ ternary
+Message-ID: <aRyOWrARRlUCeEz6@casper.infradead.org>
+References: <cover.1763227530.git.chandna.sahil@gmail.com>
+ <ff24b3c573b766b187b55a38497fbad0a319b9f8.1763227530.git.chandna.sahil@gmail.com>
+ <20251118104537.7ebf4422@pumpkin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c5f92735-0e2b-48e7-9181-04bc058c0bde@web.de>
-X-Stat-Signature: sxn6mf3zw1xu6d9nwutrkcqso5aea3u5
+In-Reply-To: <20251118104537.7ebf4422@pumpkin>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 531DC140018
+X-Stat-Signature: utxfz3mcb8mpyccx3wfu1jyeo5i3ra56
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E3DDD10001E
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763478711-482314
-X-HE-Meta: U2FsdGVkX1/kg8MCl4nAciv5FefcFEl7VB8m+izIPGRFRD1DApGIdzTaRNxaAC9lMIkH+CKfvYImN4d3a/tyVO/clmOzPFZ17FSOElade/p6byOcNm1xPhL023UTanqKsDKltYu9wv4tS7Nq0i1mfo9bjl5Lwh8Cxuu4QrmvvVBS26MPDHNB0ve++Kp8f8CTEMBxW8ZK4Zh0bB6rmkbO5WA4yh7MPM/4vd6uawgkUNs9WLvpPNAR98OTnaE9mILChVcaefvm9XrtzQaQoQ7hK+IP0KdeS6nN3cM2l3twhqZ6BykJKIIL6jzOc5RSpkKzek157bLUqACkOf+10yOlitgyfaky6Zm1G1cAQ9+S9ixHa6Y6NziqElQ1w98U44f4qRoETK4UvXS1MeSPwsrNKMVugRpE8tKgTVzu3iCODBar6tJyHuIRaV4/NaI9tIkWD9UqS9jo5VYvKOq6ftNxh39YJC2AbU7oWHnxuge+LnKG8mUfKj7J47rwsH+Zqhq0oYdu7S2MUgropeYcoIXsRTzagY9/DaPrxlUeORvAm78FmAmsuPmX8L+PllCN6yfRTuI7PAkLrLKPc9zzQuqBLILyqv4lLyQ/0ka5QX5KvqqSHYrX3ReB/ljMnZBx/B/CGkqGa6JivvPRH8RV+qAHKMhG/tLFnie7UMsadF39zAnVxHMQXq/C0cR4ftqsUjCK+NvGZ1KqW9chhDEv3T6d5mW/C9njgk8YPQnF5n3y5x2AEv1rODYMNZZ06AVmhK2XBY52f0ToS7whDus6lyIoeG3+Cd5nh/OmbEwdBWB2O10J3SAsxGrS3zS0rEJSAYA1Sj5UOu/11XV+NfOq2IEZwn54/3WgrVrO63mFEIObGEc1/1C43j1vdNiyreYTRwYR66UUAhku5zYqYSFQGbYrAxd4AOnbCAQeBSzxxtBDNoqJHWc6QzIGDpkxFwDh5mfk5tHnk7R2TSDuUZnpexF
- u9uPahsu
- U+BXZvP0PJ7Snr1Tq3fiofJdYdjtT3YbGHAQUe+xXMOOScvRIEHepepuilpXwstauHSPCrmydleJBmC8sTkVWVn1GXJMc2ufXCiwfpHIu8k5loXLaLOKqA3b3Aqjf+R1EqCVv1ui5vKi/rY97KNbW7CsoJ0AS7Hn6dLBkJrPahii3XrWBnPFiF9isf1A0ayDmaPiCfxwE/GgW3cfCyvi1GKot+Fv+Uh/Jjsp22r9+O7eceehw0jBluH0UQx6u8ZVUcfRmwKpHsABm3j7aG6RWVv5E1Od0wC9x+rl1LBED2+YZTOwKI1nVPCGK73WzlmgTY/HcWj2/NokzAtX27cWmc2ZDeF/YdJt4pQrMpU+YJInS56UBRpmmbs3d20LGrttfDP5twzNg8vpFcSFQV5Fyw1e2bt84izEYKFgp
+X-HE-Tag: 1763479137-253894
+X-HE-Meta: U2FsdGVkX1/5rYXOzgJurb7uHx5cKUIxyglnh6b+Um2x4hGPWlX1pyyKEF5TPdpyxilqkcPa2rxYFpAZ54/OyfAKyRyQVgkVXevtyB88Yes3KtB6HVbT7M0qE1sFsHK/DgD+iJtp3/q96fQQGTliLGUoYpQBpn1yK+JcIo7npJB0LnvAv9yDtpb4M6nhtILd9MWaEC0NM5mulgAdo+cnwM2iwT3XZ9uGFkoDoo0bARz82qLHoApa/9SLVXPgu5OJpOLt9Cn86yVcqpHa/o8jn2F1lV29z+fmnKRLZmjsjMr5+FpTjsPMyNWquxTxQg2RQft67lF0idw4lOK7+kZ0lj1wxAAoprOJIZCszIx1DI8t5vet81281XOe3KwP/9XNvyItG03b1vqfos3+FsYXMFNxjNC8WQvh2fJxAxiC9k+pIioka6Ug8JkpaZUxw9tOHOrJXg/YZkNoLEMi49wivCHrcJ7z9wYQzgBgsvlTQ5GWJRCDwxRGEDQtOMU5ilCBM8qCqwiyAs55or5JJ4HpdIdlxoZmgiBQ0Tcn7c+WwTh+j04tm3wXYt107HUZAQnUEU3GLO13U1K6xJ9RxClZg1jur9tkBmtc46gb3IQX7Q7dGzkOXRfgJtZrfOj02NneE8oNJbH7hbgiFK1Rn8Dlb/FGaLgd4deAQwDXe25wrSGdOZS4u5LJDtHmKE2B9az0eP2pi9mChWCp22QMb9z7hEkXafVxkrQrfnMIKydQ+JqnievWRfCTxhHVRgHVtvTu7U2+5vrEPmXAm5jsWX80YYJH0aJuJcL2sL7xeeGc92uUtdDSqxBZQ/0VqVfQKonX3ODABcGqjL8JpsR/2wyh2IrpiU30EPV34Jl22G6QTsVxztnPGC20KM8C/WPf9BFDJUCioo7MCGQ413gHWi8b1Tyn1mu2ctpaEcMwJNhF3nI/XfV/YfeFw2rTdCXlZyJItAF2udZr6C+MmIzrESi
+ qyQv4EKW
+ V6mxKYBzILWAWiEkHNsyy5Tjh//idD6xQoCWp7lj0BVxlBrCzfVSkwP4nnOUDgvMktr9GcRdmr/j2I+S7NyEwBTSPhBD+8mt14fek3pXg7cL67gWwE75onXMSyjALjG22y/rNAQVIOMcuOKF52K8rHxw939n3cBz5aqP447y1fYjgFuhxAUYwOi5rA3PHwvfNh8j/u/JRHQMuNqrnidawyaiAN9KQ1+wSxzacUQxYefflmPEwK+ByxAK960xiNWMTjv3lepG1yUHAdnqtX2DL92IsL6rrkLfhnUQxFnX34hVyPZs2ByxDXjaWq+tl/hnAN1dN+nS1ZXM2JWYHwI9H+H/ilg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,25 +98,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 02:20:59PM +0100, Markus Elfring wrote:
-> …
-> > +++ b/mm/zswap.c
-> > @@ -749,8 +749,8 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
-> >  
-> >  	acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
-> >  	if (IS_ERR(acomp)) {
-> …
-> > +		pr_err("could not alloc crypto acomp %s : %pe\n",
-> > +				pool->tfm_name, acomp);
-> >  		ret = PTR_ERR(acomp);
-> …
+On Tue, Nov 18, 2025 at 10:45:37AM +0000, David Laight wrote:
+> On Tue, 18 Nov 2025 11:38:49 +0530
+> Sahil Chandna <chandna.sahil@gmail.com> wrote:
+> > +++ b/mm/pagewalk.c
+> > @@ -313,7 +313,7 @@ static unsigned long hugetlb_entry_end(struct hstate *h, unsigned long addr,
+> >  				       unsigned long end)
+> >  {
+> >  	unsigned long boundary = (addr & huge_page_mask(h)) + huge_page_size(h);
+> > -	return boundary < end ? boundary : end;
+> > +	return min(boundary, end);
 > 
-> Would you like to reduce the indentation for the passed parameters?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?h=v6.18-rc6#n110
+> You can remove the temporary:
+> 	return min((addr & huge_page_mask(h)) + huge_page_size(h), end);
 
-That is the exact opposite of what this suggestion is intended to say.
+You can, but I'm not sure that's better.  What would be better is:
 
-Sahil, you should ignore any suggestion made to you by Markus.  He has
-been told many times to stop making these useless and unhelpful comments,
-and yet he persists.
+	unsigned long boundary = (addr | ~huge_page_mask(h)) + 1;
+	return min(boundary, end);
+
+if you insist, we could do:
+
+	return min((addr | ~huge_page_mask(h)) + 1, end);
 
