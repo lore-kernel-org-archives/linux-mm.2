@@ -4,106 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D01CCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 08:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6212CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 08:41:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9EE78E0027; Tue, 18 Nov 2025 03:21:56 -0500 (EST)
+	id E9E928E0006; Tue, 18 Nov 2025 03:41:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C76AA8E0002; Tue, 18 Nov 2025 03:21:56 -0500 (EST)
+	id E4F4A8E0002; Tue, 18 Nov 2025 03:41:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8CC78E0027; Tue, 18 Nov 2025 03:21:56 -0500 (EST)
+	id D3E348E0006; Tue, 18 Nov 2025 03:41:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A5DB68E0002
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:21:56 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48A4213AE03
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:21:56 +0000 (UTC)
-X-FDA: 84123034632.25.4AB9474
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E80761C000A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:21:53 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=lDJcrCbG;
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ywen.chen@foxmail.com designates 43.163.128.47 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763454114; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C275A8E0002
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 03:41:34 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D8F0140434
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:41:34 +0000 (UTC)
+X-FDA: 84123084108.11.9E8A1BC
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 888118001B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 08:41:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="qOQ7/DBF";
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763455292; a=rsa-sha256;
 	cv=none;
-	b=wO5NiU8+fwFTtfH2DZGbpl7DO1w1ZxVDoHJSTrhTANz1uCZP/0QGPS56JfXgGIyny15XKl
-	/GZQidImkXrHZ6IWYq8Q9Kg6dbmLOcYnVVAOAnAvM+CZNhr04YtmvUHfQbt5LDO0yzxspx
-	VahMvrUHVWmkOFt7IMw7d6a5OqCKL60=
+	b=piTRhWKV05VW9E9CgE8foxMLWO6WpInyxOeJ6sDxNyZJjKoVwfRtT9R/ofP1oSiY8VK+g9
+	xP1sB0NzHU/J7QkevqtplsAeVpku2FIpcJfOuWt6LYSTmejPF7ihJRXJJ2lY7dxA6rzChS
+	oSxHqXP0epCgxsuHMaO8jb/ZwQ6A8m8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=lDJcrCbG;
-	dmarc=pass (policy=none) header.from=foxmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ywen.chen@foxmail.com designates 43.163.128.47 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="qOQ7/DBF";
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763454114;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763455292;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D7DPGFKVy0s48PVy6E1rMZw7G6d6Aqidjr0SNy6c4rg=;
-	b=2zTjjKGwx6WbRg91wOh6VKreLEZO4tUv2Vaew+LYFl316Hq4Wn+IcbHnKaQPs0wBAHkwi8
-	QEiGZzAVrZcx2CDq9YB41183CpHyYqpvtPbsxWjU/P9bjCVMT9vyPVoPvkOLmKuRrxQlIt
-	yhvirIOYIFGI1UBB6yVRWRLK9BAz7LY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1763454111;
-	bh=D7DPGFKVy0s48PVy6E1rMZw7G6d6Aqidjr0SNy6c4rg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lDJcrCbGDutEvKP0OiWcrR82AoANoNRq6lwhx93tbn72Yw18s4at9aUs8muSDR3Cj
-	 a0hK+a7an92X+eNM5kJT8kFYxBgJO6iifM7PFVbuu0NdbVpICmhw+llx2BjCbW6ntK
-	 h26kMM02Pc1xx3YpTuBsI0BAOK9Bs6vQDDCikCB0=
-Received: from meizu-Precision-3660.meizu.com ([14.21.33.152])
-	by newxmesmtplogicsvrszb42-0.qq.com (NewEsmtp) with SMTP
-	id 57003039; Tue, 18 Nov 2025 16:21:48 +0800
-X-QQ-mid: xmsmtpt1763454108thf7bnbho
-Message-ID: <tencent_C4669CD835EF1C2ACFE58BB30BA60886BB05@qq.com>
-X-QQ-XMAILINFO: MwSgv9IoJFr1DNKAPmLPPGkCSjO832gac+Nkob40cHLFFVFi6viG110AHX/lJk
-	 MR9qQ2zKu7uIFRMc0T2nSW+57D3Xe9ulEwPrRvi2gv5kXyOgECUdJZMP6ZFF4dd4F0l4HiQwiRKe
-	 DEjO+5Kq4SRUfaM99XGjI6gBcOhYjnfJ28Alr++Rb/wQPQdcmA0MZXEK4V5CKM7+Rh9TLsLEOi8w
-	 CSj3lokmibcIMtWKnYaEkT9pDVj2hACBQJS+XhSoa9qnmhE0tWOoz1IPXyKUlXZgCcnPVRkcMi6B
-	 P4f1OgVdTiRqfxUzfjAfmYhWBsyNNjY/k6OTMZUVoLgB7+XKC3f4EqkwAjQdQHQ6Hcj4G/1cmSn/
-	 jXmuM2D8gELGqM+BoRv/RzhM2hQMX3Z9kOuTMsWVBpimU8T9BjAikA+UibiSG3VjZsDkvaVs6qTF
-	 l/LBgYw9bnZ+D9LmrEP3kp9Ryv5SZyMvPZiQevfFPCT+Gs1Vlq/Kv0NxdgRUZuZn/+P3ZR5z+DFr
-	 m5SJFlyCfLOfov6ubPg0pZwmpU7/s0Mqc/KEg5lEWXtafAw7zCBOLK8fn3LI8yEpc/COCBSA2Gf8
-	 VQJ1hetHYzQodeBFtOdu/TbWi0JZ17Jfh/owuCMAAvl/gGZDlbZtE0nJma+jjBgoxL5OrQ6Uerd2
-	 W7Tp62zENKbTQyhmkbxHB47XkK7dlmLfxmWD90aIa8NkwxpUH3+pCKwxeaHNOCL1HsX6TcBXUxOd
-	 Z1fhagpZzP48TMF+8Uk0OuFY2TA7OZAn075dA7PKgnEO9nB5laVJTllbXne5INMGGwiO0EqECSBG
-	 T45OrFcPAmuOzP2LSGkXuJrjq6JJyC0Ia0N+LknC3nRjexvrnPxGMTQnIi3b2OYiRdoKqC1PqbX3
-	 XXW6k1K11kHfw5XS0C9YcKZYdC2ihpP5N8FA//xG6HHbX6MlPB6sCp82Q64e5UI4pCSYTH+fboEt
-	 GMZJZR36Wy73ZU0FtKn+Li+/PbHZwWnOw5T6PjoZ4WzIz9zEEW8ZwMXiWDP402DsbRP4oITO/ynS
-	 9UtWqZBjwN+45cspLEDMXV/jQM3iEoZy6XjAyNxqrcedUqEsEyAnwSp+X1tpaFHXaB2eVlo1y07i
-	 pKFvll
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-From: Yuwen Chen <ywen.chen@foxmail.com>
-To: senozhatsky@chromium.org
-Cc: akpm@linux-foundation.org,
-	bgeffon@google.com,
-	licayy@outlook.com,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	bh=AovK4oTG8i9mD8KDrbZrZDCi+2Kh5o4vX35c5oMMEjA=;
+	b=TFlrulijRfvX1Waby1Ty5CUztgCUxYbHqzS3SesP62yvgmSg1rjEWX19Cwkbl+Z8PHPsDL
+	hI6vYe8kjiNciRQMHAD+riMvdcoFEc8FCpMQdswM1yyFhusv9NEl0+LvRl8DZJWCW6BfDg
+	NmZM18QNY7jB2tDkAZwpHzJgp7FuH90=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=AovK4oTG8i9mD8KDrbZrZDCi+2Kh5o4vX35c5oMMEjA=; b=qOQ7/DBFaqgk44J/G3Cq0lvalL
+	mE6TeOcAIblEo2GWsJogLXskYnARt9irhLbNTO1yvrE8mNMIID5DaCngGHuFaudutnqy5vTr77+RE
+	Ua2TTxe8h4d2jRuSeexhJgmxuEUOqLFe0vEkpT0ze5X8iIfV52TbzrZou9Tiw6YTrEgyp7vDf4JTa
+	wB9fRM21E/zDAEwz7W3Ys0kvRmypLaGnvEliBh5dI8XNeBMp8pBNrxrYcXDO4zcyxJiSGlQudDnjd
+	pBAgnifT2txEI21XJ62edGdZIhNdGkJkYqNDmWESJgKxxVpIjZE2Zc0BzPdwn0Vm2KfuET3ZSLjcj
+	/zGGGKyQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLE4V-0000000GES5-37IK;
+	Tue, 18 Nov 2025 05:16:07 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
 	linux-mm@kvack.org,
-	minchan@kernel.org,
-	richardycc@google.com,
-	ywen.chen@foxmail.com
-Subject: Re: [PATCH] zram: Fix the issue that the write - back limits might overflow
-Date: Tue, 18 Nov 2025 16:21:47 +0800
-X-OQ-MSGID: <20251118082147.2809308-1-ywen.chen@foxmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <bo4g7erropsvl7vulufdsjqlkkbjycaounh2vv4a6urttxvubr@f22z5wlgntox>
-References: <bo4g7erropsvl7vulufdsjqlkkbjycaounh2vv4a6urttxvubr@f22z5wlgntox>
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org,
+	clm@meta.com
+Subject: [PATCH v4 25/54] ibmasmfs: get rid of ibmasmfs_dir_ops
+Date: Tue, 18 Nov 2025 05:15:34 +0000
+Message-ID: <20251118051604.3868588-26-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E80761C000A
-X-Stat-Signature: 5xz8unaw7h5fuphdnjr6r4meqrqeukhz
 X-Rspam-User: 
-X-HE-Tag: 1763454113-476065
-X-HE-Meta: U2FsdGVkX18H6PR/PSYqy7pu1JuyTJFNt0vi2bnG8Z9PC1DZXtcVTIaVF0rrRZyVWqsFwpAo/rs6KvVvF2tJygqN2FVa/3lyZCtGeAdTJRKyBuvETfLzJplDPuyixAviX6SGVlUmFsVTBT4XZdDndXC560ef4K0IQu8QmfyZZIXew5JSqwrHuBEGvwDkra9ON2B7cLwkkMXBup5Qy5jIXQzf5wS9p3tnxWo85mOzfIE9qow+gKJ6rtTJeuczwPUuTMjAdr9UcpCCPNxg0C6zxPdMJGavu8wEFVPLzXudVyLt8J94Pqu/Mv3MwVvWuNm3McbPAq+o4G/h5dRJ4UQ3e27ZoNYGrx/qVUPva273yfa0hPFkBJujTVsGmxHA/YXSPrlL9HJQ327uNrbP27ZV6N4hXHlEPbfEaz+Bqnn0qisEWoHa4cycA3MleJyBclD9E3Rp9pYyjuUXKs4+uv/Gm5IlaHVc/ZIkkFBcbxAPaZrIWqz3UzEkakctHKAY+2rJkiInPVOoqHopKqzvKEzcX616MF61j0wRTdUgBgV1oR9TsEN+LpN5QYZcvhpOil0csg9RJhgXRLUBkwhZvkOCTp/S2GwKyrvpMPL0WLGkGydU6p1Jr2wDGrdjcg4/s8//j9cEOOnViFYcg87hwe2L0vgIhkFFchresD4OK8UA+2qvpM+9kVnnEMDWegxqQi5uj1cJi6spcsijbrJb+p04/wZxoQ9cVFzZZRVNrpQ1y6Nn/DlD4t40rfZ0MzZBHSDwVVvojAuOoKs04MqklY2wiUuT8m2U7aBTLqoahDEg1wG+YgRwSUd4ueZw7xGEDj4gS2NbEtNoCnJwEePZiIf7pdtD0gK2ZsvXWZmnPmOzq/7aHoC9QSz/OnCtZNFEXbtsWA0bi3LOAsPfpBjDTJnWMXZPO0PTYiLr7A9bdVZEzw+BJfAYmH0nzfiZWC0rJsWFVWU6UFe16A5iUIO//el
- nRVxle/E
- 2N2oAgAyMy22NQqBkskpkQWRMaenQ7SmuZJiDU2reL1Zdgd24TwSq65Dc0zVoSQBRXB/bPucwFjrKn3SUjqfP2X7RybexEuVhi1O4GbYJhfdj7BQ7/eVzMqGwqrlHxi4hKuiedxAFKrxloPWTbtxfxA7v7cfVJeZtLAC7kvrIczYPrsjMf5Ju/N0ESLnCHkSd1xsgtH95v1oCxGl/ZQGrd1xrEA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 888118001B
+X-Stat-Signature: tnpt6zhtma3fgc48ez8j6w81kjidp1eu
+X-HE-Tag: 1763455292-886285
+X-HE-Meta: U2FsdGVkX1+pWqx9RoDtKk7uck4Is3WLCp4ZF1GZFr+ZH6TjzzU9I1+ih68YGxh086KU+Ia3MHrafIYU9nbAvxaJS8XKClb/ODTQOL7S1PQ26Plua2VtRnchltoJSlUF2tNUU0LfgBvUF9J0VGMY7s8J1D8y6vtZzvpSC7ywwQi+eVxBprE9AgnN4KvVAQ0kOGZbj/e6OssULF71N9nfr9iEnIQ0hEEiWpl3tkYa8g9nMXD3JRGUwnvSO61+IR4OhgfOjVv0QJ/+z41ZSJyapTQKMwp0ijCg933Jz6lHBHx8FM9BcXt7R7kN4G7p2D8WvXZrV0j0Ebd1HPJe1GhA+MUH9obm04BQNCHSBoKuqc5ARdCfxwYUKDUnlX8Rnn6VtjV3mjfcuwwD4nTP+9y8c1zOtpiVrDXQgw6wtnIyrxxiqdGOgG9RAJxInkHT48me7LsBMp8LIIKu6OZ4ln0cBKqdNCARhdTJt/BaTZrfpDIbsY9h7rShSQWTuC4/SlwxALf/3/loB3gAFokene/kNkck8zZkwSNpSeFoAJm6wqy7xPb+5A+CVTBgHSt0tUMKljz+1FxEq/Py1n+vVDXihVvWlW0n5xJZ/JFEKvmIkHHhsk8vnvWLNcOwOPs6gm1cW5oJIvAbFYMWm8zYA2ataOJMyCM0A3B8m1KgnqBYabtthBDO6lenw/vYVU/1wtBBPfLlpXneG3W776cmoPaRplealWR9mXLQDq95SZspA4essrvRZWHIh4vDYS5yPyii1pgiPztUKXesQQcsSc7PDDz/BR0EYU9ozmziRwBmRoIeYOM9mjkY9nx1K9AafWZqnbYa6bnOi/c0YAsYOJX1/Q88wGfcfaTUV2utJI3KKuuw52yKDZQE347zOTuADP0IUPBD3lDWuzuXHzg87+x/VzUTXjYyxa7/bN5vW2vuI7spsMFu27fi5WRbTAAtnlqtEEB+3NZT+Ru2Dq8AX7i
+ GAk+3EaU
+ 0kZUzjKc4H5r1nZocvKs4UNo8foDS85z/9bNRa/u5QjfMzZJOk45GsfxvC017URDQGU/1NPKFLK9gH2VwejG6jJ1+T3nTlCLN+W1xhJC0fTzCwsM+nV8JipnHslDQW+sYL5CkxjQPMokEwEeXrIIRLNOKiddIxGyQYDStXVg3mIBaGWUlBy6KDax3Jdltdb1stEAzvnzHq2pQZjA+hh+Mbu0bHFu9CblvNRkuV46VbVpM2I+loZaAEEpjhm8GRp8Dw044kuZQd97mB5VOI4WAupPJlES+EjFmBvzvjsylbaGuVmYcRJsrHI4lp8tgDxFnHgsKXYRD7M72Ly8Klj0VdNdBJMaTLYTKPnMMWZKoCT+PVLcE/PnXO4dvpp7sC3G3NUGtpgFA8DVWhGgQodhdfiwQOQJddlLMQ+zMWbNAyyPL6dsm3pFE1SjfeXI/ig/U/yvNKMy90vvexsB+2gIqOe+4eQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,15 +109,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/18 15:39), Sergey Senozhatsky wrote:
-> I really wish we could just change wb code to use PAGE_SIZE not 4K
-> units [1], unfortunately it's probably too late to change that now.
->
-> [1] https://lore.kernel.org/linux-kernel/20251110052741.92031-1-senozhatsky@chromium.org
+it is always equal (and always had been equal) to &simple_dir_operations
 
-I've taken a look at the patch you submitted before. This is indeed
-a very frustrating thing. I'm not sure if we can make the change. If
-we can change it to use PAGE_SIZE, it will reduce a lot of unnecessary
-logic.
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ drivers/misc/ibmasm/ibmasmfs.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/misc/ibmasm/ibmasmfs.c b/drivers/misc/ibmasm/ibmasmfs.c
+index a6cde74efb68..824c5b664985 100644
+--- a/drivers/misc/ibmasm/ibmasmfs.c
++++ b/drivers/misc/ibmasm/ibmasmfs.c
+@@ -97,8 +97,6 @@ static const struct super_operations ibmasmfs_s_ops = {
+ 	.drop_inode	= inode_just_drop,
+ };
+ 
+-static const struct file_operations *ibmasmfs_dir_ops = &simple_dir_operations;
+-
+ static struct file_system_type ibmasmfs_type = {
+ 	.owner          = THIS_MODULE,
+ 	.name           = "ibmasmfs",
+@@ -122,7 +120,7 @@ static int ibmasmfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		return -ENOMEM;
+ 
+ 	root->i_op = &simple_dir_inode_operations;
+-	root->i_fop = ibmasmfs_dir_ops;
++	root->i_fop = &simple_dir_operations;
+ 
+ 	sb->s_root = d_make_root(root);
+ 	if (!sb->s_root)
+@@ -188,7 +186,7 @@ static struct dentry *ibmasmfs_create_dir(struct dentry *parent,
+ 	}
+ 
+ 	inode->i_op = &simple_dir_inode_operations;
+-	inode->i_fop = ibmasmfs_dir_ops;
++	inode->i_fop = &simple_dir_operations;
+ 
+ 	d_make_persistent(dentry, inode);
+ 	dput(dentry);
+-- 
+2.47.3
 
 
