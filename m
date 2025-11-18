@@ -4,103 +4,210 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E34CACCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29969CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 07:02:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 314E48E0009; Tue, 18 Nov 2025 02:01:33 -0500 (EST)
+	id 7D1546B0007; Tue, 18 Nov 2025 02:02:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29DC08E0005; Tue, 18 Nov 2025 02:01:33 -0500 (EST)
+	id 7819C6B0008; Tue, 18 Nov 2025 02:02:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 165F78E0009; Tue, 18 Nov 2025 02:01:33 -0500 (EST)
+	id 6231E6B000A; Tue, 18 Nov 2025 02:02:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 004768E0005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:01:32 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C6C61403EB
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:01:32 +0000 (UTC)
-X-FDA: 84122832024.07.BE03DB2
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D5EA414001B
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:01:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Swn8OWC9;
-	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763449290;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9BC6B0007
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:02:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5E3B58B17
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:02:17 +0000 (UTC)
+X-FDA: 84122833914.18.8E139D0
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012067.outbound.protection.outlook.com [40.107.200.67])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 13EB31C0005
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:02:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="g+hrBE2/";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of apopple@nvidia.com designates 40.107.200.67 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763449335; a=rsa-sha256;
+	cv=pass;
+	b=52xXZLygi7RXtQZQEzyoKyOCSvWGC8VGmcKNV3FQNxukm0Ci7f4IMW4LjI0KVZORIkPSfC
+	bDedGOFW5IhSdJ+5nE2auKAa0TW5kDYsN+LhijpCDgrJNcXCK4n4PIS53ePdg1DP9ZdENi
+	L0MsGJVvODXrhbzC6Zhyje8pQ3j0gBU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="g+hrBE2/";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of apopple@nvidia.com designates 40.107.200.67 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763449335;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NN/33ifYl1WumRWtJ01j5wECnyYUZIw+8lYgHF3pdkY=;
-	b=BGg8ghpqKdyHsNUXDOk28YuuXm72qCXLPO01pjIWKg48gYvINIRXYD8F7ItZOF1ZRcF3w/
-	7b1XVsiyA41J6CY9RA3fLCy6TJNpIWGzZfJCH8Bb1H244ww+cPf26rGAx161kjnF+rJG4t
-	/+7HP6IhnuhbmL3BHe7kM7tk0W9e0dI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Swn8OWC9;
-	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763449290; a=rsa-sha256;
-	cv=none;
-	b=uo2gqxvtW23E1J6kzY9kRte27VP8eW6GQuxAXzTYwbEKLbRJhw4JGnsXdW/IoktGbZACI0
-	uZ8jknqX5vtjTkSOnM+f8uSyCqcSg3viwKWk1GyQZqhOfZSBxmUYCgGVMLoOEFqmDsPdYW
-	SONN063jTLAa0LB4P0cZX8UmQFs8eA8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=NN/33ifYl1WumRWtJ01j5wECnyYUZIw+8lYgHF3pdkY=; b=Swn8OWC9emGgXeb+svd6xyIRtH
-	O8+0bfGk7vkeVTnmYyKKioAH2dKMhnaFqOOdCZhfH7DTDKCUSFYkaejYy7x5Ny81bWQhjdQklMl7S
-	Kd0VDr5NDP9eF1J4N8xntap3OHNW7LYMKQSxUanm+oLz2/1oJDnE6dgRVdmQLOR5vLoRgU8+aY8O1
-	+aFljvFS4ROnasgOFbo/ITPdAlXRonmWAtPelnYbpVkk7vcidV3IaRtWRy+plvzUZekKUcxqbxUCM
-	z/GnEDfM/zcm9STlAGaLt6i8N1wM/qw5FGnC6drFm7BAttYg7nCeiSYYhZseGYxd1llCsSW+9Jwv8
-	PU9hcoXw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4Z-0000000GEch-2tzA;
-	Tue, 18 Nov 2025 05:16:11 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org,
-	clm@meta.com
-Subject: [PATCH v4 49/54] convert nfsctl
-Date: Tue, 18 Nov 2025 05:15:58 +0000
-Message-ID: <20251118051604.3868588-50-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
-References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
-MIME-Version: 1.0
+	bh=AGWR6rfBeKNpqJT5UASilZ/Kxk9tDnl0IlBbpjCPM24=;
+	b=oKlrL7qWpcXQAQVaHiDjV9rERxDf3uSiDFG60Jm35NnuQ4cdkK4houvX8vTsrefdzAmZoO
+	IULJbn8uJDshGUzF+hBAQesC0SbY0OWi1nD+zfdgZRaPpbyL8rUJDvOgk0iN8NvjZqcOKO
+	kickWWjeiapBMGcUFyrIw0oaUg/T4ro=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ukIZsfEn+a2Ld0cfCsOGISHSb+k8x3mAPHivoQZXrzzaTEu8YOCUb2dVIrQz8JdKStG4AwV7R1NuSRLTdxrDJADsCm7EE61GQKxBo4uIda50kzCc8fe5vGxbu7ac0cHx2nDPpUnE8UtDlwmfparUcgFHCpjjRU67IiR/b2ayJI6Rp4yYgMNuX1B9mDdA0Sqpeg3rrGawW+k6Mt+YMpyabCMeozt+ZfYveJURBcipHa2orWFznBi4dgbDSn6mXhLGBzsdoBdxGCy6BZthVub10njnoxaFubrM/XdGKN9RRg6sLtY5jne+rLgUnQYEyEyCFvw1XKoY9+cD8ob7F5sNHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AGWR6rfBeKNpqJT5UASilZ/Kxk9tDnl0IlBbpjCPM24=;
+ b=sg6L6XjGKJTQugHIrBMYtu3tU+WTMjDu2d/qY/Iw0HBRBPjhxWtM8B+Bz5QfcnduVqQmOYTYstV7wjAmcWSF2Q0sB+np2H3R+3uQjIvp9EXtalqOipItPpwoPeinlRURsblRWQugLtfh74BThP/saMAxNzm5cRfLBkISCdrTP5wJy3mrpfjcUfyzmDhStTQfkJgwaxHxhcbhXRtbhMveNWJ9hecClV0SXmR7WnEogcjtqjuMvVKyBPg43hy85gim6G55zBo+WsfH+kztgdqjyB6qD48lMF5t01Ix5FhJaWVBX51hUDmQgYO81mjc6ca1eEtOn2NarF9fp+HuI4NDAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AGWR6rfBeKNpqJT5UASilZ/Kxk9tDnl0IlBbpjCPM24=;
+ b=g+hrBE2/bZ+2tfPBa7hFh2d5uW1fSfypLxxmBSx1EM44n192lxBrlP/8nSiH6Hmfu9WOhsKUzBGRGJxJYWLzMrg01axQFmdRVw1Nu/HotXfVXvs+cpTgl2O9BBn7hWO0zagV1Pjx3wL/TOytLUiyDdT8wfyuiyGPQ73XhybH6jth97YG2+274PPg2vQ8GorOxbjAkGE3bA6yuAtPHxF8h/rxva6WnjyfxKl0NWRLVzvOq/C/bf61/BsTFVnkCNo0G1lHC77jdmgVhOy2a9+mdkWMXK86xCxH502BBaUoNjon8/FRda3Gd18qcq+EDaU3IkecWyHMR0FXCoKc1r1WVg==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ CY8PR12MB8267.namprd12.prod.outlook.com (2603:10b6:930:7c::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.22; Tue, 18 Nov 2025 07:02:07 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.9320.018; Tue, 18 Nov 2025
+ 07:02:07 +0000
+Date: Tue, 18 Nov 2025 18:02:02 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	cgroups@vger.kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com, 
+	ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com, 
+	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, tj@kernel.org, 
+	hannes@cmpxchg.org, mkoutny@suse.com, kees@kernel.org, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, rientjes@google.com, jackmanb@google.com, 
+	cl@gentwo.org, harry.yoo@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, zhengqi.arch@bytedance.com, 
+	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev, 
+	fabio.m.de.francesco@linux.intel.com, rrichter@amd.com, ming.li@zohomail.com, usamaarif642@gmail.com, 
+	brauner@kernel.org, oleg@redhat.com, namcao@linutronix.de, escape@linux.alibaba.com, 
+	dongjoo.seo1@samsung.com
+Subject: Re: [RFC LPC2026 PATCH v2 00/11] Specific Purpose Memory NUMA Nodes
+Message-ID: <aktv2ivkrvtrox6nvcpxsnq6sagxnmj4yymelgkst6pazzpogo@aexnxfcklg75>
+References: <20251112192936.2574429-1-gourry@gourry.net>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D5EA414001B
-X-Stat-Signature: i7nkehkd7e9im95qmai3dswb6r4j5pui
-X-Rspamd-Server: rspam02
+In-Reply-To: <20251112192936.2574429-1-gourry@gourry.net>
+X-ClientProxiedBy: SYCP282CA0010.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:80::22) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CY8PR12MB8267:EE_
+X-MS-Office365-Filtering-Correlation-Id: ceaa6cb2-7f8c-491d-d339-08de267062d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MHBqay8rY21UU2lHaWJvbG01UUdzOXhqL2RwK0RYV0Jrdm44TTVGVm8rRkFE?=
+ =?utf-8?B?bTM4Y0VJQUZqWENaWFdKSk13RDk1N3ZSN25ybjV2eGl4SW1TTVNVNm1DYzVS?=
+ =?utf-8?B?WUg2YWsxZStJdCtOQWNGV3FCUVN1bVcxa1dCQ3Bha0JicVNWcGlBc1F1emdv?=
+ =?utf-8?B?V0poSmJudDVRTDYvQWU4ZkZjd1U2RU8xSHA1YlhrcGtaUE9aajQ2THd5WVcx?=
+ =?utf-8?B?TVVWaHUwcVBJVEtFR3UrMVkvcDNDSkFhME5ocnNWem0veDlDeERGcHJDTG0y?=
+ =?utf-8?B?VlBqOWdUTmF3QXBkd1VOeXFyaW9OQkhUSCtqRE1OOCtxOHBGckl0TWhSQThy?=
+ =?utf-8?B?N1RYb1F3eTFSS3ZqQitZc3lNM3BkaysramZ0cTZqNGZsb3JOUkI3RUN3cTJr?=
+ =?utf-8?B?R0tmVFhxQXh3LzNPaGJZc01xN3RiQUw3NUtrM1hKcGUvMjV0L0VJV1NmTEpP?=
+ =?utf-8?B?Z0ZuMm1lUHhTWUs1amtVVWJ2SGpuSG0xZ2o0aUdKYXhYaHExMWpMQlRlNXIv?=
+ =?utf-8?B?a2tjWFlOMUlDUFd4QnZ5cklFSkJlM3hDVUI3RUtZSTBYK0R6Q1MrNUhPWS9T?=
+ =?utf-8?B?ai9UdmJxMmU2Ukk1L1JNMUZ1bVVhQVMvSFNFaDZGR3R2ZGM0TzVqMVEvTGY4?=
+ =?utf-8?B?cStqZlF4dFZpZUFKazlHRXBzL0FUY3lqblR5UDNuK2tOalQ3RVdUbDlxM1BZ?=
+ =?utf-8?B?dEo2YkwzSFdMV0FCZTdyR2M4c3ZLaDQ1WGFhRnJCR1k5WjJZQ1kzT0NPV1Iy?=
+ =?utf-8?B?UEdWZFlMN3BDelN5dGFHQzBLM1kzcStEQ1JvS2tlWWd0QjB4Y1RDejk1RXVx?=
+ =?utf-8?B?UmlBMjRtZ0pkTlN0UkJIRmJRL29lZWxNSnEwUVNhdVpOaXV6R2FSakk1Wjc2?=
+ =?utf-8?B?cjFoR040Q3FuTTFXdFpUN2pPZ1FxcGdKWDRhRGFpQlBYSmZ0OWdrTjVNU2Zj?=
+ =?utf-8?B?eE1Zd3dLY0VNQ2FSYmhoNGgyMnBvYnlGOGNUUXlScVhhZFdrSHdaVjNGTG5k?=
+ =?utf-8?B?YWVFbm9TQlRpYW9xeXN5ME9aYUUxL2tPRzFFUVM5RXM5OWJsZURLaVkzeFVV?=
+ =?utf-8?B?MHhWNDdIUlRxVlJxOEpYTWwzSEJvWEN3bVhuWmRiTGk3OXAwRXZHMGNyQXlE?=
+ =?utf-8?B?bVJ5ODNnb1RybjFNSlIzK0t3dnFFUDZQT255VDhaVzQ2bzBXWWh1Ri81MTIr?=
+ =?utf-8?B?RG1zYlNjWmhpaHI0THFncjhNWjlqeXN2QTNTUjZmTGhnMTlyZENGaVpBVEkz?=
+ =?utf-8?B?a0l4L3dFay9LL2ZPdHRsdzlXTEpCV3dTMjcyR0Q2VE1mMEVPVmJyL29HME9W?=
+ =?utf-8?B?ZDJCUVd3NFZES1krbFBtSUhGbG5pMWd6d2MxK2piN1pXZmZvNWpucENpZ1ly?=
+ =?utf-8?B?MDBRTEZ5dEkzOTMvSkIvN2RJOUI5c3BNSGs2eXB4RUdWWWpGVXIvaWhiUDJB?=
+ =?utf-8?B?Rm9kNUR3L2RXQW10U2NzOTRmbUlXeGkwTUF5clNjSUg2VytUZnZPWFJ6U3Mw?=
+ =?utf-8?B?dHRIeGhNbDdNcm1jbjd5cXdsUnArNmVMblM3RE8yUFZlMGp0TVJNZGtKbFdh?=
+ =?utf-8?B?WnhEbmN1NXRCM1FRUTVpUnF4M3ZjRGl6Wk8rbE9wS1dVWTVmZk44VEpqbmFF?=
+ =?utf-8?B?Q3VPdGsxcFYrbWtoSHRGY0J2eEp4dVlMN3lXNmk5M1BTemMybWJYelVqTHl1?=
+ =?utf-8?B?eHBjajdpTEd6MVZYY1BOMWFxMStjbENGZFpLbHFtTmtZZEp3b3ZJSWtOUDgx?=
+ =?utf-8?B?dmRMMDRjWUlLTWFObzQ1Z0VCNVJzL01uSUpTdUFkV3I3WTNzMUxjV1dHemw1?=
+ =?utf-8?B?VW5ZNEk3SmtlRHE5eEZWQm9YN3kwcGc3bTZBWVFyQ0pOOGZSbjdxWThZQkta?=
+ =?utf-8?B?QWxNSm84aTZOL0NiR1J1MS9FTk5CcURvYnZDRWlJNlJ3a1pxUERpR2phMFJH?=
+ =?utf-8?Q?Hb1nr1QVl/dWO4LifesOshL559+ZbXHc?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TkI5RWI3Wk1Za0UvY2MzTjBRNnp1a2hoNXl0LzVpcE51RWZHYnByOXBZV2c3?=
+ =?utf-8?B?VzFDTXlSQXN2U2paMUZHUzFCOGRSYi95UjdBbll5TDNEZEoxT3dDY1B1Sjla?=
+ =?utf-8?B?VXo2UUx2M0dRNmluODdJQUVSZU9VekEwcEVoTGt3SURWdFoyMkt2dXNjMmx3?=
+ =?utf-8?B?ZC9LQlp0bDhMbFBBVzNMSTZKSE1EUmxvRk5DUmllNUlISm1tc25Kd1hhUnR0?=
+ =?utf-8?B?Q0FWajNieDJPNlpTdS9oUisrRjFlemxYazh6OEs0R3J6ckhIcFlvaGd3LzhQ?=
+ =?utf-8?B?cUUrSk5Ya25GaGFqNWlrVkdoaXBHd25ZOHRyVVhtRFpNS2pyYkFPRnhTc1Bs?=
+ =?utf-8?B?d25ISEJiUHpHN0FaRDNDbXYreTZKLytmVmw5TVFNWE1HOEwrYlZLSjQyOWFH?=
+ =?utf-8?B?UXIrR2krZHhzQjNoNTRQTHh0SjRQL3RLTDJ0TWRZbmFKSWpKUVd4T05mQ1dy?=
+ =?utf-8?B?WHBacFo3aGkvNlZtdVUzNkJuYi9QdE83a1gvUnNBNG5NZnA5RG5wdkxJSVJv?=
+ =?utf-8?B?RGRpVmI1UXBXY1FkNVZmaU1UaGVaSStGL3IrVGdTZmlJMW5Qc2FybWZHcnI3?=
+ =?utf-8?B?ZDQxdzM3cHNvMGNMb0tHWjk5YVQzdFlKZkFJUnp3T244K0gxNUxCNDZkVWUr?=
+ =?utf-8?B?Sk13ZnVjWkt4bGZ4U0hKc3ZhRi82QkdzNWZ6YjVqUCtGMVMvTDVqM2xHVmFz?=
+ =?utf-8?B?YkNlcXIySHlyTERSVWZmSllUQ0F6MERnWktPWE5HK2srQTZaenJFb0hnVWlS?=
+ =?utf-8?B?Z1llbERaVmNDYVFQQllmeEJPNEtuSHNiZzJ1V0V3L3lzYXBKbzJUL1g4d01P?=
+ =?utf-8?B?UGcvV2lPbFE4blhRU3RlVkRZNWx1Wk10bXJ0aWhnTW1XMXYzNzBxWlJWYWZw?=
+ =?utf-8?B?R25JRElHUkFYSTdNMHIzdUZIVE4yQUFHODZyNXpRYXJRQTJkNE1LcjZuajhO?=
+ =?utf-8?B?WWw5a0lSSCtBU0w0YjdzT25iYldFcGM4VjNtN1c5L0kzOGo2MndNUVN4clla?=
+ =?utf-8?B?SUpucDlNQ29rRUpQUTdVdlVjZE5uUlRWOG56eVp5MG0walhmbjcranpqRlRh?=
+ =?utf-8?B?eUVOUzRyTlBiSWorZ2c2bGFiWEdjSEFDNFlJTEk3WXpXeG9xUTRKb3plWW5Y?=
+ =?utf-8?B?NVllNHIxOFRJODRGR0tmSFJXWlJreWM5SG1WWUt6clNzek85dkJlaWVESlo5?=
+ =?utf-8?B?ajVRaEswNHc5RFBOK05mTkV3MmhnRE5XRVJOR3M0OWJRMEFlRVg1eWNubWJJ?=
+ =?utf-8?B?dlc0SDNpRnVydi9LTTZkVkhBRE5UM0t4YnhDS2JibE9JTERkZTNLMUxUNmwr?=
+ =?utf-8?B?Um1OcWpINDlDV1k3ZE5kbGo3enZsb29TTEYxaFJzS0ZISnhxdEhxUkRLdGdi?=
+ =?utf-8?B?aU5GM2lBc2xTeTRudU5VZ1JacktEdHJ2L0RNTkhOdW5mRWs1dGhtczRZN0k0?=
+ =?utf-8?B?aGk3MFdsWlZvRlQyWXdLd2krbGE4dXJnQnU4VnVyMGQwTWZNNFkyUUVuangy?=
+ =?utf-8?B?SGNSR2IrQmUycGJOa3RPRmhEeWdiYm9zVGMxNG02TjNrYkZzMFM3M0FDbVRp?=
+ =?utf-8?B?SHZ6SFdvazlIQklGcE9PZDI0c0gyangzRnc1WVZDVHI2YmVxUXhpYy9wMWZW?=
+ =?utf-8?B?K1A1SGpKamh6V0d2a1hiTXlheG53OFpBbThmSUhRelV2Z1dJbnBzeTRjWVFC?=
+ =?utf-8?B?VGllN1ZQbFFXZEJLUGlTUDdkSUJQUVduUlp1cTdxRmI5S1l5V1lna2MvdHZp?=
+ =?utf-8?B?V3NZWUxwVk9IeThqVWxxZ21CNmE4Sm5IczFZcnJleC9vQ0pGd3pmYUphblow?=
+ =?utf-8?B?YTM5WmdHMm4yTmxyVlphVVdCb3VKYTdxNEVDcnpMYmR0Y0dTeWRnY0w3bjho?=
+ =?utf-8?B?MGs4RVhoUVRPQnFjYnNRbXlOc0Q5a3hlcHdNamlXMkVMc0lWWU5xTExOQ3pF?=
+ =?utf-8?B?T3IrendFSmhZS2lCQnpxMUdueStaMkhlRE5VUXNna1ZNbGJEdTBVRVhhaDJ1?=
+ =?utf-8?B?YmNJSlp5N2NWRHJTOWxaRDVkY0FXTEJ5dTZ2UE9SS0ErU1NtZUZwZVVVTWd1?=
+ =?utf-8?B?RjRLUzhGREx3cGNEUkdIZHpEUDZpYloyMnM2c29vZlZaL3VXa3F2L0NwLzI5?=
+ =?utf-8?Q?SUQf4yxiW887DB4nJO+/Xu1hx?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ceaa6cb2-7f8c-491d-d339-08de267062d7
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 07:02:07.2697
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 97Qr0sHgISVNUT0ohdI8npR8LT4ahXnLmsJTkl0WsZ7EyyIpk9rebqv1PsVmBTKNX1XuLuqvtufWl0Jt/DxY/g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8267
+X-Rspamd-Queue-Id: 13EB31C0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: m1jfmp81ifoo3we47mjwh4794xnpw74b
 X-Rspam-User: 
-X-HE-Tag: 1763449290-401885
-X-HE-Meta: U2FsdGVkX19l7WSLCZSHyVu9ivXM8oHY+fGmDrAJVfyqzEula4yi5r5rU87Wt6LzgJpDfko0JmQdwZwObXa0mD2705/S59afFy8tDP3Y5DQVThAKTgqZmgGBqnvx4p0Atjhv1tp1p44dviMTWHWltA/TVlfz0rcbTh++mLB+1xVdolsyLJVz7nhxHZrzn8DGVGVXwihxaCAsRA/fz/9oWYkSDQfq+45m2Eag0UjfCr41Epq5nlDRWWlcEn5rEeSB786Nd/E3L3OJO1xTqZ7uoeSBM6kBY7lmvUvsfwuZBvI1e6sj/quJybfewPr+uzn5MpTUgIbpuko82qEFVLTY+cV1FQBZ8ePc0Yv9eDyGCI6+q5t3J/UzNQ3I29vGopXvufAnVOzldSgxhqVupFqOZXxPO5ptQH3UAvrjrqE0UE29DZNak7mPN6e3kmBLo1Cu+EHB5EE38pGHw94UqVFYu6+HuC8hrbAeLFqVUMxJIdYTDcDi/ZaZCNqTC4sGJHYfVhV/UcNOhg0jjbZwOPtegNS4p+POzlF41KZ/qAaNShVn+uk9hFbQdU15eC4e3A55sSHvDTi/yDnzGcFI18P0hhMoApEyhteVzKfjQTpOuWJ+dgVpJjPLjLLPGCMT3p8728e1Jo/LMku9RHKn6cO2cbTWf1kMyRg7GGYTb8EfbtHESOQRZw5jF2txJnHvFcQcXen4THSy+vktCRD8jqpslbX7crAbtd1Lex+yqzjgBDTfZss4QQF5Kqv412V3Th+RKMwn8SjpxeOZR/el5oUGxl0viDPC4CPVtP1QbsAKacDqDH3rzrbCxGF3N2neLSlQltVwF9Ru8Y05g4fy454OC0KPxdqDPdOWGtDaFtH9q804A0KBZ6r8J+qweKLuogWBSPBiFHPkstPuddN96R3k0rboAVHfcVNmPaID1wA+DPHvawywtXhmzZ35mDkkxhwAUFT+vLqfERUdGtuvMfn
- uS7bSrA3
- lXFkFOMkFK0ZNkz5O/A/qAHOk9sRTIhuGBa1CkFdvc/qdAGUEVXHi+IZdPxTV9bARC8T48FvC0qTa3NJNp6q7J9xhfW6qFff7Nnyo8Rd0NVlr8nKGmrHig+Mf/5lOdnJEz2b3bYc0CNwW6HiPQNbvxkNLwlgehWWRUCeyPHvYk6MotH5S//k5Oc+WEUR6Pbw4/HtpLPNYJ2IAhdQUFIQQOKVB4Cu0xiccS+E4rDhevzHdXxEqopf6GTPpux8uVvvwCyIlSN0ZMSvWauAq4midsonbI9ewrkwUZTJklJOL7gRFq/pdhPaY7T1yVfA5ldhYPh4KWMyxm3nhwXC6QYsd548X+IFolF1zLKZhDguWRIhUKRrz3DFOXi+E6lnRxAt3q8PTYoFL4wNgm/R0ioC8lFtJkyHizCWjKbxQ
+X-HE-Tag: 1763449334-401487
+X-HE-Meta: U2FsdGVkX1+SQMvxVganAaAGep7mKRYL5+KXTngGW29tgSYZaa/0uwuTF/Xj27OMFnI6oBYmaAcbivzcqwdcRYEbtNyvKs750Q0dkojqc0i4TXd32+HdSXnMLEJY/H1w+q/4KWgILrUvmS3HrGXE8llziC5IoqzWrMNxnA6oGXoe2SOWBR+jNsRpnpdj4c9gzNXtgMEwfMkg+i2zAEVk86sTZvM7iTTBE90+7TB/e8ITNWMQEGpzJhC3lnr/ubbJ3ua9BKMyV4LbaISZw/Y5LsYjd6rfesAb4CPwzGVGAVDcvJ2yEQ0Pwnnyn3tvTlRQpKXapfc8WJ2hcACHs4h+oiWw3t95+OFARiS2x64qyhDVs6FBMHspK3arxgbit++UD7WKrd03GjOUoMwsp6PPAH/+HAr+nKVghDUaIrQgobD3U7HpgoQMnN0n9t80eT/y6cC0JRLoyHbC+7/H8Jr7G72rEXOvU/uDU2f78iL5wVx3wpbA1OyzEdXKwhbx0Ge7jc7aqunVg9bxpvIIr4iqU8L/bgeHejmIMNOoTgptAFLLeZOklRG5l/+G4DsBIM6fa0QCOQDkcYO7+EC21yZxxgKp2zupLc0uEVWgY97DQ65adirjsW/Dp9Kl95F3gjadTwQ4+lyP4sH8RwbqP3iRsSJe7cPpNnbj9jnx8oCb9CV+UnP0GqV4L4mf9igCrJ7510n4VKRy4JCDWLj0SdJff8sHNub/nM0Ti8ynHHFPod/ZH8dZTvl/14P30BKST1Pm5cpXC5L9IvIeZaM8+AG0HkrWNkabaCudIUHgdqQZ2Pet2uTF5KuLltQ3GKusUh/6fL926a71OVdTdkLo1hWAmbQjYI3Igl9fFAqjSXpeNGdrmOgfFtyI6N2ZAtycvuDHWAAI0ST6uPnJTf2Z/wYggRADJhjQz7LX/dEdb+FSMQDOM4FH9mCKLjcm4CBJOf4qBKuHXfoPw/1tD5tMH6Z
+ 3Cy7Ulnc
+ SKIKBeyZsMLsGfhFIGrgUqNiNY39rPp1c99RRiZesprYHepXkfYmvPbe9FCZ79WwQtM4M5NT1yidXiNeDHaOlZyHSt5jnrKtcKYfrxmPA5pNrgyQmCKZFYOfXVcv+R3xbAe2aJQ8f0gRlBvaOEHb+K53Xf0FRnOak2Lwo4pwbb8a4vDUYcM6SiEbh+HDCowGsiMsxNbomUvuUJnz7t6Y/xzJ2LDnacjEW4DWxcskQwGAoFZSeKLuGcjAEZDgNXkRvgRQKnDy6w6WXfUwXt1zhqcmkePqIj2ffae1WsyvdmCpRI1lRbwVeW/TdTqG529l23fJYTbQwnVReCif3ccMYP9Nzt5F3wY1S/B3IXMsG+P8kzf0p5wDIqSLqunYoH4chFSJDqprJxR3BoziFYtK1JEc0Lo98sYujPTDtC9DwimSRVXx5A7BxeKMZCAMPoDvAyQS4N+nXgrihkY70NBBiwjoCQc5p8LTdVBH5PeYH0snzO6FSE4uunkzniJOdKUNQi6GooFXxdqzYAVor774BYaD/er/WigATd8yMh1gGbXCEptDbz5PPCiFL5a2svwCsfQgW8aEpg0f5Ml9z3ceAP3KzFbuqui7wnMg7HdA4LjNpbjlcKgOzn0NMSnfskJwG1baxFjM9ItDw6mJaMkamdBNaFsN00KY297MY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,93 +216,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-One instance per net-ns.  There's a fixed subset (several files in root,
-an optional symlink in root + initially empty /clients/) + per-client
-subdirectory in /clients/.  Clients can appear only after the filesystem
-is there and they are all gone before it gets through ->kill_sb().
+On 2025-11-13 at 06:29 +1100, Gregory Price <gourry@gourry.net> wrote...
+> This is a code RFC for discussion related to
+> 
+> "Mempolicy is dead, long live memory policy!"
+> https://lpc.events/event/19/contributions/2143/
+> 
+> base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
+> (version notes at end)
+> 
+> At LSF 2026, I plan to discuss:
 
-Fixed subset created in fill_super(), regular files by simple_fill_super(),
-then a subdirectory and a symlink - manually.  It is removed by
-kill_litter_super().
+Excellent! This all sounds quite interesting to me at least so I've added my two
+cents here but looking forward to discussing at LPC.
 
-Per-client subdirectories are created by nfsd_client_mkdir() (populated
-with client-supplied list of files in them).  Removed by nfsd_client_rmdir(),
-which is simple_recursive_removal().
+> - Why? (In short: shunting to DAX is a failed pattern for users)
+> - Other designs I considered (mempolicy, cpusets, zone_device)
 
-All dentries except for the ones from simple_fill_super() come from
-	* nfsd_mkdir() (subdirectory, dentry from simple_start_creating()).
-	  Called from fill_super() (creates initially empty /clients)
-	  and from nfsd_client_mkdir (creates a per-client subdirectory
-	  in /clients).
-	* _nfsd_symlink() (symlink, dentry from simple_start_creating()), called
-	  from fill_super().
-	* nfsdfs_create_files() (regulars, dentry from simple_start_creating()),
-	  called only from nfsd_client_mkdir().
+I'm interested in the contrast with zone_device, and in particular why
+device_coherent memory doesn't end up being a good fit for this.
 
-Turn d_instatiate() + inode_unlock() into d_make_persistent() + simple_done_creating()
-in nfsd_mkdir(), _nfsd_symlink() and nfsdfs_create_files() and we are done.
+> - Why mempolicy.c and cpusets as-is are insufficient
+> - SPM types seeking this form of interface (Accelerator, Compression)
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/nfsd/nfsctl.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+I'm sure you can guess my interest is in GPUs which also have memory some people
+consider should only be used for specific purposes :-) Currently our coherent
+GPUs online this as a normal NUMA noode, for which we have also generally
+found mempolicy, cpusets, etc. inadequate as well, so it will be interesting to
+hear what short comings you have been running into (I'm less familiar with the
+Compression cases you talk about here though).
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 2b79129703d5..5ce9a49e76ba 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1137,11 +1137,11 @@ static struct dentry *nfsd_mkdir(struct dentry *parent, struct nfsdfs_client *nc
- 		inode->i_private = ncl;
- 		kref_get(&ncl->cl_ref);
- 	}
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 	inc_nlink(dir);
- 	fsnotify_mkdir(dir, dentry);
--	inode_unlock(dir);
--	return dentry;
-+	simple_done_creating(dentry);
-+	return dentry;	// borrowed
- }
- 
- #if IS_ENABLED(CONFIG_SUNRPC_GSS)
-@@ -1170,9 +1170,9 @@ static void _nfsd_symlink(struct dentry *parent, const char *name,
- 	inode->i_link = (char *)content;
- 	inode->i_size = strlen(content);
- 
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
- 	fsnotify_create(dir, dentry);
--	inode_unlock(dir);
-+	simple_done_creating(dentry);
- }
- #else
- static inline void _nfsd_symlink(struct dentry *parent, const char *name,
-@@ -1228,11 +1228,11 @@ static int nfsdfs_create_files(struct dentry *root,
- 		kref_get(&ncl->cl_ref);
- 		inode->i_fop = files->ops;
- 		inode->i_private = ncl;
--		d_instantiate(dentry, inode);
-+		d_make_persistent(dentry, inode);
- 		fsnotify_create(dir, dentry);
- 		if (fdentries)
--			fdentries[i] = dentry;
--		inode_unlock(dir);
-+			fdentries[i] = dentry; // borrowed
-+		simple_done_creating(dentry);
- 	}
- 	return 0;
- }
-@@ -1346,7 +1346,7 @@ static void nfsd_umount(struct super_block *sb)
- 
- 	nfsd_shutdown_threads(net);
- 
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
- 	put_net(net);
- }
- 
--- 
-2.47.3
+> - Platform extensions that would be nice to see (SPM-only Bits)
+> 
+> Open Questions
+> - Single SPM nodemask, or multiple based on features?
+> - Apply SPM/SysRAM bit on-boot only or at-hotplug?
+> - Allocate extra "possible" NUMA nodes for flexbility?
 
+I guess this might make hotplug easier? Particularly in cases where FW hasn't
+created the nodes.
+
+> - Should SPM Nodes be zone-restricted? (MOVABLE only?)
+
+For device based memory I think so - otherwise you can never gurantee devices
+can be removed or drivers (if required to access the memory) can be unbound as
+you can't migrate things off the memory.
+
+> - How to handle things like reclaim and compaction on these nodes.
+> 
+> 
+> With this set, we aim to enable allocation of "special purpose memory"
+> with the page allocator (mm/page_alloc.c) without exposing the same
+> memory as "System RAM".  Unless a non-userland component, and does so
+> with the GFP_SPM_NODE flag, memory on these nodes cannot be allocated.
+> 
+> This isolation mechanism is a requirement for memory policies which
+> depend on certain sets of memory never being used outside special
+> interfaces (such as a specific mm/component or driver).
+> 
+> We present an example of using this mechanism within ZSWAP, as-if
+> a "compressed memory node" was present.  How to describe the features
+> of memory present on nodes is left up to comment here and at LPC '26.
+> 
+> Userspace-driven allocations are restricted by the sysram_nodes mask,
+> nothing in userspace can explicitly request memory from SPM nodes.
+> 
+> Instead, the intent is to create new components which understand memory
+> features and register those nodes with those components. This abstracts
+> the hardware complexity away from userland while also not requiring new
+> memory innovations to carry entirely new allocators.
+> 
+> The ZSwap example demonstrates this with the `mt_spm_nodemask`.  This
+> hack treats all spm nodes as-if they are compressed memory nodes, and
+> we bypass the software compression logic in zswap in favor of simply
+> copying memory directly to the allocated page.  In a real design
+
+So in your example (I get it's a hack) is the main advantage that you can use
+all the same memory allocation policies (eg. cgroups) when needing to allocate
+the pages? Given this is ZSwap I guess these pages would never be mapped
+directly into user-space but would anything in the design prevent that? For
+example could a driver say allocate SPM memory and then explicitly migrate an
+existing page to it?
+
+> There are 4 major changes in this set:
+> 
+> 1) Introducing mt_sysram_nodelist in mm/memory-tiers.c which denotes
+>    the set of nodes which are eligible for use as normal system ram
+> 
+>    Some existing users now pass mt_sysram_nodelist into the page
+>    allocator instead of NULL, but passing a NULL pointer in will simply
+>    have it replaced by mt_sysram_nodelist anyway.  Should a fully NULL
+>    pointer still make it to the page allocator, without GFP_SPM_NODE
+>    SPM node zones will simply be skipped.
+> 
+>    mt_sysram_nodelist is always guaranteed to contain the N_MEMORY nodes
+>    present during __init, but if empty the use of mt_sysram_nodes()
+>    will return a NULL to preserve current behavior.
+> 
+> 
+> 2) The addition of `cpuset.mems.sysram` which restricts allocations to
+>    `mt_sysram_nodes` unless GFP_SPM_NODE is used.
+> 
+>    SPM Nodes are still allowed in cpuset.mems.allowed and effective.
+> 
+>    This is done to allow separate control over sysram and SPM node sets
+>    by cgroups while maintaining the existing hierarchical rules.
+> 
+>    current cpuset configuration
+>    cpuset.mems_allowed
+>     |.mems_effective         < (mems_allowed ∩ parent.mems_effective)
+>     |->tasks.mems_allowed    < cpuset.mems_effective
+> 
+>    new cpuset configuration
+>    cpuset.mems_allowed
+>     |.mems_effective         < (mems_allowed ∩ parent.mems_effective)
+>     |.sysram_nodes           < (mems_effective ∩ default_sys_nodemask)
+>     |->task.sysram_nodes     < cpuset.sysram_nodes
+> 
+>    This means mems_allowed still restricts all node usage in any given
+>    task context, which is the existing behavior.
+> 
+> 3) Addition of MHP_SPM_NODE flag to instruct memory_hotplug.c that the
+>    capacity being added should mark the node as an SPM Node. 
+> 
+>    A node is either SysRAM or SPM - never both.  Attempting to add
+>    incompatible memory to a node results in hotplug failure.
+> 
+>    DAX and CXL are made aware of the bit and have `spm_node` bits added
+>    to their relevant subsystems.
+> 
+> 4) Adding GFP_SPM_NODE - which allows page_alloc.c to request memory
+>    from the provided node or nodemask.  It changes the behavior of
+>    the cpuset mems_allowed and mt_node_allowed() checks.
+> 
+> v1->v2:
+> - naming improvements
+>     default_node -> sysram_node
+>     protected    -> spm (Specific Purpose Memory)
+> - add missing constify patch
+> - add patch to update callers of __cpuset_zone_allowed
+> - add additional logic to the mm sysram_nodes patch
+> - fix bot build issues (ifdef config builds)
+> - fix out-of-tree driver build issues (function renames)
+> - change compressed_nodelist to spm_nodelist
+> - add latch mechanism for sysram/spm nodes (Dan Williams)
+>   this drops some extra memory-hotplug logic which is nice
+> v1: https://lore.kernel.org/linux-mm/20251107224956.477056-1-gourry@gourry.net/
+> 
+> Gregory Price (11):
+>   mm: constify oom_control, scan_control, and alloc_context nodemask
+>   mm: change callers of __cpuset_zone_allowed to cpuset_zone_allowed
+>   gfp: Add GFP_SPM_NODE for Specific Purpose Memory (SPM) allocations
+>   memory-tiers: Introduce SysRAM and Specific Purpose Memory Nodes
+>   mm: restrict slub, oom, compaction, and page_alloc to sysram by
+>     default
+>   mm,cpusets: rename task->mems_allowed to task->sysram_nodes
+>   cpuset: introduce cpuset.mems.sysram
+>   mm/memory_hotplug: add MHP_SPM_NODE flag
+>   drivers/dax: add spm_node bit to dev_dax
+>   drivers/cxl: add spm_node bit to cxl region
+>   [HACK] mm/zswap: compressed ram integration example
+> 
+>  drivers/cxl/core/region.c       |  30 ++++++
+>  drivers/cxl/cxl.h               |   2 +
+>  drivers/dax/bus.c               |  39 ++++++++
+>  drivers/dax/bus.h               |   1 +
+>  drivers/dax/cxl.c               |   1 +
+>  drivers/dax/dax-private.h       |   1 +
+>  drivers/dax/kmem.c              |   2 +
+>  fs/proc/array.c                 |   2 +-
+>  include/linux/cpuset.h          |  62 +++++++------
+>  include/linux/gfp_types.h       |   5 +
+>  include/linux/memory-tiers.h    |  47 ++++++++++
+>  include/linux/memory_hotplug.h  |  10 ++
+>  include/linux/mempolicy.h       |   2 +-
+>  include/linux/mm.h              |   4 +-
+>  include/linux/mmzone.h          |   6 +-
+>  include/linux/oom.h             |   2 +-
+>  include/linux/sched.h           |   6 +-
+>  include/linux/swap.h            |   2 +-
+>  init/init_task.c                |   2 +-
+>  kernel/cgroup/cpuset-internal.h |   8 ++
+>  kernel/cgroup/cpuset-v1.c       |   7 ++
+>  kernel/cgroup/cpuset.c          | 158 ++++++++++++++++++++------------
+>  kernel/fork.c                   |   2 +-
+>  kernel/sched/fair.c             |   4 +-
+>  mm/compaction.c                 |  10 +-
+>  mm/hugetlb.c                    |   8 +-
+>  mm/internal.h                   |   2 +-
+>  mm/memcontrol.c                 |   3 +-
+>  mm/memory-tiers.c               |  66 ++++++++++++-
+>  mm/memory_hotplug.c             |   7 ++
+>  mm/mempolicy.c                  |  34 +++----
+>  mm/migrate.c                    |   4 +-
+>  mm/mmzone.c                     |   5 +-
+>  mm/oom_kill.c                   |  11 ++-
+>  mm/page_alloc.c                 |  57 +++++++-----
+>  mm/show_mem.c                   |  11 ++-
+>  mm/slub.c                       |  15 ++-
+>  mm/vmscan.c                     |   6 +-
+>  mm/zswap.c                      |  66 ++++++++++++-
+>  39 files changed, 532 insertions(+), 178 deletions(-)
+> 
+> -- 
+> 2.51.1
+> 
 
