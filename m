@@ -4,103 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C820CCD19A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1F23CED243
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:18:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E334A8E003E; Tue, 18 Nov 2025 00:16:20 -0500 (EST)
+	id 3E1156B0008; Tue, 18 Nov 2025 00:18:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8730B8E003B; Tue, 18 Nov 2025 00:16:20 -0500 (EST)
+	id 390D36B000C; Tue, 18 Nov 2025 00:18:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCA968E0038; Tue, 18 Nov 2025 00:16:19 -0500 (EST)
+	id 27FEE6B000D; Tue, 18 Nov 2025 00:18:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 67A478E0039
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1432A589D8
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:16 +0000 (UTC)
-X-FDA: 84122566752.19.89EAC94
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6A91D1C0003
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=foJK7sLd;
-	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 066C96B0008
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:18:04 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C79CD12E2BD
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:18:03 +0000 (UTC)
+X-FDA: 84122571246.05.05D008B
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E393EC0003
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:18:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=rl6o1CVG;
+	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763442974;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763443082;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NeGicC5Z67ZOycdylyHVP58sPv/wzz9kpKbtM8vrBao=;
-	b=QKHwzMwO/TaKBRGjRgVI0tKpt15+bwldnr9XEyizb6usVufJspNG4urjzRyQ3PKaJ6iwyj
-	CTURQd9VUw6RYTesyXaFy+o53DzlYS030tiRu2nC6jH73nX7VfOLiIvdUIuZQxH3aAAY2M
-	4S/WhMsH/DaKyvr3sdGBVRfXinKj8bE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
-	cv=none;
-	b=3RrQQEECX692ylvb8rvvWVJ4jXN6hF1oQgjyqXwwTTUiYoivYxskrHPl9vP+gSEpMYl24G
-	F+IefLAgYwKaQdTmXeZkaX2mmIM5unDD36WbaphS9EiUmoFkFvG4DhHSeSSP2LW2TFQhx1
-	ACGMTtVV6O2MyM6AMUBuY237ARQpxkw=
+	bh=twkjfa30fRHD9BgmJwt1gQHo+WH/GMWfHY9pWcyj3jw=;
+	b=KOk2E1JHJb9dwjbEpZLfG2xh6A3w91l1vLXXYPpR2AgnekDbUU3OFqSDfYgz/sYF9F5YEw
+	JyZKnQUPACoCAWvh5wKq/PhZgfFVIuNeuSgVdhHqd3L4CPeY9KCNpTBZlGXg8qJQhj3gnh
+	FxzM4N3WC9mP0CVV4E3sqCHMrINGpXw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=foJK7sLd;
-	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=NeGicC5Z67ZOycdylyHVP58sPv/wzz9kpKbtM8vrBao=; b=foJK7sLdTQuza99mB2bmXypFjg
-	misbqZX+4TBMEHJPS/CtDVLH2McNOV5pxbQLZgbbfKRKtXjjwnk2f01dTbYNr9VJA67kQswAXuh51
-	v7BUg/u2sW2x15WikQA8wQUoxPjQvUSRM40WHr5yWeQrqH6TIN7Q0CfbUthRf/ZPJEgYcaLwIqney
-	EiFj+aQFrcYDib7axbtElcqJ5Z2Zc3O6A2uzMZLefKpMbX2VuLIAZAam2xbQLYKSpMfh0jj6whvUK
-	xLyQ6i2VSFIlc42oPP0Ujsax5Y00fFs/iuT46xZx6+SyspurjtX6r0yUUM8mE4LPm/R5jlmNfWkCw
-	C8m4O0vQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4U-0000000GERB-3NMQ;
-	Tue, 18 Nov 2025 05:16:06 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org,
-	clm@meta.com
-Subject: [PATCH v4 15/54] convert bpf
-Date: Tue, 18 Nov 2025 05:15:24 +0000
-Message-ID: <20251118051604.3868588-16-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
-References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=rl6o1CVG;
+	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763443082; a=rsa-sha256;
+	cv=none;
+	b=nZoIrbmIyj3hzfcMzytqJh6qokM3MHrqX0vt7xmhmFhIqyHx5NM4t1RhKvL/8/HzpbXHJb
+	59BvDro0zwYvyL1dhIdm/SVmyAydBFBzHZiQD1ggKi+k4tZZqc0uILknwyXLOHrYKPMkxI
+	OfB9wAPDcOx3qIdRU3P+onBR9+Czsik=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4779a4fc916so29425e9.1
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 21:18:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763443080; x=1764047880; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=twkjfa30fRHD9BgmJwt1gQHo+WH/GMWfHY9pWcyj3jw=;
+        b=rl6o1CVGBugdjnnXVhvfxYUjSvn0wbDwX2dfAcZeiqOk8IwYCApeazKGwPAYa1TCMk
+         eyhEDwImIa26i2vdd/aLm2SoiPXogB+sR8X0tDqwPc39uktL+801BJ2bq+HMQd3/1SV7
+         oDfWFSDS1h1a7V2z0z5WT07jlOst2/xBZmpIu2gMNUI9faFtkhlL0qd2CGBgzJu2Kr1i
+         J3EQls4Mt+SksEUHVXEKIlz2Q+JcqRxm8FIFr6hzyyEp/0a0ed7tofy2QV5yPKpZxE2D
+         4hdH8JBD0AS1Po6KdVIYabxhEHEsB0NZmpBdqgPedBXV3x+xuKCH6Ela9f0d0DDIysQM
+         KrpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763443080; x=1764047880;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=twkjfa30fRHD9BgmJwt1gQHo+WH/GMWfHY9pWcyj3jw=;
+        b=IH1empDAmdQgigd0I6mEPG9V7wWuOB1D38IMerHAWybgjl6Oi84tukYyfI7IUVqMIc
+         v9aMAGZDyuJRm0gaWFK38aVqjE/t/0ti7rC4p5WPvQb+bC6hu19XZ0oUM2uoYuQ40s21
+         RqZehzz4aIC6OpHg3KpxNGxrGWiVqe2Bobz2CzsXe2xXYpIoJ62S0oA1s6LlHOq8YJkN
+         FpTILrxU5xLyzbTbfHaFjwsVri95E9Mk1uWTmM6QbviuHOO+CkEwuRSrad7FZHqmGG3Q
+         /SIF7lYh6JQZHX41xaYjlrediyg8SD40DvHHgE9mkXLuyPqj2TRDwW1Os4wfB0DOLULm
+         AppQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUr9uoksND99k3esNrT7mDdAbiWnxA6o0B444Uf/osy6vamBdav7+DpFZRuGX1nvdWNDrbAS6K2kg==@kvack.org
+X-Gm-Message-State: AOJu0YwjbpcPBc1XoFza6GIf1geXLpYWcW9FKuSr36iLsQibeJOCCIsq
+	S5JuSAr1xzi6kyKFCFvxffNwtX/+iu43WNkWoIzvCD68qI+ICKZTh0k4+ogtsWAPnqcusdPt7cE
+	KM2YhBQU5NvmLpMLUiHCEJrxAHfsnCeNk/vp6Qpzm
+X-Gm-Gg: ASbGnct3o+eaX11jKHeR/EQXPK9eTx291vrf5C3/0SkmqaDp8DlSS1pCogxB9u0Bc05
+	0p69kFIqTnq3h5RThp5TorH/TxyPuXpqwyU34D3qB2dQzf/h6jBkeH1tSrJOQTf88tq+BG/qkrC
+	eoOPNJmk0uAR68WP75RMEuWC4d4or3cJ+LFRivdufnYrsHGg/jkbu3JWy5649stp0N2ocyj5FbK
+	pIfCIVo3Jo4uIIJvGOvBLHtN8gFqR/dbt8Wbuy5Byx42dIXk3rIjtNr1cr5+L5avyl6um7zxtsG
+	XbunxSUf+oDXwYYlcejDV/R4LViH
+X-Google-Smtp-Source: AGHT+IGc2iVngTxPT7o91+hFQAjlxB2KQTgYyAt0T10shwhYAGaHBuuZJNq/JBCqg3zPWok91qHXU5duI91ezWn0P2M=
+X-Received: by 2002:a05:600c:6dc1:b0:477:563a:135c with SMTP id
+ 5b1f17b1804b1-477aca4f02amr22915e9.0.1763443080368; Mon, 17 Nov 2025 21:18:00
+ -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ap34hryhsjeqmazi77s8wg4sm41kgmhc
+References: <20251116014721.1561456-1-jiaqiyan@google.com> <20251116014721.1561456-3-jiaqiyan@google.com>
+ <bcfd5575-cff0-4ead-9136-dd509bf11f64@kernel.org>
+In-Reply-To: <bcfd5575-cff0-4ead-9136-dd509bf11f64@kernel.org>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Mon, 17 Nov 2025 21:17:48 -0800
+X-Gm-Features: AWmQ_bkYLyh7FOYFP8JKvk2EtcfX6pixH2v2kxW0ZwYd8ZeKopK5TC-BlJFWJ3U
+Message-ID: <CACw3F53x=n2mNJ6QS9wBRESim8ojHCmhY+-YLAL5N_wi6x0P4Q@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] mm/memory-failure: avoid free HWPoison high-order folio
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: nao.horiguchi@gmail.com, linmiaohe@huawei.com, ziy@nvidia.com, 
+	lorenzo.stoakes@oracle.com, william.roche@oracle.com, harry.yoo@oracle.com, 
+	tony.luck@intel.com, wangkefeng.wang@huawei.com, willy@infradead.org, 
+	jane.chu@oracle.com, akpm@linux-foundation.org, osalvador@suse.de, 
+	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E393EC0003
+X-Stat-Signature: w1cqonza5ie9695fyouobxyqz168f8xd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6A91D1C0003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763442974-155782
-X-HE-Meta: U2FsdGVkX1+tVJbmTd8r7uTipWYJm/uePPvF4iQxnUqKDBUU7qOgiqNCvQtIDu5UwJ13vdYkQoJVJF9d9lqvoLgmkd1aRPxDFaQO9ND0fkG8VAHxfjuAGSSUgpAzxMI5xsTdeZ7zbxoa7zzuBflQ1aKcsbaq+8X4kVnzcgnm67H8yGIq+FKXcIt7DyZlsSoSeRRq/7RhWdx8eqsZDlyhwc3bKv3bkeY49hzsbLSV5tNZlrWQF9uP9id+Pdsrjza3ctPwQlo6KbiYSk7OB6pcLKTLaeRrYLonsvZC3KzVAXq/0+bBuSoDn4gSQJxQ7CpFmyHX8WSagyuawW0qyocCfZLwiQ/ZGkJcvQ6QWt0FLWvigTaX1szJnwZddMAaGMaEOO/Eu18fbPAlgyMHVdQuXD5a6hC5l5qZ+vnBa8oDELTL0OH5/pyZ3TT8ytcn2ETkSqBeTImyChIf8f0Z5+Ds0259XPvYHmlLYrlt0iJ7Zvut8V1/8lvK4gK71DuybkWKoWIxi5oKdvxo4RaO9v+WFSUubWxUUB2vACVit6JM4ptBqpCcYXMtrdp/ncj/4dpCnIed/6EWrwDL3HmQcpid6ZGx9tzJ5qGPxiDaqQjdJkfGyhTlnTEoExkafrv1671HnaIndAbTr3Yk0EdRkZ5JSGiqYNd0tzdzM6lJcPlmsDV4CBzT0y2yJAlJ4porolARJbOATaE2UcVNpWQuIff4UQgAIE/Zvrl9xP/yXqz9/p+lE9rwgV3Y1bfhwON5ZSXiezdm+PP6ts6QFjWIXxzObaakuxXEu60ViSy/MyZBwU/ZH4TZojSPBJonZkGVT3USYj+2tq80Fr7+iXwJeL34xG4ACEAAxgWCOgiTe/JMpVbneLGF1A3wcYOB2qBfPyZrnJavoqokv5Vqq9PDoFlAlCMbjH+81m/3GQRiEWtAqZYTjs0kV8h1OOvu/wiNFikvSfmEU6TKYbgQ9dHhpz0
- Ja8QsBwC
- zst58HnWBB3Bc3alU7oVp79k8NuiodlUo+kHr7tEuWzzLq+d1Y2zxspVuOFHoc5Z4A+82B1N1qNhbNtVbpHsai2jr9jijaXu9vOio5ZmKhIiFlYz2TVAAnsIwOmV2SE0Uuvx9tVkgF5tt9BWaS1JPxzQZWlZ8q67ZM/Hjjsr0ePAtRKh5fUpu3ZQf8crqa4mEak1QDvqfhLWcF3H6RiW1XdeI3Ggzkm8FNYr9ltax6wfQgFhaSadGXjm9CBwBm2Jm0ssJl8D2qv3om+4xV7oV9Lij+cqSuTnjKyaZicGmbB0S7Nwq+0q6mFtm73YrvFBvJoQido3uBeI2HG98TTmRLIEz0CCOA329k8t2kqSQlVX9QFCLgq3xARE9oyQTZCdf+pU2
+X-HE-Tag: 1763443081-662077
+X-HE-Meta: U2FsdGVkX19Tl+VdQWYUAsI7oxSDFJNhL4+6TPPLRR2gfI+8GQ8TGVm0uDgDbkweAN1rsjYXPAIOxaZkapVCAsuPc9/CUPeqgr46nVVheVH5Qfx0mItvGkmZImtS+HwbUrdGyoMvtLFBX1M7UnplhALp31hLmHFaGvPywZMtjtM1MhDyQJFquBAyD3Ouose37zQXpXxrGuHjJMz88oLogRT/QhRRdR7D0rLhUNF+T6WDFuVMmrOs6bjUC1KRp0Ky7nTN+VIaRVhrspXcKxeSuHyNcNQHENl+Gs+FCG+Ay3iaRUgaLwibdiLqt3VDQD7p+6JmlY3V70oewj5GemHC3t73dAtur21juXFeTLykIQimhD0ALbwlkgepn1dJ2cbp1tYBvuFoQbBZe1O4ojSZa5dSx2dGCpimOLSUNOjlyOWDWF2s3YAc+2pqL+t2VbCaplKsWLMvIvYFiCpuOHQUcpZIE381mMxxJMzv+3lwbHqd3jAqEnlOaEg6Ow2eWvqbgFHnhMzf/rO4gFFFGWEdnUQc8LzIxviIzwShbidOvssTvDUBPhS3vL2oJzhafU5fvM73BUbacsiiH4S1KV+J4gw4Ohk69aPQE45sZC5E68/sm2nWS1OYRrLAfdOn0TpBHJq7lAL5gq/Cj+GQLhH1vzJ1fwekNXy43LFXTpFYQqrm1UzacC92LEIeOA629/+K5c3Tncba0pe9dnAoDZisuHmY6EvtfW0v6AXVfqq1pxn811XSgCdfJU2Ra5dCSJXre2Fayrm2UULcWL6jWR45n3c5tfB8giJnjm2i0oJQgEpKCWdoOxLA+jXbj2AUo4DGAT85tdS0xGJoHu8MBCQeiMJ0poVDsucbCI9ffJX8qUptvIS0/uDoh0m0CCW8I2+vi3iv0ZRUWXka2rcZEHJhN1KKtDpKjqqcYtmAC+y/WXspGuGCzgKyJBkCpGzd4OkwUuQZfMkI724uAM0aWHm
+ wBW4ep6j
+ zYAxextgPRB5xXFrSk5LTCzbhxJ2Z7s/p3n8eKHJqfbT6+/VYABNQ1wr3/CAbTnR7tdx7YV/8CQYRcyI7Jo4E4+WB3NmXen/aT/Tp9/YDEwSJov9ZZSw+x2GGFVtrpSPmgUL+bQj0doAzvbrpx9H57D878Lh/Yb8WUyxgSHsBJJcLng9pTmtHjojnSVAO8NHNa8Jsn+nvFjBr2DMW7aF6lwroWoSt/5d2v7N0EFfCdeyOJrRXvyxoQEfZ38vXNG90c0DIUKwH5UlTsq/u0VFj0RZewD/ct6sEKA/TEpvxCBjq0N/5NgGnHB+XWbP9EKBh8RfZj185n3vHJVIQRIw4nUXuly08++q5tjPMcS+h63u9HRnjy3Mtbp6zaA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,67 +122,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-object creation goes through the normal VFS paths or approximation
-thereof (user_path_create()/done_path_create() in case of bpf_obj_do_pin(),
-open-coded simple_{start,done}_creating() in bpf_iter_link_pin_kernel()
-at mount time), removals go entirely through the normal VFS paths (and
-->unlink() is simple_unlink() there).
+On Mon, Nov 17, 2025 at 9:15=E2=80=AFAM David Hildenbrand (Red Hat)
+<david@kernel.org> wrote:
+>
+> On 16.11.25 02:47, Jiaqi Yan wrote:
+> > At the end of dissolve_free_hugetlb_folio, when a free HugeTLB
+> > folio becomes non-HugeTLB, it is released to buddy allocator
+> > as a high-order folio, e.g. a folio that contains 262144 pages
+> > if the folio was a 1G HugeTLB hugepage.
+> >
+> > This is problematic if the HugeTLB hugepage contained HWPoison
+> > subpages. In that case, since buddy allocator does not check
+> > HWPoison for non-zero-order folio, the raw HWPoison page can
+> > be given out with its buddy page and be re-used by either
+> > kernel or userspace.
+> >
+> > Memory failure recovery (MFR) in kernel does attempt to take
+> > raw HWPoison page off buddy allocator after
+> > dissolve_free_hugetlb_folio. However, there is always a time
+> > window between freed to buddy allocator and taken off from
+> > buddy allocator.
+> >
+> > One obvious way to avoid this problem is to add page sanity
+> > checks in page allocate or free path. However, it is against
+> > the past efforts to reduce sanity check overhead [1,2,3].
+> >
+> > Introduce hugetlb_free_hwpoison_folio to solve this problem.
+> > The idea is, in case a HugeTLB folio for sure contains HWPoison
+> > page(s), first split the non-HugeTLB high-order folio uniformly
+> > into 0-order folios, then let healthy pages join the buddy
+> > allocator while reject the HWPoison ones.
+> >
+> > [1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-=
+mgorman@techsingularity.net/
+> > [2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-=
+mgorman@techsingularity.net/
+> > [3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+> >
+> > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+>
+>
+> [...]
+>
+> >   /*
+> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > index 3edebb0cda30b..e6a9deba6292a 100644
+> > --- a/mm/memory-failure.c
+> > +++ b/mm/memory-failure.c
+> > @@ -2002,6 +2002,49 @@ int __get_huge_page_for_hwpoison(unsigned long p=
+fn, int flags,
+> >       return ret;
+> >   }
+> >
+> > +void hugetlb_free_hwpoison_folio(struct folio *folio)
+>
+> What is hugetlb specific in here? :)
+>
+> Hint: if there is nothing, likely it should be generic infrastructure.
+>
+> But I would prefer if the page allocator could just take care of that
+> when freeing a folio.
 
-Enough to have bpf_dentry_finalize() use d_make_persistent() instead
-of dget() and we are done.
+Ack, and if it could be taken care by page allocator, it would be
+generic infrastructure
 
-Convert bpf_iter_link_pin_kernel() to simple_{start,done}_creating(),
-while we are at it.
-
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- kernel/bpf/inode.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
-
-diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
-index 81780bcf8d25..9f866a010dad 100644
---- a/kernel/bpf/inode.c
-+++ b/kernel/bpf/inode.c
-@@ -144,8 +144,7 @@ static int bpf_inode_type(const struct inode *inode, enum bpf_type *type)
- static void bpf_dentry_finalize(struct dentry *dentry, struct inode *inode,
- 				struct inode *dir)
- {
--	d_instantiate(dentry, inode);
--	dget(dentry);
-+	d_make_persistent(dentry, inode);
- 
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- }
-@@ -420,16 +419,12 @@ static int bpf_iter_link_pin_kernel(struct dentry *parent,
- 	struct dentry *dentry;
- 	int ret;
- 
--	inode_lock(parent->d_inode);
--	dentry = lookup_noperm(&QSTR(name), parent);
--	if (IS_ERR(dentry)) {
--		inode_unlock(parent->d_inode);
-+	dentry = simple_start_creating(parent, name);
-+	if (IS_ERR(dentry))
- 		return PTR_ERR(dentry);
--	}
- 	ret = bpf_mkobj_ops(dentry, mode, link, &bpf_link_iops,
- 			    &bpf_iter_fops);
--	dput(dentry);
--	inode_unlock(parent->d_inode);
-+	simple_done_creating(dentry);
- 	return ret;
- }
- 
-@@ -1080,7 +1075,7 @@ static void bpf_kill_super(struct super_block *sb)
- {
- 	struct bpf_mount_opts *opts = sb->s_fs_info;
- 
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
- 	kfree(opts);
- }
- 
--- 
-2.47.3
-
+>
+> --
+> Cheers
+>
+> David
 
