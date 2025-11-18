@@ -4,88 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32FD1CE8D6B
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 01:40:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ED8ECEBF61
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 02:00:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 740408E0016; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
+	id 6B0768E0005; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C9888E0002; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
+	id 688348E0002; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DF718E0016; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
+	id 59E288E0005; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A1B18E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 20:40:30 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E750EC031E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:40:29 +0000 (UTC)
-X-FDA: 84122022978.16.8866555
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 499EE4000E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 01:40:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0OFoAo9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763430028; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 478DA8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8D5B13A986
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:00:40 +0000 (UTC)
+X-FDA: 84122073840.20.2EB083C
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 009BD1C000A
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:00:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IWZ6V6fZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763431239; a=rsa-sha256;
 	cv=none;
-	b=GDK15WQeaodh0t2T8x1NGGoWzicfptT2dy+jVikgIzBQJnbrt0CdaYC9fC4btFciU7dTJ1
-	yD5jhCbaMv663KGXBlEbnqxNgtSF8qz/Gx298p61u2xiGO0YHdWTSB3h9pnLvBiPrSa9Ij
-	Flm7Nd1z40MDO+XR+Q1DiZsCQCwRJ+U=
+	b=jcmWBdVd3+k+5R3fVVyhImcyMAf3DyLAaNG6K7TruP/HkPEj/AN24XJgZZSC7jV7h1A05Y
+	/W2st2CCLcTKStSIIfAa5k5NwPHSN15X2dN8ORl5CZgrH1uqF1Y1PgWdP4DJ8u8mw33beh
+	mbCnH6supsbIZ9lf7gAtlhw+OZO6xDE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0OFoAo9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IWZ6V6fZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763430028;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763431239;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m18BP2IdsDGFqKtpfq/YXCq57SkwYNWOh9NFp5h+cQM=;
-	b=pr3re+GdlaIWv69sMgnE9/7lvF9LCgnlOXbAkgC+X4BPXwtfC5sAJ6+o4X+lkr7dQFVzWQ
-	EMdK8Bi+Q2sGkDUvzEeqgS+m1ggHw7lyefS9+xDJn9MFChKkicTU/rB9da4e5KU6WPfDHy
-	XnbGQ/H20lbqqZe+Xr/AdsZYhvao+w8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5172541A76;
-	Tue, 18 Nov 2025 01:40:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37554C2BCB7;
-	Tue, 18 Nov 2025 01:40:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763430026;
-	bh=HC0wW5cR4LQyHkZxX4Q3FPGBPQk+o6MWSt6ijm5OY7g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0OFoAo9hpMJaYk5dmE4U3o6J0wqXWjvkf49BV9l17fiB/Tw7ezuWPcWRCFpF6+uq
-	 wB0dp0idRFjw1AqdQc5nCqdC01DOyUjjegb/Kxn3XdvGfTnFrm9h+cK8h9D8bbGc8a
-	 8QpsqCE3j3TVhs8W2DjNfqv7TgELBFr4Q1PecDPxpyOrGIZ/r8BB+hNQCRQz94pBjY
-	 H5izwudDqYftYs3d7Wg0AGeaWq1IVd2akkkB4xpKeTxRqlGJF1A4aZDSkcE8d0C4d/
-	 //g9njU4SUGowAIELm7VJEPS+BRjl2e4ZQoCGl3BRZhFdMuz+Xd/VGFYF7u217x+m0
-	 kRfdEb4aQmS9Q==
-From: SeongJae Park <sj@kernel.org>
-To: Jean Delvare <jdelvare@suse.de>
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH RFC 2/2] mm/cma: Consolidate accounting in dedicated functions
-Date: Mon, 17 Nov 2025 17:40:20 -0800
-Message-ID: <20251118014021.75804-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251117121502.6db0fd7a@endymion>
-References: 
+	bh=PjtZZ70/Qu6YbmmA5LKoN6Z9gQ7S03ZL5L4ASTauTjE=;
+	b=q0IlOFA3INfbwZUfeBV44bvINb5vX3n+62Qkef9jNWqbteDm1+3iaQtjaq9Q2MGX5DPtjF
+	rxc8HNyh0pDHaSUN1gDrO82ewhTuOaL9P+Ke/9xRXenC9rcdlMN3dDs1yKm0DEn59EQTLC
+	b/DBPSpZ36qcIPcxcHfZqh9cMjzwCzU=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b73545723ebso889576266b.1
+        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:00:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763431237; x=1764036037; darn=kvack.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PjtZZ70/Qu6YbmmA5LKoN6Z9gQ7S03ZL5L4ASTauTjE=;
+        b=IWZ6V6fZHk3n8gNXhc9mvj8+wm9OBa8+ARg2PuOiWvdO3gif0b6gNamz7NWfzB9N5Y
+         6tJe+fTZSX+UZNoqbVPgxGRyw3VoVsSqwxCAyR3tsXr3UWRmqFTF99MZmiqwOmACo6kM
+         31jM2VTS6m6dfsrlDKwea18l4LzMOlATxxS0/Q2sMgPesqcZXYj/EBdTMtF6zn3Pvd5L
+         LfcWUseRPU2FsXmkk9z0/aPDEegpcRdko1VluK5H1+vQqemoDs0wp78F4husIYkHQxid
+         +5SIEGaI6ek8IaUS9WMW2hpUiHp1VP5DtFPPULQjnN6rQSWlxhCKlGE1kpqIUMpa17JS
+         lgLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763431237; x=1764036037;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PjtZZ70/Qu6YbmmA5LKoN6Z9gQ7S03ZL5L4ASTauTjE=;
+        b=up+IY21IwfD/aFDvyedweipKK7mttqvxFJiBGpG6UFfayg5fU0dG6QLAY0KkTonFA6
+         jrhe85yOwWbRU/KAgnnJUg+kvpgeYo2DkgO8p94D93DpszLnbG4tJUhhwREKwQs2erZo
+         khmaJoCON0z+v0qFC9QUBx8z7izAyxYwR6lx2JFXCD8eZqiB8caX9/QUP9LZoWv7Inj+
+         PNVQ2+WTcugNjW0/u9tyZkJKpC+QOMsUw3cBIvgZwCWXIgeh5hvRdrmSr+aB3Jx04bQ9
+         1AecJZPcxqABL3itU9HfHpKbYbZ/uRyDpLDzBaOzKUjTyBuuYbWQ00pax9onJerrMgjF
+         TS3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWfv0eYZdUNlVqlAKq8PraqyPD9VzoJF2COg+BtDihnnpylaYQA1zI8iAyPEkBrwLMyAXVRNvQQMw==@kvack.org
+X-Gm-Message-State: AOJu0YznxQQ1f/qKT/L5gexKysudEcMy/oomvDzDoU0hDWX2PHlsoeNe
+	j3dRD2gANYMSBVWxLizTFPSAIbpqmd89IxiutzQKHpoQ90Q5RsXu3Xrb
+X-Gm-Gg: ASbGncsSWz2tgQXaD1nTOTE5RqyjzNnnc049dmLpMs4IetNDJguwc/wFQeQ/MJG6EJx
+	SoDKTgQfAvJylz/GslLE8JlKjGR6RslR2FFQJGSBrbCtxj1gNVoivVo/TAT6y1euFX1mqgKJ1/2
+	RgeuIDFhsH/meHbfu3UQmVFLJ3ZLdxyll1Aj9zoE0aUfHUYhelAiSMunjann0wEQeBGhSyfGeXs
+	YO0LY5L+cMiYX+NVg5r7v26Ki7WkGR1lcY2OC6Ym2donTfYJJlvqy7sXwjsfrJwhTXRTbf8Au+o
+	7rr9nabsldx7PdnyOs+vvr1CDZRJjnmz6LvUZRK4F1XrFbiL6CkeYhxvAH/Bf4bOgCiMFVAXi4U
+	5MdK/Pq8v3DoJ4xWXxEXajR9w8cIPK7yIBhs0VfqKVm16Dugxui6CtrH3A3GG3TiAwZpGgdyY8E
+	0T+OzTmsOETtmsUw==
+X-Google-Smtp-Source: AGHT+IEIbHsmAR4qI1U7kAkJFbuJ0gMBeLqnpNcnfrzyBKIrXirysQ6AKJVPv8sKWVks0bFN76WI/A==
+X-Received: by 2002:a17:907:d18:b0:b73:9b4a:5c02 with SMTP id a640c23a62f3a-b739b4a5cb6mr723067766b.49.1763431237209;
+        Mon, 17 Nov 2025 18:00:37 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fd7f37bsm1199178666b.35.2025.11.17.18.00.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 17 Nov 2025 18:00:35 -0800 (PST)
+Date: Tue, 18 Nov 2025 02:00:34 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Nico Pache <npache@redhat.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, david@redhat.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+	baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+	wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+	sunnanyong@huawei.com, vishal.moola@gmail.com,
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+	kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
+	cl@gentwo.org, jglisse@google.com, surenb@google.com,
+	zokeefe@google.com, hannes@cmpxchg.org, rientjes@google.com,
+	mhocko@suse.com, rdunlap@infradead.org, hughd@google.com,
+	lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org,
+	jannh@google.com, pfalcato@suse.de
+Subject: Re: [PATCH v12 mm-new 13/15] khugepaged: avoid unnecessary mTHP
+ collapse attempts
+Message-ID: <20251118020034.rdgisvkqs53lwabz@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251022183717.70829-1-npache@redhat.com>
+ <20251022183717.70829-14-npache@redhat.com>
+ <20251109024013.fzt7xxpmxwi75xgr@master>
+ <CAA1CXcA9zaGqLPHnJWH=fKPUjb02dV+rKgfmsRZOGdeukiC8eg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 499EE4000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: m3zgy7yaaq5szg9o5pizrejkay68wkq7
+In-Reply-To: <CAA1CXcA9zaGqLPHnJWH=fKPUjb02dV+rKgfmsRZOGdeukiC8eg@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-HE-Tag: 1763430028-349235
-X-HE-Meta: U2FsdGVkX19Q3gI0qnA0OBW9AMme1w1PrP46pw1pUMXaMwFUYWEMI/uUz+NaLPKEMSXwXARHY1qSEZXydDQU/TIrHwvzAazTawhwStj2OFa4YhCL2X2DRTTpPCRYQKnKyFXb4EYYYNUuzsVAblJV05sX26KgN9uGvSqUAIrnVjaZaE2UEBoPJfqX0OMn0aEtuCIms6Z9f4GNkPEM3RKvva8GSuMWvlBcPlMz4ywvM2quP6L2NiyHspb2IZDqmsI5tyUXExqe7nlJ63pfSvuNHxAhNMI0ZYWDrAIEV6bstToBNwbIgYwjlHWbxNCuF24ktovi14PKXMAEPAA4bWzF5KnKwuUQP0H4iFRSE4fDIdalSOZwLcbD/R/yALQk5VouK6YGZO3WCWYEXFdWYrfATaJMJ84G0RXpW1c8WWJ622Oo2GnTlNBBsniY8VaChd7pJoeIFW3ZGNNtzYwJNZu1zDdplIHzjqusuOD7DiqRmfNL24ZOUYRLzpBxOOkf3XTONYnQepsYtgVmlbTnVnZUbGgXtDWnIu0ld5ceD1wfjyQmrTFm0kZUaKV7EjAsOmn6/fC17sF+u7onVdHBqb7nIrHAfvPmiPtXkmvIiVuBtsm61bsanDMumSjT/vB+9jva9Wj2WMxpeL5KGkHVBc47DX7Tf8FE03qozJgQ2lOwSOxufFkYTbB7EPW5lj6oXhQkznxxhiGGMHbc7hBzz2/6rhczG3Jw0VQskSypZvW1s3T6dp8554GRWcH/BfnY0HGbLJOmzevz9RLF1IW4RItV7LFqeRXEZKeJpgqutm9rlIA20JN0tA22Ixx97tHudieuyqjK6wW0b8H6QZ2t/B3mJwK8ybURZoll+h/oA1reNqcqsU4hp9Jwc4oIybPdROEOwiuEIJRMDKoAs0L9wp4DUSQBBzrJLbbAFAjBU7ax7wsrN+QUZ6VV1vZ3921+RBQ3ruogjrbSXmwWLxyZSo6
- mmGqwq6k
- jH7bamhKkhNOBXKiljV5MjWjqA7QlKi2N2jns/FBck+4wpoU0mUikbmJNztQRCLKNmpJ/iylGIoktnrvILm8610h5Qvz/331YxD/Q0IfaUrmOOEycu6FHx3o1ulR00noj/9Othfk1jkC9dia1fQSd4fBnIG5QpPDNSvpLN04mSO83z/V38fvZqH8BPKVh2OfwrirPqKcGbZ3cd8GglFRD/Ivvws5gnbFhIbaHQT0EKqbFnEM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 009BD1C000A
+X-Stat-Signature: scwqg44grgr5u4ey8ko9h3hswustjqd1
+X-HE-Tag: 1763431238-410197
+X-HE-Meta: U2FsdGVkX1+dAFbHTPhPYitVYK3MJss4pxmc/Mj5rrjrEa4+edzglttd47PSD3uM1+Hdil0UEHq8M46zAPiE2SsVbnnlbA4vcZjCB+VKEDG6cvVLQO7e8Is31VMToP88fWCG35f/0g3uGS6K0viXO6hU9h+BPpptovWxdZsC+eydNDPuBGv1kQaVcqjCgWk5wToRmtd6c2/WHbvAoOj9LZ7ObUnkc9fgZblr2Vu7s7WhY1B1UEw6ugJ2tTvFH0GUzuzSWLTjBR8mWCH/cEVwzppK3wJTH88uX/28B87qBPbttupBDr35dlR1NNegbn4yb4MkuKjkG/j+LrOxXb1PH8NwjCshrRWh7NoIhGTiH2bnRWBdZ/iks/RwLUuehOpjXC0K71LUZ2VxnEZKZun432gvHSDbdQz5KjT8oJUTJusUvGsSM3scK90JaH/ovQP7vjOIcYJbXQqu83lZ4N/y/q0ysLnmICxGYrqnikCZROP5rzOWOe2pKyxSRKuEVnHgDBloAJ7xCfk7MxTSRn/e6N3hj4DsYTyjGHzcpqk6eNRt2a5S5UhfJGV2yac07sDGWxh2pwshqmt0vutwDg7ZVvNcbivF2gqygDm+CGHlG9TkxwE0ZzWb8qH1kbt5vj1JfbBKDv8j+wWDPFWyPCmBCYT6m9q6qGnE1+1lKIf4JKx95ol1pyhLFkGxQgvVZ7rMJV8NrofOs2n1iabrhpeypJ9tl7RQYe/W+hHsAfrp5k/+yP8+ARJJ6WMJGffmbDK+wRdpY8mSKBG9aaNv7ATte9ortFMCNfM6Rizkw3F2NRzsjWFx5+HL82ts3kJHPz1vA7M1lVkbx2CudyrcwDrguvxleEnZes9rk/CtBHrmKBKqeL6inDIuYYysk07g4C8eymfYuKXFGIvPDh+aSzOMHq3i4KQuPO8VlCbItZB4ufTVCuAdJnr7ehWSIjBxskXQfaS3N6dNlnI/4TuftEW
+ s9qWTYfe
+ +iu4rJq77s11NJ8EBSzUq7wHzpfIzvCI/UA5XHE5/U3n7oJsBCtJAl0fUjgVuXOiiGWkkTRlF222kKpvxABVunjvgPPLemBmkaLEtlq2DRo/JO5/QNHfny/TASNH2p6JYuCrgRIWdKUun1U0DnKyR07SYCnOrBA10I7vnPMsr7uSyqDq+W0U7nhyglcOPJ9fhC7VUkCg4JORv/txsfmyBQqQXiaNEiq0pvhfHHwNhFqpGQOpGSjATPOGlceoSxFM55rR71aQYzpfTQM4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,38 +145,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Nov 2025 12:15:02 +0100 Jean Delvare <jdelvare@suse.de> wrote:
+On Mon, Nov 17, 2025 at 11:16:53AM -0700, Nico Pache wrote:
+>On Sat, Nov 8, 2025 at 7:40 PM Wei Yang <richard.weiyang@gmail.com> wrote:
+>>
+>> On Wed, Oct 22, 2025 at 12:37:15PM -0600, Nico Pache wrote:
+>> >There are cases where, if an attempted collapse fails, all subsequent
+>> >orders are guaranteed to also fail. Avoid these collapse attempts by
+>> >bailing out early.
+>> >
+>> >Signed-off-by: Nico Pache <npache@redhat.com>
+>> >---
+>> > mm/khugepaged.c | 31 ++++++++++++++++++++++++++++++-
+>> > 1 file changed, 30 insertions(+), 1 deletion(-)
+>> >
+>> >diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> >index e2319bfd0065..54f5c7888e46 100644
+>> >--- a/mm/khugepaged.c
+>> >+++ b/mm/khugepaged.c
+>> >@@ -1431,10 +1431,39 @@ static int collapse_scan_bitmap(struct mm_struct *mm, unsigned long address,
+>> >                       ret = collapse_huge_page(mm, address, referenced,
+>> >                                                unmapped, cc, mmap_locked,
+>> >                                                order, offset);
+>> >-                      if (ret == SCAN_SUCCEED) {
+>> >+
+>> >+                      /*
+>> >+                       * Analyze failure reason to determine next action:
+>> >+                       * - goto next_order: try smaller orders in same region
+>> >+                       * - continue: try other regions at same order
+>> >+                       * - break: stop all attempts (system-wide failure)
+>> >+                       */
+>> >+                      switch (ret) {
+>> >+                      /* Cases were we should continue to the next region */
+>> >+                      case SCAN_SUCCEED:
+>> >                               collapsed += 1UL << order;
+>> >+                              fallthrough;
+>> >+                      case SCAN_PTE_MAPPED_HUGEPAGE:
+>> >                               continue;
+>> >+                      /* Cases were lower orders might still succeed */
+>> >+                      case SCAN_LACK_REFERENCED_PAGE:
+>> >+                      case SCAN_EXCEED_NONE_PTE:
+>> >+                      case SCAN_EXCEED_SWAP_PTE:
+>> >+                      case SCAN_EXCEED_SHARED_PTE:
+>> >+                      case SCAN_PAGE_LOCK:
+>> >+                      case SCAN_PAGE_COUNT:
+>> >+                      case SCAN_PAGE_LRU:
+>> >+                      case SCAN_PAGE_NULL:
+>> >+                      case SCAN_DEL_PAGE_LRU:
+>> >+                      case SCAN_PTE_NON_PRESENT:
+>> >+                      case SCAN_PTE_UFFD_WP:
+>> >+                      case SCAN_ALLOC_HUGE_PAGE_FAIL:
+>> >+                              goto next_order;
+>> >+                      /* All other cases should stop collapse attempts */
+>> >+                      default:
+>> >+                              break;
+>> >                       }
+>> >+                      break;
+>>
+>> One question here:
+>
+>Hi Wei Yang,
+>
+>Sorry I forgot to get back to this email.
+>
 
-> Move all accounting to dedicated functions and rename them
-> accordingly.
-> 
-> Signed-off-by: Jean Delvare <jdelvare@suse.de>
+No problem, thanks for taking a look.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+>>
+>> Suppose we have iterated several orders and not collapse successfully yet. So
+>> the mthp_bitmap_stack[] would look like this:
+>>
+>> [8 7 6 6]
+>>        ^
+>>        |
+>
+>so we always pop before pushing. So it would go
+>
+>[9]
+>pop
+>if (collapse fails)
+>[8 8]
+>lets say we pop and successfully collapse a order 8
+>[8]
+>Then we fail the other order 8
+>[7 7]
+>now if we succeed the first order 7
+>[7 6 6]
+>I believe we are now in the state you wanted to describe.
+>
+>>
+>> Now we found this one pass the threshold check, but it fails with other
+>> result.
+>
+>ok lets say we pass the threshold checks, but the collapse fails for
+>any reason that is described in the
+>/* Cases were lower orders might still succeed */
+>In this case we would continue to order 5 (or lower). Once we are done
+>with this branch of the tree we go back to the other order 6 collapse.
+>and eventually the order 7.
+>
+>>
+>> Current code looks it would give up at all, but we may still have a chance to
+>> collapse the above 3 range?
+>
+>for cases under /* All other cases should stop collapse attempts */
+>Yes we would bail out and skip some collapses. I tried to think about
+>all the cases were we would still want to continue trying, vs cases
+>where the system is probably out of resources or hitting some major
+>failure, and we should just break out (as others will probably fail
+>too).
+>
 
-> ---
-> This is based on a suggestion by SeongJae Park. Comments welcome.
-> 
->  mm/cma.c |   43 ++++++++++++++++++-------------------------
->  1 file changed, 18 insertions(+), 25 deletions(-)
-> 
-> --- linux-6.17.orig/mm/cma.c
-> +++ linux-6.17/mm/cma.c
-[...]
-> @@ -1029,7 +1022,7 @@ bool cma_release(struct cma *cma, const
->  
->  	free_contig_range(pfn, count);
->  	cma_clear_bitmap(cma, cmr, pfn, count);
-> -	cma_sysfs_account_release_pages(cma, count);
-> +	cma_account_release(cma, count);
->  	trace_cma_release(cma->name, pfn, pages, count);
+Thanks, your explanation is very clear.
 
-I was thinking we could further move trace_*() function calls to the new
-functions, but this version also looks good to me.
+>But this is also why I separated this patch out on its own. I was
+>hoping to have some more focus on the different cases, and make sure I
+>handled them in the best possible way. So I really appreciate the
+>question :)
+>
+>* I did some digging through old message to find this *
+>
+>I believe these are the remaining cases. If these are hit I figured
+>it's better to abort.
+>
 
+I agree we need to take care of those cases.
 
-Thanks,
-SJ
+>/* cases where we must stop collapse attempts */
+>case SCAN_CGROUP_CHARGE_FAIL:
+>case SCAN_COPY_MC:
+>case SCAN_ADDRESS_RANGE:
+>case SCAN_PMD_NULL:
+>case SCAN_ANY_PROCESS:
+>case SCAN_VMA_NULL:
+>case SCAN_VMA_CHECK:
+>case SCAN_SCAN_ABORT:
+>case SCAN_PMD_NONE:
+>case SCAN_PAGE_ANON:
+>case SCAN_PMD_MAPPED:
+>case SCAN_FAIL:
+>
+>Please let me know if you think we should move these to either the
+>`continue` or `next order` cases.
 
-[...]
+Take a look into these cases, it looks good to me now.
+
+Also one of my concern is this coding style is a little hard to maintain. In
+case we introduce a new result, we should remember to add it here. Otherwise
+we may stop the collapse too early.
+
+While it maybe a separate work after this patch set merged.
+
+>
+>Cheers,
+>-- Nico
+>
+>>
+>> >               }
+>> >
+>> > next_order:
+>> >--
+>> >2.51.0
+>>
+>> --
+>> Wei Yang
+>> Help you, Help me
+>>
+
+-- 
+Wei Yang
+Help you, Help me
 
