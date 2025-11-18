@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C18BCCED243
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:17:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB936CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:17:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38FCF8E003C; Tue, 18 Nov 2025 00:16:20 -0500 (EST)
+	id 5AA748E0033; Tue, 18 Nov 2025 00:16:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CE778E0033; Tue, 18 Nov 2025 00:16:20 -0500 (EST)
+	id 3180A8E003B; Tue, 18 Nov 2025 00:16:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABA118E0033; Tue, 18 Nov 2025 00:16:18 -0500 (EST)
+	id 7FAE38E000A; Tue, 18 Nov 2025 00:16:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 38C888E002C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DE868E0009
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D9759589BD
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9F6613AB30
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:15 +0000 (UTC)
-X-FDA: 84122566710.16.5EEA93F
+X-FDA: 84122566710.12.36AD239
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf21.hostedemail.com (Postfix) with ESMTP id ECB5B1C0005
+	by imf03.hostedemail.com (Postfix) with ESMTP id F14812000C
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gGHivrs5;
-	spf=none (imf21.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=G7+xIgWY;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763442974;
@@ -34,32 +34,32 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BK+HD9eFsxlpB9DT0f/M/+bf/xKzOtOP84IbBFRjnBU=;
-	b=ieH3D/QSxG2ezMXZMd5PlqwqnEDf517OUNBIYskPBfgW3VhyFCHVIzthMAZNKlOGNnaHyG
-	qrya+nLn26VCBF3cPh/3fhb018WgFlQbHjvJmgbNaRN73yXdgku0l3dnR3jmlrL17j+78b
-	en/nH4r/UYg1E/OazRTLyHC2xaVG45g=
+	bh=VD4R3gUn11tbzuOSrLlHcr6CK6toCdQdVG0PoPu8WQM=;
+	b=kXF85mdSPvSbH75brmHZKsdmcfu1owQr7QC+UuCM3l1WKddzSguL2j1UrlEX4w5xVWZXdk
+	Q1EyFqecNrPk3RutUk9Mfsw61ou/7z/f7YQJobuiRyIwDY5Pqm86F/XoAer+/RR6oyX27j
+	DrubV8gaT3Bb4PiZnpZCmIVX3nTcUJc=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=G7+xIgWY;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
 	cv=none;
-	b=tyFTVWqzcPWwX7HVOgSmck7KTip4/0RcHYA0nbKd+IyQW1BgDyFeB8DRt2dVAPRvNwqKDg
-	M82vD4vLiOEbgY1tHjnPFDhnRSyNBJnncQGIdpO9Y167aPUBsysJLlo7P3Wd2NKYnK6hRT
-	RyKLTAR8LbdkbSA+lBOR30OZf3jnhXc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gGHivrs5;
-	spf=none (imf21.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	b=aJY9qkXazGqa5YVpEuhcWPKx5bUzumBe4jwxcWlURcF65bWteZjJjUeVnko0RQgGBVXYV/
+	btCqewoEHGn9DevqGS5sKk39TvefGNQESn1tgvWQh3e16FBlJ9zsDjELE/iAT8S9WmUOko
+	H6cJg7/ExiKqsYlAIYr+gv2rj4yMutE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=BK+HD9eFsxlpB9DT0f/M/+bf/xKzOtOP84IbBFRjnBU=; b=gGHivrs5VQYbp4P2WHM7xvl1vI
-	ax4AH360oXnMEt1pRtc4JNx9Mxj27G7Ntlw1mm2vR1YKwsbAJ7BIDIj7eFRTT5DnvK8JCUY03Da8N
-	fSZOXX/fBbd9LVbSGFm1KbrbLVwJmrOCLc3+6IQCZPiNgcegz18/qFCXOQsbpNt3DjC7U07vYtsPs
-	9Rhmie54jINi8XG2EuV19IWK3Ct6nuMbf1bu4GhYd7sCTgGxsorbv2ahk2JRFthbRoeXfeiF8W2c5
-	DoQk1Kfd0U8wa560MOaJXOVqC5lEJpoM0utWOPXCu1ozCSlbpkmyZddLcoFla63XBFJB319IxTbwC
-	cWQnABmg==;
+	bh=VD4R3gUn11tbzuOSrLlHcr6CK6toCdQdVG0PoPu8WQM=; b=G7+xIgWY9mW59c0/eZZxJQc4Mx
+	lTCk0HOYiXNDgnVhmCcy8+wWHf+UNH3w+rypga4y1NhonS1cUjnRHI9BU2yzFyqi2vZkSL0IfF0Xx
+	2TJ/+oa1kZWmBGf6CNo8PwPlxzWkCNNBdJQHkeltKcMq1icgSBYByUTcNE+hxrPm3CPrC1ACgt+oR
+	jK6CrK03Fzw51gm81zn1IcBer8Q2/6ned6SlrrSgddA+RgTB4g8VJyZDat3ix86u7vN7mGGzZfDrT
+	5vHwcVjhgWFH3BoFNR11KpqoRpD+5KTGrqtLE8/9bgIvLe5Vqs1z6rktf4KgeYAA0i7RiManuouSx
+	a00n9GLQ==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4T-0000000GEPd-0X8R;
+	id 1vLE4T-0000000GEQ5-2b7c;
 	Tue, 18 Nov 2025 05:16:05 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -85,22 +85,22 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 01/54] fuse_ctl_add_conn(): fix nlink breakage in case of early failure
-Date: Tue, 18 Nov 2025 05:15:10 +0000
-Message-ID: <20251118051604.3868588-2-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 05/54] introduce a flag for explicitly marking persistently pinned dentries
+Date: Tue, 18 Nov 2025 05:15:14 +0000
+Message-ID: <20251118051604.3868588-6-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ECB5B1C0005
-X-Stat-Signature: m9be14ywcmhrpuzrb4hkcutefirdxbdc
+X-Rspamd-Queue-Id: F14812000C
+X-Stat-Signature: ic8ykxre5gartjoe849tr7gpg8jxh5mx
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763442973-255533
-X-HE-Meta: U2FsdGVkX18CW1kifyZe+WGOkQEafxQl7lyopm/HivtUP8AUL9kwLyrrciHADKAO3OazqTTH/Q2eHbVybXeLeaxXGOdWAhXpK7xAMswGollyIXZaCam7iGiYWZuMfvfKhcCg2mRteuFfhIV9JDe6WrTpssSV/EpID9qBfPfuJMDKQQVk+vCCqr8UYB7V+TSqe1I0W+yMmNPF6r6qv1H+s8YdYaw6vTdivNxea+TDLPrZauhyaZFwaXWf+zf/q0KN5dymyyPJAOxNLILY+5vbUM301gpRJMiS6E66bu8fq8Z0H3NtcPpTsxoKoazeT5HZiJXgBxjm3L0d7Lx+KGT88XAKXHzAkBbl3aFsCRy4EYjng06zuSrtVI43CjFygs/mlcu9Y4IAmpiH5D3Q1jJR6GrAsZsrdEXJtz+WiXsyLTcRu5h8bkVog/M2rl9Le/p2LM0iRidAykaFLXPRtTt+MCfEESPXPDEDQ9myUztgpCK5mpRxYvZzYkTtx/PXZXee/ZyhPSNs60ZLcRbgF1HBxKcdvFf5MfXuJEQ1nRtC/nvsoF9m6i1+yCYbRQoOLg/qPCeReFZnEgCsXvQh8Bnk5NxMFPV6qyWqEyCDL0/0ySUDJJfecAapbG/lqEdN5EMMW0Owck5ja0XfnM61vScfYs85zKcQMRRTAuRNOtXel54CN9BpaT1+udc2265UFDVIkmqBBgNruGxeIZJD7A7GX2aXMU3GKgScV0Zwdewza3947EE2vcQX5yTpLW8RStMxTr50zSjztFTs4EJq4V8p3oRuQb9pYooTzlj3msykDTuSEcozhlzisxDBg0vaMtawerVxhznk98zR7+fPPL4lxyCHNcmoGUm9wKZaombnBum81uIsB/F+fRepQi+wWdK1v6vMPPPU/Jc0uxtS8waDljsh6wpcF/aqDo46W/WXRewj6UzwKdQO83aqBihtX9cKWNtVuNa6m/w5DlhQeHO
- +KNtn4L9
- PyEb2oPmlmLfj6XLrXifPn9aM7uQTS/B1ECMUWFgUa1vw7zsCMF2xzzkxUsuPa8G68dPjzZ8V6xqLPaO2M8AOQPgApjz1Uc6OCs0qx5dsUSOEJJQcG7kSeAaG2Au2oXukzfOpjFcosJgORlsCLTLQIKIdtG9PVtyqWhunHnZkrQaVClbooK8aKiVi67cIo/bgtXkAMB2auPzlHNSV/jP2zs68QInaJhJgMOy+Fey5KfNm1BG+tvT++BUzWjFtLkWfwW5WKjgKseI58G8Rlz6lJ5ICPD8JOBjHtIh0sx/w6RITJ8GigdbvIXkcaSbR3J2lajOnlyedGf6ov0TssCHEmC5XirHzksY1owZQUm+tUbrv5GCVGaT7brhgsUJYdc+Oc6P2Ye9v10Glh5kx4Z9iBkiIw4mHO5yRaOP6qUEa1unsuFo/JvQxkGq8nhoQzBzb0AkV+kwCRuXefyQMhCrhc7fByuhJLrxICjgUYmuli7CP9pY=
+X-HE-Tag: 1763442973-776591
+X-HE-Meta: U2FsdGVkX19GrVZzIN3RWODSTELTKNLzJIFUKkS+0p9QP9rAc+RKYphntZ9PsGjqSH+H0RP7VdbxtfGnFtsBs6FlG7y6cFs6MdCG74K+nQCVdH3Bb7YX/ydocLiNavtk5IbWEeuMd6thRJGm5jGJjIeTTZYylMY3G4eNT8bXX9I7zjRcxUBesnXvP7HxKqaWPDEOWgq3YYupTB8A/iLAcfXOrT4Eokwyt8oFC32vZkkhGiIb4eLPkAGxacz8FECvXchr0cOKcvgRjnmrxUsUenlW0toLg0J08xVuhGaKeA/G43yD4Zs6p5guMvqK7Ke9tm5mNAi4jCwO/k63o6r+ByrPvkleflaiA+M4Qqhlsms9xzTsn0JZI1dCVDh5o7sD1PjDwDtYOt8RXZTH24PklG6as/KFAgzYhszSrFydLfoOCd46WeWwfTwFtEIAy2pG8qY04Sriyrm0acYh4cBBtDLdINLXj0H0bw0tOebviT17UCdNxEIGqOYpZbbClLfDush/DvOUF81b4XNenJ5Hp10Jk+DQT/h+k3bJwlWVv6iWSRwkd0hzSmEfo0sbVaz9db0ObQfKFHZCnf44ojzmvLbCq8edSeRFWZ15X2to2du48vTXLCHoFAFnX52qEkgoVjYg1fhMNmFU2ZCuDzOuvuehsp8Gp+X/P7TtSQerMWPfRAFR4uE2ohBzPkCtq5MKr4y5mA81HQ0bgnFacAJtYkkn9iCN7u6mLLUhNpSoOecxG78YIV8nHGSYuQqzjaufrjR9tjYM185Djt6RgMGVmtTdSHYZ+qJGJk8ZZrj6Bi1RpZ91bw1WDDIS8Esi0+VTkMYghSrfaCRGOw6XwSjqPt8xh8wgi1UVHT3ZM8Ylk07ToxKvIIfcnQMJPnLvgyxQSJg6FkSkaXOW9csZMmnWNxgqoVaCBMtS3nNSnx//4vZwPM+OJythMw+ry/WHaWlDqu5Zhxr36Wb4nZBArI+
+ tjmvMU+g
+ yDDrzuW69QGkPfU3shi0syC1oUtGoJfpP9ZnVVfuUUiSyKilhU44sgYODRxuDtLtnKYkYJ0/u6PxptRobw3oKubaM1d6aPUDuRvvSDpyVMF7CSKHsAqXBvnd++j16qZzDhUF195ClpGwn2GvA1oTIrqfQdqlS6TJixRpW7+FKmDf6nwgwTdwTVclYLxR7m/mVhY6Fkdil7QUuh6q9iEC24/6G42i7O8QJDW5YNyfkiXFZV6cVSy98cEcPWJ0elwqOTT/98Edzt+0aflgVfA93G3NZYIDl1F8W40XH9+TPVgYF+/k1OOWxulY8FoawHUFjBfSr0u+b/VCq9GN4IQ0IiIL2apVkTlkK3ZdxtPCpEdWJc9KkeTAUqfzehG6aNuqpOIhBOEEFAFT4O9gTrpVTW7xHQVEevbf3usck
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,76 +109,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-fuse_ctl_remove_conn() used to decrement the link count of root
-manually; that got subsumed by simple_recursive_removal(), but
-in case when subdirectory creation has failed the latter won't
-get called.
+Some filesystems use a kinda-sorta controlled dentry refcount leak to pin
+dentries of created objects in dcache (and undo it when removing those).
+Reference is grabbed and not released, but it's not actually _stored_
+anywhere.  That works, but it's hard to follow and verify; among other
+things, we have no way to tell _which_ of the increments is intended
+to be an unpaired one.  Worse, on removal we need to decide whether
+the reference had already been dropped, which can be non-trivial if
+that removal is on umount and we need to figure out if this dentry is
+pinned due to e.g. unlink() not done.  Usually that is handled by using
+kill_litter_super() as ->kill_sb(), but there are open-coded special
+cases of the same (consider e.g. /proc/self).
 
-Just move the modification of parent's link count into
-fuse_ctl_add_dentry() to keep the things simple.  Allows to
-get rid of the nlink argument as well...
+Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
+marking those "leaked" dentries.  Having it set claims responsibility
+for +1 in refcount.
 
-Fixes: fcaac5b42768 "fuse_ctl: use simple_recursive_removal()"
-Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+The end result this series is aiming for:
+
+* get these unbalanced dget() and dput() replaced with new primitives that
+  would, in addition to adjusting refcount, set and clear persistency flag.
+* instead of having kill_litter_super() mess with removing the remaining
+  "leaked" references (e.g. for all tmpfs files that hadn't been removed
+  prior to umount), have the regular shrink_dcache_for_umount() strip
+  DCACHE_PERSISTENT of all dentries, dropping the corresponding
+  reference if it had been set.  After that kill_litter_super() becomes
+  an equivalent of kill_anon_super().
+
+Doing that in a single step is not feasible - it would affect too many places
+in too many filesystems.  It has to be split into a series.
+
+Here we
+	* introduce the new flag
+	* teach shrink_dcache_for_umount() to handle it (i.e. remove
+and drop refcount on anything that survives to umount with that flag
+still set)
+	* teach kill_litter_super() that anything with that flag does
+*not* need to be unpinned.
+
+Next commits will add primitives for maintaing that flag and convert the
+common helpers to those.  After that - a long series of per-filesystem
+patches converting to those primitives.
+
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/fuse/control.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ fs/dcache.c            | 27 ++++++++++++++++++++++-----
+ include/linux/dcache.h |  1 +
+ 2 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/fs/fuse/control.c b/fs/fuse/control.c
-index bb407705603c..5247df896c5d 100644
---- a/fs/fuse/control.c
-+++ b/fs/fuse/control.c
-@@ -205,8 +205,7 @@ static const struct file_operations fuse_conn_congestion_threshold_ops = {
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 035cccbc9276..f2c9f4fef2a2 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -1511,6 +1511,15 @@ static enum d_walk_ret select_collect(void *_data, struct dentry *dentry)
+ 	return ret;
+ }
  
- static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
- 					  struct fuse_conn *fc,
--					  const char *name,
--					  int mode, int nlink,
-+					  const char *name, int mode,
- 					  const struct inode_operations *iop,
- 					  const struct file_operations *fop)
- {
-@@ -232,7 +231,10 @@ static struct dentry *fuse_ctl_add_dentry(struct dentry *parent,
- 	if (iop)
- 		inode->i_op = iop;
- 	inode->i_fop = fop;
--	set_nlink(inode, nlink);
-+	if (S_ISDIR(mode)) {
-+		inc_nlink(d_inode(parent));
-+		inc_nlink(inode);
++static enum d_walk_ret select_collect_umount(void *_data, struct dentry *dentry)
++{
++	if (dentry->d_flags & DCACHE_PERSISTENT) {
++		dentry->d_flags &= ~DCACHE_PERSISTENT;
++		dentry->d_lockref.count--;
 +	}
- 	inode->i_private = fc;
- 	d_add(dentry, inode);
++	return select_collect(_data, dentry);
++}
++
+ static enum d_walk_ret select_collect2(void *_data, struct dentry *dentry)
+ {
+ 	struct select_data *data = _data;
+@@ -1539,18 +1548,20 @@ static enum d_walk_ret select_collect2(void *_data, struct dentry *dentry)
+ }
  
-@@ -252,22 +254,21 @@ int fuse_ctl_add_conn(struct fuse_conn *fc)
- 		return 0;
+ /**
+- * shrink_dcache_parent - prune dcache
++ * shrink_dcache_tree - prune dcache
+  * @parent: parent of entries to prune
++ * @for_umount: true if we want to unpin the persistent ones
+  *
+  * Prune the dcache to remove unused children of the parent dentry.
+  */
+-void shrink_dcache_parent(struct dentry *parent)
++static void shrink_dcache_tree(struct dentry *parent, bool for_umount)
+ {
+ 	for (;;) {
+ 		struct select_data data = {.start = parent};
  
- 	parent = fuse_control_sb->s_root;
--	inc_nlink(d_inode(parent));
- 	sprintf(name, "%u", fc->dev);
--	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500, 2,
-+	parent = fuse_ctl_add_dentry(parent, fc, name, S_IFDIR | 0500,
- 				     &simple_dir_inode_operations,
- 				     &simple_dir_operations);
- 	if (!parent)
- 		goto err;
+ 		INIT_LIST_HEAD(&data.dispose);
+-		d_walk(parent, &data, select_collect);
++		d_walk(parent, &data,
++			for_umount ? select_collect_umount : select_collect);
  
--	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400, 1,
-+	if (!fuse_ctl_add_dentry(parent, fc, "waiting", S_IFREG | 0400,
- 				 NULL, &fuse_ctl_waiting_ops) ||
--	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200, 1,
-+	    !fuse_ctl_add_dentry(parent, fc, "abort", S_IFREG | 0200,
- 				 NULL, &fuse_ctl_abort_ops) ||
- 	    !fuse_ctl_add_dentry(parent, fc, "max_background", S_IFREG | 0600,
--				 1, NULL, &fuse_conn_max_background_ops) ||
-+				 NULL, &fuse_conn_max_background_ops) ||
- 	    !fuse_ctl_add_dentry(parent, fc, "congestion_threshold",
--				 S_IFREG | 0600, 1, NULL,
-+				 S_IFREG | 0600, NULL,
- 				 &fuse_conn_congestion_threshold_ops))
- 		goto err;
+ 		if (!list_empty(&data.dispose)) {
+ 			shrink_dentry_list(&data.dispose);
+@@ -1575,6 +1586,11 @@ void shrink_dcache_parent(struct dentry *parent)
+ 			shrink_dentry_list(&data.dispose);
+ 	}
+ }
++
++void shrink_dcache_parent(struct dentry *parent)
++{
++	shrink_dcache_tree(parent, false);
++}
+ EXPORT_SYMBOL(shrink_dcache_parent);
  
+ static enum d_walk_ret umount_check(void *_data, struct dentry *dentry)
+@@ -1601,7 +1617,7 @@ static enum d_walk_ret umount_check(void *_data, struct dentry *dentry)
+ 
+ static void do_one_tree(struct dentry *dentry)
+ {
+-	shrink_dcache_parent(dentry);
++	shrink_dcache_tree(dentry, true);
+ 	d_walk(dentry, dentry, umount_check);
+ 	d_drop(dentry);
+ 	dput(dentry);
+@@ -3111,7 +3127,8 @@ static enum d_walk_ret d_genocide_kill(void *data, struct dentry *dentry)
+ {
+ 	struct dentry *root = data;
+ 	if (dentry != root) {
+-		if (d_unhashed(dentry) || !dentry->d_inode)
++		if (d_unhashed(dentry) || !dentry->d_inode ||
++		    dentry->d_flags & DCACHE_PERSISTENT)
+ 			return D_WALK_SKIP;
+ 
+ 		if (!(dentry->d_flags & DCACHE_GENOCIDE)) {
+diff --git a/include/linux/dcache.h b/include/linux/dcache.h
+index c83e02b94389..94b58655322a 100644
+--- a/include/linux/dcache.h
++++ b/include/linux/dcache.h
+@@ -225,6 +225,7 @@ enum dentry_flags {
+ 	DCACHE_PAR_LOOKUP		= BIT(24),	/* being looked up (with parent locked shared) */
+ 	DCACHE_DENTRY_CURSOR		= BIT(25),
+ 	DCACHE_NORCU			= BIT(26),	/* No RCU delay for freeing */
++	DCACHE_PERSISTENT		= BIT(27)
+ };
+ 
+ #define DCACHE_MANAGED_DENTRY \
 -- 
 2.47.3
 
