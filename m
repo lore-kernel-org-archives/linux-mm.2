@@ -4,84 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5117FCEE32A
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B8E7CEE327
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:50:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9A3D6B002C; Tue, 18 Nov 2025 10:49:49 -0500 (EST)
+	id CBFCD6B00AA; Tue, 18 Nov 2025 10:50:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A23876B0089; Tue, 18 Nov 2025 10:49:49 -0500 (EST)
+	id C70C86B00AB; Tue, 18 Nov 2025 10:50:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EB846B009B; Tue, 18 Nov 2025 10:49:49 -0500 (EST)
+	id B86536B00AC; Tue, 18 Nov 2025 10:50:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 76A1F6B002C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:49:49 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25854C04A8
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:49:49 +0000 (UTC)
-X-FDA: 84124163298.19.E341CB0
-Received: from mail-106121.protonmail.ch (mail-106121.protonmail.ch [79.135.106.121])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4C0758000D
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:49:47 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b="VU/bLwEu";
-	spf=pass (imf02.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763480987;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a9ZfR2miDizST+NAQHBsA4FP50QJXQbD9wrCS0aDhy8=;
-	b=0ZZfK/N5vkKkW2DvkLENHp9JZrS34xoh3iLE1R+yBAO7pc9CokY15vLfsWQTOpsMnXZGzD
-	7L4+jJDQnwYjidLKQJmfVmRYTutnJJW4SVVDPb7+iRFJWjWqHVvHIGsk+Mtae4Q3TGJLxR
-	1Id+akdcT94z6IYZNrCQ5XixIyvp3oo=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b="VU/bLwEu";
-	spf=pass (imf02.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763480987; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A529F6B00AA
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:50:48 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 515648919A
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:50:48 +0000 (UTC)
+X-FDA: 84124165776.05.AC9AD8D
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 896DD180018
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:50:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AW5vJrQ4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763481046; a=rsa-sha256;
 	cv=none;
-	b=YlS0i0s+j7eMoDw8WWdlo9ypZv9Iovw67fkVUYJ2hs3q9/zCWnuMXh900SV8D0cYpsxh7h
-	6n62MvJXlnAm/g6mMROErM3l91yPc2dhx+GcpASf/Bw1B7tMYgoaSlCxiq/v6TYBZiesno
-	appxSDIx7+iiwFWrrlnkO3o10ZZBUb8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1763480981; x=1763740181;
-	bh=a9ZfR2miDizST+NAQHBsA4FP50QJXQbD9wrCS0aDhy8=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=VU/bLwEuIA8h9TCyJ9L4mIWEDwhoUAZ5oktm+sibJB8c9aTCHAxh4iEjZUrUcj6WK
-	 DdWYM7vyaQOmZlh5HL5Rop5CGc1TZipkU5l3spES7VnHm/wUUlnVytrI8uH5q7ufRi
-	 fJw0DGDWl+PDb+suCmmvDLbYmrbGD/oONn1SpgQgOMNsVeLROqr98iWpCJYovuu/sN
-	 41PWpyT55lKaZwMubphsuvZFYg/YtTETtW1C8gMcytVRWd8U1Gal8gOTSiTCz1xJ+K
-	 7NTB37EXbP+Q7djtplgrpcbD/6KUccafGQHCQks1468PHcx+U+AH4aBTr4zCMgXQ4E
-	 UAncnjv3o9aLg==
-Date: Tue, 18 Nov 2025 15:49:28 +0000
-To: Alexander Potapenko <glider@google.com>, xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de,
-	surenb@google.com, ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Subject: Re: [PATCH v6 06/18] x86/kasan: Add arch specific kasan functions
-Message-ID: <tide3xvqthah7m7ji6bfzb5i3ofabgwf45bn3qvvzsurnswh6z@wjxzriavwlp5>
-In-Reply-To: <6nifmxti2xfbnrdtxbosojfw52sofc7zkyjcbcyeawz5lt372f@h6ksdfqddk4z>
-References: <cover.1761763681.git.m.wieczorretman@pm.me> <5be986faa12ed1176889c3ba25852c42674305f4.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=XFXFAvKS2+bc66FR+gw7rfSybETAOBUR_vneaVdF5F9A@mail.gmail.com> <6nifmxti2xfbnrdtxbosojfw52sofc7zkyjcbcyeawz5lt372f@h6ksdfqddk4z>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 2d31863a5f203112dd7296a62db9ab5faf481d58
+	b=MBrJEC1gtERcGnRcnhz1qFR5QbA+FUYWEjvFZwkMm/Hv5gZu1JL00bQKKr18TadeDn4pUy
+	ksGT/ikd2nOze+OvjCtCqrlezMR9zZdaQ77Gj2dIx7Bh5h1TDcU8P2cUWQQjACDMCc4uIe
+	5zh41th8x0R3sVQ/k/VK/6agbOF131M=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AW5vJrQ4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of peng8420.li@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=peng8420.li@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763481046;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=znBmL0qYDlLmUNbMvde3BYp5lNRkQdrLDGuhdG6PFqQ=;
+	b=uoXpFkTuXWa7YfDBc2+MrlVbCGdxV9HiolFw43gn9IOxripljB0E/YtFuj/EGLECii7g6k
+	fHovICuo+QlGK1tnjbzUPbPR125ySgEL9xCCljGcg1rH0Os9Y8+2Wb+LAQMT5MgQPN4ErB
+	bEdB3KGFL7DFGVsFmxFrGsJFaB/U4Ec=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2953e415b27so59938555ad.2
+        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:50:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763481045; x=1764085845; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=znBmL0qYDlLmUNbMvde3BYp5lNRkQdrLDGuhdG6PFqQ=;
+        b=AW5vJrQ45WCwMHc30xxJ6NonbC929l9le9mWhDS6sSBfjlDt1gQe2z2iK/hFm7hec5
+         TC17xB9Fe/Qv0f7sHPAAlzY6xW7aKUB6n3puvIER7eEXyKyR01ru5oSdMFFMXkAsF1ev
+         YWOSWwqtCj9x8C98AyXSAGYqE7uirbO2yw8NNVCsmrWyRmDm9uwhkjpp/1ZdqPH19L4e
+         efcP4jhOQCR0A3BobgOe0YMs7yBAJecmBIf54LgSj/bqgDzdowqDACzQH7nhtqfmInq6
+         peQKaCOt2+VcFA3Ymgj5iuXlzZAwWuS4cZCsXQJq2wL0ib9wdfSK3RSTyIeO3hxSmxQU
+         hatA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763481045; x=1764085845;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=znBmL0qYDlLmUNbMvde3BYp5lNRkQdrLDGuhdG6PFqQ=;
+        b=lri0/DORz9Zp8nX8Plpv249eRneAqEwLJtQ2OAl2K+cBIF9zvJvDMk2AHvhLJoGOAb
+         M7leSU8aD+QPmCf4UfLdGxLAz84FFYBugavJq8MVImZhj8y+6F8nOGIxso7KSDLHmWxm
+         +WxkzRYVIvHrbDLqzXQdIdn3k9nVN+YUQRp0Aygj3Hk3FzK9FgRWDO5NmHYXwoYjVjKR
+         RQ2LZ0vRPd9S6iOmSpZw/e9TYu1VVVjIyIu6MGVSGd1P9ntSduEV28+T6c0pbCsQ1YTe
+         TkAATDL2Gmio+nPaW1ei2o/okbYHplijNOEbYn97FRww4mWIuAWXxZWddZs4k8pZX44g
+         pngA==
+X-Gm-Message-State: AOJu0YzLggmg/E2ODbVphBeqxklAPpTHdKrxk6nlIrznizca/GdFzg35
+	WaB65MSgGQkrpWOX57EKkrMX46xwYxr29NgFxscz3tq/GSbi8pkxtjzpTtUEvOd/yl4=
+X-Gm-Gg: ASbGnctFGlljFJqEhaic0Na9JjWJvuLgy3J3tw+lntyLkKhNFvOGpJx+OUjndDDvNG0
+	NjvcKtdb/8Drrnnhz0Pr6AFegCJArvnC1LsE+O2FB+UH5DNmIp2qB6w2N2TfYg1gDyDezeGZknh
+	Q4EPzdwwnwHvy0hoyPHh3w08h4PRQVq5dMVdQidvtavycfuZm+UgJ7GQmN/e0fahwzO5fA8RToK
+	zkPdX4woPRAGzyuXz1mQCEvNoU+PNqBtkuUCDb6TTaUkO5hyjn4n0DY3j8jrvOL5MuYotPNz2Pz
+	WfDOuR6TCxoFjymUl981aLKQEhPJz/walWFNFJvjbjXRlapg2pPLggS0x5IQWadspmtgVYodSjP
+	xyBjfdWhxlN7H4PAViX/2cm7Tq/SjfCheFRyjVzsII25MQ3dOUSI=
+X-Google-Smtp-Source: AGHT+IGhPuHebhbsdd1/YPo0JmxULz5EW7cNxLS9wqgEkAgEcu8AWv3E2wwf+5ShqW0ngI0gKPMjYQ==
+X-Received: by 2002:a17:903:1ae6:b0:295:3d5d:fe37 with SMTP id d9443c01a7336-2986a75258fmr203570505ad.41.1763481045056;
+        Tue, 18 Nov 2025 07:50:45 -0800 (PST)
+Received: from gmail.com ([117.147.72.154])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b0d34sm178002575ad.51.2025.11.18.07.50.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Nov 2025 07:50:44 -0800 (PST)
+From: Peng Li <peng8420.li@gmail.com>
+X-Google-Original-From: Peng Li
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Cc: david@redhat.com,
+	osalvador@suse.de,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	linux-kernel@vger.kernel.org,
+	dan.j.williams@intel.com,
+	Peng Li <peng8420.li@gmail.com>
+Subject: [PATCH] mm/vmalloc: fix build error
+Date: Tue, 18 Nov 2025 23:50:34 +0800
+Message-ID: <20251118155034.273696-1-peng8420.li@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4C0758000D
-X-Stat-Signature: kskh78ech67u6z44oua4q7r6b76fn3fc
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 896DD180018
+X-Stat-Signature: n956uw7tkegwy9dmx7khnpoxkc57c349
 X-Rspam-User: 
-X-HE-Tag: 1763480987-274547
-X-HE-Meta: U2FsdGVkX19qHnKOfJIvN4VYdHdbthnrRwXB1cfeclPtAX3FgPM8vV4MpvRbjChecXO1b1xGuzYVceHjhed2NIQY8d8naF/AHXHcoFq3nolLJfmZTstXKdDhiqadnjZjUANz00eyBrJKx4ddCD7+GhdNzjlRHYaV0xZvUm+bOkkDupkGpvt2zp+rSxoj7JY2A2B749RtWceNaLK9sOgB45Fi0YoBR0ePt4r3U3ZnY3enCgcfFspabEZS2X+Ezez6yuRUPIdWVYK7OecEMQ12fdiSU2nAy6RoeNXFjLtIca1l3oda/HNdoeNRsbdDnr5pnX8YFHdDrSO+mjS07uZ9xXmjpwwdJfphJzCfpjvXLHRDBYhFu2uG5WBn7Crdd7Y/ltKyBWvyRkb/7E5xGIxHEtrIFR+zsS8IdQz2jcYmvUoCLTvvW0KbPjhiHAeAaJx84BZDF+IzESCWckYbZ4W9/zHRQ8Zkfbwe38tevIphL8lceZZ8F2Agr6R/2YjBAau1tSr/bsNXo7/GglsxkquektFKs6IjvZOHPy1KAiHJccinCUDGhZk0q/DCS3Rzr9Qd1Fj0CYxLzP0hRuL1UHzWXaU+aHaEtDnnnjdmph2Ui5JbXnvLieA9Nhv0j0xqFFd3beG+Ws2s6gBPe3ILYY83xyqEMNvjxJ+Co0AZMG+iYvJ/yKrymP8qRZPXssiPonMvtK3Xnv7aUbrw4P9xZ+2Y0azPAyP5Rk78/VRW/LT3jUQiEOklj+nociLgi1HaLSPdnFeV29bPDOaYmvtuvPzKkBA0jatqlpJxTrrPODunED+PUIsAc8tG/hd8jQahNBewL/YTrP7WvR1El27ef0VvjcdFAjPcBFKLXZgbtYkFDj+eOFgxHh8Au1NMjxrFH5aeZM+qaNmS1Veb1a3Lf8SQTJdjB/T76EoDQeAlf4b623HSTRdGykCMCxvNbs14EmxvfELMAHS2B56ocbNdHRU
- 9nIwtGET
- f4bmEmLhIzRForxJHvpmWQjQ3kXHTw9HJF248n8l7LSTpso/i8tfX0yZrJGwNU2MgD/Wn/K2CsmNuvd8uw9PTC88up+AnuPz7xszP7cYOOxlvuMm/pvK7ENs79zMCc1sOYzWimxSkyCE2nbILfVdRyApEGLoNow2ZqqOc9+9VGj9wmqw8P6Z6iXhhJSvu/UzypdMYReG4gIf2svqVZFumWjCRSusYmKbl9wrK6rUvab+Evy5IY4AsgsimCBygGkK9MrvCl8MqXwsZCkT7/yA4gnTA8FnQWMXnnMrGcf6TCvUZtqp7TSasP93k5w==
+X-HE-Tag: 1763481046-895178
+X-HE-Meta: U2FsdGVkX18rIyAQH5WUmXYfapIl9ahgCISAiJ2Z9DeCUkVwSwSyShyMQGG01OEyuo5BwBv8E5Tg1SvIQXU3XOVO63sl0UJTI7OFd8coICxBLGkDU0YrHt+MRTu7jmEkHJDb4Q94d1CY/6PlBrycFdAberftlAx1v+7d2tzvQM0nBmIZ93udrs8h3BeVsk1zraA1OIsBnHlYgug/mmhaJQ49r4S+GIvkmZOivibtqzJLuAw+x1PYTqRUkB9LcLlgbbGB5MfhX5C5Cbip73F4zz1lQvEPYnTpQlVmyD165ncgOyVDMs0D0IqCD8YbE1Ca2sQszdB7wr+x2+rHv1pCGmts+qapUchVvdlV9KRo9KKHQQBw5MRqtQWJH4GiaVcHUa6eAa1jSgLgQ886RCE8K1e+AK/rUam+5Dcv6ce8hl1xYkgFbP0XBkGL0RaHM8Qx2QyfBbgVtEKVg4wrqilKsGsH20VRf1XgqetL5A3HokjzB/nGcEqRSktAECEcdzwCzKrJolpE2olNrHzglhhOxPVNxErGRt66Glp/ml4VJYefv2UAN/3Ivtl74Yi1Db6CJYCcwYp+ljg92MPI50kB44bsz/uMrqQza89uvlMnQsbJAiKMfd9kgjNmEgc8n4Bc8fLGMvev28wBMqF5DT4FNqsMU9AYtEpX0Als+K8rQwEFdKav5cpT4wfnU8rPfTHyTt3ejWLKeexPEiSLkjsVdMxyvAptZ0oq2CrIM6Ka9fWrKgb+yl3z4eEjht2UHZIwoICqYkHmZ9eYaPjqHSLAYozl2F5EByEz2HtLWjzTDBL6oZySpcmfyFunM5+tmXF6YB9VyPxcyp6aS2NH6e+atMJ83GompgKNXWo1FYJU77gcKT8IyOJ31Ou+j1rVBObMvg3mHXKa2vHfGNJXk9gJRxnX/dP9tqK7GxYRGRhH4k3+uLTJDohDKvP8trfhw068Ic0dHO1FgxuZebgg/Op
+ RUH4Yiaa
+ Sjh4Z1mfwatzprf6TSPXcbEimdIf/soXBY/wvAqnEujHs40auj+lpiY8Kq1ulcn7Sx6+6y4sXd4qQAkUgM4ZCG/nZ8Pw7GQ+lz5cmQgU6S5Fus2ssK/v8la+k5xAAQ3TXLOYjB+ydZLW9RGnxVM78v0OLkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,29 +123,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-17 at 18:41:35 +0000, Maciej Wiecz=C3=B3r-Retman wrote:
->On 2025-11-11 at 10:31:13 +0100, Alexander Potapenko wrote:
->>> +#ifdef CONFIG_64BIT
->>> +static inline void *__tag_set(const void *__addr, u8 tag)
->>> +{
->>> +       u64 addr =3D (u64)__addr;
->>> +
->>> +       addr &=3D ~__tag_shifted(KASAN_TAG_MASK);
->>
->>KASAN_TAG_MASK is only defined in Patch 07, does this patch compile?
->
->Seems I forgot to remove it from patch 7. It's originally defined
->in the mmzone.h file and looked cleaner there according to Andrey.
->
->Thanks for noticing it's still in patch 7, I'll get rid of it.
+From: Peng Li <peng8420.li@gmail.com>
 
-You were right before, after removing that define in patch 7 it doesn't
-compile. I think I'll just open code this definition here:
+commit 056b93566a35 ("mm/vmalloc: warn only once when vmalloc
+detect invalid gfp flags") modify the function call from WARN to WARN_ONCE.
 
->>> +       addr &=3D ~__tag_shifted((1UL << KASAN_TAG_WIDTH) - 1);
+WARN_ONCE input parameter format error, missing ',' tag.
+Resulting in the following compilation errors:
 
-I don't see a nicer solution here if taking things from mmzone.h is out
-of the question. I suppose a #ifndef KASAN_TAG_MASK placed here that
-would just shadow the one in mmzone.h could work too?
+mm/vmalloc.c:3940:19: error: expected ‘)’ before ‘invalid_mask’
+ 3940 |                   invalid_mask, &invalid_mask, flags, &flags);
+
+After adding the "," tag, the compilation passed.
+
+Signed-off-by: Peng Li <peng8420.li@gmail.com>
+---
+ mm/vmalloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index d78c4d09d6ea..0469ba2c230e 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3936,7 +3936,7 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+ 	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+ 
+ 	flags &= GFP_VMALLOC_SUPPORTED;
+-	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n"
++	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
+ 		  invalid_mask, &invalid_mask, flags, &flags);
+ 	return flags;
+ }
+-- 
+2.43.0
 
 
