@@ -4,139 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ED8ECEBF61
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 02:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90D97CE8D6B
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 02:08:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B0768E0005; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
+	id A6D458E0006; Mon, 17 Nov 2025 21:08:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 688348E0002; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
+	id A1E138E0002; Mon, 17 Nov 2025 21:08:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59E288E0005; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
+	id 90D138E0006; Mon, 17 Nov 2025 21:08:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 478DA8E0002
-	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 21:00:41 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8D5B13A986
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:00:40 +0000 (UTC)
-X-FDA: 84122073840.20.2EB083C
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 009BD1C000A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:00:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IWZ6V6fZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763431239; a=rsa-sha256;
-	cv=none;
-	b=jcmWBdVd3+k+5R3fVVyhImcyMAf3DyLAaNG6K7TruP/HkPEj/AN24XJgZZSC7jV7h1A05Y
-	/W2st2CCLcTKStSIIfAa5k5NwPHSN15X2dN8ORl5CZgrH1uqF1Y1PgWdP4DJ8u8mw33beh
-	mbCnH6supsbIZ9lf7gAtlhw+OZO6xDE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IWZ6V6fZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 79B8E8E0002
+	for <linux-mm@kvack.org>; Mon, 17 Nov 2025 21:08:28 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B3B2C0320
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:08:28 +0000 (UTC)
+X-FDA: 84122093496.18.1A5878A
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 51F9B40009
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 02:08:24 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=G4V+koqE;
+	dmarc=pass (policy=none) header.from=foxmail.com;
+	spf=pass (imf01.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.252 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763431239;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763431706;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PjtZZ70/Qu6YbmmA5LKoN6Z9gQ7S03ZL5L4ASTauTjE=;
-	b=q0IlOFA3INfbwZUfeBV44bvINb5vX3n+62Qkef9jNWqbteDm1+3iaQtjaq9Q2MGX5DPtjF
-	rxc8HNyh0pDHaSUN1gDrO82ewhTuOaL9P+Ke/9xRXenC9rcdlMN3dDs1yKm0DEn59EQTLC
-	b/DBPSpZ36qcIPcxcHfZqh9cMjzwCzU=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b73545723ebso889576266b.1
-        for <linux-mm@kvack.org>; Mon, 17 Nov 2025 18:00:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763431237; x=1764036037; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PjtZZ70/Qu6YbmmA5LKoN6Z9gQ7S03ZL5L4ASTauTjE=;
-        b=IWZ6V6fZHk3n8gNXhc9mvj8+wm9OBa8+ARg2PuOiWvdO3gif0b6gNamz7NWfzB9N5Y
-         6tJe+fTZSX+UZNoqbVPgxGRyw3VoVsSqwxCAyR3tsXr3UWRmqFTF99MZmiqwOmACo6kM
-         31jM2VTS6m6dfsrlDKwea18l4LzMOlATxxS0/Q2sMgPesqcZXYj/EBdTMtF6zn3Pvd5L
-         LfcWUseRPU2FsXmkk9z0/aPDEegpcRdko1VluK5H1+vQqemoDs0wp78F4husIYkHQxid
-         +5SIEGaI6ek8IaUS9WMW2hpUiHp1VP5DtFPPULQjnN6rQSWlxhCKlGE1kpqIUMpa17JS
-         lgLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763431237; x=1764036037;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PjtZZ70/Qu6YbmmA5LKoN6Z9gQ7S03ZL5L4ASTauTjE=;
-        b=up+IY21IwfD/aFDvyedweipKK7mttqvxFJiBGpG6UFfayg5fU0dG6QLAY0KkTonFA6
-         jrhe85yOwWbRU/KAgnnJUg+kvpgeYo2DkgO8p94D93DpszLnbG4tJUhhwREKwQs2erZo
-         khmaJoCON0z+v0qFC9QUBx8z7izAyxYwR6lx2JFXCD8eZqiB8caX9/QUP9LZoWv7Inj+
-         PNVQ2+WTcugNjW0/u9tyZkJKpC+QOMsUw3cBIvgZwCWXIgeh5hvRdrmSr+aB3Jx04bQ9
-         1AecJZPcxqABL3itU9HfHpKbYbZ/uRyDpLDzBaOzKUjTyBuuYbWQ00pax9onJerrMgjF
-         TS3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWfv0eYZdUNlVqlAKq8PraqyPD9VzoJF2COg+BtDihnnpylaYQA1zI8iAyPEkBrwLMyAXVRNvQQMw==@kvack.org
-X-Gm-Message-State: AOJu0YznxQQ1f/qKT/L5gexKysudEcMy/oomvDzDoU0hDWX2PHlsoeNe
-	j3dRD2gANYMSBVWxLizTFPSAIbpqmd89IxiutzQKHpoQ90Q5RsXu3Xrb
-X-Gm-Gg: ASbGncsSWz2tgQXaD1nTOTE5RqyjzNnnc049dmLpMs4IetNDJguwc/wFQeQ/MJG6EJx
-	SoDKTgQfAvJylz/GslLE8JlKjGR6RslR2FFQJGSBrbCtxj1gNVoivVo/TAT6y1euFX1mqgKJ1/2
-	RgeuIDFhsH/meHbfu3UQmVFLJ3ZLdxyll1Aj9zoE0aUfHUYhelAiSMunjann0wEQeBGhSyfGeXs
-	YO0LY5L+cMiYX+NVg5r7v26Ki7WkGR1lcY2OC6Ym2donTfYJJlvqy7sXwjsfrJwhTXRTbf8Au+o
-	7rr9nabsldx7PdnyOs+vvr1CDZRJjnmz6LvUZRK4F1XrFbiL6CkeYhxvAH/Bf4bOgCiMFVAXi4U
-	5MdK/Pq8v3DoJ4xWXxEXajR9w8cIPK7yIBhs0VfqKVm16Dugxui6CtrH3A3GG3TiAwZpGgdyY8E
-	0T+OzTmsOETtmsUw==
-X-Google-Smtp-Source: AGHT+IEIbHsmAR4qI1U7kAkJFbuJ0gMBeLqnpNcnfrzyBKIrXirysQ6AKJVPv8sKWVks0bFN76WI/A==
-X-Received: by 2002:a17:907:d18:b0:b73:9b4a:5c02 with SMTP id a640c23a62f3a-b739b4a5cb6mr723067766b.49.1763431237209;
-        Mon, 17 Nov 2025 18:00:37 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fd7f37bsm1199178666b.35.2025.11.17.18.00.35
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 17 Nov 2025 18:00:35 -0800 (PST)
-Date: Tue, 18 Nov 2025 02:00:34 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Nico Pache <npache@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, david@redhat.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
-	baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
-	wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
-	sunnanyong@huawei.com, vishal.moola@gmail.com,
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
-	kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
-	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
-	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
-	cl@gentwo.org, jglisse@google.com, surenb@google.com,
-	zokeefe@google.com, hannes@cmpxchg.org, rientjes@google.com,
-	mhocko@suse.com, rdunlap@infradead.org, hughd@google.com,
-	lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org,
-	jannh@google.com, pfalcato@suse.de
-Subject: Re: [PATCH v12 mm-new 13/15] khugepaged: avoid unnecessary mTHP
- collapse attempts
-Message-ID: <20251118020034.rdgisvkqs53lwabz@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251022183717.70829-1-npache@redhat.com>
- <20251022183717.70829-14-npache@redhat.com>
- <20251109024013.fzt7xxpmxwi75xgr@master>
- <CAA1CXcA9zaGqLPHnJWH=fKPUjb02dV+rKgfmsRZOGdeukiC8eg@mail.gmail.com>
+	bh=tquW+VVde6gvKkA0FAYyMhS9e7bJNzAzEzLm9Bg7uxA=;
+	b=Rb1pJUjFK4eTMHOc//rn+PCJwezT2B1Zqy+jKhpvMGKADXWCFxWSyV7VdlhGrQp9W3tnx4
+	weWhrsp+f7Ml2JPoQqh5RNPIXH8EL/KETrQaIvyaiYUR+2K3cV28KbTi8z9So/Iu6VXurW
+	tZpnWgI8xwJE8JCe/w8acCDRxz1CL9Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763431706; a=rsa-sha256;
+	cv=none;
+	b=8PLpPpUHt39jCCxjQ2WycuO/+MTXvS9RD8sZm7Hve0Bs4rBjab2gwov82m7g9EhfK5fN1h
+	1avWh+gr10oyWAItHUGvv7s+EH1FbYTaZv88fh1ZM8BuhLmiTC3wmMvFn7IdjPNSUAaDj/
+	2KvOu7LL3nT4cHg+eq45Eh8R+lEIHSc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=G4V+koqE;
+	dmarc=pass (policy=none) header.from=foxmail.com;
+	spf=pass (imf01.hostedemail.com: domain of ywen.chen@foxmail.com designates 162.62.57.252 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1763431699;
+	bh=tquW+VVde6gvKkA0FAYyMhS9e7bJNzAzEzLm9Bg7uxA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=G4V+koqEqCZ86BKR5iEQI28wO1mzk7gV5n/yzoSRsUW3v/3iyUzV897moBGV1ChK4
+	 3RDC6fsJPUJMS5k9MYwR+uu2gTVrExvVsQNmHBHpDbH3G47PZXlHW8VRVkM8qD67WM
+	 8TDwEdsbaAud/UPiaaeAwQmjuoT5hx5vlPRh+lZw=
+Received: from meizu-Precision-3660.meizu.com ([14.21.33.152])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 210A36C0; Tue, 18 Nov 2025 10:08:16 +0800
+X-QQ-mid: xmsmtpt1763431696t0p1kel6a
+Message-ID: <tencent_547137D7C2F3EDBCD52FB12EE2A202EEE307@qq.com>
+X-QQ-XMAILINFO: MZtEYADUG4AgmNtjQgJUQ3DtPLGHhkYi3xEiIs9A3ceN4XrokDbFIxMS7U8Ou8
+	 EXwCyPeuqsIfkoi2vMqlSknKrOIw2pCrgG0Bq5WA2hNBLwOT2YSXlmeL5TN21B/SBhgYTfA9JR8H
+	 sMKoSAbnQzgo/+4ZMSTRLHMBbHMcNriTdaNeGP3Vq3RUDDxp8I3rgqzbxpN5fKTuEMf/143Ra689
+	 obsLBbj+SoMkkuCgS9TKKCnTBd+Mhe6moGG8qTy8SlR/AwENm8oZpyVqpz8qSWF9aWF7HlQFFhxp
+	 UdBhbGhrouHxhEYpunSblA0pV0X2iL6fPLNB0qccEaYw4tiJ57SWP7C7oKYVZ/Le1nJGUuG2NbUO
+	 C24/u+PgDpdT4omNmFB853gPUXFIuTsnhky6g9GIWIuwrFJbeRAHwPVS8gs3RUHNkUDYIl0uDi/a
+	 T1PxSm7lAotxSBLHEj8SHnVVbLGlvMsa3PwzOJxawQtreC+u1+jwfxDmmBOkMd/kuez7E9w6YtzG
+	 veRvAQM6C7k82XeU5ehPcFdMZO3eAA+qJzkl8l6xrnU3o7hsRwazXBYNFsEPMSA2vDiSXXxnvPpu
+	 SJVEBPpnOgXy19OfG//EhGodDU0qFLBEa0/6pKCZlOGr+1lNpSFMfKzdk7G+NE3afTZ6vpZUNc+Z
+	 YizBBaOtHdQr7YAe/+bGqERTZNhmh5F3jVxpEYna8G/WZn3Zu6s6l+ttVD8JjZ2d5u+1Lvw4W5qC
+	 EIqjKZ9ZHLu3KNzCit4DJYixlhBJbYRDhjKNeJxLNrGKTghTLco3gIOiOEZJv9wr+jMGjc+Rqx5g
+	 CCBpze9rzqPp1ULpXexRAhF+XrUVjJab0TWiBJgZvXypYSsXY9E5gIkWDPzlQfR5H/Cvj1Bv9FxB
+	 Qbf9vDJhO3/V0KfUOICYp6F8hsqt1jnaJXyb+uMhvQjymqmSkjoa1L7ueBPTF0CINnqISoGokLqk
+	 GCHRPuozEK++C5EjPMuppMgRIIr4j87LBOoBsOnHmhM7KoJEmkLUmOA0ih7hPdBkqvLbVMw406DI
+	 iF+IUu9zmlXgaTs9ehfVcq7e2q7gNrPeuEQRAR9A==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+From: Yuwen Chen <ywen.chen@foxmail.com>
+To: bgeffon@google.com
+Cc: akpm@linux-foundation.org,
+	licayy@outlook.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	minchan@google.com,
+	minchan@kernel.org,
+	richardycc@google.com,
+	senozhatsky@chromium.org,
+	ywen.chen@foxmail.com
+Subject: Re: [PATCHv3 1/4] zram: introduce writeback bio batching support
+Date: Tue, 18 Nov 2025 10:08:16 +0800
+X-OQ-MSGID: <20251118020816.2789928-1-ywen.chen@foxmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CADyq12zxzi+t727B5sm5z-z3SmRQyMDOmr_tTG1GaMVh6VTWbw@mail.gmail.com>
+References: <CADyq12zxzi+t727B5sm5z-z3SmRQyMDOmr_tTG1GaMVh6VTWbw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA1CXcA9zaGqLPHnJWH=fKPUjb02dV+rKgfmsRZOGdeukiC8eg@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: h7iacyieipfqc3t33881tmcitwykjxcz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 009BD1C000A
-X-Stat-Signature: scwqg44grgr5u4ey8ko9h3hswustjqd1
-X-HE-Tag: 1763431238-410197
-X-HE-Meta: U2FsdGVkX1+dAFbHTPhPYitVYK3MJss4pxmc/Mj5rrjrEa4+edzglttd47PSD3uM1+Hdil0UEHq8M46zAPiE2SsVbnnlbA4vcZjCB+VKEDG6cvVLQO7e8Is31VMToP88fWCG35f/0g3uGS6K0viXO6hU9h+BPpptovWxdZsC+eydNDPuBGv1kQaVcqjCgWk5wToRmtd6c2/WHbvAoOj9LZ7ObUnkc9fgZblr2Vu7s7WhY1B1UEw6ugJ2tTvFH0GUzuzSWLTjBR8mWCH/cEVwzppK3wJTH88uX/28B87qBPbttupBDr35dlR1NNegbn4yb4MkuKjkG/j+LrOxXb1PH8NwjCshrRWh7NoIhGTiH2bnRWBdZ/iks/RwLUuehOpjXC0K71LUZ2VxnEZKZun432gvHSDbdQz5KjT8oJUTJusUvGsSM3scK90JaH/ovQP7vjOIcYJbXQqu83lZ4N/y/q0ysLnmICxGYrqnikCZROP5rzOWOe2pKyxSRKuEVnHgDBloAJ7xCfk7MxTSRn/e6N3hj4DsYTyjGHzcpqk6eNRt2a5S5UhfJGV2yac07sDGWxh2pwshqmt0vutwDg7ZVvNcbivF2gqygDm+CGHlG9TkxwE0ZzWb8qH1kbt5vj1JfbBKDv8j+wWDPFWyPCmBCYT6m9q6qGnE1+1lKIf4JKx95ol1pyhLFkGxQgvVZ7rMJV8NrofOs2n1iabrhpeypJ9tl7RQYe/W+hHsAfrp5k/+yP8+ARJJ6WMJGffmbDK+wRdpY8mSKBG9aaNv7ATte9ortFMCNfM6Rizkw3F2NRzsjWFx5+HL82ts3kJHPz1vA7M1lVkbx2CudyrcwDrguvxleEnZes9rk/CtBHrmKBKqeL6inDIuYYysk07g4C8eymfYuKXFGIvPDh+aSzOMHq3i4KQuPO8VlCbItZB4ufTVCuAdJnr7ehWSIjBxskXQfaS3N6dNlnI/4TuftEW
- s9qWTYfe
- +iu4rJq77s11NJ8EBSzUq7wHzpfIzvCI/UA5XHE5/U3n7oJsBCtJAl0fUjgVuXOiiGWkkTRlF222kKpvxABVunjvgPPLemBmkaLEtlq2DRo/JO5/QNHfny/TASNH2p6JYuCrgRIWdKUun1U0DnKyR07SYCnOrBA10I7vnPMsr7uSyqDq+W0U7nhyglcOPJ9fhC7VUkCg4JORv/txsfmyBQqQXiaNEiq0pvhfHHwNhFqpGQOpGSjATPOGlceoSxFM55rR71aQYzpfTQM4=
+X-Rspamd-Queue-Id: 51F9B40009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763431704-565538
+X-HE-Meta: U2FsdGVkX1+nDU7gOgh3Pt0UlIKRZVuXbAWHFoqfUvYVJzq4jTzlAVzx4KbPnxCyNHQdbNsTF9TnO0r7VBmTuHjlXnyKip8EZgkoaFVGg836E9u9ZA+DrfQBpcmi76SB1URYESyAaxkLreJupMhZ2kfaRHmDlcPvMPhWYwQSKCjnHubTTStSrJaARkqGeJkomy2pUa9josplyUPtwWbqka0jio+rPj7JfZ8yUH+xQ3i+mT2MCQvLxKfwTNG0+oKX1Mm3Xxs8xRQzj7Mq+Gc5nyE41rTO5HSDf2NSAMr0e20utQI04hDfnEFWu2/dN5MG8rugKAEOzLYS1z2E8r2Nt+uIcC9RkCYfAAGeVj2FdincBeW0A2E9TsqsOtOMyURJKi7g3VkI5y0OQDgNc7hdrHBcnvs8FHjDUspUKDyqy7zBwlnTbw3EMSGRNOMJbLq8Krjmz+FVmYdSwQmrrmmRDz8G3i/30t1+Yms+Enu7WB/kohHEdN1mL4qHIEb5RvFADfruKrcwig4bcHqld/VXpmNPxNBVxhDwiFBiteUaGcYnzA11dQ/LAwm9mhc03+bCH38FVLTxliVHdBCk2CP3y3JtM9ILawaljUHw+uqjcEYV0xzCozTzPI4ksdy/tptNf7YfHvfveB6ScbIwg8CgAk+U/Xlz5/dsSMO+o46XX3Ih5ZMdDtdDzAHTFAhLG1APtyD6Ir70HQ/MuM9K2zwkUdR+OggyJZ6ot5w5q3V4xUWVkan1WogW2mC17oHyINcmiDdZo3yG+U9fWV3+NILpHBSBlf1SDWnY8DkOM8WdwpxhZzBvbiVkeSaVMkAjit3TOpAAY2tmorhs05UtZtWzS8T4CAahEeHP9AXKoqTGoLNs4/3jer2s9dl5Scz6v5MXkCC60kgj1ln0pOzfNPjKhvdwVGN9tiDOdyMPIV0f5GfHrt6Y0OoCh+c3R+XC/QWCU4NKzw1g5HFt3acDU4z
+ I16rFau2
+ bJKK9IiM88clWFH13f+Et1iL0ygSn1vTT/K1ea75xIkroB0LSlcWHAiMGgkaIt0CF7LtmnpHbSNOVGqIaezlV4Uq0mihsunG+oK2NHUhhf2fP5N+bWFuUqjz9JWzLv7SqHl4icun+qXTZRLW7aDSU3fNNdLw9pqwO1LZ6H+D2/86jHOA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,173 +112,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 11:16:53AM -0700, Nico Pache wrote:
->On Sat, Nov 8, 2025 at 7:40 PM Wei Yang <richard.weiyang@gmail.com> wrote:
->>
->> On Wed, Oct 22, 2025 at 12:37:15PM -0600, Nico Pache wrote:
->> >There are cases where, if an attempted collapse fails, all subsequent
->> >orders are guaranteed to also fail. Avoid these collapse attempts by
->> >bailing out early.
->> >
->> >Signed-off-by: Nico Pache <npache@redhat.com>
->> >---
->> > mm/khugepaged.c | 31 ++++++++++++++++++++++++++++++-
->> > 1 file changed, 30 insertions(+), 1 deletion(-)
->> >
->> >diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> >index e2319bfd0065..54f5c7888e46 100644
->> >--- a/mm/khugepaged.c
->> >+++ b/mm/khugepaged.c
->> >@@ -1431,10 +1431,39 @@ static int collapse_scan_bitmap(struct mm_struct *mm, unsigned long address,
->> >                       ret = collapse_huge_page(mm, address, referenced,
->> >                                                unmapped, cc, mmap_locked,
->> >                                                order, offset);
->> >-                      if (ret == SCAN_SUCCEED) {
->> >+
->> >+                      /*
->> >+                       * Analyze failure reason to determine next action:
->> >+                       * - goto next_order: try smaller orders in same region
->> >+                       * - continue: try other regions at same order
->> >+                       * - break: stop all attempts (system-wide failure)
->> >+                       */
->> >+                      switch (ret) {
->> >+                      /* Cases were we should continue to the next region */
->> >+                      case SCAN_SUCCEED:
->> >                               collapsed += 1UL << order;
->> >+                              fallthrough;
->> >+                      case SCAN_PTE_MAPPED_HUGEPAGE:
->> >                               continue;
->> >+                      /* Cases were lower orders might still succeed */
->> >+                      case SCAN_LACK_REFERENCED_PAGE:
->> >+                      case SCAN_EXCEED_NONE_PTE:
->> >+                      case SCAN_EXCEED_SWAP_PTE:
->> >+                      case SCAN_EXCEED_SHARED_PTE:
->> >+                      case SCAN_PAGE_LOCK:
->> >+                      case SCAN_PAGE_COUNT:
->> >+                      case SCAN_PAGE_LRU:
->> >+                      case SCAN_PAGE_NULL:
->> >+                      case SCAN_DEL_PAGE_LRU:
->> >+                      case SCAN_PTE_NON_PRESENT:
->> >+                      case SCAN_PTE_UFFD_WP:
->> >+                      case SCAN_ALLOC_HUGE_PAGE_FAIL:
->> >+                              goto next_order;
->> >+                      /* All other cases should stop collapse attempts */
->> >+                      default:
->> >+                              break;
->> >                       }
->> >+                      break;
->>
->> One question here:
->
->Hi Wei Yang,
->
->Sorry I forgot to get back to this email.
->
+On Mon, 17 Nov 2025 10:19:22 -0500, Sergey Senozhatsky wrote:
+- index = pps->index;
+  zram_slot_lock(zram, index);
+  /*
+   * scan_slots() sets ZRAM_PP_SLOT and relases slot lock, so
+@@ -775,67 +999,46 @@ static int zram_writeback_slots(struct z
+   */
+  if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
+  goto next;
+- if (zram_read_from_zspool(zram, page, index))
++ if (zram_read_from_zspool(zram, req->page, index))
+  goto next;
+  zram_slot_unlock(zram, index);
 
-No problem, thanks for taking a look.
+I tested the reorganized patch on my end and found that it didn't work
+properly. Currently, it has been found that this index is uninitialized.
 
->>
->> Suppose we have iterated several orders and not collapse successfully yet. So
->> the mthp_bitmap_stack[] would look like this:
->>
->> [8 7 6 6]
->>        ^
->>        |
->
->so we always pop before pushing. So it would go
->
->[9]
->pop
->if (collapse fails)
->[8 8]
->lets say we pop and successfully collapse a order 8
->[8]
->Then we fail the other order 8
->[7 7]
->now if we succeed the first order 7
->[7 6 6]
->I believe we are now in the state you wanted to describe.
->
->>
->> Now we found this one pass the threshold check, but it fails with other
->> result.
->
->ok lets say we pass the threshold checks, but the collapse fails for
->any reason that is described in the
->/* Cases were lower orders might still succeed */
->In this case we would continue to order 5 (or lower). Once we are done
->with this branch of the tree we go back to the other order 6 collapse.
->and eventually the order 7.
->
->>
->> Current code looks it would give up at all, but we may still have a chance to
->> collapse the above 3 range?
->
->for cases under /* All other cases should stop collapse attempts */
->Yes we would bail out and skip some collapses. I tried to think about
->all the cases were we would still want to continue trying, vs cases
->where the system is probably out of resources or hitting some major
->failure, and we should just break out (as others will probably fail
->too).
->
-
-Thanks, your explanation is very clear.
-
->But this is also why I separated this patch out on its own. I was
->hoping to have some more focus on the different cases, and make sure I
->handled them in the best possible way. So I really appreciate the
->question :)
->
->* I did some digging through old message to find this *
->
->I believe these are the remaining cases. If these are hit I figured
->it's better to abort.
->
-
-I agree we need to take care of those cases.
-
->/* cases where we must stop collapse attempts */
->case SCAN_CGROUP_CHARGE_FAIL:
->case SCAN_COPY_MC:
->case SCAN_ADDRESS_RANGE:
->case SCAN_PMD_NULL:
->case SCAN_ANY_PROCESS:
->case SCAN_VMA_NULL:
->case SCAN_VMA_CHECK:
->case SCAN_SCAN_ABORT:
->case SCAN_PMD_NONE:
->case SCAN_PAGE_ANON:
->case SCAN_PMD_MAPPED:
->case SCAN_FAIL:
->
->Please let me know if you think we should move these to either the
->`continue` or `next order` cases.
-
-Take a look into these cases, it looks good to me now.
-
-Also one of my concern is this coding style is a little hard to maintain. In
-case we introduce a new result, we should remember to add it here. Otherwise
-we may stop the collapse too early.
-
-While it maybe a separate work after this patch set merged.
-
->
->Cheers,
->-- Nico
->
->>
->> >               }
->> >
->> > next_order:
->> >--
->> >2.51.0
->>
->> --
->> Wei Yang
->> Help you, Help me
->>
-
--- 
-Wei Yang
-Help you, Help me
 
