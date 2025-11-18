@@ -4,107 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA01DCED25D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 09:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D442CED25D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 10:01:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 010166B0011; Tue, 18 Nov 2025 04:42:10 -0500 (EST)
+	id 7D5546B0012; Tue, 18 Nov 2025 05:01:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F29546B00A6; Tue, 18 Nov 2025 04:42:09 -0500 (EST)
+	id 78B736B0024; Tue, 18 Nov 2025 05:01:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3FB66B00AE; Tue, 18 Nov 2025 04:42:09 -0500 (EST)
+	id 674626B007B; Tue, 18 Nov 2025 05:01:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D20716B0011
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 04:42:09 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E34E12E775
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:42:09 +0000 (UTC)
-X-FDA: 84123236778.02.8519BB0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9F6E7180005
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:42:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaA+AYng;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763458927; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EC3D6B0012
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:01:33 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7AF058CFF
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:01:32 +0000 (UTC)
+X-FDA: 84123285624.03.354841F
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1719E14001B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:01:30 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=RvpCBH5V;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763460091; a=rsa-sha256;
 	cv=none;
-	b=20Ccyw609k2W3L1ZVuzS4tY42e//dlLaaw/h/nqlRON8qMrSMz8TGXHgmzaKlTp+c7jYxw
-	j2Yww8sZtjfSZM7BkwCAGXTZAQawypgD+47lxWRagUSrZG4Y2sUVq4jD1HXb4aiXX693BT
-	O9SJfQ7SIbbRLr8IzIVlIAqHTgxAw78=
+	b=QFXkldFq0moD4NZKydU7VgAw4rKPO+tCc6oDUr0vMn7w5Wm+TyGfYkn2sTki8YDL/yD6l/
+	1gnKUwMUqm6b6YcuTfFnT3Puzlm/YIqNtpS/uw1u4vHTHWiIoRznPptl0KgAa7UbvNGUw3
+	uTMbn6LniRuHTNjDJ3NaYbRGZsPtK1I=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaA+AYng;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=RvpCBH5V;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763458927;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763460091;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cfg+8kcZHJ9ZF+ehR/HwoefWpvBNcLDRLi3IodxhRCY=;
-	b=VlmcO+v/eAzYAtLBmuw7Evc7kLoQLD4bG3hjX2mOmLxDWwvTsRpA2G08EPmTEOFmd3yu05
-	c5SnLdniodzRhVXwAQPVE+0Mvr+FsLg/0+q6JQpU8BdmJwnL/4sXVao9KbLingu6ay3lZm
-	pzr2NhBWd19YAuUO4Ov0F2KApMZj83g=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8228940379;
-	Tue, 18 Nov 2025 09:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBD7C2BCB4;
-	Tue, 18 Nov 2025 09:41:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763458926;
-	bh=XyKAd9WucePUC1o/tFCBrcsIQcxe4TH5h4/fR4SzmsI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iaA+AYnggzz+CZqxx89XQw14uDM8FmexD7ADNtIFpDkZZsEo8nGRYo1cnrQQ6eT4G
-	 6B0l0HscHNkDSEOQ7srUciuf8b7DO3nhjEtpWM9zOdZBJcgyj/np08+4nMGYKmsg6k
-	 HeRCsMeqoyn8imUAqYCsfCT3ZlbBGtAw55n4Y2QnqgdlU1x3Z/W+qIYX6nPP9LLmSF
-	 SmyYM8rXRXIVacLyyHPRQzhDot45uG9g7Fq5Smro3mnkgviJ4PHq+rYuHEY+2ub9W9
-	 zf/HNuqQadKct23H1zSUg+W3WuZJVmNLO8KKQ1rWolFkgWgn6/S8tWonQonFbCtQFt
-	 5WJUgDQrtjMKA==
-Message-ID: <ea294b1d-7698-4f67-abd5-a7b9b67db6bb@kernel.org>
-Date: Tue, 18 Nov 2025 10:41:51 +0100
+	bh=cNupE5WP11QDcgvbWMAmFaE1TAZeWcI3mGTR58jAFHY=;
+	b=sFExm0UewjOMPYot8D3OVAwWEzvq2l52B9dCsA0VjjgnZc6Y88GHdG09DTN/a+M8Ij4OlX
+	Xbff1O+Tlb7VrBm1HF58r/FaALOkh9rJW6wrZOe7k50E6oL1jKDx5LJmbzhoovNAMg/MKl
+	wYqmmqhBaLjd1aaaSg7SjCGCeOa+On0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=cNupE5WP11QDcgvbWMAmFaE1TAZeWcI3mGTR58jAFHY=; b=RvpCBH5V8xAtvybZWVGuR1nmVo
+	MjRxIRyzua4TPQCJjSZVgGMaEW6AwdPEurVjVteGpPWVh1hNGGyLPlT2P+Lll3CBKEX8DagW8UDsl
+	k2gcSs3nFAUQ9DuhYjRrsZ8QbqS/P8H65JmcaQH2lmbFSTlt5ZSGl1vBv0mWxeBA0Wga4qge4cdUZ
+	w2Bi2HsyUPG/J5vTvjAnNDfTiD/8AmWyW50Z64g4bTj2qPKA0KZ7d3DDdQnAC+RTIcU0dqLzPefS4
+	x/KshpPVS1b8B0elsqHv0AQf/7gj6sW9jsquD3KpvvOLIyWYAvJ3hp2ScabcEO2jn5Pa7nuL2MCp7
+	4QZFNFbw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLE4Z-0000000GEZo-00JA;
+	Tue, 18 Nov 2025 05:16:11 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org,
+	clm@meta.com
+Subject: [PATCH v4 46/54] hypfs: swich hypfs_create_u64() to returning int
+Date: Tue, 18 Nov 2025 05:15:55 +0000
+Message-ID: <20251118051604.3868588-47-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC mm v6] mm: introduce a new page type for page pool in page
- type
-To: Byungchul Park <byungchul@sk.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
- brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
- usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
- almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
- bpf@vger.kernel.org, linux-rdma@vger.kernel.org, sfr@canb.auug.org.au,
- dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com
-References: <20251117052041.52143-1-byungchul@sk.com>
- <f25a95a4-5371-40bd-8cc8-d5f7ede9a6ac@kernel.org>
- <e470c73a-9867-4387-9a9a-a63cd3b2654f@kernel.org>
- <20251118010735.GA73807@system.software.com>
- <20251118011831.GA7184@system.software.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20251118011831.GA7184@system.software.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9F6E7180005
-X-Stat-Signature: zrw78gr3yrnw5gzxkfymbywsg4zzzrxu
-X-HE-Tag: 1763458927-913400
-X-HE-Meta: U2FsdGVkX1+8ffl7KoSk4XuQ/jZwzAFL6f6ntH42HuB1n3x60o2rVh3Yk6z+yShLV9u0K44txChuPyG1YA3kaQuNLKLfeJ4CnRScMKi2bFnP8+NEotxKWEU0R0mg8Qhjj4RRHCtgHVl+oMutlfYCcQrQagUWFFhJz8EcSiDAB/lZB0m4mX0knSljns0Yx970ONRi8O89JDE6HKzAqmOvRUGZs809R4I3dwZEEoQllIlcXrKVlD8jF+sCT5ByKC4LtN2NXKqjQ74S4B7alMy3h3y99fjU26stxTsO1f4Q/W9DeucJcVKSP97mW+UVqCBj0y+NWS7TP0tQLrpCC+CYaWTHJjFIMsnOhnPlovPEHljcqtrMIgeRAYMIH8ovNuaErT7bHRAssURMjibf+W3/fW6AErAfO2ZdnheDDom5TE2gi+NdxQticME4VXLNwJ97hbYH7J0OGnHvjpZOQWkt76K4w7mCOzrxCmFPp86vYcHeaS30U/IVoUmyEPNe2yUUvBWsg3A/qH8InkYdaapTHj0/WpV5Ep0QDQWeX0DcmaisCw6c58es9hGJrpORT7l843PASUbmKzr0WpZE8ioL7aATZW9m9esQ+LL1GDxCeG5VDDjaYCksC4/X1wnpSxcmFLwJgGsiGCUwizIQYhW+EX7ZFVuyfgsQA9DwLRAPDwvfGe3DEeLgIM6s753vF9R1AM9SBEPV3buxCAxO0yVY5ALdD03iVHmg8xz44wzU+C30ZrHiU6hc8y5hVYY5GAKevMFM48lsmkuQN+r6iNl50tM/o/JCtLmRPN1xFpkgkUrBO7t+ebd8217SvlW/7WYlh1+jTS8WPqUgjHLrwe1EsMM6G/5coFEdAyZOQfrYQhZu2VgbGXQyGTbdSNZgIXiIadtbXQc512oD689Sp6D7VzTI5h/QpcQ7PKjatKTHhqr/moEHltVbUj9TJ4WDQnpeiBHe8TeN/xePiuIHzLZ
- qn+BK/nS
- 6LBDUClgImW+UyEGEZTqoaiMoOBXEbwjWfTA//5sgblfKKLKI/1r6t0HRSSa553G7nYKABUH73IXYBYfyKnCW9pZ+sffgnmFOCvgCShD2aprhy9KaOOuy036maNzkrXEDtdVsFRBKTLpV9W3nMgkv0tpWJUsyqJuIR8A5KBNkSeVOZDqhgD3Ro3BSoc7UEjkrIk7xu+AFPNlBCsFs8WMkGY8akAvqBPlxwNWgfry2bUZL0RI+zNfT14uaxoDxZ9d2F6wLNhta3THylK3XDC9isKxN1GkYzLlsgYsuGxEGvfAe4SR6g0OnyZDpL+7r0ExNGurJXQWG/DrU+WmgpB+X4rjKTRQrHvDEQOtteOQGYff5v8zcXEfOME9dPw==
+X-Rspamd-Queue-Id: 1719E14001B
+X-Stat-Signature: zjeajf9pse4fqbbz8e8ou7rk1kiikzk3
+X-HE-Tag: 1763460090-544516
+X-HE-Meta: U2FsdGVkX18SGKdxlKg2peFpc/dyOGjmhBxPstqziqYt5NEqj/LSfqUQ1eeEKF6g5FxHOGaIIe9FbbS4QwksaSKn+r00buGW7dDzRQPwZSgN1gRDJlPVfP62FpBbQfEw3SfQD9dTsBP2kqa1v6R7c+MfGYruuXIheL4Ah3VpCT9ZmykXiBIZbC3qXTLcIelMnZilm+YnoETdBLfMdK3O5fgwbGA6kC1JeTKkRpXZBsNcMDu62ukPUApbB9yfyYyytWOUBMSyeKrWfdDuYPSuv4KbmJpFoBdwnSjWurzXkymkDFvG8LCAjrMeE3Rxs2cQjmeHpVKrFxvJ+HALeksYlUQPgp+KQwf931GTFHlwwXZqjEXJb6DrgTBmbFKPVx4wx4nM3yNucdLted7BrafuK3j42MohbkAxhZ1ZDFlCRjfEITwNpUsnbZloApWk4+zT8jrXkTsakvbNnEmjoHWUkVqMJbB+RkChyybNTGNcAwPNHReNlUS26kuZOr487918q9f+8lVc6aMdY9ebXqJXM6IPgx0iFYjDMuFOJn7MuvKxD7Nwb7I0gA6l2AVPyaeR4FUPWl+E9lZz1njX9Wl94yj0glyEiWdLxzK6jEQHP7mBSax81wQcPny4ZuhEw3LU36G2lOL2PG7PYEZcwekCmoZAWpJsIAiLu2+D+KmG0W9Ffk4lh6f77jqVU7ipiZ1NTWo7NYadv7A0q1TcRBeq7mB1OiBttNB0qAjuCg5BS6V095TyvyC/gSa/kCfH1tcybDvDO5Zg1kX4n9KMadp5li90Bim4k1AOQFkxQswUDW0WLET7BiEHV1FCAk+MubdMMH3EOTKd67JoQ1dHBYB6jDHZK7w9aGHj4PfcdMV8mxcXW0FOafTysO8rDpzYJFyfqmZRErD4uZ7N+Zda0hhCSMF6zQlv9vld4tuGD5pWVQMlK89UhcSQTUodHvVto03U7UR1Th5INTcx2uwehvz
+ QjJxHThE
+ 8mYVAoWCEvNz3X0tgM6A/XskQFgj4/6qSs4dWNlEMNmcUcAmAoXPo+8+/nNThTGAGzFr0PkbZBDhLRnoXobBE3nrr6s4R8RtbrwVwlCLAnFVUgq0OtiOnf1CXik3N+73Pyf/GNCe+hwLwawo5b9fqOVMj6ASr9FaO1gj9NXG992Rwv+6+Er8MqexGvO80VfUmv0yJyN3eBvvpz2A6yTV8+YGDFlYaNa+F+X3r0u6jEWIvO3GuAwoz1Hq6suvPs7ADj/hjXpYl8pzBi32E07MZhbP9iNfdQmShVIpRfScEI+La9+kcRJoIqXrEN7UaPhR+NIb/dKIjFnAw84vYMkMcfY0rl12h5l5Vh5mjxprBggEuS4yvDDiUgtiAqdkeYhSJpahY5lt2D4TKuzFX0l6kfiqm4+pL9bJN2ORP+fCo0xcxXNRkozah9PqUxi/HjUEkftfGmgyCI67mKAEVGc/f2dC5qg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,118 +109,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+same story as for hypfs_create_str()
 
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ arch/s390/hypfs/hypfs.h         |  3 +--
+ arch/s390/hypfs/hypfs_diag_fs.c | 20 ++++++++++----------
+ arch/s390/hypfs/hypfs_vm_fs.c   | 15 ++++++---------
+ arch/s390/hypfs/inode.c         |  9 ++++-----
+ 4 files changed, 21 insertions(+), 26 deletions(-)
 
+diff --git a/arch/s390/hypfs/hypfs.h b/arch/s390/hypfs/hypfs.h
+index 0d109d956015..2bb7104124ca 100644
+--- a/arch/s390/hypfs/hypfs.h
++++ b/arch/s390/hypfs/hypfs.h
+@@ -22,8 +22,7 @@
+ 
+ extern struct dentry *hypfs_mkdir(struct dentry *parent, const char *name);
+ 
+-extern struct dentry *hypfs_create_u64(struct dentry *dir, const char *name,
+-				       __u64 value);
++extern int hypfs_create_u64(struct dentry *dir, const char *name, __u64 value);
+ 
+ extern int hypfs_create_str(struct dentry *dir, const char *name, char *string);
+ 
+diff --git a/arch/s390/hypfs/hypfs_diag_fs.c b/arch/s390/hypfs/hypfs_diag_fs.c
+index 2178e6060a5d..83c9426df08e 100644
+--- a/arch/s390/hypfs/hypfs_diag_fs.c
++++ b/arch/s390/hypfs/hypfs_diag_fs.c
+@@ -204,7 +204,7 @@ static int hypfs_create_cpu_files(struct dentry *cpus_dir, void *cpu_info)
+ {
+ 	struct dentry *cpu_dir;
+ 	char buffer[TMP_SIZE];
+-	void *rc;
++	int rc;
+ 
+ 	snprintf(buffer, TMP_SIZE, "%d", cpu_info__cpu_addr(diag204_get_info_type(),
+ 							    cpu_info));
+@@ -214,18 +214,18 @@ static int hypfs_create_cpu_files(struct dentry *cpus_dir, void *cpu_info)
+ 	rc = hypfs_create_u64(cpu_dir, "mgmtime",
+ 			      cpu_info__acc_time(diag204_get_info_type(), cpu_info) -
+ 			      cpu_info__lp_time(diag204_get_info_type(), cpu_info));
+-	if (IS_ERR(rc))
+-		return PTR_ERR(rc);
++	if (rc)
++		return rc;
+ 	rc = hypfs_create_u64(cpu_dir, "cputime",
+ 			      cpu_info__lp_time(diag204_get_info_type(), cpu_info));
+-	if (IS_ERR(rc))
+-		return PTR_ERR(rc);
++	if (rc)
++		return rc;
+ 	if (diag204_get_info_type() == DIAG204_INFO_EXT) {
+ 		rc = hypfs_create_u64(cpu_dir, "onlinetime",
+ 				      cpu_info__online_time(diag204_get_info_type(),
+ 							    cpu_info));
+-		if (IS_ERR(rc))
+-			return PTR_ERR(rc);
++		if (rc)
++			return rc;
+ 	}
+ 	diag224_idx2name(cpu_info__ctidx(diag204_get_info_type(), cpu_info), buffer);
+ 	return hypfs_create_str(cpu_dir, "type", buffer);
+@@ -263,7 +263,7 @@ static int hypfs_create_phys_cpu_files(struct dentry *cpus_dir, void *cpu_info)
+ {
+ 	struct dentry *cpu_dir;
+ 	char buffer[TMP_SIZE];
+-	void *rc;
++	int rc;
+ 
+ 	snprintf(buffer, TMP_SIZE, "%i", phys_cpu__cpu_addr(diag204_get_info_type(),
+ 							    cpu_info));
+@@ -272,8 +272,8 @@ static int hypfs_create_phys_cpu_files(struct dentry *cpus_dir, void *cpu_info)
+ 		return PTR_ERR(cpu_dir);
+ 	rc = hypfs_create_u64(cpu_dir, "mgmtime",
+ 			      phys_cpu__mgm_time(diag204_get_info_type(), cpu_info));
+-	if (IS_ERR(rc))
+-		return PTR_ERR(rc);
++	if (rc)
++		return rc;
+ 	diag224_idx2name(phys_cpu__ctidx(diag204_get_info_type(), cpu_info), buffer);
+ 	return hypfs_create_str(cpu_dir, "type", buffer);
+ }
+diff --git a/arch/s390/hypfs/hypfs_vm_fs.c b/arch/s390/hypfs/hypfs_vm_fs.c
+index e8a32d66062b..a149a9f92e40 100644
+--- a/arch/s390/hypfs/hypfs_vm_fs.c
++++ b/arch/s390/hypfs/hypfs_vm_fs.c
+@@ -19,10 +19,9 @@
+ 
+ #define ATTRIBUTE(dir, name, member) \
+ do { \
+-	void *rc; \
+-	rc = hypfs_create_u64(dir, name, member); \
+-	if (IS_ERR(rc)) \
+-		return PTR_ERR(rc); \
++	int rc = hypfs_create_u64(dir, name, member); \
++	if (rc) \
++		return rc; \
+ } while (0)
+ 
+ static int hypfs_vm_create_guest(struct dentry *systems_dir,
+@@ -85,7 +84,7 @@ static int hypfs_vm_create_guest(struct dentry *systems_dir,
+ 
+ int hypfs_vm_create_files(struct dentry *root)
+ {
+-	struct dentry *dir, *file;
++	struct dentry *dir;
+ 	struct diag2fc_data *data;
+ 	unsigned int count = 0;
+ 	int rc, i;
+@@ -110,11 +109,9 @@ int hypfs_vm_create_files(struct dentry *root)
+ 		rc = PTR_ERR(dir);
+ 		goto failed;
+ 	}
+-	file = hypfs_create_u64(dir, "count", data->lcpus);
+-	if (IS_ERR(file)) {
+-		rc = PTR_ERR(file);
++	rc = hypfs_create_u64(dir, "count", data->lcpus);
++	if (rc)
+ 		goto failed;
+-	}
+ 
+ 	/* guests */
+ 	dir = hypfs_mkdir(root, "systems");
+diff --git a/arch/s390/hypfs/inode.c b/arch/s390/hypfs/inode.c
+index c5e2d8932b88..6a80ab2692be 100644
+--- a/arch/s390/hypfs/inode.c
++++ b/arch/s390/hypfs/inode.c
+@@ -377,8 +377,7 @@ static struct dentry *hypfs_create_update_file(struct dentry *dir)
+ 	return dentry;
+ }
+ 
+-struct dentry *hypfs_create_u64(struct dentry *dir,
+-				const char *name, __u64 value)
++int hypfs_create_u64(struct dentry *dir, const char *name, __u64 value)
+ {
+ 	char *buffer;
+ 	char tmp[TMP_SIZE];
+@@ -387,15 +386,15 @@ struct dentry *hypfs_create_u64(struct dentry *dir,
+ 	snprintf(tmp, TMP_SIZE, "%llu\n", (unsigned long long int)value);
+ 	buffer = kstrdup(tmp, GFP_KERNEL);
+ 	if (!buffer)
+-		return ERR_PTR(-ENOMEM);
++		return -ENOMEM;
+ 	dentry =
+ 	    hypfs_create_file(dir, name, buffer, S_IFREG | REG_FILE_MODE);
+ 	if (IS_ERR(dentry)) {
+ 		kfree(buffer);
+-		return ERR_PTR(-ENOMEM);
++		return -ENOMEM;
+ 	}
+ 	hypfs_add_dentry(dentry);
+-	return dentry;
++	return 0;
+ }
+ 
+ int hypfs_create_str(struct dentry *dir, const char *name, char *string)
+-- 
+2.47.3
 
-On 18/11/2025 02.18, Byungchul Park wrote:
-> On Tue, Nov 18, 2025 at 10:07:35AM +0900, Byungchul Park wrote:
->> On Mon, Nov 17, 2025 at 05:47:05PM +0100, David Hildenbrand (Red Hat) wrote:
->>> On 17.11.25 17:02, Jesper Dangaard Brouer wrote:
->>>>
->>>> On 17/11/2025 06.20, Byungchul Park wrote:
->>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>>> index 600d9e981c23..01dd14123065 100644
->>>>> --- a/mm/page_alloc.c
->>>>> +++ b/mm/page_alloc.c
->>>>> @@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
->>>>>     #ifdef CONFIG_MEMCG
->>>>>                       page->memcg_data |
->>>>>     #endif
->>>>> -                    page_pool_page_is_pp(page) |
->>>>>                       (page->flags.f & check_flags)))
->>>>>               return false;
->>>>>
->>>>> @@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
->>>>>       if (unlikely(page->memcg_data))
->>>>>               bad_reason = "page still charged to cgroup";
->>>>>     #endif
->>>>> -    if (unlikely(page_pool_page_is_pp(page)))
->>>>> -            bad_reason = "page_pool leak";
->>>>>       return bad_reason;
->>>>>     }
->>>>
->>>> This code have helped us catch leaks in the past.
->>>> When this happens the result is that the page is marked as a bad page.
->>>>
->>>>>
->>>>> @@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
->>>>>               mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->>>>>               folio->mapping = NULL;
->>>>>       }
->>>>> -    if (unlikely(page_has_type(page)))
->>>>> +    if (unlikely(page_has_type(page))) {
->>>>> +            /* networking expects to clear its page type before releasing */
->>>>> +            WARN_ON_ONCE(PageNetpp(page));
->>>>>               /* Reset the page_type (which overlays _mapcount) */
->>>>>               page->page_type = UINT_MAX;
->>>>> +    }
->>>>>
->>>>>       if (is_check_pages_enabled()) {
->>>>>               if (free_page_is_bad(page))
->>>>
->>>> What happens to the page? ... when it gets marked with:
->>>>      page->page_type = UINT_MAX
->>>>
->>>> Will it get freed and allowed to be used by others?
->>>> - if so it can result in other hard-to-catch bugs
->>>
->>> Yes, just like most other use-after-free from any other subsystem in the
->>> kernel :)
->>>
->>> The expectation is that such BUGs are found early during testing
->>> (triggering a WARN) such that they can be fixed early.
->>>
->>> But we could also report a bad page here and just stop (return false).
-
-I agree, that we want to catch these bugs early by triggering a WARN.
-The bad_page() call also triggers dump_stack() and have a burst limiter,
-which I like.  We are running with CONFIG_DEBUG_VM=y in production (as
-the measured overhead was minimal) to monitor these kind of leaks.
-
-For the case with page_pool, we *could* recover more gracefully, by
-returning the page to the page_pool (page->pp) instance.  But I'm
-reluctant to taking this path, as that puts less pressure on fixing the
-leak as we "recovered", as this becomes are warning and not a bug.
-Opinions are welcomed, should we recover or do bad_page() ?
-
-
->>
->> I think the WARN_ON_ONCE() makes the problematic situation detectable.
->> However, if we should prevent the page from being used on the detection,
->> sure, I can update the patch.
-> 
-> I will respin with the following diff folded on the top.
-
-LGTM
-
-> 	Byungchul
-> ---
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 01dd14123065..5ae55a5d7b5d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1377,7 +1377,10 @@ __always_inline bool free_pages_prepare(struct page *page,
->   	}
->   	if (unlikely(page_has_type(page))) {
->   		/* networking expects to clear its page type before releasing */
-> -		WARN_ON_ONCE(PageNetpp(page));
-> +		if (unlikely(PageNetpp(page))) {
-> +			bad_page(page, "page_pool leak");
-> +			return false;
-> +		}
->   		/* Reset the page_type (which overlays _mapcount) */
->   		page->page_type = UINT_MAX;
->   	}
-> 
->>
->> Thanks,
->> 	Byungchul
->>
->>>
->>> --
->>> Cheers
->>>
->>> David
-
---Jesper
 
