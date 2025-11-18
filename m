@@ -4,110 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B912CEE34D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:32:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37352CEE351
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 20:36:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7280D6B00A4; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
+	id 709676B0089; Tue, 18 Nov 2025 15:36:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FEE56B00A5; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
+	id 6BA1F6B008C; Tue, 18 Nov 2025 15:36:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63BCA6B00A6; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
+	id 5A8E76B00A2; Tue, 18 Nov 2025 15:36:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 522376B00A4
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:32:15 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CDFAC84585
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:32:14 +0000 (UTC)
-X-FDA: 84124874988.10.0AE6F91
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf18.hostedemail.com (Postfix) with ESMTP id F2C831C000D
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:32:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 43DF76B0089
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:36:13 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D5D871601EA
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:36:12 +0000 (UTC)
+X-FDA: 84124884984.25.12D77B9
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C7DEE1C000D
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:36:10 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jjRdqiSz;
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dQYjUwS0;
+	spf=none (imf18.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763497933;
+	s=arc-20220608; t=1763498171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sBWoQMYYG9hFsTtDFMPgr7dIw8C1zg8c5nc9F57mrj0=;
-	b=ZypAGHL5zkVS63nk/KH0aY0NL2r4k/yVxypXGvVmLseuulNrSxOr0znWtnYS9MOrzua+rt
-	P4xMpoSDmSRtUU8XwFUPWIdP3VF6FXH3H1zsv0830H4RQcbtSU3V2uQ/PS+NH2MH+41EuG
-	kZgVG3MNoS12oIoFeNQvoiIOCwUM7cE=
+	bh=8ne+SHPq+6VfT3qkrqy+bvDWVXNhMCjamVWYxqPzmM0=;
+	b=yJXi+5sHy8To+0Lytjc/6DGbH0kXGvgl87hVs1EXAy0HxGYzzORcnogxL1fcrFm+n51D/+
+	c8dwR/ILeptIXlxMoJTtscoBggPOYcJa5rSgUTf11y1S6MXrjGufIEEgXM4jqcSmWmch+i
+	ikrnm9fn4YOLwSFKV28B7Yp4ji46cqw=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jjRdqiSz;
-	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763497933; a=rsa-sha256;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dQYjUwS0;
+	spf=none (imf18.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763498171; a=rsa-sha256;
 	cv=none;
-	b=KG0suKLLztyh+z0uAB3nPHh9PpjF62+nMZiMEXuv+4U5RHpWGzr7sCh35rVe4G9r7J4UsN
-	c/xqRz0vQ1gPrecBmFCkxO6VmxG0ZSTGI5eY7HxsNvxgBJKgRtDTzz7S1pFwsQy5bHcv1g
-	f/tfvuRO/3rECd1uOPUO9AvshdYpJkM=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso9070267a12.3
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:32:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763497931; x=1764102731; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sBWoQMYYG9hFsTtDFMPgr7dIw8C1zg8c5nc9F57mrj0=;
-        b=jjRdqiSzvokBA0fKZESoraDERmbAWyH+F6LHiviAwmPBgWKJ20OC9xHJ74jWDjXnp4
-         EkP4NNoqLg/PtKhgu53HcKP5tBwUF8ivAukRFGUh7oQHdrMZ0GwbDGTy8aRTMWHKLoVM
-         /3MPpgLFWRKsG7rzLgNXkAle5t0z4uhYse0AAKKj1dU+f2k08QQbsKorrEP4ygkcoypN
-         +7YAMjBJi3gS9kKIkkaiZldJ884ynrV6Z+UU3fy/Yap6ESCVuMwuU33L1AcZwf4djrY+
-         tpiCxLn54T8qcnaa4vu8CZbfPqCPAm77tzgqnSO9lyj16BgNS30LBovyiF+Pe8QQS4UW
-         Dl0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763497931; x=1764102731;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sBWoQMYYG9hFsTtDFMPgr7dIw8C1zg8c5nc9F57mrj0=;
-        b=mmxsGp2NUTTSNN4HsCqQsxnXb0ymman8zJ9v3UPYMtlcXgsYH3H+/oiJ34XKy2bJvU
-         eoWHJail1BJVu/mrrw33MLgNLQLWYtKKoWYth2lg41F9p4G7Kede4DB4NM1vr0wi0PZX
-         1GO58bRpY4OsuGRmy3P/Ifajfeut3CP6Lnoen+IfoJYrE5UVXQTBWS4ykEcTRhYVZShF
-         UvnW5Sv1EngTFl65wuWsxUpUiKQR6d0w/9LtT3sH9L183jqmk8pNqkdJVHImHTyZ1osZ
-         h8Vlm5O0NxL1PdBczgIkoZEHCMIyCgkl0hwlwtLMcUR5Rd2wkl/lgAwXdYLluk04kWom
-         vgyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWCd7q6bPtMBd2wMdy7YROO87wmHPuOXz6mw72Y+URllYE70llQonFiTG7Tt7cNygVElh2DCVmxig==@kvack.org
-X-Gm-Message-State: AOJu0Yzxyxb57BkKCOShsAJJ9m5tuvfiTHSdqZdn3i7Ro+K87kkqdJWm
-	g3Wsoqj1enWsra6u1B5X7oiuYxkU6bWjYAysZqTfWA3JusQM7putp6DWKZ4kECsQhS71nB8OwHr
-	KcrMFMkMP86/qYSGqmV/pfSpJH/lfXn5QXGWQveljPw==
-X-Gm-Gg: ASbGncuuXrfOht7Elt+RsC9HYPZNjbX7CT1P34BllmTXW8gSRxwV0Hk8TvCXQFBww6E
-	WlHeOm6dvhtRXva59uygNNwc4MbYrZ8/1LQHgcFDyrTrgObl0p++Svd2xpjAN+tS1almb3qagew
-	p9CCgF+555JiJdpPS4ALKQlPUM6l+cUOr7hKrajexjRrpXquM5VohIOtbwoUXq07k7aIkIgxeTm
-	dBMPStGQMKSTIX7Kvkp0sEkdWXo98lmWIUVTILQYrBVkLC2EVjXlublRXp0RzikfklWHTRXLGgS
-	wOE=
-X-Google-Smtp-Source: AGHT+IHP8X5K/LKC2JInbcbobi0WNd9xLFIh2mdNfhA8rQ0GEk5lHr6mWbEU3+ejjBwErY9sX3j4PxTJ2ml3UKwmUcI=
-X-Received: by 2002:a05:6402:1d48:b0:640:f8a7:aa3f with SMTP id
- 4fb4d7f45d1cf-64350eaa0e8mr15815608a12.25.1763497931265; Tue, 18 Nov 2025
- 12:32:11 -0800 (PST)
+	b=gnWFGbrZa6KxCa2LBd9HaPCWKBh3q03tpnR7XdaNi+quL3nS4VEBpk1a5m/GAOkIKNYRn/
+	lVfITE/C4IpSLmvky15ViCK335CqStcjIUxhbqxLsaS3YIK21K3bU7qXHuCVrp+IcQHvHH
+	eN0BYICHYB0Que91vRhrJgBTUWI6ft8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=8ne+SHPq+6VfT3qkrqy+bvDWVXNhMCjamVWYxqPzmM0=; b=dQYjUwS0F/eF5JFHzulMGPE7/R
+	Nsv3HHQLChzccVJNLthlJVWge4zFzSRLsLVQQ37whooTxdTj1bcsEA6UpxPEvPMvM1NZPz1by65We
+	WivCwDtXzheyVYkA9qVxWQ+QNJ2IgFKH1oFKL5FWHaFORTBwG5GCR23W0MYZdCeZh+TqcEwT3BIJs
+	pAfRj/aTKtsRa0rydgsDjGuvnO3v7F4yYBZbJK3QWFrdkK/S+9TKmdaVtFpBEnRuE7jurKaILpvSk
+	PQbASaYi5nvrMq9E7lf4ng4/y60qkhks4T/rc0Cu711O6g/vAAy0ZQOhJgxQsBvaAGS86NJm7xsVA
+	/GIt6h3Q==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLSQb-0000000G1y8-01Pb;
+	Tue, 18 Nov 2025 20:35:53 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A093D30029E; Tue, 18 Nov 2025 21:35:51 +0100 (CET)
+Date: Tue, 18 Nov 2025 21:35:51 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Maciej =?iso-8859-1?Q?Wiecz=F3r-Retman?= <m.wieczorretman@pm.me>
+Cc: xin@zytor.com, kaleshsingh@google.com, kbingham@kernel.org,
+	akpm@linux-foundation.org, nathan@kernel.org,
+	ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de,
+	morbo@google.com, jeremy.linton@arm.com, smostafa@google.com,
+	kees@kernel.org, baohua@kernel.org, vbabka@suse.cz,
+	justinstitt@google.com, wangkefeng.wang@huawei.com,
+	leitao@debian.org, jan.kiszka@siemens.com,
+	fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com,
+	ubizjak@gmail.com, ada.coupriediaz@arm.com,
+	nick.desaulniers+lkml@gmail.com, ojeda@kernel.org,
+	brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com,
+	glider@google.com, mark.rutland@arm.com, trintaeoitogc@gmail.com,
+	jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com,
+	dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com,
+	yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com,
+	samuel.holland@sifive.com, vincenzo.frascino@arm.com,
+	bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
+	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com,
+	kas@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com,
+	maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org,
+	rppt@kernel.org, will@kernel.org, luto@kernel.org,
+	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+	llvm@lists.linux.dev, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 15/18] x86/kasan: Handle UD1 for inline KASAN reports
+Message-ID: <20251118203551.GQ3245006@noisy.programming.kicks-ass.net>
+References: <cover.1761763681.git.m.wieczorretman@pm.me>
+ <8b0daaf83752528418bf2dd8d08906c37fa31f69.1761763681.git.m.wieczorretman@pm.me>
+ <20251111102719.GH278048@noisy.programming.kicks-ass.net>
+ <a4vtlaxadmqod44sriwf2b6cf5fzzvngl6f5s2vg6ziebahjtv@yctbqspkdn2b>
 MIME-Version: 1.0
-References: <20251118181046.23321-1-pratyush@kernel.org>
-In-Reply-To: <20251118181046.23321-1-pratyush@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 18 Nov 2025 15:31:34 -0500
-X-Gm-Features: AWmQ_bn8okgSW3sxizgThiqSsWpq9bQwatuGC_QPhuxTvRB32K8-7pbUIwkWJm4
-Message-ID: <CA+CK2bBcgn9j_jPSxXGQgfezx=UFogs-mz0qm2GQwybkFvnpTQ@mail.gmail.com>
-Subject: Re: [PATCH] test_kho: always print restore status
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
-	Mike Rapoport <rppt@kernel.org>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F2C831C000D
-X-Stat-Signature: 6g4uuonhy7n3e89hque196qxjyn5bqb8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a4vtlaxadmqod44sriwf2b6cf5fzzvngl6f5s2vg6ziebahjtv@yctbqspkdn2b>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C7DEE1C000D
+X-Stat-Signature: 5ys4jgihgtr1zx4gddeuspppikizcfcs
 X-Rspam-User: 
-X-HE-Tag: 1763497932-858419
-X-HE-Meta: U2FsdGVkX19og2ycDX6StuuECq9XOUCFuC1dHgjA+Dvquvl4KqmPDc9qxKStRETXi4X1nfTPsExNByENcGexMcw71RnCz84wMFnyfDgNR7hxvs+m+sWSDjSQqkY9QVbjXXSZjkh7metMjbpIPGgOH9g6Yzin67ZsJCE9IiPNiU1tWDCoHYuPxGNdhRQX0TthUKHZgi7AW8aB882u9YNQ3ZMonomAbXHgHTIWdKHkS3ufQ1DnKsAff11itn93PrWymYKTt6gLu/PI6bIXuxc3d3a7YY9934a/No42aSPvkuzbT6jZe0Htl2TB/i5dDLl+BwFxzBxTWLyU5+6BsKLkWAlcSwou0tFwAnRW2UQgMRu/XlIDQNznt6XgjwVxMLxGcyMPSqoZLDnZ5PMIhzHUZppJ6Ikr20utzcqwzTUOInzx3gPsLu/rtuPUgEd86t+t/vu5Nd7lwQqz9Aa9sBG7Tzk0fBdPjmoTTyFuVlecM4eHCfd0wUieiAGj6ge1/AXbxuWtbhcPFYGYPg7aElgyhaR2y80rO62IVoQbRtIJJCdlDaYa/iBS2zs6kS3eTzp8a3tBVi5KRBdkyRyCbRttt849YXGotalI+J8XaXPhh5FJuRPzc9nVzAC5j1wkFs+nics1R4fJJ9Z9dStXB+c1M/e/sTmqKjBcVPOgdo6S8MkmcdjoV/5RNASnvIVowE64AL7ZSSapIMuJ2SG44iwXgChhLgKVX9EVXeqriiW7AIfcrGjgYiwcl22aqemlITMLvbg1pDMtdKBVYJM1HbfLCfvk7U6DycpuGs6f5zkaPpTMAuxJSQPHmpRi7lQhIrziIzdIYhQHojdU4VYFIF/cd9EQgMAFAbj29KMCC8keOVA/coc4/C8LG1aI/FPeTvHA8Whqi56c4OZ7812/E+5+M3B1bYPLl03fj4UqlMw50P/6DHGiX/yLdoLCuonS8nvwwG3SfERXe8M=
+X-HE-Tag: 1763498170-428858
+X-HE-Meta: U2FsdGVkX19C2T30QVMT1Z3pz/wIAq+r2BJmSI4sQi8Ue6hhHc3PZBSFYYXgkLCym2wit4UgM4EBCU3Drh/MK8/7fXvDLgCPR+seOOvtT9OMgOX/579q28eiA6uTAFZJRL9L/FYPTnGx3Zq7l61CJ19CZKazqk/38X+rb1Pk0+LqxOWOlb+WtTpOaSLJExzwjRfRTQlUs2icjZb5sChlglKAk0L3vfTCOP6zYYelbl1Hqno1GQKopawFuJ1PxVDEfJhzRcJF6LtIbSINhbP+HZzL5JN89vmt1lDIu9jiYflap/A7CR3aLvCQRMWoKHnf53mVqpo8C7Wsd83CLcFtPUakKkNWoAGaTxSy2FCHAzRO3dBkgLKr3AIt+Pw5W3i5rBJf9oA8FVz5ndikTVvlb55ssRw+nNYVKcJ7k0QWOe3nuVT0xk/H5rMdIT4BvN83c80ie+DcFP3oXuGZcnB9PJ6pIBx/Vy6APf3adwmMAuZ2/MBTn1WU2ZnRKMi9NpaH7YjO0nF0PxcL7cTHTX3F2CH82H9zy1iLw7L63XBhrOUuNs4Fdwiyrwuahk4/eTeGe8cOtTmtFMLQlfWhrtF8CchieaUzNIdvNJw7GadfZvRHvpEjqelYjLj6G7f1yNfEg8+un3WdNY1Us9U52rFSCWrJYQ00bGGCIasYKU0NZCEo4s2Ko0GDYHbkfulcW+Oj1LO3GGdsiSHn/rnyVdCuVOevjig23dDWZnbqODzHsP1QOsrLMPmr7UP2MDxxy0xDbpVrDFcWP1BaEp4hFGrl3dQAQONQ/EuWgBoOCJ6QSbtNqhDjnGfbufLl0OdA8hjAY3hMtyV9esfftVjiklu8tHxDVBQwsjFqmEgg14upZQlfwM7ontvHlzQpa2+SfDJWI8GCVw+CBfmOx0xS2Pix0xe3A51ionovMAJZCW4pYQROeKStbRZQg7k9HgWfeMWBuCCu/qacHJ5Jtx1fqC7
+ 7Z8XNciw
+ f9NxW4Bhkqt13RKRhQuI34A5jMk/fSdr90lpQ4Npn8AE8C82TTchmNDsK9rto0FJ9o05p5Jirik0uPpXwI+GizjUOvI9AgUfbWONQPa1OIz+a3a8RydYGU8XpMY+xrWSrhNKd2Nvc4orpOkj7p1d0QLzVwFSJtm8t6+fgEZyVTUBNjGxD0CfD38C8onsmLCRYGZFGf5hbXV7yv44Me969DUyix8zbBtI7Wl2+NC1CPqTFB6rJsNJZHZyjLdUTxQ7OKbqy7PK9LcHDlzS8U4SBh90DB8QXJHD6C1LLFmIG8nIXfyqrV5jxxzn8bg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,16 +121,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 1:10=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> Currently the KHO test only prints a message on success, and remains
-> silent on failure. This makes it difficult to notice a failing test. A
-> failing test is usually more interesting than a successful one.
->
-> Always print the test status after attempting restore.
->
-> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+On Mon, Nov 17, 2025 at 09:47:20AM +0000, Maciej Wieczór-Retman wrote:
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> >> +void kasan_inline_handler(struct pt_regs *regs)
+> >> +{
+> >> +	int metadata = regs->cx;
+> >> +	u64 addr = regs->di;
+> >> +	u64 pc = regs->ip;
+> >> +	bool recover = metadata & KASAN_ECX_RECOVER;
+> >> +	bool write = metadata & KASAN_ECX_WRITE;
+> >> +	size_t size = KASAN_ECX_SIZE(metadata);
+> >> +
+> >> +	if (user_mode(regs))
+> >> +		return;
+> >> +
+> >> +	if (!kasan_report((void *)addr, size, write, pc))
+> >> +		return;
+> >> +
+> >> +	kasan_die_unless_recover(recover, "Oops - KASAN", regs, metadata, die);
+> >> +}
+> >
+> >I'm confused. Going by the ARM64 code, the meta-data is constant per
+> >site -- it is encoded in the break immediate.
+> >
+> >And I suggested you do the same on x86 by using the single byte
+> >displacement instruction encoding.
+> >
+> >	ud1	0xFF(%ecx), %ecx
+> >
+> >Also, we don't have to use a fixed register for the address, you can do:
+> >
+> >	ud1	0xFF(%ecx), %reg
+> >
+> >and have %reg tell us what register the address is in.
+> >
+> >Then you can recover the meta-data from the displacement immediate and
+> >the address from whatever register is denoted.
+> >
+> >This avoids the 'callsite' from having to clobber cx and move the address
+> >into di.
+> >
+> >What you have here will work, and I don't suppose we care about code
+> >density with KASAN much, but it could've been so much better :/
+> 
+> Thanks for checking the patch out, maybe I got too focused on just
+> getting clang to work. You're right, I'll try using the displacement
+> encoding.
+> 
+> I was attempting a few different encodings because clang was fussy about
+> putting data where I wanted it. The one in the patch worked fine and I
+> thought it'd be consistent with the form that UBSan uses. But yeah, I'll
+> work on it more.
+> 
+> I'll also go and rebase my series onto your WARN() hackery one since
+> there are a lot of changes to traps.c.
+
+Thanks!
 
