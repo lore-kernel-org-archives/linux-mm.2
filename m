@@ -4,114 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCFACED606
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D0A2CED606
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:29:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCD416B002B; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
+	id D58656B00AB; Tue, 18 Nov 2025 06:29:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7E2C6B007B; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
+	id D2FBF6B00AC; Tue, 18 Nov 2025 06:29:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D166B008A; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
+	id C6D266B00AD; Tue, 18 Nov 2025 06:29:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 918A76B002B
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:28:30 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D33C14050C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:28:30 +0000 (UTC)
-X-FDA: 84123504780.14.61E70CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7E79EA000E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:28:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQLu+9rZ;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B3D776B00AB
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:29:47 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FF9B4DA5B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:29:47 +0000 (UTC)
+X-FDA: 84123508014.23.A2DF210
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5828B160009
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:29:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gspnzMPR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763465385; a=rsa-sha256;
+	cv=none;
+	b=Enc1qln8bn+Ov6hOSuJPoLQtDhK+m/sCrPl9+XVPdYDxhnRQLl9tFCPAqSdufuNYg7qI4E
+	9u6BdydjiDxw1x09Pb4G/xqydqsPCLkqaEDAlLQHCd5r3Ua/TDW2pu5gzsGYHPOrd5HSbR
+	jwNLnM/oRHhLIjCWE5GTclgAoxSdiUc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gspnzMPR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763465308;
+	s=arc-20220608; t=1763465385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQuCt/2AXBUtG8XQE7BO4kuhqJFxjKrERJo49LtlSY4=;
-	b=Hcf66FzpXCv9hXQWqC2LDo5y0YIu6gmhZvrUcLDMBgXCNERvRW2FTwKhHCxB3MD6GRfbza
-	y4nB3clAmEA3nk5H2CrfpGcKkU8xDe8Fszax2uWZcwtfpc7kuU4jLNsXHeyOGmR7M5OZHT
-	WdmsqdRVcj1j/f9sPuAfQ2TGplifba4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763465308; a=rsa-sha256;
-	cv=none;
-	b=DRiwglmVZORV1SatX9XCjsX0a99Eq6wYQ2dDwIINlIGSJQociNaMahqkz5PVqW4218Y6Mc
-	zWJvguzz/qG3KoGn41ZVJzodsgjBfCjG+mtRawDN0V2NNmNV0AYKtvewpJ4IJ2oeK2j7Rv
-	beYv0PvoaQ1rw+H4OnPsIF8dUOq8QGA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQLu+9rZ;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 17A7640AFD;
-	Tue, 18 Nov 2025 11:28:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA73C2BCB2;
-	Tue, 18 Nov 2025 11:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763465306;
-	bh=B3Ck+ZeJMAqa97fGHBodXk952kfsyzlVaAaz1fhsUjU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GQLu+9rZRRAXOUo92WAJWcJwMQwCECdt5VEQNNd+yp5MfU6CT/SCqQGSMA1LzumqT
-	 NfCkJGz3WVbw4jmetvEnNdBIZtFyXHwH0Uv1STbCTH3FpF6egZEea/8IThMQV2AnE7
-	 Xva49r63Ie+VmHsEwIVC3bWqvEFIsND9oBQ2SEDO0+Ttol+YON6Nqe0C0GMP8C0p/x
-	 nFs3/rjxgKCHsFSL3CWTeJs90Qo4ldWBUDxa8ow5mCspZWSwIXVih7aEib8XXJ+3jN
-	 3u9YDrfXHY0BGetjelUPwh1a9YTF4bmTsULA+0awTrM4pf/hzkdGxtAY8qVHPr80PG
-	 yj/Y/ua4PKjzw==
-Date: Tue, 18 Nov 2025 13:28:00 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
-	skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v6 08/20] liveupdate: luo_flb: Introduce
- File-Lifecycle-Bound global state
-Message-ID: <aRxYQKrQeP8BzR_2@kernel.org>
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-9-pasha.tatashin@soleen.com>
- <aRrtRfJaaIHw5DZN@kernel.org>
- <CA+CK2bBxVNRkJ-8Qv1AzfHEwpxnc4fSxdzKCL_7ku0TMd6Rjow@mail.gmail.com>
+	bh=0v0oDcmCB5Zh0jXwX66CTwJWuRZAjcycr0+mPGx35yo=;
+	b=2mlGpvxstlWFFT6SyLnhEY0IAdRPa9irDypCgRRxeUWjCBOkJT74NhoMiAz48KofNuxOVm
+	dXi/dF33Ug0GN7TcdtkLE3qhoMYP4TrCMp3sN8aaB0EL9QR+z8jQQ20upyU9jK22pf+DoE
+	Ja6I1bd9e8wzbRIG0lCzGJ8hORQ7tp0=
+Message-ID: <e5edc1b6-4c63-42c7-91ab-f1a28cb0b50d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763465382;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0v0oDcmCB5Zh0jXwX66CTwJWuRZAjcycr0+mPGx35yo=;
+	b=gspnzMPRplkGC7z867QwFTewkyJ1jjD8SAY4+hZ5grMuKYL4z3vcftv20YsB7Tvuoklsnr
+	lIldrY/eVYcS/1pcbbKqyyBzBTryTYFum5nsvx+FUvKU0xMCV+MjQZ3x65rVy2dTaKNs0g
+	adrtIcsNfbPNmXZFG6gXMX4BVkJRCjc=
+Date: Tue, 18 Nov 2025 19:28:41 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+CK2bBxVNRkJ-8Qv1AzfHEwpxnc4fSxdzKCL_7ku0TMd6Rjow@mail.gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7E79EA000E
-X-Stat-Signature: zo6pb7qt4abfbfx144s66owbo3a17xnm
+Subject: Re: [PATCH v1 06/26] mm: memcontrol: return root object cgroup for
+ root memory cgroup
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+ <5e9743f291e7ca7b8f052775e993090ed66cfa80.1761658310.git.zhengqi.arch@bytedance.com>
+ <aRroO9ypxvHsAjug@hyeyoo>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aRroO9ypxvHsAjug@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5828B160009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: o4uhg515de5g9gyx94mtyczwn1memo7p
 X-Rspam-User: 
-X-HE-Tag: 1763465308-930792
-X-HE-Meta: U2FsdGVkX1/R00gCLRAdgyjR32EyVhLr5tpyLmRoIz6POS4ICagv2kESqUSv8TAwzFP9RGxgXQa0eo6b5HEZn/GaArG0KmWzyMP8wqAaWk8jXEXH0kgQIzXSe73a76PoS5P+pi8oG4O1KXfosaHXNnkDuFZNgskxWAeo31KNJBerPZnVRyHbA8aHRx4DODlBjNQJaDJjMnrtanrmj/KohtRyoHLvXQ+YzaoHXEq+Qv2Oh3n1sRoB0hdKwIyb/LsM/ESrXhfdxanSVj5miAKPggsYkB+h3i5Rw3ReByUvV+bbWs+b+dBvjtNm0z3ezs6ErFC4eDeSs9wOjarO5Ogg0rTfAJAXMdwHMpaGM+u21CY6r/VRyisMxgGs26Gupu5TKfXpg9/n1l5bd2OldzWEDPUIpXFAHJpC1vLGpE3TrVEXKk+c2OpSAqhesI+CiKsnymCgBrDZ9yl+BGyCLN6YGkJpeykAO+gPkGE0oKuezDKvP5hOVpu3gf3eytjZK39J+jMqLLy2qOai0yOEmqWuQszoPaLzSKRWYywJxgudsIVnzw+j1OgfqLgnJQV3YkoNpSfzeNAASlW9CQeFShTYcFXQatzeDFNpQDh4ObWvzC/rfbqSLZ402/PCu/eK49v0UK9HmRFQfCgN3YJkLEVKMKnUSZzmxKU+CTcM1I+6ffzN4nEq1WBDCkUsxl65cWYsFb6d9qS66e9VTCE1cxWzHpNMeKDbPqeFS6PiWKbu9wjSqdwqaX69WkoaoKNQR6lvSVoWlV6+WW9qC7L3inTaGKE1DDnXg+gPJRSgOuzNdCJwPCqJi5YetIGcb8dsaNKhUBKNyJoC6A2P9kRN8WcwSajooG8Nc+C5uGT6b6XzvbbldUJ/v8TehYGo5kBacQLe9f3Gz71G/IyKUIUKsINLbpHyshkktzbYo7hKGlOaSDT/9eEvwlXXf7gshbNEbScbjULssDppaEmvFrm8rgW
- 77FcFXJc
- ifJk4ATRf0SdCzeoU6lg8+nbxgtp1upLvuOB9z6DzlJZ4r+tl1+kHsJPvaQ2giQNUh4lZ+XTZ6DSoDYfmTJpLwc6acOMPdTnSK/Mhv6NRgaTOqKbDYKpNbf/6p3SZLpfgbAPu8iadVnrz+3DNnKtNMkDf+94O4xl21rnEMRLkr2YZpbKDsbwsXK1jPRmChZeI1Lr6bXXQdsWTBU+lYxXNmLlR1ywsMueYX7DPq7pgLwayWVLVcLCkpnaPJPQXqZY1sw3HajGdYtZWCX/SWHLZbf2R0eMlVYObveT9uS6TWQJCIMUOOxLBq3OrU8/t7OXvxBTmFDHSp98ySOnQOrksKzZYQur3yfnjbxZH4HQr6A0s3Ltf/o5qOnTwxQ==
+X-HE-Tag: 1763465385-157734
+X-HE-Meta: U2FsdGVkX18ho89WdXp+cfUWBW7sdTzCknneVQtWsDbDeA33Dcqwb/K8TapHZ9iwDvwpnn7RlOR31hZxGYgMRK6DfijwjgEOxi+6iC3PU9ulAxz64HnttP5OwOLfoq9JCCYrpV6zNX5CZOe2QzCjyWLHreg/by1HbO/z5rruDwe4smNa7Zgl8A8yulyZNiUKYWDBcJj68ztQSKngPrzK2tIx7KPcYJ+MMci5No0y6smldICagSSdayaW0n8v9ltplhKVmLklK6wpGgcKeLkyoMckr10SyRDsVcCx5Zl+6Nus8fW4uCJKsTAoxZEo0HSYmX3T1kBNIqplrGt8eu91TM1VeQf72hp84iHfu64HtpACik3znrGd2UTnYFPtnFdREjUItiqSsbgQKB12s0+hBBTMgXF5bETOT0BphmuK8tWW0BYID77Nh1q2yT6atz0UZ8jjolMGVgRhhKr4bPlKYPQckLRZYfXqTyvPLv+ldXyuSm9npyU9/Ufinv0jl5bt+ohrzGNhT34lgUvY1m3QZgoyX6JjCelwPkbRcqYQTc4SJS1FbN6LYqGPx1Yhszh4LomdUIFLMbxZ//+cA5RhzUwPPV9LJxSJQJqFQ0dnDRal6Mz/gFNjXi/H8Bt+D21TXR/y/uC8T3FdTyLpLd4N9pxfqfODkqq3vqWXwYsxD/a7aQPsUYUHOoh6EhP3O8VN8w4UEzbGUAqJJ2APkDiGzjfki7Axek/ZqyDQg6EC5nGOPy9UzuX8JsaHwr5z874P/SPxAJQoFj1c1byS80GegxlNJakkdQvi8GoXdG8HqPGaAHBO64cgD4Q813a9RfVmHe18EmqvHrQj+VfNKiWtEYxdQMuNpipuwGVFa0ChkU/CiRdFwMtQtlcrsD9AtszPy3SadWqdPieOTBaUyJ2tmazgL9sa8FXrcMpnKPOHrIYCoX1TXHCIQaJDb8sMCqK7RVodEgPouVM/2MkfZKZ
+ sSFo2t8B
+ Ztb8GTiudTLQRUnkUkFplNJNsUT0Wn6HNtaRiPi8L0btnpNFRQYkdE1FszzrrGR6FZFY+s2LFutljUiOx5Tj8zsMNpYLobQbpQamsH/BGwet6TXG8YuOIU3pzAuF3rG4yuZ4kwLM2UTPpOixbyEZ80WnlcGRdyUIKzaC7+XHzx+zvfhS3/gCR/h0Zjh7KkXJewzg2KIJRbGhJ8ZnZCQwqbPgWZdCT6R36rSJuoAQnGXEtkPgMlwfJ39tKUd4PKBq+/EjGqBYeJ3KHl+eOQL+6PQdyOZLiLD/uiQY4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,31 +98,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 10:54:29PM -0500, Pasha Tatashin wrote:
-> >
-> > The concept makes sense to me, but it's hard to review the implementation
-> > without an actual user.
+Hi Harry,
+
+On 11/17/25 5:17 PM, Harry Yoo wrote:
+> On Tue, Oct 28, 2025 at 09:58:19PM +0800, Qi Zheng wrote:
+>> From: Muchun Song <songmuchun@bytedance.com>
+>>
+>> Memory cgroup functions such as get_mem_cgroup_from_folio() and
+>> get_mem_cgroup_from_mm() return a valid memory cgroup pointer,
+>> even for the root memory cgroup. In contrast, the situation for
+>> object cgroups has been different.
+>>
+>> Previously, the root object cgroup couldn't be returned because
+>> it didn't exist. Now that a valid root object cgroup exists, for
+>> the sake of consistency, it's necessary to align the behavior of
+>> object-cgroup-related operations with that of memory cgroup APIs.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   include/linux/memcontrol.h | 29 +++++++++++++++++-------
+>>   mm/memcontrol.c            | 45 ++++++++++++++++++++------------------
+>>   mm/percpu.c                |  2 +-
+>>   3 files changed, 46 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index 6185d8399a54e..9fdbd4970021d 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>> @@ -332,6 +332,7 @@ struct mem_cgroup {
+>>   #define MEMCG_CHARGE_BATCH 64U
+>>   
+>>   extern struct mem_cgroup *root_mem_cgroup;
+>> +extern struct obj_cgroup *root_obj_cgroup;
+>>   
+>>   enum page_memcg_data_flags {
+>>   	/* page->memcg_data is a pointer to an slabobj_ext vector */
+>> @@ -549,6 +550,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+>>   	return (memcg == root_mem_cgroup);
+>>   }
+>>   
+>> +static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+>> +{
+>> +	return objcg == root_obj_cgroup;
+>> +}
 > 
-> There are three users: we will have HugeTLB support that is going to
-> be posted as RFC in a few weeks. Also, in two weeks we are going to
-> have an updated VFIO and IOMMU series posted both using FLBs. In the
-> mean time, this series provides an FLB in-kernel test that verifies
-> that multiple FLBs can be attached to File-Handlers, and the basic
-> interfaces are working.
- 
-Which means that essentially there won't be a real kernel user for FLB for
-a while.
-We usually don't merge dead code because some future patchset depends on
-it.
+> After reparenting, an objcg may satisfy objcg->memcg == root_mem_cgroup
+> while objcg != root_obj_cgroup. Should they be considered as
+> root objcgs?
 
-I think it should stay in mm-nonmm-unstable if Andrew does not mind keeping
-it there until the first user is going to land and then FLB will move
-upstream along with that user.
+Indeed, it's pointless to charge to root_mem_cgroup (objcg->memcg).
 
-If keeping FLB in mm tree is an issue we can set up an integration tree for
-LUO/KHO.
+So it should be:
 
--- 
-Sincerely yours,
-Mike.
+static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+{
+	return (objcg == root_obj_cgroup) || (objcg->memcg == root_mem_cgroup);
+}
+
+> 
+>>   static inline bool mem_cgroup_disabled(void)
+>>   {
+>>   	return !cgroup_subsys_enabled(memory_cgrp_subsys);
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 2afd7f99ca101..d484b632c790f 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -2871,7 +2865,7 @@ int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order)
+>>   	int ret = 0;
+>>   
+>>   	objcg = current_obj_cgroup();
+>> -	if (objcg) {
+>> +	if (!obj_cgroup_is_root(objcg)) {
+> 
+> Now that we support the page and slab allocators support allocating memory
+> in NMI contexts (on some archs), current_obj_cgroup() can return NULL
+> if (IS_ENABLED(CONFIG_MEMCG_NMI_UNSAFE) && in_nmi()) returns true
+> (then it leads to a NULL-pointer-deref bug).
+> 
+> But IIUC this is applied to kmem charging only (as they use this_cpu ops
+> for stats update), and we don't have to apply the same restriction to
+> charging LRU pages with objcg.
+> 
+> Maybe Shakeel has more insight on this.
+> 
+> Link: https://lore.kernel.org/all/20250519063142.111219-1-shakeel.butt@linux.dev
+
+Thanks for this information, and it seems there's nothing wrong here.
+
+Thanks,
+Qi
+
+> 
+
 
