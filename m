@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 117FFCED240
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F529CCD19A
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8721E8E002E; Tue, 18 Nov 2025 00:16:18 -0500 (EST)
+	id AE52A8E0030; Tue, 18 Nov 2025 00:16:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D3608E0030; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
+	id 86FA78E0027; Tue, 18 Nov 2025 00:16:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCBDB8E0030; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
+	id DCFF78E0035; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 27E2E8E0002
+	by kanga.kvack.org (Postfix) with ESMTP id 344828E0025
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D089C1A0379
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EED7788BBE
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:15 +0000 (UTC)
-X-FDA: 84122566710.18.CB6CA1A
+X-FDA: 84122566710.05.0CB4A53
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 269AD120007
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=iOMbmWEw;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5FF76140010
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="HqD9Ty/Z";
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
+	cv=none;
+	b=OIfvuszSTjcYrwTSc96Z8AQpmX0dklFJbfZVncWdQ1dsADZht2HcC4spDp0ZhKEnoRKycG
+	hRctZ8zlRFjaSgQEX+RmrOkYb9bcreTKvl3G+KtNVC3gKrxToj6P+cu1QhiPgDudg8wibv
+	RJmEl0tGde8cnfP+82W1Gtu+B7hnd7o=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="HqD9Ty/Z";
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf09.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763442974;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8X770T8ZfjCDu3xB4E5AEqp0VoQs0dPMEWp6Hxra23A=;
-	b=RCOeY4Zwka7UDUUGoxI76F5X30NB+wfFa/r8FqdFKJtLhGc4WRKE7X/nXaYppf5OVrozir
-	DbUuqGxOQlHooWvV/t9OXl40KlysRxFqDsESKg1ekKg27TyielcODOTmPhkJdPQ1asZ2KM
-	sDKTFf5t7ViuDyxCxVrskVCV3gVtg+I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
-	cv=none;
-	b=ztAarfINuAySL/h5Eb4FgtRlDngYnJPEDYbDCO2tckOaoxqUe1Q20vOIlkZLgxki66rnVN
-	jzm11yIoEccUbkJTzrZOnMfriUspnJ+aAuKPKG+ut5GrMBuW3j5vwg19e705qChQESdMIp
-	HwwvI7mxYFfTm0zw+7ShFmU7p7GkJUU=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=iOMbmWEw;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	bh=Swq0voO+aKDUTzOh35qGY7dyE9PZZpqvfSqrFdp+4zM=;
+	b=DPOPC0fBymI9bOCsFGgcCUyK3ss8Wh349bZx3om7TFj2z+VwELlM7YtAl3R/ORf3nT1fo9
+	3p/BpUoyj/pil2tHMcOiEcsbHG5uiHpY2USVacajZcUbAsHw8Fl4Wsl7eUGbGB9YLhlDLr
+	a5Q5UcEPviUzLSFluoNEWyNnFuHrH/M=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=8X770T8ZfjCDu3xB4E5AEqp0VoQs0dPMEWp6Hxra23A=; b=iOMbmWEw8MhF43OLV4OGzbGV4l
-	2UzCrFrcBQreA9Boshu7TrRR2/OKw5XV+h4v12MQMfaLEHMkDdSeVQL5T2SrldYFpStxa7KU10n+o
-	DoX/8FTfqXIHhwOF/aqO4ujkpGArqpcLLV+DoPw+x3bqIsAUWP0cjUrFoNd7/5yM5F9PFKL/1guqT
-	pDBRRPt74aPobPXeVxgi8PlJoBfvINts6a2OEMmeklrW56loMVL2nZCfQT5LWL4h9wloH8FHtfQO4
-	HhE6beCAYlEU2JiI4v5PtJ84dsHf/D50xDHHsXMDPzW4o18eWIU/UT00daQf4tthetYfpFuDaujxe
-	nta2w1rA==;
+	bh=Swq0voO+aKDUTzOh35qGY7dyE9PZZpqvfSqrFdp+4zM=; b=HqD9Ty/ZlWqi/Ys/cstWjq3DzG
+	PBDI34Gd0hBllGfu/crh9+czFgPMh5k5MJ+JDF7jbY/deZw2x3bwKo8FKG8in6G+HL38+jAplsYYK
+	wwLTk1f5qtCWFQC+y+bWPw5/ccTvL2hwdGRt++0wEB2ab5fICkCAkftK4snjFUKBzptK9wpgKebU7
+	ao9flFP3ocDBRA0ogxjRpEAa7gx9LWtBCOxLQA2zYDV7L3a2QEm6DAUmG31uGxYfCVsGS5w671MVr
+	XpZqUDreTmcWd1WZKtzGxhk970fSJ8lbd7BB6oXCVLo9wJpxSiW+DWGW4mFKigad+qiqyMef7yoAW
+	eM5icGaw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4W-0000000GESv-2Wwd;
-	Tue, 18 Nov 2025 05:16:08 +0000
+	id 1vLE4T-0000000GEQH-3Rhu;
+	Tue, 18 Nov 2025 05:16:05 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -85,22 +85,22 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 33/54] selinuxfs: don't stash the dentry of /policy_capabilities
-Date: Tue, 18 Nov 2025 05:15:42 +0000
-Message-ID: <20251118051604.3868588-34-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 08/54] convert ramfs and tmpfs
+Date: Tue, 18 Nov 2025 05:15:17 +0000
+Message-ID: <20251118051604.3868588-9-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bx9ffjhkuf8di5k5fpaok6atz7kwqe9k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 269AD120007
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763442973-772189
-X-HE-Meta: U2FsdGVkX18WfjTxwsoXSsxAclkr5zRaQST6Z58nEoUc2VWADoHI1uYc0q4DZUsi75t3XFp3Mld8R0Zr5ooFhu2GEx82YmnbkCorJjsuNWutFKQlud3B0Iqqb+EFPDbF190peqix82+sMZJU/2wRwJUlLLoyPupJkquIsD+i7sCaaPRHJfPRIwp9aS41KWR7/whgQi8W0TNRS7AtdW2UzUrLU47XrFB/kXpY56OIYpGO0zuGn91xGANgc/we5AFHonGa3ERSXRpA2iz2c9w79raiD+/q23QvZJqfBjtu+tFoXJjUmA36Kc6sJ3RwALpD5rsNhIYA/p0XSm6dtaR7Cj85yja3NInERq/2XUMaYRqUbBEcAOst38eCTV1kgyVwrcLZ1un+Ta+1O8M4gGqsITUCqFU8Jbv+xmy/pX5srKhJhyuU9eS2cXlLCyO3RaSdxKwqF9V7nPnbEpDZA+Xawks5T2g/YDwEGg2tEaIRvpeQFCDo1yuNGtTlY2UeZgDej7XGKyBuFObDRmvcvpYWP9TKfacC0mqsKj5n+jgqhQCJ/Dup3JyPX+yj7/xbXzHXrAh2lgHYa/m4MrAl8Rc0EEEvOTBuj5t7XzVujir8fPCXzihCYqnu7f5YcxIBflGAw5Y2bzmZJApTH77107VrGIUTygQwDqeYS2azYMnldzB9Jmh/h/8UHGnjFr/Lioi266Lfgwi6KMbfyd76yAO+MzZWb77lLkBr5uRaVWP88C0OR+Zag2Sbgzj1yfsh33O89x5LxUlKgBi8KeNU+7KNVBXYDdZ3BMFi5Oqz3uLmdf1NpL+oMFYD/yDNSi53nrMezCylYHqd51YMIrbEYZi5nm1f44EFdtGOGUeutS/GSBq5UrOcEKkhiU8+JBuPvqccJQvkqPoB+O57229d/pzYsl/Ae5UXaFovtMrZ0SUw6fC2wr/Hmz6QQakOEOrROXfGSZCeeBvH2k8u3NfWoaC
- NG4kMsV+
- PzjekTix/Q4SxIBjdXM23ID9oZD+0QXBzYDIGV7Au/GhTw32CH18DD0pFrbQpyq5XAe/pXB+oXdgO6iSGN01746QchkOJBx5evJT+G2MaZi8uB3ytSR7dspk9HmcZimaeL5x+AhOoUfR69MSFcA00ehmYVsBtEu2KbfLB7jsdbIwfmUfCtpdJMjhlajNhtZrPwi+I/4yNBy2JR1801ckVA34VVPPP4EbxnYEtAkQOOKfbJbcQF/d5BFizv1yf1q8QmuH9lZawT7g6YH0LDBtlznDXW+ouHTUcGMARs4/3sx/evi+lLqXJymOwxXJDhCDwFYWHCR6t1q7Zj5FRWcQ1lC7rNsDVVEcW7PY6eLvmfcho89WJfbk5FB192bD6WUCneRasgC6i4L/qXrODCN6gWLcb4xRg3KakxKrIe/2VeduusUOrqi9sb34VUi68c5M+ZvB5J6VjDRyGLmvxXOKd7ScztRWH5f/8AGQu9NUQtDdJpyM6j90CVwZGph9k8a/CQ5PISsDnJTjy0Ri9B017ne9/ydZuQyhC802YCR9wLw8xzc0=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5FF76140010
+X-Stat-Signature: 6wspb5tykjoq8sx18t1zppo58u18tdjx
+X-HE-Tag: 1763442974-695163
+X-HE-Meta: U2FsdGVkX1/glo6Mgvi3vjFAD9FftkFXdT0tlmnvoCXOgJ4q7sYCmvi/dIF1ShM8nKtiCWlIftg3pGSXbo9FJGLHbHNmA2l+pMvfbe8UBqcE0wpUeNMgoQoFOamtBDTSQo1Wq9iVbMvqq8otGL8wP9ZuczEbYr27YmOm9dwJBgPQtt/6eUGwWt6fzXav7lFiwGfOjc32MzeeEjJtpqse99gy0jDKyQP1Kh6fM01mByhf6gz+w3uSSqTzopJU7F0HHt9vaG8AZgFnzGZhlNjUgZ90cB8cMTvxNN6kDw1dkfFEdnOPolAvebGShIrBFGcpufXqnee57xrMw8b+noYmGlPn+AuqfYA2yRIlDQ9niP8RX7qNlFyB1Y+68cag5Uylxi76zXe45IcvYK8z85imUiRb2Kvx22cByNAOKpaUMznaWgyNvOOamSFFk1I75OWqlGy26GXXyTHsilaJWW4IUJj5iYvVL2pDXTHU5fpkP4y+X8MvUv7rTqPSlCVMNu2tt3u7gIzm/RgXOm+o5eNZyOCRq+CmHLkamG5NTXC6W4yzQaZ+WGMnYD3y3hCM97pel4Mph9GdQ6GHu5YG0DP4ryqIdS5z2O+2nquDNafZ/Zkki2ekx86w7gPEJLhwIIZ1nP6K3s5IbhEOKx3C9SLbt48EG8/RhgytD74aHRxmU4ScNRgsOZU4EdkinA8yngiKt05LDsCWLqvoE+nesJoduSVwj62K8WGeaS8z/IE7KwRtXCADFG+l2mMvJpSzERbX/NyOZ1qhiQtPcs0Br/JX9wbg4uM8R8XQhHadW8UfOeBFn1SLc4MMqzMxpRyqaYmPsHFBxHpU16/fXOuad8hQVQTHzwNAjqLhVtutFTDkmJnE1HumgUKm0YZaH+Vm7/czcGorvb6mu6JuNwlun4NtETSM0ZEZ8e+Epg8oQ/n2Yb3FxWACr9D6uyUCqYbB1fhlf457KNBSWR4ThpN0e+L
+ SrD/+z10
+ QnstoeBjtoabxW2bwai83gVwnbuPov0IcfKz3jMOKdKBu2nDkRnR1mf8ASSAcNRuHUlZZk9rICAOCJgo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,92 +109,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Don't bother to store the dentry of /policy_capabilities - it belongs
-to invariant part of tree and we only use it to populate that directory,
-so there's no reason to keep it around afterwards.
+Quite a bit is already done by infrastructure changes (simple_link(),
+simple_unlink()) - all that is left is replacing d_instantiate() +
+pinning dget() (in ->symlink() and ->mknod()) with d_make_persistent(),
+and, in case of shmem, using simple_unlink() and simple_link() in
+->unlink() and ->link() resp., instead of open-coding those there.
+Since d_make_persistent() accepts (and hashes) unhashed ones, shmem
+situation gets simpler - we no longer care whether ->lookup() has hashed
+the sucker.
 
-Same situation as with /avc, /ss, etc.  There are two directories that
-get replaced on policy load - /class and /booleans.  These we need to
-stash (and update the pointers on policy reload); /policy_capabilities
-is not in the same boat.
+With that done, we don't need kill_litter_super() for these filesystems
+anymore - by the umount time all remaining dentries will be marked
+persistent and kill_litter_super() will boil down to call of
+kill_anon_super().
 
-Acked-by: Paul Moore <paul@paul-moore.com>
-Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+The same goes for devtmpfs and rootfs - they are handled by
+ramfs or by shmem, depending upon config.
+
+NB: strictly speaking, both devtmpfs and rootfs ought to use
+ramfs_kill_sb() if they end up using ramfs; that's a separate
+story and the only impact of "just use kill_{litter,anon}_super()"
+is that we fail to free their sb->s_fs_info... on reboot.
+That's orthogonal to the changes in this series - kill_litter_super()
+is identical to kill_anon_super() for those at this point.
+
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- security/selinux/selinuxfs.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ drivers/base/devtmpfs.c |  2 +-
+ fs/ramfs/inode.c        |  8 +++-----
+ init/do_mounts.c        |  2 +-
+ mm/shmem.c              | 38 ++++++++------------------------------
+ 4 files changed, 13 insertions(+), 37 deletions(-)
 
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index 232e087bce3e..b39e919c27b1 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -75,7 +75,6 @@ struct selinux_fs_info {
- 	struct dentry *class_dir;
- 	unsigned long last_class_ino;
- 	bool policy_opened;
--	struct dentry *policycap_dir;
- 	unsigned long last_ino;
- 	struct super_block *sb;
+diff --git a/drivers/base/devtmpfs.c b/drivers/base/devtmpfs.c
+index 9d4e46ad8352..a63b0ff0c432 100644
+--- a/drivers/base/devtmpfs.c
++++ b/drivers/base/devtmpfs.c
+@@ -70,7 +70,7 @@ static struct file_system_type internal_fs_type = {
+ #else
+ 	.init_fs_context = ramfs_init_fs_context,
+ #endif
+-	.kill_sb = kill_litter_super,
++	.kill_sb = kill_anon_super,
  };
-@@ -117,7 +116,6 @@ static void selinux_fs_info_free(struct super_block *sb)
  
- #define BOOL_DIR_NAME "booleans"
- #define CLASS_DIR_NAME "class"
--#define POLICYCAP_DIR_NAME "policy_capabilities"
+ /* Simply take a ref on the existing mount */
+diff --git a/fs/ramfs/inode.c b/fs/ramfs/inode.c
+index 41f9995da7ca..505d10a0cb36 100644
+--- a/fs/ramfs/inode.c
++++ b/fs/ramfs/inode.c
+@@ -110,8 +110,7 @@ ramfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 			goto out;
+ 		}
  
- #define TMPBUFLEN	12
- static ssize_t sel_read_enforce(struct file *filp, char __user *buf,
-@@ -1871,23 +1869,24 @@ static int sel_make_classes(struct selinux_policy *newpolicy,
- 	return rc;
+-		d_instantiate(dentry, inode);
+-		dget(dentry);	/* Extra count - pin the dentry in core */
++		d_make_persistent(dentry, inode);
+ 		error = 0;
+ 		inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+ 	}
+@@ -154,8 +153,7 @@ static int ramfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 
+ 		error = page_symlink(inode, symname, l);
+ 		if (!error) {
+-			d_instantiate(dentry, inode);
+-			dget(dentry);
++			d_make_persistent(dentry, inode);
+ 			inode_set_mtime_to_ts(dir,
+ 					      inode_set_ctime_current(dir));
+ 		} else
+@@ -313,7 +311,7 @@ int ramfs_init_fs_context(struct fs_context *fc)
+ void ramfs_kill_sb(struct super_block *sb)
+ {
+ 	kfree(sb->s_fs_info);
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
  }
  
--static int sel_make_policycap(struct selinux_fs_info *fsi)
-+static int sel_make_policycap(struct dentry *dir)
+ static struct file_system_type ramfs_fs_type = {
+diff --git a/init/do_mounts.c b/init/do_mounts.c
+index 6af29da8889e..810878fb55b6 100644
+--- a/init/do_mounts.c
++++ b/init/do_mounts.c
+@@ -507,7 +507,7 @@ static int rootfs_init_fs_context(struct fs_context *fc)
+ struct file_system_type rootfs_fs_type = {
+ 	.name		= "rootfs",
+ 	.init_fs_context = rootfs_init_fs_context,
+-	.kill_sb	= kill_litter_super,
++	.kill_sb	= kill_anon_super,
+ };
+ 
+ void __init init_rootfs(void)
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b9081b817d28..a38f71519813 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3858,12 +3858,7 @@ shmem_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+ 	inode_inc_iversion(dir);
+ 
+-	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
+-		d_add(dentry, inode);
+-	else
+-		d_instantiate(dentry, inode);
+-
+-	dget(dentry); /* Extra count - pin the dentry in core */
++	d_make_persistent(dentry, inode);
+ 	return error;
+ 
+ out_iput:
+@@ -3924,7 +3919,7 @@ static int shmem_link(struct dentry *old_dentry, struct inode *dir,
+ 		      struct dentry *dentry)
  {
-+	struct super_block *sb = dir->d_sb;
- 	unsigned int iter;
- 	struct dentry *dentry = NULL;
- 	struct inode *inode = NULL;
+ 	struct inode *inode = d_inode(old_dentry);
+-	int ret = 0;
++	int ret;
  
- 	for (iter = 0; iter <= POLICYDB_CAP_MAX; iter++) {
- 		if (iter < ARRAY_SIZE(selinux_policycap_names))
--			dentry = d_alloc_name(fsi->policycap_dir,
-+			dentry = d_alloc_name(dir,
- 					      selinux_policycap_names[iter]);
- 		else
--			dentry = d_alloc_name(fsi->policycap_dir, "unknown");
-+			dentry = d_alloc_name(dir, "unknown");
- 
- 		if (dentry == NULL)
- 			return -ENOMEM;
- 
--		inode = sel_make_inode(fsi->sb, S_IFREG | 0444);
-+		inode = sel_make_inode(sb, S_IFREG | 0444);
- 		if (inode == NULL) {
- 			dput(dentry);
- 			return -ENOMEM;
-@@ -2071,15 +2070,13 @@ static int sel_fill_super(struct super_block *sb, struct fs_context *fc)
- 		goto err;
+ 	/*
+ 	 * No ordinary (disk based) filesystem counts links as inodes;
+@@ -3936,29 +3931,19 @@ static int shmem_link(struct dentry *old_dentry, struct inode *dir,
+ 	if (inode->i_nlink) {
+ 		ret = shmem_reserve_inode(inode->i_sb, NULL);
+ 		if (ret)
+-			goto out;
++			return ret;
  	}
  
--	fsi->policycap_dir = sel_make_dir(sb->s_root, POLICYCAP_DIR_NAME,
--					  &fsi->last_ino);
--	if (IS_ERR(fsi->policycap_dir)) {
--		ret = PTR_ERR(fsi->policycap_dir);
--		fsi->policycap_dir = NULL;
-+	dentry = sel_make_dir(sb->s_root, "policy_capabilities", &fsi->last_ino);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
- 		goto err;
- 	}
- 
--	ret = sel_make_policycap(fsi);
-+	ret = sel_make_policycap(dentry);
+ 	ret = simple_offset_add(shmem_get_offset_ctx(dir), dentry);
  	if (ret) {
- 		pr_err("SELinux: failed to load policy capabilities\n");
- 		goto err;
+ 		if (inode->i_nlink)
+ 			shmem_free_inode(inode->i_sb, 0);
+-		goto out;
++		return ret;
+ 	}
+ 
+ 	dir->i_size += BOGO_DIRENT_SIZE;
+-	inode_set_mtime_to_ts(dir,
+-			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+ 	inode_inc_iversion(dir);
+-	inc_nlink(inode);
+-	ihold(inode);	/* New dentry reference */
+-	dget(dentry);	/* Extra pinning count for the created dentry */
+-	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
+-		d_add(dentry, inode);
+-	else
+-		d_instantiate(dentry, inode);
+-out:
+-	return ret;
++	return simple_link(old_dentry, dir, dentry);
+ }
+ 
+ static int shmem_unlink(struct inode *dir, struct dentry *dentry)
+@@ -3971,11 +3956,8 @@ static int shmem_unlink(struct inode *dir, struct dentry *dentry)
+ 	simple_offset_remove(shmem_get_offset_ctx(dir), dentry);
+ 
+ 	dir->i_size -= BOGO_DIRENT_SIZE;
+-	inode_set_mtime_to_ts(dir,
+-			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+ 	inode_inc_iversion(dir);
+-	drop_nlink(inode);
+-	dput(dentry);	/* Undo the count from "create" - does all the work */
++	simple_unlink(dir, dentry);
+ 
+ 	/*
+ 	 * For now, VFS can't deal with case-insensitive negative dentries, so
+@@ -4130,11 +4112,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	dir->i_size += BOGO_DIRENT_SIZE;
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+ 	inode_inc_iversion(dir);
+-	if (IS_ENABLED(CONFIG_UNICODE) && IS_CASEFOLDED(dir))
+-		d_add(dentry, inode);
+-	else
+-		d_instantiate(dentry, inode);
+-	dget(dentry);
++	d_make_persistent(dentry, inode);
+ 	return 0;
+ 
+ out_remove_offset:
+@@ -5334,7 +5312,7 @@ static struct file_system_type shmem_fs_type = {
+ #ifdef CONFIG_TMPFS
+ 	.parameters	= shmem_fs_parameters,
+ #endif
+-	.kill_sb	= kill_litter_super,
++	.kill_sb	= kill_anon_super,
+ 	.fs_flags	= FS_USERNS_MOUNT | FS_ALLOW_IDMAP | FS_MGTIME,
+ };
+ 
 -- 
 2.47.3
 
