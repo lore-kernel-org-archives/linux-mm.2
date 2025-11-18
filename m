@@ -4,106 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFEB6CEE342
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:31:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D029CEE342
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 17:33:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 122B86B0024; Tue, 18 Nov 2025 12:31:20 -0500 (EST)
+	id C4D536B009D; Tue, 18 Nov 2025 12:33:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D35F6B0029; Tue, 18 Nov 2025 12:31:20 -0500 (EST)
+	id BFD666B009E; Tue, 18 Nov 2025 12:33:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F048E6B002B; Tue, 18 Nov 2025 12:31:19 -0500 (EST)
+	id AEC746B009F; Tue, 18 Nov 2025 12:33:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA7AE6B0024
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:31:19 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C084756064
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:31:18 +0000 (UTC)
-X-FDA: 84124419036.25.92CD7EF
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EDC51A0015
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:31:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hhige1My;
-	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 991716B009D
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 12:33:55 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FDA5138AF6
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:33:55 +0000 (UTC)
+X-FDA: 84124425630.07.D5BD169
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 810F940014
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:33:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fxn7giCz;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763487077;
+	s=arc-20220608; t=1763487233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=jJZHPmpfAYK3kOvAYzdDDouNFc3+GX3mg/4dP4wkGpE=;
-	b=GnBiMm9YDSnTHMecu69pTw0ANBYj07Q94y7DeHZOK35WHzWNUiMQgYIKRjpVbbnOVAr4Nz
-	Ra5puN1P+CBh1AR40hY8jiC9Vv7fE6o2AtN13teS30fe3mgMvR9m+yjJXO+wVcFDDIFxKr
-	Qiz+Sp+LoVUXUAFq8JUBD2jEMXmld/0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763487077; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=usC0flk7GgYgbibr5mJLj+o6TFk3qPlgDE/q/BlwQuM=;
+	b=wnUK+R7J89e+umsA3w/+PdGQGeez1pc7tuk3pmLeTIXbAkUmIp3+svtzLntSzvzoXfqoTh
+	EUWDyoXSiZOn/8rayUky4Z2OXlqB1JcC84lW3oMsaXAuHPxoLF5GACyaumIbbMq2GNlVWA
+	Z6kSiMUJ0aw3JhvFYh0KU9ybHbre1Sk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763487233; a=rsa-sha256;
 	cv=none;
-	b=EoN5ZiWwdpQZVwJoGEsmbahUYuSF1Iurwu6KiLB3Yt4WsMjw9VhyKvIvQcd89q8OMX5jVR
-	VeeyAMPTpbTkQ82KlLZmIDsScpz9tXMvvWhHbopHVG7CWuPz42SEUjmgXShrY1luEbm1LY
-	kNp6zf23kZTmGx3A3jLuol121rA3kII=
+	b=zMFa7eIGV/elMpwoTqMXD7mxpuT31ZjI6UFMHA2GAy9WWDVISmHEx/o5SoiFAv8n9nfQsv
+	xZyVpBES7ZEwqw8VUwXa+XoY4fnPdh/5Q/rRkhALU4Q5juOIVf983EiGTHD6h5chokv43J
+	anDZOrs7eGIpiHesgoSzX85Mu3/8ms4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Hhige1My;
-	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7ad1cd0db3bso4931306b3a.1
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 09:31:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763487076; x=1764091876; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jJZHPmpfAYK3kOvAYzdDDouNFc3+GX3mg/4dP4wkGpE=;
-        b=Hhige1MyIyDoYSPK4DmbOwU6aNgzSnXn6NR8UqJErAX9zW3juPHDSUwYliE3JS2u9H
-         P1yFhlGbLP1Oxy9mprSb8TpgEhOEGC/Cfa22InbfAorwNVfMrBPUqmOk7YHER3j57PtA
-         kOnfSrF/Twfm7ET3aYXLOxhkVi+YEhaVkHifZ3HERMXXJ6+Jp1kypTaBtKomEyWZdUkH
-         NWuT/Idn8UG+gDl+Gcd0/yep8YvHMe/GADBb/Gjhw4J/K64K4xM1sgtAJ7e43KaE2XM+
-         NuyRg6QMOL4Z32Xqo6wzpeLmpb1XEzg2Q0IBT848xvGqpnZXGA+uXAS+LqlCm3ldUQJN
-         fD8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763487076; x=1764091876;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jJZHPmpfAYK3kOvAYzdDDouNFc3+GX3mg/4dP4wkGpE=;
-        b=TuZga/YE1T9grLPn4tTdiceprLCduD/cxK7LUqvH+e4/cvLjkKit4GS5iwgWoOGIH3
-         yIZXy5LRalN4GBpMpTQYzSDXICFLpxBO8Obx7PtOLGuVObq/yVgbXeWtsTT3HL93VCkE
-         nhXL7DJZdEO4NS3lARknwFex+Ix7PVKkZXVWQaBIHx6Ftpd56gicjAo3wEhe0epvjA21
-         BA7xZ6Empad6cwYqZ3stOD867Otag9ILPzob8jMHkTql8nrnAXobxzL5Y6Wi5jgTXH9H
-         WE5frzNtkG7q0u41kN7cvYV5glXtzEtq5SMTWSF8clMbeyez555v3HB0Cfw7vkVgBLXx
-         5H1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUAEE+PcbqIHgDi0ZX/gYpFnthMxSAdShTnoPhBF8yTCaKN6JEXPzd5A/y5ni1EuDYvkz1w2d37aQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz0llESfocFTaUpDw4mgP0toX4Hm72FlpgWvy55vbZ0IciGQXwI
-	tekXDIdbuzEQ/jN/6UfL/LnwxDT/UJqMeplNoP89I1qP7xiw36ZN93iO
-X-Gm-Gg: ASbGncvp12V/nmaf/9Z0g/9yAheVPFwvKL2VMb6VhYQWo/oYLdAUk/obu7ioFSv2kMO
-	lZZnVwd4a7w4LbKxzRyZiYLtb0BtSsyAIwbEW4yejf+VCUtcF8BWg7HdIptAp4/pHg5f7ecKgYv
-	fROc3/4IJpuiKgvlFdpRc/w2IDGLBPxhcoNFFpYKY/JIHuPGOf5Qz5QHm/4xay3ddaVeCq2ZykT
-	swWbNB/dG8SirHb+PFRCX8M6zpb+VTVyXkAh0Mmwq4h7p9c432QeiErbg/xFD4dFrN/0qHwfdIG
-	SuJ4q2129joGmfLkbGbeB9oY8VhXhifqVNIJFqxmEktJZWIe1F9G4S0efJZpXifSK6cpIDz7Wam
-	hbZubXN3uDRmV/0D/Y+khlzPt6IAa68tb/8Gu7rW/c6A4PkUgcudtyJvwxJn/VupxRYWsxEc=
-X-Google-Smtp-Source: AGHT+IEQrU5uwPDP3B0D60MQHHmGXSAeXE5fv7FgIePf1xPikPaNbxxiXR2fp/Zl+qVssNoTrpyjFQ==
-X-Received: by 2002:a17:90b:3843:b0:330:7a32:3290 with SMTP id 98e67ed59e1d1-343fa751ad3mr18844371a91.37.1763487075532;
-        Tue, 18 Nov 2025 09:31:15 -0800 (PST)
-Received: from dw-tp ([49.207.232.208])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-345af0fcc0csm1694884a91.0.2025.11.18.09.31.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 09:31:13 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>, Christian Brauner <brauner@kernel.org>, djwong@kernel.org, john.g.garry@oracle.com, tytso@mit.edu, dchinner@redhat.com, hch@lst.de, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz, nilay@linux.ibm.com, martin.petersen@oracle.com, rostedt@goodmis.org, axboe@kernel.dk, linux-block@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/8] mm: Add PG_atomic
-In-Reply-To: <aRcrwgxV6cBu2_RH@casper.infradead.org>
-Date: Tue, 18 Nov 2025 21:47:42 +0530
-Message-ID: <878qg32u3d.ritesh.list@gmail.com>
-References: <cover.1762945505.git.ojaswin@linux.ibm.com> <5f0a7c62a3c787f2011ada10abe3826a94f99e17.1762945505.git.ojaswin@linux.ibm.com> <aRSuH82gM-8BzPCU@casper.infradead.org> <87ecq18azq.ritesh.list@gmail.com> <aRcrwgxV6cBu2_RH@casper.infradead.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EDC51A0015
-X-Stat-Signature: pojkoq4ztdeg3bodw3qiq8yk3in64nsz
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fxn7giCz;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D6DB408E3;
+	Tue, 18 Nov 2025 17:33:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62976C4AF12;
+	Tue, 18 Nov 2025 17:33:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763487231;
+	bh=lMCMay4OPV+EPmMwOUTyyXs4Bv2SJ+rfqLlyshkGMVk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fxn7giCzujVYHabc0Viil4nTOhRJkJImVxhMvBoYAZm8UMdE8WkL0IEmq48z8t4q/
+	 2L2usb0jNNPAQ+9QHlFn7d61iFAcqDEi0YpMl75gJrIP88ywm+ohXHafRwoO1KPuzV
+	 5JyBNmd4VcM+XKpcGhTJV6aTZoOgXDRyNa8YOa2A=
+Date: Tue, 18 Nov 2025 09:33:48 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Andrei
+ Vagin <avagin@gmail.com>
+Subject: Re: [PATCH v4 0/9] introduce VM_MAYBE_GUARD and make it sticky
+Message-Id: <20251118093348.9dac5d7142dc6df182833612@linux-foundation.org>
+In-Reply-To: <cover.1763460113.git.lorenzo.stoakes@oracle.com>
+References: <cover.1763460113.git.lorenzo.stoakes@oracle.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o6che8ayt31j6gygjgcw88trmeynmubc
 X-Rspam-User: 
-X-HE-Tag: 1763487076-67967
-X-HE-Meta: U2FsdGVkX18J0jrs+uOBujdv1ippohFJD1s2mmuIlPFS6q6MxAo0lCjdiqwujNYtqAe8m+vvGyLCX/bh9Jn7Hq9SzMqRlDat8nJTe/cuiGOPmMmoNpU3tA/mjLX/0TTJSsXUcQPsXOepFAfYPIwFH3SvNQAPX+ohk679URlac6VBSjluKW9FMlRRVawHDtp/RRPcNcjar5XikIwdPj0yF9s8yJLZ2tMdjEC4O75bpUflmFpyIxX0FxPdrISOV1pshbkQBuW+76zVdKKRHidjZNslbIfP1pmFY3KL3iNVPAZT77BngtWefoCOh0F8RzltYZNUi2zbEYBn5fCb6JZ3888CDpKOTd8om1C4d2PlR2aelITeCQPTHsXZ+O4MYLZ6g9y0n7AA762GGz5guNCJFRTiPsD6tKKbxsI8PN1Q0rJ/Av4Rk97ExM0/umMW/mpTdqLDVm37YS95iWAynQeNrC2j+us6k3keaj/XZB4tqTeQ7Y/6FPBqto/+baGAVgoPS63OGImlL4fbbgiRteb0UDorQZSy7GabN8Nr/5r6sfbOZIKrAUjvq1i/wt2Y3CdecZBje7p4/M7o8w4YQzNL1Ky3HrgLI6SCYuJJ93v6pzs4uFdjfiV4kTByA+KGqDEM/lx+3ytj9o5z+o32N5gxIC08L4znraSpmlvyAD7AHpfbaR8ZdVMUdFz+xQ6z290CAf+L4zGt76tPWt5IXjVi98Qs9lDfRgYTDUDAa8ZAVlDPN0i8lEplAz2POxUCCbfbHInHEIzDZ4D6utaPBKfnr7wR5w+nRSuk3T3h0rf/hi+dnMZxPFRKr3LTq5XtQTWCX73sSZGMMCZF1DT6OE+ERJVTVHClfv4WOP1nYN9R8Y1/3/6WITDCkwy02OPa5TqxU3Er3MJA3zuIKiHaf9UoJNX7vvuPkuIrEj0DCuPAV3FlBU4s3ATB6ijWh2UqP5VVdUoUNwsGbhrDm7qqljS
- 5lw7OWsc
- xCWk8Xm50FQhj9KiucDP7JYBhqHV1ay79wNEcrIkxIOZFJvg2zl5ZD8TXh9oSr0NOMCjoubiRbatYnFxzjlX0ByWMRQ29Bxhi9M0FAOnXqUUcawQG/awW/KcFIFcHP51plH1rXaIikpcco7JvP4rm0y+D7Wra21QztvuawQgPYEh+3RLxVNQAcMw3saauQnXxj6DOFPvR2ZxvlCwUBhncfQrQIFaxL1ulRecMWaHzPbyuyBsLoO/wHaJoAF1gVWh91Dg5DfaIFfe1NWB7AeCJvgWKSsMAzWnT1j3Mcdt/gpWGS6vt3CIuWZtwtqXjMBFvP0l9TDkKf+0Bxf/XMVP5C/TYC/6eEEYTurM7NPRb482swpOjZhTmR8TKoWHQYXpUP31xRGVkhSBk1nyHzYTALkVPKU9VAt3Wi3vdN+1EIzIzNw4oPo/xjmljqYEn27H94bvDAfaAELli4E5HSDo7q0tN+SYkKp8DvWHsWyu/zU5Izmk/dsu7A/61FyRsBRQ+ZqxkPHWfpySuqc5pjTdyPn6n9l3jZKxrIgfQ/cPiVEQJOv8=
+X-Rspamd-Queue-Id: 810F940014
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763487233-336435
+X-HE-Meta: U2FsdGVkX18LSu8yWYXVrB3Rau34HUBwEv86YKK8y5j7vnFt272Zv3yEi6orubC0om+GlyPbsYmcNAmRfTwIkd3MN6NoVc/he4V6Nizcn8nGypJGflPFiZNsuz8rkpYBEXIcO8cDfe9koiDvXs4uilP9bq0Byw9PhNDFZVK/ogygzJTHt8xYmleH73SdTGxOCrZYT10Dd6q8Cdrn9SU/gs7MT+iLiAI5S1NyKUtDdGSJtMAd2QaD2AZISqPfXeFNpP40PUYVW2oel5WwPMm4Qglgx8XS8qqef+3QpqFDlRy7GHTj3UvtmwOoH5dmBGZNc/YF2jbLRcTrjQ4I3XeoLme/R2bL9iknPZi8hNt5xGTpmEPT1LrYGdpX8UUxC/8c5um6eTp77bENPTZhNKKM3Ad3OX/CsGxMJhEG35XyExQV6fnUlJlZE1usbO7nrXG7iWyB9f1CclzpogYv8dJr+UlxySDcS922N8SU9UZRFSKqjUOpg5i9fJTb5btvbdIvvWht/mecKrtrxsl1Y0hysS2UHkMNBuKSzpCqyaEGV8CU5DFxEBWHX5tlqqAjNBtP0Hmr/IKSUT0T+TAY8q+AlTrAb7nUjmPE7xzPj1LSuQuM4UYWaARtJfDFvdfkcEbyZhs1uHqsBncBa8AVbuNysxS61sPehRZbNjzN4ahKR4hb1wio/UamqTy28/cpW56qaZaqyXM7UKKyafR+mr7fxRWHX7/1LR8F9U4zGSkOSQ2L6qyCHsKx0T6+9nxpfPOM6wFXankKp/xMUr83TixZjrsUOyS8yAVTZqTDzoXNJca7lHo16beX8YNkHYodjkhbYP+a/XNkO75aJQoYcaHs2aVFdPx9bqQxhZl3qm1s/TmwugoHI7Raa9a8ge2gyaQ+cseL26SxIV4+LJadePHUtSRg9Do+u40UCcP/sy+m1aI7BFHLpAxqsZr5un+DnkAgWU1lCFTFmFWQFZT45ol
+ a8PNdl44
+ fF8nBV1tYrp2uDVOYKDeljlAUg4DHYMBUgHbhQ5PkXfpG3StUdZlT7LX8WCHsSm3FLhkG5dzLBE8cjfVCbP3DoUInBeQAoMfEO+D6Rj4my7yc/zhvqNff63MfWHCNohHoPxK9eRs2zv0lxXGrZdGWt0U0KN+U4yIpAYYJPDEvoJknoHHD9MzuAlNK5aEAleX1bC/ImKex4zfjUVOIx9is8xXPwTzIg7AenOiP/vVVD3hH8Sc0qktGntMlXgvzuipxKv59B2+oHO41vi2vUwfwfrlX66tlpEfPYdY6M45BnwixKjgwZOq2rqT9ZOaSKb2GAj/6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,60 +102,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Matthew Wilcox <willy@infradead.org> writes:
+On Tue, 18 Nov 2025 10:17:42 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-> On Fri, Nov 14, 2025 at 10:30:09AM +0530, Ritesh Harjani wrote:
->> Matthew Wilcox <willy@infradead.org> writes:
->> 
->> > On Wed, Nov 12, 2025 at 04:36:05PM +0530, Ojaswin Mujoo wrote:
->> >> From: John Garry <john.g.garry@oracle.com>
->> >> 
->> >> Add page flag PG_atomic, meaning that a folio needs to be written back
->> >> atomically. This will be used by for handling RWF_ATOMIC buffered IO
->> >> in upcoming patches.
->> >
->> > Page flags are a precious resource.  I'm not thrilled about allocating one
->> > to this rather niche usecase.  Wouldn't this be more aptly a flag on the
->> > address_space rather than the folio?  ie if we're doing this kind of write
->> > to a file, aren't most/all of the writes to the file going to be atomic?
->> 
->> As of today the atomic writes functionality works on the per-write
->> basis (given it's a per-write characteristic). 
->> 
->> So, we can have two types of dirty folios sitting in the page cache of
->> an inode. Ones which were done using atomic buffered I/O flag
->> (RWF_ATOMIC) and the other ones which were non-atomic writes. Hence a
->> need of a folio flag to distinguish between the two writes.
->
-> I know, but is this useful?  AFAIK, the files where Postgres wants to
-> use this functionality are the log files, and all writes to the log
-> files will want to use the atomic functionality.  What's the usecase
-> for "I want to mix atomic and non-atomic buffered writes to this file"?
+> Currently, guard regions are not visible to users except through
+> /proc/$pid/pagemap, with no explicit visibility at the VMA level.
+> 
+> This makes the feature less useful, as it isn't entirely apparent which
+> VMAs may have these entries present, especially when performing actions
+> which walk through memory regions such as those performed by CRIU.
+> 
+> This series addresses this issue by introducing the VM_MAYBE_GUARD flag
+> which fulfils this role, updating the smaps logic to display an entry for
+> these.
 
-Actually this goes back to the design of how we added support of atomic
-writes during DIO. So during the initial design phase we decided that
-this need not be a per-inode attribute or an open flag, but this is a
-per write I/O characteristic.
-
-So as per the current design, we don't have any open flag or a
-persistent inode attribute which says kernel should permit _only_ atomic
-writes I/O to this file. Instead what we support today is DIO atomic
-writes using RWF_ATOMIC flag in pwritev2 syscall.
-
-Having said that there can be several policy decision that could still be
-discussed e.g. make sure any previous dirty data is flushed to disk when a
-buffered atomic write request is made to an inode. 
-Maybe that would allow us to just keep a flag at the address space level
-because we would never have a mix of atomic and non-atomic page cache
-pages.
-
-IMO, I agree that folio flag is a scarce resource, but I guess the
-initial goal of this patch series is mainly to discuss the initial
-design of the core feature i.e. how buffered atomic writes should look
-in Linux kernel. I agree and point taken that we should be careful with
-using folio flags, but let's see how the design shapes up maybe? - that
-will help us understand whether a folio flag is really required or maybe
-an address space flag would do. 
-
--ritesh
+I updated mm-unstable to this version.
 
