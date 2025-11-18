@@ -4,136 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E07CEE328
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:38:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10F02CEE327
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 15:46:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23E646B0007; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
+	id 49E6D6B0062; Tue, 18 Nov 2025 10:46:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 216566B000D; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
+	id 476366B00A4; Tue, 18 Nov 2025 10:46:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12BD16B0011; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
+	id 3B2B66B00A5; Tue, 18 Nov 2025 10:46:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 02C306B0007
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:38:12 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C732B1405DD
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:38:11 +0000 (UTC)
-X-FDA: 84124133982.04.2BB1F44
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C44D514000F
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:38:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Vw8ZZuzd;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BE606B0062
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 10:46:15 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE57BBA3AA
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:46:14 +0000 (UTC)
+X-FDA: 84124154268.16.EEEA088
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5630AC0008
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 15:46:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ct0PkeIs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763480773; a=rsa-sha256;
+	cv=none;
+	b=31t/6LsyKYXSZMGiUcu36skRVo+wl9PZo0ITWRI5RF3uBkPcJG7dTnUCEKsqGrJML4+dmj
+	s3aPvG7+uWYQLHEhKbjQvh2+nn2x6XCL1WdEalipIjojIfKtxoHWXxHJvKNKL/3wOAqCVu
+	6nDAzBy0/iQ5xAd6wAAxp+JVloN8hfc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ct0PkeIs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763480289;
+	s=arc-20220608; t=1763480773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B6uekXVR+jn/Plqa3NW/kjSUDt55yanBt9ufFPxdFs0=;
-	b=A35km+iq+I5Q09QVUKYIGCVFxqjmM0Dfpv9oacwzGAPmaHnbf/E+VmwrLdh6xkH+rUQ09x
-	Zny4c3JfRXXS7uIkn8eDakKnCgFceIBoP3nSniNfzzWHHepkEzZzEiyNz30M8d8SeoG+0n
-	gtjSKLShf67zCt+W3nPZiMyRNJ4Q04s=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Vw8ZZuzd;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763480289; a=rsa-sha256;
-	cv=none;
-	b=PFtMJAc/1O96GY/BxZysLXqYYmStt9O5KqUl6IN/6SUOzzjR8UZjdTZJGYu9X5FkMmZBC1
-	bDu6Iz1IIG58XJrtB5hxEItLPnliV7pdX+L0/h0kaK0sDixwPvKg2gsN9HSC/xxJNeRDZD
-	va+kKlkSB4TcL4e5hIUzw2TUVTmxQq0=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-644f90587e5so2207045a12.0
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 07:38:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763480288; x=1764085088; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B6uekXVR+jn/Plqa3NW/kjSUDt55yanBt9ufFPxdFs0=;
-        b=Vw8ZZuzdYH67dP7PLEg8KIeZBidInL5KGqy/DswtL+GyPT3wbPnmTaGQHA4MAhcRPJ
-         etgh2t8x2WTzaXpeuOtGnYdGmVqnLnc48G2hfhwJGV8+dEgSt6Xhjb779d4l4mBTtALO
-         IwZkUDI618D4Dnt9bFSGcrkS1V8A/N5aIHb9h64O9q0mrFipRgtYHAUmhd3VflHcgj+1
-         HLr4IPlcXPpUSTZO2JAxY0UqYaEhoF+CGBXmSkRWzQXMTxcMesbEXcdwsz6NbVTNVA8y
-         Ug2dc/gf+vw76hF3wYQGlu+SSfGmjlyHdIFegaVsVeSdDR5WJbrCk4WelySrAZPGTlsi
-         cVsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763480288; x=1764085088;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=B6uekXVR+jn/Plqa3NW/kjSUDt55yanBt9ufFPxdFs0=;
-        b=osqAIOBXLBQbXJAH/hWGFdVUNaKphc76LG1zlCK+wrlNj4bvG1PXKP00PN7GHsYT7m
-         Qb5ZTVBIp3QxCrq3unt5odEN8V2fL0K+3Nx10gRqM2RdhzXAoM+TzepKaGSgWwdr+etu
-         9JeLopMbnF2/zswiaI/Jhn+PQHasVFSQpCnNIRW0ggMIWdEneSJND7aG142SYVpuxwHs
-         j3ANNb2amHDw98npiTFiYs3KcJZmk7eqbjpx/GO2mXeXz228MYCzSWlNnRG8PliZUVSu
-         4ez2UmuAaLdV4yeAuq15JPXxoe/bNbk6xyRAyffu5TQ/RAQcigzqRj6dFhXSJiFOojYh
-         WZJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ8tE+02aB/XVaJPeeoJ0mXPrZeHz1u9ObZtH6xfyw502NyadrtadJxXsjXOzkhSQae1eAbhyygg==@kvack.org
-X-Gm-Message-State: AOJu0Yw+D5F0/RoAZ/JmkoTYb3f5RxbFG3qBddmQY+UtzsdtgF0dVNEy
-	g3C7Ke0TnLaVgTC7ypg2IVNIvdTdq4ikGsFLUQgG/cupZnpK1ZsFPgHYWjqf8CtZZgHxmajrz2/
-	pNbpoy3g0+ovZSMPGIAoy9BSyy8vZJot90vWzbCtoDQ==
-X-Gm-Gg: ASbGncvXDNqinwgazTdt3/fBPKn94aNYGOB9oFkkK6Mn+T9d9/JgIRX0DWnKYmN/wWM
-	dgdyDUcaCITZKFlybDlqYhsL5CIrGxbwDBW08W0JLaYmmZv3w6On0HdI9SqwFe77ULHe96aKmh0
-	EO04FVsX3dv9oMaCV3nSoJIzW8muSFnGJuDC1FCUfAwbTBRXbG6sP2IZ620m/n7zJzF9aMFHDmM
-	bvgkWckCIEgts5tTq2Euiq+TEzF7PTCR+rdNzmTJgSpKrsIByVz+kjcHZ7Cyoa2xGeJ8unNwJkj
-	AtA=
-X-Google-Smtp-Source: AGHT+IGrjPyW93BjIwBqBDRqzXa58mN2pSY6sOqPun6CMHKlu12QPm0Wx9wn3sNAxL6K2ljWwKgu92DgB9iBQq14qms=
-X-Received: by 2002:a05:6402:2112:b0:641:1d64:8dce with SMTP id
- 4fb4d7f45d1cf-64350e8e0fdmr16538410a12.17.1763480287895; Tue, 18 Nov 2025
- 07:38:07 -0800 (PST)
-MIME-Version: 1.0
+	bh=HtsS7C8yIMTREBBn3R48M3vH5ibHHbeU/zW99MbkXqo=;
+	b=SAn1cFc86f+YFUsi5OGxTyYyr/SjR0+anPfeDXXVTTmrEtvw8TNA7NEQUJqYvXspuE5OxK
+	Zd2Szrngu8UIg8MwithqEFlI1U0k39OgVZcQAW85b4gHdAz3SbYmh6K0SM8hOW7LSE3qBb
+	RwVB9ogxaWyKHbFAQloD8zY4wswwiP8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C99F60125;
+	Tue, 18 Nov 2025 15:46:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA31C2BCB3;
+	Tue, 18 Nov 2025 15:45:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763480771;
+	bh=NvD+wD7hmOypGfZvut1BGQBiSML9gfkbHDd/jrJynOE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Ct0PkeIs59PlX7LBGwYra2RgxeAFbO3eu3CW387XaQ0vnkjlGKnXy1w+S0G/oOYtF
+	 3ZEbbLXi1D05J9bfC9Kp3vmdRxAT/lXrLySZHirFUBiRot+9TB2RrRq26O7Vyp+RfT
+	 gNP+w3+ra/xuIrI2I1+G366IiaCHP516oJrICW32YHHy2eRDL990BKAN74RCPNZofw
+	 fpDz1EdIYhN3k5zNwgWwtSRzGcmztFet9HWsWS4eqFTwcAMlf1L0X+iaqRkb9oxm/M
+	 p287zHialGlUvSLnD7038deHegCI7IXtkUuXEri/bq2MleKqO/m3O6QK9Fw7NLVrbR
+	 +OOcRa9wAkakg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
+  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
+  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
+  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
+  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
+  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
+  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
+Subject: Re: [PATCH v6 01/20] liveupdate: luo_core: luo_ioctl: Live Update
+ Orchestrator
+In-Reply-To: <20251115233409.768044-2-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Sat, 15 Nov 2025 18:33:47 -0500")
 References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-9-pasha.tatashin@soleen.com> <aRrtRfJaaIHw5DZN@kernel.org>
- <CA+CK2bBxVNRkJ-8Qv1AzfHEwpxnc4fSxdzKCL_7ku0TMd6Rjow@mail.gmail.com> <aRxYQKrQeP8BzR_2@kernel.org>
-In-Reply-To: <aRxYQKrQeP8BzR_2@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 18 Nov 2025 10:37:30 -0500
-X-Gm-Features: AWmQ_bmD9p5Nn1RKDLqeZ98HzkdyZzvLR0FYSVXPyrJripjLvaLejIY3K1PEUqg
-Message-ID: <CA+CK2bASYtBndN24HZhkndDpsrU1rwjCokE=9eLZUq2Jhj6bag@mail.gmail.com>
-Subject: Re: [PATCH v6 08/20] liveupdate: luo_flb: Introduce
- File-Lifecycle-Bound global state
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C44D514000F
-X-Stat-Signature: dcy4e8gwsbf1ga3o4enc53ekd1ztz7e4
+	<20251115233409.768044-2-pasha.tatashin@soleen.com>
+Date: Tue, 18 Nov 2025 16:45:57 +0100
+Message-ID: <mafs0ecpv4a4q.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5630AC0008
+X-Stat-Signature: pdsicdpry8yjewuxk6yrshoe4niz67of
 X-Rspam-User: 
-X-HE-Tag: 1763480289-308193
-X-HE-Meta: U2FsdGVkX19Q3UDnRZP2QQSPt1dyiuYrT1YuEn7y2wIgMp/gX0E3pXzNLiA2mV95oIoE6k/FSRcM0E0l4dQfXO8xpebk9c51swypoJASoNpIyB+SMa82LfHbVSPsUoksrlRgDiIIO2eAowFT7jK9494ILCXwa6C3kDU0hQ6xbra/rzQtFdqZi15UC2rD4Dw2JrE9Zr97WtVgKL4prK10DzyLc0XvU9bM4ThA65ADlpL+7zb/lHB2x2TXrCJkpNtb646CzrhHkl3IVNoqc83ONQgbTPEvUGssR/0V8aBnFSJ2ncLHH4pYbIu0KaBhuEosEn0UbdgCn3Nv1jlj9UWBgHRCgotpLLokU1W90p2UhuFtz4F1xVG6DNed7KrV1zH0+U5Iemzk5TDgjtIpuBtx3m94C1RVv0adj9M7BIe5TeQsdXVm0zryRzoCV1M5Xs/xpnW825vlQ6yCby6V/2ULPXQBCh8IaJMEJ7eGN0zh45/08kXyK0fWFV6Yw0dEbNhOsftoD7iYD5UI4nd41Ba4zzeSXPZ6KlBsLefn20Zi8M/w//1aYsTU5aWHkj9qObX5Uz+7SCBzupmEPX8G+MemxtN22IR873yBd/AZz7m4RWa3jq80RhTLGFk8rIGs8TUfVSqceLv/0hq17vx1ZIG8iCjoDtKg5tYTlHAE3UproOatwNlmcqBZyjNiFYSwnsUmEhpHMSSFxBfhzjExW/xZ/dnnQF0nKwUuhb4eZgZxs4uXXqvkSRPnc7LXj8arTHssKiIVHQmhe9IATikm3V1VJ65FSChPIeWiWdiq0UGK04vvwOtvb64cxrNfE71vU68hfoDcQOs9+BexUxypKDdD1L/mv/tgiQmVDh5qJ/RndvjNq55Hpdrk11TSLCyRybqX9bCuazByvLt5zPyYdCulWJ2LZG+M3vmPSy2NcyN/SkaFB+AhzrG00i4wIMxqDF5HYzRuRvcPRIODc6MG/pH
- OYq3NVMJ
- tnKkVK8/0LuoaxwgR6XFm0ggp23v9ZNTtKs5S5SRMlQbbjtyef9vwX9VWfBKurLY0iEUh7qNklh99Ojckm6Qoav5OBEPfk/WFVlgOtdYaK0XCklvKjkfFU7b3/clVmXJoInoLEx1OuLFuSzuIF9XIUb2OiMsTIu9/ZHJsmB6H256k4pQokGFVDkmho0VF6myWiXuiNTEjIxoycOKY5L2dbUmNGchmtwyBu1sIDhBNW+5VLSvKUMoZ1dp+POy1qgUMIX/Yn5CMVhOEXZNKWn08AgdQ7oh6bl1frd8ius9acxfTQlwE0kPncQio5cNZqpTs5c57rp8yaUloj9c=
+X-HE-Tag: 1763480773-235205
+X-HE-Meta: U2FsdGVkX1/+tfILlrWdy3paIMRQ0NpfL01+42y9TZvlw4Xng6A4lumAFZLinXMlxzXEVwZ+G9SO7+zuel/Mc4g7QizqsjlwoE8pGdwvTZMmSF43y5EdRnXwrND3K/g3+n5hDxQ9Im7yUXoJJBeQaXprpZUKKSJljlfsBZMLCi7ZZhjYnv8WeTuPqbSyERYvP42/gcWbqgAvJAsCdj4DZIVze/tknKb03C+WWOxypzGT7rxZ87IOCE95FAN51eDUuXP53R1lVl4LL8yEnJb2x2yimLJ3TLjDRD64Qnr6kg2ck5pEH1A8Nu+fzrRedb559/voTVihQzCapb1xkWv5Po2b1jPiVaMlZsC55AfdqFgOJH/AVsozj9kb+lMEpKNZE3FQ5hXbH1ZYJBp1liw7KEGp3Ob8LAD3ui4mj81O7h4vtb+73WaZA7cqOhqEkXySiy7L0OJEKi96xGJPAv+5M3Ka5tIQ0u4H4Xh0PCbiGxOIYxTsCZSQmr+T5zcoGpfPWmmK2Qfpp7stvn1Xad9ve2Kz/V5PncowB4xplCy5Ru0LnR30ovAiPbkEKDzlXXYT1TU1W+ipRfNADcIuiO97VOI4qQ22jvha8PSjDJx2Q8gj42EVUjJmX+hI4K9sC3SYpDaUfXhFUHtL79rvO/4iZW+ycGin5M+iqRnLeeqUlUpMuw9ebt3qx9G2Aj63CmhqxflDe4Oj1bu+D0fsAC/jNwqaPIxPjEl3ybCBbREFBiGDgtgAxgdMUIo5104jCB5ALOgp90CMQp3gOX7RCTs6fsebxqwr9B/BeCxAzS0ToT+KpKQ0+BIQYai02gRxB0LABd6/lwdPA8ngBddFQ0nVunjGDYZfwYcVHUK9qJ9hxT9eqd0yrt0ijRxoJmbDvZIWH1hyr4j9qbPpRaIvedMcPDE9zXVCmoZXsZuIKgE8YCuNdzSHyKr0uI2kcFJDV7F5LScJeWXKKip7+fLJWrR
+ bJbq3zBD
+ in0zIrG9gZnxEovwmQpdhXW4JSs0yxevm9ZGZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,52 +118,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 6:28=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
+On Sat, Nov 15 2025, Pasha Tatashin wrote:
+
+> Introduce LUO, a mechanism intended to facilitate kernel updates while
+> keeping designated devices operational across the transition (e.g., via
+> kexec). The primary use case is updating hypervisors with minimal
+> disruption to running virtual machines. For userspace side of hypervisor
+> update we have copyless migration. LUO is for updating the kernel.
 >
-> On Mon, Nov 17, 2025 at 10:54:29PM -0500, Pasha Tatashin wrote:
-> > >
-> > > The concept makes sense to me, but it's hard to review the implementa=
-tion
-> > > without an actual user.
-> >
-> > There are three users: we will have HugeTLB support that is going to
-> > be posted as RFC in a few weeks. Also, in two weeks we are going to
-> > have an updated VFIO and IOMMU series posted both using FLBs. In the
-> > mean time, this series provides an FLB in-kernel test that verifies
-> > that multiple FLBs can be attached to File-Handlers, and the basic
-> > interfaces are working.
+> This initial patch lays the groundwork for the LUO subsystem.
 >
-> Which means that essentially there won't be a real kernel user for FLB fo=
-r
-> a while.
-> We usually don't merge dead code because some future patchset depends on
-> it.
+> Further functionality, including the implementation of state transition
+> logic, integration with KHO, and hooks for subsystems and file
+> descriptors, will be added in subsequent patches.
+>
+> Create a character device at /dev/liveupdate.
+>
+> A new uAPI header, <uapi/linux/liveupdate.h>, will define the necessary
+> structures. The magic number for IOCTL is registered in
+> Documentation/userspace-api/ioctl/ioctl-number.rst.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+[...]
+> diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+> new file mode 100644
+> index 000000000000..0e1ab19fa1cd
+> --- /dev/null
+> +++ b/kernel/liveupdate/luo_core.c
+> @@ -0,0 +1,86 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (c) 2025, Google LLC.
+> + * Pasha Tatashin <pasha.tatashin@soleen.com>
+> + */
+> +
+> +/**
+> + * DOC: Live Update Orchestrator (LUO)
+> + *
+> + * Live Update is a specialized, kexec-based reboot process that allows a
+> + * running kernel to be updated from one version to another while preserving
+> + * the state of selected resources and keeping designated hardware devices
+> + * operational. For these devices, DMA activity may continue throughout the
+> + * kernel transition.
+> + *
+> + * While the primary use case driving this work is supporting live updates of
+> + * the Linux kernel when it is used as a hypervisor in cloud environments, the
+> + * LUO framework itself is designed to be workload-agnostic. Much like Kernel
+> + * Live Patching, which applies security fixes regardless of the workload,
+> + * Live Update facilitates a full kernel version upgrade for any type of system.
 
-I understand the concern. I would prefer to merge FLB with the rest of
-the LUO series; I don't view it as completely dead code since I have
-added the in-kernel test that specifically exercises and validates
-this API.
+Nit: I think live update is very different from live patching. It has
+very different limitations and advantages. In fact, I view live patching
+and live update on two opposite ends of the "applying security patches"
+spectrum. I think this line is going to mislead or confuse people.
 
-> I think it should stay in mm-nonmm-unstable if Andrew does not mind keepi=
-ng
-> it there until the first user is going to land and then FLB will move
-> upstream along with that user.
+I think it would better to either spend more lines explaining the
+difference between the two, or just drop it from here.
 
-My reasoning for pushing for inclusion now is that there are many
-developers who currently depend on the FLB functionality. Having it in
-a public tree, preferably upstream, or at least linux-next, would be
-highly beneficial for their development and testing.
+> + *
+> + * For example, a non-hypervisor system running an in-memory cache like
+> + * memcached with many gigabytes of data can use LUO. The userspace service
+> + * can place its cache into a memfd, have its state preserved by LUO, and
+> + * restore it immediately after the kernel kexec.
+> + *
+> + * Whether the system is running virtual machines, containers, a
+> + * high-performance database, or networking services, LUO's primary goal is to
+> + * enable a full kernel update by preserving critical userspace state and
+> + * keeping essential devices operational.
+> + *
+> + * The core of LUO is a mechanism that tracks the progress of a live update,
+> + * along with a callback API that allows other kernel subsystems to participate
+> + * in the process. Example subsystems that can hook into LUO include: kvm,
+> + * iommu, interrupts, vfio, participating filesystems, and memory management.
+> + *
+> + * LUO uses Kexec Handover to transfer memory state from the current kernel to
+> + * the next kernel. For more details see
+> + * Documentation/core-api/kho/concepts.rst.
+> + */
+> +
+[...]
+> diff --git a/kernel/liveupdate/luo_ioctl.c b/kernel/liveupdate/luo_ioctl.c
+> new file mode 100644
+> index 000000000000..44d365185f7c
+> --- /dev/null
+> +++ b/kernel/liveupdate/luo_ioctl.c
+[...]
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Pasha Tatashin");
+> +MODULE_DESCRIPTION("Live Update Orchestrator");
+> +MODULE_VERSION("0.1");
 
-However, to avoid blocking the entire series, I am going to move the
-FLB patch and the in-kernel test patch to be the last two patches in
-LUOv7.
+Nit: do we really need the module version? I don't think LUO can even be
+used as a module. What does this number mean then?
 
-This way, the rest of the LUO series can be merged without them if
-they are blocked, however, in this case it would be best if the two
-FLB patches stayed in mm tree to allow VFIO/IOMMU/PCI/HugeTLB
-preservation developers to use them, as they all depend on functional
-FLB.
+Other than these two nitpicks,
 
-Pasha
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+-- 
+Regards,
+Pratyush Yadav
 
