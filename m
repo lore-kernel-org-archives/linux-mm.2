@@ -4,114 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C94CED617
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:37:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 857F2CED624
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 11:48:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B70596B00A1; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
+	id 969876B0098; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B47E26B00AF; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
+	id 919E66B00B3; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5E726B00B0; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
+	id 7E1946B00B4; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93DC36B00A1
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:37:22 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4BF621A04FF
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:37:22 +0000 (UTC)
-X-FDA: 84123527124.22.F2F29CC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 68C6D80012
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:37:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m3/oj6Kt";
-	spf=pass (imf30.hostedemail.com: domain of devnull+david.ixit.cz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+david.ixit.cz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AA9F6B0098
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 06:48:30 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 207724DD05
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:48:30 +0000 (UTC)
+X-FDA: 84123555180.21.F26CB25
+Received: from mail-244123.protonmail.ch (mail-244123.protonmail.ch [109.224.244.123])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 29E6420017
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 11:48:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gQzkmSZT;
+	spf=pass (imf13.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.123 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763465840;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763466508;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7hnSdEXh9XWJHB8iniGxuCWx+V/Zk1KRch6S68ZkIQs=;
-	b=2WcU+6OG6+qWiYVbk7zbBpFEseRjRSupa1Cdv3CJHmZRoW+NeMQvOBl2WLenD8qBTsidXv
-	WXjwSQAjm3/R50brTJSvuwvuK/3AjWdLn6trnvl1bA1b0h7g7DkCcWE42jxFWyQPhZkepY
-	jz+DredD/ulH+XOUo+ZCasvn0j/SIX0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=n6/kLrRa2f455JqtRCfVFIsy+tm9Wn1NEx703c9jG7s=;
+	b=vbWUnncDzRf8dG91eOvQ388gR+Rv/qYS4Mc1+leOMmrLNOUEMGhfJS59jg2bl2l4Qo0Xi1
+	3x0xSQ1OGQG3tA6yIRLAP1tqmpsZf/ia8FeBoF5smUu8P4dbIdRqPIZnhCCtnUX5mkFibb
+	A/lLyi0q0Z18liDGQgWqAWBzMKWtsfk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m3/oj6Kt";
-	spf=pass (imf30.hostedemail.com: domain of devnull+david.ixit.cz@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+david.ixit.cz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763465840; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=gQzkmSZT;
+	spf=pass (imf13.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.123 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763466508; a=rsa-sha256;
 	cv=none;
-	b=LlBTOIm86v6lG0Pw4jNECyHN9A+rtzP3jzRn3uoyj7XnHhxTHqoqIBhwve4rSuhj+yQiBn
-	qBYGgczi91Tcpz6zR8qn1Xwzy4W7KfFJIgrE+1Gxm38HJKQD1THwgTdvzUPuJ1Y9RHXEn7
-	X1aUptIgHv3CjRUvWdsFLli5J+gOoSw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCA2960629;
-	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A69FC19425;
-	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763465839;
-	bh=szJd34lUBHLNu9S3WWAy5BrQumAvduXH2t3XIhEX5zw=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=m3/oj6KtwbQaKH8dDXYgw5VwU3rbHBxx+7P3iMX8UaxPoH9oMPkZdKDkUKWE6ajed
-	 AStKA3jRiKg1GsomdZklQmZZcH+RR/bZIP1znZlVdlepZih71RKf6AxV3bUdMdAiEr
-	 qc6IDq1AGUK1DBVvOIQ/69L1jYVf/eXNImv/+JVcHw90L/iVn0iDD17HGjnmbINYBo
-	 1GIZqsG/XpHNtf9Ais8br4WO2fwdVqeMYDn7GC2PYS02+nnkbFRT9tXMHq6Gp9+718
-	 5SFA23FAw5CiRR5bL81vV8C9l588TMwdUVgBjgDXal2EH48DXOAMeVxqRP+bXUPahM
-	 dq/PtlluM8lpg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42487CED624;
-	Tue, 18 Nov 2025 11:37:19 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Tue, 18 Nov 2025 12:37:16 +0100
-Subject: [PATCH v2] mm/vmalloc: warn only once when vmalloc detect invalid
- gfp flags
+	b=jJbT6gRQkyuCkZQJIXJS2LifGwljMLo1tcN4NnkCxijOS3w20TCZGhYv74cmjQq3RKFfnh
+	Lj0b728iqKz0hmW/CiS6/JL3ZBWPMYX+iO45B+7Vii07Zd0AQ/mkNXcNrLQhXN0Hposl6p
+	FfpuuGT5t3mkcCv0fFviF2oyaot4yx0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1763466504; x=1763725704;
+	bh=n6/kLrRa2f455JqtRCfVFIsy+tm9Wn1NEx703c9jG7s=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=gQzkmSZTz46BncYFEP31UJ2/MYDxNGPsZbGhkfP7QuAKwi8wAXU1m+gFTGDBW1nrl
+	 DTIv0nmFW1CACxQKrZae+ZvUHuHfe5FxxKl0oXPpOtJU3maELH1R29VkX/LuutU5nv
+	 ArErm4j3DOfExn1nu5YKzs9Ng0eGJwxyVAyUfhOgGSkXSBgvWp5DOqTgp/lCk4cTAB
+	 m7m0PWLxZH8Q2d3dvbLUErergde1da/CWqSwtOMbZa60ZnJJAoYOM2MaYOyEYk83Rr
+	 l1+di0PmSIdW9qsulupjbKBkIDAf/OUoGZfR7ZSfuMhQdLGdsL22Mj9dXyw6gTBrkl
+	 MYdo+Scv2CK2A==
+Date: Tue, 18 Nov 2025 11:48:19 +0000
+To: Alexander Potapenko <glider@google.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org,
+	Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 18/18] x86/kasan: Make software tag-based kasan available
+Message-ID: <bpyudbe6kvzlj37j7c6zo33zxfc537gos3fn5cbr32yz7ebu23@oeaxjofxyeao>
+In-Reply-To: <CAG_fn=WPQZ4ti3Lb+A3jSXFWLtn6291sTKJBwKBiLD2E9YbuKA@mail.gmail.com>
+References: <cover.1761763681.git.m.wieczorretman@pm.me> <d98f04754c3f37f153493c13966c1e02852f551d.1761763681.git.m.wieczorretman@pm.me> <CAG_fn=WPQZ4ti3Lb+A3jSXFWLtn6291sTKJBwKBiLD2E9YbuKA@mail.gmail.com>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 1f509888f40154949953d5f9b6464c2363ca1311
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251118-only-one-vmalloc-v2-1-fe702aa68d8b@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAGtaHGkC/32NQQqDMBBFryKzbooTtJqueo/iQuNYB9JEEglay
- d2beoBuPrwP//0DAnmmAPfiAE+RAzubQV4K0HNvXyR4zAyylDUitsJZs+cgEd+9MU6LoR2Vasq
- qbhRCni2eJt5O5bPLPHNYnd/Ph4i/9o8sokAh1dRSr4fqVtYP3ni96g90KaUvfHYjVa4AAAA=
-X-Change-ID: 20251118-only-one-vmalloc-b8d997045791
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1257; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=54i1YH3FbEzkceweElaDmkfgd6gmC6hf5zbFIJvmoD0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpHFpuJ+ejYSTUfSbADLtP9gVRTjv696wsmMt5H
- LWLalPK7qOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaRxabgAKCRBgAj/E00kg
- cqaeEACisQrL/b2MB5OMb7gMPoBEJzUnsNF3Y6KJ1b8zABV832iROP4kQ71qBkGr2GUG7olBzyY
- 09YY/DGfZrUcnUnAuf/lhBrqg4WXBznjJDudhxk/zLK3Zv8TYmpysA4KLJquV4sJA2mP/em3O40
- yKgJjcuwotuyV8Qe8ofP8tcxCSl2jbA/wcOC93prPbxh/0x9u2lLaj7Tm/wti6iMo7hjVZLr60Z
- 4jsMUKGxJy5/wqr+5e2oN9mzZcce7bGtNw7VKQNqyxpZTFbrqmNmoYdWM5d21B5vuY70I/U9ko6
- 7mhMDCTIIQeoYiQ1bTrL6hPK1aG4KeLcul2EojTGaVyGAtcYDb7E9u3bLioYJCPJbvgYH27oQHY
- 8mO4dfzh1g6EO568QqW6+rBbE95s5Rr+puKLSEyI9DPjl1Ynhzw/Sn5MMXX3jWLlv+4s4wePHu0
- R8NgtmSBOYw8IrwFrbAMk+DYn+6D9pEN81st9xMi3d/f3GaHb5/bVQyh5LgfALbWzDZxWtsUvBM
- o1jIHhbwodFsYTlx6vEP9YzOozUNDf3JDR0txNSvYHqprZgmsXb30+whk4n3eVUYAqBqIcXwRWO
- UB4YC+nqOVcCmAoXMFU0JcfCaUyiMcrUA380gFqUUpMB5rs5Lnix3VDAd2saEUNW9T9N0wjilTe
- khx4navcxX8ASLA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 68C6D80012
-X-Stat-Signature: hgthdaog5ff15dgips1rhwzzasm3p5qd
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 29E6420017
+X-Stat-Signature: fpd9nrj6mf6weagw8qu7i5fpci1t5ayh
 X-Rspam-User: 
-X-HE-Tag: 1763465840-877214
-X-HE-Meta: U2FsdGVkX183RivHMsp2V6lEjUF8TARAfpl+4ZUuk5F9UxZU+i71F3YVAFVpVwrAS+KOtjG5TTPrUd2tspN+NBlwU7OnFLQgsNOMtaMCNpvN6CDJ0k5roC4LfTTZuZTLr+mJpqWQrMChAUFacaj2d6UsbbjmAj5RCk5qZZbe/IUVkX1pp5hl1CRaLANvFUCKXsP0L0BF9gWda8tiW4dYPNYEmzpagRsAiR2BsuVfUDCzKC/ICkhL7brbMltPGIJ6a8gnWHMizeuzrdjwHSHwQdR1VkKe2ikfqDn9cxyQfhExZ5VRwHeN2Yfjcye4nYaNyIBkiU7BX0NtHmO2UU2gPfrjyJPvcvY1kFc1DaAYzhfCX5fZm/eEMvaX9aiUnIuHvHeq3oAeSBT/rOtjDrqgHvFpX1lMe/VPbHiyZE35rRCRTJ3LTngKedoOUaS7NrS7TmF3EMEQCgNglUKWZoRgbhl7y0QqoLd3DYMQzTHzH8h7989djdZzpFG1UFxMsjCAzBz5G7XrXFmo4RGprg/Sf/HOq4qAVGnnPbuwa70GLUITai6Laos98ch+HkeUGamwxm7Pcowz1soMpFWKyM3rCG9gakek7nSY4B1txeVg7wjDj3yO1brVH+37aRkZ7CClfgllJn1ELv5xiNT056L6961DIavEsqtMu5iEERdmx4/acVXLQKj4gUjlgKETOX5CeaCO9325hmecV+utcdS9K4NeriYuTm5+XW2c2UOHgoKyuxxnOY9hdMS8JgeaivRIb0NIIuHgqH6DYHT5YHw3VzMf8zBRqe+R/dsxgFnBacHsFw4dWAychAMO+p7N5LwTeWFVviPjbJpyjRa3malwOo524PfA5MoV/r1bkf8giJcFkbXGL1Xl9Xi8sCAirFyH4Ol2x4+NU6TYTpUAoqA/2nx3sXXPSvG2xaFgFGuWuZqPrAD3f88eJDb71Zj2fZhJ88I6k0Q6oJTEnPRyZeq
- xezLTAfq
- 8/m72Rh9YyJVoY255xv0Hj93sZ2FD/FgeKQKIyJYLeziS8vrgcWZFGTSfsBFL5qzudFkbE60BPY4m5TIbAeI1c8Y1UzVzZCTxJ7noH3d2dcHlK57J1+flIml7DqxA32YEBLk+TJAJl1aX5bjr8zgMjmHsB6hy9K431/8t753EbSzXvHR6PviP2o9Kme6RvGTUoruZWyVoDldPUOGxi6zFE3dUIsJ/3m7FZr32L4LzJiE5PGEGi0AE5fNmDl/bC4nZ2EkI1oSJfFbrkb3DAdLhPYcugTcQGqFksHcUhTGB3Kaa90csKYCk052/m/BhtawXjzyu7AkzduKI/uRFTEujirC12YaoC7668F5UAv0eSfxze1xBSurJZ3bbFmSiV8FB43B9y41y/uwpWiqmjBQBMxm53M1AXlxriuIkVvuhKDgyKtar3qxxV1Vcbh0qnA52Ajw531eCtg6e1eo=
+X-HE-Tag: 1763466507-679113
+X-HE-Meta: U2FsdGVkX189btSw+NIjsNhtuhZw+aMA1KSgd+0sxJKo7ViElXLg0EbP9XicG3mt2afEUQwqytYelGzA43MpaniIdj17XzN9nZU//RA6UFEQkZndNwNpM9JS1A23DEC7gydpX6wy+xU0Bn43DE/RVyo8RE5wggUvZlRkGChkTCuDH+0sSF2GRjojQfICv5nu8+zkRQvewjrejbyDLNo6ZcJ5h6+ykZUC+ZuMECYI8cgxRF4t19G/SkFPAU+Ka+mnTTv5tgwmiCAzkA24cHBUffSDVxkUlvDrucXnYnNgYNJfyGJuC7bpakZ60BE0MPmAkfyw+29mT/VaJCLS6eOnOSNuj8HrtWeKnq0HMzKDKQn7nwPNi6GXpfyh6+J135H/fb7myEv/5No6LQEttbIzAyw7t5LgaWsTW4neI2f5uVkWyjf4mV32qmg1Cmk0Abu4vag9eefbRpPI9PeL2raq1r4BiwX/r5E7O5MCRKtAHaGQchcLMwpUSNDF8eZnfFpX6EZaNaKUxN/++gVJEkXnTpnug/kMizzUleMJbAIq9WeQutRzNYJeVt9Q5vdXoSoBm+fDZP9SsOKEl/1vzNKhy/5N3ycofyqyBRtWrCepo6RVq3SIhecZLdRP8qSIDN7ihv2qXhldDobQcOYIo/A2ZXsKQGs/oyYmKv5lEOnFinMtVn/0QRD5gMXCZc09mUqyd0p7hj/Y1sMoha392AaCL0VioQKL1ClQKFQFWATIhnmtcA5K7ZFJLUfmVNqCGC2f1Dhk6XbFdQw1uRe8W9nWbVqfzHyT7jbbObKCDgUpQUfXSy0hldTvU03tXrR4UJJGzq5cc7nlErb5A8oaHhSL+3IKENPGSE0oRdr+dpV3z3VzOy8edc9GsEUkGqWX2NFORCktSw3zY8FDW2mzXmbBCkJ6skiGkqOe2xK4mxcfiw0MyldtbQRVgUPsvfioTKuqNLbl0Vtjkx4HSTfRSAf
+ +uIPZUXh
+ pIWwyz5yngHUo88wuHi1RytSW5r8P8DyQqHaUhfsx+vduzbQ3H/uIEN7C0WXrbfFXVHY8gyaVFMWsbMccTKJTSE7tbPLKS1KCbpy0a2V5pYhnLSPoqH8u7gqDwpwiBOdhyi6ssKIwX3nSCIdpGXLHMfumZzFtDZSpkkNxlaDFj/xEZ4vw4YvtR2CnlNEcXvwQFkIiaR+mTQV6NDYLlU2XQBxzw56EKsPTDt7LSJSqwncj6gcHXx1i+oK6KAwlPSSqDt72YpMKYHFuB39vTwrjpB62NIdidoJoABJl4z7D+IaGDsNzcs9CKt57GA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,46 +91,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: David Heidelberg <david@ixit.cz>
+On 2025-11-11 at 10:00:59 +0100, Alexander Potapenko wrote:
+>On Wed, Oct 29, 2025 at 9:11=E2=80=AFPM Maciej Wieczor-Retman
+><m.wieczorretman@pm.me> wrote:
+>>
+>> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>>
+>
+>> -   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN s=
+hadow memory
+>> +   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN s=
+hadow memory (generic mode)
+>> +   fffff40000000000 |   -8    TB | fffffbffffffffff |    8 TB | KASAN s=
+hadow memory (software tag-based mode)
+>>    __________________|____________|__________________|_________|________=
+____________________________________________________
+>
+>
+>> +   ffdf000000000000 |   -8.25 PB | fffffbffffffffff |   ~8 PB | KASAN s=
+hadow memory (generic mode)
+>> +   ffeffc0000000000 |   -6    PB | fffffbffffffffff |    4 PB | KASAN s=
+hadow memory (software tag-based mode)
+>>    __________________|____________|__________________|_________|________=
+____________________________________________________
+>
+>> +       default 0xeffffc0000000000 if KASAN_SW_TAGS
+>>         default 0xdffffc0000000000
+>
+>Please elaborate in the patch description how these values were picked.
 
-Without WARN_ONCE, the logs get spammed immediately after the boot,
-on devices as OnePlus 6T (Snapdragon 845).
-
-Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Resend as requested.
----
-Changes in v2:
-- Fixed accidentally removed comma.
-- Link to v1: https://lore.kernel.org/r/20251118-only-one-vmalloc-v1-1-29f8eacb4605@ixit.cz
----
- mm/vmalloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 49e0b68768d73..59a4ea8b7f91f 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3934,8 +3934,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
- 	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
- 
- 	flags &= GFP_VMALLOC_SUPPORTED;
--	WARN(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
--			invalid_mask, &invalid_mask, flags, &flags);
-+	WARN_ONCE(1, "Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
-+		  invalid_mask, &invalid_mask, flags, &flags);
- 	return flags;
- }
- 
-
----
-base-commit: 0c1c7a6a83feaf2cf182c52983ffe330ffb50280
-change-id: 20251118-only-one-vmalloc-b8d997045791
-
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
+Sure, will do :)
 
 
