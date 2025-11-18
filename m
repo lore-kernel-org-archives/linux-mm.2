@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B47CBCED240
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336ECCED243
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Nov 2025 05:16:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EA528E001E; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
+	id AA4B38E0021; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C5DF8E0030; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
+	id 6732A8E0029; Tue, 18 Nov 2025 00:16:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1D998E0030; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
+	id ED7A48E0038; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33C5C8E0021
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 385CC8E002B
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 00:16:16 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E7EAF16038B
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DA76012E897
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:15 +0000 (UTC)
-X-FDA: 84122566710.29.B909770
+X-FDA: 84122566710.22.F706D7C
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0344A180009
+	by imf19.hostedemail.com (Postfix) with ESMTP id E94521A0005
 	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 05:16:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ZKo+9Obd;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
-	cv=none;
-	b=v2OL3RTTdg4/LBOU8XrPScroBfEKjQdjvzqqFki6zJ+2pcFJ1XqEUImuVtQ1dGHe+ITRYw
-	Ks7hDdHVS7JQ4YA6x2h4l5nTmi3oejnHUtTjbYy+0AXSxRf42M4dsfXoE5YoqlssWKlD+q
-	kRsbcrkhHULTD6JW+tsH8mh8WYPq0yw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ZKo+9Obd;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="FE7OJf/U";
+	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1763442974;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=;
-	b=GWYcuX667i82dEA/pVZQYcei+BEhQRnre5CbWgY/ruPLsMQ9fgjWCNl0oypRl2JOtTHas6
-	/onlr0zNqFud+CNKjyLqoK167m0Twc0RwAhCUYtEeWtV1hTRYv4Dpmh6GOM+a5TiGRWM/I
-	2Tb1pstbkW23lvoVI964h6zKrNHJJ2A=
+	bh=IpNAvIvaquRQO1Ji53mf5vyLMZJ4O2UIIE/EO15yw64=;
+	b=f2/bqSysS805Z0dc97zZy6MhJ896wOmPDyGJ2v7UHBqMf4GZvxC0i52/4oMprELUq4CNLa
+	q6cxmwce0pitFaZN5PDvhziStb0inS7EfKzWmhDKC9t6IeZ/CbOdel1r6Lk2tV3DvL7kqN
+	iUGi9yty2qUvurua+zObM8y9OyvDh6s=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="FE7OJf/U";
+	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763442974; a=rsa-sha256;
+	cv=none;
+	b=afTau+H4elOP+TUz67uBRiIc80gOXFYdEhik+SPPpLD2qn621V9XAZl5Gt2JX0Fq/8tfCb
+	WW8OpCOpdftL5UHqLBxK5TM7MNvIHVDku53SPm0foGa1U2z4B504aJOpcPMvBhAu74ysUk
+	OpI/HJmBMxk+/X5uqogpXj2NK+0x2Z8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=; b=ZKo+9ObdivkDNkysiYahzyuuss
-	V9yrjHh7tmjMIizFvtgrzU1ew9DKv2ijMXyq/m+VY6kJr1ok4yabwOPGzxZgNPqo1qdCwZH+GGCA9
-	Xtf/YL51cWReDV2QQXM8zEYytJDNiC9btkCVTAfz/42rcVTuGMFe7UWcDLIpuix5YDrac++QHzoXz
-	6v2zGdAVaUgb36aZ1KMpkw4J2jiHmlaq73tuwK2Le9V93bz2apa3mx7aNKqaPIoaPriRmBF0oazpX
-	A4BKfQIDaZjshqkFVaASv2u9+Euguf7X+3JH3/CMgPPVV+/JuZY+mNYWB3ETE4qgxS7s+2dJxIEyv
-	jDie91pw==;
+	bh=IpNAvIvaquRQO1Ji53mf5vyLMZJ4O2UIIE/EO15yw64=; b=FE7OJf/UU+lFlMVRVRToGhRAzP
+	N8qGXHCOjkSsJDHwHKHBs4K6aMWob5Nbszex9l+s6ZK7OfCYvZ+9TG8qyL4a56MGLrMSV9WS+QFaH
+	s1N/VE1lLOH2Yk6U5H6G2Poh2PqGUWSQ3NEN0RCixCbVN/RP60yPNMYvhHIPBExVfx/5/OZTzs1EE
+	bhLcn7ls1cB8YCrarexnMvFo0q+gbwMu1mw9xNZu/jFbTij+eRpShRImoLn13GuhwUkVAFtVXI+yz
+	d1EdjG7xvDxR5x71JxFMIMLgaP4kB7U4RmZn17NAJrLLzst9bGtt1ub4xZUECV8by7OLH3v8P7leP
+	M9vSGWsg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLE4U-0000000GER4-2rTm;
+	id 1vLE4U-0000000GEQo-1hsg;
 	Tue, 18 Nov 2025 05:16:06 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
@@ -85,23 +85,23 @@ Cc: torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org,
 	clm@meta.com
-Subject: [PATCH v4 14/54] convert mqueue
-Date: Tue, 18 Nov 2025 05:15:23 +0000
-Message-ID: <20251118051604.3868588-15-viro@zeniv.linux.org.uk>
+Subject: [PATCH v4 12/54] convert smackfs
+Date: Tue, 18 Nov 2025 05:15:21 +0000
+Message-ID: <20251118051604.3868588-13-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0344A180009
-X-Stat-Signature: 8einm4pmm8k5cmg3osk53nm7p15jytno
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E94521A0005
+X-Stat-Signature: u8ok365kspaipsyxtoh315h9xzynpbzc
 X-Rspam-User: 
-X-HE-Tag: 1763442973-925014
-X-HE-Meta: U2FsdGVkX19XZHRklINggYOjXLTeoH0vpRFjUmRT8ENeyfJe1/HLg2aHbuTSNX55nPWtzgQzhaLRkeVfXPUL5EMFONrXhtHrGOaKosU3WR2nB3rnXLAFp8oGqZ3C7ELqjjAKspxU5lIJWna8d07bGsh06DIJ5p0ojSvThONbKPkYlO5KCCo3Cx4N3LY7T3+GdPE07YwWi4pfuivZ3Z75DlcPNLx65NjpJvORjvOp9lPyw5vpKrUUXMircYRSYQrhRgxvnJbnDOl4W1BlVtTZtrw4mDVZfWXvn5IAwvre6PfkcfHTofDL/x+vKiS/47QvkcmMv2Y1Qa3Ia+4cNfIIUOk+E49bNgKrRjjHqHr0mxIX4muLY5sGxWraimgulwXz3iGDPWIkkA4N3eLfdqATS5l2rRp2lnIetrpYBNXQUEXIeTgQB310hk+MnsMHsMOcq0AT0FeMUCj+xpaU8JTKJBpyhozsJn3WpNXw1q8SyWZoyeb0SYzoZWd5Epe9b2A23uwRo6adJiwaaqm/3iw2FHl+6+PzSCH4tEXnFuzVtpW0D8gTEE/Yn2vbb7SCbDxqIMRsPpl0N653LgBSOwF+X+C6aPHelh2FgDMgI8hwhkQ+4krvnbheHbuH6Xoh0UMMgaoxw/64Cbj9Wo0aQlIAJX2VYJFMgMSfVAUmiLT0FpiZTEGlLmQB2H4u2aeC7rh1GGujCrZ32YMyIWXGc/XNnkRbA1ir0DVKb0dGyG4tFHNrA5vCM/p4dHKIedeB4Pp1mOpAElELRlPJ6hRP54L9AR+F0CHJuVqobLGrZsVUariyD7aOjw/DFBF2Ydz0xM5MYrEg5zL7Athz8WcklQeUQ7eOSt07Ble2Zb0gZnuSZqw/7YZ8wYHL2ywvARq7hTBjsk5FNZal8wAH3hUeQVB+Znot9fDAJeWUAsUclXxPP8IU6A8RZtV9zcLhAfj+vTs5Ehm1w8f5tJcF6ZOBDgS
- 7Vv3Wkb2
- 7zruTFoMTUlb7Gf4mbsY4IVvhr7+TNb/TDW/AR4FxU+u3eFzL4meJYs5l1rZuTb4Bi1k/p5idzDdgv6loNq0rqHnGpy+YnQv3H4mlN4Sl4hOwm7Gqjx8EyQqIyNICNcGnoJgy6gZFx1f3BHF7wmsWtYArDz71MvpEiDWNgsFRIXjGYyFRoKH5VvqmkIuhy6z4B5DebLvj51SkEJKRz7AcE3liU8aRggfYCkq+siITTUm1lrf/znSbTNqjunAVqxgL0vV4RzGygF+pjfi5biBrbnud7YjI7iUNVcZ1w4QD9x25Xv97eVl40HRWp6n82k74fl6roT6jCWGfgw13UB+2Q9sN0+C6yE586UhiDL7EmfpHNp2U7JaZK7CLFCGLTdzRpkFUa8jE+P2ZIRemqOXZ8HX5FcNlfz1n1w+a
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1763442973-724525
+X-HE-Meta: U2FsdGVkX1/EW95Wiv59Btx0QC+SlsrYrevf2NCS+6Tg53AfBUC12S2kxEDChvkADhwyk/6fplXa8W8ldcXne185Lcl0T/sofJvgWIRG7SL4wWwo4G1WjgUIHKaRLKmlC/W/hXH/JlmRtB/Gwz0er/yNY0w0Szr9E6i160WqniZXRrfBetxperugYcvFu9Et71Qz8OHf1cKpr30aeiP9eKJwW+Kztnkz2aEVd87iJJvQtjMhVqL0I7fZjM+70a7enqIBiBTdiw3GAbfzSF1NJ2/kTPKDvoGoMA5gLexEqNDP1AqtGWLRXDjWYl6gke+oGIY7jCx4uuZoZU+nfIZxM/L1SwhqcbFIAeN2/N8cP2aSts1pjMW+sdiMayvPLvjgGz7+EuzrRZkytUcNuFBlhU+p8Nz++PIPUpQlEDLRDW1k/H/a78GbLQs574TKJnghk3YtL1rLWMjo6TDDr6d12dR64jnD4uMW6CMcyvHgsFYAfAnaZv7CIL190EnO1ye4+r6nrQ1DC9zs1Dw9GPWP3qOk4FrSFmd8agR9IeBkMf10NicAj6Q/sLtp0TYCjFBuPB7LsjwXYSDC1DstpmO0ryacKznDVBK97sdP1eMKdxBwiSBaSEC4otw4HQt5eyHFpyzgagaHpscbO3MESr//lHt+d9a9yqyuoO/aXpzF9sBG36pfbeTNEjKxhrz7lUZRhm9sIyEVxJwfHjG5j7iTxDoPNS6vZU5vF37N2Twh9tcyEGfSPQ9AL/790+NTyAAWiX3btVZpr0ColJQkOqQdXqBtJzPAjO4w7Z1Iiu4O1N/6+uAESOsWHptCLn+1mtRxTTAPMWOvmzFC8hfRlvxuOQkkrVj9AuD9YiTdezzyQqrwJIGltVjJNNazxnMX3JDLYRgidXLk0ch1kTvCG9aFn4aS4E9fYd2skoU1TCchZ0hRr3hxCoB5ZxwtZJGCYVg/gewyGeHI8Dq3S2uXaOg
+ GCDz2siv
+ j9w1ihGC9bH8oLIcXfERCM252rxnWxtUBAcBm4n9cWYaYfN+tciQwo4LfjDrGmkggCmtI5rVk9UeF8CTf6hSEAKODgGGhY0D0nCOCNN7LFBkfje7jNaV0oicoMwUoKynT4lbRpP/iLCVaacNtoJFWSy8vTnfugtt6O+b4F7XV6pPgrRkABMflqsGS63Xq/S/687xGchxUlwYNQi9kc6HDH3kuI5rgQOIhAceO/xvsDUN99ZBxj5o9Ua2090XEFujHjAZBmIij3i7w+JaNj3xvofjdVhpGNwY+K+/tGTHOoyRl828DJNPWkAZUyUYqjf2CR7dHjItbAlVxR2EosNZ6PFK2AB1VO6gez2FQ9eAsM3hnDDi+sUZRBxDx7mYLJgDCBrDlBy3HsvSALpT/VGdRfp6ELw+MrkUhmqQPCsIpenjE9ebdTuH/UUntdjJFuPUu+ET6WFqFgHFnjmwYPnjRCmwxiCE1q+X1La5HxQkXc7XOzi+g2t3es8JcBw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,56 +109,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All modifications via normal VFS codepaths; just take care of making
-persistent in in mqueue_create_attr() and discardable in mqueue_unlink()
-and it doesn't need kill_litter_super() at all.
+Entirely static tree populated by simple_fill_super().  Can use
+kill_anon_super() as-is.
 
-mqueue_unlink() side is best handled by having it call simple_unlink()
-rather than duplicating its guts...
-
+Acked-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- ipc/mqueue.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ security/smack/smackfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index 093551fe66a7..5737130137bf 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -599,8 +599,7 @@ static int mqueue_create_attr(struct dentry *dentry, umode_t mode, void *arg)
- 	dir->i_size += DIRENT_SIZE;
- 	simple_inode_init_ts(dir);
- 
--	d_instantiate(dentry, inode);
--	dget(dentry);
-+	d_make_persistent(dentry, inode);
- 	return 0;
- out_unlock:
- 	spin_unlock(&mq_lock);
-@@ -617,13 +616,8 @@ static int mqueue_create(struct mnt_idmap *idmap, struct inode *dir,
- 
- static int mqueue_unlink(struct inode *dir, struct dentry *dentry)
- {
--	struct inode *inode = d_inode(dentry);
--
--	simple_inode_init_ts(dir);
- 	dir->i_size -= DIRENT_SIZE;
--	drop_nlink(inode);
--	dput(dentry);
--	return 0;
-+	return simple_unlink(dir, dentry);
- }
- 
- /*
-@@ -1638,7 +1632,7 @@ static const struct fs_context_operations mqueue_fs_context_ops = {
- static struct file_system_type mqueue_fs_type = {
- 	.name			= "mqueue",
- 	.init_fs_context	= mqueue_init_fs_context,
--	.kill_sb		= kill_litter_super,
-+	.kill_sb		= kill_anon_super,
- 	.fs_flags		= FS_USERNS_MOUNT,
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index b1e5e62f5cbd..e989ae3890c7 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -2960,7 +2960,7 @@ static int smk_init_fs_context(struct fs_context *fc)
+ static struct file_system_type smk_fs_type = {
+ 	.name		= "smackfs",
+ 	.init_fs_context = smk_init_fs_context,
+-	.kill_sb	= kill_litter_super,
++	.kill_sb	= kill_anon_super,
  };
  
+ static struct vfsmount *smackfs_mount;
 -- 
 2.47.3
 
