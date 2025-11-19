@@ -4,127 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C52CFCF34AB
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49E4BCF34AD
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:13:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EFCA6B00B1; Wed, 19 Nov 2025 08:09:55 -0500 (EST)
+	id 9AEA46B0031; Wed, 19 Nov 2025 08:13:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29FB76B00B2; Wed, 19 Nov 2025 08:09:55 -0500 (EST)
+	id 9866D6B00A8; Wed, 19 Nov 2025 08:13:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7046B00B3; Wed, 19 Nov 2025 08:09:55 -0500 (EST)
+	id 8C2FD6B00B0; Wed, 19 Nov 2025 08:13:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F146B6B00B1
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:09:54 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9CC92894BC
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:09:54 +0000 (UTC)
-X-FDA: 84127389108.04.F4E8BFC
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 81606140006
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:09:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dDRtXsTv;
-	spf=pass (imf09.hostedemail.com: domain of gorcunov@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=gorcunov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B3B36B0031
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:13:22 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37A1258336
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:13:22 +0000 (UTC)
+X-FDA: 84127397844.03.4EC7B01
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5A0DD8001A
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:13:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GHF1Aqwk;
+	spf=pass (imf30.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763557792;
+	s=arc-20220608; t=1763558000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c8Xcv7L+0okxtsjikEPOcHfMR5tUDxOoJBYUzekVP4g=;
-	b=WHnqnTL6cIuo1+v5IZ/RPrGTKbMTpWRIFUa0mNZ98ic4YvyzP7gYrm4dGPUHo/xRRbUXcL
-	VSUMK4PldcIBUuSGObowxnTn08cRxWibLY3+mhPq1obODe3ND5jPQ7S2gy7xd7hFGXaB8y
-	cQSaJNl2IeBwD1iCpe3V2pshZjd3Ako=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763557792; a=rsa-sha256;
-	cv=none;
-	b=XxfX61PvfNMEtS8Rzn8zNPEmJulOu8m5C2O665xnni5hjh1fKLLLTsTVlzp884fIn8kStQ
-	flrMDM9XnmWZSw0j+UqfZHswyN+oF4Y+i1lWfMgJ5RtySVuv3tjp/gy5OyQsFH2eqltQr1
-	zi+huB/LV/IDZtrPY/JDwveqqj7o9jM=
+	bh=EDmnt2ylN68mKfJ6D+yIzUhJY8ou9retC5vQgYySZIA=;
+	b=qkA80qHZn+KMfw3m5xYyGkvrlx8qDdH5m5wAERPw1zpNqvZUQ9iIQ8qGNsGZ32977FYled
+	hadLqchp4etOx25i9eMZXaLIzAgIZwiNjcJRJe2MOcrvbEpaNW2ONFDuC/hEOM7J5lquat
+	JwgDDZQlWY44zyJDxdiKiDsv89kpc3s=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dDRtXsTv;
-	spf=pass (imf09.hostedemail.com: domain of gorcunov@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=gorcunov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-376466f1280so72383801fa.0
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 05:09:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763557791; x=1764162591; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c8Xcv7L+0okxtsjikEPOcHfMR5tUDxOoJBYUzekVP4g=;
-        b=dDRtXsTvhW+ruPin6G41aMaHr6/AtKcSL3uQ9QOA31URDoDMPJekXEyklK2RyiH54r
-         /qjmFGToBBk/7wZgBlyUwKqYfFxvMvFskxfOgeujaf67WJ8uUyxJdqDrAYfP4mDF0thl
-         HUa1mOJbmK11foeOhFfmRrVTANGlsSxw2V6HZFGZArIo00VHf5DtFYSDjnA5OgIUB9he
-         YtaiMZCzvIPLlz6RWPbDLAEypQ7IcULHOeFDHUZRbkmvcJ1U8zOhxm1SR9zOTjtzFYfj
-         1YEZ1s7aEat0LblJnx/m07lEt6yJjTsvZMTdWqax1Gd/1jilq8RKVstZDEWjux6f/I5t
-         l7tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763557791; x=1764162591;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=c8Xcv7L+0okxtsjikEPOcHfMR5tUDxOoJBYUzekVP4g=;
-        b=wtsrRpOK44rNEGBS4H9WQRzCucrOWvV0I/vOaawcJAm3WUTIkOphYXHlZkCkPE5BPg
-         D/diKI9Y4Ix8+2ZcpLIwJhNtJQSr5d56vUQa4iBqZPNz0c80ifvMQK/GZir5gToG9Utn
-         phONUPy5q24j/QicGqJB1m6J+9qSpwKzyunaKGna0Eqjm+P0EJrfEomx6tGkhv4uItVv
-         zGhofz2NyBk2lhu2n8mRzu86RjGSygaIoVrPrhIFLuckYOwvnGiiDcvX38rxB2LNiRxN
-         LdxZ9QzDO8vXiTkiwkbL7Jj1C5uHKrx1Ntdhrpwbn6dJOJxaHkuXqxFcLyPS+x2OQLQG
-         uf7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWZC91HH7Cp+pjX5ktuj3w8bdSsB6HGP02z3oJwFr9QmiGGrgwp32ZKJuJbhpDZWVzMbm1kEf1Tvw==@kvack.org
-X-Gm-Message-State: AOJu0YySoA6eejiU4RcQ5WDEkyjmPNOhhc8H6+tvcTqWdh3RIwcHVtLo
-	lKPNPo2UBRnUw1/UKU6AsTVrWRyCz4MWc5HJFmFkJuSD9ExjmSbrn5Tz
-X-Gm-Gg: ASbGnctfiFxvQjpYFzppmcYC2fQ/S4l6tVmDX/vX963hW6KItUqTryCjfzd0q4rQfoH
-	WRJvEOfwsIE/zPMwpqwG++vI01B4EVBDPsoroYcSg8xjCSJ2uJek9OexXJb3es7M+1DW8ztfco4
-	8lbkDnbPpNj7AMZWUpLQOFxKc/KABDsc8lgb2ib/peEFs/CTfVdLXjg7KgUwYK07eNFtuyGKjO9
-	MGFIA4Dnj49Wc63yjZEDwLvK9oCcZxjuu7WL819cR+z3pQtc/Fu0gL2aKibJxf/0X+TjeuOvO/c
-	Pj7YL4yMZrIwhc3HIucKAxABlSvBHyIZVj/sSFVqnr+Ogr17aVqoJKmTQmtg48/HWJ5rHgS5P4A
-	gjlZ2wvoygM03b0qU0/lNs8CtzCk/g57LWt0gPjT9yom4S0AVzL+yaMxvR6ehPPpBiiOH8u973o
-	5P2dujJWr1p3HCUWzkAmpUwl9w
-X-Google-Smtp-Source: AGHT+IHfrwK81dHP0yx9TSq7f7mym39HNGjUSxDJsPi5IK+SsnvtAFvMBaKAw1yCcIbphLLGGjp4Rw==
-X-Received: by 2002:a05:6512:1252:b0:595:8350:5824 with SMTP id 2adb3069b0e04-5960382873bmr1039341e87.7.1763557790245;
-        Wed, 19 Nov 2025 05:09:50 -0800 (PST)
-Received: from grain.localdomain ([5.18.255.97])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-595803ac90dsm4722497e87.22.2025.11.19.05.09.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 05:09:49 -0800 (PST)
-Received: by grain.localdomain (Postfix, from userid 1000)
-	id 3A2A35A0033; Wed, 19 Nov 2025 16:09:49 +0300 (MSK)
-Date: Wed, 19 Nov 2025 16:09:49 +0300
-From: Cyrill Gorcunov <gorcunov@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrei Vagin <avagin@gmail.com>,
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GHF1Aqwk;
+	spf=pass (imf30.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763558000; a=rsa-sha256;
+	cv=none;
+	b=S5Yv4bcRR+INuu9+omB5aEppxYmZpKX/VCrEL0srkXHqniBQ81MJmv4jrjjcAxiZnekdqM
+	lgJuMYXL2su7TVMvzIRervx0VG743iRp/iW1X4Syx+lq7Wytew7r13dmziyponlI/NBPid
+	5Ot7qv9yphBTdakLuYKM8EBiz7QYAEM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 29B3B43352;
+	Wed, 19 Nov 2025 13:13:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4F4C113D0;
+	Wed, 19 Nov 2025 13:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763557998;
+	bh=0Xx39uDqzjZbL4y1fEwlUfWXemPTGRgOd4dvOT2DUMg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GHF1Aqwk7stwCyykVPT1YGqLL0q2EFkbo6kN9EUrvLJCQ171txGNyAbhz/88FHaZv
+	 9Rhg1BgJ1o6pwk5sbN0PfEDJwC3hklbr2bavfyxMzT01HhF0wF93D31LJijcoJ6gLx
+	 RRFCtGxIX1DwUcuBAwzEstv8DSzzM37P+t2zpedyyLBnUf7WSsyc8s20B6dfTtZtYP
+	 n3SeovgFnfzZ6hZLrcxPGnzG7gO49j5G0yZ+xF76uYa69LzleVp3n0yOevVQXsxKub
+	 cmKcRZl2oO6LkMOz/QRS9gfCL6+6UFT9W06hc6fG68egCXsf1a6inlsq6trLGvRe00
+	 zTHjfAjfnTUJQ==
+Date: Wed, 19 Nov 2025 15:13:13 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, criu@lists.linux.dev
-Subject: Re: [PATCH 0/2] make VM_SOFTDIRTY a sticky VMA flag
-Message-ID: <aR3BndGWuzf8vnku@grain>
-References: <cover.1763142412.git.lorenzo.stoakes@oracle.com>
- <CANaxB-yqsphFXvY0diEaHL+Bg4eJ+z_mqezxen9xVyoyL+4NMw@mail.gmail.com>
- <1c20ec44-0775-47e0-aabb-e1cf1f38ce94@lucifer.local>
- <CANaxB-zPuxtbpt7wcjDE1X5nv4yWp=JTq_MqWSfDce2gx-WKiA@mail.gmail.com>
- <f00a062a-8941-4cdb-975e-c13aad860168@lucifer.local>
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v8 05/11] PCI/P2PDMA: Document DMABUF model
+Message-ID: <20251119131313.GA18335@unreal>
+References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
+ <20251111-dmabuf-vfio-v8-5-fd9aa5df478f@nvidia.com>
+ <9798b34c-618b-4e89-82b0-803bc655c82b@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <f00a062a-8941-4cdb-975e-c13aad860168@lucifer.local>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 81606140006
-X-Stat-Signature: snmbf4tpottycn1wz5zfs7gep1zcdmsb
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9798b34c-618b-4e89-82b0-803bc655c82b@amd.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5A0DD8001A
+X-Stat-Signature: 3nyfp8kkxrdnorfyxoixfgs97ssi76gf
 X-Rspam-User: 
-X-HE-Tag: 1763557792-190067
-X-HE-Meta: U2FsdGVkX1/M1+nUZCVUTaDQBR/uyOIWyA0PyPMNBTriJk16NxLeq5JKm+QdHL7qE8Sqxktg+9NIIjf8+g5z3jmeNifvDovwv1C1DngI6ZNltD0iyFUM3Xwmv8FD5VaCc1gPGGUewhi90kjDDD2Rr1gFbVNwtyerXQJdWiMGPQX1sYUh1GDznPmpesY5aMBX1NT7Y7e/9T2btXUP6r6+F6HHeeAqwi+QlZJKcWZe5kde+W30FdnzPF2VManql8iIYz44jZGlcgdsLV4tSrQDGcTJyd4QzMBTmcsIFHLZDB/pY9rzs+sSfq0pEuXwjEIV6qKa1DwZOKgXOF8n15rK18c5KgbmmmoCofJDmGlW+v4j1Me6vNAzCDBz24/noJcd1+rHpHBwyOTtrJw0f+w9uZfnsFS7Idul3cyW49qgnWcStzOyaXIsr23OUpAhw+KzxGdjA2MtyFokZ70dY0PsbFCl5LA37MZfvlRIrx3ec2LeHUF5Ivg2A6buYSskUAHrZeYennAhA/h6gl2gZHGGpSCYLSs+2TAAjTDkGU53YHmP6gzGQhqHBhr0ugBgGPPZvTEtNwz2ZK9eERzlbdnW9O1VP0yqR4866ATXiuQ89DMYfx5Y9jDdcVxm6R31knTbJICjtWPhwe6vJ09k4SNKY/ZwcwWbuoniTRJ5Sr60qY7sx1Q1oo9IK0MyWg8P1aTAjXHUBkWJzuuekTAzWOTK+LNgfdRAubdZvjWC8S4jBknYDFf6Dd4zcV0YJBdy9hIicGFE2oeJwnJ6f/SqrGkYZ5D+BnGKO+ihj4u+HXF3Z1pc1ppZNNF6BhAGNCiXhrz4gxqQZRmXjdg4E6qHwukRH0e8NMiFIEKV5sVpphRVrvDMd1g9Y5xO4wCSagLuw3z3IWP2NWM9XIZ/h+2CdxSX4u4fmlqCJP1qsvVDdUEi4+NK1muYGEbkn416wtxhYqFgKoRkksneh0+tHd9kj6q
- o2jGjFTH
- cplfmYISHqPiop3iBNtoloOaUVqbhwI8zmF/0ybI+Htc7CYjF3/mveB1/GTSrBQLVO0MAY0jw8xh/9KNdhELDBx9FzDpYIUqTnWfNBfZK9tJ9E1TCPLs+QDR9qCP0zQlgN/YU1S3XosSBgB+pC4MJTfTdH1ClHrA0HVvvLOQQ4YsDjqm07qQZ7KtrIyRHxLVpnxAd+fQE0w4HgcOeWDE6P/zVLDONmO1FJxoL9TM4+45Jj2VSVdYi7TFi7B15C9s7DMzUuU+qpEK5ed/w/AHIpqW3M54KhQkiSusnmQJw2Aoukxw8iAbxHtVBfs20yyXI0q81sI7HqA2HJoyDC8sb5SVfRZyNTooJdhd1+qddisJ5JF7TRTHvp61K4M4qebCzsqvYZMZXRO3kgljkOyYL2ovdqo1BWUsop2Y+Dxa4AJWhFDpr4ZBvHsIzWsOa3VbPbrm2WLxMLHac9KWJUi2/ZpS+wFyntNSPGlzfgbOZBgoqUm51o1GCPtwBQbh8uqqV5xCSE/utQuiBlAJZuHNlg0+Z2RmiKyFsck6zadA9xi5ctgiJg/3fEJn2Mn/XCU/RREXh1Ia1YnnmayufBaSQJXuqpA==
+X-HE-Tag: 1763558000-227244
+X-HE-Meta: U2FsdGVkX1+lgtDpR6bLa0EFO4WQ1UvQMhYtyhC8RgR0kU3f0yIZtrIgxv8Ma+ddtTs4PBF4K2V7XZWkGCL9/xOCN1XFDrNH4W8pkiipm1A3gi1uV1HGB2XanHomqLZdm6aczye8P3novhuLEO2+v0yeNa2biW1Aq/NL6TfJIHWN1qPacPcoGKrm70TXJDqWrsNYXapBRui61NFRoXIijmAUPXA3c7RY3IZ1jQl+id2IzWyuYO5G5I5fQs0HDJELkD7IKpA+aMxgupbqFoVAupV4qpFueqeyjrk7tdVZvYUYmy+ZgV+H21kMLtT71NT7Bmo3D4XJe+tBGjvH+2aeHnRM5CYv9Oi9HnmcG/q6OgbF69/71yxKSy0q9UHSBYY1dBLXARMA4OlzfvHrH24zcKLvdvliU3NZ03OuPpUilTdVlmJWcOInFXDmniHeguOLs2nBpY4cx/F5yEpyDjjRbT1IFir8vzyYeDwbcmiWF+YCeQzJabZwlcRykB0pkukGatDdx1RUE1YZpzh5USOcTKjvixbMcfCHhChZr6qhZG62CBTU5/oTUH7x048R7zWL/VBq4y9l6W4A29yAY1L+u5hN4nnEgJVc5Sb9O1CF0KyVme3G1+rzXQtJW8N0uYp3iB9dJeQAPGgK+Eg4S/6NF7uQvF1FtKSoauHkZJ6uHWcp94Dmp61I+UCBDKKTa1ob5bPwpE7jDLPt632SBeUCLLyEFAaxKruF1NWsTGED7lGlLoSUFgKaclEvhhws4Za/0+D7oBENb14slhBk1zU3hLKwgB4vC40mqmPYUAIezjsmoA0tPIUcNvTmyyXPcBmvYdNxSBteRHfgzng90JH3d/DGgu8l2IcPdrxP/KevdfiCiAALHkIUIYKCv5Iowj/3XxiyRIFv/LniB07jXIdRK6gIS2ot3lXnnqZlsyM7B9k4Pcr7XOJC7yjA8iJUX+WJXotlP2pJ6dZPn8D+N6w
+ RrkPUJYX
+ iwCeJ2/2j300poHhtF6SqsN9fmp6tYe3AJZgIP+H6jVLO1lYV7O7D5YWXedRWiSG1R7HC9sipxavXLS6eYCSKGTFwIWjTZ2j2iIk4VWlJW9pGx+SSzYJMVZ8g+kH81NeFI5o/6VfSfbl7mqgt2fWo1BweTr2gx1H+93c4zGSKWZ3XG8ZdEwlixl7ogonQud79WgAi5pZwnYQxwRQ8jNYx0usI2Sx8UTH+wrvxLajGJYTollKV9m2OlWzbn96j5FK5eIkv8VXvw3CXDR2PTAJA/+rfjwrX0mu+uWbxueDxN26/G0I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,24 +115,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 07:57:30PM +0000, Lorenzo Stoakes wrote:
-...
-> > I recall correctly that initially, merging vma-s with different
-> > VM_SORTDIRTY bit values was not allowed. It was a bit surprising that
-> > this behavior was changed by Cyrill in 34228d473efe.  Cyrill was an
-> > active CRIU contributor at the time, so we can't even blame anyone for
-> > breaking CRIU :).
+On Wed, Nov 19, 2025 at 10:18:08AM +0100, Christian König wrote:
 > 
-> Well I think Cyrill is in the right here :) the problem described there -
-> that of hitting the max_map_count simply due to failed VM_SOFTDIRTY merges
-> - is very serious and clearly highlights the issue that arises from not
-> merging these - that is VMA fragmentation.
+> 
+> On 11/11/25 10:57, Leon Romanovsky wrote:
+> > From: Jason Gunthorpe <jgg@nvidia.com>
+> > 
+> > Reflect latest changes in p2p implementation to support DMABUF lifecycle.
+> > 
+> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> > ---
+> >  Documentation/driver-api/pci/p2pdma.rst | 95 +++++++++++++++++++++++++--------
+> >  1 file changed, 72 insertions(+), 23 deletions(-)
 
-Hi guys! Happen to miss this thread due to high message traffic, thanks
-for CC'ing me ;) Yeah, disability to merge VMAs due to softdirty bit has
-been a serious issue, so better criu to dump more (redundant) memory
-than apps got broken. As to this patch series, I think it is good, thanks
-a huge Lorenzo!
+<...>
 
-Acked-by: Cyrill Gorcunov <gorcunov@gmail.com>
+> > These MMIO pages have no struct page, and
+> 
+> Well please drop "pages" here. Just say MMIO addresses.
+> 
+> > +if used with mmap() must create special PTEs. As such there are very few
+> > +kernel uAPIs that can accept pointers to them; in particular they cannot be used
+> > +with read()/write(), including O_DIRECT.
+
+<...>
+
+> > +DMABUF provides an alternative to the above struct page-based
+> > +client/provider/orchestrator system. In this mode the exporting driver will wrap
+> > +some of its MMIO in a DMABUF and give the DMABUF FD to userspace.
+> > +
+> > +Userspace can then pass the FD to an importing driver which will ask the
+> > +exporting driver to map it.
+> 
+> "to map it to the importer".
+
+No problem, changed.
+
+> 
+> Regards,
+> Christian.
+> 
+> > +
+> > +In this case the initiator and target pci_devices are known and the P2P subsystem
+> > +is used to determine the mapping type. The phys_addr_t-based DMA API is used to
+> > +establish the dma_addr_t.
+> > +
+> > +Lifecycle is controlled by DMABUF move_notify(). When the exporting driver wants
+> > +to remove() it must deliver an invalidation shutdown to all DMABUF importing
+> > +drivers through move_notify() and synchronously DMA unmap all the MMIO.
+> > +
+> > +No importing driver can continue to have a DMA map to the MMIO after the
+> > +exporting driver has destroyed its p2p_provider.
+> >  
+> >  
+> >  P2P DMA Support Library
+> > 
+> 
 
