@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B457CF34D9
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E7CACF34D9
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:45:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66C7B6B00B5; Wed, 19 Nov 2025 10:45:34 -0500 (EST)
+	id 274B36B00B6; Wed, 19 Nov 2025 10:45:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61C9A6B00B6; Wed, 19 Nov 2025 10:45:34 -0500 (EST)
+	id 2254A6B00BA; Wed, 19 Nov 2025 10:45:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50BAC6B00BA; Wed, 19 Nov 2025 10:45:34 -0500 (EST)
+	id 0C6ED6B00BB; Wed, 19 Nov 2025 10:45:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D34C6B00B5
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:45:34 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A20213B2D0
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:34 +0000 (UTC)
-X-FDA: 84127781388.17.5096DE9
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1C62620008
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=IJurSALA;
-	spf=pass (imf03.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.47 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EC9086B00B6
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:45:35 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0AD716051B
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:35 +0000 (UTC)
+X-FDA: 84127781430.20.4DC6ACC
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D2DA7120009
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:33 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=gVTv3hYC;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf29.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.45 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763567132;
+	s=arc-20220608; t=1763567133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=93DS/ScHi6FgD35ajGLpv/dHTyNaaklJOjylE6wX7jU=;
-	b=PfjOhqHiefntx3coAvHLi0wWNdtOrZyNJYaXsZfDTz75WWtBGuLRLgfRvV9LFxIPV13R/f
-	UIZK0QvRRA+lP6E48Mt80D4y86sb3BCjP4GAaH98dxtXCF73riHrMdNeaO/NwS+BghcMWe
-	5nxp1aeXvmgQlaBGUHJSf3SQkkhQAnw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763567132; a=rsa-sha256;
+	bh=THAjTq9x4zT81mmTnIarOvW/kNy7ppuR0bAFxzz05mc=;
+	b=b6+mMIv7CzdyDM4rgYxXJOap8su5GrX+EQjhciax6u8QiRszp9MXKLrX8t9TZvYMvWUbQO
+	dd7i4Jp9E/wN3ViCcK83E9abj8Ts+RgKzzSiA4gp6eRzo3Iu/fFvp7eV6sHXy8+tsax7tV
+	dYTbSqEBTfLuILSVXNdw0WA0Q1aEyeI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763567133; a=rsa-sha256;
 	cv=none;
-	b=yG1sQkZC04AUeASkhyey+5A3xypAJTl0Vp35EgzE7egTcbJsFHBRaHhxGSpww59jxzUQrX
-	+x8T6CyyNTQBx99rOVYwqMPJtb3PmYJneYL/o3j66OegcATc1iTCSbyYkqRCFsrWPBQCZL
-	ou7tWzxkOdOG/h0kdohQ5zWtB+TMRsQ=
+	b=HTlgUaGygN+YMg1Px7siCm/q3vI0hNk77hygwpOHJY/rSnbabxhmqtjt5TsS4FX/izN5An
+	0wiCN08XNQn/ff++Rg7yWX7BiDdLtf7Y3wCtIWlsKuPSj+wppq+nlARDcUG9wS9NEr15J/
+	gwb9CXY8AB3jVU6Hw+hP7vpPw7txTXE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=IJurSALA;
-	spf=pass (imf03.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.47 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4779aa4f928so50064935e9.1
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:45:31 -0800 (PST)
+	imf29.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=gVTv3hYC;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf29.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.45 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42b32a3e78bso5589216f8f.0
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:45:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763567131; x=1764171931; darn=kvack.org;
+        d=linaro.org; s=google; t=1763567132; x=1764171932; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=93DS/ScHi6FgD35ajGLpv/dHTyNaaklJOjylE6wX7jU=;
-        b=IJurSALAulmxun07lBLwObgvZwmRvS0HsgOHfZ9J50ZlFq0HyBQBpiSdNRHiHzvXw+
-         6Srz6M74IKpIrWOfgy4mhn4crUPJiBfoRJRTi7BkcfK2q/+MK4cS8nBdSzxZ+ZriNQFf
-         IY4zLoYnjv6ZGnn4v6DfYMPuEaCQZUWp+FHZm4V8RKsIHyuwNJojI72xS4GiAF+cWKNf
-         QCNDugfNARSmgx5b0aoZHCGDvtwbcFvQCY1MwwnZpUxOkLAswSR2n/LM4wS8c85iAxBM
-         yL8LxlNRVSF+AdznV6FFtU2IDInrHwVqZxxe87lQNriVv8UYasGGc173o1nZGdATgw4s
-         91SA==
+        bh=THAjTq9x4zT81mmTnIarOvW/kNy7ppuR0bAFxzz05mc=;
+        b=gVTv3hYClUCkWvLRWVb31MrQHLnRnE+yUEwBbxM/5SOcE4iiVTxaUpWoiNlrRCBfxr
+         PS928ncRwkqKnCeBpjokrLSXKy7zmPi0Crgg/5a7aAOdo0OYtKaH5wOSvZAHvEhfQnub
+         d6lCdWINqa4DB4oOTVGUl9qW1LL6o5Mi2eiDZ+m666CKeE1iTE/GFDfL0nUHot6aZ73A
+         mISr4QSAdiKKQNCErm32Wr23Buj8zDD1PDfwKeAkKFsUuR7y6f/vJgQngIQsIX4dv/Ul
+         mmS2PsNeiBLaQoh1i4RU+LAgPURGnx8QnSlAlUH+CrV7rdkEhFqS0ogsFSLP9GfsEvr1
+         EXlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763567131; x=1764171931;
+        d=1e100.net; s=20230601; t=1763567132; x=1764171932;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=93DS/ScHi6FgD35ajGLpv/dHTyNaaklJOjylE6wX7jU=;
-        b=KSJbiXvLtuzjLLMJMpeu2O0ZeGIKCeH7DjfK3rVDEDmKhZbh9jMOAXrwVMFPukvGEf
-         ozIDNGeVbn3XfknJ4v3eTm4jOut/h0P9gW02ZW59fkMxmV7hUfRXEKtKRwOcgWtUPzja
-         S+wDKXGWHGnjUQLS4Bxzp3HOM4iGI65ACxmkUQbjHmHUbXnhzDoXHLMRrN0SXAlEceYL
-         GS606p3J5c2E/cPdd/HW6K1uOikTFQV+b2gjQCcNcAMeMlUouIPmMyxiYjp5LOm6zGOt
-         fQd8Ht/nJqq75a3qM4hvzBcEiMeRQNFlj91pwk1bErLRFh0+5cTXn5GlWEKVeTQN0YVg
-         I5EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWwzUXT81lA/cW8Zz31w1xq4MBWQ6VdrCSvQ28Z/cm+qZXFq1g9w35U7lpE3UzYupvd5quTHwybVQ==@kvack.org
-X-Gm-Message-State: AOJu0YyvgE12qQdfDuIpLlDXFJrOlBgP64qvsmuKuhaft6t+JDH1xNL9
-	PmNc7FY0QSoNEJPKiYHVl56PVlLuzvShELm3dGiSidSMgfRtoxsrZ2z6dSRuWh8HnwY=
-X-Gm-Gg: ASbGncsSAtxDkgf3Oy17JDtUZmNAbLwM4FR0E7dKD7MD3uvGh6DY8QqEY8pf9oI+h9T
-	4Ldv6XeeYP/ACX8rpi/Kyzq/J1PLb4jLCKko9Dy6ya8oEpIZUyFSRly7YCAI8xhNSgxKcv8joSd
-	fpU8SWhZh3c4aGtXaPwi2zUKDe7FPCFi25MsuP5ep9NZHasqmy4m3VHgkyPN5RHtVwj3yzBARTK
-	ZTuFuCaXZ2t8LgW7HS2WgPjIvOKrLFeN7LvZ88p3A/ukvm8KhkENZFf20aDIwavzqs5syS8d1n2
-	Fu6PeiJhsg4A/Z518xgm/hJbfWW5iSBKhlBx/QjaEqCXiUoDRdhQ4+TCO/Ytqu7fNllfLQET47x
-	tn3BVPgF0E+XjVYu8xfcGTzCU19BK9Xeho1GTEomTyJO8yYKnlAT4VdH+xf6GZTQ9qXAX1vc5Gh
-	/S3Dm2SiEmzq7KHgPkfdqegl6AoJ1afyDnFAe5ufzT
-X-Google-Smtp-Source: AGHT+IFTd+L8MIsFVmd5+4R/tV4nej4oyMMzTvyobs7oRMR9eeDnvkZRxA29k7Ua9rj2plkllb3d8g==
-X-Received: by 2002:a05:600c:c48f:b0:477:7b16:5f80 with SMTP id 5b1f17b1804b1-4778fe49c0bmr204044185e9.10.1763567130586;
-        Wed, 19 Nov 2025 07:45:30 -0800 (PST)
+        bh=THAjTq9x4zT81mmTnIarOvW/kNy7ppuR0bAFxzz05mc=;
+        b=C1t+xqWOAzHwubHcvL/6cpIXGhvaFqAi5TXwDOLyDfgZkpQWE61xYbF3O1Zds46Y6z
+         qM7DH2PNYk+yLABkSONUQKrnAZN2B1rgWF6gQQg8i8a/fzNXK4CpPN5R2pi4YcsAaa2X
+         0PH5H7b1p0A7qrWa0kubpvfWictMhdJBSLtP0uUBnkOHcR8dqe7ccF5vinMfHDF8ExL7
+         OLzwCMdWiFwDkNFhiaaUJNcBKXfJPqz0ZKToUVD/Ns/cjPBsQLT/hKFHDOFJMcwwY62h
+         9RhoEGZ906ZTuNZFFgALd5a//eCIXaHx1StnPoyIehKHBi4Lej6nZM5deKp240UBiuLI
+         fNGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ0e3EehLf3nzhGvL+8D4rcChEjmH0i0p2BAqJ5TVDnsF03qqYRq1fTX68c9qz9XusE7Sm7nwLkA==@kvack.org
+X-Gm-Message-State: AOJu0YyvyUc8AHVfPUmZrjWBenFnB0z7Y780mTIR8g6d5BxNugjTyiOT
+	ovPjxzqYReEUkWiFK2Dp5ixHFCqqI3Ke0lc2/yAdtt/IhVX9k29j9Zfc1FFCsHFWWII=
+X-Gm-Gg: ASbGncuEWMIHNLhwvyvzgCT7RKN4eJ0G1FhNhaeuaGxkx5qMoqWw/XOexjf7LQpNXYQ
+	g7Puh1boOtvQJ2N3nBkjijghG6psdlLz6s85LL/V/njevEv2CB+FJb0F6Twsq67efU0lbZJKYyZ
+	rfGKWGfNccdyAKVyMO6KTKxJb5216zAvg+z1Cl9+0l4eEeUN9shES2OGJ2hieBQgKYk8iHobqdk
+	oofHEUfWB4vACLUKnfC4KP2OCcUO1bhe09KlwzQDsk2bxnPzcBFoaSwKQBGNnQIbYtjT2zKKH+k
+	G4K2mkU1F8f9YQPVGWdsT6QPptTQCZrC4UwoU001+XJcoMFPMlWAOR+SK+Cau3jm6TwxKWASfOK
+	VtPHH1oOlOEstPafSvwYPp0uf07oxCbMvHJfbwwthzLxiGEOEgt1bQtb9lV5hWVWqUX5oEvrpEx
+	SNAl+EiIAw/z8hhZNoGota5jUgXqXhNg==
+X-Google-Smtp-Source: AGHT+IFM/SLutYeAmIo2p7oRt8B5TNnuLzBZ4qt+3E18Kli5wgQjVTHlMxDsxZxKW/tnJD9yRmbxGA==
+X-Received: by 2002:a05:6000:2a0a:b0:42c:a449:d68c with SMTP id ffacd0b85a97d-42ca449da11mr9102186f8f.30.1763567132399;
+        Wed, 19 Nov 2025 07:45:32 -0800 (PST)
 Received: from eugen-station.. ([82.76.24.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53dea1c9sm38765632f8f.0.2025.11.19.07.45.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53dea1c9sm38765632f8f.0.2025.11.19.07.45.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 07:45:30 -0800 (PST)
+        Wed, 19 Nov 2025 07:45:32 -0800 (PST)
 From: Eugen Hristev <eugen.hristev@linaro.org>
 To: linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -115,22 +115,22 @@ Cc: tudor.ambarus@linaro.org,
 	tony.luck@intel.com,
 	kees@kernel.org,
 	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: [PATCH 08/26] mm/page_alloc: Annotate static information into meminspect
-Date: Wed, 19 Nov 2025 17:44:09 +0200
-Message-ID: <20251119154427.1033475-9-eugen.hristev@linaro.org>
+Subject: [PATCH 09/26] mm/show_mem: Annotate static information into meminspect
+Date: Wed, 19 Nov 2025 17:44:10 +0200
+Message-ID: <20251119154427.1033475-10-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251119154427.1033475-1-eugen.hristev@linaro.org>
 References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+X-Stat-Signature: 53neb9w6gqcdx59thyphi5om79kktb3n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1C62620008
-X-Stat-Signature: rbst6nedk166gjinquc585r9aqs3qfud
-X-HE-Tag: 1763567131-189675
-X-HE-Meta: U2FsdGVkX18Pic3njwyYcMYeyVDPf2NA9MvRX1A/gzut2MK2z/bwKUYA3jd9Uu/aXNLgcpD490vGuFQhT7csJ04+SxN8Yxb/se78dnx60NElw/NNJRXABmSFYNxe0aHsmPvuYQ1tX5bMbx/EGHzpEWop/Brw794VhzCnJIK99cc2GF2+amf2bQ2iU7SkQlcOB4Gd/w/UbC5lbVg48AijqJE8lrR8StzOF9xm4atPhFJD98BQMQcM0bQiJyJRNxlIfkSvR4ObVP88pzc4U0pbtL93p8hSDp1Z0TwZvU4uQnPxETS+YENuwF5vGz7tpgxxCLAvRBXSw5fnWXLPKnSM9Jp2ZIgWIufns9hVFNnwkqLWaOrpRe2dE3XYj14IiE5BafQVLr+3k7Wbq7Ki7lSSMGUC0ecqaSD2M8LwpcxuMnM+eh41Qp95imHTnE3wb8qGMA2b/43hRZUYFEjGkA3qwf5OCbaZEgJxOQKo6vDQatsoBuEiq09pQbwizrq6OO88Z+iHEg/nDyCJfdxchv2RXiz77cE3eLN1EsCwgqiA4nWgZ2SOiSF41Sl34twofcDxlOE6tUhf5GmhHKxNOjeSnjy6Ph2HB5DgFAvL6oxR+s9h1PAYsfRU5GN9m+AiiyKKdWhrvMj0oR1RhGIlEB3Qtkg8C7T5g0rerHfQQm6V+cHtOXLa8Qc1a2E/BXn1zHCz4T4JGgEAtn8LaApDOlOeD16+DJhs6SXgV3Bx9VtG0+SyYmzSpfaiNL2bDdR0JgLI1gM0rpvL9BPgM6+sVSntDG4aOkkep0IrnwW+xFmw8rELv7DYl36RAoA9/PW2nNZXA0fUo++1gREVeAQ+kfzEJh/ziji/L8OUvDHnCMM5ULI13Dxg8fbbSMgTRLyBplrT3jVBsNqHR3yuK1ioP+OC0Xg/RtMhii/dZZuMCT6bsPiT2suE24fuNNL+6hXF2ZxjpmxrwixBHBXcn45MEEu
- ce/ymwQW
- Lu1v4Xqe76+PKvGutMukL4fGNnEBeEgA38Snqr8Rb+9xmyJ5oQjDyK9Ydw6dKUI4BrqDF2T+Jwc+cWQp3pzSRCJy1Eyk9j20CPGv1Yt38ViCYJHfXWcJxrEsjhT9AiTTiLEo6kPqyrw6QIBFVHveZlxc4LeJ/TPs3+t8pGs9uXQysADqpv6QKlq+7WRN1HHlGvgyfP1Y7Jysh1bpGD5o3CVKdUAE8hTI78p0iQrS41ZbPLY4wHwXzFNJ8jLSuKWZEaPnv27HkfzML/DUhzr9H8QjDlRBLOro4FFu5mGeGwB1EsuX4Ex135v4zBrQwK8pilUMWpcrG9lgqljNYZhrzNK10rugjzoF/rubJma5PhUVAY2tyWlmGq4VPAdUXzP07uY8Lzwow0pgBGy5pbxsZ71oA5OQLAml/7XxcX/aEASIZxPnvIqFafTlVt0JmwbiBeEQKHs/hoO//kzOb9b4GJgop6K2krmW0p6yQyzF37isrz2NMZpY8alVJcjdVJrWzCsODRI6ajJ13k94mt5DN3rGw4A==
+X-Rspamd-Queue-Id: D2DA7120009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763567133-155172
+X-HE-Meta: U2FsdGVkX18K4c4wBoeOoW+XZ4Vi+Nt1G+ssL3tv5b1icvzw3lLj/n+IqUYG7QXnxXN20QZ3Uvgr6gYpAPLO+iZasBGVYdXOZR7/QLzaG0psgZ+oc4zJvwU1ykoYR1lS6dHcHHxQy9rhLDz9VZGsSkC552E4JwiFMTjWJxd6e7e+IJeAsJK1tr1aBrkh0iwy3s6tkUhcseb1eGG6sc67RC+ziE52xU+L6+jMbsfwj7VDSS9MOTJZfPDzZDyxfq8MmvC1XC7cBvdkSjGT+ILagk0apAVXmgxaBq/kiCTJt0HFK81jmlWBw091eQYRajzALHg5sKlo4vSQ4ML2ELWDJWhVF4mbfXfeIgiiED2ULYbqzmMdJGBLDU3NoJolh/Siw+ZWZE9LBUFyOYzGjdA4NN6pSyDB8Uq65pAeMgVFbQTwOWKQJ0PY7hI0hnV3CrkRp9/h9DXoczUp+f4Y+oyK0hlXGjWK+XHAYqhjuky6GigzrzgkXln3VV9tlcPVBkENYqEW/0ipfu1lhu0Ga1wR7Go/qzG1g9HYp+dFWKXdqirUF/gbyyITaAm0BVzgDjoRkgg3FjAyTC2G5G1N9D5EcczIG1vGYiqckU5CalKv1T0YY9+sDFUnn4kO3eZ3R3eyHK4k0euaISw94jpyX46MLvNpnghWFk4NXJIq82K5hKmF7cracFDGrJ/A/3o4/R5Wr3bWcp/L5LKYeeLpE74P9WXZMn35k949p4l0gFUOjPc8t2Zj3AvnNIeMr1rS42r8+pHdNYQaKnSwafu0K34m9Rr8V8f0zpMjADevAMjhRbpnZ/2qzl1eBBqWUk5C29PJsW7/tZtug6rMWo/OVmRj1Yvc8LLaZRfXMPLR3r49/l6t28FqSrUhsjFRRT6mS4OgRfDTvXCmCqmtmejJfFm7x0ET8NVdq9oUHqbuql7WjngFveli9A38cozssu9ULE9glCFHnjDQ9rm6qM2douy
+ eiJzwZuU
+ w44iBH26Ye7ej1xFzyp/fPaXmyQpBHpl9oeho1ITr7KkZWhIIEH8jcjH50xZSpn/BNsztPoWh3J6Z+M/ZY474IXNyG/sjNIcBC6SOf+TC5yY9aXG3Q82zfSVPcBMiUR2tFRDj8qCCaWjHmNfrQu7/K3qxRj16Gpm7yQ3da7SqZoCAy+Yo3q32dUBGYXh7TKSUz43xjmqTN1lJKuImSHcQLBCljj79fLY8uPQFzZFIDE90VhbCKOXUcyoTeWLKVP0pANaoJaI85rafJwtkHwTk01oronBXa0Gb5lXE7+1KLhhOBBzDWEICN5CT2yIGTu+pFKHv3od6HJ8bTiVdX4MbOKP2E1pXxLOoODsvOChQHuekjPXWV6v4mP5NOV570ISe02e2q1XrLJuDZ4Kyr/wyUPUQW2ZBONcn99yMFPa7HawiFIwlJTjnYQ9ObCgVK/wMerG+99QIx6Kd70iocB2LE29eiHZXog1m2i7Su/SMRLEE0jQymGEDfi6xRRrE1QzENALGiPPYxQTF/4UkHiv3bT3VkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,34 +140,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Annotate vital static information into inspection table:
- - node_states
+ - _totalram_pages
 
 Information on these variables is stored into dedicated inspection section.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 ---
- mm/page_alloc.c | 2 ++
+ mm/show_mem.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 600d9e981c23..323521489907 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -55,6 +55,7 @@
- #include <linux/delayacct.h>
- #include <linux/cacheinfo.h>
- #include <linux/pgalloc_tag.h>
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 3a4b5207635d..be9cded4acdb 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -14,12 +14,14 @@
+ #include <linux/mmzone.h>
+ #include <linux/swap.h>
+ #include <linux/vmstat.h>
 +#include <linux/meminspect.h>
- #include <asm/div64.h>
- #include "internal.h"
- #include "shuffle.h"
-@@ -207,6 +208,7 @@ nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
- #endif	/* NUMA */
- };
- EXPORT_SYMBOL(node_states);
-+MEMINSPECT_SIMPLE_ENTRY(node_states);
  
- gfp_t gfp_allowed_mask __read_mostly = GFP_BOOT_MASK;
+ #include "internal.h"
+ #include "swap.h"
+ 
+ atomic_long_t _totalram_pages __read_mostly;
+ EXPORT_SYMBOL(_totalram_pages);
++MEMINSPECT_SIMPLE_ENTRY(_totalram_pages);
+ unsigned long totalreserve_pages __read_mostly;
+ unsigned long totalcma_pages __read_mostly;
  
 -- 
 2.43.0
