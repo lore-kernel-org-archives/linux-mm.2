@@ -4,178 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DD98CF2564
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 02:32:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE9ACEE35E
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 02:46:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98D356B009E; Tue, 18 Nov 2025 21:32:22 -0500 (EST)
+	id 719A76B0098; Tue, 18 Nov 2025 21:46:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93E506B00A0; Tue, 18 Nov 2025 21:32:22 -0500 (EST)
+	id 6EFFD6B0099; Tue, 18 Nov 2025 21:46:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8053D6B00A1; Tue, 18 Nov 2025 21:32:22 -0500 (EST)
+	id 62CD06B009D; Tue, 18 Nov 2025 21:46:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B5796B009E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 21:32:22 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BCD71A02BF
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:32:22 +0000 (UTC)
-X-FDA: 84125782524.18.3846DF1
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010007.outbound.protection.outlook.com [40.93.198.7])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 28B284000E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:32:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5290C6B0098
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 21:46:01 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E74F7B7E4D
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:45:58 +0000 (UTC)
+X-FDA: 84125816796.06.E0F6AEC
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 559174000E
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:45:55 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VGpAYysw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.7 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763519539;
+	spf=pass (imf17.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763520357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=al+ODu7ni6lPPea9uD4R/uCjvxjIQg9nubtu8Ii/9qY=;
-	b=RIQVV7wAosv+10yxOVWaOD+l/NcZmJTjvV5A7GRilOBynsmLUN8392JDjxw7vqv5U5nC8E
-	2b7EGH8B+TNCJsBCrKxhHZl5qitHaKSVDsV+MAOJ3a89l7y5sU8KqyjVI1b0QT9Vi6dC1J
-	Ekrx2EoL+hvYfBOqjKJz+Xdllet2eM0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763519539; a=rsa-sha256;
-	cv=pass;
-	b=l1+tvDBH2MmMWT6Dnn8CyRuDyA8TTNaeFyZ4oNLKbaMm5KI4YaTZMAqXTLiHwZJCIkrCC2
-	H6eLiEekbLYomUZOHPpGqOQhuRTVwHbQi7VcLm+u5qgYhAMfET5JJFyxFWd/rGook0uqnQ
-	p+GBiqJ6mVdwqNZKMLDl8hkYT6T/y5A=
-ARC-Authentication-Results: i=2;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xtPWvbA0ZlT1rkW+dX/KfOjgKFItCRBsi/VasSJDrHE=;
+	b=JkhXWQeq0BrAlPu8gP7u1f+SStaOYfztbfebr0edXEap8v/p0xCRp/Zp0tCAzSxucFnjC/
+	zcvjUj+4wE5f0B3WG57EthXwkpDNurlo1MoR33V4vQXNjLK2E+xg+EssuTQ2XGyTrQL/mm
+	jlDaB7jnnNIkAiy4SAPRS5qMCstipsM=
+ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VGpAYysw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.7 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Od2qpi/y0oJsY9rQ1naMFoPG7t35V8AEC1JPNB6jqMAgUzuoILu4zJOAVE4z/3eXbB0Z3WOa81HCNGiY5OwSDBY2E31TxwZp7QP+MqlyIWdFN6fbzFTld3MC4Qh38ySBo+tToAFvJZ2nZUfICx1ZzcIq6hqG+yIuJUYTsKyJJ0PjlOLnvuYWqu3p0HWqJUffY2P6mhRukjVZyxvtSP9zRF9YoyYO3j05HmNOntXGi1JJXVQ4o/EK4MulN7iT8JEof8GM/+0hcGWESobsAGV8mmCsQDSnSWZafXY1awvnu68A6A3AQaoR7vgISnz97ZX06iXEv39rAuz6pwxhVcyvVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=al+ODu7ni6lPPea9uD4R/uCjvxjIQg9nubtu8Ii/9qY=;
- b=n/TGA5zctC/r8385BcqNtjU8FO073a3PMcPMHzieaYNOKEruGRGIEdjPb4zkbZCWsDbq3s7iYRtgMkKkkqtvzJhsV2PPwWQOlWcdO7BP9Nd8zzrgVU2Hv6MNlgXgJuAzoh0ZTHl1FS6qGAliP3eEV3ZEMgE8ym7dLGqz3ZFhDMrlkwX5//StNGjQiF0iL97RFhigbfQORMqMA/ZUWyWklV647cJNkhjCHB4V3wPBV8wiZEZbIXihrGKNiBIm/hGEXQcxeBFXEG03docZ2c7noduoenCjpA3nhGFPX+R8pQVkZ7wxUlLHHyLczI1FKyyYCmiaMdWkE9c9ctwd2yXGPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=al+ODu7ni6lPPea9uD4R/uCjvxjIQg9nubtu8Ii/9qY=;
- b=VGpAYyswpK3+1OtNEeDDpnvYYvDqkPdQ0fJd7XTeQrAUnZriQhVaX3gHva3DRPDieDAOhbZO01JnDCjphhLgE3NZNyltVF7DBfvw4TVQd00mhFq8G/ZRmUYpb/avx5sx/HBxnK/1CfNcmlhEiY/30r/ZUk5iPFTLGBFTsrXQXILn2q6qlukTgYgInE0O/8eAneNts21OaC5N5UvwgaeXZZ2BSi4/rHGCNsUO9+nrTq2ptd09i+wT2PQjRV9elEv6A4VKNUr5JGz1F0SHOfY9wwrhJqDtYYC78YU/hIDCO31lqB44uOn3mFp+o0oenGQ6RSwbCjLMcjnisZ1LryJLrw==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH3PR12MB8187.namprd12.prod.outlook.com (2603:10b6:610:125::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.22; Wed, 19 Nov 2025 02:32:09 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9320.021; Wed, 19 Nov 2025
- 02:32:09 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: fix NULL pointer deference when splitting
- shmem folio in swap cache
-Date: Tue, 18 Nov 2025 21:32:05 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <A5303358-5FA3-4412-89B2-FF51DA759E28@nvidia.com>
-In-Reply-To: <20251119012630.14701-1-richard.weiyang@gmail.com>
-References: <20251119012630.14701-1-richard.weiyang@gmail.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL6PEPF00013E0B.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1001:0:10) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763520357; a=rsa-sha256;
+	cv=none;
+	b=z9lnxfLdIafMNXEiFCli+1yJmo3AhXAolHAdyYe4P/jJE/MaPyKKqoiPw3zxzeL1Uf3w7g
+	Pg4DUyKxTkLSNY1P8/ACeE1035rrVhI26gJeBcewDIDwuK5dyW4CdOnWDNVFL67mdcSZGb
+	fRbE/0sIkBROLAlvr8mb9wJhwJsMp7A=
+X-AuditID: a67dfc5b-c45ff70000001609-07-691d2f5fe744
+Date: Wed, 19 Nov 2025 11:45:46 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+	hawk@kernel.org, andrew+netdev@lunn.ch, david@redhat.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	ziy@nvidia.com, willy@infradead.org, toke@redhat.com,
+	asml.silence@gmail.com, alexanderduyck@fb.com, kernel-team@meta.com,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	mohsin.bashr@gmail.com, almasrymina@google.com, jdamato@fastly.com
+Subject: Re: [RFC net-next] eth: fbnic: use ring->page_pool instead of
+ page->pp in fbnic_clean_twq1()
+Message-ID: <20251119024546.GA18344@system.software.com>
+References: <20251119011146.27493-1-byungchul@sk.com>
+ <20251118173216.6b584dcb@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB8187:EE_
-X-MS-Office365-Filtering-Correlation-Id: e0759cbe-8fc9-4d17-a23a-08de2713d615
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8S/37ETC0Mwk/HLx7wcnH82l/WOmH82G9wCB/TUyxjxt5Cf3t6/MwxMTkhPY?=
- =?us-ascii?Q?xI7z3EYsctWg3T79QToog4RyrcC22BIgnfWigYYNVzRc/Dt0XR4r7SYhjPqI?=
- =?us-ascii?Q?W0Q5KwMfQSyHQA7ybCmq6OZX6x4F7PqgV9vO9ZP90kyKinH4V8+vrAYp4ug6?=
- =?us-ascii?Q?EqceATdblLtIw1BRKafxNKxhEIis2fvfHDd55TmMhJDSPg4Aqp9BgBbue7hJ?=
- =?us-ascii?Q?eXFGBT6AkY59TzZeVUOGZ8UBJNg8LhCiGefnEzZypFz36J4gWaJiT5ccJ5Hf?=
- =?us-ascii?Q?pZYp+fVHBlLvZFZXsprsoIE2CcrjFC4qB8uxTxIZrBG+vD8EZ/w3QS3lLMSv?=
- =?us-ascii?Q?kwCyuwrYoKzk0Mexsbyp99tBvzDpfOEc+TNNxPjbrm4XU+B+Fy2mgnpevLix?=
- =?us-ascii?Q?psNkIXIQwsURxS2QLPHZdR/ThCjym41PTb6hTJMduZdEM7RJQBivs9PB+wpZ?=
- =?us-ascii?Q?GKiW3eqTVpHoygjFaGWjzWyXCI77qa5vRQ4wwXp93VP422JHzOYVh2VQyXSg?=
- =?us-ascii?Q?XfxUmkujZekCfywlXguRbQHcX5czRzqFGSjLU5P5YmdN/YnszbGlVYL0NkUG?=
- =?us-ascii?Q?ZkTmWyfMqne+3idTTtI2q31/xw8e1p4N8RhgtLHPuO/WA/YaBm+WR7o+kvTt?=
- =?us-ascii?Q?0E5tV4vIbj9q+ARc/dmgoOCYeqRebdzKIPNRYsZ7NOXAcJ8GH6vr0qPZa11b?=
- =?us-ascii?Q?oVr4GzPDeGues0gZx2clSnJ9hdoqj3rlX/JYylmMseqvLSV+xLaawe94BuMh?=
- =?us-ascii?Q?JN9aLzADk9AZmGeWzhrHKqrnDWDjPakfIO7Rzky2R1N29d1NFKoS/Db1chgn?=
- =?us-ascii?Q?spg0aYzzjmq38pv/7dVm9ThJaiKvDbtiWYnoCRlJFG1k+Hmv/9ec8F13FMfj?=
- =?us-ascii?Q?Er/h9So/NvlX8nuz+lhatXw0Tc6TJlcb3cBxH5bdtYGkSK9+1tzr6xud3e0t?=
- =?us-ascii?Q?ocszt9lxxMJq3M7cvKR7WQQm53vxgWqZpXxEZhZRoinY8eVSFJNlCbOqRP2W?=
- =?us-ascii?Q?ra9jgluo7w1rJL+KMLegmiZwWG4xhZZzpKS4wV8VivzTyUVLms185GJ/AqqS?=
- =?us-ascii?Q?Y4sOCBz+aW/B0E1WSXJJobpjMGnZJbkAmO+6ZOAU7AxVdvLOqEGfID4c4WyP?=
- =?us-ascii?Q?qy4Q1W2yv84witP90NipBbDEnVc71esKk1vNyZryh77D8VY8Yq1ZxtoDLsr5?=
- =?us-ascii?Q?4311yC67XhVirQHcnFO8yMY+67aRBWoNc72eDnEUPY2yTOSGotcWLeg6ARz8?=
- =?us-ascii?Q?YZzfAMmFsbccM3FtpjnRW8NYzZ1/E2NeVGw7OnRK0nt/X3rS/4Q+y8/HFWOL?=
- =?us-ascii?Q?pDA8FfoTBkq5k3sKaYH7/H/1PNyGXWp3r+c1/I34oIRpGoUJZPU86uca2X9l?=
- =?us-ascii?Q?kPmDqQl0TfDSQktmypZWO2qbK1ZsVjKTF3U2LIDt7zwP3HWtNVarbGP7+NP4?=
- =?us-ascii?Q?exXfMlPBct86xZFBQ7s+5rzxHY/Q8rBx?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TXSLQsM9V9sf57NLqNUEpzeQNRScJolzS29HsRX2V9vsk6OP7x1kcE/B7EfM?=
- =?us-ascii?Q?GxprlFH3sRMzBg99/zmUEKAdO2oCbHqxujldO13O2VS73UmumdRZg6/ZFmyk?=
- =?us-ascii?Q?SmSdLTXC3Yp6X+vedoWDe0Zux43NufZR1/h2YGBKg8tEPr7MpFFjUs6f6AUM?=
- =?us-ascii?Q?T40AP7jBJByHMTiBjo54q3dWMdPlyxq63FouJCI0oZj4BqyTbKQjTYGGHnSZ?=
- =?us-ascii?Q?O9zDsc/PsXQkA8lYqhXwCJoM4/nfs22A22/U3l4qL79Un7g89Wfi+FA0ZTgF?=
- =?us-ascii?Q?nWcNP+cpMSeg+Kkv1UerDM4KzqcMv+cVDIz+mcyDOOWAWeCDcdCtCqeHz4F1?=
- =?us-ascii?Q?ZsKvZ7e8LtgxHdGNykbd9qKhRkJC7BTz1uAv6vyBwxQfQkOEng/PYGFffLfe?=
- =?us-ascii?Q?t1+/C0ZdNndCT/4/9AZ9+f8PGvX/YaUZlCSbLR/cZmY3WOXBXyLcBzZKDrYO?=
- =?us-ascii?Q?GOr5rdVi7vZlpqm5UbbtZ7+uRPuRPUuKyIgHSyFs5UfI3t28tlm126CV+Wn2?=
- =?us-ascii?Q?a+Rsqkkh+5k484k1DSl81zTrZIoRWrxXI7JQyrzB9yqB2twLVZYTlMmFJ3R9?=
- =?us-ascii?Q?Tb+nEEdrHTeR92PbhW97J5+bTyLcsB1ZV+ODtXlhCg6rez+uKtyr38uLVNst?=
- =?us-ascii?Q?q4LN4aCx9lVttxslIfmQ2pMx89yOQ1buq5BO1hFLYDjYHGhZ79TRdXItHpR0?=
- =?us-ascii?Q?2dE6+T2FtfpitRRTucUsodleIPvbFFStJ0T1LPmoVj/jSYVLHF9UZzXsxSLG?=
- =?us-ascii?Q?ODAfnfa7tvmaJGjOcCCgClqxl/fQwDSNOhaRQuK3W3XZQUIHUkRv8WKHwHJi?=
- =?us-ascii?Q?GyTrR7m51LBzuMKz0unIYkyKujUBUZuw/IVxT/4XgfPl8Lp9lglBx7AU3B5L?=
- =?us-ascii?Q?R1OmsUduYQGob6BW4Jh5/o0AHaQybLNJ9U7ty8e+LiWCrZeq4ZLbXOoXiwyu?=
- =?us-ascii?Q?vt6Xstnftc++bF9o3ogvxyoFy4WKkjm6juhE/ERjDi1y1GAriFRPY/jYHkLK?=
- =?us-ascii?Q?CpXjPw2dgZQqZB8dTkdBnh/GGDHPC6EHugnGy8AfJpBgm4pvx0WnYC2ps+7C?=
- =?us-ascii?Q?hPWjy0Ujo/GyAnudyufEv/uVYuy4GlM4+9qmn4O0rsVjdywTUiIGGNuCixRK?=
- =?us-ascii?Q?cmsBPHW6TbRSeXamBZVuWyY/5YuYMUEPDkXczOBrpX/7BMzJhXKQkabDcgsZ?=
- =?us-ascii?Q?nbu+bLnhdhbNRcX6hwwPyDnncfron2oxz0p5++izrXbanSST95LOtdxGfgxa?=
- =?us-ascii?Q?nPC8/Lmi/7myj3PlSyzsTVYYRk9O4QX7vzsTG6g8Wk2CyL8fkOlMcITSydC0?=
- =?us-ascii?Q?aovLpo1ob5w0KD3pZ1x803TrQeW1pVPnIj2IC8yZSn/WTGf99L9DAd+YAmf/?=
- =?us-ascii?Q?oJw8i8z8EhxugMVPS2HeiR7+KZjhvMhmm2hVbff5LKd7f+vacOYWkSuymTBC?=
- =?us-ascii?Q?hVrXCj7/KN662D1nzj0MQvC2up1baJTzFH+HmesOhq/Dt4l4/Xx9Szsqqis2?=
- =?us-ascii?Q?lILdfo6b0AfnVGDGkgnagqE2Ck0pAGf6ce7TMqOdX4EZEhjk/FbujAEEJlYn?=
- =?us-ascii?Q?TlFQYyUR3ITVlIbZiWgbPserLGkFU6GOsN7dmpwN?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0759cbe-8fc9-4d17-a23a-08de2713d615
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 02:32:09.2087
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yrNRkSCXS9uAIUjmm6vMjc9RuYk+glJq0Zy9EyvbQghu5bKu228iRKjlbdW5qEXQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8187
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 28B284000E
-X-Stat-Signature: y7d1h6rbp4mo7uf3pwg3rf6d169anufh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251118173216.6b584dcb@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrMIsWRmVeSWpSXmKPExsXC9ZZnoW68vmymwZX9ahb7mpYxW6z+UWGx
+	/MEOVos5q7YxWsw538Ji8XX9L2aLp8cesVvcX/aMxWJP+3ZmixWT/rJb7Lu4hs3iwrY+Vovt
+	DQ/YLS7vmsNmcW/Nf1aLk7NWslh8PHGC0eLYAjGLb6ffMFpcOvyIxWJ2Yx+jxe8fQGWzj95j
+	dxD32LLyJpPH5Vt72DwmNr9j99g56y67x4JNpR6bV2h5bFrVyeax6dMkoPCOz0we5y5WePQ2
+	v2Pz+Pj0FovH+31X2TzOLDjC7vF5k1wAfxSXTUpqTmZZapG+XQJXRtPJbraCw0IVvX/aWRsY
+	X/F1MXJySAiYSDzsuc0KY2+5e5QZxGYRUJVYsnsRI4jNJqAucePGT7C4iICKRMvmmSxdjFwc
+	zAItLBL/D80AKxIWSJdom9UEVsQrYCEx9fl/dhBbSCBGoqnnGiNEXFDi5MwnLCA2s4CWxI1/
+	L5m6GDmAbGmJ5f84QMKcAoYSJ+6+YgKxRQWUJQ5sO84EcdsjdomNK7UgbEmJgytusExgFJiF
+	ZOosJFNnIUxdwMi8ilEoM68sNzEzx0QvozIvs0IvOT93EyMwqpfV/onewfjpQvAhRgEORiUe
+	3g5+2Uwh1sSy4srcQ4wSHMxKIryqjjKZQrwpiZVVqUX58UWlOanFhxilOViUxHmNvpWnCAmk
+	J5akZqemFqQWwWSZODilGhgz9W2PTDLjfmE9T/KmX4ec/dtXFuV6nH4PDriJzrlj+jHj9uO8
+	C6dX9wcY2z/5Zdv6efF5sU7xOUIOXEWpH+adTTpx5vCSG68XzW6cKX/r8r5fn8KZHp2wC3my
+	0sRFwyLWdMf9QDOOha2cl4wXTH7ckZz33frBvpzgsvaPYbO+3jA7/Ueok/+0EktxRqKhFnNR
+	cSIAAgFzG+YCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrNIsWRmVeSWpSXmKPExsXC5WfdrBuvL5tp8LtJzGJf0zJmi9U/KiyW
+	P9jBajFn1TZGiznnW1gsvq7/xWzx9Ngjdov7y56xWOxp385ssWLSX3aLfRfXsFkcnnuS1eLC
+	tj5Wi+0ND9gtLu+aw2Zxb81/VouTs1ayWHw8cYLR4tgCMYtvp98wWlw6/IjFYnZjH6PF7x9A
+	ZbOP3mN3kPDYsvImk8flW3vYPCY2v2P32DnrLrvHgk2lHptXaHlsWtXJ5rHp0ySg8I7PTB7n
+	LlZ49Da/Y/P4+PQWi8f7fVfZPBa/+MDkcWbBEXaPz5vkAgSiuGxSUnMyy1KL9O0SuDKaTnaz
+	FRwWquj9087awPiKr4uRk0NCwERiy92jzCA2i4CqxJLdixhBbDYBdYkbN36CxUUEVCRaNs9k
+	6WLk4mAWaGGR+H9oBliRsEC6RNusJrAiXgELianP/7OD2EICMRJNPdcYIeKCEidnPmEBsZkF
+	tCRu/HvJ1MXIAWRLSyz/xwES5hQwlDhx9xUTiC0qoCxxYNtxpgmMvLOQdM9C0j0LoXsBI/Mq
+	RpHMvLLcxMwcU73i7IzKvMwKveT83E2MwChdVvtn4g7GL5fdDzEKcDAq8fD+mCCTKcSaWFZc
+	mXuIUYKDWUmEV9URKMSbklhZlVqUH19UmpNafIhRmoNFSZzXKzw1QUggPbEkNTs1tSC1CCbL
+	xMEp1cAYmSP1va+JU8cscMvH+aes4+Kvx/5gWG+tfdRXa+aPT7rbJfQb7lf/Tfhu53PBYsXe
+	nOnqm/NTLm1cwRNl3f+vM6N25qVZhdMe3H6y9M2ZPxPKjG52tXq+OxM/dzrThZWm63etfds9
+	Q5+RgzXKOX3K/vK09tq7ivNfftF0TGC0vqKXY5pZJflBiaU4I9FQi7moOBEAgoPsPM4CAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 559174000E
+X-Stat-Signature: esu8oaxpi1c6ysuuf8tbwsnhecx41yfz
 X-Rspam-User: 
-X-HE-Tag: 1763519538-380180
-X-HE-Meta: U2FsdGVkX18btMU1//1cGScu7x02ckm14cecyT0lARirGM4uzQBou2QR3Vm2FBIFLpTgkYAb/Vuh6T6QMy966ralVL1r0uXzXJlOlMjBP0lDoeDIe3ei3jLOhU77ztvrLbc/tfjqHuAJF7R68nj+rMqHRpcFi+tpyHnTSIOaq0e3bk9zuKFgILakwz2q+QXy8rd5FgjUAQezZ2jXBv17rkZpAk3uj9f4Uyeyl0Yvcyr424GMHjklcBGITWROetzT/7aFFr4fVKGBng4GhyNzWQv48lr3JzEX4LEakWa3R7hXJM/ac1nUxI6GSw6hoqoRhmUghQaRtOdKFffXtrPlRur+2cuFPcqLqf8DdZYPE0ddYuAdULy9hj4KPPkvLhg51bB81E2ryP6+fa15o844qqjmmXCONoeAccMVYcUOxsP1W+y+D99Qh7ZhLAehSjPIB1Zxqq4aTsMw1JXVJJc30X1LR2IJIuYmhAslGciXLIWrOydTLuyTC3uYkwMUPRpcr68Pcw7rBgLOBFz3ZEtFyqNFzbS7f/47xtIKqzmQcv3YZG7n5tIlr17UDZLeybI/86rJsXphhJ515oZHbxlsjt7efeCr6sL3fyx1ihYsY8usTpoLP7muBH4tPSAq3h3/0iP4ML5j6f/XTccodci13eJFYiv4FsaPkytyjKnkMpUXHZ/fTvJluoJiHIGRTJt6sQLBjuMEV066xOWW2uT8tVAHwUzwhhxFs6d/gB5zryHC6JWNfmcKlyKjBisBQrab9ybJnFvrMOlMJmz4EzWLepyrChz7kx5uU5trNaiqC2RkjO0Ay9NtWBTTahbOTrGiq+oM36g7c7ZCi+3aPY8I0px2wY6re+xzGR3JTpMKrJ7LWnew070AGr0vyLJm1QGSN+cpw2CYuDffFffowP7tRiH45UiJ2lBzl8IDVTQm5DuUVXnPeiGjQ4T6mzrLsnHDxrkNJ0s9FVKA/MIMu8+
- JVTrn1ec
- ybKsePK7+mwPHdfm204qROaO+VGxKSE7YnyzJgr/RF68xFqsC6m41q8+SIk1ObbMG5SE1sN5kCK/TSRvfP1boR9F0RZjHXdT9w4+7yKx/ueO462aQLu4oKK0sQQU9jfgmt+J7RnQz1FljxqgZW88dC5taVXrstin5ZVHoNG20/0ZUx9rH27omSnqOcbptr6nylUGK7XFcFyPlwTjVrQ9qMx4ceNiIj5PeGvozLuFozf1iaZ47yzbGym3EH7nMbIbPYyo4Zwh/WSVq1XGUO+w8jXpGvMVGKHmaN9u7E3gexPu3gWgMOYkz+lyqJ7yMFypa4JXrJ/qpO0u81uhJMENU34qR3fUbUFakawhocKeC8U7l9MVZhylMqHtr51u5KWqJVSFs9ct1BJLLevvWbfSJv+ggqKSJGzu00z4qM8cLZAit2IVzPLprb69s08ktZRW0OxohGJPD9eqwcF7YTJ9GRZmdGlsqnjOzm18ix074vMnNAcRzNTbChAM+Sm5QNpIDSojHCYW52Am3dKdnTw+ZHE9Y/VfjeAaGe2nmr2k/q31wNbvJprLU3fkFkPow5tqfEh0mw/UJjjA871YJ08M9p8Ebrpf+WV4Vnojy5c+06QBlqIE=
+X-HE-Tag: 1763520355-952336
+X-HE-Meta: U2FsdGVkX193MD1cxPtWRLzcJ0/5tR8J+xsGDjZY4Ry44g/SCNoZp2XwOv/T4tSgtBJwpea8SUxtjDAaBBwZOwChfd1EAXf1tWjIxGqGkMDm91krIlxp6eszAJk2nhMgTOV5zHzHXIJtndSqaho+ffmASCLdBt6TU/FuspIjAA5zDtJ/Y+tKctaHjR9J/h7ZNIaZLcE2jOPM9x/1SPW7PAUsBUSx28jJCjCQfLW/VElr6+mKTySdgFB0Bvcgy7IZSFy2MXvnd9mQX7i+IrQQeJUQ5JzYRb2kyy7Lwl0dANX5/gRFXqPHELGyPEcjKb/Wun17SEqHwthFd/zuV0gwNQDBOKvJhLsYNNgrXpOwcJg+fnPh/ZTcKxLFbBeY2UcqaH15sKINHRw40+iRWAtIQPXY0iMaTYzstwiVfgArRHbjk24aWvX04uiuzOy9xvKBS6TIcxD5IF3sdjWKGhDqtOP5V5A5fvcrScM6CfiFuIFO8BW/D2kgbU6YTWaLsR92qH7ZnDKtc4b7pfVnT1+Xekb3zBEG16XAe33xe/slGSbdY21sk7jFJqN6L72Es3q8uNfly7/R7GRR6M+pU2DnGaCC8g0TTYt9zi0l5fiy7rNsVSrRox2jVl70T1ID47+u3SzrwW8QO9AJz7YzYwJMcoV9ltkurydWRiBvzE01RWU4qcu80fX/bCkJZlxZ0oCR88kbVRtziKoU8VYhTLfMjkCcCa0Tdz0LtdL5bESrsg0dV085vp4jDLWy/UR9asvDbsXwZkMMzKc2QrPaSTY0M1rHCU4xe0ERjyex/eK5Zw0+LMfgqOqIDMpJHWVGR8OthfnS4tPehpWMZt/xXFcSggYvJiMpPqTxBsZAx49/1KPUjvWp0B+j6NYjNmW4qEQSR2EmAgf6+znCxojo1zMnExyd/NhBjU4dE04hyFNj83T/NUzFsWii5M09A8Ucy0mbVfEpQL+uL0Yc/PgWLS7
+ mH6ogMGU
+ EpFHFTg9hC2Cx74hVVRZy4kraW/8WUnxB+R04u26ziY1xyvyawi31A3+4LlbWCZd8o1soS3U/j3tbOU0HtfPjDPn05jEOo0RjQMZp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,178 +112,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18 Nov 2025, at 20:26, Wei Yang wrote:
+On Tue, Nov 18, 2025 at 05:32:16PM -0800, Jakub Kicinski wrote:
+> On Wed, 19 Nov 2025 10:11:46 +0900 Byungchul Park wrote:
+> > With the planned removal of @pp from struct page, we should access the
+> > page pool pointer through other means.  Use @page_pool in struct
+> > fbnic_ring instead.
+> >
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> > ---
+> > I should admit I'm not used to the following code.  So I'd like to ask
+> > how to alter page->pp to avoid accessing @pp through struct page
+> > directly.  Does the following change work?  Or can you suggest other
+> > ways to achieve it?
+> 
+> @ring in this context is the Tx ring, but it's the Rx ring that has the
+> page_pool pointer. Each Rx+Tx queue pair has 6 rings in total. You need
+> the sub0/sub1 ring of the Rx queue from which the page came here.
 
-> Commit c010d47f107f ("mm: thp: split huge page to any lower order
-> pages") introduced an early check on the folio's order via
-> mapping->flags before proceeding with the split work.
->
-> This check introduced a bug: for shmem folios in the swap cache, the
-> mapping pointer can be NULL. Accessing mapping->flags in this state
-> leads directly to a NULL pointer dereference.
->
-> This commit fixes the issue by moving the check for mapping !=3D NULL
-> before any attempt to access mapping->flags.
->
-> This fix necessarily changes the return value from -EBUSY to -EINVAL
-> when mapping is NULL. After reviewing current callers, they do not
-> differentiate between these two error codes, making this change safe.
->
-> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages=
-")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: <stable@vger.kernel.org>
->
-> ---
->
-> This patch is based on current mm-new, latest commit:
->
->     056b93566a35 mm/vmalloc: warn only once when vmalloc detect invalid=
- gfp flags
->
-> Backport note:
->
-> Current code evolved from original commit with following four changes.
-> We should do proper adjustment respectively on backporting.
->
-> commit c010d47f107f609b9f4d6a103b6dfc53889049e9
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Mon Feb 26 15:55:33 2024 -0500
->
->     mm: thp: split huge page to any lower order pages
->
-> commit 6a50c9b512f7734bc356f4bd47885a6f7c98491a
-> Author: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> Date:   Fri Jun 7 17:40:48 2024 +0800
->
->     mm: huge_memory: fix misused mapping_large_folio_support() for anon=
- folios
+Thank you for the explanation.  I'd better make it in the following way
+rather than modifying the unfamiliar code.  Looks fine?
 
-This is a hot fix to commit c010d47f107f, so the backport should end
-at this point.
+	Byungchul
+---
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index c2d7b67fec28..382573f35408 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -653,7 +653,7 @@ static void fbnic_clean_twq1(struct fbnic_napi_vector *nv, bool pp_allow_direct,
+ 				 FBNIC_TWD_TYPE_AL;
+ 		total_bytes += FIELD_GET(FBNIC_TWD_LEN_MASK, twd);
+ 
+-		page_pool_put_page(page->pp, page, -1, pp_allow_direct);
++		page_pool_put_page(pp_page_to_nmdesc(page)->pp, page, -1, pp_allow_direct);
+ next_desc:
+ 		head++;
+ 		head &= ring->size_mask;
 
->
-> commit 9b2f764933eb5e3ac9ebba26e3341529219c4401
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Wed Jan 22 11:19:27 2025 -0500
->
->     mm/huge_memory: allow split shmem large folio to any lower order
->
-> commit 58729c04cf1092b87aeef0bf0998c9e2e4771133
-> Author: Zi Yan <ziy@nvidia.com>
-> Date:   Fri Mar 7 12:39:57 2025 -0500
->
->     mm/huge_memory: add buddy allocator like (non-uniform) folio_split(=
-)
-> ---
->  mm/huge_memory.c | 68 +++++++++++++++++++++++++-----------------------=
-
->  1 file changed, 35 insertions(+), 33 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 7c69572b6c3f..8701c3eef05f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3696,29 +3696,42 @@ bool folio_split_supported(struct folio *folio,=
- unsigned int new_order,
->  				"Cannot split to order-1 folio");
->  		if (new_order =3D=3D 1)
->  			return false;
-> -	} else if (split_type =3D=3D SPLIT_TYPE_NON_UNIFORM || new_order) {
-> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -		    !mapping_large_folio_support(folio->mapping)) {
-> -			/*
-> -			 * We can always split a folio down to a single page
-> -			 * (new_order =3D=3D 0) uniformly.
-> -			 *
-> -			 * For any other scenario
-> -			 *   a) uniform split targeting a large folio
-> -			 *      (new_order > 0)
-> -			 *   b) any non-uniform split
-> -			 * we must confirm that the file system supports large
-> -			 * folios.
-> -			 *
-> -			 * Note that we might still have THPs in such
-> -			 * mappings, which is created from khugepaged when
-> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
-> -			 * case, the mapping does not actually support large
-> -			 * folios properly.
-> -			 */
-> -			VM_WARN_ONCE(warns,
-> -				"Cannot split file folio to non-0 order");
-> +	} else {
-> +		const struct address_space *mapping =3D folio->mapping;
-> +
-> +		/* Truncated ? */
-> +		/*
-> +		 * TODO: add support for large shmem folio in swap cache.
-> +		 * When shmem is in swap cache, mapping is NULL and
-> +		 * folio_test_swapcache() is true.
-> +		 */
-> +		if (!mapping)
->  			return false;
-> +
-> +		if (split_type =3D=3D SPLIT_TYPE_NON_UNIFORM || new_order) {
-> +			if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> +			    !mapping_large_folio_support(folio->mapping)) {
-
-folio->mapping can just be mapping here. The above involved commits would=
-
-mostly need separate backport patches, so keeping folio->mapping
-as the original code does not make backporting easier.
-
-> +				/*
-> +				 * We can always split a folio down to a
-> +				 * single page (new_order =3D=3D 0) uniformly.
-> +				 *
-> +				 * For any other scenario
-> +				 *   a) uniform split targeting a large folio
-> +				 *      (new_order > 0)
-> +				 *   b) any non-uniform split
-> +				 * we must confirm that the file system
-> +				 * supports large folios.
-> +				 *
-> +				 * Note that we might still have THPs in such
-> +				 * mappings, which is created from khugepaged
-> +				 * when CONFIG_READ_ONLY_THP_FOR_FS is
-> +				 * enabled. But in that case, the mapping does
-> +				 * not actually support large folios properly.
-> +				 */
-> +				VM_WARN_ONCE(warns,
-> +					"Cannot split file folio to non-0 order");
-> +				return false;
-> +			}
->  		}
->  	}
->
-> @@ -3965,17 +3978,6 @@ static int __folio_split(struct folio *folio, un=
-signed int new_order,
->
->  		mapping =3D folio->mapping;
->
-> -		/* Truncated ? */
-> -		/*
-> -		 * TODO: add support for large shmem folio in swap cache.
-> -		 * When shmem is in swap cache, mapping is NULL and
-> -		 * folio_test_swapcache() is true.
-> -		 */
-> -		if (!mapping) {
-> -			ret =3D -EBUSY;
-> -			goto out;
-> -		}
-> -
->  		min_order =3D mapping_min_folio_order(folio->mapping);
->  		if (new_order < min_order) {
->  			ret =3D -EINVAL;
-> -- =
-
-> 2.34.1
-
-Otherwise, LGTM. Thank you for fixing the issue.
-
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-
-Best Regards,
-Yan, Zi
+> > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+> > index b1e8ce89870f..95f158ba6fa2 100644
+> > --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+> > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+> > @@ -653,7 +653,7 @@ static void fbnic_clean_twq1(struct fbnic_napi_vector *nv, bool pp_allow_direct,
+> >                                FBNIC_TWD_TYPE_AL;
+> >               total_bytes += FIELD_GET(FBNIC_TWD_LEN_MASK, twd);
+> >
+> > -             page_pool_put_page(page->pp, page, -1, pp_allow_direct);
+> > +             page_pool_put_page(ring->page_pool, page, -1, pp_allow_direct);
+> >  next_desc:
+> >               head++;
+> >               head &= ring->size_mask;
+> 
 
