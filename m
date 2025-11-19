@@ -4,112 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C419CF58F5
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 21:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 491D9CF6481
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 21:56:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9882A6B0023; Wed, 19 Nov 2025 16:34:14 -0500 (EST)
+	id 60C3D6B00A5; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 938E56B0028; Wed, 19 Nov 2025 16:34:14 -0500 (EST)
+	id 5E3B76B00A6; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 875AC6B0096; Wed, 19 Nov 2025 16:34:14 -0500 (EST)
+	id 4F9F36B00A8; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 74B276B0023
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:34:14 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B36B4E6BB
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:34:14 +0000 (UTC)
-X-FDA: 84128660028.12.7412715
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2970D140003
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:34:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GzJfp/Wu";
-	spf=pass (imf23.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D5346B00A5
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3EB7FBAA3E
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:56:51 +0000 (UTC)
+X-FDA: 84128717022.29.108F6F6
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3E45240017
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:56:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=H227m8XO;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763588052;
+	s=arc-20220608; t=1763589409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EZANuNEnfoPqlj8foFWgfUflASDM8QeoCHlW0HXoEPI=;
-	b=nPviEY5o5oBfHE1AeAditCjiaSMfjZTPrOL2Pq7+NL/OB8z2EogY9DrUM+UJMg4XDA3Png
-	kVCATyFq94yNzZzNPdXtJfw+ONLrP7AKW/plu1lNhj+oXAqy5deX01q9mPFVyc0lKhrzmf
-	+1zCY1rOY9vNq58Dfz6zueFP+LellIA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GzJfp/Wu";
-	spf=pass (imf23.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763588052; a=rsa-sha256;
+	bh=GNCgiEwH4yoLxLSeabt8BIXDk+2v90qbq38QcBVyYpw=;
+	b=V5r1LpChLAgmrAiMZsAkf7saAAHDWDeHj1M7XFsFvOotjcXAaCnQBpBYKf5TSwb4seUxlq
+	u3fai+ndvMrKLzmkcGPzQPAfImpj8cO0dwVXnoBcr2h7lGzWbvEsTzlvDh3ZgqbT5SHb6m
+	7YJpsFkTis22KxUaV0Hc+1PlEreENpE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763589409; a=rsa-sha256;
 	cv=none;
-	b=VpIFQo0pkQT74GDJ9Pa4C8s/kyZ5/RLwc5gPIMxGi93oj9L3ypfBPUYKMd+MucDTFXkHmi
-	ti5XbVJWVfxUcFChoUHHm9fNNTiqxqFwsD/HLpKyPsMU+fRsZ5TlbIa9eIjpV8e3ZIePW2
-	yDrb6ATajC5+WCqHjkggkcMhoUkXfzA=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-640aaa89697so225661a12.3
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:34:11 -0800 (PST)
+	b=GqB8tESM2MZwy/OxoyjVAaPYJh9pYEPAgbdWECLRgt0KwqvdYbhYR5GZ9byDHFD0Yj6ar2
+	ntOveYu38RWeaNERzPK/ROmviaUnhixve9Y/OYgPXIFbZfzq9Psw8jVrD7RrFbLYYx/V38
+	khqFbk/T4Qd3dTumMH010/QQdFiaOvk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=H227m8XO;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so298220a12.0
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:56:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763588050; x=1764192850; darn=kvack.org;
+        d=soleen.com; s=google; t=1763589408; x=1764194208; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EZANuNEnfoPqlj8foFWgfUflASDM8QeoCHlW0HXoEPI=;
-        b=GzJfp/WuC3Zr4TnuqjPctCTf6arHcL+gCfW0oqCB7hEdS60rkEmFN3eaulok2q+QvG
-         ANxfjIb7BxY7jI324jd3zSYcJx0/NCmifzGKI6H+RGkOb62VHaQ/xnbiaswlfxYKTLWM
-         WBCqhHXgQk2CCBPyNweyXT14nGQgxDIV0H3ZbZSeKWXLxdBqCh+JTIXZvJy3fR20cs+Y
-         fRbN/lNrpfOmBC0rYqNHjebkrL2sSDzarcBO89ZkwjU7gPZDR7eteFulIXzCF42sqAiN
-         ovXQEAf9QeKds8wDPY5rbfCaTle9c7QPhCRpzFY3lBxMZRnEdqwwFyoxd1cPO4QBXTAW
-         E31w==
+        bh=GNCgiEwH4yoLxLSeabt8BIXDk+2v90qbq38QcBVyYpw=;
+        b=H227m8XOD2uSgK8sX3KmAfxf4b5UusTjg3pSlRYodzCiQYmGoRA6yo3CH8WkULOeJY
+         ug2YlOs4dyjdE6FTGuJUoMiRSnCcGzbQYAfaJeFp6wJhRzxZfN6ZF9Qwb3T3C2SUrEP0
+         hsmlTPbt4I6PChv/hl6Box+oNEv+U9rKtbDwHN6iBELi27R39CQlwoUg5MXw0rJ0YMEf
+         YRRAlT6pEwJh3o3RBOrZcEJpGmopXrZR9xgfPwvsDYYripOWpP6UpcJmO8KzSocUGl7j
+         UCigKFgkYna+YcIVxkQhMjwGuBMjctFa3ftUI8vcsTcD6eBikJDpB5rtlBxOMo24LlBt
+         DJAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763588050; x=1764192850;
+        d=1e100.net; s=20230601; t=1763589408; x=1764194208;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=EZANuNEnfoPqlj8foFWgfUflASDM8QeoCHlW0HXoEPI=;
-        b=Vkn5HXO+CkC1Gp9KQI9m+238Pjv49v2BgMq9AC3BkbKTqTIwCp/I5xo/Sr3esZffU1
-         XKBrUIGBUifbPKSCNrwOx1cAQIfOuLqEQ/VbV7Qa1ngN2oko4L4uW6Vfhkcwnzc8hUhl
-         YK2uWs+SmyAwcAJ9Cp9wK9uBBfacldaqFSuHn0n3L4tfV7zpRWXYbaU/UWoO5cqpTBUR
-         JiUi+99txRipP2vJMsnUtnjFFeHOaMdbW5LX0P1IrmUcSrODopnCZISAa0Yq5HIr5khg
-         XKuCY0Wif/nxiM8rvGKbQBmhqxmRCgBv213LL9WRljAKo9zELHjCXfTkSqFuOO+glYaQ
-         WZOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXU2PkH7IEshl1IqIppU8VvdAuOUVrZD2JkG+3ixfENI5NMQYOw23yUYCJqGz+dsThLLi0ddMXmGw==@kvack.org
-X-Gm-Message-State: AOJu0YzA0b2BzSPF/5YdcpW9ZS9n7hEI7O6o3N0pIg93OTdAxnIt297i
-	7ldSufDL9jxTgfpTt4yQeFpR/U0Cx4KOAYXalEflOTcr3waaFxss+n937kbUPfJ9PAetEW2wvOn
-	CjS2jFRAzk0WcG+dovlvxbp4BY0wDpzA=
-X-Gm-Gg: ASbGncv5xyD8zKi8TTPMiTXKGSD8LMlFodKJpZXv0y3orumfBbOyUHiVljfJCldqoRS
-	W1X1CNnUFPezlGGEwD3US/bsuLYL/8ejZ3cuAPUaEOqBQR8I9+Y06Bz+4oZPu7TTZEK+4SOa3cZ
-	h+rXMdhKvJnTcaMNOM+r2Gjrvdm3s9BBBF39TXYHiARhxasSnmFi0AFvBi84lYEuK6kX5JVmGEg
-	qsHUBjCMt4AlgwqAPSr26sZN3YyI3g/CB39H+BxxfVh3MsxJlP5tVrFvXIQicTINRp9O8g2zDO1
-	hkPMExW16WlT6Z7Oaq83cMrAW7oolu8zOLmz
-X-Google-Smtp-Source: AGHT+IHZcuD6SiEqohUA1uT4OmSsE6LKcx35j3DjRy8QJoebGQcLNtd8jd60RIfCGWdq5lgjmK1svl0yqR+TYutiSmw=
-X-Received: by 2002:a17:907:3c8c:b0:b73:3f7d:3ce with SMTP id
- a640c23a62f3a-b765545951dmr47404666b.46.1763588050481; Wed, 19 Nov 2025
- 13:34:10 -0800 (PST)
+        bh=GNCgiEwH4yoLxLSeabt8BIXDk+2v90qbq38QcBVyYpw=;
+        b=K6BUWQL9jvYsQnkH+nNQBrIkNIx6nTqMdoVQ1Cqbw+cJO0fxukhYxOlT20tFWUBx4V
+         QHRu/tbrSr20nWvQW9x/Q9lgBSkwOyoIvrdB3w1gjvR39WoGR1ilsL1cJCRG0RknmMoC
+         PCydB/QCwZQhZXcDw6p3NBwlZlhEau9q1l10soTSK+Lz9dDoZLKlToqBHG3gz86xgiwr
+         8buv3wOqQyg4nm+oRzv4kBFaYy+z5c+CSJ1ln+GFohQ1hctv0mVfFwkjAEcHBDhxUS5Y
+         xW7CCzDQuMgvXszMcga8MXKq50NVTOq8PSM24ES/SJzNTDyteoLLSx4dqBkoDTPBZoh8
+         V+uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXH/nkSWpyVEOjalbNXacwtCJj96RJbldeLFKOMNEJjXGC9o5EJXcH3259vJ77+RA7l005u6iUzkA==@kvack.org
+X-Gm-Message-State: AOJu0Yw1hOlAzitFzmEFgJu4GyUDJdbWd+s4OPN+I4kvi4QjmSmvB9gl
+	4oywBzVkrrMqvpOAIj7O4PyLhIl44aCNCRQLc47U5OO8ELnA7wZgS2T1Y8Ban/ZHZt0REr9Opmb
+	Wq9lSEBV2mOQdcnQ4NVss3wZZvPUqSYBggcMiMtkbgQ==
+X-Gm-Gg: ASbGncsZl9GLvY3+q99Zx1AAiS2uoZpPg0d0IfiMAFxshmAOV6B+47Zlkrn1TnUJ5GX
+	0tjy64L3EDevx4Cz+6+zJjTY5hl/fHSYKVH/v5ALvBMP3x8jTim8i11icbydVWXLvZ8PDGPoFds
+	v+KEHfI3A5RAsXYABoHAjYXFTLOALyBZ7oiWIwOfQtHL9yPF+wfzPGQkgMcFkEN1r78KBBuvosm
+	XiKYmxzCRxjDfZzn1/mMebA4i1lAP4j2bRLSAMF01wK2cH157gM48xOASS/zfP9eXLgAdASy2T8
+	C6U=
+X-Google-Smtp-Source: AGHT+IFLyS+wG0rWTlTQxvo48mFxi5vli+cxPH15GpPZdhy+X8F56gfcnoxRYXFwUVFltbkM5G+J1V5jBE1mGtvRoNo=
+X-Received: by 2002:a05:6402:27cc:b0:643:8301:d107 with SMTP id
+ 4fb4d7f45d1cf-645364828ddmr742149a12.30.1763589407434; Wed, 19 Nov 2025
+ 13:56:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20251119210820.2959128-1-mjguzik@gmail.com>
-In-Reply-To: <20251119210820.2959128-1-mjguzik@gmail.com>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 19 Nov 2025 22:33:58 +0100
-X-Gm-Features: AWmQ_bnz1YEjl5mv1g1GrMMj-ODfaxl3O7vj5Sce3fq8TOCK1AFIniU7jm_tG2A
-Message-ID: <CAGudoHGs+3A0TQ9q2jNGuphT=nDbfy9jBrF0-FHtV62E+cz19w@mail.gmail.com>
-Subject: Re: [PATCH] percpu_counter: reduce i-cache footprint of
- percpu_counter_add_batch() fast path
-To: dennis@kernel.org
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-16-pasha.tatashin@soleen.com> <aRsBHy5aQ_Ypyy9r@kernel.org>
+In-Reply-To: <aRsBHy5aQ_Ypyy9r@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 19 Nov 2025 16:56:10 -0500
+X-Gm-Features: AWmQ_bkST9g5qeVKeHrDii74Rowe2_O-kbr5Wx0FA7LJaDDxeXF38UaoBxVWMYo
+Message-ID: <CA+CK2bADcVsRnovkwWftPCbubXoaFrPzSavMU+G9f3XAz3YMLQ@mail.gmail.com>
+Subject: Re: [PATCH v6 15/20] mm: memfd_luo: allow preserving memfd
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2970D140003
-X-Stat-Signature: ngsk7ry3ne3b96cd6qu3uh67mi4u6sq9
+X-Stat-Signature: 158mmzf3jco3sutk9cpbcruy69t8dsrc
 X-Rspam-User: 
-X-HE-Tag: 1763588051-365444
-X-HE-Meta: U2FsdGVkX19/qb/jFZXZk3EIGlAAMjg6bFFzUnPEHpIpas9ep4WMv+k1B5DHppR1B3c/H9k+k8hWAAGFBo5JUBP3O2/KT2l2dR0G/9UBA0RLFIzxeqdb6mVKBa4EESM+g49f7zxu+Pt8417zt6TDctiO6SFsrm8M0GjhHp1O88D4B9VSBO1188Pd8maRal6+7K7bcs13nkSYtMPya7ZX/vwjRpt84xMEX9a92ASFiXxdAvsM2Ocszn2uBX0L6kVptPhJU0Sca6+v/KIhCIRXXdxx+1rezaZKgWanCBr7eFpkp/cEOpnDpgvUHLO8k4w3TumU/g/agoa6tj3jl86rlTg6GnIMuuEBtjswC5ApLqSXkFQoyWJCmnT4vJkLE1frQTq8EZHahRY7sKYeBrqU6wlCq3szbWn6CznrGr2LHvOtQUEOF+czLviQOCoNc8/mp7JyJzIYtlTG9XyeerCCGL26pP0W2OL34XpYN+T0/h6T3UeoohM0u8VK1atI/IM4bQBScxSuWusotvG+rNBoKxAL9vo153nrVFlAOsYbIpgUzH9kv8BDjz/3MSK5k4NRK2M0dxJJCSHhFvMsx5u0ZqS1cRcvB4s4xDn6+32ZJGhxw+LoQPCHa42BlYg1n9KwEwW6c7mhxMU8qx6RKWeN4MsNIN+SPbtQlaG9sLI2FLcOIP0wgME8y6gLPxxI1gXRCfHCW+DQMgjgsrLWUKMsBqoCITMHuVkofFTXk3vBa1KuyovNBQ04LJyjX3+ggwb3t2S04y0120+YLcv5JziriFX1zglKzBu82dW+Pak6T31N6YYmtg96oMMi7CxZtu1QbSYTVb+I0cB8kR6BsVzBwlDikB+H2Jj/4RjgX5Vk8EOcrJxoUSr+wXOmKaRSkuEENhiwMJqjXm69R+vNn930P3+4lVstTH6Thcxd6zw16L0SNL1p3h9SqRaA0zUF6TI12QujouulkdINTRfAP3b
- PiuFPpdx
- mTJLcTiBnAvwzsiAk1Zue0kIRmXAjZ7v5nh7iAUkbvKI5QnPJbBH/c2hv3mB1SCI9rArglnuJt5OSApD3wpeqd+Iac5WZowAFBgz1wwUr7qDSp7nmd/sfnje6xDfljVZKd9BAdmFlkiNDzifrIfYJdxvc5TN56snguLHnjQng29Y9OnyGbgSRdTzq5fctTsk6o+rvbETfOZVJaNtqBepJ3X/K0awbjVOXXP26QVyt1dw3drUISvwvVVl/541gjNEwA25K4xIplzCIYB2rSxKqt6gi+Vno0Xh0ooZThdM0u3mUxTBwF2V/uqq5s0LMi62BzfLd0NmAAmNFDJV9KFYLgYZtpj09EOkr4EqFBtZn0lCcEJRA728YBFMi+vCITQFaeMT/izc0qxEWPnSOkS59nqPg4u/H/nq0n3xockyd1KCTJVk=
+X-Rspamd-Queue-Id: 3E45240017
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763589409-629181
+X-HE-Meta: U2FsdGVkX1+pyTSxSe6DNRB7wYBqW/As27eA/1yte9uARbJiNOT7HLDV43ECKbfCHXYgfQEdl2qOpXwjb6t0cEE7WiIliMEefIFSt2ywOwPQwCldRjz/eK6J2+karOH2lFxG/NFwMUp+cW9SY07a0qF2DE96Wmfw214rI3MbxeN6JKg70grYHghjrgIj0J2DVYf9OGr/CfaA6GkQU8bUAHwqwnsGmnxkWFtLfBWtTnf8eHc85/EQYCE+EV10AOaPDb5jpem/OOasNzsd8Lmmw0Dfl6shcYo8BAFvhQAqaZDjZh67P2fjmTRkGdXXbWXAPwXvAAzOsj18VTfWOfx5CInnBoUOkUkFI2Q3e17dG+dMYC+J2ARQxi8WAQV7Tla0tuyjc2lpDGhNaZUxeDSCZGlKQhRHjAPQOAiUzxmNTLXrXYGkm4xkoUKmHjpNSY6cjlEWqj9WQqtAgPjUzTMV9AFJ86bz6sZv3xYqgfyeXm4/TJs7anBLXfR0dw5jVcMBtLnnW3z1ZYAuBnKOO4JQ1UVrz9iTiVTp5SO/lhgOiEWYTWDgeBxl4WHkGIbl0/yKwqwSfpBJeGfC0in7gPt98S6K00yH4a7Mb64udvfhbZRMHSBKznKhD9zKPh6dQqmr1FaIXN+vXWTZnMtihc8TXwpkiWjFOVGT3mOp6L2/amE+01ttso95NxOPPBJ+jPmzaa0uKZFoWuvbPOp2gZRvVzl3+SVDHvvbJU+iG6s1ALGECyEsMG8EE+Td5wXdJbIs3uOUBT2abFLZbKhMgkXDBCpRw72OOJ6YbFyz+zVCDqDXZj9B2d25xedAQPqbyDibKxrDeOPodTMDE+g7gt0DFFHYCUamidKy7TsLe8s/S3qX2veJyy+ATH5O5aVCt2tocdCpVdG8n9kMObvgNNYsXHPE0nXyVe1aMT7CKeLiGT5C28H0XLvvqzrd67BUQgafjb0Laoam6iEcsh2JJbm
+ lh6NAUeK
+ EoiuEPmzzLvEoC46nrhXhwtC8LA/0kLgg90VTzYfo00AXvx4RELE624/rPK6MY9GQ83E0os+KzARvnavip3L7QL9WU3KYHJWC/oMdlX8eObAySPCOQIlngA3Ea5f6HBFbViYuFBZg8C7IF0D2LYOyHKkVWmH6lyi5+UFPYDF4BuxBPGdhvFI22Uld6KhNVIX5Urq4nRip+iLy8VRpb2ci3Wanlvf8Zeo95SCfz91OOF+JGvZWfNoTuDWoC2VPbovthAmEg96nVwTtPq0K8fJFbrmXSoRHBfCSLKwEEg8TUeyrK85TLCL5+asHmDucj5tMA3U+ND4gPeDLQGicGJip40u8eapVoF5ZtAJyfXUwjdC0KWGJlLvPdOQUKHSimhhDgYPFyI0yhgV4wpQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,83 +140,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-So I just verified gcc 15 has this problem fixed. So one can argue the
-issue will go away on its own given enough time, hence the patch can
-be dropped if there are any concerns.
+On Mon, Nov 17, 2025 at 6:04=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Sat, Nov 15, 2025 at 06:34:01PM -0500, Pasha Tatashin wrote:
+> > From: Pratyush Yadav <ptyadav@amazon.de>
+> >
+> > The ability to preserve a memfd allows userspace to use KHO and LUO to
+> > transfer its memory contents to the next kernel. This is useful in many
+> > ways. For one, it can be used with IOMMUFD as the backing store for
+> > IOMMU page tables. Preserving IOMMUFD is essential for performing a
+> > hypervisor live update with passthrough devices. memfd support provides
+> > the first building block for making that possible.
+> >
+> > For another, applications with a large amount of memory that takes time
+> > to reconstruct, reboots to consume kernel upgrades can be very
+> > expensive. memfd with LUO gives those applications reboot-persistent
+> > memory that they can use to quickly save and reconstruct that state.
+> >
+> > While memfd is backed by either hugetlbfs or shmem, currently only
+> > support on shmem is added. To be more precise, support for anonymous
+> > shmem files is added.
+> >
+> > The handover to the next kernel is not transparent. All the properties
+> > of the file are not preserved; only its memory contents, position, and
+> > size. The recreated file gets the UID and GID of the task doing the
+> > restore, and the task's cgroup gets charged with the memory.
+> >
+> > Once preserved, the file cannot grow or shrink, and all its pages are
+> > pinned to avoid migrations and swapping. The file can still be read fro=
+m
+> > or written to.
+> >
+> > Use vmalloc to get the buffer to hold the folios, and preserve
+> > it using kho_preserve_vmalloc(). This doesn't have the size limit.
+> >
+> > Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+>
+> The order of signed-offs seems wrong, Pasha's should be the last one.
 
-On Wed, Nov 19, 2025 at 10:08=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com> =
-wrote:
+Updated.
+
+
+> > + * This interface is a contract. Any modification to the FDT structure=
+,
+> > + * node properties, compatible string, or the layout of the serializat=
+ion
+> > + * structures defined here constitutes a breaking change. Such changes=
+ require
+> > + * incrementing the version number in the MEMFD_LUO_FH_COMPATIBLE stri=
+ng.
 >
-> When compiled with gcc 14.2 for the x86-64 architecture with ORC frame
-> unwinder the fast path still has the most unfortunate size of 66 bytes,
-> in part from register spilling to falicitate the fallback.
+> The same comment about contract as for the generic LUO documentation
+> applies here (https://lore.kernel.org/all/aRnG8wDSSAtkEI_z@kernel.org/)
+
+Added.
+
 >
-> Moving it out solves the problem by keeping it just below 64 bytes.
+> > + *
+> > + * FDT Structure Overview:
+> > + *   The memfd state is contained within a single FDT with the followi=
+ng layout:
 >
-> Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-> ---
->  lib/percpu_counter.c | 30 ++++++++++++++++++++----------
->  1 file changed, 20 insertions(+), 10 deletions(-)
+> ...
 >
-> diff --git a/lib/percpu_counter.c b/lib/percpu_counter.c
-> index 2891f94a11c6..0cf6f1101903 100644
-> --- a/lib/percpu_counter.c
-> +++ b/lib/percpu_counter.c
-> @@ -89,24 +89,34 @@ EXPORT_SYMBOL(percpu_counter_set);
->   * Safety against interrupts is achieved in 2 ways:
->   * 1. the fast path uses local cmpxchg (note: no lock prefix)
->   * 2. the slow path operates with interrupts disabled
-> + *
-> + * Slowpath is implemented as a separate routine to reduce register spil=
-lage by gcc.
->   */
-> -void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s3=
-2 batch)
-> +static void noinline percpu_counter_add_batch_slowpath(struct percpu_cou=
-nter *fbc,
-> +                                                      s64 amount, s32 ba=
-tch)
->  {
->         s64 count;
->         unsigned long flags;
+> > +static struct memfd_luo_folio_ser *memfd_luo_preserve_folios(struct fi=
+le *file, void *fdt,
+> > +                                                          u64 *nr_foli=
+osp)
+> > +{
 >
-> +       raw_spin_lock_irqsave(&fbc->lock, flags);
-> +       /*
-> +        * Note: by now we might have migrated to another CPU or the valu=
-e
-> +        * might have changed.
-> +        */
-> +       count =3D __this_cpu_read(*fbc->counters);
-> +       fbc->count +=3D count + amount;
-> +       __this_cpu_sub(*fbc->counters, count);
-> +       raw_spin_unlock_irqrestore(&fbc->lock, flags);
-> +}
-> +
-> +void percpu_counter_add_batch(struct percpu_counter *fbc, s64 amount, s3=
-2 batch)
-> +{
-> +       s64 count;
-> +
->         count =3D this_cpu_read(*fbc->counters);
->         do {
->                 if (unlikely(abs(count + amount) >=3D batch)) {
-> -                       raw_spin_lock_irqsave(&fbc->lock, flags);
-> -                       /*
-> -                        * Note: by now we might have migrated to another=
- CPU
-> -                        * or the value might have changed.
-> -                        */
-> -                       count =3D __this_cpu_read(*fbc->counters);
-> -                       fbc->count +=3D count + amount;
-> -                       __this_cpu_sub(*fbc->counters, count);
-> -                       raw_spin_unlock_irqrestore(&fbc->lock, flags);
-> +                       percpu_counter_add_batch_slowpath(fbc, amount, ba=
-tch);
->                         return;
->                 }
->         } while (!this_cpu_try_cmpxchg(*fbc->counters, &count, count + am=
-ount));
+> If we are already returning nr_folios by reference, we might do it for
+> memfd_luo_folio_ser as well and make the function return int.
+
+Done
+
+>
+> > +     struct inode *inode =3D file_inode(file);
+> > +     struct memfd_luo_folio_ser *pfolios;
+> > +     struct kho_vmalloc *kho_vmalloc;
+> > +     unsigned int max_folios;
+> > +     long i, size, nr_pinned;
+> > +     struct folio **folios;
+>
+> pfolios and folios read like the former is a pointer to latter.
+> I'd s/pfolios/folios_ser/
+
+Done
+
+> > +     int err =3D -EINVAL;
+> > +     pgoff_t offset;
+> > +     u64 nr_folios;
+>
+> ...
+>
+> > +     kvfree(folios);
+> > +     *nr_foliosp =3D nr_folios;
+> > +     return pfolios;
+> > +
+> > +err_unpreserve:
+> > +     i--;
+> > +     for (; i >=3D 0; i--)
+>
+> Maybe a single line
+>
+>         for (--i; i >=3D 0; --i)
+
+Done, but wrote it as:
+for (i =3D i - 1; i >=3D 0; i--)
+Which looks a little cleaner to me.
+
+>
+> > +             kho_unpreserve_folio(folios[i]);
+> > +     vfree(pfolios);
+> > +err_unpin:
+> > +     unpin_folios(folios, nr_folios);
+> > +err_free_folios:
+> > +     kvfree(folios);
+> > +     return ERR_PTR(err);
+> > +}
+> > +
+> > +static void memfd_luo_unpreserve_folios(void *fdt, struct memfd_luo_fo=
+lio_ser *pfolios,
+> > +                                     u64 nr_folios)
+> > +{
+> > +     struct kho_vmalloc *kho_vmalloc;
+> > +     long i;
+> > +
+> > +     if (!nr_folios)
+> > +             return;
+> > +
+> > +     kho_vmalloc =3D (struct kho_vmalloc *)fdt_getprop(fdt, 0, MEMFD_F=
+DT_FOLIOS, NULL);
+> > +     /* The FDT was created by this kernel so expect it to be sane. */
+> > +     WARN_ON_ONCE(!kho_vmalloc);
+>
+> The FDT won't have FOLIOS property if size was zero, will it?
+> I think that if we add kho_vmalloc handle to struct memfd_luo_private and
+> pass that around it will make things easier and simpler.
+
+I am actually thinking of removing FDTs and using versioned struct directly=
+.
+
+>
+> > +     kho_unpreserve_vmalloc(kho_vmalloc);
+> > +
+> > +     for (i =3D 0; i < nr_folios; i++) {
+> > +             const struct memfd_luo_folio_ser *pfolio =3D &pfolios[i];
+> > +             struct folio *folio;
+> > +
+> > +             if (!pfolio->foliodesc)
+> > +                     continue;
+>
+> How can this happen? Can pfolios be a sparse array?
+
+With the current implementation of memfd_pin_folios, which populates
+holes, this array will be dense. This check is defensive coding in
+case we switch to a sparse preservation mechanism in the future. I
+will add a comment, and add a warn_on_once.
+
+>
+> > +             folio =3D pfn_folio(PRESERVED_FOLIO_PFN(pfolio->foliodesc=
+));
+> > +
+> > +             kho_unpreserve_folio(folio);
+> > +             unpin_folio(folio);
+> > +     }
+> > +
+> > +     vfree(pfolios);
+> > +}
+>
+> ...
+>
+> > +static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+> > +{
+> > +     const struct memfd_luo_folio_ser *pfolios;
+> > +     struct folio *fdt_folio;
+> > +     const void *fdt;
+> > +     u64 nr_folios;
+> > +
+> > +     if (args->retrieved)
+> > +             return;
+> > +
+> > +     fdt_folio =3D memfd_luo_get_fdt(args->serialized_data);
+> > +     if (!fdt_folio) {
+> > +             pr_err("failed to restore memfd FDT\n");
+> > +             return;
+> > +     }
+> > +
+> > +     fdt =3D folio_address(fdt_folio);
+> > +
+> > +     pfolios =3D memfd_luo_fdt_folios(fdt, &nr_folios);
+> > +     if (!pfolios)
+> > +             goto out;
+> > +
+> > +     memfd_luo_discard_folios(pfolios, nr_folios);
+>
+> Does not this free the actual folios that were supposed to be preserved?
+
+It does, when memfd was not reclaimed.
+
+>
+> > +     vfree(pfolios);
+> > +
+> > +out:
+> > +     folio_put(fdt_folio);
+> > +}
+>
+> ...
+>
+> > +static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
+> > +{
+> > +     struct folio *fdt_folio;
+> > +     const u64 *pos, *size;
+> > +     struct file *file;
+> > +     int len, ret =3D 0;
+> > +     const void *fdt;
+> > +
+> > +     fdt_folio =3D memfd_luo_get_fdt(args->serialized_data);
+>
+> Why do we need to kho_restore_folio() twice? Here and in
+> memfd_luo_finish()?
+
+Here we retrieve memfd and give it to userspace. In finish, discard
+whatever was not reclaimed.
+
+>
+> > +     if (!fdt_folio)
+> > +             return -ENOENT;
+> > +
+> > +     fdt =3D page_to_virt(folio_page(fdt_folio, 0));
+>
+> folio_address()
+
+Done
+
+>
+
+>
 > --
-> 2.48.1
->
+> Sincerely yours,
+> Mike.
 
