@@ -4,115 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95895CF34DA
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:41:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCF3CF3941
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:45:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DA236B0098; Wed, 19 Nov 2025 10:41:21 -0500 (EST)
+	id E821A6B0031; Wed, 19 Nov 2025 10:45:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68A466B009E; Wed, 19 Nov 2025 10:41:21 -0500 (EST)
+	id E59816B00A9; Wed, 19 Nov 2025 10:45:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52A6B6B00A0; Wed, 19 Nov 2025 10:41:21 -0500 (EST)
+	id D6F5A6B00AA; Wed, 19 Nov 2025 10:45:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A7B6B0098
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:41:21 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4EBF416054E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:41:17 +0000 (UTC)
-X-FDA: 84127770594.15.EB5EC31
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 86ACBC0016
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:41:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QZA36zm5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763566875; a=rsa-sha256;
-	cv=none;
-	b=hkV2Zj678ePXC5A50wZEOCQZOEg4CfNXZ4GPmfoqURdxJFXBY3fXDv7JnkpVqjvktewwQ7
-	GDXSRU0uVh6xb8Qh9avm+6evLLIM6acc5f8vE2eMqWq3QChwClu7hr+xldidr95WvkjWy1
-	ybcCzQMB2r35bnqUJKVz8XNGFrnrACc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QZA36zm5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C2C266B0031
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:45:04 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 15E3713B2AB
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:02 +0000 (UTC)
+X-FDA: 84127780044.19.8A71D82
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A5B4B120005
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:44:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AeYttVC1;
+	spf=pass (imf29.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763566875;
+	s=arc-20220608; t=1763567099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GFfDnFk2N5cFuq2BS0nwRpjVFUoTFstlRxHexwsgVM8=;
-	b=M5Wu0urobH4ZYqjVN66f3sBRwCUUuxkV2bvEmCRiSualQmXWHLHBhvb6sBWrSA+xyMyrj4
-	cubkj/v7uyn7fSXbnTqTSuTp9c7KigZ36qhm82iHa6JfK4myQQXeAjHcreti992MMnIeax
-	JioWbz+PR0WynU8wfp7y9gYIWCZgPKI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 492A643A4A;
-	Wed, 19 Nov 2025 15:41:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B957C2BCB2;
-	Wed, 19 Nov 2025 15:41:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763566873;
-	bh=+tu5xEE2csr5lj4QfalL/akMO0Iwzk3kuQR0JJgfkqQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QZA36zm5JLd7o0QBgL/m337GXPzMm86iJP+sqGrJjj1yhmQahzCnAAdePGwI0czJ9
-	 rt4OUD/ZwcM93t/K+PUcYG/mPoxd3i5GXITekoSzYkf+zK+1puSkDtnkTCfXWs++0m
-	 M9zKcwUgAkxFOEXC/RFEX/wz1Iq7Syn6vdULPDfvt40zK7+wJ2eDruSfFEgrILevfv
-	 d1Sb/+sY9emGTM3ScYXG3ovMIORPEms7/vnPk+lNN/iOHrUpZto2zHikmZMZUuTeXw
-	 q5uBEXiMRpmdS+1CbaUYpBm+Kas3khufe9slupFE9daJ6PwQfcbycL8K+e+GM1qvBy
-	 uhz+0UV4rK9dw==
-Date: Wed, 19 Nov 2025 17:41:08 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>, Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org, Alex Mastro <amastro@fb.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [Linaro-mm-sig] [PATCH v8 06/11] dma-buf: provide phys_vec to
- scatter-gather mapping routine
-Message-ID: <20251119154108.GK18335@unreal>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
- <8a11b605-6ac7-48ac-8f27-22df7072e4ad@amd.com>
- <20251119134245.GD18335@unreal>
- <6714dc49-6b5c-4d58-9a43-95bb95873a97@amd.com>
- <20251119145007.GJ18335@unreal>
- <26d7ecab-33ed-4aab-82d5-954b0d1d1718@amd.com>
+	bh=8+2RMibk5qCZlj/6zmvcs/X6W3gfpL9YpQv70ggfokw=;
+	b=ae8pMXBXJqtQxWFhCLuSQ4qcIHnF50vUzWJvxTCMWYJwLMJHU2T5ch/vXRKjLc0fnuks7O
+	xwGOG2P6mbtBvoobiss4rF3eLUjcvazoRZFE0ONCyzFFtotFqSx9ELl+ArnmOHofa7+hg8
+	IwW9QV0Nh1OdvFfr4QcEHwPxwSSRV1A=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AeYttVC1;
+	spf=pass (imf29.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763567099; a=rsa-sha256;
+	cv=none;
+	b=MeoXk2QrGrX/D5cSzdM8hVGe+1VHwKyyDTYknqPn20WTxC0a3Y5RbCPHZkvRw3AcaGsQKW
+	c3Ue1Efaztn2PWWCVgxpSiGFZjleWl3Jmn2BX4wscDciP0sCBH3nRaRL9JIwP6RM1lOikl
+	rW6sHH94v2ru8LYY8GkUQ2N12SFTVxY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763567099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8+2RMibk5qCZlj/6zmvcs/X6W3gfpL9YpQv70ggfokw=;
+	b=AeYttVC174L81fsSZCyrXbteruGobwH11N4VmTsj1LnLTBvGEfqKc5QUQdnF/cAOHKnku7
+	VVFSf0XD48X+Q28ADTsihAeuFxwsvXdZfoJ0Vto3wS4n/5OX6w13FGA8Bti+B5MYKsq34z
+	NFPKA4k39ov/fgx73H/KqrRffdW7j6s=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-489-xiFIA2grPTyVK3Sukd8EfA-1; Wed, 19 Nov 2025 10:44:57 -0500
+X-MC-Unique: xiFIA2grPTyVK3Sukd8EfA-1
+X-Mimecast-MFC-AGG-ID: xiFIA2grPTyVK3Sukd8EfA_1763567096
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4775d110fabso53013125e9.1
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:44:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763567096; x=1764171896;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kk13dNEBENY1o2hkoOmhPMN6DaHaKFtT0pxiR0fZhjU=;
+        b=RbsQNyuvgYfeXadzVW7OfPj4yg6kK3Mv3Z85Tm59RFJhWFQTv/KSkSMiTuho24Xdpu
+         vtSYMCOA96UrvZfxXoChzKVdKt/aZM6lCKWtGXGvWInQdSz3Pon1H7Pn9cSxnuA46uHK
+         1r5jbLCXbZHY5d46QhN/SUZQJ1jl4AZjQt+hlY4xN6n2pcoad7bJfZkTIcPlTflETGHE
+         KT0uP1nuLWJMSmIN6k7v0ytVkBkEKj3TlTNxp0344jpouEdXnE0xWU9Uv/4EHqgYSbYN
+         UlcVoloO3RcCKUdOyH+2ld7CuiARPLhWIIKn9ZOn3fXugKCAaPJFqOA2oNpQwAyNbHXK
+         Xu+A==
+X-Forwarded-Encrypted: i=1; AJvYcCUyJBHa1baZHIevNs5XA3mrtvHwwaSoCi3ECXGJggDOFLSqlINX06T0ympKPwmU1HbENCdb4JOPWw==@kvack.org
+X-Gm-Message-State: AOJu0YykbZMFvN0tRQj4QB641E7bAijtzJxz2X2rJLsdSyWkM94N1uYv
+	CKhH3+ootmpF5kgNuFU/w9B1YWQy3YWZb1+7sw11hWilJawJ6P9lZwxSdttwt84vhdSyaxzLxBG
+	JJ4t1AKZygTkzfGQ4YATzuiCtDJ6Pp3J5D/4rJLTP6E1qY+fWXv/w
+X-Gm-Gg: ASbGncuTfymXuOgACH9QLp+qoOaKJlv8MfPlV6Awmfap/y6jDBfMoPjwrEEXnloDkN3
+	YiKIQFRXbVGvd1r+yoSs0BP1akNZeQV3dbPbI5h3hYcFOH8F0mpZu5fOV52LkRN3893LvpD0MID
+	T9s8EEG5c2qTw+ohWQFpRkcmz+AHp+4vfGhTwNjccnJuXYxPxZ8+IqhcYkVM8hg7RNNvi0YY8UP
+	0qBtLTw+fZovpPt1QH2Q1zW56b9WQdsYeybC+krnT0JH2pgtMHtAXSaN3L4CCqM8VAmi3o1jSXH
+	+tlZ86LvoHVRP8evG1PHEQrL5JnMj5kQXtm2A6B1V8JGalxsUJCqWPh/UI6QOfvkbB1MQHA+DlM
+	Qfx9+smjTyOYB8csFTUJy6fsDVgz4YMSCfP3sJibIeiFVldSwVQhFY09oXws4NexiuNXU/jo=
+X-Received: by 2002:a05:600c:1d0e:b0:477:9cc3:7971 with SMTP id 5b1f17b1804b1-4779cc37a15mr119021015e9.20.1763567096269;
+        Wed, 19 Nov 2025 07:44:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEkP+NxoN8NdgRlSeWXCmLJ99Tn2hRpBffdqlJtKvc6mMNR3Hn0LkbgzbfrqY0lLueiMZLQiA==
+X-Received: by 2002:a05:600c:1d0e:b0:477:9cc3:7971 with SMTP id 5b1f17b1804b1-4779cc37a15mr119020335e9.20.1763567095710;
+        Wed, 19 Nov 2025 07:44:55 -0800 (PST)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-135-146.abo.bbox.fr. [213.44.135.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b10260adsm53340155e9.7.2025.11.19.07.44.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 07:44:54 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Andy Lutomirski <luto@kernel.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, rcu@vger.kernel.org,
+ the arch/x86 maintainers <x86@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
+ <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Josh
+ Poimboeuf <jpoimboe@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Arnd
+ Bergmann <arnd@arndb.de>, Frederic Weisbecker <frederic@kernel.org>, "Paul
+ E. McKenney" <paulmck@kernel.org>, Jason Baron <jbaron@akamai.com>, Steven
+ Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>, Sami
+ Tolvanen <samitolvanen@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel
+ Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mel Gorman
+ <mgorman@suse.de>, Andrew Morton <akpm@linux-foundation.org>, Masahiro
+ Yamada <masahiroy@kernel.org>, Han Shen <shenhan@google.com>, Rik van Riel
+ <riel@surriel.com>, Jann Horn <jannh@google.com>, Dan Carpenter
+ <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, Juri Lelli
+ <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, Yair
+ Podemsky <ypodemsk@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: Re: [RFC PATCH v7 29/31] x86/mm/pti: Implement a TLB flush
+ immediately after a switch to kernel CR3
+In-Reply-To: <65ae9404-5d7d-42a3-969e-7e2ceb56c433@app.fastmail.com>
+References: <20251114150133.1056710-1-vschneid@redhat.com>
+ <20251114151428.1064524-9-vschneid@redhat.com>
+ <65ae9404-5d7d-42a3-969e-7e2ceb56c433@app.fastmail.com>
+Date: Wed, 19 Nov 2025 16:44:53 +0100
+Message-ID: <xhsmhecpukowa.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <26d7ecab-33ed-4aab-82d5-954b0d1d1718@amd.com>
-X-Rspamd-Queue-Id: 86ACBC0016
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 7i33sfs377raja33yge6naicyttm7i4z
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: yRhimN83dsLxFDe7e0HSiVArGmFTACEvJ8dYvfj2ecg_1763567096
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A5B4B120005
+X-Stat-Signature: b6c6pwqjcipbsa7qjeoz79az3jypdwss
 X-Rspam-User: 
-X-HE-Tag: 1763566875-440873
-X-HE-Meta: U2FsdGVkX19Ka8Hu7FCcGrb4Nhsgwh4TR58Lcfc1xPcCnyoTlDnl17kMlUP/cZzbp57LsiW8Wg7VYOc3SYCLCEXYuXXBKfRCUnQ5e4HxLc94FKnhovFFNVAOuETjPwAiwyrDgJUo4vNdiEMcZo73daiduhTIc4auY4yWjEOnZhAB2Gu4I8mMNRemZa3bADL8YplQShgttnBOhTiB71+KKY7yUsPgQHQrGzwJEU00ecaZnqajKkkvCkQpWZFmTj5o/WYHQHwLG7sr+ipWnogK+CrZVTRzOVFhN0UU+xzohTW4wkZz+NwHCVIMJS1qWLd4LYOtNeTb7aE16wnMESfZdnUJJoC4BMWNWG7yiYpn2ijvvPYkW4FZXK2IDYyQ3qmkdogH3WyJCUZhiJR7Tz2ULS/4XdVee3UrjQhsjaaPvEhGLqoMzd14+5Osjw8Z+si+KrHhbIQEsnTkRTkYNsLIygYWVuL/plnR2X1m8vLpT11ifNWp0IyyTIKPmeRPwIeZ0FssCz+xD42vYjAA7zoWcmB7oli1gxGre0U2G66f3MeefWD5uHGXUD772aCYr6KmN8aTO6fKeI3Nvg5aRQmUvoKo3dSEWY/H6KfLan0TFzdke2v/JoZ1n6Jl5ufA8oe8pUMYem6/bjJ/3Xxlu7TC1beDjranEtlXX+8E+j67uR8W1300GB3RrgQkaDxAxRbSLTlvUTJhvAxOmm6mPBSk0EirVNMrf+UrcWfEs1jati+Swa3lcvXVjFHLPKLsmRVqOR5USV8Ypu6VS7bBPWpRMUp0Vy+zOe+Ajat6fnswr0FGe+qewK5L2bQfaOoag3+dSpjkp8QVwgwrOkw/FeQ6jFjdLSewMpUdMEsLSaEKmYUdI2g3X6+eS+VDPnCldiL81Gs2bkz/C1AoMfe1jpGYe8skAivn7Df5A49iZlYSi3CHZ1JU0K4r4JKzDK+O2RfSCsFQDHY+r2h8BQG+yOZ
- 4YVVZW1K
- 5cYZ7h2leaPp/8FUqoUy0iEd8RFu2On4DZovm/KZQVYgCQl/2TjDiYASrqi0wrzYa8APSfiX94ek3C49yKk9RNWvZx7g2xbegF7IisEay5v2TFw8kn8irSm+bHdskNbSa28LehPB2w4Oxd+rNwaTNNo2jlAjYvtt4A1b2bXSoZq0wWiEo3cfKPA3VbAys4Ay0rlWcuYwMPQwHiqLCPOJLCPXU/34YqJlVGq9rm5UDoU1fhvLasv+BqUWelldF/UygbFYm4UVE+97j0z/xnoafKDXf+tPMy47cZAmkw1cv/0KDQkByVvtr4PQMqbFFbHV+GbVqDzYAX/7HXRXOQUSs02a09Dj1FIy2AJva5nw9pGEXy1GY7oiXQwJtNA==
+X-HE-Tag: 1763567099-440250
+X-HE-Meta: U2FsdGVkX1/VAyNGuHU5JFjq8TJbRtdoMxauTE+luwIFrc7S1u/sXDtKBdPjRyVdGHYHUXyVNXYds5TLjrN4n2u0Qem2x0Mi/DzY1LMnlFPdRo75dtpkJS6kdQ0Ix9uSqhVm4nqSVbbrDXgmmbbqh9VLD7h6FHkPjjA2OTuGSrn1xiL1bfZlok4PsDRjoOEe+gQIn5Qn8KLPA12h8wJwczDMTl0cflTsMB3nHPDquqrFwA86qF2erPhf0q/B0RI6J4j4SpmTTkc+GYZThnTBQUlYoZ/5DZCkAm5j6Y3Y9WzPpIQHx16xNIUCB7Kji2sD61KtZBAg6JSJnqI89LFyanlk+7UhgyakSg57zkIgBH13wzkLGCYCr8UlNESYGmpZcHnW2XUA4i9sXSR4tCMtsq0KbdtStWIiFefoxV70YxmYV8MrPiLUwjyUoxiXtLG/CkVd+uwjyN098QPJATA9oO91+FVfVZtpGA2XM6kZraYJIE9P56QL4izxE7RVdrZCcMQh8z/ULSGZhAdFRpaxEEV7AwisSJTzbzHdxePtAYLNksSAJJGz0fAi3b/K5MRbkHWs5jLvF5myBX1p+75paW5Jo9RMjAcpAIgCehFPj8hTCAvgaJJU8JfxeYywDkvhAhPjuKG+lQiGYgNmUGK3847OWej03fnzERy2phKkfjSb38M5dJB3V1l5dqberrAkA488BC2/qSlCabR436H92yHheSfej3GnddfFUTTUD6f7f3Z3MXLkMOSKFREhvcJxlRsWg0FIhbVhrGrOtRhfItSSxSPs9OWFgg4z6BBowGRxcvMoAL+A1+hB4YpxZvzMOQSaNVMtry647E2zlnk0M0NHZBZEP9ETg1b5aEx4lppGIm/bm40DDH71oqGT/yPtf8YU0KWBf3I1hoTygRiKoQjRsVNc82pCgyjut+inbsMuomRNc+kpwzpXTLdJJ4RCy9+/fVfSeCHUV4FR9yP
+ 8KRud7fQ
+ GbzsqDKhVKKlF3g99ZTcJu6El6NDq/+Qjs4AfV6xhlx2akwOYroh/vqpRk8ucaklrme7Ik1LKKMtco1DQ4qSBFHbZUZ0n43vGePVksN5mAuSR2rxwJTk69URDsSPexOwqq0RebYj156vkBK2pb4+rMl1V3S1CmAo5XNzD4UlX1nDb+BSyr8pSrzy2NKczxqb9tsaYcvEQxmwN2Mxrz2S7//ZORK+pCwBr4UhtN80vixJCMu/JAKIyeXLPgvhm6D7AapVUWeJkR51agWD7Rn9iZ8AzLW3MnV8nmKX4LtY2Hg7mGClOSomXR/veh6El37dhmbqTm446TxbzCHvZ/ctDs283BVeDVQ0kyP6PvcSyT8zJoQtDVwWu1Xp/AXFxqVby80dvta2fV2JfsILH0kEgSSrn6jxyMnleAivLbnxniVRNBefpN1kF2PAZIYIWtZknLoCG8StESjpDEB4UJ0fiz2IieCnRZe8731AaA0/DJ7+uXIHOtKUCa8tNs+eAJjmSYiPtcKjSNjaQC0W05FNckrKJLq/0yWm3eVnkn8OF60ND+91/wb8WnTYLbTnwGY6T1/97TuPHw61fLo1mraFIGCTe1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,234 +156,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 03:53:30PM +0100, Christian König wrote:
-> 
-> 
-> On 11/19/25 15:50, Leon Romanovsky wrote:
-> > On Wed, Nov 19, 2025 at 03:11:01PM +0100, Christian König wrote:
-> >> On 11/19/25 14:42, Leon Romanovsky wrote:
-> >>> On Wed, Nov 19, 2025 at 02:16:57PM +0100, Christian König wrote:
-> >>>>
-> >>>>
-> >>>> On 11/11/25 10:57, Leon Romanovsky wrote:
-> >>>>> From: Leon Romanovsky <leonro@nvidia.com>
-> >>>>>
-> >>>>> Add dma_buf_map() and dma_buf_unmap() helpers to convert an array of
-> >>>>> MMIO physical address ranges into scatter-gather tables with proper
-> >>>>> DMA mapping.
-> >>>>>
-> >>>>> These common functions are a starting point and support any PCI
-> >>>>> drivers creating mappings from their BAR's MMIO addresses. VFIO is one
-> >>>>> case, as shortly will be RDMA. We can review existing DRM drivers to
-> >>>>> refactor them separately. We hope this will evolve into routines to
-> >>>>> help common DRM that include mixed CPU and MMIO mappings.
-> >>>>>
-> >>>>> Compared to the dma_map_resource() abuse this implementation handles
-> >>>>> the complicated PCI P2P scenarios properly, especially when an IOMMU
-> >>>>> is enabled:
-> >>>>>
-> >>>>>  - Direct bus address mapping without IOVA allocation for
-> >>>>>    PCI_P2PDMA_MAP_BUS_ADDR, using pci_p2pdma_bus_addr_map(). This
-> >>>>>    happens if the IOMMU is enabled but the PCIe switch ACS flags allow
-> >>>>>    transactions to avoid the host bridge.
-> >>>>>
-> >>>>>    Further, this handles the slightly obscure, case of MMIO with a
-> >>>>>    phys_addr_t that is different from the physical BAR programming
-> >>>>>    (bus offset). The phys_addr_t is converted to a dma_addr_t and
-> >>>>>    accommodates this effect. This enables certain real systems to
-> >>>>>    work, especially on ARM platforms.
-> >>>>>
-> >>>>>  - Mapping through host bridge with IOVA allocation and DMA_ATTR_MMIO
-> >>>>>    attribute for MMIO memory regions (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE).
-> >>>>>    This happens when the IOMMU is enabled and the ACS flags are forcing
-> >>>>>    all traffic to the IOMMU - ie for virtualization systems.
-> >>>>>
-> >>>>>  - Cases where P2P is not supported through the host bridge/CPU. The
-> >>>>>    P2P subsystem is the proper place to detect this and block it.
-> >>>>>
-> >>>>> Helper functions fill_sg_entry() and calc_sg_nents() handle the
-> >>>>> scatter-gather table construction, splitting large regions into
-> >>>>> UINT_MAX-sized chunks to fit within sg->length field limits.
-> >>>>>
-> >>>>> Since the physical address based DMA API forbids use of the CPU list
-> >>>>> of the scatterlist this will produce a mangled scatterlist that has
-> >>>>> a fully zero-length and NULL'd CPU list. The list is 0 length,
-> >>>>> all the struct page pointers are NULL and zero sized. This is stronger
-> >>>>> and more robust than the existing mangle_sg_table() technique. It is
-> >>>>> a future project to migrate DMABUF as a subsystem away from using
-> >>>>> scatterlist for this data structure.
-> >>>>>
-> >>>>> Tested-by: Alex Mastro <amastro@fb.com>
-> >>>>> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-> >>>>> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> >>>>> ---
-> >>>>>  drivers/dma-buf/dma-buf.c | 235 ++++++++++++++++++++++++++++++++++++++++++++++
-> >>>>>  include/linux/dma-buf.h   |  18 ++++
-> >>>>>  2 files changed, 253 insertions(+)
-> >>>>>
-> >>>>> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-> >>>>> index 2bcf9ceca997..cb55dff1dad5 100644
-> >>>>> --- a/drivers/dma-buf/dma-buf.c
-> >>>>> +++ b/drivers/dma-buf/dma-buf.c
-> >>>>> @@ -1254,6 +1254,241 @@ void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
-> >>>>>  }
-> >>>>>  EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment_unlocked, "DMA_BUF");
-> >>>>>  
-> >>>>> +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
-> >>>>> +					 dma_addr_t addr)
-> >>>>> +{
-> >>>>> +	unsigned int len, nents;
-> >>>>> +	int i;
-> >>>>> +
-> >>>>> +	nents = DIV_ROUND_UP(length, UINT_MAX);
-> >>>>> +	for (i = 0; i < nents; i++) {
-> >>>>> +		len = min_t(size_t, length, UINT_MAX);
-> >>>>> +		length -= len;
-> >>>>> +		/*
-> >>>>> +		 * DMABUF abuses scatterlist to create a scatterlist
-> >>>>> +		 * that does not have any CPU list, only the DMA list.
-> >>>>> +		 * Always set the page related values to NULL to ensure
-> >>>>> +		 * importers can't use it. The phys_addr based DMA API
-> >>>>> +		 * does not require the CPU list for mapping or unmapping.
-> >>>>> +		 */
-> >>>>> +		sg_set_page(sgl, NULL, 0, 0);
-> >>>>> +		sg_dma_address(sgl) = addr + i * UINT_MAX;
-> >>>>> +		sg_dma_len(sgl) = len;
-> >>>>> +		sgl = sg_next(sgl);
-> >>>>> +	}
-> >>>>> +
-> >>>>> +	return sgl;
-> >>>>> +}
-> >>>>> +
-> >>>>> +static unsigned int calc_sg_nents(struct dma_iova_state *state,
-> >>>>> +				  struct dma_buf_phys_vec *phys_vec,
-> >>>>> +				  size_t nr_ranges, size_t size)
-> >>>>> +{
-> >>>>> +	unsigned int nents = 0;
-> >>>>> +	size_t i;
-> >>>>> +
-> >>>>> +	if (!state || !dma_use_iova(state)) {
-> >>>>> +		for (i = 0; i < nr_ranges; i++)
-> >>>>> +			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
-> >>>>> +	} else {
-> >>>>> +		/*
-> >>>>> +		 * In IOVA case, there is only one SG entry which spans
-> >>>>> +		 * for whole IOVA address space, but we need to make sure
-> >>>>> +		 * that it fits sg->length, maybe we need more.
-> >>>>> +		 */
-> >>>>> +		nents = DIV_ROUND_UP(size, UINT_MAX);
-> >>>>> +	}
-> >>>>> +
-> >>>>> +	return nents;
-> >>>>> +}
-> >>>>> +
-> >>>>> +/**
-> >>>>> + * struct dma_buf_dma - holds DMA mapping information
-> >>>>> + * @sgt:    Scatter-gather table
-> >>>>> + * @state:  DMA IOVA state relevant in IOMMU-based DMA
-> >>>>> + * @size:   Total size of DMA transfer
-> >>>>> + */
-> >>>>> +struct dma_buf_dma {
-> >>>>> +	struct sg_table sgt;
-> >>>>> +	struct dma_iova_state *state;
-> >>>>> +	size_t size;
-> >>>>> +};
-> >>>>> +
-> >>>>> +/**
-> >>>>> + * dma_buf_map - Returns the scatterlist table of the attachment from arrays
-> >>>>> + * of physical vectors. This funciton is intended for MMIO memory only.
-> >>>>> + * @attach:	[in]	attachment whose scatterlist is to be returned
-> >>>>> + * @provider:	[in]	p2pdma provider
-> >>>>> + * @phys_vec:	[in]	array of physical vectors
-> >>>>> + * @nr_ranges:	[in]	number of entries in phys_vec array
-> >>>>> + * @size:	[in]	total size of phys_vec
-> >>>>> + * @dir:	[in]	direction of DMA transfer
-> >>>>> + *
-> >>>>> + * Returns sg_table containing the scatterlist to be returned; returns ERR_PTR
-> >>>>> + * on error. May return -EINTR if it is interrupted by a signal.
-> >>>>> + *
-> >>>>> + * On success, the DMA addresses and lengths in the returned scatterlist are
-> >>>>> + * PAGE_SIZE aligned.
-> >>>>> + *
-> >>>>> + * A mapping must be unmapped by using dma_buf_unmap().
-> >>>>> + */
-> >>>>> +struct sg_table *dma_buf_map(struct dma_buf_attachment *attach,
-> >>>>
-> >>>> That is clearly not a good name for this function. We already have overloaded the term *mapping* with something completely different.
-> >>>
-> >>> This function performs DMA mapping, so what name do you suggest instead of dma_buf_map()?
-> >>
-> >> Something like dma_buf_phys_vec_to_sg_table(). I'm not good at naming either.
-> > 
-> > Can I call it simply dma_buf_mapping() as I plan to put that function in dma_buf_mapping.c
-> > file per-your request.
-> 
-> No, just completely drop the term "mapping" here. This is about phys_vector to sg_table conversion and nothing else.
+On 19/11/25 06:31, Andy Lutomirski wrote:
+> On Fri, Nov 14, 2025, at 7:14 AM, Valentin Schneider wrote:
+>> Deferring kernel range TLB flushes requires the guarantee that upon
+>> entering the kernel, no stale entry may be accessed. The simplest way to
+>> provide such a guarantee is to issue an unconditional flush upon switchi=
+ng
+>> to the kernel CR3, as this is the pivoting point where such stale entrie=
+s
+>> may be accessed.
+>>
+>
+> Doing this together with the PTI CR3 switch has no actual benefit: MOV CR=
+3 doesn=E2=80=99t flush global pages. And doing this in asm is pretty gross=
+.  We don=E2=80=99t even get a free sync_core() out of it because INVPCID i=
+s not documented as being serializing.
+>
+> Why can=E2=80=99t we do it in C?  What=E2=80=99s the actual risk?  In ord=
+er to trip over a stale TLB entry, we would need to deference a pointer to =
+newly allocated kernel virtual memory that was not valid prior to our entry=
+ into user mode. I can imagine BPF doing this, but plain noinstr C in the e=
+ntry path?  Especially noinstr C *that has RCU disabled*?  We already can=
+=E2=80=99t follow an RCU pointer, and ISTM the only style of kernel code th=
+at might do this would use RCU to protect the pointer, and we are already d=
+oomed if we follow an RCU pointer to any sort of memory.
+>
 
-We have both map and unmap, so dma_buf_*_to_*() can be applicable to dma_buf_map() only.
-And it is not simple conversion, most of the logic is actually handles mapping:
+So v4 and earlier had the TLB flush faff done in C in the context_tracking =
+entry
+just like sync_core().
 
-  137         for (i = 0; i < nr_ranges; i++) {
-  138                 if (!dma->state) {
-  139                         addr = pci_p2pdma_bus_addr_map(provider,
-  140                                                        phys_vec[i].paddr);
-  141                 } else if (dma_use_iova(dma->state)) {
-  142                         ret = dma_iova_link(attach->dev, dma->state,
-  143                                             phys_vec[i].paddr, 0,
-  144                                             phys_vec[i].len, dir,
-  145                                             DMA_ATTR_MMIO);
-  146                         if (ret)
-  147                                 goto err_unmap_dma;
-  148
-  149                         mapped_len += phys_vec[i].len;
-  150                 } else {
-  151                         addr = dma_map_phys(attach->dev, phys_vec[i].paddr,
-  152                                             phys_vec[i].len, dir,
-  153                                             DMA_ATTR_MMIO);
-  154                         ret = dma_mapping_error(attach->dev, addr);
-  155                         if (ret)
-  156                                 goto err_unmap_dma;
-  157                 }
-  158
-  159                 if (!dma->state || !dma_use_iova(dma->state))
-  160                         sgl = fill_sg_entry(sgl, phys_vec[i].len, addr);
-  161         }
-  162
-  163         if (dma->state && dma_use_iova(dma->state)) {
-  164                 WARN_ON_ONCE(mapped_len != size);
-  165                 ret = dma_iova_sync(attach->dev, dma->state, 0, mapped_len);
-  166                 if (ret)
-  167                         goto err_unmap_dma;
-  168
-  169                 sgl = fill_sg_entry(sgl, mapped_len, dma->state->addr);
-  170         }
+My biggest issue with it was that I couldn't figure out a way to instrument
+memory accesses such that I would get an idea of where vmalloc'd accesses
+happen - even with a hackish thing just to survey the landscape. So while I
+agree with your reasoning wrt entry noinstr code, I don't have any way to
+prove it.
+That's unlike the text_poke sync_core() deferral for which I have all of
+that nice objtool instrumentation.
 
-SG table conversion is only two lines (160 and 169) which are here
-because of DMABUF dependency on SG.
+Dave also pointed out that the whole stale entry flush deferral is a risky
+move, and that the sanest thing would be to execute the deferred flush just
+after switching to the kernel CR3.
 
-What about dma_buf_phys_vec_mapping()/dma_buf_phys_vec_unmapping()?
+See the thread surrounding:
+  https://lore.kernel.org/lkml/20250114175143.81438-30-vschneid@redhat.com/
 
-> 
-> That we create an IOVA mapping when the access needs to go through the root complex is an implementation detail.
-> 
-> > 
-> > Regarding SG, the long term plan is to remove SG table completely, so at
-> > least external users of DMABUF shouldn't be exposed to internal implementation
-> > details (SG table).
-> 
-> Hui? Well I suggested to remove the sg_table, but that doesn't mean that implementations shouldn't be aware of that.
+mainly Dave's reply and subthread:
+  https://lore.kernel.org/lkml/352317e3-c7dc-43b4-b4cb-9644489318d0@intel.c=
+om/
 
-VFIO which is first user of this interface. It doesn't care how
-internally DMABUF handles array of phys_vecs. Today, it is sg_table,
-tomorrow it will be something else.
+> We do need to watch out for NMI/MCE hitting before we flush.
 
-Thanks
-
-> 
-> Regards,
-> Christian.
-> 
-> > 
-> > Thanks
-> 
 
