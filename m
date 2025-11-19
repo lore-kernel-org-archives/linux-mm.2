@@ -4,186 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A4B8CF3953
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:28:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C6FCF3958
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:29:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 995256B00B2; Wed, 19 Nov 2025 11:28:03 -0500 (EST)
+	id C303F6B00A7; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96C156B00C5; Wed, 19 Nov 2025 11:28:03 -0500 (EST)
+	id BE05B6B00A9; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85AB66B00D1; Wed, 19 Nov 2025 11:28:03 -0500 (EST)
+	id AACCF6B00AA; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 750056B00B2
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:28:03 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2CF5C1405E5
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:28:03 +0000 (UTC)
-X-FDA: 84127888446.17.3860B73
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7D1CE40013
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:28:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F+7aKlyo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=52ga7Pyw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IDb9oqdv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jdEHFe2N;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 9281D6B00A7
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F81613B305
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:29:27 +0000 (UTC)
+X-FDA: 84127891974.02.CB1004D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9CBD51A0006
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:29:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MaDzWdP6;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763569681;
+	s=arc-20220608; t=1763569765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DVGaf65rlgGbyF9diOMG0lcgKbDR4qeICAOaHzaIUL8=;
-	b=AqRwI50dyDokPUNqClR58GAg9ZOgu752miGul2dlcMRCkLF0EUlQt+sjenR/kJ3YGbyh9z
-	klsfCgSe+/fP3QtSbGFyK+YzVflM8vvG5q407a5AlCYgh/NosI4rLzf55JB6C4uDzOWNlj
-	wdmtd3Xr4EEoreGvTtH3IYKB8cTq98o=
+	bh=yysW3GAFdDR7cvQccQ37RQ70J/+oCxePvfJ3ChWHfd8=;
+	b=ks4KnaAmZVTLRNYg2+kVZ6uhLTiDkeDv2zcd/RWdd3pOcUkBnTS1p893wLffKGkCGjOZqz
+	kH9SO68Xf9e102GCF3iAVYVthsGSKrnBSgHjXb9t9K53PdykYUvqDUQqGsU/93Rul/7aY9
+	e0978jzSKKIaP2F6ZnMuwisepVb8ufI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F+7aKlyo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=52ga7Pyw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IDb9oqdv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jdEHFe2N;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763569681; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MaDzWdP6;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763569765; a=rsa-sha256;
 	cv=none;
-	b=yaZAgKKqyarY0TCp+x9ZNgtfTKwoAaRz+6nyqYdERUxBCMDKXyOcYczeY1SjZytIIOWKI/
-	eqYwG136Om4bnfZV51s5LDia/eGnhshX4noKJZEdXjP110ICAExfmWKR8FNXuEM7XzVFjy
-	Xi0A2QoFEj+Mo6zZa95mqU6BrzkFn9E=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8E35320589;
-	Wed, 19 Nov 2025 16:27:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763569673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DVGaf65rlgGbyF9diOMG0lcgKbDR4qeICAOaHzaIUL8=;
-	b=F+7aKlyoMulWpbQB7R8crVLgmLNuONc7wd94FNFh9hbJyHSS0ugM7JgLuVoLcOpLcWlr5n
-	5kclOyOzxseG4yC2nhBDXQm8cCF2TLGRBz/C5NJqpesIFylFR7aGSD5FdmUfQk3Lo0Ypbg
-	D9xy+BMvapqji0uFFE2mpwt2kUGwJ5Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763569673;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DVGaf65rlgGbyF9diOMG0lcgKbDR4qeICAOaHzaIUL8=;
-	b=52ga7PywMYBmf5VqP7XoY2nQ4MXISqJk6TrZvekY+6Bqp1tk/FMGUHQYFIHTcd6Yf37kMb
-	/BEc6BIc3a8fBDCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763569668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DVGaf65rlgGbyF9diOMG0lcgKbDR4qeICAOaHzaIUL8=;
-	b=IDb9oqdvXBTsgmwX8XjdVesOnPYoUILAkgnZYlR8l5KbDZXFmUk4dqPpoQcB1L6b3NpXuX
-	mDs2FaFlE3HBVIrH3wDFlDUosrwsTJYk65yYswtZmL0g1NnDcFxmPwaMx6/KsZSfe0hc68
-	zy5/otA/jsva5YNmUwdhQjfYfkQK+bk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763569668;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DVGaf65rlgGbyF9diOMG0lcgKbDR4qeICAOaHzaIUL8=;
-	b=jdEHFe2NSLDJ9IFrFgcZOcT3bVTsMe8tvVjE3/fX7C887u8VZRviIMQgB1d002FxSW2OYt
-	Sp8UbSU2wKKLr1CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5F4143EA61;
-	Wed, 19 Nov 2025 16:27:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eZnUFQTwHWmBagAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 19 Nov 2025 16:27:48 +0000
-Message-ID: <89778199-d4c9-4b0e-9e6d-64c9a23e1287@suse.cz>
-Date: Wed, 19 Nov 2025 17:27:47 +0100
+	b=hhNiQAghqgWV2sEhNL/TQhveoP5Z7hxtmdJhdXo+vXlPQU+bwVgLeb4rUdVIsgfljFsXSA
+	WFj4v2N5id+1P1YgnK4u+EIDyhtWLWvLX/LpIdRqyM3AvHfwXhoXcbnWufvaRMDzBq+kyq
+	G98TWssI9YhNyq59SjyyHtc3jRU/7gQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1035360172;
+	Wed, 19 Nov 2025 16:29:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAC0C4CEF5;
+	Wed, 19 Nov 2025 16:29:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763569764;
+	bh=TZ758d5/YEZLhoc4VSMgt5fLw/xbPcRGb/+cc267KEc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MaDzWdP675KOgfaKESTfH59kXVQiWdke3+ygU+0OqRL7Sv1m8nQcmarXn+HUWfdyd
+	 LCpBntydGltnMTi7A3/308fmvWGG9h955ph5tCtIstowAO37pRffmDPBk7LzBVlzg8
+	 zwmgikgOwuTp1muye8MZlGwpBQ2ssgKDdZZ6sAjexroFvTjWU1q3m4oGKT7/37UzjR
+	 9cZMW/spKryFmgq20PCPZH5m2h88ALKdSgknqVoFh0+IIoQULdY9xeO+pH7fpaB8ih
+	 b7ULLq6ZEIe7/wBE0325qcBbgdNuYAwffq6r0D+LFXdyn+lXi5R7e3Fa21LPNnmnTN
+	 brtT9OTr0MumA==
+Message-ID: <968d5458-7d2b-4a8d-a2a6-0931cd87898f@kernel.org>
+Date: Wed, 19 Nov 2025 17:29:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/9] mm: update vma_modify_flags() to handle residual
- flags, document
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
-References: <cover.1763460113.git.lorenzo.stoakes@oracle.com>
- <23b5b549b0eaefb2922625626e58c2a352f3e93c.1763460113.git.lorenzo.stoakes@oracle.com>
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Jann Horn <jannh@google.com>, "Uschakow, Stanislav" <suschako@amazon.de>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com"
+ <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>,
+ "nathan@kernel.org" <nathan@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
+ "liam.howlett@oracle.com" <liam.howlett@oracle.com>,
+ "osalvador@suse.de" <osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+ <81d096fb-f2c2-4b26-ab1b-486001ee2cac@lucifer.local>
+ <CAG48ez3paQTctuAO1bXWarzvRK33kyLjHbQ6zsQLTWya8Y1=dQ@mail.gmail.com>
+ <a317657d-5c4a-4291-9b53-4435012bd590@lucifer.local>
+ <CAG48ez0ubDysSygbKjUvjR2JU6_UmFJzzXtQfk0=zQeGMPwDEA@mail.gmail.com>
+ <4ebbd082-86e3-4b86-bb01-6325f300fc9c@lucifer.local>
+ <CAG48ez1JEerijaUxDRad6RkVm3TLm8bSuWGxQYs+fc_rsJDpAQ@mail.gmail.com>
+ <2bff49c4-6292-446b-9cd4-1563358fe3b4@redhat.com>
+ <0dabc80e-9c68-41be-b936-8c6e55582c79@lucifer.local>
+ <944a09b0-77a6-40c9-8bea-d6b86a438d8a@kernel.org>
+ <1d53ef79-c88c-4c5b-af82-1eb22306993b@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <23b5b549b0eaefb2922625626e58c2a352f3e93c.1763460113.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <1d53ef79-c88c-4c5b-af82-1eb22306993b@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7D1CE40013
-X-Stat-Signature: wcjgbhnwnsmz8o4atuywip6kzu6n8abj
+X-Rspamd-Queue-Id: 9CBD51A0006
+X-Stat-Signature: px6yrr8bnuqppbdacrhmifrrnfua8qwa
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763569680-563861
-X-HE-Meta: U2FsdGVkX19DlYa/UIuyo+eDhisX9kmtjR6MW03sgOrsTEKoM6hctqLomv0e5m5r/t6xeCa2GKAQj7taM5WmkWn7SxOOC+sfu4HPprDk5Rr4VgG5QdkFrJ+YIEovxVxmiChJBy+DnHWcNxEKTWyFRBniIuiC4dckjbPxHSLO7k4/aos2Mcq50b33QWJPvU35H1o8o8hj38jrYeAWwhSSs/Q4D90HODTuMysj05iMxz0E7m8FywqP56Fd2cW5+CoiO9QGKVnq494abJ250rjDXrG0r6TyyNmMnTtoqFArFfSHK9OGKGWkpAb4bOSxKXV2MmG9eFnQaFBXzgKAaPvrs+9zensTFfD2hN0ZnbbJJvO5Rgp3sQg5/Oo2MhUX7R5HDJn7DRZa++nbw45cAeH/9KzFjIIsYK6v9Ax3+qZts8EMhCo4pnbOMLYNXl6MDWGTxm3Z+Nm56nKBWsW4UfaoralRJLG9keZAUS1PvdUBoBqdklURKlI6AkcyI7HgNqqq7C85VL1ebPVlkug9nBNVu5Qe91zjix4GsNnDGuRcX7z0+VJUYillp5ovSaEYPG63JeV4zE1OCgCb+ASubGcoVlY+9w1Dqs0MS4TVil3KeojWS82iDGVNVAY1zVeUFi/30YJNmponxXDCGsJDXSuDgqopN9FNvAl08cJVzHAld2YiK0CmhN+Z4ak//UWEdn85NxlQrh9VaA6kPCLl6MdFgiF4rqDKykxVvtrGllXIRtMea8I3xVAagv7uI3VzS6oQ3HLK3QIwXd8KnzHjFu9zLuWLgjVBqW2B+Jw6coLhuY9D+zJ5Q4MEYCxl7k00PA4ScAqR/3Nta94QxPcmvgY11ppjSnjXNSUCVXKtInX4nkj+SLux5DfeXmBihBnGqtCSqaVOfE+o/gDspqpj8wxrLiaXALQFZwrhbG4PkwQaVhzLnnYSK06r3ABjzwDJvxXSBNn54lkYzNIty7vICFS
- Q1RDHcb6
- FST4NQ1n39IaHuPkgwti1fLj/NeajgGZTNqVXL52PTGTeDBHAFn6kSAdqjqMfpBA3XzVAvOpQ/S6WskgNOr83AGmHmLdbH1qV1XIdK23k2ixJ8eu/WaLrmsKVcSF774JyKQ2Y7Vcg0QvtYRD1TzPpJ8vcn5UdK5cjdSRu27s7n7x2cU7Q/XmyCfoq5LOqO/FaTuICP1BAiU2bk6omO9oOcMg4B2fIP//BTM0D+WmrNpKtQBGZvi9E4xblV/QVTWGg4rK0ynRjQ13bRnYLaKAWPsXTO3DjNI6XDmkfSLW+zW2CPB0Rx0+PUsOeh4Wg4qogy9oDwpGQ/g2pRGlO+2sw2gay9DhM6PV3Bn6ZKcusKYIwVpE=
+X-HE-Tag: 1763569765-766543
+X-HE-Meta: U2FsdGVkX18dRt8jX02UevqbvYTdxlDe87h6gp6tE+cDspcnzmvpyFUbY4rBAgzW87UwMGLvfiIYxClmUHW2tEbrwzJQVfJDg0PRmovTNH4Wcq57gt4tlQNqi0cjN++VN41R47QXOqWzeXAdIxIa23yfR+umF4EV67HHUn+NT7CYFoRh5c59Eu8S0K0F0HYNdhhyrUweezF16vPxXGipyinO/QESFjfvLrqy1dev10HDWQt0cEZWsoXkpIy8ihVfEgvcsi4bALz4bKvmH9Jl+LluwrZousQ+vY4Zrcwo6WgAauIrBdaEraMKGDHUMJ/ghx2VSAgCOHtVNT9TWdQF4azUN57VuKPhIJIYUxHNUquT3yE9FsBCaosCcFWPq4FtsRxn3vaDOJESV5moRsy0ZTBU/TvRkUiOfcS6OGimIW6sJz/jYw42QeDcdhW1fH1c/uer58cZVkz9MGyaFbronsQ4f++8rRSpohcJLId3eA3NnS45hU+8Lky1mJnsbV1AITMCFib2f/1tyUaLmPwve6Xu/PZmsJEhywDigqAV4LFoVvTBi8jOsE9iVPjO7C7kVFRoZ4sEPj7O5soVvB7uIvy0Q4JIrhAAdP53hSRjp0J1NDO5hZ/PMgNrS+sMt66kcUX27z2YKOZVp3BUs9tPhB4Ppmyfc5XfGImLFzXu/57tRGtv1xH716N8j4AdoRPK5h2y8BdsSY4J7hUBOwyBWEXmS8SUdpufzsjDG6DOY11NXdNrFV9U9ViauZps08iCRm1iezRzP9hMONO5XSVOfc0wUnENskj7zK8Z1U5RzvlVXaviXUMoM76ueXQGJSoscOPVDZWEk1iCPtZ8tEFDNNQGwODqf3Dwh5ooq9TR9O6Zha71zWyleL2czdUOWvF1UZ19z1jj/qBrtZGFonJSQx6XlEdgiJ2eyI2nHnF7gZXoWFCgznzGOq4mzKNdbh9tDWO1O2SETblXn+XOvZ7
+ /JTcUL7x
+ Fh8Ptq3GLQJgyUcUReQJOGbn27VhmcZErnp89Od5cEqbW3PmckG2JpyRm1tnsXqobOknoB93SxRGcQDLgVu+FGN38/FiFkCKpv5sxY9yrg+VfwwLtnYdYLGMYmmYmlv3ZkAPJrjp1bJWRKCH5u9HXwSq7qEVaNiCu0Te+1FdgqUX0OuAwd9X7Fv7z8M/Uxbqmg7i/s9DeHwDcw1Q4teE09c//+SfGvzlPkVWbjBJibMYE1Mlz6pxaGXU/X3dCkdLgAFTSf8S8IWUL7zxI+UTJP2CdGgbqexGOoiFtm7JA3mAHpUpeP2Yfwv0LY4Fuq2Qsqe2l3yByUTPy7Ue8G/IbmNRFbZNQ9CSWeetq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,36 +113,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/18/25 11:17, Lorenzo Stoakes wrote:
-> The vma_modify_*() family of functions each either perform splits, a merge
-> or no changes at all in preparation for the requested modification to
-> occur.
+>>
+>> So what I am currently looking into is simply reducing (batching) the number
+>> of IPIs.
 > 
-> When doing so for a VMA flags change, we currently don't account for any
-> flags which may remain (for instance, VM_SOFTDIRTY) despite the requested
-> change in the case that a merge succeeded.
+> As in the IPIs we are now generating in tlb_remove_table_sync_one()?
 > 
-> This is made more important by subsequent patches which will introduce the
-> concept of sticky VMA flags which rely on this behaviour.
-> 
-> This patch fixes this by passing the VMA flags parameter as a pointer and
-> updating it accordingly on merge and updating callers to accommodate for
-> this.
-> 
-> Additionally, while we are here, we add kdocs for each of the
-> vma_modify_*() functions, as the fact that the requested modification is
-> not performed is confusing so it is useful to make this abundantly
-> clear.
-> 
-> We also update the VMA userland tests to account for this change.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Or something else?
 
-LGTM (where the "good" means "correct" (*), not "nice", which is however not
-a fault of the patch but the pre-existing code :)
+Yes, for now. I'm essentially reducing the number of 
+tlb_remove_table_sync_one() calls.
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> 
+> As this bug is only an issue when we don't use IPIs for pgtable freeing right
+> (e.g. CONFIG_MMU_GATHER_RCU_TABLE_FREE is set), as otherwise
+> tlb_remove_table_sync_one() is a no-op?
 
-(*) but it's likely there will be a fix needed, whenever I conclude this
+Right. But it's still confusing: I think for page table unsharing we 
+always need an IPI one way or the other to make sure GUP-fast was called.
 
+At least for preventing that anybody would be able to reuse the page 
+table in the meantime.
+
+That is either:
+
+(a) The TLB shootdown implied an IPI
+
+(b) We manually send one
+
+But that's where it gets confusing: nowadays x86 also selects 
+MMU_GATHER_RCU_TABLE_FREE, meaning we would get a double IPI?
+
+This is so complicated, so I might be missing something.
+
+But it's the same behavior we have in collapse_huge_page() where we first
+
+> 
+>>
+>> In essence, we only have to send one IPI when unsharing multiple page
+>> tables, and we only have to send one when we are the last one sharing the
+>> page table (before it can get reused).
+> 
+> Right, hopefully that significantly cuts down on the amount genrated.
+
+I'd assume that the problem of the current approach is that when we fork 
+a child and it quits, that we call __unmap_hugepage_range(). If the 
+range is large enough to cover many PMD tables (multiple gigabytes?), we
+essentially send one IPI per PMD table we are unsharing, when we really 
+only have to send one.
+
+That's the theory ...
+
+-- 
+Cheers
+
+David
 
