@@ -4,98 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEAFECF34B5
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 272CFCF34B2
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:38:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 340A16B00AD; Wed, 19 Nov 2025 09:38:09 -0500 (EST)
+	id 2A4416B0027; Wed, 19 Nov 2025 09:38:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 318256B00C3; Wed, 19 Nov 2025 09:38:09 -0500 (EST)
+	id 254C36B00C4; Wed, 19 Nov 2025 09:38:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 254DA6B00C4; Wed, 19 Nov 2025 09:38:09 -0500 (EST)
+	id 11CAB6B00C5; Wed, 19 Nov 2025 09:38:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 166CE6B00AD
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:38:09 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1ACEC02CE
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:38:08 +0000 (UTC)
-X-FDA: 84127611456.12.397D07C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 05ECD4001D
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:38:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jKMfSFVz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763563087; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id EFB886B0027
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:38:12 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BED82140390
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:38:12 +0000 (UTC)
+X-FDA: 84127611624.14.D496FCE
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3175F2000B
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:38:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nBP5qgac;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763563091; a=rsa-sha256;
 	cv=none;
-	b=C8cXGpqQ784UqEQxfwj2eiyoyK60Gpm3iK9iU7ZjRUlI+3NDytErydgFU5qLRIrlSYv5Ht
-	Ikj4DSl1Bei8GBlUDAgzBZ9ziEEUgdtRMsVnFGTDzd2TyfV4JvsoGozX8Az2kgILV6fRY/
-	nj+qU52LJJYf+pO5y6SxR7zf/x9TiuM=
+	b=dPCVub9b54AWY1lNshHk3NisEAh+1H9+m1OwZ6VfGaSTfuSKOzDDYUAKdtp1XF8PqU7CHI
+	YGZRDvgVnuLiEBCIqKCmc8WLHUlsRnkBb8QxIS1ot585rGQ4IhS2nmzC0mWKV264IqJnRH
+	DBLJOQstcXC3Z6YckLWK7BgOwrYSzN0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jKMfSFVz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nBP5qgac;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763563087;
+	s=arc-20220608; t=1763563091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1cuOBZyI7dAztmR8vS9jg1Pz7EdW6vqrmey7zula7ds=;
-	b=tQDsyUk5L06vP1xHgNRmsvMYLakCG+GRRmmr+PhEbgyk4q+vQQv+oW7Uz02ffIEMzOnd7b
-	JQFQ0ERBTZOBfy9S3YIE+0PQwGckPRnJ7i9YDXcgATZ3F4Jt3tlrRmF7Sb+HDtLazZb4U6
-	rFgEh9Dt0REIokWOvsZMnk8EiXMbUuQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5200A60173;
-	Wed, 19 Nov 2025 14:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F1EC4DE0A;
-	Wed, 19 Nov 2025 14:37:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763563082;
-	bh=sJG2/+R0rJL191YTA4A2S55TEWYO2JvU1RwZ4f+4YNE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jKMfSFVz2qOpvNz6eqyEBidWOwuxu7xLDnpn3FZSq2NfkbzUTLHiO3zI+4r5+cOq9
-	 7k0FCHXq4sfQ0xy54hLyYsWK8r78RI1AFGEsX0ETIQrtXMW02YhzqcSN/0YD9P5WTd
-	 tS7Yj3vKqq17Mg43IEbqBnP2PxE2Gh8w/8joQozmW/9TEtseN+E0mV+1IzM7So5/lY
-	 TPuykFsNmp7RZggWdpi+2WIQuZ+AeDae45rJWdDguLVoq5OzMYlS1DmTri3v5AhhIV
-	 udSpogpO6eEjIIFCC7ThcwpdVkAWzHqEj3VwFcULq9O8+TIrMuw6bvyWl5SS9fXwpr
-	 fjvYZpkEbmeyw==
-Message-ID: <822641bc-daea-46e1-b2cb-77528c32dae6@kernel.org>
-Date: Wed, 19 Nov 2025 15:37:53 +0100
+	bh=jrEBjc2npjUKEbY4i9jofzcj/5yPuOiFOP9lZOX0tsI=;
+	b=VicFYZ0YJao/GpEGQNpOXLIxtbqo1+tIMVJx00TP7WEKZu5oaMAffsHr3OCtcLbKLnKw4D
+	iSzmu9glJubieZ2ui9vui2AX/FUsF1YmV1jG0t8ZHESDF3HokTvUqDmPwscoO6bnOS0X1J
+	xsj5kl9/IyDFqupw0sIUxjaXxK23BjM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=jrEBjc2npjUKEbY4i9jofzcj/5yPuOiFOP9lZOX0tsI=; b=nBP5qgacID7pPb1N+57YvHaH6U
+	G7JzO5pEUGdhuUMMNn3k9NaEbTv68dj0hY9UW4pHZq6L+RoVGX93qIlWtLYoQytGKMPvLJ/D1KqKX
+	GV6hrdcPub9oX2YzpcjTtacFWku+OtVVTd6+pFYjSu6527+53NKY32Lj/L974tmHv3ScDp3gXp1L+
+	iFJ2wJM/Lmo71iZAxzafzKq22ZOt8sC31Kd10ep+n2MvqtEeikI1sljZ8uMGCqsNpyKZSf9jdYI8B
+	dZo+n/E+UO2Xtx516smblcWCers9IJLf4xYNhwJApoxEs2EHlQuoj0F7yrGXeee4kL13PJKFJYviX
+	pvBttZDA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vLjJ8-0000000HDmA-0XUa;
+	Wed, 19 Nov 2025 14:37:18 +0000
+Date: Wed, 19 Nov 2025 14:37:17 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
+ subclasses_evt for the usage
+Message-ID: <aR3WHf9QZ_dizNun@casper.infradead.org>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-45-byungchul@sk.com>
+ <20251119105312.GA11582@system.software.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix NULL pointer deference when splitting
- shmem folio in swap cache
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20251119012630.14701-1-richard.weiyang@gmail.com>
- <a5437eb1-0d5f-48eb-ba20-70ef9d02396b@kernel.org>
- <20251119122325.cxolq3kalokhlvop@master>
- <59b1d49f-42f5-4e7e-ae23-7d96cff5b035@kernel.org>
- <950DEF53-2447-46FA-83D4-5D119C660521@nvidia.com>
- <4f9df538-f918-4036-b72c-3356a4fff81e@kernel.org>
- <FA37F8FD-DDAB-43B0-9BEA-2AC25986767E@nvidia.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <FA37F8FD-DDAB-43B0-9BEA-2AC25986767E@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119105312.GA11582@system.software.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 05ECD4001D
-X-Stat-Signature: omd9943hqjc69rbum6raamhxa46nwgg4
-X-HE-Tag: 1763563086-326796
-X-HE-Meta: U2FsdGVkX19ynZVVXyRVKebFyTXVA1J05GqFxyDJkabhTeN13xD66GgQwfB9g0jn4BbyXX/4LwdscKqpPWkhvrWYR3x2lET2m4dKbnC4vWQAb2jYaDJLjaIaqF4m1xxGAR3Z7acxoaWwb1GPQACSBqammq1SOYon+X8qE35o+L16TdTPXU4lX6IJXviCIsH77oR0brrWw7zTYL/Mk86a1H6IiqTJQ0UfZ0U/zGrvyL0JLIzPVFSXXLPaceN4AU4vtXt3OIkJ3YDKW6gN2mW4Xj9yEjdtgj2Knr+BzDcGkJzG/jZtpNhelOBpRXuNqTI4Vr4WCb6fEYeh1AX04N2cb4xZvzIvEEJiTePLeuj0c57F8yiiDHvZZl6HIkcLDW/HJj5XPiwvO8dsGOzFEZdLQ1G9pQJKr96WTBifodtu1oucgy+6S0iSJB4c6IRUrAKcJG7MH18NO3kzCWQcpb6Zz2mEKTyKQyoX48Nht/INBNNuQ85KQRp3r79bWwcPa/Gw7MMVwBRT9XGfMJsgpDUQek/99m/nR1J8KvbCjGTjo95KFfljWnw4cJssD5bpRGuEhaZNYKZ0451+xXpKEUN3Xs7TCDgZz0GJBRVAk5JoDb4+fafMI2tHNQ/CtA5SnoyWT8Nw+MyvKUBX/y5fmVG98DpdOsH1p5CefgJ8T4kIConN/O+pss3d2A5orLmXPdCzAJ8EEmRN77ViajSNK+zZFEWjpn8PFgUDOU9G3jQ6UUb3BLzbdu5deEV3i1Y3Iiyyp7Rm0GzvliUIWsrBztfOAtWrX2Y2cTzdS4Hb+QBgY7+tJX80KVW1sTqYj42Si6n8oXs7C3YQjc1/00FbQL+2A2OUk/1BZhgJm1KEaDfHVDT9Y12RBM2qZtBQEIq6NnZm3BIOD+NETFeVcrP2pqFgaILC3z8YWcwpTMQ5cH8JbNCIICtvFE0HE1dq8mZWnEcHw5jgIZFBny6NS20OU5k
- 1nQMVUyO
- MUrlrUsT+KNQLC2DASsB65yyf/bcYskVbUnvGid+6mGVNdKP7TwM/2uOBg8UsXKNJIum5/jf5FruibT3BBNMQnw2Blw079tk8t7T4mcAshTcM2vFsXMfb8UdfZ1XVE2aOFDJ5/cd2qD0AbS4V4FBh4BAp6RNOIGcQrbU5alRJWtWClMP799+wqzdVrkdMdZtTAd47lPuyHMXr3CejcizIP2bhJ9TP5iNqtFvQ448aG1eSij27r6QcWQunSJRDoMyi9DVcaJsm+sghyeY7PyyFolfp1OkfDauHoYWOEKqksxgr1IEwBlkPxbF+THNYSC+QzVmKc00HOQOuoCkjSbcGT7bEOA==
+X-Rspamd-Queue-Id: 3175F2000B
+X-Stat-Signature: 5tmtinnweb84amtm96q6dezeqgfw1tit
+X-HE-Tag: 1763563090-606245
+X-HE-Meta: U2FsdGVkX1/d9aJ48QxBOD9fjxfBKqrqIF2pR1hzN+wL7fvvmUnaxb99MBb/6Fmtj9MQmlk32EEhwhIiQFL2je6ORQY/DOTAE/cQzFQ3qBs9O/rWyT/PCzIr+lYVwOlWxRnoBCh58Hgf3kkEEEho1BsbqmViVTw5oNfcWev/UhNapA1i8AUgBEURmQdZq0AA9kDB3/3WqE0JyOdXP8AQE4xPQCAmGjF9rD6d8dzYQaJM7gOVKviqD0WasJYeHUF1e0bRwVR7VMQ90bHWc+y+WSugZk0H0tbgDodpVmKDo5bicDe9+IEUgYE6VJGPHDlV2rUvXNAnh10jRv5iv3epz10w/UD1AfKqAswLaSt7gP3GRkNBoRJv5195o8g+MAhBDx3MMHakGJCPKyl9Y9GR0C5IdBeP0gr/vsuSHKQhNtH06rtLZUnkgsCNwW+xkoFMrtBqnq/nzFwK7TRmbee0DGqfBN8X9nFdYgO3Ci7HJyEW7fJfDUWWQmV+qgL1ufYD37+utS+bivhkpisBiJ965GbhI/uZ6RASxBX+KEdRTUuJWXsmvgvoaKFqd832DvhKrfMMlhFFvR7UuWbl6UUckUqWfs3QneHqSCE28GDFHkA82k4rLdDemCHsQSjRdQtCRFR8oPjw2zOpeUOYicmHV93i2Y75rdFeeerWcfV/OCDEDALlRy3YXK4i078y6rWZY+pQ/Ft41TjCOSoIOYNT7W7zmDy0oXnaFl0+zanW4p/ADFJq5aQ/Nrkdn8Y+a225GFZa4Hp3Y4Qaj3c+LchX2uVub+pMMbb3xWjgjA6ivXRPXacVwHFI8TqJf3CddGyuWfcfqTDzBtNl65DBDgKqyXLtUK1IEVqU9GgJQuVFNp+Se04nTHEGfKhcbU9n3NSRKSg1cwkTzYTC5Gb2FO9ypqe+bMIHRLFE+DLfjhCvqGnMHRpc4g7AmtIMJ4kspWg7h0325FMJgce1eOp+WzC
+ hqo3J5oC
+ eFT9USA3Uz0Q7is1FTsw4wt64WoOemcYdpYEuEOPBR9OP6M+QVpKJwyQZHDoQnS/4hKzAJpYvfrfztFdefcuAFFdSt5NJR0LK4SMoQFGrrdFQkS/R2wKebmcjMuNr67OHpz2QzVaWqmagwMaAs7ZC8X2qeXm8/wkK5x+rS151QvpotaW5pY1N67AYZFk+G8xvCjNAiKJSQwTV2weWc/OqRZHV+wIAnH20JcYrhIc6R2e5nGf9waKYhpmU7PKo3UKZM+Zy5UNoc2rZpVFtnts2cXIoXGdFIvuhrDJtSFalvMPRGwaM9tJjuzM4wDmJh1jmOhcS6WlH3iIl6qtIDRuZyMBwLpKevcHcjIq/oFDeKCyqTyXGw79OIjU88+ngchez94W7f+f1MDZSQ8onq2f+zB6kBQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,66 +149,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> Given folio_test_swapcache() might have false positives,
->> I assume we'd need a
->>
->> 	folio_test_swapbacked() && folio_test_swapcache(folio)
->>
->> To detect large large shmem folios in the swapcache in all cases here.
->>
->> Something like the following would hopefully do:
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 2f2a521e5d683..57aab66bedbea 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3515,6 +3515,13 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>          return ret;
->>   }
->>   +static bool folio_test_shmem_swapcache(struct folio *folio)
->> +{
->> +       VM_WARN_ON_ONCE_FOLIO(folio_test_anon(folio), folio);
->> +       /* These folios do not have folio->mapping set. */
->> +       return folio_test_swapbacked(folio) && folio_test_swapcache(folio);
->> +}
->> +
->>   bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->>                  bool warns)
->>   {
->> @@ -3524,6 +3531,9 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->>                                  "Cannot split to order-1 folio");
->>                  if (new_order == 1)
->>                          return false;
->> +       } else if (folio_test_shmem_swapcache(folio)) {
->> +               /* TODO: support shmem folios that are in the swapcache. */
->> +               return false;
+On Wed, Nov 19, 2025 at 07:53:12PM +0900, Byungchul Park wrote:
+> On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
+> > False positive reports have been observed since dept works with the
+> > assumption that all the pages have the same dept class, but the class
+> > should be split since the problematic call paths are different depending
+> > on what the page is used for.
+> > 
+> > At least, ones in block device's address_space and ones in regular
+> > file's address_space have exclusively different usages.
+> > 
+> > Thus, define usage candidates like:
+> > 
+> >    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+> >    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+> >    DEPT_PAGE_DEFAULT       /* the others */
 > 
-> With this, truncated shmem returns -EINVALID instead of -EBUSY now.
-> Can s390_wiggle_split_folio() such folios?
+> 1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
+>    starts to be associated with a page cache for fs data.
+> 
+> 2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
+>    starts to be associated with meta data of fs e.g. super block.
+> 
+> 3. Lastly, I'd like to reset the annotated value if any, that has been
+>    set in the page, when the page ends the assoication with either page
+>    cache or meta block of fs e.g. freeing the page.
+> 
+> Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
+> be totally appreciated. :-)
 
-[noting that s390_wiggle_split_folio() was just one caller where I new 
-the return value differs. I suspect there might be more.]
+I don't think it makes sense to track lock state in the page (nor
+folio).  Partly bcause there's just so many of them, but also because
+the locking rules don't really apply to individual folios so much as
+they do to the mappings (or anon_vmas) that contain folios.
 
-I am still not clear on that one.
+If you're looking to find deadlock scenarios, I think it makes more
+sense to track all folio locks in a given mapping as the same lock
+type rather than track each folio's lock status.
 
-s390x obtains the folio while walking the page tables. In case it gets 
--EBUSY it simply retries to obtain the folio from the page tables.
+For example, let's suppose we did something like this in the
+page fault path:
 
-So assuming there was concurrent truncation and we returned -EBUSY, it 
-would just retry walking the page tables (trigger a fault to map a 
-folio) and retry with that one.
+Look up and lock a folio (we need folios locked to insert them into
+the page tables to avoid a race with truncate)
+Try to allocate a page table
+Go into reclaim, attempt to reclaim a folio from this mapping
 
-I would assume that the shmem folio in the swapcache could never have 
-worked before, and that there is no way to make progress really.
+We ought to detect that as a potential deadlock, regardless of which
+folio in the mapping we attempt to reclaim.  So can we track folio
+locking at the mapping/anon_vma level instead?
 
-In other words: do we know how we can end up with a shmem folio that is 
-in the swapcache and does not have folio->mapping set?
+---
 
-Could that think still be mapped into the page tables? (I hope not, but 
-right now I am confused how that can happen )
+My current understanding of folio locking rules:
 
--- 
-Cheers
+If you hold a lock on folio A, you can take a lock on folio B if:
 
-David
+1. A->mapping == B->mapping and A->index < B->index
+   (for example writeback; we take locks on all folios to be written
+    back in order)
+2. !S_ISBLK(A->mapping->host) and S_ISBLK(B->mapping->host)
+3. S_ISREG(A->mapping->host) and S_ISREG(B->mapping->host) with
+   inode_lock() held on both and A->index < B->index
+   (the remap_range code)
+
 
