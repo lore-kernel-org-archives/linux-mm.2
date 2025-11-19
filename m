@@ -4,209 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3BC9CF34B2
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D97CF34B4
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:06:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6FF16B000E; Wed, 19 Nov 2025 09:06:37 -0500 (EST)
+	id A51926B00C0; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E47AA6B0027; Wed, 19 Nov 2025 09:06:37 -0500 (EST)
+	id A01296B00C2; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35DF6B00C0; Wed, 19 Nov 2025 09:06:37 -0500 (EST)
+	id 8C8F66B00C3; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BF6A76B000E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:06:37 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFF3AB9BD3
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:06:33 +0000 (UTC)
-X-FDA: 84127531866.27.D7CB178
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010041.outbound.protection.outlook.com [52.101.61.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E167340020
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:06:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=eHTkBcoE;
-	spf=pass (imf07.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.61.41 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763561191;
+	by kanga.kvack.org (Postfix) with ESMTP id 787046B00C0
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D3871404F7
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:06:46 +0000 (UTC)
+X-FDA: 84127532412.05.FF81D95
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 370704000C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:06:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j96oD8Xj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763561204; a=rsa-sha256;
+	cv=none;
+	b=M6wOkIRwg3hC2jsa2YT18wuFrRs7wVDaQ9Y9TJX/lzHWF9ZmBVbF7xW8xMUU6FV9klcFHG
+	6NCmrHZ4HgDF8uDf7bhBEVaLdiIFcLaFEAE5StYaxdwfNxKbjK2V75L5lJdOUA+cAWAQ+I
+	Zbd6BLliyyHsQdcTe0AnNyaoZTghyOE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j96oD8Xj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763561204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RodIlqiCVlrGXPsR3ERXgJajNGk+sw1kRTH5SeTDbhg=;
-	b=QwYHUzMUbxAxJmW9q8actQcfcxDH7nNp0aGluLrC8zjGyzA2AD9DZd8OJdaMHK7zk+sO40
-	R+KatTBuJmk2KbKAvqhLw7RhF2nTw+PIZOQ1x+GWuq64Bvu1W19kBNp+kk0J95dEEoBl5J
-	YpvddHX2qmrDrHL1ncpcbewA9ojno78=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=eHTkBcoE;
-	spf=pass (imf07.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.61.41 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763561191; a=rsa-sha256;
-	cv=pass;
-	b=3eOKTv8Uj+X2z5XmfHGY03IpT5ae2DPvkxJx2p1apjPLQNYmNuS45YMk2HWWgKYK47VTis
-	7z0A1Zr7OGk5RmQzcrnLBzOe37p3TgG8BVxZrfYVi7KumG83hKSOeAKLFY3AYVwvJH0Ptz
-	b20YQk2dDZgzmieF0aAu+qbC4vTAfdc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bNCisLbtgLv7+XSWBx6uIMlyAkRqs49RpNLx982MjBKEwzNF1UHw5hTCD90Wuq8AkcJqg6WpnYX/hOQBiCRc735RZhf/7tqLYM74wdN+f61biNH/ylJlQEOVm82uspZKP8ac0WOUMDZew3ol61J1M7zwqBcpun4PJxjdEugl+RpHarUbSP1VE6kIQXp+yFzIFA+r05S9yGRkvJC3lYXmbW1PiEdDC4osNGliCSS7W7uGNi1ugdH1IuKtfjAtoeJ6rE3j9T2JNYp1aE5BI16JDK36B4BLwPH9QqMriM1CWYCGp56PVbB4BrozsfiLDigx90v2a5UYaHETdAkOoYgtHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RodIlqiCVlrGXPsR3ERXgJajNGk+sw1kRTH5SeTDbhg=;
- b=JqQIAA3R2hQxXKajJZIZ5wjuOQBmZYbay5vDZ/o53ne78sNuTswv4s38RMVOzN6zVPpAZwmr7qL9qWCUHcXBXh/Pf8oi4pgDorX9HBtR0V9wSahhgRWQrEHd3mdi+F0nWwKrB2vOC5nq7V/uJjpYurcpvuE4CV4GAzmfLE6oqtOESzh0SjOc9elr5GiNDzjgi+P/9I5t7x0MMa3lpI0ImFlvmCOiXSSGKOTUCiGBtyrntkigQLgOEa/RzUa4EbXWrQXHE8XTMtaxo5z6rKB5l/4Ns/PjyGH/FOSiPAe14wdrF+WD1Ol9q+OOSq94yp1wzwuy4kwLgq1TGxxxPDUqLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RodIlqiCVlrGXPsR3ERXgJajNGk+sw1kRTH5SeTDbhg=;
- b=eHTkBcoEOun01arH6EyTQHDDCj+HijuB0t4CxtKWYr6hsV0CFgBUCvu5nditWV0BmhCM6cNq4MuIN83Lr/vhN5eWfBCCY//7JEK7oplYD5lfl+K2vwkcyr5Qk97o3d6qQr94oru4QG0KZbhj2gXd1yXkefisc6Lu8Wpn2qfqAVw=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by MN2PR12MB4343.namprd12.prod.outlook.com (2603:10b6:208:26f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
- 2025 14:06:27 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9320.021; Wed, 19 Nov 2025
- 14:06:26 +0000
-Message-ID: <ad36ef4e-a485-4bbf-aaa9-67cd517ca018@amd.com>
-Date: Wed, 19 Nov 2025 15:06:18 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/11] PCI/P2PDMA: Document DMABUF model
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
- Sumit Semwal <sumit.semwal@linaro.org>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian
- <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-5-fd9aa5df478f@nvidia.com>
- <9798b34c-618b-4e89-82b0-803bc655c82b@amd.com>
- <20251119133529.GL17968@ziepe.ca>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20251119133529.GL17968@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0048.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:92::19) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	bh=KrYlkbrAuW0CJVMNxIgwwlmGTnSuWrArad9fT3lU1L8=;
+	b=JB4zY1oociDQHFMXHpX4Juwu5xk9Ev0t9itVGZimUYCzjffkfP8d9PpQCLwGjtgMoiBzzK
+	KAiX+PkdOO4ippgCRgeuAWBw3Wpz6q8J50uAjDdRMmmPJMnDFCtQWRXdkFwXv4DRIFmPUk
+	FPh8ux7e8WE/v5wsVyNHLCmD1MW0Npk=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42b379cd896so3921050f8f.3
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 06:06:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763561202; x=1764166002; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KrYlkbrAuW0CJVMNxIgwwlmGTnSuWrArad9fT3lU1L8=;
+        b=j96oD8XjUk7TwJYeELP+tGPv/XWxG4N+MYiFku/7PYM5TVHgmm0h9IJS74j9OoY5Pz
+         KWlNmBXH93VGpW53bxsQ+TFflhXSpS4a45R2dOtJjDQut3DvAO0kubzt4ciCmE3LwGDl
+         hvKYxS/fA5SNqsgUDgvSTPA13InHy2b7RfSrQP8d3BQy9BjHpKlUYJynIPns4eS8XAuC
+         ZdUfWAX3lWi6yZEXp5DcWL+e7CgwE41w8K83t354lQhtpnzi6bngkUmkaDEUcqP5SXcn
+         MPhWrn3H8RUlEr6CR8Yma7Si0MRjdhYEuyrmilRBO4NmL9GD2c+4W2tREdo3hYUx+EeB
+         +3cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763561202; x=1764166002;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KrYlkbrAuW0CJVMNxIgwwlmGTnSuWrArad9fT3lU1L8=;
+        b=ky/C5WOiXjcQEgLVWOV7lKbE8QQh7GNzJ/ptcyaCcBgqSlcK51ojCGN24xbWSIv980
+         t9aAFYNplFpItaL/C4vuW0vuz+ya+xoXM6xu2uDLLSkonKFnyiwLId/DtLMUQP0G+KZC
+         Co4XDGiP2oM3Tnb1NT3KULHL620ChOCS3l8sSaRyx9M8YHwoaTTr9axqXl62BGldU3ll
+         FpdYlaaNomqQXxbClKC9PuaE/a+3/VAQGIkLoahdxSvYNkxqSspgJtfu2mhL1opy0fu8
+         YazNSPKsc1NNPkFOPAumGuLzuCXGzCKQGlM+q/85S7YShCNwCisI1CxffHX3QpPYowVD
+         LjzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXLWEBkaP7OLX99B902PjHXO31TIA55kDM5wPQdHN1xrfYtPwX/JP+ckBv5aaBNbc5+cDFSqu2NpQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz0EjO+eSy49KJHmzN34Ku+bNMTKMfJpsLk9QLQzDZdP9nTzP3P
+	0EL6clahJNM63m1r3V3pi0rM8GSS5kGxKvYiy6EHTLmYI/X1yPMGw2m6
+X-Gm-Gg: ASbGncsWMQVDlrmVpiBGja+8gSWKbPC4vXbC1b+lW8QDsKdjd5lPbsCeq5T8BmYvFMp
+	iODzZsolC6TPdCaKK3FRqfnHb1gypKxjqRSBTy3FDy9L0WXdd+JT127FkwCfERwDYFwQM5pMpEn
+	vwCv0KcMa8h8fZ+1vsgJLNPRRh/6/ac3DctuY9XBxF+7GDfX/rzf5kwmNi3JJRMhwHcp4Dc6oyB
+	NMtARijtgpPMvTaeO38ipM/P13kAx4FCszSWjGZ7xjVwsdcpjins5IeLBA+2c567L3nxNA9R54X
+	hn30oh0PCMm4SZCkCgur4e9PbFuI47tLLmISJ9x0m0mzhKxzNT3SHsgzhlspPb87TlIj2/mxyax
+	qXwWP+DbguThWlD9c8RgUIPd8w3GDA+OablsAKYsCi2g5XSjg8SHWfrdMgxWL1RPaX8Xwo1hUY9
+	xo7UD6XCyvJVj1LJOxOGeya55Ga6kByfTai+ZffBJmSbOnJVfJ/DWOM+UCrv2p7ht5i8M=
+X-Google-Smtp-Source: AGHT+IFiPKDX5IFAdREjtpo8183tGXmuo5NUyGi0LIKpf84NFghKB21kVVGOB/anTbdap2sFnDN4RQ==
+X-Received: by 2002:a05:6000:2007:b0:427:9d7:86f9 with SMTP id ffacd0b85a97d-42b595ade7dmr20655507f8f.47.1763561202173;
+        Wed, 19 Nov 2025 06:06:42 -0800 (PST)
+Received: from f (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e7ae5bsm38214170f8f.8.2025.11.19.06.06.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 06:06:40 -0800 (PST)
+Date: Wed, 19 Nov 2025 15:06:32 +0100
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com, Liam.Howlett@oracle.com, 
+	lorenzo.stoakes@oracle.com
+Subject: Re: [PATCH] fork: stop ignoring NUMA while handling cached thread
+ stacks
+Message-ID: <2a3ftlongim2m7nk5wbj4se47prwagiw7uxzbk7f2isqsqezyo@b76y3afffhea>
+References: <20251117140747.2566239-1-mjguzik@gmail.com>
+ <CACRpkdbNxKh7ySjffhzCncgBroOOeOQP689k7dgBKgV9annLpg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MN2PR12MB4343:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87e99477-a4ec-41d0-1404-08de2774d454
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MHluUHVtR1pTcXo3VUZoOFNBTHdpcjkvMHViUXdXRm9QaE9sa2VRT1BiMlMr?=
- =?utf-8?B?ckxrOTNDRG5Xb1V0TTE0Z3BUT0hBcXJKNWt5K1dkajZreUM0WEp6bFB4T0VR?=
- =?utf-8?B?K1BzdmFzbVlFZkZhdGxXREVsTTBlSHRBWVQ2VkpTdmlsSlUrWHJvSm12SnRz?=
- =?utf-8?B?L0pXVWdHRTVUcDhJemwxZjBVTVVoY3Ntd2l1RG9Cc3hLeVBLLys0QnZpaDQ0?=
- =?utf-8?B?NE5jbFZTNGU0cG9KdklIUnpFb2Fvc0FUYVhXZXRrcUFlVm1XbFhLa1pOaEVS?=
- =?utf-8?B?S0pHbGlLaWdrT3hXbG1mdU45ZHRZQVZ6SWVWZGRhbVRYcXAyTW1wakt1ZWly?=
- =?utf-8?B?bVcyRlhpdWZXbTk1N0l5VEUvN05LRVZVY3YxSEZQVXpCZWdXNTRqZEppTXA2?=
- =?utf-8?B?NklLaVRXekNqU1orWkNhUHJuL1AwdU5ub015eFNGdGpmeG1MWVJ4bmV3YU5q?=
- =?utf-8?B?MjFuSmhueFBZWmQ3RUhlS1VFNnFWRE9YWDRRMDA2QSs0SEovL2tYMS9KQUd6?=
- =?utf-8?B?MnU2WXMvU1BKdUFQQVdQYWFxK1l1YjN2UzNPL2Y0OUh6RmtHNVlubkxiS3g2?=
- =?utf-8?B?MGNUcmFQWkt4Y201a244WFBPMHpNN2ZnV2dYSVF3MUhZamFJcmY4K3lnek5G?=
- =?utf-8?B?MTI1anowVUpzRk80L091UE12TlVMWnpLK0lMajNqUUo3U2RFNXFOQWtOaU9B?=
- =?utf-8?B?WjB5ejdmc0g2RS9JWTc2UWNlTWhHbWNscjgvWFIrejdOYzRwS3BFNU8zWkFP?=
- =?utf-8?B?ZWgxZlpEV2xxZzRoMFlHM1FqV0xIUWxQaUVMVGpKSmllVy91WnM4RHdaWmV2?=
- =?utf-8?B?RzlrL2hVVWRIZk1kZHZEUHJFeFdPZmpnZkhVVElhVnQzejRrMVN5d2l0YzBZ?=
- =?utf-8?B?USs5bTROZzdwWFU1NjBiZ2Jlc3VLOUlDd3lSbHpYWWxKS0l1L1g0aGRGQWtT?=
- =?utf-8?B?RU9ubjM2VDExakw0K2ZaREJoYTJhVS81UXVyTGcyalRpMEZ6ZHBPZ2V6VHZi?=
- =?utf-8?B?NkVJRTlhQ29SbjJCUThmb3luUTNwd1Y5bHlaWjJadTcrOTJGbmc1MEkrTGdC?=
- =?utf-8?B?elRvbERjTFZoQzhaV2VUdXJvaTl0SkI3MlRCR2VhU2ZiUnpPcWxBVW9pRGE0?=
- =?utf-8?B?Slc5dGcvL0xoZDhVS2FqYUVpYVFwdmNkdFJtRytXRXA0VEg5SWgzRnY0M0I5?=
- =?utf-8?B?NkJJVGVycENhNHpaeTV3eWwzZHB1NE82RkZuL1JVK244QVZjNFVEUWFvd3lS?=
- =?utf-8?B?MUxOTTE3RjA4TU5IL0hBb1o2THZLc2dYbFZoRFhkb1MreUJpTU1IN2haeUkz?=
- =?utf-8?B?WDdXRVFxRWhGU0Q0TFBUN1RDV0w1bmM5UE80Zys5a09ORm0weFpqVTBzb3hG?=
- =?utf-8?B?MExRNDlYSFRRN3I0U1F4K3VnQWxnY3V1V2dMWk5CL0I0UGxGcFU4RnJwckJK?=
- =?utf-8?B?bS9mZ3FRQ0VBNmJTaFJ0eGZGbzFLZVlSR0hhaUtRMHdua0txQ1BSaERQaksz?=
- =?utf-8?B?cTd0d2JoOXIrK3NMbE02Rmt6RTdpdDd2YlVlOExhazRvMDEwREd0QVd0cE9L?=
- =?utf-8?B?WjM0WUdOMldJRkM0TGVkRzBQRENWcm5kNnhSMzRickExMDA4ZVN6dVR0eUpv?=
- =?utf-8?B?WUJsVWpCQ1RFd25kUWs3Mk1kbXNrdzlLczNGd2Y3Z0NCTWc5YjRpOVptZlFs?=
- =?utf-8?B?MlFUYnUrTW9aSjhFaDhjQjZBSTRtaFFudHNMQnkzT2Q5eEpZRzluYXE0NGQ4?=
- =?utf-8?B?aUdQd3I4WmhVRmFIdUsvZjlqY0hRUVNDVFBjbVM0VnhFZjZLaWlPazlRcktp?=
- =?utf-8?B?aUxGUWQ5a1p3U0pydGFSY1VWdjFIQjhlYTFLbEhGVURkak1TUUZQZldKSW1N?=
- =?utf-8?B?WWtTbk5HOU96azlpdUV3YWFmSUNlSEZ6dmRXZWRpZHhnUVQ1eVRTQ0hhZ2Mx?=
- =?utf-8?Q?1dI5GZIUeHeful+qKhKNxmPZYGtl7+jc?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UEdOenRHUTVIcXFWYi80V0pwMXdWRDg0WHB5Z1IraVU0RGZJR3FJTXdRL1ZT?=
- =?utf-8?B?NGdqdFY3UjZpYkNHNkMyWTI1bjZZdzBRb2RvTk5pUmpzMkZlbTY3dGF6LzNO?=
- =?utf-8?B?Wk8rcVJ4VnR3WE84OTNnZHhRTGJJbGpTOWxndm5xWUt4YkdCZTBIZ21STEpt?=
- =?utf-8?B?c09Ta0NKeENvd3RvYzBhaDBGa2IwOVpwRGFrZW96UmFBMjY0MkhTYWxoMXJx?=
- =?utf-8?B?d1krbzZtVEU1clZhSlZCV2luQmpIWUFkZWZJV0VSaHVWUlcwdzltY1dTZFdE?=
- =?utf-8?B?NTlveFNOUnRyNC9hTjE4bnhDWURsenlqdTZ1c2thOVEyZGJVNlRNaTR0VEVi?=
- =?utf-8?B?Ulp5ZndLcjRSWDA1WHpUVXJiU0JhRmozSWRzS1ptdXdpVEZodythOGltWkRF?=
- =?utf-8?B?cnVobEdpTFMxQkNvOWxnN1VDdzZTbDNxc3RqVUw4WjZSUGJtMkVpMWpScU5m?=
- =?utf-8?B?NVZ6YlJMTDRpdWRvditIbVMrRU54eFJhVGNCcHFDNmpGVkJISEVUaWtzQ0ta?=
- =?utf-8?B?ZlVOeWtUZzhCclVaRXcwWUxIaWdUOUJGSSt0cGJweFZXY0FmaFAxTmd2eDA5?=
- =?utf-8?B?YWxVR0pSRjJlZitjMTNyd3dGS3haR0JZTENOVlBZeVVJc3VOZGVFZUZtWHpR?=
- =?utf-8?B?V0lXbGNiRmp2Z2pHVW9hbE9GQmZWRjRWSFNWZGlaLys3c21hY3lCbnpLUzdx?=
- =?utf-8?B?RUNzMVZ6ZzBqYytWQlpUdnNDMk5IdEFCbzJ2TkdDN3VPNi9yME1WU09SVnNy?=
- =?utf-8?B?NEdVZDVHRVAzeFBQNU1FbSs4MHdRWmdHY0NkdkZ0R3J0dkJ0ZVNHMUdWbUVY?=
- =?utf-8?B?aWpJSVpHQmh2cmE0K0JUVnJGMkJKaFByVUFpT2p1SHdWMnp6V0FyYllDWlFJ?=
- =?utf-8?B?L25XUzl0LzVwYkYyMmtHa1E1VWFleTFlQ2xNWEsxQ0lQbFlZdkhYMFNwMWJa?=
- =?utf-8?B?L0dNZjdmVjczWDBCWHcrL2dsL21KMFJ4VEs5Y1ZxN2Y5RjlURDZSdDFJK3lo?=
- =?utf-8?B?WlNLQ0RiREczeEMrcE9YVHdCeElIYUgyYmJ5a2N0cWIzZnZtSXpkNEswdWJK?=
- =?utf-8?B?eEFoY3FPYXBnRUFERkJyYktjYnN5V1BqbXBqSDFXc2tBSGV0dUVYdHM1b0dr?=
- =?utf-8?B?bVZWVVA3SUtHQnVrSVRjemIreWNTeDhQK20rL2VVMWNveGZZMm5EbzBmUlFX?=
- =?utf-8?B?UHRjVWp6Uys2NjMwYktKclMxdWt2RWtIYUZzTG1tUGVWUWh0VGNPUzBPbThW?=
- =?utf-8?B?SERTdEpUN3V3c1BDeDZLWmFQczJuNnd3R0VRd3dFQWhRd1FaVytXTlcybU9y?=
- =?utf-8?B?UGpETTV2OHNlb0QxMGpJQVRIUm8rWTNjdVRzQVcyVEVpcFl2OWl6bVFtcEFw?=
- =?utf-8?B?Qm9Pa1lKaHVnU0ZYYVBiemdEdFRsQ0VGOUhTdk9DeXRQRWh4MDJJR2RFazNK?=
- =?utf-8?B?YzdDbG1IUDhmSlB6SUJubEN5bzFHNTBFUytzRHBPQzEwSkxkQlZGL2l4Qmk2?=
- =?utf-8?B?R2lUMFlFc1lOa3p0V1kxblQwblVxc3NmTitGeG1Td2prYU03c1B3ZC9wVitT?=
- =?utf-8?B?VTJtRTlIOE9HODJVWmh5ZzFWR3lwVVpkVElmYW94Z29lZ0ptc2lVMW96NlN1?=
- =?utf-8?B?aVNhL3NmQzFvSm92QUtzb2R0a0N1dHo4aTVGSXlNSTM1V2lBUzZBWCtTZ24x?=
- =?utf-8?B?NlVzK1pVcWxmRzJNWGc0aHlnQXVWRS9zMmhZL1BxNE9HNTdYTHlZTU1QUTIv?=
- =?utf-8?B?NWVpMXU5MTUzaGVkdTREb2ZkZVkxTjZuZUU2NW9XR3NhY0tmSWxzY0VpNVAr?=
- =?utf-8?B?a2hzektwMWkxSEs5UGhwS1VSb2pmRkxUYnIxaGdhTWV5bmZDZEgxdEQvaHFC?=
- =?utf-8?B?QVpyakpveXRQUVZsNFljK3M3QjB6N1B0dE9sRUYxdTFTcm1JNU5CM2dJN0w1?=
- =?utf-8?B?NHhTajBiUlhPRFNQSkQxbXNxVVhnTytkdlhUNmhJekp0djhTSm5sSVZ2MnlY?=
- =?utf-8?B?Sk5vNDJPQW51dWltZGc0bHAyUVVwVnhpd0tob0lIR0Rtczl3M0x0VFQwYlJ3?=
- =?utf-8?B?K0ltd3NSaTI1NVZBZFRXL1pKU2FRWEFSUmhRaEtJcnlUdm1JNGlXUE1kbC9o?=
- =?utf-8?Q?k13nGerExg0UWYXeDpwl3lxdz?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87e99477-a4ec-41d0-1404-08de2774d454
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 14:06:26.8266
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: djCzkXeBdruYECvbipxbQfad1TBt2kTeP8tDXCBMBWh46twJm+AZ76kKKSAJ4NHp
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4343
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E167340020
-X-Stat-Signature: q8prwti9g9aytzx97shn8735r3t6bo98
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdbNxKh7ySjffhzCncgBroOOeOQP689k7dgBKgV9annLpg@mail.gmail.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 370704000C
+X-Stat-Signature: e6me8z49jfftzycmuramas4h5zr6uimb
 X-Rspam-User: 
-X-HE-Tag: 1763561190-735731
-X-HE-Meta: U2FsdGVkX19TeX7nvHl23rsc24kAzFkK1z4Z5c5JV0HInOFlAlrkMvfVAdxgCUA0G/KHTMoVTU0IvHOmztltL8bArkyRWGF7phiRfW1XSAd9c6QgI+XOgo7otfVbjEdKxjY68VCBZiG59LRFxnDTPmmJAl0TbGfhmWPyPalzNWhjSWkOSyJmrL6ALMtnlFjwD2MBIKI+2AK5Gs7u1NvtYDNEkvhtJjLz79OyNvMmQBum/j5PPqUryZeashw2l+bfLf4Orq0NrEjZ8oeVs094eyoqp+H5qIIG9YPRuZpDbbcIetYcp+8pb1TnxvweblxaM93RcKDfOEGBcd8WuAWTfcVT1AHcdzVH2tRsasro5BktwUKeHEAij4PhrlWg2rrNATFzr2Zgc5P7BY2iit+ovcsr+lODUWYYtOEmGkX+ACOilNAEkVW7IwoPn7KtR0ofeWU0+tky2yNFXXAdRwNGP5kk2/GjPMF+fRMmC7+x4t+JbqCeyvdntUhF5Adf8y58YPbqs4w8RgzwqGbUoFFWgu/+dPTjXqz97rf/C2Cy8/0Ik+hoobNVWWmYHed7pO053nIeYY+PmF5FFi79oVDrjUwMgLs15nan7KNWvH8Np3R0M6bNuC0KU9Selagp16I8c/W8tlW0RlqEley1XVNTWRMZCJuNaNZ3l9xzp3uxYUEKiUsG2EVJQJ7MOKCeY/BnJO0PSRAUv1DnLyspv2ABS0kq6kYZmHds0CDxfk4vxRcioojwbKkX3gQAvf8JBOGHCJMZAZqBXZ8k3g7ccj1MoUUq5w1HJrn/mq18z9C/YTpXtGRKuscBLc/4lTSHyccYhUe2uOl7o7bTN8CrSQrIhkvonVMY8edweEZzP1F7krWAgisHAshPweSPq7VIWHu1k1hHZgsScKh6+ClZqBxSi+PYp32uw7IVt/N0n8XWM5CzawukD8JNAHddYdMkObisKkMgcdjoHopnlOK7V7j
- 1UKBG8k7
- 6QLhldRyAwyyle4gKwJtcliRN/8dwG0gwA0BHcIb7g+QRCPC69Z/OdHbHKS3AXfojNQU147VaVtVE+DOqO1y7J18o0NFLAU0Hbt3bwwP2M1JAQ2JEGsshJCRYdReDkH0CveqQ8ZoRmEPQ6aIsu7A9SzFOVXj0IbuhdGCTEFJ9TezszE++6sIIOm3D4776ohZ6xs5Wdvm236JpwcCADPWuehP4dsfdNCvlvJ0GZqIUZmJaEoJ0TuzAkulYA2QBntVSO/7DT4ogzyO7BqxYC3j/F7ElTmEWOHr6zjYQAQkIdqvDLewYhE/Ixxcmz9ojRyF+cexy+ISPbMaGqm4zcceWEXfVIFVYg4QuJdv920SKVSX02PcuBcc7yhDRZy7S5Iw2nPA8/lZVRMNk9os+jMuVEi9GqAss82dJxJfg4g3PVt0oglaNirmO8kbIQsmFNx8m5mX9+3LLDS6EaiI=
+X-HE-Tag: 1763561203-109918
+X-HE-Meta: U2FsdGVkX18/v+UnNC6d9TISCIeOSRIekRSOV4TyAdRinA3D9CcFkWdfoKUsOHUOPdJ+E9sxwwiZLq7Z5jn9jaoarvXk/uM/ETjcxLGB0rTLn4N1Ba/pBlMG6SHXEsERdGzELlJaUK8cfeFu4L25CgkHlAJhVKQ9o7qHD5Rzax35rUIpRiN4QXNFsnHotbGNhJ9UxcpWbtkVDiTaa6yfHwdPIjYySOMCyLUAbx4cbx2DZVDzJuQclLXuA8TggKHhQrpdp3hs4UO/pqeaFDbEqzU2qmtQ+lt+xhmsOrWMstzMSoyTRdgwJn7ka45CcXcWV2Ily3I7I+hcY3ApwSRi0551xgWzdh9uKuDxPud7o5e7vCRzkEGyyX29071pUPSclDvdPnb44lF4Gu3Qpa6EwXwTCWCAekvxRpbyxrG1+da5PKTVPX5sRdPNJvlBk4uiTpVwIACm17ddf9347oxnEmxWTa0CDrZBiZvBsKDaBj39b5U+JEGI8qhe5ApiPTZ27t3mvCzd4j9Y+4UwivSztSkdz4oCG+UlLIWHm7TYi5HoGyn5DKYQP9/A68dNLrNo6umbms5gHwgm7bZWPWTexRyaJFguQUZMrqHSQfwP42+96xd13RrTdHFo0UEZzZsHPRPDKf7pdq28LsvKS7yS/TKhHobJKzn+734IdufnEZpFRC2tl1IsnGor2cFPdWUoN/ybjLA3J4H73Xrist3VBWgtUh/fRsw64Rf7SvRfgccQ6R7hnLHx9kIXgPfhffTfOqjR93I2IWxNfdnLzMWBJSmkInfHnzakCqdL3qD3XoazLgpsTi4nPniiWAzrYJFPz00kTnR95Fb5H+iCDbXUvbnrgT9SzMgSa3Dl5np0IUY+Akf7hblOWyKI3BAjedUAsmpFWrELzTxG0vuG0yJdTOSw15KJtLXyZS4yLgPy6k8hk2/NMoPJsQDitWD9Z0Ow3gTyRxEmlu0sKG5gsas
+ PEL6bJnM
+ CGkTa/oLjjSik4oE5LzyCbvpa1D5A3KTdhbTBF5ZvQCsaH1YAa8WEUNj4HJghJyQeARHSFtEKjWY5+iaT7Ax7ksA5OCXcqNAiYymkFX+c8bErXeF21ojaiL/allssLn6UtNCmhzFyzBnJRFvJPMm4POKqzhL8Lfo8Z4UQBBzlybBLq/VksE6TYg0NfCp5awdjuDG9qkCIzDPOSM/YilFDqpq/Ruf8DyYS5yRYEh/HZxl9HID4c6slVOmvC+0J8BKBqCv2i8fn1VMnZpfGspcGqyoyph3ZEPO95/stQKppITmD3J0GXLo/YEOsWcXaGuC4SmAmTDmbZZuZYECObe7k1pNmBzu9lTY5+tTVzpQ59E2390GEy+eafTPgHtQ+xZ2E18ClUe3FfpRKmsrsAPKQ30QVnbRwCuiUvzeQMujTk4h/TraKpWnjjC9rNd01t/AJ5kXD7LoLan+hIJooZhR10kwZrz9qxj+iKVGNtoXVypj8dpiGLZj8VVHa/QVCqzKcQXvF8EDmTykgx4wTRM530jGDx+bUYe4d6na/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -215,89 +124,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/19/25 14:35, Jason Gunthorpe wrote:
-> On Wed, Nov 19, 2025 at 10:18:08AM +0100, Christian König wrote:
->>> +As this is not well-defined or well-supported in real HW the kernel defaults to
->>> +blocking such routing. There is an allow list to allow detecting known-good HW,
->>> +in which case P2P between any two PCIe devices will be permitted.
->>
->> That section sounds not correct to me. 
+On Tue, Nov 18, 2025 at 10:15:04PM +0100, Linus Walleij wrote:
+> On Mon, Nov 17, 2025 at 3:08 PM Mateusz Guzik <mjguzik@gmail.com> wrote:
 > 
-> It is correct in that it describes what the kernel does right now.
+> > Note the current caching is already bad as the cache keeps overflowing
+> > and a different solution is needed for the long run, to be worked
+> > out(tm).
 > 
-> See calc_map_type_and_dist(), host_bridge_whitelist(), cpu_supports_p2pdma().
+> That isn't very strange since we just have 2 stacks in the cache.
+> 
+> The best I can think of is to scale the number of cached stacks to
+> a function of free physical memory and process fork rate, if we have
+> much memory (for some definition of) and we are forking a lot we
+> should keep some more stacks around, if the forkrate goes down
+> or we are low on memory compared to the stack size we should
+> dynamically scale down the stack cache size. (OTOMH)
+> 
 
-Well I'm the one who originally suggested that whitelist and the description still doesn't sound correct to me.
+I mentioned the cache problem when writing the patch $elsewhere and an
+idea was floated of implementing vmalloc-level caching. One person
+claimed they are going to look into it, but I don't know how serious it
+is.
 
-I would write something like "The PCIe specification doesn't define the forwarding of transactions between hierarchy domains...."
+Even so, my take on the ordeal is that per-cpu level caching for
+something like thread stacks is a waste of resources.
 
-The previous text was actually much better than this summary since now it leaves out the important information where all of this is comes from.
+Stacks are only allocated for threads (go figure). Threads are allocated
+using a per-cpu cache and then proceed to globally serialize in 3
+different spots at the moment (one can be elided, does not change the
+point). One of the locks is tasklist and I don't see anyone removing
+that problem in the foreseeable future.
 
-What the kernel does can be figure out by reading the code, but we need to describe why it does it.
+So there is no real win from per-cpu caching for threads to begin with.
+
+Instead, a cache with a granularity of n cpus (say 8) would be more
+memory-efficient *and* still not reduce scalability due to
+aforementioned bottlenecks.
+
+All that said, I'm not working on it. :)
+
+> > +static struct vm_struct *alloc_thread_stack_node_from_cache(struct task_struct *tsk, int node)
+> > +{
+> > +       struct vm_struct *vm_area;
+> > +       unsigned int i;
+> > +
+> > +       /*
+> > +        * If the node has memory, we are guaranteed the stacks are backed by local pages.
+> > +        * Otherwise the pages are arbitrary.
+> > +        *
+> > +        * Note that depending on cpuset it is possible we will get migrated to a different
+> > +        * node immediately after allocating here, so this does *not* guarantee locality for
+> > +        * arbitrary callers.
+> > +        */
+> > +       scoped_guard(preempt) {
+> > +               if (node != NUMA_NO_NODE && numa_node_id() != node)
+> > +                       return NULL;
+> > +
+> > +               for (i = 0; i < NR_CACHED_STACKS; i++) {
+> > +                       vm_area = this_cpu_xchg(cached_stacks[i], NULL);
+> > +                       if (vm_area)
+> > +                               return vm_area;
+> 
+> So we check each stack slot in order to see if we can find one which isn't
+> NULL, and we can use this_cpu_xchg() because nothing can contest
+> this here as we are under the preempt guard, so we will get a !NULL
+> vm_area then we know we are good, right?
+> 
+
+This code is the same as in the original loop.
+
+> >  static bool try_release_thread_stack_to_cache(struct vm_struct *vm_area)
+> >  {
+> >         unsigned int i;
+> > +       int nid;
+> > +
+> > +       scoped_guard(preempt) {
+> > +               nid = numa_node_id();
+> > +               if (node_state(nid, N_MEMORY)) {
+> > +                       for (i = 0; i < vm_area->nr_pages; i++) {
+> > +                               struct page *page = vm_area->pages[i];
+> > +                               if (page_to_nid(page) != nid)
+> > +                                       return false;
+> > +                       }
+> > +               }
+> 
+> I would maybe add a comment saying:
+> 
+> "if we have node-local memory, don't even bother to cache a stack
+> if any page of it isn't on the same node, we only want clean local
+> node stacks"
+> 
+> (I guess that is the semantic you wanted.)
+> 
+
+I'll add something to that extent, maybe like this:
+/*
+ * alloc_thread_stack_node_from_cache() assumes stacks are fully backed
+ * by the local node, provided it has memory.
+ */
+
+> >
+> > -       for (i = 0; i < NR_CACHED_STACKS; i++) {
+> > -               struct vm_struct *tmp = NULL;
+> > +               for (i = 0; i < NR_CACHED_STACKS; i++) {
+> > +                       struct vm_struct *tmp = NULL;
+> >
+> > -               if (this_cpu_try_cmpxchg(cached_stacks[i], &tmp, vm_area))
+> > -                       return true;
+> > +                       if (this_cpu_try_cmpxchg(cached_stacks[i], &tmp, vm_area))
+> > +                               return true;
+> 
+> So since this now is under the preemption guard, this will always
+> succeed, right? I understand that using this_cpu_try_cmpxchg() is
+> the idiom, but just asking so I don't miss something else
+> possibly contesting the stacks here.
+> 
+
+I think so, but unfortunately the typical expectation is that routines
+are callable from any context, which I'm retaining here.
+
+If one was to modify this to drop the behavior, asserts would have to be
+added this is only called from task context.
+
+> If the code should have the same style as alloc_thread_stack_node_from_cache()
+> I suppose it should be:
+> 
+> for (i = 0; i < NR_CACHED_STACKS; i++) {
+>         struct vm_struct *tmp = NULL;
+>         if (!this_cpu_cmpxchg(cached_stacks[i], &tmp, vm_area))
+>                 return true;
+> 
+> Since if it managed to exchange the old value NULL for
+> the value of vm_area then it is returning NULL on success.
+
+
+This bit I don't follow. Seems like this flips the return value?
+
+My patch aimed to be about as minimal as it gets to damage-control the
+numa problem, so I kept everything as close to "as is" as it gets.
 
 > 
->> This is well supported in current HW, it's just not defined in some
->> official specification.
+> If I understood correctly +/- the above code style change:
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > 
-> Only AMD HW.
-> 
-> Intel HW is a bit hit and miss.
-> 
-> ARM SOCs are frequently not supporting even on server CPUs.
-IIRC ARM actually has a validation program for this, but I've forgotten the name of it again.
-
-Randy should know the name of it and I think mentioning the status of the vendors here would be a good idea.
->>> +At the lowest level the P2P subsystem offers a naked struct p2p_provider that
->>> +delegates lifecycle management to the providing driver. It is expected that
->>> +drivers using this option will wrap their MMIO memory in DMABUF and use DMABUF
->>> +to provide an invalidation shutdown.
->>
->>> These MMIO pages have no struct page, and
->>
->> Well please drop "pages" here. Just say MMIO addresses.
-> 
-> "These MMIO addresses have no struct page, and"
-
-+1
-
-> 
->>> +Building on this, the subsystem offers a layer to wrap the MMIO in a ZONE_DEVICE
->>> +pgmap of MEMORY_DEVICE_PCI_P2PDMA to create struct pages. The lifecycle of
->>> +pgmap ensures that when the pgmap is destroyed all other drivers have stopped
->>> +using the MMIO. This option works with O_DIRECT flows, in some cases, if the
->>> +underlying subsystem supports handling MEMORY_DEVICE_PCI_P2PDMA through
->>> +FOLL_PCI_P2PDMA. The use of FOLL_LONGTERM is prevented. As this relies on pgmap
->>> +it also relies on architecture support along with alignment and minimum size
->>> +limitations.
->>
->> Actually that is up to the exporter of the DMA-buf what approach is used.
-> 
-> The above is not talking about DMA-buf, it is describing the existing
-> interface that is all struct page based. The driver invoking the
-> P2PDMA APIs gets to pick if it uses the stuct page based interface
-> described above or the lower level p2p provider interface this series
-> introduces.
-> 
->> For the P2PDMA API it should be irrelevant if struct pages are used or not.
-> 
-> Only for the lowest level p2p provider based P2PDMA API - there is a
-> higher level API family within P2PDMA's API that is all about creating
-> and managing ZONE_DEVICE struct pages and a pgmap, the above describes
-> that family.
-
-I completely agree to all of this, but that's not what I meant.
-
-The documentation makes it sound like DMA-buf is limited to not using struct pages and direct I/O, but that is not true.
-
-You can have DMA-bufs backed by pages, both system memory and zone device pages.
-
-But DMA-buf can also handle PCIe MMIO BARs which are micro controller doorbells or even classical HW registers.
-
-Regards,
-Christian.
-
-> 
-> Thanks,
-> Jason
-
+> Yours,
+> Linus Walleij
 
