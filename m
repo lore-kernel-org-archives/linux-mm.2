@@ -4,233 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 553C2CF2591
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:16:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E7ADCF34AB
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:16:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2BC96B00A9; Wed, 19 Nov 2025 08:16:35 -0500 (EST)
+	id 8CD896B00AA; Wed, 19 Nov 2025 08:16:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DC736B00AA; Wed, 19 Nov 2025 08:16:35 -0500 (EST)
+	id 87D976B00AE; Wed, 19 Nov 2025 08:16:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A45B6B00AB; Wed, 19 Nov 2025 08:16:35 -0500 (EST)
+	id 7450E6B00AB; Wed, 19 Nov 2025 08:16:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7644B6B00A9
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:16:35 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 178C8140369
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:16:35 +0000 (UTC)
-X-FDA: 84127405950.27.0A66D1F
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4D59D1C0004
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:16:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MiM3mBR+;
-	spf=pass (imf20.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763558191;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A1726B00A8
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:16:56 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 789865918D
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:16:53 +0000 (UTC)
+X-FDA: 84127406706.03.E66A256
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9C57940011
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:16:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATUBygQf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763558211; a=rsa-sha256;
+	cv=none;
+	b=wipcJyV/gPzK2IU8Z2F2qVKvMgw2dRb1iPV2rSo6LJ+4OhLui5RNA+GIja3uLllI1foqsZ
+	4e6WcVRAiZFGt//DXS+jfs6VHcg9LtAt+mhIQ3F7r3oyGiEDdB0JZ7zju80+J1J10A6pLM
+	f4ExMOyRz/lwMkdJIZtw2TG0+p8+QYw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATUBygQf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763558211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EG5tU9QCBYm4MnM4NJdckKlWnhetToSJr0LU1ya6fuA=;
-	b=dNQgFbce3OCgeqiD4A4YLgldkm5iYtMj5BuNkZA0YOLRPfp89jnXLfoaashezRjcAAnUsX
-	PZDtAoVG97U+hCVH9fkJ6V7QI68nVk9j14bwIeYu9WvPvb857Puoa+dhmfRcVSJutlKxUl
-	oMLFPMf/jRWyRbGLxITE/kfzKZMG6kc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763558191; a=rsa-sha256;
-	cv=fail;
-	b=jTmVhVrLqIrpVMPLAX6gbroFNz3LQr5DdXkHwVDN0+1boIqSMEiMGyRaVkqwgoIeeDumFA
-	XjOrLSRq8CgxTIXiPOSvUJKS7rKCzxFzOdUy/eeZ3In/W7sE8XQPbUAcDe/egNLjk/PJPr
-	3dQQR/ChhIzFA1C5x4MeTfhVX0hruiw=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MiM3mBR+;
-	spf=pass (imf20.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763558192; x=1795094192;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=+FA8UifDbuhTTje/P093xcL71HE/KFNsrUXshNQwoXs=;
-  b=MiM3mBR+QixwXedwwbB8g65Q08AtXseqY00FeLcEa6klz+MGwL0FlK0y
-   csKb8q9Rja4JwI3UW7aK8DKNtaZ2zyLvm5iEyuGH+ZADX6iXAtJMqj+6u
-   f4gbjz5ldTbGaQCm4IjEXdYfhO6aDHQo2FhD3WOb+FVVEgsFWUUGzVZ14
-   VdmGxzPEdm5arKX+o6VQhDl7LIOFbSvfy0nScMQVTJx1C6XsAV5zGOz5j
-   cKGK8CSwjrAHqTpMyD4b4nBhd8Gwyc11gOwfH/qCqykPVwZmc+FmskG0T
-   Cp8n9RU3172hNHv/7KPHlApucdZ7wQb+AFti695T1nJbVBf+MrhpRhdqm
-   g==;
-X-CSE-ConnectionGUID: Jb7d0R42QlCUFeuz/OtRGA==
-X-CSE-MsgGUID: qnh/B6FvQ7mQRgL5GpHndA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="88250687"
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="88250687"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 05:16:31 -0800
-X-CSE-ConnectionGUID: SXxCA3kCQUSIAGYqveeKDA==
-X-CSE-MsgGUID: buQ5IauBQPiFw8RDJJu7Iw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="196189201"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 05:16:30 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 19 Nov 2025 05:16:29 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 19 Nov 2025 05:16:29 -0800
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.62) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 19 Nov 2025 05:16:29 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qzYT/g5Fmkk70xaERSTK0tOwPe4i8z755yIo81pB/Vrd0FXrewDTC299V9kBuXs4UQAvu+t64Ew0kHlCYrgOG8FU/8FI9dNdDnn+a2nXI5nOajyfAabv/87/a1jhe3uTkS9tUZbEkuaEb5Sllb3iACKiB7FRVDj1Bwy3P4kCca5PtWmpOKpmTFtsIpGiWDeDcpU5WxtFdWELF/jsvAzQnoeyUuciEE/VTNTIfDZakCOII6GrMuUUpOZWJ48AphtFmI6EV2twv+LlSeCVsjU7INQ+B3u/zKKkfpf5Z5Jb3H6EPNpyCoj9ehoQNWb1cQMbbBW8iAib8N0uMp/rhvQJFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EG5tU9QCBYm4MnM4NJdckKlWnhetToSJr0LU1ya6fuA=;
- b=Fpqeerg254nNsfSpUWiPssnRjwd6n3rg0weqodkdvnmHz1yT/WiELL+b5OH3+CiSQdPyWz1s1o7mv3A8PJvq1fxunxX7Ov7IT2kEDarQKFLvFPO9Oe3a9a41RQdBnnKBfdaoKcgEShV1zN0bHOCTOqOpmq/f25SgnZaWtSgh5lFymdFSmiAm+JgPygGjRvDI+AIgxjAmgzEFJ50WSiHlbVB1T5BatIabr9DUlm01oVwT+mDi9kvHNh8D4KYaAGMPcUl0AOmp8gtR3bB7Zn3PRqx4OMPASP6aF0ZlEYcigvRejdLajQFac7obNx7MiQwyD7iYo3IbJj7N5uakpWWm2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
- by DS0PR11MB6470.namprd11.prod.outlook.com (2603:10b6:8:c2::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.15; Wed, 19 Nov 2025 13:16:27 +0000
-Received: from MW4PR11MB8289.namprd11.prod.outlook.com
- ([fe80::d626:a4f8:c029:5022]) by MW4PR11MB8289.namprd11.prod.outlook.com
- ([fe80::d626:a4f8:c029:5022%6]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
- 13:16:26 +0000
-Message-ID: <cd4e1cc3-ce95-450c-80a7-58053f1deb5a@intel.com>
-Date: Wed, 19 Nov 2025 21:16:17 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memory hotplug/unplug: Optimize zone->contiguous
- update when move pfn range
-To: Wei Yang <richard.weiyang@gmail.com>
-CC: David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>, Yong Hu
-	<yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu
-	<yuan1.liu@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo
-	<qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>, Pan Deng
-	<pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
-	<linux-kernel@vger.kernel.org>
-References: <aRwAjSQBby614Itx@kernel.org>
- <20251119040718.2735199-1-tianyou.li@intel.com>
- <20251119114252.oykrczprf3ecd7ak@master>
- <ca02b44b-fc3e-4626-a331-d0348ad5e9f0@intel.com>
- <20251119124418.nhzgjweamqb6vjig@master>
-Content-Language: en-US
-From: "Li, Tianyou" <tianyou.li@intel.com>
-In-Reply-To: <20251119124418.nhzgjweamqb6vjig@master>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2PR01CA0140.apcprd01.prod.exchangelabs.com
- (2603:1096:4:8f::20) To MW4PR11MB8289.namprd11.prod.outlook.com
- (2603:10b6:303:1e8::9)
+	bh=7FsENvmviF8SYsmKMWDXG6WIXjYDfnvNiBsweNHPjng=;
+	b=FwrjrH83cHEVIU3CrGjXa18CM7E8JRjuwETtOJS5+WEbHVfgXQPaCVv2i6HZw86Va+BSY9
+	4Xd7v/Rnnhji+wtyJ9IGzNhx+ft8RypUkcCvp7STKfCZ4qE6vj4i/VP829abD69E+9QKLS
+	l5BN7nhaWysP2KhTSVPh2mNNGW+jRpI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 38E2444551;
+	Wed, 19 Nov 2025 13:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFF1C2BC87;
+	Wed, 19 Nov 2025 13:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763558207;
+	bh=x24iHscgwWXz8zcfDfJ8EPqf0ndoOIcHpd6ojxGCgWk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ATUBygQfx/VrGJk3+O21/fRnmRmHKYEYl+8810qcSedGpSebuF4sTjbdwg0FYjunK
+	 dT1RfRcqdoKGs3nF62lr5FvdxBeJfBliTkaB2vb7WiQ576ySOeigbju6M/PPFmArga
+	 NBUkaaam2SBsmizxu8MQ6PdnjU++POqcTmiNsqihYt71YyU08msPVQ8FEkI1VbZM5C
+	 rY7Z2M5T/BIwk2TOu2Z6BL5VcM4cnqEaR1DIvgYuoDDNdqfuiLf6kqKkxl9nNe5+uL
+	 XTwLUE2m0XbgwgPhoiEocU84RceRYi3pihqf/hDjuu7de+C3PwR4rpe2Eq44gBW4tV
+	 D90bcmjYKuFwQ==
+Date: Wed, 19 Nov 2025 13:16:36 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	David Hildenbrand <david@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>,
+	Aishwarya.TCV@arm.com
+Subject: Re: [PATCH v3 3/8] mm: implement sticky VMA flags
+Message-ID: <25cb4b6a-035b-4193-a8db-685fc4c58507@sirena.org.uk>
+References: <cover.1762531708.git.lorenzo.stoakes@oracle.com>
+ <1ee529ff912f71b3460d0d21bc5b32ca89d63513.1762531708.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB8289:EE_|DS0PR11MB6470:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0813b57d-97c8-4e16-6c1a-08de276dd7c6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?cGVJYXpMd2dUR0d2YzIwdnhEQUNueG5oT1dkU2hXWTJPYzJDN0Jvc3lURWpH?=
- =?utf-8?B?QjJzQ0pyWmtwV3ZKTkF2dVJJc2hGVldhVFR2MWZGdEtrZmhxclIrMWRwRFhs?=
- =?utf-8?B?NW90S1JYRGh3d2ZsaCttWHFpKzM0V1A4R00ybjNvR3c1QUM4OENaS1RwTTk5?=
- =?utf-8?B?RkNvdVU5QmpEeHhyTUpsR3YvcVVNaVN4cWZyUy92MHRKd1N6TXNyRFY2bUhJ?=
- =?utf-8?B?NldBU3dzLzJKeXRkTDZobzFMdkVjUzRmeFYvMldCMTRWKzZsQVlJYXBoVFNu?=
- =?utf-8?B?TXVQRHBqZENyd2RiRE1DQ2xTUm0vQ2NqS1JQTCtxR1lMNXBJb2pDRFhQdENq?=
- =?utf-8?B?dVRsajY0VWwzNWNUSmRJWnVFT2hUUjQrWjNyVFNySU11VWNnMHFEQy9odHVO?=
- =?utf-8?B?NHhGWXpGMXljK0xqR3RHUmsveDMwbXZqSWFRM2JqQmpyZ3U4dlcyNExQbm5p?=
- =?utf-8?B?SDE4ZFY5MWFKWk41eC9rYW5VRlFoVGhGYW9jc1oyanZGYnJyMDF1ODhib3dO?=
- =?utf-8?B?M1NGbFpuNFM1bjJaRVhuUmdSV3BjR0dJc1VLRXVEdXhOSkV2RzNWU21WWG0w?=
- =?utf-8?B?RlBVNXBhU1VyWVlXYXYrNytIUGxLYSswTjZyUzdoUS85bFhxcjRYc0N3OEJa?=
- =?utf-8?B?ajFadkVSazFLSUtTSzdjSkpYVGUzak43bmFKcVhSTXYrQURYRnkrRXBucnl0?=
- =?utf-8?B?R3lLeDhyOEV6L0RSK3pSaTFWbDBDT1YwaW9kMjJwWDhLeXNkZTJVaHVONGxL?=
- =?utf-8?B?K2tMdWRXd2xiNlhaY1JycDgrdStZajk2ZC94TG1nRjhRNkVoZ0NiQ1pqQnpY?=
- =?utf-8?B?bUNXa0UzRzE2bVBoWjI3RStzbXM0M291QTdFZEFXNFEzaGlzVlVXb0VxS0Jj?=
- =?utf-8?B?NitIOTRPNWY1RlF2ZnloejBSU2g4RVoyZ1g2OS9ZOXZHbmluY2tqTzdPcE1P?=
- =?utf-8?B?QlR4YW1BTjh3TjlobmExMUtqWllHVTF0RFlLenVrL09KVzFBcGFmUmxnSmo5?=
- =?utf-8?B?aS84dEszV3kwT2RzS2Z2alBLUUNRUHUvTjZmSGgzVUJKRE1ST1ZQN2lva0xa?=
- =?utf-8?B?MXNCTHZiZ3cyNGUwRzdqemJWZVNDVkxDZUFvU1NCMEZ1MFJFeFQvQkxqY0Y3?=
- =?utf-8?B?clVaZDRpdm9nclY3VmRyL2drYkt5L2c5VkhOdmtmZERYSDZhcWNYZC9KQ3lW?=
- =?utf-8?B?aWJlenpiY2pkTURldGVrVS9wWXd0dUZTZUk5NmJxMUdPaDhvc050UkJ6ZmYv?=
- =?utf-8?B?U3pPSEVwUlRQb0lLdk5sMFc3WkMvUFcydTlqWllaS05Sc3FYK0RPNWlXVnhP?=
- =?utf-8?B?RlY4dFlKVkFweWM5THUxbmRkT0Q5OTIwdUZhTDUwaGd2RDh4Q2Z6bnA3UitT?=
- =?utf-8?B?eW95c25xSWM1Y2dRWmkxN2tCTlJaYU5FRmR6ZFlTQVJlQ3VRU2VRMnhROFNm?=
- =?utf-8?B?MHY4blJKeGNHVjA2Z2JZUkRHaTRpaTNxU1ZNZ0NoY1N0R2NqbnhnMWxaTnp6?=
- =?utf-8?B?N3NhR1NkbFh0OVdjL1UrMFR3cGtrM3ZTa1RiMUZHd2FHb2FOVXBCRW5EWWZY?=
- =?utf-8?B?OGxYdWlkOFdRc3E3RmhmV3pYL3dtNVRsdklNQlF0WFljL09lRms0NFllbDJo?=
- =?utf-8?B?YjJUM2VLRURRMVg3ZEdxcDdLYlYwQ1doOEhXRUpXRDNHKzVMWlA1MlJEUnMr?=
- =?utf-8?B?cWpaNFlmQmJOY1FrUU5lVDM4TUJHNFZ2WTBkS3ZZbGkyRzcxZ3lkdlQ2byt3?=
- =?utf-8?B?SmdlRHRNM1lmTnltclkvdld2M0p5bkttdDlvcHN5NWNzSklSaTlxMnJKR0dX?=
- =?utf-8?B?Z3cwcmxYMEp1aXlZaThSQVE1ZFpNK0hhY3FDUVJsS1RIalh1UmRXR2tXWDB6?=
- =?utf-8?B?S2J5MENLWldFY2JPeDNBY0djcFlST2FsY3FzNGFUK0VPMFRLTDIxQVJzV0J0?=
- =?utf-8?Q?iJIHZEDo51iD8l2RBkx2Jr0jGJuYRgeL?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB8289.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QTUzSWlBbVE3ak8yVUN3S2s1dnJ4TUt1ejNlRWo4dUMvdlhuYTFIdGZKZ2pE?=
- =?utf-8?B?M1N6eU5MaDU0b2VXRDhqQ2lVYS9pRnZUVytYSXFPNzNKTmVSZzhvRm02YlZE?=
- =?utf-8?B?TnRvV2xoL05UTlVsVU1MWHV0cWhqTmJ4eUtYRG5xYnlTVEpLRzRPRVBuWE5B?=
- =?utf-8?B?Lzh4VW1OT2pRS291NnVxekFoRDg2OGlCVnlPOVkrdUN5QjRFTzJCQ01xS3h5?=
- =?utf-8?B?T0Y2ZkFnTUZaL1ljWk9tVUhqRTVqYkNQTlpXZkloMUZiUXp2RHZwenU5MXNa?=
- =?utf-8?B?T0tkNmtnQVk1czRJWVJyL2Fqd0d4WmNFV0tLaFRhalVRdmo4SktieEdkN2tl?=
- =?utf-8?B?c1hpak5SWVU4czNRRUowdnhKQldOZms0UjdTRldVbTI4Z3JtUlprL2Jpbjc3?=
- =?utf-8?B?RXZTS3NoN3RCTDU5dzgrbnhFTUkyUWFZcXFqaVpKQnk2RndaSTI4T2pIWUdC?=
- =?utf-8?B?NmswRnc0Lzk3dE5hb0NOZ1EvSmViSGVLQm9POU8yekEwcmo4VFUvcnY1aklL?=
- =?utf-8?B?S3c4VytFZEhwSCthb25QMnRzYVIrYklOSTZxQlgxTUtLZ2NEWDBJQjI1MWd4?=
- =?utf-8?B?UkR2eVpZb3FNbFNoMnk1bXVQVGQ4eEtaN0ZHWXNYNGMxQmw3RUVjc1RGSzha?=
- =?utf-8?B?dVBCVktLbkJCeVBvV0dxWFYrQTNBRlhUWk83aXhlZ2p3WWRMc2tieUlCYkth?=
- =?utf-8?B?eXptUDFMSkZNMGtqWTFVZ3prTDVDZk0zanMwQjhsVndGeDhoeWdTbG1pSXpt?=
- =?utf-8?B?cTh4Q05ncjRPN01sdVJnZzVXRy9wdTVRTU80NEhlajcwODZ3cmJrSkZmWFJW?=
- =?utf-8?B?Q043aXl0OEFtelhNMUNZMjB5cTByZ0IwT2pGZFFGdjZLQ0huU3EwcGtqRW1C?=
- =?utf-8?B?aG1uUFVIWWVxbGVRZkxWNWZ5elkwZlRGVU9OMzRDWDREc0VFUis3bC9pYWdM?=
- =?utf-8?B?WFFLUEJ1YnlLUkFFTW1pOXFSc1A5eTBJNnZOY1lOS0JoLytxdXBJRWNoT05C?=
- =?utf-8?B?Y2RKNTl1bVQ1cGhTWjY2VTZkclA2eWZDNC9IUkR0eFJTUnU5clhGaDdqK1hE?=
- =?utf-8?B?eitiYVNaUjJpTFJxTWo2RWF6M0NpTW9JSVRES3ozV2RZQlhvUzFCT2ltbHhJ?=
- =?utf-8?B?OER5aE5RZDRNcDB4Ujl3VlZBa0FjOWJMczA2SDJFYng3c25wOHpSMTJpbUR0?=
- =?utf-8?B?VHlCeTB1ZWVnc0ozSExDRXNJMUlJWVBEWXR6TjZMMWZ5MkhxWC9TZmpQRHhU?=
- =?utf-8?B?UlhXREV3ZFFDLzdFV3VzSDJGQ2RtSXJQOGpzYzdJQWdoNUlDMTZHdUdNdWRL?=
- =?utf-8?B?OUhQS1JjVnovekJaRCtNcDJJQ2tzZWFmQTlXY3BLS2pXNG1vZy9ROWh5UHB1?=
- =?utf-8?B?d1BFQ1Z2aGRYWjJoZWp4VzJ2R1VjZCtUQmYyVDN2V2hVdXJrbGFkeE5jUUlO?=
- =?utf-8?B?MDdLUERWWUd1WEpjMEhRVmNubE9SdEJzWUJoTm01WkdKNFl5WEltS3VSMkY0?=
- =?utf-8?B?NXN5OVdoQldieHIzcEJxSVdMVnRCU0dpakZRVFMrUVBFdHVoVW1yd3dLakc2?=
- =?utf-8?B?YmF2Z3VYWlVNY0xNdGJLZHluWVJYWitiTDJEdFFmT1hidndkeU9Xd3hCZFhh?=
- =?utf-8?B?LzBVZE1TeVFwb1UzNFFJSVBkOW4zVSs1OVdSc1RKazdDY2laRE51RXlRNmRo?=
- =?utf-8?B?WUxVTkg2a1JyWkFyeGxRaDFJcmdNbjlCODJ3Y25VMVkyZjU4QjhqTUU3RUJF?=
- =?utf-8?B?SUwwUENaaEUwSzRNSE56aTZ4RVcxMnFDV01ZMitZRStTYmRaM2M5ZXRiTkE1?=
- =?utf-8?B?T0VGc0pTSDAzTUduRHZVVitCRExIcnBjOXBQaTN2Z0tnVWVRa0ZaYWkvckxM?=
- =?utf-8?B?M1d6dEJKc3U0N1hEVW02aDR5YkxUVHFPTlhpS1VKeDM3bkJvZGxpR2NJWWtv?=
- =?utf-8?B?QkxndExVWGlnSm1VVTlqOE9Od3pnMFQ4WFV5NjViM3pacE9iR1RWdHh3Vkgr?=
- =?utf-8?B?a2NqNnR2RlNlencxUXUrSXJjaGZnYkVOVVBuTWdpMlpDeTdvcjlOSlRSd1hm?=
- =?utf-8?B?bzlMcnhMSjBFYXh3SVpPVDZUUDR2REtYc2xtcWdJa0F6WWljSm11NzR4dnhC?=
- =?utf-8?Q?7zj3zHDpdKn+kTV3pr4dpuysP?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0813b57d-97c8-4e16-6c1a-08de276dd7c6
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB8289.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 13:16:26.7747
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 107lBxO6bMvlDvHvLIzEOfY6WHQ/+dV5BnwUjQ5DH7UCPAgm0mo17Oec1sEVEKyx9l8rfj2cCyHXbWR1XBpo+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6470
-X-OriginatorOrg: intel.com
-X-Stat-Signature: gcs33nmq3dxmditao1ct5d3f4tkiy8dy
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8R4WppGBpWuwqpgN"
+Content-Disposition: inline
+In-Reply-To: <1ee529ff912f71b3460d0d21bc5b32ca89d63513.1762531708.git.lorenzo.stoakes@oracle.com>
+X-Cookie: This screen intentionally left blank.
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4D59D1C0004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763558191-271814
-X-HE-Meta: U2FsdGVkX1+Sofv2cKI/4YGC/Ul+nWLZyz7DLpiMqJeVgQH6KU00rlD8Ok3HGHTZOT2jhpI/KQWMFWkEgq/TMMEiyFogMOQEMH5BmmMUTeqlIObkCR2DF+a+5jtA1x8kHtyOOVTimDA25D0Z+34iJqa1IU6HOgUIr4eHWYpjYdgwvldZX9LqRSTjKy7iKwkWpwe1+J3EeL8pmsqLLldTjuLyC6uiY/ExMXlOB+tAJ+Hs0tOObUY+RIRyUREIxqjXynZ6F/qKtDOfsgmm+KQ3WxrQuFfwr7r7zeVgIerJFE9SRPTuAEoF2rIPM0XF/12jq9ArU6eBnuRmQXK/hy77O6t9tJoT4RNZZFMgOy9JPKIK7T71jPJDrMteCkY3baGNfFUjk2aCRckgPc8cKZIuYSJzzbXFokTmn1TgHyhr2kbP0cv/NRyVQzflDOlLvx1NSgnweo4GpgOUDBy2wu4nUSj/Igcb/tN3g8W8yjK97DkaTxSHYe6Udb7b8qfAbwcNblGdwNm4PqfvIk+u5WsSaA+QQ7hNnBH3zUbigTb1qSwsBkc0L3K0Jl1MnRqXKiCvNyatcI7Idamoei5NvwexamhwHFD5SVpbHZml9vTcjrD0Hqaq5QFPiK5b5Rcf09PhuAa/QjMKFMuHdUBXkFcbkJFl0aNJW09tnkiIdbD5gdxUc0Xa+6wORLhv51xfvvkS/uOLnuayfObl2HQ7ldbtVTnG3PgsiBBLvIZ69a14t9HC+/Y1SLuFVrUkhIR6qNhMVdunCihcZrvVWndbiC6E3nyih6l8rp7qRVPN+nGgRXb6yXYLEx3PVxB8jlOCWa358zawPOh8dQAbOBBXi6hlbFx8NFJo3eZMrMmUckY4W+dkMirUzdJLw/E3WH2HfRUgCXIDy07AX4DSICqzqlmaoN76vjIrleLAnPtOFhdDIYqirsnrLrWxyQ9TudkDmUoSht1uVfIswNLF8eMnyqP
- XC8aSMk6
- L40YWNIq4ONHJ+rD0vj7cOFyEXmAJYA9Aon1C5SemFOo3B3IBinfWThKETm0B8hcDb86e2igGY6zcfYcx7Bg0fir3ZrBTNbqZ4WymugSsT21gsBIJiw4TUxzvr+TdrfAOEtAnItlVDC24dubWWcUjT7qyngpXp7UrwR8ANFD6xW46sp2jG92/zszzjQBQN75Snc19kKNpr/Dm0QAXW/oSL7mEea21PqaSUI9HiXYCIJosxy4G2HVsG2ABXfvIJPpOSHV6zooZFX5cKTooxFTOu/aue6aktlUHUeUEX2R1HWSwlJkJQD4KtUrFecE/WEX7rFubdFrV1rIFgztgJ535v42tFUJti7FKjOTuabXljXH1ww9VR19kQhEAlJ4V60I922z+hIZ5kKiXXZGLs0FW3yCWZWFwwgAI22MxB/1+hlNlGsr3JCFzBIGsWv0UDDr8GrXxeU7ddPOAyA9Wcj++SJsjRMbYBEwM3Cy0KGXqRCRnAsRba5J85GqnUNbLy+VPeeJxfCDJjC/dO8OEvHzqx97AwNyMEYrGVFJCDZtjg0dOI98ebT+ZM20c4A7l3hjH1bxGA8aUmedKL7j4Yu9/dKKZ91QNUXcEITDv
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9C57940011
+X-Stat-Signature: 8hyiewxco5ioqbd78acgywicrw88tii9
+X-HE-Tag: 1763558211-389843
+X-HE-Meta: U2FsdGVkX19bbpDzrOqYEX13zeK1Wkadx3hBUvo0dB5R8PgvXqfki6+JKE1W4cRy8M8XzAHyS/0xix02315n7YkWdqGejlEmHpF/BNRrTbZxwi0GWRh44RkeedwQNPdIBcATyFMZM8Qz2rvNNczlkXDBsXra1g7V5uawJml6uIMNGJOqltqXpXvCTi5DEUa253CRzINROP3X+1qRVnUvb1ZrnGuYjT4lzCADSn3OL8lxhR1chcxyuqhGPaLEY8KVtZ9G5GTWwsWMsvZXjaKaoJtgeIfhIPAAiuYrvlCIYD8B4HqOwTKMRQSvIqc8/oWZ0+C1r2zKFtmHGgDyAcWrnPtNfi67ImJUi7I0JqHfDfTAZJcVVrhQUR1pN8uIdvteVM9Z8I21OKTuMcdgETYGu9f1VE5Bg2l4gQHPizVWPTVM7yfctbaICPaves7NcfZLalvOC2J7R4o2KAZ49f0OY1JMhLx/wIdlu9qT5hoicQ/RV2AO2vQCGBG8Jms45GqvwMUAhI12ebEY5s4bMToNPtWQCvurw/h8V28pRt2zJVZzSLTh0v5RQp5JgJvzXQ2XuA7K/dJ+p54pSML7C2oUcyTX6aOS3xHry2QxZg/SMjwc1mONlkNIzfhJ/LmkwydpEL8h83qndr+O2MOrrcBKZkjzf57RG+1ConnBdcbzJRn2G4L5jNFQa2PezjTYRsW+me0Xq1+ibjG/DOQutaH8Mv27TFF34TxTY2GTiPkR3NM4eOPwNoMND6+nHXhRDrOLGhSwd0wAHDLsBixyBxS0AQ6U0OH/VC07vzQvnj5q+gxClfiUU+co4TGXLMZP3ROharmQ7vuKXYqS1A8D9o0d190+KsmKZP15tYLR1VceoQwS6WZSa2d2xRZ2Mvv3mHZIfy+0LlpklLIJJnvulBi4mEWCR+b57yU9A+tjvBgKsIsfcqIYj5sB5ebeWzl5/LOIyJxun05Qq9evXqh5FnS
+ NFs6duX/
+ 5zJiPdPxpfuESbK++ATahos7jPXI7/AHDk9YoqLM5dkdySwv3cDJESA3mVg5McPhvngz2dCcWQWc+WT2f/XrKSd1KdKKxpBDjqfg8rKJWoqGv7Hvi2C4v7Y3dnDZpGm2e4+knVP7SlhFguXmmSni/lfJQktykdiE6epCPpVBqwWRvwbbhUBHPQvmNqdgKpxkjrhClXna6PH4AcTSnWYbEMCt+AQ9NBKXlq2Q5IbkJtprRJ//TCF69ZtgrZ7PBt49Lu7ZGRmzYjVYgz//sqA1EOaYaMVDX9Tn+CjglDzmAvEsYNgGcClK0ek1+r8tdREp+p8oDcj7UY+gWeLo8DZgwzqXI3kSRImXuPdfWNfvKEWvqEErDhCwPMp7xgs1xLM8oRexAsj2YY4HZw7/CoV4IxBn0QwIQu0rvjxarnO6q7B1/tnVuBU78W7o+c9RF89JABnGNebZW5Rf4jTI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -240,154 +113,618 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 11/19/2025 8:44 PM, Wei Yang wrote:
-> On Wed, Nov 19, 2025 at 08:41:11PM +0800, Li, Tianyou wrote:
->> On 11/19/2025 7:42 PM, Wei Yang wrote:
->>> On Wed, Nov 19, 2025 at 12:07:18PM +0800, Tianyou Li wrote:
->>>> When invoke move_pfn_range_to_zone, it will update the zone->contiguous by
->>>> checking the new zone's pfn range from the beginning to the end, regardless
->>>> the previous state of the old zone. When the zone's pfn range is large, the
->>>> cost of traversing the pfn range to update the zone->contiguous could be
->>>> significant.
->>>>
->>>> Add fast paths to quickly detect cases where zone is definitely not
->>>> contiguous without scanning the new zone. The cases are: when the new range
->>>> did not overlap with previous range, the contiguous should be false; if the
->>>> new range adjacent with the previous range, just need to check the new
->>>> range; if the new added pages could not fill the hole of previous zone, the
->>>> contiguous should be false.
->>>>
->>>> The following test cases of memory hotplug for a VM [1], tested in the
->>>> environment [2], show that this optimization can significantly reduce the
->>>> memory hotplug time [3].
->>>>
->>>> +----------------+------+---------------+--------------+----------------+
->>>> |                | Size | Time (before) | Time (after) | Time Reduction |
->>>> |                +------+---------------+--------------+----------------+
->>>> | Memory Hotplug | 256G |      10s      |      2s      |       80%      |
->>>> |                +------+---------------+--------------+----------------+
->>>> |                | 512G |      33s      |      6s      |       81%      |
->>>> +----------------+------+---------------+--------------+----------------+
->>>>
->>> Nice
->>
->> Thanks for your time to review.
->>
->>
->>>> [1] Qemu commands to hotplug 512G memory for a VM:
->>>>      object_add memory-backend-ram,id=hotmem0,size=512G,share=on
->>>>      device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
->>>>      qom-set vmem1 requested-size 512G
->>>>
->>>> [2] Hardware     : Intel Icelake server
->>>>      Guest Kernel : v6.18-rc2
->>>>      Qemu         : v9.0.0
->>>>
->>>>      Launch VM    :
->>>>      qemu-system-x86_64 -accel kvm -cpu host \
->>>>      -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
->>>>      -drive file=./seed.img,format=raw,if=virtio \
->>>>      -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
->>>>      -m 2G,slots=10,maxmem=2052472M \
->>>>      -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
->>>>      -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
->>>>      -nographic -machine q35 \
->>>>      -nic user,hostfwd=tcp::3000-:22
->>>>
->>>>      Guest kernel auto-onlines newly added memory blocks:
->>>>      echo online > /sys/devices/system/memory/auto_online_blocks
->>>>
->>>> [3] The time from typing the QEMU commands in [1] to when the output of
->>>>      'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
->>>>      memory is recognized.
->>>>
->>>> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
->>>> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
->>>> Tested-by: Yuan Liu <yuan1.liu@intel.com>
->>>> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
->>>> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
->>>> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
->>>> Reviewed-by: Pan Deng <pan.deng@intel.com>
->>>> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
->>>> Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
->>>> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
->>>> ---
->>>> mm/memory_hotplug.c | 57 ++++++++++++++++++++++++++++++++++++++++++---
->>>> 1 file changed, 54 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->>>> index 0be83039c3b5..8f126f20ca47 100644
->>>> --- a/mm/memory_hotplug.c
->>>> +++ b/mm/memory_hotplug.c
->>>> @@ -723,6 +723,57 @@ static void __meminit resize_pgdat_range(struct pglist_data *pgdat, unsigned lon
->>>>
->>>> }
->>>>
->>>> +static bool __meminit check_zone_contiguous_fast(struct zone *zone,
->>>> +			unsigned long start_pfn, unsigned long nr_pages)
->>>> +{
->>>> +	const unsigned long end_pfn = start_pfn + nr_pages;
->>>> +	unsigned long nr_filled_pages;
->>>> +
->>>> +	/*
->>>> +	 * Given the moved pfn range's contiguous property is always true,
->>>> +	 * under the conditional of empty zone, the contiguous property should
->>>> +	 * be true.
->>>> +	 */
->>>> +	if (zone_is_empty(zone)) {
->>>> +		zone->contiguous = true;
->>>> +		return true;
->>>> +	}
->>>> +
->>>> +	/*
->>>> +	 * If the moved pfn range does not intersect with the original zone span,
->>>> +	 * the contiguous property is surely false.
->>>> +	 */
->>>> +	if (end_pfn < zone->zone_start_pfn || start_pfn > zone_end_pfn(zone)) {
->>>> +		zone->contiguous = false;
->>>> +		return true;
->>>> +	}
->>>> +
->>>> +	/*
->>>> +	 * If the moved pfn range is adjacent to the original zone span, given
->>>> +	 * the moved pfn range's contiguous property is always true, the zone's
->>>> +	 * contiguous property inherited from the original value.
->>>> +	 */
->>>> +	if (end_pfn == zone->zone_start_pfn || start_pfn == zone_end_pfn(zone))
->>>> +		return true;
->>>> +
->>>> +	/*
->>>> +	 * If the original zone's hole larger than the new filled pages, the
->>>> +	 * contiguous property is surely false.
->>>> +	 */
->>>> +	nr_filled_pages = end_pfn - zone->zone_start_pfn;
->>>> +	if (start_pfn > zone->zone_start_pfn)
->>>> +		nr_filled_pages -= start_pfn - zone->zone_start_pfn;
->>>> +	if (end_pfn > zone_end_pfn(zone))
->>>> +		nr_filled_pages -= end_pfn - zone_end_pfn(zone);
->>>> +	if (nr_filled_pages < (zone->spanned_pages - zone->present_pages)) {
->>>> +		zone->contiguous = false;
->>>> +		return true;
->>>> +	}
->>>> +
->>> Mike's suggestion is easier for me to understand :-)
->>
->> OK :-), with the clear votes now, I will change it in patch v3 real quick.
->> Thanks.
->>
-> Thanks for your effort.
->
-> While maybe wait a little for v3, let's see other's comment on v2 :-)
+--8R4WppGBpWuwqpgN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Nov 07, 2025 at 04:11:48PM +0000, Lorenzo Stoakes wrote:
+> It is useful to be able to designate that certain flags are 'sticky', that
+> is, if two VMAs are merged one with a flag of this nature and one without,
+> the merged VMA sets this flag.
 
-Thanks. While I am less worried if it might change back -:) In the 
-scenarios we tested, the overlap case did not happen. I agree Mike's 
-suggestion do simplify the code and reduce the maintaining efforts.
+I'm seeing regressions on multiple arm64 platforms in at least the LTP
+clone302 and madvise10 selftests, both of which have bisected to one of
+the fixups to this patch.  Especially given the other tests that also
+bisected to the same place I've not investigated further.  There's a
+number of other LTP tests that started failing today including relevant
+seeming ones munlockall01, mprotect04, madvise10, mprotect03 and
+futex_cmp_requeue01 but I don't have bisects to confirm they're the same
+thing.
 
-Regards,
+clone302:
 
-Tianyou
+tst_buffers.c:57: TINFO: Test is using guarded buffers
+tst_tmpdir.c:316: TINFO: Using /tmp/LTP_clorMwMMw as tmpdir (nfs filesystem)
+tst_test.c:1953: TINFO: LTP version: 20250530
+tst_test.c:1956: TINFO: Tested kernel: 6.18.0-rc6-next-20251119 #1 SMP PREE=
+MPT @1763523415 aarch64
+tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+tst_test.c:1774: TINFO: Overall timeout per run is 0h 05m 24s
+clone302.c:61: TPASS: sizeof(struct clone_args_minimal) =3D=3D 64 (64)
+clone302.c:102: TPASS: invalid args: clone3() failed as expected: EFAULT (1=
+4)
+clone302.c:102: TPASS: zero size: clone3() failed as expected: EINVAL (22)
+clone302.c:102: TPASS: short size: clone3() failed as expected: EINVAL (22)
+clone302.c:92: TFAIL: extra size: clone3() passed unexpectedly
+clone302.c:102: TPASS: sighand-no-VM: clone3() failed as expected: EINVAL (=
+22)
+clone302.c:102: TPASS: thread-no-sighand: clone3() failed as expected: EINV=
+AL (22)
+clone302.c:102: TPASS: fs-newns: clone3() failed as expected: EINVAL (22)
+clone302.c:102: TPASS: invalid pidfd: clone3() failed as expected: EFAULT (=
+14)
+clone302.c:102: TPASS: invalid signal: clone3() failed as expected: EINVAL =
+(22)
+clone302.c:102: TPASS: zero-stack-size: clone3() failed as expected: EINVAL=
+ (22)
+clone302.c:102: TPASS: invalid-stack: clone3() failed as expected: EINVAL (=
+22)
 
+madvise10:
 
->
+tst_test.c:1953: TINFO: LTP version: 20250530
+tst_test.c:1956: TINFO: Tested kernel: 6.18.0-rc6-next-20251119 #1 SMP PREE=
+MPT @1763523415 aarch64
+tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+tst_test.c:1774: TINFO: Overall timeout per run is 0h 05m 24s
+madvise10.c:133: TINFO: MADV_WIPEONFORK zeroes memory in child
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 16384, 0x0)
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 16384, 0x12)
+madvise10.c:88: TPASS: In PID 660, Matched expected pattern
+madvise10.c:133: TINFO: MADV_WIPEONFORK with zero length does nothing
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 0, 0x0)
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 0, 0x12)
+madvise10.c:88: TPASS: In PID 661, Matched expected pattern
+madvise10.c:133: TINFO: MADV_WIPEONFORK zeroes memory in grand-child
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 16384, 0x0)
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 16384, 0x12)
+madvise10.c:88: TPASS: In PID 663, Matched expected pattern
+madvise10.c:133: TINFO: MADV_KEEPONFORK will undo MADV_WIPEONFORK
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 16384, 0x12)
+madvise10.c:107: TPASS: madvise(0xffffa8fbc000, 16384, 0x13)
+madvise10.c:81: TFAIL: In PID 664, addr[1] =3D 0x00, expected[1] =3D 0x01
+madvise10.c:88: TPASS: In PID 664, Matched expected pattern
+
+The bisects for both follow the same pattern:
+
+# bad: [fe4d0dea039f2befb93f27569593ec209843b0f5] Add linux-next specific f=
+iles for 20251119
+# good: [ef96b7dd050abd62905588c41ffb397e0c9598c7] Merge branch 'for-linux-=
+next-fixes' of https://gitlab.freedesktop.org/drm/misc/kernel.git
+# good: [bd79452b39c21599e2cff42e9fbeb182656b6f6a] MAINTAINERS: adjust file=
+ entry in RISC-V MICROCHIP SUPPORT
+# good: [21e68bcb1b0c688c2d9ca0d457922febac650ac1] regulator: renesas-usb-v=
+bus-regulator: Remove unused headers
+# good: [96498e804cb6629e02747336a0a33e4955449732] spi: davinci: remove pla=
+tform data header
+# good: [4422df6782eb7aa9725a3c09d9ba3c38ecc85df4] ASoC: ux500: mop500_ab85=
+00: convert to snd_soc_dapm_xxx()
+# good: [9e510e677090bb794b46348b10e1c8038286e00a] spi: aspeed: Add support=
+ for the AST2700 SPI controller
+# good: [d5c8b7902a41625ea328b52c78ebe750fbf6fef7] ASoC: Intel: avs: Honor =
+NHLT override when setting up a path
+# good: [118eb2cb97b8fc0d515bb0449495959247db58f0] spi: bcm63xx: drop wrong=
+ casts in probe()
+# good: [059f545832be85d29ac9ccc416a16f647aa78485] spi: add support for mic=
+rochip "soft" spi controller
+# good: [6402ddf3027d8975f135cf2b2014d6bbeb2d3436] MAINTAINERS: refer to tr=
+ivial-codec.yaml in relevant sections
+# good: [4e00135b2dd1d7924a58bffa551b6ceb3bd836f2] spi: spi-cadence: suppor=
+ts transmission with bits_per_word of 16 and 32
+# good: [8ff3dcb0e8a8bf6c41f23ed4aa62d066d3948a10] ASoC: codecs: lpass-rx-m=
+acro: add SM6115 compatible
+# good: [e65b871c9b5af9265aefc5b8cd34993586d93aab] ASoC: codecs: pm4125: Re=
+move irq_chip on component unbind
+# good: [8d63e85c5b50f1dbfa0ccb214bd91fe5d7e2e860] firmware: cs_dsp: fix ke=
+rnel-doc warnings in a header file
+# good: [123cd174a3782307787268adf45f22de4d290128] ASoC: Intel: atom: Repla=
+ce strcpy() with strscpy()
+# good: [4d6e2211aeb932e096f673c88475016b1cc0f8ab] ASoC: Intel: boards: fix=
+ HDMI playback lookup when HDMI-In capture used
+# good: [1d562ba0aa7df81335bf96c02be77efe8d5bab87] spi: dt-bindings: nuvoto=
+n,npcm-pspi: Convert to DT schema
+# good: [873bc94689d832878befbcadc10b6ad5bb4e0027] ASoC: Intel: sof_sdw: ad=
+d codec speaker support for the SKU
+# good: [32172cf3cb543a04c41a1677c97a38e60cad05b6] ASoC: cs35l56: Allow res=
+toring factory calibration through ALSA control
+# good: [b3a5302484033331af37569f7277d00131694b57] ASoC: Intel: sof_rt5682:=
+ Add quirk override support
+# good: [772ada50282b0c80343c8989147db816961f571d] ASoC: cs35l56: Alter err=
+or codes for calibration routine
+# good: [fb1ebb10468da414d57153ddebaab29c38ef1a78] regulator: core: disable=
+ supply if enabling main regulator fails
+# good: [6985defd1d832f1dd9d1977a6a2cc2cef7632704] regmap: sdw-mbq: Reorder=
+ regmap_mbq_context struct for better packing
+# good: [2089f086303b773e181567fd8d5df3038bd85937] regulator: mt6363: Remov=
+e unneeded semicolon
+# good: [6951be397ca8b8b167c9f99b5a11c541148c38cb] ASoC: codecs: pm4125: re=
+move duplicate code
+# good: [4e92abd0a11b91af3742197a9ca962c3c00d0948] spi: imx: add i.MX51 ECS=
+PI target mode support
+# good: [abc9a349b87ac0fd3ba8787ca00971b59c2e1257] spi: fsl-qspi: support t=
+he SpacemiT K1 SoC
+# good: [1b0f3f9ee41ee2bdd206667f85ea2aa36dfe6e69] ASoC: SDCA: support Q7.8=
+ volume format
+# good: [55d03b5b5bdd04daf9a35ce49db18d8bb488dffb] spi: imx: remove CLK cal=
+culation and check for target mode
+# good: [6bd1ad97eb790570c167d4de4ca59fbc9c33722a] regulator: pf9453: Fix k=
+ernel doc for mux_poll()
+# good: [655079ac8a7721ac215a0596e3f33b740e01144a] ASoC: qcom: q6asm: Use g=
+uard() for spin locks
+# good: [2f538ef9f6f7c3d700c68536f21447dfc598f8c8] spi: aspeed: Use devm_io=
+unmap() to unmap devm_ioremap() memory
+# good: [3c36965df80801344850388592e95033eceea05b] regulator: Add support f=
+or MediaTek MT6363 SPMI PMIC Regulators
+# good: [aa897ffc396b48cc39eee133b6b43175d0df9eb5] ASoC: dt-bindings: ti,pc=
+m1862: convert to dtschema
+# good: [c4e68959af66df525d71db619ffe44af9178bb22] ASoC: dt-bindings: ti,ta=
+s2781: Add TAS5822 support
+# good: [380fd29d57abe6679d87ec56babe65ddc5873a37] spi: tegra210-quad: Chec=
+k hardware status on timeout
+# good: [af9c8092d84244ca54ffb590435735f788e7a170] regmap: i3c: Use ARRAY_S=
+IZE()
+# good: [2ecc8c089802e033d2e5204d21a9f467e2517df9] regulator: pf9453: remov=
+e unused I2C_LT register
+# good: [84194c66aaf78fed150edb217b9f341518b1cba2] ASoC: codecs: aw88261: p=
+ass pointer directly instead of passing the address
+# good: [252abf2d07d33b1c70a59ba1c9395ba42bbd793e] regulator: Small cleanup=
+ in of_get_regulation_constraints()
+# good: [ed5d499b5c9cc11dd3edae1a7a55db7dfa4f1bdc] regcache: maple: Split -=
+>populate() from ->init()
+# good: [e73b743bfe8a6ff4e05b5657d3f7586a17ac3ba0] ASoC: soc-core: check op=
+s & auto_selectable_formats in snd_soc_dai_get_fmt() to prevent dereference=
+ error
+# good: [f1dfbc1b5cf8650ae9a0d543e5f5335fc0f478ce] ASoC: max98090/91: fixin=
+g the stream index
+# good: [6ef8e042cdcaabe3e3c68592ba8bfbaee2fa10a3] ASoC: codec: wm8400: rep=
+lace printk() calls with dev_*() device aware logging
+# good: [ecd0de438c1f0ee86cf8f6d5047965a2a181444b] spi: tle62x0: Add newlin=
+e to sysfs attribute output
+# good: [cf6bf51b53252284bafc7377a4d8dbf10f048b4d] ASoC: cs4271: Add suppor=
+t for the external mclk
+# good: [20bcda681f8597e86070a4b3b12d1e4f541865d3] ASoC: codecs: va-macro: =
+fix revision checking
+# good: [e062bdfdd6adbb2dee7751d054c1d8df63ddb8b8] regmap: warn users about=
+ uninitialized flat cache
+# good: [8fdb030fe283c84fd8d378c97ad0f32d6cdec6ce] ASoC: qcom: sc7280: make=
+ use of common helpers
+# good: [28039efa4d8e8bbf98b066133a906bd4e307d496] MAINTAINERS: remove obso=
+lete file entry in DIALOG SEMICONDUCTOR DRIVERS
+# good: [f034c16a4663eaf3198dc18b201ba50533fb5b81] ASoC: spacemit: add fail=
+ure check for spacemit_i2s_init_dai()
+# good: [66fecfa91deb536a12ddf3d878a99590d7900277] ASoC: spacemit: use `dep=
+ends on` instead of `select`
+# good: [4a5ac6cd05a7e54f1585d7779464d6ed6272c134] ASoC: sun4i-spdif: Suppo=
+rt SPDIF output on A523 family
+# good: [ef042df96d0e1089764f39ede61bc8f140a4be00] ASoC: SDCA: Add HID butt=
+on IRQ
+# good: [4c33cef58965eb655a0ac8e243aa323581ec025f] regulator: pca9450: link=
+ regulator inputs to supply groups
+# good: [e7434adf0c53a84d548226304cdb41c8818da1cb] ASoC: cs530x: Add SPI bu=
+s support for cs530x parts
+# good: [77a58ba7c64ccca20616aa03599766ccb0d1a330] spi: spi-mem: Trace exec=
+_op
+# good: [01313661b248c5ba586acae09bff57077dbec0a5] regulator: Let raspberry=
+pi drivers depend on ARM
+# good: [4795375d8aa072e9aacb0b278e6203c6ca41816a] ASoC: cs-amp-lib-test: A=
+dd test cases for cs_amp_set_efi_calibration_data()
+# good: [d29479abaded34b2b1dab2e17efe96a65eba3d61] ASoC: renesas: fsi: Cons=
+tify struct fsi_stream_handler
+# good: [e973dfe9259095fb509ab12658c68d46f0e439d7] ASoC: qcom: sm8250: add =
+qrb2210-sndcard compatible string
+# good: [c17fa4cbc546c431ccf13e9354d5d9c1cd247b7c] ASoC: sdw_utils: add nam=
+e_prefix for rt1321 part id
+# good: [310bf433c01f78e0756fd5056a43118a2f77318c] ASoC: max98090/91: fixin=
+g a space
+# good: [fd5ef3d69f8975bad16c437a337b5cb04c8217a2] spi: spi-qpic-snand: mak=
+e qcom_spi_ecc_engine_ops_pipelined const
+# good: [d054cc3a2ccfb19484f3b54d69b6e416832dc8f4] regulator: rpmh-regulato=
+r: Add RPMH regulator support for PMR735D
+# good: [2528c15f314ece50218d1273654f630d74109583] ASoC: max98090/91: addin=
+g DAPM routing for digital output for max98091
+# good: [638bae3fb225a708dc67db613af62f6d14c4eff4] ASoC: max98090/91: added=
+ DAPM widget for digital output for max98091
+# good: [ecba655bf54a661ffe078856cd8dbc898270e4b5] ASoC: fsl_aud2htx: add I=
+EC958_SUBFRAME_LE format in supported list
+# good: [7e1906643a7374529af74b013bba35e4fa4e6ffc] ASoC: codecs: va-macro: =
+Clean up on error path in probe()
+# good: [d742ebcfe524dc54023f7c520d2ed2e4b7203c19] ASoC: soc.h: remove snd_=
+soc_kcontrol_component()
+# good: [6658472a3e2de08197acfe099ba71ee0e2505ecf] ASoC: amd: amd_sdw: Prop=
+agate the PCI subsystem Vendor and Device IDs
+# good: [fce217449075d59b29052b8cdac567f0f3e22641] ASoC: spacemit: add i2s =
+support for K1 SoC
+# good: [5677aa6a08c1df8bc1ec71516fe1ced9b7cb545f] HID: intel-ish-hid: ipc:=
+ Separate hibernate callbacks in dev_pm_ops
+# good: [0cc08c8130ac8f74419f99fe707dc193b7f79d86] spi: aspeed: Fix an IS_E=
+RR() vs NULL bug in probe()
+# good: [0743acf746a81e0460a56fd5ff847d97fa7eb370] spi: airoha: buffer must=
+ be 0xff-ed before writing
+# good: [b1fc226edf8680882a5bf89038bdc55afa2ac80d] media: stm32: dma2d: Dro=
+p unneeded v4l2_m2m_get_vq() NULL check
+# good: [15afe57a874eaf104bfbb61ec598fa31627f7b19] ASoC: dt-bindings: qcom:=
+ Add Kaanapali LPASS macro codecs
+# good: [d77daa49085b067137d0adbe3263f75a7ee13a1b] spi: aspeed: fix spellin=
+g mistake "triming" -> "trimming"
+# good: [1e570e77392f43a3cdab2849d1f81535f8a033e2] ASoC: mxs-saif: support =
+usage with simple-audio-card
+# good: [0d7f4e99217f6f715c7064c67eae8d9d09313b14] drm/i915/display: Introd=
+uce dp/psr_compute_config_late()
+# good: [fb25114cd760c13cf177d9ac37837fafcc9657b5] regulator: sy7636a: add =
+gpios and input regulator
+# good: [65efe5404d151767653c7b7dd39bd2e7ad532c2d] regulator: rpmh-regulato=
+r: Add RPMH regulator support for Glymur
+# good: [6621b0f118d500092f5f3d72ddddb22aeeb3c3a0] ASoC: codecs: rt5670: us=
+e SOC_VALUE_ENUM_SINGLE_DECL for DAC2 L/R MX-1B
+# good: [433e294c3c5b5d2020085a0e36c1cb47b694690a] regulator: core: forward=
+ undervoltage events downstream by default
+# good: [0b0eb7702a9fa410755e86124b4b7cd36e7d1cb4] ASoC: replace use of sys=
+tem_wq with system_dfl_wq
+# good: [bf770d6d2097a52d87f4d9c88d0b05bd3998d7de] x86/module: Improve relo=
+cation error messages
+# good: [c2d420796a427dda71a2400909864e7f8e037fd4] elfnote: Change ELFNOTE(=
+) to use __UNIQUE_ID()
+# good: [7e7e2c6e2a1cb250f8d03bb99eed01f6d982d5dd] ASoC: sof-function-topol=
+ogy-lib: escalate the log when missing function topoplogy
+# good: [4412ab501677606436e5c49e41151a1e6eac7ac0] spi: dt-bindings: spi-qp=
+ic-snand: Add IPQ5332 compatible
+# good: [5e537031f322d55315cd384398b726a9a0748d47] ASoC: codecs: Fix the er=
+ror of excessive semicolons
+# good: [64d87ccfae3326a9561fe41dc6073064a083e0df] spi: aspeed: Only map ne=
+cessary address window region
+# good: [4d410ba9aa275e7990a270f63ce436990ace1bea] dt-bindings: sound: Upda=
+te ADMAIF bindings for tegra264
+# good: [9797329220a2c6622411eb9ecf6a35b24ce09d04] ASoC: sof-function-topol=
+ogy-lib: escalate the log when missing function topoplogy
+# good: [fe8cc44dd173cde5788ab4e3730ac61f3d316d9c] spi: dw: add target mode=
+ support
+# good: [6277a486a7faaa6c87f4bf1d59a2de233a093248] regulator: dt-bindings: =
+Convert Dialog DA9211 Regulators to DT schema
+# good: [b83fb1b14c06bdd765903ac852ba20a14e24f227] spi: offload: Add offset=
+ parameter
+# good: [807c42dd8028d71222dfce035c2e87aaecbf623f] drm/xe: Don't change LRC=
+ ring head on job resubmission
+# good: [6c177775dcc5e70a64ddf4ee842c66af498f2c7c] Merge branch 'next/drive=
+rs' into for-next
+git bisect start 'fe4d0dea039f2befb93f27569593ec209843b0f5' 'ef96b7dd050abd=
+62905588c41ffb397e0c9598c7' 'bd79452b39c21599e2cff42e9fbeb182656b6f6a' '21e=
+68bcb1b0c688c2d9ca0d457922febac650ac1' '96498e804cb6629e02747336a0a33e49554=
+49732' '4422df6782eb7aa9725a3c09d9ba3c38ecc85df4' '9e510e677090bb794b46348b=
+10e1c8038286e00a' 'd5c8b7902a41625ea328b52c78ebe750fbf6fef7' '118eb2cb97b8f=
+c0d515bb0449495959247db58f0' '059f545832be85d29ac9ccc416a16f647aa78485' '64=
+02ddf3027d8975f135cf2b2014d6bbeb2d3436' '4e00135b2dd1d7924a58bffa551b6ceb3b=
+d836f2' '8ff3dcb0e8a8bf6c41f23ed4aa62d066d3948a10' 'e65b871c9b5af9265aefc5b=
+8cd34993586d93aab' '8d63e85c5b50f1dbfa0ccb214bd91fe5d7e2e860' '123cd174a378=
+2307787268adf45f22de4d290128' '4d6e2211aeb932e096f673c88475016b1cc0f8ab' '1=
+d562ba0aa7df81335bf96c02be77efe8d5bab87' '873bc94689d832878befbcadc10b6ad5b=
+b4e0027' '32172cf3cb543a04c41a1677c97a38e60cad05b6' 'b3a5302484033331af3756=
+9f7277d00131694b57' '772ada50282b0c80343c8989147db816961f571d' 'fb1ebb10468=
+da414d57153ddebaab29c38ef1a78' '6985defd1d832f1dd9d1977a6a2cc2cef7632704' '=
+2089f086303b773e181567fd8d5df3038bd85937' '6951be397ca8b8b167c9f99b5a11c541=
+148c38cb' '4e92abd0a11b91af3742197a9ca962c3c00d0948' 'abc9a349b87ac0fd3ba87=
+87ca00971b59c2e1257' '1b0f3f9ee41ee2bdd206667f85ea2aa36dfe6e69' '55d03b5b5b=
+dd04daf9a35ce49db18d8bb488dffb' '6bd1ad97eb790570c167d4de4ca59fbc9c33722a' =
+'655079ac8a7721ac215a0596e3f33b740e01144a' '2f538ef9f6f7c3d700c68536f21447d=
+fc598f8c8' '3c36965df80801344850388592e95033eceea05b' 'aa897ffc396b48cc39ee=
+e133b6b43175d0df9eb5' 'c4e68959af66df525d71db619ffe44af9178bb22' '380fd29d5=
+7abe6679d87ec56babe65ddc5873a37' 'af9c8092d84244ca54ffb590435735f788e7a170'=
+ '2ecc8c089802e033d2e5204d21a9f467e2517df9' '84194c66aaf78fed150edb217b9f34=
+1518b1cba2' '252abf2d07d33b1c70a59ba1c9395ba42bbd793e' 'ed5d499b5c9cc11dd3e=
+dae1a7a55db7dfa4f1bdc' 'e73b743bfe8a6ff4e05b5657d3f7586a17ac3ba0' 'f1dfbc1b=
+5cf8650ae9a0d543e5f5335fc0f478ce' '6ef8e042cdcaabe3e3c68592ba8bfbaee2fa10a3=
+' 'ecd0de438c1f0ee86cf8f6d5047965a2a181444b' 'cf6bf51b53252284bafc7377a4d8d=
+bf10f048b4d' '20bcda681f8597e86070a4b3b12d1e4f541865d3' 'e062bdfdd6adbb2dee=
+7751d054c1d8df63ddb8b8' '8fdb030fe283c84fd8d378c97ad0f32d6cdec6ce' '28039ef=
+a4d8e8bbf98b066133a906bd4e307d496' 'f034c16a4663eaf3198dc18b201ba50533fb5b8=
+1' '66fecfa91deb536a12ddf3d878a99590d7900277' '4a5ac6cd05a7e54f1585d7779464=
+d6ed6272c134' 'ef042df96d0e1089764f39ede61bc8f140a4be00' '4c33cef58965eb655=
+a0ac8e243aa323581ec025f' 'e7434adf0c53a84d548226304cdb41c8818da1cb' '77a58b=
+a7c64ccca20616aa03599766ccb0d1a330' '01313661b248c5ba586acae09bff57077dbec0=
+a5' '4795375d8aa072e9aacb0b278e6203c6ca41816a' 'd29479abaded34b2b1dab2e17ef=
+e96a65eba3d61' 'e973dfe9259095fb509ab12658c68d46f0e439d7' 'c17fa4cbc546c431=
+ccf13e9354d5d9c1cd247b7c' '310bf433c01f78e0756fd5056a43118a2f77318c' 'fd5ef=
+3d69f8975bad16c437a337b5cb04c8217a2' 'd054cc3a2ccfb19484f3b54d69b6e416832dc=
+8f4' '2528c15f314ece50218d1273654f630d74109583' '638bae3fb225a708dc67db613a=
+f62f6d14c4eff4' 'ecba655bf54a661ffe078856cd8dbc898270e4b5' '7e1906643a73745=
+29af74b013bba35e4fa4e6ffc' 'd742ebcfe524dc54023f7c520d2ed2e4b7203c19' '6658=
+472a3e2de08197acfe099ba71ee0e2505ecf' 'fce217449075d59b29052b8cdac567f0f3e2=
+2641' '5677aa6a08c1df8bc1ec71516fe1ced9b7cb545f' '0cc08c8130ac8f74419f99fe7=
+07dc193b7f79d86' '0743acf746a81e0460a56fd5ff847d97fa7eb370' 'b1fc226edf8680=
+882a5bf89038bdc55afa2ac80d' '15afe57a874eaf104bfbb61ec598fa31627f7b19' 'd77=
+daa49085b067137d0adbe3263f75a7ee13a1b' '1e570e77392f43a3cdab2849d1f81535f8a=
+033e2' '0d7f4e99217f6f715c7064c67eae8d9d09313b14' 'fb25114cd760c13cf177d9ac=
+37837fafcc9657b5' '65efe5404d151767653c7b7dd39bd2e7ad532c2d' '6621b0f118d50=
+0092f5f3d72ddddb22aeeb3c3a0' '433e294c3c5b5d2020085a0e36c1cb47b694690a' '0b=
+0eb7702a9fa410755e86124b4b7cd36e7d1cb4' 'bf770d6d2097a52d87f4d9c88d0b05bd39=
+98d7de' 'c2d420796a427dda71a2400909864e7f8e037fd4' '7e7e2c6e2a1cb250f8d03bb=
+99eed01f6d982d5dd' '4412ab501677606436e5c49e41151a1e6eac7ac0' '5e537031f322=
+d55315cd384398b726a9a0748d47' '64d87ccfae3326a9561fe41dc6073064a083e0df' '4=
+d410ba9aa275e7990a270f63ce436990ace1bea' '9797329220a2c6622411eb9ecf6a35b24=
+ce09d04' 'fe8cc44dd173cde5788ab4e3730ac61f3d316d9c' '6277a486a7faaa6c87f4bf=
+1d59a2de233a093248' 'b83fb1b14c06bdd765903ac852ba20a14e24f227' '807c42dd802=
+8d71222dfce035c2e87aaecbf623f' '6c177775dcc5e70a64ddf4ee842c66af498f2c7c'
+# test job: [bd79452b39c21599e2cff42e9fbeb182656b6f6a] https://lava.sirena.=
+org.uk/scheduler/job/2104086
+# test job: [21e68bcb1b0c688c2d9ca0d457922febac650ac1] https://lava.sirena.=
+org.uk/scheduler/job/2104526
+# test job: [96498e804cb6629e02747336a0a33e4955449732] https://lava.sirena.=
+org.uk/scheduler/job/2099727
+# test job: [4422df6782eb7aa9725a3c09d9ba3c38ecc85df4] https://lava.sirena.=
+org.uk/scheduler/job/2097779
+# test job: [9e510e677090bb794b46348b10e1c8038286e00a] https://lava.sirena.=
+org.uk/scheduler/job/2093905
+# test job: [d5c8b7902a41625ea328b52c78ebe750fbf6fef7] https://lava.sirena.=
+org.uk/scheduler/job/2092717
+# test job: [118eb2cb97b8fc0d515bb0449495959247db58f0] https://lava.sirena.=
+org.uk/scheduler/job/2092417
+# test job: [059f545832be85d29ac9ccc416a16f647aa78485] https://lava.sirena.=
+org.uk/scheduler/job/2086746
+# test job: [6402ddf3027d8975f135cf2b2014d6bbeb2d3436] https://lava.sirena.=
+org.uk/scheduler/job/2086625
+# test job: [4e00135b2dd1d7924a58bffa551b6ceb3bd836f2] https://lava.sirena.=
+org.uk/scheduler/job/2082495
+# test job: [8ff3dcb0e8a8bf6c41f23ed4aa62d066d3948a10] https://lava.sirena.=
+org.uk/scheduler/job/2083122
+# test job: [e65b871c9b5af9265aefc5b8cd34993586d93aab] https://lava.sirena.=
+org.uk/scheduler/job/2083037
+# test job: [8d63e85c5b50f1dbfa0ccb214bd91fe5d7e2e860] https://lava.sirena.=
+org.uk/scheduler/job/2082590
+# test job: [123cd174a3782307787268adf45f22de4d290128] https://lava.sirena.=
+org.uk/scheduler/job/2078937
+# test job: [4d6e2211aeb932e096f673c88475016b1cc0f8ab] https://lava.sirena.=
+org.uk/scheduler/job/2078014
+# test job: [1d562ba0aa7df81335bf96c02be77efe8d5bab87] https://lava.sirena.=
+org.uk/scheduler/job/2078351
+# test job: [873bc94689d832878befbcadc10b6ad5bb4e0027] https://lava.sirena.=
+org.uk/scheduler/job/2074819
+# test job: [32172cf3cb543a04c41a1677c97a38e60cad05b6] https://lava.sirena.=
+org.uk/scheduler/job/2075088
+# test job: [b3a5302484033331af37569f7277d00131694b57] https://lava.sirena.=
+org.uk/scheduler/job/2074568
+# test job: [772ada50282b0c80343c8989147db816961f571d] https://lava.sirena.=
+org.uk/scheduler/job/2069245
+# test job: [fb1ebb10468da414d57153ddebaab29c38ef1a78] https://lava.sirena.=
+org.uk/scheduler/job/2059767
+# test job: [6985defd1d832f1dd9d1977a6a2cc2cef7632704] https://lava.sirena.=
+org.uk/scheduler/job/2059097
+# test job: [2089f086303b773e181567fd8d5df3038bd85937] https://lava.sirena.=
+org.uk/scheduler/job/2058075
+# test job: [6951be397ca8b8b167c9f99b5a11c541148c38cb] https://lava.sirena.=
+org.uk/scheduler/job/2055750
+# test job: [4e92abd0a11b91af3742197a9ca962c3c00d0948] https://lava.sirena.=
+org.uk/scheduler/job/2055873
+# test job: [abc9a349b87ac0fd3ba8787ca00971b59c2e1257] https://lava.sirena.=
+org.uk/scheduler/job/2054602
+# test job: [1b0f3f9ee41ee2bdd206667f85ea2aa36dfe6e69] https://lava.sirena.=
+org.uk/scheduler/job/2053511
+# test job: [55d03b5b5bdd04daf9a35ce49db18d8bb488dffb] https://lava.sirena.=
+org.uk/scheduler/job/2053867
+# test job: [6bd1ad97eb790570c167d4de4ca59fbc9c33722a] https://lava.sirena.=
+org.uk/scheduler/job/2053537
+# test job: [655079ac8a7721ac215a0596e3f33b740e01144a] https://lava.sirena.=
+org.uk/scheduler/job/2049694
+# test job: [2f538ef9f6f7c3d700c68536f21447dfc598f8c8] https://lava.sirena.=
+org.uk/scheduler/job/2048653
+# test job: [3c36965df80801344850388592e95033eceea05b] https://lava.sirena.=
+org.uk/scheduler/job/2049502
+# test job: [aa897ffc396b48cc39eee133b6b43175d0df9eb5] https://lava.sirena.=
+org.uk/scheduler/job/2048768
+# test job: [c4e68959af66df525d71db619ffe44af9178bb22] https://lava.sirena.=
+org.uk/scheduler/job/2044048
+# test job: [380fd29d57abe6679d87ec56babe65ddc5873a37] https://lava.sirena.=
+org.uk/scheduler/job/2044588
+# test job: [af9c8092d84244ca54ffb590435735f788e7a170] https://lava.sirena.=
+org.uk/scheduler/job/2043656
+# test job: [2ecc8c089802e033d2e5204d21a9f467e2517df9] https://lava.sirena.=
+org.uk/scheduler/job/2038631
+# test job: [84194c66aaf78fed150edb217b9f341518b1cba2] https://lava.sirena.=
+org.uk/scheduler/job/2038367
+# test job: [252abf2d07d33b1c70a59ba1c9395ba42bbd793e] https://lava.sirena.=
+org.uk/scheduler/job/2038561
+# test job: [ed5d499b5c9cc11dd3edae1a7a55db7dfa4f1bdc] https://lava.sirena.=
+org.uk/scheduler/job/2029031
+# test job: [e73b743bfe8a6ff4e05b5657d3f7586a17ac3ba0] https://lava.sirena.=
+org.uk/scheduler/job/2026425
+# test job: [f1dfbc1b5cf8650ae9a0d543e5f5335fc0f478ce] https://lava.sirena.=
+org.uk/scheduler/job/2025503
+# test job: [6ef8e042cdcaabe3e3c68592ba8bfbaee2fa10a3] https://lava.sirena.=
+org.uk/scheduler/job/2025871
+# test job: [ecd0de438c1f0ee86cf8f6d5047965a2a181444b] https://lava.sirena.=
+org.uk/scheduler/job/2026135
+# test job: [cf6bf51b53252284bafc7377a4d8dbf10f048b4d] https://lava.sirena.=
+org.uk/scheduler/job/2023024
+# test job: [20bcda681f8597e86070a4b3b12d1e4f541865d3] https://lava.sirena.=
+org.uk/scheduler/job/2022953
+# test job: [e062bdfdd6adbb2dee7751d054c1d8df63ddb8b8] https://lava.sirena.=
+org.uk/scheduler/job/2020135
+# test job: [8fdb030fe283c84fd8d378c97ad0f32d6cdec6ce] https://lava.sirena.=
+org.uk/scheduler/job/2021440
+# test job: [28039efa4d8e8bbf98b066133a906bd4e307d496] https://lava.sirena.=
+org.uk/scheduler/job/2020322
+# test job: [f034c16a4663eaf3198dc18b201ba50533fb5b81] https://lava.sirena.=
+org.uk/scheduler/job/2015432
+# test job: [66fecfa91deb536a12ddf3d878a99590d7900277] https://lava.sirena.=
+org.uk/scheduler/job/2015351
+# test job: [4a5ac6cd05a7e54f1585d7779464d6ed6272c134] https://lava.sirena.=
+org.uk/scheduler/job/2011285
+# test job: [ef042df96d0e1089764f39ede61bc8f140a4be00] https://lava.sirena.=
+org.uk/scheduler/job/2010192
+# test job: [4c33cef58965eb655a0ac8e243aa323581ec025f] https://lava.sirena.=
+org.uk/scheduler/job/2009429
+# test job: [e7434adf0c53a84d548226304cdb41c8818da1cb] https://lava.sirena.=
+org.uk/scheduler/job/2007770
+# test job: [77a58ba7c64ccca20616aa03599766ccb0d1a330] https://lava.sirena.=
+org.uk/scheduler/job/2007322
+# test job: [01313661b248c5ba586acae09bff57077dbec0a5] https://lava.sirena.=
+org.uk/scheduler/job/2008874
+# test job: [4795375d8aa072e9aacb0b278e6203c6ca41816a] https://lava.sirena.=
+org.uk/scheduler/job/2009678
+# test job: [d29479abaded34b2b1dab2e17efe96a65eba3d61] https://lava.sirena.=
+org.uk/scheduler/job/2008461
+# test job: [e973dfe9259095fb509ab12658c68d46f0e439d7] https://lava.sirena.=
+org.uk/scheduler/job/2008113
+# test job: [c17fa4cbc546c431ccf13e9354d5d9c1cd247b7c] https://lava.sirena.=
+org.uk/scheduler/job/2000039
+# test job: [310bf433c01f78e0756fd5056a43118a2f77318c] https://lava.sirena.=
+org.uk/scheduler/job/1996043
+# test job: [fd5ef3d69f8975bad16c437a337b5cb04c8217a2] https://lava.sirena.=
+org.uk/scheduler/job/1996112
+# test job: [d054cc3a2ccfb19484f3b54d69b6e416832dc8f4] https://lava.sirena.=
+org.uk/scheduler/job/1995713
+# test job: [2528c15f314ece50218d1273654f630d74109583] https://lava.sirena.=
+org.uk/scheduler/job/1997616
+# test job: [638bae3fb225a708dc67db613af62f6d14c4eff4] https://lava.sirena.=
+org.uk/scheduler/job/1991887
+# test job: [ecba655bf54a661ffe078856cd8dbc898270e4b5] https://lava.sirena.=
+org.uk/scheduler/job/1985123
+# test job: [7e1906643a7374529af74b013bba35e4fa4e6ffc] https://lava.sirena.=
+org.uk/scheduler/job/1978610
+# test job: [d742ebcfe524dc54023f7c520d2ed2e4b7203c19] https://lava.sirena.=
+org.uk/scheduler/job/1975999
+# test job: [6658472a3e2de08197acfe099ba71ee0e2505ecf] https://lava.sirena.=
+org.uk/scheduler/job/1973530
+# test job: [fce217449075d59b29052b8cdac567f0f3e22641] https://lava.sirena.=
+org.uk/scheduler/job/1975656
+# test job: [5677aa6a08c1df8bc1ec71516fe1ced9b7cb545f] https://lava.sirena.=
+org.uk/scheduler/job/1978817
+# test job: [0cc08c8130ac8f74419f99fe707dc193b7f79d86] https://lava.sirena.=
+org.uk/scheduler/job/1965701
+# test job: [0743acf746a81e0460a56fd5ff847d97fa7eb370] https://lava.sirena.=
+org.uk/scheduler/job/1964858
+# test job: [b1fc226edf8680882a5bf89038bdc55afa2ac80d] https://lava.sirena.=
+org.uk/scheduler/job/1978391
+# test job: [15afe57a874eaf104bfbb61ec598fa31627f7b19] https://lava.sirena.=
+org.uk/scheduler/job/1962906
+# test job: [d77daa49085b067137d0adbe3263f75a7ee13a1b] https://lava.sirena.=
+org.uk/scheduler/job/1962818
+# test job: [1e570e77392f43a3cdab2849d1f81535f8a033e2] https://lava.sirena.=
+org.uk/scheduler/job/1962269
+# test job: [0d7f4e99217f6f715c7064c67eae8d9d09313b14] https://lava.sirena.=
+org.uk/scheduler/job/1980262
+# test job: [fb25114cd760c13cf177d9ac37837fafcc9657b5] https://lava.sirena.=
+org.uk/scheduler/job/1960133
+# test job: [65efe5404d151767653c7b7dd39bd2e7ad532c2d] https://lava.sirena.=
+org.uk/scheduler/job/1959948
+# test job: [6621b0f118d500092f5f3d72ddddb22aeeb3c3a0] https://lava.sirena.=
+org.uk/scheduler/job/1959732
+# test job: [433e294c3c5b5d2020085a0e36c1cb47b694690a] https://lava.sirena.=
+org.uk/scheduler/job/1957354
+# test job: [0b0eb7702a9fa410755e86124b4b7cd36e7d1cb4] https://lava.sirena.=
+org.uk/scheduler/job/1957417
+# test job: [bf770d6d2097a52d87f4d9c88d0b05bd3998d7de] https://lava.sirena.=
+org.uk/scheduler/job/1984426
+# test job: [c2d420796a427dda71a2400909864e7f8e037fd4] https://lava.sirena.=
+org.uk/scheduler/job/1984520
+# test job: [7e7e2c6e2a1cb250f8d03bb99eed01f6d982d5dd] https://lava.sirena.=
+org.uk/scheduler/job/1954251
+# test job: [4412ab501677606436e5c49e41151a1e6eac7ac0] https://lava.sirena.=
+org.uk/scheduler/job/1946234
+# test job: [5e537031f322d55315cd384398b726a9a0748d47] https://lava.sirena.=
+org.uk/scheduler/job/1946679
+# test job: [64d87ccfae3326a9561fe41dc6073064a083e0df] https://lava.sirena.=
+org.uk/scheduler/job/1947242
+# test job: [4d410ba9aa275e7990a270f63ce436990ace1bea] https://lava.sirena.=
+org.uk/scheduler/job/1947841
+# test job: [9797329220a2c6622411eb9ecf6a35b24ce09d04] https://lava.sirena.=
+org.uk/scheduler/job/1947406
+# test job: [fe8cc44dd173cde5788ab4e3730ac61f3d316d9c] https://lava.sirena.=
+org.uk/scheduler/job/1946044
+# test job: [6277a486a7faaa6c87f4bf1d59a2de233a093248] https://lava.sirena.=
+org.uk/scheduler/job/1947003
+# test job: [b83fb1b14c06bdd765903ac852ba20a14e24f227] https://lava.sirena.=
+org.uk/scheduler/job/1946832
+# test job: [807c42dd8028d71222dfce035c2e87aaecbf623f] https://lava.sirena.=
+org.uk/scheduler/job/1981864
+# test job: [6c177775dcc5e70a64ddf4ee842c66af498f2c7c] https://lava.sirena.=
+org.uk/scheduler/job/1780443
+# test job: [fe4d0dea039f2befb93f27569593ec209843b0f5] https://lava.sirena.=
+org.uk/scheduler/job/2106238
+# bad: [fe4d0dea039f2befb93f27569593ec209843b0f5] Add linux-next specific f=
+iles for 20251119
+git bisect bad fe4d0dea039f2befb93f27569593ec209843b0f5
+# test job: [40506e4c543a64ad5846f0a532d5ea16310fd9e3] https://lava.sirena.=
+org.uk/scheduler/job/2106514
+# bad: [40506e4c543a64ad5846f0a532d5ea16310fd9e3] Merge branch 'for-next' o=
+f https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git
+git bisect bad 40506e4c543a64ad5846f0a532d5ea16310fd9e3
+# test job: [e510eda33592ffbe54b55476040348b552674cd3] https://lava.sirena.=
+org.uk/scheduler/job/2106557
+# bad: [e510eda33592ffbe54b55476040348b552674cd3] Merge branch 'next' of ht=
+tps://git.kernel.org/pub/scm/linux/kernel/git/uml/linux.git
+git bisect bad e510eda33592ffbe54b55476040348b552674cd3
+# test job: [8903539518403d5e9a7ac09ea2486ed297f337e5] https://lava.sirena.=
+org.uk/scheduler/job/2106617
+# bad: [8903539518403d5e9a7ac09ea2486ed297f337e5] Merge branch 'for-next' o=
+f https://git.kernel.org/pub/scm/linux/kernel/git/mediatek/linux.git
+git bisect bad 8903539518403d5e9a7ac09ea2486ed297f337e5
+# test job: [fb6b3841aabe2098b0610eaf9edac0fc562a122f] https://lava.sirena.=
+org.uk/scheduler/job/2106645
+# bad: [fb6b3841aabe2098b0610eaf9edac0fc562a122f] Merge branch 'kbuild-next=
+' of https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git
+git bisect bad fb6b3841aabe2098b0610eaf9edac0fc562a122f
+# test job: [f24f3801039f9a2033e3a2390fccc5adc00a8df7] https://lava.sirena.=
+org.uk/scheduler/job/2106738
+# good: [f24f3801039f9a2033e3a2390fccc5adc00a8df7] mm: implement sticky VMA=
+ flags
+git bisect good f24f3801039f9a2033e3a2390fccc5adc00a8df7
+# test job: [420203301ca3aef72980c78534264c4ec7f672d0] https://lava.sirena.=
+org.uk/scheduler/job/2106793
+# good: [420203301ca3aef72980c78534264c4ec7f672d0] Revert "lib/plist.c: enf=
+orce memory ordering in plist_check_list"
+git bisect good 420203301ca3aef72980c78534264c4ec7f672d0
+# test job: [259dbf8c45694409126841a8769c111869fec9c8] https://lava.sirena.=
+org.uk/scheduler/job/2106834
+# bad: [259dbf8c45694409126841a8769c111869fec9c8] mm/damon/vaddr: consisten=
+tly use only pmd_entry for damos_migrate
+git bisect bad 259dbf8c45694409126841a8769c111869fec9c8
+# test job: [529b176c64b658d258493a03d88126c69aeae25b] https://lava.sirena.=
+org.uk/scheduler/job/2106989
+# bad: [529b176c64b658d258493a03d88126c69aeae25b] mm: replace remaining pte=
+_to_swp_entry() with softleaf_from_pte()
+git bisect bad 529b176c64b658d258493a03d88126c69aeae25b
+# test job: [abedb72c9bfdd177a446ed4c29b50d9dea239471] https://lava.sirena.=
+org.uk/scheduler/job/2107057
+# bad: [abedb72c9bfdd177a446ed4c29b50d9dea239471] mm: introduce leaf entry =
+type and use to simplify leaf entry logic
+git bisect bad abedb72c9bfdd177a446ed4c29b50d9dea239471
+# test job: [b789b80819cdef357c78e613a28f36d1ef7975bf] https://lava.sirena.=
+org.uk/scheduler/job/2107105
+# bad: [b789b80819cdef357c78e613a28f36d1ef7975bf] tools/testing/vma: add VM=
+A sticky userland tests
+git bisect bad b789b80819cdef357c78e613a28f36d1ef7975bf
+# test job: [b331f7745489548c5a020301f6f3b4aad20c7b77] https://lava.sirena.=
+org.uk/scheduler/job/2107143
+# bad: [b331f7745489548c5a020301f6f3b4aad20c7b77] mm: introduce copy-on-for=
+k VMAs and make VM_MAYBE_GUARD one
+git bisect bad b331f7745489548c5a020301f6f3b4aad20c7b77
+# test job: [2c91ae77d8fbafb153c13e554f50b7bbeef59d76] https://lava.sirena.=
+org.uk/scheduler/job/2107226
+# bad: [2c91ae77d8fbafb153c13e554f50b7bbeef59d76] mm-implement-sticky-vma-f=
+lags-fix-2
+git bisect bad 2c91ae77d8fbafb153c13e554f50b7bbeef59d76
+# test job: [79ee48c12ef8fe9a3daf0dbeda74f038a3f557be] https://lava.sirena.=
+org.uk/scheduler/job/2107256
+# bad: [79ee48c12ef8fe9a3daf0dbeda74f038a3f557be] mm-implement-sticky-vma-f=
+lags-fix
+git bisect bad 79ee48c12ef8fe9a3daf0dbeda74f038a3f557be
+# first bad commit: [79ee48c12ef8fe9a3daf0dbeda74f038a3f557be] mm-implement=
+-sticky-vma-flags-fix
+
+--8R4WppGBpWuwqpgN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkdwzQACgkQJNaLcl1U
+h9DdoQgAgq/frQCNWXv75TgXlpbK8uijA2OLml7Ffb25QCIjZH0riwLcOg5nl/e0
+A89YOyj4ObnpJw0J+lvaedWgyfueb4vOekR5dU1vaDlPfRPa/dsgPVCuubg6pu9O
+SfGiEOhyckiZsqrG4+gza1mhaP/q3PQXd7BN4g2BOo9axIsxGOSc1ViOIGnygNay
+9p88yzJ3y3oKNrDBJLg7gLFe1Nb+YyaXizSNCmVRvO+FMY+qtyIDFRQpZvghMnr3
+kTVqhbOmNRaGb93eQgMTQFyXd6qJarkbnA5pxhLtN9sZtVgbFxjAO5pmVhqncSlH
+bKoX7YloRzCVrn66hpdP7wDV+WQaZQ==
+=Wctg
+-----END PGP SIGNATURE-----
+
+--8R4WppGBpWuwqpgN--
 
