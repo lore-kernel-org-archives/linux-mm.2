@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 990D4CF394B
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 476C4CF3959
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03E886B00C1; Wed, 19 Nov 2025 11:40:54 -0500 (EST)
+	id A78696B00D4; Wed, 19 Nov 2025 11:41:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0165F6B00C3; Wed, 19 Nov 2025 11:40:53 -0500 (EST)
+	id A29066B00D5; Wed, 19 Nov 2025 11:41:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95056B00CA; Wed, 19 Nov 2025 11:40:53 -0500 (EST)
+	id 918166B00D6; Wed, 19 Nov 2025 11:41:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7CED6B00C1
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:40:53 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 79E7E6B00D4
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:41:19 -0500 (EST)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B73813B362
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:40:53 +0000 (UTC)
-X-FDA: 84127920786.22.644BF9E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CAB52140008
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:40:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lLhT6SzF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2508F12FABC
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:41:19 +0000 (UTC)
+X-FDA: 84127921878.22.78DADBE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 57082C0006
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:41:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="orE1k/Vz";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763570452;
+	s=arc-20220608; t=1763570477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8GbOVaz+/s61R+WywSkU7ZyxU4arEylQcxyFZ64uwIE=;
-	b=K/Yzl9bClegOtKp7nip1PqOJJWBmVRJE1npWSdiRT46LgZNpAhTtLu4hIGg9X/rskud0I8
-	IGtwx/+ppFHJEIrO/tVjLn3Q7mwmmDBaNzVzq38VbVpamKsZn0dQ0htmU0voy9JkN3VH3i
-	gcwt3rC2sSV6bCaamN03/R4d7vnFKus=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763570452; a=rsa-sha256;
+	bh=nNIh8qbJ19QLeHU07pLCa3IrEWT7XV1apL/g1/AFFuU=;
+	b=ShHUIHpd4j1jM3mArTbzuxr2XC7Rp18szSqLNzYKQvS+nRQdDworVLLvryxXuqYxllyTQl
+	J727jqmcC9UnIpO9IqJuZpGS4GDjjxhxAvc/qv+wNFSpsDGiPgEe1tH8HPBKCOxFY3Fr/d
+	FAvrgNiBVAF1FKdoFp8FI0MC4iZDDAI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763570477; a=rsa-sha256;
 	cv=none;
-	b=peFkGpJBD2lvhC3XbFP1EqpOwZOVIl07XhoLgeglSBXHcqVBJmvsXSBWw8Wg9i++EovcXv
-	WzcMXb7yFf+Ygb84du3suCG4C8StPqebZaM8QvVE2i7cp/9dUDj1jjFRU/3AQeNrSv2HCU
-	IwIfYT7wHj7SiWJD0ycO59n1INdWIlo=
+	b=YO6KLrzpWp2PKEztMgpXUOW3SvJXxwE3QoD5KfcRWe+S8UJfLox9+z1fkfVW7yknn+QBFR
+	PBVmMV2USOS31uEJ+slKpD0rs2Wh1OGP+tc+YVgaOFu3Qis+IdjQb0OE2IndyCMK6v/og5
+	cSoGP3jWFqoUI4Xj/8XV+Ex71J6LGpI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lLhT6SzF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="orE1k/Vz";
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 12EF260171;
-	Wed, 19 Nov 2025 16:40:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8644C4CEF5;
-	Wed, 19 Nov 2025 16:40:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D2B941719;
+	Wed, 19 Nov 2025 16:41:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1748AC113D0;
+	Wed, 19 Nov 2025 16:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763570450;
-	bh=JFhkn6lZcnccDk/Xiy7qQSi9rib1FbFLEz39Orxm4zU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=lLhT6SzFU8YnGXsRaD9WXB6PNnLJLV37WDNGmrJy2H1ItVpSERaHHYDaFiYKNaTV8
-	 +sVhKIOM1aK6VFMCTMiiclyoJ6FbkMoHm8GmYVEwqN8HqysKqiYA2qFxVtt1FCV6GL
-	 rQM3sW9biWpOtyldb5TOmuVQUiSaD48/zJmmAJb/OOdI1uJLtgsMGUt9P8LO0zJ0gD
-	 RROcbYYeQdiQrEUnH79JiJ1PCp3fssgXZm7EtH+v7vliUypYK83hjFbI8kc/+cf1u4
-	 f3y9tcnYDpu4hBC/zI/fNyQ2y390nUQBi/LQeDuSFAw6ek1nW6BuEi3Ur+HX4anYRQ
-	 Gf66G4uOfb/ig==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF0F39D0C22;
-	Wed, 19 Nov 2025 16:40:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1763570476;
+	bh=59551kNPC3dWWk2b79CBOZcdwg24stDVN4q/MYg3iWY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=orE1k/Vzpp7xhkzWnI6GnK+j7M5M1HpbQAmd+Tnrb/Yuws6ir0wRXw0wR4tNlNISk
+	 /hIjz/5ynSeALu01KzZjBONLeyJ9dm3BrRkTHevDIKTJA6LdkSP+OSk5TjnWpXUD6k
+	 k6dtjk7T3mGgRtNweKgZ68XtUAylpVFIFw8lgnNFCxFYTUaOA83gqTpg6S5BTNdLBl
+	 5MdINS4KqyNvJBpXbdo+kwPrHDm5vGbvjFtPKUl0UedkssDzhDhzYoVKXGfKo3BM7x
+	 UyVow7EiVUETRTouAZtXPuDvw633JXpXxek3ZTFj1aKeX0j0orb6zzRlVDqOqew87F
+	 lfp5kInyQf7gA==
+Message-ID: <3828920e-4a50-4f64-a25b-b6c677181fa9@kernel.org>
+Date: Wed, 19 Nov 2025 17:41:11 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v23 00/28] riscv control-flow integrity for usermode
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <176357041649.873046.14385292158343476261.git-patchwork-notify@kernel.org>
-Date: Wed, 19 Nov 2025 16:40:16 +0000
-References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
-In-Reply-To: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: linux-riscv@lists.infradead.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
- lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, conor@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- arnd@arndb.de, brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
- ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net, shuah@kernel.org,
- jannh@google.com, conor+dt@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, lossin@kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
- zong.li@sifive.com, david@redhat.com, cmirabil@redhat.com
-X-Stat-Signature: c3skoh5pzqjs9isipjhzpj4jinrj5xbd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/huge_memory: rename __split_unmapped_folio to
+ __split_frozen_folio
+To: Jiaqi Yan <jiaqiyan@google.com>, ziy@nvidia.com
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, inux-kernel@vger.kernel.org
+References: <20251119054639.244202-1-jiaqiyan@google.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251119054639.244202-1-jiaqiyan@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 44y16zw5b9tzbg7c41zokin3gcoiijmm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CAB52140008
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763570451-473089
-X-HE-Meta: U2FsdGVkX18/deCd71tv+6fdWyFlmLo42xEbODKIIVH3Yfhj+zrqxMEDWFm7T7mdaCZq1iuxh5OlM31sVqUGmKkJqneQDMReowH2PUacjL25hdSWIOualEgTyVDdUM3cwWhrfECcQa8yUN0hwfAsVGWDkF3ZzraDospOO37LjNYOuVQUCAmGgFxqK2xFDQL8jvtXkvKXQp+CTCT4i9UoLdd/isZuTCqlBoPHXLZGuNKMAhoTNLy6T7+zZYyYlRMmVcDSwv4nBFktvzOw62sBon/GZ0OJWIFs4gXI74Lllv1uXwllO5da75s/nw0QAWFcIEOd6q0owq86vKqR7h5zFM0HGa/90RBUkQYLmalSCohxrnUOYxEF5Z4mOo9U+K2oryRBZnyBt7o9SR2h0UMzI7BdL0QK4hAF4aLr45ikfuJnNWZ6q2S8LptdqwZeAW8/PldvT6NpSFF0pkQLn/a/FVj9Dj6bRFHjy7ShNxlQo2wLFCazYUl1VL5gmBRQleLcuN1V06cJMmR28cKs4i+GZkZw+fEgb+Iqj41efiznxDC47XN7+U3WbIBlScYgSpLi4QaM08O9OLTQ+cikEbHzRhTHcB7iCdA5o8WEhuW3vp2QBZGFy+vQolfikwQXnDg7Z1TzUEwXorF2+Fm6c8hpmJm/6RpPYBb4nIGhRuDbO38jvUb/3vyBIerN5yI93bjmeaOQR3oN/lRv8gKi+JeWl7pVu/9ybnv9Hmv37ILIVsP4Y70mMkbf7iieFBRl3XSJlD0jfijXA/w1qCbN+NAAavGHXnoes6CiOgjnI0I/0GHAQ2l+WWuctBgTV94ev+oEwTxRjBPcQRd39xC1ECk0/tyNgs62DJkZmh5Z7X70WinXVW8XN2s0u4RnDEKJUFz9ssMc8+4qwiSSJW8v/Thrttb9k/b1i/+PELbFeSz5ponmuXulku8guf5MFHp6dcGYhoLQldKD04Pm1Rt1xtt
- 8AZRrAmT
- kva+epsib51aYmoRfs/KtLyuZ3qqnwgTX5fwwczeAZYVM6sGroTbe3Q9INiwL2txt6x3apnW52iESUwgbKotRrMZxT/e1R/7YgA2aIDHPrlRYm85J8/Xgzteq4gU69+I+vamTdFQc1K5a35BO+CUdUAP5FuRpO6+QAC8cZ0WtWGM0B4Ymtuh0ESowcGetqaBFm5bZjIzQpnVIm9Z6fYmf43O/kEwAjpg/j3h0pLJddj0TZ6l/xghxMKTU/UX5YyLMSiFVK/WkoIg8Eh+5dnKivpUlHNBNzJCIMctMtCmtFHBw/t1eNcF+Gqz7VEHBvnWdFOQuZ7HT8KqZcskHfyHhSJiEzYntuRGA0W5ZiGLVYMal5HR7P0dCGuX+pK7H8nkuirxz9vpdMyft5OfNmDxlAzi+wSb/plMlZrzvUmPWJlPOtLukeAHbI/XaZEziDzk/W49z
+X-Rspamd-Queue-Id: 57082C0006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763570477-991295
+X-HE-Meta: U2FsdGVkX1+tPe+3rA9uT4HjXuFAXC/QU/Fqpd+Ca2YZO4W7MiVRD7+tnTB60Tk+6M+P/OhlqEX768WujohsZJ9m5utHiEi+f7XC34+8d/2VXb/7BsexThNDTaVrhYFnms/T6meF988xq5AjWvmzjbLEbcn2R6K01A6XWNi0XsvBW+L20qY/JZuOSXm+/YTyzf/6TVTvzgnIP0tb+6eCswIjwWBCzvOIJGyZImU+9K2rIBTbQLh2tKmyh8+cWyMo4irKWWfXudiwQROnSru4IaC7cB9pi2w2DIWGyV7DOOGaLtsvro6cxLzrsZMjB9j5E7MX2XoHlKSMjPiC8YRooYgsT5sH56RXSZnwBrltN/yqJ5NmUV/eF0aLpYbmHzd/sAUkU7Xg9HgV+VmwCPvFh9vF8Pi5GBv7rS3YHo9f3pX73E/nTw97AxStog6CoQCe5dApawtR29gUTPEOf349mHiJTkahBVjDB01Lm4WubTsPnZMdQBAD9lTYFgbLkumjlz6q986P1d7JAHnNc++ewx9Il4ujoojvlpQhXOOhFVcZUn+GMkrNG68qK7ROsevaZmqQSr+QjEgfprB+hGr1AGyGCZRcdOkGC5c+ohYhMFwXIWLV3BW5qr3jMrdHRgR54nM7raOrqMeFxiY8/X94mmOQPU8S50mmoAkdJjYScSQoPat8wT1YCNd/4G3LG7boBa1ZzfvhjTVR0lGJAtQwf8yP8m5SSNF4Sys1JfPR/jRj2G42uAQBZPnbAyRkrMBKUdGkWxCcYA4kwhoLplo9abVrSJj0pVux8e73HPWFX/UPNAGumsau/u4MeQfcskOZFHs3PwdEGcnMBX/tYhE2Bv0B4+31PV52vrgxqHvHNZv3ngvN/oM9BDiB3wt//rpyVKSNnGrKxaYHznHVYT99AfMEsiBYr0eRFpiL8nA7gtFm66MwRHKRiUH80h8ifZILBens7UY5YKYBKNsGAVt
+ PeehfKWU
+ B6nJppaObr2cheOqSqqHs/aiCa1c7lsCbZU1GQjuA/GdGEPmP2yArwTyGRjTS6qTLCDNC7tDZCWakmXWVm5xIvfarRmq+EnMuhB5zw4IAea2GXXwdCUxfjLzcMFHeZhSU99LuJhh2m4SfQ8zYXhNGwm5QWl2+hoGFuGdwrXLYouNEGA8Rs+UqatTSU1I385NV5FMtys2cWzvjisirMgydxNYX/Hm6YvKqB7AARKwzdlTd1r4k/GCeb/U5rFoffOJsUKhUFgp/75GW3Ld4B9b6Rfca3t4SupoxW0zPhZvnwtQRMp42IMZekW/asA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,88 +97,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
-
-This series was applied to riscv/linux.git (for-next)
-by Paul Walmsley <pjw@kernel.org>:
-
-On Wed, 12 Nov 2025 16:42:58 -0800 you wrote:
-> v23:
-> fixed some of the "CHECK:" reported on checkpatch --strict.
-> Accepted Joel's suggestion for kselftest's Makefile.
-> CONFIG_RISCV_USER_CFI is enabled when zicfiss, zicfilp and fcf-protection
-> are all present in toolchain
+On 19.11.25 06:46, Jiaqi Yan wrote:
+> The correct prerequisite for this split utility isn't really about
+> if the folio is unmapped; it is more about after unmapped, folio's
+> refcount is zero and has also been frozen. So rename it to
+> __split_frozen_folio.
 > 
-> v22: fixing build error due to -march=zicfiss being picked in gcc-13 and above
-> but not actually doing any codegen or recognizing instruction for zicfiss.
-> Change in v22 makes dependence on `-fcf-protection=full` compiler flag to
-> ensure that toolchain has support and then only CONFIG_RISCV_USER_CFI will be
-> visible in menuconfig.
+> Add a warning in case the folio has non-zero refcount.
 > 
-> [...]
+> No new function is added.
+> 
 
-Here is the summary with links:
-  - [v23,01/28] mm: VM_SHADOW_STACK definition for riscv
-    (no matching commit)
-  - [v23,02/28] dt-bindings: riscv: zicfilp and zicfiss in dt-bindings (extensions.yaml)
-    (no matching commit)
-  - [v23,03/28] riscv: zicfiss / zicfilp enumeration
-    (no matching commit)
-  - [v23,04/28] riscv: zicfiss / zicfilp extension csr and bit definitions
-    (no matching commit)
-  - [v23,05/28] riscv: usercfi state for task and save/restore of CSR_SSP on trap entry/exit
-    (no matching commit)
-  - [v23,06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
-    (no matching commit)
-  - [v23,07/28] riscv/mm: manufacture shadow stack pte
-    (no matching commit)
-  - [v23,08/28] riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs
-    (no matching commit)
-  - [v23,09/28] riscv/mm: write protect and shadow stack
-    (no matching commit)
-  - [v23,10/28] riscv/mm: Implement map_shadow_stack() syscall
-    (no matching commit)
-  - [v23,11/28] riscv/shstk: If needed allocate a new shadow stack on clone
-    (no matching commit)
-  - [v23,12/28] riscv: Implements arch agnostic shadow stack prctls
-    (no matching commit)
-  - [v23,13/28] prctl: arch-agnostic prctl for indirect branch tracking
-    (no matching commit)
-  - [v23,14/28] riscv: Implements arch agnostic indirect branch tracking prctls
-    (no matching commit)
-  - [v23,15/28] riscv/traps: Introduce software check exception and uprobe handling
-    (no matching commit)
-  - [v23,16/28] riscv: signal: abstract header saving for setup_sigcontext
-    https://git.kernel.org/riscv/c/bfc1388f2753
-  - [v23,17/28] riscv/signal: save and restore of shadow stack for signal
-    (no matching commit)
-  - [v23,18/28] riscv/kernel: update __show_regs to print shadow stack register
-    (no matching commit)
-  - [v23,19/28] riscv/ptrace: riscv cfi status and state via ptrace and in core files
-    (no matching commit)
-  - [v23,20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in hwprobe
-    (no matching commit)
-  - [v23,21/28] riscv: kernel command line option to opt out of user cfi
-    (no matching commit)
-  - [v23,22/28] riscv: enable kernel access to shadow stack memory via FWFT sbi call
-    (no matching commit)
-  - [v23,23/28] arch/riscv: compile vdso with landing pad and shadow stack note
-    (no matching commit)
-  - [v23,24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
-    (no matching commit)
-  - [v23,25/28] riscv: create a config for shadow stack and landing pad instr support
-    (no matching commit)
-  - [v23,26/28] riscv: Documentation for landing pad / indirect branch tracking
-    (no matching commit)
-  - [v23,27/28] riscv: Documentation for shadow stack on riscv
-    (no matching commit)
-  - [v23,28/28] kselftest/riscv: kselftest for user mode cfi
-    (no matching commit)
+While we're at it, can we look into calling this something with the 
+prefix folio_split / __folio_split to get some consistent naming at one 
+point?
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Cheers
 
-
+David
 
