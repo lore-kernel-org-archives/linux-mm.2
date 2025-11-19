@@ -4,111 +4,242 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6B87CF34B0
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DDCDCF34A1
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:44:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 258176B0005; Wed, 19 Nov 2025 08:42:56 -0500 (EST)
+	id 542216B00D1; Wed, 19 Nov 2025 08:44:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22F046B000E; Wed, 19 Nov 2025 08:42:56 -0500 (EST)
+	id 4F2DF6B00D2; Wed, 19 Nov 2025 08:44:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16C336B00A8; Wed, 19 Nov 2025 08:42:56 -0500 (EST)
+	id 393C36B00D3; Wed, 19 Nov 2025 08:44:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0659F6B0005
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:42:56 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BB05858F9C
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:42:55 +0000 (UTC)
-X-FDA: 84127472310.16.C875449
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F3226180002
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:42:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZPWhNTp;
-	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763559774;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 252DB6B00D1
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:44:48 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0FC6B9C1C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:44:47 +0000 (UTC)
+X-FDA: 84127477014.03.9F34D07
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 78F468000F
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:44:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=B9SsE4Lh;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MYS69uXE;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763559884; a=rsa-sha256;
+	cv=pass;
+	b=CgPhSZ0chvItAJiceCB8vyyroP01lO+KjFnqslwzaGGu5aXH3hKDMWNI+lhdYbNx4+M+KU
+	VLz2r8WQjuj3RjVrZgjgXPz2gBqc+FdiJZTbgoi1BKX69UT+ihVuLCdyd/E8n6rA1Iyn6g
+	4uXrmeIDjXHh3T8sT5kTP7YkJdIBB64=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=B9SsE4Lh;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MYS69uXE;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763559884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A9gOBVQm3SjNxY9RdaAh39uUQQ3mUpsdkBwekLQKP9Y=;
-	b=3oQ/qhYKaF0PgUT4YbEfkFpTZLgu7Q8ruXo42XOTY7whd1Aa1mZbJckYDKcytMxSxsNUcO
-	YACxUolDreGD066ZCKkVGML9J4FZwgoCby8dXJN/dHrg4ie41/x3864BBHeNP4SlOQ0NGl
-	msdc1weXjLDFDcSMEDNVkn3tGLRuudk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZPWhNTp;
-	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763559774; a=rsa-sha256;
-	cv=none;
-	b=kcJywHqXCxNTV05z4lZAp6E3ITLpU7DaenGR0zcbGMi6ofn4J5dQNb8BdNYdBgUPTgR1q7
-	lbSPcP8S7lkAjmc6Nvi/U9zyFFTWBSIMg4YTgBWwYWkGUfBK3aI4DjWPC3hJND3nMcZk48
-	5v9X1R85kfzS9nuJJqYpWP/ThNfGJJE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AAFE3445CC;
-	Wed, 19 Nov 2025 13:42:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0206DC4AF10;
-	Wed, 19 Nov 2025 13:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763559772;
-	bh=P/9pmsmDZmkNlTyjbeOkKXUp9EgbKAdqcxRg8cTn9uY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LZPWhNTptIctgTzaFpTd1ekG9qrGfohBqAXAHzzaU/HV67myANBywQIS/3x/phUjm
-	 DYDIhDYRi2Ivwc7B5q7hVUqiI/vIfjCdDNCVRado+aVdcD0tmv7IO4i0D/u40bFrWT
-	 CjvOkJ2Z7lepRX0ifqfXVjCrMPqnStFWbLVY19g24sOYIuWTbQo0y1QAm4DprRGO1i
-	 aboRJ2HuKLHhg3MYwK/LN0Tzpuf27/kObDzlA9GsZ9k+CZgy9xrXEQJk0bKopSx1Dd
-	 Bv28ygxN1NRHIbPAah5Y1t2rJIGCMFf0WAQN8PfHquHssFUz8z2mldqA3t1Hi8XD3S
-	 jDXI73w0cwhrg==
-Date: Wed, 19 Nov 2025 15:42:45 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>, Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org, Alex Mastro <amastro@fb.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [Linaro-mm-sig] [PATCH v8 06/11] dma-buf: provide phys_vec to
- scatter-gather mapping routine
-Message-ID: <20251119134245.GD18335@unreal>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
- <8a11b605-6ac7-48ac-8f27-22df7072e4ad@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+	bh=A2Lo34jlk2N1wsoswrMwrpg2tXlXD9XsD/dlloZsjdg=;
+	b=N775nd3/o0JbzC9nfPwfcwTnuXhMWsrmhIbzq2IBUW6aF3SYINh6X/s9O0nxCPMVDbCXEo
+	JE5UTBHiuXC0QU0TnNYI6EQB/juKsB53jvAX20hseNvF58QHjcwXqt2vrv6NLhhpOGLc6p
+	vmNENPGpcZnOYnAm2mxMrZ7x4Nl4Wbc=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJDZnMM025315;
+	Wed, 19 Nov 2025 13:44:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=A2Lo34jlk2N1wsoswr
+	Mwrpg2tXlXD9XsD/dlloZsjdg=; b=B9SsE4LhHkOwTXJIm9Aq5B2DWwJjP84S8N
+	d9yS5P+EUc3/ZNbt0gzbBDOTBQplP9xspfH0ZeMdzdFiyVn06o4F4OQUbX5V31Ak
+	D1pFc2aZQHr3qVderc4Bum6r8TMA8BPWHLCrXKP98+D3JwW/3MO1e1Hpm2NpRp6I
+	12ytwrdsi3IjFw3xPuXc25E5UihcKx5XyT9l5HhZHDsrpM3Dlrs9TGnw2E9k8DlX
+	DD9mgQ/21pwEDU4D4ESrwKyZ21aR2UAYQc4O6WI42hRIy6TMHNKPVyCXMZg+ItHN
+	qA11UhvUnLrwHYjhDJ2WOYjviuWXgV46Bz+ncPqaCCx5j3ylkDzQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aej8j71pt-5
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Nov 2025 13:44:20 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJCat5I004280;
+	Wed, 19 Nov 2025 13:40:38 GMT
+Received: from cy7pr03cu001.outbound.protection.outlook.com (mail-westcentralusazon11010029.outbound.protection.outlook.com [40.93.198.29])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefyabg6j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Nov 2025 13:40:38 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JwMXWcJ0vbVnBvO5YOnfo9KJ1cme7Sa/nfWoAmM2/1absWxXRPTsPBuHQzwUaKA0/i0+n6MsJGecZQQPZZ+U813Kq8v5+yUiLEvxjd1xPuKAZ8PhK7RHlyervSIS1DtX30MCTZx6pKzrrnr9fP7U5CvL7DooX2eVGwyfURTME8gSSwLRIaFIw+iShR0SDRl8Vpbgo9NDj/zrf9BObygMZLJDT5xWerxr6ZekbclB4zrKScyoG3k3ABVD+hHZk4b2pARbpgGr5sqfF4U6mwwFpWQQqQumTqHOEIjc1bb+G/mtP2rRAAML4vV8AYq6GtdezOM+jkbbuynhYiaRJhTpqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A2Lo34jlk2N1wsoswrMwrpg2tXlXD9XsD/dlloZsjdg=;
+ b=Cqi+Akeef4thpp5VRWEqTIPPgZGUY1weRcnvT3V0sTPZZcb4nDR/F+hsH+D5SWnjB5pmxSC/b0BNGC9sLHJAoUWXMHatnjc75V6rGAberRxPM2GXD4w7CQ9Jg8o966LBo3tHyv4Ua/fKa0wKnt6dKl9BJ5f54p+YRxXHN6PF0aWoIkLD5AWYhVJIJcwwPfh7VGC4QME6K6zukGd7Pdtv5ogIXiFdyTe66H0FQjXaDs/jRtOiv+JY5UJbyNBJqPj6RkTC301x2xAIArnUezOjIHe3WawmLpfyUH8dzIH8qPBApncNt4idG4OTXBIqdDAANySkZ6ppe20AAiejFyApXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A2Lo34jlk2N1wsoswrMwrpg2tXlXD9XsD/dlloZsjdg=;
+ b=MYS69uXEEuF55JDPibRZaA9vdm1+e3TyJHAP8m6FkGFA864feh9Ii1rzwSXB3xFzQixnZrGfy6OFyMtSM+qiF7YU7r3cTgcHRhBE03rK50H9fwSHJRM89nL5S186S47nz28siuaVb7mxTbs46yIO6ArsdE+DHfW0uviSewX5pOk=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by PH0PR10MB4472.namprd10.prod.outlook.com (2603:10b6:510:30::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
+ 2025 13:40:30 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
+ 13:40:30 +0000
+Date: Wed, 19 Nov 2025 13:40:28 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Mark Brown <broonie@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Jann Horn <jannh@google.com>, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>,
+        Aishwarya.TCV@arm.com
+Subject: Re: [PATCH v3 3/8] mm: implement sticky VMA flags
+Message-ID: <762f2824-6a3b-422a-a8b8-66b6d5d78fda@lucifer.local>
+References: <cover.1762531708.git.lorenzo.stoakes@oracle.com>
+ <1ee529ff912f71b3460d0d21bc5b32ca89d63513.1762531708.git.lorenzo.stoakes@oracle.com>
+ <25cb4b6a-035b-4193-a8db-685fc4c58507@sirena.org.uk>
+ <4dodae73i5ganur6llvbbxcojt4uailsxs6sr5w2jr4a7tzxkf@26rmrmcdjvlz>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8a11b605-6ac7-48ac-8f27-22df7072e4ad@amd.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F3226180002
-X-Stat-Signature: 1zfw6wizeb1r6wh8qjmysido6bedc1zj
+In-Reply-To: <4dodae73i5ganur6llvbbxcojt4uailsxs6sr5w2jr4a7tzxkf@26rmrmcdjvlz>
+X-ClientProxiedBy: LO4P123CA0184.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a4::9) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH0PR10MB4472:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62df9bfc-f152-411c-17cc-08de277134b6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5BbYBXo+xx9pa2pBodbzUWGSuW0FIMjm9P0FlY09trF0lWszG84z6zUFiU55?=
+ =?us-ascii?Q?cOPW1CeejJLmUAdsgUnKaC6x0oinh+6FHs43GWvvYWwTp5VjA0czgtJWgNjo?=
+ =?us-ascii?Q?LfyTfXUk9jAftxPY9AyEfJbdJatYYVSxt1zEf2HRX7GX9emu+QLJ2LI6iV50?=
+ =?us-ascii?Q?Tr2WAXSe5gQFaUc92p8BSf/RLp15FMTpF2aUABsLhPOPBPwTKQccvYCj6A2w?=
+ =?us-ascii?Q?c9/hyi5uAr1xSzn1R+6/0oFfRn6TpDjpG8lcdwtkurBGr/MILBlxUmvEsgQC?=
+ =?us-ascii?Q?0lwNuPrubGLNWFyTSsUCY9OGExYvdRBsRyLBd7FotEY89mbAgm5TU9a2DWT8?=
+ =?us-ascii?Q?fwEDaxTSroPp+Z3U515cpv0glh/LCCHPuO+eN++RaaovfOPzTmZuLMoi/ttc?=
+ =?us-ascii?Q?EnvXFfLG7CnaIqJ1XIGOIQkAVsfdpDWkjEDNR+upVIJVAFQbXZ9j7UJhaxj8?=
+ =?us-ascii?Q?cBmaHajkdRdVouimjo5D3elvT5bz3qK7ppnm6MgS/TvHPcXtjvQ8R8PDXIhk?=
+ =?us-ascii?Q?MIVpLKq0HWZfRfiSF00yqx5bWNzi/wCvHQDwH2nKeN2KV/UnSD+98TSyz9ne?=
+ =?us-ascii?Q?iKCRacmDZzFO/Nxn4BgvOB6TNkBgNu+4veQgLoYfyX09ZMZ+mFE/IGT2fyMT?=
+ =?us-ascii?Q?Zcs3Fd1yTGhuDS9GlXI7e2Unxgav3vFUlituKZRIw5+lLhmkox0QJBiO78KS?=
+ =?us-ascii?Q?KWfmrnac5jpbgytaMV93fP+FwkqxAHmiQTqtnBCJxBCadkE+ti/p1JjIyj6Z?=
+ =?us-ascii?Q?aBbtWGGdt8OPTXWdUAHNL0euZeUqYnkwwALJrYdiKDYY86NV8BF6Vz4hza/p?=
+ =?us-ascii?Q?pTxNiIQNMfN4N+res7efry9KHt22hYM+yZnTQU5biWVWjddtj4U5ZrSjkNR+?=
+ =?us-ascii?Q?XGrllMGzkGSfg8i1/pHTDm4pl4OA9kExzjAZrp38nQbA7j2U/MOivdrsLwwG?=
+ =?us-ascii?Q?Ph3PMPCOAd6p0C7+2oFsz45zsSaidQy/xmMNGFJA+TNCUzAh0ehBlGeBiqXG?=
+ =?us-ascii?Q?4ll7Cw8zsa6H18cs1CE6nlIc+y4+Yo+fNx7LZpMU0simlt+uPl0Iq3oXBpsT?=
+ =?us-ascii?Q?5k+V+NpfRsydKDLZRpKbYvhnEcrXiQEULWOgfo1xBCe83uNpfa5cNknubSpJ?=
+ =?us-ascii?Q?K23lTXN2jM8owx5rVJmTYC+1nRM+ZyQZbseXhI8l1zWfjpjm3B28rxFHeA98?=
+ =?us-ascii?Q?nfUSfSIErEIuVgeTnp0sPlEAVTxcnDVFEfLON6zW/CPV9/oj8XAasEIdzkN6?=
+ =?us-ascii?Q?zMd/MNRFbB7aBYwKcUhdCplP9U6iPUud2KsxIt7dL2IuUlLjWU9WAkimORdg?=
+ =?us-ascii?Q?D6RWdnZucVIhdv/p9OHRkcXNjoJhZz3D0YV5CastIGmCZvyvB6BY3hIK16HL?=
+ =?us-ascii?Q?pRY9iXPzdQCKbh//63Sw15hwoU3z1QMoTF3cexMTqEZeBuX0qTDk3pru07/Y?=
+ =?us-ascii?Q?X8BvYgOxs1ZgCvV+VvAB5zuaAD/AhJiw?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8XRgGFpO1rBcRB5L0T0nd8kljl01HrBOiLf0Gaqmz2FP0WCYpdEbCE/d5U+f?=
+ =?us-ascii?Q?vi+dpmU2+PfRD4+yhBoaBzTkjMdYNHbpd85HnBErVd5FZ2X6B3oeXyVFLIhD?=
+ =?us-ascii?Q?RLtanVoun2eVxliyG+/HHZEgBPWR+TzhdQ9jNK0LqR09KNOD99ljM+aTx9bz?=
+ =?us-ascii?Q?Kt++VgUiB3NUFn8GsgXiDIXb3jlUXUccJdU/Suw2Uxyu7G6MhNs4Wy1fmnRN?=
+ =?us-ascii?Q?puPb6gvd2P5ejkV8wmlckgiFhZJZ9/gg4wnTSdI8jhqFmTmaHZhL+gA439aK?=
+ =?us-ascii?Q?zmjbnF8YduOR7p1v7fIglxMthLlrSMsCc1efHFUYONdIc3kTRXudI77x+eNS?=
+ =?us-ascii?Q?Zgv3/H0jAF7VQVzWlu1E+wNtQKXybMzsX2+IFZdF5heLiEwRVir4d/gBAgcX?=
+ =?us-ascii?Q?Avnn6/okMzvf8xlYBwXQA0BygMKz+Its2TDrcumxPAj/UN91TjJ1tpLS6k7r?=
+ =?us-ascii?Q?q8Rt6wGpNvGmW8SZNIVG20ZlDr8iujt4mMMYY3YyO09o0HGBgFCHQEGE8n6g?=
+ =?us-ascii?Q?bxG2laSt12lLbuXkBEXtZ9/1CzjqA2q9AZ0zNsLgGlmswoC6SMScH3QXuBap?=
+ =?us-ascii?Q?GQeJJ769GrY5xItgE+v/CGFpCFxQpuJ0sav5KA4xTfG5GpMLuKCadROPe3cU?=
+ =?us-ascii?Q?7/Iw2MFeK5O2ptn5LcIsa+4es4iJvwF7iANpedyzYiS8IDULrfKCHwvCuzt1?=
+ =?us-ascii?Q?TNHYtxJvpBLbQJNpbVeLrir1bpsdaFIIAKywiDeBTjkAcgjRLyixJhb29NTi?=
+ =?us-ascii?Q?V5mpmeZi3jWYMYQUG7YWFHtd8pldaRxlMAw0u+JQg0PftvLm5SwbeRUhI40c?=
+ =?us-ascii?Q?bxw3ujZ97Rsd1G8tiuxvcT/v7niY0fl+t9599c/m8GWBbQyjuFd/A1zO3T7T?=
+ =?us-ascii?Q?iLUPW5KzjryMPyOOI52bjEfAqZW/VXDEzsvqynRa6iZ7nq0s4ZTPonaQGMUp?=
+ =?us-ascii?Q?UNG/rTiogvOqnb8VQ+aMssHsaBUuns10UkP9b5rBnRwTsC3mXpfEIdDzWSZi?=
+ =?us-ascii?Q?+74b8Ai2a9tBdwY9W1ixJfVO693fPx4o5G5Uq+HqdXxRHMuoHv9bJas40tcF?=
+ =?us-ascii?Q?LNTSWxN9fyxz9SlW4HbiOLnxYZcDfcR722FEDjOsWpE95L1Cf0qpRUu+oJPx?=
+ =?us-ascii?Q?oQ/byznVDPGhsZAEcgPBEKMIY7+dQarC3rfhUckLy+d8q2uIsWA3pUZ4ICRn?=
+ =?us-ascii?Q?w/pgYYkU7qtWoImQm0/5I5SecG4q9w/TOy+6C9dfenl5hc4b4do5BN1MClXU?=
+ =?us-ascii?Q?on/semwzij2TX2QCI6nicfNx8vAxW2k7wKAmWBQ5Jdv94OoTew2jxq2TiK0d?=
+ =?us-ascii?Q?TNBfq6qQ+c0jSdczye+a92EPdm0btY7sZCAdI/vgI7r+V7BRo6+PQxF6nS1w?=
+ =?us-ascii?Q?Q7/BpAxIXYzsbyalMVxLJ6/ekBP+MS2DaisLq8+LjWN/+z+XaMfM21vRglOH?=
+ =?us-ascii?Q?3s3gGb/QJmBVLtAPy7RJxPKEbiVioxZXraxIYKqSz6sqNCFZiqxOM89gd+FR?=
+ =?us-ascii?Q?Yn1/LanHCafk88HiEHwFPHoquQsjzvj4yYKuvcZIHJup5pOuyntQYITinP7z?=
+ =?us-ascii?Q?oaofPh/bDrUWCARU1Du1J/m0PSmtFKgK59ONJ1nYLjmVvlg+6Z0ebjJJJard?=
+ =?us-ascii?Q?0A=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	/eGf9d6q2Wrm6yqod43/Bk0FdMuaYm7HCGn8Nw0bY5QDvuS7iUmODCftcS74sGthDt5fjvGgWD3mp2QWvX6Ai89dXo9Hfrl9jZhEBI/kDyD/uvFqBy0qWYq1bcRwypNfpV7h+QkTEoqz0hz7vWfxIwzEpg3aZiUTRUAqVzmo9+PGK9ZQGCFcrRAcm1aqz+1ZMWZ5fzobTv8yZLnPgnmv2tGnqaQsqR7hH41x4HMAZftBQgeT5caSye9QItnW8303E/KuUc+qUg0JObkbX+BVlpOYp+xZmxw5PaWz1AdFNjTVwHx2c3II+tySskfJB3PNxxT8Gb2SaahPLjioGdISOFQxIKmpvxGCknuthqBPQtIQzy9HVqOvWiciPhBRcWzOOm/2/v06zP3PJtoOwXcMIOPh+CNH471mIvG2+p+dJTpYNi82aU/rJQrToX7IVos+BJmf2G/Qdp/OnyfdRjFSbcA8AdB/Tkq7S66sX4NuRHyFjlpjjx5a7NhpfBxv/n4PL+bY/xaxkf8/UQjqZ0oYYTtn6CahcjuKO8UNbR7JHXeGSaEdx3tQA51TK7k2N9WFphFGrNMi/vrlrRal+E5SKh9Ae0uvMbtcNFksYT0zYKs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62df9bfc-f152-411c-17cc-08de277134b6
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 13:40:30.2903
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eSbT8hsS4xvh08D7uy8AYwZcPD12TQiuN2yy36ySGVzIOiVeB4+i4mhosex5Ri4ZlOqWgfxr+IM/1bn+XWz8ZN5DsXHsInQGHrv8guXJiL0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4472
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-19_04,2025-11-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2511190109
+X-Proofpoint-ORIG-GUID: pV-cPLK3gPqUOaxr9SsdB_7vcT5w-EEM
+X-Proofpoint-GUID: pV-cPLK3gPqUOaxr9SsdB_7vcT5w-EEM
+X-Authority-Analysis: v=2.4 cv=I7xohdgg c=1 sm=1 tr=0 ts=691dc9b4 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=UhNyURFBbM0M6YVT_0sA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMSBTYWx0ZWRfX9T/osaEbIJyG
+ ttriaE0u5kLGvQ0GEaOWRFlvhvGnZcGy/wQXg9kLscdmzyfh9aE+vBV53s6cVLpTrmaFF898Ku2
+ e8em+PV+5Rje9dAxg7j50xwSwgXMf0ryjeAaG5yxeSfVlnJIov6aBylRV5G1dynFm+yvxSRU34q
+ Q3JTJQc4pGp1tfjuplDG7zyATFZ+LL9YoQ/S+8O0dZBfjOsre+/SmvIEV9r/kFIJ5IDBCIovWE1
+ AKfS5Y68N/Z4Zp3SCN7nBnBPpBMeZZjLe4CRGiSxqhlGRSWLhOCEXxaucxJ3aAY5iFGzJj+gfxc
+ JsrwlDaxow9kRdLcI/CeWl2q9DLiZcrkUzBfktdlkBDAcsdfbyz1lA/U277NRuLq4h77KBYjLMR
+ 8/GL2skzW4h8LRWRLa7/rIq/82YRYw==
 X-Rspam-User: 
-X-HE-Tag: 1763559773-168988
-X-HE-Meta: U2FsdGVkX196fMsygI9IAkhnsLzYPgUe+inn3QJWEsgLBPCvwReV7wH3tWQGiyMgvsqpjz50YPGc/d5J+wIYEATC0Gi9JeTSpCTBpg5BIrxUeTIzkBVDuk7FaudomSGzPqeOViSoOfRmAlxJtCbfk1v5cBlgUYCqY2UJtJujbdwOk9Y4tMI2O81tzJC0xZrI8bpiBOduUMy5GK8h5FFZtVNHatJSeAZhCic7Pf8Im4uL+jnVbLd59fmrB3870VFqBuliEOAytomy1uzRE+Fenrn7WAsY5cnibk0NDwwkXvBdvoX1K62rMAB8XSJtFpSHbVRV5OuIuXsOc5/64ANuDH5kW9HYOonnOXMF4jW4HfVYVIwP4E0oeX8qjbxoi3VscblKDVszzVsrRmw240b6QVv7lPUkOB32y6qLdL0CfRPcH9XiJimH86C7wiFcWTdObwydmFlcvtbnTLz6oSWQf8Qdf+WXbZzxhnw7+1WRYYgSNCbW9CZzALjrrbjfUqkqsqdV7tXBOD3wtnsQQWedbYdnzno5wGoY1NyF1rVYkYfP1hlnWPgiArq5ErT6BzvLaaIUY422EIKljia6Byc3DkAQ+NTFgpAHIOhDa6VfmokPJqxIM0oGTNMVg+mTZCytIKhuYb5Q1RbUWz0+diemfTUMLrTRfzOao69lCq8vUgUZZz1CynIPZ43xdqpCu/nafWDnd8obFaPi8aOZGK/WDSeLjQKbzqL8Po6FjREjShG2pZJZPmE3mK7p3WXzoAUfirp1XiP+HCbNT5oJo6TT3sCnxzZZb8inqulzw/Tc4mq9FfPwfAzaDbmiw/kAw5lAlc6CQzGhXlkhe7aOsVkSTbOX4VfqVGq31SGWPAfC0aHc9RIHyaCLhZ1ifPMsmfq/yye4SMFouyQnjx0H8dMbPP1zlJvm7JC1uFwtLqcJDryIy/NtBBnon45o5RZdjg9XYdXXOb5xsGt61M+w5GL
- NYr/CiOA
- SfDi5L6h9qTMPZsn9SIF2LeiXjmIBtphnRt2TlVaGOPG4/srgmin16YeHvxQycgi7m/7Cn9KA1AZTRR/cNAaxT4Clb2z+YPRbSZyiDbExnkI/OPp0T6Airn5pcywRZwmgcQQUx+ky5uPEuiEwQ+wXQ1hV6SwRh7DhqvFRri11/k1s0QpGNMYIqrqKPTyiBVXDUsmUFY6F+AjrRBT0W2b0kt9WmX1Twn+Yyc27oF4M35kzBsN0HkMhZZiJWS65lECw5fONKHuyz/EEki/o19jQ4zMZgRc72N39ySWHEvEV9uKM68Nyg274CmuFry43rTDHIC2NvKkUbKFgzHbQPtxo8UvQbszIbhocb6xyyhBlOEXZPGD25MG8maCeDA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 78F468000F
+X-Stat-Signature: 3ic39jttewgt86t77nq6rzdb4dk1jj13
+X-HE-Tag: 1763559884-577232
+X-HE-Meta: U2FsdGVkX1929JnzYx/TgURvcUsjdolVmxpUStxwS2PstFyUEoV3s/8/QdhdB7YHu3cbaQyKPTfi/DontsJDF6OOkkpWPQ8amibv0A3iPcMNL28whQheWxZEDfFfv+Hry6bXDEHFYRot3Xav7SgM5K0uhcKXQFQT1MKPAVjJcdB+z79SZwdY4BP303Rph4m9iA+ZpRmhsDmluXzKjH7ziHj3Bp8W9Tw+ekjRWzywCeg2Yhw+Uw7JH8hPnXYfFzpuFnQZQKfC4xRmmnG6rWiunJJ+TchpG1IxALHlVqMDzI44s2PtWlkMH0Sp7h2kkZr8mr+mjbAQTjWibJi8qQeBWBBKGXx8Je6vQOx/2BeJyolU1gKisCcUEuk/StqyEZUEg/24Nrbl1MYWy54kH8yYCam8LFZd06khtPceRHhFxO3gz3G8dhTOEWFgWfBGC0TqoePGuxs7Dfmdd87ed0ge9wS5X+Tk9PWGL4OnV0zSDG8ISK3Ht3IEQ50uUBvgWoED8QVf8ntgSfNDcOBa8YxyELY5VyaHaDMlRVXp65yaB55P5qFzpy32wFnjwkiQmknSTDiBcGPpCzS9SGLMMTYo8KLK3S4txCGqRPr6P/rKPBfPUAS7RUINl9nFKTBQIk4VvPI6EGtmTnBf4iXYjgJfVziltiF+HsiB8FKdsp4BcaHYmHI7be7w5KAQvHpo91bi+LRDSueOgxTLRpcy1Cz2Su89zgHQfyeQVznNvZyLsrgi3BE9IcO3eBuIQi6K9l2fcYGCHKlKAU6y8VucpGKp1vwg7rw211FuRJzL4njBdd7MAJiaWvobDu/xQgNL+SLX3a1LXKOX45Gq7ceizP65YnwaFQWxGgtVUsE9PFgjWOhVZR+1nnsdF4DCAZ8GwXlHIDI1i3pT6YpqqhuyuLSlQwfcp+G7LKPlmldOUV5B3Q1zLUkOXzCFKPIJdodXUXxXb1cqwdQAAaEhqzzzavJ
+ 1W0HFCPf
+ QIPgn2j7Lm5nciu8Up6/fsQyjn73e1wpXuYy/VguJNdbxfVr0DGHLf4KQ55oQi9/zxjM0Jk9HmQPAtSmPMaP/g3/jdj/iVJNjKy3F4tU6hPHlv6eIqyJp84qJg10acgNZ+mO2OJX03kXXAcTGGzhQ4harnEazZ68Nhm5jqWAhcaODRuWUy+Q7MB/VTURrr4obQ/V6qH0cWl9jPT+Kwj3ZotKVCqsv3bxQKv+3t5m2VVEnmYiFjc6mxQiC9jx6ntMa4DIquxY3b+a9tt8qcQ+CCbufrnO/keBtZDPE/OEnrh8t16lffutl1p3mzD1toOWtX9D762hWTwnuQw3E1/qr9OZny6d55otCwQBQmMzZ2ZoIORHzu98gsDYWeEYy5gFKbe/eEkho+ik/KsGOu2j0wp5tmagR3afq0b/EWQsE1IFGAStW1+PtjtCMk+5Y6cTKc3g7Jk1LRguMFAED6UuKfyBGm9nLe/RsNodPQ/mxkm1x2HAKds5CRuu5e6hHFe3FbeM6N0Eh5RegdYx7U/w3DMln2QPpFvbuVFX7vuFaBSSNMWBmSI50tLwqIrAKM8TS2diQ1+S434oY5bNhJQuDw1/UB7f4IRFKKWHnupHBZQRuaC5FXU1tcMdTST86E6w2F9vJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,202 +248,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 02:16:57PM +0100, Christian König wrote:
-> 
-> 
-> On 11/11/25 10:57, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Add dma_buf_map() and dma_buf_unmap() helpers to convert an array of
-> > MMIO physical address ranges into scatter-gather tables with proper
-> > DMA mapping.
-> > 
-> > These common functions are a starting point and support any PCI
-> > drivers creating mappings from their BAR's MMIO addresses. VFIO is one
-> > case, as shortly will be RDMA. We can review existing DRM drivers to
-> > refactor them separately. We hope this will evolve into routines to
-> > help common DRM that include mixed CPU and MMIO mappings.
-> > 
-> > Compared to the dma_map_resource() abuse this implementation handles
-> > the complicated PCI P2P scenarios properly, especially when an IOMMU
-> > is enabled:
-> > 
-> >  - Direct bus address mapping without IOVA allocation for
-> >    PCI_P2PDMA_MAP_BUS_ADDR, using pci_p2pdma_bus_addr_map(). This
-> >    happens if the IOMMU is enabled but the PCIe switch ACS flags allow
-> >    transactions to avoid the host bridge.
-> > 
-> >    Further, this handles the slightly obscure, case of MMIO with a
-> >    phys_addr_t that is different from the physical BAR programming
-> >    (bus offset). The phys_addr_t is converted to a dma_addr_t and
-> >    accommodates this effect. This enables certain real systems to
-> >    work, especially on ARM platforms.
-> > 
-> >  - Mapping through host bridge with IOVA allocation and DMA_ATTR_MMIO
-> >    attribute for MMIO memory regions (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE).
-> >    This happens when the IOMMU is enabled and the ACS flags are forcing
-> >    all traffic to the IOMMU - ie for virtualization systems.
-> > 
-> >  - Cases where P2P is not supported through the host bridge/CPU. The
-> >    P2P subsystem is the proper place to detect this and block it.
-> > 
-> > Helper functions fill_sg_entry() and calc_sg_nents() handle the
-> > scatter-gather table construction, splitting large regions into
-> > UINT_MAX-sized chunks to fit within sg->length field limits.
-> > 
-> > Since the physical address based DMA API forbids use of the CPU list
-> > of the scatterlist this will produce a mangled scatterlist that has
-> > a fully zero-length and NULL'd CPU list. The list is 0 length,
-> > all the struct page pointers are NULL and zero sized. This is stronger
-> > and more robust than the existing mangle_sg_table() technique. It is
-> > a future project to migrate DMABUF as a subsystem away from using
-> > scatterlist for this data structure.
-> > 
-> > Tested-by: Alex Mastro <amastro@fb.com>
-> > Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> >  drivers/dma-buf/dma-buf.c | 235 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/linux/dma-buf.h   |  18 ++++
-> >  2 files changed, 253 insertions(+)
-> > 
-> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-> > index 2bcf9ceca997..cb55dff1dad5 100644
-> > --- a/drivers/dma-buf/dma-buf.c
-> > +++ b/drivers/dma-buf/dma-buf.c
-> > @@ -1254,6 +1254,241 @@ void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
-> >  }
-> >  EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment_unlocked, "DMA_BUF");
-> >  
-> > +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
-> > +					 dma_addr_t addr)
-> > +{
-> > +	unsigned int len, nents;
-> > +	int i;
-> > +
-> > +	nents = DIV_ROUND_UP(length, UINT_MAX);
-> > +	for (i = 0; i < nents; i++) {
-> > +		len = min_t(size_t, length, UINT_MAX);
-> > +		length -= len;
-> > +		/*
-> > +		 * DMABUF abuses scatterlist to create a scatterlist
-> > +		 * that does not have any CPU list, only the DMA list.
-> > +		 * Always set the page related values to NULL to ensure
-> > +		 * importers can't use it. The phys_addr based DMA API
-> > +		 * does not require the CPU list for mapping or unmapping.
-> > +		 */
-> > +		sg_set_page(sgl, NULL, 0, 0);
-> > +		sg_dma_address(sgl) = addr + i * UINT_MAX;
-> > +		sg_dma_len(sgl) = len;
-> > +		sgl = sg_next(sgl);
-> > +	}
-> > +
-> > +	return sgl;
-> > +}
-> > +
-> > +static unsigned int calc_sg_nents(struct dma_iova_state *state,
-> > +				  struct dma_buf_phys_vec *phys_vec,
-> > +				  size_t nr_ranges, size_t size)
-> > +{
-> > +	unsigned int nents = 0;
-> > +	size_t i;
-> > +
-> > +	if (!state || !dma_use_iova(state)) {
-> > +		for (i = 0; i < nr_ranges; i++)
-> > +			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
-> > +	} else {
-> > +		/*
-> > +		 * In IOVA case, there is only one SG entry which spans
-> > +		 * for whole IOVA address space, but we need to make sure
-> > +		 * that it fits sg->length, maybe we need more.
-> > +		 */
-> > +		nents = DIV_ROUND_UP(size, UINT_MAX);
-> > +	}
-> > +
-> > +	return nents;
-> > +}
-> > +
-> > +/**
-> > + * struct dma_buf_dma - holds DMA mapping information
-> > + * @sgt:    Scatter-gather table
-> > + * @state:  DMA IOVA state relevant in IOMMU-based DMA
-> > + * @size:   Total size of DMA transfer
-> > + */
-> > +struct dma_buf_dma {
-> > +	struct sg_table sgt;
-> > +	struct dma_iova_state *state;
-> > +	size_t size;
-> > +};
-> > +
-> > +/**
-> > + * dma_buf_map - Returns the scatterlist table of the attachment from arrays
-> > + * of physical vectors. This funciton is intended for MMIO memory only.
-> > + * @attach:	[in]	attachment whose scatterlist is to be returned
-> > + * @provider:	[in]	p2pdma provider
-> > + * @phys_vec:	[in]	array of physical vectors
-> > + * @nr_ranges:	[in]	number of entries in phys_vec array
-> > + * @size:	[in]	total size of phys_vec
-> > + * @dir:	[in]	direction of DMA transfer
-> > + *
-> > + * Returns sg_table containing the scatterlist to be returned; returns ERR_PTR
-> > + * on error. May return -EINTR if it is interrupted by a signal.
-> > + *
-> > + * On success, the DMA addresses and lengths in the returned scatterlist are
-> > + * PAGE_SIZE aligned.
-> > + *
-> > + * A mapping must be unmapped by using dma_buf_unmap().
-> > + */
-> > +struct sg_table *dma_buf_map(struct dma_buf_attachment *attach,
-> 
-> That is clearly not a good name for this function. We already have overloaded the term *mapping* with something completely different.
+On Wed, Nov 19, 2025 at 01:27:08PM +0000, Pedro Falcato wrote:
+> On Wed, Nov 19, 2025 at 01:16:36PM +0000, Mark Brown wrote:
+> > On Fri, Nov 07, 2025 at 04:11:48PM +0000, Lorenzo Stoakes wrote:
+> > > It is useful to be able to designate that certain flags are 'sticky', that
+> > > is, if two VMAs are merged one with a flag of this nature and one without,
+> > > the merged VMA sets this flag.
+> >
+> > I'm seeing regressions on multiple arm64 platforms in at least the LTP
+> > clone302 and madvise10 selftests, both of which have bisected to one of
+> > the fixups to this patch.  Especially given the other tests that also
+> > bisected to the same place I've not investigated further.  There's a
+> > number of other LTP tests that started failing today including relevant
+> > seeming ones munlockall01, mprotect04, madvise10, mprotect03 and
+> > futex_cmp_requeue01 but I don't have bisects to confirm they're the same
+> > thing.
+> >
+>
+> Thanks for the reports!
+>
+> > clone302:
+> >
+> > tst_buffers.c:57: TINFO: Test is using guarded buffers
+> > tst_tmpdir.c:316: TINFO: Using /tmp/LTP_clorMwMMw as tmpdir (nfs filesystem)
+> > tst_test.c:1953: TINFO: LTP version: 20250530
+> > tst_test.c:1956: TINFO: Tested kernel: 6.18.0-rc6-next-20251119 #1 SMP PREEMPT @1763523415 aarch64
+>
+> next-20251119 still has the v3 version of the patchset, which is Known Bad(tm)
+> after a couple of buggy fixups. v4 should hopefully work properly.
+>
+> --
+> Pedro
 
-This function performs DMA mapping, so what name do you suggest instead of dma_buf_map()?
+Thanks for the reports Mark and also for following up Pedro, and yeah this
+should now be fully resolved in v4, see [0].
 
-> 
-> > +			     struct p2pdma_provider *provider,
-> > +			     struct dma_buf_phys_vec *phys_vec,
-> > +			     size_t nr_ranges, size_t size,
-> > +			     enum dma_data_direction dir)
-> > +{
-> > +	unsigned int nents, mapped_len = 0;
-> > +	struct dma_buf_dma *dma;
-> > +	struct scatterlist *sgl;
-> > +	dma_addr_t addr;
-> > +	size_t i;
-> > +	int ret;
-> > +
-> > +	dma_resv_assert_held(attach->dmabuf->resv);
-> > +
-> > +	if (WARN_ON(!attach || !attach->dmabuf || !provider))
-> > +		/* This function is supposed to work on MMIO memory only */
-> > +		return ERR_PTR(-EINVAL);
-> > +
-> > +	dma = kzalloc(sizeof(*dma), GFP_KERNEL);
-> > +	if (!dma)
-> > +		return ERR_PTR(-ENOMEM);
-> > +
-> > +	switch (pci_p2pdma_map_type(provider, attach->dev)) {
-> > +	case PCI_P2PDMA_MAP_BUS_ADDR:
-> > +		/*
-> > +		 * There is no need in IOVA at all for this flow.
-> > +		 */
-> > +		break;
-> > +	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-> > +		dma->state = kzalloc(sizeof(*dma->state), GFP_KERNEL);
-> > +		if (!dma->state) {
-> > +			ret = -ENOMEM;
-> > +			goto err_free_dma;
-> > +		}
-> > +
-> > +		dma_iova_try_alloc(attach->dev, dma->state, 0, size);
-> 
-> Oh, that is a clear no-go for the core DMA-buf code.
-> 
-> It's intentionally up to the exporter how to create the DMA addresses the importer can work with.
+The fixups were just broken but luckily Pedro noticed the mistake I'd made and
+so was able to get a fix out quickly! :)
 
-I didn't fully understand the email either. The importer needs to
-configure DMA and it supports only MMIO addresses. Exporter controls it
-by asking for peer2peer.
+[0]:https://lore.kernel.org/all/cover.1763460113.git.lorenzo.stoakes@oracle.com/
 
-Thanks
+Cheers, Lorenzo
 
