@@ -4,107 +4,249 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C6FCF3958
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62329CF394B
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:30:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C303F6B00A7; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
+	id C5AE56B007B; Wed, 19 Nov 2025 11:30:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE05B6B00A9; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
+	id C0B816B0088; Wed, 19 Nov 2025 11:30:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AACCF6B00AA; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
+	id A85AE6B008A; Wed, 19 Nov 2025 11:30:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9281D6B00A7
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:29:27 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F81613B305
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:29:27 +0000 (UTC)
-X-FDA: 84127891974.02.CB1004D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9CBD51A0006
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:29:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MaDzWdP6;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763569765;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8808A6B007B
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:30:56 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BFE22C055E
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:30:55 +0000 (UTC)
+X-FDA: 84127895670.26.D8906D3
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CA1CD40013
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:30:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ERUqV30j;
+	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=S1MXYCyJ;
+	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763569852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yysW3GAFdDR7cvQccQ37RQ70J/+oCxePvfJ3ChWHfd8=;
-	b=ks4KnaAmZVTLRNYg2+kVZ6uhLTiDkeDv2zcd/RWdd3pOcUkBnTS1p893wLffKGkCGjOZqz
-	kH9SO68Xf9e102GCF3iAVYVthsGSKrnBSgHjXb9t9K53PdykYUvqDUQqGsU/93Rul/7aY9
-	e0978jzSKKIaP2F6ZnMuwisepVb8ufI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MaDzWdP6;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763569765; a=rsa-sha256;
-	cv=none;
-	b=hhNiQAghqgWV2sEhNL/TQhveoP5Z7hxtmdJhdXo+vXlPQU+bwVgLeb4rUdVIsgfljFsXSA
-	WFj4v2N5id+1P1YgnK4u+EIDyhtWLWvLX/LpIdRqyM3AvHfwXhoXcbnWufvaRMDzBq+kyq
-	G98TWssI9YhNyq59SjyyHtc3jRU/7gQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1035360172;
-	Wed, 19 Nov 2025 16:29:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAC0C4CEF5;
-	Wed, 19 Nov 2025 16:29:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763569764;
-	bh=TZ758d5/YEZLhoc4VSMgt5fLw/xbPcRGb/+cc267KEc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MaDzWdP675KOgfaKESTfH59kXVQiWdke3+ygU+0OqRL7Sv1m8nQcmarXn+HUWfdyd
-	 LCpBntydGltnMTi7A3/308fmvWGG9h955ph5tCtIstowAO37pRffmDPBk7LzBVlzg8
-	 zwmgikgOwuTp1muye8MZlGwpBQ2ssgKDdZZ6sAjexroFvTjWU1q3m4oGKT7/37UzjR
-	 9cZMW/spKryFmgq20PCPZH5m2h88ALKdSgknqVoFh0+IIoQULdY9xeO+pH7fpaB8ih
-	 b7ULLq6ZEIe7/wBE0325qcBbgdNuYAwffq6r0D+LFXdyn+lXi5R7e3Fa21LPNnmnTN
-	 brtT9OTr0MumA==
-Message-ID: <968d5458-7d2b-4a8d-a2a6-0931cd87898f@kernel.org>
-Date: Wed, 19 Nov 2025 17:29:19 +0100
+	bh=ieDpejtHRK5TMUnI+jG18GefiMhSjBak6bTvEFOfxeE=;
+	b=X07xUrjX0XTDLLkTkZoGROexHFIhePLPVM+Ag6awfSzVeec3eBnwU0BRH0eCPzAjVsZO2v
+	2twQ/u+6u9veaU1Be8XVLNwC74ARFeUXRfmwOWL8TBKSLa+iKIlv4Xdn6qEyCtSdNumqEt
+	HGCdFjGwVM05zfhgyee2zk2MBQkwHbA=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ERUqV30j;
+	dkim=fail ("body hash did not verify") header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=S1MXYCyJ;
+	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763569852; a=rsa-sha256;
+	cv=fail;
+	b=y9UfZTUZ6U2OvrcfpCqHQG3n+epSLtBGp6M1vodJZjD9xplqv/nknZPNOYpKVjTDW5Gc3c
+	cOB6hqoc5RwChUwbC/yJHm218GiUz5ZCNtC64FupUIFpmZItKquwIshkDJRYmed842bWD2
+	ux4KgViY4gx8D81USFvLM0wJ9y2JF4U=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJEfuwn021298;
+	Wed, 19 Nov 2025 16:30:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=ieDpejtHRK5TMUnI+jG18GefiMhSjBak6bTvEFOfxeE=; b=
+	ERUqV30jejIeXIT6b66R1mRpvdIbcvMMClGMZo030A0is8YjEs14YHxVvO9j3k05
+	kABJZ6qWLoSbBdDW+ZUEyFSr8QNpR6BKw0fD0yq3l0eLS2dOEnLUH3FqtX+cODhf
+	sxh9vVq56hnp/vNzHsUmDB9mLBipUcxfwAU1jVLZ1xKM8toObYIRjRDzpDYuEJj5
+	liqInR6zEbtSZ+6+2blwxU7/yK31r1tQ3mqndB8B6OxTHpomi/f5BQTTxN5FF/YF
+	SLsdNuu0SMl2KbNsWZR249Q7IrAh9F/4uwU5Htq0m/7q5bljj/NplSOjWcRN0yCn
+	sGOIBNLSZVuNgifZuXuH3Q==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aej967be3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Nov 2025 16:30:38 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJFh8I6036004;
+	Wed, 19 Nov 2025 16:30:36 GMT
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012060.outbound.protection.outlook.com [40.93.195.60])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4aefyn366c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Nov 2025 16:30:36 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mPuHYchqZiIjCPb6lGYNVzPIRSTtHFIB0UsWK30BDNAZecMS5QBl/tB8+up/t3g28Vvcw6FgyUhcVXMRI/o0DpfsXsi5IenkeTSBGYkJYcQhtnoSg7mLS6esi0NOAbXxrNtw3fxcDCttm9EIyfUuSXrqJIvRKR13y5gSYKUycTSA251qEhVPwTaL+N4DiO0EjiMZ8ozxctd/iioW4U/ruzIe2BtmCwzHoovIrzOKA4HUtdcZRr4k+J5ujp/KPc+FKX4MkoN0rZEfRd7+7/vi3uRUcVc6qkN+BgN+mj/JxVuh+Vc1cdPyACBFTzsQxm1qfWypdW/cwGL4jxMQyOIjag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IVNU/CWT30o7lH3/TWDeXNmli/IPHZURBIS1aCP04PY=;
+ b=QEpVs8tGM1eF4yDjNlQaciY7MZxOc5hzjg9lAJC9piPWHe5KsjZFOKxkou/zvcAV46ufmwihICm5LHdnEiwvUELOCIOpCypA+56sZBrmmz/0cst7n8GR+yABiU5435zZxuF/ER5HMjV7HwMmH7AyZqBgpUlpADFprGmgHG7qBLKI9teF1ySSPtR6N0YTrFtJ4vx6EV+StSTOy8lQFPoHcYyGS8I08QKe/9lG7Kr9E6dvI1WtxxlVkKAtbXGZ0iPOuf7HLsLlaCosgPHQNui56ErayOx6s076lK+tpG0EFrVRwSn/IPFTAzy6JsGnBTHXIjMnry3ZLUAk6OdlcMwRZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IVNU/CWT30o7lH3/TWDeXNmli/IPHZURBIS1aCP04PY=;
+ b=S1MXYCyJlWkv77za0PLY0RxGYV5ti3d8DE+UKt8zQzkojQIRmPMq+aNZb8e1zAOI16e/QaBE/WhXRbP2AW7plggtwJmKaArAhc1/SRubu3NxZv7Y5JsEQnRABaDvd0iOukj5CcqWMGeBjIwUx/U1xPbfnqh+zMvzc8CBXMNjgV8=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by PH7PR10MB7840.namprd10.prod.outlook.com (2603:10b6:510:2fd::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Wed, 19 Nov
+ 2025 16:30:30 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
+ 16:30:29 +0000
+Date: Wed, 19 Nov 2025 16:30:27 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Eugen Hristev <eugen.hristev@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, tglx@linutronix.de, andersson@kernel.org,
+        pmladek@suse.com, rdunlap@infradead.org, corbet@lwn.net,
+        david@redhat.com, mhocko@suse.com, tudor.ambarus@linaro.org,
+        mukesh.ojha@oss.qualcomm.com, linux-arm-kernel@lists.infradead.org,
+        linux-hardening@vger.kernel.org, jonechou@google.com,
+        rostedt@goodmis.org, linux-doc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org
+Subject: Re: [PATCH 00/26] Introduce meminspect
+Message-ID: <6c9b0aa2-820c-4153-ad64-cd2a45f7cf32@lucifer.local>
+References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251119154427.1033475-1-eugen.hristev@linaro.org>
+X-ClientProxiedBy: LO4P123CA0044.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:152::13) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jann Horn <jannh@google.com>, "Uschakow, Stanislav" <suschako@amazon.de>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com"
- <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>,
- "nathan@kernel.org" <nathan@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "muchun.song@linux.dev" <muchun.song@linux.dev>,
- "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
- "liam.howlett@oracle.com" <liam.howlett@oracle.com>,
- "osalvador@suse.de" <osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
- <81d096fb-f2c2-4b26-ab1b-486001ee2cac@lucifer.local>
- <CAG48ez3paQTctuAO1bXWarzvRK33kyLjHbQ6zsQLTWya8Y1=dQ@mail.gmail.com>
- <a317657d-5c4a-4291-9b53-4435012bd590@lucifer.local>
- <CAG48ez0ubDysSygbKjUvjR2JU6_UmFJzzXtQfk0=zQeGMPwDEA@mail.gmail.com>
- <4ebbd082-86e3-4b86-bb01-6325f300fc9c@lucifer.local>
- <CAG48ez1JEerijaUxDRad6RkVm3TLm8bSuWGxQYs+fc_rsJDpAQ@mail.gmail.com>
- <2bff49c4-6292-446b-9cd4-1563358fe3b4@redhat.com>
- <0dabc80e-9c68-41be-b936-8c6e55582c79@lucifer.local>
- <944a09b0-77a6-40c9-8bea-d6b86a438d8a@kernel.org>
- <1d53ef79-c88c-4c5b-af82-1eb22306993b@lucifer.local>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <1d53ef79-c88c-4c5b-af82-1eb22306993b@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9CBD51A0006
-X-Stat-Signature: px6yrr8bnuqppbdacrhmifrrnfua8qwa
-X-Rspamd-Server: rspam02
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH7PR10MB7840:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5316275c-7160-4756-c426-08de2788f415
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?4QbAgXQJh0HfjIgjpGhaaihoS7A5wWFFy2o3bOE8ydSjUuZ6TgB4HdQMTB?=
+ =?iso-8859-1?Q?TDK6TIbZqBU9OCVbDpHihjDNzsyoNXu5YxCCW87IXkv4pHbu6xu0jKOz7u?=
+ =?iso-8859-1?Q?ak1qUb1/fVmFlpDz+0CtL+FyfGWMfyRb+f2A0tU9miCsP8DAGSOxifMZlR?=
+ =?iso-8859-1?Q?/zHIn4+ntgo0QsMfXsdueITmNxw6qgbPcdaLrf6HJBzVOoVOByDJs8t8ih?=
+ =?iso-8859-1?Q?7s7gCwx/NOgoAk2tszBNa8w2TpVg/ZoovpjheYqiK6TvroIm4isBssQE3G?=
+ =?iso-8859-1?Q?uH1UpW5z5KIQpXeA8UK8iugDHwfjRpqF1io89aINz3kmNuypFGCw2NM1yG?=
+ =?iso-8859-1?Q?1zSiB7SPBSwa9OIMfQjrgfAEO4LGqlWkYK/XDN8siiIMvu8yKAy9wteask?=
+ =?iso-8859-1?Q?mkIi+QxRKNZasR5lvqHP7mpH67Tcg/d4JVhRx2rmpz4KM7GpUiJTcaHcM5?=
+ =?iso-8859-1?Q?f6KgIrn+XrRU95PGNJS3Kt4mHsgXp6z94x5nnrFT8u+8eTkTg1RSoMzYE9?=
+ =?iso-8859-1?Q?9yY0KHpP/azOKk83yFvAK1DAE01V7oG9iAY3qaE0gittlmVgOrJgfv7tqZ?=
+ =?iso-8859-1?Q?6+NLIDqjj27nyJnUK6pTAlxHqxVKSrDbeim0nA0yKvqRA0NsdbBcsvizxE?=
+ =?iso-8859-1?Q?hyMi9sSuvqtDLE5Grfs/0kZUy4+q16Zpe/5oX7j14L5XYfSBr0HVZ/eEmi?=
+ =?iso-8859-1?Q?g5w1cxLYFIuPsTM4PqDRDcj/MufMWBa6pC/9Y0iKziOGXR+REtJEa4CUC2?=
+ =?iso-8859-1?Q?5vnCNEqYP6MfUA1QWSJWgjNY5WWw/GIu7YJsvJztdmaj0aM41ZRtfEcyuS?=
+ =?iso-8859-1?Q?2/bNHeIUJI803VCxGZfzBRJRKdimVjEgisbRtBm99CqCP+etI9wqoj5aEG?=
+ =?iso-8859-1?Q?no3JgY9OuuGCSJ8mBMfQMh9H3eO7LshPbmgToT7v0z95chiYM7l+kGiOMR?=
+ =?iso-8859-1?Q?NEa622XqPPH0H+PmwR39FVFL9JNeHFEExOK6dov7xDGdUQMga22b+WY4NY?=
+ =?iso-8859-1?Q?WappOL8+oeJ3JsdknPMjbGSKCfZlXxtc8PfobJUSj/vnSWpoGrTdQT+xS+?=
+ =?iso-8859-1?Q?TpxHOm073AyJUtqXYiKMnfaXtxGsVR3S3P/Np8qFCyo0cyyxlUdEQp/nXf?=
+ =?iso-8859-1?Q?Rg+/Re2GYVY30oxZyap2LqbL2ddfaLqDqgMt97RF5wJwIC1zqDJj6kReYh?=
+ =?iso-8859-1?Q?CzhPEQV3vKBDqR4q+iFG2w5iI2N0cAOiJO/p6nIBuX4eXynF85lk0UHG1y?=
+ =?iso-8859-1?Q?Y72Gz0lSxSV63M7KpZfntWUCTuoKZMG5RDlyGw4wfMzroaTwHstj5KEoKY?=
+ =?iso-8859-1?Q?Ju95mOHuKWY2FEPgJ7kilWRrqWK7ZyBkDZEW/3bp12c/ZBfB/M/jNt6LGh?=
+ =?iso-8859-1?Q?8LX2Y6D8jw2Rs5qUuALFGjQwAHXqpqsMl7vQcSsNzL53ez202n5sS1CPiC?=
+ =?iso-8859-1?Q?XqcAihKIHxnayvZ/Arda3pPvF8uixhucME0Zxw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?DuppdDKMYtLnXgtodQXfBYvEa0DGRvoKBqM6F3K95oeeWsp57P0RojAlTX?=
+ =?iso-8859-1?Q?luAC0XIEWzsgfRXNiDgmNNkCD0x3VGQpbOUAyGXc9W3N67RJ7T5uInV/NE?=
+ =?iso-8859-1?Q?mQ18XIT0l4ZS9GN48zEoIrG2wtPJ1flFUUwMihGSw+IeaSW6k45RasQoOb?=
+ =?iso-8859-1?Q?jXvXY/yk4vBG7AGk/lx/P1IKGAxwisSVB/NzPgO1PtZH3xrPw3aSdLDRoX?=
+ =?iso-8859-1?Q?G9cEpsplNk5T24zJwYOtaq+37Q1WtfH7T5ZXPWpGWXeSBe2lwDwKKxvAME?=
+ =?iso-8859-1?Q?mZcUoNm4HUL1bxVmYHnkAHRM3nAFKMUzMcZVBUA3qMwlbLMJAfLS7hNyo1?=
+ =?iso-8859-1?Q?7idsT+JeEalb9xyD6AysULULBwxKej55diZcYbVT9CY2W5lzTgTuyrnqHe?=
+ =?iso-8859-1?Q?RUJlpVKfKO628GLGj97JgiDaejBwkpeFcot1HL4NUbqgha9cJeSF9+xDK5?=
+ =?iso-8859-1?Q?NLO/W8+ytWeAvb2p8SbdAfrFuUwi6aQ5SzzCFUb/Z75vI4oM9lYMAsonOa?=
+ =?iso-8859-1?Q?W14YANdeFGopUaN1ZgVN7MkNiZgI8tBqowiQCwp3D5kH4ST4hIaLM1QNZe?=
+ =?iso-8859-1?Q?9TN3dIHSnSTbJCalU7aUbtHJf+csrNaEatNdaiSAERqPRr0B/u4/YsXxoy?=
+ =?iso-8859-1?Q?mDQf+d9up6XWttd14iCj+hcwy/1lkG8IbK+G1pxx+z5jLIxkBTgmbIbdK7?=
+ =?iso-8859-1?Q?4Hk/O8lkSmOwsedo5vsdWFCw2mCAqNWpWCio6hx3OfwUGMy+hCCFC1JwHZ?=
+ =?iso-8859-1?Q?LnwP3sA56Kp0ckM70t3hXbNph9dONZMc247W7eFX/mdwAh2h+lheuJkPOj?=
+ =?iso-8859-1?Q?IxSkf6SmVt9ydnnoi6DzTc2hSLJY+Ox7Nt6Z9xeCDgTf+Q/T4lCHd/KUTK?=
+ =?iso-8859-1?Q?vayPArp1AtsT2xsHbZqUYlnLrKNhzRsT2JWHJ4QsKKO/XAn7kaxCXbc/Ux?=
+ =?iso-8859-1?Q?6AARa+lYttQg56ywk1bS55A0t/qpGhn9zm6qmJddE7xAjk4Dwmre2g692N?=
+ =?iso-8859-1?Q?rpXyhNZSxXXG4JFnNxu3JotEj7tHLMNUy+O6KuZo1WuHRFA1yFVn5oEUNr?=
+ =?iso-8859-1?Q?F8qenQgB1Ax0SFKarikOgMpj4LU/Gg9yx6PMHXzJMd9xkUxNzlna0Uidu8?=
+ =?iso-8859-1?Q?lMSRJTotQaKQWlB9QUWYhs5cqARYtY7ylqAeTBfFVNIBmysJkv7nJqJpQ7?=
+ =?iso-8859-1?Q?BMAYNwqmOEEhqWc3xQtJFdkFbjxVPFJ9u/c42dq3mYWihaDVW2GKeZnwWE?=
+ =?iso-8859-1?Q?bUdvt/pfcGh8O75wsHiQQM4EMAEn4M0hq4C38TaOWRWRRmBFE+18obVnYq?=
+ =?iso-8859-1?Q?jeTJVCAtA1Yjt+leH0pqx5t36rqTxwWlblBTWiUnG67nDhd/91y9ACKZIx?=
+ =?iso-8859-1?Q?YqWXjJXIkVxtg4UwlNxwp3dPYHIJYqcqaR6Tzf9mScbkyVEOyBBxP2s4Lh?=
+ =?iso-8859-1?Q?ZOSVU2xTGWcODfc65fu4KQVLyySM2VyzxgCDnMQkwcisvypK9ltIeKBmvK?=
+ =?iso-8859-1?Q?62vP6dJpEmCtn3qzOIYc+76Qm9YZkOV91XdfCNqVX+5HHrZFX9k1axfAS3?=
+ =?iso-8859-1?Q?Z4aRMlpMqimS9pV0opodux+XBmIu4q9/NMd0Y7ZdLMkrUVfB9f6wPdmLBC?=
+ =?iso-8859-1?Q?q+P+OcGsG+/1Ma8ev6KwibOZ9Y8vfJhwJ2z7QmKgahs+Uwq7A/Ya4zoQ?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	uv3FVlpCiw+LiT9dSV+EPGIqbyy0MNYD9UgM7jJSarZMn6pR2qF1TqzZsSDFbCq+XNOkX/Feh2jmfXfZrbzSKP2zntNLUX4oK1vhLURcHCj2zaaoBa4eVdXz0NC6/WWHEoFH9+8k88i8PEQK8upF52iFrMsZu9KZHsLuXpdOe+jAJuVpfX6qly1vMq4ZGTBvwwwXgxVUd0plR7kit63rtxW6MyVg113Qpv0C947a45sCd0QuGfrRuUGvY/on4Qx03HfvV1j6TUeR0UtyvJX59sR39UfHrYFfDVyD1wuYb2fMNvRYAcCmy5Oxy3uclv1kW3Fx6WPm803CFwmTK5xnZHt+9SEdGx+rQlFknIM0J+yQxGSu8cTrwfjijCZfct6EBjBHOsuGKc0gPqVBM5+8u0Eajmi1tCgNNPru+EQba+h4+F2l4PyiYXBSyFQTcUb3iB70Ju1vv1pWYH9Dcq5Le0LUhnBWrPaY727oqceowOqmlGFiaqDZhQu7ODvW7BaIvrOsqUkAfztJA9Qr/TEAjJ7KWPkXS8YX8OvMZz5UO32RSJNLOLQ3sWfgjaGW+lkxftzXpcbvvQgVzJ1OJbqQ37szAZI569dkPX1dVFxBu9s=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5316275c-7160-4756-c426-08de2788f415
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 16:30:29.8723
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6xpAIeH5ATum/YqaxPPshGd2oEZCll79v++FtBqDbVwCCLNTaB8c81V8slJ+YquZw99jgcR659CW09rHWYArmRVyskMVerNL3l37w+yi/Nk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7840
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-19_04,2025-11-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511190130
+X-Authority-Analysis: v=2.4 cv=DYoaa/tW c=1 sm=1 tr=0 ts=691df0ae b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Oh2cFVv5AAAA:8 a=OGjWj8McAAAA:8 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
+ a=vnREMb7VAAAA:8 a=COk6AnOGAAAA:8 a=bLXd17yOAAAA:8 a=07d9gI8wAAAA:8
+ a=JfrnYn6hAAAA:8 a=20KFwNOVAAAA:8 a=7CQSdrXTAAAA:8 a=meVymXHHAAAA:8
+ a=1XWaLZrsAAAA:8 a=Z4Rwk6OoAAAA:8 a=yPCof4ZbAAAA:8 a=iox4zFpeAAAA:8
+ a=cm27Pg_UAAAA:8 a=ufHFDILaAAAA:8 a=Ikd4Dj_1AAAA:8 a=PuvxfXWCAAAA:8
+ a=GvQkQWPkAAAA:8 a=AiHppB-aAAAA:8 a=pGLkceISAAAA:8 a=37rDS-QxAAAA:8
+ a=9tWYmmpX5zqD_7IvvX8A:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+ a=7KeoIwV6GZqOttXkcoxL:22 a=UYjydHh6ynBBc6_pBLvz:22 a=cvBusfyB2V15izCimMoJ:22
+ a=TjNXssC_j7lpFel5tvFf:22 a=XOuVWTVwyKTMzSnUH6Op:22 a=e2CUPOnPG4QKp8I52DXD:22
+ a=1CNFftbPRP8L7MoqJWF3:22 a=a-qgeE7W1pNrGK8U0ZQC:22 a=2JgSa4NbpEOStq-L5dxp:22
+ a=HkZW87K1Qel5hWWM3VKY:22 a=WzC6qhA0u3u7Ye7llzcV:22 a=ZmIg1sZ3JBWsdXgziEIF:22
+ a=uAr15Ul7AJ1q7o2wzYQp:22 cc=ntf awl=host:12098
+X-Proofpoint-GUID: KAACB7-LHzNPPwrhK6esT4IFElcciOjG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMSBTYWx0ZWRfX78wwkWQGah4y
+ /4TEUtcYRtiwYsZ+U8MpX6bSLLz1QpkxunZqcUC6LtJ/QANc6mx8k4ylerjxE9rqGhrqg06NZha
+ oe3Aeg8t1JAqK+Ld+r2w/H2ObaY/fMA3WJ1hFJSZf3i+DZ4Ab4tjXfAvJsFVu7tUu4TLZBtBfxU
+ gm5gZ+ztM69HRI9VSFUXV6UnkxFBhj8ce29Zqz+Bl0L0QRO3QCM94e8OwZQ4s86hZS3LT27iKfG
+ /OgFv216CRizhbeD9CnWMUWu3y95ki04ScsNsRy2IrIosXSsKsFpuFk/SkGHH3e8QKhL1t6SQIw
+ 134ggtTWDaElhb6JzixQzr8rc3D/MuqJ9giikzoUXZxpo5GPD7GkWM1uqTrbzO2A0ZZcMr5u5RN
+ 3nYHNZ+YzKPAirbc6ztB2sy2+g9pg/0ALuBI937cWI7nPLHA4LI=
+X-Proofpoint-ORIG-GUID: KAACB7-LHzNPPwrhK6esT4IFElcciOjG
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CA1CD40013
+X-Stat-Signature: zj3tqxec9xmg8u83otwo4jo6f7weacxb
 X-Rspam-User: 
-X-HE-Tag: 1763569765-766543
-X-HE-Meta: U2FsdGVkX18dRt8jX02UevqbvYTdxlDe87h6gp6tE+cDspcnzmvpyFUbY4rBAgzW87UwMGLvfiIYxClmUHW2tEbrwzJQVfJDg0PRmovTNH4Wcq57gt4tlQNqi0cjN++VN41R47QXOqWzeXAdIxIa23yfR+umF4EV67HHUn+NT7CYFoRh5c59Eu8S0K0F0HYNdhhyrUweezF16vPxXGipyinO/QESFjfvLrqy1dev10HDWQt0cEZWsoXkpIy8ihVfEgvcsi4bALz4bKvmH9Jl+LluwrZousQ+vY4Zrcwo6WgAauIrBdaEraMKGDHUMJ/ghx2VSAgCOHtVNT9TWdQF4azUN57VuKPhIJIYUxHNUquT3yE9FsBCaosCcFWPq4FtsRxn3vaDOJESV5moRsy0ZTBU/TvRkUiOfcS6OGimIW6sJz/jYw42QeDcdhW1fH1c/uer58cZVkz9MGyaFbronsQ4f++8rRSpohcJLId3eA3NnS45hU+8Lky1mJnsbV1AITMCFib2f/1tyUaLmPwve6Xu/PZmsJEhywDigqAV4LFoVvTBi8jOsE9iVPjO7C7kVFRoZ4sEPj7O5soVvB7uIvy0Q4JIrhAAdP53hSRjp0J1NDO5hZ/PMgNrS+sMt66kcUX27z2YKOZVp3BUs9tPhB4Ppmyfc5XfGImLFzXu/57tRGtv1xH716N8j4AdoRPK5h2y8BdsSY4J7hUBOwyBWEXmS8SUdpufzsjDG6DOY11NXdNrFV9U9ViauZps08iCRm1iezRzP9hMONO5XSVOfc0wUnENskj7zK8Z1U5RzvlVXaviXUMoM76ueXQGJSoscOPVDZWEk1iCPtZ8tEFDNNQGwODqf3Dwh5ooq9TR9O6Zha71zWyleL2czdUOWvF1UZ19z1jj/qBrtZGFonJSQx6XlEdgiJ2eyI2nHnF7gZXoWFCgznzGOq4mzKNdbh9tDWO1O2SETblXn+XOvZ7
- /JTcUL7x
- Fh8Ptq3GLQJgyUcUReQJOGbn27VhmcZErnp89Od5cEqbW3PmckG2JpyRm1tnsXqobOknoB93SxRGcQDLgVu+FGN38/FiFkCKpv5sxY9yrg+VfwwLtnYdYLGMYmmYmlv3ZkAPJrjp1bJWRKCH5u9HXwSq7qEVaNiCu0Te+1FdgqUX0OuAwd9X7Fv7z8M/Uxbqmg7i/s9DeHwDcw1Q4teE09c//+SfGvzlPkVWbjBJibMYE1Mlz6pxaGXU/X3dCkdLgAFTSf8S8IWUL7zxI+UTJP2CdGgbqexGOoiFtm7JA3mAHpUpeP2Yfwv0LY4Fuq2Qsqe2l3yByUTPy7Ue8G/IbmNRFbZNQ9CSWeetq
+X-HE-Tag: 1763569851-150271
+X-HE-Meta: U2FsdGVkX1/X3nL+hjnO3jLsQHLkRAv0MGqXiDeG82fwUWsi1IsLMXJa787Yx7yvWXjEfd1EQ0j3hq0MAxzJIHXakJZungK6tNI2/ny1zlvSkbhaTa+Q1Px1RArg0E//FcXY3s0wpiQ3ovwgXhcCvb4e+shEOBED/YcMBBqUcFpVXFe6g9Oq49g1GFax9zesIiew/auYzBTvI/CzIna9dtAOYR3VGY8uwXVAFnrj97iVOCY/HIdLK0+JAprBlHsLJiPsePc4VS/hjfmOclVAeD6deHJoMHCznBDqOIyvqGfFWCaSyOsyb3pa5k3mzSMARJqKJSCceD37i31CnvfSoZzToLa1N5wad1SNcpUyhcFRnCIk0qLVMf3kX3rYmFF2HaNUZpffaMFoEAxxyoRHAukP7xIDYNPidcWJi2jqQRBLmg93M56f9Kps2OjOqmJRzTBnUTtdFcUgwJSvQk0/ldThuBMj1/3Oo4n7OiSskodPox7HeFlaDr+IAVvNt/vaN6aIZ09E7R0XdA9bfPe/ISGoNrwSN/JV6pcCu5Ti3PSIc7/hhEUu7epyrL409QuOTrMrfRUe7pZ0iMcg2v0HwKf8PCNV5S4CHpLJPMbqDx16pIjF+uW/6ov9V6XZEj75qeZ6HFDbtOWIarxp0X+Q35JtBdMmppD4KiWNzwMqxc6Gn7kkjAaTPaDZH6U4DvxzU5J0olIs2T2jCjGpw6SkXJO3Bs7XrFRE70DfnD/nE6D+K3nzmtcLQLHXpO48ibr06fcGiMK1cKIKkxkTD+ildaAWJbsShftLb9Q+YKqWRW4+5aJfuh6OmBti96P6WF+JqgNd7CHmIANcbHaU/K6cjpfi8Zfx9WtP74ZvWfbco1tl3bLZp23pe4fqYJV1E5Z9+6uUSIpnqVKWG2jgYumj4IkPUiH0O71d2KPE06rBmoietnA5YEFDmfPRJLLCJ5qahQNOJ3vpewQKdZkyI7I
+ ZXxPPnOx
+ JEoPaoTfxeeJtQGT1RSmpDQAh9/Kak6rsvh41gGqFJu0368k3uBUKJnJhvZUYehGRcEkSTiTc8h6N+KCNgRAEu6ktt/y08wNuwFDFThL6r/9XbR9+kJ0pB+G2ZQhfVjjV3vsh2SzF+v5yI8Mp6j75leBHn08ZFfxgTcQ/r7vgeko/fC9jaNrql5FekPsKq3vqnZDvPvrya6Kdjm6pqK/Cq9AhTe0smLocGmScOc2P4IGzmEELvZgGvDaPov10MGzLCzgRbQE3wg0/Zd8/Ksbp3ZALMfqm9i9dfeHRxhAjsm2Oi3S0Z/7368+lyzymswWK7BxHLqGER2RMS8fO5yeEmgCzo8duqVMDUwoIyZUu7kxokYsHM3zaF2ooTJGoj8w3VKsK73EEMM3FTyQKEdwWShO8nTl4FCnlJsbh/dm0bUWVvlPKYfxhDLphtdHIJM8WsENESUTrr6Q8dxw+cloQyDAC2b4zCJceQiOOaim8b2QUshLtOLvreyF473sBNtpIXjF+1/llFjKE02TTCyJidluufaj98Njbgkm736jpVXqwLa0GAk1VH6RuhBH+k/gBSX3G3I4wcRiyzPT9eJykSyjJ1l0G9fYw6ikIfRgRNkf92wdlFKOkD41ZvXhZ9peLnOEiE5ZoGo2V68FOSqSSzvfhp/fc4m8oWQlDcjcmkVeGMtSSLqJ9ADucP2WkHMIkJQUv0R1t8vJ0EVlL6Uq44NZk9ebc7JwOU/v7v+t460aTHKtBaL4R8eCSL5AK2McJaw5ks4jtGftNXlrsDHRQmIWYfpnZLwTWB59TQ3n9P0LcY3W+5Oioe3ksFZo7cGLqIIHSAwFgxinLrCsKDrhz6t65VL2+Qa/Gcjzyy16rEMm0fJGDm0ig6tQN213+yQG6NcOyZFbVO4DCLJeDC26ozZjp6Vurb4vukUlGtNuV1qpyIk/oD0ctHCYU4iqfeEbSlGNwhHy96s68iXno8A2Oq01E29BJ
+ LSTIbmhy
+ aPSMQKQW85Dotpq0+sUSaktCFfi0DU4J5jLv4jXjmlL+YPvkKTYU3oIWSOKpZI3UvDkqkuN8ApJHljH3BuWuKKstJ69HyVEz2K4tnNSwE187mKPxxrm6y2U7M25yVNmto/xfANjYSVz8k4rIlQRX4/5/uRj3q19zBe/qhT000V63TxOMzhfPon/ppL5xe6xJ+5SO/oxXar3PZYGnR4oDsZfqWdYeNmrhg7Wg5YYy/AFZ98mQlYWgUc9Ac9OKAiRQsX6/heJzftsBs8cOann2MaFRpzGc++K5uPf9M+00ltiC0zfcbuX66z5qjAlHfhUza+m6WTGlVdDFT8NnkyneOlmp6rQPswJlsQ+eT9BKmTNPEW0s+wAVnapQO9fUnNJnpcTa8V45Vq+GW9ffJ0wGoBAtG5GZQs0g2k7bKJTMNjp5m3DuFEmETezzlIlzhvUy+Of/lKRzK8+6LCSOQOG3sjwvjXtHkEyYVq/A3hVByypEM6FuvMl5xFHm+n9NVwt4M/AHlh5C5CL3UiCYJXOBegTTYJhKDsIZoHbfpa+T6HZP1YQnFgbduFoJcMFxREN/OqybRxPgyQc71nbPxp4jORkQVyy4lc4e+KL8H7W1QEYNRJNED/lzVXVRHHtSm+W+D6SK+01r4eNzZxzm+Y8/0pGhZOZGnqQXGHNfxvg8FOTLNFw+MDsE1gNjXtCrvIZ4QvPmNr4ipys987ipqlEUTbM2vBXA7p6svDzjmcqPbcysD0qKcVw/Alf/TSwQKbkEPu3royZKIpknN3L30863aR5XXdYbMYUKQK8g4VTzUGtMq6quw29eBBOeKo4EFSbZY/MMum3mNRJLxhjswyBFZdoyfA48zS37qWQAy742L/6T+dr5HyTmIVmjEV14BbFQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,59 +255,380 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->> So what I am currently looking into is simply reducing (batching) the number
->> of IPIs.
-> 
-> As in the IPIs we are now generating in tlb_remove_table_sync_one()?
-> 
-> Or something else?
+Hi Eugen,
 
-Yes, for now. I'm essentially reducing the number of 
-tlb_remove_table_sync_one() calls.
+You've not run scripts/get_maintainer.pl so this is missing a ton of maintainers
+that you're required to send this to. This is not a great start for a huge 26
+patch series that seems to want to make very significant changes.
 
-> 
-> As this bug is only an issue when we don't use IPIs for pgtable freeing right
-> (e.g. CONFIG_MMU_GATHER_RCU_TABLE_FREE is set), as otherwise
-> tlb_remove_table_sync_one() is a no-op?
+Please try to follow proper kernel procedure.
 
-Right. But it's still confusing: I think for page table unsharing we 
-always need an IPI one way or the other to make sure GUP-fast was called.
+Here's the list:
 
-At least for preventing that anybody would be able to reuse the page 
-table in the meantime.
+Jonathan Corbet <corbet@lwn.net> (maintainer:DOCUMENTATION PROCESS)
+Bjorn Andersson <andersson@kernel.org> (maintainer:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM)
+Mathieu Poirier <mathieu.poirier@linaro.org> (maintainer:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM)
+Konrad Dybcio <konradybcio@kernel.org> (maintainer:ARM/QUALCOMM SUPPORT)
+Arnd Bergmann <arnd@arndb.de> (maintainer:GENERIC INCLUDE/ASM HEADER FILES)
+Mike Rapoport <rppt@kernel.org> (maintainer:MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION)
+Thomas Gleixner <tglx@linutronix.de> (maintainer:CPU HOTPLUG)
+Peter Zijlstra <peterz@infradead.org> (maintainer:CPU HOTPLUG,commit_signer:8/46=17%,removed_lines:4/63=6%)
+Kees Cook <kees@kernel.org> (maintainer:EXEC & BINFMT API, ELF,commit_signer:7/46=15%)
+Ingo Molnar <mingo@redhat.com> (maintainer:SCHEDULER,commit_signer:1/2=50%)
+Juri Lelli <juri.lelli@redhat.com> (maintainer:SCHEDULER)
+Vincent Guittot <vincent.guittot@linaro.org> (maintainer:SCHEDULER)
+Dietmar Eggemann <dietmar.eggemann@arm.com> (reviewer:SCHEDULER)
+Steven Rostedt <rostedt@goodmis.org> (reviewer:SCHEDULER)
+Ben Segall <bsegall@google.com> (reviewer:SCHEDULER)
+Mel Gorman <mgorman@suse.de> (reviewer:SCHEDULER)
+Valentin Schneider <vschneid@redhat.com> (reviewer:SCHEDULER)
+Andrew Morton <akpm@linux-foundation.org> (maintainer:MEMORY MANAGEMENT - CORE,commit_signer:5/46=11%,commit_signer:14/22=64%)
+David Hildenbrand <david@kernel.org> (maintainer:MEMORY MANAGEMENT - CORE)
+Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (reviewer:MEMORY MANAGEMENT - CORE)
+"Liam R. Howlett" <Liam.Howlett@oracle.com> (reviewer:MEMORY MANAGEMENT - CORE)
+Vlastimil Babka <vbabka@suse.cz> (reviewer:MEMORY MANAGEMENT - CORE)
+Suren Baghdasaryan <surenb@google.com> (reviewer:MEMORY MANAGEMENT - CORE)
+Michal Hocko <mhocko@suse.com> (reviewer:MEMORY MANAGEMENT - CORE)
+Petr Mladek <pmladek@suse.com> (maintainer:PRINTK,commit_signer:5/22=23%)
+John Ogness <john.ogness@linutronix.de> (reviewer:PRINTK)
+Sergey Senozhatsky <senozhatsky@chromium.org> (reviewer:PRINTK,added_lines:21/262=8%,removed_lines:9/89=10%)
+Anna-Maria Behnsen <anna-maria@linutronix.de> (maintainer:HIGH-RESOLUTION TIMERS, TIMER WHEEL, CLOCKEVENTS)
+Frederic Weisbecker <frederic@kernel.org> (maintainer:HIGH-RESOLUTION TIMERS, TIMER WHEEL, CLOCKEVENTS)
+Brendan Jackman <jackmanb@google.com> (reviewer:MEMORY MANAGEMENT - PAGE ALLOCATOR)
+Johannes Weiner <hannes@cmpxchg.org> (reviewer:MEMORY MANAGEMENT - PAGE ALLOCATOR)
+Zi Yan <ziy@nvidia.com> (reviewer:MEMORY MANAGEMENT - PAGE ALLOCATOR)
+Dennis Zhou <dennis@kernel.org> (maintainer:PER-CPU MEMORY ALLOCATOR)
+Tejun Heo <tj@kernel.org> (maintainer:PER-CPU MEMORY ALLOCATOR)
+Christoph Lameter <cl@gentwo.org> (maintainer:PER-CPU MEMORY ALLOCATOR)
+Chris Li <chrisl@kernel.org> (maintainer:MEMORY MANAGEMENT - SWAP)
+Kairui Song <kasong@tencent.com> (maintainer:MEMORY MANAGEMENT - SWAP)
+Kemeng Shi <shikemeng@huaweicloud.com> (reviewer:MEMORY MANAGEMENT - SWAP)
+Nhat Pham <nphamcs@gmail.com> (reviewer:MEMORY MANAGEMENT - SWAP)
+Baoquan He <bhe@redhat.com> (reviewer:MEMORY MANAGEMENT - SWAP)
+Barry Song <baohua@kernel.org> (reviewer:MEMORY MANAGEMENT - SWAP)
+"Thomas Weiﬂschuh" <thomas.weissschuh@linutronix.de> (added_lines:13/207=6%)
+workflows@vger.kernel.org (open list:DOCUMENTATION PROCESS)
+linux-doc@vger.kernel.org (open list:DOCUMENTATION)
+linux-kernel@vger.kernel.org (open list)
+linux-arm-msm@vger.kernel.org (open list:ARM/QUALCOMM MAILING LIST)
+linux-remoteproc@vger.kernel.org (open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM)
+linux-arch@vger.kernel.org (open list:GENERIC INCLUDE/ASM HEADER FILES)
+linux-mm@kvack.org (open list:MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION)
 
-That is either:
+On Wed, Nov 19, 2025 at 05:44:01PM +0200, Eugen Hristev wrote:
+> meminspect is a mechanism which allows the kernel to mark specific memory
+> areas for memory dumping or specific inspection, statistics, usage.
+> Once regions are marked, meminspect keeps an internal list with the regions
+> in a dedicated table.
+> Further, these regions can be accessed using specific API by any interested driver.
 
-(a) The TLB shootdown implied an IPI
+Instincitivley not a great fan of exposing and manipulating memory resources to
+drives in such a way but I haven't looked into this in detail here.
 
-(b) We manually send one
+> Regions being marked beforehand, when the system is up and running, there
+> is no need nor dependency on a panic handler, or a working kernel that can
+> dump the debug information.
+> meminspect can be primarily used for debugging. The approach is feasible to work
+> when pstore, kdump, or another mechanism do not.
+> Pstore relies on persistent storage, a dedicated RAM area or flash, which
+> has the disadvantage of having the memory reserved all the time, or another
+> specific non volatile memory. Some devices cannot keep the RAM contents on
+> reboot so ramoops does not work. Some devices do not allow kexec to run
+> another kernel to debug the crashed one.
+> For such devices, that have another mechanism to help debugging, like
+> firmware, kmemdump is a viable solution.
+>
+> meminspect can create a core image, similar with /proc/vmcore, with only
+> the registered regions included. This can be loaded into crash tool/gdb and
+> analyzed. This happens if CRASH_DUMP=y.
+> To have this working, specific information from the kernel is registered,
+> and this is done at meminspect init time, no need for the meminspect users to
+> do anything.
+>
+> This version of the meminspect patch series includes two drivers that make use of it:
+> one is the Qualcomm Minidump, and the other one is the Debug Kinfo
+> backend for Android devices, reworked from this source here:
+> https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/drivers/android/debug_kinfo.c
+> written originally by Jone Chou <jonechou@google.com>
+>
+> *** History, motivation and available online resources ***
+>
+> The patch series is based on both minidump and kmemdump previous implementations.
+>
+> After the three RFC kmemdump versions, considering the ML discussions, I decided to
+> move this into kernel/ directory and rework it into naming it meminspect, as Thomas Gleixner
+> suggested.
+> I will present this version at Plumbers conference in Tokyo on December 13th:
+> https://lpc.events/event/19/contributions/2080/
+> I am eager to discuss it there face to face.
+>
+> Initial version of kmemdump and discussion is available here:
+> https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
+>
+> Kmemdump has been presented and discussed at Linaro Connect 2025,
+> including motivation, scope, usability and feasability.
+> Video of the recording is available here for anyone interested:
+> https://www.youtube.com/watch?v=r4gII7MX9zQ&list=PLKZSArYQptsODycGiE0XZdVovzAwYNwtK&index=14
+>
+> Linaro blog on kmemdump can be found here:
+> https://www.linaro.org/blog/introduction-to-kmemdump/
+>
+> Linaro blog on kmemdump step by stem using minidump backend is available here:
+> https://www.linaro.org/blog/kmemdump-step-by-step-on-qualcomm-automotive-platform/
+>
+> The implementation is based on the initial Pstore/directly mapped zones
+> published as an RFC here:
+> https://lore.kernel.org/all/20250217101706.2104498-1-eugen.hristev@linaro.org/
+>
+> The back-end implementation for qcom_minidump is based on the minidump
+> patch series and driver written by Mukesh Ojha, thanks:
+> https://lore.kernel.org/lkml/20240131110837.14218-1-quic_mojha@quicinc.com/
+>
+> The RFC v2 version with .section creation and macro annotation kmemdump
+> is available here:
+> https://lore.kernel.org/all/20250724135512.518487-1-eugen.hristev@linaro.org/
+>
+> The RFC v3 version with making everything static, which was pretty much rejected due to
+> all reasons discussed on the public ML:
+> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
 
-But that's where it gets confusing: nowadays x86 also selects 
-MMU_GATHER_RCU_TABLE_FREE, meaning we would get a double IPI?
+OK so you've sent several RFC's and not cc'd the right people in any of them :/
 
-This is so complicated, so I might be missing something.
+This isn't great kernel etiquette.
 
-But it's the same behavior we have in collapse_huge_page() where we first
-
-> 
->>
->> In essence, we only have to send one IPI when unsharing multiple page
->> tables, and we only have to send one when we are the last one sharing the
->> page table (before it can get reused).
-> 
-> Right, hopefully that significantly cuts down on the amount genrated.
-
-I'd assume that the problem of the current approach is that when we fork 
-a child and it quits, that we call __unmap_hugepage_range(). If the 
-range is large enough to cover many PMD tables (multiple gigabytes?), we
-essentially send one IPI per PMD table we are unsharing, when we really 
-only have to send one.
-
-That's the theory ...
-
--- 
-Cheers
-
-David
+>
+> *** How to use meminspect with minidump backend on Qualcomm platform guide ***
+>
+> Prerequisites:
+> Crash tool compiled with target=ARM64 and minor changes required for usual crash
+> mode (minimal mode works without the patch)
+> **A patch can be applied from here https://p.calebs.dev/1687bc **
+> This patch will be eventually sent in a reworked way to crash tool.
+>
+> Target kernel must be built with :
+> CONFIG_DEBUG_INFO_REDUCED=n ; this will have vmlinux include all the debugging
+> information needed for crash tool.
+>
+> Also, the kernel requires these as well:
+> CONFIG_MEMINSPECT,  CONFIG_CRASH_DUMP and the driver CONFIG_QCOM_MINIDUMP
+>
+> Kernel arguments:
+> Kernel firmware must be set to mode 'mini' by kernel module parameter
+> like this : qcom_scm.download_mode=mini
+>
+> After the kernel boots, and minidump module is loaded, everything is ready for
+> a possible crash.
+>
+> Once the crash happens, the firmware will kick in and you will see on
+> the console the message saying Sahara init, etc, that the firmware is
+> waiting in download mode. (this is subject to firmware supporting this
+> mode, I am using sa8775p-ride board)
+>
+> Example of log on the console:
+> "
+> [...]
+> B -   1096414 - usb: init start
+> B -   1100287 - usb: qusb_dci_platform , 0x19
+> B -   1105686 - usb: usb3phy: PRIM success: lane_A , 0x60
+> B -   1107455 - usb: usb2phy: PRIM success , 0x4
+> B -   1112670 - usb: dci, chgr_type_det_err
+> B -   1117154 - usb: ID:0x260, value: 0x4
+> B -   1121942 - usb: ID:0x108, value: 0x1d90
+> B -   1124992 - usb: timer_start , 0x4c4b40
+> B -   1129140 - usb: vbus_det_pm_unavail
+> B -   1133136 - usb: ID:0x252, value: 0x4
+> B -   1148874 - usb: SUPER , 0x900e
+> B -   1275510 - usb: SUPER , 0x900e
+> B -   1388970 - usb: ID:0x20d, value: 0x0
+> B -   1411113 - usb: ENUM success
+> B -   1411113 - Sahara Init
+> B -   1414285 - Sahara Open
+> "
+>
+> Once the board is in download mode, you can use the qdl tool (I
+> personally use edl , have not tried qdl yet), to get all the regions as
+> separate files.
+> The tool from the host computer will list the regions in the order they
+> were downloaded.
+>
+> Once you have all the files simply use `cat` to put them all together,
+> in the order of the indexes.
+> For my kernel config and setup, here is my cat command : (you can use a script
+> or something, I haven't done that so far):
+>
+> `cat memory/md_KELF1.BIN memory/md_Kvmcorein2.BIN memory/md_Kconfig3.BIN \
+> memory/md_Ktotalram4.BIN memory/md_Kcpu_poss5.BIN memory/md_Kcpu_pres6.BIN \
+> memory/md_Kcpu_onli7.BIN memory/md_Kcpu_acti8.BIN memory/md_Kmem_sect9.BIN \
+> memory/md_Kjiffies10.BIN memory/md_Klinux_ba11.BIN memory/md_Knr_threa12.BIN \
+> memory/md_Knr_irqs13.BIN memory/md_Ktainted_14.BIN memory/md_Ktaint_fl15.BIN \
+> memory/md_Knode_sta16.BIN memory/md_K__per_cp17.BIN memory/md_Knr_swapf18.BIN \
+> memory/md_Kinit_uts19.BIN memory/md_Kprintk_r20.BIN memory/md_Kprintk_r21.BIN \
+> memory/md_Kprb22.BIN memory/md_Kprb_desc23.BIN memory/md_Kprb_info24.BIN \
+> memory/md_Kprb_data25.BIN  memory/md_Khigh_mem26.BIN memory/md_Kinit_mm27.BIN \
+> memory/md_Kunknown29.BIN memory/md_Kunknown30.BIN memory/md_Kunknown31.BIN \
+> memory/md_Kunknown32.BIN memory/md_Kunknown33.BIN memory/md_Kunknown34.BIN \
+> memory/md_Kunknown35.BIN memory/md_Kunknown36.BIN memory/md_Kunknown37.BIN \
+> memory/md_Kunknown38.BIN memory/md_Kunknown39.BIN memory/md_Kunknown40.BIN \
+> memory/md_Kunknown41.BIN memory/md_Kunknown42.BIN memory/md_Kunknown43.BIN \
+> memory/md_Kunknown44.BIN memory/md_Kunknown45.BIN  memory/md_Kunknown46.BIN \
+> memory/md_Kunknown47.BIN memory/md_Kunknown48.BIN memory/md_Kunknown49.BIN \
+> memory/md_Kunknown50.BIN memory/md_Kunknown51.BIN memory/md_Kunknown52.BIN \
+> memory/md_Kunknown53.BIN memory/md_Kunknown54.BIN memory/md_Kunknown55.BIN \
+> memory/md_Kunknown56.BIN memory/md_Kunknown57.BIN > ~/minidump_image`
+>
+> Once you have the resulted file, use `crash` tool to load it, like this:
+> `./crash --no_modules --no_panic --no_kmem_cache --zero_excluded vmlinux minidump_image`
+>
+> There is also a --minimal mode for ./crash that would work without any patch applied
+> to crash tool, but you can't inspect symbols, etc.
+>
+> Once you load crash you will see something like this :
+>       KERNEL: /home/eugen/linux-minidump/vmlinux  [TAINTED]
+>     DUMPFILE: /home/eugen/a
+>         CPUS: 8 [OFFLINE: 6]
+>         DATE: Thu Jan  1 02:00:00 EET 1970
+>       UPTIME: 00:00:25
+>        TASKS: 0
+>     NODENAME: qemuarm64
+>      RELEASE: 6.18.0-rc2-00030-g65df2b8a0dde
+>      VERSION: #33 SMP PREEMPT Mon Nov 17 13:30:54 EET 2025
+>      MACHINE: aarch64  (unknown Mhz)
+>       MEMORY: 0
+>        PANIC: ""
+> crash> log
+> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd4b2]
+> [    0.000000] Linux version 6.18.0-rc2-00030-g65df2b8a0dde
+>
+> *** Debug Kinfo backend driver ***
+> I don't have any device to actually test this. So I have not.
+> I hacked the driver to just use a kmalloc'ed area to save things instead
+> of the shared memory, and dumped everything there and checked whether it is identical
+> with what the downstream driver would have saved.
+> So this synthetic test passed and memories are identical.
+> Anyone who actually wants to test this, feel free to reply to the patch.
+> I have also written a simple DT binding for the driver.
+>
+> Thanks for everyone reviewing and bringing ideas into the discussion.
+>
+> Eugen
+>
+> Changelog for meminspect v1:
+> - rename to meminspect
+> - start on top of v2 actually, with the section and all.
+> - remove the backend thing, change the API to access the table
+> - move everything to kernel/
+> - add dependency to CRASH_DUMP instead of a separate knob
+> - move the minidump driver to soc/qcom
+> - integrate the meminspect better into memblock by using a new memblock flag
+> - minor fixes : use dev_err_probe everywhere, rearrange variable declarations,
+> remove some useless code, etc.
+>
+> Changelog for RFC v3:
+> - V2 available here : https://lore.kernel.org/all/20250724135512.518487-1-eugen.hristev@linaro.org/
+> - Removed the .section as requested by David Hildenbrand.
+> - Moved all kmemdump registration(when possible) to vmcoreinfo.
+> - Because of this, some of the variables that I was registering had to be non-static
+> so I had to modify this as per David Hildenbrand suggestion.
+> - Fixed minor things in the Kinfo driver: one field was broken, fixed some
+> compiler warnings, fixed the copyright and remove some useless includes.
+> - Moved the whole kmemdump from drivers/debug into mm/ and Kconfigs into mm/Kconfig.debug
+> and it's now available in kernel hacking, as per Randy Dunlap review
+> - Reworked some of the Documentation as per review from Jon Corbet
+>
+>
+> Changelog for RFC v2:
+> - V1 available here: https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
+> - Reworked the whole minidump implementation based on suggestions from Thomas Gleixner.
+> This means new API, macros, new way to store the regions inside kmemdump
+> (ditched the IDR, moved to static allocation, have a static default backend, etc)
+> - Reworked qcom_minidump driver based on review from Bjorn Andersson
+> - Reworked printk log buffer registration based on review from Petr Mladek
+>
+> I appologize if I missed any review comments.
+> Patches are sent on top on 6.18-rc2
+>
+> Eugen Hristev (26):
+>   kernel: Introduce meminspect
+>   init/version: Annotate static information into meminspect
+>   mm/percpu: Annotate static information into meminspect
+>   cpu: Annotate static information into meminspect
+>   genirq/irqdesc: Annotate static information into meminspect
+>   timers: Annotate static information into meminspect
+>   kernel/fork: Annotate static information into meminspect
+>   mm/page_alloc: Annotate static information into meminspect
+>   mm/show_mem: Annotate static information into meminspect
+>   mm/swapfile: Annotate static information into meminspect
+>   kernel/vmcore_info: Register dynamic information into meminspect
+>   kernel/configs: Register dynamic information into meminspect
+>   mm/init-mm: Annotate static information into meminspect
+>   panic: Annotate static information into meminspect
+>   kallsyms: Annotate static information into meminspect
+>   mm/mm_init: Annotate static information into meminspect
+>   sched/core: Annotate runqueues into meminspect
+>   mm/memblock: Add MEMBLOCK_INSPECT flag
+>   mm/numa: Register information into meminspect
+>   mm/sparse: Register information into meminspect
+>   printk: Register information into meminspect
+>   remoteproc: qcom: Extract minidump definitions into a header
+>   soc: qcom: Add minidump driver
+>   soc: qcom: smem: Add minidump device
+>   dt-bindings: reserved-memory: Add Google Kinfo Pixel reserved memory
+>   meminspect: Add Kinfo compatible driver
+>
+>  Documentation/dev-tools/index.rst             |   1 +
+>  Documentation/dev-tools/meminspect.rst        | 139 ++++++
+>  .../reserved-memory/google,kinfo.yaml         |  49 ++
+>  MAINTAINERS                                   |  13 +
+>  drivers/remoteproc/qcom_common.c              |  56 +--
+>  drivers/soc/qcom/Kconfig                      |  13 +
+>  drivers/soc/qcom/Makefile                     |   1 +
+>  drivers/soc/qcom/minidump.c                   | 272 ++++++++++
+>  drivers/soc/qcom/smem.c                       |  10 +
+>  include/asm-generic/vmlinux.lds.h             |  13 +
+>  include/linux/memblock.h                      |   7 +
+>  include/linux/meminspect.h                    | 261 ++++++++++
+>  include/linux/soc/qcom/minidump.h             |  72 +++
+>  init/Kconfig                                  |   2 +
+>  init/version-timestamp.c                      |   3 +
+>  init/version.c                                |   3 +
+>  kernel/Makefile                               |   1 +
+>  kernel/configs.c                              |   6 +
+>  kernel/cpu.c                                  |   5 +
+>  kernel/fork.c                                 |   2 +
+>  kernel/irq/irqdesc.c                          |   2 +
+>  kernel/kallsyms.c                             |  10 +
+>  kernel/meminspect/Kconfig                     |  30 ++
+>  kernel/meminspect/Makefile                    |   4 +
+>  kernel/meminspect/kinfo.c                     | 289 +++++++++++
+>  kernel/meminspect/meminspect.c                | 470 ++++++++++++++++++
+>  kernel/panic.c                                |   4 +
+>  kernel/printk/printk.c                        |  12 +
+>  kernel/sched/core.c                           |   2 +
+>  kernel/time/timer.c                           |   2 +
+>  kernel/vmcore_info.c                          |   4 +
+>  mm/init-mm.c                                  |  11 +
+>  mm/memblock.c                                 |  36 ++
+>  mm/mm_init.c                                  |   2 +
+>  mm/numa.c                                     |   2 +
+>  mm/page_alloc.c                               |   2 +
+>  mm/percpu.c                                   |   2 +
+>  mm/show_mem.c                                 |   2 +
+>  mm/sparse.c                                   |   4 +
+>  mm/swapfile.c                                 |   2 +
+>  40 files changed, 1766 insertions(+), 55 deletions(-)
+>  create mode 100644 Documentation/dev-tools/meminspect.rst
+>  create mode 100644 Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
+>  create mode 100644 drivers/soc/qcom/minidump.c
+>  create mode 100644 include/linux/meminspect.h
+>  create mode 100644 include/linux/soc/qcom/minidump.h
+>  create mode 100644 kernel/meminspect/Kconfig
+>  create mode 100644 kernel/meminspect/Makefile
+>  create mode 100644 kernel/meminspect/kinfo.c
+>  create mode 100644 kernel/meminspect/meminspect.c
+>
+> --
+> 2.43.0
+>
+>
+>
 
