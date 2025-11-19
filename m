@@ -4,126 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E9C7CF394D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:19:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 965EDCF3955
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:24:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A1696B00D2; Wed, 19 Nov 2025 11:19:58 -0500 (EST)
+	id E1FCB6B0005; Wed, 19 Nov 2025 11:24:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 251C26B00D6; Wed, 19 Nov 2025 11:19:58 -0500 (EST)
+	id DF7046B0096; Wed, 19 Nov 2025 11:24:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1413D6B00D4; Wed, 19 Nov 2025 11:19:58 -0500 (EST)
+	id D3AEC6B00C7; Wed, 19 Nov 2025 11:24:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 037FC6B00CC
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:19:57 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A0EC713B2C3
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:19:57 +0000 (UTC)
-X-FDA: 84127868034.03.0FCFB2B
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6620B14000F
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:19:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=DpQszS2B;
-	spf=pass (imf09.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.43 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C10ED6B0005
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:24:42 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7BDB41A059D
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:24:42 +0000 (UTC)
+X-FDA: 84127880004.14.10F4CA3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C7D874000A
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:24:40 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="q91IXr/F";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763569480; a=rsa-sha256;
+	cv=none;
+	b=eIDFj1ctNVzlYGq7d8brZYdcR4rvyC0LZ8pOp2h+2w8WaT93s/OXiCc3UvXaSheRfewebz
+	w02We274k2d+JLkH9OSvuZhh1ES2KclcbwTYbXUgRR3cW0csFu81Siph0ksieMdQ40fXQf
+	UemxCQNhKqVmbZ3Nv1X8+aNfYRqQ4ek=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="q91IXr/F";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763569195;
+	s=arc-20220608; t=1763569480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s+urd6hZuWEo3shlMiSBaDb8+AZAhwgeZeQG9S0pL0o=;
-	b=BLQ5rGnZTD5g/FZQaJju/XXHf38yjbB8PX6gSSrCjM2MKaSNCzG29YX6nx4ngDN3399Seq
-	RJbxjtBNoXSf4JjjkFx7vXKu/SYH1QZ+mSnrXxMZ9rWbwPjCZgNfX1wlzq5WaWUIPyTjrP
-	CTAFuiDvZY9gqMBZfFQrjHBR/yHRrHk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=DpQszS2B;
-	spf=pass (imf09.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.43 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763569195; a=rsa-sha256;
-	cv=none;
-	b=z5Wi1qRen8HUke1I0Fo+N8EKQrmCqEias+jN+1gAVp1WpBNNVJ58VCwgtfQMOiR0LmkEDG
-	5EdfuN8xs9HL2/zVxswVvTEU353Bf3e2jeoNGnpULSrwQt8gtJJii8L6ILHzc1MiEFlQTz
-	idmjmnTzDkevKCve1QGqihJGMOiqpqQ=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so48825285e9.3
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:19:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763569194; x=1764173994; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=s+urd6hZuWEo3shlMiSBaDb8+AZAhwgeZeQG9S0pL0o=;
-        b=DpQszS2BzZvrzQIONWbiJ/IZhUibaoooBejlGCYoZ0YWOXYP3G15qd5+NEufnLyVQD
-         ceJ/KFV5ZMt5W1on3oB6i7OOgOP2E8HMYOJqsHaADKerVEMWKaR91aMjRktqcY54Z4aU
-         FUGgyICmHvoDKFvWy/SUuMYSrdYyy3drLB19ff24UmOiFk/yIfFeQdgOYNWbtrioQxsb
-         qN/l2ed49oT3MgQ1WZJmnzWWeuGlc7dyS66xucHXoJAMzdsoumwhaTt5hObti5V30Yji
-         +BFrtwp3J1b5UV3kfgbCRAjKjofNwqXA3gzHUHkFXuIUvt7RmD66U2BpxLeUuf1eCkpe
-         IbHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763569194; x=1764173994;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s+urd6hZuWEo3shlMiSBaDb8+AZAhwgeZeQG9S0pL0o=;
-        b=HsP0/S4UJpbBC/5lk3yUZa1S3VfMCY53+xPT81ojFaiidnxODnnpeml2b8zQinMaD0
-         L3Huef5zhfaeRCHaWF7nlT/tQg7lNUFFDMdpMnesEab8VJDiG0RpN2fc8dQGAZaKOqeE
-         HZIbfFu+68JfndZO4mVDJM2VocfrXs1GUHTxjNXUc/+RQFtkHuPiIeDbkSxcSuPPSU0d
-         h5yWryLWz8uaJzGZoOo5antW8SND4XMTBKM4GHr1Y8MHar887dJ5KUk5EDxNwGDJ/wt2
-         q2hTjgk2LmzWezh+2AeCkhrbsJMcP47SvYZABT90nyBtRZHqztlPohBzAsFX+O/DxrT2
-         0dEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzoB1HR+3KzNjB9vmAtLvO218aW9LwqEWzwERbAaVqGAuxeTJ5y00y/ZxTNQJ4Hr8x6bGf5+zVYA==@kvack.org
-X-Gm-Message-State: AOJu0Yyd1PK65Z2TtwEBG+b2rDsTLdHRvxjQMzu1tcFHbTOk/AzgWrEq
-	0a+EG6U8TCoYmmuxEmprwspd5d0IANEunP9k9t4MfzD74dm35GflVLf10ZJUztWiO3I=
-X-Gm-Gg: ASbGncvXilZ/USOXz/9knzy2V9jz2xYZNsrpieuxR31ChkE1sR37rxCy9QTPiu/dwzs
-	pe+Q1jRGI1gGRvrWuTKnin2G8PAwHOToasExW4Q93JBC6RPeonT6ve247QUO+X2x9q4I+/gc/Ig
-	2fbC+4Rj/WOLHAyfIvxBFYM5lREWXjW5QrrufedRzO4dk3uOXcsb/509tDLbwXnjfZy/4dQkOuD
-	/r4/Aed/ARhdTUsc3J13TWAzx8zh3ZeTV1w4PJJFqmmJh6To+uW8eieUmkhEMD0Kl+hUXeuhPFt
-	TJ0nhX5iFVJNNu0e1XZ5FpcxpG/wfKjb5CmBotv3ghq9qJRsLZBORNOTGhLL2YwFx3LSj5sXnca
-	DfkDXcg/S3szx90MPC6/FbdJRH0P4DFth700Huz2VGTlGv1UVA2eH/TzE4bMZr9N5YaBwsuCflu
-	sjUvdOe2KQdWkY64ulmvtpedUHCEZZ
-X-Google-Smtp-Source: AGHT+IFwK5aAXHXIDIc3E2JseMPHhoLC/8O7sdHZVlYBJKdiPiGNYDVrkfdVj41qV4fzGcHy4cnIEg==
-X-Received: by 2002:a05:600c:4513:b0:477:2f7c:314f with SMTP id 5b1f17b1804b1-4778fe5c820mr231183085e9.10.1763569190918;
-        Wed, 19 Nov 2025 08:19:50 -0800 (PST)
-Received: from [192.168.0.39] ([82.76.24.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b0ffc90fsm61424875e9.2.2025.11.19.08.19.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Nov 2025 08:19:50 -0800 (PST)
-Message-ID: <060e7412-8f1f-4d31-af39-79213c560e85@linaro.org>
-Date: Wed, 19 Nov 2025 18:19:48 +0200
+	bh=ock3HuqFZFInVYV1pAYFAUP+/cD+AaIgpUa3EDpJ8L0=;
+	b=UgmoSN1ljD2mcDiKtOIt6K7R0JG2VA7dNRsnLTv5OuCfQkEREh1pPk79Jh9Vv40JHSNXr0
+	urt7DCpfG5i1BjZSfZO7tXYm0dVPRxcfvLKrKXRJikd6y7MDVSGcOXizx65Q+aW0HXTlTL
+	/2RqbVm08beFIV6nPfbu2RLOZIktips=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 28ED060171;
+	Wed, 19 Nov 2025 16:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11197C4CEF5;
+	Wed, 19 Nov 2025 16:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763569479;
+	bh=k3LKx2x4kEPnJQVwGRf0BS2K3uQDuHJQ6+W82NgmB4U=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=q91IXr/FpjdsiUfmpoyz/2nEsOf60mmtnyRCeNB86rSzln+6XviST7nII7FsP/XcK
+	 wLlmNZgEqFAJ7ypIFNyzrd2D4eNzeW9BoAm7mLjh8+Zg3nsJMb97OoUcXVWs+XvKg9
+	 yDYmczcFZeERuo0q3WC9xt46q9vQCW8sI3TwG/oI/8DZB6uusSZJ8YIqiE+TL7lvB+
+	 ts1ws3T4/eZlTPMEAYX//AniaoBqPGuiRu1Gf//Hy1IF/oyfJvjCPYrG6E2+QKrLu4
+	 I93h1QyDa+3rw9uSNLp6wKIDlQywPu3emfYacThDvf5mOL6dU0T6oghzj+IZ0gdjLu
+	 HtnKa42PoijKg==
+Date: Wed, 19 Nov 2025 09:24:35 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Deepak Gupta <debug@rivosinc.com>
+cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+    richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+    kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+    evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+    samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v23 21/28] riscv: kernel command line option to opt out
+ of user cfi
+In-Reply-To: <20251112-v5_user_cfi_series-v23-21-b55691eacf4f@rivosinc.com>
+Message-ID: <fe83a3cc-e8fb-e15b-4673-8caaf1ab39b8@kernel.org>
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com> <20251112-v5_user_cfi_series-v23-21-b55691eacf4f@rivosinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 25/26] dt-bindings: reserved-memory: Add Google Kinfo
- Pixel reserved memory
-To: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com, rdunlap@infradead.org,
- corbet@lwn.net, david@redhat.com, mhocko@suse.com
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org
-References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
- <20251119154427.1033475-26-eugen.hristev@linaro.org>
- <e73bdb23-c27b-4a18-b7e3-942f2d40b726@kernel.org>
-Content-Language: en-US
-From: Eugen Hristev <eugen.hristev@linaro.org>
-In-Reply-To: <e73bdb23-c27b-4a18-b7e3-942f2d40b726@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6620B14000F
-X-Stat-Signature: qbrq5wue5b5e97mtyy8yp5y71jmkjfow
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: C7D874000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: iohrermp959cz7bp78e6yoickk9nxu9i
 X-Rspam-User: 
-X-HE-Tag: 1763569195-674087
-X-HE-Meta: U2FsdGVkX1/Vdza3m5BnOFwM3ezAazITuk4lQIPk3fLWpB3eo2O/QLJe2OuhWcWR0M/JNWtA0KNJAMnTmFZ+KvkgNLw2z/xpi0TAHIjAooK7tOJeyt0vK9XiLKJ5qxf6ovdN5s+e4qsTTJTRv8d/yH8P1S9GWJ5xmYbZVX/prWh/VhvxXBW5wefamVoJJPimMAIbJ78fujAgKPP/0Vm6zYla2GF8lpyaT2zVUvxSrfwlw9M39mPhKwqQsw7sobXDbwfi0F58Q4pWfSgODKWP9vIgjqDGGbzubQd185/meo28vHyjwbIEKf4wocR2Vs9ujcu0z385WqSaBtpjjhdVUSsQskMmjICCZEVhjovJJKbJJJbIXE4D4ud6NBKEp9mfXZAYT67Q64kXwFvQPvtDdUGu1+SNIG5u5Mv2i1zROXqUTEs05I7SCqnhxfJtsXraDgjkCesrPbk30yCY4e69jTC/cpIWsMUYtdwfQHdnMVFiuUudTSKIVs/0jzS3JTlFjFfVOdKS0qPAx/j9l5RQFOn6G/asHSaMPpqtIYIZ8nLGF5HbYUqIhFyiXgaMctEdwOOU5Iz2pQUNB24Su5+3kvC6YORcxSEndpuni/1Xr6nH6tqpckcBPlrEEBmReZvnbVFqvbH2GK6DRz8xAUySp6vhjXlTTFyR8qi4E6jM0tjwgTRdy16UT+rdodcX/ZT+q4ZrFx+dltYE/xyGuUvzT9MeXMuDZuBdlnqdkk+Q+aSS3zUUnAJa/0z3m6tDjZHbuRjSvhzYDkIjm4qZCVyIBuBHyGYQGXb7fTUQBji8JUm62rMbjxnZWk5kyIRKVcoJm9Ww7+bkmUhJOhptXOQ/5lnEGWzxjt28jWET5QW+lkxbBPpaOFCZ5QcIQ72F1s/urteBKwOsrKaxV2Tkbmboncm3F8E/GlP6Yu8Ue//IWby8hRGx9VAjaUN8RaKojx79Xlaa5v6t8KCgHg22PBF
- lRwRSy8m
- Gc56uL6255VXuDyjTm1HSUytgXxOi/+Hf9/XL+t5c5WJnrgOWnZqJ1NPnlU3KG8oFn3A7E5p06fgeZV48zxYp5tqBiz07YjH+NxDnpEeQM5kJRZ8JcCMLCE+dvZOLUYhpYKoACcB/Hwybrx8Vl3hxIH8ghyvdT6SQya0cWrBIHVjclAYJNom27T1bmMOb9AwWO5k4XcB+hNS5yeb3VtYvYEA/HvDJ2ptOidsM1TvuOlnNsOYGUMcCBlthG5dzJDkV71gMsMBe1otmpkXcwq0yiaYIuiV8QRY/2n6ryRv6SA4gqgR91nb8+gHK0tZbXRZ2xErlYMee3ZlXs6w/8iAIYyWeMd3e89CBouYNtrpNanpZMlUfxWBexPfJKTgSVAnnE6OcmRwA8n1k4IsJ+qaend5tN67EzTjyj9S9eqe9o5LP+bRvJlkQZFBCmUgp9EyiYyaABVmpXYjn/GGB18pFXaD0y/2claLa6NfCSAU350bspeUnkiPCIguxzWU0fQ/KyctxaIFT2l4VI9I=
+X-HE-Tag: 1763569480-863981
+X-HE-Meta: U2FsdGVkX18Cq3NT/f7UY4P6ApckofAfiKH2o/r6eb6vjQEkgtF8q9+xeBc2TePnAeVX9wWum4UpbqO3eRfTT3ub3508vDGZlyAApjHmlngvH5bDtAVWkrN+GuC3czcECCMZCFqs0LhjnWtIuGhKHVULkjYKfe1W0Sg4CAuCbRnF23JpBgfB20M7YPZ5ddvO53VYx7k475C5JYsG3YsMQNVlA9aogPSeBLy9dto9h95/NIKlN6YUAJn2LrtV2l1vxMSkVX/QIZjA/akpG9X/tgpuJsMY2EGHIDtklW+DU0v87Bwj6xs0NzI61Ap4uc2KGl01tGBLRr4zUnxgS2RI6Sa5YO+lX3oRPIWmEC+4kZzL6dnysD3+IeM+lki5/rbNS7GURvNylaSckshjEuwur8LDweUIlCOXAbtk96htK7ptovROm2oUCP8HjhO0A+DIFN8yiff+KT7Eo4CcTCY5BmWGUzeeZVsj8rHtUUdoIivbp40AAwKNYrB/I1EWwR4+BzG4WRpoRsMNqMGxaPRDSgIhU4/WT1QFy5w0Vw7yytKfC9ruWRutZekeihPQa/y+96GIlM8Ve8uW6TIwgOxgElLWm4kV4yFjGDsmf0abDSwHIBoetZJQ9bMP+QAkJNpkGvynokNfhVFeeXxY/rdVnuMv4U+YMJm6oesEMQyloPSbnkh61MGy+29riFjHzdsclCPmnOhztoF+Cz67nx820m0LBStstwZiowJmUL+XU2QGd+mV1Urd/Um9MAHieehU/PJc0elRgHiGqic7XF4pivazbUcWTfrlmw3sK1lVGRmM35I9KdK9rE80hiwoVFHEzb0aeA5vTkGQoSmwEEAURXRoz/hB1rBWkhoFmNSiMeDEIYvc3XCscuRhRQY+iORNkBhN6rwq051YB/9Kb1+/NkCpDuDYXJYmBg4BsKqurWzKbQy6oCicoTHbzzk3FAGmezs0GDtoyU5VSrGdn4h
+ 8hMqTkk1
+ ZOZ+g7vxVLtI5yptvX+rU+NehF/yTFtsyGu5exrhhtzyoisi5/HcVjjXrIg43gaX+hb9Fa6ugka2gZLxxa+WL5HkguFFWpSNEzaaNuiwDuIiW8vyhIipyzmOOOoljzJbTgvQKbYCWhTZfgWM4ICF9kbBkAp3ycIjQvpWH8LF3nttVIGsdti9+FhqamXLpdH7cu7cRC+il7LK4MELesdkouINcnbVB7uPTnHSx/FC2Bkdc1QB6edkei2ZNwQ+/pMHAW8yC6+iEo+u497yuuR9P6XBMI2oo3a+B9KYfxZ1b4Bh70SbLr9jlDqBFEMiOXt4fRwo0zl/j5v2inVWm61kwTtfnyfbl8/1B3PYCVpphrPSG5VSng6/M54SfvTRFr1vVHvbMb2vX6XY/VPHFZyh5kkIzUwwi6EUn8sZbwT6lzqxlF6yuPOD9iI14zJnUFvzwp15i7kAKhSrn+l7+CC2O4mZX9sp6L1c1eMEISwRs12T7kBctOU9KdaQY4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,150 +120,292 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 12 Nov 2025, Deepak Gupta via B4 Relay wrote:
+
+> From: Deepak Gupta <debug@rivosinc.com>
+> 
+> This commit adds a kernel command line option using which user cfi can be
+> disabled. User backward cfi and forward cfi can be enabled independently.
+> Kernel command line parameter "riscv_nousercfi" can take below values:
+>  - "all" : Disable forward and backward cfi both.
+>  - "bcfi" : Disable backward cfi.
+>  - "fcfi" : Disable forward cfi
+> 
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+
+I fixed the checkpatch warnings on this patch and cleaned up the patch 
+description slightly; see below.
 
 
-On 11/19/25 18:02, Krzysztof Kozlowski wrote:
-> On 19/11/2025 16:44, Eugen Hristev wrote:
->> Add documentation for Google Kinfo Pixel reserved memory area.
-> 
-> Above and commit msg describe something completely else than binding. In
-> the binding you described kinfo Linux driver, above you suggest this is
-> some sort of reserved memory.
-> 
->>
->> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
->> ---
->>  .../reserved-memory/google,kinfo.yaml         | 49 +++++++++++++++++++
->>  MAINTAINERS                                   |  5 ++
->>  2 files changed, 54 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml b/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
->> new file mode 100644
->> index 000000000000..12d0b2815c02
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
->> @@ -0,0 +1,49 @@
->> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/reserved-memory/google,kinfo.yaml#
-> 
-> Filename based on the compatible.
-> 
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Google Pixel Kinfo reserved memory
->> +
->> +maintainers:
->> +  - Eugen Hristev <eugen.hristev@linaro.org>
->> +
->> +description:
->> +  This binding describes the Google Pixel Kinfo reserved memory, a region
-> 
-> Don't use "This binding", but please describe here hardware.
-> 
->> +  of reserved-memory used to store data for firmware/bootloader on the Pixel
->> +  platform. The data stored is debugging information on the running kernel.
->> +
->> +properties:
->> +  compatible:
->> +    items:
->> +      - const: google,kinfo
->> +
->> +  memory-region:
->> +    maxItems: 1
->> +    description: Reference to the reserved-memory for the data
-> 
-> This does not match description. Unfortunately it looks like you added a
-> node just to instantiate Linux driver and this is not allowed.
-> 
-> If this was some special reserved memory region, then it would be part
-> of reserved memory bindings - see reserved-memory directory.
+- Paul
 
-I sent this patch for reserved-memory directory, where all the
-reserved-memory bindings reside. Or maybe I do not understand your
-comment ?>
-> Compatible suggests that it is purely Linux driver, so another hint.
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Wed, 12 Nov 2025 16:43:19 -0800
+Subject: [PATCH v23 21/28] riscv: add kernel command line option to opt out of user cfi
 
-This reserved memory area is used by both Linux and firmware. Linux
-stores some information into this reserved memory to be used by the
-firmware/bootloader in some specific scenarios (e.g. crash or recovery
-situations)
-As the firmware reserves this memory for this specific purpose, it is
-natural to inform Linux that the memory should not be used by another
-purpose, but by the purpose it was reserved for.
-Which would be the best way to have Linux understand where is this
-memory area so it could be handled?
+This commit adds a kernel command line option to disable part or all of
+user cfi.  User backward cfi and forward cfi can be controlled independently.
+Kernel command line parameter "riscv_nousercfi" can take the following values:
+ - "all" : Disable forward and backward cfi both
+ - "bcfi" : Disable backward cfi
+ - "fcfi" : Disable forward cfi
 
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Link: https://patch.msgid.link/20251112-v5_user_cfi_series-v23-21-b55691eacf4f@rivosinc.com
+[pjw@kernel.org: fixed warnings from checkpatch; cleaned up patch description]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+---
+ .../admin-guide/kernel-parameters.txt         |  8 +++
+ arch/riscv/include/asm/usercfi.h              |  9 +++
+ arch/riscv/kernel/cpufeature.c                |  9 ++-
+ arch/riscv/kernel/usercfi.c                   | 58 +++++++++++++++----
+ 4 files changed, 71 insertions(+), 13 deletions(-)
 
-> 
-> Looks like this is a SoC specific thing, so maybe this should be folded
-> in some of the soc drivers.
-> 
-Not really soc specific. Any soc who implements this at firmware level
-can use it. The firmware can reserve some memory for this specific
-purpose and then pass it to Linux, so Linux can fill it up.
-It just happens that the Pixel phone has this implemented right now, but
-it is not constrained to Pixel only.
-
-Instantiating this driver with a call like platform_device_register_data
-would make the driver unaware of where exactly the firmware looks for
-the data. This is right now passed through the DT node. Do you have a
-better suggestion on how to pass it ?
-
-> 
-> 
->> +
->> +required:
->> +  - compatible
->> +  - memory-region
->> +
->> +additionalProperties: true
->> +
->> +examples:
->> +  - |
->> +    reserved-memory {
->> +      #address-cells = <1>;
->> +      #size-cells = <1>;
->> +      ranges;
->> +
->> +      kinfo_region: smem@fa00000 {
->> +          reg = <0xfa00000 0x1000>;
->> +          no-map;
->> +      };
->> +    };
-> 
-> Anyway, drop, not relevant.
-> 
-> 
->> +
->> +    debug-kinfo {
->> +        compatible = "google,debug-kinfo";
-> 
-> Device node with only one phandle to reserved memory region is a proof
-> it is not a real device.
-> 
-> Also,
-> Please use scripts/get_maintainers.pl to get a list of necessary people
-> and lists to CC (and consider --no-git-fallback argument, so you will
-> not CC people just because they made one commit years ago). It might
-> happen, that command when run on an older kernel, gives you outdated
-> entries. Therefore please be sure you base your patches on recent Linux
-> kernel.
-> 
-> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-> people, so fix your workflow. Tools might also fail if you work on some
-> ancient tree (don't, instead use mainline) or work on fork of kernel
-> (don't, instead use mainline). Just use b4 and everything should be
-> fine, although remember about `b4 prep --auto-to-cc` if you added new
-> patches to the patchset.
-> 
-Thanks for your review and suggestions
-
-> 
-> Best regards,
-> Krzysztof
-> 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6c42061ca20e..453127ef8746 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6453,6 +6453,14 @@
+ 			replacement properties are not found. See the Kconfig
+ 			entry for RISCV_ISA_FALLBACK.
+ 
++	riscv_nousercfi=
++		all	Disable user cfi ABI to userspace even if cpu extension
++			are available.
++		bcfi	Disable user backward cfi ABI to userspace even if
++			shadow stack extension is available.
++		fcfi	Disable user forward cfi ABI to userspace even if landing
++			pad extension is available.
++
+ 	ro		[KNL] Mount root device read-only on boot
+ 
+ 	rodata=		[KNL,EARLY]
+diff --git a/arch/riscv/include/asm/usercfi.h b/arch/riscv/include/asm/usercfi.h
+index ec4b8a53eb74..7495baae1e3c 100644
+--- a/arch/riscv/include/asm/usercfi.h
++++ b/arch/riscv/include/asm/usercfi.h
+@@ -5,6 +5,10 @@
+ #ifndef _ASM_RISCV_USERCFI_H
+ #define _ASM_RISCV_USERCFI_H
+ 
++#define CMDLINE_DISABLE_RISCV_USERCFI_FCFI	1
++#define CMDLINE_DISABLE_RISCV_USERCFI_BCFI	2
++#define CMDLINE_DISABLE_RISCV_USERCFI		3
++
+ #ifndef __ASSEMBLER__
+ #include <linux/types.h>
+ #include <linux/prctl.h>
+@@ -13,6 +17,8 @@
+ struct task_struct;
+ struct kernel_clone_args;
+ 
++extern unsigned long riscv_nousercfi;
++
+ #ifdef CONFIG_RISCV_USER_CFI
+ struct cfi_state {
+ 	unsigned long ubcfi_en : 1; /* Enable for backward cfi. */
+@@ -83,6 +89,9 @@ void set_indir_lp_lock(struct task_struct *task);
+ 
+ #endif /* CONFIG_RISCV_USER_CFI */
+ 
++bool is_user_shstk_enabled(void);
++bool is_user_lpad_enabled(void);
++
+ #endif /* __ASSEMBLER__ */
+ 
+ #endif /* _ASM_RISCV_USERCFI_H */
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 106f6bcde5c8..b220fec9a239 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -28,6 +28,7 @@
+ #include <asm/vector.h>
+ #include <asm/vendor_extensions.h>
+ #include <asm/vendor_extensions/thead.h>
++#include <asm/usercfi.h>
+ 
+ #define NUM_ALPHA_EXTS ('z' - 'a' + 1)
+ 
+@@ -45,6 +46,8 @@ struct riscv_isainfo hart_isa[NR_CPUS];
+ 
+ u32 thead_vlenb_of;
+ 
++unsigned long riscv_nousercfi;
++
+ /**
+  * riscv_isa_extension_base() - Get base extension word
+  *
+@@ -277,7 +280,8 @@ static int riscv_ext_svadu_validate(const struct riscv_isa_ext_data *data,
+ static int riscv_cfilp_validate(const struct riscv_isa_ext_data *data,
+ 				const unsigned long *isa_bitmap)
+ {
+-	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI))
++	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI) ||
++	    (riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_FCFI))
+ 		return -EINVAL;
+ 
+ 	return 0;
+@@ -286,7 +290,8 @@ static int riscv_cfilp_validate(const struct riscv_isa_ext_data *data,
+ static int riscv_cfiss_validate(const struct riscv_isa_ext_data *data,
+ 				const unsigned long *isa_bitmap)
+ {
+-	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI))
++	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI) ||
++	    (riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_BCFI))
+ 		return -EINVAL;
+ 
+ 	return 0;
+diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
+index 33c955d56eb3..d7a973c58943 100644
+--- a/arch/riscv/kernel/usercfi.c
++++ b/arch/riscv/kernel/usercfi.c
+@@ -17,6 +17,8 @@
+ #include <asm/csr.h>
+ #include <asm/usercfi.h>
+ 
++unsigned long riscv_nousercfi;
++
+ #define SHSTK_ENTRY_SIZE sizeof(void *)
+ 
+ bool is_shstk_enabled(struct task_struct *task)
+@@ -59,7 +61,7 @@ unsigned long get_active_shstk(struct task_struct *task)
+ 
+ void set_shstk_status(struct task_struct *task, bool enable)
+ {
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return;
+ 
+ 	task->thread_info.user_cfi_state.ubcfi_en = enable ? 1 : 0;
+@@ -89,7 +91,7 @@ bool is_indir_lp_locked(struct task_struct *task)
+ 
+ void set_indir_lp_status(struct task_struct *task, bool enable)
+ {
+-	if (!cpu_supports_indirect_br_lp_instr())
++	if (!is_user_lpad_enabled())
+ 		return;
+ 
+ 	task->thread_info.user_cfi_state.ufcfi_en = enable ? 1 : 0;
+@@ -259,7 +261,7 @@ SYSCALL_DEFINE3(map_shadow_stack, unsigned long, addr, unsigned long, size, unsi
+ 	bool set_tok = flags & SHADOW_STACK_SET_TOKEN;
+ 	unsigned long aligned_size = 0;
+ 
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return -EOPNOTSUPP;
+ 
+ 	/* Anything other than set token should result in invalid param */
+@@ -306,7 +308,7 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *tsk,
+ 	unsigned long addr, size;
+ 
+ 	/* If shadow stack is not supported, return 0 */
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return 0;
+ 
+ 	/*
+@@ -352,7 +354,7 @@ void shstk_release(struct task_struct *tsk)
+ {
+ 	unsigned long base = 0, size = 0;
+ 	/* If shadow stack is not supported or not enabled, nothing to release */
+-	if (!cpu_supports_shadow_stack() || !is_shstk_enabled(tsk))
++	if (!is_user_shstk_enabled() || !is_shstk_enabled(tsk))
+ 		return;
+ 
+ 	/*
+@@ -381,7 +383,7 @@ int arch_get_shadow_stack_status(struct task_struct *t, unsigned long __user *st
+ {
+ 	unsigned long bcfi_status = 0;
+ 
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return -EINVAL;
+ 
+ 	/* this means shadow stack is enabled on the task */
+@@ -395,7 +397,7 @@ int arch_set_shadow_stack_status(struct task_struct *t, unsigned long status)
+ 	unsigned long size = 0, addr = 0;
+ 	bool enable_shstk = false;
+ 
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return -EINVAL;
+ 
+ 	/* Reject unknown flags */
+@@ -448,7 +450,7 @@ int arch_lock_shadow_stack_status(struct task_struct *task,
+ 				  unsigned long arg)
+ {
+ 	/* If shtstk not supported or not enabled on task, nothing to lock here */
+-	if (!cpu_supports_shadow_stack() ||
++	if (!is_user_shstk_enabled() ||
+ 	    !is_shstk_enabled(task) || arg != 0)
+ 		return -EINVAL;
+ 
+@@ -461,7 +463,7 @@ int arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *sta
+ {
+ 	unsigned long fcfi_status = 0;
+ 
+-	if (!cpu_supports_indirect_br_lp_instr())
++	if (!is_user_lpad_enabled())
+ 		return -EINVAL;
+ 
+ 	/* indirect branch tracking is enabled on the task or not */
+@@ -474,7 +476,7 @@ int arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status)
+ {
+ 	bool enable_indir_lp = false;
+ 
+-	if (!cpu_supports_indirect_br_lp_instr())
++	if (!is_user_lpad_enabled())
+ 		return -EINVAL;
+ 
+ 	/* indirect branch tracking is locked and further can't be modified by user */
+@@ -498,7 +500,7 @@ int arch_lock_indir_br_lp_status(struct task_struct *task,
+ 	 * If indirect branch tracking is not supported or not enabled on task,
+ 	 * nothing to lock here
+ 	 */
+-	if (!cpu_supports_indirect_br_lp_instr() ||
++	if (!is_user_lpad_enabled() ||
+ 	    !is_indir_lp_enabled(task) || arg != 0)
+ 		return -EINVAL;
+ 
+@@ -506,3 +508,37 @@ int arch_lock_indir_br_lp_status(struct task_struct *task,
+ 
+ 	return 0;
+ }
++
++bool is_user_shstk_enabled(void)
++{
++	return (cpu_supports_shadow_stack() &&
++		!(riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_BCFI));
++}
++
++bool is_user_lpad_enabled(void)
++{
++	return (cpu_supports_indirect_br_lp_instr() &&
++		!(riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_FCFI));
++}
++
++static int __init setup_global_riscv_enable(char *str)
++{
++	if (strcmp(str, "all") == 0)
++		riscv_nousercfi = CMDLINE_DISABLE_RISCV_USERCFI;
++
++	if (strcmp(str, "fcfi") == 0)
++		riscv_nousercfi |= CMDLINE_DISABLE_RISCV_USERCFI_FCFI;
++
++	if (strcmp(str, "bcfi") == 0)
++		riscv_nousercfi |= CMDLINE_DISABLE_RISCV_USERCFI_BCFI;
++
++	if (riscv_nousercfi)
++		pr_info("riscv user cfi disabled via cmdline - shadow stack status : %s, landing pad status : %s\n",
++			(riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_BCFI) ? "disabled" :
++			"enabled", (riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_FCFI) ?
++			"disabled" : "enabled");
++
++	return 1;
++}
++
++__setup("riscv_nousercfi=", setup_global_riscv_enable);
+-- 
+2.48.1
 
 
