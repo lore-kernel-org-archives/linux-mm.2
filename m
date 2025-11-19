@@ -4,118 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D97CF34B4
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:06:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42AF4CF34B5
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:08:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A51926B00C0; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
+	id 9DE936B00A8; Wed, 19 Nov 2025 09:08:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A01296B00C2; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
+	id 98F036B00AA; Wed, 19 Nov 2025 09:08:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8F66B00C3; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
+	id 8A4C56B00C3; Wed, 19 Nov 2025 09:08:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 787046B00C0
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:06:46 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D3871404F7
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:06:46 +0000 (UTC)
-X-FDA: 84127532412.05.FF81D95
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 370704000C
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:06:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j96oD8Xj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763561204; a=rsa-sha256;
-	cv=none;
-	b=M6wOkIRwg3hC2jsa2YT18wuFrRs7wVDaQ9Y9TJX/lzHWF9ZmBVbF7xW8xMUU6FV9klcFHG
-	6NCmrHZ4HgDF8uDf7bhBEVaLdiIFcLaFEAE5StYaxdwfNxKbjK2V75L5lJdOUA+cAWAQ+I
-	Zbd6BLliyyHsQdcTe0AnNyaoZTghyOE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=j96oD8Xj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5886B00A8
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:08:38 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B4D82160368
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:08:35 +0000 (UTC)
+X-FDA: 84127536990.03.FCE49F9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 713BB1C0015
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:08:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fz2a2sSn;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763561204;
+	s=arc-20220608; t=1763561313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KrYlkbrAuW0CJVMNxIgwwlmGTnSuWrArad9fT3lU1L8=;
-	b=JB4zY1oociDQHFMXHpX4Juwu5xk9Ev0t9itVGZimUYCzjffkfP8d9PpQCLwGjtgMoiBzzK
-	KAiX+PkdOO4ippgCRgeuAWBw3Wpz6q8J50uAjDdRMmmPJMnDFCtQWRXdkFwXv4DRIFmPUk
-	FPh8ux7e8WE/v5wsVyNHLCmD1MW0Npk=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42b379cd896so3921050f8f.3
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 06:06:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763561202; x=1764166002; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KrYlkbrAuW0CJVMNxIgwwlmGTnSuWrArad9fT3lU1L8=;
-        b=j96oD8XjUk7TwJYeELP+tGPv/XWxG4N+MYiFku/7PYM5TVHgmm0h9IJS74j9OoY5Pz
-         KWlNmBXH93VGpW53bxsQ+TFflhXSpS4a45R2dOtJjDQut3DvAO0kubzt4ciCmE3LwGDl
-         hvKYxS/fA5SNqsgUDgvSTPA13InHy2b7RfSrQP8d3BQy9BjHpKlUYJynIPns4eS8XAuC
-         ZdUfWAX3lWi6yZEXp5DcWL+e7CgwE41w8K83t354lQhtpnzi6bngkUmkaDEUcqP5SXcn
-         MPhWrn3H8RUlEr6CR8Yma7Si0MRjdhYEuyrmilRBO4NmL9GD2c+4W2tREdo3hYUx+EeB
-         +3cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763561202; x=1764166002;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KrYlkbrAuW0CJVMNxIgwwlmGTnSuWrArad9fT3lU1L8=;
-        b=ky/C5WOiXjcQEgLVWOV7lKbE8QQh7GNzJ/ptcyaCcBgqSlcK51ojCGN24xbWSIv980
-         t9aAFYNplFpItaL/C4vuW0vuz+ya+xoXM6xu2uDLLSkonKFnyiwLId/DtLMUQP0G+KZC
-         Co4XDGiP2oM3Tnb1NT3KULHL620ChOCS3l8sSaRyx9M8YHwoaTTr9axqXl62BGldU3ll
-         FpdYlaaNomqQXxbClKC9PuaE/a+3/VAQGIkLoahdxSvYNkxqSspgJtfu2mhL1opy0fu8
-         YazNSPKsc1NNPkFOPAumGuLzuCXGzCKQGlM+q/85S7YShCNwCisI1CxffHX3QpPYowVD
-         LjzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLWEBkaP7OLX99B902PjHXO31TIA55kDM5wPQdHN1xrfYtPwX/JP+ckBv5aaBNbc5+cDFSqu2NpQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz0EjO+eSy49KJHmzN34Ku+bNMTKMfJpsLk9QLQzDZdP9nTzP3P
-	0EL6clahJNM63m1r3V3pi0rM8GSS5kGxKvYiy6EHTLmYI/X1yPMGw2m6
-X-Gm-Gg: ASbGncsWMQVDlrmVpiBGja+8gSWKbPC4vXbC1b+lW8QDsKdjd5lPbsCeq5T8BmYvFMp
-	iODzZsolC6TPdCaKK3FRqfnHb1gypKxjqRSBTy3FDy9L0WXdd+JT127FkwCfERwDYFwQM5pMpEn
-	vwCv0KcMa8h8fZ+1vsgJLNPRRh/6/ac3DctuY9XBxF+7GDfX/rzf5kwmNi3JJRMhwHcp4Dc6oyB
-	NMtARijtgpPMvTaeO38ipM/P13kAx4FCszSWjGZ7xjVwsdcpjins5IeLBA+2c567L3nxNA9R54X
-	hn30oh0PCMm4SZCkCgur4e9PbFuI47tLLmISJ9x0m0mzhKxzNT3SHsgzhlspPb87TlIj2/mxyax
-	qXwWP+DbguThWlD9c8RgUIPd8w3GDA+OablsAKYsCi2g5XSjg8SHWfrdMgxWL1RPaX8Xwo1hUY9
-	xo7UD6XCyvJVj1LJOxOGeya55Ga6kByfTai+ZffBJmSbOnJVfJ/DWOM+UCrv2p7ht5i8M=
-X-Google-Smtp-Source: AGHT+IFiPKDX5IFAdREjtpo8183tGXmuo5NUyGi0LIKpf84NFghKB21kVVGOB/anTbdap2sFnDN4RQ==
-X-Received: by 2002:a05:6000:2007:b0:427:9d7:86f9 with SMTP id ffacd0b85a97d-42b595ade7dmr20655507f8f.47.1763561202173;
-        Wed, 19 Nov 2025 06:06:42 -0800 (PST)
-Received: from f (cst-prg-14-82.cust.vodafone.cz. [46.135.14.82])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e7ae5bsm38214170f8f.8.2025.11.19.06.06.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 06:06:40 -0800 (PST)
-Date: Wed, 19 Nov 2025 15:06:32 +0100
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com, Liam.Howlett@oracle.com, 
-	lorenzo.stoakes@oracle.com
-Subject: Re: [PATCH] fork: stop ignoring NUMA while handling cached thread
- stacks
-Message-ID: <2a3ftlongim2m7nk5wbj4se47prwagiw7uxzbk7f2isqsqezyo@b76y3afffhea>
-References: <20251117140747.2566239-1-mjguzik@gmail.com>
- <CACRpkdbNxKh7ySjffhzCncgBroOOeOQP689k7dgBKgV9annLpg@mail.gmail.com>
+	bh=+Yg19b3C0A9RgvXwEm9q22h/mHwyzJvPVT/d/nPBkXI=;
+	b=rVVVjJfymGacl5H6B8ui9plxVMCaWbCT9p0winq0A0IQu9f3rLqQX+sRHAEBD3JKRxepH+
+	SAxCunl6RSRD2Na4jepOv3WvxbZ4bE/IyA9m8ICvtHoqRI75ruKZe91fZRcRBRhAnTGq+6
+	1IenXTvPvrTHuABolTfk5ndz68xzZpg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763561313; a=rsa-sha256;
+	cv=none;
+	b=umwCuU9yEw584dOyXdlW2sHnNLXKK3BlhZf4g5ciYzcc8HyIRTg/VltNH/OjCi86rD6Ihw
+	WxIrS/hM7aUh9HdkLONC9ElBcYYSa7jjpKyVlwT85tjEjeCLX9fv9yg+beAf40Ap49Swv0
+	npVlDlhJo8WiYsMUv0uLcuCkDd6f6g0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fz2a2sSn;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763561312;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Yg19b3C0A9RgvXwEm9q22h/mHwyzJvPVT/d/nPBkXI=;
+	b=Fz2a2sSnkSL0ab9QJe8UxI3XJWX0MF5iUmle/tNjEwFX3fbe3PsoetKdvp8khLub/B40hE
+	aWB5tCJZ7Ma8E8PULdbwK7HnlS71N8+fom9E1SgvJOfOVtuKJHPAwNSzFeT4CfA/TnITQc
+	sCscR29cHwE4aV96IehanF3q1Y8DAVQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-495-JwJzTWP2O7aaSa9fWhiWnA-1; Wed,
+ 19 Nov 2025 09:08:30 -0500
+X-MC-Unique: JwJzTWP2O7aaSa9fWhiWnA-1
+X-Mimecast-MFC-AGG-ID: JwJzTWP2O7aaSa9fWhiWnA_1763561310
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B8A75180034D;
+	Wed, 19 Nov 2025 14:08:29 +0000 (UTC)
+Received: from bfoster (unknown [10.22.64.29])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C44DA195608E;
+	Wed, 19 Nov 2025 14:08:28 +0000 (UTC)
+Date: Wed, 19 Nov 2025 09:08:26 -0500
+From: Brian Foster <bfoster@redhat.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH v2 1/3] tmpfs: zero post-eof uptodate folios on swapout
+Message-ID: <aR3PWnNFhOckoHvc@bfoster>
+References: <20251112162522.412295-1-bfoster@redhat.com>
+ <20251112162522.412295-2-bfoster@redhat.com>
+ <c1978ef3-251b-4a57-8244-b047e66b6ab3@linux.alibaba.com>
+ <aRyFOsUk--AtbEGM@bfoster>
+ <9e696091-9c40-46cf-91b9-c95e1d38a1a8@linux.alibaba.com>
 MIME-Version: 1.0
+In-Reply-To: <9e696091-9c40-46cf-91b9-c95e1d38a1a8@linux.alibaba.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: FgBcDXXAm5mg80VkTpfLgPdvNadvP-M-m47hlG6tsrg_1763561310
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdbNxKh7ySjffhzCncgBroOOeOQP689k7dgBKgV9annLpg@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 370704000C
-X-Stat-Signature: e6me8z49jfftzycmuramas4h5zr6uimb
+X-Stat-Signature: ux44qwenntbhndcamnz6dw3ccxgc3qji
 X-Rspam-User: 
-X-HE-Tag: 1763561203-109918
-X-HE-Meta: U2FsdGVkX18/v+UnNC6d9TISCIeOSRIekRSOV4TyAdRinA3D9CcFkWdfoKUsOHUOPdJ+E9sxwwiZLq7Z5jn9jaoarvXk/uM/ETjcxLGB0rTLn4N1Ba/pBlMG6SHXEsERdGzELlJaUK8cfeFu4L25CgkHlAJhVKQ9o7qHD5Rzax35rUIpRiN4QXNFsnHotbGNhJ9UxcpWbtkVDiTaa6yfHwdPIjYySOMCyLUAbx4cbx2DZVDzJuQclLXuA8TggKHhQrpdp3hs4UO/pqeaFDbEqzU2qmtQ+lt+xhmsOrWMstzMSoyTRdgwJn7ka45CcXcWV2Ily3I7I+hcY3ApwSRi0551xgWzdh9uKuDxPud7o5e7vCRzkEGyyX29071pUPSclDvdPnb44lF4Gu3Qpa6EwXwTCWCAekvxRpbyxrG1+da5PKTVPX5sRdPNJvlBk4uiTpVwIACm17ddf9347oxnEmxWTa0CDrZBiZvBsKDaBj39b5U+JEGI8qhe5ApiPTZ27t3mvCzd4j9Y+4UwivSztSkdz4oCG+UlLIWHm7TYi5HoGyn5DKYQP9/A68dNLrNo6umbms5gHwgm7bZWPWTexRyaJFguQUZMrqHSQfwP42+96xd13RrTdHFo0UEZzZsHPRPDKf7pdq28LsvKS7yS/TKhHobJKzn+734IdufnEZpFRC2tl1IsnGor2cFPdWUoN/ybjLA3J4H73Xrist3VBWgtUh/fRsw64Rf7SvRfgccQ6R7hnLHx9kIXgPfhffTfOqjR93I2IWxNfdnLzMWBJSmkInfHnzakCqdL3qD3XoazLgpsTi4nPniiWAzrYJFPz00kTnR95Fb5H+iCDbXUvbnrgT9SzMgSa3Dl5np0IUY+Akf7hblOWyKI3BAjedUAsmpFWrELzTxG0vuG0yJdTOSw15KJtLXyZS4yLgPy6k8hk2/NMoPJsQDitWD9Z0Ow3gTyRxEmlu0sKG5gsas
- PEL6bJnM
- CGkTa/oLjjSik4oE5LzyCbvpa1D5A3KTdhbTBF5ZvQCsaH1YAa8WEUNj4HJghJyQeARHSFtEKjWY5+iaT7Ax7ksA5OCXcqNAiYymkFX+c8bErXeF21ojaiL/allssLn6UtNCmhzFyzBnJRFvJPMm4POKqzhL8Lfo8Z4UQBBzlybBLq/VksE6TYg0NfCp5awdjuDG9qkCIzDPOSM/YilFDqpq/Ruf8DyYS5yRYEh/HZxl9HID4c6slVOmvC+0J8BKBqCv2i8fn1VMnZpfGspcGqyoyph3ZEPO95/stQKppITmD3J0GXLo/YEOsWcXaGuC4SmAmTDmbZZuZYECObe7k1pNmBzu9lTY5+tTVzpQ59E2390GEy+eafTPgHtQ+xZ2E18ClUe3FfpRKmsrsAPKQ30QVnbRwCuiUvzeQMujTk4h/TraKpWnjjC9rNd01t/AJ5kXD7LoLan+hIJooZhR10kwZrz9qxj+iKVGNtoXVypj8dpiGLZj8VVHa/QVCqzKcQXvF8EDmTykgx4wTRM530jGDx+bUYe4d6na/
+X-Rspamd-Queue-Id: 713BB1C0015
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763561313-790691
+X-HE-Meta: U2FsdGVkX1+5cm2YJsHvD4i5oD0cJpgSFUGWdv4WJHJNEAYMjNBRc6HPoDg29yZRu0speRwKY/z98QfunzarIbZHWjV2pWGylr7m5mu8eS+qWgnaw9hThiRZjmC5G4KlDD+J2o2uTlK/eZVztDdPl0bFrJQGMm2OuTho24jS9EkA1gcloHgnf2JvOoTTa5iJfpnuJ2OMW6J5whGj1Z2Z/rESKjfbWwm11g/PSxe+MzaPBS0S+4xeXXb/9b7LRjr+SezKSp9azFGevyoyQkwr5XYsRCoVs2FZICmmmOLw4ByEv9K8qboaBzWVhDxykZRnsVeKxhDuspsLZa7EquBJtYx8F9NRid6VP3o1XPX9Qj6X7jVht289LsffTHFo7qgxL8K11uE0lsTiTkknLf69QC3b0AeCQOEL/WTi+oueyVBAmfDhmYau/AFkhcKBA7JSBLvL96VVeTtoW3P8cE0QpBEAGi4IQyllI6Hg9wZSQ/dj3LLLR6yWVCs+Ml81XhJO0eV5Bbb9JtQ90c0ho3RDS6snk+iR8oludG+ZGvfMm25Vz0kEGxPWwzUTSrkAYBYRhCKSy5RFIAIxzDAEXqpLNSZ9oTEL2kLs5D+ZHNnNJyPYeVHfW0nxGoWBiOMnqOz55ncuwff/17kHZ0jLc3q2KpLCUtf0dqOQwgVq12Jg7wK1Ip1UeDddf9IyaTBM8Gdm53hW5HsefzwV4Gnv4vPUft0MHRZPFCk5k8w8726QR16+OBa9k7zazU9L6CtgiBln2bTSU6KFcTDdGeEPMC03mbJfX/97LE4OJrMfUiLbJssZEwtC7RNXANDirE+/qFGBx+cLDjnzRUBYDWDmHZxLoDOBGixKmK0qR5uNPmV4fplxbDgt8m311+TXVEoTltFM1oT0OdX5ZB0/N2EkFdOz+asqy7EjJ1zWZem9Yqe0hzO/eAc9qLr4QuMD5rJFRfIETxqwjAl7Qtdk2YYh0F+
+ eGTZ3jTw
+ X+HGhOo8bae0s1jxl+ubVW+bmLV5pvV9DJZ6lkPhGIlf2ZB5bBTmZlo88S9WpAqyEiIMe0OjnoWeDNjJ53NY1sHdZwcryOdpxXKDeQoAiCpRw2remZDNuF2GzCyZh4kS9wyj6d5O3WTHW2uJ3AUY/msSj+VLlvxEsH4dCpUxk3XIu1NP9B2X7r+I12olAvTC1WsQ141SmG8SVrzdFUYsDyEsnmZXq7ure1q9iZmOkveKVEHMpAhbP3VUnEy1cbK98CJ0yF02veoyrvh8cyCNqlxZ4CzgYxhK2M+KV2v+IjpgQ251Mw/lE/YY0p/PTnWp/xKZTs+HgjYUrDoLzDEh36NcAdAwiJdGJrcabPE4RulEd2sXKvlu2oZcirt1N2zDnGtYyiomtFhNLywX7i8WUIoWaETxA3HEUC/4AVbNBtELyJ+pXXrc+jDHQX+Vhlebysf32ukRUzPQFj5E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,149 +111,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 10:15:04PM +0100, Linus Walleij wrote:
-> On Mon, Nov 17, 2025 at 3:08 PM Mateusz Guzik <mjguzik@gmail.com> wrote:
+On Wed, Nov 19, 2025 at 11:53:41AM +0800, Baolin Wang wrote:
 > 
-> > Note the current caching is already bad as the cache keeps overflowing
-> > and a different solution is needed for the long run, to be worked
-> > out(tm).
 > 
-> That isn't very strange since we just have 2 stacks in the cache.
+> On 2025/11/18 22:39, Brian Foster wrote:
+> > On Tue, Nov 18, 2025 at 10:33:44AM +0800, Baolin Wang wrote:
+> > > 
+> > > 
+> > > On 2025/11/13 00:25, Brian Foster wrote:
+> > > > As a first step to facilitate efficient post-eof zeroing in tmpfs,
+> > > > zero post-eof uptodate folios at swap out time. This ensures that
+> > > > post-eof ranges are zeroed "on disk" (i.e. analogous to traditional
+> > > > pagecache writeback) and facilitates zeroing on file size changes by
+> > > > allowing it to not have to swap in.
+> > > > 
+> > > > Note that shmem_writeout() already zeroes !uptodate folios so this
+> > > > introduces some duplicate logic. We'll clean this up in the next
+> > > > patch.
+> > > > 
+> > > > Signed-off-by: Brian Foster <bfoster@redhat.com>
+> > > > ---
+> > > >    mm/shmem.c | 19 +++++++++++++++++--
+> > > >    1 file changed, 17 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/mm/shmem.c b/mm/shmem.c
+> > > > index 0a25ee095b86..5fb3c911894f 100644
+> > > > --- a/mm/shmem.c
+> > > > +++ b/mm/shmem.c
+> > > > @@ -1577,6 +1577,8 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+> > > >    	struct inode *inode = mapping->host;
+> > > >    	struct shmem_inode_info *info = SHMEM_I(inode);
+> > > >    	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+> > > > +	loff_t i_size = i_size_read(inode);
+> > > > +	pgoff_t end_index = DIV_ROUND_UP(i_size, PAGE_SIZE);
+> > > >    	pgoff_t index;
+> > > >    	int nr_pages;
+> > > >    	bool split = false;
+> > > > @@ -1596,8 +1598,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+> > > >    	 * (unless fallocate has been used to preallocate beyond EOF).
+> > > >    	 */
+> > > >    	if (folio_test_large(folio)) {
+> > > > -		index = shmem_fallocend(inode,
+> > > > -			DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE));
+> > > > +		index = shmem_fallocend(inode, end_index);
+> > > >    		if ((index > folio->index && index < folio_next_index(folio)) ||
+> > > >    		    !IS_ENABLED(CONFIG_THP_SWAP))
+> > > >    			split = true;
+> > > > @@ -1647,6 +1648,20 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+> > > >    		folio_mark_uptodate(folio);
+> > > >    	}
+> > > > +	/*
+> > > > +	 * Ranges beyond EOF must be zeroed at writeout time. This mirrors
+> > > > +	 * traditional writeback behavior and facilitates zeroing on file size
+> > > > +	 * changes without having to swap back in.
+> > > > +	 */
+> > > > +	if (folio_next_index(folio) >= end_index) {
+> > > > +		size_t from = offset_in_folio(folio, i_size);
+> > > > +
+> > > > +		if (index >= end_index) {
+> > > > +			folio_zero_segment(folio, 0, folio_size(folio));
+> > > > +		} else if (from)
+> > > > +			folio_zero_segment(folio, from, folio_size(folio));
+> > > > +	}
+> > > 
+> > > As I mentioned before[1], if a large folio is beyond EOF, it will be split
+> > > in shmem_writeout(), and those small folios beyond EOF will be dropped and
+> > > freed in __folio_split(). Of course, there's another special case as Hugh
+> > > mentioned: when there's a 'fallocend' beyond i_size (e.g., fallocate()), it
+> > > will keep the pages allocated beyond EOF after the split. However, your
+> > > 'end_index' here does not consider 'fallocend,' so it seems to me that this
+> > > portion of the code doesn't actually take effect.
+> > > 
+> > 
+> > Hi Boalin,
 > 
-> The best I can think of is to scale the number of cached stacks to
-> a function of free physical memory and process fork rate, if we have
-> much memory (for some definition of) and we are forking a lot we
-> should keep some more stacks around, if the forkrate goes down
-> or we are low on memory compared to the stack size we should
-> dynamically scale down the stack cache size. (OTOMH)
-> 
-
-I mentioned the cache problem when writing the patch $elsewhere and an
-idea was floated of implementing vmalloc-level caching. One person
-claimed they are going to look into it, but I don't know how serious it
-is.
-
-Even so, my take on the ordeal is that per-cpu level caching for
-something like thread stacks is a waste of resources.
-
-Stacks are only allocated for threads (go figure). Threads are allocated
-using a per-cpu cache and then proceed to globally serialize in 3
-different spots at the moment (one can be elided, does not change the
-point). One of the locks is tasklist and I don't see anyone removing
-that problem in the foreseeable future.
-
-So there is no real win from per-cpu caching for threads to begin with.
-
-Instead, a cache with a granularity of n cpus (say 8) would be more
-memory-efficient *and* still not reduce scalability due to
-aforementioned bottlenecks.
-
-All that said, I'm not working on it. :)
-
-> > +static struct vm_struct *alloc_thread_stack_node_from_cache(struct task_struct *tsk, int node)
-> > +{
-> > +       struct vm_struct *vm_area;
-> > +       unsigned int i;
-> > +
-> > +       /*
-> > +        * If the node has memory, we are guaranteed the stacks are backed by local pages.
-> > +        * Otherwise the pages are arbitrary.
-> > +        *
-> > +        * Note that depending on cpuset it is possible we will get migrated to a different
-> > +        * node immediately after allocating here, so this does *not* guarantee locality for
-> > +        * arbitrary callers.
-> > +        */
-> > +       scoped_guard(preempt) {
-> > +               if (node != NUMA_NO_NODE && numa_node_id() != node)
-> > +                       return NULL;
-> > +
-> > +               for (i = 0; i < NR_CACHED_STACKS; i++) {
-> > +                       vm_area = this_cpu_xchg(cached_stacks[i], NULL);
-> > +                       if (vm_area)
-> > +                               return vm_area;
-> 
-> So we check each stack slot in order to see if we can find one which isn't
-> NULL, and we can use this_cpu_xchg() because nothing can contest
-> this here as we are under the preempt guard, so we will get a !NULL
-> vm_area then we know we are good, right?
-> 
-
-This code is the same as in the original loop.
-
-> >  static bool try_release_thread_stack_to_cache(struct vm_struct *vm_area)
-> >  {
-> >         unsigned int i;
-> > +       int nid;
-> > +
-> > +       scoped_guard(preempt) {
-> > +               nid = numa_node_id();
-> > +               if (node_state(nid, N_MEMORY)) {
-> > +                       for (i = 0; i < vm_area->nr_pages; i++) {
-> > +                               struct page *page = vm_area->pages[i];
-> > +                               if (page_to_nid(page) != nid)
-> > +                                       return false;
-> > +                       }
-> > +               }
-> 
-> I would maybe add a comment saying:
-> 
-> "if we have node-local memory, don't even bother to cache a stack
-> if any page of it isn't on the same node, we only want clean local
-> node stacks"
-> 
-> (I guess that is the semantic you wanted.)
+> s/Boalin/Baolin :)
 > 
 
-I'll add something to that extent, maybe like this:
-/*
- * alloc_thread_stack_node_from_cache() assumes stacks are fully backed
- * by the local node, provided it has memory.
- */
+Sorry, Baolin! ;)
 
-> >
-> > -       for (i = 0; i < NR_CACHED_STACKS; i++) {
-> > -               struct vm_struct *tmp = NULL;
-> > +               for (i = 0; i < NR_CACHED_STACKS; i++) {
-> > +                       struct vm_struct *tmp = NULL;
-> >
-> > -               if (this_cpu_try_cmpxchg(cached_stacks[i], &tmp, vm_area))
-> > -                       return true;
-> > +                       if (this_cpu_try_cmpxchg(cached_stacks[i], &tmp, vm_area))
-> > +                               return true;
+> > 
+> > So I get that split post-eof folios can fall off depending on fallocate
+> > status. I'm not sure what you mean by considering fallocend, however.
+> > ISTM that fallocend contributes to the boundary where we decide to split
+> > and/or preserve, but i_size is what is relevant for zeroing. It's not
+> > clear to me if you're suggesting the logic is potentially spurious, or
+> > this might not actually be zeroing correctly due to falloc interactions.
+> > Can you clarify the concern please? Thanks.
 > 
-> So since this now is under the preemption guard, this will always
-> succeed, right? I understand that using this_cpu_try_cmpxchg() is
-> the idiom, but just asking so I don't miss something else
-> possibly contesting the stacks here.
+> Sorry for not being clear enough (for my quick response yesterday). After
+> thinking more, I want to divide this into 3 cases to clearly explain the
+> logic here:
 > 
 
-I think so, but unfortunately the typical expectation is that routines
-are callable from any context, which I'm retaining here.
+No worries. Thanks for breaking it down. Much easier to discuss this
+way.
 
-If one was to modify this to drop the behavior, asserts would have to be
-added this is only called from task context.
-
-> If the code should have the same style as alloc_thread_stack_node_from_cache()
-> I suppose it should be:
+> 1. Without fallocate(), if a large folio is beyond EOF (i.e. i_size), it
+> will be split in shmem_writeout(), and those small folios beyond EOF will be
+> dropped and freed in __folio_split(). So, your changes should also have no
+> impact, because after the split, ‘folio_next_index(folio)’ is definitely <=
+> ‘end_index’. So the logic is correct.
 > 
-> for (i = 0; i < NR_CACHED_STACKS; i++) {
->         struct vm_struct *tmp = NULL;
->         if (!this_cpu_cmpxchg(cached_stacks[i], &tmp, vm_area))
->                 return true;
+
+Ack, but we still want to zero any post-eof portion of a small folio
+straddling i_size...
+
+> 2. With fallocate(), If a large folio is beyond EOF (i.e. i_size) but
+> smaller than 'fallocend', the folio will not be split. So, we should zero
+> the post-EOF part. Because 'index' (now representing 'fallocend') is greater
+> than 'end_index', you are zeroing the entire large folio, which does not
+> seem correct to me.
 > 
-> Since if it managed to exchange the old value NULL for
-> the value of vm_area then it is returning NULL on success.
 
+Unless CONFIG_THP_SWAP is disabled (no idea how likely that is, seems
+like an arch thing), in which case it seems we always split (and then
+the split path will still use fallocend to determine whether to toss or
+preserve).
 
-This bit I don't follow. Seems like this flips the return value?
+But otherwise yes, partial zeroing should be the same for the large
+folio across EOF case, it just happens to be a larger folio size...
 
-My patch aimed to be about as minimal as it gets to damage-control the
-numa problem, so I kept everything as close to "as is" as it gets.
-
+> if (index >= end_index) {
+> 	folio_zero_segment(folio, 0, folio_size(folio));
+> } else if ...
 > 
-> If I understood correctly +/- the above code style change:
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> I think you should only zero the range from 'from' to 'folio_size(folio)' of
+> this large folio in this case. Right?
 > 
-> Yours,
-> Linus Walleij
+
+However index is folio->index here, not fallocend. index is reassigned a
+bit further down the function just after the block try_split: lands in:
+
+        index = folio->index;
+        nr_pages = folio_nr_pages(folio);
+
+This wasn't introduced by this patch, FWIW, but I suppose we could make
+the fallocend block use a local for clarity.
+
+So given that, the logic is effectively if the folio starts at or beyond
+the first page size index beyond EOF, zero the whole thing. That seems
+pretty straightforward to me, so I'm not clear on why we'd need to
+consider whether the folio is large or not at this point.
+
+> 3. With fallocate(), If a large folio is beyond EOF (i.e. i_size) and also
+> beyond 'fallocend', the large folio will be split to small folios. If we
+> continue attempting to write out these small folios beyond EOF, we need to
+> zero the entire mall folios at this point. So, the logic looks correct
+> (because 'index' > 'end_index').
+> 
+
+Ack..
+
+> Based on the above analysis, I believe the logic should be:
+> 
+> if (folio_next_index(folio) >= end_index) {
+> 	size_t from = offset_in_folio(folio, i_size);
+> 
+> 	if (!folio_test_large(folio) && index >= end_index)
+> 		folio_zero_segment(folio, 0, folio_size(folio));
+> 	else if (from)
+> 		folio_zero_segment(folio, from, folio_size(folio));
+> }
+> 
+> The logic here is a bit complex, please correct me if I misunderstood you.
+> 
+
+Hmm.. so I'm not really sure about the large folio check. Have you
+reviewed the next patch, by chance? It occurs to me that I probably
+split these two up wrongly. I probably should have split off the
+existing !uptodate zeroing into a separate hunk in patch 1 (i.e. as a
+non functional change, refactoring patch) and then introduce the
+functional change in patch 2. I'll try that for v3.
+
+But in the meantime, this is the logic after patch 2:
+
+	/*
+	 * Ranges beyond EOF must be zeroed at writeout time. This mirrors
+	 * traditional writeback behavior and facilitates zeroing on file size
+	 * changes without having to swap back in.
+	 */
+	if (!folio_test_uptodate(folio) ||
+	    folio_next_index(folio) >= end_index) {
+		size_t from = offset_in_folio(folio, i_size);
+
+		if (!folio_test_uptodate(folio) || index >= end_index) {
+			folio_zero_segment(folio, 0, folio_size(folio));
+			flush_dcache_folio(folio);
+			folio_mark_uptodate(folio);
+		} else if (from)
+			folio_zero_segment(folio, from, folio_size(folio));
+	}
+
+So factoring out the preexisting uptodate logic, this looks mostly
+equivalent to what you posted above with the exception of the large
+folio check. I could be wrong, but it kind of sounds like that is maybe
+due to confusion over the index value.. hm?
+
+In any event, I'm trying to make this logic as simple and clear as
+possible. The idea here is basically that any folio being written out
+that is either !uptodate or at least partially beyond EOF needs zeroing.
+
+The split logic earlier in the function simply dictates what folios make
+it to this point (to be written out vs. tossed) or not, and otherwise we
+don't really have to care about state wrt zeroing post-eof folio ranges
+(particularly if any of that splitting logic happens to change in the
+future). Let me know if I'm missing something. Thanks again.
+
+Brian
+
 
