@@ -4,78 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D8F1CF3959
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 990D4CF394B
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:40:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B1536B00C8; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
+	id 03E886B00C1; Wed, 19 Nov 2025 11:40:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 762016B00D7; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
+	id 0165F6B00C3; Wed, 19 Nov 2025 11:40:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6785C6B00D8; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
+	id E95056B00CA; Wed, 19 Nov 2025 11:40:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 546486B00C8
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 27D4D59716
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:37:58 +0000 (UTC)
-X-FDA: 84127913436.09.9CFAE5A
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B7A6C4000D
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:37:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D7CED6B00C1
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:40:53 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B73813B362
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:40:53 +0000 (UTC)
+X-FDA: 84127920786.22.644BF9E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CAB52140008
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:40:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lLhT6SzF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763570276;
+	s=arc-20220608; t=1763570452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZM7rDxC0VfAIPS040RV0Yt5B6rsIxJQzvNIDiA//oq4=;
-	b=zucopcIRbkFkQ7j2zQFDqmB637U0pfUduWGJjDVxwtmWHcLTuX53uXHFf2KtUq9DBzeuoa
-	XtgDF8h3I5ukrgRaVax497VIIYU99OodHupof0z2wooP8rGrAOoyva3DZ65CsMezU/FQ4G
-	uSpU6HMoqEe/gZapN4LFWCHvnICgG+o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763570276; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8GbOVaz+/s61R+WywSkU7ZyxU4arEylQcxyFZ64uwIE=;
+	b=K/Yzl9bClegOtKp7nip1PqOJJWBmVRJE1npWSdiRT46LgZNpAhTtLu4hIGg9X/rskud0I8
+	IGtwx/+ppFHJEIrO/tVjLn3Q7mwmmDBaNzVzq38VbVpamKsZn0dQ0htmU0voy9JkN3VH3i
+	gcwt3rC2sSV6bCaamN03/R4d7vnFKus=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763570452; a=rsa-sha256;
 	cv=none;
-	b=eKQ+Z1veTv0MIeDI14b9T6BWjCPYnHqWzYEjxIzeXhMwxtm58e627bz+fiMqwSTPOVSe9O
-	/BjQOPsvefDCEv3xnWCrtNmg7NG4FO97MLlFkr1evGU554/q6AjsG34n6rxU0MFJ1l9iRy
-	PBSs1Xu/mD0y4azf+aO5CrN+uBzSFKg=
+	b=peFkGpJBD2lvhC3XbFP1EqpOwZOVIl07XhoLgeglSBXHcqVBJmvsXSBWw8Wg9i++EovcXv
+	WzcMXb7yFf+Ygb84du3suCG4C8StPqebZaM8QvVE2i7cp/9dUDj1jjFRU/3AQeNrSv2HCU
+	IwIfYT7wHj7SiWJD0ycO59n1INdWIlo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 20 Nov 2025 01:37:50 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 20 Nov 2025 01:37:50 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com,
-	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/swap: fix wrong plist empty check in swap_alloc_slow()
-Message-ID: <aR3yXh2/DhYaN8h7@yjaykim-PowerEdge-T330>
-References: <20251119114136.594108-1-youngjun.park@lge.com>
- <CAMgjq7CgwjqE9XVy6EaNe0XARYOJsOER-Ch16wuZxWfq4EdFJw@mail.gmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lLhT6SzF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 12EF260171;
+	Wed, 19 Nov 2025 16:40:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8644C4CEF5;
+	Wed, 19 Nov 2025 16:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763570450;
+	bh=JFhkn6lZcnccDk/Xiy7qQSi9rib1FbFLEz39Orxm4zU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lLhT6SzFU8YnGXsRaD9WXB6PNnLJLV37WDNGmrJy2H1ItVpSERaHHYDaFiYKNaTV8
+	 +sVhKIOM1aK6VFMCTMiiclyoJ6FbkMoHm8GmYVEwqN8HqysKqiYA2qFxVtt1FCV6GL
+	 rQM3sW9biWpOtyldb5TOmuVQUiSaD48/zJmmAJb/OOdI1uJLtgsMGUt9P8LO0zJ0gD
+	 RROcbYYeQdiQrEUnH79JiJ1PCp3fssgXZm7EtH+v7vliUypYK83hjFbI8kc/+cf1u4
+	 f3y9tcnYDpu4hBC/zI/fNyQ2y390nUQBi/LQeDuSFAw6ek1nW6BuEi3Ur+HX4anYRQ
+	 Gf66G4uOfb/ig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF0F39D0C22;
+	Wed, 19 Nov 2025 16:40:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7CgwjqE9XVy6EaNe0XARYOJsOER-Ch16wuZxWfq4EdFJw@mail.gmail.com>
-X-Stat-Signature: shbt6cbmnd5o9u7mbutf46diu388u8kj
+Subject: Re: [PATCH v23 00/28] riscv control-flow integrity for usermode
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <176357041649.873046.14385292158343476261.git-patchwork-notify@kernel.org>
+Date: Wed, 19 Nov 2025 16:40:16 +0000
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+In-Reply-To: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, conor@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ arnd@arndb.de, brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
+ ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net, shuah@kernel.org,
+ jannh@google.com, conor+dt@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, lossin@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+ zong.li@sifive.com, david@redhat.com, cmirabil@redhat.com
+X-Stat-Signature: c3skoh5pzqjs9isipjhzpj4jinrj5xbd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7A6C4000D
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763570274-286734
-X-HE-Meta: U2FsdGVkX1+TyOeoy+f1z8Gpim0Y50r//MfxubSSYduJQ0/VN0ELoy2g15RwH4dmXdqDDjNN0Q0cTwR5tIUg2rGdq9FFYozif8OheANIZ6K2UAJyjyfOfIh/dxLfmO0sVdbOgJUOTE6yUCSlejtYj/CSs6P7dW1YKpy6XZ2cMQqv/Wlrs/vdDxlF61+DFFedvfLm3M2Mk+lNfVk95umH+KiLCp5LDgv4AOzb/75DHOr39tVFJKdtVYJlivazrkc7/FSsk8XMqy40t+CeRK0hKsrFpq5CCM/kAN1+ZTNJ18DKrQkoveTmOKGaJZVo07VVZQT5TAxGHDhB7CQQVQ3GZFALcGaPbv18ccmnvfcrt6hi89OA+N89lXEy5EeRJz3hYiUl0v88936da7MUhy/CeaFKzFk1FXyJKevcipFMNqsTuR9/MF9z/2bhf7fL1KiFwSLTTIr9sH26djW2U444B1LRPvdrS9gzFHJdHye8HffiT6VjQOAsKUyY1iGPZYeOhdcBx3c77mEgbIsBUDF9zEY+VuPHAoarLtui97qPHryZ4BzXuZYmDSlhB2P/kDlR1/23XuE8iraulxMv8YeyiZRzZ9YYxsxi84vOfW23BSa84c/DMh6oz1FRhXj/5wER/xogxh1zR0sZ0WXBLrk4Izh1xP3/qHtmpaZwRjvxo2kr4uBM8vsINM/YZJmSuQtiPt/OPym2ZJEnKi7WITyiM7nukYSXCfeDd3H+XH/Festuc/c6fsOMjE5Cnddx41Y+nuH8UCk8X2mO/PCoTj09d8P+NvOQFzh0TB/lItAt/Fj+qnF+kg/Si9Bn+i6twH4E5U9BiNUdb0GWrtlT65GHzSYuXhZAPrTaJnF3aYd/CHL1dwbXpU8AH6vAIblznPAYDJN8MS75mhzEcic+Jc0S6el1DKv1gGf65TPB46fOvPWKMfB73+/Z9BTgT0QLVWyOcbTc0avLfYFD0G5SC0a
- tdHJKmf7
- oWn+v2DQWJWVjYTMZjxBeA/6WFFUL5oH/DoSp863Cyo9Tr7oltdkj5WCd1GDCz+i4F8a5L6va+Ky3g5WQ4Md057nJb72P/4rtysUWr/GvxG16WaafWVWPB1ZH2jr2YLgkIhwHlzw7hWBpWYrbonH3CsoxjV2hbaUF/ksNFkOF7rUDknb5wOiYcGqRtreycj1Ebu+ekEYwaf99f7keEZl1ND8U2C4Tx7GIZ2KndkSymOryNip7ppntDrTYKd9qgMgngpwnYrWF3XFgFbrUbLaqxZs/UHZSorVGDc0x8r3njohNjgtwkDAEwYJpOugFDA3PgK05I8OUdcsd8uo=
+X-Rspamd-Queue-Id: CAB52140008
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763570451-473089
+X-HE-Meta: U2FsdGVkX18/deCd71tv+6fdWyFlmLo42xEbODKIIVH3Yfhj+zrqxMEDWFm7T7mdaCZq1iuxh5OlM31sVqUGmKkJqneQDMReowH2PUacjL25hdSWIOualEgTyVDdUM3cwWhrfECcQa8yUN0hwfAsVGWDkF3ZzraDospOO37LjNYOuVQUCAmGgFxqK2xFDQL8jvtXkvKXQp+CTCT4i9UoLdd/isZuTCqlBoPHXLZGuNKMAhoTNLy6T7+zZYyYlRMmVcDSwv4nBFktvzOw62sBon/GZ0OJWIFs4gXI74Lllv1uXwllO5da75s/nw0QAWFcIEOd6q0owq86vKqR7h5zFM0HGa/90RBUkQYLmalSCohxrnUOYxEF5Z4mOo9U+K2oryRBZnyBt7o9SR2h0UMzI7BdL0QK4hAF4aLr45ikfuJnNWZ6q2S8LptdqwZeAW8/PldvT6NpSFF0pkQLn/a/FVj9Dj6bRFHjy7ShNxlQo2wLFCazYUl1VL5gmBRQleLcuN1V06cJMmR28cKs4i+GZkZw+fEgb+Iqj41efiznxDC47XN7+U3WbIBlScYgSpLi4QaM08O9OLTQ+cikEbHzRhTHcB7iCdA5o8WEhuW3vp2QBZGFy+vQolfikwQXnDg7Z1TzUEwXorF2+Fm6c8hpmJm/6RpPYBb4nIGhRuDbO38jvUb/3vyBIerN5yI93bjmeaOQR3oN/lRv8gKi+JeWl7pVu/9ybnv9Hmv37ILIVsP4Y70mMkbf7iieFBRl3XSJlD0jfijXA/w1qCbN+NAAavGHXnoes6CiOgjnI0I/0GHAQ2l+WWuctBgTV94ev+oEwTxRjBPcQRd39xC1ECk0/tyNgs62DJkZmh5Z7X70WinXVW8XN2s0u4RnDEKJUFz9ssMc8+4qwiSSJW8v/Thrttb9k/b1i/+PELbFeSz5ponmuXulku8guf5MFHp6dcGYhoLQldKD04Pm1Rt1xtt
+ 8AZRrAmT
+ kva+epsib51aYmoRfs/KtLyuZ3qqnwgTX5fwwczeAZYVM6sGroTbe3Q9INiwL2txt6x3apnW52iESUwgbKotRrMZxT/e1R/7YgA2aIDHPrlRYm85J8/Xgzteq4gU69+I+vamTdFQc1K5a35BO+CUdUAP5FuRpO6+QAC8cZ0WtWGM0B4Ymtuh0ESowcGetqaBFm5bZjIzQpnVIm9Z6fYmf43O/kEwAjpg/j3h0pLJddj0TZ6l/xghxMKTU/UX5YyLMSiFVK/WkoIg8Eh+5dnKivpUlHNBNzJCIMctMtCmtFHBw/t1eNcF+Gqz7VEHBvnWdFOQuZ7HT8KqZcskHfyHhSJiEzYntuRGA0W5ZiGLVYMal5HR7P0dCGuX+pK7H8nkuirxz9vpdMyft5OfNmDxlAzi+wSb/plMlZrzvUmPWJlPOtLukeAHbI/XaZEziDzk/W49z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -84,80 +114,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 09:02:14PM +0800, Kairui Song wrote:
-> On Wed, Nov 19, 2025 at 7:56 PM Youngjun Park <youngjun.park@lge.com> wrote:
-> >
-> > swap_alloc_slow() was checking `si->avail_list` instead of `next->avail_list`
-> > when verifying if the next swap device is still in the list, which could cause
-> > unnecessary restarts during allocation.
-> >
-> > Fixes: 8e689f8ea45ff ("mm/swap: do not choose swap device according to numa node")
-> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > ---
-> >  mm/swapfile.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 94e0f0c54168..cf780fefaf7d 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -1374,7 +1374,7 @@ static bool swap_alloc_slow(swp_entry_t *entry,
-> >                  * still in the swap_avail_head list then try it, otherwise
-> >                  * start over if we have not gotten any slots.
-> >                  */
-> > -               if (plist_node_empty(&si->avail_list))
-> > +               if (plist_node_empty(&next->avail_list))
-> >                         goto start_over;
-> >         }
-> >         spin_unlock(&swap_avail_lock);
-> > --
-> > 2.34.1
+Hello:
+
+This series was applied to riscv/linux.git (for-next)
+by Paul Walmsley <pjw@kernel.org>:
+
+On Wed, 12 Nov 2025 16:42:58 -0800 you wrote:
+> v23:
+> fixed some of the "CHECK:" reported on checkpatch --strict.
+> Accepted Joel's suggestion for kselftest's Makefile.
+> CONFIG_RISCV_USER_CFI is enabled when zicfiss, zicfilp and fcf-protection
+> are all present in toolchain
 > 
-> Thanks!
+> v22: fixing build error due to -march=zicfiss being picked in gcc-13 and above
+> but not actually doing any codegen or recognizing instruction for zicfiss.
+> Change in v22 makes dependence on `-fcf-protection=full` compiler flag to
+> ensure that toolchain has support and then only CONFIG_RISCV_USER_CFI will be
+> visible in menuconfig.
 > 
-> Acked-by: Kairui Song <kasong@tencent.com>
-> 
-> BTW I noticed the comment here needs update too. And the plist usage
+> [...]
 
-As I think, the first part of the comment is out of date and provides
-wrong information. I suggest we simplify it to keep only the last part:
+Here is the summary with links:
+  - [v23,01/28] mm: VM_SHADOW_STACK definition for riscv
+    (no matching commit)
+  - [v23,02/28] dt-bindings: riscv: zicfilp and zicfiss in dt-bindings (extensions.yaml)
+    (no matching commit)
+  - [v23,03/28] riscv: zicfiss / zicfilp enumeration
+    (no matching commit)
+  - [v23,04/28] riscv: zicfiss / zicfilp extension csr and bit definitions
+    (no matching commit)
+  - [v23,05/28] riscv: usercfi state for task and save/restore of CSR_SSP on trap entry/exit
+    (no matching commit)
+  - [v23,06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
+    (no matching commit)
+  - [v23,07/28] riscv/mm: manufacture shadow stack pte
+    (no matching commit)
+  - [v23,08/28] riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs
+    (no matching commit)
+  - [v23,09/28] riscv/mm: write protect and shadow stack
+    (no matching commit)
+  - [v23,10/28] riscv/mm: Implement map_shadow_stack() syscall
+    (no matching commit)
+  - [v23,11/28] riscv/shstk: If needed allocate a new shadow stack on clone
+    (no matching commit)
+  - [v23,12/28] riscv: Implements arch agnostic shadow stack prctls
+    (no matching commit)
+  - [v23,13/28] prctl: arch-agnostic prctl for indirect branch tracking
+    (no matching commit)
+  - [v23,14/28] riscv: Implements arch agnostic indirect branch tracking prctls
+    (no matching commit)
+  - [v23,15/28] riscv/traps: Introduce software check exception and uprobe handling
+    (no matching commit)
+  - [v23,16/28] riscv: signal: abstract header saving for setup_sigcontext
+    https://git.kernel.org/riscv/c/bfc1388f2753
+  - [v23,17/28] riscv/signal: save and restore of shadow stack for signal
+    (no matching commit)
+  - [v23,18/28] riscv/kernel: update __show_regs to print shadow stack register
+    (no matching commit)
+  - [v23,19/28] riscv/ptrace: riscv cfi status and state via ptrace and in core files
+    (no matching commit)
+  - [v23,20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in hwprobe
+    (no matching commit)
+  - [v23,21/28] riscv: kernel command line option to opt out of user cfi
+    (no matching commit)
+  - [v23,22/28] riscv: enable kernel access to shadow stack memory via FWFT sbi call
+    (no matching commit)
+  - [v23,23/28] arch/riscv: compile vdso with landing pad and shadow stack note
+    (no matching commit)
+  - [v23,24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
+    (no matching commit)
+  - [v23,25/28] riscv: create a config for shadow stack and landing pad instr support
+    (no matching commit)
+  - [v23,26/28] riscv: Documentation for landing pad / indirect branch tracking
+    (no matching commit)
+  - [v23,27/28] riscv: Documentation for shadow stack on riscv
+    (no matching commit)
+  - [v23,28/28] kselftest/riscv: kselftest for user mode cfi
+    (no matching commit)
 
-/*
- * swap_avail_head list may have been modified; so if next is
- * no longer in the swap_avail_head list, start over if we have
- * not gotten any slots.
- */
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> here seems can also be simplified? We never use a lower priority
-> device when there is any higher priority device in the list, as
-> devices are removed from the list when they are full.  And the first
-> thing we do here is plist_requeue. So we can just keep trying the
-> head, until the whole list is empty, seems good enough?
->
 
-if we can guarantee that cluster_alloc_swap_entry() failure is always due to
-the device being full, then we could indeed improve this by removing
-the "try each device in order" loop and only trying the highest
-priority device, as you suggested.
-
-A simple implementation might look like this (though it needs more
-thought and testing):
-
-spin_lock(&swap_avail_lock);
-while (!plist_head_empty(&swap_avail_head)) {
-    si = plist_first_entry(&swap_avail_head, ...);
-    plist_requeue(&si->avail_list[nid], &swap_avail_head);
-    spin_unlock(&swap_avail_lock);
-    if (cluster_alloc_swap_entry(si, order, SWAP_HAS_CACHE))
-       return;
-    spin_lock(&swap_avail_lock);
-}
-spin_unlock(&swap_avail_lock);
-
-For now, would it be okay if I just address the comment update in this
-patch, and submit your simplification suggestion as a separate patch
-after further consideration? 
-
-Thanks, 
-Youngjun Park
 
