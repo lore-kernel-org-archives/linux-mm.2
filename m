@@ -4,96 +4,211 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48509CF34B2
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7903FCF34B2
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 14:11:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E5176B0092; Wed, 19 Nov 2025 09:09:47 -0500 (EST)
+	id D65B96B0098; Wed, 19 Nov 2025 09:11:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 795246B00AE; Wed, 19 Nov 2025 09:09:47 -0500 (EST)
+	id D3D4A6B00BE; Wed, 19 Nov 2025 09:11:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684C66B00B0; Wed, 19 Nov 2025 09:09:47 -0500 (EST)
+	id C2C0E6B00C2; Wed, 19 Nov 2025 09:11:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 53A476B0092
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:09:47 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D2B012F941
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:09:47 +0000 (UTC)
-X-FDA: 84127540014.27.5E7070C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5A25C2000F
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:09:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fZyVdCtr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763561385;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFA136B0098
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:11:18 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63388C046F
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:11:18 +0000 (UTC)
+X-FDA: 84127543836.02.34C47A6
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010025.outbound.protection.outlook.com [52.101.85.25])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5A54340006
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:11:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TyL1hzZx;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.85.25 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763561475; a=rsa-sha256;
+	cv=pass;
+	b=EInw8K2B1NH8rxWiR5iM/YdT5pklnC8S1eaAG3wEz2MSAsSxyzZyeHjKkoctUJuCXNGej9
+	v3dJZX+Mv7uNLdih0IcExM/U06hIgVeFg9Q1A50e0pHhmdXocJx7ImAxMPKdU6wQ+OK2Lu
+	9JXBTzXDOihRRk2ZfW+UPYBXMzfeqKg=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TyL1hzZx;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.85.25 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763561475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ncYSMy7ToK0WX3I8ngwGO/NXTV1J+DKOVRcBqeRXJKY=;
-	b=KfGAfnSjRrTWsmpCU8UzRAnltP/NFTsy3/S2hdk70x3TaszxAv63TcUbY1t9ca0+9QsFCr
-	dphsCKj6yPH3yGnJ1AvgPlH2OCRyl5hTq+jLhgTZRAFvyHvAhecyQcW+p2Td+RNpiYZImB
-	y6i3nc47gWOnbb95tqqIQnMclNkoCqU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763561385; a=rsa-sha256;
-	cv=none;
-	b=D2iIfTFiU8erNZqL3PJJbYrj2dTXqB1DV0/rw6JM9xiwJ6YXypDLd7jYrKO1dwf2A//qVs
-	tEoDfsw68uKSf8FSMD0wbxg2FENIVpmt5bDNZCDgyxJwXjzz2nlPo16w8ZhiUwVXfgqTtd
-	qdwgbJ7bUHexxGZHJ1W93jKHsUq6gvM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fZyVdCtr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 876326016C;
-	Wed, 19 Nov 2025 14:09:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDFAC2BCB4;
-	Wed, 19 Nov 2025 14:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763561384;
-	bh=UVyGG1Tv0zXtgSd/kXTDkK9fw4Aoqn/vp/kNJbgoBYg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fZyVdCtrFUa4d0MTb0Iv1ACe2kYtgAuUwvCOLufjmtLUVuM00rKFpaIpkGw3oLt9y
-	 Cx8COTeKtqKQKwmPqzljVGtnu7JgnzGVvuYoebp7+fdVD1OkdnIs6Ejm8zbNFMiOxw
-	 KA0AbAPibeJ7H6G4VanoBigo2B0AXUDDq6pORVkbuwtvzG2UfnRa/F7v7KHQjdCanH
-	 gwpMZAPbHLPhlACrWIseejmBJjvXEN7j035IY4N/wXuohLettQpKLtmaU9VcxymUql
-	 kTucd83NUQOTHJYufxS9DWPZuZTpOEYqFo3HEvZ9t2SdQq8JcHcbq6i3u75/OUSPEW
-	 Aam4gDN6OztcQ==
-Message-ID: <4f9df538-f918-4036-b72c-3356a4fff81e@kernel.org>
-Date: Wed, 19 Nov 2025 15:09:37 +0100
-MIME-Version: 1.0
+	bh=eiZ7nRObJqE6TnwqLCHninvorZEilfjukWBmJU2XFGE=;
+	b=iJxeNcFM/4CcvR13NplFIywLpn+0BWJq5Z7j6Kr0cQzddoWF1A3jJVdU9kEu3qCS6aHjc8
+	wQVdlNswjCo4h0BrvirYwbH4z6IF7Iv68FqP2Mgg4LKmHlNdkGpcFp7qUB/N4x1/0FfbLW
+	FqYYag5dWUEQ48lWlDvCuxmts47ykpc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F55f5AYH4NG/3LbHstQFXHKWFs3ozrnIDcgKT3xTOOPlj4xhWzDok2Kl5BgSfO+dTP+ZgNzYCI0ye+trSnf+k7rIx1cT8LOd4V87dCtjVSusZbZnSMmf3Mth+b8PJEPy/PPXR2c7DhG3BIFDCtfxY0fmqEtpaQEsbxt5Ldcm0hf155BTlSYu9tzS6LzHnrgarnFpPFzN+t+qZeP6pTthFUywlb8EmrtRUwySpxHnK9s1UJmLQjCA6Edbi7SV1naZTWwWfV+Fh1N+Eu/LZXoo8B5XyP1mu/Dl/NkAQafz53I43Stsz27T4lmYEG5sZWqvgdo4JqpR7Ew6CPpb68D7lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eiZ7nRObJqE6TnwqLCHninvorZEilfjukWBmJU2XFGE=;
+ b=PJrOTDC43W3aHeCLwqxfFJglWHTjW5GoZmMEzVKfi2iyEC+vxiSl5DAFes1XuT0stm3mGq8n62/5yjt1BpFfQmmLXAnRm0pRoxHfbnUUGgHPvTAqty+Zl6wnJIj5akKKbX+luEKJpCWr5S7Snw7bJi8tjzqbTY0/d0xWZSyUqzni7jPC7QYMCRAikW1EUVorEfj64jN1j2ExEatAJUWQ0Jg1egKdgt7iBS5TgHxLIe/lgBIPyoYmosVueHedT1xuinh+F1BOP3Doig9NkFgv0Owub3Eqfg2Of5ATgsNt61cD4zrgZJgp1Mjt5hxExnByNNTvtwbNzcN1g9tcC4ILFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eiZ7nRObJqE6TnwqLCHninvorZEilfjukWBmJU2XFGE=;
+ b=TyL1hzZxR8pQz2ekj9YjTqHZKzo7wtXsRuv/RDdcxTphQzMcGX41ofmyJDXFigfhU8CvYGSs+CXkuNkP+co7OX658qv7ONW+5gNr/N6Dp8nHSzwBzFrFp2KBaxMqucRcarrwpbPQDKW2t3zhvui38o2Q8NwJRxLlqqZAYd5LR/g=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by MN2PR12MB4207.namprd12.prod.outlook.com (2603:10b6:208:1d9::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
+ 2025 14:11:09 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9320.021; Wed, 19 Nov 2025
+ 14:11:09 +0000
+Message-ID: <6714dc49-6b5c-4d58-9a43-95bb95873a97@amd.com>
+Date: Wed, 19 Nov 2025 15:11:01 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix NULL pointer deference when splitting
- shmem folio in swap cache
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20251119012630.14701-1-richard.weiyang@gmail.com>
- <a5437eb1-0d5f-48eb-ba20-70ef9d02396b@kernel.org>
- <20251119122325.cxolq3kalokhlvop@master>
- <59b1d49f-42f5-4e7e-ae23-7d96cff5b035@kernel.org>
- <950DEF53-2447-46FA-83D4-5D119C660521@nvidia.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [Linaro-mm-sig] [PATCH v8 06/11] dma-buf: provide phys_vec to
+ scatter-gather mapping routine
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
+ <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian
+ <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
+ Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ kvm@vger.kernel.org, linux-hardening@vger.kernel.org,
+ Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
+References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
+ <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
+ <8a11b605-6ac7-48ac-8f27-22df7072e4ad@amd.com>
+ <20251119134245.GD18335@unreal>
 Content-Language: en-US
-In-Reply-To: <950DEF53-2447-46FA-83D4-5D119C660521@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qnp1nwgdi8q9rp6imc3zjgfeddgazj9j
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20251119134245.GD18335@unreal>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0347.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f4::15) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MN2PR12MB4207:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34f31839-c545-406c-990a-08de27757d05
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cGhoa1FYNVBKQzZMSGxoL2ZYVDdBcWpYOXpjMllXZXh4NWM2UWplS21FMlNJ?=
+ =?utf-8?B?S25OT1IvZmp0Y1FjRlVKUG1SWmR5cEVuak9QdjhhRGkweUswa0lmQytvN0VP?=
+ =?utf-8?B?UktKQzdnZGc5bFRvZjVtRS9YU3hON2JBeThYRWVtWFovLzAzZG0ya1krSkJD?=
+ =?utf-8?B?aUlQM0x6TG42NFJmbHc1V2xUbCtTMnJMUXhOVlpwNUtGd2dZSjVvRFh1dU01?=
+ =?utf-8?B?em5yQWNqSk5ZY1lnWFRpQ3dYamRmbEhiOFAwV2Y3cklITjY3YnpNaURUaFNL?=
+ =?utf-8?B?YWQ1T2pHTGFnVnk2N01jY0cyMG9QUjZxVm9td0F4Yko0QWRJODkyclV1UHpB?=
+ =?utf-8?B?RWkvYklVTlVXVWMyQTJKNHRWNXRxT3lTdk1LZzJpclk2bWJRRll2WG9mNThI?=
+ =?utf-8?B?ME5XVDdpVTlLZ25FbEF3SjhLY2lBUlVkQm9NZ2RKN05EVmhqaTNYdFBUeW9z?=
+ =?utf-8?B?UU9ORXVoU3ZrV2Qyc25oQkJTVE1VR0dnY3lZL2xVRWp2aVM1SEIvbUVmTEZa?=
+ =?utf-8?B?U0poWXdPMDdlbXNGZ3pPTFZvWFByUFEzOXdJZDRRRTVSVjFVV2xNbmppWCty?=
+ =?utf-8?B?U3NkQ1lSYlFpMUJJaEowUW9nQ2tpazZ1TjJJcUpKNis2SHMxNFVONFd6QVBB?=
+ =?utf-8?B?RjIxL0JCSXpXanBIZTVRODM0VjFGdDR6T3hFZXNNd2Qxd1MzSXFYbFVmendo?=
+ =?utf-8?B?WThZM3V3NmxWVDNtbldrRnpGY0lsQ0U4U3YrMmNrTm9yNks2Z3I5cUxQaGE4?=
+ =?utf-8?B?UVM2UHE1SWZWeDVqUFFxeE1XMEV6WkVZOUEzOUFZWWR1aFA0dDh5cGYxUHdP?=
+ =?utf-8?B?NjFPcTRmQ2VuUkJyNHdSejVkRkJqaXM5OGp5b0Z0dnhjNUNOam1DQ05XTGZm?=
+ =?utf-8?B?dFdhMW5zdTE4bVRMajJNTlNmOEJLTDNVd0FaNDFMeVNiVENnYmVVVThVQUFw?=
+ =?utf-8?B?STgrOXdPaU84Z1lUZWh3YlRHVFlxYW1EZEU4RWovVzlsbFVTcTBNdHhTUHhV?=
+ =?utf-8?B?aVRyN2tnU0crUTNqZ0p4L00vSHJ3V21RY2ZmamZ5VWlDOFRxdytNdUNEVWxa?=
+ =?utf-8?B?cW9kMk1LejZ5R1JIbWx5RmRBamJ4WlJMczJaU2hpbkNaYmdaYnlLYU84N2pk?=
+ =?utf-8?B?WjMzL2dzQXBlT0hSb0dnOVBSV21iMDNzajhGWkxWT1lBYURwckt2N3d3SE03?=
+ =?utf-8?B?czB4NlRSZlBzYVJmVyt2ODd5bDZmRk45ZTdXV25qQ3NHTllQZjVZR0NXKzgy?=
+ =?utf-8?B?L1EyN1BONDkva2QvQm1XblMvOFVjNjlaUEoraE8rZVl1VUt4MnNnYnlWaEc5?=
+ =?utf-8?B?NmxRQ3lnUGdMdDFmcWU0U3IxTG5vODlQallrRnExUjJ5bzYwejFwRk1Xb1JK?=
+ =?utf-8?B?L09ybkFDMWtzMTBnZ1lPbXBRUE9tR240RUhQUWxxaG1ycmI1Y0QzbnNnZlJX?=
+ =?utf-8?B?YzRHeDdlMTlWbEpKNk02NlBPSndtYlNZN2dwZUIwTU5jajZ0ejY3a2tGanNW?=
+ =?utf-8?B?cFJHMHcyZ3R1UXMrd0kzdUh2Uk1xWmhIWWNRcGo0TkdhQ25NZUVVT1NOVWxu?=
+ =?utf-8?B?UGxrZzlHWDJ1SkJpRDYxc0oyYU5aU3FacFl3ZmhZZFBpdlpML1hRMXFERS9L?=
+ =?utf-8?B?SWRCbGhiNEVNd2xiZnlLSllmbVhhSXZaQ3hISmdyeWhXN29lZWVaSnJXa2Jo?=
+ =?utf-8?B?RzVBaElvN0xlOWpIYU5WVW1IM3VhcGFIWjUvQ2w2WS80NXRSMEM4YUpndEVU?=
+ =?utf-8?B?Q011MVhzd1lUSDNQbFIyVU5PdXg4MEozODIrSklEWVpuMTFaM21VTE1kdkJ1?=
+ =?utf-8?B?WkN3VTZVVzVnOVhFTUxPMkRiKzNNdlB2TlVDTGFLOUlXYnIzTk5GM0VLaFZS?=
+ =?utf-8?B?R2ZZMG5Yd1FrOXRFdkhNR0I5Mm1PU1lYWVF4TkE5TVFXK2VtWXN0QjNHQVFS?=
+ =?utf-8?Q?V4EK/dR3Jg4NFGLNlA8WdzG55XFE6wrG?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K1Foc0crN0VLM2QxVlI2Wko4SmxOU2kyd1UyQVFvSU1hamlrbHVXVzEvOGhX?=
+ =?utf-8?B?N3lFOUVqWk9QRmdBSVBoTnNCWkV3enpmK0lFcWJlRnJpMnRvUU9DM09MYTFu?=
+ =?utf-8?B?Qm1ndGtTSXNsVUxjVUROSXZjL2NQajNtZk1VdGR3a0l3VklUSUwyeGVDcEho?=
+ =?utf-8?B?d3FBVlhYTHNncCtzNTJibkQ1c2loTzFIUERiSDgwUDBtTzYydXV3UDRxTW9q?=
+ =?utf-8?B?dTEyS3FwOFNUaEsvYkpXL1lVVHVzeVJmT2M3b2dpRzJiWnZWZVRpcFcxKy9t?=
+ =?utf-8?B?Vjg0SnI1clVHL3puSnhabjNNQjZpREs4NmFKQlpaTlA3Z0hXWnhZTU5BK1Yx?=
+ =?utf-8?B?Z210QmFFc04ybUVkQmQwTXZ1MzdpbHowR2poeDFXWWwyUUdoNkRtaUdwck9T?=
+ =?utf-8?B?Szh5Y2I2Z3hLUGtQT3JPNjdjZHB1NXFSc1FtSTVtNlhoZ0NiSldlRjdzT0s1?=
+ =?utf-8?B?YVFkbjVlWklYa1A0c3dyVmJiUnBkSzNCZzVTc2pIcEdDZnNjL2VxMXZOLyt2?=
+ =?utf-8?B?NDJWVDY1TnJwR25xUmF0U2tTTW4wUisycmtaYzVsMHVBVHVrNTFJQlNBejhJ?=
+ =?utf-8?B?UmtIYzVzMXEzZElzNDFuUlJXZW5NL2NGS2pUQVZaMUUwUjZ4amhXcyszUnF6?=
+ =?utf-8?B?UWdFOWxtRUlSdWc3Q0MwUG9od2V4SWRPNkdNMkk2KytWZjA3ZjJjOU4rclRl?=
+ =?utf-8?B?Sm1mZ1J2d3ErZjBaakpsNndiazJMenJjYTJGTVRCQ1VmZXVoRlE3d1d6aHkx?=
+ =?utf-8?B?SUhhRVhSOGtaaGRTZ2pLRjNtRlRQQ1Z5WHcvaWNDMHBsU05sem12REt1QThM?=
+ =?utf-8?B?ekllejZOL0NtdWlwdzE2UEV1VWdxRllldkNKRUVRL1V3UElhZkZlcVlwQlkv?=
+ =?utf-8?B?R0lIWWlDb2c3dXlYQUUyTTB3RnZQRTVpL0ZOSk55RFZLS0pIVWlvTnlvUVRQ?=
+ =?utf-8?B?VkxSQy8yQXRRQitNZGY3ZktQakI5TG9OOWV1cW8wSHVzQzhYZVYzYUFyM2o4?=
+ =?utf-8?B?KzN2Rk8xTTVIb3l4blUxei9mQkpuM0tOUFBNRXl1M1h1Vkc3STJVMzAwYXM5?=
+ =?utf-8?B?dW5MN2NpYXk4eGlZMDVWUjJLL1dWdzhpc1ZwbXNtNS9heW9qSGVoZXZKQmhQ?=
+ =?utf-8?B?SGhRV0pJTzZLSGdyaWFpcS9yaTZLT1liK1oyREo3QWtVaGJ0UlNFelZta3NJ?=
+ =?utf-8?B?WTQvbVY3V0tCMEFvaXgwQ1lERzlsNlNNMzIrN3FEa1FCYTJSYlBYYnlKZmVy?=
+ =?utf-8?B?OUxTK2JRRHpheXBFQlEydEh6Qm1MWXN0U2Fsc0NqOU9razN3SUNvaTZRT054?=
+ =?utf-8?B?VTNQK1dsMXkxZnBZZU5pd25UTkl5eW1jN0hvVXJ2QlUzd2lIT3pJRWpYdHZk?=
+ =?utf-8?B?YXRSYVREQ1hSZUxYN2FaN1JuWEpBaWtQMmlwQVpUZlppV2doOUxMaHpaTFo4?=
+ =?utf-8?B?RURJdzNseVdpVmZxM204Q29ROU5LR1BDc0ZWRUk0Mk4xN0cyUmtabElwRmJJ?=
+ =?utf-8?B?MUtmVExCZEVCWko0M2gxNmUySkZzdG9CLzk1Q1JNbktzWVhOMW5McHJXSnJZ?=
+ =?utf-8?B?YmhxVWZDWnRRdWZDa0Q3MW03ZE5oMzFyQTR6YmcrS1lST2FVSjlmNlE0SWZR?=
+ =?utf-8?B?SXFlUDZBenh3ZlJuK0hwSFJwUS9nZlpwOTJyWkpRQk15WTRObWlwR0JIQXRw?=
+ =?utf-8?B?VFJmQUFJaEQ0Z0ZXbWRXck5MT0w5NVd3ZTRZS1ZVdEtkOXAwalFwd2p6MGFU?=
+ =?utf-8?B?cW90dmxZbVdJcml3ajlJbktTRDl6b29GWmVRV2F1YlRyZ29MNktQNWM0ekpI?=
+ =?utf-8?B?ellrTlQrVVhtb1V6ZHhQQ3ovTjlpNXpXK2RTU1IwYWlhcDRGZFBUQ3RLWTBs?=
+ =?utf-8?B?R3Z6eFp2aWFOWHJ4bXBmcVd2aytDUitTS2NUTE1XWTUzWmR4MjVocnpBeDMv?=
+ =?utf-8?B?M0pvR2w5ajd5NmY0aytoTnN0MTNONEdsNG5xOWs0cGwvMlN4NzE2VjhEV3Rk?=
+ =?utf-8?B?YlFYMUtxMVY1YzRhd0ZKYi9hQ2lPSGJyZjU1anQrSExmc1ozS0thZmZMSk53?=
+ =?utf-8?B?Z3l0N0xPNytQaFhQMjhobEEyQ1lPTjJKa2lCVkNsbmlJQ3hxa1FnOEtyczZu?=
+ =?utf-8?Q?lkSSC6ng0A9+FgRI/KEN6sL+O?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34f31839-c545-406c-990a-08de27757d05
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 14:11:09.8082
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0+Jc8VIYaEUptvZ/s0we6G6ycFlJakE7MOow/P6fT0ceCp0WJt9qZ35haDcpD8St
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4207
+X-Rspamd-Queue-Id: 5A54340006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: phs9tkywrmmxbawup9ubxuacsfbw9bwd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A25C2000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763561385-817531
-X-HE-Meta: U2FsdGVkX1/xe2qMoItLw0wmNeZ88keXafbFbnOCpd+Hlvy/T5/IrR3ocS67Lntta2DE5mB7weR/wOfNWvw8kWLhzxhokjk/kNt4lxBVLdGDRyiCQlWINaxcaffx/jW4iIS1N9SnedTQig2q9BWhEGKfhvhiOBJ8PVStCBtxJ96if2dnbbbGkMaifSYklsY5JOGgjBvNEsDWBNkioDiufnfoagUssdo+paSMrklM2burj5ylbnMUMvfz57ALzaV7D120i40JMFU5P66mJjXKeFR62FJBNuxGwXch1ZcnVcluvGXnO9Z1SmUxGkPJZE7r2LIp1SYHeUrNG8GUhnnFRClOtvfQG14OOCwrV3VyyyWen8YU6KDDjas+T73BGEPI8wxcqnOZ2GJFn94TB8cxpMw6BEE6ABBq+ctK5qzXP6gZCQkTmduqTwQsm/goK5UrAjJwmRzu7bDwtqt7B2nypjfaEcj2HCXcILj29ClNvtuzezrFbmIOeIq9TIhJL74y6vlWX2W4h4lhcbL6l+idpN32IwrEa8/9C+MVmvLRrWJdO3IoZ1tzNrBtAMho2lm2p3RcnfAjD/Avk4FPzEyFFikpkq/KcUnlP43LiWo6NPukysJB4RbkhTlCfqNMQ6y9uEOaRYj5maz2QUgXYH1gVtOO6NM+FoI9IdEWLyxUng9jyqJR6pv7I7jj6dfYuAsDq+OkINT6sYctuPBZE7H8/zYUsZY/x0SXANau69bLmsdDBKDrUUih1S2ijRGFyO8Rd0eWC7rnykauhG085OqDB86Jb48RCDbqnZxZPbI0AEXT7ZRZsAyTQrapfGJ5t84EBn93hWnvJpDLWIFS+vdhTkD/mUcZ8v5B1RFcDZ/73/ACtY1TZn6UUia0LhCB4mQiVJNf2GX2IIrz/vGMVuUXszR7cldAXiKcJwhp72d0zuNayHOrei8Q4ft77rXn7/ly5E7vUBNp/N+wmKP6qDh
- AaHsrvuf
- gXrjolAwxOwVFUVTzei2+n32ignNllcxAs9M3+FTFN6o9nhl5QJQUiZEk5+K8SqyFzvBk8fgQLepGYtct+xK8jgnInQH21LRn+PX6oUV0OqJF0NowZn1KHchwsDrPoG/tmcxctDstoKo74jnSTzduLQ3Cv78qITdppHQpI+UQVsywJ5z8OpLoeedjbrQZi2b9AjAiyzHr3QJZhiFZL93N9AtAaeJ/FkFciLNO/xMSNo6nm/bsNWEGG77HzngFL+uyaw/iz7/oXRotOh8GRB+ZVrO52fTz/U3DjHdt4fTzn9Q2TeJYxy/L7DLD9P5ShfQV0qBtEMKlFavGmIEoWKlytzYtfH6ZQuSp4Dwf4Sc0DT4X40a+shg0DYWXGn0dhgMs5XUG/EwH61U7ZIBU8/r/neGrEnxjvtDpIp0uiqFMzUgkWL6sPJS9tiCHzmbn0157DvluKHSZ8peOSb6ENYqYTgQaJaJQUIz+qpOasq96uUFIyGZa5sPJbClhV/Bh8g2KYzVY
+X-HE-Tag: 1763561475-616843
+X-HE-Meta: U2FsdGVkX1+m961o5dUdyS9WEgQf3NNrdfCC/7PwfhCTCUt4SdzewoFgDRaZ9EP0OHt8YjTWv+u1IOktIbiFn4mTWUOS1X2aEuDYMnRQwbCYdLGTYehFC9QvhfUTuTiJG0uwhYiTjEk8n4K+gBqhbi2lEkCMcCTflSQNjq/dhxsweH+do8knZSU4ryfjyQV07Xfz3Jm/w5eAE9m9tngk3OJfYx9WsfPKHCznT/ELk5hXsM9U3QfVGzeaP/cMS3cc6HSebe/xl5i7y2B1Y5o2l59VNbuHrP124JOsl1FeAY64FoIeL9ADtSWk33X9rXJ1x35xMtizlQ7V8I3N+tLUJXD3anqqbBhKGdb5vuR8G7RERw1wBh/IenN4gtNNgdSXIqaJ3TBgJlxFXUmRXg07ra0fiu7LX23b16jN1GAx52oL98btbiTn2iyU4v7OykL0srZmkCe+Vg3i0njnQzzwGNWq5aSJClJJ8RE/ehrE/8sLlrbboOifFl7xHPXCqH5vil1kt0HZe1D3Qj+EeabkySvfNc4/jsBfai694ax9na5Kef6gY428xIagAlOvD7qxlYwFBXZgQeUwD0B6VqXR1cLZMEN2+Re52L/y5VpnB6ejMqsD9rebYO92rHYs6/bHDtG76WwSve4z8B1vzqMb0Bh7WI3qPD7Jdjla+ynRe40CdqmXvps/BXIwCJZGnaHNt36sLJ7zgMc54vlQZTsOZJW32VYsrWbwHLLxenN1IjvCSTh9F970wMfSmDJVPC0cOJIey0T6hzXun+nl9tjmLRDm5B/QTovfHvGS8BE8BMRbq/TRt/pVzKrfP75XnXlIsIYnYp0RBMPqDnTbcaJhRREAQjcfDiSV/wXNcqwZqxTA1P/5HJBL99yXtJCqzgIQleyyCd6AIShrfHj7hvlcGevhCZmbyiP4kW9ooLhsTCYtQxPE8Lgb1dd9fBw5fpggMukGT3TUdUdZ1v/m7yf
+ OHIuke7B
+ +zXttiytLD8OCNcRe2lcUEU4jtZy450rQ7lUwsYP0bNxNyAJH0rwZobS26+MTUHbmVDTyBcsxltyz/pFluANbRf9/V6Yo+PqO+mVebDLsVgWShKMw8VXCmeuYLpAJ6xcRg+KBkXrqCaIsr7fknnp9Veid2DFhELW11qKFk+cylQZAHLKJ/5DpE70p9TDL9L2UrSa1TzpIheAjqOBRo8gpKkHcyqHLbwInDnFuSFWsTuKBPsKbEC0PDqa0ZqYPWncbdzdvt2tJYVPk2g9RN0siZrl8UvAXVCliv5nDxo4B1R8thMNFICok5EBPt8e5Fz9JhNrnNXrkf1e8ToURZjTDMgLAN1fPnLo6Ne1ABtyidu4vxr7y5Mb9NzZcsgv/g8SLXf/yoDXJnC4QydqATKAwD2E5rflHL/Np2foHXH/3gAa+c7iW7FmgkkqqoTkQSICOzkrHjv0kU4Abhjd0VZZz27Ww6dsoJRxXsca3pJcPJFnMPFHcjPbnNiVQLwX/Ly4KETlw4kFBIjwOZ6j7lsXNPB43+TIlwhXGdlVR6CCmVOcnLnc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,187 +217,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19.11.25 14:08, Zi Yan wrote:
-> On 19 Nov 2025, at 7:54, David Hildenbrand (Red Hat) wrote:
-> 
->>>
->>>> So I think we should try to keep truncation return -EBUSY. For the shmem
->>>> case, I think it's ok to return -EINVAL. I guess we can identify such folios
->>>> by checking for folio_test_swapcache().
->>>>
->>>
->>> Hmm... Don't get how to do this nicely.
->>>
->>> Looks we can't do it in folio_split_supported().
->>>
->>> Or change folio_split_supported() return error code directly?
+On 11/19/25 14:42, Leon Romanovsky wrote:
+> On Wed, Nov 19, 2025 at 02:16:57PM +0100, Christian König wrote:
 >>
 >>
->> On upstream, I would do something like the following (untested):
+>> On 11/11/25 10:57, Leon Romanovsky wrote:
+>>> From: Leon Romanovsky <leonro@nvidia.com>
+>>>
+>>> Add dma_buf_map() and dma_buf_unmap() helpers to convert an array of
+>>> MMIO physical address ranges into scatter-gather tables with proper
+>>> DMA mapping.
+>>>
+>>> These common functions are a starting point and support any PCI
+>>> drivers creating mappings from their BAR's MMIO addresses. VFIO is one
+>>> case, as shortly will be RDMA. We can review existing DRM drivers to
+>>> refactor them separately. We hope this will evolve into routines to
+>>> help common DRM that include mixed CPU and MMIO mappings.
+>>>
+>>> Compared to the dma_map_resource() abuse this implementation handles
+>>> the complicated PCI P2P scenarios properly, especially when an IOMMU
+>>> is enabled:
+>>>
+>>>  - Direct bus address mapping without IOVA allocation for
+>>>    PCI_P2PDMA_MAP_BUS_ADDR, using pci_p2pdma_bus_addr_map(). This
+>>>    happens if the IOMMU is enabled but the PCIe switch ACS flags allow
+>>>    transactions to avoid the host bridge.
+>>>
+>>>    Further, this handles the slightly obscure, case of MMIO with a
+>>>    phys_addr_t that is different from the physical BAR programming
+>>>    (bus offset). The phys_addr_t is converted to a dma_addr_t and
+>>>    accommodates this effect. This enables certain real systems to
+>>>    work, especially on ARM platforms.
+>>>
+>>>  - Mapping through host bridge with IOVA allocation and DMA_ATTR_MMIO
+>>>    attribute for MMIO memory regions (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE).
+>>>    This happens when the IOMMU is enabled and the ACS flags are forcing
+>>>    all traffic to the IOMMU - ie for virtualization systems.
+>>>
+>>>  - Cases where P2P is not supported through the host bridge/CPU. The
+>>>    P2P subsystem is the proper place to detect this and block it.
+>>>
+>>> Helper functions fill_sg_entry() and calc_sg_nents() handle the
+>>> scatter-gather table construction, splitting large regions into
+>>> UINT_MAX-sized chunks to fit within sg->length field limits.
+>>>
+>>> Since the physical address based DMA API forbids use of the CPU list
+>>> of the scatterlist this will produce a mangled scatterlist that has
+>>> a fully zero-length and NULL'd CPU list. The list is 0 length,
+>>> all the struct page pointers are NULL and zero sized. This is stronger
+>>> and more robust than the existing mangle_sg_table() technique. It is
+>>> a future project to migrate DMABUF as a subsystem away from using
+>>> scatterlist for this data structure.
+>>>
+>>> Tested-by: Alex Mastro <amastro@fb.com>
+>>> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+>>> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+>>> ---
+>>>  drivers/dma-buf/dma-buf.c | 235 ++++++++++++++++++++++++++++++++++++++++++++++
+>>>  include/linux/dma-buf.h   |  18 ++++
+>>>  2 files changed, 253 insertions(+)
+>>>
+>>> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+>>> index 2bcf9ceca997..cb55dff1dad5 100644
+>>> --- a/drivers/dma-buf/dma-buf.c
+>>> +++ b/drivers/dma-buf/dma-buf.c
+>>> @@ -1254,6 +1254,241 @@ void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
+>>>  }
+>>>  EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment_unlocked, "DMA_BUF");
+>>>  
+>>> +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+>>> +					 dma_addr_t addr)
+>>> +{
+>>> +	unsigned int len, nents;
+>>> +	int i;
+>>> +
+>>> +	nents = DIV_ROUND_UP(length, UINT_MAX);
+>>> +	for (i = 0; i < nents; i++) {
+>>> +		len = min_t(size_t, length, UINT_MAX);
+>>> +		length -= len;
+>>> +		/*
+>>> +		 * DMABUF abuses scatterlist to create a scatterlist
+>>> +		 * that does not have any CPU list, only the DMA list.
+>>> +		 * Always set the page related values to NULL to ensure
+>>> +		 * importers can't use it. The phys_addr based DMA API
+>>> +		 * does not require the CPU list for mapping or unmapping.
+>>> +		 */
+>>> +		sg_set_page(sgl, NULL, 0, 0);
+>>> +		sg_dma_address(sgl) = addr + i * UINT_MAX;
+>>> +		sg_dma_len(sgl) = len;
+>>> +		sgl = sg_next(sgl);
+>>> +	}
+>>> +
+>>> +	return sgl;
+>>> +}
+>>> +
+>>> +static unsigned int calc_sg_nents(struct dma_iova_state *state,
+>>> +				  struct dma_buf_phys_vec *phys_vec,
+>>> +				  size_t nr_ranges, size_t size)
+>>> +{
+>>> +	unsigned int nents = 0;
+>>> +	size_t i;
+>>> +
+>>> +	if (!state || !dma_use_iova(state)) {
+>>> +		for (i = 0; i < nr_ranges; i++)
+>>> +			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
+>>> +	} else {
+>>> +		/*
+>>> +		 * In IOVA case, there is only one SG entry which spans
+>>> +		 * for whole IOVA address space, but we need to make sure
+>>> +		 * that it fits sg->length, maybe we need more.
+>>> +		 */
+>>> +		nents = DIV_ROUND_UP(size, UINT_MAX);
+>>> +	}
+>>> +
+>>> +	return nents;
+>>> +}
+>>> +
+>>> +/**
+>>> + * struct dma_buf_dma - holds DMA mapping information
+>>> + * @sgt:    Scatter-gather table
+>>> + * @state:  DMA IOVA state relevant in IOMMU-based DMA
+>>> + * @size:   Total size of DMA transfer
+>>> + */
+>>> +struct dma_buf_dma {
+>>> +	struct sg_table sgt;
+>>> +	struct dma_iova_state *state;
+>>> +	size_t size;
+>>> +};
+>>> +
+>>> +/**
+>>> + * dma_buf_map - Returns the scatterlist table of the attachment from arrays
+>>> + * of physical vectors. This funciton is intended for MMIO memory only.
+>>> + * @attach:	[in]	attachment whose scatterlist is to be returned
+>>> + * @provider:	[in]	p2pdma provider
+>>> + * @phys_vec:	[in]	array of physical vectors
+>>> + * @nr_ranges:	[in]	number of entries in phys_vec array
+>>> + * @size:	[in]	total size of phys_vec
+>>> + * @dir:	[in]	direction of DMA transfer
+>>> + *
+>>> + * Returns sg_table containing the scatterlist to be returned; returns ERR_PTR
+>>> + * on error. May return -EINTR if it is interrupted by a signal.
+>>> + *
+>>> + * On success, the DMA addresses and lengths in the returned scatterlist are
+>>> + * PAGE_SIZE aligned.
+>>> + *
+>>> + * A mapping must be unmapped by using dma_buf_unmap().
+>>> + */
+>>> +struct sg_table *dma_buf_map(struct dma_buf_attachment *attach,
 >>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 2f2a521e5d683..33fc3590867e2 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3524,6 +3524,9 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->>                                  "Cannot split to order-1 folio");
->>                  if (new_order == 1)
->>                          return false;
->> +       } else if (folio_test_swapcache(folio)) {
->> +               /* TODO: support shmem folios that are in the swapcache. */
->> +               return false;
->>          } else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->>              !mapping_large_folio_support(folio->mapping)) {
->>                  /*
->> @@ -3556,6 +3559,9 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->>                                  "Cannot split to order-1 folio");
->>                  if (new_order == 1)
->>                          return false;
->> +       } else if (folio_test_swapcache(folio)) {
->> +               /* TODO: support shmem folios that are in the swapcache. */
->> +               return false;
-> You are splitting the truncate case into shmem one and page cache one.
-> This is only for shmem in the swap cache and ...
+>> That is clearly not a good name for this function. We already have overloaded the term *mapping* with something completely different.
 > 
->>          } else  if (new_order) {
->>                  if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->>                      !mapping_large_folio_support(folio->mapping)) {
->> @@ -3619,6 +3625,15 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>          if (folio != page_folio(split_at) || folio != page_folio(lock_at))
->>                  return -EINVAL;
->>   +       /*
->> +        * Folios that just got truncated cannot get split. Signal to the
->> +        * caller that there was a race.
->> +        *
->> +        * TODO: support shmem folios that are in the swapcache.
-> 
-> this is for page cache one. So this TODO is not needed.
+> This function performs DMA mapping, so what name do you suggest instead of dma_buf_map()?
 
-I added the TODO because we'd like to detect truncation there as well I think. Hm.
+Something like dma_buf_phys_vec_to_sg_table(). I'm not good at naming either.
 
 > 
->> +        */
->> +       if (!is_anon && !folio->mapping && !folio_test_swapcache(folio))
->> +               return -EBUSY;
->> +
-
-Given folio_test_swapcache() might have false positives,
-I assume we'd need a
-
-	folio_test_swapbacked() && folio_test_swapcache(folio)
-
-To detect large large shmem folios in the swapcache in all cases here.
-
-Something like the following would hopefully do:
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2f2a521e5d683..57aab66bedbea 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3515,6 +3515,13 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
-         return ret;
-  }
-  
-+static bool folio_test_shmem_swapcache(struct folio *folio)
-+{
-+       VM_WARN_ON_ONCE_FOLIO(folio_test_anon(folio), folio);
-+       /* These folios do not have folio->mapping set. */
-+       return folio_test_swapbacked(folio) && folio_test_swapcache(folio);
-+}
-+
-  bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
-                 bool warns)
-  {
-@@ -3524,6 +3531,9 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
-                                 "Cannot split to order-1 folio");
-                 if (new_order == 1)
-                         return false;
-+       } else if (folio_test_shmem_swapcache(folio)) {
-+               /* TODO: support shmem folios that are in the swapcache. */
-+               return false;
-         } else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-             !mapping_large_folio_support(folio->mapping)) {
-                 /*
-@@ -3556,6 +3566,9 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
-                                 "Cannot split to order-1 folio");
-                 if (new_order == 1)
-                         return false;
-+       } else if (folio_test_shmem_swapcache(folio)) {
-+               /* TODO: support shmem folios that are in the swapcache. */
-+               return false;
-         } else  if (new_order) {
-                 if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-                     !mapping_large_folio_support(folio->mapping)) {
-@@ -3619,6 +3632,13 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-         if (folio != page_folio(split_at) || folio != page_folio(lock_at))
-                 return -EINVAL;
-  
-+       /*
-+        * Folios that just got truncated cannot get split. Signal to the
-+        * caller that there was a race.
-+        */
-+       if (!is_anon && !folio->mapping && !folio_test_shmem_swapcache(folio))
-+               return -EBUSY;
-+
-         if (new_order >= folio_order(folio))
-                 return -EINVAL;
-  
-@@ -3659,17 +3679,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-                 gfp_t gfp;
-  
-                 mapping = folio->mapping;
--
--               /* Truncated ? */
--               /*
--                * TODO: add support for large shmem folio in swap cache.
--                * When shmem is in swap cache, mapping is NULL and
--                * folio_test_swapcache() is true.
--                */
--               if (!mapping) {
--                       ret = -EBUSY;
--                       goto out;
--               }
-+               VM_WARN_ON_ONCE_FOLIO(!mapping, folio);
-  
-                 min_order = mapping_min_folio_order(folio->mapping);
-                 if (new_order < min_order) {
-
->>>
->>>>
->>>> Probably worth mentioning that this was identified by code inspection?
->>>>
->>>
->>> Agree.
->>>
->>>>>
->>>>> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
->>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>>> Cc: Zi Yan <ziy@nvidia.com>
->>>>> Cc: <stable@vger.kernel.org>
->>>>
->>>> Hmm, what would this patch look like when based on current upstream? We'd
->>>> likely want to get that upstream asap.
->>>>
->>>
->>> This depends whether we want it on top of [1].
->>>
->>> Current upstream doesn't have it [1] and need to fix it in two places.
->>>
->>> Andrew mention prefer a fixup version in [2].
->>>
->>> [1]: lkml.kernel.org/r/20251106034155.21398-1-richard.weiyang@gmail.com
->>> [2]: lkml.kernel.org/r/20251118140658.9078de6aab719b2308996387@linux-foundation.org
 >>
->> As we will want to backport this patch, likely we want to have it apply on current master.
+>>> +			     struct p2pdma_provider *provider,
+>>> +			     struct dma_buf_phys_vec *phys_vec,
+>>> +			     size_t nr_ranges, size_t size,
+>>> +			     enum dma_data_direction dir)
+>>> +{
+>>> +	unsigned int nents, mapped_len = 0;
+>>> +	struct dma_buf_dma *dma;
+>>> +	struct scatterlist *sgl;
+>>> +	dma_addr_t addr;
+>>> +	size_t i;
+>>> +	int ret;
+>>> +
+>>> +	dma_resv_assert_held(attach->dmabuf->resv);
+>>> +
+>>> +	if (WARN_ON(!attach || !attach->dmabuf || !provider))
+>>> +		/* This function is supposed to work on MMIO memory only */
+>>> +		return ERR_PTR(-EINVAL);
+>>> +
+>>> +	dma = kzalloc(sizeof(*dma), GFP_KERNEL);
+>>> +	if (!dma)
+>>> +		return ERR_PTR(-ENOMEM);
+>>> +
+>>> +	switch (pci_p2pdma_map_type(provider, attach->dev)) {
+>>> +	case PCI_P2PDMA_MAP_BUS_ADDR:
+>>> +		/*
+>>> +		 * There is no need in IOVA at all for this flow.
+>>> +		 */
+>>> +		break;
+>>> +	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
+>>> +		dma->state = kzalloc(sizeof(*dma->state), GFP_KERNEL);
+>>> +		if (!dma->state) {
+>>> +			ret = -ENOMEM;
+>>> +			goto err_free_dma;
+>>> +		}
+>>> +
+>>> +		dma_iova_try_alloc(attach->dev, dma->state, 0, size);
 >>
->> Bur Andrew can comment what he prefers in this case of a stable fix.
+>> Oh, that is a clear no-go for the core DMA-buf code.
+>>
+>> It's intentionally up to the exporter how to create the DMA addresses the importer can work with.
 > 
-> That could mess up with mm-new tree[1] based on Andrew's recent feedback.
+> I didn't fully understand the email either. The importer needs to
+> configure DMA and it supports only MMIO addresses. Exporter controls it
+> by asking for peer2peer.
 
-Right, a similar fix could be had against mm-new.
+I miss interpreted the call to pci_p2pdma_map_type() here in that now the DMA-buf code decides if transactions go over the root complex or not.
 
--- 
-Cheers
+But the exporter can call pci_p2pdma_map_type() even before calling this function, so that looks fine to me.
 
-David
+Regards,
+Christian.
+
+> 
+> Thanks
+
 
