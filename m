@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 491D9CF6481
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 21:56:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C83FBCF58FE
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 22:13:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60C3D6B00A5; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
+	id 1EB546B00AB; Wed, 19 Nov 2025 17:13:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E3B76B00A6; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
+	id 16DFE6B00AC; Wed, 19 Nov 2025 17:13:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F9F36B00A8; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
+	id 010A56B00AD; Wed, 19 Nov 2025 17:13:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D5346B00A5
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:56:53 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3EB7FBAA3E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:56:51 +0000 (UTC)
-X-FDA: 84128717022.29.108F6F6
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3E45240017
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:56:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=H227m8XO;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DA1406B00AB
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 17:13:07 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BB441606A3
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 22:13:05 +0000 (UTC)
+X-FDA: 84128757930.19.C881436
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5AC071A0009
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 22:13:03 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="Lfd/UOKP";
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763589409;
+	s=arc-20220608; t=1763590383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GNCgiEwH4yoLxLSeabt8BIXDk+2v90qbq38QcBVyYpw=;
-	b=V5r1LpChLAgmrAiMZsAkf7saAAHDWDeHj1M7XFsFvOotjcXAaCnQBpBYKf5TSwb4seUxlq
-	u3fai+ndvMrKLzmkcGPzQPAfImpj8cO0dwVXnoBcr2h7lGzWbvEsTzlvDh3ZgqbT5SHb6m
-	7YJpsFkTis22KxUaV0Hc+1PlEreENpE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763589409; a=rsa-sha256;
-	cv=none;
-	b=GqB8tESM2MZwy/OxoyjVAaPYJh9pYEPAgbdWECLRgt0KwqvdYbhYR5GZ9byDHFD0Yj6ar2
-	ntOveYu38RWeaNERzPK/ROmviaUnhixve9Y/OYgPXIFbZfzq9Psw8jVrD7RrFbLYYx/V38
-	khqFbk/T4Qd3dTumMH010/QQdFiaOvk=
+	bh=jmO/rmQDeDDD4oFLN2kD77+FOiHPR0yrD5sudAmDUFo=;
+	b=lj34/Pz1K98zmxQrikQCI3TphYImRtjDliczX8DPFmT7CJzUmU5fFsz2wV4M1/CJ5LAu8I
+	PnYUfF+1hb1O0mSu4N7HNgb5erpaVOKR4cGp7z0d5j0dZ4+a86WWRrCOfCEXC/Dz+4G3L8
+	opsdFmwn9m4xV/Mu5tbse7xyBZxXl0w=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=H227m8XO;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="Lfd/UOKP";
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so298220a12.0
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:56:48 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763590383; a=rsa-sha256;
+	cv=none;
+	b=GePFGIf+Dd8HdqVGJO5IbH0RcGE6EXqRVnCI2RAemnxNBwe11st9JBjLCwJYw7XuVs2I+Z
+	hohaiCAAU1TvB4mqR3B5g5pXxFqltUmDpqMCu+Wrl2MFvZufZUa6XOeJCXOC4ftLoe1Pgk
+	+Avl6BwkEacn6POwKIn8/a7pkEhiZd4=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64320b9bb4bso413958a12.0
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 14:13:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763589408; x=1764194208; darn=kvack.org;
+        d=soleen.com; s=google; t=1763590382; x=1764195182; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GNCgiEwH4yoLxLSeabt8BIXDk+2v90qbq38QcBVyYpw=;
-        b=H227m8XOD2uSgK8sX3KmAfxf4b5UusTjg3pSlRYodzCiQYmGoRA6yo3CH8WkULOeJY
-         ug2YlOs4dyjdE6FTGuJUoMiRSnCcGzbQYAfaJeFp6wJhRzxZfN6ZF9Qwb3T3C2SUrEP0
-         hsmlTPbt4I6PChv/hl6Box+oNEv+U9rKtbDwHN6iBELi27R39CQlwoUg5MXw0rJ0YMEf
-         YRRAlT6pEwJh3o3RBOrZcEJpGmopXrZR9xgfPwvsDYYripOWpP6UpcJmO8KzSocUGl7j
-         UCigKFgkYna+YcIVxkQhMjwGuBMjctFa3ftUI8vcsTcD6eBikJDpB5rtlBxOMo24LlBt
-         DJAQ==
+        bh=jmO/rmQDeDDD4oFLN2kD77+FOiHPR0yrD5sudAmDUFo=;
+        b=Lfd/UOKPF3WHZdThYSeRPSF2y9KzLR1Asg9yBgs4zDmr6h1bT6fAoOYqPPoGSwVtNS
+         w4MQzbNZTV2h0dvH1LWgsKO8L7WGKe+D2bNU98hB3PWzkIlGZ2pqnQRG6/K1vMHDPVqc
+         NHJQes8ASQgI82e9GnI/X961yG/EjGSpSzihcS9QwAAEvRotnlAw9rEBHfgXy7Ly8ntA
+         3CnDkU67OcmJqGgLWyIfSDNQouM7AecT7b7v+FU1szf7c8nsY1oeAYwXWeH86cybjxwS
+         mKa7p+Mu06SQ0+WKQybyo8sFl4HEuoTi4y3tlXxMTQvjx5Y3eMhtA4Z4dT8EIXZUsfVn
+         jEDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763589408; x=1764194208;
+        d=1e100.net; s=20230601; t=1763590382; x=1764195182;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GNCgiEwH4yoLxLSeabt8BIXDk+2v90qbq38QcBVyYpw=;
-        b=K6BUWQL9jvYsQnkH+nNQBrIkNIx6nTqMdoVQ1Cqbw+cJO0fxukhYxOlT20tFWUBx4V
-         QHRu/tbrSr20nWvQW9x/Q9lgBSkwOyoIvrdB3w1gjvR39WoGR1ilsL1cJCRG0RknmMoC
-         PCydB/QCwZQhZXcDw6p3NBwlZlhEau9q1l10soTSK+Lz9dDoZLKlToqBHG3gz86xgiwr
-         8buv3wOqQyg4nm+oRzv4kBFaYy+z5c+CSJ1ln+GFohQ1hctv0mVfFwkjAEcHBDhxUS5Y
-         xW7CCzDQuMgvXszMcga8MXKq50NVTOq8PSM24ES/SJzNTDyteoLLSx4dqBkoDTPBZoh8
-         V+uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXH/nkSWpyVEOjalbNXacwtCJj96RJbldeLFKOMNEJjXGC9o5EJXcH3259vJ77+RA7l005u6iUzkA==@kvack.org
-X-Gm-Message-State: AOJu0Yw1hOlAzitFzmEFgJu4GyUDJdbWd+s4OPN+I4kvi4QjmSmvB9gl
-	4oywBzVkrrMqvpOAIj7O4PyLhIl44aCNCRQLc47U5OO8ELnA7wZgS2T1Y8Ban/ZHZt0REr9Opmb
-	Wq9lSEBV2mOQdcnQ4NVss3wZZvPUqSYBggcMiMtkbgQ==
-X-Gm-Gg: ASbGncsZl9GLvY3+q99Zx1AAiS2uoZpPg0d0IfiMAFxshmAOV6B+47Zlkrn1TnUJ5GX
-	0tjy64L3EDevx4Cz+6+zJjTY5hl/fHSYKVH/v5ALvBMP3x8jTim8i11icbydVWXLvZ8PDGPoFds
-	v+KEHfI3A5RAsXYABoHAjYXFTLOALyBZ7oiWIwOfQtHL9yPF+wfzPGQkgMcFkEN1r78KBBuvosm
-	XiKYmxzCRxjDfZzn1/mMebA4i1lAP4j2bRLSAMF01wK2cH157gM48xOASS/zfP9eXLgAdASy2T8
-	C6U=
-X-Google-Smtp-Source: AGHT+IFLyS+wG0rWTlTQxvo48mFxi5vli+cxPH15GpPZdhy+X8F56gfcnoxRYXFwUVFltbkM5G+J1V5jBE1mGtvRoNo=
-X-Received: by 2002:a05:6402:27cc:b0:643:8301:d107 with SMTP id
- 4fb4d7f45d1cf-645364828ddmr742149a12.30.1763589407434; Wed, 19 Nov 2025
- 13:56:47 -0800 (PST)
+        bh=jmO/rmQDeDDD4oFLN2kD77+FOiHPR0yrD5sudAmDUFo=;
+        b=qfBtRtADdvyMwtjIVFkvp+1RKkBGqu3owaGAVZn1Pgp2u0pS00J2Ui7HzuwutwdUwO
+         yBdRtGFCoNOhyC+evmjQV4eW9lCqBqiliSL1ntkrV9VhdakUafPwF/vR9OHmgJz0NFJN
+         vfcyjiR4Sk0bDvialYTqCrUKs4Y06h/4Wgb+Jo+kijI49QB25QALNoLWzXD/N/2EkMhf
+         Y9wZlfg4qyVa35YnLXlj1UdBPmfNYM7GmywvCK/z1K8JTAJYe1slPTnwrmbHCI4iTgHi
+         VcSu96Juq6+kYMfrsJQX2KpoIopSk9GaldFK3H9WW/UvtAzZT9RGJMPz1WafOvgLQSFg
+         ztfA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOSqflmRu9XWVpIw9bJG99B0eELmmHN7ChCnfHj6WFE4FPK/Tbf84iLeNsG/F4NJtLmH8UFD+qww==@kvack.org
+X-Gm-Message-State: AOJu0YxB68hf6GWShgyl5klgAp76x3OXCU/E9kLMkRJ/6xNl6By2eVQY
+	8bZyaAFM7SMqbg3R4YFGEwNx+foQeLNfBdm8dQp6yNKM7H/jJ+pXJkjzxqGGFAyve3LMWClzFD0
+	oWh6DOXJJYDOGCf3UGN3bN3NjY+F3F6daPwN3Ji2OMQ==
+X-Gm-Gg: ASbGncu+OFXZgSmISLRQXLgpAP4hKy4v0UDet0i3hruzWA9VKOK9dDz7cASgA2r0LeE
+	7ruwTpMvrkqCl5XYYXYeWgdVgU1ir9rS+z5jSU11z7F/RUxb/7cP8ZDDm01+qZIW4RbsG9AyBcG
+	QbJpthofGjcAInUwv0DFRPokORn8n3HLJmsmXx37o5D3WMNltVk5NuOeqoSkpNVfUFBisQF+A4E
+	zyriXcvkePedjxygtfuKmZVr1Qb8n93Ye/FMhNZ/Z3QFTrGq4biwqHCKfwwIxfn1SlScv6B3wlh
+	O6OPMhYOh1bngw==
+X-Google-Smtp-Source: AGHT+IFw6kDorU2RenWoIYJjhBpjj+66hDpPciDjAImJ3B8hxUcjgpzXU/StGuyx3A6WKe/RvhzZdqNdpa9gP61f3nc=
+X-Received: by 2002:a05:6402:3492:b0:640:b625:b920 with SMTP id
+ 4fb4d7f45d1cf-6453966533fmr137250a12.6.1763590381585; Wed, 19 Nov 2025
+ 14:13:01 -0800 (PST)
 MIME-Version: 1.0
 References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-16-pasha.tatashin@soleen.com> <aRsBHy5aQ_Ypyy9r@kernel.org>
-In-Reply-To: <aRsBHy5aQ_Ypyy9r@kernel.org>
+ <20251115233409.768044-19-pasha.tatashin@soleen.com> <aR40oVOxZ-dezpy0@google.com>
+In-Reply-To: <aR40oVOxZ-dezpy0@google.com>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 19 Nov 2025 16:56:10 -0500
-X-Gm-Features: AWmQ_bkST9g5qeVKeHrDii74Rowe2_O-kbr5Wx0FA7LJaDDxeXF38UaoBxVWMYo
-Message-ID: <CA+CK2bADcVsRnovkwWftPCbubXoaFrPzSavMU+G9f3XAz3YMLQ@mail.gmail.com>
-Subject: Re: [PATCH v6 15/20] mm: memfd_luo: allow preserving memfd
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+Date: Wed, 19 Nov 2025 17:12:24 -0500
+X-Gm-Features: AWmQ_bn2ZiiYRRhjdL5Zxy3O1nTVtrU9qOIx56eMo9t0_SUIdxuoIchWFpNGDbY
+Message-ID: <CA+CK2bBoantuwMxqe1=PnRO+RX86Qo0epf89kbmZx5z8i2ivLQ@mail.gmail.com>
+Subject: Re: [PATCH v6 18/20] selftests/liveupdate: Add kexec-based selftest
+ for session lifecycle
+To: David Matlack <dmatlack@google.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
+	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
 	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
 	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
 	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
@@ -124,14 +124,14 @@ Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
 	chrisl@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 158mmzf3jco3sutk9cpbcruy69t8dsrc
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5AC071A0009
+X-Stat-Signature: qicu636gj3hd1fxcjcfyqcgc75w6da13
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3E45240017
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763589409-629181
-X-HE-Meta: U2FsdGVkX1+pyTSxSe6DNRB7wYBqW/As27eA/1yte9uARbJiNOT7HLDV43ECKbfCHXYgfQEdl2qOpXwjb6t0cEE7WiIliMEefIFSt2ywOwPQwCldRjz/eK6J2+karOH2lFxG/NFwMUp+cW9SY07a0qF2DE96Wmfw214rI3MbxeN6JKg70grYHghjrgIj0J2DVYf9OGr/CfaA6GkQU8bUAHwqwnsGmnxkWFtLfBWtTnf8eHc85/EQYCE+EV10AOaPDb5jpem/OOasNzsd8Lmmw0Dfl6shcYo8BAFvhQAqaZDjZh67P2fjmTRkGdXXbWXAPwXvAAzOsj18VTfWOfx5CInnBoUOkUkFI2Q3e17dG+dMYC+J2ARQxi8WAQV7Tla0tuyjc2lpDGhNaZUxeDSCZGlKQhRHjAPQOAiUzxmNTLXrXYGkm4xkoUKmHjpNSY6cjlEWqj9WQqtAgPjUzTMV9AFJ86bz6sZv3xYqgfyeXm4/TJs7anBLXfR0dw5jVcMBtLnnW3z1ZYAuBnKOO4JQ1UVrz9iTiVTp5SO/lhgOiEWYTWDgeBxl4WHkGIbl0/yKwqwSfpBJeGfC0in7gPt98S6K00yH4a7Mb64udvfhbZRMHSBKznKhD9zKPh6dQqmr1FaIXN+vXWTZnMtihc8TXwpkiWjFOVGT3mOp6L2/amE+01ttso95NxOPPBJ+jPmzaa0uKZFoWuvbPOp2gZRvVzl3+SVDHvvbJU+iG6s1ALGECyEsMG8EE+Td5wXdJbIs3uOUBT2abFLZbKhMgkXDBCpRw72OOJ6YbFyz+zVCDqDXZj9B2d25xedAQPqbyDibKxrDeOPodTMDE+g7gt0DFFHYCUamidKy7TsLe8s/S3qX2veJyy+ATH5O5aVCt2tocdCpVdG8n9kMObvgNNYsXHPE0nXyVe1aMT7CKeLiGT5C28H0XLvvqzrd67BUQgafjb0Laoam6iEcsh2JJbm
- lh6NAUeK
- EoiuEPmzzLvEoC46nrhXhwtC8LA/0kLgg90VTzYfo00AXvx4RELE624/rPK6MY9GQ83E0os+KzARvnavip3L7QL9WU3KYHJWC/oMdlX8eObAySPCOQIlngA3Ea5f6HBFbViYuFBZg8C7IF0D2LYOyHKkVWmH6lyi5+UFPYDF4BuxBPGdhvFI22Uld6KhNVIX5Urq4nRip+iLy8VRpb2ci3Wanlvf8Zeo95SCfz91OOF+JGvZWfNoTuDWoC2VPbovthAmEg96nVwTtPq0K8fJFbrmXSoRHBfCSLKwEEg8TUeyrK85TLCL5+asHmDucj5tMA3U+ND4gPeDLQGicGJip40u8eapVoF5ZtAJyfXUwjdC0KWGJlLvPdOQUKHSimhhDgYPFyI0yhgV4wpQ=
+X-HE-Tag: 1763590383-40911
+X-HE-Meta: U2FsdGVkX19BDHtccTTUIv5xRSpbRJFA7AZUdiB/FP/RaLFpy6Cl5kT/Rape8XVJfQqpYhmzQAMv9sO7niF4mvuAuo7+6/7Pl+GJMsZUrOyVcyh5cTPCbiFDmKIqiZMA5/dPgoFjImj6GaG7O07KrDLFMECeD6q+tYL7/jPCMECigGZjwBcUBlecJqKOpeQ6UUYV0XWyCUZmxlaP3+Ofz73I5QWiVEGOoLWE6aSxF1PhsX6Sioqhwz/5v1E9o9E4iKXjU+oVGCEnlvhDlAJHR3rY27zRWdlGJAT3hUxqAT+7Vm9pavCtlDq/qAtqt2kgPJaWwYsSVBYWujEnuMiu2M+FPSE1v+nU16Zti1wVIRB4uOuuoPu8er8g9BmwmOxNLieNyioLoMli4xz1O+WCKRtbyC9Z0WVwRxiAkvQJIt4SNMHlPH2llHN1NJkb/YZJzoV3fRAzeEI9uYXwVHKye4s93H4xalUxg5t/fbmUb7dLdI0fGmU1Q+TThX6qWMFi1WxA7/mStMY+tntbL7A9zuzS5tZPpTe893exnocCA3h5R5bILrEFOPwDUQfCeVDG7pFKhMZkSOm1Gu+ca+lSb5xq4GBowmN2dzIQylQ8yZzLj5bG0XLGRBUFzI3CgZVZQFZsZ74Odzt2VJDlAQzj/Req6S4W0G8UHPSCWDK04xBqsDkBQYp6aB72H5qVG8aaUj5DacwSns53bwxm+SqT2tGfF5L9BIgW1oL4XP0BsGRjOMcnyaaEHFkrOjrOD+PpXqMTdzCx7wVZWHBmHh2eVtHEgpfmZPdO1xsnZlBFohM+5Mk/XloohNZn1g6Poa3CsP1IgV9Ek5mBO7v3qRLTa3cTYNL6QThZTls8F2Ax6LQUQR3D8n4NEB1ABOKy268BOMFeWL02+XQ/O5T9jN8gVvL9Ydu1yvQ9Pmsq6Oq0DF919jnlLr4NTS4zp9x48+ooXHmBW5ivTKjqrqfbRmB
+ sj3V/iGI
+ FZJamrkspkGb8sBMGnZWY/72GkJqs1qZAV5O/XRKtGAZZY6rsV4lfLJ9dix1scv/LviYdmkoZIkTS7Ympccnesw0blxhQktJp7FR/KVkAnHTVi1rqzj8kwcCYR/zsZhzI121SMSqcJh3aT5XUaAmHlghNNgwUHJDehebXgQUwArkVlNltX6NhNCM0+2IsjVEg7E4oEzQucld0+D2KXzrQaGQZ7sLxiPCAV241LJh+9C8PFkycr3NJjYxktfSHNZUEFqv4aesrFOjYYmq9pzr59+ZVBsHhdjcJ61a8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,247 +140,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 17, 2025 at 6:04=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
+On Wed, Nov 19, 2025 at 4:20=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
 >
-> On Sat, Nov 15, 2025 at 06:34:01PM -0500, Pasha Tatashin wrote:
-> > From: Pratyush Yadav <ptyadav@amazon.de>
-> >
-> > The ability to preserve a memfd allows userspace to use KHO and LUO to
-> > transfer its memory contents to the next kernel. This is useful in many
-> > ways. For one, it can be used with IOMMUFD as the backing store for
-> > IOMMU page tables. Preserving IOMMUFD is essential for performing a
-> > hypervisor live update with passthrough devices. memfd support provides
-> > the first building block for making that possible.
-> >
-> > For another, applications with a large amount of memory that takes time
-> > to reconstruct, reboots to consume kernel upgrades can be very
-> > expensive. memfd with LUO gives those applications reboot-persistent
-> > memory that they can use to quickly save and reconstruct that state.
-> >
-> > While memfd is backed by either hugetlbfs or shmem, currently only
-> > support on shmem is added. To be more precise, support for anonymous
-> > shmem files is added.
-> >
-> > The handover to the next kernel is not transparent. All the properties
-> > of the file are not preserved; only its memory contents, position, and
-> > size. The recreated file gets the UID and GID of the task doing the
-> > restore, and the task's cgroup gets charged with the memory.
-> >
-> > Once preserved, the file cannot grow or shrink, and all its pages are
-> > pinned to avoid migrations and swapping. The file can still be read fro=
-m
-> > or written to.
-> >
-> > Use vmalloc to get the buffer to hold the folios, and preserve
-> > it using kho_preserve_vmalloc(). This doesn't have the size limit.
-> >
-> > Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+> On 2025-11-15 06:34 PM, Pasha Tatashin wrote:
 >
-> The order of signed-offs seems wrong, Pasha's should be the last one.
-
-Updated.
-
-
-> > + * This interface is a contract. Any modification to the FDT structure=
-,
-> > + * node properties, compatible string, or the layout of the serializat=
-ion
-> > + * structures defined here constitutes a breaking change. Such changes=
- require
-> > + * incrementing the version number in the MEMFD_LUO_FH_COMPATIBLE stri=
-ng.
->
-> The same comment about contract as for the generic LUO documentation
-> applies here (https://lore.kernel.org/all/aRnG8wDSSAtkEI_z@kernel.org/)
-
-Added.
-
->
-> > + *
-> > + * FDT Structure Overview:
-> > + *   The memfd state is contained within a single FDT with the followi=
-ng layout:
->
-> ...
->
-> > +static struct memfd_luo_folio_ser *memfd_luo_preserve_folios(struct fi=
-le *file, void *fdt,
-> > +                                                          u64 *nr_foli=
-osp)
-> > +{
->
-> If we are already returning nr_folios by reference, we might do it for
-> memfd_luo_folio_ser as well and make the function return int.
-
-Done
-
->
-> > +     struct inode *inode =3D file_inode(file);
-> > +     struct memfd_luo_folio_ser *pfolios;
-> > +     struct kho_vmalloc *kho_vmalloc;
-> > +     unsigned int max_folios;
-> > +     long i, size, nr_pinned;
-> > +     struct folio **folios;
->
-> pfolios and folios read like the former is a pointer to latter.
-> I'd s/pfolios/folios_ser/
-
-Done
-
-> > +     int err =3D -EINVAL;
-> > +     pgoff_t offset;
-> > +     u64 nr_folios;
->
-> ...
->
-> > +     kvfree(folios);
-> > +     *nr_foliosp =3D nr_folios;
-> > +     return pfolios;
+> > diff --git a/tools/testing/selftests/liveupdate/do_kexec.sh b/tools/tes=
+ting/selftests/liveupdate/do_kexec.sh
+> > new file mode 100755
+> > index 000000000000..3c7c6cafbef8
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/liveupdate/do_kexec.sh
+> > @@ -0,0 +1,16 @@
+> > +#!/bin/sh
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +set -e
 > > +
-> > +err_unpreserve:
-> > +     i--;
-> > +     for (; i >=3D 0; i--)
+> > +# Use $KERNEL and $INITRAMFS to pass custom Kernel and optional initra=
+mfs
 >
-> Maybe a single line
->
->         for (--i; i >=3D 0; --i)
+> It'd be nice to use proper command line options for KERNEL and INITRAMFS
+> instead of relying on environment variables.
 
-Done, but wrote it as:
-for (i =3D i - 1; i >=3D 0; i--)
-Which looks a little cleaner to me.
+Now that tests and do_kexec are separate, I do not think we should
+complicate do_kexec.sh to support every possible environment. On most
+modern distros kexec is managed via systemd, and the load and reboot
+commands are going to be handled through systemd. do_kexec.sh is meant
+for a very simplistic environment such as with busybox rootfs to
+perform selftests.
 
+> e.g.
 >
-> > +             kho_unpreserve_folio(folios[i]);
-> > +     vfree(pfolios);
-> > +err_unpin:
-> > +     unpin_folios(folios, nr_folios);
-> > +err_free_folios:
-> > +     kvfree(folios);
-> > +     return ERR_PTR(err);
-> > +}
-> > +
-> > +static void memfd_luo_unpreserve_folios(void *fdt, struct memfd_luo_fo=
-lio_ser *pfolios,
-> > +                                     u64 nr_folios)
-> > +{
-> > +     struct kho_vmalloc *kho_vmalloc;
-> > +     long i;
-> > +
-> > +     if (!nr_folios)
-> > +             return;
-> > +
-> > +     kho_vmalloc =3D (struct kho_vmalloc *)fdt_getprop(fdt, 0, MEMFD_F=
-DT_FOLIOS, NULL);
-> > +     /* The FDT was created by this kernel so expect it to be sane. */
-> > +     WARN_ON_ONCE(!kho_vmalloc);
+>   ./do_kexec.sh -k <kernel> -i <initramfs>
 >
-> The FDT won't have FOLIOS property if size was zero, will it?
-> I think that if we add kho_vmalloc handle to struct memfd_luo_private and
-> pass that around it will make things easier and simpler.
+> > +
+> > +KERNEL=3D"${KERNEL:-/boot/bzImage}"
+> > +set -- -l -s --reuse-cmdline "$KERNEL"
+>
+> I've observed --reuse-cmdline causing overload of the kernel command
+> line when doing repeated kexecs, since it includes the built-in command
+> line (CONFIG_CMDLINE) which then also gets added by the next kernel
+> during boot.
 
-I am actually thinking of removing FDTs and using versioned struct directly=
-.
+There is a problem with CONFIG_CMDLINE + KEXEC, ideally, it should be
+addressed in the kernel
 
 >
-> > +     kho_unpreserve_vmalloc(kho_vmalloc);
-> > +
-> > +     for (i =3D 0; i < nr_folios; i++) {
-> > +             const struct memfd_luo_folio_ser *pfolio =3D &pfolios[i];
-> > +             struct folio *folio;
-> > +
-> > +             if (!pfolio->foliodesc)
-> > +                     continue;
+> Should we have something like this instead?
 >
-> How can this happen? Can pfolios be a sparse array?
+> diff --git a/tools/testing/selftests/liveupdate/do_kexec.sh b/tools/testi=
+ng/selftests/liveupdate/do_kexec.sh
+> index 3c7c6cafbef8..2590a870993d 100755
+> --- a/tools/testing/selftests/liveupdate/do_kexec.sh
+> +++ b/tools/testing/selftests/liveupdate/do_kexec.sh
+> @@ -4,8 +4,16 @@ set -e
+>
+>  # Use $KERNEL and $INITRAMFS to pass custom Kernel and optional initramf=
+s
+>
+> +# Determine the boot command line we need to pass to the kexec kernel.  =
+Note
+> +# that the kernel will append to it its builtin command line, so make su=
+re we
+> +# subtract the builtin command to avoid accumulating kernel parameters a=
+nd
+> +# eventually overflowing the command line.
+> +full_cmdline=3D$(cat /proc/cmdline)
+> +builtin_cmdline=3D$(zcat /proc/config.gz|grep CONFIG_CMDLINE=3D|cut -f2 =
+-d\")
 
-With the current implementation of memfd_pin_folios, which populates
-holes, this array will be dense. This check is defensive coding in
-case we switch to a sparse preservation mechanism in the future. I
-will add a comment, and add a warn_on_once.
+This also implies we have /proc/config.gz or CONFIG_IKCONFIG_PROC ...
 
+> +cmdline=3D${full_cmdline/$builtin_cmdline /}
+> +
+>  KERNEL=3D"${KERNEL:-/boot/bzImage}"
+> -set -- -l -s --reuse-cmdline "$KERNEL"
+> +set -- -l -s --command-line=3D"${cmdline}" "$KERNEL"
 >
-> > +             folio =3D pfn_folio(PRESERVED_FOLIO_PFN(pfolio->foliodesc=
-));
-> > +
-> > +             kho_unpreserve_folio(folio);
-> > +             unpin_folio(folio);
-> > +     }
-> > +
-> > +     vfree(pfolios);
-> > +}
+>  INITRAMFS=3D"${INITRAMFS:-/boot/initramfs}"
+>  if [ -f "$INITRAMFS" ]; then
 >
-> ...
+> > +
+> > +INITRAMFS=3D"${INITRAMFS:-/boot/initramfs}"
+> > +if [ -f "$INITRAMFS" ]; then
+> > +    set -- "$@" --initrd=3D"$INITRAMFS"
+> > +fi
+> > +
+> > +kexec "$@"
+> > +kexec -e
 >
-> > +static void memfd_luo_finish(struct liveupdate_file_op_args *args)
-> > +{
-> > +     const struct memfd_luo_folio_ser *pfolios;
-> > +     struct folio *fdt_folio;
-> > +     const void *fdt;
-> > +     u64 nr_folios;
-> > +
-> > +     if (args->retrieved)
-> > +             return;
-> > +
-> > +     fdt_folio =3D memfd_luo_get_fdt(args->serialized_data);
-> > +     if (!fdt_folio) {
-> > +             pr_err("failed to restore memfd FDT\n");
-> > +             return;
-> > +     }
-> > +
-> > +     fdt =3D folio_address(fdt_folio);
-> > +
-> > +     pfolios =3D memfd_luo_fdt_folios(fdt, &nr_folios);
-> > +     if (!pfolios)
-> > +             goto out;
-> > +
-> > +     memfd_luo_discard_folios(pfolios, nr_folios);
->
-> Does not this free the actual folios that were supposed to be preserved?
+> Consider separating the kexec load into its own script, in case systems h=
+ave
+> their own ways of shutting down for kexec.
 
-It does, when memfd was not reclaimed.
+I think, if do_kexec.sh does not work (load + reboot), the user should
+use whatever the standard way on a distro to do kexec.
 
 >
-> > +     vfree(pfolios);
-> > +
-> > +out:
-> > +     folio_put(fdt_folio);
-> > +}
->
-> ...
->
-> > +static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
-> > +{
-> > +     struct folio *fdt_folio;
-> > +     const u64 *pos, *size;
-> > +     struct file *file;
-> > +     int len, ret =3D 0;
-> > +     const void *fdt;
-> > +
-> > +     fdt_folio =3D memfd_luo_get_fdt(args->serialized_data);
->
-> Why do we need to kho_restore_folio() twice? Here and in
-> memfd_luo_finish()?
-
-Here we retrieve memfd and give it to userspace. In finish, discard
-whatever was not reclaimed.
-
->
-> > +     if (!fdt_folio)
-> > +             return -ENOENT;
-> > +
-> > +     fdt =3D page_to_virt(folio_page(fdt_folio, 0));
->
-> folio_address()
-
-Done
-
->
-
->
-> --
-> Sincerely yours,
-> Mike.
+> e.g. a kexec_load.sh script that does everything that do_kexec.sh does ex=
+ecpt
+> the `kexec -e`. Then do_kexec.sh just calls kexec_load.sh and kexec -e.
 
