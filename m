@@ -4,91 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDCBCF2566
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 02:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666F3CEE35E
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 02:10:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4E996B008A; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
+	id B03866B00A5; Tue, 18 Nov 2025 21:10:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFEDD6B00A5; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
+	id AB3306B00A6; Tue, 18 Nov 2025 21:10:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B14CD6B00A6; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
+	id 9A3146B00A8; Tue, 18 Nov 2025 21:10:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DFDE6B008A
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4EC7A12EB30
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:00:17 +0000 (UTC)
-X-FDA: 84125701674.02.C85E0AF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 83FC56B00A5
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 21:10:15 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7DDCA12EB9D
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:10:11 +0000 (UTC)
+X-FDA: 84125726622.28.F4CEC9C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B1E951A000C
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:00:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kb/UXTSe";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763517615; a=rsa-sha256;
-	cv=none;
-	b=tHDPQ9JFN1e66s4XHFEQb8sB2fbJV9CNo5zAUiI3lUpUK4OXUPqmO4D2oDwe8WOeCCDhbT
-	qYavzlWcxnsSlBHO+aavIOLw/htaCP1eyZzZmk4+jSzIVEFi+sdlfUgBOLkgDVJsyma2BZ
-	gTlV1M7BCz3BKm3GpaT6LNRtV3KKRhk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kb/UXTSe";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id F0AFC4000F
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:10:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gQxDJ5mp;
+	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763517615;
+	s=arc-20220608; t=1763518210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5lLzJ3HX2WFatV9+GacUwdgdtt5CF5Xf3PFlaOI1b3Y=;
-	b=w/5IOW/uZLgwym9pODYkL1C5rzhMDRT0Pani8p2y+ymcTFkwtIiklAq2sKxwxubR2TDT1H
-	KuyDvoRrjPu4RlIiZ8RcsHXKGOke2uAb7dXSct8Q0S6qwWAS2jmLFpgnQMf0Ih0TTc0Jh9
-	WfNZvM9IfLlGmhg7DqYYiaotBk8mi+w=
+	bh=q+C28i6QhxJM8UNZS2+nU7JycDllFDPvl66ZHmXo2z8=;
+	b=8WiwheAFAczVvd+YDyJgF8l5mkT/DQhsWtZFYxEMnn/z3xyYM9yQv3EOLuqZRbdSMBkVES
+	0MsUbIEM9nF8Julrc+xwEniwXYnDxq9usyMeWc2aY+kQ9uIYpEfJLsIX0/BbgFPeyRJzM2
+	zR60OmZPIrt6ZSzODWp08bXHDP2WiGA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gQxDJ5mp;
+	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763518210; a=rsa-sha256;
+	cv=none;
+	b=k2L7v2HzvGSOCDndJMCbuGnuCt+9kQkM7r7uYU7NfyrcebkaMMWpeQYEfBnbxwVdH5HQ0R
+	u84DfZoi5Aj4uLidbCkkDdshWJtBhCupcPVupNpy46Luz/HALPiwsZsOvEJtmgOQznhDH3
+	xwi8KdSBreRuPx67CattA5KA8/GDsEg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 07998600C4;
-	Wed, 19 Nov 2025 02:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2E9C4CEFB;
-	Wed, 19 Nov 2025 02:00:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D0DA6001A;
+	Wed, 19 Nov 2025 02:10:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3917C2BC87;
+	Wed, 19 Nov 2025 02:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763517614;
-	bh=+wyBW64IzNGcFzUyRIq3XdIAGkWKGaf05JXNZtza/v8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kb/UXTSeMmyW3QHHULosUPUWmqxeQJz7cW5eLR/nyR2yPwFAmXrl7Te/dHy8IBwuh
-	 ie9qj2dIQmVwC66HrrlVnLlcbCZwQU/qbv69RVxg1TxvHTSmz1bn48KpimDrgtaiKD
-	 ZYknW1kPYRGWcx2TUcPwjJVHb4QOau7vu/U9qqHEpIR6eJop/Gsfy6kXKMwDml+UyI
-	 4CoUbeifcy3BQfXVPWnAJJtZBtyyQHQrNALPAxFnsRUPd5mf88y2PjfOru5TkkOUo4
-	 ySm+kRZJ+qO3fISJLYJOkzUx29FX+bw/q7uN+Vblr0vvsmmhg+2ur8Y05gSdNF1dD/
-	 d5kKqmMq/Vg3w==
-From: SeongJae Park <sj@kernel.org>
-To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH v2] mm/vmalloc: warn only once when vmalloc detect invalid gfp flags
-Date: Tue, 18 Nov 2025 18:00:09 -0800
-Message-ID: <20251119020010.72911-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251118-only-one-vmalloc-v2-1-fe702aa68d8b@ixit.cz>
-References: 
+	s=k20201202; t=1763518209;
+	bh=k7vmW/RUqWPlVO5giK/cK6TaEpCgB4w4DRmfGMjrWnE=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=gQxDJ5mpzXpk0ZRIUGBkibfec1sYzpwu0Uuwz8kdw+LLnuMhZ97V4YAIFdA+WlE/v
+	 rrkjeKeJs9JNHGJE3yCKsQUQngi0xEnRcOrzCBunHBLMmFqXWkVuWK0xnK2rexsYPR
+	 UsKxn+hQHUkRqtwPM9yBlqI6UuyhhIUr80lsmRZVk84KvCjFIvdjzBwE26OJl/gsNu
+	 3Gj6HS67WYR3XmND8jP355bJxUMg71T6oKhWvItQFQYELHAhpIKkHeWhwYYSZPtcoh
+	 7t5eW19iFqlmpArq94nwOZtTVWxCWhqS6FrqRCcOvYXQbd51t/FXBnw/bczoZS2gff
+	 p2NCRuaugVlnQ==
+Content-Type: multipart/mixed; boundary="===============6882105097318953948=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B1E951A000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3xns1oxai6dsacinrnm1o8wb8awjwdf6
+Message-Id: <bb24c9ee360a4538d3aa5f00091586fe0d7ae4b7277ea8efe866457954a75696@mail.kernel.org>
+In-Reply-To: <15f95166c6c516f303f3092e74c88ace5164bdf0.1763457705.git.zhuhui@kylinos.cn>
+References: <15f95166c6c516f303f3092e74c88ace5164bdf0.1763457705.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH 1/3] memcg: add eBPF struct ops support for memory charging
+From: bot+bpf-ci@kernel.org
+To: hui.zhu@linux.dev,akpm@linux-foundation.org,hannes@cmpxchg.org,mhocko@kernel.org,roman.gushchin@linux.dev,shakeel.butt@linux.dev,muchun.song@linux.dev,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,kpsingh@kernel.org,sdf@fomichev.me,haoluo@google.com,jolsa@kernel.org,shuah@kernel.org,peterz@infradead.org,ojeda@kernel.org,nathan@kernel.org,kees@kernel.org,tj@kernel.org,jeffxu@chromium.org,mkoutny@suse.com,kernel@jfarr.cc,brauner@kernel.org,rdunlap@infradead.org,brgerst@gmail.com,masahiroy@kernel.org,linux-kernel@vger.kernel.org,linux-mm@kvack.org,cgroups@vger.kernel.org,bpf@vger.kernel.org,linux-kselftest@vger.kernel.org
+Cc: zhuhui@kylinos.cn,geliang@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed, 19 Nov 2025 02:10:05 +0000 (UTC)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F0AFC4000F
+X-Stat-Signature: jcziqatby85e7ghexpnhyzzznctxw4dh
 X-Rspam-User: 
-X-HE-Tag: 1763517615-508736
-X-HE-Meta: U2FsdGVkX1+1JeBGA0cG5327YgTxd/+xBjlGmtz3pijr2K2DN1cDL27S8QiOikrqJUYn4LX0WaQIL6qButByhegRuneioDLj+WZdtUath7oxtb2VYVfGA1jW8Rd+r6P+tjEKJxGIjI40eJ9J4zWwxo6KsfR22ONYxM4tTKqe9Z4lLxv8HHaL2e34tisqzdg06o8SJ/fDPWljeEhC/F38MiOaBfa3wuQaipbcQnSBc/fQ+M+HNtMdPyA2PSzX0kQLezWXn47+fljDq31LMa3Pksi/MyaafJybXBXPXhMd8F8+nDxWOYy4gpb9+2E8zan81UggwNXJxgf+OuQTCHvl3Ze/9zoDbwzGHqTILxmJ9e0adfYS+NRa0Mry3M7yoZmgQPJEajlbwClIBnq5W7BRbLQubU2Mw3yNKqD3I4ZMihRm39l5D322Pf2VbpFiJuK+d4fx/hqlXFV45ZrBNTAsGRmsUrqDrk0NO5PCXQgZPMiErwn2mkLpAusQjw2NWta6y013e2genQ6MzqWQ4ixeyuwRRtc84FJGkF5VNfb58qltrdOMlXYVFFi+0pViRDAJYe+QTmMpdT4KZkl0wgcvwmWEurAPWHn/KGgQNTHPqnQJhBbF7ZYDiWQWRydqtsyK+9n0E8ygPXnc93Z7hvk3Xmx28XnDpAuKaaNYNDcid5ikh8RIsHQh/Q5MMtwwCxf25IXpf1i7C0Qt6P6QrstmWo1bnTRm77cPGN7CUPnol2cyIHfPMY/gzFVIB0v5wmyoTDxrjxEUzMKmVzyqR1noOJt5p5ZdbLtrsYg3HjE0OT19MJVVA0FvuvJ9UBvSI2sHLm8UCXAd/g3TPdD/QgABPMvJ5YIE2iHzvyOY9jDGj4roI8riojXc4U+AL9TnjPECV8n/tbN2CKx5oRCbZSc5CXPHxfOnf+cU5WfBeHPVgUES6BYevTGXeqnQZoKZUDSF+EZyVT3n7/L1m/zcXZ7
- LX+NZ7+g
- g7SGQySEV6IRl5Utg/mVuOP783Qcrni56nm3fWskTl4OKlOR8xy4aIHYDODzJLbf6XqNVLKj9l2zyrakXlsvrWVL0zXj9R+AgVe3mMGN7drj0sl5B3J0HKuzNJ7Ait1jSnUYptBUi1K5IlNqnuP5c46GlUJt6ZQ+asX4hvU56IriEiB/11TtfM2XYg/jlaOaSODXz/EdjcL/o89J1bCOP5Vsxhw4RnDTKECI5Rg3tGXlUYh1i51AvhhxT9JDcbg/HRI+wSVju9TLH5ehJ4dsXu54cGMysCasHZfJ4xY88GLJcQ10VlN2bWpAbqLGnlaK8lIjUt/DtGz3NDzb8XV6Fg21AcW+2DiNxkm7e
+X-HE-Tag: 1763518209-753548
+X-HE-Meta: U2FsdGVkX1/Ya8K+0QvBItH9SgkejDgCym32eU13jwPk85gU63Z6ClmypB/KZI9iXmHcXTrhlCA82lKYxfPU7ayGFj4P0Q8qNe4Rcwog5oo6lqb+cywiT0dfs+yA6+I+PD3qgFbMbXglXXfeVmBjgohDJtYUOSXBrrRKK/sdwy1zoMSm3oOqkze8tsUy4dTy8G9UizloVqU4UtvkZbOIRw+Xh9o1GZ0j87fY3TLdNBtmMUnTJP8lZZSkr+me7tSdkkHRmfZwMu7OlN3UoRuUBjnjzGizsLF9FJyutzv+3/PBG1gn6BvZX4han3CPsYFq62Ht5R422B/WhW9jVaBVUkVceN8BhYShGklsUBHGdsFIaHMaUEUSrgCLWvu8Yz1R8sIDYIH4FLRglO2BnmM6YM3Ew/U6pwDbDK8YC/geYKBvaH/Kjm5JajkqnyUplIiGvUC8eTDUS/9v3wd1/SrnFTIH+YHLH+VWKnRFx/LcquglNBYXXgYHfLUy1p8CQTnh7CZfV6abI7HX3KUhNqwFcYjHwjuJULi7uXn9EJWJ5WzXTahPCOrWvW+HzDwpdAtosVJ3vWL+LJT6oo9iNmxeFXyXShzT3BZWQnWSWxESGtNWD47yUxExw8JXYSwq6OuGqrO2WpWoGGieSuK6SOZtCrb0iIQypl0DqEerdpAyYD5lQbu7BvKAbAGox2HkmxVAXfXGg2DGHExhDw+rfVnezLLhRby4kolQbOwWPaNR32hFjGqgc2rrwMPHK5j37vtUMv2mdo/PrJ5IS7oHcFjiuMy4G5v4e7eN5T6DFPzcQSbOT6wIyvIAZHQy1NGrmxTgfPEKk3NJS9Ey8KgSXs2B2o3TgGbVb6fvztUJR2/OFOBfY0GOXvvmvsCkzShUCHDjT53GKQ5LodWOGv7sOfPYr10MPkUFqx7r6TICE6KZ6QATVDgBpulJNj9vovnQd2ZorWBN8oskz8ItnTlA6MQ
+ MFs/g9qi
+ 4n12VlscIZ5vKoLCNEp+lCvWt/Xs7Mg9+nE833/aIzalt5+dNmki6sAW1QXuJ8jNL/V7miwU6/p6y7FivaNq55aXyOxHYMnITUIhhtm16ug2zkwU8nH7POhZ4yJXLTi/JoFaU3Rzeu6pwzQ6M/plRMpK+qQBsHLLgjuBIz8LliC+dTF/s72UOOIKbN6xkD5fgvbPLLKK0ywfBxvANaPO3OmRQvK6D7gTcYqgyb7jKdKTrCwCS/smP/58NglbsrGZ47Kq3IL9GtjhiPwDOQt0IZyaxifyPiY/58JLjUTnfWAnk0850BXFOWq90k7Gs//zNvfnWaonn1m8mNfbgLQ0CRZZ51+kJO3Og7XRwnE7eI9JkdrgzQ8IOQM7Jaw/IQ/TPZS7pKvv/AHN9oE9dPiioHpmfK2hfQPzNAkRfSDJNX1KCUR3TOK9oy0Nbdf13maYcATqnqc4XByP0w6FLPJqm0di9DZbqOytHIe3kh5dyH8JELn4ZntYX7oUHzgEMDZbSDlujrqbtDuAB+XA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,21 +89,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Nov 2025 12:37:16 +0100 David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org> wrote:
+--===============6882105097318953948==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> From: David Heidelberg <david@ixit.cz>
-> 
-> Without WARN_ONCE, the logs get spammed immediately after the boot,
-> on devices as OnePlus 6T (Snapdragon 845).
-> 
-> Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 4deda3362..104c9e930 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -68,6 +68,7 @@
+>  #include <net/ip.h>
+>  #include "slab.h"
+>  #include "memcontrol-v1.h"
+> +#include "memcontrol_bpf.h"
+>
+>  #include <linux/uaccess.h>
+>
+> @@ -2301,13 +2302,14 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	int nr_retries = MAX_RECLAIM_RETRIES;
+>  	struct mem_cgroup *mem_over_limit;
+>  	struct page_counter *counter;
+> -	unsigned long nr_reclaimed;
+> +	unsigned long nr_reclaime, nr_reclaimed;
+>  	bool passed_oom = false;
+>  	unsigned int reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+>  	bool drained = false;
+>  	bool raised_max_event = false;
+>  	unsigned long pflags;
+>  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+> +	bool charge_done = false;
+>
+>  retry:
+>  	if (consume_stock(memcg, nr_pages))
+> @@ -2320,20 +2322,30 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	if (!do_memsw_account() ||
+>  	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+>  		if (page_counter_try_charge(&memcg->memory, batch, &counter))
+> -			goto done_restock;
+> -		if (do_memsw_account())
+> -			page_counter_uncharge(&memcg->memsw, batch);
+> -		mem_over_limit = mem_cgroup_from_counter(counter, memory);
+> +			charge_done = true;
+> +		else {
+> +			if (do_memsw_account())
+> +				page_counter_uncharge(&memcg->memsw, batch);
+> +			mem_over_limit = mem_cgroup_from_counter(counter, memory);
+> +		}
+>  	} else {
+>  		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+>  		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
+>  	}
+>
+> -	if (batch > nr_pages) {
+> +	if (!charge_done && batch > nr_pages) {
+>  		batch = nr_pages;
+>  		goto retry;
+>  	}
+>
+> +	nr_reclaime = bpf_try_charge_memcg(memcg, gfp_mask, nr_pages,
+> +					   mem_over_limit,
+> +					   reclaim_options,
+> +					   charge_done);
+                                           ^^^^^^^^^^^^
 
-Acked-by: SeongJae Park <sj@kernel.org>
+When charge succeeds (charge_done = true), mem_over_limit is never
+initialized but gets passed to bpf_try_charge_memcg(). Looking at
+memcontrol_bpf.h, the BPF verifier allows read access to all fields
+in struct try_charge_memcg via bpf_tracing_btf_ctx_access() (only
+write access to nr_pages is restricted by memcg_ops_btf_struct_access).
+
+Can the BPF program read this uninitialized pointer value? This would
+leak kernel stack data to the BPF program.
+
+> +
+> +	if (charge_done)
+> +		goto done_restock;
+
+[ ... ]
+
+> diff --git a/mm/memcontrol_bpf.h b/mm/memcontrol_bpf.h
+> new file mode 100644
+> index 000000000..ee2815fc3
+> --- /dev/null
+> +++ b/mm/memcontrol_bpf.h
+
+[ ... ]
+
+> +static inline unsigned long
+> +bpf_try_charge_memcg(struct mem_cgroup *memcg,
+> +		     gfp_t gfp_mask,
+> +		     unsigned int nr_pages,
+> +		     struct mem_cgroup *mem_over_limit,
+> +		     unsigned int reclaim_options,
+> +		     bool charge_done)
+> +{
+> +	struct memcg_ops *ops;
+> +	struct try_charge_memcg tcm;
+> +	int update_nr_pages;
+> +
+> +	if (likely(!static_branch_unlikely(&memcg_bpf_enable)))
+> +		goto out;
+> +
+> +	ops = memcg_ops_get();
+> +	if (unlikely(!ops))
+> +		goto out;
+> +
+> +	tcm.memcg = memcg;
+> +	tcm.gfp_mask = gfp_mask;
+> +	tcm.nr_pages = nr_pages;
+> +	tcm.mem_over_limit = mem_over_limit;
+                              ^^^^^^^^^^^^^^^
+Here mem_over_limit gets copied into the tcm struct, which is then
+passed to the BPF program at the line below.
+
+> +	tcm.reclaim_options = reclaim_options;
+> +	tcm.charge_done = charge_done;
+> +
+> +	update_nr_pages = ops->try_charge_memcg(&tcm);
+
+[ ... ]
 
 
-Thanks,
-SJ
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-[...]
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/19486904708
+
+--===============6882105097318953948==--
 
