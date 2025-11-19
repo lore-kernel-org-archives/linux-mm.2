@@ -4,77 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 426D3CF31AE
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 11:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1902CF31AD
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 11:42:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 890A06B00A9; Wed, 19 Nov 2025 06:42:49 -0500 (EST)
+	id 55C5B6B00AB; Wed, 19 Nov 2025 06:42:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 867A76B00AA; Wed, 19 Nov 2025 06:42:49 -0500 (EST)
+	id 533C86B00AE; Wed, 19 Nov 2025 06:42:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77E156B00AB; Wed, 19 Nov 2025 06:42:49 -0500 (EST)
+	id 449856B00AF; Wed, 19 Nov 2025 06:42:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6350C6B00A9
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 06:42:49 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35D0C1A045C
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:42:49 +0000 (UTC)
-X-FDA: 84127169658.05.24DDD4B
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E9C75180017
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:42:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763552567; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 2F43B6B00AB
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 06:42:58 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E9D9014049F
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:42:57 +0000 (UTC)
+X-FDA: 84127169994.27.C032612
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E8496C0003
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:42:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ngAFrctV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763552576; a=rsa-sha256;
 	cv=none;
-	b=NwsHoME38rVHyv4umO7t36mZyyXN9zj+ro0js6Yif19f06cxhnSwMp1dxVPDn+OGjdJSFw
-	kgKr9hE5+/byv/q0okEQNRNDVcLvfMn8tycBGy3a4wwx9pkZKP/Jsin+U4wPDKrRHlAJ6F
-	2KM4lfhD5gIJdGe+o65somSdrLQktGI=
+	b=UIx6JuR2KZw1Rc++HQ4liK7kn7pig+Jsj4J+KEMUvO0Fz7T1209OI/qVacuEQwog1W9ylA
+	R4pP32z9O+En2XNZeyg9iqQ0TYXBmlOyHRAJ1nj4G0wcuUnfl6ArkpObhyGNLAOKo7OqIF
+	ehAFdW6pM+MGCP4eU02QNIAysONk+V4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ngAFrctV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763552567;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763552576;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=G+BB3jIgoepc61Pc/HJqok5R0Wq1hv2ySuUhJCu1SuU=;
-	b=JXMtbe2NkTrjyfJg1lr6pNVy4kCfDkNO93d5ZODZI4VMCPiYVOBwiW//1OJmMF2blExPoG
-	EnHhV5/+P5U+BsVYk4gLYW5+Eap4+QAnWDzZv+SrNXQm7svgeZazItK+inJBVMzHBI+GtX
-	txI9F0Di7yHgb/OV0/IuNh8IisrRrT4=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 19 Nov 2025 20:42:41 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: akpm@linux-foundation.org
-Cc: chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	linux-mm@kvack.org,
-	youngjun.park@lge.com
-Subject: [PATCH] mm/swap: fix wrong plist empty check in swap_alloc_slow()
-Date: Wed, 19 Nov 2025 20:41:36 +0900
-Message-Id: <20251119114136.594108-1-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p+8CdVW7qRHuadRsFNXcHiteFeYMuyKZGGt4Q4lo3EA=;
+	b=lheTjRdQQiVdl2l4jnCu6aO4eftsPabp4sfPf5MddpOUO6Qx7wRCcip+eraswKl0gEAo9C
+	J1FSGlV8e8z0LNExBxPOMtP0ytdxamJVBYjTToItv2uJniBKwP6daY1wV8ueWgboVMZU7k
+	xwxnPaHTpGX092QymBTWQkUFtlmlQi8=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so1699692a12.3
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:42:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763552574; x=1764157374; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p+8CdVW7qRHuadRsFNXcHiteFeYMuyKZGGt4Q4lo3EA=;
+        b=ngAFrctV1oCMoZjbnY3NZaCcMaXaSMQ72aLFdhpjEKyQeTAy4iQC82J42hMTe2w56N
+         JkXHk0VTtS4qhV/lsGIgw/K+jDXZSVigRDDf/ISvz9ApQHFNU6CPuZylrmEVSj3uEKoe
+         iU9C068EkdkKHBZMl2olQWDHPkt420tELdRcJ/bY1pQCEivP8dp8t+KKi1q5uPzVCGtp
+         9S6yZ/yf8mi54dWgqiIRmkf3PuFcHDFD2rqpLk9YU0z67pbUaf8fH096UFIxO72ezNhU
+         cqVziDlqxvrvmmZ7s/CJqPDqZx67CeVPUIcL3FMrkl0+d8vYhH3NqA/ngb6BDhpE9fGq
+         6uqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763552574; x=1764157374;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p+8CdVW7qRHuadRsFNXcHiteFeYMuyKZGGt4Q4lo3EA=;
+        b=XOHEaVnOq4jKGyT8s0JUVjujnZxFc9/2zJgshxrdHtr7rZVC7z9OuX+WnF+mzu37+J
+         oleKxSktT+BbeiimyyPJUoa4vi6gag/jgQXT5ijnqaRTlptjKSKnlaY6F2/0Rl8H4xxD
+         YUtcc2dXhBH1DRpM7061BBLjwSTN7FfSV4CbK1vRzwfF4u6cIVZLcG5/gDecE6T7MOan
+         aGQg5IkaF9njvvOwulS0MJnh1z8tUv/yisK5l9t6Mhq9/xjtdTHawWbkOHhoUZ44e9kv
+         aaRGXRVleB6cUKf2fw3JSib1zSDqONJYKMzuSAPef7FHTBjJu/EHFSBPImQ7UrgBrgBc
+         bEuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVM0UrpYfzZSJWZrKrqtNvK4cLKkQbEfxzYLBYVfs4LsgZBuf7YU8MaOoirM1ErU4WZALNlhcIz/g==@kvack.org
+X-Gm-Message-State: AOJu0Ywe0dKDpIUsrBfLqZyIer4WXNEx3CaypnezOAqSPwWl0SlOWK8D
+	4KBn7TbXb+ng5UYv9D7hztj7HNAg/sxTkyhPTCM8y7pWXGclrQi6nbCc
+X-Gm-Gg: ASbGncuz+N6nolZx0oQRgt+2ASkNFsocyGeqmM+O0k6oPt59xkYgTXJA6ihFGVqHrMh
+	jwnvqGyGZOFgHCumVoQCSvryt7pTw6hTQzTK32zu6JVTkmS3FOq4lCuIlcfgBIqyjoSvl5zn9O7
+	DmxuhTFQQ6udliQ0O+YlbMXBq8IcvlrNQ3bfnOH4rV4pDyEw/NesvNMbmhKigkq2TRr4ddFz6PQ
+	Zax/hOeQNVlbQx4LgwKt1ADWPqXok5ZZKHQZXkMqj4GDfQdQSGNCYyUZLRG6GM4brj2Vw1ifzk9
+	0ThKiFrN3SZncJL0O3XQnVG5obW3EPV+VH0mRBTMJX9ry+0BMUK0eCaTnOjr5/jf2e5usvR5iDL
+	iW63U4FXIiWgC6hb5mllrEzSpoFXXkMMesQcqhtFTOKKXyy0QXFvMpX504wEM3F9uyzrHEgARcX
+	twjXTUl0w/Y1P84w==
+X-Google-Smtp-Source: AGHT+IHsC8WLzRz86acSXKKLf9htyktUYbaQTt584boJvhtqrXAJbQVTaPMhhYWIheLKaJCxpnT9YA==
+X-Received: by 2002:a05:6402:2806:b0:643:60b6:3eed with SMTP id 4fb4d7f45d1cf-64360b63f56mr15412046a12.31.1763552574059;
+        Wed, 19 Nov 2025 03:42:54 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a4b1fadsm16169223a12.31.2025.11.19.03.42.52
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 19 Nov 2025 03:42:53 -0800 (PST)
+Date: Wed, 19 Nov 2025 11:42:52 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Tianyou Li <tianyou.li@intel.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+	Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/memory hotplug/unplug: Optimize zone->contiguous
+ update when move pfn range
+Message-ID: <20251119114252.oykrczprf3ecd7ak@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <aRwAjSQBby614Itx@kernel.org>
+ <20251119040718.2735199-1-tianyou.li@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E9C75180017
-X-Stat-Signature: jxjjzzo536gh5fzsz974p7pzk8fxun3w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119040718.2735199-1-tianyou.li@intel.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-HE-Tag: 1763552565-566052
-X-HE-Meta: U2FsdGVkX1+2OF2ZdGl+qurMmIpptlzoLoxdnLrpo3daQXTHPpjGW1tEmguO4MUyU1y+BvyBSTRfug5z/zC4ZmGyvrJwJr48Dm/jCpKxjPqDnHCLjDSxpZ8uW6r2DYMozIC0g8RyMRI3GpmXtlCfvHKmNQ4mCjWL5ErY5L3Ls4/1XVQZfJAJVJKhJJWF5cuQI6lGKiGH8XGYvC9PzF1tWKSpHTGqSvolB2AGY8vx8k6ZLdDcPkQsYvXmDs+GNulJjXWFK+kBY/VvQl7DbYil3eDFarfr8GhZLCHtMwGBrBbNIIJXplQy9XK1fA7/4bmJUU0z/ztyB74dS2u8Y8Sb8V6akTwWyzKt/1Q0LcoW4Uq3LT+fog0pAz4eilIe3QLrD6ZDOjkeiLPbsKKwJDl8QqKl3Ce0qFCiLby21ZT2iqsn25pNTtwBEoNXROOglTF/+mQuB3FtzZnN+swEpghnfmmqlX1bFWNe6H7cj7FZiUlFwsZ5DRVFAymrJyE/3tDBb4MCez47e+8RY7d9Gx/Uy6Wpa9/nZoz43Z3cI9KhOh0jOEG18w0r3bMh0BXoI+AHePQrlSAIIGufGCk6XrX3E91wbpThOTs/LQX1cF/6syDVd3gLtLjxk+gJAvqHD5bVCmUSLgIYN2kl9fbyWpw58Sn3AAh5b/rjCHjtofy1Nn7vtq+KQ8jUgW3KWhX/5fBlkK3CKCVqJWiZNw3xbzN8N/IiL9lXd8MrYRHkjMc8Bd2j4Hei51p4f6cwtpj2VwozDL7T4Xz4AiF9D5UvSntZH7qYH/YTnBAwiWS9R7l6z1OjIF1lCRtnsGH8WW+iKBrU3sFlfSl+rIpe4s+dG07OirOYBk4yfEoKw2JEwGtZ/yIeB83VTP7XZesTLfGrFXuQrLf3QOjR4jiW+aP6M1wPVkavxd9r4fYOB7L4gAUDH8yD7m1QaZRKpe04hm7SP9vUFwDjbppkUuxnuMOik3x
- II0y3MLG
- sod5YIsJsTtevq/QBdexEuiukzwcOAxq/JgPkPe0Iaiv/pwSYz8bjcWHqR66FzN1TiOGVtkRotEnNWnwpFM0hVqAt+fU+NFaIYyczmC2LtyoJAOgzxtZUmvaGRoLIRssZP87dN4gCVW3jVXluo9pzap3tCfA7DpIuyZqQTK4wq/uDSAh9qUYn6pwrRY+beypSfJIyPsXUTuA3/TyD09DBP2tEZ/c1bz3rOCsEx+Ca6tvfuJOyz4/UHoAiSvJ+m0zh6klNiVFdWN4zGMk=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E8496C0003
+X-Stat-Signature: 6jwh1ogzdb7iatiy3ew6axq9ot4esjjd
+X-HE-Tag: 1763552575-723950
+X-HE-Meta: U2FsdGVkX1/wHSe8MIt83DdZtA7YyzUp0QDvDFSowUQwJ8PbdKt03T0+6PjBmh+kIxtzYekD1PuI50BIXzWyqXuSYcO7duK1E5XZDQVPQ4ihNAH+eslV6ZF46G3yUmAHrWcnhugY6PIf1hJCSIzG6tSfF/ItGjZHrylfFJns6swtvvZ13uHkCJPrpsW2AtngzFJbB1MvhGcOslv/IzvmMLJPhmF0MxagSC9iVMMmMETd/qvftV3rXJjHPu6dVMI0JqfjJ5ZcLbQ/XObbwSOcqaPkSOELh8iAsMm829bLYbnTQOegsxNk46fz0dRnGsk17EVARGf8n7xAQG6N0f4JGvNk6y3Zy9lYgda1HAT2SspE64b93HT0GTEcdretYsWqiYMPUZjgULyUgAb67uCtwNZZzZbZsZITjn4ByEak0y0XAchOuu7dgj9xdd+GKHwtuqtsPsDAP2L1rcRKE8NWfqlCOdERZPxpsLpK3xkrQsXneGJagsqD22BgST14pi2wjeoa+ko3KF+uuV2EwW2cVRzejmCKNubb59zqHJWg0UaEajatlAl5i/P+xpQEeRk/dnK8lM1hzVuozFE5DPeHm//aonjaF6aGRRuwsM7FjUQ+3E6IGYjzi8WF/lfl6ByIztUk30gy+pEqs+Qp7oaj0lMOrVUYWgmgIujU7MH5Qz7hGGeCdrHOhnwS4Ab8gPuhrHCzEB5M9CgQmL/GCkpyKQVcLxx6EjnTvbUlj6VRdy4iQV533VcPreUWjB5JRw1/Ue5b2LqYogEvb+jWgWiChxDoAmKS21VVNcHPZa81Aa4/p3myRev6LWUISDPrZ3I0LqCrsqh+RDUAqETMXJlrFwVTlovc88vkFLAojYbvjJ14hDwGdeQQYYjtERa3m7S94xh4k5JUMzj+pPuJe44nwUxWVK0ewUpetvyPcbZ85+HW3/yzSaNOBQkH+kNFOuH50NEt/2jQmAYiPvk4H50
+ oWRmcwEI
+ 2KYDVBUqVf4zeyz7Ym1MhS1B5K8jVh3C7318I18XWSRBowaqA6oFTUZjKR+5tFCvSbMqRMUNUSW1IO59mA9CJ1TNd9mFzxIMoQFvIzb4o2fC0zWYmyEB4e2XBTZv691popt98eMP68VHz4pEsbzrAyfZq/Dj9E9BKcMaTnXCtQxna83M7VDWF/bQNte3twpZvmr0t3V8TdGYtbf4k0vuyY1HDGgcogfrxFI3+s7uEFy/nMPNbYjYem1WZLy7ceNYmnFwSF782riwpyhhTfnqz5aVIA5i5tMG62YJMTcHYhtfsdaglP8Uz6OKec+uNpcXlk2i9aD1fBXYDtfSOBawLrmXjzdCLd82rCBMX8+hRweHqH/Ht+DRP1uXtYFZjmX3kuaadMGIcRvwTbtKGAOsgW17QAZTEYStegZch7sRBUtjCWr4uZ490tN2xUw2IQ/leq2GRLeEVlisjiAxJQK+gDM8fxY+Kn5T1ZKNTSTLWl20nMfekNlwfb4WzN1roj5zqByUYcXJjE/oArY5M8wUVZg75lvR4NgpXUWh9RfsBsCpamHsiXQKcuR2PigjBjBLfqzYZaATKtyDmFPqL7gDL8+0OPHjKvmYaQUFUBPur0vZ5rehHoYaEolnXiQttIwyvtXj0SHEWCSfW19rCL42VDV++khx88CDNunlN4MuTxT1UyA1NAN1+bSBPtw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -83,30 +129,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-swap_alloc_slow() was checking `si->avail_list` instead of `next->avail_list`
-when verifying if the next swap device is still in the list, which could cause
-unnecessary restarts during allocation.
+On Wed, Nov 19, 2025 at 12:07:18PM +0800, Tianyou Li wrote:
+>When invoke move_pfn_range_to_zone, it will update the zone->contiguous by
+>checking the new zone's pfn range from the beginning to the end, regardless
+>the previous state of the old zone. When the zone's pfn range is large, the
+>cost of traversing the pfn range to update the zone->contiguous could be
+>significant.
+>
+>Add fast paths to quickly detect cases where zone is definitely not
+>contiguous without scanning the new zone. The cases are: when the new range
+>did not overlap with previous range, the contiguous should be false; if the
+>new range adjacent with the previous range, just need to check the new
+>range; if the new added pages could not fill the hole of previous zone, the
+>contiguous should be false.
+>
+>The following test cases of memory hotplug for a VM [1], tested in the
+>environment [2], show that this optimization can significantly reduce the
+>memory hotplug time [3].
+>
+>+----------------+------+---------------+--------------+----------------+
+>|                | Size | Time (before) | Time (after) | Time Reduction |
+>|                +------+---------------+--------------+----------------+
+>| Memory Hotplug | 256G |      10s      |      2s      |       80%      |
+>|                +------+---------------+--------------+----------------+
+>|                | 512G |      33s      |      6s      |       81%      |
+>+----------------+------+---------------+--------------+----------------+
+>
 
-Fixes: 8e689f8ea45ff ("mm/swap: do not choose swap device according to numa node")
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- mm/swapfile.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Nice
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 94e0f0c54168..cf780fefaf7d 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1374,7 +1374,7 @@ static bool swap_alloc_slow(swp_entry_t *entry,
- 		 * still in the swap_avail_head list then try it, otherwise
- 		 * start over if we have not gotten any slots.
- 		 */
--		if (plist_node_empty(&si->avail_list))
-+		if (plist_node_empty(&next->avail_list))
- 			goto start_over;
- 	}
- 	spin_unlock(&swap_avail_lock);
+>[1] Qemu commands to hotplug 512G memory for a VM:
+>    object_add memory-backend-ram,id=hotmem0,size=512G,share=on
+>    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>    qom-set vmem1 requested-size 512G
+>
+>[2] Hardware     : Intel Icelake server
+>    Guest Kernel : v6.18-rc2
+>    Qemu         : v9.0.0
+>
+>    Launch VM    :
+>    qemu-system-x86_64 -accel kvm -cpu host \
+>    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>    -drive file=./seed.img,format=raw,if=virtio \
+>    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>    -m 2G,slots=10,maxmem=2052472M \
+>    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>    -nographic -machine q35 \
+>    -nic user,hostfwd=tcp::3000-:22
+>
+>    Guest kernel auto-onlines newly added memory blocks:
+>    echo online > /sys/devices/system/memory/auto_online_blocks
+>
+>[3] The time from typing the QEMU commands in [1] to when the output of
+>    'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>    memory is recognized.
+>
+>Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+>Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+>Tested-by: Yuan Liu <yuan1.liu@intel.com>
+>Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+>Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+>Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
+>Reviewed-by: Pan Deng <pan.deng@intel.com>
+>Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+>Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
+>Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+>---
+> mm/memory_hotplug.c | 57 ++++++++++++++++++++++++++++++++++++++++++---
+> 1 file changed, 54 insertions(+), 3 deletions(-)
+>
+>diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>index 0be83039c3b5..8f126f20ca47 100644
+>--- a/mm/memory_hotplug.c
+>+++ b/mm/memory_hotplug.c
+>@@ -723,6 +723,57 @@ static void __meminit resize_pgdat_range(struct pglist_data *pgdat, unsigned lon
+> 
+> }
+> 
+>+static bool __meminit check_zone_contiguous_fast(struct zone *zone,
+>+			unsigned long start_pfn, unsigned long nr_pages)
+>+{
+>+	const unsigned long end_pfn = start_pfn + nr_pages;
+>+	unsigned long nr_filled_pages;
+>+
+>+	/*
+>+	 * Given the moved pfn range's contiguous property is always true,
+>+	 * under the conditional of empty zone, the contiguous property should
+>+	 * be true.
+>+	 */
+>+	if (zone_is_empty(zone)) {
+>+		zone->contiguous = true;
+>+		return true;
+>+	}
+>+
+>+	/*
+>+	 * If the moved pfn range does not intersect with the original zone span,
+>+	 * the contiguous property is surely false.
+>+	 */
+>+	if (end_pfn < zone->zone_start_pfn || start_pfn > zone_end_pfn(zone)) {
+>+		zone->contiguous = false;
+>+		return true;
+>+	}
+>+
+>+	/*
+>+	 * If the moved pfn range is adjacent to the original zone span, given
+>+	 * the moved pfn range's contiguous property is always true, the zone's
+>+	 * contiguous property inherited from the original value.
+>+	 */
+>+	if (end_pfn == zone->zone_start_pfn || start_pfn == zone_end_pfn(zone))
+>+		return true;
+>+
+>+	/*
+>+	 * If the original zone's hole larger than the new filled pages, the
+>+	 * contiguous property is surely false.
+>+	 */
+>+	nr_filled_pages = end_pfn - zone->zone_start_pfn;
+>+	if (start_pfn > zone->zone_start_pfn)
+>+		nr_filled_pages -= start_pfn - zone->zone_start_pfn;
+>+	if (end_pfn > zone_end_pfn(zone))
+>+		nr_filled_pages -= end_pfn - zone_end_pfn(zone);
+>+	if (nr_filled_pages < (zone->spanned_pages - zone->present_pages)) {
+>+		zone->contiguous = false;
+>+		return true;
+>+	}
+>+
+
+Mike's suggestion is easier for me to understand :-)
+
+>+	clear_zone_contiguous(zone);
+>+	return false;
+>+}
+>+
+> #ifdef CONFIG_ZONE_DEVICE
+> static void section_taint_zone_device(unsigned long pfn)
+> {
+>@@ -752,8 +803,7 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+> {
+> 	struct pglist_data *pgdat = zone->zone_pgdat;
+> 	int nid = pgdat->node_id;
+>-
+>-	clear_zone_contiguous(zone);
+>+	const bool fast_path = check_zone_contiguous_fast(zone, start_pfn, nr_pages);
+> 
+> 	if (zone_is_empty(zone))
+> 		init_currently_empty_zone(zone, start_pfn, nr_pages);
+>@@ -783,7 +833,8 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+> 			 MEMINIT_HOTPLUG, altmap, migratetype,
+> 			 isolate_pageblock);
+> 
+>-	set_zone_contiguous(zone);
+>+	if (!fast_path)
+>+		set_zone_contiguous(zone);
+> }
+> 
+> struct auto_movable_stats {
+>-- 
+>2.47.1
+>
+
 -- 
-2.34.1
-
+Wei Yang
+Help you, Help me
 
