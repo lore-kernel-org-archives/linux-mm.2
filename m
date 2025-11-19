@@ -4,104 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E848CF318C
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 10:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB386CF318C
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 10:53:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B38986B008C; Wed, 19 Nov 2025 05:52:53 -0500 (EST)
+	id 434576B0006; Wed, 19 Nov 2025 05:53:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE7AE6B00A9; Wed, 19 Nov 2025 05:52:53 -0500 (EST)
+	id 3E43C6B009D; Wed, 19 Nov 2025 05:53:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B0446B00AA; Wed, 19 Nov 2025 05:52:53 -0500 (EST)
+	id 2AC7C6B00A9; Wed, 19 Nov 2025 05:53:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 856BD6B008C
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 05:52:53 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6478C03D0
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:52:50 +0000 (UTC)
-X-FDA: 84127043700.30.AE04D8E
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8700E40002
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:52:47 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763549568;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=thFNe4a1dSSWuPPIRTGEH+jMwtRkDnCfabWt2HYJy/o=;
-	b=1mOycM49EOpayUGYo1VGMjtxjphWuxavbw2gYl0BXenIoA58NdM9SVNQylM/EnWhfHG/dA
-	6jtVE7cQ1/GAjkKFAAz2JRj0UuSG2MnonnDaDCfmqmBbuI4KIIoUFqbziVrAJvgnq+wasL
-	y08vttU5yKXX38lv1DLOBTWfb5X49WM=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 118BC6B0006
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 05:53:25 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A79A6C03E6
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:53:24 +0000 (UTC)
+X-FDA: 84127045128.27.06D1F57
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7499310000C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:53:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763549603; a=rsa-sha256;
+	cv=none;
+	b=qP7sPm3ewi62l7/y428Y/sTMy0SgVR/RiCEIwPHjvQVDMEMZH2s8nK6Z/MVYy5C/7rfN+5
+	yvCszQo2uvyXsUsgFTjMDGIho1IXs0N9DEjD5BbPJUrl8GNLOKxADINCxzmInOZRueC2n2
+	0jMLvOuRb6RdSYMg6Q9O8F9UmT6LBgA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
+	imf05.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763549568; a=rsa-sha256;
-	cv=none;
-	b=CDcv+kEl1B+d3rznJX6XSGlHjZJeWUWjosy3N/5+KS+j9ZYskERhIB/FWPptqpC9TyoXT6
-	LqcK5yWPLgFlLj0I3NXsIvJapU+/pOJv07Qju3goq/MEXnuZ6n+8EZv+ZgiyKhxFtxsiNh
-	YDgjh9qBUSjsa8N3mcLCqjM0F8/vNXA=
-X-UUID: daf01190c53511f0a38c85956e01ac42-20251119
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_EXISTED
-	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:2fef2393-71be-482c-a7c0-c52d41eee6e1,IP:10,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:5
-X-CID-INFO: VERSION:1.3.6,REQID:2fef2393-71be-482c-a7c0-c52d41eee6e1,IP:10,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:9b5fcba47a3de54798378eb4b8f014d0,BulkI
-	D:251119185236YEZMKME3,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|850,
-	TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,
-	BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: daf01190c53511f0a38c85956e01ac42-20251119
-X-User: zhangguopeng@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <zhangguopeng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 634930976; Wed, 19 Nov 2025 18:52:34 +0800
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-To: tj@kernel.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	mkoutny@suse.com,
-	muchun.song@linux.dev
-Cc: shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: [PATCH] selftests: cgroup: make test_memcg_sock robust against delayed sock stats
-Date: Wed, 19 Nov 2025 18:52:16 +0800
-Message-Id: <20251119105216.1675608-1-zhangguopeng@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763549603;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=suzNoqltQcIiuDgccb0XJfjEtvsI5/fosyRyXyRKtsY=;
+	b=S2lfPhtOX9JmGISJR3GHWaeMeCk9N2DI3H3XIUMWQ3KtUyCp+b5u/IXkDgNeIPEKR62aeW
+	hX5FykXZdUmrc+RMMHXFY84rvKoEMRvjw5HBgl9V0gzk/404jooG3x2ZJ6B+i3fcSPZlM3
+	filPqjFThtMZ2ITso/3rPeBY9muUDNc=
+X-AuditID: a67dfc5b-c45ff70000001609-19-691da19e89c8
+Date: Wed, 19 Nov 2025 19:53:12 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
+ subclasses_evt for the usage
+Message-ID: <20251119105312.GA11582@system.software.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-45-byungchul@sk.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8700E40002
-X-Stat-Signature: gqe7ur6cq1q8dse5c16pqbd3n844o19f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251002081247.51255-45-byungchul@sk.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHed67o9HrtHrMhFhJYGQaYoeyKPDD+6WILoQF1cqXHM0VW1lG
+	hWWpWVJMFrkuXtO1vLWVeWeazUsXK22saF5CtDCNprOaS3NG5Lcfv8P5/8+Hw5EyO72YU6qP
+	ixq1QiVnJJRkZF7Bqrv5IcqIhochkGHOoaHXnYHgUs00Bb91NhamG2wIhp+6EOj7BxiYdg4R
+	MGBNRzD5spOER7YeBO36KwyMvLlNQN6FBhpSCysYqOmrZeHGw0WgL6sjoDglFD4ZDSw4r+kp
+	aO+x0zA8qGNgvLufgPy0Igps1Z8IuFr5mIae0mkaUm79oKGztoyG/j4HDdmjgwiK3d9YsOUt
+	BN2giwVX0QQFaWNTNLRmWQnofl+HoDGjj4CWiicEmEvtDHQ4x1jwOKtpsOtyGaj8XsLAnfFI
+	KPttR5siBJOlihBK75YiYdKjQ8L4vVRS8LjfMUJHARZqDE5WuNj4gRUsxjChsP4LIeS73LRg
+	Nl1mBLNLxwqZI92E8NFezwijr16x25bskcTEiyplkqhZvfGAJKGxr4Q5lr7hlHGomk1BLyIy
+	kR+H+Sjce76X+sdfx/NZH1N8KG4730X7mOFXYIfjF+njQH4ptmQNzngJR/I5wdhdmcr4BgG8
+	Ck+0lM8uS3nALbkts17GH8R6Uzb91/vj9pyB2TKSD8OOqS9EJuJmOBiXTHE+7cevxeW5NuTj
+	BfwybK1qJXxdmO/xw1XGn+jvoUG4yeigriPeMCfWMCfW8D82D5EmJFOqkxIVSlVUeEKyWnkq
+	/NDRRDOa+bbis9691cj1ekcz4jkknyfNmB+ilNGKJG1yYjPCHCkPlIZuXqKUSeMVyadFzdH9
+	mhMqUduMgjlKvki6ZuJkvIw/rDguHhHFY6Lm35Tg/BanoJVnRm+v927dpIvd9cLjv/1BZNby
+	Q1cnK+ss2UExnWShmBDr/8hakN110vK8oO2NN5KuNacPlN/ct2a33qaIttbnVnl3bqkju5yx
+	0RXhsV3rkos2ar0QnxaXfjC6adgRZA58Vrxs+G3AOXy6Q/353X0yKuKyyR4V51k3tLw87eMN
+	OaVNUESGkRqt4g+/LpDnaQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0xTZxjHfc+dZtUjg3hiXUK6oQaDQjLmk7kZlyzxxGXGxA9LtkWtejYa
+	SmGtY9aEDCyNBJ3UukJoBcrt2BSE2noBSQ3jUqdCLKubZIMBSy0wuSTaApXbTl2W+eXN7/39
+	n3/yfHgYPHGF3MyotacEnValUVIyQnZwjzG9uu4tdUYgvBt+K+4iIBopJeBKWwsFpZ4qEgKt
+	zQhGo6UIFpbsOJg61ghYsfhpiMT+oGHN50dQMWjBoeVGMQYv3KsUPOt5jsA6HqKgcqqYgDnx
+	AgJb2E7DVN9+mBntJGFtZAKDJ/PTCMTQKgahrnMIVipyoLbeS8HSwCMcKq0BBHXjIzhMuqXw
+	hv9PBD7nWQqemm/iEAyth8fROQruW89TMDN4BYNZNwWOsz4Squ0WBMaGNgoqqj0EdIzdoWHw
+	2TIGwxUWDJo9n8KoGCbgobkek/aTpq5vAnulEZOeSQys1zoxiIkuGvobhgkQi1LBPhAk4S+n
+	jYbl8UxYc+SBv3mChpFyKwGtM4/IfVbEL5guErzLewvjTb+sUHxLTQvil15aEB9pMuK8ySx9
+	e6bncL7E+x3f9HCa4l9Gf6V437yD4B/Uc/ylgXS+wzZC8yV3f6cPvf+57IOTgkZdIOh27T0m
+	y747dpXKP/fhaedEO12E+jPKUALDse9y05E6Os4Em8r9XBwk40yx27ihoRge5yQ2hfP+EJa8
+	jMHZKgUXdRupePAmq+Hme1tfleUscL21va98Inucs7ouk//6jdz9qhARZ5xN44ZWp7AyxEis
+	4K6uMnGdwO7mWmv9KM7J7Ntc1617mBnJba+1ba+1bf+3HQh3oSS1tiBXpdZk7dTnZBu06tM7
+	T+TlepB0lGLh8qV2FAnu70Ysg5RvyBfNW9SJpKpAb8jtRhyDK5PkqR9JSn5SZTgj6PKO6r7V
+	CPpupGAI5Sb5gc+EY4ns16pTQo4g5Au6/1KMSdhchFwpXRu+f55pejyW9YVKH3sykbl93dbC
+	NPTJ4t5wRvJC5zd/L9aUKH5aUISInB9v6icPtycf6T/cdHQwwJ+pOeBrNNBHKgvHHxwKOi+I
+	X/aleAJfpR8MG4wZTva2uyemnd1RfvHpO0lZfeWjH7MNmONyG31evL7eWzY7/F7jjJjfqyT0
+	2arMNFynV/0DMGDGq5ADAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7499310000C
+X-Stat-Signature: 8bco1d8kitqpdxpowtct9jwfma4pngpp
 X-Rspam-User: 
-X-HE-Tag: 1763549567-507190
-X-HE-Meta: U2FsdGVkX1/2WaWU7b8E4jc0UqNtHiAoBrpoSryunB4s0YwIYF0vqsTis6C7JDByzBiEEoNii2RtsoNTleAmFzBWe6vi5LpZ13/8rEZlDVh7+eZoyy0sTodJqNCLCRRD2VLsVOSgPLZ9YE16dKsDD2H5kqN6hMyzDZZIrZIDKUWlyJUQVZpYiPKDCZisZ6r/+N8DH9cIsnHXo/NCNRF6XT22fLVHwQQfJ6XhTzyW0Oz9TAjR6fxVh/vjpYjqstW+n3vpHSuW3cxf9Uf9bgCGLbSmlZ/GDpEN5Sa+Q5gqHkq8GgvIxF7NrOjYrHnc4mnEgrdPC5yh75X1VFtQVvDyUmPRxkhYLAiCMslz+5SgyP9RGRi7ojU6UkZMofA5XinwfU4bmlZ1/yBUly1diNwSgP1xAKTutm0YakNuG5E0nbcf11IumirX7m4OnffxpifsiEqyrq9OR03Dj25zh3kYMnasWqpW2PNuN0IliAumsLUHeR9WEn41nNIJpWy/H1p1BRvFLyt6t5avtKeHejuiGktail2W0YqYJsk7pNX8VZeca2Z5MfiJTuRxG5QMfvUOvnYQYo4g+AE6xfOzISFTAPeKmRULO4PiBwo/9aMx4k6fZXjR1/VaWpKtwh4vQhjP5/Oy4TwMemaYgX7/E3Vhnf0cIGnzh1pKm55Z+tX+R2A4Z8jPqmzY/ck+Oh8cAxIb+IbAXtHdKxF1pneT/piaaWiOn+6lbb5hZk571RhZ8y9gveGxPGNwRdoKDSxtqG4TojujWK3gh04aBT9J27AAnUnt5xGRSKhoxnpoxudR5xxoL349UmJCp+WWE2vjmcBZ0Og+XOWgpBJyIq5FhOtgKMarLh5G2wDUSiXgfQv/83RD5iKuYjJFzmRW2+0Ab0aXxquAF0NM5zGQCHz7Df8vjxVCWMPb9Ukm4BrcgzNaGxQWCKRcc4dOYo2wzYjyB2h4pOyvWO2NJGP71WIxglK
- gW2KtC+h
- iZP46Y05SAF0i00cxxD+q3KJeqVCcFwqS7W4w59SK1zHOpnPbPFeHikH/RQ==
+X-HE-Tag: 1763549602-995992
+X-HE-Meta: U2FsdGVkX1/C04LTRwwgrBBltQ71fOOE/lSGr9jxkoaiqqKjw/4uwYfNBtnsSgg1FgmbhYLaTF8Yf6fRRoAozLLcP746G2L1O7OpCGPFeoyeP4da9AV+SKo61nS/jc8T9MKw9ReouRWkUMZqvydQNoW4U6QmT94UaJOYJqUF5KL8CFlbph97nhp6kPjdvfKv8GbVAVDix7hgMkM+dsJj9OZpeN57DNAq/bPpEilm5j8D26D4Y49gMOmVvJpFq9f7qZ8mwTByRwsn06TTZPZnHUVbJRq9br+Oay+mcpmYGu9Nr7kBjvfqaGYW0p2Sugy+BZk/eN9h04tRlb6DKYq7IZizMsb/w4+Ib5mkeHCyboTGxzdAnFE+DMs1nFU2HqezgjxhojwSMmRKfVRWj4dDMtwnZO3mS/2+cTXtOswBwQYjccfMzukdroWyf8D6BjKfAnqJg9hAwPMvnZyibMKszyhSehpT0jdA0FC46fW0GuHcpwphptiL192sd0C4vc5rnbni2HittU4UHvz14tWgdqrOGw6nMXti6alA8SgbOu7f8M1WKhrLw+axhk9VGuZHEDBDmvZbHmnezkXneGi1L4yN+Y+qjskKep0dek5sPWyH8cLUe6y0mNpN53IvaR4qd/XiykMXacPv3lK1wNcBaNVXiU+8JE8yT1lHBbngCLs3umn4x+sMQ7iTcG0M5HFTTG6NzkiAGxGKPdgd7PwZbjV8n6gSCa7Il418AKSi1RdU+mEUOXaqRxg/rNwiFmVVvlpSaQOFVyQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,76 +167,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_memcg_sock() currently requires that memory.stat's "sock " counter
-is exactly zero immediately after the TCP server exits. On a busy system
-this assumption is too strict:
+On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
+> False positive reports have been observed since dept works with the
+> assumption that all the pages have the same dept class, but the class
+> should be split since the problematic call paths are different depending
+> on what the page is used for.
+> 
+> At least, ones in block device's address_space and ones in regular
+> file's address_space have exclusively different usages.
+> 
+> Thus, define usage candidates like:
+> 
+>    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+>    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+>    DEPT_PAGE_DEFAULT       /* the others */
 
-  - Socket memory may be freed with a small delay (e.g. RCU callbacks).
-  - memcg statistics are updated asynchronously via the rstat flushing
-    worker, so the "sock " value in memory.stat can stay non-zero for a
-    short period of time even after all socket memory has been uncharged.
+1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
+   starts to be associated with a page cache for fs data.
 
-As a result, test_memcg_sock() can intermittently fail even though socket
-memory accounting is working correctly.
+2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
+   starts to be associated with meta data of fs e.g. super block.
 
-Make the test more robust by polling memory.stat for the "sock " counter
-and allowing it some time to drop to zero instead of checking it only
-once. If the counter does not become zero within the timeout, the test
-still fails as before.
+3. Lastly, I'd like to reset the annotated value if any, that has been
+   set in the page, when the page ends the assoication with either page
+   cache or meta block of fs e.g. freeing the page.
 
-On my test system, running test_memcontrol 50 times produced:
+Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
+be totally appreciated. :-)
 
-  - Before this patch:  6/50 runs passed.
-  - After this patch:  50/50 runs passed.
+	Byungchul
 
-Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
----
- .../selftests/cgroup/test_memcontrol.c        | 24 ++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 4e1647568c5b..86d9981cddd8 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1384,6 +1384,8 @@ static int test_memcg_sock(const char *root)
- 	int bind_retries = 5, ret = KSFT_FAIL, pid, err;
- 	unsigned short port;
- 	char *memcg;
-+	long sock_post = -1;
-+	int i, retries = 30;
- 
- 	memcg = cg_name(root, "memcg_test");
- 	if (!memcg)
-@@ -1432,7 +1434,27 @@ static int test_memcg_sock(const char *root)
- 	if (cg_read_long(memcg, "memory.current") < 0)
- 		goto cleanup;
- 
--	if (cg_read_key_long(memcg, "memory.stat", "sock "))
-+	/*
-+	 * memory.stat is updated asynchronously via the memcg rstat
-+	 * flushing worker, so the "sock " counter may stay non-zero
-+	 * for a short period of time after the TCP connection is
-+	 * closed and all socket memory has been uncharged.
-+	 *
-+	 * Poll memory.stat for up to 3 seconds and require that the
-+	 * "sock " counter eventually drops to zero.
-+	 */
-+	for (i = 0; i < retries; i++) {
-+		sock_post = cg_read_key_long(memcg, "memory.stat", "sock ");
-+		if (sock_post < 0)
-+			goto cleanup;
-+
-+		if (!sock_post)
-+			break;
-+
-+		usleep(100 * 1000); /* 100ms */
-+	}
-+
-+	if (sock_post)
- 		goto cleanup;
- 
- 	ret = KSFT_PASS;
--- 
-2.25.1
-
+> Introduce APIs to set each page's usage properly and make sure not to
+> interact between at least between DEPT_PAGE_REGFILE_CACHE and
+> DEPT_PAGE_BDEV_CACHE.  However, besides the exclusive usages, allow any
+> other combinations to interact to the other for example:
+> 
+>    PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+>    DEPT_PAGE_REGFILE_CACHE page and vice versa.
+> 
+>    PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+>    DEPT_PAGE_BDEV_CACHE page and vice versa.
+> 
+>    PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+>    DEPT_PAGE_DEFAULT page.
+> 
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+>  include/linux/dept.h       | 31 +++++++++++++++-
+>  include/linux/mm_types.h   |  1 +
+>  include/linux/page-flags.h | 76 +++++++++++++++++++++++++++++++++++++-
+>  3 files changed, 104 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/dept.h b/include/linux/dept.h
+> index 0ac13129f308..fbbc41048fac 100644
+> --- a/include/linux/dept.h
+> +++ b/include/linux/dept.h
+> @@ -21,8 +21,8 @@ struct task_struct;
+>  #define DEPT_MAX_WAIT_HIST		64
+>  #define DEPT_MAX_ECXT_HELD		48
+>  
+> -#define DEPT_MAX_SUBCLASSES		16
+> -#define DEPT_MAX_SUBCLASSES_EVT		2
+> +#define DEPT_MAX_SUBCLASSES		24
+> +#define DEPT_MAX_SUBCLASSES_EVT		3
+>  #define DEPT_MAX_SUBCLASSES_USR		(DEPT_MAX_SUBCLASSES / DEPT_MAX_SUBCLASSES_EVT)
+>  #define DEPT_MAX_SUBCLASSES_CACHE	2
+>  
+> @@ -390,6 +390,32 @@ struct dept_ext_wgen {
+>  	unsigned int wgen;
+>  };
+>  
+> +enum {
+> +	DEPT_PAGE_DEFAULT = 0,
+> +	DEPT_PAGE_REGFILE_CACHE,	/* regular file page cache */
+> +	DEPT_PAGE_BDEV_CACHE,		/* block device cache */
+> +	DEPT_PAGE_USAGE_NR,		/* nr of usages options */
+> +};
+> +
+> +#define DEPT_PAGE_USAGE_SHIFT 16
+> +#define DEPT_PAGE_USAGE_MASK ((1U << DEPT_PAGE_USAGE_SHIFT) - 1)
+> +#define DEPT_PAGE_USAGE_PENDING_MASK (DEPT_PAGE_USAGE_MASK << DEPT_PAGE_USAGE_SHIFT)
+> +
+> +/*
+> + * Identify each page's usage type
+> + */
+> +struct dept_page_usage {
+> +	/*
+> +	 * low 16 bits  : the current usage type
+> +	 * high 16 bits : usage type requested to be set
+> +	 *
+> +	 * Do not apply the type requested immediately but defer until
+> +	 * after clearing PG_locked bit of the folio or page e.g. by
+> +	 * folio_unlock().
+> +	 */
+> +	atomic_t type; /* Update and read atomically */
+> +};
+> +
+>  struct dept_event_site {
+>  	/*
+>  	 * event site name
+> @@ -562,6 +588,7 @@ extern void dept_hardirqs_off(void);
+>  struct dept_key { };
+>  struct dept_map { };
+>  struct dept_ext_wgen { };
+> +struct dept_page_usage { };
+>  struct dept_event_site { };
+>  
+>  #define DEPT_MAP_INITIALIZER(n, k) { }
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 5ebc565309af..8ccbb030500c 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -224,6 +224,7 @@ struct page {
+>  	struct page *kmsan_shadow;
+>  	struct page *kmsan_origin;
+>  #endif
+> +	struct dept_page_usage usage;
+>  	struct dept_ext_wgen pg_locked_wgen;
+>  } _struct_page_alignment;
+>  
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index d3c4954c4218..3fd3660ddc6f 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -204,6 +204,68 @@ enum pageflags {
+>  
+>  extern struct dept_map pg_locked_map;
+>  
+> +static inline int dept_set_page_usage(struct page *p,
+> +		unsigned int new_type)
+> +{
+> +	unsigned int type = atomic_read(&p->usage.type);
+> +
+> +	if (WARN_ON_ONCE(new_type >= DEPT_PAGE_USAGE_NR))
+> +		return -1;
+> +
+> +	new_type <<= DEPT_PAGE_USAGE_SHIFT;
+> +retry:
+> +	new_type &= ~DEPT_PAGE_USAGE_MASK;
+> +	new_type |= type & DEPT_PAGE_USAGE_MASK;
+> +
+> +	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
+> +		goto retry;
+> +
+> +	return 0;
+> +}
+> +
+> +static inline int dept_reset_page_usage(struct page *p)
+> +{
+> +	return dept_set_page_usage(p, DEPT_PAGE_DEFAULT);
+> +}
+> +
+> +static inline void dept_update_page_usage(struct page *p)
+> +{
+> +	unsigned int type = atomic_read(&p->usage.type);
+> +	unsigned int new_type;
+> +
+> +retry:
+> +	new_type = type & DEPT_PAGE_USAGE_PENDING_MASK;
+> +	new_type >>= DEPT_PAGE_USAGE_SHIFT;
+> +	new_type |= type & DEPT_PAGE_USAGE_PENDING_MASK;
+> +
+> +	/*
+> +	 * Already updated by others.
+> +	 */
+> +	if (type == new_type)
+> +		return;
+> +
+> +	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
+> +		goto retry;
+> +}
+> +
+> +static inline unsigned long dept_event_flags(struct page *p, bool wait)
+> +{
+> +	unsigned int type;
+> +
+> +	type = atomic_read(&p->usage.type) & DEPT_PAGE_USAGE_MASK;
+> +
+> +	if (WARN_ON_ONCE(type >= DEPT_PAGE_USAGE_NR))
+> +		return 0;
+> +
+> +	/*
+> +	 * event
+> +	 */
+> +	if (!wait)
+> +		return 1UL << type;
+> +
+> +	return (1UL << DEPT_PAGE_DEFAULT) | (1UL << type);
+> +}
+> +
+>  /*
+>   * Place the following annotations in its suitable point in code:
+>   *
+> @@ -214,20 +276,28 @@ extern struct dept_map pg_locked_map;
+>  
+>  static inline void dept_page_set_bit(struct page *p, int bit_nr)
+>  {
+> +	dept_update_page_usage(p);
+>  	if (bit_nr == PG_locked)
+>  		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
+>  }
+>  
+>  static inline void dept_page_clear_bit(struct page *p, int bit_nr)
+>  {
+> +	unsigned long evt_f;
+> +
+> +	evt_f = dept_event_flags(p, false);
+>  	if (bit_nr == PG_locked)
+> -		dept_event(&pg_locked_map, 1UL, _RET_IP_, __func__, &p->pg_locked_wgen);
+> +		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
+>  }
+>  
+>  static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
+>  {
+> +	unsigned long evt_f;
+> +
+> +	dept_update_page_usage(p);
+> +	evt_f = dept_event_flags(p, true);
+>  	if (bit_nr == PG_locked)
+> -		dept_wait(&pg_locked_map, 1UL, _RET_IP_, __func__, 0, -1L);
+> +		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
+>  }
+>  
+>  static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
+> @@ -245,6 +315,8 @@ static inline void dept_folio_wait_on_bit(struct folio *f, int bit_nr)
+>  	dept_page_wait_on_bit(&f->page, bit_nr);
+>  }
+>  #else
+> +#define dept_set_page_usage(p, t)		do { } while (0)
+> +#define dept_reset_page_usage(p)		do { } while (0)
+>  #define dept_page_set_bit(p, bit_nr)		do { } while (0)
+>  #define dept_page_clear_bit(p, bit_nr)		do { } while (0)
+>  #define dept_page_wait_on_bit(p, bit_nr)	do { } while (0)
+> -- 
+> 2.17.1
 
