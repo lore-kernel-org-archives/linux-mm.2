@@ -4,94 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF89CF258C
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 09:10:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABB02CF3182
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 09:16:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67D866B00A6; Wed, 19 Nov 2025 04:10:46 -0500 (EST)
+	id EA1AA6B0030; Wed, 19 Nov 2025 04:16:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62D726B00A8; Wed, 19 Nov 2025 04:10:46 -0500 (EST)
+	id E522D6B00A5; Wed, 19 Nov 2025 04:16:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51C926B00A9; Wed, 19 Nov 2025 04:10:46 -0500 (EST)
+	id D41276B00A8; Wed, 19 Nov 2025 04:16:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8F26B00A6
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 04:10:46 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5220013AB69
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:10:43 +0000 (UTC)
-X-FDA: 84126786366.23.8E4FBD6
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 391FD14000A
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:10:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ucw.cz header.s=gen1 header.b=RJRBSeAN;
-	spf=pass (imf23.hostedemail.com: domain of pavel@ucw.cz designates 46.255.230.98 as permitted sender) smtp.mailfrom=pavel@ucw.cz;
-	dmarc=pass (policy=none) header.from=ucw.cz
+	by kanga.kvack.org (Postfix) with ESMTP id BF9EE6B0030
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 04:16:28 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63B9B1603E7
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:16:28 +0000 (UTC)
+X-FDA: 84126800856.03.A5FFBDA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B8B1AC0008
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 09:16:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FlTNcb3M;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763543441;
+	s=arc-20220608; t=1763543786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aKoPdmFx5HfPn5TOgKRfoxKrS5WsoaWj58t/0pgywKo=;
-	b=kHHk/PWrRM8DTC7YkADcj3IiyQWKXNdkZjZLLzPd8ohztZmJ4vP2Ldum0drs+T8YIF1onf
-	AZOy+O4DgshZbN+p6UXn5L4LTjEB5hbhrIwjRtFnXDdII9uUeseZxkaOMCjxuEG3o0QAaa
-	/UY/gHrEKEosk4mvLnRMLEkjDmCSyBU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ucw.cz header.s=gen1 header.b=RJRBSeAN;
-	spf=pass (imf23.hostedemail.com: domain of pavel@ucw.cz designates 46.255.230.98 as permitted sender) smtp.mailfrom=pavel@ucw.cz;
-	dmarc=pass (policy=none) header.from=ucw.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763543441; a=rsa-sha256;
+	bh=DzpCFtBCrrzCM/5GvRHS1rCNTxwfe7bXDs9M4IdsMNU=;
+	b=yxHEpZZBCoVZDgO/IHL701fhQitruhqETVm+IgScGmMxoWyxBcm/CMTLN9zBvt/4MSsa7w
+	V/XqKz4GMNOKtEEpvvqnrT1ffBB5F3pulwVLneNQpCdNbAL2b6C0POEIZyJvoJ+5DhEupd
+	VKQ0VeTV3uRiqkV0Mo9R0nM6kCiHEcY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763543786; a=rsa-sha256;
 	cv=none;
-	b=mhxzsyKjAf9nRo+DYIrg+r7EAuf35QJYypvqrFxP8MZmupohZDPpOc6attyAXCJR8r1eCF
-	XWb6NiLQkubk6wsbdQ0E5KAodllPl2WsqcCJw+ZM5ESDvN6YUkVFjE9G7Iou+D6ReVzGyN
-	eraSy14pm/s5O8nfbgB8/PF7tDEu5nY=
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 0EDD71C01B5; Wed, 19 Nov 2025 10:10:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1763543438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aKoPdmFx5HfPn5TOgKRfoxKrS5WsoaWj58t/0pgywKo=;
-	b=RJRBSeANYOBxvnqyHlD+I2v3IXaMwzRsxHvxBDiIjOvVpL1DzXXNzrkwtJ+Q8P4NOyNTyK
-	n/XF3RNw+GNi85nHnzcSCQ4w1iD0HcWkVtaVFqB6B0c3aPBjTfKDEToY5eRn2690EjOa0S
-	XxkmAA9DvUKolt0+Vi1UBNxKPsTd0/o=
-Date: Wed, 19 Nov 2025 10:10:37 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: "Richard W.M. Jones" <rjones@redhat.com>, akpm@linux-foundation.org,
-	david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org
-Cc: Eric Dumazet <edumazet@google.com>, Josef Bacik <josef@toxicpanda.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
-	Eric Dumazet <eric.dumazet@gmail.com>,
-	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com,
-	Mike Christie <mchristi@redhat.com>,
-	Yu Kuai <yukuai1@huaweicloud.com>, linux-block@vger.kernel.org,
-	nbd@other.debian.org
-Subject: Userland used in writeback path was Re: [PATCH] nbd: restrict
- sockets to TCP and UDP
-Message-ID: <aR2JjR1yKHCCPalO@duo.ucw.cz>
-References: <20250909132243.1327024-1-edumazet@google.com>
- <aRyzUc/WndKJBAz0@duo.ucw.cz>
- <20251118181623.GK1427@redhat.com>
+	b=Px5t5ifjFR+XNNiMwDBpFRuahQEDkhlgXL8YzeWTogbLQ0plsd9meTmSIrQRPXAmXf+W8R
+	cWx/GL3cpC0TgJrDSvTXIyhMbFaB41ymw57JeYMLnrO6RcV3c4vFPLLFVHBc8PRAo/fLpS
+	kC3mbVO10yCrKsxF7+6ZSMMzjcF4FHc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FlTNcb3M;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id F1A366015E;
+	Wed, 19 Nov 2025 09:16:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25F6C2BCB6;
+	Wed, 19 Nov 2025 09:16:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763543785;
+	bh=pVtZ+fK4btyZD14SaYan12k/0/Sh9SgT5AKYHSQTNMw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FlTNcb3MPw83x3iSu8dqCCFLrB+fCZKLBfiYE+hxgj98uFnZcSe9DxEcrzBDKIDDm
+	 l3wkzpgeMFUFKVOYtzOHyLB9/xL7CRM7yxH98fJjZNlmwshO13xwdCRQp55x2+qquh
+	 oVQqZMKP8QH9QroiilyrMy9gf9M6JRIsOI/kyUri7SnctuceDpLp5rkwi+9wCp8e9Y
+	 BQdJZpQHyWFKT1ah1HnhIGAkT3ytbceyguPa5erSYk4TFZUTNAeRN0w763wzefvhI4
+	 4qMjkvkep1aLhSQla5QjFmeCoSpBQ3r0pOf+gHLXvOtnx4H4kWigjtQ8YwR6OLMXDv
+	 jWH4MV5JyfsoA==
+Message-ID: <61f7c6d2-a15e-4c6a-9704-0e3db65eed3c@kernel.org>
+Date: Wed, 19 Nov 2025 10:16:14 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="aQHk9D/h+j/L8Oa2"
-Content-Disposition: inline
-In-Reply-To: <20251118181623.GK1427@redhat.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 391FD14000A
-X-Stat-Signature: cooqcm371ufnpu91copmfqbio8m6phz3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/9] mm: set the VM_MAYBE_GUARD flag on guard region
+ install
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
+References: <cover.1763460113.git.lorenzo.stoakes@oracle.com>
+ <e9e9ce95b6ac17497de7f60fc110c7dd9e489e8d.1763460113.git.lorenzo.stoakes@oracle.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <e9e9ce95b6ac17497de7f60fc110c7dd9e489e8d.1763460113.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 3nokga8p13b4hfu8ds8ka3eb4t6g6jai
 X-Rspam-User: 
-X-HE-Tag: 1763543440-499682
-X-HE-Meta: U2FsdGVkX1+aFb68xu0CdjYlAL57XQQZ/TGV6T6yQiMhrnEgmAS0QDdb7IHi4AHpm0rn+TKVW0J0u3AIOTm38SoOqBV388eQqMQ/3UxzlN3W0PB+knoDQLApGjQj2f5WS5BtMrrD4HwhiejhvwOaUPxb9UJmrGlmKQiCzDbxlVIwmwaFwsynei8le2wxQ2jLNblTOI1Ed1XLcaGbubPACw9Y2pzOA4GCHg0KjSjGKWzTZd0bEDZoxyC3BeUhr4iZQOSAyJg84wxVBkh+Tet0/A8yrEvWpEtnsN5vgl5Pm+73Pq4y03qPdkxKSGhuq+KW2yq4VKIEVErYjg6rCQTZqF+pacGjbDWcZWPyLLR/pYMAvz6r/xe4VzXEiCa+lV8zk+AEsOURXejrw2xSkgsUpsqpVIKjathRvXblC37978MGMvnIvqAkdEQg/JDQ9IScCmBawhDN3r6BuBwVBVlod7oqilEUrSW1bEjxC4I/A1DviK1hdnR4dx/mBQiDcWCNcGOJvFTmcsi7A7/JcDRljeAtZ3sF+IBmtokST/CvmZQaCgL9jKciTUSsAbSMsz3p2usxM8ipx513NIcLc1wUE4HrRJYBfT7CDAuEGUzJHeUs+72e62TrAB+mEXhiwUgM858G6UdyCD940rjG8kyWvLpVAYMhGx8KTwcEE4rcL8PwYtV2aAeqEmy1V0/mTTY+R2a0PbGxm5dWXYb/B5HfMJYd8TxMdmafrnj5fjNSXnwU+4s7lGY/ZQNLXCGKpLnb28dlBwyJj17nlxwus26RQVowGqrnbJxKKjJIxQDHWcMVmQM1L1ep7jglfitxfpxQDtKKJg0I2Yx9AjquoMGGR985lL9aXpFir+T9wa6+jL2EEnASD0w8tAvANvWNpu7lmJwvRN29zlwsY9YyEF3H1Imew5qRXbTLPn0ONZjtP815CJETznvjINsCpaESCpon/Djh1xZ0hKoEY4xeosS
- hZgSol/z
- cz4qDHc7b9VgxyC5KcPZxqWt1mJ6A3/00vsVSz+Po2KqBwKYVL84tG77/OyQQ1BdQ7gaLiXS108iT/efGF0FSoHjCZvLXmU3OOe6biAKKr+9M47ZZ8pVytQo1vI6ifEjNzTZ2r5SI/W0KkM12dEbkNWi6Z2J1RwT8CPYXSCLdS+acUibaV93YzDzcIJJ536eG4AQZPHOIqfMWRz0urJRYIxvG2N0Ick5znNXJLzblh1FCyEeOw+ywyTWJy8eKBm8Sm/qoOIVFyDy4Ay6v+rZf3yO3MUhChREUUPrA07XA/98Pmz8BWSUqWKqX3VE+Qg2JGjMOuC8Ros9PR9GI74KnyzXLdFaSROtTyUwVHQ90tOke1uazXVXzTvLMHCWJWjJ8mIUsEUIIg/PV+4A=
+X-Rspamd-Queue-Id: B8B1AC0008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763543786-716119
+X-HE-Meta: U2FsdGVkX1+TNQ5JR3Gxi1U+/gal2JllsLPru8cruh0dshPcQcKYfChuxfXViDIZ2qLBscRAgPnngVO2V6IDgf61QJM2GXvzDvJew/2KKHfUFGScrbh3NfRjV8hGzcw+aAD2uEm+hkTlLi25r33tUgXTAvR2J3LzUaMgstBFinc9wn9sMBOZc7VTAd8jkE5b/ZUZtB/pf7L86RaoehDcv3BeN/WeS46o8t8DLRUly3yGCPg8tx/xtIhEoId2ccohBRI0LRZNnm4gzfFrlTL4ia2154cllSXEmFBZbAvu/xDegxZII5T5c48ZZg8mlfXFtHNWX7taeKfAswVmGuddrRj4zIv+sbVWs4dF9kI0aul63NgmSREm3a9O2nOfgUzEv/6aQ/WdTvc3/NGgESBrFn8j9Asvx3EkBbmUnarPbNdazaWZhOAbK7YEC7hJhEK2/UaG6EKP0TsRhdAZJGp2whT4ypeZMGx7868b3gHaCn6HnXTddWK1bfdpshVthxFGSh+4vky94aNQoPM6u7w3tqDs3W0RjfZ/QQqRetQB1sfANFqmUBXT8MKgmOlI0avWam0VCYQwJIcY3LvncCmiUjZE9RRHQ+6Ykc6MFiPEh1D52ulk7krqxcEfe/JrR60kRabQUNmhWQqhKGK5m5X0sH+0z6vGi0SGnPb3/pBj7dXzUS0JocbvZ+EyYYYQ6mcBVcdIbNe45MNsIpU8THZIhT/t1AcodBXssYDSDk29lLyGeAna1yMjIIh9Ly7AFIcNzzOTnSVbP4fTBmkyEWrpDHPWMGcFlVV2NMl5m3UqIGo1QsMdl10d+obhIphBNCf4xnCRhrwLhhY6GihL6LnsK2nnS9LuX7C3wVB1caWuAeYlAiJ4VFqTfqJchzBdVZmeWQan0Y8wQay7f+k4g7aLxnWmyxwfpIPnZP3PHojolUjbr972V3bsQ5mzO1adj5i03LQGyXUWJNjOAM8EPuJ
+ 0TJ37HIW
+ Vknb8kEtOiHR4nNjt3FPRkrlKtOL0AFJY5IyZhoe9lv3Xd41D+4T5LW8C2Et/51cyx5d16ijtw6kcVonHQFJ5n47wqFxTfWW1wkcCK0U5H0F9yvEtAvdsGdy2T9FEvOwjTJtlpkYHWRn8+TmZf9eMKRajfOJkss+T1V9Dkr0/UVSWBCOy+DsczkZudQPHq92jt2ybDztEIU8Me4pm/vb25OnRkTMmkD7jOeaugwnaFdCSyu79uQhFfJUxwrjDGA4yFcUdJa4oL/Cn7feGBfiBTHnJzQ0Y9bzsuTGeOZBDspsf9PYuppF3nQDZWA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,53 +109,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+>   
+> +/* Can we retract page tables for this file-backed VMA? */
+> +static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
 
---aQHk9D/h+j/L8Oa2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It's not really the VMA that is retractable :)
 
-On Tue 2025-11-18 18:16:23, Richard W.M. Jones wrote:
-> On Tue, Nov 18, 2025 at 06:56:33PM +0100, Pavel Machek wrote:
-> > Hi!
-> >=20
-> > > Recently, syzbot started to abuse NBD with all kinds of sockets.
-> > >=20
-> > > Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
-> > > made sure the socket supported a shutdown() method.
-> > >=20
-> > > Explicitely accept TCP and UNIX stream sockets.
-> >=20
-> > Note that running nbd server and client on same machine is not safe in
-> > read-write mode. It may deadlock under low memory conditions.
-> >=20
-> > Thus I'm not sure if we should accept UNIX sockets.
->=20
-> Both nbd-client and nbdkit have modes where they can mlock themselves
-> into RAM.
+Given that the function we are called this from is called 
+"retract_page_tables" (and not file_backed_...) I guess I would just 
+have called this
 
-kernel needs memory. It issues write-back to get some.
-nbd-client does syscall. Maybe writing to storage?
-That syscall does kmalloc().
-That kmalloc now needs something like PF_MEMALLOC flag.
+"page_tables_are_retractable"
 
-mlock() is not enough.
+"page_tables_support_retract"
 
-Best regards,
-							Pavel
---=20
-I don't work for Nazis and criminals, and neither should you.
-Boycott Putin, Trump, Netanyahu and Musk!
+Or sth. along those lines.
 
---aQHk9D/h+j/L8Oa2
-Content-Type: application/pgp-signature; name="signature.asc"
+> +{
+> +	/*
+> +	 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
+> +	 * got written to. These VMAs are likely not worth removing
+> +	 * page tables from, as PMD-mapping is likely to be split later.
+> +	 */
+> +	if (READ_ONCE(vma->anon_vma))
+> +		return false;
+> +
+> +	/*
+> +	 * When a vma is registered with uffd-wp, we cannot recycle
+> +	 * the page table because there may be pte markers installed.
+> +	 * Other vmas can still have the same file mapped hugely, but
+> +	 * skip this one: it will always be mapped in small page size
+> +	 * for uffd-wp registered ranges.
+> +	 */
+> +	if (userfaultfd_wp(vma))
+> +		return false;
+> +
+> +	/*
+> +	 * If the VMA contains guard regions then we can't collapse it.
+> +	 *
+> +	 * This is set atomically on guard marker installation under mmap/VMA
+> +	 * read lock, and here we may not hold any VMA or mmap lock at all.
+> +	 *
+> +	 * This is therefore serialised on the PTE page table lock, which is
+> +	 * obtained on guard region installation after the flag is set, so this
+> +	 * check being performed under this lock excludes races.
+> +	 */
+> +	if (vma_flag_test_atomic(vma, VM_MAYBE_GUARD_BIT))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>   static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>   {
+>   	struct vm_area_struct *vma;
+> @@ -1724,14 +1761,6 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>   		spinlock_t *ptl;
+>   		bool success = false;
+>   
+> -		/*
+> -		 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
+> -		 * got written to. These VMAs are likely not worth removing
+> -		 * page tables from, as PMD-mapping is likely to be split later.
+> -		 */
+> -		if (READ_ONCE(vma->anon_vma))
+> -			continue;
+> -
+>   		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
+>   		if (addr & ~HPAGE_PMD_MASK ||
+>   		    vma->vm_end < addr + HPAGE_PMD_SIZE)
+> @@ -1743,14 +1772,8 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>   
+>   		if (hpage_collapse_test_exit(mm))
+>   			continue;
+> -		/*
+> -		 * When a vma is registered with uffd-wp, we cannot recycle
+> -		 * the page table because there may be pte markers installed.
+> -		 * Other vmas can still have the same file mapped hugely, but
+> -		 * skip this one: it will always be mapped in small page size
+> -		 * for uffd-wp registered ranges.
+> -		 */
+> -		if (userfaultfd_wp(vma))
+> +
+> +		if (!file_backed_vma_is_retractable(vma))
+>   			continue;
+>   
+>   		/* PTEs were notified when unmapped; but now for the PMD? */
+> @@ -1777,15 +1800,15 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>   			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>   
+>   		/*
+> -		 * Huge page lock is still held, so normally the page table
+> -		 * must remain empty; and we have already skipped anon_vma
+> -		 * and userfaultfd_wp() vmas.  But since the mmap_lock is not
+> -		 * held, it is still possible for a racing userfaultfd_ioctl()
+> -		 * to have inserted ptes or markers.  Now that we hold ptlock,
+> -		 * repeating the anon_vma check protects from one category,
+> -		 * and repeating the userfaultfd_wp() check from another.
+> +		 * Huge page lock is still held, so normally the page table must
+> +		 * remain empty; and we have already skipped anon_vma and
+> +		 * userfaultfd_wp() vmas.  But since the mmap_lock is not held,
+> +		 * it is still possible for a racing userfaultfd_ioctl() or
+> +		 * madvise() to have inserted ptes or markers.  Now that we hold
+> +		 * ptlock, repeating the retractable checks protects us from
+> +		 * races against the prior checks.
+>   		 */
+> -		if (likely(!vma->anon_vma && !userfaultfd_wp(vma))) {
+> +		if (likely(file_backed_vma_is_retractable(vma))) {
+>   			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+>   			pmdp_get_lockless_sync();
+>   			success = true;
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 0b3280752bfb..5dbe40be7c65 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -1141,15 +1141,21 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+>   		return -EINVAL;
+>   
+>   	/*
+> -	 * If we install guard markers, then the range is no longer
+> -	 * empty from a page table perspective and therefore it's
+> -	 * appropriate to have an anon_vma.
+> -	 *
+> -	 * This ensures that on fork, we copy page tables correctly.
+> +	 * Set atomically under read lock. All pertinent readers will need to
+> +	 * acquire an mmap/VMA write lock to read it. All remaining readers may
+> +	 * or may not see the flag set, but we don't care.
+> +	 */
+> +	vma_flag_set_atomic(vma, VM_MAYBE_GUARD_BIT);
+> +
 
------BEGIN PGP SIGNATURE-----
+In general LGTM.
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaR2JjQAKCRAw5/Bqldv6
-8nyLAJ0fg+14AbZ5oZZJCws638BzTfOy3ACfQZ9jf5rMfhYV1RriNRoroGv0JwI=
-=eRuh
------END PGP SIGNATURE-----
+> +	/*
+> +	 * If anonymous and we are establishing page tables the VMA ought to
+> +	 * have an anon_vma associated with it.
 
---aQHk9D/h+j/L8Oa2--
+Do you know why? I know that as soon as we have anon folios in there we 
+need it, but is it still required for guard regions? Patch #5 should 
+handle the for case I guess.
+
+Which other code depends on that?
+
+-- 
+Cheers
+
+David
 
