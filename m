@@ -4,91 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 932ADCF2564
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 00:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92C34CF2564
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 01:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D19AA6B0011; Tue, 18 Nov 2025 19:54:07 -0500 (EST)
+	id B24796B009E; Tue, 18 Nov 2025 20:12:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF10A6B0089; Tue, 18 Nov 2025 19:54:07 -0500 (EST)
+	id AD4E56B00A0; Tue, 18 Nov 2025 20:12:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2EBF6B009D; Tue, 18 Nov 2025 19:54:07 -0500 (EST)
+	id 99C6A6B00A1; Tue, 18 Nov 2025 20:12:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B24746B0011
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:54:07 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5597316028E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 00:54:07 +0000 (UTC)
-X-FDA: 84125534934.05.3039573
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A50C8160002
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 00:54:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VoM/x51p";
-	spf=pass (imf08.hostedemail.com: domain of oupton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=oupton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 849E76B009E
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:12:11 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14A8CC0247
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:12:11 +0000 (UTC)
+X-FDA: 84125580462.09.CC1A15E
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9D5D4C000A
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:12:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763513645;
+	s=arc-20220608; t=1763514729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ia4Jz6cmDrN09XgjuGqDrF/80hZrLXIy7Z24x5aUL+c=;
-	b=6vCCrXq4+t4chB0orG+ajz4/My5LrAAcsc0wc3DdRwj/rSLhgZ89w/PplUAIMjPGdR1Pz5
-	v3qXl2RwZX4MftZPGM4eDhLY/DcUn7sgLutVbPBGDRuiwBQZhqk1pbE33Z+RmEeIiTSKi7
-	A7ZYmK6sMzKr2qiOTTWpFP0VAqIk/5o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763513645; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=bhMtPRMDmTEKRd92YEOO6Y+XmIEDiYMkbOau+fNpNNo=;
+	b=F9qd6TlmZfvhq0MxiUQn/Z2NgxQ+9SLsPpF65vke61ecc1uAnvc4LuczkhJu/TVewsrGPX
+	BTmovaExmAuULC/wJ6QkkNHSsrZGaQ0HuUMxcX4pEjNyYK2G/0EGTt61xKsiL7jD4QReNj
+	/zohmTCQ/gDNm5OMQWXR5rP6ULfGTeo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763514729; a=rsa-sha256;
 	cv=none;
-	b=JNiN8Mbt+soXL+94Gq2H6pbjq8+z3BmqY0ZJueZfH1u+M1akdJLJrIOGQTyRpHve3CSm1w
-	wj8kFi2+lYGhZ12EL4oKcYNnOieeqWP0f3pqo5TSEZ0cR1shGDmGO5S1ef4hH93sot9VAw
-	odZSWITyf4IcAPd0U7ohN40pzIbkk2M=
+	b=eUd6Ifbf1RRQ0IzD50OLw72ql690zZQUg9G+r5aoFr4+PjD3OMYFzL2R/njh1AatG43Nbj
+	vYIWYHObOjRlX44AETLbS8048BVrLulTTIzF84PLnjg8dgVWIdIyafwc34LS2TFhN+0yii
+	DNL8o9sW2IJDHqsEfIZaGumu09UORag=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="VoM/x51p";
-	spf=pass (imf08.hostedemail.com: domain of oupton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=oupton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BCC94385E;
-	Wed, 19 Nov 2025 00:54:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A199C2BCB6;
-	Wed, 19 Nov 2025 00:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763513643;
-	bh=SpJfGIQpV72H2dtRGzaRjB5DzZJk8SmDJ++Y4B2SDVw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VoM/x51pdvlXZkIb0y3a2nU1/4bS8NbLwuWP8QVhR9Fzbb1Ck9yOE0LIMEknJsCAo
-	 1c9Yhj9WTIQXytyIyDy6nfVDBVBMq+gAvmLp7bnRqegoCvV3VQb9BMygT2ThCGVrdi
-	 +VqP7NQW36mTUNW5FJkoqhN2A1qlskv9KIh79BMOTPCiAxifEM9z6kIla+ApCNo7Ks
-	 iok/zofUPYMqLDTFHA8i1Yc1mLW8zGjQ8zV6hENvF4+jYkEVKEABR44GfcHXucN+R/
-	 cqyrQTrXN9Fos0LGQ9TO3XmXg2enU1p7+bBPOgai8Fg4Q5Igs9Rb3WaNyzPISxpFTH
-	 x0I98fWDWnRmQ==
-Date: Tue, 18 Nov 2025 16:54:01 -0800
-From: Oliver Upton <oupton@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	bpf@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, kvmarm@lists.linux.dev
-Subject: Re: [PATCH v3 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
-Message-ID: <aR0VKf8bdvU72Pq8@kernel.org>
-References: <20251117173530.43293-1-vishal.moola@gmail.com>
- <20251117173530.43293-2-vishal.moola@gmail.com>
- <20251118224448.GA998046@ax162>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118224448.GA998046@ax162>
-X-Rspamd-Server: rspam12
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-1c-691d195f68c3
+From: Byungchul Park <byungchul@sk.com>
+To: kuba@kernel.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	hawk@kernel.org,
+	andrew+netdev@lunn.ch,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	ziy@nvidia.com,
+	willy@infradead.org,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	alexanderduyck@fb.com,
+	kernel-team@meta.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	mohsin.bashr@gmail.com,
+	almasrymina@google.com,
+	jdamato@fastly.com
+Subject: [RFC net-next] eth: fbnic: use ring->page_pool instead of page->pp in fbnic_clean_twq1()
+Date: Wed, 19 Nov 2025 10:11:46 +0900
+Message-Id: <20251119011146.27493-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrGLMWRmVeSWpSXmKPExsXC9ZZnoW68pGymwf4fahb7mpYxW6z+UWGx
+	/MEOVos5q7YxWsw538Ji8XX9L2aLp8cesVvcX/aMxWJP+3ZmixWT/rJb7Lu4hs3iwrY+Vovt
+	DQ/YLS7vmsNmcW/Nf1aLk7NWslh8PHGC0eLYAjGLb6ffMFpcOvyIxWJ2Yx+jxe8fQGWzj95j
+	dxD32LLyJpPH5Vt72DwmNr9j99g56y67x4JNpR6bV2h5bFrVyeax6dMkoPCOz0we5y5WePQ2
+	v2Pz+Pj0FovH+31X2TzOLDjC7vF5k1wAfxSXTUpqTmZZapG+XQJXxowV55gKNnNWbJn6j62B
+	8TN7FyMnh4SAicT8T2eZYezZS8+wgthsAuoSN278BIuLCOhKHOicDGRzcTALdLBI/HhzEKxZ
+	WCBRYsuMf2BFLAKqEoc/N7KB2LwCphIfJ/dBDZWXWL3hAFizhEA/u8TXj3tYIBKSEgdX3GCZ
+	wMi9gJFhFaNQZl5ZbmJmjoleRmVeZoVecn7uJkZgbCyr/RO9g/HTheBDjAIcjEo8vB38splC
+	rIllxZW5hxglOJiVRHhVHWUyhXhTEiurUovy44tKc1KLDzFKc7AoifMafStPERJITyxJzU5N
+	LUgtgskycXBKNTDGm+xfuGnhL9eoyWYit07o3yt70dxkdMxy0dODnRd5pPf9c5d199atKJl7
+	dc6d0oaMFRe3qyb6fXa1WuIiPtFwTUX9fl6n5QsvLD3GPq2lQZp9w0fL/40ep07fXSRi8k5+
+	pgqvFU+JgfPENIUcQYULR7K6Nq7bpRh7viJZ7HSNgBGzqf+aHbFKLMUZiYZazEXFiQCWGiPn
+	iQIAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLLMWRmVeSWpSXmKPExsXC5WfdrBsvKZtpMH2RsMW+pmXMFqt/VFgs
+	f7CD1WLOqm2MFnPOt7BYfF3/i9ni6bFH7Bb3lz1jsdjTvp3ZYsWkv+wW+y6uYbM4PPckq8WF
+	bX2sFtsbHrBbXN41h83i3pr/rBYnZ61ksfh44gSjxbEFYhbfTr9htLh0+BGLxezGPkaL3z+A
+	ymYfvcfuIOGxZeVNJo/Lt/aweUxsfsfusXPWXXaPBZtKPTav0PLYtKqTzWPTp0lA4R2fmTzO
+	Xazw6G1+x+bx8ektFo/3+66yeSx+8YHJ48yCI+wenzfJBQhEcdmkpOZklqUW6dslcGXMWHGO
+	qWAzZ8WWqf/YGhg/s3cxcnJICJhIzF56hhXEZhNQl7hx4ycziC0ioCtxoHMykM3FwSzQwSLx
+	481BsAZhgUSJLTP+gRWxCKhKHP7cyAZi8wqYSnyc3McMMVReYvWGA8wTGDkWMDKsYhTJzCvL
+	TczMMdUrzs6ozMus0EvOz93ECAz0ZbV/Ju5g/HLZ/RCjAAejEg/vjwkymUKsiWXFlbmHGCU4
+	mJVEeFUdgUK8KYmVValF+fFFpTmpxYcYpTlYlMR5vcJTE4QE0hNLUrNTUwtSi2CyTBycUg2M
+	GYt2JXJmzPU+Uu/3ec/vmQ+nTppud+NvxN77myYFTPSbnloopSZ/gun+U33R7XVnQnxVr30K
+	lzA2WuoTzyBoOC2nt1mEverBruXap8/tv++ZXCXz2u4vd43PziKjtsfKU+acuJVWsl7m/8sb
+	pwoyT1zSSzc3Ly6r95Bvb9TVMPnf8r5ZRN1BiaU4I9FQi7moOBEAOo3XlXACAAA=
+X-CFilter-Loop: Reflected
+X-Stat-Signature: czwfarapa95ohdiobe5j56dn3m73ot69
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A50C8160002
-X-Stat-Signature: 3kd5rktj8n19i636o38q49hexz9iw5is
-X-HE-Tag: 1763513645-643366
-X-HE-Meta: U2FsdGVkX18DTGtBQ4VU2VO0cYEaN8ux0WncbXSTBSD1Q19bXYA3ZiR80VoLEsAnTVkKjzccSG1WAZ4bGH5d8WATYv3KawIgpHAijIqKTzOSJtYqSriz84Bu5w6XySpm5zwXuEg7xVtB1xyyQs5FJPumlwY9TZUfQdSgNV6/y2sFQj9urLhq4umhP6bCkYoWXNaKgOvs43PP78tck/mjGD0Ej2zAOaKSLYXJf/U2BBPDXfrFpmfCaRaMDuusNQn19qKjlkpfnIKIHqQTddO4/j8J8Y+2a1FkxJ89OwbW5Zi7lvOhx4ZaL8mvdkSnUNoFx1yfG429zUAAb1O/S+leRcHq33d1jv3J33qnZwGUXsX+hgFIBF0Q/UzdM7/OK3JJISR/Ey1iKaJ5RyO1hbxkbPaeY0v4xXc5a40Bikztp5EMEnct1n6fjNJDH4u65jN7h2JxUWkVOqFmiTZKlVYMvlq6Oyj/d3+ki82hNZ51w2rRIAgVUl11+Q5+wanc68184ns/NApVg7aQPfs9aZi9H6XQHfYRTS2H8vhRvqVlCfW1ddO1GgDz1Kfn4r6he7A4t67A/TOItb6dBOdKP38QQM846UnXBEaRuL+2Ynxe7dPjYz+LrPoiufJ+zrotopTi3Zhth4v1ddAU/F74Ux79eI/CStWHB+qtJenxQmPLqeT9kgUWGOLoUZTPNf8yqDbDAP/6yIKgN24Xr0/agP2aXubPAexwW68n+k17LKbzKFInWzlLvtWDxL9sNpgTDj9nYj9P06qV0sFUKHNAHK8JR8NSirlagAF7DpB6Fv6uEdbtsy1oyKfv7bt9DCahiqBU/hRjwgUYTPpIvsDtQwNBPm75iKvt3c6ouUAX3EDKaIkhcJQu1ZWOb+ZAPlMkWbyawh3KkAEqRq8QKE7ya6YdRstjYxRECS+8qYHqdffYjeqLyki47j4l4vsDIjTi4C805R538odAKeGazGkP+7v
- tARcG6CZ
- pzb3SzUwS5xc/v+7iAhmf7p5cowpYevV/szPs0crx7UcMq2G/jCzYlgSuVk+OxeO/PQ1Y5Ad/scV4Ykr84+6gsTPIr3/vVcTn9JB4gp3sWww+SCmvfl7gheACGgaNwnB/gCc/mhbafopfSfKRphkzdqeGB9oVedabnvfRKlUsJmDw0ST9tvN4YXlKhW856nvUB/JkhTPzjHkVZtZismRVfmAVoaNBKMzXRQLKhH8yt1uj4GU8YcfvwkuCCSpCRlVaVO0sM6O+BOScmc1WloMLaSfxayeHxujjmx+ECj28m81hvI/YoQp1Uv5mD5Vi626kElyuSdLKfFT1DrE=
+X-Rspamd-Queue-Id: 9D5D4C000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763514727-148749
+X-HE-Meta: U2FsdGVkX1+mvl9JNFA5/OjArlwuWH5cM1a/ABe09NbKeAdUjM8i7IrXut1m90j9JxtBwMKJskitq+YnwjK4XoBF22fN8cjpEsZk3OuvVJUheZruN82LXmk1Bl1+P4ZyPLZX+NU55r8SAqVPTlkA4ZEPFvOnWk6N8wRBrEOo0GN89glxQ07OAR6KLPyDqkJuW52c1S51H9G0Qotw7jLSLmZtq32fT04mrtxF4kz2dGmWNsM8cfujE076QODz7s486yUMS5f3UChAauta4VXgscwRPF5FQZ/6dgxeA8mLzb06MTl3wRZQKbGLBhUDHwRwQJHB8aI2tGL+zUYwW/RJjevmwWd9VK4oj7Uhy4n+uq3WGMpFZz9e3+7PraQftxfPbtt2r75J2Hvbs10yu/BhtYQ1f+ZmEfKa5I46NVhM3ZyfFT3RTWxagS2VfLisA7l9BNQRTVM5LkFhoimoDGkSWPK8eBOYS5CMGbNuFmAmrU/ZbdxJLLxYrJMyGK+/F+KFFESnD1WWljAbAzdT4XTmj6/fYGfVV6jh7m+WQgHp370qJrgIh8uIMgSgLPnB2RA+d1snRr6aFMpljmjc1UrPW0QAAeS15K6TYBaeeLxIX7Ph75DZxaH56d2r+u9kW4cPHfWkX8K4TFLMoVZs27xDgIbY5clLegEKtjpaKubTRJV/iAHT2+gyBdzGnNFL/p3fVhD7hIZToc7wnOzzeRo6jPomuH2DgTjfLLmh9EW29QjsBvnaZItCorW8X7gpEAIRrbLNdSLQBidwCfFVQKeehOGL22t704ElL7/vWIqPoVTgeZBYRYyjujIO1Nquez0KgXhZRKwCJe1+p9nFdNKgjjrSSMmxWqJxOC48W3LmxjBFqUKL5sf8AmPo/lh0FBBysKH/Pb1uKYoMVu+lKb7AUbolKWK6OqPWgT/IsJsvEHXG/u9PTl98dtXemEkvvYlj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,29 +115,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nathan,
+With the planned removal of @pp from struct page, we should access the
+page pool pointer through other means.  Use @page_pool in struct
+fbnic_ring instead.
 
-Thanks for reporting this.
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+I should admit I'm not used to the following code.  So I'd like to ask
+how to alter page->pp to avoid accessing @pp through struct page
+directly.  Does the following change work?  Or can you suggest other
+ways to achieve it?
 
-On Tue, Nov 18, 2025 at 03:44:48PM -0700, Nathan Chancellor wrote:
-> where kvm_arch_alloc_vm() from arch/arm64/kvm/arm.c is
-> 
->   struct kvm *kvm_arch_alloc_vm(void)
->   {
->       size_t sz = sizeof(struct kvm);
-> 
->       if (!has_vhe())
->           return kzalloc(sz, GFP_KERNEL_ACCOUNT);
-> 
->       return __vmalloc(sz, GFP_KERNEL_ACCOUNT | __GFP_HIGHMEM | __GFP_ZERO);
->   }
-> 
-> Should __GFP_HIGHMEM be dropped from the call to __vmalloc? It looks
-> like it was added by commit 115bae923ac8 ("KVM: arm64: Add memcg
-> accounting to KVM allocations") back in 5.16.
+	Byungchul
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yep. May as well switch to kvzalloc() while we're at it.
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index b1e8ce89870f..95f158ba6fa2 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -653,7 +653,7 @@ static void fbnic_clean_twq1(struct fbnic_napi_vector *nv, bool pp_allow_direct,
+ 				 FBNIC_TWD_TYPE_AL;
+ 		total_bytes += FIELD_GET(FBNIC_TWD_LEN_MASK, twd);
+ 
+-		page_pool_put_page(page->pp, page, -1, pp_allow_direct);
++		page_pool_put_page(ring->page_pool, page, -1, pp_allow_direct);
+ next_desc:
+ 		head++;
+ 		head &= ring->size_mask;
+-- 
+2.17.1
 
-Thanks,
-Oliver
 
