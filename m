@@ -4,101 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F7E1CF31B0
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 12:24:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 275DFCF31B0
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 12:28:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AEB66B00B0; Wed, 19 Nov 2025 07:24:47 -0500 (EST)
+	id 730616B0098; Wed, 19 Nov 2025 07:28:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85EF36B00B4; Wed, 19 Nov 2025 07:24:47 -0500 (EST)
+	id 7089A6B00B5; Wed, 19 Nov 2025 07:28:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74DFB6B00B5; Wed, 19 Nov 2025 07:24:47 -0500 (EST)
+	id 645A26B00B6; Wed, 19 Nov 2025 07:28:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FDF56B00B0
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:24:47 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 119D51A0472
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 12:24:47 +0000 (UTC)
-X-FDA: 84127275414.25.C44F571
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 224A140003
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 12:24:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OBSgFKD3;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 557EF6B0098
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:28:16 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E98C04E15B
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 12:28:15 +0000 (UTC)
+X-FDA: 84127284150.18.9C738F8
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3FE021A0002
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 12:28:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bcCmkuHu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763555294; a=rsa-sha256;
+	cv=none;
+	b=NSpQHy83owvgXSZPCRRBwIuJ4FoxLlHfUImlojPVdgshdFPhAgx71KJoTa4Hf7sWptSdvN
+	Xn4ZX36RC8ho5fXh2QiUlKJGjA1Ho21ZjabCQs5PixqL2B2yqna+1OPJbxx5hKn29VW4ye
+	Uy1HoQ9QR7zvdbv9JITe+7vPl5riXTQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bcCmkuHu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763555085;
+	s=arc-20220608; t=1763555294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2dwmow3TuepoCNwXY3P6hcFzEoPrM376KiDIO88jNoM=;
-	b=KBRZ+EE4jRLSw+OOwNIm22X/+QneE8RijZBaIuXjNoYdtiwtZF3TxQlux+7Daf9LuFgk4O
-	BUZ6P/1SMDPN8WvGipMbe66TVYLKMSixfad3v74LUQh2PDxW0SV+50dGBRmA8OFrPfvt3c
-	5bHRqYv/eq3BWaujZhcMp9ggicR2w00=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OBSgFKD3;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763555085; a=rsa-sha256;
-	cv=none;
-	b=frKZt16plid001KyLXTV6ta3YMr1w1tHG/0JZzwbOiUv7HpAdasqzMTETkxpX+EsXbz+t0
-	r9lj6Rixg4sxWFVEjai6BLb2Qml7ainB0jbu80MNF+H96kCnAZV4K9Bi0feQmsGgRycqKb
-	vvGmA4ujttMc02BxkecMsbnOgbSzQJE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EAD8432FE;
-	Wed, 19 Nov 2025 12:24:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EBCC116D0;
-	Wed, 19 Nov 2025 12:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763555083;
-	bh=iBiJTRsmPeT8yT7z7CbiOkAhObefLKlCnyqgtKvMuCk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OBSgFKD3+2NvaYtuKw/QdLvJ4kd1qTjKiTeRyHWtELBx2sa2VxIWisexyF7jgJgeD
-	 8/7qcHogwMEYULif7/zT0Blo6SdqmJfDDkjOtqvhR34sRQy8h5rR4W7ewalVmRGYey
-	 Jc1bz1eKKmip3Nhp5EEVKNnH4+TcAvXMYIX4DJVlFe1cnT7kWo4T2BMafaaKj6W0QE
-	 tksi9TyyDvEnpbaBkBecgBzphpzgjI0aD0eMgPZ+3ODv+MpVNh0XNg8xSfrSSBC/HP
-	 tX3pn90oDkV+9B6k4FD+XGPRfz+Fs8u7hySZerofnUkosVm2LUZ1/W1me0CAQMB7jS
-	 lCDTRg/6ptIBg==
-Message-ID: <7160b6ec-4da5-4273-be91-1339bd00d009@kernel.org>
-Date: Wed, 19 Nov 2025 13:24:35 +0100
+	bh=+CKhj841T0e6qZvubDhvAJxg1sC8gp96pehxxFiAmCs=;
+	b=ROzhr61xtVjZpc4EeQB448ehuD3cy4tiVSeyt/V48LMKyAvy/trFaythlCNM16XsV+vRZ6
+	qhm4faIo6o2qtentxSVfJyKCOVE24C3ZKQraOTJLR9ZQU7ObCfvJe7135sG4YUEAjkYMov
+	IKyWTLLt/JDuwAl8LQUzKDwlx185wKI=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so5652546b3a.1
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 04:28:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763555293; x=1764160093; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+CKhj841T0e6qZvubDhvAJxg1sC8gp96pehxxFiAmCs=;
+        b=bcCmkuHuZJXyf4VvhLlu2oPAEjaD+5JZVuWHPm4OMfFpktsILlUcUXem2Jdrtfqnuq
+         KDhvu5tA2MnhcqSYaXo8ObnYCGriYCWZuq/aEnvCyLAVqM9JdujOqkKPsRJR4QeAXdKE
+         pKyOJS4QE7frfZF7R0GmiSMhdHnkbkOpHbjR6uFRiQhY1jlidx3g5YlFhb17NuhOZGbE
+         9QhEkSj1RgthWbriXI5RLHbAK7ucRDCKv2zzFTTsNzO3GC9j+cehbuRUsP0Cjdn/PIlc
+         z80ylGO2bHKww0sZxi2sAEVs4C1APT1vQZFMV+1fb9ftirwP4V8NUu6UiRfqZOU+6OQx
+         jZrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763555293; x=1764160093;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+CKhj841T0e6qZvubDhvAJxg1sC8gp96pehxxFiAmCs=;
+        b=iZ2RVuzroY/Fuib8r8Yih8FGeBTQn72uBUXmUk/n5WBiCm01TTE8UtZFTnBUc2ago+
+         JPVZ7ysdaKV76qfRe36hYK2Ba1bmIbj4hm0ej4Od0/GyskL6R1fkJzhPW6r2aubJiUGB
+         oIYwSH2VfN5YkSyIKAK6qASCNu0v+p/LZOQocIP5F1DxG8aKcKWiae7x5t9zRVBa2qUn
+         HA5iLmNmHaE1IVcW7hjJ6Ya/MuOEocxw6JLEg4Mh+VrpTEGhIaSKwLDWWX0rpEyg1g+b
+         jKFQ4Xt+6HRwHATkOrhPm91iwRj+BKWD8ywJ0E+e9JqBUhc4GFGj+bvnaqoBD0zNyF/A
+         xsxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVBZZWZWEdZ3VvgVDZfNd5pcs8FUAkvqAgXpzt9/pzxq4HMD7T/ciTW44Xx0D7T/iuCQYskB3R5w==@kvack.org
+X-Gm-Message-State: AOJu0Yx64F81RxH1BnOnOSPj9BiK6RGzcIKeVa95HZuj5LsvHbrCEhoc
+	eU12fcHpMxlUemOyh64UpMv/wnjKo2RBp9WAiHc7t0EYC5YjHGdZKhM7
+X-Gm-Gg: ASbGncsN1vQjfG8EXUq3LrOHPpxUy1QWvbBXZCnvDhudlIsHMRhUxmj263hotffLhdK
+	KnSCd3TuFfXrjVr/UW/2LlRPLT6Bvb3ooVoTncpAqwCTTTcSvchHhHw69SaX29d3GOe6cp/TzuR
+	LQDpDy1dmP/uh/vgE9CCqmrNRn1PDZ9Uf/qfpseT2ov7vAzS25Avb2BDUBzJy3E3MEeIlMyjYAB
+	M9khNezo7exLNjvI2lr/T/EhDEBklTvQq+TRLnfffsdGVLh+mVuAIGDUYdV2Dx2Yy5/1sp25umc
+	PDX6PqlFqV8EocbGtJZMQKcxKiOV9OKQYx2m2/WADTJVFGSqM2ocN/gJkSCyl+fVzH+moS/c54i
+	ms9Fv4sam+9Ug8F3XKA4VokJaXKPkhybVO6PjpqNcaVRtd11glM0w4vrY9urvMfh/C+/RNN5tgR
+	LAKqDIe3bnbXszi1ZHdmo=
+X-Google-Smtp-Source: AGHT+IEJJjWz+MJzpUl7ns76a+Og9nUY/w0T8Ert+O7huCBITXi39FiE1X0vmFKSLM4XAxMf1Yzn/A==
+X-Received: by 2002:a05:6a00:22c5:b0:7ab:8d8a:1024 with SMTP id d2e1a72fcca58-7ba39bbdfcdmr21856893b3a.7.1763555292868;
+        Wed, 19 Nov 2025 04:28:12 -0800 (PST)
+Received: from EBJ9932692.tcent.cn ([45.8.220.113])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b92782d39bsm19596383b3a.63.2025.11.19.04.28.06
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 19 Nov 2025 04:28:12 -0800 (PST)
+From: Lance Yang <ioworker0@gmail.com>
+To: zhangguopeng@kylinos.cn
+Cc: hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@kernel.org,
+	mkoutny@suse.com,
+	muchun.song@linux.dev,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	shuah@kernel.org,
+	tj@kernel.org,
+	leon.huangfu@shopee.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] selftests: cgroup: make test_memcg_sock robust against delayed sock stats
+Date: Wed, 19 Nov 2025 20:27:58 +0800
+Message-ID: <20251119122758.85610-1-ioworker0@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251119105216.1675608-1-zhangguopeng@kylinos.cn>
+References: <20251119105216.1675608-1-zhangguopeng@kylinos.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] mm: make PT_RECLAIM depend on
- MMU_GATHER_RCU_TABLE_FREE && 64BIT
-To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
- akpm@linux-foundation.org, ioworker0@gmail.com
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
- <0a4d1e6f0bf299cafd1fc624f965bd1ca542cea8.1763117269.git.zhengqi.arch@bytedance.com>
- <355d3bf3-c6bc-403e-9f19-89259d868611@kernel.org>
- <195baf7c-1f4e-46a4-a4aa-e68e7d00c0f9@linux.dev>
- <9386032c-9840-49da-83f9-74b112f3e752@kernel.org>
- <956c7ca1-bce8-4eed-8a86-bc8adfc708b8@linux.dev>
- <6a22ff95-28c1-4c1d-a1a8-6a391bcc8c86@kernel.org>
- <479b0409-335f-4450-8eb2-5270a5847f5e@linux.dev>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <479b0409-335f-4450-8eb2-5270a5847f5e@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 224A140003
-X-Stat-Signature: m7h7oat8anxqfqxxt1k7mdkxiora4891
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3FE021A0002
+X-Stat-Signature: 7b1pxtd77s844isw6675f19yjpsazzge
 X-Rspam-User: 
-X-HE-Tag: 1763555084-19316
-X-HE-Meta: U2FsdGVkX19LecPijM626StIYMffJHrxmlHdmKuWWITaOOjNYzXPxX49Rn8k6Aio3sGTqpE6gJlkKybEzcZqFx8+kMUfp+m3YdUY5wa6ugyKrI2rv20vcXTWj3lpBsLQVkQOqPLpbNYqDykDIt5APSYAuy8MPxehrETQCaZrBzslHMsB/pM/y/8UVqDRlbasq9xcDcGTMZwJ/vZI/oKagB0lRI8b6jFLql/jBIbXAv4jO0DgOKyIIzPgIzd1XV1plGxAL2QIqOrtvpqZgUqpSnnHwZDP0GzPdDJRLM8R7Btz4MpUHaXs1wN/KE3gHgPu3N/EP8WKoVGr6WU585OaRYint/j6KNTwBsTvG+S0ciHXGEdX91QyV8lG8XhXOd7O8WTz77+ecutPB0iBj3mAFUP1Rwlj+2BpTtkv8+6dLlERSon+2xBzM5hlqu9w6yL//e0vE/jGvTJAuumvDhRCbI3eXW2Q/mGept0n6xniz62iWpMg440T4cpvS4lTl80Ca/mnEVlPmzq8XTmIG+6LLJso1C3kKWeY4QPh1J63FrjwT4+OHJyYTpUAuwpDVyTc7A/RWBaDiiaFmQb/ofNjcDFMOtAMuqQE3j53/BUEdBRCip0w/mmQj6GV5L3paaxEsxxybHh7EB5Pepvcmm0/+dzPczxiYIKDQAjaDqqxRYxKa8Sx6Y6NJ1fpbK6pnxImaaE2UzMVLf436Rt3d4maAg60KMiV8xzILXsxq6KiMrUiCuSbR5U1pxho9dpK4/jZoRweFPImk1lo90J8+7S1hFxXlOBLWlaQp+4MaCXVD0iNokOVgQRZC2b0OO2Au7qbPhrtu8+bWsI8iHPwEmdaUxNeeu+S855grig4RuSBw6blqDqA0eoremXCYvBXCBO82RYOAthHVQpvOr9cq8zY74MYWtFhO7RUJexB5izuA40FHsvJziHX+eKxAdB+k4/e2H82/+x0xlM8YWRNjzl
- OzJevpJz
- UYhDl8RGz4dHctATtDZzHAOLeQaCiTeYkrMdTKVEWf2kMCMRGNU4bKuZiMSgw3ICHjhrURkkZw2ylSkdb4caVIoMDhZFJZP/OqNKykMQnWY2Uq8lzKv0E8GHynmPKmnvsMXeO8fVR3ruUiuBhjZKIqqx7hSw+d7w2jBxoZVkYWa1soM50fIaHk4/RdsYRg3zcJROSYSaaZHqS3Xlqm2x81QVIvo/ZRnZBXUuzXW9h4IdmFiu7y7HKrX/CIJEh51gB5XX5kckCjSK/H9550s6n0iSXe4fw9lbqxu29242lP/98vw82kORaw2yACNE+/LQdGECdU5cIfhvgHcG1xgB64nAUOib/WEvWqO/FZ4RgwVUn9i4tplxOyA2IiJS1uBiKMgNd
+X-HE-Tag: 1763555293-964792
+X-HE-Meta: U2FsdGVkX19ZSrq1SrHn8gjBzPDEVrEbt3QGsvka2J2OzCoLDu9HVTAkraKeTnzUrhnOb6KEXCtYvLRseB+AdSEBWZZ9o3i2SdnMfPMaotiy8ShezepDZSwQzz4CGszjKX3eRsyJ2mb8SYu8VkF3vQB5C680zMafecRzxhp8Q/1+vqiLpsIkDSTBtaL1OVbOAOYUw07nrL8eVSIPfuerlkBa1UUPNxj/cITbWDAsg/2tIwXR98GYqmehHzj5jbdXMsPerujkFsRgGz8pFrQcGwGYWjIgsFqrsv08tKSkKevwdUaW0KdByzDnamn9XoW7S26rD0e9C41dJwgcul0yxnHApaZi9yNmh6nySb++R1PkJeCKgRwMmRUIB6HrPZ96AgZFOxPBFFyAHONIzWqvfh7LxY/ahPGBvpFCFvuDP7ZBdWYKEEAagMsH8fAWONDmYaewxlFMaocLzoAADBf2JrZ2gBMCC/M8hQLvuvgDiyb9NGqYaqikCkq3bu/3q4Z5/dEQ41eTTBrVEXE0gTku4MzZ7ayXco68lIo6uFKKaK3PsV4AIvzWsf86CvUK6b0NcIlvUmC5bMTMKPmaqpNLipIeiu+yblM17ONUgk0S07k6S51gByIY425JXPwYibHm9bLCZ9YcFfnvE19HYyC2quMXQu/zu7XDqP7yQUBM+ptgMR5mdHO83R8URTn1ZEd8l85u8RC++P5+I/YvPaWE0FgahATpsy8mrWFSNWKrS4zV50HwbeiaAVY0VKrEAOyj5UNA+M7t0eTA81BflIApUrvs5emCCHh8yGhc0ZSlQDNVbVZTvZFegmdBK3TQeDj+uFCQhgDjCJsQUJ6OteOG+aqChmVSLl55c+BfL9Q2HdocX1jg6+wsfXswY2inM6LwauUOCPVQgnn2LdMvS7JdBdN6yfwqWGKbxS6NWDW1n/KZjPmJn9cjzZ2HhftzwuUovnZixolHCNFXwZjMCfJ
+ RVWmR1Rn
+ FnpV0TzP0Wtx5mao4gT0kJO4ILfXIOeQPdeqsjMEYqsTc1zG1o8Gx5CGOgc+3LhNANE6cxV/yZ1dmbZmh3c/jQBdH6lKEjzF/YCZelHb65DpJsrA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,203 +130,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19.11.25 13:13, Qi Zheng wrote:
+From: Lance Yang <lance.yang@linux.dev>
+
+
+On Wed, 19 Nov 2025 18:52:16 +0800, Guopeng Zhang wrote:
+> test_memcg_sock() currently requires that memory.stat's "sock " counter
+> is exactly zero immediately after the TCP server exits. On a busy system
+> this assumption is too strict:
 > 
+>   - Socket memory may be freed with a small delay (e.g. RCU callbacks).
+>   - memcg statistics are updated asynchronously via the rstat flushing
+>     worker, so the "sock " value in memory.stat can stay non-zero for a
+>     short period of time even after all socket memory has been uncharged.
 > 
-> On 11/19/25 7:35 PM, David Hildenbrand (Red Hat) wrote:
->> On 19.11.25 12:02, Qi Zheng wrote:
->>> Hi David,
->>>
->>> On 11/19/25 6:19 PM, David Hildenbrand (Red Hat) wrote:
->>>> On 18.11.25 13:02, Qi Zheng wrote:
->>>>>
->>>>>
->>>>> On 11/18/25 12:57 AM, David Hildenbrand (Red Hat) wrote:
->>>>>> On 14.11.25 12:11, Qi Zheng wrote:
->>>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>>
->>>>>> Subject: s/&&/&/
->>>>>
->>>>> will do.
->>>>>
->>>>>>
->>>>>>>
->>>>>>> Make PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE so that
->>>>>>> PT_RECLAIM
->>>>>>> can
->>>>>>> be enabled by default on all architectures that support
->>>>>>> MMU_GATHER_RCU_TABLE_FREE.
->>>>>>>
->>>>>>> Considering that a large number of PTE page table pages (such as
->>>>>>> 100GB+)
->>>>>>> can only be caused on a 64-bit system, let PT_RECLAIM also depend on
->>>>>>> 64BIT.
->>>>>>>
->>>>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>>> ---
->>>>>>>      arch/x86/Kconfig | 1 -
->>>>>>>      mm/Kconfig       | 6 +-----
->>>>>>>      2 files changed, 1 insertion(+), 6 deletions(-)
->>>>>>>
->>>>>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>>>>>> index eac2e86056902..96bff81fd4787 100644
->>>>>>> --- a/arch/x86/Kconfig
->>>>>>> +++ b/arch/x86/Kconfig
->>>>>>> @@ -330,7 +330,6 @@ config X86
->>>>>>>          select FUNCTION_ALIGNMENT_4B
->>>>>>>          imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>>>>>>          select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->>>>>>> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
->>>>>>>          select ARCH_SUPPORTS_SCHED_SMT        if SMP
->>>>>>>          select SCHED_SMT            if SMP
->>>>>>>          select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
->>>>>>> diff --git a/mm/Kconfig b/mm/Kconfig
->>>>>>> index a5a90b169435d..e795fbd69e50c 100644
->>>>>>> --- a/mm/Kconfig
->>>>>>> +++ b/mm/Kconfig
->>>>>>> @@ -1440,14 +1440,10 @@ config ARCH_HAS_USER_SHADOW_STACK
->>>>>>>            The architecture has hardware support for userspace shadow
->>>>>>> call
->>>>>>>                stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>>>>>> -config ARCH_SUPPORTS_PT_RECLAIM
->>>>>>> -    def_bool n
->>>>>>> -
->>>>>>>      config PT_RECLAIM
->>>>>>>          bool "reclaim empty user page table pages"
->>>>>>>          default y
->>>>>>> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->>>>>>> -    select MMU_GATHER_RCU_TABLE_FREE
->>>>>>> +    depends on MMU_GATHER_RCU_TABLE_FREE && MMU && SMP && 64BIT
->>>>>>
->>>>>> Who would we have MMU_GATHER_RCU_TABLE_FREE without MMU? (can we drop
->>>>>> the MMU part)
->>>>>
->>>>> OK.
->>>>>
->>>>>>
->>>>>> Why do we care about SMP in the first place? (can we frop SMP)
->>>>>
->>>>> OK.
->>>>>
->>>>>>
->>>>>> But I also wonder why we need "MMU_GATHER_RCU_TABLE_FREE && 64BIT":
->>>>>>
->>>>>> Would it be harmful on 32bit (sure, we might not reclaim as much, but
->>>>>> still there is memory to be reclaimed?)?
->>>>>
->>>>> This is also fine on 32bit, but the benefits are not significant, So I
->>>>> chose to enable it only on 64-bit.
->>>>
->>>> Right. Address space is smaller, but also memory is smaller. Not that I
->>>> think we strictly *must* to support 32bit, I merely wonder why we
->>>> wouldn't just enable it here.
->>>>
->>>> OTOH, if there is a good reason we cannot enable it, we can definitely
->>>> just keep it 64bit only.
->>>
->>> The only difficulty is this:
->>>
->>>>
->>>>>
->>>>> I actually tried enabling MMU_GATHER_RCU_TABLE_FREE on all
->>>>> architectures, and apart from sparc32 being a bit troublesome (because
->>>>> it uses mm->page_table_lock for synchronization within
->>>>> __pte_free_tlb()), the modifications were relatively simple.
->>>
->>> in sparc32:
->>>
->>> void pte_free(struct mm_struct *mm, pgtable_t ptep)
->>> {
->>>            struct page *page;
->>>
->>>            page = pfn_to_page(__nocache_pa((unsigned long)ptep) >>
->>> PAGE_SHIFT);
->>>            spin_lock(&mm->page_table_lock);
->>>            if (page_ref_dec_return(page) == 1)
->>>                    pagetable_dtor(page_ptdesc(page));
->>>            spin_unlock(&mm->page_table_lock);
->>>
->>>            srmmu_free_nocache(ptep, SRMMU_PTE_TABLE_SIZE);
->>> }
->>>
->>> #define __pte_free_tlb(tlb, pte, addr)  pte_free((tlb)->mm, pte)
->>>
->>> To enable MMU_GATHER_RCU_TABLE_FREE on sparc32, we need to implement
->>> __tlb_remove_table(), and call the pte_free() above in
->>> __tlb_remove_table().
->>>
->>> However, the __tlb_remove_table() does not have an mm parameter:
->>>
->>> void __tlb_remove_table(void *_table)
->>>
->>> so we need to use another lock instead of mm->page_table_lock.
->>>
->>> I have already sent the v2 [1], and perhaps after that I can enable
->>> PT_RECLAIM on all 32-bit architectures as well.
->>>
->>
->> I guess if we just make it depend on MMU_GATHER_RCU_TABLE_FREE that will
->> be fine.
->>
->>> [1].
->>> https://lore.kernel.org/all/
->>> cover.1763537007.git.zhengqi.arch@bytedance.com/
->>>
->>>>>
->>>>>>
->>>>>> If all 64BIT support MMU_GATHER_RCU_TABLE_FREE (as you previously
->>>>>> state), why can't we only check for 64BIT?
->>>>>
->>>>> OK, will do.
->>>>
->>>> This was also more of a question for discussion:
->>>>
->>>> Would it make sense to have
->>>>
->>>> config PT_RECLAIM
->>>>        def_bool y
->>>>        depends on MMU_GATHER_RCU_TABLE_FREE
->>>
->>> make sense.
->>>
->>>>
->>>> (a) Would we want to make it configurable (why?)
->>>
->>> No, it was just out of caution before.
->>>
->>>> (b) Do we really care about SMP (why?)
->>>
->>> No. Simply because the following situation is impossible to occur:
->>>
->>> pte_offset_map
->>> traversing the PTE page table
->>>
->>> <preemption or hardirq>
->>>
->>> call madvise(MADV_DONTNEED)
->>>
->>> so there's no need to free PTE page via RCU.
->>>
->>>> (c) Do we want to limit to 64bit (why?)
->>>
->>> No, just because the profit is greater at 64-BIT.
->>
->> I was briefly wondering if on 32bit (but maybe also on 64bit with
->> configurable user page table levels?) we could have the scenario that we
->> only have two page table levels.
->>
->> So reclaiming the PMD level (corresponding to the highest level) would
+> As a result, test_memcg_sock() can intermittently fail even though socket
+> memory accounting is working correctly.
 > 
-> reclaiming the PMD level? The PT_RECLAIM only reclaim PTE pages, not PMD
-> pages, am I misunderstanding something?
+> Make the test more robust by polling memory.stat for the "sock " counter
+> and allowing it some time to drop to zero instead of checking it only
+> once. If the counter does not become zero within the timeout, the test
+> still fails as before.
+> 
+> On my test system, running test_memcontrol 50 times produced:
+> 
+>   - Before this patch:  6/50 runs passed.
+>   - After this patch:  50/50 runs passed.
 
-Sorry, I looked too much into PMD table sharing the last days :D
+Good catch! Thanks!
 
-You're right, it would work in any case even with only 2 levels of apge 
-tables.
+With more CPU cores, updates may be distributed across cores, making it
+slower to reach the per-CPU flush threshold, IIUC :)
 
--- 
-Cheers
+> 
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> ---
+>  .../selftests/cgroup/test_memcontrol.c        | 24 ++++++++++++++++++-
+>  1 file changed, 23 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+> index 4e1647568c5b..86d9981cddd8 100644
+> --- a/tools/testing/selftests/cgroup/test_memcontrol.c
+> +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+> @@ -1384,6 +1384,8 @@ static int test_memcg_sock(const char *root)
+>  	int bind_retries = 5, ret = KSFT_FAIL, pid, err;
+>  	unsigned short port;
+>  	char *memcg;
+> +	long sock_post = -1;
+> +	int i, retries = 30;
+>  
+>  	memcg = cg_name(root, "memcg_test");
+>  	if (!memcg)
+> @@ -1432,7 +1434,27 @@ static int test_memcg_sock(const char *root)
+>  	if (cg_read_long(memcg, "memory.current") < 0)
+>  		goto cleanup;
+>  
+> -	if (cg_read_key_long(memcg, "memory.stat", "sock "))
+> +	/*
+> +	 * memory.stat is updated asynchronously via the memcg rstat
+> +	 * flushing worker, so the "sock " counter may stay non-zero
+> +	 * for a short period of time after the TCP connection is
+> +	 * closed and all socket memory has been uncharged.
+> +	 *
+> +	 * Poll memory.stat for up to 3 seconds and require that the
+> +	 * "sock " counter eventually drops to zero.
 
-David
+It might be worth mentioning that the current periodic rstat flush happens
+every 2 seconds (#define FLUSH_TIME (2UL*HZ)). Adding this context to the
+comment would explain why the 3-second timeout was chosen ;)
+
+> +	 */
+> +	for (i = 0; i < retries; i++) {
+> +		sock_post = cg_read_key_long(memcg, "memory.stat", "sock ");
+> +		if (sock_post < 0)
+> +			goto cleanup;
+> +
+> +		if (!sock_post)
+> +			break;
+> +
+> +		usleep(100 * 1000); /* 100ms */
+
+Nit: It would be better to define the retry count and interval as macros
+(e.g., MAX_RETRIES, WAIT_INTERVAL) to avoid magic numbers and make the 3s
+timeout calculation explicit.
+
+> +	}
+> +
+> +	if (sock_post)
+>  		goto cleanup;
+>  
+>  	ret = KSFT_PASS;
+
+Thanks,
+Lance
 
