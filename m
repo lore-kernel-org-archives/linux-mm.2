@@ -4,117 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44615CF34B0
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:54:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9907CF34AD
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:58:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EC3D6B00B8; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
+	id 512A06B00CE; Wed, 19 Nov 2025 08:58:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99C9E6B00BC; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
+	id 4C2BD6B00D0; Wed, 19 Nov 2025 08:58:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88B326B00BE; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
+	id 3B1DB6B00D2; Wed, 19 Nov 2025 08:58:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 710246B00B8
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 15B6389608
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:54:16 +0000 (UTC)
-X-FDA: 84127500912.30.FAAFFAC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 56E54140008
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:54:14 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lOc+pw0S;
-	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 256996B00CE
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:58:22 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEA5F1A0499
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:58:21 +0000 (UTC)
+X-FDA: 84127511202.23.0320F25
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2E33EA0006
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:58:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/CZAhY7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763560700; a=rsa-sha256;
+	cv=none;
+	b=AH/k8hV9h7kO+I/xiE/jUPtwXIP7Nen31s+3QnrJv1I/n0ggxGdyRkjtPHlDDmjMmLRDAM
+	bkxqrxRSyBXSQJlXanSNog3dEjpcC567TYU5V/S467UUaXLZy31WILvQ6Whza5DAndrb96
+	f+FQJ/3dgjpmet0RkmiBy52HiaMmMYc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/CZAhY7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763560454;
+	s=arc-20220608; t=1763560700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y45nMI1mbLz9G34uo5lDlXGTr5Y3YBOq2Eva63SbSBk=;
-	b=ofNbvVNeiFKko1jpBXAROuC3N8VzlKtcmU7EzL7XWFQx1mZ0OtT8VNXFWjc1Oddt4s2mfM
-	J+6HrnjSVt5BnzgzyIzRFef9uJWBOAldBx2wYJCTZiKJcXBZWF0di9BZoovm7CKQ7y8ZJz
-	5t1JNdlAQ+QK33GFj9YxpzeaLPi1i3g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763560454; a=rsa-sha256;
-	cv=none;
-	b=Xd7/MLzIMkg/YYRAUkVsDD5yC+/qs8xz9E9X3QfzTDt7I+CnPB1oXU5mO3ZUH2q85vVxjA
-	9muyHs4u+IlZQ85ezx/XnfE+ju79drNIPDwgjwkmR1qx69PrOwckOLeyolxijkTdBVyEs8
-	4vA4q0dYKcAMEq4dhINBUwsBA/U+lHg=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lOc+pw0S;
-	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=6/O46G3l8a3xd3jAGTmunqMyjv56Qx3dqB//uHeURzw=;
+	b=W64Xsp34d1J1HxL8o5Ma7wMikUCqpHQ3dxdPn0ji0+M5ca7D8NTr9kGihyB4Q/IvfUUCrN
+	ee3UV4khRXvvQKR3byuQ+S3VZljnBXLxjqe7QcpJxS8Ej003AbwBS+k7X97VMGiNmRNzgE
+	OIwbe/24I+uMiUadsa7UrtPy2MX9iFk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4E82840251;
-	Wed, 19 Nov 2025 13:54:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4089C2BCB6;
-	Wed, 19 Nov 2025 13:54:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C25260166;
+	Wed, 19 Nov 2025 13:58:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1880C2BC9E;
+	Wed, 19 Nov 2025 13:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763560452;
-	bh=khDyF27Ua+YvAG563h+Mn5TVNwmjUpzwzSeY1s3ZrlM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lOc+pw0SropUFqAbVYzMoWEHW1jJDTrt97jUDXz56yN0le/B+KOyXK6xnERbWqNdy
-	 LBjMT4gf6zJ5xLQ64pQkqww1I8qSD+7y/IDRApuyDvzXjq9BFKkEOeCi8bxA/oo1gH
-	 70+OJhKd6XWXCZEn57dkcHhMJy+/OipA/ho8GrlgsWfIHeiMPKdy6djUHim0G3aLYZ
-	 Smu4HN5s73AeSqAjTtbTpkSpzB4YO7/XVcv9jfbhTGeKtpPOUqXybhXbJn04qeXgZf
-	 DJ8SJ2zHpC/cN0o1khK2H92TSVtXxhG0/mnVCa20BOeZHJlnQ/YkrpnwOm6k6yFofi
-	 vqwHi5UdKLC/g==
-Date: Wed, 19 Nov 2025 15:54:07 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Keith Busch <kbusch@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [PATCH v8 09/11] vfio/pci: Enable peer-to-peer DMA transactions
- by default
-Message-ID: <20251119135407.GG18335@unreal>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-9-fd9aa5df478f@nvidia.com>
- <BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
- <aRzUpmUkDy-qN5c1@kbusch-mbp>
- <BN9PR11MB52768D54FF42AB11C49202C98CD7A@BN9PR11MB5276.namprd11.prod.outlook.com>
+	s=k20201202; t=1763560699;
+	bh=JRxfngDvQAz26XpSeqsn2PHhq06Y1ysuGPxFMQy3pGQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=j/CZAhY7IOXTGtYHDrPVJN3J24w7oj9tqLskEU3HV9HITpVTB3d0UdEh2KH0Qs8ep
+	 nKPaoJmIRi1gviOyvSWcNhxIMWHqheenctHKlyCtXNY1HH5FwUqwkbb7l4TDKndDGe
+	 nuL+ijtZWUlG+SiFQ6AclgX7a3OFwAWuJ5P5XSC8OpBXawA9b66vy3xHEdZHYdcIRV
+	 AJBVKInh6gSCz1an+HSvObyG+JSgIt5gPJ6uxiyxA28fO1rRFetrdnahXS+Yobqlu4
+	 jIcjZkwTmOVXdrQOn8B7SJ7mCP5lOv1QO9dVuhxloM6ffLbiAiX7HOay6JcUn2Y7xo
+	 E9WwH60FLE4bw==
+Message-ID: <86b1e36b-02a4-45c5-9670-543cc635bb65@kernel.org>
+Date: Wed, 19 Nov 2025 14:58:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BN9PR11MB52768D54FF42AB11C49202C98CD7A@BN9PR11MB5276.namprd11.prod.outlook.com>
-X-Rspamd-Server: rspam12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: fix NULL pointer deference when splitting
+ shmem folio in swap cache
+To: Wei Yang <richard.weiyang@gmail.com>, Zi Yan <ziy@nvidia.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20251119012630.14701-1-richard.weiyang@gmail.com>
+ <a5437eb1-0d5f-48eb-ba20-70ef9d02396b@kernel.org>
+ <20251119122325.cxolq3kalokhlvop@master>
+ <59b1d49f-42f5-4e7e-ae23-7d96cff5b035@kernel.org>
+ <950DEF53-2447-46FA-83D4-5D119C660521@nvidia.com>
+ <20251119134106.t7jmnl2k5w265en6@master>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251119134106.t7jmnl2k5w265en6@master>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2E33EA0006
+X-Stat-Signature: oa4zghh8ugi4h3nnyznnnputu1ufursq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56E54140008
-X-Stat-Signature: 935t99sccuc4uxsrd5mp1oo4aqxn1okm
-X-HE-Tag: 1763560454-239561
-X-HE-Meta: U2FsdGVkX18tcMKFKTlb41/QfVbpn38mXtWGhlLDiGylK0+l/2rOY4M5QsEXH4XWM6+ieq+MXDMHKZPeBTG2Ld6EZEKJlbinno/okt/wG/c76Je3CgGY2TWUy4CdBZsjVqhHxGeffhUz5FGJN5kHqUMm7g7NpXdx7g1AAUZt1XW/wvqWKmML1F3o8BDkq2aCJkT3vSJykavgq6U+/M1u5LAnvShdAIbvbas90B3NC/qub26qw8181XiseK60tlD99rZVmtKdlQF2Eof/iJYz29iPt4ReJosuWlPNyRhW3MZu+oUuXMQa60fXZ46Pnr0B3wqtN5ccCz0ucwgcuKHVNzqyKbVqIVA8A/HxtrIBXppDOEKxEZYFfQS73P2E3ncVF7gXFtFPtkgthptNfF0MGWcGu/Y6jluXkD/rbHTTcEaj6hHfEBGlFZMvFHXALzJ4qbecPbsAxyN4lRqsBkNH4jBQjxvJRQNZMLh2CrIsvMjE/Ue56PaYh6vDVRigEVFeqyeE1Gr9zNJNJSxgpyZyHDyDPiBsUpIGLwmXFs8sEzWv+4mYY+ZoAZunMP/x6X7E1HcKjs2jZoJr/TBmneCY+nQ1TlBlc6ZtJcclPWIKMqdsJIyNBCcFugLZPV107ZvEHfEzWq6yKc6Q9EpzFU7weOfCg/eQ3szZv/N4YqsRcH7U4lmvp3AftHiezj3klwMQ69vdk04IY0BTYIkahCp/gIAS1lPEHu/o42CBFK+qLOl3C40rb+Dku48+BPpWwl+StjDl3mSeAbTWKraaBUJghGojiHv9v2IhBAQoRu/+hhCHsjBgkyA0zXkSfCy21b87jI0p2m2r+Qby2O8KRuQlXPhJN/+wu5BagizFnfZK/n58cULtcwfVBZbAid/QvNeouNTkiFfZ0xSCpkuLaMohynTLyg1PTDHzSLgOeSshoEzgJ08+7Lf4GLIV8EZpBXfrGuvMmIlALmRBnfBF/aw
- MaEXWwRy
- HCgaiNOuBP7TccIKsvey9HonnvE7EU5NyoYtlvRtp9hO07avR60QSNkXqlo7czop7O36hMsOZHqvrfoaNOdLzJbRHGdd0G4lS2vok7hiIbrmp5h9cva8zmPkwG1bdFp5e93zZbjEq72ZEOcBlt1p5U6joknV+f2rYWkpxp1lTOffzmEHzhNHvrVcmmyJ/t+L/yUv9pIWYNbYCQ9ZRsWLNUrHrxeNh2gsZfPHuwOYzkvpjX3Tcuk0iQJxD0NDckSmKBnYZebGwfzw4OB0dAzyfjJEu06RBQuXXycSnFlJuxPtDDszTrMebMOf0rNcp+xy28+DRdm17+JkLhMzXWHVafqUx62WcL6NkHWpjq2CWv+lbcbY/o7CsvoyeuA==
+X-HE-Tag: 1763560700-670306
+X-HE-Meta: U2FsdGVkX183s6QucC1MOmbp5vUKwVZpA3UhF6Ck1AyBdVUyL6C7IvJEzoLNP5jSeUjsNwgJe6eZrRboKDwfLCs4TcFZDkWuw0dnrwPblkwJacQ0jnXSKMVxfLcrHIwvxewvqBTi9gJxdynZAPcBNKn9lRWcNoXbZrmCyKuWz+X0clb9vpvK0ja19M7xxrgyPJlUUK2Vmt1tLv2J/B/09xyzgV6poyxuCRHkLeXFkcxA++vD+GGLkYWbxjZn6LegnPZfF+zrM3XGbQAqpDOGRaN/bYZ56a0TDnvf+l/RIG8goQAt59ZH4KtJjobG0DfBu0C4y7BDuq8dcoiRJd2KQIJHVCrgXeUjYydbFWbcaUIeLWbxz0ttI7TMCueal+G290qkj5uboUBVA0wp4bNdF8UeguOxFwpAbpr3+MFLI9aa+Xid41HOOfJlNEMTpgAIgfBdsm17GOEnpuXTNfFuglCmWStlOl4bt3DKweAYlO5g/qkhzwQCHLYe/HrXyCSIrGSuezv3dJsyvwxASCLM6fuINH3c8HD7XFETTr6kHz2jEU3ofHj9cQJAp9YNaMZ8OtsvaGzihx+VDN6oQc7wbrYJMfBfi4qhuhMYSlqMOGav3m1I40GwMtOfH86FKFxjAu7sXsJef6bxwgVADU3i2rzRBFL0WDNOnwDOiD7WWQ3qQRgQDkxMh1eHuAEIr9YqIODLqAGTx2rZg0/xAEj4B/zGvyczmEM+oS4+FBxgpXryY6pWZZ8FWXiwHHBS7PKBZyDPHyYuO1CEqYzcVsmFWJSBhSUzbANG3HHedJE4obq1qAM9aWm23EwYXShW1aKQC/MpRAnix+Dz8QccaW6ATRzL3LX5rjCkM1stc70cvkgd5sdzdLBnAjq15oUlnlX30k07XAOw9vfEn8zacWuzw8XDSe10xDi7wkGK2cuv/DZtwajC+jhG7HiT5QYLDhEFvejBHpOMAsqjDF8L23+
+ L+ddMG5J
+ SN5thjAndrOaHtmjNg8vQpksbMEQf0ikLOJZ8oH0R1prlP3aFwvyQQCT9uAPctOVnjPkvarD2JUqMqw2IOCO4ynETeL6IVk/xTAEisKyLo/BviBDeg949V+mbzrT+DjxlDUX9hAzk9ATSZvO5wLQ96F7wJ4Z795fpJNoL9dhuMMetA/Gq2ZG4zPlVyNoIJivwBOGnJme1K1TRoqvCobQ8vn3Y8XRuO7bOlmdiPcPZmppBWK75fzRSVO8v3qwYT0NQXXyKLIkcKPRdHj4etQdJlHrYEe0EWWOnx4eaisMoJKAa2Y0u6Yf2tYLkWcOsURrJeswS8TSXodiOJNHHtEYlDlwGjzuxVOAJA+z+4BDmg5JDX2fVvw0DaKBC4Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,28 +102,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 12:02:02AM +0000, Tian, Kevin wrote:
-> > From: Keith Busch <kbusch@kernel.org>
-> > Sent: Wednesday, November 19, 2025 4:19 AM
-> > 
-> > On Tue, Nov 18, 2025 at 07:18:36AM +0000, Tian, Kevin wrote:
-> > > > From: Leon Romanovsky <leon@kernel.org>
-> > > > Sent: Tuesday, November 11, 2025 5:58 PM
-> > > >
-> > > > From: Leon Romanovsky <leonro@nvidia.com>
-> > >
-> > > not required with only your own s-o-b
-> > 
-> > That's automatically appended when the sender and signer don't match.
-> > It's not uncommon for developers to send from a kernel.org email but
-> > sign off with a corporate account, or the other way around.
+On 19.11.25 14:41, Wei Yang wrote:
+> On Wed, Nov 19, 2025 at 08:08:01AM -0500, Zi Yan wrote:
+>> On 19 Nov 2025, at 7:54, David Hildenbrand (Red Hat) wrote:
+>>
+>>>>
+>>>>> So I think we should try to keep truncation return -EBUSY. For the shmem
+>>>>> case, I think it's ok to return -EINVAL. I guess we can identify such folios
+>>>>> by checking for folio_test_swapcache().
+>>>>>
+>>>>
+>>>> Hmm... Don't get how to do this nicely.
+>>>>
+>>>> Looks we can't do it in folio_split_supported().
+>>>>
+>>>> Or change folio_split_supported() return error code directly?
+>>>
+>>>
+>>> On upstream, I would do something like the following (untested):
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 2f2a521e5d683..33fc3590867e2 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -3524,6 +3524,9 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+>>>                                  "Cannot split to order-1 folio");
+>>>                  if (new_order == 1)
+>>>                          return false;
+>>> +       } else if (folio_test_swapcache(folio)) {
+>>> +               /* TODO: support shmem folios that are in the swapcache. */
+>>> +               return false;
 > 
-> Good to know.
+> Hmm... we are filtering out all swapcache instead of just shmem swapcache?
+> 
+> Is it possible for (folio->mapping && folio_test_swapcache(folio)) reach here?
+> Looks the logic is little different, but maybe I missed something.
+> 
+> OK, my brain is out of state. Hope I don't make stupid mistake.
 
-Yes, in addition, I used to separate between code authorship and my
-open-source activity. Code belongs to my employer and this is why corporate
-address is used as an author, but all emails and communications are coming from
-my kernel.org account.
+It's tricky. folio_test_swapcache() only applies to anon and shmem.
 
-Thanks
+But looking at it, we have
+
+	PG_swapcache = PG_owner_priv_1,
+
+PG_owner_priv_1 is also used for
+* XEN stuff
+* vmemmap_self_hosted
+
+Which is not important for us IIRC.
+
+But we have
+
+	/* Some filesystems */
+	PG_checked = PG_owner_priv_1
+
+So maybe we could indeed have false positives here.
+
+
+So I guess we cannot rely on folio_test_swapcache() ... here. What a mess.
+
+-- 
+Cheers
+
+David
 
