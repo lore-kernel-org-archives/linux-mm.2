@@ -4,187 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24DF9CF2563
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 00:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62707CF2561
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 00:19:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 713396B009E; Tue, 18 Nov 2025 19:06:36 -0500 (EST)
+	id BEA336B0011; Tue, 18 Nov 2025 19:19:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EB2F6B00A1; Tue, 18 Nov 2025 19:06:36 -0500 (EST)
+	id BC1866B0024; Tue, 18 Nov 2025 19:19:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6010C6B00A3; Tue, 18 Nov 2025 19:06:36 -0500 (EST)
+	id AB0196B002E; Tue, 18 Nov 2025 19:19:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EBB46B009E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:06:36 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D26CBC022E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 00:06:35 +0000 (UTC)
-X-FDA: 84125415150.06.15002CF
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012018.outbound.protection.outlook.com [40.93.195.18])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E830318000E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 00:06:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=U2Urw14K;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of nicolinc@nvidia.com designates 40.93.195.18 as permitted sender) smtp.mailfrom=nicolinc@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93E6B6B0011
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:19:29 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B44412E779
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 00:19:24 +0000 (UTC)
+X-FDA: 84125447448.16.9A925C7
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012060.outbound.protection.outlook.com [52.101.48.60])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1F98F4000F
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 00:19:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=zxCqcKb1;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf17.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.48.60 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763511561; a=rsa-sha256;
+	cv=pass;
+	b=cWxGIbFnJB4Zh6KICbJySfUDHvfrsRAwev9LWCvhKaHGHvOugfoUqQ/HUn/39CsrGRIby2
+	BcrMOnrQjKaPvmjay9PM/VPBtWI3kkhHD9+qop+A+puN3cxvXtHcneR+2OKWitLcTaWj8D
+	9RJReKd6LwvNwIz8xnS4LjvgGbICohU=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=zxCqcKb1;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf17.hostedemail.com: domain of Michael.Roth@amd.com designates 52.101.48.60 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763510793;
+	s=arc-20220608; t=1763511561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d/5PWLvdd1WeJ4W7zy8OAcBghdLi8K9u6ZsUNgm6aoQ=;
-	b=uL6VzWSmUv9FeHKXm8XuYTNaBdXVYkzLLFcqMNdMfFngSOueuc59ILHcY/bKwg/8Sp9+6i
-	w1cP9YkNpvJXETU+U/HjakVyEzDmn/8nuLUcRC40VU9AATthOzZxIGWneNVIcaOZh8eY/D
-	WYsfRnfI/q7q1J92dstzthnzl+gycgk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763510793; a=rsa-sha256;
-	cv=pass;
-	b=kGSrxxDqIglbWgse75lJ5UMm6dlrZUJ4uW3rlM6kVkCNL2biEH37s7Ch/hSaKo0Y5GdqjA
-	FoEUOVdUf5IX8lziu4w6SsWcSgYcUfv/1osXRXs4UzZuHFqiEQFh2vzYKyscKVsyK+DSjS
-	uIF7UPIQoWVEYmXIYXaWYdDnZvWQ6s0=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=U2Urw14K;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of nicolinc@nvidia.com designates 40.93.195.18 as permitted sender) smtp.mailfrom=nicolinc@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	bh=VKYS/svfp/P9esRciBmgOf/ZbpjghbQN6DFVVWI2PgQ=;
+	b=2a78R/wdO46qQsIfreRSV/ZH9Et8VG0detY+2mmjg1Uo+X/CMe8kc9F9Z2ueRu3jCVIm5k
+	L60DbmQ4P3s91xsaDpJdZY+r8jJ6YKaLbaoGvGzdOg6/wjf7vH71UtSdfaYJA48WNydzDA
+	pAXIVTmW3yRCnfeRfJPgPCa6Vb8LkXw=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fzUTSyQuiLfORfKX4LI3X8yvZcGDJfGPUSktAKBfjYYRq1g56DORDZcH0LneYpWpweR54S961+xc7+v+8jUCsD4obvc7/G2dEfEGREME3kMT7l+0CW3GBKzdk/u93wme7jZjETC7OiiCi2+HWkenEuOxlgHH5JacMj7h0yZW3nXrpuWNSjBLBoCThR1Ty+EFbsJ4U2bvPbBYP4T3bvL/FlOnl6R3DbdGKcmuG2whuWC9F182Tn2eUJPR6WUvwjEFLL4Pmde+821kwK6qZgbgr8TNlV2ZdOpgzg+nHPqzS/62hv0hY5FIBKJJFgF4BgmEr8yXaDyiPlMJJNN/zZ7afQ==
+ b=MtEvaCA3PIFOINt9MjTankK3mYOihAjW479urRj/irpyFGlkE/WUsFdRoKKUk2o9CAGyGcfMPYTRh72iTiugk/iIJnWnp+LByKLlIzSKq5Ku9Tcf+60hRwcetnJHam/kVu/Nxa8Lkp8UrmxOfHl/5DLCWEnUvKqwYBCrJUerkT+31PQ6XVcSvW+R/YOKgmzkl3PNnZbmaIsJP9gT9nUF4nxCCxwa6Cjordf0QcnqeHqvL7B9c6YwnJtmNjAkScLs1cr0akpu0lWeMxp4zWFaNLycz1iISBLDHkjKOE6oNYVO85LFC+Bj9MHcLVBhblJVj2CWxQiQNMCo5g4ud3Gerg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d/5PWLvdd1WeJ4W7zy8OAcBghdLi8K9u6ZsUNgm6aoQ=;
- b=Pnm4XZ1vAJuVnhTW0JuRoALR+6gZ2i2xghn7DZjIfTYBZmfUdcTCMn9x2Myzarg/TsabwK0L00aCw+vGQ6qwsP5G325dQaTD7vpN1TtVAiAWhDUJrRO2nfpsqYUATCyTSt+2EpTmQ/EHlC4hX7hTpsM42GgxDiwxEI0YSwIyjGr8rNRvrCp7JuzuZ153zYWeTaKsUt5PIxDZAaSPsU37FvTTPsYhyOiiIEumLvoiVYwyJj1hTZ/vC0lLv5DmlqUp3/gGqK/3GlFuZnyRiQgocWO/W8uXa0ZborQIn9flOtFP/xrnQnjaezSoViMvGdDRBKMZoPQaEsPtNj6qpLSENA==
+ bh=VKYS/svfp/P9esRciBmgOf/ZbpjghbQN6DFVVWI2PgQ=;
+ b=RFqMb9kSKO9A8E7E2uy3RXaNE7tyJi1KxclieX46ZpmfgU1T81Rlz1z1UtAeQejDwAyO3CbZwuYaZPhsyEPnLNmdYfUyfaEdpIZ4wi7x6rYCXdsVkNCDiEHyhh71WfARJ902Gb+eIeS3k1mhfe9XLE7KF9Ei4N4ks7pyMIKOyt6OHfA18PRZFCY33XjkLXZK/O5OulcdZf6JvDb1h9nOvF0QM1Ai2qqCNieVsFVvAdO5yYmzmU1g/hxKrwZ3SblJodUGVw5HhdD/XR56Hw/GMAxSdCurP/w2GG5suJibKaH3Na4igrTN50WgrImemiIsNBlUHe3vFQoLTZI2+0rScg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d/5PWLvdd1WeJ4W7zy8OAcBghdLi8K9u6ZsUNgm6aoQ=;
- b=U2Urw14Ko2+/JJeYYi2XiQOHuCm9bRJWUnU3odkLPjnFdrmy51bEUc5iUzP42CAqZqDryRSseNuWikpMtlGMhS5FuJeMvd6sWz7xsjzh84qup23Vf8lgPDWyd+zu3U6hWbH1LtokVBe9mpr5anMeCQO33f/atHJMrefPsFDJoeJPQogwBmsDeyMgWnML/wtaDwz206VM3IGZmH/laT2kExJ0/ZFQaO0W6z/n3/s9XGWtzYSiXzXHnaPg0B+BDoFPeXBvw/pOPRgwImo6AlL3GHwbDUfDK+a5bUeGUVEvZxJcJ2jDQH239dzkXBviM3xEPP1yfLCKi1OGBD3D9x5ejg==
-Received: from MN2PR05CA0023.namprd05.prod.outlook.com (2603:10b6:208:c0::36)
- by LV3PR12MB9266.namprd12.prod.outlook.com (2603:10b6:408:21b::21) with
+ bh=VKYS/svfp/P9esRciBmgOf/ZbpjghbQN6DFVVWI2PgQ=;
+ b=zxCqcKb1lSpjJFAUmBUkaWO9iuVOQGnzXnpNC3Nl90B4K/fjZcyc5S4VAoEDG4opDjW6nP/WBoPdojRaOFm/DQ6QBdsVnxxP09UggLE30Q7hEmCYCbEnGCUfW3g4ur+5WA8jSZAWC/xSRu9iyMtNN41AHaAvAct8TEBi1buF5CI=
+Received: from BN0PR04CA0135.namprd04.prod.outlook.com (2603:10b6:408:ed::20)
+ by DS0PR12MB8504.namprd12.prod.outlook.com (2603:10b6:8:155::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
- 2025 00:06:28 +0000
-Received: from BL6PEPF0001AB4C.namprd04.prod.outlook.com
- (2603:10b6:208:c0:cafe::e8) by MN2PR05CA0023.outlook.office365.com
- (2603:10b6:208:c0::36) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Wed, 19 Nov
+ 2025 00:19:13 +0000
+Received: from BN2PEPF000044A6.namprd04.prod.outlook.com
+ (2603:10b6:408:ed:cafe::20) by BN0PR04CA0135.outlook.office365.com
+ (2603:10b6:408:ed::20) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Wed,
- 19 Nov 2025 00:06:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BL6PEPF0001AB4C.mail.protection.outlook.com (10.167.242.70) with Microsoft
+ 19 Nov 2025 00:19:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF000044A6.mail.protection.outlook.com (10.167.243.100) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Wed, 19 Nov 2025 00:06:28 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 18 Nov
- 2025 16:06:14 -0800
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 18 Nov 2025 16:06:14 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 18 Nov 2025 16:06:12 -0800
-Date: Tue, 18 Nov 2025 16:06:11 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
-	<logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>, Robin Murphy
-	<robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
-	"Jonathan Corbet" <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Kees Cook
-	<kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, "Ankit
- Agrawal" <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, "Shameer
- Kolothum" <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, "Alex
- Williamson" <alex@shazbot.org>, Krishnakant Jaju <kjaju@nvidia.com>, Matt
- Ochs <mochs@nvidia.com>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>,
-	<iommu@lists.linux.dev>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-	<linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<linaro-mm-sig@lists.linaro.org>, <kvm@vger.kernel.org>,
-	<linux-hardening@vger.kernel.org>, Alex Mastro <amastro@fb.com>
-Subject: Re: [PATCH v8 06/11] dma-buf: provide phys_vec to scatter-gather
- mapping routine
-Message-ID: <aR0J8zHtfe/j4ajU@Asurada-Nvidia>
-References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
+ 15.20.9343.9 via Frontend Transport; Wed, 19 Nov 2025 00:19:12 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 18 Nov
+ 2025 16:19:12 -0800
+Date: Tue, 18 Nov 2025 18:18:52 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
+	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
+	<vannapurve@google.com>, <aik@amd.com>, <ira.weiny@intel.com>,
+	<yan.y.zhao@intel.com>
+Subject: Re: [PATCH 1/3] KVM: guest_memfd: Remove preparation tracking
+Message-ID: <20251119001852.jx3lydjhk4xj2xst@amd.com>
+References: <20251113230759.1562024-1-michael.roth@amd.com>
+ <20251113230759.1562024-2-michael.roth@amd.com>
+ <diqzqztwb495.fsf@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
+In-Reply-To: <diqzqztwb495.fsf@google.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4C:EE_|LV3PR12MB9266:EE_
-X-MS-Office365-Filtering-Correlation-Id: ebe9b90d-7b73-4436-d0c9-08de26ff7cc5
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A6:EE_|DS0PR12MB8504:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00188fb3-68e9-45c4-4394-08de27014462
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|36860700013|376014|82310400026;
+	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UPeB8HywBeXH9UFWWV9lGgJ2/MmtmJ4OOyC+g0tDe5AHpwAMQ8xrS6GCm95t?=
- =?us-ascii?Q?lypTQjm9hVAlB61Ih4p3RTpPf13nZlWDKGOZj19RdiO18GyUP1p7pfyw1P48?=
- =?us-ascii?Q?DXUHpHO9McNgpIZhwS1APsZaNVzGsVSp14ZRnxyhOIDxuWxYGQGPfz+atpK/?=
- =?us-ascii?Q?4ug6gssdfpdangpl1z7ssWwhAsPLc0Z8nkqvNyhWd+ldBXksv3/ZR8B35Qwu?=
- =?us-ascii?Q?i3lSev3/2gBEuYkLxuZmB/sVeEpJ/q64JHCJUJoDVL2HESYtNpyOefxwJiym?=
- =?us-ascii?Q?DrKTV2harBdf5XwDZLyPRZ5kBqKy+ZNTUVHLrqa2DqhS7Unh6/c+6ago9AoA?=
- =?us-ascii?Q?+QEIAQqtAq6gzg92gGK1CJe7AUS39HRMI+J64p8kSaPwdmdbLvbppgRJ1e+C?=
- =?us-ascii?Q?hB8ooQDk1gO4i0SZbgzyuXFcwaKWf9eH5I4cFbHKgr/33JC9Yn9x9K3zyD2v?=
- =?us-ascii?Q?1jTHhTUVa9WTVDPv60wC8oY1gqnKpb1a93TlygocYhNWyhq7B9gWPhLL2lo/?=
- =?us-ascii?Q?tmoCpLG3iRDCRtrD67CIQiHAj4zzrlRZoF0oqQR7GlyqKK+Dc5mlVe4sRike?=
- =?us-ascii?Q?HEX1IuS5zvM9n45fWFfwLAwOQjTZ4RwjJVb1HbQDrYVtNmC7v8Yz6u6gcfDH?=
- =?us-ascii?Q?x4pLbWuS0Em961+4bv8aCOi7Qf/2J1/eZgMF5VC/Kh1V3g+GvzSI5j1lGV/U?=
- =?us-ascii?Q?0ccMSGm39fyt5SkU3exrIVpuRTHXXo859Z8OBNeRGnoWv1JabHFpOebfbwgo?=
- =?us-ascii?Q?PwWBoRSLQFHPmNDejZ2M/+lPWp8ttIEEP9+lg+7l6oRU7c5arWg6+r7gOmjR?=
- =?us-ascii?Q?FdFqHArzm4QoVDXm4Kch3bpkGswMlpPl/fBJgjDY27IfCXYY+Q55e0nLcB21?=
- =?us-ascii?Q?K9Aw6kXoyDqllhEMVyrrk0KEeyHIP/v8Od+9kqLrZbDGna+DXSrEjZ/AczXL?=
- =?us-ascii?Q?kKrAaDaRioqnBWRj37hqeErWmbLyOUEDuf4RXqWRCyvJsvm0bLGfJ7abRPhG?=
- =?us-ascii?Q?CPRmmOwAjBnad1pg3iv2T61/pnNOZ1c7IhbhMJHvbzdcCqemkdQ08zTK9dup?=
- =?us-ascii?Q?I1qY3aJ3833cvAXLC69+sInbaPEI2AI1ZjJJRq9YpVcvg7OUTVypKr4k9PF3?=
- =?us-ascii?Q?1i7AWhnkvtLwjiQGUW13YrS4wAydlvjfFvtmhppWhjesEDX6ZFO6Ch20tg3B?=
- =?us-ascii?Q?kkoaxLa01pU231Oinyaxb29CtdYeM8btVDFQUJIxIuE+Gb/XtAM8G7HLfvoI?=
- =?us-ascii?Q?YP4Wr2fAvvgsmL7/uRRWmLgpuU2D5V59T6nbRSXleWHUjX7yaI8sbQYqPZxw?=
- =?us-ascii?Q?vx0xqCn8tolsxteGT2vI1X9uuNAooDuB11+0VKpf9H1r33DR6pRjjfsIxaDJ?=
- =?us-ascii?Q?A2q9p4r++4Pw8+u5VFml2hI+ruoYzfopgj0+M9lsFra16JF7Sst8Bb1u2E2A?=
- =?us-ascii?Q?uPF5hj+K0By4f1OVN+erk0Zy3aiucAvTVCJqHm/e5uT2wtpAbd4K6vSE+hG0?=
- =?us-ascii?Q?Fy9nREql+PdPKhNhqn70EwFh1cbyLrx0nstSyZWL+N1cv08E7ejQndAseUQz?=
- =?us-ascii?Q?JQXESL5OXwu5dsUf+ZU=3D?=
+	=?us-ascii?Q?FYy2ZKrb/+RYvYNbPSzQi0418SfDO6lU4mL/daBdcb9G02rVnuk2DU6HEsos?=
+ =?us-ascii?Q?jACdpei2X31dx0V4O+XrN77XkBOEGHee/2Zm15gB6AeDuvfgkk2t+Gk3viYS?=
+ =?us-ascii?Q?gXbmiv7hrlja2mdpPyuHBvlzLrN26MJlUqhLb4lX1vP1vksOudxymfxewDpM?=
+ =?us-ascii?Q?cnts7TCvTV1BuYL5rmYfFG5SmGgdXFwKVGvT8GqAUoM5Ax+BdhicuMQRIyxP?=
+ =?us-ascii?Q?Bh4BU2o+VYnVet5h5eZ4InRtou/sxXBjpttvuyc82ssIQSTFcOVtU3HR7+kr?=
+ =?us-ascii?Q?pM7E9Sm/6mkqiWRDQzhjUOqBzEaSjjrhROBLjrurzUKb+kxRsD+UKQ1ORWmx?=
+ =?us-ascii?Q?ZZeYNSfarsDjQVC3mXYgU7BWnPPVtBBHw4ejiIwESdTxuDLfajPThFcqIoTx?=
+ =?us-ascii?Q?engkTKSwy2j80CcjJ6urelB6dvtGM43zVCJg5JiyPh8Z5WUDHcRvN6fSOyDA?=
+ =?us-ascii?Q?cxiwmWfhzkTHQL3O9eq9WibQlS00ymd/YXCtm3m3mFW9mAkaN7vOIL/HO30B?=
+ =?us-ascii?Q?ZK3eiVh+6ToDdxlwb60D2JpxicbrxKoUk6US0C3jnc+eHP69JQGyxfVbP4Ua?=
+ =?us-ascii?Q?EaZZpvd1gthxyt6ZghRfcEj3r9x1WYPpZJ5AbiRQBcpYssH6Jda+sFAU9gOt?=
+ =?us-ascii?Q?uhxFvc48dxKas6erwJ6wrrd1s2P65gECMiFrcRCI7HqNIZOTe3AydEgWWteP?=
+ =?us-ascii?Q?If6gPoLzbUHj0c6psXv50W38443PAlJ+aEbZU+wtJKndwRyTG6OKcABf9fI7?=
+ =?us-ascii?Q?d7UlPe/kKwRUQTOy51IzV5Ba2+fMe7gMEqnWgtLvpMArzPDLYSdcZb0gf/6w?=
+ =?us-ascii?Q?8ZnQK46y01d//cRRehs+MzmRtwBwPkHvxFKx3CJ42D65nvYVTEc07CHoPjO7?=
+ =?us-ascii?Q?rC7RakPcZkLwXRCBA7QpNppXRzeksw2STOlpKdmL9nDPR11yISwZMnZbymxi?=
+ =?us-ascii?Q?B5esVNFTH3rKDsxh+5+qM23dhODiCIbqlLlkRckVoWcaCW7/70CmNd2ZXkZg?=
+ =?us-ascii?Q?ulm4BYSpBjcJFW8wb6FmlDC2v9L4dAGWSi0weR07QVSCNQ7oyHsbH1GUbDGe?=
+ =?us-ascii?Q?JQ17lL0n1MjUezlLO45nOoUtJvBHUfIxmPSdT7zkaU0Erf3ZCpnBSVgdoKFw?=
+ =?us-ascii?Q?tSbkUSOaaHMiWjMgeKnS4+hXKbiUxsKjWA/hTUQZ34vI/55eMrmxKZhcZoIW?=
+ =?us-ascii?Q?QnQB0MeJRMCouvVtZ1QNPpUwny+b+bI9MtTg5Ht+8C8D/wgatbSjk9YoH4gy?=
+ =?us-ascii?Q?XoD/i8mz8l5rx+J9qpXe2qBwE7WLVW2b0ftjd5BeHLQqmrxw6sbm+6uO/9Pp?=
+ =?us-ascii?Q?oiNS7/SVt2FebXSYtPZ/h5zzVN4ZNGTZZ+HV99hopC94ffZ/Kl7FRlglqT1I?=
+ =?us-ascii?Q?PItDCGHU0UKmKPr2bIV8aycesVx6mdxA2sZ4arGWHDJHNpBcnOSTtP5Z7EXD?=
+ =?us-ascii?Q?3q1F7BPtOxNqVfelnKASVPUD51W2LUodgb9gEKQyxomzfUtgb5CN5cEclIEO?=
+ =?us-ascii?Q?GVYMzqlW6xRYm0WogkFu1NUrtGbvnRPPysbH2ZtMZTe5UsSEyAKkOuUCXjO6?=
+ =?us-ascii?Q?r0r6A+zzb9PlljE5Jrk=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 00:06:28.3462
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 00:19:12.8516
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ebe9b90d-7b73-4436-d0c9-08de26ff7cc5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00188fb3-68e9-45c4-4394-08de27014462
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4C.namprd04.prod.outlook.com
+	BN2PEPF000044A6.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9266
-X-Rspamd-Server: rspam12
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8504
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1F98F4000F
+X-Stat-Signature: tbi7zyxjbr6egd3mhdabsj7xebpi4qyk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E830318000E
-X-Stat-Signature: 3syf8dc9szu3a8cgwdyjrjkgtca337px
-X-HE-Tag: 1763510792-62930
-X-HE-Meta: U2FsdGVkX1+wgUBPhaNT9AmRHofcAc3UD98c8Evmt2gMIEvz0lFaSNNNMpy/XXmKbeg4EsjzOgy5Be2aQnEBW2X3PLAeUmjTVkCXJqOUwgPWsCDntv7yjbn9LTeMuFRJCmJmfA6KFXASKarUb48i6uwu36VT7oN6E57ArRAZuTfH7tQZbOM/W5heCgmlFiSpKSLvOAKe1B0FaxQ/tPQuWBzgKmd3cGfFCF+bagVn6ybdcGw12ios4NJ3m1EiiamHx2Mie0Wrb5yeOpo7+lFwNWrN/gdEbyd5Cp4btUSdI0Lhxp6QH1p1hvTECWg6FRho52RFjNqLccSt5wsRjx6vS5CFtbw6VXfHh9BGCwfWaeoSYmaWhh0MFg41tCzGa06blmKlR6Vqk9WXpoYh4qZD5HVp5RPzjgHGdDynU4KbgvV22i2PN3Kc8G9X7Uz/sEKr8bDFhVjT/NkNH1yUpxDi1FvIuOzjT1FSq7MqlQ/X3qVjrKdW0/3hnxBkqvQ3UQziRzNgxobhOtPHQJ57BVO/Lh4OGJe2ZUxobavw1n2WgIlHeM55Ih5UmGrPJRurEX37rzx3Ib1Ge9JdTncY5S4/XwbblcgG+1LIsrkUe+e0Wkv6PPSyV2vuNYWB3M+9I/PxL9apAnH3cgoIHR9bJfuWlTeHHN0yY3s7Je79y+WAwpqMquPrRz1vRF4UMfR0ah8SRmtuSTWsoFEEY2/Y2eBu1+oStVGslru01Z8iVwgcM2cIXt7kk47uEyDZ1Qv4sdI03p2XYwpT8vObX0iw56avCe4jeoRoS95NcFGKwEUVo+Oz3ICc2R8R/P1P0gAGRv6LVC0KrlC6p22VwiSI2jLzWDS7rXCxCIHw9kO7TZ5JGLsVrNNDITqojKJMMbMhOyISqSAHhCnk2QFtN9Bz9o4zY52pZ1KldOhB1fHbrFfyPbVpa2nNEfzcg+0UuVRodSpK68A7DU+knPEx6JxWFWP
- BZGiPwFU
- hwFqiCDO6Vg+5wS9AxlGdwfxCjXT+hs3qaCQaU/kALB2xKjee6khFnP2FnY0AH4sJmK/bZxWSnGeA0oqu6mwCAMkGUob2YZV4B3+X597gp+cxi0zet97cfBgixDv2aI+HhJl4oIdnDM7/UFrcoB7wnTF/olxDAemAYxuENusKkHxTGV2Gl11t8BgIBt66910BunkG9mpHrIBGfQcNJCjrifaylg9LhAm6X3yipwOcuVf6GHgXlFJcgvFQHbMNWCsqukhAD4QZnGfkFdm3HbC7LyyI1Ho8XBzrQyStFaBXQOBDJ6EbRYaOXxvgJ/ekmiJi2+dsm7p8pQAQEwdv/mcB0qeLMasGTriSV8kAHnTX2xoWnRovvD8gvXOgilm9X8Mjt3DyMxTr6wb9mtH/yMAnaoqkLZfETEZ6E4pipMOncx05oda+MiC8azRKEdXrWkDY4lfYCcDNi0/Su8Hl71Y19GlQ1Q==
+X-HE-Tag: 1763511560-666291
+X-HE-Meta: U2FsdGVkX18zRkQstoX+TKSupnFBfbmxLww5fisxuWzkhK08dcR3EKlXpyW0H6ysDzRJmpvzPZlkX7VyVfILb5ai/2IY6/95zQ4LuITAL+5v0b6XI6jLRr2pEsPpP7m6ngzFTxlZENYolrC85QF72D1ayaS4lcmXAcQbqcgsmzfy3Hc0Nir6BjgPxPdaiw+q7FLHuovLw18NAb+RRWMO+O4paWoanRddJpoJfc/nrQ3GnAdQWnfUwhQgB7TqW2ru7GiqEua8Fml95DdqRyihDyVen6S7fQ8JQfEjuRVi+J8uzO4hsqX7MTd4sEzDeXwzGB9UW8t9Z9XAwbJW+a47IdnDMEuQh4B7hKZ3Ck0yF3YMvzc19VTlh8qGwjSxy7DXLjtVLracDlOtoN767AIT+dD29SiAGCP9fvoyVIG8WHzM9NS+om7DFfxKn5JLEkJS0dMlGrBcp1CfHUsam/hECttaS3/+BCeqUpbGtaCxx/a2knACP4dtYZclVRbhSgh1dGFXBpk7iWtyTe/IRyVqdSpc7jgLdxZDJm/or33hF3yRkSQbP1/vw6a5G8kJapCMGhCRrdEVCFKe702IrbKR16SehZ+YeQHrNkIg0aSQbfjbVhlQU3FapaCf6KognHE6Zk99lrR4GmvAzuj9a943EXtaSrfi4TSwLRmo+85M8lneQh3DnuS1OjJBMfhsmbFNQLKd1m5lv6UrPIrCYaDjU5AYNVe33tQhvD1S5Q9WjpOVjLIwRivtgpUYE85Bd+DbwoN8P76Q6XQ5Kqu5wYyalfGy9tx1EId2roROfQL2OqeraKnhs76EEhO12P76HlFnQjpE4A15ycWoJum4e4/U1WvZp2jOBocaYoX7KIQxsHMiRIWsgZuPCDD6US9VFH9Xk6MzwgfzMVIi2BiJ4aM4/RKHDM9ELFRLMGTlgLntdRcbA8mBnqfewNq/O+tj9uTxxOqxPGoejlbx/eoLAnf
+ 7L4ciZIB
+ cCk9tarQaHX/nbezsaJ/UwrQheLKFMGJXWZ7C1lNuRxN7NqQ2Zbym4Rf35XBr+m2bu2RrlmIuG1SpuBS+HKHfsfJlwsIpL3j2Q1wxW6jNujq1KVP6/VmGjZV2Skdd2TSHmVXqe1ingB3h8mJhMfbTz1oE7F5Lm2n85kcdbbaZ++DM41bdHzwifxrDyT4Kdgd3r6+tXMn/KBZjl9fJ98Hd6h291OJNwxOzbvONKVIrURBsNWcmJ66d6PxZVp+PmEcsklf5zfbz6H7CQqpXVSV8HGnDMuYPvlFxHiQZxFywWU8kum3JGPrD70BekfSatRChe/uuTm5EhrNy7OsOlsM9zD20PsbSXZu5j8SSrFTxvBQJ2pdjEY2TAU4wPmwErG08DUHAqg6W/8yxCCr/CofKSsVjjbIzGeNpXkT7IozVEiS2e+/qaOMkEzKK+3h0xd748hQr9SX6KgF2Z9ufJ3+JL6Paj+pog03+HklgzAKaHSagn2HfJ/nishnF8u+LtfxTNiulhNo3XiGX6YoS0l7na7vBrlSAxMXHDfAzHvBg8TzQa8GcGzNsXeDct4eK5lp0fMz0dcu1xqI+WUBiTHNOwUIZDxKq9CCCJOMjkKw9t65eGuYL4w9wV0R9Krp4LJBjAjp1FnbUPzl3R2M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,72 +175,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 11, 2025 at 11:57:48AM +0200, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On Mon, Nov 17, 2025 at 03:58:46PM -0800, Ackerley Tng wrote:
+> Michael Roth <michael.roth@amd.com> writes:
 > 
-> Add dma_buf_map() and dma_buf_unmap() helpers to convert an array of
-> MMIO physical address ranges into scatter-gather tables with proper
-> DMA mapping.
+> > guest_memfd currently uses the folio uptodate flag to track:
+> >
+> >   1) whether or not a page has been cleared before initial usage
+> >   2) whether or not the architecture hooks have been issued to put the
+> >      page in a private state as defined by the architecture
+> >
+> > In practice, 2) is only actually being tracked for SEV-SNP VMs, and
+> > there do not seem to be any plans/reasons that would suggest this will
+> > change in the future, so this additional tracking/complexity is not
+> > really providing any general benefit to guest_memfd users. Future plans
+> > around in-place conversion and hugepage support, where the per-folio
+> > uptodate flag is planned to be used purely to track the initial clearing
+> > of folios, whereas conversion operations could trigger multiple
+> > transitions between 'prepared' and 'unprepared' and thus need separate
+> > tracking, will make the burden of tracking this information within
+> > guest_memfd even more complex, since preparation generally happens
+> > during fault time, on the "read-side" of any global locks that might
+> > protect state tracked by guest_memfd, and so may require more complex
+> > locking schemes to allow for concurrent handling of page faults for
+> > multiple vCPUs where the "preparedness" state tracked by guest_memfd
+> > might need to be updated as part of handling the fault.
+> >
+> > Instead of keeping this current/future complexity within guest_memfd for
+> > what is essentially just SEV-SNP, just drop the tracking for 2) and have
+> > the arch-specific preparation hooks get triggered unconditionally on
+> > every fault so the arch-specific hooks can check the preparation state
+> > directly and decide whether or not a folio still needs additional
+> > preparation. In the case of SEV-SNP, the preparation state is already
+> > checked again via the preparation hooks to avoid double-preparation, so
+> > nothing extra needs to be done to update the handling of things there.
+> >
 > 
-> These common functions are a starting point and support any PCI
-> drivers creating mappings from their BAR's MMIO addresses. VFIO is one
-> case, as shortly will be RDMA. We can review existing DRM drivers to
-> refactor them separately. We hope this will evolve into routines to
-> help common DRM that include mixed CPU and MMIO mappings.
+> This looks good to me, thanks!
 > 
-> Compared to the dma_map_resource() abuse this implementation handles
-> the complicated PCI P2P scenarios properly, especially when an IOMMU
-> is enabled:
-> 
->  - Direct bus address mapping without IOVA allocation for
->    PCI_P2PDMA_MAP_BUS_ADDR, using pci_p2pdma_bus_addr_map(). This
->    happens if the IOMMU is enabled but the PCIe switch ACS flags allow
->    transactions to avoid the host bridge.
-> 
->    Further, this handles the slightly obscure, case of MMIO with a
->    phys_addr_t that is different from the physical BAR programming
->    (bus offset). The phys_addr_t is converted to a dma_addr_t and
->    accommodates this effect. This enables certain real systems to
->    work, especially on ARM platforms.
-> 
->  - Mapping through host bridge with IOVA allocation and DMA_ATTR_MMIO
->    attribute for MMIO memory regions (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE).
->    This happens when the IOMMU is enabled and the ACS flags are forcing
->    all traffic to the IOMMU - ie for virtualization systems.
-> 
->  - Cases where P2P is not supported through the host bridge/CPU. The
->    P2P subsystem is the proper place to detect this and block it.
-> 
-> Helper functions fill_sg_entry() and calc_sg_nents() handle the
-> scatter-gather table construction, splitting large regions into
-> UINT_MAX-sized chunks to fit within sg->length field limits.
-> 
-> Since the physical address based DMA API forbids use of the CPU list
-> of the scatterlist this will produce a mangled scatterlist that has
-> a fully zero-length and NULL'd CPU list. The list is 0 length,
-> all the struct page pointers are NULL and zero sized. This is stronger
-> and more robust than the existing mangle_sg_table() technique. It is
-> a future project to migrate DMABUF as a subsystem away from using
-> scatterlist for this data structure.
-> 
-> Tested-by: Alex Mastro <amastro@fb.com>
-> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> What do you think of moving preparation (or SNP-specific work) to be
+> done when the page is actually mapped by KVM instead? So whatever's done
+> in preparation is now called from KVM instead of within guest_memfd [1]?
 
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Now that preparation tracking is removed, it is now completely decoupled
+from the kvm_gmem_populate() path and fully contained in
+kvm_gmem_get_pfn(), where it becomes a lot more straightforward to move
+this into the KVM MMU fault path.
 
-With a nit:
+But gmem currently also handles the inverse operation via the
+gmem_invalidate() hooks, which is driven separately from the KVM MMU
+notifiers. And it's not so simple to just plumb it into those paths,
+but invalidation in this sense involves clearing the 'validated' bit
+in the RMP table for the page, which is a destructive operation, whereas
+the notifiers as they exist today can be using for non-destructive
+operations like simply rebuilding stage2 mappings. So we'd probably need
+to think through what that would look like if we really want to move
+preparation/un-preparation out of gmem.
 
-> +err_unmap_dma:
-> +	if (!i || !dma->state) {
-> +		; /* Do nothing */
-> +	} else if (dma_use_iova(dma->state)) {
-> +		dma_iova_destroy(attach->dev, dma->state, mapped_len, dir,
-> +				 DMA_ATTR_MMIO);
-> +	} else {
-> +		for_each_sgtable_dma_sg(&dma->sgt, sgl, i)
-> +			dma_unmap_phys(attach->dev, sg_dma_address(sgl),
-> +				       sg_dma_len(sgl), dir, DMA_ATTR_MMIO);
+So I think it makes sense to consider this patch as-is as a stepping
+stone toward that, but I don't have any objection to going that
+direction. Curious what others have to say though.
 
-Would it be safer to skip dma_unmap_phys() the range [i, nents)?
+> 
+> I'm concerned about how this preparation needs to be done for the entire
+> folio. With huge pages, could it be weird if actually only one page in
+> the huge page is faulted in, and hence only that one page needs to be
+> prepared, instead of the entire huge page?
+
+In previous iterations of THP support for SNP[1] I think this worked out
+okay. You'd prepare optimistically prepare the whole huge folio, and if KVM
+mapped it as, say, 4K, you'd get an RMP fault and PSMASH the RMP table
+to smaller 4K/prepare entries. But that was before in-place conversion
+was in the picture, so we didn't have to worry about ever converting
+those other prepared entries to a shared state, so you could defer
+everything until folio cleanup. For in-place we'd need to take the
+memory attributes for the range we are mapping into account and clamp
+the range down to a smaller order accordingly before issuing the prepare
+hook. But I think it would still be doable.
+
+Maybe more directly would be to let KVM MMU tell us the max mapping
+level it will be using so we can just defer all the attribute handling
+to KVM. But this same approach could still be done with gmem issuing
+the prepare hooks in the case of in-place conversion. So I think it's
+doable either way... hard to tell what approach is cleaner without some
+hugepage patches on top. I'm still trying to get update THP on top of
+your in-place conversion patches posted and maybe it'll be easier to see
+what things would look like in that context.
+
+[1] https://lore.kernel.org/kvm/20241212063635.712877-1-michael.roth@amd.com/
+
+> 
+> In the other series [2], there was a part about how guest_memfd should
+> invalidate the shared status on conversion from private to shared. Is
+> that still an intended step, after this series to remove preparation
+> tracking?
+
+Yes, I was still planning to have gmem drive prepare/invalidate where
+needed. If we move things out to MMU that will require some rethinking
+however.
+
+
+Thanks,
+
+Mike
+
+> 
+> [1] https://lore.kernel.org/all/diqzcy7op5wg.fsf@google.com/
+> [2] https://lore.kernel.org/all/20250613005400.3694904-4-michael.roth@amd.com/
+> 
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  virt/kvm/guest_memfd.c | 47 ++++++++++++++----------------------------
+> >  1 file changed, 15 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index fdaea3422c30..9160379df378 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -76,11 +76,6 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+> >  	return 0;
+> >  }
+> >  
+> > -static inline void kvm_gmem_mark_prepared(struct folio *folio)
+> > -{
+> > -	folio_mark_uptodate(folio);
+> > -}
+> > -
+> >  /*
+> >   * Process @folio, which contains @gfn, so that the guest can use it.
+> >   * The folio must be locked and the gfn must be contained in @slot.
+> > @@ -90,13 +85,7 @@ static inline void kvm_gmem_mark_prepared(struct folio *folio)
+> >  static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  				  gfn_t gfn, struct folio *folio)
+> >  {
+> > -	unsigned long nr_pages, i;
+> >  	pgoff_t index;
+> > -	int r;
+> > -
+> > -	nr_pages = folio_nr_pages(folio);
+> > -	for (i = 0; i < nr_pages; i++)
+> > -		clear_highpage(folio_page(folio, i));
+> >  
+> >  	/*
+> >  	 * Preparing huge folios should always be safe, since it should
+> > @@ -114,11 +103,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, folio_nr_pages(folio)));
+> >  	index = kvm_gmem_get_index(slot, gfn);
+> >  	index = ALIGN_DOWN(index, folio_nr_pages(folio));
+> > -	r = __kvm_gmem_prepare_folio(kvm, slot, index, folio);
+> > -	if (!r)
+> > -		kvm_gmem_mark_prepared(folio);
+> >  
+> > -	return r;
+> > +	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
+> >  }
+> >  
+> >  /*
+> > @@ -420,7 +406,7 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+> >  
+> >  	if (!folio_test_uptodate(folio)) {
+> >  		clear_highpage(folio_page(folio, 0));
+> > -		kvm_gmem_mark_prepared(folio);
+> > +		folio_mark_uptodate(folio);
+> >  	}
+> >  
+> >  	vmf->page = folio_file_page(folio, vmf->pgoff);
+> > @@ -757,7 +743,7 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+> >  static struct folio *__kvm_gmem_get_pfn(struct file *file,
+> >  					struct kvm_memory_slot *slot,
+> >  					pgoff_t index, kvm_pfn_t *pfn,
+> > -					bool *is_prepared, int *max_order)
+> > +					int *max_order)
+> >  {
+> >  	struct file *slot_file = READ_ONCE(slot->gmem.file);
+> >  	struct gmem_file *f = file->private_data;
+> > @@ -787,7 +773,6 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+> >  	if (max_order)
+> >  		*max_order = 0;
+> >  
+> > -	*is_prepared = folio_test_uptodate(folio);
+> >  	return folio;
+> >  }
+> >  
+> > @@ -797,19 +782,25 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  {
+> >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> >  	struct folio *folio;
+> > -	bool is_prepared = false;
+> >  	int r = 0;
+> >  
+> >  	CLASS(gmem_get_file, file)(slot);
+> >  	if (!file)
+> >  		return -EFAULT;
+> >  
+> > -	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared, max_order);
+> > +	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+> >  	if (IS_ERR(folio))
+> >  		return PTR_ERR(folio);
+> >  
+> > -	if (!is_prepared)
+> > -		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> > +	if (!folio_test_uptodate(folio)) {
+> > +		unsigned long i, nr_pages = folio_nr_pages(folio);
+> > +
+> > +		for (i = 0; i < nr_pages; i++)
+> > +			clear_highpage(folio_page(folio, i));
+> > +		folio_mark_uptodate(folio);
+> > +	}
+> > +
+> > +	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> >  
+> >  	folio_unlock(folio);
+> >  
+> > @@ -852,7 +843,6 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> >  		struct folio *folio;
+> >  		gfn_t gfn = start_gfn + i;
+> >  		pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> > -		bool is_prepared = false;
+> >  		kvm_pfn_t pfn;
+> >  
+> >  		if (signal_pending(current)) {
+> > @@ -860,19 +850,12 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> >  			break;
+> >  		}
+> >  
+> > -		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &is_prepared, &max_order);
+> > +		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &max_order);
+> >  		if (IS_ERR(folio)) {
+> >  			ret = PTR_ERR(folio);
+> >  			break;
+> >  		}
+> >  
+> > -		if (is_prepared) {
+> > -			folio_unlock(folio);
+> > -			folio_put(folio);
+> > -			ret = -EEXIST;
+> > -			break;
+> > -		}
+> > -
+> >  		folio_unlock(folio);
+> >  		WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
+> >  			(npages - i) < (1 << max_order));
+> > @@ -889,7 +872,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+> >  		p = src ? src + i * PAGE_SIZE : NULL;
+> >  		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
+> >  		if (!ret)
+> > -			kvm_gmem_mark_prepared(folio);
+> > +			folio_mark_uptodate(folio);
+> >  
+> >  put_folio_and_exit:
+> >  		folio_put(folio);
+> > -- 
+> > 2.25.1
+> 
 
