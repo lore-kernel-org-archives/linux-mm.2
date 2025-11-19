@@ -4,202 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80AC3CF258C
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 08:33:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCFD3CF259E
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 08:52:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2C236B0024; Wed, 19 Nov 2025 03:33:00 -0500 (EST)
+	id EB4266B00A2; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB57B6B0027; Wed, 19 Nov 2025 03:33:00 -0500 (EST)
+	id E8B756B00A4; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2E356B009E; Wed, 19 Nov 2025 03:33:00 -0500 (EST)
+	id DA1046B00A5; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 991796B0024
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:33:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BC761403B0
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:33:00 +0000 (UTC)
-X-FDA: 84126691320.03.D3CF3D1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D81551C0004
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:32:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TGVncszb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf20.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=oliver.sang@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763541177; a=rsa-sha256;
-	cv=fail;
-	b=le3bLjG41qd4s2gcK8oy/9wXQq+Ea+7x3faiTV5bCVmFP0+4kS6vDBHOJE7m9bWW1jvasN
-	TAxc1f4u8HmKPaWvTo10DdcI7AjMktWvF2eNyxyXIE42v/Ua3RN1t9tS+m73kuB+CK8aC8
-	lpxT6NIPfSXaT1CNvdpCP/ooBylSCY8=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TGVncszb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf20.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=oliver.sang@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763541177;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C9C646B00A2
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 47CFF13AB2D
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:52:27 +0000 (UTC)
+X-FDA: 84126740334.27.6B1E047
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 05ECFA0006
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:52:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763542345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xPcee2QCr1oCBIANsWHuZhaw/QN27pWHUKVhZdMKXmo=;
-	b=unW0EKCosv+Um9pjnlmmCUnKjSpTLdqOOghOLRWTPVPy46qMWZ/BgVsN+RxYKJsKdKmuf8
-	tYjhS2QXb7mRIPZUXkU5EWUjL6Yiavu+wEytNEiR/ScvhfQSf/h+KcL4BJqMSUgPB+RsVD
-	6GG47sBW/lkhaMcWHudP0CnhDtlvzQk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763541176; x=1795077176;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=uWTsh+9W6L4OKU8I5QFR6y4aNxBhzi7MR+Wf9d8bgFw=;
-  b=TGVncszbqgeMYe0xX26aL9pD0U0qqfuwFobvsQ5yX4bJP9M5EWer3FJ+
-   uHxyywYVZXgLFhU4OZrq/Lv4XY1pE/WM/6SRCqkHPP9QLysLgGBPDdE6O
-   x2ldJ52Ew64OcBnqGFHMK/dnquGf6djML5DAEaHat75BrL1EhyVp652qq
-   oA442QoHnUQ3xRf6zqnJshtMEGrSMwe3oq/aDVh5PXVgqsBqC7T+9EUJA
-   9T1rDF2HaRelhwagQA4wxsivAQOu257yyMTX9XAYV8w2t2DjW0GbVJ7uO
-   sZDHz/EYygDj7gLUOmkUdxAG4yy4DolYJTviE1irqSO4QoeXMxFM+0zMM
-   w==;
-X-CSE-ConnectionGUID: Od/xquBsTT+HrzXRePek5A==
-X-CSE-MsgGUID: flAi9dxCQtGb1H0wULLVVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65472949"
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="65472949"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 00:32:54 -0800
-X-CSE-ConnectionGUID: DwlFGXT5SIOcUnxO66DqQw==
-X-CSE-MsgGUID: UqmeTotaQm+4Lu/nyrNVGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="195110912"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 00:32:54 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 19 Nov 2025 00:32:53 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 19 Nov 2025 00:32:53 -0800
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.66) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 19 Nov 2025 00:32:53 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UgJdAvbcIu1MwdcrywnUTr3YX0HFAzJrTNl5FSm8J2utP0QGOjeD3NIl6caYbroYaTmAXKWpCTlE9kpXcIaCXbX38Jin18LYtM787WJk8V4YbwAUaIYu0J7MAq5ktAqrx3v5k45bXWWlblNFRGiPg5WuaAaJ54AeaXPQeZ7apiHa5ELkod01V5mULtM1ccIIX7Dd3w3xQany4aFXjDaz0vrMEURG5iTJu1aTlM8OdI297K41iKwcTc84YxLkTsnsvHo0QI2VKNVOpcyIx65Ak1PTiEMaSUGPZCAaTGFHIGgtlEQK9v5LwWB3q0BCqfUEjLJBR1yoAk64gN0LMWfGNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xPcee2QCr1oCBIANsWHuZhaw/QN27pWHUKVhZdMKXmo=;
- b=IEXZWGub2t/p7LXXcmfaoEQtvHXfNgxUeVS69sza5UaH1tNHvxM84N6GReVI2vjrtmW/ZivvJQ0HjYjDQFaI02/XLoqEvs9iPe41Dc3FT2uOnOvsUTROXV1BEX3eJNLrQCBw6a58Mw/4qBuySyDTZpEuPeEi36W3+ognllCjIu/VAEE0mGWeX0pZlgd1VASXf2fO3zyfKyreWPoidRKm5vrfRfRyPZEHbGH8Z5PA1PkCn6038C47TRx/w2Jv0cewatVZsKK9wJIXIqB7rE6XjuwmUDaLqBIW8exgkQ+A/I5ztxA0AHwwQVOkSGzayNHdQBigt7YIUAxI67AyCoKenw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
- by DS4PPFEE549A404.namprd11.prod.outlook.com (2603:10b6:f:fc02::60) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
- 2025 08:32:46 +0000
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c%5]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
- 08:32:46 +0000
-Date: Wed, 19 Nov 2025 16:32:38 +0800
-From: kernel test robot <oliver.sang@intel.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-mm@kvack.org>,
-	<oliver.sang@intel.com>
-Subject: [vbabka:b4/sheaves-for-all] [slab]  a7317bb8f3:
- BUG:kernel_NULL_pointer_dereference,address
-Message-ID: <202511191644.dad64d88-lkp@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-ClientProxiedBy: SI2P153CA0006.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::22) To LV3PR11MB8603.namprd11.prod.outlook.com
- (2603:10b6:408:1b6::9)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=YD7I5Jcs69vLbIT2krq3Zlf0iG7ECwTQcD324vfja78=;
+	b=j9T6X1vPvLEIdKk3mw0lbZTvZlqVgt6LkK8EkjRaUBhZaEOyc9ZJBr94oVXHJ0fY6/A1wO
+	lM8rZnknL2o7Iaae3khxXYwgcMfKSrovwYlF9+dqOTu8Xrk1n23xEDxM5waFqkgENywVzW
+	IcWCWrQyU66UPnXCXg1e4af5KJRrwd0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763542345; a=rsa-sha256;
+	cv=none;
+	b=polaNprsjSy4XhRURfPBreD5hyn5bL7r6tL0VGmUafZtbPg8hJ8vOa8spx1GDEOKCxajhD
+	IWC2CILXgdCfc57CqV72V4NfoFFnxcmz/PfLtVf69hq28CEA8svz7egiui5hwQuB00+71g
+	EphNsj39WJ646nDmShohCuKF+pRz/gQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dBFb84HwXzKHMnv
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:51:48 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 7F9911A0A9A
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:52:16 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP2 (Coremail) with SMTP id Syh0CgDXf3Y5hR1pCbIYBQ--.49555S2;
+	Wed, 19 Nov 2025 16:52:16 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huawei.com
+Subject: [RFC -next] memcg: Optimize creation performance when LRU_GEN is enabled
+Date: Wed, 19 Nov 2025 08:37:22 +0000
+Message-Id: <20251119083722.1365680-1-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|DS4PPFEE549A404:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4130482-fa8d-4384-db94-08de27463745
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?me9Tv7mIO9gAK8ZayY9HUE2nauUkZethpQFnQisbBaEEqnq0YZe2XYx8zLF/?=
- =?us-ascii?Q?dzAzt25KopCRr6Pv6K+YwEYNMO16GGvHwc4pp/IDyNHPpHSPI5RLFlIh7Wfk?=
- =?us-ascii?Q?L+kj4ei6aqRWGSkc3EHJCltx+PjS+tbgOKFB7jmXKc/+II05JnYejEAA3h3S?=
- =?us-ascii?Q?2RnlyNFsDxG7iD9naQaRYyBK74rxXK+q2I+wKcNCsoWgQm9Ke5O7hwYZ5gGc?=
- =?us-ascii?Q?tNUSMae8C6KRvXvyJjr4KANcdyK+oXlFqtzAh16EHtoPt+g2iYsrmm3pPcff?=
- =?us-ascii?Q?P+S3qlf0bh8bB7LF9Jn/1qvI5B1Cpv3lC4ttPHqrG1C8HS0JZ9CzfICDHBk9?=
- =?us-ascii?Q?Bebn79yOMlDbckSD8e5KT4krJmkZVZ2b/98CiIqtoU7zGxlD6pbFLRdUkE2Y?=
- =?us-ascii?Q?7VdNviIlBRP+na+LufN9qpLQaQhiGGQFxDPDIVhi0y9XvTLY8Fa4019vwbXY?=
- =?us-ascii?Q?EeSPG6E7bJN6zpTGCtXj750Mn5muSNq/t69elGUW0LCNIHmuqks1z3sCzPOO?=
- =?us-ascii?Q?p/jGuZNf4ECggqMdP1A8Sj74YlB7zNH5mUty+P41LuB+JmC45cmpK8iH4MXR?=
- =?us-ascii?Q?jSD1vEXoAP1dIgo6YAPf4BFi1sIWJLEMaQdRIRpxap17ZvPO/acm438yMXAQ?=
- =?us-ascii?Q?vofkKoeTBWVgo5fogjGoeqHEIYgMmGPgtF+Y4Ccf8MHew8BxtqDa7+eUbPa2?=
- =?us-ascii?Q?jKYRpaSERPtI016Rv0teyTi8S+BpUrEAO4QogGEu0PWk8xMTKzQusYTSbT3g?=
- =?us-ascii?Q?9mOroSIBRScu7qI9uH1CIuUfdyDSm3e/mBO/aXR6fEA+4SUNchae9uAMltSf?=
- =?us-ascii?Q?F+BGEeMv/4pCJKRN9iH2IauhHYK1yzMKuCu3Qvmz9yBXuurHCHGGYn6sqAvq?=
- =?us-ascii?Q?6MIzBbeMxO0jxPAJH5gIbbcIvML0p8LkDDLGwXXltRtnCC85C6jz64K2s+XK?=
- =?us-ascii?Q?BlqOFSb/AwP6TD4iQ1ECLBlOum2kaAamDzxJvrqtai95LUxLiZhbeY5dVUkW?=
- =?us-ascii?Q?PCDahhD2j65f7Rco56J32f+jVEzWRo2j5wHS9cyDEXyIXeb43Yr1pxNPl/VD?=
- =?us-ascii?Q?rwdS19ErrCq6RMt1OnlM+622MQ4l96WiTghYCRPnf3mmbJgejh/pl8bqOf+4?=
- =?us-ascii?Q?9OlPAo8E35Z1U7OKtPbXkF9EVYTW4STlOQRg5/rDsSJnNQKwWWkGj2PgEelb?=
- =?us-ascii?Q?psvH6UnW92zQxFnXY803cpPAoPqMvTuvoLxOzioSabxAowoKJrU0YV26acBp?=
- =?us-ascii?Q?B4fmngFpw56pC39773p5ETgp6XM9Z+ilv0Z/El/XfQc+u9fK4Gl4aGhFKqWv?=
- =?us-ascii?Q?+R7GsOiZx7gfpFV4V5glGTTGYELAYB3BcbzneGw3+VfePCSZi3rCMOViDjfg?=
- =?us-ascii?Q?gSj63Dlsjt0JSkKUGWZD8FEgysLIkdGQn5nR2X7Xf+08e/nrCNQUhZxHCMLA?=
- =?us-ascii?Q?c22lcmjEd1BicqH5jwXXi9xVtOoZPnKJub5/2D6o7d1tyGqikWrsBw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LsjEKua4cZxY62cIzf5EqzjVBVS6svQT7GRCQ8zBOIWEAZgrFZEY0jJ7Nkmo?=
- =?us-ascii?Q?e56AbnMaUNmw3ZVV7zHCGgHSWi0eU2BTNE81n4U3kH4ii0qJb/VbSvnj7J1c?=
- =?us-ascii?Q?Fi+Mt58M5ISSLTHnieR19PjyYyQDdOJH5phIf9yvvLEcgVTJp4OAEm+URE1s?=
- =?us-ascii?Q?icGmm8UIGpeFH349dQwQFxPfG6en4nYmumtDIcjFoWcabaQvZ/fPlkoT4FTU?=
- =?us-ascii?Q?4eZ0nBrogq9zop0JwWwNZkL7WTdj+Aoy6SXcGBDa9s0WM1g5lwz9kAvoccLw?=
- =?us-ascii?Q?Qm0j716M8Ei89iFqAEL/g0R9DadAviLqggC0s3MFEVHjfiQiBzaYynQqL7IA?=
- =?us-ascii?Q?GCQSlp2eSNIWUoI+QBQKwN6W6MyLbLrzHKZF74lGjripWf1pzhYSvl489vqT?=
- =?us-ascii?Q?ek+kHjPAL8opU1aTjeetIhHWSS3Om61obqc+udvCqGV3mXEVJvzwBt36tHIz?=
- =?us-ascii?Q?myUmZN0PVPvumelPV74U/fdGXuOQXkAl9ZflTSxStSwShBqy4OZTrjihGvrd?=
- =?us-ascii?Q?tktaRMRLwkR4Gb3MWEwIXQhY/Qb7jqTdJNtLeXeregAE1gxJGxH/IfIqOCZ6?=
- =?us-ascii?Q?fIb0QFNNTu4XnQXei6po3UYU2WZzllZkLzg8iQ3aLWiWIvq3YVDDiLqJrhAf?=
- =?us-ascii?Q?93FkLV8897aFd9XH5xQjfSVeY0vZYjxxI7qrOmQ6o171ojy7ux1SkMURZVMj?=
- =?us-ascii?Q?/Tj1MDDfUbht7jdexNxPRDhv+uLSXtxiFwa7P6Urrgwy22O81sT6iUPhrAkG?=
- =?us-ascii?Q?tXWYIVC1cmBTi/HtQmOISxbyzUSUMVQ7agcehWXfuQ0+Ql6bLlkOEnZaPJHA?=
- =?us-ascii?Q?uZtiMv8SoY2ZvdhCvTWVFKVKWaE5Tj8VG+tif+Bopn1q3SICrTn9nGwBqQNF?=
- =?us-ascii?Q?gX7PMlcLB8yr5/xfBjNkACEJbt+U1x/9wr4PceC1LzhVjTxQU0Ofz7FsbwkS?=
- =?us-ascii?Q?bRVucVEHcBkn4U9L4bwF0RQuPveuN6szMTMbjZPKJqTGJBaRLcvigLtHNbPz?=
- =?us-ascii?Q?xNWWxvRZCUUaNOGr8w1A/KGiFC6eFp0ZqMNp6K5v/uknzzo7wNecwg0Kbtv8?=
- =?us-ascii?Q?bdk5czs9cGqAs0e90hSFQdDGgdp+pzHK9Oagijtd6etOSx+V2vCGWFUBmwse?=
- =?us-ascii?Q?fAZhPM3gFZrwKf45pELzgbovN3rPFWSbaqigwLOYxBIZJAEnMe4Wbw9OrL1g?=
- =?us-ascii?Q?NN+Awt/t0AWtI/4CRobX9RTjlQXQs6JCJKZ/rezTy1Xc1sV5hqx7CfOA7s4f?=
- =?us-ascii?Q?BiaEbiR7QMSwKknlH/eZY3JULCVLjIY43KFFApASn3THjA+yePAO+4hD9oli?=
- =?us-ascii?Q?cxq4jN75giuZQxR2ir/Ok6ccLmr5NwxCZyabV0/McoxdI38QXiGjKBi3MhQk?=
- =?us-ascii?Q?acSC8hgHyHVw/O578KHw/At8d8QLHWO5XU+gU68e0/Geg0hozYUj9AqLOVoU?=
- =?us-ascii?Q?Ga5hMVoH6XK7xKPYAdVbU7vgYCLRKPaBwCgitATCTVI9Wcl4KHrZa0WgXN1A?=
- =?us-ascii?Q?zpW7IVcz8f4oMcg3gaco8R0MzUVRkmKwHc8LYVjT104GmRRH2YJgm4UM4M0j?=
- =?us-ascii?Q?NXbABJFIPTbZzVmGBZ7nPwpOfCAoBg3vHWIyBp/V+heVzELO6izFwwPC2yG/?=
- =?us-ascii?Q?lg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4130482-fa8d-4384-db94-08de27463745
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 08:32:46.3348
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7DSLKcX56dtWubCOWY2qI2EAFhL8xTs2dCA9b8HlGc7YSlsi/6tlgMUJd1L2HlcC54H9ib8nafRFwH7xT7mtww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFEE549A404
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgDXf3Y5hR1pCbIYBQ--.49555S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Xw4xKw4fXw4Dtr45Ar1UZFb_yoWxXFWxpF
+	Z8G3sI9a95Jr43Kr43Jr4DC3ZIyw18XryYvry7Ga4akr13Gry8K3W8KF4jyFW5ZrZ5urs7
+	Wry5tw17GayUK3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
+	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IU0bAw3UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Stat-Signature: pwrs93d98eun98bok3prerdgd79xgsft
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D81551C0004
-X-Stat-Signature: r9yf1qi8xsnqucr1xaok3xjudfkbmo7z
-X-HE-Tag: 1763541175-324310
-X-HE-Meta: U2FsdGVkX18ELjrL3rcHogNMTHZCtvRHp/MqgQAsGYtxTc03CBl8LCFI01tciwMLIPLVEq2LwEAGw0YFZP5Y51OrcuFEbZuNTxETCdZJLA3dvbnwgCi4HZWDc686aE2OCftNAyoHpzIQnDTm90hkOMrhleSM83CzoPEWGMEE1882Y0rWIzETMCWCILy2PAEVoAPlow8WZ2IwfA+O/AyFbGLs1CpokEo3n1ea6asUtj11dpWWYsGBr5ui9C6aAlO+R6iMVugU7ztYoHyrZuzY+lwFFJsQQB8kqt8bH0oM390SO3OJSz33hfCyRXusVt6XZpTdGlqpY3GKrCnzxDavR8aY9EKCFv6UNs8zGWFraUMgZiV8osUbyDQ6DM4DyqeVfCATuOhqXqqiJbv2zXzDa9pRmI3731kxm/sM18YRTVdhjc2sRhTH9DfwFwCX7qVnT+9lJOx19eechXKTt1tkGnxYPzY/l0MiMPXzcmWfefkQgeYY4OS81T/hyCJFX9vXg9oYMgM3Ehsy0ipZERWhMgKClckaCUQ5IcGrj3Fn4Ckb84fTy8rSJYn5M/kXoW5Dke18cHPPeBunXw9RNJ+1MByQ6pyVNSjEteWAswZgMhMgAbp7jyP7P6v85cez/sC8vQHVCB+6FSvkJUe74NpEzpFYv+i2bLiRav3rSlDJHWtV3K12M0B3UN5GPgJtxk6H3k4qMBhMiFSGVub7fRCnAyWt7WJxFiVQxs/ZBThRtUV1mChcLqn4fYBRdW/DrNlqm12m9EqiAeGusDyYQDH+R7CA14fiYgp+Xo/M/Bw7p99oV1Gef9Zpl8V7lXRdZUH4i2ok3QuUT5/KhHf+EJOy3JpXkynmjgcN1uLASOdoUipj+fljxLo7wojk/r5L4rktG1R2F48M4CzPmaZXeAPxpXwg2/y07gTgVyeh94CYs/x6/BybmSJn3amURBdqabcN7xhR0vcuUz24Bya9PFa
- Qel1lhSr
- 1SVq/4G2dyZu4EQIBxi09XlHOPaywCBUhACoXNvJUlpmv4mx4m7p36z8JNDQweCkHxSgxm4A8L7Bpo5jdry5ZmwHPLrduiVtlXSqt+1qzfML9bxiLWZxSBUI/FsaTZzbKhzNheJ5RJFXDgiEEXQY9dxSN7OaxbrcVrCPDoA/Mi05lbhn8eBTNaqnxhFcnU5J5/q7AVSk2WcoOl9NaQHkIGNZGBl5UlxPTNE4H34Ce8riC1+EfZnF/KErbmG5EMsoltHLkact1Qt7gxi2sV5/Ptr/+i3daOiLDbNWOyiD7+PbmfGmv/uYInwuchTfgbkoJ2i1xRqBZXPRHxj6NHcXDTO0LypYZdz+xcJWjXMniRjfhJTzUZMqRBQ4a3Lv4m1PcMOkKYZrGLlNgMOigwiwSKTDGn2s3U32i0FxCB6j0T+QClZZQdhuAYPjYPgTSwkuhyjyqbMEaTMLTCe3QsrZWC2+MsRB5UWCoHVhF+XH8kcCYIgn5Miey2BKzaM2jmSw+X3xJ+cUA+cyg2MgIj/ieOwEduko4gT+Raw4Ri9jldFm+bwsZ8c0RabdzEx1r3MKtOlTS0wiOcmeXN545MZb6/3pIYaCxOGPANA9ZHFbCuwg10EqdPh3iYRN8Lqod6pC4i6bQpslXxepGZFYOXwPoX7gGfA==
+X-Rspamd-Queue-Id: 05ECFA0006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763542340-784467
+X-HE-Meta: U2FsdGVkX19l0vV71bgvPZtT635QPV8HieGH6C0yOnvyGa+dIW5GskpLxCHiMZddCJd0KmNJXED+/KzitMZ1Wgxy6f9x5T9Rh8R8bxtz8jvoj4NLbY7wa+X9s4Ie1Fwam9igGEp2Z6Pi/QLoRpbJ15OaK0sCU8FK0ieslPEnW1FPzNkb4dWABakSBHYlciUf8motRtPuuwrOKiRf2hD0b5UUNBK27OMBTDN4pry89s9t+DELZGm2Q8o9O39SWs5eS/xQhso4nv0rzEM5xwJzDQcYgu4PrIgGvt6oztedppjH6YB358zNjsevupYZeIWM/R4YZOvwsxHkhZzyTDOH1HcGRfi7X2UGcttWh6HM/zi5D5LSz0SKHWaREscb5loPA5mRXJyCPsxucn/uNyNHcrcvVWqrCjlN7cL+COWRsn88U6hTsFRQmheA7/V8ITf9kNanvPOg0BJ5Z1aV8mmcJM4/JJa01IsWACexd7DmedHOB3EwNg7TzU7K4nO8lManNxCcvM8ppMREohF5MFlGzX/C5nK3yeN3bmTwDAcI4NiG9BGo+uHBmcGIEMn8Z9ftXlPyUaTtiWv9R4lT/NYqOMAJZ4b226UqjEZQNBzyQt0x6X+ji6P10r79ITv/KXsUyh6H3DgzUdnqPG8EW0ei8mCqRd+hJwlfU+SvEZ9rHXOHrvszuD09vnZByEYanwO9wcHKFJN21UtGa8bJ6+Mwiy4hIz4zhSBlADTubN2AeTIj+crRNMrJTBJrwnu7E0PNIH3dHvjhJyXp+yR7bClJIaTqwCUIO96rZoPO46x6e+1yNVVRff8KabmUUczUg93gqd+FCHcxcEkbRae6bqrCaNpGhr6IhUhDYgdQYYDaCJLjyuTcs5O0nIFwVz3/u50LZ0TXMhvbaw8U1LChbsS33SYE8pDIa2giLObUOWGdJme+K6+cH/jQTdr0iUKwQx8FKVXjB1SfKP+zrkeQnO4
+ 7oL50Qdv
+ WNt3jrJ2vfP8/f3wjDuvruztpb7nsRI+xoup/TwIEnlsQoduN42ibeWlGL6np7k+lU0JBAEmh63vSMhCv1D/rJ9mDivIj4rg5yqEZuSO9PdOVJlrcRSUCTpCxzkgQ9VY+2/xv4YbCE1aqr8bMBxk/OIfjtO6a5xIc1InMSyqiXO6NaSIm4gSPo7G9wQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,152 +113,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Chen Ridong <chenridong@huawei.com>
 
+With LRU_GEN=y and LRU_GEN_ENABLED=n, a performance regression occurs
+when creating a large number of memory cgroups (memcgs):
 
-Hello,
+	# time mkdir testcg_{1..10000}
 
-kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
+	real	0m7.167s
+	user	0m0.037s
+	sys	0m6.773s
 
-commit: a7317bb8f3c4bfb06e805a5b8273d0f6f7fb3dd7 ("slab: remove cpu (partial) slabs usage from allocation paths")
-https://git.kernel.org/cgit/linux/kernel/git/vbabka/linux.git b4/sheaves-for-all
+	# time mkdir testcg_{1..20000}
 
-in testcase: boot
+	real	0m27.158s
+	user	0m0.079s
+	sys	0m26.270s
 
-config: x86_64-rhel-9.4
-compiler: gcc-14
-test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 32G
+In contrast, with LRU_GEN=n, creation of the same number of memcgs
+performs better:
 
-(please refer to attached dmesg/kmsg for entire log/backtrace)
+	# time mkdir testcg_{1..10000}
 
+	real	0m3.386s
+	user	0m0.044s
+	sys	0m3.009s
 
-+---------------------------------------------+------------+------------+
-|                                             | 5788d3ad0f | a7317bb8f3 |
-+---------------------------------------------+------------+------------+
-| boot_successes                              | 15         | 0          |
-| boot_failures                               | 0          | 15         |
-| BUG:kernel_NULL_pointer_dereference,address | 0          | 15         |
-| Oops                                        | 0          | 15         |
-| RIP:get_partial_node                        | 0          | 15         |
-| Kernel_panic-not_syncing:Fatal_exception    | 0          | 15         |
-+---------------------------------------------+------------+------------+
+	# time mkdir testcg_{1..20000}
 
+	real	0m6.876s
+	user	0m0.075s
+	sys	0m6.121s
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <oliver.sang@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202511191644.dad64d88-lkp@intel.com
+The root cause is that lru_gen node onlining uses hlist_nulls_add_tail_rcu,
+which traverses the entire list to find the tail. This traversal scales
+with the number of memcgs, even when LRU_GEN is runtime-disabled.
 
+Fix this by adding a per-lru_gen tail pointer to track the list's tail.
+Appending new nodes now uses the tail pointer directly, eliminating full
+list traversal.
 
-[    0.200136][    T0] BUG: kernel NULL pointer dereference, address: 0000000000000020
-[    0.200965][    T0] #PF: supervisor read access in kernel mode
-[    0.201586][    T0] #PF: error_code(0x0000) - not-present page
-[    0.202222][    T0] PGD 0 P4D 0
-[    0.202577][    T0] Oops: Oops: 0000 [#1] SMP PTI
-[    0.203085][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.18.0-rc3-00060-ga7317bb8f3c4 #1 VOLUNTARY
-[    0.204159][    T0] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[    0.205286][    T0] RIP: 0010:get_partial_node (mm/slub.c:586 mm/slub.c:601 mm/slub.c:3575)
-[    0.205916][    T0] Code: 00 00 00 0f 1f 44 00 00 41 8b 50 10 41 8b 70 30 49 8b 44 24 28 4d 8b 74 24 20 4c 01 ee 48 89 44 24 28 48 8b 5c 24 28 49 89 c7 <48> 8b 3e 49 33 b8 c0 00 00 00 48 0f ce 48 89 f9 66 89 c3 48 31 f1
-All code
-========
-   0:	00 00                	add    %al,(%rax)
-   2:	00 0f                	add    %cl,(%rdi)
-   4:	1f                   	(bad)
-   5:	44 00 00             	add    %r8b,(%rax)
-   8:	41 8b 50 10          	mov    0x10(%r8),%edx
-   c:	41 8b 70 30          	mov    0x30(%r8),%esi
-  10:	49 8b 44 24 28       	mov    0x28(%r12),%rax
-  15:	4d 8b 74 24 20       	mov    0x20(%r12),%r14
-  1a:	4c 01 ee             	add    %r13,%rsi
-  1d:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
-  22:	48 8b 5c 24 28       	mov    0x28(%rsp),%rbx
-  27:	49 89 c7             	mov    %rax,%r15
-  2a:*	48 8b 3e             	mov    (%rsi),%rdi		<-- trapping instruction
-  2d:	49 33 b8 c0 00 00 00 	xor    0xc0(%r8),%rdi
-  34:	48 0f ce             	bswap  %rsi
-  37:	48 89 f9             	mov    %rdi,%rcx
-  3a:	66 89 c3             	mov    %ax,%bx
-  3d:	48 31 f1             	xor    %rsi,%rcx
+After applying this patch, memcg creation performance with LRU_GEN=y
+matches the fully disabled baseline:
 
-Code starting with the faulting instruction
-===========================================
-   0:	48 8b 3e             	mov    (%rsi),%rdi
-   3:	49 33 b8 c0 00 00 00 	xor    0xc0(%r8),%rdi
-   a:	48 0f ce             	bswap  %rsi
-   d:	48 89 f9             	mov    %rdi,%rcx
-  10:	66 89 c3             	mov    %ax,%bx
-  13:	48 31 f1             	xor    %rsi,%rcx
-[    0.207999][    T0] RSP: 0000:ffffffff84203cf0 EFLAGS: 00010002
-[    0.208637][    T0] RAX: 0000000000200001 RBX: 0000000000200001 RCX: ffffffff82a9b66d
-[    0.209498][    T0] RDX: 0000000000060010 RSI: 0000000000000020 RDI: ffff8b5640041000
-[    0.210361][    T0] RBP: ffffffff84203d50 R08: ffffffff84f68980 R09: ffff8b5640041000
-[    0.211194][    T0] R10: ffffffff83ff45c0 R11: ffff8b5640041000 R12: fffffc2a44001040
-[    0.212049][    T0] R13: 0000000000000000 R14: ffff8b5640041080 R15: 0000000000200001
-[    0.212927][    T0] FS:  0000000000000000(0000) GS:ffff8b5dda9f2000(0000) knlGS:0000000000000000
-[    0.213908][    T0] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.214593][    T0] CR2: 0000000000000020 CR3: 0000000581e24000 CR4: 00000000000000b0
-[    0.215442][    T0] Call Trace:
-[    0.215786][    T0]  <TASK>
-[    0.216091][    T0]  ? pcpu_block_update (mm/percpu.c:631)
-[    0.216589][    T0]  ? init_kmem_cache_nodes (mm/slub.c:7639)
-[    0.217107][    T0]  ___slab_alloc (mm/slub.c:3663 (discriminator 1) mm/slub.c:4473 (discriminator 1))
-[    0.217604][    T0]  ? pcpu_chunk_relocate (mm/percpu.c:248 mm/percpu.c:557)
-[    0.218108][    T0]  ? pcpu_alloc_area (mm/percpu.c:1262)
-[    0.218590][    T0]  ? init_kmem_cache_nodes (mm/slub.c:7639)
-[    0.219144][    T0]  ? init_kmem_cache_nodes (mm/slub.c:7639)
-[    0.219683][    T0]  kmem_cache_alloc_node_noprof (mm/slub.c:4934 (discriminator 1) mm/slub.c:4998 (discriminator 1))
-[    0.220268][    T0]  init_kmem_cache_nodes (mm/slub.c:7639)
-[    0.220774][    T0]  do_kmem_cache_create (mm/slub.c:8582 (discriminator 1))
-[    0.221319][    T0]  create_boot_cache (mm/slab_common.c:677)
-[    0.221831][    T0]  kmem_cache_init (mm/slub.c:8463)
-[    0.222303][    T0]  mm_core_init (mm/mm_init.c:2716)
-[    0.222761][    T0]  start_kernel (init/main.c:972)
-[    0.223218][    T0]  x86_64_start_reservations (arch/x86/kernel/head64.c:310)
-[    0.223768][    T0]  x86_64_start_kernel (??:?)
-[    0.224247][    T0]  common_startup_64 (arch/x86/kernel/head_64.S:419)
-[    0.224744][    T0]  </TASK>
-[    0.225033][    T0] Modules linked in:
-[    0.225420][    T0] CR2: 0000000000000020
-[    0.225844][    T0] ---[ end trace 0000000000000000 ]---
-[    0.226389][    T0] RIP: 0010:get_partial_node (mm/slub.c:586 mm/slub.c:601 mm/slub.c:3575)
-[    0.226958][    T0] Code: 00 00 00 0f 1f 44 00 00 41 8b 50 10 41 8b 70 30 49 8b 44 24 28 4d 8b 74 24 20 4c 01 ee 48 89 44 24 28 48 8b 5c 24 28 49 89 c7 <48> 8b 3e 49 33 b8 c0 00 00 00 48 0f ce 48 89 f9 66 89 c3 48 31 f1
-All code
-========
-   0:	00 00                	add    %al,(%rax)
-   2:	00 0f                	add    %cl,(%rdi)
-   4:	1f                   	(bad)
-   5:	44 00 00             	add    %r8b,(%rax)
-   8:	41 8b 50 10          	mov    0x10(%r8),%edx
-   c:	41 8b 70 30          	mov    0x30(%r8),%esi
-  10:	49 8b 44 24 28       	mov    0x28(%r12),%rax
-  15:	4d 8b 74 24 20       	mov    0x20(%r12),%r14
-  1a:	4c 01 ee             	add    %r13,%rsi
-  1d:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
-  22:	48 8b 5c 24 28       	mov    0x28(%rsp),%rbx
-  27:	49 89 c7             	mov    %rax,%r15
-  2a:*	48 8b 3e             	mov    (%rsi),%rdi		<-- trapping instruction
-  2d:	49 33 b8 c0 00 00 00 	xor    0xc0(%r8),%rdi
-  34:	48 0f ce             	bswap  %rsi
-  37:	48 89 f9             	mov    %rdi,%rcx
-  3a:	66 89 c3             	mov    %ax,%bx
-  3d:	48 31 f1             	xor    %rsi,%rcx
+	#time mkdir testcg_{1..10000}
 
-Code starting with the faulting instruction
-===========================================
-   0:	48 8b 3e             	mov    (%rsi),%rdi
-   3:	49 33 b8 c0 00 00 00 	xor    0xc0(%r8),%rdi
-   a:	48 0f ce             	bswap  %rsi
-   d:	48 89 f9             	mov    %rdi,%rcx
-  10:	66 89 c3             	mov    %ax,%bx
-  13:	48 31 f1             	xor    %rsi,%rcx
+	real	0m3.368s
+	user	0m0.025s
+	sys	0m3.012s
 
+	# time mkdir testcg_{1..20000}
+	real	0m6.742s
+	user	0m0.085s
+	sys	0m5.995s
 
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20251119/202511191644.dad64d88-lkp@intel.com
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+---
+ include/linux/mmzone.h |  4 +++
+ mm/vmscan.c            | 78 ++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 75 insertions(+), 7 deletions(-)
 
-
-
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 4398e027f450..bdee57b35126 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -513,6 +513,8 @@ struct lru_gen_folio {
+ 	u8 gen;
+ 	/* the list segment this lru_gen_folio belongs to */
+ 	u8 seg;
++	/* the bin index this lru_gen_folio is queued on */
++	u8 bin;
+ 	/* per-node lru_gen_folio list for global reclaim */
+ 	struct hlist_nulls_node list;
+ };
+@@ -610,6 +612,8 @@ struct lru_gen_memcg {
+ 	unsigned long nr_memcgs[MEMCG_NR_GENS];
+ 	/* per-node lru_gen_folio list for global reclaim */
+ 	struct hlist_nulls_head	fifo[MEMCG_NR_GENS][MEMCG_NR_BINS];
++	/* cached tails to speed up enqueueing */
++	struct hlist_nulls_node *tails[MEMCG_NR_GENS][MEMCG_NR_BINS];
+ 	/* protects the above */
+ 	spinlock_t lock;
+ };
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 8890f4b58673..6c2665e48f19 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4299,6 +4299,66 @@ enum {
+ 	MEMCG_LRU_YOUNG,
+ };
+ 
++static void memcg_lru_add_head_locked(struct pglist_data *pgdat,
++				      struct lruvec *lruvec, int gen, int bin)
++{
++	struct lru_gen_memcg *memcg_lru = &pgdat->memcg_lru;
++	struct hlist_nulls_head *head = &memcg_lru->fifo[gen][bin];
++	struct hlist_nulls_node *node = &lruvec->lrugen.list;
++	bool empty = !memcg_lru->tails[gen][bin];
++
++	hlist_nulls_add_head_rcu(node, head);
++	lruvec->lrugen.bin = bin;
++
++	if (empty)
++		memcg_lru->tails[gen][bin] = node;
++}
++
++static void memcg_lru_add_tail_locked(struct pglist_data *pgdat,
++				      struct lruvec *lruvec, int gen, int bin)
++{
++	struct lru_gen_memcg *memcg_lru = &pgdat->memcg_lru;
++	struct hlist_nulls_head *head = &memcg_lru->fifo[gen][bin];
++	struct hlist_nulls_node *node = &lruvec->lrugen.list;
++	struct hlist_nulls_node *tail = memcg_lru->tails[gen][bin];
++
++	if (tail) {
++		WRITE_ONCE(node->next, tail->next);
++		WRITE_ONCE(node->pprev, &tail->next);
++		rcu_assign_pointer(hlist_nulls_next_rcu(tail), node);
++	} else {
++		hlist_nulls_add_head_rcu(node, head);
++	}
++
++	memcg_lru->tails[gen][bin] = node;
++	lruvec->lrugen.bin = bin;
++}
++
++static void memcg_lru_del_locked(struct pglist_data *pgdat, struct lruvec *lruvec,
++				 bool reinit)
++{
++	int gen = lruvec->lrugen.gen;
++	int bin = lruvec->lrugen.bin;
++	struct lru_gen_memcg *memcg_lru = &pgdat->memcg_lru;
++	struct hlist_nulls_head *head = &memcg_lru->fifo[gen][bin];
++	struct hlist_nulls_node *node = &lruvec->lrugen.list;
++	struct hlist_nulls_node *prev = NULL;
++
++	if (hlist_nulls_unhashed(node))
++		return;
++
++	if (memcg_lru->tails[gen][bin] == node) {
++		if (node->pprev != &head->first)
++			prev = container_of(node->pprev, struct hlist_nulls_node, next);
++		memcg_lru->tails[gen][bin] = prev;
++	}
++
++	if (reinit)
++		hlist_nulls_del_init_rcu(node);
++	else
++		hlist_nulls_del_rcu(node);
++}
++
+ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+ {
+ 	int seg;
+@@ -4326,15 +4386,15 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
+ 	else
+ 		VM_WARN_ON_ONCE(true);
+ 
++	memcg_lru_del_locked(pgdat, lruvec, false);
++
+ 	WRITE_ONCE(lruvec->lrugen.seg, seg);
+ 	WRITE_ONCE(lruvec->lrugen.gen, new);
+ 
+-	hlist_nulls_del_rcu(&lruvec->lrugen.list);
+-
+ 	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
+-		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
++		memcg_lru_add_head_locked(pgdat, lruvec, new, bin);
+ 	else
+-		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
++		memcg_lru_add_tail_locked(pgdat, lruvec, new, bin);
+ 
+ 	pgdat->memcg_lru.nr_memcgs[old]--;
+ 	pgdat->memcg_lru.nr_memcgs[new]++;
+@@ -4365,7 +4425,7 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
+ 
+ 		lruvec->lrugen.gen = gen;
+ 
+-		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[gen][bin]);
++		memcg_lru_add_tail_locked(pgdat, lruvec, gen, bin);
+ 		pgdat->memcg_lru.nr_memcgs[gen]++;
+ 
+ 		spin_unlock_irq(&pgdat->memcg_lru.lock);
+@@ -4399,7 +4459,7 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
+ 
+ 		gen = lruvec->lrugen.gen;
+ 
+-		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
++		memcg_lru_del_locked(pgdat, lruvec, true);
+ 		pgdat->memcg_lru.nr_memcgs[gen]--;
+ 
+ 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
+@@ -5664,8 +5724,10 @@ void lru_gen_init_pgdat(struct pglist_data *pgdat)
+ 	spin_lock_init(&pgdat->memcg_lru.lock);
+ 
+ 	for (i = 0; i < MEMCG_NR_GENS; i++) {
+-		for (j = 0; j < MEMCG_NR_BINS; j++)
++		for (j = 0; j < MEMCG_NR_BINS; j++) {
+ 			INIT_HLIST_NULLS_HEAD(&pgdat->memcg_lru.fifo[i][j], i);
++			pgdat->memcg_lru.tails[i][j] = NULL;
++		}
+ 	}
+ }
+ 
+@@ -5687,6 +5749,8 @@ void lru_gen_init_lruvec(struct lruvec *lruvec)
+ 
+ 	if (mm_state)
+ 		mm_state->seq = MIN_NR_GENS;
++
++	lrugen->bin = 0;
+ }
+ 
+ #ifdef CONFIG_MEMCG
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
 
 
