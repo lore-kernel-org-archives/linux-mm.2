@@ -4,136 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FE7FCF2591
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 657C5CF34A1
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:30:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B09A36B0029; Wed, 19 Nov 2025 08:27:16 -0500 (EST)
+	id BFB726B0012; Wed, 19 Nov 2025 08:30:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABA9A6B002B; Wed, 19 Nov 2025 08:27:16 -0500 (EST)
+	id BAB836B0030; Wed, 19 Nov 2025 08:30:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A8A26B00D2; Wed, 19 Nov 2025 08:27:16 -0500 (EST)
+	id A9A966B009E; Wed, 19 Nov 2025 08:30:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8497C6B0029
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:27:16 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 356D4C047B
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:27:16 +0000 (UTC)
-X-FDA: 84127432872.02.421AD80
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BADDB14000A
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:27:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="RMWOXnF/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9LYejATv;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="RMWOXnF/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9LYejATv;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 96DCC6B0012
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:30:08 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4425258F9C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:30:08 +0000 (UTC)
+X-FDA: 84127440096.03.AB1D647
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AFA43C0014
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:30:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CJmkRcmE;
+	spf=pass (imf10.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763558834;
+	s=arc-20220608; t=1763559006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pQ44aemiqJtq0zuhYxg46Kkv6bvog9XT2UPmBVw0jms=;
-	b=aNVpHp5kS0zXorAW/9JMFLf+bJZ71WghjHlTcuP7OHlWkB6FN0EaCCZz5d9CHE17ingXCg
-	L+w5fDeYUuWnl1U0xL0siNf+GXxmguUFshVxFwHYas4dQoWuIUUl7lBuZXtib1AkEL72pP
-	Qh1Z4h/DNjes+7lK8rJ9QzXrOxhf978=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="RMWOXnF/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9LYejATv;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="RMWOXnF/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9LYejATv;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763558834; a=rsa-sha256;
+	bh=ulGpNYQnSvgmpTjzN1a5zt6/Vo1Htjymkdyk0Lii2iw=;
+	b=IpWj34ZRV0lwwt/Rvv6t/Bn/CkIbH6SUnp02Ph2eB5/BIaRFGs1MpHMI2kMKNDXrmpFqRf
+	2GuIu+DMKb2xnw9bamsreCSGwN9ZNG6/Zm4AVkq0U6jck5RSu3whHPo2nMwxSirOr+IDfi
+	QRT4+i1dkMLjhO+S9xepUDcyjmtRKv4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763559006; a=rsa-sha256;
 	cv=none;
-	b=3rz8A90cC2RValIZzxv/exJ3WT8eG7oISR6V58HvPIEFzYF8Ye4sLcXtDeaUd7o+M0UER6
-	hmyngOFEm3+PCVlbkFS/M7ta96mYaLPCmmmguY9yDarjTZCKoIXEb138u/lRSo2WeJWP5S
-	jZAbKnj8t2g2ivBC3i8G5kmij4xniaI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1DF202122F;
-	Wed, 19 Nov 2025 13:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763558832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pQ44aemiqJtq0zuhYxg46Kkv6bvog9XT2UPmBVw0jms=;
-	b=RMWOXnF/ZNFkgMlOeBmixrq5P+Jky/xvy/zWvHNTcg2baoZYZUB4kLAyTLQHYQLNNUxnE9
-	BYPR/O6m4Q5pHJm3SRZi7hEwLL7f2LHn7gfzSMpbSgiGgt3fXJYQH/arQ+gewvWAUt4kIa
-	u71FSPx6juE+l1yS8fvxYJxBijv/A9c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763558832;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pQ44aemiqJtq0zuhYxg46Kkv6bvog9XT2UPmBVw0jms=;
-	b=9LYejATvmFovj4posftKnmnywuSGp3r7VTCOjjB+7yjVLxPMUHMF6HNd8YUzKj7pHJxX5k
-	EB4N0NtjKCDF2NDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763558832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pQ44aemiqJtq0zuhYxg46Kkv6bvog9XT2UPmBVw0jms=;
-	b=RMWOXnF/ZNFkgMlOeBmixrq5P+Jky/xvy/zWvHNTcg2baoZYZUB4kLAyTLQHYQLNNUxnE9
-	BYPR/O6m4Q5pHJm3SRZi7hEwLL7f2LHn7gfzSMpbSgiGgt3fXJYQH/arQ+gewvWAUt4kIa
-	u71FSPx6juE+l1yS8fvxYJxBijv/A9c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763558832;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pQ44aemiqJtq0zuhYxg46Kkv6bvog9XT2UPmBVw0jms=;
-	b=9LYejATvmFovj4posftKnmnywuSGp3r7VTCOjjB+7yjVLxPMUHMF6HNd8YUzKj7pHJxX5k
-	EB4N0NtjKCDF2NDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B21B3EA62;
-	Wed, 19 Nov 2025 13:27:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nnHREq7FHWl4NgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 19 Nov 2025 13:27:10 +0000
-Date: Wed, 19 Nov 2025 13:27:08 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Mark Brown <broonie@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Jann Horn <jannh@google.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>, Aishwarya.TCV@arm.com
-Subject: Re: [PATCH v3 3/8] mm: implement sticky VMA flags
-Message-ID: <4dodae73i5ganur6llvbbxcojt4uailsxs6sr5w2jr4a7tzxkf@26rmrmcdjvlz>
-References: <cover.1762531708.git.lorenzo.stoakes@oracle.com>
- <1ee529ff912f71b3460d0d21bc5b32ca89d63513.1762531708.git.lorenzo.stoakes@oracle.com>
- <25cb4b6a-035b-4193-a8db-685fc4c58507@sirena.org.uk>
+	b=vFXei+ZTtffy2Fv8asyDqTudtruDgXzukg9L9Khsiy0bfVO24orpSOuHFpiTe58b20pTjW
+	UQDBZfH6oinHFm6nrNr1t/XfCNySAyx1+LGqNq+0rE5PBOHnOJ+bzAXJ/8c0FHMU0Douep
+	5R0cvYWDobpjZomcWpiWKlvDYkitwDY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CJmkRcmE;
+	spf=pass (imf10.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 26D4560123;
+	Wed, 19 Nov 2025 13:30:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B920DC19425;
+	Wed, 19 Nov 2025 13:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763559005;
+	bh=T77xD4ouQwJfrrfoYJul3nkxhRgI6f45RqfVLeuXla0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CJmkRcmExDwPt0NuCANFi896HuCFEIGU3LYAoLvhl8S3uU9mfBypEzVSr32GsqZy0
+	 9/i6r19RZmZ62wtupphqnAO8hbyri/wPrlx+2egmQAVVAfXzAjAQg9//PYFGan5bni
+	 pk0qcg+vRudcykukDUhBBIgqjiqJBtVsRDmSGRqW0pz5Gglk6LGSk41HQnN10/vOll
+	 y837YDb/TkXoHX8I8N3jo+MHBgeNPV8Cz170FjUyldCJaY8TGh2bFXWSLULpw+FO6d
+	 eb4+355odBMqKRZiIPwYiwF+iwiQXKJMUxv42Leegovr8lnDq2Mv1Ats+WCCrLVsSJ
+	 k/AyOs5u/QaIA==
+Date: Wed, 19 Nov 2025 15:30:00 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH v8 06/11] dma-buf: provide phys_vec to scatter-gather
+ mapping routine
+Message-ID: <20251119133000.GB18335@unreal>
+References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
+ <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
+ <BN9PR11MB5276BC3C0BDA85F0259A35058CD7A@BN9PR11MB5276.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <25cb4b6a-035b-4193-a8db-685fc4c58507@sirena.org.uk>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BADDB14000A
-X-Stat-Signature: rtq9frw768zh81z4sstf3pdny8c6pxut
+In-Reply-To: <BN9PR11MB5276BC3C0BDA85F0259A35058CD7A@BN9PR11MB5276.namprd11.prod.outlook.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AFA43C0014
+X-Stat-Signature: o1m4h5uaioeezhfy7cfducf4nqzam8ee
 X-Rspam-User: 
-X-HE-Tag: 1763558833-375092
-X-HE-Meta: U2FsdGVkX1/vu59ory1WC6LlhWEQb6azOUPNcvyJ/kO3CDDwneeeIhl3s8l2zvjBwYige3tO/uNqRpo7kWUF0VghIiFbYv+tWXkl1YHPjumZDTAHISI/YRlYeVXo+hP/wsGza8Bcj1jqczWOGYgvBxo2E7sYIw7IvgVhNZhjcplel6biBYUlhS4xdrLEaufwZnzAEfdwb3wTV1yYAiJyIHx9sK44w406jCEXGIQ98Mr3l5YW6OX4jdna5vNd5+c2a0Vd/axYVTUSBFkaIBnJnyYeuMs9hOXCxr1lV4LJNuAZY6moXzPfZVmAqw1AD1h4XaovjNp88y/oZt0yM1qToEho0xZ2b5k3qWHWlcSSGt/UNkrijGg1RSVW686nZdDw8AMeS+0A+ly25UAJfPKawBoPR7xx/hpjxKVDSWKexI3oxZrTuOGJJ5xIe5dPCuvM3b5KVOr/sb8lIdPxfqmVbZNBVh+8IqyluoGFyXqxt+tD+ghLvPDFWhwh+L3IuhoBCD2KFd2uUSEjc2w1tnqtZKdFKCWmqUEsL23wK8gZJFzM+vQ60xn2wfq5lf4KNCvufyN/+gXWOA90AmZXsNX/e8jYxzF5zWxlgdzrMahFHQ+M3xbO68omYLKlRoyoUKbxlG0kQE9aS6Qb1mh+86STGzR92gnSDt2n6Zjw0tqB9JSHFZzpup9JEoQ+Qo7nFKd2ApuSgKx5DjWb2hyino/YtALUN/TQz87hVhROSk57dcu4cHL80C4Q3hJzRGPCFJOIUvo/mHFFg4SQ/FlSUkD3KiCHzmF0ScrVC2ceQcDg8wuUdF7eJf3Qk8ectfuBZRjv8XiANL9mPF5JTWgniFCxW1+0gIeN6s4pcJ137/7raPaclk9+wZnQ2JRXiB0XPCtFu1nNRWCgLDfMXeOOsCx9q6zTYU/s7EmA7nXSWuiIQrMS3V1j8ygVln/jVHhp8ZVjINFjiYIGJAdXkP9BtjZ
- gkBgvg1d
- yevihW4ivcl66kWqrnbbbmqRAo7+dWw+4YI0PVkCbRqRBRQIv43USLkR92n/gqtJiZ2H++LlLFA2RgYT3w3ziDy/oAAQmJNm13EtCbv/aNhq4fWCFb5ZNN8Fp/jAKVsesMPNsT7HrSQ8Jry6OiiuqgxoIsEvzNPhHv0qMemWy0LkUMfv4tW3f5IujH/kq0/3cbiRTjGAEV+9ST2eGdj211ph7SSYiMwqNPbvzPdbufSfsM+Nze3EwrC2R0Sz6Os9pdX0RWYJMI6jjO2aym01TkuuQWc5fps8mxdRvMaMNr64K3P4=
+X-HE-Tag: 1763559006-965523
+X-HE-Meta: U2FsdGVkX1+16J1r/skBNdq5+k00hAJK1jfVskTo2IiMbFgcG6H1QtbbBslnE8pTrqdADmpEvtP2lnUzsTyWYt4yJ4NzotV8ylptKJoYY5nYfFCTmD2rAfRkH1TlA8Byj/73XYoYD3TfH9JmGpc0AsxJ67wyiCf0ej66Zy2Zcj0dJj2yt5m20Hdjam7Aze2CoMIXWVtzrFd1T1pw5GYI+ws9UwnWj4cW1BnZtTJ0N6QXhNy8+/nnn52JypzMwSsCD8jrCh5v3Uo98PYWJPS7eWK0YqvrkuqIp7K8Q9zM5xnQ8P0KEnpyuEdJJd8k51lZjd96AZyIRQgSZfxyN8Qx154pzmzrjcW2iFD7TiKzop//4UtfFIJna976lhMN1U95/aUWwOK4jztprqGvwM4ky/AUIZSbwJp39E/uPXq+rZDgfg9w2EYK6yMjcOt+58SWoaGiTdp5nVQbFR1tMl17YaMe6TfWbbAJil+2bIePniz+n9zoo0wZPxEcpk48XI+Sbnya5pzdsrv/ydF7bMhP0rVeEDBz3VvCoTDzyImF8zbNrINL0waXLXvrbICgHuibhTdQcL1C+Gg9Ue3PURBziP2Bn1oaDEf5i+JCcv/aX9NQNY/XQFdZl9i/M+9KgF1WMuaIpsBcaj713ljEsvlyAaxuauNW4p/rGhk1RRA2PTmxvPtIJJtvJMXuSx/1cvJYB0WJpFznpX2RiiABvfY+HQRg3fP/wG/0AS72Pnth4Z/ELl1kwsjsg6+6v1N7So8nfuiBhR/NZg/RD7GoCH/aW6EcsWG5Z+IQ/20ciOmg/Ygf1ag9bFGz8RmnEMD41L4ELn+UWdyBc1Q4IfiC6Bn+6KvQNhOuGkqsV1cjtzpFT9dU2f69dYhzhhaBeKP3eon6m7X3+0hzKsqXLvHAWmBCowvxiv7pN3jFrxuuElTjXs9hlSsRx2uhfacsDquFrM0Dy1MvQTxpfwn+VE/9xyN
+ 5fXr/Qxq
+ 567tjuRw1mM1NfzJGBMzz2cM3X4l0X5Fb6wl5VEErp4uncFwF7DCN88fyQxERlT86AnUR0hTK5qBAbifDBlJvtL13Y+2jbeT+nea8epYnJcbap+RxT9Id80WG7YWvhlxVtQEHGsabNlpERME++KYgSugeoFcBqVip/yatvzb7nYYJ0Nd6v0dPglPNQ0OSg6V7ZToFvzZ1o0Dmiq24HIlYcfDuK12XZlZjZv1vlyk0GG8gBWw5oqeX4wwiiHFbm/b/yTG+HlBxdmgFbPLy9VYFWb6NueSoGTzeLGmt5HFdhXoXPOhl6iTT+0cKmwxTEeTL6QxZPFXz7HDlrpmHuMKdh7Vbde8RUtkdlhddd1SlG3xKcOyuTzQiCGUn2Yj23OaPVDF9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,34 +121,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 01:16:36PM +0000, Mark Brown wrote:
-> On Fri, Nov 07, 2025 at 04:11:48PM +0000, Lorenzo Stoakes wrote:
-> > It is useful to be able to designate that certain flags are 'sticky', that
-> > is, if two VMAs are merged one with a flag of this nature and one without,
-> > the merged VMA sets this flag.
+On Wed, Nov 19, 2025 at 05:54:55AM +0000, Tian, Kevin wrote:
+> > From: Leon Romanovsky <leon@kernel.org>
+> > Sent: Tuesday, November 11, 2025 5:58 PM
+> > +
+> > +	if (dma->state && dma_use_iova(dma->state)) {
+> > +		WARN_ON_ONCE(mapped_len != size);
 > 
-> I'm seeing regressions on multiple arm64 platforms in at least the LTP
-> clone302 and madvise10 selftests, both of which have bisected to one of
-> the fixups to this patch.  Especially given the other tests that also
-> bisected to the same place I've not investigated further.  There's a
-> number of other LTP tests that started failing today including relevant
-> seeming ones munlockall01, mprotect04, madvise10, mprotect03 and
-> futex_cmp_requeue01 but I don't have bisects to confirm they're the same
-> thing.
->
+> then "goto err_unmap_dma".
 
-Thanks for the reports!
- 
-> clone302:
+It never should happen, there is no need to provide error unwind to
+something that you won't get.
+
 > 
-> tst_buffers.c:57: TINFO: Test is using guarded buffers
-> tst_tmpdir.c:316: TINFO: Using /tmp/LTP_clorMwMMw as tmpdir (nfs filesystem)
-> tst_test.c:1953: TINFO: LTP version: 20250530
-> tst_test.c:1956: TINFO: Tested kernel: 6.18.0-rc6-next-20251119 #1 SMP PREEMPT @1763523415 aarch64
+> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 
-next-20251119 still has the v3 version of the patchset, which is Known Bad(tm)
-after a couple of buggy fixups. v4 should hopefully work properly.
-
--- 
-Pedro
+Thanks
 
