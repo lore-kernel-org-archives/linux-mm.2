@@ -4,116 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49BB5CF2566
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 01:26:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A73ACF2568
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 01:27:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ECE86B0029; Tue, 18 Nov 2025 20:26:39 -0500 (EST)
+	id CA98A6B0010; Tue, 18 Nov 2025 20:27:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79D7F6B0092; Tue, 18 Nov 2025 20:26:39 -0500 (EST)
+	id C81C46B009E; Tue, 18 Nov 2025 20:27:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E0C36B0098; Tue, 18 Nov 2025 20:26:39 -0500 (EST)
+	id B98206B00A0; Tue, 18 Nov 2025 20:27:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BB306B0029
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:26:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0AAE0140293
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:26:39 +0000 (UTC)
-X-FDA: 84125616918.05.4A9E87B
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 54BB9C0002
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:26:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Km6iIQi9;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A265C6B0010
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:27:36 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A978DB7A26
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:27:34 +0000 (UTC)
+X-FDA: 84125619228.07.881FA97
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D871140003
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:27:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763515597;
+	s=arc-20220608; t=1763515652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=/k7vekq5uifkJbSVciIjngOCcc9K2Bjv96liQeZ5afs=;
-	b=WY9xNLZPHU1wp4gJ7LAeE4oS+iQCDcnpYV6S3g5sBM3HF2+KGpZRni3jyUx+xFP6I3xsBU
-	h15/+fEz95YqLSIZFWLsEmB12kwkxulnRKFH1YXGlNX3YnXIZI7AQLQ1yUny+kg+Uqo6fj
-	l+HK9zLFT5ZmY1fG/3H+aGHrlrXdGqs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763515597; a=rsa-sha256;
-	cv=none;
-	b=y0+sOcddh/SY2xCFeHuWgZWKVImY3n6nWEX4xwGISCEtNLI0kful/V3n8IJ6MAHcyl37nn
-	RLlRvQ7unhzCdFR7y42GqTHNgK0UhduxsdRJYxaYUhp1pdkIEevH+4pjYi7EP6wB0f5Wb9
-	csTw49XWEN6fivf8l8OT7Xz/ML3vuNM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=6Ti/cnzmzl6UIOOI4zldbnpv5HvT+yGYz0dXRJK5TRc=;
+	b=YJTx8Ccr1JvCSzSErZcTR5ReQzw79Xby0XeEcYl+SwsUd0iwGvz1fdO/U6/nAZ/UXmN1R4
+	UVZBg2WS7z1Pne62KkAj5cTDRJf3Fkv/TuhWPhZN0sWw4QoswlBHV2B7uTpopaQzYd9f95
+	UaJIYo5cKs3C3Y/2K0jzHfGDem/YGk8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Km6iIQi9;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7633027cb2so110166666b.1
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 17:26:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763515596; x=1764120396; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/k7vekq5uifkJbSVciIjngOCcc9K2Bjv96liQeZ5afs=;
-        b=Km6iIQi9uxNFeQx9IIJ5t7iFtnZfhNUeV0t5+9hbPiAwXuOMxbAHbsXV/KwEtL11VV
-         G+9Qxrlbg9pHs5xycZKocaZpd9CNDjcvZjnJ1I6XczpG0Hq6T8rQtRN7qwq+uUc1ISPY
-         uiQ9pGxeREcoQ8MT520rX4tByTAldia4fQFgJ4NbNb0e6nxfsMwQdHDUijKBpH4HXDgH
-         GyvoBqjoGHC/HJEdS/g+GyTA50hfNZARmUh3wIP+3xPxSGql1wAE4IRqdUyOszslTMSQ
-         0D+SBYrxAl+d8B7YIXEbb7mnTcpY8S6/w4okODfXssQwF5/yzeCDhvFuzUHbUityDnMY
-         Azww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763515596; x=1764120396;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/k7vekq5uifkJbSVciIjngOCcc9K2Bjv96liQeZ5afs=;
-        b=HVFlYQpbEi3CIld0+es3PKkOFcnd4s1trj4BI34UsmeB+1sm8mFJR5E0syD7OUAqwx
-         498eZkwwEcd/VQizog8fn4Dh0yLW1wGKITVaRbmKNJDw2sO1X3xLNaJRHVLmyqi7MgI4
-         pvNWk5qYdb6v57x0xfvhKuPcWhqh4jHP6WAVYbmCrym9rHPP0QiltJkl4E24HdgFK2GJ
-         Z07Vpz07kGM2/QBoEAZwrNjCqOXdbHz5lOQmIqK/Qqf/7jFtD1kbMZPa5XgadVTacFxZ
-         E6ojNBtMACEDiK5PZzsooL1Fr4RxoyzM3Iuamy0E2PBjwN1FqGagdwCDMnSN+DZU15cM
-         y7hg==
-X-Gm-Message-State: AOJu0YxowEFnFQTu6bF7YlGDuCV8as2DuKym1Zhadg0gXE6rCCakbDXJ
-	eIa4JcE6jhrkkO1u8WpwOcSmpGU98/+YzFDb4JbrO59ESxZ2jfnFZ7XY
-X-Gm-Gg: ASbGnctKs23PAUZwFIafhyAW9uzh/nIQqCmD2Wrb7uACGVGJAITpso1mTxkc21qmOc3
-	ksC9ZIXNDTaNgv208Wst29Nlk6oWIGbXE3tRdooa7QE8m4dkflSR9M7pLZBdjlDT2WNFB2RSckZ
-	48J13pX0iMr6tqNMUtXE6pSOTcZGjNt+JrdusoC+au36u0yoCAb1/qVfVuZSWGeuH9+8QjDduqa
-	PtkxCZcGeyNtG4j/E6vDN+G7RW4wTFhXeOjhoPp+7QIN00m9DU4vGZx+tZrwR7rULuPtmnNxFY8
-	9Pmz5Q2ja1Avj2vPWz+XwVu7zOkgyYKkXKB5Yjpf3AAw77SfDXaOCXuZmzRs9kVYkDnFwilcguw
-	tH/dzeQYyIlXwuLT4cCxwDZw0APS4Ki/g3/1HlmCIqvP76FllYdGQpEvGGrEBtVvCqoytoP+7TW
-	AxmCzrgSZGxLHRt1s+mYNVPipLaZrTEQCTyrk=
-X-Google-Smtp-Source: AGHT+IFnyktwM+fGRh8zm7gxJxVmJhx+iTUvB4u1iys1ibCwKjNj95d1Xy05vA9leU7Z2ItSgFpyOQ==
-X-Received: by 2002:a17:907:6d0b:b0:b73:58b4:1247 with SMTP id a640c23a62f3a-b7367926438mr1903786166b.25.1763515595525;
-        Tue, 18 Nov 2025 17:26:35 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fedb91bsm1471579766b.70.2025.11.18.17.26.33
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Nov 2025 17:26:34 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763515652; a=rsa-sha256;
+	cv=none;
+	b=HKp0Zlhe3s1Iu+uG52YZjjMNOWSeWOpXkLyfJszA/87tsJw8cSNEh8tD6dVRG8yxKl6nsa
+	cJ6jZtPuV88ceFCX8s479vkM5HdqhrSL26MVStDLtI3Kmbu+F9Ur4n/CWiOolBeE+349kJ
+	S4XLZCpgr1yRKKURY1JThcFj7yxzLnA=
+X-AuditID: a67dfc5b-c2dff70000001609-55-691d1cf9e515
+From: Byungchul Park <byungchul@sk.com>
+To: linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
 	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
 	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/huge_memory: fix NULL pointer deference when splitting shmem folio in swap cache
-Date: Wed, 19 Nov 2025 01:26:30 +0000
-Message-Id: <20251119012630.14701-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Stat-Signature: fy8q9km7w8ap6t61r3hc3351i81kcxk9
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	horms@kernel.org,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ilias.apalodimas@linaro.org,
+	willy@infradead.org,
+	brauner@kernel.org,
+	kas@kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	almasrymina@google.com,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au,
+	dw@davidwei.uk,
+	ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: [RFC mm v7] mm: introduce a new page type for page pool in page type
+Date: Wed, 19 Nov 2025 10:27:09 +0900
+Message-Id: <20251119012709.35895-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec97ds5xOjtNrZOXioEUQnbB7Amiy7f3ixgVdIVaecqRWszL
+	VCy0BqbmpYtkc5VR3o3lusyJk3Jei6i8sai0lrooMzEdzQ1sWlHf/vwvvw8PD4flRkkwp0pK
+	EdVJygQFI6Wl3/xur3GHhqnWnetZDXpDAwP1P9Oh+kOTBFwNDgr0dY8RTLvesjBn6UTwo72L
+	ga/WKQR3bjsx6F9qaZgxzGIwNzsQfCm7x8Bop52FemMMDFeN0dCSa8JgL+5moFDrxmBxTbBw
+	rqnGC36QzcKrx0USuDpbicGU/YGFvmY9A0MNcxIYayukoUdXS8NkaTuG4aLt0FmxBJzPxxG0
+	G0wUOC/eYGDgejMFjywDLFzprWDgk3YYQa/VTkOp5wID5TlFCNw/vciJkmkJlHcMsdsjSY7N
+	xhDr+HdMHta+ochg2SWa2FqfUcSse8+SCmMqeVATQfJtvZgY6/IYYpy6zJJ3gy0M6S5z08T8
+	cTMxN/2gSOH5CWZn0AHpljgxQZUmqtduPSKNz9O6qdODynRHbrUkG1XG5iMfTuCjhGzPAPVX
+	9zW6mHnN8KsEm82F53Ugv06oKZ32aimH+QJOeNvauBAE8DGCvcXE5iOOo/lw4cXoAlPGbxQm
+	RsfY38wVQv39J/i3v1jouT5Cz9exl2+4KZ+3sbdy/lH5Al7g+zmh2tP/Z7tMeFpjo0uQv+6/
+	ue7fXPffvALhOiRXJaUlKlUJUZHxGUmq9MhjpxKNyPtJVWc8B5vQ1KvdbYjnkMJPdmFRmEou
+	UaYlZyS2IYHDikBZ+I5QlVwWp8zIFNWnDqtTE8TkNhTC0Yqlsg1OTZycP6FMEU+K4mlR/Tel
+	OJ9g7yWzrvllah0X7Xv3H7UkdocWV8ESx2taE1Oiv/v8hfmsdSakuCo3Nm+TpjCvejLAOmgJ
+	D/TpSOszTH72XeMp2JbFb44+5P9k9/CefQUkyG/EN3eXb+jyW8Erjd9Wh3XMvtOEtOqXabqc
+	2zSGrjD3QMqcaevxsYiY6H6Lva42crpSQSfHK9dHYHWy8hdOCNbeRQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRyG+853zndOy9HJxE6WFSMVotQw8RddMII6FGURYRSRQw9upFO2
+	FBUCTbGyNDUFm1sY4l1ZzryiUmpTCyuUbNFlZalQpqXLNpVsFlH/vbzvw/PXy2H3AsaLU2su
+	SFqNMkZBZLTs6K70bc713urA9h4CBlMtgRpHElS8a2HAWTtOgaG6CYHd+YqFxQ4LgpmeXgKf
+	u6cRlN6ZxWB4mkHDd9Mchta2cQSfiuoIjFpGWKgxHwFb+RgN7ZebMYzc6COQnTGPocM5ycKl
+	lkqXuCGVhW5jPwPPmnIYKJgrw9Cc+o6FoTYDgbe1iwyMdWXT0K+vouFrYQ8GW04oWEo8Yfbx
+	BIIeUzMFs9eNBJ7faqOgseM5CzcHSwh8yLAhGOweoaFw4QqB4rQcBPMOl3Iy185A8cO3bGiA
+	mGa1ErF7YgqL96peUuJwUR4tWjsfUWKr/g0rlpgTxIbKLWKWdRCL5uqrRDRP57Pi6+F2IvYV
+	zdNi6/udYmvLDCVmp0+SY56nZbujpBh1oqQN2BshU13NmKfih5VJ45crmFRUFpaFlnMCv0MY
+	qneSpUx4P8FqdeKl7MEHCpWFdleWcZi/xgmvOut/D6v5I8JIezObhTiO5n2EgdHfHjkfLEyO
+	jrF/nBuFmrv38Z9+ldB/6yO9hGOX33TbfanGLiS9sRjnohX6/yj9P0r/H1WCcDXyUGsSY5Xq
+	mGB/3XlVskad5B8ZF2tGrq+UX1zIa0H2oYNdiOeQwk3uyF2vdmeUibrk2C4kcFjhIffZ56rk
+	UcrkFEkbd06bECPputA6jlaskR8KlyLc+WjlBem8JMVL2r8rxS33SkUhfKDvzBPiO/7lW2aQ
+	5mJIgTF5ShhYeYacve0XGm2LKp3TBiXUZXpGb/XzRo2GB2PLjJXZkVTxj7g9GjkTPjdw0rbB
+	2/F1T3zEKc+QsJ/POjc7UvYf/3huh0BU/h2H1246YBq2W4xuQbWlE0nhUX32PFWR74mGFwW9
+	TL7blXyLgtaplNu3YK1O+QuLJBpRJwMAAA==
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D871140003
+X-Stat-Signature: hpyq9txqhwbxhd7gf8oa9g38o4fuax8w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 54BB9C0002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763515597-783021
-X-HE-Meta: U2FsdGVkX1/QdG6f+GnCFTi4HlyfGuu2H3mGjBtSUDIMsBPiGWPzPpzNNumzQJAKLGTksg4AfoD9b66n7ydF/i1BiYoQvWL/TartlztRPor5Qg3zepPB5cOKuPwC6FzwYXVAZYorX0F9/Il8xAuYGl/Qr2PCYH+R84G5MaEWgktQvhe6iiPXI3N6DVYxjHNIHJtwC082brfu+IMxMCsDXsYY5SOH4XKxlwRBblk3np++DC00D+BqqcoXNgMfinC7orauXtmPaoKlZ+1d0l+0fT2ub9mLBMtoB3FZI/pGe2opzzgj8mriBuxuP5/hCiZgj9Ts3FPxibgkjiIqe1A1dzZfPZdJF7DwBlAGK02rE5H7+8VqLDbii05icS8CJaOyWhwsYggYZb/hoiDJBHs75oFy7Hs365+BXhtO6Uqnxl0Ak9FFwZJkD1lMkzLI2ddAYhpNBVyLKgPAbMOgLziFl5Y7K+jo4/yhwUNhs2iAFYnkrGkKaCuVVGLHcUG80VuqB7wcPjJ6c/ANMl+imT86Mz33oWjMPJWApDe9NOFoHmHFwhwKshwt37W64Phnj8Ub/yEwZYtLLmv2kAsyLfv64B2sP+qBB82aqjhTP7eN1xiBDdd0Y8sdj3d7bGdUiSuk3QxuRVKhyQqiQpzy3B0ottkPAMS3SFL9cEYAI39jTd8wfCiVrQHY1EQQ5WlppBWiMxjAT1VluglO9mjfTNXQujxwS08YuIfQ0I2WqEPXWiB2g0Ye6dciiNCKnrdbuKU2YwjxdEC5h7VkwKGM/TrACx66Ye71PeWNrtoM1C7bf2y/aM1XFXzV2AgFl1wmC4bSGT4EXQcPi5UmWz6HEajc0Qlzg4MreL1T25ueeSv893yUdZ5W2GSfVkv4lW2OzmMgBzOSyJQyX2RpBGMwF6ANdYa8DSy0I+kgZKbw4QGMt6XJrUREI6vQMG7S5mbHlhAx7vlz6CSV3uiR3o0YXoC
- 16qAaQVO
- rN0bggKwRIoiSDQlGXzj+oxgPNJTisClhuX/yuB1IBm/mP48RIFD8Gcof5Zq4EKo5LPUa9bcYYHkLshNe1AunI/+9RpuJu8bUimfH8ORuKXhg1IRl65aRMU/Psvdrm38a2E9gimTbHVXswChwNzUlUEam5B512xBEtQ7ZyGPCueYdcQihBLJcxp3NMsiHkmjFBb3cCy5ABv5L6YvUU8l/u5prmSBpJfhrny0kvoGndOHPIEJUd9UTDOO5kqPJUj5xRrXJq3ZWdZA1T8tJp4hLqG+7HDmTSIuPFY92LCEKOndg/g4qaPmF74zwOGln2C/Gl+l/dv6t2hdLYcn3YutGPyu1/pnpHwRgLbAQwFK2afybz7fTHrgd+5LqEz7f9A0Zmy7zB3kDbemVpf8PjvGFA9avq5W8db9tRuj3NJR227zY/Y0hp3OhxwVyDHHlw+l/0VvEf+ZTaDwSisSPykfGJrgwiLDVQLtd9SKTGgGygluEQLEe8LV+APNFmAfvCK40X8vcn5mtyHkku6tolLhWQIJz51GwaJNwpEbYZGUGm528aAha6IZqEFe1KSDknzcl4m9x9ZGiwBebPbwx/vjtuQ7DyXfTbNtkcMsbURbjdOXD5OMVu/voFIVbEEqtRxQ/JSk25VTEEQmTV+m7SSGXcO0/qz10b6Vz0mAC4gIio+G6VZ8=
+X-HE-Tag: 1763515650-302145
+X-HE-Meta: U2FsdGVkX1+ZcP/uwoDDMqo2H/JUJlm0xccQcTiGP2L/VOndp8HVoK9A9yOX5hdYOEbuPUor9zAGdGOScL7dkXPtXjB9b1fa4aEEKIzmwDa7tTp/aYbFvhDYNowV1lHcbBEG1v/0hJTkuDcLg4lFUqAHnfks/iq6xUY4OCWRPNeSBNxnYpnDaPBPLAI/6XSWMf5wTqs3xJ8FJFLPSl8wJbefRb/0r82gUq4r0Ud+K4/c43VNtW1UafR8wnz6vNcVEkUEgJkjU7OLFALDDFSl2THyg1ApqOHF4kpRk5K4Bs3jae8Zci8Dpfvr/S2BcPFJ086o/EOQs+bL6/NDIeAqLprUFuuTdsdOD8S+DoDVn1Y8qlJBu05IHI93GwJXJC1UiJnFso0KAu8yVfXxsShRSWtJ+T+fQvqaFo8c1/BT6TrAHKyOs0gIkVUhPUz1umfxoEn6kafvo2ojck2nlpQUI/0qnLHgJYL1mRtDr4rkYyvwrTGZ1oJj5ccg869cAI5chAyGq0836XuB6Fb9B4hhNQE0/q99Tud3IW9PPI3Gmzt1W+0NpoXWUTa4C+pbOVGhTCfpvCd229AQxPWYK9lbefs5eL8HR69GT7nMvr4m44DGREF8jy8KutfQhE5TlyLvNb3NeZEjVEc/kWBhiD8Ln2ESCzC4/wF0CQMMwWhSZf92JtGuFspRTO2IrO+FFCdQ+kRtIJvnzhs7q5iSTYdp3sYMKlcQjyvsD14gr4GufIXz54le0priZKm2hy/7uobL7sBsGbCR2JYeE5JQGbfY+A1rghwktztG9nac/b6BiboLcqR+m6z5njLJUZmgTmfRake6z+0frsNjVppRrMfEHl56FnLXIeOJ2f7KaPMgokSFPA+S1mIrbZKvr4jUm9p0TkD0RY+f4MoW2zNsvCScnm8XB2EUqg1osW6DddrknMGpZVw8bN+rpQPS4zj1DYpTFD9DqfdLgSXB4KesZU9
+ dYTibqG3
+ alVP6zShRNTIdS5HzYeveSnRYcpL03KaFG56dsrJPYu/KaCVCaYng71igFLoq7+wEMUSDxicRUQSdOke3aJx4xuvr8M0lSl+J2x7bZ+GJpCcL78chqTIi0fQFRCh09ZVyWXO50P4XqCv18TIxWQvODjZagLLkhn2UIutnf/VKAQH5lToj+05SZkRoBzxq9M0IWXNJGLcSZmginruq2Zac0xnsB7ErtI3k5DSmFkzr2rKCcqID9pkaXX9OsKhaR89fswq+pBlptC9646NsSBM4T/intgxq0aVQSakIBrtXyQ20efpJeqKUOPh7IDKdslYWaEoBjmeeJ+ovMCxhu7wuktzzW9qzjvKAtdsCfZekZG9iwj7w7c0ofb7JtbeTHECITzmHjiDL5P21aHFpP1r3XBrHeA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,152 +149,323 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit c010d47f107f ("mm: thp: split huge page to any lower order
-pages") introduced an early check on the folio's order via
-mapping->flags before proceeding with the split work.
+Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+determine if a page belongs to a page pool.  However, with the planned
+removal of @pp_magic, we should instead leverage the page_type in struct
+page, such as PGTY_netpp, for this purpose.
 
-This check introduced a bug: for shmem folios in the swap cache, the
-mapping pointer can be NULL. Accessing mapping->flags in this state
-leads directly to a NULL pointer dereference.
+Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+and __ClearPageNetpp() instead, and remove the existing APIs accessing
+@pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+netmem_clear_pp_magic().
 
-This commit fixes the issue by moving the check for mapping != NULL
-before any attempt to access mapping->flags.
+Plus, add @page_type to struct net_iov at the same offset as struct page
+so as to use the page_type APIs for struct net_iov as well.  While at it,
+reorder @type and @owner in struct net_iov to avoid a hole and
+increasing the struct size.
 
-This fix necessarily changes the return value from -EBUSY to -EINVAL
-when mapping is NULL. After reviewing current callers, they do not
-differentiate between these two error codes, making this change safe.
+This work was inspired by the following link:
 
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
+  https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
 
+While at it, move the sanity check for page pool to on the page free
+path.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
 ---
+I'm keeping all the Reviewed-by and Acked-by given for mm changes even
+though I changed a lil bit since it obviously improves the code better.
 
-This patch is based on current mm-new, latest commit:
+However, I dropped all the Reviewed-by and Acked-by given for network
+changes since I changed how to implement the part on the request from
+Jakub.  Can I keep your tags?  Jakub, are you okay with this change?
 
-    056b93566a35 mm/vmalloc: warn only once when vmalloc detect invalid gfp flags
+  Reviewed-by: Mina Almasry <almasrymina@google.com>
+  Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
 
-Backport note:
+This set is supposed to go via the mm tree, but it currently also
+depends on patches in the net-next tree.  For now, this set is based
+on linux-next, but will apply cleanly (or get rebased) after mm tree was
+rebased.
 
-Current code evolved from original commit with following four changes.
-We should do proper adjustment respectively on backporting.
+Changes from v6:
+	1. Do bad_page() and prevent the page from being returned to the
+	   page allocator instead of just WARN_ON_ONCE() on detection of
+	   page pool leak in the page free path. (feedbacked by Jesper
+	   and David)
 
-commit c010d47f107f609b9f4d6a103b6dfc53889049e9
-Author: Zi Yan <ziy@nvidia.com>
-Date:   Mon Feb 26 15:55:33 2024 -0500
+Changes from v5:
+	1. Add @page_type to struct net_iov so as to use the page_type
+	   APIs even for struct net_iov. (feedbacked by Jakub)
 
-    mm: thp: split huge page to any lower order pages
+Changes from v4:
+	1. Rebase on the latest version of linux-next as of Nov 3.
+	2. Improve commit messages. (feedbacked by Jakub and Mina)
+	3. Add Acked-by and Reviewed-by.  Thanks to Mina.
 
-commit 6a50c9b512f7734bc356f4bd47885a6f7c98491a
-Author: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Date:   Fri Jun 7 17:40:48 2024 +0800
+Changes from v3:
+	1. Rebase on next-20251023 of linux-next.
+	2. Split into two, mm changes and network changes.
+	3. Improve the comments (feedbacked by Jakub)
 
-    mm: huge_memory: fix misused mapping_large_folio_support() for anon folios
+Changes from v2:
+	1. Rebase on linux-next as of Jul 29.
+	2. Skip 'niov->pp = NULL' when it's allocated using __GFP_ZERO.
+	3. Change trivial coding style. (feedbacked by Mina)
+	4. Add Co-developed-by, Acked-by, and Reviewed-by properly.
+	   Thanks to all.
 
-commit 9b2f764933eb5e3ac9ebba26e3341529219c4401
-Author: Zi Yan <ziy@nvidia.com>
-Date:   Wed Jan 22 11:19:27 2025 -0500
-
-    mm/huge_memory: allow split shmem large folio to any lower order
-
-commit 58729c04cf1092b87aeef0bf0998c9e2e4771133
-Author: Zi Yan <ziy@nvidia.com>
-Date:   Fri Mar 7 12:39:57 2025 -0500
-
-    mm/huge_memory: add buddy allocator like (non-uniform) folio_split()
+Changes from v1:
+	1. Rebase on linux-next.
+	2. Initialize net_iov->pp = NULL when allocating net_iov in
+	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
+	3. Use ->pp for net_iov to identify if it's pp rather than
+	   always consider net_iov as pp.
+	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
 ---
- mm/huge_memory.c | 68 +++++++++++++++++++++++++-----------------------
- 1 file changed, 35 insertions(+), 33 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
+ include/linux/mm.h                            | 27 +++----------------
+ include/linux/page-flags.h                    |  6 +++++
+ include/net/netmem.h                          | 15 +++++++++--
+ mm/page_alloc.c                               | 11 +++++---
+ net/core/netmem_priv.h                        | 20 +++++---------
+ net/core/page_pool.c                          | 18 +++++++++++--
+ 7 files changed, 53 insertions(+), 46 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 7c69572b6c3f..8701c3eef05f 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3696,29 +3696,42 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
- 				"Cannot split to order-1 folio");
- 		if (new_order == 1)
- 			return false;
--	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
--		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--		    !mapping_large_folio_support(folio->mapping)) {
--			/*
--			 * We can always split a folio down to a single page
--			 * (new_order == 0) uniformly.
--			 *
--			 * For any other scenario
--			 *   a) uniform split targeting a large folio
--			 *      (new_order > 0)
--			 *   b) any non-uniform split
--			 * we must confirm that the file system supports large
--			 * folios.
--			 *
--			 * Note that we might still have THPs in such
--			 * mappings, which is created from khugepaged when
--			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
--			 * case, the mapping does not actually support large
--			 * folios properly.
--			 */
--			VM_WARN_ONCE(warns,
--				"Cannot split file folio to non-0 order");
-+	} else {
-+		const struct address_space *mapping = folio->mapping;
-+
-+		/* Truncated ? */
-+		/*
-+		 * TODO: add support for large shmem folio in swap cache.
-+		 * When shmem is in swap cache, mapping is NULL and
-+		 * folio_test_swapcache() is true.
-+		 */
-+		if (!mapping)
- 			return false;
-+
-+		if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
-+			if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-+			    !mapping_large_folio_support(folio->mapping)) {
-+				/*
-+				 * We can always split a folio down to a
-+				 * single page (new_order == 0) uniformly.
-+				 *
-+				 * For any other scenario
-+				 *   a) uniform split targeting a large folio
-+				 *      (new_order > 0)
-+				 *   b) any non-uniform split
-+				 * we must confirm that the file system
-+				 * supports large folios.
-+				 *
-+				 * Note that we might still have THPs in such
-+				 * mappings, which is created from khugepaged
-+				 * when CONFIG_READ_ONLY_THP_FOR_FS is
-+				 * enabled. But in that case, the mapping does
-+				 * not actually support large folios properly.
-+				 */
-+				VM_WARN_ONCE(warns,
-+					"Cannot split file folio to non-0 order");
-+				return false;
-+			}
- 		}
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 5d51600935a6..def274f5c1ca 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+ 				page = xdpi.page.page;
  
-@@ -3965,17 +3978,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+-				/* No need to check page_pool_page_is_pp() as we
++				/* No need to check PageNetpp() as we
+ 				 * know this is a page_pool page.
+ 				 */
+ 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a3f97c551ad8..081e365caa1a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4252,10 +4252,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+  * DMA mapping IDs for page_pool
+  *
+  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
+- * stashes it in the upper bits of page->pp_magic. We always want to be able to
+- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
+- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
+- * (since it overlaps with page->lru.next), so we must ensure that we cannot
++ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
++ * arbitrary kernel pointers stored in the same field as pp_magic (since
++ * it overlaps with page->lru.next), so we must ensure that we cannot
+  * mistake a valid kernel pointer with any of the values we write into this
+  * field.
+  *
+@@ -4290,26 +4289,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+ #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+ 				  PP_DMA_INDEX_SHIFT)
  
- 		mapping = folio->mapping;
- 
--		/* Truncated ? */
--		/*
--		 * TODO: add support for large shmem folio in swap cache.
--		 * When shmem is in swap cache, mapping is NULL and
--		 * folio_test_swapcache() is true.
--		 */
--		if (!mapping) {
--			ret = -EBUSY;
--			goto out;
--		}
+-/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+- * bits used for the DMA index. page_is_pfmemalloc() is checked in
+- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+- */
+-#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
 -
- 		min_order = mapping_min_folio_order(folio->mapping);
- 		if (new_order < min_order) {
- 			ret = -EINVAL;
+-#ifdef CONFIG_PAGE_POOL
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+-}
+-#else
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return false;
+-}
+-#endif
+-
+ #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+ #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+ #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 0091ad1986bf..edf5418c91dd 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -934,6 +934,7 @@ enum pagetype {
+ 	PGTY_zsmalloc		= 0xf6,
+ 	PGTY_unaccepted		= 0xf7,
+ 	PGTY_large_kmalloc	= 0xf8,
++	PGTY_netpp		= 0xf9,
+ 
+ 	PGTY_mapcount_underflow = 0xff
+ };
+@@ -1078,6 +1079,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+ PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+ FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
+ 
++/*
++ * Marks page_pool allocated pages.
++ */
++PAGE_TYPE_OPS(Netpp, netpp, netpp)
++
+ /**
+  * PageHuge - Determine if the page belongs to hugetlbfs
+  * @page: The page to test.
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 651e2c62d1dd..ab107b05341e 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -114,10 +114,21 @@ struct net_iov {
+ 			atomic_long_t pp_ref_count;
+ 		};
+ 	};
+-	struct net_iov_area *owner;
++
++	unsigned int page_type;
+ 	enum net_iov_type type;
++	struct net_iov_area *owner;
+ };
+ 
++/* Make sure 'the offset of page_type in struct page == the offset of
++ * type in struct net_iov'.
++ */
++#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
++	static_assert(offsetof(struct page, pg) ==	\
++		      offsetof(struct net_iov, iov))
++NET_IOV_ASSERT_OFFSET(page_type, page_type);
++#undef NET_IOV_ASSERT_OFFSET
++
+ struct net_iov_area {
+ 	/* Array of net_iovs for this area. */
+ 	struct net_iov *niovs;
+@@ -260,7 +271,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
+  */
+ #define pp_page_to_nmdesc(p)						\
+ ({									\
+-	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
++	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
+ 	__pp_page_to_nmdesc(p);						\
+ })
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23..5ae55a5d7b5d 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
+ #ifdef CONFIG_MEMCG
+ 			page->memcg_data |
+ #endif
+-			page_pool_page_is_pp(page) |
+ 			(page->flags.f & check_flags)))
+ 		return false;
+ 
+@@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+ 	if (unlikely(page->memcg_data))
+ 		bad_reason = "page still charged to cgroup";
+ #endif
+-	if (unlikely(page_pool_page_is_pp(page)))
+-		bad_reason = "page_pool leak";
+ 	return bad_reason;
+ }
+ 
+@@ -1378,9 +1375,15 @@ __always_inline bool free_pages_prepare(struct page *page,
+ 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+ 		folio->mapping = NULL;
+ 	}
+-	if (unlikely(page_has_type(page)))
++	if (unlikely(page_has_type(page))) {
++		/* networking expects to clear its page type before releasing */
++		if (unlikely(PageNetpp(page))) {
++			bad_page(page, "page_pool leak");
++			return false;
++		}
+ 		/* Reset the page_type (which overlays _mapcount) */
+ 		page->page_type = UINT_MAX;
++	}
+ 
+ 	if (is_check_pages_enabled()) {
+ 		if (free_page_is_bad(page))
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 23175cb2bd86..6b7d90b8ebb9 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -8,21 +8,15 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
+ 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
+ }
+ 
+-static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
+-{
+-	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
+-}
+-
+-static inline void netmem_clear_pp_magic(netmem_ref netmem)
+-{
+-	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
+-
+-	netmem_to_nmdesc(netmem)->pp_magic = 0;
+-}
+-
+ static inline bool netmem_is_pp(netmem_ref netmem)
+ {
+-	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	return PageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
+ }
+ 
+ static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a5edec485f1..27650ca789d1 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -699,7 +699,14 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
+ 	netmem_set_pp(netmem, pool);
+-	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	__SetPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+ 	 * page_pool_set_pp_info() is only called once for every page when it
+@@ -714,7 +721,14 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 
+ void page_pool_clear_pp_info(netmem_ref netmem)
+ {
+-	netmem_clear_pp_magic(netmem);
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	__ClearPageNetpp(__netmem_to_page((__force unsigned long)netmem & ~NET_IOV));
++
+ 	netmem_set_pp(netmem, NULL);
+ }
+ 
+
+base-commit: e1f5bb196f0b0eee197e06d361f8ac5f091c2963
 -- 
-2.34.1
+2.17.1
 
 
