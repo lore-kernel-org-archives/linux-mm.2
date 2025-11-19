@@ -4,126 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7DF8CF397E
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 17:36:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67DE1CF58C1
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 17:38:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51F466B00C3; Wed, 19 Nov 2025 12:36:10 -0500 (EST)
+	id C51D06B00B9; Wed, 19 Nov 2025 12:38:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F6C26B00C7; Wed, 19 Nov 2025 12:36:10 -0500 (EST)
+	id C02E06B00BB; Wed, 19 Nov 2025 12:38:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40D346B00DC; Wed, 19 Nov 2025 12:36:10 -0500 (EST)
+	id AF25A6B00BC; Wed, 19 Nov 2025 12:38:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DE9A6B00C3
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 12:36:10 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E63F6B00B9
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 12:38:48 -0500 (EST)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D6629140613
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 17:36:09 +0000 (UTC)
-X-FDA: 84128060058.20.97DDBBF
-Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 58C53100004
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 17:36:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kKguyMYu;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=411f24c19=kalyazin@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=411f24c19=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5511812DB84
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 17:38:48 +0000 (UTC)
+X-FDA: 84128066736.20.07B01FD
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DDA9216000B
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 17:38:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T9JBzqVh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yLu5T8cW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GzUsgZDZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XbrrhC6E;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763573767;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1763573926;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MYyWWExzLhYCC4+Jo3opQw3FoaDIdSA/mKXXs7/p6Qo=;
-	b=ePBfTGSEo4SKCS4f5vD2m8VCGPsXP7jx3IfE7Ig3AP6fYb2asvQTcw+R8FHTTdn6fVDjyY
-	Re5uC+TRUv1TEcpOSIbvX0MfCrVmtbOrrG0uc3k111yPbSHvXMNw97RBEZZ7gwnuDtlsif
-	bceTPhEhSpiXeWySqATOtSGWgy+DXqs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763573767; a=rsa-sha256;
+	bh=1mSLpYwyWs0jTEtlK1pjJRZyO0gy9r6uw5nGiKgaKjk=;
+	b=6L+XdjZQRqlWPpiZJvlNmm4BJwYGPN3ZZZlTtKK+z9uyLeBbB9oyc33LRbEGizixVg5eLX
+	RzQe3XM65WdIxqQXDaoQlXy/Sr77cLd89FCqX710GmFuHytQ5Q+dZKY6XyHEFd4f3srBWI
+	1KVelxbhj5sA4NNIUKiSb/MjbeXfr8A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763573926; a=rsa-sha256;
 	cv=none;
-	b=HGh2X05rwChgg7Y1Jd0L+p7TS/yXCXgQvWfwaaJAewcdoxrr14GRG5mBak/RpHESMbrhl6
-	nFeIMrnksgyenCjp2ZmQpJ71exdf5R9zyTzSLJnkwduKEyqY+9aq+Q/hGM9drhL2cbb4wN
-	gv2Ftz5pOyod7GgCAXcGlSWTH9jDpJg=
+	b=1RQkYXxdgShT95SvhfT5m6B1256Crd9oszLOniw+RJ67oyN3Os+uLi9vj9ulrGLPM1r3II
+	XQ3mqLTLjGN5NjUYXsQcf44KcqpVdDZ/wDpzZb3CHW0vn1JB5EpT0Y/Qwb4Zu0PChWMvgT
+	YQXvPCe5F5SJYFoXgOfE9GAnj1KEDUE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kKguyMYu;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=411f24c19=kalyazin@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=411f24c19=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1763573767; x=1795109767;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=MYyWWExzLhYCC4+Jo3opQw3FoaDIdSA/mKXXs7/p6Qo=;
-  b=kKguyMYuPAyLAqhYtK8oQmt3CVpaOTqe+ghuUAMiiMSKSJd5alnd2X5Z
-   eXFiLFolz5Q3rGu16zswnc1oMnuiu0jcrI/nMa0vpt6QCIsvkF1lUf6LV
-   wNPoVDFfKIuLuwKAc5KhGfPheQa9eZR9yq68o+u/69vkirWWTrQ01vVwJ
-   5zhbJwOhyvZC33ZrIQ5HfVAsPCCV2iwrMJtt2JytMCYSd/DOSuxvPAhwl
-   JWiBKUCfQJzUCuph6hcpAJHn6g/5PvMZNeoFrcgj5wWPimy7KOiAtJhAn
-   lSyXVX0+mj4Wu/t4K8LzQjdF41ESvloSYMBi8tb09OLxPi/TTsMmkBfZM
-   A==;
-X-CSE-ConnectionGUID: 2KODmyCIQDO7OmZJiRekMg==
-X-CSE-MsgGUID: /R+RMYiNR2O9nKeRZ0LSfg==
-X-IronPort-AV: E=Sophos;i="6.19,315,1754956800"; 
-   d="scan'208";a="5358484"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 17:35:47 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:18787]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.7.216:2525] with esmtp (Farcaster)
- id de87be56-055f-4e2c-857c-09a3093658e3; Wed, 19 Nov 2025 17:35:47 +0000 (UTC)
-X-Farcaster-Flow-ID: de87be56-055f-4e2c-857c-09a3093658e3
-Received: from EX19D022EUC002.ant.amazon.com (10.252.51.137) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Wed, 19 Nov 2025 17:35:37 +0000
-Received: from [192.168.8.246] (10.106.82.8) by EX19D022EUC002.ant.amazon.com
- (10.252.51.137) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Wed, 19 Nov 2025
- 17:35:36 +0000
-Message-ID: <b51a9cad-7942-473d-971a-d6fa3b26f63e@amazon.com>
-Date: Wed, 19 Nov 2025 17:35:32 +0000
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T9JBzqVh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yLu5T8cW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GzUsgZDZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XbrrhC6E;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D7E46205C6;
+	Wed, 19 Nov 2025 17:38:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763573924; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1mSLpYwyWs0jTEtlK1pjJRZyO0gy9r6uw5nGiKgaKjk=;
+	b=T9JBzqVh6oEbZwD5zolZL/taXOZDPJQINezckSXcdw3oKZ+HlPl8xO8onVtGG884PuvmuD
+	v4hhDJsI4s2rKZ4BHfoAjD3RMLotXasXmZLRoWpJJPSdaAszOIJML9M/AVg2hd+lhYQ4X+
+	4ONp93kZvetqvITD/kHjCdMrdsGB2EU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763573924;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1mSLpYwyWs0jTEtlK1pjJRZyO0gy9r6uw5nGiKgaKjk=;
+	b=yLu5T8cWoBzkgrMG23WZh/ekbOdkBOvDajoWCleFw+AGIBFVCDIUaczHIkmJWv1BmPNRZr
+	6cLW3DRyJhB6BnAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763573923; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1mSLpYwyWs0jTEtlK1pjJRZyO0gy9r6uw5nGiKgaKjk=;
+	b=GzUsgZDZi2H4PYOhAcEcflzMFnL3xgGyZJUobW02hbnGJ4r/CxeX8xfkTAm2XqycTny8lC
+	moBN1wLpotdNFyWgoC739VKl8eAN3YvsyFsbdkmwjM8ISLfzq8G9Rs/Rgj2ftvsGhT7Bdb
+	Iwybmk0hLj/lFa2mmvD/G64xORgHBbI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763573923;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1mSLpYwyWs0jTEtlK1pjJRZyO0gy9r6uw5nGiKgaKjk=;
+	b=XbrrhC6Ek8BBPwakObopUIjoE57tTvkr7nU8fkUIglIghQR5YqYG5ZP9sM3zju6emcA5Fy
+	LIhmbD+QgNUJgMCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB38A3EA61;
+	Wed, 19 Nov 2025 17:38:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gwRxKaMAHmnHLwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 19 Nov 2025 17:38:43 +0000
+Message-ID: <9b82c8fe-7321-4481-bd02-1c0628eaf57c@suse.cz>
+Date: Wed, 19 Nov 2025 18:38:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [RFC PATCH 0/4] mm, kvm: add guest_memfd support for uffd minor
- faults
-To: Peter Xu <peterx@redhat.com>
-CC: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>, Andrea Arcangeli
-	<aarcange@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, "Hugh
- Dickins" <hughd@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko <mhocko@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
-References: <20251117114631.2029447-1-rppt@kernel.org>
- <a5531d06-dd11-402b-a701-a7c6a62186a7@amazon.com> <aRt52tDCh72ytIp1@x1.local>
+Subject: Re: [PATCH v2 1/2] mm: propagate VM_SOFTDIRTY on merge
 Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-Autocrypt: addr=kalyazin@amazon.com; keydata=
- xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
- JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
- BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
- IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
- CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
- ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
- ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
- i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
-In-Reply-To: <aRt52tDCh72ytIp1@x1.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1763399675.git.lorenzo.stoakes@oracle.com>
+ <955478b5170715c895d1ef3b7f68e0cd77f76868.1763399675.git.lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <955478b5170715c895d1ef3b7f68e0cd77f76868.1763399675.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.106.82.8]
-X-ClientProxiedBy: EX19D010EUA003.ant.amazon.com (10.252.50.136) To
- EX19D022EUC002.ant.amazon.com (10.252.51.137)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 58C53100004
-X-Stat-Signature: 7k59jwco8xyh3qhxzmrpw9jyueymfwtr
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763573767-299680
-X-HE-Meta: U2FsdGVkX1/ivqlOAfQRR7Tb70ZcYskwG1gEA+kbDuRFGShHlaJtd4FFkcq4j1h8HC/2VGrJX/5UNVFJ/32kr5VsQrtFI2if4jEAJsoKv5bMTGNYaH8pipUag3zQ5/VQJbIGlrqmnQNZq5tbEcVWL9iptmGiLvNQ5fZ+yZgx0kYXK1XUJK5KKbi/CLe+y3GrUw3KLrVdSJ/g0BIvOJi6ahJGHcKqzh3qcRZHpaggnZMMTw/Jf2xawWO6BJRKz93R3Bg1aR8Yf3bzaiZMmDkf8i6QjFDrLYh1MgZ8kN+tQsF7edrr5afbXZ/Ia7OkW+KVklbAWD+h8ZhJRIfYJXB3X4li1oJ0kvw08Z1oxgLqFX3gMHs6mB1mGBDbRAc+FUmlP2gkrkBZXsdEpt1f6bOi0x9kgB5937YwjsDO/WOHYRTY+SDdVBe3tz2D0y1tQlYq9WqNEN/NlrSW8DCGNUpfAGDUXeJCDEZWq7mOmaUM4NhggY9+g2/bduJUinQFLFLbTjzrKksVuyySwAV3YWLDlCqZRRYU+hCN24B+qW2isioRDnd9SKlcW6ulF1kX0xGTylCYtEf89+fXDzlvKQvocbqwIZcnWwgeLYNkK3QZYEsGZuxjQ8oLS0BZB1SLuBLS/HCMLedskDkf0ZsJoXbi52VQZrOEMPvHWNMAjA+N04M2Ov71ayY4bK8XoThaqQG8rEUNaQwo3f72Eo6jxkD9X3uGE9hMEQcGxk8+stpslFstqlBuD+YWdXmX4kqrWDJ44HWOf3L8PQxAtwIe95H1CO92HTr0MOXHRlbb8Zz+vVPmtcRtla8jFHzrvtFQ9XAXCd5PAwyt21t89zvg3HMpCxB7VzGNoZtQ9j4UWurnseHnFCk7zhQTcotjgGGgKMPomcsCdh7KF7WNVJdqInW3b8RNH2Qn5b1cvd2qTY/Je+8xPuQ02U25fuaoiRu5Dt/MTLWBBErI1W7QOAzJDhh
- ISsgj+7b
- S2HHbzoIUtwZeYlXa4D9CaDCQYLXreeNAFvYikpRW8+3fVNU0Z2GlxxCJs8SlLD7qZ+pljzI3+RdZt9g9NvHmOytlsHBgMB3QjtOljad3reTyEsLIwVEHNRWFAo9cZACc8R/7LYsxSj6yv8lWXky4Bc8JLy2F37d26ERKqEtjrWmMTwtQ3GBzLWxStaGJpt9bTwFacFKYXQhPMQjf9zjaIKyVWLNY5wue+2K2rGp2S04nhnpZ92lPjKQAdeFYqG31cV9VHYL56aG1MrUf3FtBDhUln4wDcwNf3Z4P5poflDN7O2vxpMKNyTZERZ1/fQE1zeB575vooT8Puy4cxgZArYpdb4VVW8DheBBpijg7HJgmJSr98Wuc5l1hzsgvfBNqo1vLyDNhKfPybz115ehvFFBMda9QPe3LK7cPnT/DOm1qYCbo0Qd30VcXnsq0eeR/tjVKUXw4g4kLcrDHgZ3oK7BO2+gYYBAOwAzFgG8jIPTjg9kO6DbNp4IQtwoLsSDCOL5PMzV/y/0EGcrWsMrjKZj0v8O5CcfOmR0VPzgqqnPFYcF7JsIykYphZ4DMpTIb8u4WYP31MskxlLVjaaLb6GqJTRG1cfWdVhZ7DxKvXbKiY2aD94fEzl5oZnkJPxea+AakE3XpBtGN3qNWAgfYLs608B4VV3V843PAzBrIUMWSCrHl9vowGxCglIRqSNtlPQjqBUMp3+RzwpL184gbm7CRgMpO4UpfpRNDSYQC2XMGv0WcMVd5JIku6JnayOY3fX/Yp+qasWAIAS8GOpFxEUX+0BZK/p9pQb66MCKwsVffiApZIOUJbV9b52JTngM1nIsedTaRSJb8gdoop0eeaY1OO5PTh0z8cq5GOTsYQEQWfbz1SBRu8xqMQq32RpwEV3RjwHPHojB6/+lmaUVqHvgbZw==
+X-Rspamd-Queue-Id: DDA9216000B
+X-Stat-Signature: mgfy7csbk6pisyu8u6j8gyyqa6sdx9q5
+X-HE-Tag: 1763573925-112918
+X-HE-Meta: U2FsdGVkX1/F8HFuULDnu4tDt7fkB/VYB3SsS50OxJiiHrcZaaFrmPWexilPL9//RG1D9B7CoUPqLDC6Nmgyhl9lSJSFZg7NyXGdjWEEvsZBsMgrUn5hhXwl7sJwgDgI1ZNE/khcnwI0+1THoGSJjHhttrpBYETK3l8lK4KbARznuosYiNe7D2F1QJcy6wrkMZpBUL+f41Z0acMndjSuND5dZMg+vi9xKGU+DRiXZsMGQV9njJvJMHCzAKhZIrumxp41wSt7n/wO/bhYVYhg0Iuuly0NjTHHQDPvybMj+wgvfiaLknrmC8KcTr0rx0dsfrW1qqXU2fB6B4f54riUuxFMdR+h0zGigx4MSo5yk+2S+0qLpcLDt/kesa5fM8HpTnEjsJJ2NSFYJule+FmM4xOYXjUbULvshqaJoKVQZaU934K0BHa0URGRWO2ValgOlagcjYLmBORdN/s5p8llmgC63QkhtfU30mAHZYMaHhrCiZsAJ7D0rvu9MNYSweWWEXxCOfZWcw13obQiv6nKKk0wFiz1WKbQ39gFNiLcBKVrsHgk5JA6On6UzIyRBGGrmBSC+n87d79uiOsN8/cIHDnZAUQ8+lgg2hVxGlEuN2t38PL08pj0ZCzM88T9AU9NjOPjOk6TbVj9Rf97R1qrSVcqXx6Tn5+n9lvrfAnPlDNr8yFX+al3zN+DbGwt53ureJ16wzvAUKtEYyqxndvthiBShM9ynri4u4m20lZDtAFjhYRpggo9wohWnzouVYO2w5ZxlsZHkarT5KT52N43HV2/kCuqnf2FMgIIuJtpDwu8tIrRV6/ClD3VewxeeNqL9ToIZ25OJxakP/+nF6NMjOOTmG++ea4zncKXioczJ21E8lTqw8IQKWaOnUP8CHhT1FFtOpa+tsBCJPO+ubgzq2tylgG3lfBSM36rQaCIp3QFVcrDoXv5TAPja6C/SfkwOpbo3cLwjB3uxVjfP3z
+ 3Ac2C01/
+ 4my8FHIKVkmGg0UuHLtfdwPNc6tARk/6aUYLJ8v65RKbrpX7k6j/buHyza/mYYMsGckkka3VH8NPjn4L7GxqYz9jZ3e7bDGprItTPr5e+2neWd9Q5AVLUz12nRl417eQa6gr3yuxfeYL+2C+wSHrIxVApPrWEQob4LbuCx+7e4mM/K+hwa2i+grzhFtX7aVSI47GZ9mb+kVYuQ9XbIAWuR5XCMmMBxCxxLZK5Ij+SNqWz1xc2KaCqCoFEESBy0y6j7X+l/+l6RkKIKggJ8JF5p4PqW1m/TSmYDyMujVErhjP3JfkpHRE5VrmbbR3PW22LkV/m6N3Br6VtKJVdL5nuTcZR/VT1aO7Vjz0pBlQJsWnuaIJgPv0DA12JcfoNi9OVsVEt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,32 +182,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 11/17/25 18:33, Lorenzo Stoakes wrote:
+> Currently we set VM_SOFTDIRTY when a new mapping is set up (whether by
+> establishing a new VMA, or via merge) as implemented in __mmap_complete()
+> and do_brk_flags().
+> 
+> However, when performing a merge of existing mappings such as when
+> performing mprotect(), we may lose the VM_SOFTDIRTY flag.
+> 
+> This is because currently we simply ignore VM_SOFTDIRTY for the purposes
+> of merge, so one VMA may possess the flag and another not, and whichever
+> happens to be the target VMA will be the one upon which the merge is
+> performed which may or may not have VM_SOFTDIRTY set.
+> 
+> Now we have the concept of 'sticky' VMA flags, let's make VM_SOFTDIRTY one
+> which solves this issue.
+> 
+> Additionally update VMA userland tests to propagate changes.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
+Seems it's been like that since 34228d473efe ("mm: ignore VM_SOFTDIRTY on
+VMA merging") (unless it was in the meanwhile fixed and broken again) but as
+was discussed, not urgent for stable.
 
-On 17/11/2025 19:39, Peter Xu wrote:
-> On Mon, Nov 17, 2025 at 05:55:46PM +0000, Nikita Kalyazin wrote:
->> In our use case, Firecracker snapshot-restore using UFFD [1], we will use
->> UFFD minor/continue to respond to guest_memfd faults in user mappings
->> primarily due to VMM accesses that are required for PV (virtio) device
->> emulation and also KVM accesses when decoding MMIO operations on x86.
-> 
-> I'm curious if firecracker plans to support live snapshot save.  When with
-> something like ioctls_supported flags, guest-memfd can declare support for
-> wr-protect support easily too, and synchronous userfaultfd wr-protect traps
-> will be an efficient way to do live save.
-> 
-> I'm guessing it's not an immediate demand now or it would have been asked
-> already supporting both MINOR and WP, but I just want to raise this
-> question.  Qemu already supports live snapshot save, so it'll always be
-> good gmem can also support wp at some point, but it can be done later too.
-
-No, live snapshots haven't been on our plan so far.
-
-> 
-> Thanks,
-> 
-> --
-> Peter Xu
-> 
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
 
