@@ -4,110 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ECA4CF34A1
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:48:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44615CF34B0
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 13:54:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC6AD6B00BD; Wed, 19 Nov 2025 08:48:44 -0500 (EST)
+	id 9EC3D6B00B8; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9DD26B00CB; Wed, 19 Nov 2025 08:48:44 -0500 (EST)
+	id 99C9E6B00BC; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDB466B00D0; Wed, 19 Nov 2025 08:48:44 -0500 (EST)
+	id 88B326B00BE; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AE9296B00BD
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:48:44 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4AFA3895FC
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:48:44 +0000 (UTC)
-X-FDA: 84127486968.28.E713EFE
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 710246B00B8
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:54:16 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 15B6389608
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:54:16 +0000 (UTC)
+X-FDA: 84127500912.30.FAAFFAC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A7DB216000F
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:48:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KA20TCoH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 56E54140008
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 13:54:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lOc+pw0S;
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763560122;
+	s=arc-20220608; t=1763560454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BeuXovBni7+sG9dL/vAQiqMT1Z6f2OI4qumf/l0t4PU=;
-	b=BBxfjJ+Bd/gmF0CNeTIHqagwdWK9V4yZaMy+89j9Y6Yz5OUyeOjyDeNr7Xqft2sb9ObpvF
-	tHMI87DHDESRD83OpoljFW7aibIHkd0S/mz9hc7CuNvKD22ypOa34YUcc4l5SfP3FCheyx
-	WdePAsOS2JqJcJVpP5f8kRvv4VreU+E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763560122; a=rsa-sha256;
+	bh=Y45nMI1mbLz9G34uo5lDlXGTr5Y3YBOq2Eva63SbSBk=;
+	b=ofNbvVNeiFKko1jpBXAROuC3N8VzlKtcmU7EzL7XWFQx1mZ0OtT8VNXFWjc1Oddt4s2mfM
+	J+6HrnjSVt5BnzgzyIzRFef9uJWBOAldBx2wYJCTZiKJcXBZWF0di9BZoovm7CKQ7y8ZJz
+	5t1JNdlAQ+QK33GFj9YxpzeaLPi1i3g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763560454; a=rsa-sha256;
 	cv=none;
-	b=Eu05yuNJI4MySVNsmQlIrWowo8ZYkaIWpZF9REVcDStfuK2w1e9FlKaXlasupJxaC5wc4n
-	hvHCJjNqC1HOZ3jFKEtdnT84Nzgt4ETlwbwHZ5E8s9hoPmibRNVhsAzIaB9J6zTPip2v5V
-	R+pJX5DpI41ZaFiCLXh/EFlDhXYS9O0=
+	b=Xd7/MLzIMkg/YYRAUkVsDD5yC+/qs8xz9E9X3QfzTDt7I+CnPB1oXU5mO3ZUH2q85vVxjA
+	9muyHs4u+IlZQ85ezx/XnfE+ju79drNIPDwgjwkmR1qx69PrOwckOLeyolxijkTdBVyEs8
+	4vA4q0dYKcAMEq4dhINBUwsBA/U+lHg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KA20TCoH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lOc+pw0S;
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A17B64064E;
-	Wed, 19 Nov 2025 13:48:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F90C2BCB3;
-	Wed, 19 Nov 2025 13:48:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E82840251;
+	Wed, 19 Nov 2025 13:54:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4089C2BCB6;
+	Wed, 19 Nov 2025 13:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763560121;
-	bh=WBVxdPHFlyOgnD3YarukkHOdXbptm0KrfxkS3OxiyOA=;
+	s=k20201202; t=1763560452;
+	bh=khDyF27Ua+YvAG563h+Mn5TVNwmjUpzwzSeY1s3ZrlM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KA20TCoHh4xBpJsET+frUdvFAC1/PD10QEHBCIMaao0WAnseVamH90obusp+eQ5o2
-	 JrhR8HX77yzaqJbG7RbbqAQs3awsq4Yvi7P4lQEZ99DLZaMLoKH1/O5e8/LLveXrkv
-	 HCKoHyda54qc27+KsHvuXB6+0wPcCgAO6rsNtdaEMFdpPZjPGtqLRxBnqe3Arlb9EG
-	 osGef8+spXexQcAOPEgMRnoYG//AXXDg2MNWYqsnZOs0wHsYLRrmAJ/9zE8Pdo+dbS
-	 CMLK4jt8qhrjL3QY8uNgMZwKArml4umHyJINrVhyQzJ9qdxF59lBOeH32HAdcfhxrX
-	 lBCpSzaidWhXw==
-Date: Wed, 19 Nov 2025 15:48:36 +0200
+	b=lOc+pw0SropUFqAbVYzMoWEHW1jJDTrt97jUDXz56yN0le/B+KOyXK6xnERbWqNdy
+	 LBjMT4gf6zJ5xLQ64pQkqww1I8qSD+7y/IDRApuyDvzXjq9BFKkEOeCi8bxA/oo1gH
+	 70+OJhKd6XWXCZEn57dkcHhMJy+/OipA/ho8GrlgsWfIHeiMPKdy6djUHim0G3aLYZ
+	 Smu4HN5s73AeSqAjTtbTpkSpzB4YO7/XVcv9jfbhTGeKtpPOUqXybhXbJn04qeXgZf
+	 DJ8SJ2zHpC/cN0o1khK2H92TSVtXxhG0/mnVCa20BOeZHJlnQ/YkrpnwOm6k6yFofi
+	 vqwHi5UdKLC/g==
+Date: Wed, 19 Nov 2025 15:54:07 +0200
 From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>,
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Keith Busch <kbusch@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
 	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
 	Will Deacon <will@kernel.org>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>, Kees Cook <kees@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Ankit Agrawal <ankita@nvidia.com>,
 	Yishai Hadas <yishaih@nvidia.com>,
 	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
 	Alex Williamson <alex@shazbot.org>,
 	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org, Alex Mastro <amastro@fb.com>,
-	Nicolin Chen <nicolinc@nvidia.com>
-Subject: Re: [Linaro-mm-sig] [PATCH v8 06/11] dma-buf: provide phys_vec to
- scatter-gather mapping routine
-Message-ID: <20251119134836.GF18335@unreal>
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	Alex Mastro <amastro@fb.com>, Nicolin Chen <nicolinc@nvidia.com>
+Subject: Re: [PATCH v8 09/11] vfio/pci: Enable peer-to-peer DMA transactions
+ by default
+Message-ID: <20251119135407.GG18335@unreal>
 References: <20251111-dmabuf-vfio-v8-0-fd9aa5df478f@nvidia.com>
- <20251111-dmabuf-vfio-v8-6-fd9aa5df478f@nvidia.com>
- <8a11b605-6ac7-48ac-8f27-22df7072e4ad@amd.com>
- <20251119132511.GK17968@ziepe.ca>
- <69436b2a-108d-4a5a-8025-c94348b74db6@amd.com>
+ <20251111-dmabuf-vfio-v8-9-fd9aa5df478f@nvidia.com>
+ <BN9PR11MB52767F78317AF3AB94A5B7D38CD6A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <aRzUpmUkDy-qN5c1@kbusch-mbp>
+ <BN9PR11MB52768D54FF42AB11C49202C98CD7A@BN9PR11MB5276.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <69436b2a-108d-4a5a-8025-c94348b74db6@amd.com>
-X-Stat-Signature: qpa3om8n3e8uim8jjo9nrc9gwz75jswj
+In-Reply-To: <BN9PR11MB52768D54FF42AB11C49202C98CD7A@BN9PR11MB5276.namprd11.prod.outlook.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A7DB216000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763560122-667027
-X-HE-Meta: U2FsdGVkX18JWHGyh/MFf7LFnQsVULrOM1q+l76dR7xamFmgoy8igKEYvRFneaOHQ3gjGs40H/nhoEcOKcW8YI2NV2xJRV2PxZrKxm2+rkWm44AU9JEq25qCsyrzzKoNyyHTafvdsmNCoWlRAqRmqEqBbao+MlK+syO8Q/OrJsutXyq/ZK+b6t8yX4RrowEQ1jK4XkYl1Ca1sfetvUTyDNgnbmjhuefhGoGKLbrVQ8eZcbvd6jx2wcU2GDScnI5GY22awuHWviPUXTY8HGOJAFJeDubbCRwOvuceulEHCx/TyVfU8FkftccT0Dq2eAhn69QGQ0RC/Cgva+6wLQcr6WVUm/yh8g3oFqPoUERqJThy81NW8GQLtED0xSMTxNQacv16khNaf8aWHqaDACmyIXcjuxI66s2EioCOyfpgcqId36qJi0FjQ7gJrENf5oo5W00KN9Y+pdNLWa7lej7URSfOzY3ZR5Ie0AHZHB9zOflebkz0Tf+4USCK2NoXaqqIh+TiqTRHp36UiBblS7lMMRhRjMpntszT6NTc+hL4s1eZCXr/jOqiz86ivUVKSLH8VkCJlOqVVuIMzwwBLBm+ZjLxefGgZu8eKS6eKbVBmbgElWvrNWRf3hv0fgXuGKPB8C+ysda3uSQ6SNTpF9vx2ix2nw/HK66wA4efCgCJzsuuYoqEA6SVmb0g5RVD7gaxtyH0h+4oaYQBvoP75J7SX3rSih2PPzPrNDHAYw6OMa8wexmfGcjAxju4/CCnFUT3P5NznKW9ldd0Jb7bKn3yaqv870aYFvXsfAILG5w7gRWH5nxIadbsuWopd6bwBhjcMTbdI/8sn9p1WuocjYskt+l6ksfvpjWo61ZeEV3p7UnzJRSCtJS8t2E8UTRoFyYSD+FTOvLUPQnuX+IGyanu9GSSt/n5QCEF6ysxBnht73js8RssEcoQLQ==
+X-Rspamd-Queue-Id: 56E54140008
+X-Stat-Signature: 935t99sccuc4uxsrd5mp1oo4aqxn1okm
+X-HE-Tag: 1763560454-239561
+X-HE-Meta: U2FsdGVkX18tcMKFKTlb41/QfVbpn38mXtWGhlLDiGylK0+l/2rOY4M5QsEXH4XWM6+ieq+MXDMHKZPeBTG2Ld6EZEKJlbinno/okt/wG/c76Je3CgGY2TWUy4CdBZsjVqhHxGeffhUz5FGJN5kHqUMm7g7NpXdx7g1AAUZt1XW/wvqWKmML1F3o8BDkq2aCJkT3vSJykavgq6U+/M1u5LAnvShdAIbvbas90B3NC/qub26qw8181XiseK60tlD99rZVmtKdlQF2Eof/iJYz29iPt4ReJosuWlPNyRhW3MZu+oUuXMQa60fXZ46Pnr0B3wqtN5ccCz0ucwgcuKHVNzqyKbVqIVA8A/HxtrIBXppDOEKxEZYFfQS73P2E3ncVF7gXFtFPtkgthptNfF0MGWcGu/Y6jluXkD/rbHTTcEaj6hHfEBGlFZMvFHXALzJ4qbecPbsAxyN4lRqsBkNH4jBQjxvJRQNZMLh2CrIsvMjE/Ue56PaYh6vDVRigEVFeqyeE1Gr9zNJNJSxgpyZyHDyDPiBsUpIGLwmXFs8sEzWv+4mYY+ZoAZunMP/x6X7E1HcKjs2jZoJr/TBmneCY+nQ1TlBlc6ZtJcclPWIKMqdsJIyNBCcFugLZPV107ZvEHfEzWq6yKc6Q9EpzFU7weOfCg/eQ3szZv/N4YqsRcH7U4lmvp3AftHiezj3klwMQ69vdk04IY0BTYIkahCp/gIAS1lPEHu/o42CBFK+qLOl3C40rb+Dku48+BPpWwl+StjDl3mSeAbTWKraaBUJghGojiHv9v2IhBAQoRu/+hhCHsjBgkyA0zXkSfCy21b87jI0p2m2r+Qby2O8KRuQlXPhJN/+wu5BagizFnfZK/n58cULtcwfVBZbAid/QvNeouNTkiFfZ0xSCpkuLaMohynTLyg1PTDHzSLgOeSshoEzgJ08+7Lf4GLIV8EZpBXfrGuvMmIlALmRBnfBF/aw
+ MaEXWwRy
+ HCgaiNOuBP7TccIKsvey9HonnvE7EU5NyoYtlvRtp9hO07avR60QSNkXqlo7czop7O36hMsOZHqvrfoaNOdLzJbRHGdd0G4lS2vok7hiIbrmp5h9cva8zmPkwG1bdFp5e93zZbjEq72ZEOcBlt1p5U6joknV+f2rYWkpxp1lTOffzmEHzhNHvrVcmmyJ/t+L/yUv9pIWYNbYCQ9ZRsWLNUrHrxeNh2gsZfPHuwOYzkvpjX3Tcuk0iQJxD0NDckSmKBnYZebGwfzw4OB0dAzyfjJEu06RBQuXXycSnFlJuxPtDDszTrMebMOf0rNcp+xy28+DRdm17+JkLhMzXWHVafqUx62WcL6NkHWpjq2CWv+lbcbY/o7CsvoyeuA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,101 +123,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 02:42:18PM +0100, Christian König wrote:
-> On 11/19/25 14:25, Jason Gunthorpe wrote:
-> > On Wed, Nov 19, 2025 at 02:16:57PM +0100, Christian König wrote:
-> >>> +/**
-> >>> + * dma_buf_map - Returns the scatterlist table of the attachment from arrays
-> >>> + * of physical vectors. This funciton is intended for MMIO memory only.
-> >>> + * @attach:	[in]	attachment whose scatterlist is to be returned
-> >>> + * @provider:	[in]	p2pdma provider
-> >>> + * @phys_vec:	[in]	array of physical vectors
-> >>> + * @nr_ranges:	[in]	number of entries in phys_vec array
-> >>> + * @size:	[in]	total size of phys_vec
-> >>> + * @dir:	[in]	direction of DMA transfer
-> >>> + *
-> >>> + * Returns sg_table containing the scatterlist to be returned; returns ERR_PTR
-> >>> + * on error. May return -EINTR if it is interrupted by a signal.
-> >>> + *
-> >>> + * On success, the DMA addresses and lengths in the returned scatterlist are
-> >>> + * PAGE_SIZE aligned.
-> >>> + *
-> >>> + * A mapping must be unmapped by using dma_buf_unmap().
-> >>> + */
-> >>> +struct sg_table *dma_buf_map(struct dma_buf_attachment *attach,
-> >>
-> >> That is clearly not a good name for this function. We already have overloaded the term *mapping* with something completely different.
-> >>
-> >>> +			     struct p2pdma_provider *provider,
-> >>> +			     struct dma_buf_phys_vec *phys_vec,
-> >>> +			     size_t nr_ranges, size_t size,
-> >>> +			     enum dma_data_direction dir)
-> >>> +{
-> >>> +	unsigned int nents, mapped_len = 0;
-> >>> +	struct dma_buf_dma *dma;
-> >>> +	struct scatterlist *sgl;
-> >>> +	dma_addr_t addr;
-> >>> +	size_t i;
-> >>> +	int ret;
-> >>> +
-> >>> +	dma_resv_assert_held(attach->dmabuf->resv);
-> >>> +
-> >>> +	if (WARN_ON(!attach || !attach->dmabuf || !provider))
-> >>> +		/* This function is supposed to work on MMIO memory only */
-> >>> +		return ERR_PTR(-EINVAL);
-> >>> +
-> >>> +	dma = kzalloc(sizeof(*dma), GFP_KERNEL);
-> >>> +	if (!dma)
-> >>> +		return ERR_PTR(-ENOMEM);
-> >>> +
-> >>> +	switch (pci_p2pdma_map_type(provider, attach->dev)) {
-> >>> +	case PCI_P2PDMA_MAP_BUS_ADDR:
-> >>> +		/*
-> >>> +		 * There is no need in IOVA at all for this flow.
-> >>> +		 */
-> >>> +		break;
-> >>> +	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-> >>> +		dma->state = kzalloc(sizeof(*dma->state), GFP_KERNEL);
-> >>> +		if (!dma->state) {
-> >>> +			ret = -ENOMEM;
-> >>> +			goto err_free_dma;
-> >>> +		}
-> >>> +
-> >>> +		dma_iova_try_alloc(attach->dev, dma->state, 0, size);
-> >>
-> >> Oh, that is a clear no-go for the core DMA-buf code.
-> >>
-> >> It's intentionally up to the exporter how to create the DMA
-> >> addresses the importer can work with.
+On Wed, Nov 19, 2025 at 12:02:02AM +0000, Tian, Kevin wrote:
+> > From: Keith Busch <kbusch@kernel.org>
+> > Sent: Wednesday, November 19, 2025 4:19 AM
 > > 
-> > I can't fully understand this remark?
-> 
-> The exporter should be able to decide if it actually wants to use P2P when the transfer has to go through the host bridge (e.g. when IOMMU/bridge routing bits are enabled).
-> 
-> Thinking more about it exporters can now probably call pci_p2pdma_map_type(provider, attach->dev) before calling this function so that is probably ok.
-> 
-> >> We could add something like a dma_buf_sg_helper.c or similar and put it in there.
+> > On Tue, Nov 18, 2025 at 07:18:36AM +0000, Tian, Kevin wrote:
+> > > > From: Leon Romanovsky <leon@kernel.org>
+> > > > Sent: Tuesday, November 11, 2025 5:58 PM
+> > > >
+> > > > From: Leon Romanovsky <leonro@nvidia.com>
+> > >
+> > > not required with only your own s-o-b
 > > 
-> > Yes, the intention is this function is an "exporter helper" that an
-> > exporter can call if it wants to help generate the scatterlist.
-> > 
-> > So your "no-go" is just about what file it is in, not anything about
-> > how it works?
+> > That's automatically appended when the sender and signer don't match.
+> > It's not uncommon for developers to send from a kernel.org email but
+> > sign off with a corporate account, or the other way around.
 > 
-> Yes, exactly that. Just move it into a separate file somewhere and it's probably good to go as far as I can see.
-> 
-> But only take that as Acked-by, I would need at least a day (or week) of free time to wrap my head around all the technical details again. And that is something I won't have before January or even later.
+> Good to know.
 
-If it helps, we can meet at LPC. Jason and/or I will be happy to assist.
+Yes, in addition, I used to separate between code authorship and my
+open-source activity. Code belongs to my employer and this is why corporate
+address is used as an author, but all emails and communications are coming from
+my kernel.org account.
 
 Thanks
-
-> 
-> Regards,
-> Christian.
-> 
-> > 
-> > Thanks,
-> > Jason
-> 
 
