@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EE04CF2564
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 01:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDCBCF2566
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 02:00:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA5E86B002C; Tue, 18 Nov 2025 20:52:57 -0500 (EST)
+	id C4E996B008A; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7D296B0089; Tue, 18 Nov 2025 20:52:57 -0500 (EST)
+	id BFEDD6B00A5; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB9FD6B008A; Tue, 18 Nov 2025 20:52:57 -0500 (EST)
+	id B14CD6B00A6; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D7096B002C
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:52:57 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 637791402CF
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:52:57 +0000 (UTC)
-X-FDA: 84125683194.21.0F85EBE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BFF49A0015
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:52:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dpz8PnXd;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DFDE6B008A
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 21:00:17 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4EC7A12EB30
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:00:17 +0000 (UTC)
+X-FDA: 84125701674.02.C85E0AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B1E951A000C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:00:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kb/UXTSe";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763517615; a=rsa-sha256;
+	cv=none;
+	b=tHDPQ9JFN1e66s4XHFEQb8sB2fbJV9CNo5zAUiI3lUpUK4OXUPqmO4D2oDwe8WOeCCDhbT
+	qYavzlWcxnsSlBHO+aavIOLw/htaCP1eyZzZmk4+jSzIVEFi+sdlfUgBOLkgDVJsyma2BZ
+	gTlV1M7BCz3BKm3GpaT6LNRtV3KKRhk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kb/UXTSe";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763517175;
+	s=arc-20220608; t=1763517615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bbyRZ/PMyT5AooI8iO3av138qB0SaPMTi8n8joHABBM=;
-	b=RlacfXXJWFmreXfjckoUmF+lPvl6Fs6DhsToqgYs6ms/VYrgAlPLBMWwOCzkeiWaY4te9E
-	cec7X34mDq+/CpQQoIhetoE57xT8KD7v0gjIb1gnTmYOvtwdT3YKCHr1USNloKVX0oIMIt
-	XvWgW4vhk75j/kOVwpo5amX4Ly7zr2g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763517175; a=rsa-sha256;
-	cv=none;
-	b=CjjrMUr+GsTNXGkLuiLnnglWHyXFDeLRCrPV979NZJoarJ/p36qMS9ISvjt0fNOXnOUUN0
-	b6/TDjxP0IrPi5D2xpmBIttpVxLNHEQI1QBhUkd9zKs4kV0Gx1gHnHXY5MaP4K5aw+RQWH
-	cgehYUI58+Bxlc1IBU5qk+RLIgQN6UQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dpz8PnXd;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=5lLzJ3HX2WFatV9+GacUwdgdtt5CF5Xf3PFlaOI1b3Y=;
+	b=w/5IOW/uZLgwym9pODYkL1C5rzhMDRT0Pani8p2y+ymcTFkwtIiklAq2sKxwxubR2TDT1H
+	KuyDvoRrjPu4RlIiZ8RcsHXKGOke2uAb7dXSct8Q0S6qwWAS2jmLFpgnQMf0Ih0TTc0Jh9
+	WfNZvM9IfLlGmhg7DqYYiaotBk8mi+w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC723402E2;
-	Wed, 19 Nov 2025 01:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5520FC2BCB5;
-	Wed, 19 Nov 2025 01:52:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 07998600C4;
+	Wed, 19 Nov 2025 02:00:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2E9C4CEFB;
+	Wed, 19 Nov 2025 02:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763517174;
-	bh=TCEqzR6zBDhattucvhy5/nwMOLb1P6FH1l3zgtrIhIQ=;
+	s=k20201202; t=1763517614;
+	bh=+wyBW64IzNGcFzUyRIq3XdIAGkWKGaf05JXNZtza/v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dpz8PnXdicz9rP0/tPu2fRyD4FTob2uHNpXFq0i6VjQk0MbyoTeQmxk40SpreMZ1D
-	 ksFjxM1bDpaD6tRqKcQbe837NDpvVn3D96TNbTiDCQ+sckkkz7VDUwt6E5Y53s6x9p
-	 z3fueSAnatoBMU6o1geoOpjSNCHOfBD3DsOmIq/tfXaLwlJLFv177lhoObz78/8joG
-	 0Id4ydQgLdOEPyn28shQFynLFMSltstbXal5p6qVm83/QLafSk8o66ABAPpr3OQRRO
-	 AXOueqI75vdGXJDFgI3HYut2oEH3wD0AGsJMrGElAem1h5sXyiz09YAtpTeRg72uX5
-	 gcQvExbw9/mIA==
+	b=kb/UXTSeMmyW3QHHULosUPUWmqxeQJz7cW5eLR/nyR2yPwFAmXrl7Te/dHy8IBwuh
+	 ie9qj2dIQmVwC66HrrlVnLlcbCZwQU/qbv69RVxg1TxvHTSmz1bn48KpimDrgtaiKD
+	 ZYknW1kPYRGWcx2TUcPwjJVHb4QOau7vu/U9qqHEpIR6eJop/Gsfy6kXKMwDml+UyI
+	 4CoUbeifcy3BQfXVPWnAJJtZBtyyQHQrNALPAxFnsRUPd5mf88y2PjfOru5TkkOUo4
+	 ySm+kRZJ+qO3fISJLYJOkzUx29FX+bw/q7uN+Vblr0vvsmmhg+2ur8Y05gSdNF1dD/
+	 d5kKqmMq/Vg3w==
 From: SeongJae Park <sj@kernel.org>
-To: Sahil Chandna <chandna.sahil@gmail.com>
+To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	zhengqi.arch@bytedance.com,
-	Liam.Howlett@oracle.com,
-	weixugc@google.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm/vmscan: use %pe to print PTR_ERR() values
-Date: Tue, 18 Nov 2025 17:52:43 -0800
-Message-ID: <20251119015243.72791-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH v2] mm/vmalloc: warn only once when vmalloc detect invalid gfp flags
+Date: Tue, 18 Nov 2025 18:00:09 -0800
+Message-ID: <20251119020010.72911-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <94ba6ef88d97eb1a5e20eeab9f913be8fdc46fd5.1763227530.git.chandna.sahil@gmail.com>
+In-Reply-To: <20251118-only-one-vmalloc-v2-1-fe702aa68d8b@ixit.cz>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B1E951A000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3xns1oxai6dsacinrnm1o8wb8awjwdf6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BFF49A0015
-X-Stat-Signature: w47fqofymk3cxs5t3nbi7rdguabssjh7
-X-HE-Tag: 1763517175-502991
-X-HE-Meta: U2FsdGVkX194cyQc/Xwr4Lhnuzmwydq11qEnpLJLyebmJUCb4RPgLVZPmcO1U3WmVuiOTUI3Aw15APDe/tnpL0g2rZdtQFIGBdi4TsBr5fBju8iqe1Wn8kM0ithOqHoA4omKos+pyWYVQR95vylgmVNm6UcTiP5WNO0yYnmMoTT8dK9nuMWuqAM/nZt2XmEHi1JVz7jL0Hm6qQWlrKdkpbVVCRNzC+VUWdgkX3KPZqqvPYMPx/n8fG93uBnd5LoQsfTiSrSco9rqFtnpZSW7L88FFQb1aPr4RwWEkvVp2AMcdNg6+GztMMNyEu7lJa2F3LV0pybyA9j91L62TlacZ+dZ33zNU8IB3GXYygn2jH0Gop8yuifpHxQSAve5AKu91OxhEqX5r6BJVgw5oFddAqICWI0bXlbfQTP/KhWliLO9wHdVR3fFFVdixhtdv9tfkgvYGBoG5JEkk1Dk1AeTumLAikKQAE5pVbBgdB9Bo81MC22BfUz1WMCdQDeQP2WXJtJr3t4yEBMBJz8qKX70wHthARqTF50uWVFO5NWxtv9GGbCB5gvyKHkox/sGmv3g4+OlBXACUBeOkSxo2dD/IEl7F/2lfkZ1UBooCQ1keOGQfxutY9jH4YzFcoDpY0GQkpT1RpyaMeFAQH7HVZ5LS0xvelWeb9IbK8jOl8eiljBQS2uQ/VwCeecLLj9hngvwXfNQn9azmu4jV+9e+1RZsbGH1unPtgzb8/sPSe8YIaWuoBcZRkIFGEqveWhDd0PQ7hvsEtd3HPr41xEGzOQCikHwHee6Tvd4gCiQNR53Ir8L+QaqwYhytNp+heg3HlGad1I6IhthwliJREt/Z7PhskoiZwtvinvBwgpb+6CCTiLOKroBCo+oWqDHzObsR+JLJ9Al+Qmv8WVxyfcfML0YjXD7ql8AgV6f/o8ecKdgd3BmuvoILOQDDPJKc6gpBOjRRPFiZLlUcLhhkQU/qe6
- Iy6r7PTf
- Q+QCZaDlklzCnqlB3OnawFT4PI5gjs53+MEMB1iXbczFvqhazFw/ZvL8Z7spKvtzALDIsB4FuIqtSkmaw2g6DQrn+AAspJl2UbvvfZ8GtcqOrpcdX/OA2rrXBbfPo2U8sujexaHF2VYrZPXL1J9/iq0URNUyKhT6enK7Iyh9fWgntGU2vPJ+/guTK5Bwox4MiZH6bGtpVhZEQxnGDJQhNkXR8gpvpH6s9eJCd40mFcM+s2S85Sxi+QDsyENu0VvvChoItGDar+CYNSHiOA40vcMrMFluHZ7YBYaIQyW2igVLmvXwwp6B35xhvu8czm48zOITVbFk/rTPOKPPAh5UE8WUkvw==
+X-HE-Tag: 1763517615-508736
+X-HE-Meta: U2FsdGVkX1+1JeBGA0cG5327YgTxd/+xBjlGmtz3pijr2K2DN1cDL27S8QiOikrqJUYn4LX0WaQIL6qButByhegRuneioDLj+WZdtUath7oxtb2VYVfGA1jW8Rd+r6P+tjEKJxGIjI40eJ9J4zWwxo6KsfR22ONYxM4tTKqe9Z4lLxv8HHaL2e34tisqzdg06o8SJ/fDPWljeEhC/F38MiOaBfa3wuQaipbcQnSBc/fQ+M+HNtMdPyA2PSzX0kQLezWXn47+fljDq31LMa3Pksi/MyaafJybXBXPXhMd8F8+nDxWOYy4gpb9+2E8zan81UggwNXJxgf+OuQTCHvl3Ze/9zoDbwzGHqTILxmJ9e0adfYS+NRa0Mry3M7yoZmgQPJEajlbwClIBnq5W7BRbLQubU2Mw3yNKqD3I4ZMihRm39l5D322Pf2VbpFiJuK+d4fx/hqlXFV45ZrBNTAsGRmsUrqDrk0NO5PCXQgZPMiErwn2mkLpAusQjw2NWta6y013e2genQ6MzqWQ4ixeyuwRRtc84FJGkF5VNfb58qltrdOMlXYVFFi+0pViRDAJYe+QTmMpdT4KZkl0wgcvwmWEurAPWHn/KGgQNTHPqnQJhBbF7ZYDiWQWRydqtsyK+9n0E8ygPXnc93Z7hvk3Xmx28XnDpAuKaaNYNDcid5ikh8RIsHQh/Q5MMtwwCxf25IXpf1i7C0Qt6P6QrstmWo1bnTRm77cPGN7CUPnol2cyIHfPMY/gzFVIB0v5wmyoTDxrjxEUzMKmVzyqR1noOJt5p5ZdbLtrsYg3HjE0OT19MJVVA0FvuvJ9UBvSI2sHLm8UCXAd/g3TPdD/QgABPMvJ5YIE2iHzvyOY9jDGj4roI8riojXc4U+AL9TnjPECV8n/tbN2CKx5oRCbZSc5CXPHxfOnf+cU5WfBeHPVgUES6BYevTGXeqnQZoKZUDSF+EZyVT3n7/L1m/zcXZ7
+ LX+NZ7+g
+ g7SGQySEV6IRl5Utg/mVuOP783Qcrni56nm3fWskTl4OKlOR8xy4aIHYDODzJLbf6XqNVLKj9l2zyrakXlsvrWVL0zXj9R+AgVe3mMGN7drj0sl5B3J0HKuzNJ7Ait1jSnUYptBUi1K5IlNqnuP5c46GlUJt6ZQ+asX4hvU56IriEiB/11TtfM2XYg/jlaOaSODXz/EdjcL/o89J1bCOP5Vsxhw4RnDTKECI5Rg3tGXlUYh1i51AvhhxT9JDcbg/HRI+wSVju9TLH5ehJ4dsXu54cGMysCasHZfJ4xY88GLJcQ10VlN2bWpAbqLGnlaK8lIjUt/DtGz3NDzb8XV6Fg21AcW+2DiNxkm7e
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,21 +97,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Nov 2025 11:38:50 +0530 Sahil Chandna <chandna.sahil@gmail.com> wrote:
+On Tue, 18 Nov 2025 12:37:16 +0100 David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org> wrote:
 
-> Use the %pe printk format specifier to report error pointers directly
-> instead of printing PTR_ERR() as a long value. This improves clarity,
-> produces more readable error messages.
+> From: David Heidelberg <david@ixit.cz>
 > 
-> This instance was flagged by the Coccinelle script
-> (misc/ptr_err_to_pe.cocci) as an opportunity to adopt %pe.
+> Without WARN_ONCE, the logs get spammed immediately after the boot,
+> on devices as OnePlus 6T (Snapdragon 845).
 > 
-> Found by: make coccicheck MODE=report M=mm/
-> No functional change intended
-> 
-> Signed-off-by: Sahil Chandna <chandna.sahil@gmail.com>
+> Fixes: 7179b2256315 ("mm/vmalloc: warn on invalid vmalloc gfp flags")
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Acked-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
