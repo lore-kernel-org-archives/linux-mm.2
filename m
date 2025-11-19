@@ -4,137 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F1ACF2564
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 03:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42274CF2564
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 03:09:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14DD36B0028; Tue, 18 Nov 2025 22:03:48 -0500 (EST)
+	id 993EE6B0031; Tue, 18 Nov 2025 22:09:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FE986B0098; Tue, 18 Nov 2025 22:03:48 -0500 (EST)
+	id 96B4F6B0062; Tue, 18 Nov 2025 22:09:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 013726B0099; Tue, 18 Nov 2025 22:03:47 -0500 (EST)
+	id 8A8C66B007B; Tue, 18 Nov 2025 22:09:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E4A436B0028
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:03:47 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 396811402E1
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:03:45 +0000 (UTC)
-X-FDA: 84125861610.27.E2AF4E2
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3C2FCC000F
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:03:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=KkFRBYiZ;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A8C16B0031
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 22:09:08 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B8DE758355
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:09:05 +0000 (UTC)
+X-FDA: 84125875050.25.DCD0C1A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf16.hostedemail.com (Postfix) with ESMTP id EE92C180008
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:09:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hRzA3cej;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=tianyou.li@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763521743; a=rsa-sha256;
+	cv=none;
+	b=k7osdcwKnK+n303+io0GR2EJD+GN11xO9wS0RaT4A5fy5j0W4Us9J0tgp0yoC3QV0nHjZA
+	9YDSwgI3+rN/GmDbzX2EpzgtTPyMqX98dUUJNocYgEbMQvwnaQ/XZSQ6HfcL1DwFGBx3vQ
+	mTHpUm3Tv5PGK3lpmdt1FOJieI3sTnY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hRzA3cej;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf16.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=tianyou.li@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763521423;
+	s=arc-20220608; t=1763521743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iLVQ9fpSMwb+/1OgxzSqM9eSJCO8OgdCf7gGWf7HfaQ=;
-	b=qZX+HMO18Mm7l003Q1CX7ax9D11Jl9Y006P1Hlbr5OhUggU+8LyW2Y25k5OFuKm5OSK6HJ
-	pIkoNeil9mFCWkXq0PrictA4zk531haSMF7ikBW+p502Frcx3iUU901EeI4zY7kW2vSQOK
-	p4wBDkxZgZOf1RjQG7Isnp1hbrkuZ38=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763521423; a=rsa-sha256;
-	cv=none;
-	b=QUjp5UhOgcBUwUo582x+B3cD+Xv9z7QkhidVAwFiFYdRsdmwG2D74bcDRVBxAKN5MlTk9f
-	uk65xqM0jRw1vvnY5IbRiFKFFW3QGw+rbXwCXYTkKsCagRh+7mgYS6nzkor65BKJ7i+2g9
-	vQA5Jp71GCXBj1iVN44KMTtzAozRAi4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=KkFRBYiZ;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5959d9a8eceso601316e87.3
-        for <linux-mm@kvack.org>; Tue, 18 Nov 2025 19:03:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763521421; x=1764126221; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iLVQ9fpSMwb+/1OgxzSqM9eSJCO8OgdCf7gGWf7HfaQ=;
-        b=KkFRBYiZOcAQaVCthyz6RPa1DGZMBlTYhWC5byKXXTKFt7BaYusDFaRRfg+Gvh0i11
-         oV8Mh1UcaS/oCAonma59bma4UIq7FumvA5qXV+4rddKDxsRq4qLL2jftbKSuoT+R3r2N
-         UdRT9yB2wI4TKJViaQTzSo7DGy+DB9Mq77I+WcpUGuT6HwjwW/mcHWY7PKrC10LrvBFS
-         xppeMk1+xkjEAnI+woTfDQ9rtkXg+/Xa+pjFpua5YXndONdOq79zLAQ4fCBQB9zV+yIQ
-         Ogfw+OMBp2BO0BLYqU/GF9vc83LYNzFQtAuBno1yd/zM6tQaRGikQ3S8pHZh+0KAzepn
-         wEFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763521421; x=1764126221;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iLVQ9fpSMwb+/1OgxzSqM9eSJCO8OgdCf7gGWf7HfaQ=;
-        b=BLMwgKOyVbT1yVrV1gLdrNsDFkzWGRvCCPtu3THmukdLuRU5/bzvYd/Kdlr01dnfDi
-         OC0a9Kd/3nze287PmAGh9P40PRq9RVwoarAKXQSGCsHZUe7scJJWefPZXrkyQL2rKAF3
-         Yqm11oU0F/igvZAdUO3wvddRcgJaJMsr8EMFIPaDFpcoTrtEgS6mIVNLxXakoomr+p7S
-         6QTLqyosibyUSpRgwUC+QGETy+SNTHyQCaS6MzZRqAXeBythHxhq5Zrig5kf4wQht3TS
-         ATycYeQAx26Et2auMvWyCdtkWupMBQ0xpaSbNvjGmZIn2qeezExDaYg3pxPb0grPQoL9
-         lRog==
-X-Forwarded-Encrypted: i=1; AJvYcCVievQNKaDuwQqgiylhi+IOVoc4qMFakQD1hRv2xZ49gTOhypFsVuqzU772JRWTj01vYHxBC1dy4g==@kvack.org
-X-Gm-Message-State: AOJu0YxwkJBr8D68ZBIOy3eAckgFQqiq2rl0yNTw8SrDzo2aNcdGSKhE
-	q/fCg7nfPzD0S1nJoaBhtzKu062A2CPBcv+2hcfYWhmLaYLjtLJSzHeVY8XEEPGlhwbOMyN9Nxs
-	ywrCdq+HYlRAXi92To9hQj16xZQ61XXG/orE6tT1k/A==
-X-Gm-Gg: ASbGncvCkONlaSXXrE6NRsMAY7vcelnCAdthaWG6PSzvwgFWm/IPLxLVFjKU2N9Hvdy
-	VAGPslfn6zVBtDAy9mPMRTH0icyHIk2uqW4ZyG6Nrvon7d8UDtJiKfs2hiaV2xTv1QJVvhnRqpt
-	2LVaMXF9tCenXKlsdpSGMDyjwNeHR7Tgvi6fpK0gJX/CsDVi2MDfhf+hljDxhVg9bjbVZ1CnY3m
-	QKUjR9XjeYlkoluZOpT5gfiHXrVn1KOgX8cYCzGUCVGasGYx+5Dum3w1nyHVkbGZz9n
-X-Google-Smtp-Source: AGHT+IF6jFUgyWxnWzJx/waEh+e8ZZZcrBjexbTkHm8gmlq1XM1TXAgMYp45D6MyYvw+W6OQW+owK+2k/XNdPzJADA8=
-X-Received: by 2002:a05:6512:239a:b0:594:3d20:f021 with SMTP id
- 2adb3069b0e04-595841e10e3mr6573440e87.3.1763521421110; Tue, 18 Nov 2025
- 19:03:41 -0800 (PST)
+	bh=Gh6R88LAbnx9tFBHvcQcYUPaASHiMjoo8OXtsvQlTnY=;
+	b=AmF/73Hfl4DXutoiJSY836o14eUj64a9rWKE+WPK86jMjBkYcKkS6Dbn6GJCNPuxRl0oai
+	IGUZUCbd7ZMqzTkCO/pzPVlnfmYGM0un5vpXinMHcmZfGxzGlC8UyYYmwj8Xh7Kuvnlhdu
+	GYIrXBK8nvou0KDCnrMduZHogeJ6SZo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763521743; x=1795057743;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rNPZHlBaO/JApGt1epeD+p3Oa009n2+ha/fBgcOGjrI=;
+  b=hRzA3cej0mSa0dm1/i68GSSlO6nVH9r5Pe9QjOlN5dW4mBWi3LuUZD3j
+   EXR5C/PYCVd+0B25Ss9oaRpYKukysSfo28kZ7ghWtvZaUeN8g3ku3NJkP
+   A8ai2ltGWXendwwh7suQwOsPE7Prru3C5CP14ucVJ6Tdb+/3CXcKQcEbN
+   /Szeb82Ycm7KKijcY3zfAe9CU7CYouqozOMAL/HYj6Xp/jgBM3GsTms13
+   nyjLGB/Qa3IO4J6gjLOBF63/T7FFyvTIODmI1OsDCU6tUOH6jjuPhN0Mw
+   +vaJfBngkp8zlwlCk34aHzdVzynv+ktEsBUZM6qxU1/s6K/SpHX8W9w0U
+   g==;
+X-CSE-ConnectionGUID: HbAo+PzQTh2EEtluCo5vSg==
+X-CSE-MsgGUID: O3IfCvo6SI+OGrqAv+xYww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="91032308"
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="91032308"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 19:09:02 -0800
+X-CSE-ConnectionGUID: 84U3sawTTPO3ZldqdNZBdA==
+X-CSE-MsgGUID: aB3xw2FzS/uF+2x6c+sx7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="191371608"
+Received: from linux-pnp-server-27.sh.intel.com ([10.239.147.41])
+  by fmviesa009.fm.intel.com with ESMTP; 18 Nov 2025 19:08:58 -0800
+From: Tianyou Li <tianyou.li@intel.com>
+To: David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>,
+	Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>,
+	Tianyou Li <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/memory hotplug/unplug: Optimize zone->contiguous update when move pfn range
+Date: Wed, 19 Nov 2025 12:07:18 +0800
+Message-ID: <20251119040718.2735199-1-tianyou.li@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <aRwAjSQBby614Itx@kernel.org>
+References: <aRwAjSQBby614Itx@kernel.org>
 MIME-Version: 1.0
-References: <aRuODFfqP-qsxa-j@kernel.org> <CA+CK2bAEdNE0Rs1i7GdHz8Q3DK9Npozm8sRL8Epa+o50NOMY7A@mail.gmail.com>
- <aRxWvsdv1dQz8oZ4@kernel.org> <20251118140300.GK10864@nvidia.com>
- <aRyLbB8yoQwUJ3dh@kernel.org> <CA+CK2bBFtG3LWmCtLs-5vfS8FYm_r24v=jJra9gOGPKKcs=55g@mail.gmail.com>
- <20251118153631.GB90703@nvidia.com> <CA+CK2bC6sZe1qYd4=KjqDY-eUb95RBPK-Us+-PZbvkrVsvS5Cw@mail.gmail.com>
- <20251118161526.GD90703@nvidia.com> <CA+CK2bCguutAdsXETdDSEPCPT_=OQupgyTfGKQuxi924mOfhTQ@mail.gmail.com>
- <20251118232517.GD120075@nvidia.com>
-In-Reply-To: <20251118232517.GD120075@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 18 Nov 2025 22:03:03 -0500
-X-Gm-Features: AWmQ_bkhtJuHwb_aYM1P0vArDeVsoqrPaefrD9sFZo9CLgQiJu240K99k3Hl7qU
-Message-ID: <CA+CK2bCtJD-FGtmCOfz8arUGqO6hFkxWcjG-wHz_S1Abt7rXEw@mail.gmail.com>
-Subject: Re: [PATCH v6 02/20] liveupdate: luo_core: integrate with KHO
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Mike Rapoport <rppt@kernel.org>, pratyush@kernel.org, jasonmiu@google.com, 
-	graf@amazon.com, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3C2FCC000F
-X-Stat-Signature: xs3rna5yfuiefxxu335w8kjtpkfk98fk
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EE92C180008
+X-Stat-Signature: pmi6yjhh3ucp7qtmy8uchz8ukbhpecaa
 X-Rspam-User: 
-X-HE-Tag: 1763521422-185439
-X-HE-Meta: U2FsdGVkX1+/80Pv5RuPXDOsPcHvin/OMhCogXuHheilKnjKX5Q+a3NVYzgrPSluPFyFexqzdgwySCC/fjUeGi1G8GeeP4tZldbMsLyvrcBMPHDeaWHNy9mkU2eDP+Qdc5D4e3zOSUZghpkQFS4+chwb/00aI1OPUXBIu5HLoYu+HqGF2GP/OcDrv9WtxDvEw/M3d63tCVKhAaoSmMokQf5wkEWik7N+Mhxauub3ZWCS0mrvrV5cZFZqbPJ7OAkje142hr7MCm/IXxj9ht6145PFDjZX0w0GrlDr57j18WQ4TEymUSAM5L54s9vz+nH/KmRDGUsSfS6g8qh5ocwWu0hQcOOqxwReXKlZKgU/3FuT+o/IivtTs8FwrzPrzX/v7Y5cQoIBoEhoSHnIFV6DXw/ve538VkXcx4KgCBOAwFU3d6Iiq4ol75wVW2auQwNu3fni7TwNhfqvUrORZ0syDIpxnDeodygIvQGLNnArJex3va31v2P/V4goi7k3Oq8ajD/DpuH3xZRbMa9al2tWzw6tWd28vdvQYNq0lNpKL7hijYY6/xTuOiRAV8JtHjsrihdX7ksaheUdPmXQ4QJlc5ApYifYCfQt4toL3nzQ4w1HDBLNEgf+EFX/trCOPrXrFHrw/XrzDosaXSrRUts+lw3Vm0D4EhnPQFVwGPC2DlAOL2Rqrvud/WP7eulRwPBC9ZwEnxFm1pDoVbqmb02YboDy/BlPslm7jFMIi+3vOlGDWB26TtswqO7PXXagPomXxqOv5iWtW2SQqtIuLCfJZ5YW9OHRAFM+xUCWxkfind0+G3SPj7I7C/2eCVRGO+qQLRVEmGnuLyzuSAGw5EpMRM6qckfbzxLvZtwk9oZb3BALYordE9LIP/GROs65yU/PFtG0OWWzcGs2PqY5dEp8EmxuTqGuTzo7ow2i1tIxyKvsEb2UfI0feB8r6Ybhf+nBZ3MpUjyxUBxAeiCbgtM
- gs/x4r4c
- muQgjNHgRUk1VnBA37ku5/pnuA1hynLjCqkDj3cWypM3QEGxb1nene3ETGiD3SQGhO1u27sMXXVBuhIkhpa5jKl+17KpSshHpj69gLQiq0LEe73cB8lOLRz+gg8leSihQTUGPRftneWMUkpE3fkgzYbUopHrU/mG9fJE7ApN9GS53Tw76STn9697aEDLEF+oFOWFiibjpByJJ2z/ECAo4AeN8pZxQ7lvpZqRb+1/U57dLUTpNsDgMwDo0013B7r6KbXOndzQDUdNgXUhkFW6Ux/OgbiG9OpxF0ofme6rEapS6Ap4v+yXDioyTrBSp6XXR3KNfzwcnBAIoikA=
+X-HE-Tag: 1763521742-695951
+X-HE-Meta: U2FsdGVkX1/U4gWsJum7dBJCVNrZ1IfAkzLsyl6yyMKkvPunY/N0NKEvFcAtzQvU4DmlCm8XxzVkWn2kb1YcUjMoTBPEOvOCZkZIpYO/VWnd7lzXYCT/6xuJ/SVk8tsJFTH6kCvW7Jswzh6usFwBLh/0+5a3GC9lGYBC5/QLxGc6Rj1fm3RMw4i3xHS5V4UBU88d9ZdYUL6V8ibCasnashly2rvtnWaVrUOcNvFQsqz9VWA6Tyy+LP4KXIbt8nYqfOTI/g2ak98SUITtplNjknEOjvxSEJTeaPAZcyQni8coPTmco9fw617R9B2eT2qtUHzn2LgJdVBLk6ROoC8JxNpI34iDFnZQxWHusN/FU1VjIItn+uowMxzfN1suYgQ9X9gNLAm3ARX9TTtZBKRr9kS3jm+HmiY6DXwVcfYWpXqt7L9Fw5tt5z06zWWIuM0/nCgB9aq1BtRFfC2psaG5ItWNi+iiGbZYA8kV9H2SmgEnTGGhhn14WKJ9RQ7Fu34eE5nLdjIEMHs7ma2iXe91hX0m6Ggq/eeCCVQdnSE26mmxNYuyM59WZ6kCy4KrxQy21Ut0KsvyM3NVhuvjnkMgv9HypqY29M5360+5FgGxgY+iJWXHwdCkS6O6DV7CQGGSRn4niUOJgwG7aimwFCC4IpTlmGgqNTL/FH3+YNxgbKorpG+Wysp280DVw6EDLAxq2G1tpc6cRlv2LC/NWXwnjkt45lWMQBWRSAXzPfQbVDkM0YuYaJqM3AeeACAhiXs6+4invg6TMwMln80OBQAmoDu2gevwXF4Q3OMMb2D2/c6iJSpCU+GqpYZ0/p8Af4rlH4blugjaoMx1BOBqRmTFUhdz+A8YiDdOymgrKGrnyoTa4pbmHdqIohuh/iU7i0qY5mA+YKcyCA7/h5tBT5xBYJW3EU8UMgweX/lO6xNXBBK2wcuAl+bvytB6mhVBvUqqlLY+ta4EfMA4dyMvPKl
+ YQKKgQsT
+ Mt29r7UImdfcAeuOE1iOlAgOxrWjuRLMUQ08YgaGDxHBiyqWrpiFk0kEhMd9FKRA9AthHtVIqLf07YSFNhAm2naxZ7sYNpPpBUlojftJm8Oq6kf8da+Vn88WCpLXMWVFRniiqVBj80vFF2nSiYfniP4PSWBbeXoJyuXHzcuYZvM9AJE/9shGOwjxfSTmbhyu6LC4ZELuDByHIP9o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,41 +114,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 6:25=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Tue, Nov 18, 2025 at 05:07:15PM -0500, Pasha Tatashin wrote:
->
-> > In this case, we cannot even rely on having "safe" memory, i.e. this
-> > scratch only boot to preserve dmesg/core etc, this is unfortunate. Is
-> > there a way to avoid defaulting to identify mode when we are booting
-> > into the "maintenance" mode?
->
-> Maybe one could be created?
->
-> It's tricky though because you also really want to block drivers from
-> using the iommu if you don't know they are quieted and you can't do
-> that without parsing the KHO data, which you can't do because it
-> doesn't understand it..
->
-> IDK, I think the "maintenance" mode is something that is probably best
-> effort and shouldn't be relied on. It will work if the iommu data is
-> restored or other lucky conditions hit, so it is not useless, but it
-> is certainly not robust or guaranteed.
+When invoke move_pfn_range_to_zone, it will update the zone->contiguous by
+checking the new zone's pfn range from the beginning to the end, regardless
+the previous state of the old zone. When the zone's pfn range is large, the
+cost of traversing the pfn range to update the zone->contiguous could be
+significant.
 
-Right, even kdump has always been best-effort; many types of crashes
-do not make it to the crash kernel.
+Add fast paths to quickly detect cases where zone is definitely not
+contiguous without scanning the new zone. The cases are: when the new range
+did not overlap with previous range, the contiguous should be false; if the
+new range adjacent with the previous range, just need to check the new
+range; if the new added pages could not fill the hole of previous zone, the
+contiguous should be false.
 
-> You are better to squirt a panic message out of the serial port and
+The following test cases of memory hotplug for a VM [1], tested in the
+environment [2], show that this optimization can significantly reduce the
+memory hotplug time [3].
 
-For early boot LUO mismatches, or if FLB data is inaccessible for any
-reason, devices might go rogue, so triggering a panic during boot is
-appropriate.
++----------------+------+---------------+--------------+----------------+
+|                | Size | Time (before) | Time (after) | Time Reduction |
+|                +------+---------------+--------------+----------------+
+| Memory Hotplug | 256G |      10s      |      2s      |       80%      |
+|                +------+---------------+--------------+----------------+
+|                | 512G |      33s      |      6s      |       81%      |
++----------------+------+---------------+--------------+----------------+
 
-However, session and file data structures are deserialized later, when
-/dev/liveupdate is first opened by userspace. If deserialization fails
-at that stage, I think we should simply fail the open(/dev/liveupdate)
-call with an error such as -EIO.
+[1] Qemu commands to hotplug 512G memory for a VM:
+    object_add memory-backend-ram,id=hotmem0,size=512G,share=on
+    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+    qom-set vmem1 requested-size 512G
 
-Pasha
+[2] Hardware     : Intel Icelake server
+    Guest Kernel : v6.18-rc2
+    Qemu         : v9.0.0
+
+    Launch VM    :
+    qemu-system-x86_64 -accel kvm -cpu host \
+    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+    -drive file=./seed.img,format=raw,if=virtio \
+    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+    -m 2G,slots=10,maxmem=2052472M \
+    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+    -nographic -machine q35 \
+    -nic user,hostfwd=tcp::3000-:22
+
+    Guest kernel auto-onlines newly added memory blocks:
+    echo online > /sys/devices/system/memory/auto_online_blocks
+
+[3] The time from typing the QEMU commands in [1] to when the output of
+    'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+    memory is recognized.
+
+Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+Tested-by: Yuan Liu <yuan1.liu@intel.com>
+Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
+Reviewed-by: Pan Deng <pan.deng@intel.com>
+Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
+Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+---
+ mm/memory_hotplug.c | 57 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 54 insertions(+), 3 deletions(-)
+
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 0be83039c3b5..8f126f20ca47 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -723,6 +723,57 @@ static void __meminit resize_pgdat_range(struct pglist_data *pgdat, unsigned lon
+ 
+ }
+ 
++static bool __meminit check_zone_contiguous_fast(struct zone *zone,
++			unsigned long start_pfn, unsigned long nr_pages)
++{
++	const unsigned long end_pfn = start_pfn + nr_pages;
++	unsigned long nr_filled_pages;
++
++	/*
++	 * Given the moved pfn range's contiguous property is always true,
++	 * under the conditional of empty zone, the contiguous property should
++	 * be true.
++	 */
++	if (zone_is_empty(zone)) {
++		zone->contiguous = true;
++		return true;
++	}
++
++	/*
++	 * If the moved pfn range does not intersect with the original zone span,
++	 * the contiguous property is surely false.
++	 */
++	if (end_pfn < zone->zone_start_pfn || start_pfn > zone_end_pfn(zone)) {
++		zone->contiguous = false;
++		return true;
++	}
++
++	/*
++	 * If the moved pfn range is adjacent to the original zone span, given
++	 * the moved pfn range's contiguous property is always true, the zone's
++	 * contiguous property inherited from the original value.
++	 */
++	if (end_pfn == zone->zone_start_pfn || start_pfn == zone_end_pfn(zone))
++		return true;
++
++	/*
++	 * If the original zone's hole larger than the new filled pages, the
++	 * contiguous property is surely false.
++	 */
++	nr_filled_pages = end_pfn - zone->zone_start_pfn;
++	if (start_pfn > zone->zone_start_pfn)
++		nr_filled_pages -= start_pfn - zone->zone_start_pfn;
++	if (end_pfn > zone_end_pfn(zone))
++		nr_filled_pages -= end_pfn - zone_end_pfn(zone);
++	if (nr_filled_pages < (zone->spanned_pages - zone->present_pages)) {
++		zone->contiguous = false;
++		return true;
++	}
++
++	clear_zone_contiguous(zone);
++	return false;
++}
++
+ #ifdef CONFIG_ZONE_DEVICE
+ static void section_taint_zone_device(unsigned long pfn)
+ {
+@@ -752,8 +803,7 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+ {
+ 	struct pglist_data *pgdat = zone->zone_pgdat;
+ 	int nid = pgdat->node_id;
+-
+-	clear_zone_contiguous(zone);
++	const bool fast_path = check_zone_contiguous_fast(zone, start_pfn, nr_pages);
+ 
+ 	if (zone_is_empty(zone))
+ 		init_currently_empty_zone(zone, start_pfn, nr_pages);
+@@ -783,7 +833,8 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+ 			 MEMINIT_HOTPLUG, altmap, migratetype,
+ 			 isolate_pageblock);
+ 
+-	set_zone_contiguous(zone);
++	if (!fast_path)
++		set_zone_contiguous(zone);
+ }
+ 
+ struct auto_movable_stats {
+-- 
+2.47.1
+
 
