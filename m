@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 650D6CF2566
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 01:35:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94785CF2566
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 01:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C20D16B009E; Tue, 18 Nov 2025 20:35:09 -0500 (EST)
+	id F2FA06B002B; Tue, 18 Nov 2025 20:35:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD09C6B00A0; Tue, 18 Nov 2025 20:35:09 -0500 (EST)
+	id EDEE36B002C; Tue, 18 Nov 2025 20:35:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A988D6B00A1; Tue, 18 Nov 2025 20:35:09 -0500 (EST)
+	id DF50D6B00A0; Tue, 18 Nov 2025 20:35:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 95E3F6B009E
-	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:35:09 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 544E313A3B6
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:35:09 +0000 (UTC)
-X-FDA: 84125638338.06.B068633
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A353640004
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:35:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rJKJXVPq;
-	spf=pass (imf04.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE89D6B002B
+	for <linux-mm@kvack.org>; Tue, 18 Nov 2025 20:35:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7825613A42E
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:35:18 +0000 (UTC)
+X-FDA: 84125638716.09.1428803
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C08B6C000A
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 01:35:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l0cWAGhd;
+	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763516107;
+	s=arc-20220608; t=1763516117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=APzUbJ1xJcLTN15RzI5Lt/FDUDhgt5Fbd2bTLMIMyeQ=;
-	b=bhcXov6+9fq8jiBVU25298/395+BQtqDGL5cTvveQitUt2h58eOc77XcL7Jc4Qwu5DzPmi
-	A+Zabuu2fEmyw9ciEU8HDr2gthwk+IA8FGCAPyrWIm+sZKJYlmx7JuG01wdhkfE3H2NZVn
-	uZK0db3XWs9bdCf7Qt3jciayZUlpdkA=
+	bh=D8dIlCkeLmHRvfs6fUIYZ7yvGZoAG1TWr2WBwtR6cnw=;
+	b=eStbCdP7UFinSS3WIjGT8vNOE8MzKXDdrcF8iSeTKvLph88bWK21t8ECKPg7LplJe/RmZ4
+	LgINyta/38EA8MP4UayX5V3XIsIgxFTt/CtJWOuikoqo4FNbwYnrmc753kAZclElZsr1yZ
+	JSHcNaYM6euq0nmnecVSQWPkIlL2cbk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rJKJXVPq;
-	spf=pass (imf04.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l0cWAGhd;
+	spf=pass (imf10.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763516107; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763516117; a=rsa-sha256;
 	cv=none;
-	b=BdZmi5iXYwCjMTiX7uy3C9whs7gPP9p3Ls8NfGl+vuqknbDKpS0SCwKruhUPu/o2TEyDPu
-	iQPlpW4fUxYk+c/H9rvlJMBwVQ9VAVDbMdbySkWDujFguVEB/eWnmwdElHnkcIAv3CBSRo
-	ktSZgZz1e0500P/Yart1y1cUXWWCFJs=
+	b=ue6PREHUHSixZiS9c51vYouKeUeWnMmXeILdfNNKySwaS6emieylFc4KCWsc/f85TgxZiz
+	PHR04zsKnzufyk1YrtUApEFy0pAEEDV+conwMgQfsxyD15NH2dMQCbCf1vovxo+WYvcvRX
+	RSlAJr3Um1nbWko//rR9alFf4b3fA+Q=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763516106;
+	t=1763516115;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=APzUbJ1xJcLTN15RzI5Lt/FDUDhgt5Fbd2bTLMIMyeQ=;
-	b=rJKJXVPqyQq5HjlvFiXrkhuluS7KlJTVwnsZHRW4cmL0e5TInZS9YpTGeQLiVFuBFboxuL
-	ynaA07biE0TPd906lyYl19JS1eZgGAw6GuDGTYR+8SWz6fWPft/9epr8XY8KxPK63+d2Wu
-	LDoZxauP/e5JFtJEM9a4z7HJVLmupOc=
+	bh=D8dIlCkeLmHRvfs6fUIYZ7yvGZoAG1TWr2WBwtR6cnw=;
+	b=l0cWAGhdWRSC8NfGk4eXSNApKMWN/6jjT/zXj8aYwETERhPKAqw9nf91LKUUVCqiLM+fkK
+	mo4lHL3jkthGa0LDFfBd+OXsWrDEQ5bR89bznO6SIPCzUQ0onQosC6w5/0FCn1sjQRk8+Q
+	WrAPWxSBABrvy+tLp1sJdnXMjrEnfmM=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -98,22 +98,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kselftest@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>,
 	Geliang Tang <geliang@kernel.org>
-Subject: [RFC PATCH 2/3] selftests/bpf: add memcg eBPF struct ops test
-Date: Wed, 19 Nov 2025 09:34:07 +0800
-Message-ID: <0017945a4297a296c87a65d62cc4bd9948f6c20c.1763457705.git.zhuhui@kylinos.cn>
+Subject: [RFC PATCH 3/3] samples/bpf: add example memcg eBPF program
+Date: Wed, 19 Nov 2025 09:34:08 +0800
+Message-ID: <b470e1e2e3c1baa97a7bc6637863b3f52336ebb1.1763457705.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1763457705.git.zhuhui@kylinos.cn>
 References: <cover.1763457705.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A353640004
-X-Stat-Signature: tszf87sc1mojwrkbzbhadwxf3xkchu55
+X-Rspamd-Queue-Id: C08B6C000A
+X-Stat-Signature: 7jd3z8n9guzcmpoq7m5zntap8cdrwgr5
 X-Rspam-User: 
-X-HE-Tag: 1763516107-960151
-X-HE-Meta: U2FsdGVkX197Iwe1kzskrvzOktaQ/3zkgQuj3lZky56myyyqoVkbUWE2Dbxh9/71bH5mNifahivGuwziyGk57/eoykFPnImPSsk5p1FyeAR1jY1V3YbN+bNBUNGaJZgkSg54myVA6AHvXKnSej16Dhr0JBKwWPBXT6mq212pm9NB1uVb4J1qQ0AtbTI+ULgXwiSNhSb2rcm9HLu8yZej7R3XVB99IjkwaZ2X6JPZ7dasGvWaI00LnkLWK5pYpcfW+rpYF1OMkS3Z/UjobIyLxTa3WSllGFPa2Mfd27Hsa41E4v+neU8jFNQo6R++8xZGa+4w7bog/p8TuZiR4tyWyvMPShP121mzFsMd/LuWRP4HRHN4Oa+xt9zmnz558ADtdCFkEVt7CJwjQzJZDjGLNKRjrl/Ff2VT8mczgxwrr+cVyLetFEzDL7vfo7dB/IpXJShSJOXUWyKECvz0xnAB/QwpVjdIHM5ZC+YN7R1/ktSFC8Rt6Ig322UVf4WQg7UuzQVCajmmtJ3QBuDmCZTyX4t35Oel1jMqy4U8dYtRbnLuWd3oGzdVB4ZRH1bRZCsFyLhppjIFYJ6x4cr3etamSFW09oJkM2zr92wY/kq0jU71Zj/n/1Pei+c2/iCGhtz/c5exqbKEgOso3m1DzQY53OowLd6gHUEL1UK4W/dDY0p6igjOUXnIHU3YObWyC7anuopa+Mzu/3gNdR8bgOLuYopaMCe2y4E2xbqBttjcQ7zMEXM0qS5izcCRX2AinTeRT0lGxsiBZxkPG2m7/Mus4p96Exu3jkz/ri0WyBXW+pEGP7vNnmu/p5pMcugb4432ryJsaMIvhBU5atHJAd1yJS7EUVJ/pCeJFRsicaBuqed1y+NMLuEcTDMqjpdX0LtAf78DeaBcru+GKHfGltFMMgEYj8mXGZIC743JEvb4Or3G61kSnZJRav3FxfO3SdRuHWakuHOerC5ntyThT6n
- i2YtkYOX
- olEKcdM3aUS7nGYmrzjWq23vsFDaFcHFZhK7KfmUtQgXhrdDlAtlk3Y4OJp2bMVV8JN7Z1D1wpJO4ocPZ/ZVTqsFXuseVkDmXf6U6LbPYPiY/wQ+BpEXFt30uqiXFzM+fEVPziiFaxqEnM66jq9QpDg+guVfVbkZ3s9HTOyMgmwfzNUtCeTB+L7rXBkCXXeCavYjZysDamJBOXv0edLhVMJ4TIfer6byJjNjmIGU7DqTiD0d81/rM1zt5ScHr1owu+rE+u0puj9jru6/jdULWj/vU5HBw5RvgwlMW
+X-HE-Tag: 1763516116-857028
+X-HE-Meta: U2FsdGVkX1+lCQUpA+Tl4OO1enRbGYl45Tog9OFSBuOVnMde3mzRpS4aXKYwqF1JxtlUR2LTrVvtsSyEPZUB7lZVvu7EiQIkDgA8YzySWU5YglAwsXwuffZWDD+0N+IE0KQQw5N1SeoDueSbbGAuT5IujLAnEcSfi3WqWe1yFIUlUBAH2EB2VV0wXZ/lRCWwoFnlFiqxdcbKZGIJlMjdDuCloITCbVHSbZv0LJzi8/oYMR1T7lWpuuqE0M6oi2SCiRY5n08QIr12J62y4Arvj1aTwozcSjcOJpwlZLhNQT4Lf1CKxNgwsPP5f57ThC7LbM/wE5t83pNvIHI0X/pEocCh5EH7ty/IPTfl8FFWWh2TKQwSngS/hDHOvuSZs17Po/PQM9L8PbYYrwXzr9s0xuCji0d8FF15EROiD3db7ZvI+pMX0doCCWlEghYk377KkVykQnEapFM1YVIZPuCSOGqCKnL5u4iyjk1H5pTSAx3Qpf64fx+bCW2Ci2BtDQgzkKY0t21loNpNQOTZay5xzKQmzIa0pgGoDiwqBBoxpkbCUTGL8baDi0E2E1b52ZwX8XnX6xi3sjeqWrayfwd3r6Kj1/dwPvae9BzoEXh2VZPOupAUY3IQkmyF4gbgwYVl8VA/UVXZW9LOxXkSHZeYl0ilQJJgAc4g+NS/mdbDVB+u98usBIieP3JHBKJdWux29EkFkTX7+fAO8+d3HrIedjvUC3m5PuNEDD+5HMi4Ny+M/EMO63kifYXMgchPNeCDXQ7u3uoqMKd/zE4u1N18zcsv6nyoCgNCY4SBbtlmYk1gHZuqn+fP1wwAXOHS6O/z2uLNANdeTreh4XZ7n4VZLp+u2kaSamGXEzjGQn9oNLYBQkwzmifZKEYFxNKBdXXXv/lvG9FskAmofP/tx0ef4m5uhe4LFYf93t3Nr4QQdQfZyiYQFcRfnStUrHmG2sTq4Yx8ZaoX3dNgsi8Rvv4
+ vwx3zJU/
+ tAb+AU9oiJ6r8tBL5lkyoJJrt4y8rrREd9rqSMh69ganOTsQ60O1jaHPDK5E5zX0In7jEW32cFa3ZN04rkoibTQrargevaMTVtADJTo68+Oe6YlehwpOPmYsqKFRxTkZGvGjm87lEVZGQnFfq675FVqIcdyt+Rqky880T6UFw8jplFoColxmnLIm6sLEySQ+c5AnTOeLUuOQEI8GUHhJWEpnJItKtNHb0MNDZpa2UjSSWCeJ9wTAUItTNlq306vpRkTJksBG2IFFgW2ZwHE8KumcTKXPtlHN31CyY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,187 +124,90 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-Add comprehensive selftest suite for memory controller eBPF
-support. The tests validate the core functionality of the
-memcg_ops struct ops implementation.
+Add a sample eBPF program demonstrating the new memory
+controller eBPF support. This example serves as both a reference
+implementation and a validation tool for the memcg eBPF
+functionality.
 
-Test coverage includes:
+The sample includes:
 
-1. test_memcg_ops_load: Validates that the eBPF object file
-   can be successfully loaded by libbpf.
+- memcg_printk.bpf.c: An eBPF program that attaches to the
+  try_charge_memcg hook and prints detailed information about
+  memory charging events, including:
+  * Memory cgroup name
+  * GFP flags and page count
+  * Reclamation options
+  * Affected memory cgroup (when applicable)
 
-2. test_memcg_ops_attach: Tests attaching the memcg_ops struct
-   ops to the kernel, verifying the basic attachment mechanism
-   works correctly.
+- memcg_printk.c: A userspace loader program that:
+  * Loads the eBPF object file
+  * Finds and attaches the memcg_ops struct ops
+  * Keeps the program attached until interrupted
+  * Provides proper error handling and cleanup
 
-3. test_memcg_ops_double_attach: Validates that only one
-   memcg_ops instance can be attached at a time. Attempts to
-   attach a second program should fail, ensuring the
-   single-handler design constraint is enforced.
+Usage:
+  $ ./samples/bpf/memcg_printk
 
-The test suite includes:
+This will attach the eBPF program to the memcg charging path.
+Output can be viewed via kernel trace events (e.g.,
+trace_printk logs).
 
-- prog_tests/memcg_ops.c: Test entry point with individual
-  test functions using standard BPF test framework helpers
-  like ASSERT_OK_PTR and ASSERT_ERR_PTR
-- progs/memcg_ops.bpf.c: Simple eBPF program implementing
-  the struct ops interface
-
-Uses standard test_progs framework macros for consistent error
-reporting and handling. All tests properly clean up resources
-in error paths.
+The program demonstrates:
+- Accessing memory cgroup context fields
+- Using bpf_printk for debugging and monitoring
+- Proper struct ops registration via libbpf
+- Integration with the kernel's BPF infrastructure
 
 Signed-off-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- MAINTAINERS                                   |   1 +
- .../selftests/bpf/prog_tests/memcg_ops.c      | 117 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/memcg_ops.c |  20 +++
- 3 files changed, 138 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_ops.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops.c
+ MAINTAINERS                    |  2 +
+ samples/bpf/Makefile           |  2 +
+ samples/bpf/memcg_printk.bpf.c | 30 +++++++++++++
+ samples/bpf/memcg_printk.c     | 82 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 116 insertions(+)
+ create mode 100644 samples/bpf/memcg_printk.bpf.c
+ create mode 100644 samples/bpf/memcg_printk.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 498d01c9a48e..dc3aa53d2346 100644
+index dc3aa53d2346..c8f32f7dad3f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -6356,6 +6356,7 @@ F:	mm/memcontrol_bpf.h
+@@ -6356,6 +6356,8 @@ F:	mm/memcontrol_bpf.h
  F:	mm/page_counter.c
  F:	mm/swap_cgroup.c
  F:	samples/cgroup/*
-+F:	tools/testing/selftests/bpf/*/memcg_ops.c
++F:	samples/memcg_printk.bpf.c
++F:	samples/memcg_printk.c
+ F:	tools/testing/selftests/bpf/*/memcg_ops.c
  F:	tools/testing/selftests/cgroup/memcg_protection.m
  F:	tools/testing/selftests/cgroup/test_hugetlb_memcg.c
- F:	tools/testing/selftests/cgroup/test_kmem.c
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 95a4fa1f1e44..d50e958fc8d5 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -37,6 +37,7 @@ tprogs-y += xdp_fwd
+ tprogs-y += task_fd_query
+ tprogs-y += ibumad
+ tprogs-y += hbm
++tprogs-y += memcg_printk
+ 
+ # Libbpf dependencies
+ LIBBPF_SRC = $(TOOLS_PATH)/lib/bpf
+@@ -122,6 +123,7 @@ always-y += task_fd_query_kern.o
+ always-y += ibumad_kern.o
+ always-y += hbm_out_kern.o
+ always-y += hbm_edt_kern.o
++always-y += memcg_printk.bpf.o
+ 
+ COMMON_CFLAGS = $(TPROGS_USER_CFLAGS)
+ TPROGS_LDFLAGS = $(TPROGS_USER_LDFLAGS)
+diff --git a/samples/bpf/memcg_printk.bpf.c b/samples/bpf/memcg_printk.bpf.c
 new file mode 100644
-index 000000000000..3f989bcfb8c4
+index 000000000000..66c87bf4cbcb
 --- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-@@ -0,0 +1,117 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Memory controller eBPF struct ops test
-+ */
-+
-+#include <test_progs.h>
-+#include <bpf/btf.h>
-+
-+void test_memcg_ops_load(void)
-+{
-+	struct bpf_object *obj;
-+	int err;
-+
-+	obj = bpf_object__open_file("memcg_ops.bpf.o", NULL);
-+	err = libbpf_get_error(obj);
-+	if (CHECK_FAIL(err)) {
-+		obj = NULL;
-+		goto out;
-+	}
-+
-+	err = bpf_object__load(obj);
-+	if (CHECK_FAIL(err))
-+		goto out;
-+
-+out:
-+	if (obj)
-+		bpf_object__close(obj);
-+}
-+
-+void test_memcg_ops_attach(void)
-+{
-+	struct bpf_object *obj;
-+	struct bpf_map *map;
-+	struct bpf_link *link = NULL;
-+	int err;
-+
-+	obj = bpf_object__open_file("memcg_ops.bpf.o", NULL);
-+	err = libbpf_get_error(obj);
-+	if (CHECK_FAIL(err)) {
-+		obj = NULL;
-+		goto out;
-+	}
-+
-+	err = bpf_object__load(obj);
-+	if (CHECK_FAIL(err))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(obj, "mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name"))
-+		goto out;
-+
-+	link = bpf_map__attach_struct_ops(map);
-+	if (!ASSERT_OK_PTR(link, "bpf_map__attach_struct_ops"))
-+		goto out;
-+
-+out:
-+	if (link)
-+		bpf_link__destroy(link);
-+	if (obj)
-+		bpf_object__close(obj);
-+}
-+
-+void test_memcg_ops_double_attach(void)
-+{
-+	struct bpf_object *obj, *obj2;
-+	struct bpf_map *map, *map2;
-+	struct bpf_link *link = NULL, *link2 = NULL;
-+	int err;
-+
-+	obj = bpf_object__open_file("memcg_ops.bpf.o", NULL);
-+	err = libbpf_get_error(obj);
-+	if (CHECK_FAIL(err)) {
-+		obj = NULL;
-+		goto out;
-+	}
-+
-+	err = bpf_object__load(obj);
-+	if (CHECK_FAIL(err))
-+		goto out;
-+
-+	map = bpf_object__find_map_by_name(obj, "mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name"))
-+		goto out;
-+
-+	link = bpf_map__attach_struct_ops(map);
-+	if (!ASSERT_OK_PTR(link, "bpf_map__attach_struct_ops"))
-+		goto out;
-+
-+	obj2 = bpf_object__open_file("memcg_ops.bpf.o", NULL);
-+	err = libbpf_get_error(obj2);
-+	if (CHECK_FAIL(err)) {
-+		obj2 = NULL;
-+		goto out;
-+	}
-+
-+	err = bpf_object__load(obj2);
-+	if (CHECK_FAIL(err))
-+		goto out;
-+
-+	map2 = bpf_object__find_map_by_name(obj2, "mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name"))
-+		goto out;
-+
-+	link2 = bpf_map__attach_struct_ops(map2);
-+	if (!ASSERT_ERR_PTR(link2, "bpf_map__attach_struct_ops")) {
-+		bpf_link__destroy(link2);
-+		goto out;
-+	}
-+
-+out:
-+	if (link)
-+		bpf_link__destroy(link);
-+	if (obj)
-+		bpf_object__close(obj);
-+	if (obj2)
-+		bpf_object__close(obj2);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_ops.c b/tools/testing/selftests/bpf/progs/memcg_ops.c
-new file mode 100644
-index 000000000000..a21fbe859fd3
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_ops.c
-@@ -0,0 +1,20 @@
++++ b/samples/bpf/memcg_printk.bpf.c
+@@ -0,0 +1,30 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +#include "vmlinux.h"
@@ -312,19 +215,117 @@ index 000000000000..a21fbe859fd3
 +#include <bpf/bpf_helpers.h>
 +#include <bpf/bpf_tracing.h>
 +
-+char _license[] SEC("license") = "GPL";
-+
 +SEC("struct_ops/try_charge_memcg")
-+int BPF_PROG(test_try_charge_memcg,
-+	     struct try_charge_memcg *tcm)
++int BPF_PROG(handle_try_charge_memcg, struct try_charge_memcg *tcm)
 +{
++	bpf_printk(
++		"memcg %s gfp_mask 0x%x nr_pages %lu reclaim_options 0x%lx\n",
++		tcm->memcg->css.cgroup->kn->name,
++		tcm->gfp_mask,
++		tcm->nr_pages,
++		tcm->reclaim_options);
++	if (!tcm->charge_done)
++		bpf_printk("memcg %s mem_over_limit %s\n",
++			   tcm->memcg->css.cgroup->kn->name,
++			   tcm->mem_over_limit->css.cgroup->kn->name);
++
 +	return 0;
 +}
 +
 +SEC(".struct_ops")
 +struct memcg_ops mcg_ops = {
-+	.try_charge_memcg = (void *)test_try_charge_memcg,
++	.try_charge_memcg = (void *)handle_try_charge_memcg,
 +};
++
++char _license[] SEC("license") = "GPL";
+diff --git a/samples/bpf/memcg_printk.c b/samples/bpf/memcg_printk.c
+new file mode 100644
+index 000000000000..a2c5be2415ea
+--- /dev/null
++++ b/samples/bpf/memcg_printk.c
+@@ -0,0 +1,82 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#define _GNU_SOURCE
++
++#include <errno.h>
++#include <signal.h>
++#include <bpf/libbpf.h>
++
++static bool exiting;
++
++static void sig_handler(int sig)
++{
++	exiting = true;
++}
++
++static int libbpf_print_fn(enum libbpf_print_level level, const char *format, va_list args)
++{
++	return vfprintf(stderr, format, args);
++}
++
++int main(int argc, char **argv)
++{
++	struct bpf_object *obj = NULL;
++	struct bpf_link *link = NULL;
++	struct bpf_map *map;
++	char filename[256];
++	int err;
++
++	exiting = false;
++
++	signal(SIGINT, sig_handler);
++	signal(SIGTERM, sig_handler);
++
++	libbpf_set_print(libbpf_print_fn);
++
++	snprintf(filename, sizeof(filename), "%s.bpf.o", argv[0]);
++	obj = bpf_object__open_file(filename, NULL);
++	err = libbpf_get_error(obj);
++	if (err) {
++		fprintf(stderr, "Failed to open BPF object file: %d\n",
++			err);
++		obj = NULL;
++		goto cleanup;
++	}
++
++	err = bpf_object__load(obj);
++	if (err) {
++		fprintf(stderr, "Failed to loading BPF object file: %d\n",
++			err);
++		goto cleanup;
++	}
++
++	map = bpf_object__find_map_by_name(obj, "mcg_ops");
++	if (!map) {
++		fprintf(stderr, "Failed to find struct_ops map 'mcg_ops'\n");
++		err = -ENOENT;
++		goto cleanup;
++	}
++
++	link = bpf_map__attach_struct_ops(map);
++	err = libbpf_get_error(link);
++	if (err) {
++		fprintf(stderr, "Failed to attach struct ops: %d\n",
++			err);
++		link = NULL;
++		goto cleanup;
++	}
++
++	printf("Press Ctrl+C to exit...\n");
++
++	while (!exiting)
++		sleep(1);
++
++	printf("Bye!\n");
++
++cleanup:
++	if (link)
++		bpf_link__destroy(link);
++	if (obj)
++		bpf_object__close(obj);
++
++	return err;
++}
 -- 
 2.43.0
 
