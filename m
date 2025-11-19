@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C8A7CF3942
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:46:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EA4ECF3950
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:46:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 869B86B00C2; Wed, 19 Nov 2025 10:45:48 -0500 (EST)
+	id 730BB6B00C3; Wed, 19 Nov 2025 10:45:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 819B86B00C3; Wed, 19 Nov 2025 10:45:48 -0500 (EST)
+	id 6B9D76B00C4; Wed, 19 Nov 2025 10:45:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 708B26B00C4; Wed, 19 Nov 2025 10:45:48 -0500 (EST)
+	id 55C3A6B00C5; Wed, 19 Nov 2025 10:45:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 531066B00C2
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:45:48 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17FC0160540
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:48 +0000 (UTC)
-X-FDA: 84127781976.06.044F3F6
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 24AC4140002
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:45 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=S9mJ6qzk;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf09.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.51 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763567146; a=rsa-sha256;
-	cv=none;
-	b=IlTtOIox72/5vesw3/Tumsk9n1xwUWUXYO3X9RIzOkQw9amNuZhp5fGO0g42rcqPWYriNk
-	k8lDaUFNmB55FNRPkJ7a6PGDAWisom3IebGE6wlGkYAGrhqk3y+jfLePJ0JDA8oN/ynehj
-	dMAP1F3BNfVtCNpTHjRsM9q7vFitcSY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=S9mJ6qzk;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf09.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.51 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CC266B00C3
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:45:50 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F1F4F59410
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:49 +0000 (UTC)
+X-FDA: 84127782018.29.9215A4C
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 01AD418001C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=Z799A1FJ;
+	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.42 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763567146;
+	s=arc-20220608; t=1763567148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qf0q06JpGKFVTNkejD0yb20CFvUyN2OLH5ZYFwRjaWU=;
-	b=OrN8JgRbgKQkiJ3RNkI+9jGZeA2WqVZUg0rNCqrl/fHzQECCsUVNzSpMWwrouZSbpLHSCj
-	9R5PO1AlwAnF134l83YSBeVNXKrkj3kYLDiYw+iohii6iSaIlFLXEVNSJGiWsdGuHO+Jnf
-	x1lPmfmwRUaQvvhvrs3Er/hRc2HLDP0=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477563e28a3so8031125e9.1
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:45:45 -0800 (PST)
+	bh=cDp3sMBoTlmxBrCfHcN3bT849KzRdDNMVpiuychnTdo=;
+	b=DVBKoqWEPYpS5+9BVUQEHlysPVVKT6PMoXelyOW7KVhV3hQ4iyeOoIQ0fdFs0vKQYIEaNG
+	0v898PeQOHuBWhuFt8yA9U3qNxz0cistEA7rkz6aLWEOtCRRhN/SQGxmiuxMVGo3MM/f4o
+	Cw/Jj/f5Y9FeD14wOTBGm2Tlwn2ORUY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763567148; a=rsa-sha256;
+	cv=none;
+	b=r7eDLtKAVWdEtBRt1AW1fBsfUUhNNfGpCUOTi7OYP0cLklKp13Fxd280uhdKiHA6nvyvJb
+	jof0bfaR5hIl9xeistSUa/zd0DCKAMFTBRsz5Fbljbxdob0L8caRjBr410jZ5E03Lqq/UM
+	k6S+UAVD84/a79to+RcR2MScDAZ7uWk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=Z799A1FJ;
+	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.42 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42b32a5494dso4139007f8f.2
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:45:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763567145; x=1764171945; darn=kvack.org;
+        d=linaro.org; s=google; t=1763567146; x=1764171946; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qf0q06JpGKFVTNkejD0yb20CFvUyN2OLH5ZYFwRjaWU=;
-        b=S9mJ6qzkrZZZcYhWS9OJjwj46HWggUQeB3c00GSlTodDkwxq0Zi/iWQPRDtbZoDXFB
-         8e6lPUrjLokVftRsPErTQw9pUku26ZAYlaTJmxF1S5DyERJuP5v+8Yp9cP5AdHAYCEDj
-         SbDjBCuVH1Sw/FpVsWqeoNCv3YIWd1kS306WZbvUytJKQdl4eYTFMv1BqEqLyj7wo5hW
-         z63Gn4SzotR/cQaeTnhwsW9ws7pnay/5lAjoMTBHP7fUZ4ITVaSieqV0kegnWv7wsMed
-         GZFdBekh2JTzfiAVaeMNl7avFUoD8lNKvrAM8yB5Hdzk1HYUX/pLjM2S8gLx3u763txG
-         iMng==
+        bh=cDp3sMBoTlmxBrCfHcN3bT849KzRdDNMVpiuychnTdo=;
+        b=Z799A1FJH30EpTpOAtCnTcV9rlSQX0RExkMdEtyJMWpVBu4VtUqnjqazjxVuhEKiYt
+         iDdhoPySiNq27Q9YVU6BmHCqLNTXY+JYNcE5lN0WpnBZXGhMgdleHl3P0rfnJEtbITLl
+         k5AoyGpMc4MHGY0YruOjGkd8gYDAG8pFv5tj8PpHtJ5nqb6eMfWCO9rzeR7lGEAd0fJ/
+         ZB6gjnehtx1/AoiHnxIuJBzNu4VXTc4oz/0WtwE20DvYy62qVEtJFWo49Td7oBL0hOyH
+         5LznXyQkWwFysWCjXtzkRB3jo40Vf49KoDZ987/9DkEnB1RHNZoBk4ikVBrmQazLnaA1
+         IBAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763567145; x=1764171945;
+        d=1e100.net; s=20230601; t=1763567146; x=1764171946;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qf0q06JpGKFVTNkejD0yb20CFvUyN2OLH5ZYFwRjaWU=;
-        b=GHcSD3a/CsTr5Nq5fEWAfKzpwa0QuQgWUbnqC2/UXoWgl3OFpfaYPynAZuYJUUXRU3
-         2Qy3Jg9BLTpSmXbIJQlOGurTDU7gZkF0Jme2YytFoShaddCZgHODaMKFq+TOGrTNyXxd
-         XxlPAnvXJLcSVWwWCh8U872YgAF6wTHtRevnlIyyccQNLHJO0x181fY+MJsDcsSxnRhT
-         g9NF3LgAta3n0flhl6xbncLhBje7pwnpS9LzqhAWJ6Mv8WyI4bf2iIlQbZh54oy3L6HW
-         zDhkHbKtJ2XKbAOJ+dLJRu8yk8HtdUZyh9aaZ1uAqhj8Np99g8G0hd/bpLVCidn+Pkx2
-         yjRg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9cX0CNkQU32g/zaKFNNPChgD77CmJAuXKc14RTPXvJdq5CorUbUpV6YhrNAci1eQ1UIP0zLHx4g==@kvack.org
-X-Gm-Message-State: AOJu0Yx0lSVnEGuGg4nGzEZuXLgrXPmC/YPMu1pnEkMbB5z+dftBBccf
-	8VRvGhTbgptxQPFtKgo4gatlmJVxMb0bSyKwYzi4w1vFr882Sx1ES2j+GUXoGb4bEYo=
-X-Gm-Gg: ASbGncv9YfIQYyYanjqLfzU+JTpP/Daq6IMt6rMC0Jifb9dR2ZUEMrhhgthxxbzCUh3
-	xnXipWCEGsPgQwdp7gInP8tDGmZ3wE2WIAokEVYEsrLBqgftpbrijj6GryjO0sRR2RGI6/dUAxi
-	6qYDmD7cBv2M5BpvTslcMwNuuvlGBfXoSTEkDW+OgqkSBFjuVrP7rY2PQfx8bOjLgUTM0S0M8CY
-	VHVYdGYVhHDnwDzgG8uzuTcTPkTYtn+z+pH6b+XLxzxfo1L41t7dNxhZDpm87TIx317zktsh/2w
-	B5XMPVPDz+s+MaJNEr5DzroaXQ4XpAQAlKsuAqd9HA1xR6OSbm/TkifLqDueOzUz8Yg9K1wz/I2
-	ETvxahUFUEilSsCIq5CEDM5bHBb1XmuJf3w8/XxmDPKi4FB6gqHj6zRDNZXyaFglmJmqsW7WAiI
-	/Ud0MaNKlTgqkZPss1IICKUDp9cVYLbA==
-X-Google-Smtp-Source: AGHT+IG9WtxjjgmkiAX9yQZlIznike3yBomBYuHSDjoJXaquW6OMMeXhxlHfzRespLZJBzb+ERriSg==
-X-Received: by 2002:a05:600c:2313:b0:471:793:e795 with SMTP id 5b1f17b1804b1-477b1787bafmr21362035e9.0.1763567144657;
-        Wed, 19 Nov 2025 07:45:44 -0800 (PST)
+        bh=cDp3sMBoTlmxBrCfHcN3bT849KzRdDNMVpiuychnTdo=;
+        b=bdLDN3SOT2/xpZ3CjqtD5WnfSEYielOL3wEc4mN6qQ6gIiLAAszE10NUionApqQf7/
+         UYlyWTvmikDG/LlNKEgBgVN7WfgxJyDiRv3cUvVq/4MvTJuv3X3/ojvwSjSiKSR5H6Kc
+         huqF4xHHLloLv3YLx+hYYthxVVDizoJbP4dRk5/YOZdobQ6/MUDE23nsiS/uaetlO/MY
+         OV2DR9y7+WVGD5hlsC4Uh7g5RG+mrvHCiCV/8C8azOVGb5yPQytEGtX0JzleRObDH318
+         vt55Dj3uNZVeyo3BaPbTh9WIoFoAPOkSwDIn5zmD+2qeqZlyLErPchth1Yigb3CjNRaD
+         dsog==
+X-Forwarded-Encrypted: i=1; AJvYcCWSUuIOIh+hSQ1NGA6mzOOMElkhdgQD9nIHg/1QPX37CsjiSxsLVS56eztputt3/iiFMRF6BaWJ6g==@kvack.org
+X-Gm-Message-State: AOJu0YyMFQB1OKCYqiYucKZAEJKwCq4cAl9SXBYXkId5OqDv3ETDGdqr
+	OfLxZHabAjt174q7qGd9y0kr2NeE5hZwHU0mPbuwXqjYrAY0Q2kr6upxk9tc7moszp4=
+X-Gm-Gg: ASbGnctck7vPhi4akqnA8T5KvNGWF62W+n1HL6lJ/jL5jF9yWpZ27GYRP7z+T+/zPbE
+	pn9w/xuU7Y5AhAEMvcICJ1XNjzo8e8Zd2tLRYmCCA8AnryxL8BjW3UOSVLfo4RT77PTB+nnLBya
+	zZF/OQ3ZabMr4dPAemfhPSnIpBfJIt4VMnDheGJ+zVAlvgpVti+HJ6B5QTWxyW2Gtlxzl/88Kxz
+	AtP4xVhPiLrEYq229YOMNYJoeVgApYc80nJeQZPksbYsbZTzx3IIizL2WTNpLAowlyx7Jrn57ra
+	gWmhSYWKS24gQnsBLuYypCzEDw6BO4kwt1lQEZ9CRSs4DG3vWLC0MYlJTH+XhNRT/e0wz5RMDgC
+	bL7htygufvx/uM/HfRZ9HdKis+rYkVrov0JmOBBQDKCkHFcHnnWV0Vy9nIDrvxH9BlMzlxDjsNv
+	iyIyQ0fsNJUDrAE9i/rPo=
+X-Google-Smtp-Source: AGHT+IHSn97ivXqqEi+3+TEBhok4L0zKY5jBJq8AwBEmyjMgjDaigOLXet9t8Pqm4XTXHvlHGh5HZw==
+X-Received: by 2002:a05:6000:2891:b0:42b:39d0:638d with SMTP id ffacd0b85a97d-42cb1f9e35bmr3506384f8f.28.1763567146421;
+        Wed, 19 Nov 2025 07:45:46 -0800 (PST)
 Received: from eugen-station.. ([82.76.24.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53dea1c9sm38765632f8f.0.2025.11.19.07.45.43
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53dea1c9sm38765632f8f.0.2025.11.19.07.45.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 07:45:44 -0800 (PST)
+        Wed, 19 Nov 2025 07:45:46 -0800 (PST)
 From: Eugen Hristev <eugen.hristev@linaro.org>
 To: linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -115,22 +115,22 @@ Cc: tudor.ambarus@linaro.org,
 	tony.luck@intel.com,
 	kees@kernel.org,
 	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: [PATCH 16/26] mm/mm_init: Annotate static information into meminspect
-Date: Wed, 19 Nov 2025 17:44:17 +0200
-Message-ID: <20251119154427.1033475-17-eugen.hristev@linaro.org>
+Subject: [PATCH 17/26] sched/core: Annotate runqueues into meminspect
+Date: Wed, 19 Nov 2025 17:44:18 +0200
+Message-ID: <20251119154427.1033475-18-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251119154427.1033475-1-eugen.hristev@linaro.org>
 References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 24AC4140002
-X-Stat-Signature: tfkc3mr4on5hfkd1ax3ptzrxh38zuhz4
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763567145-960351
-X-HE-Meta: U2FsdGVkX1/gzmHNEMn6LOmIhpXLifRzeacricujZytFbcys1lZFY8dzwvzJdhKB4xNsm2lezdEuTwr/V85gFsA/SDwk9jTiigLLXswVgyv1Szn5HIZC01gcRTiLc1dUIhBZRH1X8piJ/X2hRzIe1Yj+nTXho7CjPtbxEgPGM70nKTf5/2XsIcI86vQfJhfOE+2XcTZggem/2CDxn8wvX8+IBS3zbyOqowY2L5vB+7zN0gCiuuFbPbZd6WjrG6my0Uo9+7PotadZF8MuKTZ2Uq28BFdH4vAk8MWJSWIYGuylsKm4+P0AiMcQTndJn1AoS8D3T0LK8Ks0DkITp1hD3475aCGHZi7FSxg/zsuDhqtpTf8W58W4gJ14ocOJd4PPAkTrlCBG/0Dxen+XclVltM/rXxKglM9BvhMGbV+lCXBrj1Dum/cYYf/4vwFa7oTa1iy9utBzywpBGyYT/d+sjRpkCvsYQh0QiZ/NXi88X97Kl89FZrxYeJmWrlg7Rp9T8Ydm3X+FzcxksjDTsQfBgvRFP31qFtVXLAJHl25btOPrkN2QN5hGB9P/p5/lcpWo9PAMUZDzvBQ9H/UeuyFF9IT7WPMk0UMw7coT9/rimn02d+1L/QIrL+eyP6/F4h+ot4dR29kBwmWpMiUYEG+FVJEjlzc4yrsPSXgb3TrEPkMEPQS2XBSGPLXkpO3h08YMs0tYoqCcM/dUIgqIkxEbPJOKkExs70NzFlq60DK2yj5WgAVmDdt3IivSrYvf07DXJxC4FPZ2skVDEl0H+ihYZ+ijaY1lrK0fyTvlbNbvGIe6B9khAcYDizrVbgkOGZ1YjMenBzTfXKP2fvmA5sWGpql53UarQp/rSMgoDTSKHqSjgqdm/6PZ9snZksViR0hhnSmlfe8cN9Us3xASxSlYWEMDl2qek9DLqn7nOT2m9DRrlflKxyqf+FrEig2obUwKY5i9fHe8Q1Gc7PaLzpQ
- BizI6m4d
- jLHop6/74gtALkEweFe+CcpO9+TaIn7KCwGEDhM9YnoubCDUPDeKnPFaDL8oLXy4Wtx0sm/ALZYiiextKhj2p8txifIdHXLQE8BCDDKAwcrU0QYUaEW9/0HY1hfR3sDtFIj+LR6ZTgQLC4yhghEVE4b3IFEWuByNmEG440pjKJfIKwZ/aAc+IAbhd79U9Wp05TUelDlOfi/1KWMz/6dRZQJzxOzqLu1FskZZyRlhkZY+5Z8jRXItyaMWVJ65nv8PExZ5Tc7RElQN5l9h3vZC0CF/D1LXAnKZCzxaV3Zic3ZWO2ormDI3Ms/im0+Z2rVAj43Tq1PcAtztPjuirxax5RthIVafdunt/mpcF+SkHVtEpQiqGcagVpxbGUYmwIwAF8Q+1iOxy1MpQoxgULarjkvKh/LAME/9VOO2I2cw0plQUFV55uEZzkwSgf9JM4VQx+VLq4Q3d8C4bPshA7O6mFH5hKKeAtyMgZfeiWO+X3OaQhvInhxeEwgq7I0LyEuAZp422kUBcqSBOAzrVWyP+si5CsQ==
+X-Rspamd-Queue-Id: 01AD418001C
+X-Stat-Signature: 9xpz3dy15ffp1k3953caf1eo7e8ztxnz
+X-HE-Tag: 1763567147-816552
+X-HE-Meta: U2FsdGVkX18U4JisUn6xCbn4fGYGcNdRH44xZSWMMjcsvLtx5kDNUng3tfMElpjzrt/kna8CUk7fTK5+b9RZfIUrAOwY08cvAX4A70M/5d1XrmuqUnGpUbDQYowKKXwiZeb3TuUxe4/VkWhEnWLfBxfaIYaHUbfJK3UAW6P7LBFKk55NRgHuM8ENXRbhnTlzi9Asrebg5aiEvA6qR9LI2mtcWKAb7Xed7KM/PuujoMxG69WQ2a3BMkvYRgZ1fGGyuJ5ZQm1osmcAt+wDZ0nlcMMhtREuJRpoysSxNmrRh9tR/RvK4ouXnEWJr0pp5NbaD4BhCHhcrD5+fz3CZsPa8f5sGnSQQy1gKoS9/8moZOqfAMD0JiFxvOWLkuKS/7yK18YQYg56YvzNnHmnp3a1ZfQbIyjoDgXF5u21Ep88Xh1GstD/e/fKll4iFlPyGu9Y81+gFmbb+rv3gahBPqwcGio5ihYLPfKHJvzyDzF+0XO/eO8md2UugiyFsJjkcrmsupfn/2aEb30V5yWK6YHj432lZhnPLayRc4OPMSZixFfgCNI3K73zSLe5r559qnnMMtzK7Okt7h+DBdPCkrd3JL1ye/W58ZuOC+W8CdEjxD7231GXod2fdcwhnzRqh+A6BH/sw/wfpo5L2PVtMm5lp4TWMArkIgI1bTcOd7OHxNVELfQYLcrPo7k/7flcFHb/ZJwEk/C3uaqT5VJd/eClcpAEafmxlbee62KLYzKRQDGB9afAP+kFnjJgtNXLSlzYK/5Y66rXNda2lW3xulNRJ+eRrZzKmeiM88tdd6OC0clCKdNxw4vJGl+Fcon0L3shYStrBNPjeAw+BXhnDFTs7yXYzDvouJO4MobhBsIhx2BUw916eGLpjH8AEtGDZq6FjyORCRW2wh1tHazISeFFnxoYuk9z5vCcXMGQeL5fJq0Su+aRign4/GiFI9eBEmRSgGbilNGnLJqwm76PB6D
+ qrPCWyrR
+ kwuarw6TGWXZDK2Hd/j0WsbtY/1MVQ9VWWVyldGmnS5cLhTKotUADwlT7rOuYhsVqhkePMRkRJ+9ZCcwoc1PGCtZEBAAyRCXPQYVxtLnRBj3oEVNZe7rK0nWj0QCpphM1ZkgiEdx74kSp/P9TB7RMt95ovMg4NsHv/iAwg2h2UwNc/iIeAcSTP0J0qyNi621o/3nh8mxr+Qejniemqh9fci8oeSVCDZvLDe2zUzBdaqod0fIp+oI5jDBaBqF3oXVXk8zxaKH6Ei/1GezhB69R+/vELvJXvbUctEdwyngG4NO+YseYABzg5uIaG1aQGhkUW39es9lUdGrAz87xQlJ7QChD0qlqgb03YMbuHnueCbMH5MouWgpbqTV/1aYGxhv/H3axf39NZSwRyXpsPaGXxGiZcvFWKJVm+jnN96SyKneGmQ0JeW6KMHlhhJUgnwwWwuzfieMUAWeMljY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,36 +139,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Annotate vital static information into inspection table:
- - high_memory
-
-Information on these variables is stored into dedicated inspection section.
+Annotate runqueues into meminspect. Even if these are static, they
+are defined percpu, and a later init call will instantiate them for each
+cpu. Hence, we cannot annotate them in the usual way, but rather have
+to call meminspect API at init time.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 ---
- mm/mm_init.c | 2 ++
+ kernel/sched/core.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 3db2dea7db4c..c31062a3ff47 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -32,6 +32,7 @@
- #include <linux/vmstat.h>
- #include <linux/kexec_handover.h>
- #include <linux/hugetlb.h>
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index f1ebf67b48e2..a68367daddb4 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -69,6 +69,7 @@
+ #include <linux/wait_api.h>
+ #include <linux/workqueue_api.h>
+ #include <linux/livepatch_sched.h>
 +#include <linux/meminspect.h>
- #include "internal.h"
- #include "slab.h"
- #include "shuffle.h"
-@@ -52,6 +53,7 @@ EXPORT_SYMBOL(mem_map);
-  */
- void *high_memory;
- EXPORT_SYMBOL(high_memory);
-+MEMINSPECT_SIMPLE_ENTRY(high_memory);
  
- #ifdef CONFIG_DEBUG_MEMORY_INIT
- int __meminitdata mminit_loglevel;
+ #ifdef CONFIG_PREEMPT_DYNAMIC
+ # ifdef CONFIG_GENERIC_IRQ_ENTRY
+@@ -8792,6 +8793,7 @@ void __init sched_init(void)
+ 		rq->core_cookie = 0UL;
+ #endif
+ 		zalloc_cpumask_var_node(&rq->scratch_mask, GFP_KERNEL, cpu_to_node(i));
++		meminspect_lock_register_va(rq, sizeof(*rq));
+ 	}
+ 
+ 	set_load_weight(&init_task, false);
 -- 
 2.43.0
 
