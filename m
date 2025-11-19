@@ -4,137 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E825CCF3959
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:36:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D8F1CF3959
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 16:37:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 564FC6B00A3; Wed, 19 Nov 2025 11:36:28 -0500 (EST)
+	id 7B1536B00C8; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53C2C6B00A6; Wed, 19 Nov 2025 11:36:28 -0500 (EST)
+	id 762016B00D7; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 452556B00D1; Wed, 19 Nov 2025 11:36:28 -0500 (EST)
+	id 6785C6B00D8; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 337AC6B00A3
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:36:28 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5F7E14058A
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:36:27 +0000 (UTC)
-X-FDA: 84127909614.01.F6B84CD
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 96D7F12000E
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:36:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QoyUzQy0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qKhmmQci;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Vc917aBD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EhVk9XM6;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 546486B00C8
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 11:37:58 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 27D4D59716
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:37:58 +0000 (UTC)
+X-FDA: 84127913436.09.9CFAE5A
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B7A6C4000D
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:37:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763570186;
+	s=arc-20220608; t=1763570276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UaJrljRuHzsSahjPRFPX05pBvERQqP62JHa1SezYFP4=;
-	b=NoUnqc6RIYOjja3T5p1TpAiCQ771u+clfUMUkputW0k5Scs6QwrB21zk7fqvKFLiNFN3mC
-	0WjnnhRrug0aiPkNwNv+q7tjdGYwfWUnV8D9m0AppJiM98MgrHLEWyeB8pVIYjGnIun7dp
-	eVv2NncRFwvH5W3md4yclA2fSsNARLI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763570186; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZM7rDxC0VfAIPS040RV0Yt5B6rsIxJQzvNIDiA//oq4=;
+	b=zucopcIRbkFkQ7j2zQFDqmB637U0pfUduWGJjDVxwtmWHcLTuX53uXHFf2KtUq9DBzeuoa
+	XtgDF8h3I5ukrgRaVax497VIIYU99OodHupof0z2wooP8rGrAOoyva3DZ65CsMezU/FQ4G
+	uSpU6HMoqEe/gZapN4LFWCHvnICgG+o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763570276; a=rsa-sha256;
 	cv=none;
-	b=DQG7ca5E4qKMz3Hx/cOgDpx5wgs0fQftGbMVubS5dBkQPSUuOJnMkQK0rR+lKhFH0un4PS
-	2gMRg2yZZu9fm1RBmMbyZU7LbU/yNf139kMzXxB9aNRWTQNBlnKQemhwiaRdXvg36RxPxt
-	7knzKvd+ibuwDhS+KGidUSvc21iQkpM=
+	b=eKQ+Z1veTv0MIeDI14b9T6BWjCPYnHqWzYEjxIzeXhMwxtm58e627bz+fiMqwSTPOVSe9O
+	/BjQOPsvefDCEv3xnWCrtNmg7NG4FO97MLlFkr1evGU554/q6AjsG34n6rxU0MFJ1l9iRy
+	PBSs1Xu/mD0y4azf+aO5CrN+uBzSFKg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QoyUzQy0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qKhmmQci;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Vc917aBD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EhVk9XM6;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CDBEC20595;
-	Wed, 19 Nov 2025 16:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763570178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UaJrljRuHzsSahjPRFPX05pBvERQqP62JHa1SezYFP4=;
-	b=QoyUzQy0kfEnmwEH9C+WMNmv2fIw6SyxdCjQ48Vph6uLgnt2FyRgxRi+IrojladgxuGPqF
-	lgOx9Sp0Tpe3VQugorn8fo9va7mWPEshkF5wl7IVuODe649vFAspPCCre792HbRoNJzDIp
-	Zsj6cN0scu/Ujuuk/8iqe7SUORJ33/g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763570178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UaJrljRuHzsSahjPRFPX05pBvERQqP62JHa1SezYFP4=;
-	b=qKhmmQci2mtPc1l8hRYQoJB2MunsPpcPUwoTjghLy0f/8UeUoZhRpC1t2aDUlTvlNwmWKY
-	fYhvv+/I+Q/GNeDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1763570173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UaJrljRuHzsSahjPRFPX05pBvERQqP62JHa1SezYFP4=;
-	b=Vc917aBDIOVnaGybQq9G9o6Sw5JDPY9DXNjg0SB3wCL9/7z05/g3dtOdqldVWKeio8A1fU
-	wT1TjOnfdFdWRvoysS8piGh9prn0ffObfab8alRHuZuoxYbw9OSLk+320MTkYfLmaGZQRy
-	BHalF4F3Bja+m/sVwTPFNLNMHeB6gLY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1763570173;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UaJrljRuHzsSahjPRFPX05pBvERQqP62JHa1SezYFP4=;
-	b=EhVk9XM63H+CBv9exjU6w0Z1ugfyJBtkpRPI4mnv+0FmkorsOQ8RVVkrkiFOGJk/Vx4DlA
-	9BIe0uuvHC5zHVBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2DD143EA62;
-	Wed, 19 Nov 2025 16:36:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Kx8ECPzxHWl4cgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 19 Nov 2025 16:36:12 +0000
-Date: Wed, 19 Nov 2025 16:36:10 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jann Horn <jannh@google.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
-Subject: Re: [PATCH v4 3/9] mm: update vma_modify_flags() to handle residual
- flags, document
-Message-ID: <vr45iyduvak3wpzmos5l4jfpzticerlnxuhnpvbzb7fpsvanqx@rsuogv5s6brh>
-References: <cover.1763460113.git.lorenzo.stoakes@oracle.com>
- <23b5b549b0eaefb2922625626e58c2a352f3e93c.1763460113.git.lorenzo.stoakes@oracle.com>
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 20 Nov 2025 01:37:50 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 20 Nov 2025 01:37:50 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com,
+	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/swap: fix wrong plist empty check in swap_alloc_slow()
+Message-ID: <aR3yXh2/DhYaN8h7@yjaykim-PowerEdge-T330>
+References: <20251119114136.594108-1-youngjun.park@lge.com>
+ <CAMgjq7CgwjqE9XVy6EaNe0XARYOJsOER-Ch16wuZxWfq4EdFJw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <23b5b549b0eaefb2922625626e58c2a352f3e93c.1763460113.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7CgwjqE9XVy6EaNe0XARYOJsOER-Ch16wuZxWfq4EdFJw@mail.gmail.com>
+X-Stat-Signature: shbt6cbmnd5o9u7mbutf46diu388u8kj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96D7F12000E
-X-Stat-Signature: d8byffhkbzcziezzrgq7ankkgfqbfa8x
-X-HE-Tag: 1763570185-546285
-X-HE-Meta: U2FsdGVkX1+QhRh0XXdjdQV6W959dCKo1OGaFt9JIFQkT0pffZSg+Sgza4gm8HPKT/2UM0wgZO66HLF68K/PXivsmr7cR+BVzcg2EAtKOiAsKIkRIoXj7XtVYxSUyFbj+jDGDPXBb9MjrLd3ApqlmcKnzE8r6vaqTEhY05mF83mNhn0z+fHTF3OJWOTtU9YU/S5wUNUGX3DtcfoIzeqSf6FWNmVCnbLqgBngOoUKr/w+7RPMLkKuB0CuwSSlStsSwsWn92wXzbr2mNNTp1U02bI+I/1cbWkYS1uA6P87gkN5nFrotX8/WtCkGyaksQ1t1b0CCpRt8ddLjVL/zbi512sjQd9GohTZf69X7TYWIgBErVO4XjBF0BSDnBPJBujat193IN55ci4Z6cMejKgVnjUak0RVVvrtz0EqG2R2/e9NaB0mXPjuHFZB6v6y1XvWmyqXq6C+W/+Y0vf04okQzk7k+LAw5N7S/Micr2apqlTy78hh+cxknuNsKLfwBdFS0LLnGSbAtnF2qUMxwD/No4BJsI3WBT+GXmCvgkI2KMiwmsmA5zcodgAO0snMLKarUdcGK8B6HWKamF8KPYo7k1FsXfu/bhvSo19eCf/+ChIEAsgLbzcmd0bROgjSX9Jl0iX+rLp45v3/jOwKQXSu9RLINgA/eRHUWybBexHQ+Q36tGkgWdBv6uUNN3JKjQ2ofhpaxChQkAIgq+oM4pJZ0nnIbaKekrrgLViiUnvpse9QA9ObtHFiJEp/86HpldD+IKU/gtEPhqkxCPtMANGUZyltqnBrJbhshJMzLFrHSndtWMQe13KFSz1aamq9Y+U+7WqUUKWO/YGSzDI8xNWodm+Bqu7qFx3XTPYmobjn7F7CaFv1VqmjW8ZrODL89UzYUHzsir2SRkxQ8c/SPyCFbdp8uBgAJLaQ0GCFFp7v9gnS5z2BJlaUZEoXHnwdyBflrc1js8daHf7MBJPPrSS
- RjE2962/
- oulqqCm9I5kXe+t8ruXla7Pc4rn4+N4dnwkZcFLytKudPdD8wZXL2gNqaWyw3qAKsWSvJ4wd/m9JC7ZkAog7zLvB3WL1l2jy89JFr5N6mMXgAPJzZuzD4rOQPMoKDhYCSbTDObofV/hBfIIVMuf9x+6kM1fMf8yzHo12ddVJn+lK4KgXzReyJOJ8aBpx53EGWxzFGl9E9kFJR4ZrdKtAMzhNqBdTnaM0kRO5PSBFT1f5QL9jFq97CUgO+4kU/WpIaBBEvCfjiiL1U+oLF0G4kijhLNjP6TgiA9pPgFaIxj59H05tb/wsASqxes9TShhwXy7aozmCt+aKoq8kXiFTN7jw7Je4mcsPNljkC9wf4WEiYRHMlw2+su/wGdA==
+X-Rspamd-Queue-Id: B7A6C4000D
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763570274-286734
+X-HE-Meta: U2FsdGVkX1+TyOeoy+f1z8Gpim0Y50r//MfxubSSYduJQ0/VN0ELoy2g15RwH4dmXdqDDjNN0Q0cTwR5tIUg2rGdq9FFYozif8OheANIZ6K2UAJyjyfOfIh/dxLfmO0sVdbOgJUOTE6yUCSlejtYj/CSs6P7dW1YKpy6XZ2cMQqv/Wlrs/vdDxlF61+DFFedvfLm3M2Mk+lNfVk95umH+KiLCp5LDgv4AOzb/75DHOr39tVFJKdtVYJlivazrkc7/FSsk8XMqy40t+CeRK0hKsrFpq5CCM/kAN1+ZTNJ18DKrQkoveTmOKGaJZVo07VVZQT5TAxGHDhB7CQQVQ3GZFALcGaPbv18ccmnvfcrt6hi89OA+N89lXEy5EeRJz3hYiUl0v88936da7MUhy/CeaFKzFk1FXyJKevcipFMNqsTuR9/MF9z/2bhf7fL1KiFwSLTTIr9sH26djW2U444B1LRPvdrS9gzFHJdHye8HffiT6VjQOAsKUyY1iGPZYeOhdcBx3c77mEgbIsBUDF9zEY+VuPHAoarLtui97qPHryZ4BzXuZYmDSlhB2P/kDlR1/23XuE8iraulxMv8YeyiZRzZ9YYxsxi84vOfW23BSa84c/DMh6oz1FRhXj/5wER/xogxh1zR0sZ0WXBLrk4Izh1xP3/qHtmpaZwRjvxo2kr4uBM8vsINM/YZJmSuQtiPt/OPym2ZJEnKi7WITyiM7nukYSXCfeDd3H+XH/Festuc/c6fsOMjE5Cnddx41Y+nuH8UCk8X2mO/PCoTj09d8P+NvOQFzh0TB/lItAt/Fj+qnF+kg/Si9Bn+i6twH4E5U9BiNUdb0GWrtlT65GHzSYuXhZAPrTaJnF3aYd/CHL1dwbXpU8AH6vAIblznPAYDJN8MS75mhzEcic+Jc0S6el1DKv1gGf65TPB46fOvPWKMfB73+/Z9BTgT0QLVWyOcbTc0avLfYFD0G5SC0a
+ tdHJKmf7
+ oWn+v2DQWJWVjYTMZjxBeA/6WFFUL5oH/DoSp863Cyo9Tr7oltdkj5WCd1GDCz+i4F8a5L6va+Ky3g5WQ4Md057nJb72P/4rtysUWr/GvxG16WaafWVWPB1ZH2jr2YLgkIhwHlzw7hWBpWYrbonH3CsoxjV2hbaUF/ksNFkOF7rUDknb5wOiYcGqRtreycj1Ebu+ekEYwaf99f7keEZl1ND8U2C4Tx7GIZ2KndkSymOryNip7ppntDrTYKd9qgMgngpwnYrWF3XFgFbrUbLaqxZs/UHZSorVGDc0x8r3njohNjgtwkDAEwYJpOugFDA3PgK05I8OUdcsd8uo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,36 +84,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 10:17:45AM +0000, Lorenzo Stoakes wrote:
-> The vma_modify_*() family of functions each either perform splits, a merge
-> or no changes at all in preparation for the requested modification to
-> occur.
+On Wed, Nov 19, 2025 at 09:02:14PM +0800, Kairui Song wrote:
+> On Wed, Nov 19, 2025 at 7:56 PM Youngjun Park <youngjun.park@lge.com> wrote:
+> >
+> > swap_alloc_slow() was checking `si->avail_list` instead of `next->avail_list`
+> > when verifying if the next swap device is still in the list, which could cause
+> > unnecessary restarts during allocation.
+> >
+> > Fixes: 8e689f8ea45ff ("mm/swap: do not choose swap device according to numa node")
+> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> > ---
+> >  mm/swapfile.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 94e0f0c54168..cf780fefaf7d 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -1374,7 +1374,7 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+> >                  * still in the swap_avail_head list then try it, otherwise
+> >                  * start over if we have not gotten any slots.
+> >                  */
+> > -               if (plist_node_empty(&si->avail_list))
+> > +               if (plist_node_empty(&next->avail_list))
+> >                         goto start_over;
+> >         }
+> >         spin_unlock(&swap_avail_lock);
+> > --
+> > 2.34.1
 > 
-> When doing so for a VMA flags change, we currently don't account for any
-> flags which may remain (for instance, VM_SOFTDIRTY) despite the requested
-> change in the case that a merge succeeded.
+> Thanks!
 > 
-> This is made more important by subsequent patches which will introduce the
-> concept of sticky VMA flags which rely on this behaviour.
+> Acked-by: Kairui Song <kasong@tencent.com>
 > 
-> This patch fixes this by passing the VMA flags parameter as a pointer and
-> updating it accordingly on merge and updating callers to accommodate for
-> this.
-> 
-> Additionally, while we are here, we add kdocs for each of the
-> vma_modify_*() functions, as the fact that the requested modification is
-> not performed is confusing so it is useful to make this abundantly
-> clear.
-> 
-> We also update the VMA userland tests to account for this change.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> BTW I noticed the comment here needs update too. And the plist usage
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+As I think, the first part of the comment is out of date and provides
+wrong information. I suggest we simplify it to keep only the last part:
 
-Quite ugly change, but for the sake of brevity I think we can live it
-Temporarily(tm).
+/*
+ * swap_avail_head list may have been modified; so if next is
+ * no longer in the swap_avail_head list, start over if we have
+ * not gotten any slots.
+ */
 
--- 
-Pedro
+> here seems can also be simplified? We never use a lower priority
+> device when there is any higher priority device in the list, as
+> devices are removed from the list when they are full.  And the first
+> thing we do here is plist_requeue. So we can just keep trying the
+> head, until the whole list is empty, seems good enough?
+>
+
+if we can guarantee that cluster_alloc_swap_entry() failure is always due to
+the device being full, then we could indeed improve this by removing
+the "try each device in order" loop and only trying the highest
+priority device, as you suggested.
+
+A simple implementation might look like this (though it needs more
+thought and testing):
+
+spin_lock(&swap_avail_lock);
+while (!plist_head_empty(&swap_avail_head)) {
+    si = plist_first_entry(&swap_avail_head, ...);
+    plist_requeue(&si->avail_list[nid], &swap_avail_head);
+    spin_unlock(&swap_avail_lock);
+    if (cluster_alloc_swap_entry(si, order, SWAP_HAS_CACHE))
+       return;
+    spin_lock(&swap_avail_lock);
+}
+spin_unlock(&swap_avail_lock);
+
+For now, would it be okay if I just address the comment update in this
+patch, and submit your simplification suggestion as a separate patch
+after further consideration? 
+
+Thanks, 
+Youngjun Park
 
