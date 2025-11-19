@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C029CF2588
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 07:32:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30457CF2567
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 07:32:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 881B76B00A1; Wed, 19 Nov 2025 02:32:44 -0500 (EST)
+	id 8A8316B00A3; Wed, 19 Nov 2025 02:32:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 831546B00A2; Wed, 19 Nov 2025 02:32:44 -0500 (EST)
+	id 858786B00A4; Wed, 19 Nov 2025 02:32:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71FFA6B00A3; Wed, 19 Nov 2025 02:32:44 -0500 (EST)
+	id 747C26B00A5; Wed, 19 Nov 2025 02:32:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BE786B00A1
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:32:44 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0360A12EF59
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:32:43 +0000 (UTC)
-X-FDA: 84126539448.12.5D77944
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F4426B00A3
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 02:32:54 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10913C0337
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:32:54 +0000 (UTC)
+X-FDA: 84126539868.29.1E6832A
 Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5145AA0005
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:32:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vbucHj67;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 61DF0100003
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:32:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uyjpuiv9;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763537562;
+	s=arc-20220608; t=1763537572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x1iNplE99sGAypoCEEPI8YVyyZSSPtGtkqVo740CsVs=;
-	b=ZwFvB5SQ6PcuFkadRRX6asY5cFZwIA/ZXDT6+PEqKN+Vj1rwcvLN4HfvqLn45xIc1bJKLq
-	1vLHiRgCkMruKEitVC4uHZMVbquNugA55igRS0hsyO1bV8IELB8qWs5lvRV3u+AWHud8bL
-	7qW5A0xeXjAltxy0onTU/eY63QqIra8=
+	bh=nqzAgJ4OlgcGBu7aVY4MnPgaTUGUmQkYyYjl0T7Jjfo=;
+	b=cnPMIhDZMWtSpcQSI63Mld9wHa36llCi+CIU9mmo9nCRepQQ91XuCko4hx1eoDoZ382ELs
+	onUJv+WDGbzV6wzDFXa3Ta0tFRAbANhpf14MKH9zmFrMCmmczFFr+bRAAPc6pyJHgqT+92
+	9l5Qegr9T7v4eHoHrsDSojLmIZa296o=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vbucHj67;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uyjpuiv9;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763537562; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763537572; a=rsa-sha256;
 	cv=none;
-	b=zbpa8SQyli5vuZ7EUAXj4G+MRyCiPl4Qzjlq9+ZAbbMygUDWBoWiF7og4ojiqtH2gJYboc
-	EslfiqZ62GafsqSwn80GM9WpMQjnBU6vqkVA1AcuNSljNlWQAzDs9W8yAfTo5BtjPbRAcT
-	2ZQHNQFPnGDHmeG9UQEFp6YslMoI0zs=
+	b=sbqsJSI635ndGBSf4boPgkLxgxtYj60yjwy+I+QNtj6IgwoTdN2LKnH+5apWoSc7tASebt
+	+UChTVoO5itw3ye/z0zDgFG+py3CNJiz31nfVIJDln6MnVrGtMi4f3o4QLOCoTlbFgaKYN
+	wOeam+2zIJb2xfhH1Bfz3TLAhbrOiUA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763537560;
+	t=1763537570;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x1iNplE99sGAypoCEEPI8YVyyZSSPtGtkqVo740CsVs=;
-	b=vbucHj67nP76kiXE1QyY8BDwAzCLOGQUCC0PuxiMX09JuvuPEDA7TD6Faql30bLUhiVf76
-	IOCfwQsCxOzvk1jJIx6cB/4wVYkH1Ymgi7/nv/RuHvh3YJEurHzaNl8B/s41J5hlfHjpnD
-	Wr8XalvYuqFraXJCvIIVSZfyHo2LYco=
+	bh=nqzAgJ4OlgcGBu7aVY4MnPgaTUGUmQkYyYjl0T7Jjfo=;
+	b=uyjpuiv9TBbXB7w5nX9ezg2b/0arYsi+ngniUmEy5/UHQe7UIU+7bW+ZZH6JZOPtCOAwTM
+	I2y6i4tBKl8QNLVOSZZcx0mBsB2R/e0ql3nUife45Tqxisf0T9zBpRBX7bZtz84Wv3to6z
+	ik4dz5PKJGLLY8Z0cTmGxwsTW0EsQQg=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: will@kernel.org,
 	aneesh.kumar@kernel.org,
@@ -77,23 +77,25 @@ Cc: linux-arch@vger.kernel.org,
 	linux-mips@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-um@lists.infradead.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v2 1/7] mm: change mm/pt_reclaim.c to use asm/tlb.h instead of asm-generic/tlb.h
-Date: Wed, 19 Nov 2025 15:31:18 +0800
-Message-ID: <e9d510106b5bf72a9b577b8c5ad161fd3c29c2b6.1763537007.git.zhengqi.arch@bytedance.com>
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>
+Subject: [PATCH v2 2/7] alpha: mm: enable MMU_GATHER_RCU_TABLE_FREE
+Date: Wed, 19 Nov 2025 15:31:19 +0800
+Message-ID: <54381c49729449b9c3a09e78a69bf14b4b107774.1763537007.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1763537007.git.zhengqi.arch@bytedance.com>
 References: <cover.1763537007.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 5145AA0005
-X-Stat-Signature: grwzsk4pi6mjxzciot39rhstkd1f8g69
+X-Rspamd-Queue-Id: 61DF0100003
+X-Stat-Signature: ytonujkpqu441fmh9i4r4pozbdjqb4cr
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1763537562-855835
-X-HE-Meta: U2FsdGVkX19muwcKfkmG+qFr7A29keTMNzuaH4Hfl0ivXH2abYNqUOJ5IEvXr/5j+oOarAippznJS2ppRt6cFcGlrtavXglTwtEc37lSaFlsobbPIxJZoF0bl/N9uNYVIJTl7U5liZ2gr5HG+PESXBxENJme/dJ8D89zHvoHVtfVDqXQyjxyYF3IlGXTAjZRTP1hARi8mpmLOlpKGGYFRC6mYpR33qYDVRcJv8aGbsfeFE/moGj3BJjpbJqX95ove9Tlt0yh7GttTDfAE2Xk+BpHQBLrMqYQmApQDmN5c3QjTftzHRDES625cGH9N0Jwy9txZTmjAY+expYEmtpsaKoSj+zuumaLIAtlJt7GSLjYvgrnIjAuoPZa7aj4AoHLw1VYEGI+rT2SEEnfTnpIaaTv1YTAdeSGNRFf4UzJ4rTL0Y9HZilrJmHCyQo80bAZMgzyIvwXbIcY1A8eofT+phT5LV3rs/gsiFE5jVAXda6n9frftL0IKFagu2bNp4josG89UaEFpu2ur7wCEDMvLzrxQfXdBdt8I+RkZ44SA81UHEjC4vWibZ+yT0DBYx9x0mqsWdYOr21v9/R3a2QXPb4jR0orHsoldC9l9DuMIjLPmXBHcvaopkwnists2Nqj0PYfqrcmez0AY4BbNexoX8vv2DTcZTEyflopvH7/J6R/xG/OEa4KYBYdVR3FvznZti2CsWyzjXJVXcZxtGeY1SnLVUmCEKpV0WRj6w0wWLPE3TCKPqvWukQEFmQtDCzTByfTbYC0EFt9/QRuwWRVWFoB5Q0dgDhf/9R9yU9UwfOPTG6F4QmXLqvhljtjonuYuqIpeNzJrjQ2Jf3ZG6paQLTzYdYFwKb4oLECIQ1ETvBLIdWqkf4WXTbaN5GRKL+ytdUAh0zB8zEDHYOrzpYecAKUtfg3G1pBkLbG+P1amlJKDiLVQ8mH9qBmHJRE7Q8XfTYkRlgXLa2gTuXYbSp
- SyKqcjK+
- A6mGIi96AlFMUE8oGH5MCTKD1LBiu5yiHP3U1n/rZpIDdmlow98MU6ipnIgsaOks1xYEURh07XKhRDJDAx7i85s18b7uuKM562+cqdUhNjDVIAM0ARxQt8z4q58RF5761Rj0TiXMvBGsZfkPKiOwo7G5Fng5kTS+WolcgLCW0ggp+Cmbx/qfk6lcXV69A3mZSJSr3eTCErmsyG6ngmSELniXQE34fT6mug8iHXeM/4sE5qZlUNqFvzjjbluinwaFqZh9clI169L8gLQyKqWgicgJe46EXOJuzPBPLBbP6iEKOlQ8=
+X-HE-Tag: 1763537572-74905
+X-HE-Meta: U2FsdGVkX18ns5Nx23Q1A2tco8zoMT+dlWndEPp/M9TYPdgBWjxAeQHz0L2eTClhsbQauJQbeEPenTEUk9rAVvMIM4AuE1WMPGIflup3ISzCpDTaKazbhOQbi05acKI1rkfI+cuLun5vxzY63aL3bE2iVU+sckG0+U7ynQzQ4hXuwmjlpVJcNeC2en9brRXcllsVaLR6HdsnEn5CF1AAkpVnV9xvcI9o+nQrW12iT9TNu1rC8ICu4D0gTMivz3JOARFX0BhGu7aSRtP1ia+O7fsp91ANpFw3a+zIKsoXdUSm6AVayPGmUYpWrd4And7hnHpPldHznh46LJA1ac6Rv2Rv5YdJAY+Mv4yimV/Y7hPajRNiN6TJARgETWCccS0IBw0VKSJU/Ngy5KeP7/p+xlOPGKvsUhFpLlH4Uh7Y8XVJreJYc1AsNu25lfDwazMQ1YRBcL0aVfoDo7Z3roHeUyZON3zgBpbb92LZeVHaxaI1EuBQkau5gLhiqne2HFOZvLoSx3Jg00jEREjlmCJn4p7WPgSh73rgUBAwmTbJmkwD2JP1fW4KQvhz89Ba/LiDCfVW8wBtpQYBtDdUEnSv+Anh9b7t31hCH/kR2e2ZiphzEL0NM2YfbOVo0CBX7dd7BAD1Q5IhxYb7BxDEOxkWQwxyQkzkCs32MzNOCA9kqbTZPT1zPrNYKS8KdHHL96Z7wq3YjbvJcdjohBa0SzncvphH8jeJn7rseZoZ9j89WQOETeKVsdMKBmi8X5p+f3oBGb9XAvd8nmEUvdnx22lc1KWt/0vKx2wjG7HiB3323dLbMMto6XeCrM2CT5ll3ofICMzEdnfOYD5qVc+Dlb8bS8xeP7JzyKMUlI6MAcNDadOAiplFMiDsSrboTEUGvGVYXaIMKrpqMHaOxHImB4LPJhbBjPu5KZyMXjeI+aWg7oM063NyRGiCDotlfBMOonxySYns38s4daWL3r+j011
+ xyqzFDtV
+ lIfv6uDm1PnBYFwcyfgLisz84cWstIPRmNgm0CqaZkm3HVyH/LDGIsEMpFqvIy45SAgSJAe62UguVUXH792rHovMbNK619dezhvuLjpM3DXUwLfoe69GivYSG9B73Ib+B6auDpeAFEKcUkBVbBQeWQUvbcjdD7hMTIbCmgLjZapaF8Ag4H94liUKrfRF+3HkG9wFpY6uIlmkIJzvmktX7HHd01OsZtSqEqnWWQ+G2bRm8dLvYKTKv5A7uUC8E5JBBwBaqyYZFoAeMQ7QVsBieu+yxLzihtzQ2TaxsP2pG+OOSaRbkq4R1rBpvzipKiMybgbac
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,29 +106,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Generally, the asm/tlb.h will include asm-generic/tlb.h, so change
-mm/pt_reclaim.c to use asm/tlb.h instead of asm-generic/tlb.h. This can
-also fix compilation errors on some architecture when CONFIG_PT_RECLAIM
-is enabled (such as alpha).
+On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of
+empty PTE page table pages (such as 100GB+). To resolve this problem,
+first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
+PT_RECLAIM feature, which resolves this problem.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Matt Turner <mattst88@gmail.com>
 ---
- mm/pt_reclaim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/alpha/Kconfig           | 1 +
+ arch/alpha/include/asm/tlb.h | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
-index 0d9cfbf4fe5d8..46771cfff8239 100644
---- a/mm/pt_reclaim.c
-+++ b/mm/pt_reclaim.c
-@@ -2,7 +2,7 @@
- #include <linux/hugetlb.h>
- #include <linux/pgalloc.h>
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index 80367f2cf821c..6c7dbf0adad62 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -38,6 +38,7 @@ config ALPHA
+ 	select OLD_SIGSUSPEND
+ 	select CPU_NO_EFFICIENT_FFS if !ALPHA_EV67
+ 	select MMU_GATHER_NO_RANGE
++	select MMU_GATHER_RCU_TABLE_FREE
+ 	select SPARSEMEM_EXTREME if SPARSEMEM
+ 	select ZONE_DMA
+ 	help
+diff --git a/arch/alpha/include/asm/tlb.h b/arch/alpha/include/asm/tlb.h
+index 4f79e331af5ea..ad586b898fd6b 100644
+--- a/arch/alpha/include/asm/tlb.h
++++ b/arch/alpha/include/asm/tlb.h
+@@ -4,7 +4,7 @@
  
--#include <asm-generic/tlb.h>
-+#include <asm/tlb.h>
+ #include <asm-generic/tlb.h>
  
- #include "internal.h"
- 
+-#define __pte_free_tlb(tlb, pte, address)		pte_free((tlb)->mm, pte)
+-#define __pmd_free_tlb(tlb, pmd, address)		pmd_free((tlb)->mm, pmd)
+- 
++#define __pte_free_tlb(tlb, pte, address)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
++#define __pmd_free_tlb(tlb, pmd, address)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
++
+ #endif
 -- 
 2.20.1
 
