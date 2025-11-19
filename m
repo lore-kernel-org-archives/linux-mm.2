@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8320CF34D9
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 385AECF34D9
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 15:46:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 953376B00C6; Wed, 19 Nov 2025 10:45:55 -0500 (EST)
+	id 3FC686B00CB; Wed, 19 Nov 2025 10:45:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B5846B00C7; Wed, 19 Nov 2025 10:45:55 -0500 (EST)
+	id 3852E6B00CD; Wed, 19 Nov 2025 10:45:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 756BD6B00C8; Wed, 19 Nov 2025 10:45:55 -0500 (EST)
+	id 24D9E6B00CF; Wed, 19 Nov 2025 10:45:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 596026B00C6
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:45:55 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 260395955A
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:55 +0000 (UTC)
-X-FDA: 84127782270.17.8C2B960
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 289081A000A
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=xuBDnkOP;
-	spf=pass (imf19.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.42 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F00A6B00CB
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 10:45:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D1E631A0513
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:56 +0000 (UTC)
+X-FDA: 84127782312.30.47D55BB
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E51548000B
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 15:45:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=lsZBsV+A;
+	spf=pass (imf02.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.51 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
 	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763567153;
+	s=arc-20220608; t=1763567155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uk1lFWru0IGdhKwRKbnhtV9p6FImm0O6RRZYNI9uc9w=;
-	b=T1YHwuyUN+YMQEGFvBtaSF6/0CBYLTXycJuQzJsfZIMzwMUJME9DlA/jd3TjKOP25JFHND
-	G0Wz94VSXJJShPc3uMSwPA0N4xTkXu+3f/c8/iPPVx9nxC1P6NAP5Wd110t7NfWeXH2JCG
-	q8fZ2r6p6YCMYlk1o9rlkph0Vla/zpw=
+	bh=Y7Ucs3kp0oXjJAHNPlew8LSoAGCaHnYy/9pb2BVOQfw=;
+	b=o4nJGoMTEeH2l58s/tmgdeF/8cihCgQZIUBlQJhkgU+DNGEbXKDlOQaKYLWLzb9JlOTcbQ
+	fmDsK/mM5hm8gufGcmLM3dJAKgptxKXnIgMi1g1k4X7dt5yiMDtrzm5w4mHlDO+zXDPhJQ
+	0FYTyHaRMzVrJqIX8vlzWFnGpfPdj4s=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=xuBDnkOP;
-	spf=pass (imf19.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.42 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=lsZBsV+A;
+	spf=pass (imf02.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.51 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
 	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763567153; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763567155; a=rsa-sha256;
 	cv=none;
-	b=V6ziOo7K7vY+aLHlGvYxo1SsTizWohAZGXxBshNHJXmNfm9qZKNefXOJWtzb0pA+BEVx1+
-	56yGhpyKUJ2LFcRXW+qUj0Mf3OuE/fcAUGGnOXe2CNTkPkIPsTjsVGq/Blkwba1spDQZJI
-	Bpf4JsHmgniO7T2dRqCVNDI4X/pOFTY=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42b31c610fcso5924809f8f.0
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:45:52 -0800 (PST)
+	b=gY6b+A+STV4fFsWLVb5+Ni4RBT8ji/3rtymjCDB/SEBeGDn3wi1l9HE5cjRMopTnPgj7nK
+	7FICWXfFDfJkyCCKtX+rmo29jbkTptyCpQgkCQwUFXfpH7GALU7m2bThPNO6p4cUUXmp89
+	v3GS8YlmXR5bDugduKf1hJ7QIvEDNoA=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42b32a5494dso4139083f8f.2
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 07:45:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763567152; x=1764171952; darn=kvack.org;
+        d=linaro.org; s=google; t=1763567153; x=1764171953; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uk1lFWru0IGdhKwRKbnhtV9p6FImm0O6RRZYNI9uc9w=;
-        b=xuBDnkOP14tt8Z4xjN+jmMJaEdlBUBZu+y9ow9+d8DfHCyl8mm3tsyFa4NlPtwAv3z
-         0cJZSpbaQhIfEzc41//VphHsIB4EqkwmabjTU33624Z6lpL7yB+EynExminwvVAG7LW9
-         r2JFnSTJ8Scza580iFlMnPXanRZrvKKlcKVMAPHYLBSf7CEihmr1xg2ENFw9Y4J+h9a6
-         HNLbv4saE8mqUrhWD1JZ4dw12amsZHkVXHjGw+8CpfRKPTZmD7tnwfhGGbVQ9/if9JWz
-         6/762CO6YWxDHU5CEdFtHNQyBJGhOI81uuNwdfXX+1F6x7AZcrQhMOE3hzPhSYn0MVWZ
-         unyA==
+        bh=Y7Ucs3kp0oXjJAHNPlew8LSoAGCaHnYy/9pb2BVOQfw=;
+        b=lsZBsV+AsevRqEb+he5XPsOuDoFN+VYFaNlUEm15fvJP+a3CWUujfY36JHiUZijQQl
+         /Nv5aHDpdv4y3HJlPgmo7EQGIZOJzBRrj3uofbzM7kNmQjPJsw1kIFM5lMQh/WkRCPOQ
+         kH/VrO/Ddzsz+oZxXEZW83IcDcDhaOmwiK2Q0WbBjB4oQUmLPi81Bno62GsApwTMGVv4
+         Ey6b53ImPpSrvDWDO/wcpaWnfeZ2/Q65Sad9dI1HYcM/sNqS/UabV2FTC/mx4pjMKY6p
+         bkcN+Yp0sGVNF1VZJ5XPPYw3M+zfb1J3OXmLeAZgmO3dUuoMnAze4a9gQvgRWN/1ZprM
+         2D0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763567152; x=1764171952;
+        d=1e100.net; s=20230601; t=1763567153; x=1764171953;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=uk1lFWru0IGdhKwRKbnhtV9p6FImm0O6RRZYNI9uc9w=;
-        b=lJaWiCLA08FSvJr4BhEPOMV6RpGr0T+5Fq5ipzb9o8mavKlmxCwMLw90NlRZtakpZ/
-         uHft/DxeN2u9Lpi+aYkppoOsF2a6dqR8F0nsvG+6fQSTqivaMsTl5Rf4SMuQh+AgY51E
-         ztBm9kF1O6Tbn0zEOJsZBN/CTITwoMzUcZ6t46M87BgF6VhTjN+cfQcy6CTkpW3MAebv
-         J4glQc7JcTV5C36F+0kat93mBapVKVode1reCPrxalyLWfOBGaqWVlzgiqxgmY17PeVv
-         9W417z86M4mOQ0tzkiF9ea5T/wFctplvEvrPPJ/Ck1etlQsAgl3PAgAH/4W14OEHfzMi
-         5htA==
-X-Forwarded-Encrypted: i=1; AJvYcCXMlj4EgRQtXrTOZn0fAHEYq4kZF2JhEHyg35gvOrNkQVBK8obX54xS55kiqkwBWmLEkKZ/yHYn+w==@kvack.org
-X-Gm-Message-State: AOJu0Yy2ZUt3k+Y41/XWp5DoIPxfV/VXqf331ZmGU4ZTNVU3J/2R7VRi
-	af1YisJix5cNECSUDEN/VRxQC739g2YvDf7InEnwHCX0gKGzD7MNlWBIUTE0YVbTKyg=
-X-Gm-Gg: ASbGncvpqskMXckJyhIVza8/jcCmJcG9W6RFUTZSVk9hgqi7zcKsIScvfgn+U+6reNo
-	bX2PTwTbsFAytL2ChkzgNsSUlCR3kMOLroNWu2d1u+A2npPOdcCRCGVfc7rhcfqOLpi9s/KggjI
-	CuXqURUe7SHoopct6L0iYVrpSeyjpZ3mjKu//DILYkma1BoJq0IiNxisedqH3ZVb14jV/zNEd+S
-	/auHcnMUv/615bjMxko45okoLFMGu85ZZEuCyfD72y50T4MlwP8cAnyUh5HAE4cfTfo3AJ+CUdC
-	AKyNf12tEKmBxs0hHINnBNUkBWulxJ9GS2vwRkwfG6xKAISYF+Y1+7pmMq88wx0UasVDxKTiNUm
-	4iLSopHumOUwOjU7fji8Wtl89n9rC0IpjtFmNQj+lrDYkLKHJGhP7B5n8cpzm+CEJRWF2nLz+xy
-	c6XBUbrCL68+DNPKlQDUag0mVgNowm8g==
-X-Google-Smtp-Source: AGHT+IGiIxmeqrKKXMpyNCEgyddWcck0X4KYjA7E97PFt6A4ulW3WkSU04Vt6omGLvNuAQXzgiycDA==
-X-Received: by 2002:a05:6000:2888:b0:42b:3ab7:b8b9 with SMTP id ffacd0b85a97d-42b5934db2cmr19180692f8f.20.1763567151698;
-        Wed, 19 Nov 2025 07:45:51 -0800 (PST)
+        bh=Y7Ucs3kp0oXjJAHNPlew8LSoAGCaHnYy/9pb2BVOQfw=;
+        b=VfeWRPKHl6ERikh5b95TUO60kQsZlq9Z99hXJCSquIGhnfdjtMdrzpkhadBWbroP37
+         37h5zQ+b8U8Qu+Ncfjusa5Ln8c4LnOTHSiDH/vSBfJktR8JOM4qD6HCtIsgNTcusePHg
+         ghrXJCG+aI9UzxsY+z2n9/a0R1HMnSOHBsZhdUgkcA1JrJcelrn26KILWYKSGqKrb/Y2
+         naK85A/VPgYoRVW+YD9ufQzivwGDcet/SQZllXcqGCR93v2/MMR1slsCRfLMW+iJjoWJ
+         6ndJay6V8nq/5cAZJIW+r5QHVXhYTgShxZDfsRp58VTZaQbEoYVam0uVJ0UG2+k4UubP
+         +Jgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUrhy2j1j30RiSibsK3l6v3dt+hkOa4B52Nx9UNHKjfUiBXWZDUO857EBDV5MN+ofT/y/FSpxPhuA==@kvack.org
+X-Gm-Message-State: AOJu0YzAoEJjwKTm4dcnBaoqXp7BVpCGi48zUPq7hrpg+RRrQs/PemR3
+	HmXTVdXUelcu5gJVgYiaV2mxcm8GbUUQ7RFwYU+F9fbKwiBA47aISu7fBLlmMh0PqUjF34CrRd7
+	/gIVJya456A==
+X-Gm-Gg: ASbGnctP19F4KH68XJjX4GzmW8i6vFOUNTQ4BR0Bpys9Nf2aOnmyfZ6TbblXV2hRlqe
+	2PioZJ5q8mIsOET/xp+B3sqA2/7R2bnXMMlaKlfuA2MIQ2SLEWuuW8UWpnNkmav1EH3SRJWrXWV
+	0/8zKKsnZhV63wh3CXGJJ8ApZNduvsv7ZS/Oyk/vYO8rybDNgAlMvAIVubtJlecD/B7dv24PkQv
+	7T9dg/S3k4a4OhCnLklp+xVJrdmzeN1FTKogahEU1Y8o2rXMOyprqei1TfRAIj6LAMClJmiSQVz
+	7+g7r1nvzRBNwaq5845Ou3sLtrC+kzFjZy84cO0ypYfRw+vIN+86Tf89beVx2jg0nzAlJ4I5unP
+	oplPBrB9uu9bKgnNA8kMAz3bUMQ/R+QWwCu4LCvAuG1uWRT4rLzv3JxISWv2IYKgUIFDt0KURVK
+	0ssuWlxsWkBg9bMac+HcuVvkmMG2rgCw==
+X-Google-Smtp-Source: AGHT+IFMxVwxw3DtlUhFwveVzixkh9p9iHWd+faYE31GhqiINsGSMiGzAK7z2FWSCj0eS8F6/aaKoQ==
+X-Received: by 2002:a05:6000:2510:b0:42b:3e20:f1b4 with SMTP id ffacd0b85a97d-42cb1f1de66mr3206403f8f.5.1763567153508;
+        Wed, 19 Nov 2025 07:45:53 -0800 (PST)
 Received: from eugen-station.. ([82.76.24.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53dea1c9sm38765632f8f.0.2025.11.19.07.45.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53dea1c9sm38765632f8f.0.2025.11.19.07.45.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 07:45:51 -0800 (PST)
+        Wed, 19 Nov 2025 07:45:53 -0800 (PST)
 From: Eugen Hristev <eugen.hristev@linaro.org>
 To: linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -115,22 +116,22 @@ Cc: tudor.ambarus@linaro.org,
 	tony.luck@intel.com,
 	kees@kernel.org,
 	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: [PATCH 20/26] mm/sparse: Register information into meminspect
-Date: Wed, 19 Nov 2025 17:44:21 +0200
-Message-ID: <20251119154427.1033475-21-eugen.hristev@linaro.org>
+Subject: [PATCH 21/26] printk: Register information into meminspect
+Date: Wed, 19 Nov 2025 17:44:22 +0200
+Message-ID: <20251119154427.1033475-22-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251119154427.1033475-1-eugen.hristev@linaro.org>
 References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 289081A000A
-X-Stat-Signature: hebzqfupgk3f5hz13xb4redd9t7n979e
+X-Rspamd-Queue-Id: E51548000B
+X-Stat-Signature: fe6age8pdea3iwxihra5a9gfznzdheyw
 X-Rspam-User: 
-X-HE-Tag: 1763567152-259254
-X-HE-Meta: U2FsdGVkX1/p3oqO11DNY9G7CPgQRXvycNqm1V4dujUejoWTn8DwkK7IWm98/Opp/0ycCmKLN+wfItRYCMpugemXfyifjKfsYOHhA+SoK4TfF+2GFBSnxgrchHhZ86B4UlZbWXuMGwDGzMFZZCVzgwb3g5e2NC74fP26lT84L6TTWjJU/qNCQnfUXXcSvUssbmV4N8DVOzxjHifAxwq2trV2pstkpIoM0wvofVDCr4K5P2N7as2kEz4Goz6rl2QD6EeiHuteXxjcjxO9OYO2ZglVNVh2YrSSJahJ5RsdBEQNXnvUYxl3tP8xNimsYD8IPqWkIljAvWl+dEkzs293joFnu3ldCnDkxPh/IXr25rgp8uEgCHBO1LlQGkPCKM6IbJd6uC5378gETxFEKzww7gPdqZuHRNCERckX/Uolcsice/ilY7EzqdtI1eSX/uAvrAMqkIqRD8CtSclnUgqn1SCXH5SnuSMwhpTFfNUQjk9vmE+p1dXQXExiK1Vq0u+JGpzI51RqOz5Z+jtQ2DTSuKIDnuWnRMTsqkos8RrURoxknYgH3NfIxjXWAUZy40iC9YzvUrx9x9Zi9HvYXfhhBZ5ayxAj+Dvb2KHeFGOXsmel6pDae0r1IcJmcoZFWviEx40RNogMr8INDS4v+lhoJrmuNAMgjcuv3M9hBEIxWOyyIkQzG5h0BbCkZl0Gep7Hu/50L1j5UVtf4SF9Z63Sp4JaZhn4fv+/j9Zry60v9xBYVBcfm3SCu0ge316ppGTlsJxZJL9WG0NBmx9IuTFaEQmNO7dKfogFkLfnqK2eLQTastI/cwU63lPYGs/VwAl8tmgOsSxoBEuiz7KjOhwMvvDHSJ2YeY330chNPGA68zQXmeQZly3Yq+UAoUMDnBX+U4v5hFMBht+lDJDzVjX2L036nx4oy0kkAgnjMX7jbhVfvRyQiVfUr8w2lrBTw7ivFarEt5t1ob0xy14fA4W
- rzuV86sj
- 4GbOfK44lA7EAVWOxUyBFyXeEUbk/plFMdj5IDPNObKAjkkEN+AxxQRXXMEtgp6HQVihGOqDPzGX68j9WFYD7xnH/98ot6sNIRMtrp0WhJuplk2cMVVh+II4cBX+DT6pLZoApywwiNruWIzPDwlsQw3HDRAjRlgpjctcA2C7lxERj+pLGNXK5M7QEsyEbFEiCFMqqtxL3IfKaHBcvVvAXEhdT37YR9iZk0VHIht4d1phZYh4rRpIBpUQeNThrUnO8xQYivzkn3Pu+DEdrNerpIFSiISeNpyEYd0so2qoQvcG7ee0QzSdGAck/dmlAGXh4iuhT+0DEfPIDJtt/nGIaRzAzN8pbhKgP6UswBj3j6+7vhC7/xi9woboHeUbUhjS0TBkJRppSC3+FfelPbn8TlAPiaqq0Hai4seFX
+X-HE-Tag: 1763567154-372029
+X-HE-Meta: U2FsdGVkX1/3WCJShddHVP440gMfeZ5+INnTWljdCpw/zWdTbrw7gefyoMxx4Dm7055RyPpoyx7kbYpzky5BrGzmjIXmQKhYinAH5OeqLFgwcIPVX4EEInzAnBqot1ArHL9/jxTakG8cv8rbtPHHOhjHDiywq5zUVaDo+0pG9driwWZ8XSFaDfxv/J8VL9NfNvFcFKnmoZDZB/51yaJmXlQRwI4Mzx3qp4knK1ddbfrwYWODNREIU3vVSWVm73qu6ki3xMHadW/1S4F9wCz1vB6ZEUrx0NO+PUgaZwqDuA1BIinYvaS7dtLyau8aGKQnZFIJhLX7/y8dtsQJZlu5FwSYWGZQ2vFNHOM87MU4BcTW1IGypBs0xCQpjMY3vC9/8sSe6FNADo2VC2R7ZHt7sL2Z4LR0RlSjHUn+41GjjaXd0vtHawkexwXGOfcR1k7R1R2CUtFBr3Ljvff1mx2wV10tp4iDzu+H6a6RwKNQJ+KldcuHCdp1OY3oO6B7DEfmKSQmXdG2xQyYfadlLY16vnjTtSWvIBNDw/xjTkhcEaS2m42E3PunAL8b4EENeK7iShg3LaOrwLt9wr6NgfNhnWCmqM68lTIeQVZ20HWecYSkowGTDizMddgEkPYQ2cNPh7F//8B+HEv2zrU9OxuL8dntZJBQtTSdw1wFNMe3GVWPQng7RYbtYFLllI+OHbWJr59XO5MSxepTT6NtoxaTUWkdPA8YPUvta4tICMYIxhHY22g5gPn2ouma59J3LEgX9dWhiJ3dUaQzEVm3bkGfxWcSD9R2i3bQpm/st40jZNNtd61XYQSCeYVsZ5l+vNBh3BFQ8kyJiitpx+4hj6Y9RisxZwEVcfaJVkacpYTqhLDbWrflrW9joPyfw34Dd4ngMz0mhwx8oq5ottCK8/6Tn9zAaAHdSiCz9dyBbmEMJxoqX+VDWBvIOm2B6OWaV0tpbKwrigzh3nG201vCLI8
+ 8Zqr3a1H
+ 2bN6WgBhet2W1o5mtJGcahvjd0y8d020z0uz7+aCQMFfjGV4KDWHXubTz2zUBqyEtphPGap5wNp7fnYIgN47QR0fIW1N51Vj+Db9VTMKniGdSSEfP09CZRAjtSPKt/zzZ/4cOqePkvmIKl8FpXPGJFB8/b3pmXlo7urNRgc34SgwiHJaIka1aFk/V0uIrbVv5zY1WeTfloM8/RKAxRt0fwx1cSOqOwhhvMCiUGLWfa2xsp3lRcoX7zQkoWY4aFylHFhqm8z9NbicNzmSX0b0MGslqTly0sDrgDONeddu2qHaBk5kuDG542g5rgyjOOocq4xAC3QhkJAoQSIMmjXBE5YhLWuFpjmc9z1U/8t+Tt4dYYbGyQNtmyM2h6NIV/ufu235Tw7KEDaP5McZD/zel8V84SBu+IbKnyoeewKViYwFpqUiv/KepegzMKxmsD6sSa74sHa4xQTViaqc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,58 +141,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Annotate vital static information into meminspect:
- - mem_section
+ - prb_descs
+ - prb_infos
+ - prb
+ - prb_data
+ - printk_rb_static
+ - printk_rb_dynamic
 
 Information on these variables is stored into inspection table.
 
 Register dynamic information into meminspect:
- - section
- - mem_section_usage
-
-This information is being allocated for each node, so call
+ - new_descs
+ - new_infos
+ - new_log_buf
+This information is being allocated as a memblock, so call
 memblock_mark_inspect to mark the block accordingly.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 ---
- mm/sparse.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/printk/printk.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 17c50a6415c2..80530e39c8b2 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -15,6 +15,7 @@
- #include <linux/swapops.h>
- #include <linux/bootmem_info.h>
- #include <linux/vmstat.h>
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 5aee9ffb16b9..8b5aba2527ac 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -49,6 +49,7 @@
+ #include <linux/sched/debug.h>
+ #include <linux/sched/task_stack.h>
+ #include <linux/panic.h>
 +#include <linux/meminspect.h>
- #include "internal.h"
- #include <asm/dma.h>
  
-@@ -30,6 +31,7 @@ struct mem_section mem_section[NR_SECTION_ROOTS][SECTIONS_PER_ROOT]
- 	____cacheline_internodealigned_in_smp;
+ #include <linux/uaccess.h>
+ #include <asm/sections.h>
+@@ -513,10 +514,16 @@ static u32 log_buf_len = __LOG_BUF_LEN;
  #endif
- EXPORT_SYMBOL(mem_section);
-+MEMINSPECT_SIMPLE_ENTRY(mem_section);
+ _DEFINE_PRINTKRB(printk_rb_static, CONFIG_LOG_BUF_SHIFT - PRB_AVGBITS,
+ 		 PRB_AVGBITS, &__log_buf[0]);
++MEMINSPECT_NAMED_ENTRY(prb_descs, _printk_rb_static_descs);
++MEMINSPECT_NAMED_ENTRY(prb_infos, _printk_rb_static_infos);
++MEMINSPECT_NAMED_ENTRY(prb_data, __log_buf);
++MEMINSPECT_SIMPLE_ENTRY(printk_rb_static);
  
- #ifdef NODE_NOT_IN_PAGE_FLAGS
+ static struct printk_ringbuffer printk_rb_dynamic;
++MEMINSPECT_SIMPLE_ENTRY(printk_rb_dynamic);
+ 
+ struct printk_ringbuffer *prb = &printk_rb_static;
++MEMINSPECT_SIMPLE_ENTRY(prb);
+ 
  /*
-@@ -253,6 +255,7 @@ static void __init memblocks_present(void)
- 		size = sizeof(struct mem_section *) * NR_SECTION_ROOTS;
- 		align = 1 << (INTERNODE_CACHE_SHIFT);
- 		mem_section = memblock_alloc_or_panic(size, align);
-+		memblock_mark_inspect(virt_to_phys(mem_section), size);
+  * We cannot access per-CPU data (e.g. per-CPU flush irq_work) before
+@@ -1190,6 +1197,7 @@ void __init setup_log_buf(int early)
+ 		       new_log_buf_len);
+ 		goto out;
  	}
- #endif
++	memblock_mark_inspect(virt_to_phys(new_log_buf), new_log_buf_len);
  
-@@ -343,6 +346,7 @@ sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
- 		limit = MEMBLOCK_ALLOC_ACCESSIBLE;
- 		goto again;
+ 	new_descs_size = new_descs_count * sizeof(struct prb_desc);
+ 	new_descs = memblock_alloc(new_descs_size, LOG_ALIGN);
+@@ -1198,6 +1206,7 @@ void __init setup_log_buf(int early)
+ 		       new_descs_size);
+ 		goto err_free_log_buf;
  	}
-+	memblock_mark_inspect(virt_to_phys(usage), size);
- 	return usage;
++	memblock_mark_inspect(virt_to_phys(new_descs), new_descs_size);
+ 
+ 	new_infos_size = new_descs_count * sizeof(struct printk_info);
+ 	new_infos = memblock_alloc(new_infos_size, LOG_ALIGN);
+@@ -1206,6 +1215,7 @@ void __init setup_log_buf(int early)
+ 		       new_infos_size);
+ 		goto err_free_descs;
+ 	}
++	memblock_mark_inspect(virt_to_phys(new_infos), new_infos_size);
+ 
+ 	prb_rec_init_rd(&r, &info, &setup_text_buf[0], sizeof(setup_text_buf));
+ 
+@@ -1258,8 +1268,10 @@ void __init setup_log_buf(int early)
+ 
+ err_free_descs:
+ 	memblock_free(new_descs, new_descs_size);
++	memblock_clear_inspect(virt_to_phys(new_descs), new_descs_size);
+ err_free_log_buf:
+ 	memblock_free(new_log_buf, new_log_buf_len);
++	memblock_clear_inspect(virt_to_phys(new_log_buf), new_log_buf_len);
+ out:
+ 	print_log_buf_usage_stats();
  }
- 
 -- 
 2.43.0
 
