@@ -4,107 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCFD3CF259E
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 08:52:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A91D8CF259E
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Nov 2025 08:58:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB4266B00A2; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
+	id EC2526B002C; Wed, 19 Nov 2025 03:58:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8B756B00A4; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
+	id E99FC6B009D; Wed, 19 Nov 2025 03:58:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1046B00A5; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
+	id DD6806B00A2; Wed, 19 Nov 2025 03:58:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C9C646B00A2
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:52:29 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 47CFF13AB2D
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:52:27 +0000 (UTC)
-X-FDA: 84126740334.27.6B1E047
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 05ECFA0006
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:52:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CEA9B6B002C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 03:58:09 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5353FC015D
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:58:07 +0000 (UTC)
+X-FDA: 84126754614.02.1910262
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D57C720008
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 08:58:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P3SKLotS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763542685; a=rsa-sha256;
+	cv=none;
+	b=XAKY7XgwGS9haBSc/ktQDPb66FhEnMvAolfjUzWx7XTx1GoWH2xVa3ZGbssexzcL8VjNWi
+	9Fp7U41dOgrMIgx3HrPeD90ISc1QTpptjukeF3I6F6RjzgKOpdIT0jg/ALd72tFQaDvJJt
+	oUN3nlcaUzf6+VLzsma1dOy/2BkJu0s=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P3SKLotS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763542345;
+	s=arc-20220608; t=1763542685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=YD7I5Jcs69vLbIT2krq3Zlf0iG7ECwTQcD324vfja78=;
-	b=j9T6X1vPvLEIdKk3mw0lbZTvZlqVgt6LkK8EkjRaUBhZaEOyc9ZJBr94oVXHJ0fY6/A1wO
-	lM8rZnknL2o7Iaae3khxXYwgcMfKSrovwYlF9+dqOTu8Xrk1n23xEDxM5waFqkgENywVzW
-	IcWCWrQyU66UPnXCXg1e4af5KJRrwd0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763542345; a=rsa-sha256;
-	cv=none;
-	b=polaNprsjSy4XhRURfPBreD5hyn5bL7r6tL0VGmUafZtbPg8hJ8vOa8spx1GDEOKCxajhD
-	IWC2CILXgdCfc57CqV72V4NfoFFnxcmz/PfLtVf69hq28CEA8svz7egiui5hwQuB00+71g
-	EphNsj39WJ646nDmShohCuKF+pRz/gQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dBFb84HwXzKHMnv
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:51:48 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 7F9911A0A9A
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:52:16 +0800 (CST)
-Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
-	by APP2 (Coremail) with SMTP id Syh0CgDXf3Y5hR1pCbIYBQ--.49555S2;
-	Wed, 19 Nov 2025 16:52:16 +0800 (CST)
-From: Chen Ridong <chenridong@huaweicloud.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	lujialin4@huawei.com,
-	chenridong@huawei.com
-Subject: [RFC -next] memcg: Optimize creation performance when LRU_GEN is enabled
-Date: Wed, 19 Nov 2025 08:37:22 +0000
-Message-Id: <20251119083722.1365680-1-chenridong@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8vB7y19qFv1FPZh7hVNJXERZbT1mfwdh1Es/NnsyVrM=;
+	b=oGJbWXj3TgG6Ba+YMDvO7lEOy8fpDadpCs1H3iCOCSfxRMwGV5tyeTgr/BMFUgeczslDLw
+	PQ5x7zCDT9hPDlSp6v2pevAxzq9xC76O65BNfmyMqEX2btqdnNt0HZWRn13WZvuvaYR6by
+	otDeySifooBlRG/F3qfzeIZjVGX3Noc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 08FEB60138;
+	Wed, 19 Nov 2025 08:58:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F14C19421;
+	Wed, 19 Nov 2025 08:58:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763542684;
+	bh=SEyrQRN6vxWoOkBDR/9CmO79XgbuxRdUsBZ9vRIt9XQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=P3SKLotSQD/ek/OairstDSQ9az94gG0MpogyOM85oXkDwzdCT9p7R5Ytq6xzjlsPB
+	 WYUHTFBPWFMIxosKwStrZl8m++04ArWKDevNP0/fFWu+uZEcPbYZwQRsilaPmZsxqM
+	 WzL1iO9XjczlkSXxW+Q9iwqUXrxBCzlKoCDqstz1IcqV2J353BGLKM+XwBmVLHDQ9u
+	 AYK9IjbHcqx1q0cB7AhB/6ZMOUeaCp0kR4EyBO9DdCcLMC2uk/AP8x9gcuq8HzNqbd
+	 uCMw1yyUp+cmjztWQBpcT8OJn07t4DVJRxTmYk5JjGB53GaIGeOTgIrhvQs7S73jhS
+	 ojEZbG5T29FNg==
+Message-ID: <a5437eb1-0d5f-48eb-ba20-70ef9d02396b@kernel.org>
+Date: Wed, 19 Nov 2025 09:57:58 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgDXf3Y5hR1pCbIYBQ--.49555S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3Xw4xKw4fXw4Dtr45Ar1UZFb_yoWxXFWxpF
-	Z8G3sI9a95Jr43Kr43Jr4DC3ZIyw18XryYvry7Ga4akr13Gry8K3W8KF4jyFW5ZrZ5urs7
-	Wry5tw17GayUK3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
-	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
-	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
-	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
-	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
-	7IU0bAw3UUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Stat-Signature: pwrs93d98eun98bok3prerdgd79xgsft
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: fix NULL pointer deference when splitting
+ shmem folio in swap cache
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+Cc: linux-mm@kvack.org, stable@vger.kernel.org
+References: <20251119012630.14701-1-richard.weiyang@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251119012630.14701-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D57C720008
+X-Stat-Signature: j8gen9mx8n7dx9joei7j6xn9pwgo1zwj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 05ECFA0006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763542340-784467
-X-HE-Meta: U2FsdGVkX19l0vV71bgvPZtT635QPV8HieGH6C0yOnvyGa+dIW5GskpLxCHiMZddCJd0KmNJXED+/KzitMZ1Wgxy6f9x5T9Rh8R8bxtz8jvoj4NLbY7wa+X9s4Ie1Fwam9igGEp2Z6Pi/QLoRpbJ15OaK0sCU8FK0ieslPEnW1FPzNkb4dWABakSBHYlciUf8motRtPuuwrOKiRf2hD0b5UUNBK27OMBTDN4pry89s9t+DELZGm2Q8o9O39SWs5eS/xQhso4nv0rzEM5xwJzDQcYgu4PrIgGvt6oztedppjH6YB358zNjsevupYZeIWM/R4YZOvwsxHkhZzyTDOH1HcGRfi7X2UGcttWh6HM/zi5D5LSz0SKHWaREscb5loPA5mRXJyCPsxucn/uNyNHcrcvVWqrCjlN7cL+COWRsn88U6hTsFRQmheA7/V8ITf9kNanvPOg0BJ5Z1aV8mmcJM4/JJa01IsWACexd7DmedHOB3EwNg7TzU7K4nO8lManNxCcvM8ppMREohF5MFlGzX/C5nK3yeN3bmTwDAcI4NiG9BGo+uHBmcGIEMn8Z9ftXlPyUaTtiWv9R4lT/NYqOMAJZ4b226UqjEZQNBzyQt0x6X+ji6P10r79ITv/KXsUyh6H3DgzUdnqPG8EW0ei8mCqRd+hJwlfU+SvEZ9rHXOHrvszuD09vnZByEYanwO9wcHKFJN21UtGa8bJ6+Mwiy4hIz4zhSBlADTubN2AeTIj+crRNMrJTBJrwnu7E0PNIH3dHvjhJyXp+yR7bClJIaTqwCUIO96rZoPO46x6e+1yNVVRff8KabmUUczUg93gqd+FCHcxcEkbRae6bqrCaNpGhr6IhUhDYgdQYYDaCJLjyuTcs5O0nIFwVz3/u50LZ0TXMhvbaw8U1LChbsS33SYE8pDIa2giLObUOWGdJme+K6+cH/jQTdr0iUKwQx8FKVXjB1SfKP+zrkeQnO4
- 7oL50Qdv
- WNt3jrJ2vfP8/f3wjDuvruztpb7nsRI+xoup/TwIEnlsQoduN42ibeWlGL6np7k+lU0JBAEmh63vSMhCv1D/rJ9mDivIj4rg5yqEZuSO9PdOVJlrcRSUCTpCxzkgQ9VY+2/xv4YbCE1aqr8bMBxk/OIfjtO6a5xIc1InMSyqiXO6NaSIm4gSPo7G9wQ==
+X-HE-Tag: 1763542685-850690
+X-HE-Meta: U2FsdGVkX1+qB3cJTgtz2DHnU1Uam9rQDFGTiAyL0DdhabLekD1UXJaB4AZAMPNIEReEbU2K1VPw8a47qFgbJ+CUcaX0BfKlbJqnnzKik41dfDIbe08HMeUCfNyIZWgGFtLsoU9A9tQF5kLRpl4YowQGfEgJbMbFRElxp01kidaRwg5nbyTjetdkRAsWEL6GFq7U5e0H2n7In4py+D2HqAS2/MlVBist+NlNxfvz9yQkfWRHsx+V/BzZQYQeGixkkFs8RaAKC/d/lzuFebqrc3qiy9wj3j/vSBh1NTY1OrBXbawDzK0uh3aWyFdOTBV2IyBsBxA7eQaFbAs01XjnxWv9EjsC6ZznbFxK8r8isTc+S2MMsBjk3hbLgd1JawPLmk1FjpG3UIKvtvFpZvmW/By2nkO6JGEDXrH7ULvF2RXg80sqOdoPhudEKc+Eu5ZRzOpjLUxyqUvUiXEgGstJXlLHlqqRzbww3TM0O/ZaZJYCBEiskttA+wnOf9g737f6aJ3hViQMxeMdFVfp+KqP6BUw51tGGQXRpADUeDREQSD/W4jbGyv1/vKAWgHR+cWwTl8GzlVCZZ6KUphJhgdkybEbVNEaMPm6W93NlpfiwsFSGfbwfBZr7mmuLNzD5UlnYGQcxuH30VKAfYhxVDWrSonyLVF+A5o6Ea49fNq3tOEzP5E0XOqq6KlQM9+BYqZy+jHt/a1T8mVsOqYyxVVnSajVURuE8qbMQS3W/VJbq60cw4Rz0iX0ekW2f3gIq7hHTPDcww+6lD66LWgkbMU1xAH4KIB0nhykUhgHYLPRKeCeXMC7oyhFhOs3irDg53mkhTD2dGa6aPFrVEUkXqdKJk/RM39DQlb0b9QTD4EMTx2SS/dkD+ve0vfpXRngpwwj3pAVLA04B/SvtEJXL0bRyY+hJptX/PVedMy5M1dJNPbPBRMpWpcHnaLmrquqbShv0QScuVK+WyHhPcDP7di
+ U/tZ/zcJ
+ SOv+CH+oEb8aooN/HrEP1f3Wx+5A1hdC7CLqrDOb6r4LLx02h6/YUnmWz2UJVMxtJU44x244o4JwzL9A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,219 +97,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chen Ridong <chenridong@huawei.com>
+On 19.11.25 02:26, Wei Yang wrote:
+> Commit c010d47f107f ("mm: thp: split huge page to any lower order
+> pages") introduced an early check on the folio's order via
+> mapping->flags before proceeding with the split work.
+> 
+> This check introduced a bug: for shmem folios in the swap cache, the
+> mapping pointer can be NULL. Accessing mapping->flags in this state
+> leads directly to a NULL pointer dereference.
 
-With LRU_GEN=y and LRU_GEN_ENABLED=n, a performance regression occurs
-when creating a large number of memory cgroups (memcgs):
+Under which circumstances would that be the case? Only for large shmem 
+folios in the swapcache or also for truncated folios? So I'd assume this
+would also affect truncated folios and we should spell that out here?
 
-	# time mkdir testcg_{1..10000}
+> 
+> This commit fixes the issue by moving the check for mapping != NULL
+> before any attempt to access mapping->flags.
+> 
+> This fix necessarily changes the return value from -EBUSY to -EINVAL
+> when mapping is NULL. After reviewing current callers, they do not
+> differentiate between these two error codes, making this change safe.
 
-	real	0m7.167s
-	user	0m0.037s
-	sys	0m6.773s
+The doc of __split_huge_page_to_list_to_order() would now be outdated 
+and has to be updated.
 
-	# time mkdir testcg_{1..20000}
+Also, take a look at s390_wiggle_split_folio(): returning -EINVAL 
+instead of -EBUSY will make a difference on concurrent truncation. 
+-EINVAL will be propagated and make the operation fail, while -EBUSY 
+will be translated to -EAGAIN and the caller will simply lookup the 
+folio again and retry.
 
-	real	0m27.158s
-	user	0m0.079s
-	sys	0m26.270s
+So I think we should try to keep truncation return -EBUSY. For the shmem 
+case, I think it's ok to return -EINVAL. I guess we can identify such 
+folios by checking for folio_test_swapcache().
 
-In contrast, with LRU_GEN=n, creation of the same number of memcgs
-performs better:
 
-	# time mkdir testcg_{1..10000}
+Probably worth mentioning that this was identified by code inspection?
 
-	real	0m3.386s
-	user	0m0.044s
-	sys	0m3.009s
+> 
+> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: <stable@vger.kernel.org>
 
-	# time mkdir testcg_{1..20000}
+Hmm, what would this patch look like when based on current upstream? 
+We'd likely want to get that upstream asap.
 
-	real	0m6.876s
-	user	0m0.075s
-	sys	0m6.121s
+> 
+> ---
+> 
+> This patch is based on current mm-new, latest commit:
+> 
+>      056b93566a35 mm/vmalloc: warn only once when vmalloc detect invalid gfp flags
+> 
+> Backport note:
+> 
+> Current code evolved from original commit with following four changes.
+> We should do proper adjustment respectively on backporting.
+> 
+> commit c010d47f107f609b9f4d6a103b6dfc53889049e9
+> Author: Zi Yan <ziy@nvidia.com>
+> Date:   Mon Feb 26 15:55:33 2024 -0500
+> 
+>      mm: thp: split huge page to any lower order pages
+> 
+> commit 6a50c9b512f7734bc356f4bd47885a6f7c98491a
+> Author: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Date:   Fri Jun 7 17:40:48 2024 +0800
+> 
+>      mm: huge_memory: fix misused mapping_large_folio_support() for anon folios
+> 
+> commit 9b2f764933eb5e3ac9ebba26e3341529219c4401
+> Author: Zi Yan <ziy@nvidia.com>
+> Date:   Wed Jan 22 11:19:27 2025 -0500
+> 
+>      mm/huge_memory: allow split shmem large folio to any lower order
+> 
+> commit 58729c04cf1092b87aeef0bf0998c9e2e4771133
+> Author: Zi Yan <ziy@nvidia.com>
+> Date:   Fri Mar 7 12:39:57 2025 -0500
+> 
+>      mm/huge_memory: add buddy allocator like (non-uniform) folio_split()
+> ---
+>   mm/huge_memory.c | 68 +++++++++++++++++++++++++-----------------------
+>   1 file changed, 35 insertions(+), 33 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 7c69572b6c3f..8701c3eef05f 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3696,29 +3696,42 @@ bool folio_split_supported(struct folio *folio, unsigned int new_order,
+>   				"Cannot split to order-1 folio");
+>   		if (new_order == 1)
+>   			return false;
+> -	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
+> -		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+> -		    !mapping_large_folio_support(folio->mapping)) {
+> -			/*
+> -			 * We can always split a folio down to a single page
+> -			 * (new_order == 0) uniformly.
+> -			 *
+> -			 * For any other scenario
+> -			 *   a) uniform split targeting a large folio
+> -			 *      (new_order > 0)
+> -			 *   b) any non-uniform split
+> -			 * we must confirm that the file system supports large
+> -			 * folios.
+> -			 *
+> -			 * Note that we might still have THPs in such
+> -			 * mappings, which is created from khugepaged when
+> -			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
+> -			 * case, the mapping does not actually support large
+> -			 * folios properly.
+> -			 */
+> -			VM_WARN_ONCE(warns,
+> -				"Cannot split file folio to non-0 order");
+> +	} else {
 
-The root cause is that lru_gen node onlining uses hlist_nulls_add_tail_rcu,
-which traverses the entire list to find the tail. This traversal scales
-with the number of memcgs, even when LRU_GEN is runtime-disabled.
 
-Fix this by adding a per-lru_gen tail pointer to track the list's tail.
-Appending new nodes now uses the tail pointer directly, eliminating full
-list traversal.
+Why not simply
 
-After applying this patch, memcg creation performance with LRU_GEN=y
-matches the fully disabled baseline:
+} else if (!folio->mapping) {
+	/*
+	 * Truncated?
+	...
+	return false;
+} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
+...
 
-	#time mkdir testcg_{1..10000}
+> +		const struct address_space *mapping = folio->mapping;
+> +
+> +		/* Truncated ? */
+> +		/*
+> +		 * TODO: add support for large shmem folio in swap cache.
+> +		 * When shmem is in swap cache, mapping is NULL and
+> +		 * folio_test_swapcache() is true.
+> +		 */
 
-	real	0m3.368s
-	user	0m0.025s
-	sys	0m3.012s
+While at it, can we merge the two comments into something, like:
 
-	# time mkdir testcg_{1..20000}
-	real	0m6.742s
-	user	0m0.085s
-	sys	0m5.995s
+/*
+  * If there is no mapping that the folio was truncated and we cannot
+  * split.
+  *
+  * TODO: large shmem folio in the swap cache also don't currently have a
+  * mapping but folio_test_swapcache() is true for them.
+  */
 
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
----
- include/linux/mmzone.h |  4 +++
- mm/vmscan.c            | 78 ++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 75 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 4398e027f450..bdee57b35126 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -513,6 +513,8 @@ struct lru_gen_folio {
- 	u8 gen;
- 	/* the list segment this lru_gen_folio belongs to */
- 	u8 seg;
-+	/* the bin index this lru_gen_folio is queued on */
-+	u8 bin;
- 	/* per-node lru_gen_folio list for global reclaim */
- 	struct hlist_nulls_node list;
- };
-@@ -610,6 +612,8 @@ struct lru_gen_memcg {
- 	unsigned long nr_memcgs[MEMCG_NR_GENS];
- 	/* per-node lru_gen_folio list for global reclaim */
- 	struct hlist_nulls_head	fifo[MEMCG_NR_GENS][MEMCG_NR_BINS];
-+	/* cached tails to speed up enqueueing */
-+	struct hlist_nulls_node *tails[MEMCG_NR_GENS][MEMCG_NR_BINS];
- 	/* protects the above */
- 	spinlock_t lock;
- };
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 8890f4b58673..6c2665e48f19 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4299,6 +4299,66 @@ enum {
- 	MEMCG_LRU_YOUNG,
- };
- 
-+static void memcg_lru_add_head_locked(struct pglist_data *pgdat,
-+				      struct lruvec *lruvec, int gen, int bin)
-+{
-+	struct lru_gen_memcg *memcg_lru = &pgdat->memcg_lru;
-+	struct hlist_nulls_head *head = &memcg_lru->fifo[gen][bin];
-+	struct hlist_nulls_node *node = &lruvec->lrugen.list;
-+	bool empty = !memcg_lru->tails[gen][bin];
-+
-+	hlist_nulls_add_head_rcu(node, head);
-+	lruvec->lrugen.bin = bin;
-+
-+	if (empty)
-+		memcg_lru->tails[gen][bin] = node;
-+}
-+
-+static void memcg_lru_add_tail_locked(struct pglist_data *pgdat,
-+				      struct lruvec *lruvec, int gen, int bin)
-+{
-+	struct lru_gen_memcg *memcg_lru = &pgdat->memcg_lru;
-+	struct hlist_nulls_head *head = &memcg_lru->fifo[gen][bin];
-+	struct hlist_nulls_node *node = &lruvec->lrugen.list;
-+	struct hlist_nulls_node *tail = memcg_lru->tails[gen][bin];
-+
-+	if (tail) {
-+		WRITE_ONCE(node->next, tail->next);
-+		WRITE_ONCE(node->pprev, &tail->next);
-+		rcu_assign_pointer(hlist_nulls_next_rcu(tail), node);
-+	} else {
-+		hlist_nulls_add_head_rcu(node, head);
-+	}
-+
-+	memcg_lru->tails[gen][bin] = node;
-+	lruvec->lrugen.bin = bin;
-+}
-+
-+static void memcg_lru_del_locked(struct pglist_data *pgdat, struct lruvec *lruvec,
-+				 bool reinit)
-+{
-+	int gen = lruvec->lrugen.gen;
-+	int bin = lruvec->lrugen.bin;
-+	struct lru_gen_memcg *memcg_lru = &pgdat->memcg_lru;
-+	struct hlist_nulls_head *head = &memcg_lru->fifo[gen][bin];
-+	struct hlist_nulls_node *node = &lruvec->lrugen.list;
-+	struct hlist_nulls_node *prev = NULL;
-+
-+	if (hlist_nulls_unhashed(node))
-+		return;
-+
-+	if (memcg_lru->tails[gen][bin] == node) {
-+		if (node->pprev != &head->first)
-+			prev = container_of(node->pprev, struct hlist_nulls_node, next);
-+		memcg_lru->tails[gen][bin] = prev;
-+	}
-+
-+	if (reinit)
-+		hlist_nulls_del_init_rcu(node);
-+	else
-+		hlist_nulls_del_rcu(node);
-+}
-+
- static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
- {
- 	int seg;
-@@ -4326,15 +4386,15 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
- 	else
- 		VM_WARN_ON_ONCE(true);
- 
-+	memcg_lru_del_locked(pgdat, lruvec, false);
-+
- 	WRITE_ONCE(lruvec->lrugen.seg, seg);
- 	WRITE_ONCE(lruvec->lrugen.gen, new);
- 
--	hlist_nulls_del_rcu(&lruvec->lrugen.list);
--
- 	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
--		hlist_nulls_add_head_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
-+		memcg_lru_add_head_locked(pgdat, lruvec, new, bin);
- 	else
--		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[new][bin]);
-+		memcg_lru_add_tail_locked(pgdat, lruvec, new, bin);
- 
- 	pgdat->memcg_lru.nr_memcgs[old]--;
- 	pgdat->memcg_lru.nr_memcgs[new]++;
-@@ -4365,7 +4425,7 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
- 
- 		lruvec->lrugen.gen = gen;
- 
--		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[gen][bin]);
-+		memcg_lru_add_tail_locked(pgdat, lruvec, gen, bin);
- 		pgdat->memcg_lru.nr_memcgs[gen]++;
- 
- 		spin_unlock_irq(&pgdat->memcg_lru.lock);
-@@ -4399,7 +4459,7 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
- 
- 		gen = lruvec->lrugen.gen;
- 
--		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
-+		memcg_lru_del_locked(pgdat, lruvec, true);
- 		pgdat->memcg_lru.nr_memcgs[gen]--;
- 
- 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
-@@ -5664,8 +5724,10 @@ void lru_gen_init_pgdat(struct pglist_data *pgdat)
- 	spin_lock_init(&pgdat->memcg_lru.lock);
- 
- 	for (i = 0; i < MEMCG_NR_GENS; i++) {
--		for (j = 0; j < MEMCG_NR_BINS; j++)
-+		for (j = 0; j < MEMCG_NR_BINS; j++) {
- 			INIT_HLIST_NULLS_HEAD(&pgdat->memcg_lru.fifo[i][j], i);
-+			pgdat->memcg_lru.tails[i][j] = NULL;
-+		}
- 	}
- }
- 
-@@ -5687,6 +5749,8 @@ void lru_gen_init_lruvec(struct lruvec *lruvec)
- 
- 	if (mm_state)
- 		mm_state->seq = MIN_NR_GENS;
-+
-+	lrugen->bin = 0;
- }
- 
- #ifdef CONFIG_MEMCG
 -- 
-2.34.1
+Cheers
 
+David
 
