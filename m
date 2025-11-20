@@ -4,112 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1AFCCF58D1
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 02:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CF00CF64A4
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 02:34:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8BEB6B0024; Wed, 19 Nov 2025 21:19:17 -0500 (EST)
+	id A77936B002C; Wed, 19 Nov 2025 21:34:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3CE76B0028; Wed, 19 Nov 2025 21:19:17 -0500 (EST)
+	id A4F516B0031; Wed, 19 Nov 2025 21:34:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2B7A6B002A; Wed, 19 Nov 2025 21:19:17 -0500 (EST)
+	id 965916B0032; Wed, 19 Nov 2025 21:34:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AEE0F6B0024
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:19:17 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16ADB89B5C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 02:19:15 +0000 (UTC)
-X-FDA: 84129378270.06.57AEA4C
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 27D67140002
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 02:19:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FeBywbMP;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8636A6B002C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:34:27 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 343DA12FB0C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 02:34:27 +0000 (UTC)
+X-FDA: 84129416574.08.16D7143
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 236B110000A
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 02:34:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763606065; a=rsa-sha256;
+	cv=none;
+	b=EXbmJIIuxmmBmz8yYDR481SRSZMiqzMA+/BjyHqByjmYBb5F1mnkE9+38MvGdP4HCfp4KU
+	bqcZ7PxFFsW8XVGdi/5CurELc0JU2cimbf+LelIzRbNkG2f0uP8OcU37Lq4V9EdO+u8+Hv
+	wsFCBKIiHRnusFid+q7wDd4yX1mD+CM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763605153;
+	s=arc-20220608; t=1763606065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fG/2l/sjWGh3NEPjE+Aqfw+mUrUlI68rlAeABXvsz4E=;
-	b=ZHYrgJ7a7gk+ueSzpjrJ6D5v+O8wmmf0ljJj3dgahla9dbqOE3Sv7t892rnAIJtYR05ju5
-	4eEN4GVw5n+D2pVKXMfBIU2Z6/agQqOaOIiUTUqnSeGE79iUPBUvx0l82qiolIWldO7p6X
-	4p9pfeof7B2ET46FRTVAePpRYNFGICQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763605153; a=rsa-sha256;
-	cv=none;
-	b=ThdGOD0SIKduUqiyCqDSX94vurg6Hbk4T5HHW2wOmccfsinTiASFq7Xn/uGGIYZMQYfACQ
-	+xmI4mkSSmS8elFU0a26IqPPST3/l/IppKRsWi8kmIwH4K2lunuHymnh8rTmhj+2pGlbHw
-	6NUu72YibMN+AfmSKgJATkfQRhlMRIU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FeBywbMP;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b7636c96b9aso52283666b.2
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 18:19:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763605151; x=1764209951; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fG/2l/sjWGh3NEPjE+Aqfw+mUrUlI68rlAeABXvsz4E=;
-        b=FeBywbMPn1WtxBRXp3qO1NNmevvYHXsy1cKB0czD+bd5bPemerlxuRbPvhljPxoc1j
-         9TdwJOInuhx7oF9Fh0FW62tnGntjI4OIbnzC6L1CO0WoL8ZN5Ok//o7s83ZmpW++BjOf
-         JM3arq4pV1yE+TICi72tO6m0oXEO5kDeWRnoSxLvmM3APV4af5y3qRXiGB+ufbplgSaT
-         WNh2EGe8VO/pxlXJHG7cZBNsu6eBrRVqTp30oSzNayG8aEwamEax9oNaT5WQWhR/Wo+y
-         lLPZb4/nP1IhVLh0PYFrR4GbygiTq090zwfrqGjkP5iybK+Nfoc9UadBnhgPGiSBUuxS
-         PdXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763605151; x=1764209951;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fG/2l/sjWGh3NEPjE+Aqfw+mUrUlI68rlAeABXvsz4E=;
-        b=IDc5qfmuhMf02eBb8P+ElwodTqcqsarU/R9tuiliEHlo+46wwsVRjyuS1axAK3ODVm
-         TTpj0898XUjpIm20Noe67Lan9ZseFUUF2ZuaKOU1+NLNc0DWJTudTQzy3AR7+GRYea0q
-         cexAac5TxLJg0JKCKYchcM7mZCEliVbLBmFN9/L6wTE38N5oSgEXyWbqvbeWN65EMUTH
-         ZL+clAxdSOlbPnX+z7IrRci+FyoyNkTQyc/03EpFWATGU7UEmmaOujp/66DGpkBMlt0q
-         e774uj6C+RLkVoiTQhQUU0Xz2ywJU5Dls9pibz/Xoht70rOFOFMOjTF8cbMzB+fByUhe
-         bq0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWs4D8f+DQWnO77z3fwcMB3MhpRNcXH6yHamoHFA/mVJJxGyrahPEHw8h9pOMsd+r+/nvY+sPtCOQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy1rHR2i3kr2NqN+PX6QXjrWbkqQGPj5t7u5Ek3S+SSvmZ9BdRB
-	0DY3w7I/UWd63J7N3+1wdJsJaeeAQrt+OihRYBpNd137Do9/HFCPlU8mIyBUDJoJ66gu57hGI9u
-	mNVDNgEGKUT8fXEUuCTrvIhNsDMXvlqQ=
-X-Gm-Gg: ASbGncvc4qUtVe+afCCto+N2fuyh0ybSeL/LuSvHCnm7L45u6JVbYs/JlePDuoSfCGQ
-	XfE8gtbWZbRAF2JhKY8WM9W98+L+tfcfzBT/T7hygoqsccRq0/+SNFDRcCf+mgyTkKzJ5aw0AGe
-	mrWe68oaxlM8PrEZUSxEArLyCi4wa9E0asuKW2b4FmVvLfGbD1Zyvhb9QvpSI4mkw8xEjgTzbLw
-	vb53FJ2k2GLj8nGYI9Q1BrGEokGzny0hZWJDqKvU3SxR9YtjFBVZvswDJ7tBP0EmnV6mH/6qz4U
-	VMANd1nHYw7lHJLIdaBVHZvCZ7GbOsY=
-X-Google-Smtp-Source: AGHT+IH8PHlHZ38DAziNxg+eG55H8k2xBxrOurZ3SBbGYPORCC1wZsoJOfBdt60gTAKu3Nb2q2o0oA2FTbBIyDJVVoc=
-X-Received: by 2002:a17:907:a893:b0:b76:36ee:376 with SMTP id
- a640c23a62f3a-b76554a5e98mr135808666b.54.1763605151305; Wed, 19 Nov 2025
- 18:19:11 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PLZO573yegtDupirfe2hf3Uaeaxna3Kfmd34I1vRXcU=;
+	b=pBxyRE2yfLagOfUDdRnCluaTFWE/y8XfFAvB3TGIQtSHA8MTAw+P55zT3jE6N3qVOToTr5
+	1P+goL0vQ+pG0CZxWjG1cAH8vEbOm+VVs1p/HU0nlezpIfftOQ0MU480QLk/MD7sJlgE5b
+	I/lTUif2OO/elY5J1oSlr7k/E4K2ad4=
+X-AuditID: a67dfc5b-c2dff70000001609-28-691e7e2be02d
+Date: Thu, 20 Nov 2025 11:34:13 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
+ subclasses_evt for the usage
+Message-ID: <20251120023413.GA27403@system.software.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-45-byungchul@sk.com>
+ <20251119105312.GA11582@system.software.com>
+ <aR3WHf9QZ_dizNun@casper.infradead.org>
+ <20251120020909.GA78650@system.software.com>
 MIME-Version: 1.0
-References: <20251119114136.594108-1-youngjun.park@lge.com>
- <CAMgjq7CgwjqE9XVy6EaNe0XARYOJsOER-Ch16wuZxWfq4EdFJw@mail.gmail.com> <aR53i1G45XAqCzBd@yjaykim-PowerEdge-T330>
-In-Reply-To: <aR53i1G45XAqCzBd@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 20 Nov 2025 10:18:34 +0800
-X-Gm-Features: AWmQ_bkzD6Txov4tfJulVoq_1iJ7YTedPTcR8qX4HA9rM7n52SkyRgDg9BS_Ju4
-Message-ID: <CAMgjq7C_ebrZv73VNBk-mhaSJwQXJur96R2OdW96YCM7vtJkzw@mail.gmail.com>
-Subject: Re: [PATCH] mm/swap: fix wrong plist empty check in swap_alloc_slow()
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 27D67140002
-X-Stat-Signature: yhnodgniet4zzrufrzh94cwbe4dmp8rm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251120020909.GA78650@system.software.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa2xTdRjG8z/3NlQPHZO/DI2pNjNVJkzQ18R4C4nni8a4xCyI0cYdXWPX
+	kTM2NiKkMIYTiK3VXTxls7twGKwIdgW34ZIxR3GXZoXN2kU6drNSt7mEbCW7sNkzYuTLm+d9
+	nie/vB9ejtTXMJs4i22vKNnMVgOjpbQz6+q2PHPwccvWrzwZED7UScHJ814G7i65SShrW6Xg
+	nivAwtzCHyysdgQQVF53keD1HyJgVjmBQI65WYhffRNmbl2m4ffENAJlcoWApeAACXVjURL8
+	gREEHU2HGfjTeZGEwcmHYGh+loGeiuMM/HOBAc/hDhpq3C4EpQ3nGais8VHQNtrOwvWpZQJu
+	VroIaPa9BbeUGAV9znoCquLJ1o8bwV1VSiTHbQIqzl0mYEE5y0J/w00KFLsR3MFBGsabZBaW
+	x7bBqicfoo4KCnpGwjT8ZB9lwTd8FcHc0BgB3hMxEsrb5ynwTSTTuqONFARaxwkYbD/JwIh3
+	lYZQZx8NN5pDyQsCvyYp8hkKxkYjNLQE+8nXcoSyG/cYwVvrRcLSogsJc6dKSaHMmVx/mZ4l
+	hVN904ywOP8bI3QkPJTQW4+Fr4NbhDY5ygoeX6FwpHuGFlqaTELDz3Hincxd2pdzRKulSJSe
+	e+Ujba4vECL2ND5RfGnCj+woio8hjsP8dtx4JvMY0qxJ+0QUqTbFG3Ft+4uqzfDpOBJZIFV7
+	A/80nvYn21qO5OvT8LneK7TaSeGtONH9A6tqHQ/4aP8yrZb0/N8IX3T6qfvBetzz3eSaJnkT
+	jqzECRVK8mn49Aqn2hr+JRxuca0xU/knceela4TKwXxMg8PyFLp/56P4SlOEciJefgArP4CV
+	/8d6EHkW6S22ojyzxbo9I7fEZinO+Dg/z4eST6scWH6/Fd0JZXUhnkOGdbrswGMWPW0uKijJ
+	60KYIw0bdMbXN1v0uhxzyX5Ryv9QKrSKBV0ojaMMG3WZiX05ev5T817xM1HcI0r/pQSn2WRH
+	O7/9QvI3HmeKCyt5FNghbT7iPbA1y5haYvNVL4ajw+LdmGmfktK6GNr9uStr11A8tffdDxyP
+	dL/xyXvPJoarUfOrT62kUM//JfelD1iH0r/cv0N5e6pGCkqFtZ0Oz7jGEa1WvklUDZR31WUW
+	Zz982/T97rYXssv1joPGC3fyr+00UAW55m0mUiow/wu4SwdtsAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0xTZxTPd7/7orPLtbLxKZtxNUSjwc1Ns7NHli1b4MbEjWQm6jYzm3kj
+	V0rBVhGWoMVaR5hzpVlLaFUYaEHAgm0lQwNBxDpUIo+JRKlYLSqTR6aAQ0pZ67LMf05+5/fK
+	+ePwWBVmFvGybpek12m0alZBKz7/wJS8cu9i+S13H4K+glYaJicKaThSX8dCoaeUgS53LYLB
+	yUIET2ecGMxNczTMWv0cTEzf4mCu2Y/A3m3FUOcroOBJQ4SFRxceI7AFQyyUDBfQMO46hMBx
+	38nB8MVUGB08x8Bc4AEFN6ZGELhCEQpCrT8gmLVnQFmFl4WZzmsYSmxdCH4NBjA8bIiKPv9t
+	BM3V+1kYspzB0Bt6Gf6YHGehw/YjC6PdRygYa2ChfH8zA0edVgSmynoW7Ec9NDTdOctB96Mw
+	BQN2KwW1nvUw6LpPwxVLBRW9L+o6nQDOEhMVHQ8psJ06R8G0q4aDq5UDNLiMSeDs7GXgbrWD
+	g3BwNcyVZ4G/9gEHgZ9tNLhHrzEf25D41HyYFmu8jZRo7pllxbpjdUiceWZF4sQJExbNluh6
+	YWQciwe8e8QTV0ZY8dnkdVZsniqnxcsVRCzuTBabHAFOPNByk0t7/yvFh9skrZwj6d/8aKsi
+	3ePvorKPL8ltvOdDRhQgRSiOJ8IaYrwXQEWI52khiRw7+26MZoVlpL9/GsfoeGE5GfG9XYQU
+	PBYqEsmpy+eZmGeBoCVT7W4uhpUCkINXw0zMpBL+ROSMxUf/K8wnHaWh5xgLK0h/ZJiKlWIh
+	kVRF+BgdJ7xH+rzW552vCEtJa+MlyoKUjhfSjhfSjv/T5QjXoHhZl5OpkbVrVxky0vN0cu6q
+	77IyPSj6k678cPFvaKI3tQ0JPFLPU27yvy6rGE2OIS+zDREeq+OVSZ+8JquU2zR530v6rG/1
+	u7WSoQ0l8rQ6Qbluo7RVJWzX7JIyJClb0v+nUnzcIiNKyZ6u+rL1SdpL2+mFZY9Nd/YuLZzB
+	r1r+2jJl8q9sGUv5Zd+AuequbvGenp4kb9rp4oadBz/bfD5i2ZGivl6p34eHNm7QlG1u/+bv
+	Hcaf3PX2ky1DN2/83rLzndS1h+xy8Ovx3QsWJuQOLEle193x6bxg/uHSLe1VYzg/f836NPfy
+	6i/eUNOGdM3qFVhv0PwDJjjDWY8DAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: 236B110000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: rftodk96m3se4ohkxx76u66xi5c6rbzx
 X-Rspam-User: 
-X-HE-Tag: 1763605152-911022
-X-HE-Meta: U2FsdGVkX1901cDlktEz+NmHeg1mg9xDDFbTHiCVX49aULv36KiaSsMGtZgDAPrIMhYyWgxt2m3wmw7Txc74zyN9Lzl+etw06nP4cgneXMr4AwHpiXNaEzIkblvAznes7i0diq3ktelaO/aPkYSi5ym7/0NkKTJeP0N6AA/uKulkwjkyqxBBcFeLjH7y34U8FKwe93fSddckAOGj+mVwehV9pKSNDO/SgWhcXqsPUr9VxjVbbnfklgeQfZLg7S7BVca2fPqCfvSWNuLS6NP9M4asGBEJaV188wXFF/kcsOpTTWbRNEYQvjLTBhRoeYwD6hxMr5rTXGgq9q46jifHFxXwtZRfiSwEaWClOV9nuiy8MubXcePae+CBUqcOxyRKCyEiwxe28y88p8hzOfOIJOotNEPI8zmJMDtCvzs8JkkeusExLDYXcqc7oj1256SmglKAEMCPn5tDzBqqrPwhXTu35TJeLvSUYNIk/QTlgeMCcjqe4NdiNyxJouDHMeHN4k1yHTSnrEcj8H7TYFvp3xvv7QAj3pohJQXv5PuMCeU/Yf0c8UvGG6D4qwOnpfQ3oz5QBV/e9FoHHUM2QLjDDNhgk20u6qSIKmqMtxG54uZSTjWqWIW9EHCH+IaRUSqssOcYDpvyTNpyWNdei5a10+fC4W3G3khRW0vBF47RffjUccPWdmfU52GCpIHEja4JK2OzIjVsj06zi41LKB+2x8ptMkb6PlS2Rz6FlZ9WxmmBBc1l1ONv/+wn3EnKhMAx2yIKH8ez7Q9+qeARMUgbNqEMfVv3yisM4BrhogLDk99CJU7f3TVoiTmMzpl/so2CkFrkd+OA5zGqbsLa9GJDMHOyZeCCHEWFwEvMORmxzvGlKswyCgwNGT5qiCD+Cd8uJ2/zq5WLZs8iGarhRJZkTkzO77TNaBkvlq0FfHLT0T4z2MLTYucX4JwKOexsjTSPsRdDHSqfkt0Y1cUWu+y
- IZl9McUA
- gH5fXvLgI8Sy1jTrJLFm9IBfU5i7f2n0GrRVqsybN7ISNHeifScg9+e4WrYn3fmJu7kKFb+rrv1lrn0lxAWc/BT/h2kRX9cDPLl9jSyOCWF0xw+mSy/YGY2wW5hTVb4Eo81Nhg81vnbXjLxsn9AU9/UkNTGgfbibAe/URns5gdB5v37bWJtreeIg8liI0sEd5X+zedKiCZ3u+0J2Xc0Vh6Gs/7WG2kunWQwnFaSBpI3bLj///HX2gPbNgLWs+wn07Dzp2p8c370TcpB5uVldVsYQyAiYQzXTPuuiOxNPStJR8LlsYrkG+Y+01UMvRlE0yMtvr5yBDdpYyGm24y4x+Cgsz0lAiC4Ut/iFrbcKhA639NupXvKQj8F7bywTj6pKT+113TSOwGbjMJz+yzW9D225mfoOjU7w1e68n1kHul3N3qH7eps0+w4X+KOKJepgSiwoEgySH/Uci5FA=
+X-HE-Tag: 1763606062-70062
+X-HE-Meta: U2FsdGVkX19f25mLfEiYjtJWtn4cDdvhTDgzbMDVydHCz1ur3BekNnTxOcuUj6ttQ157/0g/NEL1h7aIcevMHs9knjvCNECN8doeDDAZ4KgY1cxGKeU837wEqIvEfTroYHCXV9n4briVQi+/IfPnq3KrUu0PAWvG85gPSB7OhGG4rUWwUS2xYC80s0qet3RA2CRD7RhLNKihl59xFrAysfH/fJE6mma2WMzovqWy/J8PgLrF7gRMa9cMonfeHjhNRFHoAsM0PUl8TlIgXQbpQx06vLwlxGj3kr/gd88+FMw4i4gCUamP+UA6I3xy32OlLVyLnWOCR4UoH3Qt98MfEdMKUOatulp3usmJ+Ytv/xG3RLM/WYUf9A3TQgVAEateTdHXqEFtfKvijiGsBdD+7DLYY/O9tpQi8KCCG6EysybT45rXW3yQ4YoP37FhYzwR97rcGX/ZJa6OPtrKZTQ67wIq2AoOQIsmL1iXhu3e9UXSTFAqeK00a+B+dxBOeYzEZ9p2DFHCzUZ8Zwxm4xA//BmJRsZT07jbBwzbZ/DrT10Z2XOfLivNwAqEqmDWHuKEwnBXCw1CIXuZbohJnpVNppIaUo7G09ovCYGFYGm0WD4uPq4yiFGufMhalIoLz6u/CnaBGPg/9+PD0IeEi/kTs3OHOMqyMRg338bJ8t6axZMiXs4xNBnMVPQFAyLN44T1JRJv5dbsJxfAJCuS7slD+EO2QsqcsKm8DJjaKrD//uivO4t93xuj6Im/fmC5sY7Gb+VVZ+KvzEbRPURHVDpRcmwfg+FXxm3a6wUVpgUMhqGokMQu9TZCclDXVz65cx+SCm42hOKG+N2WCvj0aay7aZnWiotxzbhb11o71OUjuOeEd73+NV04JweIcu8g16aHjJuRaNubMbiiN9q5WL3fx8CIygaX7JZRPWyNzFZ+pNJR3fnaXKTdSVZPKdovfYai6DlK1mkwFCdNIca7GJJ
+ aSVnBq4d
+ uXiMGiZAZdkZHFFffkVKxeNbEY9Y+UnITPJDdT2Eg4q3Un7fJgcjBVF/9iUJYwudXRdeOC0CV1JnbBzw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,23 +173,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 10:06=E2=80=AFAM YoungJun Park <youngjun.park@lge.c=
-om> wrote:
->
-> I've investigated this further and noticed something about swap_sync_disc=
-ard.
-> During iteration, it doesn't perform an empty check on swap devices. As a
-> result, if the iteration exits because the next device is full
-> (deleted by plist at this time), the
-> operation(swap I/O) fails even when other available swap devices remain.
->
-> Should this be addressed?
->
-> Best Regards,
-> Youngjun Park
+On Thu, Nov 20, 2025 at 11:09:09AM +0900, Byungchul Park wrote:
+> On Wed, Nov 19, 2025 at 02:37:17PM +0000, Matthew Wilcox wrote:
+> > On Wed, Nov 19, 2025 at 07:53:12PM +0900, Byungchul Park wrote:
+> > > On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
+> > > > False positive reports have been observed since dept works with the
+> > > > assumption that all the pages have the same dept class, but the class
+> > > > should be split since the problematic call paths are different depending
+> > > > on what the page is used for.
+> > > >
+> > > > At least, ones in block device's address_space and ones in regular
+> > > > file's address_space have exclusively different usages.
+> > > >
+> > > > Thus, define usage candidates like:
+> > > >
+> > > >    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+> > > >    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+> > > >    DEPT_PAGE_DEFAULT       /* the others */
+> > >
+> > > 1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
+> > >    starts to be associated with a page cache for fs data.
+> > >
+> > > 2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
+> > >    starts to be associated with meta data of fs e.g. super block.
+> > >
+> > > 3. Lastly, I'd like to reset the annotated value if any, that has been
+> > >    set in the page, when the page ends the assoication with either page
+> > >    cache or meta block of fs e.g. freeing the page.
+> > >
+> > > Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
+> > > be totally appreciated. :-)
+> > 
+> > I don't think it makes sense to track lock state in the page (nor
+> > folio).  Partly bcause there's just so many of them, but also because
+> > the locking rules don't really apply to individual folios so much as
+> > they do to the mappings (or anon_vmas) that contain folios.
+> 
+> Thank you for the suggestion!
+> 
+> Since two folios associated to different mappings might appear in the
+> same callpath that usually be classified to a single class, I need to
+> think how to reflect the suggestion.
+> 
+> I guess you wanted to tell me a folio can only be associated to a single
+> mapping at once.  Right?  If so, sure, I should reflect it.
+> 
+> > If you're looking to find deadlock scenarios, I think it makes more
+> > sense to track all folio locks in a given mapping as the same lock
+> > type rather than track each folio's lock status.
+> > 
+> > For example, let's suppose we did something like this in the
+> > page fault path:
+> > 
+> > Look up and lock a folio (we need folios locked to insert them into
+> > the page tables to avoid a race with truncate)
+> > Try to allocate a page table
+> > Go into reclaim, attempt to reclaim a folio from this mapping
+> > 
+> > We ought to detect that as a potential deadlock, regardless of which
+> > folio in the mapping we attempt to reclaim.  So can we track folio
+> 
+> Did you mean 'regardless' for 'potential' detection, right?
+> 
+> > locking at the mapping/anon_vma level instead?
+> 
+> Piece of cake.  Even though it may increase the number of DEPT classes,
+> I hope it will be okay.  I just need to know the points in code where
+> folios start/end being associated to their specific mappings.
 
-Actually after thinking about it again, swap_sync_discard should be
-looking at swap_active_head, not swap_avail_head. Changing to
-swap_active_head and also checking SWP_WRITEOK is a right fix I think,
-and should be good enough.
+Assuming that I understand what you meant correctly, I can use the
+@mapping value in struct page as a second key in DEPT.  Of course, it
+doesn't guarantee unique ids of the mappings for ever.  However, I think
+it can be a good and quite simple start.
+
+	Byungchul
+
+> 	Byungchul
+> 
+> > ---
+> > 
+> > My current understanding of folio locking rules:
+> > 
+> > If you hold a lock on folio A, you can take a lock on folio B if:
+> > 
+> > 1. A->mapping == B->mapping and A->index < B->index
+> >    (for example writeback; we take locks on all folios to be written
+> >     back in order)
+> > 2. !S_ISBLK(A->mapping->host) and S_ISBLK(B->mapping->host)
+> > 3. S_ISREG(A->mapping->host) and S_ISREG(B->mapping->host) with
+> >    inode_lock() held on both and A->index < B->index
+> >    (the remap_range code)
 
