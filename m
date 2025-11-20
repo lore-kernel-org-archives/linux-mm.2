@@ -4,90 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED0FCCFA441
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 20:23:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEBB4CFA442
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 20:26:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1AB6B0032; Thu, 20 Nov 2025 15:23:58 -0500 (EST)
+	id 27AEF6B0030; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07A4B6B0062; Thu, 20 Nov 2025 15:23:58 -0500 (EST)
+	id 252CF6B0088; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF91A6B0088; Thu, 20 Nov 2025 15:23:57 -0500 (EST)
+	id 168576B0089; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D803D6B0032
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:23:57 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E31157D50
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:23:57 +0000 (UTC)
-X-FDA: 84132111714.29.1DA5564
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D4267C001A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:23:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r9UnyXZI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763670235; a=rsa-sha256;
-	cv=none;
-	b=W6lIJUBM15QW+cdLXdVuI9azWdUVym4/BS4l/aOC5azOdWsYG1pKV1EOFl/77oI5EhoOxt
-	wCpjw9hl5QovfUNoe/WKzS8zYJyTs+nWGQMyoDD2t3eh4z6esVAUoLD6h2hwjNfxpg8dXf
-	vaxOwMP3PJUV3zW4a+UUvWmYdrQRtXE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r9UnyXZI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 064926B0030
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C427C57ECF
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:26:09 +0000 (UTC)
+X-FDA: 84132117258.15.D766262
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C4565140007
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:26:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=NMFZFOgL;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763670235;
+	s=arc-20220608; t=1763670367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xT58wTbsK0GO5M6BVHaI3YDjWCCUhIyL5uwYgAHfxcI=;
-	b=6VGz+YHrbc37roB+Iol68SiromfxP+QDPCic7itt5F1vK7cUnoKdo/2usUOEeZ4zE0mBIY
-	zozmypLLJ7rAcgIgbIUbTEZdY7ahKv4V6wJybGyGzzfq3/Cn0gqM5AToBlTFeG+ayTjTlE
-	wBcIVI9ZG1qOZJ1619QS+8Pqn++W0M8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35F8C60017;
-	Thu, 20 Nov 2025 20:23:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A2EC4CEF1;
-	Thu, 20 Nov 2025 20:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763670234;
-	bh=a2FEA625ANzLpjWkhlLtr1SxRvZigA90QEKhvulL0yQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=r9UnyXZIV7L8ZEOOeJT1nl62EE6F8j9PcBYhYDgjuXdqLWdOasVD1Vd2xaxL5PqfE
-	 cHv1LnDQ9uXSc7KHeS91rdLs1uhyk0KakkBPQKfX1uspq/dM0doSGkbkcJxkqogn+b
-	 PoEcIOSBZeHC8NGZAaCohSy30TRBPO6BLUrqCI+UnSI8GGfhz/c5NmV3iq3pYPDItR
-	 F9FFuDHirpkbyfWCeUHIUy/iO5DbQvU6hFMlZQTQKemyHm76gGYOhO83Ek8lg7vWmH
-	 JVxDDl6VYryFXKGDdGPRB7+r4Lue0oZ8GpEjDBZjtpZh0t2rHd0q+bIBNP+kvf53ii
-	 V+6mOW30QW9kA==
-Message-ID: <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
-Date: Thu, 20 Nov 2025 21:23:51 +0100
+	bh=PqIhtMYQq6hQ/aIE/gJLhPbAAZf5g6u9uLXykoPMVFQ=;
+	b=1AKtKIoxd4r2pD4fjlPhG9zMDYdGuQh54N1KI/L7OqPWT3IhgEyxJJ8X61zc/BolqxQ+iL
+	2QJ4jLxisXIYQKWFbwrhypK1uR6/V+wS9HfBGsqHOokMW/mS294faCALI7bxDEaWbSk7V+
+	3ArYfvlfGZkoy+76aolehnaBI2VVklw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=NMFZFOgL;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763670367; a=rsa-sha256;
+	cv=none;
+	b=x+cvON6PjwamvPLs4EIkLR0kOoIHn1e79VjNLW1qTGu1V6qJ2fIJVRGLkIDVz47hrv9Af7
+	TYJMgwdQnfFtSVCM/99Tuld1f4pYc9vuy0Shj0/Jg5iPuIx0ulL4BLi3WqXyIhYc4ejtHW
+	wziax+B5Ccs4gqYmNwNhL40jTaiVmGw=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so2151592a12.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:26:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763670366; x=1764275166; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PqIhtMYQq6hQ/aIE/gJLhPbAAZf5g6u9uLXykoPMVFQ=;
+        b=NMFZFOgLWYzOU3nsiIV9T+8MS7H83PB7oHG1ajnMgd73BEYmDczZAXd+H96p7lwdBg
+         dSraqGzJidyHVVgrslro7oNPElncHM3xJlkEWDrmGnXEbdJdBfkxn9gEBz0pxiIFefFq
+         9u/yj2RvJBkh9eb/uNIFSgh9oVfXwbcIx10yn4Bo8rGAF0JgJAtcvFgVUBGXcdrcuUDJ
+         cVN9F14YWx9RsXZ2AQqY2jEUkxw1V6Gikrx/23FSIlhjVjk3zpgYYjsA49DrWceuxECr
+         zG97cJl30Nld5uI3ehmOXcYzlgdQnedZ8xIFSyd0Wn1Bjn6rTIkV1//jG+jyabYzJt/9
+         orhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763670366; x=1764275166;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PqIhtMYQq6hQ/aIE/gJLhPbAAZf5g6u9uLXykoPMVFQ=;
+        b=UGRpBdvNQCogJyxneMLRxP5MruHz6Zd1ip5pEwlWqqMq+Sx+fSvlHJjAXCTlDsNlyF
+         2w7vpjGg44k+GWe6Bt4GQdLIBhaGeBMQkAUH+X2Jfk3ELwmWcqpUMeZ1wJc/bxV9Azev
+         gN1d4ffxByQ7ignVc8qYBT8nxCZa9aMk91u47Aw9+y6Be1J99QlQ79vfunaOJCJfHPzm
+         tIDJDOuP2KWKR/3/33az8RtI7j4E+sAfnTFnRESO3/0F7nupVwnCvfrQozMuA3LsnBL9
+         Lr8TXDrKBSAutMDtawM7F4DGbP4j3XSFFDRjwpC4x65xBHKgeeD3gBU1n50Xpnhtytuu
+         QJWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdighc2hRvY50Cn+I2mZviQZKfPsKh4V43sO/k+VLjnxcOQd5aiGcXe2ukypnOY/2rdjXCB69sww==@kvack.org
+X-Gm-Message-State: AOJu0YwuxSJX7bfgx/Ah9s684NUzdexSEAQIIx3QzHF/nbslOVxhh0E1
+	RtbGpGXAWUBZhjWeV0INAzMvqK91tih6oDmF1Ci8Zc5rd41VDYDY0Hp/u9dsx6Uj9NqIKv9BU0g
+	bJTzCaGSPVuONPqyfmShKskHSbjfh+2yv27Ek+2RFOw==
+X-Gm-Gg: ASbGncvrg+Ntk0A/uMH9eSulF1Fb0ONcUXXxJDnPc42+i/juKNdj13jRb04b/MVsJmF
+	BhtCnLXK8v+tJ7Qc5H5oXkv4kYNeI5fiVjzUk6faUmjLTYpfxNM7Rpw7Q5lJTjimGkX5ke4ga2I
+	+LjTwXL1hVMkFmbgEurcJRAnLYj1lRusX/0LLw0D77NVK87dOMlFtB0ctGSbawBSUu/PsOmkE4W
+	YsAdu1XcAg7npJ6UQb7Ci4F+lsPISTSeOftvpGhCvyuAX67l5cLFjwjJVyGcsciNhWY3q9PdqqI
+	siI=
+X-Google-Smtp-Source: AGHT+IHQa+0J7ga3uOxgiO5UWDnt3zS3XFLtQ5KrArOQzn1GSk7RNpL77vJHQpSi8zpQevLWXRXWPqNncA9R8gIVg0E=
+X-Received: by 2002:a05:6402:510b:b0:643:e03:db14 with SMTP id
+ 4fb4d7f45d1cf-6455468513dmr12410a12.19.1763670366147; Thu, 20 Nov 2025
+ 12:26:06 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
- hang in wait_sb_inodes()
-To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, shakeel.butt@linux.dev,
- athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
-References: <20251120184211.2379439-1-joannelkoong@gmail.com>
- <20251120184211.2379439-3-joannelkoong@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251120184211.2379439-3-joannelkoong@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D4267C001A
-X-Stat-Signature: 56s5k9pixaoitbbntxiwpr6oruwfeacq
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-7-pasha.tatashin@soleen.com> <aRoU1DSgVmplHr3E@kernel.org>
+ <CA+CK2bBFS754hdPfNAkMp_PqNpOB2nY02OkWbhRdoUiZ+ah=jw@mail.gmail.com> <aR9N14KWaz6SdFcw@kernel.org>
+In-Reply-To: <aR9N14KWaz6SdFcw@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 20 Nov 2025 15:25:29 -0500
+X-Gm-Features: AWmQ_bkGcmBhhiXsN0wvCp8At9RZAkpij5uzcyGIDeVMn-hUhCRg5LgwnVtdQKA
+Message-ID: <CA+CK2bDMS7g_9Z4aC1n-rYOGcXP9X+12cJhpYbx1HpsDfaMcfg@mail.gmail.com>
+Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems callbacks
+To: Mike Rapoport <rppt@kernel.org>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
+	chrisl@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C4565140007
+X-Stat-Signature: snizwibwddezt9ee5upgoncyg8jpkiqi
 X-Rspam-User: 
-X-HE-Tag: 1763670235-705554
-X-HE-Meta: U2FsdGVkX18tJdIO8Mi1Tbhj6WxCLvcz6RGK3sFXcoGMf44VCKVVAPQYa3AE9mMQiRVbkThm//Nwc5x+S91XDQZ8vms46F+pErgsy3C2Jf3IJgfGziSs8Q/IzpCPsnCWhPRwZrA0TYXkQCFwVkraTomQBwVVsvfi2kP0kxIIceHcamLPxzUDQI9p1JWGGdA+T2WmcvMBmI0Cl3uxXFmW+AqUT1Sn5H4C+t2qKvgFcbwuqqxbRipUy4qD+9MHx4+sHmNQ+wkMcYBjc2s5l31hUCoyq2ugOMJzOWmjgDwC0EBZPhHb7e6A2WsQ54Tg7yY0Qbe4YKJRpBgzwrMrtWRqp1N/XseWUVgeRmxXzWQYEI55xUBS8m6f5EgKZXMvqTWcTjkKeeOS18wz2Ume4VwaBxvJ6aEx5lqxuuw8wNiC639xlcXg7yvkOEWxkgqRXw1w7ZdzxUbv+rsEDNhj1D/6bQB0EH9qF91bynf51VhfVgQaPIZ+WZmlS++lb9HSuO8+CRrLAxO+ycZFvmHY6A/qZRS9+26nwaZndGRDPetgrfPNg7gYAvvUD28/+jE5uFT85OMxv+4k90TkePQL3jXoWMJ1Dt4sLwMqYIdrlafDbZdIOZ07Suvkeb4qiKTmo5o6VVXUp7Y25wY1M4ed6tZbQiO4beJBn+gW20N6m6UDo7jpPhVEEG5taKnrwSZKhxYNk1E91wZaycyiE0gt66QfARQERYLsWTzEAfvHWoLMPYYD7Iq15D0N7xjOlpZieufO4SUIQHGhvziA9X3+xidxSbAbSPHKAcEqdUaJquognjy6iUT8WyQ6GlvvIJZmrI4SRLAK2HTi62r8k0MhBouxpQXBYPxgi7JtDlHBaGFLaK1LNANaOJQZ1W1fVVhNHLrvApS+ieoKvfFgzTI9zWcEKWCa363dyQsV3R0zZXdqY9uar0/I4TB4zFlTIYMVULfyUm4ftvrclW0mUg4lvjq
- UlTpHQLH
- te4FbfnLRYHxy9EY7ojZAu7Q9lHNSyELcuTxtBMe83kv4BaMxW4mMy0mRQnEmkM3bsrxAoHUvaeaeb9q8+djuRMuXMCwKuulG/AF6DyQ31/aKwXHuv/3Q/7iv2NCwDHxIWwt1uOVeJ1S9kVqUooB+SBt8f4mor/Zs3NMO0bg5n1bZjWCsnxeHbvz7MgKxQZwaqu/AnL/XzsO9vJOQJxAWm/PCDHuMgZIg48x5cKY000biV+guAsBJtu9cFXI9LNEIFZxD7TQME1KyiKdNe4R2TV45qccG0ClxLKQppL8Whr1nE+zIhs/+by3D8YQmByKcYgGSk3V8x9G1UlQInhslsQGDYEmwVEvtgGRfIGu2qXIVIeDWJHhyuDeOKT5nr8YpF5BX
+X-HE-Tag: 1763670367-404755
+X-HE-Meta: U2FsdGVkX19SO1aincP7t91Q63hTNLmvoBjuxIopLFvTsrHh1KuNDhVWar5eoyP/BG9FT7fnJq1pXjm7LW4D60RjeRyJlUagblRCzB9qeVqO/Od1KTGNrTj4lsLhYyclqbbfugba8kenMAZ8GtsKJt0JCuZ3Tpjwlmj3Ni2XJSpP4q+0ahlpw8UejMAUfsO92+/LqBKJM6E4xhry8buSssoXLamfSp9RnnYJDNWN2V8pUvH4MwbqGwWBVCVHv15gZshOc/ajrbRa7AXo52nABEznzD1P/eICXZ1pRI8wPIHYWZSGmU6g+TbaezBjdcNFN27xmMtDXOkI3IhanI5WhIOs0XwqCD5Rz1ytDbxy/37vJG+msuaoNWr23yVA0bKVGF9NOScsi/PYgj2GaMWosU+qmn6j118xW1IZFAgaJ/i9WbfQrLG6J4Zb8OBSQxVoRXNdwD+s3LyDw8iYULaQf0zMY7J4lgHaKOL7ySh3egetZjxfqpoLuPnYVF81A1rgLWEkU50w/cFRzQQPbAwtLdHSYkyIkOcjDQxTjzGNgkOtPCbz1ldBQsnXN2EhMd1Xhgp6FzjgR7+k92w/7kogSPiotGtx+gFEJ/DRkKiVeo8G7SeeSj7VhCX6U5FIoHkghtEi3AFJnFOzHAwalENv6o0RTBFXLPR0/0FbjF8GdAoo6bjIMDwyzYz9FsK4N7yPIMC+u8noGHOe4pi3gPOsKcyKrHngoPYnc5drjLH0gN1lsxrj8KM43PY01wZK9ceGRYGa3nPI7czXbgo/ZzWYpPt7rg5SEzo1aMkhOmbqjvr3EpMPaYqbnkvk70RA6lK2b3mKJ0DQKAqvGdbej3xsMXLeUkqn/XPlLc+6m8M7nD38mGn+8klcT8rILbvZtm2A+x32YVU9o71rQQp44h8L08+lDNRVEdZmTC29WlaxVTHAsC3SYi4a+DsYtFXo/GC5bVscDnnbfC+Ramd9oY0
+ dzFglZg2
+ fREJ9w83rSz2uSN+tesQ0DaHYxq2fsShayx9Z7wigUdUf7nJHeSl9k770sFYn+vhbnDnIg5fFszB8V00qDcTfxSR6TTP3fgIh159v+vdiAGM2NyVSvqbXNi7bx7jgqFovhMxtubV7Y7EZuVsRiVQ+hZV7M5+ZmHb/sSmoWIdxcFMDf/4XN8CHI8qtKt1nW28U4Tcn1cs5lo7g5F68qzYHtwVh1Dkz6yApwGzFmQhan4dAmZQyryL4pYmnEQgfaPBziTSqAiYQ6DdYpnteeM+iRgom26PWOAPSzaJ6ZRSXACplXXtCSdg5SoxKDealhJj9pIsrYKx2ynPUvsSg/uyZ9D88LcsHYzfsO6ffnqUZFquf9TQe42h3sU2UBOIsF3zWhEQ3rnwJs68ORDWi5stdjG9KxVstuqx/DkOrAw9R+YkdbitYcrhv5Q7oBqzK/LnibzglbmoAFqW5U2fBvJdRPqiHYLrEy7EuOOkxt+iUuNqLNPo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,44 +141,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 19:42, Joanne Koong wrote:
-> During superblock writeback waiting, skip inodes where writeback may
-> take an indefinite amount of time or hang, as denoted by the
-> AS_WRITEBACK_MAY_HANG mapping flag.
-> 
-> Currently, fuse is the only filesystem with this flag set. For a
-> properly functioning fuse server, writeback requests are completed and
-> there is no issue. However, if there is a bug in the fuse server and it
-> hangs on writeback, then without this change, wait_sb_inodes() will wait
-> forever.
-> 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
-> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> ---
->   fs/fs-writeback.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 2b35e80037fe..eb246e9fbf3d 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -2733,6 +2733,9 @@ static void wait_sb_inodes(struct super_block *sb)
->   		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
->   			continue;
->   
-> +		if (mapping_writeback_may_hang(mapping))
-> +			continue;
+On Thu, Nov 20, 2025 at 12:20=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wr=
+ote:
+>
+> On Mon, Nov 17, 2025 at 12:50:56PM -0500, Pasha Tatashin wrote:
+> > > > +struct liveupdate_file_handler;
+> > > > +struct liveupdate_session;
+> > >
+> > > Why struct liveupdate_session is a part of public LUO API?
+> >
+> > It is an obscure version of private "struct luo_session", in order to
+> > give subsystem access to:
+> > liveupdate_get_file_incoming(s, token, filep)
+> > liveupdate_get_token_outgoing(s, file, tokenp)
+> >
+> > For example, if your FD depends on another FD within a session, you
+> > can check if another FD is already preserved via
+> > liveupdate_get_token_outgoing(), and during retrieval time you can
+> > retrieve the "struct file" for your dependency.
+>
+> And it's essentially unused right now.
 
-I think I raised it in the past, but simply because it could happen, why 
-would we unconditionally want to do that for all fuse mounts? That just 
-seems wrong :(
+I am going to move this API to the end of the series, next to FLB :-)
 
-To phrase it in a different way, if any writeback could theoretically 
-hang, why are we even waiting on writeback in the first place?
+>
+> > > > +     }
+> > > > +
+> > > > +     return 0;
+> > > > +
+> > > > +exit_err:
+> > > > +     fput(file);
+> > > > +     luo_session_free_files_mem(session);
+> > >
+> > > The error handling in this function is a mess. Pasha, please, please,=
+ use
+> > > goto consistently.
+> >
+> > How is this a mess? There is a single exit_err destination, no
+> > exception, no early returns except at the very top of the function
+> > where we do early returns before fget() which makes total sense.
+> >
+> > Do you want to add a separate destination for
+> > luo_session_free_files_mem() ? But that is not necessary, in many
+> > places it is considered totally reasonable for free(NULL) to work
+> > correctly...
+>
+> You have a mix of releasing resources with goto or inside if (err).
+> And while basic free() primitives like kfree() and vfree() work correctly
+> with NULL as a parameter, luo_session_free_files_mem() is already not a
+> basic primitive and it may grow with a time. It already has two condition=
+s
+> that essentially prevent anything from freeing and this will grow with th=
+e
+> time.
+>
+> So yes, I want a separate goto destination for freeing each resource and =
+a
+> goto for
+>
+>         err =3D fh->ops->preserve(&args);
+>         if (err)
 
--- 
-Cheers
+Thanks, I made the change.
 
-David
+>
+> case.
+>
+> > > > +             luo_file =3D kzalloc(sizeof(*luo_file), GFP_KERNEL);
+> > > > +             if (!luo_file)
+> > > > +                     return -ENOMEM;
+> > >
+> > > Shouldn't we free files allocated on the previous iterations?
+> >
+> > No, for the same reason explained in luo_session.c :-)
+>
+> A comment here as well please :)
+
+Done
+
+>
+> > > > +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64=
+ token,
+> > > > +                              struct file **filep)
+> > > > +{
+> > >
+> > > Ditto.
+> >
+> > These two functions are part of the public API allowing dependency
+> > tracking for vfio->iommu->memfd during preservation.
+>
+> So like with FLB, until we get actual users for them they are dead code.
+> And until it's clear how exactly dependency tracking for vfio->iommu->mem=
+fd
+> will work, we won't know if this API is useful at all or we'll need
+> something else in the end.
+
+SGTM
+
+>
+> --
+> Sincerely yours,
+> Mike.
 
