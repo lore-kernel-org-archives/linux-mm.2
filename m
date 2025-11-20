@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83CD3CF8861
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:02:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59504CF8861
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:02:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFCF96B000D; Thu, 20 Nov 2025 10:02:51 -0500 (EST)
+	id B8BC96B002E; Thu, 20 Nov 2025 10:02:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAD306B0028; Thu, 20 Nov 2025 10:02:51 -0500 (EST)
+	id B15586B0030; Thu, 20 Nov 2025 10:02:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C75106B002E; Thu, 20 Nov 2025 10:02:51 -0500 (EST)
+	id 9DD816B0062; Thu, 20 Nov 2025 10:02:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B15B26B000D
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:02:51 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 706F012DF38
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:51 +0000 (UTC)
-X-FDA: 84131302542.16.2C43722
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6C1F310002A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TUBfRIOz;
-	spf=pass (imf05.hostedemail.com: domain of 3ly0faQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ly0faQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 83F126B002E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:02:58 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B46F6160198
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:54 +0000 (UTC)
+X-FDA: 84131302668.25.56E3865
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 615F6100039
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="CkHPD9/C";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3mi0faQUKCMEls2lynvvnsl.jvtspu14-ttr2hjr.vyn@flex--elver.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3mi0faQUKCMEls2lynvvnsl.jvtspu14-ttr2hjr.vyn@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763650972; a=rsa-sha256;
+	cv=none;
+	b=6OU1kS4xtXgD8wd6b6JRpQdiw/zVZxb/RujwDm9GOwQz9JzrKnLBM8boWy5Kl/rLVAV3nL
+	J9BRAi8oHWtIkX9u+C9kskPwPtr2l+13d/kYVsmYTWn1eVHr6B148ajbmgfgrod5249vWD
+	Z0zofJ2KoSCQfX5u7hn0T5h3HsgHkO8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="CkHPD9/C";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3mi0faQUKCMEls2lynvvnsl.jvtspu14-ttr2hjr.vyn@flex--elver.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3mi0faQUKCMEls2lynvvnsl.jvtspu14-ttr2hjr.vyn@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763650969;
+	s=arc-20220608; t=1763650972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+xm08Oqaiz0C+41w88sCv4Knf0HeT4Y61beURoEgshc=;
-	b=UjAq/TYlhfiROaqc2vdnjodc1RmhDIrSaJivekrZiqV3GSsI3mhdfcDUPWbb8yllGWr1Ir
-	kLRzrWIKz12NT71tjXe+V1dNZCjHcYwKoz3UeFbjyJqQoxU9dns14YADCr+IIWYXxeLfx9
-	gnFmIc626PZrdNnDg+ozOyDpQVp6zgc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TUBfRIOz;
-	spf=pass (imf05.hostedemail.com: domain of 3ly0faQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3ly0faQUKCL4ipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763650969; a=rsa-sha256;
-	cv=none;
-	b=KMp3xJdGHy22iioB4fS1FdK8S40+x4dEQ0DGH8TYvFts6ifM38C7wB0gA7Z2QXMfo4eJoX
-	an4ZcrIoIYYr/YmmZnv5w8KfCE9csQqMn6NhhJaqs2wrWaj35pAACYdBdlNjkJ1CYTsso4
-	kczu27fAlCeytouHVpKgRHKeu53ybRg=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47797caba11so4146095e9.3
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:02:49 -0800 (PST)
+	bh=pO9hFwvp+ZAw4faY1qJIaLxAu4rxu7t5oxtHI4nO9RE=;
+	b=V92yWrkmWNN8zid5BUMFORA7E+BVeNSdFrMC+/GK0SEsp553I2WmDQ/lgtfic13DHb9QfY
+	8ytxD60+7dpDkRMaMSXJ0Pvd5mofO3Zz9cSENGwl+NiDQI3Z56Ai/zWuJWf+f2cCXr6Skb
+	dZj4Oe59zFzwQmJdD1qrUuUlL9EUwYU=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-429c76c8a1bso1042042f8f.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:02:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763650968; x=1764255768; darn=kvack.org;
+        d=google.com; s=20230601; t=1763650971; x=1764255771; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+xm08Oqaiz0C+41w88sCv4Knf0HeT4Y61beURoEgshc=;
-        b=TUBfRIOz02aF3hlJ3KSoExiiu3jC1KgnkmYlcCG6860VnTeil0ak+xtoWnB2uM0Duj
-         mT1leSHCeQNBt8AiT6ybEyCghWQYhA3KH63wtvgHnwPGx2M5iklug37zJRrHiUMynAcM
-         qeyb4M3OS8LRrp+AFC1EMd7EcR+15U1K7WEbYoOWDNbXeKbu8ENBf/iI+H5j7hiZ/6xw
-         tGsxqez436zqyn0wL5NeqT/KHlO8PiIURRtlkYyl51+lDVovflRawWphtsjc0PKqPWKM
-         LJJBYreg8AMGgKpA/5OLgeIZO/C8WTlcq54944wEFn2aRlFHtUNCkoYbr3brfMb2EhAd
-         69cw==
+        bh=pO9hFwvp+ZAw4faY1qJIaLxAu4rxu7t5oxtHI4nO9RE=;
+        b=CkHPD9/CMVjLBn0sEzzOnJ4A1zy4xYwmYRQnN+m0nPmas1O14Py1USn1Gf3h7z+W7T
+         E+f1l8DDx7npdwgXAS8QE/aRWqUPP6yw3s3NeTHn/JwKaXcRnCIG/We0Krz8ctYRe3Y6
+         Y4WX8dA78Qo6z2Hj1CIW+GWk285e+G9w2HgAdHs7qcIB9D64nHlfi32LjFM8XCBThFeQ
+         36g5w9wEtvaURZ2ufVoY9LvTzQ/dJr2+2vuUF2X6P9INTxYmx88653JfOxsuX8oEQhwg
+         35MLLcXea9aonvn2VGMyG9RfRr/DKrHLXoaN5FdEIBCEeFb2dr/iZXgpnK7uLXTC5QAd
+         9g3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763650968; x=1764255768;
+        d=1e100.net; s=20230601; t=1763650971; x=1764255771;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+xm08Oqaiz0C+41w88sCv4Knf0HeT4Y61beURoEgshc=;
-        b=I8wIJ2pKspcZqVgtn93h9HhMjC/vJ7tZoZH4R9vO6SeJkjTss1s4i5gkFxykoATrOV
-         bvymTBrk6mxKI7l5S9wh1hnFiWHkVhdaE4TWawAQfr9O2gGHW4wwZDZn+z+fdfQI7cCg
-         ZrEIN/iDOZXpAaERmT+KKLn3pcr9WYkAsTeKMlr2huIlR71h3pZAvy40twGD6S0Yarj/
-         skxzriUCw/TcE6jyZ/VaRxMef0BMt0Jwlft4ifD7TWS/muiN1hI7s0fQK1iah9JO7nOa
-         L4o1MCNEkycY7Zrf8QDl5KdxIEdb3pIXMhI18IaB7D0K8rfUdKliVtktWB/inWimu5Jc
-         dw4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXsSKU4yIOE5qMpzsTsLAYCEA1kkLSFPKIU13UEZCuhe3dIFI30vltTDKAvZT9k+WGL1aFy4EY8Lg==@kvack.org
-X-Gm-Message-State: AOJu0Yw4frFfmQCTR2OINkqv9Klo0L47dq8821wtbaKpsneQwraqQhek
-	iyircuSoialRz3njEA0L0oms8WfHeGIuuLEcj22XhkBzGDUQtvpxznuMzQNVpqrbjrpF7dMF840
-	/xg==
-X-Google-Smtp-Source: AGHT+IGUHW8T7PbhGDmbj5YjoSY8aOAhL/hfcFkM7c1fjnxT41/dPSOy7IIJVzHNh1nc5oCgWusA4fLoNQ==
-X-Received: from wmbd17.prod.google.com ([2002:a05:600c:58d1:b0:477:76e1:9b4e])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:470a:b0:477:1bb6:17e5
- with SMTP id 5b1f17b1804b1-477b8d8b887mr39140845e9.30.1763650967589; Thu, 20
- Nov 2025 07:02:47 -0800 (PST)
-Date: Thu, 20 Nov 2025 15:49:03 +0100
+        bh=pO9hFwvp+ZAw4faY1qJIaLxAu4rxu7t5oxtHI4nO9RE=;
+        b=PVYnsL5iouF548TYPbVNRHiOrP+I84xEoqKn8HSXgUXORVRaEHWv3xYu8iZUSgOloK
+         vH4lgkvwyOiMRsSDLd/pYAv3Axk4LpAqBnRln8XOI6LouiWLouTVntEpbjoqkWJ122Vb
+         itRD7pjxH5aenzQeNUgyYlC3oUa70YR3xypIiKbvLVS0QkoxrZvLTaHyKA2flPdr4xAT
+         egbSr86VZTvVYpSTVf1ZOuMChd2j7Qj8bzZIpfoS5J1dvHnwxIdXvE/uM345MnDcze9F
+         sXjJSzeZvg0rXSK0xfQ6vxSW6dqUGBNAD8od2XXQ6Z+J05VLFHvv3IQ0CQ7+mPhg88oC
+         vKfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSYlkjY3YcLPnBy/GeTCK/DZaVTdJzyWK2rovrB/dOoLdM0DUrYqwTgYQvESNLrc0Rjwlf6mEnLg==@kvack.org
+X-Gm-Message-State: AOJu0YxnXdtRJfFmNuxHHDawFowDcQxk7v0N/KRm3TrjxGD84ghdrBNT
+	r8ouaB6Uuy+u7as51DsVLWfvqDT5qjL03HkMpEH6Sz3DpFiqR4YLHNLr7MHnvaL5VYLtU7si0R9
+	B1g==
+X-Google-Smtp-Source: AGHT+IHM/v/9QHeHspB9MXGvz9KS9VSUFd0lOA+Am+xXltzxMW2mqXoAyAyRJa7cm3HE0irfxHztOPPvIg==
+X-Received: from wrsy7.prod.google.com ([2002:a5d:4ac7:0:b0:42b:3a01:7811])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:460f:0:b0:42b:396e:27fd
+ with SMTP id ffacd0b85a97d-42cb9a5612emr2389445f8f.38.1763650970452; Thu, 20
+ Nov 2025 07:02:50 -0800 (PST)
+Date: Thu, 20 Nov 2025 15:49:04 +0100
 In-Reply-To: <20251120145835.3833031-2-elver@google.com>
 Mime-Version: 1.0
 References: <20251120145835.3833031-2-elver@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251120145835.3833031-3-elver@google.com>
-Subject: [PATCH v4 01/35] compiler_types: Move lock checking attributes to compiler-context-analysis.h
+Message-ID: <20251120145835.3833031-4-elver@google.com>
+Subject: [PATCH v4 02/35] compiler-context-analysis: Add infrastructure for
+ Context Analysis with Clang
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +114,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6C1F310002A
-X-Stat-Signature: 98nc5cfaqxwnphm57isjbwjq743apm7q
 X-Rspam-User: 
-X-HE-Tag: 1763650969-933222
-X-HE-Meta: U2FsdGVkX1/uhFA0aX1dvaZFmTt3fQyxgjlFthz/FFdaSh2j7znOiG9hJg0BFzxBIwLODifBAEl7T1MYs1OFpLICRokwSImqEw6xnrTottIuDdTFzzZI53GXsgNBGOv9PxfotCWPeA0z5jpAzdOCc8jMHATJzO6VDzZbIGmgUru2RGbh9wdLd+HjQdTOiqUOgOJBpqzib9fmd4gsPVxPdFo9N1AhWZFb5nr2nHKB8152uZMSuqVeGRnKEiQtJ7nwmuq9FxqLZZWiMufhMiw3GzcM/0oilcjkIVTEY3qoD3emMwZPPiLy6oHXTeg8A7Pk62ll2FtXnTig0w32kEBAlP+ghiaKqYd8YPNdGSHC6Ov1iBO2e6TjbNXvJ4kadDgX6zP6XNdr88mV4FdJsvAizLN4COTWpqsWhitKgw9JSu0XzdGrqV2AmeHN8rLL+uQxLufllCFr3SO+WECsiG2BetHg5Jbu9Nwe7MsE9s8j3JXIeVKxaZTM017MbdwwWDZM7m7/iDT4erJEY6sliVD2nfTWPCZhLJ3pZxQbN1ebVWBGGetRYfsRLtHjOWmo7yAR91BC7be/x9MCOb3IB7ndrUCGYS3UsslbwH4Rro9D9jzDeMGH2EqQBImXA4QVVnsmWm178jl9gEjziWU61oRMNoAVAlT0H6nCCGqC9wHsvQ+TWmMn//GkGidOcwJ3UarZASsK2PM6KzN30lAyM8giL3a1iNfHGB9iD/dQa60FvXzjhIyKCtvc8173d/EcAp78RNCOPFWdg7wjtYD4Am+2v03dY3XmCCZQzVh27lqwd33Vs+2+/HLVko33aDMGE95+Fd1wAz+a4QprMLpyINwF8UC8P2M0IXTziyTu8VemPfi5nTWmPwlG4e2dtmjIGxametIz8WC9VkIYuDgWXAR2od4GxABAxUeTfpS3lKOkFUvDB5YI0fK/vR1rqgZNPgb0HgurJnATjE3IzJPaY4w
- Rv9qcD0b
- oFetJLwuKUYI1by2bWJca0qEHUY0P4NDYAIVulNQtuQ4vf7uov0I0J1luleh9yQDFBt/FPUHEyX0PSnqcJIKvjKyK9stA0IkjWH2GSeMct5C3soZnYryvxyDYsbZhBZg40rRYa35MaSOTQZInNtDObe62IhsYPpwB5Mf3Jjm3VtYb5lTcAD239rm3cJLOC6m/FiXtmTYrioq4HA7Xc1Ic2+Xi+mnQzjbhkqkw37B5+csZIw9VAXIZPcklaWnDcFHHoB+M39PLpqf6hf6aB+u3k7xjBKyEpmLvWhCacvinmbRhEALfKxc9TRFUgwfuBN8ImstofFJdQ0YQCIZ5LCjXR/nOZZKSPJQx3Ko++UxUKZnLB4l3iKwJNji3VEG/kUMTxVo2tZVhItdq+uLFJ6qlVhhxWXlB99QmA4L/FdaTtdWga8SMruGmCFPoCpXSL81Tv7L9kY0kkcz661a7HTbuzTT1Su1Upy/6MBoNqUKci/QQGXF/PEZvT2LS2tl655d52AWnF/M7Oxfp5xlqxZ4DHQXfe9pHmB+C7a0ApmSwDHxaE+Zkpt/fitFID+BUeCp+grd0Rrym1YQOfHIh5oF4Z+rVfFI6grYXiwjpjSVp6HQCEXr/YklY1T41ZEjJJlnyQenMZEP0cJPvg3coy4WQbPftR3RtgvH2rtea6z71j69dD0IYEHpwL61UjSr4uhOqukwTpbikcP0WKioKWVtPLah13XRnjbcZERKdJ8zOM/LE6SBbqFSSlNd2Ae2J3+eKg+3fJYJ2CMOKPT2bzlS5yVNDX3QLUVoKQ66ZnebFE/5RaP4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 615F6100039
+X-Stat-Signature: zg68gw7zzm3nokdpr164r8zdaww71c6m
+X-HE-Tag: 1763650972-108904
+X-HE-Meta: U2FsdGVkX18r6pPgfNIn8MpBb7el5ibSuezZ6zDBsI3tSjSjEWx+zRQQp+Ni0hFO131Vz1KQKgU7sNXsVfc8g8qw0VOqYrIn9ET5x6DEY4C1bc5jhFUOczaWPLySyot4t8wX0XzsCbsgOkVa6/HV05TZeShySb/9PsthFkGz8L/SPN+ccoGaxZc2V8R8veA7dHsQXhS2ieim7nIAJV11Bzhnh0A/xxzMHwHKjF1tF3xJWSnYivfPNh0kHuzY7nHDkPLUDeTwvn1K85eVsaXBbzl8gM4Y7/cv6NHf/rvygAJRNj7mZOSYzAN3rIsuHIAaQh1HcWVKAqL42OcHfS5L6eJY8+mwzObVIAbat/xJTJNhIvvWG3hcBc5+gMp8d1Y4iv4IMfZBj3pCef2n8fKQHOQL/KwPVre27NLvD884jfJEl12GwjQ0EVE8seyJ820Gvo8u0fBo42MUR8xLgOdtrIA3Cxy3sdgQRFufeo0NUTndqXsbz7YNZHfC9tdEfRNVQtdAwgtsPky3WnpHl1seMIO+BzVvQUH01eawmoxsoHHUzQQ714U8vRY3xNl71FB1IcplLuWbxnDg0pDUDmzyyGbOZ69ro3K7RIhpnsYCKlsBcmvY6MrXeTTLUChtdJTbNhAy13Qr0ik3wIt7WcYUWwlQHn5TJVwJiFgdOAVjlEXd4zTtgkWaiBWrTwdOSIvFDnoqtT3JZV3LKbBU1a3vKTC/oe1KRsFK6dcCsBbvYUNORvmpuipaWTs1qrNgRCUp0lnl1zDkDZz7Qk8Lx2idgszJdT2ZG8b09Uf0nv0xjNtFzOyEa15KwSXt2GfKxzlSyYERsgXCYgo1/W3r/f44ydeuBUvMfjW2Q8EDgdsEbJRi1EeFghJLO5vmwgH1eD1iKC76QolQa1xJazJdcUgb9qZ5n0TS+wWD7WzfXveXsDAdQdFRPDzmRAn0+8AX9k3vgB944+LfOT+wtYJE26X
+ 7uoEz+LC
+ ih72jz4D3M7OTCSuveeVuWHDcWJvs++Yp4Nghommwh0xf5GneqsWxP0GqlkWvxE6bRB59IsRnpOez0jPWs2zoQNQEEyNXncX9JzXhTkuQ014JCG+89Oouzdnu9DfroQSryydKaQhDdwoL/3CNa1XotPjP/6hqwn8AOlTuSxdJ/7dXGgTNjrkFd8QdNZpqOaG80DjTkqcEflf9/Ga6XzdnV19H6psaYFszMtXvvY4XOnbABzMyiwSWrdPJOR3IoSXaYgaz6lkZBuIYsNwOcBkEBe3E8rHa4dgHqX3etJd+TAHIAT5RRLezq2KswF9OL+ypf4Xcg3v6+RFoLdsB0KpvghLMTWvlxnaO8Hqw0y2didQ1H0uXaYsrx7DxfWBwiwsP0vPf6FZFNpys5KqkfwCx/xGN4a0ulQdA0UznH8Js5IMqd2i+puqkzYO/TsA/P+4T0njbB2h01jhMKRN27to7DPfbs8PsA+Wpb0RoZLcG+NSZF498Nmq1wwf8WcDnwcI8I97qCzRYUG4R3oC+H6Hv3lmXIChBk+gfKKHCyFG39sRVFawvv3d+zYoNG3mJGR4JmndNZXge6RgZ0X0argnE5SiU6N9mE4VoK2pcqwC1awPwl1XLUXRsivB8lEFh5q0ANQrEiwyvs4vqG9UPKuJHHeiaS5lTxpT+fdM3WzgnFwQ2/bhWOVVBQRIPx5uepvP5TN4L8haZMNK73ASH8DODalCsVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,106 +130,632 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The conditional definition of lock checking macros and attributes is
-about to become more complex. Factor them out into their own header for
-better readability, and to make it obvious which features are supported
-by which mode (currently only Sparse). This is the first step towards
-generalizing towards "context analysis".
+Context Analysis is a language extension, which enables statically
+checking that required contexts are active (or inactive), by acquiring
+and releasing user-definable "context guards". An obvious application is
+lock-safety checking for the kernel's various synchronization primitives
+(each of which represents a "context guard"), and checking that locking
+rules are not violated.
 
-No functional change intended.
+Clang originally called the feature "Thread Safety Analysis" [1]. This
+was later changed and the feature became more flexible, gaining the
+ability to define custom "capabilities". Its foundations can be found in
+"Capability Systems" [2], used to specify the permissibility of
+operations to depend on some "capability" being held (or not held).
+
+Because the feature is not just able to express "capabilities" related
+to synchronization primitives, and "capability" is already overloaded in
+the kernel, the naming chosen for the kernel departs from Clang's
+"Thread Safety" and "capability" nomenclature; we refer to the feature
+as "Context Analysis" to avoid confusion. The internal implementation
+still makes references to Clang's terminology in a few places, such as
+`-Wthread-safety` being the warning option that also still appears in
+diagnostic messages.
+
+ [1] https://clang.llvm.org/docs/ThreadSafetyAnalysis.html
+ [2] https://www.cs.cornell.edu/talc/papers/capabilities.pdf
+
+See more details in the kernel-doc documentation added in this and
+subsequent changes.
+
+Clang version 22+ is required.
 
 Signed-off-by: Marco Elver <elver@google.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 ---
 v4:
 * Rename capability -> context analysis.
----
- include/linux/compiler-context-analysis.h | 32 +++++++++++++++++++++++
- include/linux/compiler_types.h            | 18 ++-----------
- 2 files changed, 34 insertions(+), 16 deletions(-)
- create mode 100644 include/linux/compiler-context-analysis.h
 
+v3:
+* Require Clang 22 or later (reentrant capabilities, basic alias analysis).
+* Rename __assert_cap/__asserts_cap -> __assume_cap/__assumes_cap (suggested by Peter).
+* Add __acquire_ret and __acquire_shared_ret helper macros - can be used
+  to define function-like macros that return objects which contains a
+  held capabilities. Works now because of capability alias analysis.
+* Add capability_unsafe_alias() helper, where the analysis rightfully
+  points out we're doing strange things with aliases but we don't care.
+* Support multi-argument attributes.
+
+v2:
+* New -Wthread-safety feature rename to -Wthread-safety-pointer (was
+  -Wthread-safety-addressof).
+* Introduce __capability_unsafe() function attribute.
+* Rename __var_guarded_by to simply __guarded_by. The initial idea was
+  to be explicit if the variable or pointed-to data is guarded by, but
+  having a shorter attribute name is likely better long-term.
+* Rename __ref_guarded_by to __pt_guarded_by (pointed-to guarded by).
+---
+ Makefile                                  |   1 +
+ include/linux/compiler-context-analysis.h | 452 +++++++++++++++++++++-
+ lib/Kconfig.debug                         |  30 ++
+ scripts/Makefile.context-analysis         |   7 +
+ scripts/Makefile.lib                      |  10 +
+ 5 files changed, 493 insertions(+), 7 deletions(-)
+ create mode 100644 scripts/Makefile.context-analysis
+
+diff --git a/Makefile b/Makefile
+index d763c2c75cdb..0cad6e76f801 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1093,6 +1093,7 @@ include-$(CONFIG_RANDSTRUCT)	+= scripts/Makefile.randstruct
+ include-$(CONFIG_KSTACK_ERASE)	+= scripts/Makefile.kstack_erase
+ include-$(CONFIG_AUTOFDO_CLANG)	+= scripts/Makefile.autofdo
+ include-$(CONFIG_PROPELLER_CLANG)	+= scripts/Makefile.propeller
++include-$(CONFIG_WARN_CONTEXT_ANALYSIS) += scripts/Makefile.context-analysis
+ include-$(CONFIG_GCC_PLUGINS)	+= scripts/Makefile.gcc-plugins
+ 
+ include $(addprefix $(srctree)/, $(include-y))
 diff --git a/include/linux/compiler-context-analysis.h b/include/linux/compiler-context-analysis.h
-new file mode 100644
-index 000000000000..f8af63045281
---- /dev/null
+index f8af63045281..8c75e1d0034a 100644
+--- a/include/linux/compiler-context-analysis.h
 +++ b/include/linux/compiler-context-analysis.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
+@@ -6,27 +6,465 @@
+ #ifndef _LINUX_COMPILER_CONTEXT_ANALYSIS_H
+ #define _LINUX_COMPILER_CONTEXT_ANALYSIS_H
+ 
++#if defined(WARN_CONTEXT_ANALYSIS)
++
 +/*
-+ * Macros and attributes for compiler-based static context analysis.
++ * These attributes define new context guard (Clang: capability) types.
++ * Internal only.
 + */
++# define __ctx_guard_type(name)			__attribute__((capability(#name)))
++# define __reentrant_ctx_guard			__attribute__((reentrant_capability))
++# define __acquires_ctx_guard(...)		__attribute__((acquire_capability(__VA_ARGS__)))
++# define __acquires_shared_ctx_guard(...)	__attribute__((acquire_shared_capability(__VA_ARGS__)))
++# define __try_acquires_ctx_guard(ret, var)	__attribute__((try_acquire_capability(ret, var)))
++# define __try_acquires_shared_ctx_guard(ret, var) __attribute__((try_acquire_shared_capability(ret, var)))
++# define __releases_ctx_guard(...)		__attribute__((release_capability(__VA_ARGS__)))
++# define __releases_shared_ctx_guard(...)	__attribute__((release_shared_capability(__VA_ARGS__)))
++# define __assumes_ctx_guard(...)		__attribute__((assert_capability(__VA_ARGS__)))
++# define __assumes_shared_ctx_guard(...)	__attribute__((assert_shared_capability(__VA_ARGS__)))
++# define __returns_ctx_guard(var)		__attribute__((lock_returned(var)))
 +
-+#ifndef _LINUX_COMPILER_CONTEXT_ANALYSIS_H
-+#define _LINUX_COMPILER_CONTEXT_ANALYSIS_H
++/*
++ * The below are used to annotate code being checked. Internal only.
++ */
++# define __excludes_ctx_guard(...)		__attribute__((locks_excluded(__VA_ARGS__)))
++# define __requires_ctx_guard(...)		__attribute__((requires_capability(__VA_ARGS__)))
++# define __requires_shared_ctx_guard(...)	__attribute__((requires_shared_capability(__VA_ARGS__)))
 +
-+#ifdef __CHECKER__
++/**
++ * __guarded_by - struct member and globals attribute, declares variable
++ *                only accessible within active context
++ *
++ * Declares that the struct member or global variable is only accessible within
++ * the context entered by the given context guard. Read operations on the data
++ * require shared access, while write operations require exclusive access.
++ *
++ * .. code-block:: c
++ *
++ *	struct some_state {
++ *		spinlock_t lock;
++ *		long counter __guarded_by(&lock);
++ *	};
++ */
++# define __guarded_by(...)		__attribute__((guarded_by(__VA_ARGS__)))
 +
-+/* Sparse context/lock checking support. */
-+# define __must_hold(x)		__attribute__((context(x,1,1)))
-+# define __acquires(x)		__attribute__((context(x,0,1)))
-+# define __cond_acquires(x)	__attribute__((context(x,0,-1)))
-+# define __releases(x)		__attribute__((context(x,1,0)))
-+# define __acquire(x)		__context__(x,1)
-+# define __release(x)		__context__(x,-1)
-+# define __cond_lock(x, c)	((c) ? ({ __acquire(x); 1; }) : 0)
++/**
++ * __pt_guarded_by - struct member and globals attribute, declares pointed-to
++ *                   data only accessible within active context
++ *
++ * Declares that the data pointed to by the struct member pointer or global
++ * pointer is only accessible within the context entered by the given context
++ * guard. Read operations on the data require shared access, while write
++ * operations require exclusive access.
++ *
++ * .. code-block:: c
++ *
++ *	struct some_state {
++ *		spinlock_t lock;
++ *		long *counter __pt_guarded_by(&lock);
++ *	};
++ */
++# define __pt_guarded_by(...)		__attribute__((pt_guarded_by(__VA_ARGS__)))
 +
-+#else /* !__CHECKER__ */
++/**
++ * context_guard_struct() - declare or define a context guard struct
++ * @name: struct name
++ *
++ * Helper to declare or define a struct type that is also a context guard.
++ *
++ * .. code-block:: c
++ *
++ *	context_guard_struct(my_handle) {
++ *		int foo;
++ *		long bar;
++ *	};
++ *
++ *	struct some_state {
++ *		...
++ *	};
++ *	// ... declared elsewhere ...
++ *	context_guard_struct(some_state);
++ *
++ * Note: The implementation defines several helper functions that can acquire
++ * and release the context guard.
++ */
++# define context_guard_struct(name, ...)								\
++	struct __ctx_guard_type(name) __VA_ARGS__ name;							\
++	static __always_inline void __acquire_ctx_guard(const struct name *var)				\
++		__attribute__((overloadable)) __no_context_analysis __acquires_ctx_guard(var) { }	\
++	static __always_inline void __acquire_shared_ctx_guard(const struct name *var)			\
++		__attribute__((overloadable)) __no_context_analysis __acquires_shared_ctx_guard(var) { } \
++	static __always_inline bool __try_acquire_ctx_guard(const struct name *var, bool ret)		\
++		__attribute__((overloadable)) __no_context_analysis __try_acquires_ctx_guard(1, var)	\
++	{ return ret; }											\
++	static __always_inline bool __try_acquire_shared_ctx_guard(const struct name *var, bool ret)	\
++		__attribute__((overloadable)) __no_context_analysis __try_acquires_shared_ctx_guard(1, var) \
++	{ return ret; }											\
++	static __always_inline void __release_ctx_guard(const struct name *var)				\
++		__attribute__((overloadable)) __no_context_analysis __releases_ctx_guard(var) { }	\
++	static __always_inline void __release_shared_ctx_guard(const struct name *var)			\
++		__attribute__((overloadable)) __no_context_analysis __releases_shared_ctx_guard(var) { } \
++	static __always_inline void __assume_ctx_guard(const struct name *var)				\
++		__attribute__((overloadable)) __assumes_ctx_guard(var) { }				\
++	static __always_inline void __assume_shared_ctx_guard(const struct name *var)			\
++		__attribute__((overloadable)) __assumes_shared_ctx_guard(var) { }			\
++	struct name
 +
-+# define __must_hold(x)
-+# define __acquires(x)
-+# define __cond_acquires(x)
-+# define __releases(x)
-+# define __acquire(x)		(void)0
-+# define __release(x)		(void)0
-+# define __cond_lock(x, c)	(c)
++/**
++ * disable_context_analysis() - disables context analysis
++ *
++ * Disables context analysis. Must be paired with a later
++ * enable_context_analysis().
++ */
++# define disable_context_analysis()				\
++	__diag_push();						\
++	__diag_ignore_all("-Wunknown-warning-option", "")	\
++	__diag_ignore_all("-Wthread-safety", "")		\
++	__diag_ignore_all("-Wthread-safety-pointer", "")
 +
-+#endif /* __CHECKER__ */
++/**
++ * enable_context_analysis() - re-enables context analysis
++ *
++ * Re-enables context analysis. Must be paired with a prior
++ * disable_context_analysis().
++ */
++# define enable_context_analysis() __diag_pop()
 +
-+#endif /* _LINUX_COMPILER_CONTEXT_ANALYSIS_H */
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 0a1b9598940d..7eb8d8db6c28 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -24,6 +24,8 @@
- # define BTF_TYPE_TAG(value) /* nothing */
- #endif
- 
-+#include <linux/compiler-context-analysis.h>
++/**
++ * __no_context_analysis - function attribute, disables context analysis
++ *
++ * Function attribute denoting that context analysis is disabled for the
++ * whole function. Prefer use of `context_unsafe()` where possible.
++ */
++# define __no_context_analysis	__attribute__((no_thread_safety_analysis))
 +
- /* sparse defines __CHECKER__; see Documentation/dev-tools/sparse.rst */
++#else /* !WARN_CONTEXT_ANALYSIS */
++
++# define __ctx_guard_type(name)
++# define __reentrant_ctx_guard
++# define __acquires_ctx_guard(...)
++# define __acquires_shared_ctx_guard(...)
++# define __try_acquires_ctx_guard(ret, var)
++# define __try_acquires_shared_ctx_guard(ret, var)
++# define __releases_ctx_guard(...)
++# define __releases_shared_ctx_guard(...)
++# define __assumes_ctx_guard(...)
++# define __assumes_shared_ctx_guard(...)
++# define __returns_ctx_guard(var)
++# define __guarded_by(...)
++# define __pt_guarded_by(...)
++# define __excludes_ctx_guard(...)
++# define __requires_ctx_guard(...)
++# define __requires_shared_ctx_guard(...)
++# define __acquire_ctx_guard(var)			do { } while (0)
++# define __acquire_shared_ctx_guard(var)		do { } while (0)
++# define __try_acquire_ctx_guard(var, ret)		(ret)
++# define __try_acquire_shared_ctx_guard(var, ret)	(ret)
++# define __release_ctx_guard(var)			do { } while (0)
++# define __release_shared_ctx_guard(var)		do { } while (0)
++# define __assume_ctx_guard(var)			do { (void)(var); } while (0)
++# define __assume_shared_ctx_guard(var)			do { (void)(var); } while (0)
++# define context_guard_struct(name, ...)		struct __VA_ARGS__ name
++# define disable_context_analysis()
++# define enable_context_analysis()
++# define __no_context_analysis
++
++#endif /* WARN_CONTEXT_ANALYSIS */
++
++/**
++ * context_unsafe() - disable context checking for contained code
++ *
++ * Disables context checking for contained statements or expression.
++ *
++ * .. code-block:: c
++ *
++ *	struct some_data {
++ *		spinlock_t lock;
++ *		int counter __guarded_by(&lock);
++ *	};
++ *
++ *	int foo(struct some_data *d)
++ *	{
++ *		// ...
++ *		// other code that is still checked ...
++ *		// ...
++ *		return context_unsafe(d->counter);
++ *	}
++ */
++#define context_unsafe(...)		\
++({					\
++	disable_context_analysis();	\
++	__VA_ARGS__;			\
++	enable_context_analysis()	\
++})
++
++/**
++ * __context_unsafe() - function attribute, disable context checking
++ * @comment: comment explaining why opt-out is safe
++ *
++ * Function attribute denoting that context analysis is disabled for the
++ * whole function. Forces adding an inline comment as argument.
++ */
++#define __context_unsafe(comment) __no_context_analysis
++
++/**
++ * context_unsafe_alias() - helper to insert a context guard "alias barrier"
++ * @p: pointer aliasing a context guard or object containing context guards
++ *
++ * No-op function that acts as a "context guard alias barrier", where the
++ * analysis rightfully detects that we're switching aliases, but the switch is
++ * considered safe but beyond the analysis reasoning abilities.
++ *
++ * This should be inserted before the first use of such an alias.
++ *
++ * Implementation Note: The compiler ignores aliases that may be reassigned but
++ * their value cannot be determined (e.g. when passing a non-const pointer to an
++ * alias as a function argument).
++ */
++#define context_unsafe_alias(p) _context_unsafe_alias((void **)&(p))
++static inline void _context_unsafe_alias(void **p) { }
++
++/**
++ * token_context_guard() - declare an abstract global context guard instance
++ * @name: token context guard name
++ *
++ * Helper that declares an abstract global context guard instance @name, but not
++ * backed by a real data structure (linker error if accidentally referenced).
++ * The type name is `__ctx_guard_@name`.
++ */
++#define token_context_guard(name, ...)					\
++	context_guard_struct(__ctx_guard_##name, ##__VA_ARGS__) {};	\
++	extern const struct __ctx_guard_##name *name
++
++/**
++ * token_context_guard_instance() - declare another instance of a global context guard
++ * @ctx: token context guard previously declared with token_context_guard()
++ * @name: name of additional global context guard instance
++ *
++ * Helper that declares an additional instance @name of the same token context
++ * guard class @ctx. This is helpful where multiple related token contexts are
++ * declared, to allow using the same underlying type (`__ctx_guard_@ctx`) as
++ * function arguments.
++ */
++#define token_context_guard_instance(ctx, name)		\
++	extern const struct __ctx_guard_##ctx *name
++
++/*
++ * Common keywords for static context analysis. Both Clang's "capability
++ * analysis" and Sparse's "context tracking" are currently supported.
++ */
  #ifdef __CHECKER__
- /* address spaces */
-@@ -34,14 +36,6 @@
- # define __rcu		__attribute__((noderef, address_space(__rcu)))
- static inline void __chk_user_ptr(const volatile void __user *ptr) { }
- static inline void __chk_io_ptr(const volatile void __iomem *ptr) { }
--/* context/locking */
--# define __must_hold(x)	__attribute__((context(x,1,1)))
--# define __acquires(x)	__attribute__((context(x,0,1)))
--# define __cond_acquires(x) __attribute__((context(x,0,-1)))
--# define __releases(x)	__attribute__((context(x,1,0)))
--# define __acquire(x)	__context__(x,1)
--# define __release(x)	__context__(x,-1)
--# define __cond_lock(x,c)	((c) ? ({ __acquire(x); 1; }) : 0)
- /* other */
- # define __force	__attribute__((force))
- # define __nocast	__attribute__((nocast))
-@@ -62,14 +56,6 @@ static inline void __chk_io_ptr(const volatile void __iomem *ptr) { }
  
- # define __chk_user_ptr(x)	(void)0
- # define __chk_io_ptr(x)	(void)0
--/* context/locking */
+ /* Sparse context/lock checking support. */
+ # define __must_hold(x)		__attribute__((context(x,1,1)))
++# define __must_not_hold(x)
+ # define __acquires(x)		__attribute__((context(x,0,1)))
+ # define __cond_acquires(x)	__attribute__((context(x,0,-1)))
+ # define __releases(x)		__attribute__((context(x,1,0)))
+ # define __acquire(x)		__context__(x,1)
+ # define __release(x)		__context__(x,-1)
+ # define __cond_lock(x, c)	((c) ? ({ __acquire(x); 1; }) : 0)
++/* For Sparse, there's no distinction between exclusive and shared locks. */
++# define __must_hold_shared	__must_hold
++# define __acquires_shared	__acquires
++# define __cond_acquires_shared __cond_acquires
++# define __releases_shared	__releases
++# define __acquire_shared	__acquire
++# define __release_shared	__release
++# define __cond_lock_shared	__cond_acquire
+ 
+ #else /* !__CHECKER__ */
+ 
 -# define __must_hold(x)
 -# define __acquires(x)
 -# define __cond_acquires(x)
 -# define __releases(x)
--# define __acquire(x)	(void)0
--# define __release(x)	(void)0
--# define __cond_lock(x,c) (c)
- /* other */
- # define __force
- # define __nocast
+-# define __acquire(x)		(void)0
+-# define __release(x)		(void)0
+-# define __cond_lock(x, c)	(c)
++/**
++ * __must_hold() - function attribute, caller must hold exclusive context guard
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the caller must hold the given context
++ * guard instance @x exclusively.
++ */
++# define __must_hold(x)		__requires_ctx_guard(x)
++
++/**
++ * __must_not_hold() - function attribute, caller must not hold context guard
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the caller must not hold the given context
++ * guard instance @x.
++ */
++# define __must_not_hold(x)	__excludes_ctx_guard(x)
++
++/**
++ * __acquires() - function attribute, function acquires context guard exclusively
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the function acquires the given context
++ * guard instance @x exclusively, but does not release it.
++ */
++# define __acquires(x)		__acquires_ctx_guard(x)
++
++/**
++ * __cond_acquires() - function attribute, function conditionally
++ *                     acquires a context guard exclusively
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the function conditionally acquires the
++ * given context guard instance @x exclusively, but does not release it.
++ */
++# define __cond_acquires(x)	__try_acquires_ctx_guard(1, x)
++
++/**
++ * __releases() - function attribute, function releases a context guard exclusively
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the function releases the given context
++ * guard instance @x exclusively. The associated context must be active on
++ * entry.
++ */
++# define __releases(x)		__releases_ctx_guard(x)
++
++/**
++ * __acquire() - function to acquire context guard exclusively
++ * @x: context guard instance pointer
++ *
++ * No-op function that acquires the given context guard instance @x exclusively.
++ */
++# define __acquire(x)		__acquire_ctx_guard(x)
++
++/**
++ * __release() - function to release context guard exclusively
++ * @x: context guard instance pointer
++ *
++ * No-op function that releases the given context guard instance @x.
++ */
++# define __release(x)		__release_ctx_guard(x)
++
++/**
++ * __cond_lock() - function that conditionally acquires a context guard
++ *                 exclusively
++ * @x: context guard instance pinter
++ * @c: boolean expression
++ *
++ * Return: result of @c
++ *
++ * No-op function that conditionally acquires context guard instance @x
++ * exclusively, if the boolean expression @c is true. The result of @c is the
++ * return value; for example:
++ *
++ * .. code-block:: c
++ *
++ *	#define spin_trylock(l) __cond_lock(&lock, _spin_trylock(&lock))
++ */
++# define __cond_lock(x, c)	__try_acquire_ctx_guard(x, c)
++
++/**
++ * __must_hold_shared() - function attribute, caller must hold shared context guard
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the caller must hold the given context
++ * guard instance @x with shared access.
++ */
++# define __must_hold_shared(x)	__requires_shared_ctx_guard(x)
++
++/**
++ * __acquires_shared() - function attribute, function acquires context guard shared
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the function acquires the given
++ * context guard instance @x with shared access, but does not release it.
++ */
++# define __acquires_shared(x)	__acquires_shared_ctx_guard(x)
++
++/**
++ * __cond_acquires_shared() - function attribute, function conditionally
++ *                            acquires a context guard shared
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the function conditionally acquires the
++ * given context guard instance @x with shared access, but does not release it.
++ */
++# define __cond_acquires_shared(x) __try_acquires_shared_ctx_guard(1, x)
++
++/**
++ * __releases_shared() - function attribute, function releases a
++ *                       context guard shared
++ * @x: context guard instance pointer
++ *
++ * Function attribute declaring that the function releases the given context
++ * guard instance @x with shared access. The associated context must be active
++ * on entry.
++ */
++# define __releases_shared(x)	__releases_shared_ctx_guard(x)
++
++/**
++ * __acquire_shared() - function to acquire context guard shared
++ * @x: context guard instance pointer
++ *
++ * No-op function that acquires the given context guard instance @x with shared
++ * access.
++ */
++# define __acquire_shared(x)	__acquire_shared_ctx_guard(x)
++
++/**
++ * __release_shared() - function to release context guard shared
++ * @x: context guard instance pointer
++ *
++ * No-op function that releases the given context guard instance @x with shared
++ * access.
++ */
++# define __release_shared(x)	__release_shared_ctx_guard(x)
++
++/**
++ * __cond_lock_shared() - function that conditionally acquires a context guard shared
++ * @x: context guard instance pinter
++ * @c: boolean expression
++ *
++ * Return: result of @c
++ *
++ * No-op function that conditionally acquires context guard instance @x with
++ * shared access, if the boolean expression @c is true. The result of @c is the
++ * return value.
++ */
++# define __cond_lock_shared(x, c) __try_acquire_shared_ctx_guard(x, c)
+ 
+ #endif /* __CHECKER__ */
+ 
++/**
++ * __acquire_ret() - helper to acquire context guard of return value
++ * @call: call expression
++ * @ret_expr: acquire expression that uses __ret
++ */
++#define __acquire_ret(call, ret_expr)		\
++	({					\
++		__auto_type __ret = call;	\
++		__acquire(ret_expr);		\
++		__ret;				\
++	})
++
++/**
++ * __acquire_shared_ret() - helper to acquire context guard shared of return value
++ * @call: call expression
++ * @ret_expr: acquire shared expression that uses __ret
++ */
++#define __acquire_shared_ret(call, ret_expr)	\
++	({					\
++		__auto_type __ret = call;	\
++		__acquire_shared(ret_expr);	\
++		__ret;				\
++	})
++
++/*
++ * Attributes to mark functions returning acquired context guards.
++ *
++ * This is purely cosmetic to help readability, and should be used with the
++ * above macros as follows:
++ *
++ *   struct foo { spinlock_t lock; ... };
++ *   ...
++ *   #define myfunc(...) __acquire_ret(_myfunc(__VA_ARGS__), &__ret->lock)
++ *   struct foo *_myfunc(int bar) __acquires_ret;
++ *   ...
++ */
++#define __acquires_ret		__no_context_analysis
++#define __acquires_shared_ret	__no_context_analysis
++
+ #endif /* _LINUX_COMPILER_CONTEXT_ANALYSIS_H */
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 3034e294d50d..696e2a148a15 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -613,6 +613,36 @@ config DEBUG_FORCE_WEAK_PER_CPU
+ 	  To ensure that generic code follows the above rules, this
+ 	  option forces all percpu variables to be defined as weak.
+ 
++config WARN_CONTEXT_ANALYSIS
++	bool "Compiler context-analysis warnings"
++	depends on CC_IS_CLANG && CLANG_VERSION >= 220000
++	# Branch profiling re-defines "if", which messes with the compiler's
++	# ability to analyze __cond_acquires(..), resulting in false positives.
++	depends on !TRACE_BRANCH_PROFILING
++	default y
++	help
++	  Context Analysis is a language extension, which enables statically
++	  checking that required contexts are active (or inactive) by acquiring
++	  and releasing user-definable "context guards".
++
++	  Clang's name of the feature is "Thread Safety Analysis". Requires
++	  Clang 22 or later.
++
++	  Produces warnings by default. Select CONFIG_WERROR if you wish to
++	  turn these warnings into errors.
++
++	  For more details, see Documentation/dev-tools/context-analysis.rst.
++
++config WARN_CONTEXT_ANALYSIS_ALL
++	bool "Enable context analysis for all source files"
++	depends on WARN_CONTEXT_ANALYSIS
++	depends on EXPERT && !COMPILE_TEST
++	help
++	  Enable tree-wide context analysis. This is likely to produce a
++	  large number of false positives - enable at your own risk.
++
++	  If unsure, say N.
++
+ endmenu # "Compiler options"
+ 
+ menu "Generic Kernel Debugging Instruments"
+diff --git a/scripts/Makefile.context-analysis b/scripts/Makefile.context-analysis
+new file mode 100644
+index 000000000000..70549f7fae1a
+--- /dev/null
++++ b/scripts/Makefile.context-analysis
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0
++
++context-analysis-cflags := -DWARN_CONTEXT_ANALYSIS		\
++	-fexperimental-late-parse-attributes -Wthread-safety	\
++	-Wthread-safety-pointer -Wthread-safety-beta
++
++export CFLAGS_CONTEXT_ANALYSIS := $(context-analysis-cflags)
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 1d581ba5df66..aa45b3273f7c 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -105,6 +105,16 @@ _c_flags += $(if $(patsubst n%,, \
+ 	-D__KCSAN_INSTRUMENT_BARRIERS__)
+ endif
+ 
++#
++# Enable context analysis flags only where explicitly opted in.
++# (depends on variables CONTEXT_ANALYSIS_obj.o, CONTEXT_ANALYSIS)
++#
++ifeq ($(CONFIG_WARN_CONTEXT_ANALYSIS),y)
++_c_flags += $(if $(patsubst n%,, \
++		$(CONTEXT_ANALYSIS_$(target-stem).o)$(CONTEXT_ANALYSIS)$(if $(is-kernel-object),$(CONFIG_WARN_CONTEXT_ANALYSIS_ALL))), \
++		$(CFLAGS_CONTEXT_ANALYSIS))
++endif
++
+ #
+ # Enable AutoFDO build flags except some files or directories we don't want to
+ # enable (depends on variables AUTOFDO_PROFILE_obj.o and AUTOFDO_PROFILE).
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
