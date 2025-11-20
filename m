@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F00E3CF8575
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7DDACF8576
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:25:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E93E6B007B; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
+	id 228906B0096; Thu, 20 Nov 2025 04:25:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0F06B0089; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
+	id 2005F6B0098; Thu, 20 Nov 2025 04:25:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D69A6B008C; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
+	id 13C5D6B0099; Thu, 20 Nov 2025 04:25:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 068EA6B007B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B01D413BB4C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:24:42 +0000 (UTC)
-X-FDA: 84130450404.20.F15716D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E496EC0009
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:24:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWbw+OUy;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 020346B0096
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:25:09 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF3A21407EF
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:25:09 +0000 (UTC)
+X-FDA: 84130451538.26.21A3163
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1FB6B140009
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:25:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uwLOIVrC;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763630681;
+	s=arc-20220608; t=1763630708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MexTHsODPsFaneP6axrOnEPrzTnipF93xhJ0bFbDIz8=;
-	b=Otf1ETrIJZO/UDAs6C89i2uOSmDsaDG9p05jHVKuaxBu/RjH8hieo21gwlflilo+U76Ks1
-	XwutSuZVGCaNAL4eaS/QD67pmuanOSJxqLa7+9Z3R3LPK4NqG5kEZtanT0wMJfLb6SFA7G
-	K37m3yAM0nDXFoCOYt9l2y2XTaezBbU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWbw+OUy;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763630681; a=rsa-sha256;
+	bh=rWSmvSxXpg/mSZQH6kbqxm/dkIi5PSx5PsRdWHSKC6k=;
+	b=yxlYHsoMzXjBZR5Al1Fw3VzwDMPIyrU0UNKlFhZKHpWBQqL4JCWWU2JQ8OZ55T0mXosrq9
+	AXfYPS37pgJTxhKhzOJIkaCY+CpMvlCHBYjWHVZz3kOIlnIRmgD9G2xBxpspwI5aRMNKKh
+	vV1EIWvzTjlgcv2QrZF4cbFPoS4s89M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763630708; a=rsa-sha256;
 	cv=none;
-	b=E1xqYu2UkbZ9QbcTsD0xLcO55bAm52MSasWGviTz2ld5sX66BL3UmatojeVz6+nughC72Z
-	+7f6O41RhDS+lEnc6J/BGxobMlumD3OYsDCPUhlziW97023X9PFPjivC9PPVYFmkbeSzxw
-	fI28d8wD11foGQ0wKU6wp0Lck8Aucvg=
+	b=npcvzna0X1yykq3jRA4w1BVSUGgsS/nxUwtF9EI4UmCtEsBgkiqUsaMIp7YEN6gybard40
+	XrMD3QbeeT2yfdxMczMeo3UnisTgN9UEzt15/dVbY0er+Xv0pXwhIVCQb4ROaRUuTIV6y1
+	rEGUX8FNIxsIRTRpI/Dl79WkRnR6YJM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uwLOIVrC;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5DA4416B3;
-	Thu, 20 Nov 2025 09:24:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5A8C4CEF1;
-	Thu, 20 Nov 2025 09:24:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6CE1F60007;
+	Thu, 20 Nov 2025 09:25:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8E6C4CEF1;
+	Thu, 20 Nov 2025 09:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763630679;
-	bh=yMpM6nvcM1itHRSp8tmlbz1cYUJ/Loqws7g5zCaxfzQ=;
+	s=k20201202; t=1763630707;
+	bh=Zxcj9YrpAEfvPY91o1U5hwiHCXNZdysrcM08YutqhjA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KWbw+OUy0Wv5wFZ6Y8BGC1yDMPrd1YgLC8xh53gmso8bTjGeqsB4zWE+kJUflx3UE
-	 ViUBcBqTk/fhkjBp216aqkVvOgzV4GQYWxE/rABw44iVPQVzV8a5q7EOHTRja2YB9X
-	 yaA6ul6O0ng8UAgA+ERWORkBsfp3c8Rdd9RYRTsZ2IQtAmijeV1W2QajdmJicONMGT
-	 LU4LyeqPE+H5oHQ7tN0AR6sCKJDSes2RlmSaAXwvF/ZbB9l/CnIsnBMrYDbSNYS0/W
-	 Nf2N7hOFKS5mEuRlmO1bGEM4xzpwmv+stVvqMwILPri2deacRUMvObwIZBMjkdeG99
-	 hiy2SdVL5mvbA==
-Message-ID: <21c6ef2d-6836-47cf-9529-6838a940d06f@kernel.org>
-Date: Thu, 20 Nov 2025 10:24:33 +0100
+	b=uwLOIVrCHyj293/4WH4HOG2zu281VSxljjgOmaymHYjlguERPfAvjpub/HQXMaBV3
+	 MndUSzl+xdJ8n6JaBOtzKpWB1DbPDCNe/+bZKBLtAV6C8SJAgHO9iQQ6phudPOCvEt
+	 yzp5BKvBVMliCmTQjTZBAfV0UB4leb7yzJ5V5vhTjJRDnseA2Bh0fx6+sV8qEy6VgS
+	 tB29W2mj6vEzz8sO8gakgTCpvxTjCXTuQim5ckt/P4nF/5rXOVHSiqdq9zEukpNm3Q
+	 2cFd6XYCoDx8kmoueTfcrs8w8yvqO0o9js8bETMGbuvRdVUN6AK8MX4foCpnH0OJkr
+	 mQGfW84PZULcQ==
+Message-ID: <875584d7-5a68-4f7a-8549-2a9cd6c7f9d8@kernel.org>
+Date: Thu, 20 Nov 2025 10:25:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] mm/huge_memory: fix NULL pointer deference when
- splitting folio
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr
-Cc: linux-mm@kvack.org, stable@vger.kernel.org
-References: <20251119235302.24773-1-richard.weiyang@gmail.com>
+Subject: Re: [RFC PATCH 1/3] mm/huge_memory: prevent NULL pointer dereference
+ in try_folio_split_to_order()
+To: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251120035953.1115736-1-ziy@nvidia.com>
+ <20251120035953.1115736-2-ziy@nvidia.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251119235302.24773-1-richard.weiyang@gmail.com>
+In-Reply-To: <20251120035953.1115736-2-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E496EC0009
-X-Stat-Signature: fk6rxnnncxd68rukstidsgnnczdwra4c
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763630680-379558
-X-HE-Meta: U2FsdGVkX19f3lRMsPD2OIZMta3FU6Dystu6SDAViIV9C0jg1wluHyoc+SKoFa3jNFPOEakY7CqckBvfqMxyzithfaKfyfV6oqmQsCbdQn+kjcwM4N9/QwP+zLbQC9gs0LJ5SQxIqeUuWpINBsGFDTVm2YblRxjc84OQBNTiDmpD+VbDds0WIets5ipk/gn9ZjFVxXE4cATYBKI2ezPCjrsR3NkXJgYZUzvesEeTkpE7+8CjHlCcYN/NhUilNxEFlsiVwb/ZanaCES6IgjEK3SUsTDuJD5+G+gotiz7B7WjEDTcKSPzDXLxD8ZP9timO0LxiAK/egglBhDpP1MI4w/dEdL1a7ML/OU1oIGB6mU0DB8c25Ytq/kLfLpvvuj7Bct9ORqcYflwSOJP8miRuFPvQGRF6WYfK7zGsOY2a4DKcvEb0tcmXLejdsSOegbpH61GBK9zB8XJoKmoP0FrzyjQsOkRAHNdrx7KR3Kd2O2AvMW+vnWkvkmzGNBVjFRMgiURMVe8K4BUs2LuRgmmoHSaEw3RHQfc1feTLM4KNTSXrbDNMawmwHPSVFL4f9ny4HsfuWAwJW0q89KS03FEYXjj7IPS7CigVyHc31qJHNGcdtS/0QriOv4cQuo+GzDD8ya1WxXutTsY7Tr9AZsdnvVvCX+5py2CfnWh6ufBFtKx1vA73ZkXqVC6RcneVLLZ2QxOR3i5iSyc/wqQ3GSS1kJg5XeSXXrMkbrM1SJv1GNncYM8GwkeFSLYDBdrYAxThdz2gF6FI/GG9F1TS+prE48nubefA0QoUnC0DFQAw5CKbKkvaFmTcByXECvqxTibl+fJrlIjLRSIjv0B4IKvPnjy5ckGMGm7NAD6FCvc1YCkqwxWjKvuu/DxcwD9ey9W13aZbB7NoACovYv9xrY5ioXEBHlzOs9j8c23umfa/EI64Ec2660Y5KrrTavqlBsTQD5ufdIZSWFCcfNgSGqY
- 8Pi66Ee3
- WlMEpPlhSY7firUKjvRntj9kqJzGZKiqc47XsTMGBTt7SyPLTa5PmoArVlnAEPadUCoCKM5wKaX99MNdEW1iWk4F1BmXmpOqvBjGh3EkgPAEKZDNekLZmQqE5eK7ZDW0LFbKSCPym9Zvo5nBRqFn3K7/VbD/NsldZ93rP2XsozGcpCx2jlwepsY8ooXl6jtF9/8Mqlc62Ll1gvZZ/8+APCQFh/YkMojAI9TbFYXvwIkwiWwqXHUn+6xurBygQQ5GoLIi57dRypHB8jxj+FCxMZ3zNZjKQfZYdzP4aRv55YpCD5CnvuiPNXX5bN/40EXXV+U9tvPiAMmmbzYr9s/e9PRbCn7fQ8zfAZr9ZskZZ8PbpGQKxR5HJWGXSWGuDp/HYhrVSGEtEDcmvEPs+6CD6YP5lIGHf1sTF1KIVb5WbkW4VXdzIOn4nzxw0b6kmNr/JU+FFt/xyZbHGX7ST2P+iwEm4fOXGgYaIkQdHjn+aPBugXIh+oIAYaCM41Q==
+X-Rspamd-Queue-Id: 1FB6B140009
+X-Stat-Signature: 6fhx5u8sa1bige8m41czqsgp5jwunnar
+X-HE-Tag: 1763630707-404243
+X-HE-Meta: U2FsdGVkX18Pz6kIqq5Czi535TP6564b7L6Ps6MiyUDJE9BZ7tuXmJ3NFR3+CAuHuPS5bOdr6Owm2iRBkdtZK4IknhaTd5W1heiOBENejuiBXRAG27Oq9UImAb4Lu6eNerCwyBUUQElxeO84x2VpKmO++R2dWDjjbQCtTn7gkCg39eoRrOC+/MidOmCKUY8PND50DDjZYoO1uUkLMeCVIVwO6ZlI4lq7gBgdONSGE8oJeAHMAahXcOSDLQKGI9Ql83263iyE5ZXknbOXRaqqcVIsqAbIhrhUVLRRZCoA+8k6PPvBnSylnqug9XkwLlPRtgpQlXy+omEIUtiJErrN9H3MHwuUN72iMp148g0J+ih20S5heJjELqtL4GO/5ZU76ZSiyNbLrVdCFeVBrHPsNoegJVifDe08Cmr1FhYf05KsSR656IKSHQOsO79ul7veCtUQ0WC2jXE+rhvuROqyd0DaF7b20/3eZBVL+/lU4rUmSbUGvBTllTK81y4o0bt4X02Pa1sBPTf59y8HaBkV24Qy9lzYhZ7/e8NIiNCD2meqYstgNhm6fGSe7OLKYk2J98yN0Zs+Md9NDHC9uDwOFNYT50x7cjJoEU4EOHfSfBtc3OpLwwRjPO2v+GhHzuicwZyIeyFRJpUEz1HBu7x1L92Z/MZQxXSQSXZEirXcmBIg4BaGrzZa/DZA+D+cWC0JNs7ScIlPBLynPLZwe10NpQB/POz/A/MiFbF5nMR7/YGVMUAIJyg7ZM+A3X5T2MF/qjQx/3I449H96cqjCyIuXQjNPYdkszSV30Tkv6wJYDgHemJKrhpI0uzCUUNNERXWqAXWXLVSuKYGw+EATna7kqMFDbXuSBitqsA+2rEma8euYs+4jrJQwwR0/+v1vZHjuR2aIYnCs62Ql4wLHg81bXRMdDUlnCzXD1XOXlao5zW/9lpOCBD2jYRf8UP/rDXDqyNOP9NA5zgoJ/aeewl
+ sfJImjDk
+ QrLOEvzkkUzM1jCl+Zhcacxr6p52RgLLttLx/mFCDBcEdh9auwK2fPPdqiWYOKWchYKCW9IwpYY03vdmgkDeYjfJC5LjhmbUt7m8IiRj/0IrmiU0JXORCcbymguKD8AN6ANAHrhpjYVniXYZCowexKDZWbORNUgXJVFodyPFflHBZIo2Sp6A7I9wG7vGpKOsSj5tE9c4xqIJnNhsO1f0p/gSv15u/Ze+PioIRX9niuN/gzeFVFQUNFBkcwawvq6brGFXzn2vOyhMiLd/bmyhcnSxU4FaRspLvVDQDvkWhxI7g72/3UFgJFympWcre12dkrf8vB9/F4RF54Pqt3uw8RmYee5u1kp8g4YztyRAEIVa3AIIgcSPvbvxl8/hWkO0jRh8aC91L1XQ69tftHSFmEmTOh3ncGDeCtiIZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,26 +101,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 00:53, Wei Yang wrote:
-> Commit c010d47f107f ("mm: thp: split huge page to any lower order
-> pages") introduced an early check on the folio's order via
-> mapping->flags before proceeding with the split work.
+On 11/20/25 04:59, Zi Yan wrote:
+> folio_split_supported() used in try_folio_split_to_order() requires
+> folio->mapping to be non NULL, but current try_folio_split_to_order() does
+> not check it. Add the check to prevent NULL pointer dereference.
 > 
-> This check introduced a bug: for shmem folios in the swap cache and
-> truncated folios, the mapping pointer can be NULL. Accessing
-> mapping->flags in this state leads directly to a NULL pointer
-> dereference.
+> There is no issue in the current code, since try_folio_split_to_order() is
+> only used in truncate_inode_partial_folio(), where folio->mapping is not
+> NULL.
 > 
-> This commit fixes the issue by moving the check for mapping != NULL
-> before any attempt to access mapping->flags.
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>   include/linux/huge_mm.h | 7 +++++++
+>   1 file changed, 7 insertions(+)
 > 
-> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> Cc: <stable@vger.kernel.org>
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 1d439de1ca2c..0d55354e3a34 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -407,6 +407,13 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
+>   static inline int try_folio_split_to_order(struct folio *folio,
+>   		struct page *page, unsigned int new_order)
+>   {
+> +	/*
+> +	 * Folios that just got truncated cannot get split. Signal to the
+> +	 * caller that there was a race.
+> +	 */
+> +	if (!folio_test_anon(folio) && !folio->mapping)
+> +		return -EBUSY;
+> +
+>   	if (!folio_split_supported(folio, new_order, SPLIT_TYPE_NON_UNIFORM, /* warns= */ false))
+>   		return split_huge_page_to_order(&folio->page, new_order);
+>   	return folio_split(folio, new_order, page, NULL);
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+I guess we'll take the one from Wei
+
+https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
+
+right?
 
 -- 
 Cheers
