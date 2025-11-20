@@ -4,103 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076EACF9C40
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 16:21:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71C78CF887B
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 16:36:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 583D96B0028; Thu, 20 Nov 2025 11:21:59 -0500 (EST)
+	id BC2836B000A; Thu, 20 Nov 2025 11:36:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55C446B00B1; Thu, 20 Nov 2025 11:21:59 -0500 (EST)
+	id B737A6B002F; Thu, 20 Nov 2025 11:36:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471AE6B00B2; Thu, 20 Nov 2025 11:21:59 -0500 (EST)
+	id AB0286B00A8; Thu, 20 Nov 2025 11:36:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 32DE46B0028
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:21:59 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7FB812EEB5
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:21:58 +0000 (UTC)
-X-FDA: 84131501916.12.38BC390
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0EA321C0005
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:21:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YiLNKzrL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763655717; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C5C26B000A
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:36:38 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5467D12F199
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:36:38 +0000 (UTC)
+X-FDA: 84131538876.22.46B3F4C
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 78FD7C001C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:36:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YWUNow44;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=bgeffon@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763656596; a=rsa-sha256;
 	cv=none;
-	b=KLGEh1YfCikSlxujCxcfalky5KJ1sUeHqR66PJzQuGRYj4FBb3pjwx20f7/ieJFaYTasdA
-	sRmkv0ItOEY1YSYEKBmlT/zv8U2and4dEqolZUIXERyt/+AmKnjQS3Ea4sfIRsM5xC6TD/
-	+DCjwCySZPmsCbXrbSgm8iHAfzHMszE=
+	b=BxxXoOh+GNM8378Wj4Hl6JIFv9er4PoXykykZy9x5qnI2jmasL6Mf7EmUh5bvyXyKAia+A
+	fLu3J523MvIqkpcbZ0f3dMgEKJIBXlV4LPE/r/0sMFVr2a4p0mK5ODNhdU/Jt/1qN8OeiZ
+	c0mlFeExYObJ6plcgvgE6miVMmyA/Zo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YiLNKzrL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YWUNow44;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=bgeffon@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763655717;
+	s=arc-20220608; t=1763656596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sPhklqFTkvPhAiUk4xe8wPf+zcMb+rfWX/qb94drxV4=;
-	b=ma7d7GCSUCvvtH+yAhUQEo+dO8kHqrRsQTXY96ESl2+S5b1HfhinqikIga51hpV0pg6Wf9
-	XQLMNpD//XF91lHO+55mvLV+BH+xA1Ti5vE7e5pt8YWsn3+PyqbUzzDA/tlFMP29kJnl7/
-	BpwN39s75ErI2aXZiwogmEBx8WWQJyI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CEFA14167E;
-	Thu, 20 Nov 2025 16:21:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97884C4CEF1;
-	Thu, 20 Nov 2025 16:21:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763655715;
-	bh=NZKGOfpHm1+oI2EFNHX4s7/pBTvqhugD71XFSvGZD1A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YiLNKzrLmFvvyKW12ItCD0e9K8K/Bt/UXrcOtHd4kC5Rn5L2X+jvujiPQWWfLuSag
-	 wYOdQxeQgrA6o3riKZyzaLVi1WGOD6j/AswJ9H0Fmr4uFm/bBij2aJ6+jF7nUXJACI
-	 Ddb5YTxdvpmmat72DvvbiUfCrmoL+cOpaLqxDCMQvkvK//QNAOymY0SJ/gWntdw2jI
-	 KJ1h0KoIBCMLX/2RXZlHyCxsrQosgqMHx9HwWnItExwZtPXlVRhzhYCsnCs0Yb/xmp
-	 FGxqBeSdI2pJf2F3OpzcMiyrUaN76KscFGrSS16j4WvLB4ZDqGV5iA1G2+zLDtN6M2
-	 mK1Wjr6+5c5mA==
-Message-ID: <779100ad-a012-49ab-b2ba-b67335947481@kernel.org>
-Date: Thu, 20 Nov 2025 17:21:46 +0100
+	bh=MI69GlEKOdT6dKGc/fqL6NZfHR0DisLkriIWy/ff1KU=;
+	b=HXfTgxF6GaJB9KJ0CtiV8nm6AuyOqGuK+G+7LNhIE/PxMYhnAe1UXJSB+qc2qAPPm7AVgl
+	F9U8r+44XooNqvKCLbEdv8UPg6xLJOyXcGfxQQV7KWyGQd1ItDDQyIyussSi0ZccssFGqw
+	HYFdNfT9YsFJ1OZAg0Sy2MY7DeJIt0c=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29852dafa7dso201705ad.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:36:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763656595; x=1764261395; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MI69GlEKOdT6dKGc/fqL6NZfHR0DisLkriIWy/ff1KU=;
+        b=YWUNow445RECeUXJWahYvF3BwwezfrYCK+Rp6/mYUNw/dcnTEdGq3O/n5aRLvghTSG
+         slzAEl7erzAFuRNmdlyNP/UfiZzSMCEu7lzJ7+m2oWa76nmYheiL9XOGm5ZqJjtOfiYY
+         wRgOebvShdZ6R8AD7JdJGHwKg8XIAsgXQXLuGrnwPCVJFNFozgLIi4zjDfMYBAtIwG0N
+         eSCOFd6JF4RsvTldUZTHhY1/Uld9LFMT9zyUGHvhfYqN87All7hvdOyxOXooUfZEzSrw
+         YxMIPVoqtqboJQf5DTyqoSKgtl4rfpsqngvSUWeWj5qXXR+R+4UiIfaIwhiq3+PASdlY
+         yrkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763656595; x=1764261395;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MI69GlEKOdT6dKGc/fqL6NZfHR0DisLkriIWy/ff1KU=;
+        b=glaqmUl5BIIOqnwxX1uH2QVIfohgsMUPtYu4xC6UCBq6mJn4suTRBNfV50w3SYQj/F
+         BOneyls/o3N4HtRPMhuJy4jKKF9n8FGaZ1c+vQlGWGbAcYogigHLdI8j/sL27yTozgvR
+         ycMjB3r7Jc4Mlv1CDi5xo8W7RQyVrYU9v8yf6r8H95GDeBwNo2oLL5DpI2AKj8ysHZoF
+         r1w55IjSPOlpNFPKqhN75FcM5tIj55Ca4qPx/D6Sp8G1QwfbaxkTmwqRrz6jiWj6Z2o6
+         TCSzQquGXGa1y+jRV1NuaEPWy6pEBXYVAidHCvfcENjzKRqsYg8yLRwOxwE4bNs5ZbEe
+         qh+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVSZHNhROpDV272YVz5weeeKqIUS2WRO7OnOTUmqDf4/Cgluv/hXIHq97Q5p0gNcwgL8s36YfOYhA==@kvack.org
+X-Gm-Message-State: AOJu0Yx6as927Jy025IZFhYpNj9nIZKmyN0SN9gtg8t4XNv6ug6M3REJ
+	pVD/UNzhsx9BUicreCQXNzAdzmEX3eKKUpY43Oft7/avwdOCy1omFrTyWCmvK90FGYenhBvpgeO
+	k4XzXdmHp9a8Bt0g5rTSKBeJf4YwPRXKh85bQgdMb
+X-Gm-Gg: ASbGncsDhmfcDeEVVl6odN9FeDz0BT4hJUeCSp9dOCxHTa/IX4w2AgLlqMr7RJ0HPAE
+	gKUxxJBdCadExK6FfEwTwv/ll/swIhRzZ50BwPfzVRhFgnFbFPwEmcGTnxna9VR2u7eqwn54XrC
+	0P2KkqY7joICsq8Q+55ji8Tv6mIqgAPhIPc/lp3KaJXoK8o078IPLYzoZDMqyoveXC71L2wt4yt
+	QtisrfqEQRDlSujiSvt6TDS0faXx2slxyeGUHc65BM/0S6hRPu8fvbLdQX/mme9mmkKJGcmFoH2
+	ruPEHItxBFYK1wFB4fAaJ6finJiqu3YZGqrTw7OtLuLaKUSdtw7E6Tc=
+X-Google-Smtp-Source: AGHT+IHwbZhiTefJHOcoxsF0WPPJxsxN9tQq29Zp/xNBgglgSM1gNp7NoJsF7O880AqiUsYvqO+T4BOUMSNMohb/Nbs=
+X-Received: by 2002:a17:902:e54b:b0:299:c367:9e04 with SMTP id
+ d9443c01a7336-29b5dc5dcf8mr3271095ad.19.1763656594872; Thu, 20 Nov 2025
+ 08:36:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fixup: mm/huge_memory.c: introduce
- folio_split_unmapped
-To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, dri-devel@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251120134232.3588203-1-balbirs@nvidia.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251120134232.3588203-1-balbirs@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0EA321C0005
+References: <20251120152126.3126298-1-senozhatsky@chromium.org> <20251120152126.3126298-6-senozhatsky@chromium.org>
+In-Reply-To: <20251120152126.3126298-6-senozhatsky@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Thu, 20 Nov 2025 11:35:58 -0500
+X-Gm-Features: AWmQ_bm7DruXduZIQpRB_jSdesTnBG2UEkernRi3vrpgktZOUbhhguQOJZM17i8
+Message-ID: <CADyq12xHEQ4aFRdVDMkmuA1-r+FU7N4O7-8UUTpD9ACFo3tuZA@mail.gmail.com>
+Subject: Re: [RFC PATCHv5 5/6] zram: rework bdev block allocation
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Yuwen Chen <ywen.chen@foxmail.com>, Richard Chang <richardycc@google.com>, 
+	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 78FD7C001C
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 5pgrhnpinb9whf3y1exynyqynbmqi9q8
+X-Stat-Signature: 3i153ht7fe9she7atnw84i87mzoe9d8j
 X-Rspam-User: 
-X-HE-Tag: 1763655716-499802
-X-HE-Meta: U2FsdGVkX19Hl4bur78uFajvkZiHC2kyhQoIjlxz3rXabHaRwL9Gwa9MienP1lJfYHneWsEI+aRSdXko/NLdTDp7eC3f36YUqSVHHqzYXT2yRrN3QB6b+tPgDWb3ZMKltMi+GDr+SvHGLI3nndaAAQWLGX/lY04fl7Qq2nVJkc8+UJGhSTxpL8Bm8UUJwI2MfVXxrR0uH9KoXz8WV8ij44199imfHAGqBlswG0k1ZbwFyIF7T6ZIR8Om3YkaslDbydC2pprD13EMeomDKQpRXqR+ccqBaTPV8EmO82Ga3GCB86Iq0a6WNCtllzeCbt+CkZcic5ABEGlQiA7jrvLr2f0OQqS13e5dvc7jR40vcmlrix2Dcut+/RJP6UN9rY8rTriN7vmOqOSrlcNPJEgV5Om0GqqkdmSS02dGjDN4ho8n79prRN32c4jTK27FXnUnbOERLftLY0rPK+tIiKYc/yJiCld8P2Fs+CN1on04z+B7ghWOJGbSC7KN+xNCyxNtGqgw0eVJqoOsfyI6SzH+kxYaBW+ljlAoJ7vadkZiP77Dp7zlppsyW8tSpJg0kDeJwqSaGkTuwvucIO65/8+HKHmV4izIHZVRqwfqGO09xA5vKlBdjwtbJ9bQuMp2g9oNgWtOhTq8E6WP9+auXkkuTllKdeubJ/O8Klr8YbjJZJpkyn7kNWRrklCVuqAwYc6/ujnTK2WtLPzKgZhBtLyf1RKClxToxp90iAwZ71P7FsxY0A7wLh5ho2DFDLsBqMNn6SpjfXmAF1j1TrmKohtjYzNg6YsnMWh5UZHSvswbFKH+ylsC5UwDqddpLD37eH2H13Tcj0BaY4nB/27F+XES2ZZZlZp4Wv/qoktAvztlgGuOS3doZW4wa5kyK1wyfvy5bpJsU/6NQQfIoozBMsnIFR4D9NY12RemK6k15QTtwC6FeTxluOzjEArNuHMsNN8HVabF3wWGARMTnaX/HAH
- JHIfcNfh
- E5g1kg3Xmyz8F6xFBgT2qZfTDNLsNqfOgBzAhUMHe+IzGqrdVH/SmU8hYRGYks/TUIxQiowIH2z93mZuBAq9QiKNSuwiRSvo8hlmB5gbv0rfMMhGFXCm6ku8g4BmCs/MMQTGsWsnl5WiKJnu/BI/Evqgy5m2RB5lSq4driA55TZ1kQXrxvj4V0stGiW6XXxCxJrRsYuDrHl6Ye6AtEl9bIR77PBG634kmr8He29LnLyexY+J6LaitYmK1m7aqhvS4OeQS/VbKwSPYYVKTDBB68Kn33oLdS3nbtli6y6IIUbzudeWyxmSXsVO/T2CnHI3IDMegp9dtMjHHU45TkofIO5bVeW7wahV5n0JsM6K8C+14GaLhNqxyZAOAvil4DHuvk5xDC1rpEztm4yeMeTsEB/CLjBxtHlts50yWWE0p3382vKGwohOLL+Z6pzPg/xyaMmrWSzsQ0ZuMTwIiV0Zz5Lw9Il65PlHz7Exv2VUK4dBPb2i4S4R3F7ZaR78XB5il0yk85a5ftkqnieuoffm6TrmobuYKdb2etEM1HP4h0VuBSQFFwVQ8bRnTjPRYNAgBbLZQON5V73H9qI6/Sd5oQBWT+mnkZ1A4fGpgcT8KE6F6UY6Q+6/RGmRBVJ9xK3ZUtdxukHIVkFJ9HqSkJSuyeK2bOdCzgBlUcuruPI4SyBSqYR+raL75t5pRAiy9cNby17n4hjFBo5eIINq062b8TogrubXhW/pf6xkPuismu/oyLcee2r6vONgGy+UpEkpTVoTYjJLbPGZeKL9YTftCnSMX1CP51Qh3qOu1h+Bl6fRYDxM=
+X-HE-Tag: 1763656596-705816
+X-HE-Meta: U2FsdGVkX19WvdHkiGjxrMHXflWkP1FG6hRuUrn3B7pRbTLC8AO8qF2GC2923PolIcAWbHRqyJha8Y6LPim2DgtjZkbvC9A4kYJ2twxCHfhTk0bVtl8AkWwGGsOhRYTfQLHaLNciVfnsbOicyryekqjau81YfcEC9yNlAsXA3DelZBFTKjwt+J1HrfbwsdbYQ7UfuWmRz7T2Vv04Ff2maXJ9ZWOltaDPK+rDjQKrrhjfyxfnmKAXW+v6nQElUiBknZVX1riJB8aQTu6MfdeUfhCMtZguRxu9WBHsOaoYfHzLRojNEw7nBTrOwl+XTfZ/xLUSuBU+m3W/MWF4wyxc3XxrJfI2ZhBN1pGUiA50z5x7S/8ctma2q/Jr6TdcRw8xYcIjohUihCWFeE5I+AUCSYfIiLU+vKvXUq5OeguV+whG9cIzzkLJqkWBsZJV9CKWDkpTlHN5nkqhw6D/ZVL63yaffZzhkhKToqmJMeoq40Zj4JogBaYkXh9h/FF42vejBgPvdDu8laT8FFjWO75oaJNb42bc942CwoOFgGcoe3ADOVJVer46/EyOAN7nyWZVNymNGG1oxLkVzyU6YnrDOh3XXK/OP25zfuphv0OAECp00OxDdhDm555ZDoBphg8VC/wZQLhW9xvntF3BqO7TlOY81bVsEb0do4fg2/f6fbg8PpNTa8UiONXeMxD6uUYCtuaayc4GbDrrwQF92hagqE3UDkZcWaY0Id5/5GDYgYoJEK2Ov+ALoKwQVykikMS7xSVz0pBmaRBcCNd0lRQeqOZwhgucCHNgof1EiVCzk7RGuJWzAARl+ZJe4FTP7AIZo1qgxiTGseb5FXWja/5XVpjtiFyTvIP5LjAx5+jrJWfDq644Lhtwd+89i3MO95oYqIpsp13sUxxdn8uv1YiHJ5bEceaAGmDzY6tjHwOd85ZmFrc8UuKWgybhgFJTRJvspEJosFKwZNTzAUp4GPH
+ RIob5VH+
+ l8PMAwxEj+NDZncXtK7rsPltiGveWQtDDJopkgPuMWLB3nQFLQrxkvcFHx7Co8WLbUzFhh0Dpzmrt3csoISLhlryvN3kt5KbN6+x1GdiOY7u9bq2b6rAs4dSMq2h0RUm4lVxcTRPkJX3pC3DNQjpy/R8NxtgOLEGbrAUipjvTvSjNLwl1xsn+CX9e1dhmHNfKr4bTVl/e+YgzWuC4FuMYXcZEWIkXG/IyipFYb6OHIFtitmg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,84 +119,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 14:42, Balbir Singh wrote:
-> Code refactoring of __folio_split() via helper
-> __folio_freeze_and_split_unmapped() caused a regression with clang-20
-> with CONFIG_SHMEM=n, the compiler was not able to optimize away the
-> call to shmem_uncharge() due to changes in nr_shmem_dropped.
-> Fix this by adding a stub function for shmem_uncharge when
-> CONFIG_SHMEM is not defined.
-> 
-> smatch also complained about parameter end being used without
-> initialization, which is a false positive, but keep the tool happy
-> by sending in initialized parameters. end is initialized to 0.
-> smatch still complains about mapping being NULL and nr_shmem_dropped
-> may not be 0, but that is not true prior to or after the changes.
-> 
-> Add detailed documentation comments for folio_split_unmapped()
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Mika Penttilä <mpenttil@redhat.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+On Thu, Nov 20, 2025 at 10:22=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> First, writeback bdev ->bitmap bits are set only from one
+> context, as we can have only one single task performing
+> writeback, so we cannot race with anything else.  Remove
+> retry path.
+>
+> Second, we always check ZRAM_WB flag to distinguish writtenback
+> slots, so we should not confuse 0 bdev block index and 0 handle.
+> We can use first bdev block (0 bit) for writeback as well.
+>
+> While at it, give functions slightly more accurate names, as
+> we don't alloc/free anything there, we reserve a block for
+> async writeback or release the block.
+>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+
+Reviewed-by: Brian Geffon <bgeffon@google.com>
+
 > ---
-> This fixup should be squashed into the patch "mm/huge_memory.c:
-> introduce folio_split_unmapped" in mm/mm-unstable
-> 
->   include/linux/shmem_fs.h |  6 +++++-
->   mm/huge_memory.c         | 30 +++++++++++++++++++++---------
->   2 files changed, 26 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-> index 5b368f9549d6..7a412dd6eb4f 100644
-> --- a/include/linux/shmem_fs.h
-> +++ b/include/linux/shmem_fs.h
-> @@ -136,11 +136,16 @@ static inline bool shmem_hpage_pmd_enabled(void)
->   
->   #ifdef CONFIG_SHMEM
->   extern unsigned long shmem_swap_usage(struct vm_area_struct *vma);
-> +extern void shmem_uncharge(struct inode *inode, long pages);
-
-I forgot to add, we drop the "extern" on functions whenever we move them.
-
->   #else
->   static inline unsigned long shmem_swap_usage(struct vm_area_struct *vma)
->   {
->   	return 0;
->   }
+>  drivers/block/zram/zram_drv.c | 37 +++++++++++++++++------------------
+>  1 file changed, 18 insertions(+), 19 deletions(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 671ef2ec9b11..ecbd9b25dfed 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -500,6 +500,8 @@ static ssize_t idle_store(struct device *dev,
+>  }
+>
+>  #ifdef CONFIG_ZRAM_WRITEBACK
+> +#define INVALID_BDEV_BLOCK             (~0UL)
 > +
-> +static void shmem_uncharge(struct inode *inode, long pages)
-
-"static inline void" should resolve the compilation issue.
-
-
-
--- 
-Cheers
-
-David
+>  struct zram_wb_ctl {
+>         struct list_head idle_reqs;
+>         struct list_head done_reqs;
+> @@ -746,23 +748,20 @@ static ssize_t backing_dev_store(struct device *dev=
+,
+>         return err;
+>  }
+>
+> -static unsigned long alloc_block_bdev(struct zram *zram)
+> +static unsigned long zram_reserve_bdev_block(struct zram *zram)
+>  {
+> -       unsigned long blk_idx =3D 1;
+> -retry:
+> -       /* skip 0 bit to confuse zram.handle =3D 0 */
+> -       blk_idx =3D find_next_zero_bit(zram->bitmap, zram->nr_pages, blk_=
+idx);
+> -       if (blk_idx =3D=3D zram->nr_pages)
+> -               return 0;
+> +       unsigned long blk_idx;
+>
+> -       if (test_and_set_bit(blk_idx, zram->bitmap))
+> -               goto retry;
+> +       blk_idx =3D find_next_zero_bit(zram->bitmap, zram->nr_pages, 0);
+> +       if (blk_idx =3D=3D zram->nr_pages)
+> +               return INVALID_BDEV_BLOCK;
+>
+> +       set_bit(blk_idx, zram->bitmap);
+>         atomic64_inc(&zram->stats.bd_count);
+>         return blk_idx;
+>  }
+>
+> -static void free_block_bdev(struct zram *zram, unsigned long blk_idx)
+> +static void zram_release_bdev_block(struct zram *zram, unsigned long blk=
+_idx)
+>  {
+>         int was_set;
+>
+> @@ -887,7 +886,7 @@ static int zram_writeback_complete(struct zram *zram,=
+ struct zram_wb_req *req)
+>                  * (if enabled).
+>                  */
+>                 zram_account_writeback_rollback(zram);
+> -               free_block_bdev(zram, req->blk_idx);
+> +               zram_release_bdev_block(zram, req->blk_idx);
+>                 return err;
+>         }
+>
+> @@ -901,7 +900,7 @@ static int zram_writeback_complete(struct zram *zram,=
+ struct zram_wb_req *req)
+>          * finishes.
+>          */
+>         if (!zram_test_flag(zram, index, ZRAM_PP_SLOT)) {
+> -               free_block_bdev(zram, req->blk_idx);
+> +               zram_release_bdev_block(zram, req->blk_idx);
+>                 goto out;
+>         }
+>
+> @@ -989,8 +988,8 @@ static int zram_writeback_slots(struct zram *zram,
+>                                 struct zram_pp_ctl *ctl,
+>                                 struct zram_wb_ctl *wb_ctl)
+>  {
+> +       unsigned long blk_idx =3D INVALID_BDEV_BLOCK;
+>         struct zram_wb_req *req =3D NULL;
+> -       unsigned long blk_idx =3D 0;
+>         struct zram_pp_slot *pps;
+>         int ret =3D 0, err =3D 0;
+>         u32 index =3D 0;
+> @@ -1022,9 +1021,9 @@ static int zram_writeback_slots(struct zram *zram,
+>                                 ret =3D err;
+>                 }
+>
+> -               if (!blk_idx) {
+> -                       blk_idx =3D alloc_block_bdev(zram);
+> -                       if (!blk_idx) {
+> +               if (blk_idx =3D=3D INVALID_BDEV_BLOCK) {
+> +                       blk_idx =3D zram_reserve_bdev_block(zram);
+> +                       if (blk_idx =3D=3D INVALID_BDEV_BLOCK) {
+>                                 ret =3D -ENOSPC;
+>                                 break;
+>                         }
+> @@ -1058,7 +1057,7 @@ static int zram_writeback_slots(struct zram *zram,
+>                 __bio_add_page(&req->bio, req->page, PAGE_SIZE, 0);
+>
+>                 zram_submit_wb_request(zram, wb_ctl, req);
+> -               blk_idx =3D 0;
+> +               blk_idx =3D INVALID_BDEV_BLOCK;
+>                 req =3D NULL;
+>                 cond_resched();
+>                 continue;
+> @@ -1365,7 +1364,7 @@ static int read_from_bdev(struct zram *zram, struct=
+ page *page,
+>         return -EIO;
+>  }
+>
+> -static void free_block_bdev(struct zram *zram, unsigned long blk_idx)
+> +static void zram_release_bdev_block(struct zram *zram, unsigned long blk=
+_idx)
+>  {
+>  }
+>  #endif
+> @@ -1889,7 +1888,7 @@ static void zram_free_page(struct zram *zram, size_=
+t index)
+>
+>         if (zram_test_flag(zram, index, ZRAM_WB)) {
+>                 zram_clear_flag(zram, index, ZRAM_WB);
+> -               free_block_bdev(zram, zram_get_handle(zram, index));
+> +               zram_release_bdev_block(zram, zram_get_handle(zram, index=
+));
+>                 goto out;
+>         }
+>
+> --
+> 2.52.0.rc1.455.g30608eb744-goog
+>
 
