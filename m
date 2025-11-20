@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC6CCF8861
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:22:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA06DCF8865
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1EFB6B0006; Thu, 20 Nov 2025 10:22:12 -0500 (EST)
+	id 097646B00A7; Thu, 20 Nov 2025 10:22:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACFB36B00A7; Thu, 20 Nov 2025 10:22:12 -0500 (EST)
+	id 021C46B00B5; Thu, 20 Nov 2025 10:22:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E54A6B00B5; Thu, 20 Nov 2025 10:22:12 -0500 (EST)
+	id E523C6B00CB; Thu, 20 Nov 2025 10:22:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A4346B0006
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:22:12 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3905C139441
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D65146B00A7
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:22:14 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A10561A0189
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:22:14 +0000 (UTC)
+X-FDA: 84131351388.02.7463D10
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B6DD04001D
 	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:22:12 +0000 (UTC)
-X-FDA: 84131351304.15.56E9070
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 38E46C000E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:22:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=M5VO5jEP;
-	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="Y5vpG/Gk";
+	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763652130;
+	s=arc-20220608; t=1763652132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DQMGDA1+u1LPAuL+BCiFc4Yo1PBFGHEJGqJGazuFeIc=;
-	b=M+n3VRlm6DmVWdpdk4RmpZFnxUjJWXFgAKLvT2PfERx9Vdy7k/2ZnaAj8IKVlFNcv2il/F
-	R/BkBu1M/h0P4WWI6A2+4LRIx9EcecrKhHJLz5tPTdb3m50K+On8t16rmKe4WTeVc0Ngo5
-	pRb1A/G+N5wNhooLtcbb9WFu2PzG2Tw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763652130; a=rsa-sha256;
-	cv=none;
-	b=2nWDm4yiqwvUoeQKUZlAQJLCFcXCLSG+xJoODKuV4Lbef42r9aGGUjnC1+GJ5PGKWXWScR
-	9n9XTarGswn1traQxyvF7LJQvM2CREosN0NtV6PUNTQ137sKlNHg3/n/xxWqpsi21xG+Kr
-	wni15jSD9t9KD2znlnirFhIX0dQQbuk=
+	bh=ZAmKATgpNu/alXOGtuyOI3W/oFMTAwgOBJmF8/nzO6s=;
+	b=pKt9X9lnYjHYs78qKgY3pE7v7Emu5PncOtURC14dyhOPabqKypNI9FZpDMr85RvgFjIvVR
+	xlHMnMIXnCv/7btNaN8noyv+m2UlpC3P/0e7eG2Y4Z3tDpnTWw9+EcqrPvs7vdbZE8Ouhd
+	pnpLGDXsg2a6KcSNCArLpxHBQ1SrIxU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=M5VO5jEP;
-	spf=pass (imf22.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="Y5vpG/Gk";
+	spf=pass (imf11.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.52 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7ba92341f83so1412252b3a.0
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:22:09 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763652132; a=rsa-sha256;
+	cv=none;
+	b=3aYou+V0OCBT/jqFdDU9IhSwKcOaI4Ta7IbNRId3QrUqgVE4T2MsnpyeBb5KyiarinOwaR
+	Ucd7ITkyXnL/ZMy5xIZ89ebj26YtPtM5Pep1LP7ukFGrQvdTzBAf3JS8aVMe77kUtntQUv
+	yHo9A8HHtn0vWfRf5ypnYGNeQNzqfY8=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3437ea05540so876290a91.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:22:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763652129; x=1764256929; darn=kvack.org;
+        d=chromium.org; s=google; t=1763652131; x=1764256931; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DQMGDA1+u1LPAuL+BCiFc4Yo1PBFGHEJGqJGazuFeIc=;
-        b=M5VO5jEPXj10q9HjwCKjmiP9yjtx5d/F5zV1pZIPKfT+O/H8PnP0cmUK9UMgm+R19A
-         dN2ytpq3y0XmpD+syQWU5a+Sv8qGecKTACBAl6TOOzTASGEZDa2nXXmKcBoPC6YGaiUZ
-         gD75qqw8pymWMqzRP+0LezOylJu3FHBINpxds=
+        bh=ZAmKATgpNu/alXOGtuyOI3W/oFMTAwgOBJmF8/nzO6s=;
+        b=Y5vpG/GkBRNmjYAn+xh+lc504gFIkPxHE9xjNUAMQ0IUvfJ10BW33RptnlQkXxKg4k
+         7JrY27mhOUiweflwkbDooUrO8h/eZE9LNdcsjxZi3N21GwA1bwFo7JdF+RZRUkFXR8p7
+         rJk+14gIvsWk8NQtzVpP4WHL2jOTbUBpCgw20=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763652129; x=1764256929;
+        d=1e100.net; s=20230601; t=1763652131; x=1764256931;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DQMGDA1+u1LPAuL+BCiFc4Yo1PBFGHEJGqJGazuFeIc=;
-        b=uH8Iip6imo6T+R13RMJ6/w8T5QNfKCYU4fXOZ9kuAc7FjkQuSbUG9DazaHbCxaRr8p
-         FHbTJpjPIcrk+nggsLUSzEPfq/XrzP0r97SfZEhVB6+9B0TIIPptGDiX1RTaCc8f0Dnq
-         HouIC2ZL9wmqPXsWghEmi5Qp3pLoxQFLCVu8jW8K2ZBPradOOiryiz1fEzG861T3NK2+
-         iBo3XMpN8c1NU8cdPLpNWO5FV7Sg3kAY1PozXEpYPMMcTnvMIiz0ZsJuYcM30Z35OCly
-         8D0OeRmZ4uFp9dep2Z6lOL9WHkzYpALINym/e+2JxERuM+5vOUCZe185/mDFhJXbes48
-         Yeqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWFdR5jN3Fey24TA1LLZsSRicHLQ4IUOaPMmRTVyEo/P13F/ncRwhstSp2nIkAIXFheqwvagIiI+A==@kvack.org
-X-Gm-Message-State: AOJu0YzbR+eUnN0Q/a/fzx4sxi3XfBZ3Lvsj3Zb8qrMk5fdCdwFFWpXF
-	P8tq5MijUyTRN6B/MMkghE4PR1ESmm7uYawCwE6t8YWqPWOowvEwaefONvgOKGbrAQ==
-X-Gm-Gg: ASbGncumnqCoDqXWY7+cGxujLH4qy4tMLqJRYI6zG4ocm3uhOREjvusr3pg/9SYiPNH
-	9CiUVsQ0umTjMXzlKraW3OUz6BVrKzyGJQ5GuylsbYiIyJdOS+arDfj34n0+YNC0whiUNCpOKrb
-	m7vB6ZLlS2lkkNzWjHCBa6rjGn5pjBDcawSV3JN4/xHmlMKochgjSvfEjQc6MhFrdr0BFTROvvq
-	zaWOmtm+Pxpfvg0XP3gKhPt2NaCaYYskbYUpgsA4ckBTcC8uAFeO8ozEVivuD91wDcd/+zvg47B
-	ty/gHcdOU62BAuZkoS7mI0MCF5aRc/e7c4FjAWOPZu7V36ylueDJZZSW4ndaVzJu+HqKGzuB+cA
-	WUPHEyG+FDSjcb/5QP5fvHOoU4T6VOZ80XoBih+Xg+N5854gne8vBLJvprZut2WyNzH8pDU5h9B
-	ZvZBWsyQoSgQGZe5baOCXg6Pk8mkEaXzPgeUFn5Q==
-X-Google-Smtp-Source: AGHT+IH4Kqb6jdeCprkIAeBP8l5L/2bdYTnDn0ERK7+4rx4S17p67ukAm1nlmWjmMsyD/cMn7l50fA==
-X-Received: by 2002:a05:6a00:1248:b0:7ad:386e:3b6d with SMTP id d2e1a72fcca58-7c3f07656fbmr4373751b3a.21.1763652129027;
-        Thu, 20 Nov 2025 07:22:09 -0800 (PST)
+        bh=ZAmKATgpNu/alXOGtuyOI3W/oFMTAwgOBJmF8/nzO6s=;
+        b=mrNxKTMNLXabiO1NRmmlSIr5hxsHKDjAKTAO8mPTiQeu2PVCYxaCUrJ4mCK6u2YDcR
+         9sBRtArYi+bY+tCRyZ7UfFnmCf955VPSoloDzCPw1NfgE50zaL9pNM9Xsxq76X5WgBYf
+         om0mcjZFp/bZDu+NnsH+HWvxoE0RSrjYT7hAKR75krsqcluc9ESlFUgd5x/oulx1iuHY
+         gcjhGfoQWsmHtiyMWGbe7d0Ssfpr0Me/HgIKtax182NLdi9fVMuPyt3uW5h7u1h20YPK
+         46qcHaqwb+m8z7pY7CONTeHNpEAq2fmsnsAZESw1i/JKdaXisM02RQqmESu+MF4/5wIa
+         TAnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXXVkWRUtYgG2Pgvz6fV8ErMtsm0rp/IVSCKPzjV/xDfsKrKR8G7x6vsY2egy6xqSx6N1YFzZg9Tg==@kvack.org
+X-Gm-Message-State: AOJu0YwXjXZuUIzOho471a9SnknD2Eey/sgUE3UvUHw3BFhub8YxIDnY
+	5fd+cwL24tGQWkslpxHcwbVAVX4mtLG4jmrozfCXMTYBgPCwKCaPH54Fu2DMBAshag==
+X-Gm-Gg: ASbGnctiyqIX8KfMcIXCS6Q2uCKJkyIkMSBoy4awIX4s0KvjrmjBMGIt/RxcbG3J9jg
+	kHLQ8yJwtPQrrF9EO2UKwD7C6J9sUHm7fOrl4AY067fAxBZgm5m7O9WC5+Yfi3wOAEZTym90x69
+	o9/1D9cBy1RjqaEsn7z8fw6pim01Ml9IN1FgssUyUREMCWulsQIu81DqgBu5sfE5jRTU/t7O1eN
+	50PBFSwvHeKzJrD344l4js5qRLcdHaKFPIPIIksK4k4UVnOad8y8WG9OoT4OhqP63z4em3+oFru
+	/Tqngt7GGJy5VPggDrVUQnr8oQ3Y4UjHmFXXoYnmCEtKVPi8jD9ps5IuGv6LFJF9fsZFanYgqQb
+	IBQUJCWDr321yuhivMlSI0M1TYGZM4hs3xUXeaV0i45AfYFTf8jRjh2AJ7XER4VTucz4fZMtMiP
+	tgxeGqRcXDLU0W2TTMZZV+fkwJdWzvMHvx7y8Nig==
+X-Google-Smtp-Source: AGHT+IGXx99ORaMc9c2Jm3Uyx2w4g0SNrUulESpO10c9NwCK4Ja79Nw8/lRM5g2x9jRJA1DHlD8CCA==
+X-Received: by 2002:a17:90b:53c8:b0:340:be44:dd0b with SMTP id 98e67ed59e1d1-34727d5233emr3818884a91.34.1763652131431;
+        Thu, 20 Nov 2025 07:22:11 -0800 (PST)
 Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:6762:7dba:8487:43a1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f023f968sm3179642b3a.38.2025.11.20.07.22.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f023f968sm3179642b3a.38.2025.11.20.07.22.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 07:22:08 -0800 (PST)
+        Thu, 20 Nov 2025 07:22:11 -0800 (PST)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Minchan Kim <minchan@kernel.org>,
@@ -98,24 +98,23 @@ Cc: Brian Geffon <bgeffon@google.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Minchan Kim <minchan@google.com>
-Subject: [RFC PATCHv5 1/6] zram: introduce writeback bio batching
-Date: Fri, 21 Nov 2025 00:21:21 +0900
-Message-ID: <20251120152126.3126298-2-senozhatsky@chromium.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [RFC PATCHv5 2/6] zram: add writeback batch size device attr
+Date: Fri, 21 Nov 2025 00:21:22 +0900
+Message-ID: <20251120152126.3126298-3-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
 In-Reply-To: <20251120152126.3126298-1-senozhatsky@chromium.org>
 References: <20251120152126.3126298-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 38E46C000E
-X-Stat-Signature: 7khdxtqcnhj6qwburw8gyywh7wj35d4w
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B6DD04001D
+X-Stat-Signature: bghjgn9oykdawardam45yzjkxbodsi8h
 X-Rspam-User: 
-X-HE-Tag: 1763652130-696218
-X-HE-Meta: U2FsdGVkX19hQ1q7pTsEk8fEM8fNvgKLUdXXWegH//Ka8wFfMIXO+3YNEDA7oUXehy5/s9mi5dTQAOe8v41iKolTx1To/liOlHH7wzRCHVZBILTVF01fhSGeGvE+H9OHqZ76rgU8XyRppr6WCJN7FhjOfHGb39L6ZkYDyeBp/Y/rnEnfEHJi4rm+y72uuq0QKepFj7lgrGMjiWTXiVrS6GHog83syJFBOIYXNSAiIWraBJeaF5v+nwHtEvVik36AW/RMKLQ8Gq8ivfEdpeaqoxkjXGZzDnjKB1RNugC3ulVYQ9urmowzHZZasyNapUT2g27KeC2hy05Qr464Rl+4F4IXw6vUrtV/nCUQFSoBrdT1fZ+2PRlGiZkOMTfz7juPAQf1qb0ygfqhRVR7V4hvy/Bb2RMzebeXc/1KOQPtqhdH4aZjJZdFGax8M92NYjSJnYiL/d1++trW7dLeGlxs/sYhMgGWhsEAx8RNUrvoaloek0Pdm/pfFlVsbrRCS+3o1lbAW75egLDEgVrM2qwm+XVe0lavrm+P+zsfsQOCkCHCNJEjBZJl56efR3c0vSpfCJIs5nKWof3TYdyfoJut9qfhtcIo52K1mVAZVMj5DahqzTd73SkdqDg3T/Z1gFZHeVurXNV1sDDeTgiM4B59jcndplSwXfq9JONzOFd1sMT4m5wU7gc+lXyz3Q9LZVDfgJmx/52p825n56GhRcjUAC47ThuiP0c+ckP0cD6hX184M3VrrRFBv7SU3rvVNIBlxasguKolIisaQKDRwFFAWKtmJkOUr5KRv+JHSsrcOTxYr68O+k3dtVFucYesY9wi09kCDafx0FxUYMtLgd2hih1zs+sRNOYCGbYegILgbRRA1xgTtZF7rIDJrBaZgX1z3J6LoO5pc2mP0RvijcMN9O5BXfjmq6b1lB+dSoqFYh7iKiAoi/hrvAvVhASN1i2x0fF6spl/P1+nNbhUnw5
- yzbUJRCc
- ZcEAsvyN/FqdfRddXm3CqQhdpA/j0DTv5pjRNlNT8JvUg754WAbz2/ocGYvHyEdOIdYdQQ6IgdPSrCk7MqCt5I9gjAtfq978W5nbLnfff5oRawdkkGFGdVNdMpNQbU4/SfUQC5oVSjZHW8rq+TOQhf5ty6EdCkIQWwBWpltVLpRonGcOsIwoOY8viOdq/yzYvxTdKgHl1VYplno9uqlUqmgdBEs1k9vLLrdR/O6XnRVaTBroH64JtYe9oTdhh/92OEtsIH4/XFapjCP+spfak3fL8jmz8kEjkufcJpRh3ANl0viwfTx5LMjbrOgjy3IYPKyJgZsDlnJuERcIAGX3ayDkD2uFu/vAXtr25heJ+KNC93CrvKWXoDbHPPCjBCcMCUX2q
+X-HE-Tag: 1763652132-512031
+X-HE-Meta: U2FsdGVkX1+JBF6nKlAB+1SfwJrARTOm9/dHhazhvWcvqtIQ+OD98vgXcoE1ht0/Nu6+LniRlPNMHNGLi0nilU0541E0wcJ6dwR+Q7NqSjWw/5aVIQkyyjeEA5TkBHXLP4lSF21FUGAkz6giE6gDyfiaNSGc/zZJmWKCcsIav9KbKcWokV0eK+R4QrlndrGLr82ywUhAYr7+L2dcYqMu91v+NXZPZkcPqhl4jkWYw+FiKPbFxA32H3AlXInaeWHWBOsVxfAmfdE8QcguUAPNqaDYRhkSwRUUb9N70QTzy01WDdbWd+eEcEU0RTjMruz7vgcezu3kPCJ8Cg0te+IrQULJg7/WXV4v/rbyYcrfvmNRZ4cutr0bQnNAcxrOlz2KbFAOWlcXTzjP7hBhSpjVfJEQZ4qYF8Rv0hkBPoUDsAjDNYgFs/5cGrW8MTDen4rMn4fn0oQC5NyfLuyFOMCbs2TbQjZ464YLZeCNirwoWzJ9Kxn3CX7bGWr1OE2ttroTjyC4ZoCTJ+tvU/u9iFZCSsnbhqex4Hl2Qfa/eOzQCLeUABovQurXRJFb1vj0Z302R1k6OizG6KmncpSOXKA3k5xezrRDAFdOfyPgy3L3SnkHXewXuScsWHrWLf1e7ZIF0PS63rVYitbDbNRU3fNdN4KYOOuGlxWNz5QPqT5Jbp0Ksw4AhC4uJZa55x2jNm62C15JHhHS5xxF1bJVL+DdrN5IEgkrhXII7TpK8FWHF9bF2iPEyVNSQ+tpAio4jUZ4Z54s9ytmb2qoGcuxYchp/1OCHKlFF3fE7UJXUV32LQakGOk0hjjomSxqjQLxKxp9RPjtCQNbOf1J6oPdOIv/3oXrcGhI14fDyUGnubrdpyFulrIl7OJUSZonn98ym7cpC6G3XiRaRdgkxUDRIqY76ZSvRjzPM2lKVWZvcNMgYVsFS//cSxb2ylO1GyrlYR0QiM7i7OL/St8ajMp1lsH
+ fn+v3t2x
+ g4hbzSWEOFOebZHuM5KKe7K5fYxR+YhQLUVe3yJORQ4ZT+ENgBrSfrbM7qdLr2BvX32Fb5X3aKQppf5JrDtOvqkCae/0Zvsk0NmLkJcxX2BJ5MmDodhcdUXEtNTHWbC2ym1kUDAsWclKpM1iXk9fbJokghRPkVJzjN8PXEG4TcpdmqwBmYaZyBsd4E2BJ/JESSkaV/TQgaUENnna68xN1H788RuET+qjU+0vO3Au6kwao9vsrYMsiH8yyOcIGDrpNCj/bAMKDctK0Nckt9YJGkKy24yHsTTd2KOaADmD4auWwIaDMKxgJRK6OFQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,497 +123,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, zram writeback supports only a single bio writeback
-operation, waiting for bio completion before post-processing
-next pp-slot.  This works, in general, but has certain throughput
-limitations.  Introduce batched (multiple) bio writeback support
-to take advantage of parallel requests processing and better
-requests scheduling.
-
-For the time being the writeback batch size (maximum number of
-in-flight bio requests) is set to 32 for all devices.  A follow
-up patch adds a writeback_batch_size device attribute, so the
-batch size becomes run-time configurable.
+Introduce writeback_batch_size device attribute so that
+the maximum number of in-flight writeback bio requests
+can be configured at run-time per-device.  This essentially
+enables batched bio writeback.
 
 Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Co-developed-by: Yuwen Chen <ywen.chen@foxmail.com>
-Co-developed-by: Richard Chang <richardycc@google.com>
-Suggested-by: Minchan Kim <minchan@google.com>
 ---
- drivers/block/zram/zram_drv.c | 366 +++++++++++++++++++++++++++-------
- 1 file changed, 298 insertions(+), 68 deletions(-)
+ drivers/block/zram/zram_drv.c | 48 ++++++++++++++++++++++++++++++-----
+ drivers/block/zram/zram_drv.h |  1 +
+ 2 files changed, 43 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index a43074657531..37c1416ac902 100644
+index 37c1416ac902..7904159e9226 100644
 --- a/drivers/block/zram/zram_drv.c
 +++ b/drivers/block/zram/zram_drv.c
-@@ -500,6 +500,24 @@ static ssize_t idle_store(struct device *dev,
+@@ -588,6 +588,42 @@ static ssize_t writeback_limit_show(struct device *dev,
+ 	return sysfs_emit(buf, "%llu\n", val);
  }
  
- #ifdef CONFIG_ZRAM_WRITEBACK
-+struct zram_wb_ctl {
-+	struct list_head idle_reqs;
-+	struct list_head done_reqs;
-+	wait_queue_head_t done_wait;
-+	spinlock_t done_lock;
-+	atomic_t num_inflight;
-+};
-+
-+struct zram_wb_req {
-+	unsigned long blk_idx;
-+	struct page *page;
-+	struct zram_pp_slot *pps;
-+	struct bio_vec bio_vec;
-+	struct bio bio;
-+
-+	struct list_head entry;
-+};
-+
- static ssize_t writeback_limit_enable_store(struct device *dev,
- 		struct device_attribute *attr, const char *buf, size_t len)
- {
-@@ -734,19 +752,220 @@ static void read_from_bdev_async(struct zram *zram, struct page *page,
- 	submit_bio(bio);
- }
- 
--static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
-+static void release_wb_req(struct zram_wb_req *req)
- {
--	unsigned long blk_idx = 0;
--	struct page *page = NULL;
--	struct zram_pp_slot *pps;
--	struct bio_vec bio_vec;
--	struct bio bio;
-+	__free_page(req->page);
-+	kfree(req);
-+}
-+
-+static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
++static ssize_t writeback_batch_size_store(struct device *dev,
++					  struct device_attribute *attr,
++					  const char *buf, size_t len)
 +{
-+	if (!wb_ctl)
-+		return;
++	struct zram *zram = dev_to_zram(dev);
++	u32 val;
++	ssize_t ret = -EINVAL;
 +
-+	/* We should never have inflight requests at this point */
-+	WARN_ON(atomic_read(&wb_ctl->num_inflight));
-+	WARN_ON(!list_empty(&wb_ctl->done_reqs));
++	if (kstrtouint(buf, 10, &val))
++		return ret;
 +
-+	while (!list_empty(&wb_ctl->idle_reqs)) {
-+		struct zram_wb_req *req;
++	if (!val)
++		val = 1;
 +
-+		req = list_first_entry(&wb_ctl->idle_reqs,
-+				       struct zram_wb_req, entry);
-+		list_del(&req->entry);
-+		release_wb_req(req);
-+	}
-+
-+	kfree(wb_ctl);
-+}
-+
-+/* XXX: should be a per-device sysfs attr */
-+#define ZRAM_WB_REQ_CNT 32
-+
-+static struct zram_wb_ctl *init_wb_ctl(void)
-+{
-+	struct zram_wb_ctl *wb_ctl;
-+	int i;
-+
-+	wb_ctl = kmalloc(sizeof(*wb_ctl), GFP_KERNEL);
-+	if (!wb_ctl)
-+		return NULL;
-+
-+	INIT_LIST_HEAD(&wb_ctl->idle_reqs);
-+	INIT_LIST_HEAD(&wb_ctl->done_reqs);
-+	atomic_set(&wb_ctl->num_inflight, 0);
-+	init_waitqueue_head(&wb_ctl->done_wait);
-+	spin_lock_init(&wb_ctl->done_lock);
-+
-+	for (i = 0; i < ZRAM_WB_REQ_CNT; i++) {
-+		struct zram_wb_req *req;
-+
-+		/*
-+		 * This is fatal condition only if we couldn't allocate
-+		 * any requests at all.  Otherwise we just work with the
-+		 * requests that we have successfully allocated, so that
-+		 * writeback can still proceed, even if there is only one
-+		 * request on the idle list.
-+		 */
-+		req = kzalloc(sizeof(*req), GFP_KERNEL | __GFP_NOWARN);
-+		if (!req)
-+			break;
-+
-+		req->page = alloc_page(GFP_KERNEL | __GFP_NOWARN);
-+		if (!req->page) {
-+			kfree(req);
-+			break;
-+		}
-+
-+		list_add(&req->entry, &wb_ctl->idle_reqs);
-+	}
-+
-+	/* We couldn't allocate any requests, so writeabck is not possible */
-+	if (list_empty(&wb_ctl->idle_reqs))
-+		goto release_wb_ctl;
-+
-+	return wb_ctl;
-+
-+release_wb_ctl:
-+	release_wb_ctl(wb_ctl);
-+	return NULL;
-+}
-+
-+static void zram_account_writeback_rollback(struct zram *zram)
-+{
-+	spin_lock(&zram->wb_limit_lock);
-+	if (zram->wb_limit_enable)
-+		zram->bd_wb_limit +=  1UL << (PAGE_SHIFT - 12);
-+	spin_unlock(&zram->wb_limit_lock);
-+}
-+
-+static void zram_account_writeback_submit(struct zram *zram)
-+{
-+	spin_lock(&zram->wb_limit_lock);
-+	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
-+		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
-+	spin_unlock(&zram->wb_limit_lock);
-+}
-+
-+static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
-+{
-+	u32 index = req->pps->index;
-+	int err;
-+
-+	err = blk_status_to_errno(req->bio.bi_status);
-+	if (err) {
-+		/*
-+		 * Failed wb requests should not be accounted in wb_limit
-+		 * (if enabled).
-+		 */
-+		zram_account_writeback_rollback(zram);
-+		free_block_bdev(zram, req->blk_idx);
-+		return err;
-+	}
-+
-+	atomic64_inc(&zram->stats.bd_writes);
-+	zram_slot_lock(zram, index);
-+	/*
-+	 * We release slot lock during writeback so slot can change under us:
-+	 * slot_free() or slot_free() and zram_write_page(). In both cases
-+	 * slot loses ZRAM_PP_SLOT flag. No concurrent post-processing can
-+	 * set ZRAM_PP_SLOT on such slots until current post-processing
-+	 * finishes.
-+	 */
-+	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT)) {
-+		free_block_bdev(zram, req->blk_idx);
-+		goto out;
-+	}
-+
-+	zram_free_page(zram, index);
-+	zram_set_flag(zram, index, ZRAM_WB);
-+	zram_set_handle(zram, index, req->blk_idx);
-+	atomic64_inc(&zram->stats.pages_stored);
-+
-+out:
-+	zram_slot_unlock(zram, index);
-+	return 0;
-+}
-+
-+static void zram_writeback_endio(struct bio *bio)
-+{
-+	struct zram_wb_req *req = container_of(bio, struct zram_wb_req, bio);
-+	struct zram_wb_ctl *wb_ctl = bio->bi_private;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&wb_ctl->done_lock, flags);
-+	list_add(&req->entry, &wb_ctl->done_reqs);
-+	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
-+
-+	wake_up(&wb_ctl->done_wait);
-+}
-+
-+static void zram_submit_wb_request(struct zram *zram,
-+				   struct zram_wb_ctl *wb_ctl,
-+				   struct zram_wb_req *req)
-+{
-+	/*
-+	 * wb_limit (if enabled) should be adjusted before submission,
-+	 * so that we don't over-submit.
-+	 */
-+	zram_account_writeback_submit(zram);
-+	atomic_inc(&wb_ctl->num_inflight);
-+	req->bio.bi_private = wb_ctl;
-+	submit_bio(&req->bio);
-+}
-+
-+static int zram_complete_done_reqs(struct zram *zram,
-+				   struct zram_wb_ctl *wb_ctl)
-+{
-+	struct zram_wb_req *req;
-+	unsigned long flags;
- 	int ret = 0, err;
--	u32 index;
- 
--	page = alloc_page(GFP_KERNEL);
--	if (!page)
--		return -ENOMEM;
-+	while (1) {
-+		spin_lock_irqsave(&wb_ctl->done_lock, flags);
-+		req = list_first_entry_or_null(&wb_ctl->done_reqs,
-+					       struct zram_wb_req, entry);
-+		if (req)
-+			list_del(&req->entry);
-+		spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
-+
-+		if (!req)
-+			break;
-+
-+		err = zram_writeback_complete(zram, req);
-+		if (err)
-+			ret = err;
-+
-+		atomic_dec(&wb_ctl->num_inflight);
-+		release_pp_slot(zram, req->pps);
-+		req->pps = NULL;
-+
-+		list_add(&req->entry, &wb_ctl->idle_reqs);
-+	}
++	down_read(&zram->init_lock);
++	zram->wb_batch_size = val;
++	up_read(&zram->init_lock);
++	ret = len;
 +
 +	return ret;
 +}
 +
-+static struct zram_wb_req *zram_select_idle_req(struct zram_wb_ctl *wb_ctl)
++static ssize_t writeback_batch_size_show(struct device *dev,
++					 struct device_attribute *attr,
++					 char *buf)
 +{
-+	struct zram_wb_req *req;
++	u32 val;
++	struct zram *zram = dev_to_zram(dev);
 +
-+	req = list_first_entry_or_null(&wb_ctl->idle_reqs,
-+				       struct zram_wb_req, entry);
-+	if (req)
-+		list_del(&req->entry);
-+	return req;
++	down_read(&zram->init_lock);
++	val = zram->wb_batch_size;
++	up_read(&zram->init_lock);
++
++	return sysfs_emit(buf, "%u\n", val);
 +}
 +
-+static int zram_writeback_slots(struct zram *zram,
-+				struct zram_pp_ctl *ctl,
-+				struct zram_wb_ctl *wb_ctl)
-+{
-+	struct zram_wb_req *req = NULL;
-+	unsigned long blk_idx = 0;
-+	struct zram_pp_slot *pps;
-+	int ret = 0, err = 0;
-+	u32 index = 0;
- 
- 	while ((pps = select_pp_slot(ctl))) {
- 		spin_lock(&zram->wb_limit_lock);
-@@ -757,6 +976,27 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
- 		}
- 		spin_unlock(&zram->wb_limit_lock);
- 
-+		while (!req) {
-+			req = zram_select_idle_req(wb_ctl);
-+			if (req)
-+				break;
-+
-+			wait_event(wb_ctl->done_wait,
-+				   !list_empty(&wb_ctl->done_reqs));
-+
-+			err = zram_complete_done_reqs(zram, wb_ctl);
-+			/*
-+			 * BIO errors are not fatal, we continue and simply
-+			 * attempt to writeback the remaining objects (pages).
-+			 * At the same time we need to signal user-space that
-+			 * some writes (at least one, but also could be all of
-+			 * them) were not successful and we do so by returning
-+			 * the most recent BIO error.
-+			 */
-+			if (err)
-+				ret = err;
-+		}
-+
- 		if (!blk_idx) {
- 			blk_idx = alloc_block_bdev(zram);
- 			if (!blk_idx) {
-@@ -775,67 +1015,47 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
- 		 */
- 		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
- 			goto next;
--		if (zram_read_from_zspool(zram, page, index))
-+		if (zram_read_from_zspool(zram, req->page, index))
- 			goto next;
- 		zram_slot_unlock(zram, index);
- 
--		bio_init(&bio, zram->bdev, &bio_vec, 1,
--			 REQ_OP_WRITE | REQ_SYNC);
--		bio.bi_iter.bi_sector = blk_idx * (PAGE_SIZE >> 9);
--		__bio_add_page(&bio, page, PAGE_SIZE, 0);
--
- 		/*
--		 * XXX: A single page IO would be inefficient for write
--		 * but it would be not bad as starter.
-+		 * From now on pp-slot is owned by the req, remove it from
-+		 * its pp bucket.
- 		 */
--		err = submit_bio_wait(&bio);
--		if (err) {
--			release_pp_slot(zram, pps);
--			/*
--			 * BIO errors are not fatal, we continue and simply
--			 * attempt to writeback the remaining objects (pages).
--			 * At the same time we need to signal user-space that
--			 * some writes (at least one, but also could be all of
--			 * them) were not successful and we do so by returning
--			 * the most recent BIO error.
--			 */
--			ret = err;
--			continue;
--		}
-+		list_del_init(&pps->entry);
- 
--		atomic64_inc(&zram->stats.bd_writes);
--		zram_slot_lock(zram, index);
--		/*
--		 * Same as above, we release slot lock during writeback so
--		 * slot can change under us: slot_free() or slot_free() and
--		 * reallocation (zram_write_page()). In both cases slot loses
--		 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
--		 * ZRAM_PP_SLOT on such slots until current post-processing
--		 * finishes.
--		 */
--		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
--			goto next;
-+		req->blk_idx = blk_idx;
-+		req->pps = pps;
-+		bio_init(&req->bio, zram->bdev, &req->bio_vec, 1, REQ_OP_WRITE);
-+		req->bio.bi_iter.bi_sector = req->blk_idx * (PAGE_SIZE >> 9);
-+		req->bio.bi_end_io = zram_writeback_endio;
-+		__bio_add_page(&req->bio, req->page, PAGE_SIZE, 0);
- 
--		zram_free_page(zram, index);
--		zram_set_flag(zram, index, ZRAM_WB);
--		zram_set_handle(zram, index, blk_idx);
-+		zram_submit_wb_request(zram, wb_ctl, req);
- 		blk_idx = 0;
--		atomic64_inc(&zram->stats.pages_stored);
--		spin_lock(&zram->wb_limit_lock);
--		if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
--			zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
--		spin_unlock(&zram->wb_limit_lock);
-+		req = NULL;
-+		cond_resched();
-+		continue;
-+
- next:
- 		zram_slot_unlock(zram, index);
- 		release_pp_slot(zram, pps);
--
--		cond_resched();
- 	}
- 
--	if (blk_idx)
--		free_block_bdev(zram, blk_idx);
--	if (page)
--		__free_page(page);
-+	/*
-+	 * Selected idle req, but never submitted it due to some error or
-+	 * wb limit.
-+	 */
-+	if (req)
-+		release_wb_req(req);
-+
-+	while (atomic_read(&wb_ctl->num_inflight) > 0) {
-+		wait_event(wb_ctl->done_wait, !list_empty(&wb_ctl->done_reqs));
-+		err = zram_complete_done_reqs(zram, wb_ctl);
-+		if (err)
-+			ret = err;
-+	}
- 
- 	return ret;
+ static void reset_bdev(struct zram *zram)
+ {
+ 	if (!zram->backing_dev)
+@@ -779,10 +815,7 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+ 	kfree(wb_ctl);
  }
-@@ -948,7 +1168,8 @@ static ssize_t writeback_store(struct device *dev,
- 	struct zram *zram = dev_to_zram(dev);
- 	u64 nr_pages = zram->disksize >> PAGE_SHIFT;
- 	unsigned long lo = 0, hi = nr_pages;
--	struct zram_pp_ctl *ctl = NULL;
-+	struct zram_pp_ctl *pp_ctl = NULL;
-+	struct zram_wb_ctl *wb_ctl = NULL;
- 	char *args, *param, *val;
- 	ssize_t ret = len;
- 	int err, mode = 0;
-@@ -970,8 +1191,14 @@ static ssize_t writeback_store(struct device *dev,
+ 
+-/* XXX: should be a per-device sysfs attr */
+-#define ZRAM_WB_REQ_CNT 32
+-
+-static struct zram_wb_ctl *init_wb_ctl(void)
++static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
+ {
+ 	struct zram_wb_ctl *wb_ctl;
+ 	int i;
+@@ -797,7 +830,7 @@ static struct zram_wb_ctl *init_wb_ctl(void)
+ 	init_waitqueue_head(&wb_ctl->done_wait);
+ 	spin_lock_init(&wb_ctl->done_lock);
+ 
+-	for (i = 0; i < ZRAM_WB_REQ_CNT; i++) {
++	for (i = 0; i < zram->wb_batch_size; i++) {
+ 		struct zram_wb_req *req;
+ 
+ 		/*
+@@ -1197,7 +1230,7 @@ static ssize_t writeback_store(struct device *dev,
  		goto release_init_lock;
  	}
  
--	ctl = init_pp_ctl();
--	if (!ctl) {
-+	pp_ctl = init_pp_ctl();
-+	if (!pp_ctl) {
-+		ret = -ENOMEM;
-+		goto release_init_lock;
-+	}
-+
-+	wb_ctl = init_wb_ctl();
-+	if (!wb_ctl) {
+-	wb_ctl = init_wb_ctl();
++	wb_ctl = init_wb_ctl(zram);
+ 	if (!wb_ctl) {
  		ret = -ENOMEM;
  		goto release_init_lock;
- 	}
-@@ -1000,7 +1227,7 @@ static ssize_t writeback_store(struct device *dev,
- 				goto release_init_lock;
- 			}
+@@ -2840,6 +2873,7 @@ static DEVICE_ATTR_RW(backing_dev);
+ static DEVICE_ATTR_WO(writeback);
+ static DEVICE_ATTR_RW(writeback_limit);
+ static DEVICE_ATTR_RW(writeback_limit_enable);
++static DEVICE_ATTR_RW(writeback_batch_size);
+ #endif
+ #ifdef CONFIG_ZRAM_MULTI_COMP
+ static DEVICE_ATTR_RW(recomp_algorithm);
+@@ -2861,6 +2895,7 @@ static struct attribute *zram_disk_attrs[] = {
+ 	&dev_attr_writeback.attr,
+ 	&dev_attr_writeback_limit.attr,
+ 	&dev_attr_writeback_limit_enable.attr,
++	&dev_attr_writeback_batch_size.attr,
+ #endif
+ 	&dev_attr_io_stat.attr,
+ 	&dev_attr_mm_stat.attr,
+@@ -2922,6 +2957,7 @@ static int zram_add(void)
  
--			scan_slots_for_writeback(zram, mode, lo, hi, ctl);
-+			scan_slots_for_writeback(zram, mode, lo, hi, pp_ctl);
- 			break;
- 		}
- 
-@@ -1011,7 +1238,7 @@ static ssize_t writeback_store(struct device *dev,
- 				goto release_init_lock;
- 			}
- 
--			scan_slots_for_writeback(zram, mode, lo, hi, ctl);
-+			scan_slots_for_writeback(zram, mode, lo, hi, pp_ctl);
- 			break;
- 		}
- 
-@@ -1022,7 +1249,7 @@ static ssize_t writeback_store(struct device *dev,
- 				goto release_init_lock;
- 			}
- 
--			scan_slots_for_writeback(zram, mode, lo, hi, ctl);
-+			scan_slots_for_writeback(zram, mode, lo, hi, pp_ctl);
- 			continue;
- 		}
- 
-@@ -1033,17 +1260,18 @@ static ssize_t writeback_store(struct device *dev,
- 				goto release_init_lock;
- 			}
- 
--			scan_slots_for_writeback(zram, mode, lo, hi, ctl);
-+			scan_slots_for_writeback(zram, mode, lo, hi, pp_ctl);
- 			continue;
- 		}
- 	}
- 
--	err = zram_writeback_slots(zram, ctl);
-+	err = zram_writeback_slots(zram, pp_ctl, wb_ctl);
- 	if (err)
- 		ret = err;
- 
- release_init_lock:
--	release_pp_ctl(zram, ctl);
-+	release_pp_ctl(zram, pp_ctl);
-+	release_wb_ctl(wb_ctl);
- 	atomic_set(&zram->pp_in_progress, 0);
- 	up_read(&zram->init_lock);
- 
-@@ -1112,7 +1340,9 @@ static int read_from_bdev(struct zram *zram, struct page *page,
- 	return -EIO;
- }
- 
--static void free_block_bdev(struct zram *zram, unsigned long blk_idx) {};
-+static void free_block_bdev(struct zram *zram, unsigned long blk_idx)
-+{
-+}
+ 	init_rwsem(&zram->init_lock);
+ #ifdef CONFIG_ZRAM_WRITEBACK
++	zram->wb_batch_size = 32;
+ 	spin_lock_init(&zram->wb_limit_lock);
  #endif
  
- #ifdef CONFIG_ZRAM_MEMORY_TRACKING
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 6cee93f9c0d0..1a647f42c1a4 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -129,6 +129,7 @@ struct zram {
+ 	struct file *backing_dev;
+ 	spinlock_t wb_limit_lock;
+ 	bool wb_limit_enable;
++	u32 wb_batch_size;
+ 	u64 bd_wb_limit;
+ 	struct block_device *bdev;
+ 	unsigned long *bitmap;
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
