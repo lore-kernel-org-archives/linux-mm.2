@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF639CF8864
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9A35CF8864
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:34:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D6B96B00B5; Thu, 20 Nov 2025 10:33:19 -0500 (EST)
+	id DFE8F6B00A6; Thu, 20 Nov 2025 10:34:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 286FF6B00B7; Thu, 20 Nov 2025 10:33:19 -0500 (EST)
+	id DD5EC6B00B3; Thu, 20 Nov 2025 10:34:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 176EF6B00B9; Thu, 20 Nov 2025 10:33:19 -0500 (EST)
+	id CC5966B00BC; Thu, 20 Nov 2025 10:34:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 03C266B00B5
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:33:19 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9ACA11DF61F
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:33:18 +0000 (UTC)
-X-FDA: 84131379276.10.929E977
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AA61F4001A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:33:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S5BnA7FO;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BC17F6B00A6
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:34:58 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6486813965F
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:34:58 +0000 (UTC)
+X-FDA: 84131383476.21.3F4D100
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BAAD01C0011
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:34:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BSbuSzzK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763652896; a=rsa-sha256;
+	cv=none;
+	b=e5Q27LruLI00mtYAcfuoakIlZCiZhLrHBlqhkUZjBpUI7/PpyGZNIYPC9lBLTg8dU06NsN
+	HMgqP73Zmn8xdkt1L96WaAK12w/t1afPKRDXC4Xz6qjAsC8gfBfMs61xXhiks3Hpb95vCj
+	2HutwlhXBgn3cwiXi3w40enxJbAt/qE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BSbuSzzK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763652796;
+	s=arc-20220608; t=1763652896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lDYWvzV00war0PaG8iXR9EC5P7ybowhtaV/Mule0Tpk=;
-	b=LCHW/2RauutA5vKsHXO0pmUXYz5LkLlkC0NuzcWAiozq5d6OIwcrvEQGYlJPR+HV+rFYyP
-	/Ce9M42y/JuS04gWgsr5NWpqmJwBiJltXZhwqCi63N8JXRNbbX0PfFavOq7xZnESyWZBsW
-	Bwd5r1JMg3U4wIddTgmex4gwAf8od9U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763652796; a=rsa-sha256;
-	cv=none;
-	b=lGj4uN+xlgAYzmlCotMwZUtpLXnYAI05TGIvew2R3O7FJSqH0oxfTGe7vWeDvs5Sd5up28
-	Qg9a8fvoxkRMurQ4ITgL9n+suqZNxD74DpIrhhDvQu1HdR7kx/XqlSaMNQ4qnSZcDQZn3G
-	80QuDwoDb4ExESYG2+khARjWd2ph7d4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S5BnA7FO;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63c489f1e6cso942986a12.1
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:33:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763652795; x=1764257595; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lDYWvzV00war0PaG8iXR9EC5P7ybowhtaV/Mule0Tpk=;
-        b=S5BnA7FO9hk6cTlSQXmpoBr9GtyRJwTS2wiPlcLMu2grC4506xNGke5fOCQKyXoLiZ
-         AtK65hbLIbcRnXSVy8Xc3Inhd7OBbWprBQCVj9CVTfFHmAj5nZZD/IvY+NSyT5zBR0b+
-         b53WrurKHcV0BREgaYQJLxUiF/En2oU4uOFlkOtWWjGKjQhbpxRO4d41LsWNyNn/Rknl
-         zpu5V3MwksF+aKCwESJVYxI0I393fiDIYK9FbOj7Gw17wmdGCsfqM1cz/KlAnM1YkCmQ
-         sWR05/8VWLn92O33c6Ze27mKIEwe+voeAmFJV8+USzbVXCKfcaDlFlnw3Lg9h+ZnxANA
-         tctg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763652795; x=1764257595;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lDYWvzV00war0PaG8iXR9EC5P7ybowhtaV/Mule0Tpk=;
-        b=gdFnTQEkwEDdkc8tauRwrfZUDn3Yk87BHAtI2OVN8e1LRMcZ2JpQwt7J1ZYQQ0ut5w
-         0CSzkaClBZg6aIusnP5RGUP5q9Bxwnk4u3r2LMkHwMRMuvpbZnVxG03Hf0yIHPD8Ur7E
-         CakJS3InRWWT2Kiwdd1Yb0QTbaqe5ioeKEhMn7KiMX12ctnzuFXZmX3KJjOR3bDY6zc+
-         XGqqZwHMCxpT4TsPLZO4l3KQZAVMajjOzZpH4CowLSDK5X6i5ipfbXf8ZZ85hVQJrOd4
-         WtX4WfteScXSHoPs3izhl541qX9WVvuCGvYyq22s5cKpHcG7LNfgJwprdSJztVbHEJM9
-         qVBA==
-X-Gm-Message-State: AOJu0YxhTNVk1R73qf2afx6QwyPMxj7PxdFazjovCHOERbcgGsGf1vNq
-	NnEwgd7hXUhEeb3HB62U9artj7fcU7nqoaLuSlvB2PuwbYf+IdousSJ5qSv5Y5FSGcU7atkJ4Ub
-	ogheu6V8gj9LkUFTgsJ53Jv5kqFv2rOQ=
-X-Gm-Gg: ASbGnctl/wIN2RHKXVbAZo4IjmyizCGJjm54zl5DqGg5kPOBfxzsz8vQZ7Bdo6MIAi/
-	stJoGPlI7yX9xroWWi0015NlIPICN1yUkkSwFJnLPwypZQpjYE29lpntHuxdD3Hh1VtNsl+AAsV
-	R2fkp4AwG/f+7rgdAAsnWHCTaYDafLav651452RhhL9cq6hwgTjQqDPc8EZ/tSMZOqrDzS0joYH
-	Z/lesDcJtIsiBsy/Sfk5PbKBjO4Q9KQdgprPcgt2PL7pcsfgI6hCwa9HsIkK4TDss80OTFl1nmK
-	Wdg5k9aJjSC/TgzRHzHu6SANi+RBOHw=
-X-Google-Smtp-Source: AGHT+IGalPEqSt5aEJqWgWpdGvkPdtBO/Z+NyWAgvLtLH5FfiPrf8NoCtColJJLUTMAQQPTzFSce/o360XEGIps+8Ts=
-X-Received: by 2002:a05:6402:1454:b0:643:4e9c:d165 with SMTP id
- 4fb4d7f45d1cf-6453965384cmr2831419a12.5.1763652795015; Thu, 20 Nov 2025
- 07:33:15 -0800 (PST)
+	bh=XUFuS19Wb+ilqZ1JfCLr5GwlcbMVh1uoyglC+IV1BTM=;
+	b=VH+wCHRcu87fHroWb2RN0KYwpIropBDup6sRVOTPaPyRuRySS1X0CU/C3sBom7QboZKscm
+	CH5wgDJMi8+BMTn9wbx6+rS5tm4v4siK14bBEmjOw2KYjF1HjSdvtxB9ar23OkyIenq0dz
+	oZwraiudeT+PMygtGaJXFjSUT0eyjFA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 11AD960131;
+	Thu, 20 Nov 2025 15:34:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36EEC4CEF1;
+	Thu, 20 Nov 2025 15:34:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763652895;
+	bh=iLlpiIoq6RvRNwPu4wKmwbysrxXgehN/NeIhRBCyojQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=BSbuSzzK7NmUg46X6Xqg6ULra0bk2IOvd4ky2Uu2VfaVLOtcvXkx17NUhrXYC5ucU
+	 PJfv6TgrN2RCJfDTXq3QFuGducBydTpyGGuTVt1tX1UsYx158hZaIw6KucGedSBdnj
+	 cnWvat7/iCNuhM3D4FhcULyewVEYpxKNXTsxKMFgotaIX21VGAH+F5QnMtqCQtdQ/z
+	 u0eFdZ3lwuu0TO7ycFLhQMuIe6rxYzaKbfyXFMQmSh3psyGpXYrvKSG8c5ZUAthpep
+	 YZM6LAvl7j2Lgl6pytE3RCmARngLlNipOyV3xf4vphQJBndBwXD2Xe912KrSst9b9D
+	 szpXLx0N6hkVw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>,  pratyush@kernel.org,
+  jasonmiu@google.com,  graf@amazon.com,  dmatlack@google.com,
+  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
+  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
+  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
+  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
+  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
+  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
+  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  linux@weissschuh.net,  linux-kernel@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-mm@kvack.org,
+  gregkh@linuxfoundation.org,  tglx@linutronix.de,  mingo@redhat.com,
+  bp@alien8.de,  dave.hansen@linux.intel.com,  x86@kernel.org,
+  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
+  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org
+Subject: Re: [PATCH v6 15/20] mm: memfd_luo: allow preserving memfd
+In-Reply-To: <CA+CK2bADcVsRnovkwWftPCbubXoaFrPzSavMU+G9f3XAz3YMLQ@mail.gmail.com>
+	(Pasha Tatashin's message of "Wed, 19 Nov 2025 16:56:10 -0500")
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+	<20251115233409.768044-16-pasha.tatashin@soleen.com>
+	<aRsBHy5aQ_Ypyy9r@kernel.org>
+	<CA+CK2bADcVsRnovkwWftPCbubXoaFrPzSavMU+G9f3XAz3YMLQ@mail.gmail.com>
+Date: Thu, 20 Nov 2025 16:34:45 +0100
+Message-ID: <mafs0a50g3ega.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
- <20251117-swap-table-p2-v2-10-37730e6ea6d5@tencent.com> <aR65k5Xxl28MvMcf@yjaykim-PowerEdge-T330>
-In-Reply-To: <aR65k5Xxl28MvMcf@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 20 Nov 2025 23:32:37 +0800
-X-Gm-Features: AWmQ_bkAxXmKncGUVav5WnvWHw5-ZVR6S13_zc6f-YdEmo_U7b_i2-MtTZ7_py8
-Message-ID: <CAMgjq7BREEfVxET=xDU32=K4j_qps1ccmozvw3_X3CnVqHxFKw@mail.gmail.com>
-Subject: Re: [PATCH v2 10/19] mm, swap: consolidate cluster reclaim and check logic
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BAAD01C0011
+X-Rspamd-Server: rspam07
+X-Stat-Signature: r48guo9i39n1k5jthj5uujayg14uoexs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AA61F4001A
-X-Stat-Signature: ttdzgt3wxbqyisp1asar1qrdbd11rsxp
-X-HE-Tag: 1763652796-247063
-X-HE-Meta: U2FsdGVkX1/mzu/YlUG6fDKvKyFcmtgswvsPQ4fIl1tcQ00OpeCVQ2TM2B3kdMkHDlkkNPY9Yi2WaH2u3EoAXGTJG5BN+YdJKlyixqMRB+RPFR1MFWLQGK8/tTvxPNl253yWSJ6YLlKDm/Le8dLxIdkIbYEBgijW3uFVR0cVlXpvr/FVqGwZwpsOw4CPC4OvPZ5PldpPRzceb83QRnrSy46AUI0NHOvPYShgwRPafz7BOmDGLuk00tekwq6x4XoN3K5e3KoAgOILUPnk/qhaBaMQ8a4Onf1x9AmONAmfVCZB6UFJhLD+IerpXaWeB5UxmPa4Fefuu40Glhx+IDZiUST9ud9+ARwWiRnhFUDHrE//Cradjy1LD0VJew3kgbrRFlUvqM4vtyDT9SsoufmT/BpZw3JHkhzg+CEXzIXYfFxY+tfgycLSyn6XsEwj0f/2FhMocuznDsp+SCTGVFnaR+mZ7waWaYuCexuYKB7CjgWu5uAbX2BFkxE07d37Kp4qz5B1dzm96p0UQuNMCkwxJ/QgSvOfS0T/RKA4mTy6SbXuH0HKQrcXGpOTAYq/OiFCEJ8IUmnFPZCc1lm+USaczRLghpkjSCyIOzl2OwIkS2I02qIWnXKCbyZnsFRLF5KnZ4couCsszyxT27Gwg0vtb6V2rz4qczrAsjJoOAn0ZKOK2fUbL2u07oGSr+j7nHiGye+vhG2jy5s0sn5GytmhM+jrImzub01DsJq6nuTuIDdG03fy1xBNhJkpBHIHL6+rD3uNG20HYPZREVDPKHcJ4bIGlXuEvAkHpzusa1n9dWgRvSO+mF5LneyWKIfM5ViPGvZla/UB5Ml9zO+jOwyuOlFwUODvwYMYd68sV7Xc8Vdpq8wMN3ffp6sz2G16Pml1x+JaYaSAS0KNnL8cqH7KLnOPkLNsFogQOA7SVIU1PfgEaV1/FHpsEEnDSLM/2G9Ixjw/J7O/KK1SHOfnNio
- eoCZeYyB
- C47FjB4IbTdwAxYeHnu6/vs1/jqT1cY4omJuk2T/iTQWIeKYpOOQQYCPVcFHNK5A4vMRc7d/u4jlmq8UTWpFBXPJePu1V0KC+HHO4sXTAEGvNmbJiGL8mSihnvIzuzPGT2Bx/AbrXQRByAtdFy9KiyfvSognfZk8E3cFaTrawuXyN9FoVMBDbes7W1j8iust79yO8YWmPREhXUzM88ZVWH1lN8wjowckqj04xb0Zd7UzquDMbV+HxEFGKEd0vSHzRAT9s6nAb6E1kchyk38z3HcqmWmTYN8MDE+aGGBn5/UoOF+p0YB28zQRgRnYGs9ts0KHfnK0ZtmoeK9eJuPR2ViQGFPoORB6/jdVrUh1pr0Egm92wNZGBGuupA7ly31S+L/tj89a8GDyNfkytblP2wvZtaw==
+X-HE-Tag: 1763652896-508950
+X-HE-Meta: U2FsdGVkX19eeMaXOdROBXes4j296eeMwY3CqZxk1OIuDgO4ykwA6nb17FeKQp0Z3wkO+C9donU47MXsQ+SVuRWoZcV39BeTMulUw8gDslCKbkbGQq9z9OkSM3p6cp/EgVWrFT/zzmAa+dWrHEBL9077VKovFOrMhNHnzmcOhD5S5aH1F0AcQBPRyPf1s1k2NcYH3rTOIPC5cTWwim/T2+5OEfXMWoLiKOPiwuSXDYW60IWlT7UmhNALF0HcSofpQpGtR4ViatsXYcFVlT0R2+xCQHIC+QKROnaCRNhH7FYMSCD/czLGlEdvjm62oUCMBVC/w2i1FRP0MmLPPOcGN3yZdCcP99krj49k/Gm8BIlotC6kY0GBPenf4XmZy1vLi3k5iORXYxcK+cuJTYyQcIq9xCkBvXolIe3Z3chlif/Fid93lVPK9sop8EbJxuL1D2sRFGfXXIWnKFOCy5iOMHdquFIeql6hzZ4Yadzodbl+5q9zs4yWWrDXZ6iujvxIwxKm5kaNrI/bZ3IERrbssZKzUfsq2MUpxmqzFjowap2fpv04cwM2LheRRP9Q/9iYrFUA/pNVwHY3PZcJo6beKNop1FljybQzGpBhy+zk4rA2v03Vs533VXHEyED3y/8v+J2f3+fOW1NMJI/CUBI7YLQc0ly6yG/kVtw//PmIbFV0m/D6tSAKg4JYsPfENWw/+J1IezTzdJW+iLYfch13WAnqVCPOjyi45zdTEM6J+SJoc7UfbsaYNWiqVCz+4s7kd32rby7ziwG2RRcW1XUrFnjs0LtJbzyAHAjakRdrNt5W8ZfV/HALvUQBSSWFaQM+w0jBPfBnuQwOT/Bvrl/VLO+8/koUgTO86KzxixqreSg8khVIoOlnwiOUr10GGg8qxhwQZwzodnOgmnhu79wmSOwVLG8OjQR8/pCA9D8lVuMlCzWS8ZFscuVA0vHKZcqzb0ShMKn9yXxMOJO3r2j
+ /+iW5fKW
+ LesuO7Fqt+DVNTget9ATgGEsl/lpdFcWMuVo6HDQX7Knwn5dgatC1dUJAoKjw6ngmSKfsB8Bsx60fE1OXD8Jcvqu0SHoJxkX+5T5u8kKWbmfNc3u0SXpHbFOSNMxiXHyTaAvX3e1MoSFDLDdzEAheLMTO9zqrV/x0wgY0CeQlozqb0mBSU7tjuDTdhgRRVD8Rhdcv64fB6eRbH/dTtzlw9MQZ/N/Z/TXjq4xvSDPnyIzeJ39QQNfnBBcA2AvYOWoUW5tH4zYCaSrsO235Mmc+GOj1ptXrChSwnt4pLK4Vecz3egJMvfkFzQu4NH3ufDP/Jr/fYs4Hoy8KlzzlOKkP9wkqzUZr/YDRwkLuR18YXKpliMRgefLVow9gejVQn+wQoCbNZaPYopjMvE+WdezzqobuKwNnbJ3MSVq437G9MbRrTOI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,175 +122,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 2:47=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Mon, Nov 17, 2025 at 02:11:51AM +0800, Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Swap cluster cache reclaim requires releasing the lock, so some extra
-> > checks are needed after the reclaim. To prepare for checking swap cache
-> > using the swap table directly, consolidate the swap cluster reclaim and
-> > check the logic.
-> >
-> > Also, adjust it very slightly. By moving the cluster empty and usable
-> > check into the reclaim helper, it will avoid a redundant scan of the
-> > slots if the cluster is empty.
-> >
-> > And always scan the whole region during reclaim, don't skip slots
-> > covered by a reclaimed folio. Because the reclaim is lockless, it's
-> > possible that new cache lands at any time. And for allocation, we want
-> > all caches to be reclaimed to avoid fragmentation. And besides, if the
-> > scan offset is not aligned with the size of the reclaimed folio, we are
-> > skipping some existing caches.
-> >
-> > There should be no observable behavior change, which might slightly
-> > improve the fragmentation issue or performance.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >  mm/swapfile.c | 45 +++++++++++++++++++++++----------------------
-> >  1 file changed, 23 insertions(+), 22 deletions(-)
-> >
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index d2e60734ce8f..d57e83a4d0a7 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -778,42 +778,50 @@ static int swap_cluster_setup_bad_slot(struct swa=
-p_cluster_info *cluster_info,
-> >       return 0;
-> >  }
-> >
-> > -static bool cluster_reclaim_range(struct swap_info_struct *si,
-> > -                               struct swap_cluster_info *ci,
-> > -                               unsigned long start, unsigned long end)
-> > +static unsigned int cluster_reclaim_range(struct swap_info_struct *si,
-> > +                                       struct swap_cluster_info *ci,
-> > +                                       unsigned long start, unsigned i=
-nt order)
-> >  {
-> > +     unsigned int nr_pages =3D 1 << order;
-> > +     unsigned long offset =3D start, end =3D start + nr_pages;
-> >       unsigned char *map =3D si->swap_map;
-> > -     unsigned long offset =3D start;
-> >       int nr_reclaim;
-> >
-> >       spin_unlock(&ci->lock);
-> >       do {
-> >               switch (READ_ONCE(map[offset])) {
-> >               case 0:
-> > -                     offset++;
-> >                       break;
-> >               case SWAP_HAS_CACHE:
-> >                       nr_reclaim =3D __try_to_reclaim_swap(si, offset, =
-TTRS_ANYWAY);
-> > -                     if (nr_reclaim > 0)
-> > -                             offset +=3D nr_reclaim;
-> > -                     else
-> > +                     if (nr_reclaim < 0)
-> >                               goto out;
-> >                       break;
-> >               default:
-> >                       goto out;
-> >               }
-> > -     } while (offset < end);
-> > +     } while (++offset < end);
-> >  out:
-> >       spin_lock(&ci->lock);
-> > +
-> > +     /*
-> > +      * We just dropped ci->lock so cluster could be used by another
-> > +      * order or got freed, check if it's still usable or empty.
-> > +      */
-> > +     if (!cluster_is_usable(ci, order))
-> > +             return SWAP_ENTRY_INVALID;
-> > +     if (cluster_is_empty(ci))
-> > +             return cluster_offset(si, ci);
-> > +
-> >       /*
-> >        * Recheck the range no matter reclaim succeeded or not, the slot
-> >        * could have been be freed while we are not holding the lock.
-> >        */
-> >       for (offset =3D start; offset < end; offset++)
-> >               if (READ_ONCE(map[offset]))
-> > -                     return false;
-> > +                     return SWAP_ENTRY_INVALID;
-> >
-> > -     return true;
-> > +     return start;
-> >  }
-> >
-> >  static bool cluster_scan_range(struct swap_info_struct *si,
-> > @@ -901,7 +909,7 @@ static unsigned int alloc_swap_scan_cluster(struct =
-swap_info_struct *si,
-> >       unsigned long start =3D ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
-> >       unsigned long end =3D min(start + SWAPFILE_CLUSTER, si->max);
->
-> The Original code. I'm wondering if there's an off-by-one error here. Loo=
-king at the code
-> below, it seems the design allows the end offset to go through the
-> logic as well. Shouldn't it be 'start + SWAPFILE_CLUSTER - 1' and
-> 'si->max - 1'?
+On Wed, Nov 19 2025, Pasha Tatashin wrote:
 
-You mean the `offset <=3D end` check below? That's fine because the for
-loops starts with `end -=3D nr_pages`.
+> On Mon, Nov 17, 2025 at 6:04=E2=80=AFAM Mike Rapoport <rppt@kernel.org> w=
+rote:
+>>
+>> On Sat, Nov 15, 2025 at 06:34:01PM -0500, Pasha Tatashin wrote:
+>> > From: Pratyush Yadav <ptyadav@amazon.de>
+>> >
+>> > The ability to preserve a memfd allows userspace to use KHO and LUO to
+>> > transfer its memory contents to the next kernel. This is useful in many
+>> > ways. For one, it can be used with IOMMUFD as the backing store for
+>> > IOMMU page tables. Preserving IOMMUFD is essential for performing a
+>> > hypervisor live update with passthrough devices. memfd support provides
+>> > the first building block for making that possible.
+>> >
+>> > For another, applications with a large amount of memory that takes time
+>> > to reconstruct, reboots to consume kernel upgrades can be very
+>> > expensive. memfd with LUO gives those applications reboot-persistent
+>> > memory that they can use to quickly save and reconstruct that state.
+>> >
+>> > While memfd is backed by either hugetlbfs or shmem, currently only
+>> > support on shmem is added. To be more precise, support for anonymous
+>> > shmem files is added.
+>> >
+>> > The handover to the next kernel is not transparent. All the properties
+>> > of the file are not preserved; only its memory contents, position, and
+>> > size. The recreated file gets the UID and GID of the task doing the
+>> > restore, and the task's cgroup gets charged with the memory.
+>> >
+>> > Once preserved, the file cannot grow or shrink, and all its pages are
+>> > pinned to avoid migrations and swapping. The file can still be read fr=
+om
+>> > or written to.
+>> >
+>> > Use vmalloc to get the buffer to hold the folios, and preserve
+>> > it using kho_preserve_vmalloc(). This doesn't have the size limit.
+>> >
+>> > Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> > Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+[...]
+>> > +     struct inode *inode =3D file_inode(file);
+>> > +     struct memfd_luo_folio_ser *pfolios;
+>> > +     struct kho_vmalloc *kho_vmalloc;
+>> > +     unsigned int max_folios;
+>> > +     long i, size, nr_pinned;
+>> > +     struct folio **folios;
+>>
+>> pfolios and folios read like the former is a pointer to latter.
+>> I'd s/pfolios/folios_ser/
+
+folios_ser is a tricky name, it is very close to folio_ser (which is
+what you might use for one member of the array).
+
+I was bit by this when hacking on some hugetlb preservation code. I
+wrote folios_ser instead of folio_ser in a loop, and then had to spend
+half an hour trying to figure out why the code wasn't working. It is
+kinda hard to differentiate between the two visually.
+
+Not that I have a better name off the top of my head. Just saying that
+this naming causes weird readability problems.
 
 >
-> >       unsigned int nr_pages =3D 1 << order;
-> > -     bool need_reclaim, ret;
-> > +     bool need_reclaim;
-> >
-> >       lockdep_assert_held(&ci->lock);
-> >
-> > @@ -913,20 +921,13 @@ static unsigned int alloc_swap_scan_cluster(struc=
-t swap_info_struct *si,
-> >               if (!cluster_scan_range(si, ci, offset, nr_pages, &need_r=
-eclaim))
-> >                       continue;
-> >               if (need_reclaim) {
-> > -                     ret =3D cluster_reclaim_range(si, ci, offset, off=
-set + nr_pages);
-> > -                     /*
-> > -                      * Reclaim drops ci->lock and cluster could be us=
-ed
-> > -                      * by another order. Not checking flag as off-lis=
-t
-> > -                      * cluster has no flag set, and change of list
-> > -                      * won't cause fragmentation.
-> > -                      */
-> > +                     found =3D cluster_reclaim_range(si, ci, offset, o=
-rder);
-> >                       if (!cluster_is_usable(ci, order))
-> >                               goto out;
+> Done
 >
-> This check resolves the issue I mentioned in my previous review.
->
-> > -                     if (cluster_is_empty(ci))
-> > -                             offset =3D start;
-> >                       /* Reclaim failed but cluster is usable, try next=
- */
-> > -                     if (!ret)
-> > +                     if (!found)
-> >                               continue;
-> > +                     offset =3D found;
-> >               }
-> >               if (!cluster_alloc_range(si, ci, offset, usage, order))
-> >                       break;
->
-> I think the reason cluster_is_usable() is checked redundantly here is
-> because cluster_reclaim_range() returns an unsigned int (offset), making
-> it impossible to distinguish error values.
->
-> What if we make offset an output parameter (satisfying the assumption
-> that it can be changed in reclaim_range) and return an error value
-> instead? This would eliminate the redundant cluster_is_usable() check
-> and simplify the logic. Also, the consecutive "offset =3D found, found =
-=3D
-> offset" is a bit confusing, and this approach could eliminate that as
-> well.
->
-> What do you think?
+[...]
 
-That's a good suggestion indeed, I'll try to make the code cleaner
-this way. Thanks!
+--=20
+Regards,
+Pratyush Yadav
 
