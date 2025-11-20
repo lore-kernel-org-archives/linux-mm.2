@@ -4,128 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FA7CF6497
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 00:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C9D3CF64A0
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 00:49:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E45836B00A4; Wed, 19 Nov 2025 19:47:42 -0500 (EST)
+	id 7B9626B002C; Wed, 19 Nov 2025 19:49:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1D5B6B00A6; Wed, 19 Nov 2025 19:47:42 -0500 (EST)
+	id 76A446B002E; Wed, 19 Nov 2025 19:49:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5A4C6B00A8; Wed, 19 Nov 2025 19:47:42 -0500 (EST)
+	id 6802A6B0098; Wed, 19 Nov 2025 19:49:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C5BC96B00A4
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 19:47:42 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38CA2BADD3
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:47:40 +0000 (UTC)
-X-FDA: 84129147480.17.255EA0B
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3055520007
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:47:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZwOtyzyw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763599658; a=rsa-sha256;
-	cv=none;
-	b=CwciOP51uh2N++hrmc8tIZAVhUN81MiFwcIzK5EeufHyz3DaYtnKFQT7aHA326UrNBqCeP
-	uhSpn9Px1+o6hWvizNHhUptRCWfpwIONuj+/VsW3ATtLSeC+z/Pq8oV6YkS9u3F46ReVIK
-	CjUfetlwCBV19RNzmsYVI3B6l9KZslI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZwOtyzyw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 586536B002C
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 19:49:45 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF65A13B31A
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:49:42 +0000 (UTC)
+X-FDA: 84129152604.01.D14771C
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AB3CE140008
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:49:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BZyYNNoc;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763599658;
+	s=arc-20220608; t=1763599780;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w/P67X+tOkro4N9DxBcXvDCHrMw8zb4DFRG/1PsXQbs=;
-	b=vCUTpuZKhVp28OXqoa+87bNtjMztjyvyhf7AhSQTDtOwsFDyeqSgOwVfn+PdVEl3o5+Zwh
-	kGJZ5EMQTB9ub2hqibnLBj7Qik8NDQAlhrMATqVdGh3QGc/OEe1EJdrbzRCUEAILrDywqA
-	W3r9gn4Hr9nXb6ro8Y6eZuwbgA1awEA=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b73875aa527so54302766b.3
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:47:37 -0800 (PST)
+	bh=GFzHXxyk6we/pBImLIWglgwRBcWEEHpcqfaS4xxBUvQ=;
+	b=wDlUY30jR9geC7C4x1CzMJhnd2J/Fq346FL4qAvtVnl4gbpJQcMhhWNUrd5JiqafAN/Njl
+	kXnAZv+3jg1QD7ZoZoCmwY/joRyGf4JzzneZAx0D3Uv4GY/D+krO1qC6zheb4Nan4TJySW
+	F76VOtkX0V40Q0LlGClVSalj2HHjs/4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BZyYNNoc;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763599780; a=rsa-sha256;
+	cv=none;
+	b=6/y18QKlQu6/VqB0BUWcvZp9kpW3ymDKeB+A41oZ9uzLMdCJZif2oRggQ7yK/4qBFDsYjr
+	/Cu4Ajm7aa9ZiXlhK2aEB+whF76V0PeirzsrlaBi+He/ykiKxmjeS+0nDP46WmM10CUij8
+	0wRTz1Ls/KI6Yv/k9i5Z3VOb9yxkmo0=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b472842981fso44922366b.1
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 16:49:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763599656; x=1764204456; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763599779; x=1764204579; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w/P67X+tOkro4N9DxBcXvDCHrMw8zb4DFRG/1PsXQbs=;
-        b=ZwOtyzywE+A6LeibNdBlWVFjj4wX36/2dmdrvfF7J8Um2OA3TIrm/rwqv6l9w3aXZA
-         Fy2IFA+x9XyWwiLvgega8jP/4fW1R0/JSeJV9b+VX8ypR/rbFwiBCna+AxS/aKaJimcv
-         IbTrJZMfKpuEA+3c+qEsb134BHA6NzvvmneFvIEaO82oXQ2J1ZzlIC2eqg6dz684VG0+
-         OEhuwmxAHSxuJlbLerXFAUPI23v2YHEG9yz87Z/jKGQJn9ARGC2c7JYy9+NtzEVL079G
-         jEjI+hujUkFoC6BTNCuDwrlKc1cesH8MNMQLkhqKBgvMPuIdgRSBxHRkXG/0lZ1Jbhu4
-         /ewg==
+        bh=GFzHXxyk6we/pBImLIWglgwRBcWEEHpcqfaS4xxBUvQ=;
+        b=BZyYNNocRC+FmKyjdMgqKdJwAZtwf+nFXUxONwAFVxbm2UmihTvMruVeU39Mvk3pK8
+         ZoHuOiQofml3Ay6owtsX8nmkLb7guiFgG0KaatS0koJmfniqaylM06GCw7X1gpoEVUS+
+         KT8jKoOdlFq3TNtwi3ZABdIsMGPLuzIssbkZ9Cijcl03Y8OcRjUZBQ43NzOgw91UsGQ+
+         MbMWufVR84aNB9zoUuvq1TPj2nPhJwsO5ryRDiQwP/j2YeN7tSVc2cg2A0ke8pp0eGVX
+         92MmH+HZJx7WDW2SkVfQP1/8J1Oa8GW+CNIDS2AFWpuYpToFxrkG8sgKp6C5ov1LfYn9
+         JVIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763599656; x=1764204456;
+        d=1e100.net; s=20230601; t=1763599779; x=1764204579;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w/P67X+tOkro4N9DxBcXvDCHrMw8zb4DFRG/1PsXQbs=;
-        b=uZJJ8dG/wNoNBY6PeMgdthh6cNb+BjgKThvU5Sb30TQi0VF+JtU/NR7R4D5YwXjRJV
-         Jy74wviSyZgqPkGY0fGF0SF5YJzPlx9e3wafw6mV2jCmIYoOOtxYM2B7g7CHxxF5/m0g
-         kQGmtpbBa+NkNS/x2BwoeME0O3MFwostKk6V463X7uZq4l2tQd0PKmljyjqDcabBowL2
-         4rFdQaEY9MYPoJ+sIIsG1bDGsAPA4D8dFiQdeAPzeoPuHKzmDuKMf9X4ceKaw7J7dcg/
-         Xq4++rac5jvXCSP1IgOK7HcN/sGrxDFjRo/sSkiJGtoxmzpspxsQmLkmGc7/DyP0qWNK
-         cZ8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXJge9A3vOIEIQLjfvjnDD4Av8TvJY5WhZJnZAm0LalxdNeU3rUfB509O32N6lcEHPprn2zd+BCGA==@kvack.org
-X-Gm-Message-State: AOJu0YxuyAey2TptfrPIINlLq+jBpZNAxNMKGIaCa348CcKHqmGLtmMj
-	VQ1ZAcNkiuG/VqhdOFzIy9PPjA8pe7KIXNT4lJABHrm0r3lD38XoS5nX
-X-Gm-Gg: ASbGncuQ6xcGwrG3JnflUhvoNREFCVugE2HEtLy7/D1FNW+SWhptP96HcDwFs+zOQdP
-	CdBvf/cWO9phcWiYI2zRGzgXgq4DxUXjzxhqv6CUku8Q5iFnohVt0KUl4iaASr8whFlUKy5+VoK
-	KZW4jcQA9iF3tVVPcMKQmTD+n0bD2kgB+0JrsdwhXXvimN6V8YfGV5klprgQO811U4wFFqJr3td
-	VjZNYW5a2mvILXy1ciazu/97SamzDPZwrXidjyDf3NMEvuyETlbVQr/0nMsbo9f7xqASUHyB9Pi
-	B+MIJXExQeZyDBE1nfS+w7tMwFPe0oVCLjKgfXylN1djaHF7JB0i1BKLovh1PxkgoVWRiueOu6c
-	rELR+x8bi8nbh7ubGFkBzBUujTNvWCcfWBNB2bfR0wtTcFxRGyOD6LrGmFmnoMBmLiMfbdq/W3c
-	H2H2jvKSxJGbRtWw==
-X-Google-Smtp-Source: AGHT+IHN7VWtMO14c9xDQq914ZJx1tXNG2tHafnw8FSgGsDSWuZ/SH5/VJQ/QIuDTYiSsmkR4cRwIA==
-X-Received: by 2002:a17:907:2d94:b0:b73:3ced:2f66 with SMTP id a640c23a62f3a-b7655295778mr91038966b.14.1763599656277;
-        Wed, 19 Nov 2025 16:47:36 -0800 (PST)
+        bh=GFzHXxyk6we/pBImLIWglgwRBcWEEHpcqfaS4xxBUvQ=;
+        b=VyBxF2n6BgIr9lB89aYSyeK8JdzCs+ueu0mfOEyFzzprYmZWw6xQVtx+T7e1BDBMeZ
+         2iidMPv7uDepFRLdhDEXmVgn5sUFI2t/ug7L+Du6/RfEF+DvHnX+LoGy9N+XBQ4BTXhM
+         G7XlLAuBTLPRZXB4IpaDsRcXYcNC2OMK4NS8mndhZ2Whloz0EhNLD4hd3krB1YwGopNw
+         GNwJZtiBibf39fsnXMpSHQeYg7n+ZImVbc7eJ9n4DUX3tDf3+vwr4J1b9E3DRIEUdOJI
+         tsJyAYqmJGG1Sj/+T62a710DYzpYHyqeK8a0nr7p3xdzwF6HPWMMv9CjSSw1r1uGU6eG
+         +5QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSeIpE+YPqHrOP+3I6BSrOAr9sgFN+S0vzjSpELfDVfSrXCY7Q3DVtWcd1hRwYln7ICtya7hAf8Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz24sIOKgZpw1svu7WgaaaPXka6UbUpJii0ptpya7NjjzKLyvdp
+	nPgUuMnubLXJFvEBqqUdrscd2WatlyCuVqPUAzj97QvpgTEuH0jnbvhZ
+X-Gm-Gg: ASbGncs74H0Ihs/AXSwfcX3LJ7D4Oh7xuegsvCvOQRMdg6eVnaTk4d6o3w9NtCmoNAJ
+	lTqisopDHKAeMDyKZ4LHKbQuaqMAkUT+CmWUbdyORDHjbjbOEILBfTCmexRSHPxhQstikg5VFkn
+	SsygeSuGP6jQyJ/lQ5xmqmUNkn4w8k3f3qwlKdDrqS/2LzWRMRWZwx7UP6Q+GRaL0MCNzUn7QkH
+	FK7AeYqGaNgbxhf3Nvt0aQa6DKs06moAZlMImf1XXNKVbpnDs3yTJ+Fdouke6TodGkeqS5IzicQ
+	H0wNw9vjrKKbrBZH8XogR168ws+d0o+t5bTK/1tqhu2iMsJw8vPdXJfZIcxkXHrIaxs2FUNQc6X
+	3ifoPFbkHzWKCK6gI1grKi4t5LQZm3kNVPrSjO9bKj13P0KBnIpce3HggEnM2FXXgtUl4YG11hM
+	wUIQgJkmqtNCYMxQ==
+X-Google-Smtp-Source: AGHT+IHpPW7Sc9vCqGKgvv+ArrMlVJXYKQRzM7WdUX5uPBrdUZ9D6nYP09kf9RuD6MHojf9jBsaXlQ==
+X-Received: by 2002:a17:907:2da5:b0:b46:6718:3f20 with SMTP id a640c23a62f3a-b7654f300f5mr129118666b.48.1763599779148;
+        Wed, 19 Nov 2025 16:49:39 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654cdd659sm72546466b.7.2025.11.19.16.47.35
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6453642d3ecsm797235a12.17.2025.11.19.16.49.37
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 19 Nov 2025 16:47:35 -0800 (PST)
-Date: Thu, 20 Nov 2025 00:47:35 +0000
+        Wed, 19 Nov 2025 16:49:38 -0800 (PST)
+Date: Thu, 20 Nov 2025 00:49:37 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, david@kernel.org,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
 	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
 	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: fix NULL pointer deference when
- splitting shmem folio in swap cache
-Message-ID: <20251120004735.52z7r4xmogw7mbsj@master>
+	baohua@kernel.org, lance.yang@linux.dev, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [Patch v2] mm/huge_memory: fix NULL pointer deference when
+ splitting folio
+Message-ID: <20251120004937.lkczokv5mdo6dy4u@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251119012630.14701-1-richard.weiyang@gmail.com>
- <a5437eb1-0d5f-48eb-ba20-70ef9d02396b@kernel.org>
- <20251119122325.cxolq3kalokhlvop@master>
- <59b1d49f-42f5-4e7e-ae23-7d96cff5b035@kernel.org>
- <950DEF53-2447-46FA-83D4-5D119C660521@nvidia.com>
- <4f9df538-f918-4036-b72c-3356a4fff81e@kernel.org>
- <FA37F8FD-DDAB-43B0-9BEA-2AC25986767E@nvidia.com>
- <822641bc-daea-46e1-b2cb-77528c32dae6@kernel.org>
- <14253d62-0a85-4f61-aed6-72da17bcef77@kernel.org>
+References: <20251119235302.24773-1-richard.weiyang@gmail.com>
+ <20251120000312.xasxdzmmztvp4spa@master>
+ <20251119164650.e5ac7e3b5fa6062016652149@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <14253d62-0a85-4f61-aed6-72da17bcef77@kernel.org>
+In-Reply-To: <20251119164650.e5ac7e3b5fa6062016652149@linux-foundation.org>
 User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: AB3CE140008
+X-Stat-Signature: t7hsnt5at4k4jhmogxygr9eek81psgqk
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3055520007
-X-Stat-Signature: 11mwjzepmwg7pryju5ysfcmk3zjr44yb
-X-HE-Tag: 1763599657-203265
-X-HE-Meta: U2FsdGVkX1+rau97PZT7ZPwZAm8DDv+nv7t7WAIsIGH5sgHqqCmXJGSNqwzr7sMi0UtYIfgpOXlZdOUyrhKUfqNxZ+o2IusWlJ2rO8na6+X6mgocQFyx4LqteSjAkmvVSyW/YD9nvm40bqL+xTRzwmaHmORHqzxcLX3CfMUWGu1uvCE1uT/PiWzAeEa5HJebU23li7LqTQIXYiVDf6XV7KjKN9hFkpsu2tS9oUUKVZdIFjx9KzJsWpZ9qNXYrtid2RwKomnNsELq7WRQmoYCVkBcgvr48SePbXMlHuZRuqf5QVlwZOh2fU1cc5UjJuz+F3ofqhl5lWR1irV82KF+EarLMi3RBVbzrE8roQGxsde8Ty08xTjfhiJsTojBamhD8XptIaXQFmW3ntTXCXUhXSMimhtZei3wg/bKba0n+ecfUfLlSvjvWK7XnLlbycaZlnrRMxT5k49LQHz2e7a28pegroj1KWBJnItXk1ssXHZNOzqN43cBhQMsEGLC+uGYSVXyY0FmTj78rVLxSPOLV55lt2zPARqWoGOd65zgzruB41yIA+WZZ/cJ96P4anYNU24CNHN3Lgt6W5nFcsb7ke4hbuut8AmKUSMZdG0kjgga1wrVYAEeYXMv2eancpAKDYdC/SpuJBi2VOfmVUlDbOt5gqz/8rTdM41X9ABo5YUFKvlLZ9D9O36TKpwArzobmAlfOkTGhwIJeluEQDFB1uVLUgQ3OAd+TwcuC//s80dlpf3xbc4x/Igz5CDqdmCNAUYfwW7hteQKB2nO76WJNLGzyl0zLkTadwwjRxIU42bc8WVoWAE/5mvgHtC9s+jUCdF8fX/XKFys2NWdPfCtnOkmkvX3Ju7R7vptLQ6CBx3F4sIyWqzSEQ3BrkT8SoVYtODxLRF9unjSR/hKwcnIRXEFIcinK5s7P1rEqUEqw7Vztk7mQ3MkU12SIjjzvo5yGCVgB02rfLcYRb865Gx
- aBxNu1iI
- 74Y+izUwrmB9MBBNVXjg3vHx2nQdOtKsereRlGVKkX0PeMtG157YWyd+usyruZCTwqY06C7WO68ha2Vlk5XPE6/5LyL+GeeHYgDOXNxWFJQghj2Pas8FUUve3mUftuggvIaAQaHN8DiWv0NX7qEyj4kviS63mH7wewOmlVS/55tEPj9A/9j/L+VWioLRLemnl+FwAsndxkWrf49r73f0HH7L967kXa6hDN3wwFXkkTZ9BZrTAln3fhQn++Hv1aUXcF9JMpyHX3MyMw3DgCnc62xL9/Xqbzz0ff3ZzzgBgLa52fBYo7uoQtgbTPtdVRmlOmE6wBl1NkyKX5DIKXUMoo5VHAShxuVnd7cH9/+G6vQIFKFIDc6O3I1pFSQpfwujil9JEERwHJqX41bpBkqXAG8+Ub6xDsOqjhcIlXIXGIdKzB1SSw9fdnMIls/uc9O8bDeyOgspefPdIyz1pMKmWDMoOfYKTDv3tQnhcBH0irIGYBjU3VtmsQJx0/L31QI6i8OSjpRddOaq+p5UNxJ4qmgKHd49u9ebiUzUmezR01+0sj9btonVOz6JuhPMDcEy9jWioe2rAc1jdyb6qcNzDs0hgOOcxyLOI/Puqaj2Tdio99l5xO/6koyR/bU/sap/bEi/VcOO1SZ4CEkoS6h00+VyE6G2QOcLbe+xH4URmY90QHUIeKSrI8JchE3jp47Ufwp51Ukvbn61FfadH0TDhTOW8eJhW4xTONw+8hBVpwszqiX/YOW1wpqP63VyIGzigq5KVWtTMWFvvE+LA17J6h7+G5g==
+X-HE-Tag: 1763599780-523833
+X-HE-Meta: U2FsdGVkX19BQHNolDJdM5nB1VRINYi0XOiuZ5wg3kxyfJKpugv30+Unf65YczQoMDUwKyhldM0qYDTRyrKFwuVq7VCeV0BJrGD2svG7Kfu21gb78y59sC/kubtgWne/9+hUCMAL9g2m+IwlLdg/ACkKsc2aszwyYSq1H3/yDV01oIv0PMw5ymllSK8vQ+HWsa2COY3+UliFgv78biVcvk7x0w4Uby4/3DOmXKUxKc0vBITomJaL6q1D7MdL8Jj0iKVkhPn3NKK5+Nf+UmXxVpKbHvDZMgFfsS/SpMF9EMySW1Sd2ZWRYEVnujMo/GxoERgC0MfAsBB3wPj79HgcxzZtG/34FAduL5WWPJxe0iUM/4HXq76dXbD4Kvfwr6wo2Qp5Fpu9tqb2B9Oer551/ARbDWVRk69tk6Rl8LIpgy/qNcnWDKgv7qhUXgwh6Thm9RPLvR3XV4bPljHK7POCaZrKmRDAVh3z/HfbI+eftD6Qe2as44I8C7jPZDAQJtvRus/76hvg1y4fkT0PGR0divrdZvTDEKekEB0aCQLdNQdQ0fGzjbR0dmC5C0igIqpzJSorMH9kTPm/sF1QY+gbhsfpE04Uq02dMY78ahprufYu06b8tvnaLxTpW1XRSdkkWpzNzMmkqW3NtSpOIgXoK4TPg4r2vmnJHcmxWh5dVRm+fu3ZGVZSDK48Uwe4swjAU4vEsNFg+lmaPYJqiuZc5KH8ir3AbzM5fEspQ2XNHNRxh9eqUenOES6P6fTMlL0Ku+mDHNKc/PfzeOUvBvHWtmqNKQSzVYt0dwmPZQPfREalLcGjsxkC58jOa1bcmCsqIE3oeBouA0eWqA7Lz1meQc0J+ollfUi/wdCsL193Jt4uaEgvE2D379d/0p97Gd5inLRY/rLNS6rjj4/eMFIyiPfBT1wHLUzFTqFxEbDjpIikc1AA3yzQLtFhSrqHVjXbUIuKFTaJ9OBYXjnjf3n
+ MQKpcdNM
+ MyXD+zz/FM5ZDGqq4b7w/jcJbxZPVedEsarVLvAWMoe0il2LOXdWhhxgoxanTB0IHYfQeiXhTdHSCugJs0IL9yHVmpqBwigXRrlvSt9t7G/68ZwcWzgh3f5dr3ADEnD6IlgRBXfmYGO+BUcvD1CGD9vlWIcL0fQwYvhUPWX5IPb9x2fw0pFONY7BPzZ6fPOnaJxw2nuJmuiHaahyH2K+x5jscVDneN2V+zMxM+sM0ow+9oZb9T4myP3FZXa6M9OCvOPgJ6ZKE+oXuvdqhg62jhN3NANxFJBOUqjcLP45Jr4zG2oryiTPwh+AY3jVd7pl9TM3jwGNdZKyMU3YkQUjiQxfupUBw9DdUQ3wE90K8U7aPFrCNVs/eSfbyjmzY/feNk0uf00OjiwCsGf0nTtbH87TNR9JAEPzSaT6+3JLVE/KcMD7I0N0aGA4mOD7gNh3q11G2nJMjevvXlUmcfLqMeXF+N0iBZgCId35nI8TXR2k4RDI8QUB5nX9tFASlHV25l94U3UUtnIidQ7rRwEfhkspl9dUnlP5jLXFKqbVDqluB5iG01h2NupryExz18BGo8/nTsu5ivMGAAF0ITS0SLiBT01OyEIXMiRq5R/MFQ00Nm8GqEkzdtSPH0AeDxDCrhprDt5vhgPMyamv+TOiQooZRQJllCouyivEqmATboEapIpErHDpg22p8xtVMODpMJp0K2Vh9Qnx6/Gj/63XJiXGCpE0iHFYmK1c2apHLFMi3gXQ3EU4nMSo0aH6SMoud/k8DE7ZT9162JJX9iFvy9R6ea3DSX/axu8B+NKa9PRqBNtX2bnbqx+USqmbyDfymFSMqBIP/uVDrXYovNcDHpRMM0/Op+j4KLqXYTQ9+E0/4AO6DCTUJ8qjT3SOwmiKhWGJT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,149 +129,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 03:46:14PM +0100, David Hildenbrand (Red Hat) wrote:
->On 19.11.25 15:37, David Hildenbrand (Red Hat) wrote:
->> > > Given folio_test_swapcache() might have false positives,
->> > > I assume we'd need a
->> > > 
->> > > 	folio_test_swapbacked() && folio_test_swapcache(folio)
->> > > 
->> > > To detect large large shmem folios in the swapcache in all cases here.
->> > > 
->> > > Something like the following would hopefully do:
->> > > 
->> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> > > index 2f2a521e5d683..57aab66bedbea 100644
->> > > --- a/mm/huge_memory.c
->> > > +++ b/mm/huge_memory.c
->> > > @@ -3515,6 +3515,13 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->> > >           return ret;
->> > >    }
->> > >    +static bool folio_test_shmem_swapcache(struct folio *folio)
->> > > +{
->> > > +       VM_WARN_ON_ONCE_FOLIO(folio_test_anon(folio), folio);
->> > > +       /* These folios do not have folio->mapping set. */
->> > > +       return folio_test_swapbacked(folio) && folio_test_swapcache(folio);
->> > > +}
->> > > +
->> > >    bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->> > >                   bool warns)
->> > >    {
->> > > @@ -3524,6 +3531,9 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->> > >                                   "Cannot split to order-1 folio");
->> > >                   if (new_order == 1)
->> > >                           return false;
->> > > +       } else if (folio_test_shmem_swapcache(folio)) {
->> > > +               /* TODO: support shmem folios that are in the swapcache. */
->> > > +               return false;
->> > 
->> > With this, truncated shmem returns -EINVALID instead of -EBUSY now.
->> > Can s390_wiggle_split_folio() such folios?
->> 
->> [noting that s390_wiggle_split_folio() was just one caller where I new
->> the return value differs. I suspect there might be more.]
->> 
->> I am still not clear on that one.
->> 
->> s390x obtains the folio while walking the page tables. In case it gets
->> -EBUSY it simply retries to obtain the folio from the page tables.
->> 
->> So assuming there was concurrent truncation and we returned -EBUSY, it
->> would just retry walking the page tables (trigger a fault to map a
->> folio) and retry with that one.
->> 
->> I would assume that the shmem folio in the swapcache could never have
->> worked before, and that there is no way to make progress really.
->> 
->> In other words: do we know how we can end up with a shmem folio that is
->> in the swapcache and does not have folio->mapping set?
->> 
->> Could that think still be mapped into the page tables? (I hope not, but
->> right now I am confused how that can happen )
->> 
+On Wed, Nov 19, 2025 at 04:46:50PM -0800, Andrew Morton wrote:
+>On Thu, 20 Nov 2025 00:03:12 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 >
->Ah, my memory comes back.
+>> +	 * TODO: this will also currently refuse shmem folios that are in the
+>> >+	 * swapcache.
+>> >+	 */
+>> >+	if (!is_anon && !folio->mapping)
+>> >+		return -EBUSY;
+>> >+
+>> 
+>> This one would have a conflict on direct cherry-pick to current master and
+>> mm-stable.
+>> 
+>> But if I move this code before (folio != page_folio(split_at) ...), it could
+>> be apply to mm-new and master/mm-stable smoothly.
+>> 
+>> Not sure whether this could make Andrew's life easier.
 >
->vmscan triggers shmem_writeout() after unmapping the folio and after making sure that there are no unexpected folio references.
+>I added the below and fixed up fallout in the later patches.
 >
->shmem_writeout() will do the shmem_delete_from_page_cache() where we set folio->mapping = NULL.
+>If this doesn't apply to -stable kernels then the -stable maintainers
+>might later ask you to help rework it.
 >
->So anything walking the page tables (like s390x) could never find it.
+
+OK, got it.
+
 >
 >
->Such shmem folios really cannot get split right now until we either reclaimed them (-> freed) or until shmem_swapin_folio() re-obtained them from the swapcache to re-add them to the swapcache through shmem_add_to_page_cache().
+>From: Wei Yang <richard.weiyang@gmail.com>
+>Subject: mm/huge_memory: fix NULL pointer deference when splitting folio
+>Date: Wed, 19 Nov 2025 23:53:02 +0000
 >
->So maybe we can just make our life easy and just keep returning -EBUSY for this scenario for the time being?
+>Commit c010d47f107f ("mm: thp: split huge page to any lower order pages")
+>introduced an early check on the folio's order via mapping->flags before
+>proceeding with the split work.
 >
->diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->index 2f2a521e5d683..5ce86882b2727 100644
->--- a/mm/huge_memory.c
->+++ b/mm/huge_memory.c
->@@ -3619,6 +3619,16 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->        if (folio != page_folio(split_at) || folio != page_folio(lock_at))
->                return -EINVAL;
->+       /*
->+        * Folios that just got truncated cannot get split. Signal to the
->+        * caller that there was a race.
->+        *
->+        * TODO: this will also currently refuse shmem folios that are in
->+        * the swapcache.
->+        */
->+       if (!is_anon && !folio->mapping)
->+               return -EBUSY;
+>This check introduced a bug: for shmem folios in the swap cache and
+>truncated folios, the mapping pointer can be NULL.  Accessing
+>mapping->flags in this state leads directly to a NULL pointer dereference.
+>
+>This commit fixes the issue by moving the check for mapping != NULL before
+>any attempt to access mapping->flags.
+>
+>Link: https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
+>Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+>Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>Reviewed-by: Zi Yan <ziy@nvidia.com>
+>Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+>Cc: <stable@vger.kernel.org>
+>Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>---
+>
+> mm/huge_memory.c |   22 ++++++++++------------
+> 1 file changed, 10 insertions(+), 12 deletions(-)
+>
+>--- a/mm/huge_memory.c~mm-huge_memory-fix-null-pointer-deference-when-splitting-folio
+>+++ a/mm/huge_memory.c
+>@@ -3619,6 +3619,16 @@ static int __folio_split(struct folio *f
+> 	if (folio != page_folio(split_at) || folio != page_folio(lock_at))
+> 		return -EINVAL;
+> 
+>+	/*
+>+	 * Folios that just got truncated cannot get split. Signal to the
+>+	 * caller that there was a race.
+>+	 *
+>+	 * TODO: this will also currently refuse shmem folios that are in the
+>+	 * swapcache.
+>+	 */
+>+	if (!is_anon && !folio->mapping)
+>+		return -EBUSY;
 >+
->        if (new_order >= folio_order(folio))
->                return -EINVAL;
->@@ -3659,17 +3669,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->                gfp_t gfp;
->                mapping = folio->mapping;
+> 	if (new_order >= folio_order(folio))
+> 		return -EINVAL;
+> 
+>@@ -3659,18 +3669,6 @@ static int __folio_split(struct folio *f
+> 		gfp_t gfp;
+> 
+> 		mapping = folio->mapping;
 >-
->-               /* Truncated ? */
->-               /*
->-                * TODO: add support for large shmem folio in swap cache.
->-                * When shmem is in swap cache, mapping is NULL and
->-                * folio_test_swapcache() is true.
->-                */
->-               if (!mapping) {
->-                       ret = -EBUSY;
->-                       goto out;
->-               }
->+               VM_WARN_ON_ONCE_FOLIO(!mapping, folio);
->                min_order = mapping_min_folio_order(folio->mapping);
->                if (new_order < min_order) {
->
-
-One more thing come up my mind.
-
-Current folio_split_supported() is used in try_folio_split_to_order().
-
-Here are related commits:
-
-[1] commit 7460b470a131f985a70302a322617121efdd7caa
-    Author: Zi Yan <ziy@nvidia.com>
-    Date:   Fri Mar 7 12:40:00 2025 -0500
-
-        mm/truncate: use folio_split() in truncate operation
-
-[2] commit 77008e1b2ef73249bceb078a321a3ff6bc087afb
-    Author: Zi Yan <ziy@nvidia.com>
-    Date:   Thu Oct 16 21:36:30 2025 -0400
-    
-        mm/huge_memory: do not change split_huge_page*() target order silently
-
-[1] looks fine, because before calling folio_split_supported(),
-min_order_for_split() would return negative if !folio->mapping.
-
-But [2] moves min_order_for_split() from try_folio_split_to_order() to it
-caller.
-
-Currently it looks good, but not sure it will leave potential misuse.
-
->
->-- 
->Cheers
->
->David
+>-		/* Truncated ? */
+>-		/*
+>-		 * TODO: add support for large shmem folio in swap cache.
+>-		 * When shmem is in swap cache, mapping is NULL and
+>-		 * folio_test_swapcache() is true.
+>-		 */
+>-		if (!mapping) {
+>-			ret = -EBUSY;
+>-			goto out;
+>-		}
+>-
+> 		min_order = mapping_min_folio_order(folio->mapping);
+> 		if (new_order < min_order) {
+> 			ret = -EINVAL;
+>_
 
 -- 
 Wei Yang
