@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED753CFA441
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 20:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9417ECF885D
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 20:08:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FC8D6B0011; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
+	id EB78C6B002D; Thu, 20 Nov 2025 15:08:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AD236B0022; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
+	id E8F866B002F; Thu, 20 Nov 2025 15:08:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29BF36B0026; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
+	id DCC146B0030; Thu, 20 Nov 2025 15:08:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 170B36B0011
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A5EFC0330
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:02:01 +0000 (UTC)
-X-FDA: 84132056442.01.4D9E0EF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CEE1A6B002D
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:08:11 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6687F140351
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:08:08 +0000 (UTC)
+X-FDA: 84132071856.18.840C5E1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6301610000B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:01:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=synl6nsr;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id B33DD1C0016
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:08:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FUgR5We2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763669286; a=rsa-sha256;
+	cv=none;
+	b=dW+7phCXFA/Jj2qygMOv+j07oTa7MTxj1jjypD0dkamVEBWbG9nlGBTpkJe9DV5Hc/vwk5
+	ZetE3WPZxqwZxpqpjWU2co9S8KapSN98QK8kGwMXYkVMQEi5WOmN9RzFxSipCua7MJNq4z
+	VcpUcONqJMeYc+KE03jZpVs9UAoOKoo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FUgR5We2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763668919;
+	s=arc-20220608; t=1763669286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pHVgaJEz/7rvdq304rmAiCJ6m4k1j4l8IBv8ks/glf4=;
-	b=odzB9nvJORgpcPDVsQ1/SEgWJ2WLEI0LSBzk+hRs6N2PYyV5po2naXFe9b/BeMz8yhHmND
-	xv9tcZFKt6KkUFxS1MnBCnCvq0oKd57V+xAFID6cev3LlQlgpoaoUcP7jSYUfMLbUdImD4
-	ksbLTzpkrVEdYqcubP+cpob0dxahLXA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=synl6nsr;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763668919; a=rsa-sha256;
-	cv=none;
-	b=W0GbQfs6KoxfipNbl2EHiSqPKhVbA0GewM0tEwwEtwM9uNRQBNbjgiU6ciLP1yWRV3RPQ/
-	v69xuQyP54QBWkeDc4CKoTBamIC/cgkZK5XyGcuGDYm6Zl9SY65fP0662jovS6Bg0SGxVp
-	kWxyML0adFeDTsXR53RqR6lZGCFrfFM=
+	bh=wNa9iwEAN9AZjnVq0r0weyR2GTqJY3I3qxY4R8Ltv9E=;
+	b=nNlBcdMIaao/Cxu23UJhqE1RqqZxj4muLUKyaQMzDTKQQLYVJNGkkkc7HsaLyofxY+Azh2
+	l1kOqpZDc6Gyf+aPUNxr2xgBuK3qAOnXJGjJSIxjU0zfm36yQSn+UO8bZXesD7iIYnhdiS
+	xOQG7UOAg0y3xBXDl4dgq//geUZTmuU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 773A2600AA;
-	Thu, 20 Nov 2025 20:01:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9507C4CEF1;
-	Thu, 20 Nov 2025 20:01:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 308B660017;
+	Thu, 20 Nov 2025 20:08:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFE1C4CEF1;
+	Thu, 20 Nov 2025 20:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763668918;
-	bh=ZvX0wFM0qL1CtiFzpbJjufy/5/LYP6pOHRZEztLhSmA=;
+	s=k20201202; t=1763669285;
+	bh=VVP8DdbSUeK/J4HV2SMoyh6buJCbiFpKSw4KcUAUqQY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=synl6nsrM7koryVi0hr6FZQxhlPjLlbafWBhokYY8sS5/OqXPPqbsN0XP+yeyDQJB
-	 fn2p2iPvCfi1BvSCFhV5u1Q2qN6MDyaoZK0vA97C8VpPFqwUoykvzHEZlcaqFqw5mf
-	 MPCMkvHV6SZoCdV/El4CL0YSGFvRP/H7hwVsGMwuEoc/iHhmaOBS6mltuWCx29klCO
-	 MhrFWO2gJ39g5tHgax9XHO3kn8SXTxMMYOmDpIuSYLO7RKWWykQoDbrzlw+7UX0YA7
-	 bfiqxng42Was01wyhEfy3sii1trz/aRcmolAyR8NWw6EpbW4sTdKXLFKptgow196Ds
-	 xmCfl0EPdcKvA==
-Message-ID: <90790838-f6aa-41e7-9f34-7d5a1e18a706@kernel.org>
-Date: Thu, 20 Nov 2025 21:01:52 +0100
+	b=FUgR5We2tVWz3KOYVUlN9XBm2aT9NIJuOBtVwZlHkIk4HijQ9xaoL+hJIAJzVu+1+
+	 kldFCboZhalUhd1A6glgmSWS/am1dk6WrKFWuw3nWY/EqbPTlBjKcfpoJ8EbqdFi3g
+	 O+NozSCVx3VB+rhgZnQj4yJT6++vwZZFZ2iN7liJIq42i19RJ9GsWPvnneOVvnmkEP
+	 YVnYefGXWT/BwT5aKviXdVcq3J5EWu/bsgSaZiwmY1rL2ykMW8tSzOpU52YpNL1g1p
+	 +s2vMiv7ehxSoD/sOABpJbOO/joYPl6Dou5XevL7Zm/WpOcVu4c53FBlovBXLvWOCJ
+	 6rkhH4KPoRbGg==
+Message-ID: <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
+Date: Thu, 20 Nov 2025 21:08:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/3] mm/huge_memory: add kernel-doc for
- folio_split_supported()
-To: Zi Yan <ziy@nvidia.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251120035953.1115736-1-ziy@nvidia.com>
- <20251120035953.1115736-3-ziy@nvidia.com>
- <b051bc10-cf68-4e1b-847d-a1323552b963@kernel.org>
- <9D88B1A6-1D00-4770-9B66-A9A0F1B6AC15@nvidia.com>
+Subject: Re: [PATCH v1 1/2] mm: rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to
+ AS_WRITEBACK_MAY_HANG
+To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, shakeel.butt@linux.dev,
+ athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
+References: <20251120184211.2379439-1-joannelkoong@gmail.com>
+ <20251120184211.2379439-2-joannelkoong@gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <9D88B1A6-1D00-4770-9B66-A9A0F1B6AC15@nvidia.com>
+In-Reply-To: <20251120184211.2379439-2-joannelkoong@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6301610000B
-X-Stat-Signature: zmzx7kf6yff33tfwnexanfj9sw1qkndr
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B33DD1C0016
+X-Stat-Signature: dsu91bf15d55wwb1y3ass4znrc3sqbq4
 X-Rspam-User: 
-X-HE-Tag: 1763668919-898826
-X-HE-Meta: U2FsdGVkX18LNlQAYewD+ZcScUUw8AjLCFPCKT8hfqzmOOUC+cbFJpmcox2EeQ7R1mc5KG4okID3QqVHAsloSg69iNoW5jiQatj46UrfLeZSkIKfSKk9o/jliDtZeFzNACQqAR2H9FR8Yy9u10G6ZHn1QrBi9JLYqKqQTtFXLyX2Mp1aQGdGeAY343LdFWD2BTGeqEuXfns1VjqAD9O+shAMtNzrBHuXQ/xEGu5KnJKhkZUsz1IzNmaELoqK397kg5SXPnhnEKu5BTNZzKMtfaa5iZKlU4EAJ+3yO+7xKHDJAlIWqwbZoA6NyN4TRNGVcTM8GvB7FcSCcp+7icyzoGbxg+jkdpYuKGUKbFvBa+Ff5VDd4/Ql3mnhcLglbxp95lIcUrz1YBubNNcs9MQabllx52yQEuCfPveef9S4/npgwQMMBwETCJf5qwwbDf8oS33r/L9Q0cxqqYXV1fG7MOfAbMIOA4QtVSIIvjcWWp45NikzF9nZDH2Dn9mRLjsrz0E1po90UOZA3/oCqNZOVKdS/Gq/89Wtk0SiOChfDMUP2iKe4jSse46Ml2kEERJkwZ/5QqRi8GwEQ9VpbPcNFudnvklDLSnq0k5QSgB9pXfEO/z0kADQzMzyA7xOaFyQPWZ5BJAR7XSXyjALLsyfOz3g3OrLHeVDhIzC0aGC1p/ccGjJSyADBEOkbGFapJm+W141QgDS9SYUA9DlM5Y0wA6RaW0JPBykbvf2EjpH+XDdcns0IX9o3ayIZ9pc5+EzCz2hussPIZMLF/mUnAocfLMsUT9hAm9NwxC+mE88VXdY608/1mSYKdJC8O3/XgIOEnuM3r7rNaPwbSUgAIAVPKGfhWSWIBd+Ebaq39Ak4KjM5Nh9T25mm2OtQeTU6RUcE6eXXZMaqSpyh9IFjAHAacqGnNu/L/5FUSczXiOcmWYXzNWA/aXTnbhzaCdoeU3pTOzF2bFCEcfJh+cetXB
- 2PO3zvMS
- wxZZFZLsrUKDgcw/P2WQzu+DK2tPLqNpNMagNzPHtlkI7yLO/ujw7jfkHcB3uIDlu96rhZZFT1lyPg5LuKyIMywbB0XxNwHS4+zrcVS+IDlkxWpmHS5c7LvkctfcErzqAYCXmWNN895wqZ2+QDsnURRcgY7UV+WLhpa/twbyqSExrVqdcqcbLgRjxwHvXHfeYYPFiGq0Vc1KExOVbtzwtA6uz8uyHFRAC4m9wR/ShQ7PBe/8Vp9n7SXon2T/Vu1q9APEe2XthoBD4WsvHaXmXJEr9ZtTOwM3y5JgWJxR0bsTnpcHPtWPx8fRAt60BZFRcOOw6Oqo9RFkILnWBKUtF2CmfgrULIBpE7oG04CjnapA7+3w=
+X-HE-Tag: 1763669286-615738
+X-HE-Meta: U2FsdGVkX19CHiVHaQeDIi+G89Xe5TJHD8fvuPGDyOnXNtX8TQnoPdLf6uhz9QjtHpSdIT219oC2r8w2HMYPQNoBChYyiLudFcBs0PNMNsPKeQ0hP9PNZl9Gb3XByUVjxVeeS3gUCBj9Tz8YD6TIjATLmYETJiJz1PoU49uii8+KAt1zKpUDl1dCOy+kRwiugehdb5Uhf5HcS6poxUxUynuyPO+L+S5ObcjD4LyR66nupzs6TJ0AhY/OM2PMLeOfQCb2lQsYWZJDgmIPKhRGV0dnrhCUq/s0Y/4WPZE5vAnlBSwxJiVaXHYx2qll3PUhGbifu39SO3rjw0nIvekp5N2omUa/SQFj84cNQF0UJQ+TXanI6b7/tJoDBj0aXOSMZbOOtZqpMYLwWWvwIpNHvyvX6X0VRtdy07IBA1ah+2iWuhLfvzOnsTdLXYJ3OIFCkVK5ZNdGFpTkiGV9PmrmomdVrUmL9rN39YHNzFfRJF1qvTU/cjv0LE0F08KXeXbZk+I4eM+grvMhm1Wl5tgudCRgEBlaiYds0wt32Nvssk2/fP4y64A49vEzeZQ48Cli9OMTEJAQGKocLixh6yoxka/jvDd8Da9lXu6B4FC5KLBx4m638an8yUiDihRABuf3yzp8+EODhOB6eIrg8WIccpLtiCkN5rgrnNVNQiNM9SxShKsDhGPMeBo0ZXPMT9pWuqthjTkJNmIpZ23d7P/QUWoIZywrMCaSdDfylxwfLtTH9iJOpsmEJ3RxzQzaewK/wIcEzFS2O5xF9UIkfpbP8ZNyO3LEjhVGRSG6v/LcKZO7tnQ4l5WkRaKHiBYebna5gqdczOxTlTROwY+F4vN5bttSdJpxx94msOjqreqOotdMwQLXrdY/c9px7V/ZBScFUdgIKiVsncAixKwJ25H+b2iSCsNUJ6/yizyINuQCPkL00r+R6Nf6LF3a9kI3QIAJuyXOJP4b7gN0x53xi6u
+ fNFCloY5
+ TO5O+OQ3J+G3TLuKG7bFBJagyHvOFzDIW0z3UPxt4h26pjQguGdD+m28TGskmmp8Z5iYf1AtVhjRjaYWyn2G4G5NXkic/nC/MDxr6uYZYAk4iWkC+fEXFbN9HpZPscwZqodhJj7YcMMmLD00xgo664QB+xHgDbP7m8QTnkfqgh6mzpD75NHFXq+eZ6rSndTsfu2vzs3i7CS+i1V10ymhxqe0jjlEcPi79pwDFWVe1hjejLRiPfQy9MYBvDAOiGH0HRKmLw4pjmVoKxv0E7vPMFJmcPEB+K8ECQpYSMqUbGAYq98jta8J3PYwMTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,64 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 15:48, Zi Yan wrote:
-> On 20 Nov 2025, at 4:27, David Hildenbrand (Red Hat) wrote:
+On 11/20/25 19:42, Joanne Koong wrote:
+> AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM was added to avoid waiting on
+> writeback during reclaim for inodes belonging to filesystems where
+> a) waiting on writeback in reclaim may lead to a deadlock or
+> b) a writeback request may never complete due to the nature of the
+> filesystem (unrelated to reclaim)
 > 
->> On 11/20/25 04:59, Zi Yan wrote:
->>> It clarifies that folio_split_supported() does not check folio->mapping and
->>> can dereference it.
->>>
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>>    mm/huge_memory.c | 17 +++++++++++++++++
->>>    1 file changed, 17 insertions(+)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index efea42d68157..15e555f1b85d 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -3688,6 +3688,23 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>>    	return 0;
->>>    }
->>>   +/**
->>> + * folio_split_supported() - check if a folio can be split to a given order
->>> + * @folio: folio to be split
->>> + * @new_order: the smallest order of the after split folios (since buddy
->>> + *             allocator like split generates folios with orders from @folio's
->>> + *             order - 1 to new_order).
->>> + * @split_type: uniform or non-uniform split
->>> + * @warns: whether gives warnings or not for the checks in the function
->>> + *
->>> + * folio_split_supported() checks if @folio can be split to @new_order using
->>> + * @split_type method.
->>> + *
->>> + * Context: Caller must make sure folio->mapping is not NULL, since the
->>> + *          function does not check it and can dereference folio->mapping
->>
->> Only for anon folios. Also, I would drop the detail about dereference.
+> Rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to the more generic
+> AS_WRITEBACK_MAY_HANG to reflect mappings where writeback may hang where
+> the cause could be unrelated to reclaim.
 > 
-> OK.
-> 
->>
->> I guess we really need the folio lock to prevent concurrent truncation.
->>
->> Maybe something like:
->>
->> "The folio must be locked. For non-anon folios, the caller must make sure that folio->mapping is not NULL (e.g., not truncated)."
-> 
-> Sure. Do you think it is worth adding VM_WARN_ONCE_ON(!folio_test_locked);
-> and VM_WARN_ONCE_ON(!folio->mapping); ?
+> This allows us to later use AS_WRITEBACK_MAY_HANG to mitigate other
+> scenarios such as possible hangs when sync waits on writeback.
 
-Makes sense. Or we allow !folio->mapping, return false and do something 
-like the following. Still wondering how we could handle that case better.
+Hmm, there is a difference whether writeback may hang or whether 
+writeback may deadlock.
 
-if (!folio_split_supported(folio)) {
-	if (folio_split_temporarily_unsupported(folio))
-		return -EBUSY;
-	return -EINVAL;
-}
+In particular, isn't it the case that writeback on any filesystem might 
+effectively hang forever on I/O errors etc?
 
-hmmmm
+Is this going back to the previous flag semantics before we decided on 
+AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM? (I'd have to look at the previous 
+discussions, but "writeback may take an indefinite amount" in patch #2 
+pretty much looks like what I remember there)
 
 -- 
 Cheers
