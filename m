@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 643F7CF8863
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 14:42:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32869CF8863
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 14:42:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF9676B0024; Thu, 20 Nov 2025 09:42:26 -0500 (EST)
+	id 913186B0031; Thu, 20 Nov 2025 09:42:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD14B6B0031; Thu, 20 Nov 2025 09:42:26 -0500 (EST)
+	id 8EABD6B0032; Thu, 20 Nov 2025 09:42:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0DFD6B0032; Thu, 20 Nov 2025 09:42:26 -0500 (EST)
+	id 800D96B0062; Thu, 20 Nov 2025 09:42:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E0E46B0024
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:42:26 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66A4E12DAE3
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:42:26 +0000 (UTC)
-X-FDA: 84131251092.13.46629B7
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A7AD64001B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:42:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=T6DiTPF0;
-	spf=pass (imf07.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 70F5D6B0031
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:42:29 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15C1112D97F
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:42:29 +0000 (UTC)
+X-FDA: 84131251218.25.1548877
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 863E620006
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:42:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=YFhlBDO+;
+	spf=pass (imf13.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763649744;
+	s=arc-20220608; t=1763649747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VqtJVjFf2VTiEsbahcHSK1+SUTx0HAzBAG6cy3z+p1Y=;
-	b=M4Cirdt2JfStI4cM8UPrS+Fx5KHWpQHQtluhHgdFrUHBwzpSTZvMvjPr4lyQzKq5tKhtDj
-	qZn9xJ/elZsoq91XBSP1Z/aJrgoENrtDg6g9+PK9mUmKpPMnHTl5ZHVi4RXZ7TfgDPbyRC
-	uaRwQxfBBxflQ97FKKMRx4UOeZTpD2o=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=T6DiTPF0;
-	spf=pass (imf07.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763649744; a=rsa-sha256;
+	bh=C21VWiTFnCtjKUC3lRTNib5t5KU/n8R+0YWZGg6WN4c=;
+	b=trP2mDPq8aDWt/ggQqx06kYBERDam7614de8WFVdPmpOVyRee8A1wT2UWd9/qNTrpYqeK7
+	oCcRWEGvALi4s9x0TkMMxMpRtCAdusXPjD6EGQUxpS37aWzRGdUDpJd4pF5JdnmPIzNGGJ
+	zlNS8D3iiSZA9haddCSGTdjf3U2IpDM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763649747; a=rsa-sha256;
 	cv=none;
-	b=iTxmPspvvXap5KE30VBsbOpAe2T5lblWFkkvnfgxYvlJfsz7fAsASbF7RubHemiTOVhhdq
-	l8Etr53PgmruvPjaADBHHkRddwYFaXtNEJa4R4hGDgK0qvrqLXTE+1BYKnComp18f8VeyP
-	aJXzb1bQ6Iojju1+V5SF5NIy/4P7akQ=
+	b=BXOatviki3EbMoa6En/lt1H4e7LIbfbzs644ZOO0TgMRbfyvcYNGQp+vOwNhe5qE43QYYm
+	XRLrqtxJEpHDmiu2vtwOVhzCxu9eJI9+bqmWTbf8gBrTaq5b1PexyChYoRxzHAuoVU+hSf
+	XC9K6GijoFXKQ2K2x2L0E34k1ffb4mY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=YFhlBDO+;
+	spf=pass (imf13.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Vq
-	tJVjFf2VTiEsbahcHSK1+SUTx0HAzBAG6cy3z+p1Y=; b=T6DiTPF0QphyeJ6ynn
-	rpY6XD2TiGV6q27qAf8VLfdX98bhKJJh+KtuE1Hrjnxm4LekyutigidujNaJZWUG
-	r84wyEXl/6O4Z5VDNM9CPz8nx5HVZn7NGs0xkQwThGDFvJjgCC4iACP8KbFJO8vA
-	U8CfGhL9bNzEy5/5EKKrUSi7E=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=C2
+	1VWiTFnCtjKUC3lRTNib5t5KU/n8R+0YWZGg6WN4c=; b=YFhlBDO+wGNN1bMmpY
+	2qb/OX6/Mho6hh50nJn0j4E+Yf5o2M/RCV8iDnbqUEQ4ys/Lc1AuUDKfwYQN792v
+	zBkZRsZD938tJhpCzPqFBrylDLRy1XFGCUfoAqHFb1ywCa93l1kzzgzonMTKKQfO
+	y/yg9YsUNLwblZTUiUr/Q2TUo=
 Received: from ubuntu24-z.. (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wA3yJmuKB9pTEQrBQ--.727S4;
-	Thu, 20 Nov 2025 22:41:55 +0800 (CST)
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wA3yJmuKB9pTEQrBQ--.727S3;
+	Thu, 20 Nov 2025 22:41:53 +0800 (CST)
 From: ranxiaokai627@163.com
 To: catalin.marinas@arm.com,
 	akpm@linux-foundation.org,
@@ -70,29 +70,29 @@ Cc: linux-kernel@vger.kernel.org,
 	kexec@lists.infradead.org,
 	ran.xiaokai@zte.com.cn,
 	ranxiaokai627@163.com
-Subject: [PATCH 2/2] liveupdate: Fix boot failure due to kmemleak access to unmapped pages
-Date: Thu, 20 Nov 2025 14:41:47 +0000
-Message-ID: <20251120144147.90508-3-ranxiaokai627@163.com>
+Subject: [PATCH 1/2] mm: kmemleak: introduce kmemleak_no_scan_phys() helper
+Date: Thu, 20 Nov 2025 14:41:46 +0000
+Message-ID: <20251120144147.90508-2-ranxiaokai627@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251120144147.90508-1-ranxiaokai627@163.com>
 References: <20251120144147.90508-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wA3yJmuKB9pTEQrBQ--.727S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr48CF43Jw4DKryfuFWktFb_yoW8tr4xpF
-	yvkF1DCw4jy34jqFWxZa4v934Fga90kw17AFyj934avr9Fv3s3tws5ZryUtryUXrZ3KF4j
-	vFWDK3yruw4UZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEs2-UUUUUU=
+X-CM-TRANSID:_____wA3yJmuKB9pTEQrBQ--.727S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZry8XF4rKrW5Wry7tF43Wrg_yoW5Zr47pF
+	Z7Cry7GFW7Xa4Uua9Fva48Zw4DJws7GF1aya42kwnxZF90vFn7Aw4fCrZFyFy5Jr97Gr4Y
+	vrWxtFZ0kr48J3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piXyCPUUUUU=
 X-Originating-IP: [117.176.242.6]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbBEBwMTGkfJUZRjQABsE
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A7AD64001B
-X-Stat-Signature: h8oi47b4p3kuz3ze7qsjuja3yafuspj7
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbBEAcMTGkfJUZRigAAsZ
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763649743-284241
-X-HE-Meta: U2FsdGVkX18HFsXxO8zqgyJDCyTJWy7CuB/ZPVHtsuzlIa2K1+YwsBXI6bObYh1d5xOabLZN2Jg1cRbFDSeCMTMqvO3BZpA8TKpEEu7RqMUAJeEE0SbpFYlme8DBLH8Nj+huX8kbaYQg51astML5kgUkEVKK78R0FeBcudLdh8mPgWUv8KMrkNQb6NUkMA7uJ4OnXdJ1a2KHMTUPbfhLoYSH5ckM63MTHujYEYPKcN4BMVfKKZdt4POphixEMOnYu2BX4Gy/z4DyWA+8moe1nfEn+rUaMzhEBdT1u535deJdUhltucbq3qkS0Cvdm1vNO3AN41s7bJ2xWL9rrnX8W5xWcKJFQqPrDlPS97or95Hqmkgk34hui8321dui13mA52plOa5MtxxpAnWHyY6e6MMuxzKDWq2KN0q5gGlwehSPvKnpAsu3HIXMHYTL633RUG/zVyQn7LODSj1CDq6nbAHCRGHsJlbGULSnSJ5M8W/K6sqezXuE1JLFasIHPRZj6UF/IDFOnVUM5NVR1g8ffbeueDM7L5kPvZNEnfFehV59EdsCYMKVeRwL1fAKjd+UdtDICt8QB96FT6fP2yKoCtmeDvBBzaJGOy8xTyI9veGm/bKUKbDFdOWmqvYT7Xpd6/1JLn6ppK6kVqv7DIXJtd0M20gSu4+G3UQ/F7xYh3WqxGtCI97gwdXlrlxyHaMJUjOuM5kbc2QPiPlOAPymOKrWhw5mXsaKh0f2kKqyVpT9jZ4q0BDlwmiN5zkftm+MqBS2D5MBBm/v9eN3xB8PgauV82aNhXssqco8LrmUz/hozWQFoTTf2n+veVN8A2GKY9Ho0dTjADtLLWtKzCrCUtyCmSgCuAN9QRJKm3r3ycyHj1oMcdxjZxmsbzKlmiPFbN4LFl1CD3Q7Y9DOMAoNdDIE+amNqQZx4hLiTycfOIYPQiOkrc0GggKeXRNZbI+2yct/jbOVY9djob81Ei9
- dAwszdZv
- oNRG3ON6oT4zePgOnOKrkHVlpvFJ/8pezwk2ksk5YTLfUOFRK+gtUnxWwegppvAvaY/IP9UI28DUsZzSOVX7brv8C4G8UaZ15giRKvyTYUBaQ8p5FJNN2hPC6xzyIAbvUbHT+4BrXmpzeVkGmad4Zu1hkJrRjghajd08XssEvXQDFjXEiC6LFtaqmMV9/9xIngpbOuxJql0u47R6wqIwJeuC9XUgUMn/iPhSMtF8oSt0lSFan/nQqt8GSliy4tDrbHdeTTA4wC7XndgzhaCL5MSezda+afrFm0AdUA19yURTKVTRK3GMYfzsuAUigkkhLzrO3WuHUXBSomFAp8EFllug1ryqiBnAE4bVjzKaq/M3t7EDEZnsQZ9yG5M6Vqyp/1WgKXhHn4g9igs4=
+X-Rspamd-Queue-Id: 863E620006
+X-Stat-Signature: akzda5z1hcqqe7f1d45xsyru7tfgzkpb
+X-HE-Tag: 1763649745-453961
+X-HE-Meta: U2FsdGVkX1+/pD+ARsdKe5Zs+Oxisoxx/2S2p8sDSOCYs/p9WlLUr9NX/AqJQLvHdE5dho+594UxB0RWmfu+amXOf0+0QpNWbRi+Au2vcr1vIMCpkJ6DO5LT1V85REYxGOfd+JBvaGpxUKv9EuxjnH1MrhRCQrCF2+RzVRPLeja11QIpx0JlD62Ibtoxfs+ACNn4m8lP5iazvJMZ+W0X2TmXb64D8WF51FExAt959xrW5UGhLDDqALxzG5+NsjxHAt9pce+YrhEi0ExdXSWNoVcuuvfd+SPD5SEVpwNvLanP1EYZlLw6WoSrWzSQa/6M9e0uwI54KycAds4PaIqWDO55JDXcxN2aZfTvCrucq0BK/aVxiaGTGAB91jzBDRVgGhVdrzuSpZ5gjMcm27kGPT6/D85N0x+zEgWTKOEoViUIKAulohezaRaTYP9vqsLCAw5UXsK5wt8+gmpeMyB/A1eHYy+Ea6qQoikvkrf57Uy+r4BKdKHvdNfw+3nRZ+lgfMOXC/6steuOIAm/CUilO4NXREATnCAN3iPPk0+X2KY+GH/9851sOeSXxr1Xj00VNPqsYP7KO+0uvjlswjDChcQ0WE4ga6sTcm/H5o8AQbx019LBvA2RWRXjWD37NaWmLO5M3zxk4pzGywhkEf1PnrD55yFiuqXdgpjNFE5lhH/fbsSmG70LfIwzcKjBaOTU2Yg0ZsVgGuk6TgAUh8u3gGPNVxHD+FENTIQF72957WSmKndiiegFOTHyxckaMUuvUopEZoyiBWpHyXuCRLV14V3Gw57Fi1b3Xh276ove5EbUfRft/hlFAqiPNQgPu6vL1RT3v///yS1tIKPVTITL0BR6uesc9naDAQ1RT8RUpWmDG/fXtzrPAXDc3h1KUSPu8EerjMCywzVAX1qU7zUB8rECCCgtmzxIUrDqsNcvAe3r+tEkGkkkYPMoNHvm2Gu3SHrokCAfJxi4IigIE/r
+ yk6F98cS
+ ZW0meMSoLarpmrJ+6iGIjiNtW+kbqPVTsd/Y/r7bJGUXB7wdpyc7ae3YgBytAfUn7VWDv/n0tUQbu96Mun7025EI2y+4OelhmvzY5zKDJFr255zt9wGTiAzbtapU/hv6KCYDsTWTAJlOnMHyXHhwxv5DHXixgWXt3x69AeqAJdIwBL0urldGr3vTtjW22lJI62trCwmTOuaDnhCgjVnmlLwGAFOySiup/Oj92YdnYZlT2iImd4Jr65DdeW0RoB9PKPmpkcL0P3ZAJn1E6xs8qE9c1v+w3lOp2jFSSJRr88EtQvy5MvcmApR4nKH+EFqihyo2kUFyQprj57Nv8F8CN4gYpZbJXeDgfHdxxoXH+56kYfo6wdJD6pb/qerFAHhTERTgbSGkJdsL/K5HXdyQsBCMtQNhbpiDE3LOA03ylXiQ5qSahmYx7OU00ZWPD87bdqwjJ0J7F/a6LMLGD70dvbh+H7rUQsF3tQ8VU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,66 +103,84 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-When booting with debug_pagealloc=on while having:
-CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
-CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF=n
-the system fails to boot due to page faults during kmemleak scanning.
+Introduce kmemleak_no_scan_phys(phys_addr_t), a physical-address
+variant to kmemleak_no_scan(). This helper marks memory regions
+as non-scanable using physical addresses directly.
 
-This occurs because:
-With debug_pagealloc enabled, __free_pages() invokes
-debug_pagealloc_unmap_pages(), clearing the _PAGE_PRESENT bit for
-freed pages in the direct mapping.
-Commit 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-releases the KHO scratch region via init_cma_reserved_pageblock(),
-unmapping its physical pages. Subsequent kmemleak scanning accesses
-these unmapped pages, triggering fatal page faults.
+It is specifically designed to prevent kmemleak from accessing pages
+that have been unmapped by debug_pagealloc after being freed to
+the buddy allocator. The kexec handover (KHO) subsystem will call
+this helper to exclude the kho_scratch reservation region from scanning,
+thereby avoiding fatal page faults during boot when debug_pagealloc=on.
 
-Call kmemleak_no_scan_phys() from kho_reserve_scratch() to
-exclude the reserved region from scanning before
-it is released to the buddy allocator.
-
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
 Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 ---
- kernel/liveupdate/kexec_handover.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/kmemleak.h |  4 ++++
+ mm/kmemleak.c            | 15 ++++++++++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 224bdf5becb6..dd4942d1d76c 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -11,6 +11,7 @@
+diff --git a/include/linux/kmemleak.h b/include/linux/kmemleak.h
+index fbd424b2abb1..e955ad441b8a 100644
+--- a/include/linux/kmemleak.h
++++ b/include/linux/kmemleak.h
+@@ -31,6 +31,7 @@ extern void kmemleak_ignore(const void *ptr) __ref;
+ extern void kmemleak_ignore_percpu(const void __percpu *ptr) __ref;
+ extern void kmemleak_scan_area(const void *ptr, size_t size, gfp_t gfp) __ref;
+ extern void kmemleak_no_scan(const void *ptr) __ref;
++extern void kmemleak_no_scan_phys(phys_addr_t phys) __ref;
+ extern void kmemleak_alloc_phys(phys_addr_t phys, size_t size,
+ 				gfp_t gfp) __ref;
+ extern void kmemleak_free_part_phys(phys_addr_t phys, size_t size) __ref;
+@@ -113,6 +114,9 @@ static inline void kmemleak_erase(void **ptr)
+ static inline void kmemleak_no_scan(const void *ptr)
+ {
+ }
++static inline void kmemleak_no_scan_phys(phys_addr_t phys)
++{
++}
+ static inline void kmemleak_alloc_phys(phys_addr_t phys, size_t size,
+ 				       gfp_t gfp)
+ {
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 1ac56ceb29b6..b2b8374e19c3 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1058,12 +1058,12 @@ static void object_set_excess_ref(unsigned long ptr, unsigned long excess_ref)
+  * pointer. Such object will not be scanned by kmemleak but references to it
+  * are searched.
+  */
+-static void object_no_scan(unsigned long ptr)
++static void object_no_scan_flags(unsigned long ptr, unsigned long objflags)
+ {
+ 	unsigned long flags;
+ 	struct kmemleak_object *object;
  
- #include <linux/cleanup.h>
- #include <linux/cma.h>
-+#include <linux/kmemleak.h>
- #include <linux/count_zeros.h>
- #include <linux/kexec.h>
- #include <linux/kexec_handover.h>
-@@ -654,6 +655,7 @@ static void __init kho_reserve_scratch(void)
- 	if (!addr)
- 		goto err_free_scratch_desc;
+-	object = find_and_get_object(ptr, 0);
++	object = __find_and_get_object(ptr, 0, objflags);
+ 	if (!object) {
+ 		kmemleak_warn("Not scanning unknown object at 0x%08lx\n", ptr);
+ 		return;
+@@ -1328,10 +1328,19 @@ void __ref kmemleak_no_scan(const void *ptr)
+ 	pr_debug("%s(0x%px)\n", __func__, ptr);
  
-+	kmemleak_no_scan_phys(addr);
- 	kho_scratch[i].addr = addr;
- 	kho_scratch[i].size = size;
- 	i++;
-@@ -664,6 +666,7 @@ static void __init kho_reserve_scratch(void)
- 	if (!addr)
- 		goto err_free_scratch_areas;
+ 	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
+-		object_no_scan((unsigned long)ptr);
++		object_no_scan_flags((unsigned long)ptr, 0);
+ }
+ EXPORT_SYMBOL(kmemleak_no_scan);
  
-+	kmemleak_no_scan_phys(addr);
- 	kho_scratch[i].addr = addr;
- 	kho_scratch[i].size = size;
- 	i++;
-@@ -676,6 +679,7 @@ static void __init kho_reserve_scratch(void)
- 		if (!addr)
- 			goto err_free_scratch_areas;
- 
-+		kmemleak_no_scan_phys(addr);
- 		kho_scratch[i].addr = addr;
- 		kho_scratch[i].size = size;
- 		i++;
++void __ref kmemleak_no_scan_phys(phys_addr_t phys)
++{
++	pr_debug("%s(%pap)\n", __func__, &phys);
++
++	if (kmemleak_enabled)
++		object_no_scan_flags((unsigned long)phys, OBJECT_PHYS);
++}
++EXPORT_SYMBOL(kmemleak_no_scan_phys);
++
+ /**
+  * kmemleak_alloc_phys - similar to kmemleak_alloc but taking a physical
+  *			 address argument
 -- 
 2.25.1
 
