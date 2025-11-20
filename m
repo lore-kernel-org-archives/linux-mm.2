@@ -4,141 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B11A2CF64BB
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 07:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F094CF854B
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 07:27:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194966B0028; Thu, 20 Nov 2025 02:21:15 -0500 (EST)
+	id CC6096B0007; Thu, 20 Nov 2025 02:27:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16C626B002A; Thu, 20 Nov 2025 02:21:15 -0500 (EST)
+	id C9DC16B0012; Thu, 20 Nov 2025 02:27:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 082626B002B; Thu, 20 Nov 2025 02:21:15 -0500 (EST)
+	id BB3706B0027; Thu, 20 Nov 2025 02:27:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EC02B6B0028
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 02:21:14 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A33D213BA4A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:21:14 +0000 (UTC)
-X-FDA: 84130139268.13.23171DE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E5BB9140004
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:21:12 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nb6ActO4;
-	spf=pass (imf26.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA1DA6B0007
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 02:27:35 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 547C85A95E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:27:35 +0000 (UTC)
+X-FDA: 84130155270.19.9AC2A73
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2EB551C0009
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:27:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763623653; a=rsa-sha256;
+	cv=none;
+	b=ed1ptx6Et0aUOniwwkOj9mbtKZhLMOsGDpJtb7atCKKwXgxiyL+FxMrfZtSYhB0o6QiDei
+	c0/56Gg9P57k+YJFaOzP/dXhmljmta6ZU3MV+d/pm0yZPef88z24GeU+oNYZwlyS+QUZPt
+	Abzr1eELGyDWxZ1Y5kvQ6FTedw1hNDQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763623272;
+	s=arc-20220608; t=1763623653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=czJcuQ5Urf4DvTYKbPcWrAcA0kCkCZn4V2PGpIonnik=;
-	b=G+Qk+fLhi8ha3qMCBFTFvzy838oxP2TRkJqEh5iYoRIImZijLSFVEIujzcW8118L0OhqUF
-	9V/+fXVm8K/y68GJB02OXaRi0NGVvekTA5crqQ6NP5p/iFYlF9CCBYlmTZaXgv4UVvM3e+
-	0a3EAfMnm6otuC3A8r5noUoP7WlN1cc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763623272; a=rsa-sha256;
-	cv=none;
-	b=CPiJk3aT68Rtyq8Zn+L69FPK+N4cBJbBSx7eZ1DhN6Fyi7AgKE2k+Exp5wWsIyzSXUNiG4
-	Xse4FSCrCKvVcrt0YH3WPYZe9Zk7d3Y/BnJtK6QrTGKic03BElljcL0BXc+7cKhCYsLKYV
-	BIoc13fvQxMG9sffgfIrJWZ4+7iChkc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nb6ActO4;
-	spf=pass (imf26.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 37259600C4;
-	Thu, 20 Nov 2025 07:21:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED68C4CEF1;
-	Thu, 20 Nov 2025 07:21:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763623271;
-	bh=Q9x7pfr68ABlQkeGDOQXfTv4u0y1Q9ao0HbtlLeZBks=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Nb6ActO4kn5WR22MgZjBWnEhix29+SAXSkzvBaTiYlthZrhPeDL2UyotiI4/dFl3G
-	 CifRWjVgR+IJPR1LDUCi/XQzpU3AP2TnzTk7P0jgZwbG7vNm8sQquNWtMFl+/om2Tb
-	 LxYHzl8vQQELTJQb7NnXh80mV/vTTRhBUBxXHc7+lcavP0TtPpsXyKrQtj3bBODjAx
-	 +HgdU2zRDeqKOoI5hiFt9a9mKAt9tZ58Lp83ZEibBiIP16VJNgbSspvaUazIqEQESj
-	 87GBtLVfJZnjF+CR/0M18mx8sy7KXThc3JEI/6owWCwr6ZgohZQpRMi9pI15uksJ2M
-	 NQSikIjacL0WA==
-Message-ID: <c503061b-00cc-4d04-8380-3a0fe0a2c788@kernel.org>
-Date: Thu, 20 Nov 2025 08:21:04 +0100
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PeXopoGnVpa1AMUDs7beSLhVS8PFd0/tK69ottiollU=;
+	b=b839XPs9rhqOIYMC8aF3Hv6yAb1hL19T+2oF0zgYV4ZbQkZtG3lFy6czHTOUSQj3aufwye
+	unOs+BC156oHA+713sT9/spcyOztruh0ptEvYYgfLblNY8w8sZC9dkxb01HcGCwNJs2tvW
+	a7E0ua8PXHCUfu90S+sICllUIJqhpZc=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 0AA3C68B05; Thu, 20 Nov 2025 08:27:27 +0100 (CET)
+Date: Thu, 20 Nov 2025 08:27:26 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: kernel test robot <oliver.sang@intel.com>
+Cc: Christoph Hellwig <hch@lst.de>, oe-lkp@lists.linux.dev, lkp@intel.com,
+	Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	kasan-dev@googlegroups.com
+Subject: Re: [linux-next:master] [mempool]  022e94e2c3:
+ BUG:KASAN:double-free_in_mempool_free
+Message-ID: <20251120072726.GA31171@lst.de>
+References: <202511201309.55538605-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 25/26] dt-bindings: reserved-memory: Add Google Kinfo
- Pixel reserved memory
-To: Eugen Hristev <eugen.hristev@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com, rdunlap@infradead.org,
- corbet@lwn.net, david@redhat.com, mhocko@suse.com
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-arch@vger.kernel.org, tony.luck@intel.com, kees@kernel.org
-References: <20251119154427.1033475-1-eugen.hristev@linaro.org>
- <20251119154427.1033475-26-eugen.hristev@linaro.org>
- <e73bdb23-c27b-4a18-b7e3-942f2d40b726@kernel.org>
- <060e7412-8f1f-4d31-af39-79213c560e85@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <060e7412-8f1f-4d31-af39-79213c560e85@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4kfgcspqz64fx3rmqpoxmnsp33ue8iqn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202511201309.55538605-lkp@intel.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2EB551C0009
+X-Stat-Signature: fyf3b9xco75b8njwfeby97889u47z4km
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E5BB9140004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763623272-579455
-X-HE-Meta: U2FsdGVkX1+7PEheBFAuSVPfPzPXGjXXo26dVdeJFeOhR+iNb9UdaHfzjCXfrAEfaLbVX8mlbUt+MHr7xTzYjxcYqs8d8h5+YJ91g9drqMZGAGDv6XD0pjVp8jLKSOwejgSC2M2K2ixFrFtGJSG19MjJG0wqjVSTu3dfBk6aAzbGzTj2T6GJ+Zy/BYrw1U8dcN+cvS7yMk+XNG2RZNU82x7WWKKivTk2Mn0GlhVXA1BCN9EtA2aUhQC/1SDGv4EVF4Lqr/O4w0Gz7wPaQQ8hWgSxFXJLViZc3IH45WTF6kNu3L83eLy60Z1Fgfxn54FBo2AcnNnPmn2lQNYSssvpTd/hFGIAKAz1SL9nzW76taHt78LUeWNWWTgRVcY3WggAaXLraBmOx3OlV+e3fRj6Ddi7i3OfAb44jtPjOlf7oSFwIGu39vAa4VrPlRf6Ew33dABySDNm5k6MMls03uTW05vdvJAnos8LkU7FCDktXus2MciyGLcmoIRYUFaWDhW7s/rFnkgX63c2rdgQn9zxEAeSQRmWDbSi/X2kWj2cAe8+1/M6esiRqsmwJtquTs6uIweDpqC1wsyRtchJ7dqgG+qgW/mdob8DwtTPokgT5qX/Kgcc0+GzBy+qzJx6vYvxClgsQAB8jfjxCdHQdZswiHkMHRwQs6KLfqWR4fOxeE9XoTd9AgG+UZ0WOmviT44pzsSY4lHYiQzzEwi0Pj3iDvE7+ORa9T1u3ruNQbzSbeN38EweUw7cmzAanq/mt1cDU3gexY7nO8cSoN5kBOcH5QKUIUYcdX3KnO7ZjeP1mi0wYqsBE0msXsm158Ilt8w5xYOTasG+77u/WrHy6j4ka/NyR/Zy4E7rsGJgBVx9ql15Y/RhsyheHvzg25Rr/qheOalOBMmkgFHPZzoIxDxcV8kJvJQQT0C3AEdXEaXTm/GvIJiUY06X7EJ5LvS5VunXxHttW6dAVD1voh3tPpj
- L+ZU9Hsa
- MIIAtRssybUJWgAfCN5TSfHHRz4eHZLrF0d2+CwxoHROcb60RAg87/uBmHevCsTvU9TJP3OQdl4XV2tEyLvNbuHkMrIc9m2BAjA+FyJtXgsyXpiVT+zP1WEL2m786upr+UV0St2KMeL4CPdvRpWqBEw1zRdyf5JRspmgOytzr9M3ObLId5YO11cL7NzAldZfSjww1L60k8Ja62RC7UCk2Gf8oyzN32nd+X4JE2aVnwp7Lf7BdH59zj6JLTGkMVPbzPhfaiX8jEfkE0tV4BCuOcpDFzOsM3R1CO9aLy2022Z01xcRquNm08uW/5FmTVosDT2zoD671QhUKeyrhJPjs2ZQ1JmijJCL/aLqCHcMfv+F9Vqoi74sLAlrK+A==
+X-HE-Tag: 1763623652-172107
+X-HE-Meta: U2FsdGVkX19G0v9UGetIW5kga+tcE0xmDERrqlCEy7vC3x5Nl9N17tJ2CWvLryJLT5ISkd917zMyG16jxoBBWwNiiM8YTheir9dkArGpl78cwzs3FwEC2VgKTpF9CsTbn8BAeUUSBRtNW1F056FOiP4+cxJLwGbt+AZVFSsNL7wl9E5Oo/uLPefJV1CVdTpPVltIMZLuqXTXBAxjdWNCvRAdfnvkkXQrNerpiQZCdNWjgMaF5bIyhswA5MyBmW4287lfumY4gEIDvUWgySo5WvX6zvusCrR7VICa1UkrsPgVvL88FVXU6fwKFzDzDZpCr7RDmK5R5Wp1MncwCnO/712d1FLIxG5oop5Gb8DUO55q2lSgr9R0E0URtO/5RsVv8uSlFkPK+VHKcGN4y0RMYRZQCZXK+1FbeeBxQScH76M0IzvF2huNH18mQg0DKZx3kwTuCnFKXPSmzCjF4H2oJn9h20skwnsSChGFgq9hpp0I+W3jEp6ZHRK0EyF/hi1l1c6B1PpI6tFx3Oc5y82LX4TO1HbRlPuQP9e3rZC6ClXq5tINKfbiXq3VFJj0Fj9tBq6V5Y7jfho56eJyBQgGWYR7t9v1MEYXHBlYvHbh/iKM//GplPTn20IWaemkFVkfCkuUB33I/0zDkkAkMpwWEtE+wva1cezHxZAg3C1E8A6GNBloVN/fk+m4Ph7/71c/Dj8+SE6FxUabqJWsz9WaAY5DFbyVFTJVzfhH+dMYy1LMmaFMN/LqMdsNkW1eRpC3ciz6ePxg6U6E8JJ/ivjsbuPTwVM9OnFUtkhzlJUhK6tQvAINUr47/TbIzERuOwRL4cYdPM46a0NHOrWYkTFFJBgy4i2R2KUjmxR0IVcWlP5sPcRuGyYyoqavgUqMcWy81gr19bNjNFdXnYB0uGR3uXr+xTQmTfe6fO2FBLUpMSnoE6x9Xr2L2v8yzdnlQZttRTRAxAmldjSYwVzVcXF
+ xJ0LJnUE
+ OBBX7dQ2qMkqaRfwHZ+98ryDGHtEolR9NZa5Bve6wIh0aCiThyTXAhqa1tDo88upWRAPWCiHedFWCUGSYAEPEjED2zmSjbUPih5PQPORYx4jfW9Q4xVfBtLhWcO1VQQ6q7W2y5wbRzlagUoq5sSaM52HaGQ6gzgZz/HFnkFf3JNjzbnoe2kOVjAsW+YHCvpT48xEJuIddka3u4tcWVwjnpSaS3Y/FAxQxDHgOK716Czf6xt++QLekMfD8rPmUYdNNK9gf83x8o6+aeduIy6ofF/FW+5UUHZZzD6VBTbnlp9vrOuseNHzlz8/gL3pmoKzo04vEKws6eIcefcWjmoStyRz2tg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,116 +86,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19/11/2025 17:19, Eugen Hristev wrote:
+Maybe I'm misunderstanding the trace, but AFAICS this comes from
+the KASAN kunit test that injects a double free, and the trace
+shows that KASAN indeed detected the double free and everything is
+fine.  Or did I misunderstand the report?
+
+On Thu, Nov 20, 2025 at 01:57:20PM +0800, kernel test robot wrote:
 > 
 > 
-> On 11/19/25 18:02, Krzysztof Kozlowski wrote:
->> On 19/11/2025 16:44, Eugen Hristev wrote:
->>> Add documentation for Google Kinfo Pixel reserved memory area.
->>
->> Above and commit msg describe something completely else than binding. In
->> the binding you described kinfo Linux driver, above you suggest this is
->> some sort of reserved memory.
->>
->>>
->>> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
->>> ---
->>>  .../reserved-memory/google,kinfo.yaml         | 49 +++++++++++++++++++
->>>  MAINTAINERS                                   |  5 ++
->>>  2 files changed, 54 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml b/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
->>> new file mode 100644
->>> index 000000000000..12d0b2815c02
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
->>> @@ -0,0 +1,49 @@
->>> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/reserved-memory/google,kinfo.yaml#
->>
->> Filename based on the compatible.
->>
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Google Pixel Kinfo reserved memory
->>> +
->>> +maintainers:
->>> +  - Eugen Hristev <eugen.hristev@linaro.org>
->>> +
->>> +description:
->>> +  This binding describes the Google Pixel Kinfo reserved memory, a region
->>
->> Don't use "This binding", but please describe here hardware.
->>
->>> +  of reserved-memory used to store data for firmware/bootloader on the Pixel
->>> +  platform. The data stored is debugging information on the running kernel.
->>> +
->>> +properties:
->>> +  compatible:
->>> +    items:
->>> +      - const: google,kinfo
->>> +
->>> +  memory-region:
->>> +    maxItems: 1
->>> +    description: Reference to the reserved-memory for the data
->>
->> This does not match description. Unfortunately it looks like you added a
->> node just to instantiate Linux driver and this is not allowed.
->>
->> If this was some special reserved memory region, then it would be part
->> of reserved memory bindings - see reserved-memory directory.
+> Hello,
 > 
-> I sent this patch for reserved-memory directory, where all the
-> reserved-memory bindings reside. Or maybe I do not understand your
-> comment ?>
-
-There is no ref to reserved memory here. Please look first how reserved
-memory bindings are written,
-
->> Compatible suggests that it is purely Linux driver, so another hint.
+> kernel test robot noticed "BUG:KASAN:double-free_in_mempool_free" on:
 > 
-> This reserved memory area is used by both Linux and firmware. Linux
-> stores some information into this reserved memory to be used by the
-> firmware/bootloader in some specific scenarios (e.g. crash or recovery
-> situations)
-> As the firmware reserves this memory for this specific purpose, it is
-> natural to inform Linux that the memory should not be used by another
-> purpose, but by the purpose it was reserved for.
-
-But you did not write bindings for it. You wrote bindings for Linux
-device driver, I already explained that last time.
-
-> Which would be the best way to have Linux understand where is this
-> memory area so it could be handled?
-
-
+> commit: 022e94e2c304505973d00dedca4b1432c231fbf6 ("mempool: add mempool_{alloc,free}_bulk")
+> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+> 
+> [test failed on linux-next/master 187dac290bfd0741b9d7d5490af825c33fd9baa4]
+> 
+> in testcase: kunit
+> version: 
+> with following parameters:
+> 
+> 	group: group-03
 > 
 > 
->>
->> Looks like this is a SoC specific thing, so maybe this should be folded
->> in some of the soc drivers.
->>
-> Not really soc specific. Any soc who implements this at firmware level
-> can use it. The firmware can reserve some memory for this specific
-> purpose and then pass it to Linux, so Linux can fill it up.
-> It just happens that the Pixel phone has this implemented right now, but
-> it is not constrained to Pixel only.
 > 
-> Instantiating this driver with a call like platform_device_register_data
-> would make the driver unaware of where exactly the firmware looks for
-> the data. This is right now passed through the DT node. Do you have a
-> better suggestion on how to pass it ?
-
-I do not see how this question is relevant here. I don't care how you
-pass it to the driver, because we discuss bindings. You created bindings
-for Linux driver and that's a no. If you wanted that, I suggests that it
-could be instantiated by some other driver, but sure - we don't have to
-go that way, that was just an idea how to solve the problem bindings
-like this cannot be accepted.
-
-Best regards,
-Krzysztof
+> config: x86_64-rhel-9.4-kunit
+> compiler: gcc-14
+> test machine: 8 threads 1 sockets Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz (Haswell) with 16G memory
+> 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
+> 
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202511201309.55538605-lkp@intel.com
+> 
+> 
+> kern  :err   : [  152.903458] [   T4181] ==================================================================
+> kern  :err   : [  152.916375] [   T4181] BUG: KASAN: double-free in mempool_free (mm/mempool.c:687 (discriminator 1))
+> kern  :err   : [  152.922918] [   T4181] Free of addr ffff88812a92b800 by task kunit_try_catch/4181
+> 
+> kern  :err   : [  152.932343] [   T4181] CPU: 2 UID: 0 PID: 4181 Comm: kunit_try_catch Tainted: G S  B            N  6.18.0-rc3-00007-g022e94e2c304 #1 PREEMPT(voluntary)
+> kern  :err   : [  152.932348] [   T4181] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE, [N]=TEST
+> kern  :err   : [  152.932350] [   T4181] Hardware name: Dell Inc. OptiPlex 9020/0DNKMN, BIOS A05 12/05/2013
+> kern  :err   : [  152.932351] [   T4181] Call Trace:
+> kern  :err   : [  152.932353] [   T4181]  <TASK>
+> kern  :err   : [  152.932354] [   T4181]  dump_stack_lvl (lib/dump_stack.c:122)
+> kern  :err   : [  152.932358] [   T4181]  print_address_description+0x88/0x320
+> kern  :err   : [  152.932362] [   T4181]  print_report (mm/kasan/report.c:483)
+> kern  :err   : [  152.932365] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+> kern  :err   : [  152.932367] [   T4181]  kasan_report_invalid_free (mm/kasan/report.c:563)
+> kern  :err   : [  152.932371] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+> kern  :err   : [  152.932374] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+> kern  :err   : [  152.932376] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+> kern  :err   : [  152.932378] [   T4181]  check_slab_allocation (mm/kasan/common.c:230)
+> kern  :err   : [  152.932381] [   T4181]  __kasan_mempool_poison_object (mm/kasan/common.c:542 (discriminator 1))
+> kern  :err   : [  152.932384] [   T4181]  mempool_free_bulk (mm/mempool.c:137 mm/mempool.c:160 mm/mempool.c:653)
+> kern  :err   : [  152.932387] [   T4181]  ? mempool_init_node (mm/mempool.c:140 mm/mempool.c:160 mm/mempool.c:245)
+> kern  :err   : [  152.932389] [   T4181]  ? _raw_spin_lock_irqsave (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:111 (discriminator 4) kernel/locking/spinlock.c:162 (discriminator 4))
+> kern  :err   : [  152.932393] [   T4181]  mempool_free (mm/mempool.c:687 (discriminator 1))
+> kern  :err   : [  152.932395] [   T4181]  ? __pfx_mempool_free (mm/mempool.c:686)
+> kern  :err   : [  152.932398] [   T4181]  ? kasan_save_track (mm/kasan/common.c:69 (discriminator 1) mm/kasan/common.c:78 (discriminator 1))
+> kern  :err   : [  152.932400] [   T4181]  ? remove_element (mm/mempool.c:172)
+> kern  :err   : [  152.932414] [   T4181] mempool_double_free_helper (mm/kasan/kasan_test_c.c:1444 (discriminator 17)) kasan_test
+> kern  :err   : [  152.932423] [   T4181]  ? __pfx_mempool_double_free_helper (mm/kasan/kasan_test_c.c:1436) kasan_test
+> kern  :err   : [  152.932440] [   T4181]  ? sched_clock (arch/x86/include/asm/preempt.h:95 arch/x86/kernel/tsc.c:289)
+> kern  :err   : [  152.932442] [   T4181]  ? __update_idle_core (kernel/sched/sched.h:1340 kernel/sched/fair.c:7584)
+> kern  :err   : [  152.932445] [   T4181] mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1457) kasan_test
+> kern  :err   : [  152.932453] [   T4181]  ? __pfx_mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1448) kasan_test
+> kern  :err   : [  152.932461] [   T4181]  ? __switch_to (arch/x86/include/asm/cpufeature.h:101 arch/x86/kernel/process_64.c:378 arch/x86/kernel/process_64.c:666)
+> kern  :err   : [  152.932463] [   T4181]  ? __pfx_mempool_kmalloc (mm/mempool.c:715)
+> kern  :err   : [  152.932466] [   T4181]  ? __pfx_mempool_kfree (mm/mempool.c:722)
+> kern  :err   : [  152.932468] [   T4181]  ? __pfx_read_tsc (arch/x86/include/asm/tsc.h:57 arch/x86/kernel/tsc.c:1134)
+> kern  :err   : [  152.932471] [   T4181]  ? ktime_get_ts64 (kernel/time/timekeeping.c:387 kernel/time/timekeeping.c:404 kernel/time/timekeeping.c:967)
+> kern  :err   : [  152.932474] [   T4181]  ? __pfx___schedule (kernel/sched/core.c:6785)
+> kern  :err   : [  152.932477] [   T4181]  kunit_try_run_case (lib/kunit/test.c:450 lib/kunit/test.c:493)
+> kern  :err   : [  152.932480] [   T4181]  ? __pfx_kunit_try_run_case (lib/kunit/test.c:480)
+> kern  :err   : [  152.932483] [   T4181]  ? _raw_spin_lock_irqsave (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:111 (discriminator 4) kernel/locking/spinlock.c:162 (discriminator 4))
+> kern  :err   : [  152.932486] [   T4181]  ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:161)
+> kern  :err   : [  152.932489] [   T4181]  ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:161)
+> kern  :err   : [  152.932492] [   T4181]  ? __pfx_kunit_try_run_case (lib/kunit/test.c:480)
+> kern  :err   : [  152.932494] [   T4181]  ? __pfx_kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:26)
+> kern  :err   : [  152.932498] [   T4181]  kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:31)
+> kern  :err   : [  152.932501] [   T4181]  kthread (kernel/kthread.c:463)
+> kern  :err   : [  152.932503] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+> kern  :err   : [  152.932505] [   T4181]  ? __pfx__raw_spin_lock_irq (kernel/locking/spinlock.c:169)
+> kern  :err   : [  152.932509] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+> kern  :err   : [  152.932511] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+> kern  :err   : [  152.932513] [   T4181]  ret_from_fork (arch/x86/kernel/process.c:164)
+> kern  :err   : [  152.932516] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+> kern  :err   : [  152.932518] [   T4181]  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+> kern  :err   : [  152.932522] [   T4181]  </TASK>
+> 
+> kern  :err   : [  153.201368] [   T4181] Allocated by task 4181:
+> kern  :warn  : [  153.205558] [   T4181]  kasan_save_stack (mm/kasan/common.c:57)
+> kern  :warn  : [  153.210098] [   T4181]  kasan_save_track (mm/kasan/common.c:69 (discriminator 1) mm/kasan/common.c:78 (discriminator 1))
+> kern  :warn  : [  153.214637] [   T4181]  remove_element (mm/mempool.c:172)
+> kern  :warn  : [  153.219176] [   T4181]  mempool_alloc_preallocated (include/linux/spinlock.h:406 mm/mempool.c:409 mm/mempool.c:585)
+> kern  :warn  : [  153.224582] [   T4181] mempool_double_free_helper (mm/kasan/kasan_test_c.c:1439) kasan_test
+> kern  :warn  : [  153.231213] [   T4181] mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1457) kasan_test
+> kern  :warn  : [  153.237839] [   T4181]  kunit_try_run_case (lib/kunit/test.c:450 lib/kunit/test.c:493)
+> kern  :warn  : [  153.242727] [   T4181]  kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:31)
+> kern  :warn  : [  153.248830] [   T4181]  kthread (kernel/kthread.c:463)
+> kern  :warn  : [  153.252759] [   T4181]  ret_from_fork (arch/x86/kernel/process.c:164)
+> kern  :warn  : [  153.257211] [   T4181]  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+> 
+> kern  :err   : [  153.264025] [   T4181] Freed by task 4181:
+> kern  :warn  : [  153.267866] [   T4181]  kasan_save_stack (mm/kasan/common.c:57)
+> kern  :warn  : [  153.272416] [   T4181]  kasan_save_track (mm/kasan/common.c:69 (discriminator 1) mm/kasan/common.c:78 (discriminator 1))
+> kern  :warn  : [  153.276964] [   T4181]  __kasan_save_free_info (mm/kasan/generic.c:590 (discriminator 1))
+> kern  :warn  : [  153.282025] [   T4181]  __kasan_mempool_poison_object (mm/kasan/common.c:534)
+> kern  :warn  : [  153.287868] [   T4181]  mempool_free_bulk (mm/mempool.c:137 mm/mempool.c:160 mm/mempool.c:653)
+> kern  :warn  : [  153.292668] [   T4181]  mempool_free (mm/mempool.c:687 (discriminator 1))
+> kern  :warn  : [  153.296944] [   T4181] mempool_double_free_helper (mm/kasan/kasan_test_c.c:1444 (discriminator 5)) kasan_test
+> kern  :warn  : [  153.303573] [   T4181] mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1457) kasan_test
+> kern  :warn  : [  153.310203] [   T4181]  kunit_try_run_case (lib/kunit/test.c:450 lib/kunit/test.c:493)
+> kern  :warn  : [  153.315091] [   T4181]  kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:31)
+> kern  :warn  : [  153.321198] [   T4181]  kthread (kernel/kthread.c:463)
+> kern  :warn  : [  153.325127] [   T4181]  ret_from_fork (arch/x86/kernel/process.c:164)
+> kern  :warn  : [  153.329576] [   T4181]  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+> 
+> kern  :err   : [  153.336387] [   T4181] The buggy address belongs to the object at ffff88812a92b800
+> which belongs to the cache kmalloc-128 of size 128
+> kern  :err   : [  153.350320] [   T4181] The buggy address is located 0 bytes inside of
+> 128-byte region [ffff88812a92b800, ffff88812a92b880)
+> 
+> kern  :err   : [  153.365488] [   T4181] The buggy address belongs to the physical page:
+> kern  :warn  : [  153.371765] [   T4181] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x12a92a
+> kern  :warn  : [  153.380478] [   T4181] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+> kern  :warn  : [  153.388842] [   T4181] flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
+> kern  :warn  : [  153.396513] [   T4181] page_type: f5(slab)
+> kern  :warn  : [  153.400355] [   T4181] raw: 0017ffffc0000040 ffff888100042a00 ffffea00040b9600 0000000000000004
+> kern  :warn  : [  153.408806] [   T4181] raw: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+> kern  :warn  : [  153.417258] [   T4181] head: 0017ffffc0000040 ffff888100042a00 ffffea00040b9600 0000000000000004
+> kern  :warn  : [  153.425800] [   T4181] head: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+> kern  :warn  : [  153.434338] [   T4181] head: 0017ffffc0000001 ffffea0004aa4a81 00000000ffffffff 00000000ffffffff
+> kern  :warn  : [  153.442876] [   T4181] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000002
+> kern  :warn  : [  153.451422] [   T4181] page dumped because: kasan: bad access detected
+> 
+> kern  :err   : [  153.459902] [   T4181] Memory state around the buggy address:
+> kern  :err   : [  153.465395] [   T4181]  ffff88812a92b700: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> kern  :err   : [  153.473335] [   T4181]  ffff88812a92b780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> kern  :err   : [  153.481266] [   T4181] >ffff88812a92b800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> kern  :err   : [  153.489195] [   T4181]                    ^
+> kern  :err   : [  153.493121] [   T4181]  ffff88812a92b880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> kern  :err   : [  153.501051] [   T4181]  ffff88812a92b900: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> kern  :err   : [  153.508980] [   T4181] ==================================================================
+> kern  :info  : [  153.517054] [   T3993]     ok 51 mempool_kmalloc_double_free
+> kern  :err   : [  153.517141] [   T4183] ==================================================================
+> 
+> 
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20251120/202511201309.55538605-lkp@intel.com
+> 
+> 
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+---end quoted text---
 
