@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60BFBCF8865
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4238CF8865
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:24:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF0056B00D8; Thu, 20 Nov 2025 10:22:24 -0500 (EST)
+	id 5A8356B0011; Thu, 20 Nov 2025 10:24:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E53D36B00DB; Thu, 20 Nov 2025 10:22:24 -0500 (EST)
+	id 558486B00BA; Thu, 20 Nov 2025 10:24:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA52B6B00DC; Thu, 20 Nov 2025 10:22:24 -0500 (EST)
+	id 446E76B00BC; Thu, 20 Nov 2025 10:24:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B6B4B6B00D8
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:22:24 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B4111394EB
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:22:24 +0000 (UTC)
-X-FDA: 84131351808.09.8621D1D
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9C8E81C0002
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:22:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AViNnHnY;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DA906B00BA
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:24:53 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA85C12DDE5
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:24:52 +0000 (UTC)
+X-FDA: 84131358024.10.AB6802C
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 166D2140018
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:24:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ku36GYJn;
+	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763652142;
+	s=arc-20220608; t=1763652291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hNBO1q43Z4HLMo3u95PxV7vGEr2bqJ5I/H/pDo2xib0=;
-	b=X62bPnz6QHnC9lr5bIL2jxP1zPxRt+3K8bGqAjylkVgjre/pX9NUhaVNmtdFGzEJUe6d8l
-	84VTW9w2Eb1Npq5Gy3abKRklUF5IsXkDvqD06vGhw7YJgWtflB7qaPR4fevyUmxoTApuJj
-	ze/3wv71jK5iAua/+vnB+7ym0QdqrvA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763652142; a=rsa-sha256;
+	bh=6y/ne0wZndH5zO3FaM35/ylxSZxnZPTH23+w/6th6WY=;
+	b=wgRdwbTlTc07qpFBBfkz1of200EVL+tMI4UhcxfFq8ei8KT9uc4m/wZsp9UN1Cu8Y4BNLC
+	Jjlct6uqTb7oRNqAs9CYjVSH1oSAD6KBXUi9PW3N0bq9HpenyCB2BpthxbYLxqKrzJ0eKx
+	23Eu2es8AcbvBQ4p+eMuk67g+xbgY+E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763652291; a=rsa-sha256;
 	cv=none;
-	b=Nf8S+UCGdcMBaMK5vZOhXONMMuFnCB8X119rlqjrOUZ9dsYO27qcOltTuEEuQmVvxOhHtJ
-	VyvUf6FQ5C+cc0SQnCiIRCuXLQzpnSZsyTMwIXDInUpNrVrmGLuVfx047nFhAgIQ1012ER
-	P9/JyGUmJsd6Jyhdiu0d0wvXDG2AXtg=
+	b=6s4Cf8Fu0Pln5pzR0EoIhdVAQtdwBWBNLbv8FOLpBpbTlQ0JvDeQg0EWy8Y1T3R9Th5nLu
+	OuVDSacS1PMK+5/hx2WKyBUgFSFlt4Gt62dW3zFGjASi6B9QbjMRYgndyKcWFKQWCFM4s+
+	UC1qyqtYBShjn/KS2adxqv3cwJ4L/Q8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AViNnHnY;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7b86e0d9615so1279978b3a.0
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:22:22 -0800 (PST)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ku36GYJn;
+	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b739ef3f739so201759666b.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:24:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763652141; x=1764256941; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1763652289; x=1764257089; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hNBO1q43Z4HLMo3u95PxV7vGEr2bqJ5I/H/pDo2xib0=;
-        b=AViNnHnY8qJaJkfOogjTUNZi36bmfLy52MKCfmcewEVm2RD01cmI3JCliKNlIJyBYp
-         bytIm0eyWUAfLWmXCX19it+2s/6LqRheqKbgHmw09R67tRELCIS5goMYX8m5TnLYwaxt
-         58GW5TOrR8ZcZOnIx1x+UtCT5yFpjBw1U2Mvg=
+        bh=6y/ne0wZndH5zO3FaM35/ylxSZxnZPTH23+w/6th6WY=;
+        b=ku36GYJnc8t7XT+R8wex1Wc6yhCjeSk42+5O6ZcPkVAkp3IOwNZxFm4Ymm7dKBtDuc
+         nmTEP3gzuvMUWDMCL7zwnCHADMWOBBKrkATy5ifTRbTy8nd/Kj3pEXaziGkYZy3pYtze
+         exI8s8DymjFBzdeDwM/1s9JrpgULa6iQ52yTv5+fyaNKU9msMYvkk1Z/jUJuuQoy+Tic
+         u8FfzRvLNNxeefJ+XfcPD+P/ATl+Q2ZTCHsol1VIrED+tJRVG4lmKcj2EJVyWOeThqvB
+         fHRR+EPDXjY9OfGBI4MgK530jG3P5GalsVoMsTNNrBWATQIUuweu47J0AEN1Zwbi8R1K
+         kkUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763652141; x=1764256941;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1763652289; x=1764257089;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hNBO1q43Z4HLMo3u95PxV7vGEr2bqJ5I/H/pDo2xib0=;
-        b=m/cz8+EJIjvU3u/FUgeI6SFDGaUY9dU73asyOvIP1B68DBW4lnwbJHPDWR6GENeyCv
-         GnjDa1keGSJlwmZ9LMAGA6r3fGPEQZpIgTYpP1dmbti4da2LlPgheWwErCew/J4AKnuI
-         LqVV13mcH+AgbZ30gQD9iSQXd1t1tZWyVVm7AgcNVg3CY3+sza4K0kW+0mUv7RiKN3hv
-         1D30DhB4Vm+TqkWRAHn+i/krVZGlU7BI0hveE5FMY161g5LLNpEflByus/qfM2AT9aHy
-         u/+D04mn2z/RbIVCjsXVKF4hEBSMUAwSRHl03APjEXaugdGQ/3C7GhKlGCyJLmbBJywL
-         2XeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ1l79MkuBLKUi49EwCmTCwJWjkfWAAyT3dwLa5fgoExBJsYqqFEpqzsbykr9GpPkR09aR/3lHPQ==@kvack.org
-X-Gm-Message-State: AOJu0YxBNk3f5eks4cH3CFQjgoaKXRc/h2bGYCkoFKg/zDEuQB1TCv6I
-	c3NRk15n59qXvW372t0wvST2sVfSmfRnk6cd880GfCgUQnJPXE4N8incyOhqh0dnlg==
-X-Gm-Gg: ASbGncsvQvRinUWUd+3WEOTg8ILzb2Xc/GxlPKtJ8Hi97AK4aUuNwrYGvCrrvUSihow
-	b3xmFxhPbu3KJ2ndYw7oZ3Cf2b3Nj2W2m8uAte6zwI3HoHJxshmJidZ5s6vC51mNDGOMo8jk79Q
-	+8Io89VLLjLLNnvmSU82uSiKey+My77iDvR7cQzw6rL+5zE4E3H1K/VNY8Rmdim1ubKkTC6qhGG
-	XVO2M8Ca9hHu5hIQ7oH5t2JG0dzpHfQNnjzzNY5K0r5ygYv3UiPDpvuX5/t3HaahMkGAszSd6tl
-	3d9CIIzmdfbK8rPP/zsOkG2OKhGw//W21pL64r6j2Q8UPyRwe2u0I7Ca1SGuiOPffLHQAdE8iyG
-	ZePs5cUCAZXE2DUcctQkvMKblC9e4GJv6PAnERt4SP5faWWyUZi0bFa+q/l4V8zM8KyQHw16nXo
-	o90B2T2ZPYXU6SzwJM/JiPm+Yrzrjlro+sIvg8uQ==
-X-Google-Smtp-Source: AGHT+IGM/LtK9fM0SsN5LsA6eyPljhRQtoqszEcAtB8Xy29m8uMD4FUL1K10u/XIZzdHc9yqVpK3Kw==
-X-Received: by 2002:a05:6a00:3926:b0:7aa:2d04:ccf6 with SMTP id d2e1a72fcca58-7c3f211a3femr4367565b3a.0.1763652141473;
-        Thu, 20 Nov 2025 07:22:21 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:6762:7dba:8487:43a1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f023f968sm3179642b3a.38.2025.11.20.07.22.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 07:22:21 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Yuwen Chen <ywen.chen@foxmail.com>,
-	Richard Chang <richardycc@google.com>
-Cc: Brian Geffon <bgeffon@google.com>,
-	Fengyu Lian <licayy@outlook.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [RFC PATCHv5 6/6] zram: read slot block idx under slot lock
-Date: Fri, 21 Nov 2025 00:21:26 +0900
-Message-ID: <20251120152126.3126298-7-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-In-Reply-To: <20251120152126.3126298-1-senozhatsky@chromium.org>
-References: <20251120152126.3126298-1-senozhatsky@chromium.org>
+        bh=6y/ne0wZndH5zO3FaM35/ylxSZxnZPTH23+w/6th6WY=;
+        b=hjN2WkQ6oqg+LJAPkpaBZ2TgtuFJ19Zfa1INB1dMc5t5fUhInPHHyBMmvC13e5FZ7K
+         oynn7JSA6VOB0nXvQ/4y5zGw2pUQ0MPbHv78jtmGFza1z7DidszFeI0ILVvALhQJQy/x
+         tnbFzzzbwF2MT3zsYogF3EsJXQk+txr2xWzE5djai2iXpO+pJPJiZTWV9R02JBG/XRs8
+         UX8C0RJjyGmEO96F/nY4fo1y0vOotYvgBZqCrkBggni9YzPdb+hxb2iiVds27rwMrdEz
+         zX1s8PnCpFYDqfjSwHX+cahCp1cKB/sz8Q1W7gWhKaVe3MDyR25Oe0t01jPb0DZ+FPmO
+         s3Mw==
+X-Gm-Message-State: AOJu0Yw1LxCeANh+o2ebEBhPCDqSJyXySXhsm8GD0F5Nnu0LRq0GfYPr
+	lDb8MMVdp+Qmk/wloxEtuM2pCjsK+HnEnhzNJh93FQSxeVCHG+eKniNllWByZZ3ZNqLtTtJmfcy
+	qeyyh/N41+KgzK5sn+Cwd1lIMOhtB1Io=
+X-Gm-Gg: ASbGncuzYHt++BHPag1KeyGCrbjsBSWOZ7LIrzbt4W2Ym0SHzj6l5UhXBDM4KdBDHXI
+	U6B3GBF+5javtbY8NOVvEAd9ORgYe/1oUu3BOzTgttGA/GThjRQvNo9mWoCIRg83VGpvcgXPGZ8
+	am+XjVXTpnm/ti3o5jc3kVXu2/2Ju9F7lTnjNzF01TgoVOwdl2lzO6VQ7WlmM5LMXJiSb0ULiuj
+	WQiuPCY3SevMt7HAqO6twu9UMyFgTHWk2kdtTMB7+zhkkVZAKSWFOt/XwpAnpZ7lOowoBTBybxV
+	Hb1jWOi+XuTBrWipSfO0mVPPiirJL9s=
+X-Google-Smtp-Source: AGHT+IHtHKc1nhUG9TCWSjiJGwYThNYvO+rK1/PqWavFfKQZo5ZMDUmFxuyVoXTkX9J5YPtc2jWNqfawLtQhuX8gCPQ=
+X-Received: by 2002:a17:906:f59b:b0:b73:6998:7bce with SMTP id
+ a640c23a62f3a-b7654f9f5admr401232966b.33.1763652289231; Thu, 20 Nov 2025
+ 07:24:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9od7bjz4rho1kd31n6uxgc4tz6w5szqs
+References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
+ <20251117-swap-table-p2-v2-10-37730e6ea6d5@tencent.com> <aR6/Kc0kag8Z9y6y@yjaykim-PowerEdge-T330>
+ <aR6/lN6fWi9qQD8J@yjaykim-PowerEdge-T330>
+In-Reply-To: <aR6/lN6fWi9qQD8J@yjaykim-PowerEdge-T330>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 20 Nov 2025 23:24:12 +0800
+X-Gm-Features: AWmQ_blv2fvoPXXGWCZbSjvj9YB-kiH67x2lHuHoWc1Kr_X9mNdVkoEhvXWH2Dk
+Message-ID: <CAMgjq7Bm4ZD3nHLT0pvA7T2pMr+pP7ZAd0Ho_8YKpj8gskQ_TA@mail.gmail.com>
+Subject: Re: [PATCH v2 10/19] mm, swap: consolidate cluster reclaim and check logic
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 166D2140018
+X-Stat-Signature: yko77qfs67uikemgduxqgyb4qihak9t6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C8E81C0002
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763652142-358716
-X-HE-Meta: U2FsdGVkX18FR2ykMugVYggoFsrqc5aoC+PJttnP6/DisBNCl2Ir1mN7aGFau3LGXmkfRp96UHK80+7765g60fH53/UIqCrRUyx3cNe3jajCU7AgSVb36gCHm9TCh1bwaApUvpBrXJs1Ojw9Uw5DzUdhuYn/1Ry7SzAUY0UPxLNd8RCgQ2lfEhA6QbmJQhnG/LVAGKiRVwCWQS9gbY++N7+H0ijJCglo5f2UI4nyTPXegzXXCKU3y4Smv5MDPFk8RUWJ2/x+vWyNsNOmt6v9yM5lQNTdd81Vm8Ah2PKvJnCzh2jTpqfKvGCcDG1C3+ZsAEdQBE/ROfMU79tVpcuwM5WdhXXIawLzu6HBMAYOuLIzpt7HckzQpWLos1XP5eBx6KjILSFZQqxb8YKxdjiS/RSu1wJ+m9E6VoS1l7Y7Ie/RLIt3820Jn2EnzNQ4x8JR14V37oBboudscmKxiWreDnezzpVEp+kKIRT7M4g4n9jE0/bvDlBv11vpK9LB7Ogx1OfHggrsCp4B7q3ZBCVnruxrp6sA1wxJMp5SN+Tt6wkHz5P43N3VZnQSG45PFefwgayIPmse1YY4ecS3fEMknlUd81dsPzyX2fERnqEdyd2ZMwHIjKL6UiOaXA0tapXqOH8TNKdzhS6v3YYyriiKHPgDTZtZ9tofSX0HQeYnT3JW3vWiwpKk1dRMezWmo8YVhQdDzIsm9xs51+ZtBUdDYOjc0ndJ3MY+Wl8krK9r+zFuMVRYZhD2PxnWNqDVSZh1+o3TbM14zJ184mnchiznj9nu1p67Mn9/qV6rXnNZDmD5wlQUIEapfgrSEim7TExU9XoBJ17dC2kordjldvMeXbim8tKOQUHc3oDKhopjz0z2zgd4/jmZWAp0j2EnguUFJfs+9EsuCxtA5YnwcrK3tjyQeMymrN0MhUf4d42KQT6RKhBYABmL9KjylzEG1+MxDmBa72H1gyYJ7dESoBX
- ZueA2Hq9
- H804O3eoRzYvX977MznPJQLFROAmZdssUOA0g/zMxRl3AiN756mtUQK90x9Qm43bTaE5Hl5AthkqKfP0xdYgIborAuc3DrRkLsWXxsHrcoPc5kJDx3kreHgxetO51778Xlb1e6Si+IfstYjuqWVILfZmB3eKf1z/C26uwWCEXxwj8VFpBxC8JooEfShoS/xRvvzh8oyYSwsuywbAwM+oa9CviTxlYfgdS/oXuJvrYC/aB5R3/jfPTvXCFoHKUj+lOqMJgMmMg9QFj8kQ9itlr7qnpaeB4Ojt+Wfye+o8WFepsjzFLF/WVD80unA==
+X-HE-Tag: 1763652290-490960
+X-HE-Meta: U2FsdGVkX1+BFvlNSvnOkDAeSFntanTgNIdEzCUz5b6d7BiAkFs0OWQBMsfwp93G53Qchy5dLdr/+7KinlDirL9Wg7QqwzeySjOR/YLtxDm1A8nly70CAL0XmmaCTcseIkonzJM5XyIEZqG3JbuQ0iRR3wps8LUxegaJd+vkdHGBkwGqIli04C3kW3KJ9e0Ii2+Wk1XxG0TRebpymqZdWa1PaMqcXBFyiUMUkegz1Cu+gh0+wOfti87U868GVodrzUc1E0QKads1bIpLEEApk3Qq4M13CDIRTPZviHMDmrQdIuSjz2QIk2tyvBIzF5N4pS8TlAXaZTRnNF5wX1sRu/rM2cLr9yqjPuOaIzga4TXJk57E0Bb5f5Q+LzbukenstcnKJdfUfpYiPy1f1EP7YWrm1K3qAEDpL/hunPJ1FUn81HLZk/KjfEDY3ZqcjOKzgcv3U3IrhrqqtmRNuULSLyCE7BdKKfVKSN2ZXcWlf4BQlXV6J23YswWP1I8LXCGxmvHma1e+T1cov6bxYHw4RTuFLaZFDNtrSJbZ4k4dMrHdH8pJuUt4o9dbU9+buxwVMy0UYUmC41IzOjuiN89F/ZzXr0TaXWZ3yHwrD1t6wIAKGiwC/257c0zfp4+3ds2mkwwNVGSqYKL9wTsJPwb2VroBJXzOIuNOaMkti8oBNXQwHlS+zfndicbBqBvoSWDtlOHKBA1l6u3gFa/Wn+TEYmnw6KSXSp4DCaWG2am7AfV5ZpLlAFyuDf+evCEtBJ4E0hb/nBja1sOk4k6ouFtGlRaXFer7qXavYACrebJiZLfWDqDqAdTPO5GLoOUw0VXlvwYVXDa6m8KXdhj/2jwMs2uwKEwiOe6mPu9Af6fJoExsZRdZLp6hvVNTX0dKm+rqkthuIWj4cdLPLpmwkB47VJ7BstSL5SalxZFrlRSbJRMKEjk/1rUGxorX81kmI86UhyF85Tv2lhE14HU7hDl
+ 3gIoAg1e
+ k7vdlKF2L534JkdKd39dIuU0sGXLp5TGiJMexprDMXFHqk4YxQYVdmtT5SxvYsQzJzFCCcXHz1jDVXDzx1SAR64EbbHzOhRib12hQ+yq8cXI5ifiUcP2yYjpZp8p0Pz8ine81YVvJEjnPDFduD6Y1rnrb4YR5+y/v5Jfst0voNqpUJtb0KeqNzcAVoqCn4r/g2ZWc9IISEwwD5sRSrNcuyDNIO+Mr+8BzxZBhRMgjr5hm8bLYskBHo3rZ3++sYVy9HwAHAE4KCryBKpuGUuubNEqheVIn2g7v6oVeJvXo3rVEOX4dSaWRyxu3OX9QCrDPcErInVPHGUPzr6v2CGiRFmpXU03UVgQNwxi+HqjOHaQJhMDBuMWJOytCY/dAcqAdU5pJ5YJQ2YrK7HdVJFQb0C8tTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,41 +123,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Read slot's block id under slot-lock.  We release the
-slot-lock for bdev read so, technically, slot still can
-get freed in the meantime, but at least we will read
-bdev block (page) that holds previous know slot data,
-not from slot->handle bdev block, which can be anything
-at that point.
+On Thu, Nov 20, 2025 at 3:13=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> On Thu, Nov 20, 2025 at 04:11:37PM +0900, YoungJun Park wrote:
+> > I found the just very Nit comment cleanup.
+> >
+> > In swap_cache_add_folio() comment, it mentions "SWAP_HAS_CACHE bit
+> > to avoid race or conflict." Also shouldn't the comments that reference
+> > HAS_CACHE(the word, swapfile.c) be updated accordingly?
+> >
+> > Youngjun Park
+>
+> I added reply on wrong patchset, Sorry.
+>
+> The comment is for
+> [PATCH v2 18/19] mm, swap: drop the SWAP_HAS_CACHE flag
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index ecbd9b25dfed..1f2867cd587e 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1994,14 +1994,14 @@ static int zram_read_page(struct zram *zram, struct page *page, u32 index,
- 		ret = zram_read_from_zspool(zram, page, index);
- 		zram_slot_unlock(zram, index);
- 	} else {
-+		unsigned long blk_idx = zram_get_handle(zram, index);
-+
- 		/*
- 		 * The slot should be unlocked before reading from the backing
- 		 * device.
- 		 */
- 		zram_slot_unlock(zram, index);
--
--		ret = read_from_bdev(zram, page, zram_get_handle(zram, index),
--				     parent);
-+		ret = read_from_bdev(zram, page, blk_idx, parent);
- 	}
- 
- 	/* Should NEVER happen. Return bio error if it does. */
--- 
-2.52.0.rc1.455.g30608eb744-goog
-
+No problem, I got what you mean. Yeah, that one more comment to clean
+up. Thanks!
 
