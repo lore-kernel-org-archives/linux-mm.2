@@ -4,122 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ABF1CF8855
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 12:55:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1635CF8855
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 12:58:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62F3A6B000A; Thu, 20 Nov 2025 07:55:13 -0500 (EST)
+	id 01C326B0006; Thu, 20 Nov 2025 07:58:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DF676B002F; Thu, 20 Nov 2025 07:55:13 -0500 (EST)
+	id F35906B0031; Thu, 20 Nov 2025 07:58:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CE966B0030; Thu, 20 Nov 2025 07:55:13 -0500 (EST)
+	id E24316B0032; Thu, 20 Nov 2025 07:58:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 36CB46B000A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:55:13 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10C9DBBAF3
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:55:13 +0000 (UTC)
-X-FDA: 84130980906.29.ED20F2B
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 045641C0005
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:55:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SKQnzKpU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CFFC16B0006
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:58:07 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D16C5B764
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:58:07 +0000 (UTC)
+X-FDA: 84130988214.02.A271089
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0964A8001B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:58:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763643311;
+	s=arc-20220608; t=1763643485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GL5G0+c5xZz8aJnyzIUKwf30/NDXSihWrQzUxGxYjIs=;
-	b=Z2zyhwx85orj3Abxj7rQhX2ZXlGoIPylUsLQzkXRGgrwn16i893oKq2IqWKNmLKMMKBtCt
-	grxhEk8leklFZsIzcBOnfYZQ31LJZRvKwdFXjdsV1tNznWIDJ1w6+eqfvyubu5RY822H5V
-	ANr+2eTrQqnXMeR13ZDGVNQqxRYRFpc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763643311; a=rsa-sha256;
-	cv=none;
-	b=IeqPAZ3d7GSlR6gD0D4fiS7lFtjn4XrjNlb3T3xN4YjXozRuZQIlyJTDDnHazqk+3OvveJ
-	ym1pYkg1Kpkg0fAQrh7xuxJdPv5LI8L1BxzX1B4cpWMCwD/0dYMwRlrj4prO9deUIXvFHw
-	auAGQ8n/sXusiuJcNNoBYVE4PYP4OoM=
+	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
+	b=E+jNaLMVc4TlpjPq2otzReejXf9HE1lxe6n+WL3ljz8ben4ayOhOhJNimptHKubDdnfJoA
+	vj3qn82oaixptiirkHQq1XgwJ5de0MRrk0HEtt7+vhgE3Hxp1b57XnvhmJuHzsq8v395ox
+	weCTsvlfW7Ynknpiq4rg+9fVW86CcJ0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SKQnzKpU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42b566859ecso760366f8f.2
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:55:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763643309; x=1764248109; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GL5G0+c5xZz8aJnyzIUKwf30/NDXSihWrQzUxGxYjIs=;
-        b=SKQnzKpUmh/G9uzc9pkbjjLc8Oc3qSbnHmbnr8u/LcLC4yls7oBASdxQbPJ2A/VUHD
-         GhiO6fAJaJYoGtXeNfJbdhtHX/ENYI8ja1Y9ksnhhWRHbOf6/K+8QPtdvMaYqtqzuQuU
-         v8w4e+5linv0rQTb8pGnI+rxuuy7LX0Xn3+oTmQho4N4nid+DdghDLg8ZckvxkkjG8ng
-         w9HvGa6sSxH2U2rJx1pxlIS/x7GH8qTLzvb40g1/bMaNGHEOwrXHu4hCmxsd3LjGOSdB
-         QadwbZe8YMvOe3funi4Kym9Pw0Ii4o7Wr6weH00OqVT4FSdIJyqC1E35NEAi09W92AyG
-         Bz/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763643309; x=1764248109;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GL5G0+c5xZz8aJnyzIUKwf30/NDXSihWrQzUxGxYjIs=;
-        b=DT8hGUoKnvon4i8eA4h8FlXuUVUz7b5YdasUl9TkvbE7Ds9hN6ToYN8vMSXNtgpOBg
-         Y1+W+aPyxgFyLs4ZEJ3w0AclDs5z3yf3u3l1rtdcwpb+Mtcwy1xLV7DcgxT1JG4Yd56s
-         NxBbSM6HyEtag8gMo9PdbYMYwFdycYCuSK2HRweCuW4vl6vIWI2N9S6AFTcUFSMs+MHu
-         w6qJbw7Zk/vy8DKyqS260ZdtkyWwiwjX36AVJEUwQcwO9Q8tgXwvBhqbriNP/zBVO6+H
-         jb5EQD5x77LkvnBV4F1RtC42rXpR8cPgTfNfNpSL+4WBeuGHm0CerBFWaCS1mV3eCDwQ
-         c/5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXW8l1IXA1qVjUjCTEIYMe9YHj2EFEnp4yHcrJGGjEPndXLYB5jIIbMpVOYvxW1JCMdLRL8V8NtNQ==@kvack.org
-X-Gm-Message-State: AOJu0YxhB1lV0OFGlfMvCya1AXMKYm5ctO9WrSO6arGR+Yj/2fYhDipN
-	l+9qKG/WeGihPT/5HoJN19tdrgk71TT71CYMUr/ts4aaSzopLl5DE2vn
-X-Gm-Gg: ASbGncs/+3/4TBA4RcxeiBEsLdlcVScBp4HqdC5TnBdH+XqORzdCWvWFPYKtjdEz4yr
-	qTt1AeHJtSaBd45vv5UslN/AF0J+BG8JQd3ZB9M06QwEkMgLz3T9CtUsBexYDa4Sg+ruubjFlNR
-	ctFEthT+zDPQ1pROf9TyPB2szaHt58Xl0BfyH0NFRwFxydKqVlruvI/WX5iv9DWO+QMZemmFsmj
-	FTAZuzc9Uu7s+GN/LfAevxe8h3fmWJbbJwojxtRpAdJOytWbWtsOGcoAxZt7bjIEq1/GASfaJS/
-	nmBzpeOIUBc0IkVqQDLcsabUzej615BbokNKxjVQj1bHv9HQscXz08pTzqY6sPVGEcNFH2KT48Q
-	ixlv4/wywhIf9rLV+e36UpHpIB53lFRCrV9uWoQkQt3//7TnDNuSovjfU3Zmdj7teKQxUSP/g97
-	CBm8vIEp/gLVDJHixxR9Wo5YtrWFhiMtH/MX16nV5QAMZuMpdPFpUk
-X-Google-Smtp-Source: AGHT+IFU7kfWfvCTzsg6mmHTeWF/Bfj6Cwbkq5zHUE7KNXvkB7ee4cOXGRDIAiPbZDCgY5IenhM3aw==
-X-Received: by 2002:a5d:584d:0:b0:429:ba48:4d6 with SMTP id ffacd0b85a97d-42cb9a19612mr2600256f8f.10.1763643308985;
-        Thu, 20 Nov 2025 04:55:08 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f2e432sm5241066f8f.9.2025.11.20.04.55.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 04:55:08 -0800 (PST)
-Date: Thu, 20 Nov 2025 12:55:05 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, Axel
- Rasmussen <axelrasmussen@google.com>, Christoph Lameter <cl@gentwo.org>,
- David Hildenbrand <david@redhat.com>, Dennis Zhou <dennis@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>, Tejun Heo
- <tj@kernel.org>, Yuanchu Xie <yuanchu@google.com>
-Subject: Re: [PATCH 39/44] mm: use min() instead of min_t()
-Message-ID: <20251120125505.7ec8dfc6@pumpkin>
-In-Reply-To: <0c264126-b7ff-4509-93a6-582d928769ea@lucifer.local>
-References: <20251119224140.8616-1-david.laight.linux@gmail.com>
-	<20251119224140.8616-40-david.laight.linux@gmail.com>
-	<0c264126-b7ff-4509-93a6-582d928769ea@lucifer.local>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763643485; a=rsa-sha256;
+	cv=none;
+	b=l01a18OJ269JXwfgSfjC/zOkAoiFrqXfDvYA9Ovlrabay8lAiCtf64PR9f479EpYIcNXQx
+	GQw9zC2QDyQdxIH/44rwMKg00WykdG+HUWUTkFHVFx7+XL2wPBKrF98X5djAy6RXy3u3pu
+	e6E/+0IeIoQ45pijBg/iFcH/jYZQSrk=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1626520A2E;
+	Thu, 20 Nov 2025 12:58:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763643483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
+	b=KPz2W4ilySLGgjTbe6p35SMCJKelGbG6GBdPFSbHc+sSyLEjwuLRXgphB4eqYoOJ7IUIGT
+	PPj4PcpDzhqRL0LFrorj2xyBulwKxBBCNEatJ4DVRI/Qajlcp4IWrMaXpgbikiXD9VhTO4
+	gMBDSGxgdOqbyifNDz6nAQgwr2Gcmvk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763643483;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
+	b=ti84snLwzX57cCkc4wju2PuJrWjzezZ2kGAbAfrZb1AK2dHi/u6g+bQI5NFupIJlR1VC1T
+	88Vv2zwHxVR9cUBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1763643483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
+	b=KPz2W4ilySLGgjTbe6p35SMCJKelGbG6GBdPFSbHc+sSyLEjwuLRXgphB4eqYoOJ7IUIGT
+	PPj4PcpDzhqRL0LFrorj2xyBulwKxBBCNEatJ4DVRI/Qajlcp4IWrMaXpgbikiXD9VhTO4
+	gMBDSGxgdOqbyifNDz6nAQgwr2Gcmvk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1763643483;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
+	b=ti84snLwzX57cCkc4wju2PuJrWjzezZ2kGAbAfrZb1AK2dHi/u6g+bQI5NFupIJlR1VC1T
+	88Vv2zwHxVR9cUBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EDD303EA61;
+	Thu, 20 Nov 2025 12:58:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id T1iyOVoQH2mCbgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 20 Nov 2025 12:58:02 +0000
+Message-ID: <7ffb1908-464a-4158-8712-7735100ae630@suse.cz>
+Date: Thu, 20 Nov 2025 13:58:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next:master] [mempool] 022e94e2c3:
+ BUG:KASAN:double-free_in_mempool_free
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Christoph Hellwig <hch@lst.de>,
+ kernel test robot <oliver.sang@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
+References: <202511201309.55538605-lkp@intel.com>
+ <20251120072726.GA31171@lst.de>
+ <9e066a2f-28fd-4da7-bca8-c10f7b58f811@gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <9e066a2f-28fd-4da7-bca8-c10f7b58f811@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ay9wf67cbus51cxqtnqdmq3ddc9b3kt9
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0964A8001B
+X-Stat-Signature: agsxnb8hhems7esja97kdq6kxwrnq1dw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 045641C0005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763643310-630945
-X-HE-Meta: U2FsdGVkX19V9YmiMazrBNQufonTi5GsouAYhbNLZbYQnA7jTMX8XulGVP26dg5ksf4k2Yba0rVfl7dGUhIkyRngKNXYWgwkwUJcpUgLA3yuFQUodBtVlvlMr0mozdtxWACWJwhEUSUF9jlXn9akcw1deIY/lj6boJURMMrc+TFTD5jvSt7naXqsJ4xcp+nrQ5+wg8c7HbFtQIaXvrDurbJkBsioGaSt6Qf1oQ2p2Am3ME05K1+atia7RbYOMC2BibM7IJ4Ys2A3N7e7QwEbgR0Ls5VwsimdHN171OP0TOKyxiP4yWnU4WyI2d+8706Ow6quuVE6N26dZLrSMck+DuBqaXqc7nMb+5ZUKlMtJR22rOVj5oSA0p8G5QwJiLf442XDcIgR2i2jnpNM06rAomRBuoXgcTAq7/ngDgqP+MeZLQwue0mwywJP7iRsYPI78NB3mdxHAVtPLENwYQpInRE5ZGvyV9qJV7g8XRlOP/3QnGlpIbYhRLzZUXgYKWCJp4GXP37hWnoC0cm6RC2WBBsJtwRctPP/l1rJhauGGHFjidRVjd2/IuOhnNO2v68oYe+VdAUqx8OFgRbFGgX5A3G7jJDQYXX8vQRscJmiCtJIs9hQFN4W6DWNZO95bimAduLrrtwYmVy8OZVsHtHAP2HJfywEKMTR1y0gLiXJmmVR/6UMwZfbE0G2KQAmzBE9v40xKcgWVSytsF869Q6MkH53G6jHNDfT71NdrfepTZs6T/b1ORLhOZ35JRIEG7hR4XsZqh8Ougd/5qnKkDri4w+KB9uQ5nvDuu04MZRKPthdK7Ccf/hXAM3NycZnsNVIGgTkahQ5ZVKgqxTk8RO1YdEC8rPf5HhHTD/QKcYFpmPARss/N9PBdRPvTrokpXd8F9bjqBjaPfK3VFNTvCVuhVnUd3W1RVfd1/pZjE9nHpDCUIhERu1LPael/WI51LWbNF7lVhMklhtmcfRZdmh
- FpA0MsCq
- WLiTQYrBnLOwFW0yi0E3KbgOxB2oZ/P0D5Ee80KnXnazFPvIv5XDYDaFVrYHL0Etbq6hlTapsLsmSc+S9elu10luiPcLlwY4sE1Z4T960R1NoH+26faCff17XDLb7H95lDtL4V580Tznbk5gPzP0Vw4SbaNmzvepXZ6V1G+REfJaUOAcuEWShDzw2X+q2KhnFarh1Ed3X1JHXr8fNfa6l8oenLn2Nhz+2ohgJ4LwfKBhXog8cifB92ZfqQFwcu+LFdgxNj1vu85WT+3zCPu6o9pv3R+mr8FVMP8lV9KUv5TS8+2FA2lOx4pZclDVM1n2nduUF/tQ4NNzqM5mIaCV9t8FW5ZnluKG3XFEvbR5fi1opzDi120v8O4F9D2pbDszGluJZ7pU565Jg84KI3g9VA/ctYjFmmqVWwosMZXj6kR6sXQzfyHM1ZCgyuhCEaIUODQ4bi8qi1LDErgWw1g+MxuAul2t2ur5IKpi6odTwp42rcvfp1pzoCwc7Xv+npq1pC0VtSiQaJB3KKO/Lb07RqlN9dw==
+X-HE-Tag: 1763643484-816478
+X-HE-Meta: U2FsdGVkX1/hB9Uezr+/D3eLfoQTqVF9VBwHlSSl09K69rflG6iTiLLwkFF/G/L6Gu+v9iYPzLMvLg2Y1ntUQYOsReXM34r1s2lZLcXQ+hRwft0ML/pRBAC2uHeG/YlhizrMQJNFhT93kgpcmCZP64nWS4JmSWS+T+TlPRIdBY78C1RwoXBds/NJN8ArLkFpsYITZ1rW53KX66LANvamhmLfS7vX/CbI2CNMATS/jG04nlv4Lr9hnVFo25qbr5wr+F6zTuAQBN4uXvHYhDXUDllPFuSziMkRSpE34qbTxwEjbIC8veJoD2Ul36SjTNLGezFcx6WblCCXZeCUlIe4SJwnb+rPcIPwwFTTOG8V+atuK8ZgUbT+TkBHKXUKL7pZB9MlvwfOYbIUJQnYgZ9plyj8XPWZmDlBgkAuaqCJeFP2QJNJU7bLLvwuT8Jpxh3rn44PEHJWg4+t3J1SGIw3nnXnE8QcOlVGrSFtvAtPqtoEurwTATG7XrMGbyjZ2M+EoDZmM9tPixv+H79nlWC+QyzbcKPJT2l/TTIWJxj6WkLb6FMQk/VGNIJhiskPVMh4Kd7c0vcxAjCJTtvEc5TU+Chu/YsTuywC3gCMTLLZm9JWRe/5nARKfZH25qk12JeGRNITCNE3r2jJvAsb0xVpDGfgnSDCLL98dyaSoyKyhAC5V28dntE714xazXWlOojMErAfJXbzK3VW8KEHztRghP76d1O+m3N/SKQcXRU0XAkLs2nV14GLOFiF1WbwXes/MHFOGkxBYZnP/z0zuZyScb87ydtIZfUrPVJBe2VcN1Df51rdIYcb/sNsTHTx6EzjyyTP+N2+SzDJblLnUjQ71y3MPuFwckVvOZ1b1cljMsD8ksQPcBx/ulDgeG0ioZPGRROWUfVLxUKwuC+tVAT5h4OmQtp67G7ukRMmWOajTJOG0GbH9mLpUeETYjUfS5OIDL4PHJi5NpFhhJo3mTB
+ jaX488Pq
+ sk2bD0vDP8FcvTTu/jWlOhcM/Nio2bLgaphINSdrF0rtV3OLrYW7d2MWeF26viy+Zl0nQ3P3LtckhIDi2MJGdoCG1eH4w6waxeELybLBWWHs3jpg3cJCr9HRorawC8b+OHqGfSpgMd/IsrTIF4i6NyiMETQ/cwTo4x56r3vd9MOZgTd/EfKX6nFurR4Jf9VQuhhcN2t+TUgHWa5bFAVJE3u2IsW1gNsLut4AO7ynXbIxuDtb3vkTramSbBGSERUl3cbLsn6YzyxFrEMvL5Bi2rLzy9tHqc4aGxoBgAXTtLUieaGN2FDtuqV9MMPy8lU3MvTwWgo3raoNkFBoV/G3wzM7oQiTygA6vJZUijbWXBWuyf4OGoXJ07xbF0bFxQPl9Aws3QO8BaltMwnJWTC8/mdklvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,235 +182,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 20 Nov 2025 10:36:16 +0000
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On 11/20/25 12:17, Andrey Ryabinin wrote:
+> 
+> 
+> On 11/20/25 8:27 AM, Christoph Hellwig wrote:
+>> Maybe I'm misunderstanding the trace, but AFAICS this comes from
+>> the KASAN kunit test that injects a double free, and the trace
+>> shows that KASAN indeed detected the double free and everything is
+>> fine.  Or did I misunderstand the report?
+>> 
+> 
+> Right, the report comes from the test, so it's expected behavior.
 
-> I guess you decided to drop all reviewers for the series...?
-> 
-> I do wonder what the aversion to sending to more people is, email for review is
-> flawed but I don't think it's problematic to ensure that people signed up to
-> review everything for maintained files are cc'd...
-
-Even sending all 44 patches to all the mailing lists was over 5000 emails.
-Sending to all 124 maintainers and lists is some 50000 emails.
-And that is just the maintainers, not the reviewers etc.
-I don't have access to a mail server that will let me send more than
-500 messages/day (the gmail limit is 100).
-So each patch was send to the maintainers for the files it contained,
-that reduced it to just under 400 emails.
-
-> 
-> On Wed, Nov 19, 2025 at 10:41:35PM +0000, david.laight.linux@gmail.com wrote:
-> > From: David Laight <david.laight.linux@gmail.com>
-> >
-> > min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
-> > Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned long'
-> > and so cannot discard significant bits.  
-> 
-> you're changing min_t(int, ...) too? This commit message seems incomplete as a
-> result.
-
-Ok, I used the same commit message for most of the 44 patches.
-The large majority are 'unsigned int' ones.
-
-> 
-> None of the changes you make here seem to have any bearing on reality, so I
-> think the commit message should reflect that this is an entirely pedantic change
-> for the sake of satisfying a check you feel will reveal actual bugs in the
-> future or something?
-> 
-> Commit messages should include actual motivation rather than a theoretical one.
-> 
-> >
-> > In this case the 'unsigned long' values are small enough that the result
-> > is ok.
-> >
-> > (Similarly for clamp_t().)
-> >
-> > Detected by an extra check added to min_t().  
-> 
-> In general I really question the value of the check when basically every use
-> here is pointless...?
-> 
-> I guess idea is in future it'll catch some real cases right?
-> 
-> Is this check implemented in this series at all? Because presumably with the
-> cover letter saying you couldn't fix the CFS code etc. you aren't? So it's just
-> laying the groundwork for this?
-
-I could fix the CFS code, but not with a trivial patch.
-I also wanted to put the 'fixes' in the first few patches, I didn't realise
-how bad that code was until I looked again.
-(I've also not fixed all the drivers I don't build.)
-
-> 
-> >
-> > Signed-off-by: David Laight <david.laight.linux@gmail.com>
-> > ---
-> >  mm/gup.c      | 4 ++--
-> >  mm/memblock.c | 2 +-
-> >  mm/memory.c   | 2 +-
-> >  mm/percpu.c   | 2 +-
-> >  mm/truncate.c | 3 +--
-> >  mm/vmscan.c   | 2 +-
-> >  6 files changed, 7 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/mm/gup.c b/mm/gup.c
-> > index a8ba5112e4d0..55435b90dcc3 100644
-> > --- a/mm/gup.c
-> > +++ b/mm/gup.c
-> > @@ -237,8 +237,8 @@ static inline struct folio *gup_folio_range_next(struct page *start,
-> >  	unsigned int nr = 1;
-> >
-> >  	if (folio_test_large(folio))
-> > -		nr = min_t(unsigned int, npages - i,
-> > -			   folio_nr_pages(folio) - folio_page_idx(folio, next));
-> > +		nr = min(npages - i,
-> > +			 folio_nr_pages(folio) - folio_page_idx(folio, next));  
-> 
-> There's no cases where any of these would discard significant bits. But we
-> ultimately cast to unisnged int anyway (nr) so not sure this achieves anything.
-
-The (implicit) cast to unsigned int is irrelevant - that happens after the min().
-The issue is that 'npages' is 'unsigned long' so can (in theory) be larger than 4G.
-Ok that would be a 16TB buffer, but someone must have decided that npages might
-not fit in 32 bits otherwise they wouldn't have used 'unsigned long'.
-
-> 
-> But at the same time I guess no harm.
-> 
-> >
-> >  	*ntails = nr;
-> >  	return folio;
-> > diff --git a/mm/memblock.c b/mm/memblock.c
-> > index e23e16618e9b..19b491d39002 100644
-> > --- a/mm/memblock.c
-> > +++ b/mm/memblock.c
-> > @@ -2208,7 +2208,7 @@ static void __init __free_pages_memory(unsigned long start, unsigned long end)
-> >  		 * the case.
-> >  		 */
-> >  		if (start)
-> > -			order = min_t(int, MAX_PAGE_ORDER, __ffs(start));
-> > +			order = min(MAX_PAGE_ORDER, __ffs(start));  
-> 
-> I guess this would already be defaulting to int anyway.
-
-Actually that one is also fixed by patch 0001 - which changes the return
-type of the x86-64 __ffs() to unsigned int.
-Which will be why min_t() was used in the first place.
-I probably did this edit first.
-
-> 
-> >  		else
-> >  			order = MAX_PAGE_ORDER;
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 74b45e258323..72f7bd71d65f 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -2375,7 +2375,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
-> >
-> >  	while (pages_to_write_in_pmd) {
-> >  		int pte_idx = 0;
-> > -		const int batch_size = min_t(int, pages_to_write_in_pmd, 8);
-> > +		const int batch_size = min(pages_to_write_in_pmd, 8);  
-> 
-> Feels like there's just a mistake in pages_to_write_in_pmd being unsigned long?
-
-Changing that would be a different 'fix'.
-
-> Again I guess correct because we're not going to even come close to ulong64
-> issues with a count of pages to write.
-
-That fact that the count of pages is small is why the existing code isn't wrong.
-The patch can't make things worse.
-
-> 
-> >
-> >  		start_pte = pte_offset_map_lock(mm, pmd, addr, &pte_lock);
-> >  		if (!start_pte) {
-> > diff --git a/mm/percpu.c b/mm/percpu.c
-> > index 81462ce5866e..cad59221d298 100644
-> > --- a/mm/percpu.c
-> > +++ b/mm/percpu.c
-> > @@ -1228,7 +1228,7 @@ static int pcpu_alloc_area(struct pcpu_chunk *chunk, int alloc_bits,
-> >  	/*
-> >  	 * Search to find a fit.
-> >  	 */
-> > -	end = min_t(int, start + alloc_bits + PCPU_BITMAP_BLOCK_BITS,
-> > +	end = umin(start + alloc_bits + PCPU_BITMAP_BLOCK_BITS,
-> >  		    pcpu_chunk_map_bits(chunk));  
-> 
-> Is it really that useful to use umin() here? I mean in examples above all the
-> values would be positive too. Seems strange to use umin() when everything involves an int?
-> 
-> >  	bit_off = pcpu_find_zero_area(chunk->alloc_map, end, start, alloc_bits,
-> >  				      align_mask, &area_off, &area_bits);
-> > diff --git a/mm/truncate.c b/mm/truncate.c
-> > index 91eb92a5ce4f..7a56372d39a3 100644
-> > --- a/mm/truncate.c
-> > +++ b/mm/truncate.c
-> > @@ -849,8 +849,7 @@ void pagecache_isize_extended(struct inode *inode, loff_t from, loff_t to)
-> >  		unsigned int offset, end;
-> >
-> >  		offset = from - folio_pos(folio);
-> > -		end = min_t(unsigned int, to - folio_pos(folio),
-> > -			    folio_size(folio));
-> > +		end = umin(to - folio_pos(folio), folio_size(folio));  
-> 
-> Again confused about why we choose to use umin() here...
-> 
-> min(loff_t - loff_t, size_t)
-> 
-> so min(long long, unsigned long)
-
-Which is a signedness error because both are 64bit.
-min(s64, u32) also reports a signedness error even though u32 is promoted
-to s64, allowing that would bloat min() somewhat (and it isn't common).
-
-> 
-> And I guess based on fact we don't expect delta between from and folio start to
-> be larger than a max folio size.
-
-The problem arises if 'to - folio_pos(folio)' doesn't fit in 32 bits
-(and its low 32bit are small).
-I think that might be possible if truncating a large file.
-So this might be a real bug.
-
-> 
-> So probably fine.
-> 
-> >  		folio_zero_segment(folio, offset, end);
-> >  	}
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index b2fc8b626d3d..82cd99a5d843 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -3489,7 +3489,7 @@ static struct folio *get_pfn_folio(unsigned long pfn, struct mem_cgroup *memcg,
-> >
-> >  static bool suitable_to_scan(int total, int young)
-> >  {
-> > -	int n = clamp_t(int, cache_line_size() / sizeof(pte_t), 2, 8);
-> > +	int n = clamp(cache_line_size() / sizeof(pte_t), 2, 8);  
-> 
-> int, size_t (but a size_t way < INT_MAX), int, int
-
-Unfortunately even if cache_line_size() is u32, the division makes the result
-size_t and gcc doesn't detect the value as being 'smaller that it used to be'.
-
-	David
-
-> 
-> So seems fine.
-> 
-> >
-> >  	/* suitable if the average number of young PTEs per cacheline is >=1 */
-> >  	return young * n >= total;
-> > --
-> > 2.39.5
-> >  
-> 
-> Generally the changes look to be correct but pointless.
-
+I assume the bot was filtering those, but the changed stacktrace (now
+including the new mempool_free_bulk()) now looks new and the filter needs
+updating?
 
