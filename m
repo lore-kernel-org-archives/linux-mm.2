@@ -4,244 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFC64CF9C72
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 825C0CF9C51
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:29:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E31346B0022; Thu, 20 Nov 2025 12:27:49 -0500 (EST)
+	id A639B6B002C; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E089F6B0093; Thu, 20 Nov 2025 12:27:49 -0500 (EST)
+	id A13EA6B002D; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCFFA6B0099; Thu, 20 Nov 2025 12:27:49 -0500 (EST)
+	id 8DBAF6B002F; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B66496B0022
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:27:49 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0F2D3160291
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:27:47 +0000 (UTC)
-X-FDA: 84131667774.27.242FC0A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B59671C000A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:27:42 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZEdZcs9c;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf20.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763659663; a=rsa-sha256;
-	cv=fail;
-	b=fVlCjD8uVVY/J7mGPeL/7xo3sHyvtPXBe6MEKIYV2tGxAZKM6U8PG6lamzeaupFKw9h5uN
-	5tMXX7GsV/2I4rBZzImQWMovhhlFhs+cg1te0hqXv57MRF4VcL+z5kb0O7ZP8HRkUGwmlc
-	1SUvcyXS9IUTWdmwE9D600HgYe9/cS4=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZEdZcs9c;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf20.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763659663;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 782456B002C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAA011601E4
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:29:38 +0000 (UTC)
+X-FDA: 84131672436.05.5057D1B
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 43D40C0014
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:29:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com;
+	dmarc=pass (policy=none) header.from=xmission.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763659776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HSZ40ALWmUiKkKVbq/AAtJBclwJe781DZi9y9oTiPgU=;
-	b=FTUNt0JpCaNQTGmFHOmrO1ftuLtOExwFshKNNDxMkt/tmjQdHRubP6sBWsRYqoUDFYFaBU
-	pPK347Yqya0e0CgEiuqnUFruyXj/92rNY5KrHM2OUAFc2Wgu8ZAnTng3rDjbAvHWklOUsC
-	WclzkebZb9UTVyZXdXY5CCLfJj7PngM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763659663; x=1795195663;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=1vQOBix1q8q+7acNk5kJVGYV20r2ZTW39EG1fKIFlyw=;
-  b=ZEdZcs9cks/+lom84WcQh5cKJuqbJweR3quiXCRDuhpPX6uJ/CUb06j4
-   1UYNEOGtIM3e9jFPg4ZsQ/aqENN7qRgn0G1f4VUKe8/g5UuMqhsg/Ju1m
-   ApWCStoBiJvzKlDpFTHQj/9VSrZQgg3O6/B/VNSckVBZGOcDUH+Nya1WW
-   6/YKEtWDI+Do7d679zA5Quvjclm8kxcDUBiSi9/EVS1yLTMnuFEsRbnSm
-   oCptw2f55SLMkqzFM+BuABFXkXLoLEvm4rtJAf21NctgP4vOQ8PQw7MSx
-   kSKICST/auDwIs/HXb+kwI62T9QT8rsWlxJjEtU/Lg3g391a8pu5o8dpo
-   Q==;
-X-CSE-ConnectionGUID: ZpCL/vYiRTW82IoRCzzlCg==
-X-CSE-MsgGUID: 1wBu8QH3RW6kUqGX/auxCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65768266"
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
-   d="scan'208";a="65768266"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 09:27:41 -0800
-X-CSE-ConnectionGUID: flTyXRNLRrihy9nEVBStsA==
-X-CSE-MsgGUID: +LFtsuPMSSCtFWVLTviUcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
-   d="scan'208";a="195729469"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 09:27:40 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 20 Nov 2025 09:27:40 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 20 Nov 2025 09:27:40 -0800
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.10) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 20 Nov 2025 09:27:39 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MlULLQB8MVe57FBKoDRfo5gR8CgO7dMnfziFJpah5QqG/ql/rB9C47htf8QO7e3lzS78PbhP7ausqhGsyiusvrVilClD+f9GujSmeHMTt/TEeVypSRUUXcTU0QTCHktpsBxsE6cWWDySacwbLgVb0Ol/k7o+hdaNORVD6ba5a4FFemi0Q/Tjcew7jRzpwM+L950ncnHs2kzZBaqQLCzRXMTt3Z/B5o4NHGv4L00T4+O29BO1ZYoV2ryYz3jq0HZCC2DE4bB7LGSGcHoNqhKQijNkMBOXqtM/iTFO9sNPg9F1QPAdMR5ZDOkdL+oG/JU/66gHS+QxMVCpQdiIVozMig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HSZ40ALWmUiKkKVbq/AAtJBclwJe781DZi9y9oTiPgU=;
- b=vh4yKEY1rxWfwrnwtSCn5/wfoxNMzU4Wpc4w0Q/CulRDeEGU9eoNinyGJaIgaGzL6XPNrVwWBP7dzPf14a3RB9y75UP8JVqCEU7jHSKcfa84MqIX6UjzKRmo7tLjNmDx+bfh0VGYkdUuAK2EvAiida+RnWYXWmj4PijmRKPNRfRHWENlaSdyQam+D0XtGX+ecp2rqLpno151JCq1bZ3KUcyVHwMk/PdJK+PxKVmx346ztvvxMVaUUsE0RpFD1qGe549VGlsXX7VBHgE09gxuSHAIyWmUKsXC43emlPHvdOWpjZrDy5TfA7AfkAa4nruujZujQcnCbzJOmXx68fy2sQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by CH3PR11MB7321.namprd11.prod.outlook.com (2603:10b6:610:150::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
- 2025 17:27:37 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%3]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 17:27:37 +0000
-Date: Thu, 20 Nov 2025 09:27:34 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Balbir Singh <balbirs@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-mm@kvack.org>, David Hildenbrand
-	<david@redhat.com>, Zi Yan <ziy@nvidia.com>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
-	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, "Oscar
- Salvador" <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
-	<dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>, Mika
- =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>, Francois Dugast
-	<francois.dugast@intel.com>
-Subject: Re: [v7 00/16] mm: support device-private THP
-Message-ID: <aR9Phl4tsMHHJJwI@lstrano-desk.jf.intel.com>
-References: <aOePfeoDuRW+prFq@lstrano-desk.jf.intel.com>
- <20251111154326.bc48466a6962fbbffd8ebdd0@linux-foundation.org>
- <7a0f2704-80b5-4cbd-8f3b-ac03692eefd3@nvidia.com>
- <aR5/uUFboeeSwN0z@lstrano-desk.jf.intel.com>
- <7ecb3faa-8bc7-4eb1-9342-404a9ff52b97@nvidia.com>
- <24d8d39b-5ebe-4f29-93ff-3f7ca2a9b1cc@nvidia.com>
- <aR6HtvxhmVxUvd+h@lstrano-desk.jf.intel.com>
- <e8efd187-237c-47c7-ab99-33183e0988df@nvidia.com>
- <aR6szF6Ga8K2ZRjR@lstrano-desk.jf.intel.com>
- <aac2caec-0909-40ef-978e-97fdb34e1937@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aac2caec-0909-40ef-978e-97fdb34e1937@nvidia.com>
-X-ClientProxiedBy: BYAPR01CA0055.prod.exchangelabs.com (2603:10b6:a03:94::32)
- To PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GCfJXPfqkRJSPRHzlR8tAMkwsl/MwNptOMMjaUHQYis=;
+	b=jE0sWX+nXjFZHXPRrdm3ZMVDiWkhZOq5x02Hhq7wNgQRqh97xhVvcNJaYv7IsqmH1LU1bq
+	fOHBJLXYMpurC75d43wSS+svu5TT6R0qdoEXE7AJP50pN4czWcBRnbhy36Y2eYRaK7FVEh
+	DdBJLF/6BhyJ7G6GZvX310xNTH94Rg8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763659776; a=rsa-sha256;
+	cv=none;
+	b=F5P1vkBagf0sHYiG1t/LnZD+uPev5S8v0UkCMSxvnFdcyrlNLRK36C3CK7njJn5j6i28+G
+	OCdSmwR5P7eYHXaMK4STmWvi9ek3UDg3kcOhynxxZT3Rxj7DBdBZPSyN4LUUMDbu3OkOAI
+	G5Tu+TyR/M4Ory8PcaAXcNlngC85ANg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com;
+	dmarc=pass (policy=none) header.from=xmission.com
+Received: from in01.mta.xmission.com ([166.70.13.51]:36142)
+	by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1vM8TC-0080O5-W2; Thu, 20 Nov 2025 10:29:23 -0700
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:33708 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1vM8TB-00Fz5d-R2; Thu, 20 Nov 2025 10:29:22 -0700
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,  Alexey Dobriyan
+ <adobriyan@gmail.com>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
+ <kees@kernel.org>,  Andy Lutomirski <luto@amacapital.net>,  Will Drewry
+ <wad@chromium.org>,  Christian Brauner <brauner@kernel.org>,  Andrew
+ Morton <akpm@linux-foundation.org>,  Michal Hocko <mhocko@suse.com>,
+  Serge Hallyn <serge@hallyn.com>,  James Morris
+ <jamorris@linux.microsoft.com>,  Randy Dunlap <rdunlap@infradead.org>,
+  Suren Baghdasaryan <surenb@google.com>,  Yafang Shao
+ <laoar.shao@gmail.com>,  Helge Deller <deller@gmx.de>,  Adrian Reber
+ <areber@redhat.com>,  Thomas Gleixner <tglx@linutronix.de>,  Jens Axboe
+ <axboe@kernel.dk>,  Alexei Starovoitov <ast@kernel.org>,
+  "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
+  linux-security-module@vger.kernel.org,  tiozhang
+ <tiozhang@didiglobal.com>,  Luis Chamberlain <mcgrof@kernel.org>,  "Paulo
+ Alcantara (SUSE)" <pc@manguebit.com>,  Sergey Senozhatsky
+ <senozhatsky@chromium.org>,  Frederic Weisbecker <frederic@kernel.org>,
+  YueHaibing <yuehaibing@huawei.com>,  Paul Moore <paul@paul-moore.com>,
+  Aleksa Sarai <cyphar@cyphar.com>,  Stefan Roesch <shr@devkernel.io>,
+  Chao Yu <chao@kernel.org>,  xu xin <xu.xin16@zte.com.cn>,  Jeff Layton
+ <jlayton@kernel.org>,  Jan Kara <jack@suse.cz>,  David Hildenbrand
+ <david@redhat.com>,  Dave Chinner <dchinner@redhat.com>,  Shuah Khan
+ <shuah@kernel.org>,  Elena Reshetova <elena.reshetova@intel.com>,  David
+ Windsor <dwindsor@gmail.com>,  Mateusz Guzik <mjguzik@gmail.com>,  Ard
+ Biesheuvel <ardb@kernel.org>,  "Joel Fernandes (Google)"
+ <joel@joelfernandes.org>,  "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>,  Hans Liljestrand <ishkamiel@gmail.com>,  Penglei
+ Jiang <superman.xpt@gmail.com>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Adrian Ratiu <adrian.ratiu@collabora.com>,
+  Ingo Molnar <mingo@kernel.org>,  "Peter Zijlstra (Intel)"
+ <peterz@infradead.org>,  Cyrill Gorcunov <gorcunov@gmail.com>,  Eric
+ Dumazet <edumazet@google.com>
+In-Reply-To: <87tsyozqdu.fsf@email.froward.int.ebiederm.org> (Eric
+	W. Biederman's message of "Thu, 20 Nov 2025 09:15:57 -0600")
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+	<AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+	<AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+	<GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+	<GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+	<87tsyozqdu.fsf@email.froward.int.ebiederm.org>
+Date: Thu, 20 Nov 2025 11:29:14 -0600
+Message-ID: <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CH3PR11MB7321:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5d3aaef-3b7e-4c97-5d97-08de285a1967
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?c2I5Y2Noc05hVXZZaXk1SWhGM05NUU9wUDFHdk56Z1N6ZnFDMDFjYnBFNzhV?=
- =?utf-8?B?NW5Hd09nSFlwdGMwRzNSUStKYThqSXVGSGZiTUFNcGtTUUNteStJM2FtdjVl?=
- =?utf-8?B?WFpSWS9yU2F5SzB2Z2NERThuTjBydjVhQ2k5KzBtejNRTDU4VldMYmsyRDk1?=
- =?utf-8?B?SUM1dDhiNUxSYVJZWmI2OTdobG1Lb3poaGVJa3RKNDRHT1FHeVhZcTg3R1BZ?=
- =?utf-8?B?dzRTV2J0Y2JkMWpCeFRxcVVQRGdKY1k5dmdoRzF3WnlpQUo0emtqN0JKMkF2?=
- =?utf-8?B?Y3MwcGRHanppYlFkbjA1cDdwb25oazB5Sk4zVlBFMlRha25nODA4VXNQK1pV?=
- =?utf-8?B?bEVCQjIxbm9WWjJvb2hNY1UxREYxMkNuc0pOSSs2UHBJMHo2dFhWelcrUERj?=
- =?utf-8?B?ZVFiRGJrR1plVzRDVzkrQkd2L21ydlJ6RE9yTWtTbjBhektkSzNYMEJwbk5r?=
- =?utf-8?B?WEpHRmhXd1VRcSs1ckJLY3EwUlBuWlRrT200Z1ZmZEVCSUNXanlESFJWVXFF?=
- =?utf-8?B?NXBZRGlMbHBQMUNJdTViWEMvdUxvZzZTelJtTEF5Sndmc2hpeFhRV2pQYXBT?=
- =?utf-8?B?TmFYaTVsb3dLS0t0YWhoYk80cnFFZDFZckM0R2t1bzhOSlpkbHhqR2QxR0JR?=
- =?utf-8?B?VllVa1lQOTdzWk9jczlJMzhPVVpXR21ydWVUbStxRFdLekx5RzdkZ1pRY3I2?=
- =?utf-8?B?NHZzVjVyTGJYamNWTTkzZE5jeU5kU2VNazBLRUlqc2EvY3VmRldlbThpczlD?=
- =?utf-8?B?MVFkS2xYS0hrS2J1cTFjS0w1RGpSWDRSMURBbDIydnpqUHRhbHhmWUFKakk1?=
- =?utf-8?B?VFJReHVRSjBIYmZURC90R2FBeElFQVp0V1RQN3hsV1BJbm1KY1o3MWNyT3JW?=
- =?utf-8?B?V0JjRVpoL0s2THFmdVRtOUdmeUUvcGlTak82R1FGdWtCYjFET0U4eUkyNm5a?=
- =?utf-8?B?QWlrQjgxOXRqNUpHRzdjRzRxb2hVU2Z0NStKUW9PUkg5SnFkaEFBcU1ISjdJ?=
- =?utf-8?B?VUhFY1hqZSsxTG1GZGxydzRnQjhpZFlialZtTWNkL29vTUl3bk9UL0VScDRu?=
- =?utf-8?B?d0QzT1ZHaU5UZW1CWXduN2I0RmRBSG50UDFNUTdvUjVuODhuTldxbmtiOWxX?=
- =?utf-8?B?VEEzK0cyRTlPSVphZEZ2U0JjcDZvaGdhc1ZYRXBqMm5YczZvTDFQYmd0ZGxp?=
- =?utf-8?B?ZkxYQnhwekdUUEhPbVRUYkk4YTJSaFRBS25kNUlJZzhaVTJ1dlJKKzZsM0Ju?=
- =?utf-8?B?Q054d3lzeWxkWnZPRXhZNm1WWlM5RWZ0V0RvV1NMQm05Y1BMaUZ5SzR5UVpi?=
- =?utf-8?B?dDhweUw0YnhqWm5SYjZ3dnJqZmdkR1JzclMxQnZWT1l6U1lrMVFRM2gyenhI?=
- =?utf-8?B?eS9UbzNuU2RNeXV5b3BrU2pHd0ozcnlQRTltSksyeFIxVEpDM1dVejYxWEw3?=
- =?utf-8?B?U0ZkUlZTeE1RcGVWUUxoazFRc2JaQW9oelFGY2xCUGFDZkF3d2txTDczN1k0?=
- =?utf-8?B?S3FTSFI3QXNXa3p6YnRUZGJYUVVCUUM4dEJ5WkdkT000ckl0NnQzVkdlVjZN?=
- =?utf-8?B?Q0hOUTQ5RldSZXFPTTFXeWZ5dW5iKzNhWnhXT0lqdjZSVXdiUmlkQlJ2U2VW?=
- =?utf-8?B?Nk0wU28ydXB3cnRuNzhKeDRIcUpMQlZ3NGovczU1clUvSjAvS0svUTk1TzJ3?=
- =?utf-8?B?RkhvVEt4bFN3bit2MjJ4WXBHYkhaTnR6bHZNdlh3Vlk2eXA4MkRxUi9icnJ0?=
- =?utf-8?B?SFlyTDVnN3ZCYVo4YXp4bDIwRUFtUHBydXJuOCszaDhFQ3JvSnV3Q1ExV3Bs?=
- =?utf-8?B?dENrK0s0TDlBZ3EvNE12MFkvK3grbDUxUVYxVmlrSjlGZkJhSmFSdjRkUlNP?=
- =?utf-8?B?ZFBvZkNWaGxmbFd3MG5uWWtNZmo1TjlFN3E1R1lacWN3eHc9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TVEwclFEYnFmcTdwRXczbEs3L3A1Z21yVkhIN2g2NGM2RVpYalNVbUFkSFZ4?=
- =?utf-8?B?c1RIeTB0TlN1REtZRTlIV1RtMzNhQnJxT28yNXBWcGM3SVVuNTUxOGJrUzNG?=
- =?utf-8?B?c0Zaci9hcDMwQXpnc2J1dDFKVzRZVXF3MGJkMFJJNlFsZWJXdUZXUTlhbDln?=
- =?utf-8?B?WlBhTER5cDJ6TGR4bWJYREFvNmJPb3A0WWxlaWJuNjh2UzdZNXhMUU1YS3Yx?=
- =?utf-8?B?MXRkV256YWp4SFhYQ1VtU0l6L0RtdGZiNGxndnF4ZUpORWoxRmd4K0ZOYXRr?=
- =?utf-8?B?RnA3dGVkVU1QRGhCOUtJOUhvU2pjeEsySVJjVzg4WTlDTllqWWkzZUhjRnU4?=
- =?utf-8?B?ZnBiTzJWQStxQUh4WHF1NUZHdDNxNGhpc1JNR04zN1ZiaktJbVpadXpjcFpp?=
- =?utf-8?B?MVZoNWcyTktDRGZoZjJnYTBQTmFHSklHZERnM3RxYmg4TWRlMWdqcXVNMUJW?=
- =?utf-8?B?WkJuQ0Vubm53bVlGbis5WUk3bkVxZlJLVHlyU2RNY0RGaEE0ZDAyYytPQyt3?=
- =?utf-8?B?d1dueDFQSE5EcytSSDVxd1NOYm1oU29CejVWRU1zb3p0bUFBR0xic3FuNGRI?=
- =?utf-8?B?aWVXc2psUVJOaWZoMElmVUJ0cUQ5VEFWMkl6SUlRMEpTY3Frb0crQ1J3TjlF?=
- =?utf-8?B?NXdWR3FLN211aEFRRzJ1K1M1MWxmLzhIZ1JDZXA1WGRYcDFldnZ2WTJsNmJW?=
- =?utf-8?B?cTJNSkNZQ1dKYUxYakljdnNBWm9CbmcrWVh6SmlqM2RoNVpBZ0QvZVp3MGhp?=
- =?utf-8?B?ZDgvUGxCUmhVRXA3UzRKdzJicUI5NStRSFhGZmxwQXRYNFBYUXZITWcySElC?=
- =?utf-8?B?VFQrb3NDYnFGeGtsbVF0NnNnZ2RQZktOd2tjUkY0amRMaU5DR0dBRkZHN282?=
- =?utf-8?B?S2pBUktnVG0yUVNPNUYxeFdQWkJ5TTNXczh4cFMxaVM4OTg0WkV0Rkk2aEpU?=
- =?utf-8?B?cVAzaUdxWlhJdi9tcmdOcWtnYVpQSjQ5UmJOSjlYdmc0TzF1L3JMYnN4TWtr?=
- =?utf-8?B?U0VPbjFSU1hqNlozcVM4QzJ2bkw4Z2x3bUJJQ3JWZFBRZWRNWTBiWHpDdXRy?=
- =?utf-8?B?czBLaTgzeGpnYlpTaEZsT0xGbmpSSTZCT1BQUGhrelNNenc3WnFBUENvSVZw?=
- =?utf-8?B?aFl3TWtWNU01S3J3TTNNUUpjTWY3VjI2dmhLRXVnVFZwVk9wSzdSb3RITjVn?=
- =?utf-8?B?dGZZMmJ3TWpPZElBYnozYkN4aCtFUzJ5amNPMkNlRXVRd1BENnhHUzlQQUQz?=
- =?utf-8?B?d0FIUlpnRHNYY2hwYVNZYk5MMXFRUmt6TUMwTjFEZ1doSWpyTnAyaGtqZ2xn?=
- =?utf-8?B?SmpSandTajUwMFhFd2JXSmJEUnNMQ3BmRmFmS3hwak1kc0wvZzQrVGdrUVo4?=
- =?utf-8?B?dW0rVVpTM280TXoybHRORzRwYU5wbHIwZkZkYWdVZkFHRjdUVkVIM0dBclQ0?=
- =?utf-8?B?M3VjaTFkUWZLeWVCOFFVd1IxQ3FRME5INmkxUU0wbWMwYmVuYWQ3ZlBKanky?=
- =?utf-8?B?dkdmc3dwRi9lM3g2a2dNM3pxVDJTVDMyTkN5RzJ4SHl6TlNQR05aZU5haC9k?=
- =?utf-8?B?dkJJVFdBMmdoSnNQUEZ0YVZsdEp0TFJySk1QY1k0bFZsaVU5VGZ3YzRHck02?=
- =?utf-8?B?SXdIUVB1bWZoN1ZrQVgzMlFjWnJZQ1pTZXozVXd0SFJ1RThNc0l3UUVBTStH?=
- =?utf-8?B?Y2RjU3RsQ2ZPdUF0Wnd5Si8yZ2hsbHBNY2Z0dVRuQmcxcVlYekR4eFVSbGt1?=
- =?utf-8?B?bUtSa0Q3K21Vend2WEtxMVRiUTFLNk8ydkRpMm5vUllMY3lLb0FMYjVvcEJo?=
- =?utf-8?B?WDMyZFBkeVdoV2kvVFp3Y2RjVEFFQWlzZ3A4alRxOGtFK092YzQ3ekNBZHor?=
- =?utf-8?B?dUNXS3dJakZwUjRiL1hJaW5EK01RbzYxcVFyS0ZlKzVLRHd0Q0ZqRHhCVW5p?=
- =?utf-8?B?anNva3Jydm1BcGFLNjFGbnZJV09RMlo4WkFjR1cwb2x6Z2VneVA1d1VyTUJQ?=
- =?utf-8?B?anlWajFQSHNoTHFSOVJJVjJCRGVCYU1nbGlzWFdSaWNaWGo5UFZvZDdaVGsv?=
- =?utf-8?B?RXFMcjM1dytHMmVNTCsrSlkzbEUvR1pwMWJMK08vZGVucjEwa09MRGlHTk9j?=
- =?utf-8?B?Y0tZTU5hVzhZeC90Y2hrTjR2Q3FpR2hyZ3Q3Q1c4ekhUVTRYdDA4OWpVVHBO?=
- =?utf-8?B?aVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5d3aaef-3b7e-4c97-5d97-08de285a1967
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 17:27:37.3730
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p0DsRWow1OFrN//mgZG7Nqgdglq7fspx+XAk4lOdYlMXuv8mZfkTJIz/tTsWcP7jKckMU4uwpIrvgwyQnidHCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7321
-X-OriginatorOrg: intel.com
+Content-Type: text/plain
+X-XM-SPF: eid=1vM8TB-00Fz5d-R2;;;mid=<87wm3ky5n9.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX18WRCiEc86RNupml3aU1I9F5t8x9s6oRjc=
+Subject: Re: [PATCH v18] exec: Fix dead-lock in de_thread with ptrace_attach
+X-SA-Exim-Connect-IP: 166.70.13.51
+X-SA-Exim-Rcpt-To: too long (recipient list exceeded maximum allowed size of 512 bytes)
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out02.mta.xmission.com); SAEximRunCond expanded to false
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B59671C000A
-X-Stat-Signature: iocprfgigzzkma53mp7etui466tzkc8s
-X-HE-Tag: 1763659662-418075
-X-HE-Meta: U2FsdGVkX18urZHtjfoR4l2IamYe/bsBQBXJSsW5tRvMoESeYEyajqd4kYEOxSJ9BLSxJBJ/JtQAOoOSrVXoD7dDPzjox7m3pB08rtinjvhPbAbOiFCl1W69orjUrGmjNZgjW4bDoM/Lc9x7ZrkEQWSEXOMbkdGRmakQqwGdnXdmOV8UqFURYOPcheiaaN6rcS/YDRkEiPTuNj71GD7LSR+yrUKVvkTbplrp9TfwRmQF/c/78PYI4nUnGLTzYG7dBpfBvdVLcBd+m5sHwmPlXt0MOP0Vi9F/IGPY3+oqn4zT1OjdnWNHOPDWlFZYOsSH73n5bBwqYSLupEkjITtoZZTIhkuyq9n0twbWoEiB2JQG8nyvomTeELjcCOCLBFAoUmoz0vR9g0mbpt5gBkQNZmy4wes4puV8Lcz+B+q1zcFnEzwr48NnQB/yiI876SWDOZaiYrxNfc2TkhCYXI0vKoFYQrPDwTCFzkwB2Ay4fg73Ke1ocQ2u3/9E4Tuux6HTaUhUgseo3jecoZbVD1LuYDRXNKpVz+x/gU3oOkjFdSC7CsJrIpnAdvXR/qpJyntJkDp71epfc0dBxlXvZG3wQe6fiKhgL4DFvg4t7sdGiMW68m6J0d2p8n2ur593C0aZKKIivGGSBwUiB1BnKbXLFfkvhbwQnbKkfCLlw0wsFVpz/rWeO3aRIboelzDDo/H++UKpw6s4RdGuNC3N9oExU92N0BO52fw7ii7oU+Zo+OgiR5YdyKvlrGwpfc0q+1D8+io/LW6RQ45n2o3XfBiWDJyePYFtY26mqIXlDo0nksTX6qz9v6xRkMnAcwNyZesrZpCYAxmZWEUvsu856CWd/ifaSBOetSynC+sP7hb+ImVyB3IND3b8/4wMoaqpsvRcDLC4AfRz1aLgyLllvemcIrWZX9edz5xaXv6fQF2hnefPrFCVapJ9SRa7WaJphCPIcbNh6NUetNMPjTY79il
- UTtiGTQY
- om98mSbuGlLh5x+hQlF8y7iuXb8gLWOvUDpP7qaabRkmpeEHRAVNm8bXqMYWQIeafBolhXVsfs/2bIYva228ifJi51JucyHH0MQT3w9KHhLi5w3iOSQQD7vbrcvu7JRbMGG3kf6YQKt/fajG+Jf4O0cd9w4ifV2XDTzxbqYZjjRt1Vyhv2tY8/FaF8+5qQ+V4QweyCFbai6N64UpmSnRt7Od1UQh5748ebZeKk98VkZq+460uihJZBtfuTum5uv5cs66rIzZwD+zZyr3pKdI0uw4AyouG6ZdgUIPwdJQVw3TsE4IPZ3fiD1msC5Z+GZBrMSXAXnNxotGb5LB6aJ8nK/Iws3IBzi1dl5p7vmk8jjI1ZoTo63G8yshguaIkVQV1niLLmb4z13w6kQ0/5PAvRV7MEzjX7x8ZAhK7NZ+97fP0hzyXTuA1khN3ixMgyEHV0fjMMHIlifn7IqYqRCrDO+X5AnikXLc3DwwTbXOh7Qqpyc/lPRhRxeWjXl+O7RC6Ci7makZ/XdU9f76l8uH9ARWTjiDk0hmVUugQdQWARAX/9d04QV/pK9EtL72nBLkXO99J0woGvqgP9fKD+oRIm0tvcbe8AwHdGSO0/BJfhNAR5+rbF3nZrOaGdDsiEnuH3JA05ERO1J1THEZGWvripNqIjhbFu1ZZE01QP/rBS9dBb08=
+X-Rspamd-Queue-Id: 43D40C0014
+X-Stat-Signature: bj7ccfrwtx3g3t4csu6pbaujbzkq7yqc
+X-HE-Tag: 1763659776-607643
+X-HE-Meta: U2FsdGVkX19iku3dLGMtZCv6Dcjdnab0xOLVPWO4K4aIfzJlUP07rqjLnH/6FaqmBv7ODrvBmt5IcaZ0I7SM4RBJrKQaJh3e+sffFqjR8t0xTB5fql7J4j8LA6veCWxisWOiQUrD0b2Eq5jhuovZROcZFdLC6EFSuJTDUe7WKoh5aS8FjMxDehUM9ReHnDz6G+/z7Ywj1Jf08bSAFYxTMKmVYjwHC/WGbqYSRJCTzqTS7bBL69xg5xHQk5k5RlDJY7YLwqYR1dmzOQuvZQ+ZkNmjzFiJqjmHb/NGGALb48kuucbAwFPHOoms8zxW+MUjzVlj8WSXwCf6+RwMii/2GDgawiI/dpQNOgzN2Kz9e7U1PgJDuvJ3aK10cEE7Rif5QHQOGTbSVtKCXC6d2U20JrJqJsyMkzkT9LmI7SZxrEj6IJEyG/hvsFl2u8dVPR9Y5szZEIQ6ppngLEOqQaB9QvOr1wT78rCz3+Ba3RK6V52JaVqPDyr/1sW2X4q498DzZyVbShPxh/3Ndc5NCgySZM4jO3uyOaOjR8NqQElZl7BVPXBviPvsvs+lBTicjG0spaw+LcdoWFvOhKR1kxjIey1COw4ZsaHbwT2bc/LZ4yqj5+9ws/zWTq7V6kddzMyMY8Q+8kohv+UM5sftukb7gPsd5lgwRad1APpWPo3QMFmxWAdUxa3FjZkCFouPjFGN+5/zsQF7KA1ufuVLfCuLzPsGmBu6CVdrUs6Xmhejk2kyY4AQkApyuuw1KxI4ihRbCnV+kWqAgXsJFSUwhL5gOQLObSiKgREIJ0SQmeOBGvgWM3D1+EogGd8QpRchfLiUax494syXaLUK+zA/FTWNHHnZxFFCvbnbuUZ2yMaRdcBEIzMhZ9BoWSX/WOcOeryWXdySoYpk8J6qAOXZt+u8GBmQ6WGTd3hnXxabqKGgGdRYSdxlByHj2nc/XFGL9aUklnU3zcSbdfVYdvJH45w
+ iS/bK3K7
+ wUuiOdpYhsmk30myTyr8aaPc7DozyOpVTyz8YQMsAuZ/7hoCo14XZbvktPa5jLWwK71hRID4kHQzd90z5E6DdI2f8UaG0XzVsj9cS+yEpSX+twTHjN49cCHB58Sn5eVtL21aB0kq80MrDqmKSvupTCUp5vrH6pRE9MnGjqnnl+pBtzhH9yzZjmqZepqsUtmll6/ofcsscjY5EWF+fcyGNpUkDShBRm48GKyz8pGuf2mMPL1s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,297 +133,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 05:03:36PM +1100, Balbir Singh wrote:
-> On 11/20/25 16:53, Matthew Brost wrote:
-> > On Thu, Nov 20, 2025 at 02:58:58PM +1100, Balbir Singh wrote:
-> >> On 11/20/25 14:15, Matthew Brost wrote:
-> >>> On Thu, Nov 20, 2025 at 01:59:09PM +1100, Balbir Singh wrote:
-> >>>> On 11/20/25 13:50, Balbir Singh wrote:
-> >>>>> On 11/20/25 13:40, Matthew Brost wrote:
-> >>>>>> On Wed, Nov 12, 2025 at 10:52:43AM +1100, Balbir Singh wrote:
-> >>>>>>> On 11/12/25 10:43, Andrew Morton wrote:
-> >>>>>>>> On Thu, 9 Oct 2025 03:33:33 -0700 Matthew Brost <matthew.brost@intel.com> wrote:
-> >>>>>>>>
-> >>>>>>>>>>>> This patch series introduces support for Transparent Huge Page
-> >>>>>>>>>>>> (THP) migration in zone device-private memory. The implementation enables
-> >>>>>>>>>>>> efficient migration of large folios between system memory and
-> >>>>>>>>>>>> device-private memory
-> >>>>>>>>>>>
-> >>>>>>>>>>> Lots of chatter for the v6 series, but none for v7.  I hope that's a
-> >>>>>>>>>>> good sign.
-> >>>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>> I hope so too, I've tried to address the comments in v6.
-> >>>>>>>>>>
-> >>>>>>>>>
-> >>>>>>>>> Circling back to this series, we will itegrate and test this version.
-> >>>>>>>>
-> >>>>>>>> How'd it go?
-> >>>>>>>>
-> >>>>>>
-> >>>>>> My apologies for the delay—I got distracted by other tasks in Xe (my
-> >>>>>> driver) and was out for a bit. Unfortunately, this series breaks
-> >>>>>> something in the existing core MM code for the Xe SVM implementation. I
-> >>>>>> have an extensive test case that hammers on SVM, which fully passes
-> >>>>>> prior to applying this series, but fails randomly with the series
-> >>>>>> applied (to drm-tip-rc6) due to the below kernel lockup.
-> >>>>>>
-> >>>>>> I've tried to trace where the migration PTE gets installed but not
-> >>>>>> removed or isolate a test case which causes this failure but no luck so
-> >>>>>> far. I'll keep digging as I have time.
-> >>>>>>
-> >>>>>> Beyond that, if I enable Xe SVM + THP, it seems to mostly work (though
-> >>>>>> the same issue as above eventually occurs), but I do need two additional
-> >>>>>> core MM patches—one is new code required for Xe, and the other could be
-> >>>>>> considered a bug fix. Those patches can included when Xe merges SVM THP
-> >>>>>> support but we need at least not break Xe SVM before this series merges.
-> >>>>>>
-> >>>>>> Stack trace:
-> >>>>>>
-> >>>>>> INFO: task kworker/u65:2:1642 blocked for more than 30
-> >>>>>> seconds.
-> >>>>>> [  212.624286]       Tainted: G S      W           6.18.0-rc6-xe+ #1719
-> >>>>>> [  212.630561] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-> >>>>>> disables this message.
-> >>>>>> [  212.638285] task:kworker/u65:2   state:D stack:0     pid:1642
-> >>>>>> tgid:1642  ppid:2      task_flags:0x4208060 flags:0x00080000
-> >>>>>> [  212.638288] Workqueue: xe_page_fault_work_queue
-> >>>>>> xe_pagefault_queue_work [xe]
-> >>>>>> [  212.638323] Call Trace:
-> >>>>>> [  212.638324]  <TASK>
-> >>>>>> [  212.638325]  __schedule+0x4b0/0x990
-> >>>>>> [  212.638330]  schedule+0x22/0xd0
-> >>>>>> [  212.638331]  io_schedule+0x41/0x60
-> >>>>>> [  212.638333]  migration_entry_wait_on_locked+0x1d8/0x2d0
-> >>>>>> [  212.638336]  ? __pfx_wake_page_function+0x10/0x10
-> >>>>>> [  212.638339]  migration_entry_wait+0xd2/0xe0
-> >>>>>> [  212.638341]  hmm_vma_walk_pmd+0x7c9/0x8d0
-> >>>>>> [  212.638343]  walk_pgd_range+0x51d/0xa40
-> >>>>>> [  212.638345]  __walk_page_range+0x75/0x1e0
-> >>>>>> [  212.638347]  walk_page_range_mm+0x138/0x1f0
-> >>>>>> [  212.638349]  hmm_range_fault+0x59/0xa0
-> >>>>>> [  212.638351]  drm_gpusvm_get_pages+0x194/0x7b0 [drm_gpusvm_helper]
-> >>>>>> [  212.638354]  drm_gpusvm_range_get_pages+0x2d/0x40 [drm_gpusvm_helper]
-> >>>>>> [  212.638355]  __xe_svm_handle_pagefault+0x259/0x900 [xe]
-> >>>>>> [  212.638375]  ? update_load_avg+0x7f/0x6c0
-> >>>>>> [  212.638377]  ? update_curr+0x13d/0x170
-> >>>>>> [  212.638379]  xe_svm_handle_pagefault+0x37/0x90 [xe]
-> >>>>>> [  212.638396]  xe_pagefault_queue_work+0x2da/0x3c0 [xe]
-> >>>>>> [  212.638420]  process_one_work+0x16e/0x2e0
-> >>>>>> [  212.638422]  worker_thread+0x284/0x410
-> >>>>>> [  212.638423]  ? __pfx_worker_thread+0x10/0x10
-> >>>>>> [  212.638425]  kthread+0xec/0x210
-> >>>>>> [  212.638427]  ? __pfx_kthread+0x10/0x10
-> >>>>>> [  212.638428]  ? __pfx_kthread+0x10/0x10
-> >>>>>> [  212.638430]  ret_from_fork+0xbd/0x100
-> >>>>>> [  212.638433]  ? __pfx_kthread+0x10/0x10
-> >>>>>> [  212.638434]  ret_from_fork_asm+0x1a/0x30
-> >>>>>> [  212.638436]  </TASK>
-> >>>>>>
-> >>>>>
-> >>>>> Hi, Matt
-> >>>>>
-> >>>>> Thanks for the report, two questions
-> >>>>>
-> >>>>> 1. Are you using mm/mm-unstable, we've got some fixes in there (including fixes to remove_migration_pmd())
-> >>>
-> >>> remove_migration_pmd - This is a PTE migration entry.
-> >>>
-> >>
-> >> I don't have your symbols, I thought we were hitting, the following condition in the walk
-> >>
-> >> 	if (thp_migration_supported() && pmd_is_migration_entry(pmd)) {
-> >>
-> >> But sounds like you are not, PMD/THP has not been enabled in this case
-> >>
-> > 
-> > No, migration_entry_wait rather than pmd_migration_entry_wait.
-> > 
-> >>
-> >>>>>    - Generally a left behind migration entry is a symptom of a failed migration that did not clean up
-> >>>>>      after itself.
-> >>>
-> >>> I'm on drm-tip as I generally need the latest version of my driver
-> >>> because of the speed we move at.
-> >>>
-> >>> Yes, I agree it looks like somehow a migration PTE is not getting
-> >>> properly removed.
-> >>>
-> >>> I'm happy to cherry pick any patches that you think might be helpful
-> >>> into my tree.
-> >>>
-> >>
-> >> Could you try the mm/mm-new tree with the current xe driver?
-> >>
-> > 
-> > Unfortunately, this is a tough one. We land a lot of patches in Xe/DRM,
-> > so bringing the driver up to date with an MM branch is difficult, and
-> > I’m not an expert at merging branches. It would be nice if, in the DRM
-> > flow, we could merge patches from outside our subsystem into a
-> > bleeding-edge kernel for the things we typically care about—but we’d
-> > need a maintainer to sign up for that.
-> > 
-> >> In general, w.r.t failure, I would check for the following
-> >>
-> >> 1. Are the dst_pfns in migrate_vma_pages() setup correctly by the device driver?
-> >> 2. Any failures in folio_migrate_mapping()?
-> >> 3. In migrate_vma_finalize() check to see if remove_migration_ptes() failed
-> >>
-> >> If (3) fails that will explain the left over migration entries
-> >>
-> > 
-> > Good tips, but think I got it via biscet.
-> > 
-> > Offending patch is:
-> > 
-> > 'mm/migrate_device: handle partially mapped folios during collection'
-> > 
-> > The failing test case involves some remap-related issue. It’s a
-> > parameterized test, so I honestly couldn’t tell you exactly what it’s
-> > doing beyond the fact that it seems nonsensical but stresses remap. I
-> > thought commit '66d81853fa3d selftests/mm/hmm-tests: partial unmap,
-> > mremap and anon_write tests' would catch this, but it looks like I need
-> > to make the remap HMM test cases a bit more robust—similar to my
-> > driver-side tests. I can take an action item to follow up on this.
-> > 
-> > Good news, I can tell you how to fix this...
-> > 
-> > In 'mm/migrate_device: handle partially mapped folios during collection': 
-> > 
-> > 109 +#if 0
-> > 110 +                       folio = page ? page_folio(page) : NULL;
-> > 111 +                       if (folio && folio_test_large(folio)) {
-> > 112 +                               int ret;
-> > 113 +
-> > 114 +                               pte_unmap_unlock(ptep, ptl);
-> > 115 +                               ret = migrate_vma_split_folio(folio,
-> > 116 +								  migrate->fault_page);
-> > 117 +
-> > 118 +                               if (ret) {
-> > 119 +                                       ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-> > 120 +                                       goto next;
-> > 121 +                               }
-> > 122 +
-> > 123 +                               addr = start;
-> > 124 +                               goto again;
-> > 125 +                       }
-> > 126 +#endif
-> > 
-> > You can probably just delete this and use my patch below, but if you
-> > want to try fixing it with a quick look: if migrate_vma_split_folio
-> > fails, you probably need to collect a hole. On success, you likely want
-> > to continue executing the remainder of the loop. I can try playing with
-> > this tomorrow, but it’s late here.
-> > 
-> > I had privately sent you a version of this patch as a fix for Xe, and
-> > this one seems to work:
-> > 
-> > [PATCH] mm/migrate: Split THP found in middle of PMD during page collection
-> > 
-> > The migrate layer is not coded to handle a THP found in the middle of a
-> > PMD. This can occur if a user manipulates mappings with mremap(). If a
-> > THP is found mid-PMD during page collection, split it.
-> > 
-> > Cc: Balbir Singh <balbirs@nvidia.com>
-> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > ---
-> >  mm/migrate_device.c | 37 +++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 35 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> > index abd9f6850db6..9ffc025bad50 100644
-> > --- a/mm/migrate_device.c
-> > +++ b/mm/migrate_device.c
-> > @@ -65,6 +65,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >         struct vm_area_struct *vma = walk->vma;
-> >         struct mm_struct *mm = vma->vm_mm;
-> >         unsigned long addr = start, unmapped = 0;
-> > +       struct folio *split_folio = NULL;
-> >         spinlock_t *ptl;
-> >         pte_t *ptep;
-> > 
-> > @@ -107,10 +108,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >                 }
-> >         }
-> > 
-> > -       ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-> > +       ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
-> >         if (!ptep)
-> >                 goto again;
-> >         arch_enter_lazy_mmu_mode();
-> > +       ptep += (addr - start) / PAGE_SIZE;
-> > 
-> >         for (; addr < end; addr += PAGE_SIZE, ptep++) {
-> >                 struct dev_pagemap *pgmap;
-> > @@ -209,6 +211,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >                         bool anon_exclusive;
-> >                         pte_t swp_pte;
-> > 
-> > +                       if (folio_order(folio)) {
-> > +                               split_folio = folio;
-> > +                               goto split;
-> > +                       }
-> > +
-> >                         flush_cache_page(vma, addr, pte_pfn(pte));
-> >                         anon_exclusive = folio_test_anon(folio) &&
-> >                                           PageAnonExclusive(page);
-> > @@ -287,8 +294,34 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >         if (unmapped)
-> >                 flush_tlb_range(walk->vma, start, end);
-> > 
-> > +split:
-> >         arch_leave_lazy_mmu_mode();
-> > -       pte_unmap_unlock(ptep - 1, ptl);
-> > +       pte_unmap_unlock(ptep - 1 + !!split_folio, ptl);
-> > +
-> > +       /*
-> > +        * XXX: No clean way to support higher-order folios that don't match PMD
-> > +        * boundaries for now — split them instead. Once mTHP support lands, add
-> > +        * proper support for this case.
-> > +        *
-> > +        * The test, which exposed this as problematic, remapped (memremap) a
-> > +        * large folio to an unaligned address, resulting in the folio being
-> > +        * found in the middle of the PTEs. The requested number of pages was
-> > +        * less than the folio size. Likely to be handled gracefully by upper
-> > +        * layers eventually, but not yet.
-> > +        */
-> > +       if (split_folio) {
-> > +               int ret;
-> > +
-> > +               ret = split_folio(split_folio);
-> > +               if (fault_folio != split_folio)
-> > +                       folio_unlock(split_folio);
-> > +               folio_put(split_folio);
-> > +               if (ret)
-> > +                       return migrate_vma_collect_skip(addr, end, walk);
-> > +
-> > +               split_folio = NULL;
-> > +               goto again;
-> > +       }
-> > 
-> >         return 0;
-> >  }
-> > 
-> > If I apply the #if 0 change along with my patch above (plus one core
-> > MM patch needed for Xe that adds a support function), Xe SVM fully
-> > passes our test cases with both THP enabled and disabled.
-> > 
-> Excellent work! Since you found this, do you mind sending the fix to Andrew as a fixup
+"Eric W. Biederman" <ebiederm@xmission.com> writes:
 
-Done. Here is a dri-devel patchworks link [1] to the patch.
+> Bernd Edlinger <bernd.edlinger@hotmail.de> writes:
+>
+>> This introduces signal->exec_bprm, which is used to
+>> fix the case when at least one of the sibling threads
+>> is traced, and therefore the trace process may dead-lock
+>> in ptrace_attach, but de_thread will need to wait for the
+>> tracer to continue execution.
+>
+> A small quibble it isn't a dead lock.  It isn't even really a live lock,
+> as it is possible to SIGKILL our way out.
+>
+> Thinking about this there is a really silly and simple way we can deal
+> with this situation for PTRACE_ATTACH.  We can send SIGSTOP and wait for
+> the thread to stop before doing anything with cred_guard_mutex.
+>
+> PTRACE_ATTACH already implies sending SIGSTOP so as long as we have
+> enough permissions to send SIGSTOP I don't see that being a problem.
+>
+> The worst case I can see is that we get a case where we stop the
+> process, the permission check fails under cred_guard_mutex and
+> and ptrace attach has fails and has to send SIGCONT to undo it's
+> premature SIGSTOP.  That might almost be visible, but it would still
+> be legitimate because we can still check that we have permission to
+> send SIGSTOP.
 
-Matt
+Bah no I am full of it.
 
-[1] https://patchwork.freedesktop.org/series/157859/
+The challenging behavior is in the semantics of the kernel operations.
+We need to describe it as such please.
 
-> to the original patch. Since I don't have the test case, I have no way of validating the
-> change or any change on top of it would continue to work
-> 
-> FYI: The original code does something similar, I might be missing the 
-> migrate_vma_collect_skip() bits.
-> 
-> Thanks!
-> Balbir
-> 
-> 
+It is the same class of problem as a single threaded process calls exec
+with a pipe attached to both stdin and stdout of the new process.
+
+For the stdin and stdout we can say just use pull and nonblocking I/O.
+
+The problem is that both PTRACE_ATTACH and PTRACE_SEIZE block over
+the duration of exec, and if exec is waiting for a thread to exit,
+and that thread is blocked in PTRACE_EVENT_EXIT waiting for that very
+same tracer those processes will hang. Not deadlock.
+
+
+I haven't seen anyone clearly describe the problem lately so I am
+repeating it.
+
+
+Just looking at the code I don't think there is any fundamental reason
+to call commit_creds after de_thread.  If we can change that we can sort
+this out without any change in userspace semantics.
+
+If we can't move commit_creds we have to either give
+PTRACE_ATTACH/PTRACE_SEIZE a non-block mode, or break out of
+PTRACE_EVENT_EXIT in de_thread.
+
+I will post a proof of concept of moving commit_creds in just a minute.
+
+Eric
 
