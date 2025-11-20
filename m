@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D939ACF8864
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:13:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 761FFCF8861
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:13:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAE6B6B00C8; Thu, 20 Nov 2025 10:13:32 -0500 (EST)
+	id 7D5B86B00CC; Thu, 20 Nov 2025 10:13:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0AC46B00CB; Thu, 20 Nov 2025 10:13:32 -0500 (EST)
+	id 7375B6B00CE; Thu, 20 Nov 2025 10:13:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CF466B00C8; Thu, 20 Nov 2025 10:13:32 -0500 (EST)
+	id 5B16C6B00CF; Thu, 20 Nov 2025 10:13:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AA4B6B00CA
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:13:32 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C348E140172
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:13:27 +0000 (UTC)
-X-FDA: 84131329254.05.A43DE4D
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F17F21C0004
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:13:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kWGaZ/PS";
-	spf=pass (imf20.hostedemail.com: domain of 3FDAfaQUKCEEhoyhujrrjoh.frpolqx0-ppnydfn.ruj@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3FDAfaQUKCEEhoyhujrrjoh.frpolqx0-ppnydfn.ruj@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 42C4C6B00CC
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:13:36 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05F938652C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:13:36 +0000 (UTC)
+X-FDA: 84131329632.26.A0A8560
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 515F68001E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:13:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xOJGxivL;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of 3HDAfaQUKCEkpw6p2rzzrwp.nzxwty58-xxv6lnv.z2r@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3HDAfaQUKCEkpw6p2rzzrwp.nzxwty58-xxv6lnv.z2r@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763651606;
+	s=arc-20220608; t=1763651614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e0QY5sCjABQs82s4Ju3ZdPJK85+Pyg+eamRrTOstnfs=;
-	b=I/7ls89KasAWnGAWS0MAGYR8SqvwFNdNyjtwSq8zQksjmuPwdN/FbcBhJqkMat0/2OkeER
-	RFiJAq8aSdPmCtHlhGXpewPQra6VjkTL/ypvYwqjdqZ0bp67PD/BxU/WL7bSqmU38P0T6+
-	1JrGdysIvOCur2TvvY0CFySYMY77yRg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kWGaZ/PS";
-	spf=pass (imf20.hostedemail.com: domain of 3FDAfaQUKCEEhoyhujrrjoh.frpolqx0-ppnydfn.ruj@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3FDAfaQUKCEEhoyhujrrjoh.frpolqx0-ppnydfn.ruj@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763651606; a=rsa-sha256;
+	bh=xNvl5AadBnBbkNqIZ5ePr/ep+DGb1qTLi02EcnmaTpQ=;
+	b=PFUY50jIz9Rund//SuEI904L6ODYlYhwoKkFtQV59EG1D93l8Z9I1q9XY6xjAwySMGMvzw
+	A+5ToGbDYn2LXqK7mc/vk+LxpYWwYgam3rqB4k8pXH7rEBr2EaCCAUZsVckRwk0y+HSeni
+	LugTqCgje8qsfRWJXsOplzaOOi0nh2o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763651614; a=rsa-sha256;
 	cv=none;
-	b=gProgANr8xUGN2V1wxHNiTJFgg6yjSxT+gKH980MbviNdy7FuubnLgYYInYn/za5LeNBqr
-	2oq3LGW81wibmO5U5Btv+jZvC63Ww6YlyB65RbL+3SG5oBG/bhrSErwyhWrbLO5A189AOX
-	3Z5aMaBJUagfvhPrCBW0xCZ5cVaaT7c=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-429c7b0ae36so658566f8f.0
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:13:25 -0800 (PST)
+	b=kYUHBJR0BSbrhOixfjLCGn/HCjzLvNXf3cFYnudA3vELKO+cGoBTpg2k60196+oebYrlL8
+	xDwSzXHE/arZ93X59Fhmp1wZOkhgokGudzhLp7LLvKQcgyzKHhpnwnjn4YRjVoWLevdJGa
+	cAb/fB6pT0kvcrPTYfuO1eyvRcXAoyg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xOJGxivL;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of 3HDAfaQUKCEkpw6p2rzzrwp.nzxwty58-xxv6lnv.z2r@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3HDAfaQUKCEkpw6p2rzzrwp.nzxwty58-xxv6lnv.z2r@flex--elver.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477632ef599so11886405e9.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:13:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763651604; x=1764256404; darn=kvack.org;
+        d=google.com; s=20230601; t=1763651613; x=1764256413; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e0QY5sCjABQs82s4Ju3ZdPJK85+Pyg+eamRrTOstnfs=;
-        b=kWGaZ/PSwtlFdAMmsL9kdiqubBjULju3EGMqNJV4GJsv5NBQwyn1cNuPvmMQFgIwLD
-         V/PVjTgOpLQ39a78rOdtOPPZ/dRkc1s1C8n7UGl3NjJn6B6U+0/bV/pWGwp9fqvqxCLQ
-         tF7mvuf9LCW/fqWOrEdIUB5Es3KaCYm5V33v9ihYF7+NfKbWOs2ddkvDxBTREAjm5Ifw
-         jvkGaDb2FRNtI0s1u+gnrwIjwcSv0ovNZggbfnoD/wB1OlD7oZVxT7Ik9116Bksx7n6Y
-         6/N6Vjry774X9lEyGZdHJs1gKMeZbRjAzW2qzhK6WzT6IlhCKNcInNSpfWf8kA9aPyig
-         i+MQ==
+        bh=xNvl5AadBnBbkNqIZ5ePr/ep+DGb1qTLi02EcnmaTpQ=;
+        b=xOJGxivLGXxuD7T0nen7CdxecmQ51Y21jjH3GxfadqrQNei2eI1What6DGAgzpuWqT
+         Rj5Fp2iCJeqLGRtMnkpjEzDsPX2dsJVps2WYzpzuR9A2CSkTZ0+ml6TlUMchlo31WosU
+         e+lvbzuaqvXp6c5ytxSn62Umxv+QB6/Kn3Xk7I0RvQ0HCJHfNlJtRVaq6MBZWnYlHdkz
+         +/fQ4lQCkBSkO0d2Z24sg2EoCFc6rbVubwSZt9nkIpZcrMLLseIt0pscrdrH6rwf8vPA
+         g6EC3u75Rtk/7JdS6VQIQA9Qylrl0DB4VinVUguLPKk+6Kwbx1HoVZXd/ipGeQ3GkqvT
+         oCtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763651604; x=1764256404;
+        d=1e100.net; s=20230601; t=1763651613; x=1764256413;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e0QY5sCjABQs82s4Ju3ZdPJK85+Pyg+eamRrTOstnfs=;
-        b=AJcYImEYJn0s/LhHmkqL9L63g2watH22nhQFKazrGL+xvZsD3v81j6H4sg34IaAfTd
-         W7Ao8DBmAUhuon1EZ+mvlftI9wLXu0NlhV0ISa9M1mWN0EB1GU4huSQkFb3ENsxeGIaO
-         AwXgWH86makWdx6FVjsHzCgOv1ao+cdvj/76+x5KlEGGfCiRvj/4Ix1Vu3JuMqe2XISp
-         Thw0sqemG4CDG5j+e67JofkA0qIkPogyfH4c2s6qvcm/wKHVLZrCKRxatqNOyYoqgD9e
-         d5qekbIRpYjgsSa+K7Y6/DiQR0M0q39W2pCXeMpCKxiunLIIa9ykhQ0zJMNgj6mJHpnm
-         ryDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQz5pL0CxgnGiGSk5aubmZJBVkc7WDXEZBW1pdjR0pTVdB0j74v+ML/4GISO8V4NamFPJQ0b3f8g==@kvack.org
-X-Gm-Message-State: AOJu0Yzb1mlPnFvXAyd+4lL9kDrjxJrKPXf8JPFOOb8fGpkzeuBBQb6T
-	F5esWtVqxadeE5xVUl0NNdZu3M8+bah5TUmV+OO/VdyUp8XMMqI8hjRZiqtr3YVgL/DRgYp1bkE
-	pJg==
-X-Google-Smtp-Source: AGHT+IEwTiVA/c7ivK4PcZYzQTIU6yfpqSY2nHpvc3eMP1mZxx+HGAMnAzVRYoTvuPwgEuO1vhoD29fTuQ==
-X-Received: from wrbfq12.prod.google.com ([2002:a05:6000:2a0c:b0:425:6f4f:8f67])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:adf:f8cc:0:b0:429:b8c7:1848
- with SMTP id ffacd0b85a97d-42cba767dd8mr2702228f8f.19.1763651604278; Thu, 20
- Nov 2025 07:13:24 -0800 (PST)
-Date: Thu, 20 Nov 2025 16:09:49 +0100
+        bh=xNvl5AadBnBbkNqIZ5ePr/ep+DGb1qTLi02EcnmaTpQ=;
+        b=iqH8ZnKQA7ipyu2eow0LdyEJydz3vb8j2MFCquq/w+5zOjA1rSY8bgYkkVYQpG/pIH
+         noJAlF1B4qUC+triCdJ2v4bWvmqw1r2hzi5M4xOjUV3UtU87aJbWLlGbAbJ8NuBgnQAa
+         xumbvnC6pzfoUHH4GisFcnnQJpKYleO8G31nezsyO1YEN6Bn26Fl2NA7PI+kVI/Tmj+m
+         uZlDEsBlCXDo7RZBt5UNRjadveCwXHHI1VeaIDIW06KbH7u517OI33XaWMKqRB0AilR4
+         2p/u0Okuq6PXFC3nQ+YgS2ZgC9jXPjT+AzihKFYbeWXNvC9cNFNn6Urye3bn8Gj+buM/
+         LHWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXLHeYpslihVBB7DBeeEr282F9qmp8r6ZQJ/ECHOwGuhSZacWT/qgayITuJX3boTPqdb4q4Zbw8ew==@kvack.org
+X-Gm-Message-State: AOJu0Yx2HL08BWbS8kNAQ8tPBB2DKz+evJv1L4eX417J61x8n2rgXzU/
+	7iz6lnW6BOR3af/NK9yRBJuAKtv2xWfOojqtezuA0FKZEJyL0J8tJ3HZhWTUc6lIHVzVbdp9Fi8
+	dSw==
+X-Google-Smtp-Source: AGHT+IF9W56E3BCf4ycfyNzV0Jbt7zmYcg646z2GlS6yDnrRg6LpKFxf4hnN1dp2GqjQ6ITkpBqUZJJJqw==
+X-Received: from wmbbd8.prod.google.com ([2002:a05:600c:1f08:b0:470:fd92:351d])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1516:b0:477:14ba:28da
+ with SMTP id 5b1f17b1804b1-477b9ea8f78mr18741385e9.5.1763651612613; Thu, 20
+ Nov 2025 07:13:32 -0800 (PST)
+Date: Thu, 20 Nov 2025 16:09:51 +0100
 In-Reply-To: <20251120151033.3840508-7-elver@google.com>
 Mime-Version: 1.0
 References: <20251120145835.3833031-2-elver@google.com> <20251120151033.3840508-7-elver@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251120151033.3840508-25-elver@google.com>
-Subject: [PATCH v4 24/35] compiler-context-analysis: Introduce header suppressions
+Message-ID: <20251120151033.3840508-27-elver@google.com>
+Subject: [PATCH v4 26/35] MAINTAINERS: Add entry for Context Analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F17F21C0004
-X-Stat-Signature: 1useeuymko8j7px8sn6tgjzn9wigarjn
+X-Stat-Signature: qwq7gy7jgpnirn3efjci7p8p5jj5azah
 X-Rspam-User: 
-X-HE-Tag: 1763651605-122567
-X-HE-Meta: U2FsdGVkX19PV4sxti/Eht6EUrQW1QLvr47s+daaXEWx/b5e8b3VtvnaAuQvaXR8FSjuIdXjQtnUIdYFHnqviecV4L5QAvl96M1eAvr5YNdPn6iVSj57NbXpnmDle70rPm0XAu6+gYPW48dGib/okWgsJfHOtglnAuJLp8vjWl6xTRCUoF7hYpZjvV23ZbYXX/oSVfnMr5dJuMsVX4hBcoT0Wt8r8ABICp3FqSDS3Z3Bgb5TuzmcRFJAKUjaE2hcszsQYfemPsOT1pwwgaQEWFk2LyFsCqbi9CC8LYJPTsQOaNkmieiCyuiMXaB6CJ4j2kimZDM3DBemsu/ELsTho/qHeqm2r5LA6WE+JddGmVpZqD2tYWAkfpAlurlOOvvXgxDdpwzXreyVXHx6tQCcC4U9jYwugfVku2nJ7Kb4WYC7PWtnW2TbbCHbkrTPqfKwWAlLhCPYApHLoPCrfpFNonHbe4VX5WIdfag8WK7bweC1rvuj9xuiP0LpTXj2xKPyhjNkbYRJmH9v7svYkLqqN8AjevlKM8sKXIt2tO7xEDFbX03uLKSt6agULEDyuE3qFyNTdU27JOSFYTYlemwK+59hDIXGP1zodzOZvO0x04YvOS+Q75qP2UZ5+87i7GOQv90tyA00kHi94bs9reS+wIln6F9nFArQGs5/8XcEHnaSPGeOCmxDEanpdTkCGsYNavcowqk66arm18PW6tCwiOoSYSFE78dGgvi0jYL/Fu2NQ5PCFjKb0EmEnvN3ozGv5VUiFUQq8qvP7kNb++/7gl9sFRjshFatR1v3D5QTi4b1XVh8J5JdnblzbyYuCG5lv7TNzqL3jqQoUu4fpyB1M0WxUhLRi0tdhArwMVaTKs3a9X40xMvYmQJKnzNxOTMWw4qpJPl3L0tid4n4ZF1HvtVODiCS1CaG0cblCJZ3XmRYDNDCNJhzA0rxe5Tn9fjKSyFtcYBWqVWhAMUiXKr
- YgPWen3B
- Uga5hrH87bdceJ7HCfVPBXuhHusAT6Cd6Gx6QxKtLSgMAMOAolDWRlvvcywEz31yh358jnb+c8he8bYYsy4hn8tfTe2uuEVYvZ8epfqqnxfDuze2e98kidaJrsCKWE1w6wyVCECSpO3BSVSlUgd4nUS8WSGBZt6pULLy4DUDzpG6VbWOaUxJIh4ITE9SZVC6BJ7Rs4KOxTYTNKFqyyweiG68kqiF0GLtQfZ29cFikNqaoD0FPh/y7NrHrPPMAavlDyixY+yz5IEiynAor/5+5xnT6LpEc7gfZcMi15vwD5/Y3UIQPJK3n4vqiiappPihT8mseYTrGKvOAAFhpF31QcZGreVJz8bi10420ZxZbSdTCVqPosmbYq3NtQsuPSXeyTxeIAdHoYGUsxB9QdE1usOSYZPU6ywma0W7XkX/nlhFmjfLRbfUP3PoTdGEUiZ4s6W4D2XNiARKSXQnCq89um/tRCIbiY20neHMy9WeQj83bF9nHOD3OwsIPb2gwYXooGAjHSRAJDlIc4+QE3qoZKwXmrlpEqidYc0R8+Tk4HcEaZeEy3bKKcvoG5L93UcESIrrUYGTCCpYYVi/VLStXPec7pczYe/Wo/uXVkJt2WCOjhna+xAs3Z51GWBjA/9C/MRUIu7yLfJ2ujJw=
+X-Rspamd-Queue-Id: 515F68001E
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763651614-496437
+X-HE-Meta: U2FsdGVkX1/57G9rUO4XIG260n5cONLTXvwzPVsAh7ZWL2cOakPcyD4m8sGtxkIhtZEwnA+z+PfSkysyl9cGxh8VDnGhtPxUxMXjKluADNxPI5DLS128HXPDuVjM5LqN79g0YfzYCqgAq9lFmHFpDl1JtKinWUZCrk9mrCWa8AoGxkXHyt05n2buDocHqBSmVfMHCEwzT6ABLnv1+9hEW5IeewP0LpE0XUtTcqSRGK4SUjBA/bWWMc6FDnsgibpKKd4EQV6o6tS0POsMGbxvTDRIDurZXURq7ljPSoiAUEy0r1V0Mckhsa2L0ABlrjmQNEqM1OcxaOUcOJ2tfiVk0zzBPbEp0reZd2EbaMik+nD8NH5TrtfbA73exd1xGbooqtBTxYI7nyDFaLAwCPNiU6doG9r3HxXY1/1gKoSgWabWdPNiUgj13Hvq4lS/L98hsWvkXquBNO6bD/HYOc0Wyf0avJjbiA/B61hJMiTh3cwInHbPSVGah5ES+QVQaDByhag3ygzesPNvHuFoLDQDEvcf6WfEhYA9aXeG8UxkWPuiXbEcIh3QpQoOTRGIMLzCYd9XHxcGBB+mLzq303cCaMor6CRuE2fNkEOXpvBzw5Di6zqQ7MlbqhyxjPo9y5UM7Nn54P6nCDZ4oq+RqPy693tj2HVLX4cqUg/FVv9w2T7ENJWDMTS/CfqT92KKhewyrcC+a7ubNEIFiIiA1SDfx6CU6SXI76ZFmxTF9OsqQfsLHpTA4+nQ9AUsfL5ew5XWo34rUvXabD/JEhs5Hp8F2u24lROT2+iCgSe0/hIe7oxomUJXAZ5W7Uz9n7tmxX2JcOY8LRTzXVXHQ3E/3Uobfoc6HZvbK+lQPLzpA+SB9UB6vA65hBk0hFJ8G8GAD0Yk8sm8NXKRjyrjSUc2RBqmLXr8qztv1QVJTdimkLanCs4H56IqPm4eupuu/KzCWJdQjV6h1vOKrVaYunJYumo
+ 9yy8m8Si
+ 4BPDLefpK4SG3HR6H8WxrFyTqvsgzE2DLfgwM55UgcoeK2GT11W7tpDZv7tYT2TbEnapgM94r3POlzPhY0g/fBXek3sfLD2AyE2a6apQvtygyaqblUy8RRnvO8SDSexItoA8k5QnVhwVbsS+bRMnajud31lkrKS3oF1GDjiYvlgwJFiX1x7AWa2C62akh/bjtELJ0upmymVklG3DvkPk3PMeElU8XVqBxdD3k2HL8Dba308wB0oWO2bcQ6F9emMoPfkBZTW53cS26hACfp2KjJZax1rSF22ui/FggWgX0ApfG23cJ50fCS//kpKylttFA/BdOrNDWGa2mKIFI/Qo34FiokNu2JFHMtMmUHsnprxljlBSwmUF4uO7p6tMlulOXYg2JR73H14o29KT8mXj+npuGKVFieqYvrhA7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,87 +129,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While we can opt in individual subsystems which add the required
-annotations, such subsystems inevitably include headers from other
-subsystems which may not yet have the right annotations, which then
-result in false positive warnings.
-
-Making compatible by adding annotations across all common headers
-currently requires an excessive number of __no_context_analysis
-annotations, or carefully analyzing non-trivial cases to add the correct
-annotations. While this is desirable long-term, providing an incremental
-path causes less churn and headaches for maintainers not yet interested
-in dealing with such warnings.
-
-Rather than clutter headers unnecessary and mandate all subsystem
-maintainers to keep their headers working with context analysis,
-suppress all -Wthread-safety warnings in headers. Explicitly opt in
-headers with context-enabled primitives.
-
-With this in place, we can start enabling the analysis on more complex
-subsystems in subsequent changes.
+Add entry for all new files added for Clang's context analysis.
 
 Signed-off-by: Marco Elver <elver@google.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 ---
 v4:
 * Rename capability -> context analysis.
 ---
- scripts/Makefile.context-analysis        |  4 +++
- scripts/context-analysis-suppression.txt | 32 ++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
- create mode 100644 scripts/context-analysis-suppression.txt
+ MAINTAINERS | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/scripts/Makefile.context-analysis b/scripts/Makefile.context-analysis
-index 70549f7fae1a..cd3bb49d3f09 100644
---- a/scripts/Makefile.context-analysis
-+++ b/scripts/Makefile.context-analysis
-@@ -4,4 +4,8 @@ context-analysis-cflags := -DWARN_CONTEXT_ANALYSIS		\
- 	-fexperimental-late-parse-attributes -Wthread-safety	\
- 	-Wthread-safety-pointer -Wthread-safety-beta
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e64b94e6b5a9..0445478f74c7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6029,6 +6029,17 @@ M:	Nelson Escobar <neescoba@cisco.com>
+ S:	Supported
+ F:	drivers/infiniband/hw/usnic/
  
-+ifndef CONFIG_WARN_CONTEXT_ANALYSIS_ALL
-+context-analysis-cflags += --warning-suppression-mappings=$(srctree)/scripts/context-analysis-suppression.txt
-+endif
++CLANG CONTEXT ANALYSIS
++M:	Marco Elver <elver@google.com>
++R:	Bart Van Assche <bvanassche@acm.org>
++L:	llvm@lists.linux.dev
++S:	Maintained
++F:	Documentation/dev-tools/context-analysis.rst
++F:	include/linux/compiler-context-analysis.h
++F:	lib/test_context-analysis.c
++F:	scripts/Makefile.context-analysis
++F:	scripts/context-analysis-suppression.txt
 +
- export CFLAGS_CONTEXT_ANALYSIS := $(context-analysis-cflags)
-diff --git a/scripts/context-analysis-suppression.txt b/scripts/context-analysis-suppression.txt
-new file mode 100644
-index 000000000000..df25c3d07a5b
---- /dev/null
-+++ b/scripts/context-analysis-suppression.txt
-@@ -0,0 +1,32 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# The suppressions file should only match common paths such as header files.
-+# For individual subsytems use Makefile directive CONTEXT_ANALYSIS := [yn].
-+#
-+# The suppressions are ignored when CONFIG_WARN_CONTEXT_ANALYSIS_ALL is
-+# selected.
-+
-+[thread-safety]
-+src:*arch/*/include/*
-+src:*include/acpi/*
-+src:*include/asm-generic/*
-+src:*include/linux/*
-+src:*include/net/*
-+
-+# Opt-in headers:
-+src:*include/linux/bit_spinlock.h=emit
-+src:*include/linux/cleanup.h=emit
-+src:*include/linux/kref.h=emit
-+src:*include/linux/list*.h=emit
-+src:*include/linux/local_lock*.h=emit
-+src:*include/linux/lockdep.h=emit
-+src:*include/linux/mutex*.h=emit
-+src:*include/linux/rcupdate.h=emit
-+src:*include/linux/refcount.h=emit
-+src:*include/linux/rhashtable.h=emit
-+src:*include/linux/rwlock*.h=emit
-+src:*include/linux/rwsem.h=emit
-+src:*include/linux/seqlock*.h=emit
-+src:*include/linux/spinlock*.h=emit
-+src:*include/linux/srcu*.h=emit
-+src:*include/linux/ww_mutex.h=emit
+ CLANG CONTROL FLOW INTEGRITY SUPPORT
+ M:	Sami Tolvanen <samitolvanen@google.com>
+ M:	Kees Cook <kees@kernel.org>
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
