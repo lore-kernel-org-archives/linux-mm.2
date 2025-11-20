@@ -4,135 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEBB4CFA442
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 20:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB8E3CF885D
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 20:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27AEF6B0030; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
+	id 869766B0026; Thu, 20 Nov 2025 15:57:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 252CF6B0088; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
+	id 840446B0027; Thu, 20 Nov 2025 15:57:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 168576B0089; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
+	id 72EF96B0028; Thu, 20 Nov 2025 15:57:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 064926B0030
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:26:10 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C427C57ECF
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:26:09 +0000 (UTC)
-X-FDA: 84132117258.15.D766262
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C4565140007
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:26:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=NMFZFOgL;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C71B6B0026
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:57:52 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 002E01401DC
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:57:51 +0000 (UTC)
+X-FDA: 84132197184.22.0AD7D52
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A4D1C8000B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:57:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=xmission.com;
+	spf=pass (imf02.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.233 as permitted sender) smtp.mailfrom=ebiederm@xmission.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763672269; a=rsa-sha256;
+	cv=none;
+	b=cNLKMKzVPYwJp7i8kK/jZ8797PTEYt6UeFp5jLSM/ai7Sr+abHpSsnpZcghC2mlDpMRtN8
+	KGxr1ZTuI/Wgo18KPKngx7tQMV1/231qaILmF4TXMVkxtySVm+jCAguApZ1NXbKXL6SCkt
+	xY793LvkjjXdPcteJ3hyKYWPLfF6PK4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=xmission.com;
+	spf=pass (imf02.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.233 as permitted sender) smtp.mailfrom=ebiederm@xmission.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763670367;
+	s=arc-20220608; t=1763672269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PqIhtMYQq6hQ/aIE/gJLhPbAAZf5g6u9uLXykoPMVFQ=;
-	b=1AKtKIoxd4r2pD4fjlPhG9zMDYdGuQh54N1KI/L7OqPWT3IhgEyxJJ8X61zc/BolqxQ+iL
-	2QJ4jLxisXIYQKWFbwrhypK1uR6/V+wS9HfBGsqHOokMW/mS294faCALI7bxDEaWbSk7V+
-	3ArYfvlfGZkoy+76aolehnaBI2VVklw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=NMFZFOgL;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763670367; a=rsa-sha256;
-	cv=none;
-	b=x+cvON6PjwamvPLs4EIkLR0kOoIHn1e79VjNLW1qTGu1V6qJ2fIJVRGLkIDVz47hrv9Af7
-	TYJMgwdQnfFtSVCM/99Tuld1f4pYc9vuy0Shj0/Jg5iPuIx0ulL4BLi3WqXyIhYc4ejtHW
-	wziax+B5Ccs4gqYmNwNhL40jTaiVmGw=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so2151592a12.1
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:26:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763670366; x=1764275166; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PqIhtMYQq6hQ/aIE/gJLhPbAAZf5g6u9uLXykoPMVFQ=;
-        b=NMFZFOgLWYzOU3nsiIV9T+8MS7H83PB7oHG1ajnMgd73BEYmDczZAXd+H96p7lwdBg
-         dSraqGzJidyHVVgrslro7oNPElncHM3xJlkEWDrmGnXEbdJdBfkxn9gEBz0pxiIFefFq
-         9u/yj2RvJBkh9eb/uNIFSgh9oVfXwbcIx10yn4Bo8rGAF0JgJAtcvFgVUBGXcdrcuUDJ
-         cVN9F14YWx9RsXZ2AQqY2jEUkxw1V6Gikrx/23FSIlhjVjk3zpgYYjsA49DrWceuxECr
-         zG97cJl30Nld5uI3ehmOXcYzlgdQnedZ8xIFSyd0Wn1Bjn6rTIkV1//jG+jyabYzJt/9
-         orhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763670366; x=1764275166;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PqIhtMYQq6hQ/aIE/gJLhPbAAZf5g6u9uLXykoPMVFQ=;
-        b=UGRpBdvNQCogJyxneMLRxP5MruHz6Zd1ip5pEwlWqqMq+Sx+fSvlHJjAXCTlDsNlyF
-         2w7vpjGg44k+GWe6Bt4GQdLIBhaGeBMQkAUH+X2Jfk3ELwmWcqpUMeZ1wJc/bxV9Azev
-         gN1d4ffxByQ7ignVc8qYBT8nxCZa9aMk91u47Aw9+y6Be1J99QlQ79vfunaOJCJfHPzm
-         tIDJDOuP2KWKR/3/33az8RtI7j4E+sAfnTFnRESO3/0F7nupVwnCvfrQozMuA3LsnBL9
-         Lr8TXDrKBSAutMDtawM7F4DGbP4j3XSFFDRjwpC4x65xBHKgeeD3gBU1n50Xpnhtytuu
-         QJWg==
-X-Forwarded-Encrypted: i=1; AJvYcCVdighc2hRvY50Cn+I2mZviQZKfPsKh4V43sO/k+VLjnxcOQd5aiGcXe2ukypnOY/2rdjXCB69sww==@kvack.org
-X-Gm-Message-State: AOJu0YwuxSJX7bfgx/Ah9s684NUzdexSEAQIIx3QzHF/nbslOVxhh0E1
-	RtbGpGXAWUBZhjWeV0INAzMvqK91tih6oDmF1Ci8Zc5rd41VDYDY0Hp/u9dsx6Uj9NqIKv9BU0g
-	bJTzCaGSPVuONPqyfmShKskHSbjfh+2yv27Ek+2RFOw==
-X-Gm-Gg: ASbGncvrg+Ntk0A/uMH9eSulF1Fb0ONcUXXxJDnPc42+i/juKNdj13jRb04b/MVsJmF
-	BhtCnLXK8v+tJ7Qc5H5oXkv4kYNeI5fiVjzUk6faUmjLTYpfxNM7Rpw7Q5lJTjimGkX5ke4ga2I
-	+LjTwXL1hVMkFmbgEurcJRAnLYj1lRusX/0LLw0D77NVK87dOMlFtB0ctGSbawBSUu/PsOmkE4W
-	YsAdu1XcAg7npJ6UQb7Ci4F+lsPISTSeOftvpGhCvyuAX67l5cLFjwjJVyGcsciNhWY3q9PdqqI
-	siI=
-X-Google-Smtp-Source: AGHT+IHQa+0J7ga3uOxgiO5UWDnt3zS3XFLtQ5KrArOQzn1GSk7RNpL77vJHQpSi8zpQevLWXRXWPqNncA9R8gIVg0E=
-X-Received: by 2002:a05:6402:510b:b0:643:e03:db14 with SMTP id
- 4fb4d7f45d1cf-6455468513dmr12410a12.19.1763670366147; Thu, 20 Nov 2025
- 12:26:06 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aEBwn+Hbog5QWYI9ZRbRDRTMI0lo5YNRfAV7/A1mhSQ=;
+	b=yDk/Ra2/T70mc9WxEf3xQgKW6Qa2DtK7n+duPkQTjxJNUZWTGl2b269ovH3eBDKFao041P
+	PN3eCnUcnmPDu2gA0fWyuWiklVYF3MjD1xz/j+iuo+Kt+9PynlCItCXTaiK6RfJyR2BiWI
+	LBmGObyju+SUfbexIZlZsB1iltBAmVY=
+Received: from in02.mta.xmission.com ([166.70.13.52]:46344)
+	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1vMBik-00C0Xc-GI; Thu, 20 Nov 2025 13:57:38 -0700
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:45204 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1vMBii-00Bjcg-Ml; Thu, 20 Nov 2025 13:57:38 -0700
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,  Alexey Dobriyan
+ <adobriyan@gmail.com>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
+ <kees@kernel.org>,  Andy Lutomirski <luto@amacapital.net>,  Will Drewry
+ <wad@chromium.org>,  Christian Brauner <brauner@kernel.org>,  Andrew
+ Morton <akpm@linux-foundation.org>,  Michal Hocko <mhocko@suse.com>,
+  Serge Hallyn <serge@hallyn.com>,  James Morris
+ <jamorris@linux.microsoft.com>,  Randy Dunlap <rdunlap@infradead.org>,
+  Suren Baghdasaryan <surenb@google.com>,  Yafang Shao
+ <laoar.shao@gmail.com>,  Helge Deller <deller@gmx.de>,  Adrian Reber
+ <areber@redhat.com>,  Thomas Gleixner <tglx@linutronix.de>,  Jens Axboe
+ <axboe@kernel.dk>,  Alexei Starovoitov <ast@kernel.org>,
+  "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
+  linux-security-module@vger.kernel.org,  tiozhang
+ <tiozhang@didiglobal.com>,  Luis Chamberlain <mcgrof@kernel.org>,  "Paulo
+ Alcantara (SUSE)" <pc@manguebit.com>,  Sergey Senozhatsky
+ <senozhatsky@chromium.org>,  Frederic Weisbecker <frederic@kernel.org>,
+  YueHaibing <yuehaibing@huawei.com>,  Paul Moore <paul@paul-moore.com>,
+  Aleksa Sarai <cyphar@cyphar.com>,  Stefan Roesch <shr@devkernel.io>,
+  Chao Yu <chao@kernel.org>,  xu xin <xu.xin16@zte.com.cn>,  Jeff Layton
+ <jlayton@kernel.org>,  Jan Kara <jack@suse.cz>,  David Hildenbrand
+ <david@redhat.com>,  Dave Chinner <dchinner@redhat.com>,  Shuah Khan
+ <shuah@kernel.org>,  Elena Reshetova <elena.reshetova@intel.com>,  David
+ Windsor <dwindsor@gmail.com>,  Mateusz Guzik <mjguzik@gmail.com>,  Ard
+ Biesheuvel <ardb@kernel.org>,  "Joel Fernandes (Google)"
+ <joel@joelfernandes.org>,  "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>,  Hans Liljestrand <ishkamiel@gmail.com>,  Penglei
+ Jiang <superman.xpt@gmail.com>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Adrian Ratiu <adrian.ratiu@collabora.com>,
+  Ingo Molnar <mingo@kernel.org>,  "Peter Zijlstra (Intel)"
+ <peterz@infradead.org>,  Cyrill Gorcunov <gorcunov@gmail.com>,  Eric
+ Dumazet <edumazet@google.com>
+In-Reply-To: <87wm3ky5n9.fsf@email.froward.int.ebiederm.org> (Eric
+	W. Biederman's message of "Thu, 20 Nov 2025 11:29:14 -0600")
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+	<AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+	<AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+	<GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+	<GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+	<GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+	<87tsyozqdu.fsf@email.froward.int.ebiederm.org>
+	<87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
+Date: Thu, 20 Nov 2025 14:57:29 -0600
+Message-ID: <87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-7-pasha.tatashin@soleen.com> <aRoU1DSgVmplHr3E@kernel.org>
- <CA+CK2bBFS754hdPfNAkMp_PqNpOB2nY02OkWbhRdoUiZ+ah=jw@mail.gmail.com> <aR9N14KWaz6SdFcw@kernel.org>
-In-Reply-To: <aR9N14KWaz6SdFcw@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 20 Nov 2025 15:25:29 -0500
-X-Gm-Features: AWmQ_bkGcmBhhiXsN0wvCp8At9RZAkpij5uzcyGIDeVMn-hUhCRg5LgwnVtdQKA
-Message-ID: <CA+CK2bDMS7g_9Z4aC1n-rYOGcXP9X+12cJhpYbx1HpsDfaMcfg@mail.gmail.com>
-Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems callbacks
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C4565140007
-X-Stat-Signature: snizwibwddezt9ee5upgoncyg8jpkiqi
+Content-Type: text/plain
+X-XM-SPF: eid=1vMBii-00Bjcg-Ml;;;mid=<87h5uoxw06.fsf_-_@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX1/yI+0jxd75r+xV/noKUQQ5aYKsGTMf/70=
+Subject: [RFC][PATCH] exec: Move cred computation under exec_update_lock
+X-SA-Exim-Connect-IP: 166.70.13.52
+X-SA-Exim-Rcpt-To: too long (recipient list exceeded maximum allowed size of 512 bytes)
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out03.mta.xmission.com); SAEximRunCond expanded to false
+X-Rspamd-Queue-Id: A4D1C8000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: c3rmimegbmsytxbd17chp4te6brg6h91
 X-Rspam-User: 
-X-HE-Tag: 1763670367-404755
-X-HE-Meta: U2FsdGVkX19SO1aincP7t91Q63hTNLmvoBjuxIopLFvTsrHh1KuNDhVWar5eoyP/BG9FT7fnJq1pXjm7LW4D60RjeRyJlUagblRCzB9qeVqO/Od1KTGNrTj4lsLhYyclqbbfugba8kenMAZ8GtsKJt0JCuZ3Tpjwlmj3Ni2XJSpP4q+0ahlpw8UejMAUfsO92+/LqBKJM6E4xhry8buSssoXLamfSp9RnnYJDNWN2V8pUvH4MwbqGwWBVCVHv15gZshOc/ajrbRa7AXo52nABEznzD1P/eICXZ1pRI8wPIHYWZSGmU6g+TbaezBjdcNFN27xmMtDXOkI3IhanI5WhIOs0XwqCD5Rz1ytDbxy/37vJG+msuaoNWr23yVA0bKVGF9NOScsi/PYgj2GaMWosU+qmn6j118xW1IZFAgaJ/i9WbfQrLG6J4Zb8OBSQxVoRXNdwD+s3LyDw8iYULaQf0zMY7J4lgHaKOL7ySh3egetZjxfqpoLuPnYVF81A1rgLWEkU50w/cFRzQQPbAwtLdHSYkyIkOcjDQxTjzGNgkOtPCbz1ldBQsnXN2EhMd1Xhgp6FzjgR7+k92w/7kogSPiotGtx+gFEJ/DRkKiVeo8G7SeeSj7VhCX6U5FIoHkghtEi3AFJnFOzHAwalENv6o0RTBFXLPR0/0FbjF8GdAoo6bjIMDwyzYz9FsK4N7yPIMC+u8noGHOe4pi3gPOsKcyKrHngoPYnc5drjLH0gN1lsxrj8KM43PY01wZK9ceGRYGa3nPI7czXbgo/ZzWYpPt7rg5SEzo1aMkhOmbqjvr3EpMPaYqbnkvk70RA6lK2b3mKJ0DQKAqvGdbej3xsMXLeUkqn/XPlLc+6m8M7nD38mGn+8klcT8rILbvZtm2A+x32YVU9o71rQQp44h8L08+lDNRVEdZmTC29WlaxVTHAsC3SYi4a+DsYtFXo/GC5bVscDnnbfC+Ramd9oY0
- dzFglZg2
- fREJ9w83rSz2uSN+tesQ0DaHYxq2fsShayx9Z7wigUdUf7nJHeSl9k770sFYn+vhbnDnIg5fFszB8V00qDcTfxSR6TTP3fgIh159v+vdiAGM2NyVSvqbXNi7bx7jgqFovhMxtubV7Y7EZuVsRiVQ+hZV7M5+ZmHb/sSmoWIdxcFMDf/4XN8CHI8qtKt1nW28U4Tcn1cs5lo7g5F68qzYHtwVh1Dkz6yApwGzFmQhan4dAmZQyryL4pYmnEQgfaPBziTSqAiYQ6DdYpnteeM+iRgom26PWOAPSzaJ6ZRSXACplXXtCSdg5SoxKDealhJj9pIsrYKx2ynPUvsSg/uyZ9D88LcsHYzfsO6ffnqUZFquf9TQe42h3sU2UBOIsF3zWhEQ3rnwJs68ORDWi5stdjG9KxVstuqx/DkOrAw9R+YkdbitYcrhv5Q7oBqzK/LnibzglbmoAFqW5U2fBvJdRPqiHYLrEy7EuOOkxt+iUuNqLNPo=
+X-HE-Tag: 1763672269-275660
+X-HE-Meta: U2FsdGVkX1+WzZSrzwusHI7MKuSFzNWPaUkAWw8FkwL3pPqWTXgZ0xi+ul0Q5KQ/iYmyXr+yJn7F6J2EKAQL3i3Z1VUkWmWrsd1xmb1KagbqHapIuowT8e+XV6xpCfa6k7UwfLu6t6keSLfYobXTZOSNP1adwypjCYxd+A+EfqMnBZIluoSO+rHqeQW2bCp3inE/R60Ajso0M+mfmlkSaBgBA+NL6RxNHfcXPyFOV8Kn9jPrFSi510hggArlBeLeiJNMMyJ4aSNKtwfOxn/Fq9hgfi9jEv8YU4xDhWsqkW70yUIEAO80v+tY+SPBa2gCXwm2HRi05PAl86n4tX+F2uwwo6AmnoGc76Dy5JJiQYDjmdZFXzC2Uf/il7rWgHqNScyGg14gxO77TJc/hb0rWfs6HvokbJmVNMu6t79dMn1nhrEW+1KH2ez8ziYO2WZrGs1ivd9UGtw2H1aysMaxYRtQFOum7av3LlLhHCaQ5cTWcODsYa4mQnqbbk0BNroFnefUdIS5/EXRlF+sYMFlSrvUl5Dn2CLNJrumkF8hiLi1nerlo7CVr8LlOsFqiIzb8bFsvdloEr+2tt9B1VecZjC2VnyFgyHdyryhrWhiPsDWIxHbCrRLNeTQwgYiZOTdhBXOV6n8Hhgk8rj8g89KUxtI93bTwWaGJYIlkdoXd8QiSqvSrDuwHOY9Qfiz8y3nEGyifvBCUUAPuTGNZGqqqurce3JdkD8EwwUO4OLysOIdg8vaZQn4IH2p8w3HOI+uF3Blj9JJuEOMzFXEOJpFSMyZ9yUt4pf2tyJEiBlDjsNmR73rnwWnMLWPpHHhvXwekZpJuOsZxaP1P08aeSDF739GIA5LjZtZZjv4a19eVDdEFJnfnpgHiE1PwJy+SSbNmfS3svcMQwA08+ZHQOqcPlnjremPjDlPbksurXMPPZ/cH8dTNzskIdPZA7XQu02bw6O1roF9gOqXh7Zs+04
+ G5BOdj8q
+ C1yN8cKwlB4DaKcJ9RUgGsKzuRa/1ORkQHOI3b6nDAa4ctrsMTKVyWNVxH9P7o5dorrwe0vwApxfDp0QGIjPRzlUQpImyYTZ6cjG9g5Hyekxj5rUSN9q7xpc9+DANwyr5hSfROf5jwCOfE5dPAk6t8ECzzrrSXlUXHygvTCg7+ZKfX2BIPFmuXtpULTbYki9GFxGN8L0ZWGKEuDT0bU+sg1Xk+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,105 +134,445 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 12:20=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wr=
-ote:
->
-> On Mon, Nov 17, 2025 at 12:50:56PM -0500, Pasha Tatashin wrote:
-> > > > +struct liveupdate_file_handler;
-> > > > +struct liveupdate_session;
-> > >
-> > > Why struct liveupdate_session is a part of public LUO API?
-> >
-> > It is an obscure version of private "struct luo_session", in order to
-> > give subsystem access to:
-> > liveupdate_get_file_incoming(s, token, filep)
-> > liveupdate_get_token_outgoing(s, file, tokenp)
-> >
-> > For example, if your FD depends on another FD within a session, you
-> > can check if another FD is already preserved via
-> > liveupdate_get_token_outgoing(), and during retrieval time you can
-> > retrieve the "struct file" for your dependency.
->
-> And it's essentially unused right now.
 
-I am going to move this API to the end of the series, next to FLB :-)
+Instead of computing the new cred before we pass the point of no
+return compute the new cred just before we use it.
 
->
-> > > > +     }
-> > > > +
-> > > > +     return 0;
-> > > > +
-> > > > +exit_err:
-> > > > +     fput(file);
-> > > > +     luo_session_free_files_mem(session);
-> > >
-> > > The error handling in this function is a mess. Pasha, please, please,=
- use
-> > > goto consistently.
-> >
-> > How is this a mess? There is a single exit_err destination, no
-> > exception, no early returns except at the very top of the function
-> > where we do early returns before fget() which makes total sense.
-> >
-> > Do you want to add a separate destination for
-> > luo_session_free_files_mem() ? But that is not necessary, in many
-> > places it is considered totally reasonable for free(NULL) to work
-> > correctly...
->
-> You have a mix of releasing resources with goto or inside if (err).
-> And while basic free() primitives like kfree() and vfree() work correctly
-> with NULL as a parameter, luo_session_free_files_mem() is already not a
-> basic primitive and it may grow with a time. It already has two condition=
-s
-> that essentially prevent anything from freeing and this will grow with th=
-e
-> time.
->
-> So yes, I want a separate goto destination for freeing each resource and =
-a
-> goto for
->
->         err =3D fh->ops->preserve(&args);
->         if (err)
+This allows the removal of fs_struct->in_exec and cred_guard_mutex.
 
-Thanks, I made the change.
+I am not certain why we wanted to compute the cred for the new
+executable so early.  Perhaps I missed something but I did not see any
+common errors being signaled.   So I don't think we loose anything by
+computing the new cred later.
 
->
-> case.
->
-> > > > +             luo_file =3D kzalloc(sizeof(*luo_file), GFP_KERNEL);
-> > > > +             if (!luo_file)
-> > > > +                     return -ENOMEM;
-> > >
-> > > Shouldn't we free files allocated on the previous iterations?
-> >
-> > No, for the same reason explained in luo_session.c :-)
->
-> A comment here as well please :)
+We gain a lot.
 
-Done
+We stop holding the cred_guard_mutex over places where the code sleeps
+and waits for userspace.  These places include the waiting for the
+tracer in PTRACE_EVENT_EXIT, "put_user(0, tsk->clear_child_tid)" in
+mm_release, and "get_user(futex_offset, ...") in exit_robust_mutex.
 
->
-> > > > +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64=
- token,
-> > > > +                              struct file **filep)
-> > > > +{
-> > >
-> > > Ditto.
-> >
-> > These two functions are part of the public API allowing dependency
-> > tracking for vfio->iommu->memfd during preservation.
->
-> So like with FLB, until we get actual users for them they are dead code.
-> And until it's clear how exactly dependency tracking for vfio->iommu->mem=
-fd
-> will work, we won't know if this API is useful at all or we'll need
-> something else in the end.
+We can remove fs_struct->in_exec.  The case where it was used simply
+never comes up, when we compute the cred after de_thread completes.
 
-SGTM
+We remove the possibility of a hang between a tracer calling
+PTRACE_ATTACH/PTRACE_SIEZE and the kernel waiting for the tracer
+in PTRACE_EVENT_EXIT.
 
->
-> --
-> Sincerely yours,
-> Mike.
+---
+Oleg, Kees, Bernd, Can you see anything I am missing?
+
+The code compiles but I haven't test it yet.
+
+I thought I was going to move commit_creds before de_thread, but that
+would have taken commit_cred out of exec_update_lock (which introduces
+races).
+
+However I can't see any drawbacks of going the other direction.
+
+
+ fs/exec.c                    | 88 ++++++++++++++----------------------
+ fs/fs_struct.c               |  1 -
+ fs/proc/base.c               |  4 +-
+ include/linux/fs_struct.h    |  1 -
+ include/linux/sched/signal.h |  6 ---
+ init/init_task.c             |  1 -
+ kernel/cred.c                |  2 +-
+ kernel/fork.c                |  8 +---
+ kernel/ptrace.c              |  4 +-
+ kernel/seccomp.c             | 12 ++---
+ 10 files changed, 45 insertions(+), 82 deletions(-)
+
+diff --git a/fs/exec.c b/fs/exec.c
+index 4298e7e08d5d..5ae96584dab0 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1090,6 +1090,9 @@ void __set_task_comm(struct task_struct *tsk, const char *buf, bool exec)
+ 	perf_event_comm(tsk, exec);
+ }
+ 
++static int prepare_bprm_creds(struct linux_binprm *bprm);
++static void check_unsafe_exec(struct linux_binprm *bprm);
++
+ /*
+  * Calling this is the point of no return. None of the failures will be
+  * seen by userspace since either the process is already taking a fatal
+@@ -1101,10 +1104,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	struct task_struct *me = current;
+ 	int retval;
+ 
+-	/* Once we are committed compute the creds */
+-	retval = bprm_creds_from_file(bprm);
+-	if (retval)
+-		return retval;
+ 
+ 	/*
+ 	 * This tracepoint marks the point before flushing the old exec where
+@@ -1123,8 +1122,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	retval = de_thread(me);
+ 	if (retval)
+ 		goto out;
+-	/* see the comment in check_unsafe_exec() */
+-	current->fs->in_exec = 0;
+ 	/*
+ 	 * Cancel any io_uring activity across execve
+ 	 */
+@@ -1251,6 +1248,25 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	WRITE_ONCE(me->self_exec_id, me->self_exec_id + 1);
+ 	flush_signal_handlers(me, 0);
+ 
++	retval = prepare_bprm_creds(bprm);
++	if (retval)
++		goto out_unlock;
++
++	/*
++	 * Check for unsafe execution states before exec_binprm(), which
++	 * will call back into begin_new_exec(), into bprm_creds_from_file(),
++	 * where setuid-ness is evaluated.
++	 */
++	check_unsafe_exec(bprm);
++
++	/* Set the unchanging part of bprm->cred */
++	retval = security_bprm_creds_for_exec(bprm);
++
++	/* Once we are committed compute the creds */
++	retval = bprm_creds_from_file(bprm);
++	if (retval)
++		goto out_unlock;
++
+ 	retval = set_cred_ucounts(bprm->cred);
+ 	if (retval < 0)
+ 		goto out_unlock;
+@@ -1272,9 +1288,9 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	if (get_dumpable(me->mm) != SUID_DUMP_USER)
+ 		perf_event_exit_task(me);
+ 	/*
+-	 * cred_guard_mutex must be held at least to this point to prevent
++	 * exec_update_lock must be held at least to this point to prevent
+ 	 * ptrace_attach() from altering our determination of the task's
+-	 * credentials; any time after this it may be unlocked.
++	 * credentials.
+ 	 */
+ 	security_bprm_committed_creds(bprm);
+ 
+@@ -1291,8 +1307,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 
+ out_unlock:
+ 	up_write(&me->signal->exec_update_lock);
+-	if (!bprm->cred)
+-		mutex_unlock(&me->signal->cred_guard_mutex);
+ 
+ out:
+ 	return retval;
+@@ -1336,7 +1350,6 @@ void setup_new_exec(struct linux_binprm * bprm)
+ 	 */
+ 	me->mm->task_size = TASK_SIZE;
+ 	up_write(&me->signal->exec_update_lock);
+-	mutex_unlock(&me->signal->cred_guard_mutex);
+ }
+ EXPORT_SYMBOL(setup_new_exec);
+ 
+@@ -1351,21 +1364,15 @@ void finalize_exec(struct linux_binprm *bprm)
+ EXPORT_SYMBOL(finalize_exec);
+ 
+ /*
+- * Prepare credentials and lock ->cred_guard_mutex.
+- * setup_new_exec() commits the new creds and drops the lock.
+- * Or, if exec fails before, free_bprm() should release ->cred
+- * and unlock.
++ * Prepare credentials.  begin_new_exec() commits the new creds.
++ * Or, if exec fails before, free_bprm() should release ->cred.
+  */
+ static int prepare_bprm_creds(struct linux_binprm *bprm)
+ {
+-	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+-		return -ERESTARTNOINTR;
+-
+ 	bprm->cred = prepare_exec_creds();
+ 	if (likely(bprm->cred))
+ 		return 0;
+ 
+-	mutex_unlock(&current->signal->cred_guard_mutex);
+ 	return -ENOMEM;
+ }
+ 
+@@ -1386,9 +1393,7 @@ static void free_bprm(struct linux_binprm *bprm)
+ 	}
+ 	free_arg_pages(bprm);
+ 	if (bprm->cred) {
+-		/* in case exec fails before de_thread() succeeds */
+-		current->fs->in_exec = 0;
+-		mutex_unlock(&current->signal->cred_guard_mutex);
++		/* in case exec fails before commit_creds succeeds */
+ 		abort_creds(bprm->cred);
+ 	}
+ 	do_close_execat(bprm->file);
+@@ -1486,13 +1491,12 @@ EXPORT_SYMBOL(bprm_change_interp);
+ 
+ /*
+  * determine how safe it is to execute the proposed program
+- * - the caller must hold ->cred_guard_mutex to protect against
++ * - the caller must hold ->exec_update_lock to protect against
+  *   PTRACE_ATTACH or seccomp thread-sync
+  */
+ static void check_unsafe_exec(struct linux_binprm *bprm)
+ {
+-	struct task_struct *p = current, *t;
+-	unsigned n_fs;
++	struct task_struct *p = current;
+ 
+ 	if (p->ptrace)
+ 		bprm->unsafe |= LSM_UNSAFE_PTRACE;
+@@ -1509,25 +1513,9 @@ static void check_unsafe_exec(struct linux_binprm *bprm)
+ 	 * suid exec because the differently privileged task
+ 	 * will be able to manipulate the current directory, etc.
+ 	 * It would be nice to force an unshare instead...
+-	 *
+-	 * Otherwise we set fs->in_exec = 1 to deny clone(CLONE_FS)
+-	 * from another sub-thread until de_thread() succeeds, this
+-	 * state is protected by cred_guard_mutex we hold.
+ 	 */
+-	n_fs = 1;
+-	read_seqlock_excl(&p->fs->seq);
+-	rcu_read_lock();
+-	for_other_threads(p, t) {
+-		if (t->fs == p->fs)
+-			n_fs++;
+-	}
+-	rcu_read_unlock();
+-
+-	/* "users" and "in_exec" locked for copy_fs() */
+-	if (p->fs->users > n_fs)
++	if (p->fs->users > 1)
+ 		bprm->unsafe |= LSM_UNSAFE_SHARE;
+-	else
+-		p->fs->in_exec = 1;
+ 	read_sequnlock_excl(&p->fs->seq);
+ }
+ 
+@@ -1731,25 +1719,15 @@ static int bprm_execve(struct linux_binprm *bprm)
+ {
+ 	int retval;
+ 
+-	retval = prepare_bprm_creds(bprm);
+-	if (retval)
+-		return retval;
++	if (bprm->is_check)
++		return 0;
+ 
+-	/*
+-	 * Check for unsafe execution states before exec_binprm(), which
+-	 * will call back into begin_new_exec(), into bprm_creds_from_file(),
+-	 * where setuid-ness is evaluated.
+-	 */
+-	check_unsafe_exec(bprm);
+ 	current->in_execve = 1;
+ 	sched_mm_cid_before_execve(current);
+ 
+ 	sched_exec();
+ 
+-	/* Set the unchanging part of bprm->cred */
+-	retval = security_bprm_creds_for_exec(bprm);
+-	if (retval || bprm->is_check)
+-		goto out;
++
+ 
+ 	retval = exec_binprm(bprm);
+ 	if (retval < 0)
+diff --git a/fs/fs_struct.c b/fs/fs_struct.c
+index 28be762ac1c6..945bc0916f65 100644
+--- a/fs/fs_struct.c
++++ b/fs/fs_struct.c
+@@ -109,7 +109,6 @@ struct fs_struct *copy_fs_struct(struct fs_struct *old)
+ 	/* We don't need to lock fs - think why ;-) */
+ 	if (fs) {
+ 		fs->users = 1;
+-		fs->in_exec = 0;
+ 		seqlock_init(&fs->seq);
+ 		fs->umask = old->umask;
+ 
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 6299878e3d97..7041fb4d1689 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -2834,14 +2834,14 @@ static ssize_t proc_pid_attr_write(struct file * file, const char __user * buf,
+ 	}
+ 
+ 	/* Guard against adverse ptrace interaction */
+-	rv = mutex_lock_interruptible(&current->signal->cred_guard_mutex);
++	rv = down_write_killable(&current->signal->exec_update_lock);
+ 	if (rv < 0)
+ 		goto out_free;
+ 
+ 	rv = security_setprocattr(PROC_I(inode)->op.lsmid,
+ 				  file->f_path.dentry->d_name.name, page,
+ 				  count);
+-	mutex_unlock(&current->signal->cred_guard_mutex);
++	up_write(&current->signal->exec_update_lock);
+ out_free:
+ 	kfree(page);
+ out:
+diff --git a/include/linux/fs_struct.h b/include/linux/fs_struct.h
+index baf200ab5c77..29d0f7d57743 100644
+--- a/include/linux/fs_struct.h
++++ b/include/linux/fs_struct.h
+@@ -10,7 +10,6 @@ struct fs_struct {
+ 	int users;
+ 	seqlock_t seq;
+ 	int umask;
+-	int in_exec;
+ 	struct path root, pwd;
+ } __randomize_layout;
+ 
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 7d6449982822..7e9259c8fb2b 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -241,12 +241,6 @@ struct signal_struct {
+ 	struct mm_struct *oom_mm;	/* recorded mm when the thread group got
+ 					 * killed by the oom killer */
+ 
+-	struct mutex cred_guard_mutex;	/* guard against foreign influences on
+-					 * credential calculations
+-					 * (notably. ptrace)
+-					 * Deprecated do not use in new code.
+-					 * Use exec_update_lock instead.
+-					 */
+ 	struct rw_semaphore exec_update_lock;	/* Held while task_struct is
+ 						 * being updated during exec,
+ 						 * and may have inconsistent
+diff --git a/init/init_task.c b/init/init_task.c
+index a55e2189206f..4813bffe217e 100644
+--- a/init/init_task.c
++++ b/init/init_task.c
+@@ -30,7 +30,6 @@ static struct signal_struct init_signals = {
+ #ifdef CONFIG_CGROUPS
+ 	.cgroup_threadgroup_rwsem	= __RWSEM_INITIALIZER(init_signals.cgroup_threadgroup_rwsem),
+ #endif
+-	.cred_guard_mutex = __MUTEX_INITIALIZER(init_signals.cred_guard_mutex),
+ 	.exec_update_lock = __RWSEM_INITIALIZER(init_signals.exec_update_lock),
+ #ifdef CONFIG_POSIX_TIMERS
+ 	.posix_timers		= HLIST_HEAD_INIT,
+diff --git a/kernel/cred.c b/kernel/cred.c
+index dbf6b687dc5c..80e376ce005f 100644
+--- a/kernel/cred.c
++++ b/kernel/cred.c
+@@ -252,7 +252,7 @@ EXPORT_SYMBOL(prepare_creds);
+ 
+ /*
+  * Prepare credentials for current to perform an execve()
+- * - The caller must hold ->cred_guard_mutex
++ * - The caller must hold ->exec_update_lock
+  */
+ struct cred *prepare_exec_creds(void)
+ {
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 3da0f08615a9..996c649b9a4c 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1555,11 +1555,6 @@ static int copy_fs(u64 clone_flags, struct task_struct *tsk)
+ 	if (clone_flags & CLONE_FS) {
+ 		/* tsk->fs is already what we want */
+ 		read_seqlock_excl(&fs->seq);
+-		/* "users" and "in_exec" locked for check_unsafe_exec() */
+-		if (fs->in_exec) {
+-			read_sequnlock_excl(&fs->seq);
+-			return -EAGAIN;
+-		}
+ 		fs->users++;
+ 		read_sequnlock_excl(&fs->seq);
+ 		return 0;
+@@ -1699,7 +1694,6 @@ static int copy_signal(u64 clone_flags, struct task_struct *tsk)
+ 	sig->oom_score_adj = current->signal->oom_score_adj;
+ 	sig->oom_score_adj_min = current->signal->oom_score_adj_min;
+ 
+-	mutex_init(&sig->cred_guard_mutex);
+ 	init_rwsem(&sig->exec_update_lock);
+ 
+ 	return 0;
+@@ -1710,7 +1704,7 @@ static void copy_seccomp(struct task_struct *p)
+ #ifdef CONFIG_SECCOMP
+ 	/*
+ 	 * Must be called with sighand->lock held, which is common to
+-	 * all threads in the group. Holding cred_guard_mutex is not
++	 * all threads in the group. Holding exec_update_lock is not
+ 	 * needed because this new task is not yet running and cannot
+ 	 * be racing exec.
+ 	 */
+diff --git a/kernel/ptrace.c b/kernel/ptrace.c
+index 75a84efad40f..8140d4bfc279 100644
+--- a/kernel/ptrace.c
++++ b/kernel/ptrace.c
+@@ -444,8 +444,8 @@ static int ptrace_attach(struct task_struct *task, long request,
+ 	 * SUID, SGID and LSM creds get determined differently
+ 	 * under ptrace.
+ 	 */
+-	scoped_cond_guard (mutex_intr, return -ERESTARTNOINTR,
+-			   &task->signal->cred_guard_mutex) {
++	scoped_cond_guard (rwsem_read_intr, return -ERESTARTNOINTR,
++			   &task->signal->exec_update_lock) {
+ 
+ 		scoped_guard (task_lock, task) {
+ 			retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 25f62867a16d..87de8d47d876 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -479,7 +479,7 @@ static int is_ancestor(struct seccomp_filter *parent,
+ /**
+  * seccomp_can_sync_threads: checks if all threads can be synchronized
+  *
+- * Expects sighand and cred_guard_mutex locks to be held.
++ * Expects sighand and exec_update_lock locks to be held.
+  *
+  * Returns 0 on success, -ve on error, or the pid of a thread which was
+  * either not in the correct seccomp mode or did not have an ancestral
+@@ -489,7 +489,7 @@ static inline pid_t seccomp_can_sync_threads(void)
+ {
+ 	struct task_struct *thread, *caller;
+ 
+-	BUG_ON(!mutex_is_locked(&current->signal->cred_guard_mutex));
++	BUG_ON(!rwsem_is_locked(&current->signal->exec_update_lock));
+ 	assert_spin_locked(&current->sighand->siglock);
+ 
+ 	/* Validate all threads being eligible for synchronization. */
+@@ -590,7 +590,7 @@ void seccomp_filter_release(struct task_struct *tsk)
+  *
+  * @flags: SECCOMP_FILTER_FLAG_* flags to set during sync.
+  *
+- * Expects sighand and cred_guard_mutex locks to be held, and for
++ * Expects sighand and exec_update_lock locks to be held, and for
+  * seccomp_can_sync_threads() to have returned success already
+  * without dropping the locks.
+  *
+@@ -599,7 +599,7 @@ static inline void seccomp_sync_threads(unsigned long flags)
+ {
+ 	struct task_struct *thread, *caller;
+ 
+-	BUG_ON(!mutex_is_locked(&current->signal->cred_guard_mutex));
++	BUG_ON(!rwsem_is_locked(&current->signal->exec_update_lock));
+ 	assert_spin_locked(&current->sighand->siglock);
+ 
+ 	/*
+@@ -2011,7 +2011,7 @@ static long seccomp_set_mode_filter(unsigned int flags,
+ 	 * while another thread is in the middle of calling exec.
+ 	 */
+ 	if (flags & SECCOMP_FILTER_FLAG_TSYNC &&
+-	    mutex_lock_killable(&current->signal->cred_guard_mutex))
++	    down_read_killable(&current->signal->exec_update_lock))
+ 		goto out_put_fd;
+ 
+ 	spin_lock_irq(&current->sighand->siglock);
+@@ -2034,7 +2034,7 @@ static long seccomp_set_mode_filter(unsigned int flags,
+ out:
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 	if (flags & SECCOMP_FILTER_FLAG_TSYNC)
+-		mutex_unlock(&current->signal->cred_guard_mutex);
++		up_read(&current->signal->exec_update_lock);
+ out_put_fd:
+ 	if (flags & SECCOMP_FILTER_FLAG_NEW_LISTENER) {
+ 		if (ret) {
+-- 
+2.41.0
+
 
