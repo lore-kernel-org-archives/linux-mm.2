@@ -4,151 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18322CF8840
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 10:37:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E9B1CF857F
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 10:39:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58AF56B0008; Thu, 20 Nov 2025 05:37:31 -0500 (EST)
+	id AE6186B000E; Thu, 20 Nov 2025 05:39:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53AEB6B0096; Thu, 20 Nov 2025 05:37:31 -0500 (EST)
+	id ABD8A6B0012; Thu, 20 Nov 2025 05:39:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 402E76B0098; Thu, 20 Nov 2025 05:37:31 -0500 (EST)
+	id 9FB506B0089; Thu, 20 Nov 2025 05:39:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 281AC6B0008
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:37:31 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C09FA13BB39
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:37:30 +0000 (UTC)
-X-FDA: 84130633860.24.D4F0F55
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3E17340014
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:37:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CIpzmcRj;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf11.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B0796B000E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:39:36 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0928214084E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:39:32 +0000 (UTC)
+X-FDA: 84130638984.12.44B8D26
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5C4301A0004
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:39:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+NMVcBn;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763635048;
+	s=arc-20220608; t=1763635170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DiFm2pPK77NqjGSzdBjYiWga4vIf+HSFMe/r5qjGP94=;
-	b=1oS05fZ8qO0MAFBoJs6LtU1WSTudfrBn3cuglaT5zeJLDHsXlU/8E5QO301Emuw3uKfQS9
-	o0xAVd+y6PFPS2LEElDMqP6ikBmXHcC81W4r561n/eEk5Tlwd3Z8pR2VwY4VLxLlpkz6hc
-	zFqdW5ra+Upd1gWHe0tK6xWV90xygiI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763635048; a=rsa-sha256;
-	cv=none;
-	b=4nC5SIwe5YI1tUsBvmTm0UfjGCOrPO9NvKyKeRTOMc4lWckS+IDAkWl3DDT6BSKj9uSVA7
-	J4hCkXUeaF3CZwmtdDa5KFwIDUu7NqRyjrW8jFep7YipsCRj1LdMQR6UeJLgaKDua6jGSY
-	652/U58b2K9PUlF70KV4z4xmmXcj0b8=
+	bh=t1L78JWdnbTPwOev7eMJ4Yi1EfrBBlfXmTcOPyqNKVg=;
+	b=iq1yg7WA34h2mMnE5KlXfVQoZ6xgEGbp3tJvRJMXDc4+ydA2Z8NNQYy+c1TTPO7k9e0DYP
+	jUs+dlHW48cuENsHwrjPA2YbDaIXfOg5hke6kiK9kQ4h4VNiz28oldCHvzgvErDwTkwYEz
+	T8WbmGzQI7sJDuIJ1kDKGRN5snanPW0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CIpzmcRj;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf11.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AJLl0ke028025;
-	Thu, 20 Nov 2025 10:37:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=DiFm2pPK77NqjGSzdBjYiWga4vIf+H
-	SFMe/r5qjGP94=; b=CIpzmcRjLwZN7KojVF0gGFWMPqnUYOnxsJlEBVmRyswY7r
-	YLbnKYn2mj8h3fGVDY1+Ze9DCcUn0uLC4/0Ez7KL893cbgy1Z63qhrTiuW/19KAy
-	s3lHv4VkUDvNP6cwOJcKSQ5JLwtQKms86t6tYXUshjCifCHFdq/Ml+jvvi7OCpxl
-	l8A9QI+ZGKBUEx2C4H0SQPzB1IieZ7iBL1Ll+wyrAx/7yJdo+dCmETgksq3dT90+
-	H00peX9MOBM50IQ7ipqb9rpVmkpZ3V6buQTPpgtInSrULUEy7H7Ti8UvJRXAz+K1
-	UktDO6+edSl1xyijy/3TGWqcRjLhfa2G9bjH8l1w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejka5rfa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Nov 2025 10:37:14 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5AKAYZxS005668;
-	Thu, 20 Nov 2025 10:37:13 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4aejka5rf4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Nov 2025 10:37:13 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK9Gl4t010411;
-	Thu, 20 Nov 2025 10:37:12 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4af3use22j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Nov 2025 10:37:12 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5AKAbA4g29557356
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Nov 2025 10:37:10 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C66A320043;
-	Thu, 20 Nov 2025 10:37:10 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 639E120040;
-	Thu, 20 Nov 2025 10:37:06 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.109.219.158])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 20 Nov 2025 10:37:06 +0000 (GMT)
-Date: Thu, 20 Nov 2025 16:07:03 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Dave Chinner <david@fromorbit.com>
-Cc: John Garry <john.g.garry@oracle.com>,
-        Ritesh Harjani <ritesh.list@gmail.com>, Christoph Hellwig <hch@lst.de>,
-        Christian Brauner <brauner@kernel.org>, djwong@kernel.org,
-        tytso@mit.edu, willy@infradead.org, dchinner@redhat.com,
-        linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, jack@suse.cz, nilay@linux.ibm.com,
-        martin.petersen@oracle.com, rostedt@goodmis.org, axboe@kernel.dk,
-        linux-block@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/8] xfs: single block atomic writes for buffered IO
-Message-ID: <aR7vTybVzFTnqL9G@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <cover.1762945505.git.ojaswin@linux.ibm.com>
- <aRUCqA_UpRftbgce@dread.disaster.area>
- <20251113052337.GA28533@lst.de>
- <87frai8p46.ritesh.list@gmail.com>
- <aRWzq_LpoJHwfYli@dread.disaster.area>
- <aRb0WQJi4rQQ-Zmo@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <aRmHRk7FGD4nCT0s@dread.disaster.area>
- <8d645cb5-7589-4544-a547-19729610d44d@oracle.com>
- <aRuKz4F3xATf8IUp@dread.disaster.area>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+NMVcBn;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763635170; a=rsa-sha256;
+	cv=none;
+	b=MJx0eonBzBUGgt0VKhEbZpRk/7JyMFVjc51irNAGrs2u5aJH3G9VxyqQC3oreE3ZzDckXZ
+	S8mwvTluy3ZFnZoz6ZpnlAqP+TgWnxxHWK9jbCQouYdBI3S9Xp/s/3Xb5VnOHOEsnyh/lG
+	hS00QtrL8q9BCb2S5oJWgyFwWXvj1mo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6754844303;
+	Thu, 20 Nov 2025 10:39:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52C5C4CEF1;
+	Thu, 20 Nov 2025 10:39:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763635169;
+	bh=znEBJZ6KVjGxzXOPPFRsG2pfUqSyfqKNp3vpnt4GJOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d+NMVcBnQBzC7bjU9SGmlKCg9QD1FjOqHhljO7/dgmuvdk6VrTEKwWCW4phwfHHd8
+	 PB3TCRF0Zex+ImdB5soewloNhAA6U9XfQmF+FVBbt0wyqpGM3lMM6z48PXFeXL5gDu
+	 oJHDekD5xXDH236W2gsv2C379JPZuS3UyL9zMlS2KjQF5bPKguchJ3gVDC43qr1cLM
+	 zIoixbl2+j+a3DuJYs9R6KwP9+Vu2T/aHyyqC7tnGm+Bo/2VnFXgvtKzcowKux1Urs
+	 B9lLldl/SE9NXZ6sEEqCAuT+5Cm6KFGrg8iX0WFXCJV3QfpwtPoD0hHRKo0f7BTyO3
+	 A5dE/feCtJxBQ==
+Date: Thu, 20 Nov 2025 12:39:21 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+	bhe@redhat.com, jasonmiu@google.com, arnd@arndb.de, coxu@redhat.com,
+	dave@vasilevsky.ca, ebiggers@google.com, graf@amazon.com,
+	kees@kernel.org, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v1 04/13] kho: Verify deserialization status and fix FDT
+ alignment access
+Message-ID: <aR7v2VyYfs2HAUbW@kernel.org>
+References: <20251114155358.2884014-1-pasha.tatashin@soleen.com>
+ <20251114155358.2884014-5-pasha.tatashin@soleen.com>
+ <mafs0tsyw7e0a.fsf@kernel.org>
+ <aRhJk_Glv2pX2dRo@kernel.org>
+ <mafs0qztv4gw9.fsf@kernel.org>
+ <CA+CK2bDfrx21=Aw3pwPn4=AKGVeh0O+sB5gp8rvh0fk8C_nsdw@mail.gmail.com>
+ <mafs0a50j466b.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aRuKz4F3xATf8IUp@dread.disaster.area>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: iDamewJHv0QnhGk1wWJdIgKgHtcmARzf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX+pxIFpdIplp6
- RR2l0xrSadCKFa0vLJi9A7gDrVIAkyOtzmPehTZVRmLenVYmfRq3bq/USt+qDyJnFsMTOVZnI2H
- Z6RXB2oomcd42MbJolqmKOR/Qza90jAzBaX5pOhPYVVD9pXEHbhtp5tlX/iOixFLo8xByk5seEx
- NmDC/PcXrsqH270b2ZKJ1zcwzigTEMzw/4M7eAm0oaflXbYf7BvZ7szl2gvmJD7172hSgaSVKTm
- g7c1vT6t5NwKb69BVNe0KLDSQNQsJwCYwBzkVQCFrHZTqQ9s9TQFfmsR7C2cnHr5YsEJqcyydqs
- n/NJmIMV/93Ovc8Sw3oxwSCbuSpWumfYSbTs+96DpouPrKLCZJV63obthf0gQtpB353LJUWNk+X
- kOM+X5Bi0kaw3SFUeH2IxhbL341vrA==
-X-Proofpoint-ORIG-GUID: _mx-pRALduQpTGKgkkarqN-KolQEQbAr
-X-Authority-Analysis: v=2.4 cv=XtL3+FF9 c=1 sm=1 tr=0 ts=691eef5a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=7-415B0cAAAA:8 a=70sU5qKYBexbB1LL4xUA:9 a=CjuIK1q_8ugA:10
- a=biEYGPWJfzWAr4FL6Ov7:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-20_03,2025-11-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511150032
-X-Stat-Signature: mxsxefhn958scquagdpyzdp58wmk3et6
+In-Reply-To: <mafs0a50j466b.fsf@kernel.org>
+X-Rspamd-Queue-Id: 5C4301A0004
+X-Stat-Signature: yjjfna4k6o3u9yj1duuciwswge6e3obd
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3E17340014
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763635048-463310
-X-HE-Meta: U2FsdGVkX1/G2RImbcpzRcE9C4wcFnaL47TU0NttfZA3vM7lyDQyJ/DYubCSN1NEsbE9QXrhCYx1UgRkp9lDFRf3d/ARvPvEYDc8mYK9LUvK/N9wsc8Z8RTysZXsX+zvYf3Byzf0xJXJWCNgacjOiYJZ7OnM6fhymANRBSVG7vQ+NuD+kALR6Kjh6Ggta7lPtBd9KVMTI3pFkLun9peoErNTBv6o2ynywloaeVGCr0kFgUng7mTtPaoOkcL0T9L+k1WhXNXAVgrla2/R5Ec9+3nliaLVWoB8eGUgSvBiY8nx/MeIRif2bcwQmGMOJHPxHeaDjDxfidhnEyzKich/jXoxtrsIORjM9h13q7rELnwbPLvnPP6LTiUwrwtdDewnJqcdIgoiVbZoNyZIUX2S8DvWx5CutYCi+eDEIW4A5oz/dss4lelRnyV7LibN1HiMHBPIqXdqPXP0+nRZ+1teMFQunOkVgUv57XPPmV7gsn+VkyJ0nRFzDeL4ZL8KdcZ7hKZt9lqLu4uBxhDRsdW5C+UQ1c021X91hAhX1SoD96oCK5+kWzLqYIFzoUyJqPmySlgfEbtx7SfFcjM1LjoKdjpwWbOJpD+/2jkB/ZC5fjTD0YEL30k2VRR+e19KBiibmgFyTH8PxDNW714UBMv73J8gcf0jqKKp2by6vaZYV4pOdcHs1K3J5cfYx0PFXymBLjfIjo9r6byZKqtowjDOxI0jTejSP5SDEMryzbksODcSSCu6mSPKeko3mqNZG/W3Uol6KXLBhNTcZSJUKFjNZG64gAbxLk7f6acXOyUxDr4Xyai1vbqlX6MszSxWCsL2bRdlkEv63zVyxP/4HDey58o0fVNydXLkUpJ6ipTM2Q/FSGEIim2sC39BWc5fP9MboZecIWSOBSFyj9rNjBwiiwPHqhs1gqJdwj1WVog+JM3lFceHBKNK/j9P0SSTid+HnjWZynsW/23XqQWYloZ
- +nGCUs2j
- Ii+n6uFawgxY4PxqQaGwhZ59hO/VG1Ug+elsckSN3cr5CvwpPA7zJRlm4jRhltWrEaQNweoapM7f2mzOVh+/P8TP5ubf9fn0DrIf6N7NWHWLuwqzboWVLPzR9CvKEyutxmcVytueKF6vXvpfWK+WuWiIWtfhuyvv26N1g9YgVqz7ESuFesxvvWpPN5nvySLKDod+/C0olEgXpf1aZvwqqEbwWmiLzzdqIAzuUG3PKVSxROnk2JOPayEPvpEID10bnI5S945qAWgr+J5oqRAjI+EgN+takPG+/8YNFj5oAkRzWvgWcD7D9NDzAYk6bnezd23k37i0sF6Gq9pQG5+ZXmB4y6n1D1o4/I9KatRmrnssVG3W5huHxdlCxXCD4awKS//qW32QrylEmKWFHkxyB08B4L5+NTQzKJM2+PSSDBkDBBA/bwyjXi6FBYpY0avf4zF86XCeZTBSKKaPT+LKpdTwuxYw65Ebd7FlH
+X-HE-Tag: 1763635170-933859
+X-HE-Meta: U2FsdGVkX18JMvtp/+j1Lml67JuG31TV4XyFANnvY5cdnWDn8nizr+Jxhy+psLRIxBcX1RZ3MODooIzupyEzCytecbbKJC/t02Wft0hkoJpeLxmFkUEv26QWdp5W073TJv7gTndZgngXiNgs+0neVCV24R3nk2jL9CNoNAPYogOLJGWGBr47hI9SBmCxRiJSm8B2ILibxjvC7L31VdBgr5pQp6Lihg6DoFvA6qQI0WIgGh7XuYDT9M/neUs8rOn97ZSW/VN2tO9jXbUCucQnr1/nn5WyLGJb9md51DIJsEMFxtqHDOWh34l+h2F575f3xfsFAMs1CheYRjZzZmUHrzQMH8NMC9SSlhMg+ZDCdI9RJPZv7QHwe0kBwlXIANeKwW6ebTKjphSK0zSlCuKpLl/J83CVzHK4z1VaoKSCTtJCRcN773UgY27CfxX9eK9zM/quvUHpl9MEBbLVtRsHWcSOxzulwHqPL3+rzjuMfZblpp/WAcrZ1SBDYdpJfM1RUyrfxoqpd7WAdfMUFMI6CZjP3qr7pGun2JKmF5WVFOzqd/8pK2ca9jEbR9lRzwzVOAv200JUJz4sYy0Ckv1bOzWOPUW69Z7jZNZhVQ547KbE7lIbTtbMqLcYrBzUXcge9no7Jk5eAMAzmcd+u2RNFaWvyLDW6ddhVogIPxkB9PVCUssWeEr8Y/R9QL4cRaDV+Ao/maDbd3nDL8EZxxwWrRuCWMCWEpeAF058GmeDLypWMjf8tl89Y3AzyNfiRApZs2mIVTe5coXESlHRyueUlEwRd5cyHy+e8dnoE4TcBQ+sLONSJIFUVQGiTzG9+Cpy5vxbKAtDpczTz2rZf4hNwy+raYmW3we/3tam40T22wTBpkF3zcw5DxGhPT+Pfr8otdLj1vPd1XKWJxL6rC/+AHr2zb/nCgiKUUBxbiamFqei7Gvx53ZoUb6mTQ9sCsgySEh5gtf34vRpg1XI9tk
+ VHqf//4M
+ 6zelDv+zqv5B9wmDoGbWTHvJS0czbFdIFVV2W7rYqE5bQstroZRJ45PU/1FPX4tsKsSiKbPe8pkOlXz8vyBo5cwnQIeDzBSWXJknj9GsVnfbRwA9OUopduHO7W4r01O7zPHW9ypzT+aufDSNcdG0WFC8ydTw0mJEfkA5M6yyhed6oXhFTQ/uh8/wYDY0NKk6Kk5m+Cb2eik2NdbLZoHhlOdRKLkC7jImpp6gFzmzwxd+os+qQDk8jF8JQfcyq4KQ6Fj+2EOg51mkXBra8e+qTfaeKpw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,144 +101,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 18, 2025 at 07:51:27AM +1100, Dave Chinner wrote:
-> On Mon, Nov 17, 2025 at 10:59:55AM +0000, John Garry wrote:
-> > On 16/11/2025 08:11, Dave Chinner wrote:
-> > > > This patch set focuses on HW accelerated single block atomic writes with
-> > > > buffered IO, to get some early reviews on the core design.
-> > > What hardware acceleration? Hardware atomic writes are do not make
-> > > IO faster; they only change IO failure semantics in certain corner
-> > > cases.
-> > 
-> > I think that he references using REQ_ATOMIC-based bio vs xfs software-based
-> > atomic writes (which reuse the CoW infrastructure). And the former is
-> > considerably faster from my testing (for DIO, obvs). But the latter has not
-> > been optimized.
+On Tue, Nov 18, 2025 at 06:11:24PM +0100, Pratyush Yadav wrote:
+> On Tue, Nov 18 2025, Pasha Tatashin wrote:
 > 
-
-Hi Dave,
-Thanks for the review and insights.
-
-Going through the discussions in previous emails and this email, I
-understand that there are 2 main points/approaches that you've
-mentioned:
-
-1. Using COW extents to track atomic ranges
-  - Discussed inline below.
-
-2. Using write-through for RWF_ATOMIC buffered-IO (Suggested in [1])
-	- [1] https://lore.kernel.org/linux-ext4/aRmHRk7FGD4nCT0s@dread.disaster.area/
-  - I will respond inline in the above thread.
-
-> For DIO, REQ_ATOMIC IO will generally be faster than the software
-> fallback because no page cache interactions or data copy is required
-> by the DIO REQ_ATOMIC fast path.
+> >> > This page is never freed, so adding it to zone managed pages or keeping it
+> >> > reserved does not change anything.
+> >>
+> >> In practice, sure. I still don't see a good reason to _not_ initialize
+> >> the page properly. It's not like it costs us much in terms of
+> >> performance or code complexity.
+> >>
+> >> Since kho_restore_folio() makes sure the folio was _actually_ preserved
+> >> from KHO, you have a safety check against previous kernel having a bug
+> >> and not preserving the FDT properly. And I get that the FDT has already
+> >> been used by this point, but at least you would have some known point to
+> >> catch this.
+> >
+> > The kho_alloc_preserve() API is different from kho_preserve_folio().
+> > With kho_preserve_folio(), memory is allocated and some time later is
+> > preserved, so there is a possibility for that memory to exist and be
+> > used where it is not preserved, therefore it is a crucial step for
+> > such memory to also do kho_restore_folio() before used. With
+> > kho_alloc_preserve(), when the memory exists it is always preserved;
+> > it is gurantee of this API. There is no reason to do
+> > kho_restore_folio() on such memory at all. It can be released back to
+> > the system via kho_free_restore()/kho_free_unpreserve().
 > 
-> But we are considering buffered writes, which *must* do a data copy,
-> and so the behaviour and performance differential of doing a COW vs
-> trying to force writeback to do REQ_ATOMIC IO is going to be much
-> different.
+> Even for those I think there should be a kho_restore_mem() or something
+> similar (naming things is hard :/), so they go through the restore,
+> their struct page is properly initialized and accounted for, and
+> make sure the pages were actually preserved.
 > 
-> Consider that the way atomic buffered writes have been implemented
-> in writeback - turning off all folio and IO merging.  This means
-> writeback efficiency of atomic writes is going to be horrendous
-> compared to COW writes that don't use REQ_ATOMIC.
+> Using the memory without restoring it first should be the exception IMO.
+ 
+Base KHO and LUO FTDs are such exceptions for sure :)
+We have to use them way before we can even think about restoring.
 
-Yes, I agree that it is a bit of an overkill.
-
-> 
-> Further, REQ_ATOMIC buffered writes need to turn off delayed
-> allocation because if you can't allocate aligned extents then the
-> atomic write can *never* be performed. Hence we have to allocate up
-> front where we can return errors to userspace immediately, rather
-> than just reserve space and punt allocation to writeback. i.e. we
-> have to avoid the situation where we have dirty "atomic" data in the
-> page cache that cannot be written because physical allocation fails.
-> 
-> The likely outcome of turning off delalloc is that it further
-> degrades buffered atomic write writeback efficiency because it
-> removes the ability for the filesystem to optimise physical locality
-> of writeback IO. e.g. adjacent allocation across multiple small
-> files or packing of random writes in a single file to allow them to
-> merge at the block layer into one big IO...
-> 
-> REQ_ATOMIC is a natural fit for DIO because DIO is largely a "one
-> write syscall, one physical IO" style interface. Buffered writes,
-> OTOH, completely decouples application IO from physical IO, and so
-> there is no real "atomic" connection between the data being written
-> into the page caceh and the physical IO that is performed at some
-> time later.
-> 
-> This decoupling of physical IO is what brings all the problems and
-> inefficiencies. The filesystem being able to mark the RWF_ATOMIC
-> write range as a COW range at submission time creates a natural
-> "atomic IO" behaviour without requiring the page cache or writeback
-> to even care that the data needs to be written atomically.
-> 
-> From there, we optimise the COW IO path to record that
-> the new COW extent was created for the purpose of an atomic write.
-> Then when we go to write back data over that extent, the filesystem
-> can chose to do a REQ_ATOMIC write to do an atomic overwrite instead
-> of allocating a new extent and swapping the BMBT extent pointers at
-> IO completion time.
-> 
-> We really don't care if 4x16kB adjacent RWF_ATOMIC writes are
-> submitted as 1x64kB REQ_ATOMIC IO or 4 individual 16kB REQ_ATOMIC
-> IOs. The former is much more efficient from an IO perspective, and
-> the COW path can actually optimise for this because it can track the
-> atomic write ranges in cache exactly. If the range is larger (or
-> unaligned) than what REQ_ATOMIC can handle, we use COW writeback to
-> optimise for maximum writeback bandwidth, otherwise we use
-> REQ_ATOMIC to optimise for minimum writeback submission and
-> completion overhead...
-
-Okay IIUC, you are suggesting that, instead of tracking the atomic
-ranges in page cache and ifs, lets move that to the filesystem, for
-example in XFS we can:
-
-1. In write iomap_begin path, for RWF_ATOMIC, create a COW extent and
-mark it as atomic. 
-
-2. Carry on with the memcpy to folio and finish the write path.
-
-3. During writeback, at XFS can detect that there is a COW atomic
-extent. It can then:
-  3.1 See that it is an overlap that can be done with REQ_ATOMIC
-	directly 
-	3.2 Else, finish the atomic IO in software emulated way just like we
-	do for direct IO currently.
-
-I believe the above example with XFS can also be extended to a FS like
-ext4 without needing COW range, as long as we can ensure that we always
-meet the conditions for REQ_ATOMIC during writeback (example by using
-bigalloc for aligned extents and being careful not to cross the atomic
-write limits)
-
-> 
-> IOWs, I think that for XFS (and other COW-capable filesystems) we
-> should be looking at optimising the COW IO path to use REQ_ATOMIC
-> where appropriate to create a direct overwrite fast path for
-> RWF_ATOMIC buffered writes. This seems a more natural and a lot less
-> intrusive than trying to blast through the page caceh abstractions
-> to directly couple userspace IO boundaries to physical writeback IO
-> boundaries...
-
-I agree that this approach avoids bloating the page cache and ifs layers
-with RWF_ATOMIC implementation details. That being said, the task of
-managing the atomic ranges is now pushed down to the FS and is no longer
-generic which might introduce friction in onboarding of new FSes in the
-future. Regardless, from the discussion, I believe at this point we are
-okay to make that trade-off.
-
-Let me take some time to look into the XFS COW paths and try to implement
-this approach. Thanks for the suggestion!
-
-Regards,
-ojaswin
-
-> 
-> -Dave.
 > -- 
-> Dave Chinner
-> david@fromorbit.com
+> Regards,
+> Pratyush Yadav
+
+-- 
+Sincerely yours,
+Mike.
 
