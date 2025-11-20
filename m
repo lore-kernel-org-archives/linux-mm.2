@@ -4,211 +4,231 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B8FECF8579
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:33:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AC8BCF8577
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:35:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B9A86B00BD; Thu, 20 Nov 2025 04:33:53 -0500 (EST)
+	id E9F676B0024; Thu, 20 Nov 2025 04:35:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 969B36B00BE; Thu, 20 Nov 2025 04:33:53 -0500 (EST)
+	id E767C6B0029; Thu, 20 Nov 2025 04:35:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8323C6B00BF; Thu, 20 Nov 2025 04:33:53 -0500 (EST)
+	id D43B16B0024; Thu, 20 Nov 2025 04:35:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EDC46B00BD
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:33:53 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2797013BB0C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:33:53 +0000 (UTC)
-X-FDA: 84130473546.10.05A0C68
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012027.outbound.protection.outlook.com [52.101.53.27])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3515E160009
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:33:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=O68aiD3o;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BCFC96B0024
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:35:23 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 78F4A1A0810
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:35:23 +0000 (UTC)
+X-FDA: 84130477326.27.64283C1
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0CA7420002
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:35:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hX34nl4v;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=EmkoKdfV;
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.53.27 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763631230; a=rsa-sha256;
+	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763631320; a=rsa-sha256;
 	cv=pass;
-	b=7oaqSoHxFVjJuBYM6FZoJt3yow2jKGTI55JHjfL5EmE4BfZpEv8t4UVifU+IXNAD7ljnQw
-	767B80AopD7/+3MseixqlzevnoLpttEv9/WUg+LjcWVmb47WxVa/Sa6YraXQkJK2SmAIEz
-	OrqpTM9CPELt+F9jHWqhUsX/lvYW1OA=
+	b=l6bFgMGNnMg1sz7IbddfDzyRW3y626GziW6wtj8VHtFX5R2FO5D/Pc/4tFootGgOr4gtEN
+	vjUmN+1fMM3SWX2RteFqbR6M/nXseJo3a1WZj4oHvV9HngQZYp1q2XKjPb465e0dYPwnx0
+	pWaEd5eDh+7EvdUDDv4SyhYw1FIOTIw=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=O68aiD3o;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hX34nl4v;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=EmkoKdfV;
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.53.27 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763631230;
+	s=arc-20220608; t=1763631320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v+IKuHfz3VsjQjAkN6PhhIVHZeqYqNaWdj453DTQok8=;
-	b=6oRVBOgkkWGag/UeAZdB+Pv/h+0wqnC3MyTQrcqqOBZnjCaLuqWzrDbE15vJwPk0h4fk5Z
-	A0d5UmElvDuw6ug9OWg39Ijnhkr/JeUyMF39qO2TupGAyTIBG4mxY3FNY4+5TNAnJ/dbrW
-	5IZzz/k+zR4oqWz+dEUgbH2IdkWmNd4=
+	bh=ARHQOqiczSvo9hnSbCqSYXTiBt3iyjPlp1EPRNjkqFk=;
+	b=MVEC436lOi6w4fksNCfFk00nCZBoGljjJ3kPx/LSwF04xtXNzPIAykLxcF4YIbmXDJyiLI
+	IjTAqo8tsfvyhEMpI5Gzp3iYgK4BeXIIfWS7K5rkYtmYHnmRJGRuzef0oqzgao5MMcuCRA
+	2xzLxaBYZMT2OKAw6wNSkNW4oYwOb/M=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK8ppA5025019;
+	Thu, 20 Nov 2025 09:35:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=ARHQOqiczSvo9hnSbC
+	qSYXTiBt3iyjPlp1EPRNjkqFk=; b=hX34nl4vKuH0ln/0tSvxrxeOc/aNyt/sh4
+	GNQgGblZ6c0xouDyQigas6/7k4fMKvNJ3SdWLDb7sxIj5FVZY16798apYOu32WQF
+	edr34AIQfE0HO7ZEFSFXBX/v+fANMsZa8hdhoPrlPuMhNfQfXMvIEjddlThuJwnv
+	lxe03VrRYDIfTU97fvH5tSQtT71jkZNcOvbG69If73Mui/wZX3Oz2YR3oqoToMtg
+	ZtUjWxSATuD6+MeuyZx2JbJtwGqK5YmbCt02839hisRc7tfYEGGmp5KKfEmZU95C
+	1PIneU03vpQJReiicc3dUWlicXRQ7UV/Ae0WTKB+SlzV2tLFboeQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aej968qg9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Nov 2025 09:35:14 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK8uJW6039956;
+	Thu, 20 Nov 2025 09:35:13 GMT
+Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010019.outbound.protection.outlook.com [52.101.56.19])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4aefyp45dj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Nov 2025 09:35:13 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q5ZQkjS5Q6Wzn0eqpijm2OUmUiuQQzTChu5E43MJ+5fqLUTRmIqNuf3N3ZzqP9PeX65dGnm+97rKWC/sMzP6ADbEOfLtuHaLl2ofBW4QagVVs0C3l8qcFyRY1MK21TLNekSrn1palSykN4W9enGsz2bGA2SxT3+8+lIJx6Y3/2o/peYNAbmsq042AwlbLEGJqS1Ouqa1OgOMqyEZ4nr9gNNfBD3CY8Mn9w3udmvIZoIBJVbBxYTZR5JkAmDkrUTxUppM/dc1NzEAHh0THd6sX14ScCMNd0r6uVaqYuUkfc4FcfI7S9Jk1tEyupnJvLyiJjWDtEPjQbfU4SepXyTTIw==
+ b=Ms6TfZFwbYHssJ1pvACbG2prbLazCfnmP3YwZMv9T8Z4QMDpvjsVjioIBBM9YJOiyPSneCe08Nl8tIq2+e91nfMRwSrdca/Psuvxk3ygPb1wK+xFyC8gFykz08gGF23xKLuKrt+02mp6y3xJcHaBwc5h36bR4MmYG4wY3kjsup+2ypfVdiAD56XBUnDrslLqGkeVAd9muB21dVVm59iz7RZkTvgkuA0X0PIKq9jFJAywqNMl7J2e2nsGagvgaz/kYyoOjVSCkFf7/P4+33ngAA5Z3TbuernOAi1gi4XYjW2OUkyljiMskqlJEmH6dwwMsb6OO82RFZG4G3FhjBTLag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v+IKuHfz3VsjQjAkN6PhhIVHZeqYqNaWdj453DTQok8=;
- b=gkpmEmEngSaQf0mhUGQu1CwKLlJ8jf0R3rWLn2P8b4dz9lrlnpv9Ewuj94K9BHZoj1UBb2neu6EMUm7rBOxYZUzx5/fz4T9XyHZTtKqc/2LCyCwTNy1m0DyB6GJjassdOFsaQYKOlBvYFyDqoZCp1eYBqI2CFrGqzm/5WnME0y6v0Ax0ZEJTfpmnfxu+yWNKm4/8k0NhV8qs3QKCfG+ttmdErqJGnb2vSyPkTPySI3Osz/+IB3VK5HLQGOHOsV0tbDV7vLQjUorFzFpWvKMbY8wyo8YAhu1p+rgu510WRAbgVe+HsI3bO+ppvbwfOIUnf2MmJmotl00Fvrr4I4d78w==
+ bh=ARHQOqiczSvo9hnSbCqSYXTiBt3iyjPlp1EPRNjkqFk=;
+ b=j8r40ngJhqDXHTiwtdqXcGPafEHGKv1o2L3MqnHa7EFW+4Fk9JgVR24wGq/x+/TyebSXCUzty+VKO+xAhaDK0VdQ7mAZ7EA72JIu8MMA78PyuQ0j8LS1JEI0LzTr75hSR+aBwUuXWCEbXiQ7nhYpp0NnepXKzl4C1+c1vlpgWmJKelz6SCayAfIpN1J7JY8tk6J3U1reDHFU4sSUanjxXOQUoPz53nJNMggkbUts800OPPFSpYoBrfRaby8ipo5aNEQE+u6td/qEUR/4dPyOpqmSvmk/RHl/9/65pOVC15XGf+zrURGxO7kGoS58+EVndgj8qjQh0I76aMMGjUrW6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v+IKuHfz3VsjQjAkN6PhhIVHZeqYqNaWdj453DTQok8=;
- b=O68aiD3ojshtF65osjgU3NitFZWWXrT1ADuxm953qWyiDpzYrERCHO62WpijrIXn9Ubs+1wD+nPMNhFROPklevUyjyaRXLiJvoV+TUy0QCxak27caevEZTQGsyuzp0krDjnnUjisb/jiSwSqs30r4hNbEHusBq53BEhJFd4e+dI=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SJ1PR12MB6097.namprd12.prod.outlook.com (2603:10b6:a03:488::6) with
+ bh=ARHQOqiczSvo9hnSbCqSYXTiBt3iyjPlp1EPRNjkqFk=;
+ b=EmkoKdfVuUzTRrtYsUx2Z1d5MjlNJ7ScduxF2nEcb1ZUQu5IP9l33NdtCFPZvn1g0gyQXFVoN+8FQ6Hix/bYLyOgqkXiv79pcaj+G33XKMIUJ/eOn6mnAtqTlpSrTDKWaYKC3W2xRR3sA4qsAyJGsDV3+KZepaokyUUQ+8Tf5Ms=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by BLAPR10MB5106.namprd10.prod.outlook.com (2603:10b6:208:30c::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Thu, 20 Nov
- 2025 09:33:45 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9320.021; Thu, 20 Nov 2025
- 09:33:45 +0000
-Message-ID: <57b8876f-1399-4e4d-a44b-1177787aa17d@amd.com>
-Date: Thu, 20 Nov 2025 10:33:36 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 06/11] dma-buf: provide phys_vec to scatter-gather
- mapping routine
-To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian
- <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>
-Cc: Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, linux-hardening@vger.kernel.org,
- Nicolin Chen <nicolinc@nvidia.com>, Alex Mastro <amastro@fb.com>,
- Jason Gunthorpe <jgg@nvidia.com>
-References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
- <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20251120-dmabuf-vfio-v9-6-d7f71607f371@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN1PR10CA0019.namprd10.prod.outlook.com
- (2603:10b6:408:e0::24) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+ 2025 09:35:10 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
+ 09:35:10 +0000
+Date: Thu, 20 Nov 2025 09:35:08 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+        Pedro Falcato <pfalcato@suse.de>,
+        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: Re: [PATCH] mm/mremap: allow VMAs with VM_DONTEXPAND|VM_PFNMAP when
+ creating new mapping
+Message-ID: <4fdd31d7-2814-43ed-9674-d4b15b0ed780@lucifer.local>
+References: <20251120053546.2885836-1-vivek.kasireddy@intel.com>
+ <976e9916-c949-4fa0-b92e-87f6841b5cbe@lucifer.local>
+ <6e415c85-9ccd-4029-91fe-557d3946ef51@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6e415c85-9ccd-4029-91fe-557d3946ef51@kernel.org>
+X-ClientProxiedBy: LO4P123CA0009.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:150::14) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ1PR12MB6097:EE_
-X-MS-Office365-Filtering-Correlation-Id: df5befd7-dad0-4e23-3e61-08de2817e6b2
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|BLAPR10MB5106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c516a75-a770-4905-2861-08de2818195c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?V21IZ1RsOEdWMlBOMTA0dDJRRlZ0ZTdiSlpBMmVzeWJ3MW1xYXhzWFV0QzNq?=
- =?utf-8?B?a1dlNHRnbTAwcmNDNFR5dEhCS2swdTVkcnpvblZVZldLSFlMcjExRXU5U0Rk?=
- =?utf-8?B?WGl5WWI0ZGdXaEJTQ2RLT3FwUi9nWnluUmc5S3ZnK1YxMWh5VlQxZUpLQ3Vu?=
- =?utf-8?B?bGJPeDNnZ1hOa0F1OTVqZFJhSGZkaVZ2YXBwWnBUNVM2UVZjb3lYT0JvZ0px?=
- =?utf-8?B?aVRZQ3JkY1kxSEg3SnlXWjZ2bFZGcUpzb05pdEphNFpOVWlRN1lDTzg3RlFk?=
- =?utf-8?B?cURKeU03OUtONmhwNVRrbEI3MWJ5SlZpWUpsdU1TaElaWllHMTNGK3lIS2o2?=
- =?utf-8?B?ZzFic24vSGxmSFhXL09ZTXA5ZnZPL05Kb24yYTBjMHRLUUhGVklzZVM5RFVH?=
- =?utf-8?B?Z0t3TnhTc2Y3b1BkLzVBWFh3Sm5KK2VUZmI5WlFGbFRWMXR4S1dSYVQ3NTlB?=
- =?utf-8?B?ZndabDVPSXZqNFNlNnNOelRRQVY0azNHaDJJQ05VU3BMc2RZMTRBTUVSZEpT?=
- =?utf-8?B?a0xUTllTeU1NREFpcjhyMTExa3hxQkxmZ21CQnhpU3VBME05UkpuY1pheGRF?=
- =?utf-8?B?eTIxWFRmVmhNUVRKdSt5bHBkU1I1KzIrUlBrWW1wUVRta21QYVI3am0yUGN5?=
- =?utf-8?B?WTlzaG1sbFpyMnozOEFqSlhpNVhIMVRIQktLc2liWUp1a3J3RWZCRSt3dVY4?=
- =?utf-8?B?ejJ4TTZvazA5aGJKVHpsdWZPa3N5ejJZYWdZT0JnZitKb3FtNVdOZWl3SDM0?=
- =?utf-8?B?NWtXWWcyZjl1WWhBeTZ1ZDhUWXFGb2FPbVpMRlpmdXJRMnljc1h0UEdBb3Jp?=
- =?utf-8?B?eE9aMXBZb2JidXM1UjNBUFNITGxPWVVrdGRrK0h6MzFackt6cW1XemFKbEsx?=
- =?utf-8?B?NmZ3V2wwUXJjWDVwVk03VVhONjY3SVdVODNyTVRYM282dHVxSk54SWFRcE9p?=
- =?utf-8?B?T2E5QjZXVm55dVMvcXJaOU1ldFJuUVo4eVFta2d2RXNXTG02Ym9yaUFabFFn?=
- =?utf-8?B?SjVvbUFreFpHUnZHOEtJL1RyaHFwMVpOWTA2dW01ZENRZEg5T3dabDF3Zndt?=
- =?utf-8?B?SjZsSEMrdW9Zc0RrWi9PemZrQU1mVU9YTkp6aHN6RjBXUG9IVndORHNsalQr?=
- =?utf-8?B?dU5pODRrZGlOTjdaODBCV1E4YnhmanFiTDFCcWJTMkprMnZoZXFack5na3du?=
- =?utf-8?B?SytFdXZETlBPalBqd29EaTlpc0gwSlZNb0pEVGIyZ3NSYmdNRVV3cDczSkhi?=
- =?utf-8?B?R0picXpiTzJyRnZqR2tJZktEU2diVG90TnllMnFGL2lUSUFuak5IY3Z2b0dF?=
- =?utf-8?B?VU42QTRVSEJoNG5PcWlIWitzeGVPcXhrc0ZSRGxjR0FnMGtRWDBrYnNVQUxX?=
- =?utf-8?B?SUtDb1M4T3FtT1VVbnNKajF4NWZHaStIcE1hVlBQRSt5UEt5QkNXaVN0RGd2?=
- =?utf-8?B?SENhQWl6NkNjQVBWMU0vb0hBSjZVcU5TcmpONjc4STZIMUs3NDRHclhyWkdQ?=
- =?utf-8?B?RDBISTJwS0xHYTEwTTJMNlNiSWtBakhCYVdvMnJXVjF5VERpbXBsR0VVM0J1?=
- =?utf-8?B?L3RaS2VlLzQ1dURwUWE5MldDZjMyc0dZbmJWa3BnRStJeXp4M3RCS0YreEgr?=
- =?utf-8?B?VlUwdGlyYjRDRzlxcnB2WnVjUnpYZytsY2JMYjlCZWFySC9UQ2hLc3lGYnF2?=
- =?utf-8?B?MER2S2p4M3RuMTZ5Vmc2ZnhUWkJkdzVvc2dtVU9la3lkUkZzOWpiYjUwbXlR?=
- =?utf-8?B?V1RSRTZEWWswenJxbmZycURLWGkwbWdySXV5dlFzNWMrNVhGVkl6V2J6SEpk?=
- =?utf-8?B?N1JOUGN3Qi9aYkViQ1c0NU1HTUhjVVNHOTM5MjI0SWo5aW1lZlZVYy9RWU9m?=
- =?utf-8?B?Z2ZIb2svSlJ3SUxJTVlNVXpLRjd5Zk1QS2RZTlc1SCtWeUJoUXAxU0szQklt?=
- =?utf-8?B?bzFzM3hmZ2U0Umk3YjNOZTlTSWJCOUptRjA2bFQzR1BiMlRqOG1BZ1MrNkRn?=
- =?utf-8?Q?uWv58s/QtbMBsqtuOxJ9qjkMAKQsE0=3D?=
+	=?us-ascii?Q?i2dqtInEJ/Qk4JRCICKqxN1KnDaJoWCi+ZVaPLwqHJK2XBT8s6M/d1Wi7BdR?=
+ =?us-ascii?Q?dxTv+d4nfIHVQgJJq8/jlUkqaEIhById+/fLkhwMMj4PI2zmup2cDiXQoIQM?=
+ =?us-ascii?Q?Dvy+toFvoRc1YWCsbOgpJq43xShIRK+VyQyFmV9WD1sWbhaHjhUueR/pVOxN?=
+ =?us-ascii?Q?LYmgSJmyGpZCrEXSbQ9sSVC0f7AsZVZCHxH7nd36RFmdg7Mr8yrc2B6CVl+Y?=
+ =?us-ascii?Q?bYK0Z3txw4H5y+cgWZb3e1Uzr1J2Bnakn1y5d+lvAGK9nlhHTdjlmDnWTS+k?=
+ =?us-ascii?Q?bbaWwZJLFQPHMgbZ5RoMkXt09r2fJ8mz8ctjbQsO+xugnxz1cx5x4jJxm0lg?=
+ =?us-ascii?Q?5P1VlHFeJdOzpyelgEffb9buGUpDinwuEju9ZCuWNYBXeK1Qn4iiycXJdDNJ?=
+ =?us-ascii?Q?+1BO6j8hwQU2PruzwWuFyUF4TkReK7o8l/7zFm6uWO9fGDFpCS7QPB5Q6Cea?=
+ =?us-ascii?Q?EtZWZQNLeR7YkoW9QIiGhuBPXZIzXOO5grNBITZJDC6x/PdXOOwsBm+OT0BH?=
+ =?us-ascii?Q?i9EAKPcdss5fH89sft8hDV/mmS96zZpFBu5NEh1JxAPG1E9AUVtsDQ4Yfls1?=
+ =?us-ascii?Q?wPjOAsotdxxQoOkZDsOTkIepimjjobo6GgEbAPyYhTc8AQ8bJagnceyBsG6s?=
+ =?us-ascii?Q?MClNp7Ix/d4DIOppgChf7MN1dxwOHTFahsc1oZFwCzUmV8ACLNIJ2/fjozY2?=
+ =?us-ascii?Q?46Y4VNPqyh0qXTHCDNjPWZv6QzDuIIlVBA8BN44iDd3NpOfQjs7+njpyR/Ut?=
+ =?us-ascii?Q?AxduvOB5NV02Ao91jRezB/HtV7QYeSyuLc39yCs7xNO64kBtXVJqrgqk6mRd?=
+ =?us-ascii?Q?PwRYko6S/u+A94Po5Fw+8ULuGYBlGX/DuF8FGEB7s7h0QjEJKTR3ze0EQwbN?=
+ =?us-ascii?Q?HheIps0zAQ0B4h0zhbtcaXHQAWMvnFv88mJcQbmB/M4wz5rEWggVj0wdTOQM?=
+ =?us-ascii?Q?liPP2C4tBpKbLfM6M5Lr4i9fUHH8YK5P0ala01OzslF41anSdp/HgnD0mLNC?=
+ =?us-ascii?Q?wUI4wVXk6r1p0lnGskhNDm2YjgSg7MLr0Wu9o98NzTdn4g8Z5ehWmssB47Yz?=
+ =?us-ascii?Q?VYkvh1vTpi60QKeVOL+jh1KP6ddnh03awTlc5MwtGRr2c+FQYo34GkWegRx+?=
+ =?us-ascii?Q?79CDZ5m3BM4z45J1kYy5J07cpsjrP/3fnZKrEZskyZo8DHqjzV7NhhsJHc+l?=
+ =?us-ascii?Q?mi3EWwfGj6d1KReklKaUxwIFZRvHIAMxsKDCotTAEd+YuH7IG1k2f36Zm5gp?=
+ =?us-ascii?Q?8dVsMV+dqihYl1ZObkim7c6I9mS4z3J3lkxDHBaXLYtqAsAcAv6ddOiij5V0?=
+ =?us-ascii?Q?KIW4bevfTe0yEuV9Y2okp++QOs05szOGQJ7FU6CiN05zsuKD0k5zpYSokl4P?=
+ =?us-ascii?Q?zRd0MZ7mue4H6sH2TG1C9oxEzcKBfwGcKseZoi9dGaWALWDPl/uKLRkwkBQP?=
+ =?us-ascii?Q?yP593hASWhajJ0BR5IMCA2rUPpkBoiHq?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUNqRFBSVE5TQlZMUWtMUG82TTNPK0VqWkZFTDQycnFCZmkxODM2aTJUamJ5?=
- =?utf-8?B?ZW01Sk9Eay9CNzBWa2J1ZmxwOUFMekdyZG9ydXhrVWFCeitKMW5wQWlJdzBz?=
- =?utf-8?B?ZW5HekpKR3NlS0hvM21PcTFIQ2RBTTRuUUhqN2NocUZaSEN6Rmt5Zi94THdT?=
- =?utf-8?B?RGdiQWt4Ti93cFVxSG54NzhVeTRCZEc1OGVKd1JJait6SEV0dGthYVF3RG1x?=
- =?utf-8?B?eGhDVXhvQ1o1bXlRYlJCWFNKNElsTWFWcWlXY0dHTFZ0RGR4T1dsbjNzemV6?=
- =?utf-8?B?ank0TXIxM1F3a05nT3FVbmVCc091NG9oR3pOYzJDVXA1dW0rN2JmWWZQTU1m?=
- =?utf-8?B?VmprbkZJN0t1ak12TFVrUllOOEpMUzBHY2I1TlQwT2ozV2hSMlk1cGt0NGlC?=
- =?utf-8?B?b00xVk11M2RGN2t0OVJRcmtKbXlBU2x5VEpUR0NFbWsxVHZkUmVaSm1DWmJz?=
- =?utf-8?B?Zlk0ZmZKMWp2Zk9nLyt4d1h3U1F1STZ5ZmZUa1FXSWtlaUg3Wis3QWhueTdk?=
- =?utf-8?B?WVp0bVBTbUVmaTJIc2o0MURIZWZsQ09xWlZGQnJUK2NraDZNQ2gwWHNLN2Zt?=
- =?utf-8?B?aFFiZzlXZHlteDVJTm9MRm9pem1sR1hxRytFRWVhRGVlRzl6TFN1VkVmMjg1?=
- =?utf-8?B?eENPVHUvai9WVEt2clR2NFprc1NBUTVBUmhSZVJzUkM0amVhZ2p6Y0ZxelZL?=
- =?utf-8?B?SWEvT1lSVjE3b2d2V1N2MmFyVHc1bGlHbEUzSitEZEk3aTlHUFEwSjEzZzRF?=
- =?utf-8?B?djJFMFc3ejRlWllxWURma0habFM1L1pNY2YxVXZuNFArWWVnalRQcy9vdTBX?=
- =?utf-8?B?dVFFTUtndVlUTnhBUjc2bDFVVjdpa1BUM1A4VXQxMVA5cVhuMVFmbHlRN05t?=
- =?utf-8?B?RUYxQVo5SWQvQ21BVFdHTi9LVkhFekNNem5paW9pRURVcEdyODJwSmJiamdG?=
- =?utf-8?B?djJsWTBjcU5xNWNXbEhWWXlFSGw0dUFmaW5YU2R6enFPRXd0SmsrQ1ZqRXpM?=
- =?utf-8?B?cnhnVmpHN3pZdk5PTnl0bnR2UHJreWVDeGdrZStqUDFhR3ZlLzAwcW83eWtt?=
- =?utf-8?B?SThObDRseVFaUFFsMzNBczdhbERGZk53MHd6Ykd3L2RiOEQvMFp0ZWxsWVAw?=
- =?utf-8?B?VFpRbmR2bjVmdnBGbzMrN2JVK3duU1Y3Y21JY3pGQ1YwSWxtVldKN2szTnJ1?=
- =?utf-8?B?MmI5K1dWL0dMNWphTXdGRWRJMXQ3ZmtQUHhNSXZ4azRnQ0l1NElHZTVDM1p6?=
- =?utf-8?B?eHZqdU5JZCtjRkZJd3hSY2JYWFF4bGp3alRkZEVZL0hWY3JnWnAvekYwUlZB?=
- =?utf-8?B?dmx6RnAwRU80dytLWTA5bGVuaWUyUG9kNzc2ZTk0NDFybWsvc25qclVIbFZ4?=
- =?utf-8?B?akpYeWRXT2Q3SmlHNUNmWVRaNkxYYUQybjRVaUhIQTdjZ3ZUK3lodkp6V1RJ?=
- =?utf-8?B?bmw0UXRObEovNmdoZEVsbEpwczJkNG80K25kekRySmExQkhHUW9jVU4xbGVP?=
- =?utf-8?B?VlV4NmhpSE96aThCbll5dU5xUGNBWmxOUUx1UHk3YnNBRGg0VGRCK0Z1TU1Z?=
- =?utf-8?B?N3oyOTFyKzdYSXIxdGNUd05xSldvMGorRzNXcUU1Q0lkT2U2cVJnWlBCSUhB?=
- =?utf-8?B?TVVaQjFpdlNWRzcxUkFPUlhsNXl1WDlBSzhVRVo0NFlWM0RUanQ2bFFwZDRw?=
- =?utf-8?B?c2UvYzRkcmM0ZEZRNmhQNHhpWW9XOXM0V2JSVFZXWkxPRi9RQ3RDMzZ4M2NB?=
- =?utf-8?B?MmFUUTd2SHIvM3YvVGlXOEZUV2MrNCt5MUp2NVhvajRmWVBCTjBNTjhpbzNt?=
- =?utf-8?B?by9MZ3JaYW8xSVo0eGhhSkgyZUpQSlhWc3FROFYvUjB5STZxdXFNeWIvM2lw?=
- =?utf-8?B?Mm43eC9PaS83NHFQbi9yYTlvTTJ0V0JNVk9MOFVtRk5jcVQ0TTZUWXRPZTNi?=
- =?utf-8?B?QVZzL0hzc3dhQVNLSTFRSjc0UllwUUZ3cXZ4ODh5WDdGb2JNNWpaVzRzT1gz?=
- =?utf-8?B?ajhJbkI2Um9SMnM4MWhHK2pqdzEzMnVnQ3lEcVJXM1BtNUhkdGUrYlRiRWg1?=
- =?utf-8?B?Qy84S1FITjVQbVZLajlEVW5WaWc1a2syRVI3Y1UyeVZHczZ0Z2VkZlArekNK?=
- =?utf-8?Q?aT+vBBxP6DNjQkkIcWTrGkEO8?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df5befd7-dad0-4e23-3e61-08de2817e6b2
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+	=?us-ascii?Q?Z1eZ/PiwUFvxkToFY+Lar0z1CM5KWe2Qh6qMK3WmVd7MvN8jHKg2GYrUtz1E?=
+ =?us-ascii?Q?NoHBuY4RwVcAWFjZ3BBTuHy7p4FdvVd6KsG4XQFyxkwW/gmBtB1mh+XlQg9P?=
+ =?us-ascii?Q?mydyUtrqywrBGk0LL63Z3aQwhasyzhFvXfcaOHvG78LuW5NbT/AnwcrAnhTF?=
+ =?us-ascii?Q?cgEPWTqG0fJ6jHKIcAzqZraMCTDihocHkQ+sypXFFm6w21XsrDreN+ofTAf+?=
+ =?us-ascii?Q?UWMUkmPAcKrD3z5gSWHw2HEFTuHvJPAoOAqkov8nH2lsd1VlJZqug9mQYI2a?=
+ =?us-ascii?Q?vVNdOGHzZ8MIvoXUfonAJOVQXIPt3OGYcD45imA61FQFghh3F9djF/eGnYaP?=
+ =?us-ascii?Q?nwNmuHFC/oEdpYr/r6fg9LpypieDvIQOATJN3aWNqsBYAClIL9MOkyIVfTBT?=
+ =?us-ascii?Q?KasDJ4VwV9TGblXU23/448aABvN25xrLAc/kUU9Wi50l/+WjxLC+kSuyAscR?=
+ =?us-ascii?Q?q2slg+4pX+q3DkBI5SFsJsgJk+PYB5I6V61AMSkklYqXu3FaIizu1I19jKqK?=
+ =?us-ascii?Q?py+v/Ij8k+LmZFthRf69d0VE6oGn5wFO/5IOxiWNuoWxO27a4UKl+XT+hj6G?=
+ =?us-ascii?Q?smqH0FUSlsE9k0Q3UyXfSJ2l5/6lC7EmjsLUsl+ec+YbfvyYLqs/wxfuYZqc?=
+ =?us-ascii?Q?E/QvFsWd/al0R6HMRvM3zTv1CMV2CmRoDahQid8f9sHEh8ezlAulEifMLr0t?=
+ =?us-ascii?Q?XsgxC2dOcSfzDEHZU+i/IgbUktiiEBK82nlFEPXQlYPCG+pkw+yZDAdv0tix?=
+ =?us-ascii?Q?SJegb6tEbxLwZ33ZDC6XEgtRR99qoKo+S7EcULIQ2l42PgHASZeN52P91DSB?=
+ =?us-ascii?Q?gUehdDLgwQZUsGEo3uilDS4xAptrlVatiJiU3vRzjnDA8SGcL16Rs/kIMa5s?=
+ =?us-ascii?Q?n7HIle9xHFxB+cZFANW+JOjn/JB6gOGvHONjoLm8TxF41DdFGeZDfgoM6OcF?=
+ =?us-ascii?Q?SINcFL85foJnZbAt16g97h554yriZq0uNk5Y7FJPVUXBl2EfVE0PN56Qg1rm?=
+ =?us-ascii?Q?eYF+lba5ybjNaST27yl1dk4POWPCMAVQ08v+e9H/6BINCeP1JjthcDbMy4HS?=
+ =?us-ascii?Q?LAAG99LIqNpnIHjuxqCJ6gNynt3iD+cAxB8fYX3lDmIeZiAGjatWsJRln0Cc?=
+ =?us-ascii?Q?N9UwcTnfBaFfe4x6d0C1cRuatWTkNcWIaRa5fgjITdF43Mt8yshLmEuLWTB+?=
+ =?us-ascii?Q?mLGb2hR7BwIyW//bRG8OIo/CdWWhBORFvjH1u+mHHFGRvdWOlNPx+hPgw5sK?=
+ =?us-ascii?Q?mfnSgMfwQOTqBX7/Juo/5FrT+WFtncorTZaLEGtY8G5JiF2m/apkfrTG9IQR?=
+ =?us-ascii?Q?qeDmCj54raBbZHjWOtHMfD7wZ4qbvUR2am6zoOXVteOp/1viVILzzQx+C5u1?=
+ =?us-ascii?Q?n9kwM++v84RengpGWeEb6svUBmLg61s4x1u/UPjJIH71DKe26OjdC+YPkOFw?=
+ =?us-ascii?Q?UU+f20i0kkMgYItisvT9MJywp+fj0Z0BFG0LbG8WjhWFfMsn8sNxqDBYnk9A?=
+ =?us-ascii?Q?0mEQ1sm5uOynZQcfssq0av+fThwjk4/CCnGcxTa/wSyYFqRrH9ZbO8oPac4L?=
+ =?us-ascii?Q?5iyDVY5ubOcjStEE9YUpMwJ6R93nfDSW2+ysAdsYcKxA4uPrpdoqmR/Xf0vU?=
+ =?us-ascii?Q?EA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	JoVMNYDEkjfJrWuB2bvJ33WjbCbwqs39gIS695coRAtWrRXWSI6GV9y/cAkpRH1Mj/bFMqAAMRSyyCKfi7d2QcDHD38Y0SUKES7BYwZ1sgAqbgC/vetIDJJ/MCnuVPEDBkUa7dMmoAx3JPXhQ253vf2wuUw5qDb9KJwewQ5pUeMWfwXwJCXVo7m4mnkHhlPMHdZL8L0LW6vC6Va8mTKCLWMzO4yfdCJcLZV++HKgWDjtaCzlGtIwcNHR9Qd3XaMVkgV8M7C8fIWrRBBV1tPlgQnTrsw86sTm0UBJgYC/lBslFMNAG5dyyKNVCgWqLcZBYyZFNI9RIVKLnZezamPhZuGZuLF8LTYDbapySPo/rZvHm2DeYQZfVh6ryvIkFvI6O1ebnvmIjSG7IQHZFLih+1IxZCN+qM4FduqGB76G8iLYU8LkNE4V0eynpu/pGxn+wgOLECevvck4zNs95BfoaDf4x2vZzGymVRkhU4nE8L1NzGhFAShWT0BDd8baZjh2KdI/MKnbvCXGBOjytUcQmeGZbqnpw/OKlkVw8vaeyI95wim2P95P5rwx1l7dP9VJT2GhtCq5Xv5xaqWML6caWAlGT5vjSkbd/O1fkZ62+9o=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c516a75-a770-4905-2861-08de2818195c
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 09:33:45.4685
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 09:35:10.3535
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yBDKvv6wi/qF93q75+tlUnrJj5OKYMoggjV2T9Ei4xe5Fvq1TVkWQz9XlSJB5k3n
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6097
+X-MS-Exchange-CrossTenant-UserPrincipalName: fCNMJaNcmrbWt8zfagNtZMz1itNQds497McwnYqGaCirBmTTe6Exm1F8Dgdi0ohNuibflAj1DCUoIwFWNHHtI7V2whIW+wkxt3iRGNnzsMg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB5106
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-20_03,2025-11-18_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 spamscore=0
+ adultscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511200057
+X-Authority-Analysis: v=2.4 cv=DYoaa/tW c=1 sm=1 tr=0 ts=691ee0d2 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=IeMd7XrFkhigNuMyoGwA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12099
+X-Proofpoint-GUID: 6MTi_VCK5GJyVJPCj5UV9sFgbOZ5_lhm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMSBTYWx0ZWRfXyZZFm9mXX05K
+ THkQ7FZaH1LDUtMueNNNu0z7B6jwO0ecZxQn54GAV78Lf/JpFGSgR+d4qf9Wm8JY7h/k3+LsKdQ
+ aWseYny8g6YSY6plO/fiLaWqWrk9jGdJRdQqBUYrDYrOXeVDxzUkrFYTe3GJt4tkHmF/xB9V5ES
+ ciPkhd8m7LonxCe9tyKMW4uv/YiFLTUQmtdd1hmHaTAqB7xAyYM9XJlHf0YdD27D4pZFrKUJlah
+ bpP5F+/zb79eHCZk96eE7XZEpKOccf7r0SrDRyKJfRWF0YAKIfSBRv+uW4YMyJh6Vu/5FTWu/ZB
+ th4CLaJ0ggbBeKlVgX6LPV9Fv28UVUbljJ5Kxrqgg+WnB3fuYQb0VvpJyBuNDJ65LoVjd0momof
+ ZsTiNviZpGdUu54dZz7IAbBoDsLbB90QfdMit3183qj/zJ1KZA0=
+X-Proofpoint-ORIG-GUID: 6MTi_VCK5GJyVJPCj5UV9sFgbOZ5_lhm
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3515E160009
-X-Stat-Signature: dwtbds8acjxbs1gdidmsusecfy9fk79z
-X-HE-Tag: 1763631229-720429
-X-HE-Meta: U2FsdGVkX1/GXV+BZt+OVRbcdyoPh3+XdyLFgsD+ZWhJMXhxrGEQbMnUCAYUy37TIX6lEoGPto8pb4Q9eEQzx2mAdlXoiRywors5Zf790lxVTB/Xq2nuSez/g4wu7b8AiCZK4apZUx+a5fMHA2cgDHqrmgV7PLbP4Ve9/WLOdREl8weuy6M4jOUOyH6/3c5O4ZL/Cz2RtKXwvAzZJ3eL94YlnseD+BEgNoeYVf/lNFnzbWFoE0w3hP4fo5BaBOLMEbp17KAucd0HP/HOZ0Lu5KtKHFRkHGcr8x3AOzEgyh62biC+VoMdTqdrffjrXLrhnOdGftnyBdsVVnRa2aRVtOHz3vFUT5/YZ+PjlwyTjsc5S54otfFarzliVjKa2YLrt5uYNa26oMFMUImhquKtkA29rjp5bs6zIdk+r5iBhdZmGpDYmFjwZY3dEz+2smEqlO/3sq4fpaMvg5ku7rfRI/XjNQZIlUAQmeA6gF9QjS0EU0BO6QZVw1YiEjJdOwCPYkZv8gOrX0BjeQFOgxF6/O8gVSTb+m5ovKo8c00x0085HTv36Q4A4rbFO1bW2jkRaM0xiB7RLxmO6NPEzFh3iaMQ6BEd2pyqc8nOdGSope5Ul4tET0s4gfudfY2iXm/EwNBDY/8EgewQM93xoJhU6/Xf/nDMPsADNEMnKEA9zZbkZ9KIA2BMNbrQz69YVjchEfRPRYarBpReQPDDi2HWKRXMJVFFEGpwQvl8X15dkdW5OGPCXXH5r3lytqS+r9WICcsycK3ECgqcB5j3NuRFraTr/pSOWJWUrA3OsUOtcDv4DFYz/Ac131poTtUeH0CF8E/jxShpkbZVTs5I13pV9lWqCcW/NCastZncNzjwkbNAmRyw6oZ5AHos2tUAYphBeF8nR/sUnqppfgJ7/YfseSJA4ScWM5vG5WfLQrwbBDJF+mHHvqpvuyOMDmmSmiBs7KKdeTwseFfl4E6eS4w
- CHdw4wH+
- FJfBzTMrQOPXL8HD1sdVjy2VVU3okZCwgoPNHpgE9aKemceZvIb/mZGHNvaEbEILTG7m0j912y5eGQaLxqF2L6hNDygYMKWEGwfdj+7rCRhOOPOfcZ1latdEbPzZ69A9fR1PZQ87idqCAec745oYR53aMtzD/J2DFjPHFCiBPgsQltgFzlickP99iRBNVPf7VvCkQB2sVVIkhrq0vv3ulmDQzXba2t41+/YFlmDdjH2wvjkhGKjBZV3dQNPQSL/Fft0nj2PPnmEli/v01rf7aQnHRrrfX8gTgWMQDFdzbHTjPYB6NJ8lkDrsb+803nFiLRZqWdTmclEQXGmTUSokVOYNc1IOQY/V5qHlmbEW4PGzw0H/oQVlB1jxmqvlXE2oM+XQfsK5o7u6hqcHlckKMbxitxir9alHb4wpcRvU0tLqy98Toibn6Fc7d/IJsmjTuYjSfw6+DuFZdls7iovRmKF+5omK1JcgLqxn//g6Zk7uiq/Yg25YptFVGGr8SSM9Jj4296fAgcG8sG/r9+rpYa35rHPbl9ascqfOJwwFetQn0HcS4pe4p++RwY0AVVpMy/ZMJpAqOzyDzq96/t1y98JGF8A==
+X-Rspamd-Queue-Id: 0CA7420002
+X-Stat-Signature: xwptyfa5hsko85f5mw44otafjg1aubg9
+X-HE-Tag: 1763631319-47927
+X-HE-Meta: U2FsdGVkX18g3gitN7h1ohrDOz07mpLPKODEsO4o/DIIm+pDUftq1Sxpt6+BMawnoh1oyrIHmKGMbL/nlWa/U2iWpksj1TofalZi8mAwlT7MG+DYMYCE68C9uLr97gfz6zs2PmR8Nouag/beR+krbqUGgsGn9OEYZ+QPrfjpY9YSxuYemsHoCmtZr/44Entli2DTp17qvlD6LLqx/l0lRBoHXXA4V7ooihdJRSCdiuRj3yP0g7f0kTUxKgQgyyqOrpdIVk+buGLolT4Zdo0KZslSmGq3xGPqvG12LvbnlX3s+Qn3mBa6vVrmVPguQVPy4pfDCoNWkNIO7X5kZVhHJsWCnUi7a69kvBk2OL3lp34xBacCXonQGswVcqjQPRIL5hJzoyAZ3yYfJ97kH/Yf1zMN4TAajH9oLRoVeWXId3naeINOy6FYFmf4nQbs9eW3whVyfcmmu5MXdNbJkD6do9M76SHBUj/NfVABRdQ+UtE5WQrh4t3Xp+t1vzcZFbmZ1L9ClHrK5ZmwOc0ZUJHucyAC6I0fO6g6XtMnNRzyJV/oS3Xssg3o3kZ7gL5Bv9J8+FdEgtSh5pDIXdSpCEnwtx8YW7jx1RL38yl/u9HqhQybfAFlPVcpbmJsqjxYdnOjEJ5Yh/3R6+GREAPWBh0s+omsYPox2pt7cMZD0vJ4Pu13i5HDUhb00YzY5PrCmXdFF8E5mPJu/rks3O77qd3WNWDrmSMhcAv2eF9m3blufckrvegHVOseTagKTpGy2TVb46PP6zuAIvH5IR7xTH06OxVOS6Q84DbnDQg980igxdIEtWNrLA6b+8bQWA2+o7tRbRKULVgWtFRxQfU0vGGRqB4jLzmkTvDaEpGFZb1mrtv0b0NdJtjcL7gAR/8mJ6sffjVbq7cugRjB/mDG3ur5cm3lClmdYDbbkOBH7f/GKCHecwLhfgBSruQV/02w00p2m1PzDpsPWTV8GSVxHR+
+ wZxNbBnp
+ PhEjUic2FwMawWkWJ68PSLvHE+k1Kr9X+aVH0iW3i/NEc+Hk0SC28WXczJ4XPXO91HuQAzbwV4+Q6WOKBAxLuKbGMGqHaKv9B5Jpgpr/faXHMZAMM4OVJxpdo60pyOUoFXbm+ha44GaiBr0VOcWIbFNS8FAQf4E5XyaavUNIpCrjW6TwlRQpKYo2huXd1Qnyzs3Qe3r9NP6JEuPr5vzW2VUL1QId8wBUWUV0pOBL7IK80qGWsX8Su/5eJuJsBEQaxKUfBQLZbdOs/D/lVs3eBoSNIO4XV+6a2DhvLzqGFs2hUTLlJqy5JMK35aZOw/A9jEYJy+GcZrdC5bzA3E+OROfD2pxDQVj31lQ2KLsyPTO2M64QgS9sg0zRZ76w9S+I2fboIF2khsRBWlPN9EuCwMy4ZVvkf1A5VRejqcCMPrAPYEpBuL1upKfznT6xRrnePsX8J1LOJ2SSXc3qEMvvyUsUUARgrEcdFzoMjqqNi9KukeAAifsFGRDrCoIgsAGT2ZeZpjki8ilAb3MlUd8TjCm41A/1gmWZCXnide2kgTDcHOjertAvIxiF2EjxdlmiMcEiJakYiQ6p48n5ykp1r0m2aUTKMlVbHZ3TO5DfV3TqcFRCFGn8ubtPos7J1wz8kraOKZ7PrhlqHsFrTH5cVIIDL0l03BehdzZN3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -217,393 +237,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 10:28, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Add dma_buf_phys_vec_to_sgt() and dma_buf_free_sgt() helpers to convert
-> an array of MMIO physical address ranges into scatter-gather tables with
-> proper DMA mapping.
-> 
-> These common functions are a starting point and support any PCI
-> drivers creating mappings from their BAR's MMIO addresses. VFIO is one
-> case, as shortly will be RDMA. We can review existing DRM drivers to
-> refactor them separately. We hope this will evolve into routines to
-> help common DRM that include mixed CPU and MMIO mappings.
-> 
-> Compared to the dma_map_resource() abuse this implementation handles
-> the complicated PCI P2P scenarios properly, especially when an IOMMU
-> is enabled:
-> 
->  - Direct bus address mapping without IOVA allocation for
->    PCI_P2PDMA_MAP_BUS_ADDR, using pci_p2pdma_bus_addr_map(). This
->    happens if the IOMMU is enabled but the PCIe switch ACS flags allow
->    transactions to avoid the host bridge.
-> 
->    Further, this handles the slightly obscure, case of MMIO with a
->    phys_addr_t that is different from the physical BAR programming
->    (bus offset). The phys_addr_t is converted to a dma_addr_t and
->    accommodates this effect. This enables certain real systems to
->    work, especially on ARM platforms.
-> 
->  - Mapping through host bridge with IOVA allocation and DMA_ATTR_MMIO
->    attribute for MMIO memory regions (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE).
->    This happens when the IOMMU is enabled and the ACS flags are forcing
->    all traffic to the IOMMU - ie for virtualization systems.
-> 
->  - Cases where P2P is not supported through the host bridge/CPU. The
->    P2P subsystem is the proper place to detect this and block it.
-> 
-> Helper functions fill_sg_entry() and calc_sg_nents() handle the
-> scatter-gather table construction, splitting large regions into
-> UINT_MAX-sized chunks to fit within sg->length field limits.
-> 
-> Since the physical address based DMA API forbids use of the CPU list
-> of the scatterlist this will produce a mangled scatterlist that has
-> a fully zero-length and NULL'd CPU list. The list is 0 length,
-> all the struct page pointers are NULL and zero sized. This is stronger
-> and more robust than the existing mangle_sg_table() technique. It is
-> a future project to migrate DMABUF as a subsystem away from using
-> scatterlist for this data structure.
-> 
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Tested-by: Alex Mastro <amastro@fb.com>
-> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+On Thu, Nov 20, 2025 at 10:16:26AM +0100, David Hildenbrand (Red Hat) wrote:
+> On 11/20/25 10:04, Lorenzo Stoakes wrote:
+> > Hi Vivek, thanks for the patch.
+> >
+> > In general though, let's please not make a fundamental change to mremap()
+> > behaviour in late -rc6. Late in cycle/during merge window we're really only
+> > interested in existing series, series that are less involved than this.
+> >
+> > On Wed, Nov 19, 2025 at 09:35:46PM -0800, Vivek Kasireddy wrote:
+> > > When mremap is used to create a new mapping, we should not return
+> > > -EFAULT for VMAs with VM_DONTEXPAND or VM_PFNMAP flags set because
+> > > the old VMA would neither be expanded nor shrunk in this case. This
+> >
+> > I guess you're trying to be succinct here and 'clone' each input VMA using
+> > the 0 source size input.
+> >
+> > However this can't work.
+> >
+> > This operation is not equivalent to an mmap(). It may seem to be for
+> > ordinary mappings but in practice it isn't:
+> >
+> > (syscall)
+> > -> do_mremap()
+> > -> mremap_at()
+> > -> expand_vma()
+> > -> move_vma()
+> > -> copy_vma_and_data()
+> > -> copy_vma()
+> >
+> > Essentially copying the properties of the VMA to the new region.
+> >
+> > But this doesn't work for PFN map.
+> >
+> > At _no point_ are you invoking the original f_op->mmap or
+> > f_op->mmap_prepare handler.
+> >
+> > And these handles for PFN maps set up page tables, because PFN maps
+> > literally do not exist as VMAs which have properties independent of their
+> > page tables like this.
+>
+> vfio-pci is a bit different, though, as it uses
+> vmf_insert_pfn()/vmf_insert_pfn_pmd()/vmf_insert_pfn_pud() at fault time to
+> insert PFNs, not at mmap time using remap_pfn_range() and friends.
+>
+> (see vfio_pci_mmap_page_fault() )
 
-Could be that this will backfire at some point, but I think we will never know without trying.
+It sets VM_DONTEXPAND but is fine with being expanded? :) That sounds like a
+bug there:
 
-Acked-by: Christian König <christian.koenig@amd.com>
+	vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
+			VM_DONTEXPAND | VM_DONTDUMP);
 
-Regards,
-Christian.
+Drop the VM_DONTEXPAND then?
 
-> ---
->  drivers/dma-buf/Makefile          |   2 +-
->  drivers/dma-buf/dma-buf-mapping.c | 248 ++++++++++++++++++++++++++++++++++++++
->  include/linux/dma-buf-mapping.h   |  17 +++
->  include/linux/dma-buf.h           |  11 ++
->  4 files changed, 277 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/dma-buf/Makefile b/drivers/dma-buf/Makefile
-> index 70ec901edf2c..2008fb7481b3 100644
-> --- a/drivers/dma-buf/Makefile
-> +++ b/drivers/dma-buf/Makefile
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  obj-y := dma-buf.o dma-fence.o dma-fence-array.o dma-fence-chain.o \
-> -	 dma-fence-unwrap.o dma-resv.o
-> +	 dma-fence-unwrap.o dma-resv.o dma-buf-mapping.o
->  obj-$(CONFIG_DMABUF_HEAPS)	+= dma-heap.o
->  obj-$(CONFIG_DMABUF_HEAPS)	+= heaps/
->  obj-$(CONFIG_SYNC_FILE)		+= sync_file.o
-> diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
-> new file mode 100644
-> index 000000000000..de494bcac5e9
-> --- /dev/null
-> +++ b/drivers/dma-buf/dma-buf-mapping.c
-> @@ -0,0 +1,248 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * DMA BUF Mapping Helpers
-> + *
-> + */
-> +#include <linux/dma-buf-mapping.h>
-> +#include <linux/dma-resv.h>
-> +
-> +static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
-> +					 dma_addr_t addr)
-> +{
-> +	unsigned int len, nents;
-> +	int i;
-> +
-> +	nents = DIV_ROUND_UP(length, UINT_MAX);
-> +	for (i = 0; i < nents; i++) {
-> +		len = min_t(size_t, length, UINT_MAX);
-> +		length -= len;
-> +		/*
-> +		 * DMABUF abuses scatterlist to create a scatterlist
-> +		 * that does not have any CPU list, only the DMA list.
-> +		 * Always set the page related values to NULL to ensure
-> +		 * importers can't use it. The phys_addr based DMA API
-> +		 * does not require the CPU list for mapping or unmapping.
-> +		 */
-> +		sg_set_page(sgl, NULL, 0, 0);
-> +		sg_dma_address(sgl) = addr + i * UINT_MAX;
-> +		sg_dma_len(sgl) = len;
-> +		sgl = sg_next(sgl);
-> +	}
-> +
-> +	return sgl;
-> +}
-> +
-> +static unsigned int calc_sg_nents(struct dma_iova_state *state,
-> +				  struct dma_buf_phys_vec *phys_vec,
-> +				  size_t nr_ranges, size_t size)
-> +{
-> +	unsigned int nents = 0;
-> +	size_t i;
-> +
-> +	if (!state || !dma_use_iova(state)) {
-> +		for (i = 0; i < nr_ranges; i++)
-> +			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
-> +	} else {
-> +		/*
-> +		 * In IOVA case, there is only one SG entry which spans
-> +		 * for whole IOVA address space, but we need to make sure
-> +		 * that it fits sg->length, maybe we need more.
-> +		 */
-> +		nents = DIV_ROUND_UP(size, UINT_MAX);
-> +	}
-> +
-> +	return nents;
-> +}
-> +
-> +/**
-> + * struct dma_buf_dma - holds DMA mapping information
-> + * @sgt:    Scatter-gather table
-> + * @state:  DMA IOVA state relevant in IOMMU-based DMA
-> + * @size:   Total size of DMA transfer
-> + */
-> +struct dma_buf_dma {
-> +	struct sg_table sgt;
-> +	struct dma_iova_state *state;
-> +	size_t size;
-> +};
-> +
-> +/**
-> + * dma_buf_phys_vec_to_sgt - Returns the scatterlist table of the attachment
-> + * from arrays of physical vectors. This funciton is intended for MMIO memory
-> + * only.
-> + * @attach:	[in]	attachment whose scatterlist is to be returned
-> + * @provider:	[in]	p2pdma provider
-> + * @phys_vec:	[in]	array of physical vectors
-> + * @nr_ranges:	[in]	number of entries in phys_vec array
-> + * @size:	[in]	total size of phys_vec
-> + * @dir:	[in]	direction of DMA transfer
-> + *
-> + * Returns sg_table containing the scatterlist to be returned; returns ERR_PTR
-> + * on error. May return -EINTR if it is interrupted by a signal.
-> + *
-> + * On success, the DMA addresses and lengths in the returned scatterlist are
-> + * PAGE_SIZE aligned.
-> + *
-> + * A mapping must be unmapped by using dma_buf_free_sgt().
-> + *
-> + * NOTE: This function is intended for exporters. If direct traffic routing is
-> + * mandatory exporter should call routing pci_p2pdma_map_type() before calling
-> + * this function.
-> + */
-> +struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
-> +					 struct p2pdma_provider *provider,
-> +					 struct dma_buf_phys_vec *phys_vec,
-> +					 size_t nr_ranges, size_t size,
-> +					 enum dma_data_direction dir)
-> +{
-> +	unsigned int nents, mapped_len = 0;
-> +	struct dma_buf_dma *dma;
-> +	struct scatterlist *sgl;
-> +	dma_addr_t addr;
-> +	size_t i;
-> +	int ret;
-> +
-> +	dma_resv_assert_held(attach->dmabuf->resv);
-> +
-> +	if (WARN_ON(!attach || !attach->dmabuf || !provider))
-> +		/* This function is supposed to work on MMIO memory only */
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	dma = kzalloc(sizeof(*dma), GFP_KERNEL);
-> +	if (!dma)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	switch (pci_p2pdma_map_type(provider, attach->dev)) {
-> +	case PCI_P2PDMA_MAP_BUS_ADDR:
-> +		/*
-> +		 * There is no need in IOVA at all for this flow.
-> +		 */
-> +		break;
-> +	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-> +		dma->state = kzalloc(sizeof(*dma->state), GFP_KERNEL);
-> +		if (!dma->state) {
-> +			ret = -ENOMEM;
-> +			goto err_free_dma;
-> +		}
-> +
-> +		dma_iova_try_alloc(attach->dev, dma->state, 0, size);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto err_free_dma;
-> +	}
-> +
-> +	nents = calc_sg_nents(dma->state, phys_vec, nr_ranges, size);
-> +	ret = sg_alloc_table(&dma->sgt, nents, GFP_KERNEL | __GFP_ZERO);
-> +	if (ret)
-> +		goto err_free_state;
-> +
-> +	sgl = dma->sgt.sgl;
-> +
-> +	for (i = 0; i < nr_ranges; i++) {
-> +		if (!dma->state) {
-> +			addr = pci_p2pdma_bus_addr_map(provider,
-> +						       phys_vec[i].paddr);
-> +		} else if (dma_use_iova(dma->state)) {
-> +			ret = dma_iova_link(attach->dev, dma->state,
-> +					    phys_vec[i].paddr, 0,
-> +					    phys_vec[i].len, dir,
-> +					    DMA_ATTR_MMIO);
-> +			if (ret)
-> +				goto err_unmap_dma;
-> +
-> +			mapped_len += phys_vec[i].len;
-> +		} else {
-> +			addr = dma_map_phys(attach->dev, phys_vec[i].paddr,
-> +					    phys_vec[i].len, dir,
-> +					    DMA_ATTR_MMIO);
-> +			ret = dma_mapping_error(attach->dev, addr);
-> +			if (ret)
-> +				goto err_unmap_dma;
-> +		}
-> +
-> +		if (!dma->state || !dma_use_iova(dma->state))
-> +			sgl = fill_sg_entry(sgl, phys_vec[i].len, addr);
-> +	}
-> +
-> +	if (dma->state && dma_use_iova(dma->state)) {
-> +		WARN_ON_ONCE(mapped_len != size);
-> +		ret = dma_iova_sync(attach->dev, dma->state, 0, mapped_len);
-> +		if (ret)
-> +			goto err_unmap_dma;
-> +
-> +		sgl = fill_sg_entry(sgl, mapped_len, dma->state->addr);
-> +	}
-> +
-> +	dma->size = size;
-> +
-> +	/*
-> +	 * No CPU list included — set orig_nents = 0 so others can detect
-> +	 * this via SG table (use nents only).
-> +	 */
-> +	dma->sgt.orig_nents = 0;
-> +
-> +
-> +	/*
-> +	 * SGL must be NULL to indicate that SGL is the last one
-> +	 * and we allocated correct number of entries in sg_alloc_table()
-> +	 */
-> +	WARN_ON_ONCE(sgl);
-> +	return &dma->sgt;
-> +
-> +err_unmap_dma:
-> +	if (!i || !dma->state) {
-> +		; /* Do nothing */
-> +	} else if (dma_use_iova(dma->state)) {
-> +		dma_iova_destroy(attach->dev, dma->state, mapped_len, dir,
-> +				 DMA_ATTR_MMIO);
-> +	} else {
-> +		for_each_sgtable_dma_sg(&dma->sgt, sgl, i)
-> +			dma_unmap_phys(attach->dev, sg_dma_address(sgl),
-> +				       sg_dma_len(sgl), dir, DMA_ATTR_MMIO);
-> +	}
-> +	sg_free_table(&dma->sgt);
-> +err_free_state:
-> +	kfree(dma->state);
-> +err_free_dma:
-> +	kfree(dma);
-> +	return ERR_PTR(ret);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(dma_buf_phys_vec_to_sgt, "DMA_BUF");
-> +
-> +/**
-> + * dma_buf_free_sgt- unmaps the buffer
-> + * @attach:	[in]	attachment to unmap buffer from
-> + * @sgt:	[in]	scatterlist info of the buffer to unmap
-> + * @direction:	[in]	direction of DMA transfer
-> + *
-> + * This unmaps a DMA mapping for @attached obtained
-> + * by dma_buf_phys_vec_to_sgt().
-> + */
-> +void dma_buf_free_sgt(struct dma_buf_attachment *attach, struct sg_table *sgt,
-> +		      enum dma_data_direction dir)
-> +{
-> +	struct dma_buf_dma *dma = container_of(sgt, struct dma_buf_dma, sgt);
-> +	int i;
-> +
-> +	dma_resv_assert_held(attach->dmabuf->resv);
-> +
-> +	if (!dma->state) {
-> +		; /* Do nothing */
-> +	} else if (dma_use_iova(dma->state)) {
-> +		dma_iova_destroy(attach->dev, dma->state, dma->size, dir,
-> +				 DMA_ATTR_MMIO);
-> +	} else {
-> +		struct scatterlist *sgl;
-> +
-> +		for_each_sgtable_dma_sg(sgt, sgl, i)
-> +			dma_unmap_phys(attach->dev, sg_dma_address(sgl),
-> +				       sg_dma_len(sgl), dir, DMA_ATTR_MMIO);
-> +	}
-> +
-> +	sg_free_table(sgt);
-> +	kfree(dma->state);
-> +	kfree(dma);
-> +
-> +}
-> +EXPORT_SYMBOL_NS_GPL(dma_buf_free_sgt, "DMA_BUF");
-> diff --git a/include/linux/dma-buf-mapping.h b/include/linux/dma-buf-mapping.h
-> new file mode 100644
-> index 000000000000..a3c0ce2d3a42
-> --- /dev/null
-> +++ b/include/linux/dma-buf-mapping.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * DMA BUF Mapping Helpers
-> + *
-> + */
-> +#ifndef __DMA_BUF_MAPPING_H__
-> +#define __DMA_BUF_MAPPING_H__
-> +#include <linux/dma-buf.h>
-> +
-> +struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
-> +					 struct p2pdma_provider *provider,
-> +					 struct dma_buf_phys_vec *phys_vec,
-> +					 size_t nr_ranges, size_t size,
-> +					 enum dma_data_direction dir);
-> +void dma_buf_free_sgt(struct dma_buf_attachment *attach, struct sg_table *sgt,
-> +		      enum dma_data_direction dir);
-> +#endif
-> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> index d58e329ac0e7..0bc492090237 100644
-> --- a/include/linux/dma-buf.h
-> +++ b/include/linux/dma-buf.h
-> @@ -22,6 +22,7 @@
->  #include <linux/fs.h>
->  #include <linux/dma-fence.h>
->  #include <linux/wait.h>
-> +#include <linux/pci-p2pdma.h>
->  
->  struct device;
->  struct dma_buf;
-> @@ -530,6 +531,16 @@ struct dma_buf_export_info {
->  	void *priv;
->  };
->  
-> +/**
-> + * struct dma_buf_phys_vec - describe continuous chunk of memory
-> + * @paddr:   physical address of that chunk
-> + * @len:     Length of this chunk
-> + */
-> +struct dma_buf_phys_vec {
-> +	phys_addr_t paddr;
-> +	size_t len;
-> +};
-> +
->  /**
->   * DEFINE_DMA_BUF_EXPORT_INFO - helper macro for exporters
->   * @name: export-info name
-> 
+But on the other hand... I see a _whole bunch_ of logic in vfio_pci_core_mmap()
+that just wouldn't be executed on expansion (and the requested case here is 100%
+an expand due to not invoking mmap callbacks...)
 
+So we'd still be in a broken state here surely if we allowed it?
+
+>
+> Now, I have to idea if that is the main use case we want to target here and
+> how we could handle it, just wanted to point it out :)
+
+Right, the objections all remain, we absolutely cannot take this patch or
+anything like it.
+
+I guess VM_DONTEXPAND is really 'we do stuff in the (soon to be) mmap_prepare
+callback that is dependent on region size'.
+
+Most notably in this case:
+
+	phys_len = PAGE_ALIGN(pci_resource_len(pdev, index));
+	...
+	if (req_start + req_len > phys_len)
+		return -EINVAL;
+
+>
+> --
+> Cheers
+>
+> David
+>
+
+I wouldn't be entirely opposed to a _new system call_ explicitly for cloning an
+existing memory region that explicitly invokes an mmap with equivalent
+parameters for VM_DONTEXPAND/VM_PFNMAP cases/does a copy for ordinary cases.
+
+But I'm not interested in doing that for mremap(ptr, 0, new_size, ...).
+
+An alternative would be to have a new VMA callback for expansion where the
+driver could explicitly do these checks :) but not sure if worth it.
+
+Cheers, Lorenzo
 
