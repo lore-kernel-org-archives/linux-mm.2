@@ -4,247 +4,202 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F68ECF64BF
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 05:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54023CF64BC
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 05:57:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C0FC6B002F; Thu, 20 Nov 2025 00:53:29 -0500 (EST)
+	id B115D6B002E; Thu, 20 Nov 2025 00:57:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6989A6B0030; Thu, 20 Nov 2025 00:53:29 -0500 (EST)
+	id AC2376B0030; Thu, 20 Nov 2025 00:57:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55FD86B0031; Thu, 20 Nov 2025 00:53:29 -0500 (EST)
+	id 9B04B6B0031; Thu, 20 Nov 2025 00:57:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E2146B002F
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:53:29 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 04FA613B21C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:53:28 +0000 (UTC)
-X-FDA: 84129918138.24.B704471
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8F85B4000E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:53:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DyZnPgE2;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 86EFF6B002E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:57:39 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC6DE89CA5
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:57:36 +0000 (UTC)
+X-FDA: 84129928512.16.20B0486
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9CA951C0009
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:57:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=glY300y1;
+	spf=pass (imf21.hostedemail.com: domain of oliver.sang@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763618005; a=rsa-sha256;
-	cv=fail;
-	b=eMhwEUFJr3SkRYzbqI96kOEPuT2js0O94N/HHiV4WG4SQTincQ85YtNthKWnClEGpe07pn
-	dDGUC2DzQYFS1FlZg+p9DlzZmZmSmSSkvpPbmwVTGfD5DWLBTFF1CQCauhNeX/deJG083R
-	8MVxuYj02dzWxXNkBONKwdZuwgBEQ3k=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DyZnPgE2;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763618005;
+	s=arc-20220608; t=1763618254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+XjlNMIJxIhw3ooUEn7DbX+F8lvudsvoY69LKaQVUtI=;
-	b=iA3RPk7bpxaeesfaIQm+lwpuCJXHCUOFzJOfGsZRN/YEkvT3+IQIjuoZ6zTKPwneujVubd
-	Ws9WgJGfJ5yiCfxDPU+e32YYxxiwE11/1XUmdAJHw5Re+RRpmD+usuWiqpewdfARCKM2Mi
-	njB5UY5E6uFCuKLy6t3AHlSPpn4aq5Q=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=iR1GgGxXZfS71fZL6x0P4A5Lk6ajLL2TKvBMpQGpDHQ=;
+	b=Es4UrvecHRd9COZLiTGwdU5CzPxiQkZ0ToNNr45menZen/+CIy28OvhrgKsjEmPnLdSo6t
+	fIUEtXeorpCMpwzPb0sMTEhKzTOoeNCiBEHkfSUS7xDi5om9+ej2EGmiMug2Svgxvx1Lq/
+	erNUGxFIDYwzyLTKouXzaatbV7YNwIY=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=glY300y1;
+	spf=pass (imf21.hostedemail.com: domain of oliver.sang@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763618254; a=rsa-sha256;
+	cv=fail;
+	b=rAm4VkYkXzVOKlcg9n1u0WrvHtHfO+urTnlzkhOQWae/ZqSzuPUZx+IFyCLOwtn3zzOZpe
+	BM+PbKK+S1/Mv8dBzMdRD/vqZTMJ/raS8rMQjBdTCFDHMbJQNvc2nxH7T7ay15sB27DMtC
+	AGDHb22I+lc7+Kjs+ZC1k7zt2MyleeE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763618005; x=1795154005;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=BChzAsrnKrIU0EvLSqQPRFkglMv31ixp6p9GApIxOJU=;
-  b=DyZnPgE2nqOqhzSK+ELXPj9bkFB996FWs9MFVwM3BF8f9jwAvnobT9N2
-   y81L6i+TTfYBcNOK6uaC1cUyvHAx2+BLLvdCiSrHrX23aG9fO30DyFMNE
-   nEg3QP6XddNK2Tu9qB2vekXfS31Xj7N2snIxQoRafWyAmRH+n5NMuJrqh
-   t65x8Jpvd1adUznL9YC+zAPJlqAyIEKDn63njVFw6B3l2652WgoUNCEhl
-   s1BoibLv38KgGf5wgXObAUOBjN+6rGf41KlIk4Apbb1jzNWWaFkdOv8HH
-   lor9ZKNnEDSygXgjKKZ9lthNDe03Ak3ZZwtMZtWwG1B5E4gcXfFqDdu8I
+  t=1763618254; x=1795154254;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=hK5fqF44Eh11MjzDH+NC/1HPvZw7Hmv8Y7T3gEIj7TI=;
+  b=glY300y1I9jb5d7W6pKy1gPpuH0GRopm6aVmNUMLGuOyNbIEvZLZTV+m
+   TkzGfkanmjLiIkLAIelX8HLueZzA4I/HVcaqzRkUbfxJQi/z6fdNe/KH5
+   LjL9A7SXQski792BYFm9GkYkvU/DuXFX98LhzT/Yl2HBV0I2gBdzd5fzp
+   eS8b0fj6cdQW2xLNHPBOPB/0RSeftDpw4R4CvaQ/Ashnk7sME0hdmQ5M9
+   4OAE3YgU23Rv5VMihTPSSTxLY/Y/HcAAYMhakvtsnBd3noGhmSvJcaAb5
+   1V4DqiZijQnxrPF+3cIr3Q2be7aPdzNiltVRmh27fAOZoLCCad6Gh4QNc
    w==;
-X-CSE-ConnectionGUID: lLWk2JyqSOS1HhykfBiIeg==
-X-CSE-MsgGUID: WvSOR5ZWQuKHIVYCZ2Y+Ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="64680038"
+X-CSE-ConnectionGUID: 2eTdMreOS4OuNsWp7z5SSA==
+X-CSE-MsgGUID: lNa8/yqESgKKppix7dhVbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="76003076"
 X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; 
-   d="scan'208";a="64680038"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 21:53:23 -0800
-X-CSE-ConnectionGUID: CSoT+FK4T76Z3+9/FQZKeA==
-X-CSE-MsgGUID: MSlPIKWzSFCAQnqa8aMp8g==
+   d="scan'208";a="76003076"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 21:57:33 -0800
+X-CSE-ConnectionGUID: D66+7l/FT++pcYovgbiGFA==
+X-CSE-MsgGUID: muxF/bcWQW+wiPtuaVXnYA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; 
-   d="scan'208";a="192063735"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 21:53:23 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+   d="scan'208";a="221914544"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 21:57:32 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 19 Nov 2025 21:53:22 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.27; Wed, 19 Nov 2025 21:57:31 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 19 Nov 2025 21:53:22 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.24) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Wed, 19 Nov 2025 21:57:31 -0800
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.11) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 19 Nov 2025 21:53:22 -0800
+ 15.2.2562.27; Wed, 19 Nov 2025 21:57:32 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PDNryQ8zFDcrR0miw8LLFporX1SBvtbciC6qGWX2dKLlrDNfWLIhUzSAl5ixmpB+wz/89bSDoVF/hdXPn/iKHWjkEf0kj4DXyqdrWa+9U9pbpxV0VL1/1RDpsSKusq6TfKqlYlObXXCwsqa5Xyq0eDgdrNGEO6fRonKHQxowfli4VatHu8SZNONcTGQX2jHh8MXUMgXEadVr7NlKGtYd79SkxqiEqg53y/FLHZv+ZR1ZUHU88Myg833ySkH/kW97VfGD5YRxkBKvyrhNHQYApkT6PsSlLp2WSI7jZg2e/whEv8ePHNPm73ls68RHU0GuY4M/Fov5bxgSVVB+IRfRiQ==
+ b=A3+HObZ+S2fmZCpG8RKu864xW0aZaksclhXP2avm4xPI4NaDp2ws8wwBrP/dffPYCq35Z/kZOlS2CvjFTj7DZGF5LQM5NtKM4hNMTQfKcRBRzRmpJIhf7rPmKY6/AtmAOOtvm4G1nt85jrYKDAAGhlI0YAp0XRVz4s8+pIIi8YZvhi2RfTJ1Y9crY/SZ4E49+fkIsG4SU+WoKk+CK4FEVuedOf03Bl1C/HAG2LXxqD00AhhbnjBsojGZjIbb68U4U/uhW//nFVFdDaxuw6cLVxCG5ZKKDFVBKM6Uj2ef0haIKsar685Ihq7w6DjnrXl6rqjU1P4z2d366PBFjmv3JA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+XjlNMIJxIhw3ooUEn7DbX+F8lvudsvoY69LKaQVUtI=;
- b=e1x7SEtlg1uYGGv22Tqoca9PVvI4pdm0aSf/GI8NF+ZRd/0/EOtKaOnDmbZgQMOfRcW59v+4FL7uKyDDO4Xuwdrj33wwarr5nX2wEVakmwyPthYRQGRvY95ppm0zG1ntEc7Jxx8ZSYwqOpJrON3lmzKRXx56GKeRJ9oEf2GtvQ17HoRGUc8+wfiJ2xPBGxhAHO+A0AnQCYq8lwByCDVvZsUUf68iFuFlJMTWTw8T4g7f5pwnlt+NoaMD9LGxR1pBzGU7WneN6b/C9cISFbTMkxHeS++3syyWZ/Oo8VdwxQPWtAHhvf+asnrCmwwufL74zpDy85wcd8y4ZGi8xQ3nLg==
+ bh=iR1GgGxXZfS71fZL6x0P4A5Lk6ajLL2TKvBMpQGpDHQ=;
+ b=UX2K6jFutaJZGF7GZQRFb2EdksjkZJUojasdvKuqFZI8h2MWWlxutvzjSe/OPRBXuzJtTnxZ1nOSNcg2OmXGGb72sjH5eQpyaquKOh+Zv03evz6uqWLs4sTRaa/BjtPczvddHHXAFRCr18s1l/9hPdCFZ/Iq7DavZjus5bbnftFlFbANlEWydQ0vwPioy5RyzfEELht1Vphf+WCmGu9LnMNU2FSX2r8e/bWeUOodjN7+ea2NuG1dg1paqt/J6EhAEkiKj5JVMBqAbMFuKSneMgX9uLsk/fFOj4ZYBvk61TipnIpQD7e4wTrLF5L32cj7omMrfLPQAPkSy8kYhsCgWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6) with
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by CY8PR11MB6817.namprd11.prod.outlook.com (2603:10b6:930:63::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
- 2025 05:53:19 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%3]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 05:53:19 +0000
-Date: Wed, 19 Nov 2025 21:53:16 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Balbir Singh <balbirs@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-mm@kvack.org>, David Hildenbrand
-	<david@redhat.com>, Zi Yan <ziy@nvidia.com>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
-	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, "Oscar
- Salvador" <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
-	<dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>, Mika
- =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>, Francois Dugast
-	<francois.dugast@intel.com>
-Subject: Re: [v7 00/16] mm: support device-private THP
-Message-ID: <aR6szF6Ga8K2ZRjR@lstrano-desk.jf.intel.com>
-References: <20251008201740.d9507f4807a73058d4da23a8@linux-foundation.org>
- <a5992f11-5841-4bbf-b190-b5df41b68b0c@nvidia.com>
- <aOePfeoDuRW+prFq@lstrano-desk.jf.intel.com>
- <20251111154326.bc48466a6962fbbffd8ebdd0@linux-foundation.org>
- <7a0f2704-80b5-4cbd-8f3b-ac03692eefd3@nvidia.com>
- <aR5/uUFboeeSwN0z@lstrano-desk.jf.intel.com>
- <7ecb3faa-8bc7-4eb1-9342-404a9ff52b97@nvidia.com>
- <24d8d39b-5ebe-4f29-93ff-3f7ca2a9b1cc@nvidia.com>
- <aR6HtvxhmVxUvd+h@lstrano-desk.jf.intel.com>
- <e8efd187-237c-47c7-ab99-33183e0988df@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
+ 2025 05:57:29 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%5]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
+ 05:57:29 +0000
+Date: Thu, 20 Nov 2025 13:57:20 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Christoph Hellwig <hch@lst.de>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, Vlastimil Babka
+	<vbabka@suse.cz>, <linux-mm@kvack.org>, <oliver.sang@intel.com>
+Subject: [linux-next:master] [mempool]  022e94e2c3:
+ BUG:KASAN:double-free_in_mempool_free
+Message-ID: <202511201309.55538605-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e8efd187-237c-47c7-ab99-33183e0988df@nvidia.com>
-X-ClientProxiedBy: SJ0PR03CA0007.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::12) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+X-ClientProxiedBy: SI2P153CA0029.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::16) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ0PR11MB6622:EE_
-X-MS-Office365-Filtering-Correlation-Id: 198c45a3-ba0e-4e23-4c81-08de27f91b70
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|CY8PR11MB6817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30f51867-bac7-40e8-7d50-08de27f9b051
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eG5hUUpqU1gvdEMyai9ZVU5jUXMrNGZCUi9rMG56UGk4SGZnRHNEanR0N3VJ?=
- =?utf-8?B?d0o4VnVpcExDNWcydzRnVlRTdGhGNTVhTEFFUEVMbnJwTnkvNEhibmpvZHdH?=
- =?utf-8?B?Smx6ZFVkdHBkNDk2WW5lV2QvaXZZWUxDMTdQTWo2ZlJ4ZGVBc25kRnZISmtS?=
- =?utf-8?B?cS8zMzgxd3c1TVZrR3d6SmhaZjd6OSs0VlZhcGJ3TVZ2alJkeUZLd3pMT0lz?=
- =?utf-8?B?R3V4SjFOU1R2dVdBYUNjNHlRdVBza3hvekt2VW5pcHduU3RldU5TTHVnaXY0?=
- =?utf-8?B?V0dmbzFCRTBSQ0Mvc1M2VVJVOHRJZ3hRVWNaVG5yK0pwMjkzVFdsTjQrUGZB?=
- =?utf-8?B?VUg5dzhydFU3RDVOQmxmTjJDK2VwS1dTMFk4RlJwVlZNa1RZWm5lc1hXeW9k?=
- =?utf-8?B?Q2JQeHR1anJQZlRra2IxUUZ4TVIvRTJYaE9ieTZGRXJock95dE1JTE1tNEVh?=
- =?utf-8?B?RUtzRE5hOXl2UEg4YU10akVwc05PMnNZY0wzTEw0NzBzOEtnMDBUaTFCd0FO?=
- =?utf-8?B?OXlIQjIvTTFhMGU0V0czaUtlSDM0eldIQzhpd3BqQnRyN0h6bmFKR2dzbG5v?=
- =?utf-8?B?UHlYL1BLWTVjeWNFKzk1VFkyS2d4cWNsMWhCS3JYc212VFoxWnpGWHZ6NWZJ?=
- =?utf-8?B?OFhUVnRRekpYVDY2RzBVRmZrM2lzZTFoUnRSTC9oQzg1UVpUMHYvdGU3Yjkw?=
- =?utf-8?B?STNQbnlSVVdwdGJLc21pWGtUOHhnM1o2M01STWZIeTdUUnJ4dU9CTW1zNXVy?=
- =?utf-8?B?VEgraEdVN2JSRGhZUWdOTDcybDVTM1dXTmZRb3JKZkwwOG55MExVeXFNRGh1?=
- =?utf-8?B?ZHpHazViSjZmVXF6bzd0MTc1dHZXNDh0YjkzVFVjRWhzTmRtNHNZQTBYVDNq?=
- =?utf-8?B?Tmwzc05oaE53ZzA1TmxicXVpWE8vUmRycW82UUI4RTdUZkdMdWxwUkhpVVJZ?=
- =?utf-8?B?QmRoMThzNkM2ODBIS0xqUmNzRzJ0enJDZ3E2WThsUkVyamtxZGRlbWdrZitS?=
- =?utf-8?B?MUhTU0ErcThRK1lzTlVkVkRpT0M0UlcwbU9uSFJkMGxOOEUvZmQ3emZicDJR?=
- =?utf-8?B?cnVrb0svVXRNdzZUeFJtVml1S3JEL0x1MGV6UkMzTEtudkxHNVl6Nyt5Vm9K?=
- =?utf-8?B?WmNoclRrdkx6LzFVVjFKYlhXVlNBVFdIMHdZRzhFZXEvUXVGOHF5RzZrZ0NG?=
- =?utf-8?B?ckRnUXdCSEE4TnFJb01VUk5aWTViQnRRV2E1UWRPamVya2d2TEJGUWNwWTY5?=
- =?utf-8?B?N0lMNlh6UzUyTytXNDF3MzdXUEYyUmkxZDNVRjA1S3F6SjBNRE01aTlzOWlR?=
- =?utf-8?B?dWRacmgzeE5sQXdQTUMzZlZlK1Y3WE4vRFVEUXNKOFE5bTQ1NFdqN0VGTGtM?=
- =?utf-8?B?eVNjZ2pQSElnS2ozcncxSlVoVXlSMFllV29HcUxRVVVVa1R4dGxhTW5RR0tj?=
- =?utf-8?B?dTBvSlRvMTV1QzRBVXNQcXF5bXlGbWwrUkRnNENBNTY3R0huei9HNHZHUGRI?=
- =?utf-8?B?SGNGSERYZ3VBeGljakp0SGgzbHZqTFArNGlQc0J4VkszKzF6MmVBS2tXMjll?=
- =?utf-8?B?Uk4vSEkybGNGQndTSzZkQTVFRWJNbmtFSlF1UFRVTWFXenZMSWxJUmxLYmww?=
- =?utf-8?B?R2Q3TGlpSWExSzY2eFVBcXRTNzA4NEhtalNzaStUWEJ5TkdrM3B5WnRoZWpy?=
- =?utf-8?B?dmhCRzNsR3NEVXNtcWpqeXZ1M09zc0RhMXpyVVBMUFlpSU9rdnlpZ3FDZEVj?=
- =?utf-8?B?T05LTHEreDZUUm9EajBJTnhjc0Q4a3RLZklxR0piTkg3UXcwd05Pc3JiNFox?=
- =?utf-8?B?R3BManZEamZxeisrZTQrMHFiZkYwak01aFhUUE1KTzdwMmV2Y2UzckxBdER3?=
- =?utf-8?B?bW1nWkhra25DVFhyV21mZ3RycVJlTUFqanlPdXAvZU5PTk5sWS9EWWFiWnN5?=
- =?utf-8?B?WFJmYWpTcnhGeWJzNnE4bisya01Ta25ObC9IMERMOWpiSWUveUo0bG1PVzVT?=
- =?utf-8?B?M2tCUWxNb1VnPT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?M/C4DgVOnh7LYynMM1V0/ZjQuCjwr1ZGmchz173akh1d7G8ETcvYpKmt4pJY?=
+ =?us-ascii?Q?SANeGjpMp3z/ttHiFF0ovqe2BGzgfGmeJnD6k0khAsqMBJS86FX5GJr1X+Xm?=
+ =?us-ascii?Q?i3E0mqZd0vuC9lLq6+XC+NfCFNOM4IoyMzfPAPaqJpvh1ecfMvAzH5C9MFvX?=
+ =?us-ascii?Q?H7JTa2DkyLPNZTOTxLj9SK3uHBd81Opxou1iisREIC48BGjS6aY7cztbPlvT?=
+ =?us-ascii?Q?Te8Ea4eQ1erp8ucDs60LVMlBQMepXbXTiUu3uKbKb3yE9FCGxJ9JOnCILEGS?=
+ =?us-ascii?Q?wYec6CvyJuX0Vqu75O9/Vw92Uid+8mN47BmtP2ctJSpcsTQJB7uZDw6FqaVD?=
+ =?us-ascii?Q?rLR9qWJYPrxJucRJzPlTq7kZmO10aylfTyGry2srwzgDnCWd+SNtZDpdU1Vc?=
+ =?us-ascii?Q?jifkaK/vPQUtY0sqdSWdRZiTaO97vE/QQ2j4sxTOWHoFNM6XZfus+nLFLVA/?=
+ =?us-ascii?Q?O0kVtiwyMKjxvAyFz5Y3RIs4Y51ez0O7Ihnf7HxEja7dHVLB3HA8XUNkxcYc?=
+ =?us-ascii?Q?HKQYKUWgKnpW+ABiAKPBtcetHXYPg3YaGBRcKMOokaFHoKCClIcupJFofnId?=
+ =?us-ascii?Q?Vlc0ZCAlI9crhPqf7EHScc49iFLBeLi1bXFvIA1y+BJnelEk1aW4M62G2x6l?=
+ =?us-ascii?Q?ke5/G7+dhlmII81Xh2sFmncxn8yAGtqOOSQBU8HZMaZH80s2iAdK/zPKOGlA?=
+ =?us-ascii?Q?3PL6he5vbgaiDnC38nZcBGCgc/gFkJL+S6K/NsZI7Uo0Ug85T0rJCUxncHhZ?=
+ =?us-ascii?Q?7q51h6R3SoOveZreY61oxxidM8QuZoPlPKb7YKj2O63bQWHkrfh5+dAFvxUl?=
+ =?us-ascii?Q?poCUlYXX6EsbaNPYWP6TXzf6WCJDFx+0ggx82weLvRVW9T6s+3bPwaUrv08A?=
+ =?us-ascii?Q?3cTlqO0Wl9diRmxIgaajEClfXWCDP0dqCVX/sYtsTej3NrWeEJmZ9pybPjbh?=
+ =?us-ascii?Q?WWxg3m8w0TZnCNchhGzf4BjYfRrgyo8tJU5ydrsUjDorMKnCC7HcF+C+33b1?=
+ =?us-ascii?Q?m08wzB51QHd8U2y1/ORv6lQ0iI/GjxaKd+pU/qt4tmSSRR37dwP3Ujd4xo0y?=
+ =?us-ascii?Q?UnwEC+smZHiXlzkaXK4v65Zsiin6YISqkBHfMByO9x+gy2YjwjgpgK58Dorv?=
+ =?us-ascii?Q?GBgUOf8O3iW2mrEurr5GTMe+E5kybgjfi/7Rh5wmFO9vWC2JgBSPRRuNtCdE?=
+ =?us-ascii?Q?0ZvFR6sRDMjZcgP8cRhO1hanqnl240N8RvnWF4hzd7PkFl0AViKWbFFgbGP+?=
+ =?us-ascii?Q?6LkHtQuCbshoTfm09aSZv70/XX4Kk+eLxcQNJxUJ/3sgJtHUyG/KfRytaWy3?=
+ =?us-ascii?Q?2FU2wLNsczlJbfNWg9K1/PNzkURRtwB91MixE3i7ZN26JxiUgIopk5IYdx7z?=
+ =?us-ascii?Q?8Yh4Vhvoeyk504PaewLYedHtOcTSQ/F1fyAL0LszX3SybxNGlHu5GNkXkKzq?=
+ =?us-ascii?Q?j+YbCK+7aR4Yc6J24Er9Ni9dsWEB3YaBpCtC49yq4Vkj4e4u79pDJw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cmFjeVVtS3YveEh6OVJaUUQyaE85UVA5R0JuVC9yaGk4YTFHNlU0YkRFVEdK?=
- =?utf-8?B?VTZRTXNRaWF0TVI2by9kOW5tTmgxcXA1NENoTkswNTQxWWRjRUZqRzF5SkZB?=
- =?utf-8?B?b2J6VkY0SXYyeUJsbDRWS3N1VGRuM0hLcWZFODg0ZnFtS1g5bVpoMUh5Z1dY?=
- =?utf-8?B?eHRNcXdQK1ZKZld3VlhHUUYxR2dINlp4MXN1RCthOU1scFJUT0FzTmhtdk5p?=
- =?utf-8?B?aWJGUVh6Qk5UYk0zbHg5aDRxQXQ0TGpxeUw4YVJDMjFOSGpyd2V4YlFCRXlS?=
- =?utf-8?B?dXBZQTk0SGgrYnJsTHdrdHRQWlJrcWgyMEtDakozVUk5K0tXUHFiRFhQT3Zz?=
- =?utf-8?B?Vm1OT0pyaVFhdHNTM1UwaWF1TFdVZloveENVR3pmVHMxME1WcS9CcEJYaEsw?=
- =?utf-8?B?WkVIUCtaL29OMWhXd1ZjTng2Q1M2VVdVaHpnakhDOFAycW9ucFM1M2tUVHlV?=
- =?utf-8?B?d2w3RHJMSFdRbjJoT1JiSTZ0T1Zpakh3K1RzV2p2dXBTeTVTMXRkMjNjRG05?=
- =?utf-8?B?aUhhZnRrMDUySlUyN2dyRVkvQStPeDRzV2Q3SVFvK08wVkxJdlBJWnBnYmZJ?=
- =?utf-8?B?N2c2OW04T3NQaEJIY1YwK2JRanpoUmN0bWhCT1JmTXUzKzdCcGpTRmlCV0xE?=
- =?utf-8?B?Y0l6Tm5aQmdqQ1c4M09XdWRXd3lKbEdVQmtrV0VnODl0R2RYYjJUQ29MWGN0?=
- =?utf-8?B?Ly84VG1ldVBZMlNKUE96clUyNnFNZGZEYVdBWnBVdVAzRk41ZFFmQndZaVlD?=
- =?utf-8?B?aWVVY1AzSENUMjJORjhrT0thdnZjalE0MlJtYmozZ0JzNTk5RnNYNFErR1dS?=
- =?utf-8?B?Rk5ENFUzOUpYWlkxUWFZRmVOVExOa1NiajI1NWdmanFzMGY3SEd6d1pBV3Fz?=
- =?utf-8?B?dXBTVjZheGJXNWxCTkxDZmtHcDhpc2VKME44Rks4eG14WjN1T1VUR0NZSkRa?=
- =?utf-8?B?NU5CLzhnV3dXaVZZSC9HK083a2FJdWlZWUY5VVlDa2dpVXdZWXRZSURDSm1H?=
- =?utf-8?B?RXpXN2VONm9ob1pPc3RzZ1ZyL001VzZMNVJQT3p2dWUrWFRCVllLWVBqL1k3?=
- =?utf-8?B?dG9kaXhIdGo5V1M2a2xjRVJiZG16d1FwakRRTk1selZxeVcya3FGdmkybUxs?=
- =?utf-8?B?U1czdGhJTi9paVV3cXM3eTdFVGd3TXNaZGdPWS94SnZLdzIzazNrOFVlbVgx?=
- =?utf-8?B?QVhDSlE1Vjh4YnlVRDZVY2UyWnR2eEIyRlp1WmJ2UmJ0Q2pJUGdjSEgwRFpJ?=
- =?utf-8?B?MHkwSkJUdkdGWSt3U1VzMlZqd09NcUI2NWZjcVJiYWljWUQ3UUpOSWI3UVRl?=
- =?utf-8?B?MnBjaWluamZpdkFIcWxLc3RmVnpqTlA1MmtjemwzYk9TeDkycytyaUQxQWND?=
- =?utf-8?B?M2V4WlduVlV4OGFXRW9kbnBsNVNlNlQ5VUIwbXo5ZU1SNFhyenlnOHJDY0ln?=
- =?utf-8?B?TEM0TTZXa29UZ3lVcnRqN1BOaWNzeHFtVkNFMURkMk1ncjlHaFhZNldMQmhH?=
- =?utf-8?B?bXdjOFYvdVRjSlBsNkNSYzFXTC9nTlNsd1QwSm85YVVURXBhck1jcVFBc1Ns?=
- =?utf-8?B?TWdXT25LZWxFNE11WERtUU1qbDJYVWlBa1RFSjBUN1NIYk9kK0RtbzNSZ0dh?=
- =?utf-8?B?eE5BTFYzL0NzN1dLOFpzOFg5R2RzUS91NEdwM3k3cThPRHd6ajh1S0JzMG5G?=
- =?utf-8?B?bjhsRFpzZUgyaEdsTWlKMVo0c0oyd05DL3d0MEJZYU9UTnN4aTA1Q2pMQmRD?=
- =?utf-8?B?bDB6QTF3cmFPT2lrcmkzL25lNThYTUFZa2N2RitPN0ZQQmtmd1NiREhCcHd5?=
- =?utf-8?B?b1ViSGxkY1dSTWlZaHV5dnJKT3VWTk9TYVRCWld6VTJlV3IxVmdqc2RvUmVv?=
- =?utf-8?B?dUtCeHJrWWpwRi95eS9PeVRkMTBxS3huMjlaaURZeVhRTldWUHl1YUxxNGV5?=
- =?utf-8?B?SGZuN0xYYzNodzRQYzNDc3ZFZzhOSG9qdHorTTVRL0NGSmxrRDFtR3Y3cHNE?=
- =?utf-8?B?QmIwS3RFWFJHa3VmcHhOZFY2TTRlV21mbnI4WTF2UHBDOFN4NytwcnNabW1D?=
- =?utf-8?B?TTBiQXk0WStZWjBJdityRHlUdHdQZmlHSW0wNk9XOEhkUTdkV1pPdmltR1I0?=
- =?utf-8?B?eEc2bnQ4OHNzVEFnbkFuVUVWdk93OHhoUGtIblNLbUF3WVBCcHFzNWF1ZnY5?=
- =?utf-8?B?Mmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 198c45a3-ba0e-4e23-4c81-08de27f91b70
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?j4Y8PQ5K9+eH7A48H16y8fVLgQ3T/8CgycoXCoM7sgVh/J0JcIgOZGZ6pMSt?=
+ =?us-ascii?Q?DtB/SGCP3CCo9YkfkHmp6pNeIIWIXydqlBxz6M4wuhpEjUuWYvldg5GVDRUQ?=
+ =?us-ascii?Q?q1fAWh/G+jw0Q3bf2TzEbrVLjSSXtuaUJkj0aVqpMgtrujDQTiX/eGL+lphH?=
+ =?us-ascii?Q?JgSyZ9oP3wAaMfvfMLIWMFP3MpMGY1OW8v0qyWSICAe9AZ1CfEG6R02Qf7Aw?=
+ =?us-ascii?Q?SPGQuSZE81AMY7Dw4ymiiCjF2QdTb1dvsFsttROdfE1V3rAS1zf7N3mnt7op?=
+ =?us-ascii?Q?yXrI3K4FhUZ4h6BX/S25MkubwfcxXJ/c1/AwBTJO3/He6ojbO7YbewlRpicD?=
+ =?us-ascii?Q?HhipVaASRHHT7GqdsguDDikKP0LC+hlO6cIuQzJrxATRD2G+qf/5LxGroIUX?=
+ =?us-ascii?Q?sBLanG33KtX0TASp65giYmmmJV8CkjKg295o60t8j4roVvONPydwZ29zDgI+?=
+ =?us-ascii?Q?VK8lDlzLHnzvkeWj01HMJNCuNPbVGp0K9w5ABnSwi+GssfMspTVmNYgFuwOT?=
+ =?us-ascii?Q?ICnx7rYwnnYzXu25mJre706ilmh/93xZrgD1AL69GJ+5VAgaL91iZcTopi4y?=
+ =?us-ascii?Q?dFPPO061AGI9d0PF1JjbNjy3xCHeZQ5EvCIWp+qjXqPGBZuFIn8+OfZpbIGB?=
+ =?us-ascii?Q?NPmFrnSDTeF9T68Y6nOGohdGnoDu8gs4VEtRSG0nn/ONZB8LlkfUw/eXduEO?=
+ =?us-ascii?Q?KpBPgyJgeh9pYnrMqhjdWUQ45UpUJ6bs/3x7ZzO87A3QwWqPHdg+l7fB77gY?=
+ =?us-ascii?Q?j8FUTXOvo6PhL6h9boWL/TMP9S4LPXHLUgGyimWsXwVD0u7eJrG3wOhDLk2U?=
+ =?us-ascii?Q?qH7Gmro/lVTHMz9T/ZABBhnOfncLW22J31e/ncpBnvMALe8Ix9aSw9MUfk5E?=
+ =?us-ascii?Q?ctpONi1r6+WiVUzJJ7SylCd5/FGwPqkl5X7/leL/+PdkSJ4QRa83RqE+u1nY?=
+ =?us-ascii?Q?xqmfZJRBnQ8UNcN1EK7uZ0l52DcfMeumSd9DhfdxAi5hFCIFt+rBJZo3owEv?=
+ =?us-ascii?Q?O5bRN0Xs0UjdvNMGIECHgYBkDeuU+4HDF4vnZ94EUpiW0VZMrV6YfM1zWYam?=
+ =?us-ascii?Q?IuFu9hYh6YDkrGuwOuEkjZvjEDfUf1cwZFZOkoenOfKWy/HlD/AwUi6p4/A+?=
+ =?us-ascii?Q?MgdCrsS5VoBnNHDWUrdeyBKVgI3FzSAlEz5w15TIDYO3HiLfrPLRIrZrJXoA?=
+ =?us-ascii?Q?a9TytxpYAaL8qvMwXNTT3BhG+bIXEHtTJ4ei2p7rjXj3gbdwwXO97OeV9A1/?=
+ =?us-ascii?Q?kVF76NysrZttf/3nEzSm9n1ryt5VbqDcmzSL6RZtAUqGAAD1JBok6gD7z3kk?=
+ =?us-ascii?Q?iBzvVPnkMTm0J213bLmemz29G9vsN/HZp6hiDTqBGnh2qHFjO9uK8wiysAhK?=
+ =?us-ascii?Q?GNBWAcYDI/iLgtnCXLCrW3anh5eQh4l2XTWIjeYb4CGB47EJLqMejHYO5bUm?=
+ =?us-ascii?Q?2ob2Oa5t7+8iYEls6EkEmYbVnyRKV9sLlcCH22w3s8UfJBSVsWOroKxCvrYj?=
+ =?us-ascii?Q?3ndWjYb0dFKHmcxqqXnmHOfZ6IUx0vSrSuLSwMwvq5B+/Y2Pgfp0U/6VFbge?=
+ =?us-ascii?Q?1/aHyJi8heoQ8smUx7/bwsMjxhZWXjwndq5QpwbYLWt3xYq8VE1cbfNmY5uH?=
+ =?us-ascii?Q?/Q=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30f51867-bac7-40e8-7d50-08de27f9b051
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 05:53:19.5739
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 05:57:29.4637
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c+B6stLK2tvGeYsTJSb5OAv/zf6/Q53g9iAYKdeJCtf401ae47gb5U13v0Pdr5fKI4ivJXWGCAWqnAE65NoAig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6622
+X-MS-Exchange-CrossTenant-UserPrincipalName: q0DIobHsSlR8ovtKzaF3coSQv2OSmRaN0HguTLcqbhjMw2ptIEOeae73ikulSE81fgqteUSCEjeZUZ9pqh0inw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6817
 X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9CA951C0009
+X-Stat-Signature: 9yzpf1uiewn814591tjzupmgtnubipmi
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8F85B4000E
-X-Stat-Signature: wrfi16c6hez3b9fwi8ssnioebww5ywqy
-X-HE-Tag: 1763618004-770866
-X-HE-Meta: U2FsdGVkX19Ytwg65rCJ3W5fuAhSOPqF3PR8gyezzMeahfG9Q3fZVOjK8bUaGsXf2sJAWMG3WKMsmvWiSu4ZdQLXlG6OYogsJ/vZ4l4XhvYlGh+8mSORbFfmjnueRQiawvP26B1xSjvzo2OVa+SXakQY5OaRtPB1uMQ/Dad5JHBh/Ih/zJOw1MoOcJqbFEIkAZvU2BMx+tPw2zrZVPuBFMwpFxtfa+PM1xzDHL8NkBf+p1vNWemWf3YmYM9S2qAtTlEDGKUzLUdKADt5C11ofgIgvnAbtumHJb/DU1LVLbo8F38xKWCFIgIlSOJZ0cdoKHQ5ntV5qaiW3+aN+pStqANIMaH5cdnYD0L9rTvs/xM6o1wNt3c/gDjXYFC8BF3gQEQ/+xjpIvxSm7BJVihvWqu8g3KfZHj7xBDq7ua66d88lf+VqYJPQGu+3UGsCXJdAp4KNwXClF7rk5AP6UoMGGyU2/vZFQRRZMcELf6w9TDuXOwTGWyeO9ohVF8G10H6wuTLubHoYY2sIwzeWBlraPjJNiwjUjBiIuPzcD+qnhEzm3EJaSxkZm1c0U9eKJFtYXzc9XyfccKgqMGYMuBRsl6tmlKxFgSuRbqhixkkuua4RdhRimJKP2vz4Ru05sEQYxF0f6Uok7CJyuI7YBGLCdjVoouR2RpfxEho3n+eYhEfE9px7fp6PxJcAqJFMp9LjZWAQnLUrdwx3x9394vHqLs1V5b0L+m2Tc7UNrUckGOL99YPLVxEs74WVl6Vktqs+FE/jFHjqCWA6i5r/parAbKeJZttLzEp9OA6FDqQe8fenYsoqGCfR5SI47x1/jhD3C3QChFg24zIIqRbfiH5AZ7ivzmdFKe0cUB0OysKv9wf8xqrjYUO5x8jc2jhYBYz83kL2iOGZWFB9rycLjT9UvDkM2GgvUbsITyh0HwZx3mDT3+ApPZIcWd6D3IhqrNFqoh+Pe6lLy74Rbj36eR
- k8tWWsU2
- uwVM02zGC9G8wCI462QssnTh+wVUHTR7bbQI+fNIAVM5rlaquOcGL3O6tOBHiCl0Cbv6O
+X-HE-Tag: 1763618253-963924
+X-HE-Meta: U2FsdGVkX18sPjCMuI48ljV5ZvNqN9I8DmCGK5tVP7In2DvR9G1tjuuyV8WzrCOlJYsTBSAfk1+a72Brk/lJ/CKZGD4c3CLBqlaWdbqvdTvOVmY18IO2hLEPmni8refiTv/xxHo4f95aojf1i1lfLzw+JRpuJtFdXodkPfTpD+DpsGckHviMxEPtBU61cYmFSKwknIm1JHX53UiQQeglaNIdEwLOe37DUpfgZPsEL3t5veR11E4s8ZICjtRjn8XFBdDpuiIg1a9Oixz1vXvefXFThVoGqhv6XSOnHDf6RtvL1p7NRchdsGSwlVg+yHsuiGkU/y4sb4cwY6VhT3O3jDlJZr3ANpY4jJdjTiqj6YFF26oPaY7QCXpVwOxCsiiXgJwpGzoLB2nMqnRMPBtn/QCnUbsPYD5dVJZNO+bru3jhuMB8RhjiDzd0mVVjXIxizeNKSY+dtLees3xTP5XiE2ckWItjwJu+7LtyU8I+VQ278cDN2G5zVZYqudMP8ilouuyigrlSvqj8xF6L6AygAzuyuzuE7C1EsWiz/YbAelHY0QIV/IypVVk5ShEGHNIXD2msafPNJ/ATdxSFf38XYV7wa1TJ+0zjrcW8wqZUBQVQcQdQ+eKZN4mkMdskRAEkj70PFczq2Fsd9rAhm9/Kl3F5hy8XtqoVEFBBGvyztlXlvZZovkQYUfYOF0hoodnTBa75+LFrEHnpA9HF55LTOxa9n9MjEpEUNxmfKU+y3nHl3t84JtZJCQGk2cbmRvELXXMH1taZ3whTGLhld3gsDo8K5ya370M/5ghOHLo7fFPJMNS2Bd0o7Li+0RtZ/VZ1rhiTcsBJl9lpzIkJQJTvAMkj1Ca2zNjfU8prXx41F1zBxPUETg90rJhD7MGe+EVIliWpmYgDy1bD919UlQbGaJpOC7bRpzboItFmP8rCkHcIYfX+rTrgUOp3m89FRol2TkLJ7bGZSEnUX+Hjs/L
+ x/OadlxC
+ +no7zJDzaPKgS5nlYNbHxTseNpw2RbPz3XZ99
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -253,366 +208,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 02:58:58PM +1100, Balbir Singh wrote:
-> On 11/20/25 14:15, Matthew Brost wrote:
-> > On Thu, Nov 20, 2025 at 01:59:09PM +1100, Balbir Singh wrote:
-> >> On 11/20/25 13:50, Balbir Singh wrote:
-> >>> On 11/20/25 13:40, Matthew Brost wrote:
-> >>>> On Wed, Nov 12, 2025 at 10:52:43AM +1100, Balbir Singh wrote:
-> >>>>> On 11/12/25 10:43, Andrew Morton wrote:
-> >>>>>> On Thu, 9 Oct 2025 03:33:33 -0700 Matthew Brost <matthew.brost@intel.com> wrote:
-> >>>>>>
-> >>>>>>>>>> This patch series introduces support for Transparent Huge Page
-> >>>>>>>>>> (THP) migration in zone device-private memory. The implementation enables
-> >>>>>>>>>> efficient migration of large folios between system memory and
-> >>>>>>>>>> device-private memory
-> >>>>>>>>>
-> >>>>>>>>> Lots of chatter for the v6 series, but none for v7.  I hope that's a
-> >>>>>>>>> good sign.
-> >>>>>>>>>
-> >>>>>>>>
-> >>>>>>>> I hope so too, I've tried to address the comments in v6.
-> >>>>>>>>
-> >>>>>>>
-> >>>>>>> Circling back to this series, we will itegrate and test this version.
-> >>>>>>
-> >>>>>> How'd it go?
-> >>>>>>
-> >>>>
-> >>>> My apologies for the delay—I got distracted by other tasks in Xe (my
-> >>>> driver) and was out for a bit. Unfortunately, this series breaks
-> >>>> something in the existing core MM code for the Xe SVM implementation. I
-> >>>> have an extensive test case that hammers on SVM, which fully passes
-> >>>> prior to applying this series, but fails randomly with the series
-> >>>> applied (to drm-tip-rc6) due to the below kernel lockup.
-> >>>>
-> >>>> I've tried to trace where the migration PTE gets installed but not
-> >>>> removed or isolate a test case which causes this failure but no luck so
-> >>>> far. I'll keep digging as I have time.
-> >>>>
-> >>>> Beyond that, if I enable Xe SVM + THP, it seems to mostly work (though
-> >>>> the same issue as above eventually occurs), but I do need two additional
-> >>>> core MM patches—one is new code required for Xe, and the other could be
-> >>>> considered a bug fix. Those patches can included when Xe merges SVM THP
-> >>>> support but we need at least not break Xe SVM before this series merges.
-> >>>>
-> >>>> Stack trace:
-> >>>>
-> >>>> INFO: task kworker/u65:2:1642 blocked for more than 30
-> >>>> seconds.
-> >>>> [  212.624286]       Tainted: G S      W           6.18.0-rc6-xe+ #1719
-> >>>> [  212.630561] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-> >>>> disables this message.
-> >>>> [  212.638285] task:kworker/u65:2   state:D stack:0     pid:1642
-> >>>> tgid:1642  ppid:2      task_flags:0x4208060 flags:0x00080000
-> >>>> [  212.638288] Workqueue: xe_page_fault_work_queue
-> >>>> xe_pagefault_queue_work [xe]
-> >>>> [  212.638323] Call Trace:
-> >>>> [  212.638324]  <TASK>
-> >>>> [  212.638325]  __schedule+0x4b0/0x990
-> >>>> [  212.638330]  schedule+0x22/0xd0
-> >>>> [  212.638331]  io_schedule+0x41/0x60
-> >>>> [  212.638333]  migration_entry_wait_on_locked+0x1d8/0x2d0
-> >>>> [  212.638336]  ? __pfx_wake_page_function+0x10/0x10
-> >>>> [  212.638339]  migration_entry_wait+0xd2/0xe0
-> >>>> [  212.638341]  hmm_vma_walk_pmd+0x7c9/0x8d0
-> >>>> [  212.638343]  walk_pgd_range+0x51d/0xa40
-> >>>> [  212.638345]  __walk_page_range+0x75/0x1e0
-> >>>> [  212.638347]  walk_page_range_mm+0x138/0x1f0
-> >>>> [  212.638349]  hmm_range_fault+0x59/0xa0
-> >>>> [  212.638351]  drm_gpusvm_get_pages+0x194/0x7b0 [drm_gpusvm_helper]
-> >>>> [  212.638354]  drm_gpusvm_range_get_pages+0x2d/0x40 [drm_gpusvm_helper]
-> >>>> [  212.638355]  __xe_svm_handle_pagefault+0x259/0x900 [xe]
-> >>>> [  212.638375]  ? update_load_avg+0x7f/0x6c0
-> >>>> [  212.638377]  ? update_curr+0x13d/0x170
-> >>>> [  212.638379]  xe_svm_handle_pagefault+0x37/0x90 [xe]
-> >>>> [  212.638396]  xe_pagefault_queue_work+0x2da/0x3c0 [xe]
-> >>>> [  212.638420]  process_one_work+0x16e/0x2e0
-> >>>> [  212.638422]  worker_thread+0x284/0x410
-> >>>> [  212.638423]  ? __pfx_worker_thread+0x10/0x10
-> >>>> [  212.638425]  kthread+0xec/0x210
-> >>>> [  212.638427]  ? __pfx_kthread+0x10/0x10
-> >>>> [  212.638428]  ? __pfx_kthread+0x10/0x10
-> >>>> [  212.638430]  ret_from_fork+0xbd/0x100
-> >>>> [  212.638433]  ? __pfx_kthread+0x10/0x10
-> >>>> [  212.638434]  ret_from_fork_asm+0x1a/0x30
-> >>>> [  212.638436]  </TASK>
-> >>>>
-> >>>
-> >>> Hi, Matt
-> >>>
-> >>> Thanks for the report, two questions
-> >>>
-> >>> 1. Are you using mm/mm-unstable, we've got some fixes in there (including fixes to remove_migration_pmd())
-> > 
-> > remove_migration_pmd - This is a PTE migration entry.
-> > 
-> 
-> I don't have your symbols, I thought we were hitting, the following condition in the walk
-> 
-> 	if (thp_migration_supported() && pmd_is_migration_entry(pmd)) {
-> 
-> But sounds like you are not, PMD/THP has not been enabled in this case
-> 
 
-No, migration_entry_wait rather than pmd_migration_entry_wait.
 
-> 
-> >>>    - Generally a left behind migration entry is a symptom of a failed migration that did not clean up
-> >>>      after itself.
-> > 
-> > I'm on drm-tip as I generally need the latest version of my driver
-> > because of the speed we move at.
-> > 
-> > Yes, I agree it looks like somehow a migration PTE is not getting
-> > properly removed.
-> > 
-> > I'm happy to cherry pick any patches that you think might be helpful
-> > into my tree.
-> > 
-> 
-> Could you try the mm/mm-new tree with the current xe driver?
->
+Hello,
 
-Unfortunately, this is a tough one. We land a lot of patches in Xe/DRM,
-so bringing the driver up to date with an MM branch is difficult, and
-I’m not an expert at merging branches. It would be nice if, in the DRM
-flow, we could merge patches from outside our subsystem into a
-bleeding-edge kernel for the things we typically care about—but we’d
-need a maintainer to sign up for that.
+kernel test robot noticed "BUG:KASAN:double-free_in_mempool_free" on:
 
-> In general, w.r.t failure, I would check for the following
-> 
-> 1. Are the dst_pfns in migrate_vma_pages() setup correctly by the device driver?
-> 2. Any failures in folio_migrate_mapping()?
-> 3. In migrate_vma_finalize() check to see if remove_migration_ptes() failed
-> 
-> If (3) fails that will explain the left over migration entries
-> 
+commit: 022e94e2c304505973d00dedca4b1432c231fbf6 ("mempool: add mempool_{alloc,free}_bulk")
+https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
 
-Good tips, but think I got it via biscet.
+[test failed on linux-next/master 187dac290bfd0741b9d7d5490af825c33fd9baa4]
 
-Offending patch is:
+in testcase: kunit
+version: 
+with following parameters:
 
-'mm/migrate_device: handle partially mapped folios during collection'
+	group: group-03
 
-The failing test case involves some remap-related issue. It’s a
-parameterized test, so I honestly couldn’t tell you exactly what it’s
-doing beyond the fact that it seems nonsensical but stresses remap. I
-thought commit '66d81853fa3d selftests/mm/hmm-tests: partial unmap,
-mremap and anon_write tests' would catch this, but it looks like I need
-to make the remap HMM test cases a bit more robust—similar to my
-driver-side tests. I can take an action item to follow up on this.
 
-Good news, I can tell you how to fix this...
 
-In 'mm/migrate_device: handle partially mapped folios during collection': 
+config: x86_64-rhel-9.4-kunit
+compiler: gcc-14
+test machine: 8 threads 1 sockets Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz (Haswell) with 16G memory
 
-109 +#if 0
-110 +                       folio = page ? page_folio(page) : NULL;
-111 +                       if (folio && folio_test_large(folio)) {
-112 +                               int ret;
-113 +
-114 +                               pte_unmap_unlock(ptep, ptl);
-115 +                               ret = migrate_vma_split_folio(folio,
-116 +								  migrate->fault_page);
-117 +
-118 +                               if (ret) {
-119 +                                       ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-120 +                                       goto next;
-121 +                               }
-122 +
-123 +                               addr = start;
-124 +                               goto again;
-125 +                       }
-126 +#endif
+(please refer to attached dmesg/kmsg for entire log/backtrace)
 
-You can probably just delete this and use my patch below, but if you
-want to try fixing it with a quick look: if migrate_vma_split_folio
-fails, you probably need to collect a hole. On success, you likely want
-to continue executing the remainder of the loop. I can try playing with
-this tomorrow, but it’s late here.
 
-I had privately sent you a version of this patch as a fix for Xe, and
-this one seems to work:
 
-[PATCH] mm/migrate: Split THP found in middle of PMD during page collection
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202511201309.55538605-lkp@intel.com
 
-The migrate layer is not coded to handle a THP found in the middle of a
-PMD. This can occur if a user manipulates mappings with mremap(). If a
-THP is found mid-PMD during page collection, split it.
 
-Cc: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- mm/migrate_device.c | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
+kern  :err   : [  152.903458] [   T4181] ==================================================================
+kern  :err   : [  152.916375] [   T4181] BUG: KASAN: double-free in mempool_free (mm/mempool.c:687 (discriminator 1))
+kern  :err   : [  152.922918] [   T4181] Free of addr ffff88812a92b800 by task kunit_try_catch/4181
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index abd9f6850db6..9ffc025bad50 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -65,6 +65,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-        struct vm_area_struct *vma = walk->vma;
-        struct mm_struct *mm = vma->vm_mm;
-        unsigned long addr = start, unmapped = 0;
-+       struct folio *split_folio = NULL;
-        spinlock_t *ptl;
-        pte_t *ptep;
+kern  :err   : [  152.932343] [   T4181] CPU: 2 UID: 0 PID: 4181 Comm: kunit_try_catch Tainted: G S  B            N  6.18.0-rc3-00007-g022e94e2c304 #1 PREEMPT(voluntary)
+kern  :err   : [  152.932348] [   T4181] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE, [N]=TEST
+kern  :err   : [  152.932350] [   T4181] Hardware name: Dell Inc. OptiPlex 9020/0DNKMN, BIOS A05 12/05/2013
+kern  :err   : [  152.932351] [   T4181] Call Trace:
+kern  :err   : [  152.932353] [   T4181]  <TASK>
+kern  :err   : [  152.932354] [   T4181]  dump_stack_lvl (lib/dump_stack.c:122)
+kern  :err   : [  152.932358] [   T4181]  print_address_description+0x88/0x320
+kern  :err   : [  152.932362] [   T4181]  print_report (mm/kasan/report.c:483)
+kern  :err   : [  152.932365] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+kern  :err   : [  152.932367] [   T4181]  kasan_report_invalid_free (mm/kasan/report.c:563)
+kern  :err   : [  152.932371] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+kern  :err   : [  152.932374] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+kern  :err   : [  152.932376] [   T4181]  ? mempool_free (mm/mempool.c:687 (discriminator 1))
+kern  :err   : [  152.932378] [   T4181]  check_slab_allocation (mm/kasan/common.c:230)
+kern  :err   : [  152.932381] [   T4181]  __kasan_mempool_poison_object (mm/kasan/common.c:542 (discriminator 1))
+kern  :err   : [  152.932384] [   T4181]  mempool_free_bulk (mm/mempool.c:137 mm/mempool.c:160 mm/mempool.c:653)
+kern  :err   : [  152.932387] [   T4181]  ? mempool_init_node (mm/mempool.c:140 mm/mempool.c:160 mm/mempool.c:245)
+kern  :err   : [  152.932389] [   T4181]  ? _raw_spin_lock_irqsave (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:111 (discriminator 4) kernel/locking/spinlock.c:162 (discriminator 4))
+kern  :err   : [  152.932393] [   T4181]  mempool_free (mm/mempool.c:687 (discriminator 1))
+kern  :err   : [  152.932395] [   T4181]  ? __pfx_mempool_free (mm/mempool.c:686)
+kern  :err   : [  152.932398] [   T4181]  ? kasan_save_track (mm/kasan/common.c:69 (discriminator 1) mm/kasan/common.c:78 (discriminator 1))
+kern  :err   : [  152.932400] [   T4181]  ? remove_element (mm/mempool.c:172)
+kern  :err   : [  152.932414] [   T4181] mempool_double_free_helper (mm/kasan/kasan_test_c.c:1444 (discriminator 17)) kasan_test
+kern  :err   : [  152.932423] [   T4181]  ? __pfx_mempool_double_free_helper (mm/kasan/kasan_test_c.c:1436) kasan_test
+kern  :err   : [  152.932440] [   T4181]  ? sched_clock (arch/x86/include/asm/preempt.h:95 arch/x86/kernel/tsc.c:289)
+kern  :err   : [  152.932442] [   T4181]  ? __update_idle_core (kernel/sched/sched.h:1340 kernel/sched/fair.c:7584)
+kern  :err   : [  152.932445] [   T4181] mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1457) kasan_test
+kern  :err   : [  152.932453] [   T4181]  ? __pfx_mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1448) kasan_test
+kern  :err   : [  152.932461] [   T4181]  ? __switch_to (arch/x86/include/asm/cpufeature.h:101 arch/x86/kernel/process_64.c:378 arch/x86/kernel/process_64.c:666)
+kern  :err   : [  152.932463] [   T4181]  ? __pfx_mempool_kmalloc (mm/mempool.c:715)
+kern  :err   : [  152.932466] [   T4181]  ? __pfx_mempool_kfree (mm/mempool.c:722)
+kern  :err   : [  152.932468] [   T4181]  ? __pfx_read_tsc (arch/x86/include/asm/tsc.h:57 arch/x86/kernel/tsc.c:1134)
+kern  :err   : [  152.932471] [   T4181]  ? ktime_get_ts64 (kernel/time/timekeeping.c:387 kernel/time/timekeeping.c:404 kernel/time/timekeeping.c:967)
+kern  :err   : [  152.932474] [   T4181]  ? __pfx___schedule (kernel/sched/core.c:6785)
+kern  :err   : [  152.932477] [   T4181]  kunit_try_run_case (lib/kunit/test.c:450 lib/kunit/test.c:493)
+kern  :err   : [  152.932480] [   T4181]  ? __pfx_kunit_try_run_case (lib/kunit/test.c:480)
+kern  :err   : [  152.932483] [   T4181]  ? _raw_spin_lock_irqsave (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:111 (discriminator 4) kernel/locking/spinlock.c:162 (discriminator 4))
+kern  :err   : [  152.932486] [   T4181]  ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:161)
+kern  :err   : [  152.932489] [   T4181]  ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:161)
+kern  :err   : [  152.932492] [   T4181]  ? __pfx_kunit_try_run_case (lib/kunit/test.c:480)
+kern  :err   : [  152.932494] [   T4181]  ? __pfx_kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:26)
+kern  :err   : [  152.932498] [   T4181]  kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:31)
+kern  :err   : [  152.932501] [   T4181]  kthread (kernel/kthread.c:463)
+kern  :err   : [  152.932503] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+kern  :err   : [  152.932505] [   T4181]  ? __pfx__raw_spin_lock_irq (kernel/locking/spinlock.c:169)
+kern  :err   : [  152.932509] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+kern  :err   : [  152.932511] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+kern  :err   : [  152.932513] [   T4181]  ret_from_fork (arch/x86/kernel/process.c:164)
+kern  :err   : [  152.932516] [   T4181]  ? __pfx_kthread (kernel/kthread.c:412)
+kern  :err   : [  152.932518] [   T4181]  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+kern  :err   : [  152.932522] [   T4181]  </TASK>
 
-@@ -107,10 +108,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-                }
-        }
+kern  :err   : [  153.201368] [   T4181] Allocated by task 4181:
+kern  :warn  : [  153.205558] [   T4181]  kasan_save_stack (mm/kasan/common.c:57)
+kern  :warn  : [  153.210098] [   T4181]  kasan_save_track (mm/kasan/common.c:69 (discriminator 1) mm/kasan/common.c:78 (discriminator 1))
+kern  :warn  : [  153.214637] [   T4181]  remove_element (mm/mempool.c:172)
+kern  :warn  : [  153.219176] [   T4181]  mempool_alloc_preallocated (include/linux/spinlock.h:406 mm/mempool.c:409 mm/mempool.c:585)
+kern  :warn  : [  153.224582] [   T4181] mempool_double_free_helper (mm/kasan/kasan_test_c.c:1439) kasan_test
+kern  :warn  : [  153.231213] [   T4181] mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1457) kasan_test
+kern  :warn  : [  153.237839] [   T4181]  kunit_try_run_case (lib/kunit/test.c:450 lib/kunit/test.c:493)
+kern  :warn  : [  153.242727] [   T4181]  kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:31)
+kern  :warn  : [  153.248830] [   T4181]  kthread (kernel/kthread.c:463)
+kern  :warn  : [  153.252759] [   T4181]  ret_from_fork (arch/x86/kernel/process.c:164)
+kern  :warn  : [  153.257211] [   T4181]  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
 
--       ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-+       ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
-        if (!ptep)
-                goto again;
-        arch_enter_lazy_mmu_mode();
-+       ptep += (addr - start) / PAGE_SIZE;
+kern  :err   : [  153.264025] [   T4181] Freed by task 4181:
+kern  :warn  : [  153.267866] [   T4181]  kasan_save_stack (mm/kasan/common.c:57)
+kern  :warn  : [  153.272416] [   T4181]  kasan_save_track (mm/kasan/common.c:69 (discriminator 1) mm/kasan/common.c:78 (discriminator 1))
+kern  :warn  : [  153.276964] [   T4181]  __kasan_save_free_info (mm/kasan/generic.c:590 (discriminator 1))
+kern  :warn  : [  153.282025] [   T4181]  __kasan_mempool_poison_object (mm/kasan/common.c:534)
+kern  :warn  : [  153.287868] [   T4181]  mempool_free_bulk (mm/mempool.c:137 mm/mempool.c:160 mm/mempool.c:653)
+kern  :warn  : [  153.292668] [   T4181]  mempool_free (mm/mempool.c:687 (discriminator 1))
+kern  :warn  : [  153.296944] [   T4181] mempool_double_free_helper (mm/kasan/kasan_test_c.c:1444 (discriminator 5)) kasan_test
+kern  :warn  : [  153.303573] [   T4181] mempool_kmalloc_double_free (mm/kasan/kasan_test_c.c:1457) kasan_test
+kern  :warn  : [  153.310203] [   T4181]  kunit_try_run_case (lib/kunit/test.c:450 lib/kunit/test.c:493)
+kern  :warn  : [  153.315091] [   T4181]  kunit_generic_run_threadfn_adapter (lib/kunit/try-catch.c:31)
+kern  :warn  : [  153.321198] [   T4181]  kthread (kernel/kthread.c:463)
+kern  :warn  : [  153.325127] [   T4181]  ret_from_fork (arch/x86/kernel/process.c:164)
+kern  :warn  : [  153.329576] [   T4181]  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
 
-        for (; addr < end; addr += PAGE_SIZE, ptep++) {
-                struct dev_pagemap *pgmap;
-@@ -209,6 +211,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-                        bool anon_exclusive;
-                        pte_t swp_pte;
+kern  :err   : [  153.336387] [   T4181] The buggy address belongs to the object at ffff88812a92b800
+which belongs to the cache kmalloc-128 of size 128
+kern  :err   : [  153.350320] [   T4181] The buggy address is located 0 bytes inside of
+128-byte region [ffff88812a92b800, ffff88812a92b880)
 
-+                       if (folio_order(folio)) {
-+                               split_folio = folio;
-+                               goto split;
-+                       }
-+
-                        flush_cache_page(vma, addr, pte_pfn(pte));
-                        anon_exclusive = folio_test_anon(folio) &&
-                                          PageAnonExclusive(page);
-@@ -287,8 +294,34 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-        if (unmapped)
-                flush_tlb_range(walk->vma, start, end);
+kern  :err   : [  153.365488] [   T4181] The buggy address belongs to the physical page:
+kern  :warn  : [  153.371765] [   T4181] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x12a92a
+kern  :warn  : [  153.380478] [   T4181] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+kern  :warn  : [  153.388842] [   T4181] flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
+kern  :warn  : [  153.396513] [   T4181] page_type: f5(slab)
+kern  :warn  : [  153.400355] [   T4181] raw: 0017ffffc0000040 ffff888100042a00 ffffea00040b9600 0000000000000004
+kern  :warn  : [  153.408806] [   T4181] raw: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+kern  :warn  : [  153.417258] [   T4181] head: 0017ffffc0000040 ffff888100042a00 ffffea00040b9600 0000000000000004
+kern  :warn  : [  153.425800] [   T4181] head: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+kern  :warn  : [  153.434338] [   T4181] head: 0017ffffc0000001 ffffea0004aa4a81 00000000ffffffff 00000000ffffffff
+kern  :warn  : [  153.442876] [   T4181] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000002
+kern  :warn  : [  153.451422] [   T4181] page dumped because: kasan: bad access detected
 
-+split:
-        arch_leave_lazy_mmu_mode();
--       pte_unmap_unlock(ptep - 1, ptl);
-+       pte_unmap_unlock(ptep - 1 + !!split_folio, ptl);
-+
-+       /*
-+        * XXX: No clean way to support higher-order folios that don't match PMD
-+        * boundaries for now — split them instead. Once mTHP support lands, add
-+        * proper support for this case.
-+        *
-+        * The test, which exposed this as problematic, remapped (memremap) a
-+        * large folio to an unaligned address, resulting in the folio being
-+        * found in the middle of the PTEs. The requested number of pages was
-+        * less than the folio size. Likely to be handled gracefully by upper
-+        * layers eventually, but not yet.
-+        */
-+       if (split_folio) {
-+               int ret;
-+
-+               ret = split_folio(split_folio);
-+               if (fault_folio != split_folio)
-+                       folio_unlock(split_folio);
-+               folio_put(split_folio);
-+               if (ret)
-+                       return migrate_vma_collect_skip(addr, end, walk);
-+
-+               split_folio = NULL;
-+               goto again;
-+       }
+kern  :err   : [  153.459902] [   T4181] Memory state around the buggy address:
+kern  :err   : [  153.465395] [   T4181]  ffff88812a92b700: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+kern  :err   : [  153.473335] [   T4181]  ffff88812a92b780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+kern  :err   : [  153.481266] [   T4181] >ffff88812a92b800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+kern  :err   : [  153.489195] [   T4181]                    ^
+kern  :err   : [  153.493121] [   T4181]  ffff88812a92b880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+kern  :err   : [  153.501051] [   T4181]  ffff88812a92b900: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+kern  :err   : [  153.508980] [   T4181] ==================================================================
+kern  :info  : [  153.517054] [   T3993]     ok 51 mempool_kmalloc_double_free
+kern  :err   : [  153.517141] [   T4183] ==================================================================
 
-        return 0;
- }
 
-If I apply the #if 0 change along with my patch above (plus one core
-MM patch needed for Xe that adds a support function), Xe SVM fully
-passes our test cases with both THP enabled and disabled.
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20251120/202511201309.55538605-lkp@intel.com
 
-> >>> 2. The stack trace is from hmm_range_fault(), not something that this code touches.
-> >>>
-> > 
-> > Agree this is a symptom of the above issue.
-> > 
-> >>> The stack trace shows your code is seeing a migration entry and waiting on it.
-> >>> Can you please provide a reproducer for the issue? In the form of a test in hmm-tests.c
-> >>>
-> > 
-> > That will be my plan. Right now I'm opening my test up which runs 1000s
-> > of variations of SVM tests and the test that hangs is not consistent.
-> > Some of these are threaded or multi-process so it might possibly be a
-> > timing issue which could be hard to reproduce in hmm-tests.c. I'll do my
-> > best here.
-> > 
-> >>> Have you been able to bisect the issue?
-> >>
-> > 
-> > That is my next step along with isolating a test case.
-> > 
-> >> Also could you please try with 10b9feee2d0d ("mm/hmm: populate PFNs from PMD swap entry")
-> >> reverted?
-> >>
-> > 
-> > I can try but I highly doubt this is related. The hanging HMM code in is
-> > PTE walk step after this, also I am not even enabling THP device pages
-> > in my SVM code to reproduce this.
-> > 
-> 
-> Thanks, do regular hmm-tests pass for you in that setup/environment?
-> 
 
-Yes. As noted above, I need to make the remap HMM case a bit more
-robust. I’ll try to get to this before the Thanksgiving break in the US
-(next Thursday-Friday).
 
-Matt
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-> Balbir
-> 
-> > Matt
-> > 
-> >>>
-> >>> Balbir
-> >>>
-> >>>
-> >>>> Matt 
-> >>>>
-> >>>>>> Balbir, what's the status here?  It's been a month and this series
-> >>>>>> still has a "needs a new version" feeling to it.  If so, very soon
-> >>>>>> please.
-> >>>>>>
-> >>>>>
-> >>>>> I don't think this needs a new revision, I've been testing frequently
-> >>>>> at my end to see if I can catch any regressions. I have a patch update for
-> >>>>> mm-migrate_device-add-thp-splitting-during-migration.patch, it can be applied
-> >>>>> on top or I can send a new version of the patch. I was waiting
-> >>>>> on any feedback before I sent the patch out, but I'll do it now.
-> >>>>>
-> >>>>>> TODOs which I have noted are
-> >>>>>>
-> >>>>>> https://lkml.kernel.org/r/aOePfeoDuRW+prFq@lstrano-desk.jf.intel.com
-> >>>>>
-> >>>>> This was a clarification on the HMM patch mentioned in the changelog
-> >>>>>
-> >>>>>> https://lkml.kernel.org/r/CABzRoyZZ8QLF5PSeDCVxgcnQmF9kFQ3RZdNq0Deik3o9OrK+BQ@mail.gmail.com
-> >>>>>
-> >>>>> That's a minor comment on not using a temporary declaration, I don't think we need it, let me know if you feel strongly
-> >>>>>
-> >>>>>> https://lkml.kernel.org/r/D2A4B724-E5EF-46D3-9D3F-EBAD9B22371E@nvidia.com
-> >>>>>
-> >>>>> I have a patch for this, which I posted, I can do an update and resend it if required (the one mentioned above)
-> >>>>>
-> >>>>>> https://lkml.kernel.org/r/62073ca1-5bb6-49e8-b8d4-447c5e0e582e@
-> >>>>>>
-> >>>>>
-> >>>>> I can't seem to open this
-> >>>>>
-> >>>>>> plus a general re-read of the
-> >>>>>> mm-migrate_device-add-thp-splitting-during-migration.patch review
-> >>>>>> discussion.
-> >>>>>>
-> >>>>> That's the patch I have
-> >>>>>
-> >>>>> Thanks for following up
-> >>>>> Balbir
-> >>>
-> >>
-> 
 
