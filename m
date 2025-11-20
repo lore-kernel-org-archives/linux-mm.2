@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6897BCF8570
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F00E3CF8575
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:24:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B93EC6B0092; Thu, 20 Nov 2025 04:21:35 -0500 (EST)
+	id 2E93E6B007B; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6BD46B0095; Thu, 20 Nov 2025 04:21:35 -0500 (EST)
+	id 2C0F06B0089; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A81C36B0096; Thu, 20 Nov 2025 04:21:35 -0500 (EST)
+	id 1D69A6B008C; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 96A6A6B0092
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:21:35 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E8C95B35E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:21:35 +0000 (UTC)
-X-FDA: 84130442550.09.FE12779
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AA020C000D
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:21:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eu0rkwm4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763630493; a=rsa-sha256;
-	cv=none;
-	b=lOiTlb2whviegr3dvfxmhTQk+stP/ZrxT23Q8gmAY3t68gdi3NmGjZL0YCndZZ55Ohu+Ym
-	yZ0tCZ0QCtO7WIEwsjAb1pL3oWuSBblh+UTWbauXkAGy1WmFvRfIIPPslONGG18tUZ1U/d
-	TKJiovZYTHG2XOFGzlRYVp3RasJv7p0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eu0rkwm4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 068EA6B007B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:24:43 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B01D413BB4C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:24:42 +0000 (UTC)
+X-FDA: 84130450404.20.F15716D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E496EC0009
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:24:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWbw+OUy;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763630493;
+	s=arc-20220608; t=1763630681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qExihDuno7MaUro6s8FSJYa8KtjgfePenn0sjuTqV9s=;
-	b=KIgQ/Kvyz/YE1yiGwsmMmscK9OYha8J2gqJHaBXIVNnNhqO5+4BMrZ5ejxrYRSuXTUMBYr
-	shH5k1PM7kI4jkBAHnnC5GqXzr3NB2ec6VSsDH6ZlFDlHzczKZuOgTfSatydJBnMYX9Un0
-	WsSoerwoR1jq2ArN4wStvgaW/Ql64Uw=
+	bh=MexTHsODPsFaneP6axrOnEPrzTnipF93xhJ0bFbDIz8=;
+	b=Otf1ETrIJZO/UDAs6C89i2uOSmDsaDG9p05jHVKuaxBu/RjH8hieo21gwlflilo+U76Ks1
+	XwutSuZVGCaNAL4eaS/QD67pmuanOSJxqLa7+9Z3R3LPK4NqG5kEZtanT0wMJfLb6SFA7G
+	K37m3yAM0nDXFoCOYt9l2y2XTaezBbU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWbw+OUy;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763630681; a=rsa-sha256;
+	cv=none;
+	b=E1xqYu2UkbZ9QbcTsD0xLcO55bAm52MSasWGviTz2ld5sX66BL3UmatojeVz6+nughC72Z
+	+7f6O41RhDS+lEnc6J/BGxobMlumD3OYsDCPUhlziW97023X9PFPjivC9PPVYFmkbeSzxw
+	fI28d8wD11foGQ0wKU6wp0Lck8Aucvg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 263446011E;
-	Thu, 20 Nov 2025 09:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69759C116B1;
-	Thu, 20 Nov 2025 09:21:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E5DA4416B3;
+	Thu, 20 Nov 2025 09:24:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5A8C4CEF1;
+	Thu, 20 Nov 2025 09:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763630492;
-	bh=qExihDuno7MaUro6s8FSJYa8KtjgfePenn0sjuTqV9s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=eu0rkwm4OBhsJQEJ00dt0+Lu8W7F8Xg4qqtuoQiXLuc7+DVYohnk+hBynpVP84HCo
-	 6va4jxO0d2DFSzImL/zm7JxlR0CKNPehqnSq/KA27pgEZqlBnEgVkmRUzhkO6vKWsA
-	 4zGwzDAiMNtewJneTXI2NcaND2UFiWBZCWdiO793ZNhKru4FzNo30AEq45vj78cSCI
-	 U8Z/iDCQidE84ggxTX1yRdVvyUmgHxYRiPuWVeB6peTPUAfzzI1bTgxDkqXRV04Bj9
-	 O0FibFGbf2QjoPt4zKGcP4tl8MKahPARfvWzscDk+GGESNDrjDIhszZIjM+rhvh6Fm
-	 OO/SQekExeOAw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  Alexander Graf <graf@amazon.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  David Matlack <dmatlack@google.com>,  Mike
- Rapoport <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,
-  LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] kho: free chunks using free_page() instead of kfree()
-In-Reply-To: <d41ce2d1-e353-4e5b-a17f-52d888a560b4@web.de> (Markus Elfring's
-	message of "Wed, 19 Nov 2025 21:06:49 +0100")
-References: <20251118182218.63044-1-pratyush@kernel.org>
-	<d41ce2d1-e353-4e5b-a17f-52d888a560b4@web.de>
-Date: Thu, 20 Nov 2025 10:21:30 +0100
-Message-ID: <mafs0qztt2h5x.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1763630679;
+	bh=yMpM6nvcM1itHRSp8tmlbz1cYUJ/Loqws7g5zCaxfzQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KWbw+OUy0Wv5wFZ6Y8BGC1yDMPrd1YgLC8xh53gmso8bTjGeqsB4zWE+kJUflx3UE
+	 ViUBcBqTk/fhkjBp216aqkVvOgzV4GQYWxE/rABw44iVPQVzV8a5q7EOHTRja2YB9X
+	 yaA6ul6O0ng8UAgA+ERWORkBsfp3c8Rdd9RYRTsZ2IQtAmijeV1W2QajdmJicONMGT
+	 LU4LyeqPE+H5oHQ7tN0AR6sCKJDSes2RlmSaAXwvF/ZbB9l/CnIsnBMrYDbSNYS0/W
+	 Nf2N7hOFKS5mEuRlmO1bGEM4xzpwmv+stVvqMwILPri2deacRUMvObwIZBMjkdeG99
+	 hiy2SdVL5mvbA==
+Message-ID: <21c6ef2d-6836-47cf-9529-6838a940d06f@kernel.org>
+Date: Thu, 20 Nov 2025 10:24:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AA020C000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: cqnj91t9qair5pcg1kiz69mseux5g7ea
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/huge_memory: fix NULL pointer deference when
+ splitting folio
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr
+Cc: linux-mm@kvack.org, stable@vger.kernel.org
+References: <20251119235302.24773-1-richard.weiyang@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251119235302.24773-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E496EC0009
+X-Stat-Signature: fk6rxnnncxd68rukstidsgnnczdwra4c
 X-Rspam-User: 
-X-HE-Tag: 1763630493-978955
-X-HE-Meta: U2FsdGVkX19TY1NOHCQg8oNGIengjjymlyHbcjXWvY6R/RHz1TzoEvh51OUz9SGp3QL8R8QpULSMVx7P+CSV88LyDXOoryhp0leN4Abo3qN5rhw9/x1EmRy80omSojttsuhjWhHi581w31+pbb/bp3fNW3tWSuu5Cu+lbypr9bzGImUgKDZMuTdITB0Qj0QOGGRwOFZCTiNA9RAqEHGdjhedvuNCZuiPGfyzUl++ACmvXvxaC95eHUyOg6ZSngjqJj1f+Sm4s2H6kPsgN6zPtGyxOjQJytXm7YIdAurOhnbRYZMsgLT5aTld4er5Q8QC4gVnh6ZLP/vbSevMpZfbuuJ4Su8KlthbJSmqOIGam17anaB7OeolwoLKfuIMqkm2URiccmTt/2dmwhfpH+I0s9yGUPSfbyiT2RemqYjh2V66ylDrvydv/ognNnKrxbCmL6BexH6yD9YEL+JOFDhyBcGZ0JoAG8whCJUcsevcyyTIYW33slMVz9x0tH21bSKLKLK2TtIpi9gAnQq7WgUt8PG8tY/7uzy/xEkak+FjF4A3TpiaT9HBMQrlr1u+kfmiSBV6Id9deayWZ+AEnEkV/a5beStKb4FxIpr8wFckYVQbZBEOgY+Io8LpqGGMRJGzmKACxmlhjcmvteaD1CtAGn/DmfWlaan1/Ahoz7M7D81XLurdgpfRL5y3MDd730YuLyXEJer+ZQvNWt/f4KgZHalLy/sFwxQ9/W0s//1W/MGDfmuv8uFr7F4UFAqWYMdq35K9hhEB7jZuPJPiGL4rsWJEESU4KgZDIcVMbvCpvvhMM6kprixHGdSlLSSTYF04cHtCM5EMOTy77xVJxUE+wGlrf3QBLyea4evN5e8UbbLf/s32N2U2FG20c1O7vaTICAEDhWadwclfNVw0sel4MCw5pnd9XPy+y/m+/yDGE1iqiugFXocypWq2Q8tdsQYY4gxeUfnnZIfmwCbCKwL
- PLYMyNXI
- zugZSthFFSnodm/WTA/c6WxoYDc/bwmdKXoORw/QodnlKgH6ZCqWCkEXmQMjMSOqq8u/pYvBUOVNS86qaQZlfnqphFL81/rSk8qFf8QGU/8POBVnI7HSAwSm7t6hxa6VCs+Ua3Vf1izlte6aGPwelQkkygV6ndrubVR88Y/uTf6cawvjH+Y6vNrgj4uMh3U9X28cWCf0z5vbDiY+ybfRjcwoD0ZKQn2gXbFdP9NiCh8LUNNLv/BGOtzomELzcc45L4gE9espuJ8iGv+sZvyvJeZTwO4HNSfVs/ZSN
+X-HE-Tag: 1763630680-379558
+X-HE-Meta: U2FsdGVkX19f3lRMsPD2OIZMta3FU6Dystu6SDAViIV9C0jg1wluHyoc+SKoFa3jNFPOEakY7CqckBvfqMxyzithfaKfyfV6oqmQsCbdQn+kjcwM4N9/QwP+zLbQC9gs0LJ5SQxIqeUuWpINBsGFDTVm2YblRxjc84OQBNTiDmpD+VbDds0WIets5ipk/gn9ZjFVxXE4cATYBKI2ezPCjrsR3NkXJgYZUzvesEeTkpE7+8CjHlCcYN/NhUilNxEFlsiVwb/ZanaCES6IgjEK3SUsTDuJD5+G+gotiz7B7WjEDTcKSPzDXLxD8ZP9timO0LxiAK/egglBhDpP1MI4w/dEdL1a7ML/OU1oIGB6mU0DB8c25Ytq/kLfLpvvuj7Bct9ORqcYflwSOJP8miRuFPvQGRF6WYfK7zGsOY2a4DKcvEb0tcmXLejdsSOegbpH61GBK9zB8XJoKmoP0FrzyjQsOkRAHNdrx7KR3Kd2O2AvMW+vnWkvkmzGNBVjFRMgiURMVe8K4BUs2LuRgmmoHSaEw3RHQfc1feTLM4KNTSXrbDNMawmwHPSVFL4f9ny4HsfuWAwJW0q89KS03FEYXjj7IPS7CigVyHc31qJHNGcdtS/0QriOv4cQuo+GzDD8ya1WxXutTsY7Tr9AZsdnvVvCX+5py2CfnWh6ufBFtKx1vA73ZkXqVC6RcneVLLZ2QxOR3i5iSyc/wqQ3GSS1kJg5XeSXXrMkbrM1SJv1GNncYM8GwkeFSLYDBdrYAxThdz2gF6FI/GG9F1TS+prE48nubefA0QoUnC0DFQAw5CKbKkvaFmTcByXECvqxTibl+fJrlIjLRSIjv0B4IKvPnjy5ckGMGm7NAD6FCvc1YCkqwxWjKvuu/DxcwD9ey9W13aZbB7NoACovYv9xrY5ioXEBHlzOs9j8c23umfa/EI64Ec2660Y5KrrTavqlBsTQD5ufdIZSWFCcfNgSGqY
+ 8Pi66Ee3
+ WlMEpPlhSY7firUKjvRntj9kqJzGZKiqc47XsTMGBTt7SyPLTa5PmoArVlnAEPadUCoCKM5wKaX99MNdEW1iWk4F1BmXmpOqvBjGh3EkgPAEKZDNekLZmQqE5eK7ZDW0LFbKSCPym9Zvo5nBRqFn3K7/VbD/NsldZ93rP2XsozGcpCx2jlwepsY8ooXl6jtF9/8Mqlc62Ll1gvZZ/8+APCQFh/YkMojAI9TbFYXvwIkwiWwqXHUn+6xurBygQQ5GoLIi57dRypHB8jxj+FCxMZ3zNZjKQfZYdzP4aRv55YpCD5CnvuiPNXX5bN/40EXXV+U9tvPiAMmmbzYr9s/e9PRbCn7fQ8zfAZr9ZskZZ8PbpGQKxR5HJWGXSWGuDp/HYhrVSGEtEDcmvEPs+6CD6YP5lIGHf1sTF1KIVb5WbkW4VXdzIOn4nzxw0b6kmNr/JU+FFt/xyZbHGX7ST2P+iwEm4fOXGgYaIkQdHjn+aPBugXIh+oIAYaCM41Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,30 +98,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19 2025, Markus Elfring wrote:
+On 11/20/25 00:53, Wei Yang wrote:
+> Commit c010d47f107f ("mm: thp: split huge page to any lower order
+> pages") introduced an early check on the folio's order via
+> mapping->flags before proceeding with the split work.
+> 
+> This check introduced a bug: for shmem folios in the swap cache and
+> truncated folios, the mapping pointer can be NULL. Accessing
+> mapping->flags in this state leads directly to a NULL pointer
+> dereference.
+> 
+> This commit fixes the issue by moving the check for mapping != NULL
+> before any attempt to access mapping->flags.
+> 
+> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Cc: <stable@vger.kernel.org>
 
-> =E2=80=A6
->> When the commit switched to using the buddy allocator directly, it
->> missed updating kho_mem_ser_free() to use free_page() instead of
->> kfree().
->
-> Would another imperative wording become helpful for an improved change de=
-scription?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
-ocumentation/process/submitting-patches.rst?h=3Dv6.18-rc6#n94
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-"the commit" here refers to the commit fa759cd75bce5 ("kho: allocate
-metadata directly from the buddy allocator"), not "this commit"/"this
-patch". I figured that can be understood from the context and I won't
-need to spell the whole thing out again.
+-- 
+Cheers
 
-I don't understand the technicalities of the English grammar so well,
-but IIUC imperative mood is used in sentences that give a command. This
-paragraph talks about a past event.
-
-Anyway, if you have something better, happy to take suggestions.
-
---=20
-Regards,
-Pratyush Yadav
+David
 
