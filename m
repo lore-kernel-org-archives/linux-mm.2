@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6615CFA442
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 19:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED753CFA441
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 20:02:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB2CB6B0007; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
+	id 3FC8D6B0011; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D632A6B0008; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
+	id 3AD236B0022; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C78F46B002A; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
+	id 29BF36B0026; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B53116B0007
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6649412F92B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:56:19 +0000 (UTC)
-X-FDA: 84132042078.07.9D4529C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9539120002
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:56:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s2EPi/es";
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 170B36B0011
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:03 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A5EFC0330
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:02:01 +0000 (UTC)
+X-FDA: 84132056442.01.4D9E0EF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6301610000B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 20:01:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=synl6nsr;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763668577;
+	s=arc-20220608; t=1763668919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cYC40L8sQ+P2147+k130cpCq8h5yBBFwMhFNnLakTj8=;
-	b=r5QcFLRK35ynAWgCRf+nnCCiz8+Bc7xfWVcVTM8rTL4gCYEYvhei3DUuJil8ZqMKt0bAVS
-	0v2xhIl2HQYHDMcQgPdaY+9Xp+nT90J9JcX68XKXFCGl3HoSpMv5sCGJGdfckyUEva9/yq
-	b9L5vHzULU8sZNf5dXCqhkw6wbMt8R0=
+	bh=pHVgaJEz/7rvdq304rmAiCJ6m4k1j4l8IBv8ks/glf4=;
+	b=odzB9nvJORgpcPDVsQ1/SEgWJ2WLEI0LSBzk+hRs6N2PYyV5po2naXFe9b/BeMz8yhHmND
+	xv9tcZFKt6KkUFxS1MnBCnCvq0oKd57V+xAFID6cev3LlQlgpoaoUcP7jSYUfMLbUdImD4
+	ksbLTzpkrVEdYqcubP+cpob0dxahLXA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s2EPi/es";
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=synl6nsr;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763668577; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763668919; a=rsa-sha256;
 	cv=none;
-	b=pyF7GQBg/BBGMJUYwFh1WmH512HP95OOh0G2Q22jIeWx0JglmGaAVPCF6e7cW7WCIu6xmr
-	5bChxjMECZiQ1SuG+0ZpDue7XygSzfq8je5Z8Bia7+32F+exRSZb8/Fo921XWIEq3WcoGQ
-	tSXOzWxHfbwhIT1LkxsAv05QZiOGx78=
+	b=W0GbQfs6KoxfipNbl2EHiSqPKhVbA0GewM0tEwwEtwM9uNRQBNbjgiU6ciLP1yWRV3RPQ/
+	v69xuQyP54QBWkeDc4CKoTBamIC/cgkZK5XyGcuGDYm6Zl9SY65fP0662jovS6Bg0SGxVp
+	kWxyML0adFeDTsXR53RqR6lZGCFrfFM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5E5CE43727;
-	Thu, 20 Nov 2025 19:56:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2534C4CEF1;
-	Thu, 20 Nov 2025 19:56:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 773A2600AA;
+	Thu, 20 Nov 2025 20:01:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9507C4CEF1;
+	Thu, 20 Nov 2025 20:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763668576;
-	bh=qtHvUpDPE2SB/7d+oRdbHGsrVFL/jkakr/Kb85gdfuY=;
+	s=k20201202; t=1763668918;
+	bh=ZvX0wFM0qL1CtiFzpbJjufy/5/LYP6pOHRZEztLhSmA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s2EPi/esShxVmKeGCrkp0KRAHLvnhdW/GcHJ8d+tDjKFM7F8KsywJTyMOj6UPKEUN
-	 JfICeRLft9enfyA48HZS7fZIhmli01y5IKtxQStFgbnQYh+Wg/hJdKNQu5pKrWGI6U
-	 aUE4Uh2NfkDnWPjyfjVoId8/4u0TJdwMKJcgE5W/E4ibcScQ9xzkpoJRaXaaMeB0va
-	 bCoxFkkS82ym5DC9YfXtS9NvCeowXC/n1nOniqwrGjbrcXl873VWPm7GUHrysXlcpR
-	 IFBQ7MYOy5bnX8XxTEKbVaGPK6E7tucBykq4p+bB5GZloovvY47vJAsWFlKC27h9Gl
-	 1Al2xQMhRMsvA==
-Message-ID: <c29e2ec1-c607-4467-b500-617584c8fb6c@kernel.org>
-Date: Thu, 20 Nov 2025 20:56:10 +0100
+	b=synl6nsrM7koryVi0hr6FZQxhlPjLlbafWBhokYY8sS5/OqXPPqbsN0XP+yeyDQJB
+	 fn2p2iPvCfi1BvSCFhV5u1Q2qN6MDyaoZK0vA97C8VpPFqwUoykvzHEZlcaqFqw5mf
+	 MPCMkvHV6SZoCdV/El4CL0YSGFvRP/H7hwVsGMwuEoc/iHhmaOBS6mltuWCx29klCO
+	 MhrFWO2gJ39g5tHgax9XHO3kn8SXTxMMYOmDpIuSYLO7RKWWykQoDbrzlw+7UX0YA7
+	 bfiqxng42Was01wyhEfy3sii1trz/aRcmolAyR8NWw6EpbW4sTdKXLFKptgow196Ds
+	 xmCfl0EPdcKvA==
+Message-ID: <90790838-f6aa-41e7-9f34-7d5a1e18a706@kernel.org>
+Date: Thu, 20 Nov 2025 21:01:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] mm/huge_memory: prevent NULL pointer dereference
- in try_folio_split_to_order()
+Subject: Re: [RFC PATCH 2/3] mm/huge_memory: add kernel-doc for
+ folio_split_supported()
 To: Zi Yan <ziy@nvidia.com>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -80,22 +80,22 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
  <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20251120035953.1115736-1-ziy@nvidia.com>
- <20251120035953.1115736-2-ziy@nvidia.com>
- <875584d7-5a68-4f7a-8549-2a9cd6c7f9d8@kernel.org>
- <FCFED9E9-56A9-4260-8B42-D0BCFC83C506@nvidia.com>
+ <20251120035953.1115736-3-ziy@nvidia.com>
+ <b051bc10-cf68-4e1b-847d-a1323552b963@kernel.org>
+ <9D88B1A6-1D00-4770-9B66-A9A0F1B6AC15@nvidia.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <FCFED9E9-56A9-4260-8B42-D0BCFC83C506@nvidia.com>
+In-Reply-To: <9D88B1A6-1D00-4770-9B66-A9A0F1B6AC15@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9539120002
-X-Stat-Signature: 3o6s57heo1ahtzek6pz81jtaooh8hgwp
-X-Rspamd-Server: rspam02
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6301610000B
+X-Stat-Signature: zmzx7kf6yff33tfwnexanfj9sw1qkndr
 X-Rspam-User: 
-X-HE-Tag: 1763668577-674756
-X-HE-Meta: U2FsdGVkX18DivvEHQj5Cs29iwZANxXMBYbkDw/b2YwWpo1/VmIJP4Sg2d+7b8H84/HeS8H2iTwl3YzqgsaeRfkZmPrlkvjnUrKLS8KkJa5ssCzBTgVTYpzLgAAuOBzoBi2ttjLzPPfO/mDvDZ07Vvo46PyUNAZ6UZDR0KJColfWV4YzMl0XA9vADolzmMOsY1aUi05XIdcrlLdNWI+LqdbvYw64lnmOIF2Q7dy7J6YYNjjWHrMG2T04uUJx82fbXuHOLC3NoTwX9k0YRFaRIJgtWiMhNM1hB6/dKxJUKDE9br60jlvPMhIGQ7Glqjy3lUOOrifztnGJsJDTcbsz80mbD5fIsGxCXtmuGPjVR7TL1n3QIAtNj5Zs06w11ivzDplvSsrGLrjblJhQzxtDm3ma06sqdIlEv7r238emb14wQrCzZY2+DPoUlM18CavHIJSaR1YwJDBZhVvdm3UpCirHiB0GifkjT+dbS3V3sGfRV8lFfTVNQo/JFpvz7Jk+Y+jIVU5FmPj4bjMJrRvmhSju9cX8KI4w/ERRK9/kh6gWui1Z1PsG4BUR8DRSda0ITqYBAPdXePffjzaQgzX3scm6u3CjJomwA4+CAxhfLs7OPXvj3Mhw5Yz5+Gz7H7oLFsXyyuRemEc+/HXeXq+exF1lIncVWdcqYk3KzthFGISX/FcJsPf4uPQ5N3apatXDGS3YhgD4uOMUeMyeZTircvU/Gb508PBbk1Gd2BtAkFOi2G6DtpNrcDMYOb6oCc3mFvJss7l6cF72gqHMarzQNJ2FJPQx0TQXYgtZrzjZ71LP6boMwgNiJrwVl7Lo+JDQPWZcSTBa3rb9VUpvb5fMR34zZMx3gX50EekyX7/3lWI5ac12gnqhrWPURGAnwn+bys5s5A4T7JnWCo3t6Hk8a46/FtpxA60mSMB4wTFHDgDFcVeMYACDdZ6Cyi9mgPlKDmO7eXLIBUCzrCLtixb
- +WsSo18I
- bIUd3/VxrtRuoYDCR2oYqx/qs3iZeNf5lAigERq25Xmh/2Vx8xV/pE7xT/zS7sAt4wECOKpcpkYi5nEWy7mgj0ZNENvIoDuxZrcNQpHyoMd87CWSV+hKwcfOJzyMtNyEIRS7rpgTEnMFiteCt7H4Agl9yOIs4XvFT9h5hE0UyVMyP7JN1+dZQtPk0XR9niPNblcplTQGs3TBGzIiGCbbPvYtnDUJWbOScL67ibNoOxCdVf/WA6GMry0EKGSbYbCv4aEatQQ+X5fmV42n9wdR0SpSxsXFAKBKPaLRZrTv0g7yJJsfFm+V4bJOev6Pu6j2YXmt4TfI4S74rvVJT/TccQTOFlN5rPivFCZxdj7q/Uaw7W8sWM5ra/TOKTfpVJFBQUAeWia7incjCpq/Jp8QKh4BaDs/+9zrl3JWyV7sKaoWJDVgxLd+oB1Mv9xejaO/y85oQ8abNJdneFnTYNrF+rj301XQ56OI2UIkm
+X-HE-Tag: 1763668919-898826
+X-HE-Meta: U2FsdGVkX18LNlQAYewD+ZcScUUw8AjLCFPCKT8hfqzmOOUC+cbFJpmcox2EeQ7R1mc5KG4okID3QqVHAsloSg69iNoW5jiQatj46UrfLeZSkIKfSKk9o/jliDtZeFzNACQqAR2H9FR8Yy9u10G6ZHn1QrBi9JLYqKqQTtFXLyX2Mp1aQGdGeAY343LdFWD2BTGeqEuXfns1VjqAD9O+shAMtNzrBHuXQ/xEGu5KnJKhkZUsz1IzNmaELoqK397kg5SXPnhnEKu5BTNZzKMtfaa5iZKlU4EAJ+3yO+7xKHDJAlIWqwbZoA6NyN4TRNGVcTM8GvB7FcSCcp+7icyzoGbxg+jkdpYuKGUKbFvBa+Ff5VDd4/Ql3mnhcLglbxp95lIcUrz1YBubNNcs9MQabllx52yQEuCfPveef9S4/npgwQMMBwETCJf5qwwbDf8oS33r/L9Q0cxqqYXV1fG7MOfAbMIOA4QtVSIIvjcWWp45NikzF9nZDH2Dn9mRLjsrz0E1po90UOZA3/oCqNZOVKdS/Gq/89Wtk0SiOChfDMUP2iKe4jSse46Ml2kEERJkwZ/5QqRi8GwEQ9VpbPcNFudnvklDLSnq0k5QSgB9pXfEO/z0kADQzMzyA7xOaFyQPWZ5BJAR7XSXyjALLsyfOz3g3OrLHeVDhIzC0aGC1p/ccGjJSyADBEOkbGFapJm+W141QgDS9SYUA9DlM5Y0wA6RaW0JPBykbvf2EjpH+XDdcns0IX9o3ayIZ9pc5+EzCz2hussPIZMLF/mUnAocfLMsUT9hAm9NwxC+mE88VXdY608/1mSYKdJC8O3/XgIOEnuM3r7rNaPwbSUgAIAVPKGfhWSWIBd+Ebaq39Ak4KjM5Nh9T25mm2OtQeTU6RUcE6eXXZMaqSpyh9IFjAHAacqGnNu/L/5FUSczXiOcmWYXzNWA/aXTnbhzaCdoeU3pTOzF2bFCEcfJh+cetXB
+ 2PO3zvMS
+ wxZZFZLsrUKDgcw/P2WQzu+DK2tPLqNpNMagNzPHtlkI7yLO/ujw7jfkHcB3uIDlu96rhZZFT1lyPg5LuKyIMywbB0XxNwHS4+zrcVS+IDlkxWpmHS5c7LvkctfcErzqAYCXmWNN895wqZ2+QDsnURRcgY7UV+WLhpa/twbyqSExrVqdcqcbLgRjxwHvXHfeYYPFiGq0Vc1KExOVbtzwtA6uz8uyHFRAC4m9wR/ShQ7PBe/8Vp9n7SXon2T/Vu1q9APEe2XthoBD4WsvHaXmXJEr9ZtTOwM3y5JgWJxR0bsTnpcHPtWPx8fRAt60BZFRcOOw6Oqo9RFkILnWBKUtF2CmfgrULIBpE7oG04CjnapA7+3w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,86 +104,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 15:41, Zi Yan wrote:
-> On 20 Nov 2025, at 4:25, David Hildenbrand (Red Hat) wrote:
+On 11/20/25 15:48, Zi Yan wrote:
+> On 20 Nov 2025, at 4:27, David Hildenbrand (Red Hat) wrote:
 > 
 >> On 11/20/25 04:59, Zi Yan wrote:
->>> folio_split_supported() used in try_folio_split_to_order() requires
->>> folio->mapping to be non NULL, but current try_folio_split_to_order() does
->>> not check it. Add the check to prevent NULL pointer dereference.
->>>
->>> There is no issue in the current code, since try_folio_split_to_order() is
->>> only used in truncate_inode_partial_folio(), where folio->mapping is not
->>> NULL.
+>>> It clarifies that folio_split_supported() does not check folio->mapping and
+>>> can dereference it.
 >>>
 >>> Signed-off-by: Zi Yan <ziy@nvidia.com>
 >>> ---
->>>    include/linux/huge_mm.h | 7 +++++++
->>>    1 file changed, 7 insertions(+)
+>>>    mm/huge_memory.c | 17 +++++++++++++++++
+>>>    1 file changed, 17 insertions(+)
 >>>
->>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->>> index 1d439de1ca2c..0d55354e3a34 100644
->>> --- a/include/linux/huge_mm.h
->>> +++ b/include/linux/huge_mm.h
->>> @@ -407,6 +407,13 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
->>>    static inline int try_folio_split_to_order(struct folio *folio,
->>>    		struct page *page, unsigned int new_order)
->>>    {
->>> +	/*
->>> +	 * Folios that just got truncated cannot get split. Signal to the
->>> +	 * caller that there was a race.
->>> +	 */
->>> +	if (!folio_test_anon(folio) && !folio->mapping)
->>> +		return -EBUSY;
->>> +
->>>    	if (!folio_split_supported(folio, new_order, SPLIT_TYPE_NON_UNIFORM, /* warns= */ false))
->>>    		return split_huge_page_to_order(&folio->page, new_order);
->>>    	return folio_split(folio, new_order, page, NULL);
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index efea42d68157..15e555f1b85d 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -3688,6 +3688,23 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>>>    	return 0;
+>>>    }
+>>>   +/**
+>>> + * folio_split_supported() - check if a folio can be split to a given order
+>>> + * @folio: folio to be split
+>>> + * @new_order: the smallest order of the after split folios (since buddy
+>>> + *             allocator like split generates folios with orders from @folio's
+>>> + *             order - 1 to new_order).
+>>> + * @split_type: uniform or non-uniform split
+>>> + * @warns: whether gives warnings or not for the checks in the function
+>>> + *
+>>> + * folio_split_supported() checks if @folio can be split to @new_order using
+>>> + * @split_type method.
+>>> + *
+>>> + * Context: Caller must make sure folio->mapping is not NULL, since the
+>>> + *          function does not check it and can dereference folio->mapping
 >>
->> I guess we'll take the one from Wei
->>
->> https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
->>
->> right?
+>> Only for anon folios. Also, I would drop the detail about dereference.
 > 
-> This is different. Wei’s fix is to __folio_split(), but mine is to
-> try_folio_split_to_order(). Both call folio_split_supported(), thus
-> both need the folio->mapping check.
-
-Ah, good that I double-checked :)
-
+> OK.
 > 
-> That is also my question in the cover letter on whether we should
-> move folio->mapping check to folio_split_supported() and return
-> error code instead of bool. Otherwise, any folio_split_supported()
-> caller needs to check folio->mapping.
+>>
+>> I guess we really need the folio lock to prevent concurrent truncation.
+>>
+>> Maybe something like:
+>>
+>> "The folio must be locked. For non-anon folios, the caller must make sure that folio->mapping is not NULL (e.g., not truncated)."
+> 
+> Sure. Do you think it is worth adding VM_WARN_ONCE_ON(!folio_test_locked);
+> and VM_WARN_ONCE_ON(!folio->mapping); ?
 
-I think the situation with truncation (-that shmem swapcache thing, 
-let's ignore that for now) is that the folio cannot be split until fully 
-freed. But we don't want to return -EINVAL to the caller, the assumption 
-is that the folio will soon get resolved -- folio freed -- and the 
-caller will be able to make progress. So it's not really expected to be 
-persistent.
+Makes sense. Or we allow !folio->mapping, return false and do something 
+like the following. Still wondering how we could handle that case better.
 
--EINVAL rather signals "this cannot possibly work, so fail whatever you 
-are trying".
+if (!folio_split_supported(folio)) {
+	if (folio_split_temporarily_unsupported(folio))
+		return -EBUSY;
+	return -EINVAL;
+}
 
-We rather want to indicate "there was some race situation, if you try 
-again later it might work or might have resolved itself".
-
-Not sure I like returning an error from folio_split_supported(), as it's 
-rather a boolean check (supported vs. not supported).
-
-Likely we could just return "false" for truncated folios in 
-folio_split_supported(), but then state that that case must be handled 
-upfront.
-
-We could provide another helper to wrap the truncation check, hmmm
-
-
-BTW, I wonder if the is_huge_zero_folio() check should go into 
-folio_split_supported() and just return in -EINVAL. (we shouldn't really 
-trigger that). Similarly we could add a hugetlb sanity check.
+hmmmm
 
 -- 
 Cheers
