@@ -4,106 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 193ECCF8848
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 11:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3DF2CF8847
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 12:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0241E6B000C; Thu, 20 Nov 2025 06:56:31 -0500 (EST)
+	id 5D0366B000E; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F16AA6B0022; Thu, 20 Nov 2025 06:56:30 -0500 (EST)
+	id 5A7F86B0022; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E052A6B0023; Thu, 20 Nov 2025 06:56:30 -0500 (EST)
+	id 4BE376B0023; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C44A06B000C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 06:56:30 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D141113BC0A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:56:25 +0000 (UTC)
-X-FDA: 84130832730.27.22FCD61
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0E69A180009
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:56:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A6596B000E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CBDAE140885
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:00:18 +0000 (UTC)
+X-FDA: 84130842516.21.89D38E3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1A704A001C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:00:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1dqDXb5;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763639784;
+	s=arc-20220608; t=1763640017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lApzEuvQnP6sGQHfDY2VfhcBrFxi8a4AnoOmbX99m8M=;
-	b=4tirzYpuuCgsnfpVAy2Gk1orXa+ZGMzrQJLyXUFJG8zCaqzybC3n7gzIEetVRQMTD/eT3w
-	7wxH7TLYIL80n97tC7q/0f8LZ3dF/eBvrUH0Ksvc4ZTRTqoTWboACk64lGp6U01qONepVQ
-	pxv1zjyzoifHMQm3LXckrIuQfXkRCcE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763639784; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=izoi8yQsiqbRVYHfS6EEAgxH+tvjcbRq8E1ezeHjWsM=;
+	b=I/v1ngS4Dw6Oi48byJTu68ohFrvL/DeOUvP9D1dwrmJLyG2odglDAfUbDqc2qDNvIs2OBn
+	0+ZM04niRfGS6K48qx/X/wObDVCx5DvkwbV+FHlx5Q1eVzaaVJcCMC72iXUERY6o8A6jD2
+	iMQYpQApndNF3S5z8pyS0TAHXfvm8l8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763640017; a=rsa-sha256;
 	cv=none;
-	b=iJHfdbUeXvqITa0Nfi8wY7xEs89/BVPO/Q/DZWN3Id9c8qVDWAt9wPRaHEI7CiAhY1THEk
-	4QrgyIeMKObCguIPMo6dF9X99HyMIRB4SToesp/2Ye2znJGuOdiFhm6mhBNCBJegX73nJY
-	nuoPUrC4bHk8abetEyBqnJN8swUr6Uk=
+	b=YeKAQ+LYmeP8jRrgpBo+asGImUHoWZdi+3Snw2vTef4LlFcnQcjN3eMuNWyscRV8jQ75mK
+	i59qtRZO5k3jdfkNu3mN3wtJlZc0cOclVpr/0307yxDODpfs3J1FOzHv7VEjiQwmvk2Gfg
+	O+nCSrVigS/+WIqCLoe15rIXRCws2uQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dBxct3wQ1zKHMZq
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:55:42 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 2C95B1A16A3
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:56:12 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP1 (Coremail) with SMTP id cCh0CgDHAkzaAR9p6oyMBQ--.55774S2;
-	Thu, 20 Nov 2025 19:56:12 +0800 (CST)
-Message-ID: <a7e55445-20ee-4133-8455-b6c5f7a45ff3@huaweicloud.com>
-Date: Thu, 20 Nov 2025 19:56:10 +0800
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1dqDXb5;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4E3956014A;
+	Thu, 20 Nov 2025 12:00:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D163FC116B1;
+	Thu, 20 Nov 2025 12:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763640016;
+	bh=a891wy2LWb3q2/Qd/lnECCF9sVIO/WgE2s+OoTfoJFc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B1dqDXb5vwyekZMQTVzWrNIa3ii435VJA9YGdsMd12UcKhIyrY47VzRMFUQst9HEM
+	 lqmNlXlj0DfISnogXhDAcDa76t1saCVD5TtDEV7CdFlQNEirQnRdZxtG6eDAgMUQXp
+	 NBhW8+ko2f9Az3rlRQ+U2aMYlEQnnqZiIqakVgcajTN+UndTLeibEzPmhdMJ4XnbMl
+	 3PMImHGIJ0+jwJ4PfNkXwkeOTdc/dUwN93UBgJjVrbJYOMBxBgJ7qLPMYDaPIQUhiE
+	 UhY2BSOj8zLyCxKseM4ZRlB7pwwbCOsQPhPMRnGGYDWjsyEXUWuu/QolHVt8PmnZFV
+	 1U0iwQ8F48AqA==
+Date: Thu, 20 Nov 2025 14:00:07 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Tianyou Li <tianyou.li@intel.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone->contiguous
+ update when move pfn range
+Message-ID: <aR8Cx_K2N8DPlwkP@kernel.org>
+References: <20251119114252.oykrczprf3ecd7ak@master>
+ <20251119140657.3845818-1-tianyou.li@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 25/26] mm: memcontrol: eliminate the problem of dying
- memory cgroup for LRU folios
-To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, harry.yoo@oracle.com, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <44fd54721dfa74941e65a82e03c23d9c0bff9feb.1761658311.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <44fd54721dfa74941e65a82e03c23d9c0bff9feb.1761658311.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgDHAkzaAR9p6oyMBQ--.55774S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrurW8Xw4DCr4xJr47XFWkZwb_yoWkGFbEy3
-	Z8WasFgry3WrsxGw1kWrn8ZFsrKa12yr1rXF4UAFW7A3Z0qay2kr97Xr45ZrWfuF4rG3W8
-	X34DWr4xWwnrtjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
-	0PDUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119140657.3845818-1-tianyou.li@intel.com>
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0E69A180009
-X-Stat-Signature: 91448jgd4hpe3ygkw85ny6tz33s56wdg
+X-Rspamd-Queue-Id: 1A704A001C
+X-Stat-Signature: qg87ydptk1b5r1q8nzxqraoarhek7uh3
 X-Rspam-User: 
-X-HE-Tag: 1763639778-357335
-X-HE-Meta: U2FsdGVkX19Ir3vgF5CJ9aMOd4I1ISfuVDsPkn5W+ZDBdKKycQ1kR6vBsP3QK2nJeBxxQV7oZ8azBIRtCeMlJQ17ojtwe+pVbCHmO6HvlQXaYQZSvPASbyLYcEQ2P9w7o5AjeIUYrJlQGmxs5kOlre0ksbp3Eq07gihtFfG0ar1GLmJQlktWR0h28ow6Ir5YiSZfwGgwC95zqh65fETQIwlZI06aPvtG8S5CKcKVj9iGcKPqNRPpp1sIk2qEj3AZ5TSA/mV6xk/lDIoxwPEp8eJ/K6Ikfigwx9FcbXTmbUZL8P66O92ejFLcXchynZyoqj5bNlLh3n3/fjTgHND4uqD/ZQCIY5CLATzurlwIb52ik2pLIY75i4cIaj6YXaW4fyPWjSfzp1jmTKDpvUButaIpdm96aFDIw+8t8CXSSSJLOsZXLDQRzSY7XHk12cYncZ+9n/2EyD8ixuG1kbov8jBSpB4oUKE1EaIGt1iEBEGJxmG0C20lwYpRxcM1gqIPGlM2eh50m2JFr4qrnfaI7MyTaldWlWoJB+GFuHmgCwKem84dFXJ7XOfnqRC1vLu0cPChUshRiBoaSYIMmKOyaAeXYpbXARl9uvU/49KJ54icac0mYOFH/ShvMfBwK8kQuI9562DH0aB60s8Y91Cx73QRivur0vL23JbThEiYQN7zQ+Md6bm3f/hBLFS+Gr4+2xjefRzHCvmk5rBklZt3jTiUkv5h8xHwGObFo2Khj3N4qSs7cAwhqqfX28QvdHM1eWIFuZEhDyiDWv2ZbYUT+4woBR5LvVY9BIBL7dER+QHEZR1ppA3INIPbsSeOPJhKWNveF5rnQfbyOw1bc8KKALx/p7vfIyAqfYkIx6Bn3exxs1uPqZHEzPdJCLlteZ9HURrqedWf4Q2Ix0EPSAP/H3SNAH7mAtzya35LzPlY2RAnJgClqNJt+xcB7HIOIYsP4swRSs9GyXJhDDe4Ikl
- PGPWYKWm
- W1DvUFpfkysOWBwAZXOZx8xX4SSOwZvf4n5Qjg/gx9ybzMNpZ/2Ai4GsTkw0VS6BvfDSy61dgK++pJkwlkzDLgPfl5h8ZlapmzrEyQUNEfE2rpIV4qHloJsR1ytvqfCPO4TCfTzAqL8TWVG953K6Ehvxqag==
+X-HE-Tag: 1763640016-842526
+X-HE-Meta: U2FsdGVkX19KumtOa9pKUYM/NGlGN8ntB9kuvfkhLdQsi3v9OmIjAsZmU725lTriF0SQOD5KDRBOe7EIwNAls7xDOtsrRcDG8lEEGtMi7OSd9KsPLDcG/eXc31m1JNcCq2rrGlIXqGHT94s34Lv+vhOkrnspGcojoddUX4wgh3mZNLlXkKdnqNhKQ7x/D9xpe7g/0aqcCzX5r/rjJreKG+PkRP+kQcNYs77ZbXufwl7FPK6++Oq2lqdl4FDQPzd7Eivc/cBoKhWSKi5cEtZ1qwYaDPs0XOGqVnrqeGvp+jwAPUWF/PwlQc9qfLUs8BRryjEwFA5oB/mr48S6epo8ucHKr7A1ACofrNcVdgDqj+0ze1H2zjGvzSoWHKninjgbDPKFFpPUFrcV/gWa4nMv/tms6cG1sXsJrQrAB0MD/L4i4B5sbyPVbgzPS7RfWER66L37YeTkSd4u5I30p5zPhcwuRovNZNrtjBhRaFf4EHtmCHZeKoPOQbVJJNfD6YoGZqwqA6r88t6ViHSNSbCM7UV0467Ej5gUKuMjNRc5y2k4R3sNbNht0EQJ15yMRKOMIP2lUepohCD38srmDXRFksqaHSsy0C5ED4sKgCxf/WPCTiQcfHScrCtKU20qC7vThqUR8RJFYumQaCpWd+FmQKoi83sLX+oVkml1iJzWTbD9a6ZfZC8oWB8bD+aFLj2biyoYn9Bwe1Au+dY8dOeL2Jvs/uWGXpekSMpVVt7ybXH1R0oAyNBXnh1CtFhqu7/jQABEAJ82GA7gE6zf2Tu0YCCt1uAeayrE2E+fvGh7DyR99TJt4jtx9BayQqPeFJcq+FM3e/HgXZNwgsFn4WBftDMp2Aff5r2C/RPPhwQS4Ly81OssON7kw2lak1ICAfa3YHw8qUT6sIPYOWcibn5DEK8xAphxo8J5LOsuJwbCCxG5KIfR3KSMRAi1QAplekl5+sVo9ZncZu0VuWBpzpu
+ Lto4S9CI
+ hTyjYmux7BMijxNdD//RbXWXzVafS0qpldqk0uaj6ey3KIfhsdI0zYI8fhcJU2RApdXjRzemePP8dsvIebgjDOu/0t2W8/UbncjZz2eGHS1kxZBMmnum/6C7chFiD7NAgT/q2I4JGNIU4Ac98Oj+aIlwOss7KloEENdiKgrPbZBs7aG7P/mhtuLM3XkDyOkr2pbgSP+XnUMU2k8yA8YvOLv6ZhxBta3Xp4Ys2aWyDvelVrMsRUv1dBmnVihWwA8E9IIrNaPm7qwZvFoiAhcST2czrKg8Sopy2N/Ct4mfJLnc4zWWo+SmKZAGB35G8UkY0eEKzFEjxDACztcU8CU4iCS26bfC+yCk+6X9PgkcPMLhrus1v7znMzG/giA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,43 +100,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
+Please start a new thread when sending a new version of a patch next time.
+And as Wei mentioned, wait a bit for the discussion on vN to settle before
+sending vN+1.
 
-On 2025/10/28 21:58, Qi Zheng wrote:
->  static void reparent_locks(struct mem_cgroup *src, struct mem_cgroup *dst)
->  {
-> +	int nid, nest = 0;
-> +
->  	spin_lock_irq(&objcg_lock);
-> +	for_each_node(nid) {
-> +		spin_lock_nested(&mem_cgroup_lruvec(src,
-> +				 NODE_DATA(nid))->lru_lock, nest++);
-> +		spin_lock_nested(&mem_cgroup_lruvec(dst,
-> +				 NODE_DATA(nid))->lru_lock, nest++);
-> +	}
+On Wed, Nov 19, 2025 at 10:06:57PM +0800, Tianyou Li wrote:
+> When invoke move_pfn_range_to_zone, it will update the zone->contiguous by
+> checking the new zone's pfn range from the beginning to the end, regardless
+> the previous state of the old zone. When the zone's pfn range is large, the
+> cost of traversing the pfn range to update the zone->contiguous could be
+> significant.
+> 
+> Add fast paths to quickly detect cases where zone is definitely not
+> contiguous without scanning the new zone. The cases are: when the new range
+> did not overlap with previous range, the contiguous should be false; if the
+> new range adjacent with the previous range, just need to check the new
+> range; if the new added pages could not fill the hole of previous zone, the
+> contiguous should be false.
+> 
+> The following test cases of memory hotplug for a VM [1], tested in the
+> environment [2], show that this optimization can significantly reduce the
+> memory hotplug time [3].
+> 
+> +----------------+------+---------------+--------------+----------------+
+> |                | Size | Time (before) | Time (after) | Time Reduction |
+> |                +------+---------------+--------------+----------------+
+> | Memory Hotplug | 256G |      10s      |      2s      |       80%      |
+> |                +------+---------------+--------------+----------------+
+> |                | 512G |      33s      |      6s      |       81%      |
+> +----------------+------+---------------+--------------+----------------+
+> 
+> [1] Qemu commands to hotplug 512G memory for a VM:
+>     object_add memory-backend-ram,id=hotmem0,size=512G,share=on
+>     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
+>     qom-set vmem1 requested-size 512G
+> 
+> [2] Hardware     : Intel Icelake server
+>     Guest Kernel : v6.18-rc2
+>     Qemu         : v9.0.0
+> 
+>     Launch VM    :
+>     qemu-system-x86_64 -accel kvm -cpu host \
+>     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
+>     -drive file=./seed.img,format=raw,if=virtio \
+>     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
+>     -m 2G,slots=10,maxmem=2052472M \
+>     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
+>     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
+>     -nographic -machine q35 \
+>     -nic user,hostfwd=tcp::3000-:22
+> 
+>     Guest kernel auto-onlines newly added memory blocks:
+>     echo online > /sys/devices/system/memory/auto_online_blocks
+> 
+> [3] The time from typing the QEMU commands in [1] to when the output of
+>     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
+>     memory is recognized.
+> 
+> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
+> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
+> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
+> Reviewed-by: Pan Deng <pan.deng@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
+> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+> ---
+>  mm/memory_hotplug.c | 51 ++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 48 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 0be83039c3b5..aed1827a2778 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -723,6 +723,51 @@ static void __meminit resize_pgdat_range(struct pglist_data *pgdat, unsigned lon
+>  
 >  }
 >  
->  static void reparent_unlocks(struct mem_cgroup *src, struct mem_cgroup *dst)
->  {
-> +	int nid;
+> +static bool __meminit check_zone_contiguous_fast(struct zone *zone,
+> +			unsigned long start_pfn, unsigned long nr_pages)
+> +{
+> +	const unsigned long end_pfn = start_pfn + nr_pages;
 > +
-> +	for_each_node(nid) {
-> +		spin_unlock(&mem_cgroup_lruvec(dst, NODE_DATA(nid))->lru_lock);
-> +		spin_unlock(&mem_cgroup_lruvec(src, NODE_DATA(nid))->lru_lock);
+> +	/*
+> +	 * Given the moved pfn range's contiguous property is always true,
+> +	 * under the conditional of empty zone, the contiguous property should
+> +	 * be true.
+> +	 */
+> +	if (zone_is_empty(zone)) {
+> +		zone->contiguous = true;
+
+I don't think it's safe to set zone->contiguous until the end of
+move_pfn_range_to_zone(). See commit feee6b298916 ("mm/memory_hotplug:
+shrink zones when offlining memory").
+
+check_zone_contiguous_fast() should only check if the zone remains
+contiguous after hotplug or it's certainly discontinuous, but should not
+set zone->contiguous. It still must be cleared before resizing the zone and
+set after the initialization of the memory map.
+
+> +		return true;
 > +	}
->  	spin_unlock_irq(&objcg_lock);
+> +
+> +	/*
+> +	 * If the moved pfn range does not intersect with the original zone span,
+> +	 * the contiguous property is surely false.
+> +	 */
+> +	if (end_pfn < zone->zone_start_pfn || start_pfn > zone_end_pfn(zone)) {
+> +		zone->contiguous = false;
+> +		return true;
+> +	}
+> +
+> +	/*
+> +	 * If the moved pfn range is adjacent to the original zone span, given
+> +	 * the moved pfn range's contiguous property is always true, the zone's
+> +	 * contiguous property inherited from the original value.
+> +	 */
+> +	if (end_pfn == zone->zone_start_pfn || start_pfn == zone_end_pfn(zone))
+> +		return true;
+> +
+> +	/*
+> +	 * If the original zone's hole larger than the moved pages in the range,
+> +	 * the contiguous property is surely false.
+> +	 */
+> +	if (nr_pages < (zone->spanned_pages - zone->present_pages)) {
+> +		zone->contiguous = false;
+> +		return true;
+> +	}
+> +
+> +	clear_zone_contiguous(zone);
+> +	return false;
+> +}
+> +
+>  #ifdef CONFIG_ZONE_DEVICE
+>  static void section_taint_zone_device(unsigned long pfn)
+>  {
+> @@ -752,8 +797,7 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  {
+>  	struct pglist_data *pgdat = zone->zone_pgdat;
+>  	int nid = pgdat->node_id;
+> -
+> -	clear_zone_contiguous(zone);
+> +	const bool fast_path = check_zone_contiguous_fast(zone, start_pfn, nr_pages);
+>
+>  	if (zone_is_empty(zone))
+>  		init_currently_empty_zone(zone, start_pfn, nr_pages);
+> @@ -783,7 +827,8 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  			 MEMINIT_HOTPLUG, altmap, migratetype,
+>  			 isolate_pageblock);
+>  
+> -	set_zone_contiguous(zone);
+> +	if (!fast_path)
+> +		set_zone_contiguous(zone);
 >  }
 >  
-
-The lock order follows S0→D0→S1→D1→…, and the correct unlock sequence should be Dn→Sn→…→D1→S0
-
-However, the current unlock implementation uses D0→S0→D1→S1→…
-
-I’m not certain whether this unlock order will cause any issues—could this lead to potential
-problems like deadlocks or lock state inconsistencies?
+>  struct auto_movable_stats {
+> -- 
+> 2.47.1
+> 
 
 -- 
-Best regards,
-Ridong
-
+Sincerely yours,
+Mike.
 
