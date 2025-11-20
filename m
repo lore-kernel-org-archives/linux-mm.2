@@ -4,133 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E298CFA443
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 19:43:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6615CFA442
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 19:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1196B0029; Thu, 20 Nov 2025 14:43:25 -0500 (EST)
+	id DB2CB6B0007; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 998E36B0032; Thu, 20 Nov 2025 14:43:25 -0500 (EST)
+	id D632A6B0008; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AFAE6B0062; Thu, 20 Nov 2025 14:43:25 -0500 (EST)
+	id C78F46B002A; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 796096B0029
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:43:25 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B53116B0007
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:56:19 -0500 (EST)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A5ED12E6AD
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:43:20 +0000 (UTC)
-X-FDA: 84132009360.07.91D8872
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5C727C0011
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:43:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Eep7lU+S;
-	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6649412F92B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:56:19 +0000 (UTC)
+X-FDA: 84132042078.07.9D4529C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9539120002
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:56:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s2EPi/es";
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763667798;
+	s=arc-20220608; t=1763668577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jOb5k3bbgLdxLAU2xBUhkNf6M8DrTXlh4mqXRt4KFAI=;
-	b=cSDLS8hxSjbjJ8ITUFWtwzX7uzuo9e7yeXKJD5mar4XcWyUwofos6n34cg3IPh46Dk3SFG
-	uYI9Cl7cT4mK+s3si8DBwMMAAJmnnlG769x0uUymqWZzlottQlufm5+TT1PYT4QMvO6Heq
-	Mi+nmeOWo1wXfDI8CJCHtnh23X13h24=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763667798; a=rsa-sha256;
-	cv=none;
-	b=V3nNRrrZz+LiKl3rVFml3fzjjMaQuJ0P/6oLBkJKc9SAcIXHpcB5uwZvJh4lmtPpCVp8fW
-	BCjsjB+CFu0MbuH5TTStXlmkev29xJVieLdR/+l9TS/5HKKdFRbWNGpIixb4RcuZWwdU00
-	ZcBh1mvsfI0DsXF9OUqoWQh0MRDF2yY=
+	bh=cYC40L8sQ+P2147+k130cpCq8h5yBBFwMhFNnLakTj8=;
+	b=r5QcFLRK35ynAWgCRf+nnCCiz8+Bc7xfWVcVTM8rTL4gCYEYvhei3DUuJil8ZqMKt0bAVS
+	0v2xhIl2HQYHDMcQgPdaY+9Xp+nT90J9JcX68XKXFCGl3HoSpMv5sCGJGdfckyUEva9/yq
+	b9L5vHzULU8sZNf5dXCqhkw6wbMt8R0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Eep7lU+S;
-	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5957e017378so1246609e87.3
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:43:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763667796; x=1764272596; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jOb5k3bbgLdxLAU2xBUhkNf6M8DrTXlh4mqXRt4KFAI=;
-        b=Eep7lU+S5lpw3XHgncpg7WskeQDPksMdoi4nUnslBAPJELVoz90atwuAf+/c4jXwbU
-         un46/LdEyx5Ngufu5pIsJFeSa7oQjuIBUpMmgpg4bAKqJxB27VPdUMMg02vSZ0o/bTXS
-         Wj2d/MaMp5HW57xuMXQIxLcPsb5IPIGeM00T4/TxBGa6G14Z2xMURjmgT6/Axx4tOue5
-         Y/Y3uECBJQX8o8cVWyAu63JYmOLcU9XwzSmkMTl+RJNLTXs5pbag+JH1Yla9DouSIbLt
-         ZrDAA7lp1axupy/5qQ8x+2suKYCpi0WO+8Au5mr477e1niO1BfU/rxWvp0pKIO8nDVnt
-         /DHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763667796; x=1764272596;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jOb5k3bbgLdxLAU2xBUhkNf6M8DrTXlh4mqXRt4KFAI=;
-        b=PvHCbN+xpBynHHUCC6zzTaOzgn+VrpQh3a6YQLDlmsrHfBBNFEYpWMcaz6TFusONJF
-         dgFD6FkUTeLRdAzAlnbMydvqT1729Z1QGBdw2X9MnINmI+Um+gNNXWCxixKJLONUeRHT
-         CS4IhuH2JmWrMjxFMC2gu4VsLNCRcdpVJUzJueCqtxPrZD0dlvk6ozYAHoz7TLTQ9YsB
-         wF8G8FBI49grQTWhrgr+Uv4p7Ci8PhvvsNZlMmPGovCnuxO2pJ+5b2JBXN3NPMI0uc1y
-         DBUUkULvrPKRY059B4blx+oRW0C73/fgBSP42+NAn3sXCbMY0sH1z2Ar9VjoRYONNL9s
-         tSug==
-X-Forwarded-Encrypted: i=1; AJvYcCVGNsyxXwkn3JhVZ6p8NGYeSXYvZEr9Crs2dxWe5MdZf2TSvx6U3UOQ/RAw7L9bp3mZUfZpKrHgyA==@kvack.org
-X-Gm-Message-State: AOJu0YwC0Cxivv3Tqm69RIOxTS0wZ12yFbHb/Ea5l9lG0h34CRMTcE+G
-	ik+5/jZIig92eiqgY3XNBcGfshXSDdHTX3lfAfHE+WwAF7Xid56DkUVkQq6Q5unhq9CGl7jq9Yv
-	j88Xe/0d1oUHx8WEZ8RTFlg4BxPcYVusg8s5O8PZ3
-X-Gm-Gg: ASbGncu9+Agfq9cBZupGaI6utlBtxsXv2FCY4ZcbkM6tpQOGhc4lO6YMMGZ/nqTyZes
-	McGm9upzr3A08JreKKJCDL1bqc7vpwoSlEjDHa/xPbeKocQQNHyyRYsmhXirQITPn0lMCrL5FMI
-	nTMx06ecxSHSxz1PcnVpCfrIW896t1tIOj1xbegJ/gpDwoTwBsZ93/1UpA7Z+MXjYEvc25Gu4wH
-	SQ7t6+g0sOtTMwh9S9b07Qtz9z9aQRUvGoSvkyYDUSE6XpeCN/FuGEhsVFD+gD3tR+lefo=
-X-Google-Smtp-Source: AGHT+IHcyfhgJOxNFwVB1wmP5vbwR6JERZRpaFBPUMh7cIOOgFdIrerxF5fqZb7M8NqokF29pYgwiXqXN0SorsacWb4=
-X-Received: by 2002:a05:6512:3093:b0:594:346f:4850 with SMTP id
- 2adb3069b0e04-5969e331044mr1508727e87.49.1763667795875; Thu, 20 Nov 2025
- 11:43:15 -0800 (PST)
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="s2EPi/es";
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763668577; a=rsa-sha256;
+	cv=none;
+	b=pyF7GQBg/BBGMJUYwFh1WmH512HP95OOh0G2Q22jIeWx0JglmGaAVPCF6e7cW7WCIu6xmr
+	5bChxjMECZiQ1SuG+0ZpDue7XygSzfq8je5Z8Bia7+32F+exRSZb8/Fo921XWIEq3WcoGQ
+	tSXOzWxHfbwhIT1LkxsAv05QZiOGx78=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E5CE43727;
+	Thu, 20 Nov 2025 19:56:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2534C4CEF1;
+	Thu, 20 Nov 2025 19:56:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763668576;
+	bh=qtHvUpDPE2SB/7d+oRdbHGsrVFL/jkakr/Kb85gdfuY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=s2EPi/esShxVmKeGCrkp0KRAHLvnhdW/GcHJ8d+tDjKFM7F8KsywJTyMOj6UPKEUN
+	 JfICeRLft9enfyA48HZS7fZIhmli01y5IKtxQStFgbnQYh+Wg/hJdKNQu5pKrWGI6U
+	 aUE4Uh2NfkDnWPjyfjVoId8/4u0TJdwMKJcgE5W/E4ibcScQ9xzkpoJRaXaaMeB0va
+	 bCoxFkkS82ym5DC9YfXtS9NvCeowXC/n1nOniqwrGjbrcXl873VWPm7GUHrysXlcpR
+	 IFBQ7MYOy5bnX8XxTEKbVaGPK6E7tucBykq4p+bB5GZloovvY47vJAsWFlKC27h9Gl
+	 1Al2xQMhRMsvA==
+Message-ID: <c29e2ec1-c607-4467-b500-617584c8fb6c@kernel.org>
+Date: Thu, 20 Nov 2025 20:56:10 +0100
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-6-pasha.tatashin@soleen.com> <CALzav=c-KJg8q8-4EaDC1M+GErTCiRKtn5qRbh1wa08zJ0N4ng@mail.gmail.com>
- <CA+CK2bD4Y3CMHcTGKradmv-hAbdtA7zsw2CYeh7-8LNianYMZw@mail.gmail.com>
-In-Reply-To: <CA+CK2bD4Y3CMHcTGKradmv-hAbdtA7zsw2CYeh7-8LNianYMZw@mail.gmail.com>
-From: David Matlack <dmatlack@google.com>
-Date: Thu, 20 Nov 2025 11:42:47 -0800
-X-Gm-Features: AWmQ_blhAAizSjkijMqBfleikcubXUn4oYnXzPUSaeKAUDCiwV_6zW22M0WcB8M
-Message-ID: <CALzav=dmFQr+BrqzRDgio0q68MPRVnZPK4-wUXVj47o1FObgNg@mail.gmail.com>
-Subject: Re: [PATCH v6 05/20] liveupdate: luo_ioctl: add user interface
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, rppt@kernel.org, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, linux@weissschuh.net, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, rafael@kernel.org, 
-	dakr@kernel.org, bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: hxn8r1u14yhpjnnrzzx83t7bioy8isn5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/3] mm/huge_memory: prevent NULL pointer dereference
+ in try_folio_split_to_order()
+To: Zi Yan <ziy@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251120035953.1115736-1-ziy@nvidia.com>
+ <20251120035953.1115736-2-ziy@nvidia.com>
+ <875584d7-5a68-4f7a-8549-2a9cd6c7f9d8@kernel.org>
+ <FCFED9E9-56A9-4260-8B42-D0BCFC83C506@nvidia.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <FCFED9E9-56A9-4260-8B42-D0BCFC83C506@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9539120002
+X-Stat-Signature: 3o6s57heo1ahtzek6pz81jtaooh8hgwp
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C727C0011
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763667798-510199
-X-HE-Meta: U2FsdGVkX1+tfgG6GAdATkg/x+R0o6K+DRuEKKR1g+sh3AUyIgTvVwCPSYhyfbAv1/MLR1EXoD/Pm4vGDFYPdzR2iqkRFn6K2TFebspMFIYZ3ZCXWC28Ohnpr3NTG8eUNCBvyHVjBvzKoflPMweuvgEW0Jbr1+i9HvlZQn27XuJd0Tt2pjaNq5941nJiH70IogvtFnwPTlJUuPrDnABCgD44tNX6CqGMrX+7/XBQ7mvqKd02OZDlbv5zlPHdLyxEPJZhwqVcLCQD6Dwtu9IIj9rct2AqBMU4qTSYvj8EtaFpe0ZddPm7OuX7vrg2G+ZCQeGb+q6f2xj39Q6xQtuPA0wDkO5teqBdGvC9BOTMCIpXnudpz4ztz8rX4X3HAaTt/zqGNLwbLM71sTumndWF4FCHQKcahxJB/3BbSEDUYEz9cv1+gNOp4vIQYFgCD7O9WBzeaNkrZ19fq4ke+GIgLm5UX8Rz0EAQ4Scw0xSga29B/cQW9GzVHYIDD/0VG0fxTD0tIY5iUNRJ813widky+SZRDwquAkjap4G3KzpO9kbROfapSEhsGrJU0++82LRl/X07YyNK18pzdB2KwUZws10oajGu3jY9CtKXeCp9pS9txIJRQaJOE3D5HgMug2HJtbAzG3K9l2L09TpVaOuyxD8IgZKIzGxxp8qrSbUM1Rp2odR309IfuBVkuWqpe/nm6Rb/FnIQTbFHkrNkFoPK0MpM5aX+bo5wztLrrZvEylPF5sGIsfGkXO3MjtWx4qvLkKgA57CXSVgFq2eZc1OZRsf1EZG+BeXyzq2DCNjk3X2HIIbZK+ZAmNtEjyOhrJMPuwcMm7WrJl0w2AsfMZU0D7B/5qqSqAx29GS8FXqUmIbARxk223Lwke0LtiUkGLDb+Wuh3Ht0VGTUbtId943SpD4O4iywVXBeVsYUilQ8I1oC//25i9V3kTIrrOOrShb7XHf+GFr7bRAAjKVWpJr
- JITDaZHF
- wIDOkqOeZkYwKZ29NZMaT7Yr6a3+DmgbssGwvQfpGOWtXyZQNOtxDf1ZtsutZQqPD9J7GuOpRILsb/zM/gA75kfrsuSXfGDQwA4x3heyB5lsNjEb9ovr/UsIGFHOa4g3PVvYLjLFJHTu30jlrUiVulnFQdIUEro1D8QMnNOh0FqFfzdNlGRquMAnnjvmfhoc5i9HDuqUIBM1gIs6SaofwkviEL/FFjZcJX8ovH4fNQOhEN7WVkTtlrdLZNVH98ei7nj0sRXZlgp9V8xuMH1KV4IIuu7YMSEYBX0wjkhaJgfasUnvUBL7H7oRl4pGInp9pnC5WVXQx3/rQehQg9VuQc9tM3bjH8ImxpoILT1Not1aSlEnZTQg0+LpzMA4oGob4qq2Cli9VpQfbK0c=
+X-HE-Tag: 1763668577-674756
+X-HE-Meta: U2FsdGVkX18DivvEHQj5Cs29iwZANxXMBYbkDw/b2YwWpo1/VmIJP4Sg2d+7b8H84/HeS8H2iTwl3YzqgsaeRfkZmPrlkvjnUrKLS8KkJa5ssCzBTgVTYpzLgAAuOBzoBi2ttjLzPPfO/mDvDZ07Vvo46PyUNAZ6UZDR0KJColfWV4YzMl0XA9vADolzmMOsY1aUi05XIdcrlLdNWI+LqdbvYw64lnmOIF2Q7dy7J6YYNjjWHrMG2T04uUJx82fbXuHOLC3NoTwX9k0YRFaRIJgtWiMhNM1hB6/dKxJUKDE9br60jlvPMhIGQ7Glqjy3lUOOrifztnGJsJDTcbsz80mbD5fIsGxCXtmuGPjVR7TL1n3QIAtNj5Zs06w11ivzDplvSsrGLrjblJhQzxtDm3ma06sqdIlEv7r238emb14wQrCzZY2+DPoUlM18CavHIJSaR1YwJDBZhVvdm3UpCirHiB0GifkjT+dbS3V3sGfRV8lFfTVNQo/JFpvz7Jk+Y+jIVU5FmPj4bjMJrRvmhSju9cX8KI4w/ERRK9/kh6gWui1Z1PsG4BUR8DRSda0ITqYBAPdXePffjzaQgzX3scm6u3CjJomwA4+CAxhfLs7OPXvj3Mhw5Yz5+Gz7H7oLFsXyyuRemEc+/HXeXq+exF1lIncVWdcqYk3KzthFGISX/FcJsPf4uPQ5N3apatXDGS3YhgD4uOMUeMyeZTircvU/Gb508PBbk1Gd2BtAkFOi2G6DtpNrcDMYOb6oCc3mFvJss7l6cF72gqHMarzQNJ2FJPQx0TQXYgtZrzjZ71LP6boMwgNiJrwVl7Lo+JDQPWZcSTBa3rb9VUpvb5fMR34zZMx3gX50EekyX7/3lWI5ac12gnqhrWPURGAnwn+bys5s5A4T7JnWCo3t6Hk8a46/FtpxA60mSMB4wTFHDgDFcVeMYACDdZ6Cyi9mgPlKDmO7eXLIBUCzrCLtixb
+ +WsSo18I
+ bIUd3/VxrtRuoYDCR2oYqx/qs3iZeNf5lAigERq25Xmh/2Vx8xV/pE7xT/zS7sAt4wECOKpcpkYi5nEWy7mgj0ZNENvIoDuxZrcNQpHyoMd87CWSV+hKwcfOJzyMtNyEIRS7rpgTEnMFiteCt7H4Agl9yOIs4XvFT9h5hE0UyVMyP7JN1+dZQtPk0XR9niPNblcplTQGs3TBGzIiGCbbPvYtnDUJWbOScL67ibNoOxCdVf/WA6GMry0EKGSbYbCv4aEatQQ+X5fmV42n9wdR0SpSxsXFAKBKPaLRZrTv0g7yJJsfFm+V4bJOev6Pu6j2YXmt4TfI4S74rvVJT/TccQTOFlN5rPivFCZxdj7q/Uaw7W8sWM5ra/TOKTfpVJFBQUAeWia7incjCpq/Jp8QKh4BaDs/+9zrl3JWyV7sKaoWJDVgxLd+oB1Mv9xejaO/y85oQ8abNJdneFnTYNrF+rj301XQ56OI2UIkm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,48 +104,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 11:23=E2=80=AFAM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
->
-> On Thu, Nov 20, 2025 at 1:38=E2=80=AFPM David Matlack <dmatlack@google.co=
-m> wrote:
-> >
-> > On Sat, Nov 15, 2025 at 3:34=E2=80=AFPM Pasha Tatashin
-> > <pasha.tatashin@soleen.com> wrote:
-> > > The idea is that there is going to be a single userspace agent drivin=
-g
-> > > the live update, therefore, only a single process can ever hold this
-> > > device opened at a time.
-> > ...
-> > > +static int luo_open(struct inode *inodep, struct file *filep)
-> > > +{
-> > > +       struct luo_device_state *ldev =3D container_of(filep->private=
-_data,
-> > > +                                                    struct luo_devic=
-e_state,
-> > > +                                                    miscdev);
-> > > +
-> > > +       if (atomic_cmpxchg(&ldev->in_use, 0, 1))
-> > > +               return -EBUSY;
-> >
-> > Can you remind me why the kernel needs to enforce this? What would be
-> > wrong or unsafe from the kernel perspective if there were multiple
-> > userspace agents holding open files for /dev/liveupdate, each with
-> > their own sessions?
->
-> By enforcing a singleton, we will ensure a consistent view for tooling
-> like luoadm (which will track incoming/outgoing sessions, UUIDs, etc.)
-> and prevent conflicting commands regarding the transition state.
->
-> This is not a bottleneck because the vast majority of the work
-> (preserving devicse/memory) is handled via the individual Session FDs.
-> Also, since sessions persist even if /dev/liveupdate is closed, we
-> allow the agent upgrade, or crashing without requiring concurrent
-> access.
+On 11/20/25 15:41, Zi Yan wrote:
+> On 20 Nov 2025, at 4:25, David Hildenbrand (Red Hat) wrote:
+> 
+>> On 11/20/25 04:59, Zi Yan wrote:
+>>> folio_split_supported() used in try_folio_split_to_order() requires
+>>> folio->mapping to be non NULL, but current try_folio_split_to_order() does
+>>> not check it. Add the check to prevent NULL pointer dereference.
+>>>
+>>> There is no issue in the current code, since try_folio_split_to_order() is
+>>> only used in truncate_inode_partial_folio(), where folio->mapping is not
+>>> NULL.
+>>>
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>>    include/linux/huge_mm.h | 7 +++++++
+>>>    1 file changed, 7 insertions(+)
+>>>
+>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>>> index 1d439de1ca2c..0d55354e3a34 100644
+>>> --- a/include/linux/huge_mm.h
+>>> +++ b/include/linux/huge_mm.h
+>>> @@ -407,6 +407,13 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
+>>>    static inline int try_folio_split_to_order(struct folio *folio,
+>>>    		struct page *page, unsigned int new_order)
+>>>    {
+>>> +	/*
+>>> +	 * Folios that just got truncated cannot get split. Signal to the
+>>> +	 * caller that there was a race.
+>>> +	 */
+>>> +	if (!folio_test_anon(folio) && !folio->mapping)
+>>> +		return -EBUSY;
+>>> +
+>>>    	if (!folio_split_supported(folio, new_order, SPLIT_TYPE_NON_UNIFORM, /* warns= */ false))
+>>>    		return split_huge_page_to_order(&folio->page, new_order);
+>>>    	return folio_split(folio, new_order, page, NULL);
+>>
+>> I guess we'll take the one from Wei
+>>
+>> https://lkml.kernel.org/r/20251119235302.24773-1-richard.weiyang@gmail.com
+>>
+>> right?
+> 
+> This is different. Wei’s fix is to __folio_split(), but mine is to
+> try_folio_split_to_order(). Both call folio_split_supported(), thus
+> both need the folio->mapping check.
 
-Yeah, I'm not concerned about bottlenecking. It just seems like an
-artificial constraint to impose on userspace at this point. The only
-ioctls on /dev/liveupdate are to create a session and retreive a
-session. Neither of those will conflict with having multiple open
-files for /dev/liveupdate.
+Ah, good that I double-checked :)
+
+> 
+> That is also my question in the cover letter on whether we should
+> move folio->mapping check to folio_split_supported() and return
+> error code instead of bool. Otherwise, any folio_split_supported()
+> caller needs to check folio->mapping.
+
+I think the situation with truncation (-that shmem swapcache thing, 
+let's ignore that for now) is that the folio cannot be split until fully 
+freed. But we don't want to return -EINVAL to the caller, the assumption 
+is that the folio will soon get resolved -- folio freed -- and the 
+caller will be able to make progress. So it's not really expected to be 
+persistent.
+
+-EINVAL rather signals "this cannot possibly work, so fail whatever you 
+are trying".
+
+We rather want to indicate "there was some race situation, if you try 
+again later it might work or might have resolved itself".
+
+Not sure I like returning an error from folio_split_supported(), as it's 
+rather a boolean check (supported vs. not supported).
+
+Likely we could just return "false" for truncated folios in 
+folio_split_supported(), but then state that that case must be handled 
+upfront.
+
+We could provide another helper to wrap the truncation check, hmmm
+
+
+BTW, I wonder if the is_huge_zero_folio() check should go into 
+folio_split_supported() and just return in -EINVAL. (we shouldn't really 
+trigger that). Similarly we could add a hugetlb sanity check.
+
+-- 
+Cheers
+
+David
 
