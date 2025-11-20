@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C53F0CF9C7A
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 18:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8287FCF9C7A
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 18:42:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F12B6B0028; Thu, 20 Nov 2025 13:42:47 -0500 (EST)
+	id CBD796B0029; Thu, 20 Nov 2025 13:42:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A756B0029; Thu, 20 Nov 2025 13:42:47 -0500 (EST)
+	id C94FF6B002A; Thu, 20 Nov 2025 13:42:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BC126B002A; Thu, 20 Nov 2025 13:42:47 -0500 (EST)
+	id B5D196B002B; Thu, 20 Nov 2025 13:42:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE566B0028
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:42:47 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED45812F2F8
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:42:46 +0000 (UTC)
-X-FDA: 84131856732.08.CA02B55
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0CCD1160013
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:42:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JJ1Uaf3x;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A193F6B0029
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:42:49 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 47302139F56
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:42:49 +0000 (UTC)
+X-FDA: 84131856858.04.2B0B631
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 68DC940011
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 18:42:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DkRslEJY;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763664165; a=rsa-sha256;
-	cv=none;
-	b=HQ6ZKRJhtRzLrmKYrwme79Yk8w2x1Iw8+mt4g4i1N0Ory6TtBWr+YCgXVqEwiLHOfL3Tv9
-	cTPOiM1mdf28rDrDhacjd0ibTA2ZO52SUaCNvQp30hsO7aU/J+z6pmh9whnP4HYWf5LCDG
-	1o/BfCp2Fvjj0PtkdfoJ6MWxFiOJ6H0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JJ1Uaf3x;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763664165;
+	s=arc-20220608; t=1763664167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z5IkkGmTBKtnq9MgWNqv3BWJfeeYyXZgIWDNQMVeTZQ=;
-	b=Mfw022X25XX1n10hTXKy4h1vhcsVQ66c+TwktQWpUDzEp5lLncHqKp9fQjCjm4y5aGS4cD
-	Us5lwljmxru4l/IfD7UCniABFeyWh1VKZ5cv1SsJ3V3XJdTM1CRG/w9YIxhI3/OIWalvEA
-	wq4DVTujVVsypW+RdqxNheF1M0DJ6xI=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7b8bbf16b71so1573002b3a.2
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:42:44 -0800 (PST)
+	bh=4SdOHNqAWfToMGBCQSO9tHleaQeM6zla4PftQMCtKtA=;
+	b=K+zkxkNG8foT+IkBbLhaBiYjQfpCKhiqocf4OTy/bZWXofSEO0/2Ls6Mdc1EFyG4lmF8hT
+	ln/BA4lDdXRj8ws5UpzkEdeQIpFoH8UDhsxz88oWAH/m93VYh1fJ97H7W3S4TnpHxwlWva
+	Vs+DhrMd9ToYXEBzbJdax0iBMUWWewE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763664167; a=rsa-sha256;
+	cv=none;
+	b=Wyn6bkFHoMlt8PCmy4EBJqt4iWUhbR8DaEKv9ms2/DIpC6hV8u2aBL5VsqIcAUJ/OZT798
+	CAznP+jN3xwKW1Pmd0iTNADJMkeNunXIsOsrCs5uFtm7VuPpDt1r72Mo/aeu6Tb+eBj8oL
+	wrfYv06v/YwF1ZTKZpF/GPmd7GQUisQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DkRslEJY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-29555b384acso14635105ad.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:42:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763664164; x=1764268964; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763664166; x=1764268966; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z5IkkGmTBKtnq9MgWNqv3BWJfeeYyXZgIWDNQMVeTZQ=;
-        b=JJ1Uaf3xFPigET5mI+jSEp16e7k6tWoJTP0dcYbxxjDrFBPHwscQtQGgIjMYrBb/Rf
-         ajqS5qGO7xRjXje9Hbv/gROo1qbHrA8vbqE4x21EhO+DIsupuGc2JiciJc5cN3ALvGNE
-         43lG8UJ6ITDdwBMK1pi2it3hjHFzjtKS/1PG0CLjllIOR8EHG6np2xq4qNdW7LsdZO6T
-         dZ+QZZIoxvQeBmG3Ci0+cx4RBIMdGKN4qm7zrojfj8pzdSsZyFP2qYt4hVTKWnALIfzO
-         B649IXluxCk9qlV0Ut0bnQhrwg6q7RAhpwWKkEcIfDz7yfYvgPaws3zzZMMU52CdwU5/
-         sNHQ==
+        bh=4SdOHNqAWfToMGBCQSO9tHleaQeM6zla4PftQMCtKtA=;
+        b=DkRslEJYbKLfg2s/lXua6aYBuu66Xru5yh2KgAPy9UW0zGQ9+vIgFlnSfOBM7gKXfN
+         8/zhJ322vBDfT2uu2mvczKu0k2I8QwsLwdI5ModOk0pmkvxardWoROGX+gel3DNWYU+h
+         xjUDey8xONFrZj0q65Qac1d377XVwRuyIKZrdNGm6ihSNS3TP4U/s7d7sS4mCIfljDIL
+         ccnKSgcnKQ3VJolSV7ENbFLrSkNJ+xLSxUIKgU+Y/DI3pYd6mF9kF226gjhFOQpGEJw6
+         4wCklsJ5EqwAfDRTZhUKMEyf6cC9VHEUaAjyXqBMpvam6jatqU12xs3iJdcVxBQBItOJ
+         SUjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763664164; x=1764268964;
+        d=1e100.net; s=20230601; t=1763664166; x=1764268966;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=z5IkkGmTBKtnq9MgWNqv3BWJfeeYyXZgIWDNQMVeTZQ=;
-        b=GRt2SSPmJheHasisrrYUGK1GSrJ/lupwpYd4uO3Aby2yrVZdW8miwNkMv+64cCOrVs
-         /T/Ll21Brz+kWrbMsPAHgb2qGm3Wci8h68/Pvwxhcx4wSsxD0bSDlzU5U6XoeF4h+Vyz
-         QAviicqV/HCDSyitwZO4k8b0b5GxFTVpf2r3yIwgAFvPSNP77b7H2qK1nYIx9q+3GJvg
-         QBsFZvXDdbsHPd1z7j+Hw20KpTWn4D+G0ndrpEERrx61fbBY8OLKzTShwhLIKpJ6Nk9q
-         dd35xHuOHJsO0LWktE/3nwn21hXyT9eIfq6Q6442cw1P3aANW5yK0BrrSPca9l/DBLkH
-         L4xg==
-X-Forwarded-Encrypted: i=1; AJvYcCUCZNbU1j5iPZIJcZzUEXMECO+PUpDx1tv/XVANhBGPU0DvuZU2LGJjXNt0Utgv2XX3R4kTK9d5bQ==@kvack.org
-X-Gm-Message-State: AOJu0YyJYpbT36r2kkXbv055GBR2WxQaO2kxyA84G/iwllepSSDW4SOt
-	+yJAeHoSRElyfspY9gGBdDwMzmLQ6Aa6UisREVF+73eEtk7a/6bMSTUd
-X-Gm-Gg: ASbGncuL8/3XQRyTTrql5rGlP5VEjRSYRgRP3912/wQSvJxZL45gK1vdNPStYJLuezb
-	w6k8ajWFpKXnKrC1t+gkcvxfB7NmRdd5cma6avIaUMPEyxaPGNBwjc//h9lOeumTCDUnUBhaPIh
-	TdBU1FC1VKxwHdk6RmXeyNYpAANo8/V5IMCobjei1sLoamOFQ/mb6UIR84h2k8gr/GJDVHLBJGA
-	xiJBgJwI/iXxt+Yp15Fr3xINAlA9fZYf+KKxXdkT7ygX9vnFVRIxam2IplHJ55YBKhU8hOELXtU
-	OQOGT3oA2wynlx4JHfsnKp9shl41Lpkaxi8dCOyQZLQMnJAkrCrwATPpga1buSMRDMy3dNNb88d
-	mefDZDqfDzAJRM0R2A2UDfhTs4VSm/bq/KzNCNd5o4YroOzY6/iEXL5GUa3WRxKSNnNvndFGgsx
-	FviO+inpNbHEomLqUf9tjG3HcPw3bu
-X-Google-Smtp-Source: AGHT+IEn4fRMkobTZvL45tQ+snkxa4PzVhtyX4lkl507PdlHW0Dkqo+rP9vCwPWP+/AQsmyKFvZE4g==
-X-Received: by 2002:a05:6a20:3d1a:b0:35b:b508:b99f with SMTP id adf61e73a8af0-36140a58348mr3931938637.1.1763664163860;
-        Thu, 20 Nov 2025 10:42:43 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:4d::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3ed892396sm3565435b3a.29.2025.11.20.10.42.42
+        bh=4SdOHNqAWfToMGBCQSO9tHleaQeM6zla4PftQMCtKtA=;
+        b=ZmZ+5QR98nGPUXOvfPizyYTELFYuXp8Q6MCwAMBY6apyI3EpGWp2PwdBD7o3ec9z/J
+         Ppozry9JTHF6jI0yijXjE/peZ2hMU/zsyLi3uWUzJxnNsu1Z/PoZ2NNnat2rDiOj7Lvo
+         0rIHuydK0+phoBOG1lkSJmapt2diikuuEQPD7AfbanWq2i+F8isUyyihHA/VGCOltgWs
+         811H5yOk26FUi8TjECHOrm/3XOJ9jJTFhlX5JJE7UrdgNEkZRMwVuzwRZE4rjHgn/Itz
+         gYeFGPtcLVIz6XpbJOs4Mtgw3e5yZQgvrKcZ/f0D9cLCDgOY+QLf6R5XA5J3Ncm5pVJS
+         L9XA==
+X-Forwarded-Encrypted: i=1; AJvYcCXwHO2nr+h6j1fo5BXWUb+KoYf+g9tdVdSP8roJzFxC/3lb1WIFNkllT4VC5V5n6bGm0g7PzenTDw==@kvack.org
+X-Gm-Message-State: AOJu0Yw1udZu53h/C3RZKkiQTjMxbwPDXiy+tHiC/wZg/tlS8Sfb/vap
+	MUWptDKJE3hp4iH4vXCy/fKmammdbArLw5JfKasByui42VUC8UQVjrj7
+X-Gm-Gg: ASbGncumIBkk7HM3JgqmZQ9yFtma4R/ct6xWg9+vdE3qFNCxR4/jjbPoKxoMCSoZOec
+	KApCRPhjbFI4Nt145DW1vYW6ejpKBb78Zjj5tNHxDVa0hOTFvjWx2azOGQiBS9Z5ofxva62FhPr
+	smnII/NlZ2yTEn+9JHiTL2EaoJxTVlIxE7katKcJ1frL7ByDXb06a/2TY+9+njNTqykqWkZii+X
+	YyTtJRwIEkAfyjM80++B5uVj6Ts4ZbZCqC5x95P39ArUqFjT/Z5Tl5Xs/ay9ynw0pQKtxzQ3bDa
+	pQQEKM7kSFjL5sfCSfO9qfPiRYTo9mpPnFiOm+S+KK5KjCuNK4Bkrrbo5WK98iUeVpEPwkChI09
+	ASzkR/SVL21zonGOvw6UlNKdEkvMPx1baT6qN49yG2CYqPA+rqoT48SVzUL77wdy3c8qPjA+MwZ
+	dDPHmjZMkQmveQ0b+8
+X-Google-Smtp-Source: AGHT+IGMQdvAAHN149Yn6LgRqFI4HzPl0k7Zd7jTCi6NSREDlb5zLOE7+bQWEE9AUu/iFrbJVTRTJQ==
+X-Received: by 2002:a17:90b:274b:b0:340:d1b5:bfda with SMTP id 98e67ed59e1d1-34727bca9b5mr4408688a91.3.1763664166234;
+        Thu, 20 Nov 2025 10:42:46 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:5::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3472693c501sm3229945a91.16.2025.11.20.10.42.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 10:42:42 -0800 (PST)
+        Thu, 20 Nov 2025 10:42:45 -0800 (PST)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: akpm@linux-foundation.org
 Cc: david@redhat.com,
@@ -99,22 +99,22 @@ Cc: david@redhat.com,
 	athul.krishna.kr@protonmail.com,
 	miklos@szeredi.hu,
 	stable@vger.kernel.org
-Subject: [PATCH v1 1/2] mm: rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to AS_WRITEBACK_MAY_HANG
-Date: Thu, 20 Nov 2025 10:42:10 -0800
-Message-ID: <20251120184211.2379439-2-joannelkoong@gmail.com>
+Subject: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback hang in wait_sb_inodes()
+Date: Thu, 20 Nov 2025 10:42:11 -0800
+Message-ID: <20251120184211.2379439-3-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251120184211.2379439-1-joannelkoong@gmail.com>
 References: <20251120184211.2379439-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zqjprhhp17frycjn6mfjq7yfbnq56f7m
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0CCD1160013
-X-Stat-Signature: dy9wnbu5dj1cqo844yz394tiesnoew3s
-X-HE-Tag: 1763664164-186068
-X-HE-Meta: U2FsdGVkX192E+RCffNY733YiVTNKhNuaiLpDIHQWI4rJoj7dQ0zBlz238vAvsBHxheC0dKATPid1G3LR4TBCcu075uFH8Y8XKk5dcIg/UT7SXwJhOdmqbGddpfjjM+VJnOqGRzZ5V0mLZvCK+QkgNliL9C9hzA80Lmnk+2nOSlGjmXjOcrUb2Ch2oahTkqYLYsoOy67xhJ+REmtdrDLWq4ffTXdrhCVb/lzSuodGNn6ePPHubVeFQlgl4HyyfSjiNLI9wE9rB+GPRkbXWLUe8W4czkCi4tORTe2qBRh+GGlVg/36KjCbj6Ptp2tBscR8CTtGEKgyaoz8SdnevBWKrHvzW+ykhPRuPhzAK4awIUVNc6nEbpidIK/4qpkseGd6qvGzwvsaUsuIQCxhxpVlAXRK19apIpkcXd0rs7d3I3S/ZDlvbHamZeOmlVSYrEtGyjxobHUN7QKc1583dEh/MBGHIK37P5POeDkvsopDNKgT7pUoNP0aXvEbMCKO9Dh4enrGM9wJMXjbsdTFws3A+oX3drEyKcbymhOEF0TwIN0K1+T27Eo6/ApEmUqzyxUfwe5DA5PuReDiK7BCa3U7PNvB/9bK9ngn9G7Ox5SelAMRCg0I14lTmsVkDsW603rK+8lPJN1eB3KpKs9ovX88i0GZd3K4L8vpZWdytRfLQfwMJDIJYTaS1X4hQlYYcvUmXeUC/xAQdD5ZmTQ7d6Shxdy/IS5PpVhAAJObtMn7otkCVIcUy1g3sXcXpqd+Yht3cf3ZAe8B9gYxh0fqdG/64Hp7sh9q5Kvys5NSrH5z+kLM7zanTNdcSVt4v0QefNnW1BPgleGE9rrZ5C6cDQNaWMDYzmNEgbWfrot5iuHjQBWK6o/bkcVp4aEDrPohtA8hluZsksWnctiEZkjkmytFzoTWXI9YgdfF4LfQpwsJXGQhGPsvgmgRThSS00wJk3/zdmca9IdBJnd27E9Tea
- Cf//f+32
- ycfhZg3Yif6lN0KlJhdlNit+ZPf8wkM7KMwOJNKOt8r3TLBfrdiS5KRdYVhOzUkip5sZsC3lHGnLxRNFMGva5LGoH/bu2HVou5n322NsNsymuU35l8LhVpBMcFVNJKt+shzVYhVI6K9nLh7RzRzxP/LGPAI07cHIXHXR5XR7NdHg6RZNxzpqsHP8LG1jS948NglJ5dzegCF+PEC2IwKYJxLV5F6nudbokSCv48s+1nWvBF23onmLbdppnQgaXGIFbs2nem2HiQdXdezn697SlYwviUq8274xYTWEBFz7OOXkgpw1cdWIcCeu9xiyemejCIbuTwtldhkWFs4tWKFdVlUEl4aa8lmZZTeqO9ZjlmYph2Iwx8vzsiFiswk85aErE1kBNjrp8fzNX64eElL83/UDjlYEPw/CroXSf9mmVu/mXogb4qe7kssAITnhN4L0/hlATQgdFO4Z1QE9c5KF6uPjzp7skxYDAhIw0QZLNvT4nL62fsNPBlJMZtBoTT2i2MKUnkaEm+mdwbFoK4u7KLyw5CojhKKkaDLBY1aaiTYY738k=
+X-Rspamd-Queue-Id: 68DC940011
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763664167-768364
+X-HE-Meta: U2FsdGVkX1/YFGdyrjuKX53p+cIzS1pZHTw+BN+/5hbrh8DXr/duYXcTskFtBvfCslSFlqizsJWiXPCdj4K22GLPYpS/B4NJfh4+Eo1ELWYddoFmwbsgL+1wz7DjLDNSPS8RQt1OeuxuANJg3Gr+RcPgwefA9sQa8DYuAz1Qgo3HXzWlQ49pJxfQ+CUw7+eBj6OfIH1ti1RqP3zEdWIZXNuydpRadY/ub1IdNmyYLA8x6PQW7Y0kxbaGtgc+KYs4qH6YhE8CA+ASsCbq4ywvzEG+oxtWBx1/sUk77hlkytJHQk/QMKZcgsofHaNdoTQzlrKTkiWX9jgv/E96LBYaqla3CCKeZWiuiJ7d3yVpOiK0VkuZr6YNYj8y2h2t3cS+ccKSnsJc/TUIlrxt0iDfrIbfUtGj+5lruBLgyMIpnYKYBdaN3No/zzEKDSdS4XOU1+3eP5gKji6aZm5GZ91Cq3OwwTMytOVN3gOvPxkJUbm+wugwdoAy5p/rjdhDpz1pddbplndbqZKLj12ddR2ccW8v0caBTX3fPIknyAUe436iGLs32TNzVvEBhASSibn4R2754QOmNOek4IOe2NJnfZuwK2la0oyRV2qFytkXyzlqY/NPJsvkt962qKP8iZ1NnzptOqO9Kd0LP9r/6NzMQpF3lg2h1nK+xDSPcT6H2njcg/nFJ0CdQynKNyNw8h9pttfWWvhkJeASdp7zeui22o1lg7wvUWQnuCmHd3KAb6QwfyV84Dm43iAZkGuhPB6YE7tdJCAIT8GKsa7g4w4Q1WfPYf0ppNn1z4xPWMMVG3aCnGF5hZN5Zbf+P3xZy590wm3jd4+NjFK74n5ZVyLW18d/eJ0aF3ZK32TgFn8pVwo8H/Ht+ELbHA9SzIpQ3KbJvYlgS2UuS511LD4cTYvDn/DAk7TgKB0DkXMY+DjOyUw2w1YNinNENYUdD4eDN7II8IxjnO+gtODh8t3MlSU
+ in1wrbJY
+ Pe46L8ONCoHxB4Ju2ZwrhfA6ZKo7SyY2OQL9IzgIkZu9I/9jyZyxQKdSNpXQdQuNpL/W3MC6kjeXZ1MiZEYR+GG1ot9n4bllTUau86zm+hn59LRLWgmgjgsBcgbBOL74r9hTczRUob8KlUt2+NO1Xc7QngfXXp4mxbt1ocEf9VTaqbZAu/KqaIq0TiSGm0V8ArD0rtsObt5OoEfVOCIG5NIbZZV7F/6pfvnr301I45Vp8dRBu+aY1hIqJCbatwgKKYKUpFSiq9Wjo2Q/x5jfvwTwd5iYzkQMnHuUtDtzZvXCB3c+lVYaj7KoeBa31Djf6C0Akwi5ml79yWOPANKMoQahzWpStcT2IvIKIR/1sbYGYkOWO+chJyBV1d5JWW0ml0/Vl3SrXzMk9lnfphMnRQF2doTsaQdO0pBHvSdJb7xh79inMqa6RrWpSrkurU1eb1Y33kvSrcmtEj8yj3TEgjpbBYw/gHcBi5dRTuqJzNyg0+6QWMOjbOBkVDNIZr2y6i+AfmVxk6tHfmbjMG72qMMFHzqKy9yvg+Re/qbjupgnAWj4CTDIhgkZUJmfHdF3TP/hD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,85 +123,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM was added to avoid waiting on
-writeback during reclaim for inodes belonging to filesystems where
-a) waiting on writeback in reclaim may lead to a deadlock or
-b) a writeback request may never complete due to the nature of the
-filesystem (unrelated to reclaim)
+During superblock writeback waiting, skip inodes where writeback may
+take an indefinite amount of time or hang, as denoted by the
+AS_WRITEBACK_MAY_HANG mapping flag.
 
-Rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to the more generic
-AS_WRITEBACK_MAY_HANG to reflect mappings where writeback may hang where
-the cause could be unrelated to reclaim.
-
-This allows us to later use AS_WRITEBACK_MAY_HANG to mitigate other
-scenarios such as possible hangs when sync waits on writeback.
+Currently, fuse is the only filesystem with this flag set. For a
+properly functioning fuse server, writeback requests are completed and
+there is no issue. However, if there is a bug in the fuse server and it
+hangs on writeback, then without this change, wait_sb_inodes() will wait
+forever.
 
 Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
 ---
- fs/fuse/file.c          |  2 +-
- include/linux/pagemap.h | 10 +++++-----
- mm/vmscan.c             |  3 +--
- 3 files changed, 7 insertions(+), 8 deletions(-)
+ fs/fs-writeback.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index f1ef77a0be05..0804c832bcb7 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3126,7 +3126,7 @@ void fuse_init_file_inode(struct inode *inode, unsigned int flags)
- 	inode->i_fop = &fuse_file_operations;
- 	inode->i_data.a_ops = &fuse_file_aops;
- 	if (fc->writeback_cache)
--		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
-+		mapping_set_writeback_may_hang(&inode->i_data);
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 2b35e80037fe..eb246e9fbf3d 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2733,6 +2733,9 @@ static void wait_sb_inodes(struct super_block *sb)
+ 		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+ 			continue;
  
- 	INIT_LIST_HEAD(&fi->write_files);
- 	INIT_LIST_HEAD(&fi->queued_writes);
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 09b581c1d878..a895d6b6aabb 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,7 +210,7 @@ enum mapping_flags {
- 	AS_STABLE_WRITES = 7,	/* must wait for writeback before modifying
- 				   folio contents */
- 	AS_INACCESSIBLE = 8,	/* Do not attempt direct R/W access to the mapping */
--	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
-+	AS_WRITEBACK_MAY_HANG = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
-@@ -338,14 +338,14 @@ static inline bool mapping_inaccessible(const struct address_space *mapping)
- 	return test_bit(AS_INACCESSIBLE, &mapping->flags);
- }
++		if (mapping_writeback_may_hang(mapping))
++			continue;
++
+ 		spin_unlock_irq(&sb->s_inode_wblist_lock);
  
--static inline void mapping_set_writeback_may_deadlock_on_reclaim(struct address_space *mapping)
-+static inline void mapping_set_writeback_may_hang(struct address_space *mapping)
- {
--	set_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
-+	set_bit(AS_WRITEBACK_MAY_HANG, &mapping->flags);
- }
- 
--static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct address_space *mapping)
-+static inline bool mapping_writeback_may_hang(const struct address_space *mapping)
- {
--	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
-+	return test_bit(AS_WRITEBACK_MAY_HANG, &mapping->flags);
- }
- 
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 92980b072121..636c18ee2b2c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1216,8 +1216,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 			} else if (writeback_throttling_sane(sc) ||
- 			    !folio_test_reclaim(folio) ||
- 			    !may_enter_fs(folio, sc->gfp_mask) ||
--			    (mapping &&
--			     mapping_writeback_may_deadlock_on_reclaim(mapping))) {
-+			    (mapping && mapping_writeback_may_hang(mapping))) {
- 				/*
- 				 * This is slightly racy -
- 				 * folio_end_writeback() might have
+ 		spin_lock(&inode->i_lock);
 -- 
 2.47.3
 
