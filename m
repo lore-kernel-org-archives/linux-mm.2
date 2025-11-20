@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AC27CF8861
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:03:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1119CF8861
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:03:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 041736B007B; Thu, 20 Nov 2025 10:03:04 -0500 (EST)
+	id 3282A6B0089; Thu, 20 Nov 2025 10:03:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0D6F6B0088; Thu, 20 Nov 2025 10:03:03 -0500 (EST)
+	id 2AF976B008A; Thu, 20 Nov 2025 10:03:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD5376B0089; Thu, 20 Nov 2025 10:03:03 -0500 (EST)
+	id 12BF16B0092; Thu, 20 Nov 2025 10:03:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C731A6B007B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:03:03 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C0E7160194
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:03:03 +0000 (UTC)
-X-FDA: 84131303046.06.646F6FA
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EEE7AC0002
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CwwHJS5s;
-	spf=pass (imf28.hostedemail.com: domain of 3nS0faQUKCMQov5o1qyyqvo.mywvsx47-wwu5kmu.y1q@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3nS0faQUKCMQov5o1qyyqvo.mywvsx47-wwu5kmu.y1q@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E14B26B0089
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:03:04 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A80E31DFAE0
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:03:04 +0000 (UTC)
+X-FDA: 84131303088.18.0182547
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AE571C0013
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:03:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kwhttIni;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 3oi0faQUKCMkt0At6v33v0t.r310x29C-11zAprz.36v@flex--elver.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3oi0faQUKCMkt0At6v33v0t.r310x29C-11zAprz.36v@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763650982; a=rsa-sha256;
+	cv=none;
+	b=2kKnzLjBNN+T8357nRqrjbpzgmqF85+MCX8oEMyCXeL6Hfr+ihS6A6TZzcGb9yZFRiIjcj
+	FcrGRqpXu2uSMQw/okBHIL0JrsQ7rS7hm7P1KyX/OpL+geYKv2ScllnBV2ZrWPUWn+JrxT
+	8hnRfzBkDBiFZABqolaXMAhrHXCpIXE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kwhttIni;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 3oi0faQUKCMkt0At6v33v0t.r310x29C-11zAprz.36v@flex--elver.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3oi0faQUKCMkt0At6v33v0t.r310x29C-11zAprz.36v@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763650980;
+	s=arc-20220608; t=1763650982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lIkqaT4GZQQ8I2xtRoztfiZr8q25ife+cBqIcslh3gQ=;
-	b=wo6cWhyM9CZh9nt+tB302LZtX9xHWUAVU5gYTZjM0NivW6+AMFFalMjMuYGxmYfReI978/
-	SSWgRVB13F4w5UUNB1/ERoU1rIvkS8+ACoFxfqpRwbcOwZSmMTTBNUAL96goW2zOQ2rfQl
-	4mMlHLgIbjvawQBc9fl7/p7BJr76Ui8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=CwwHJS5s;
-	spf=pass (imf28.hostedemail.com: domain of 3nS0faQUKCMQov5o1qyyqvo.mywvsx47-wwu5kmu.y1q@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3nS0faQUKCMQov5o1qyyqvo.mywvsx47-wwu5kmu.y1q@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763650980; a=rsa-sha256;
-	cv=none;
-	b=EI2KK0gJkKNHIm/zKGXS9UqOE9lROUC3Cl6QdSOBW5Nsy882Y+f4gMBMnVl4ituBzi0uML
-	HOsgnJTNuWBv6G5kFqgluXgp1iaQ0YWPyr/HTMQSaAQG1kZTtVKT2jsuPZyxpiC1We8Yhy
-	obwAPtPV6rw881Mgb1at203bJvdGPRQ=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4775fcf67d8so10369915e9.0
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:02:54 -0800 (PST)
+	bh=QTNBohfvQLfYyJiWHtGyLx9FZqAAISthRH9eXaAWBIw=;
+	b=cyEl3st6bkOqLkPOrqFbR+ILtdi3fO7XJLDDYzyWhpCw4OPyRCJkYJe9XTO4kPEikY3/IJ
+	eCVG7/0CPElqZqjsZiMkuFCv+mZp1/r3cPli3yReYmN6vPodUwYm3D0y0XWy+1uD8SpYOr
+	2FH4JaJ0G7viPnY6FSDSD/nxQj9ocXM=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64165abd7ffso1295586a12.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:03:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763650973; x=1764255773; darn=kvack.org;
+        d=google.com; s=20230601; t=1763650981; x=1764255781; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lIkqaT4GZQQ8I2xtRoztfiZr8q25ife+cBqIcslh3gQ=;
-        b=CwwHJS5sfg5EzhSYkxdGtqhZVfvg3tVAxyRTjblpiCw4kHCNXPK/2hx39CzIBoNjnA
-         iXNDMEO/YxtU24qTR/H5zb9v76Qok4pRe6jr+IC0/fT/IVt9Avu3tbtAuZYSJLL1WwBs
-         jRONemnvQtlsJT5OsRJ2JdG7m6vV3Uifg2wRghNJk2rJrOra96ObcEKpHnq6/EPy4voh
-         Qd2cUaL+cjmqNCZMuLkUU/A6MclpczQrVRW2WDqCjNfiFxBdOS/QX0vHrqGz/VGhmeL5
-         z61bePwv05gEb5AzqpDs6O0tg277Q6ZIv07NfBRQCA6kDpJEulGTS+ZUDJsGMFBUh6CN
-         IVsg==
+        bh=QTNBohfvQLfYyJiWHtGyLx9FZqAAISthRH9eXaAWBIw=;
+        b=kwhttIni9CuDSa1MykNlGgrLAP4zkld6zEwh1COKFbKXo7LS3tDuKXJqpCPvYRUHZx
+         ZiqSY63t0T54pWbK4rVwpeKUs651nhakaAQFknfd+NrBe6kDA8AW36w1PKlnPtlVufpH
+         RxllwGmMCkhL9LV4g8ZrBHMxoiMokjYgMaGG5dgnczEKSkpQ1QYXbFGSsSOSqX+z5IQA
+         zgWOyjoOPaCGXrVT+yhd41B4bUTYnKogzvagIPn6qU0w02xgxx9m1zAyV7tL6XLrvu+s
+         iqZTc0v6Qk/rAKhMktNE4VWDhU3HFqfpSSOdBfDD+VscF03+ycFcZxQlqxi92PdUChNT
+         hqOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763650973; x=1764255773;
+        d=1e100.net; s=20230601; t=1763650981; x=1764255781;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lIkqaT4GZQQ8I2xtRoztfiZr8q25ife+cBqIcslh3gQ=;
-        b=JV44JEm6j/v3ehRnfeRmkD4KwTFBVa1AFM1ne/0m2tN4O7ScuqhLuqc/5CMzkaoPVD
-         9KaprwdxGzSIBbPRFS2kKpSR3vCsmc4BD7jdKqWmwT2z6qxfrttSKkLYBubvGkgImqmI
-         xwcLh482u0HKL2nj1KReA9p2FFKtjmSfrgn02Nj9D2N4mhI1ih8029poPwsH27Lss5dY
-         1LYVscgc09J2zABgrBsV7N7dIDklN/HE7HcbSmbxEYuM4g3Qo3iwibvx9rxiUhxpd30j
-         4vSi5xAIQHJ3CFcvuRqZhLBahOndyfclF+AOgIwFqhB1FD7giWT74dIvL4jnuOPMgFsl
-         iyKA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0jB694BseIc/5ZOCQO/LXJ2UDynSxUsx/G/q6xEnWGjDHLbCfsLg4SNkr/E8c84I7QQefWRvr1g==@kvack.org
-X-Gm-Message-State: AOJu0YwUt0m2Agh1WVS7VchAOCygsukiAVanVfLu8oX2slIrJqWgLfYZ
-	UtEkPZrm13gj8+mcCJQB1DCgduTcI+8dh6jaflu1GvUyR1BsfCqUYkRlkzct9ImSg1XBhtRUzwU
-	Ypw==
-X-Google-Smtp-Source: AGHT+IE7SKgiCw/02hArGI9zujP0xPyrpw65qFKPWhHBeestq9lQVOSID1Bw6HemoDi2xS2ktBePcnke9A==
-X-Received: from wmrm14.prod.google.com ([2002:a05:600c:37ce:b0:46e:4c7c:5162])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:470d:b0:477:9cdb:e32e
- with SMTP id 5b1f17b1804b1-477b8a50e80mr28447795e9.9.1763650973180; Thu, 20
- Nov 2025 07:02:53 -0800 (PST)
-Date: Thu, 20 Nov 2025 15:49:05 +0100
+        bh=QTNBohfvQLfYyJiWHtGyLx9FZqAAISthRH9eXaAWBIw=;
+        b=kDY+GRb/X70Qfe9R/z9OGP/PZ8rAxbQOYF3eSATUSK+lcMkReB01nQU7G1yxftThvy
+         Mb3bA640SPPYRwp4Ucuzs5orQhjeTa3JayeAe8iKZpqma/bS+uIQBAls6Lg32RIoQzl7
+         MgpgkgUIaw+U1S96GfX7iKSh1CTFzZ2Zq/C+1gRISyKmA1Cb9fAXSz7PT62LWKupxJth
+         zj6op6hYt4NB/f4pANuk0xhXqk4jjskAxeUQkClP1EqXxFHA7wHlcItwl2DXCDDGL88v
+         hyTnqVFHlLy+xYFTjZIOomlG6nibcBGG7kIiDmaUSCyRIySFiKIJDOQv9WEjfhf8eP+c
+         ov/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWYDj1VFziZh0yYsx1rjmOzg3NhsgrvVnOz7dsYpJfBQnGAyv6e85pHGz0m1MnGhPo0J5y+Qd80mQ==@kvack.org
+X-Gm-Message-State: AOJu0YztPGE5mgvZ8SBejHQ4tsTxxtDeUO5DhjEfv0hMXcGca1NfQfzO
+	nmvTpHtuWPnkUa4XSrg7RartEycrkqCQglBO+HdlPBlpRGCX61G5FTy9iL0T+mUtEonrwAXZlbN
+	vGQ==
+X-Google-Smtp-Source: AGHT+IF9OaX/QGeSo05eKeUEdCvjlZVpqfgwLf4/MHL/rv8J5uT/4osVo9PFxwafA3Q6L9NfftMIvUQ5OA==
+X-Received: from edb10.prod.google.com ([2002:a05:6402:238a:b0:643:5f58:caa7])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:268d:b0:640:b1cf:f800
+ with SMTP id 4fb4d7f45d1cf-6453d084770mr1885049a12.4.1763650978915; Thu, 20
+ Nov 2025 07:02:58 -0800 (PST)
+Date: Thu, 20 Nov 2025 15:49:07 +0100
 In-Reply-To: <20251120145835.3833031-2-elver@google.com>
 Mime-Version: 1.0
 References: <20251120145835.3833031-2-elver@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251120145835.3833031-5-elver@google.com>
-Subject: [PATCH v4 03/35] compiler-context-analysis: Add test stub
+Message-ID: <20251120145835.3833031-7-elver@google.com>
+Subject: [PATCH v4 05/35] checkpatch: Warn about context_unsafe() without comment
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EEE7AC0002
-X-Stat-Signature: 39r8uaw3k3n1cx1n7krikzdx1ypkt85e
 X-Rspam-User: 
-X-HE-Tag: 1763650974-359160
-X-HE-Meta: U2FsdGVkX1+fVul4LfDP/IbRkfGYIUvYSRTJpDecl0e4v7NI4Ya/w2/S/LULQ6RNiXSqwmb1tXJFrwrx0jlmSpGcKwJF5iqx16E8kOQaCT/KEjj7Kf5kCB+/7xKIED3yWE5SE4nwvjObO8jlCjZcWXo+wbfeyg2qVew/uFFKBHpnfNcAfQxbRev7vrxVt++njJzP39YTuRLpaBb612cZ9nruBQNx10snB5AJQup8YNY2c7IEx6/f8wMxBxUg+XgdOgvtUqk3OKER9ptTXtk6zLv3YCvb62sdjH5oi4Wj/IBjfSLGJngFTlN32pxi4rNWmxl2vvUms78RiKmOKSmDsV8IGuVQW1SFqI20W0ELqz4dllg+fuD7RJglJuQL5vlCe5rNnWu6DXbbEfBv2lBlUKDEmooiPh7aJ0+Rfk0tINwINMzdRh9eWmGBIALJrGZ8mZKGb48R22H6jsqiTDXUkx9FU1u0coozXOczaIEPM7/0o8vb435/zg555RJam7GW6/APFmH3Lf9JEzTZYnxkoLAKbeq11LOxYPfK6OUEuft9x+NG+1Fu1l+LVKh1CH72iJ+httx/tyGz3DYRM0tlH/6AdJv4It1xpEbefDCoRTZxvUg7Jnn0APZCNE4TPlzJ+TODLwhBzexn3pNQo9n6vW19ppDAO8MdiqccqAh8mN+p4JpDc2WWooiv9YgU9/rsem+Q7QhmDm57Um767AaSiCnuNZf6VaKriAd5GC2hFkIISVNESWalsej6/WoiV3K0FFMPFQZunZi3+NJ4VmtnKw8cfB+ELJWmeLIgUVXtILBqJJF1h4RXxcNgEzLOSHWcyiwBuAv+xAista6u9cMeywI9doKsB907Ewz2NDrMhP4O/hLxE9K9fQBgAajN99aaMmEmpicRTziynCw6ABUc1GCZId7v6X5x/SArEQUDuDs3B3X3yqmXxpz0jZppAG8R+TYcDj0+6LAfRysFCyC
- 4Bm+WN44
- P5BoyuqngcjzbgfXYv7aR9EB6lUIOsZkQ6Yg9ot+uKL3KMdWaVmbqYt279m1tbXtawax9o5VG1WUgb1NTXb0Q7iXOg1V0RR626NfZdjSbn4Jhq6bLdCCD+f9iji1tM7SjvJzG1riPbvGp1Ts4cHsBmUERMKvaKO+GahelXFgCxPbZ4qcl0QXcu2Du/rayi15mL4kdXaNBQB2PXhpFLy5XmWurG0bD59FhcZ5JVy/xCO96VSonzsMpnM9+xyQ9TD+GuMqPIRCu6+HXUpZYTfHCfzgjHCf9exDYQhJiDK6TW2UGk+e+DPHE5CiBlnYcBtSrUmp0uA1l2BcsjJ0b1OmM5+KK1nM4LQObfMuudHpnCscCrqt8QaDyFDMHDhOIBv1SCkiLosL5Cw/ROhHDywaDCBuaj0BqjB2aNI9FWeaGryKfspfSymXnhi6RrI066CnUq5fLPWnmxHBram38MNb/hVB7dm90YwajayE9bRfiymvkatqaIx5cFUTqkVjoqHV7rribcmAeZ9j5BTyqEZL0n31pWLglmzTvs0iFfTTbFFruj7O2qQ9nim/1bURCojaJg7rj4rPi7mXLoCKSMxlW0w6vxJMV2c9v3FqbM5Gs6vWuBEQ3tNOEiurUHmwmSw+TjrirzE7M25YTlnLy9Vm3avRJVJRj2Xsl1eruD+wEPwPupZ5xBPg+zWSukNTmyePKN1x2
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AE571C0013
+X-Stat-Signature: 7zpxt7bhoz73k1uhaipwkkgwdct63kih
+X-HE-Tag: 1763650982-958404
+X-HE-Meta: U2FsdGVkX19adAAoTu6dwD2T9yRNf+VsaJKfrmmRF8Wi718vWhgFRTuFjQGNl5SMuzccaRcdr8nznPmJ0p8SwR3j6VJa7okVi+nmX+a2prfkQX/fvhj0EAXkCxKF9HXcdysb3Cd5jyQvPMb7j+3Dvh3stF53FGRUxMy5uZmQSw7lWvAQu5PjSXw2XvzK/n3TpQVK0biEY+P8+mVANeco/Fcyy+30Np8GM9v/WxcuYwdv3/a0XYw/Y/HMtodY/Dysk8oa0sq9Cw+Mjxb40kbQHm+RZagPNqpJlZjouMwrvm2U+NrjsT8i+s6rZaiy1izSsWQ4zMRaHLIQCZtes1iRvd2H7d8JTFm668klLxy86nBnhIdOw/DTgOR80WN/tmjQn2JC31kaADbIbmUiqBrRzMjhs3+24bPw7PExp2Q8grcppjx8TnDdc11PB3catvCbt8kUy7OlRF0zRnWQqtjuu1+CgoNFQwTD3JFy+4YqUmsmZP0dLu8OeGoM/tNS5QED++tGXkWwfqIXWX4krXoLPKN0ft1XG0tcW8kViDBDed//pKJeIGi08oh8BFxgQt2f6xnnzVAjcc3HOBv0w16U1Nj8dyz9pX6DQeovjVdEp4E4AOmHIkDEN2JIwyynHYQeGwzjpxYNUfWQgnSsj+dxg5ct+mb6mieqpwo7mLoUABfzeqMy/NW+GqmaI8i3Ye59/6Kz3rpxZCKn24DAs/GRCKa2HOUn4qTApxOK0mPf2sOokgY8WSFKlg/0TyKIzAUJMh3buK7VUtE/MIzLQo7nLjaEjkOad36VOOQibV5oRbNVwtpDbeFZn0ZsB5e8LLvm3igVHi0F5YrhxpY/vZWoaZ4RrBxZI188IzR54KQcYIPjuSJmCwyafiuM/stKtqbkJharGFqakhpsYL2Nk1Mt4mmr7fdTcUwr3Eo2BU85kntmIGOelkgHe1EqbBiGK1cWGZ+qHM/HiJYiyuFgCay
+ RNp13g1S
+ NxxwwxpGtAJLD574Vog+YenYTil7qMe3uqRDb/rKNd4joYANMuE18A35e7r76cXSiNX4bCfIW4r3SxFZJ6PW4BJoiPWSu2jnWuBLW1nrGqwgheCGQTL32V1dsV05gDNlEt2ONz4JbikI5WJIhL/3nR7BeJZOqnbdX+/rwIQcxKvkmCVEdllIwoidnjiuVTXTYVHSDlgoUaJ1a/2WSIYFa+K46GlphNjqdfv/lZ0RAhouBa09m9VCcSxiZ0QAo//xUnsGBOAvqcXt/0CmYM0rEIkJujxfEAoMyK3bTjFue3CmLZliKEHK6yHXqA4DHBFzDWdJ1gtpFeBefatdFRfL/W3bf0/cFg4d4z/b2gmhbTJRmOT0UfIGCb+q01MT12hr7V+EmaqGR0zdqlKOMS0wwRt/VKxvmh+gGM+MSlqLTFwHNJq/EhGmxp4L7OxGcoiCKIopSfcG5g3HLep2YNH5iDjxC5GYQxmjTNle1Fs8UHScjl2Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,81 +129,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a simple test stub where we will add common supported patterns that
-should not generate false positive of each new supported context guard.
+Warn about applications of context_unsafe() without a comment, to
+encourage documenting the reasoning behind why it was deemed safe.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
 v4:
 * Rename capability -> context analysis.
+* Avoid nested if.
 ---
- lib/Kconfig.debug           | 14 ++++++++++++++
- lib/Makefile                |  3 +++
- lib/test_context-analysis.c | 18 ++++++++++++++++++
- 3 files changed, 35 insertions(+)
- create mode 100644 lib/test_context-analysis.c
+ scripts/checkpatch.pl | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 696e2a148a15..0c499d22407c 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2833,6 +2833,20 @@ config LINEAR_RANGES_TEST
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 92669904eecc..a5db6b583b88 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -6722,6 +6722,13 @@ sub process {
+ 			}
+ 		}
  
- 	  If unsure, say N.
- 
-+config CONTEXT_ANALYSIS_TEST
-+	bool "Compiler context-analysis warnings test"
-+	depends on EXPERT
-+	help
-+	  This builds the test for compiler-based context analysis. The test
-+	  does not add executable code to the kernel, but is meant to test that
-+	  common patterns supported by the analysis do not result in false
-+	  positive warnings.
++# check for context_unsafe without a comment.
++		if ($line =~ /\bcontext_unsafe\b/ &&
++		    !ctx_has_comment($first_line, $linenr)) {
++			WARN("CONTEXT_UNSAFE",
++			     "context_unsafe without comment\n" . $herecurr);
++		}
 +
-+	  When adding support for new context guards, it is strongly recommended
-+	  to add supported patterns to this test.
-+
-+	  If unsure, say N.
-+
- config CMDLINE_KUNIT_TEST
- 	tristate "KUnit test for cmdline API" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
-diff --git a/lib/Makefile b/lib/Makefile
-index 1ab2c4be3b66..59ed5f881bcb 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -329,4 +329,7 @@ obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
- 
- obj-$(CONFIG_FIRMWARE_TABLE) += fw_table.o
- 
-+CONTEXT_ANALYSIS_test_context-analysis.o := y
-+obj-$(CONFIG_CONTEXT_ANALYSIS_TEST) += test_context-analysis.o
-+
- subdir-$(CONFIG_FORTIFY_SOURCE) += test_fortify
-diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
-new file mode 100644
-index 000000000000..68f075dec0e0
---- /dev/null
-+++ b/lib/test_context-analysis.c
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Compile-only tests for common patterns that should not generate false
-+ * positive errors when compiled with Clang's context analysis.
-+ */
-+
-+#include <linux/build_bug.h>
-+
-+/*
-+ * Test that helper macros work as expected.
-+ */
-+static void __used test_common_helpers(void)
-+{
-+	BUILD_BUG_ON(context_unsafe(3) != 3); /* plain expression */
-+	BUILD_BUG_ON(context_unsafe((void)2; 3) != 3); /* does not swallow semi-colon */
-+	BUILD_BUG_ON(context_unsafe((void)2, 3) != 3); /* does not swallow commas */
-+	context_unsafe(do { } while (0)); /* works with void statements */
-+}
+ # check of hardware specific defines
+ 		if ($line =~ m@^.\s*\#\s*if.*\b(__i386__|__powerpc64__|__sun__|__s390x__)\b@ && $realfile !~ m@include/asm-@) {
+ 			CHK("ARCH_DEFINES",
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
