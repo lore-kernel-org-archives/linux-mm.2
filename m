@@ -4,240 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A98CF887F
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 22:04:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F343CF887F
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 22:07:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32F7A6B0022; Thu, 20 Nov 2025 17:04:53 -0500 (EST)
+	id D480F6B0029; Thu, 20 Nov 2025 17:07:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DFB26B0026; Thu, 20 Nov 2025 17:04:53 -0500 (EST)
+	id CF8B96B002A; Thu, 20 Nov 2025 17:07:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 180F26B0029; Thu, 20 Nov 2025 17:04:53 -0500 (EST)
+	id C0DF06B002B; Thu, 20 Nov 2025 17:07:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F14176B0022
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:04:52 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0CE5A13AB91
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 22:04:50 +0000 (UTC)
-X-FDA: 84132365940.18.DD4DE62
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BA3EC140002
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 22:04:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H4vftO3k;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf23.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763676286;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ACCAC6B0029
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:07:33 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 77DFA88D33
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 22:07:29 +0000 (UTC)
+X-FDA: 84132372618.05.B8B574F
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7026A140014
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 22:07:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=NnwdbSuP;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763676447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a1uN6GAqwWBgLVCLGGckGeKLQXuRhoyL2fTVUZQCSag=;
-	b=VCY9ZN/Qn4TETZEQdcqNHwRV2YbAERXYkuxKBBjr4ARprZUjlP1sztar2Wi8gfIZ+jOSS+
-	tzbC/0NUayMFMQ7xeEpz6qkq8FaHVZ2hYeoOuWH5dTIRbPu++A+RnW1rU7f8wZ5dRqz02H
-	8GxItwfEgKOmKMHivQ06KM4KkeykCc8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763676286; a=rsa-sha256;
-	cv=fail;
-	b=VGnAVIN3nzj4td8oXRb4J+MPPU4F7Ga1JmDxbDfjlCAvVAfu2m9eDJZ6Eteg3woXFMyZGL
-	F8K3neBTDZEH1QAjR2oZubw/Y1wjIahkDX46XK2gPzltgE8dXaaGfuhdUvAb+ETuhLOatA
-	ix/u7IFX9OSo3CIUJkli0PUOfIcJ7Bc=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H4vftO3k;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf23.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763676286; x=1795212286;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=erwA9i/Lnr5ZITUGG/ZDXL4HLvNVyKrwkTGeIKEFa2g=;
-  b=H4vftO3kPzHxT96RyreRxZmKA27pJhGOummND3W93hct06gUmFedIzXo
-   CuogK8UdjQbZ60u3RGaPLDqcfKlohqXS55rV8Xxe+Hgn2DBh2eSaDdT9t
-   jvAE0hGveu0En3Vw6Aj3oY91nNH9OzcEn35Cv9h2M+v1OUQ6MCJw8QWTc
-   4pNdunJgYb3y4kPGb/tkeIkQjL3my51F9ifmvTjitMSgTAXbci/w+gY6K
-   KuSvbgQ+YrGJEN1Ha4WWX07Tj+hL3zhzoaDEKxa9937arOZK/dJozhi0C
-   kYnf9tj0GD7Z8eP8vat8eGj6npx9fxeBmGyc7lbS+jqplOq/azibYSdRj
-   A==;
-X-CSE-ConnectionGUID: i/j0tCYHQM6aHQxUzne+wg==
-X-CSE-MsgGUID: BL0ag1jySuGFovLBImZqAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65801753"
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
-   d="scan'208";a="65801753"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 14:04:44 -0800
-X-CSE-ConnectionGUID: I/jOuEFdSXmKbxe88sWkFA==
-X-CSE-MsgGUID: YWIgLLywROmxJ9wWG8tgDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
-   d="scan'208";a="191310467"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 14:04:44 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 20 Nov 2025 14:04:43 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 20 Nov 2025 14:04:43 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.40) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 20 Nov 2025 14:04:43 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DcyL4nqEGO5FWfxwp9C8blxHeCkK2VVTxIZVvV36AlTN7TU5pNMey2hV2otovvFpXhoGUjkoSA8iNeUxwEeXMcCaU3HZsJnXXISH0PKb4Psy9ulScT2cdGbzxoi5yeeRILy0Ff7lPyM+2xKgJ6fyqfMKp1WnbaQP+oxHm7K/O697/tjX22F9ZEOrd13ETJ2YrO+ax51VvgsdYzxXveVvZzRgmXNoNSmKj4+YAx4PfN6BnrwI3eqCXyTTSaAyye+14E8hncWRzksq/lLNpNihiObkNeoFfvH3gVPUVVUpaDUBOzacpgfY91MkytKX4FJuArzNzSNEh9VL6InzIllJxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a1uN6GAqwWBgLVCLGGckGeKLQXuRhoyL2fTVUZQCSag=;
- b=HlW+JOGaRVZcKEt9t+GKYOKLvGHlVzQC/ERdVRds4RnoAT6ZIjGaPQ28JNP8ljX09nwBgljJ6Vd2W8h8ZCSDiRb9e2tiO9CuI716sQMwT1DVhq4dZrI5khHhRz2RslSUGDKPRJuOfIdRAujk58EBzd4aKc3lR6p9PfG2maurzKTy2jPz2iNQj2AlhnNRuDIhRIIYvKkYLJFN8mM9nTsED/LiGp192ZUy5TDU7tGe7oA5Z7ekbL5LTZOrrNmu9Gx473tb9dySLKpGzaqyBB1lVfOZMGthfTzkKzl6E67NfPUvKH+niWPP7pQ6Nt9tsyQN8WCEZSInePP7ev+emWzbgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by IA0PR11MB8397.namprd11.prod.outlook.com (2603:10b6:208:48b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Thu, 20 Nov
- 2025 22:04:40 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%3]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 22:04:40 +0000
-Date: Thu, 20 Nov 2025 14:04:37 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>
-CC: <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@redhat.com>, Zi Yan <ziy@nvidia.com>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
-	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, "Oscar
- Salvador" <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
-	<Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
-	<dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>, Francois Dugast
-	<francois.dugast@intel.com>, Balbir Singh <balbirs@nvidia.com>
-Subject: Re: [PATCH] fixup: mm/migrate_device: handle partially mapped folios
- during
-Message-ID: <aR+QdfjRw+U5go9+@lstrano-desk.jf.intel.com>
-References: <20251120170515.46504-1-matthew.brost@intel.com>
- <a6d4dff5-15be-48e3-9bb8-00bb44dc5584@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a6d4dff5-15be-48e3-9bb8-00bb44dc5584@redhat.com>
-X-ClientProxiedBy: BYAPR07CA0099.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::40) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=ZknmF3VpgAd9bo/Uo3njgGJcOyZCg9JJGN/hBR6DdHM=;
+	b=WtrAYX5ewngkHM3epLSdqVtMeFAGI9Wvs2xZHm176E0PLYxzgUToDrg+MJRrvLB+RERQg/
+	XulSple87mFehDHW1fI6c3VAPmR60XotJi35sKZPxZmChlVTff4v8ikmxj6zfNkLacSN5r
+	EWVMZ2+XFwlaI0Eo2EDJGXVyXxaco90=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763676447; a=rsa-sha256;
+	cv=none;
+	b=Wv3ghaNvz0yikd1KpPm4W/wuKDPwQttCcbCA3zw1IJ/lQnAFJew+v0aqrr8xtNG3cLcEWm
+	/kXHkq+V7nUmBDeXtgz7eds/9XTmTJ95MvfQA/hZjRCCpVWNymH8Zl9uEugUgq4WHrJ/LH
+	qpPOO0O+F4g+ZYMDNhmisv4ruR1p77U=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=NnwdbSuP;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-640e9f5951aso1394403a12.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:07:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1763676446; x=1764281246; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZknmF3VpgAd9bo/Uo3njgGJcOyZCg9JJGN/hBR6DdHM=;
+        b=NnwdbSuPe3TZT5PEGFa7Lu2MIxH+VNgtEuDWMAQIuNdj8ZQFlP3QEekk3py6df9bjC
+         qXhwfuPpmwHd/H8pH4+wLoYgQBJ3mXBN7TP7luPWjC5s/x9c3l852bgeQrzNxBOCTf0m
+         yplQe4PPqfmtMCtjX7AUoMS9rbcI87cBDM7skL4qv/sTFPOJXpuZIuRUgjU+QzmMb/+k
+         OosXgSlqkQl0cjZzcnAWfmVFk4uS1PDM7UvSLqlPy8IdvTJYXsJbEhDp50975GjtYX+n
+         t/v/flaRLfDPy/fuh+L3du3wZCc1fcxLlYzgDBySmtP/taNpjEMNPWdtb6LGhzY085Hx
+         yZJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763676446; x=1764281246;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZknmF3VpgAd9bo/Uo3njgGJcOyZCg9JJGN/hBR6DdHM=;
+        b=n/v284qWh35Eo4Z3gFzGxfKGko2Yil3KIQ0856953IcQqDAAdaC5fB1GcqhHmOieeq
+         ihfEJE8U8OfINXTF5/sGb5UtBrJdmt9LxZB8aI/Bq4GzA4Yv/w3QjhCvfffNSzdeDQkV
+         Hfx0ky2jxLi7c3vm/gEc/cCWjEBt8NXrB3SB7oK4ckpFPhpaGD6998/Oa+xuw1wQkbUy
+         90kCLN294fJTIQs5AEQJA5EhLUK49KvY4oYXawatMlqqSLee4nXJQeqC8yE0vZsz5EeU
+         EGN07kdldDPpwXuOy2eSF+9cro1oPjs+ksZulZtQ9tCs5BOrlRuXMljW8gwaDnQ6Bq+O
+         aEeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVts/NjwPxcWtrEgRiiO8As6Rn6RzpAcpHAowbMF1MU2/v+S+x/uubSj1DN8DNLXLBIGEJJkotNaQ==@kvack.org
+X-Gm-Message-State: AOJu0YxMbnzsFkQQ9FDFNmwjJzuDxX2ABYo2Ul63ucnxNMFB/L9LlAQl
+	lGV3NqgjNl9bHMBa9v903y9MI/Kt3bwZJXoK/wQOs/CsxD/nJZm9v1JojfyCtk3ISZrVKHXDo4z
+	U/+GWyiWL5NqIF50wRqP45L0XCxjkeV45wUY/vxThM2J6NxrI2fO34s5Hfw==
+X-Gm-Gg: ASbGncsFQxubwFOSXPgRsRXGn8fi55gcHvdjfhYvZvA4i2etf9hsD1lV0xc2cVvtr7y
+	BYAsF+wvzAbmzJjZB4foSlUKFkxwvBRnYa23bouQeQ5pgaiZfu2T/nWNvCOfVqv5xhiCK4Ej1bW
+	kz8X3R/34038joc20iCZ6Dd65Iv/VJGJqVu0IP7g+LIrCavsiCqlc5b80noJN9+iTvMFmPg8b1u
+	itpjikQceXoMoEGmz8ldf7QWddRGB+eJhrHWypvbwuiohR1WcrEh0CUwfeGxcGMQAbb
+X-Google-Smtp-Source: AGHT+IGGH+g0kYgYnofK8nL8B1VmA3Kloy65i8uSy0ml2n0UZYKAny9eZQdSBm/1tUGN38T2SrmNnESf+SbwD7gKsW0=
+X-Received: by 2002:a05:6402:1ecb:b0:640:9997:a229 with SMTP id
+ 4fb4d7f45d1cf-645550783cfmr206597a12.3.1763676445755; Thu, 20 Nov 2025
+ 14:07:25 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA0PR11MB8397:EE_
-X-MS-Office365-Filtering-Correlation-Id: a2fc96e1-cb4b-453b-24fb-08de2880cdc5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?a1RoUVZxUGdrM2p2YzdtbHlncE94K3pRV2NvNnJSSHNFbE5QWFZYWXR4b1JV?=
- =?utf-8?B?UGNYYjhKdEpQajFpNnFUM1dQOUFhbFl5OWd2V2RBVE80NXRHcWM5V1I0TWlZ?=
- =?utf-8?B?Tk9YUk9DMnFVM1c2TnQ5cU9sNElST0dLc1NOM0t6WnhIcFVRNHV4SytSeVlj?=
- =?utf-8?B?b1FHbUgxTzJLeTh3alpKTmI4UnR0N3FDeEJDamluMVl3bm9SU2tZZDZYdjRu?=
- =?utf-8?B?N09UVnV5TzFLZFdydXBYNEpGTGJtR21RWG9jQmswQlBUVTdqUnVtY1pTRDF0?=
- =?utf-8?B?cXI3MFNoVkcvMVB3NC9zQ2JFNWR6ZmRYUEpncVpUN280aWVOSHQ1cGFWTUNK?=
- =?utf-8?B?VTNadHVrRktKbFpuSmlGdXhnQUdJeVhDeTQ0QmxmWUhZdjFjMmFtV1JPeTVm?=
- =?utf-8?B?SnA4bXNLL0c2S01pbEhrTHY5VG1kMk1SdEtHaEw1eGtsbEcvSmE2b2Vyc2RD?=
- =?utf-8?B?NlU4Tm9VcGNpS0s2T2Y3Z05VbEF5TU5yNUtxSXRWTTYyN2xkVW42RHQwb1A3?=
- =?utf-8?B?ZGJyRmk0UXJ6am1icmRUVkVYUS9JRGlhdG83UENrcjBJeDJXdHQ4ZGZyL3RP?=
- =?utf-8?B?ZVJ5dEZaNGtPVEFwajJSUEkwWU5XdVBVdUpVZjQ0Zjc0NXVzYjVkNDZUUjhW?=
- =?utf-8?B?YVM0VXZPL3IwNHh2QjhoWWVmRkRSbDlXRlJBK3ZwODdLWURMZThhWERpQWFz?=
- =?utf-8?B?RjBtU3dVOU9CY2l3c0QxVmZpaDlERjZjUnNaU2hwM3gxN3h6dEQxYk80M3VK?=
- =?utf-8?B?YTl4dllnRmJHRGU4ZDA4ZGVxSXA0MFNzck5YdXgxUUlJVzJGU1ZWSzRCZSs1?=
- =?utf-8?B?blpQVjk2bkI0MHZjSExOM0hSbGxLY1RMUGdZUnV2S3NjaklOUzROczdINXFX?=
- =?utf-8?B?VHFKZ1hKZU1NT2xmL0lXQkQ4MUpCYmpGck9hQ3NJK3dXeWhnK3dVMmZ1Tno1?=
- =?utf-8?B?RTQzVGU4dUVUaFRFQUFBUTl3dTVUY2lxMWdSMWkrenBNSFZFT2FlVHo4T1R2?=
- =?utf-8?B?bmFnUUJhN3JxMDByclpIT0daUjNRQ1NMQ24wSFF0bUJXU1RTVHpMRG81R1p1?=
- =?utf-8?B?VE00RFBvcWpWRXdxdmlVZkRNdU01ZENJQk01UDdJaGZ6NjdLZjErcTYwNG5q?=
- =?utf-8?B?bDA4ZGtsRDViWU1mcmhSRE9DWTRWMzJPRXdKZEtlaFB5R0hsdStiVTJ5dHRo?=
- =?utf-8?B?TERUOVRDdWVKZU82UnFIUDFQVnJFK3ZZYnlRZHc4dlJKQkJEZGJJYzc4THRU?=
- =?utf-8?B?cERHeldKSGdrY0d1dkQrdjB0bmlRQ1FLanRsd2V1WlUzc2F5cGFPSVVQRTJ5?=
- =?utf-8?B?REgzN0dPNTB6czhtNGMvT3VFa0NYRUY3SWhRZDhzbG5INGEwZ1RUQzlYYXJY?=
- =?utf-8?B?TDBQZ1FHSlB2b1I0bUVmbDVtUDI4YkxhOTN5cUk5Y1J3TGNhVlVwWUQ5Zktt?=
- =?utf-8?B?dmlucmhnK0tmMGQ0WFlOZmNvSzJiTFpMam9xOE04NTBLNkVhbWhzRkJHUWkr?=
- =?utf-8?B?NDgraEo5Smx6Z0NBaG1PbGxrVGxKVkxQYVpjL2dNdFptU2QwRzhrS0RPVzFy?=
- =?utf-8?B?akk5YXBjbThwNXVuUWpwT1Nqc1d1RVdycDV5bUszQmwxUFlxYmRpcm9NWUJD?=
- =?utf-8?B?VUt6QmlUbEd1cmlkNUVFRHozZ1d1TXRLbXZwMmxTMllEN3MzdnBmdzlhQktI?=
- =?utf-8?B?ZmIwWjBReGxiYi93bVlkSS90d09ySG1peEFNSW1VNmMzRnYyV0JCVUM4ZXpp?=
- =?utf-8?B?K3ZUWTByY2YvdzNiSldXaTBvR2VHZGViYUY0N2Q4b2RobHJQNnZYOHYvKzdS?=
- =?utf-8?B?SHdxOHJHQmRuVUh2TGJvdTc5WUowZTZ3eG9ISmNEVWVjMytuRURmR2hseVZ3?=
- =?utf-8?B?Q0ZIbFY1ZDIvRDN6RnZjVlVieERxUHM5aVU1cG5SR1EyZTdja3lhZThIS2FT?=
- =?utf-8?Q?84cSAqCM1X1ani08xklejVWPnPXZShLH?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGN1M1JmS21hb05uWmRXcExFdzUvSTl4QXRiS1VVdkU2N1JwS01TR2tuZ2I4?=
- =?utf-8?B?N25QWFNSaUVPRnhCU0U4ckZBcFJ0bHRCQjAzZ1ByOXNreWFWUHNPT3FhQjJh?=
- =?utf-8?B?N3A5cWNRUVNhL1lCSnMzMnNIVm02N0VtdHJSRzdrbm94ZVBDWVpPRnpJMW9G?=
- =?utf-8?B?M0ppUnRYTSt2VlUwSGhnc2taWGJNbStqdUtVV3RnUVBZNGRNSXBHZXlsNDB3?=
- =?utf-8?B?RDJoZTZBZ1hPOHZyTnk2Z2FWbUlxTjAvdEJOSzAvaG9uUHVOOEN0ZWlDc2RP?=
- =?utf-8?B?MXl3TFdUWVdJWStRUnpBaG1WZ25wUXVEWmNERjEvZTZta1Q0eDAzSjNvS3Uz?=
- =?utf-8?B?Zkszd0xrNGthUWp4WDFiK0lLQ3M3UG9xZ09nT3Fyb0sybDlaTW9tNnVvSVJW?=
- =?utf-8?B?dFRCOTM5T04xZEtJaVVxK2dlUjFSb1U3eWJWOWJ3TUJYUGpVRWtkQU9LWHlK?=
- =?utf-8?B?K1g4Zk1EK0l5dUY2dU90ZU1wYkpPbWVUcW1aYUtvdU9PNC9IbDdwajB4Ymdq?=
- =?utf-8?B?V0FvMVdicjJlOUNxV1JrVEJXMlkrNlh2KzgyR2VHdkxpaE5xUXdRS0htL3Bq?=
- =?utf-8?B?ZElqa3ZJN0pKVkdrbFNmOWt3aDg5RFJ1Tm1KL2FjMkF6OTk0NWtOUWFwb2tU?=
- =?utf-8?B?dlRmS3JNOG81OG5tT0o4QzJqQVZJR3V4aC9SOWtsQlNOZFlWSWNXVTZyZi9P?=
- =?utf-8?B?a3RsUi9uWFF3OC9kR2I5Vm9MbzA1bTVOb0h6amtMY1VCUXJWdjdCRC84N01C?=
- =?utf-8?B?MnE1KzQ5ckZZdzFjRVQ5dC9yUXB0eU1hdFNFUWZlY0kyQmhndjB1Znc5aWZZ?=
- =?utf-8?B?SGVYR1R3OGI1cWpESmRWSnNLNGpaSGlKOGt1T2pMYlFCQkxsQ0JXVzRRR0pV?=
- =?utf-8?B?aHNzU1FCb0xpYkI5OVNPMmNtZzN2YUxpdmppc1h3eEV5cE9mWU1wWDliTTQ3?=
- =?utf-8?B?ZW1hQzlJZzNCb0NuUTdkUjJ3TnMrbG5uRVZ3QXE2eFhtUU41TlFuSGFWZXA4?=
- =?utf-8?B?cEtVRHRFNytqVHNucmxyL1NwQ2dtd3Rra0NpUVpkaEN3OXF1c0dJTkFFMjdt?=
- =?utf-8?B?aERNMXNrdzFOdlhmRUY3cHo0NXdUTFFWQ3F3b3hSOGRuV2RFUXZTRnBKZ1A2?=
- =?utf-8?B?THR6YTVrMFQ4QStOdjNoNUZJRmhMUGtaMHJ4T0M0eVoveWJDU0RONitIRlpr?=
- =?utf-8?B?dXpPeWZpSjN1ZlgzTjB0NnRFVFp4elM0N3ZKSmVUenV2UDFmdlZsdHo4amRK?=
- =?utf-8?B?cFpMTmlVV0ZadllOYmgwUWtibUl4N0IzRzYrNUNRL3cyeHRSV2M4QzBkTTF1?=
- =?utf-8?B?cmpLL2dHcUNtSHprcGpETUVPenZ0SndxbTZFQkZzd0JlSnZlb0FJZS8zQlVr?=
- =?utf-8?B?L1ZtKzRNK2lodm5iU3Q4eUtnMUZFU1FmcXArWHRxY3NMRE5GdVVyT2U3dXBL?=
- =?utf-8?B?M1QxUms5WDJBZ1hpTmpWUW1IOFdHdTZJYm5acXRkZ2I0SmY5UTJsc0lRN2VD?=
- =?utf-8?B?TVBtandaWngyaEVMU3VkWVJtTGNGQktjWTBGNkxCMGhiSW14T1RuaGNJSEwv?=
- =?utf-8?B?SFlmQkduaGk5bmUvNkI0RGdkVW9oNHNWcy9lSGUzcWtpd0pFVEM4SEI5cDlx?=
- =?utf-8?B?VFMyU2NHM3ozemdtOElkbml0SU5QT1BmR2RKQ3A1MTVkUXQrOCtSYi9YZVVI?=
- =?utf-8?B?aHY0UmhkUVVIT2ZZZ2JraUowVzFha3UzaXRSQ3J5SlB5b1UzNHJJZ01tOWxz?=
- =?utf-8?B?LzNHOTJsZnpnNEo1eHhCVmdqYldHRktKN3BRUGVOZTIxOGxyOURYdzRFRlpl?=
- =?utf-8?B?UElwY3BkUnFyWENkSkVtTEJqckFQajl4SVRBZGVQaitxL1VVZE1iRHN6UTJr?=
- =?utf-8?B?b3pRbnFzMEt5RFEveUMrNFNVK1EwTWZSN3dZNzZwdnJoanN4S3RxY05sRU1L?=
- =?utf-8?B?T01SeEhjQTFuUnBrTDBXeTllYUVvVDk3WDlJMzM0T1RMZmFIb2k4S2lkaGZY?=
- =?utf-8?B?NnhSYVpvbGlxSEpyMmlVMEp4UE1YcUxaODI3RElxeFRydGZ3ZFVmaEVURWZ1?=
- =?utf-8?B?RWl5UEppa0hPdEdhYTVnU255aFRnaDZrcEp1d3NSRWozSDFIcFpRdWtTR3U0?=
- =?utf-8?B?MlJFZEFsWm9wVUpxRmJjcGdweUpTN0ZNcXhEamVoZHJ5ZUtNazRiZHpZbFNp?=
- =?utf-8?B?TEE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2fc96e1-cb4b-453b-24fb-08de2880cdc5
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 22:04:40.8504
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bEh9u1/rRNGe8vAwTqnHMjfWQzB4Gidog8o0Nh6xqyDrqRkmfLIPATYuNc/msQJ7I6kS2MrS+ruooXTLRmzQUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8397
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BA3EC140002
-X-Stat-Signature: ueppcsmqckqiqiazei1p9bzkzfbz8nst
+References: <202511210513.ywQeN1k6-lkp@intel.com>
+In-Reply-To: <202511210513.ywQeN1k6-lkp@intel.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 20 Nov 2025 17:06:48 -0500
+X-Gm-Features: AWmQ_blimq4IQ7xme_3ojz0bDM0Um-4i6aYcx4O7UAhNInw7IGfPjHprHt__x7s
+Message-ID: <CA+CK2bDOxj14O2kuvn+BNnXJ+R7rb0CK+ZS_hoiUBX5YhDfaHw@mail.gmail.com>
+Subject: Re: [linux-next:master 9912/10599] kernel/liveupdate/luo_session.c:392:86:
+ sparse: sparse: Using plain integer as NULL pointer
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4td976w4hufh58c31ys8bimtqrcs6sbw
 X-Rspam-User: 
-X-HE-Tag: 1763676285-614947
-X-HE-Meta: U2FsdGVkX19APccavSaeqFiaFpLUIX8O2tMi9blhjMd98Dy+vr/vfKWAnfyo6INd5r1qIjX944dJ5EzY1+9pAiYeLXfkRXl+bkK9KsPIi7Ee/H7RDOvnZc5MX8Ln7BdqDdTqLoiNJKcMsTd/FWREdw4LTuLmN7ZPE6HHzFnLAImh+rtPdaeGqPemC2F08+pQ1XJF3POdVj6VcFSI5sP8JfWmgiQifUP5RGsZtLyNQk32WBButZwkHgzvbgZ032OQnLs4Y91VyKw6qaaIUr/bNvrXNrNa8qccr99PCQirKRSR1+SiHF23TtQFQIdVO9RfRllpojLKwMY2LdWPWX3Uibco01tD0M5gzwM6BFm33OPJyToUb5tex05KoQYL5KbnQviwQm6R+yn4OtiPmLTfDI/Zxj/T/8zD2VutO+z+7GH1MLzHX60j8J4AcS+ejte5sIkD3HgzTGnq27cSJeUibX8GY0AGoXnExXlS3TFKK+f/HGffjGBYJB02TPKG0zxC1M1GNE7ZIszc35zRtmq8UypJKh3rKsR5t9vjGKJ/VUgsaWFgvp3OMv/aQNnEsZMSfikPjY9YKvqnTw6eBgdHKQzYF9Hdkt5jjtAXLNkjz6cl4gomAvKeXpYeuV2QgoTSs/FV/OoG0CxySb/j3O7ZiPtOBgTu3oeHia3URv7tyUVd33TdDLT8sZvzVwBLB2sD/7593V1j1ZffQrGqI7aRIHqZMLtwjATmq+Q0oYR5ri/WAb+RgWqAsNFPyHDO57b3pQu7f8T0I59/lV96oM7s4LJEcHibzD01hXMQv/ek6V1PEaj6DJn6nfn4GiffjTEP1+7l/hGDwjByDMHSLZdv9mY2iFaIWC7m+kZ2cJo0LsnUDllukPzCWhuw2dou9NxwqZG+xxV4oTqSZpoU/GoCFV3zA6w5s7sSV9uoOJcRXOjktret9nbLAqEZDGhWsmKVop6yAFM5J0DirN7lnuC
- Qd3es3RB
- eVrKd7y/BOzaOT8F8ngg8JQAPkToyC59NUUnYTkKpIzRheoCnbRxktS6YVpqPoyEFiOw4rBaFcm+5QzsF+0Hwugep8d0J8WhvVClwFPiIeWoV7O+FpWG8m/x5oWdcPkEvCMxzLLT8vfk42bvQqdqeHeTbP2w1f8/YKG83/8JqKoo1xkglWeQ/mHtcFstAuMtO/jJjCQ7ttY8B2QXA+cNw+/PlZbZOb4T72+jFey0lznt7jXfOYCi6+ie1lVKdAiELxN0q8Y2avBnABSeIKtUxMQN/OdNhbYF2XdBNRVy2uui6Iue2zPokKVA2AeGvB/9Y3hSNMJpABibeDBAgXhPhP2OxEAyn/nDjrJ1pqnzmjrwu97sQcAybFa2UUoT6n6cnMZ8rxXiUQUKMeQMzC64EdpPmZS0N7cMlujPgk640KABj51hCNwy3ZPQOMATxbY2Tr1m+ylI0vjCGBjXdBXLJ7iYd9hmMgowNkrvJYPOC+0CYZPxLESYRFN/ino3YSNBFnOP71bXEr1r07uF1c7CvT51VUY3Q/OXkaTbmp/yTMS4CpKOAgGKochWtb7ACbT2y5Ce2f5THYO8HOs2cyBTWtFX6QnI8Lhyhg2I4Zg0Ory8EwY8h6G7yafZZucgplnbQqxmJCrUHgF3YJdBvrJEk35wVyH6VRyIK4ZQ6SnOW28CtNtKdMR8rFJmcstWpkopLsSKtf/pVv0azFMYli1qbuo6i5+hKT1rIdKTHsQmvEPBl9TmlDmbGUs6TGz0tJ2gg43mQKBg3WEGlmgS1NglY0ohVLR0LhMCfPizp/6ZRwIkmdJdFAGzJY2/GEiKz9NYaJTF7BXH/41f1qTzMKAjpn/DdHWDGqhjYQQTtrKqN2W1758xmSyzBYC1YJcD9S65LR2B2ssmGYMnNCue4+63iy0CXJdl7akqc1oZIoJZDG2vd1rNGrDsoL3uYuvoH8FF8/Hy0f32at0vOMno2x6AIBlFFC9yc
- yqEpkNGs
- kkKBKctSd5Pckr8GUTrc30JbC2aXQQ0i8L5jCrW5wC4=
+X-Rspamd-Queue-Id: 7026A140014
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763676447-273593
+X-HE-Meta: U2FsdGVkX19um8Xup0p8bB/3mDoMSegLp46mMRNiwkKMXCYZ3mNgfAoiLrdF614ZU833uLLXuY5/BITlTMmIHrikyQQuAeN7o6nnCYFse9ONyB+l3Ikm8ib4Al9zu5EMW6jz+xbgIszwZLu61h+i+P28jyIaXnFZKwcVMg03FkMgMCYJXxTcxkMTGnXs322EgqIcArhZIlaGJyrjHVh+Wu9mL6g1db+3HXFvywmpSHTaeG3Jy3qB5Oq0MhykTLZPZWiOvAdEiyzw0nuQJtlbO/IFAVOHFYDRXvU/C+bqrJR9AHVP4hQPouAhM4sr1B9eY6h195LoGAZUTDFPoS0QlvUDubaFUj6Aw33iKC42ymwgVNOv0kl/RZtggwPxSS3Kei1AUDkThZuoOLiN/RxnY47d4pQ44kpputSLW4y9AqjGBSkwWA8CuskghlJmbVC/T3XRkNAh/KcUnRqgbCy6OP43B1xAJxeaPudmtek3crcCojPIo8SauX2wWoF5gbwd2Z4bOxbXdH+UZOwC1RA46pYFhu43HvpaX1kQ9dwMZT4G2p0AJ5szMjVOsNglBMfhNDqEDteYqY/Rh3OATF7R5t2kXMjDY0YlCamBx+Nfy5Papt0tUL+8hgW2YxUWk1YRPDBvGfwTTl6NyVexOfrmVPZcwyPBaF9DUXoJ55/23/Zm6C0nZZTJjKL4R5Dv6nnhCzmi/kubymgwj8atPV/Do4BgF7SGgr+4dYuTKFKQzjS6ruODD25SWsLpr9Ztf35y+1FMGcaIfkIQCSZUy31AiGeWZCFVHXyXavZJa7JGdMOQ58kwg7O+ppVziF9DHalucPDLWmLqq1MYAgF50AeV5IQKeEhNaQ6Q3gMwbGSEfiEu3au/bz7SfIIcf9Y+PAxI9Xdgmzai9ZyrQgIGftImuA7g6RsM7vtc3JA/pbVkCo6qrB5MV5b12LZ6juNDyXaE2jslyo+zwBlK2n4bv8i
+ mBdzGENy
+ QXhH1VPU14Nv+1A+RUcXksWNG10j952uW8NaKaBTSr1d2hwiAYcVUPqMQo7kMEop6rGfOroEJi0RWzQKg22rrVQ3wuXjbbujxXpGRbbjcj4fc5AGgGBIOBTJIuF4XonSBTUvgRJJmtuj+Uam7mI4wmXQ6wINCuS6Q6wrrY4llgCZPgMQPzU7NoRUxUPTuVr4OjWK1O2uF7qKWi8tjv9XdoO6pIl08par+5yc82SwY0WTg5Xah0HAO9FdeaINQzfvWLLdMP8BDF+1kukeVRuHRP292AP9MvqyIYH60a6aU2tuMWVj0QdaiKTumx2jNzqoopM7QLwKOA1xlOoK1Jcqc1SopZAahjFtRaW1WMmNStuC95S2Crk4riEHhUQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -246,215 +117,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 07:43:42PM +0200, Mika Penttilä wrote:
-> Hi,
-> 
-> On 11/20/25 19:05, Matthew Brost wrote:
-> 
-> > Splitting a partially mapped folio caused a regression in the Intel Xe
-> > SVM test suite in the mremap section, resulting in the following stack
-> > trace:
-> >
-> >  NFO: task kworker/u65:2:1642 blocked for more than 30 seconds.
-> > [  212.624286]       Tainted: G S      W           6.18.0-rc6-xe+ #1719
-> > [  212.638288] Workqueue: xe_page_fault_work_queue xe_pagefault_queue_work [xe]
-> > [  212.638323] Call Trace:
-> > [  212.638324]  <TASK>
-> > [  212.638325]  __schedule+0x4b0/0x990
-> > [  212.638330]  schedule+0x22/0xd0
-> > [  212.638331]  io_schedule+0x41/0x60
-> > [  212.638333]  migration_entry_wait_on_locked+0x1d8/0x2d0
-> > [  212.638336]  ? __pfx_wake_page_function+0x10/0x10
-> > [  212.638339]  migration_entry_wait+0xd2/0xe0
-> > [  212.638341]  hmm_vma_walk_pmd+0x7c9/0x8d0
-> > [  212.638343]  walk_pgd_range+0x51d/0xa40
-> > [  212.638345]  __walk_page_range+0x75/0x1e0
-> > [  212.638347]  walk_page_range_mm+0x138/0x1f0
-> > [  212.638349]  hmm_range_fault+0x59/0xa0
-> > [  212.638351]  drm_gpusvm_get_pages+0x194/0x7b0 [drm_gpusvm_helper]
-> > [  212.638354]  drm_gpusvm_range_get_pages+0x2d/0x40 [drm_gpusvm_helper]
-> > [  212.638355]  __xe_svm_handle_pagefault+0x259/0x900 [xe]
-> > [  212.638375]  ? update_load_avg+0x7f/0x6c0
-> > [  212.638377]  ? update_curr+0x13d/0x170
-> > [  212.638379]  xe_svm_handle_pagefault+0x37/0x90 [xe]
-> > [  212.638396]  xe_pagefault_queue_work+0x2da/0x3c0 [xe]
-> > [  212.638420]  process_one_work+0x16e/0x2e0
-> > [  212.638422]  worker_thread+0x284/0x410
-> > [  212.638423]  ? __pfx_worker_thread+0x10/0x10
-> > [  212.638425]  kthread+0xec/0x210
-> > [  212.638427]  ? __pfx_kthread+0x10/0x10
-> > [  212.638428]  ? __pfx_kthread+0x10/0x10
-> > [  212.638430]  ret_from_fork+0xbd/0x100
-> > [  212.638433]  ? __pfx_kthread+0x10/0x10
-> > [  212.638434]  ret_from_fork_asm+0x1a/0x30
-> > [  212.638436]  </TASK>
-> >
-> > The issue appears to be that migration PTEs are not properly removed
-> > after a split.
-> >
-> > This change refactors the code to perform the split in a slightly
-> > different manner while retaining the original patch’s intent. With this
-> > update, the Intel Xe SVM test suite fully passes.
-> >
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Zi Yan <ziy@nvidia.com>
-> > Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > Cc: Rakie Kim <rakie.kim@sk.com>
-> > Cc: Byungchul Park <byungchul@sk.com>
-> > Cc: Gregory Price <gourry@gourry.net>
-> > Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> > Cc: Alistair Popple <apopple@nvidia.com>
-> > Cc: Oscar Salvador <osalvador@suse.de>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > Cc: Nico Pache <npache@redhat.com>
-> > Cc: Ryan Roberts <ryan.roberts@arm.com>
-> > Cc: Dev Jain <dev.jain@arm.com>
-> > Cc: Barry Song <baohua@kernel.org>
-> > Cc: Lyude Paul <lyude@redhat.com>
-> > Cc: Danilo Krummrich <dakr@kernel.org>
-> > Cc: David Airlie <airlied@gmail.com>
-> > Cc: Simona Vetter <simona@ffwll.ch>
-> > Cc: Ralph Campbell <rcampbell@nvidia.com>
-> > Cc: Mika Penttilä <mpenttil@redhat.com>
-> > Cc: Francois Dugast <francois.dugast@intel.com>
-> > Cc: Balbir Singh <balbirs@nvidia.com>
-> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> >
-> > ---
-> > This fixup should be squashed into the patch "mm/migrate_device: handle
-> > partially mapped folios during" in mm/mm-unstable
-> >
-> > I replaced the original patch with a local patch I authored a while back
-> > that solves the same problem but uses a different code structure. The
-> > failing test case—only available on an Xe driver—passes with this patch.
-> > I can attempt to fix up the original patch within its structure if
-> > that’s preferred.
-> > ---
-> >  mm/migrate_device.c | 42 ++++++++++++++++++++++++------------------
-> >  1 file changed, 24 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> > index fa42d2ebd024..69e88f4a2563 100644
-> > --- a/mm/migrate_device.c
-> > +++ b/mm/migrate_device.c
-> > @@ -254,6 +254,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >  	spinlock_t *ptl;
-> >  	struct folio *fault_folio = migrate->fault_page ?
-> >  		page_folio(migrate->fault_page) : NULL;
-> > +	struct folio *split_folio = NULL;
-> >  	pte_t *ptep;
-> >  
-> >  again:
-> > @@ -266,10 +267,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >  			return 0;
-> >  	}
-> >  
-> > -	ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-> > +	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
-> >  	if (!ptep)
-> >  		goto again;
-> >  	arch_enter_lazy_mmu_mode();
-> > +	ptep += (addr - start) / PAGE_SIZE;
-> >  
-> >  	for (; addr < end; addr += PAGE_SIZE, ptep++) {
-> >  		struct dev_pagemap *pgmap;
-> > @@ -347,22 +349,6 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >  					pgmap->owner != migrate->pgmap_owner)
-> >  					goto next;
-> >  			}
-> > -			folio = page ? page_folio(page) : NULL;
-> > -			if (folio && folio_test_large(folio)) {
-> > -				int ret;
-> > -
-> > -				pte_unmap_unlock(ptep, ptl);
-> > -				ret = migrate_vma_split_folio(folio,
-> > -							  migrate->fault_page);
-> > -
-> > -				if (ret) {
-> > -					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-> > -					goto next;
-> > -				}
-> > -
-> > -				addr = start;
-> > -				goto again;
-> > -			}
-> >  			mpfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
-> >  			mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
-> >  		}
-> > @@ -400,6 +386,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >  			bool anon_exclusive;
-> >  			pte_t swp_pte;
-> >  
-> > +			if (folio_order(folio)) {
-> > +				split_folio = folio;
-> > +				goto split;
-> > +			}
-> > +
-> >  			flush_cache_page(vma, addr, pte_pfn(pte));
-> >  			anon_exclusive = folio_test_anon(folio) &&
-> >  					  PageAnonExclusive(page);
-> > @@ -478,8 +469,23 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >  	if (unmapped)
-> >  		flush_tlb_range(walk->vma, start, end);
-> >  
-> > +split:
-> >  	arch_leave_lazy_mmu_mode();
-> > -	pte_unmap_unlock(ptep - 1, ptl);
-> > +	pte_unmap_unlock(ptep - 1 + !!split_folio, ptl);
-> > +
-> > +	if (split_folio) {
-> > +		int ret;
-> > +
-> > +		ret = split_folio(split_folio);
-> > +		if (fault_folio != split_folio)
-> > +			folio_unlock(split_folio);
-> 
-> I think wrong folio is left locked in case of fault_folio != NULL. Look how
-> migrate_vma_split_folio() handles it.
+On Thu, Nov 20, 2025 at 4:36=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+rote:
 >
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.g=
+it master
+> head:   88cbd8ac379cf5ce68b7efcfd4d1484a6871ee0b
+> commit: f485f57c35af5b8c2a243dfc39ee171673484915 [9912/10599] liveupdate:=
+ luo_session: add sessions support
+> config: x86_64-randconfig-121-20251120 (https://download.01.org/0day-ci/a=
+rchive/20251121/202511210513.ywQeN1k6-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0=
+227cb60147a26a1eeb4fb06e3b505e9c7261)
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20251121/202511210513.ywQeN1k6-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511210513.ywQeN1k6-lkp=
+@intel.com/
+>
+> sparse warnings: (new ones prefixed by >>)
+> >> kernel/liveupdate/luo_session.c:392:86: sparse: sparse: Using plain in=
+teger as NULL pointer
+>
+> vim +392 kernel/liveupdate/luo_session.c
+>
+>    357
+>    358  int luo_session_deserialize(void)
+>    359  {
+>    360          struct luo_session_header *sh =3D &luo_session_global.inc=
+oming;
+>    361          int err;
+>    362
+>    363          if (luo_session_is_deserialized())
+>    364                  return 0;
+>    365
+>    366          luo_session_global.deserialized =3D true;
+>    367          if (!sh->active) {
+>    368                  INIT_LIST_HEAD(&sh->list);
+>    369                  init_rwsem(&sh->rwsem);
+>    370                  return 0;
+>    371          }
+>    372
+>    373          for (int i =3D 0; i < sh->header_ser->count; i++) {
+>    374                  struct luo_session *session;
+>    375
+>    376                  session =3D luo_session_alloc(sh->ser[i].name);
+>    377                  if (IS_ERR(session)) {
+>    378                          pr_warn("Failed to allocate session [%s] =
+during deserialization %pe\n",
+>    379                                  sh->ser[i].name, session);
+>    380                          return PTR_ERR(session);
+>    381                  }
+>    382
+>    383                  err =3D luo_session_insert(sh, session);
+>    384                  if (err) {
+>    385                          luo_session_free(session);
+>    386                          pr_warn("Failed to insert session [%s] %p=
+e\n",
+>    387                                  session->name, ERR_PTR(err));
+>    388                          return err;
+>    389                  }
+>    390
+>    391                  session->count =3D sh->ser[i].count;
+>  > 392                  session->files =3D sh->ser[i].files ? phys_to_vir=
+t(sh->ser[i].files) : 0;
 
-Ah, yes. It took me a minute, but I think I understand what the code is
-doing. It has to relock the fault page if it was included in the split.
-I actually think that code has a corner-case bug in it too.
- 
-> > +		folio_put(split_folio);
-> > +		if (ret)
-> > +			return migrate_vma_collect_skip(addr, end, walk);
-> > +
-> > +		split_folio = NULL;
-> > +		goto again;
-> > +	}
-> >  
-> >  	return 0;
-> >  }
-> 
-> How is this making a difference, I suppose it's only the 
-> migrate_vma_collect_skip() after failed split? 
+Should be: session->files =3D sh->ser[i].files ?
+phys_to_virt(sh->ser[i].files) : NULL;
 
-Yes, that is one part, but perhaps that is actually harmless as split
-will just keep on failing.
+Will fix it in the next version.
 
-I think the real issue is that it restarts the loop with goto again by
-resetting addr to the start. If the prior pages were locked and
-migration entries were installed, the second pass will fail to lock the
-pages and install NULL mpfns, which results in the migration entries
-never being removed—and that leads to the stack trace I’m seeing.
-
-> Why are you just removing the other migrate_vma_split_folio() call? 
-
-I was a bit rushed and overloaded with other things. I think I have a
-way to fix this within the framework of the original patch. Another
-patch in Balbir’s series has the same problem too. Let me try this one
-again, testing out another version now.
-
-Thanks for the input.
-
-Matt
-
-> 
-> --Mika
-> 
+Pasha
 
