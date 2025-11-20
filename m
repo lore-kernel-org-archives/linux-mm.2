@@ -4,111 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29A6DCFA446
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 21:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 615F4CFA446
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 21:36:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D1406B002B; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
+	id A6FB66B002B; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A87E6B002C; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
+	id 9F9536B002C; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E6076B002E; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
+	id 8C0AA6B002E; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D3356B002B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1964C588BD
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:28:38 +0000 (UTC)
-X-FDA: 84132274716.29.0E78A7F
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2EA00C000A
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:28:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ERFj09Py;
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 77D4C6B002B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 236B213AA60
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:36:27 +0000 (UTC)
+X-FDA: 84132294414.24.5D1D685
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 946561C0011
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:36:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LaJBzhHJ;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763674116;
+	s=arc-20220608; t=1763674585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
-	b=DK7OgYjuTvdnvjN+NCHc4KAz/Oa6vkqQY3Ufud8t3ezKkqEQUcDHmqdEhsetblhBPyvIJI
-	X6nQYMp00rdsErEwiYkNaJ/rdT91r/3Uw68kBhI9AAvYa0Mr8cjMw6YTKNf+DDciGwGdyD
-	BKfD7Y506ioyqWRjiBakl+/p4ILf0ME=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763674116; a=rsa-sha256;
-	cv=none;
-	b=qUQho3sxwXGFoAcKUXxg87VDt0on5dJIQQf9dJHQALSlrhHnV9d7VLOhNM3DNb1ApWMNxI
-	pljI8HG3IefMCd9wTH6+ySyg06WA3eU8EULR3LZQVFXG3TT84VF+J9l7uAQYsr9Xdf1Iy7
-	sR2HoOmaabqwqfg5dcYZdACRQlbBKrM=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6EFdADKaPdUmJFGC3bGJoIPWkCFx4ee0UN5G6pGUyLo=;
+	b=Vb06vADj1AvD8T9JVg3iPsJYMTzmHwQvmTgKatSd8jAvMQNvogFKFsh0jbVxhS4n3L//ML
+	zmxeHvPs9hh9RefQGqeKqv06ExOd3mqjuYQEU5SmTQ+CQg1+/gpxsnXBe9boZty6SMMFI0
+	zOfv9nuhsHchcXl6GBgT0bhrC8irma4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ERFj09Py;
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ee0084fd98so10497571cf.3
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:28:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763674115; x=1764278915; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
-        b=ERFj09PyuDXo7ID3eD6obd7mF2zdLqalsaETzAVRGhE5Lo9hjqTcPYLbOM/gqcZ6Fx
-         rhfgbrA4KCH3esadYicZPMG3f9eRG58SX6Fy1hUlEuMhXswYFz3vcpA1eRV1n2uSZjGL
-         DV5uE/G9EJ6xaUo5DcAjS16ymuXUOasbQXTbbmZfxcy2MLZpnEpd0E3yvmxyDrKlq96N
-         0CEPrHlh82PwuzEGy7Js7t2vOs/xhE5Fuv7P1B9IwaO/8fOHWgct2kULUkNP5jxVPidr
-         KrB6vrtootWNbUoRamEQwE5hox5Z1buhIG/MVjrztOsl9WP8m4Uki092PZ/uQM9hHnph
-         6B6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763674115; x=1764278915;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
-        b=DEVxSx62w/NVKum5mBwj5/vIDOMT959grG3DXB/C568S0QIVXe5IjtVatubVihg+2M
-         7NfkeRPKCXTjpwsf1t6S8Ct9XI3/n89FHXqMSO0/yRdjF4I/Ex+bDHCsfmnpI6nRU6aP
-         CxQdCyx8n5EWj2zyICv1wUpvZwhXOWDyhY99TLKKmaR0x6BOXH6avRAfK1BYm5o7Jcz0
-         YyctSSJp+vynhA/w+8drMfcnugs10stnCljOL6yD+rY2dgkg3A7zx0mMI1QMA3R6TMSM
-         3mK0dvycmzO+v/sQRixdZPnfbJiDhkCAudDf5L1GEjvMj077UVTdcyGHK8Fjncc6+Omj
-         uhBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/JyCsqBtUCg89792bag9k0sv7JaEh8+wWjL+SVE4suHzptgm+bI+Q/ntrnjBWo/zSJufRjVN2bQ==@kvack.org
-X-Gm-Message-State: AOJu0YwBnq5Ys+EuBfk/ViTIjIsCZxVN+cTJNVV253yLhxfyIh6rSXyN
-	Y1BdGGmFgoX2KMUiYKskP7oPZllB8osuVOnx5Oy//iDMleVpGFV97rdX7BHOADkd+LR1DAiGYnC
-	GQK5XX+zmw1tUIJnIUvdNscHPir9wq+8=
-X-Gm-Gg: ASbGnctqAwiBjhjd5LW6/wggtSbMVcuBDZQMc4fn3dJBoT7wppsaku6pRcnkTOpVCHn
-	NqhD09pyHQJwweKUIcuSQtw//kWhet2DcW5gNc+X0RYD/eUSjAXk6rcrHFrRSlHTxWp+Kj/I46p
-	HT1N2M6fyWe2/hEc5Trf4IkLgVRgHKMw9pJXk2r/00N3wQRCoWeFeN9lcXGWFuk44zhep4Glmz1
-	+Z1IuNqkwekMlScXB68mDzOGlX+Xv4q9N4zAE4Be07dUduJyRYIAGNWveF6AO55b2Ulzw==
-X-Google-Smtp-Source: AGHT+IEa5T+vJspuWQ+toPhdixw0WwlXC4G0HJVZEYNsBGrI4UEp3MsHvbWsFOZ191NkPJIFH9UZtf+mHSYJj1eRNx0=
-X-Received: by 2002:a05:622a:4ca:b0:4ee:15af:b938 with SMTP id
- d75a77b69052e-4ee5892e29dmr992241cf.70.1763674115151; Thu, 20 Nov 2025
- 13:28:35 -0800 (PST)
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LaJBzhHJ;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763674585; a=rsa-sha256;
+	cv=none;
+	b=okU/g8AaiNTn2ia2T1JTvel1fJUS9qWqBlPEtR4VIvr8/fMZCyTv8Jm43ugQszVZcFQePr
+	LKaNB2VbSz2NlAoaciKmjhw2T80BfBzzW0iHmihSrX4X8MAJ1GO64GnaSExXchWEu5Ify9
+	kG01hYJqdC2u9Scv60NxuTTDHjsjTiM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763674585; x=1795210585;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=DU7XGzoH3AZNUi+RrQ3xeIu8dOW4ZXL6yva3U5HYBaE=;
+  b=LaJBzhHJ4U4BBJmiMx7/knwwzqwTmnZEdpU1aP8m/FgFn3kf5lPicCan
+   JMTPmOshlSL13+Ze93w+EyLRgEsJzYgWiaEn+783859ZHKO6jGcayZcA+
+   UL1lOH6D1erE7NTVIiSe/a6no9x/yiHuzWrVglUO1xDMF1llTC5umg9fe
+   JMT/JAccUYu6kidYtfYpdcAcEoM8kQn9bBXwnLn/Gftgs7PhGGU938fAZ
+   qKn6iKwJY2MynNDosoo5CZY/0+G1AM0WNaoFgfX3S82VGJQnB0fh5cwYE
+   f7fglF6pnjFmzHS6+P7FOohFhnzUMnhLwOrdCPaiLfgWnz2dUDSE6b/fF
+   Q==;
+X-CSE-ConnectionGUID: dpkLH0KNQq24AwzADSkNFg==
+X-CSE-MsgGUID: VB9l/cmoRlSIV754HUDnPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76864701"
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
+   d="scan'208";a="76864701"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 13:36:24 -0800
+X-CSE-ConnectionGUID: NeC6Lu3vSg6ak7hTcTip5g==
+X-CSE-MsgGUID: D2K2LDidSsmNJb062+ajeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
+   d="scan'208";a="191591618"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 20 Nov 2025 13:36:22 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMCKB-0004bJ-33;
+	Thu, 20 Nov 2025 21:36:19 +0000
+Date: Fri, 21 Nov 2025 05:35:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master 9912/10599]
+ kernel/liveupdate/luo_session.c:392:86: sparse: sparse: Using plain integer
+ as NULL pointer
+Message-ID: <202511210513.ywQeN1k6-lkp@intel.com>
 MIME-Version: 1.0
-References: <20251120184211.2379439-1-joannelkoong@gmail.com>
- <20251120184211.2379439-2-joannelkoong@gmail.com> <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
-In-Reply-To: <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 20 Nov 2025 13:28:24 -0800
-X-Gm-Features: AWmQ_bmnvTHHOQkyw-5ik9LsEU1gIAn8vSNbEvhvGRrj7a058LOg6piKf3ugJVk
-Message-ID: <CAJnrk1ZpU3eqh7jN8r-ZPyFsuAjkKgwJ-_Sx0L=710hD0UYwUg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] mm: rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to AS_WRITEBACK_MAY_HANG
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, shakeel.butt@linux.dev, 
-	athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: bexqc64eyzy6466ym79xcpotrih4ckj1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 946561C0011
+X-Stat-Signature: zgrss94p6snzazqccw8pkh76n3kpwri8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2EA00C000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763674116-651163
-X-HE-Meta: U2FsdGVkX19TnV3uDMcbb9TNRLa3s+FhTjB/5wHWFf9WzUkr8CPSd+sOdIkWJWS48vYBEFJcexVafit1IW4JGby3/D17/k1/PMO9hKLLFMyD0V+AkhiZ1lt+N8auq6/rt/U7UNQF30t1n5qzCO4Wz7+BE4wvZEGF8fSjfsjcNzu+maHLKTqeyh8M52HFuKwjBl1SV68ObF3BLfijGVjsd+szD8zP41XCkQqvTdXh5zEwsNlibFLXaJ+AobLba32Ililgk774Q86rpZ73P5vqPFjt1EdPAzT/yxvMTt7mYKZFEn9W+9IfHmrHIFwcMSVcJMEMSb0+dJskNKtoMTW/uJCOvEfddR8UK5hxtVbK/FgpFD6siqtWhLwsSpZ5PIR4dE7WIg65mudgF3vig5njs4Fz71bOKTJhi6oHN0MH3kVhJXG5fK+pGBez4hIXUP/mx4+yC8bjJx7D9oHV4dprUO5mL/3NimIivXqq6YRoUQy7bRzwprip0VQa/UE9bE0c0NuYvKgylrj+Od1wwspckm4hIHX3wWlyEWc1DcLwrvH6AHAVkc9nCuwR3QoHkFuc3HUwdQLE9+ONlkc/jaS1mufERLjpc3SggrSA/16eawybWkwVNicGk0XT+iWlgpG1pwZngMSmT/O7VaG00HOeh17y4TIy11twg/XkDqXntYwNU6seuiHjovcFcL+IxWHIHwSO08Re5rdz/PqoqcA2isqvw7/oSUozYAIEME51WCewNgL3yXBT8mMDhc6+MaIPK9nZw0jYOCwAHPOuyiwQqY3gJ4V2xAro2Z1yMBQ4G3vMPgB+4Iz0NYf1crDuBmDHehyL+f4J6Y/uf9viPd93ZV+ICUFyzGYLPKaG4HOW0QFsdiyxqhRDCc430eI5AxlovrFKbri56PoiXb4yzJGg7vaGZJd+PI0kvbqvmf3sYeiuGxM8SZ2wXR/SSkWtAclx3HAMieVIuEIWVURzS4D
- /QkozL+s
- WNXzVfNStFlPK4DgWgiZhHUzrot4TCc0yOuE/ai3Xz8fu23+zG23g4cA+hjtmq9rXrp64RDpGAumcm9foBKqeEw2uTBFTyqcJ6TNMA7+VDVlxTssGjjyzAr338vKz4LdIAn81JICFJiWvNS42HghmL7R/UZ0KGAgjVrL/v3f9iHRfW88d6369nO/zmN3ywYnfP7DkkC92jsJEeNtVvPWOcbEzDqJWnhwfnmQJwpLCbnasczWtxz6My18lOx+q8lDxHVKB/wJ9XVVGR1jEUxaivETOmEH1h6/OvH/3fUHqEvvgTG7pvSMwyCw1kFWnQNN38lMGiWRZYXkJOWvdFlPPCtH9GZTW1eNTmcbYI9Jd8pkrOql1yPKBwJ2MF6jWaW5x5BAiYrJD+K1rNMVNFzq6/4VjKYag1LXJDZlovVkUb56x/SY=
+X-HE-Tag: 1763674584-612125
+X-HE-Meta: U2FsdGVkX196WBn/fUd6r58aePXoMFT543QigV9NYL72oWP/LjaB8T7B5PBd9DsX/Gp05NiJu3Sfwm9t6PJPfDUqHFM+fDIdhrfz5xBbiTuNSJeHcrAip1XwQcm7f9Ta0Ey52fnpPGlU6d2KXV45FbGsGPXyHjgn20ruqojZA/j7nrscqFeUglK0Vg488kzmoaCqGUZ8OifT4POyHH6bsoAOQ98KutRQbi5QQv5WTNgKH0UhjUusheFbfkOqsmNdX+tIxs4UmuJ2R/ETmiHL1O9q2V+TEuW9ghtKWNFmCzM5DsSvgtg8x2rQaAH9xb7Hiye8DIElhfvMPC4TOU8NwdwgDq3FBExzoOBkyA/wQnXumB5pINhXCCphhCEplCkQjDv884+eBYsrwemBKNmR6xhTX3i8z0+4uUBI/6vTe3IRe25CMtTTUGD77HMyLD2lcNqbXxYpdyZJBa5aozX4EFDotMkOIuA71K/608QtRTohIL27asCIe0U7n+tVMf8TBQyypy0ZdAt4hueA9EJUhsn8q0Af4TEb6ALL74hS7+I7oGrURWA5AUXcxzQKgq2V66WnUozBQLwKS5blm+3K3R2ELvETRSKaS8SUIic/0jpqB6p4Sf7EFT2rkZzda/IMzuJ6m9uJ3wW+FU32FkupT5Q+h+PoqjMy0GKZ9A/rrgGo1O6etiaRKRVK1vj50DHoi/GN8NjIzmvdEuyVk/hUyj/PtjMrLVdxLZSnzaNglR6qt0daVFfcCvaORNkNukut4mfamZdhhzSyBqOgqdxI5qzv8r7Xxq/gH1c9EFa9tCwCvHA2VbtIp84uuF3oF5KBu3w2lpzF0PrcoA4HkWnHbUMo7XS6icC6Y56iobnE6FnN8QtkarSVJ21nrn7q5cOBDFeEpMpXEOyz5qTfrURKvsyaDpeh+XPYeIj7AWLpI7njCNTi9txszw05SX65DOQOl8uX0rtetB3aX2wr52L
+ L42dkw2I
+ OeHS0dQCY8+fJmbI6E/9Fm9QkFbAkX+S2/3E2KZMky2fFtA2zP03DKgrRgegUb3KSzUAIGZ7InK56USlWDa1XmSY3eXXovkGzXZR7tpcuuyMU7zNXDxoW0M4v1b5RdbuWjneqZSxSlxp3koTksT0IUk8a/pYgKaRGVS5HNYn1hX8PDxdG7orLJQnmANJz95OqDP18U5+TKKY+bYHIoLcz1jzdV2LZmUOJmLWFSWD0boLp8Y3XWs4MuR1GnVaCJMYS+RZARsFL/69cnU58i6ZcxLHqV1YvFLPfcH/KgQfa2tiFGApjrpAh8jJaW0BjTflKUG/qXlKDzstzuX4txlZZ9mmmcBItSdjYQ/DzvCFpQPLWNi5TqXBi2vF8gw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,46 +106,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 12:08=E2=80=AFPM David Hildenbrand (Red Hat)
-<david@kernel.org> wrote:
->
-> On 11/20/25 19:42, Joanne Koong wrote:
-> > AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM was added to avoid waiting on
-> > writeback during reclaim for inodes belonging to filesystems where
-> > a) waiting on writeback in reclaim may lead to a deadlock or
-> > b) a writeback request may never complete due to the nature of the
-> > filesystem (unrelated to reclaim)
-> >
-> > Rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to the more generic
-> > AS_WRITEBACK_MAY_HANG to reflect mappings where writeback may hang wher=
-e
-> > the cause could be unrelated to reclaim.
-> >
-> > This allows us to later use AS_WRITEBACK_MAY_HANG to mitigate other
-> > scenarios such as possible hangs when sync waits on writeback.
->
-> Hmm, there is a difference whether writeback may hang or whether
-> writeback may deadlock.
->
-> In particular, isn't it the case that writeback on any filesystem might
-> effectively hang forever on I/O errors etc?
->
-> Is this going back to the previous flag semantics before we decided on
-> AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM? (I'd have to look at the previous
-> discussions, but "writeback may take an indefinite amount" in patch #2
-> pretty much looks like what I remember there)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   88cbd8ac379cf5ce68b7efcfd4d1484a6871ee0b
+commit: f485f57c35af5b8c2a243dfc39ee171673484915 [9912/10599] liveupdate: luo_session: add sessions support
+config: x86_64-randconfig-121-20251120 (https://download.01.org/0day-ci/archive/20251121/202511210513.ywQeN1k6-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511210513.ywQeN1k6-lkp@intel.com/reproduce)
 
-Yes, I think if we keep AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, then we
-would need another flag to denote the inode should be skipped in
-wait_sb_inodes(), which seems unideal. I was considering renaming this
-to AS_WRITEBACK_INDETERMINATE but I remember everyone hated that name.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511210513.ywQeN1k6-lkp@intel.com/
 
-Thanks,
-Joanne
+sparse warnings: (new ones prefixed by >>)
+>> kernel/liveupdate/luo_session.c:392:86: sparse: sparse: Using plain integer as NULL pointer
 
->
-> --
-> Cheers
->
-> David
+vim +392 kernel/liveupdate/luo_session.c
+
+   357	
+   358	int luo_session_deserialize(void)
+   359	{
+   360		struct luo_session_header *sh = &luo_session_global.incoming;
+   361		int err;
+   362	
+   363		if (luo_session_is_deserialized())
+   364			return 0;
+   365	
+   366		luo_session_global.deserialized = true;
+   367		if (!sh->active) {
+   368			INIT_LIST_HEAD(&sh->list);
+   369			init_rwsem(&sh->rwsem);
+   370			return 0;
+   371		}
+   372	
+   373		for (int i = 0; i < sh->header_ser->count; i++) {
+   374			struct luo_session *session;
+   375	
+   376			session = luo_session_alloc(sh->ser[i].name);
+   377			if (IS_ERR(session)) {
+   378				pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
+   379					sh->ser[i].name, session);
+   380				return PTR_ERR(session);
+   381			}
+   382	
+   383			err = luo_session_insert(sh, session);
+   384			if (err) {
+   385				luo_session_free(session);
+   386				pr_warn("Failed to insert session [%s] %pe\n",
+   387					session->name, ERR_PTR(err));
+   388				return err;
+   389			}
+   390	
+   391			session->count = sh->ser[i].count;
+ > 392			session->files = sh->ser[i].files ? phys_to_virt(sh->ser[i].files) : 0;
+   393			session->pgcnt = sh->ser[i].pgcnt;
+   394		}
+   395	
+   396		kho_restore_free(sh->header_ser);
+   397		sh->header_ser = NULL;
+   398		sh->ser = NULL;
+   399	
+   400		return 0;
+   401	}
+   402	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
