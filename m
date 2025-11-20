@@ -4,94 +4,234 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3DF2CF8847
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 12:00:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6729CF8844
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 12:09:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D0366B000E; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
+	id 2FEA26B0008; Thu, 20 Nov 2025 07:09:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A7F86B0022; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
+	id 2D6376B0024; Thu, 20 Nov 2025 07:09:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BE376B0023; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
+	id 19E506B0026; Thu, 20 Nov 2025 07:09:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A6596B000E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:00:19 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CBDAE140885
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:00:18 +0000 (UTC)
-X-FDA: 84130842516.21.89D38E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1A704A001C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:00:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1dqDXb5;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763640017;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 071DF6B0008
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:09:32 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A8488A014
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:09:29 +0000 (UTC)
+X-FDA: 84130865658.19.B1C8A46
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 79A77100012
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:09:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=nWxDQkWz;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VyKK7ICs;
+	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763640565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=izoi8yQsiqbRVYHfS6EEAgxH+tvjcbRq8E1ezeHjWsM=;
-	b=I/v1ngS4Dw6Oi48byJTu68ohFrvL/DeOUvP9D1dwrmJLyG2odglDAfUbDqc2qDNvIs2OBn
-	0+ZM04niRfGS6K48qx/X/wObDVCx5DvkwbV+FHlx5Q1eVzaaVJcCMC72iXUERY6o8A6jD2
-	iMQYpQApndNF3S5z8pyS0TAHXfvm8l8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763640017; a=rsa-sha256;
-	cv=none;
-	b=YeKAQ+LYmeP8jRrgpBo+asGImUHoWZdi+3Snw2vTef4LlFcnQcjN3eMuNWyscRV8jQ75mK
-	i59qtRZO5k3jdfkNu3mN3wtJlZc0cOclVpr/0307yxDODpfs3J1FOzHv7VEjiQwmvk2Gfg
-	O+nCSrVigS/+WIqCLoe15rIXRCws2uQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1dqDXb5;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E3956014A;
-	Thu, 20 Nov 2025 12:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D163FC116B1;
-	Thu, 20 Nov 2025 12:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763640016;
-	bh=a891wy2LWb3q2/Qd/lnECCF9sVIO/WgE2s+OoTfoJFc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B1dqDXb5vwyekZMQTVzWrNIa3ii435VJA9YGdsMd12UcKhIyrY47VzRMFUQst9HEM
-	 lqmNlXlj0DfISnogXhDAcDa76t1saCVD5TtDEV7CdFlQNEirQnRdZxtG6eDAgMUQXp
-	 NBhW8+ko2f9Az3rlRQ+U2aMYlEQnnqZiIqakVgcajTN+UndTLeibEzPmhdMJ4XnbMl
-	 3PMImHGIJ0+jwJ4PfNkXwkeOTdc/dUwN93UBgJjVrbJYOMBxBgJ7qLPMYDaPIQUhiE
-	 UhY2BSOj8zLyCxKseM4ZRlB7pwwbCOsQPhPMRnGGYDWjsyEXUWuu/QolHVt8PmnZFV
-	 1U0iwQ8F48AqA==
-Date: Thu, 20 Nov 2025 14:00:07 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Tianyou Li <tianyou.li@intel.com>
-Cc: David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
-	Yuan Liu <yuan1.liu@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone->contiguous
- update when move pfn range
-Message-ID: <aR8Cx_K2N8DPlwkP@kernel.org>
-References: <20251119114252.oykrczprf3ecd7ak@master>
- <20251119140657.3845818-1-tianyou.li@intel.com>
-MIME-Version: 1.0
+	bh=kGx6rTnYT7Hd6AU8ED8gO8XCVsk/a3cuQttexsc+OpM=;
+	b=caambOQmJQhlcAxR6vpJvrzFOPK3jIYAisl07rZN6YhmnvhfLrb9/fHdyn8nPnqY2v+mQx
+	6z45WJNxeJFCg7fMUb0pXX60D56mO/j6X5UknIzU06sES0ggBd6b4TgoBAtImMP5TYphn/
+	xSjGQnXdi//6fSLKt6WsZZmFO9LFYRo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763640565; a=rsa-sha256;
+	cv=pass;
+	b=xZKQjQRer+wY71tg6cU8IonrWHqygyunowAz0InvYbIf+d10Kxm4qgSJ5f6HSUHn395VMG
+	514RspmvRpprTx8G5YKXO6s8GoqrvzEPyNgx/wcz45+FlapcuEnKDoUSC3B6VHAh8G99MQ
+	vJPkYipCyukMGBXelBSudwA8YzuCe7c=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=nWxDQkWz;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VyKK7ICs;
+	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AKB6feY008728;
+	Thu, 20 Nov 2025 12:09:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=kGx6rTnYT7Hd6AU8ED
+	8gO8XCVsk/a3cuQttexsc+OpM=; b=nWxDQkWzgUujo5cOOwfVOdQPmPvbNuAd2q
+	fzEbFYi49YTED8iDOxsn64ZK77AvXyLwGBAF8WvJ/p+CXwfbFsL9iSW0Kl5zkDbk
+	451NUjmp8G2WR+t5d/wOuEkl2qZDZUErBxQLdsKkGSH0auOFLsP9cN1I406f6dzm
+	lDhGj8ohRjEcY6/VghbyxjThp2nYwROuzPiLkmkvmJ5gIFK+lk5zPJUBqu/UUqpo
+	CjymDdWbeEZajq0EbX5sLq5Dz257mrAkWhCD2iOGvDjWbjKP4NVY7oJ0VK5u+ODT
+	rExSdOxk6Wq20VRXDU2Njefpg4em/ayvi4egwMpV8tKwGI4/iOEw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aejbursrw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Nov 2025 12:09:12 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AKBP62l004341;
+	Thu, 20 Nov 2025 12:09:11 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012031.outbound.protection.outlook.com [52.101.48.31])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefybr42f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Nov 2025 12:09:11 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fwVYYB3We2kkeOgo8QMaLhh7Dcs/HVZpbGWhod84wvnVeZqdrBQ2thmxF11b4+IveRBz1UB32KM9E98lcmcWLGgLAvvfnUh6G/lAOIZ61Nx7PoyKyfxYAC+qwEEHmEHrwDMICpHhT5cZ/o9dOp1gFHYNLYfCyX+anNhD18EkSpdezMTKDD35vx8laNQiULg8mzJE91UvBV2oxiTBBkkeYswcySJp/lI5n0G2YCOmyL1TYOoEDReJ9TYC1Y8yWtrsylawEZRfIfzG2D+qD0nacH6QDjPUsfrMD4USUEXQjbc0Noal6wQhlnyGdve+fDVGoLah98ymTo2gxIUjtC4dsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kGx6rTnYT7Hd6AU8ED8gO8XCVsk/a3cuQttexsc+OpM=;
+ b=PFv0lj5xAhy3Bvqw0ZHsi3v1IfyyU/3G4l9wYbUqOO4PdF+nLV+jqUp67LVPCUCQnyu4sOxQee507z+y6o8p5wr0X+a4HtgrANpdUc2e36+RF/Akk9/km70/szIFlL3uksCxmUVJofp0PdLnqnB7AjxYoM9dDXIXCq9UuxNdonYHhicHMtLJfkueqWZev2Up4spDGEerKLD10L1joIlQbWDuPetSka6A2HNZPL5Kr+Azd1u5awec9mA/JEd8J8nMXnic84IR2+GEwOTLo0L1cepqjH0MDHdel4wB+Gr5OnfPcDWTBu4rmLCffEJa1Ay1fXSwqRUCE2Ju9BhKITLP1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kGx6rTnYT7Hd6AU8ED8gO8XCVsk/a3cuQttexsc+OpM=;
+ b=VyKK7ICsnhXWLfAUKwvywr1G83jju9b7KDGOuZMnWhIz4iPxXtj1ntrBdG7SxoTdJ00piICqPeKPXpUVTaPMtW/cN4WxByM91bWi5diGH4XF87aMK2qepQ3JIH1pixgqPBfXZx7JdLgQS5r9qa/xWm/qLnKxQKRntGNP/AYv3ZM=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SJ0PR10MB5744.namprd10.prod.outlook.com (2603:10b6:a03:3ef::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
+ 2025 12:09:08 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.011; Thu, 20 Nov 2025
+ 12:09:08 +0000
+Date: Thu, 20 Nov 2025 12:09:06 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: david.laight.linux@gmail.com
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Hildenbrand <david@redhat.com>, Dennis Zhou <dennis@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Yuanchu Xie <yuanchu@google.com>
+Subject: Re: [PATCH 39/44] mm: use min() instead of min_t()
+Message-ID: <3330fff1-5c45-4ba6-8f22-7501e0e6383b@lucifer.local>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
+ <20251119224140.8616-40-david.laight.linux@gmail.com>
+ <0c264126-b7ff-4509-93a6-582d928769ea@lucifer.local>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251119140657.3845818-1-tianyou.li@intel.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1A704A001C
-X-Stat-Signature: qg87ydptk1b5r1q8nzxqraoarhek7uh3
+In-Reply-To: <0c264126-b7ff-4509-93a6-582d928769ea@lucifer.local>
+X-ClientProxiedBy: LO4P265CA0144.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c4::17) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB5744:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21e516d0-5ba1-41fe-0bd1-08de282d9bca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?abmTJcyHBAYG/DjiKw5Y4RSKPx7EeRUtRhgcmfCtsbAF4q7qScLKxs7cTLeE?=
+ =?us-ascii?Q?KkSPe4ZXbyXv59uDBBPtsBC9tlvwQ6q7O/4mcVOD5ZtLfaIVJNwJymbvTUrO?=
+ =?us-ascii?Q?U4HTNPcDcuixIkvPFEmEBD+uR2PUbye0p7nzO2tysu4UELK1VrWeno+D54Pv?=
+ =?us-ascii?Q?68GTd+Ad0PdMWdxF+od3sid6Qr6fNYqd4EmkNmzoCn0lY6cZDxXFij0jNQPi?=
+ =?us-ascii?Q?T86yqWBJNerTFR9m2JfwCOmX96OUEf95qePTNFyOIkN4NLNnwjRvnjStE84B?=
+ =?us-ascii?Q?S5nsORVIC5KeJ+DepFMypaBtffHaoTDmZoKXiRPC7/hzzp7/eZSDS4gpXNTj?=
+ =?us-ascii?Q?U4ffxTFEMh7Dkrgiz8gKINEkjb4MUZayoWwjF50a97O9fCxtbstMFFPaJN3D?=
+ =?us-ascii?Q?r9F5ghzK7P44viN49otgcjQ1TD/wMa19kUWoQzNEYkZMtqXe0CaVMsDItB3K?=
+ =?us-ascii?Q?+fNRVbJZNgTFsndEkfPnb4nA54xQq8cDGRY8JqCf85WWIFuwO1SrUBdWSiDx?=
+ =?us-ascii?Q?GaGCWT3Kv4/5MdKO2W0P1qaafjj9ntXpTS7d3FNo2UxVmF7fzYjdh94LSYXC?=
+ =?us-ascii?Q?7fQCeFK5VEtdMgUQ22LQBzBA5M3Lpjqgcn5sULT89oysknOva6603kWw0W9s?=
+ =?us-ascii?Q?pp/gcd2MkrCSRI+FY3EwrUc9LH6/Z+5f4qA3hJiwLKSMLRaqmCdsvgyPoldi?=
+ =?us-ascii?Q?0dNuAzTccY1Egrn1Q/kx7pYoAgax6y8LU4RDBZsdh+gWy6i5pkO5PiKPRGVc?=
+ =?us-ascii?Q?Y7n5fi1D5wSI2DAGlYrt/9ReVBQEr6RtcHLkXv6VOcFbXcFdPLKRN+DucPkr?=
+ =?us-ascii?Q?x7ziMgBSDDysgudh0YhHE8KtdwqmWcV8q9DWZ/8dnP3MBt4XkVw0GWMQr/Q9?=
+ =?us-ascii?Q?7gmctGi7qnqM2RZwPdqbf0qsM6KOvpXv3VCEDAhrtm+q/SPOERXIa6iFi8R5?=
+ =?us-ascii?Q?U/ihi6fQuB2lyYD3f3U7DPKsjbsVqb4j0Amlqy8tSojn055lpgIE+GHbK2F7?=
+ =?us-ascii?Q?VWCRMSjYXRtWF3KQ2d57ltFxyc1vSVrPKevocr6ZfTAiusbUl92ZsLrdzVpP?=
+ =?us-ascii?Q?wxtNL2XwuV4TlbvEsE6IVvufF5u4tq+TcGmjDmIPNI1ocdlWIM2Ba1GtT3Be?=
+ =?us-ascii?Q?Yjm4Ah1XOu50NQ5x2kc9XeAWmfQgUjz7h/IyqmdvX+d5vVTbAIcFxKpSe7Ly?=
+ =?us-ascii?Q?kJ7ERv6FiQo3Ojojdj1lJIEX7rbx3nEdTb0G8omft/fMRBEAenvtnifhoUhB?=
+ =?us-ascii?Q?o3VHPhCSvRPGzqufExPcdGqQhJ16GJd0SygoJ4c7In7Uev/g1McwIrt86B/o?=
+ =?us-ascii?Q?qEOeay/91NSUWxFkrtTkkD16SnYMrHAlNbDIJ2GH+I0V41Krj8DDz2wRV5v0?=
+ =?us-ascii?Q?HvlXGsOvH52Xkuj5dionVqQxpna4m2pp1NG/Y9ZVuVcS9lxy5HCzT/CNRl/K?=
+ =?us-ascii?Q?Mngt2Ck48dIE8kabvrPmbhZC0elPfhK1?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jM01guC0sPsnqONjAKvCDCTj6EsAI46hna2cLZ5zsQibfTOgCTEDHOk9udqi?=
+ =?us-ascii?Q?2WWYG9cOqnWPxs1QUjA8WXq3+fr+EQrMvVZn8KwIKVcz35+o2iN/8dcxikrz?=
+ =?us-ascii?Q?SNMV2cA1pP76el91awL6roaOKLzXnzVC6sq+UIlFwIsixeAn97GE95wPYQBa?=
+ =?us-ascii?Q?CUalKZ1c7jFd3Fi8YhYGAAbsIucGiTVyOMqZGjN1Xs/TU5azxP6SUEb4RZEO?=
+ =?us-ascii?Q?VfQk7Ir9bcGm3GTPPdC8F3EduAxdXs9k6jx34SgFNkNT4p+WKCq7nxO0irwi?=
+ =?us-ascii?Q?GnPDaVYzfW5IRLqiERUcUyb5wXJXIEZ8t73ngJoHhH8bsehVrxza2ZsMHT/x?=
+ =?us-ascii?Q?dP/PlOmsbInc+xMEuLwhvu0dHBXtEbyjKV9EPDd2jGFz1MNuDiaah0htbHfo?=
+ =?us-ascii?Q?RB5X57KqtTVb7zaGZtCEsW+Avm4BJfWq4K1QFT4+lncrikOFMz78IJUM/R/j?=
+ =?us-ascii?Q?VrbDcuqKbIoNrZliX9qmfLilNEh1tzPlQQO1pl3V3mi7J+PEWlpoqqx8V/Ho?=
+ =?us-ascii?Q?jX3Q3L3WSxdNp9CeFXeCt0Ly7xC2AdEy+ROp8rm6AoMeGBqyudPABryibKCx?=
+ =?us-ascii?Q?gGJO04Px49v5Ec/Kgf14txx+nsq1wkMFZ25ON0RiYC6bIb/Kyr0jTdsr2Uut?=
+ =?us-ascii?Q?x9noczR/GoL1Wm7hM2gcG5Tw4KSimtI7z96tWydE6WxnDWwZ5Ohr0hkJu34e?=
+ =?us-ascii?Q?cv3GBZtDiW/TnnFVueqL/hj6djYK0yaKldfVv4G8kwxsfsZk7mNKTUJsqccU?=
+ =?us-ascii?Q?4ixMmQiB94lrB2Z4qESn2frFdzIiNaSZ/p9dPkavJi2dcjOS0XvbPuuD2/82?=
+ =?us-ascii?Q?e+t7JSw/6bNZze3spAtrV4ofMOi0ep+SCJpcbsx997ZBsHy3Z3wsrapaQoeJ?=
+ =?us-ascii?Q?GNdGG/OUiunNfW7ttSj1Rhni6GXpxQJW9uybFhXquiVu23JLoS5+fSx5xUYJ?=
+ =?us-ascii?Q?SNDTQ7YLCo/BAWMRB8hk3pLpF06eLGKa5mksynxKCZaw+ZYVuXWbnixbtE/N?=
+ =?us-ascii?Q?RIFew3F1UVQGqrC74xJUA7U9YopRcQMnt873sNj4a/7AsZFoNZyR+iYggPjz?=
+ =?us-ascii?Q?P9QdzzFFcH7djxaoQ/uJdIVD5Bia7HsTbJlOh36kkGy9IctO4UTvHIeq7+QJ?=
+ =?us-ascii?Q?mbusfQ+0NrDfx3MYFY7MfqdiqTnthY/JSNYthqyA9rpZCJD214CeInXYVd7y?=
+ =?us-ascii?Q?e4P4MnY7XiVcn1LRUscDwYr7mVHWueDHjLNqyX34sDVjtiU+Od/vj2MSWSWC?=
+ =?us-ascii?Q?ibodsP7Jjk6rgYfyqz1g4n8qqBsHy8z0po4nHnK15JV0z6WJBi5cla9j834p?=
+ =?us-ascii?Q?seb9O8U/JwQj4zUrHlk8XVrtiLUwdbTG/fZc9zk7eaajYJJsOdEehTjUPs0s?=
+ =?us-ascii?Q?2fP1ry2EiH/XC41ufeu0EwD+cOnXlbHhjPBvdyQ19p1mAXa75Lh0tjNfAE/1?=
+ =?us-ascii?Q?RXjTGgga25DsrxjlZceyWP1nNfuDz3jmKEBQjJdoIjdAe/+e/tFfQZKFH02L?=
+ =?us-ascii?Q?l39lwcfT8bU7VLCgeMk7oR7e6WcwzN9ZEFUSITE5epdj5++PYmm15pJaKSXi?=
+ =?us-ascii?Q?Jx39lXGzZZP9PaUIY4k7lgQoMEVB6HGBqIre7JFvMPUSXqYYeARHcLzsMw8+?=
+ =?us-ascii?Q?jw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	9IuDX0qfFYEo44lE6cnuyTDxEOgvhZAG5anhMPGWDTGff3a854YDkdJ40JUsaMk+F0rcjcr1k22VFn3DdaA6OjrcDsduYa74bbrYeK2CU3fsQmzyJDJ17tF1/tOV6esncuVwl5/LxUvSUApU1X6swJnvR2/8VO3ZsJofdEgsDjXnZCxfrrWDK2OiRsZN/pL9TuHERcByaBHRB7yduSkywIf36I/l2kFNsRkODIxGAzCnxoKyq9OfKgKDK09cTWRZexmFcnPTb1o4iFj+BtWxyYFYRyYRf1WqxX5yGgKDOk1X2k57zsFOfmBKUDxpxtFSHRH6TqEXSycARMPnNhNO7ihbO98i1nQEwn+PjKUj/4rJbn7X2CDEWwduZG4v4gMSC3DjCOlUG74ny4Igs57TAfJEn0c425QS2l13BN9bzv3TnU6kfcgCG0rxglsu1xJKKjRC3SKPnRljO/rDixdSds925/UdiS4BYTi7yVZKT7d5BtIevjmIaH+wDdsgEGRXjUXxCTMN5J5A4H1R9+HsF5KNlA+iV12l/s4xRXnGxnu9091An4ENKdCiyST3Cr3nJRCYZk7dpadgYn4ig7PYnJhWCz6GCrbRghu9CGQumZ8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21e516d0-5ba1-41fe-0bd1-08de282d9bca
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 12:09:08.7351
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IRbLUrJzxO+vXU/7D13KD03NNOZkL1iPPluA2OC/HzQozoG6wt9FYFUcGLBiz8ONAzshxQovC3K9fdOZ1AEfQBjgLy7rFXdRUoVJbK1emVE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5744
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-20_04,2025-11-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2511200076
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMiBTYWx0ZWRfX0tmq55KyRNhF
+ lAtz3M5yqX6NmPfwgdDtWWLUxIhHPOSQufGBewZjDuMDU76d5/7NaxYfJdTHv08JDzS8UQ4MeQL
+ wlk/Eyua0HcyQVfjzS5Gnc2McEHUXKIKbJafA4ab/1+L66yeD29ShdTmHrW78er4HjlqLnx1/iy
+ qiINukV5PU1P8q3LnWAyRQdMCKpNZB0j3rxE/5kIYQVsyfnBqC02o6NRUGrJZ7hhl6yhQtSlS2r
+ aJ3dyu9LofCIWrV28vTBNa2lrcUidkVm1QV21BT9SPky+jmt4SPY050nackiFVQ1gXZ/K8fV5I8
+ ytnP0Ria+Rv0G55pK8csWF8B8dayaL2X6l8WgrIh4TT95hPnD194hbKq5Z2ti3yA88mfcUHAzhR
+ rViH4r/2nwbFHxGHWcoJiPbCmjElGQ==
+X-Proofpoint-GUID: Hc0cyazDXvz2YFyQC0qOKsBxO9k-HL4g
+X-Proofpoint-ORIG-GUID: Hc0cyazDXvz2YFyQC0qOKsBxO9k-HL4g
+X-Authority-Analysis: v=2.4 cv=Rdydyltv c=1 sm=1 tr=0 ts=691f04e8 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=kgHi4e0kVQvgMnxFnJMA:9 a=CjuIK1q_8ugA:10
+X-Stat-Signature: zbi5bg3gx5t568fuqwpb79hj914iearu
 X-Rspam-User: 
-X-HE-Tag: 1763640016-842526
-X-HE-Meta: U2FsdGVkX19KumtOa9pKUYM/NGlGN8ntB9kuvfkhLdQsi3v9OmIjAsZmU725lTriF0SQOD5KDRBOe7EIwNAls7xDOtsrRcDG8lEEGtMi7OSd9KsPLDcG/eXc31m1JNcCq2rrGlIXqGHT94s34Lv+vhOkrnspGcojoddUX4wgh3mZNLlXkKdnqNhKQ7x/D9xpe7g/0aqcCzX5r/rjJreKG+PkRP+kQcNYs77ZbXufwl7FPK6++Oq2lqdl4FDQPzd7Eivc/cBoKhWSKi5cEtZ1qwYaDPs0XOGqVnrqeGvp+jwAPUWF/PwlQc9qfLUs8BRryjEwFA5oB/mr48S6epo8ucHKr7A1ACofrNcVdgDqj+0ze1H2zjGvzSoWHKninjgbDPKFFpPUFrcV/gWa4nMv/tms6cG1sXsJrQrAB0MD/L4i4B5sbyPVbgzPS7RfWER66L37YeTkSd4u5I30p5zPhcwuRovNZNrtjBhRaFf4EHtmCHZeKoPOQbVJJNfD6YoGZqwqA6r88t6ViHSNSbCM7UV0467Ej5gUKuMjNRc5y2k4R3sNbNht0EQJ15yMRKOMIP2lUepohCD38srmDXRFksqaHSsy0C5ED4sKgCxf/WPCTiQcfHScrCtKU20qC7vThqUR8RJFYumQaCpWd+FmQKoi83sLX+oVkml1iJzWTbD9a6ZfZC8oWB8bD+aFLj2biyoYn9Bwe1Au+dY8dOeL2Jvs/uWGXpekSMpVVt7ybXH1R0oAyNBXnh1CtFhqu7/jQABEAJ82GA7gE6zf2Tu0YCCt1uAeayrE2E+fvGh7DyR99TJt4jtx9BayQqPeFJcq+FM3e/HgXZNwgsFn4WBftDMp2Aff5r2C/RPPhwQS4Ly81OssON7kw2lak1ICAfa3YHw8qUT6sIPYOWcibn5DEK8xAphxo8J5LOsuJwbCCxG5KIfR3KSMRAi1QAplekl5+sVo9ZncZu0VuWBpzpu
- Lto4S9CI
- hTyjYmux7BMijxNdD//RbXWXzVafS0qpldqk0uaj6ey3KIfhsdI0zYI8fhcJU2RApdXjRzemePP8dsvIebgjDOu/0t2W8/UbncjZz2eGHS1kxZBMmnum/6C7chFiD7NAgT/q2I4JGNIU4Ac98Oj+aIlwOss7KloEENdiKgrPbZBs7aG7P/mhtuLM3XkDyOkr2pbgSP+XnUMU2k8yA8YvOLv6ZhxBta3Xp4Ys2aWyDvelVrMsRUv1dBmnVihWwA8E9IIrNaPm7qwZvFoiAhcST2czrKg8Sopy2N/Ct4mfJLnc4zWWo+SmKZAGB35G8UkY0eEKzFEjxDACztcU8CU4iCS26bfC+yCk+6X9PgkcPMLhrus1v7znMzG/giA==
+X-Rspamd-Queue-Id: 79A77100012
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763640565-21415
+X-HE-Meta: U2FsdGVkX1/MeBa8+xonMIfFt5Ltr1BFI1tiBf33ZYd8lZjOkf6PCxRB5i7Jk1nYoYm7py4tUnaCYWIDDb4C5TWW1Zt7JzA1TrQZ0YroPess/Vxlqf2Clw8nfZOeXo/tJcQpzTdQgDxyFnrzsfvjJRH1pJVuixTHr2zJPSRFTQ9WmOGt2z4MnuWI5zN3AIwsNMfso6tzcFOSFmO8Cj4150uIU+BdaRuzP3OrU1C/OLtNZrvsCUih339zDkni7reAind/fhsPb90cN2rdZH7PXQeP++LXh1kq4iXibqCQe6dwv0RlKKXonhFVy+8ZRay6OTvoKalkFAEQ8T61DSj6WjKUNyXdFUS/bDzvQJaSogICRKKpUBQg9o8B08ml6v4b49+Low26uFoIAKDAJpzRHcOCoXh1do5Q6+NZela+3zpS3Em81nyU5kbyhUt2IvdR+FCKMqgHSALrvRM4PYPTVdk25cTeffqFKU2VQtpsrriqqM4ndo9iTJ4hElweQ/ZDXsSuHt5EZBqbHfA3wNI3e0d1HJiwNQcNE/GvdV9OjdpxlQvo83UIYv5JrU4m7kR2BTQtBadiDhw5kwCU+tb9WiHETkFj0H4Pf+dm62Oz/shizhdZIYKgKQZgmPGCc+AjpTsaWylo+jZqRiWDeQIM2OUPcO9VOUYhl9NiPsUxTmEOq3ML7i4hubR15AmTeCfzWO00omAzkSy1KkTmB8+/Ly13PewkDx2FI7Wp6Le9Ub38bapHHnO8YF0gUR4UurDvxr3FrhW/EJ+9yRFMPqD6qCJaoVjZbV1I7Jh4LQKVqtMBlh10yW5FLg6WG93bYKLvC+Tqi2rKwocYvEK9KSyvGZyqjhr7b0HxIOUmjZLwFlslhxgwKx8N7KDQbGBDhRYhJChTN3zXRXFwIFj2tvnOnSp64/awu2jPIenwlI5McR7OvnyH/AN8gzkjDbzX0Bvb0dfVSbqGY0xlNQT+NN6
+ hhS5lTxq
+ SVXkpRff0X1+/peY3Dg0xTyhXLkkjjbOCqKVDx9GOBkI7mNfr6951J0HIQ4HrxR2MphKC3JekevPaZQx7eP9G/unsVP3O361OoGUmLI0R/Tno3mcpteXAYF0lWHPEuQQUNOqhTSTSj79UPsfAZTnLYMFItaretZjxGztfl0qXxUf8ePCah9cZfQx/34+qhxGrWwN/Uxl0dxAEOhcKIll3zDO0EegD5EyWm5pMVHLeSey++RS1vmTl9gaZPrgK/h2TIiYJDXXTrc7lV5tOM6dkHLQ/T05Roy3tj8PIESyu4WS/TahkagHKZnKAIscFcnuQElI3lYl2I6qlfz5zYf/BePd9QWnXpJghyl+IiJrxELStNBTO9x5iLz7yYT/bjImdhUlWpxAzZ9ckYKxDWzo0KpD/MHJ3FEUOxfbTX64eVMCAWkbMG6VUvDYznd9C9j27U7mkpIwEXb/9kBucNzHH1S0MkFCING29GwOQc8+gIrTfPFMnKCEwa7+DLBcTm5GRV+knILZqu95LRBlPPxji2ANJDkyVA0/T1dZQZuRyl7Xuo5jFPd5yHwUrN/nP3vi3pW9tR8LsO8IgNLA6BwODIZIYruq6ILaZV6bD9vbQmKKtJon1CAnI2LzC77Xr3PmN6zCCUhxM8747+7Gdn6KXtoUpwmBhe6fQU0n+HhxdVs2nuPlOPuZYCpgUsCXQQ5uXYQAXP0Z86gMivTPW+U0GFMGn7A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,170 +240,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-Please start a new thread when sending a new version of a patch next time.
-And as Wei mentioned, wait a bit for the discussion on vN to settle before
-sending vN+1.
-
-On Wed, Nov 19, 2025 at 10:06:57PM +0800, Tianyou Li wrote:
-> When invoke move_pfn_range_to_zone, it will update the zone->contiguous by
-> checking the new zone's pfn range from the beginning to the end, regardless
-> the previous state of the old zone. When the zone's pfn range is large, the
-> cost of traversing the pfn range to update the zone->contiguous could be
-> significant.
-> 
-> Add fast paths to quickly detect cases where zone is definitely not
-> contiguous without scanning the new zone. The cases are: when the new range
-> did not overlap with previous range, the contiguous should be false; if the
-> new range adjacent with the previous range, just need to check the new
-> range; if the new added pages could not fill the hole of previous zone, the
-> contiguous should be false.
-> 
-> The following test cases of memory hotplug for a VM [1], tested in the
-> environment [2], show that this optimization can significantly reduce the
-> memory hotplug time [3].
-> 
-> +----------------+------+---------------+--------------+----------------+
-> |                | Size | Time (before) | Time (after) | Time Reduction |
-> |                +------+---------------+--------------+----------------+
-> | Memory Hotplug | 256G |      10s      |      2s      |       80%      |
-> |                +------+---------------+--------------+----------------+
-> |                | 512G |      33s      |      6s      |       81%      |
-> +----------------+------+---------------+--------------+----------------+
-> 
-> [1] Qemu commands to hotplug 512G memory for a VM:
->     object_add memory-backend-ram,id=hotmem0,size=512G,share=on
->     device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
->     qom-set vmem1 requested-size 512G
-> 
-> [2] Hardware     : Intel Icelake server
->     Guest Kernel : v6.18-rc2
->     Qemu         : v9.0.0
-> 
->     Launch VM    :
->     qemu-system-x86_64 -accel kvm -cpu host \
->     -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
->     -drive file=./seed.img,format=raw,if=virtio \
->     -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
->     -m 2G,slots=10,maxmem=2052472M \
->     -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
->     -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
->     -nographic -machine q35 \
->     -nic user,hostfwd=tcp::3000-:22
-> 
->     Guest kernel auto-onlines newly added memory blocks:
->     echo online > /sys/devices/system/memory/auto_online_blocks
-> 
-> [3] The time from typing the QEMU commands in [1] to when the output of
->     'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
->     memory is recognized.
-> 
-> Reported-by: Nanhai Zou <nanhai.zou@intel.com>
-> Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
-> Tested-by: Yuan Liu <yuan1.liu@intel.com>
-> Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> Reviewed-by: Yu C Chen <yu.c.chen@intel.com>
-> Reviewed-by: Pan Deng <pan.deng@intel.com>
-> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-> Reviewed-by: Yuan Liu <yuan1.liu@intel.com>
-> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
-> ---
->  mm/memory_hotplug.c | 51 ++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 48 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 0be83039c3b5..aed1827a2778 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -723,6 +723,51 @@ static void __meminit resize_pgdat_range(struct pglist_data *pgdat, unsigned lon
->  
->  }
->  
-> +static bool __meminit check_zone_contiguous_fast(struct zone *zone,
-> +			unsigned long start_pfn, unsigned long nr_pages)
-> +{
-> +	const unsigned long end_pfn = start_pfn + nr_pages;
-> +
-> +	/*
-> +	 * Given the moved pfn range's contiguous property is always true,
-> +	 * under the conditional of empty zone, the contiguous property should
-> +	 * be true.
-> +	 */
-> +	if (zone_is_empty(zone)) {
-> +		zone->contiguous = true;
-
-I don't think it's safe to set zone->contiguous until the end of
-move_pfn_range_to_zone(). See commit feee6b298916 ("mm/memory_hotplug:
-shrink zones when offlining memory").
-
-check_zone_contiguous_fast() should only check if the zone remains
-contiguous after hotplug or it's certainly discontinuous, but should not
-set zone->contiguous. It still must be cleared before resizing the zone and
-set after the initialization of the memory map.
-
-> +		return true;
-> +	}
-> +
-> +	/*
-> +	 * If the moved pfn range does not intersect with the original zone span,
-> +	 * the contiguous property is surely false.
-> +	 */
-> +	if (end_pfn < zone->zone_start_pfn || start_pfn > zone_end_pfn(zone)) {
-> +		zone->contiguous = false;
-> +		return true;
-> +	}
-> +
-> +	/*
-> +	 * If the moved pfn range is adjacent to the original zone span, given
-> +	 * the moved pfn range's contiguous property is always true, the zone's
-> +	 * contiguous property inherited from the original value.
-> +	 */
-> +	if (end_pfn == zone->zone_start_pfn || start_pfn == zone_end_pfn(zone))
-> +		return true;
-> +
-> +	/*
-> +	 * If the original zone's hole larger than the moved pages in the range,
-> +	 * the contiguous property is surely false.
-> +	 */
-> +	if (nr_pages < (zone->spanned_pages - zone->present_pages)) {
-> +		zone->contiguous = false;
-> +		return true;
-> +	}
-> +
-> +	clear_zone_contiguous(zone);
-> +	return false;
-> +}
-> +
->  #ifdef CONFIG_ZONE_DEVICE
->  static void section_taint_zone_device(unsigned long pfn)
->  {
-> @@ -752,8 +797,7 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
->  {
->  	struct pglist_data *pgdat = zone->zone_pgdat;
->  	int nid = pgdat->node_id;
-> -
-> -	clear_zone_contiguous(zone);
-> +	const bool fast_path = check_zone_contiguous_fast(zone, start_pfn, nr_pages);
+On Thu, Nov 20, 2025 at 10:36:16AM +0000, Lorenzo Stoakes wrote:
+> I guess you decided to drop all reviewers for the series...?
 >
->  	if (zone_is_empty(zone))
->  		init_currently_empty_zone(zone, start_pfn, nr_pages);
-> @@ -783,7 +827,8 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
->  			 MEMINIT_HOTPLUG, altmap, migratetype,
->  			 isolate_pageblock);
->  
-> -	set_zone_contiguous(zone);
-> +	if (!fast_path)
-> +		set_zone_contiguous(zone);
->  }
->  
->  struct auto_movable_stats {
-> -- 
-> 2.47.1
-> 
+> I do wonder what the aversion to sending to more people is, email for review is
+> flawed but I don't think it's problematic to ensure that people signed up to
+> review everything for maintained files are cc'd...
+>
+> On Wed, Nov 19, 2025 at 10:41:35PM +0000, david.laight.linux@gmail.com wrote:
+> > From: David Laight <david.laight.linux@gmail.com>
+> >
+> > min_t(unsigned int, a, b) casts an 'unsigned long' to 'unsigned int'.
+> > Use min(a, b) instead as it promotes any 'unsigned int' to 'unsigned long'
+> > and so cannot discard significant bits.
+>
+> you're changing min_t(int, ...) too? This commit message seems incomplete as a
+> result.
+>
+> None of the changes you make here seem to have any bearing on reality, so I
+> think the commit message should reflect that this is an entirely pedantic change
+> for the sake of satisfying a check you feel will reveal actual bugs in the
+> future or something?
+>
+> Commit messages should include actual motivation rather than a theoretical one.
+>
+> >
+> > In this case the 'unsigned long' values are small enough that the result
+> > is ok.
+> >
+> > (Similarly for clamp_t().)
+> >
+> > Detected by an extra check added to min_t().
+>
+> In general I really question the value of the check when basically every use
+> here is pointless...?
+>
+> I guess idea is in future it'll catch some real cases right?
+>
+> Is this check implemented in this series at all? Because presumably with the
+> cover letter saying you couldn't fix the CFS code etc. you aren't? So it's just
+> laying the groundwork for this?
+>
+> >
+> > Signed-off-by: David Laight <david.laight.linux@gmail.com>
 
--- 
-Sincerely yours,
-Mike.
+I mean I don't see anything wrong here, and on the basis that this will be
+useful in adding this upcoming check, with the nit about commit msg above, this
+LGTM so:
+
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
+> > ---
+> >  mm/gup.c      | 4 ++--
+> >  mm/memblock.c | 2 +-
+> >  mm/memory.c   | 2 +-
+> >  mm/percpu.c   | 2 +-
+> >  mm/truncate.c | 3 +--
+> >  mm/vmscan.c   | 2 +-
+> >  6 files changed, 7 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/mm/gup.c b/mm/gup.c
+> > index a8ba5112e4d0..55435b90dcc3 100644
+> > --- a/mm/gup.c
+> > +++ b/mm/gup.c
+> > @@ -237,8 +237,8 @@ static inline struct folio *gup_folio_range_next(struct page *start,
+> >  	unsigned int nr = 1;
+> >
+> >  	if (folio_test_large(folio))
+> > -		nr = min_t(unsigned int, npages - i,
+> > -			   folio_nr_pages(folio) - folio_page_idx(folio, next));
+> > +		nr = min(npages - i,
+> > +			 folio_nr_pages(folio) - folio_page_idx(folio, next));
+>
+> There's no cases where any of these would discard significant bits. But we
+> ultimately cast to unisnged int anyway (nr) so not sure this achieves anything.
+>
+> But at the same time I guess no harm.
+>
+> >
+> >  	*ntails = nr;
+> >  	return folio;
+> > diff --git a/mm/memblock.c b/mm/memblock.c
+> > index e23e16618e9b..19b491d39002 100644
+> > --- a/mm/memblock.c
+> > +++ b/mm/memblock.c
+> > @@ -2208,7 +2208,7 @@ static void __init __free_pages_memory(unsigned long start, unsigned long end)
+> >  		 * the case.
+> >  		 */
+> >  		if (start)
+> > -			order = min_t(int, MAX_PAGE_ORDER, __ffs(start));
+> > +			order = min(MAX_PAGE_ORDER, __ffs(start));
+>
+> I guess this would already be defaulting to int anyway.
+>
+> >  		else
+> >  			order = MAX_PAGE_ORDER;
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 74b45e258323..72f7bd71d65f 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -2375,7 +2375,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
+> >
+> >  	while (pages_to_write_in_pmd) {
+> >  		int pte_idx = 0;
+> > -		const int batch_size = min_t(int, pages_to_write_in_pmd, 8);
+> > +		const int batch_size = min(pages_to_write_in_pmd, 8);
+>
+> Feels like there's just a mistake in pages_to_write_in_pmd being unsigned long?
+>
+> Again I guess correct because we're not going to even come close to ulong64
+> issues with a count of pages to write.
+>
+> >
+> >  		start_pte = pte_offset_map_lock(mm, pmd, addr, &pte_lock);
+> >  		if (!start_pte) {
+> > diff --git a/mm/percpu.c b/mm/percpu.c
+> > index 81462ce5866e..cad59221d298 100644
+> > --- a/mm/percpu.c
+> > +++ b/mm/percpu.c
+> > @@ -1228,7 +1228,7 @@ static int pcpu_alloc_area(struct pcpu_chunk *chunk, int alloc_bits,
+> >  	/*
+> >  	 * Search to find a fit.
+> >  	 */
+> > -	end = min_t(int, start + alloc_bits + PCPU_BITMAP_BLOCK_BITS,
+> > +	end = umin(start + alloc_bits + PCPU_BITMAP_BLOCK_BITS,
+> >  		    pcpu_chunk_map_bits(chunk));
+>
+> Is it really that useful to use umin() here? I mean in examples above all the
+> values would be positive too. Seems strange to use umin() when everything involves an int?
+>
+> >  	bit_off = pcpu_find_zero_area(chunk->alloc_map, end, start, alloc_bits,
+> >  				      align_mask, &area_off, &area_bits);
+> > diff --git a/mm/truncate.c b/mm/truncate.c
+> > index 91eb92a5ce4f..7a56372d39a3 100644
+> > --- a/mm/truncate.c
+> > +++ b/mm/truncate.c
+> > @@ -849,8 +849,7 @@ void pagecache_isize_extended(struct inode *inode, loff_t from, loff_t to)
+> >  		unsigned int offset, end;
+> >
+> >  		offset = from - folio_pos(folio);
+> > -		end = min_t(unsigned int, to - folio_pos(folio),
+> > -			    folio_size(folio));
+> > +		end = umin(to - folio_pos(folio), folio_size(folio));
+>
+> Again confused about why we choose to use umin() here...
+>
+> min(loff_t - loff_t, size_t)
+>
+> so min(long long, unsigned long)
+>
+> And I guess based on fact we don't expect delta between from and folio start to
+> be larger than a max folio size.
+>
+> So probably fine.
+>
+> >  		folio_zero_segment(folio, offset, end);
+> >  	}
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index b2fc8b626d3d..82cd99a5d843 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3489,7 +3489,7 @@ static struct folio *get_pfn_folio(unsigned long pfn, struct mem_cgroup *memcg,
+> >
+> >  static bool suitable_to_scan(int total, int young)
+> >  {
+> > -	int n = clamp_t(int, cache_line_size() / sizeof(pte_t), 2, 8);
+> > +	int n = clamp(cache_line_size() / sizeof(pte_t), 2, 8);
+>
+> int, size_t (but a size_t way < INT_MAX), int, int
+>
+> So seems fine.
+>
+> >
+> >  	/* suitable if the average number of young PTEs per cacheline is >=1 */
+> >  	return young * n >= total;
+> > --
+> > 2.39.5
+> >
+>
+> Generally the changes look to be correct but pointless.
 
