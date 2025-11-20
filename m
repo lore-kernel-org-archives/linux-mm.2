@@ -4,289 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07832CF64AB
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD9E6CF857E
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 09:40:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E6F46B008C; Thu, 20 Nov 2025 04:39:57 -0500 (EST)
+	id 471E56B00A1; Thu, 20 Nov 2025 04:40:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 470436B00A1; Thu, 20 Nov 2025 04:39:57 -0500 (EST)
+	id 3FBDE6B00A3; Thu, 20 Nov 2025 04:40:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 274C86B00BE; Thu, 20 Nov 2025 04:39:57 -0500 (EST)
+	id 24E2E6B00AE; Thu, 20 Nov 2025 04:40:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D9F86B008C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:39:57 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC6561A07F2
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:39:56 +0000 (UTC)
-X-FDA: 84130488792.10.C4BC748
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4F77FC000C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:39:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AB4Hlr77;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=RLXnG1Za;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763631593;
+	by kanga.kvack.org (Postfix) with ESMTP id 0DF796B00A1
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 04:40:01 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB59013BB3D
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:40:00 +0000 (UTC)
+X-FDA: 84130488960.15.C4F54B0
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C7A83C000B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:39:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ursulin.net header.s=google header.b=wYlkjAf0;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of tursulin@ursulin.net designates 209.85.128.43 as permitted sender) smtp.mailfrom=tursulin@ursulin.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763631598; a=rsa-sha256;
+	cv=none;
+	b=7kINt1PIgujNcUcuHhuv/e5IOmdEHhlna+RoUcHx0odKf9Ast2fMYfeFAVnlKJseD9zxKO
+	pcKdIAABnVBw/JhSN3wq1UpVNjccKrU01eCuj0oD7UAzjWaB7u7/WMascrOlwO5F6g6dj1
+	Ttuvt1lrh/yypFcbH7Nva7GB8dHryqk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ursulin.net header.s=google header.b=wYlkjAf0;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of tursulin@ursulin.net designates 209.85.128.43 as permitted sender) smtp.mailfrom=tursulin@ursulin.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763631598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x4fUEt2dY48v08qsyqD9z9bao7UeIcMWh+YtvJ7Wa8M=;
-	b=yzLzQ0iWlXcYj8Qw7+SUo/sw0DXhhWjjn9rod9bkEBs/FeUks2xo6RzZ7CJfC/I7kypBKd
-	ydetl71tjFXdxNZD/KTGitTE3xvHmkKybIBBSHXUiVYmaFvBxRPQLMA/4dnw6y/BWGqEWc
-	+v+eqN22Ssq2/VwmRZjJMv3Rhbho3qk=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AB4Hlr77;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=RLXnG1Za;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763631593; a=rsa-sha256;
-	cv=pass;
-	b=vGOlf9rqSdKjJkRv5hgIn3UK89mxB2mVURSGyhE1X5y/3WMJA4v/dx/GBk0+UhhC4Sw8PC
-	K9fdzGM29S49RDu0AlHkKzM9p4s6i+88A0umxr/a2hFUkpf3qO9hkTnmKKilUBSkrZl/QL
-	DvdS5kosTjTp7ZXed8+PnDh8yRXhhEg=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK8psgo025083;
-	Thu, 20 Nov 2025 09:39:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=x4fUEt2dY48v08qsyq
-	D9z9bao7UeIcMWh+YtvJ7Wa8M=; b=AB4Hlr77en1zgu1iHk+B7Apaq3MqGGIEQ/
-	LJPRtUuMhWhDPaxaVa8d9RCv2WkwtmQyQGbvbfSX/X3ZI5PCxribrfPwZ7SkYOUs
-	Mm3w/pFzWHW5Q/uQeRg5PE4+PF61p0O+oehQ1HEg8yivz/khZDYd6Pni+35DcrzY
-	v5/+F/xcFdHF8S7clbtEMJsAIwLTEdoCJItKirj5IPyiml/LWuK9XkY/qqsjxzjX
-	lGZgmMQI9AXnc7WunZ1BATwjHe70ovuNtMP5ScOj0oE4I/4pelk/0zdCwg1fJ0bV
-	IBATtE6JZk1Q6LKxrGOYdIsrKky4J+jqAXLaJ5JO7GginDhFr6XA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aej968raq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Nov 2025 09:39:13 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AK7gVgs003837;
-	Thu, 20 Nov 2025 09:39:13 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012012.outbound.protection.outlook.com [52.101.48.12])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4aefybt6cu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Nov 2025 09:39:12 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qumUVLD8P0uKYvJ7uVWudq9i4wKFIjLo5no4cipmWp7FgGDeMROJ9SLikEwdIXLQx3hYL8JWxIRO0+H6BY7R35oh1oyhUMYADamCGTilmDupeWH8oe9SOtk/JIrZiO+nEiMzsI+PC/7Z0RgL85ulIRioCi0/dN1Q1aEihQJg81pMT6SzPAfPZuvLzqgk/6BjBOQt1WnsEQSoD/Prlf9I0AjsAwUqDu//d3vRN2fNOouqkUnNmVzuJmHobEsSCl7DN8Dd4l36Utsq12doFC6kt6xo1FN1wFrn9SGVQB5iBKtECSmH2tzwUKqkvbtABelETM2nhoB5tfnbV/v8rayefQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x4fUEt2dY48v08qsyqD9z9bao7UeIcMWh+YtvJ7Wa8M=;
- b=EPadCiow1JLm5mXLBKnooPPkY+Dv/TOCMNeKn9m7TdoA5SBor3HvaFzmsge5AZKNn919vjgcqiN2ZqtQgrSMRVGjFOdwGVxqQAZ/52ja1wYxk1Tsd6zXWsFjqma8ePfjVczzT8u3XFzAhYLvwP6egaLb5k5Y90IYroTqesKaUkXN5w+0TEeTtXL82RpGu4HCx6wIkGKLqnprLIC64NTbAum8ztFFuKy92nE0VzBb1LJhH+EHBO7RMcn3ZTQrFTVI1kDV84YPkaEYYsWjIrAkX3tDfK0TX0TY/i7beypYd4SqTNAV6EPpj7Qmf3Xe6J4yUgX1t8z6WELoUtfGK6mhGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=U6D2T/swrfGwwYIubUbU67Re0aJ0OQCaQcEzYhgb7k8=;
+	b=A4dfSUj/xf+GhJBi56bgv/RppIQ/tb6W3JtFPvnkQ2aFTe3ZIzzSDkwm4Po/zf3FbcioQc
+	GPy3YzijI1rFJy3YmDdZPej4VlfCkE8PRoa0A6Cbcbf8l4B2ZCnll4oF76UxoZ4AyOWT2L
+	ZkOfjkqPWBf8zdH4IzRvnXwdjxpepQA=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-477aa218f20so4083615e9.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:39:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x4fUEt2dY48v08qsyqD9z9bao7UeIcMWh+YtvJ7Wa8M=;
- b=RLXnG1Za6wMrmX2TAQBIw5BpkcE78ld/LLbOQrT5M5d/6AZjS6jh9rVYbibmI0/2G5qcqodlDWuEYuZpYc7vSqNUwligEryQt4aRN9akeKpIOGqe+X4GLYfDyWtFdyGQBXRLV8B8Bb8UIQVEzQLF9sQiA1sai0ycIgKt/k2fib8=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS4PPFA043F25E4.namprd10.prod.outlook.com (2603:10b6:f:fc00::d39) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Thu, 20 Nov
- 2025 09:38:59 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 09:38:59 +0000
-Date: Thu, 20 Nov 2025 09:38:57 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: david.laight.linux@gmail.com
-Cc: linux-kernel@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, Borislav Petkov <bp@alien8.de>,
-        Christian Brauner <brauner@kernel.org>,
-        Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        Christoph Hellwig <hch@lst.de>, Daniel Borkmann <daniel@iogearbox.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, David Ahern <dsahern@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dennis Zhou <dennis@kernel.org>, Eric Dumazet <edumazet@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-        Jakub Sitnicki <jakub@cloudflare.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>, Jens Axboe <axboe@kernel.dk>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, John Allen <john.allen@amd.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Juergen Gross <jgross@suse.com>, Kees Cook <kees@kernel.org>,
-        KP Singh <kpsingh@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Mika Westerberg <westeri@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>, Namhyung Kim <namhyung@kernel.org>,
-        Neal Cardwell <ncardwell@google.com>, nic_swsd@realtek.com,
-        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        Olivia Mackall <olivia@selenic.com>, Paolo Abeni <pabeni@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Peter Huewe <peterhuewe@gmx.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Srinivas Kandagatla <srini@kernel.org>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>,
-        Theodore Ts'o <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>, x86@kernel.org,
-        Yury Norov <yury.norov@gmail.com>, amd-gfx@lists.freedesktop.org,
-        bpf@vger.kernel.org, cgroups@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, io-uring@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-mm@kvack.org,
-        linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, mptcp@lists.linux.dev,
-        netdev@vger.kernel.org, usb-storage@lists.one-eyed-alien.net
-Subject: Re: [PATCH 00/44] Change a lot of min_t() that might mask high bits
-Message-ID: <6ef2fb97-56a5-4cf1-9dc4-b46fa04cbdae@lucifer.local>
-References: <20251119224140.8616-1-david.laight.linux@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
-X-ClientProxiedBy: LO0P123CA0010.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:354::19) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=ursulin.net; s=google; t=1763631597; x=1764236397; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U6D2T/swrfGwwYIubUbU67Re0aJ0OQCaQcEzYhgb7k8=;
+        b=wYlkjAf0LAUacTwGw4J+wx8o5PUDK2usYi98mt/wKJhUHeiS7r8BxUKL7+VgH2h5mu
+         YVgGvingxSUx45ogDqHTII0M5ttS+hp7D2KBBZbnVSeT3tYH/AMXGuNBtzm+dbZCz8xU
+         0g8bSMVtIrX8Wu27I2TJFz1Jk7qj48Bx+FG/mNG5E4m1LvETT59Rub6JJYKzwhlVQTRE
+         tvR6wWxuSoCc/tD4hHJteT1792kXhracmmLqvuuXx1lEUMXnI8i1Ba7vDa+dKtuPMjyh
+         f1hs0NK3Gzt+uqh/khQGIovDaCDt5oOpltMFExBWKXwNYFppRTHaC56k23i8ffUxtuyi
+         SPRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763631597; x=1764236397;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U6D2T/swrfGwwYIubUbU67Re0aJ0OQCaQcEzYhgb7k8=;
+        b=Tp5Q4OBubcNbjOhg6ccozRtMtLEu0v6i1Y+xrJrC/vZF64WQq8MfisVlezyad+CMyn
+         vb14cFiBpsvexD+aeVnhrf4gHUBabm70WPyO4ocqyRSk5JIDPsgJ2j/5BOSu1qAFxsMc
+         KTlolKe91D9RgDP4N3fVOVvmikXHKBcWndonxVv926OOIa1/qWKkyS9f5foJOLNp+PBm
+         EghYsr2L6GbAOBfnh7I1vd/TFEVA+ObFT2slX80KtF0Ogrmgw8xM3VRSkakfy6FBe6pE
+         uFC1cOC6oabhdF7bH11x/hjkK0K3k2U3xZ/skL3nblvBLg+4nfInIRcNmOQRhib8jda6
+         psuw==
+X-Forwarded-Encrypted: i=1; AJvYcCWudlWwZBFXogea4WuMIge1L/GsgIVDqzyJ/ktvxcK+kyvBsKvoHu2Moi6ZQNUR61qRq3Z4YQO9dQ==@kvack.org
+X-Gm-Message-State: AOJu0YwelL8f3+Nk0zh8C0W1CcL5ilrsp9SZFdQ63BNTvS3ahpF27+Lp
+	XWiVy2X+hjdVYtvqHAurmZfKQCgW0ovvc7p/rUCgCQjh98Z7cxY2/6wWiTH5+EaYZzg=
+X-Gm-Gg: ASbGnculNgMWqZWfdew2sPWZ3XOsHStWpRaw4mV895B4DP+hF3weR3lps3J5KeiNFz6
+	oakPvNU2zsD+b9POxCskTZ2twX7WdSwPX6TfbN7b9QueXeUyg0eAJSiJqG9BJGC3+eCw0hQ6a7e
+	FHnzGsYAY4A4zfbo9+A2ZVo/6AVHYHg4ue1p4hv0qXOietiAWe1ZzntijvBLCUFKqByVMq+UN8N
+	5OD+l1BTA1w7aWpTsoWv2Xg6LKX9zqWCoY2QXZyMT0+ngRmD7EOjbpRzqF2tnyrFALBd1YrHU5N
+	Kl57mIR1R4Wo666uXgtmpWV0INZj8a14I1iSuzNbUgpfTix8uM6R9e0O8jt6hf9ML/L1Y41mf7K
+	Zmo5fSkwj2Or5t+aGQK8I539E0nEyXcp9P65tHeULj4o7cX8Bho4t3K8kAB0Zl+Uy8czpcMJu6D
+	HzYXVXCwINn4GAg2JW2+qJ4W0tIhdf1WzvBja4a77Ei34=
+X-Google-Smtp-Source: AGHT+IGOpmCt7r6aMgv0PofyN+s+ybvbGGWrGxrluj7E2hm4OOsNHntjgzS2fQRDmHRVqJS0JlWLYQ==
+X-Received: by 2002:a05:600c:3550:b0:477:75eb:a643 with SMTP id 5b1f17b1804b1-477b9ddd8c4mr18898435e9.4.1763631596107;
+        Thu, 20 Nov 2025 01:39:56 -0800 (PST)
+Received: from [192.168.0.101] ([90.240.106.137])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b0ffd37bsm100308375e9.3.2025.11.20.01.39.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Nov 2025 01:39:55 -0800 (PST)
+Message-ID: <75cf65a0-8967-4e39-8bfe-aa284f8242b3@ursulin.net>
+Date: Thu, 20 Nov 2025 09:39:54 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS4PPFA043F25E4:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63b535ed-f831-4444-84b2-08de2818a215
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c9/CcJ7O60eQP7KLrCZxQFr3Q8U8cBg+5mO4hB6PRYN1T3QIDxN2grHVLHw6?=
- =?us-ascii?Q?TKs4x3ONPpB5+jtTKf7Nw86mws2Z/yGNS9epYtS0h/Sa4zMJrOeE+8gG+gTk?=
- =?us-ascii?Q?X7MMFaMcSxnD2yQ91Jb/7e+lvUD3OHTA78ZuEb154amMdJrxxuHN5MfUSw3k?=
- =?us-ascii?Q?cRThLzGheaOk/8OyRerEdXw5YyaHgxTelJ/1IxAhFTzU3DpoSBBBh8iIr1im?=
- =?us-ascii?Q?0kq0p1wl+W6yxHWQy3ORLkrRdG4FPwIBbDdzCM/JPLopr8eP0ynpZ+zupbbk?=
- =?us-ascii?Q?KcX+Q/Koof/iVc1kgykBW3pN0ERkdCGalezZMG2ZtcUhpOv0TIv+BY9ifdJA?=
- =?us-ascii?Q?UQSVBHehFiHC+JKj5o+An4G6xWm1kvvsJChPE97KjDHFDol0S4pJnBSzSN9y?=
- =?us-ascii?Q?BBLDy2iiI757oepk8e0MVuTMeQXuz0aJuQyQIC89dRAemyhInQ+xDet5+mQu?=
- =?us-ascii?Q?hM8qv+A7A8HuZHwyApUTTU7uBN3WJJejKDnmD6CqJseHOpzgINLV1lpZHd3r?=
- =?us-ascii?Q?3BwzwMKSc1UnIEilqDMenIyZ1dYa9GIPY68bapQnnZXkiX4fdfic5cPrRLds?=
- =?us-ascii?Q?KOLIrV3KavsouaTCQtaELQjLSQTChUCFtxBPVitIcnWSuoWRmTDtMcHYth+g?=
- =?us-ascii?Q?Qu6fJ8ebIpAoqO4HhOkatNNmHcE4mV1ltApCBQ6qSvFsOvA1rY0JZM2ERsPw?=
- =?us-ascii?Q?gErnb9+gYt3p3YGP1tuAZ2J1oNJjmtyMW9KnbzavtI65FZS3UALs+FlkAHdg?=
- =?us-ascii?Q?OEXmD5Wxn6BBdQXx/lqVKFKoK0gxldZTNkMds24+zAqhEfDmk06ooRdvNraw?=
- =?us-ascii?Q?zSHDA/rGqiP6h+e37GZ4P7qnEZ14pty6bBqY7MOLVXqX6CW3Q/O+x4un5Xe1?=
- =?us-ascii?Q?cC7UYL8WkSba//fEBQAfsrAc1szn7ypZvjpjp07JOEjY9WTUyJYWeJsJbGLB?=
- =?us-ascii?Q?mBomKueBFkZf+hhHnsnRTlvMDwcL2aNh2MCIGKoWMYr7ev7bTZaa/3/jhOEu?=
- =?us-ascii?Q?gUEn8aDdNa0PiFu1oYAN/l3Zv8dj9JSHB+HA1TjKMyNBW48Wc2rcW0y0ZZb7?=
- =?us-ascii?Q?advIteVDFgdwYgsN3+2LZe0XyDoVEaOR+RmlZPY4xmRdkeCM1Wp8ey18lg/A?=
- =?us-ascii?Q?+A1qKGRsNOSvM8+sUsDHLwMNxoKL/cELW3ykuJ7rVr5mib3C65HCOqSU672P?=
- =?us-ascii?Q?Nv+V+WQj0EVMOmr1F3S2cVbLlGyntc/gyJJSSsr7Trm6Xtta6G1Y2sd3AVtb?=
- =?us-ascii?Q?2tkKMThSd4GkywWpuFdXkVYQfBAJGUXNzE7GiXxgSnfE1bUG5FNqjk+Oydy7?=
- =?us-ascii?Q?mcD/FNGceMjf0JSLVv2p9Poj0aG2KCk9pjcpmiX9Hwb3pJf4H99Rzl3l7eNG?=
- =?us-ascii?Q?0wntEwY8uGnW501P1N15JLtk19LGOTCCbRjrvX1KaijWSlGxCcJZFXjEGF/R?=
- =?us-ascii?Q?/kYy7l7qwImf/snQObrGrY181BRdOAYG?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kPRWY1LIwS5S+D/L+x8VTm9PTXQwjo2HENrTSiBL4yuumMrLXTWwdbpU5r9W?=
- =?us-ascii?Q?mAkDtwRm/3YlQxL/4xhbbKlRCQbZ3YN5O1+hNdX0w+GbFqpmkztV2OK/rb8N?=
- =?us-ascii?Q?Y2aSRqdtiuBzTC4YnI3KMSvWJIM6146cw3wRVbStas3EG2rGlycuYpOnBlzD?=
- =?us-ascii?Q?agcHk/JxFwpyFQBnRQnDM0F27l6qaCghYvfZZwR4Jm7/26UQPbVAG4z8uz8Y?=
- =?us-ascii?Q?aCpsqMjbqE0jkplok//0MOC8WuvWijf+3o8G2b+SvKi5hja1ehhsoLjFrj+5?=
- =?us-ascii?Q?Wjdm51ZYTEKpUe+Ntir9dvafBLYsftdiZj4ytDlG9aOD2E7op2yOnMaEjZ0V?=
- =?us-ascii?Q?SjRSMp54wNvi2SRmla5MHdwc3reVek6AZBUETf6D0AHSIBIvrsP0DVrjekMY?=
- =?us-ascii?Q?s0z0ddbwPNYnvY1+2P9Fl9xO2GPyHsCRMEs/I7N9vCwxQb2TP/mlLlapd7I4?=
- =?us-ascii?Q?VRVEADyXrgDGTefu9DB5YSEKRAKpYjIT/ciWQydQkYHcs+KFhct4NKkvfViJ?=
- =?us-ascii?Q?4Qvfb9d1Z5VBPDMkn+I2tpE0FHgyiJmLSQBiRuCQrn4Yku7s8z0SwqVOhXkt?=
- =?us-ascii?Q?sjs48IOWIwwNoJs+c/PTJ2IJJp5wn8kOn7nmfbIcAHZ7dwTlQy6zCFtdOIdt?=
- =?us-ascii?Q?t3qYuTZpPvWpMZKt2oMDFtIakSQmy/dia0RPuBPFjiRFiv1MmYtz/uLyCVUV?=
- =?us-ascii?Q?qJ1P933vB6vRc2q9I7j3e6n5pEm5G7i3TOE7Cpd4fXGM2Js3r0XcrdqHJIjS?=
- =?us-ascii?Q?DtHDiiw/Gn655DDunBC7Cgtfnp11N5Ft8TPB8akL5UY9eABrzFrX6yLR10OC?=
- =?us-ascii?Q?Wx8Vhn1OZ8aHYi/swZEAIRCOPyUtWOwvRZn+jwn+cXnFF8/0z0FQ+6wq0MO6?=
- =?us-ascii?Q?dkCY197auRmY0l7h9/OMaVLOTeIIbIH8yRirwWdzayjaE24UeTDjbPxJjDO1?=
- =?us-ascii?Q?qlIHhI2qwHu4jH4cuQPxMsYl4VpX3OHEt2JfDTzPpZJ01FXrahsaDYtGSfud?=
- =?us-ascii?Q?a19fWW2NAL7kQUA6SMzwRNFdlM3uNDJkOyTtCmdPzOLy1vPBjtpop3rMUWfE?=
- =?us-ascii?Q?Q6N1XSY67waBy8146iAJFW6dND3eyb9guJY8b8Bzwp+sWNySrZERyF9t9DzV?=
- =?us-ascii?Q?K8MVFssjKHGbrx+vogdqTcTVFMGJ7XqMc36sO8H5FWY3bf0HZq2dDfafyhyf?=
- =?us-ascii?Q?tyTTG4Fe1bSaXBg70qUqN4TU1Od2A0R+chbpxQS3rBJ/q56J0LZbARFaCwc1?=
- =?us-ascii?Q?NoEUwObIcb/xt/Y3o4mQhMfVOeq8byLQ3hT8SAiF07n58Kx2B5yB7t5aUwFt?=
- =?us-ascii?Q?lyEpocmUmWK+OA7cX+KxrnLCNHjfIAEqqbnp4+rLPBdCRBoKf3c4gUG0iRun?=
- =?us-ascii?Q?nFNKH9Zu7hXkExmVF5VULFttq7mXoKrMWNSJMIQk6lTuujq4FKW43EA5Mbo3?=
- =?us-ascii?Q?Zfdm3MGQYarA55IjxUjCNDkOK+V6KL2sM3fwKAv01J8TuU0SwW0SV1+VlEtl?=
- =?us-ascii?Q?Q2ql1qNK49iz0m6jrBo4Q3zIyTbBma98snvo31b5AXg1BXWg1uCV1qR/1PzL?=
- =?us-ascii?Q?TN8K0SdxFBxk8ffmj0mqmzGEc46NFvfzWecQt8Fv3vrjkAh2qD7joo7UmEbr?=
- =?us-ascii?Q?Hw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	4mxMIwaVn/X497q5Wi5JUtAxmEf3wjrEIy4nzUFPT/jD42SftGbN4p5Rz70m+EYpEQEGs0Ube3/twWm/2YxPm0y9Rj+w/tHx5SCLNOrWrSAgu5PxK3EhAz68hADb9iyr15uLM04z+boMFb10tzH8KTL0m8PVx8/6ysNDCOLbVsk6+M0jL21n64SujDsSIrDnhnAD5BnY3rCg6OI/nKGLhuyTk3QXTrlCyokW1yvAkBU76PxRpPFxwIywnu5KRUgklBfmb/0Y3cAD2B5ejR9BHj6u0wERyx2PgoRnpi4WOBIXGEqxB8O3b0YEVk3UFk7JHWncl4qAvXIgLMDDXNGIGUvcpvFEcLh9iAz+VL72rSy0X5EfOwGNFYFaIndAmOnqsjD1dyOAgJJ6KOW12S1vwmwXDibM9GtHEA74ckN4Q7ZGxt3yzeHZiN6l7/wtYz25Sw1kDtwHyzH+Ya32rqGa/AtzrwzZW0CxLByYmt6AkzmfDnXXB8ljC1ef8z65/t55/k8eGurdtnDh86qOLtXr4CBZZAW02zh84yi+GU1OF+Dj2BkSEFkWCtYTgfKIqtnk8OljlnwBz0T1weEgkk883Tnb2atFRHMMuIpavc4dBD8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63b535ed-f831-4444-84b2-08de2818a215
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 09:38:59.8734
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5ItduNliVtAqDKxYryyBeUrZMlHyQ5n8PkmB+iBXaQXZfE2lMdgCPgtX3mDnbFNa6n1HScfGbp2FCwJ2jr6nIo1m2TAzUmSBipCwRwAfUTQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFA043F25E4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-20_03,2025-11-18_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 spamscore=0 mlxlogscore=968
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2511200058
-X-Authority-Analysis: v=2.4 cv=DYoaa/tW c=1 sm=1 tr=0 ts=691ee1c1 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=pGLkceISAAAA:8 a=Wzxjd0fUqIwO4rn60qQA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: vHyM1L6ZHbOR8-4PRZUdcGdHQ1UfesM4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE1MDAzMSBTYWx0ZWRfX9uw9B2QCWmyu
- YM7K3vh3wz+R/ZYJ4uUoPPImvw9SUAIzKiQ7diBcQnKJh8dyimqs6Tf+RIZdZdq4NqykmuMiQ6/
- C9MCakf8ppETzIeiclvCorDztPdQDnqDA6qkIjRD3LxTTjLC89MwDnwfUeBXY6I1mWH4ew4dVDa
- f5mmOh6Ad+P07cCPaWf7NUXqrRganjVL+jmeUCiSE4Uj3ta2Oj4ztxh0PMhDyXVTVMNdi20thva
- xOfsYAUhK1jH4uJ2npIlStUAg3RjSKomM4JeA3JkUYfVLJSZdSVUHP6mFcvlcol86IX5zzClIRM
- u6MEgWxTuCQYBy0bSYu46I1T9c/iKNg8ZcDWf+4dgtvzViAGm7uNNg+5JOfHx22izInBQpJS0Bx
- A3CIo0+iB/qTd4yJ4nvbpbbO0HFAaA==
-X-Proofpoint-ORIG-GUID: vHyM1L6ZHbOR8-4PRZUdcGdHQ1UfesM4
-X-Rspamd-Queue-Id: 4F77FC000C
-X-Stat-Signature: yjy3mnqp5xsm8ricaa4iirzp7nncg9d1
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 06/11] drm/v3d: Use huge tmpfs mountpoint helpers
+To: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christopher Healy <healych@amazon.com>, Matthew Wilcox
+ <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+References: <20251114170303.2800-1-loic.molinari@collabora.com>
+ <20251114170303.2800-7-loic.molinari@collabora.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <20251114170303.2800-7-loic.molinari@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1763631593-548737
-X-HE-Meta: U2FsdGVkX1/6U/n6mEnCkKclZlBmtQW4+2kyI7YnJzafur7rNjCjvcs2JESz6tl6tV0yYMTI1e4wAkArX03b+se3NWY2NFKpoCU0kQZ70/XEZiDZ1HIkaiSsFkCgvttWakGAesRoTL03J6nGi+S/Sie3tVA1U/3881cgNLv23/0112IhF076DHo3aMoxi4rSyvYwCgnOCFRIwupmYK4UJh3F+QGWPliK2L5K15SEfPt+g7YPRVKtn+gU3GQlQ4SZum5p9iSjgEF0e+KoMb63OSxJb46A59Ml124+LHOUuQp/yQU/X4/i7Jqg1LXwzTvzFlWDe5eXWlzCNEhi0rOaJnneeR2Hzi9+tkpfmShvet8bPLR0AoKaBg87tWQPskduY+Js60eqE/d1W69EO8keAyiZyZyboawJN1PlCzreWJgD5FasNWz6djo9i5XrnQCrgRWSgvpccv8xSZd7oSVONmdSu8U451hJHdwFjOW1HImAvDxYLoxTQP70NrQGTlIQUilF5GsAMuu7VFWBcvQXs1ZnBz0NE6tUrsf0JC4UmwTnVoAGCjg4ezuf96PwxaoKxqn2LnLNzVQXXR2aVGY16OjPJgS7cKROpry97vDojucWu/gkqWjBa4PwbzRZczQUa89V9WNjY+EEysErryAo7eXV0TnmAjnSf6lcHT371JGYhblIwY780Q+sq7XxkEdiQqGTFSkblLixe20vDTlcybXhviQ3DWeY+z8vqGauA2Fa9PmHUinnuVKnyAROGIeqLFEH5ogdztAamyjDt/1CGxtRd5xi4Bw1IjgcP+C0hm+ULujn4fTfvKoQxjSrUPWLex7xpQw9fTxCXGHmX6Sk8Ov62Hd8/NvZ/rdbyzDbpgORwTn+BnnfzosQVaG/UBUxQiSad/MsDQY3ACqrCel2MqoJ87SCN7O6zziSk0nn1cvMEavH+CVt1190uZQ1E4DMCJH63xZl5tDeT+8SDTb
- z81slvzu
- 2t8FoL1K3P2TovHlVEtR8dt5nY19Y6Prw3Gb6F+1zAthOj/ta8Y5JFyz13V92HAMmqdyq4t4dXunKWmNQWQ5LBAnIiieZpe9tnfnPUDk2CA9iqcpS8TNX+NX9HouctNIgQxU82XgTkS5XLTPO3Rv70gE9MN3PgPU5Ep41gfGa33gU8GwN8Xj8TnUBffvl0+66mqTD7H9bmRLnq8FkmIdgk7PJ/fOrDOq8qkm43hbOVqRfkia78vZFOaZsV+/JhhpoL+eDXaEkbrI1g/LyVaS211CIA97wUIhjYv8GsNY+H6pK4tmKCZuszUtg+qv6cFtz7/0xQDuRlr6qpRVsiTAB3CrT6S3QvOL00qtqS8iQIWLhhAmavJ4P2MXaOKKNYMsgYQJ81VHj1Sac4l1IeJ5XRjRavei3sN9NKP4aUUZPDyISxjlFPTZOKZuAgzxaG7q6/k6DpfkT/pHjgWixuC/ffe74utNgUFrDzv2wo4KwWp5bz9awG9vCd5kAxkBfE+ss15jsp81Hvn/Q9UCz8PnROzK3UprWDX7j/01COe3JSM3p9Kt6QYo/BAve8YQSLR/hIlN37aadYzAcQNUJgIeBJqqmKMWCsipYGnxHi/ZFZO7Sasg59njPk7rNVarTdMZ/8lx2pI86px3ZQn2isi1B5Ik0R+uTFxT6lipBCSMI12HMR75TB4fYHCNySKtpNADIoMSpvJbueVJNjIATvOfYT3SU5InRHUOnzzf9VF92EEXxTJNQ7XC24hJMlatSx9DmPFJk
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C7A83C000B
+X-Stat-Signature: f5s3xop9ousni7ixmnzzkctybo3oubzw
+X-HE-Tag: 1763631598-274819
+X-HE-Meta: U2FsdGVkX19EE/WT2UQ0SsOhCP28yfEvLVD5Kn4wcKSCozquNier602WNO49PGOsF2gHZ/7aM2lbgVsp8ClIUzotR36ZChmnwx+Qm52FRsU52zJWBjxUP8wApNxCWXjRC/SgqNNp0763eIKJK0spPaIfGHdneK5rLa6TtqzNylGNJh7sv+xdQg08VkmMVjbRhdYLeKN78q5T+qcrP8w8edta0n2WoeYeS1ej2T5eJfy2wEMVrOafb5kmJSKfPgIXE5o5hjxItxLew/z1e7RU8FCGmNwmXQOSp3LNvZsbbPsefHylyEYalapLvqP7KwzDwR8sIRQJYyKmqTjoPZEQwZ9n6O7OmtK9lBbVqN1XvnmkAJtyoTb6g56oyc7rk9njTuOVz1KXfPSG9Noz3KlmE1pwtJHjlrY3p1qj+KNK56yof8eYVMu63KcMNq/in1MIWkUVS8SkXWeqNqp+XwCzg8lYxTbUPCiUyLpdpDgtPTFuLs/VduuSr4pirmZMw4+/P0jFkSw2ZT67tjT0mGR36+75ez72+anIhssL4e3CjJ23JlhGoX9uDM5tWgx5jkZhetXyd/NCtdPNk1rLgGsbKoL4x9Ne7F7hCEot9oOvXnTVcs6UsIYSA+zp/U6AbRWlRGpbEMCDLZPBpHH339ZJ1dU7tHCMQXdhvezjmH2OE+o6I/VNs0IqVEoI3p21SZ37qIOxUdfQ5lAjJWYQ7lZ9x+JFkkYRZxg1FK4pUc9NqxD5PPMnQYnDe27B7Uq7kn+ay+G0szPpqlzbIVAzu1SktzJAlTs+0rPgtvVy67Ejr+vfS7qp9MKapPBaGiwmgs7n/NKDTDQ4R6r6Lau/MwOedC9Mq1JBvYpLrPJDMQBB5VU5D/um3QMuXJYfChWkpO906bDUlW+FfdOeP22B+pg5j4BwON/FiHpVK1d3yzfp5O/OmEI1arPBnb4LK50Rl73m4LcnRvLAkgXuwqPbzgt
+ CWgdEazk
+ B2vsiXQcu+TtBZQT7iqUPETdpKsQH8/j/C277do0ZTvoGHkqLOnCPVpFyetQGRhfY2dBtaQ2wqjPi92v31X2qiTTc0OE38bR5nxWeDEfjWnhPmQPkBO/PH4+4iTqLH9LohalYQxjy6JxpsSBU32XjbBKKbUalJW1VHGCjfqCdENbEBp+F/bADvp33lLtAiWn9neXyKM1OFTf7PAyy/6dVCMJ+ryEFIN9B9es6CiXvnrvxMFYUyYlRtHTIB+RkVXQea/9QwZ5gxnYsXU7NwCDnrUqRRiZfFdxSg/WbA+3YUFbKzEWCcy99HTKALJi0PwHmjM6rsdf+r2eam/yR2HwqODJZjJl2V146rd8GxZkFMGvZTyWTJWhX2aVYz/Le/TsYFQMs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -295,190 +143,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 19, 2025 at 10:40:56PM +0000, david.laight.linux@gmail.com wrote:
-> From: David Laight <david.laight.linux@gmail.com>
->
-> It in not uncommon for code to use min_t(uint, a, b) when one of a or b
-> is 64bit and can have a value that is larger than 2^32;
-> This is particularly prevelant with:
-> 	uint_var = min_t(uint, uint_var, uint64_expression);
->
-> Casts to u8 and u16 are very likely to discard significant bits.
->
-> These can be detected at compile time by changing min_t(), for example:
-> #define CHECK_SIZE(fn, type, val) \
-> 	BUILD_BUG_ON_MSG(sizeof (val) > sizeof (type) && \
-> 		!statically_true(((val) >> 8 * (sizeof (type) - 1)) < 256), \
-> 		fn "() significant bits of '" #val "' may be discarded")
->
-> #define min_t(type, x, y) ({ \
-> 	CHECK_SIZE("min_t", type, x); \
-> 	CHECK_SIZE("min_t", type, y); \
-> 	__cmp_once(min, type, x, y); })
->
-> (and similar changes to max_t() and clamp_t().)
 
-Have we made sure that the introduction of these don't cause a combinatorial
-explosion like previous min()/max() changes did?
+On 14/11/2025 17:02, Loïc Molinari wrote:
+> Make use of the new drm_gem_huge_mnt_create() and
+> drm_gem_get_huge_mnt() helpers to avoid code duplication. Now that
+> it's just a few lines long, the single function in v3d_gemfs.c is
+> moved into v3d_gem.c.
+> 
+> v3:
+> - use huge tmpfs mountpoint in drm_device
+> - move v3d_gemfs.c into v3d_gem.c
+> 
+> v4:
+> - clean up mountpoint creation error handling
+> 
+> v5:
+> - fix CONFIG_TRANSPARENT_HUGEPAGE check
+> - use drm_gem_has_huge_mnt() helper
+> 
+> v8:
+> - don't access huge_mnt field with CONFIG_TRANSPARENT_HUGEPAGE=n
+> 
+> v9:
+> - replace drm_gem_has_huge_mnt() by drm_gem_get_huge_mnt()
+> 
+> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+> ---
+>   drivers/gpu/drm/v3d/Makefile    |  3 +-
+>   drivers/gpu/drm/v3d/v3d_bo.c    |  9 +++--
+>   drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
+>   drivers/gpu/drm/v3d/v3d_drv.h   | 11 +-----
+>   drivers/gpu/drm/v3d/v3d_gem.c   | 27 ++++++++++++--
+>   drivers/gpu/drm/v3d/v3d_gemfs.c | 62 ---------------------------------
+>   6 files changed, 34 insertions(+), 80 deletions(-)
+>   delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
+> 
+> diff --git a/drivers/gpu/drm/v3d/Makefile b/drivers/gpu/drm/v3d/Makefile
+> index fcf710926057..b7d673f1153b 100644
+> --- a/drivers/gpu/drm/v3d/Makefile
+> +++ b/drivers/gpu/drm/v3d/Makefile
+> @@ -13,8 +13,7 @@ v3d-y := \
+>   	v3d_trace_points.o \
+>   	v3d_sched.o \
+>   	v3d_sysfs.o \
+> -	v3d_submit.o \
+> -	v3d_gemfs.o
+> +	v3d_submit.o
+>   
+>   v3d-$(CONFIG_DEBUG_FS) += v3d_debugfs.o
+>   
+> diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
+> index d9547f5117b9..211578abf9b6 100644
+> --- a/drivers/gpu/drm/v3d/v3d_bo.c
+> +++ b/drivers/gpu/drm/v3d/v3d_bo.c
+> @@ -114,7 +114,7 @@ v3d_bo_create_finish(struct drm_gem_object *obj)
+>   	if (IS_ERR(sgt))
+>   		return PTR_ERR(sgt);
+>   
+> -	if (!v3d->gemfs)
+> +	if (!drm_gem_get_huge_mnt(obj->dev))
+>   		align = SZ_4K;
+>   	else if (obj->size >= SZ_1M)
+>   		align = SZ_1M;
+> @@ -150,12 +150,15 @@ struct v3d_bo *v3d_bo_create(struct drm_device *dev, struct drm_file *file_priv,
+>   			     size_t unaligned_size)
+>   {
+>   	struct drm_gem_shmem_object *shmem_obj;
+> -	struct v3d_dev *v3d = to_v3d_dev(dev);
+>   	struct v3d_bo *bo;
+>   	int ret;
+>   
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>   	shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
+> -						  v3d->gemfs);
+> +						  dev->huge_mnt);
+> +#else
+> +	shmem_obj = drm_gem_shmem_create(dev, unaligned_size);
+> +#endif
 
->
-> This shows up some real bugs, some unlikely bugs and some false positives.
-> In most cases both arguments are unsigned type (just different ones)
-> and min_t() can just be replaced by min().
->
-> The patches are all independant and are most of the ones needed to
-> get the x86-64 kernel I build to compile.
-> I've not tried building an allyesconfig or allmodconfig kernel.
+Don't you want to use the same pattern not requiring #ifdef as you did 
+in i915?
 
-Well I have a beefy box at my disposal so tried thiese for you :)
+The rest looks good to me on a glance. Only functional change appears to 
+be that you are adding a new error message, scrolling down..
 
-Both allyesconfig & allmodconfig works fine for x86-64 (I tried both for good
-measure)
+>   	if (IS_ERR(shmem_obj))
+>   		return ERR_CAST(shmem_obj);
+>   	bo = to_v3d_bo(&shmem_obj->base);
+> diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
+> index e8a46c8bad8a..8faa9382846f 100644
+> --- a/drivers/gpu/drm/v3d/v3d_drv.c
+> +++ b/drivers/gpu/drm/v3d/v3d_drv.c
+> @@ -107,7 +107,7 @@ static int v3d_get_param_ioctl(struct drm_device *dev, void *data,
+>   		args->value = v3d->perfmon_info.max_counters;
+>   		return 0;
+>   	case DRM_V3D_PARAM_SUPPORTS_SUPER_PAGES:
+> -		args->value = !!v3d->gemfs;
+> +		args->value = !!drm_gem_get_huge_mnt(dev);
+>   		return 0;
+>   	case DRM_V3D_PARAM_GLOBAL_RESET_COUNTER:
+>   		mutex_lock(&v3d->reset_lock);
+> diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
+> index 1884686985b8..99a39329bb85 100644
+> --- a/drivers/gpu/drm/v3d/v3d_drv.h
+> +++ b/drivers/gpu/drm/v3d/v3d_drv.h
+> @@ -158,11 +158,6 @@ struct v3d_dev {
+>   	struct drm_mm mm;
+>   	spinlock_t mm_lock;
+>   
+> -	/*
+> -	 * tmpfs instance used for shmem backed objects
+> -	 */
+> -	struct vfsmount *gemfs;
+> -
+>   	struct work_struct overflow_mem_work;
+>   
+>   	struct v3d_queue_state queue[V3D_MAX_QUEUES];
+> @@ -569,6 +564,7 @@ extern const struct dma_fence_ops v3d_fence_ops;
+>   struct dma_fence *v3d_fence_create(struct v3d_dev *v3d, enum v3d_queue q);
+>   
+>   /* v3d_gem.c */
+> +extern bool super_pages;
+>   int v3d_gem_init(struct drm_device *dev);
+>   void v3d_gem_destroy(struct drm_device *dev);
+>   void v3d_reset_sms(struct v3d_dev *v3d);
+> @@ -576,11 +572,6 @@ void v3d_reset(struct v3d_dev *v3d);
+>   void v3d_invalidate_caches(struct v3d_dev *v3d);
+>   void v3d_clean_caches(struct v3d_dev *v3d);
+>   
+> -/* v3d_gemfs.c */
+> -extern bool super_pages;
+> -void v3d_gemfs_init(struct v3d_dev *v3d);
+> -void v3d_gemfs_fini(struct v3d_dev *v3d);
+> -
+>   /* v3d_submit.c */
+>   void v3d_job_cleanup(struct v3d_job *job);
+>   void v3d_job_put(struct v3d_job *job);
+> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
+> index 5a180dc6c452..62532a89dd14 100644
+> --- a/drivers/gpu/drm/v3d/v3d_gem.c
+> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
+> @@ -259,6 +259,30 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
+>   	v3d_invalidate_slices(v3d, 0);
+>   }
+>   
+> +static void
+> +v3d_huge_mnt_init(struct v3d_dev *v3d)
+> +{
+> +	int err = 0;
+> +
+> +	/*
+> +	 * By using a huge shmemfs mountpoint when the user wants to
+> +	 * enable Super Pages, we can pass in mount flags that better
+> +	 * match our usecase.
+> +	 */
+> +
+> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && super_pages)
+> +		err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+> +
+> +	if (drm_gem_get_huge_mnt(&v3d->drm))
+> +		drm_info(&v3d->drm, "Using Transparent Hugepages\n");
+> +	else if (err)
+> +		drm_warn(&v3d->drm, "Can't use Transparent Hugepages (%d)\n",
+> +			 err);
 
-> I've also not included the patch to minmax.h itself.
->
-> I've tried to put the patches that actually fix things first.
-> The last one is 0009.
->
-> I gave up on fixing sched/fair.c - it is too broken for a single patch!
-> The patch for net/ipv4/tcp.c is also absent because do_tcp_getsockopt()
-> needs multiple/larger changes to make it 'sane'.
+.. here, but that looks acceptable to me.
 
-I guess this isn't broken per se there just retain min_t()/max_t() right?
+Regards,
 
->
-> I've had to trim the 124 maintainers/lists that get_maintainer.pl finds
-> from 124 to under 100 to be able to send the cover letter.
-> The individual patches only go to the addresses found for the associated files.
-> That reduces the number of emails to a less unsane number.
->
-> David Laight (44):
->   x86/asm/bitops: Change the return type of variable__ffs() to unsigned
->     int
->   ext4: Fix saturation of 64bit inode times for old filesystems
->   perf: Fix branch stack callchain limit
->   io_uring/net: Change some dubious min_t()
->   ipc/msg: Fix saturation of percpu counts in msgctl_info()
->   bpf: Verifier, remove some unusual uses of min_t() and max_t()
->   net/core/flow_dissector: Fix cap of __skb_flow_dissect() return value.
->   net: ethtool: Use min3() instead of nested min_t(u16,...)
->   ipv6: __ip6_append_data() don't abuse max_t() casts
->   x86/crypto: ctr_crypt() use min() instead of min_t()
->   arch/x96/kvm: use min() instead of min_t()
->   block: use min() instead of min_t()
->   drivers/acpi: use min() instead of min_t()
->   drivers/char/hw_random: use min3() instead of nested min_t()
->   drivers/char/tpm: use min() instead of min_t()
->   drivers/crypto/ccp: use min() instead of min_t()
->   drivers/cxl: use min() instead of min_t()
->   drivers/gpio: use min() instead of min_t()
->   drivers/gpu/drm/amd: use min() instead of min_t()
->   drivers/i2c/busses: use min() instead of min_t()
->   drivers/net/ethernet/realtek: use min() instead of min_t()
->   drivers/nvme: use min() instead of min_t()
->   arch/x86/mm: use min() instead of min_t()
->   drivers/nvmem: use min() instead of min_t()
->   drivers/pci: use min() instead of min_t()
->   drivers/scsi: use min() instead of min_t()
->   drivers/tty/vt: use umin() instead of min_t(u16, ...) for row/col
->     limits
->   drivers/usb/storage: use min() instead of min_t()
->   drivers/xen: use min() instead of min_t()
->   fs: use min() or umin() instead of min_t()
->   block: bvec.h: use min() instead of min_t()
->   nodemask: use min() instead of min_t()
->   ipc: use min() instead of min_t()
->   bpf: use min() instead of min_t()
->   bpf_trace: use min() instead of min_t()
->   lib/bucket_locks: use min() instead of min_t()
->   lib/crypto/mpi: use min() instead of min_t()
->   lib/dynamic_queue_limits: use max() instead of max_t()
->   mm: use min() instead of min_t()
->   net: Don't pass bitfields to max_t()
->   net/core: Change loop conditions so min() can be used
->   net: use min() instead of min_t()
->   net/netlink: Use umin() to avoid min_t(int, ...) discarding high bits
->   net/mptcp: Change some dubious min_t(int, ...) to min()
->
->  arch/x86/crypto/aesni-intel_glue.c            |  3 +-
->  arch/x86/include/asm/bitops.h                 | 18 +++++-------
->  arch/x86/kvm/emulate.c                        |  3 +-
->  arch/x86/kvm/lapic.c                          |  2 +-
->  arch/x86/kvm/mmu/mmu.c                        |  2 +-
->  arch/x86/mm/pat/set_memory.c                  | 12 ++++----
->  block/blk-iocost.c                            |  6 ++--
->  block/blk-settings.c                          |  2 +-
->  block/partitions/efi.c                        |  3 +-
->  drivers/acpi/property.c                       |  2 +-
->  drivers/char/hw_random/core.c                 |  2 +-
->  drivers/char/tpm/tpm1-cmd.c                   |  2 +-
->  drivers/char/tpm/tpm_tis_core.c               |  4 +--
->  drivers/crypto/ccp/ccp-dev.c                  |  2 +-
->  drivers/cxl/core/mbox.c                       |  2 +-
->  drivers/gpio/gpiolib-acpi-core.c              |  2 +-
->  .../gpu/drm/amd/amdgpu/amdgpu_doorbell_mgr.c  |  4 +--
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c        |  2 +-
->  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  2 +-
->  drivers/i2c/busses/i2c-designware-master.c    |  2 +-
->  drivers/net/ethernet/realtek/r8169_main.c     |  3 +-
->  drivers/nvme/host/pci.c                       |  3 +-
->  drivers/nvme/host/zns.c                       |  3 +-
->  drivers/nvmem/core.c                          |  2 +-
->  drivers/pci/probe.c                           |  3 +-
->  drivers/scsi/hosts.c                          |  2 +-
->  drivers/tty/vt/selection.c                    |  9 +++---
->  drivers/usb/storage/protocol.c                |  3 +-
->  drivers/xen/grant-table.c                     |  2 +-
->  fs/buffer.c                                   |  2 +-
->  fs/exec.c                                     |  2 +-
->  fs/ext4/ext4.h                                |  2 +-
->  fs/ext4/mballoc.c                             |  3 +-
->  fs/ext4/resize.c                              |  2 +-
->  fs/ext4/super.c                               |  2 +-
->  fs/fat/dir.c                                  |  4 +--
->  fs/fat/file.c                                 |  3 +-
->  fs/fuse/dev.c                                 |  2 +-
->  fs/fuse/file.c                                |  8 ++---
->  fs/splice.c                                   |  2 +-
->  include/linux/bvec.h                          |  3 +-
->  include/linux/nodemask.h                      |  9 +++---
->  include/linux/perf_event.h                    |  2 +-
->  include/net/tcp_ecn.h                         |  5 ++--
->  io_uring/net.c                                |  6 ++--
->  ipc/mqueue.c                                  |  4 +--
->  ipc/msg.c                                     |  6 ++--
->  kernel/bpf/core.c                             |  4 +--
->  kernel/bpf/log.c                              |  2 +-
->  kernel/bpf/verifier.c                         | 29 +++++++------------
->  kernel/trace/bpf_trace.c                      |  2 +-
->  lib/bucket_locks.c                            |  2 +-
->  lib/crypto/mpi/mpicoder.c                     |  2 +-
->  lib/dynamic_queue_limits.c                    |  2 +-
->  mm/gup.c                                      |  4 +--
->  mm/memblock.c                                 |  2 +-
->  mm/memory.c                                   |  2 +-
->  mm/percpu.c                                   |  2 +-
->  mm/truncate.c                                 |  3 +-
->  mm/vmscan.c                                   |  2 +-
->  net/core/datagram.c                           |  6 ++--
->  net/core/flow_dissector.c                     |  7 ++---
->  net/core/net-sysfs.c                          |  3 +-
->  net/core/skmsg.c                              |  4 +--
->  net/ethtool/cmis_cdb.c                        |  7 ++---
->  net/ipv4/fib_trie.c                           |  2 +-
->  net/ipv4/tcp_input.c                          |  4 +--
->  net/ipv4/tcp_output.c                         |  5 ++--
->  net/ipv4/tcp_timer.c                          |  4 +--
->  net/ipv6/addrconf.c                           |  8 ++---
->  net/ipv6/ip6_output.c                         |  7 +++--
->  net/ipv6/ndisc.c                              |  5 ++--
->  net/mptcp/protocol.c                          |  8 ++---
->  net/netlink/genetlink.c                       |  9 +++---
->  net/packet/af_packet.c                        |  2 +-
->  net/unix/af_unix.c                            |  4 +--
->  76 files changed, 141 insertions(+), 176 deletions(-)
->
-> --
-> 2.39.5
->
+Tvrtko
+
+> +	else
+> +		drm_notice(&v3d->drm,
+> +			   "Transparent Hugepage support is recommended for optimal performance on this platform!\n");
+> +}
+> +
+>   int
+>   v3d_gem_init(struct drm_device *dev)
+>   {
+> @@ -310,7 +334,7 @@ v3d_gem_init(struct drm_device *dev)
+>   	v3d_init_hw_state(v3d);
+>   	v3d_mmu_set_page_table(v3d);
+>   
+> -	v3d_gemfs_init(v3d);
+> +	v3d_huge_mnt_init(v3d);
+>   
+>   	ret = v3d_sched_init(v3d);
+>   	if (ret) {
+> @@ -330,7 +354,6 @@ v3d_gem_destroy(struct drm_device *dev)
+>   	enum v3d_queue q;
+>   
+>   	v3d_sched_fini(v3d);
+> -	v3d_gemfs_fini(v3d);
+>   
+>   	/* Waiting for jobs to finish would need to be done before
+>   	 * unregistering V3D.
+> diff --git a/drivers/gpu/drm/v3d/v3d_gemfs.c b/drivers/gpu/drm/v3d/v3d_gemfs.c
+> deleted file mode 100644
+> index bf351fc0d488..000000000000
+> --- a/drivers/gpu/drm/v3d/v3d_gemfs.c
+> +++ /dev/null
+> @@ -1,62 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0+
+> -/* Copyright (C) 2024 Raspberry Pi */
+> -
+> -#include <linux/fs.h>
+> -#include <linux/mount.h>
+> -#include <linux/fs_context.h>
+> -
+> -#include <drm/drm_print.h>
+> -
+> -#include "v3d_drv.h"
+> -
+> -void v3d_gemfs_init(struct v3d_dev *v3d)
+> -{
+> -	struct file_system_type *type;
+> -	struct fs_context *fc;
+> -	struct vfsmount *gemfs;
+> -	int ret;
+> -
+> -	/*
+> -	 * By creating our own shmemfs mountpoint, we can pass in
+> -	 * mount flags that better match our usecase. However, we
+> -	 * only do so on platforms which benefit from it.
+> -	 */
+> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+> -		goto err;
+> -
+> -	/* The user doesn't want to enable Super Pages */
+> -	if (!super_pages)
+> -		goto err;
+> -
+> -	type = get_fs_type("tmpfs");
+> -	if (!type)
+> -		goto err;
+> -
+> -	fc = fs_context_for_mount(type, SB_KERNMOUNT);
+> -	if (IS_ERR(fc))
+> -		goto err;
+> -	ret = vfs_parse_fs_string(fc, "source", "tmpfs");
+> -	if (!ret)
+> -		ret = vfs_parse_fs_string(fc, "huge", "within_size");
+> -	if (!ret)
+> -		gemfs = fc_mount_longterm(fc);
+> -	put_fs_context(fc);
+> -	if (ret)
+> -		goto err;
+> -
+> -	v3d->gemfs = gemfs;
+> -	drm_info(&v3d->drm, "Using Transparent Hugepages\n");
+> -
+> -	return;
+> -
+> -err:
+> -	v3d->gemfs = NULL;
+> -	drm_notice(&v3d->drm,
+> -		   "Transparent Hugepage support is recommended for optimal performance on this platform!\n");
+> -}
+> -
+> -void v3d_gemfs_fini(struct v3d_dev *v3d)
+> -{
+> -	if (v3d->gemfs)
+> -		kern_unmount(v3d->gemfs);
+> -}
+
 
