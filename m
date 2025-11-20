@@ -4,100 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38DA9CF9C56
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:00:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16713CF9C72
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:05:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DF716B0022; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
+	id 666026B0005; Thu, 20 Nov 2025 12:05:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 790576B008C; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
+	id 63DCD6B0098; Thu, 20 Nov 2025 12:05:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67E7F6B009F; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
+	id 57C9D6B0099; Thu, 20 Nov 2025 12:05:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 57FF36B0022
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 46F316B0005
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:05:30 -0500 (EST)
 Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22DB013A64B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:00:18 +0000 (UTC)
-X-FDA: 84131598516.21.BE7976E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 942FE40016
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:00:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Kx1m9Bcg;
-	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C100588541
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:05:29 +0000 (UTC)
+X-FDA: 84131611578.21.F7BC392
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2DEE320013
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:05:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="MqING/AM";
+	spf=pass (imf03.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763658016;
+	s=arc-20220608; t=1763658327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=re2tiGZL7IZwaCp1/yGWEfyF4epuwIDXTzQ2HA1ACdI=;
-	b=F+9SksARdy2CuZAjcVuGgkGgZsBh3YhgdMFOzKbZKFuY4gqncGhLghI3OnnekPxY0m61ub
-	F6txBjvUZy3cP7eSpAyfwhJgkt6EDFAAzebGpBkSeOi9wiJUdKbLl43PKcvaQw2aC6/5XD
-	AGmNkLwdwM0YG61NQCYVIDfHlgTIdWY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=E9ip36rubT+CVrDml5ch1XI3NtiGWW9mBTpvkIZg71Q=;
+	b=b1XACCe/p0PiqoNgfH7opoiZJa+EVccIrWNOSP8yBUGxxE2jWHQxBbU/LaPLPqywtLnBP6
+	7u0pqGNaWqm78AlQFSwQIrndkVzzG9ngUs0a382v5iMXw3yLnVB1sLbTrs9HDh59urMOXe
+	xGWdN6ZNJqqp6gHv2v03fmdpgVaIQAg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Kx1m9Bcg;
-	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763658016; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="MqING/AM";
+	spf=pass (imf03.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763658327; a=rsa-sha256;
 	cv=none;
-	b=PkU3vJbNE9Grjdi4+P7IdSoRyF0wV9DkWCpos8aDcWpfnoTwtgjGGLq9H8DJ9xOd5Yn/cp
-	t7kJAyrNf9sDXoKZu/+L2knFiMJeI2+WCpumUQMxTsTNtNRQceeH+9tlr8WpxuM335Xo6+
-	oroVgp3bK7jb8wt07hP0rGnsi5NmIWw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=re2tiGZL7IZwaCp1/yGWEfyF4epuwIDXTzQ2HA1ACdI=; b=Kx1m9BcgcI0haXR+zGeSAWaIw9
-	G0fPgYE3/vT6S94x5gDbWpNv9di7Oz6fLCKbHPUhUTEN5662TE8kzwSE2A+aRpkEXCFXXMHDKKbo3
-	6WIsXxeKbgIwvJN93YZ6yV+NLX2cc+altMh+dmz5ZbvOEjHuDYYTKwPyvKQ/0Nocd1d02SjYt6P5L
-	xpk0W8fKlUvLFB71q2xjiqXTxBbfAdGflCcv7A5adjSBE6PFDnYNRQg6SCBBdRnBdfmDyMm4nTt9B
-	+q2Itwb7APatwg0U1FBtKNAZg36UO1tqyLl1oQlhYpmUd3T+rFRLfHDMcAMaTh81uI/s349eJi9jn
-	PPccvL1g==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vM80l-00000001Vsl-0MTK;
-	Thu, 20 Nov 2025 16:59:59 +0000
-Date: Thu, 20 Nov 2025 16:59:58 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
+	b=UVXg3ZJQURLgaxbcxUv0PcWrNHUeHMEApbet3pxZuhNjZ9P4GqXCoJt7wux027ZYVfSU/j
+	4qumdcGEIHkNzXCPSxQ4ds1FVG+IPDomQluYvihjv8ZTXdkbHbcndsqWBIQzmxMtvNo3bZ
+	OqzL9ijjNEQIRIGV/LAnpMVd3eXuIZc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763658328; x=1795194328;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0P+F2Tg0fn+MXjgxnMgiCiFpy4TcG5e/HDS82IiOpjI=;
+  b=MqING/AMNhjRxWb4Nf0P3tQ9SvUnvU4k52aTC2P3aAx2+LjnxfCO70EK
+   rmhSLYoIN8skLEuTT8rF7atowW61WwjzkG6w8UWgZELeWLQW4ap2lvBJE
+   7P/3ivT+Yk/xXnFMQBSKvp9yR668KBhFlvKWkhymF1RkDWI5Oe7OpHafR
+   CQnJkHlqHV+kqGCMobOGOeEYpp+98N30wfzeD1E1muwBYNjx7IGsmGb+s
+   Mbv97+LnnfFg9wAEBElR1rvY3WnSWXb9QjyE1BB2cTFExYaJdiPnlaS71
+   18FmWe19/q0vSlO4InlgcOun6FQv+1hu1Bl5uBVEmCk49iaxfrEWUH5M1
+   w==;
+X-CSE-ConnectionGUID: q0EHat/nSE2qjA5lIR8MgA==
+X-CSE-MsgGUID: NhCTuBC4TSOUV6NbSV8B6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="77205138"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
+   d="scan'208";a="77205138"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 09:05:26 -0800
+X-CSE-ConnectionGUID: d67znad0TziXigjrOBwcAQ==
+X-CSE-MsgGUID: SxjtGamwQXaoMQ8AZZezmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
+   d="scan'208";a="190710630"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 09:05:25 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>, Chris Mason <clm@meta.com>
-Subject: Re: [PATCH] mm/filemap: Fix logic around SIGBUS in
- filemap_map_pages()
-Message-ID: <aR9JDud3PS-A_hcg@casper.infradead.org>
-References: <20251120161411.859078-1-kirill@shutemov.name>
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Balbir Singh <balbirs@nvidia.com>
+Subject: [PATCH] fixup: mm/migrate_device: handle partially mapped folios during
+Date: Thu, 20 Nov 2025 09:05:15 -0800
+Message-Id: <20251120170515.46504-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251120161411.859078-1-kirill@shutemov.name>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 942FE40016
-X-Stat-Signature: y4kgca69uqcre5opx57ocmom51bseg6n
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2DEE320013
+X-Stat-Signature: 6158z77hxwa7jj9gxm64kzd8n467j9x8
 X-Rspam-User: 
-X-HE-Tag: 1763658015-587042
-X-HE-Meta: U2FsdGVkX1/sOakiS7vFHDc1xE751MeYxQTgzl9P1viHPuHfWm2OeVwdDzUgF261iDHZjLPQO7+3Q/qZnvIIwZz/n484Bkbw0LNAj4vTW5JaBpBeeqomznRrdCNnBkGWfTV33ILStxOQSeBJOpiGi3lS/y8wWtJJdq4qh+tAQ+3mg4RXun5Lamgob5W02IyqSP76Qi8ZoHW02j373cuhivxOrx8WXbQzu7HjV3P+sYvGOd5lDZfqtGXWuF/TMgp2CD/lN0SyihpyaJq6eHSCgHFtYkkD46HmGYVNMGwqEN+w0x+KJalv0tQ6IveoQlX8Y9b2Bw1Mk1ENtOuHZxa7LfqqDJBIvytddvVuV3Myd0aoVSt+0Lemu3DRKpw6yfZAIMHDeV53nNSUphJyVFkAMx4lvzWnF0gSConwY0ygrgTzPo2jL1KRyIGRxsG/T16beiNz0pdk8e918FRBLdhH8426qdwQIRc8ixwQRfnetvBJjJ4XaMK6f9RueQLzWxbvTHFhP9XXzVfKRrVzW4lnuA196J26KUFxMrTPPLhIwHL46c3Tjxd9pR56idvFKSUa6FO9u2w9eZ73bh+JM6ILJctQAvCSeNSu6iGAxU66xi6VoGj+L4ktqlQDfsHWXPpNGz4KVgrwOKoFSSDQJPKwcUkbXHViLt+9ciltRQs/naL18xCeQIXN94cdgy7I+Fbi47aiCa4e5RyX7tQ/nFRQoZSpKOH5+EaGwaLOZASemhPW9rwJn5Q+J0uNrcpnT7wlpJId+va7ov2hYy+QQdIQG09BNg4KTUmRs7PJ+DNxlBBI482c7dZ0u23GhHqM60GdP84ZLVo8UuByI0BzkNoSAB5UFXNbPc6PkT6f3t+3LvndiNNBzy+fN8lqVSRZaNeoSjZNYQCybS6AFB/CeRtVYUF120+b4DlLc6slPt4LEMblWgjRoVfpHQGtvgHFhcKyb7cBPvNrDDF7ewy5Q4z
- HMWu0rFO
- uZiruRuzaxEMa6ymRh/GJ/P2uFWO0xZfnMibXkP+uN3nAChjtD6fj3TBNLkw2w7W/H9H/UBDKbLDmvDKnQw9EjTzAaxSpoiKKbPwaj9VirMv+OL2JFByeEJxq2K5Vlz7xibXaMj/kboIfUcAcMfJr80f336iIU/wFFRG8EeRZfQMIUh7VJ63XspkA25L/Iw4xbAw25MrtT+LqMrCZljNKkElBI/0zzyvMNH0fHHg9bC8X2CiI5/4TrAJWZyz2BBcZAXvYCrIdfDoT4DYcrJjbvfUUfBLy0VyxO4EEnr41LWRC4PP3VqBVuX7QhsXA9Q9BOI+gta2rzZRIeJPY7rlp3jyi0Z5x6jHU2TTXrz1kpqiFUSRC+K2J8CKn8b6lCV5sk+K3VfOTStYwXxg7OhmL2EHUdUFdiyXkbInLIWXmOx2ga0BzK+ugIYT7Mg==
+X-HE-Tag: 1763658326-946594
+X-HE-Meta: U2FsdGVkX1/V+meWdzfvXRL5Wse2u/qSlGPyYkrEK/57DBzISOwp3+sWm3vQJ6z91Qg6k762Jf+hQgblPalnZNi9GvEErVYcxxzEcApFBgiOyn9dYAs8TkNEM6CZOwmUBIIJGZDvQszQNk3+302lihfZMnAs1xrwmBkm1bW9RJgBi3hG3vD3+sWkh6Yb3WIcSnQA/CDAdpxFJW3jQyWTXDT0IeU9uo+DgZbfRHhOYeZLOxrhpGDrj/10WPJDaZDoVXpT0SVilyAJtomzJOjipoVp5f9ZxT2X35yMzUxz3ybox7ZLyGr0E/Kgm73i80E72y6STGpxNp9IeoEqoPDcIIBL5B/5RS3PVZAlcCJdgOd5arr2oInfVMLg2C2oLvoUDzFxQ2qgL+heC9wORMN2mOGW2ruBWe5JseWrtLfUkW503R0andNmON/J6kjKF2d66JmknJkto6HMzPIt5HEPUw6VEOqCRp3Ww1y49c9W3awxx6+p2nDta/acap8ZvBdpf5k1SSqfG8Mm4kIisGbpv3Vcrk3B+Cam0hL9owwFop8bBHckuGJkyvaO2nvCP4BiW+eEvLUqKb3dE4L9H6b9eTI8AmoK8vs0QRhXE976UsBnyK4n6lwnb0UQ/RhD0RgwROZqp6nJCaUPAk69xM3dGUPdgCilVl4XGbaZHjHwom6mWN3PKI12REVQ/L362WGQCnUKVk/jlMMifDC3BioX5eGP1F8arxCZWkGXOP77Lp6uS+9G1gi/cRUwOkBciwoqU9hTLfXqCPjRARRDGV31hYXPWAUF4Weq+S35PvV0VdztzyRGHF8DYxQ6SbByKpEZ2p9UT0HmsYJgtRu6FYpdHIvjM++ClhPn50Dyx69xTeJuBym7w2Q3vjlEGFcg2jhGVOXWWk/gJVh8znIuPUV6WfPas0MJQisMPzGoi/ctlDT4V9M3nj0eF2ytem0C3BU3rUXj88vw9kgcKyXH9wW
+ gec+ee1z
+ QXejDAXPla1pbsoSVSo2pQ+3A4qnjcx8GQBqxrB2aXg4qcXxB7QCRwIyJCmKBDUtQ42SCoGxc+rB7fRgC74mkK92ejH0FJsG0EWBIHeK/cvbrNR/EEEDP3mykhsvxn86qAqn4geD2LQ8Mz6z/UcWE51KmMjly9VdFKtrpAszfkkYyOFqdlNSLCF+LvPBUCxdrx2PStXpc8JabMd88ZK5qm8zWTf7Tk7xXpTqFyljbdiEPiTLaxEbF5vGUMil71RxuB/7tBsfgXdLQKgsYulkqg5ae5W2OSLuvDs2ICSCLNkQjVt5gXp91MS/ZQnqjegiAhlmETidtsHfgYYbustUcDzUhWHtnRAhAmShSZsWmWP0ZC6kPrlQ10h91VGEB95ymy2iZDbliaGUkqx2YzRIqqxzkdDEhF4hTA8XIqm2k23EXrfTIHaEU97mzcA+Mt4vU7HgCWf0ngJJAYETMHklOdqCVOC7+qAqJzDJd/K6TQapOXqitmAsK2JsOikTaRFeWyqp8snRUnXtMgsSDvFROemjjwA4N32mOILCzOCYpF8oK6fRja9kmbfWDUiGZCIZUzCkvgfQcFEAYM3VEH15+4kOHCVMvBgZO7Iz05YFAzxLH6Vchbuil1L3udphAjG+48Rs8rK2QT6JoSLO6Lr21IUehvio3HZZenmw3FLnRx8od+Xth9gf0n1Fa22Gj56SWkgIQa5kgSIKmpk4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,18 +127,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 04:14:11PM +0000, Kiryl Shutsemau wrote:
-> Chris noticed that filemap_map_pages() calculates can_map_large only
-> once for the first page in the fault around range. The value is not
-> valid for the following pages in the range and must be recalculated.
-> 
-> Instead of recalculating can_map_large on each iteration, pass down
-> file_end to filemap_map_folio_range() and let it make the decision on
-> what can be mapped.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reported-by: Chris Mason <clm@meta.com>
-> Fixes: 74207de2ba10 ("mm/memory: do not populate page table entries beyond i_size")h
+Splitting a partially mapped folio caused a regression in the Intel Xe
+SVM test suite in the mremap section, resulting in the following stack
+trace:
 
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+ NFO: task kworker/u65:2:1642 blocked for more than 30 seconds.
+[  212.624286]       Tainted: G S      W           6.18.0-rc6-xe+ #1719
+[  212.638288] Workqueue: xe_page_fault_work_queue xe_pagefault_queue_work [xe]
+[  212.638323] Call Trace:
+[  212.638324]  <TASK>
+[  212.638325]  __schedule+0x4b0/0x990
+[  212.638330]  schedule+0x22/0xd0
+[  212.638331]  io_schedule+0x41/0x60
+[  212.638333]  migration_entry_wait_on_locked+0x1d8/0x2d0
+[  212.638336]  ? __pfx_wake_page_function+0x10/0x10
+[  212.638339]  migration_entry_wait+0xd2/0xe0
+[  212.638341]  hmm_vma_walk_pmd+0x7c9/0x8d0
+[  212.638343]  walk_pgd_range+0x51d/0xa40
+[  212.638345]  __walk_page_range+0x75/0x1e0
+[  212.638347]  walk_page_range_mm+0x138/0x1f0
+[  212.638349]  hmm_range_fault+0x59/0xa0
+[  212.638351]  drm_gpusvm_get_pages+0x194/0x7b0 [drm_gpusvm_helper]
+[  212.638354]  drm_gpusvm_range_get_pages+0x2d/0x40 [drm_gpusvm_helper]
+[  212.638355]  __xe_svm_handle_pagefault+0x259/0x900 [xe]
+[  212.638375]  ? update_load_avg+0x7f/0x6c0
+[  212.638377]  ? update_curr+0x13d/0x170
+[  212.638379]  xe_svm_handle_pagefault+0x37/0x90 [xe]
+[  212.638396]  xe_pagefault_queue_work+0x2da/0x3c0 [xe]
+[  212.638420]  process_one_work+0x16e/0x2e0
+[  212.638422]  worker_thread+0x284/0x410
+[  212.638423]  ? __pfx_worker_thread+0x10/0x10
+[  212.638425]  kthread+0xec/0x210
+[  212.638427]  ? __pfx_kthread+0x10/0x10
+[  212.638428]  ? __pfx_kthread+0x10/0x10
+[  212.638430]  ret_from_fork+0xbd/0x100
+[  212.638433]  ? __pfx_kthread+0x10/0x10
+[  212.638434]  ret_from_fork_asm+0x1a/0x30
+[  212.638436]  </TASK>
+
+The issue appears to be that migration PTEs are not properly removed
+after a split.
+
+This change refactors the code to perform the split in a slightly
+different manner while retaining the original patch’s intent. With this
+update, the Intel Xe SVM test suite fully passes.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Mika Penttilä <mpenttil@redhat.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+
+---
+This fixup should be squashed into the patch "mm/migrate_device: handle
+partially mapped folios during" in mm/mm-unstable
+
+I replaced the original patch with a local patch I authored a while back
+that solves the same problem but uses a different code structure. The
+failing test case—only available on an Xe driver—passes with this patch.
+I can attempt to fix up the original patch within its structure if
+that’s preferred.
+---
+ mm/migrate_device.c | 42 ++++++++++++++++++++++++------------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index fa42d2ebd024..69e88f4a2563 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -254,6 +254,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 	spinlock_t *ptl;
+ 	struct folio *fault_folio = migrate->fault_page ?
+ 		page_folio(migrate->fault_page) : NULL;
++	struct folio *split_folio = NULL;
+ 	pte_t *ptep;
+ 
+ again:
+@@ -266,10 +267,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 			return 0;
+ 	}
+ 
+-	ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
++	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
+ 	if (!ptep)
+ 		goto again;
+ 	arch_enter_lazy_mmu_mode();
++	ptep += (addr - start) / PAGE_SIZE;
+ 
+ 	for (; addr < end; addr += PAGE_SIZE, ptep++) {
+ 		struct dev_pagemap *pgmap;
+@@ -347,22 +349,6 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 					pgmap->owner != migrate->pgmap_owner)
+ 					goto next;
+ 			}
+-			folio = page ? page_folio(page) : NULL;
+-			if (folio && folio_test_large(folio)) {
+-				int ret;
+-
+-				pte_unmap_unlock(ptep, ptl);
+-				ret = migrate_vma_split_folio(folio,
+-							  migrate->fault_page);
+-
+-				if (ret) {
+-					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+-					goto next;
+-				}
+-
+-				addr = start;
+-				goto again;
+-			}
+ 			mpfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
+ 			mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
+ 		}
+@@ -400,6 +386,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 			bool anon_exclusive;
+ 			pte_t swp_pte;
+ 
++			if (folio_order(folio)) {
++				split_folio = folio;
++				goto split;
++			}
++
+ 			flush_cache_page(vma, addr, pte_pfn(pte));
+ 			anon_exclusive = folio_test_anon(folio) &&
+ 					  PageAnonExclusive(page);
+@@ -478,8 +469,23 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 	if (unmapped)
+ 		flush_tlb_range(walk->vma, start, end);
+ 
++split:
+ 	arch_leave_lazy_mmu_mode();
+-	pte_unmap_unlock(ptep - 1, ptl);
++	pte_unmap_unlock(ptep - 1 + !!split_folio, ptl);
++
++	if (split_folio) {
++		int ret;
++
++		ret = split_folio(split_folio);
++		if (fault_folio != split_folio)
++			folio_unlock(split_folio);
++		folio_put(split_folio);
++		if (ret)
++			return migrate_vma_collect_skip(addr, end, walk);
++
++		split_folio = NULL;
++		goto again;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.34.1
+
 
