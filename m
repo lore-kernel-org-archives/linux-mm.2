@@ -4,92 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75668CF6497
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 01:18:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF0C5CF64A1
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 01:47:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2BA86B008A; Wed, 19 Nov 2025 20:18:54 -0500 (EST)
+	id BEDD86B007B; Wed, 19 Nov 2025 20:47:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB54F6B008C; Wed, 19 Nov 2025 20:18:54 -0500 (EST)
+	id B77496B0088; Wed, 19 Nov 2025 20:47:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCB216B0095; Wed, 19 Nov 2025 20:18:54 -0500 (EST)
+	id A676A6B0089; Wed, 19 Nov 2025 20:47:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A8A1E6B008A
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 20:18:54 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6392F84E4E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:18:54 +0000 (UTC)
-X-FDA: 84129226188.04.276FEFB
+	by kanga.kvack.org (Postfix) with ESMTP id 90DAE6B007B
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 20:47:42 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4879F12FA7D
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:47:42 +0000 (UTC)
+X-FDA: 84129298764.24.954A185
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B651BC000B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:18:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1zlCzpb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8780D1A0004
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:47:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uF2z7xSs;
+	spf=pass (imf19.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763601532;
+	s=arc-20220608; t=1763603260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3oyM318uH5S1Nn1ZG/gh0i4UmP1BvYgaynzgkilEmmU=;
-	b=5KTqPX/oyDOpzo/9hMBGdTomlrfx7buSwFwBMwNYrnMtLI3sSK4uvi0vCI3TiTQ12I5a9p
-	yiOGqjKrJzuRCxWxYKlxXbwC+41255eVqhS0ZEbuu4dseEoBWb0SoOUo4ksJC1KRALjhe2
-	ysVYG6dn8lLNwZIsMNL+LdBqK+bgdoM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763601532; a=rsa-sha256;
-	cv=none;
-	b=bhHcoXvKdWmWyaIWRQ0cfUrv0oqZZVZEVcCaRBEn0DGac/MhZINvh87aSehVsZZCzQ1nD4
-	7qhbh9tPmHo3NDCvk7rcMLKWvis1HNuIGcP64O+Q9KZBWn+PMTZmyO8BlcQBWtFIjIWgw+
-	/LZ/sKBmJ2GjyL0pnL6vn5VrCCMPFpw=
+	bh=Qz0Kt9BVZotF+W8b8C03wV9uEpjzU2IZVkSaOcZVd50=;
+	b=O7pG6qC8YxngEXeC4rbDsgfdtNclJ6gar7E5IDuMGLoJaTuWQU3jpEVrTVlVtxJ1tn7gJM
+	2x9XgOh1wXKkDaaM4fckbjti74usMNtnueu60OkYGpElCUdF7o3cELvsCmkVcnJnL1Y+hN
+	7Ck8fwcZx5CNvlQzrsDPGzHOfW4MKlU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1zlCzpb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uF2z7xSs;
+	spf=pass (imf19.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763603260; a=rsa-sha256;
+	cv=none;
+	b=mY4gOgDXCPLBOvtTOoTsOF1il717t29MJq3bAxsZTl7bpFKhWj4FZ5RGT2LBbqpq1PdZAa
+	Bbgn2aiaAyJbBhoOrKez5kaSeORZIRU/RqCRc6EDUrocna34NjvTg+1iK1IW8brgBFfRRo
+	3zmN8eVGPeElmJdb2jHFTUb862jq0a0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 99AAB42D75;
-	Thu, 20 Nov 2025 01:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D20EC4CEF5;
-	Thu, 20 Nov 2025 01:18:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E650E43A3A;
+	Thu, 20 Nov 2025 01:47:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC38C113D0;
+	Thu, 20 Nov 2025 01:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763601531;
-	bh=O7zgRWKMoo8FQsJbNJswAKghVra7cYWb26LJqJOXoU8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1zlCzpb7taE9BcvNT/M+eEUDk0sbpOVM3BhGG2zAqUd54Jh01nR78Zel6pPSVjir
-	 F8qHnn6slUVPotwcSq6Q/t1Yt1Fe0ItQu6h9TDjowr9Rh4diy7t7SN8GzWwDPXm/10
-	 MS7KTcgz5/U0KEr5B0eLnlQmE9eq/AeIfxoYI0OgG6VIMqjWCG7kU2r0EbXTn2FTrD
-	 BFrun0KNQCmSl6TP5402DRyByH0AZDv8WNYa+r3XQBOSYuJVGZb9M8NYScbCR0q0tH
-	 sFiKAxq7nCznFFSiznA4bcxBlrUoAByViTpYFOfsaXy7RWhsmZ5P3ycTKGJ8wIAGj7
-	 iwkJ9YeyEDD9g==
-From: SeongJae Park <sj@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	SeongJae Park <sj@kerneel.org>
-Subject: Re: [PATCH] test_kho: always print restore status
-Date: Wed, 19 Nov 2025 17:18:48 -0800
-Message-ID: <20251120011849.74672-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251118181046.23321-1-pratyush@kernel.org>
-References: 
+	s=k20201202; t=1763603258;
+	bh=Qz0Kt9BVZotF+W8b8C03wV9uEpjzU2IZVkSaOcZVd50=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uF2z7xSsJBEF2o7jOCGEA8BICVnf2Ll7GN/YdEoLbs8PaQeAHioKS/o3SZ7QSxsKt
+	 vFnjbh6TICH8PLye1zHlHKdpzDE5Fm345e4L/w0hg/fEJ7Itp2slYgup6C6JZwwIym
+	 LLCi+QyeEmLY48F4L7ZzcbTStdyHeEENY8Hfnp0DqQrXSF5r2MrZk7t4OMHkvbN7PR
+	 8Qcsuc8hp1q4+vdSlLZQjWoYyrPh5U9WhuFsg9TNqdi8dNwuUtBQRxPyNJujXI9VwL
+	 mc5s7M6miwKRs2zV2Elwkq7lUfoGg+X1KHfkkxDDXD+SynQUk6oIGjhckD0gmUEmi4
+	 nBJOVjtHwyLhA==
+Date: Wed, 19 Nov 2025 17:47:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: david.laight.linux@gmail.com
+Cc: linux-kernel@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Alexei Starovoitov
+ <ast@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Andreas Dilger
+ <adilger.kernel@dilger.ca>, Andrew Lunn <andrew@lunn.ch>, Andrew Morton
+ <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Ard Biesheuvel
+ <ardb@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, Borislav Petkov <bp@alien8.de>, Christian
+ Brauner <brauner@kernel.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Christoph Hellwig <hch@lst.de>, Daniel Borkmann
+ <daniel@iogearbox.net>, Dan Williams <dan.j.williams@intel.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ David Ahern <dsahern@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "David S. Miller"
+ <davem@davemloft.net>, Dennis Zhou <dennis@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ingo Molnar <mingo@redhat.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jarkko Sakkinen
+ <jarkko@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Jens Axboe
+ <axboe@kernel.dk>, Jiri Slaby <jirislaby@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, John Allen <john.allen@amd.com>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Juergen Gross <jgross@suse.com>, Kees Cook
+ <kees@kernel.org>, KP Singh <kpsingh@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Mika Westerberg <westeri@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, Namhyung Kim
+ <namhyung@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+ nic_swsd@realtek.com, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Olivia
+ Mackall <olivia@selenic.com>, Paolo Abeni <pabeni@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Peter Huewe <peterhuewe@gmx.de>, Peter
+ Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Srinivas Kandagatla
+ <srini@kernel.org>, Stefano Stabellini <sstabellini@kernel.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>, "Theodore Ts'o"
+ <tytso@mit.edu>, Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, x86@kernel.org, Yury Norov
+ <yury.norov@gmail.com>, amd-gfx@lists.freedesktop.org, bpf@vger.kernel.org,
+ cgroups@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ io-uring@vger.kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-mm@kvack.org,
+ linux-nvme@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, mptcp@lists.linux.dev, netdev@vger.kernel.org,
+ usb-storage@lists.one-eyed-alien.net
+Subject: Re: [PATCH 00/44] Change a lot of min_t() that might mask high bits
+Message-ID: <20251119174734.5cba3f95@kernel.org>
+In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ifa5rdmtj5tsngupkguqmhcofyabkcnm
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8780D1A0004
+X-Stat-Signature: o6ehmeqgzxczom138ez9azsk3pusbq9k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B651BC000B
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763601532-942447
-X-HE-Meta: U2FsdGVkX18couV17PN86QZsolH6DnooNhfydUXhQ1RSOFmkxqTKiZSkQSxU3vF7fyXccwveOmOhbLvzhyrKvA2v1YHrPpIzmDsURl5KLiFjuAjyLmlAEsvuayul0Ao+gbfS0FnyQwX36OXpjwVG1SVCzHvJzQ+0z4LBimDf94F0N3FTSURcNxrx5rKwP2sSguTavGiF93UUaj0m7krVwiLuZlcwBDsvafHzHuPN7+faNO8z/t1v0hGFtz4SPV3WpPHn7+uDHIKy0Dbyd7vcITFBIEH8OlFfurcKEhQZ0Jm2mmxZl29hNXdsbchXWRfaErM+sYQCFgTwhnnPq51Wy7ZgW00C/0jr3MJOmNdOsMe/jPb64GntLHDlAMKGoYPbDGQCdCYflUvtKqkORTMNdf4od18arWay+VT4D8zGGibt+QMMXde6grKgLf4te2LX3bAAS0ArJhn1tGyw1rL8TsuGIVPnSWb6l4XhdudT5xKODOtP0OKXvwD/kwbAjTk3lsZHqMDPJtob3+uGIZ2P+g+rr2+daOl0UdNgQouysCeodHxZ8R68VKYfByYJvyW7gRXgom0JJcIoGPQKtl+OGMWciCBj7zjEg56cOLI5K7+FA35Qn6m08kkc4UINg6Y8HQfw8E4xxYa9Le+g5QuiNk+cda+BU74BKvpvWWOGg9e86AEN9L9saZOZ+lS+wD3N9GLdrWt/HoNOzhj0HaaE27IQcj+3sAynE7ak8iHPOQuidRzT/TCHqkWij9XIiVaPH4El2HLC8QJ8l2rhaqMc/p6Oj4fIZ10giDfdm1OI7ukm35IbQGQFBV+I0lcMZhtRXcVhphbE551inylbBNzcKZdA9El90K/JYUyGsjF4TbjoAbNdCI5ozAZQrJUIb5s4OeC8GeShuY/b8eeIY8fusX3Zmn8nGZxnTfpVcVSr2mCemFPBIas278Wu1FoXBb1K2hjKv3yAg+mlKwgzITd
- aRxr1fe8
- lIeTCOAyB/bxm+pygxmRR9LULeoutNbA2TkqMpaojJQx4fxj20CAWbsBPBWiTfGvowfznXz0y+xprPCUk6ndeRqGBlwjDhJ1CtaJs28razUjPRQzovGW1o8Z8Z9ELWxufrDt8gkxNETk51zAYRHFodgipGcGHouuH3aeemjTZCJBH24l1qA+JCNVCuiJk8dirU8Ve3rER4OBtaLwbMiUTMrm8QlDAJYlSVDHUO34MnUWi6C+07Iwdyfrjgy3RJagfN51Xoclx3fiS1oA7JbkqmF4KDjyufGCJsTPhccYVTYrhb6kvG1HmEgHxeCJf9PgDih37jqIslGoDKLHutH7jhMKRSw==
+X-HE-Tag: 1763603260-238770
+X-HE-Meta: U2FsdGVkX190EgZ6weCGNFNY7Q/mNZvoJGJIpkB4gC4wWggsSraGL84DZNlinbawJAGCVE3gA9QeSjS0HVux0G4aS7yCUL5DD4zc+6kht5icVG7yl88ZVK02DPuOCmZAfY61p1cRHkK5tWsCaVhBr1u2maQO0fpudDf/gaptJUoyIydehBJr/UNJqHMkkN9Dx8b5j7KeRBxy3nFegSrshRZ1QKo7O2QTq086CJod8JEa8qffDfOrd3EopZ5dsde3Sv/3eUe9IUhKzlr1ZqZansI+ifTrqgDjlZOx4z1l/AExK1/4jg0W92N23eCC7BEwNbSIczwbxnDzTpajX+Zp/1gvlQKEm92Mf4xd9j5X1P3EbngXcMs3AJIpmiVJoyTLXQHTWOQPZDAirWZ05mnUmxe3eXfK5oUagpekNdd5Hc8xHStdeaCPu2vxil4XYkQ6vkTrOjAlf/r2Gch2ViR3K/F9ETYwOioiurztEZ5vOGRv57srQ/3q/U+fZuxbhP+FJoPsqp9pt4ShugJzwPAjQBHhY8ZFCbGh5dm6gK6+2pUFgy7Uwrd+ZpwvBi2IpzV0iy7yrOBo+5sgM9N9rl6BkC4j4Vozobg2MXHQ6JkOSCC8NIWq1pOEt6CjYXE88zAKo7qHzAsskBAx0vI4bsyMurx2/eaDW6Fi2cNuOx5Hw+/o+4jpW5ULLHeGBfY3YXN1gDY675PDRlGZE0MPGXrjHBLiLrms83Q3leBf1eM/hDCE+pcKS8J+U33Hx3RxQUd9CU5ZXobKI+jCaCC+QghWddOwd9ruqQT10hLMP1CjGQsB3qU672Cgecxkkzw0hood97NgLQEAHIby3zrQCCvjNApYXx5O9Lz7nuqrhZrYkbXrKQATcNLi1dMcnmzEqBfIoiBqueZgcom2OqzFkNIkl0vm1MCZNab1bKy1XSymyuCFHmSc9bTJpb1vYxSjjjP5feeQj4UtxuRaG2QjeUG
+ caK9R108
+ bnFTftl3u59U4I/JYKCjY2NXNaW/u5tCD3JxeRgzhGoItd0WEFcYINm3RdSHxXu/Cexpa1shzIGeX4yzxatgeNVrEH0qzKFgrgjAxB4gVosPupKfA+Q9CmKDKgab5wFH+F7rrsMbb7j3yt1F20qyGk4zUqiDhmeaacsRbPYJen6agUZ8hQqVA1CWcxUC3Ly3WQFbW4t2EKzc25owOJOXH+w6zw6EU8eA28zyKqToTNQTqxG79vu9uiF4h7Mf6NY1Scijt/eJsPuLAUWB12WZx7X6Uk1vK4GaG7MvrUcjEJ3knWaobTtusrYPvSWhchc19nwu4IDy24/EQ7Oq92DQVCgiRxueMG2wq3JSFJ3pyE3jY0+lRx6w69OSSGUdcnF78v9uMxIIVvs+7KNU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,21 +142,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Nov 2025 19:10:45 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
+On Wed, 19 Nov 2025 22:40:56 +0000 david.laight.linux@gmail.com wrote:
+> I've had to trim the 124 maintainers/lists that get_maintainer.pl finds
+> from 124 to under 100 to be able to send the cover letter.
+> The individual patches only go to the addresses found for the associated files.
+> That reduces the number of emails to a less unsane number.
 
-> Currently the KHO test only prints a message on success, and remains
-> silent on failure. This makes it difficult to notice a failing test. A
-> failing test is usually more interesting than a successful one.
-> 
-> Always print the test status after attempting restore.
-> 
-> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-
-Acked-by: SeongJae Park <sj@kerneel.org>
-
-
-Thanks,
-SJ
-
-[...]
+Please split the networking (9?) patches out to a separate series.
+It will help you with the CC list, and help us to get this applied..
 
