@@ -4,137 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EF7CCF9C7A
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 19:11:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B9BFCFA442
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 19:20:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 551DC6B0062; Thu, 20 Nov 2025 14:11:14 -0500 (EST)
+	id 8772D6B002B; Thu, 20 Nov 2025 14:20:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 529816B007B; Thu, 20 Nov 2025 14:11:14 -0500 (EST)
+	id 84E936B002C; Thu, 20 Nov 2025 14:20:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43FFE6B0088; Thu, 20 Nov 2025 14:11:14 -0500 (EST)
+	id 7641A6B002D; Thu, 20 Nov 2025 14:20:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 33E566B0062
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:11:14 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EBB2212E2D3
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:11:13 +0000 (UTC)
-X-FDA: 84131928426.02.1246928
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F0EA6140011
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:11:11 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VUu0+dsH;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 654956B002B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 14:20:24 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 142BA140322
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:20:24 +0000 (UTC)
+X-FDA: 84131951568.12.4356040
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D48D018000C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 19:20:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GmJD9zCO;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763665872;
+	s=arc-20220608; t=1763666422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ah4PI5Tf13M72+zbrnNAV69UwNAi5YkBZFZHyMln8zc=;
-	b=54g4DoPWJNrHo68tH9R1XEW125AQTtL+WVeY/r2Lk4o7tP7KIssSFtmrV/wWO1dE0zeJId
-	MrM2KHcOQsodPCZHS/NAxbPVuCxbFBQlQt2p0emlgJ4BNQfaHDvwlp2AnR4s7W1PLjCPNM
-	27L2Z0GgtrEB3f19I6wCaEbw24N3tKU=
+	bh=1GdkfT+k3vOqAIJe3mmQZm2FSZ3v5dOxrZlq1SxHp5k=;
+	b=3m3S8ULvb4QNWr+/MNoAL/0VCupJ70ZTsz4425PeblRrvcAbG1xoftfiN81rIxDUfFk+Nk
+	y0PoH795PPkohbnnNuU7ATBsjDkrDKpkozvHRR8tZItp/Dbij/JuU4mChgNXoC1egfiFk7
+	sQjuvLWHth+o3mTM5g5rClAEFHam8Ow=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VUu0+dsH;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763665872; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GmJD9zCO;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763666422; a=rsa-sha256;
 	cv=none;
-	b=BcwFPAF5WhaBjxQXwkt7cBFkmiOd4lo9R7twnq5dqnJD2h2q6XKZ7RQ2MG+yvb27iujZGH
-	XUjDjsxt01USb4E2Njins/zw7pzUjtemKhn92G9CAHCMMo4K4YA6DeAjxr3VyY0hJ9RZf7
-	cWUJX7LEp3mju63pv8TeehtEWrS/G6s=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so1907343a12.3
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:11:11 -0800 (PST)
+	b=dNmYgIRjWBnBJ/oLFI/sl1H3UR7t20/TVrFrQvm3U2bwWnXhxUq884ErvguIO5Zg6gquRC
+	gNs2z67HrRjqDeic4XTPZNO5M2i3kiqDBWsZ0Iaj6luO+1I5bsP0s8LZNy1XQ8dCXUJvOv
+	z0IG9YJ6nU77gnAP7hDppiWzDtWIn6M=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42b3d4d9ca6so1118109f8f.2
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:20:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1763665870; x=1764270670; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ah4PI5Tf13M72+zbrnNAV69UwNAi5YkBZFZHyMln8zc=;
-        b=VUu0+dsHnM1nn2USNJoiSMVlmMEe+vQhOV5P4GjYJN1/0RvhhrhbgulwXc/k8WxH03
-         EUTtPjbPZQh874vj4rMB9ieuwto/rMnApHL1894L0I0LWab24iI+0wiilpAhvhIkNbi3
-         7ow4YwKZi7ld16aI+KgNWYN4Q65f9JQfSGOBGmSOqDn1jG8AKAsFN7nOjGI6s6WWsOsf
-         o5UpnU70SITeJdWlpQDwhmaVy7hhpugbijFEGK3hYXFoCPwCl7zxcD7lkHWYl7OUoxGU
-         rXGVKG/E+OfWw0rJVbyYySprVMN6aE+wPkXb2WjCq0E24BCzBwSY8zONXetAppKVtBto
-         Ngkw==
+        d=suse.com; s=google; t=1763666420; x=1764271220; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1GdkfT+k3vOqAIJe3mmQZm2FSZ3v5dOxrZlq1SxHp5k=;
+        b=GmJD9zCOVaftY1LAjXU4hFPGMPRxpThd/UpoS9rWvvQpmvcnZgY6Bwxixb9+8puUQ9
+         3DFJdJSiywSxRduxc0s85lceex0OnwiVYNUJQlt4wnwUcnkC0aD+eHXd/VlzrA54JkvP
+         QAcerIyNDxzFaqC/zDkfQ9WTh50CKsGZWA7co/pbC7fJxJbR4durMmM0MITT8thi7hD6
+         heEC5Gz9WJwfr5VXwIrbDjApuczPKkTmrIFk4rW+RMUwIQbg1wE6cUk3YGwjCZL6kDAj
+         H/nl3HVFfF7uGK7VrdlIJQWTLS0lcbwcOi5EzPghkeuJ0OCt287CNpc7KlftakwolvKB
+         coQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763665870; x=1764270670;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ah4PI5Tf13M72+zbrnNAV69UwNAi5YkBZFZHyMln8zc=;
-        b=jfa5JqmDpmQJ52ar2LRSWVcfDAgaCVbBfWR2V8ub7mgizS4K0ambcA0P7nBxAKRNC8
-         C6uhbc2Fjw51lf5baFevG1s0ODWrmo9EhZVXlACE/sX5AeHCoX9soxvZIhm8D65PZ5mB
-         oJFI1v/08XWE3FneE9z2mjkrTsMUSO3Dwy65LbnhMkacmKLAI2SMOlihIVyECP6ILAyQ
-         H2KEmaIqUSvF1EirVAs2HQyyaV9qbv2fCCdC5yspDfNdXROqRMNKfmpbDObkulzx+/EL
-         ZvdG4QEqA1VagnlMwGaCCtfzYgNIdJesgocJfdu5gOEhKX2yoUf2eLa7B+6mbTmzHgov
-         VRgg==
-X-Forwarded-Encrypted: i=1; AJvYcCVQUHyhEUEoHc12ISLwBoz4qpDT1Qo0C75qFl3gjJ6JetkwRzBLrdB6rGAj2T9mLz+Um5DfvMY9ew==@kvack.org
-X-Gm-Message-State: AOJu0YzMNwof9wIX7UI9AXd7oT+VM6qZWpQDyAv6S4lSvFvH24zlFmGV
-	0JHvTx3ocFC5EHYoZ5KIp67qu8P+splGyjFMlCGNeF1+yD5ChXFS0oNyHtz2d9++Segl14KSRRv
-	SfBBuHVZBYTB1R3fVnlLF3KCxfLxwDEV+qF8Wupu4LQ==
-X-Gm-Gg: ASbGncvTqLciqiMORihqce/kCKQ5KnIoIVAiiKZKXLxD7fNpkRhsMZIfMJpEG7JsKFi
-	9U8TzVC0y8cvmC2UfZfyUwFTklN37JGatr/CLNIIX2G5lcAJduNDgViPnNh3C8S7gCDzfRQs7r7
-	pXK0X8j1C2wR1RebONF9Ltnsul2WFBTcAONLBh91Vw8Ty8tM+U0AZtSjeWoqMgA7x2DPdJajkcY
-	0tSLf+tPeYEFy42ucn0koKs20fn55jFITMlKPsekKKi7Y4Lbc2mgOeFXCoAqA8yTVvc
-X-Google-Smtp-Source: AGHT+IH4WA4XmxDMHnQGvwWRqcCYMoQ95h8Cnb/tecHWkSne98BYp1s+lgZXYiOL0q0CCu+HgOArmo/0lwNHfSz4VVo=
-X-Received: by 2002:a05:6402:3586:b0:640:a7a9:289f with SMTP id
- 4fb4d7f45d1cf-645363c6b54mr3839432a12.2.1763665869906; Thu, 20 Nov 2025
- 11:11:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763666420; x=1764271220;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1GdkfT+k3vOqAIJe3mmQZm2FSZ3v5dOxrZlq1SxHp5k=;
+        b=ou10UHTtGJmfstlJC7Ad2yFSwL2tGjE8RK1+Zw/QUlvk6S8qVXqgCeMFs6QZIPPhmU
+         BXj81oUQ//6PC+sGa3liJmYIMYpvanmu8Fo/c66A4V5TaInA6km/Nd/fWCqc0fLbRB4c
+         qIeR/ke+dNHQ+sSymh58ncO26LX33TYZapmOba15xT74szS0YUu68YKXVdDEH5bD5ZYY
+         wJJBn8Wy0YjXTBW4eD45z2U1eholo2kIA/zMqVazMG+8eK0oeOyUe5UTrsm2yMXol/aG
+         3Mz+fUpxMHoYJ2LnXMoK5ZggHYbxTUO/Qe9QlewXpRHvR51dQ2u1vY6C06jplo/Jy/bC
+         Z9rA==
+X-Forwarded-Encrypted: i=1; AJvYcCWIL7px+535KToE/78Ej3EC1Vfv/CQOlg0Lla574oIaXw6fEzijzmiRQeqyHLXuJA0TyYYLSBmoNw==@kvack.org
+X-Gm-Message-State: AOJu0YzsTO08/bSgxtcGZLoipPm4ruP80ti4cMGPxs2T15nwWPQyomPE
+	OXS7nllCF2mC4Lo+xXuqzjNy8lF6BQ86fSUyyrYhQBOMuDDjX4Mlj7QfVVOIwKuuZRE=
+X-Gm-Gg: ASbGnctZHqsYof6zIBhBzNXHXnNmAgUCMXfSceeveVg5mQleToi0H7Y+fo4+JASseQa
+	brzzEx98AwBFeNR6utoroYCBq3QkbLIu+ZrqYYypwUMStc0MHQIOhefXXvvj7z+2W0JYp/SubKi
+	5zVQEWDUhGphlVluXc99YIuge/FHqd3F3xlMeorCVANpeIWFDJteVAWQdEynkz3XNFzkzilTO7/
+	pqQM+SqySoIBxMvPFg1/XVZ/UGPolJyAQzOOwtjOa3heosaCP4GQZzuYVwShBmEILjW6rXMPoOQ
+	2DL+M3lYLBpyBxC3ERAIND7nMZOCdstI2CjNRkcj4ccyamT851EGIaPkwb0RV/eoOPUbwGGrbkN
+	dIYLUc0u7PP7FiIue7pQHqezwu2bfP5+gjpR6n8w1atmogyVDBetHSufgemRD1xe/oM361+08oH
+	S1erlglnzhXkD4BCSPU1YuPyNS
+X-Google-Smtp-Source: AGHT+IGAoi9mcb2Ki+Vf2x8GF9MIVNCxw9/ODHm+fzM81xCrrAi2YNRfJaEumj8/F5Vldpj31JhIrw==
+X-Received: by 2002:a5d:5f50:0:b0:42b:5628:f4a3 with SMTP id ffacd0b85a97d-42cb9a0d86bmr4652179f8f.1.1763666420131;
+        Thu, 20 Nov 2025 11:20:20 -0800 (PST)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fa41d2sm6785593f8f.22.2025.11.20.11.20.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Nov 2025 11:20:19 -0800 (PST)
+Date: Thu, 20 Nov 2025 20:20:18 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: hui.zhu@linux.dev
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com, Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH 0/3] Memory Controller eBPF support
+Message-ID: <aR9p8n3VzpNHdPFw@tiehlicka>
+References: <cover.1763457705.git.zhuhui@kylinos.cn>
+ <87ldk1mmk3.fsf@linux.dev>
+ <895f996653b3385e72763d5b35ccd993b07c6125@linux.dev>
 MIME-Version: 1.0
-References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
- <20251115233409.768044-9-pasha.tatashin@soleen.com> <aRrtRfJaaIHw5DZN@kernel.org>
- <CA+CK2bBxVNRkJ-8Qv1AzfHEwpxnc4fSxdzKCL_7ku0TMd6Rjow@mail.gmail.com>
- <aRxYQKrQeP8BzR_2@kernel.org> <CA+CK2bASYtBndN24HZhkndDpsrU1rwjCokE=9eLZUq2Jhj6bag@mail.gmail.com>
- <aR9i9SXGDQ6bi1mi@kernel.org>
-In-Reply-To: <aR9i9SXGDQ6bi1mi@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 20 Nov 2025 14:10:33 -0500
-X-Gm-Features: AWmQ_bkna6LLJHL393cMjX0oZb4owkA8mCeUNJHS4sJFmwNTru1Npow-9jQRfrE
-Message-ID: <CA+CK2bAA4qifTLpk27FtJX476Jr+VB9sa-NTUyo9nqmeWfkPPg@mail.gmail.com>
-Subject: Re: [PATCH v6 08/20] liveupdate: luo_flb: Introduce
- File-Lifecycle-Bound global state
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F0EA6140011
-X-Stat-Signature: j4i559975iawskao3864e5t1mwjshsty
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <895f996653b3385e72763d5b35ccd993b07c6125@linux.dev>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D48D018000C
+X-Stat-Signature: wcc8kxpxmyuyw9km3qigwuxgzkhx66ba
 X-Rspam-User: 
-X-HE-Tag: 1763665871-562091
-X-HE-Meta: U2FsdGVkX19yc26JYYSGXsozW8U+EfrA6yebrKnBLtLUSbONW6Hoy+Y+RhPQgINg0uhXntTq2s/g63B3TLV6Y5yk94azxa1gUYPJdpK43BjNMAfKHI8Cn/jzDtl6XAd9yLEqRSPkXCtqC3Zey2qSNUTGVYtiJRfrjLteSkp6YGlsvq/bqECdJ+lrXHU0E8Xc0aT7AqjJQImCjE1AVIj3cExbMfucZQ6m49HwiUcEmsyAJZDSf2b/Qbor+aQkfhMmP78w7gHmYtZbnC664ysUpHwnFogTmDlw+sUFLD+5Ek9myJxwow0dr29W7TMm1ck3fUgRbQBCVFg9CF0JYHQL/ijWCAflmVwgdMtz5Jduvvg7SHJAcgrFSbvq82xkDHhFNCNXDQUhxRfC4+/0D4R5tqwxzjUSnJhKsGTNk3WDugpdpqvFyAvZ9yw532WczRSGP4E4b5+dxbWKR3+h7gMAcxhtesnGmwtyhd3u6HlMnetvoJt7R1oldUWb9kWuLxi1n5hQbXQudV513j65ZLd/iRQMEN5KD2S+sXBY3vKz2lKMqbUkv5aOa9fgdGiCTM3l9oVUkSmzWRfiOjzsit6QqOtrlUUoyky9ZFXFaODoVhuLN+KkVhY40Yi0kRZeJczZ9EUvPl3p/+lM7NmDMMW3HTN/f681mbKICH3yt5/tBlvYmgcCiKNETZslmS+nOzd+6RJk+hdrVkqJu98gZRqxfAdDeQtqXv12m7+DoA8S6OMQh29f5I/0a5DeXi2FMQc919VBXkGDpSTB/CsR0o3UKu7VRguRq+FNfR5hGwjJqbeWTV4dDNf1oktb3UDOZ0dt8MO+xGgOjp6Tj03yA6+2pV10pafXrlFQrmUSFtrOwloXnrWAb6KCsBB4SUNoZNq6CPHWrTnHXqrKnj0LzaWhPNoTzA2SVOeXYrjENQu5X+VuurdDjfnT3tKW60tHPVVTmZSUBd0UKhCNv84CQvk
- sViflLwI
- HFi1czVPxYLbv+FdcG7MmpJcYXBPB0Jj6cYdSflhLaiG9w1rTsTtTLkaMoSMJ1GTyv9Z9O+J2UFi4PiJBqJnmm0ZkdeNcBaHnLDujbHidjjxOaed/pwAx+x/libIuxSRkIr6ozz6Wj7TwQYNSs46GA772PGy/oc9WdCXJN+5pqYefm2jG+iO02XA7hZB5fUYta2gi1lQBw6ujwXuaUcadPgXn9O34mZnb598gcWZ/ebj838yYoqptRKN1WZgy407/me/BdxHP/Vl9qaYZhmEKbhcuW4Hv9M78kU22aK/pDQuLV9gcs8W06mxxEh6benwiW+bTSgzM7Q+JtVo=
+X-HE-Tag: 1763666421-994693
+X-HE-Meta: U2FsdGVkX1+W+qOSzYeq+jTqUkmAT5MPcqQ7+6GmF+s2IOCwK9ShShgK2yT7KDmvPQtwD+8qJbNL+jkEdXd2IsqiTACqcbcGXHIDIwnzXwQEZGF+ITd8YBxKmb8oTKXaYzaa+C7dMyMpSEDZhNtww9uyoDHhX3A8HInM8GES6tU+GAiCSu+ocrcjgzGNL0szRy6Q4SFmDdoyZ+8O9uOe39voy+0mC/a1kQKVD4NwmFU2LTSlQWfNvwOn3qCJ1c2j+lmokZ02K4O2+tMBpyQ9QiUC5mp5xcKF/nwPGqApUGHL0vNB4WT0K4FGlsxIlq+3GKIEnDWfjgwZxJt38EFXQ6abmJ10D7n1XybGVbZpwGAEEN7jUu5nDg5wuhOxOmwR3yybfCjmNdDN1vECxDl2E8DAps86A7Lgv3rfc2cRG5yV+/+eDwHPpFoQzJL6zGOioGebVyIv0BSyOo2JZZS3/gJatKANFNb3uPUJpE3Y2g3eP918WvclwkPro/eSc9mUPlWErMFzw3I4KZgbXmM6nbbLbFfupW4ceaO7OLuyZg9kTbtoyCNSQmevwVfqyaRpcdp5AuMRFADTdmCjKl9gfr5zI1DpPRicn+pFlb/l5DO0/A/T1SDXrl99aGojTXprHbSiDpnlRK9AQ5C31JfczfqQ41Vvn6054/g8gJrhGrH7JSIdpAfXdAG28VtVBxayZzeRZ6u46ZZtQBS1JsMbfK1G68iV6yYezvoIgMQlqAL5iTAPhTTEEqrzmAhG7BBbhacZKB1IKeXI0TRZ7O39LDPe4do1gmI8XZ2xi627yMtyqvTTwimWGZ1kPpe5VpGSrDWQuPvLKjS3KE0irNAtBlvyjzNT+AwxUj/koJetQ7axWdvdzmg85tKJh7bxPAzOtDya35nrXywJQ1GCs3Ncx/wJrKt8vYn04P1/gdF+wzxugR6lQetWJ1/6SlUt4YV47b2xGHAQ+7U9PX6xnPn
+ CMmel9QH
+ KI/WjGJvbXVSAqFpXdBnS9rM+d6CXldXuTFiRUHkJ3DK6k2MWYoU3cvbwn6wKk7ayeV5NuyBXalG9/r0xkxveaccuQLs18cTUKEMWMLQOwf35NE07U8wL0i6TAY/UX20OGqPwJ+lb/lC/vC4AF9caJ3/iCET//NwoBae6/nmzQTdimc2wXQslqNcf43Mkso/Ckrt3/27+0XXmCy4RQiK10BxKA/oSAZ++eB83qMmOmlUNj9bqCP6CtDdDL6IgexoV+7wd45vxLPPeTScxeqJtFByYaRFvonStkBug1Ss6hzgFCPx7NiX6es+Q3fCOVMHzYFpBiGsvdlncwFXTAhuU4jAZQFjGSWAjBjK+bLtxETl9pvgLauagW0TLO6qiai4NPBYpsCbshjTfWfv0t7gAWhZvYzHDuOsnv0yScdTOpwySHgnh+bOsEEfDS4mblUEH0YhV2/nSXjkN6cs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,88 +148,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 1:50=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Tue, Nov 18, 2025 at 10:37:30AM -0500, Pasha Tatashin wrote:
-> > On Tue, Nov 18, 2025 at 6:28=E2=80=AFAM Mike Rapoport <rppt@kernel.org>=
- wrote:
-> > >
-> > > On Mon, Nov 17, 2025 at 10:54:29PM -0500, Pasha Tatashin wrote:
-> > > > >
-> > > > > The concept makes sense to me, but it's hard to review the implem=
-entation
-> > > > > without an actual user.
-> > > >
-> > > > There are three users: we will have HugeTLB support that is going t=
-o
-> > > > be posted as RFC in a few weeks. Also, in two weeks we are going to
-> > > > have an updated VFIO and IOMMU series posted both using FLBs. In th=
-e
-> > > > mean time, this series provides an FLB in-kernel test that verifies
-> > > > that multiple FLBs can be attached to File-Handlers, and the basic
-> > > > interfaces are working.
-> > >
-> > > Which means that essentially there won't be a real kernel user for FL=
-B for
-> > > a while.
-> > > We usually don't merge dead code because some future patchset depends=
- on
-> > > it.
-> >
-> > I understand the concern. I would prefer to merge FLB with the rest of
-> > the LUO series; I don't view it as completely dead code since I have
-> > added the in-kernel test that specifically exercises and validates
-> > this API.
->
-> The test exercises a simple happy flow, but it still does not validate th=
-at
-> this API is what we'll be using in the end.
-> It's quite probable that the first upstream user of FLB will use this exa=
-ct
-> API, but chances are that it will require adjustments to "the real life".
->
-> It does look sane, but without an actual user (sorry, but the test does n=
-ot
-> count) it's hard to anticipate the potential required changes and potenti=
-al
-> corner cases.
->
-> Let's hold FLB until it can be actually consumed by HugeTLB or VFIO or
-> IOMMU.
+On Thu 20-11-25 09:29:52, hui.zhu@linux.dev wrote:
+[...]
+> > I generally agree with an idea to use BPF for various memcg-related
+> > policies, but I'm not sure how specific callbacks can be used in
+> > practice.
+> 
+> Hi Roman,
+> 
+> Following are some ideas that can use ebpf memcg:
+> 
+> Priority‑Based Reclaim and Limits in Multi‑Tenant Environments:
+> On a single machine with multiple tenants / namespaces / containers,
+> under memory pressure it’s hard to decide “who should be squeezed first”
+> with static policies baked into the kernel.
+> Assign a BPF profile to each tenant’s memcg:
+> Under high global pressure, BPF can decide:
+> Which memcgs’ memory.high should be raised (delaying reclaim),
+> Which memcgs should be scanned and reclaimed more aggressively.
+> 
+> Online Profiling / Diagnosing Memory Hotspots:
+> A cgroup’s memory keeps growing, but without patching the kernel it’s
+> difficult to obtain fine‑grained information.
+> Attach BPF to the memcg charge/uncharge path:
+> Record large allocations (greater than N KB) with call stacks and
+> owning file/module, and send them to user space via a BPF ring buffer.
+> Based on sampled data, generate:
+> “Top N memory allocation stacks in this container over the last 10 minutes,”
+> Reports of which objects / call paths are growing fastest.
+> This makes it possible to pinpoint the root cause of host memory
+> anomalies without changing application code, which is very useful
+> in operations/ops scenarios.
+> 
+> SLO‑Driven Auto Throttling / Scale‑In/Out Signals:
+> Use eBPF to observe memory usage slope, frequent reclaim,
+> or near‑OOM behavior within a memcg.
+> When it decides “OOM is imminent,” instead of just killing/raising
+> limits, it can emit a signal to a control‑plane component.
+> For example, send an event to a user‑space agent to trigger
+> automatic scaling, QPS adjustment, or throttling.
+> 
+> Prevent a cgroup from launching a large‑scale fork+malloc attack:
+> BPF checks per‑uid or per‑cgroup allocation behavior over the
+> last few seconds during memcg charge.
 
-Ok
+AFAIU, these are just very high level ideas rather than anything you are
+trying to target with this patch series, right?
 
-> > > I think it should stay in mm-nonmm-unstable if Andrew does not mind k=
-eeping
-> > > it there until the first user is going to land and then FLB will move
-> > > upstream along with that user.
-> >
-> > My reasoning for pushing for inclusion now is that there are many
-> > developers who currently depend on the FLB functionality. Having it in
-> > a public tree, preferably upstream, or at least linux-next, would be
-> > highly beneficial for their development and testing.
-> >
-> > However, to avoid blocking the entire series, I am going to move the
-> > FLB patch and the in-kernel test patch to be the last two patches in
-> > LUOv7.
-> >
-> > This way, the rest of the LUO series can be merged without them if
-> > they are blocked, however, in this case it would be best if the two
-> > FLB patches stayed in mm tree to allow VFIO/IOMMU/PCI/HugeTLB
-> > preservation developers to use them, as they all depend on functional
-> > FLB.
->
-> That's pretty much what I'm suggesting just without "if they are blocked"=
- :)
+All I can see is that you add a reclaim hook but it is not really clear
+to me how feasible it is to actually implement a real memory reclaim
+strategy this way.
 
-SGTM
-
->
-> > Pasha
->
-> --
-> Sincerely yours,
-> Mike.
->
+In prinicipal I am not really opposed but the memory reclaim process is
+rather involved process and I would really like to see there is
+something real to be done without exporting all the MM code to BPF for
+any practical use. Is there any POC out there?
+-- 
+Michal Hocko
+SUSE Labs
 
