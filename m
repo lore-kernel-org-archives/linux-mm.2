@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A3F1CF885A
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9634CF885A
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:57:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D67CF6B0088; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
+	id 2215F6B0028; Thu, 20 Nov 2025 08:57:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D18A86B0089; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
+	id 1D19C6B0030; Thu, 20 Nov 2025 08:57:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C55AF6B008C; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
+	id 0E85A6B0092; Thu, 20 Nov 2025 08:57:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B5EBC6B0088
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60BD9C011B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:55:29 +0000 (UTC)
-X-FDA: 84131132778.08.9A27ADA
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F104A6B0028
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:57:02 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97D104B9A3
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:57:02 +0000 (UTC)
+X-FDA: 84131136684.27.503027D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C2C9B16000B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:55:27 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QKsjgNPU;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id CF04840014
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:57:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zbc5YrtE;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763646927;
+	s=arc-20220608; t=1763647020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=44TukmqM1pM7wJwbSWZRWo0DXAJICz/EvslVoyveLSQ=;
-	b=E31dwW8TTeDrWLlIovk18MmRqJc+89xOK6aruWjMWoD8BnD4HVK89lvrAOuZfJUf1l+7Ww
-	sGMbfy0kDqcb4pIghb0N1yizfnjVj2J7k4KogzYjMCJR0GVev2r5DdAqS5p92vWZ/gLQtK
-	CdzZ/XrXoRVW1eOB/QVXykldgTo8QQI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763646927; a=rsa-sha256;
+	bh=S74x+9RuFkgsoAZJgEhzdNtxe9HOobAUoEHbF9q+FQM=;
+	b=pt4yb2Kllv8DfuHmoxjVMdwViWIKdCzJcHfk2ySFR/AzMyUBqyz0gufowSzd7+wdUP2lpG
+	0pMBtKlI74lTmS+eY00vorpzkBymywb0GJWllB5tDiww4fbjXSPV3ixv3wdKeMN7mPHhJ0
+	URpW3CP56QsBC8rS0zX5i5TsKigq/Wo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763647020; a=rsa-sha256;
 	cv=none;
-	b=4Ycb9A9uZEKBNeQdX8LFuDpEFtuXP3p0xkg+1ceTSPcLtrp+4OjCvj3BqdeJp/1Vz2WZNH
-	54lUXjJuHfhOV9daVxPDwK5GN1V39C9I9HdnKJRBDZGY1yu4gzSycPFUe1J/uRiRsVZXiM
-	KW/S8scOeQIOXJsspUKTpwT9RTs/tkI=
+	b=49kAFJyNcA9yECcByyXAoJveDgHYZCV8hr7XaMpYnZC71ZsFanLJarWbABBI90vXCgB6Lt
+	7iC9y2Qpg9V1sLnuYYJZDJtSU2oaqcZBiQlLTkRhWpDZ2NATH2ouSEGlYlGy67KkJivFfh
+	/1llTMaYKCapQEYlTrwdGlGaRzdZd6o=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QKsjgNPU;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zbc5YrtE;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCED0408C5;
-	Thu, 20 Nov 2025 13:55:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CDEC113D0;
-	Thu, 20 Nov 2025 13:55:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CE91041A00;
+	Thu, 20 Nov 2025 13:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F32C4CEF1;
+	Thu, 20 Nov 2025 13:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763646926;
-	bh=w98CTr1y6u3rlNRFz9EHhQELuGV5IPxoox3hjleT2DM=;
+	s=k20201202; t=1763647019;
+	bh=QoxYYErELdLLrGpV/rQFRHVcqyK4OsRv+E7EQNcD4us=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QKsjgNPU5/PcGb6udYNlfEODXgk8ivv7ikeYCyFGtk3qXg1WX8QH7JrCzMWxApG6D
-	 HRXoVEATmOyWOgmvnMU4f7Jt6iiVHv5eHM/f4tu0MRUlVmtw2VH8m1qwghCR0CTqqW
-	 W+iDNL3eGu7Y5patl7mIDeOVyZkN3EEMa5yBpbDAbimNotN9a9qNgkN1TxBWNWn2dT
-	 QKi+xC8V8RYoPmWfaroSMUaiEmf7Brtfy5KeymvdgbxHSNMcKtNfnTucAcEjD33pc/
-	 PQdFCVdp+5DKaGCEnlHxsnb+5FwMYO3IfEPaa6Y0EyLznPWk5AnVdC3KqBaaBa6SgV
-	 yr5gf3p/wf5/w==
-Message-ID: <2b7ab53c-b1cc-44f0-acdc-e28967f53ea5@kernel.org>
-Date: Thu, 20 Nov 2025 14:55:23 +0100
+	b=Zbc5YrtEAY3IC450+cK7+99gQqU12F4Mu54/CB6RTHfFLBfNWaaXDDqYXuZjjs3CI
+	 7V13oLdt1IKRIKIF+epZylukvu3znmbAgD9GEk87xoMq3BjT+84EbeglA2IEEdW+P1
+	 zSfZVoVl+iWVYmC2bIv52dc7sR2eMpLILv9aMhWhe0kg5AxocJjYe/mKzACuOWzywM
+	 QvZFaxQ51QG803h5WyNlZG6vtmhFPC9Wg6bTdCtLrK2fohDGXtJAI/DfXU/2CTVTAd
+	 iISg14ZMA4Nw5v0DwfKF5+C7/P6V4pzYBYqpPDdCuVseInGB5oW8K0f8a3c4XVNf6Z
+	 DVPqDLCYPSo2w==
+Message-ID: <9ca2fe91-5037-4299-8090-1031dae8c691@kernel.org>
+Date: Thu, 20 Nov 2025 14:56:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: Use frozen pages for page tables
-To: Chih-En Lin <shiyn.lin@gmail.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org
+Subject: Re: [PATCH 4/4] pgtable: Remove uses of page->lru
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org
 References: <20251113140448.1814860-1-willy@infradead.org>
- <20251113140448.1814860-2-willy@infradead.org>
- <20251119154654.GA606021@gmail.com>
+ <20251113140448.1814860-5-willy@infradead.org>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251119154654.GA606021@gmail.com>
+In-Reply-To: <20251113140448.1814860-5-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C2C9B16000B
-X-Stat-Signature: 5da4tj1gymm7ea5obufkc9636zzcc7ij
+X-Rspamd-Queue-Id: CF04840014
+X-Stat-Signature: ciedjtifppd89eo6agjqhss3tk49ie5u
 X-Rspam-User: 
-X-HE-Tag: 1763646927-668388
-X-HE-Meta: U2FsdGVkX19gnS0bnlI1tjVayC82rjTvtl0XkPutNgqdLZfCePcLZ8bZYeai/ciXmMP1DcYHsot9RugfzaXGp6WAEpVoAgoqlJR/avdpDEi7xh8lc8vtv6uJmTQzvzjtcxM55BpKYdMTyckmZLi9x+oo0adAczp6v39AYKHupqZbrMVqdlMaIOl/Jn5s4ETI9OLHFyc/gQaQzYQbLrAE3IlI4M/KwP4TgPIYdkjN08HC1LUPY2ql2zo8dSubG+lscfGHMzrRKQtvqcHvaYZqfSroBH8AiJXpqXI1hQtLgDgz6kYeinFeXu35K6atpLNRqKfm+ozRYATT2LQ/loH+E1jpOyv02ixV0OH0t3cyZ49qbTu7c6qjuK3lBJ/WH0wOS8uET2r5SAru3yA/cooq+3Ytfv3TFoOuJogjA7zWtCdPeTFdxhkBw6gevmd4YdT2XnLH98BLRhWLtGvzuCGsg2Ckhr4Jl3oGY8p7iv/mLQ4pSRbQMet7mknysbZLLOTB5ncEYM6UlgIU3/OyeEtOyxrdECPtsu9D5Ka8ngm577vdVh1jiQsCyv8uFmJ2aaEQWsExgr4INV9s4Rn6qw26gjHgQ0QMp1rPpSCa4RRRiYdG/ceK3H+ljhLWO0tCWEkyry7ZaqaD/zJrLtLYgAh0ok3BJzLkuC7NdfKqMCGLLfL29j9HV5MsoCYgCuxl1ien58L3RsHCxVas0s6Mc1M75uCtKoUlLaTwAh6ABlDm+ihTV2VhYiOW4yvDE9MGo7WPG+EkEe8/MDTMaA47RBCSEj+DMkypxXF6/9jr6b50HAUmyrCB4AfhxL5lQZh5pzzNndGyJOIMOue+6CPxSq/AF9UBOkCano29NFLWiYflTsw3eE52sf9Rvw5LwTXJta69W/qe9+RWcLHOFeWJcGAjubcpWzfiOAu5RP4ICjjd1fOMYvu5mjUDrbCalMrEUGvMhlIIg4pvC+PIFnZMEbn
- V5GNpNOo
- hPDcjnxX7+wXYfAsazovUFEfSyg==
+X-HE-Tag: 1763647020-513825
+X-HE-Meta: U2FsdGVkX1+ax4pXJAb05hguTQsjo6xaTpr8thB3rXEeHPBcVQc/nvU3C6mvT7mWKr80M7L4MNU0lcHKkCUPuOtKZJ1arXf0R4pxWY58DtXZb5wNA4gJMf4heKcKfSfa/eOWGmmbD+nQ+TaNasAfdsWfqDPQGmWOO4/ZcAeraaalt5DBKVt7FPx21Gi5vot6rdpG7hL8Zochr0+34oc7Gd5uspMgY1tDlf2DP8D2+rmmgeOx0rXTMK/5L97TGiOm37huvrSJRfUMeVsFTF6EQg5q/Wsv3vnsEW11zMYwBAuEWLw9NZ1cANe2h1JTNNziaRWf3L6vHnYT0/rUWvC0gUfln0QnHJhAbgSBQ4PKnzyYwNVicAok3Zm9cvUXJwbVdYcq3JthMxTwoe6NO0y29O01Rpg9o7h1JGQPwIHYKX4EZ+R+RJ/LZ+2ciM/CGYdYxthS8UMt4tEslN8whlqP1838OfPsCMRseNWPmrtjo1a3W1/VkgvvKyADJLS+NvOuHkWkXW1gMeHSCzUk05SQSR6FM/SqO9geuMOhkkTpyG1ew+jxlYVnDQC5rGxWgV7TO4P5aorrReHZKfUIbzSOM6GLepwkjD7UHaDxK92zaMpbIPswhJFBGXp1t5uGM/nQqjNC97KDwPIZYvzccQdcx/B7P6tlZQRaTOlssSkQ5xRlz0wCGcr29fYkLUoSZS2+NH//4DJgvt0kseAeI4G/6AEcP69gY49EH+EztEKSFG6qehKTn1nCshvPiRsA998eZfom9mRw/fU3r27p1UrdeC0pff3zH87gvyV2BuyKm2cUT52ZfBflracG9ad1ijuiaQ8T2WwGknoIZPXV/0EWtAqcwpQYMomTSDs5p6nZp0uYfkYOcQBucfImxk+ddOaU6S6b3Bb/3Gd1zs3TeIRkUkmvNg2qtw0jEIP+7UHMFsQ9Rf5CEU6lkXbWQEEepwLBp+K48LKonWcTDuv/Ymb
+ uG9qC+Aw
+ DcKXcwbl+3n0I1SQd9J3bqWgGpiXicuobGBDlYcio5098V4nJ7Tg3kM2KJyazmIUVKQagUu5mjR//UB2SG6MtCV7cqL7yOu55eW3owUaeJTowlDs3563qXj+IQuw3EedwJs5L0H51g4xiIj0rLpc/wWx9JU4wO0sjfUcbByHXkwnOMpqYTMwyjRSED7/fVsEtpMV5ufJdwLBmRiDkUqXxRqgzrfLP1ZAlabiasdMKCpZnOyE8g2S+ZWxfGlB/Txo1TOyUlKsiRpD0jbbjEbTbnot8hrn4z8GuLH6OTTB7Hp2mo3Vl17yFN1x48xuKzVPWX68mexNSwWkmxiBphQqEm4+BbN8bicEY6OQ4S1m24quYEwgVJGGxpgGl4Rbt+67o9n4YoGfG5wD5e2ilvAKSguCn41ktQspbDdrq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,18 +95,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
->> +{
->> +	struct page *page = ptdesc_page(pt);
->> +
->> +	if (ptdesc_test_kernel(pt))
->> +		pagetable_free_kernel(pt);
+On 11/13/25 15:04, Matthew Wilcox (Oracle) wrote:
+> Use ptdesc->pt_list instead of page->lru.  These are the same bits for
+> now, but will be different when ptdesc is allocated separately.
 > 
-> Should we use test_and_clear_bit() here to prevent the double free?
-> Or it is unnecessary because the caller will guarantee there is no other
-> thread that will free the same pagetables.
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
 
-If that would be the case, it would be horribly broken already?
+
+LGTM
+
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
 Cheers
