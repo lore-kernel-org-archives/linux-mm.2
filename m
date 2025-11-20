@@ -4,201 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67B53CF8861
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B3DCF8863
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C72136B0008; Thu, 20 Nov 2025 10:01:16 -0500 (EST)
+	id F0DA56B0006; Thu, 20 Nov 2025 10:02:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C22B26B0026; Thu, 20 Nov 2025 10:01:16 -0500 (EST)
+	id EBEB36B000D; Thu, 20 Nov 2025 10:02:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC3C06B0030; Thu, 20 Nov 2025 10:01:16 -0500 (EST)
+	id DAD8A6B0028; Thu, 20 Nov 2025 10:02:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 97AA26B0008
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:01:16 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 873001A01A9
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:01:14 +0000 (UTC)
-X-FDA: 84131298468.03.261053E
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012043.outbound.protection.outlook.com [40.107.200.43])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7373EC0027
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:01:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cJKK+qSi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.43 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763650871;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C1F406B0006
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:02:48 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84117B67AF
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:48 +0000 (UTC)
+X-FDA: 84131302416.09.09D45DA
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8A071140022
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:02:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="cag4H17/";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3lC0faQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3lC0faQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763650966; a=rsa-sha256;
+	cv=none;
+	b=BZczrtS+dYnGRHuVX0jPkHcw4SGx/o+lKNlKNN+3b7Qf1YCMECxRv9bUoUq3Z9I7e3OT5Z
+	kmCtk8FlfyoNeXeo9Yw3RpSCfi+9GAi6iSjnU3fMbZpn4kHzJ3fTpLcEs5So6qyIBdFgBG
+	ttf3iHbl1m2nVp8zvKSaCEidW+jWcss=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="cag4H17/";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf09.hostedemail.com: domain of 3lC0faQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3lC0faQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763650966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vjdz1xBRiW5GN2fSky6bNaPjbqx1FljVmmCUSqbeWXE=;
-	b=uxkj0slXRcmBveQkJjWY3E5UFkiXCFnO8woWIWuUivrZCUW7pPEDdxYiHBiQVBrwgVX/uP
-	67TDYoVHrDRsCYMdF2yizH5UWK/oLwdxxlbi9Hhn0/vOFMvPpC2je9ALZXbeIeTZEFy02e
-	OEUN6+qORMQh2tGuB1eoSStuHUKGTZs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763650871; a=rsa-sha256;
-	cv=pass;
-	b=aPyQYU/Cv8H/UvobzTvbV4Coxw2NTvwhCaEzD00Jdr3jqoid5ZZXD4DzjRDl+BWaXvd7p3
-	RpkQeA8rMK8pO+RUX6bWmRi9wuEi8U9rNpb4l9KKduFRm/m/vfGpuOA+l20IVqSKF+aB/z
-	gZ87/PrC1cFnwOvzklxKkpAsxXMIHLs=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cJKK+qSi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.43 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RfDGJ5OHxKHz9vUtubf29cTWzzAqVphc8XAT/mgfapCKy1p1pjbvWffKAw4NHvRpQ69zRogRDx8xeGmXKfQ4ckDzgyKMWVyVv2AWS3/50aAZ7UR4r40FxutgUoouMZWiDrIo1YhtxcxIq/RLnw+ofOUw6vMfHvIkztFNI0UHZIt6DZ6ja+9lFVM900+qFU3H4yswsON4bQ/c+MKZkkOLGCDIhcHEfgb3alRMr2eLvPmtrCPjdFIeunoH7QlGczxtnJpSCqg1F95QvcR9sR5MpEt85yxr0YSEtnkGn8FGM8NpaviOlDGmA9FaiTABGKGJh1N3bGVO9T8lqowbShvk+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vjdz1xBRiW5GN2fSky6bNaPjbqx1FljVmmCUSqbeWXE=;
- b=yP/sV3NIiGnQiSFA/aOVBq2flN8i496yKAGeA3zRyzMcnViBfmMlz+iE7ImMeC9m9UYtbfGg8Sd2XGsso2kXsBypNTi6C4jkIX7d8xjDSA0JHeks0ku3TnEu66CRxs4MxNV7tfriTFHYRjJRtrjka1RolHUxrrhbwvCPR/iFJbzcb5uwpzhqL1wNIviX+2KWuR8x3NMGrhC+6GWC0MHhWyxr3MxKvpYqjmVifTdMa1CTP2bvoZ77nnMmpRFgfGCVRbBHplQ22L01GNxRSKVLPGIdGGlqW8Oh7UEIxKUamy2UWrR53igxgVVEts2groies+u4eTuDN4e0k0p3qZqOGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vjdz1xBRiW5GN2fSky6bNaPjbqx1FljVmmCUSqbeWXE=;
- b=cJKK+qSiQ1g6dmRcIxoZwfMcuYQiFoxPJIpxb/xgxDRNkORRJvHHS9NVQXDw/aIVmXJJsQDMKu2abfTXP+JY4x1y/RKKdDvK7m40o3oEGUJVM+2v+OeIZWzw+FocV2vJlAbOHY/HVSA/Gbc18WtKsWc9Je5DUgn1IK61nN4eO+3l5X+DHi8nrrhadNPiB+LPvGgvSpsK7i+jDuRrBAi1T9FYjtRbcWlt/0U5jFIHSfHpgltZPDRwN8J6F5nY6gT7V5+ZKc+22Nsx74j7+SH63hIJ44wsYO6xyyfwIeMWIPcL6sEaIpygujF6SKd9i4DqlV5MCq/HGqYXPnpWv5xRbQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH2PR12MB4119.namprd12.prod.outlook.com (2603:10b6:610:aa::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.11; Thu, 20 Nov 2025 15:00:58 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9343.011; Thu, 20 Nov 2025
- 15:00:58 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 3/3] mm/memory-failure: handle min_order_for_split()
- error code properly
-Date: Thu, 20 Nov 2025 10:00:55 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <86CBD3DE-2245-4C79-BDA3-4977548898E3@nvidia.com>
-In-Reply-To: <b7af446a-eb74-483f-8a88-d48266278f05@nvidia.com>
-References: <20251120035953.1115736-1-ziy@nvidia.com>
- <20251120035953.1115736-4-ziy@nvidia.com>
- <b7af446a-eb74-483f-8a88-d48266278f05@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MN2PR11CA0012.namprd11.prod.outlook.com
- (2603:10b6:208:23b::17) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH2PR12MB4119:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd56df45-a2e0-4e87-020a-08de28459caf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Nlgxb0hIRU1wQVA5eHVwOFpmeG9FUmVmdi9oQ2FnVGcwK3pyenk0eHo3TkZJ?=
- =?utf-8?B?ZEE0TzVTampSeUVQWTM1MGN1MXAvOW1mU0FtVy9kRis2cjdDYjZ0QkpVd3Ra?=
- =?utf-8?B?d1MzRWpPdmZUdndlV052d25OamFWTjB5d0puWXNEZTV3K0lsWFp2TjRFNjdD?=
- =?utf-8?B?TWVXQ2NMOTJzM0ppTEJweVlsWlFqSXpic1Q5V085VUppRFd2TjhEeUZDK2NP?=
- =?utf-8?B?dEhObHg2cmd3TkR1bUdLWDRWWU53S0xlYmVYTDlSWTMvNWxBVzI0VGhhakJz?=
- =?utf-8?B?eUdBM0RObkZsVWpCREFicXNZQTI1d3REYitNNW9BREJ0NHJmenZ3M1BnU0hN?=
- =?utf-8?B?bFNDRVhjOHRqU0RwK0V1NDR6YnRZazBGZnM4V3hyZFJCRXVTcVFKZFRBUmdn?=
- =?utf-8?B?VXNqaG9ka1kzd2N6U1hXZytFZElMUW5yemNLcWR5TlJDYzBCanRTVE03eExy?=
- =?utf-8?B?eDRmUUVLYzNKdzE3YWQyRlc3eW56NEdsVTVMaU5LMXZSR2htc3RzNW9iVE5N?=
- =?utf-8?B?b0dVRnllNS9nSktwZ1NEMGlZTG1TdmNHSzJpZ1o1eFJaTWhEVG5vNndvZVVK?=
- =?utf-8?B?a3NMUVhUd1MreG5QRDNUSFV1aGM2VlJSY0tORCs0ZzhUSzNXaXl2bEJLV2oy?=
- =?utf-8?B?cnBZblI1d1N5SEw5MndvYlNQb0NTQXg3SWZIeHQxY1B4enhybldWZENhTkRs?=
- =?utf-8?B?UTlOL2pBeDNaaCtneHk3MTFZNW5ISlVBU3E4MWczdDZlb0RIOFQxTjZEbmV0?=
- =?utf-8?B?ZGMxS0o0bWt6amhOZE9VOG9aNHVBRC9UYWpndDYxTHhxS0pYb2pPRHlhMVJ3?=
- =?utf-8?B?Z2NCTng4TE1qTkxlRm9tVGJ0UFVFWlNBQ0xnbk50TmplQ3lZV3Ewdi9lRjNI?=
- =?utf-8?B?c1E1dkxMdHd0SlNFcEI1SVdoUEg4UUZ0UTA2VzhLeHh0T3pFdFNFdFFjZ2V6?=
- =?utf-8?B?SG5aOHVxeTVnSEJhTzV0ODBETkZTL1ozaldocnVYUmN6L05GdnZKdGhscU9C?=
- =?utf-8?B?ZFRSdklGY2g1OVlqbnpzVzREQkJyWG9MLzMvTzZVRTV0U0RRY0NBSFZWVzJj?=
- =?utf-8?B?b1BPRW9wRlZyaXY1Q2I5TFppdDdpZTM2ZE84bHB4amh5QVUxU1pDNnZ5V0RQ?=
- =?utf-8?B?TFJjYUMrUDhKRW5mZ1JSaVEvSmlYSkZRbUt0SHpHcHNDTmkxTjlHTEdPUnBa?=
- =?utf-8?B?OGRZNXIreUJoVlNDc3l6YmNJb0VQaDF3YXhGNGtvcUxQcmZ3eis3cEhpWG1X?=
- =?utf-8?B?RXlrWEpqcjJZbHlqYmRTaFBMM1RQTERsYWt1VHduWXJEc0NwN2ZDQ09BeWFF?=
- =?utf-8?B?OVFPUCsyam95OTNHeU4ra0JVMkdiK0Q4NFExa3MvTEZ5bVhWaXFjK05PeW1Q?=
- =?utf-8?B?OUJ3cjFmR3BVYlNpTW1RUTcvR0R6Y2o0TTJNWFE2RFhrRFlHRncrWlF0K3k5?=
- =?utf-8?B?OTdGU3NNS2hPQ3pZN3JyNzlFUTR4VVYrcS8zcldsUTUwaHpBWkVZbGwxZ2Zr?=
- =?utf-8?B?c2VWU3JKRmJOckkyd1FhbGVMaklESXYwbkJyMndLVzI4a3FSQUxRUTY3QXpU?=
- =?utf-8?B?OUJPSkYxaUZIdUxyZmI3UjJNZDgzak9OcEIyeDFzZHU1MmNBNEVYUCtoSTZT?=
- =?utf-8?B?VmpJbTQwMk1mWkxLeVUyZEg4R1Z3ZU4vcnBwLytlTFJxeTZFcEVETCt0Znli?=
- =?utf-8?B?TlIySllUWXpSRE12Vlh5WFJKSjhGU0xhUkFLcXRpWEkwWnI5bVBCK1VaZE1i?=
- =?utf-8?B?MDdVN2FnQmt0NnlhOEtpMDY2cVJrYS8vN25OMWJFUU5LZzNkYUlZZ1FaYksw?=
- =?utf-8?B?QjUxVzJ0Ym9BRmhTSmkrN2haT2FNQnV2dURka1hweU4vcVcxL2o2d2tWS0U3?=
- =?utf-8?B?VXhTU0t1dUt6c1NqckRRMDY2QmllZHUyYkVkRTVtSEJoKzBnSEI1TjM0ZkFi?=
- =?utf-8?Q?uOYBUgMuQAeox7Rv2276sc1UF9KRDfBo?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGRxM08xeDlwUXBSWnZCUlJ3M21uZVJ4T0FMTTA1dkF1YTZVdDZrTElReUZT?=
- =?utf-8?B?aURkS1ZzaVZmMUdUY1ExR2xWcitoTU5zVktVd0Z4VklUYmdJVlYvUWl4UFRn?=
- =?utf-8?B?dC84YndMc3Zaa3VLdDU2TXNqcXFpWGxRSS9US3dDTkUycVAvTTFYRW1UQkF6?=
- =?utf-8?B?Vno4ZmdadStoeVMrbVVGN0p5SzJWRVBCR2tKcW5WZGtYSDJtaHIrL2k2RVdR?=
- =?utf-8?B?YUkyM1IrZExrTjBjQThGeG1NdEhNTGtsd01oWEtTNjcyMEcyRnZET29uNU81?=
- =?utf-8?B?M21GcVluOUVCUVFsR0dZREZGNHpHT1B3MHNLQm9HZXhNZERJV1hpRWFERXlF?=
- =?utf-8?B?TXl6N3pmQ1Y5Ri8zRHYyd2ZPeW1uVGNDQXV1UHJDeGlVenRTNmRkdTVFbkJW?=
- =?utf-8?B?ZEc3SXFMVnJLTnJaTGU1cEtIUkRYdjFuUnVqeUpERjVnck5RS1NQeVZMNHdw?=
- =?utf-8?B?T2liRTk2SDFReWZ5aEZtZklJSEFLOXR6LzFzVVJ0VzFoOVlwZFcrVVRxVUFZ?=
- =?utf-8?B?Wmd2UzduZm9XbUI5eTlPQU9zeGdZWjhOWWRRaVFZYTFmZkt4ckt2Wkk1c3Er?=
- =?utf-8?B?dHNVblZ4ZEdHa2FxTlRlLzU0bkc1WDhEYWo4WHRaQ1JLWnhDNkpEc2UrZEpU?=
- =?utf-8?B?WkVkNWpMSFF0WGp1Zk80ZGUxVXFLcDJqWnpqZjUrVllrVWhLM2w3TzBZUGpG?=
- =?utf-8?B?bGJaUW1tMzhmTGVPNVNSME9leGFBU3ZXbWVKL1JXTHoxWkovSU1BMkRjNVp5?=
- =?utf-8?B?dUVpTmNJeXY5SUxDSlRtNmtaMmx0ZVVCMW5UOUpjVlpJQXdzUThZbXZMLyt5?=
- =?utf-8?B?YWVXc2haRGVOQ2Z6MkJ4NU5Layt2SEFhbzlJZ2pYb1V3d2pia3kzbEFUbVUw?=
- =?utf-8?B?akNqa1ppaWFicWhJbW1ka0lQU2pIU0orZEo3QWtvWUM2M3d6SGlzTWdnNlo4?=
- =?utf-8?B?Vks2aVI3T0gybENLV0pIYTVyWUl3MUcyWjRuMVRiRmQ4c3JTTTNZVTBzZ0hv?=
- =?utf-8?B?eWRScFp1WlFwZmxLQ0lZdDJBc3ZVK0xhS2U4WGQ0bXBMbEJMamw3c0dCZ1c3?=
- =?utf-8?B?M2RwNFpZUlN2S2VTaXhqOXRlSUVQa0VHQXdzVkVWVjZOTDRheUZqZUkyeHVB?=
- =?utf-8?B?VEp3M2RSenJEQm55RGl4cmhtdURIVVlTT0g3WmRBZDdvMU9ZSmdlcUszTUxR?=
- =?utf-8?B?WE5FTkpKNmtEWWJTK2d1T3JUa3d2dnZubTFDamxVS0IxeHgyeTU4ajBxVTRi?=
- =?utf-8?B?TjB0WHVyc2VlMm1GQ09WWXFSTDUxMktpazBxMURNUG80b0JFSWQrSFZ0MGxw?=
- =?utf-8?B?SUlkblQ2RmwwZjFhbGgrTDAyOEFZRzhCQnBEbDUveWJjY0tVWFFKVFVOQW42?=
- =?utf-8?B?enNIcjdSNUc4SXkzRWJYNjNUVmRNZjE2emh2bE9SUkZNK2VVdU9WM2ZNUGhw?=
- =?utf-8?B?b2tjOFlWMlIwM1pQYlVuek0zRzdsZG9RT3ZaZ0VJMGtoaTdXT2x4Wk04R29w?=
- =?utf-8?B?M1BBd2ZwZGFoMnlPWEUrc2JwSHJiV2IxQjhkbCtrMUF5cC9pUGo2dHM3R1B6?=
- =?utf-8?B?MEdBZVJGN3pGaFZrdm83Y3J0YnREVVFndEhxYUNoUU1HdXhjTHllamhTeDJJ?=
- =?utf-8?B?b3dLWHE3M3lEcHRWL0NIMXR6eEo1d0dYMU56TnkyR202QjVUY1VJNG0vc2M3?=
- =?utf-8?B?V2Fxdyt2aUtadGhZS28yU3RkdkoxZjhjQnpmaTN4UFRQVXVDSFR5SkUvbWJS?=
- =?utf-8?B?c084a1FMb013OUxkcDkyT29ncERNWCsvYlh0bW04ZkNJZ1UzSERTSStRMGUr?=
- =?utf-8?B?V1kxTnIxK29KUW1XRHk5QjZnQVpOMW80S2NvSlVvQnlnSzVOUzRMOWZXOFo0?=
- =?utf-8?B?SWFqUVRZcFp5dGIvWnlzUVJWNHNHanZTSEJoRDlnMy9Fei9ZY2l3eUdvQ3dM?=
- =?utf-8?B?Vnk2MkNSRmgxekhJS0xUYXFPMkpia3h5bUp5aHlTNVowdmhzd25GUjBqbFlx?=
- =?utf-8?B?cmltYzdVa0gxWXd4bjAreVlBMm5Vc3RCRzZrUURnZEc4d2xnWVNUc2JRYmhW?=
- =?utf-8?B?NFd2UG1Lb2xJeUhnV05CZ0Z5Q2lkdlkyL1psUVBBY3NudnlkdFcrT01WWDVR?=
- =?utf-8?Q?z8KmBgt3FK0RmDSpaeSz/DSN/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd56df45-a2e0-4e87-020a-08de28459caf
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 15:00:58.0939
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jbWES2B7x3DVGzfcmEAOkTh65+OA5LYdRu5jkXdTHGJqi3rNUcYyaE2qoCAJe3tT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4119
-X-Rspamd-Server: rspam12
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=299yB9vU7jRjUKLu8+l/HXcvl5VmnE8Y+0izxahilbE=;
+	b=J4+ryD0tpXG7qMmTL1q+Iz9PHGvVJiNPw/zXz0FXKE9x/sgpj4nroY7bwNuaXG37vCRXkj
+	z+28aD56hBunBruEAXKc8TexpDbR2PE9efHJc2nJqkG2UioXv6oAI6rNnGjFsbaTeo10BA
+	S8rLP2rjHQ/FVNi7zE9fHszNVwsRtns=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4779b432aecso6031375e9.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:02:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763650965; x=1764255765; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=299yB9vU7jRjUKLu8+l/HXcvl5VmnE8Y+0izxahilbE=;
+        b=cag4H17/oltohs+g5uCYl3NMCIcF2ldIFvK1DZkp0fWFEitlYVJsDPEBZTNT3KmjMI
+         k8K75HLLTURwO1mU1IddqOdTU2JS8L2psq828DDZdZVte9ffoQYvzCK/qNJXzb0h9yQJ
+         1F87fxMmvNtvg5g/tnduS6mUyzz4qexvjzwIAP7q8IVGK6kSQ5avszb5JQPZcZCE7w8f
+         P/UZ2PdsW+PC8g+MdAIY/ydM+kdWDs1KUH+CgBw6IEYkd+S548fdMG60kcex1ZjQwqtQ
+         yF4H3/pB+5Ru/8Ya7a5Gv2zCgw3saslAJQGC06JihpTBXma5JkI1VpwEIfvSKBqV1Ijf
+         K9dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763650965; x=1764255765;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=299yB9vU7jRjUKLu8+l/HXcvl5VmnE8Y+0izxahilbE=;
+        b=pWnO7jJzECS7VORgjDZKLDokeLi9DuM1I5V/ASlBFuPlPy/hByXROwPG99iA/Xu94e
+         Q5Xka87oM+d3DktW9CGbhBDUPGujeLrVnsmO5J5j95v8h6m96xfk43b0eAWH7mCTrHxd
+         4g1MKA0OjX3UvmiaZuIAxTQvRPKEDXiJTeSCuROKg5IifI1Fjzh+IkNUSKDlkf+qXR9v
+         lY5oWq9Bmzc28PolWSe7LdepHw6tHEIKu9pxB3JtzF2PTpsS45QnPXpyOf5p5QQke3Uj
+         XYgE+op4ERgUPRqk5Gc+O05kjY34cAMobDxkjPYiHpdJwjrUtNJeMj+fYmBWAH4TEALW
+         qj4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVgqvs9hWW7AwNnR0F606BeRmWEPgcch8YzkqTTWsmoFauNTEqGN68aIEhNTLdvOqocPTrKnUzZhA==@kvack.org
+X-Gm-Message-State: AOJu0YyCwE0kPTqVf6vXBhSwbv7iQyokUj7Vld/sTOxl6SEbCfdBxqLT
+	dLaEgXsFFBoQ5Q6w7N2XQgCu+CqhPtLJr06riyRF4fiHZWUoQidUwljUoxmCydnbmEMQjAB1yBf
+	8bQ==
+X-Google-Smtp-Source: AGHT+IFyISfz3EA+x8by8TiaBc8rX6DJ8mSkbxNkvS0Q/9XVzJVRXjpX7J/DtmASShfXFKhrcCebAsbPag==
+X-Received: from wmbjj13.prod.google.com ([2002:a05:600c:6a0d:b0:477:9f68:c324])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:35c7:b0:46e:49fb:4776
+ with SMTP id 5b1f17b1804b1-477b8954523mr34852375e9.11.1763650964345; Thu, 20
+ Nov 2025 07:02:44 -0800 (PST)
+Date: Thu, 20 Nov 2025 15:49:02 +0100
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
+Message-ID: <20251120145835.3833031-2-elver@google.com>
+Subject: [PATCH v4 00/35] Compiler-Based Context- and Locking-Analysis
+From: Marco Elver <elver@google.com>
+To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
+	Chris Li <sparse@chrisli.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>, 
+	Christoph Hellwig <hch@lst.de>, Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
+	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Johannes Berg <johannes.berg@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Triplett <josh@joshtriplett.org>, Justin Stitt <justinstitt@google.com>, 
+	Kees Cook <kees@kernel.org>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7373EC0027
-X-Stat-Signature: 4zgfizgmeudryk8hycbhr6nn96gduc46
-X-HE-Tag: 1763650871-292088
-X-HE-Meta: U2FsdGVkX18/+TMhSjBQK1F2oJucX+TWBzcAJBS7WU7NDQvEH1lL5njsRIfAsXF5gF2guhkjiqJJW1Wc1NRU7TGnb9dbiFMQOPR2IV6rCRJnKGfu7rPQvFwM8/Iks0JonQ5qFHxRgivk0ga4bs/kjXYVF7leIzEKR+phG+HB7jJfG/3R4Sc9nvLl8FY6z1UcxzfJPue4qniaIjtqtPFXl869BNyb6LszpfPiaNxSkZcyan3mBlPK1/AMERerVea31Aq4uhv5Uevrs0ptsEshQ0T1MGUlAe/GYRMM6y56AzCsf4iO+OZePOIwwQOkEtEorG6KL9oNCWNn+LMiaSu9bBaxMWYUlJ3ghF8ctEAzXGJkuMRXggfDViBhNEl2DS1Os8E0CSBsNVL9hGcg7DvsxkZANvzCJ4dABil8vUCOK5+1Iw9bkasc5Q3O+xZuF9kSli18jy8hqCSWaK2z8fp3uq2IvnijMwizeu96fV4kBn4ShjKz84/sPTwJCo5tS5PSHPvismP7D2c/EeBn6cJORCz+lNyAO5PuybNPtL7/nFiTMf61izPVZVzLRJ5/ijx9zBHKGR7IC2nCeDxoAzoAfcHyV0Mi8yRgUKFYM9SLgsSnFHWHVJkrvgXpMVaJ39CzeYxe2BgTyrZ4H1YRwgxGXh9UxztNgySw+7852XpNiFA9BNRYTWJV6h++eutA9nDfSLmv08HTi88qi6Ma8zU+iE5hJtUGnxp7hIlstlA/5fXjw2GVZRkOialBe/23fBgwe1fzKRVMscocV4J1tY3Z7nPlpKkzVxIVpc1lHTjeCGJYEmNAcD+gt1/OSNnbTMM5tF95GWfTM6xauEPwcmxn0axyTKdbWzTLk2yKsIwVy3vNHqaYnC9qyTY3OVmAkLQ+P2nDKTSSUOxZy1NmCJ3RGSM0/4Zp9DbKKwO0XZGd90L4SfLgejNqaErbe08/OvUn6VRjjHCVzgwPb7OGOIm
- uwxoHfkE
- tzB2hHczrD4CqfJrOjeW7gcVkpNf9qw35ZKIynF/6wxBzrKcEsWUL812TLiCsYR0TWurQxFTObUR8ROEbmuWV5Q3E+DTl6Xp3KdnARVuj+RZlrObbJV2/SLTD/+KTXZFhk3sq0e/bd9VbNcdbVFTav/qOs8ErlhStBtlUfBD07F3XafHodu2FmIt42cboivn6DGWPprweNXnQOPZbFOUjGY0tVDKWZj6h3vKxWskPPveuNsEhdIJVIX7A4CrPHP/wXqqF3Kf4QVfLZ4GDPjTvMSm+uvHUWDSbhqOdx3m1xjvh76SJehSxTBYoUlhe1lJauQmpqQbq5k/qY02TScFMEmqOXEpcVS9HJw+Vz8CVz4chw6RG73ysrl7vscNp1KckrC4ph79kcUc5hYi/yQZgFt2D4OwqvzsvWz+fHUd8JoE4dsRXzVqvTJQguSrChIk3F2mCwU9WY8SvvfEt1ti91EAPsxKLhaDUnI43AWAuL1jCnGc/qIG0IV1slt/o4TPmEcL3dlClVPmwGrBEkeeFMfZkumUsDfUaO5KLiinkwr0DQBVdgWaRP/CHc/r0ZXKaRtCt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8A071140022
+X-Stat-Signature: dyu5mokicw38dzo4wmcc4srg6qsrakdg
+X-HE-Tag: 1763650966-309538
+X-HE-Meta: U2FsdGVkX19I+Hql4xD89Cwf5WwZheJn2ITzaIMk9Foyifp2E0+jHjR0exXwAVYt5L6bcjhR2pBIf6NYYCaVx/lfCVdwOV4NWmetU72GhNDhd94gYcVjfoybscwIb2FlQgGv1ONI6jmO5lv3zphFc9qjNG7FbqDJKC8zkYAfPVvaM09BDdbD9rKlu2v0bub8aqmCUnCx7zT0kmoOImccYtcE+GfP6VK02luPTkmg3al0lL/uRqYhm2pr/g+HpnxZ7psq5GaaeWV9/65XaFY7bLhlvUbfdbN+hExGamP8bu1xZ2F6g0Dv1UDmlNeUu6jo2E+VwbFS5maMxrZWbNHAHIFOINn1pCV0BntN14/6rRvU1+NWMPKkX8P7EZYd1QPx29how8j7FpHCbYSjzgOZ6R9Yac9tMlHdBwXE+HSnSQc2HxIqzDS7InYkxEnzF6oB0gf5RYIoclq+9F/y1O+T2ox8UEIcHPDQ00E2hJBdlaP7vo4RiTBV6GmUQvbHdL8M7Zbv441nyVRfMPNaReM5ilCIdVVjXLfQqhgIWvAaLhJmhuHRrcUVu4CEaCpXyt7+mckFE16IJ+6PAZAtxc93p0Zb1nKuaE+Fcr5K+evlGPm8q7u7kSkIRXzeau1g+Ii96+uOmdyOsRW59vKiAZGLiM41yQJabwTv2Lm7/+X8z6gGVWKWvb9lXTJI3K6NtN2lsrcvi7Q5MsBAstMinmVJocj7yi1IvYFKiwullAaYCPE4uTo0L+dVxuuwchwHHP+jQn0vmQ05k8jNXWgcV0ZJAN6GP+8JZYiqCNPF2SDaZ1/uDGElCCYKKLSYQOsZ6pVoxmb65hYGi2nSAUhZPDJ2OirREglzCN/Q2qrUD4sKxT/gaqfcaSJtREcoYNsZnevo+7NUwEipM2xJSSrcU9N4+/Y431th+M7EJHzLuuzYiti/IDc8SZ7ZfxPWF8eYs30xIlsX7NPz2841qcOhkTF
+ 6f8bU6ph
+ R+XVsNqnCzySVjiD4KQpwKLJNAKQF8ODQJCV9WfWdP4nub2H7rTvi4WYgeBDrl2qLoNkpV0nM+3vOx3PCW+DNeBPMbEgs2a9X5ObuYMXXakoZahFZ2nHdKCBNSfpNapTdHi+c8rEQGYuQ127bwHmopzJUuBef86ydahGzP+0M8KvwIepHvOFq4gRKrQrhaPL1KL9d6J2cckF74Y3Awm5yRo664SeMGEQYM2y3xOPsof0jRWiGo2j0YELgYicczVhfgR/v7htbSb4T2ooDr76+GPALHtmEHcQ7lFe1VbVhRBEaKJC/VGiWfrq2gYYoM0LnTvjbcwTOo/jC+MT1rPYgqONVKf+QNj7NAnIVhh8GXTXFVnyVEwaiaPrNBzw/Hj6JgDy8dQCxkFjNlBn3kKYuzBQXFjO57kTmOU6Ohdju95cM3zdKCCrypdLKGz9slP67RwLsfYTilY2Y1Mxzg/t5wmUbRySyB7DnEK5RCoNA0qZeGiS45MlK9A79YH8kSqlU3L/HPT8G9yESZrZt9s1PvWm+NWCTgmr8yf2ebFyhg2B0DaE+Vxiiue3aQx1wqZ3ch2505zadgUgWj36WMXBjLoHEoNkpLlI8RLd/A1EKZ5qvgHVMYHUlvTjQUuA6OzDAcdK3DP4gbEF4pQ5GEa+Ku+HBPUFfw6qnpSZ2bx03x/n7LKWNmqldBZn2NcE1Kflby5/lujB1pAM7OhnXaXheMk9VCC17rrtVE/StfDwNVJFrZJcFMwlT8YYLCLHrlkHqnQ7EUAzGjFHIsch16OKLZopTyXGy52ux3ezsLniN5xfGTPTOpUPjcGrHycPv9V0jeI9vOZ4yAlUYMlgNheTBqpNBGa8rh7Vfe6KQWGrhhtD0eO5ga8cdh0CcB0cqGVjiWki8z0+tXqwg01nxLru9c53A2gV/T5WrTJHAxFnZC6ZB3TGGc/T4ozcb5cHmtnR9P5hokgEtDEyOTKs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -207,68 +127,366 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19 Nov 2025, at 23:45, Balbir Singh wrote:
+Context Analysis is a language extension, which enables statically
+checking that required contexts are active (or inactive) by acquiring
+and releasing user-definable "context guards". An obvious application is
+lock-safety checking for the kernel's various synchronization primitives
+(each of which represents a "context guard"), and checking that locking
+rules are not violated.
 
-> On 11/20/25 14:59, Zi Yan wrote:
->> min_order_for_split() returns -EBUSY when the folio is truncated and cannot
->> be split. In commit 77008e1b2ef7 ("mm/huge_memory: do not change
->> split_huge_page*() target order silently"), memory_failure() does not
->> handle it and pass -EBUSY to try_to_split_thp_page() directly.
->> try_to_split_thp_page() returns -EINVAL since -EBUSY becomes 0xfffffff0 as
->> new_order is unsigned int in __folio_split() and this large new_order is
->> rejected as an invalid input. The code does not cause a bug.
->> soft_offline_in_use_page() also uses min_order_for_split() but it always
->> passes 0 as new_order for split.
->>
->> Handle it properly by checking min_order_for_split() return value and not
->> calling try_to_split_thp_page() if the value is negative. Add a comment
->> in soft_offline_in_use_page() to clarify the possible negative new_order
->> value.
->>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->>  mm/memory-failure.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index 7f908ad795ad..86582f030159 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -2437,8 +2437,11 @@ int memory_failure(unsigned long pfn, int flags)
->>  		 * or unhandlable page.  The refcount is bumped iff the
->>  		 * page is a valid handlable page.
->>  		 */
->> -		folio_set_has_hwpoisoned(folio);
->> -		err = try_to_split_thp_page(p, new_order, /* release= */ false);
->> +		if (new_order >= 0) {
->> +			folio_set_has_hwpoisoned(folio);
->
-> if new_order < 0, do we skip setting hwpoisioned bit on the folio?
+The feature requires Clang 22 (unreleased) or later. Clang originally
+called the feature "Thread Safety Analysis" [1]. This was later changed
+and the feature became more flexible, gaining the ability to define
+custom "capabilities". Its foundations can be found in "Capability
+Systems" [2], used to specify the permissibility of operations to depend
+on some "capability" being held (or not held).
 
-The bit should be set. Anyway, I am going to take David’s approach to
-change min_order_for_split().
+Because the feature is not just able to express "capabilities" related
+to synchronization primitives, and "capability" is already overloaded in
+the kernel, the naming chosen for the kernel departs from Clang's
+"Thread Safety" and "capability" nomenclature; we refer to the feature
+as "Context Analysis" to avoid confusion. The internal implementation
+still makes references to Clang's terminology in a few places, such as
+`-Wthread-safety` being the warning option that also still appears in
+diagnostic messages.
 
-Thanks.
+Additional details can be found in the added kernel-doc documentation.
+An LWN article covered v2 of the series: https://lwn.net/Articles/1012990/
 
->
->> +			err = try_to_split_thp_page(p, new_order, /* release= */ false);
->> +		} else
->> +			err = new_order;
->>  		/*
->>  		 * If splitting a folio to order-0 fails, kill the process.
->>  		 * Split the folio regardless to minimize unusable pages.
->> @@ -2779,6 +2782,7 @@ static int soft_offline_in_use_page(struct page *page)
->>  		/*
->>  		 * If new_order (target split order) is not 0, do not split the
->>  		 * folio at all to retain the still accessible large folio.
->> +		 * new_order can be -EBUSY, meaning the folio cannot be split.
->>  		 * NOTE: if minimizing the number of soft offline pages is
->>  		 * preferred, split it to non-zero new_order like it is done in
->>  		 * memory_failure().
->
-> Balbir
+ [1] https://clang.llvm.org/docs/ThreadSafetyAnalysis.html
+ [2] https://www.cs.cornell.edu/talc/papers/capabilities.pdf
 
+=== Development Approach ===
 
-Best Regards,
-Yan, Zi
+Prior art exists in the form of Sparse's Context Tracking. Locking
+annotations on functions already exist sparsely, so the concept of
+analyzing locking rules is not foreign to the kernel's codebase.
+
+However, Clang's analysis is more complete vs. Sparse's, with the
+typical trade-offs in static analysis: improved completeness is
+sacrificed for more possible false positives or additional annotations
+required by the programmer. Numerous options exist to disable or opt out
+certain code from analysis.
+
+This series initially aimed to retain compatibility with Sparse, which
+can provide tree-wide analysis of a subset of the context analysis
+introduced, but it was later decided to drop Sparse compatibility. For
+the most part, the new (and old) keywords used for annotations remain
+the same, and many of the pre-existing annotations remain valid.
+
+One big question is how to enable this feature, given we end up with a
+new dialect of C; two approaches have been considered:
+
+  A. Tree-wide all-or-nothing approach. This approach requires tree-wide
+     changes, adding annotations or selective opt-outs. Making more
+     primitives context-analysis aware increases churn where maintainers
+     are unfamiliar with the feature and the analysis is unable to deal
+     with complex code patterns as-is.
+
+Because we can't change the programming language (even if from one C
+dialect to another) of the kernel overnight, a different approach might
+cause less friction.
+
+  B. A selective, incremental, and much less intrusive approach.
+     Maintainers of subsystems opt in their modules or directories into
+     context analysis (via Makefile):
+
+       CONTEXT_ANALYSIS_foo.o := y	# foo.o only
+       CONTEXT_ANALYSIS := y  		# all TUs
+
+     Most (eventually all) synchronization primitives, and more
+     context guards including ones that track "irq disabled",
+     "preemption" disabled, etc. could be supported.
+
+The approach taken by this series is B. This ensures that only
+subsystems where maintainers are willing to deal with any warnings are
+opted-in. Introducing the feature can be done incrementally, without
+large tree-wide changes and adding numerous opt-outs and annotations to
+the majority of code.
+
+  Note: Bart Van Assche concurrently worked on enabling -Wthread-safety:
+  https://lore.kernel.org/all/20250206175114.1974171-1-bvanassche@acm.org/
+  Bart's work has shown what it might take to go with approach A
+  (tree-wide, restricted to 'mutex' usage). This has shown that the
+  analysis finds real issues when applied to enough subsystems!  We hope
+  this serves as motivation to eventually enable the analysis in as many
+  subsystems as possible, particularly subsystems that are not as easily
+  tested by CI systems and test robots.
+
+=== Initial Uses ===
+
+With this initial series, the following synchronization primitives are
+supported: `raw_spinlock_t`, `spinlock_t`, `rwlock_t`, `mutex`,
+`seqlock_t`, `bit_spinlock`, RCU, SRCU (`srcu_struct`), `rw_semaphore`,
+`local_lock_t`, `ww_mutex`.
+
+To demonstrate use of the feature on real kernel code, the series also
+enables context analysis for the following subsystems:
+
+	* kernel/kcov
+	* kernel/kcsan
+	* kernel/sched/
+	* lib/rhashtable
+	* lib/stackdepot
+	* mm/kfence
+	* security/tomoyo
+    	* crypto/
+
+The initial benefits are static detection of violations of locking
+rules. As more context guards are supported, we would see more static
+checking beyond what regular C can provide, all while remaining easy
+(and quick) to use via the Clang compiler.
+
+  Note: The kernel already provides dynamic analysis tools Lockdep and
+  KCSAN for lock-safety checking and data-race detection respectively.
+  Unlike those, Clang's context analysis is a compile-time static
+  analysis with no runtime impact. The static analysis complements
+  existing dynamic analysis tools, as it may catch some issues before
+  even getting into a running kernel, but is *not* a replacement for
+  whole-kernel testing with the dynamic analysis tools enabled!
+
+=== Appendix ===
+
+A Clang version that supports `-Wthread-safety-pointer` and the new
+alias-analysis of context-guard pointers is required (from this version
+onwards):
+
+	https://github.com/llvm/llvm-project/commit/7ccb5c08f0685d4787f12c3224a72f0650c5865e
+
+The minimum required release version will be Clang 22.
+
+This series is also available at this Git tree:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/melver/linux.git/log/?h=ctx-analysis/dev
+
+=== Changelog ===
+
+v4:
+
+  - Rename capability -> context analysis, per Linus's suggestion:
+    https://lore.kernel.org/all/CAHk-=wgd-Wcp0GpYaQnU7S9ci+FvFmaNw1gm75mzf0ZWdNLxvw@mail.gmail.com/
+
+  - Minor fixes.
+
+v3: https://lore.kernel.org/all/20250918140451.1289454-1-elver@google.com/
+
+  - Bump min. Clang version to 22+ (unreleased), which now supports:
+
+	* re-entrancy via __attribute__((reentrant_capability));
+	* basic form of capability alias analysis - which is the
+	  biggest improvement since v2.
+
+    This was the result of conclusions from this discussion:
+    https://lore.kernel.org/all/CANpmjNPquO=W1JAh1FNQb8pMQjgeZAKCPQUAd7qUg=5pjJ6x=Q@mail.gmail.com/
+
+  - Rename __asserts_cap/__assert_cap to __assumes_cap/__assume_cap.
+
+  - Switch to DECLARE_LOCK_GUARD_1_ATTRS().
+
+  - Add __acquire_ret and __acquire_shared_ret helper macros - can be
+    used to define function-like macros that return objects which
+    contains a held capabilities. Works now because of capability alias
+    analysis.
+
+  - Add capability_unsafe_alias() helper, where the analysis rightfully
+    points out we're doing strange things with aliases but we don't
+    care.
+
+  - Support multi-argument attributes.
+
+  - Enable for kernel/sched/{core,fair}.c, kernel/kcsan.
+  - Drop drivers/tty changes (revisit later).
+
+v2: https://lore.kernel.org/all/20250304092417.2873893-1-elver@google.com/
+
+  - Remove Sparse context tracking support - after the introduction of
+    Clang support, so that backports can skip removal of Sparse support.
+
+  - Remove __cond_lock() function-like helper.
+
+  - ww_mutex support.
+
+  - -Wthread-safety-addressof was reworked and committed in upstream
+    Clang as -Wthread-safety-pointer.
+
+  - Make __cond_acquires() and __cond_acquires_shared() take abstract
+    value, since compiler only cares about zero and non-zero.
+
+  - Rename __var_guarded_by to simply __guarded_by. Initially the idea
+    was to be explicit about if the variable itself or the pointed-to
+    data is guarded, but in the long-term, making this shorter might be
+    better.
+
+  - Likewise rename __ref_guarded_by to __pt_guarded_by.
+
+  - Introduce common header warning suppressions - this is a better
+    solution than guarding header inclusions with disable_ +
+    enable_capability_analysis(). Header suppressions are disabled when
+    selecting CONFIG_WARN_CAPABILITY_ANALYSIS_ALL=y. This bumps the
+    minimum Clang version required to 20+.
+
+  - Make the data_race() macro imply disabled capability analysis.
+    Writing capability_unsafe(data_race(..)) is unnecessarily verbose
+    and data_race() on its own already indicates something subtly unsafe
+    is happening.  This change was made after analysis of a finding in
+    security/tomoyo.
+
+  - Enable analysis in the following subsystems as additional examples
+    of larger subsystem. Where it was obvious, the __guarded_by
+    attribute was added to lock-guarded variables to improve coverage.
+
+    	* drivers/tty
+	* security/tomoyo
+    	* crypto/
+
+RFC v1: https://lore.kernel.org/lkml/20250206181711.1902989-1-elver@google.com
+
+Marco Elver (35):
+  compiler_types: Move lock checking attributes to
+    compiler-context-analysis.h
+  compiler-context-analysis: Add infrastructure for Context Analysis
+    with Clang
+  compiler-context-analysis: Add test stub
+  Documentation: Add documentation for Compiler-Based Context Analysis
+  checkpatch: Warn about context_unsafe() without comment
+  cleanup: Basic compatibility with context analysis
+  lockdep: Annotate lockdep assertions for context analysis
+  locking/rwlock, spinlock: Support Clang's context analysis
+  compiler-context-analysis: Change __cond_acquires to take return value
+  locking/mutex: Support Clang's context analysis
+  locking/seqlock: Support Clang's context analysis
+  bit_spinlock: Include missing <asm/processor.h>
+  bit_spinlock: Support Clang's context analysis
+  rcu: Support Clang's context analysis
+  srcu: Support Clang's context analysis
+  kref: Add context-analysis annotations
+  locking/rwsem: Support Clang's context analysis
+  locking/local_lock: Include missing headers
+  locking/local_lock: Support Clang's context analysis
+  locking/ww_mutex: Support Clang's context analysis
+  debugfs: Make debugfs_cancellation a context guard struct
+  compiler-context-analysis: Remove Sparse support
+  compiler-context-analysis: Remove __cond_lock() function-like helper
+  compiler-context-analysis: Introduce header suppressions
+  compiler: Let data_race() imply disabled context analysis
+  MAINTAINERS: Add entry for Context Analysis
+  kfence: Enable context analysis
+  kcov: Enable context analysis
+  kcsan: Enable context analysis
+  stackdepot: Enable context analysis
+  rhashtable: Enable context analysis
+  printk: Move locking annotation to printk.c
+  security/tomoyo: Enable context analysis
+  crypto: Enable context analysis
+  sched: Enable context analysis for core.c and fair.c
+
+ Documentation/dev-tools/context-analysis.rst  | 146 +++++
+ Documentation/dev-tools/index.rst             |   1 +
+ Documentation/dev-tools/sparse.rst            |  19 -
+ Documentation/mm/process_addrs.rst            |   6 +-
+ MAINTAINERS                                   |  11 +
+ Makefile                                      |   1 +
+ crypto/Makefile                               |   2 +
+ crypto/acompress.c                            |   6 +-
+ crypto/algapi.c                               |   2 +
+ crypto/api.c                                  |   1 +
+ crypto/crypto_engine.c                        |   2 +-
+ crypto/drbg.c                                 |   5 +
+ crypto/internal.h                             |   2 +-
+ crypto/proc.c                                 |   3 +
+ crypto/scompress.c                            |  24 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |   4 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |   6 +-
+ .../intel/iwlwifi/pcie/gen1_2/internal.h      |   5 +-
+ .../intel/iwlwifi/pcie/gen1_2/trans.c         |   4 +-
+ fs/dlm/lock.c                                 |   2 +-
+ include/crypto/internal/acompress.h           |   7 +-
+ include/crypto/internal/engine.h              |   2 +-
+ include/linux/bit_spinlock.h                  |  24 +-
+ include/linux/cleanup.h                       |  17 +
+ include/linux/compiler-context-analysis.h     | 429 +++++++++++++
+ include/linux/compiler.h                      |   2 +
+ include/linux/compiler_types.h                |  18 +-
+ include/linux/console.h                       |   4 +-
+ include/linux/debugfs.h                       |  12 +-
+ include/linux/kref.h                          |   2 +
+ include/linux/list_bl.h                       |   2 +
+ include/linux/local_lock.h                    |  45 +-
+ include/linux/local_lock_internal.h           |  73 ++-
+ include/linux/lockdep.h                       |  12 +-
+ include/linux/mm.h                            |  33 +-
+ include/linux/mutex.h                         |  35 +-
+ include/linux/mutex_types.h                   |   4 +-
+ include/linux/rcupdate.h                      |  90 +--
+ include/linux/refcount.h                      |   6 +-
+ include/linux/rhashtable.h                    |  14 +-
+ include/linux/rwlock.h                        |  22 +-
+ include/linux/rwlock_api_smp.h                |  43 +-
+ include/linux/rwlock_rt.h                     |  44 +-
+ include/linux/rwlock_types.h                  |  10 +-
+ include/linux/rwsem.h                         |  66 +-
+ include/linux/sched.h                         |   6 +-
+ include/linux/sched/signal.h                  |  16 +-
+ include/linux/sched/task.h                    |   5 +-
+ include/linux/sched/wake_q.h                  |   3 +
+ include/linux/seqlock.h                       |  24 +
+ include/linux/seqlock_types.h                 |   5 +-
+ include/linux/spinlock.h                      |  89 ++-
+ include/linux/spinlock_api_smp.h              |  34 +-
+ include/linux/spinlock_api_up.h               | 112 +++-
+ include/linux/spinlock_rt.h                   |  37 +-
+ include/linux/spinlock_types.h                |  10 +-
+ include/linux/spinlock_types_raw.h            |   5 +-
+ include/linux/srcu.h                          |  64 +-
+ include/linux/srcutiny.h                      |   4 +
+ include/linux/srcutree.h                      |   6 +-
+ include/linux/ww_mutex.h                      |  22 +-
+ kernel/Makefile                               |   2 +
+ kernel/kcov.c                                 |  36 +-
+ kernel/kcsan/Makefile                         |   2 +
+ kernel/kcsan/report.c                         |  11 +-
+ kernel/printk/printk.c                        |   2 +
+ kernel/sched/Makefile                         |   3 +
+ kernel/sched/core.c                           |  89 ++-
+ kernel/sched/fair.c                           |   9 +-
+ kernel/sched/sched.h                          | 110 +++-
+ kernel/signal.c                               |   4 +-
+ kernel/time/posix-timers.c                    |  13 +-
+ lib/Kconfig.debug                             |  44 ++
+ lib/Makefile                                  |   6 +
+ lib/dec_and_lock.c                            |   8 +-
+ lib/rhashtable.c                              |   5 +-
+ lib/stackdepot.c                              |  20 +-
+ lib/test_context-analysis.c                   | 596 ++++++++++++++++++
+ mm/kfence/Makefile                            |   2 +
+ mm/kfence/core.c                              |  20 +-
+ mm/kfence/kfence.h                            |  14 +-
+ mm/kfence/report.c                            |   4 +-
+ mm/memory.c                                   |   4 +-
+ mm/pgtable-generic.c                          |  19 +-
+ net/ipv4/tcp_sigpool.c                        |   2 +-
+ scripts/Makefile.context-analysis             |  11 +
+ scripts/Makefile.lib                          |  10 +
+ scripts/checkpatch.pl                         |   7 +
+ scripts/context-analysis-suppression.txt      |  33 +
+ security/tomoyo/Makefile                      |   2 +
+ security/tomoyo/common.c                      |  52 +-
+ security/tomoyo/common.h                      |  77 +--
+ security/tomoyo/domain.c                      |   1 +
+ security/tomoyo/environ.c                     |   1 +
+ security/tomoyo/file.c                        |   5 +
+ security/tomoyo/gc.c                          |  28 +-
+ security/tomoyo/mount.c                       |   2 +
+ security/tomoyo/network.c                     |   3 +
+ tools/include/linux/compiler_types.h          |   2 -
+ 99 files changed, 2377 insertions(+), 592 deletions(-)
+ create mode 100644 Documentation/dev-tools/context-analysis.rst
+ create mode 100644 include/linux/compiler-context-analysis.h
+ create mode 100644 lib/test_context-analysis.c
+ create mode 100644 scripts/Makefile.context-analysis
+ create mode 100644 scripts/context-analysis-suppression.txt
+
+-- 
+2.52.0.rc1.455.g30608eb744-goog
+
 
