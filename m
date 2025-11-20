@@ -4,127 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 825C0CF9C51
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:29:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C39E1CF9C7B
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A639B6B002C; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
+	id 0E2466B0027; Thu, 20 Nov 2025 12:43:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13EA6B002D; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
+	id 092D46B0032; Thu, 20 Nov 2025 12:43:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DBAF6B002F; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
+	id E9CA96B007B; Thu, 20 Nov 2025 12:43:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 782456B002C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:29:41 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAA011601E4
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:29:38 +0000 (UTC)
-X-FDA: 84131672436.05.5057D1B
-Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 43D40C0014
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:29:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com;
-	dmarc=pass (policy=none) header.from=xmission.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D5B4D6B0027
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:43:53 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2633E1A02B4
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:43:51 +0000 (UTC)
+X-FDA: 84131708262.04.15E2D18
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9A28240006
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:43:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Wtd1LUKz;
+	spf=pass (imf01.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763659776;
+	s=arc-20220608; t=1763660628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GCfJXPfqkRJSPRHzlR8tAMkwsl/MwNptOMMjaUHQYis=;
-	b=jE0sWX+nXjFZHXPRrdm3ZMVDiWkhZOq5x02Hhq7wNgQRqh97xhVvcNJaYv7IsqmH1LU1bq
-	fOHBJLXYMpurC75d43wSS+svu5TT6R0qdoEXE7AJP50pN4czWcBRnbhy36Y2eYRaK7FVEh
-	DdBJLF/6BhyJ7G6GZvX310xNTH94Rg8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763659776; a=rsa-sha256;
-	cv=none;
-	b=F5P1vkBagf0sHYiG1t/LnZD+uPev5S8v0UkCMSxvnFdcyrlNLRK36C3CK7njJn5j6i28+G
-	OCdSmwR5P7eYHXaMK4STmWvi9ek3UDg3kcOhynxxZT3Rxj7DBdBZPSyN4LUUMDbu3OkOAI
-	G5Tu+TyR/M4Ory8PcaAXcNlngC85ANg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h5K529+IW3mfatV8YWxaIFFBbWKaoKKreOwOQ6h6naM=;
+	b=PkMzXhWvcOr9UbgAz5YXjeYTkkbNoE0HPx9z8bpMYPT9srK649D+U43aNYzFBsOz9agusc
+	O7PWy2iEJ0Bxwr2qNA7s0WPCHXdB3mDBBF4mFKlYaI7sje2UEJVVopIfXYfggABd04vT3Y
+	WwSSd1ctPUj1SZtbyZOfPLOgEb88nYk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of ebiederm@xmission.com designates 166.70.13.232 as permitted sender) smtp.mailfrom=ebiederm@xmission.com;
-	dmarc=pass (policy=none) header.from=xmission.com
-Received: from in01.mta.xmission.com ([166.70.13.51]:36142)
-	by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1vM8TC-0080O5-W2; Thu, 20 Nov 2025 10:29:23 -0700
-Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:33708 helo=email.froward.int.ebiederm.org.xmission.com)
-	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1vM8TB-00Fz5d-R2; Thu, 20 Nov 2025 10:29:22 -0700
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Bernd Edlinger <bernd.edlinger@hotmail.de>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,  Alexey Dobriyan
- <adobriyan@gmail.com>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
- <kees@kernel.org>,  Andy Lutomirski <luto@amacapital.net>,  Will Drewry
- <wad@chromium.org>,  Christian Brauner <brauner@kernel.org>,  Andrew
- Morton <akpm@linux-foundation.org>,  Michal Hocko <mhocko@suse.com>,
-  Serge Hallyn <serge@hallyn.com>,  James Morris
- <jamorris@linux.microsoft.com>,  Randy Dunlap <rdunlap@infradead.org>,
-  Suren Baghdasaryan <surenb@google.com>,  Yafang Shao
- <laoar.shao@gmail.com>,  Helge Deller <deller@gmx.de>,  Adrian Reber
- <areber@redhat.com>,  Thomas Gleixner <tglx@linutronix.de>,  Jens Axboe
- <axboe@kernel.dk>,  Alexei Starovoitov <ast@kernel.org>,
-  "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
-  linux-security-module@vger.kernel.org,  tiozhang
- <tiozhang@didiglobal.com>,  Luis Chamberlain <mcgrof@kernel.org>,  "Paulo
- Alcantara (SUSE)" <pc@manguebit.com>,  Sergey Senozhatsky
- <senozhatsky@chromium.org>,  Frederic Weisbecker <frederic@kernel.org>,
-  YueHaibing <yuehaibing@huawei.com>,  Paul Moore <paul@paul-moore.com>,
-  Aleksa Sarai <cyphar@cyphar.com>,  Stefan Roesch <shr@devkernel.io>,
-  Chao Yu <chao@kernel.org>,  xu xin <xu.xin16@zte.com.cn>,  Jeff Layton
- <jlayton@kernel.org>,  Jan Kara <jack@suse.cz>,  David Hildenbrand
- <david@redhat.com>,  Dave Chinner <dchinner@redhat.com>,  Shuah Khan
- <shuah@kernel.org>,  Elena Reshetova <elena.reshetova@intel.com>,  David
- Windsor <dwindsor@gmail.com>,  Mateusz Guzik <mjguzik@gmail.com>,  Ard
- Biesheuvel <ardb@kernel.org>,  "Joel Fernandes (Google)"
- <joel@joelfernandes.org>,  "Matthew Wilcox (Oracle)"
- <willy@infradead.org>,  Hans Liljestrand <ishkamiel@gmail.com>,  Penglei
- Jiang <superman.xpt@gmail.com>,  Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>,  Adrian Ratiu <adrian.ratiu@collabora.com>,
-  Ingo Molnar <mingo@kernel.org>,  "Peter Zijlstra (Intel)"
- <peterz@infradead.org>,  Cyrill Gorcunov <gorcunov@gmail.com>,  Eric
- Dumazet <edumazet@google.com>
-In-Reply-To: <87tsyozqdu.fsf@email.froward.int.ebiederm.org> (Eric
-	W. Biederman's message of "Thu, 20 Nov 2025 09:15:57 -0600")
-References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
-	<AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
-	<AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	<AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	<AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	<AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
-	<GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-	<GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-	<GV2PPF74270EBEEE807D016A79FE7A2F463E4D6A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-	<87tsyozqdu.fsf@email.froward.int.ebiederm.org>
-Date: Thu, 20 Nov 2025 11:29:14 -0600
-Message-ID: <87wm3ky5n9.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Wtd1LUKz;
+	spf=pass (imf01.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763660628; a=rsa-sha256;
+	cv=none;
+	b=Iav5qKg3SCfjQQnv3OVyRrH564za3Lj8bWTn2movfLt3vEx+czOtUKjGsev8NwQlqyCNzZ
+	5rsPFW0wXtoCg06chS/EXKRbtmRdGrMJunrv1SeuGWqvm4rblZ2PswNFtFTpxSBd3Ey4Fi
+	CKepeIjVnQU2AC0CbPoQjh3pPga7Vms=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763660627;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h5K529+IW3mfatV8YWxaIFFBbWKaoKKreOwOQ6h6naM=;
+	b=Wtd1LUKzSjHle8XADzKy3FNIb+Wa/zXtxcQ4YoEMpq9Bprn7UXyhZN/ViNttQbyDtxtLyn
+	95ALb2h5fIn+C5WIj5aCXI1qIbwt51cW0+X8rc4MmDIqm08d4nnIVgjOmu8LMnvD39ZxWd
+	9ustJRyIXkWj2m+8kcf056Qr07cTCAU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-364-hLSfgbIcM3aaD3FmqhaELQ-1; Thu, 20 Nov 2025 12:43:46 -0500
+X-MC-Unique: hLSfgbIcM3aaD3FmqhaELQ-1
+X-Mimecast-MFC-AGG-ID: hLSfgbIcM3aaD3FmqhaELQ_1763660625
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4779c35a66bso8484895e9.2
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 09:43:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763660625; x=1764265425;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h5K529+IW3mfatV8YWxaIFFBbWKaoKKreOwOQ6h6naM=;
+        b=Sw4G+EAiQuszBkiqrLOigMkoBWDk9GmKBsp3sYTuL4EW5EX/HVmBiprnPzrtLoVphv
+         jZv3GKbXjm6XW/YldH4lHUD48PYEChOldyuR7u6kId2Mmu+w4I1L6fVyZA9PIy45Dkii
+         CH5xOymH6B7WLydsrw3phT4PXXH4eI9naTR/aYNEPope4u+QPysTAFErw74Wlr+oqozJ
+         a7KVbUFPJ7i82lEtL7uX/g5xVc9A6ik6xwAp+MEVuJjsYMt6cUnQTJilAT15U3XaMWHG
+         CtjTqzDQXOApBccze64YzW8WEvu0F9rIPcMK+UTp3/vDVix1+dNiF+gwEkVDh/94PmT8
+         Tfig==
+X-Forwarded-Encrypted: i=1; AJvYcCWbRS8+/Ezq02ZFUyiTXoLyOGycUmDfpO7a/drxldNqM4E+vGxRjIG8AMIQnIbXCQxIELlt9OBDxA==@kvack.org
+X-Gm-Message-State: AOJu0YzJwQYA5EU2VoNmTmv2PsAhFtsMoyoa+S7Aej4eLr3v6Ap6s4GA
+	bkuCK4EH98HfTulQfOAZ5Om+ygOVsTr6ZzJePTSCLsRWUylA9aXxZv5/T3P83kZI7iVcVhJqx6d
+	hnVVecHOK2xpjKf5IJbW8Qd1LpGY4D6p4LAyH5qjCXfmkFh3GwOw=
+X-Gm-Gg: ASbGncsnP9e/1wQbORwx8l7O3FyzzZOJVDj/oIEBbbVgArCDT7jk+viXQkI9PTD5Z+W
+	aRVldkZDJKm40iOAGiq4eGOaPjeJ8r0PymMarG4HnnkXXj2SXw+SrsixhBRYbgzAM7/UO/BWj/9
+	HRG3mVq0Mq6dPBpvVEnWd3Jc78V+LUjz+iI1cUPR4MXOcbwvwElRGyce1VVWubPKW1JYrDpsw3u
+	eVZ4UFCwTNgR1vZ5MQpSQoDhbeAXcN9TjIVZ3xTpmrikWKpeFD8aSO66iI8JtmcUgjzqUM5OVeb
+	JtKnJYb9K1qgHB1o4EXXqYtZ7aU+yMy6LBxuEUBJ162lLLtIe30REzGSmTEKp5QkfG4ucFUPYu6
+	QsqkYkSTV06fMff9SApCA/0z3zf/X+hl7CmE=
+X-Received: by 2002:a05:600c:3504:b0:477:9e8f:dae8 with SMTP id 5b1f17b1804b1-477b835b953mr41784925e9.0.1763660625158;
+        Thu, 20 Nov 2025 09:43:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEdAlOF06qo3jtRC/aQhNuMM6LcKWoAE2dGW+pEN1nNpje9HxRmH/mDX+HF51rEmo8eT5UOvg==
+X-Received: by 2002:a05:600c:3504:b0:477:9e8f:dae8 with SMTP id 5b1f17b1804b1-477b835b953mr41784645e9.0.1763660624633;
+        Thu, 20 Nov 2025 09:43:44 -0800 (PST)
+Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf1df392sm1633645e9.1.2025.11.20.09.43.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Nov 2025 09:43:44 -0800 (PST)
+Message-ID: <a6d4dff5-15be-48e3-9bb8-00bb44dc5584@redhat.com>
+Date: Thu, 20 Nov 2025 19:43:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1vM8TB-00Fz5d-R2;;;mid=<87wm3ky5n9.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX18WRCiEc86RNupml3aU1I9F5t8x9s6oRjc=
-Subject: Re: [PATCH v18] exec: Fix dead-lock in de_thread with ptrace_attach
-X-SA-Exim-Connect-IP: 166.70.13.51
-X-SA-Exim-Rcpt-To: too long (recipient list exceeded maximum allowed size of 512 bytes)
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-SA-Exim-Scanned: No (on out02.mta.xmission.com); SAEximRunCond expanded to false
-X-Rspamd-Server: rspam12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fixup: mm/migrate_device: handle partially mapped folios
+ during
+To: Matthew Brost <matthew.brost@intel.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Ralph Campbell <rcampbell@nvidia.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Balbir Singh <balbirs@nvidia.com>
+References: <20251120170515.46504-1-matthew.brost@intel.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20251120170515.46504-1-matthew.brost@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: c7tJQZSsQddfJ2Hx7i9Ll6eKwXrwLYwjKPKtfp38Wy4_1763660625
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9A28240006
+X-Stat-Signature: 5bnonti7njawonn75z59czmsustm3d35
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 43D40C0014
-X-Stat-Signature: bj7ccfrwtx3g3t4csu6pbaujbzkq7yqc
-X-HE-Tag: 1763659776-607643
-X-HE-Meta: U2FsdGVkX19iku3dLGMtZCv6Dcjdnab0xOLVPWO4K4aIfzJlUP07rqjLnH/6FaqmBv7ODrvBmt5IcaZ0I7SM4RBJrKQaJh3e+sffFqjR8t0xTB5fql7J4j8LA6veCWxisWOiQUrD0b2Eq5jhuovZROcZFdLC6EFSuJTDUe7WKoh5aS8FjMxDehUM9ReHnDz6G+/z7Ywj1Jf08bSAFYxTMKmVYjwHC/WGbqYSRJCTzqTS7bBL69xg5xHQk5k5RlDJY7YLwqYR1dmzOQuvZQ+ZkNmjzFiJqjmHb/NGGALb48kuucbAwFPHOoms8zxW+MUjzVlj8WSXwCf6+RwMii/2GDgawiI/dpQNOgzN2Kz9e7U1PgJDuvJ3aK10cEE7Rif5QHQOGTbSVtKCXC6d2U20JrJqJsyMkzkT9LmI7SZxrEj6IJEyG/hvsFl2u8dVPR9Y5szZEIQ6ppngLEOqQaB9QvOr1wT78rCz3+Ba3RK6V52JaVqPDyr/1sW2X4q498DzZyVbShPxh/3Ndc5NCgySZM4jO3uyOaOjR8NqQElZl7BVPXBviPvsvs+lBTicjG0spaw+LcdoWFvOhKR1kxjIey1COw4ZsaHbwT2bc/LZ4yqj5+9ws/zWTq7V6kddzMyMY8Q+8kohv+UM5sftukb7gPsd5lgwRad1APpWPo3QMFmxWAdUxa3FjZkCFouPjFGN+5/zsQF7KA1ufuVLfCuLzPsGmBu6CVdrUs6Xmhejk2kyY4AQkApyuuw1KxI4ihRbCnV+kWqAgXsJFSUwhL5gOQLObSiKgREIJ0SQmeOBGvgWM3D1+EogGd8QpRchfLiUax494syXaLUK+zA/FTWNHHnZxFFCvbnbuUZ2yMaRdcBEIzMhZ9BoWSX/WOcOeryWXdySoYpk8J6qAOXZt+u8GBmQ6WGTd3hnXxabqKGgGdRYSdxlByHj2nc/XFGL9aUklnU3zcSbdfVYdvJH45w
- iS/bK3K7
- wUuiOdpYhsmk30myTyr8aaPc7DozyOpVTyz8YQMsAuZ/7hoCo14XZbvktPa5jLWwK71hRID4kHQzd90z5E6DdI2f8UaG0XzVsj9cS+yEpSX+twTHjN49cCHB58Sn5eVtL21aB0kq80MrDqmKSvupTCUp5vrH6pRE9MnGjqnnl+pBtzhH9yzZjmqZepqsUtmll6/ofcsscjY5EWF+fcyGNpUkDShBRm48GKyz8pGuf2mMPL1s=
+X-HE-Tag: 1763660628-263708
+X-HE-Meta: U2FsdGVkX1/RZj2E7JjSEE6BDW2KGgKCvUfFJs4wy3X+Oynf7rf1nuMzgbsM3d/vSQh2hMi39ACtoocr+ADyokJqXNiLQc/IyuYzQssLStCz7GCiY+mmSL4ADA6RDGzqgUw/af8Ar05kG7e/qn485eUSacZLevLPTHRISkIIZpR7aMaKXGfPrSa2LRkTy6Yo0M+svrPb1c22TSTjB6DU48hz1mJMcXOCuwzkG5laeJSjYK/6AXckosRsvtsTfh0QSQEhmL4ch0DytIl6uGIoyuSOM6FNnOirisds6yK8XQZSLioXxUCs7BkgtYdmB3c2MQMFM05s2UEAfdVdP1j8Y4SrKjUEqksB4J7ShAvGp2RYeoGq8mAIkxSfybFF7FVf86mreisR9VLSBTJ8E01FwsCCHlr7biej/PJjxy7keRL5mBaLtAzEkDmSUB4WG5NdgwlzPpZOIfv46C25BOEohEmEREr7cVsHCSCfsbOaDAfhIwuVcOyuLPs4v/mB91ayCpaSf0UvYFPPo0ewB/ZVFOkE4fpGXI5rYKuUGqDSNKk+Mx6Nzddkf2tapPGp0AUGyYeFO19ZEmJFIHdk3ykC2QqwJcxv/n0ljsjcHHJsRn55RJlPJcLbhe8HZPdXSOcTfdseS8OSm1sJZJJ9eqZPur9WKd3XdOtE7Cl8h3qE6LdNoCTUMdHpmH4APzt001NQR+8bOqTZgce+Yj7oMBYpLMCh71p4jcRZ5NX0Z8FFd5wOBKLxf0nR5uBP5LLfufJdcWu8sVde7zCjTPE1SEH2bSA9XW7K9Xm6gClI2cd8tUm/chBp7jR1dK5MG3CnL9nR3A/SyWx6X//z50BA4Nc0m9BOA7jcfXFDyzSyUX3EokOiEqxyFA/HgcosZe6vXUw+WyM5j4LBtc7JVosto+eTFdeJDaYEf9lqyfi84K+h1Cw++0DHMWrlLN7mFR54MlayjtXORs2XcDgu+jMSvqF
+ 2Zc2KrDw
+ sAN+OhJBdfmNvZvLm7jya9P5bs/T506XhitBQ50xBF2cyuDshjgSrPVaOdklKtocK4wK5hTGos/3U4BMo78s2J80sJFT7cC9TGcYyVoZQ38ouDSUlH2P3XZ7WZJvuyDirotFTkEjBT5wAb7XH3wVlMf8+qr4VktNhBOaV0vf83e6GmmLYJn8TXljvZT9hEUoyTxR2hhCaToCQIX9uK2eByOxzSZs+CfZqxnb1jS8RFcxSsypEz8uuX4QyYuV63bRoMF/mGz13zBf2rUfJFCFwGnAnoRlu4AIYq/Zf/Asw9oYqc+//TbVHknwbHVXg7tCZMnl8SfZrV1Yi8/FwKVGGK9lBQiOaCSbucjSTghgKg0o5A8Z6peEJ+SUgR/A7gtTjrrBMpTJiIMTcQqvQf5tFFWlZmd4icXmXcZZst6gL7KLJLBcv4S+xA0vUqWG1/UFl10FJTeMnEptZL0/P6DSOwTCg75wX+vN3iJf2MK6OLmXMON0u3KgFfAQktPb1M9oMwkExP6JOcONHKR1kJEUjxEfC7joEpjnzpkjC5UkT4CYeQ/kU1qXeOyhCIMf4QfTfaMIk/ZaALYGWDBXReSLW3g0e+OLUCCWvQdGo6ZHt8JrdZGGQTX5SG4tPWgePT1DJwvmyERkTL6TVFBVkkFGuArVPUoNzrXHu6UEC5LOs1xVTFByh+c3GayFNXRrBiuxUtItq3389KnpBIvnTRhct+DSQAOatgyntwtu6zS3kQrp/SdviWG3uhcJZj6Yax+vbRc3tTnfAcCc3RlUGb4YQEZ/QaC9e3/1sTt+JrZhEfq0BplY63SikSY/x6ky+kumj5p66392mp1p/HcD24o4ZJCxEMGn1ORxsTmlmDnJ4Mi+RsGN3g875nmcBOOyAPNL68w1sVmR9Pm2/oXI4TFKNHmsMLlwRPAKHr0cK4rWdON8RTsAoqEJZpUYtDm06bs11uJDR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,62 +148,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Eric W. Biederman" <ebiederm@xmission.com> writes:
+Hi,
 
-> Bernd Edlinger <bernd.edlinger@hotmail.de> writes:
+On 11/20/25 19:05, Matthew Brost wrote:
+
+> Splitting a partially mapped folio caused a regression in the Intel Xe
+> SVM test suite in the mremap section, resulting in the following stack
+> trace:
 >
->> This introduces signal->exec_bprm, which is used to
->> fix the case when at least one of the sibling threads
->> is traced, and therefore the trace process may dead-lock
->> in ptrace_attach, but de_thread will need to wait for the
->> tracer to continue execution.
+>  NFO: task kworker/u65:2:1642 blocked for more than 30 seconds.
+> [  212.624286]       Tainted: G S      W           6.18.0-rc6-xe+ #1719
+> [  212.638288] Workqueue: xe_page_fault_work_queue xe_pagefault_queue_work [xe]
+> [  212.638323] Call Trace:
+> [  212.638324]  <TASK>
+> [  212.638325]  __schedule+0x4b0/0x990
+> [  212.638330]  schedule+0x22/0xd0
+> [  212.638331]  io_schedule+0x41/0x60
+> [  212.638333]  migration_entry_wait_on_locked+0x1d8/0x2d0
+> [  212.638336]  ? __pfx_wake_page_function+0x10/0x10
+> [  212.638339]  migration_entry_wait+0xd2/0xe0
+> [  212.638341]  hmm_vma_walk_pmd+0x7c9/0x8d0
+> [  212.638343]  walk_pgd_range+0x51d/0xa40
+> [  212.638345]  __walk_page_range+0x75/0x1e0
+> [  212.638347]  walk_page_range_mm+0x138/0x1f0
+> [  212.638349]  hmm_range_fault+0x59/0xa0
+> [  212.638351]  drm_gpusvm_get_pages+0x194/0x7b0 [drm_gpusvm_helper]
+> [  212.638354]  drm_gpusvm_range_get_pages+0x2d/0x40 [drm_gpusvm_helper]
+> [  212.638355]  __xe_svm_handle_pagefault+0x259/0x900 [xe]
+> [  212.638375]  ? update_load_avg+0x7f/0x6c0
+> [  212.638377]  ? update_curr+0x13d/0x170
+> [  212.638379]  xe_svm_handle_pagefault+0x37/0x90 [xe]
+> [  212.638396]  xe_pagefault_queue_work+0x2da/0x3c0 [xe]
+> [  212.638420]  process_one_work+0x16e/0x2e0
+> [  212.638422]  worker_thread+0x284/0x410
+> [  212.638423]  ? __pfx_worker_thread+0x10/0x10
+> [  212.638425]  kthread+0xec/0x210
+> [  212.638427]  ? __pfx_kthread+0x10/0x10
+> [  212.638428]  ? __pfx_kthread+0x10/0x10
+> [  212.638430]  ret_from_fork+0xbd/0x100
+> [  212.638433]  ? __pfx_kthread+0x10/0x10
+> [  212.638434]  ret_from_fork_asm+0x1a/0x30
+> [  212.638436]  </TASK>
 >
-> A small quibble it isn't a dead lock.  It isn't even really a live lock,
-> as it is possible to SIGKILL our way out.
+> The issue appears to be that migration PTEs are not properly removed
+> after a split.
 >
-> Thinking about this there is a really silly and simple way we can deal
-> with this situation for PTRACE_ATTACH.  We can send SIGSTOP and wait for
-> the thread to stop before doing anything with cred_guard_mutex.
+> This change refactors the code to perform the split in a slightly
+> different manner while retaining the original patch’s intent. With this
+> update, the Intel Xe SVM test suite fully passes.
 >
-> PTRACE_ATTACH already implies sending SIGSTOP so as long as we have
-> enough permissions to send SIGSTOP I don't see that being a problem.
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Mika Penttilä <mpenttil@redhat.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 >
-> The worst case I can see is that we get a case where we stop the
-> process, the permission check fails under cred_guard_mutex and
-> and ptrace attach has fails and has to send SIGCONT to undo it's
-> premature SIGSTOP.  That might almost be visible, but it would still
-> be legitimate because we can still check that we have permission to
-> send SIGSTOP.
+> ---
+> This fixup should be squashed into the patch "mm/migrate_device: handle
+> partially mapped folios during" in mm/mm-unstable
+>
+> I replaced the original patch with a local patch I authored a while back
+> that solves the same problem but uses a different code structure. The
+> failing test case—only available on an Xe driver—passes with this patch.
+> I can attempt to fix up the original patch within its structure if
+> that’s preferred.
+> ---
+>  mm/migrate_device.c | 42 ++++++++++++++++++++++++------------------
+>  1 file changed, 24 insertions(+), 18 deletions(-)
+>
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index fa42d2ebd024..69e88f4a2563 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -254,6 +254,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  	spinlock_t *ptl;
+>  	struct folio *fault_folio = migrate->fault_page ?
+>  		page_folio(migrate->fault_page) : NULL;
+> +	struct folio *split_folio = NULL;
+>  	pte_t *ptep;
+>  
+>  again:
+> @@ -266,10 +267,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  			return 0;
+>  	}
+>  
+> -	ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+> +	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
+>  	if (!ptep)
+>  		goto again;
+>  	arch_enter_lazy_mmu_mode();
+> +	ptep += (addr - start) / PAGE_SIZE;
+>  
+>  	for (; addr < end; addr += PAGE_SIZE, ptep++) {
+>  		struct dev_pagemap *pgmap;
+> @@ -347,22 +349,6 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  					pgmap->owner != migrate->pgmap_owner)
+>  					goto next;
+>  			}
+> -			folio = page ? page_folio(page) : NULL;
+> -			if (folio && folio_test_large(folio)) {
+> -				int ret;
+> -
+> -				pte_unmap_unlock(ptep, ptl);
+> -				ret = migrate_vma_split_folio(folio,
+> -							  migrate->fault_page);
+> -
+> -				if (ret) {
+> -					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+> -					goto next;
+> -				}
+> -
+> -				addr = start;
+> -				goto again;
+> -			}
+>  			mpfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
+>  			mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
+>  		}
+> @@ -400,6 +386,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  			bool anon_exclusive;
+>  			pte_t swp_pte;
+>  
+> +			if (folio_order(folio)) {
+> +				split_folio = folio;
+> +				goto split;
+> +			}
+> +
+>  			flush_cache_page(vma, addr, pte_pfn(pte));
+>  			anon_exclusive = folio_test_anon(folio) &&
+>  					  PageAnonExclusive(page);
+> @@ -478,8 +469,23 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  	if (unmapped)
+>  		flush_tlb_range(walk->vma, start, end);
+>  
+> +split:
+>  	arch_leave_lazy_mmu_mode();
+> -	pte_unmap_unlock(ptep - 1, ptl);
+> +	pte_unmap_unlock(ptep - 1 + !!split_folio, ptl);
+> +
+> +	if (split_folio) {
+> +		int ret;
+> +
+> +		ret = split_folio(split_folio);
+> +		if (fault_folio != split_folio)
+> +			folio_unlock(split_folio);
 
-Bah no I am full of it.
+I think wrong folio is left locked in case of fault_folio != NULL. Look how
+migrate_vma_split_folio() handles it.
 
-The challenging behavior is in the semantics of the kernel operations.
-We need to describe it as such please.
+> +		folio_put(split_folio);
+> +		if (ret)
+> +			return migrate_vma_collect_skip(addr, end, walk);
+> +
+> +		split_folio = NULL;
+> +		goto again;
+> +	}
+>  
+>  	return 0;
+>  }
 
-It is the same class of problem as a single threaded process calls exec
-with a pipe attached to both stdin and stdout of the new process.
+How is this making a difference, I suppose it's only the 
+migrate_vma_collect_skip() after failed split? 
+Why are you just removing the other migrate_vma_split_folio() call? 
 
-For the stdin and stdout we can say just use pull and nonblocking I/O.
+--Mika
 
-The problem is that both PTRACE_ATTACH and PTRACE_SEIZE block over
-the duration of exec, and if exec is waiting for a thread to exit,
-and that thread is blocked in PTRACE_EVENT_EXIT waiting for that very
-same tracer those processes will hang. Not deadlock.
-
-
-I haven't seen anyone clearly describe the problem lately so I am
-repeating it.
-
-
-Just looking at the code I don't think there is any fundamental reason
-to call commit_creds after de_thread.  If we can change that we can sort
-this out without any change in userspace semantics.
-
-If we can't move commit_creds we have to either give
-PTRACE_ATTACH/PTRACE_SEIZE a non-block mode, or break out of
-PTRACE_EVENT_EXIT in de_thread.
-
-I will post a proof of concept of moving commit_creds in just a minute.
-
-Eric
 
