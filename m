@@ -4,91 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F25FCF8875
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:56:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C536FCF8875
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 15:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79BF56B0005; Thu, 20 Nov 2025 10:56:25 -0500 (EST)
+	id 26FBF6B00D3; Thu, 20 Nov 2025 10:58:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7734B6B00C7; Thu, 20 Nov 2025 10:56:25 -0500 (EST)
+	id 21F4C6B00D5; Thu, 20 Nov 2025 10:58:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 662AF6B000E; Thu, 20 Nov 2025 10:56:25 -0500 (EST)
+	id 10EAC6B00D8; Thu, 20 Nov 2025 10:58:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 458E96B00C7
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:56:25 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E733456D4E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:56:24 +0000 (UTC)
-X-FDA: 84131437488.11.807E489
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 38706C0018
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:56:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=j20qsWKK;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F3A376B00D3
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 10:58:19 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B07341601D1
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:58:19 +0000 (UTC)
+X-FDA: 84131442318.21.1ABEC73
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BB2531C0010
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 15:58:17 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QBOEnjjR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=bgeffon@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763654297; a=rsa-sha256;
+	cv=none;
+	b=dgkTve7H4NjFfo8nfclOV+ov6MSaoZk+BwhRBBYH9z5HhU8FXRSl9OehnIfAo4IIQY9pA5
+	/a/EjIU8E8XGW694z7rZ/Id3MRoBNIFnT+uIMGq1D2C/H4zvQaYeyuhGYvH1lgCM2ILLrm
+	5NXc8Zz40M6gIzd2NovPEoBteesDDys=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QBOEnjjR;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=bgeffon@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763654183;
+	s=arc-20220608; t=1763654297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qWw+s1u+JKSjcVDup8Ep0QD6BVAJJH/Usa3pNaN1aN0=;
-	b=SqEsa6liuESvb0m1PpH479Zqcg7IgscOip0TzXFsatkbKUnzcFaRZi5wuYPaKAT/4PMVED
-	+/IY46jlJe1ISL6k74d/yumkOz0KoLxRLZbCL5nWgtIeETgMdpnsnWb+/zAsMH25VCIRJJ
-	OqOIA3wpzLMeUw8adrukhcnfuHxjXNI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=j20qsWKK;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763654183; a=rsa-sha256;
-	cv=none;
-	b=kpQq3O3RV3BICtEPX89eGmDODq8iuDJkCTDZEJhdxDmxO/PR9r6EZ6gAo2gE+pV41yV6V8
-	kXBZ5CNGa14CpZeFw5XOOx2+HJYVEpPHMFxk80Thc2xGPvki/YuJcujIsekzhIdr+X2Zva
-	A3oU7B9ndDEZRS4Ig7tjICQhNQlt7jM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9FA1B60142;
-	Thu, 20 Nov 2025 15:56:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AC8C4CEF1;
-	Thu, 20 Nov 2025 15:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763654182;
-	bh=yHAxO/XmBrSDVoEYRjxBwgefm+ZWzlUd1ZfmhZ8KS9s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=j20qsWKKVoWshSWyVABqDXVsx/ZWnoKoVukrgKGCajhXpm8P4/KLPZft+T5SUOWZx
-	 af+bUltUMRSF6vb5wVJkOB8UtgA47gBv4XdtTeLeHyn47BqvgwUiL81J8FabTpTgNd
-	 QI+geOhbFz7WNe6c40GtLGAfblC6ZZNkhWFgBdNM=
-Date: Thu, 20 Nov 2025 07:56:21 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, tony.luck@intel.com, bp@alien8.de,
- linmiaohe@huawei.com, nao.horiguchi@gmail.com, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, will@kernel.org,
- liaohua4@huawei.com, lilinjie8@huawei.com
-Subject: Re: [PATCH v3] mm/memory-failure: remove the selection of RAS
-Message-Id: <20251120075621.b193e9ad997a2bfc0e588201@linux-foundation.org>
-In-Reply-To: <fc7bae22-0705-475a-be89-8bb3ca12384d@kernel.org>
-References: <20251119095943.67125-1-xieyuanbin1@huawei.com>
-	<fc7bae22-0705-475a-be89-8bb3ca12384d@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 38706C0018
-X-Stat-Signature: u6h8ftdhcaig3rd9h8ew4551ku511jbb
+	bh=FM+Mb2yZG4S4vNNa7mZRT19UBjXjaSiTW+UNdByxGbk=;
+	b=U/7VBDGuPWc/P190/dv83vLm8D49K4yeFOjc64izUBjkHHosknnwOGxnm2nt4nNaB432IK
+	JEnT7nqa/VclkpnRhjl/wImSMSv3G3DYQaCD4z9bDjhJjlhz/i1W/0qwdoJVT6M/Hrze5Y
+	60X8fciQoaT07hrNFF2E1SEuEX0lUPc=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-295c64cb951so257065ad.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:58:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763654296; x=1764259096; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FM+Mb2yZG4S4vNNa7mZRT19UBjXjaSiTW+UNdByxGbk=;
+        b=QBOEnjjRZ8nXDbYSRXHJ6rlDpoTdiu1qCyeVLmYuuESryj4EByvZYc68HEEOK5ooh9
+         W91xUDUrn0WmGLmFs4xfDLZCbfebRbgySeJvLgGHQNfwyGlPRnT+lSi75NoUZOYXCZj4
+         YhFK6tenjJUk/w5zUKVhN1gxX5Lv/EJmQMMk7NTOH3H8qnKU9UGSBhocjnvRjjAlUkwX
+         K+lYtdXKFBW70GXL3LJxZGEnFH8bq1zgdLO+2JEQ1f6xs+dMy7zP0C/g4TTcuh0nqrPl
+         XMZsTHqKfc4MEqlQExoWIG3io/w+2Sh/+JKW0n/2FjD1h6obQ99k8niSJBmv8MfI7DBq
+         DbtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763654296; x=1764259096;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FM+Mb2yZG4S4vNNa7mZRT19UBjXjaSiTW+UNdByxGbk=;
+        b=WeDAcnkAAi3LjHRS87v5oWJozW6rdjIDcFF5AKAlbX4AddPefPCjYr5Nl7TZrdYrR3
+         cjDExY9JsQ6ZO77F4cZnXxXbjrXqy1yWS8gr0EuE5DFnSUi5GSSSvbhEExZ2E5QZsMCv
+         XPTs1cDjANNbqS9lENgoCdjf++szcEMYdzjFpSN/FwsgTZkbC/7NKZNcr4hXSypEUvo6
+         EuD7cG/xaqv770ghEhRY7UWrhcN2cjiuJ6g+QyuKFzSVVJWg+EPg7pZpebYxlfKnan2g
+         fUoKb5qRnpL5FDByWf7H7sMgIAxMZG9UvQYWc4T6HRYOketwbp4QtUd42YVIGtdv264A
+         mJVg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0q2h7vG4OweY9+jcqrmVIa1+tFhCtYddA9hH5GtCcQzf3rjSgXqkFqHqqnAcdZLFFQnwOAc3B/g==@kvack.org
+X-Gm-Message-State: AOJu0YwYXcniqfOru6RTh+svIHJ64hfDny+hK5I+WUvis+Inq59zaR54
+	rwA/8DuoUggutNou24oEzC4Fq9TM1a9ztmsLBc5o9F+gUqTMO9lhQfAfXWOXNsRNUn2W9+zdBJt
+	Y5npzQ/5syMea/7/zlZZYXZZiOoJB4NmGI9urAkeP
+X-Gm-Gg: ASbGncvHaADoeDjBdWbQtfOEdtLmY71WCROwh7e5pDS9WCOQZSe+ldr5001HxFOvjxl
+	N4gV1DaiuWa30/es+NKhyBdbaXfQi8tLL0z6eqRSkZQ+8NQjaxxNYQcRF5bcM0PMyqwZzE/WmvZ
+	kua+ZVKIfycvQmopvCmT4apiq5/bWUkgCw/bjaSQOyLDHAgn8hM2vbOf+Ai11bAjnl/PsiKAt2h
+	S/Og4+WAbzwICcB+zuEh32LThVSTy9H42myD8w4jmkF50ZyIOh+WTZ/oTDKet7AUqgRno/DrTHK
+	uRwe5H80crCjjiadIxZJcw2FB6dUeq6uus/6uJXZmKByPh8T0XFrgdY=
+X-Google-Smtp-Source: AGHT+IEN0NULaP+VnPL1/fDLZYNjF8Hd/VUeot/flqRIzbz+bFM8hMgL+i6VUxvXySk8BrtVEFw6k33qRAE2TH0TEa4=
+X-Received: by 2002:a17:903:2f81:b0:29a:7af:b3c9 with SMTP id
+ d9443c01a7336-29b5c5951d8mr2842585ad.16.1763654296382; Thu, 20 Nov 2025
+ 07:58:16 -0800 (PST)
+MIME-Version: 1.0
+References: <20251120152126.3126298-1-senozhatsky@chromium.org> <20251120152126.3126298-3-senozhatsky@chromium.org>
+In-Reply-To: <20251120152126.3126298-3-senozhatsky@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Thu, 20 Nov 2025 10:57:39 -0500
+X-Gm-Features: AWmQ_bnVrwcH8-BKVi3_n9EW4M0i9C_Im6NDofM4Llka_8QMk4wUrZfCfTLCF0M
+Message-ID: <CADyq12ypYai3Q2QntCjvp26U_J3xWpO4J_DSV+UwCqLFinkcGg@mail.gmail.com>
+Subject: Re: [RFC PATCHv5 2/6] zram: add writeback batch size device attr
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Yuwen Chen <ywen.chen@foxmail.com>, Richard Chang <richardycc@google.com>, 
+	Fengyu Lian <licayy@outlook.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1763654183-862818
-X-HE-Meta: U2FsdGVkX1/ZCzZBPW2lF/aM+rshV6Md9tV9tdtYXLV6O4Edf/d2UL2KDJCTUq95DQyJ8EdLtEWoQxntv6kwQVabb8HcVXBAxva9POCCsNW1/Law2ALjZuLm2Ne0PJpUnR+a6PO+u7W4AyFnPjsRioFLxHTyuFH0gmB2DqaRXALW+MwC8YF/u5Kff7bgG7SNMBMI6l/mjCpevvVsbNW0jsQdH0vliv1rhwW4JZ9w9hb5b7ElLBC5ezCAFRDeg+SfyIdcFEL95erPWgUgQv7OcDQvpIxKjm6sUcnMRD+S+ym7OUNox1ZK23oJ9qgB3Ve0pEjXSyYaItpxCBVRAWxug4WMPupdJCiTET/Ti7EW3bh7eM6urifwKgfpMxd9HWN8SMOzsKbnJ+47LImGLhP3JfO7BU6+u4PAApTu6I+213Fp10KUYnUiPqa+qmn1QbyKlv/2uO9oPWyjt+d6oflMBFzqvvwkXr44hngOIf294MNtbFbZfPp7tuKWakL510HGUtlvLi7oSviJotywhoaSp6mkHJfSuUJaXTf6AkxPG9u5aE++f5JEkOoFvIB47lQB46tjyqt8Mbqefd/qnCckOz5bHwdTMmuzOmY907oQoHMETSW5h5NGba6JM8xPl5gt/OzRigivLjLgNgt74uJEqMLcOMGEpAbuxylkRHzANOCOTa4jcsstiDxmxRlPhtmRh0qDGRPp18LhTwGntPItOltjswhnieyQMYOkVAd5Wr+qfvYsmxqZQFK94S34kR8APM+bOtGhNp/Q8cxeD6Y41ES60ZwLx93DPtJPGHSdOu14MxKmtrR/3R7iwqm3eTEi1UxVdPyejsCgXJFCbCRZsfaoj4n3f+F0cfb9KBUdTNLPE3BWQXsArJtBQeHRLAfdDPWxo/0+jRHQOoULajfOqHNT3XEH3q8agJEpiwPBgpeN/W7qG707j5iOWuxaUNFOYe95ZGn1EHj3e6VZZOh
- udr6T/+2
- tee5Dmx80h3lnbpgi+Pe/WBepsCRoJcPy0I38NY7+s/zewvlY8PFOAKfwfAPaMd00KBpoSR3UUdFzC774/VkGLHdVZAu2UCt0vrSEl/A7J4zlnoBn3Rkd0P7/ADB+yfufel7JaO9XAH0aurphe28/pbLfHJagaVLUAw4GH+TbEDNDBsj4KkoBygSTH9ecmB/uE1XUAj+flZKvmHULOETPxu9KzxNp70sTwrLRCQ1t3KZ/XL09xQ3o3wOLsTVpGLUZf9VD6550w3nfhox/CTQZmWlNwNAryLgBzHtpsmCMgLZMpbjeDFm6A7+CsXYHUiebNqK8JEWGNBZO7jtqlRrt9MHFtB/6IgGrDXa3DELmIUhWi49uihc2b/xs3/TLoDOPx2JYo8OX5piF0St0sEsxW+oP9MlAW0lGRh7k50w3olmZY1I=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BB2531C0010
+X-Stat-Signature: k371nor1y5hrkgdkymm8ehijdzohbtup
+X-HE-Tag: 1763654297-436979
+X-HE-Meta: U2FsdGVkX18v8u/cR7h5WDcMJHAbo8wRfiQatbsBsvTDi4t6TJPjXTEkfC9/IaUQ64PXFzH0QBMQAWVM0vXILPQc0TARw3tWp3hhA/XkkGqe64NR0l1ld/kDDzSaPE49aAkPTQ/ZqlHTpxX7bKvZpH4VniWBVbaL9m9mjxzs/6xjYvaIpCnWzo5G25BgguN6kuy9KYWWGkqDATOn4KCLxNKusc+otc69pWq/DLafFisAPTNxWWPvERyZ88LiArQN3/KJgKrkeIMZOjihKCJhq48NlJRM8wcGM53GeKajTlDKLzPJiMQH+u2AQigw45mygXQXR9EtKWjrlF/h4U98qSnPIEHHTkz67tLLFqTpzl1yqsotV+6CdPTQODbaix4m1toe7JZdR8h2sq74TnPOokiVi01wpzxbxJbxRFTeO7pCZJOm23py7cJwkRzPqQYxp03DUcsO05AiitA0eD9NNJqaf7IoetYjLJ77PInAan29R9T35fB6lnorpoQxFQr2kwNCXCSteHrsA51xnmOO3+4HzXLNEkv8tUVJoJLY8GcztpgF1TZoWVblWi0WoZTnIdw5GjeP196pAvyNQjygzP9bhmTty24cdjh1ZH7uGZfRp9OF3I/86plECuvhqdOJLrTq+R65Fb1On7KjM0aaY483jIyT9WQckxUqTGnCFngMFyf7MKxdg7kHKZYr57S2WG1p2XgQCBS+UJqPu8fNqgmcu37cIMe8BIW78xJiCYL9ZgNbG7lLtzx5aCFWqGyS1Ie/Z6TW4+yBShvgpfPCE53Ts/OkDX3IRDE2+U4sC9p5AVvwNMyLDQm0SIo2P6rnYw4fMs2yYnnQNxHIaRiYnKxpLeKBAC7Hf8tr8hD1NJmc3psx5EToKqC0nLblHDAVDUVPsjBvdcLBEv/m0gKlJfMPd+YFNFUUB3gaNjXe2WJ72ZzMOkDADMIcMTVD35rRujoGmisBgw4xN19Fmnm
+ l3g4dGmN
+ qpiP61uTA2kyP3Kdha97n5aU0Jdmu21yP9vQ7BMnONX7JyFxfE5U0L2CaSEOsX5blhw5jF/i9vlU/OGOnK1E5EUb0tyaTUiH8XlxA5grvcXogNYwJd7gEUs424Cbrv4wWp1Q3xy5eHfRYOpQtFJ0Sv9DQDax1XWW2XEMa7vVjf/rbKfRjskPAaY3F8ifBLZN4nEVoW5TM7J44LqXhazbkjbpQzrQE4jM3gqMKBofgqOKYuceL8FzfW7ptf6JXXUsrjlCm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,20 +119,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 20 Nov 2025 14:59:54 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+On Thu, Nov 20, 2025 at 10:22=E2=80=AFAM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> Introduce writeback_batch_size device attribute so that
+> the maximum number of in-flight writeback bio requests
+> can be configured at run-time per-device.  This essentially
+> enables batched bio writeback.
+>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> ---
+>  drivers/block/zram/zram_drv.c | 48 ++++++++++++++++++++++++++++++-----
+>  drivers/block/zram/zram_drv.h |  1 +
+>  2 files changed, 43 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 37c1416ac902..7904159e9226 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -588,6 +588,42 @@ static ssize_t writeback_limit_show(struct device *d=
+ev,
+>         return sysfs_emit(buf, "%llu\n", val);
+>  }
+>
+> +static ssize_t writeback_batch_size_store(struct device *dev,
+> +                                         struct device_attribute *attr,
+> +                                         const char *buf, size_t len)
+> +{
+> +       struct zram *zram =3D dev_to_zram(dev);
+> +       u32 val;
+> +       ssize_t ret =3D -EINVAL;
+> +
+> +       if (kstrtouint(buf, 10, &val))
+> +               return ret;
+> +
+> +       if (!val)
+> +               val =3D 1;
 
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -11631,10 +11631,11 @@ R:	Naoya Horiguchi <nao.horiguchi@gmail.com>
-> >   L:	linux-mm@kvack.org
-> >   S:	Maintained
-> >   F:	include/linux/memory-failure.h
-> >   F:	mm/hwpoison-inject.c
-> >   F:	mm/memory-failure.c
-> > +F:	include/trace/events/memory-failure.
-> 
-> These are ordered alphabetically, so it should be further up next to the 
-> other include.
+IMO a value of 0 for the batch size doesn't make sense, -EINVAL?
 
-I fixed that up, thanks.
+> +
+> +       down_read(&zram->init_lock);
+> +       zram->wb_batch_size =3D val;
+> +       up_read(&zram->init_lock);
+> +       ret =3D len;
+> +
+> +       return ret;
+> +}
+> +
+> +static ssize_t writeback_batch_size_show(struct device *dev,
+> +                                        struct device_attribute *attr,
+> +                                        char *buf)
+> +{
+> +       u32 val;
+> +       struct zram *zram =3D dev_to_zram(dev);
+> +
+> +       down_read(&zram->init_lock);
+> +       val =3D zram->wb_batch_size;
+> +       up_read(&zram->init_lock);
+> +
+> +       return sysfs_emit(buf, "%u\n", val);
+> +}
+> +
+>  static void reset_bdev(struct zram *zram)
+>  {
+>         if (!zram->backing_dev)
+> @@ -779,10 +815,7 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ct=
+l)
+>         kfree(wb_ctl);
+>  }
+>
+> -/* XXX: should be a per-device sysfs attr */
+> -#define ZRAM_WB_REQ_CNT 32
+> -
+> -static struct zram_wb_ctl *init_wb_ctl(void)
+> +static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
+>  {
+>         struct zram_wb_ctl *wb_ctl;
+>         int i;
+> @@ -797,7 +830,7 @@ static struct zram_wb_ctl *init_wb_ctl(void)
+>         init_waitqueue_head(&wb_ctl->done_wait);
+>         spin_lock_init(&wb_ctl->done_lock);
+>
+> -       for (i =3D 0; i < ZRAM_WB_REQ_CNT; i++) {
+> +       for (i =3D 0; i < zram->wb_batch_size; i++) {
+>                 struct zram_wb_req *req;
+>
+>                 /*
+> @@ -1197,7 +1230,7 @@ static ssize_t writeback_store(struct device *dev,
+>                 goto release_init_lock;
+>         }
+>
+> -       wb_ctl =3D init_wb_ctl();
+> +       wb_ctl =3D init_wb_ctl(zram);
+>         if (!wb_ctl) {
+>                 ret =3D -ENOMEM;
+>                 goto release_init_lock;
+> @@ -2840,6 +2873,7 @@ static DEVICE_ATTR_RW(backing_dev);
+>  static DEVICE_ATTR_WO(writeback);
+>  static DEVICE_ATTR_RW(writeback_limit);
+>  static DEVICE_ATTR_RW(writeback_limit_enable);
+> +static DEVICE_ATTR_RW(writeback_batch_size);
+>  #endif
+>  #ifdef CONFIG_ZRAM_MULTI_COMP
+>  static DEVICE_ATTR_RW(recomp_algorithm);
+> @@ -2861,6 +2895,7 @@ static struct attribute *zram_disk_attrs[] =3D {
+>         &dev_attr_writeback.attr,
+>         &dev_attr_writeback_limit.attr,
+>         &dev_attr_writeback_limit_enable.attr,
+> +       &dev_attr_writeback_batch_size.attr,
+>  #endif
+>         &dev_attr_io_stat.attr,
+>         &dev_attr_mm_stat.attr,
+> @@ -2922,6 +2957,7 @@ static int zram_add(void)
+>
+>         init_rwsem(&zram->init_lock);
+>  #ifdef CONFIG_ZRAM_WRITEBACK
+> +       zram->wb_batch_size =3D 32;
+>         spin_lock_init(&zram->wb_limit_lock);
+>  #endif
+>
+> diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.=
+h
+> index 6cee93f9c0d0..1a647f42c1a4 100644
+> --- a/drivers/block/zram/zram_drv.h
+> +++ b/drivers/block/zram/zram_drv.h
+> @@ -129,6 +129,7 @@ struct zram {
+>         struct file *backing_dev;
+>         spinlock_t wb_limit_lock;
+>         bool wb_limit_enable;
+> +       u32 wb_batch_size;
+>         u64 bd_wb_limit;
+>         struct block_device *bdev;
+>         unsigned long *bitmap;
+> --
+> 2.52.0.rc1.455.g30608eb744-goog
+>
 
