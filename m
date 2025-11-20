@@ -4,90 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE947CF8859
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADE5BCF8859
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:35:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 348AF6B0023; Thu, 20 Nov 2025 08:34:30 -0500 (EST)
+	id EE4B16B0031; Thu, 20 Nov 2025 08:35:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F9566B0026; Thu, 20 Nov 2025 08:34:30 -0500 (EST)
+	id E94B46B0032; Thu, 20 Nov 2025 08:35:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 236406B0028; Thu, 20 Nov 2025 08:34:30 -0500 (EST)
+	id DD1C26B008A; Thu, 20 Nov 2025 08:35:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 167216B0023
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:34:30 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8D5E140114
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:34:29 +0000 (UTC)
-X-FDA: 84131079858.22.A979676
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4A29E180010
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:34:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kqt4D9kV;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D0B7F6B0031
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:35:41 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 95ABC855FC
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:35:41 +0000 (UTC)
+X-FDA: 84131082882.11.6134B21
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C9477140014
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:35:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=knQ3E4Fj;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763645668;
+	s=arc-20220608; t=1763645740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5MQr0CRFgIXovknIEHiu9j5T0LFNZ19+f2mtfiMOm/c=;
-	b=rxygjUaia7GtnWcU9vp5f3Zx+KdGhOa7D7ieJdW7NaZPsi7iyB9sLAOAGTX3LQxMUhSED6
-	U2e5eecvyUDfBIAlNz/WfHywJ07MhHd2WO4Ex61xL00ScoXk0SYfsJD6Y5bi22uwLvKAuA
-	prP7KqmsewD043kJBegowX5Pcwl6s/g=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kqt4D9kV;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763645668; a=rsa-sha256;
+	bh=5btAk5N6dNvXNLzmFnp9b/KE4gsd8sDZpcNKThRPsAc=;
+	b=ms9nrQILepbqd5NjOxaZQrrfHDhd2yNkLhYTM2ZkWVo4lFRy+tdIL6gQI64Yu1cXArLk7T
+	gidA74RPeKIopuqNr1AlNENYX5Avt8D6yb7Q5n/BKujr3K54z0FbmZxMWVZB6XOvfXBuQI
+	6qnZ19ER08z4m+Eag1UzaI5R3lwSFhY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763645740; a=rsa-sha256;
 	cv=none;
-	b=U0KasbxEjWHunNMEoGrBYEwAQOud1SJhXhb+azzRqXMXsNi/YMqEU9a7PWF4I7TEAhkO7T
-	MZXc8sSRbiHGwgY80lyRvRTIKL+tdXcZNaWWMlze0ObKz1siIFvR/Dh9AQ3U2OEWNa2YhY
-	qPIVyj7c7siZnGHGjHx9vMv4Pbl36aE=
-Message-ID: <0addc62f-e0b3-456e-b172-9216a6d2b8d5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763645666;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5MQr0CRFgIXovknIEHiu9j5T0LFNZ19+f2mtfiMOm/c=;
-	b=Kqt4D9kVgo8JwZMHBEt00cKHZB42GRhjYrKiWjFMfvK33V+97UY6w4oO/R9vkQ9g1cBnkT
-	DhDgOFCKVj9TlInMNBa3UzYy+bGA+d77esp3+g2SSJkirJGUqfphWkKICH5rLdRzceXQ9P
-	k6mwGTxtL++xKJpiNHrBZiSW5jpvixk=
-Date: Thu, 20 Nov 2025 21:34:08 +0800
+	b=upPApukNV9DfYMpISgBZ8zbvsIrBuM3DmMaYLHOoIhzC0zbhdWVl5qnHXjwpFqbLQQThfo
+	5/L+PrxZWE7oj10A2LgIJeiH1ZUFP7FDTSd3AaWHw4w0yP6UdA2rztd91MtlJV+ERGRdgP
+	VAy2CLxeKD1+vYOxipBzNnFIwuMJMcE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=knQ3E4Fj;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA3E843F98;
+	Thu, 20 Nov 2025 13:35:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A494EC4CEF1;
+	Thu, 20 Nov 2025 13:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763645738;
+	bh=7fOQWOlDa/yWJfdxMP4b/quIC4jTVVkZpbyue8xkZUo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=knQ3E4FjFLvlIBk5Vj1nqlfGxz6LM/OkrjtqrPhjawaq7swVpXiOv9gqhzHsVnJtx
+	 0r5rujNQ2NvwVHZtqa6cb6ArDqIpyu9xNFcTjiAMSz6JgiXjs8hCzI/NhtGgcgvey0
+	 4Ge6vzXaavWScRr7gtsJaU62ZrwGvN92xjuLy1zu/4vkZ9P2fGj0KDl8P879JL0yR7
+	 vBBXjPeN0N1hUdp47kYlDr5kul04dWk2cIwmWqC3ujfwrRkdkygdxlDuBO829RYEsN
+	 xe85Pf3Qpykdreik1mg2SvxHeGVikch5HSlNNWMSUGPpwQW5hNYDpERSaWsMP5b9Pm
+	 SBXqTwTvzRVUw==
+Message-ID: <be698a14-c292-42d1-9a85-109a9072a0b2@kernel.org>
+Date: Thu, 20 Nov 2025 14:35:32 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 11/26] mm: page_io: prevent memory cgroup release in
- page_io module
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <3076467321061767e16ca7abbaa33998bfee97cc.1761658310.git.zhengqi.arch@bytedance.com>
- <aR2NQl-w2O4PgvHr@hyeyoo>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aR2NQl-w2O4PgvHr@hyeyoo>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 1/2] mm/khugepaged: do synchronous writeback for
+ MADV_COLLAPSE
+To: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ Branden Moore <Branden.Moore@amd.com>
+References: <20251120065043.41738-6-shivankg@amd.com>
+ <20251120065043.41738-8-shivankg@amd.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251120065043.41738-8-shivankg@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 4A29E180010
-X-Stat-Signature: dnb94tz8h17dzxyfeibe1uz961pxczs9
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1763645668-567583
-X-HE-Meta: U2FsdGVkX19P43Hro0jHD/9qy7PwbXlZ9e3PhMVqydhRiixMX8b4u4u6vv48AM8mxvQ6JLBaTU+TYuKsnKV7sGT61dJkPVmIXLmZ0Lv+0v3PqRPtsKHjkYa9+6BNWO3zhwgBzIQWzZPeubBI1iXlBFdfX9o44pleKo6T0PxZvGYV+MWwYR7QoJHwNg4hhg6lMMcqHeHKOOJkqhSX4ogrAoOsMf+5bj7knxhF7y9gIK3yi8Lc6P9qQxTe7h6u2O0NRESfWZAOZRno3af4IEGZpRXZwCfeCQ+VgqzC+n6DPDS05WqqeUef3ryHW/OK7haqb0WUVBNSPz5busyAtc/F9r95NpSskF37XjwsZ3ulNEaIC2kB1dibsmYHIqIz7msPMe2J9xl6/YVnWBh2OYDzn9orDi221fzd3MjqZTYO+WPmjOlphk1tUFeq/p3ei5anf+RQy8ZSW46mo/8qtbTU2TstoIMME57vAQwoqZaH4lGfs0E6Zivboq3G1vga0rPQgB4BJhQjo7Lh8eswdPI5xbRQR5kN8bTb3m3gG8BKjNszkQpfxX8cpjuS+A6cyR444WFmCqZ5x4TUlfH52P64SlNeQjcIzt3xDGOxfSRnYclq834/iWv8/qJZt7dLmbNheESCIz2BexA4kLg49hdz9zUpmP2Aj1cSAJxxfONBD7C3Oxs5kaoQEdAFzX9TVddBOydgww6SdJ5n9NW3QAiGwisydKtGtBj3LvxGjXRK/fVFGXHBfxXAeniTDj2ZBH/uKFCvpQGwJr+NWV0+ldCQEGsCyE9eORNXyhhxmyhanFiX1UZPZl6whVjl+F1rcjM/U65ZPrl2G1FnOVluE3Cr6/64mes3Ss6k0m5j0hATtrS4k7x6y80GQh1Xb+Jsv8qw
+X-Rspamd-Queue-Id: C9477140014
+X-Stat-Signature: ij38kmn7zcj4fnkmdtxmry5ksneijsxw
+X-HE-Tag: 1763645739-754114
+X-HE-Meta: U2FsdGVkX1/J4m4B9EgXvPXKFMUJZ18T9JtT00AuqQwkibS6woIqbHjodxABdudQqgKuxpVzaJiWv/AkSi1XXhy5smM9TZJUSS+of/Fi6OG2+zZtOzlSTgo4zlIrxZkZcKpzC858ANkosHgd1MOLkmXepRuLgIUYlB4jbIFf0K11aVqtwtYVj8qdS7BXBuzo4xznXdv52HUuf3gI4qDiLwzATpZxw2AlRIPKhvHmWC8PXY0HfrJGeadQtOKehprEcta/Jl1JAuodDLdgPpxLOFzg2C7PpRBiCrxt65ak+idnv0dWOsiSWe9pt4nSqDxYJnWqjcy6mhDX+ICiesaIbCW7iAc1S/1j/kJnZu+7Z3rtFS/GDkuXh66YXEu00FNRRbUx8LNdvWCuC2G8PU9GbD+Qd3lLbXoiOMtdGSHtCdBrBB9Z38VIgrfa4fFu/ou5ZDETiE5TO24D9AX9FpgX7lEl3Nkzw1+OEh2Y95Ji6l8N06Lp9Tg5dSZTv4G3YeLGgu0EQ9KMhfHvtqYKuGm7M7ZQVZ+vUilyBqFs6BR0/o7LwBe9cyHjZ4WS1SN2bxvGOI+ofOBE34NKMzoW9sd/9fKMgp/EjIxXo+LzunBVLom5qe3u2mNdUfCjbPK6gnl4o00KFRi8JCPtxXlIS7EKgHLTJVH2fTd0TcYtoibyIvKiLbCZAzuqyEML6kg45eb98XAQJ1FWnEvcUaW20kWSv/20ucCIFK+dIMmtPmuAftiOJ7UduNvg6GAf9sDDY/fhCh4mSSoNWlfKGBurPSgbjDM5Sot4xeXFpnT4tw8snAG+SbTSB0S7SUzytHg5YtnX9LCtZx/oqBjbiUqAkm/D8V7BqYq1MG3/w1kOG0euC31ulN0jkKSl92JEKdcHmW/C07m27nnRs7S0X0j8vYJUIXtlpqXf1AsYBKtAvLCaHxGEG76HULNVrBFV5jTbd6JCKVCpP9ht61CB+lXEiu9
+ EjT8imQI
+ fUNOFHYYmpL3U6BjH1JRQpwWlYopKyaSmN1gSbdw2WwWsVGtGXrCNJUjbSsj/DrPsaajpxIBcW+w5gCMRZVcrLxGUDNWrp086mxPao7fRAYq4CLHiJeIMWWfuO95o0A0a5kB/wp8EZKIEPtkVN5zAlfB21rX60P3xwDiATK/Lj15rf7OgqYbduvR32VV74vLQ7xbsJ0F3v3i1tovyo3sRjnx6bax5e+YgKGHxJsZMcvvMJJ78sBuWr34AacanY1+mHORgb41qS+j05v9KDfh7mQlkmkP+SlMdvLmqvR92MsiCOWo2NN+L05W8iqF6coY4S9++7s0due6bYUSWJo7Gr7NI020buY8fFizXaXQb/eUOAbN+dG/vjPFE106BG9XmSPaQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,39 +105,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 11/19/25 5:26 PM, Harry Yoo wrote:
-> On Tue, Oct 28, 2025 at 09:58:24PM +0800, Qi Zheng wrote:
->> From: Muchun Song <songmuchun@bytedance.com>
->>
->> In the near future, a folio will no longer pin its corresponding
->> memory cgroup. To ensure safety, it will only be appropriate to
->> hold the rcu read lock or acquire a reference to the memory cgroup
->> returned by folio_memcg(), thereby preventing it from being released.
->>
->> In the current patch, the rcu read lock is employed to safeguard
->> against the release of the memory cgroup in swap_writepage() and
+On 11/20/25 07:50, Shivank Garg wrote:
+> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
+> text sections), the pages may still be dirty from recent writes and
+> cause collapse to fail with -EINVAL. This is particularly problematic
+> for freshly copied executables on filesystems, where page cache folios
+> remain dirty until background writeback completes.
 > 
-> nit:                                          ^ swap_writeout()
-
-will fix it.
-
+> The current code in collapse_file() triggers async writeback via
+> filemap_flush() and expects khugepaged to revisit the page later.
+> However, MADV_COLLAPSE is a synchronous operation where userspace
+> expects immediate results.
 > 
->> bio_associate_blkg_from_page().
->>
->> This serves as a preparatory measure for the reparenting of the
->> LRU pages.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
+> Perform synchronous writeback in madvise_collapse() before attempting
+> collapse to avoid failing on first attempt.
 > 
-> Looks good to me,
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-
-Thanks!
-
+> Reported-by: Branden Moore <Branden.Moore@amd.com>
+> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
+> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>   mm/khugepaged.c | 26 ++++++++++++++++++++++++++
+>   1 file changed, 26 insertions(+)
 > 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 97d1b2824386..066a332c76ad 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -22,6 +22,7 @@
+>   #include <linux/dax.h>
+>   #include <linux/ksm.h>
+>   #include <linux/pgalloc.h>
+> +#include <linux/backing-dev.h>
+>   
+>   #include <asm/tlb.h>
+>   #include "internal.h"
+> @@ -2784,6 +2785,31 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
+>   	hend = end & HPAGE_PMD_MASK;
+>   
+> +	/*
+> +	 * For file-backed VMAs, perform synchronous writeback to ensure
+> +	 * dirty folios are flushed before attempting collapse. This avoids
+> +	 * failing on the first attempt when freshly-written executable text
+> +	 * is still dirty in the page cache.
+> +	 */
+> +	if (!vma_is_anonymous(vma) && vma->vm_file) {
+> +		struct address_space *mapping = vma->vm_file->f_mapping;
+> +
+> +		if (mapping_can_writeback(mapping)) {
+> +			pgoff_t pgoff_start = linear_page_index(vma, hstart);
+> +			pgoff_t pgoff_end = linear_page_index(vma, hend);
+> +			loff_t lstart = (loff_t)pgoff_start << PAGE_SHIFT;
+> +			loff_t lend = ((loff_t)pgoff_end << PAGE_SHIFT) - 1;
+> +
 
+Hm, so we always do that, without any indication that there actually is 
+something dirty there.
+
+Internally filemap_write_and_wait_range() uses something called 
+mapping_needs_writeback(), but it also applies to the complete file, not 
+a range.
+
+Wouldn't it be better do do that only if we detect that there is 
+actually a dirty folio in the range?
+
+That is, if we find any dirty folio in hpage_collapse_scan_file() and we 
+are in madvise, do that dance here and retry?
+
+-- 
+Cheers
+
+David
 
