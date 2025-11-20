@@ -4,101 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E9DCCF256D
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 05:01:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C3BCD4F3E
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 05:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 510E16B0026; Thu, 20 Nov 2025 00:01:09 -0500 (EST)
+	id 770256B0024; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E6646B0027; Thu, 20 Nov 2025 00:01:09 -0500 (EST)
+	id 747C66B0026; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 422796B0028; Thu, 20 Nov 2025 00:01:09 -0500 (EST)
+	id 65DAD6B0027; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3128F6B0026
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:01:09 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 608B31A0769
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:01:06 +0000 (UTC)
-X-FDA: 84129786132.17.0926B10
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5E6AE20007
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:01:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MSnknZ5c;
-	spf=pass (imf13.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 558EF6B0024
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02DBD12FDF5
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:14:24 +0000 (UTC)
+X-FDA: 84129819690.05.FD5078B
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E06581C000D
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:14:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763615663; a=rsa-sha256;
+	cv=none;
+	b=nV+Xalqgy3XzdhO0w3IH7wmUZyqfXbTbA0kun1izCScG5Q1u/1HoibsNbpseXO3zDFqPLo
+	+3Z1OzH2m70hhmRmZPrOcDRjGn5npT31mc6WP8YLeTu9HOO1XspoMSxhGwSCWWC5b/9E9B
+	G0W7qh6puoC8c1LkB7rzpv6UMefYxZY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763614864;
+	s=arc-20220608; t=1763615663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eS/KBjPYoCr7fRnK2jMtf54XMo5mOZgaGLvvf1R4/9c=;
-	b=ftPY5aKqsmpQB3Wl4pD9+uuJiEBj/FpQC5GsvamqtB6ePPYyB8rty8yu/0JrcTyP6x1lnp
-	AobrouT76Po0rZvEbZnYNdSiS5OleWDioZfq28b/6gBTiyLXdcc1kFEoVIBmjvuhkdJEEh
-	ktXipA6oi8JDDHH2ibEfopBQSU/QTdU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763614864; a=rsa-sha256;
-	cv=none;
-	b=pxQlvkgz9nIlcBttmrvmOf59q3y0WaewDq9YlAEEAyaj1tz1Y1Zj7WMTEM4CSr3Pmvvchc
-	OAoXE/mPAA3QVce3ehpbbPf6nFjZERCNWzhByKjEm9iLxqcLzEZx80Tcs5CaraNvdT01h2
-	B8jtF5ozStCooQ2926EoRIWHVNkQN1Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MSnknZ5c;
-	spf=pass (imf13.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3BAF429FD
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:01:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFDAC116C6
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:01:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763614862;
-	bh=eS/KBjPYoCr7fRnK2jMtf54XMo5mOZgaGLvvf1R4/9c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MSnknZ5ckbuk2TTAZY9RsAcbvPeNg3MNUF/Ta6erW9MQlpLiDlCR4uV7zZdpkBf1k
-	 z6TKgAy8m9QNwUDUgFquIe7iuDKxuFz7didTV368Piw6W7JSKYQJEyqDeRqB+KtSsE
-	 DyWgvEejSzJ4jHqumFETS/kWPsgx1/dwKZal3QL74QSVDOBtcoVJ9teDuYr6hSBqjJ
-	 HW5oRIyPwOqjDF3C9IxQhK9VG3OaVsaibj56R1vd/nKcFlkrUs9zD0mFUfIR9DT2jf
-	 FE+xsoBF4KIfB10TZ37/c7yTjWaQz2rPLFUc05DYggKRH5wwQRKONWNZEVbZY5Hy/K
-	 eeFncZSYCFu8w==
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-640e065991dso413523d50.3
-        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:01:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUn+VynrtDe56T4Ck1xBs7s7+2nk/X3EZyG7WsN3xjVoeRTMbB0RS88fbiopfHTSgC/Gxl9z1NVbw==@kvack.org
-X-Gm-Message-State: AOJu0YwCQGuruzamwuLqsJhD18S+x9uoSuDK91cgbVlXSQM9whilGJcQ
-	C/1INo93vMyCfkWvY9W9lBx8P6BKrhUAzn5jHOg/qIUkxJUJJe/4rLuB+btBCV9QHWcQA+RfHQk
-	NsofuMkusMlHlcUUhYt+ms5IRnk+kH3fhN/Nh+brwYw==
-X-Google-Smtp-Source: AGHT+IHvR0bhrPFn+krsez1ru9VZBAExJsov3yiU7r2e48NDHcV3GEAvjeMLE3ErTqO3Q4izxeqYERqJVxGWsRx1ZZ0=
-X-Received: by 2002:a53:b111:0:b0:641:f5bc:6986 with SMTP id
- 956f58d0204a3-642f7e9ee56mr992792d50.82.1763614860917; Wed, 19 Nov 2025
- 21:01:00 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qRWBRzXiy43nvVUA0JuJNwrWIQ1dA9+VpC3tFevJqs0=;
+	b=Yxku3cA1L0rjOWsKfkszML2jkKIf4PBzypZWHIHZPbWfv9mcXqtIG+icy+DZDyeYuAGB56
+	KavbhTTBrfdC6tULs6Fr5+cnz8dtMwZIdmtlhI207yl1ERn/5tuGM4k4NU1pnAYk+GPKNZ
+	NkNkWr2N2SLBSmkRFj84ahVRdQVl9Dg=
+X-AuditID: a67dfc5b-c2dff70000001609-90-691ea3a8ad9b
+Date: Thu, 20 Nov 2025 14:14:11 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
+ subclasses_evt for the usage
+Message-ID: <20251120051411.GA18291@system.software.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-45-byungchul@sk.com>
+ <20251119105312.GA11582@system.software.com>
+ <aR3WHf9QZ_dizNun@casper.infradead.org>
+ <20251120020909.GA78650@system.software.com>
 MIME-Version: 1.0
-References: <20251031065011.40863-1-youngjun.park@lge.com> <20251031065011.40863-4-youngjun.park@lge.com>
- <CACePvbXO8oSH+-igG1pNFueB5JdoDOadV0n9DNN++iMWgCDiPA@mail.gmail.com>
- <CACePvbVydfq5DFP4R3tKXtN-UmZNQJMxm-p-4+fYFwyPfLR9cw@mail.gmail.com> <20251105162953.74b38e11ad1a28093e751822@linux-foundation.org>
-In-Reply-To: <20251105162953.74b38e11ad1a28093e751822@linux-foundation.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 19 Nov 2025 21:00:50 -0800
-X-Gmail-Original-Message-ID: <CACePvbVLG2BbC7CQLrC5sP1fUXxuV+MqBh=LyJgLr9REQz252g@mail.gmail.com>
-X-Gm-Features: AWmQ_bmWhUeDwBPZUiJhOjv5IFxuuQu3Wj7px4rGDPvqB9Bj7dfMNZef3ZJI0wo
-Message-ID: <CACePvbVLG2BbC7CQLrC5sP1fUXxuV+MqBh=LyJgLr9REQz252g@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] mm, swap: Remove redundant comment for read_swap_cache_async
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5E6AE20007
-X-Stat-Signature: yuaz4unpsuc4aeod7xaqqugpjetz45be
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251120020909.GA78650@system.software.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sf1DTdRjH7/P9vR3Tb1PiEyvvWqcWHZhK9VTW5R9d3z/oxyneefVHfS++
+	JzvHsIEoXD/IXBEJjSXrGKA7PAfClPUFtKFwiIIgcoAUfTXHWI0R4dIDBHUBbXRe/vd+nud1
+	r+f54+FI7VEmkTOYciWzSTTqGTWlDsfVJJ84tsbw3HgwDqoa3QwUyRU0+O8UIZiPVJJg8S5R
+	sGDrZmGprRuBfchGgrv5CwJmPIsMTF2YRlAeCDLgCFWyMNn1JoT9Z2lY8k0Q4AouEhDs+BrB
+	gn03HK1pYiDSP0DCn55oq63uAAPj1hYShoMrIDxURcDfHgacB9poqK60RTdVyxR4x1pZuGG3
+	EdAgvwV+V4iCHyYZsP+YAOUnzxJwz1XPQmX/MA2/1zmiJzqzobthggXfd+UUnAoP0DAVsjHg
+	v/QVDfK1LgSzPwcIcB8KkSD/MUJDxZEbDJxr66VguLWKgUOeFhpG3Us0DHb00XC1YZCCxgmF
+	gF7HCQqO/zpEwFypDgbLSmhQrOMIXHdusa9nCPOWUkqobzpNCJarC4zgPuJGQuS+DQmzx78k
+	BYs1Wl64eYsUyvqTBa/DxwoH26+zglPeKxy8GKaFY+cmCeH61KuCXP8N827Se+otGZLRkCeZ
+	N7z2oTqzxx1h9txes99yt50oRL0JxUjFYT4Vd3mqmQd59PL3bCxT/Frc4w0vZ4ZfjxXlHlmM
+	OG41/zS+2bypGKk5kq/R4ZOXz9MxZhVvxHMXT7ExRsMDnvdsiTFa/i+EW6zNVIzR8I/g3org
+	cib5JKwsThIxnuR1uHaRi7VV/Et4pMm2rIznn8Idpy8RMQ/mQyrcekZG/935GD5fp1BWxDse
+	0joe0jr+1zoRWY+0BlNelmgwpqZk5psM+1M+ys6SUfRtXZ/+8/5PaHpweyfiOaSP0+zsfsKg
+	pcW8nPysToQ5Ur9as3br4watJkPML5DM2R+Y9xqlnE6k4yh9gmbT3L4MLb9LzJV2S9Ieyfxg
+	SnCqxEJ0eORjZfOKQEngZTrxjSn3lVEPXZG7Izv9Mx83+4J2bpV/pz3dLxeMlDWltEdg37ep
+	136ZedGb1rcyvqekdl1Vde0noVdun1EKH33HVbryc/E3lfO+N9CoK5h5vjR587PTb/fdlaVt
+	8aYx31jxgG5bEfNkF0S2pz2zQ1S2KumHe9L0VE6muDGJNOeI/wILdggfsgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTdxTH87v39t5Lt+qlsvBDHHE1RCMKaLbkuJnFRzJ+IRsx/qMxIdrI
+	jRTKI61DWbJIhUaCZtbOQmhFOgiVQEUolYAGwkMroMhrY920MmbloWWYjYc8u5Zkmf+cfM/5
+	fr4n54/D0/IVyWZelXlW1GQq1QpWykiTvsjfXV0ZpYp/+WwrjOjaGZibLWTgxh07C4WOUgkM
+	1NUiGJ0rRLCwbKFB3+JnYNXo4mB28RkH/lYXguJBIw12p46Cf+rXWHjT9TcC05iXhZIpHQMz
+	tisIzOMWDqYeJsD06H0J+D0TFPw670Ng865R4G2/hGC1OB3KKxpZWO7rp6HENIDgpzEPDZP1
+	AdPpeoGgtfoiC68Md2kY9m6An+dmWOgxXWZhevAGBX/Vs2C92CqBMosRQX7lHRaKyxwMtPxx
+	j4PBNysUPC82UlDr+AZGbeMMPDZUUIH7AlRDOFhK8qlAmaTAdPs+BYu2Gg6eVD5nwJYXDZa+
+	YQn8WW3mYGVsD/itWeCqneDAc9XEQN10v+SACZEF/Q8MqWlsooh+aJUl9pt2RJaXjIjMVuXT
+	RG8ItF2+GZoUNJ4jVY99LFma+4UlrfNWhvRWYHKtbzdpMXs4UtD2O3fk8xPS/SmiWpUjauK+
+	PCVN7bYvs9lvo87r37VReagnvAiF8Fj4FL/o/ZELakaIxt0t0+uaFbZjt3uRLkI8HybswD7n
+	3iIk5WmhIhLf7u2QBJlNghrPP6jjgoxMALxQvz/IyIXXCN81OJkgIxNCcU+pd13Twk7sXpui
+	gjwtROJba3xwHCLswyONxvWVHwnbcHvTI8qAZOb30ub30ub/01ZE16AwVWZOhlKl/ixWm56a
+	m6k6H3s6K8OBAj9p+37lWjOaHU7oRAKPFB/Kjrs+VsklyhxtbkYnwjytCJNFH9yikstSlLnf
+	iZqsk5pv1aK2E0XyjCJclnhMPCUXzijPiumimC1q/nMpPmRzHtq7o2DoxPHYmeqy1IMDhzu2
+	7DrXxI9uHLyZeCbu6aR1rFv/22H3oZdXbKFX9yUlNmx9p0s+etQfP+6oc0RsvP4qxZdY5CGf
+	HCjsbiMRX+OIXULZyAdfdbAx7nju5K3QDeOHtkddb2Z8F/QdzTFpyZcMS5d9D9MMb8vLJywI
+	zzvTdApGm6rcs5PWaJX/An0YZayPAwAA
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E06581C000D
+X-Stat-Signature: bh7z7rgawm85u3adybkogiedu1bcmpkr
 X-Rspam-User: 
-X-HE-Tag: 1763614864-435676
-X-HE-Meta: U2FsdGVkX19Z3IU2ma4iRU6AkWk8UgHTliBpORkw5LO5IXofa84MNuAW6FH4nAAof6iBwsQWDwvGPfRgBi+IgIYXOjCa69zDS0VK/0uHfpVDcrLWLGSZilykwO5G+Cr53XaKuRzDIqYRSTFeDASKSYxyVBzwmwNt6Ehw3lZulS7ExsPRPvVhwdv72ptFHBu4xe1tIHpXNtHiVrE8X8hRgom/yruvusQzE6V8NTRaBws4H5mzT3HyoC9AHthTpQ3jDeSvdc8qP0+sdFHpkiFmN7l4ccyIXszTUPK9C5iK9vMRGsaBIYj/pKO8xNm8CGs9OcUVjaZgwriskDR3jvpfiXbZhtvQbLIof54BqcH57JY8azRFieM0ErudGr4ByPRdjZaoAGIS+xpPr60mXlAV8M+ORPAqfh+bvs4R3Oln9VKfn3J7YO8GqpKJi1w1baTwRGtAN/gmxkmtyns/C2A/GFFqcvn/eCb0guyo7V9voKZz8an0QamBJFDzcFkJb3ErvvOA8ojY0mbZpzGMmmSAjdl3h/fosGvAcSjY+d2jHF2OoHTSc09QXDrNLcPpaRxwEeKE1ZUBXgoM1uld7x9/gw9CjlDRuh8EA5/uZ4BzyWZXwznYsrCBrNZeHUeKlGzlMpJ6LTg4ErIdLDRHAcHy0y+xaNXylsvvdwyS3iFC9KwOyXuBpwa1AaTwC4KNcJlBhopA0Fn2jNvZT9NYjHNkB0Z3h79E36yvxvpX8Wr87gnYsTFFeRXUetQ5syR3B5JsyQzz4CV4a9lROitweOmrAsThI0ZoH46EL9Cdc71uO7b0CIVGj8V9kz23+atjK/LHcv63N7yRYrFMMy5NIFwS48p+x6YXVrmg3qns/LiTTnb520gJunD+MeyPHZ/er2C2cRieG0H2PZQaJZdprZGteH0XXe+mbgdHrSJF5TUKbPxTVW9DXhE3xI86ULEpNF/Tt9plw7E8vfGZifOnxxu
- mKLzDZYz
- A8I/l9Z7DQ8QWhoREcWVsH5o5b5UwTwkfAw3nk9FcHTc/cKGWlcAABG3ZYjpkMVY6myZoZeS6WgjFyO866ojftJsQeVyhHXPJCBOxQrHWXwo+wfZ5MlJCIwxkJY+pVmgLzBB7pRvuQXHAyz0MDoMJhul5TN51dRopGveRT6Yade+Vfns0voIsfOZGmv7rToVHo3QNPUO12FwpqxQtATq/ZVhwx4KOQJlMHVz8TIOT16U5bcnqbrBRDAK6xLfBStsMESJxAAoa8WJ7GC2FDsuueQkEfbbKoek8x+oDa+wU8L53rIGKQjNOcDRX6s5oHzHIf53glYNFNlb3Ez7+e5nHge9M7CYb6YwkTIHbXExgNApiQDdG9ROLUx2slIIOtOXLHkw7ANJ+Aa6476VRutv/cOpDXD9NQS6ICQ2HBc3HBfy2bbk0ZiVlfwTQsw==
+X-HE-Tag: 1763615660-106671
+X-HE-Meta: U2FsdGVkX1+M4vGGCBKfMYFKpm8tDUlq51ppD/MSRlNCGYlh0XGRMeRrZxJAEKlhBfOQrryuaK6Y1hb42sra+DZld5cafvRkG309SBjxqpPlFU2rcgKZkmGIUsxxS4DxPwDlh0N4KpKSkgFTDKmx4bScEZYWisUnFFOR5nxQxzHx+SBC/b+4poApWqGWDyWeSrm4EYAL0bKwmMO7w5H5c1VLuFDgEB1fN2I3iRJwzeAuU0LCgM7Mv6qOOvCvgr5Im3VCXD72L0iznz12HxFawN9zcnxJpYVNGD3gUql2+7BITOZwktwDXg0UGuUHqJGLKLh755Jt0T5DEfjMw9XbvJO3LwbX+quAeY2j6t2HDkSNKDRkQ7ZB8iMRIbHX49zMh8PxjCP5e0y35++yC/LDge3DjGYUhFOGd3BZF+bqWx8Z1GOYi9G4cMEWL2eUvxQ/Lp/DqAcIVUTPyXRkGFayzYWegumRLWfKOSFgagmrAZglGCq/iGu6u4jw7GHizrW+EDBsJf6ksCRKx6T98Af5nUkhDyr/YOSMQ0mVJvSEwJPvzA87F/+8kG1GOCt0Z6CDxdr2tCDjJAbze+JaP7F5VjJHH4zUfw4SAht1xh0X1CbiJERMVGfkpKh4kx80a5HWVw4ghaP5jK8XYmAM0bMaMaaEgxiBcNvyd23sSp88s3u2P1udgP3OUwbrcE8hnnQJk1NjgdfFbU3iNQTrmhJTF/3FlUWlRtYz4vap+9e+gokBf9XjKrhuyg6Y4CdGYlaogAel1DorhlGExTRBJ8hXCW55EZYxNBMPiJNTCinLZgvmRBt58adUY/VSZz1Tg2LIC2FOjdoTQLYsKal6stO9kE5Rfbkt3Zyo6VnRtTnuz+VlEKq7kqbal7Ql+u47p+7RERGAUT6LkSa93sG4ePpETlTL1llzGxaas70UrxD05BKRr08AmTs76QQP1OTlCoDhjXnKKxmn8mxC3iKnEpY
+ tkoTjACf
+ islIYbz2f13PmsZkC9yAtulAq822m++gRCIFU850E0lYSZQCoDeUMceFBVAwo8AJqRTYM7yUqj+sWWiI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,27 +173,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 5, 2025 at 4:29=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Tue, 4 Nov 2025 23:58:17 -0800 Chris Li <chrisl@kernel.org> wrote:
->
-> > Do you mind putting this 5 patches series AFTER the swap table phase
-> > II? It is the comment adjustment anyway. If there is a conflict with
-> > phase II, I think phase II should take priority.
->
-> OK, I'll drop this series "mm: swap: small fixes and comment cleanups", v=
-2.
+On Thu, Nov 20, 2025 at 11:09:09AM +0900, Byungchul Park wrote:
+> On Wed, Nov 19, 2025 at 02:37:17PM +0000, Matthew Wilcox wrote:
+> > On Wed, Nov 19, 2025 at 07:53:12PM +0900, Byungchul Park wrote:
+> > > On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
+> > > > False positive reports have been observed since dept works with the
+> > > > assumption that all the pages have the same dept class, but the class
+> > > > should be split since the problematic call paths are different depending
+> > > > on what the page is used for.
+> > > >
+> > > > At least, ones in block device's address_space and ones in regular
+> > > > file's address_space have exclusively different usages.
+> > > >
+> > > > Thus, define usage candidates like:
+> > > >
+> > > >    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+> > > >    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+> > > >    DEPT_PAGE_DEFAULT       /* the others */
+> > >
+> > > 1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
+> > >    starts to be associated with a page cache for fs data.
+> > >
+> > > 2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
+> > >    starts to be associated with meta data of fs e.g. super block.
+> > >
+> > > 3. Lastly, I'd like to reset the annotated value if any, that has been
+> > >    set in the page, when the page ends the assoication with either page
+> > >    cache or meta block of fs e.g. freeing the page.
+> > >
+> > > Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
+> > > be totally appreciated. :-)
+> > 
+> > I don't think it makes sense to track lock state in the page (nor
+> > folio).  Partly bcause there's just so many of them, but also because
+> > the locking rules don't really apply to individual folios so much as
+> > they do to the mappings (or anon_vmas) that contain folios.
+> 
+> Thank you for the suggestion!
+> 
+> Since two folios associated to different mappings might appear in the
+> same callpath that usually be classified to a single class, I need to
+> think how to reflect the suggestion.
+> 
+> I guess you wanted to tell me a folio can only be associated to a single
+> mapping at once.  Right?  If so, sure, I should reflect it.
+> 
+> > If you're looking to find deadlock scenarios, I think it makes more
+> > sense to track all folio locks in a given mapping as the same lock
+> > type rather than track each folio's lock status.
+> > 
+> > For example, let's suppose we did something like this in the
+> > page fault path:
+> > 
+> > Look up and lock a folio (we need folios locked to insert them into
+> > the page tables to avoid a race with truncate)
+> > Try to allocate a page table
+> > Go into reclaim, attempt to reclaim a folio from this mapping
+> > 
+> > We ought to detect that as a potential deadlock, regardless of which
+> > folio in the mapping we attempt to reclaim.  So can we track folio
+> 
+> Did you mean 'regardless' for 'potential' detection, right?
+> 
+> > locking at the mapping/anon_vma level instead?
+> 
+> Piece of cake.  Even though it may increase the number of DEPT classes,
 
-Hi Andrew,
+Might be not as easy as I thought it'd be.  I need to think it more..
 
-I discuss with Kairui, his swap table phase II series will need to
-refresh a V3 anyway.
-Please re-apply this cleanup 5 patch series from YongJun, it is
-already reviewed. Kairui's phase II V3 will use it as base so we don't
-hold up this cleanup series for too long.
+	Byungchul
 
-Thanks
-
-Chris
+> I hope it will be okay.  I just need to know the points in code where
+> folios start/end being associated to their specific mappings.
+> 
+> 	Byungchul
+> 
+> > ---
+> > 
+> > My current understanding of folio locking rules:
+> > 
+> > If you hold a lock on folio A, you can take a lock on folio B if:
+> > 
+> > 1. A->mapping == B->mapping and A->index < B->index
+> >    (for example writeback; we take locks on all folios to be written
+> >     back in order)
+> > 2. !S_ISBLK(A->mapping->host) and S_ISBLK(B->mapping->host)
+> > 3. S_ISREG(A->mapping->host) and S_ISREG(B->mapping->host) with
+> >    inode_lock() held on both and A->index < B->index
+> >    (the remap_range code)
 
