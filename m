@@ -4,112 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE77ECFA446
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 21:27:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29A6DCFA446
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 21:28:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 072C06B0023; Thu, 20 Nov 2025 16:27:32 -0500 (EST)
+	id 3D1406B002B; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0239D6B0026; Thu, 20 Nov 2025 16:27:31 -0500 (EST)
+	id 3A87E6B002C; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7B6B6B002B; Thu, 20 Nov 2025 16:27:31 -0500 (EST)
+	id 2E6076B002E; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D55B36B0023
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:27:31 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E22DE139CFA
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:27:29 +0000 (UTC)
-X-FDA: 84132271818.02.8FF21BA
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0985316000F
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:27:27 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BEijFUi2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D3356B002B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:28:40 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1964C588BD
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:28:38 +0000 (UTC)
+X-FDA: 84132274716.29.0E78A7F
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2EA00C000A
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:28:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ERFj09Py;
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763674048;
+	s=arc-20220608; t=1763674116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8MQ2GPBHW83S5fq1wRW7v7lPo7wmxf/AYTgBtJy0YmY=;
-	b=C6ktlNqdxrA8GGBm1gKcLqHeNNc5nQbBNgWBr2BubXFPL4iPu+HYe5ULXR5v5WMPIMhAbe
-	NYKoNeMJLvsPMu9W2Ppr4aefhi3kx61200ZcP+VAJvKQ2gcA5dLajxhlZ9iiLef85KEnoY
-	rm6kDiNJiwKRVq+R9DsLu8rxh2AwSmw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763674048; a=rsa-sha256;
+	bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
+	b=DK7OgYjuTvdnvjN+NCHc4KAz/Oa6vkqQY3Ufud8t3ezKkqEQUcDHmqdEhsetblhBPyvIJI
+	X6nQYMp00rdsErEwiYkNaJ/rdT91r/3Uw68kBhI9AAvYa0Mr8cjMw6YTKNf+DDciGwGdyD
+	BKfD7Y506ioyqWRjiBakl+/p4ILf0ME=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763674116; a=rsa-sha256;
 	cv=none;
-	b=1k4lpJmrTbnAKKULEqzS9/HYnk6/4pAc+LAAi6U45Ghv1bcLOmjBD4j70SoysJK7bym4He
-	t/BGJKpL4iEc15uf3zDjSW9ULKD+y+e0OqZh9qGgiPbXnJQqbCzmtVym2suVAuG3Q07aGM
-	NCjjOCprV3XoQwktmipNK4y6TyJmIO0=
+	b=qUQho3sxwXGFoAcKUXxg87VDt0on5dJIQQf9dJHQALSlrhHnV9d7VLOhNM3DNb1ApWMNxI
+	pljI8HG3IefMCd9wTH6+ySyg06WA3eU8EULR3LZQVFXG3TT84VF+J9l7uAQYsr9Xdf1Iy7
+	sR2HoOmaabqwqfg5dcYZdACRQlbBKrM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BEijFUi2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7aab061e7cbso1621400b3a.1
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:27:27 -0800 (PST)
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ERFj09Py;
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ee0084fd98so10497571cf.3
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:28:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763674047; x=1764278847; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1763674115; x=1764278915; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8MQ2GPBHW83S5fq1wRW7v7lPo7wmxf/AYTgBtJy0YmY=;
-        b=BEijFUi2zUtNzdEZa7uXt7+45XeNj+A04+SmkVI91iwwxb5xo0ArpfyCyJYeFDxKiI
-         SmNLe1dMW47f5NGBDX5RtbIujTF6gSgoV5yh9NMmRfaqUsSPW9JjgsZVcuHdn+OnIjaa
-         N/WEWJEKovZ4JUcBWGMz+Zvc6yrD5n6Xle6Dfv/PKeMkixNSvhznrB0NWjfiIPIqTRHy
-         FPg9+Y0QviIz+pclhWGiA/33uNVXC47zskuLrkHgrmkg5la5pMp0GZVYxujuywr1Nehq
-         FDKIiP5agSrHmtqkF2xsX3vS5XU+RM3+NlticfvdORJQiaY3A02uiAcN8Z2D7gBXkeff
-         2Jdw==
+        bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
+        b=ERFj09PyuDXo7ID3eD6obd7mF2zdLqalsaETzAVRGhE5Lo9hjqTcPYLbOM/gqcZ6Fx
+         rhfgbrA4KCH3esadYicZPMG3f9eRG58SX6Fy1hUlEuMhXswYFz3vcpA1eRV1n2uSZjGL
+         DV5uE/G9EJ6xaUo5DcAjS16ymuXUOasbQXTbbmZfxcy2MLZpnEpd0E3yvmxyDrKlq96N
+         0CEPrHlh82PwuzEGy7Js7t2vOs/xhE5Fuv7P1B9IwaO/8fOHWgct2kULUkNP5jxVPidr
+         KrB6vrtootWNbUoRamEQwE5hox5Z1buhIG/MVjrztOsl9WP8m4Uki092PZ/uQM9hHnph
+         6B6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763674047; x=1764278847;
+        d=1e100.net; s=20230601; t=1763674115; x=1764278915;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8MQ2GPBHW83S5fq1wRW7v7lPo7wmxf/AYTgBtJy0YmY=;
-        b=TtRd+4fZkqhjRlavPqW/bBR5BBg8tIwb5aF9GiUORDGCoFJn0fj6zxq4kMCJ6Zk8S7
-         iiU8agoM/ETUrvBpxUwhbbjcNmwa6MZBXp93G2FXkJcolU1sivuyAktCjun3nrvTlfs/
-         U8JEfdkbH9VF8rcL/01xnjioXFhYrZIBIwkKIhL8xb+03eRVH7i5U6SxqK9KFXl6cKJ+
-         ID3opNVgRsogRu5CzEfitH1Lw+ADDsmtpayvxb3BK6EuSYcR8+tR70xtaTDFR93OEPdG
-         lVmYdLMIkGWvwnYcoQeiRuIG2AT2K4fBR0ZVqcGZnHxPcQRA/6CUeRZbNObaTLsvIiQO
-         jBYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUuW2Nef5sT4pItUlyIDZS7r5EnVYJeWJPqQf8ok4RyKGbaB+COGMOP29UEUCPp55gGXNcswqUxg==@kvack.org
-X-Gm-Message-State: AOJu0YzfdZYiAEOczAbDToslHelbE8W/7NmxlaS2BSas2MCSOA2+uxj6
-	17fkJGExMn2NLZfFUzBPjXfFwxvxT3hdm+2qqjwMNADGGSDDK2y+nzYl0GgYHjlXY0K25bYaDaM
-	uebsyEGT7y/VVznEjM2YzDkF6JsHDW9c1dP6Vm2M=
-X-Gm-Gg: ASbGnct8afLt7diw7GOA2RR0Fjf1IqdtyFrf/mlUgmGSPVpS0yi+jclWwgJPU4QFTj/
-	ELfJvaeqVrWP8R/N4tO4gRov4MSyB9Y31j/hGUYxrpxF/E23dRcat0eBNnLNzwrLcwOU0jcafo1
-	HtcjzzOojSnftJ2nexztInj+8hgbnQaZ48PP1R4QsRMURYJ3RtqdKPsVgxmeas9vt+u+i7jie0l
-	dkYysIOPJiSuIViLmjPirGLlgb8POfR9rjWz74F2BvYML73oHoetENc6yYcNBpZkYDGtA==
-X-Google-Smtp-Source: AGHT+IG+lg4eS5i0rptnxHqewOGmi9WIWtm3BkNS150hRV68edD3IKYERtGEqWDxSOmk7U8Kg75UXfI9iTTk7B7cmnk=
-X-Received: by 2002:a05:622a:1aa3:b0:4eb:a0aa:28e with SMTP id
- d75a77b69052e-4ee58936cb6mr772331cf.64.1763673645433; Thu, 20 Nov 2025
- 13:20:45 -0800 (PST)
+        bh=Q8U3O6jgZZEpClalOlIGtLCm09UlDJ0npUO0CA7BwqM=;
+        b=DEVxSx62w/NVKum5mBwj5/vIDOMT959grG3DXB/C568S0QIVXe5IjtVatubVihg+2M
+         7NfkeRPKCXTjpwsf1t6S8Ct9XI3/n89FHXqMSO0/yRdjF4I/Ex+bDHCsfmnpI6nRU6aP
+         CxQdCyx8n5EWj2zyICv1wUpvZwhXOWDyhY99TLKKmaR0x6BOXH6avRAfK1BYm5o7Jcz0
+         YyctSSJp+vynhA/w+8drMfcnugs10stnCljOL6yD+rY2dgkg3A7zx0mMI1QMA3R6TMSM
+         3mK0dvycmzO+v/sQRixdZPnfbJiDhkCAudDf5L1GEjvMj077UVTdcyGHK8Fjncc6+Omj
+         uhBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/JyCsqBtUCg89792bag9k0sv7JaEh8+wWjL+SVE4suHzptgm+bI+Q/ntrnjBWo/zSJufRjVN2bQ==@kvack.org
+X-Gm-Message-State: AOJu0YwBnq5Ys+EuBfk/ViTIjIsCZxVN+cTJNVV253yLhxfyIh6rSXyN
+	Y1BdGGmFgoX2KMUiYKskP7oPZllB8osuVOnx5Oy//iDMleVpGFV97rdX7BHOADkd+LR1DAiGYnC
+	GQK5XX+zmw1tUIJnIUvdNscHPir9wq+8=
+X-Gm-Gg: ASbGnctqAwiBjhjd5LW6/wggtSbMVcuBDZQMc4fn3dJBoT7wppsaku6pRcnkTOpVCHn
+	NqhD09pyHQJwweKUIcuSQtw//kWhet2DcW5gNc+X0RYD/eUSjAXk6rcrHFrRSlHTxWp+Kj/I46p
+	HT1N2M6fyWe2/hEc5Trf4IkLgVRgHKMw9pJXk2r/00N3wQRCoWeFeN9lcXGWFuk44zhep4Glmz1
+	+Z1IuNqkwekMlScXB68mDzOGlX+Xv4q9N4zAE4Be07dUduJyRYIAGNWveF6AO55b2Ulzw==
+X-Google-Smtp-Source: AGHT+IEa5T+vJspuWQ+toPhdixw0WwlXC4G0HJVZEYNsBGrI4UEp3MsHvbWsFOZ191NkPJIFH9UZtf+mHSYJj1eRNx0=
+X-Received: by 2002:a05:622a:4ca:b0:4ee:15af:b938 with SMTP id
+ d75a77b69052e-4ee5892e29dmr992241cf.70.1763674115151; Thu, 20 Nov 2025
+ 13:28:35 -0800 (PST)
 MIME-Version: 1.0
 References: <20251120184211.2379439-1-joannelkoong@gmail.com>
- <20251120184211.2379439-3-joannelkoong@gmail.com> <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
-In-Reply-To: <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
+ <20251120184211.2379439-2-joannelkoong@gmail.com> <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
+In-Reply-To: <7fae20ca-d7b0-4786-8c31-288648db8ad0@kernel.org>
 From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 20 Nov 2025 13:20:33 -0800
-X-Gm-Features: AWmQ_bknxKe3HYjwzzfUFST-_e4QC_Zgx5EeYqCXoRNHcbarFlFOQ1yJzG1WvYc
-Message-ID: <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
- hang in wait_sb_inodes()
+Date: Thu, 20 Nov 2025 13:28:24 -0800
+X-Gm-Features: AWmQ_bmnvTHHOQkyw-5ik9LsEU1gIAn8vSNbEvhvGRrj7a058LOg6piKf3ugJVk
+Message-ID: <CAJnrk1ZpU3eqh7jN8r-ZPyFsuAjkKgwJ-_Sx0L=710hD0UYwUg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] mm: rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to AS_WRITEBACK_MAY_HANG
 To: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Cc: akpm@linux-foundation.org, linux-mm@kvack.org, shakeel.butt@linux.dev, 
 	athul.krishna.kr@protonmail.com, miklos@szeredi.hu, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jmzkzdfkgafg9j6d5fdw1krpsnhsh3fj
+X-Stat-Signature: bexqc64eyzy6466ym79xcpotrih4ckj1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0985316000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1763674047-748706
-X-HE-Meta: U2FsdGVkX189zn/51Mm6pGdnlpDCjwO844LgeSsZLd6oQpy1pk4KQJ5gL2fMGbq6qQPJpozFyHx6lQh1VJixWYTDrAwyaQoMik360JGWFjiXG+1qK94DokyKzBQlwfm+XCNcRcoCVJLl63Pvn0GPfWt21gl1no9xudbY8f8pksFSqHat4gcX40xUInflSle+8JUWOf1zZGIEHXvYYfk/efApVzBS2lHJDBuu4weq5I129FRlLK0gFQi2ZS9zGGBdyjZ3CvOuLO4cvPhad+2/S2u60zzAzgxh01z9XoNOd8MjEk6ZRRPw/tUSey5ILGBhqWejZatjS2ECFi+1pYAksj2s+GqA3qYt3LPWP+UZEthfnh8AMoQf3ndQTw1s7kNhbeXNjSPUpgYXBNhkqH7mM0PevIkQOu5a/TcdHJcvdIrrfCUSnQsgj/G9gAhY5OteT4HFyeADepfcQyoKKt2iW13wD3OOXhkJiuerTq/PjWc+2WzDXSlPEtA55htWbR3rJyiGLnTe3TXLarTgUZkV9xDHB09obh2qnj5kwPNsiC+wK/Yc1UEm0eBUo0IWy08fJoIvO/ZfSZzVPaUkN+0/5ivsop30XObqy5vCMUMCGyshwYHcLT+s/KpXSkPmIjVH5qXF/AShQ/Ocu1IRGb5h3uwoorNP+zDofywzXyckn3EUtIPjJE6GaOBrMhlotwHppcu26ctsaDU05B3v9DHbUE5ho75YTTOQujzh/PVZb6uAAwABME/AfZY2ZIDokWPfCxmWdREclZxx9kXflYNDwW6uFcbQPu7xEHJwrCUaOAc/+fTn6oE01vmqEUKSRvTWmuxEIwvFnmISTBqd0Gvp4B/dPAEzE4K1vT2vJQEkK3gF9lCFyUxx/dzKkT9OR4luOOesC2NrchTANJgddVpOHOq3FHb9DYteqhdVxGhJRJvT6k9tXxv0LFbBWHXUj46D4NN7I7DBgb/k295JBcY
- 9+YKlU26
- Hq5Gqkbx4vYhgw75fLGXyyz0IiWWQOnkK3ik2kV57422Zahn8BJVWKGugrt7x3bJccwvqpSIrBjXOYmDrF3sC1LhQNRSjTEUfjhkkKP9ujb5iwx4XROlbo4K8nY9tTv/o4HoKgtpLex2INgEGzWVU0PiqXnz7zgFnqIQORpz7G+9o1U5EWoLy9O16R9JBnWk7QoxxpB5PJqUjITQfpinmZu9oL3WAl6adlxlVg966I6bT+uwvXhskJPLjWqTVozcyTF9iQYAgM1fPlL+vjIBFH+FAL7BbeDluqX4SnIb5howEui/a3BQKg8Q4v4fyWMo+kocX5p8kcnqytGeZ/5BMKOSO/fuCb8L+I+etnsGaRo1uhkKFSn6rh2Gz3M+i9ePESeFrkpxhW5tHU6sU5rAYcuqA9LrilvvzsCfkHR5qwJkM0KuGc0yFjwlKjyQLyHk0bN/DAS0ey/VXQGHw6G5P2pW1iloTfNCMZ9k7JsbZEvOiMeeNswpk8655tWfMt4bqy3NM
+X-Rspamd-Queue-Id: 2EA00C000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1763674116-651163
+X-HE-Meta: U2FsdGVkX19TnV3uDMcbb9TNRLa3s+FhTjB/5wHWFf9WzUkr8CPSd+sOdIkWJWS48vYBEFJcexVafit1IW4JGby3/D17/k1/PMO9hKLLFMyD0V+AkhiZ1lt+N8auq6/rt/U7UNQF30t1n5qzCO4Wz7+BE4wvZEGF8fSjfsjcNzu+maHLKTqeyh8M52HFuKwjBl1SV68ObF3BLfijGVjsd+szD8zP41XCkQqvTdXh5zEwsNlibFLXaJ+AobLba32Ililgk774Q86rpZ73P5vqPFjt1EdPAzT/yxvMTt7mYKZFEn9W+9IfHmrHIFwcMSVcJMEMSb0+dJskNKtoMTW/uJCOvEfddR8UK5hxtVbK/FgpFD6siqtWhLwsSpZ5PIR4dE7WIg65mudgF3vig5njs4Fz71bOKTJhi6oHN0MH3kVhJXG5fK+pGBez4hIXUP/mx4+yC8bjJx7D9oHV4dprUO5mL/3NimIivXqq6YRoUQy7bRzwprip0VQa/UE9bE0c0NuYvKgylrj+Od1wwspckm4hIHX3wWlyEWc1DcLwrvH6AHAVkc9nCuwR3QoHkFuc3HUwdQLE9+ONlkc/jaS1mufERLjpc3SggrSA/16eawybWkwVNicGk0XT+iWlgpG1pwZngMSmT/O7VaG00HOeh17y4TIy11twg/XkDqXntYwNU6seuiHjovcFcL+IxWHIHwSO08Re5rdz/PqoqcA2isqvw7/oSUozYAIEME51WCewNgL3yXBT8mMDhc6+MaIPK9nZw0jYOCwAHPOuyiwQqY3gJ4V2xAro2Z1yMBQ4G3vMPgB+4Iz0NYf1crDuBmDHehyL+f4J6Y/uf9viPd93ZV+ICUFyzGYLPKaG4HOW0QFsdiyxqhRDCc430eI5AxlovrFKbri56PoiXb4yzJGg7vaGZJd+PI0kvbqvmf3sYeiuGxM8SZ2wXR/SSkWtAclx3HAMieVIuEIWVURzS4D
+ /QkozL+s
+ WNXzVfNStFlPK4DgWgiZhHUzrot4TCc0yOuE/ai3Xz8fu23+zG23g4cA+hjtmq9rXrp64RDpGAumcm9foBKqeEw2uTBFTyqcJ6TNMA7+VDVlxTssGjjyzAr338vKz4LdIAn81JICFJiWvNS42HghmL7R/UZ0KGAgjVrL/v3f9iHRfW88d6369nO/zmN3ywYnfP7DkkC92jsJEeNtVvPWOcbEzDqJWnhwfnmQJwpLCbnasczWtxz6My18lOx+q8lDxHVKB/wJ9XVVGR1jEUxaivETOmEH1h6/OvH/3fUHqEvvgTG7pvSMwyCw1kFWnQNN38lMGiWRZYXkJOWvdFlPPCtH9GZTW1eNTmcbYI9Jd8pkrOql1yPKBwJ2MF6jWaW5x5BAiYrJD+K1rNMVNFzq6/4VjKYag1LXJDZlovVkUb56x/SY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,66 +117,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 12:23=E2=80=AFPM David Hildenbrand (Red Hat)
+On Thu, Nov 20, 2025 at 12:08=E2=80=AFPM David Hildenbrand (Red Hat)
 <david@kernel.org> wrote:
 >
 > On 11/20/25 19:42, Joanne Koong wrote:
-> > During superblock writeback waiting, skip inodes where writeback may
-> > take an indefinite amount of time or hang, as denoted by the
-> > AS_WRITEBACK_MAY_HANG mapping flag.
+> > AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM was added to avoid waiting on
+> > writeback during reclaim for inodes belonging to filesystems where
+> > a) waiting on writeback in reclaim may lead to a deadlock or
+> > b) a writeback request may never complete due to the nature of the
+> > filesystem (unrelated to reclaim)
 > >
-> > Currently, fuse is the only filesystem with this flag set. For a
-> > properly functioning fuse server, writeback requests are completed and
-> > there is no issue. However, if there is a bug in the fuse server and it
-> > hangs on writeback, then without this change, wait_sb_inodes() will wai=
-t
-> > forever.
+> > Rename AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM to the more generic
+> > AS_WRITEBACK_MAY_HANG to reflect mappings where writeback may hang wher=
+e
+> > the cause could be unrelated to reclaim.
 > >
-> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and interna=
-l rb tree")
-> > Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> > ---
-> >   fs/fs-writeback.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> >
-> > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> > index 2b35e80037fe..eb246e9fbf3d 100644
-> > --- a/fs/fs-writeback.c
-> > +++ b/fs/fs-writeback.c
-> > @@ -2733,6 +2733,9 @@ static void wait_sb_inodes(struct super_block *sb=
-)
-> >               if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> >                       continue;
-> >
-> > +             if (mapping_writeback_may_hang(mapping))
-> > +                     continue;
+> > This allows us to later use AS_WRITEBACK_MAY_HANG to mitigate other
+> > scenarios such as possible hangs when sync waits on writeback.
 >
-> I think I raised it in the past, but simply because it could happen, why
-> would we unconditionally want to do that for all fuse mounts? That just
-> seems wrong :(
-
-I think it's considered a userspace regression if we don't revert the
-program behavior back to its previous version, even if it is from the
-program being incorrectly written, as per the conversation in [1].
-
-[1] https://lore.kernel.org/regressions/CAJnrk1Yh4GtF-wxWo_2ffbr90R44u0WDmM=
-AEn9vr9pFgU0Nc6w@mail.gmail.com/T/#m73cf4b4828d51553caad3209a5ac92bca78e15d=
-2
-
+> Hmm, there is a difference whether writeback may hang or whether
+> writeback may deadlock.
 >
-> To phrase it in a different way, if any writeback could theoretically
-> hang, why are we even waiting on writeback in the first place?
+> In particular, isn't it the case that writeback on any filesystem might
+> effectively hang forever on I/O errors etc?
 >
+> Is this going back to the previous flag semantics before we decided on
+> AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM? (I'd have to look at the previous
+> discussions, but "writeback may take an indefinite amount" in patch #2
+> pretty much looks like what I remember there)
 
-I think it's because on other filesystems, something has to go
-seriously wrong for writeback to hang, but on fuse a server can easily
-make writeback hang and as it turns out, there are already existing
-userspace programs that do this accidentally.
+Yes, I think if we keep AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, then we
+would need another flag to denote the inode should be skipped in
+wait_sb_inodes(), which seems unideal. I was considering renaming this
+to AS_WRITEBACK_INDETERMINATE but I remember everyone hated that name.
 
 Thanks,
 Joanne
 
+>
 > --
 > Cheers
 >
