@@ -4,100 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 615F4CFA446
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 21:36:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD4DCFA446
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 21:38:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6FB66B002B; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
+	id DA5E26B0011; Thu, 20 Nov 2025 16:37:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F9536B002C; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
+	id D7DDC6B0012; Thu, 20 Nov 2025 16:37:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C0AA6B002E; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
+	id C6D4D6B002E; Thu, 20 Nov 2025 16:37:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 77D4C6B002B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:36:27 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 236B213AA60
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:36:27 +0000 (UTC)
-X-FDA: 84132294414.24.5D1D685
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 946561C0011
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:36:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LaJBzhHJ;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B24A26B0011
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:37:59 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A0BD1403A1
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:37:59 +0000 (UTC)
+X-FDA: 84132298278.26.806A356
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 39B3014000F
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 21:37:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Ig1olQFf;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763674677; a=rsa-sha256;
+	cv=none;
+	b=pszLNeqlyfwtVssJuu+GHFLauZgG+jdM/LK8719vufFrvQ0G40GI5gid+fksi+DYxoLsPw
+	eIIZDXpdF8lIITAF6swX88tZykgTC/9Dlw082yXjc7oGBvGNEp6MV5EazrTKs9jjxxXzHK
+	hTmtjzx+MT5ZGcs1G43+phfcPSgKMBQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Ig1olQFf;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763674585;
+	s=arc-20220608; t=1763674677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6EFdADKaPdUmJFGC3bGJoIPWkCFx4ee0UN5G6pGUyLo=;
-	b=Vb06vADj1AvD8T9JVg3iPsJYMTzmHwQvmTgKatSd8jAvMQNvogFKFsh0jbVxhS4n3L//ML
-	zmxeHvPs9hh9RefQGqeKqv06ExOd3mqjuYQEU5SmTQ+CQg1+/gpxsnXBe9boZty6SMMFI0
-	zOfv9nuhsHchcXl6GBgT0bhrC8irma4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LaJBzhHJ;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763674585; a=rsa-sha256;
-	cv=none;
-	b=okU/g8AaiNTn2ia2T1JTvel1fJUS9qWqBlPEtR4VIvr8/fMZCyTv8Jm43ugQszVZcFQePr
-	LKaNB2VbSz2NlAoaciKmjhw2T80BfBzzW0iHmihSrX4X8MAJ1GO64GnaSExXchWEu5Ify9
-	kG01hYJqdC2u9Scv60NxuTTDHjsjTiM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763674585; x=1795210585;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=DU7XGzoH3AZNUi+RrQ3xeIu8dOW4ZXL6yva3U5HYBaE=;
-  b=LaJBzhHJ4U4BBJmiMx7/knwwzqwTmnZEdpU1aP8m/FgFn3kf5lPicCan
-   JMTPmOshlSL13+Ze93w+EyLRgEsJzYgWiaEn+783859ZHKO6jGcayZcA+
-   UL1lOH6D1erE7NTVIiSe/a6no9x/yiHuzWrVglUO1xDMF1llTC5umg9fe
-   JMT/JAccUYu6kidYtfYpdcAcEoM8kQn9bBXwnLn/Gftgs7PhGGU938fAZ
-   qKn6iKwJY2MynNDosoo5CZY/0+G1AM0WNaoFgfX3S82VGJQnB0fh5cwYE
-   f7fglF6pnjFmzHS6+P7FOohFhnzUMnhLwOrdCPaiLfgWnz2dUDSE6b/fF
-   Q==;
-X-CSE-ConnectionGUID: dpkLH0KNQq24AwzADSkNFg==
-X-CSE-MsgGUID: VB9l/cmoRlSIV754HUDnPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76864701"
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
-   d="scan'208";a="76864701"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 13:36:24 -0800
-X-CSE-ConnectionGUID: NeC6Lu3vSg6ak7hTcTip5g==
-X-CSE-MsgGUID: D2K2LDidSsmNJb062+ajeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; 
-   d="scan'208";a="191591618"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 20 Nov 2025 13:36:22 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMCKB-0004bJ-33;
-	Thu, 20 Nov 2025 21:36:19 +0000
-Date: Fri, 21 Nov 2025 05:35:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 9912/10599]
- kernel/liveupdate/luo_session.c:392:86: sparse: sparse: Using plain integer
- as NULL pointer
-Message-ID: <202511210513.ywQeN1k6-lkp@intel.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v4yhXQ9GulKnB8nV4VH5JE032ZQQUQfYPouYE6GX0WU=;
+	b=6PxHO6JLq3+jbaZ51ACqpqax/BEWtJD6SHF2HEqZxEPiSL3xdXqrr9CD9gYZ5dgSXOlYMi
+	dxZ6elhP+CVlM0+p1KxzS/qoc5MdmXM65vn+cI120xpXJkipcXavWBx8FSKjSi0cNyPHVX
+	TFqL/0LUwxAzNmjwqDeegsVVITg8SPc=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b725ead5800so179402366b.1
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:37:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1763674675; x=1764279475; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=v4yhXQ9GulKnB8nV4VH5JE032ZQQUQfYPouYE6GX0WU=;
+        b=Ig1olQFfF0Fc/2mforw4Yax5oxVChiQlQfQku3Wd5FudNrDXKhuTaVDhb6UKrCvwNq
+         4kMPsi9dboYAJ3ksJjSzlrmB5qEqy+/lJ6lBB8QmgXu9pbLD42QI/OZ5eqmWFRrOkOVO
+         WCYwnhdiou2PYlaNw5ZRQAITTGJAK87O3ZGrc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763674675; x=1764279475;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v4yhXQ9GulKnB8nV4VH5JE032ZQQUQfYPouYE6GX0WU=;
+        b=vW8z2IL2PKhY4tWtg5PgLSO2qurp73GGGXmhhBatV6qxHb35ex6J3dv6wiDmP8OO32
+         ziXT384Emy6dLWcguwjOy/hjVJBkMYwdLpQSQudZ0xZWHn6qEQIxQz6NqQB1c38ptsii
+         oWIE28Jh7xAmwR5R3VTJGbDX3T6WcyyUM1qDbjt/JzJIpfAnxKfZOvZjyo5ofEBcfokb
+         o4yCJpng3NxDayeMXI6PeoszrJ6Xfzr6c/QiTuLYqkH/niqDdgDEEAT04nnq36t5NHtG
+         jron1eivWXjA0Umtf+nQZouZuKg0HG3iu+t9QBvP+ft7Jb15E7o4EyLtlCux3nZnY1ra
+         vPJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhBXOaY+0EvTGaoB7gAduKEevBYQE7pJ/KZT51pcQmEcLkIck7UoYUCMarDGks394ZV1H6pt3TfA==@kvack.org
+X-Gm-Message-State: AOJu0YyudqJvTggklDnd8yB+VyYzXtMEyWoe9Xpq9qNrP3FtzBlEqI3A
+	iuusa8vO+VIhnoUkd/kcuovmQ6d08z0+kBJ2C3F+DuDsUA1ZkGi0sVt1CC4a3xWl4YSNLsdS+fw
+	nPRhjBYTCwQ==
+X-Gm-Gg: ASbGncvuMqVWLbU+0JsC0DVMdr8Pbxlp3qnPBKQAVvdrOkI/br3SEuBAkBo2lslXrOj
+	I1/FrH3zmuVnjkO/u1+dbf0RfSpdn+K82IfPw+jva+HnZsQB13DfypJOrq5wCZk0seUzaVy7UMg
+	3Ppx7AlcYRj+7gtdYWyHOeWQ5mxqLA0UFtmkyut8XFiwOE/QWc912mnosKpzU21SaeZCVK730xj
+	PD4q59jZGn6eN7bxzk3EKdht3+MXKRbLr/QMFSO2PdN1r4zgCmANSSjlwtrM2QmANt3yX5gozqU
+	/6jzOrch028/I0HYdb/LtRPEG9+7+P77EaP8mdQkoy5p2yEftFd7G8oIR03Sm9tzlVWiTa+pYkc
+	k/9uvhhyByCw5eXRueVFqPrrJkW9JTamp6I3cay1zQd+eK77zdJMTONnmnNrZ6wVlQQH0keNb/K
+	imQFjbSGAct4v+Zar/GRWeN+MXQ1HGMQmBnmqkWQpotcVqrlXZ9ibqeTaYBIed
+X-Google-Smtp-Source: AGHT+IE+aw2QXa/02oXuxAQZpJQby0zAzIPBDYJY9n1kYCu15sf8KKnfxQ7zAbtEiF/ur0NuHcosNg==
+X-Received: by 2002:a17:907:3f14:b0:b72:134a:48c8 with SMTP id a640c23a62f3a-b7654cfd448mr471795766b.14.1763674674996;
+        Thu, 20 Nov 2025 13:37:54 -0800 (PST)
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654fd4e6bsm291444266b.34.2025.11.20.13.37.53
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Nov 2025 13:37:53 -0800 (PST)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640860f97b5so2058547a12.2
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:37:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUbkWV/qkoGE3fBtDc6Ar/oMFw23DyCGoKXAPoQ5WAjCsmx1JQb9stQ6CrGauD0RpBh0MVxIhaNxQ==@kvack.org
+X-Received: by 2002:a05:6402:90c:b0:63b:f67b:3782 with SMTP id
+ 4fb4d7f45d1cf-64554692891mr155989a12.27.1763674673251; Thu, 20 Nov 2025
+ 13:37:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 946561C0011
-X-Stat-Signature: zgrss94p6snzazqccw8pkh76n3kpwri8
+References: <3f4ec3be-0725-43cc-a75b-72549ebdc5c9@suse.cz> <CAHk-=whUBuZmRNGCxjnAkFQLO_HVV8SgWEAUg+3z4EARD9MM3Q@mail.gmail.com>
+ <aR913JM35YDVSCjF@casper.infradead.org>
+In-Reply-To: <aR913JM35YDVSCjF@casper.infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 20 Nov 2025 13:37:36 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whk_gUfFKtZrjd6TbaR0YhEmhOAs9wXFg5Je3FzQ3adAw@mail.gmail.com>
+X-Gm-Features: AWmQ_bke52G7Xf5XSH-fAxcjB8H4OhPHmCg2i731CLXDdQlXY8OHLgDLjc_6dog
+Message-ID: <CAHk-=whk_gUfFKtZrjd6TbaR0YhEmhOAs9wXFg5Je3FzQ3adAw@mail.gmail.com>
+Subject: Re: [GIT PULL] slab fix for 6.18-rc7
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, 
+	Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Christoph Hellwig <hch@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 39B3014000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: xfokbzmmrm9xwy86sk5je6a3eiyrc8oq
 X-Rspam-User: 
-X-HE-Tag: 1763674584-612125
-X-HE-Meta: U2FsdGVkX196WBn/fUd6r58aePXoMFT543QigV9NYL72oWP/LjaB8T7B5PBd9DsX/Gp05NiJu3Sfwm9t6PJPfDUqHFM+fDIdhrfz5xBbiTuNSJeHcrAip1XwQcm7f9Ta0Ey52fnpPGlU6d2KXV45FbGsGPXyHjgn20ruqojZA/j7nrscqFeUglK0Vg488kzmoaCqGUZ8OifT4POyHH6bsoAOQ98KutRQbi5QQv5WTNgKH0UhjUusheFbfkOqsmNdX+tIxs4UmuJ2R/ETmiHL1O9q2V+TEuW9ghtKWNFmCzM5DsSvgtg8x2rQaAH9xb7Hiye8DIElhfvMPC4TOU8NwdwgDq3FBExzoOBkyA/wQnXumB5pINhXCCphhCEplCkQjDv884+eBYsrwemBKNmR6xhTX3i8z0+4uUBI/6vTe3IRe25CMtTTUGD77HMyLD2lcNqbXxYpdyZJBa5aozX4EFDotMkOIuA71K/608QtRTohIL27asCIe0U7n+tVMf8TBQyypy0ZdAt4hueA9EJUhsn8q0Af4TEb6ALL74hS7+I7oGrURWA5AUXcxzQKgq2V66WnUozBQLwKS5blm+3K3R2ELvETRSKaS8SUIic/0jpqB6p4Sf7EFT2rkZzda/IMzuJ6m9uJ3wW+FU32FkupT5Q+h+PoqjMy0GKZ9A/rrgGo1O6etiaRKRVK1vj50DHoi/GN8NjIzmvdEuyVk/hUyj/PtjMrLVdxLZSnzaNglR6qt0daVFfcCvaORNkNukut4mfamZdhhzSyBqOgqdxI5qzv8r7Xxq/gH1c9EFa9tCwCvHA2VbtIp84uuF3oF5KBu3w2lpzF0PrcoA4HkWnHbUMo7XS6icC6Y56iobnE6FnN8QtkarSVJ21nrn7q5cOBDFeEpMpXEOyz5qTfrURKvsyaDpeh+XPYeIj7AWLpI7njCNTi9txszw05SX65DOQOl8uX0rtetB3aX2wr52L
- L42dkw2I
- OeHS0dQCY8+fJmbI6E/9Fm9QkFbAkX+S2/3E2KZMky2fFtA2zP03DKgrRgegUb3KSzUAIGZ7InK56USlWDa1XmSY3eXXovkGzXZR7tpcuuyMU7zNXDxoW0M4v1b5RdbuWjneqZSxSlxp3koTksT0IUk8a/pYgKaRGVS5HNYn1hX8PDxdG7orLJQnmANJz95OqDP18U5+TKKY+bYHIoLcz1jzdV2LZmUOJmLWFSWD0boLp8Y3XWs4MuR1GnVaCJMYS+RZARsFL/69cnU58i6ZcxLHqV1YvFLPfcH/KgQfa2tiFGApjrpAh8jJaW0BjTflKUG/qXlKDzstzuX4txlZZ9mmmcBItSdjYQ/DzvCFpQPLWNi5TqXBi2vF8gw==
+X-HE-Tag: 1763674676-22793
+X-HE-Meta: U2FsdGVkX18j66/Bdgr452vLBHNstsEjpIkO87zhipz0MPj8ku11AsyYSx+HWpamLBvyxpVUrrxcEcMdiduAo9PExXgKZUjk86pxKLYz0uxMJxTF23cI4Rza3hVdcHwUUDIgEh3uqAInuv6jT+LvGcL6OoOJFoFrlSjtGAeBJnysDsDircSbdd/D1ZkEEQWlGwqrPY86tqxqyB/2CL45pNPpxWzn6xyaNOcZCPlv9N5Y6rZSIL/gdCSJBEiaJtvRevyrkPqs8Q/B9JdZ+DtEq2C/a0tOGKVLx5630M2A9LNHR20QeOi25u/pNXwjRtFKaqQr1ec3M3LzJ5PN6iRN+LkWIigBKhgesmKKFAbUnoBUEAqQKaPb3uZx1qnxGZUmNSj78zl4lbcamX59aU7JflkM3YrJDdCLbhSL9itfbFIxaetsY8qCx49oGo57qJRZzJp5pfMGwIQ1JSLI4y4dmzf/LTPXoixPull2zbPWJswhF81+eZzCBGjdlo70EHSrQygbVbgjCdwQa4KpPAS27YPJgxvS5rEWaFZw5b/ZOui0NlIhgyFPw7wgPfCtnMlNDhQU8H7Vql4a4z4m47KSpwN5YFjpptd2U1Fq7jZjc1/6hUZ9lyCu6UWS1nCvEEuYphovmvSyyG3VhQSB2lYML9Yh10dZMsxm7j/HPHHpXA1kgSw+PwOvH09MlSdjmz4pcMOyyK7xnWhgaiPsAPfU4EKRbGPv6aYuewEVHYVr4mPp0qowsY8M0x/phgSsZeUknQW4jQkwKXcwDotoAS4HEL0j5AHWeMx7Y16Ac6mUjiatmD5nznr9HERRWYPGPmIpDMDPUvOBmS02ZKvJ/7RaWtXUvJfHl5nZZt1AJo1FDdjJiHqIdsm6vDjIpx/KlbbJh1LqGvEMfEj+/Riwe30AyvbHIfISdUuiFDz7zZz5tTCMtULnRjxfBYUL7y4HI8ozhxcAZXhuca8/m61JQM3
+ oPW1ukdR
+ uFkjUUSWQNcT7kOTIP38fYOLHVIROhONxySr/xWjpyLy1rMKwUu+nu0YvoyhQhMEsy2ozHWrO1IPORKIMAvMm7ApQzuPpdLnsB7Iyd9treM6csszLeCBPFWbQTkzfJGGN/HY9fB8PbexJHhu1JK6xw+h7c0fxuvfi1XdBqfVVoFZYh9WSLVqqUXM7EV7HiQE7GAXxWUVhYMdfKIa6W2B6pkIHpB+l3ZtCpL64jXUq3tK/imh1qt7fNEm7eWiz3wTIv5oZkkbAQ5hmr/AdFyO1R0QRFIsNTVTL9vk8Vdt2v9bA63lbDD3lrzf0DUsDnBfJ8yi/URLHQuJimLGXwgb+2iQ/3+EQDd+MUlX6BII2MKcFo/3sFCh64pllEuFD3iDKafkHFMntto7qNEd+XlvB2DW+BC5wB08qP9zqBunB4naOuFMIV6Rlp+AlIhjf0uEzBGE/LDK1gBrKBdJqAVbcNIj/ce0Dh2IK6zZthewoLm8FHl2nRVfzMF8i1jmqpH5vSp3113JZA6n+f8sXNF+Qcm9+Y7+W97BPBEXLBD9aiZemcDO48EV01KYALe9GFwiODyJOfYRf9o9J4cjFx29N6cIGtQyfW+KvasOKBY+iohCvatbO/3mBGZgxvUwlVaICCJ7tAnUrXM6Du3OBA9dsLrlmEGFnC/yj7WqI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,71 +128,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   88cbd8ac379cf5ce68b7efcfd4d1484a6871ee0b
-commit: f485f57c35af5b8c2a243dfc39ee171673484915 [9912/10599] liveupdate: luo_session: add sessions support
-config: x86_64-randconfig-121-20251120 (https://download.01.org/0day-ci/archive/20251121/202511210513.ywQeN1k6-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511210513.ywQeN1k6-lkp@intel.com/reproduce)
+On Thu, 20 Nov 2025 at 12:11, Matthew Wilcox <willy@infradead.org> wrote:
+>
+> Would you rather see something like this that hides the fact it's
+> dealing with HIGHMEM?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511210513.ywQeN1k6-lkp@intel.com/
+NO!
 
-sparse warnings: (new ones prefixed by >>)
->> kernel/liveupdate/luo_session.c:392:86: sparse: sparse: Using plain integer as NULL pointer
+I would rather see us stop writing WORSE CODE due to the abomination
+that is HIGHMEM.
 
-vim +392 kernel/liveupdate/luo_session.c
+> @@ -67,11 +67,19 @@ static void check_element(mempool_t *pool, void *element)
 
-   357	
-   358	int luo_session_deserialize(void)
-   359	{
-   360		struct luo_session_header *sh = &luo_session_global.incoming;
-   361		int err;
-   362	
-   363		if (luo_session_is_deserialized())
-   364			return 0;
-   365	
-   366		luo_session_global.deserialized = true;
-   367		if (!sh->active) {
-   368			INIT_LIST_HEAD(&sh->list);
-   369			init_rwsem(&sh->rwsem);
-   370			return 0;
-   371		}
-   372	
-   373		for (int i = 0; i < sh->header_ser->count; i++) {
-   374			struct luo_session *session;
-   375	
-   376			session = luo_session_alloc(sh->ser[i].name);
-   377			if (IS_ERR(session)) {
-   378				pr_warn("Failed to allocate session [%s] during deserialization %pe\n",
-   379					sh->ser[i].name, session);
-   380				return PTR_ERR(session);
-   381			}
-   382	
-   383			err = luo_session_insert(sh, session);
-   384			if (err) {
-   385				luo_session_free(session);
-   386				pr_warn("Failed to insert session [%s] %pe\n",
-   387					session->name, ERR_PTR(err));
-   388				return err;
-   389			}
-   390	
-   391			session->count = sh->ser[i].count;
- > 392			session->files = sh->ser[i].files ? phys_to_virt(sh->ser[i].files) : 0;
-   393			session->pgcnt = sh->ser[i].pgcnt;
-   394		}
-   395	
-   396		kho_restore_free(sh->header_ser);
-   397		sh->header_ser = NULL;
-   398		sh->ser = NULL;
-   399	
-   400		return 0;
-   401	}
-   402	
+You just added more lines of code to deal with something that we
+shouldn't spend one second of time on, and that we should *not* write
+more complex code for.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+IOW, I think what should happen is just something like below. IOW,
+just remove the useless garbage.
+
+Think of it as a small step towards the eventual bright future that is
+lack of HIGHMEM.
+
+HIGHMEM was a mistake forced on us by bad hardware. We should revel in
+the fact that it is not really relevant any more.
+
+            Linus
+
+---
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index 32b65073d0cc..ecfb65c09651 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -58,7 +58,7 @@ config SLUB_DEBUG
+
+ config SLUB_DEBUG_ON
+  bool "SLUB debugging on by default"
+- depends on SLUB_DEBUG
++ depends on SLUB_DEBUG && !HIGHMEM
+  select STACKDEPOT_ALWAYS_INIT if STACKTRACE_SUPPORT
+  default n
+  help
+diff --git a/mm/mempool.c b/mm/mempool.c
+index d7bbf1189db9..22157d23cdd9 100644
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -12,7 +12,6 @@
+
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+-#include <linux/highmem.h>
+ #include <linux/kasan.h>
+ #include <linux/kmemleak.h>
+ #include <linux/export.h>
+@@ -68,20 +67,9 @@ static void check_element(mempool_t *pool, void *element)
+  } else if (pool->free == mempool_free_pages) {
+  /* Mempools backed by page allocator */
+  int order = (int)(long)pool->pool_data;
+-
+-#ifdef CONFIG_HIGHMEM
+- for (int i = 0; i < (1 << order); i++) {
+- struct page *page = (struct page *)element;
+- void *addr = kmap_local_page(page + i);
+-
+- __check_element(pool, addr, PAGE_SIZE);
+- kunmap_local(addr);
+- }
+-#else
+  void *addr = page_address((struct page *)element);
+
+  __check_element(pool, addr, PAGE_SIZE << order);
+-#endif
+  }
+ }
+
+@@ -107,20 +95,9 @@ static void poison_element(mempool_t *pool, void *element)
+  } else if (pool->alloc == mempool_alloc_pages) {
+  /* Mempools backed by page allocator */
+  int order = (int)(long)pool->pool_data;
+-
+-#ifdef CONFIG_HIGHMEM
+- for (int i = 0; i < (1 << order); i++) {
+- struct page *page = (struct page *)element;
+- void *addr = kmap_local_page(page + i);
+-
+- __poison_element(addr, PAGE_SIZE);
+- kunmap_local(addr);
+- }
+-#else
+  void *addr = page_address((struct page *)element);
+
+  __poison_element(addr, PAGE_SIZE << order);
+-#endif
+  }
+ }
+ #else /* CONFIG_SLUB_DEBUG_ON */
 
