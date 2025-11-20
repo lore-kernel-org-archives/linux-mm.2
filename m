@@ -4,95 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F64CF8854
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:01:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92550CF8854
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:09:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5053A6B0029; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
+	id ED6E86B002F; Thu, 20 Nov 2025 08:09:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B5316B002A; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
+	id EAF096B0062; Thu, 20 Nov 2025 08:09:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A3FF6B002C; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
+	id DEBEC6B007B; Thu, 20 Nov 2025 08:09:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 291556B0029
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8487F160869
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:01:30 +0000 (UTC)
-X-FDA: 84130996740.29.2AA3231
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 104B0180010
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:01:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=usJJd61n;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CDE696B002F
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:09:25 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 75D16160888
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:09:25 +0000 (UTC)
+X-FDA: 84131016690.18.20DEFC0
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7BE9A1A0007
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:09:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=pYTsshcF;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf19.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.128.172 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763643688;
+	s=arc-20220608; t=1763644163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Appw5O9xn9vKWf0A+16v30yLtvA63IpanK+xECauBoM=;
-	b=vrKJHU/oO9ShyQOLC6BvDgQEGk6AwNPDPO4rQWm0rXiDXyFjogw7Zfo299nGxuiwoBIua7
-	QZS+gPHjvzA2JqbhvM0ZJVk8bHCwr3BMqQyEKWs9ZlKQyTtrv7sy5Pm0iBL9BG5PFLkFRh
-	dDe7XVmPRKgyr8vkmirpciGmOpYhFuM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=usJJd61n;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763643688; a=rsa-sha256;
+	bh=r1I0QiXVPHftQdf8ZpFoiPUOmVVw5f0W+STeRluV2CA=;
+	b=oJZrYl5jRbjZHEwAEXnZ2jUP/4LcU8S7fZg/2N51+KNLMAATJCOervmz8tYr+gZfymVFlq
+	yYrBfvdgq/8UOeUFpCkZKkiac3CxYuEuP/vL7Gfo2l0a9rbr/8o+qVxF9oxYJZm5xiZyJB
+	VGLlVcUTKpubNwTxtModxGDsBp+qhmM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763644163; a=rsa-sha256;
 	cv=none;
-	b=ukpnYl0b+LI8IjRwg5M6yzijCtxlLwOL8bMToYPGGG9KYDiEiWAglLUcRdLza7hN2A+B5V
-	1h6O87jCmNLBcYkuHZ7kAG/8aisaN17MdSgk/LAE21wXTM2pBhttGErgYGgSnX3gnoy7bB
-	cY5DPqRgSScIse4XPW2kVAJE1E+ZAEg=
-Message-ID: <f4652d26-a0f0-4ffe-ad53-74a3418c75e1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763643685;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Appw5O9xn9vKWf0A+16v30yLtvA63IpanK+xECauBoM=;
-	b=usJJd61nfgOrgJv9VkEZ3PMKtrtJaJEjNlVH8RWyyQmyKQb+9SiV7pZ0w1OZPZ1n9HBCc9
-	xoFEYp8owtU2QvVmNzWY2cX9h/gQJ517YAyli+xGAvQDmkG+LAEU3kpCek5pkniDCNt3vG
-	saFS6TwzqYvcFwtasFMFWmyOzqAjkI0=
-Date: Thu, 20 Nov 2025 21:01:11 +0800
+	b=QXs2ZX6x/STf5nDDoBWyYpfpHWAiWXZDONparAg0cnYvBNsYjQRCxWdKsx2mfKRYSMgao2
+	bbG+BTnLqCros2BTJU8pMuyX2ZIafhWgHyOUJS1WWXOnJPapRYvGrEZN5yRrWLoDMloghO
+	mRWhNRNREel86U6ICLfJFXM4rSqWXKQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=pYTsshcF;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf19.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.128.172 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-780fe76f457so7887347b3.0
+        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:09:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763644162; x=1764248962; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r1I0QiXVPHftQdf8ZpFoiPUOmVVw5f0W+STeRluV2CA=;
+        b=pYTsshcFqs9FD9fJe2HLurHF9mj+NaVMN5ON5GTeWbCzeW0fn3TbXUHpO8t5yzfh6p
+         TImylPWVdGLDI51ZTMq+KQa6yRqdbuwm0n/F8KWI4cG+Bsd9DLyY3Osjk1fppuWEhAD5
+         /+X2GhdNZNDHzGdkp2Qk3GRO6fjBC55nQn5ZIoW2wQ/pJq1WTzwu3qJatlt9WbDOPCjr
+         jXJ9JWHfG45TJZCFTSs7ANOmST5V7kYjr3KqAuQuOV3lXRwU0c8fFAh3gzYLYzro8Ge+
+         n3QOcz3hHUV4ticSiT0buidmAu1LzfwD1zzPZBgJfx2N9yu7fL1RDSR7rS143qKGoafD
+         oc8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763644162; x=1764248962;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=r1I0QiXVPHftQdf8ZpFoiPUOmVVw5f0W+STeRluV2CA=;
+        b=YVfiLDsYe7mggA0B0aWj65GOF2D/x/G2MdmvlH2KCsYyjN6KBSeP5tWAD/BlTqh2iV
+         VySdWjqbvFdoB2G/nerHYbDaZ6zRElUvqS8218K+n5NoLcmfLfiyiPS2bIoPH0pd6uc6
+         JNuYjzUTXkd/kkMNOjB7ZpJcPZNZ0mYNDjvbrLqJnk4MjHM8bqKBcfWX8MRkYg0sBBgz
+         +o5lam5/2kbmXJGJQgMudp76mkWHUNyDkWLXVeS0k9B5BaT84riqggvFOCfYzVBAZGHb
+         ewOMQyFow4JJ0XsbMlz9iQtrx9MQ5dk3+pd7c7AuGA7lakNcYgkXvLqQ4tyVNQ+RZ7U8
+         qCUw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5Zuvhu14Ggqj63r+P6eSN2W114XbK+lwjAx6J+2FNdPZwpBXkcOwpPt10K5QODYzE8+2sEzl6Ow==@kvack.org
+X-Gm-Message-State: AOJu0YyHaOoNtqxjf+aru7X3LqrpiewvE0zO35dI3OYWB/E/WqD7eCmR
+	Rfred9y1dk5o0BKTJOXb48JZIOUup/aROHIbDCIEz+x+V0nBsr12cj6TYy5qY5FdWK835SG4XuH
+	ZqzcizIXBhqx7dvSh7Z2O4IRFA4j9o4DGIL66uLkG0w==
+X-Gm-Gg: ASbGncsr1dkryKUBStFa+GA85owTcN7gV+e9b8mZrjzyPM21ZZrku8eXGQW+25QMOBr
+	o0qg6hK/RzCv5ol4GyshtsENt7aTqROGNKfsYGQmH4M+vyfo0tKdXW/pbgVEPK6UpY5pMw2DHgy
+	3u+eN08z8iyi3M2af4OqQXpyIiXQn7SZhH/whIJtnx5YLMV1psf6ff511vgFVD4Nu3+xnKwlABJ
+	FVBXBt8wxBXhw13uON2Om0clJ7QIyakRje/AX3q8X7L9LMK78agBZVaboj3uhriELoUmF0=
+X-Google-Smtp-Source: AGHT+IEgY5abhSTiMU0lpFXAsS0MziG35W+XuoxZsUyng6z11cdX7siflB64NvHvDx/iWDTD/vORYSvUcdTKAP3cke4=
+X-Received: by 2002:a05:690c:e4e2:b0:789:2e24:b786 with SMTP id
+ 00721157ae682-78a7963c587mr48433677b3.52.1763644162316; Thu, 20 Nov 2025
+ 05:09:22 -0800 (PST)
 MIME-Version: 1.0
-Subject: Re: [PATCH V2 1/2] mm/khugepaged: do synchronous writeback for
- MADV_COLLAPSE
-Content-Language: en-US
-To: Shivank Garg <shivankg@amd.com>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, David Hildenbrand <david@kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, Branden Moore <Branden.Moore@amd.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-References: <20251120065043.41738-6-shivankg@amd.com>
- <20251120065043.41738-8-shivankg@amd.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251120065043.41738-8-shivankg@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 104B0180010
-X-Stat-Signature: 63f63ko3aitt34pkeytwkrwiepchuc9s
+References: <20251120054015.3019419-1-mjguzik@gmail.com>
+In-Reply-To: <20251120054015.3019419-1-mjguzik@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 20 Nov 2025 14:09:07 +0100
+X-Gm-Features: AWmQ_bmva2PuQJGfBivPIJW9T3qpMV1mhmjywprPZqprVkeKf1AnumodUtem6Hc
+Message-ID: <CACRpkdYwUAEvqLugyHfAaHqUXODq+4kdKphgfxs7-UJMaAYeag@mail.gmail.com>
+Subject: Re: [PATCH v2] fork: stop ignoring NUMA while handling cached thread stacks
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com, 
+	Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 7jocsjykdm1nrn8wak6cfspug5et7okp
 X-Rspam-User: 
-X-HE-Tag: 1763643687-828517
-X-HE-Meta: U2FsdGVkX18k2OvMrJU8VBSbVbz1Ep6rdJimZvRFya4kZ3sQMCF3NWL/ZywWr85jzUfVtkegqasG2cfouk1qsmQm7saaEAWBNvev6DM/Ta3YUygSiuXBemYR3C318fI+WmtBrcfAnHj5omtY96jwjK74Ha0mdC78aXCtuol0hTzOkdv/lE86stCzTb6iiNGEPai8VjBsydaoX33d0SbDUVSMuwotqIbNKWRBS8t4XfHh1HCqZwbVcrVqCQIrD9x6X3HlU/QHTOWDJHp7kLJbOcfnJik1B3BnVyFkHkjcvPKADyP/uKaHHCJFXBnRPhefUJ6Zy9gsDblvDTBwzm39WFQOd45yxIEuwileNr90NDIJh9MVtgNichnn4MFXItTdBFySOiohJWcRdk9uDlLlkSHSo03Msk8dYZ1ruLXaMnQCF7N+rGWXwt3I/8P4ZIdCh7EMBSbEeAWAAtaS8dgOXTeYUrPN70WlqhPsQ+E8oTNRm91kVSjWgD0jbcwOANjwW1Vvb4a0uP3t+QeaEiC1FBOb1Mb/EbB2kZR0A7tjU3ugLZNFrkTT6Yd/S9EmlZqCk3sAzFIDuKWzkHIBHl5s6Z4PggRljtc5GpKn/32A/OlbCchxZm+knzNaAKylMQHtLbgVfnwElpXDu71kAqcNBXRX8klbVVdKhJZoz0qW602vWKuyiuK050XkREyWq3RGffrdIPbPv2F97wO2rtRSzgXTqRAZm0n+y29hmHI3Eez8IiXDAqYbzPBZN0yYQqwIJo2X3SLwwUnC4gvxC23iDh9FodBFHUMH7To2yVU1pcyWp8kScW0dXBIrVusHUOp/FfY6IJZBbhxAq01P/y22UbENzpL45rpFeZ4GA84/fi7JsKCZTxP4jRZmQKw5ZXjrxduYFwJxNlUl3WounX0u1aSn7A/HA7P2DfEpC1jko3yjBQSFadwqWNeiWWC1nQqQxgq2LXqKA/XLwdNpWT5
- ync/3ALG
- OMBqFO+0K/gwh5GYlyXJ2daJ0gb+D8ZglMqbGdp5lJv/uRm52jy029+tpu57iCWgQXOdWv0+SKK+OvFGBrgJw1UHfe1cMy0RWN6d8lCpUMlSzhOvWTzCAF04f8fUy9BD9evU3bUZPZGTbcioJwxBXDE9FvGoxLxfvfyA9N7R/HhZBm+hL3Cyhd0h9jaqBphyFxKvsM1LL+vx/sYZQi4jFP3tM+dQC9IW0hgnPs9/XLosi5B6XiozFJdyT4QDjpx8qtCLKLm0Bcy3cZ+5f7KZtlgqOyUkVxwQH2hYLDVLjSKLcMfRVydiTQq6gPiYRwtWXMHH49iFZ2x/eVbfZjTK/6cSwdg==
+X-Rspamd-Queue-Id: 7BE9A1A0007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1763644163-841976
+X-HE-Meta: U2FsdGVkX19lsMZzjeznaF57HOm1W2a7TtjntoFHzShtYm6kKcGNJFzLwqtt7xQgWI8j8k5nzthAh6/tLBoDAW1e4Ai3f1KOqHhxgjRECThPBnBtsoU6x+WI22Mos6o0PiFQ/yUIsTPY1koOE8Tvw2s+PPGjKfMw3iAiCeQjh39vW1IcN7T9oXQ2q9GpAzj5leKL5EB+lDdq0nKL5SaaXB30B9gRMqdr7cl+H4rmacruz4wF01hsmH8N0wHNmW7HGdhFIVOAP5Ph8I4XqvBid/r/VpEwl7SFPAfgQYgmsgUatxbKWWBtQMtrmPx70Ex7RhU/ekKbfMJTfugcT2d8aXHjgNlzocJyjEE8b+9dAIOSRX8xrHjgUQ2hmZfsc3J+vjCgtgy1bd2z86LApngn2DvpVLs5rSw7sUAmSZtcYXdHlxAwPcpSr3F95y/s5TJnQLYP0FW47+zhGPadAKm75mBOIOytAOTB9gyQBwuP/WMd+rRqrBNOEQR1ebCKgNMWo+6A9Ve9+h4AyAk/SnefpGPKNuwz7VxBUN1wv5MdNE4+Bxt9LY/MT5f4Hlqg2fT/9DxOmmrU6qyhF+svXvqE5i0KAfjFzQtHY+lLqZG0x0P6mhpLl2tkK1vHEtDXJ7xWjGLjnhA2LA1r/eSb1zy9khejGpFyndpxN3v4JMxF+R8RNAjPzjo17S30Q1xj8a0Zc2WdcL63TExNE1b4p13UdxYS1hjpPE7EEzhRsC/mhvWhg4QldnbCWsVBaK+sUI64TKkQCBxJVjVwRPL8EpVPsrvlNUW8L0aHGj/eiB+w/5TY8eM9VZJXbYuCKPzQ0yAv/3O1qf2Lzo8+FL/idEXr30HxF4xwOVz2BeP3ah8obl+SLr8DQSOebSyXwDVI0ewJpEba2CDMTiKAVDubG1qke8j7dpRYs6j3MGpOzX77lKqASJNoRk79IfIPuJ0X4PEZrcp7B5/bdrKvoEkgPeB
+ YxmadYFk
+ 6shzr8ZUGoAco9KrNVK26gTRFL1hrOW3Atyxg99Gh1U99B3Hyv51Xg6UOF+xse7Kkiw32qKbf+s+YrvGJ15Jobuz6mBotOUU/yiE0JcIXStZhIH2OzHT/puorOkqaR/bkcDLVWndNDwN6A2fOF+kzsqpyrRlD0pLL2gKauUteRKsI8ucQorf9JXWpHh5pJCirTnuUt2WjSTy1JsocrNGyF5H08J2FimAPPfaLltJoR2cahbDNzJ9S33L18dBvJZWoyLkrqomimNXNyPE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,102 +117,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Nov 20, 2025 at 6:40=E2=80=AFAM Mateusz Guzik <mjguzik@gmail.com> w=
+rote:
 
+> 1. the numa parameter was straight up ignored.
+> 2. nothing was done to check if the to-be-cached/allocated stack matches
+>    the local node
+>
+> The id remains ignored on free in case of memoryless nodes.
+>
+> Note the current caching is already bad as the cache keeps overflowing
+> and a different solution is needed for the long run, to be worked
+> out(tm).
+>
+> Stats collected over a kernel build with the patch with the following
+> topology:
+>   NUMA node(s):              2
+>   NUMA node0 CPU(s):         0-11
+>   NUMA node1 CPU(s):         12-23
+>
+> caller's node vs stack backing pages on free:
+> matching:       50083 (70%)
+> mismatched:     21492 (30%)
+>
+> caching efficiency:
+> cached:         32651 (65.2%)
+> dropped:        17432 (34.8%)
+>
+> Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
 
-On 2025/11/20 14:50, Shivank Garg wrote:
-> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
-> text sections), the pages may still be dirty from recent writes and
-> cause collapse to fail with -EINVAL. This is particularly problematic
-> for freshly copied executables on filesystems, where page cache folios
-> remain dirty until background writeback completes.
-> 
-> The current code in collapse_file() triggers async writeback via
-> filemap_flush() and expects khugepaged to revisit the page later.
-> However, MADV_COLLAPSE is a synchronous operation where userspace
-> expects immediate results.
-> 
-> Perform synchronous writeback in madvise_collapse() before attempting
-> collapse to avoid failing on first attempt.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks!
-
-> 
-> Reported-by: Branden Moore <Branden.Moore@amd.com>
-> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
-> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->   mm/khugepaged.c | 26 ++++++++++++++++++++++++++
->   1 file changed, 26 insertions(+)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 97d1b2824386..066a332c76ad 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -22,6 +22,7 @@
->   #include <linux/dax.h>
->   #include <linux/ksm.h>
->   #include <linux/pgalloc.h>
-> +#include <linux/backing-dev.h>
->   
->   #include <asm/tlb.h>
->   #include "internal.h"
-> @@ -2784,6 +2785,31 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->   	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
->   	hend = end & HPAGE_PMD_MASK;
->   
-> +	/*
-> +	 * For file-backed VMAs, perform synchronous writeback to ensure
-> +	 * dirty folios are flushed before attempting collapse. This avoids
-> +	 * failing on the first attempt when freshly-written executable text
-> +	 * is still dirty in the page cache.
-> +	 */
-> +	if (!vma_is_anonymous(vma) && vma->vm_file) {
-> +		struct address_space *mapping = vma->vm_file->f_mapping;
-> +
-> +		if (mapping_can_writeback(mapping)) {
-> +			pgoff_t pgoff_start = linear_page_index(vma, hstart);
-> +			pgoff_t pgoff_end = linear_page_index(vma, hend);
-> +			loff_t lstart = (loff_t)pgoff_start << PAGE_SHIFT;
-> +			loff_t lend = ((loff_t)pgoff_end << PAGE_SHIFT) - 1;
-
-It looks like we need to hold a reference to the file here before
-dropping the mmap lock :)
-
-			file = get_file(vma->vm_file);
-
-Without it, the vma could be destroyed by a concurrent munmap() while
-we are waiting in filemap_write_and_wait_range(), leading to a UAF
-on mapping, IIUC ...
-
-> +
-> +			mmap_read_unlock(mm);
-> +			mmap_locked = false;
-> +
-> +			if (filemap_write_and_wait_range(mapping, lstart, lend)) {
-
-And drop the reference :)
-
-				fput(file);
-
-
-> +				last_fail = SCAN_FAIL;
-> +				goto out_maybelock;
-> +			}
-
-Same here :)
-
-			fput(file);
-
-
-> +		}
-> +	}
-> +
->   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->   		int result = SCAN_FAIL;
->   
-
-Cheers,
-Lance
+Yours,
+Linus Walleij
 
