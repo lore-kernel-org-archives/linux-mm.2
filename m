@@ -4,204 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3692CF9C72
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:13:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D13A1CF9C73
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:20:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31DC56B000D; Thu, 20 Nov 2025 12:13:18 -0500 (EST)
+	id 105CC6B0095; Thu, 20 Nov 2025 12:20:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CCE66B0010; Thu, 20 Nov 2025 12:13:18 -0500 (EST)
+	id 0DE926B0096; Thu, 20 Nov 2025 12:20:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 147E66B0099; Thu, 20 Nov 2025 12:13:18 -0500 (EST)
+	id F36456B0098; Thu, 20 Nov 2025 12:20:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 007876B000D
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:13:17 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81A7412F279
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:13:15 +0000 (UTC)
-X-FDA: 84131631150.04.2595A82
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012036.outbound.protection.outlook.com [40.107.209.36])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6F9391C0002
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:13:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=WhWJewt9;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of ankita@nvidia.com designates 40.107.209.36 as permitted sender) smtp.mailfrom=ankita@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1763658792; a=rsa-sha256;
-	cv=pass;
-	b=4NozDa+Z4ESbmw080a744dHGzSg34SWizLS0pL7edo6GWfz/JLcKP1OBjuh0XUU8f7xNwy
-	DIHJMOGjH/CZvPTM9ChBRPq8jYiX5GE+B/sCjF7zldgx/uBr/LjmBdPNH7E/X40zhxvxlx
-	9mUqK0abnYMnEVCchKBrhh1iCg/Fddk=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=WhWJewt9;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of ankita@nvidia.com designates 40.107.209.36 as permitted sender) smtp.mailfrom=ankita@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763658792;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E09D66B0095
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:20:50 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17311C026F
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:20:49 +0000 (UTC)
+X-FDA: 84131650218.21.30C5894
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 86130C0006
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:20:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sap5ecG9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763659247; a=rsa-sha256;
+	cv=none;
+	b=lXX7OoWH3kZEiaQXg+54ODzBwjODlNSfjB1Vxw+k5HFO4XopQklCL7Ll0ITFYKuDMDXFEb
+	QHKGtc3NGfovikfwajYbNhVlEX9sx5MGs2vjKeajTJxIYMOtHiWRaY9bOF+lojnawmm4OT
+	kLtHYQRMXtux2mYOmx+i0nVu9zAibi8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sap5ecG9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1763659247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ueReyUd/clxUCPeYxsUeGzslCCZDKn3U4DhzTjw3Bhg=;
-	b=lqY9Q0HekSyDeTIuDLGFkRzIxrX4E6aVFeeDYpXYQUUDkLPdudIM2PnG86wH8shCmvcBRh
-	YSrePgxPqUrosVavFJBmim40xQQwJocefvHmL/KUSnoWrdbGx+o5CNeJqZQRFq4Ln48ICa
-	E2o2+mhLuZyHmnwycmqnaPN4xrhHNY0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qwlguWTWs4dEHYvVYsWQKogU3JCr5usPFPPpuryhTSEDQ0Pw7KtHEDw5B+YnoG/OC6nDsMSQQ1lN/uheFLWFVkLPpeEuafTc/U3iEDiotQhHytlYWu+Xh3MtVdkkO5J/PdTCIqwIdd8gGnqtvD3H58ZPsy+ai11hbmoHIidZg8kIOWshP2Lh8ldfO6LtToGfqm3MqM7UTlpF7Hp0/r2eVkPGjlsbrJDnXN5RmbPUoxzONT/ufb3kdihzU8EP7jmQ2jTZTiNDdBFOr/rF5K+g7Tbd4nZrtRS1egSJDCG2RUBFrYnB/xYJuwH+KbE8eUbsXtuPDoACaopJ73MUUMB7Uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ueReyUd/clxUCPeYxsUeGzslCCZDKn3U4DhzTjw3Bhg=;
- b=V1u1ilDcDnXkLTkgm4JAKscpE3bqk4co9r+RfRpNGuibk2Nx4mNgF0oqSr9D2UeOKcnPVCWaIVDRL0wOeQMzY3Ka5yf1FwYHl276H96E9sxMnOE7wySiciUdj6MDzyHrV0mm71AsWhtpLbMMQAkntliC9ITMC2Fbr2+XN16gmlV9hTbCIIVuNJGTWhVi7+3K9lgvpBCcO1+F9fjyzKIcfW2l/q6hFudAgdu9NbEiKLi3rejoQZ2ijfvI8Uu9M1jxdnCENa7hixJmQbA0lBHb/ldhaPDtido2Gi1RrdLE//3IZBMug3M7ZR/EBT3unNiqqq3/9O0GTJQLAxkbd+zgZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ueReyUd/clxUCPeYxsUeGzslCCZDKn3U4DhzTjw3Bhg=;
- b=WhWJewt9cWxCfLOafluiv3qZUVgaWFyqM7PtNGk/8if9DYzvXHrTF7J0pFvtWoIvvhtsaS/DfH7A2sCJh2L/wcSfz/WElMSo8C6xiUxcMH34l+Sdi6Yitc3ECfPsiFKkfkb9ZdGFvGkqcuRL9HqRv+BIXlUpCmCG571hxdTy5kiZH83fGfGZPU7rAYYiTEq1FpJnUEL7S7dEkE7KsZm204Qge9zU9fOQMGQR3/5YikwDqOqRUlfp5JetEMXqYIwaJfRrlJhRK3Luy96cPAMgFJbLHTPXptOhBY0paKPoekqzz8q+V9JLWoVOyRyMkfsOCJY8UDojonnXWgm1bwmLyA==
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21)
- by DS5PPFBABE93B01.namprd12.prod.outlook.com (2603:10b6:f:fc00::65f) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
- 2025 17:13:05 +0000
-Received: from SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd]) by SA1PR12MB7199.namprd12.prod.outlook.com
- ([fe80::928c:89d8:e8d6:72dd%6]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 17:13:05 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>, Robin
- Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, Jason
- Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, Jonathan
- Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
-	=?iso-8859-1?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, Kees Cook
-	<kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Yishai
- Hadas <yishaih@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>, Kevin
- Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>
-CC: Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "linaro-mm-sig@lists.linaro.org"
-	<linaro-mm-sig@lists.linaro.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-hardening@vger.kernel.org"
-	<linux-hardening@vger.kernel.org>, Alex Mastro <amastro@fb.com>, Nicolin Chen
-	<nicolinc@nvidia.com>
-Subject: Re: [PATCH v9 11/11] vfio/nvgrace: Support get_dmabuf_phys
-Thread-Topic: [PATCH v9 11/11] vfio/nvgrace: Support get_dmabuf_phys
-Thread-Index: AQHcWgAs+ixHoXcoSUC3aT08aR+6zbT7uJlO
-Date: Thu, 20 Nov 2025 17:13:05 +0000
-Message-ID:
- <SA1PR12MB719993F747B09154A3DDA788B0D4A@SA1PR12MB7199.namprd12.prod.outlook.com>
-References: <20251120-dmabuf-vfio-v9-0-d7f71607f371@nvidia.com>
- <20251120-dmabuf-vfio-v9-11-d7f71607f371@nvidia.com>
-In-Reply-To: <20251120-dmabuf-vfio-v9-11-d7f71607f371@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR12MB7199:EE_|DS5PPFBABE93B01:EE_
-x-ms-office365-filtering-correlation-id: f48bc750-6a3a-4945-18f5-08de285811b4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|7416014|366016|376014|38070700021|921020;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?cjIaEK/tVvTVZXpwpovCni3KHELH8hQF3811i+HBgT7osmi1W5M7lYrRym?=
- =?iso-8859-1?Q?m7kklAcGtKJlS/XSRYwQnfWUdg8IROUd2fsS7DyscezZKa1dlQ+GggrLGo?=
- =?iso-8859-1?Q?knTmzwY9VuDNB6pXzcqcof1IQ4Ic/OajQSk8EShMConIUjyESs01do6+Zq?=
- =?iso-8859-1?Q?OBqw3TIqS1hacvYIq1c4RueuRDj+aeD21L5AzMmgYlYHsJidlRnhim4U+Q?=
- =?iso-8859-1?Q?dtluwfg0sMsh4Lu5h4J/OIZcklrhB6Ht8Zv2R69H/2m92qVdWCVUpr32Es?=
- =?iso-8859-1?Q?j8kjZR5/HuIFsYnPqiFj8UlHAGBOXWwIZJ+iU1bpWcyA+C8NE09fLs5GZP?=
- =?iso-8859-1?Q?IhsF67h5KvUqUsV22+uE+NHPyi/AtVvhYLd5mLv849Y5b1r4XTuQ17dHDj?=
- =?iso-8859-1?Q?VQ4oRTJeASJE8439WE369lXBUpGozemRcKMiAnADtjm4IAmXXhrRUHUbcg?=
- =?iso-8859-1?Q?vxiaXCpptaVEAn0RTWsJc/vhJ4/aX9Fmx7ex8ER0Vp3+eVTYSBKG+OqCY3?=
- =?iso-8859-1?Q?aLsC5ia9uM9uM0OyTHBsTcSWoDrCpAYzJr90Vd1wMfcrj4e+ntFOAYlEhS?=
- =?iso-8859-1?Q?C1HIsOJTpaMJGhOWzAs9F5Q14eAYkeXZYXLelmoLAGYKHISf4asxAkEOqI?=
- =?iso-8859-1?Q?InGF6m5DJSR2KxVW0TTtHnZgJNyVFI/GJyWH0RPiF0LF5087rltlFGLbXv?=
- =?iso-8859-1?Q?TH0mN+bGJG62S0zgnK6b5KP5wqz7gOtFUK81pcpwyGSALWCjLFYcUYix3l?=
- =?iso-8859-1?Q?MTusY8VTfYHwDUJGUq25dvrBpNIrHHIoUMGB9ouW/ab3+wbq2yu0j2aGlB?=
- =?iso-8859-1?Q?Oa1iE4I18PwROF2P332rknUaGRkcs6QTMV5wJZFEv/3mLj6N+PhI/E9ZbZ?=
- =?iso-8859-1?Q?WCTtu5KCdAr1jQ1HOmvjAMolcX5Cl/6dIMsy8iVVd+VXR5oAM6MFhcP837?=
- =?iso-8859-1?Q?Y/kUN11ncVWlejYV5T4DuV2HO1ggh02fG/djCa/NP6ok6rJBshD2EbUrom?=
- =?iso-8859-1?Q?vgP/HcjyZ0vjxUURINun/gBfIw3IBHl/JXzTU6XrJMIYJGFwU2Vl38xTC5?=
- =?iso-8859-1?Q?dRPzzc8SX47p/9Gzzw6q+j+n/x4ofqFZpD0W2vwd6o9GX2YTWl6h4Kbr7b?=
- =?iso-8859-1?Q?hH6WGHVFaqAjWGORYBrZOyWE64UdYsay6obB+j899aR4+vGhPYjhVmYTVY?=
- =?iso-8859-1?Q?EI2YDVMIs/FB26As2Bfi37vGX2G519OzoxVkXy13J0E7mJI/6iawxOcpRp?=
- =?iso-8859-1?Q?WCZPRA86N0RG2PnLDkb5uRsmULCUbmVny/vcPNwgRblBvnD5JrVxYeEBi1?=
- =?iso-8859-1?Q?6ayPCJBB9V+2FGamG7/2VY7qpwE7T3OrUfdiNXbJnYSdImXojdVfKABqn8?=
- =?iso-8859-1?Q?tzIBLEIytFkjhwp67CqoUukqGX9FezOMJvWyGu4xRbnYKGDfprYeJRKhHu?=
- =?iso-8859-1?Q?LtDHDJdiGcNFlTWbxmTG/aPugQr2zfF5tPJqD3CaY2PXVMYABOvouLqTde?=
- =?iso-8859-1?Q?b9691L6jsriPcben23rJRs327Kn1c71O9RqlAKLNAjqfRSzMusVJwS5gpr?=
- =?iso-8859-1?Q?72UZ9TMPTWkbOkVNyBZ/TeCuAn82a43OvEKWbKiaSdKBYVpC4g=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB7199.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(38070700021)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?bM3zs/GB5WQ5w6MS44YWuO1rWrybf4KPCnHuPwF93xwb2YCUtZQQFW/+ey?=
- =?iso-8859-1?Q?BPM13CQ+CiG018QzMGnt7PGhhOa7vclGHI5tWP26ePUCUXTKLEoaENjrVw?=
- =?iso-8859-1?Q?/MbH2UqKO3i1Hvw9Apwfx271cn1DaVa/PzmblfmB5CxqkzE3uw8B8PJJZs?=
- =?iso-8859-1?Q?p+uDSmsT07Y9kiARfPqiqSmFhtGQlpaojdY4QWhswt+JALrf3txGRAcWJq?=
- =?iso-8859-1?Q?MGFqLSzoqOHFXJ3rYIoCVh5fpJIIVWf6DuA0sP34KheZUmk7NrUYCBwqR/?=
- =?iso-8859-1?Q?AWlXmqyi6YOeQ4ruHnmhQkm3vsIlk2s2QsJDhpnWHharQHCtEi/frrgTMH?=
- =?iso-8859-1?Q?nUP+aiFDQ0Sf01IYl9W+KT8KEjNyI5P+aJytDHEQZYRAWtJWlyTCjEPD3v?=
- =?iso-8859-1?Q?aNSI7CopcUSo7XpRSx0504UrhK+qida9tl+k7DlDiTkfIzbr36sefSg5el?=
- =?iso-8859-1?Q?m8YBUJ/u9dazsnEIsa5z8A+Qh/3aAhsehxQSDUt2TTr14MqNaw2mW9AnCR?=
- =?iso-8859-1?Q?O2ejTEBn9yeg8P+nYc8Oo07hRjHloI9jrT1hhY7QbblHx1iczmgOEAAXpm?=
- =?iso-8859-1?Q?UOYFv3oBE3uozP6JW09P+hTWOICr+VrAbIHtOYsMundVMR83jWR1KsM9YK?=
- =?iso-8859-1?Q?JLogRaekCJil6c5kcwrrINr3cxBocM/O879aHc6Jf+kDzdB+sQKhDzPcVs?=
- =?iso-8859-1?Q?D9pPZTsPAwatUFQelJXyK9w+mLeRA9mX1UqxBQUYukXeD43FcxMEbJykMT?=
- =?iso-8859-1?Q?THRAxveYQfp+tQGgFZqNZHIkQpE2N/+MVWrWqTS24P4Y2AfElTiFO8+S6s?=
- =?iso-8859-1?Q?0UfAnFIBgUgp1sDSlOSw8E/GXz0IIJPCzCKogpMFDdnWBZ1P8g6DpVU0ni?=
- =?iso-8859-1?Q?UOFC1Glv1zv+7ikaaafioQ4NvGR1bxy19nQ8Oh8MbPtVijOLRcXiT+IB6w?=
- =?iso-8859-1?Q?Jy5x2scVvEGBKBLYSsty4nfsNVJoCuxMkHrWG2biWDlbJaAPtnNUn/n7Lh?=
- =?iso-8859-1?Q?tY/suT7DvXsOmjOXURW2aCFeYmpZIqOSsKJkX0ttPW9/t3HrUNDrtACo2u?=
- =?iso-8859-1?Q?UaRQn/43/5DX0xJFViZOp4nTluyOHYy2Voi2pjnWpTTIaUMw6yyRh/Uh3X?=
- =?iso-8859-1?Q?bfkfVrrvBYZ3tVdNsSMVOQBj53Q8/68gr3DbKH1ZsTUO20pEY76MnNcWhS?=
- =?iso-8859-1?Q?h19wh0VesbYFy124LFo07jpyAJHQfEp0ORPmM+nYxHvYtg9j2fvPPatTY2?=
- =?iso-8859-1?Q?NgrKgf5e+8kh1Hns/oD/imXX24wNhkn4WpEHJKXkKsr+xg7MEBqtX7q1sU?=
- =?iso-8859-1?Q?+JwskaiS8Uow0gUKzdT20FvRfqgI0cpWdNA2Yz4iJDtRy64McqNKBcq++I?=
- =?iso-8859-1?Q?23U9hDSJIGE9cNYLIJ+Vt+eEXqud4AUdX6hAjaJjWixjQ2m0mHWHfpBxeP?=
- =?iso-8859-1?Q?smAAHcKYosb9QFTsyDSFmqmowjG5eC29ZQxgHA9B9n4h64bL8RSJKVvJhU?=
- =?iso-8859-1?Q?1Xdk/Q0xx9yYacdet7578SmBNT6iIcR6mKp4swzZXR2IJhgCnlh6F7IK+K?=
- =?iso-8859-1?Q?8Uuc5TB9FjdZSdGM6Npw7IDfzqjfm/Mok39u9G2f6krWbWjyGuR5PGqqPC?=
- =?iso-8859-1?Q?edu99kGoC9Cag=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	bh=y23bOop1/MFxm87uTde0Jpn3gqLN2TJzKAK3shfeWSo=;
+	b=Igz6Nwflt872OfYEzoqGxHqQmB00NQViLt+rUgKg1nRb9kdYLpacElGiW9fHvP2lmA3ZXO
+	Gxdj5EsmGM/EGm6T4zzPY7p4aIk1qYdKdmCT28P7zxv0dQCqyQZgcftq/ayU0hf21RZ/6E
+	052gNsNsB3o5o6qFtY+hkU7FFJDc0XM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EC6E7601DE;
+	Thu, 20 Nov 2025 17:20:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B32C4CEF1;
+	Thu, 20 Nov 2025 17:20:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763659246;
+	bh=fD6KjoGzF7YWD+p5+muskUl3aspahvddrqQqiF5E0oc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sap5ecG9LGJ8wpTAYDVKAIMrPJKlHSE68WffXz2yNvUZnXdIBn7l8lIGbnotMc9qc
+	 4UvFnri9+3qxNKGHl1DKfj1kfzW8tWjCrq0Wav7skSZi671Y+Xf3BWLH2EFS6gHBXG
+	 uUEEe+2Dwp3dW/x64f0jRgjdsbxlTY8DsC3kGsqTj3QqbdbduJse9G9Z7WSNL0FsbB
+	 asf3PkIfJ9IBdOPz2qY0QGN/6cAH7zMJK4iiliG2tCWB3F2jLmuZ8MrGZSMjJPqcmJ
+	 YC8Sp0VH+4R5da77Tmu8lT9QmYW4efCZoC+vDVYT9qDRZBb1/fTjzStTuXldlhqgnJ
+	 gMvfzGioMt3RA==
+Date: Thu, 20 Nov 2025 19:20:23 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, linux@weissschuh.net,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org
+Subject: Re: [PATCH v6 06/20] liveupdate: luo_file: implement file systems
+ callbacks
+Message-ID: <aR9N14KWaz6SdFcw@kernel.org>
+References: <20251115233409.768044-1-pasha.tatashin@soleen.com>
+ <20251115233409.768044-7-pasha.tatashin@soleen.com>
+ <aRoU1DSgVmplHr3E@kernel.org>
+ <CA+CK2bBFS754hdPfNAkMp_PqNpOB2nY02OkWbhRdoUiZ+ah=jw@mail.gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7199.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f48bc750-6a3a-4945-18f5-08de285811b4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2025 17:13:05.2368
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: g21sYZC9KoTgR7vpp+ZqzPYvTNoKNmeZbGKHTWNmdiPEYzcsidZk1+O10LVnwkfN0dTZr4V46jQKjj5xIEES6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFBABE93B01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+CK2bBFS754hdPfNAkMp_PqNpOB2nY02OkWbhRdoUiZ+ah=jw@mail.gmail.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 86130C0006
+X-Stat-Signature: xgeezq8z7zwnnx5yaoyk65txs61emqo5
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6F9391C0002
-X-Stat-Signature: 7beqbmgyi1bdcity5jcjwz1htgyx5333
-X-HE-Tag: 1763658792-704536
-X-HE-Meta: U2FsdGVkX1+lNka0d1e0KRspHlmGHNord3c2HU7hzniv/WmdltKYhPcvH8HpPYc/ocQuBnzb4EcrpX96U+pLNxB4AW8TIatLiWMu1y2VQzk+J6yCCyCstewE9J0OtK8CU40SY3ooZiaxig1E1CiL5injzOs+eVjzX5hNAUR4+81MrjYlcC8srmsegouMghGV/WHUfs7KRc8CCX9flAH6wZDwwOxhee1a5tOkvtVnlNTDu1uO0GnzjNArEvexvBDP901ZZnCMsP2LLh3yFcEtlkiUZ8lN6PPQkOtG/M/PA6z0t+pBaZ4WkQ0IQuucCE1CKQ88qQPiveDgggkH+nlKsNk9S/qgcmiFw4WhLugT9UY8H3gfChm2TBiOWbKETN1jl3iYnhMn+4wVMQv+Igy5W490DIFAEnymECgWWXugejSTRbGY9D5b5XDgCADlgU3nKsjFEQGIAOLwHTog/eIv2sTeI7mvLsqqZSHOY5c09z/+0vnfiGj1sxdMK3KJa8JtvJuI77ci+0dexUEgyuddHeYLtutvuJ+R2GHEX+geC+HH6pxoaTl39zTyMDYhmK3LUyfAguQ2qrAY/n6+RRYsr1FT75tVKBVREyBojyL3DthZ3mRZtnuwPoJsKl2K9cPva8RTohOBsH/8LyQeahJIR6Lv4RCx/kodjK6A/M0LUJVtjSZQbMpjDl+aVIIvx0XcMgwkQsZ3ZfAhx3pfE3ZR4p17SXw/UwzchVug96NO2zEiMrJx+4kpUF9irTBGzGMw+P005oCwq4d6VggVPdy5TlNwk1a1ehvQ+Svor3Zh8bKPPmlieEVrQV1buIgLNX0G6yK+gZr97l9Ld0KJ7QqLZ6JMYCPpf5IsLXq+1mxNt2w8fln6mPkgowOIYuua2fOKNr3ZLW0i31KWTIEQW05XDrC3LZUYPXbFzjohKTNd7YmTeVduu/tEFXbsQFlHjwgD5wKRPrRq6wDZrgJW5La
- Q+gYBFrj
- KaA39WWm0wuKlBL54Zet8OqxCT3eN4k6umzJd5fK9PKByqHIIYqqKeIV3K8C8+wCZEbHHdEOgBSzbjN0+4zxLSkmOyI6GYJ+ho1WL5/c+4N7sWwssKQueimwbQgD/xdhmTsxw+8rThZqgOsxoAlkxvNC90kBQ6G19G8rHkTc+otO8I/qCFAifzVZNd+r/fChLjN1qjf1zwdpHqtzME3fRGLszPMtC/csmJTkOGzEYc5DkEHoOH3VIPS/Jwuq6QUUUVm0CLVCXB6ymDtVhbznA3n0jS4+xm9eKO+RvEbg784Ej1kHYPw+hy5MasW3thIMOv5WKurYQJ8r/6+s2986My2he3vlICV3ESHBZNDjvRvmOd3fpRBxJDoxEAV+wyNWU/nVoFG+Me+4I349hxIfvbE/j9L7SQSEe5WobM7oI4rq7QEfbtturmQ6hAnzvMg/M9iZYLKT5IjqSVi40Q0UcK5QXY2HirHgiHoMJ7CjDMI0oDsDidIwYGJF29BZrEXHKA8RWR7R1K3MQ2OoHmGz03C15o+AedV0sHofFulYVVSnPGEVuiRwo7fQsGNukiOy0NMMi
+X-HE-Tag: 1763659247-113509
+X-HE-Meta: U2FsdGVkX19oURwnIjsjuQKP/FsS1PT/MNcA9e3tSI+rwqVnQ/IEvHvfxDWbASN78SWRUiGuKqJlS7cfIuWJwydadnSI3K+FiB0GOAfErxPiJIljI0CVniY8kAlesGmld5Qw90Cl0XHx6NUc3dzw8tFDP5qo54yXHzgrfBIqVtldHjVu4f27alQqW/rdwnO3Fo43GvblXHgTYZd7BpZMWwp5v7CAgXrueUxG5eWvNkMlwtmAkbQnWk2tjBEtExO/eKlFQL6MP17qyfjEz1QUaFL1i8w3bwZ74MifrnALIF9lcEOnDGcTa++t43v7bqv0VaYnYllLZsorEZUtFhGDTLK/BoWcP6qJF7SxchuF5QRCZTyEVSLWudyIjo/G/pmxtyFcVp4f+zSr2NCMkPGKk8pzD4agGZU/vcabs1Ff76O2b/ZL4vWSi4JG4CHtHKi9it9oktu33UeOJwdqaS1qf1w9VN/b9mD87MzG8OS8Dyb5gDJmT+TQX9ogkGkPF1Cl3hSYU8M5p64fmEh4plT2kW/2cizA8wzS4UiINLoWoVVt/3wPs+qZmxrkE8T9xYhLpnHuOUeR7mopPddv0HrqkyPNGw8I38KNI09e3J0L6iBkrulqCAanI7bjAMgq0Lksa/Zs65mv1MX3wrpAdGJGCqOFdKuapbWBMnRI3ylobONzcgauIDFg3NLag54GIHWQZJEK0JXZeMEpYo0dCm7ak7oVYWU4hzBznIy9XEH4ApJm5wVeneXhM/aVfYRlEJngXNradBc4GQ210NGsQRCZKtt17gIWacCztvoTdsQUYMEAEYm8YjHvRCtt92dOfFlC6bJKbD/tGxdtKFVW8CM+5I9RwD20+8q5P7LaABckDiFvwljkthEKQfXyUqWDOiRPkWR3NJQ3Mx1h6qhaBIY8XFvRRrvyQ2Ir2JTAENG8Tz9z0hk8u/JLz25hsK70Pc+ZNNxyt80OVAQkeZihJu3
+ EuDyL3DJ
+ bXneGwcmRhqcwkTOj5GZ2oNz22M67IzuVC2FKK1wqikL3pABgW0i0B/3P4vi90uK1JQfebSl+bW/tI6hpeOQ/nWIS/zckVNCWO1/9rL6DKhV47yzVaM41SxSJAIaGvmG57xadTC2xpqhIfWc4vmddhnzaOw3YScvJFLtbeaa9CzRVh4hfWZcBzeqcPPcU5IgFxuQ+p+NGr4+g5wvOGrp/ZvQJKNoHr2TooK6xscEkEBFcaQ1t60ZHepp3IhMEvEuzhjAsbsZM6QInq8OLaauOWMOAgmf+8g+ks5z8czAZluJKXZlMUAaeYPdFmjoTBTUNuUqTgEY1PgadmlV05KId1LWi4+MPpsDAol0Cv1F5w1ujxlaYHoJQGdmKrQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -210,23 +120,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> =0A=
-> The "CXL" ranges that are remapped into BAR 2 and BAR 4 areas are not PCI=
-=0A=
-> MMIO, they actually run over the CXL-like coherent interconnect and for=
-=0A=
-> the purposes of DMA behave identically to DRAM. We don't try to model thi=
-s=0A=
-> distinction between true PCI BAR memory that takes a real PCI path and th=
-e=0A=
-> "CXL" memory that takes a different path in the p2p framework for now.=0A=
-> =0A=
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>=0A=
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>=0A=
-> Tested-by: Alex Mastro <amastro@fb.com>=0A=
-> Tested-by: Nicolin Chen <nicolinc@nvidia.com>=0A=
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>=0A=
-> ---=0A=
-=0A=
-Reviewed-by: Ankit Agrawal <ankita@nvidia.com>=
+On Mon, Nov 17, 2025 at 12:50:56PM -0500, Pasha Tatashin wrote:
+> > > +struct liveupdate_file_handler;
+> > > +struct liveupdate_session;
+> >
+> > Why struct liveupdate_session is a part of public LUO API?
+> 
+> It is an obscure version of private "struct luo_session", in order to
+> give subsystem access to:
+> liveupdate_get_file_incoming(s, token, filep)
+> liveupdate_get_token_outgoing(s, file, tokenp)
+> 
+> For example, if your FD depends on another FD within a session, you
+> can check if another FD is already preserved via
+> liveupdate_get_token_outgoing(), and during retrieval time you can
+> retrieve the "struct file" for your dependency.
+ 
+And it's essentially unused right now.
+
+> > > +     }
+> > > +
+> > > +     return 0;
+> > > +
+> > > +exit_err:
+> > > +     fput(file);
+> > > +     luo_session_free_files_mem(session);
+> >
+> > The error handling in this function is a mess. Pasha, please, please, use
+> > goto consistently.
+> 
+> How is this a mess? There is a single exit_err destination, no
+> exception, no early returns except at the very top of the function
+> where we do early returns before fget() which makes total sense.
+> 
+> Do you want to add a separate destination for
+> luo_session_free_files_mem() ? But that is not necessary, in many
+> places it is considered totally reasonable for free(NULL) to work
+> correctly...
+
+You have a mix of releasing resources with goto or inside if (err).
+And while basic free() primitives like kfree() and vfree() work correctly
+with NULL as a parameter, luo_session_free_files_mem() is already not a
+basic primitive and it may grow with a time. It already has two conditions
+that essentially prevent anything from freeing and this will grow with the
+time.
+
+So yes, I want a separate goto destination for freeing each resource and a
+goto for 
+
+	err = fh->ops->preserve(&args);
+	if (err)
+
+case.
+
+> > > +             luo_file = kzalloc(sizeof(*luo_file), GFP_KERNEL);
+> > > +             if (!luo_file)
+> > > +                     return -ENOMEM;
+> >
+> > Shouldn't we free files allocated on the previous iterations?
+> 
+> No, for the same reason explained in luo_session.c :-)
+
+A comment here as well please :)
+
+> > > +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
+> > > +                              struct file **filep)
+> > > +{
+> >
+> > Ditto.
+> 
+> These two functions are part of the public API allowing dependency
+> tracking for vfio->iommu->memfd during preservation.
+
+So like with FLB, until we get actual users for them they are dead code. 
+And until it's clear how exactly dependency tracking for vfio->iommu->memfd
+will work, we won't know if this API is useful at all or we'll need
+something else in the end.
+
+-- 
+Sincerely yours,
+Mike.
 
