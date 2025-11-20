@@ -4,167 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84C3BCD4F3E
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 05:14:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63604CF64BC
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 05:26:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 770256B0024; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
+	id AEA2E6B0005; Thu, 20 Nov 2025 00:26:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 747C66B0026; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
+	id A9A816B0022; Thu, 20 Nov 2025 00:26:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65DAD6B0027; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
+	id 9AF6B6B0023; Thu, 20 Nov 2025 00:26:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 558EF6B0024
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:14:25 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02DBD12FDF5
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:14:24 +0000 (UTC)
-X-FDA: 84129819690.05.FD5078B
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E06581C000D
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:14:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763615663; a=rsa-sha256;
-	cv=none;
-	b=nV+Xalqgy3XzdhO0w3IH7wmUZyqfXbTbA0kun1izCScG5Q1u/1HoibsNbpseXO3zDFqPLo
-	+3Z1OzH2m70hhmRmZPrOcDRjGn5npT31mc6WP8YLeTu9HOO1XspoMSxhGwSCWWC5b/9E9B
-	G0W7qh6puoC8c1LkB7rzpv6UMefYxZY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 880CB6B0005
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 00:26:11 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40C10BB194
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:26:11 +0000 (UTC)
+X-FDA: 84129849342.30.FF2C008
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 263E4180017
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 05:26:08 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=qXme2O7N;
+	spf=pass (imf24.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763615663;
+	s=arc-20220608; t=1763616369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qRWBRzXiy43nvVUA0JuJNwrWIQ1dA9+VpC3tFevJqs0=;
-	b=Yxku3cA1L0rjOWsKfkszML2jkKIf4PBzypZWHIHZPbWfv9mcXqtIG+icy+DZDyeYuAGB56
-	KavbhTTBrfdC6tULs6Fr5+cnz8dtMwZIdmtlhI207yl1ERn/5tuGM4k4NU1pnAYk+GPKNZ
-	NkNkWr2N2SLBSmkRFj84ahVRdQVl9Dg=
-X-AuditID: a67dfc5b-c2dff70000001609-90-691ea3a8ad9b
-Date: Thu, 20 Nov 2025 14:14:11 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
- subclasses_evt for the usage
-Message-ID: <20251120051411.GA18291@system.software.com>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-45-byungchul@sk.com>
- <20251119105312.GA11582@system.software.com>
- <aR3WHf9QZ_dizNun@casper.infradead.org>
- <20251120020909.GA78650@system.software.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vUqeS6K4g0hUxh5GcRzYb7k8IKeXwg6G9epDSLnS8mY=;
+	b=InrL6OFfy4PFc59daho+xiyNfDtrnIDNK/96kHJFehCeN0pUSy2RXI3AL5xUtsaS80BJTE
+	nqSiSJiIIjz+842DbOyxQu3hh1O92I5EsJRsVKfzPk1fV7qVq4mVw/IRUKLvQAaxwsS+eo
+	nyrCqmFOn4byULNPAyHAAasD/Q1j4aw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=qXme2O7N;
+	spf=pass (imf24.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.44 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763616369; a=rsa-sha256;
+	cv=none;
+	b=uES9XJj9FLp2Qw8vgHdj5OZddLpFlObHRu2+3dKA3HBK2znoe/ZwRCwTLpHx8ZFs2NreAg
+	qgs8cikPdZET/C8gxKpKvdBm2rK3KwbOH9GU+12ZHgYyCt1AMCHgpAfMGvk+08QwdgR6TH
+	aTrur2UVn7wErh4afQtCY3s74yNuTIw=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so2535045e9.3
+        for <linux-mm@kvack.org>; Wed, 19 Nov 2025 21:26:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763616367; x=1764221167; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vUqeS6K4g0hUxh5GcRzYb7k8IKeXwg6G9epDSLnS8mY=;
+        b=qXme2O7NqCbpUpcd4ZJS2hYVIl1ragLBOg885rFQgFNNusTRCWE3ESjpVJBMMRcw6a
+         JiyTytg6WScwptpcDnJsmgTEyrszdpv8Sn0r4J1f8VLIlkhDr5Mq1UV3oRe0IZ1umSM1
+         m+87zBqqwRRy0qzG2ZWO0qGgvdaI1Ij6u/2/Ip21wdytAIitf/QaTX8j4yDjkiwkJdTi
+         T7APxzynuLUmGJ6JW6DxddoDZZG0kRtVnrwXwzURwNAji+ew0TZKMrQNQ5dfXbqDetLI
+         ubh6GXibnRonGEMplW82cRnGdEJSdshZ8IazBDUQdU4TCHi28kyuunzi5aQaxeBQxMaE
+         hfpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763616367; x=1764221167;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vUqeS6K4g0hUxh5GcRzYb7k8IKeXwg6G9epDSLnS8mY=;
+        b=QAFbDgO2fIkh4DxBnkdd86Ye1HQimPmV2vZVpkbfy1YpGFLRUYCSk1upiGOEIn5Ykk
+         fvs3+ETPUmkN9fYCpDpUMpkwEcIo2GF+s+mmOZ8YX57mXUI1WgTSoZ4P6o7nrUa8e7hs
+         krjxegTtNQdKqQaVOEMqQnBvEv6vZjTvM+y7N5DdboUk+xfd6L/dWeE2rsGrJfU/KOsA
+         tyPsTvLBc5+RX0NrAnnTN1/v9ZRD2G7e2BnDehOs8FTZjyQcWb/eq4/Kwwdyk4IY+YME
+         rCLLL4+ID6erpDAgUslxkL6H4nXWp2LU5FpiCI/16jBBOiob6cns/edLmV9MuFYihm/s
+         L6jg==
+X-Forwarded-Encrypted: i=1; AJvYcCVxYh0ESMeT7OcbUOgRxm/vzI8vlLMZEm0rcIF/BazD3u8UFPOMb7biy667t/8yR2q4ZPHywYV/Tw==@kvack.org
+X-Gm-Message-State: AOJu0YyB5F+TgNi9ZyXHN7tqy9dU1rkXBt6+KoFjcCjuA+jTKx/LcSfw
+	koLORZ4RFh9GvgQXIq9f5jIGzsCzojrtI+X7Pyq79lkvueLjPPIKkx5iLkOxS7akb2Q=
+X-Gm-Gg: ASbGncvne2jWVMLUBjiL+Z1X3KXsJrS/4UFVvFcwStQdIVDDAZd5B+j3zWfIdw91a2a
+	Zqrbuh5sXWK20t7MFNEGqrhyIqsswHo3pacG7X0AQ1AoD/EzGwmtEDi8DtgsXZw+EUaiXlMuGkH
+	vZpuZniiN/DcaYBKxrbj2VcMHnD7o2Lu4RQFRTT21SZn12lH8d40X+2BRbyUG4hB75XqHIyJiNX
+	sbrhz6kiTp+ZVtZW4rnRodBMk8RjrI4ZnWcAmtc7VCG7qxpNIpv0l+SerwP5rI17zm681+eY9HA
+	0OFfMSlirNckj5BzUau/zhSo+vvZOjtlwdh4fzbqEJoPdYrAJ7w2+5zK6dEg6vIs9vWlUQGvyCS
+	fIJKg4jqqDcZK+gV6UN8WW3IC9hljaLd5Y4TkN8Bf/lmP4X/wWyjbbBEDkZqhdxB/bGvDuwFodB
+	e+VHA6aQ/fIc085Zv9
+X-Google-Smtp-Source: AGHT+IFWWOupAlmioPPlt+riq99upzqU3hX3m2vpY2Y33m3pRyb3Gi9KlUndDLVMEA6CzkdsEjgEWg==
+X-Received: by 2002:a05:600c:4746:b0:471:1774:3003 with SMTP id 5b1f17b1804b1-477bac1d90bmr5158065e9.29.1763616367195;
+        Wed, 19 Nov 2025 21:26:07 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-477a9df8db3sm53497665e9.11.2025.11.19.21.26.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 21:26:06 -0800 (PST)
+Date: Thu, 20 Nov 2025 08:26:03 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: oe-kbuild@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, dri-devel@lists.freedesktop.org, lkp@intel.com,
+	oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [PATCH] mm/huge_memory.c: introduce folio_split_unmapped
+Message-ID: <aR6max8N4djU5OVB@stanley.mountain>
+References: <202511151216.rhK2ItOb-lkp@intel.com>
+ <661d1f3b-0f04-43fc-85ef-d29d492a2b06@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251120020909.GA78650@system.software.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sf1DTdRjH7/P9vR3Tb1PiEyvvWqcWHZhK9VTW5R9d3z/oxyneefVHfS++
-	JzvHsIEoXD/IXBEJjSXrGKA7PAfClPUFtKFwiIIgcoAUfTXHWI0R4dIDBHUBbXRe/vd+nud1
-	r+f54+FI7VEmkTOYciWzSTTqGTWlDsfVJJ84tsbw3HgwDqoa3QwUyRU0+O8UIZiPVJJg8S5R
-	sGDrZmGprRuBfchGgrv5CwJmPIsMTF2YRlAeCDLgCFWyMNn1JoT9Z2lY8k0Q4AouEhDs+BrB
-	gn03HK1pYiDSP0DCn55oq63uAAPj1hYShoMrIDxURcDfHgacB9poqK60RTdVyxR4x1pZuGG3
-	EdAgvwV+V4iCHyYZsP+YAOUnzxJwz1XPQmX/MA2/1zmiJzqzobthggXfd+UUnAoP0DAVsjHg
-	v/QVDfK1LgSzPwcIcB8KkSD/MUJDxZEbDJxr66VguLWKgUOeFhpG3Us0DHb00XC1YZCCxgmF
-	gF7HCQqO/zpEwFypDgbLSmhQrOMIXHdusa9nCPOWUkqobzpNCJarC4zgPuJGQuS+DQmzx78k
-	BYs1Wl64eYsUyvqTBa/DxwoH26+zglPeKxy8GKaFY+cmCeH61KuCXP8N827Se+otGZLRkCeZ
-	N7z2oTqzxx1h9txes99yt50oRL0JxUjFYT4Vd3mqmQd59PL3bCxT/Frc4w0vZ4ZfjxXlHlmM
-	OG41/zS+2bypGKk5kq/R4ZOXz9MxZhVvxHMXT7ExRsMDnvdsiTFa/i+EW6zNVIzR8I/g3org
-	cib5JKwsThIxnuR1uHaRi7VV/Et4pMm2rIznn8Idpy8RMQ/mQyrcekZG/935GD5fp1BWxDse
-	0joe0jr+1zoRWY+0BlNelmgwpqZk5psM+1M+ys6SUfRtXZ/+8/5PaHpweyfiOaSP0+zsfsKg
-	pcW8nPysToQ5Ur9as3br4watJkPML5DM2R+Y9xqlnE6k4yh9gmbT3L4MLb9LzJV2S9Ieyfxg
-	SnCqxEJ0eORjZfOKQEngZTrxjSn3lVEPXZG7Izv9Mx83+4J2bpV/pz3dLxeMlDWltEdg37ep
-	136ZedGb1rcyvqekdl1Vde0noVdun1EKH33HVbryc/E3lfO+N9CoK5h5vjR587PTb/fdlaVt
-	8aYx31jxgG5bEfNkF0S2pz2zQ1S2KumHe9L0VE6muDGJNOeI/wILdggfsgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTdxTH87v39t5Lt+qlsvBDHHE1RCMKaLbkuJnFRzJ+IRsx/qMxIdrI
-	jRTKI61DWbJIhUaCZtbOQmhFOgiVQEUolYAGwkMroMhrY920MmbloWWYjYc8u5Zkmf+cfM/5
-	fr4n54/D0/IVyWZelXlW1GQq1QpWykiTvsjfXV0ZpYp/+WwrjOjaGZibLWTgxh07C4WOUgkM
-	1NUiGJ0rRLCwbKFB3+JnYNXo4mB28RkH/lYXguJBIw12p46Cf+rXWHjT9TcC05iXhZIpHQMz
-	tisIzOMWDqYeJsD06H0J+D0TFPw670Ng865R4G2/hGC1OB3KKxpZWO7rp6HENIDgpzEPDZP1
-	AdPpeoGgtfoiC68Md2kY9m6An+dmWOgxXWZhevAGBX/Vs2C92CqBMosRQX7lHRaKyxwMtPxx
-	j4PBNysUPC82UlDr+AZGbeMMPDZUUIH7AlRDOFhK8qlAmaTAdPs+BYu2Gg6eVD5nwJYXDZa+
-	YQn8WW3mYGVsD/itWeCqneDAc9XEQN10v+SACZEF/Q8MqWlsooh+aJUl9pt2RJaXjIjMVuXT
-	RG8ItF2+GZoUNJ4jVY99LFma+4UlrfNWhvRWYHKtbzdpMXs4UtD2O3fk8xPS/SmiWpUjauK+
-	PCVN7bYvs9lvo87r37VReagnvAiF8Fj4FL/o/ZELakaIxt0t0+uaFbZjt3uRLkI8HybswD7n
-	3iIk5WmhIhLf7u2QBJlNghrPP6jjgoxMALxQvz/IyIXXCN81OJkgIxNCcU+pd13Twk7sXpui
-	gjwtROJba3xwHCLswyONxvWVHwnbcHvTI8qAZOb30ub30ub/01ZE16AwVWZOhlKl/ixWm56a
-	m6k6H3s6K8OBAj9p+37lWjOaHU7oRAKPFB/Kjrs+VsklyhxtbkYnwjytCJNFH9yikstSlLnf
-	iZqsk5pv1aK2E0XyjCJclnhMPCUXzijPiumimC1q/nMpPmRzHtq7o2DoxPHYmeqy1IMDhzu2
-	7DrXxI9uHLyZeCbu6aR1rFv/22H3oZdXbKFX9yUlNmx9p0s+etQfP+6oc0RsvP4qxZdY5CGf
-	HCjsbiMRX+OIXULZyAdfdbAx7nju5K3QDeOHtkddb2Z8F/QdzTFpyZcMS5d9D9MMb8vLJywI
-	zzvTdApGm6rcs5PWaJX/An0YZayPAwAA
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E06581C000D
-X-Stat-Signature: bh7z7rgawm85u3adybkogiedu1bcmpkr
+In-Reply-To: <661d1f3b-0f04-43fc-85ef-d29d492a2b06@nvidia.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 263E4180017
+X-Stat-Signature: h57kqkeqhbupbnccgy5t7mny1uojztfz
 X-Rspam-User: 
-X-HE-Tag: 1763615660-106671
-X-HE-Meta: U2FsdGVkX1+M4vGGCBKfMYFKpm8tDUlq51ppD/MSRlNCGYlh0XGRMeRrZxJAEKlhBfOQrryuaK6Y1hb42sra+DZld5cafvRkG309SBjxqpPlFU2rcgKZkmGIUsxxS4DxPwDlh0N4KpKSkgFTDKmx4bScEZYWisUnFFOR5nxQxzHx+SBC/b+4poApWqGWDyWeSrm4EYAL0bKwmMO7w5H5c1VLuFDgEB1fN2I3iRJwzeAuU0LCgM7Mv6qOOvCvgr5Im3VCXD72L0iznz12HxFawN9zcnxJpYVNGD3gUql2+7BITOZwktwDXg0UGuUHqJGLKLh755Jt0T5DEfjMw9XbvJO3LwbX+quAeY2j6t2HDkSNKDRkQ7ZB8iMRIbHX49zMh8PxjCP5e0y35++yC/LDge3DjGYUhFOGd3BZF+bqWx8Z1GOYi9G4cMEWL2eUvxQ/Lp/DqAcIVUTPyXRkGFayzYWegumRLWfKOSFgagmrAZglGCq/iGu6u4jw7GHizrW+EDBsJf6ksCRKx6T98Af5nUkhDyr/YOSMQ0mVJvSEwJPvzA87F/+8kG1GOCt0Z6CDxdr2tCDjJAbze+JaP7F5VjJHH4zUfw4SAht1xh0X1CbiJERMVGfkpKh4kx80a5HWVw4ghaP5jK8XYmAM0bMaMaaEgxiBcNvyd23sSp88s3u2P1udgP3OUwbrcE8hnnQJk1NjgdfFbU3iNQTrmhJTF/3FlUWlRtYz4vap+9e+gokBf9XjKrhuyg6Y4CdGYlaogAel1DorhlGExTRBJ8hXCW55EZYxNBMPiJNTCinLZgvmRBt58adUY/VSZz1Tg2LIC2FOjdoTQLYsKal6stO9kE5Rfbkt3Zyo6VnRtTnuz+VlEKq7kqbal7Ql+u47p+7RERGAUT6LkSa93sG4ePpETlTL1llzGxaas70UrxD05BKRr08AmTs76QQP1OTlCoDhjXnKKxmn8mxC3iKnEpY
- tkoTjACf
- islIYbz2f13PmsZkC9yAtulAq822m++gRCIFU850E0lYSZQCoDeUMceFBVAwo8AJqRTYM7yUqj+sWWiI=
+X-HE-Tag: 1763616368-483917
+X-HE-Meta: U2FsdGVkX18qNGFkm1SQ/QRBz1+6Nxm6PN/L2JoS2QsNHAWcwhkru3XpHmI994WykOGL1AUX3bzqCI4GFad7ZurzvaTPDXP7HYgcMWLyUFzoKbAgVcCr3Th/29qzAQ26GR8D4gSaNlSOUyauYjnuW4N1iBfLA6VtyiYAG0z7Z2J/a0baa/pMS7tEucrMGsx4TWmMcmyOhIM0jq3FSFbJTi3iOxDuMc0bUxcTS91NGj7Usimd4IHu1OZ24x6Z3phmYA6wlRm6a3EXeiq5SkyOfYCULfYraLI6Jgd72rAYKfAXkP/AoUjMfL1vsht8CChR8K472m+Q89IyeVHIPScrylsYpUMW7RBpGopnl1Gpgfvy3w1HSf+h6awAIpX06Klo/K8MaTj+jWjN5SDuSlSQOb5b+oKnmx5vvS+VbA/368Z5QvBtXYw9tbD+YTLgMgusZI94Y9jf57KfY/TnIwM/+Znzh4+dbZrsk6hykivgF7dIsZYBaLzUI5+hE7OxqUjCwFpjrwuvdmh+f2CRVh/615DNZO5eHMHOReZYKM6AiTCzYr9aO/0QUFK+gPwu2Et/skglgUXmJxG46QG8kC9Hr4KfJKVbWjqhhCoz9RpV0mpHsn1WFynCNBErgGWfo2/0vJ65iBvCxr4GG60wyr0FHsPW8LdOSSm8vPK5M2gZ7Fxtlbnhpp3frfUOjgC4+lIfMfCUEGujanb0hYqikn/cz1AaYokLkrc1lZRCsUxDF57oD4qSV12ihecWgg6goZf1k+P5OvLfoh39ChjVA9SEvrJYabXMiL1stYcwqlMrzofsILjnhf6gzcR7nwVUFRTwTZrXb46Nh7nEsQAdQeoeQt4qpvHlRw0/vX8X6Ww8tV6uKj4qrv6TBszm3oFDPlHjsLpR26gc/4v9nT417txUORubzYS+DZlubUfpT98Ey4FE28dJxl9WU8SlwFFuO+0dIn/n4epUq95mK4ULaSd
+ EJSlS66l
+ AVmxOIDO9Vq2n5kN3h1+u1LIrHYnSQPS7Qkl8OFvg4ebl5ZGTZy0uT4y27QiBuPtC5rF8tdbV5ICKdk5PYYd4GEJLNEGucxehenmbiWZZAFepu7j2kVx//+6srUGmiypgXDqc3hPBCVE1k/bfqkRSUSpAIZAgMwbqyYLX8950UGOV8DwfzbuKE6We+i454iRoMOx5KUp2v1XmMbz/09u8B0BzXWWOo0n76BZ5r73c1FspC27YB/pISSHzcIGa36Zb7ubuvF7ZFWVijnFCJELdxV1JFKS30PB6563CGvMbAKdjgs9p6f2BM0VZKmRFTYSnU7dLE/lq4pwQBJmh9j7q4lBcEUDLMe5i8FjCR6OhXroXlOzUVn2t3HRt34VcfXm2UctO0xQGB7rW1QXAMb4YQR2H6g8yOD8OKT5B2Km6NH7PEqMbJ9sdKs0ripRSoUeftLz/svZjD0MDhRs1bOYwv7bq5ri74aiapoMhm3JoohpPymRy847WTSTeqcM+cDz310wPkoqKpLLhZ7wOLFWyC3H5MHfD47x1O4lVu/bBoE7sraGDvshTaUSbj+4Nok7f9xLuv4fUuon3dbILNe19/B98oPTmCpjk62tR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -173,92 +139,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 20, 2025 at 11:09:09AM +0900, Byungchul Park wrote:
-> On Wed, Nov 19, 2025 at 02:37:17PM +0000, Matthew Wilcox wrote:
-> > On Wed, Nov 19, 2025 at 07:53:12PM +0900, Byungchul Park wrote:
-> > > On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
-> > > > False positive reports have been observed since dept works with the
-> > > > assumption that all the pages have the same dept class, but the class
-> > > > should be split since the problematic call paths are different depending
-> > > > on what the page is used for.
-> > > >
-> > > > At least, ones in block device's address_space and ones in regular
-> > > > file's address_space have exclusively different usages.
-> > > >
-> > > > Thus, define usage candidates like:
-> > > >
-> > > >    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
-> > > >    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
-> > > >    DEPT_PAGE_DEFAULT       /* the others */
-> > >
-> > > 1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
-> > >    starts to be associated with a page cache for fs data.
-> > >
-> > > 2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
-> > >    starts to be associated with meta data of fs e.g. super block.
-> > >
-> > > 3. Lastly, I'd like to reset the annotated value if any, that has been
-> > >    set in the page, when the page ends the assoication with either page
-> > >    cache or meta block of fs e.g. freeing the page.
-> > >
-> > > Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
-> > > be totally appreciated. :-)
+On Thu, Nov 20, 2025 at 10:58:07AM +1100, Balbir Singh wrote:
+> On 11/19/25 23:32, Dan Carpenter wrote:
+> > Hi Balbir,
 > > 
-> > I don't think it makes sense to track lock state in the page (nor
-> > folio).  Partly bcause there's just so many of them, but also because
-> > the locking rules don't really apply to individual folios so much as
-> > they do to the mappings (or anon_vmas) that contain folios.
-> 
-> Thank you for the suggestion!
-> 
-> Since two folios associated to different mappings might appear in the
-> same callpath that usually be classified to a single class, I need to
-> think how to reflect the suggestion.
-> 
-> I guess you wanted to tell me a folio can only be associated to a single
-> mapping at once.  Right?  If so, sure, I should reflect it.
-> 
-> > If you're looking to find deadlock scenarios, I think it makes more
-> > sense to track all folio locks in a given mapping as the same lock
-> > type rather than track each folio's lock status.
+> > kernel test robot noticed the following build warnings:
 > > 
-> > For example, let's suppose we did something like this in the
-> > page fault path:
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Balbir-Singh/mm-huge_memory-c-introduce-folio_split_unmapped/20251114-093541
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> > patch link:    https://lore.kernel.org/r/20251114012228.2634882-1-balbirs%40nvidia.com
+> > patch subject: [PATCH] mm/huge_memory.c: introduce folio_split_unmapped
+> > config: i386-randconfig-141-20251115 (https://download.01.org/0day-ci/archive/20251115/202511151216.rhK2ItOb-lkp@intel.com/config)
+> > compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
 > > 
-> > Look up and lock a folio (we need folios locked to insert them into
-> > the page tables to avoid a race with truncate)
-> > Try to allocate a page table
-> > Go into reclaim, attempt to reclaim a folio from this mapping
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > | Closes: https://lore.kernel.org/r/202511151216.rhK2ItOb-lkp@intel.com/
 > > 
-> > We ought to detect that as a potential deadlock, regardless of which
-> > folio in the mapping we attempt to reclaim.  So can we track folio
+> > smatch warnings:
+> > mm/huge_memory.c:4044 __folio_split() error: uninitialized symbol 'end'.
+> > mm/huge_memory.c:4052 __folio_split() error: we previously assumed 'mapping' could be null (see line 4046)
+> > 
 > 
-> Did you mean 'regardless' for 'potential' detection, right?
+> Thanks for the report!
 > 
-> > locking at the mapping/anon_vma level instead?
+> If mapping is not NULL, end is initialized. More comments on UBSan below
 > 
-> Piece of cake.  Even though it may increase the number of DEPT classes,
+> > vim +/end +4044 mm/huge_memory.c
+> > 
+> > 6384dd1d18de7b Zi Yan                  2025-03-07  3908  static int __folio_split(struct folio *folio, unsigned int new_order,
+> > 58729c04cf1092 Zi Yan                  2025-03-07  3909  		struct page *split_at, struct page *lock_at,
+> > f6b1f167ffe29f Balbir Singh            2025-11-14  3910  		struct list_head *list, enum split_type split_type)
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3911  {
+> > 58729c04cf1092 Zi Yan                  2025-03-07  3912  	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
+> > 6c7de9c83be68b Zi Yan                  2025-07-18  3913  	struct folio *end_folio = folio_next(folio);
+> > 5d65c8d758f259 Barry Song              2024-08-24  3914  	bool is_anon = folio_test_anon(folio);
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3915  	struct address_space *mapping = NULL;
+> > 5d65c8d758f259 Barry Song              2024-08-24  3916  	struct anon_vma *anon_vma = NULL;
+> > 8ec26327c18e1d Wei Yang                2025-10-10  3917  	int old_order = folio_order(folio);
+> > 6c7de9c83be68b Zi Yan                  2025-07-18  3918  	struct folio *new_folio, *next;
+> > 391dc7f40590d7 Zi Yan                  2025-07-18  3919  	int nr_shmem_dropped = 0;
+> > 391dc7f40590d7 Zi Yan                  2025-07-18  3920  	int remap_flags = 0;
+> > 504e070dc08f75 Yang Shi                2021-06-15  3921  	int extra_pins, ret;
+> > 006d3ff27e884f Hugh Dickins            2018-11-30  3922  	pgoff_t end;
+> > 478d134e9506c7 Xu Yu                   2022-04-28  3923  	bool is_hzp;
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3924  
+> > 714b056c832106 Zi Yan                  2025-07-17  3925  	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+> > 714b056c832106 Zi Yan                  2025-07-17  3926  	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3927  
+> > 58729c04cf1092 Zi Yan                  2025-03-07  3928  	if (folio != page_folio(split_at) || folio != page_folio(lock_at))
+> > 1412ecb3d256e5 Zi Yan                  2024-03-07  3929  		return -EINVAL;
+> > 1412ecb3d256e5 Zi Yan                  2024-03-07  3930  
+> > 8ec26327c18e1d Wei Yang                2025-10-10  3931  	if (new_order >= old_order)
+> > c010d47f107f60 Zi Yan                  2024-02-26  3932  		return -EINVAL;
+> > 58729c04cf1092 Zi Yan                  2025-03-07  3933  
+> > aa27253af32c74 Wei Yang                2025-11-06  3934  	if (!folio_split_supported(folio, new_order, split_type, /* warn = */ true))
+> > 6a50c9b512f773 Ran Xiaokai             2024-06-07  3935  		return -EINVAL;
+> > c010d47f107f60 Zi Yan                  2024-02-26  3936  
+> > 5beaee54a324ba Matthew Wilcox (Oracle  2024-03-26  3937) 	is_hzp = is_huge_zero_folio(folio);
+> > 4737edbbdd4958 Naoya Horiguchi         2023-04-06  3938  	if (is_hzp) {
+> > 4737edbbdd4958 Naoya Horiguchi         2023-04-06  3939  		pr_warn_ratelimited("Called split_huge_page for huge zero page\n");
+> > 478d134e9506c7 Xu Yu                   2022-04-28  3940  		return -EBUSY;
+> > 4737edbbdd4958 Naoya Horiguchi         2023-04-06  3941  	}
+> > 478d134e9506c7 Xu Yu                   2022-04-28  3942  
+> > 3e9a13daa61253 Matthew Wilcox (Oracle  2022-09-02  3943) 	if (folio_test_writeback(folio))
+> > 59807685a7e77e Ying Huang              2017-09-06  3944  		return -EBUSY;
+> > 59807685a7e77e Ying Huang              2017-09-06  3945  
+> > 5d65c8d758f259 Barry Song              2024-08-24  3946  	if (is_anon) {
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3947  		/*
+> > c1e8d7c6a7a682 Michel Lespinasse       2020-06-08  3948  		 * The caller does not necessarily hold an mmap_lock that would
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3949  		 * prevent the anon_vma disappearing so we first we take a
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3950  		 * reference to it and then lock the anon_vma for write. This
+> > 2f031c6f042cb8 Matthew Wilcox (Oracle  2022-01-29  3951) 		 * is similar to folio_lock_anon_vma_read except the write lock
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3952  		 * is taken to serialise against parallel split or collapse
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3953  		 * operations.
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3954  		 */
+> > 29eea9b5a9c9ec Matthew Wilcox (Oracle  2022-09-02  3955) 		anon_vma = folio_get_anon_vma(folio);
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3956  		if (!anon_vma) {
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3957  			ret = -EBUSY;
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3958  			goto out;
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3959  		}
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  3960  		anon_vma_lock_write(anon_vma);
+> > 3d4c0d98eb8572 Balbir Singh            2025-10-01  3961  		mapping = NULL;
+> > 
+> > end is not initialized for anonymous folios.
+> > 
+> 
+> Yes
+> 
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3962  	} else {
+> > e220917fa50774 Luis Chamberlain        2024-08-22  3963  		unsigned int min_order;
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3964  		gfp_t gfp;
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3965  
+> > 3e9a13daa61253 Matthew Wilcox (Oracle  2022-09-02  3966) 		mapping = folio->mapping;
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3967  
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3968  		/* Truncated ? */
+> > 6384dd1d18de7b Zi Yan                  2025-03-07  3969  		/*
+> > 6384dd1d18de7b Zi Yan                  2025-03-07  3970  		 * TODO: add support for large shmem folio in swap cache.
+> > 6384dd1d18de7b Zi Yan                  2025-03-07  3971  		 * When shmem is in swap cache, mapping is NULL and
+> > 6384dd1d18de7b Zi Yan                  2025-03-07  3972  		 * folio_test_swapcache() is true.
+> > 6384dd1d18de7b Zi Yan                  2025-03-07  3973  		 */
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3974  		if (!mapping) {
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3975  			ret = -EBUSY;
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3976  			goto out;
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3977  		}
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  3978  
+> > e220917fa50774 Luis Chamberlain        2024-08-22  3979  		min_order = mapping_min_folio_order(folio->mapping);
+> > e220917fa50774 Luis Chamberlain        2024-08-22  3980  		if (new_order < min_order) {
+> > e220917fa50774 Luis Chamberlain        2024-08-22  3981  			ret = -EINVAL;
+> > e220917fa50774 Luis Chamberlain        2024-08-22  3982  			goto out;
+> > e220917fa50774 Luis Chamberlain        2024-08-22  3983  		}
+> > e220917fa50774 Luis Chamberlain        2024-08-22  3984  
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3985  		gfp = current_gfp_context(mapping_gfp_mask(mapping) &
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3986  							GFP_RECLAIM_MASK);
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3987  
+> > 0201ebf274a306 David Howells           2023-06-28  3988  		if (!filemap_release_folio(folio, gfp)) {
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3989  			ret = -EBUSY;
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3990  			goto out;
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3991  		}
+> > 6a3edd29395631 Yin Fengwei             2022-08-10  3992  
+> > 3c844d850e4486 Wei Yang                2025-11-06  3993  		if (split_type == SPLIT_TYPE_UNIFORM) {
+> > 58729c04cf1092 Zi Yan                  2025-03-07  3994  			xas_set_order(&xas, folio->index, new_order);
+> > 8ec26327c18e1d Wei Yang                2025-10-10  3995  			xas_split_alloc(&xas, folio, old_order, gfp);
+> > 6b24ca4a1a8d4e Matthew Wilcox (Oracle  2020-06-27  3996) 			if (xas_error(&xas)) {
+> > 6b24ca4a1a8d4e Matthew Wilcox (Oracle  2020-06-27  3997) 				ret = xas_error(&xas);
+> > 6b24ca4a1a8d4e Matthew Wilcox (Oracle  2020-06-27  3998) 				goto out;
+> > 6b24ca4a1a8d4e Matthew Wilcox (Oracle  2020-06-27  3999) 			}
+> > 58729c04cf1092 Zi Yan                  2025-03-07  4000  		}
+> > 6b24ca4a1a8d4e Matthew Wilcox (Oracle  2020-06-27  4001) 
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4002  		anon_vma = NULL;
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4003  		i_mmap_lock_read(mapping);
+> > 006d3ff27e884f Hugh Dickins            2018-11-30  4004  
+> > 006d3ff27e884f Hugh Dickins            2018-11-30  4005  		/*
+> > 58729c04cf1092 Zi Yan                  2025-03-07  4006  		 *__split_unmapped_folio() may need to trim off pages beyond
+> > 58729c04cf1092 Zi Yan                  2025-03-07  4007  		 * EOF: but on 32-bit, i_size_read() takes an irq-unsafe
+> > 58729c04cf1092 Zi Yan                  2025-03-07  4008  		 * seqlock, which cannot be nested inside the page tree lock.
+> > 58729c04cf1092 Zi Yan                  2025-03-07  4009  		 * So note end now: i_size itself may be changed at any moment,
+> > 58729c04cf1092 Zi Yan                  2025-03-07  4010  		 * but folio lock is good enough to serialize the trimming.
+> > 006d3ff27e884f Hugh Dickins            2018-11-30  4011  		 */
+> > 006d3ff27e884f Hugh Dickins            2018-11-30  4012  		end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
+> > d144bf6205342a Hugh Dickins            2021-09-02  4013  		if (shmem_mapping(mapping))
+> > d144bf6205342a Hugh Dickins            2021-09-02  4014  			end = shmem_fallocend(mapping->host, end);
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4015  	}
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4016  
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4017  	/*
+> > 684555aacc90d7 Matthew Wilcox (Oracle  2022-09-02  4018) 	 * Racy check if we can split the page, before unmap_folio() will
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4019  	 * split PMDs
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4020  	 */
+> > 8710f6ed34e7bc David Hildenbrand       2024-08-02  4021  	if (!can_split_folio(folio, 1, &extra_pins)) {
+> > fd4a7ac32918d3 Baolin Wang             2022-10-24  4022  		ret = -EAGAIN;
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4023  		goto out_unlock;
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4024  	}
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4025  
+> > 684555aacc90d7 Matthew Wilcox (Oracle  2022-09-02  4026) 	unmap_folio(folio);
+> > e9b61f19858a5d Kirill A. Shutemov      2016-01-15  4027  
+> > b6769834aac1d4 Alex Shi                2020-12-15  4028  	/* block interrupt reentry in xa_lock and spinlock */
+> > b6769834aac1d4 Alex Shi                2020-12-15  4029  	local_irq_disable();
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4030  	if (mapping) {
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4031  		/*
+> > 3e9a13daa61253 Matthew Wilcox (Oracle  2022-09-02  4032) 		 * Check if the folio is present in page cache.
+> > 3e9a13daa61253 Matthew Wilcox (Oracle  2022-09-02  4033) 		 * We assume all tail are present too, if folio is there.
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4034  		 */
+> > 6b24ca4a1a8d4e Matthew Wilcox (Oracle  2020-06-27  4035) 		xas_lock(&xas);
+> > 6b24ca4a1a8d4e Matthew Wilcox (Oracle  2020-06-27  4036) 		xas_reset(&xas);
+> > 391dc7f40590d7 Zi Yan                  2025-07-18  4037  		if (xas_load(&xas) != folio) {
+> > 391dc7f40590d7 Zi Yan                  2025-07-18  4038  			ret = -EAGAIN;
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4039  			goto fail;
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4040  		}
+> > 391dc7f40590d7 Zi Yan                  2025-07-18  4041  	}
+> > baa355fd331424 Kirill A. Shutemov      2016-07-26  4042  
+> > f6b1f167ffe29f Balbir Singh            2025-11-14  4043  	ret = __folio_freeze_and_split_unmapped(folio, new_order, split_at, &xas, mapping,
+> > f6b1f167ffe29f Balbir Singh            2025-11-14 @4044  						true, list, split_type, end, extra_pins);
+> >                                                                                                                                 ^^^
+> > Passing uninitialized variables isn't allowed unless the function is
+> > inlined.  It triggers a UBSan warning at runtime as well.
+> 
+> end is expected to be unused when uninitialized, are you suggesting we need to have a default value even if unused inside the function.
+> My daily build has UBSan enabled, I'll try again
+> 
+> CONFIG_UBSAN=y
+> CONFIG_CC_HAS_UBSAN_ARRAY_BOUNDS=y
+> # CONFIG_UBSAN_BOUNDS is not set
+> CONFIG_UBSAN_SHIFT=y
+> # CONFIG_UBSAN_UNREACHABLE is not set
+> # CONFIG_UBSAN_BOOL is not set
+> # CONFIG_UBSAN_ENUM is not set
+> 
 
-Might be not as easy as I thought it'd be.  I need to think it more..
+Huh.  It's interesting that UBSan doesn't complain.  Potentially, the
+function is inlined?
 
-	Byungchul
+Technically, passing uninitialized variables to a function is undefined
+behavior in C.  But in practical terms (and it make Linus cross that
+the C standard doesn't account for this), when a function is inlined
+then that shouldn't really be undefined.  But otherwise, yes, passing
+uninitialized variables is not allowed, even when they're not used.
 
-> I hope it will be okay.  I just need to know the points in code where
-> folios start/end being associated to their specific mappings.
-> 
-> 	Byungchul
-> 
-> > ---
-> > 
-> > My current understanding of folio locking rules:
-> > 
-> > If you hold a lock on folio A, you can take a lock on folio B if:
-> > 
-> > 1. A->mapping == B->mapping and A->index < B->index
-> >    (for example writeback; we take locks on all folios to be written
-> >     back in order)
-> > 2. !S_ISBLK(A->mapping->host) and S_ISBLK(B->mapping->host)
-> > 3. S_ISREG(A->mapping->host) and S_ISREG(B->mapping->host) with
-> >    inode_lock() held on both and A->index < B->index
-> >    (the remap_range code)
+Everyone sensible is going to set CONFIG_INIT_STACK_ALL_ZERO for
+production systems so initializing variables to zero doesn't affect
+anything.
+
+regards,
+dan carpenter
+
 
