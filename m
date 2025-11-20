@@ -4,98 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59C25CF64BB
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 06:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 450B8CF8547
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 06:47:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A01776B0027; Thu, 20 Nov 2025 01:38:10 -0500 (EST)
+	id 6E66C6B0012; Thu, 20 Nov 2025 01:47:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B2356B0029; Thu, 20 Nov 2025 01:38:10 -0500 (EST)
+	id 6BFB96B0022; Thu, 20 Nov 2025 01:47:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0BE6B002A; Thu, 20 Nov 2025 01:38:10 -0500 (EST)
+	id 5FD8A6B0026; Thu, 20 Nov 2025 01:47:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 764E86B0027
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:38:10 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 078C1BB2A5
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 06:38:08 +0000 (UTC)
-X-FDA: 84130030656.15.D329E9B
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7B97916000C
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 06:38:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="X/8DHOAJ";
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DA926B0012
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:47:55 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E323DC070C
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 06:47:54 +0000 (UTC)
+X-FDA: 84130055268.08.13449FC
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AFE5410000F
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 06:47:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763620686;
+	s=arc-20220608; t=1763621273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BX9rFfaKdKny49Aru+ZL28mbNKoUR069Ni3qjLSN1/M=;
-	b=WzgSkUtXo+XDNXYQOVlW2i/Cm9U2QAH0nieX7uvD8LjuMzFbwT8P9PTeHyRNH0pK20K6vT
-	UIB+D5KjaJ9vuX5o3jvKQqidg3Xwibmej13+F/Q9xD3Kpv3tnkWkHVo2hI60EEhmLytS2W
-	uXKWGUIWSu0W8TD2+wJRkUvOP0B9Fqo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763620686; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O7SUDZBedgcdkQbz39P6KzsbKvp2K2hbEcdsNeEtLH0=;
+	b=wV7Cppm+pYxbn83cddfKyap/19aMlKwCPCc1HyBmXS8/lbpcODTtx/Bo7FHzQhNIgq79cT
+	KW8nlLGKPRsJsBBy0+0hDBOdZLLYeK1siBQ6PaxrRDOsjvB0gJqGWtfKtrXPJFtEfN19Dg
+	BGpRdFUBTww4vl2vBTh/ZPVygcsPwY8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763621273; a=rsa-sha256;
 	cv=none;
-	b=syk9PquoObAbNyMRKMuEyUgN0nxsxajgqJXt4wTIO//e/tnu4GuAwfEfMJCJhEGJThmQfs
-	LYNoV9R95OoJbUx1fRSiDpNxinYVyc3Y/U2Y7lojJDIAMmedFpSgyMDJdDPvhVcgzyeIFI
-	39eYzb2wB3bs52aFtvmcJ5hRy4PuZmM=
+	b=eh5VnVl5kZmTINIF1/6GShM02UnW8x7/gbumN2fx7qdX5mKu5hT4MhDY0wpFQ/O5hqmBu/
+	27uyscFJPIHN2+0KGMHiJpjczn5rV5dXFVWhg9/Zpb46Ea9p2L10QTz/wFLBK2cA/sUiBr
+	VclBii5ILdy8O/Duax6m2xIw10aeIBg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="X/8DHOAJ";
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1763620681; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=BX9rFfaKdKny49Aru+ZL28mbNKoUR069Ni3qjLSN1/M=;
-	b=X/8DHOAJDiI6kV8kDDEAq2SKkOudWDkRiD7ZO+QQvQNuejjqepDtUPqy4hsVGsF23x3GZk7EjudiMC5pITKpY4FG1gf6oJqZFtHGHz8RKDuSiHfBp2IP3J10bq2csr3jP4ONTbCUrrbqVvi2nrMIOUo0ooT7CMu969aXRjca22c=
-Received: from 30.74.144.115(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WssTONS_1763620638 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 20 Nov 2025 14:37:59 +0800
-Message-ID: <cb2f5978-5fdf-4e4d-a662-14c5858b0fe6@linux.alibaba.com>
-Date: Thu, 20 Nov 2025 14:37:58 +0800
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 20 Nov 2025 15:47:47 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 20 Nov 2025 15:47:47 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v2 10/19] mm, swap: consolidate cluster reclaim and check
+ logic
+Message-ID: <aR65k5Xxl28MvMcf@yjaykim-PowerEdge-T330>
+References: <20251117-swap-table-p2-v2-0-37730e6ea6d5@tencent.com>
+ <20251117-swap-table-p2-v2-10-37730e6ea6d5@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 mm-new 14/15] khugepaged: run khugepaged for all
- orders
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com,
- ziy@nvidia.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
- dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
- baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
- wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com,
- raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
- tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
- cl@gentwo.org, jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
- lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
- pfalcato@suse.de
-References: <20251022183717.70829-1-npache@redhat.com>
- <20251022183717.70829-15-npache@redhat.com>
- <2f1cdad3-6ac4-4502-a599-5bef9dbe0847@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <2f1cdad3-6ac4-4502-a599-5bef9dbe0847@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: erfhiwy9pufa4fb6k61r1otj7gmnktb5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117-swap-table-p2-v2-10-37730e6ea6d5@tencent.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7B97916000C
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763620684-864388
-X-HE-Meta: U2FsdGVkX1/ox/0E+Wn49HWy0io7nbhHtLvdVKUIanufKvtGK3iKS4sGBoOMkoWNCqFRubNrgQvjhxokvvf7rPfEpAc4nbij9Of1c/9T3axRokz7BrxJV+6yWUvop6CJ0+9rz7ROHCj+NyjZSGzXB0judJOX6Xv/aK6BCmJmn0XVJCFvpz0bgI1ktvZTQGi2ZhLIRndfDIPJSohtMiQ+yUIu/k9vvTjysrq30wRWLUZg2xUMQXB9gXrUKuz5sLycnlh07+wB1jW2LdNeT6W/toRS0ZlVTFDcnNMrsR78/xAZiFRO9rRfD9ZbSTxxEli7wRF+sNrnVXaixPY5nWht513arC+b+PcdAMrA8y7ZjJorC8A2HAsL4ZOsvJLw2eZIOl1RTzBs1nZTO9W0/BQWztowgE2Adltbb/bnUMknU4EyEXEjSRG6AAl7tWZZtvPNNEnesomzc7NCPML2JMnDMh+dUVDHFRsaZoRFscYQWinykaefiOGHJIFnKIlhfkLraiAOXkpRIW/O5eQHpkd8iYrMgPJhOhksZUjo83PQNdKcdRmUIv4mg06pPd9LHvMsPpLH8ldaZDghMwKMBGhTkugz2iSlLg+IIcUKCG0OIoZYtQp9vNhpgj4TrtqlwGIuMGC0PdvU+bUdll6KYWU4xneEZNdGC9gIdjLEQODbPXCPJFs7oosxHmK8dD/R+F8L6i719gVUS+ft6mpzI9qKyOeh7U/vRUwNoBJVNSrWOL3NTBEoc+Xxl6lvqz0FESRA8YKIoHUSrA+IbZERsnErV8KOZbt1gsPZ+ViEnXeCDHEiK5Wn4y+izSY60OBoAmvUMSfVDtEFAF5acgyZ07nj1UjAhi6nZgiqhGePBik/WBAS1Q+TxqZEDplhVs4M+rJrUiAuMua9P3cuFBq1P+mXECaA2rSt16Caw1VnaUq27AfPx2aiLqlc+MhBO1Zopm9U3mbi/Gmlrz8PTnEDGJd
- LVHzuX84
- p/FfAbGV2DVVw0Mlcxj+LW5bKt+1sfQl4L/IZZFNlM8NU6s61mWAkBZxYZOp5p78NW30FT75AuUWRLtkyFwQmBgySqb0osBjrrhm1OotlmR5mznc4Z+LWa1ofJK6IR7LaU0WDvl9ua6FevNErbRuQCCsSnt7cCT7OklsQ7u6A8xAED2xGK4SAzUWHL97HDm0DsGbf5jcaTB4WGhh2WR4GUc1fcqrLPMhlrJjv6e0DOp8DQ6bgXEBz6hhJooaO6J5hJwYtxg6QNcApn+lx2/2Ck7Vd3EsUl/JgfT/+I+S7xfU6eqfAGRlHmZ3gT6fMGSm997LsrezViKaCjWbfgi8Bt3wKq7IiNVNI3swtK2fBFZZCHKKm3+jGOQ47cGXXqTwCmapc3bPND0vEbdMXctn/+WjJKS7ICkD6Vk/KKn1NhUnrR7LB7MRLzDcmfw==
+X-Rspamd-Queue-Id: AFE5410000F
+X-Stat-Signature: w863utw8y9o13a48bbjq6rsq5mn8ot31
+X-HE-Tag: 1763621271-904779
+X-HE-Meta: U2FsdGVkX1/JSn5XuGdf3RHY1y0KNj70rVLjOZbLXBGPA5PcLjTusicshdRmlNKbTF+CjzDDoEDRlMtmjVytXJUcbqcebaotB3xL4HedOHDPtC3a34LeFiJr/C2lF5uqjI2oQtIlhAoKwvF3puLdoJBHrizh53ZE4n31TYEuSgLzhnJn9QHfubpoUTyqBlXevpJ9qXJgYJHYeglr1EnenqdunahtL03ME/JwcKkLONb9I+cz6BS5bgSXcC8VIC47pj2gaVL8E9IpX2Nokfk5iZUhCIwMHddRF8t9cIndU5jIBWpkKekrmSHGrbtiXG/qzxaO5XhVsmr8JdMwHwWcmxoFEKSqqm2sV6hzvSbbTVbV84ZUmKgskpzNSyWQmkQfiIByI6shSanYfGWrc91PT4bSu6PUy9MHtqrlvbNH+I4pBMHwPYpbhFUTQOP0QBoAQXvLNqpn3PdObmQ9tQrL04I0LU97t5qMjJA821Nc1NQwA4bMtFrk5VPes0UFEb+5CNU/rByIN1JK1sjC2DuYZf2wHZmqyH05/M1dP1qX4EZMPkZMeqtAqT989mB/fDYpj8TrY9GYMp7vEJhETuetLK/eMM9S2hd02L2B6uaISnU9etj30GnqLEieA+zygi23+Aek7ptA/7VJzteCHL97++IWqMOVYL8NqH9WheTZwuruyCsR7AzI+rbw/qhHkLUVQCHCS9ZvWeUKRsKVDpKQsV4oMKcsc/IAMsHXTYRkMB8qVqoLM38LY0BwVYWY2fAiOBYdvS291ReOJO3mWBMpAjQPpO+5y+fy0pN/y7w8VPSoKnx/oXMVmsgbho+S4XajEHSv9T/GxVgH0PsS2qhLVPNvgQZ+H4W6K7vm2inACcTVEEzcYh44Bg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,101 +91,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/11/19 20:13, Lorenzo Stoakes wrote:
-> On Wed, Oct 22, 2025 at 12:37:16PM -0600, Nico Pache wrote:
->> From: Baolin Wang <baolin.wang@linux.alibaba.com>
->>
->> If any order (m)THP is enabled we should allow running khugepaged to
->> attempt scanning and collapsing mTHPs. In order for khugepaged to operate
->> when only mTHP sizes are specified in sysfs, we must modify the predicate
->> function that determines whether it ought to run to do so.
->>
->> This function is currently called hugepage_pmd_enabled(), this patch
->> renames it to hugepage_enabled() and updates the logic to check to
->> determine whether any valid orders may exist which would justify
->> khugepaged running.
->>
->> We must also update collapse_allowable_orders() to check all orders if
->> the vma is anonymous and the collapse is khugepaged.
->>
->> After this patch khugepaged mTHP collapse is fully enabled.
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Signed-off-by: Nico Pache <npache@redhat.com>
->> ---
->>   mm/khugepaged.c | 25 +++++++++++++------------
->>   1 file changed, 13 insertions(+), 12 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 54f5c7888e46..8ed9f8e2d376 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -418,23 +418,23 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->>   		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->>   }
->>
->> -static bool hugepage_pmd_enabled(void)
->> +static bool hugepage_enabled(void)
->>   {
->>   	/*
->>   	 * We cover the anon, shmem and the file-backed case here; file-backed
->>   	 * hugepages, when configured in, are determined by the global control.
->> -	 * Anon pmd-sized hugepages are determined by the pmd-size control.
->> +	 * Anon hugepages are determined by its per-size mTHP control.
->>   	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
->>   	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
->>   	 */
->>   	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->>   	    hugepage_global_enabled())
->>   		return true;
->> -	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
->> +	if (READ_ONCE(huge_anon_orders_always))
->>   		return true;
->> -	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
->> +	if (READ_ONCE(huge_anon_orders_madvise))
->>   		return true;
->> -	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
->> +	if (READ_ONCE(huge_anon_orders_inherit) &&
->>   	    hugepage_global_enabled())
->>   		return true;
->>   	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
->> @@ -508,7 +508,8 @@ static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
->>   			vm_flags_t vm_flags, bool is_khugepaged)
->>   {
->>   	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
->> -	unsigned long orders = BIT(HPAGE_PMD_ORDER);
->> +	unsigned long orders = is_khugepaged && vma_is_anonymous(vma) ?
->> +				THP_ORDERS_ALL_ANON : BIT(HPAGE_PMD_ORDER);
+On Mon, Nov 17, 2025 at 02:11:51AM +0800, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Why are we doing this? If this is explicitly enabling mTHP for anon, which it
-> seems to be, can we please make this a little more explicit :)
+> Swap cluster cache reclaim requires releasing the lock, so some extra
+> checks are needed after the reclaim. To prepare for checking swap cache
+> using the swap table directly, consolidate the swap cluster reclaim and
+> check the logic.
 > 
-> I'd prefer this not to be a horribly squashed ternary, rather:
+> Also, adjust it very slightly. By moving the cluster empty and usable
+> check into the reclaim helper, it will avoid a redundant scan of the
+> slots if the cluster is empty.
 > 
-> 	unsigned long orders;
+> And always scan the whole region during reclaim, don't skip slots
+> covered by a reclaimed folio. Because the reclaim is lockless, it's
+> possible that new cache lands at any time. And for allocation, we want
+> all caches to be reclaimed to avoid fragmentation. And besides, if the
+> scan offset is not aligned with the size of the reclaimed folio, we are
+> skipping some existing caches.
 > 
-> 	/* We explicitly allow mTHP collapse for anonymous khugepaged ONLY. */
-> 	if (is_khugepaged && vma_is_anonymous(vma))
-> 		orders = THP_ORDERS_ALL_ANON;
-> 	else
-> 		orders = BIT(HPAGE_PMD_ORDER);
+> There should be no observable behavior change, which might slightly
+> improve the fragmentation issue or performance.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swapfile.c | 45 +++++++++++++++++++++++----------------------
+>  1 file changed, 23 insertions(+), 22 deletions(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index d2e60734ce8f..d57e83a4d0a7 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -778,42 +778,50 @@ static int swap_cluster_setup_bad_slot(struct swap_cluster_info *cluster_info,
+>  	return 0;
+>  }
+>  
+> -static bool cluster_reclaim_range(struct swap_info_struct *si,
+> -				  struct swap_cluster_info *ci,
+> -				  unsigned long start, unsigned long end)
+> +static unsigned int cluster_reclaim_range(struct swap_info_struct *si,
+> +					  struct swap_cluster_info *ci,
+> +					  unsigned long start, unsigned int order)
+>  {
+> +	unsigned int nr_pages = 1 << order;
+> +	unsigned long offset = start, end = start + nr_pages;
+>  	unsigned char *map = si->swap_map;
+> -	unsigned long offset = start;
+>  	int nr_reclaim;
+>  
+>  	spin_unlock(&ci->lock);
+>  	do {
+>  		switch (READ_ONCE(map[offset])) {
+>  		case 0:
+> -			offset++;
+>  			break;
+>  		case SWAP_HAS_CACHE:
+>  			nr_reclaim = __try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
+> -			if (nr_reclaim > 0)
+> -				offset += nr_reclaim;
+> -			else
+> +			if (nr_reclaim < 0)
+>  				goto out;
+>  			break;
+>  		default:
+>  			goto out;
+>  		}
+> -	} while (offset < end);
+> +	} while (++offset < end);
+>  out:
+>  	spin_lock(&ci->lock);
+> +
+> +	/*
+> +	 * We just dropped ci->lock so cluster could be used by another
+> +	 * order or got freed, check if it's still usable or empty.
+> +	 */
+> +	if (!cluster_is_usable(ci, order))
+> +		return SWAP_ENTRY_INVALID;
+> +	if (cluster_is_empty(ci))
+> +		return cluster_offset(si, ci);
+> +
+>  	/*
+>  	 * Recheck the range no matter reclaim succeeded or not, the slot
+>  	 * could have been be freed while we are not holding the lock.
+>  	 */
+>  	for (offset = start; offset < end; offset++)
+>  		if (READ_ONCE(map[offset]))
+> -			return false;
+> +			return SWAP_ENTRY_INVALID;
+>  
+> -	return true;
+> +	return start;
+>  }
+>  
+>  static bool cluster_scan_range(struct swap_info_struct *si,
+> @@ -901,7 +909,7 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+>  	unsigned long start = ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
+>  	unsigned long end = min(start + SWAPFILE_CLUSTER, si->max);
 
-Yes, LGTM.
+The Original code. I'm wondering if there's an off-by-one error here. Looking at the code
+below, it seems the design allows the end offset to go through the
+logic as well. Shouldn't it be 'start + SWAPFILE_CLUSTER - 1' and
+'si->max - 1'?
 
-> Also, does THP_ORDERS_ALL_ANON account for KHUGEPAGED_MIN_MTHP_ORDER? It's weird
-> to say that an order is allowed that isn't permitted by mTHP (e.g. order-0).
+>  	unsigned int nr_pages = 1 << order;
+> -	bool need_reclaim, ret;
+> +	bool need_reclaim;
+>  
+>  	lockdep_assert_held(&ci->lock);
+>  
+> @@ -913,20 +921,13 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+>  		if (!cluster_scan_range(si, ci, offset, nr_pages, &need_reclaim))
+>  			continue;
+>  		if (need_reclaim) {
+> -			ret = cluster_reclaim_range(si, ci, offset, offset + nr_pages);
+> -			/*
+> -			 * Reclaim drops ci->lock and cluster could be used
+> -			 * by another order. Not checking flag as off-list
+> -			 * cluster has no flag set, and change of list
+> -			 * won't cause fragmentation.
+> -			 */
+> +			found = cluster_reclaim_range(si, ci, offset, order);
+>  			if (!cluster_is_usable(ci, order))
+>  				goto out;
 
-The THP_ORDERS_ALL_ANON has already filtered out order 0 and order 1, so 
-it matches the definition of KHUGEPAGED_MIN_MTHP_ORDER.
+This check resolves the issue I mentioned in my previous review.
 
-/*
-  * Mask of all large folio orders supported for anonymous THP; all 
-orders up to
-  * and including PMD_ORDER, except order-0 (which is not "huge") and 
-order-1
-  * (which is a limitation of the THP implementation).
-  */
-#define THP_ORDERS_ALL_ANON	((BIT(PMD_ORDER + 1) - 1) & ~(BIT(0) | BIT(1)))
+> -			if (cluster_is_empty(ci))
+> -				offset = start;
+>  			/* Reclaim failed but cluster is usable, try next */
+> -			if (!ret)
+> +			if (!found)
+>  				continue;
+> +			offset = found;
+>  		}
+>  		if (!cluster_alloc_range(si, ci, offset, usage, order))
+>  			break;
+
+I think the reason cluster_is_usable() is checked redundantly here is
+because cluster_reclaim_range() returns an unsigned int (offset), making
+it impossible to distinguish error values.
+
+What if we make offset an output parameter (satisfying the assumption
+that it can be changed in reclaim_range) and return an error value
+instead? This would eliminate the redundant cluster_is_usable() check
+and simplify the logic. Also, the consecutive "offset = found, found =
+offset" is a bit confusing, and this approach could eliminate that as
+well.
+
+What do you think?
+
+Thnaks!
+
+Youngjun Park
+> -- 
+> 2.51.2
+> 
+> 
 
