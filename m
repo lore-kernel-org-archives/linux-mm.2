@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A4ACF885A
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A3F1CF885A
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:55:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18F446B0026; Thu, 20 Nov 2025 08:45:33 -0500 (EST)
+	id D67CF6B0088; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1673E6B0030; Thu, 20 Nov 2025 08:45:33 -0500 (EST)
+	id D18A86B0089; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A4246B008C; Thu, 20 Nov 2025 08:45:33 -0500 (EST)
+	id C55AF6B008C; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EB4946B0026
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:45:32 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A01B8140126
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:45:32 +0000 (UTC)
-X-FDA: 84131107704.13.40F7B16
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BC1DDC0014
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:45:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KZQyoVQE;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B5EBC6B0088
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:55:29 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60BD9C011B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:55:29 +0000 (UTC)
+X-FDA: 84131132778.08.9A27ADA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C2C9B16000B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:55:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QKsjgNPU;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763646331;
+	s=arc-20220608; t=1763646927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0F1vo22ZFTmKf8sXE42d1ovwkd4h2/GmeH0WirLVGeg=;
-	b=hg/Yy3yHL4OzkvmasoYZ0WWfaQ+aIkQ+h+iMoYNsOVhA3snbq6r9tklfI8XKRBtUykFGTI
-	uAuA5Hfeq1jGRzdy5rxWeC0fO92902L7t3KcXb4OEQTQbq1JeGylny5VsfRf/R1z5JbefI
-	2QXQkrd1uwblYkLMXATl81aXKvkdDho=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KZQyoVQE;
-	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763646331; a=rsa-sha256;
+	bh=44TukmqM1pM7wJwbSWZRWo0DXAJICz/EvslVoyveLSQ=;
+	b=E31dwW8TTeDrWLlIovk18MmRqJc+89xOK6aruWjMWoD8BnD4HVK89lvrAOuZfJUf1l+7Ww
+	sGMbfy0kDqcb4pIghb0N1yizfnjVj2J7k4KogzYjMCJR0GVev2r5DdAqS5p92vWZ/gLQtK
+	CdzZ/XrXoRVW1eOB/QVXykldgTo8QQI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763646927; a=rsa-sha256;
 	cv=none;
-	b=R08ptcqWD2o1yZAP7QFYfjNO+eaJHbYcSWv0yyQ5oWQ64ypeic2AwXWCwJKprS7apOomRR
-	Bu/rXx6n0lDfKj6h24tQ4mQFaKsCqZNsXT+upENMvhdQR42XrrCbloD1XRJZY/yUSaWJpm
-	weZDhXO4DLJYhkS6V7m43Eh3e+EV2Rs=
-Message-ID: <cf600d82-82f5-414c-b880-71133379d5d4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763646329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0F1vo22ZFTmKf8sXE42d1ovwkd4h2/GmeH0WirLVGeg=;
-	b=KZQyoVQEqYe/9XPzLslzGEobTzkXAQWLBhUuaENdHn2JcZkTs3FEHl89i4TBmDv3Q4l6WK
-	dJciw1xTfr0yhYuoDDpR3VaSo5HBt+gc9UF2D2kvkmuBMPvmRBDtIW/ul/1iL+G1qsqO34
-	F/b9KKIJiTm3UsMXcB4XXtOz6iniLEU=
-Date: Thu, 20 Nov 2025 21:45:19 +0800
+	b=4Ycb9A9uZEKBNeQdX8LFuDpEFtuXP3p0xkg+1ceTSPcLtrp+4OjCvj3BqdeJp/1Vz2WZNH
+	54lUXjJuHfhOV9daVxPDwK5GN1V39C9I9HdnKJRBDZGY1yu4gzSycPFUe1J/uRiRsVZXiM
+	KW/S8scOeQIOXJsspUKTpwT9RTs/tkI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QKsjgNPU;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BCED0408C5;
+	Thu, 20 Nov 2025 13:55:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CDEC113D0;
+	Thu, 20 Nov 2025 13:55:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763646926;
+	bh=w98CTr1y6u3rlNRFz9EHhQELuGV5IPxoox3hjleT2DM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QKsjgNPU5/PcGb6udYNlfEODXgk8ivv7ikeYCyFGtk3qXg1WX8QH7JrCzMWxApG6D
+	 HRXoVEATmOyWOgmvnMU4f7Jt6iiVHv5eHM/f4tu0MRUlVmtw2VH8m1qwghCR0CTqqW
+	 W+iDNL3eGu7Y5patl7mIDeOVyZkN3EEMa5yBpbDAbimNotN9a9qNgkN1TxBWNWn2dT
+	 QKi+xC8V8RYoPmWfaroSMUaiEmf7Brtfy5KeymvdgbxHSNMcKtNfnTucAcEjD33pc/
+	 PQdFCVdp+5DKaGCEnlHxsnb+5FwMYO3IfEPaa6Y0EyLznPWk5AnVdC3KqBaaBa6SgV
+	 yr5gf3p/wf5/w==
+Message-ID: <2b7ab53c-b1cc-44f0-acdc-e28967f53ea5@kernel.org>
+Date: Thu, 20 Nov 2025 14:55:23 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 25/26] mm: memcontrol: eliminate the problem of dying
- memory cgroup for LRU folios
-To: Chen Ridong <chenridong@huaweicloud.com>, hannes@cmpxchg.org,
- hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, david@redhat.com,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <44fd54721dfa74941e65a82e03c23d9c0bff9feb.1761658311.git.zhengqi.arch@bytedance.com>
- <a7e55445-20ee-4133-8455-b6c5f7a45ff3@huaweicloud.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <a7e55445-20ee-4133-8455-b6c5f7a45ff3@huaweicloud.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] mm: Use frozen pages for page tables
+To: Chih-En Lin <shiyn.lin@gmail.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org
+References: <20251113140448.1814860-1-willy@infradead.org>
+ <20251113140448.1814860-2-willy@infradead.org>
+ <20251119154654.GA606021@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251119154654.GA606021@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BC1DDC0014
-X-Stat-Signature: wfheqxstqs47x67z4xgabk97tchshzch
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C2C9B16000B
+X-Stat-Signature: 5da4tj1gymm7ea5obufkc9636zzcc7ij
 X-Rspam-User: 
-X-HE-Tag: 1763646330-510086
-X-HE-Meta: U2FsdGVkX18VcTGrcxtNovzJ3DiPYqqOXg/e946NFheJBIPVq2/ZW1krv/vsdTid5wgPINag8hAHb7OLAgf58Ucj3Hof3NJrIhgSD+40C0jpRtyjmxFM9aNj4zUPSgdvUxHEZrfxVuUKV/bmjfJvCyYrCf2T0ffTalVwDFUyQtEERdgjcT+IRFT6vlPemZ0hyIEW8KVg7SaEFv/lgq4IB/8LRPPb1grQRprvfafeRMyhNZCTCcN3xei8WfqhbgkeiUEmpXZfzgadHjjvxdbO3eGHKmE6hnf1EXiV4l6QzF0b1w2HmC9bHMrBqysYgm68v8mhWTBYr4NELNLoBdnTyhJQvcbupAjshOw1Eb/Jxw5wFxCMiFBB/HJRNcwxUwcu5n3BqD/U9ycK1qxCQ0GhYXNPibnY50UjqX9cpxvQrRFDPZ5wXP/vgK/4+wTWSjjlpAC6bxvd/w4wumfP/UTBLduika1LnON02iKWzSh1nC48rBD2TxkJPF+YW8i7SGb8jco/ov0mzxXbC1XRoX2XBu1pubeHBklLbhDumKEUBF0uIbxL52ciyRKgqdDt2eE94hojo4PQRbh279bu/qzXM8ZdFgnfXtmv7wDhVn4nZDn1JnmWcq32XeDXVRMujsNa5Tkvok69K/jcoVZi46YmeAAn00VSxa7M/pMPHRPVhEqKPHEqHzsX2rVHIOkwq0X9wZNf+qfB1sVgYi4mSeFpvyRAviA+vgtgyN0s/wc2YGRBsMeCHc1fAzJQVDkpH9hPZktbSSzsG0P/C2nS8gdVmNpjxOw60Hpfr1KU26D4EqDR70apRLF/fMh/q/bb0WglC7Xiy573zStnEnslEGxGfxwo6ljNCEMI2aCK7+ln2uaJ5V2Br6l1KSZtGBTft1MakTHCyJIU4gtG0ElqPPWhBDcF2hozXZvArnt2+CuqK3sMsLKr3SUu5FusOVxM1YNP8M5MeoY5d0IClsZ/bga
- bzg8X8I+
- 3OeaMmxQQ8K2xqvA0BhvJ3pQ7c4BUYx4nAHr9wpKbugnFY4p4YUHS4sqiVaK7gQbApLfKUlWHA7LaJzHQ6/KmD7wIYtzuKK1Kavu2c6o1swd44GlxKHiQIL79dVzQM4e9Jxatjk4U5iI7OeuXrgLY7ZFz4Kjgx3Dv4jnBOJ8g4nng4RJLNMcNoROQiklWHuOF7sXb37s/7XvVegngo66pUujiM60b8e+D5sJcGWlm5GsILzo=
+X-HE-Tag: 1763646927-668388
+X-HE-Meta: U2FsdGVkX19gnS0bnlI1tjVayC82rjTvtl0XkPutNgqdLZfCePcLZ8bZYeai/ciXmMP1DcYHsot9RugfzaXGp6WAEpVoAgoqlJR/avdpDEi7xh8lc8vtv6uJmTQzvzjtcxM55BpKYdMTyckmZLi9x+oo0adAczp6v39AYKHupqZbrMVqdlMaIOl/Jn5s4ETI9OLHFyc/gQaQzYQbLrAE3IlI4M/KwP4TgPIYdkjN08HC1LUPY2ql2zo8dSubG+lscfGHMzrRKQtvqcHvaYZqfSroBH8AiJXpqXI1hQtLgDgz6kYeinFeXu35K6atpLNRqKfm+ozRYATT2LQ/loH+E1jpOyv02ixV0OH0t3cyZ49qbTu7c6qjuK3lBJ/WH0wOS8uET2r5SAru3yA/cooq+3Ytfv3TFoOuJogjA7zWtCdPeTFdxhkBw6gevmd4YdT2XnLH98BLRhWLtGvzuCGsg2Ckhr4Jl3oGY8p7iv/mLQ4pSRbQMet7mknysbZLLOTB5ncEYM6UlgIU3/OyeEtOyxrdECPtsu9D5Ka8ngm577vdVh1jiQsCyv8uFmJ2aaEQWsExgr4INV9s4Rn6qw26gjHgQ0QMp1rPpSCa4RRRiYdG/ceK3H+ljhLWO0tCWEkyry7ZaqaD/zJrLtLYgAh0ok3BJzLkuC7NdfKqMCGLLfL29j9HV5MsoCYgCuxl1ien58L3RsHCxVas0s6Mc1M75uCtKoUlLaTwAh6ABlDm+ihTV2VhYiOW4yvDE9MGo7WPG+EkEe8/MDTMaA47RBCSEj+DMkypxXF6/9jr6b50HAUmyrCB4AfhxL5lQZh5pzzNndGyJOIMOue+6CPxSq/AF9UBOkCano29NFLWiYflTsw3eE52sf9Rvw5LwTXJta69W/qe9+RWcLHOFeWJcGAjubcpWzfiOAu5RP4ICjjd1fOMYvu5mjUDrbCalMrEUGvMhlIIg4pvC+PIFnZMEbn
+ V5GNpNOo
+ hPDcjnxX7+wXYfAsazovUFEfSyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,46 +98,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-On 11/20/25 7:56 PM, Chen Ridong wrote:
-> 
-> 
-> On 2025/10/28 21:58, Qi Zheng wrote:
->>   static void reparent_locks(struct mem_cgroup *src, struct mem_cgroup *dst)
->>   {
->> +	int nid, nest = 0;
+>> +{
+>> +	struct page *page = ptdesc_page(pt);
 >> +
->>   	spin_lock_irq(&objcg_lock);
->> +	for_each_node(nid) {
->> +		spin_lock_nested(&mem_cgroup_lruvec(src,
->> +				 NODE_DATA(nid))->lru_lock, nest++);
->> +		spin_lock_nested(&mem_cgroup_lruvec(dst,
->> +				 NODE_DATA(nid))->lru_lock, nest++);
->> +	}
->>   }
->>   
->>   static void reparent_unlocks(struct mem_cgroup *src, struct mem_cgroup *dst)
->>   {
->> +	int nid;
->> +
->> +	for_each_node(nid) {
->> +		spin_unlock(&mem_cgroup_lruvec(dst, NODE_DATA(nid))->lru_lock);
->> +		spin_unlock(&mem_cgroup_lruvec(src, NODE_DATA(nid))->lru_lock);
->> +	}
->>   	spin_unlock_irq(&objcg_lock);
->>   }
->>   
+>> +	if (ptdesc_test_kernel(pt))
+>> +		pagetable_free_kernel(pt);
 > 
-> The lock order follows S0→D0→S1→D1→…, and the correct unlock sequence should be Dn→Sn→…→D1→S0
-> 
-> However, the current unlock implementation uses D0→S0→D1→S1→…
-> 
-> I’m not certain whether this unlock order will cause any issues—could this lead to potential
-> problems like deadlocks or lock state inconsistencies?
+> Should we use test_and_clear_bit() here to prevent the double free?
+> Or it is unnecessary because the caller will guarantee there is no other
+> thread that will free the same pagetables.
 
-As long as the order in which the locks are held is consistent, there 
-should be no deadlock problem?
+If that would be the case, it would be horribly broken already?
 
-> 
+-- 
+Cheers
 
+David
 
