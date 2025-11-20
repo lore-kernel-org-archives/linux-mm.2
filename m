@@ -4,176 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1635CF8855
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 12:58:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F64CF8854
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:01:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01C326B0006; Thu, 20 Nov 2025 07:58:08 -0500 (EST)
+	id 5053A6B0029; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F35906B0031; Thu, 20 Nov 2025 07:58:07 -0500 (EST)
+	id 4B5316B002A; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E24316B0032; Thu, 20 Nov 2025 07:58:07 -0500 (EST)
+	id 3A3FF6B002C; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFFC16B0006
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 07:58:07 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D16C5B764
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:58:07 +0000 (UTC)
-X-FDA: 84130988214.02.A271089
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0964A8001B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:58:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 291556B0029
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:01:34 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8487F160869
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:01:30 +0000 (UTC)
+X-FDA: 84130996740.29.2AA3231
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 104B0180010
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:01:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=usJJd61n;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763643485;
+	s=arc-20220608; t=1763643688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
-	b=E+jNaLMVc4TlpjPq2otzReejXf9HE1lxe6n+WL3ljz8ben4ayOhOhJNimptHKubDdnfJoA
-	vj3qn82oaixptiirkHQq1XgwJ5de0MRrk0HEtt7+vhgE3Hxp1b57XnvhmJuHzsq8v395ox
-	weCTsvlfW7Ynknpiq4rg+9fVW86CcJ0=
+	bh=Appw5O9xn9vKWf0A+16v30yLtvA63IpanK+xECauBoM=;
+	b=vrKJHU/oO9ShyQOLC6BvDgQEGk6AwNPDPO4rQWm0rXiDXyFjogw7Zfo299nGxuiwoBIua7
+	QZS+gPHjvzA2JqbhvM0ZJVk8bHCwr3BMqQyEKWs9ZlKQyTtrv7sy5Pm0iBL9BG5PFLkFRh
+	dDe7XVmPRKgyr8vkmirpciGmOpYhFuM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KPz2W4il;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ti84snLw;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763643485; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=usJJd61n;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763643688; a=rsa-sha256;
 	cv=none;
-	b=l01a18OJ269JXwfgSfjC/zOkAoiFrqXfDvYA9Ovlrabay8lAiCtf64PR9f479EpYIcNXQx
-	GQw9zC2QDyQdxIH/44rwMKg00WykdG+HUWUTkFHVFx7+XL2wPBKrF98X5djAy6RXy3u3pu
-	e6E/+0IeIoQ45pijBg/iFcH/jYZQSrk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1626520A2E;
-	Thu, 20 Nov 2025 12:58:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763643483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=ukpnYl0b+LI8IjRwg5M6yzijCtxlLwOL8bMToYPGGG9KYDiEiWAglLUcRdLza7hN2A+B5V
+	1h6O87jCmNLBcYkuHZ7kAG/8aisaN17MdSgk/LAE21wXTM2pBhttGErgYGgSnX3gnoy7bB
+	cY5DPqRgSScIse4XPW2kVAJE1E+ZAEg=
+Message-ID: <f4652d26-a0f0-4ffe-ad53-74a3418c75e1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763643685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
-	b=KPz2W4ilySLGgjTbe6p35SMCJKelGbG6GBdPFSbHc+sSyLEjwuLRXgphB4eqYoOJ7IUIGT
-	PPj4PcpDzhqRL0LFrorj2xyBulwKxBBCNEatJ4DVRI/Qajlcp4IWrMaXpgbikiXD9VhTO4
-	gMBDSGxgdOqbyifNDz6nAQgwr2Gcmvk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763643483;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
-	b=ti84snLwzX57cCkc4wju2PuJrWjzezZ2kGAbAfrZb1AK2dHi/u6g+bQI5NFupIJlR1VC1T
-	88Vv2zwHxVR9cUBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1763643483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
-	b=KPz2W4ilySLGgjTbe6p35SMCJKelGbG6GBdPFSbHc+sSyLEjwuLRXgphB4eqYoOJ7IUIGT
-	PPj4PcpDzhqRL0LFrorj2xyBulwKxBBCNEatJ4DVRI/Qajlcp4IWrMaXpgbikiXD9VhTO4
-	gMBDSGxgdOqbyifNDz6nAQgwr2Gcmvk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1763643483;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZBU/AsUgcSzrIfqjUnDEsEXZDEFHybM/XjPFqhqGKmE=;
-	b=ti84snLwzX57cCkc4wju2PuJrWjzezZ2kGAbAfrZb1AK2dHi/u6g+bQI5NFupIJlR1VC1T
-	88Vv2zwHxVR9cUBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EDD303EA61;
-	Thu, 20 Nov 2025 12:58:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id T1iyOVoQH2mCbgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 20 Nov 2025 12:58:02 +0000
-Message-ID: <7ffb1908-464a-4158-8712-7735100ae630@suse.cz>
-Date: Thu, 20 Nov 2025 13:58:02 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=Appw5O9xn9vKWf0A+16v30yLtvA63IpanK+xECauBoM=;
+	b=usJJd61nfgOrgJv9VkEZ3PMKtrtJaJEjNlVH8RWyyQmyKQb+9SiV7pZ0w1OZPZ1n9HBCc9
+	xoFEYp8owtU2QvVmNzWY2cX9h/gQJ517YAyli+xGAvQDmkG+LAEU3kpCek5pkniDCNt3vG
+	saFS6TwzqYvcFwtasFMFWmyOzqAjkI0=
+Date: Thu, 20 Nov 2025 21:01:11 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next:master] [mempool] 022e94e2c3:
- BUG:KASAN:double-free_in_mempool_free
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Christoph Hellwig <hch@lst.de>,
- kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
-References: <202511201309.55538605-lkp@intel.com>
- <20251120072726.GA31171@lst.de>
- <9e066a2f-28fd-4da7-bca8-c10f7b58f811@gmail.com>
+Subject: Re: [PATCH V2 1/2] mm/khugepaged: do synchronous writeback for
+ MADV_COLLAPSE
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <9e066a2f-28fd-4da7-bca8-c10f7b58f811@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Shivank Garg <shivankg@amd.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, David Hildenbrand <david@kernel.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, Branden Moore <Branden.Moore@amd.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <20251120065043.41738-6-shivankg@amd.com>
+ <20251120065043.41738-8-shivankg@amd.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20251120065043.41738-8-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0964A8001B
-X-Stat-Signature: agsxnb8hhems7esja97kdq6kxwrnq1dw
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 104B0180010
+X-Stat-Signature: 63f63ko3aitt34pkeytwkrwiepchuc9s
 X-Rspam-User: 
-X-HE-Tag: 1763643484-816478
-X-HE-Meta: U2FsdGVkX1/hB9Uezr+/D3eLfoQTqVF9VBwHlSSl09K69rflG6iTiLLwkFF/G/L6Gu+v9iYPzLMvLg2Y1ntUQYOsReXM34r1s2lZLcXQ+hRwft0ML/pRBAC2uHeG/YlhizrMQJNFhT93kgpcmCZP64nWS4JmSWS+T+TlPRIdBY78C1RwoXBds/NJN8ArLkFpsYITZ1rW53KX66LANvamhmLfS7vX/CbI2CNMATS/jG04nlv4Lr9hnVFo25qbr5wr+F6zTuAQBN4uXvHYhDXUDllPFuSziMkRSpE34qbTxwEjbIC8veJoD2Ul36SjTNLGezFcx6WblCCXZeCUlIe4SJwnb+rPcIPwwFTTOG8V+atuK8ZgUbT+TkBHKXUKL7pZB9MlvwfOYbIUJQnYgZ9plyj8XPWZmDlBgkAuaqCJeFP2QJNJU7bLLvwuT8Jpxh3rn44PEHJWg4+t3J1SGIw3nnXnE8QcOlVGrSFtvAtPqtoEurwTATG7XrMGbyjZ2M+EoDZmM9tPixv+H79nlWC+QyzbcKPJT2l/TTIWJxj6WkLb6FMQk/VGNIJhiskPVMh4Kd7c0vcxAjCJTtvEc5TU+Chu/YsTuywC3gCMTLLZm9JWRe/5nARKfZH25qk12JeGRNITCNE3r2jJvAsb0xVpDGfgnSDCLL98dyaSoyKyhAC5V28dntE714xazXWlOojMErAfJXbzK3VW8KEHztRghP76d1O+m3N/SKQcXRU0XAkLs2nV14GLOFiF1WbwXes/MHFOGkxBYZnP/z0zuZyScb87ydtIZfUrPVJBe2VcN1Df51rdIYcb/sNsTHTx6EzjyyTP+N2+SzDJblLnUjQ71y3MPuFwckVvOZ1b1cljMsD8ksQPcBx/ulDgeG0ioZPGRROWUfVLxUKwuC+tVAT5h4OmQtp67G7ukRMmWOajTJOG0GbH9mLpUeETYjUfS5OIDL4PHJi5NpFhhJo3mTB
- jaX488Pq
- sk2bD0vDP8FcvTTu/jWlOhcM/Nio2bLgaphINSdrF0rtV3OLrYW7d2MWeF26viy+Zl0nQ3P3LtckhIDi2MJGdoCG1eH4w6waxeELybLBWWHs3jpg3cJCr9HRorawC8b+OHqGfSpgMd/IsrTIF4i6NyiMETQ/cwTo4x56r3vd9MOZgTd/EfKX6nFurR4Jf9VQuhhcN2t+TUgHWa5bFAVJE3u2IsW1gNsLut4AO7ynXbIxuDtb3vkTramSbBGSERUl3cbLsn6YzyxFrEMvL5Bi2rLzy9tHqc4aGxoBgAXTtLUieaGN2FDtuqV9MMPy8lU3MvTwWgo3raoNkFBoV/G3wzM7oQiTygA6vJZUijbWXBWuyf4OGoXJ07xbF0bFxQPl9Aws3QO8BaltMwnJWTC8/mdklvw==
+X-HE-Tag: 1763643687-828517
+X-HE-Meta: U2FsdGVkX18k2OvMrJU8VBSbVbz1Ep6rdJimZvRFya4kZ3sQMCF3NWL/ZywWr85jzUfVtkegqasG2cfouk1qsmQm7saaEAWBNvev6DM/Ta3YUygSiuXBemYR3C318fI+WmtBrcfAnHj5omtY96jwjK74Ha0mdC78aXCtuol0hTzOkdv/lE86stCzTb6iiNGEPai8VjBsydaoX33d0SbDUVSMuwotqIbNKWRBS8t4XfHh1HCqZwbVcrVqCQIrD9x6X3HlU/QHTOWDJHp7kLJbOcfnJik1B3BnVyFkHkjcvPKADyP/uKaHHCJFXBnRPhefUJ6Zy9gsDblvDTBwzm39WFQOd45yxIEuwileNr90NDIJh9MVtgNichnn4MFXItTdBFySOiohJWcRdk9uDlLlkSHSo03Msk8dYZ1ruLXaMnQCF7N+rGWXwt3I/8P4ZIdCh7EMBSbEeAWAAtaS8dgOXTeYUrPN70WlqhPsQ+E8oTNRm91kVSjWgD0jbcwOANjwW1Vvb4a0uP3t+QeaEiC1FBOb1Mb/EbB2kZR0A7tjU3ugLZNFrkTT6Yd/S9EmlZqCk3sAzFIDuKWzkHIBHl5s6Z4PggRljtc5GpKn/32A/OlbCchxZm+knzNaAKylMQHtLbgVfnwElpXDu71kAqcNBXRX8klbVVdKhJZoz0qW602vWKuyiuK050XkREyWq3RGffrdIPbPv2F97wO2rtRSzgXTqRAZm0n+y29hmHI3Eez8IiXDAqYbzPBZN0yYQqwIJo2X3SLwwUnC4gvxC23iDh9FodBFHUMH7To2yVU1pcyWp8kScW0dXBIrVusHUOp/FfY6IJZBbhxAq01P/y22UbENzpL45rpFeZ4GA84/fi7JsKCZTxP4jRZmQKw5ZXjrxduYFwJxNlUl3WounX0u1aSn7A/HA7P2DfEpC1jko3yjBQSFadwqWNeiWWC1nQqQxgq2LXqKA/XLwdNpWT5
+ ync/3ALG
+ OMBqFO+0K/gwh5GYlyXJ2daJ0gb+D8ZglMqbGdp5lJv/uRm52jy029+tpu57iCWgQXOdWv0+SKK+OvFGBrgJw1UHfe1cMy0RWN6d8lCpUMlSzhOvWTzCAF04f8fUy9BD9evU3bUZPZGTbcioJwxBXDE9FvGoxLxfvfyA9N7R/HhZBm+hL3Cyhd0h9jaqBphyFxKvsM1LL+vx/sYZQi4jFP3tM+dQC9IW0hgnPs9/XLosi5B6XiozFJdyT4QDjpx8qtCLKLm0Bcy3cZ+5f7KZtlgqOyUkVxwQH2hYLDVLjSKLcMfRVydiTQq6gPiYRwtWXMHH49iFZ2x/eVbfZjTK/6cSwdg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,19 +101,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/20/25 12:17, Andrey Ryabinin wrote:
-> 
-> 
-> On 11/20/25 8:27 AM, Christoph Hellwig wrote:
->> Maybe I'm misunderstanding the trace, but AFAICS this comes from
->> the KASAN kunit test that injects a double free, and the trace
->> shows that KASAN indeed detected the double free and everything is
->> fine.  Or did I misunderstand the report?
->> 
-> 
-> Right, the report comes from the test, so it's expected behavior.
 
-I assume the bot was filtering those, but the changed stacktrace (now
-including the new mempool_free_bulk()) now looks new and the filter needs
-updating?
+
+On 2025/11/20 14:50, Shivank Garg wrote:
+> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
+> text sections), the pages may still be dirty from recent writes and
+> cause collapse to fail with -EINVAL. This is particularly problematic
+> for freshly copied executables on filesystems, where page cache folios
+> remain dirty until background writeback completes.
+> 
+> The current code in collapse_file() triggers async writeback via
+> filemap_flush() and expects khugepaged to revisit the page later.
+> However, MADV_COLLAPSE is a synchronous operation where userspace
+> expects immediate results.
+> 
+> Perform synchronous writeback in madvise_collapse() before attempting
+> collapse to avoid failing on first attempt.
+
+Thanks!
+
+> 
+> Reported-by: Branden Moore <Branden.Moore@amd.com>
+> Closes: https://lore.kernel.org/all/4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com
+> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>   mm/khugepaged.c | 26 ++++++++++++++++++++++++++
+>   1 file changed, 26 insertions(+)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 97d1b2824386..066a332c76ad 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -22,6 +22,7 @@
+>   #include <linux/dax.h>
+>   #include <linux/ksm.h>
+>   #include <linux/pgalloc.h>
+> +#include <linux/backing-dev.h>
+>   
+>   #include <asm/tlb.h>
+>   #include "internal.h"
+> @@ -2784,6 +2785,31 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
+>   	hend = end & HPAGE_PMD_MASK;
+>   
+> +	/*
+> +	 * For file-backed VMAs, perform synchronous writeback to ensure
+> +	 * dirty folios are flushed before attempting collapse. This avoids
+> +	 * failing on the first attempt when freshly-written executable text
+> +	 * is still dirty in the page cache.
+> +	 */
+> +	if (!vma_is_anonymous(vma) && vma->vm_file) {
+> +		struct address_space *mapping = vma->vm_file->f_mapping;
+> +
+> +		if (mapping_can_writeback(mapping)) {
+> +			pgoff_t pgoff_start = linear_page_index(vma, hstart);
+> +			pgoff_t pgoff_end = linear_page_index(vma, hend);
+> +			loff_t lstart = (loff_t)pgoff_start << PAGE_SHIFT;
+> +			loff_t lend = ((loff_t)pgoff_end << PAGE_SHIFT) - 1;
+
+It looks like we need to hold a reference to the file here before
+dropping the mmap lock :)
+
+			file = get_file(vma->vm_file);
+
+Without it, the vma could be destroyed by a concurrent munmap() while
+we are waiting in filemap_write_and_wait_range(), leading to a UAF
+on mapping, IIUC ...
+
+> +
+> +			mmap_read_unlock(mm);
+> +			mmap_locked = false;
+> +
+> +			if (filemap_write_and_wait_range(mapping, lstart, lend)) {
+
+And drop the reference :)
+
+				fput(file);
+
+
+> +				last_fail = SCAN_FAIL;
+> +				goto out_maybelock;
+> +			}
+
+Same here :)
+
+			fput(file);
+
+
+> +		}
+> +	}
+> +
+>   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+>   		int result = SCAN_FAIL;
+>   
+
+Cheers,
+Lance
 
