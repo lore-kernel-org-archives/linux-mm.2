@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78626CF8859
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:41:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4348CF8859
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 13:42:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D451A6B007B; Thu, 20 Nov 2025 08:41:30 -0500 (EST)
+	id 335856B002E; Thu, 20 Nov 2025 08:42:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5956B0088; Thu, 20 Nov 2025 08:41:30 -0500 (EST)
+	id 2E6576B002F; Thu, 20 Nov 2025 08:42:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0B216B008C; Thu, 20 Nov 2025 08:41:30 -0500 (EST)
+	id 1D57B6B008A; Thu, 20 Nov 2025 08:42:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A96BA6B007B
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:41:30 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E3DB12CAAF
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:41:30 +0000 (UTC)
-X-FDA: 84131097540.03.9316057
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 858FA40004
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:41:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MRYO20LC;
-	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0738C6B002E
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 08:42:33 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0ADF160127
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:42:32 +0000 (UTC)
+X-FDA: 84131100144.27.26F2C17
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id F30A418001B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 13:42:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K3rtIRyF;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763646088;
+	s=arc-20220608; t=1763646151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iiUwXuDwPsPo8P/JiH7Rc6iuaehlzYW3mvFReb61JcA=;
-	b=M51Gvgv6YaYcDicHqZm8ZBe5/GJYUZAKPwOp9ykL6JTYOvm9TS1JGL7rwuwd/jalPuPuhD
-	NX/t5mZqnITJlh8uvK2SvpuUQXMmFQcIUCqOlGTFj+UFWvfOnXiph1DL8DbPp+6KZlE5VL
-	yOVnDJc4uPk6djOgF4M6GEjMAthtSkY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MRYO20LC;
-	spf=pass (imf04.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763646088; a=rsa-sha256;
+	bh=IhtvXZ8QlZS5KN18xFYL8OwmH7E6r9W5PH7l3gXBaCs=;
+	b=KHJHYTNa2qTWi5H+BUHSz9XQXBZPXy9+Td4yRHFPPE1Q1JIep6htS59He76D9gYT7oPGee
+	1BfmzYC/hcp74vH4Iri+uXCS3yyXrQemO4c+jLE+RU50wRpf4Rm56Dt81hn1NwPT7FzN6v
+	QKlDj6lkZQmCr8jICS/XQHgWDuemqXk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763646151; a=rsa-sha256;
 	cv=none;
-	b=EXmZLRzQ0qeT0JbYF1wPwDTWJMQiREDQTywJH/TGhXX2LLv52kFJp8uCNopmp+3D2CobHe
-	NoN4BggaDnBuUmF2FkskV5czpmkHMYGBYMwgageRFHjNeAhArsd9F/PEyoW56xhFkUTn+f
-	2kfp7tcg5LDMhjBd70zyZyOtMAYd0q4=
-Message-ID: <fa71b2bf-e08e-4991-a821-51c6f40e9a90@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763646086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iiUwXuDwPsPo8P/JiH7Rc6iuaehlzYW3mvFReb61JcA=;
-	b=MRYO20LC5Fn8ysYUK9k9irRH7GumJAbF7J9zObagPMYZVTcIKzaUpwAffATPRR0rSEby4B
-	ohC0GJrFXrjXJIGTa6kWudW9h2GgghJHUJxrANhQg/E1dpccoCFh0uDl0mIVpojt7IGyP/
-	6ZoSQQZNHbd7kPNULpfCrJ+wb9McQQk=
-Date: Thu, 20 Nov 2025 21:41:15 +0800
+	b=0Cgz/ry89lSN3LgH2IE518qvBkWhNm2rPWs7MQwEUrqu1KT+QWk9kcxtuZSih10LEKbtaZ
+	hVD4qTx0CCi7jTRyHeO/KZNuS8yJ8AFiB/VCu/z3fnLTg/jLLzG8q1PXF/xxTnS7tWCI65
+	SowjWZ4atvCPnSaGis6F72rOQi/WKKo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K3rtIRyF;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 706D26011F;
+	Thu, 20 Nov 2025 13:42:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14026C4CEF1;
+	Thu, 20 Nov 2025 13:42:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763646150;
+	bh=Ht1OIK/aZGwiLrXboc7wimNOH1Dr30vWNH61iqtkHFo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K3rtIRyFY5JuIVHZJScwFQEdOsxo4+WVC17Jgy5iyfDYh51Dnc6qWfB3+Z2p0x2Pc
+	 oEnBSdvoeVKyaVlrSk7FgwNjKZJfl0hWn22itFLBFE3yxZtm9nByrhhrTWWNxQvEOt
+	 mKRJMafCuiiEAjaqje8pVbI1aDOegIRC8QX0SuvzxPnIMiiqkZfG+6wm0a5INqxHBL
+	 K4oZe/c0DFh8etEw85g+lIsF76/TcryeoTLtsTJj5pNC4ASwD1ZQq0GHrRqadVTOvo
+	 qHWkjtoFAla14tWGK4jVgwFFpHBaiFES25MkgV49IvxHoPSBVxWWcEn7EMGebVbcdu
+	 po6wOXnw9m4IQ==
+Message-ID: <e06666bf-6d19-4ed7-a870-012dff1fe077@kernel.org>
+Date: Thu, 20 Nov 2025 14:42:24 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 19/26] mm: swap: prevent lruvec release in swap module
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <c8b190b1b4f2690f12dee0e334e4c0b3f94ad260.1761658311.git.zhengqi.arch@bytedance.com>
- <aR7k8oFb_uZYj5bj@hyeyoo>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aR7k8oFb_uZYj5bj@hyeyoo>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 39/44] mm: use min() instead of min_t()
+To: David Laight <david.laight.linux@gmail.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Christoph Lameter
+ <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Yuanchu Xie <yuanchu@google.com>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
+ <20251119224140.8616-40-david.laight.linux@gmail.com>
+ <0c264126-b7ff-4509-93a6-582d928769ea@lucifer.local>
+ <20251120125505.7ec8dfc6@pumpkin>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251120125505.7ec8dfc6@pumpkin>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 858FA40004
-X-Stat-Signature: cgbir416gt1fs5pu8prunfycmchsaxp4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: F30A418001B
+X-Stat-Signature: xpuar7sqd9ocy5rue141r8u39yejp68e
 X-Rspam-User: 
-X-HE-Tag: 1763646088-653893
-X-HE-Meta: U2FsdGVkX1/iGHe16YUbsrrYeRw/U5eSnxFTb2n18pW1M4VX1ZhIshuz3TCdP2MtoiOTVb4xuG3QffpOYrgHAMLPXH7pmhLG2iOUfuSWIwCnzHkgIDEpiWSrgttPzB+lzBSt+F4qLsfKR0iHeOSD/GfON1Vpf0lJI4SKv/FK6kda6dUWker0GryZdnuOdAicRIl7pCsoMkSrvN4ybBtZ6BpImb+IDMIH7OrFPxiaCM6dNCuNz274r1grRfkmnk3ylqUbnHUP6Skrixp3nS4sxFV3oxR3xiE3Y2PYXDmGk5Fy7z8EFZzEU0RyAooH4sTCJ7JxooFKYIkmjqAO1FiZXRYz2R1DULy8vVsF8WfzMJfyhQPGh8JokVaSMnLvEmgK9q9/rZ0uRA0QXvZkruHR8uN2NCM+CkWRfbnEGjSO+ufFxpq/QEnPF6hlHn5FFuYqrOL9G2iaS2Bmp9QgPW/i9inG9A/BIBYYhScAcex+LjnDnNmKG/OjIBbd1mM8Nz/nocsRkifIwfxdi77XYm+F35XR6aLoy87MRctXYEJtsGox+mu5xDDLqrLrbcxlOIztYtFdwBGZCCzz7a5bF+FygfmXjRT2DriJthT1Q01x4CCrUp3be2N18vIBHDfR2fNLrOb5s1Uq1GzDGablKIdm6Ws9LHl7j7gHh01vRvPK0r2/awTAJlXkBqN6EYBMFkVsjcFmAmmYv4WAXIFdz/R59brcn0jKFR9iJ3xnqr6Hfzdnyzos5Zi9hhPGhHjK2EwfKKNUdHRwDWVDojIu3ZZxnNXtd5l+CTUW8dxdL40V/mrGYfs/u0vj4wqR7zTHdcE3jt6+5hgfiu2X+oe2wLONbISfUfC3ulWEsvkfb+sjCnMITAlqbF5EmZuh2BH2d7Q/n8sXaUCSrALRXovRx+ASDUeZduHl+QJogF9REryu6A/DLdegT8nFEGE+DbjqWrosq9pN+HdjrRr+6nJdKpX
- +TjorYoi
- HLqsHkogpM4dlRBB6AVeWtmLpgJ+iZK3rsJo4VTNDGgELttjM4vUxjNqjZWFIoHoPT+SkKu9M0hl+D4bKS+D009vZ6ggn1vJs0fFfQS6uvomMli9CQuJ8MsUsy6Zks4cwZT+qr4URcGyZ9jTbTyOvpf+E2x2DTYt26utUt/pO7veAuB9nWIddEDDjqOnFETTIneSUZdZx+EXUYLzeT8PY36rDmJEu2sN7BXHOY2LJi6PMb2uc7CLV/9BP8k4DBPjWDRgB
+X-HE-Tag: 1763646150-830366
+X-HE-Meta: U2FsdGVkX1+9TehF5sJgBg9c2ev6PanpWEiKkAjtr7rx01NcMKzXnIXGkGHCxlmsvYJc9Qe5Fqrbso+o7qLHMC9pD7ZTdh9eQb4fexrwtiDySpxBoszxNk4X+4YQFKp1XyCmO9jWk8kX14m/AWNf2u/hpMGlV5N61TKEresXkzrDCf7XRSgT7rr0/zLm58xbS1tg6TZOAXHRqTZ9Swh96Oi1/803umJR2P/z/uXhYQQdds6NRCWEftJZj6ZwaEbEyp7RroSTyjaMGVQPSgRBUFdiLhCMFV8fjNd1jCU+mPxJgylg4ZlyixPp9GqjFSElyJhzCH5cgctiUnOL8XqjNJM2tMqZmD12L7kjFwDwFBFsqhMysykfxp5LWj/EP4Khwu5UZeofHCHWnuPAKlmCKVODSofJcJkPyeUMBeiHyDO+Aj0UhaT3Z9iTgVNtqendi7SvStlp7mBSOjpHNtpVh72uvwBtbWMS/fst+kNXysaaiBtPYaj/W4jCEZB/t/U6SNVw1J2IWGiGfQEf2s7KUxusSrzetHLtShwlgdSaljQ6rTUHfE+yGDNoPTdO/z0wly0LLiispFRLTMAx+cXVdAMw/sMhLfX9V/fi5JW3AZJjqU6gWJKaEGGDVg0op//KV/JtsMuzhDeZYTKuFjBvHzXz9hNgym1Fdzxkiv9PM5t1VHtcACgEtATBhOVPF7HjrltnMEjl5U++o4sXL0bYyq+DzzHnlbkrX2yst2ecjTtV49ZZRAiZRyikKP2ZCHhPQ4jAB4P5Fs61Toyleanr7gB/zFFfEWNYLJYwgSkwFYpOPXgq3VbqSgViLVtyGwgy7j3fg7ObWxXEY2LQivmIBmqdxOF8FNlFc1IETLUFaEhOCNxk6/tBT1s2WJx4oxgyigUvWzZ2AYPfhX9seNjeghh5n4XYSNAhMqL/5go+4ypvi33QWYdr7gVJWU0Suq586rmccQWX5+vcu0js8zy
+ P8YyciBY
+ TqQQmArQ3di1GmLW8pqkkDkHPcxEYa+cP9ZblEVOZXWg/tJcXAQdllEQpyUUamVXwULmmTp0sFKw3CUkYStjHxtdBRzQfTa0y6kW56F6SIqNFJzujoI3JSC2n9fiq0NZy3dwuTQWMox0EFinjP2o2cchnCmOW1IdAc3+SUizqgXezLex6+vb0Wrh4MK7NLOzWnI/AKovaAuQLNnmRa6huUAbpXXboKaMJZtd6SUo7K2GXrctpJjeFlW0J+BLlz1YqZMlnyffLHUhJVwDuu8fUGcXW4ZV6V9vBD81UjycQoz2yEzmVh8AqxHdV0A4IZBwIkeIk6e9gsIW4VQigGtzwLzpggLYV2Dz4tz7GS8JT0ZBaE9Bm/ALcwjQJmYY8WCZ72HDuX3928ykXoauf/9RWsKo3Rg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,37 +105,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-On 11/20/25 5:52 PM, Harry Yoo wrote:
-> On Tue, Oct 28, 2025 at 09:58:32PM +0800, Qi Zheng wrote:
->> From: Muchun Song <songmuchun@bytedance.com>
 >>
->> In the near future, a folio will no longer pin its corresponding
->> memory cgroup. So an lruvec returned by folio_lruvec() could be
->> released without the rcu read lock or a reference to its memory
->> cgroup.
+>>>
+>>> Signed-off-by: David Laight <david.laight.linux@gmail.com>
+>>> ---
+>>>   mm/gup.c      | 4 ++--
+>>>   mm/memblock.c | 2 +-
+>>>   mm/memory.c   | 2 +-
+>>>   mm/percpu.c   | 2 +-
+>>>   mm/truncate.c | 3 +--
+>>>   mm/vmscan.c   | 2 +-
+>>>   6 files changed, 7 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/mm/gup.c b/mm/gup.c
+>>> index a8ba5112e4d0..55435b90dcc3 100644
+>>> --- a/mm/gup.c
+>>> +++ b/mm/gup.c
+>>> @@ -237,8 +237,8 @@ static inline struct folio *gup_folio_range_next(struct page *start,
+>>>   	unsigned int nr = 1;
+>>>
+>>>   	if (folio_test_large(folio))
+>>> -		nr = min_t(unsigned int, npages - i,
+>>> -			   folio_nr_pages(folio) - folio_page_idx(folio, next));
+>>> +		nr = min(npages - i,
+>>> +			 folio_nr_pages(folio) - folio_page_idx(folio, next));
 >>
->> In the current patch, the rcu read lock is employed to safeguard
->> against the release of the lruvec in lru_note_cost_refault() and
->> lru_activate().
+>> There's no cases where any of these would discard significant bits. But we
+>> ultimately cast to unisnged int anyway (nr) so not sure this achieves anything.
 > 
-> nit: the above paragraph looks incorrect.
+> The (implicit) cast to unsigned int is irrelevant - that happens after the min().
+> The issue is that 'npages' is 'unsigned long' so can (in theory) be larger than 4G.
+> Ok that would be a 16TB buffer, but someone must have decided that npages might
+> not fit in 32 bits otherwise they wouldn't have used 'unsigned long'.
 
-Right, will fix it in the version.
+See commit fa17bcd5f65e ("mm: make folio page count functions return 
+unsigned") why that function used to return "long" instead of "unsigned 
+int" and how we changed it to "unsigned long".
 
-> 
->> This serves as a preparatory measure for the reparenting of the
->> LRU pages.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
-> 
-> Looks good to me,
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Until that function actually returns something that large might take a 
+while, so no need to worry about that right now.
 
-Thanks!
 
-> 
 
+-- 
+Cheers
+
+David
 
