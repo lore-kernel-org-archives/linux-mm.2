@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 032FACF649C
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 01:03:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F0DFCF649C
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 01:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16CB66B0010; Wed, 19 Nov 2025 20:03:12 -0500 (EST)
+	id EC7566B0092; Wed, 19 Nov 2025 20:11:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 144486B0032; Wed, 19 Nov 2025 20:03:12 -0500 (EST)
+	id E77B36B0095; Wed, 19 Nov 2025 20:11:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 081586B007B; Wed, 19 Nov 2025 20:03:12 -0500 (EST)
+	id D66C86B0096; Wed, 19 Nov 2025 20:11:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB39A6B0010
-	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 20:03:11 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0F671606D3
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:03:08 +0000 (UTC)
-X-FDA: 84129186456.28.0D03714
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 177E318000F
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:03:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d0EiuuaB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763600587; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C0D236B0092
+	for <linux-mm@kvack.org>; Wed, 19 Nov 2025 20:11:39 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3AAC61A0705
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:11:37 +0000 (UTC)
+X-FDA: 84129207834.18.6B3D83C
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4A67940013
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 01:11:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763601095; a=rsa-sha256;
 	cv=none;
-	b=dJAVqiXbxKwF3KBIbG7SqHuzIip9tU6lFRvqKxMqvFm98XCdYCVvDo3xBzn7X52tjSuJ4L
-	qwOLGYNIMBwIuqQ7H+W6htFTjvh5OAOZjBOJouk15FfFAOpFOAcvMrtW+2z7CvD3spiENP
-	0DKkxfQ0hwGVPKQPrL+9PwnDMQ+QPX0=
+	b=8H0LR5KPjYa4u4dx0/d/6+tuhhU91f+E3TpsY/NjulhUf1su7hny7u5JxGssBylHHqepnO
+	q+n/dcuI5c5DSD6jmHmVdavuaZsevXI9Kn70rjDu+e228OD0548SyIveYhjWT4ee76rJ+k
+	Oim+QicDIzumQmuSOCcqmRa7JlGyvY4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d0EiuuaB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763600587;
+	s=arc-20220608; t=1763601095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z1FxhRsN2boAMAQbdfFCvomkSRM7By6r+cfbP774rR8=;
-	b=IX1k7CjO+juzrWmtL7XF9FNvGc14l5vg+amR76vdH9oJo0YbMIkIjDayKQsjewr7bRw1OY
-	vTNCeTaW4xkhpRXtRFjPkcDNEcoCfHYtToIOklvQ5vJRZL3UnJa6g6gCIyx/AGLFCIP+th
-	KYRdnMERcJjUsr9srOBiBCBVLL7QcDU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CE90943E34;
-	Thu, 20 Nov 2025 01:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87263C4CEF5;
-	Thu, 20 Nov 2025 01:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763600585;
-	bh=V+jX/8QopxdSDO6O5TNU3aEQhlUYE8ATtCK6XEKW5RY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0EiuuaBz/OpXfei/3z+GvVGzAHjTn8GeJe/V4wbTymI8kxgG7CQW5bgzOyeu9NfO
-	 slXNTBw5yovdT8DtaQVJBTZ8wu4Q2bTP2lzDfWD73Lqxm2fZZ4bIcawdaCrJvTd13R
-	 FHUubmE24/9h/onBi6fJCZT3EJWbxorAEYAbV7eH3Ooc0saYuzGjhEa5APcFdFqDS3
-	 dg3Qwsu9vMDW9yli1a+tHxPFZyOZUYGdhMqqzhIO/4xdvGAk0SRS3VztlZ1MHkcA/G
-	 7yg1s/tm0TZItoH1Pu32NXu4EMgTIq/7FulmI9gx5reEeaKH8za0LIHLZVg2bLx2u0
-	 eIxNMXBYDlsQQ==
-From: SeongJae Park <sj@kernel.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-kernel@vger.kernel.org,
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=qPKqnv35DG4U6a/ztoQ9qpFSmco5mZwTTBFElxax3xQ=;
+	b=aSvYylsHfek5GPdkjdEfUP1hs9poB5KGE851j3bnjSHoadPE8Hoe6EgyHsxCt9pg9AsVgM
+	XmeFt0yQC0NbKvt2/Xd8aPMNypC4FVcbdLP8VL5pW52rS2EOq7T+pN2At0ACW43raxXfVr
+	GzL1zoaoeQgvCaSIqw2x4/qn/tLOBaA=
+X-AuditID: a67dfc5b-c2dff70000001609-09-691e6ac0bb8f
+From: Byungchul Park <byungchul@sk.com>
+To: kuba@kernel.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3 0/4] make vmalloc gfp flags usage more apparent
-Date: Wed, 19 Nov 2025 17:03:02 -0800
-Message-ID: <20251120010303.74537-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251117173530.43293-1-vishal.moola@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 177E318000F
-X-Stat-Signature: jw8j4c9hs6xw4tz7x9toapcokwmwkmgx
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	hawk@kernel.org,
+	andrew+netdev@lunn.ch,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	ziy@nvidia.com,
+	willy@infradead.org,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	alexanderduyck@fb.com,
+	kernel-team@meta.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	mohsin.bashr@gmail.com,
+	almasrymina@google.com
+Subject: [PATCH net-next] eth: fbnic: access @pp through netmem_desc instead of page
+Date: Thu, 20 Nov 2025 10:11:18 +0900
+Message-Id: <20251120011118.73253-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrNLMWRmVeSWpSXmKPExsXC9ZZnoe7BLLlMg+/HuS32NS1jtlj9o8Ji
+	+YMdrBZzVm1jtJhzvoXF4uv6X8wWT489Yre4v+wZi8We9u3MFvsurmGzuLCtj9Vie8MDdovL
+	u+awWdxb85/V4uSslSwWH0+cYLQ4tkDM4tvpN4wWlw4/YrGY3djHaPH7B1DZ7KP32B3EPLas
+	vMnkMbH5HbvHzll32T0WbCr12LxCy2PTqk42j02fJgGFd3xm8jh3scKjt/kdm8fHp7dYPN7v
+	u8rmcWbBEXaPz5vkAviiuGxSUnMyy1KL9O0SuDLu9WxjK3jNUbHqSwtrA+Me9i5GTg4JAROJ
+	vg/tzF2MHGD2nquKIGE2AXWJGzd+MoPYIgK6Egc6JwPZXBzMAp+YJSYvus4EkhAWCJH4v3oD
+	mM0ioCrRsPEHC4jNK2Aq8fL8LlaI+fISqzccAGuWEGhnl1i+5Q5UQlLi4IobLBMYuRcwMqxi
+	FMrMK8tNzMwx0cuozMus0EvOz93ECIyCZbV/oncwfroQfIhRgINRiYc34phsphBrYllxZe4h
+	RgkOZiURXlVHmUwh3pTEyqrUovz4otKc1OJDjNIcLErivEbfylOEBNITS1KzU1MLUotgskwc
+	nFINjN6h16cvWWSzsTIiT1u/nJtRbsV2GS7V67dip3zc/it7T2zRm4O7rdf2fpcTvW4q86Cj
+	rH+HiP/MGqadX1U4oo4Ya/hWOLleWxyo57/rh1X36nYZj4LQwgsp+y//szCVOB6cMLsyxiZc
+	1Dful23rUja9lnmlyh3RL+4e2R399X5FwbKOlvIfSizFGYmGWsxFxYkAVscVQX4CAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAwFlApr9CAMS0gMaCGludGVybmFsIgYKBApOO4MtwGoeaTCcrzA4voKmAzir
+	+Hg4p+C4BTicqrYBOJzPhAQ49a/6AzjlxuIHON+m5gQ4vIe3Azi+0awGOMOdyQU40LaOBTi3
+	gOAHONO6nAY43qz/BTjJmqkEOPHIyAE4xqAWOPbL7AE40sPiBDibgY4BOPv4nAY4m8XeB0AX
+	SLSp2QJIkYPuB0i5mt0HSKCydUizqCpIsqqJBkiy8pIHSLm48wJIztF4SI2D7gZI8eXaBEjv
+	vtUGSKPo8AJIzKDEB0jzsh5QD1oKPGRlbGl2ZXIvPmAKaN6MtgZw6wh4qvSEBYABvAeKAQgI
+	GBA0GLzVIYoBCQgGECcY2Nj5A4oBCQgUEC0YwImTA4oBCggDEPIDGJOi1wKKAQkIExBUGP+r
+	sAKKAQkIBBAlGICx+ASKAQkIDRA1GOnPugWKAQkIGBAfGKuwwAOQAQigAQCqARRpbnZtYWls
+	NS5za2h5bml4LmNvbbIBBgoEpn38kbgB9NNHwgEQCAEiDA1Yxh1pEgVhdnN5bcIBGAgDIhQN
+	JUEcaRINZGF5emVyb19ydWxlc8IBGwgEIhcNSldlYBIQZ2F0ZWtlZXBlcl9ydWxlc8IBAggJ
+	GoABoJHbR2sVUCzxuoDwxyMmkqBXF4al3Xu+/KeWDFycuLHThKC1KVAB4UhuTInEILi7Yc9F
+	LSPhohFt3YrI6sYdAyb4t6hro/hiVt9dUMepBuE0D0Iykco+5aIwqZWeTTBz+t7PiBCCGmPc
+	hiTD6LBvqu4JFXow8q8jzbRTUA5WRDgiBHNoYTEqA3JzYZmxZ6JlAgAA
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-HE-Tag: 1763600586-660437
-X-HE-Meta: U2FsdGVkX19HkdebZKH9xuGKsfOaUk9NjH0UN0vg83Q2S8CQOHZe5pu69cPZe+yrPK7pzNLctZzvlBq9BmjR4u/jo/l43DKEjLrSiG1XiJ3eKgRLLefU6Y6b3GAAWXzoDHQ7/zCPhWfrQg9iqQGYWAgxWAUKvfrFxL4mJ0M43IvD1R7eTSrkne76mh97iaUnzkAC2evwm77MCTeYAj7YiddIfPFSgHK0MHLsCQ6bHdlqXa+DPDI2qovWN0YzLIJgZnY0qVmfhtB04xjM80vEeWONDwytdr6drhx4LRjWq/o7Y0etltkYW0Adu+ulDcOnlG9l7s6ImILMflMcRGdK8RpB/WvRVjFGA8ODj+zahX/6BKsMz357CGFw9wz5LMbyiH0f+s3uj4Ae0t6mrywZOZWl0Ztw+kLNnEbHzpImFJl59SSqR9LPOl81/rp/v3rlErFOkWqYdQkVQRlgjByQNd2y+pWSv2PX5bX52ScXeHN1NnlR6TJT52kTkfC83b4/UmNCTgYFS3WLP+Ur2GfZZ0/s9COw7iNtL8HS6tI4XWlr234bDVR5KTrEMi2Klf4asiMJByAgj3YvIFt+m78CvqirQ+Np1Nkm3rWce2DTiJO7zIOgfTHaCUiNQYdXnk432xIp19ZG17tRlhRwjHmlLUlnS1h77zCmdB6XmEQvV8rFSoxXcmc1xBOoaNc1Y4P0oVylSRZc2iuTWZ938UBRpNWaGdjQGZg4Y2bGjWVrMM9NP4rSzHUM0hALfEwPfjoCn8jhLreZylw/o7EHFHYn6QtvhFf46aBrcgnJQMuQRpTjQKG/lIqlT47H+CIGw9C5e19ipBnJsTpA70WrBpiD5AM59EwZFEFD5ZpixnyXa9E1q8BrP0c73ysDsbCUFi6erggSluTaDvRvzaX0y8Xa6yH0jbiltgSm4P+7qYTRn4g+8hthbffuR3QZazJQXCWveEdsIxrHow0uL+WVj1H
- mmCGf3ZK
- dplHOI3BbfnO45Tkbyi00nrj056zZ+KmjiF6RU+dkkqoqgerkz1YE6vMS4Z7LGLcQKd5PZyKp0UtdnYal2nth2HdtlKFzZIoRwPe/MB4+REdxtxudEAE/8+1f6zNhuRf2FAasscK5FoOvwbMfI+N8Q4sW2nqviE0acTXLCHyaeehvb3sffpZMvUMJhYJiiEk5V+fz3s4Ko5/GuAN9kGeDaXeDhCQyqd/nGIDNTJiAx7rM+1FMy6vk6YchDyy5RYPoTEZyCSrNuPsMdxydlkz210vdhCXPKjreZ1DNuNNu3LNqv9StX/I4F5Me58NBtn7ooNgRD3hIGPBuydg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4A67940013
+X-Stat-Signature: 4tx78nthqug1swwyj6tmcrtxbjwzampk
+X-HE-Tag: 1763601092-942430
+X-HE-Meta: U2FsdGVkX1/J8RRyKzI7oTHUYNN8zB0NyEJg8djVQ0GhXPFy079UEESwP2AFD1cBDEUhCA+RSdir1h7o6POlJvSYB8+QwPxaxlzfCJEijOYUSOW+n67CnRLRsM4SqjiFfqD6DoDpwTOg4bq6v+rnzsvqL02M1SUMMTeqqAIwBT5ammZqa5Yk29OSBcdYeaGZdGeacNKMR9335N+dxGrosaEKz3Pc7EuGdBeCwgyIjy+gylCrAYjbFQPwQc8PtYvmnOBu6dLEAkpgz2C9KjY+w/6EMW1QtdQRdpwxTWgBb6glXF/nHrGjy7+xQnRcvpY27NYgkAocBbdOI1KpZO8P6b6fDX+vdK4SHtXinh+B97/9S2l5atYU2nIBxbmmHtJ5L5FlGfaOQRe7czCtDKl4F9W8NfILWJSQVfKQTVgVx/Nfb9gIP5UbyY6zQdVN9yEL4RHX75WwwAXUhpipIYp1CbAcAtOlAoyMz5M4TUtAXVzjaYBVx5NmzCMcdFQ6xPZQvSihgT07bzJRCzdUmzhhDdvdk/HNO7c7pM43iZ3JRhdiFpvEZOvJdZA+fNBke60jB341h22ilNIm+3JEMHCNYRn94z/6ANlmNv7YgQbTgffYvqJc2uwOQDGIBqjqlgZw+0+wQ57eiNOg3mfvTcRhXsYhsF9fYhiB4vQXH+c+LVNDmiHDUgVos/k2hQ+3L10NIcXsDwTOvfoGJaKkL3bBRx6tFS/YEaWYnrTQcGS2cbx2hulbdCrcQwjaSsAodQ5UA569iTlEpLgmW7m9uzW5z9o2akHPRob9+pTGMT6xU9R3Zz5xHPqRAz5ImzZFiojkoZ9H9eBkVG29D02tDfj8EPZaxmwnFGh+U2k2QhD2esAKlSyimzfw1+DQYltO4E4Bgeqjym+u9yq7Gl+aMJoO711+wjiQC4OVlyt37j8Vj/6pur7iepM1aHyeemhTu+hRgTlh7Ituidj0GB0/8zM
+ auwD4vwp
+ KSRLr7zQbVpKPPVH7N/3C0/AiMrko00Wns7lrqFGD6znyxXA29sdHzRcaWAzq67ae7zmuV4laX88BL8VkGQI7+SsRag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,35 +115,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Nov 2025 09:35:26 -0800 "Vishal Moola (Oracle)" <vishal.moola@gmail.com> wrote:
+To eliminate the use of struct page in page pool, the page pool users
+should use netmem descriptor and APIs instead.
 
-> We should do a better job at enforcing gfp flags for vmalloc. Right now, we
-> have a kernel-doc for __vmalloc_node_range(), and hope callers pass in
-> supported flags. If a caller were to pass in an unsupported flag, we may
-> BUG, silently clear it, or completely ignore it.
-> 
-> If we are more proactive about enforcing gfp flags, we can making sure
-> callers know when they may be asking for unsupported behavior.
-> 
-> This patchset lets vmalloc control the incoming gfp flags, and cleans up
-> some hard to read gfp code.
+Make fbnic access @pp through netmem_desc instead of page.
 
-For the series,
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+Changes from rfc:
+	1. Use pp_page_to_nmdesc(page)->pp instead a wrong approach,
+	   ring->page_pool. (feedbacked by Jakub)
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Acked-by: SeongJae Park <sj@kernel.org>
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index c2d7b67fec28..56744e3a14ec 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -653,7 +653,8 @@ static void fbnic_clean_twq1(struct fbnic_napi_vector *nv, bool pp_allow_direct,
+ 				 FBNIC_TWD_TYPE_AL;
+ 		total_bytes += FIELD_GET(FBNIC_TWD_LEN_MASK, twd);
+ 
+-		page_pool_put_page(page->pp, page, -1, pp_allow_direct);
++		page_pool_put_page(pp_page_to_nmdesc(page)->pp, page, -1,
++				   pp_allow_direct);
+ next_desc:
+ 		head++;
+ 		head &= ring->size_mask;
+-- 
+2.17.1
 
-> 
-> ---
-> Linked rfc [1] and rfc v2[2] for convenience.
-> 
-> Patch v2 -> v3:
->   Only changes the whitelist mask and comment in patch 1:
-
-I'd suggest s/whitelist/allow-list/.
-
-
-Thanks,
-SJ
-
-[...]
 
