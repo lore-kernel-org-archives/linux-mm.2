@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E03C8CF9C46
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 16:54:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38DA9CF9C56
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Nov 2025 17:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CBBC6B0011; Thu, 20 Nov 2025 11:54:24 -0500 (EST)
+	id 7DF716B0022; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07CD46B009E; Thu, 20 Nov 2025 11:54:24 -0500 (EST)
+	id 790576B008C; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5CD6B009F; Thu, 20 Nov 2025 11:54:23 -0500 (EST)
+	id 67E7F6B009F; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D94266B0011
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 11:54:23 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8062B57397
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:54:23 +0000 (UTC)
-X-FDA: 84131583606.16.C33F298
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BA1F72001E
-	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 16:54:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w28RvdNg;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763657661; a=rsa-sha256;
-	cv=none;
-	b=eYT4KQqhUslvHS6fhVlVajPTCWGusCxMdaRtDM45XAIjQQLNd1/d9MDlkENyslEp8HKQWx
-	YSwxy+rbzyMBZIipP2FO7KhxXPSv1g2QNI/KWpgRrhhdZ9ypq3uR7QSdsdXMb7oLE/J1Xj
-	ulDpK1V4AtuE4LATQVWZwu1Ex9SXEwI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w28RvdNg;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 57FF36B0022
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 12:00:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22DB013A64B
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:00:18 +0000 (UTC)
+X-FDA: 84131598516.21.BE7976E
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 942FE40016
+	for <linux-mm@kvack.org>; Thu, 20 Nov 2025 17:00:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Kx1m9Bcg;
+	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763657661;
+	s=arc-20220608; t=1763658016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HuR8qVEo+ksobb7OjlKlwuNSi/Ho+65Gb4SxTte7sXg=;
-	b=rYXXQO7bCExG48qcRKnPa3rYQI00AYD56B24Ld9WUyyNA6VGhPk6LN+8H6kF4xH1GaF5It
-	X63B1h/+WKw6JjCndqbvFSSAaT6YGC4CRxvA6J6cRLHTvhRDhVU6rpZIaeUXDVFo3e6h8w
-	a4xDBW1vfw51KQ+bApIn3IjmPb/nge8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 15D27601A2;
-	Thu, 20 Nov 2025 16:54:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FD0C4CEF1;
-	Thu, 20 Nov 2025 16:54:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763657660;
-	bh=HDk2Od2npPr2bwYJHE6u/KVNG+/2mrpUW2MyMGJzHXM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=w28RvdNgbaTvkKAHWLPsbKozzDgSFyNm0pS6FaOLnu4oa/UEE1tgRQek8vOXERz3y
-	 VCUtfwBS+9GTTVP0bjLEoxryrGXMH89n9tHUJaUBbH69mrLDRJUxL76Rpon7YG0e3p
-	 6tALArAEN0GNOwLSlt/Y3wFZRdpwVUHqYW3k+uww=
-Date: Thu, 20 Nov 2025 08:54:19 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, Kemeng Shi
- <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
- <baohua@kernel.org>
-Subject: Re: [PATCH v2 3/5] mm, swap: Remove redundant comment for
- read_swap_cache_async
-Message-Id: <20251120085419.4476309a1af1679106b61ebb@linux-foundation.org>
-In-Reply-To: <CACePvbVLG2BbC7CQLrC5sP1fUXxuV+MqBh=LyJgLr9REQz252g@mail.gmail.com>
-References: <20251031065011.40863-1-youngjun.park@lge.com>
-	<20251031065011.40863-4-youngjun.park@lge.com>
-	<CACePvbXO8oSH+-igG1pNFueB5JdoDOadV0n9DNN++iMWgCDiPA@mail.gmail.com>
-	<CACePvbVydfq5DFP4R3tKXtN-UmZNQJMxm-p-4+fYFwyPfLR9cw@mail.gmail.com>
-	<20251105162953.74b38e11ad1a28093e751822@linux-foundation.org>
-	<CACePvbVLG2BbC7CQLrC5sP1fUXxuV+MqBh=LyJgLr9REQz252g@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BA1F72001E
-X-Stat-Signature: 474hn61uh8e3z4bywt78w9jbq1pgcd7x
+	bh=re2tiGZL7IZwaCp1/yGWEfyF4epuwIDXTzQ2HA1ACdI=;
+	b=F+9SksARdy2CuZAjcVuGgkGgZsBh3YhgdMFOzKbZKFuY4gqncGhLghI3OnnekPxY0m61ub
+	F6txBjvUZy3cP7eSpAyfwhJgkt6EDFAAzebGpBkSeOi9wiJUdKbLl43PKcvaQw2aC6/5XD
+	AGmNkLwdwM0YG61NQCYVIDfHlgTIdWY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Kx1m9Bcg;
+	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763658016; a=rsa-sha256;
+	cv=none;
+	b=PkU3vJbNE9Grjdi4+P7IdSoRyF0wV9DkWCpos8aDcWpfnoTwtgjGGLq9H8DJ9xOd5Yn/cp
+	t7kJAyrNf9sDXoKZu/+L2knFiMJeI2+WCpumUQMxTsTNtNRQceeH+9tlr8WpxuM335Xo6+
+	oroVgp3bK7jb8wt07hP0rGnsi5NmIWw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=re2tiGZL7IZwaCp1/yGWEfyF4epuwIDXTzQ2HA1ACdI=; b=Kx1m9BcgcI0haXR+zGeSAWaIw9
+	G0fPgYE3/vT6S94x5gDbWpNv9di7Oz6fLCKbHPUhUTEN5662TE8kzwSE2A+aRpkEXCFXXMHDKKbo3
+	6WIsXxeKbgIwvJN93YZ6yV+NLX2cc+altMh+dmz5ZbvOEjHuDYYTKwPyvKQ/0Nocd1d02SjYt6P5L
+	xpk0W8fKlUvLFB71q2xjiqXTxBbfAdGflCcv7A5adjSBE6PFDnYNRQg6SCBBdRnBdfmDyMm4nTt9B
+	+q2Itwb7APatwg0U1FBtKNAZg36UO1tqyLl1oQlhYpmUd3T+rFRLfHDMcAMaTh81uI/s349eJi9jn
+	PPccvL1g==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vM80l-00000001Vsl-0MTK;
+	Thu, 20 Nov 2025 16:59:59 +0000
+Date: Thu, 20 Nov 2025 16:59:58 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Kiryl Shutsemau <kas@kernel.org>, Chris Mason <clm@meta.com>
+Subject: Re: [PATCH] mm/filemap: Fix logic around SIGBUS in
+ filemap_map_pages()
+Message-ID: <aR9JDud3PS-A_hcg@casper.infradead.org>
+References: <20251120161411.859078-1-kirill@shutemov.name>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251120161411.859078-1-kirill@shutemov.name>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 942FE40016
+X-Stat-Signature: y4kgca69uqcre5opx57ocmom51bseg6n
 X-Rspam-User: 
-X-HE-Tag: 1763657661-482481
-X-HE-Meta: U2FsdGVkX18ZCsjrbPmz3tHEGrw14bIK+aEJ2u+Xh2JI7oRM9i/64wBNprLS8J+cx+G08GJfWkpKZWD+Y7W8T53JmOA7Sns+XFDp3fvIb9AG4WvnnnZifVLpyBjN62Wyk0hHhgY7XVMn0ckGYc/Gx61iP6CGhuQu3GhlriMSmv5rPa3jQBA3iIfd9wWLnaeF3z1QuhEdEJ5AKxYkjljhpp6XTDHQzr2Vb4d6/4wxHqA0ssjkBOodKJ2lZHucE49UM8m5CbCBJb895XkLdOwsa3Telidm1ql4wxGqnHLBUhlr0ZqZR/laMXzeeZkaZiE0//a9B4lXbtEmKE4ddza09uOV2SZYFKRv5Ftrlvjnjp92pA7IkjvodbcTJ8Yzy8ev1KOiu65mXgFebRoDtnfYNIabu6Yc/hkNMOx3AXzxUj2lUcwrLnRKr8RipK31DONqecMYp8SpffU5Ga0Z2mZ+Amb3oKPrCdhqzVCGSOCNdXyr+U0v4DjlXUt2a2QKopRKs34OD85xscKb+hel73psvuCHKyrtp5dddz4h0yaQ3tEJ2DePsiB9YXH7zlad9Xd2FxvNFcSwl9EWNueCsVM7Y5bbc5q5qBTPgLvb2IK8Zo9GhrWHUe7M38EusyiDy8GnET3nrQ2458os/PouvH4B04uT0+FXDw6uqX6ms8rzRIBr2/0xVeSpa+qx/Lh+ea6qPtyhgIAuu577KTdVPYx5lfcFVtZpbx3zJa3te6Gq4WRusnoR4Eeym2+rIGYRRyCTgZOaWJ7mp0zG612rn7fD7oGosB2S4VNYu6rmzxzaM8uJ281XR6b8rvM/sDWi8C2KB+oYip04Wj5rTcjf9amxdjFdTpqfWopdSH+LsrdGKs9gOw3LCIRmJS7LeqKoGEieiAxjIS2WvKQ2ZS18uxMhpVzVpwobknEg0bSt9Ica8TVLTTzXzxnJH4273To7p+46axJTpbJyPi6QTBktykf
- 8S7p8yBX
- 1UbE/x0Rfn8QDDXS0S6pCum2bESeP2bE1filUYinLi6iocQMHvGswa0OThPal1aroaKLapsyrpX/XbIndELCdcSOEESwLNjqu5MOSsCOnHPmvn7VdBcjWQfEExpz6gC/9QjgnmRQS3/i5D2s/EpewKu32842unp1TqlD2AGnKEK1O4DPpp6zGtKc2EpMuvhBB0NloQRU573kSiNz5MkhJ7j6QF9pfJgGXReZzTqrhQn8qIbQKBXB15in+7ePUVfXESjc53bYlPgqkxbDg35l7rNPGb8EJ2L13QRxvIVegBF1gh5GTz20cSq0RH+tnny7egPVIX9gf7wUgUtwmMdSL+ww72O3D+HzmjNGCL9z0ngx+DTcuJ2VqtbLvSDf4+yweSCkGoxpJlLk/gPW4UiLj08+zw89n0FHPMmqd3GjDWRDT+fI=
+X-HE-Tag: 1763658015-587042
+X-HE-Meta: U2FsdGVkX1/sOakiS7vFHDc1xE751MeYxQTgzl9P1viHPuHfWm2OeVwdDzUgF261iDHZjLPQO7+3Q/qZnvIIwZz/n484Bkbw0LNAj4vTW5JaBpBeeqomznRrdCNnBkGWfTV33ILStxOQSeBJOpiGi3lS/y8wWtJJdq4qh+tAQ+3mg4RXun5Lamgob5W02IyqSP76Qi8ZoHW02j373cuhivxOrx8WXbQzu7HjV3P+sYvGOd5lDZfqtGXWuF/TMgp2CD/lN0SyihpyaJq6eHSCgHFtYkkD46HmGYVNMGwqEN+w0x+KJalv0tQ6IveoQlX8Y9b2Bw1Mk1ENtOuHZxa7LfqqDJBIvytddvVuV3Myd0aoVSt+0Lemu3DRKpw6yfZAIMHDeV53nNSUphJyVFkAMx4lvzWnF0gSConwY0ygrgTzPo2jL1KRyIGRxsG/T16beiNz0pdk8e918FRBLdhH8426qdwQIRc8ixwQRfnetvBJjJ4XaMK6f9RueQLzWxbvTHFhP9XXzVfKRrVzW4lnuA196J26KUFxMrTPPLhIwHL46c3Tjxd9pR56idvFKSUa6FO9u2w9eZ73bh+JM6ILJctQAvCSeNSu6iGAxU66xi6VoGj+L4ktqlQDfsHWXPpNGz4KVgrwOKoFSSDQJPKwcUkbXHViLt+9ciltRQs/naL18xCeQIXN94cdgy7I+Fbi47aiCa4e5RyX7tQ/nFRQoZSpKOH5+EaGwaLOZASemhPW9rwJn5Q+J0uNrcpnT7wlpJId+va7ov2hYy+QQdIQG09BNg4KTUmRs7PJ+DNxlBBI482c7dZ0u23GhHqM60GdP84ZLVo8UuByI0BzkNoSAB5UFXNbPc6PkT6f3t+3LvndiNNBzy+fN8lqVSRZaNeoSjZNYQCybS6AFB/CeRtVYUF120+b4DlLc6slPt4LEMblWgjRoVfpHQGtvgHFhcKyb7cBPvNrDDF7ewy5Q4z
+ HMWu0rFO
+ uZiruRuzaxEMa6ymRh/GJ/P2uFWO0xZfnMibXkP+uN3nAChjtD6fj3TBNLkw2w7W/H9H/UBDKbLDmvDKnQw9EjTzAaxSpoiKKbPwaj9VirMv+OL2JFByeEJxq2K5Vlz7xibXaMj/kboIfUcAcMfJr80f336iIU/wFFRG8EeRZfQMIUh7VJ63XspkA25L/Iw4xbAw25MrtT+LqMrCZljNKkElBI/0zzyvMNH0fHHg9bC8X2CiI5/4TrAJWZyz2BBcZAXvYCrIdfDoT4DYcrJjbvfUUfBLy0VyxO4EEnr41LWRC4PP3VqBVuX7QhsXA9Q9BOI+gta2rzZRIeJPY7rlp3jyi0Z5x6jHU2TTXrz1kpqiFUSRC+K2J8CKn8b6lCV5sk+K3VfOTStYwXxg7OhmL2EHUdUFdiyXkbInLIWXmOx2ga0BzK+ugIYT7Mg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,25 +106,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 19 Nov 2025 21:00:50 -0800 Chris Li <chrisl@kernel.org> wrote:
-
-> On Wed, Nov 5, 2025 at 4:29 PM Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> > On Tue, 4 Nov 2025 23:58:17 -0800 Chris Li <chrisl@kernel.org> wrote:
-> >
-> > > Do you mind putting this 5 patches series AFTER the swap table phase
-> > > II? It is the comment adjustment anyway. If there is a conflict with
-> > > phase II, I think phase II should take priority.
-> >
-> > OK, I'll drop this series "mm: swap: small fixes and comment cleanups", v2.
+On Thu, Nov 20, 2025 at 04:14:11PM +0000, Kiryl Shutsemau wrote:
+> Chris noticed that filemap_map_pages() calculates can_map_large only
+> once for the first page in the fault around range. The value is not
+> valid for the following pages in the range and must be recalculated.
 > 
-> Hi Andrew,
+> Instead of recalculating can_map_large on each iteration, pass down
+> file_end to filemap_map_folio_range() and let it make the decision on
+> what can be mapped.
 > 
-> I discuss with Kairui, his swap table phase II series will need to
-> refresh a V3 anyway.
-> Please re-apply this cleanup 5 patch series from YongJun, it is
-> already reviewed. Kairui's phase II V3 will use it as base so we don't
-> hold up this cleanup series for too long.
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Reported-by: Chris Mason <clm@meta.com>
+> Fixes: 74207de2ba10 ("mm/memory: do not populate page table entries beyond i_size")h
 
-OK...
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
