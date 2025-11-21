@@ -4,111 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BD5CFA477
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C42CFA478
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 07:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEC1D6B002E; Fri, 21 Nov 2025 02:32:36 -0500 (EST)
+	id 114C36B0010; Fri, 21 Nov 2025 02:39:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9C6E6B002F; Fri, 21 Nov 2025 02:32:36 -0500 (EST)
+	id 0EC9C6B002F; Fri, 21 Nov 2025 02:39:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8B5C6B007B; Fri, 21 Nov 2025 02:32:36 -0500 (EST)
+	id 028C86B0031; Fri, 21 Nov 2025 02:39:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C49DF6B002E
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:32:36 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71E8BC04C5
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:32:36 +0000 (UTC)
-X-FDA: 84133796712.09.7014371
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7589B18000F
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:32:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E76246B0010
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 02:39:17 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9508B12FEEE
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:39:17 +0000 (UTC)
+X-FDA: 84133813554.13.3F0BAE5
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 365BA180008
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 07:39:13 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=JTHSVOPJ;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	dkim=pass header.d=huawei.com header.s=dkim header.b="N5/8B55n";
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763710354;
+	s=arc-20220608; t=1763710755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eP4FxARObWS9vkRJqC7sV2sVfLC5TMvEe3NqnVYi/Jk=;
-	b=Cnr0DuF8fbNT2QzQJFHpEMJ3EfsJIhcHLNCHFGkfPwZb6oyRzzOcIvkhoQLD5lWZeOXZMq
-	Hc6d2+3u1Sjj90uH+ae+2XleTZg5fKtXPEgsT4IAludPY+60ofkK9iHmc+JwFI6Um7kP6p
-	Y6a2WT+PBrqS3oj+ucKuGPMvRKLIaqQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763710354; a=rsa-sha256;
-	cv=none;
-	b=CZ0/YyPQ511EpCZltNFOjxi5McdzjPxBLD+nuoEffstE/zmFBBDKVvLgzkruZlctrFdaVp
-	xUpMoBjiGknmKXUmHAx8QSJD2EgeUgScnFP5UIy4wyXG0sXfMIGs2dtbOrlQjNJM3R0AWs
-	+daZ7qkrFyVlpou/2GxdPhi0cG5WIL8=
+	bh=Jw7Ud8zh45h7Hnmg98SmQKRWVlaGwdOC5WqXH1EQ55o=;
+	b=41M6bbogWWAZGI76dsTTCH41UKESF6BgPXpQusPsg3vRHk5DnwknwSOWIk8dopHW9xqIfK
+	l9YYIYiptAv690w6GwDnKLR9SWWynxtiPORL2iZpmJmEerZNBrUSrNlvQl2AAQsDXk3QGx
+	4IP58t43kVseisyxbIXwrAqbxyaNxQU=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=JTHSVOPJ;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2984dfae043so16137005ad.0
-        for <linux-mm@kvack.org>; Thu, 20 Nov 2025 23:32:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1763710353; x=1764315153; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eP4FxARObWS9vkRJqC7sV2sVfLC5TMvEe3NqnVYi/Jk=;
-        b=JTHSVOPJLfY1hP/0AjUQcFyW8vOQ8tcFD9EAjQIUcfYB5npJRwHOfWDyuYv08JLUdx
-         o1oho7ZAuqI2LZ9hOAvKGUqMPZFuadt+Up6663AMfOf2EAwHXdtBMWmMKVMG2B3MkyfX
-         KXxtK9bJgTMbySqdII1StcQIOIctOOvZMgZUg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763710353; x=1764315153;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eP4FxARObWS9vkRJqC7sV2sVfLC5TMvEe3NqnVYi/Jk=;
-        b=WM0XKk0bNoALBLOxgGi70vRrY81Fr723IyMWOl6iR1UyC5jGk2Q7MLpw9I4rHIHhuj
-         5n/EWU012k02d6NcU9e1+wx+HmX75RCdm7+mcAsPQ/ovbJJAWNjDZuyyiYf6eouUWnlV
-         6kailnxERbvZxMVm/X9+TenQaYUR++DKiMpw42edH7k6nVaNySJkPJbwPie2pcPKBlY7
-         2x1jAuCh6suikuoaQMAw3yazZtE2rUwFFB7+TaLojH/mFQ2skue2n8Aa8OLsT0Z8LycI
-         IG9Pql5OSiP3vhDaI9LwF+Zn/FzpCewQTBInY6sZiJHEPEFL6wedBXnXwuPW1cZK1l7k
-         wyOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBM6Ckt6mWXfMN4N7gS7VOVmdIRfZ7hhjWI3usf8u/RCXuiWT1ARFNXSrh3pa8O1roSDivJyUY1A==@kvack.org
-X-Gm-Message-State: AOJu0YwvF+1fv3tm9MvBur9E7x7eUD1tXM5mKnuqwsbT5qMrqIDM6oPr
-	Ci4fyDKzDr+MhPs4vfqDw/E+k8MN3o3ny23q6M/W6wJhhaoNZEnsL8F6+/8Tv9bjkg==
-X-Gm-Gg: ASbGncux7V8PBB6iMI5fv1Qfcdxuk0ul8+Aj2LzCgqfJMfo5L7uLzjoeBpeVPt+wvzP
-	+ITEKs764eyWKFW7ey5zz19P3Zb6Mkk932qOXLTyPMfCUTtHgR+89IQf3yX+AB2/QMBtphnMtnC
-	oxEnEJxS/EGifuP1csemsANCRJegGGzX390ZG8TogbKdkUhkJMyP8XOk6aGhBoy2XtWJE3a6qxi
-	uw4ZlQ1q0nGIXDIMMPdZ3CLlxckBUEeVgQT2zDc5fMGySsB9IGBEENnTKK20aj+KxgJ7HK9ZrZu
-	ORdYO5k9Wh0lAp3jNiu5vwnsxIqN6RiKXtnNOk/PfSTZGyAO63kG1BzvtXqpxkNSDnMmgZ4pAoC
-	f5Scc3CihqlXuAMaklubvC8DE6IJeKQMZQxbcMcTCaw2QbNhc7UEQ2lyMMaCAzPbUIJV4EvsVI2
-	i0LhrpsgHek5Lveg==
-X-Google-Smtp-Source: AGHT+IFBREOiOEZ7qBgrF54NMyKPzD+NC9b8oN3uY8MHWRRQbBF1pojjanpzzM8yrsl4GI/fnBPTuw==
-X-Received: by 2002:a17:90b:580c:b0:341:8491:472a with SMTP id 98e67ed59e1d1-34733e4c8d9mr1759968a91.4.1763710353227;
-        Thu, 20 Nov 2025 23:32:33 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:b321:53f:aff8:76e2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-345af1ed1e7sm5529337a91.1.2025.11.20.23.32.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 23:32:32 -0800 (PST)
-Date: Fri, 21 Nov 2025 16:32:27 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yuwen Chen <ywen.chen@foxmail.com>
-Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, 
-	bgeffon@google.com, licayy@outlook.com, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, richardycc@google.com
-Subject: Re: [RFC PATCHv5 0/6] zram: introduce writeback bio batching
-Message-ID: <upyms2wnksojg6ix7dha74bjm2gfhv6ieef65k3f2our4r6fp4@kjtpmu4mtbay>
-References: <20251120152126.3126298-1-senozhatsky@chromium.org>
- <tencent_301571E78C8FB8CE9FE3E5857DC174E5150A@qq.com>
+	dkim=pass header.d=huawei.com header.s=dkim header.b="N5/8B55n";
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763710755; a=rsa-sha256;
+	cv=none;
+	b=uXVClUIIWcNmcVDAaLedZSQLi5E2A4vcTaMxlooLfnhCowWLKDCttZus1+G9pQ2o8Zd4/c
+	8WWqsapCQ5VfXweVRki4mv3s1NSjfqsPEdzAbnY6VZmRBSof6A1PiQx5pfWzSXM1eMnNkg
+	BwMHJPpJ4ktZMArpe1eKVzuZHn9b+8o=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Jw7Ud8zh45h7Hnmg98SmQKRWVlaGwdOC5WqXH1EQ55o=;
+	b=N5/8B55nKmRouJYEJQ31wAPlVWAbWvnSJEvXC4E4Y/iT7YlDm1xWdztV8ZlPBdi7UML01lUc1
+	Fv8XbMPOj7kpwPW+tlnhHlLdprZnTT5vLaEvUbYWZSyYGWOxnOO7oHGFWOv5YELHAHIr5n25AxD
+	y1ox9Sv5tlLGPqrKu9b8QeU=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dCRrL55nqz1cyP6;
+	Fri, 21 Nov 2025 15:37:22 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id F1326180043;
+	Fri, 21 Nov 2025 15:39:07 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 21 Nov 2025 15:39:07 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 21 Nov 2025 15:39:06 +0800
+Subject: Re: [PATCH v3] mm/memory-failure: remove the selection of RAS
+To: Xie Yuanbin <xieyuanbin1@huawei.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-trace-kernel@vger.kernel.org>,
+	<will@kernel.org>, <liaohua4@huawei.com>, <lilinjie8@huawei.com>,
+	<david@redhat.com>, <tony.luck@intel.com>, <bp@alien8.de>,
+	<nao.horiguchi@gmail.com>, <rostedt@goodmis.org>, <mhiramat@kernel.org>,
+	<mathieu.desnoyers@efficios.com>, <akpm@linux-foundation.org>,
+	<david@kernel.org>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
+	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
+References: <20251119095943.67125-1-xieyuanbin1@huawei.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <8567d8c5-e864-8f84-7805-c004698e72d7@huawei.com>
+Date: Fri, 21 Nov 2025 15:39:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_301571E78C8FB8CE9FE3E5857DC174E5150A@qq.com>
-X-Stat-Signature: euhrzh83usk7x9ynxd9a3qgz38fwjg56
+In-Reply-To: <20251119095943.67125-1-xieyuanbin1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 365BA180008
+X-Stat-Signature: khriiwio1xxn496eeqgr4f8g4zwaknjr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7589B18000F
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763710354-39790
-X-HE-Meta: U2FsdGVkX18TepYd3KZ8x049y48Gy4p4epxviV17wzrfpBtRNMXk2ZtDzX3k4K3gniqkTSRFWcvl7BpKuahH6J5NpeaXMSHNAKQLYHeOpNFBIOajo4R+DWcEz9yMQx3HPZLegwxpIPqsO/RFrhk7tV142Cjt7S8ZKIG56nFVzZxd5Umhzzv9bmwtyTBqCNOhcMva/zPcSmIhv9iA+5Yx2FFDbCUpzClEBYhS6UG0IBiDa3QqhG2yGKmN2yLAF5pKloExwfashNEwcnZ+AamyxDg47c8grAh5WYwFqO1RGAj9orhlPmHHZd6oYcMeanzDgYg8Ayv6TeTKlpuDSVi+PkMhARzMQTkO1bW6jGgxaKy8l03Ru/+P2+9CtyWb7W7lz9aij7Vx1rUfKJFcZhiP00UHVmIAKIAuo8SG5kC7Ev0yq966uQF3/DrTjex1xIBIqNPM3RnCFAZx1EOVFgHJ+/yMfiJC7qxo3DLXKN2vJByLYNvyHVBp22aMpzgHUFUr066Bn/SjPyK5t7hYcED8VCY3sSc/wNyia6bbzuCAqmAbi/3OwKs1Je1yqb3kWIXj8zaXfc3BfB8nka+R9kvuISNzxJLXiSh9R8TUaVerLRujd/VxAYyk9F9nYh9VIbIV+1wCcz+oT3ubmh7OhMe1nQn5M/9ZRXjZPKniWVu8++01A6otb84L73iK00kZlVVAFdF0WU6eP+cGLxCiyOokpz6IGX+j9q1/6VwLZMEd0LQIsTOuH0kDN6aqcgpaM23wShyGfHAa4dLqvxfQ5QhLiIPXjOSxMKaojSwu1g0Q2RnUx6xkJBGLfIx128iq6CJ3Iz/FZFIAxo62BB4Phhub5Cu2I6s3rHNPlynvGAI+gp8BylbXSw40TuKAySeZGycPE+82oc7yhLCU5f4W2WayJtj04w1pH25J1MCV9N0LPJb1jvwqnFCPzgDPOCwGsdAJoS4EftJFcXsTBd7KExy
- zsi3oP3l
- 21HmzqUm/psBtGIyx8nCnLxrzODvig0tPu3RPpyBJ4gFyo1lqgr41/dRIxKBk1lO7vs8XpgmOboJR2V/AVwI6UclQHIbiiAFS4HCZ8W5HzSXlPfsMUZ+iucB2Yjt/M20L2LXqURVKgkb8VveDYnX24C6WAtPaVmSAgtg9UzZ2Nv7/yg/jVjkSVM/a3fGgIUp3CVfFSCqndOLFg9xNTg95HwgN6rlWyPir0CVc/chdB0wzrmhCSM9TNiSb6B1TItcGWZKDlRTT+XcLqRMS2JEgXOC+p639FZnVmm7QvJ+wLBBnYGGuiV89Mq/5WVQTd2qEHYlAgna+QgHTfYHuaMz8VGozce1j1Ia/rsj/cEnqwUSgacw=
+X-HE-Tag: 1763710753-911610
+X-HE-Meta: U2FsdGVkX1+K1E9JytOmVgiCeqE+jK7kImgF1TcoIHA3kJ50WJodUWWLIm34Fmv2Vdsu31zsayI8TL3ssw6joa484omgycLD3gIgzg9at3P1w61tapEDZxHyFTgUor5zhAQyQ/1LadbwwxvwHZBbginGj2xEoEUqpbpVYUL7AS3t6JEpDzGfH1WPPg7rDR97qHKu5XUIolmtH2KObehBhg+agHKyHDvFwcIOTrEUJ+GtGwVHvweIOC8RWvRRUSsbefcmD12HsuTfuDY9b/IJEnPVMprxIRsso97Ce6bxCNWxC94O8jZOE77uaQYTERN6BpIvdRn5VcPtLiCVapRUW3xUCRVkjzvehrgLhUDjg1seR+Sc8zkpg7UXMmDYtOwwAUHbmDbQFOle8OKyI87t/PkISCmssKWRb9Kxi10slptZhR+8XjKs0zJf5s4BK9nZj7t70M6FcoQWqEnQ/BPZZVdpmjxEsoRfS0oRJxWccnDFRoIAtn7hp5aXuNR2/29cS7wAc5TMjWOIqz0fXvMR84O8fPnvVhUp8/CVYX0dWG3TGop6p6MXQU22AaszRPSV7oxz1KWKY+pW4YscCqDSjtPrztlz5IXdksikMfON3w3lMOOHBMjXx5yB0L+YnaDT/hzeTKmMcW1c8IMh4A0SygPSs2jMRCvSjwbTU0kGi4w8kSyRHurUX5l6LVLrlvboEI9sxl35+EML2nzNqaAn52muPe/+H4J+FZa3skQIjauI0O/3vgg+Hldonrk8ZLAVUNYUnS8I3EabHWmlt2URBSm1J+ul5Lp8dbHWX+jt1sX2iSGfTuIWL+uzOcaERkNVxyN4I9t7NYRPpw+26BO10pX8iDLc+Vc0oFcvrEJenYiMMHFxLevPWmQGONUuqkSQ38O+C3qmxfxhAKRTSeZdY9W222vbMBZWxBjFIJmHc7tNk5Nur+T3DzWF7YV7z9k5LC4EJMR8pMAkPTA0W4e
+ ar3ZNOC4
+ I1EmDkhIjDh72ObJf2gx2cKIsUL25BJQckLEj68pf/Z4eHvirFfgJMbgRJh/+to9Y09hVSsqMzYd161t6/mKvstfYPY2PzELRI9R+lsvtv4cP4tAT9bPFDNmaD5zGSqXwIa+FvjaJml1q6xLqaKb1rFP6LLUal/pBrMFtG0+7T3roLmbFMNW5OoRZv3fvWQumwBbplrF1tdkgWOjZKcl/tZ8Mx2mSi9F3ke2TGaqcqAb809R5peQtKCBO7VoplqiUQVYN/IaTTAIr0m3qoJKXMAXNs2XqkCZ73sRaOzX26ZbH3eiapg7KLsYRjCamH1ZK9MmXwCZVgyVJhM6mUPUUW+Xm25d80kLZDD/fyEGatqlc1c7E3p2CpPtaUIdqB9CinDXADsi5PQPX7Chw0FYSk/rk2A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,49 +110,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/11/21 15:14), Yuwen Chen wrote:
-> On Fri, 21 Nov 2025 00:21:20 +0900, Sergey Senozhatsky wrote:
-> > This is a different approach compared to [1].  Instead of
-> > using blk plug API to batch writeback bios, we just keep
-> > submitting them and track available of done/idle requests
-> > (we still use a pool of requests, to put a constraint on
-> > memory usage).  The intuition is that blk plug API is good
-> > for sequential IO patterns, but zram writeback is more
-> > likely to use random IO patterns.
+On 2025/11/19 17:59, Xie Yuanbin wrote:
+> The commit 97f0b13452198290799f ("tracing: add trace event for
+> memory-failure") introduces the selection of RAS in memory-failure.
+> This commit is just a tracing feature; in reality, there is no dependency
+> between memory-failure and RAS. RAS increases the size of the bzImage
+> image by 8k, which is very valuable for embedded devices.
 > 
-> > I only did minimal testing so far (in a VM).  More testing
-> > (on real H/W) is needed, any help is highly appreciated.
+> Move the memory-failure traceing code from ras_event.h to
+> memory-failure.h and remove the selection of RAS.
 > 
-> I conducted a test on an NVMe host. When all requests were random,
-> this fix was indeed a bit faster than the previous one.
+> v2->v3: https://lore.kernel.org/20251104072306.100738-3-xieyuanbin1@huawei.com
+>   - Change define TRACE_SYSTEM from ras to memory_failure
+>   - Add include/trace/events/memory-failure.h to
+>     "HWPOISON MEMORY FAILURE HANDLING" section in MAINTAINERS
+>   - Rebase to latest linux-next source
+> 
+> v1->v2: https://lore.kernel.org/20251103033536.52234-2-xieyuanbin1@huawei.com
+>   - Move the memory-failure traceing code from ras_event.h to
+>     memory-failure.h
+> 
+> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+> Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
 
-Is "before" blk-plug based approach and "after" this new approach?
+LGTM. With David's comment addressed,
 
-> before:
-> real	0m0.261s
-> user	0m0.000s
-> sys	0m0.243s
-> 
-> real	0m0.260s
-> user	0m0.000s
-> sys	0m0.244s
-> 
-> real	0m0.259s
-> user	0m0.000s
-> sys	0m0.243s
-> 
-> after:
-> real	0m0.322s
-> user	0m0.000s
-> sys	0m0.214s
-> 
-> real	0m0.326s
-> user	0m0.000s
-> sys	0m0.206s
-> 
-> real	0m0.325s
-> user	0m0.000s
-> sys	0m0.215s
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
-Hmm that's less than was anticipated.
+Thanks.
+.
+
 
