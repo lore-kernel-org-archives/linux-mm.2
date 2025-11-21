@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FD17CFA766
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 09:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0C60CFA76B
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 10:07:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A7E06B0062; Fri, 21 Nov 2025 04:58:10 -0500 (EST)
+	id E4D486B000A; Fri, 21 Nov 2025 05:07:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 758F26B007B; Fri, 21 Nov 2025 04:58:10 -0500 (EST)
+	id E24B36B0088; Fri, 21 Nov 2025 05:07:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66EA86B0088; Fri, 21 Nov 2025 04:58:10 -0500 (EST)
+	id D61756B008C; Fri, 21 Nov 2025 05:07:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C8176B0062
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 04:58:10 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC0FB130035
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 09:58:08 +0000 (UTC)
-X-FDA: 84134163456.08.015E7F7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C290B6B000A
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 05:07:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76D0B13B322
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:07:02 +0000 (UTC)
+X-FDA: 84134185884.22.ED66012
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4E21B14000A
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 09:58:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zlEarTm1;
-	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id D0A00180005
+	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 10:07:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2TaCtuuA;
+	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763719087;
+	s=arc-20220608; t=1763719620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=p3uSsQviajI5Wcec5YbGA4iSyEYKtu9q8vJRWq/p0fA=;
-	b=KiTEo7KxR0V/k0VHqnxigh3yf0UuSOOVIA+IYd9dya8+e+MPoeJEO0k2VU6cb2Gqexbn+6
-	TdxmcVgbdfPIcf91Z/Z7Xxg+6JALLXWE5+/sCASgc3EwUt2cGKRDBAtW5uWeziZfhFCEeq
-	nNEJ06rW4UJJc1OULLkRi4baalcrsrk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763719087; a=rsa-sha256;
-	cv=none;
-	b=OYRuRdrnGaspcR4KPZrp/4gnkp4pP81hdmPvKa4sYgtEmHpmO0jrPNKtGM/0lkPDsE9kxk
-	FO2oMS759Qnnad5HxlmAOmTF1+yt1OxfU8iKZaHEFfKUHiM4INrXzoz6QyFNI5LaYrIYi6
-	dS5QjkYKpWZRucXbhw11qlJO7Cr2kbk=
+	bh=Xxm0FqYsCPxjMJq/u2TJGbNdPHQbW2wmjgkyiCtumt8=;
+	b=P3vk83L3QgECndrmeNF/LkGUb7DHsMAujpqxw2CjYCIAjKM9X8CPywNnve8z6/w1n9S8U0
+	laMHb/hyWo6GLEVIsXmYTcTGABJR4wTWDVlswEGOF8XFATrCe0aexwUkFvtf61H4b/PE1U
+	yZmz5CF3JAtwRr8vhjj7wFobiYZJOjw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zlEarTm1;
-	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2TaCtuuA;
+	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763719620; a=rsa-sha256;
+	cv=none;
+	b=KSNU2S3z7Nhef3M46az7H3on2UTu4IV2HmmZHTbv1G+5bljIU7d+R4Ho1xmprKvxgSipnk
+	8hERbeg4Tn5rvr3Duv+/Bpb+yRnyYJQVUBW+hl5kIXSXG+ybrYEIbF8NmBhXYhF6ml5wNT
+	FoAqRwyLiSz9IAcKzBN3s5RrjaQXK0E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E9A960239;
-	Fri, 21 Nov 2025 09:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F207C116D0;
-	Fri, 21 Nov 2025 09:58:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5126160232;
+	Fri, 21 Nov 2025 10:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0295C4CEF1;
+	Fri, 21 Nov 2025 10:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1763719086;
-	bh=wnYxFFffiRTRmegFpJ7WrqdMCOtU3eVKBCCcjthQkhI=;
+	s=korg; t=1763719620;
+	bh=onsZhPB7qEHvClhLPQIXSIwttEViaP3QujfHVQuBohw=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=zlEarTm1TNzDWDBIzfoHPLxhxFLKHgHYHi1XrZuc1Oe4mzdIr7JFbL5Ou361GSFpv
-	 2/NoFZaDQ+uXUT4V7a9U4wIyzKXo7K2qCveJywVyrWANBHKhCgyJ6haNTVnbAc8geQ
-	 W72Imp7qG42k4w+KSGX9qcg2zbuTMLtKM/IObk8I=
-Subject: Patch "mm, percpu: do not consider sleepable allocations atomic" has been added to the 6.12-stable tree
+	b=2TaCtuuAbBNM8FB/3nnNVlB6W3BHpLQE9XT5oDFi/U6ttNaCY8hUiDMgGXHf622nK
+	 Yf3GUJi7+ntWnA3jyL0BcDl63z9T67ioeVK5sbjzmkmOPZ8HiTmqxN4Vlms/RfkCyZ
+	 AU+piMnr4bgjfy/YT5H9UD90WSTYmHsB0uP88YD8=
+Subject: Patch "mm, percpu: do not consider sleepable allocations atomic" has been added to the 6.6-stable tree
 To: akpm@linux-foundation.org,chenxinxin@xiaomi.com,cl@linux.com,dennis@kernel.org,fdmanana@suse.com,gregkh@linuxfoundation.org,linux-mm@kvack.org,mambaxin@163.com,mhocko@suse.com,tj@kernel.org,vbabka@suse.cz
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 21 Nov 2025 10:57:41 +0100
-In-Reply-To: <20251117093604.551707-1-mambaxin@163.com>
-Message-ID: <2025112141-kettle-handlebar-ee57@gregkh>
+Date: Fri, 21 Nov 2025 11:06:40 +0100
+In-Reply-To: <20251117093013.545253-1-mambaxin@163.com>
+Message-ID: <2025112140-charcoal-buffed-97bf@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Stat-Signature: dojg7fib4dg4ucnwxeexdgd89b41huje
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D0A00180005
+X-Stat-Signature: cscfznos7ispcifdypc5dsfi5et36ii9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E21B14000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1763719087-875781
-X-HE-Meta: U2FsdGVkX19+zArSXJUkUVe4ICyc+uSxLzGxJJPZtRM9krpDIwLatHSzAOG5mplpglyQYwLFsKbBjc79fLeI8gMfMZ9sZH8ZS2MuhrVqv3o0ZDM1BcAwbnvjEMO6dQcumUxStXITesEdjKwWL30Srw6afhJ/ofgdaWcnuhfi1ek5mfsgLX+wgXkp6KM/QknrgZQ4Uu4PVRDN6k6VeOv3ONpk+eJUTrY2nIEZq4KHKWPWUN4Vn6JOlcovM6Ej7H7xmVaXaOpYTeQZcIeHOtjo6Utm8lUkEz6Cx88QoGtOqRpE9GtyeEwVo+zkaojwl2XwAR2YHDncjbd9Ef4w7swyjyAka0HJjj/asRog4LkJeY8nHuBEFt538+yh7So7bsmkt706xB4u2lKyJUfMYdtPJoaDIPK1IX4cBwjuJ6hebDMBbh1YU4f3v25kDQycQ7yrKU3zzGwRGKqkbRAK7VknTmh2XymKtKi3uxqNmW1ZTAwXsBaKIG4eL6T5rY3zDb9Gr9mongVRqzoOUoypvYj/pKWSrocPkvdaij24Lp/JN0gVnAtPl5WLIUTZfBFv6ZmRFUv54uc4MehPEvCdoTz1Qr1CYdX3d45mSGIbEK6jAnXn+EGyI93jO8bCgt/1CjuA2oDZuEgBHRzR2YaOTrDA/Vc6T8KT+p9I60Pn4XAjvgl4UEOR+ikE5eaFeaG/MEQbc14IZpljWUDqbFMD9xCsqabP+ST2HeUBgy0ACZvPs8AVB9b5chZlpmYepwpBm4mbNvbLwNauzL82VExymWA6SGAElkPm3ZtEABcKZx9ZtiRKFEXLia1gkiA7tyXEJIiA7qQNZUuATVDXd+mYw6zHrS5Ps5jllqNLdya2MDuHakqyAZcH07HJ4ygcRqDMoM8zhqaHPDE6tz0PK2Gn/gXxTH8/Hlvf9Ek/EuEgUqSto8DE/4H/qukBZzE/lUdsXgOMilu2NEQlBO+vT8Y0vaq
- W18F7xRh
- ts92DemKlXkY6e+5p9ksVKtKi0L9339RJFoTvz+Tnj3ANtsn/W+ZbsGBfkNTJXCWv9TrK/kx7opFd0mYj89htIwE36XjD4j34t+TnOdWS9RkJpLcxdtf/fCY74QQeOc/75K73gWsmRhPG3SDZTwVi8WBSH2gjvjZtQjHIWu7VE3Az7fWlU5BYW6vKr2kQTTEM/gY4a8lnxnAnrOeUDy/G9amL3GgT2hImbNouPaBHcQggF/g5ZISwoACh2p9rms/FdGxLBHiTdufbMWQ+Y21IUPht2QpjzuDdGvyfLtoVLWcjQuapFGWwwV/FJ0VQQ/Kou7H4na3iBeH9NAvxG8LTLVu8fWQvF8TaSNcDuwvEOWiR0v02KykdX3PBzTy/17+kMyy81CK7xxDV4ifLl/+xfsZtA2/DFlHh+806+qsHgythqka6f1Xe+0VPXYKwt6F1Ez1V3PTQpqQJubEA4UVlR0uDW3kJ080Cy90NWvuFhvbnaHdOacaBo4fip9UxMMzHfdu7X0E6F4MGs0NFbRJGMjA3B74IGeMUJL+d8H3rz5vly4WUCisXJbzY0YLGiV+2DSH87xNCWzMiX9Doc/xlHw/m/urh2ZZe0gtB/R/nQ44ggmR3w6S/0qvtmfiBJR7rQe+Gi1F8jlHKgWTnWZkjTTCyawzs0aMQkURcLXl3oZ6gzon97HQ7jEkkHDDYP2c9cyPFkCLp1mlb7U+3MkE1Og3Ogi6JtAdrwalACaOR5ngFCWs=
+X-HE-Tag: 1763719620-512984
+X-HE-Meta: U2FsdGVkX18guoS23Zq560y9rP3Kk6+bmuW6g87KBx1o9vibgnL1ZAvACzywalSNccr5tZUc7nRQEg8jOLv4CtfMzuzv/QGoUbTrxIkWmZFWxn27MPM3Io2v5TwCmU0LxfegIMfVnQkDTI4fULvp4VeyIB3sjHhPHp/2gYTfYIVqQ6cSFkREiPMyhC3P0JL0q8VcgxL2qCdGoR8ZeEMB8zBGTrGfVZFGKgz7+HZyPxMcqHeMRKSGVuzrj69zJ+TQ0wrE4Prhq0IuNC8kIGWuy6ZkgE46KNM/JZHfRpJJLuzpFMHeEWdDxjq/3C8Y5kkGolEDWWP3JRNDfvWMp+ei0XaTpTbLKELQB+X6o8Z7YZKvRCKUWMaOOuufZJmuNH1srQ0saalHeuzvOwPBGGiIhHK9jY1WmfLi9CZKMjaIRRj7PHYfRx83sQTx4dY65qvAzEBB0j2qG5nio2kpjk9JXKJo0VUlfeqN8KfVvhp2r9pogiYHnL+5d5FV0b410Zof1WVw1ZSJ/r1dS7To/p4JNbFhh1IShzmWq2L5hPfqu+AljcJxD/uCrSPf44LB935e1+Oqkp6/6dx9g9+SR+ksEHX7JdXdLeZ0mOeBVpIoG7WISAfly/RLm3V2gg3n5MJLf0vBcgwC1rODwQzdk0xkrJvXA6I0yEy1FCpeaUJHW5wguXDdybxg65ZYtbf6F1MH2rySXGaFPqQlQPKIooliFAWiwGCeGys4n/ckH0i1H5vr5elic3yp0jzq8CDbqmSGKj1C7iCHvi3ZAkqb/fDgb7oiq+lvQKJGP59gD28KwI1YtUNnapHnynCVwdursQukVKf8neMUx7+F6oLqUlq79s2iVcHZO1yJqSJ8d42ec8sw57YsaKtWpNmmfqLWMoULTIA7zgTQbfnmn1xmUncrFft/wftIuV166D/s3yhpFhQIQN3ygsy0BR39D9iSHuHCCKFddSLRq+VxjOYRiX0
+ 4blFT6ZI
+ mlUd96/z7ilHYZgiUmsPZt5HdL88fBQQ6X//HcnFc3FEFYVKalj/ABqvaTvW5oomri8X+/6o3TEKAvp5G227dhH4s7wEsNguMVTpo0CmDvHki35u/suUhdWGn1AJHVYCORAw1eG0vlKT9hurzwOIyYFCia8i9NAj3ai+oFU1XyVeRm6rQcp2QZkC8dd+WuZh+aPPp9OVjAJOwUYAhxwJ8XXSzZzBTtzLZYuLlui/aWMQVEVjvpJqxVyYkizMLNsVlP13ArwiQkTBzVl5PlxNZY6DlG2mukRmMrMZONmB0rjC8RuzD5DUZTrt217MkhrWTeMJ6fZ1C8MfIPpblqwhzfjTUGPg12/TYQPwi52cDpD1sO0e4wwNy3EK3HqqFqJcKIukj2Sf1F/GCUIo3ALB7wUXjDkrPm9TgjqrcANyRfEh9E7BRTpjNUEqmw+tVPoHD4OFLgyLFAxuIxrZT+wVgMrXRLzl+ufMcY/A/sV7djlnIOrf6t4E13U5LJGHCp7lqZLf59JmnIQCNJX/2hO97HAYRwNEdxhRnd+rjogr0JIP6qJ7iUHHzR1TP2XgzBveUTB6pRh38ZftVL7WLt2zkJGDhEOECbW/IKeABIC2y+keztyioxK+J4N7SSEpaoahEx7IKbZMM2Zh7JRXOi0utb482DK7IR6o8xC+VL2f+5RIu5b07VltYukjluaWgOQkfzv4S3nW9MCpv6xBDSg3CR4GsGSw5o81X4payqr1FanlZ0a0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,24 +94,24 @@ This is a note to let you know that I've just added the patch titled
 
     mm, percpu: do not consider sleepable allocations atomic
 
-to the 6.12-stable tree which can be found at:
+to the 6.6-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      mm-percpu-do-not-consider-sleepable-allocations-atomic.patch
-and it can be found in the queue-6.12 subdirectory.
+and it can be found in the queue-6.6 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From mambaxin@163.com Mon Nov 17 10:37:01 2025
+From stable+bounces-194942-greg=kroah.com@vger.kernel.org Mon Nov 17 10:31:20 2025
 From: mambaxin@163.com
-Date: Mon, 17 Nov 2025 17:36:04 +0800
+Date: Mon, 17 Nov 2025 17:30:13 +0800
 Subject: mm, percpu: do not consider sleepable allocations atomic
 To: dennis@kernel.org, tj@kernel.org, cl@linux.com, akpm@linux-foundation.org, gregkh@linuxfoundation.org, mhocko@suse.com
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>, Filipe David Manana <fdmanana@suse.com>, chenxin <chenxinxin@xiaomi.com>
-Message-ID: <20251117093604.551707-1-mambaxin@163.com>
+Message-ID: <20251117093013.545253-1-mambaxin@163.com>
 
 From: Michal Hocko <mhocko@suse.com>
 
@@ -162,7 +162,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/percpu.c
 +++ b/mm/percpu.c
-@@ -1758,7 +1758,7 @@ void __percpu *pcpu_alloc_noprof(size_t
+@@ -1734,7 +1734,7 @@ static void __percpu *pcpu_alloc(size_t
  	gfp = current_gfp_context(gfp);
  	/* whitelisted flags that can be passed to the backing allocators */
  	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
@@ -171,7 +171,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	do_warn = !(gfp & __GFP_NOWARN);
  
  	/*
-@@ -2203,7 +2203,12 @@ static void pcpu_balance_workfn(struct w
+@@ -2231,7 +2231,12 @@ static void pcpu_balance_workfn(struct w
  	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
  	 * to move fully free chunks to the active list to be freed if
  	 * appropriate.
@@ -184,7 +184,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	mutex_lock(&pcpu_alloc_mutex);
  	spin_lock_irq(&pcpu_lock);
  
-@@ -2214,6 +2219,7 @@ static void pcpu_balance_workfn(struct w
+@@ -2242,6 +2247,7 @@ static void pcpu_balance_workfn(struct w
  
  	spin_unlock_irq(&pcpu_lock);
  	mutex_unlock(&pcpu_alloc_mutex);
@@ -196,5 +196,5 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from mambaxin@163.com are
 
-queue-6.12/mm-percpu-do-not-consider-sleepable-allocations-atomic.patch
+queue-6.6/mm-percpu-do-not-consider-sleepable-allocations-atomic.patch
 
